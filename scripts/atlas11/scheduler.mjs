@@ -5,7 +5,7 @@
  *   node scripts/atlas11/scheduler.mjs --today               # 오늘이 거래일이면 16:00 계획분을 재시도 규칙대로 돌리고 끝(타이머·cron 용) · complete 면 0, 아니면 2
  *   node scripts/atlas11/scheduler.mjs --dry-run [--at ISO]  # 다음 실행 시각 다섯 개만 출력하고 끝
  *   node scripts/atlas11/scheduler.mjs --at ISO [--fast] [--max-runs N] [--root dir]   # 시계 시작점 흉내(--fast: 실제로 자지 않음 · 검사용)
- * 환경변수: ATLAS_DAILY_CMD (기본 node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_naver.mjs · 실행 때 --now <시계> 를 붙인다)
+ * 환경변수: ATLAS_DAILY_CMD (기본 node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_krx_close.mjs · 실행 때 --now <시계> 를 붙인다)
  *          ATLAS_RUN_KST=16:00 · ATLAS_RETRY_MINUTES=10 · ATLAS_GIVE_UP_KST=18:00
  * 기록: reports/atlas11/operations/scheduler-runs.jsonl (실행마다 한 줄) · scheduler-heartbeat.json (60초마다) · scheduler.lock (한 번에 하나만)
  * 이 파일을 두는 것만으로는 아무것도 돌지 않는다 — deploy/ 의 설치(systemd · Docker · GitHub Actions) 중 하나가 필요하다.
@@ -16,7 +16,7 @@ import os from 'node:os';
 import {spawn} from 'node:child_process';
 import {validateRollingCalendar} from '../../lib/rolling-calendar.mjs';
 
-export const DEFAULT_COMMAND = Object.freeze(['node', 'scripts/atlas11/run_daily.mjs', '--collector', 'scripts/atlas11/collect_naver.mjs']);
+export const DEFAULT_COMMAND = Object.freeze(['node', 'scripts/atlas11/run_daily.mjs', '--collector', 'scripts/atlas11/collect_krx_close.mjs']);
 export const OPS_DIR = 'reports/atlas11/operations';
 export const FILES = Object.freeze({runs: 'scheduler-runs.jsonl', heartbeat: 'scheduler-heartbeat.json', lock: 'scheduler.lock'});
 const KST = 9 * 3600000;

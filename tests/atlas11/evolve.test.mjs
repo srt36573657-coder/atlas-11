@@ -23,7 +23,7 @@ test('채점 정책: 결과 보기 전에 고정(첫 채점 전 시각) · 기�
 });
 
 test('채점 셀: 발행 뒤 확정된 목표일만 · 오늘 종가는 확정 증거 있어야 · 정답/오답 양쪽 기록 · 미래 정보 차단', async () => {
-  const {input, calendar} = await realInputs(); const p = await readJSON('public/data/atlas11/forecast.json');
+  const {input, calendar} = await realInputs(); const p = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json');
   const before = scoreAllPublications([p], input, {calendar, now: '2026-09-29T02:00:00.000Z', policy});
   assert.equal(before.cells.length, 0); assert.equal(before.pending.length, 1040); assert.ok(before.pending.every(x => x.reason === '목표일 전'));
   // 9/29 종가를 가짜로 넣되(검사용 입력 · 실제 자료 아님) 확정 증거를 붙여 채점되는지 · 증거가 없으면 보류되는지

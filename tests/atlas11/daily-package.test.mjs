@@ -5,14 +5,16 @@ import path from 'node:path';
 import {runDaily, offlineCollector} from '../../lib/atlas11/daily.mjs';
 import {readRecords, currentRecords} from '../../lib/atlas11/records.mjs';
 import {readEvents} from '../../lib/atlas11/evolve/registry.mjs';
-import {tempRoot, root, readJSON} from './helpers.mjs';
+import {tempRoot, root, readJSON, INPUT_928} from './helpers.mjs';
 
 /** 실제 자료 사본 + 설정 + 등록부(비어 있음). 후향 검증은 돌리지 않는다(runBacktests:false) — 검증 결과 캐시만 복사해 판정 흐름을 검사한다 */
 async function fixtureRoot({withBacktests = false} = {}) {
   const dir = await tempRoot();
-  for (const f of ['public/data/input.json', 'public/data/rolling-calendar.json', 'public/data/atlas11/forecast.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
+  await fs.mkdir(path.join(dir, 'public/data'), {recursive: true}); await fs.copyFile(path.join(root, INPUT_928), path.join(dir, 'public/data/input.json'));
+  await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.copyFile(path.join(root, 'reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), path.join(dir, 'public/data/atlas11/forecast.json'));
+  for (const f of ['public/data/rolling-calendar.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
   await fs.mkdir(path.join(dir, 'reports/atlas11/versions'), {recursive: true});
-  const latest = await readJSON('public/data/atlas11/forecast.json');
+  const latest = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json');
   await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
   if (withBacktests) { const src = path.join(root, 'reports/atlas11/evolve/backtests'); await fs.mkdir(path.join(dir, 'reports/atlas11/evolve/backtests'), {recursive: true}); for (const f of await fs.readdir(src)) if (f.endsWith('.json')) await fs.copyFile(path.join(src, f), path.join(dir, 'reports/atlas11/evolve/backtests', f)); }
   return {dir, latest};

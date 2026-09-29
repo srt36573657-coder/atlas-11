@@ -7,7 +7,7 @@ import {explainAsset} from '../../lib/atlas11/explain.mjs';
 import {readAllPublications} from '../../lib/atlas11/forecast.mjs';
 import {realInputs, readJSON, root} from './helpers.mjs';
 
-async function latest() { return readJSON('public/data/atlas11/forecast.json'); }
+async function latest() { return readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'); }
 
 test('채점: 발행 뒤 실제값만 · 실현값 없는 목표일은 채점하지 않음 · 보관 참조본 제외 · Brier', async () => {
   const {input, calendar} = await realInputs();

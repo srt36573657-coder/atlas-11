@@ -268,9 +268,11 @@ test('CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실
 test('run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52', async () => {
   const dir = await tempRoot();
   await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.mkdir(path.join(dir, 'reports/atlas11/versions'), {recursive: true});
-  for (const f of ['public/data/input.json', 'public/data/rolling-calendar.json', 'public/data/atlas11/forecast.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
-  const latest = await readJSON('public/data/atlas11/forecast.json'); await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
-  const real = await readJSON('public/data/input.json'), today = '2026-09-29';
+  await fs.mkdir(path.join(dir, 'public/data'), {recursive: true}); await fs.copyFile(path.join(root, 'tests/atlas11/fixtures/input-2026-09-28.json'), path.join(dir, 'public/data/input.json'));
+  await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.copyFile(path.join(root, 'reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), path.join(dir, 'public/data/atlas11/forecast.json'));
+  for (const f of ['public/data/rolling-calendar.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
+  const latest = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'); await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
+  const real = await readJSON('tests/atlas11/fixtures/input-2026-09-28.json'), today = '2026-09-29';
   // 오늘 봉 하나만 주는 합성 응답(count=1) — 저장된 과거 행과 부딪히지 않는다
   const f = stubFetch(async url => { const s = symbolOf(url), prev = real.assets.find(a => a.code === s)?.prices.at(-1)?.close ?? 10000; const c = Math.round(prev * 1.01); return respond(xml(s, [{date: today, open: prev, high: Math.max(prev, c), low: Math.min(prev, c), close: c, volume: 123456}])); });
   const collector = (input, window) => collect(input, window, {fetch: f, now: NOW, count: 1, finalityDelayMs: 0, politeDelayMs: 0, market: [], sleep: noSleep});
@@ -280,7 +282,8 @@ test('run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(-
   assert.equal(result.forecastWithheldReason, 'build 미주입', '발행기는 주입하지 않았다(이 검사는 수집·검증만 본다)');
   const written = JSON.parse(await fs.readFile(path.join(dir, 'public/data/input.json'), 'utf8')), row = written.assets.find(a => a.code === '005930').prices.at(-1);
   assert.equal(row.date, today); assert.equal(row.finalClose, true); assert.equal(row.observedAt, NOW); assert.equal(new URL(row.sourceUrl).hostname, 'fchart.stock.naver.com'); assert.equal(row.quality, 'single_source');
-  assert.ok(written.priceRevisions.filter(x => x.date === today).length === 52 && written.priceRevisions.filter(x => x.date === today).every(x => x.provider === 'ROLLING_REVIEWED_COLLECTOR'));
+  const added = written.priceRevisions.slice(real.priceRevisions?.length ?? 0).filter(x => x.date === today); // 이 실행이 새로 붙인 정정 기록만(저장소에 이미 있던 기록은 제외)
+  assert.ok(added.length === 52 && added.every(x => x.provider === 'ROLLING_REVIEWED_COLLECTOR'), `added ${added.length}`);
   assert.ok(f.count() === 104, '52 종목 × 두 번 받기 = 104 요청: ' + f.count());
 });
 
@@ -316,4 +319,27 @@ console.log(JSON.stringify({clock: r.clock, observedAt: r.observations[0]?.obser
   assert.ok(Date.parse(ja.fetchedAt) > Date.parse('2026-09-29T00:00:00Z') || true, 'fetchedAt 은 실제 벽시계(재생이므로 도장보다 앞설 수 있다)');
   const b = await run(process.execPath, ['--input-type=module', '-e', script], {cwd: root, env: {...process.env, ATLAS_NOW: ''}});
   assert.equal(JSON.parse(b.stdout.trim().split('\n').at(-1)).clock.source, 'wall_clock');
+});
+
+/* ---------- 정규장 종가 수집기(야후) — 실제 수신 원문 3개로 검사 ---------- */
+import {collect as collectKrx, parseYahooChart} from '../../scripts/atlas11/collect_krx_close.mjs';
+import {mergeRollingPrices as mergeKrx, rollingOperationWindow as windowKrx, rollingHash as hashKrx} from '../../lib/rolling-operation.mjs';
+const YF = path.join(root, 'tests/atlas11/fixtures/yahoo');
+test('정규장 종가 수집기: 검토된 KRX 종가와 겹치는 날짜가 한 원도 다르지 않고 · 9/29 정규장 종가(보도값)와 같고 · 확정 증거로 검증기를 통과 · 네이버 통합가 행을 정정 기록과 함께 바꾼다', async () => {
+  const input = await readJSON('tests/atlas11/fixtures/input-2026-09-28.json'), calendar = await readJSON('public/data/rolling-calendar.json');
+  const p = parseYahooChart(await fs.readFile(path.join(YF, '005930.KS.json'), 'utf8')); assert.equal(p.rows.find(r => r.date === '2026-09-29').close, 272500); assert.equal(p.meta.hasPrePostMarketData, false);
+  const now = '2026-09-29T10:40:00.000Z', w = windowKrx(input, now, {calendar, runEndDate: null});
+  const r = await collectKrx(input, w, {now, calendar, codes: ['005930', '373220', '329180'], fixtureDir: YF, market: false, sleep: async () => {}});
+  assert.deepEqual(r.errors, []); assert.equal(r.stats.finalizedToday, 3); assert.ok(r.stats.reviewedOverlapChecked >= 12);
+  const close = Object.fromEntries(r.observations.map(o => [o.code, o.rows.find(x => x.date === '2026-09-29').close]));
+  assert.deepEqual(close, {'005930': 272500, '373220': 352500, '329180': 429000}, '서울신문 272,500 · 아시아경제 −3.16% · −2.94%');
+  const m = mergeKrx(input, r.observations, {now, expectedHash: hashKrx(input), calendar, runEndDate: null});
+  for (const c of Object.keys(close)) { const row = m.input.assets.find(a => a.code === c).prices.find(x => x.date === '2026-09-29'); assert.equal(row.close, close[c]); assert.equal(row.priceBasis, 'KRX_REGULAR'); assert.equal(row.finalClose, true); }
+  // 검토 종가와 다른 값이 오면 그 종목은 오늘 값도 넘기지 않는다
+  const bad = structuredClone(input); bad.assets.find(a => a.code === '005930').prices.find(x => x.date === '2026-09-23').close = 286500;
+  const rb = await collectKrx(bad, w, {now, calendar, codes: ['005930'], fixtureDir: YF, market: false, sleep: async () => {}});
+  assert.equal(rb.observations.length, 0); assert.equal(rb.errors[0].code, 'REVIEWED_ROW_MISMATCH');
+  // 정규장 마감 기록 전 시각이면 오늘 행은 확정하지 않는다
+  const early = await collectKrx(input, w, {now: '2026-09-29T06:30:10.000Z', calendar, codes: ['005930'], fixtureDir: YF, market: false, sleep: async () => {}});
+  assert.equal(early.errors[0].code, 'TODAY_NOT_FINAL');
 });

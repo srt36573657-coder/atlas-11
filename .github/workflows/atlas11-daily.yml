@@ -52,7 +52,7 @@ jobs:
             attempt=$((attempt + 1))
             now="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
             echo "::group::attempt ${attempt} · --now ${now}"
-            out="$(node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_naver.mjs --now "$now")" && code=0 || code=$?
+            out="$(node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_krx_close.mjs --now "$now")" && code=0 || code=$?
             json="$(printf '%s\n' "$out" | tail -n 1)"
             echo "$json"
             confirmed="$(node -e 'try{const j=JSON.parse(process.argv[1]);console.log(Number.isFinite(j.confirmedTodayStocks)?j.confirmedTodayStocks:0)}catch{console.log(0)}' "$json")"
