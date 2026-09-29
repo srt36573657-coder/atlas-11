@@ -321,25 +321,29 @@ console.log(JSON.stringify({clock: r.clock, observedAt: r.observations[0]?.obser
   assert.equal(JSON.parse(b.stdout.trim().split('\n').at(-1)).clock.source, 'wall_clock');
 });
 
-/* ---------- 정규장 종가 수집기(야후) — 실제 수신 원문 3개로 검사 ---------- */
-import {collect as collectKrx, parseYahooChart} from '../../scripts/atlas11/collect_krx_close.mjs';
+/* ---------- 정규장 종가 수집기(15:30 종가 단일가 분봉) — 깃허브 실행기에서 받은 실제 원문으로 검사 ---------- */
+import {collect as collectKrx, closingAuctionBar} from '../../scripts/atlas11/collect_krx_close.mjs';
 import {mergeRollingPrices as mergeKrx, rollingOperationWindow as windowKrx, rollingHash as hashKrx} from '../../lib/rolling-operation.mjs';
-const YF = path.join(root, 'tests/atlas11/fixtures/yahoo');
-test('정규장 종가 수집기: 검토된 KRX 종가와 겹치는 날짜가 한 원도 다르지 않고 · 9/29 정규장 종가(보도값)와 같고 · 확정 증거로 검증기를 통과 · 네이버 통합가 행을 정정 기록과 함께 바꾼다', async () => {
+const NM = path.join(root, 'tests/atlas11/fixtures/naver-minute');
+test('정규장 종가 수집기: 15:30 종가 단일가 봉 = 보도된 종가 · 직전 검토 종가와 같은 방법으로 일치 · 종가만 넘겨 다른 세션 OHLC 를 섞지 않음 · 네이버 통합가 행을 정정 기록과 함께 바꾼다', async () => {
   const input = await readJSON('tests/atlas11/fixtures/input-2026-09-28.json'), calendar = await readJSON('public/data/rolling-calendar.json');
-  const p = parseYahooChart(await fs.readFile(path.join(YF, '005930.KS.json'), 'utf8')); assert.equal(p.rows.find(r => r.date === '2026-09-29').close, 272500); assert.equal(p.meta.hasPrePostMarketData, false);
+  const bar = closingAuctionBar(await fs.readFile(path.join(NM, '005930-20260929.json'), 'utf8'), '2026-09-29'); assert.equal(bar.close, 272500); assert.ok(bar.auctionVolume > 1000000);
   const now = '2026-09-29T10:40:00.000Z', w = windowKrx(input, now, {calendar, runEndDate: null});
-  const r = await collectKrx(input, w, {now, calendar, codes: ['005930', '373220', '329180'], fixtureDir: YF, market: false, sleep: async () => {}});
-  assert.deepEqual(r.errors, []); assert.equal(r.stats.finalizedToday, 3); assert.ok(r.stats.reviewedOverlapChecked >= 12);
+  const r = await collectKrx(input, w, {now, calendar, codes: ['005930', '373220', '329180'], fixtureDir: NM, sleep: async () => {}});
+  assert.deepEqual(r.errors, []); assert.equal(r.stats.finalizedToday, 3); assert.equal(r.stats.crossChecked, 3);
+  assert.ok(r.observations.every(o => o.crossCheck.match && o.crossCheck.day === '2026-09-28'));
   const close = Object.fromEntries(r.observations.map(o => [o.code, o.rows.find(x => x.date === '2026-09-29').close]));
   assert.deepEqual(close, {'005930': 272500, '373220': 352500, '329180': 429000}, '서울신문 272,500 · 아시아경제 −3.16% · −2.94%');
-  const m = mergeKrx(input, r.observations, {now, expectedHash: hashKrx(input), calendar, runEndDate: null});
-  for (const c of Object.keys(close)) { const row = m.input.assets.find(a => a.code === c).prices.find(x => x.date === '2026-09-29'); assert.equal(row.close, close[c]); assert.equal(row.priceBasis, 'KRX_REGULAR'); assert.equal(row.finalClose, true); }
-  // 검토 종가와 다른 값이 오면 그 종목은 오늘 값도 넘기지 않는다
-  const bad = structuredClone(input); bad.assets.find(a => a.code === '005930').prices.find(x => x.date === '2026-09-23').close = 286500;
-  const rb = await collectKrx(bad, w, {now, calendar, codes: ['005930'], fixtureDir: YF, market: false, sleep: async () => {}});
+  // 네이버 통합가(9/29 353,000 등)가 먼저 들어가 있던 상황에서도 정규장 종가로 바뀌고, 옛 OHLC·거래량은 물려받지 않는다
+  const dirty = structuredClone(input); for (const [c, v] of [['373220', 353000], ['329180', 430500]]) dirty.assets.find(a => a.code === c).prices.push({date: '2026-09-29', open: v, high: v, low: v, close: v, volume: 1, quality: 'single_source', sourceUrl: 'https://fchart.stock.naver.com/x', observedAt: '2026-09-29T09:20:00.000Z'});
+  const m = mergeKrx(dirty, r.observations, {now, expectedHash: hashKrx(dirty), calendar, runEndDate: null});
+  for (const c of Object.keys(close)) { const row = m.input.assets.find(a => a.code === c).prices.find(x => x.date === '2026-09-29'); assert.equal(row.close, close[c]); assert.equal(row.priceBasis, 'KRX_REGULAR'); assert.equal(row.finalClose, true); assert.equal(row.open, undefined); assert.equal(row.volume, undefined); }
+  assert.ok(m.input.priceRevisions.slice(dirty.priceRevisions.length).some(x => x.code === '373220' && x.before === 353000 && x.after === 352500), '정정 기록: 353,000 → 352,500');
+  // 직전 검토 종가와 다르면 그 종목은 넘기지 않는다
+  const bad = structuredClone(input); bad.assets.find(a => a.code === '005930').prices.find(x => x.date === '2026-09-28').close = 271000;
+  const rb = await collectKrx(bad, w, {now, calendar, codes: ['005930'], fixtureDir: NM, sleep: async () => {}});
   assert.equal(rb.observations.length, 0); assert.equal(rb.errors[0].code, 'REVIEWED_ROW_MISMATCH');
-  // 정규장 마감 기록 전 시각이면 오늘 행은 확정하지 않는다
-  const early = await collectKrx(input, w, {now: '2026-09-29T06:30:10.000Z', calendar, codes: ['005930'], fixtureDir: YF, market: false, sleep: async () => {}});
-  assert.equal(early.errors[0].code, 'TODAY_NOT_FINAL');
+  // 15:30 봉이 아직 없으면(마감 전 등) 오늘 행은 확정하지 않는다
+  const empty = await collectKrx(input, w, {now, calendar, codes: ['005930'], fetch: async url => ({ok: true, status: 200, text: async () => url.includes('20260929') ? '[]' : await fs.readFile(path.join(NM, '005930-20260928.json'), 'utf8')}), sleep: async () => {}});
+  assert.equal(empty.errors[0].code, 'TODAY_NOT_FINAL'); assert.equal(empty.observations.length, 0);
 });

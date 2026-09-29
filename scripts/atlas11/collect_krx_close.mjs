@@ -74,8 +74,8 @@ export async function collect(input, window, options = {}) {
     const stored = new Map(asset.prices.map(p => [p.date, p]));
     // 채울 날짜: cutoff 이하 최근 5거래일 중 정규장 종가 행이 없는 날
     const recent = sessions.filter(d => d <= cutoff).slice(-5), need = recent.filter(d => stored.get(d)?.priceBasis !== 'KRX_REGULAR');
-    // 교차 검증 날짜: need 보다 앞선 가장 가까운 검토 종가 날짜
-    const checkDay = sessions.filter(d => d < (need[0] ?? cutoff) && stored.get(d)?.priceBasis === 'KRX_REGULAR').at(-1) ?? null;
+    // 교차 검증 날짜: 가장 최근의 검토 종가 날짜(오늘 제외) — 분봉 보관 기간(약 1~2주) 안이어야 한다
+    const checkDay = sessions.filter(d => d <= cutoff && d !== today && stored.get(d)?.priceBasis === 'KRX_REGULAR').at(-1) ?? null;
     if (!need.length) { lastGoodDate[code] = cutoff; continue; }
     const got = {}, raw = [];
     let failed = null;
