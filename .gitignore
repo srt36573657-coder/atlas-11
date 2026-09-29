@@ -17,3 +17,9 @@ reports/atlas11/browser/*
 reports/atlas11/ab/*/paired.csv
 reports/atlas11/evolve/logs/
 reports/atlas11/operations/input-before-*.json
+!reports/prediction-candidate/
+reports/prediction-candidate/*
+!reports/prediction-candidate/fomo52.json
+!reports/rolling/
+reports/rolling/*
+!reports/rolling/versions/
