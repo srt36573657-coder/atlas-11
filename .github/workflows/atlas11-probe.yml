@@ -6,21 +6,27 @@ on:
         description: 'YYYYMMDD'
         required: false
         default: '20260929'
+      which:
+        description: 'sources | yahoo52'
+        required: false
+        default: 'sources'
 permissions:
   contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 14
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}"
       - run: |
+          mkdir -p reports/atlas11/probe
+          if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
+      - if: always()
+        run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
-          git pull --rebase -q
           git add -f reports/atlas11/probe
-          git commit -m "atlas11 source probe [skip ci]" && git push
+          git commit -m "atlas11 probe ${{ inputs.which }} [skip ci]" && git pull --rebase -q && git push
