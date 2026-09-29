@@ -251,7 +251,9 @@ test('fixture 재생: 실제 52 종목 코드 + KOSPI · 네트워크 없이 파
 
 test('CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실제 input.json 의 검토 종가와 다른 합성 행은 REVIEWED_ROW_MISMATCH(exit 2)로 드러난다 · ATLAS_COLLECTOR_FIXTURE 환경변수로도 재생', async () => {
   const dir = await tempRoot(), out = path.join(dir, 'collect.json');
-  const cli = (args, env = process.env) => run(process.execPath, ['scripts/atlas11/collect_naver.mjs', ...args], {cwd: root, env, maxBuffer: 1e8}).then(r => ({code: 0, ...r}), e => ({code: e.code, stdout: e.stdout, stderr: e.stderr}));
+  // 9/28 까지의 고정 입력 사본에서 실행(매일 자라는 실제 input.json 과 무관하게)
+  await fs.mkdir(path.join(dir, 'public/data'), {recursive: true}); await fs.copyFile(path.join(root, 'tests/atlas11/fixtures/input-2026-09-28.json'), path.join(dir, 'public/data/input.json')); await fs.copyFile(path.join(root, 'public/data/rolling-calendar.json'), path.join(dir, 'public/data/rolling-calendar.json')); await fs.symlink(path.join(root, 'lib'), path.join(dir, 'lib'));
+  const cli = (args, env = process.env) => run(process.execPath, [path.join(root, 'scripts/atlas11/collect_naver.mjs'), '--root', dir, ...args], {cwd: root, env, maxBuffer: 1e8}).then(r => ({code: 0, ...r}), e => ({code: e.code, stdout: e.stdout, stderr: e.stderr}));
   const a = await cli(['--now', NOW, '--fixture', FIXTURES, '--out', out, '--codes', '005930,000720', '--no-market', '--finality-delay-ms', '0', '--polite-delay-ms', '0']);
   const printed = JSON.parse(a.stdout.trim().split('\n').at(-1)), saved = JSON.parse(await fs.readFile(out, 'utf8'));
   assert.equal(a.code, 2, '합성 종가가 저장된 검토 종가(KRX_REGULAR 행 · 8월 말~9/28)와 달라 exit 2');
