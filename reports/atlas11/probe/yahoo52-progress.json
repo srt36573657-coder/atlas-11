@@ -1,0 +1,952 @@
+{
+ "elapsedMs": 69133,
+ "done": true,
+ "out": [
+  {
+   "code": "005930",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 161,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "005930",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "009150",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "009150",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "373220",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "373220",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "005380",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "005380",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "207940",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "207940",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "105560",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 121,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "105560",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "028260",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "028260",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "032830",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "032830",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012450",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012450",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034020",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034020",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 60,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "329180",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "329180",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034730",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034730",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012330",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012330",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "066570",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "066570",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "035420",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "035420",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010120",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 58,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010120",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 59,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "000810",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "000810",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "005490",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "005490",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 122,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010130",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010130",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 54,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "138040",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "138040",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "015760",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "015760",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "011200",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "011200",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "051910",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "051910",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "017670",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "017670",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "033780",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "033780",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "196170",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "196170",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "018260",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 54,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "018260",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 119,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "086280",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "086280",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 63,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "000720",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "000720",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 60,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "278470",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 226,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "278470",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "030200",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "030200",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "003490",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "003490",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "047050",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "047050",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "003230",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "003230",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "259960",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "259960",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "021240",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "021240",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "352820",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "352820",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "009830",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "009830",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "029780",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "029780",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "028300",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "028300",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034220",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "034220",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "002380",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "002380",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "036460",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "036460",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 119,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "004170",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "004170",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 58,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012750",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "012750",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 59,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "111770",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "111770",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 121,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "035250",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "035250",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "257720",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "257720",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 58,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "226950",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "226950",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010170",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "010170",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "214370",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 56,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "214370",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "030000",
+   "sfx": ".KS",
+   "status": 429,
+   "bytes": 19,
+   "ms": 57,
+   "err": null,
+   "last": null
+  },
+  {
+   "code": "030000",
+   "sfx": ".KQ",
+   "status": 429,
+   "bytes": 19,
+   "ms": 55,
+   "err": null,
+   "last": null
+  },
+  {
+   "spark": "v8",
+   "status": 429,
+   "sample": "Too Many Requests\r\n"
+  },
+  {
+   "spark": "v7",
+   "status": 429,
+   "sample": "Too Many Requests\r\n"
+  }
+ ]
+}
