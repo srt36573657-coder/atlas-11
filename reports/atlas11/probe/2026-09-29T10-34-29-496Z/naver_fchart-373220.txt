@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="EUC-KR" ?>
+
+<protocol>
+
+
+
+	
+	
+			<chartdata symbol="373220" name="LG에너지솔루션" count="3" timeframe="day" precision="0" origintime="20220127">
+			
+				<item data="20260923|353500|359000|349500|352000|222728" />
+			
+				<item data="20260928|352000|368000|350500|360500|321270" />
+			
+				<item data="20260929|359000|359000|348500|353000|256560" />
+			
+	
+
+
+	</chartdata>
+</protocol>

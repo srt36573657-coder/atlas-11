@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="EUC-KR" ?>
+
+<protocol>
+
+
+
+	
+	
+			<chartdata symbol="329180" name="HD현대중공업" count="3" timeframe="day" precision="0" origintime="20210917">
+			
+				<item data="20260923|451500|451500|438000|444000|190670" />
+			
+				<item data="20260928|445000|447000|439000|439000|102051" />
+			
+				<item data="20260929|437000|438500|424500|429000|193907" />
+			
+	
+
+
+	</chartdata>
+</protocol>

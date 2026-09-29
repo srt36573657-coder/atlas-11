@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KTPV2SK');</script>
+    <!-- End Google Tag Manager -->
+
+
+<!-- End Google Tag Manager (noscript) -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1210">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta name="naver-site-verification" content="7522a37599a270a379bf95c46d59aba6b962d29d" />
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/swiper.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/tabcontent.js"></script>
+    <script src="/js/stock.js"></script>
+    <script src="/js/chosen.jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?%2520family=Montserrat:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Noto+Sans+KR:wght@300;400;500;700&displa%2520y=swap" >
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/ui.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chosen.min.css">
+    <link rel="shortcut icon" href="https://static.mk.co.kr/favicon_new.ico">
+
+    <meta name="color-scheme" content="light only"/>
+    <meta name="supported-color-schemes" content="light"/>
+
+
+    <!--[if lt IE 9]><script src="/js/libs/html5shiv.js"></script><![endif]-->
+    <!--광고 스크립트-->
+
+   
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    
+
+    <script>
+        
+        var host_url        = '/7450/www.mk.co.kr/stock/section_home';
+        var segment_1       = '';
+        var segment_2       = '';
+        var segment_3       = '';
+
+        var host_segment_1      = 'price';
+        var host_segment_2      = 'home';
+ 
+
+        //메인 페이지
+        if((host_segment_1 == 'empty' && host_segment_2 == 'empty') || ((host_segment_1 == '' && host_segment_2 == ''))){
+            host_url        = '/7450/www.mk.co.kr/stock/section_home';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_home';
+        }
+
+        if(host_segment_1 == 'search' && host_segment_2 == 'list'){
+            host_url        = '/7450/www.mk.co.kr/stock/search';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'price' && host_segment_2 == 'home'){
+            host_url        = '/7450/www.mk.co.kr/stock/price';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'world' && host_segment_2 == 'stock'){
+            host_url        = '/7450/www.mk.co.kr/stock/price/world';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'empty'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'index'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'ranking'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'new_quoted_company'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'popular'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'futures'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'domestic' && host_segment_2 == 'all_stocks'){
+            host_url        = '/7450/www.mk.co.kr/stock/domestic';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'world' && host_segment_2 == 'empty'){
+            host_url        = '/7450/www.mk.co.kr/stock/world/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'world' && host_segment_2 == 'view'){
+            host_url        = '/7450/www.mk.co.kr/stock/world';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'empty'){
+            host_url        = '/7450/www.mk.co.kr/stock/news/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'all'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'marketCondition'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'company'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'world'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'bond'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'disclosure'){
+            host_url        = '/7450/www.mk.co.kr/stock/news';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'news' && host_segment_2 == 'view'){
+            host_url        = '/7450/www.mk.co.kr/stock/news/view';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'view';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'empty'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'view'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'industry_report'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'company_report'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'issue_report'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'invest' && host_segment_2 == 'new_quoted_company'){
+            host_url        = '/7450/www.mk.co.kr/stock/invest';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'cryptocurrency' && host_segment_2 == 'empty'){
+            host_url        = '/7450/www.mk.co.kr/stock/cryptocurrency/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'cryptocurrency' && host_segment_2 == 'price'){
+            host_url        = '/7450/www.mk.co.kr/stock/cryptocurrency';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'marketindex' && host_segment_2 == 'exchange'){
+            host_url        = '/7450/www.mk.co.kr/stock/marketindex/section_list';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = 'section_list';
+        }
+
+        if(host_segment_1 == 'marketindex' && host_segment_2 == 'gold'){
+            host_url        = '/7450/www.mk.co.kr/stock/marketindex';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        if(host_segment_1 == 'marketindex' && host_segment_2 == 'material'){
+            host_url        = '/7450/www.mk.co.kr/stock/marketindex';
+            segment_1       = '';
+            segment_2       = '';
+            segment_3       = '';
+        }
+
+        window.googletag    = window.googletag || {cmd: []};
+
+        googletag.cmd.push(function() {
+            var AdUnitPath  = host_url;
+            if(segment_3 == 'section_home'){
+                googletag.defineSlot(AdUnitPath, [[1200, 300], [970, 250], [980, 120], [970, 90], [930, 180], [728, 90], [1, 1], 'fluid'], 'TC_billboard').setTargeting('div_id', ['TC_billboard']).setTargeting('position', ['TC']).setTargeting('ad_area_type', ['on_the_top']).setTargeting('default_exposure', ['hidden']).addService(googletag.pubads());
+            }else{
+                googletag.defineSlot(AdUnitPath, [[1200, 300], [970, 250], [980, 120], [970, 90], [930, 180], [728, 90], [1, 1], 'fluid'], 'TC_billboard').setTargeting('div_id', ['TC_billboard']).setTargeting('position', ['TC']).setTargeting('ad_area_type', ['on_the_top']).setTargeting('default_exposure', ['']).addService(googletag.pubads());
+            }
+            googletag.defineSlot(AdUnitPath, [[250, 360], [240, 400], [250, 250], 'fluid'], 'MR_rectangle').setTargeting('div_id', ['MR_rectangle']).setTargeting('position', ['MR']).setTargeting('ad_area_type', ['']).setTargeting('default_exposure', ['']).addService(googletag.pubads());
+            googletag.defineSlot(AdUnitPath, [[250, 360], [240, 400], [250, 250], 'fluid'], 'BR_rectangle').setTargeting('div_id', ['BR_rectangle']).setTargeting('position', ['BR']).setTargeting('ad_area_type', ['']).setTargeting('default_exposure', ['']).addService(googletag.pubads());
+
+            if(segment_3 == 'view'){
+                googletag.defineSlot(AdUnitPath, [[930, 180], [750, 300], [750, 200], [480, 320], [728, 90], [468, 60], 'fluid'], 'BC_leaderboard').setTargeting('div_id', ['BC_leaderboard']).setTargeting('position', ['BC']).setTargeting('ad_area_type', ['below_pc_byline']).setTargeting('default_exposure', ['']).addService(googletag.pubads());
+            }
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().collapseEmptyDivs();
+            googletag.pubads().setCentering(true);
+            googletag.pubads().setTargeting('section_home_nm', [segment_1]).setTargeting('section_list_nm', [segment_2]).setTargeting('page_type', [segment_3]).setTargeting('article_num', []).setTargeting('title', []).setTargeting('url', []).setTargeting('publish_date', []).setTargeting('journalist', []).setTargeting('keywords', []).setTargeting('ticker_name', []).setTargeting('has_video', []).setTargeting('is_app_viewer', []).setTargeting('login_type', []).setTargeting('login_status', []).setTargeting('mebership_type', []).setTargeting('domain', []).setTargeting('referer', []).setTargeting('is_paid_content', []);
+            googletag.pubads().setPublisherProvidedId('');
+            googletag.enableServices();
+        });
+
+        // DOM이 로드된 후 GPT 초기화
+        // function initGPT() {
+        //     googletag.cmd.push(function() {
+        //         googletag.display('TC_billboard');
+        //         googletag.display('MR_rectangle');
+        //         googletag.display('BR_rectangle');
+        //         if(segment_3 == 'view'){
+        //             googletag.display('BC_leaderboard');
+        //         }
+        //     });
+        // }
+
+        // if (document.readyState === 'loading') {
+        //     document.addEventListener('DOMContentLoaded', initGPT);
+        // } else {
+        //     initGPT();
+        // }
+    </script>
+    
+    <title>삼성전자(005930)- 매일경제 마켓</title>
+
+    <link rel="canonical" href="https://stock.mk.co.kr">
+    <link rel="alternate" media="only screen and ( max-width: 640px)" href="https://stock.mk.co.kr" />
+    <meta name="description" property="description" content="종목 현재가, 시세, 리포트 등 정보 제공">
+
+    <meta name="og:title" property="og:title" content="삼성전자(005930)- 매일경제 마켓" />
+    <meta name="og:url" property="og:url" content="https://stock.mk.co.kr" />
+    <meta name="og:image" property="og:image" content="https://stock.mk.co.kr/images/default.jpg" />
+    <meta name="og:description" property="og:description" content="종목 현재가, 시세, 리포트 등 정보 제공" />
+
+    <meta name="twitter:card" property="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" property="twitter:site" content="@mk_sokbo">
+    <meta name="twitter:title" property="twitter:title" content="삼성전자(005930)- 매일경제 마켓"/>
+    <meta name="twitter:image" property="twitter:image" content="https://stock.mk.co.kr/images/default.jpg"/>
+    <meta name="twitter:description" property="twitter:description" content="종목 현재가, 시세, 리포트 등 정보 제공">
+
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTPV2SK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- End Google Tag Manager (noscript) -->
+<!-- s: wrapper -->
+<div class="wrapper">
+    <!-- s: Header -->
+    <header id="header">
+        <section class="stock_flow_sec top_bar">
+            <div class="set_inner">
+                <h2 class="sec_ttl is_blind">주가 정보</h2>
+                <div class="stock_flow_wrap flow_ui">
+                    <ul class="stock_list move_el" id="move_stock">
+                        <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">코스피</b>
+                <p class="stock_info_group" aria-label="6,870.81원, -0.27% 감소">
+                    <span class="stock" aria-hidden="true">6,870.81</span>
+                    <span class="is_minus" aria-hidden="true">-0.27%</span>
+                </p>
+            </div>
+        </li>
+            <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">코스닥</b>
+                <p class="stock_info_group" aria-label="849.80원, 0.38% 증가">
+                    <span class="stock" aria-hidden="true">849.80</span>
+                    <span class="is_plus" aria-hidden="true">0.38%</span>
+                </p>
+            </div>
+        </li>
+            <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">코스피200</b>
+                <p class="stock_info_group" aria-label="1,088.15원, -0.10% 감소">
+                    <span class="stock" aria-hidden="true">1,088.15</span>
+                    <span class="is_minus" aria-hidden="true">-0.10%</span>
+                </p>
+            </div>
+        </li>
+                <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">미국(USD)</b>
+                <p class="stock_info_group" aria-label="1,355.60원, -0.29% 감소">
+                    <span class="stock" aria-hidden="true">1,355.60</span>
+                    <span class="is_minus" aria-hidden="true">-0.29%</span>
+                </p>
+            </div>
+        </li>
+                <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">비트코인</b>
+                <p class="stock_info_group" aria-label="114,125,000원, 1.66% 증가">
+                    <span class="stock" aria-hidden="true">114,125,000</span>
+                    <span class="is_plus" aria-hidden="true">1.66%</span>
+                </p>
+            </div>
+        </li>
+            <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">이더리움</b>
+                <p class="stock_info_group" aria-label="3,681,000원, 2.36% 증가">
+                    <span class="stock" aria-hidden="true">3,681,000</span>
+                    <span class="is_plus" aria-hidden="true">2.36%</span>
+                </p>
+            </div>
+        </li>
+            <li class="stock_node">
+            <div class="stock_item" role="text">
+                <b class="stock_name">리플</b>
+                <p class="stock_info_group" aria-label="2,042원, 1.29% 증가">
+                    <span class="stock" aria-hidden="true">2,042</span>
+                    <span class="is_plus" aria-hidden="true">1.29%</span>
+                </p>
+            </div>
+        </li>
+    </ul>                </div>
+            </div>
+        </section>
+
+        <section class="gnb">
+            <div class="set_inner clearFix">
+                <div class="logo_wrap">
+                    <a href="https://mk.co.kr" class="logo_area">
+                        <h1 class="logo">
+                            <span class="is_blind">매일 경제</span>
+                            <!-- <svg version="1.1" id="mkLogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="130" h="30" viewBox="0 0 130 30" xml:space="preserve">
+                            <g style="fill:#000;" >
+                                <path d="M121 1.2c0 .2.1.3.3.3.7 0 1.3.6 1.4 1.4V29h1.9c1.5-.1 2.6-1.3 2.6-2.8V.8h-5.8c-.3 0-.4.2-.4.4M26.1 1.2c0 .2.1.3.3.3.7 0 1.3.6 1.3 1.4v4.8h-2.8V.8h-5.7c-.2 0-.3.2-.3.3 0 .2.1.3.3.3.7 0 1.3.6 1.3 1.4V29h1.9c1.4-.1 2.5-1.3 2.4-2.7V10.9h2.8V29h2.2c1.4 0 2.3-1.2 2.3-2.8V.8h-5.8c-.1 0-.2.2-.2.4M114.4.8c-.2 0-.3.2-.3.3 0 .2.1.3.3.3.7 0 1.3.6 1.3 1.3v6h-4.5c-.7 0-.7.3-.5.7l1.4 2.2h3.6V29h2c1.4-.1 2.5-1.3 
