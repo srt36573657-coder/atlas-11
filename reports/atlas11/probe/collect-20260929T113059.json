@@ -1,0 +1,1520 @@
+{
+ "attempted": true,
+ "provider": "naver_minute_1530_closing_auction",
+ "observations": [
+  {
+   "code": "005930",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/005930/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "85fe451097634ad4c1134944711de62c69259ebb6c72afdbebaff6de8027b03f",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:00.555Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 270000,
+    "fetchedClose": 270000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/005930/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 1907055주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 272500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 1907055
+    }
+   ]
+  },
+  {
+   "code": "009150",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/009150/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "0942605f0f1595087cd9b4b556158170dc5240fbd12dd98b967cd7c380170ae7",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:01.244Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 1499000,
+    "fetchedClose": 1499000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/009150/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 27117주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 1528000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 27117
+    }
+   ]
+  },
+  {
+   "code": "373220",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/373220/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "4069982530bd8d16a5885a293412faaee61083974bcbfaf9b7e1493ea4d88b5b",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:02.039Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 364000,
+    "fetchedClose": 364000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/373220/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 21459주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 352500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 21459
+    }
+   ]
+  },
+  {
+   "code": "005380",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/005380/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "2d234f63950b56709ebfed39995a612ff4b9e14f7e89601498814fac2ef66645",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:02.728Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 354500,
+    "fetchedClose": 354500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/005380/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 90003주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 350000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 90003
+    }
+   ]
+  },
+  {
+   "code": "207940",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/207940/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "ece841816faa4cb3342333e71222054b228b6083f2d6df0aadf78e17202612b2",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:03.420Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 1400000,
+    "fetchedClose": 1400000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/207940/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 3297주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 1385000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 3297
+    }
+   ]
+  },
+  {
+   "code": "105560",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/105560/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "adea9a2b0f460c55f4308fce80d88104de7be2eb904784f59669bfdeb5c70e94",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:04.103Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 174200,
+    "fetchedClose": 174200,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/105560/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 149304주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 173500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 149304
+    }
+   ]
+  },
+  {
+   "code": "028260",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/028260/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "208235d44bc7db854f2dbe3c246971b4214de22a6cd8ba141bba7e6322602aa4",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:05.133Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-22",
+    "reviewedClose": 367000,
+    "fetchedClose": 367000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/028260/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 50151주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-23",
+     "close": 367000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 22671
+    },
+    {
+     "date": "2026-09-29",
+     "close": 345000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 50151
+    }
+   ]
+  },
+  {
+   "code": "032830",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/032830/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "37c45b9b70f27dcdd01be1f7e86d60501ede5f01b904724d4a270482d68a5c74",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:05.822Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 296000,
+    "fetchedClose": 296000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/032830/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 37070주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 290500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 37070
+    }
+   ]
+  },
+  {
+   "code": "012450",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/012450/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "ece7a3077b88d754853e6fff3130a3f037af99f1c720da2c53727c93aac4a052",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:06.509Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 1034000,
+    "fetchedClose": 1034000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/012450/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 14706주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 1012000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 14706
+    }
+   ]
+  },
+  {
+   "code": "034020",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/034020/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "f26441feaeb1e094abfa8b47e41251c35c8de6799c86d7ede16d90d596e8192c",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:07.196Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 82000,
+    "fetchedClose": 82000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/034020/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 116513주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 79700,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 116513
+    }
+   ]
+  },
+  {
+   "code": "329180",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/329180/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "b2a82f0b789666b1ca6bfa585eced0a138108ccd817ae26cdde8ad28b3ef9368",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:07.880Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 442000,
+    "fetchedClose": 442000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/329180/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 14717주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 429000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 14717
+    }
+   ]
+  },
+  {
+   "code": "034730",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/034730/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "ae2225cdacfbb966854c16088a8d455a0995add191a4e630dc8324f3b6690617",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:08.567Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 578000,
+    "fetchedClose": 578000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/034730/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 23575주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 586000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 23575
+    }
+   ]
+  },
+  {
+   "code": "012330",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/012330/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "0ccf424857a0886ffb937702adcb2b146e91df6ea4793d604f981f0d0131d28c",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:09.255Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 373000,
+    "fetchedClose": 373000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/012330/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 48482주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 367000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 48482
+    }
+   ]
+  },
+  {
+   "code": "066570",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/066570/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "df660b6991facec81858f64ddc888170d2c6d67ab0cb3bbe6d581a114310e8b0",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:09.946Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 214500,
+    "fetchedClose": 214500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/066570/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 56291주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 213500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 56291
+    }
+   ]
+  },
+  {
+   "code": "035420",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/035420/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "3f44c4ab1c848064f644d13cbe349afbde76a82a89931b92d6cb80136441b172",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:10.634Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 197700,
+    "fetchedClose": 197700,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/035420/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 62233주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 194800,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 62233
+    }
+   ]
+  },
+  {
+   "code": "010120",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/010120/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "d46ce2acbc5cad492f8ca28482b343245e9d593ec78e3fb81c58c2ddc0bcc612",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:11.319Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 204500,
+    "fetchedClose": 204500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/010120/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 27786주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 205000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 27786
+    }
+   ]
+  },
+  {
+   "code": "000810",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/000810/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "924d39f77902fea3731bfd00de6e3c501aba2aeacd0394f87faa6f942d7d04ba",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:12.691Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-17",
+    "reviewedClose": 666000,
+    "fetchedClose": 666000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/000810/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 13228주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-21",
+     "close": 651000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 10215
+    },
+    {
+     "date": "2026-09-22",
+     "close": 655000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 8198
+    },
+    {
+     "date": "2026-09-29",
+     "close": 653000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 13228
+    }
+   ]
+  },
+  {
+   "code": "005490",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/005490/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "b49143b27eb11f0d5f5e8c758b56813fe792fb5245cf8c88008fe56a1f7d1d9d",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:13.383Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 316500,
+    "fetchedClose": 316500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/005490/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 28454주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 304000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 28454
+    }
+   ]
+  },
+  {
+   "code": "010130",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/010130/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "3f31f2468453ba2f4823dadf6bed6c65e35dd7062b4528bde31e8995f90beb83",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:14.075Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 1102000,
+    "fetchedClose": 1102000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/010130/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 524주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 1064000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 524
+    }
+   ]
+  },
+  {
+   "code": "015760",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/015760/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "cc2d4915643959c303fe472834657fb27028afd13d8a178ca10f9c63c1770283",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:16.484Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 30700,
+    "fetchedClose": 30700,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/015760/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 92701주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 30100,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 92701
+    }
+   ]
+  },
+  {
+   "code": "011200",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/011200/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "dc321e080441080c03dc3f0daf8898e3588cc13861e8b920e606d82918b0d2fe",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:17.167Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 21250,
+    "fetchedClose": 21250,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/011200/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 82655주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 21000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 82655
+    }
+   ]
+  },
+  {
+   "code": "051910",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/051910/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "60636a66fd4a06fe3c23709b837da8b1cba91a076f19f6b307326c35a86de8cb",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:17.851Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 262500,
+    "fetchedClose": 262500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/051910/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 21522주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 250000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 21522
+    }
+   ]
+  },
+  {
+   "code": "017670",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/017670/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "5cba3798c0b874c9f51ea349e8241e27099217f7c91316e45584a8053edfe023",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:18.538Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 88200,
+    "fetchedClose": 88200,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/017670/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 51618주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 86200,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 51618
+    }
+   ]
+  },
+  {
+   "code": "033780",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/033780/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "2ac45e784eff9dfbfdf399e98293b976a0fff76051782c987bda5345d9a93011",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:19.227Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 175400,
+    "fetchedClose": 175400,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/033780/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 42730주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 177200,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 42730
+    }
+   ]
+  },
+  {
+   "code": "196170",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/196170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "a356da7bdacc43289eaf3748a1b48cf6888cda1542d93c31bb61359f21bd7770",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:19.913Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 252500,
+    "fetchedClose": 252500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/196170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 8687주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 253500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 8687
+    }
+   ]
+  },
+  {
+   "code": "018260",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/018260/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "7911d30e03a8901ad4294a86e1f8e3038f62594a8975c2a79c5be23e4db2d192",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:20.600Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 219000,
+    "fetchedClose": 219000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/018260/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 21012주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 216500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 21012
+    }
+   ]
+  },
+  {
+   "code": "086280",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/086280/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "7e5961caf32ab44b058e865b9eb86f172d1bbf9fb0dedb28e42f57e118a7578b",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:21.288Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 199100,
+    "fetchedClose": 199100,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/086280/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 15275주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 197500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 15275
+    }
+   ]
+  },
+  {
+   "code": "000720",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/000720/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "bbeb5513373e158999f39b708b5cacec987554fb03f28a52c651df33cbbe82c8",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:21.978Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 124600,
+    "fetchedClose": 124600,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/000720/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 32878주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 117000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 32878
+    }
+   ]
+  },
+  {
+   "code": "278470",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/278470/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "82d86290a1ea0f71d0d84fef21835ee3f8d1e8a6bd867a8fb1ecdcf1c4a4215c",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:22.662Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 368500,
+    "fetchedClose": 368500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/278470/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 12955주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 362500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 12955
+    }
+   ]
+  },
+  {
+   "code": "030200",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/030200/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "a3a38501fb82a46a9b739dbe2ea7795ef484cc9d7ced40d169a71089cbf98621",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:23.350Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 52900,
+    "fetchedClose": 52900,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/030200/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 20839주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 52900,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 20839
+    }
+   ]
+  },
+  {
+   "code": "003490",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/003490/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "cd23bfb2d8cf34f2706d71796de94befbb563f20405d14c99003a6f5968aa2c8",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:24.039Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 31700,
+    "fetchedClose": 31700,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/003490/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 123245주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 31400,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 123245
+    }
+   ]
+  },
+  {
+   "code": "047050",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/047050/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "d3e354f1a206e46454cce99670771cde8cc7e1b98b7139cb5cc50c5f20f2f46c",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:24.726Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 56900,
+    "fetchedClose": 56900,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/047050/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 18483주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 54400,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 18483
+    }
+   ]
+  },
+  {
+   "code": "003230",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/003230/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "6d0018493d4489c4bcb5377fb7d29cb44ea8a14e30e88200904ff4bd46787fe4",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:25.758Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-21",
+    "reviewedClose": 1276000,
+    "fetchedClose": 1276000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/003230/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 874주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-22",
+     "close": 1252000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 1564
+    },
+    {
+     "date": "2026-09-29",
+     "close": 1225000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 874
+    }
+   ]
+  },
+  {
+   "code": "259960",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/259960/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "ee035b5483efab89ec47ded97c9b7026beb8e9bfa8ba78d99f5f761753792dfd",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:26.453Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 202000,
+    "fetchedClose": 202000,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/259960/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 9100주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 198700,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 9100
+    }
+   ]
+  },
+  {
+   "code": "021240",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/021240/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "1c288719b1acd895a7840fa3b0c06111033076f16ff15dca6da6a93c8610905b",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:28.166Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-17",
+    "reviewedClose": 107500,
+    "fetchedClose": 107500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/021240/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 9951주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-21",
+     "close": 99500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 13519
+    },
+    {
+     "date": "2026-09-22",
+     "close": 99800,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 7088
+    },
+    {
+     "date": "2026-09-23",
+     "close": 99800,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 6431
+    },
+    {
+     "date": "2026-09-29",
+     "close": 101500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 9951
+    }
+   ]
+  },
+  {
+   "code": "352820",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/352820/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "79226db01381bd43b6f72e375149fe405c377a1d97a0ed58c97b7bfbfe4be781",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:28.853Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 161900,
+    "fetchedClose": 161900,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/352820/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 9001주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 158700,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 9001
+    }
+   ]
+  },
+  {
+   "code": "009830",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/009830/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "b9e71f3f4b8851a45a11424bf67d00fbcd6b7d2a51e93a14a281c71e3f5f43d6",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:29.554Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 33350,
+    "fetchedClose": 33350,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/009830/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 100998주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 32500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 100998
+    }
+   ]
+  },
+  {
+   "code": "028300",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/028300/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "4ebbd59490d0c33f7cfb1d7dc12802cd1abebb65558db3dac4b6e25748a2ea7d",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:31.952Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 39700,
+    "fetchedClose": 39700,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/028300/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 38045주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 40150,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 38045
+    }
+   ]
+  },
+  {
+   "code": "034220",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/034220/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "e872aa2013dbf8a5aa8ff529f05be92a1413bdd627604f0481167109181900bb",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:32.637Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 8450,
+    "fetchedClose": 8450,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/034220/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 157670주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 8340,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 157670
+    }
+   ]
+  },
+  {
+   "code": "036460",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/036460/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "7cad31198ed97cde3e44cea23bd171c543a72b147e2ccdb66019468ef160803c",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:34.691Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 35500,
+    "fetchedClose": 35500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/036460/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 27324주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 35500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 27324
+    }
+   ]
+  },
+  {
+   "code": "004170",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/004170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "6739c36a05fcb975cc401ac30569a03a413ee5bfc414afb94a9799b242891190",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:36.075Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-17",
+    "reviewedClose": 353500,
+    "fetchedClose": 353500,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/004170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 6916주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-21",
+     "close": 357500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 1106
+    },
+    {
+     "date": "2026-09-22",
+     "close": 357500,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 2664
+    },
+    {
+     "date": "2026-09-29",
+     "close": 340000,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 6916
+    }
+   ]
+  },
+  {
+   "code": "257720",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/257720/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "6907365654b2159a621bddf257d83b7755908186d5df4d01b75e5ba66c07bd6e",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:41.897Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 38700,
+    "fetchedClose": 38700,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/257720/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 9657주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 38150,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 9657
+    }
+   ]
+  },
+  {
+   "code": "226950",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/226950/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "e0402fffd85e96f763280983f36cace7e008710869a565562b4c744111acdc8e",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:42.584Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 104400,
+    "fetchedClose": 104400,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/226950/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 1704주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 102800,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 1704
+    }
+   ]
+  },
+  {
+   "code": "010170",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/010170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "591f527c00293fd579f3d51080ddb9a896890a2faf19713b5eaed5dbb12acda8",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:43.269Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 17280,
+    "fetchedClose": 17280,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/010170/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 49272주) · 15:40 이후 시간외 종가매매 봉도 같은 가격 · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 16600,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 49272
+    }
+   ]
+  },
+  {
+   "code": "214370",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/214370/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "de9b4afe7dfa72c8d264c9d93043307995441ac0bbd0ca2385ea09c1fc133592",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:44.299Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-22",
+    "reviewedClose": 39350,
+    "fetchedClose": 39350,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/214370/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 6976주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-23",
+     "close": 40200,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 1540
+    },
+    {
+     "date": "2026-09-29",
+     "close": 41700,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 6976
+    }
+   ]
+  },
+  {
+   "code": "030000",
+   "sourceUrl": "https://api.stock.naver.com/chart/domestic/item/030000/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "rawHash": "11475a4046f0c0ebccc46dafb3a60cbae6d75f52bdc6bf19bfea30a1d06a3da3",
+   "observedAt": "2026-09-29T11:30:59Z",
+   "fetchedAt": "2026-09-29T11:31:44.984Z",
+   "priceBasis": "KRX_REGULAR",
+   "adjustmentsVerified": false,
+   "crossCheck": {
+    "day": "2026-09-28",
+    "reviewedClose": 17810,
+    "fetchedClose": 17810,
+    "match": true
+   },
+   "finalClose": true,
+   "sessionDate": "2026-09-29",
+   "finalizedAt": "2026-09-29T11:30:59.000Z",
+   "finalitySourceUrl": "https://api.stock.naver.com/chart/domestic/item/030000/minute?startDateTime=202609291525&endDateTime=202609291545",
+   "finalityBasis": "15:30 종가 단일가 분봉(체결 20315주) · 직전 거래일 검토 종가와 같은 방법으로 일치 확인",
+   "rows": [
+    {
+     "date": "2026-09-29",
+     "close": 17880,
+     "priceBasis": "KRX_REGULAR",
+     "closeBasis": "krx_closing_auction_1530_minute_bar",
+     "auctionVolume": 20315
+    }
+   ]
+  }
+ ],
+ "errors": [
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "138040",
+   "day": "2026-09-09",
+   "reviewedClose": 125000,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  },
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "029780",
+   "day": "2026-09-16",
+   "reviewedClose": 44400,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  },
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "002380",
+   "day": "2026-09-04",
+   "reviewedClose": 482000,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  },
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "012750",
+   "day": "2026-09-02",
+   "reviewedClose": 80200,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  },
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "111770",
+   "day": "2026-08-28",
+   "reviewedClose": 74300,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  },
+  {
+   "code": "REVIEWED_ROW_MISMATCH",
+   "stockCode": "035250",
+   "day": "2026-09-14",
+   "reviewedClose": 14810,
+   "fetchedClose": null,
+   "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
+  }
+ ],
+ "lastGoodDate": {
+  "105560": "2026-09-29",
+  "196170": "2026-09-29",
+  "207940": "2026-09-29",
+  "214370": "2026-09-29",
+  "226950": "2026-09-29",
+  "257720": "2026-09-29",
+  "259960": "2026-09-29",
+  "278470": "2026-09-29",
+  "329180": "2026-09-29",
+  "352820": "2026-09-29",
+  "373220": "2026-09-29",
+  "005930": "2026-09-29",
+  "009150": "2026-09-29",
+  "005380": "2026-09-29",
+  "028260": "2026-09-29",
+  "032830": "2026-09-29",
+  "012450": "2026-09-29",
+  "034020": "2026-09-29",
+  "034730": "2026-09-29",
+  "012330": "2026-09-29",
+  "066570": "2026-09-29",
+  "035420": "2026-09-29",
+  "010120": "2026-09-29",
+  "000810": "2026-09-29",
+  "005490": "2026-09-29",
+  "010130": "2026-09-29",
+  "015760": "2026-09-29",
+  "011200": "2026-09-29",
+  "051910": "2026-09-29",
+  "017670": "2026-09-29",
+  "033780": "2026-09-29",
+  "018260": "2026-09-29",
+  "086280": "2026-09-29",
+  "000720": "2026-09-29",
+  "030200": "2026-09-29",
+  "003490": "2026-09-29",
+  "047050": "2026-09-29",
+  "003230": "2026-09-29",
+  "021240": "2026-09-29",
+  "009830": "2026-09-29",
+  "028300": "2026-09-29",
+  "034220": "2026-09-29",
+  "036460": "2026-09-29",
+  "004170": "2026-09-29",
+  "010170": "2026-09-29",
+  "030000": "2026-09-29"
+ },
+ "delayed": false,
+ "startedAt": "2026-09-29T11:30:59.429Z",
+ "finishedAt": "2026-09-29T11:31:45.134Z",
+ "stats": {
+  "stocks": 52,
+  "succeeded": 46,
+  "failed": 6,
+  "finalizedToday": 46,
+  "crossChecked": 52,
+  "requests": 131,
+  "durationMs": 45705
+ }
+}
