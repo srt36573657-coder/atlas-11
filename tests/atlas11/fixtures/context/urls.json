@@ -1,0 +1,15 @@
+{
+ "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1": "index-KOSPI.json",
+ "https://m.stock.naver.com/api/index/KOSDAQ/price?pageSize=10&page=1": "index-KOSDAQ.json",
+ "https://m.stock.naver.com/api/stock/005930/trend?pageSize=10&page=1": "flows-005930.json",
+ "https://m.stock.naver.com/api/stock/196170/trend?pageSize=10&page=1": "flows-196170.json",
+ "https://m.stock.naver.com/api/news/stock/005930?pageSize=20&page=1": "news-005930.json",
+ "https://m.stock.naver.com/api/news/stock/196170?pageSize=20&page=1": "news-196170.json",
+ "https://m.stock.naver.com/api/stock/005930/disclosure?pageSize=20&page=1": "disclosures-005930.json",
+ "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXKOUS&cosd=2026-06-02": "fred-DEXKOUS.csv",
+ "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10": "naver-FX_USDKRW.json",
+ "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10": "naver-SOX.json",
+ "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=10": "naver-VIX.json",
+ "https://api.stock.naver.com/marketindex/bond/KR3YT=RR/prices?page=1&pageSize=10": "naver-KR3YT.json",
+ "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=1&pageSize=10": "naver-CLcv1.json"
+}

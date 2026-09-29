@@ -2,7 +2,7 @@
 import {h, won, pct, pctPoint, num, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, reducedMotion, clamp, wonShort} from './util.js';
 import {loadCards, loadStock, prefs, url, state, setSummary} from './store.js';
 import {priceChart, chartTip, sparkline, probBar, contributionBars, quantileBox} from './chart.js';
-import {renderInfo, renderChain, loadNetwork} from './view-network.js';
+import {renderInfo, renderContextBox, renderChain, loadNetwork} from './view-network.js';
 
 /* ---------- 재생 상태: 종목마다 독립 (커서·재생·속도·확인한 사건) · 종목당 타이머 1개 ---------- */
 const players = new Map();
@@ -193,8 +193,8 @@ async function renderDetail(main, manifest, code) {
     big('20일 전망', won(r20.p50), dirMark(r20.direction.cumulative.selected) + ' ' + pct(r20.return) + ' · 범위 ' + wonShort(r20.p10) + '~' + wonShort(r20.p90), DIR[r20.direction.cumulative.selected].cls),
     big('최근 오차', recent ?? '채점 대기', recent ? '1·5·10·20일 중 확보된 것' : `첫 채점 ${shortDate(manifest.firstScorableDate)}`, ''));
   for (const b of numbers.children) b.setAttribute('data-speak', b.textContent.replace(/\s+/g, ' '));
-  const infoBox = h('section', {class: 'card info', 'aria-label': '종목 정보'}), chainBox = h('section', {class: 'card chain', 'aria-label': '연쇄 지도'});
-  const more = h('div', {class: 'detail-more'}, infoBox, chainBox);
+  const infoBox = h('section', {class: 'card info', 'aria-label': '종목 정보'}), ctxBox = h('section', {class: 'card ctx', 'aria-label': '수급·뉴스·공시'}), chainBox = h('section', {class: 'card chain', 'aria-label': '연쇄 지도'});
+  const more = h('div', {class: 'detail-more'}, infoBox, ctxBox, chainBox);
   main.replaceChildren(
     h('section', {class: 'detail'},
       h('div', {class: 'detail-top'},
@@ -217,6 +217,7 @@ async function renderDetail(main, manifest, code) {
   draw();
   // 종목 정보 + 연쇄 지도: 그래프가 자리 잡은 뒤(너비 확정) 그린다 · 지도는 너비가 바뀌면 다시 그린다
   renderInfo(infoBox, d);
+  renderContextBox(ctxBox, d.context ?? null);
   if (network) {
     const chain = renderChain(chainBox, {network, code, onNavigate: c => { location.hash = '#/stock/' + c; }});
     let lastMapW = chainBox.clientWidth; new ResizeObserver(() => { if (chainBox.clientWidth !== lastMapW) { lastMapW = chainBox.clientWidth; chain.stop(); chain.draw(); } }).observe(chainBox);

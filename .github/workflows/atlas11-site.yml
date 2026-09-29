@@ -1,0 +1,43 @@
+name: atlas11-site
+# 화면만 지금 다시 올린다(수집·채점·발행은 하지 않음) — 넷리파이 열쇠를 막 넣었을 때 16시를 기다리지 않고 확인하려는 용도
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-daily
+  cancel-in-progress: false
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: Asia/Seoul
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build view bundle and package dist/
+        run: |
+          node scripts/atlas11/build_view.mjs
+          node scripts/atlas11/package.mjs --no-full --out out
+      - name: Netlify deploy
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        run: node scripts/atlas11/deploy_netlify.mjs --dir dist
+      - name: No token
+        if: ${{ env.NETLIFY_AUTH_TOKEN == '' }}
+        run: echo "::warning::NETLIFY_AUTH_TOKEN secret is not set — nothing deployed"
+      - name: Commit deploy record
+        if: always()
+        shell: bash
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -A reports/
+          [ -f deploy/netlify-site.json ] && git add deploy/netlify-site.json
+          if git diff --cached --quiet; then echo "nothing to commit"; else git commit -m "atlas11 site deploy $(date +%Y-%m-%d) [skip ci]" && git pull --rebase -q && git push; fi

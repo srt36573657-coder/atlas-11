@@ -43,7 +43,7 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   const abHistory = [previousCandidate ? {label: '이전 세션 실행(2026-09-28 10:47Z) · 이번 실행 아님', at: previousCandidate.at, A: previousCandidate.A, B: previousCandidate.B, numericalGate: previousCandidate.numericalGate, adopted: false} : null, ab ? {label: '이번 세션 실행', at: ab.finishedAt, A: ab.A, B: ab.B, numericalGate: ab.numericalGate, adopted: false, runId: ab.runId} : null].filter(Boolean);
   const archive = await loadArchiveReconstruction(input);
   let operations = [];
-  try { const dir = path.join(root, 'reports/atlas11/operations'); const names = (await fs.readdir(dir)).filter(f => /^\d{4}-\d{2}-\d{2}T.*\.json$/.test(f)).sort().slice(-12).reverse(); for (const f of names) { const o = JSON.parse(await fs.readFile(path.join(dir, f), 'utf8')); operations.push({at: o.at, status: o.status, exitCode: o.exitCode, forecastId: o.forecastId ?? null, newForecast: o.newForecast ?? null, collectionAttempted: o.collection?.attempted ?? null, confirmedTodayStocks: o.confirmedTodayStocks ?? null, scoredDates: o.scoredDates ?? null, reason: o.forecastWithheldReason ?? o.error ?? null}); } } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  try { const dir = path.join(root, 'reports/atlas11/operations'); const names = (await fs.readdir(dir)).filter(f => /^\d{4}-\d{2}-\d{2}T.*\.json$/.test(f)).sort().slice(-12).reverse(); for (const f of names) { const o = JSON.parse(await fs.readFile(path.join(dir, f), 'utf8')); operations.push({at: o.at, event: o.runtime?.event ?? (o.runtime?.host ?? null), runUrl: o.runtime?.runUrl ?? null, status: o.status, exitCode: o.exitCode, forecastId: o.forecastId ?? null, newForecast: o.newForecast ?? null, collectionAttempted: o.collection?.attempted ?? null, confirmedTodayStocks: o.confirmedTodayStocks ?? null, scoredDates: o.scoredDates ?? null, reason: o.forecastWithheldReason ?? o.error ?? null}); } } catch (e) { if (e.code !== 'ENOENT') throw e; }
   const scenarioStability = await read('reports/atlas11/scenario-stability.json', null);
   // 자동 진화: 등록부 상태 · 후보 검증 결과(네 숫자·관문) · 설정 요약 · 요인 관리표 · 기록 색인 · 일일 보고 · 예약 상태
   const evolveConfig = await read('config/atlas11/evolution.v1.json', null), scoringPolicy = await read('config/atlas11/scoring-policy.v1.json', null);
@@ -71,11 +71,32 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   for (const k of Object.keys(scoreHistory.byCode)) scoreHistory.byCode[k].sort((a, b) => a.targetDate.localeCompare(b.targetDate) || a.horizon - b.horizon);
   const heartbeat = await read('reports/atlas11/operations/scheduler-heartbeat.json', null);
   let schedulerRuns = []; try { schedulerRuns = (await fs.readFile(path.join(root, 'reports/atlas11/operations/scheduler-runs.jsonl'), 'utf8')).split('\n').filter(Boolean).slice(-10).map(l => JSON.parse(l)); } catch (e) { if (e.code !== 'ENOENT') throw e; }
-  // 살아 있는 예약기 = heartbeat 가 있고 멈춤 표시가 없고 10분 안에 갱신된 것. 멈춘 heartbeat 는 「설치됨」이 아니다.
+  // 예약 상태 — 기본 운영은 GitHub Actions(저장소의 .github/workflows/atlas11-daily.yml · 평일 07:00 UTC = 16:00 KST).
+  //   「예약 연결」은 워크플로 파일에 cron 이 있다는 뜻이고, 「예약 실행 확인」은 러너가 schedule 이벤트로 시작한 실행 기록이 있다는 뜻이다. 둘을 섞지 않는다.
+  let workflowText = null; try { workflowText = await fs.readFile(path.join(root, '.github/workflows/atlas11-daily.yml'), 'utf8'); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const cron = workflowText?.match(/cron:\s*'([^']+)'/)?.[1] ?? null;
+  const ghRuns = []; try { const dir = path.join(root, 'reports/atlas11/operations'); for (const f of (await fs.readdir(dir)).filter(f => /^\d{4}-\d{2}-\d{2}T.*\.json$/.test(f)).sort()) { const o = JSON.parse(await fs.readFile(path.join(dir, f), 'utf8')); if (o.runtime?.host === 'github-actions') ghRuns.push({at: o.at, event: o.runtime.event, runUrl: o.runtime.runUrl ?? null, status: o.status, exitCode: o.exitCode, confirmedTodayStocks: o.confirmedTodayStocks ?? null, forecastId: o.forecastId ?? null}); } } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const lastScheduled = ghRuns.filter(r => r.event === 'schedule').at(-1) ?? null, lastManual = ghRuns.filter(r => r.event !== 'schedule').at(-1) ?? null;
   const hbAge = heartbeat?.lastHeartbeat ? (Date.parse(now) - Date.parse(heartbeat.lastHeartbeat)) / 60000 : null;
   const alive = Boolean(heartbeat) && heartbeat.status !== 'stopped' && hbAge != null && hbAge <= 10;
-  const schedule = {runTimeKST: evolveConfig?.schedule?.runTimeKST ?? '16:00', publishEnd: evolveConfig?.schedule?.publishEnd ?? null, installed: alive, alive, heartbeat, heartbeatAgeMinutes: hbAge != null ? Math.round(hbAge) : null, recentRuns: schedulerRuns, note: alive ? `예약기 살아 있음(heartbeat ${Math.round(hbAge)}분 전)` : heartbeat ? `예약기 멈춤(마지막 heartbeat ${heartbeat.lastHeartbeat}, 상태 ${heartbeat.status ?? '미상'}) — 지금 실행 중 아님 · 서버·예약이 설치되지 않음(deploy/README.md)` : '예약기 heartbeat 없음 — 이 환경에는 서버·예약이 설치되지 않음(deploy/README.md)'};
-  const files = buildViewBundle({publication, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null} : null, now});
+  const schedule = {host: cron ? 'github-actions' : alive ? 'self-hosted' : null, cron, cronMeaning: cron === '0 7 * * 1-5' ? '평일 07:00 UTC = 16:00 KST' : cron, workflow: cron ? '.github/workflows/atlas11-daily.yml' : null, runTimeKST: evolveConfig?.schedule?.runTimeKST ?? '16:00', publishEnd: evolveConfig?.schedule?.publishEnd ?? null, installed: Boolean(cron) || alive, alive, heartbeat, heartbeatAgeMinutes: hbAge != null ? Math.round(hbAge) : null, recentRuns: schedulerRuns, githubRuns: ghRuns.slice(-12).reverse(), lastScheduledRun: lastScheduled, lastManualRun: lastManual,
+    note: cron ? (lastScheduled ? `GitHub Actions 예약 실행 확인 · 마지막 예약 실행 ${lastScheduled.at} · ${lastScheduled.status}` : `예약 연결 완료(GitHub Actions ${cron === '0 7 * * 1-5' ? '평일 16:00 KST' : cron}) · 첫 예약 실행 확인 대기${lastManual ? ` · 손으로 시작한 실행 마지막 ${lastManual.at}` : ''} · 휴장일에는 「거래일 아님」으로 끝남 · GitHub 예약은 몇 분 늦게 시작할 수 있음`) : alive ? `예약기 살아 있음(heartbeat ${Math.round(hbAge)}분 전)` : '예약 연결 없음 — 워크플로 파일도, 살아 있는 예약기도 없음(deploy/README.md)'};
+  // 사이트 배포 기록(Netlify) — 배포 단계가 남긴 파일만 믿는다
+  const deploy = await read('reports/atlas11/operations/deploy-latest.json', null);
+  // 관측 수집(시장·수급·뉴스·공시·거시) — 요약 + 종목별 최근 값
+  const contextLatest = await read('reports/atlas11/context/latest.json', null);
+  let contextByCode = null;
+  if (contextLatest?.file) {
+    const snap = await read(contextLatest.file, null);
+    if (snap) {
+      contextByCode = {};
+      for (const a of input.assets) {
+        const fl = snap.flows.find(x => x.code === a.code), nw = snap.news.find(x => x.code === a.code), ds = snap.disclosures.find(x => x.code === a.code);
+        contextByCode[a.code] = {day: snap.day, fetchedAt: snap.fetchedAt, flows: fl ? fl.rows.slice(-5) : [], flowsSourceUrl: fl?.sourceUrl ?? null, news: nw ? nw.items.filter(i => !i.duplicateOf).sort((x, y) => y.publishedAt.localeCompare(x.publishedAt)).slice(0, 6).map(({publishedAt, office, title, url}) => ({publishedAt, office, title, url})) : [], newsRepublished: nw?.republished ?? 0, disclosures: ds ? ds.items.slice(-4).reverse().map(({publishedAt, title, corporateAction, actionWord}) => ({publishedAt, title, corporateAction, actionWord})) : [], missing: [!fl && '수급', !nw && '뉴스', !ds && '공시'].filter(Boolean), usedInForecast: false};
+      }
+    }
+  }
+  const files = buildViewBundle({publication, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
   const dir = path.join(root, 'public/data/atlas11/view');
   await fs.rm(dir + '.next', {recursive: true, force: true});
   await fs.mkdir(path.join(dir + '.next', 'stocks'), {recursive: true});

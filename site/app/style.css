@@ -298,6 +298,8 @@ details.more summary { cursor: pointer; font-weight: 600; min-height: 44px; disp
 .ftile.used b { color: var(--ok); }
 .ftile.partial { background: var(--warn-soft); border-color: #F1D9A6; }
 .ftile.partial b { color: var(--warn); }
+.ftile.observed { background: var(--primary-soft); border: 1px dashed var(--primary); }
+.ftile.observed b { color: var(--primary-ink); }
 
 /* ---------- 하단 4메뉴 (모바일) ---------- */
 .bottom { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line); z-index: 20; padding-bottom: env(safe-area-inset-bottom); }
@@ -459,7 +461,9 @@ details.more summary { cursor: pointer; font-weight: 600; min-height: 44px; disp
 /* ---------- v5: 종목 정보(1년 범위 띠 · 6칸 격자) · 연쇄 지도(원형 관계망 · 1~5차 파급 · 재생) · 1만원 비교 묶음 강조 ---------- */
 .detail-more { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); margin-top: var(--s3); }
 .detail-more > .card { min-width: 0; }
-.card.info h3, .card.chain h3 { margin-top: 0; }
+.card.info h3, .card.chain h3, .card.ctx h3 { margin-top: 0; }
+.card.ctx h4 { margin: var(--s3) 0 var(--s1); font-size: var(--fs-sm); }
+.card.ctx .news-list li { margin: 4px 0; line-height: 1.45; overflow-wrap: anywhere; }
 .info-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 6px 0 4px; }
 .info-row .lbl { font-size: var(--fs-xs); color: var(--muted); font-weight: 700; white-space: nowrap; }
 .range { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 220px; min-width: 160px; font-size: var(--fs-xs); color: var(--muted); font-weight: 600; }
@@ -581,7 +585,7 @@ h1.h1, .h1 { letter-spacing: -.015em; }
 .table.records tbody tr:nth-child(even) td { background: rgba(62,48,28,.025); }
 .table-wrap { overflow-x: auto; max-height: 70vh; border-radius: 10px; border: 1px solid var(--hair); }
 .pill { display: inline-block; font-size: var(--fs-xs); padding: 2px 8px; border-radius: 999px; background: var(--flat-soft); color: var(--muted); font-weight: 700; margin: 1px 2px 1px 0; white-space: nowrap; line-height: 1.5; border: 1px solid transparent; }
-.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.warn { background: var(--warn-soft); color: var(--warn); } .pill.bad { background: var(--up-soft); color: var(--up); } .pill.muted { background: var(--flat-soft); color: var(--muted); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.info { background: var(--primary-soft); color: var(--primary-ink); } .pill.warn { background: var(--warn-soft); color: var(--warn); } .pill.bad { background: var(--up-soft); color: var(--up); } .pill.muted { background: var(--flat-soft); color: var(--muted); }
 .sentences { margin: 6px 0 4px; padding-left: 1.4em; display: grid; gap: 8px; }
 .sentences li { font-size: var(--fs-md); line-height: 1.55; }
 .sentences li b { display: block; font-size: var(--fs-xs); color: var(--muted); letter-spacing: .02em; text-transform: none; }

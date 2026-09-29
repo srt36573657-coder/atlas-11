@@ -137,7 +137,10 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.evaluate(() => { document.querySelector('.top').style.visibility = 'hidden'; });
   await page.locator('.card.info').screenshot({path: path.join(dir, `${label}-03b-info.png`)});
   await page.locator('.card.chain').screenshot({path: path.join(dir, `${label}-03c-chain.png`)});
+  await page.locator('.card.ctx').screenshot({path: path.join(dir, `${label}-03d-context.png`)});
   await page.evaluate(() => { document.querySelector('.top').style.visibility = ''; });
+  const ctxText = await page.locator('.card.ctx').innerText(), ctxRows = await page.locator('.card.ctx table tbody tr').count(), ctxNews = await page.locator('.card.ctx .news-list li').count();
+  check(`${label} 상세: 수급·뉴스·공시 칸(기록 · 예측 미사용) · 외국인·기관·개인 표 · 기사 목록(제목만)`, /수급·뉴스·공시/.test(ctxText) && /예측 미사용/.test(ctxText) && /외국인/.test(ctxText) && ctxRows >= 1 && ctxNews >= 1, {ctxRows, ctxNews});
   for (let k = 0; k < 4; k++) await page.locator('.tool[aria-label^="글씨 크게"]').click();
   await page.waitForTimeout(200);
   const fontSize = await page.evaluate(() => document.documentElement.style.fontSize), overflow200 = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -188,7 +191,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 자료 상태: 36요인 격자·달력·무결성·검사 증거`, /36요인/.test(statusText) && tiles === 36 && days >= 5 && shield === 1 && await page.locator('a[href*="evidence"]').count() >= 3, {tiles, days, shield});
   await shot('07-status');
   // v6 자료 상태: 예약·수집 상태 정직 표시
-  check(`${label} 자료 상태: 예약기 설치 안 됨을 숨기지 않음`, /heartbeat 없음|예약이 설치되지 않음|서버·예약/.test(statusText), null);
+  check(`${label} 자료 상태: 예약 연결·예약 실행 확인·사이트 배포를 사실대로(연결 ≠ 실행 확인)`, /예약 실행 확인/.test(statusText) && /(첫 예약 실행 확인 대기|확인 · )/.test(statusText) && /관측 수집기/.test(statusText) && /사이트 배포/.test(statusText) && !/heartbeat 없음 — 이 환경에는 서버·예약이 설치되지 않음/.test(statusText), null);
+  // v7 관측 기록: 36요인 격자에 「관측 기록 · 예측 미사용」 칸 · 오늘의 시장·수급·거시 절
+  const observedTiles = await page.locator('.ftile.observed').count();
+  const hasCtx = await page.evaluate(() => [...document.querySelectorAll('h2')].some(x => /오늘의 시장·수급·거시/.test(x.textContent)));
+  check(`${label} 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시`, observedTiles >= 1 && hasCtx && /예측 미사용/.test(statusText), {observedTiles, hasCtx});
   // v6 진화: 자동 진화 등록부(후보 11 · 네 숫자 · 관문 · 결정) · 36요인 관리표 · 채점 정책
   await page.goto(base + '/#/evolution', {waitUntil: 'networkidle'}); await page.waitForSelector('.card.panel');
   const evoText = await page.locator('#main').innerText();
