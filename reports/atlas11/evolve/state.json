@@ -2253,10 +2253,10 @@
  "lastAdoptionDate": null,
  "cooldownUntilTradingDayIndex": null,
  "sequence": 1,
- "events": 48,
- "lastEventAt": "2026-09-29T06:42:26.000Z",
+ "events": 55,
+ "lastEventAt": "2026-09-29T10:29:50Z",
  "lastNoChange": {
-  "at": "2026-09-29T06:42:26.000Z",
+  "at": "2026-09-29T10:29:50Z",
   "reason": "오늘 검증한 후보 없음"
  }
 }
