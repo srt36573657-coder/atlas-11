@@ -1,0 +1,26 @@
+name: atlas11-probe
+on:
+  workflow_dispatch:
+    inputs:
+      day:
+        description: 'YYYYMMDD'
+        required: false
+        default: '20260929'
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}"
+      - run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git pull --rebase -q
+          git add -f reports/atlas11/probe
+          git commit -m "atlas11 source probe [skip ci]" && git push
