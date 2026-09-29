@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-1",
-  "at": "2026-09-29T22:33:09.860Z",
+  "at": "2026-09-29T22:44:38.459Z",
   "base": "http://127.0.0.1:8811",
   "chromium": "playwright bundled chromium (headless)",
   "viewports": {
@@ -335,12 +335,15 @@
       }
     },
     {
-      "name": "pc 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음",
+      "name": "pc 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
       "ok": true,
       "detail": {
         "sixCount": 6,
         "typeBtns": 8,
         "expRows": 11,
+        "expExpected": 11,
+        "shownDate": "2026-09-29",
+        "totalExperiments": 11,
         "dl": 3
       }
     },
@@ -367,7 +370,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ciux9qt-band-inner\")",
+        "bandFill": "url(\"#cxedad2-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -724,12 +727,15 @@
       }
     },
     {
-      "name": "mobile 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음",
+      "name": "mobile 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
       "ok": true,
       "detail": {
         "sixCount": 6,
         "typeBtns": 8,
         "expRows": 11,
+        "expExpected": 11,
+        "shownDate": "2026-09-29",
+        "totalExperiments": 11,
         "dl": 3
       }
     },
@@ -756,7 +762,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#c9o3q5x-band-inner\")",
+        "bandFill": "url(\"#cwm01oy-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -793,5 +799,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-29T22-32-27-541Z"
+  "dir": "reports/atlas11/browser/2026-09-29T22-43-56-378Z"
 }

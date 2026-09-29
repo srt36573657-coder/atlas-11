@@ -1,424 +1,448 @@
 TAP version 13
-# Subtest: parseFchartXml: 행·날짜·숫자 · 주석/CRLF 무시 · 정렬 · timeframe≠day 거부 · 깨진 행 거부 · 중복 충돌 거부
-ok 1 - parseFchartXml: 행·날짜·숫자 · 주석/CRLF 무시 · 정렬 · timeframe≠day 거부 · 깨진 행 거부 · 중복 충돌 거부
+# Subtest: 수집 범위: 구간 합집합이 기간을 덮는지 · 빈틈이면 거짓
+ok 1 - 수집 범위: 구간 합집합이 기간을 덮는지 · 빈틈이면 거짓
   ---
-  duration_ms: 47.464416
+  duration_ms: 0.763784
+  type: 'test'
+  ...
+# Subtest: 기간 증거: 발행 뒤 ~ 목표일 15:30 사이만 · 재게시 제외 · 수급 합계와 평소 중앙값 · 기업행위 공시 · 원인 판정 아님
+ok 2 - 기간 증거: 발행 뒤 ~ 목표일 15:30 사이만 · 재게시 제외 · 수급 합계와 평소 중앙값 · 기업행위 공시 · 원인 판정 아님
+  ---
+  duration_ms: 9.167329
+  type: 'test'
+  ...
+# Subtest: 원인 분석 a3: 기간 증거를 확인된 사실로 붙이고 · 방향이 맞는 큰 순매도는 「수급」 약한 가설 · 배당락 공시는 「기업 사건」 약한 가설 · 관측이 없으면 이전과 같다
+ok 3 - 원인 분석 a3: 기간 증거를 확인된 사실로 붙이고 · 방향이 맞는 큰 순매도는 「수급」 약한 가설 · 배당락 공시는 「기업 사건」 약한 가설 · 관측이 없으면 이전과 같다
+  ---
+  duration_ms: 193.281751
+  type: 'test'
+  ...
+# Subtest: 관측 묶음 합치기(실제 응답 재생 두 번): 같은 기사 한 번 · 수급은 나중 수집값 · 기사 수집 구간 기록
+ok 4 - 관측 묶음 합치기(실제 응답 재생 두 번): 같은 기사 한 번 · 수급은 나중 수집값 · 기사 수집 구간 기록
+  ---
+  duration_ms: 103.621387
+  type: 'test'
+  ...
+# Subtest: parseFchartXml: 행·날짜·숫자 · 주석/CRLF 무시 · 정렬 · timeframe≠day 거부 · 깨진 행 거부 · 중복 충돌 거부
+ok 5 - parseFchartXml: 행·날짜·숫자 · 주석/CRLF 무시 · 정렬 · timeframe≠day 거부 · 깨진 행 거부 · 중복 충돌 거부
+  ---
+  duration_ms: 50.494256
   type: 'test'
   ...
 # Subtest: parseNaverDayJson: 문자열 숫자(쉼표 포함) · 정렬 · 배열 아님/필드 빠짐/JSON 아님 거부
-ok 2 - parseNaverDayJson: 문자열 숫자(쉼표 포함) · 정렬 · 배열 아님/필드 빠짐/JSON 아님 거부
+ok 6 - parseNaverDayJson: 문자열 숫자(쉼표 포함) · 정렬 · 배열 아님/필드 빠짐/JSON 아님 거부
   ---
-  duration_ms: 0.706586
+  duration_ms: 0.755158
   type: 'test'
   ...
 # Subtest: rowProblem: 정지 봉(0/0/0/0 · 종가>0)은 통과 · 종가 0 · 음수 거래량 · OHLC 어긋남은 사유
-ok 3 - rowProblem: 정지 봉(0/0/0/0 · 종가>0)은 통과 · 종가 0 · 음수 거래량 · OHLC 어긋남은 사유
+ok 7 - rowProblem: 정지 봉(0/0/0/0 · 종가>0)은 통과 · 종가 0 · 음수 거래량 · OHLC 어긋남은 사유
   ---
-  duration_ms: 0.221133
+  duration_ms: 0.259486
   type: 'test'
   ...
 # Subtest: fetchWithRetry: 500 두 번 뒤 성공(3회 · 대기 1s/3s) · 404 는 즉시 포기 · 전부 실패면 4회 시도 · sha256 · 시간 제한(Abort)
-ok 4 - fetchWithRetry: 500 두 번 뒤 성공(3회 · 대기 1s/3s) · 404 는 즉시 포기 · 전부 실패면 4회 시도 · sha256 · 시간 제한(Abort)
+ok 8 - fetchWithRetry: 500 두 번 뒤 성공(3회 · 대기 1s/3s) · 404 는 즉시 포기 · 전부 실패면 4회 시도 · sha256 · 시간 제한(Abort)
   ---
-  duration_ms: 49.483813
+  duration_ms: 52.239997
   type: 'test'
   ...
 # Subtest: finalizeToday: 두 번 같으면 확정(finalizedAt=두 번째) · 종가/거래량 다르면 fetch_mismatch · 15:30 전 · 두 번째 없음 · 오늘 봉 없음
-ok 5 - finalizeToday: 두 번 같으면 확정(finalizedAt=두 번째) · 종가/거래량 다르면 fetch_mismatch · 15:30 전 · 두 번째 없음 · 오늘 봉 없음
+ok 9 - finalizeToday: 두 번 같으면 확정(finalizedAt=두 번째) · 종가/거래량 다르면 fetch_mismatch · 15:30 전 · 두 번째 없음 · 오늘 봉 없음
   ---
-  duration_ms: 0.525212
+  duration_ms: 0.438767
   type: 'test'
   ...
 # Subtest: collect: 마감 뒤 두 번 받아 같으면 finalClose 증거 · 비거래일/미완료 행은 버리고 셈 · mergeRollingPrices 통과 · 52 규칙의 confirmedToday
-ok 6 - collect: 마감 뒤 두 번 받아 같으면 finalClose 증거 · 비거래일/미완료 행은 버리고 셈 · mergeRollingPrices 통과 · 52 규칙의 confirmedToday
+ok 10 - collect: 마감 뒤 두 번 받아 같으면 finalClose 증거 · 비거래일/미완료 행은 버리고 셈 · mergeRollingPrices 통과 · 52 규칙의 confirmedToday
   ---
-  duration_ms: 35.320092
+  duration_ms: 32.391131
   type: 'test'
   ...
 # Subtest: collect: 두 번째 받기에서 종가/거래량이 다르면 그 종목의 오늘 행만 빠지고 TODAY_NOT_FINAL · delayed=true · 나머지는 검증기 통과
-ok 7 - collect: 두 번째 받기에서 종가/거래량이 다르면 그 종목의 오늘 행만 빠지고 TODAY_NOT_FINAL · delayed=true · 나머지는 검증기 통과
+ok 11 - collect: 두 번째 받기에서 종가/거래량이 다르면 그 종목의 오늘 행만 빠지고 TODAY_NOT_FINAL · delayed=true · 나머지는 검증기 통과
   ---
-  duration_ms: 11.767181
+  duration_ms: 14.000774
   type: 'test'
   ...
 # Subtest: collect: 시계가 15:30 전이면 두 번째 받기 없이 오늘 행 제외(before_regular_close) · 마감 전 창(cutoff=어제)이면 오늘 행은 미완료로 버림
-ok 8 - collect: 시계가 15:30 전이면 두 번째 받기 없이 오늘 행 제외(before_regular_close) · 마감 전 창(cutoff=어제)이면 오늘 행은 미완료로 버림
+ok 12 - collect: 시계가 15:30 전이면 두 번째 받기 없이 오늘 행 제외(before_regular_close) · 마감 전 창(cutoff=어제)이면 오늘 행은 미완료로 버림
   ---
-  duration_ms: 21.094912
+  duration_ms: 22.405823
   type: 'test'
   ...
 # Subtest: collect: 1차(fchart) 원천이 계속 실패하면 4회 시도 뒤 2차(api JSON) · 둘 다 실패한 종목만 FETCH_FAILED · 다른 종목은 무사
-ok 9 - collect: 1차(fchart) 원천이 계속 실패하면 4회 시도 뒤 2차(api JSON) · 둘 다 실패한 종목만 FETCH_FAILED · 다른 종목은 무사
+ok 13 - collect: 1차(fchart) 원천이 계속 실패하면 4회 시도 뒤 2차(api JSON) · 둘 다 실패한 종목만 FETCH_FAILED · 다른 종목은 무사
   ---
-  duration_ms: 13.877659
+  duration_ms: 14.541555
   type: 'test'
   ...
 # Subtest: collect: 동시 요청 4 이하 · 종목 실패 격리 · 16:00 뒤 doubleFetchAfterDeadline=false 면 증거 없이 오늘 행 유지(검증기는 시각으로 받음)
-ok 10 - collect: 동시 요청 4 이하 · 종목 실패 격리 · 16:00 뒤 doubleFetchAfterDeadline=false 면 증거 없이 오늘 행 유지(검증기는 시각으로 받음)
+ok 14 - collect: 동시 요청 4 이하 · 종목 실패 격리 · 16:00 뒤 doubleFetchAfterDeadline=false 면 증거 없이 오늘 행 유지(검증기는 시각으로 받음)
   ---
-  duration_ms: 22.512728
+  duration_ms: 22.594641
   type: 'test'
   ...
 # Subtest: collect: 잘못된 행(종가 0 · OHLC 어긋남)은 넘기지 않고 경고 · 오늘 행이 잘못되면 TODAY_NOT_FINAL · 정지 봉은 통과 · 남은 행은 검증기 통과
-ok 11 - collect: 잘못된 행(종가 0 · OHLC 어긋남)은 넘기지 않고 경고 · 오늘 행이 잘못되면 TODAY_NOT_FINAL · 정지 봉은 통과 · 남은 행은 검증기 통과
+ok 15 - collect: 잘못된 행(종가 0 · OHLC 어긋남)은 넘기지 않고 경고 · 오늘 행이 잘못되면 TODAY_NOT_FINAL · 정지 봉은 통과 · 남은 행은 검증기 통과
   ---
-  duration_ms: 11.128726
+  duration_ms: 10.378564
   type: 'test'
   ...
 # Subtest: fixture 재생: 실제 52 종목 코드 + KOSPI · 네트워크 없이 파일 응답 · 52 전부 확정 · 검증기 통과(빈 가격표 입력)
-ok 12 - fixture 재생: 실제 52 종목 코드 + KOSPI · 네트워크 없이 파일 응답 · 52 전부 확정 · 검증기 통과(빈 가격표 입력)
+ok 16 - fixture 재생: 실제 52 종목 코드 + KOSPI · 네트워크 없이 파일 응답 · 52 전부 확정 · 검증기 통과(빈 가격표 입력)
   ---
-  duration_ms: 160.809751
+  duration_ms: 162.02427
   type: 'test'
   ...
 # Subtest: CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실제 input.json 의 검토 종가와 다른 합성 행은 REVIEWED_ROW_MISMATCH(exit 2)로 드러난다 · ATLAS_COLLECTOR_FIXTURE 환경변수로도 재생
-ok 13 - CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실제 input.json 의 검토 종가와 다른 합성 행은 REVIEWED_ROW_MISMATCH(exit 2)로 드러난다 · ATLAS_COLLECTOR_FIXTURE 환경변수로도 재생
+ok 17 - CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실제 input.json 의 검토 종가와 다른 합성 행은 REVIEWED_ROW_MISMATCH(exit 2)로 드러난다 · ATLAS_COLLECTOR_FIXTURE 환경변수로도 재생
   ---
-  duration_ms: 489.624573
+  duration_ms: 489.272344
   type: 'test'
   ...
 # Subtest: run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52
-ok 14 - run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52
+ok 18 - run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52
   ---
-  duration_ms: 1375.071568
+  duration_ms: 1463.782712
   type: 'test'
   ...
 # Subtest: collect: 저장된 검토 행(KRX_REGULAR)과 종가가 다른 날짜는 넘기지 않고 REVIEWED_ROW_MISMATCH · 같은 날짜는 그대로 · 검증기가 하루 전체를 던지지 않는다
-ok 15 - collect: 저장된 검토 행(KRX_REGULAR)과 종가가 다른 날짜는 넘기지 않고 REVIEWED_ROW_MISMATCH · 같은 날짜는 그대로 · 검증기가 하루 전체를 던지지 않는다
+ok 19 - collect: 저장된 검토 행(KRX_REGULAR)과 종가가 다른 날짜는 넘기지 않고 REVIEWED_ROW_MISMATCH · 같은 날짜는 그대로 · 검증기가 하루 전체를 던지지 않는다
   ---
-  duration_ms: 13.071726
+  duration_ms: 17.962247
   type: 'test'
   ...
 # Subtest: 실행기 시계 도장: options.now 가 없으면 프로세스 argv 의 --now(run_daily 가 받은 값)를 observedAt 으로 쓴다 · 없으면 벽시계
-ok 16 - 실행기 시계 도장: options.now 가 없으면 프로세스 argv 의 --now(run_daily 가 받은 값)를 observedAt 으로 쓴다 · 없으면 벽시계
+ok 20 - 실행기 시계 도장: options.now 가 없으면 프로세스 argv 의 --now(run_daily 가 받은 값)를 observedAt 으로 쓴다 · 없으면 벽시계
   ---
-  duration_ms: 259.424238
+  duration_ms: 283.078814
   type: 'test'
   ...
 # Subtest: 정규장 종가 수집기: 15:30 종가 단일가 봉 = 보도된 종가 · 직전 검토 종가와 같은 방법으로 일치 · 종가만 넘겨 다른 세션 OHLC 를 섞지 않음 · 네이버 통합가 행을 정정 기록과 함께 바꾼다
-ok 17 - 정규장 종가 수집기: 15:30 종가 단일가 봉 = 보도된 종가 · 직전 검토 종가와 같은 방법으로 일치 · 종가만 넘겨 다른 세션 OHLC 를 섞지 않음 · 네이버 통합가 행을 정정 기록과 함께 바꾼다
+ok 21 - 정규장 종가 수집기: 15:30 종가 단일가 봉 = 보도된 종가 · 직전 검토 종가와 같은 방법으로 일치 · 종가만 넘겨 다른 세션 OHLC 를 섞지 않음 · 네이버 통합가 행을 정정 기록과 함께 바꾼다
   ---
-  duration_ms: 881.065988
+  duration_ms: 983.180923
   type: 'test'
   ...
 # Subtest: num: 부호·쉼표·% 문자열을 수로 · 읽을 수 없으면 null(0 으로 바꾸지 않음)
-ok 18 - num: 부호·쉼표·% 문자열을 수로 · 읽을 수 없으면 null(0 으로 바꾸지 않음)
+ok 22 - num: 부호·쉼표·% 문자열을 수로 · 읽을 수 없으면 null(0 으로 바꾸지 않음)
   ---
-  duration_ms: 2.044909
+  duration_ms: 1.273294
   type: 'test'
   ...
 # Subtest: 실제 응답 해석: 코스피 9/29 종가 6,870.81(−0.27%) · 삼성전자 9/29 외국인 −2,508,369 · 기관 +53,759 · 개인 +422,277 · 코드 어긋나면 거부
-ok 19 - 실제 응답 해석: 코스피 9/29 종가 6,870.81(−0.27%) · 삼성전자 9/29 외국인 −2,508,369 · 기관 +53,759 · 개인 +422,277 · 코드 어긋나면 거부
+ok 23 - 실제 응답 해석: 코스피 9/29 종가 6,870.81(−0.27%) · 삼성전자 9/29 외국인 −2,508,369 · 기관 +53,759 · 개인 +422,277 · 코드 어긋나면 거부
   ---
-  duration_ms: 15.522855
+  duration_ms: 15.129663
   type: 'test'
   ...
 # Subtest: 뉴스: 같은 기사·재게시(제목 같음) 가림 · 가장 이른 것이 대표 · 한국시간 표기 · 본문은 담지 않음
-ok 20 - 뉴스: 같은 기사·재게시(제목 같음) 가림 · 가장 이른 것이 대표 · 한국시간 표기 · 본문은 담지 않음
+ok 24 - 뉴스: 같은 기사·재게시(제목 같음) 가림 · 가장 이른 것이 대표 · 한국시간 표기 · 본문은 담지 않음
   ---
-  duration_ms: 3.239783
+  duration_ms: 6.078645
   type: 'test'
   ...
 # Subtest: 공시: 기업행위 낱말(배당락 등) 표시 · 시간대 없는 원문은 한국시간으로 해석했다고 남김
-ok 21 - 공시: 기업행위 낱말(배당락 등) 표시 · 시간대 없는 원문은 한국시간으로 해석했다고 남김
+ok 25 - 공시: 기업행위 낱말(배당락 등) 표시 · 시간대 없는 원문은 한국시간으로 해석했다고 남김
   ---
-  duration_ms: 2.565327
+  duration_ms: 1.837277
   type: 'test'
   ...
 # Subtest: 거시: FRED CSV 머리줄 검사 · 빈 값(.)은 행을 만들지 않음 · 네이버 {result}/배열 두 모양 · 날짜는 그 시장 현지 거래일
-ok 22 - 거시: FRED CSV 머리줄 검사 · 빈 값(.)은 행을 만들지 않음 · 네이버 {result}/배열 두 모양 · 날짜는 그 시장 현지 거래일
+ok 26 - 거시: FRED CSV 머리줄 검사 · 빈 값(.)은 행을 만들지 않음 · 네이버 {result}/배열 두 모양 · 날짜는 그 시장 현지 거래일
   ---
-  duration_ms: 3.00914
+  duration_ms: 2.805212
   type: 'test'
   ...
 # Subtest: 정정 추적: 같은 종목·날짜 값이 바뀌면 revisions · 당일 행은 잠정 표시
-ok 23 - 정정 추적: 같은 종목·날짜 값이 바뀌면 revisions · 당일 행은 잠정 표시
+ok 27 - 정정 추적: 같은 종목·날짜 값이 바뀌면 revisions · 당일 행은 잠정 표시
   ---
-  duration_ms: 0.421435
+  duration_ms: 0.507917
   type: 'test'
   ...
 # Subtest: 수집기(실제 응답 재생 · 두 종목): 지수·수급·뉴스·공시·거시를 모으고, 없는 자료는 0 이 아니라 오류로 · FRED 실패 시 대체 출처로 전환 · 예측 미사용
-ok 24 - 수집기(실제 응답 재생 · 두 종목): 지수·수급·뉴스·공시·거시를 모으고, 없는 자료는 0 이 아니라 오류로 · FRED 실패 시 대체 출처로 전환 · 예측 미사용
+ok 28 - 수집기(실제 응답 재생 · 두 종목): 지수·수급·뉴스·공시·거시를 모으고, 없는 자료는 0 이 아니라 오류로 · FRED 실패 시 대체 출처로 전환 · 예측 미사용
   ---
-  duration_ms: 142.929067
+  duration_ms: 136.459575
   type: 'test'
   ...
 # Subtest: 수집기: 값이 바뀐 수급은 정정 기록(잠정→확정) · 휴장일은 아무것도 쓰지 않음 · 15:40 전이면 당일 행을 버림
-ok 25 - 수집기: 값이 바뀐 수급은 정정 기록(잠정→확정) · 휴장일은 아무것도 쓰지 않음 · 15:40 전이면 당일 행을 버림
+ok 29 - 수집기: 값이 바뀐 수급은 정정 기록(잠정→확정) · 휴장일은 아무것도 쓰지 않음 · 15:40 전이면 당일 행을 버림
   ---
-  duration_ms: 200.187908
+  duration_ms: 199.72853
   type: 'test'
   ...
 # Subtest: 가져오기: 제한된 재시도(1회) · 404 는 곧바로 포기 · 호스트 차단기
-ok 26 - 가져오기: 제한된 재시도(1회) · 404 는 곧바로 포기 · 호스트 차단기
+ok 30 - 가져오기: 제한된 재시도(1회) · 404 는 곧바로 포기 · 호스트 차단기
   ---
-  duration_ms: 1501.811633
+  duration_ms: 1503.327636
   type: 'test'
   ...
 # Subtest: 매일 실행기 8단계: 잠금 · 거래일 아님 · 마감 전 · 수집기 없음(부분) · 52 확정이면 발행(재사용) · 기록 8종 · 여섯 문장 · 같은 실행 두 번 = 기록 중복 0
-ok 27 - 매일 실행기 8단계: 잠금 · 거래일 아님 · 마감 전 · 수집기 없음(부분) · 52 확정이면 발행(재사용) · 기록 8종 · 여섯 문장 · 같은 실행 두 번 = 기록 중복 0
+ok 31 - 매일 실행기 8단계: 잠금 · 거래일 아님 · 마감 전 · 수집기 없음(부분) · 52 확정이면 발행(재사용) · 기록 8종 · 여섯 문장 · 같은 실행 두 번 = 기록 중복 0
   ---
-  duration_ms: 3503.00838
+  duration_ms: 3443.951616
   type: 'test'
   ...
 # Subtest: 중단 뒤 이어서 실행: 발행 단계에서 죽어도 다음 실행이 같은 결과로 마무리하고 기록은 두 번 쌓이지 않는다 · 예약 종료 뒤에는 발행 없이 채점만
-ok 28 - 중단 뒤 이어서 실행: 발행 단계에서 죽어도 다음 실행이 같은 결과로 마무리하고 기록은 두 번 쌓이지 않는다 · 예약 종료 뒤에는 발행 없이 채점만
+ok 32 - 중단 뒤 이어서 실행: 발행 단계에서 죽어도 다음 실행이 같은 결과로 마무리하고 기록은 두 번 쌓이지 않는다 · 예약 종료 뒤에는 발행 없이 채점만
   ---
-  duration_ms: 2685.144372
+  duration_ms: 2685.812297
   type: 'test'
   ...
 # Subtest: 수집 관측값 검증: 출처·해시·시각이 없는 관측은 거부되고 실패로 기록된다
-ok 29 - 수집 관측값 검증: 출처·해시·시각이 없는 관측은 거부되고 실패로 기록된다
+ok 33 - 수집 관측값 검증: 출처·해시·시각이 없는 관측은 거부되고 실패로 기록된다
   ---
-  duration_ms: 191.205003
+  duration_ms: 201.132811
   type: 'test'
   ...
 # Subtest: 진화 단계: 캐시된 후보 검증 11개를 평가해 사건 장부·실험 기록을 남기고, 어느 것도 관문을 다 넘지 못해 운영 A 유지 · 두 번 실행해도 사건 중복 없음
-ok 30 - 진화 단계: 캐시된 후보 검증 11개를 평가해 사건 장부·실험 기록을 남기고, 어느 것도 관문을 다 넘지 못해 운영 A 유지 · 두 번 실행해도 사건 중복 없음
+ok 34 - 진화 단계: 캐시된 후보 검증 11개를 평가해 사건 장부·실험 기록을 남기고, 어느 것도 관문을 다 넘지 못해 운영 A 유지 · 두 번 실행해도 사건 중복 없음
   ---
-  duration_ms: 1914.033553
+  duration_ms: 2013.925765
   type: 'test'
   ...
 # Subtest: 배포 묶음: index.html 최상위 · 화면 자료·CSV 포함 · 비밀키 없음 · 원본 대용량 제외
-ok 31 - 배포 묶음: index.html 최상위 · 화면 자료·CSV 포함 · 비밀키 없음 · 원본 대용량 제외
+ok 35 - 배포 묶음: index.html 최상위 · 화면 자료·CSV 포함 · 비밀키 없음 · 원본 대용량 제외
   ---
-  duration_ms: 2.169084
+  duration_ms: 2.176725
   type: 'test'
   ...
 # Subtest: 채점 정책: 결과 보기 전에 고정(첫 채점 전 시각) · 기간별 허용 오차와 보간 · 다섯 분류
-ok 32 - 채점 정책: 결과 보기 전에 고정(첫 채점 전 시각) · 기간별 허용 오차와 보간 · 다섯 분류
+ok 36 - 채점 정책: 결과 보기 전에 고정(첫 채점 전 시각) · 기간별 허용 오차와 보간 · 다섯 분류
   ---
-  duration_ms: 1.914037
+  duration_ms: 2.822956
   type: 'test'
   ...
 # Subtest: 채점 셀: 발행 뒤 확정된 목표일만 · 오늘 종가는 확정 증거 있어야 · 정답/오답 양쪽 기록 · 미래 정보 차단
-ok 33 - 채점 셀: 발행 뒤 확정된 목표일만 · 오늘 종가는 확정 증거 있어야 · 정답/오답 양쪽 기록 · 미래 정보 차단
+ok 37 - 채점 셀: 발행 뒤 확정된 목표일만 · 오늘 종가는 확정 증거 있어야 · 정답/오답 양쪽 기록 · 미래 정보 차단
   ---
-  duration_ms: 257.997602
+  duration_ms: 258.543817
   type: 'test'
   ...
 # Subtest: 기록 장부: 덧붙이기만 · 같은 내용은 한 번 · 정정은 이전 ID 에 연결 · 색인·CSV
-ok 34 - 기록 장부: 덧붙이기만 · 같은 내용은 한 번 · 정정은 이전 ID 에 연결 · 색인·CSV
+ok 38 - 기록 장부: 덧붙이기만 · 같은 내용은 한 번 · 정정은 이전 ID 에 연결 · 색인·CSV
   ---
-  duration_ms: 9.743497
+  duration_ms: 13.03813
   type: 'test'
   ...
 # Subtest: 후보 명세: 설정에서 한 변수만 바꾼 11개 · 결정적 ID · 운영 A 는 fitFactorModel 과 숫자가 같다 · 후보는 다르다
-ok 35 - 후보 명세: 설정에서 한 변수만 바꾼 11개 · 결정적 ID · 운영 A 는 fitFactorModel 과 숫자가 같다 · 후보는 다르다
+ok 39 - 후보 명세: 설정에서 한 변수만 바꾼 11개 · 결정적 ID · 운영 A 는 fitFactorModel 과 숫자가 같다 · 후보는 다르다
   ---
-  duration_ms: 335.767537
+  duration_ms: 355.726341
   type: 'test'
   ...
 # Subtest: 채택 판정: 실제 검증 결과(운영 A vs 11 후보) — 네 숫자·관문·블록 불확실성 · 벌점[3,30]은 네 숫자 통과 뒤 방향 관문에서 기각 · 실전 관찰·복귀 규칙
-ok 36 - 채택 판정: 실제 검증 결과(운영 A vs 11 후보) — 네 숫자·관문·블록 불확실성 · 벌점[3,30]은 네 숫자 통과 뒤 방향 관문에서 기각 · 실전 관찰·복귀 규칙
+ok 40 - 채택 판정: 실제 검증 결과(운영 A vs 11 후보) — 네 숫자·관문·블록 불확실성 · 벌점[3,30]은 네 숫자 통과 뒤 방향 관문에서 기각 · 실전 관찰·복귀 규칙
   ---
-  duration_ms: 27.048677
+  duration_ms: 24.527973
   type: 'test'
   ...
 # Subtest: 등록부: 사건 장부 재생으로 상태 · 채택은 operating 을 바꾸고 이전 버전을 남긴다 · 복귀는 직전 검증 버전으로 · 사건 중복 없음
-ok 37 - 등록부: 사건 장부 재생으로 상태 · 채택은 operating 을 바꾸고 이전 버전을 남긴다 · 복귀는 직전 검증 버전으로 · 사건 중복 없음
+ok 41 - 등록부: 사건 장부 재생으로 상태 · 채택은 operating 을 바꾸고 이전 버전을 남긴다 · 복귀는 직전 검증 버전으로 · 사건 중복 없음
   ---
-  duration_ms: 8.291033
+  duration_ms: 6.008381
   type: 'test'
   ...
 # Subtest: 발행본과 모델 명세: 운영 A 명세는 forecastId 를 바꾸지 않는다 · 후보 명세는 다른 ID·모델 버전 · 그림자 발행은 공개 상태가 아니다
-ok 38 - 발행본과 모델 명세: 운영 A 명세는 forecastId 를 바꾸지 않는다 · 후보 명세는 다른 ID·모델 버전 · 그림자 발행은 공개 상태가 아니다
+ok 42 - 발행본과 모델 명세: 운영 A 명세는 forecastId 를 바꾸지 않는다 · 후보 명세는 다른 ID·모델 버전 · 그림자 발행은 공개 상태가 아니다
   ---
-  duration_ms: 20730.526257
+  duration_ms: 21219.673495
   type: 'test'
   ...
 # Subtest: 발행본: 52 고유코드 · 자기 실제 종가 출발(첫점 차이 0 = 52/52) · 20 실제 거래일 · 스키마
-ok 39 - 발행본: 52 고유코드 · 자기 실제 종가 출발(첫점 차이 0 = 52/52) · 20 실제 거래일 · 스키마
+ok 43 - 발행본: 52 고유코드 · 자기 실제 종가 출발(첫점 차이 0 = 52/52) · 20 실제 거래일 · 스키마
   ---
-  duration_ms: 5871.558315
+  duration_ms: 5764.710951
   type: 'test'
   ...
 # Subtest: 검사기: 변조된 발행본을 거부한다 (출발점·분위수 순서·확률 합·중복 코드·미래 날짜·이전 발행 순서)
-ok 40 - 검사기: 변조된 발행본을 거부한다 (출발점·분위수 순서·확률 합·중복 코드·미래 날짜·이전 발행 순서)
+ok 44 - 검사기: 변조된 발행본을 거부한다 (출발점·분위수 순서·확률 합·중복 코드·미래 날짜·이전 발행 순서)
   ---
-  duration_ms: 149.234411
+  duration_ms: 174.908709
   type: 'test'
   ...
 # Subtest: 미래 누수 차단: 발행 시각 뒤에 관측된 가격이나 기준일 뒤 가격은 입력이 되지 않는다
-ok 41 - 미래 누수 차단: 발행 시각 뒤에 관측된 가격이나 기준일 뒤 가격은 입력이 되지 않는다
+ok 45 - 미래 누수 차단: 발행 시각 뒤에 관측된 가격이나 기준일 뒤 가격은 입력이 되지 않는다
   ---
-  duration_ms: 5514.113781
+  duration_ms: 5588.379303
   type: 'test'
   ...
 # Subtest: 어제 전망 연결: 직전 거래일 발행본만 previous 가 된다 · 같은 날 앞선 발행은 earlierToday
-ok 42 - 어제 전망 연결: 직전 거래일 발행본만 previous 가 된다 · 같은 날 앞선 발행은 earlierToday
+ok 46 - 어제 전망 연결: 직전 거래일 발행본만 previous 가 된다 · 같은 날 앞선 발행은 earlierToday
   ---
-  duration_ms: 5438.810549
+  duration_ms: 5543.449395
   type: 'test'
   ...
 # Subtest: 불변 저장: 같은 발행본은 재사용, 다른 내용의 같은 ID 는 거부, latest 포인터는 비교-교환, CSV 21행
-ok 43 - 불변 저장: 같은 발행본은 재사용, 다른 내용의 같은 ID 는 거부, latest 포인터는 비교-교환, CSV 21행
+ok 47 - 불변 저장: 같은 발행본은 재사용, 다른 내용의 같은 ID 는 거부, latest 포인터는 비교-교환, CSV 21행
   ---
-  duration_ms: 385.037035
+  duration_ms: 367.876693
   type: 'test'
   ...
 # Subtest: 연쇄 지도: 52노드 · 묶음 합 52 · 종목당 이웃 ≤5 · 값 전부 유한 · 시장 통로+직접 통로 = 전체 베타×Δ (항등식)
-ok 44 - 연쇄 지도: 52노드 · 묶음 합 52 · 종목당 이웃 ≤5 · 값 전부 유한 · 시장 통로+직접 통로 = 전체 베타×Δ (항등식)
+ok 48 - 연쇄 지도: 52노드 · 묶음 합 52 · 종목당 이웃 ≤5 · 값 전부 유한 · 시장 통로+직접 통로 = 전체 베타×Δ (항등식)
   ---
-  duration_ms: 76.079552
+  duration_ms: 72.053431
   type: 'test'
   ...
 # Subtest: 종목 정보: 1년 최고·최저 사이의 위치 · 수익률 · 이동평균 · 낙폭이 실제 가격에서 계산됨
-ok 45 - 종목 정보: 1년 최고·최저 사이의 위치 · 수익률 · 이동평균 · 낙폭이 실제 가격에서 계산됨
+ok 49 - 종목 정보: 1년 최고·최저 사이의 위치 · 수익률 · 이동평균 · 낙폭이 실제 가격에서 계산됨
   ---
-  duration_ms: 13.955635
+  duration_ms: 11.768222
   type: 'test'
   ...
 # Subtest: 실행 환경 증거: GitHub 러너 변수 → 서버·실행 주소 · 예약 실행은 schedule 이벤트일 때만 · 로컬은 수동
-ok 46 - 실행 환경 증거: GitHub 러너 변수 → 서버·실행 주소 · 예약 실행은 schedule 이벤트일 때만 · 로컬은 수동
+ok 50 - 실행 환경 증거: GitHub 러너 변수 → 서버·실행 주소 · 예약 실행은 schedule 이벤트일 때만 · 로컬은 수동
   ---
-  duration_ms: 0.899182
+  duration_ms: 0.824499
   type: 'test'
   ...
 # Subtest: 매일 실행 + 관측 기록: 요인 기록이 「관측 기록 · 예측 미사용」과 「수치 입력」「미확보」를 가르고 · 운영 기록에 예약 실행 증거가 남는다
-ok 47 - 매일 실행 + 관측 기록: 요인 기록이 「관측 기록 · 예측 미사용」과 「수치 입력」「미확보」를 가르고 · 운영 기록에 예약 실행 증거가 남는다
+ok 51 - 매일 실행 + 관측 기록: 요인 기록이 「관측 기록 · 예측 미사용」과 「수치 입력」「미확보」를 가르고 · 운영 기록에 예약 실행 증거가 남는다
   ---
-  duration_ms: 2852.749317
+  duration_ms: 2985.072142
   type: 'test'
   ...
 # Subtest: 넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새로 만들기(파일에 적음) · 올릴 폴더는 저장소 밖 사본 · 새 사이트는 검색 제외
-ok 48 - 넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새로 만들기(파일에 적음) · 올릴 폴더는 저장소 밖 사본 · 새 사이트는 검색 제외
+ok 52 - 넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새로 만들기(파일에 적음) · 올릴 폴더는 저장소 밖 사본 · 새 사이트는 검색 제외
   ---
-  duration_ms: 9.89244
+  duration_ms: 7.900919
   type: 'test'
   ...
 # Subtest: 색 토큰 대비: 글자 색은 AA(4.5:1) 이상, 본문은 AAA(7:1), 선·표시색은 3:1 이상 — 밝은 모드·다크 모드 모두
-ok 49 - 색 토큰 대비: 글자 색은 AA(4.5:1) 이상, 본문은 AAA(7:1), 선·표시색은 3:1 이상 — 밝은 모드·다크 모드 모두
+ok 53 - 색 토큰 대비: 글자 색은 AA(4.5:1) 이상, 본문은 AAA(7:1), 선·표시색은 3:1 이상 — 밝은 모드·다크 모드 모두
   ---
-  duration_ms: 6.664156
+  duration_ms: 6.893774
   type: 'test'
   ...
 # Subtest: nextRunAt: 16:00 전 거래일=오늘 · 정각/이후=다음 거래일 · 주말 · 개천절 대체휴일(10/5) · 한글날(10/9) · 추석(9/24·25) · 시각 옵션 · 달력 끝
-ok 50 - nextRunAt: 16:00 전 거래일=오늘 · 정각/이후=다음 거래일 · 주말 · 개천절 대체휴일(10/5) · 한글날(10/9) · 추석(9/24·25) · 시각 옵션 · 달력 끝
+ok 54 - nextRunAt: 16:00 전 거래일=오늘 · 정각/이후=다음 거래일 · 주말 · 개천절 대체휴일(10/5) · 한글날(10/9) · 추석(9/24·25) · 시각 옵션 · 달력 끝
   ---
-  duration_ms: 75.324832
+  duration_ms: 84.314358
   type: 'test'
   ...
 # Subtest: classifyRun: exit 0=complete · partial/52 미만=retry · 잠금 충돌·JSON 없음=재시도 대상 · failed_validation/failed=멈춤
-ok 51 - classifyRun: exit 0=complete · partial/52 미만=retry · 잠금 충돌·JSON 없음=재시도 대상 · failed_validation/failed=멈춤
+ok 55 - classifyRun: exit 0=complete · partial/52 미만=retry · 잠금 충돌·JSON 없음=재시도 대상 · failed_validation/failed=멈춤
   ---
-  duration_ms: 0.428255
+  duration_ms: 0.577842
   type: 'test'
   ...
 # Subtest: runCommand: 마지막 JSON 줄을 읽고 --now 를 붙인다 · 죽으면 json=null · 없는 실행 파일
-ok 52 - runCommand: 마지막 JSON 줄을 읽고 --now 를 붙인다 · 죽으면 json=null · 없는 실행 파일
+ok 56 - runCommand: 마지막 JSON 줄을 읽고 --now 를 붙인다 · 죽으면 json=null · 없는 실행 파일
   ---
-  duration_ms: 135.569384
+  duration_ms: 148.118908
   type: 'test'
   ...
 # Subtest: 재시도 상태기계: partial(40/52) → 10분 뒤 재시도 → complete · 로그 두 줄 · 두 번째 --now 는 +10분
-ok 53 - 재시도 상태기계: partial(40/52) → 10분 뒤 재시도 → complete · 로그 두 줄 · 두 번째 --now 는 +10분
+ok 57 - 재시도 상태기계: partial(40/52) → 10분 뒤 재시도 → complete · 로그 두 줄 · 두 번째 --now 는 +10분
   ---
-  duration_ms: 84.127195
+  duration_ms: 92.240168
   type: 'test'
   ...
 # Subtest: 재시도 상태기계: 18:00 KST 까지만 — 17:45 시작 · 17:55 재시도 · 다음(18:05)은 넘기므로 given_up_for_day · 검증 실패는 즉시 멈춤 · 죽음도 재시도 대상 · 재시도 간격 설정
-ok 54 - 재시도 상태기계: 18:00 KST 까지만 — 17:45 시작 · 17:55 재시도 · 다음(18:05)은 넘기므로 given_up_for_day · 검증 실패는 즉시 멈춤 · 죽음도 재시도 대상 · 재시도 간격 설정
+ok 58 - 재시도 상태기계: 18:00 KST 까지만 — 17:45 시작 · 17:55 재시도 · 다음(18:05)은 넘기므로 given_up_for_day · 검증 실패는 즉시 멈춤 · 죽음도 재시도 대상 · 재시도 간격 설정
   ---
-  duration_ms: 244.347158
+  duration_ms: 265.565074
   type: 'test'
   ...
 # Subtest: 시계·잠: --fast 는 실제로 자지 않고 시각만 건너뜀 · sleepUntil 은 ≤60초 조각으로 tick 을 부른다 · 흉내 시계는 실제 경과를 더한다 · wakeUp
-ok 55 - 시계·잠: --fast 는 실제로 자지 않고 시각만 건너뜀 · sleepUntil 은 ≤60초 조각으로 tick 을 부른다 · 흉내 시계는 실제 경과를 더한다 · wakeUp
+ok 59 - 시계·잠: --fast 는 실제로 자지 않고 시각만 건너뜀 · sleepUntil 은 ≤60초 조각으로 tick 을 부른다 · 흉내 시계는 실제 경과를 더한다 · wakeUp
   ---
-  duration_ms: 51.324046
+  duration_ms: 51.38996
   type: 'test'
   ...
 # Subtest: 잠금: 살아 있는 pid 는 LOCK_HELD · 죽은 pid 는 교체(holder_not_running) · 24시간 지난 잠금은 교체(stale_24h · 메모 남김) · 남의 잠금은 풀지 않음
-ok 56 - 잠금: 살아 있는 pid 는 LOCK_HELD · 죽은 pid 는 교체(holder_not_running) · 24시간 지난 잠금은 교체(stale_24h · 메모 남김) · 남의 잠금은 풀지 않음
+ok 60 - 잠금: 살아 있는 pid 는 LOCK_HELD · 죽은 pid 는 교체(holder_not_running) · 24시간 지난 잠금은 교체(stale_24h · 메모 남김) · 남의 잠금은 풀지 않음
   ---
-  duration_ms: 7.999065
+  duration_ms: 9.480844
   type: 'test'
   ...
 # Subtest: CLI --dry-run: 다음 실행 다섯 개 출력(마지막 줄 JSON) · 아무것도 실행하지 않음
-ok 57 - CLI --dry-run: 다음 실행 다섯 개 출력(마지막 줄 JSON) · 아무것도 실행하지 않음
+ok 61 - CLI --dry-run: 다음 실행 다섯 개 출력(마지막 줄 JSON) · 아무것도 실행하지 않음
   ---
-  duration_ms: 55.931188
+  duration_ms: 68.840089
   type: 'test'
   ...
 # Subtest: CLI --once: 하루치 명령을 바로 한 번(재시도 없음) · 그 exit code 로 끝 · 로그 한 줄 · 명령은 ATLAS_DAILY_CMD
-ok 58 - CLI --once: 하루치 명령을 바로 한 번(재시도 없음) · 그 exit code 로 끝 · 로그 한 줄 · 명령은 ATLAS_DAILY_CMD
+ok 62 - CLI --once: 하루치 명령을 바로 한 번(재시도 없음) · 그 exit code 로 끝 · 로그 한 줄 · 명령은 ATLAS_DAILY_CMD
   ---
-  duration_ms: 178.858845
+  duration_ms: 198.845415
   type: 'test'
   ...
 # Subtest: 데몬(--fast · --max-runs 1): 15:59:30 에 켜져 16:00 실행 → 로그·heartbeat(stoppedAt)·잠금 해제 · 이미 돌고 있으면 exit 3 · 16:00 뒤에 켜지면 따라잡기
-ok 59 - 데몬(--fast · --max-runs 1): 15:59:30 에 켜져 16:00 실행 → 로그·heartbeat(stoppedAt)·잠금 해제 · 이미 돌고 있으면 exit 3 · 16:00 뒤에 켜지면 따라잡기
+ok 63 - 데몬(--fast · --max-runs 1): 15:59:30 에 켜져 16:00 실행 → 로그·heartbeat(stoppedAt)·잠금 해제 · 이미 돌고 있으면 exit 3 · 16:00 뒤에 켜지면 따라잡기
   ---
-  duration_ms: 798.857125
+  duration_ms: 872.917443
   type: 'test'
   ...
 # Subtest: 데몬 SIGTERM: 실제로 자는 중에 신호를 받으면 곧 멈추고 heartbeat 에 stoppedAt · 잠금 해제 · exit 0
-ok 60 - 데몬 SIGTERM: 실제로 자는 중에 신호를 받으면 곧 멈추고 heartbeat 에 stoppedAt · 잠금 해제 · exit 0
+ok 64 - 데몬 SIGTERM: 실제로 자는 중에 신호를 받으면 곧 멈추고 heartbeat 에 stoppedAt · 잠금 해제 · exit 0
   ---
-  duration_ms: 85.53384
+  duration_ms: 87.049434
   type: 'test'
   ...
 # Subtest: CLI --today: 거래일이면 16:00 계획분을 재시도 규칙대로(partial→complete · exit 0) · 휴일(한글날)이면 실행 없이 exit 0 · 전부 partial 이면 given_up_for_day · exit 2
-ok 61 - CLI --today: 거래일이면 16:00 계획분을 재시도 규칙대로(partial→complete · exit 0) · 휴일(한글날)이면 실행 없이 exit 0 · 전부 partial 이면 given_up_for_day · exit 2
+ok 65 - CLI --today: 거래일이면 16:00 계획분을 재시도 규칙대로(partial→complete · exit 0) · 휴일(한글날)이면 실행 없이 exit 0 · 전부 partial 이면 given_up_for_day · exit 2
   ---
-  duration_ms: 304.416414
+  duration_ms: 330.77609
   type: 'test'
   ...
 # Subtest: 채점: 발행 뒤 실제값만 · 실현값 없는 목표일은 채점하지 않음 · 보관 참조본 제외 · Brier
-ok 62 - 채점: 발행 뒤 실제값만 · 실현값 없는 목표일은 채점하지 않음 · 보관 참조본 제외 · Brier
+ok 66 - 채점: 발행 뒤 실제값만 · 실현값 없는 목표일은 채점하지 않음 · 보관 참조본 제외 · Brier
   ---
-  duration_ms: 443.969721
+  duration_ms: 464.554615
   type: 'test'
   ...
 # Subtest: 1만원 비교: 52선 · 같은 시작일 1만원 · 순위 동률 규칙 · 두 순위 이름 분리
-ok 63 - 1만원 비교: 52선 · 같은 시작일 1만원 · 순위 동률 규칙 · 두 순위 이름 분리
+ok 67 - 1만원 비교: 52선 · 같은 시작일 1만원 · 순위 동률 규칙 · 두 순위 이름 분리
   ---
-  duration_ms: 30.745128
+  duration_ms: 36.833112
   type: 'test'
   ...
 # Subtest: 화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫자 일치 · 종목별 설명이 서로 다름 · 변조 시 실패
-ok 64 - 화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫자 일치 · 종목별 설명이 서로 다름 · 변조 시 실패
+ok 68 - 화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫자 일치 · 종목별 설명이 서로 다름 · 변조 시 실패
   ---
-  duration_ms: 735.783152
+  duration_ms: 775.474456
   type: 'test'
   ...
 # Subtest: 날짜별 설명: 그 종목 숫자로 만든 문장 · 실제/출발/전망 구분 · 일정 사용 여부 명시
-ok 65 - 날짜별 설명: 그 종목 숫자로 만든 문장 · 실제/출발/전망 구분 · 일정 사용 여부 명시
+ok 69 - 날짜별 설명: 그 종목 숫자로 만든 문장 · 실제/출발/전망 구분 · 일정 사용 여부 명시
   ---
-  duration_ms: 26.188085
+  duration_ms: 25.344317
   type: 'test'
   ...
 # Subtest: 새 모의 계산은 운영 엔진 A와 수치가 같다 (같은 시드 · 52종목 · 20거래일 · p10/p50/p90/mean/방향확률)
-ok 66 - 새 모의 계산은 운영 엔진 A와 수치가 같다 (같은 시드 · 52종목 · 20거래일 · p10/p50/p90/mean/방향확률)
+ok 70 - 새 모의 계산은 운영 엔진 A와 수치가 같다 (같은 시드 · 52종목 · 20거래일 · p10/p50/p90/mean/방향확률)
   ---
-  duration_ms: 6332.406162
+  duration_ms: 6652.551176
   type: 'test'
   ...
 # Subtest: 분위수 순서 · 확률 합 1 · 최댓값 선택 · 손실 경로 보존 · 시나리오 21점
-ok 67 - 분위수 순서 · 확률 합 1 · 최댓값 선택 · 손실 경로 보존 · 시나리오 21점
+ok 71 - 분위수 순서 · 확률 합 1 · 최댓값 선택 · 손실 경로 보존 · 시나리오 21점
   ---
-  duration_ms: 5489.634136
+  duration_ms: 5237.18017
   type: 'test'
   ...
 # Subtest: 재현성: 같은 시드는 같은 결과, 다른 시드는 다른 결과
-ok 68 - 재현성: 같은 시드는 같은 결과, 다른 시드는 다른 결과
+ok 72 - 재현성: 같은 시드는 같은 결과, 다른 시드는 다른 결과
   ---
-  duration_ms: 6081.903539
+  duration_ms: 5807.027879
   type: 'test'
   ...
 # Subtest: 방향 선택 규칙: 동률은 flat→up→down 순, 근소 차이 표시, 표준오차
-ok 69 - 방향 선택 규칙: 동률은 flat→up→down 순, 근소 차이 표시, 표준오차
+ok 73 - 방향 선택 규칙: 동률은 flat→up→down 순, 근소 차이 표시, 표준오차
   ---
-  duration_ms: 0.541602
+  duration_ms: 0.595992
   type: 'test'
   ...
-1..69
-# tests 69
+1..73
+# tests 73
 # suites 0
-# pass 69
+# pass 73
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 77459.427953
+# duration_ms 78868.228373

@@ -207,7 +207,9 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const sixCount = await page.locator('.sentences li').count(), typeBtns = await page.locator('.filters.types .filter').count();
   await page.locator('.filters.types .filter[data-type="experiment"]').click(); await page.waitForTimeout(500);
   const expRows = await page.locator('.records-result tbody tr').count(), dl = await page.locator('.btn-download').count(), recText = await page.locator('#main').innerText();
-  check(`${label} 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음`, sixCount === 6 && typeBtns === 8 && expRows === 11 && dl >= 2 && !/\bnull\b/.test(recText), {sixCount, typeBtns, expRows, dl});
+  // 기록 화면은 가장 최근 날짜를 먼저 보인다 — 그날 실험 기록 수(색인)와 표의 행 수가 같아야 하고, 누적 실험 기록은 후보 11개 이상
+  const ledgerIdx = await page.evaluate(async () => (await fetch('data/atlas11/ledger/index.json')).json()), shownDate = ledgerIdx.dates.at(-1), expExpected = ledgerIdx.byDate[shownDate]?.experiment ?? 0;
+  check(`${label} 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음`, sixCount === 6 && typeBtns === 8 && expRows === expExpected && ledgerIdx.totals.experiment >= 11 && dl >= 2 && !/\bnull\b/.test(recText), {sixCount, typeBtns, expRows, expExpected, shownDate, totalExperiments: ledgerIdx.totals.experiment, dl});
   await page.locator('.filters.types .filter[data-type="factor"]').click(); await page.waitForTimeout(400);
   const factorRecordRows = await page.locator('.records-result tbody tr').count();
   check(`${label} 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작`, factorRecordRows >= 36 && factorRecordRows % 36 === 0 && await page.locator('.btn-download').count() >= 2, {factorRecordRows});
