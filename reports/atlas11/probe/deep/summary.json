@@ -1,0 +1,65 @@
+[
+ {
+  "name": "mk-home-005930.html",
+  "url": "https://stock.mk.co.kr/price/home/KR7005930003",
+  "status": 200,
+  "bytes": 150648,
+  "err": null
+ },
+ {
+  "name": "mk-foreigner-005930.html",
+  "url": "https://stock.mk.co.kr/price/foreigner/KR7005930003",
+  "status": 200,
+  "bytes": 231635,
+  "err": null
+ },
+ {
+  "name": "mk-daily-005930.html",
+  "url": "https://stock.mk.co.kr/price/daily/KR7005930003",
+  "status": 404,
+  "bytes": 0,
+  "err": null
+ },
+ {
+  "name": "naver-integration-005930.json",
+  "url": "https://m.stock.naver.com/api/stock/005930/integration",
+  "status": 200,
+  "bytes": 8743,
+  "err": null
+ },
+ {
+  "name": "naver-polling-005930.json",
+  "url": "https://polling.finance.naver.com/api/realtime/domestic/stock/005930",
+  "status": 200,
+  "bytes": 2415,
+  "err": null
+ },
+ {
+  "name": "naver-minute-005930.json",
+  "url": "https://api.stock.naver.com/chart/domestic/item/005930/minute?startDateTime=202609291515&endDateTime=202609291545",
+  "status": 200,
+  "bytes": 1832,
+  "err": null
+ },
+ {
+  "name": "naver-m-price-krx-005930.json",
+  "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=3&page=1&marketType=KRX",
+  "status": 200,
+  "bytes": 864,
+  "err": null
+ },
+ {
+  "name": "naver-fchart-krx-005930.xml",
+  "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005930&timeframe=day&count=3&requestType=0&market=KRX",
+  "status": 200,
+  "bytes": 409,
+  "err": null
+ },
+ {
+  "name": "naver-siseJson-krx-005930.txt",
+  "url": "https://api.finance.naver.com/siseJson.naver?symbol=005930&requestType=1&startTime=20260925&endTime=20260929&timeframe=day",
+  "status": 200,
+  "bytes": 196,
+  "err": null
+ }
+]
