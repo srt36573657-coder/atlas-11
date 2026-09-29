@@ -1,13 +1,13 @@
 {
   "schema": "atlas11-browser-check-1",
-  "at": "2026-09-29T06:46:05.995Z",
-  "base": "http://localhost:8811",
+  "at": "2026-09-29T22:33:09.860Z",
+  "base": "http://127.0.0.1:8811",
   "chromium": "playwright bundled chromium (headless)",
   "viewports": {
     "pc": "1280x800",
     "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)"
   },
-  "passed": 108,
+  "passed": 112,
   "failed": 0,
   "checks": [
     {
@@ -29,7 +29,7 @@
       "name": "pc 자료 기준일 표시",
       "ok": true,
       "detail": {
-        "chip": "확정 종가 9월 28일"
+        "chip": "확정 종가 9월 29일"
       }
     },
     {
@@ -52,14 +52,14 @@
       "name": "pc 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 44
+        "filtered": 42
       }
     },
     {
       "name": "pc 발행본 정보 팝오버·무결성 검사",
       "ok": true,
       "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-28-atlas11-27e1f65cfc167be9\n기준일\n9월 28일 확정 종가\n발행 시각\n9. 28. 22:29 (한국)\n미래\n20거래일 · 09/29~10/28\n경로\n52종"
+        "popText": "이 화면의 발행본\n발행본\n2026-09-29-atlas11-128de9174cfdfa1f\n기준일\n9월 29일 확정 종가\n발행 시각\n9. 29. 20:35 (한국)\n미래\n20거래일 · 09/30~10/29\n경로\n52종"
       }
     },
     {
@@ -123,8 +123,8 @@
       "name": "pc 미래 날짜 눌러 이유 열림(D+3)",
       "ok": true,
       "detail": {
-        "cursor": "10월 1일(목) D+3",
-        "explainHead": "10월 1일(목) · D+3 전망"
+        "cursor": "10월 2일(금) D+3",
+        "explainHead": "10월 2일(금) · D+3 전망"
       }
     },
     {
@@ -137,14 +137,14 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 1일 중앙 전망 447,742원 · 출발가 대비 +1.30% · 이 날 상승 55% · 80% 범위 "
+        "oneline": "10월 2일 중앙 전망 435,969원 · 출발가 대비 +1.62% · 이 날 상승 56% · 80% 범위 "
       }
     },
     {
       "name": "pc 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "9월 29일(화) D+1",
+        "after": "9월 30일(수) D+1",
         "sameSvg": true
       }
     },
@@ -159,7 +159,7 @@
       "name": "pc 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 1일(목) D+3"
+        "resumed": "10월 1일(목) D+2"
       }
     },
     {
@@ -171,7 +171,7 @@
       "name": "pc CSV 다운로드 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260928.csv",
+        "name": "ATLAS_329180_20260929.csv",
         "rows": 22
       }
     },
@@ -179,7 +179,7 @@
       "name": "pc 상세 JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260928_detail.json"
+        "name": "ATLAS_329180_20260929_detail.json"
       }
     },
     {
@@ -196,7 +196,7 @@
         "nodes": 52,
         "arcs": 9,
         "orders": 5,
-        "links": 32
+        "links": 31
       }
     },
     {
@@ -204,7 +204,7 @@
       "ok": true,
       "detail": {
         "shockBefore": "−2.65%",
-        "shockAfter": "+5.30%"
+        "shockAfter": "+5.29%"
       }
     },
     {
@@ -240,6 +240,14 @@
       "name": "pc 이동한 종목에서도 연쇄 지도 다시 그림",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "pc 상세: 수급·뉴스·공시 칸(기록 · 예측 미사용) · 외국인·기관·개인 표 · 기사 목록(제목만)",
+      "ok": true,
+      "detail": {
+        "ctxRows": 5,
+        "ctxNews": 6
+      }
     },
     {
       "name": "pc 글씨 200% 에서도 가로 넘침 없음",
@@ -306,9 +314,17 @@
       }
     },
     {
-      "name": "pc 자료 상태: 예약기 설치 안 됨을 숨기지 않음",
+      "name": "pc 자료 상태: 예약 연결·예약 실행 확인·사이트 배포를 사실대로(연결 ≠ 실행 확인)",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "pc 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시",
+      "ok": true,
+      "detail": {
+        "observedTiles": 13,
+        "hasCtx": true
+      }
     },
     {
       "name": "pc 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
@@ -329,9 +345,11 @@
       }
     },
     {
-      "name": "pc 기록: 요인 기록 36행 · 걸러진 CSV 내려받기 동작",
+      "name": "pc 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
       "ok": true,
-      "detail": null
+      "detail": {
+        "factorRecordRows": 72
+      }
     },
     {
       "name": "pc 기록 CSV 내려받기 파일명",
@@ -349,7 +367,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cagsj6o-band-inner\")",
+        "bandFill": "url(\"#ciux9qt-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -395,7 +413,7 @@
       "name": "mobile 자료 기준일 표시",
       "ok": true,
       "detail": {
-        "chip": "09/28 확정"
+        "chip": "09/29 확정"
       }
     },
     {
@@ -418,14 +436,14 @@
       "name": "mobile 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 44
+        "filtered": 42
       }
     },
     {
       "name": "mobile 발행본 정보 팝오버·무결성 검사",
       "ok": true,
       "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-28-atlas11-27e1f65cfc167be9\n기준일\n9월 28일 확정 종가\n발행 시각\n9. 28. 22:29 (한국)\n미래\n20거래일 · 09/29~10/28\n경로\n52종"
+        "popText": "이 화면의 발행본\n발행본\n2026-09-29-atlas11-128de9174cfdfa1f\n기준일\n9월 29일 확정 종가\n발행 시각\n9. 29. 20:35 (한국)\n미래\n20거래일 · 09/30~10/29\n경로\n52종"
       }
     },
     {
@@ -456,7 +474,7 @@
       "name": "mobile 그래프가 화면 안에 보임(스크롤 전)",
       "ok": true,
       "detail": {
-        "chartTop": 609
+        "chartTop": 639
       }
     },
     {
@@ -484,8 +502,8 @@
       "name": "mobile 미래 날짜 눌러 이유 열림(D+3)",
       "ok": true,
       "detail": {
-        "cursor": "10월 1일(목) D+3",
-        "explainHead": "10월 1일(목) · D+3 전망"
+        "cursor": "10월 2일(금) D+3",
+        "explainHead": "10월 2일(금) · D+3 전망"
       }
     },
     {
@@ -498,7 +516,7 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 1일 중앙 전망 447,742원 · 출발가 대비 +1.30% · 이 날 상승 55% · 80% 범위 "
+        "oneline": "10월 2일 중앙 전망 435,969원 · 출발가 대비 +1.62% · 이 날 상승 56% · 80% 범위 "
       }
     },
     {
@@ -515,7 +533,7 @@
       "name": "mobile 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "9월 29일(화) D+1",
+        "after": "9월 30일(수) D+1",
         "sameSvg": true
       }
     },
@@ -530,7 +548,7 @@
       "name": "mobile 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 1일(목) D+3"
+        "resumed": "10월 1일(목) D+2"
       }
     },
     {
@@ -542,7 +560,7 @@
       "name": "mobile CSV 다운로드 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260928.csv",
+        "name": "ATLAS_329180_20260929.csv",
         "rows": 22
       }
     },
@@ -550,7 +568,7 @@
       "name": "mobile 상세 JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260928_detail.json"
+        "name": "ATLAS_329180_20260929_detail.json"
       }
     },
     {
@@ -567,7 +585,7 @@
         "nodes": 52,
         "arcs": 9,
         "orders": 5,
-        "links": 32
+        "links": 31
       }
     },
     {
@@ -575,7 +593,7 @@
       "ok": true,
       "detail": {
         "shockBefore": "−2.65%",
-        "shockAfter": "+5.30%"
+        "shockAfter": "+5.29%"
       }
     },
     {
@@ -611,6 +629,14 @@
       "name": "mobile 이동한 종목에서도 연쇄 지도 다시 그림",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "mobile 상세: 수급·뉴스·공시 칸(기록 · 예측 미사용) · 외국인·기관·개인 표 · 기사 목록(제목만)",
+      "ok": true,
+      "detail": {
+        "ctxRows": 5,
+        "ctxNews": 6
+      }
     },
     {
       "name": "mobile 글씨 200% 에서도 가로 넘침 없음",
@@ -677,9 +703,17 @@
       }
     },
     {
-      "name": "mobile 자료 상태: 예약기 설치 안 됨을 숨기지 않음",
+      "name": "mobile 자료 상태: 예약 연결·예약 실행 확인·사이트 배포를 사실대로(연결 ≠ 실행 확인)",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "mobile 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시",
+      "ok": true,
+      "detail": {
+        "observedTiles": 13,
+        "hasCtx": true
+      }
     },
     {
       "name": "mobile 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
@@ -700,9 +734,11 @@
       }
     },
     {
-      "name": "mobile 기록: 요인 기록 36행 · 걸러진 CSV 내려받기 동작",
+      "name": "mobile 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
       "ok": true,
-      "detail": null
+      "detail": {
+        "factorRecordRows": 72
+      }
     },
     {
       "name": "mobile 기록 CSV 내려받기 파일명",
@@ -720,7 +756,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#clz00ih-band-inner\")",
+        "bandFill": "url(\"#c9o3q5x-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -757,5 +793,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-29T06-45-22-299Z"
+  "dir": "reports/atlas11/browser/2026-09-29T22-32-27-541Z"
 }

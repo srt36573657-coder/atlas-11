@@ -40,6 +40,7 @@ test('뉴스: 같은 기사·재게시(제목 같음) 가림 · 가장 이른 �
   assert.ok(n.items.every(i => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00\+09:00$/.test(i.publishedAt) && i.title && !('body' in i)));
   assert.equal(n.distinct + n.republished, n.items.length);
   assert.equal(titleKey('[속보] 삼성전자, “HBM 증산”'), titleKey('삼성전자 HBM 증산'));
+  assert.equal(parseNews(JSON.stringify([{total: 1, items: [{officeId: '3', articleId: 'c', datetime: '202609300700', titleFull: '증권가 &quot;D램·추가 환원 주목&quot; &amp; 전망'}]}]), '005930').items[0].title, '증권가 "D램·추가 환원 주목" & 전망', '기사 제목의 HTML 문자 참조는 글자로');
   const dup = parseNews(JSON.stringify([{total: 2, items: [{officeId: '1', articleId: 'a', datetime: '202609300900', title: '[단독] 삼성전자 HBM 증산', mobileNewsUrl: 'u1'}, {officeId: '2', articleId: 'b', datetime: '202609300930', title: '삼성전자, HBM 증산', mobileNewsUrl: 'u2'}]}, {total: 1, items: [{officeId: '1', articleId: 'a', datetime: '202609300900', title: '[단독] 삼성전자 HBM 증산'}]}]), '005930');
   assert.equal(dup.raw, 3); assert.equal(dup.sameArticle, 1); assert.equal(dup.items.length, 2); assert.equal(dup.items[1].duplicateOf, '1-a'); assert.equal(dup.distinct, 1);
 });

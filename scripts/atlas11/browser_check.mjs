@@ -209,7 +209,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const expRows = await page.locator('.records-result tbody tr').count(), dl = await page.locator('.btn-download').count(), recText = await page.locator('#main').innerText();
   check(`${label} 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음`, sixCount === 6 && typeBtns === 8 && expRows === 11 && dl >= 2 && !/\bnull\b/.test(recText), {sixCount, typeBtns, expRows, dl});
   await page.locator('.filters.types .filter[data-type="factor"]').click(); await page.waitForTimeout(400);
-  check(`${label} 기록: 요인 기록 36행 · 걸러진 CSV 내려받기 동작`, await page.locator('.records-result tbody tr').count() === 36 && await page.locator('.btn-download').count() >= 2);
+  const factorRecordRows = await page.locator('.records-result tbody tr').count();
+  check(`${label} 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작`, factorRecordRows >= 36 && factorRecordRows % 36 === 0 && await page.locator('.btn-download').count() >= 2, {factorRecordRows});
   const [csvDl] = await Promise.all([page.waitForEvent('download', {timeout: 8000}), page.locator('.btn-download', {hasText: '걸러진 CSV'}).click()]);
   check(`${label} 기록 CSV 내려받기 파일명`, /ATLAS_factor_.*\.csv$/.test(csvDl.suggestedFilename()), {name: csvDl.suggestedFilename()});
   await shot('08-records');

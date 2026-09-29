@@ -10,6 +10,7 @@ import {buildViewBundle} from '../../lib/atlas11/view.mjs';
 import {readRecords, currentRecords} from '../../lib/atlas11/records.mjs';
 import {loadState} from '../../lib/atlas11/evolve/registry.mjs';
 import {generateCandidates} from '../../lib/atlas11/evolve/models.mjs';
+import {decodeEntities} from '../../lib/atlas11/context.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -63,7 +64,8 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   const dailyIndex = await read('public/data/atlas11/daily/index.json', null), dailyReport = dailyIndex?.latest ? await read('public/data/atlas11/daily/' + dailyIndex.latest + '.json', null) : null;
   if (ledger && dailyIndex) ledger = {...ledger, dailyReports: dailyIndex};
   const factorRecords = currentRecords(await readRecords(root, 'factor')), lastFactorDay = factorRecords.map(r => r.body.day).sort().at(-1);
-  if (evolve) evolve.factorTable = factorRecords.filter(r => r.body.day === lastFactorDay).map(r => r.body).sort((a, b) => a.factorId.localeCompare(b.factorId));
+  // 같은 날 여러 번 실행하면 요인 기록이 여러 벌 쌓인다(덮어쓰지 않음) — 현황표는 요인마다 그날 마지막 기록 하나
+  if (evolve) { const lastByFactor = new Map(); for (const r of factorRecords.filter(r => r.body.day === lastFactorDay).sort((a, b) => String(a.at).localeCompare(String(b.at)))) lastByFactor.set(r.body.factorId, {...r.body, recordedAt: r.at, recordId: r.id}); evolve.factorTable = [...lastByFactor.values()].sort((a, b) => a.factorId.localeCompare(b.factorId)); evolve.factorTableNote = `${lastFactorDay} 기록 ${factorRecords.filter(r => r.body.day === lastFactorDay).length}건 중 요인마다 마지막 기록`; }
   const scoreRecords = currentRecords(await readRecords(root, 'score')).map(r => r.body).filter(c => c.kind === 'live');
   const analysisRecords = currentRecords(await readRecords(root, 'analysis')).map(r => r.body).filter(a => a.kind === 'cell');
   const scoreHistory = {byCode: {}};
@@ -92,7 +94,7 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
       contextByCode = {};
       for (const a of input.assets) {
         const fl = snap.flows.find(x => x.code === a.code), nw = snap.news.find(x => x.code === a.code), ds = snap.disclosures.find(x => x.code === a.code);
-        contextByCode[a.code] = {day: snap.day, fetchedAt: snap.fetchedAt, flows: fl ? fl.rows.slice(-5) : [], flowsSourceUrl: fl?.sourceUrl ?? null, news: nw ? nw.items.filter(i => !i.duplicateOf).sort((x, y) => y.publishedAt.localeCompare(x.publishedAt)).slice(0, 6).map(({publishedAt, office, title, url}) => ({publishedAt, office, title, url})) : [], newsRepublished: nw?.republished ?? 0, disclosures: ds ? ds.items.slice(-4).reverse().map(({publishedAt, title, corporateAction, actionWord}) => ({publishedAt, title, corporateAction, actionWord})) : [], missing: [!fl && '수급', !nw && '뉴스', !ds && '공시'].filter(Boolean), usedInForecast: false};
+        contextByCode[a.code] = {day: snap.day, fetchedAt: snap.fetchedAt, flows: fl ? fl.rows.slice(-5) : [], flowsSourceUrl: fl?.sourceUrl ?? null, news: nw ? nw.items.filter(i => !i.duplicateOf).sort((x, y) => y.publishedAt.localeCompare(x.publishedAt)).slice(0, 6).map(({publishedAt, office, title, url}) => ({publishedAt, office, title: decodeEntities(title), url})) : [], newsRepublished: nw?.republished ?? 0, disclosures: ds ? ds.items.slice(-4).reverse().map(({publishedAt, title, corporateAction, actionWord}) => ({publishedAt, title: decodeEntities(title), corporateAction, actionWord})) : [], missing: [!fl && '수급', !nw && '뉴스', !ds && '공시'].filter(Boolean), usedInForecast: false};
       }
     }
   }
