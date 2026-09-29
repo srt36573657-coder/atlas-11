@@ -7,7 +7,7 @@ on:
         required: false
         default: '20260929'
       which:
-        description: 'sources | yahoo52'
+        description: 'sources | yahoo52 | deep | context'
         required: false
         default: 'sources'
 permissions:
@@ -23,7 +23,7 @@ jobs:
           node-version: 22
       - run: |
           mkdir -p reports/atlas11/probe
-          if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; elif [ "${{ inputs.which }}" = "deep" ]; then timeout 300 node scripts/atlas11/probe/deep.mjs || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
+          if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; elif [ "${{ inputs.which }}" = "deep" ]; then timeout 300 node scripts/atlas11/probe/deep.mjs || true; elif [ "${{ inputs.which }}" = "context" ]; then timeout 600 node scripts/atlas11/probe/context.mjs "${{ inputs.day || '20260929' }}" || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
       - if: always()
         run: |
           git config user.name atlas11-bot
