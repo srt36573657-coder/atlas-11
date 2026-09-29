@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {initialState,clientState} from '../lib/service.mjs';
+import {createDisplayBundle} from '../lib/display-bundle.mjs';
+const [inputPath,outputPath]=process.argv.slice(2);
+if(!inputPath||!outputPath)throw Error('usage: node scripts/build_display_bundle.mjs input.json output.json');
+const raw=await fs.readFile(inputPath),bundle=JSON.parse(raw),sourceSHA256=createHash('sha256').update(raw).digest('hex');
+const display=createDisplayBundle(bundle,clientState(initialState(bundle)),{sourceSHA256,sourceBytes:raw.length});
+await fs.writeFile(outputPath,JSON.stringify(display));
+console.log(JSON.stringify({sourceBytes:raw.length,displayBytes:Buffer.byteLength(JSON.stringify(display)),sourceSHA256,versions:display.versionMetadata.length,assets:display.candidate.assets.length}));

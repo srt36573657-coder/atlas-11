@@ -1,0 +1,260 @@
+{
+  "schema": 1,
+  "accepted": [],
+  "candidates": [
+    {
+      "id": "F-COM-US-JOBS-20261002",
+      "batch": "F",
+      "name": "미국 고용",
+      "announcementDate": "2026-10-02",
+      "announcementTime": "08:30",
+      "timezone": "America/New_York",
+      "date": null,
+      "i": "공통",
+      "k": "공",
+      "c": "매크로",
+      "kind": "미국 고용",
+      "sources": [
+        {
+          "name": "미국 노동통계국",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "근거·두 번째 출처·한국 반영일 미확인"
+    },
+    {
+      "id": "F-COM-US-CPI-20261014",
+      "batch": "F",
+      "name": "미국 물가",
+      "announcementDate": "2026-10-14",
+      "announcementTime": "08:30",
+      "timezone": "America/New_York",
+      "date": null,
+      "i": "공통",
+      "k": "공",
+      "c": "매크로",
+      "kind": "미국 물가",
+      "sources": [
+        {
+          "name": "미국 노동통계국",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "근거·두 번째 출처·한국 반영일 미확인"
+    },
+    {
+      "id": "F-COM-FED-20261028",
+      "batch": "F",
+      "name": "미국 금리회의",
+      "announcementDate": "2026-10-28",
+      "meetingStart": "2026-10-27",
+      "date": null,
+      "i": "공통",
+      "k": "공",
+      "c": "매크로",
+      "kind": "미국 금리회의",
+      "sources": [
+        {
+          "name": "미국 연준",
+          "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+          "publishedAt": "2026-09-16",
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "근거·두 번째 출처·한국 반영일 미확인"
+    },
+    {
+      "id": "SS-IR-2026-08-20",
+      "batch": "B",
+      "name": "JP Morgan / Nomura Tech Tour",
+      "announcementDate": "2026-08-20",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-08-27",
+      "batch": "B",
+      "name": "Citi Korea Investor Conference",
+      "announcementDate": "2026-08-27",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-08-31",
+      "batch": "B",
+      "name": "키움증권 Corp Day",
+      "announcementDate": "2026-08-31",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-09-02",
+      "batch": "B",
+      "name": "신한투자증권 Corp Day",
+      "announcementDate": "2026-09-02",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-09-09",
+      "batch": "B",
+      "name": "KB증권 Korea Conference",
+      "announcementDate": "2026-09-09",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-09-16",
+      "batch": "B",
+      "name": "UBS Tech Tour",
+      "announcementDate": "2026-09-16",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    },
+    {
+      "id": "SS-IR-2026-09-23",
+      "batch": "F",
+      "name": "BofA Asia Pacific Conference",
+      "announcementDate": "2026-09-23",
+      "announcementTime": null,
+      "timezone": "Asia/Seoul",
+      "date": null,
+      "i": 1,
+      "code": "005930",
+      "sector": "반도체와반도체장비",
+      "k": "종",
+      "c": "실적",
+      "kind": "투자설명회(IR) · 증권사 콘퍼런스 참석",
+      "sources": [
+        {
+          "name": "삼성전자 IR",
+          "url": "https://www.samsung.com/sec/ir/ir-events-presentations/events/",
+          "publishedAt": null,
+          "retrievedAt": "2026-09-24"
+        }
+      ],
+      "s": null,
+      "H": [],
+      "status": "일정만 확인. 발표 시각·게시일·독립 두 번째 출처·과거 수익률 근거 미확보"
+    }
+  ],
+  "rejected": []
+}

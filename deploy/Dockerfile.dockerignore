@@ -1,0 +1,8 @@
+# docker build -f deploy/Dockerfile . 일 때 BuildKit 이 이 파일을 쓴다 — 무거운 것·비밀은 이미지에 넣지 않는다
+node_modules
+dist
+out
+.git
+deploy/atlas11.env
+*.env
+!deploy/atlas11.env.example

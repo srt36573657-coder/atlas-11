@@ -1,0 +1,47 @@
+{
+  "appVersion": "7.5.0",
+  "createdAt": "2026-09-26T19:03:42.711Z",
+  "protocol": {
+    "id": "atlas-press-integration-1.0.0",
+    "mode": "research_only",
+    "forecastStart": "2026-09-17",
+    "forecastEnd": "2026-10-30",
+    "annualToDailyConversion": false,
+    "sectorMappingInference": false,
+    "trustProbability": null,
+    "defaultLiveWeight": 0,
+    "roundingRule": "half of the last retained decimal unit; conservative when trailing zeros were not preserved"
+  },
+  "reportId": "f4cda6e1346436e19ff503c4872375d3fcd442169c1ad16cdf719efd0f0bf54d",
+  "baselineId": "2026-09-23-75d1b207",
+  "counts": {
+    "assets": 52,
+    "sources": 20,
+    "observations": 160,
+    "marketObservations": 43,
+    "sectorObservations": 102,
+    "companyObservations": 15,
+    "linkedCompanies": 10,
+    "priceChecks": 15,
+    "pricePass": 4,
+    "priceWarn": 8,
+    "priceMissing": 3,
+    "linkedForecasts": 52,
+    "live": 0
+  },
+  "tests": {
+    "passed": 194,
+    "failed": 0,
+    "cancelled": 0,
+    "source": "reports/tests.tap"
+  },
+  "existingForecastCount": 14,
+  "previousForecastsUnchanged": true,
+  "originalSHA256": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+  "priceAdjustmentApplied": false,
+  "priceSkillVerified": false,
+  "independentProspectiveValidations": 0,
+  "netlifyDeployed": false,
+  "pixelBrowserVerified": false,
+  "articleReviewFile": "reports/press-history-independent-review.md"
+}

@@ -1,0 +1,78 @@
+/* ATLAS design365 — keyboard, touch and assistive presentation.
+   CSS support only; this stylesheet is not a WCAG conformance certificate. */
+:root { --d365-focus: var(--text, #2a2023); --d365-focus-offset: 3px; }
+/* D306–D313: never remove the native keyboard path. */
+:is(button,a[href],input,select,textarea,summary,[tabindex]):focus-visible {
+  outline: 3px solid var(--d365-focus);
+  outline-offset: var(--d365-focus-offset);
+  scroll-margin-block: 6rem 2rem;
+}
+.stock-search:focus-within { outline: 3px solid var(--d365-focus); outline-offset: 3px; }
+:is(.date-cell,.picker-grid button,.news-reading-list button):focus-visible { position: relative; z-index: 2; }
+:is(.focus-news-content,.news-reading-detail,.news-reading-list,.stock-picker,.table-scroll) { scroll-padding-block: 12px; }
+:is(.date-grid,.daily-change-strip) { scroll-padding-inline: 12px; }
+.skip-link:focus-visible { outline-offset: 4px; max-inline-size: calc(100vw - 2rem); white-space: normal; }
+/* D314–D321: 24px pointer floor; coarse inputs get larger controls. */
+:is(button,summary) { min-block-size: 24px; }
+:is(button) { min-inline-size: 24px; }
+:is(input[type=checkbox],input[type=radio]) { min-inline-size: 20px; min-block-size: 20px; }
+:is(.chart-options label) { min-block-size: 32px; gap: 8px; }
+@media (pointer: coarse) {
+  :is(button,select,input:not([type=checkbox]):not([type=radio]),summary) { min-block-size: 44px!important; }
+  :is(.dialog-title button,.focus-navigation button,.day-step,.watch-button) { min-inline-size: 44px!important; }
+  :is(.chart-options label) { min-block-size: 44px!important; }
+  :is(.stock-controls,.picker-filters,.account-actions) { gap: 8px; }
+  :is(input,select,textarea) { font-size: max(1rem,16px)!important; }
+}
+/* D322–D326: disabled is not synonymous with loading. */
+button:disabled { cursor: not-allowed; }
+button[aria-busy=true] { cursor: progress; }
+:is(button[aria-disabled=true],a[aria-disabled=true]) { cursor: not-allowed; text-decoration-style: dotted; }
+:is(button:disabled,button[aria-disabled=true]) { filter: none; }
+:is(input,select,textarea):disabled { cursor: not-allowed; border-style: dashed; }
+/* D327–D331: readable interactive evidence and overflow cues. */
+:is(.source-card,.evidence-sources a,.daily-explanation a) { text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+:is(.source-card,.daily-explanation,.news-reading-detail) { overflow-wrap: anywhere; }
+:is(.focus-news-content,.news-reading-list,.news-reading-detail,.stock-picker,.table-scroll) { scrollbar-gutter: stable; scrollbar-width: auto; }
+:is(.focus-news-content,.news-reading-list,.news-reading-detail,.stock-picker,.table-scroll,.date-grid) { scrollbar-color: var(--muted) var(--surface-inset); }
+:is(.date-grid,.table-scroll):focus-within { outline-offset: 2px; }
+/* D332–D333: reusable hidden text; hidden focus targets become visible. */
+.d365-visually-hidden:not(:focus):not(:focus-within) {
+ position: absolute!important; inline-size: 1px!important; block-size: 1px!important;
+ padding: 0!important; margin: -1px!important; overflow: hidden!important;
+ clip-path: inset(50%)!important; white-space: nowrap!important; border: 0!important;
+}
+.d365-visually-hidden:focus { position: static; inline-size: auto; block-size: auto; clip-path: none; white-space: normal; }
+/* D334–D337: explicit user preferences, without changing replay state. */
+@media (prefers-reduced-motion: reduce) {
+ *,*::before,*::after { animation: none!important; transition: none!important; scroll-behavior: auto!important; }
+ .mini-card:hover { transform: none!important; }
+}
+@media (prefers-contrast: more) {
+ :is(button,input,select,textarea,summary,.mini-card,.daily-explanation,.source-card) { border-color: currentColor; }
+ :is(button:disabled,input:disabled,select:disabled) { opacity: 1; }
+}
+/* D338–D345: preserve system high-contrast colors and non-color distinctions. */
+@media (forced-colors: active) {
+ :is(button,input,select,textarea,summary,.dialog,.mini-card,.source-card,.daily-explanation) { forced-color-adjust: auto; border-color: ButtonText; }
+ :is(button,a[href],input,select,summary,[tabindex]):focus-visible { outline: 3px solid Highlight; }
+ :is([aria-pressed=true],[aria-current=date],button.active) { outline: 2px solid Highlight; outline-offset: -3px; }
+ :is(button:disabled,input:disabled,select:disabled,[aria-disabled=true]) { color: GrayText; border-color: GrayText; opacity: 1; }
+ a[href] { color: LinkText; text-decoration: underline; }
+ :is(.trend-chart,.chart) { forced-color-adjust: auto; }
+ .trend-chart [data-forecast-code] { stroke: CanvasText; stroke-dasharray: 7 4; }
+ .trend-chart :is([data-actual-code],[data-actual-path]) { stroke: CanvasText; stroke-dasharray: none; }
+ :is(.focus-news-content,.news-reading-list,.news-reading-detail,.stock-picker,.table-scroll,.date-grid) { scrollbar-color: auto; }
+}
+/* D346–D352: paper reading keeps values, sources and line semantics. */
+@media print {
+ @page { margin: 15mm; }
+ html,body { background: white!important; color: black!important; }
+ :is(.mini-card,.dialog,.daily-explanation,.news-reading-detail,.source-card) { box-shadow: none!important; color: black!important; background: white!important; }
+ :is(.mini-card,.daily-explanation,.source-card) { break-inside: avoid; }
+ :is(.focus-news-content,.news-reading-list,.news-reading-detail,.stock-picker,.table-scroll) { max-height: none!important; overflow: visible!important; }
+ :is(.stock-controls,.playback-controls,.skip-link,.toast) { display: none!important; }
+ :is(a[href]) { color: black!important; text-decoration: underline; }
+ .trend-chart [data-forecast-code] { stroke: black!important; stroke-dasharray: 7 4!important; }
+ .trend-chart :is([data-actual-code],[data-actual-path]) { stroke: black!important; stroke-dasharray: none!important; }
+}

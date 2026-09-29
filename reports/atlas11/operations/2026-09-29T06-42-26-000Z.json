@@ -1,0 +1,2107 @@
+{
+  "schema": "atlas11-operation-2",
+  "at": "2026-09-29T06:42:26.000Z",
+  "dayKST": "2026-09-29",
+  "status": "partial",
+  "exitCode": 2,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-09-29T06:42:26.560Z",
+      "status": "ok",
+      "durationMs": 23,
+      "session": true,
+      "afterClose": true,
+      "day": "2026-09-29",
+      "cutoff": "2026-09-29"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-09-29T06:42:26.584Z",
+      "status": "ok",
+      "durationMs": 2708,
+      "attempted": true,
+      "observations": 0,
+      "errors": 52,
+      "recordId": "collection-67a5a996d8edac26"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-09-29T06:42:29.292Z",
+      "status": "ok",
+      "durationMs": 726,
+      "changed": false,
+      "confirmedToday": 0,
+      "actualAsOf": "2026-09-28",
+      "inputSnapshotSHA256": "4b0d7b61d8d36256f481a0db2872b3f145ced764d1afb86da9c48c4c5e554a8e"
+    },
+    {
+      "step": "4_score",
+      "startedAt": "2026-09-29T06:42:30.254Z",
+      "status": "ok",
+      "durationMs": 29,
+      "evaluated": 0,
+      "newRecords": 0,
+      "duplicates": 0,
+      "pending": 4160
+    },
+    {
+      "step": "5_analyze",
+      "startedAt": "2026-09-29T06:42:30.284Z",
+      "status": "ok",
+      "durationMs": 36,
+      "cells": 0,
+      "newRecords": 0,
+      "aggregateDate": "2026-09-29"
+    },
+    {
+      "step": "6_publish",
+      "startedAt": "2026-09-29T06:42:30.321Z",
+      "status": "ok",
+      "durationMs": 1,
+      "skipped": true,
+      "reason": "오늘(2026-09-29) 확정 종가 확인 0/52 · 52개 전부 확인될 때만 발행 · 이전 발행본 유지"
+    },
+    {
+      "step": "7_evolve",
+      "startedAt": "2026-09-29T06:42:30.322Z",
+      "status": "ok",
+      "durationMs": 65,
+      "backtested": 0,
+      "adopted": 0,
+      "rejected": 0,
+      "observing": 0,
+      "rolledBack": 0,
+      "operatingModel": "atlas11-A-1"
+    },
+    {
+      "step": "8_report_view",
+      "startedAt": "2026-09-29T06:42:30.389Z",
+      "view": {
+        "forecastId": "2026-09-28-atlas11-27e1f65cfc167be9",
+        "files": 60,
+        "dir": "public/data/atlas11/view",
+        "scoreTargetDate": "2026-09-29",
+        "firstScorableDate": "2026-09-29",
+        "scoredDates": 0,
+        "bytes": 6015734
+      },
+      "status": "ok",
+      "durationMs": 1015,
+      "dailyReport": "2026-09-29",
+      "ledgerTotals": {
+        "collection": 2,
+        "forecast": 0,
+        "score": 0,
+        "analysis": 2,
+        "factor": 36,
+        "experiment": 11,
+        "model": 0,
+        "operation": 4
+      }
+    }
+  ],
+  "serverInstalled": false,
+  "scheduledRunInstalled": false,
+  "warnings": [],
+  "configVersion": "v1",
+  "configSHA256": "0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340",
+  "scoringPolicyVersion": "v1",
+  "scoringPolicySHA256": "395c9821305b8226a6958855ef8efb9257a46bcaf938fc0ba85c80126311e746",
+  "previousForecastId": "2026-09-28-atlas11-27e1f65cfc167be9",
+  "operatingModel": "atlas11-A-1",
+  "day": "2026-09-29",
+  "session": true,
+  "afterClose": true,
+  "calendarGate": {
+    "day": "2026-09-29",
+    "status": "await_final_provider_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": true,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": true
+  },
+  "cutoff": "2026-09-29",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-09-28",
+  "publishEnd": "2026-10-30",
+  "afterPublishEnd": false,
+  "collection": {
+    "attempted": true,
+    "provider": "naver_fchart_daily",
+    "observations": 0,
+    "errors": [
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "005930",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005930&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=005930&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.586Z",
+                "status": 403,
+                "ms": 356
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/005930/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/005930/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.942Z",
+                "status": 403,
+                "ms": 355
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "009150",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=009150&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=009150&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.639Z",
+                "status": 403,
+                "ms": 306
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/009150/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/009150/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.945Z",
+                "status": 403,
+                "ms": 351
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "373220",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=373220&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=373220&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.640Z",
+                "status": 403,
+                "ms": 402
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/373220/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/373220/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.042Z",
+                "status": 403,
+                "ms": 389
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "005380",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005380&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=005380&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:26.641Z",
+                "status": 403,
+                "ms": 418
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/005380/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/005380/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.059Z",
+                "status": 403,
+                "ms": 383
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "207940",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=207940&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=207940&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.447Z",
+                "status": 403,
+                "ms": 3
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/207940/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/207940/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.450Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "105560",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=105560&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=105560&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.448Z",
+                "status": 403,
+                "ms": 3
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/105560/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/105560/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.452Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "028260",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=028260&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=028260&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.582Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/028260/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/028260/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.584Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "032830",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=032830&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=032830&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.592Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/032830/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/032830/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.594Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "012450",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=012450&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=012450&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.602Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/012450/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/012450/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.604Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "034020",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=034020&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=034020&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.603Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/034020/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/034020/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.605Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "329180",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=329180&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=329180&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.736Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/329180/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/329180/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.738Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "034730",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=034730&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=034730&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.745Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/034730/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/034730/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.746Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "012330",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=012330&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=012330&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.756Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/012330/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/012330/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.757Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "066570",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=066570&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=066570&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.756Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/066570/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/066570/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.758Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "035420",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=035420&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=035420&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.890Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/035420/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/035420/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.892Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "010120",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=010120&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=010120&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.898Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/010120/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/010120/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.900Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "000810",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=000810&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=000810&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.909Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/000810/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/000810/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.911Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "005490",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005490&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=005490&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.910Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/005490/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/005490/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:27.912Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "010130",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=010130&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=010130&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.044Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/010130/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/010130/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.046Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "138040",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=138040&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=138040&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.051Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/138040/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/138040/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.052Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "015760",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=015760&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=015760&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.063Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/015760/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/015760/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.064Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "011200",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=011200&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=011200&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.063Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/011200/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/011200/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.065Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "051910",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=051910&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=051910&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.198Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/051910/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/051910/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.200Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "017670",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=017670&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=017670&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.204Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/017670/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/017670/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.205Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "033780",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=033780&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=033780&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.216Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/033780/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/033780/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.217Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "196170",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=196170&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=196170&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.216Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/196170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/196170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.218Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "018260",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=018260&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=018260&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.352Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/018260/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/018260/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.354Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "086280",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=086280&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=086280&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.355Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/086280/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/086280/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.356Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "000720",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=000720&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=000720&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.369Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/000720/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/000720/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.371Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "278470",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=278470&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=278470&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.369Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/278470/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/278470/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.371Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "030200",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=030200&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=030200&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.506Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/030200/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/030200/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.508Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "003490",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=003490&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=003490&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.508Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/003490/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/003490/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.510Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "047050",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=047050&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=047050&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.522Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/047050/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/047050/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.524Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "003230",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=003230&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=003230&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.523Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/003230/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/003230/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.524Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "259960",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=259960&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=259960&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.660Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/259960/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/259960/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.662Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "021240",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=021240&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=021240&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.661Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/021240/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/021240/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.663Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "352820",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=352820&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=352820&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.675Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/352820/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/352820/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.676Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "009830",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=009830&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=009830&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.675Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/009830/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/009830/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.677Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "029780",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=029780&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=029780&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.814Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/029780/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/029780/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.816Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "028300",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=028300&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=028300&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.815Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/028300/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/028300/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.817Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "034220",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=034220&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=034220&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.828Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/034220/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/034220/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.830Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "002380",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=002380&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=002380&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.828Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/002380/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/002380/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.829Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "036460",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=036460&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=036460&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.968Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/036460/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/036460/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.970Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "004170",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=004170&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=004170&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.970Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/004170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/004170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.972Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "012750",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=012750&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=012750&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.980Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/012750/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/012750/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.982Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "111770",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=111770&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=111770&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.981Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/111770/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/111770/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:28.982Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "035250",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=035250&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=035250&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.122Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/035250/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/035250/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.124Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "257720",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=257720&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=257720&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.124Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/257720/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/257720/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.126Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "226950",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=226950&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=226950&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.132Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/226950/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/226950/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.134Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "010170",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=010170&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=010170&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.134Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/010170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/010170/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.135Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "214370",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=214370&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=214370&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.276Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/214370/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/214370/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.278Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "FETCH_FAILED",
+        "stockCode": "030000",
+        "message": "모든 원천 실패",
+        "tried": [
+          {
+            "source": "fchart",
+            "url": "https://fchart.stock.naver.com/sise.nhn?symbol=030000&timeframe=day&count=30&requestType=0",
+            "ok": false,
+            "error": "FETCH_FAILED:https://fchart.stock.naver.com/sise.nhn?symbol=030000&timeframe=day&count=30&requestType=0",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.277Z",
+                "status": 403,
+                "ms": 1
+              }
+            ]
+          },
+          {
+            "source": "naver_api",
+            "url": "https://api.stock.naver.com/chart/domestic/item/030000/day?startDateTime=202608140000&endDateTime=202609290000",
+            "ok": false,
+            "error": "FETCH_FAILED:https://api.stock.naver.com/chart/domestic/item/030000/day?startDateTime=202608140000&endDateTime=202609290000",
+            "attempts": [
+              {
+                "attempt": 1,
+                "at": "2026-09-29T06:42:29.278Z",
+                "status": 403,
+                "ms": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "delayed": false,
+    "stats": {
+      "stocks": 52,
+      "succeeded": 0,
+      "failed": 52,
+      "delayedFinality": 0,
+      "finalizedToday": 0,
+      "droppedNonSessionRows": 0,
+      "droppedIncompleteRows": 0,
+      "droppedInvalidRows": 0,
+      "reviewedRowMismatches": 0,
+      "requests": 105,
+      "durationMs": 2704
+    },
+    "durationMs": 2705
+  },
+  "collectionRecordId": "collection-67a5a996d8edac26",
+  "inputChanged": false,
+  "actualAsOf": "2026-09-28",
+  "freshStocks": 0,
+  "confirmedTodayStocks": 0,
+  "confirmedTodayCodes": [],
+  "retainedStoredClose": true,
+  "inputSnapshotSHA256": "4b0d7b61d8d36256f481a0db2872b3f145ced764d1afb86da9c48c4c5e554a8e",
+  "unconfirmedCodes": [
+    "005930",
+    "009150",
+    "373220",
+    "005380",
+    "207940",
+    "105560",
+    "028260",
+    "032830",
+    "012450",
+    "034020",
+    "329180",
+    "034730",
+    "012330",
+    "066570",
+    "035420",
+    "010120",
+    "000810",
+    "005490",
+    "010130",
+    "138040",
+    "015760",
+    "011200",
+    "051910",
+    "017670",
+    "033780",
+    "196170",
+    "018260",
+    "086280",
+    "000720",
+    "278470",
+    "030200",
+    "003490",
+    "047050",
+    "003230",
+    "259960",
+    "021240",
+    "352820",
+    "009830",
+    "029780",
+    "028300",
+    "034220",
+    "002380",
+    "036460",
+    "004170",
+    "012750",
+    "111770",
+    "035250",
+    "257720",
+    "226950",
+    "010170",
+    "214370",
+    "030000"
+  ],
+  "scoreId": "9912e771fdf79c5f431f7542d33699a8b69815240da6485d4ec7e70774fe91e2",
+  "scoredDates": 0,
+  "scoring": {
+    "evaluated": 0,
+    "evaluatedLive": 0,
+    "pending": 4160,
+    "uniqueTargetDates": 0,
+    "byClass": {},
+    "exclusionReasons": {
+      "발행 뒤 목표만 채점(목표일 마감 후 발행)": 52,
+      "실제 종가 미확보": 208,
+      "목표일 전": 3900
+    },
+    "newRecords": 0,
+    "duplicates": 0,
+    "corrected": 0,
+    "cutoff": "2026-09-29",
+    "summary": {}
+  },
+  "analysis": {
+    "cellAnalyses": 0,
+    "newRecords": 0,
+    "aggregateDate": "2026-09-29"
+  },
+  "forecastId": "2026-09-28-atlas11-27e1f65cfc167be9",
+  "newForecast": false,
+  "liveForecastStocks": 0,
+  "forecastWithheldReason": "오늘(2026-09-29) 확정 종가 확인 0/52 · 52개 전부 확인될 때만 발행 · 이전 발행본 유지",
+  "evolution": {
+    "backtested": 0,
+    "adopted": 0,
+    "rejected": 0,
+    "observing": 0,
+    "rolledBack": 0,
+    "promoted": [],
+    "notes": [],
+    "operatingModel": "atlas11-A-1",
+    "candidatesTotal": 11,
+    "states": {
+      "cand-cada92bb6a02": "기각",
+      "cand-94bdc0454e5e": "기각",
+      "cand-e8a6bf641e5a": "기각",
+      "cand-61932e5bacf4": "기각",
+      "cand-99b1f5f4a26c": "기각",
+      "cand-52f5c4516030": "기각",
+      "cand-006aefb23808": "기각",
+      "cand-d935b67d4ce5": "기각",
+      "cand-f5472cad05be": "기각",
+      "cand-93d57983854e": "기각",
+      "cand-563996496016": "기각"
+    }
+  },
+  "operatingModelAfter": "atlas11-A-1",
+  "viewPending": false,
+  "finishedAt": "2026-09-29T06:42:31.404Z",
+  "dailyReport": {
+    "date": "2026-09-29",
+    "version": 4,
+    "md": "reports/atlas11/daily/2026-09-29.md"
+  },
+  "ledger": {
+    "totals": {
+      "collection": 2,
+      "forecast": 0,
+      "score": 0,
+      "analysis": 2,
+      "factor": 36,
+      "experiment": 11,
+      "model": 0,
+      "operation": 4
+    },
+    "dates": 1
+  }
+}

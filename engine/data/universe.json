@@ -1,0 +1,522 @@
+[
+  {
+    "id": 1,
+    "sector": "반도체와반도체장비",
+    "nameB": "삼성전자",
+    "codeB": "005930",
+    "nameF": "삼성전자",
+    "codeF": "005930",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 2,
+    "sector": "전자장비와기기",
+    "nameB": "삼성전기",
+    "codeB": "009150",
+    "nameF": "삼성전기",
+    "codeF": "009150",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 3,
+    "sector": "전기제품",
+    "nameB": "LG에너지솔루션",
+    "codeB": "373220",
+    "nameF": "LG에너지솔루션",
+    "codeF": "373220",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 4,
+    "sector": "자동차",
+    "nameB": "현대차",
+    "codeB": "005380",
+    "nameF": "현대차",
+    "codeF": "005380",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 5,
+    "sector": "제약",
+    "nameB": "삼성바이오로직스",
+    "codeB": "207940",
+    "nameF": "삼성바이오로직스",
+    "codeF": "207940",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 6,
+    "sector": "은행",
+    "nameB": "KB금융",
+    "codeB": "105560",
+    "nameF": "KB금융",
+    "codeF": "105560",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 7,
+    "sector": "복합기업",
+    "nameB": "삼성물산",
+    "codeB": "028260",
+    "nameF": "삼성물산",
+    "codeF": "028260",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 8,
+    "sector": "생명보험",
+    "nameB": "삼성생명보험",
+    "codeB": "032830",
+    "nameF": "삼성생명보험",
+    "codeF": "032830",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 9,
+    "sector": "우주항공과국방",
+    "nameB": "한화에어로스페이스",
+    "codeB": "012450",
+    "nameF": "한화에어로스페이스",
+    "codeF": "012450",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 10,
+    "sector": "기계",
+    "nameB": "두산에너빌리티",
+    "codeB": "034020",
+    "nameF": "두산에너빌리티",
+    "codeF": "034020",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 11,
+    "sector": "조선",
+    "nameB": "HD현대중공업",
+    "codeB": "329180",
+    "nameF": "HD현대중공업",
+    "codeF": "329180",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 12,
+    "sector": "석유와가스",
+    "nameB": "SK",
+    "codeB": "034730",
+    "nameF": "SK",
+    "codeF": "034730",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 13,
+    "sector": "자동차부품",
+    "nameB": "현대모비스",
+    "codeB": "012330",
+    "nameF": "현대모비스",
+    "codeF": "012330",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 14,
+    "sector": "전자제품",
+    "nameB": "LG전자",
+    "codeB": "066570",
+    "nameF": "LG전자",
+    "codeF": "066570",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 15,
+    "sector": "양방향미디어와서비스",
+    "nameB": "NAVER",
+    "codeB": "035420",
+    "nameF": "NAVER",
+    "codeF": "035420",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 16,
+    "sector": "전기장비",
+    "nameB": "LS ELECTRIC",
+    "codeB": "010120",
+    "nameF": "LS ELECTRIC",
+    "codeF": "010120",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 17,
+    "sector": "손해보험",
+    "nameB": "삼성화재",
+    "codeB": "000810",
+    "nameF": "삼성화재",
+    "codeF": "000810",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 18,
+    "sector": "철강",
+    "nameB": "POSCO홀딩스",
+    "codeB": "005490",
+    "nameF": "POSCO홀딩스",
+    "codeF": "005490",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 19,
+    "sector": "비철금속",
+    "nameB": "고려아연",
+    "codeB": "010130",
+    "nameF": "고려아연",
+    "codeF": "010130",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 20,
+    "sector": "증권",
+    "nameB": "메리츠금융지주",
+    "codeB": "138040",
+    "nameF": "메리츠금융지주",
+    "codeF": "138040",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 21,
+    "sector": "전기유틸리티",
+    "nameB": "한국전력",
+    "codeB": "015760",
+    "nameF": "한국전력",
+    "codeF": "015760",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 22,
+    "sector": "해운사",
+    "nameB": "HMM",
+    "codeB": "011200",
+    "nameF": "HMM",
+    "codeF": "011200",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 23,
+    "sector": "화학",
+    "nameB": "LG화학",
+    "codeB": "051910",
+    "nameF": "LG화학",
+    "codeF": "051910",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 24,
+    "sector": "무선통신서비스",
+    "nameB": "SK텔레콤",
+    "codeB": "017670",
+    "nameF": "SK텔레콤",
+    "codeF": "017670",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 25,
+    "sector": "담배",
+    "nameB": "KT&G",
+    "codeB": "033780",
+    "nameF": "KT&G",
+    "codeF": "033780",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 26,
+    "sector": "생물공학",
+    "nameB": "알테오젠",
+    "codeB": "196170",
+    "nameF": "알테오젠",
+    "codeF": "196170",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 27,
+    "sector": "IT서비스",
+    "nameB": "삼성에스디에스",
+    "codeB": "018260",
+    "nameF": "삼성에스디에스",
+    "codeF": "018260",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 28,
+    "sector": "항공화물운송과물류",
+    "nameB": "현대글로비스",
+    "codeB": "086280",
+    "nameF": "현대글로비스",
+    "codeF": "086280",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 29,
+    "sector": "건설",
+    "nameB": "현대건설",
+    "codeB": "000720",
+    "nameF": "현대건설",
+    "codeF": "000720",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 30,
+    "sector": "화장품",
+    "nameB": "에이피알",
+    "codeB": "278470",
+    "nameF": "에이피알",
+    "codeF": "278470",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 31,
+    "sector": "다각화된통신서비스",
+    "nameB": "KT",
+    "codeB": "030200",
+    "nameF": "KT",
+    "codeF": "030200",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 32,
+    "sector": "항공사",
+    "nameB": "대한항공",
+    "codeB": "003490",
+    "nameF": "대한항공",
+    "codeF": "003490",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 33,
+    "sector": "무역회사와판매업체",
+    "nameB": "포스코인터내셔널",
+    "codeB": "047050",
+    "nameF": "포스코인터내셔널",
+    "codeF": "047050",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 34,
+    "sector": "식품",
+    "nameB": "삼양식품",
+    "codeB": "003230",
+    "nameF": "삼양식품",
+    "codeF": "003230",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 35,
+    "sector": "게임엔터테인먼트",
+    "nameB": "크래프톤",
+    "codeB": "259960",
+    "nameF": "크래프톤",
+    "codeF": "259960",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 36,
+    "sector": "가정용기기와용품",
+    "nameB": "코웨이",
+    "codeB": "021240",
+    "nameF": "코웨이",
+    "codeF": "021240",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 37,
+    "sector": "방송과엔터테인먼트",
+    "nameB": "하이브",
+    "codeB": "352820",
+    "nameF": "하이브",
+    "codeF": "352820",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 38,
+    "sector": "에너지장비및서비스",
+    "nameB": "한화솔루션",
+    "codeB": "009830",
+    "nameF": "한화솔루션",
+    "codeF": "009830",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 39,
+    "sector": "카드",
+    "nameB": "삼성카드",
+    "codeB": "029780",
+    "nameF": "삼성카드",
+    "codeF": "029780",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 40,
+    "sector": "건강관리장비와용품",
+    "nameB": "HLB",
+    "codeB": "028300",
+    "nameF": "HLB",
+    "codeF": "028300",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 41,
+    "sector": "디스플레이 패널",
+    "nameB": "LG디스플레이",
+    "codeB": "034220",
+    "nameF": "LG디스플레이",
+    "codeF": "034220",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 42,
+    "sector": "건축자재",
+    "nameB": "KCC",
+    "codeB": "002380",
+    "nameF": "KCC",
+    "codeF": "002380",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 43,
+    "sector": "가스유틸리티",
+    "nameB": "한국가스공사",
+    "codeB": "036460",
+    "nameF": "한국가스공사",
+    "codeF": "036460",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 44,
+    "sector": "백화점과일반상점",
+    "nameB": "신세계",
+    "codeB": "004170",
+    "nameF": "신세계",
+    "codeF": "004170",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 45,
+    "sector": "상업서비스와공급품",
+    "nameB": "에스원",
+    "codeB": "012750",
+    "nameF": "에스원",
+    "codeF": "012750",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 46,
+    "sector": "섬유,의류,신발,호화품",
+    "nameB": "영원무역",
+    "codeB": "111770",
+    "nameF": "영원무역",
+    "codeF": "111770",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 47,
+    "sector": "호텔,레스토랑,레저",
+    "nameB": "강원랜드",
+    "codeB": "035250",
+    "nameF": "강원랜드",
+    "codeF": "035250",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 48,
+    "sector": "인터넷과카탈로그소매",
+    "nameB": "실리콘투",
+    "codeB": "257720",
+    "nameF": "실리콘투",
+    "codeF": "257720",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 49,
+    "sector": "생명과학도구및서비스",
+    "nameB": "올릭스",
+    "codeB": "226950",
+    "nameF": "올릭스",
+    "codeF": "226950",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 50,
+    "sector": "통신장비",
+    "nameB": "한화비전",
+    "codeB": "489790",
+    "nameF": "대한광통신",
+    "codeF": "010170",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 51,
+    "sector": "건강관리업체및서비스",
+    "nameB": "케어젠",
+    "codeB": "214370",
+    "nameF": "케어젠",
+    "codeF": "214370",
+    "verifiedB": false,
+    "verifiedF": false
+  },
+  {
+    "id": 52,
+    "sector": "광고",
+    "nameB": "제일기획",
+    "codeB": "030000",
+    "nameF": "제일기획",
+    "codeF": "030000",
+    "verifiedB": false,
+    "verifiedF": false
+  }
+]

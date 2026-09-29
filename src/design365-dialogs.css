@@ -1,0 +1,54 @@
+/* D364: modal diagnosis reader. No recorded cause, identifier or score is hidden. */
+.diagnosis-backdrop {
+  position:fixed; inset:0; z-index:100;
+  display:flex; align-items:stretch; justify-content:flex-end;
+  padding:24px; background:rgb(56 44 42 / 46%);
+  overscroll-behavior:contain;
+}
+.diagnosis-backdrop .diagnosis-sheet {
+  position:relative; inset:auto; width:min(520px,100%); max-width:100%;
+  height:100%; max-height:calc(100dvh - 48px); min-height:0;
+  display:flex; flex-direction:column; overflow:hidden; padding:0;
+  background:var(--surface,#fffdf9); color:var(--text,#382c2a);
+  border:1px solid var(--border,#d8cdbf); border-radius:16px;
+  box-shadow:0 20px 72px rgb(56 44 42 / 24%);
+}
+.diagnosis-sheet>.diagnosis-header {
+  position:sticky; top:0; z-index:1; display:flex; flex:none;
+  align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:20px; border-bottom:1px solid var(--border,#d8cdbf);
+  background:var(--surface,#fffdf9);
+}
+.diagnosis-header>div {min-width:0;}
+.diagnosis-header span {display:block; color:var(--muted,#665851); font-size:12px; line-height:1.6;}
+.diagnosis-header h3 {margin:5px 0 0; font-size:20px; line-height:1.4; overflow-wrap:anywhere;}
+.diagnosis-header button {flex:none; min-height:44px; min-width:64px; padding:8px 12px; border-radius:9px; white-space:nowrap;}
+.diagnosis-sheet>.diagnosis-body {
+  display:block; flex:1; min-height:0; overflow:auto; overscroll-behavior:contain;
+  padding:4px 20px 24px; scrollbar-gutter:stable; scroll-padding-block:16px;
+  overflow-wrap:anywhere; -webkit-overflow-scrolling:touch;
+}
+.diagnosis-body>p {line-height:1.7;}
+.diagnosis-body article {padding-block:16px;}
+.diagnosis-body article p {font-size:14px; line-height:1.8;}
+.diagnosis-body details {margin-top:16px;}
+.diagnosis-body summary {min-height:44px; padding-block:10px; line-height:1.6; cursor:pointer;}
+.diagnosis-body details p {font-size:12px; line-height:1.75; overflow-wrap:anywhere;}
+.diagnosis-body:focus-visible {outline:2px solid var(--gold,#71522e); outline-offset:-4px;}
+@media(max-width:640px) {
+  .diagnosis-backdrop {padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));}
+  .diagnosis-backdrop .diagnosis-sheet {width:100%; height:100%; max-height:100%; border-radius:12px;}
+  .diagnosis-sheet>.diagnosis-header {padding:16px; gap:10px;}
+  .diagnosis-header h3 {font-size:18px;}
+  .diagnosis-sheet>.diagnosis-body {padding:4px 16px 20px;}
+}
+@media(forced-colors:active) {
+  .diagnosis-backdrop {background:Canvas;}
+  .diagnosis-backdrop .diagnosis-sheet {border:2px solid CanvasText;}
+  .diagnosis-header {border-bottom:1px solid CanvasText;}
+}
+/* News reading transfers focus explicitly, without re-announcing the entire article. */
+.news-read-action {min-height:44px; align-self:end;}
+.news-selection-status {font-size:12px; color:var(--muted,#665851); line-height:1.6; margin-block:8px 12px;}
+.news-reading-detail:focus-visible {outline:2px solid var(--gold,#71522e); outline-offset:-4px;}
+.news-source-state {font-size:12px; line-height:1.7; color:var(--muted,#665851);}

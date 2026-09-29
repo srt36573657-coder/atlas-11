@@ -1,0 +1,207 @@
+/* ATLAS Atelier: presentation-only chart semantics. No path geometry or data transform. */
+.chart-wrap,.evolution-workbench,.breaking-workbench,.score-workbench {
+  --atelier-plot:#fffcf6;
+  --atelier-ink:#2d241f;
+  --atelier-muted:#695d52;
+  --atelier-rule:#ded3c4;
+  --atelier-baseline:#80603e;
+  --atelier-evolution:#22655c;
+  --atelier-breaking:#b94e20;
+  --positive:#9e3344;
+  --negative:#2b5b78;
+}
+.chart-wrap {
+  --chart-grid:#e4dcd0;
+  --chart-muted:#786b5f;
+  --chart-forecast:#80603e;
+  --chart-actual:#2d241f;
+  --chart-event:#80603e;
+  --chart-band:#c7b192;
+  --chart-cursor:#695744;
+  --chart-hover:#695744;
+  background:var(--atelier-plot);
+  background-image:none;
+  border-color:#e4dacd;
+  border-radius:10px;
+  box-shadow:none;
+}
+.chart-wrap svg text,.evo-chart text,.breaking-price-chart text {
+  font-family:var(--font-ui,Arial,'Malgun Gothic',sans-serif);
+  font-variant-numeric:tabular-nums lining-nums;
+  letter-spacing:0;
+  fill:#695d52;
+}
+.trend-chart .actual-caption { fill:#2d241f; font-weight:550; }
+.trend-chart .endpoint-label {
+  fill:#2d241f;
+  font-weight:650;
+  paint-order:stroke fill;
+  stroke:#fffcf6;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.trend-chart>svg>line[opacity=".5"] { stroke:#857361; opacity:1; }
+.chart-wrap .play-cursor { stroke:#695744; }
+.chart-wrap .current-dot { stroke:#fffcf6; }
+.chart-wrap .hover-card {
+  color:#2d241f;
+  background:#fffcf6;
+  border-color:#baaa96;
+  box-shadow:0 6px 22px #2d241f12;
+  border-radius:8px;
+}
+.chart-wrap .hover-card>b { border-bottom-color:#ded3c4; }
+.chart-legend { background:#fffcf6; color:#695d52; border-top-color:#ded3c4; }
+.evo-legend,.breaking-chart-legend {
+  gap:9px 19px;
+  padding:10px 0;
+  border-bottom:1px solid #e6ddd0;
+  font-size:12px;
+  color:#695d52;
+  line-height:1.7;
+}
+.evo-legend span,.breaking-chart-legend span { max-width:100%; overflow-wrap:anywhere; }
+.evo-legend .original::before,.breaking-chart-legend .base::before { border-color:#80603e; border-top-style:dashed; }
+.evo-legend .baseline::before { border-color:#755049; border-top-style:dashed; }
+.evo-legend .actual::before,.breaking-chart-legend .actual::before { border-color:#2d241f; border-top-style:solid; }
+.evo-legend .shadow::before { border-color:#22655c; border-top-style:dashed; }
+.breaking-chart-legend .change::before { border-color:#b94e20; border-top-style:dashed; }
+.evo-chart,.breaking-price-chart { background:#fffcf6; border-radius:8px; }
+.evo-gridline,.breaking-chart-grid { stroke:#e4dcd0; stroke-width:1; }
+/* Only actual observations are solid. Original and revised models remain dashed. */
+.evo-original,.breaking-chart-baseline { stroke:#80603e; stroke-dasharray:7 4; }
+.evo-baseline { stroke:#755049; stroke-dasharray:3 5; }
+.evo-shadow { stroke:#22655c; stroke-dasharray:9 5; }
+.breaking-chart-change { stroke:#b94e20; stroke-dasharray:8 5; }
+.evo-actual,.breaking-chart-actual { stroke:#2d241f; stroke-dasharray:none; }
+.evo-actual-dot,.breaking-chart-dot { fill:#2d241f; stroke:#fffcf6; }
+.evo-cursor,.breaking-chart-start { stroke:#786b5f; }
+.evo-chart-note,.breaking-chart-panel>p,.breaking-chart-panel>small {
+  color:#695d52;
+  font-size:12px;
+  line-height:1.8;
+}
+/* Selection is persistent and structural; holiday and missing labels remain visible. */
+.date-cell,.evo-date-strip button {
+  background:#fffcf6;
+  border-color:#d9ccba;
+  border-radius:8px;
+  font-variant-numeric:tabular-nums lining-nums;
+  box-shadow:none;
+}
+.date-cell[data-kind="holiday"] { background:#f1ece3; border-style:dashed; color:#695d52; }
+.date-cell[data-kind="missing"] { background:#fffcf6; border-style:dotted; color:#695d52; }
+.date-cell[aria-pressed="true"],.evo-date-strip button[aria-pressed="true"] {
+  color:#2d241f;
+  background:#e9dfd0;
+  border-color:#80603e;
+  box-shadow:inset 0 -3px #80603e;
+}
+.date-cell[aria-pressed="true"] small,.evo-date-strip button[aria-pressed="true"] small { color:#4d4137; }
+.date-cell:focus-visible,.evo-date-strip button:focus-visible { outline:2px solid #80603e; outline-offset:3px; }
+.evo-date-strip { padding-bottom:12px; scrollbar-color:#baaa96 #f1ece3; }
+.evo-date-strip button { min-height:58px; }
+.evo-date-strip b { font-weight:600; }
+.evo-date-strip small { font-size:12px; line-height:1.45; color:#695d52; }
+.calendar-caption,.calendar-month { color:#695d52; }
+.date-event-dot { color:#80603e; }
+/* The learning state is a research status, not a green success certificate. */
+.evolution-workbench { --evo-wine:#2d241f; --evo-muted:#695d52; --evo-line:#ded3c4; --evo-paper:#fffcf6; }
+.breaking-workbench { --br-ink:#2d241f; --br-muted:#695d52; --br-border:#ded3c4; --br-paper:#fffcf6; }
+.evo-plot-panel,.evo-day-panel,.evo-learning,.evo-notes,.evo-history,.evo-paired,
+.breaking-chart-panel,.breaking-performance,.breaking-detail,.breaking-premises-history {
+  background:#fffcf6;
+  border-color:#ded3c4;
+  border-radius:12px;
+  box-shadow:0 2px 8px #2d241f04;
+}
+.evo-plot-panel,.breaking-chart-panel { padding:22px; }
+.evo-panel-heading,.breaking-section-heading { padding-bottom:4px; }
+.evo-panel-heading h3,.breaking-section-heading h3 { color:#2d241f; letter-spacing:-.025em; }
+.evo-research-tag { color:#695744; background:#f4eee5; border-color:#b6a38a; border-radius:7px; line-height:1.6; }
+.evo-state,.breaking-mode,.breaking-decision-result,.breaking-successor {
+  background:#f5efe5;
+  border-color:#ccbca5;
+  border-radius:8px;
+  color:#2d241f;
+}
+.evo-state { border-left-color:#80603e; }
+.breaking-mode,.breaking-decision-result { border-left:3px solid #b94e20; }
+.evo-state small,.breaking-mode span,.breaking-decision-result>small { color:#695d52; }
+.evo-state[data-training-state="TRAINED"] { border-left-color:#22655c; }
+.evo-values>div { padding-block:12px; border-bottom-color:#e5dccf; }
+.evo-values dt { color:#695d52; font-size:12px; line-height:1.65; }
+.evo-values dd { color:#2d241f; font-weight:600; font-size:13px; line-height:1.65; font-variant-numeric:tabular-nums; }
+.evo-day-title>span,.evo-issued,.evo-muted { color:#695d52; }
+.evo-reason { background:#faf5ec; border-color:#e0d5c5; border-radius:8px; }
+.evo-reason b { color:#695744; font-size:12px; }
+.evo-training-metrics>div,.breaking-overview article,.score-metrics>div {
+  background:#fffcf6;
+  border:1px solid #ded3c4;
+  border-radius:10px;
+  box-shadow:none;
+}
+.evo-training-metrics b,.breaking-overview b,.score-metrics b {
+  color:#2d241f;
+  font-weight:550;
+  font-variant-numeric:tabular-nums lining-nums;
+  letter-spacing:-.025em;
+  line-height:1.4;
+}
+.evo-training-metrics span,.evo-training-metrics small,.breaking-overview span,.breaking-overview small,
+.score-metrics small,.score-metrics span { color:#695d52; font-size:12px; line-height:1.7; }
+.score-context { color:#695d52; background:#f5efe5; border-color:#ded3c4; line-height:1.85; }
+.evo-error-heading { border-top-color:#ded3c4; }
+.evo-error-heading span { font-size:12px; color:#695d52; line-height:1.6; }
+.evo-error-track { background:#eee7dc; border-radius:2px; }
+.evo-error-track::before { border-left-color:#786b5f; }
+.evo-error-track i.above { background:#9e3344; }
+.evo-error-track i.below { background:#2b5b78; }
+.evo-error-row[aria-pressed="true"] { background:#f1e7d9; border-color:#9d866a; }
+.evo-error-row time,.evo-error-row b { font-size:12px; color:#2d241f; }
+/* Tables are data, not decorative cards: restrained rules and stable numeric columns. */
+.score-workbench .table-scroll,.chart-data-scroll,.breaking-chart-table {
+  border:1px solid #ded3c4;
+  border-radius:8px;
+  background:#fffcf6;
+  scrollbar-color:#baaa96 #f1ece3;
+}
+.score-workbench table,.chart-data-scroll table,.breaking-chart-table table { font-variant-numeric:tabular-nums lining-nums; border-collapse:collapse; }
+.score-workbench thead th,.chart-data-scroll thead th,.breaking-chart-table th {
+  background:#f1ece3;
+  color:#695d52;
+  font-weight:600;
+  font-size:12px;
+  border-bottom:1px solid #cbbcaa;
+}
+.score-workbench td,.chart-data-scroll td,.breaking-chart-table td { color:#2d241f; border-bottom-color:#e9e1d6; line-height:1.65; }
+.score-workbench td:not(:first-child),.chart-data-scroll td:not(:first-child),.breaking-chart-table td:not(:first-child) { font-variant-numeric:tabular-nums; }
+.chart-data-scroll tr[aria-current="date"] { background:#eee3d3; }
+.chart-reading-panel { background:#fffcf6; border-color:#ded3c4; box-shadow:none; }
+.chart-reading-panel>summary { color:#2d241f; }
+.chart-range-note { background:#f1ece3; color:#695d52; line-height:1.8; }
+.breaking-performance-rows article { border-bottom-color:#ded3c4; line-height:1.7; font-variant-numeric:tabular-nums; }
+.breaking-performance-rows small { color:#695d52; font-size:12px; }
+.breaking-performance-empty { background:#f5efe5; border:1px solid #ded3c4; }
+.evo-learning pre,.evo-learning .evo-equation { background:#f4eee4; color:#4d4137; border-radius:7px; }
+@media(hover:hover) {
+  .date-cell:not([aria-pressed="true"]):hover,.evo-date-strip button:not([aria-pressed="true"]):hover { border-color:#9d866a; background:#f5efe5; }
+  .score-workbench tbody tr:hover,.breaking-chart-table tbody tr:hover { background:#f8f0e3; }
+}
+@media(max-width:640px) {
+  .evo-plot-panel,.breaking-chart-panel { padding:15px; }
+  .evo-legend,.breaking-chart-legend { gap:6px 12px; font-size:12px; }
+  .evo-values>div { padding-block:10px; }
+  .evo-training-metrics>div,.score-metrics>div { border-radius:8px; }
+}
+@media(forced-colors:active) {
+  .chart-wrap,.evo-chart,.breaking-price-chart { background:Canvas; border-color:CanvasText; }
+  .chart-wrap svg text,.evo-chart text,.breaking-price-chart text { fill:CanvasText; }
+  .trend-chart .endpoint-label { stroke:Canvas; }
+  .evo-original,.evo-baseline,.evo-shadow,.evo-actual,.breaking-chart-baseline,.breaking-chart-change,.breaking-chart-actual { stroke:CanvasText; }
+  .evo-actual-dot,.breaking-chart-dot { fill:CanvasText; stroke:Canvas; }
+  .evo-legend span::before,.breaking-chart-legend span::before { border-color:CanvasText; }
+  .date-cell[aria-pressed="true"],.evo-date-strip button[aria-pressed="true"],.evo-error-row[aria-pressed="true"] { background:Canvas; color:CanvasText; outline:2px solid Highlight; box-shadow:none; }
+  .date-cell[aria-pressed="true"] small,.evo-date-strip button[aria-pressed="true"] small { color:CanvasText; }
+  .evo-error-track i.above,.evo-error-track i.below { background:CanvasText; }
+}

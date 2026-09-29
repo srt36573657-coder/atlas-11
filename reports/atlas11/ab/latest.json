@@ -1,0 +1,21 @@
+{
+  "runId": "ab-db46556a729dde8b",
+  "finishedAt": "2026-09-28T13:14:16.574Z",
+  "A": {
+    "meanErrorPct": 9.310358180102945,
+    "rankHits": 86
+  },
+  "B": {
+    "meanErrorPct": 9.385397528271163,
+    "rankHits": 100
+  },
+  "numericalGate": false,
+  "decision": {
+    "selected": "A",
+    "adoptedB": false,
+    "reason": "both_predeclared_conditions_not_met",
+    "liveAdvantageProven": false
+  },
+  "origins": 120,
+  "stockTargetRows": 124800
+}

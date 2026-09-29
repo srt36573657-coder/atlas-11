@@ -1,0 +1,19 @@
+node_modules/
+dist/
+out/
+publish/
+*.tmp
+*.next
+*.lock
+.env
+/etc/
+# 대용량 원본·과거 감사 이력(서버 ZIP 에 보관) — 매일 실행에는 필요 없음
+public/data/atlas.json
+public/data/*.gz
+reports/*
+!reports/atlas11/
+reports/atlas11/browser/*
+!reports/atlas11/browser/latest.json
+reports/atlas11/ab/*/paired.csv
+reports/atlas11/evolve/logs/
+reports/atlas11/operations/input-before-*.json

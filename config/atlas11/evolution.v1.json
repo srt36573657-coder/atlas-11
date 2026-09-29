@@ -1,0 +1,215 @@
+{
+  "schema": "atlas11-evolution-config-1",
+  "version": "v1",
+  "createdAt": "2026-09-29T05:02:36.897Z",
+  "note": "자동 진화 범위를 미리 제한한 설정. 모델·실행기는 이 파일과 채점 정책을 스스로 바꾸지 못한다(새 버전 파일 + 사람 승인만). 후보는 운영 모델과 같은 입력·같은 종목·같은 목표일·같은 난수로만 비교한다.",
+  "scoringPolicyFile": "config/atlas11/scoring-policy.v1.json",
+  "schedule": {
+    "runTimeKST": "16:00",
+    "collectDeadlineKST": "18:00",
+    "retryEveryMinutes": 10,
+    "publishEnd": "2026-10-30",
+    "publishEndNote": "기존 예약 종료일 · 임의 연장 없음 · 종료 뒤 남은 목표일은 「예약 종료 뒤 잔여 채점」 상태로 계속 채점",
+    "scoringContinuesAfterEnd": true
+  },
+  "operating": {
+    "initialVersion": "atlas11-A-1",
+    "spec": {
+      "id": "A",
+      "family": "baseline",
+      "label": "운영 A: F35 자기 수익률(1·2·5·20·60일)+F11 52종목 폭·5일 평균 · 벌점 [1,10] · 변동성 자유 선택(GARCH/상수) · 동결 2026-09-17",
+      "penalties": [
+        1,
+        10
+      ],
+      "volatility": "free",
+      "featureMask": null,
+      "carry": []
+    }
+  },
+  "candidateFamilies": [
+    {
+      "family": "penalty",
+      "variable": "ridge penalties",
+      "allowed": [
+        [
+          0.3,
+          3
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          10,
+          100
+        ]
+      ],
+      "note": "계수 크기(가중치)만 바꿈"
+    },
+    {
+      "family": "features",
+      "variable": "feature mask (0..6 = 자체1·2·5·20·60일 · 52폭 · 52평균5)",
+      "allowed": [
+        [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "note": "요인 선택만 바꿈 (짧은 창 제거 / 52종목 대용 제거 / 1·2일 제거)"
+    },
+    {
+      "family": "volatility",
+      "variable": "volatility model",
+      "allowed": [
+        "garch11",
+        "constant"
+      ],
+      "note": "변동성·범위만 바꿈"
+    },
+    {
+      "family": "regime",
+      "variable": "carry feature at origin",
+      "allowed": [
+        "basket20",
+        "breadth20"
+      ],
+      "note": "시장 상태(52종목 20일 평균 수익률 또는 20일 폭 평균)를 기준일 값으로 고정해 넣음 · 방정식 구조 변경"
+    },
+    {
+      "family": "sector",
+      "variable": "carry feature at origin",
+      "allowed": [
+        "group5"
+      ],
+      "note": "묶음(산업) 5일 평균 수익률을 기준일 값으로 고정해 넣음"
+    }
+  ],
+  "limits": {
+    "maxCandidatesPerRun": 2,
+    "oneVariablePerCandidate": true,
+    "maxLiveObservationCandidates": 2,
+    "maxAdoptionsPer20TradingDays": 1,
+    "cooldownTradingDaysAfterAdoption": 10,
+    "backtestTimeBudgetMinutes": 40
+  },
+  "validation": {
+    "originDays": 120,
+    "blocks": 6,
+    "blockDays": 20,
+    "horizon": 20,
+    "paths": 512,
+    "seed": 20260917,
+    "topK": 5,
+    "trainingWindowMax": 504,
+    "minimumTrain": 160,
+    "innerDays": 40,
+    "holdoutDays": 60,
+    "trainingBefore": "2026-09-17",
+    "order": "과거 학습 → 내부 후보 선택(inner 40일) → 아직 보지 않은 이후 구간 평가(블록 앞에서 재적합·블록 안 계수 동결)",
+    "leakageChecks": [
+      "학습 종료일 < 기준일",
+      "목표일 실제값은 선택에 미사용",
+      "표준화·결측·요인 선택은 학습 구간 안에서만"
+    ],
+    "requireCompleteOrigins": true
+  },
+  "adoption": {
+    "coreRule": "후보 평균 가격 오차율 < 운영 AND 후보 D+20 상위5 순위 적중 ≥ 운영",
+    "gates": {
+      "leakage": {
+        "rule": "futureTraining=0 AND futureTargetsInSelection=0"
+      },
+      "dataQuality": {
+        "rule": "운영과 같은 입력 해시(같은 가격 빈티지) · 같은 난수 · 같은 종목·목표일"
+      },
+      "direction": {
+        "rule": "후보 D+20 방향 정답률 ≥ 운영 − 0.01"
+      },
+      "coverage": {
+        "rule": "후보 80% 띠 실제 담김이 [0.70, 0.90] 안이고 |담김−0.80| ≤ |운영 담김−0.80| + 0.03"
+      },
+      "interval": {
+        "rule": "후보 평균 interval score(출발가 대비) ≤ 운영 × 1.02"
+      },
+      "brier": {
+        "rule": "후보 평균 Brier ≤ 운영 + 0.01"
+      }
+    },
+    "uncertainty": {
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "rule": "P(후보 오차 < 운영 오차) ≥ 0.80 AND 6블록 중 후보가 더 나은 블록 ≥ 4"
+    },
+    "note": "네 숫자만 우연히 좋아진 후보는 채택하지 않는다 · 자료 부족이면 검증 대기"
+  },
+  "liveObservation": {
+    "minScoredDates": 10,
+    "horizonsUsed": [
+      1,
+      5
+    ],
+    "rule": "같은 날짜·종목 셀에서 후보(그림자 발행) 평균 오차율(1·5일) ≤ 운영 AND 방향 정답률 ≥ 운영 − 0.02",
+    "maxTradingDaysWithoutDecision": 40,
+    "shadowPaths": 20000,
+    "shadowSeed": 20260917,
+    "note": "과거 검증을 통과한 후보만 운영과 나란히 매일 그림자 발행 · 사전 기준 충족 시 자동 승격 · 기준 미충족·증거 부족이면 보류"
+  },
+  "rollback": {
+    "window": {
+      "scoredDates": 5,
+      "horizonsUsed": [
+        1,
+        5
+      ]
+    },
+    "triggers": [
+      {
+        "id": "live_degradation",
+        "rule": "최근 5 채점일에서 현재 운영 버전의 평균 오차율(1·5일)이 직전 검증 버전(그림자)의 1.25배를 넘고 방향 정답률도 낮으면 복귀"
+      },
+      {
+        "id": "computation_error",
+        "rule": "발행 계산에서 예외가 나면 직전 검증 버전으로 즉시 복귀"
+      },
+      {
+        "id": "data_anomaly",
+        "rule": "52종목 미확정이면 발행 보류(복귀 아님) · 원자료를 바꾸지 않음"
+      }
+    ],
+    "note": "복귀 시각·이유·대상 발행본을 기록 · 교체와 복귀는 이후 발행본에만 적용"
+  },
+  "states": [
+    "후보 생성",
+    "과거 검증",
+    "실전 관찰",
+    "채택",
+    "기각",
+    "되돌림",
+    "변경 없음",
+    "검증 대기"
+  ],
+  "immutability": {
+    "evaluationRulesEditableByModel": false,
+    "rawDataEditableByModel": false,
+    "configChangesRequireNewVersionFile": true
+  }
+}

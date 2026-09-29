@@ -1,0 +1,4513 @@
+{
+  "schema": "atlas-press-history-1.0",
+  "createdAt": "2026-09-26T17:34:32+00:00",
+  "researchWindow": {
+    "from": "2016-09-17",
+    "to": "2026-09-16",
+    "calendarYear2016ContextIncludesPreWindow": true
+  },
+  "forecastWindow": {
+    "from": "2026-09-17",
+    "to": "2026-10-30"
+  },
+  "status": "partial_historical_evidence_not_daily_training_data",
+  "liveModelApplied": false,
+  "trustProbability": null,
+  "counts": {
+    "sources": 20,
+    "reportedObservations": 160,
+    "marketObservations": 43,
+    "sectorObservations": 102,
+    "companyObservations": 15,
+    "companiesWithDirectObservations": 10,
+    "universeCompanies": 52,
+    "computedAnnualComparisons": 18
+  },
+  "sources": [
+    {
+      "id": "A16",
+      "publisher": "아시아경제",
+      "publishedAt": "2016-12-30T08:53:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://view.asiae.co.kr/article/2016123008081793354",
+      "label": "2016 연말 시장·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "2016년 전체 등락률은 연구 시작일 이전을 포함하는 참고값."
+    },
+    {
+      "id": "E16",
+      "publisher": "이투데이",
+      "publishedAt": "2016-12-29T17:22:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.etoday.co.kr/news/view/1434420?trc=view_joinnews",
+      "label": "2016 업종 등락률",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "Y17",
+      "publisher": "연합뉴스",
+      "publishedAt": "2018-01-02T06:09:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/amp/view/AKR20171229162600008",
+      "label": "2017 연말 지수·종목 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "2017년 결과이나 기사 공개일은 2018-01-02."
+    },
+    {
+      "id": "F17",
+      "publisher": "한국금융신문",
+      "publishedAt": "2017-12-28T17:33:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.fntimes.com/html/view.php?ud=201712281722212279d6f793b310_18",
+      "label": "2017 업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "Y18",
+      "publisher": "연합뉴스",
+      "publishedAt": "2018-12-28T18:52:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/amp/view/AKR20181228142951008",
+      "label": "2018 연말 지수 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "N18",
+      "publisher": "뉴스웨이",
+      "publishedAt": "2018-12-28T17:46:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.newsway.co.kr/news/view?ud=2018122817431787155",
+      "label": "2018 코스닥 업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "Y19",
+      "publisher": "연합뉴스",
+      "publishedAt": "2019-12-30T17:33:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/view/AKR20191230145600008",
+      "label": "2019 코스피 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "A19",
+      "publisher": "아시아경제",
+      "publishedAt": "2019-12-30T16:44:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.asiae.co.kr/article/2019123016442265701",
+      "label": "2019 코스피 업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "시가총액 문장의 단위 오류는 수집 대상에서 제외."
+    },
+    {
+      "id": "YK19",
+      "publisher": "연합뉴스",
+      "publishedAt": "2019-12-30T19:08:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/amp/view/AKR20191230143751008",
+      "label": "2019 코스닥 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "Y20",
+      "publisher": "연합뉴스",
+      "publishedAt": "2020-12-30T19:53:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/amp/view/AKR20201230152351002",
+      "label": "2020 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "Y21",
+      "publisher": "연합뉴스",
+      "publishedAt": "2021-12-30T17:55:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/view/AKR20211230156800002",
+      "label": "2021 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "A22",
+      "publisher": "아주경제",
+      "publishedAt": "2022-12-29T18:05:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.ajunews.com/view/20221229175157208",
+      "label": "2022 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "시가총액·연속 상승 연수의 기사 내 불일치는 채택하지 않음."
+    },
+    {
+      "id": "M23",
+      "publisher": "매일경제 / 연합뉴스",
+      "publishedAt": "2023-12-28T17:00:01+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://stock.mk.co.kr/news/view/325188",
+      "label": "2023 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "연합뉴스 전재. 별도의 독립 관측으로 세지 않음. 수정 17:17:27."
+    },
+    {
+      "id": "Y24",
+      "publisher": "연합뉴스",
+      "publishedAt": "2024-12-30T17:00:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.yna.co.kr/view/AKR20241230114900008",
+      "label": "2024 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "H25",
+      "publisher": "한국경제",
+      "publishedAt": "2025-12-30T18:17:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.hankyung.com/article/2025123033346",
+      "label": "2025 지수·업종 결산",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "수정 18:23. 가격 등락률과 시가총액 증가율을 구분."
+    },
+    {
+      "id": "N25",
+      "publisher": "뉴스핌",
+      "publishedAt": "2025-12-30T16:18:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.newspim.com/news/view/20251230000883",
+      "label": "2025 폐장일 양대 지수",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": ""
+    },
+    {
+      "id": "M26",
+      "publisher": "머니투데이",
+      "publishedAt": "2026-09-16T16:27:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.mt.co.kr/stock/2026/09/16/2026091616025991201",
+      "label": "2026-09-16 마감 지수",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "본문에 붙는 현재 주가 위젯은 역사적 종가로 수집하지 않음."
+    },
+    {
+      "id": "N26",
+      "publisher": "뉴스핌",
+      "publishedAt": "2026-09-16T15:50:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://web3.newspim.com/news/view/20260916000937",
+      "label": "2026-09-16 종목별 등락",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "코스닥 전일 대비 포인트가 본문·사진 설명에서 불일치. 종가와 등락률만 사용."
+    },
+    {
+      "id": "A26",
+      "publisher": "아주경제",
+      "publishedAt": "2026-07-02T15:08:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.ajunews.com/view/20260702150504734",
+      "label": "2026 상반기 지수·업종·종목",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "전년 말 대비 6월 말의 반기 자료. 연간·일간 자료와 합치지 않음."
+    },
+    {
+      "id": "K26",
+      "publisher": "국민일보",
+      "publishedAt": "2026-07-05T18:36:00+09:00",
+      "observedAt": "2026-09-26T17:34:32+00:00",
+      "url": "https://www.kmib.co.kr/article/view.asp?arcid=1783243262",
+      "label": "2026 상반기 코스피 교차 대조",
+      "verification": "article_body_read",
+      "archivedOriginalAtPublicationVerified": false,
+      "notes": "수정 23:53. 삼성전기 회사 수익률의 시작 가격은 1/2로 설명되어 기간 기준이 달라질 수 있음."
+    }
+  ],
+  "observations": [
+    {
+      "id": "press-0001",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2016-12-29",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2026.46,
+      "unit": "point",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0002",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 3.3,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": true,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0003",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2016-12-29",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 631.44,
+      "unit": "point",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0004",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2017-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2467.49,
+      "unit": "point",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0005",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 21.76,
+      "unit": "percent",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0006",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2017-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 798.42,
+      "unit": "point",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0007",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 26.44,
+      "unit": "percent",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0008",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2018-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2041.04,
+      "unit": "point",
+      "sourceIds": [
+        "Y18"
+      ],
+      "availableAt": "2018-12-28T18:52:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0009",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -17.28,
+      "unit": "percent",
+      "sourceIds": [
+        "Y18"
+      ],
+      "availableAt": "2018-12-28T18:52:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0010",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2018-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 675.65,
+      "unit": "point",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0011",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -15.4,
+      "unit": "percent",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0012",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2019-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2197.67,
+      "unit": "point",
+      "sourceIds": [
+        "Y19"
+      ],
+      "availableAt": "2019-12-30T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0013",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 7.67,
+      "unit": "percent",
+      "sourceIds": [
+        "Y19"
+      ],
+      "availableAt": "2019-12-30T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0014",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2019-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 669.83,
+      "unit": "point",
+      "sourceIds": [
+        "YK19"
+      ],
+      "availableAt": "2019-12-30T19:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0015",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -0.9,
+      "unit": "percent",
+      "sourceIds": [
+        "YK19"
+      ],
+      "availableAt": "2019-12-30T19:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0016",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2020-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2873.47,
+      "unit": "point",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0017",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 30.8,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0018",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2020-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 968.42,
+      "unit": "point",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0019",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2021-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2977.65,
+      "unit": "point",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0020",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 3.6,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0021",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2021-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 1033.98,
+      "unit": "point",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0022",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2022-12-29",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2236.4,
+      "unit": "point",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0023",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -24.89,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0024",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2022-12-29",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 679.29,
+      "unit": "point",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0025",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -34.3,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0026",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2023-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2655.28,
+      "unit": "point",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0027",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 18.73,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0028",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2023-12-28",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 866.57,
+      "unit": "point",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0029",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 27.57,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0030",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2024-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 2399.49,
+      "unit": "point",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0031",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -9.63,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0032",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2024-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 678.19,
+      "unit": "point",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0033",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -21.74,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0034",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2025-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 4214.17,
+      "unit": "point",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0035",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 75.6,
+      "unit": "percent",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "contextOnlyBeforeStudyStart": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0036",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2025-12-30",
+      "periodType": "year_end_snapshot",
+      "metric": "index_close",
+      "value": 925.47,
+      "unit": "point",
+      "sourceIds": [
+        "N25"
+      ],
+      "availableAt": "2025-12-30T16:18:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0037",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 34.7,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0038",
+      "kind": "sector_index",
+      "entity": "철강금속",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 25.3,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0039",
+      "kind": "sector_index",
+      "entity": "은행",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 21.9,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0040",
+      "kind": "sector_index",
+      "entity": "음식료",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -27.8,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0041",
+      "kind": "sector_index",
+      "entity": "섬유의복",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -22.8,
+      "unit": "percent",
+      "sourceIds": [
+        "A16"
+      ],
+      "availableAt": "2016-12-30T08:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0042",
+      "kind": "sector_index",
+      "entity": "의약품",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 62.9,
+      "unit": "percent",
+      "sourceIds": [
+        "F17"
+      ],
+      "availableAt": "2017-12-28T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0043",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 45.4,
+      "unit": "percent",
+      "sourceIds": [
+        "F17"
+      ],
+      "availableAt": "2017-12-28T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0044",
+      "kind": "sector_index",
+      "entity": "증권",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 27.7,
+      "unit": "percent",
+      "sourceIds": [
+        "F17"
+      ],
+      "availableAt": "2017-12-28T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0045",
+      "kind": "sector_index",
+      "entity": "종이목재",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -17.6,
+      "unit": "percent",
+      "sourceIds": [
+        "F17"
+      ],
+      "availableAt": "2017-12-28T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0046",
+      "kind": "sector_index",
+      "entity": "전기가스",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -11.7,
+      "unit": "percent",
+      "sourceIds": [
+        "F17"
+      ],
+      "availableAt": "2017-12-28T17:33:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0047",
+      "kind": "sector_index",
+      "entity": "오락·문화",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 24.0,
+      "unit": "percent",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0048",
+      "kind": "sector_index",
+      "entity": "반도체",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -37.0,
+      "unit": "percent",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0049",
+      "kind": "sector_index",
+      "entity": "의료·정밀기기",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -27.7,
+      "unit": "percent",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0050",
+      "kind": "sector_index",
+      "entity": "유통",
+      "periodStart": "2018-01-01",
+      "periodEnd": "2018-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -26.7,
+      "unit": "percent",
+      "sourceIds": [
+        "N18"
+      ],
+      "availableAt": "2018-12-28T17:46:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0051",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 39.9,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0052",
+      "kind": "sector_index",
+      "entity": "서비스업",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 12.9,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0053",
+      "kind": "sector_index",
+      "entity": "운수장비",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 9.8,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0054",
+      "kind": "sector_index",
+      "entity": "전기가스",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -16.6,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0055",
+      "kind": "sector_index",
+      "entity": "건설업",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -16.5,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0056",
+      "kind": "sector_index",
+      "entity": "보험업",
+      "periodStart": "2019-01-01",
+      "periodEnd": "2019-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -16.0,
+      "unit": "percent",
+      "sourceIds": [
+        "A19"
+      ],
+      "availableAt": "2019-12-30T16:44:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0057",
+      "kind": "sector_index",
+      "entity": "의약품",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 91.1,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0058",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 47.4,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0059",
+      "kind": "sector_index",
+      "entity": "화학",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 41.6,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0060",
+      "kind": "sector_index",
+      "entity": "서비스업",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 34.5,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0061",
+      "kind": "sector_index",
+      "entity": "은행",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -24.5,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0062",
+      "kind": "sector_index",
+      "entity": "섬유의복",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -11.9,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0063",
+      "kind": "sector_index",
+      "entity": "보험",
+      "periodStart": "2020-01-01",
+      "periodEnd": "2020-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -7.6,
+      "unit": "percent",
+      "sourceIds": [
+        "Y20"
+      ],
+      "availableAt": "2020-12-30T19:53:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0064",
+      "kind": "sector_index",
+      "entity": "비금속",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 29.9,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0065",
+      "kind": "sector_index",
+      "entity": "서비스업",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 16.1,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0066",
+      "kind": "sector_index",
+      "entity": "운수창고",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 15.0,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0067",
+      "kind": "sector_index",
+      "entity": "금융",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 9.7,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0068",
+      "kind": "sector_index",
+      "entity": "의약품",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -18.4,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0069",
+      "kind": "sector_index",
+      "entity": "화학",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -4.5,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0070",
+      "kind": "sector_index",
+      "entity": "유통",
+      "periodStart": "2021-01-01",
+      "periodEnd": "2021-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -3.9,
+      "unit": "percent",
+      "sourceIds": [
+        "Y21"
+      ],
+      "availableAt": "2021-12-30T17:55:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0071",
+      "kind": "sector_index",
+      "entity": "서비스업",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -42.1,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0072",
+      "kind": "sector_index",
+      "entity": "건설업",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -36.0,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0073",
+      "kind": "sector_index",
+      "entity": "전기·전자",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -30.1,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0074",
+      "kind": "sector_index",
+      "entity": "보험",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 9.7,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0075",
+      "kind": "sector_index",
+      "entity": "전기·가스",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 8.4,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0076",
+      "kind": "sector_index",
+      "entity": "음식료",
+      "periodStart": "2022-01-01",
+      "periodEnd": "2022-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 0.5,
+      "unit": "percent",
+      "sourceIds": [
+        "A22"
+      ],
+      "availableAt": "2022-12-29T18:05:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0077",
+      "kind": "sector_index",
+      "entity": "비금속광물",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 49.3,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0078",
+      "kind": "sector_index",
+      "entity": "철강금속",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 39.7,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0079",
+      "kind": "sector_index",
+      "entity": "기계",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 34.5,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0080",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 33.4,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0081",
+      "kind": "sector_index",
+      "entity": "운수장비",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 32.0,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0082",
+      "kind": "sector_index",
+      "entity": "전기가스",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -27.3,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0083",
+      "kind": "sector_index",
+      "entity": "섬유의복",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -27.1,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0084",
+      "kind": "sector_index",
+      "entity": "의료정밀",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -24.7,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0085",
+      "kind": "sector_index",
+      "entity": "종이목재",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -13.2,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0086",
+      "kind": "sector_index",
+      "entity": "보험",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 25.24,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0087",
+      "kind": "sector_index",
+      "entity": "운송장비/부품",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 20.15,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0088",
+      "kind": "sector_index",
+      "entity": "금융",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 18.4,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0089",
+      "kind": "sector_index",
+      "entity": "통신",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 14.87,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0090",
+      "kind": "sector_index",
+      "entity": "증권",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 13.04,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0091",
+      "kind": "sector_index",
+      "entity": "화학",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -34.66,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0092",
+      "kind": "sector_index",
+      "entity": "섬유/의류",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -27.3,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0093",
+      "kind": "sector_index",
+      "entity": "전기/전자",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -22.76,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0094",
+      "kind": "sector_index",
+      "entity": "의료/정밀기기",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -20.27,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0095",
+      "kind": "sector_index",
+      "entity": "금속",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -18.83,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0096",
+      "kind": "sector_index",
+      "entity": "기계·장비",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 133.7,
+      "unit": "percent",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0097",
+      "kind": "sector_index",
+      "entity": "전기·전자",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 127.9,
+      "unit": "percent",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0098",
+      "kind": "sector_index",
+      "entity": "전기·가스",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 103.5,
+      "unit": "percent",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0099",
+      "kind": "sector_index",
+      "entity": "증권",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 99.9,
+      "unit": "percent",
+      "sourceIds": [
+        "H25"
+      ],
+      "availableAt": "2025-12-30T18:17:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0100",
+      "kind": "sector_index",
+      "entity": "운수창고",
+      "periodStart": "2016-01-01",
+      "periodEnd": "2016-12-29",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -13.9,
+      "unit": "percent",
+      "sourceIds": [
+        "E16"
+      ],
+      "availableAt": "2016-12-29T17:22:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": true
+    },
+    {
+      "id": "press-0101",
+      "kind": "sector_index",
+      "entity": "일반전기전자",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 107.7,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0102",
+      "kind": "sector_index",
+      "entity": "반도체",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 56.5,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0103",
+      "kind": "sector_index",
+      "entity": "인터넷",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 29.6,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0104",
+      "kind": "sector_index",
+      "entity": "의료정밀기기",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 29.4,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0105",
+      "kind": "sector_index",
+      "entity": "운송",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -63.7,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0106",
+      "kind": "sector_index",
+      "entity": "방송서비스",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -21.5,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0107",
+      "kind": "sector_index",
+      "entity": "섬유의류",
+      "periodStart": "2023-01-01",
+      "periodEnd": "2023-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -21.3,
+      "unit": "percent",
+      "sourceIds": [
+        "M23"
+      ],
+      "availableAt": "2023-12-28T17:00:01+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0108",
+      "kind": "sector_index",
+      "entity": "일반서비스",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 13.05,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0109",
+      "kind": "sector_index",
+      "entity": "제약",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 11.68,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0110",
+      "kind": "sector_index",
+      "entity": "섬유/의류",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -51.3,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0111",
+      "kind": "sector_index",
+      "entity": "전기/전자",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -49.31,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0112",
+      "kind": "sector_index",
+      "entity": "금융",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -43.62,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0113",
+      "kind": "sector_index",
+      "entity": "기계/장비",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -38.97,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0114",
+      "kind": "sector_index",
+      "entity": "기타제조",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-12-30",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": -34.88,
+      "unit": "percent",
+      "sourceIds": [
+        "Y24"
+      ],
+      "availableAt": "2024-12-30T17:00:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0115",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 200.5,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0116",
+      "kind": "sector_index",
+      "entity": "오락·문화",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -35.51,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0117",
+      "kind": "sector_index",
+      "entity": "종이·목재",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -25.12,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0118",
+      "kind": "sector_index",
+      "entity": "전기·가스",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -20.37,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0119",
+      "kind": "sector_index",
+      "entity": "비금속",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -16.17,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0120",
+      "kind": "sector_index",
+      "entity": "제약",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -14.15,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0121",
+      "kind": "sector_index",
+      "entity": "금속",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -0.79,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0122",
+      "kind": "sector_index",
+      "entity": "운송·창고",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -1.61,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0123",
+      "kind": "sector_index",
+      "entity": "음식료·담배",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 0.14,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0124",
+      "kind": "sector_index",
+      "entity": "비금속",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 56.23,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0125",
+      "kind": "sector_index",
+      "entity": "기계·장비",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 50.39,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0126",
+      "kind": "sector_index",
+      "entity": "전기전자",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 24.56,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0127",
+      "kind": "sector_index",
+      "entity": "오락·문화",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -41.78,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0128",
+      "kind": "sector_index",
+      "entity": "출판·매체복제",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -36.54,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0129",
+      "kind": "sector_index",
+      "entity": "섬유·의류",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -31.27,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0130",
+      "kind": "sector_index",
+      "entity": "IT서비스",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -27.46,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0131",
+      "kind": "sector_index",
+      "entity": "제약",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -20.08,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0132",
+      "kind": "sector_index",
+      "entity": "정보기술",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 241.04,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI200",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0133",
+      "kind": "sector_index",
+      "entity": "헬스케어",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -19.6,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI200",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0134",
+      "kind": "sector_index",
+      "entity": "철강·소재",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -18.58,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSPI200",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0135",
+      "kind": "sector_index",
+      "entity": "정보기술",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 74.29,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ150",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0136",
+      "kind": "sector_index",
+      "entity": "커뮤니케이션서비스",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -33.48,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ150",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0137",
+      "kind": "sector_index",
+      "entity": "자유소비재",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -28.94,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ150",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0138",
+      "kind": "sector_index",
+      "entity": "헬스케어",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -17.8,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "indexFamily": "KOSDAQ150",
+      "officialIndexCode": null,
+      "classificationContinuityVerified": false,
+      "contextOnlyBeforeStudyStart": false
+    },
+    {
+      "id": "press-0139",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year_end_snapshot",
+      "metric": "index_close",
+      "value": 8476.48,
+      "unit": "point",
+      "sourceIds": [
+        "K26"
+      ],
+      "availableAt": "2026-07-05T18:36:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0140",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 101.14,
+      "unit": "percent",
+      "sourceIds": [
+        "A26",
+        "K26"
+      ],
+      "availableAt": "2026-07-05T18:36:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0141",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": -1.0,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "returnBasis": "previous_year_end_to_period_end_as_reported"
+    },
+    {
+      "id": "press-0142",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily_snapshot",
+      "metric": "index_close",
+      "value": 6717.97,
+      "unit": "point",
+      "sourceIds": [
+        "M26",
+        "N26"
+      ],
+      "availableAt": "2026-09-16T16:27:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0143",
+      "kind": "market_index",
+      "entity": "KOSPI",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 1.37,
+      "unit": "percent",
+      "sourceIds": [
+        "M26",
+        "N26"
+      ],
+      "availableAt": "2026-09-16T16:27:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "returnBasis": "previous_trading_day_close"
+    },
+    {
+      "id": "press-0144",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily_snapshot",
+      "metric": "index_close",
+      "value": 815.98,
+      "unit": "point",
+      "sourceIds": [
+        "M26",
+        "N26"
+      ],
+      "availableAt": "2026-09-16T16:27:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false
+    },
+    {
+      "id": "press-0145",
+      "kind": "market_index",
+      "entity": "KOSDAQ",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 0.44,
+      "unit": "percent",
+      "sourceIds": [
+        "M26",
+        "N26"
+      ],
+      "availableAt": "2026-09-16T16:27:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "returnBasis": "previous_trading_day_close"
+    },
+    {
+      "id": "press-0146",
+      "kind": "company",
+      "entity": "삼성전자",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 41.4,
+      "unit": "percent",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "005930",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0147",
+      "kind": "company",
+      "entity": "삼성바이오로직스",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 145.7,
+      "unit": "percent",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "207940",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0148",
+      "kind": "company",
+      "entity": "LG전자",
+      "periodStart": "2017-01-01",
+      "periodEnd": "2017-12-28",
+      "periodType": "annual",
+      "metric": "price_return_pct",
+      "value": 105.43,
+      "unit": "percent",
+      "sourceIds": [
+        "Y17"
+      ],
+      "availableAt": "2018-01-02T06:09:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "066570",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0149",
+      "kind": "company",
+      "entity": "삼성전자",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 178.57,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "005930",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0150",
+      "kind": "company",
+      "entity": "삼성전기",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 756.47,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "009150",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0151",
+      "kind": "company",
+      "entity": "대한광통신",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "periodType": "half_year",
+      "metric": "price_return_pct",
+      "value": 519.14,
+      "unit": "percent",
+      "sourceIds": [
+        "A26"
+      ],
+      "availableAt": "2026-07-02T15:08:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "010170",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0152",
+      "kind": "company",
+      "entity": "삼성전자",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 2.01,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "005930",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0153",
+      "kind": "company",
+      "entity": "삼성전기",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 4.86,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "009150",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0154",
+      "kind": "company",
+      "entity": "삼성물산",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 1.87,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "028260",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0155",
+      "kind": "company",
+      "entity": "KB금융",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 0.51,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "105560",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0156",
+      "kind": "company",
+      "entity": "LG에너지솔루션",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": 0.41,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "373220",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0157",
+      "kind": "company",
+      "entity": "현대차",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": -1.36,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "005380",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0158",
+      "kind": "company",
+      "entity": "삼성바이오로직스",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": -0.21,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "207940",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0159",
+      "kind": "company",
+      "entity": "알테오젠",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily",
+      "metric": "price_return_pct",
+      "value": -1.73,
+      "unit": "percent",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "196170",
+      "corporateActionAdjustmentVerified": false,
+      "returnBasis": "article_period_as_reported; exact_adjustment_basis_unverified"
+    },
+    {
+      "id": "press-0160",
+      "kind": "company",
+      "entity": "삼성전자",
+      "periodStart": null,
+      "periodEnd": "2026-09-16",
+      "periodType": "daily_snapshot",
+      "metric": "close_price",
+      "value": 253500,
+      "unit": "KRW",
+      "sourceIds": [
+        "N26"
+      ],
+      "availableAt": "2026-09-16T15:50:00+09:00",
+      "evidenceLevel": "press_reported",
+      "pointInTimeOriginalVerified": false,
+      "eligibleForDailyModel": false,
+      "stockCode": "005930",
+      "corporateActionAdjustmentVerified": false
+    }
+  ],
+  "derivedComparisons": [
+    {
+      "entity": "KOSPI",
+      "periodStart": "2016-12-29",
+      "periodEnd": "2017-12-28",
+      "metric": "price_return_pct",
+      "value": 21.763568,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0001",
+        "press-0004"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2017-12-28",
+      "periodEnd": "2018-12-28",
+      "metric": "price_return_pct",
+      "value": -17.282745,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0004",
+        "press-0008"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2018-12-28",
+      "periodEnd": "2019-12-30",
+      "metric": "price_return_pct",
+      "value": 7.674029,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0008",
+        "press-0012"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2019-12-30",
+      "periodEnd": "2020-12-30",
+      "metric": "price_return_pct",
+      "value": 30.75075,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0012",
+        "press-0016"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2020-12-30",
+      "periodEnd": "2021-12-30",
+      "metric": "price_return_pct",
+      "value": 3.625582,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0016",
+        "press-0019"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2021-12-30",
+      "periodEnd": "2022-12-29",
+      "metric": "price_return_pct",
+      "value": -24.893792,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0019",
+        "press-0022"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2022-12-29",
+      "periodEnd": "2023-12-28",
+      "metric": "price_return_pct",
+      "value": 18.730102,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0022",
+        "press-0026"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2023-12-28",
+      "periodEnd": "2024-12-30",
+      "metric": "price_return_pct",
+      "value": -9.633259,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0026",
+        "press-0030"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSPI",
+      "periodStart": "2024-12-30",
+      "periodEnd": "2025-12-30",
+      "metric": "price_return_pct",
+      "value": 75.627738,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0030",
+        "press-0034"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2016-12-29",
+      "periodEnd": "2017-12-28",
+      "metric": "price_return_pct",
+      "value": 26.444318,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0003",
+        "press-0006"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2017-12-28",
+      "periodEnd": "2018-12-28",
+      "metric": "price_return_pct",
+      "value": -15.376619,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0006",
+        "press-0010"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2018-12-28",
+      "periodEnd": "2019-12-30",
+      "metric": "price_return_pct",
+      "value": -0.861393,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0010",
+        "press-0014"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2019-12-30",
+      "periodEnd": "2020-12-30",
+      "metric": "price_return_pct",
+      "value": 44.576982,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0014",
+        "press-0018"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2020-12-30",
+      "periodEnd": "2021-12-30",
+      "metric": "price_return_pct",
+      "value": 6.76979,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0018",
+        "press-0021"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2021-12-30",
+      "periodEnd": "2022-12-29",
+      "metric": "price_return_pct",
+      "value": -34.303371,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0021",
+        "press-0024"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2022-12-29",
+      "periodEnd": "2023-12-28",
+      "metric": "price_return_pct",
+      "value": 27.569963,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0024",
+        "press-0028"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2023-12-28",
+      "periodEnd": "2024-12-30",
+      "metric": "price_return_pct",
+      "value": -21.738579,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0028",
+        "press-0032"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    },
+    {
+      "entity": "KOSDAQ",
+      "periodStart": "2024-12-30",
+      "periodEnd": "2025-12-30",
+      "metric": "price_return_pct",
+      "value": 36.461759,
+      "formula": "100*(end_close/start_close-1)",
+      "inputObservationIds": [
+        "press-0032",
+        "press-0036"
+      ],
+      "evidenceLevel": "computed_from_press_reported_closes",
+      "eligibleForDailyModel": false
+    }
+  ],
+  "stockCoverage": [
+    {
+      "stockCode": "005930",
+      "name": "삼성전자",
+      "atlasSectorLabel": "반도체와반도체장비",
+      "directCompanyObservationIds": [
+        "press-0146",
+        "press-0149",
+        "press-0152",
+        "press-0160"
+      ],
+      "directCompanyObservationCount": 4,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "009150",
+      "name": "삼성전기",
+      "atlasSectorLabel": "전자장비와기기",
+      "directCompanyObservationIds": [
+        "press-0150",
+        "press-0153"
+      ],
+      "directCompanyObservationCount": 2,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "373220",
+      "name": "LG에너지솔루션",
+      "atlasSectorLabel": "전기제품",
+      "directCompanyObservationIds": [
+        "press-0156"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "005380",
+      "name": "현대차",
+      "atlasSectorLabel": "자동차",
+      "directCompanyObservationIds": [
+        "press-0157"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "207940",
+      "name": "삼성바이오로직스",
+      "atlasSectorLabel": "제약",
+      "directCompanyObservationIds": [
+        "press-0147",
+        "press-0158"
+      ],
+      "directCompanyObservationCount": 2,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "105560",
+      "name": "KB금융",
+      "atlasSectorLabel": "은행",
+      "directCompanyObservationIds": [
+        "press-0155"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "028260",
+      "name": "삼성물산",
+      "atlasSectorLabel": "복합기업",
+      "directCompanyObservationIds": [
+        "press-0154"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "032830",
+      "name": "삼성생명보험",
+      "atlasSectorLabel": "생명보험",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "012450",
+      "name": "한화에어로스페이스",
+      "atlasSectorLabel": "우주항공과국방",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "034020",
+      "name": "두산에너빌리티",
+      "atlasSectorLabel": "기계",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "329180",
+      "name": "HD현대중공업",
+      "atlasSectorLabel": "조선",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "034730",
+      "name": "SK",
+      "atlasSectorLabel": "석유와가스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "012330",
+      "name": "현대모비스",
+      "atlasSectorLabel": "자동차부품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "066570",
+      "name": "LG전자",
+      "atlasSectorLabel": "전자제품",
+      "directCompanyObservationIds": [
+        "press-0148"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "035420",
+      "name": "NAVER",
+      "atlasSectorLabel": "양방향미디어와서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "010120",
+      "name": "LS ELECTRIC",
+      "atlasSectorLabel": "전기장비",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "000810",
+      "name": "삼성화재",
+      "atlasSectorLabel": "손해보험",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "005490",
+      "name": "POSCO홀딩스",
+      "atlasSectorLabel": "철강",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "010130",
+      "name": "고려아연",
+      "atlasSectorLabel": "비철금속",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "138040",
+      "name": "메리츠금융지주",
+      "atlasSectorLabel": "증권",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "015760",
+      "name": "한국전력",
+      "atlasSectorLabel": "전기유틸리티",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "011200",
+      "name": "HMM",
+      "atlasSectorLabel": "해운사",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "051910",
+      "name": "LG화학",
+      "atlasSectorLabel": "화학",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "017670",
+      "name": "SK텔레콤",
+      "atlasSectorLabel": "무선통신서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "033780",
+      "name": "KT&G",
+      "atlasSectorLabel": "담배",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "196170",
+      "name": "알테오젠",
+      "atlasSectorLabel": "생물공학",
+      "directCompanyObservationIds": [
+        "press-0159"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "018260",
+      "name": "삼성에스디에스",
+      "atlasSectorLabel": "IT서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "086280",
+      "name": "현대글로비스",
+      "atlasSectorLabel": "항공화물운송과물류",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "000720",
+      "name": "현대건설",
+      "atlasSectorLabel": "건설",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "278470",
+      "name": "에이피알",
+      "atlasSectorLabel": "화장품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "030200",
+      "name": "KT",
+      "atlasSectorLabel": "다각화된통신서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "003490",
+      "name": "대한항공",
+      "atlasSectorLabel": "항공사",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "047050",
+      "name": "포스코인터내셔널",
+      "atlasSectorLabel": "무역회사와판매업체",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "003230",
+      "name": "삼양식품",
+      "atlasSectorLabel": "식품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "259960",
+      "name": "크래프톤",
+      "atlasSectorLabel": "게임엔터테인먼트",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "021240",
+      "name": "코웨이",
+      "atlasSectorLabel": "가정용기기와용품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "352820",
+      "name": "하이브",
+      "atlasSectorLabel": "방송과엔터테인먼트",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "009830",
+      "name": "한화솔루션",
+      "atlasSectorLabel": "에너지장비및서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "029780",
+      "name": "삼성카드",
+      "atlasSectorLabel": "카드",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "028300",
+      "name": "HLB",
+      "atlasSectorLabel": "건강관리장비와용품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "034220",
+      "name": "LG디스플레이",
+      "atlasSectorLabel": "디스플레이 패널",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "002380",
+      "name": "KCC",
+      "atlasSectorLabel": "건축자재",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "036460",
+      "name": "한국가스공사",
+      "atlasSectorLabel": "가스유틸리티",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "004170",
+      "name": "신세계",
+      "atlasSectorLabel": "백화점과일반상점",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "012750",
+      "name": "에스원",
+      "atlasSectorLabel": "상업서비스와공급품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "111770",
+      "name": "영원무역",
+      "atlasSectorLabel": "섬유,의류,신발,호화품",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "035250",
+      "name": "강원랜드",
+      "atlasSectorLabel": "호텔,레스토랑,레저",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "257720",
+      "name": "실리콘투",
+      "atlasSectorLabel": "인터넷과카탈로그소매",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "226950",
+      "name": "올릭스",
+      "atlasSectorLabel": "생명과학도구및서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "010170",
+      "name": "대한광통신",
+      "atlasSectorLabel": "통신장비",
+      "directCompanyObservationIds": [
+        "press-0151"
+      ],
+      "directCompanyObservationCount": 1,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "selected_press_observations"
+    },
+    {
+      "stockCode": "214370",
+      "name": "케어젠",
+      "atlasSectorLabel": "건강관리업체및서비스",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    },
+    {
+      "stockCode": "030000",
+      "name": "제일기획",
+      "atlasSectorLabel": "광고",
+      "directCompanyObservationIds": [],
+      "directCompanyObservationCount": 0,
+      "tenYearDailySeriesComplete": false,
+      "officialHistoricalSectorMapping": null,
+      "status": "no_direct_company_observation_in_this_release"
+    }
+  ],
+  "qualityIssues": [
+    {
+      "id": "Q01",
+      "issue": "2016 calendar-year returns include dates before 2016-09-17.",
+      "action": "context_only; never relabel as study-period returns"
+    },
+    {
+      "id": "Q02",
+      "issue": "Annual / half-year / daily values have different horizons.",
+      "action": "store separate periodType; never interpolate daily paths"
+    },
+    {
+      "id": "Q03",
+      "issue": "Historical articles can embed current stock-price widgets.",
+      "action": "only dated article-body historical values retained"
+    },
+    {
+      "id": "Q04",
+      "issue": "2025 sector price returns differ from market-cap growth (e.g. machinery 133.7% vs 137.3%).",
+      "action": "exclude market-cap growth from price observations",
+      "sourceIds": [
+        "H25"
+      ]
+    },
+    {
+      "id": "Q05",
+      "issue": "2019 Metro article lists electronics 40.16%, transport equipment 12.52%; other reports list 39.9% and 9.8%. Exact baseline mismatch unresolved.",
+      "action": "exclude Metro variants; retain explicitly sourced A19 observations as press research only, not certified values",
+      "candidateUrl": "https://www.metroseoul.co.kr/article/2019123000173"
+    },
+    {
+      "id": "Q06",
+      "issue": "2019 Aju article prints 2018 close as 2041.41; year-end reports give 2041.04.",
+      "action": "exclude 2041.41; use Y18 close",
+      "candidateUrl": "https://www.ajunews.com/view/20191230180604568"
+    },
+    {
+      "id": "Q07",
+      "issue": "2026-09-16 Newspim KOSDAQ point change differs between body and caption (3.58 / 3.57).",
+      "action": "exclude point change and conflicting FX statements; close 815.98 agrees with M26",
+      "sourceIds": [
+        "M26",
+        "N26"
+      ]
+    },
+    {
+      "id": "Q08",
+      "issue": "Industry labels and index families change. KOSPI, KOSDAQ, KOSPI200, KOSDAQ150 are not interchangeable.",
+      "action": "retain original labels and family; official codes/mappings remain null"
+    },
+    {
+      "id": "Q09",
+      "issue": "Article explanations are retrospective associations, not measured causal coefficients.",
+      "action": "research context only; do not convert prose to forecast drift"
+    },
+    {
+      "id": "Q10",
+      "issue": "Article publication timestamps do not prove an unchanged historical article version.",
+      "action": "record observedAt separately; historical original unverified"
+    },
+    {
+      "id": "Q11",
+      "issue": "Large 2026 H1 returns appear in Aju and Kookmin; common KRX underlying data is not independently audited. Company start-price conventions may differ.",
+      "action": "keep reported values without claiming corporate-action adjustment or independent verification",
+      "sourceIds": [
+        "A26",
+        "K26"
+      ]
+    },
+    {
+      "id": "Q12",
+      "issue": "2025-12-29 market close is not the final 2025-12-30 close.",
+      "action": "use 4214.17, not 4220.56, for year-end comparison"
+    },
+    {
+      "id": "Q13",
+      "issue": "Selected winning/losing sectors in news are not a complete unbiased panel.",
+      "action": "do not calculate cycle significance, predictive skill or 52-stock sensitivities from this sample"
+    }
+  ],
+  "limitations": [
+    "Not a complete 10-year daily index/sector/company panel.",
+    "No repeated cycle or predictive improvement has been established.",
+    "2018 sector observations here cover KOSDAQ, not KOSPI sector indices.",
+    "No sector has a verified continuous 10-year daily series in this release.",
+    "Company reactions, corporate actions, original article vintages and index membership remain unverified.",
+    "News-selected observations have selection bias.",
+    "Previously published forecasts and source ZIP are unchanged."
+  ]
+}

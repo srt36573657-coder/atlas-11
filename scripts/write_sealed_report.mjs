@@ -1,0 +1,38 @@
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {verifyStudySeal} from '../lib/sealed-manifest.mjs';
+const read=p=>fs.readFileSync(p,'utf8'),sha=x=>createHash('sha256').update(x).digest('hex');
+const b=JSON.parse(read('public/data/atlas.json'));
+const before=JSON.parse(read('reports/sealed-study/before/public/data/atlas.json'));
+const prior=new Map([before.original,...before.priorVersions,before.candidate].map(v=>[v.id,sha(JSON.stringify(v))]));
+const current=new Map([b.original,...b.priorVersions,b.candidate].map(v=>[v.id,sha(JSON.stringify(v))]));
+for(const[id,h]of prior)if(current.get(id)!==h)throw Error('기존 전망 변경: '+id);
+const release=process.argv.includes('--release');
+if(release)for(const key of Object.keys(before))if(!['sealedStudy','atlasBenchmark'].includes(key)&&JSON.stringify(before[key])!==JSON.stringify(b[key]))throw Error('봉인 시험이 기존 자료를 변경: '+key);
+if(b.input.assets.length!==52||new Set(b.input.assets.map(a=>a.code)).size!==52)throw Error('52종목 원칙 위반');
+const studies=b.sealedStudy?.studies??[];if(!studies.length||studies.some(s=>!verifyStudySeal(s).valid||s.recordCount!==104))throw Error('두 줄 시험 무결성 실패');
+const tap=read('reports/tests.tap'),count=k=>Number(tap.match(new RegExp('# '+k+' (\\d+)(?:\\s|$)'))?.[1]);
+if(!count('tests')||count('fail')!==0||count('pass')!==count('tests'))throw Error('최종 TAP 미통과');
+const stressPath='reports/sealed-study/stress.json';
+const stress=fs.existsSync(stressPath)?JSON.parse(read(stressPath)):null;
+if(!stress||stress.completedCases!==1_000_000_000||stress.failureCount!==0||stress.status!=='PASSED')throw Error('10억 건 수치 검사 미완료');
+if(stress.codeHashes['../lib/paired-score.mjs']!==sha(fs.readFileSync('lib/paired-score.mjs')))throw Error('수치 검사 이후 계산 코드 변경');
+const study=studies.at(-1),reports=b.sealedStudy.reports??[],latest=reports.at(-1);
+const report={at:new Date().toISOString(),version:'8.6.0',feature:'SEALED_COMPARISON',assets:52,records:study.recordCount,studyId:study.id,studyDigest:study.seal.digest,studyCreatedAt:study.createdAt,informationCutoff:study.informationCutoff,retrospective:true,externalTimestamp:'PENDING',priorForecastsPreserved:prior.size,originalSHA:sha(JSON.stringify(b.original)),actualAsOf:b.input.actualAsOf,reports:reports.length,latestSummary:latest?.summary??null,benchmark:b.atlasBenchmark?.status??'NOT_COLLECTED',tests:count('tests'),passed:count('pass'),failed:0,stress,priorDataUnchanged:release?true:null,liveDeployment:false,pixelBrowserVerified:false,physicalDeviceVerified:false,accuracyCertification:false};
+report.studyVersionCount=studies.length;
+report.latestStudyReportDates=new Set(reports.filter(r=>r.studyId===study.id).map(r=>r.date)).size;
+report.numericAAssets=study.validARecords;report.numericBAssets=study.validBRecords;
+report.benchmarkLastAttempt=b.atlasBenchmark?.collectionLogs?.at(-1)??null;
+const baseline=JSON.parse(read('reports/sealed-study/preservation-before.json'));
+for(const[p,h]of Object.entries(baseline.existingLibs))if(p!=='lib/service.mjs'&&sha(fs.readFileSync(p))!==h)throw Error('기존 계산/자료 모듈 변경: '+p);
+report.existingModelModulesUnchanged=true;
+for(const[p,h]of Object.entries(study.provenance.implementationHashes)){const archived='reports/sealed-study/implementations/'+h+'.mjs';if(!fs.existsSync(archived)||sha(fs.readFileSync(archived))!==h)throw Error('최신 봉인 구현 원본 누락: '+p);}
+report.latestImplementationSnapshotsVerified=true;
+fs.writeFileSync('reports/sealed-study/validation.json',JSON.stringify(report,null,2));
+if(release)fs.writeFileSync('reports/sealed-study/release-validation.json',JSON.stringify(report,null,2));
+fs.writeFileSync('public/downloads/ATLAS_Sealed_Validation.json',JSON.stringify(report,null,2));
+fs.writeFileSync('public/downloads/ATLAS_Sealed_Reports.json',JSON.stringify(reports.filter(r=>r.studyId===study.id)));
+const body=`# ATLAS 8.6 — 두 줄 봉인 비교와 날짜별 성적\n\n성적 → 봉인 시험에서52종목의9/17종가 고정A, 뉴스 중심B, 실제 종가를 비교합니다. 기존 운영 전망·진화·돌발 전망은 보존했습니다.\n\n- 저장 기록104개. 뉴스 수치 근거가 없는 B는 미산정이며0효과나 적중으로 채점하지 않습니다.\n- 같은 종목·날짜의 A/B는 같은 대칭 폭을 사용합니다. 방향·중심오차·담김·폭 점수·코스피 대비를 구분합니다.\n- 미산정·자료 미확보·가격 빈티지/기업행위 조정 부족은 정식 성적에서 제외하며, 관측 비교는 별도로 표시합니다.\n- 정보 기준9/17과 실제 생성일을 분리합니다. 역사 재구성은 당시 발행본이 아닙니다.\n- SHA256 내용 검사와 제3자 시각 인증은 다릅니다. 현재 외부 인증은 미연결/대기이며 scripts/sealed_timestamp.mjs의 준비·검증 절차를 포함했습니다. 자체 테스트 인증서는 실전 인증이 아닙니다.\n- 거래일16시 수집 경로에 별도 성적 보고서 갱신과 코스피 수집을 연결했습니다. 서버 배포/설정 없이는 정적 사이트가 자동 수집하지 않습니다.\n- 장기 목표250일은 정확도 인증 기준이 아닙니다. 이번 기간은9/17~10/30고정,10/30은1차 기록 마감입니다.\n\n## 실제 검증\n최종 기능 검사${report.tests}개 통과·실패0. 수치 대량 검사는 별도 stress 보고서의 실제 cases/count를 따릅니다. 이는 실제 주식 적중 검증 횟수가 아닙니다. 기존${prior.size}개 전망과 최초 SHA ${report.originalSHA}를 보존했습니다. 보관 공통 종가 ${report.actualAsOf}. 실제 브라우저/휴대폰 픽셀 및 실사이트 배포는 확인하지 않았습니다.\n\n## 배포\nATLAS_Evolution_Netlify.zip은 가벼운 Netlify 수동 배포용입니다. 압축을 풀고 index.html이 바로 들어있는 폴더를 올리세요. ATLAS_Netlify.zip에는 전체소스·검사·서버코드가 들어 있습니다. ZIP 배포만으로 서버 자동수집·계정로그인·외부시각인증이 연결되지는 않습니다.\n\n## 세부 자료\nATLAS_Sealed_Comparison_Plan.md, ATLAS_Sealed_Study.json, ATLAS_Sealed_Reports.json, ATLAS_Sealed_Validation.json. ATLAS_Sealed_Reports.json은 최신 봉인 시험의 보고서 모음입니다. 모든 이전 시험·수정 기록은 전체 저장 자료에 보존되며 화면에서 버전을 골라 내려받을 수 있습니다.\n`;
+fs.writeFileSync('public/downloads/ATLAS_Sealed_Guide.md',body);
+for(const file of ['README.md','VALIDATION.md']){const old=read(file),mark='\n<!-- SEALED86_HISTORY -->\n',history=old.includes(mark)?old.split(mark).slice(1).join(mark):old;fs.writeFileSync(file,body+mark+history);}
+console.log(JSON.stringify({...report,latestSummary:undefined,stress:undefined}));

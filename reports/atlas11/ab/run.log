@@ -1,0 +1,13 @@
+{"completed":10,"total":120,"origin":"2026-03-18","elapsedMs":61394}
+{"completed":20,"total":120,"origin":"2026-04-01","elapsedMs":110003}
+{"completed":30,"total":120,"origin":"2026-04-15","elapsedMs":170953}
+{"completed":40,"total":120,"origin":"2026-04-29","elapsedMs":219132}
+{"completed":50,"total":120,"origin":"2026-05-15","elapsedMs":279782}
+{"completed":60,"total":120,"origin":"2026-06-01","elapsedMs":328320}
+{"completed":70,"total":120,"origin":"2026-06-16","elapsedMs":390736}
+{"completed":80,"total":120,"origin":"2026-06-30","elapsedMs":440200}
+{"completed":90,"total":120,"origin":"2026-07-14","elapsedMs":503145}
+{"completed":100,"total":120,"origin":"2026-07-29","elapsedMs":551269}
+{"completed":110,"total":120,"origin":"2026-08-12","elapsedMs":614808}
+{"completed":120,"total":120,"origin":"2026-08-27","elapsedMs":664824}
+{"runId":"ab-db46556a729dde8b","A":{"meanErrorPct":9.310358180102945,"rankHits":86},"B":{"meanErrorPct":9.385397528271163,"rankHits":100},"numericalGate":false,"decision":{"selected":"A","adoptedB":false,"reason":"both_predeclared_conditions_not_met","liveAdvantageProven":false}}

@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+const read=p=>JSON.parse(fs.readFileSync(p)),b=read('public/data/atlas.json'),rows=[...read('reports/rebuild52-research-a.json').assets,...read('reports/rebuild52-research-b.json').assets];
+const p='public/downloads/NEWS_RESEARCH_52.md',archive='reports/rebuild52-before/NEWS_RESEARCH_52-v6.md';
+if(!fs.existsSync(archive))fs.copyFileSync(p,archive);
+const ec=b.candidate.evidenceCoverage,clusters=new Map();for(const r of ec.rows)for(const a of r.assessments)clusters.set(a.clusterId,a.classification);
+const counts={};for(const x of clusters.values())counts[x]=(counts[x]??0)+1;
+let md=`# ATLAS 7 — 52종목 재조사와 현재 입력\n\n${b.input.newsResearch.checkedAt}\n\n52개 고유 종목을 재조사했습니다. 원문 확인·접속 실패·동적 목록 미노출·정확한 일자 미공개를 아래와 개별 JSON에 구분합니다. 모든 회사의 중요 미래 공시를 확보했다는 뜻이 아닙니다.\n\n- 표시에 연결된 사건 단계 ${b.candidate.eventGate.accepted.length}개: 시장 ${b.candidate.newsCoverage.byScope.market}, 지수 ${b.candidate.newsCoverage.byScope.index}, 업종 ${b.candidate.newsCoverage.byScope.sector}, 기업 ${b.candidate.newsCoverage.byScope.company}.\n- 중복 제외 경제 사건 ${clusters.size}개: 가격 영향 검토 후보 ${counts.price_evidence_candidate??0}, 설명용 ${counts.context_only??0}, 유보 ${counts.abstain??0}. 하나의 유상증자의 두 단계는 독립 사건 두 개가 아닙니다.\n- 기업·업종 일정 연결 ${b.input.newsResearch.assets.filter(r=>r.byScope.company+r.byScope.sector>0).length}종목. 기업 관련 일정 ${b.input.newsResearch.assets.filter(r=>r.byScope.company>0).length}종목(자회사 관련 포함).\n- 지정한 7종목의 확정 날짜는 여전히 미확보: SK, POSCO홀딩스, 고려아연, 메리츠금융지주, 포스코인터내셔널, 삼성카드, 제일기획.\n- 당시 가격 빈티지·기업행위 조정·시장 예상 대비 차이·독립 검증까지 충족한 정밀 추정 사건은 0개입니다. 방향 유보·신뢰 확률 null을 유지합니다.\n\n## 이번에 추가한 근거\n\n`;
+for(const id of b.input.newsResearch.rebuild52.addedEventIds){const e=b.input.events.find(e=>e.id===id);md+=`- **${e.name}**: 실제 일정/사실 ${e.eventDate} → 그래프 설명 ${e.targetDate}. ${e.channel} [원문](${e.sources[0].url})\n`;}
+md+='\nHLB는 과거 9/27 예정 검색 후보를 기각하고 FDA의 9/23 승인 사실을 신규 기록했습니다. 기존 운영 사건을 정정한 것이 아닙니다. 코웨이 10월 계획은 정확한 날짜가 없어 미입력, 케어젠 10/4 구두 발표 검색 후보는 원문 미대조로 미입력입니다.\n\n## 52종목별 재확인\n\n| 코드 | 종목 | 현재 확인 결과 |\n|---|---|---|\n';
+for(const a of b.input.assets){const r=rows.find(r=>r.code===a.code);md+=`| ${a.code} | ${a.name} | ${(r.note??r.finding).replaceAll('|','/')} |\n`;}
+md+='\n## 자동 수집의 실제 결과\n\n52/52 종목에 최소 한 출처 요청을 시도했습니다. 264개 출처 중 199개는 DNS EAI_AGAIN, 65개는 동일 호스트 회로 차단으로 요청 유보입니다. HTTP 본문 수집 성공 0, 자동 승인 사건 0, 종료 코드 2. 별도 웹 조사에서 확인한 원문을 자동 수집 성공으로 계산하지 않습니다. 수집·검토·가격 영향 적용은 서로 다른 단계입니다.\n\n## 이전 조사 기록 보존\n\n아래는 이전 v6 조사 당시 기록입니다. 최신 상태는 위 요약과 개편 JSON을 사용합니다. 이전 복원 한계·접근 실패를 삭제하지 않습니다.\n\n'+fs.readFileSync(archive,'utf8');
+fs.writeFileSync(p,md);
+for(const n of ['rebuild52-research-a.json','rebuild52-research-a.md','rebuild52-research-b.json','rebuild52-research-b.md','rebuild52-research-b-candidates.json','numerics-10000.json','numerics-10000.md'])fs.copyFileSync('reports/'+n,'public/downloads/'+n);
+console.log(JSON.stringify({stages:b.candidate.eventGate.accepted.length,clusters:clusters.size,counts,checked:rows.length}));

@@ -1,0 +1,272 @@
+{
+  "schema": "atlas.parallel-research.v1",
+  "batch": "finance-ir-20260926",
+  "observedAt": "2026-09-26T11:40:37Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "105560",
+    "138040",
+    "029780",
+    "034730"
+  ],
+  "reviewedCount": 4,
+  "primaryScheduleConfirmedCodes": [
+    "105560"
+  ],
+  "pendingPrimaryCodes": [
+    "034730"
+  ],
+  "noNewConfirmedScheduleCodes": [
+    "138040",
+    "029780"
+  ],
+  "scopePolicy": "기업 자체 또는 근거 있는 종속회사 사건만 해당 종목에 연결. 홈페이지 열람과 행사 원문 검증은 구별. 과거 사건·다른 종목·단순 프로모션 소비자 결제 예시를 미래 가격촉매로 전환하지 않음.",
+  "assets": [
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "status": "company_authored_schedule_verified",
+      "checkedAt": "2026-09-26T11:40:37Z",
+      "note": "10/2 회장후보추천위원회·이사회 추천 절차를 KB금융이 작성·배포한 6/2 보도자료에서 확인. 임원 자격검증 통과를 전제로 하는 일정이며 회장 취임일·선임 결과 확정이 아님. 9/11 후속 회사 보도자료의 11/20 임시주총 예정과 구분. 신규 입력 권고, 가격 효과 유보.",
+      "sources": [
+        {
+          "url": "https://www.hankyung.com/article/202606023070P",
+          "name": "KB금융 작성·배포 보도자료 — 차기 회장 선임 절차 개시",
+          "role": "primary_company_authored_press_release_distributed_by_publisher",
+          "verified": "본문 10/2 추천 절차와 기사 말미 뉴스제공=KB금융, 기업이 작성하여 배포한 보도자료 표기 직접 확인",
+          "publishedAt": "2026-06-02T14:07:00+09:00",
+          "webRef": "turn404view0"
+        },
+        {
+          "url": "https://www.newswire.co.kr/newsRead.php?no=1042442",
+          "name": "KB금융 제공 9/11 후속 보도자료",
+          "role": "primary_company_press_release",
+          "verified": "후보 확정과 자격심사를 거친 11/20 임시주총 예정 직접 확인. 10/2 변경 또는 취소 명시는 발견하지 못했으며 변경 없음의 완전 증명은 아님.",
+          "publishedAt": "2026-09-11T17:31:00+09:00",
+          "webRef": "turn404view1"
+        },
+        {
+          "url": "https://kbfg.com/kor/ir/investor/list.jsp",
+          "name": "회사 IR",
+          "role": "primary_research_route",
+          "verified": "최신 실적 안내는 2026-07-23. 3분기 날짜 미확인.",
+          "webRef": "turn352view0"
+        },
+        {
+          "url": "https://kbfg.com/kor/ir/disclosure/notice/now/list.jsp",
+          "name": "회사 공고",
+          "role": "primary_research_route",
+          "verified": "최근 배당 기준일 공고는7/23, 작년10/30공고를 올해로 복사하지 않음.",
+          "webRef": "turn357view5"
+        }
+      ],
+      "followupCheck": "회사 후속9/11보도 직접 대조 및 10/2 변경·취소 검색. 최신IR·회사공고 확인. 9/15 IR 원문2건은DART502여서 이전9/21·23경과기록을 현재본문검증성공으로 덮지 않음.",
+      "failures": [
+        {
+          "url": "https://www.kbfg.com/kor/pr/press/view.htm?B=8&CONTENT=15132&QUERY=list.htm",
+          "reason": "회사 뷰 페이지에 본문 미노출. 대신 회사 작성자 명시된 한국경제 보도자료 원문 직접 대조."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915800452",
+          "reason": "502"
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260915800456",
+          "reason": "502"
+        }
+      ]
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "status": "date_not_confirmed",
+      "checkedAt": "2026-09-26T11:40:37Z",
+      "note": "9/21 자본인정채무증권 발행결정 후보를 발견했으나 전재 요약의 납입일은9/22로 현재 시점에서 이미 과거. DART 원문502여서 사실확정이나 과거모형편입에 사용하지 않음. 회사 IR행사 본문은 동적 목록이 노출되지 않아 미래 날짜 부재를 단정하지 않음. 기간 내 신규 미래 확정일 미확보.",
+      "sources": [
+        {
+          "url": "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+          "name": "회사 IR자료·행사",
+          "role": "primary_research_route",
+          "verified": "공식 페이지 접근, IR행사 데이터 본문 미노출. 행사 없음의 증거가 아님.",
+          "webRef": "turn352view1"
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/138040/official_notice",
+          "name": "최근 공시 목록",
+          "role": "secondary_discovery_only",
+          "verified": "9/21 자본인정채무증권 발행결정 및8/28자사주신탁 목록 확인.",
+          "webRef": "turn357view0"
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000379",
+          "name": "9/21 자본인정채무증권 발행결정",
+          "role": "primary_unavailable",
+          "verified": false
+        },
+        {
+          "url": "https://goinsider.kr/stock/00860332",
+          "name": "전재 요약의 납입일 확인용",
+          "role": "secondary_discovery_only",
+          "verified": "AI요약상 2026-09-22 납입. 원문 확인전 미확정 후보로만 보관.",
+          "webRef": "turn373search2"
+        }
+      ],
+      "followupCheck": "최근 공시 목록·공식 IR·회사명 및 날짜를 묶은 후속 검색 실시. 계열 증권사의 다른 IR·발행일을 지주사 자체 일정으로 섞지 않음.",
+      "failures": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000379",
+          "reason": "502"
+        },
+        {
+          "url": "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+          "reason": "동적 행사 목록 미노출"
+        }
+      ]
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "status": "date_not_confirmed",
+      "checkedAt": "2026-09-26T11:40:37Z",
+      "note": "공식 IR 일정표의 최신2026상반기 발표7/27과1분기4/24 직접 확인.10/28은2025년3분기이므로 올해입력금지.9/21채권서류는9/22발행실적보고가 후속되어 미래발행으로 세지 않음. 새2026-10월 확정실적일·기업행사 원문미확보. 소비자별 첫결제 예시날짜나 카드 프로모션의 종료일을 기업결과 발표일로 꾸미지 않음.",
+      "sources": [
+        {
+          "url": "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+          "name": "회사 IR일정표",
+          "role": "primary_research_route",
+          "verified": "2026상반기7/27,1분기4/24,2025 3분기10/28본문 직접 확인.",
+          "webRef": "turn352view2"
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/029780/official_notice",
+          "name": "최근 공시 목록",
+          "role": "secondary_discovery_only",
+          "verified": "9/22증권발행실적보고,9/21일괄신고추가서류목록. 향후실적예고없다는완전증거는아님.",
+          "webRef": "turn357view1"
+        },
+        {
+          "url": "https://www.samsungcard.com/company/introduction/history/UHPPCI0104M0.jsp",
+          "name": "회사 연혁 검색",
+          "role": "primary_search_only",
+          "verified": "카드출시 과거연혁 검색결과, 미래정확일사건근거로 채택하지 않음.",
+          "webRef": "turn407search1"
+        }
+      ],
+      "followupCheck": "올해 실적공시예고·회사 행사·출시 추가검색. 민간 예상일10/22~11/5는확정일아님.",
+      "failures": []
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "status": "candidate_pending_primary",
+      "checkedAt": "2026-09-26T11:40:37Z",
+      "note": "9/22 DART 증권신고서 접수와9/23한국금융신문에서9/29회사채수요예측·10/7발행 후보 확인. DART웹502·부모브라우저502이고KIND·공동주관사공식원문날짜대조 미확보로 확정편입유보.8/26자회사합병정정은전재상2027-01-01로범위밖이며원문접속실패도보존.",
+      "sources": [
+        {
+          "url": "https://sk-inc.com/kr/ir/irArchive.aspx",
+          "name": "SK주식회사 공식 IR자료실",
+          "role": "primary_research_route",
+          "verified": "2026최신EarningsBriefing8/14확인.",
+          "webRef": "turn354view7"
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/034730/official_notice",
+          "name": "최근 공시 목록",
+          "role": "secondary_discovery_only",
+          "verified": "9/22채무증권신고서와8/26합병정정 접수목록.",
+          "webRef": "turn357view3"
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+          "name": "9/22 채무증권신고서",
+          "role": "primary_unavailable",
+          "verified": false
+        },
+        {
+          "url": "https://www.fntimes.com/html/view.php?mobile=1&ud=202609230745252422141825007d_18",
+          "name": "한국금융신문 SK319회사채 기사",
+          "role": "secondary_date_candidate",
+          "verified": "수요예측9/29,발행10/7. 주관사SK증권·KB증권. 본문전재와검색일치.",
+          "publishedAt": "2026-09-23T11:09:45+09:00",
+          "webRef": "turn379search4"
+        },
+        {
+          "url": "https://m.newspic.kr/view.html?cp=D7tev39p&nid=2026092311094515616&pn=333",
+          "name": "한국금융신문 전재 본문",
+          "role": "secondary_date_candidate_same_article",
+          "verified": "동일기사본문 직접읽음. 독립2차검증으로세지않음.",
+          "webRef": "turn379view0"
+        },
+        {
+          "url": "https://www.kbsec.com/go.able?linkcd=m50010000",
+          "name": "공동주관사KB증권 수요예측 안내",
+          "role": "primary_research_route",
+          "verified": "웹도구가PDF안내뿐반환. 해당SK회차날짜미확인.",
+          "webRef": "turn411view0"
+        }
+      ],
+      "followupCheck": "KIND회사명·회차·발행일 검색과공동주관사KB증권공식안내 확인. 원문없으므로금리·수요예측결과·발행확정금액 생성금지.",
+      "failures": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+          "reason": "웹502, 부모브라우저도502(connection refused)"
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260826800334",
+          "reason": "웹타임아웃"
+        },
+        {
+          "url": "https://www.kbsec.com/go.able?linkcd=m50010000",
+          "reason": "동적본문회수실패,PDF설치안내만노출"
+        }
+      ],
+      "pendingDates": [
+        {
+          "date": "2026-09-29",
+          "kind": "BOND_BOOKBUILDING",
+          "confirmed": false
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "BOND_ISSUANCE",
+          "confirmed": false
+        }
+      ]
+    }
+  ],
+  "proposedEvents": [
+    {
+      "id": "REVIEW:COMPANY_GOVERNANCE_RECOMMENDATION-105560-20261002",
+      "scope": "company",
+      "codes": [
+        "105560"
+      ],
+      "title": "KB금융 회추위·이사회 회장 후보 추천 절차 예정",
+      "eventDate": "2026-10-02",
+      "targetDate": "2026-10-02",
+      "eventTime": null,
+      "publishedAt": "2026-06-02T14:07:00+09:00",
+      "firstObservedAt": "2026-09-26T11:40:37Z",
+      "availableAt": "2026-09-26T11:40:37Z",
+      "sourceUrl": "https://www.hankyung.com/article/202606023070P",
+      "sourceType": "company_authored_press_release",
+      "sourceIdentityNote": "배포처한국경제,본문말미뉴스제공=KB금융·기업작성보도자료명시",
+      "status": "official_announced_conditional_schedule",
+      "condition": "최종후보의관계법령상자격검증통과를전제로하는추천절차",
+      "followupSourceUrl": "https://www.newswire.co.kr/newsRead.php?no=1042442",
+      "channel": "지배구조·경영진후보추천일정.회장취임일이나찬반결과확정아님.가격영향입증·비교가능과거사건표본미확보로수치영향유보.",
+      "impact": "abstain",
+      "trustProbability": null
+    }
+  ],
+  "limitations": [
+    "원문완료1종목,후보원문대조보류1종목,새확정일미확보2종목.모두확보로표시하지않음.",
+    "회사홈페이지접속과이벤트원문검증을같이세지않음.",
+    "검색한후속공시가없다는사실을후속공시가전혀없다는증명으로쓰지않음.",
+    "기존연구기록과접근제한은덮어쓰지않음.",
+    "가격효과·신뢰확률·임원선임결과를새로추정하지않음."
+  ]
+}

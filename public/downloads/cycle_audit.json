@@ -1,0 +1,497 @@
+{
+  "id": "e69ccecad63156180c5f3af90b568000502f567505b5e5d5bf54388fa3aeeae8",
+  "at": "2026-09-26T16:45:05.299Z",
+  "protocol": {
+    "protocol": {
+      "id": "atlas-cycle-1.0.2",
+      "plan": "atlas-cycle-plan-1",
+      "mode": "research_only",
+      "universeSize": 52,
+      "forecastStart": "2026-09-17",
+      "forecastEnd": "2026-10-30",
+      "researchStart": "2016-09-17",
+      "parameterSelectionCutoff": "2026-09-16",
+      "trendWindows": [
+        21,
+        63,
+        126,
+        252
+      ],
+      "volatilityWindow": 63,
+      "accelerationLag": 21,
+      "exposureWindow": 252,
+      "minimumExposureRows": 126,
+      "leadLags": [
+        -20,
+        -10,
+        -5,
+        0,
+        5,
+        10,
+        20
+      ],
+      "ridgeCandidates": [
+        0.1,
+        1,
+        10
+      ],
+      "residualRidge": 1,
+      "exposureRidge": 1,
+      "exposurePenaltyBasis": "unit_variance_predictors",
+      "minimumInitialYears": 3,
+      "primaryHorizon": 20,
+      "minimumNonoverlapTrainOrigins": 36,
+      "minimumNonoverlapTestOrigins": 12,
+      "minimumInnerTrainOrigins": 18,
+      "minimumInnerTestOrigins": 6,
+      "stateThreshold": 0.6,
+      "epsilon": 1e-12,
+      "seed": 20260917,
+      "bootstrapDraws": 1000,
+      "blockLength": 20,
+      "defaultEnabled": false,
+      "trustProbability": null
+    },
+    "sha256": "cc57406844bdd60575e2b943d2b9149e116a66b9088d79e0bca660a0e782bd57"
+  },
+  "counts": {
+    "assets": 52,
+    "mapped": 0,
+    "features": 0,
+    "candidates": 0,
+    "live": 0
+  },
+  "audit": {
+    "status": "insufficient_evidence",
+    "enabled": false,
+    "trustProbability": null,
+    "draws": 1000,
+    "seed": 20260917,
+    "horizon": 20,
+    "blockOrigins": 2,
+    "independentCrossValidationCount": null,
+    "dateClusters": 0,
+    "comparisons": [],
+    "protocolHash": "cc57406844bdd60575e2b943d2b9149e116a66b9088d79e0bca660a0e782bd57",
+    "method": "paired_date_block_centered_max_statistic"
+  },
+  "models": [
+    {
+      "code": "005930",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "009150",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "373220",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "005380",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "207940",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "105560",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "028260",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "032830",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012450",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034020",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "329180",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034730",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012330",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "066570",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "035420",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010120",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "000810",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "005490",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010130",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "138040",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "015760",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "011200",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "051910",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "017670",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "033780",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "196170",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "018260",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "086280",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "000720",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "278470",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "030200",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "003490",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "047050",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "003230",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "259960",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "021240",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "352820",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "009830",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "029780",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "028300",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034220",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "002380",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "036460",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "004170",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012750",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "111770",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "035250",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "257720",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "226950",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010170",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "214370",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "030000",
+      "status": "abstain",
+      "model": null,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    }
+  ],
+  "accuracyCertified": false
+}

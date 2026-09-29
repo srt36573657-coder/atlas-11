@@ -1,0 +1,27 @@
+# ATLAS 11 하루치 실행(타이머용 · 데몬 대신) — atlas11-daily.timer 가 평일 16:00 KST 에 이 서비스를 한 번 깨운다.
+# `scheduler.mjs --today` 는 오늘이 거래일이면 하루치를 돌리고, 52 종목 미확정이면 10분마다 18:00 까지 다시 시도한 뒤 끝난다.
+# 휴일(달력의 holidays)에는 아무것도 하지 않고 바로 끝난다.
+# 설치:  sudo cp deploy/systemd/atlas11-daily.service deploy/systemd/atlas11-daily.timer /etc/systemd/system/
+#        sudo cp deploy/atlas11.env.example /etc/atlas11.env
+#        sudo systemctl daemon-reload && sudo systemctl enable --now atlas11-daily.timer
+# 확인:  systemctl list-timers atlas11-daily.timer · tail -f /var/log/atlas11/daily.log
+# 주의:  atlas11-scheduler.service(데몬)와 이 타이머를 동시에 켜지 않는다 — 둘 중 하나만.
+[Unit]
+Description=ATLAS 11 daily run (oneshot, with retries until 18:00 KST)
+Documentation=file:/opt/atlas11/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=atlas11
+WorkingDirectory=/opt/atlas11
+EnvironmentFile=/etc/atlas11.env
+Environment=NODE_ENV=production
+Environment=TZ=Asia/Seoul
+ExecStart=/usr/bin/node scripts/atlas11/scheduler.mjs --today
+TimeoutStartSec=3h
+LogsDirectory=atlas11
+StandardOutput=append:/var/log/atlas11/daily.log
+StandardError=append:/var/log/atlas11/daily.log
+NoNewPrivileges=true

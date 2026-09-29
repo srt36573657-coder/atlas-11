@@ -1,0 +1,10 @@
+{
+  "goal": "52종목 원본을 보존하며 계산 정밀도를 개선하고 미확인 뉴스 일정을 모두 검증한다. 미확보 일정은 완료 처리하지 않는다.",
+  "max_continuations": 20,
+  "max_unchanged": 5,
+  "checks": [
+    {"id":"NUMERICAL_PRECISION","requirement":"52종목 2만 경로, 첫 거래일 직접 계산, 오차 구간, 원본·이전 전망 보존","argv":["node","scripts/verify_precision.mjs","data"],"timeout":15},
+    {"id":"CURRENT_TESTS","requirement":"현재 소스와 일치하는 전체 기능·회귀 검사 통과","argv":["node","scripts/verify_precision.mjs","tests"],"timeout":10},
+    {"id":"ALL_MISSING_NEWS","requirement":"기존 미확인 13종목의 기간 내 정확한 일정을 원문·독립 검토·설치까지 완료","argv":["node","scripts/ATLAS_Research_13.mjs","check","reports/research-13-state.json","public/data/atlas.json"],"timeout":15}
+  ]
+}

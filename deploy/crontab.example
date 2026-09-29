@@ -1,0 +1,11 @@
+# ATLAS 11 — cron 으로 평일 16:00 KST 에 하루치 실행 (서버에 systemd 가 없을 때)
+# 설치: crontab -e 로 열어 아래 내용을 붙여 넣는다. 앱은 /opt/atlas11 에 두고, 로그 폴더를 먼저 만든다: sudo mkdir -p /var/log/atlas11 && sudo chown $USER /var/log/atlas11
+# 시간대: cronie 계열은 CRON_TZ 를, 그 밖은 서버 시간대를 따른다. 서버가 UTC 이고 CRON_TZ 를 모르는 cron 이면 시각을 `0 7 * * 1-5` (UTC 07:00 = KST 16:00) 로 바꾼다.
+CRON_TZ=Asia/Seoul
+TZ=Asia/Seoul
+PATH=/usr/local/bin:/usr/bin:/bin
+# (1) 하루치 한 번 — 수집기 관측 시각 도장을 위해 --now 를 반드시 붙인다(collect_naver.mjs 머리말). 공휴일은 run_daily 가 '거래일 아님'으로 스스로 끝난다.
+0 16 * * 1-5 cd /opt/atlas11 && node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_naver.mjs --now "$(date -u +\%Y-\%m-\%dT\%H:\%M:\%SZ)" >> /var/log/atlas11/daily.log 2>&1
+# (2) 재시도까지 원하면 (1) 대신 이 줄 — 52 종목 미확정이면 10분마다 18:00 까지 다시 시도하고 끝난다. --now 는 알아서 붙는다.
+# 0 16 * * 1-5 cd /opt/atlas11 && node scripts/atlas11/scheduler.mjs --today >> /var/log/atlas11/daily.log 2>&1
+# 두 줄을 동시에 켜지 않는다 — 하나만.

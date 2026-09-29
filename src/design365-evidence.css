@@ -1,0 +1,148 @@
+/* ATLAS evidence reading layer. Presentation only; no data, ordering or model changes. */
+
+/* D184: 뉴스 작업대 폭 보호 */
+.news-workbench { min-width:0; color:#382c2a; }
+
+/* D185: 선택 도구 줄바꿈 */
+.news-workbench .workbench-heading { display:flex; flex-wrap:wrap; gap:12px 20px; align-items:end; }
+
+/* D186: 선택 필드 라벨 계층 */
+.news-workbench .workbench-heading label { display:grid; gap:6px; font-size:12px; font-weight:600; color:#65554b; }
+
+/* D187: 모형 한계의 상시 가독성 */
+.news-workbench > .muted { font-size:13px; line-height:1.75; max-width:78ch; color:#65554b; }
+
+/* D188: 뉴스 선택목록 스크롤 보호 */
+.news-reading-list { overscroll-behavior-y:contain; scrollbar-gutter:stable; scroll-padding-block:12px; }
+
+/* D189: 목록 카드 읽기 간격 */
+.news-reading-list > button { display:grid; gap:7px; padding:16px; text-align:start; min-width:0; border-radius:12px; }
+
+/* D190: 목록 제목의 자연스러운 줄바꿈 */
+.news-reading-list > button b { font-size:14px; line-height:1.65; font-weight:650; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* D191: 목록 날짜와 범위 구분 */
+.news-reading-list > button small { font-size:11px; color:#65554b; font-variant-numeric:tabular-nums; line-height:1.6; }
+
+/* D192: 목록 영향값 가독성 */
+.news-reading-list > button > span { font-size:12px; line-height:1.6; font-variant-numeric:tabular-nums; }
+
+/* D193: 선택 뉴스 위치 명확화 */
+.news-reading-list > button[aria-pressed="true"] { background:#eee5d7; color:#382c2a; border-color:#94734a; box-shadow:inset 3px 0 #94734a; }
+
+/* D194: 뉴스 키보드 포커스 */
+.news-reading-list > button:focus-visible { outline:3px solid #382c2a; outline-offset:3px; }
+
+/* D195: 상세 패널 종이 표면 */
+.news-reading-detail { min-width:0; background:#fffcf6; border:1px solid #ddd1c0; border-radius:14px; padding:clamp(18px,2vw,28px); color:#382c2a; }
+
+/* D196: 상세 내부 스크롤 안정 */
+.news-reading-detail { overscroll-behavior-y:contain; scrollbar-gutter:stable; scroll-padding-block:20px; }
+
+/* D197: 뉴스 상세 제목 계층 */
+.news-reading-detail > h3 { font-size:clamp(19px,1.8vw,25px); line-height:1.5; letter-spacing:-.025em; margin:12px 0 18px; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* D198: 상세 이유 문단 읽기폭 */
+.news-reading-detail > p { max-width:68ch; font-size:14px; line-height:1.85; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* D199: 모형 비교 수치 묶음 */
+.impact-reading { display:grid; gap:8px; padding:16px; margin:18px 0; border:1px solid #d7c8b2; border-radius:10px; background:#f6f2e9; }
+
+/* D200: 원문 섹션 경계 */
+.news-reading-detail > h4 { margin:26px 0 12px; padding-top:18px; border-top:1px solid #e1d7c8; font-size:13px; font-weight:700; }
+
+/* D201: 원문 링크 카드 */
+.news-reading-detail .source-card { display:block; padding:13px 14px; margin-block:8px; border:1px solid #ded3c4; border-radius:9px; background:#f6f2e9; color:#382c2a; text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+
+/* D202: 원문 URL의 줄바꿈 */
+.source-card small { display:block; margin-top:5px; color:#65554b; font-size:11px; line-height:1.65; overflow-wrap:anywhere; }
+
+/* D203: 직접 근거 링크의 클릭 영역 */
+.evidence-source { display:inline-flex; flex-direction:column; gap:3px; min-height:44px; justify-content:center; max-width:100%; padding-block:5px; color:#382c2a; text-decoration:underline; text-underline-offset:3px; }
+
+/* D204: 출처 도메인 읽기 */
+.evidence-source small { font-size:11px; line-height:1.6; color:#65554b; overflow-wrap:anywhere; }
+
+/* D205: 출처 키보드 탐색 */
+:is(.evidence-source,.source-card):focus-visible { outline:3px solid #382c2a; outline-offset:3px; border-radius:4px; }
+
+/* D206: 날짜 설명 패널의 내용 보호 */
+.daily-explanation { min-width:0; color:#382c2a; overflow-wrap:anywhere; }
+
+/* D207: 선택 날짜 헤더 정렬 */
+.explanation-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+/* D208: 선택 날짜 숫자 고정 */
+.explanation-heading time { font-size:12px; font-variant-numeric:tabular-nums; color:#65554b; }
+
+/* D209: 표시 종류 태그 */
+.date-kind { display:inline-flex; align-items:center; min-height:26px; padding:3px 9px; border:1px solid #d7c8b2; border-radius:5px; background:#f6f2e9; color:#382c2a; font-size:11px; font-weight:650; }
+
+/* D210: 설명 가격값의 최소폭 */
+.daily-values > div { min-width:0; overflow-wrap:anywhere; }
+
+/* D211: 설명 가격 숫자 비교 */
+.daily-values :is(b,strong) { font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+
+/* D212: 핵심 이유 강조 */
+.daily-reason { border-inline-start:3px solid #94734a; background:#f1eade; padding:16px; margin-top:18px; border-radius:0 10px 10px 0; }
+
+/* D213: 핵심 이유 제목 대비 */
+.daily-reason > b { color:#382c2a; font-size:14px; font-weight:700; }
+
+/* D214: 이유 문장 간격 */
+.daily-reason p { font-size:13px; line-height:1.85; margin-block:10px 0; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* D215: 개별 날짜 사건 구분 */
+.daily-event { padding-block:20px; border-top:1px solid #ded3c4; margin-top:16px; }
+
+/* D216: 날짜 사건 제목 */
+.daily-event h4 { font-size:16px; line-height:1.6; margin:8px 0 12px; color:#382c2a; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* D217: 추정 한계 표시 보호 */
+.daily-reason-state { padding:12px; border:1px solid #d7c8b2; background:#f6f2e9; border-radius:8px; color:#65554b; font-size:12px; line-height:1.7; }
+
+/* D218: 계산식 펼치기 터치영역 */
+.daily-calculation > summary { min-height:44px; display:list-item; padding:11px 8px; cursor:pointer; color:#382c2a; font-size:12px; line-height:1.7; }
+
+/* D219: 펼친 계산식 패널 */
+.daily-calculation[open] { padding:0 10px 12px; margin-block:12px; border:1px solid #ded3c4; border-radius:8px; background:#fffcf6; }
+
+/* D220: 긴 방정식 스크롤 */
+.daily-calculation code { display:block; max-width:100%; overflow-x:auto; padding:10px; background:#f6f2e9; font-size:11px; line-height:1.8; white-space:normal; overflow-wrap:anywhere; }
+
+/* D221: 보조자료 열기 포커스 */
+:is(.daily-calculation,.research-drawer,.reading-guide,.news-upcoming) > summary:focus-visible { outline:3px solid #382c2a; outline-offset:3px; border-radius:4px; }
+
+/* D222: 날짜 레일 스크롤 여백 */
+.date-grid { scroll-padding-inline:12px; scrollbar-gutter:stable; overscroll-behavior-x:contain; padding-block:8px 12px; }
+
+/* D223: 날짜 선택 크기 */
+.date-cell { min-width:62px; min-height:58px; padding:9px 8px; border-radius:9px; font-variant-numeric:tabular-nums; }
+
+/* D224: 선택 날짜의 이중 표시 */
+.date-cell[aria-pressed="true"] { border-color:#94734a; box-shadow:inset 0 -3px #94734a; background:#eee5d7; color:#382c2a; }
+
+/* D225: 날짜 키보드 포커스 */
+.date-cell:focus-visible { outline:3px solid #382c2a; outline-offset:2px; }
+
+/* D226: 휴장 참고값 구분 */
+.date-cell[data-kind="holiday"] { background:#f6f2e9; border-style:dashed; color:#65554b; }
+
+/* D227: 자료 미확보의 시각적 구분 */
+.date-cell[data-kind="missing"] { border-style:dotted; color:#65554b; background:#fffcf6; }
+
+/* D228: 월 경계 표식 */
+.calendar-month { align-self:center; padding:8px 6px; color:#65554b; font-weight:700; font-size:11px; white-space:nowrap; }
+
+/* D229: 중요 뉴스 확인 헤더 */
+.focus-news-heading[data-waiting="true"] { background:#eee5d7; border-bottom:2px solid #94734a; color:#382c2a; }
+
+/* D230: 설명 내부 스크롤 명확화 */
+.focus-news-content { overscroll-behavior-y:contain; scrollbar-gutter:stable; scroll-padding-block:16px; }
+
+/* D231: 설명 영역 키보드 진입 */
+.focus-news-content:focus-visible { outline:2px solid #94734a; outline-offset:-3px; }
+
+/* Essential source/date metadata stays readable after the global cascade. */
+.source-card small,.news-reading-list>button small{font-size:12px;line-height:1.6;}

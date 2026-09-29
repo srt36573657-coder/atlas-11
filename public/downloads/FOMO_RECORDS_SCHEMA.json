@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ATLAS FOMO v2 verified-source record envelope",
+  "type": "object",
+  "required": [
+    "schema",
+    "records"
+  ],
+  "properties": {
+    "schema": {
+      "const": "atlas-fomo-records-2"
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "date",
+          "field",
+          "value",
+          "unit",
+          "sourceUrl",
+          "observedAt",
+          "snapshotHash"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[0-9]{6}$"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "field": {
+            "enum": [
+              "open",
+              "high",
+              "low",
+              "volume",
+              "turnover",
+              "retailBuy",
+              "retailSell",
+              "retailNetBuy",
+              "marginBalance",
+              "searchIndex"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshotHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "queryId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "adjustmentsVerified": {
+            "type": "boolean"
+          },
+          "availableAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "publishedAt"
+            ],
+            "properties": {
+              "publishedAt": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "required": [
+              "availableAt"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "$comment": "Runtime additionally enforces units, nonnegative fields except signed retailNetBuy, actual trading dates, cutoff, source conflicts, and queryId for relative search series. These records are observations, not forecasts or accuracy certificates."
+}

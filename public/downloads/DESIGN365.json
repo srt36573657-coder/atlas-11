@@ -1,0 +1,4926 @@
+{
+  "validation": {
+    "at": "2026-09-27T10:10:06.637Z",
+    "uiVersion": "8.1.1",
+    "engineVersion": "atlas-news-8.0.1",
+    "counts": {
+      "implemented": 310,
+      "verified_existing": 34,
+      "planned": 21
+    },
+    "checkpoints": 365,
+    "independentNewFeatures": false,
+    "unchangedEngineAndDataFiles": 60,
+    "currentTests": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "kind": "Node/jsdom built UI and worker, CSS/schema/preservation"
+    },
+    "previousFullSuite": {
+      "passed": 244,
+      "release": "8.0.1",
+      "rerun": false
+    },
+    "pixelBrowserVerified": false,
+    "liveDeployment": false,
+    "forecastDataChanged": false
+  },
+  "checkpoints": [
+    {
+      "id": "D001",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "종이색 배경",
+      "problem": "눈부신 순백 바탕",
+      "solution": "아이보리 #f6f2e9",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:9",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D002",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "와인 본문",
+      "problem": "브랜드와 본문색 불일치",
+      "solution": "와인 #382c2a",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:15",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D003",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "장식 골드",
+      "problem": "금색의 역할 혼용",
+      "solution": "마크 장식 전용 골드",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:7",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D004",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "텍스트 골드",
+      "problem": "연한 금색 본문 가독성",
+      "solution": "어두운 골드 텍스트",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:8",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D005",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "기본 표면",
+      "problem": "배경과 카드 구분 부족",
+      "solution": "따뜻한 백색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:10",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D006",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "높은 표면",
+      "problem": "표면 단계 불일치",
+      "solution": "따뜻한 밝은 표면 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:11",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D007",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "호버 표면",
+      "problem": "호버가 다른 팔레트",
+      "solution": "따뜻한 베이지",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:12",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D008",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "내부 표면",
+      "problem": "내부 데이터 띠 과한 대비",
+      "solution": "낮은 대비의 내부 면",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:13",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D009",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "주석 표면",
+      "problem": "주석과 기본면 구분 부족",
+      "solution": "주석 전용 면",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:14",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D010",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "보조 글자",
+      "problem": "보조 설명 과한 흐림",
+      "solution": "짙은 중성 갈색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:16",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D011",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "세부 글자",
+      "problem": "플레이스홀더 흐림",
+      "solution": "세부 글자 별도 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:17",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D012",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "골드 호버",
+      "problem": "링크 반응 불명확",
+      "solution": "더 진한 골드",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:19",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D013",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "반전 글자",
+      "problem": "버튼 글자 일관성 부족",
+      "solution": "밝은 반전 글자",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:20",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D014",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "면 경계",
+      "problem": "차가운 테두리",
+      "solution": "따뜻한 경계선",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:21",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D015",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "조작 경계",
+      "problem": "조작과 장식 경계 동일",
+      "solution": "더 진한 조작 테두리",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:22",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D016",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "상승 색",
+      "problem": "연한 빨강 판독성",
+      "solution": "짙은 적색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:23",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D017",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "하락 색",
+      "problem": "연한 파랑 판독성",
+      "solution": "짙은 청색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:24",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D018",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "성공 색",
+      "problem": "상태색 불일치",
+      "solution": "짙은 녹색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:25",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D019",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "차트 눈금",
+      "problem": "격자가 데이터와 경쟁",
+      "solution": "절제된 눈금 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:26",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D020",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "실제 선 색",
+      "problem": "실제 데이터 시각 위계",
+      "solution": "와인 실제선",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:29",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D021",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "전망 선 색",
+      "problem": "전망과 실제색 구별",
+      "solution": "골드 갈색 전망선",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:33",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D022",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "차트 커서 색",
+      "problem": "커서의 약한 대비",
+      "solution": "짙은 골드 커서",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:31",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D023",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "차트 범위 색",
+      "problem": "범위와 선의 구분",
+      "solution": "밝은 범위 색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:28",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D024",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "한글 글꼴 경로",
+      "problem": "Arial 우선으로 한글 환경 불일치",
+      "solution": "시스템 한글/Noto fallback",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:34",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D025",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "브랜드 영문 글꼴",
+      "problem": "본문과 브랜드 위계 혼동",
+      "solution": "로컬 세리프 브랜드 전용",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:35",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D026",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "보조 크기 단위",
+      "problem": "10px 보조정보 밀도",
+      "solution": "12px 대응 rem 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:36",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D027",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "본문 크기 단위",
+      "problem": "중복 본문크기 선언",
+      "solution": "15px 대응 rem 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:38",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D028",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "제목 유동 크기",
+      "problem": "화면 폭별 제목 단절",
+      "solution": "clamp 제목 크기",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:39",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D029",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "본문 행간",
+      "problem": "긴 설명 판독성",
+      "solution": "기본 행간 1.65",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:41",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D030",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "폰트 확대 정책",
+      "problem": "플랫폼 자동 글자 배율 불일치",
+      "solution": "100% 텍스트 조정; 줌 차단 없음",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:41",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D031",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "조작 글꼴",
+      "problem": "입력칸과 본문 글꼴 차이",
+      "solution": "조작 요소 같은 한글 스택",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:42",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D032",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "제목 줄 균형",
+      "problem": "제목 끝 외톨이 단어",
+      "solution": "지원 브라우저 균형 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:43",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D033",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "한글 단어 줄바꿈",
+      "problem": "한글 단어가 중간 절단",
+      "solution": "단어 유지+긴 토큰 비상 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:44",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D034",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "워드마크 자간",
+      "problem": "브랜드 글자 밀도",
+      "solution": ".14em 자간과 600 굵기",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:45",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D035",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "슬로건 글씨",
+      "problem": "11px 설명 가독성",
+      "solution": "12px 대응 보조 글씨",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:46",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D036",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "기존 원 배경 제거",
+      "problem": "새 마크 주변 이중 원",
+      "solution": "투명 배경과 그림자 제거",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:47",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D037",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "마크 비율",
+      "problem": "마크 이미지 늘어남",
+      "solution": "contain 비율 유지",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:48",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D038",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "섹션 제목 한글",
+      "problem": "영문 세리프와 한글 혼합",
+      "solution": "한글 시스템 제목 650 굵기",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:49",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D039",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "종목 제목",
+      "problem": "종목명 자간 과압축",
+      "solution": "-.03em와 행간1.35",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:50",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D040",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "뉴스 제목",
+      "problem": "긴 뉴스 제목 밀도",
+      "solution": "1.4 행간",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:51",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D041",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "설명 본문",
+      "problem": "문단 설명의 빽빽함",
+      "solution": "1.8 행간",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:52",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D042",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "메타정보 글씨",
+      "problem": "10px 메타정보",
+      "solution": "중요 메타정보12px 대응",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:53",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D043",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "편집 소제목",
+      "problem": "소제목 구분 부족",
+      "solution": "짙은 골드 650 굵기",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:54",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D044",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "숫자 정렬",
+      "problem": "금액자리 흔들림",
+      "solution": "tabular-nums lining-nums",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:55",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D045",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "주요 수치 굵기",
+      "problem": "숫자 위계 불일치",
+      "solution": "650 굵기와 좁은 자간",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:56",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/elements/typography/type-sets/"
+      ]
+    },
+    {
+      "id": "D046",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "링크 밑줄",
+      "problem": "색상만으로 링크 판단",
+      "solution": "고정 밑줄 두께와 오프셋",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:42",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D047",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "링크 호버",
+      "problem": "호버 반응 약함",
+      "solution": "밑줄2px와 짙은색",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:59",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D048",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "출처 URL 줄바꿈",
+      "problem": "긴 URL 넘침",
+      "solution": "anywhere 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:60",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D049",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "주요 버튼",
+      "problem": "밝은 골드 버튼 대비",
+      "solution": "와인 배경 아이보리 글자",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:61",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D050",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "주요 버튼 호버",
+      "problem": "주요 버튼 상태 구별",
+      "solution": "밝아진 와인 호버",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:62",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D051",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "키보드 포커스",
+      "problem": "포커스가 표면에 묻힘",
+      "solution": "3px 짙은 테두리+밝은 안쪽 경계",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css:67",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D052",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "선택 글자 색",
+      "problem": "드래그 선택 테마 불일치",
+      "solution": "베이지 선택면과 와인 글자",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css ::selection",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D053",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "고대비 모드",
+      "problem": "테마 포커스가 강제색에서 손실",
+      "solution": "Highlight 포커스와 ButtonFace 버튼",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css @media(forced-colors:active)",
+      "acceptance": "빌드 후 해당 선택자의 계산 스타일과 원본 선언 일치 확인",
+      "sourceUrls": []
+    },
+    {
+      "id": "D054",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "벡터 원본 마크",
+      "problem": "문자 A 임시마크",
+      "solution": "직접 작성한 A와 관측 궤도 SVG",
+      "status": "implemented",
+      "evidence": "public/atlas-mark.svg",
+      "acceptance": "SVG XML 파싱; 외부 이미지 참조 0개",
+      "sourceUrls": []
+    },
+    {
+      "id": "D055",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "마크 접근 이름",
+      "problem": "독립 이미지 의미 누락",
+      "solution": "SVG title/aria-labelledby",
+      "status": "implemented",
+      "evidence": "public/atlas-mark.svg title",
+      "acceptance": "독립 SVG title 존재; 인접 워드마크에서는 img alt 빈값 사용",
+      "sourceUrls": []
+    },
+    {
+      "id": "D056",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "마크 관측점",
+      "problem": "일반 삼각형의 식별력 부족",
+      "solution": "상단 우측 관측점과 열린 궤도",
+      "status": "implemented",
+      "evidence": "public/atlas-mark.svg circle",
+      "acceptance": "뷰박스64 안에 모든 경로 포함",
+      "sourceUrls": []
+    },
+    {
+      "id": "D057",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "작은 탭 전용 마크",
+      "problem": "큰 마크 축소시 세부 뭉침",
+      "solution": "32뷰박스 A와 점으로 간소화",
+      "status": "implemented",
+      "evidence": "public/favicon.svg",
+      "acceptance": "SVG XML 파싱; 32px판독 실화면 별도 점검",
+      "sourceUrls": []
+    },
+    {
+      "id": "D058",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "탭 반전 대비",
+      "problem": "밝은 탭에서 아이콘 소실",
+      "solution": "와인 타일·아이보리 A",
+      "status": "implemented",
+      "evidence": "public/favicon.svg rect/path",
+      "acceptance": "밝은 환경 대비 계산",
+      "sourceUrls": []
+    },
+    {
+      "id": "D059",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "브랜드 통합·첫 로딩 상태",
+      "problem": "자료 로딩 동안 정체성·상태 안내 부재",
+      "solution": "root JSX 마크 연결과 동일 팔레트 로딩 화면; 동작 줄의 모션 감소 대응",
+      "status": "implemented",
+      "evidence": "src/design365-brand.css .atlas-loading / .loading-rule / prefers-reduced-motion; root reported .brand-mark img integration",
+      "acceptance": "실제 빌드 DOM에 마크·로딩 role=status 확인; 픽셀 검수 별도",
+      "sourceUrls": []
+    },
+    {
+      "id": "D060",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "모바일 실화면 글자 검수",
+      "problem": "CSS만으로 줄바꿈 보장 불가",
+      "solution": "320/390px 제목·가격·출처줄 검수",
+      "status": "planned",
+      "evidence": "browser visual QA pending",
+      "acceptance": "가로 넘침·겹침 0건",
+      "sourceUrls": []
+    },
+    {
+      "id": "D061",
+      "area": "브랜드·타이포그래피·색상",
+      "title": "고대비 키보드 실화면",
+      "problem": "선언이 있어도 브라우저 동작 미확인",
+      "solution": "Tab 이동과 forced-colors 실화면 검사",
+      "status": "planned",
+      "evidence": "browser accessibility QA pending",
+      "acceptance": "모든 조작에 포커스 보이고 주 기능 유지",
+      "sourceUrls": []
+    },
+    {
+      "id": "D062",
+      "area": "charts",
+      "title": "차트 종이 표면",
+      "problem": "기존 흰 바탕은 주변 카드와 층위 구분이 약함",
+      "solution": "따뜻한 #fffdf9 표면 사용",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap background",
+      "acceptance": "차트 표면이 수치를 덮지 않는다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D063",
+      "area": "charts",
+      "title": "모형 선 금색 통일",
+      "problem": "장식색과 모형 선 관계가 불명확",
+      "solution": "선용 금색 #94734a 지정",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap --chart-forecast",
+      "acceptance": "모형 선의 점선 패턴은 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D064",
+      "area": "charts",
+      "title": "실제 선 잉크색",
+      "problem": "실측과 연구선을 색상으로도 구분할 필요",
+      "solution": "실측 와인 잉크색 #382c2a 지정",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap --chart-actual",
+      "acceptance": "실선 실제·점선 모형 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D065",
+      "area": "charts",
+      "title": "격자 시각 위계",
+      "problem": "격자가 가격 선과 경쟁할 수 있음",
+      "solution": "격자는 밝은 중성색으로 제한",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap --chart-grid",
+      "acceptance": "눈금 위치와 개수 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D066",
+      "area": "charts",
+      "title": "축 글자 대비",
+      "problem": "보조 숫자 대비가 낮을 수 있음",
+      "solution": "축 글자 #71655b 유지",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart svg text",
+      "acceptance": "축 숫자가 배경 위에 읽힌다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D067",
+      "area": "charts",
+      "title": "차트 테두리",
+      "problem": "차트와 주변 요약의 경계가 약함",
+      "solution": "1px 중성 테두리",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap border",
+      "acceptance": "모든 차트에 같은 경계",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D068",
+      "area": "charts",
+      "title": "차트 모서리",
+      "problem": "각진 표면이 카드와 어긋남",
+      "solution": "12px 라운드; 모바일9px",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap border-radius",
+      "acceptance": "수치 영역은 자르지 않는다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D069",
+      "area": "charts",
+      "title": "SVG 숫자 정렬",
+      "problem": "숫자 폭 차이로 읽는 리듬 불규칙",
+      "solution": "표형 숫자 사용",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap svg text font-variant-numeric",
+      "acceptance": "폰트 지원 시 날짜 숫자 폭 일관",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D070",
+      "area": "charts",
+      "title": "축 자간",
+      "problem": "기존 광역 글자 스타일이 눈금 폭에 영향",
+      "solution": "SVG 숫자 자간0으로 고정",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap svg text letter-spacing",
+      "acceptance": "부호와 숫자 자간 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D071",
+      "area": "charts",
+      "title": "실측·예측 상단 설명",
+      "problem": "상단 안내가 눈금과 같은 위계",
+      "solution": "상단 실제·예측 안내600중량",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .actual-caption",
+      "acceptance": "안내 문구를 삭제하지 않는다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D072",
+      "area": "charts",
+      "title": "끝값 강조",
+      "problem": "끝값이 선 위에 겹쳐 읽기 어려움",
+      "solution": "끝값700중량11px",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .endpoint-label",
+      "acceptance": "끝값 계산과 좌표는 동일",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D073",
+      "area": "charts",
+      "title": "끝값 배경 분리",
+      "problem": "끝값 뒤 선이 글자 획과 충돌",
+      "solution": "표면색3px 글자 외곽",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .endpoint-label paint-order",
+      "acceptance": "끝값 텍스트가 선과 구분",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D074",
+      "area": "charts",
+      "title": "뉴스 캡션 읽기",
+      "problem": "주석이 강하거나 너무 희미해질 위험",
+      "solution": "9px 보조 잉크색 지정",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .event-caption",
+      "acceptance": "캡션 내용을 그대로 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D075",
+      "area": "charts",
+      "title": "가격선 꺾임 품질",
+      "problem": "급격한 꺾임에서 접합이 거칠어짐",
+      "solution": "linejoin round",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap [data-forecast-code]",
+      "acceptance": "좌표·기울기 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D076",
+      "area": "charts",
+      "title": "실제선 끝 처리",
+      "problem": "실측 단절부가 거칠게 보일 수 있음",
+      "solution": "실제선 linecap round",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap [data-actual-path]",
+      "acceptance": "결측 구간을 연결하지 않는다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D077",
+      "area": "charts",
+      "title": "커서 클릭 투과",
+      "problem": "재생 커서가 차트 클릭을 가릴 수 있음",
+      "solution": "커서 pointer-events none",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .play-cursor",
+      "acceptance": "날짜 클릭이 원래 차트로 전달",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D078",
+      "area": "charts",
+      "title": "현재점 경계",
+      "problem": "점과 같은 색 선이 섞임",
+      "solution": "현재점 표면색1px 외곽",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .current-dot",
+      "acceptance": "점 중심 좌표 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D079",
+      "area": "charts",
+      "title": "뉴스 마커 조작 암시",
+      "problem": "작은 점이 클릭 가능한지 불명확",
+      "solution": "마커 pointer 커서",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .event-marker",
+      "acceptance": "데스크톱 포인터에서 손 모양",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D080",
+      "area": "charts",
+      "title": "뉴스 호버 반응",
+      "problem": "선택 직전 마커 피드백 약함",
+      "solution": "호버에서 외곽 두께2px",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .trend-chart .event-marker:hover circle",
+      "acceptance": "반지름·값·분류색 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D081",
+      "area": "charts",
+      "title": "차트 내부 포커스 문맥",
+      "problem": "차트 내부 조작 포커스 위치가 흐림",
+      "solution": "focus-within 외곽선",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap:focus-within",
+      "acceptance": "포커스 가능한 자식이 있을 때만 표시",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D082",
+      "area": "charts",
+      "title": "범례 분리선",
+      "problem": "범례가 그래프와 섞임",
+      "solution": "상단 테두리와 내측 여백",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-legend",
+      "acceptance": "범례 텍스트 순서는 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D083",
+      "area": "charts",
+      "title": "범례 줄바꿈",
+      "problem": "긴 한국어 범례가 카드 폭 넘침",
+      "solution": "flex 간격과 overflow-wrap",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-legend span",
+      "acceptance": "긴 범례가 부모 폭 내 줄바꿈",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D084",
+      "area": "charts",
+      "title": "호버 카드 밝은 표면",
+      "problem": "기존 어두운 카드가 밝은 테마와 충돌",
+      "solution": "아이보리 표면·와인 글자",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .hover-card",
+      "acceptance": "실제 존재하는 상세 차트 hover에 적용",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D085",
+      "area": "charts",
+      "title": "호버 카드 폭",
+      "problem": "최소200px가 좁은 화면 넘칠 가능성",
+      "solution": "min-width0 및 최대 부모−24px",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .hover-card max-width",
+      "acceptance": "작은 차트 안에 카드 수용",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D086",
+      "area": "charts",
+      "title": "호버 날짜 제목",
+      "problem": "날짜와 종목 값 구분 약함",
+      "solution": "날짜 아래 여백과 구분선",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .hover-card>b",
+      "acceptance": "날짜를 먼저 식별",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D087",
+      "area": "charts",
+      "title": "호버 값 줄바꿈",
+      "problem": "종목명과 값 긴 행이 넘침",
+      "solution": "행 flex-wrap 허용",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .chart-wrap .hover-card div",
+      "acceptance": "긴 종목명·가격이 잘리지 않음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D088",
+      "area": "charts",
+      "title": "최종 가격 조판",
+      "problem": "큰 가격의 과도한 음수자간",
+      "solution": "가격 자간−.025em 및 행간1.35",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .end-forecast b",
+      "acceptance": "원 표시와 가격을 그대로 유지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D089",
+      "area": "charts",
+      "title": "선택 날짜 캡션 정렬",
+      "problem": "라벨과 날짜가 붙어 보임",
+      "solution": "flex baseline·gap8px",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .selected-quote .quote-caption",
+      "acceptance": "좁은 화면에서는 줄바꿈",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D090",
+      "area": "charts",
+      "title": "일별 등락 위계",
+      "problem": "선택 가격 대비 등락 설명이 약함",
+      "solution": "등락 글자700중량",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .quote-value>[data-selected-change]",
+      "acceptance": "기존 상승빨강·하락파랑 보존",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D091",
+      "area": "charts",
+      "title": "출발점 읽기",
+      "problem": "출발점 숫자와 근거가 답답함",
+      "solution": "표형숫자·1.55행간·구분선색",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: .forecast-origin b",
+      "acceptance": "출발 종가 자체 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D092",
+      "area": "charts",
+      "title": "모션 감수성",
+      "problem": "마커 hover 애니메이션 불필요할 수 있음",
+      "solution": "감소 모션에서 transition none",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: @media prefers-reduced-motion",
+      "acceptance": "운영체제 설정을 따른다",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D093",
+      "area": "charts",
+      "title": "강제 색상 모드",
+      "problem": "강제 대비에서 표면·텍스트 소실 가능",
+      "solution": "Canvas와 CanvasText 사용",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: @media forced-colors",
+      "acceptance": "텍스트와 툴팁 경계를 시스템색으로 표시",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D094",
+      "area": "charts",
+      "title": "인쇄 차트 보존",
+      "problem": "인쇄 페이지 중간에서 차트 분리 가능",
+      "solution": "break-inside avoid와 툴팁 숨김",
+      "status": "implemented",
+      "evidence": "src/design365-charts.css: @media print",
+      "acceptance": "인쇄 시 임시 hover 정보 제외",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D095",
+      "area": "charts",
+      "title": "전체 기간 최초 표시",
+      "problem": "재생 시 미래 구간이 잘리면 전체 흐름 파악 어려움",
+      "solution": "전체 clip 폭 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-entire-period",
+      "acceptance": "clip width는 커서 날짜와 무관",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D096",
+      "area": "charts",
+      "title": "실측 실선 구분",
+      "problem": "색상만으로 값의 종류 구분 불가",
+      "solution": "실측 실선 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-actual-path",
+      "acceptance": "실측 path에 dash 미지정",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D097",
+      "area": "charts",
+      "title": "모형 점선 구분",
+      "problem": "실측과 모형을 동일하게 오인 위험",
+      "solution": "7 4 점선 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-forecast-code",
+      "acceptance": "점선 패턴 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D098",
+      "area": "charts",
+      "title": "불확실성 선택 표시",
+      "problem": "범위가 중앙값을 항상 가릴 수 있음",
+      "solution": "showRange 선택 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx showRange",
+      "acceptance": "체크박스로 기존 범위 표시",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D099",
+      "area": "charts",
+      "title": "실측 결측 단절",
+      "problem": "없던 거래일 값까지 연결 위험",
+      "solution": "비연속 시 M 이동 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx continuous",
+      "acceptance": "결측은 새 선분 시작",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D100",
+      "area": "charts",
+      "title": "0% 기준 유지",
+      "problem": "장식 수정으로 기준가격 관계 왜곡 위험",
+      "solution": "anchor 기준 0선 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx y(anchor)",
+      "acceptance": "축 수식 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D101",
+      "area": "charts",
+      "title": "출발일 구분선",
+      "problem": "보관 실측과 전망 출발 혼동",
+      "solution": "원래 출발일 경계 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-forecast-boundary",
+      "acceptance": "경계 날짜 원본 동일",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D102",
+      "area": "charts",
+      "title": "모바일 스크롤 오클릭 방지",
+      "problem": "스크롤을 날짜 클릭으로 오인",
+      "solution": "포인터 이동8px 검사 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx pointer.current",
+      "acceptance": "드래그 후 날짜 변경 방지",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D103",
+      "area": "charts",
+      "title": "뉴스 분류별 마커",
+      "problem": "설명과 가격 반영 사건 혼동",
+      "solution": "기존 방향·분포·유보 분류 보존",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-event-state",
+      "acceptance": "마커 채움 및 분류 변경 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D104",
+      "area": "charts",
+      "title": "차트 설명 접근성",
+      "problem": "SVG만으로 의미 전달 어려움",
+      "solution": "aria-describedby와 desc 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx aria-describedby",
+      "acceptance": "실측/모형/기간/한계 설명 존재",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D105",
+      "area": "charts",
+      "title": "반응형 날짜 눈금",
+      "problem": "좁은 화면에서 날짜 밀집",
+      "solution": "기존 폭별7/14일 간격 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx tickStep",
+      "acceptance": "마지막 날짜 항상 표시",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D106",
+      "area": "charts",
+      "title": "공통 눈금 선택",
+      "problem": "개별 확대와 직접 비교 혼동",
+      "solution": "기존 own/shared 선택 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx data-scale",
+      "acceptance": "표현 방식이 선택과 일치",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D107",
+      "area": "charts",
+      "title": "키보드 차트 날짜 이동",
+      "problem": "SVG 자체에 키보드 날짜 탐색 없음",
+      "solution": "화면맞춤 그래프에서 방향키·Home·End 날짜 이동",
+      "status": "implemented",
+      "evidence": "src/insights.tsx + tests/ui.test.mjs: focused chart keyboard integration",
+      "acceptance": "키보드로 모든 날짜 선택",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D108",
+      "area": "charts",
+      "title": "뉴스 마커 키보드 선택",
+      "problem": "g 클릭만 있는 마커 접근성 부족",
+      "solution": "화면맞춤 뉴스 마커 button 역할·tabIndex·Enter/Space 날짜 선택",
+      "status": "implemented",
+      "evidence": "src/insights.tsx + tests/ui.test.mjs: focused chart keyboard integration",
+      "acceptance": "포인터 없이 뉴스 열기",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D109",
+      "area": "charts",
+      "title": "뉴스 마커 터치 영역",
+      "problem": "현재 r3~4 점의 물리 클릭 영역 작음",
+      "solution": "이웃 날짜 중간점에서 분리한 투명 마커 영역 + 44px 일정 버튼 대안",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "24px 이상 충돌 없는 타깃",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D110",
+      "area": "charts",
+      "title": "호버·포커스 값 동등성",
+      "problem": "hover 정보를 키보드로 같은 위치에서 보기 어려움",
+      "solution": "선택 날짜 실제·모형 값을 동일 저장 자료의 HTML로 제공",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "hover와 동일 데이터",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D111",
+      "area": "charts",
+      "title": "차트 텍스트 표",
+      "problem": "모든 값을 스크린리더로 순회 어려움",
+      "solution": "선택 종목만 44일 저장값 펼침 표 제공; 결측은 —, 휴장 참고 별도",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "순서와 값이 차트 동일",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D112",
+      "area": "charts",
+      "title": "200% 텍스트 확대",
+      "problem": "SVG 텍스트는 CSS 확대만으로 충분하지 않음",
+      "solution": "확대 시 별도 HTML 라벨 검토",
+      "status": "planned",
+      "evidence": "실브라우저 측정 필요",
+      "acceptance": "중요 설명 손실 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D113",
+      "area": "charts",
+      "title": "320px 끝값 충돌",
+      "problem": "끝값과 날짜 캡션 충돌 가능",
+      "solution": "실픽셀 측정 후 라벨 충돌 회피",
+      "status": "planned",
+      "evidence": "실브라우저 측정 필요",
+      "acceptance": "중앙값 좌표 변경 없이 이동",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D114",
+      "area": "charts",
+      "title": "긴 종목명 값 충돌",
+      "problem": "긴 이름은 헤더의 가격 공간을 압박",
+      "solution": "종목명별 줄바꿈 스냅샷 평가",
+      "status": "planned",
+      "evidence": "실브라우저 측정 필요",
+      "acceptance": "이름·가격 모두 완전 표시",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D115",
+      "area": "charts",
+      "title": "동일일 복수 마커 설명",
+      "problem": "한 점에 여러 뉴스를 숨길 수 있음",
+      "solution": "선택한 날의 연결 일정 전체 제목·건수·반영 상태 표시",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "한 날짜 모든 사건 접근",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D116",
+      "area": "charts",
+      "title": "강제색상 선 구분 검증",
+      "problem": "시스템색에서 연구 후보와 실제선 혼동 가능",
+      "solution": "실선·대시 패턴 실기 검증",
+      "status": "planned",
+      "evidence": "접근성 기기 검사 필요",
+      "acceptance": "색 없는 상태에서도 구별",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D117",
+      "area": "charts",
+      "title": "차트 읽기 순서",
+      "problem": "SVG 설명과 현재값 중복 낭독 가능",
+      "solution": "스크린리더 실제 순서 점검",
+      "status": "planned",
+      "evidence": "보조기술 검사 필요",
+      "acceptance": "한 날짜 설명 한 번 명확히 읽음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D118",
+      "area": "charts",
+      "title": "분포 범위 설명 연결",
+      "problem": "P10~P90를 적중률로 오해 가능",
+      "solution": "범위 선택에 연결된 P10~P90 설명과 검증 한계",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "모형 범위와 검증 적중률 구분",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D119",
+      "area": "charts",
+      "title": "저시력 고대비 프리셋",
+      "problem": "기본 팔레트만으로 모든 사용자 대응 어려움",
+      "solution": "화면맞춤 큰 글씨·선명하게 토글: 숫자·설명·축 확대",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "확대해도 값과 범위 동일",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D120",
+      "area": "charts",
+      "title": "리사이즈 안정성",
+      "problem": "대화창 크기 변경 시 축 재측정 여부 불확실",
+      "solution": "ResizeObserver 실기 회귀 점검",
+      "status": "planned",
+      "evidence": "실브라우저 검사 필요",
+      "acceptance": "크기 변경 후 클릭 날짜 정확",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D121",
+      "area": "charts",
+      "title": "휴장일 선택 상태",
+      "problem": "선택 커서가 있어도 실측값 없는 날 혼동 가능",
+      "solution": "휴장일에 새 종가를 만들지 않고 직전 거래일 날짜·참고값 표시",
+      "status": "implemented",
+      "evidence": "src/insights.tsx ChartReadingPanel + src/atlas.tsx focus controls + reports/design365-polish/charts.md; actual device verification remains pending",
+      "acceptance": "가짜 실제 종가 생성 없음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D122",
+      "area": "charts",
+      "title": "시각 회귀 기준 이미지",
+      "problem": "CSS 검사만으로 겹침을 완전히 판단 불가",
+      "solution": "320/390/768/1440px 기준 촬영",
+      "status": "planned",
+      "evidence": "허용된 브라우저 환경 필요",
+      "acceptance": "픽셀 검사 미완료를 통과로 표시하지 않음",
+      "sourceUrls": [
+        "https://carbondesignsystem.com/data-visualization/color-palettes/",
+        "https://www.tradingview.com/charting-library-docs/latest/configuration/accessibility/"
+      ]
+    },
+    {
+      "id": "D123",
+      "area": "shell/navigation/stock-discovery",
+      "title": "탐색 화면 최대 폭",
+      "problem": "넓은 화면에서 내용이 양끝으로 흩어짐",
+      "solution": "데스크톱 최대 1880px·좌우 28px로 제한",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:6 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "1880px 초과 화면에서도 본문이 중앙에 머묾",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D124",
+      "area": "shell/navigation/stock-discovery",
+      "title": "상단 헤더 압축",
+      "problem": "브랜드 영역이 그래프 진입을 늦춤",
+      "solution": "데스크톱 헤더 최소 높이 66px로 정돈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:8 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "헤더의 기존 클릭 요소가 잘리지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D125",
+      "area": "shell/navigation/stock-discovery",
+      "title": "헤더의 조용한 경계",
+      "problem": "상단과 본문 경계가 무겁거나 모호함",
+      "solution": "아이보리 표면·얇은 와인 경계 사용",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:10 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "헤더와 본문이 구별되고 불필요한 진한 그림자가 없음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D126",
+      "area": "shell/navigation/stock-discovery",
+      "title": "절제된 워드마크",
+      "problem": "브랜드 글자 장식이 데이터보다 강함",
+      "solution": "명조형 워드마크와 일정 자간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:29 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "브랜드는 인식되지만 카드 제목보다 화면을 지배하지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D127",
+      "area": "shell/navigation/stock-discovery",
+      "title": "브랜드 인장",
+      "problem": "브랜드 배지가 전체 색감과 분리됨",
+      "solution": "와인 표면과 가는 골드 테두리",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:31 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "브랜드 표식과 나머지 조작 요소가 구분됨",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D128",
+      "area": "shell/navigation/stock-discovery",
+      "title": "브랜드 보조 설명",
+      "problem": "보조 문구 자간이 과도함",
+      "solution": "짧은 설명의 자간·행간 정돈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:33 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "설명을 읽을 때 글자가 지나치게 벌어지지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D129",
+      "area": "shell/navigation/stock-discovery",
+      "title": "헤더 버튼 일관성",
+      "problem": "상단 버튼마다 모양이 달라 우선순위 혼란",
+      "solution": "10px 반경·일정 간격·통일된 경계",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:35 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "상단 조작이 같은 제품의 컨트롤로 읽힘",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D130",
+      "area": "shell/navigation/stock-discovery",
+      "title": "종목 선택 우선",
+      "problem": "설정 버튼이 핵심 탐색보다 강하게 보임",
+      "solution": "종목 선택을 와인 채움, 설정을 윤곽형으로",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:38 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "종목 선택이 상단의 우선 동작으로 구별됨",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D131",
+      "area": "shell/navigation/stock-discovery",
+      "title": "계정 버튼 분리",
+      "problem": "로그인 버튼이 투자 판단 동작처럼 강함",
+      "solution": "밝은 보조 표면과 와인 글자",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:41 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "계정 동작이 선택 버튼보다 시각적으로 약함",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D132",
+      "area": "shell/navigation/stock-discovery",
+      "title": "연결 상태 문구",
+      "problem": "서버 상태가 장식이나 경보로 보임",
+      "solution": "11px 설명형 문구로 간결화",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:43 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "연결 여부 원문이 지워지지 않고 읽힘",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D133",
+      "area": "shell/navigation/stock-discovery",
+      "title": "고정 탐색 레일",
+      "problem": "좌측 메뉴가 내용과 구분되지 않음",
+      "solution": "168px 탐색 레일에 얕은 표면·경계",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:12 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "데스크톱에서 메뉴와 본문이 겹치지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D134",
+      "area": "shell/navigation/stock-discovery",
+      "title": "현재 화면 표시",
+      "problem": "선택 상태가 색상 하나에만 의존",
+      "solution": "굵은 글자·채움·안쪽 세로 표시 조합",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:45 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "현재 페이지 버튼의 굵기와 경계가 함께 달라짐",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D135",
+      "area": "shell/navigation/stock-discovery",
+      "title": "메뉴 호버 피드백",
+      "problem": "메뉴 이동 가능 여부가 약함",
+      "solution": "비선택 메뉴만 표면색 변경",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:47 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "호버 때 항목 위치가 움직이지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D136",
+      "area": "shell/navigation/stock-discovery",
+      "title": "아이콘과 메뉴 라벨",
+      "problem": "세로 메뉴 라벨이 잘리거나 아이콘 정렬 불안정",
+      "solution": "18px 아이콘·10px 간격·라벨 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:49 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "텍스트가 생략되지 않고 아이콘 폭이 유지됨",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D137",
+      "area": "shell/navigation/stock-discovery",
+      "title": "본문 정렬선",
+      "problem": "상태·본문·푸터의 시작점이 불일치",
+      "solution": "주요 직계 영역을 같은 192px 들여쓰기로 정렬",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:14 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "상단 상태와 종목 제목의 왼쪽 기준선이 일치함",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D138",
+      "area": "shell/navigation/stock-discovery",
+      "title": "접히는 소개 문구",
+      "problem": "소개가 본문보다 주의를 끔",
+      "solution": "소개 summary를 12px 보조 문구로",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:53 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "소개 열기 기능을 유지하며 기본 높이가 작음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D139",
+      "area": "shell/navigation/stock-discovery",
+      "title": "연구 상태 배너",
+      "problem": "유보 문구가 오류 경보처럼 보임",
+      "solution": "옅은 금빛 표면과 가는 왼쪽 경계",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:55 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "유보 문구·검증 링크가 읽히며 경고를 숨기지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D140",
+      "area": "shell/navigation/stock-discovery",
+      "title": "기록 요약 읽기",
+      "problem": "기준일 행이 정보 밀도가 높음",
+      "solution": "12px 문구와 충분한 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:57 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "기간·실제 종가 기준일이 한 그룹으로 읽힘",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D141",
+      "area": "shell/navigation/stock-discovery",
+      "title": "섹션 위치 표시",
+      "problem": "작은 상단 분류가 주제목과 경쟁",
+      "solution": "짧은 locator의 대비·크기 제한",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:59 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "주제목보다 시각적 중요도가 낮음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D142",
+      "area": "shell/navigation/stock-discovery",
+      "title": "탐색 주제목",
+      "problem": "제목의 글꼴·자간이 지나치게 장식적",
+      "solution": "와인색·명확한 굵기·안정적 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:61 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "제목 두 줄에서도 겹치지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D143",
+      "area": "shell/navigation/stock-discovery",
+      "title": "탐색 안내 폭",
+      "problem": "긴 안내가 버튼과 충돌",
+      "solution": "안내 최대 72ch와 읽기 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:63 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "문구가 주요 버튼을 밀어 화면 밖으로 보내지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D144",
+      "area": "shell/navigation/stock-discovery",
+      "title": "클릭 종목 선택",
+      "problem": "검색 입력이 필수처럼 느껴짐",
+      "solution": "독립 44px 선택 버튼의 명확한 윤곽",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:65 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "타이핑 없이 종목 선택 창을 열 수 있음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D145",
+      "area": "shell/navigation/stock-discovery",
+      "title": "검색의 고정 라벨",
+      "problem": "placeholder만으로 기능을 알기 어려움",
+      "solution": "기존 검색 라벨의 대비·간격 강조",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:67 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "입력 후에도 종목 찾기 라벨이 남음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D146",
+      "area": "shell/navigation/stock-discovery",
+      "title": "검색 입력 표면",
+      "problem": "검색창이 주변 필터와 혼합됨",
+      "solution": "밝은 표면·경계·단일 모서리 체계",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:69 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "검색 입력과 지우기 버튼의 영역이 명확함",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D147",
+      "area": "shell/navigation/stock-discovery",
+      "title": "필터 도구 영역",
+      "problem": "필터가 제목·결과와 섞임",
+      "solution": "필터 하단 얇은 구분선과 일정 여백",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:72 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "필터와 카드가 서로 다른 그룹으로 읽힘",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D148",
+      "area": "shell/navigation/stock-discovery",
+      "title": "필터 클릭 크기",
+      "problem": "조밀한 필터가 누르기 어려움",
+      "solution": "42px 높이와 수평 여백",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:74 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "필터 버튼의 실제 최소 높이가 42px 이상",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D149",
+      "area": "shell/navigation/stock-discovery",
+      "title": "선택 필터 상태",
+      "problem": "선택 여부가 미약함",
+      "solution": "굵기와 채움색을 함께 적용",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:76 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "aria-pressed 선택 상태에 스타일이 연결됨",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D150",
+      "area": "shell/navigation/stock-discovery",
+      "title": "필터별 개수",
+      "problem": "숫자가 필터 이름과 섞임",
+      "solution": "작은 내부 배지와 고정폭 숫자",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:78 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "각 개수가 자신의 필터에 묶여 보임",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D151",
+      "area": "shell/navigation/stock-discovery",
+      "title": "결과 개수 읽기",
+      "problem": "보이는 종목 수가 작고 모호함",
+      "solution": "12px 보조 문구와 강조 숫자",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:81 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "검색·필터 후 수량을 바로 읽을 수 있음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D152",
+      "area": "shell/navigation/stock-discovery",
+      "title": "읽기 도구 행",
+      "problem": "도움말과 크기 조절의 위치가 불안정",
+      "solution": "한 줄 flex 및 필요한 경우 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:84 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "도움말과 카드 크기가 겹치지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D153",
+      "area": "shell/navigation/stock-discovery",
+      "title": "카드 밀도 선택",
+      "problem": "크기 버튼이 별개 행동처럼 보임",
+      "solution": "분할 선택 표면과 선택된 내부 타일",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:86 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "모아보기·크게보기 중 하나가 명확함",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D154",
+      "area": "shell/navigation/stock-discovery",
+      "title": "순위 기준 설명",
+      "problem": "정렬 기준이 카드와 멀어짐",
+      "solution": "필터 아래 기준 안내의 행간·여백 정돈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:90 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "중앙값 기준과 미검증 상태 문구가 유지됨",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D155",
+      "area": "shell/navigation/stock-discovery",
+      "title": "데스크톱 카드 열",
+      "problem": "좁은 데스크톱에서도 3열이 강제됨",
+      "solution": "1001px부터 2열, 1500px부터 3열",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:20 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "카드가 좁아져 제목·가격이 중첩되지 않음",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D156",
+      "area": "shell/navigation/stock-discovery",
+      "title": "크게 보기 열",
+      "problem": "읽기 모드가 일반 모드와 비슷함",
+      "solution": "데스크톱 2열·28px 여백으로 구분",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:22 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "넓은 화면에서 크게보기 카드 폭이 일반보다 큼",
+      "sourceUrls": [
+        "https://fluent2.microsoft.design/components/web/react/core/nav/usage"
+      ]
+    },
+    {
+      "id": "D157",
+      "area": "shell/navigation/stock-discovery",
+      "title": "카드 표면",
+      "problem": "과한 카드 그림자가 데이터와 경쟁",
+      "solution": "미색 표면·얕은 그림자·가는 경계",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:92 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "카드 경계는 인식되되 떠 있는 상자 느낌이 과하지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D158",
+      "area": "shell/navigation/stock-discovery",
+      "title": "카드 호버 안정성",
+      "problem": "카드 이동 애니메이션이 그래프 비교 방해",
+      "solution": "색·그림자만 변경하고 이동 금지",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:94 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "호버 전후 차트의 좌표 위치가 변하지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D159",
+      "area": "shell/navigation/stock-discovery",
+      "title": "카드 내부 기준선",
+      "problem": "제목·조작이 서로 다른 여백 사용",
+      "solution": "카드 내부 16px 수평 기준선",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:96 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "제목·차트·버튼의 경계가 정돈됨",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D160",
+      "area": "shell/navigation/stock-discovery",
+      "title": "종목 제목 진입점",
+      "problem": "상세 진입 제목이 장식 문구처럼 보임",
+      "solution": "제목 버튼 여백·분리선·굵기 정돈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:98 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "제목 클릭 동작을 유지하고 종목명을 우선 읽음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D161",
+      "area": "shell/navigation/stock-discovery",
+      "title": "업종 메타데이터",
+      "problem": "업종이 종목명만큼 강하게 보임",
+      "solution": "11px 보조 정보 수준으로",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:101 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "종목명과 업종이 명확한 위계를 가짐",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D162",
+      "area": "shell/navigation/stock-discovery",
+      "title": "종목 코드 가독성",
+      "problem": "코드가 업종과 붙어 보임",
+      "solution": "숫자 자간·왼쪽 간격·고정폭 숫자",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:103 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "여섯 자리 코드가 한 덩어리로 읽힘",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D163",
+      "area": "shell/navigation/stock-discovery",
+      "title": "연구 상태 유지",
+      "problem": "연구용 상태가 가격에 묻힘",
+      "solution": "유보 라벨을 11px 읽기 문구로",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:105 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "카드별 방향 판단 유보 표시가 숨겨지지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D164",
+      "area": "shell/navigation/stock-discovery",
+      "title": "목표일 가격 읽기",
+      "problem": "숫자 폭 변화가 정렬을 흔듦",
+      "solution": "고정폭 숫자와 안정적 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:107 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "가격 자릿수 차이가 카드 텍스트와 겹치지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D165",
+      "area": "shell/navigation/stock-discovery",
+      "title": "비교 기준 결합",
+      "problem": "수익률 기준일과 숫자가 분리됨",
+      "solution": "기준 설명 최대 20ch·안정적 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:109 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "출발 실제 종가 대비라는 의미가 잘리지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D166",
+      "area": "shell/navigation/stock-discovery",
+      "title": "선택 날짜 가격 표면",
+      "problem": "목표가와 현재 선택값이 혼동됨",
+      "solution": "선택값 그룹에 다른 옅은 표면 적용",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:111 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "목표일 가격과 선택 날짜 가격이 다른 그룹으로 보임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D167",
+      "area": "shell/navigation/stock-discovery",
+      "title": "선택 날짜 캡션",
+      "problem": "날짜와 종류 표시가 좁은 폭에서 충돌",
+      "solution": "캡션 간격과 줄바꿈 허용",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:113 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "모형·실제 구분과 날짜가 겹치지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D168",
+      "area": "shell/navigation/stock-discovery",
+      "title": "출발점 보조 정보",
+      "problem": "출발점 가격이 주가격과 경쟁",
+      "solution": "세로 분리선·보조색·일정 패딩",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:115 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "출발점은 보존하면서 선택값이 먼저 보임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D169",
+      "area": "shell/navigation/stock-discovery",
+      "title": "카드 조작 묶음",
+      "problem": "재생 버튼들이 제각기 붙음",
+      "solution": "차트 아래 조작 행 간격·정렬 통일",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:117 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "버튼이 차트 아래 동일한 위치군에 놓임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D170",
+      "area": "shell/navigation/stock-discovery",
+      "title": "재생 주요 동작",
+      "problem": "재생과 다른 조작의 위계가 없음",
+      "solution": "재생만 와인 채움·40px 높이",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:119 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "중요 뉴스 계속 버튼도 같은 우선 동작으로 보임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D171",
+      "area": "shell/navigation/stock-discovery",
+      "title": "보조 재생 동작",
+      "problem": "처음·다음 뉴스가 주동작과 경쟁",
+      "solution": "밝은 윤곽형 40px 버튼",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:121 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "처음·다음뉴스는 보이지만 재생보다 약하게 보임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D172",
+      "area": "shell/navigation/stock-discovery",
+      "title": "재생 옵션 그룹",
+      "problem": "속도·눈금·범위 옵션이 뭉침",
+      "solution": "옵션 수평·수직 간격과 행간 정돈",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:123 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "옵션 라벨이 다른 옵션에 붙지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D173",
+      "area": "shell/navigation/stock-discovery",
+      "title": "뉴스 범위 칩",
+      "problem": "범위별 개수가 텍스트에 묻힘",
+      "solution": "시장·지수·업종·기업 칩 표면 통일",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:125 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "개수를 효과 크기로 오해시키는 과장 색을 쓰지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D174",
+      "area": "shell/navigation/stock-discovery",
+      "title": "0건 칩 표현",
+      "problem": "0건 칩이 너무 흐려 읽히지 않음",
+      "solution": "점선 윤곽과 충분한 글자색·불투명도1",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:127 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "0건이 사라지지 않고 상태 차이만 전달됨",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D175",
+      "area": "shell/navigation/stock-discovery",
+      "title": "근거 미확보 안내",
+      "problem": "미확보 문구가 작고 압축됨",
+      "solution": "11px 안내와 1.6 행간",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:129 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "자료 부족 문구가 잘리거나 숨겨지지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D176",
+      "area": "shell/navigation/stock-discovery",
+      "title": "관심종목 상태",
+      "problem": "관심 버튼이 호버에 의존하거나 선택이 모호",
+      "solution": "상시 윤곽·선택시 채움·굵기",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:131 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "등록과 해제 상태를 별과 표면으로 함께 구별함",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D177",
+      "area": "shell/navigation/stock-discovery",
+      "title": "연구자료 펼침",
+      "problem": "부가 자료의 시작점이 불명확",
+      "solution": "summary 상단 구분선·패딩·굵기",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:134 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "접힘 구조와 원래 표시 여부를 유지함",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D178",
+      "area": "shell/navigation/stock-discovery",
+      "title": "빈 결과의 맥락",
+      "problem": "빈 화면이 고장처럼 보임",
+      "solution": "카드형 점선 표면과 중앙 안내",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:136 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "빈 결과 이유와 복구 동작이 한 곳에 보임",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D179",
+      "area": "shell/navigation/stock-discovery",
+      "title": "빈 상태 삽화",
+      "problem": "삽화가 행동보다 큼",
+      "solution": "48px 보조 아이콘으로 제한",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:139 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "아이콘이 제목과 복구 버튼을 압도하지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D180",
+      "area": "shell/navigation/stock-discovery",
+      "title": "빈 상태 복구",
+      "problem": "검색 실패 후 다음 행동이 약함",
+      "solution": "전체 종목 보기 버튼을 명확한 주동작으로",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:141 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "한 번 클릭해 검색·필터를 해제하는 기존 동작 유지",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D181",
+      "area": "shell/navigation/stock-discovery",
+      "title": "종목 선택 카드",
+      "problem": "선택 창 목록이 좁고 밀집됨",
+      "solution": "72px 최소 높이·14px 패딩",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:143 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "기업명·업종·수익률과 클릭 영역이 겹치지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D182",
+      "area": "shell/navigation/stock-discovery",
+      "title": "선택 종목 경계",
+      "problem": "선택시 2px 테두리가 크기를 바꿈",
+      "solution": "1px 테두리·안쪽 그림자로 선택 표현",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:146 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "선택 전후 버튼 외곽 크기가 변하지 않음",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D183",
+      "area": "shell/navigation/stock-discovery",
+      "title": "하단 보조 탐색",
+      "problem": "푸터 링크가 본문과 혼합됨",
+      "solution": "상단 얇은 경계와 일정 링크 간격",
+      "status": "implemented",
+      "evidence": "src/design365-shell.css:148 — 기존 JSX 선택자에 CSS 작성. 통합 import와 브라우저 렌더 검증은 루트 담당.",
+      "acceptance": "계산·자료·맨위 링크가 마지막 탐색 그룹으로 읽힘",
+      "sourceUrls": [
+        "https://m1.material.io/components/cards.html"
+      ]
+    },
+    {
+      "id": "D184",
+      "area": "뉴스 목록",
+      "title": "뉴스 작업대 폭 보호",
+      "problem": "좁은 화면에서 뉴스가 컨테이너 밖으로 밀림",
+      "solution": "최소폭을 해제해 기존 레이아웃 안에서 읽기",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-workbench",
+      "acceptance": "빌드 후 .news-workbench 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D185",
+      "area": "뉴스 목록",
+      "title": "선택 도구 줄바꿈",
+      "problem": "종목과 정렬 선택이 좁은 폭에서 충돌",
+      "solution": "도구를 필요할 때 다음 줄로 배치",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-workbench .workbench-heading",
+      "acceptance": "빌드 후 .news-workbench .workbench-heading 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D186",
+      "area": "뉴스 목록",
+      "title": "선택 필드 라벨 계층",
+      "problem": "라벨과 값의 구분이 약함",
+      "solution": "라벨을 값 위에 일정 간격으로 배치",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-workbench .workbench-heading label",
+      "acceptance": "빌드 후 .news-workbench .workbench-heading label 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D187",
+      "area": "뉴스 목록",
+      "title": "모형 한계의 상시 가독성",
+      "problem": "핵심 한계 설명이 작은 보조문처럼 읽힘",
+      "solution": "상시 노출 문단의 읽기 폭과 행간 확보",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-workbench > .muted",
+      "acceptance": "빌드 후 .news-workbench > .muted 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D188",
+      "area": "뉴스 목록",
+      "title": "뉴스 선택목록 스크롤 보호",
+      "problem": "목록 끝에서 페이지까지 튀어 이동",
+      "solution": "스크롤 전파 제한과 여유 확보",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list",
+      "acceptance": "빌드 후 .news-reading-list 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D189",
+      "area": "뉴스 목록",
+      "title": "목록 카드 읽기 간격",
+      "problem": "날짜 제목 수치가 빽빽함",
+      "solution": "세 줄 정보의 간격과 카드 여백 통일",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button",
+      "acceptance": "빌드 후 .news-reading-list > button 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D190",
+      "area": "뉴스 목록",
+      "title": "목록 제목의 자연스러운 줄바꿈",
+      "problem": "긴 한국어 제목이 카드 밖으로 나감",
+      "solution": "제목 의미단위 줄바꿈과 긴 단어 탈출",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button b",
+      "acceptance": "빌드 후 .news-reading-list > button b 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D191",
+      "area": "뉴스 목록",
+      "title": "목록 날짜와 범위 구분",
+      "problem": "날짜와 제목의 시각적 무게가 비슷함",
+      "solution": "날짜 범위를 작은 일정 폭 숫자로 배치",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button small",
+      "acceptance": "빌드 후 .news-reading-list > button small 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D192",
+      "area": "뉴스 목록",
+      "title": "목록 영향값 가독성",
+      "problem": "소수점 변화값 비교가 어려움",
+      "solution": "수치 간격을 일정하게 유지",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button > span",
+      "acceptance": "빌드 후 .news-reading-list > button > span 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D193",
+      "area": "뉴스 목록",
+      "title": "선택 뉴스 위치 명확화",
+      "problem": "현재 읽는 뉴스가 목록에서 약하게 보임",
+      "solution": "색과 왼쪽 선을 함께 사용해 선택 표시",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button[aria-pressed=\"true\"]",
+      "acceptance": "빌드 후 .news-reading-list > button[aria-pressed=\"true\"] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D194",
+      "area": "뉴스 목록",
+      "title": "뉴스 키보드 포커스",
+      "problem": "키보드 이동 위치가 흐림",
+      "solution": "선택 상태와 다른 외곽 포커스 링",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-list > button:focus-visible",
+      "acceptance": "빌드 후 .news-reading-list > button:focus-visible 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D195",
+      "area": "뉴스 상세",
+      "title": "상세 패널 종이 표면",
+      "problem": "목록과 상세의 역할이 구분되지 않음",
+      "solution": "상세에 넓은 읽기 여백과 밝은 표면 부여",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail",
+      "acceptance": "빌드 후 .news-reading-detail 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D196",
+      "area": "뉴스 상세",
+      "title": "상세 내부 스크롤 안정",
+      "problem": "긴 원문 설명 탐색 중 위치가 불안정",
+      "solution": "내부 읽기 스크롤의 폭과 여백 안정",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail",
+      "acceptance": "빌드 후 .news-reading-detail 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D197",
+      "area": "뉴스 상세",
+      "title": "뉴스 상세 제목 계층",
+      "problem": "설명과 사건 이름이 비슷한 크기",
+      "solution": "사건 이름을 상세의 첫 읽기 지점으로 강조",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail > h3",
+      "acceptance": "빌드 후 .news-reading-detail > h3 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D198",
+      "area": "뉴스 상세",
+      "title": "상세 이유 문단 읽기폭",
+      "problem": "긴 설명을 한 줄로 멀리 읽어야 함",
+      "solution": "문단 폭과 한국어 행간 제한",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail > p",
+      "acceptance": "빌드 후 .news-reading-detail > p 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D199",
+      "area": "뉴스 상세",
+      "title": "모형 비교 수치 묶음",
+      "problem": "분포 변화와 설명의 연결이 약함",
+      "solution": "관련 수치와 주석을 한 카드로 묶기",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .impact-reading",
+      "acceptance": "빌드 후 .impact-reading 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D200",
+      "area": "뉴스 상세",
+      "title": "원문 섹션 경계",
+      "problem": "계산 설명과 출처가 이어져 보임",
+      "solution": "원문 구역 시작을 여백과 가는 선으로 분리",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail > h4",
+      "acceptance": "빌드 후 .news-reading-detail > h4 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D201",
+      "area": "출처",
+      "title": "원문 링크 카드",
+      "problem": "링크가 일반 문장으로 오인됨",
+      "solution": "원문을 클릭 가능한 독립 카드로 표시",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .news-reading-detail .source-card",
+      "acceptance": "빌드 후 .news-reading-detail .source-card 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D202",
+      "area": "출처",
+      "title": "원문 URL의 줄바꿈",
+      "problem": "긴 URL이 화면을 늘림",
+      "solution": "URL을 별도 줄에 표시하고 줄바꿈 허용",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .source-card small",
+      "acceptance": "빌드 후 .source-card small 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D203",
+      "area": "출처",
+      "title": "직접 근거 링크의 클릭 영역",
+      "problem": "작은 출처 링크를 모바일에서 누르기 어려움",
+      "solution": "링크 최소높이와 밑줄 확보",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .evidence-source",
+      "acceptance": "빌드 후 .evidence-source 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D204",
+      "area": "출처",
+      "title": "출처 도메인 읽기",
+      "problem": "원문 제공자를 확인하기 어려움",
+      "solution": "기존 도메인 설명을 선명한 보조 텍스트로 표시",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .evidence-source small",
+      "acceptance": "빌드 후 .evidence-source small 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D205",
+      "area": "출처",
+      "title": "출처 키보드 탐색",
+      "problem": "출처에 포커스가 갔는지 불명확",
+      "solution": "명시적 외곽 링으로 확인",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: :is(.evidence-source,.source-card):focus-visible",
+      "acceptance": "빌드 후 :is(.evidence-source,.source-card):focus-visible 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D206",
+      "area": "설명",
+      "title": "날짜 설명 패널의 내용 보호",
+      "problem": "길어진 설명이 패널 폭을 넘음",
+      "solution": "좁은 설명 열에 내용이 들어오도록 설정",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-explanation",
+      "acceptance": "빌드 후 .daily-explanation 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D207",
+      "area": "설명",
+      "title": "선택 날짜 헤더 정렬",
+      "problem": "상태와 날짜가 겹침",
+      "solution": "한 줄 정렬하되 좁으면 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .explanation-heading",
+      "acceptance": "빌드 후 .explanation-heading 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D208",
+      "area": "설명",
+      "title": "선택 날짜 숫자 고정",
+      "problem": "날짜 전환 때 폭이 흔들림",
+      "solution": "일정 폭 숫자로 선택 날짜 표기",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .explanation-heading time",
+      "acceptance": "빌드 후 .explanation-heading time 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D209",
+      "area": "설명",
+      "title": "표시 종류 태그",
+      "problem": "실제와 모형의 문맥이 눈에 안 들어옴",
+      "solution": "기존 텍스트 상태 태그에 테두리와 여백 제공",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-kind",
+      "acceptance": "빌드 후 .date-kind 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D210",
+      "area": "설명",
+      "title": "설명 가격값의 최소폭",
+      "problem": "큰 가격값이 옆 칸을 침범",
+      "solution": "가격 셀 최소폭 해제와 개행 허용",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-values > div",
+      "acceptance": "빌드 후 .daily-values > div 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D211",
+      "area": "설명",
+      "title": "설명 가격 숫자 비교",
+      "problem": "가격 날짜별 비교의 정렬이 불안정",
+      "solution": "가격과 변화값에 일정 폭 숫자 적용",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-values :is(b,strong)",
+      "acceptance": "빌드 후 .daily-values :is(b,strong) 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D212",
+      "area": "설명",
+      "title": "핵심 이유 강조",
+      "problem": "왜라는 답변이 주변 자료에 묻힘",
+      "solution": "핵심 이유를 금색 선과 밝은 배경으로 강조",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-reason",
+      "acceptance": "빌드 후 .daily-reason 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D213",
+      "area": "설명",
+      "title": "핵심 이유 제목 대비",
+      "problem": "금색 작은 글씨의 대비가 부족할 수 있음",
+      "solution": "핵심 문구를 와인색으로 읽기 쉽게 변경",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-reason > b",
+      "acceptance": "빌드 후 .daily-reason > b 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D214",
+      "area": "설명",
+      "title": "이유 문장 간격",
+      "problem": "여러 이유 문장이 붙어 보임",
+      "solution": "문단 간격과 행간으로 문장 분리",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-reason p",
+      "acceptance": "빌드 후 .daily-reason p 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D215",
+      "area": "설명",
+      "title": "개별 날짜 사건 구분",
+      "problem": "여러 사건 설명의 경계가 모호함",
+      "solution": "사건마다 여백과 구분선 부여",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-event",
+      "acceptance": "빌드 후 .daily-event 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D216",
+      "area": "설명",
+      "title": "날짜 사건 제목",
+      "problem": "긴 사건 제목이 작은 문장에 묻힘",
+      "solution": "제목 크기와 줄 간격 명확화",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-event h4",
+      "acceptance": "빌드 후 .daily-event h4 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D217",
+      "area": "설명",
+      "title": "추정 한계 표시 보호",
+      "problem": "방향 유보 문구가 맨 아래에서 흐림",
+      "solution": "삭제하지 않고 별도 상태 블록으로 표시",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-reason-state",
+      "acceptance": "빌드 후 .daily-reason-state 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D218",
+      "area": "상세 공개",
+      "title": "계산식 펼치기 터치영역",
+      "problem": "표본과 계산 상세를 누르기 어려움",
+      "solution": "네이티브 펼치기 표시 유지하고 충분한 높이 제공",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-calculation > summary",
+      "acceptance": "빌드 후 .daily-calculation > summary 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D219",
+      "area": "상세 공개",
+      "title": "펼친 계산식 패널",
+      "problem": "펼친 내용의 범위가 불명확",
+      "solution": "상세가 열린 영역에 경계와 바탕 제공",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-calculation[open]",
+      "acceptance": "빌드 후 .daily-calculation[open] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D220",
+      "area": "상세 공개",
+      "title": "긴 방정식 스크롤",
+      "problem": "긴 방정식이 패널 밖으로 나감",
+      "solution": "계산 문자열을 전부 보존하며 감싸기",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .daily-calculation code",
+      "acceptance": "빌드 후 .daily-calculation code 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D221",
+      "area": "상세 공개",
+      "title": "보조자료 열기 포커스",
+      "problem": "보조자료 접근의 키보드 위치가 흐림",
+      "solution": "네이티브 summary 포커스 강화",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: :is(.daily-calculation,.research-drawer,.reading-guide,.news-upcoming) > summary:focus-visible",
+      "acceptance": "빌드 후 :is(.daily-calculation,.research-drawer,.reading-guide,.news-upcoming) > summary:focus-visible 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D222",
+      "area": "날짜",
+      "title": "날짜 레일 스크롤 여백",
+      "problem": "끝 날짜 접근 때 화면 전체가 이동",
+      "solution": "가로 스크롤 경계와 포커스 여백 확보",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-grid",
+      "acceptance": "빌드 후 .date-grid 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D223",
+      "area": "날짜",
+      "title": "날짜 선택 크기",
+      "problem": "작은 날짜칸을 정확히 누르기 어려움",
+      "solution": "날짜와 변화율을 읽을 터치영역 확보",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-cell",
+      "acceptance": "빌드 후 .date-cell 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D224",
+      "area": "날짜",
+      "title": "선택 날짜의 이중 표시",
+      "problem": "선택 여부를 배경색만으로 구분",
+      "solution": "하단 선과 배경으로 함께 표현",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-cell[aria-pressed=\"true\"]",
+      "acceptance": "빌드 후 .date-cell[aria-pressed=\"true\"] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D225",
+      "area": "날짜",
+      "title": "날짜 키보드 포커스",
+      "problem": "날짜 방향키 이동 위치가 안 보임",
+      "solution": "선택일과 포커스일을 별개 외곽선으로 표시",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-cell:focus-visible",
+      "acceptance": "빌드 후 .date-cell:focus-visible 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D226",
+      "area": "날짜",
+      "title": "휴장 참고값 구분",
+      "problem": "휴장일을 새 가격으로 오해할 가능성",
+      "solution": "기존 휴장 텍스트에 점선 테두리 보완",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-cell[data-kind=\"holiday\"]",
+      "acceptance": "빌드 후 .date-cell[data-kind=\"holiday\"] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D227",
+      "area": "날짜",
+      "title": "자료 미확보의 시각적 구분",
+      "problem": "자료 없음과 0변화를 혼동",
+      "solution": "기존 자료 없음 문구를 점선 상태로 보완",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .date-cell[data-kind=\"missing\"]",
+      "acceptance": "빌드 후 .date-cell[data-kind=\"missing\"] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D228",
+      "area": "날짜",
+      "title": "월 경계 표식",
+      "problem": "9월에서 10월로 바뀌는 위치가 약함",
+      "solution": "월 전환 라벨에 일정한 여백과 굵기 제공",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .calendar-month",
+      "acceptance": "빌드 후 .calendar-month 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D229",
+      "area": "뉴스 정지",
+      "title": "중요 뉴스 확인 헤더",
+      "problem": "재생이 멈춘 이유가 눈에 잘 안 들어옴",
+      "solution": "기존 확인 대기 문구를 헤더 전체로 강조",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .focus-news-heading[data-waiting=\"true\"]",
+      "acceptance": "빌드 후 .focus-news-heading[data-waiting=\"true\"] 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D230",
+      "area": "뉴스 정지",
+      "title": "설명 내부 스크롤 명확화",
+      "problem": "뉴스 읽다가 그래프까지 밀리는 느낌",
+      "solution": "기존 내부 스크롤에 안정적 경계 제공",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .focus-news-content",
+      "acceptance": "빌드 후 .focus-news-content 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D231",
+      "area": "뉴스 정지",
+      "title": "설명 영역 키보드 진입",
+      "problem": "설명 스크롤 영역의 키보드 진입을 알 수 없음",
+      "solution": "내용을 가리지 않는 내부 포커스 선",
+      "status": "implemented",
+      "evidence": "src/design365-evidence.css selector: .focus-news-content:focus-visible",
+      "acceptance": "빌드 후 .focus-news-content:focus-visible 대상에 선언 적용 확인; 실제 브라우저/모바일 검사는 통합 단계에서 수행",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D232",
+      "area": "출처",
+      "title": "출처 호스트 표시 보존",
+      "problem": "링크가 공식 인증처럼 보일 위험",
+      "solution": "기존 호스트와 새 창 설명을 유지하며 인증 배지를 임의 추가하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx SourceLink",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D233",
+      "area": "뉴스 정렬",
+      "title": "종목별 영향순 계산 보존",
+      "problem": "디자인 수정이 종목별 뉴스 순서를 바꿀 위험",
+      "solution": "기존 distributionChangePP 정렬식을 수정하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/workbench.tsx NewsWorkbench items",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D234",
+      "area": "뉴스 정렬",
+      "title": "미산정과 0 구분 보존",
+      "problem": "가격 영향 미산정을 0으로 오인",
+      "solution": "기존 가격 영향 미산정 문구 보존",
+      "status": "verified_existing",
+      "evidence": "src/workbench.tsx news-reading-list",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D235",
+      "area": "뉴스 상세",
+      "title": "핵심 제한 상시 노출 보존",
+      "problem": "중요한 한계를 접힌 패널에 숨길 위험",
+      "solution": "핵심 모형 설명은 상세 열기 없이 계속 표시",
+      "status": "verified_existing",
+      "evidence": "src/workbench.tsx news-workbench > p",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D236",
+      "area": "날짜",
+      "title": "날짜 키보드 동작 보존",
+      "problem": "장식 변경으로 날짜 선택 접근이 사라질 위험",
+      "solution": "방향키와 Home/End 이동 코드는 그대로 보존",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx DateGrid keyboard",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D237",
+      "area": "날짜",
+      "title": "날짜 접근 이름 보존",
+      "problem": "휴장과 연결 일정을 색으로만 전달할 위험",
+      "solution": "날짜·종목·상태·일정 수의 접근 이름 보존",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx DateGrid aria-label",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D238",
+      "area": "뉴스 정지",
+      "title": "확인 대기 기능 보존",
+      "problem": "새 디자인이 자동재생 정지 규칙을 바꿀 위험",
+      "solution": "타이머·확인 후 계속 로직 변경 없음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx focus-news-heading / p.stop",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D239",
+      "area": "설명",
+      "title": "종목 고유 설명 보존",
+      "problem": "공통 디자인으로 모든 회사 이유가 같아질 위험",
+      "solution": "기존 buildDailyExplanation 결과를 그대로 표시",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx DailyExplanation",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D240",
+      "area": "출처",
+      "title": "새 창 링크 보호 보존",
+      "problem": "원문으로 이동시 앱 맥락을 잃을 위험",
+      "solution": "target=_blank rel=noreferrer 기존 속성 보존",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx SourceLink target rel",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D241",
+      "area": "상세 공개",
+      "title": "보조 계산만 접기 보존",
+      "problem": "필수 이유도 접혀 찾기 어려움",
+      "solution": "핵심 이유는 상시 표시하고 표본·계수만 기존 details 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx daily-calculation",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D242",
+      "area": "설명",
+      "title": "평균과 중앙값 구분 보존",
+      "problem": "가격 통계 종류를 혼동",
+      "solution": "기존 모형 평균·모형 중앙값 라벨 수정 없음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx daily-values",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D243",
+      "area": "연구자료",
+      "title": "FOMO 미확보 구분 보존",
+      "problem": "불완전 자료가 완성 점수로 보임",
+      "solution": "미완성·계산 유보 텍스트와 분모18 보존",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx FomoPanel",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D244",
+      "area": "검증",
+      "title": "모바일 원문 독해 검사",
+      "problem": "CSS 구현만으로 실제 독해 향상 단정 불가",
+      "solution": "360px와 확대200%에서 제목·출처·날짜·내부스크롤 검증 예정",
+      "status": "planned",
+      "evidence": "src/design365-evidence.css + browser integration",
+      "acceptance": "기존 동작 보존은 소스 대조; planned 항목은 실제 브라우저 검증 후 상태 변경",
+      "sourceUrls": [
+        "https://design-system.service.gov.uk/components/details/",
+        "https://carbondesignsystem.com/components/structured-list/usage/"
+      ]
+    },
+    {
+      "id": "D245",
+      "area": "모바일·반응형",
+      "title": "유동 바깥 여백",
+      "problem": "고정 여백이 좁은 화면을 낭비",
+      "solution": "clamp(12px,2vw,28px) 여백 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: :root; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ":root가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D246",
+      "area": "모바일·반응형",
+      "title": "하단 안전 영역 토큰",
+      "problem": "홈 인디케이터와 콘텐츠 충돌 위험",
+      "solution": "safe-area-inset-bottom 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: :root; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ":root가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D247",
+      "area": "모바일·반응형",
+      "title": "앵커 이동 여백",
+      "problem": "고정 내비게이션에 이동 대상이 가려질 위험",
+      "solution": "상하 scroll-padding",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: html; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": "html가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D248",
+      "area": "모바일·반응형",
+      "title": "루트 폭 제한",
+      "problem": "main이 부모보다 넓어질 위험",
+      "solution": "width100% min-width0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: main[data-design-edition]; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": "main[data-design-edition]가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D249",
+      "area": "모바일·반응형",
+      "title": "본문 그리드 축소 허용",
+      "problem": "긴 콘텐츠의 최소 폭이 전체 확장",
+      "solution": "핵심 컨테이너 min-width0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .atlas-content; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".atlas-content가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D250",
+      "area": "모바일·반응형",
+      "title": "종목 이름 칸 축소",
+      "problem": "제목과 수익률이 서로 밀어냄",
+      "solution": "자식 min-width0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .mini-title>div; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".mini-title>div가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D251",
+      "area": "모바일·반응형",
+      "title": "긴 종목 이름 줄바꿈",
+      "problem": "긴 이름이 카드 밖으로 넘침",
+      "solution": "overflow-wrap anywhere",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .mini-title h3; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".mini-title h3가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D252",
+      "area": "모바일·반응형",
+      "title": "재생 버튼 터치 영역",
+      "problem": "작은 조작 영역 오탭 위험",
+      "solution": "최소44px 버튼",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-controls button; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-controls button가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D253",
+      "area": "모바일·반응형",
+      "title": "관심 버튼 터치 영역",
+      "problem": "작은 관심 등록 영역",
+      "solution": "최소44px 버튼",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-button; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-button가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D254",
+      "area": "모바일·반응형",
+      "title": "날짜 바로가기 터치 영역",
+      "problem": "날짜 선택 오탭 위험",
+      "solution": "최소44px 버튼",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .smart-dates button; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".smart-dates button가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D255",
+      "area": "모바일·반응형",
+      "title": "옵션 라벨 클릭 영역",
+      "problem": "체크박스 주변 간격 부족",
+      "solution": "라벨44px와gap6px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-options label; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-options label가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D256",
+      "area": "모바일·반응형",
+      "title": "체크박스 수축 방지",
+      "problem": "좁은 옵션행에서 체크박스 압축",
+      "solution": "flex-shrink0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-options input[type=checkbox]; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-options input[type=checkbox]가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D257",
+      "area": "모바일·반응형",
+      "title": "선택 상자 높이",
+      "problem": "속도 선택 터치 영역 부족",
+      "solution": "최소44px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-options select; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-options select가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D258",
+      "area": "모바일·반응형",
+      "title": "조작 그룹 줄바꿈",
+      "problem": "고정 가로 조작행 넘침",
+      "solution": "flex-wrap wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-controls; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-controls가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D259",
+      "area": "모바일·반응형",
+      "title": "날짜 슬라이더 제스처",
+      "problem": "슬라이더와 세로 스크롤 충돌 가능",
+      "solution": "30px 높이와pan-y",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-date-slider; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-date-slider가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D260",
+      "area": "모바일·반응형",
+      "title": "집중보기 조작 줄바꿈",
+      "problem": "작은 뷰포트의 조작 겹침",
+      "solution": "줄바꿈 허용",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card .stock-controls; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card .stock-controls가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D261",
+      "area": "모바일·반응형",
+      "title": "하루 이동 버튼 고정폭",
+      "problem": "화살표 버튼 압축",
+      "solution": "44px flexbasis",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card .stock-controls .day-step; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card .stock-controls .day-step가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D262",
+      "area": "모바일·반응형",
+      "title": "계속 버튼 유동폭",
+      "problem": "긴 확인 문구 고정폭 문제",
+      "solution": "min-width0 flex150px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card .stock-controls .primary; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card .stock-controls .primary가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D263",
+      "area": "모바일·반응형",
+      "title": "집중보기 옵션 간격",
+      "problem": "여러 옵션이 붙어 보임",
+      "solution": "열12px 행2px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card .stock-options; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card .stock-options가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D264",
+      "area": "모바일·반응형",
+      "title": "차트 최소폭 해제",
+      "problem": "차트 intrinsic 폭이 넘침",
+      "solution": "min-width0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card .trend-chart; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card .trend-chart가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D265",
+      "area": "모바일·반응형",
+      "title": "설명 스크롤 격리",
+      "problem": "설명 끝 스크롤이 배경으로 전달",
+      "solution": "overscroll containment",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-news-content; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-news-content가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D266",
+      "area": "모바일·반응형",
+      "title": "뉴스 읽기 스크롤 격리",
+      "problem": "뉴스 끝에서 화면 전체 움직임",
+      "solution": "overscroll containment",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .news-reading-detail; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".news-reading-detail가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D267",
+      "area": "모바일·반응형",
+      "title": "뉴스 목록 스크롤 안정",
+      "problem": "스크롤바로 목록 폭 흔들림",
+      "solution": "stable scrollbar gutter",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .news-reading-list; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".news-reading-list가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D268",
+      "area": "모바일·반응형",
+      "title": "종목 목록 터치 스크롤",
+      "problem": "긴 종목 선택 영역 스크롤 불편",
+      "solution": "관성 스크롤과격리",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .stock-picker; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".stock-picker가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D269",
+      "area": "모바일·반응형",
+      "title": "설명 긴 원문 줄바꿈",
+      "problem": "긴 URL 및 식별값 넘침",
+      "solution": "overflow-wrap anywhere",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-news-content; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-news-content가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D270",
+      "area": "모바일·반응형",
+      "title": "설명 내부 이동 여백",
+      "problem": "내부 앵커 제목 붙음",
+      "solution": "12px scroll-padding",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-news-content; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-news-content가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D271",
+      "area": "모바일·반응형",
+      "title": "설명 제목 줄바꿈",
+      "problem": "날짜·상태 제목 겹침",
+      "solution": "flex-wrap wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-news-heading; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-news-heading가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D272",
+      "area": "모바일·반응형",
+      "title": "일반 모달 뷰포트 제한",
+      "problem": "큰 모달 화면 밖 탈출",
+      "solution": "maxwidth viewport-24 maxheight dvh-32",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .dialog:not(.watch-dialog); 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".dialog:not(.watch-dialog)가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D273",
+      "area": "모바일·반응형",
+      "title": "집중보기 최대 가독 폭",
+      "problem": "대형 화면 설명 칸 과도확장",
+      "solution": "maxwidth1600px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D274",
+      "area": "모바일·반응형",
+      "title": "집중보기 하단 안전영역",
+      "problem": "홈 표시줄이 버튼 가림",
+      "solution": "safearea padding",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D275",
+      "area": "모바일·반응형",
+      "title": "모달 도구 모음 줄바꿈",
+      "problem": "긴 종목 선택과닫기 충돌",
+      "solution": "flex-wrap wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog .dialog-title; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog .dialog-title가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D276",
+      "area": "모바일·반응형",
+      "title": "모달 종목 선택 최소폭",
+      "problem": "긴 선택값 넘침",
+      "solution": "min-width0 minheight44",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog .dialog-title select; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog .dialog-title select가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D277",
+      "area": "모바일·반응형",
+      "title": "모달 닫기 수축 방지",
+      "problem": "닫기 버튼 압축",
+      "solution": "flex-shrink0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog .dialog-title button; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog .dialog-title button가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D278",
+      "area": "모바일·반응형",
+      "title": "가로 노치 여백",
+      "problem": "가로 방향 노치와 접촉",
+      "solution": "좌우 safearea",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-backdrop; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-backdrop가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D279",
+      "area": "모바일·반응형",
+      "title": "종목 선택 버튼 축소",
+      "problem": "그리드 버튼 최소폭 초과",
+      "solution": "min-width0",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .picker-grid button; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".picker-grid button가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D280",
+      "area": "모바일·반응형",
+      "title": "선택 종목 이름 줄바꿈",
+      "problem": "긴 기업명과숫자 충돌",
+      "solution": "minwidth0 wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .picker-grid button>span; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".picker-grid button>span가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D281",
+      "area": "모바일·반응형",
+      "title": "검색 필터 입력 폭",
+      "problem": "입력 intrinsic 폭 넘침",
+      "solution": "minwidth0 maxwidth100%",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .picker-filters input; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".picker-filters input가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D282",
+      "area": "모바일·반응형",
+      "title": "원문 주소 줄바꿈",
+      "problem": "긴주소 가로스크롤",
+      "solution": "overflow-wrap anywhere",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .source-card; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".source-card가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D283",
+      "area": "모바일·반응형",
+      "title": "성과 수치 카드 줄바꿈",
+      "problem": "긴 지표 설명 넘침",
+      "solution": "minwidth0 wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .score-metrics>div; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".score-metrics>div가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D284",
+      "area": "모바일·반응형",
+      "title": "표 지역 스크롤",
+      "problem": "표가 화면 전체 폭을 확장",
+      "solution": "maxwidth100% 내부가로스크롤 유지",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .table-scroll; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".table-scroll가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D285",
+      "area": "모바일·반응형",
+      "title": "진단창 안전 영역",
+      "problem": "진단 내용이 하단에 가림",
+      "solution": "safearea 하단패딩",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .diagnosis-sheet; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".diagnosis-sheet가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D286",
+      "area": "모바일·반응형",
+      "title": "계정 긴 이메일",
+      "problem": "긴이메일 한줄넘침",
+      "solution": "anywhere wrap",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .account-panel; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".account-panel가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D287",
+      "area": "모바일·반응형",
+      "title": "계정 조작 줄바꿈",
+      "problem": "등록조작 한행넘침",
+      "solution": "flexwrap gap10",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .account-actions; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".account-actions가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D288",
+      "area": "모바일·반응형",
+      "title": "1024폭 좁은 사이드바",
+      "problem": "사이드바가 카드 영역 차지",
+      "solution": "821~1100폭 사이드바144px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: main[data-design-edition]>nav; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": "main[data-design-edition]>nav가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D289",
+      "area": "모바일·반응형",
+      "title": "태블릿 카드 두열",
+      "problem": "중간폭 카드 세열 과밀",
+      "solution": "821~1100 두열",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .small-multiples; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".small-multiples가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D290",
+      "area": "모바일·반응형",
+      "title": "데스크톱 집중보기 비율",
+      "problem": "설명 최소폭과 차트 폭 불균형",
+      "solution": "761이상 1.7대1 최소설명280px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .focus-card; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".focus-card가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D291",
+      "area": "모바일·반응형",
+      "title": "1440폭 카드 밀도",
+      "problem": "대화면 폭 활용 일관성 부족",
+      "solution": "1101~1659 기본3열 읽기2열",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .small-multiples; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".small-multiples가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D292",
+      "area": "모바일·반응형",
+      "title": "모바일 모든 내비게이션 노출",
+      "problem": "5번째이후기능 숨김",
+      "solution": "숨김해제 가로스크롤",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: main[data-design-edition]>nav button:nth-child(n+5); 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": "main[data-design-edition]>nav button:nth-child(n+5)가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D293",
+      "area": "모바일·반응형",
+      "title": "모바일 고정 헤더 해제",
+      "problem": "작은화면 높이를 고정헤더가 차지",
+      "solution": "820이하 relative",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: main[data-design-edition]>header; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": "main[data-design-edition]>header가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D294",
+      "area": "모바일·반응형",
+      "title": "모바일 입력 글자 크기",
+      "problem": "작은입력 글자 가독성과 브라우저확대 위험",
+      "solution": "모바일16px",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .picker-filters input; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".picker-filters input가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D295",
+      "area": "모바일·반응형",
+      "title": "390폭 성과 한열",
+      "problem": "작은폰 숫자 두열밀집",
+      "solution": "390이하 한열",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .score-metrics; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".score-metrics가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D296",
+      "area": "모바일·반응형",
+      "title": "짧은 가로폰 집중보기",
+      "problem": "낮은높이에서 그래프·설명 잘림",
+      "solution": "620높이이하 외부스크롤과220px차트",
+      "status": "implemented",
+      "evidence": "src/design365-responsive.css: .watch-dialog; 실제 컴포넌트 src/atlas.tsx 또는 src/workbench.tsx와 기존 globals.css에서 선택자 확인. CSS 작성 완료이며 실기기 측정은 미완료.",
+      "acceptance": ".watch-dialog가 목표 폭에서 적용되고 조작/내용을 숨기거나 가로 넘침을 만들지 않는지 브라우저 확인",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D297",
+      "area": "기기 검증",
+      "title": "360px 실측 검증",
+      "problem": "CSS 작성만으로 실제 기기 배치를 인증할 수 없음",
+      "solution": "360px에서 첫화면·종목선택·집중보기·뉴스·성과창 캡처 후 가로넘침/조작 크기 측정",
+      "status": "planned",
+      "evidence": "해당폭을 포괄하는 mediaquery는 src/design365-responsive.css에 존재하나 실제브라우저실측 미수행",
+      "acceptance": "document.scrollWidth<=innerWidth; 집중보기 조작 접근 가능; 그래프/설명 손실 없음",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D298",
+      "area": "기기 검증",
+      "title": "390px 실측 검증",
+      "problem": "CSS 작성만으로 실제 기기 배치를 인증할 수 없음",
+      "solution": "390px에서 첫화면·종목선택·집중보기·뉴스·성과창 캡처 후 가로넘침/조작 크기 측정",
+      "status": "planned",
+      "evidence": "해당폭을 포괄하는 mediaquery는 src/design365-responsive.css에 존재하나 실제브라우저실측 미수행",
+      "acceptance": "document.scrollWidth<=innerWidth; 집중보기 조작 접근 가능; 그래프/설명 손실 없음",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D299",
+      "area": "기기 검증",
+      "title": "768px 실측 검증",
+      "problem": "CSS 작성만으로 실제 기기 배치를 인증할 수 없음",
+      "solution": "768px에서 첫화면·종목선택·집중보기·뉴스·성과창 캡처 후 가로넘침/조작 크기 측정",
+      "status": "planned",
+      "evidence": "해당폭을 포괄하는 mediaquery는 src/design365-responsive.css에 존재하나 실제브라우저실측 미수행",
+      "acceptance": "document.scrollWidth<=innerWidth; 집중보기 조작 접근 가능; 그래프/설명 손실 없음",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D300",
+      "area": "기기 검증",
+      "title": "1024px 실측 검증",
+      "problem": "CSS 작성만으로 실제 기기 배치를 인증할 수 없음",
+      "solution": "1024px에서 첫화면·종목선택·집중보기·뉴스·성과창 캡처 후 가로넘침/조작 크기 측정",
+      "status": "planned",
+      "evidence": "해당폭을 포괄하는 mediaquery는 src/design365-responsive.css에 존재하나 실제브라우저실측 미수행",
+      "acceptance": "document.scrollWidth<=innerWidth; 집중보기 조작 접근 가능; 그래프/설명 손실 없음",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D301",
+      "area": "기기 검증",
+      "title": "1440px 실측 검증",
+      "problem": "CSS 작성만으로 실제 기기 배치를 인증할 수 없음",
+      "solution": "1440px에서 첫화면·종목선택·집중보기·뉴스·성과창 캡처 후 가로넘침/조작 크기 측정",
+      "status": "planned",
+      "evidence": "해당폭을 포괄하는 mediaquery는 src/design365-responsive.css에 존재하나 실제브라우저실측 미수행",
+      "acceptance": "document.scrollWidth<=innerWidth; 집중보기 조작 접근 가능; 그래프/설명 손실 없음",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+        "https://www.w3.org/WAI/WCAG21/Understanding/reflow",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D302",
+      "area": "기존 계약 보존",
+      "title": "종목별 재생 상태 유지",
+      "problem": "레이아웃 개선이 핵심재생 계약을 바꿀 위험",
+      "solution": "JavaScript·수식·데이터 파일을 수정하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx StockCard 기존 종목별 상태; 이번 변경은CSS뿐; 코드 보존 확인이며 브라우저 동작 확인은 아님",
+      "acceptance": "서로다른 두종목 재생날짜가 독립",
+      "sourceUrls": []
+    },
+    {
+      "id": "D303",
+      "area": "기존 계약 보존",
+      "title": "기본 하루1초 선택 보존",
+      "problem": "레이아웃 개선이 핵심재생 계약을 바꿀 위험",
+      "solution": "JavaScript·수식·데이터 파일을 수정하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx option value=\"1000\" 하루1초 그대로; 코드 보존 확인이며 브라우저 동작 확인은 아님",
+      "acceptance": "기본속도와 실제타이머 동작회귀검사",
+      "sourceUrls": []
+    },
+    {
+      "id": "D304",
+      "area": "기존 계약 보존",
+      "title": "중요뉴스 확인대기 보존",
+      "problem": "레이아웃 개선이 핵심재생 계약을 바꿀 위험",
+      "solution": "JavaScript·수식·데이터 파일을 수정하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx focus-news-heading data-waiting=Boolean(p.stop) 그대로; 코드 보존 확인이며 브라우저 동작 확인은 아님",
+      "acceptance": "중요뉴스마다 사용자확인전 정지",
+      "sourceUrls": []
+    },
+    {
+      "id": "D305",
+      "area": "기존 계약 보존",
+      "title": "날짜 클릭 및전체경로 보존",
+      "problem": "레이아웃 개선이 핵심재생 계약을 바꿀 위험",
+      "solution": "JavaScript·수식·데이터 파일을 수정하지 않음",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx onDateSelect/seek과 DateGrid 처리 수정없음; 코드 보존 확인이며 브라우저 동작 확인은 아님",
+      "acceptance": "날짜선택은해당종목만 변경; 전체예측경로 계속표시",
+      "sourceUrls": []
+    },
+    {
+      "id": "D306",
+      "area": "키보드",
+      "title": "공통 초점 테두리",
+      "problem": "컨트롤별 포커스 표현이 달라 길을 잃을 수 있다",
+      "solution": "focus-visible 3px 테두리",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: outline: 3px solid var(--d365-focus)",
+      "acceptance": "Tab 이동 시 현재 요소 테두리 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D307",
+      "area": "키보드",
+      "title": "테두리 간격",
+      "problem": "윤곽선이 내용과 붙어 구별이 어려울 수 있다",
+      "solution": "outline-offset 3px",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: --d365-focus-offset: 3px",
+      "acceptance": "버튼 글자와 윤곽선 분리 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D308",
+      "area": "키보드",
+      "title": "상단 가림 완화",
+      "problem": "스크롤 초점이 상단 영역과 가까워질 수 있다",
+      "solution": "scroll-margin 상단6rem",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scroll-margin-block: 6rem 2rem",
+      "acceptance": "고정영역 아래 포커스 노출을 실제 브라우저에서 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D309",
+      "area": "키보드",
+      "title": "검색창 부모 초점",
+      "problem": "검색 input의 기존 outline:none으로 표시가 약하다",
+      "solution": "부모 focus-within 윤곽선",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .stock-search:focus-within",
+      "acceptance": "검색입력 Tab 시 부모 테두리 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D310",
+      "area": "키보드",
+      "title": "날짜 초점 겹침 완화",
+      "problem": "인접 날짜 셀 위로 테두리가 겹친다",
+      "solution": "focus-visible z-index 2",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .date-cell,.picker-grid button,.news-reading-list button",
+      "acceptance": "날짜 셀 경계에서 초점 표시 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D311",
+      "area": "키보드",
+      "title": "세로 읽기영역 여유",
+      "problem": "스크롤 박스 끝 컨트롤이 가장자리에 붙는다",
+      "solution": "scroll-padding-block 12px",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scroll-padding-block: 12px",
+      "acceptance": "뉴스 목록 끝 초점 여유 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D312",
+      "area": "키보드",
+      "title": "가로 날짜영역 여유",
+      "problem": "가로 스크롤에서 날짜 테두리가 잘릴 수 있다",
+      "solution": "scroll-padding-inline 12px",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scroll-padding-inline: 12px",
+      "acceptance": "첫·끝 날짜 키보드 도달 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D313",
+      "area": "키보드",
+      "title": "건너뛰기 링크 줄바꿈",
+      "problem": "좁은 화면에서 건너뛰기 문장이 넘칠 수 있다",
+      "solution": "뷰포트 폭 제한과 줄바꿈",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .skip-link:focus-visible",
+      "acceptance": "320px 폭 건너뛰기 링크가 읽히는지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D314",
+      "area": "터치",
+      "title": "버튼 최소 높이",
+      "problem": "작은 보조 버튼의 클릭 면적이 좁다",
+      "solution": "24px 최소 높이",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: :is(button,summary)",
+      "acceptance": "계산된 최소 높이24px 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D315",
+      "area": "터치",
+      "title": "아이콘 최소 너비",
+      "problem": "기호 버튼 너비가 작을 수 있다",
+      "solution": "24px 최소 너비",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: :is(button) { min-inline-size: 24px; }",
+      "acceptance": "기호 버튼 계산 너비24px 이상; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D316",
+      "area": "터치",
+      "title": "선택상자 시각 크기",
+      "problem": "체크박스 모양이 작다",
+      "solution": "20px 시각 크기·라벨 영역 별도 확보",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: input[type=checkbox]",
+      "acceptance": "상자 모양20px와 라벨 클릭영역 별도 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D317",
+      "area": "터치",
+      "title": "차트옵션 라벨 높이",
+      "problem": "체크박스 주변 클릭영역이 부족하다",
+      "solution": "라벨32px 최소 높이",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .chart-options label",
+      "acceptance": "라벨을 눌러 옵션 변경되는지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D318",
+      "area": "터치",
+      "title": "거친 포인터44px",
+      "problem": "모바일에서 작은 조작이 어렵다",
+      "solution": "coarse 포인터44px 높이",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: @media (pointer: coarse)",
+      "acceptance": "터치 모드 버튼 최소44px 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D319",
+      "area": "터치",
+      "title": "닫기·이동 버튼 폭",
+      "problem": "세로 높이만 커도 닫기 기호 폭은 좁을 수 있다",
+      "solution": "대화상자·날짜 이동44px 폭",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .dialog-title button,.focus-navigation button,.day-step,.watch-button",
+      "acceptance": "닫기와 날짜 이동 터치폭 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D320",
+      "area": "터치",
+      "title": "옵션 라벨 터치 높이",
+      "problem": "차트 옵션 라벨이 모바일에서 좁다",
+      "solution": "coarse 라벨44px",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .chart-options label",
+      "acceptance": "터치 모드 라벨 높이44px 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D321",
+      "area": "터치",
+      "title": "이웃 버튼 간격",
+      "problem": "재생·계정 조작이 가까워 오터치 가능",
+      "solution": "coarse gap8px",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .stock-controls,.picker-filters,.account-actions",
+      "acceptance": "이웃 컨트롤 간격 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D322",
+      "area": "상태",
+      "title": "비활성 커서",
+      "problem": "기본 disabled 커서가 wait여서 로딩처럼 보인다",
+      "solution": "not-allowed로 구분",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: button:disabled { cursor: not-allowed; }",
+      "acceptance": "비활성 이전버튼이 대기커서가 아닌지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D323",
+      "area": "상태",
+      "title": "실제 처리중 커서",
+      "problem": "진행중과 비활성을 구분할 필요",
+      "solution": "aria-busy에서 progress",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: button[aria-busy=true]",
+      "acceptance": "실제 aria-busy 컨트롤에만 적용; 동작 생성 아님; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D324",
+      "area": "상태",
+      "title": "ARIA 비활성 시각",
+      "problem": "aria-disabled 요소도 상태 표현 필요",
+      "solution": "커서·점선 장식 규칙",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: a[aria-disabled=true]",
+      "acceptance": "CSS는 클릭 차단하지 않음을 별도 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D325",
+      "area": "상태",
+      "title": "비활성 필터 제거",
+      "problem": "필터효과가 상태색을 왜곡할 수 있다",
+      "solution": "disabled filter none",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: filter: none",
+      "acceptance": "비활성 대비를 실제 상태별 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D326",
+      "area": "상태",
+      "title": "폼 비활성 테두리",
+      "problem": "흐린 색만으로 비활성 구별이 어렵다",
+      "solution": "점선 테두리 추가",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: textarea):disabled",
+      "acceptance": "색 없이 비활성 폼 구별 가능한지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D327",
+      "area": "읽기",
+      "title": "근거 링크 밑줄",
+      "problem": "링크가 색에만 의존할 수 있다",
+      "solution": "본문·출처 링크 밑줄",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: text-decoration: underline",
+      "acceptance": "근거 링크가 본문과 구별되는지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D328",
+      "area": "읽기",
+      "title": "근거 링크 밑줄 거리",
+      "problem": "밑줄이 글자와 붙어 읽기 불편할 수 있다",
+      "solution": "0.2em 밑줄 오프셋",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: text-underline-offset: .2em",
+      "acceptance": "한글 하단 획과 밑줄 간격 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D329",
+      "area": "읽기",
+      "title": "긴 주소 줄바꿈",
+      "problem": "긴 원문 주소가 설명창 밖으로 넘친다",
+      "solution": "overflow-wrap:anywhere",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: overflow-wrap: anywhere",
+      "acceptance": "긴URL fixture에서 가로넘침 검사; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D330",
+      "area": "스크롤",
+      "title": "스크롤 폭 예약",
+      "problem": "스크롤바 출현 시 내용이 좌우로 흔들린다",
+      "solution": "scrollbar-gutter stable",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scrollbar-gutter: stable",
+      "acceptance": "긴 뉴스와 짧은 뉴스 전환 시 폭 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D331",
+      "area": "스크롤",
+      "title": "얇은 스크롤바 완화",
+      "problem": "얇은 스크롤바가 잡기 어렵다",
+      "solution": "auto 폭 및 색상 토큰",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scrollbar-width: auto",
+      "acceptance": "시스템 스크롤바 조작성 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      ]
+    },
+    {
+      "id": "D332",
+      "area": "보조기술",
+      "title": "숨김텍스트 유틸리티",
+      "problem": "보조 설명용 안전한 CSS 유틸리티 부재",
+      "solution": "접근성 트리 보존한 시각숨김 클래스",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .d365-visually-hidden:not(:focus)",
+      "acceptance": "유틸리티만 제공; 실제 사용 요소는 별도 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D333",
+      "area": "보조기술",
+      "title": "숨김 포커스 복원",
+      "problem": "숨김 링크가 초점을 받아도 보이지 않으면 혼란",
+      "solution": "focus 시 일반흐름 복원",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .d365-visually-hidden:focus",
+      "acceptance": "유틸리티 fixture 키보드 초점 표시; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D334",
+      "area": "동작선호",
+      "title": "모션 감소 전환",
+      "problem": "장식 애니메이션이 사용자 선호와 충돌 가능",
+      "solution": "reduce 선호에서 animation/transition 제거",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: @media (prefers-reduced-motion: reduce)",
+      "acceptance": "OS reduce 모드 장식 전환 정지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D335",
+      "area": "동작선호",
+      "title": "모션 감소 스크롤",
+      "problem": "부드러운 자동 스크롤이 멀미 유발 가능",
+      "solution": "reduce에서 scroll-behavior auto",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scroll-behavior: auto!important",
+      "acceptance": "모션 감소에서 즉시 스크롤 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D336",
+      "area": "동작선호",
+      "title": "카드 확대 모션 제거",
+      "problem": "카드 hover 변형이 잔존할 수 있다",
+      "solution": "reduce에서 transform none",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .mini-card:hover",
+      "acceptance": "사용자 선호 시 카드 이동 없음 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D337",
+      "area": "고대비",
+      "title": "대비 선호 테두리",
+      "problem": "낮은 대비 경계가 컨트롤 구분을 방해",
+      "solution": "more 선호에서 currentColor 경계",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: @media (prefers-contrast: more)",
+      "acceptance": "고대비 선호 컨트롤 경계 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D338",
+      "area": "강제색상",
+      "title": "시스템 색 사용",
+      "problem": "임의 테마색이 강제색상 모드와 충돌",
+      "solution": "forced-color-adjust:auto",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: @media (forced-colors: active)",
+      "acceptance": "시스템 테마별 요소 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D339",
+      "area": "강제색상",
+      "title": "시스템 초점색",
+      "problem": "사용자 시스템 초점 강조 필요",
+      "solution": "Highlight 윤곽선",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: outline: 3px solid Highlight",
+      "acceptance": "강제색상 Tab 초점 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D340",
+      "area": "강제색상",
+      "title": "선택 상태 윤곽선",
+      "problem": "채움색이 사라지면 선택 상태 분실",
+      "solution": "pressed/current outline",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: outline: 2px solid Highlight",
+      "acceptance": "선택 날짜·버튼 구별 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D341",
+      "area": "강제색상",
+      "title": "비활성 시스템색",
+      "problem": "낮은 opacity가 시스템 비활성 표현을 훼손",
+      "solution": "GrayText·opacity1",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: color: GrayText",
+      "acceptance": "disabled 대조 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D342",
+      "area": "강제색상",
+      "title": "원문 링크 시스템색",
+      "problem": "테마색 링크가 안 보일 수 있다",
+      "solution": "LinkText와 밑줄",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: color: LinkText",
+      "acceptance": "출처 링크 식별 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D343",
+      "area": "강제색상",
+      "title": "예측 점선 유지",
+      "problem": "색이 사라져 실제/예측 선 구분이 어려움",
+      "solution": "예측선 CanvasText·점선",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: stroke-dasharray: 7 4",
+      "acceptance": "예측선 점선 유지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D344",
+      "area": "강제색상",
+      "title": "실제 실선 유지",
+      "problem": "흑백에서 실제 선 의미 유지 필요",
+      "solution": "실제선 CanvasText·실선",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: data-actual-path",
+      "acceptance": "실제선 실선 유지 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D345",
+      "area": "강제색상",
+      "title": "스크롤바 시스템색",
+      "problem": "커스텀 스크롤색이 시스템색을 방해",
+      "solution": "forced 모드 scrollbar-color auto",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: scrollbar-color: auto",
+      "acceptance": "강제색상 스크롤바 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D346",
+      "area": "인쇄",
+      "title": "종이 여백",
+      "problem": "브라우저 기본여백에 의존한다",
+      "solution": "15mm 페이지 여백",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: @page { margin: 15mm; }",
+      "acceptance": "인쇄미리보기 잘림 검사 필요; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D347",
+      "area": "인쇄",
+      "title": "흰 종이 배경",
+      "problem": "어두운 배경·그림자가 잉크를 낭비",
+      "solution": "흰배경 검정글자·그림자제거",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: box-shadow: none!important",
+      "acceptance": "흑백인쇄 가독성 검사 필요; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D348",
+      "area": "인쇄",
+      "title": "카드 내부 분할 완화",
+      "problem": "카드가 페이지 중간에서 잘릴 수 있다",
+      "solution": "break-inside avoid",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: break-inside: avoid",
+      "acceptance": "긴카드는 브라우저 예외가 있음을 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D349",
+      "area": "인쇄",
+      "title": "내부 스크롤 펼치기",
+      "problem": "스크롤 바깥 설명이 인쇄에서 누락 가능",
+      "solution": "max-height 해제·overflow visible",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: max-height: none!important",
+      "acceptance": "긴 뉴스 인쇄 내용 누락검사 필요; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D350",
+      "area": "인쇄",
+      "title": "재생 조작 숨김",
+      "problem": "종이에 재생 버튼이 불필요",
+      "solution": "조작·토스트만 숨김",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: .stock-controls,.playback-controls,.skip-link,.toast",
+      "acceptance": "값·근거 본문 보존 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D351",
+      "area": "인쇄",
+      "title": "출처 링크 식별",
+      "problem": "흑백에서도 링크임을 보여야 한다",
+      "solution": "검정 링크 밑줄",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: :is(a[href])",
+      "acceptance": "주소 링크 자체삭제없음 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D352",
+      "area": "인쇄",
+      "title": "가격선 흑백 의미",
+      "problem": "인쇄색상 미출력 시 선 구별 저하",
+      "solution": "예측 점선·실제 실선 강제",
+      "status": "implemented",
+      "evidence": "src/design365-accessibility.css: stroke: black!important",
+      "acceptance": "인쇄미리보기 선 패턴 확인; CSS 구현 확인이며 픽셀·보조기술 실기 검증 미완료",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D353",
+      "area": "키보드",
+      "title": "본문 건너뛰기 링크",
+      "problem": "반복 탐색을 건너뛰는 수단 필요",
+      "solution": "기존 skip-link 및 focusContent 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx:1132",
+      "acceptance": "DOM 존재 확인; 실제 읽기 순서 검증 별도",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D354",
+      "area": "대화상자",
+      "title": "Escape 닫기",
+      "problem": "키보드로 대화상자를 닫을 수 있어야 한다",
+      "solution": "기존 Escape 처리 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx:123",
+      "acceptance": "기존 코드 확인; 대화상자별 실기 검사 필요",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D355",
+      "area": "대화상자",
+      "title": "초점 순환",
+      "problem": "대화상자에서 키보드 초점 유실 방지",
+      "solution": "기존 Tab/Shift+Tab 처리 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx:142-145",
+      "acceptance": "기존 UI 검사 유지",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D356",
+      "area": "대화상자",
+      "title": "의미있는 모달 이름",
+      "problem": "보조기술에 대화상자 목적 전달 필요",
+      "solution": "기존 aria-modal/aria-label 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx:167-169",
+      "acceptance": "주요 모달 의미 코드 확인; 전체 대화상자 인증 아님",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D357",
+      "area": "상태",
+      "title": "검색 결과 알림",
+      "problem": "검색 결과 수 변화 인지 필요",
+      "solution": "기존 polite live 상태 유지",
+      "status": "verified_existing",
+      "evidence": "src/atlas.tsx:1271",
+      "acceptance": "aria-live=polite/atomic DOM 확인",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D358",
+      "area": "예측표현",
+      "title": "선 스타일 구별",
+      "problem": "색만으로 예측과 실제를 구별하면 어려움",
+      "solution": "기존 예측 점선·실제 실선 유지",
+      "status": "verified_existing",
+      "evidence": "src/insights.tsx:68-70",
+      "acceptance": "SVG stroke 패턴 코드 확인",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ]
+    },
+    {
+      "id": "D359",
+      "area": "검증",
+      "title": "VoiceOver 실기",
+      "problem": "소스만으로 화면낭독 결과를 확정 못함",
+      "solution": "iOS VoiceOver로 종목선택·뉴스읽기·재생 절차 검사",
+      "status": "planned",
+      "evidence": "실기 미실행",
+      "acceptance": "주요 흐름 이름·순서·중복발화 기록",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D360",
+      "area": "검증",
+      "title": "200% 글자 확대",
+      "problem": "텍스트 확대의 실제 배치 영향 미확인",
+      "solution": "지원 브라우저 200% 확대 검사",
+      "status": "planned",
+      "evidence": "픽셀 브라우저 검증 미실행",
+      "acceptance": "조작·수치·근거가 잘리지 않음",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D361",
+      "area": "검증",
+      "title": "320px 리플로우",
+      "problem": "좁은 모바일 폭 실제 렌더링 미확인",
+      "solution": "320px 뷰포트에서 가로넘침 조사",
+      "status": "planned",
+      "evidence": "픽셀 브라우저 검증 미실행",
+      "acceptance": "차트 의도된 영역 외 전체가로스크롤 없음",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D362",
+      "area": "검증",
+      "title": "전체 대비 측정",
+      "problem": "CSS 토큰만으로 모든 상태 대비 인증 불가",
+      "solution": "최종 합성 CSS의 글자·선·초점 상태 대비 측정",
+      "status": "planned",
+      "evidence": "최종 디자인 병합 후 수행",
+      "acceptance": "텍스트 크기별 WCAG 대비 기준에 결과표 작성",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D363",
+      "area": "검증",
+      "title": "모바일 터치 실기",
+      "problem": "최소크기 CSS 선언과 실제 계산크기는 다를 수 있음",
+      "solution": "iPhone/Android에서 닫기·날짜·속도 조작 검사",
+      "status": "planned",
+      "evidence": "실기 미실행",
+      "acceptance": "오터치·가림·확대 여부 기록",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D364",
+      "area": "보조기술",
+      "title": "진단창 초점 동작",
+      "problem": "별도 diagnosis-sheet는 공통Modal와 다른 구현",
+      "solution": "진단창 portal·모달 이름·Escape·Tab 순환·배경 inert·닫기 후 초점 복귀",
+      "status": "implemented",
+      "evidence": "src/workbench.tsx DiagnosisDialog; reports/design365-polish/diagnosis-check.json",
+      "acceptance": "실제 동작 구현 후 Escape·Tab·복귀 검사",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "D365",
+      "area": "검증",
+      "title": "인쇄 실기",
+      "problem": "print CSS만으로 페이지 배치 보증 못함",
+      "solution": "PDF 인쇄미리보기로 긴 뉴스와52카드 검사",
+      "status": "planned",
+      "evidence": "인쇄 렌더링 미실행",
+      "acceptance": "잘림·누락·선구별을 페이지별 기록",
+      "sourceUrls": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      ]
+    }
+  ]
+}

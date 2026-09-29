@@ -1,0 +1,32 @@
+{
+  "version": "9.2.0",
+  "at": "2026-09-28T03:07:30.417Z",
+  "forecastId": "2026-09-23-wave-169bd2b1fd8b",
+  "sourceSHA256": "235925fafa9010c7f036a4028fd7614bd855f5e54402f88b31f7d377402c455c",
+  "initialHash": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+  "originalPreserved": true,
+  "legacyDailyMovementSHA256": "2be4e22dcc05f7b770e46f3a0c8340c1bd77d5e721384baeb8bd46b4b423dec0",
+  "testsPassed": 18,
+  "browserChecks": 13,
+  "browserPassed": true,
+  "fullLegacyRegressionRerun": false,
+  "stocks": 52,
+  "pathsPerStock": 100000,
+  "totalPaths": 5200000,
+  "independentAccuracyTests": 0,
+  "selectedStocks": 52,
+  "newsWaveStocks": 52,
+  "fomoEnabledStocks": 0,
+  "actualAsOf": "2026-09-23",
+  "newPriceCollection": false,
+  "newNewsCollection": false,
+  "liveDeployed": false,
+  "trustProbability": null,
+  "limitations": [
+    "observational_not_causal",
+    "price_vintage_and_corporate_actions_unverified",
+    "FOMO_core_input_missing",
+    "three_session_window_not_full_duration_estimate",
+    "new_model_prospective_accuracy_unverified"
+  ]
+}

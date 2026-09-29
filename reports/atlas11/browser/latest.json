@@ -1,0 +1,761 @@
+{
+  "schema": "atlas11-browser-check-1",
+  "at": "2026-09-29T06:46:05.995Z",
+  "base": "http://localhost:8811",
+  "chromium": "playwright bundled chromium (headless)",
+  "viewports": {
+    "pc": "1280x800",
+    "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)"
+  },
+  "passed": 108,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "pc 첫 화면 52카드",
+      "ok": true,
+      "detail": {
+        "cards": 52
+      }
+    },
+    {
+      "name": "pc 첫 화면에 실제 내용(카드)이 보임",
+      "ok": true,
+      "detail": {
+        "top": 289,
+        "inViewport": true
+      }
+    },
+    {
+      "name": "pc 자료 기준일 표시",
+      "ok": true,
+      "detail": {
+        "chip": "확정 종가 9월 28일"
+      }
+    },
+    {
+      "name": "pc 카드마다 작은 그래프·확률 막대",
+      "ok": true,
+      "detail": {
+        "sparks": 52,
+        "pbars": 52
+      }
+    },
+    {
+      "name": "pc 카드마다 1년 범위 띠·묶음 이름(9묶음)",
+      "ok": true,
+      "detail": {
+        "ranges": 52,
+        "groupNames": 9
+      }
+    },
+    {
+      "name": "pc 「하락 선택」 거름 단추",
+      "ok": true,
+      "detail": {
+        "filtered": 44
+      }
+    },
+    {
+      "name": "pc 발행본 정보 팝오버·무결성 검사",
+      "ok": true,
+      "detail": {
+        "popText": "이 화면의 발행본\n발행본\n2026-09-28-atlas11-27e1f65cfc167be9\n기준일\n9월 28일 확정 종가\n발행 시각\n9. 28. 22:29 (한국)\n미래\n20거래일 · 09/29~10/28\n경로\n52종"
+      }
+    },
+    {
+      "name": "pc Esc 로 팝오버 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 터치 영역 44px 미만 없음",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "pc 카드 한 번 눌러 상세 열림",
+      "ok": true,
+      "detail": {
+        "title": "HD현대중공업 329180"
+      }
+    },
+    {
+      "name": "pc 상세 상단 숫자 5개",
+      "ok": true,
+      "detail": {
+        "numbers": 5
+      }
+    },
+    {
+      "name": "pc 그래프가 화면 안에 보임(스크롤 전)",
+      "ok": true,
+      "detail": {
+        "chartTop": 345
+      }
+    },
+    {
+      "name": "pc 실제선·오늘선·띠·경계선·출발점",
+      "ok": true,
+      "detail": {
+        "actual": true,
+        "today": true,
+        "band": true,
+        "boundary": true,
+        "anchor": true
+      }
+    },
+    {
+      "name": "pc 세 겹 띠(5~95·10~90·25~75%)와 첫 숫자 강조",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc IBM Plex Sans KR 글씨체 적용",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 그래프 위 마우스 말풍선",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 미래 날짜 눌러 이유 열림(D+3)",
+      "ok": true,
+      "detail": {
+        "cursor": "10월 1일(목) D+3",
+        "explainHead": "10월 1일(목) · D+3 전망"
+      }
+    },
+    {
+      "name": "pc 선택 날짜 분포 상자(5~95%·상자·중앙·출발가)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 날짜 설명: 한 줄 결론·기여 막대·미확보·출처",
+      "ok": true,
+      "detail": {
+        "contrib": 4,
+        "oneline": "10월 1일 중앙 전망 447,742원 · 출발가 대비 +1.30% · 이 날 상승 55% · 80% 범위 "
+      }
+    },
+    {
+      "name": "pc 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
+      "ok": true,
+      "detail": {
+        "after": "9월 29일(화) D+1",
+        "sameSvg": true
+      }
+    },
+    {
+      "name": "pc 중요 일정에서 정지·확인 대기",
+      "ok": true,
+      "detail": {
+        "text": "9월 30일 중요 일정 1건"
+      }
+    },
+    {
+      "name": "pc 확인 뒤 계속 재생",
+      "ok": true,
+      "detail": {
+        "resumed": "10월 1일(목) D+3"
+      }
+    },
+    {
+      "name": "pc 대표 시나리오 선 표시",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc CSV 다운로드 21행(출발 1+전망 20)",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_329180_20260928.csv",
+        "rows": 22
+      }
+    },
+    {
+      "name": "pc 상세 JSON 내려받기(blob · CSP 아래)",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_329180_20260928_detail.json"
+      }
+    },
+    {
+      "name": "pc 종목 정보(1년 범위 띠 · 18칸 · 동조 상위 5)",
+      "ok": true,
+      "detail": {
+        "infoKv": 18
+      }
+    },
+    {
+      "name": "pc 연쇄 지도 52노드·9묶음 호·1~5차 다섯 칸·연결선",
+      "ok": true,
+      "detail": {
+        "nodes": 52,
+        "arcs": 9,
+        "orders": 5,
+        "links": 32
+      }
+    },
+    {
+      "name": "pc 충격 단추(+10%) → 2차 숫자 부호 바뀜",
+      "ok": true,
+      "detail": {
+        "shockBefore": "−2.65%",
+        "shockAfter": "+5.30%"
+      }
+    },
+    {
+      "name": "pc 시장 통로·직접 통로 설명 문장",
+      "ok": true,
+      "detail": {
+        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
+      }
+    },
+    {
+      "name": "pc 누적(1~5차 합) 칸 추가",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 파급 재생: 1차부터 차례로 켜짐(초반 < 끝)",
+      "ok": true,
+      "detail": {
+        "litEarly": 1,
+        "litLate": 17,
+        "stripLit": 5
+      }
+    },
+    {
+      "name": "pc 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
+      "ok": true,
+      "detail": {
+        "hashBefore": "#/stock/329180",
+        "hashAfter": "#/stock/010120"
+      }
+    },
+    {
+      "name": "pc 이동한 종목에서도 연쇄 지도 다시 그림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 글씨 200% 에서도 가로 넘침 없음",
+      "ok": true,
+      "detail": {
+        "fontSize": "200%",
+        "overflow200": 0
+      }
+    },
+    {
+      "name": "pc 1만원 비교 52선",
+      "ok": true,
+      "detail": {
+        "raceLines": 52
+      }
+    },
+    {
+      "name": "pc 순위 52줄",
+      "ok": true,
+      "detail": {
+        "rankRows": 52
+      }
+    },
+    {
+      "name": "pc 순위 종목 선택 → 강조·일정",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 전망 구간에서 「오늘부터 향후 수익률 순위」 단추",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 「오늘 1만원 출발」로 다시 환산",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 1만원 비교 묶음 단추(전체+9) → 반도체·전자 6선 강조",
+      "ok": true,
+      "detail": {
+        "groupBtns": 10,
+        "hl": 6
+      }
+    },
+    {
+      "name": "pc 성적 화면(채점 예정표 4칸 + 후향 진단)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 진화 화면 A/B 네 숫자·기각·계산 흐름 그림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 자료 상태: 36요인 격자·달력·무결성·검사 증거",
+      "ok": true,
+      "detail": {
+        "tiles": 36,
+        "days": 10,
+        "shield": 1
+      }
+    },
+    {
+      "name": "pc 자료 상태: 예약기 설치 안 됨을 숨기지 않음",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
+      "ok": true,
+      "detail": {
+        "candRows": 11,
+        "factorRows": 36
+      }
+    },
+    {
+      "name": "pc 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음",
+      "ok": true,
+      "detail": {
+        "sixCount": 6,
+        "typeBtns": 8,
+        "expRows": 11,
+        "dl": 3
+      }
+    },
+    {
+      "name": "pc 기록: 요인 기록 36행 · 걸러진 CSV 내려받기 동작",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 기록 CSV 내려받기 파일명",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_factor_2026-09-29_filtered.csv"
+      }
+    },
+    {
+      "name": "pc 스푸마토 그래프: 아이보리 바탕·판·띠 경계선 6·실제선 그림자·후광·띠 그라데이션·좌표 변환 없음·모델 칩",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(241, 236, 226)",
+        "plate": 1,
+        "edges": 6,
+        "shadow": 1,
+        "halo": 1,
+        "bandFill": "url(\"#cagsj6o-band-inner\")",
+        "transforms": 0,
+        "modelChip": true
+      }
+    },
+    {
+      "name": "pc 주요 메뉴 4개",
+      "ok": true,
+      "detail": {
+        "nav": 4
+      }
+    },
+    {
+      "name": "pc 가로 스크롤 없음",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 콘솔 오류 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "pc 실패한 요청 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "mobile 첫 화면 52카드",
+      "ok": true,
+      "detail": {
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 첫 화면에 실제 내용(카드)이 보임",
+      "ok": true,
+      "detail": {
+        "top": 498,
+        "inViewport": true
+      }
+    },
+    {
+      "name": "mobile 자료 기준일 표시",
+      "ok": true,
+      "detail": {
+        "chip": "09/28 확정"
+      }
+    },
+    {
+      "name": "mobile 카드마다 작은 그래프·확률 막대",
+      "ok": true,
+      "detail": {
+        "sparks": 52,
+        "pbars": 52
+      }
+    },
+    {
+      "name": "mobile 카드마다 1년 범위 띠·묶음 이름(9묶음)",
+      "ok": true,
+      "detail": {
+        "ranges": 52,
+        "groupNames": 9
+      }
+    },
+    {
+      "name": "mobile 「하락 선택」 거름 단추",
+      "ok": true,
+      "detail": {
+        "filtered": 44
+      }
+    },
+    {
+      "name": "mobile 발행본 정보 팝오버·무결성 검사",
+      "ok": true,
+      "detail": {
+        "popText": "이 화면의 발행본\n발행본\n2026-09-28-atlas11-27e1f65cfc167be9\n기준일\n9월 28일 확정 종가\n발행 시각\n9. 28. 22:29 (한국)\n미래\n20거래일 · 09/29~10/28\n경로\n52종"
+      }
+    },
+    {
+      "name": "mobile Esc 로 팝오버 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 터치 영역 44px 미만 없음",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "mobile 카드 한 번 눌러 상세 열림",
+      "ok": true,
+      "detail": {
+        "title": "HD현대중공업 329180"
+      }
+    },
+    {
+      "name": "mobile 상세 상단 숫자 5개",
+      "ok": true,
+      "detail": {
+        "numbers": 5
+      }
+    },
+    {
+      "name": "mobile 그래프가 화면 안에 보임(스크롤 전)",
+      "ok": true,
+      "detail": {
+        "chartTop": 609
+      }
+    },
+    {
+      "name": "mobile 실제선·오늘선·띠·경계선·출발점",
+      "ok": true,
+      "detail": {
+        "actual": true,
+        "today": true,
+        "band": true,
+        "boundary": true,
+        "anchor": true
+      }
+    },
+    {
+      "name": "mobile 세 겹 띠(5~95·10~90·25~75%)와 첫 숫자 강조",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile IBM Plex Sans KR 글씨체 적용",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 미래 날짜 눌러 이유 열림(D+3)",
+      "ok": true,
+      "detail": {
+        "cursor": "10월 1일(목) D+3",
+        "explainHead": "10월 1일(목) · D+3 전망"
+      }
+    },
+    {
+      "name": "mobile 선택 날짜 분포 상자(5~95%·상자·중앙·출발가)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 날짜 설명: 한 줄 결론·기여 막대·미확보·출처",
+      "ok": true,
+      "detail": {
+        "contrib": 4,
+        "oneline": "10월 1일 중앙 전망 447,742원 · 출발가 대비 +1.30% · 이 날 상승 55% · 80% 범위 "
+      }
+    },
+    {
+      "name": "mobile 날짜를 누르면 이유가 바텀시트로 열림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile Esc 로 바텀시트 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
+      "ok": true,
+      "detail": {
+        "after": "9월 29일(화) D+1",
+        "sameSvg": true
+      }
+    },
+    {
+      "name": "mobile 중요 일정에서 정지·확인 대기",
+      "ok": true,
+      "detail": {
+        "text": "9월 30일 중요 일정 1건"
+      }
+    },
+    {
+      "name": "mobile 확인 뒤 계속 재생",
+      "ok": true,
+      "detail": {
+        "resumed": "10월 1일(목) D+3"
+      }
+    },
+    {
+      "name": "mobile 대표 시나리오 선 표시",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile CSV 다운로드 21행(출발 1+전망 20)",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_329180_20260928.csv",
+        "rows": 22
+      }
+    },
+    {
+      "name": "mobile 상세 JSON 내려받기(blob · CSP 아래)",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_329180_20260928_detail.json"
+      }
+    },
+    {
+      "name": "mobile 종목 정보(1년 범위 띠 · 18칸 · 동조 상위 5)",
+      "ok": true,
+      "detail": {
+        "infoKv": 18
+      }
+    },
+    {
+      "name": "mobile 연쇄 지도 52노드·9묶음 호·1~5차 다섯 칸·연결선",
+      "ok": true,
+      "detail": {
+        "nodes": 52,
+        "arcs": 9,
+        "orders": 5,
+        "links": 32
+      }
+    },
+    {
+      "name": "mobile 충격 단추(+10%) → 2차 숫자 부호 바뀜",
+      "ok": true,
+      "detail": {
+        "shockBefore": "−2.65%",
+        "shockAfter": "+5.30%"
+      }
+    },
+    {
+      "name": "mobile 시장 통로·직접 통로 설명 문장",
+      "ok": true,
+      "detail": {
+        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
+      }
+    },
+    {
+      "name": "mobile 누적(1~5차 합) 칸 추가",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 파급 재생: 1차부터 차례로 켜짐(초반 < 끝)",
+      "ok": true,
+      "detail": {
+        "litEarly": 1,
+        "litLate": 17,
+        "stripLit": 5
+      }
+    },
+    {
+      "name": "mobile 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
+      "ok": true,
+      "detail": {
+        "hashBefore": "#/stock/329180",
+        "hashAfter": "#/stock/010120"
+      }
+    },
+    {
+      "name": "mobile 이동한 종목에서도 연쇄 지도 다시 그림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 글씨 200% 에서도 가로 넘침 없음",
+      "ok": true,
+      "detail": {
+        "fontSize": "200%",
+        "overflow200": 0
+      }
+    },
+    {
+      "name": "mobile 1만원 비교 52선",
+      "ok": true,
+      "detail": {
+        "raceLines": 52
+      }
+    },
+    {
+      "name": "mobile 순위 52줄",
+      "ok": true,
+      "detail": {
+        "rankRows": 52
+      }
+    },
+    {
+      "name": "mobile 순위 종목 선택 → 강조·일정",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 전망 구간에서 「오늘부터 향후 수익률 순위」 단추",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 「오늘 1만원 출발」로 다시 환산",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 1만원 비교 묶음 단추(전체+9) → 반도체·전자 6선 강조",
+      "ok": true,
+      "detail": {
+        "groupBtns": 10,
+        "hl": 6
+      }
+    },
+    {
+      "name": "mobile 성적 화면(채점 예정표 4칸 + 후향 진단)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 진화 화면 A/B 네 숫자·기각·계산 흐름 그림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 자료 상태: 36요인 격자·달력·무결성·검사 증거",
+      "ok": true,
+      "detail": {
+        "tiles": 36,
+        "days": 10,
+        "shield": 1
+      }
+    },
+    {
+      "name": "mobile 자료 상태: 예약기 설치 안 됨을 숨기지 않음",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
+      "ok": true,
+      "detail": {
+        "candRows": 11,
+        "factorRows": 36
+      }
+    },
+    {
+      "name": "mobile 기록: 여섯 문장 6 · 종류 8 · 실험 기록 11행 · 내려받기 단추 · 'null' 없음",
+      "ok": true,
+      "detail": {
+        "sixCount": 6,
+        "typeBtns": 8,
+        "expRows": 11,
+        "dl": 3
+      }
+    },
+    {
+      "name": "mobile 기록: 요인 기록 36행 · 걸러진 CSV 내려받기 동작",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 기록 CSV 내려받기 파일명",
+      "ok": true,
+      "detail": {
+        "name": "ATLAS_factor_2026-09-29_filtered.csv"
+      }
+    },
+    {
+      "name": "mobile 스푸마토 그래프: 아이보리 바탕·판·띠 경계선 6·실제선 그림자·후광·띠 그라데이션·좌표 변환 없음·모델 칩",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(241, 236, 226)",
+        "plate": 1,
+        "edges": 6,
+        "shadow": 1,
+        "halo": 1,
+        "bandFill": "url(\"#clz00ih-band-inner\")",
+        "transforms": 0,
+        "modelChip": true
+      }
+    },
+    {
+      "name": "mobile 주요 메뉴 4개",
+      "ok": true,
+      "detail": {
+        "nav": 4
+      }
+    },
+    {
+      "name": "mobile 가로 스크롤 없음",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 콘솔 오류 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "mobile 실패한 요청 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "dark 다크 모드 토큰 적용(배경·글자)",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(26, 23, 20)",
+        "ink": "rgb(241, 235, 224)",
+        "errors": []
+      }
+    }
+  ],
+  "dir": "reports/atlas11/browser/2026-09-29T06-45-22-299Z"
+}

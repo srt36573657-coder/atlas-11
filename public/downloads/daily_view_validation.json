@@ -1,0 +1,788 @@
+{
+  "appVersion": "7.1.0",
+  "modelVersion": "atlas-news-7.0.0",
+  "createdAt": "2026-09-26T14:29:52.194Z",
+  "sourceHashes": {
+    "src/atlas.tsx": "82332ec414db6df4859912e5d4cdd84dc89a67a52a770536dd35a35e239b8bab",
+    "src/globals.css": "256b47ea7d86686c8cd1a447722b8413c72c81c449ed892da1ab14c9d2a635d0",
+    "lib/story.mjs": "5a84f6219f7edc222ec59976b384b0489d57760a6964b3b592f1e85b7713e389",
+    "lib/service.mjs": "d20e7db8f6b8663c80458b44f1a1c3930d4c8c6db5b11239394d575ca44967f8",
+    "lib/daily-view-contract.mjs": "222a00e7a60d7bb1d585fdbb3c81cd7479467056691a99eac4ad35d6ab32d162",
+    "lib/daily-explanation.mjs": "401a112dde0ec24eb79681933426ac908939c66a2e66bc9bf288db476f485945",
+    "tests/ui.test.mjs": "ca3d1c16bb8c6c147e083f5d36f539feef226240f9bb98bcf77e0304a233607a",
+    "tests/daily-explanation.test.mjs": "905a4baf99cd1a8ec8be2381c7d99295048b81bd7ef773f582e82d508240702f",
+    "tests/theme-contrast.test.mjs": "84c66d4927ee15ab4286e7a1516949113a3afe7eb0062a14ae573337553b70c6"
+  },
+  "rules": {
+    "version": "atlas-daily-view-1.0.0",
+    "assetCount": 52,
+    "origin": "2026-09-17",
+    "end": "2026-10-30",
+    "defaultSpeedMs": 1000,
+    "showEntireForecast": true,
+    "replayUnit": "calendar_day",
+    "priceSeries": "p50",
+    "holidayPolicy": "reference_previous_session_without_new_price_row",
+    "importantNewsPolicy": "wait_for_explicit_continue",
+    "trustProbability": null
+  },
+  "tests": {
+    "total": 134,
+    "passed": 134,
+    "failed": 0,
+    "skipped": 0,
+    "source": "reports/tests.tap",
+    "sha256": "b520b50b065ab28e3016da568c7625e9a11a6a8984be4af0f1b396866f473cc4"
+  },
+  "explanationCount": 2288,
+  "coverage": [
+    {
+      "code": "005930",
+      "name": "삼성전자",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 8,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "009150",
+      "name": "삼성전기",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "373220",
+      "name": "LG에너지솔루션",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "005380",
+      "name": "현대차",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "207940",
+      "name": "삼성바이오로직스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 9,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "032830",
+      "name": "삼성생명보험",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "012450",
+      "name": "한화에어로스페이스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 8,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "034020",
+      "name": "두산에너빌리티",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "329180",
+      "name": "HD현대중공업",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "012330",
+      "name": "현대모비스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "066570",
+      "name": "LG전자",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "035420",
+      "name": "NAVER",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "010120",
+      "name": "LS ELECTRIC",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "000810",
+      "name": "삼성화재",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "015760",
+      "name": "한국전력",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "011200",
+      "name": "HMM",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "051910",
+      "name": "LG화학",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 9,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "017670",
+      "name": "SK텔레콤",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "196170",
+      "name": "알테오젠",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "018260",
+      "name": "삼성에스디에스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "086280",
+      "name": "현대글로비스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "000720",
+      "name": "현대건설",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "278470",
+      "name": "에이피알",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "030200",
+      "name": "KT",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "003490",
+      "name": "대한항공",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "003230",
+      "name": "삼양식품",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "259960",
+      "name": "크래프톤",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "021240",
+      "name": "코웨이",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "352820",
+      "name": "하이브",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 9,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "009830",
+      "name": "한화솔루션",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "028300",
+      "name": "HLB",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 8,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "034220",
+      "name": "LG디스플레이",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "036460",
+      "name": "한국가스공사",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "004170",
+      "name": "신세계",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "012750",
+      "name": "에스원",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "035250",
+      "name": "강원랜드",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 8,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "257720",
+      "name": "실리콘투",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "226950",
+      "name": "올릭스",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "010170",
+      "name": "대한광통신",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 7,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "214370",
+      "name": "케어젠",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 8,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    },
+    {
+      "code": "030000",
+      "name": "제일기획",
+      "dates": 44,
+      "byKind": {
+        "actual": 5,
+        "holiday": 16,
+        "forecast": 23
+      },
+      "eventDays": 6,
+      "businessEvidenceDays": 0,
+      "firstDate": "2026-09-17",
+      "lastDate": "2026-10-30"
+    }
+  ],
+  "preservation": {
+    "passed": true,
+    "retainedForecasts": 14,
+    "sourceInputUnchanged": true,
+    "evaluationUnchanged": true,
+    "engineUnchanged": true,
+    "historyUnchanged": true
+  },
+  "flatDiagnosis": "reports/daily-experience-flat-diagnosis.json",
+  "browserPreview": {
+    "status": "NOT_RUN",
+    "attempted": true,
+    "reason": "Playwright Chromium headless executable absent in the runtime",
+    "browserPixelValidation": false,
+    "uiValidation": "Built React UI exercised with jsdom and actual Worker in tests/ui.test.mjs; final full test result is reports/tests.tap",
+    "deployedSite": false
+  },
+  "trustProbability": null,
+  "predictiveAccuracyCertified": false,
+  "externalDeployment": false
+}

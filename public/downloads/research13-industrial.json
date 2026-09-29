@@ -1,0 +1,395 @@
+{
+  "schema": "atlas.research13.batch.v1",
+  "researcher": "/root/industrial_13",
+  "observedAt": "2026-09-26T12:16:08Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "028260",
+    "005490",
+    "010130"
+  ],
+  "candidateCodes": [
+    "028260"
+  ],
+  "unresolvedCodes": [
+    "005490",
+    "010130"
+  ],
+  "integrationPerformed": false,
+  "primaryVerifiedCandidates": [
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "eventId": "REVIEW:COMPANY_POPUP_ANGGAE_SEONGSU-028260-20260929",
+      "title": "삼성물산 패션 브랜드 앙개 성수 팝업 개점",
+      "eventDate": "2026-09-29",
+      "eventEndDate": "2026-10-14",
+      "targetDate": "2026-09-29",
+      "eventLocalTime": null,
+      "eventTimezone": "Asia/Seoul",
+      "dateBasis": "서울 성동구 매장의 달력 개점일. 정확한 개점 시간은 원문에 없어 만들지 않음. 대상일은9/29 거래일이며 장중 반응시간 확정은 아님.",
+      "publisherRole": "issuer",
+      "scope": "company",
+      "codes": [
+        "028260"
+      ],
+      "publishedDate": "2026-09-17",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T12:16:08Z",
+      "availableAt": "2026-09-26T12:16:08Z",
+      "sourceUrl": "https://news.samsungcnt.com/ko/%EC%A0%84%EC%B2%B4%EA%B8%B0%EC%82%AC/%ED%8C%A8%EC%85%98%EB%B6%80%EB%AC%B8/2026-09-%EC%8B%A0%EC%98%88-%EC%97%AC%EC%84%B1%EB%B3%B5-%EC%95%99%EA%B0%9C-%EB%8D%94%ED%98%84%EB%8C%80-%EC%84%9C%EC%9A%B8%EC%84%9C-%ED%8C%9D%EC%97%85-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4/",
+      "sources": [
+        {
+          "role": "issuer",
+          "url": "https://news.samsungcnt.com/ko/%EC%A0%84%EC%B2%B4%EA%B8%B0%EC%82%AC/%ED%8C%A8%EC%85%98%EB%B6%80%EB%AC%B8/2026-09-%EC%8B%A0%EC%98%88-%EC%97%AC%EC%84%B1%EB%B3%B5-%EC%95%99%EA%B0%9C-%EB%8D%94%ED%98%84%EB%8C%80-%EC%84%9C%EC%9A%B8%EC%84%9C-%ED%8C%9D%EC%97%85-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4/",
+          "ref": "turn447view0",
+          "bodyRead": true,
+          "evidenceLocation": "L35 게시일2026.09.17; L53 삼성물산 패션부문 브랜드; L62 성수9/29~10/14와9/29개점 첫날 행사",
+          "excerpt": "앙개는 더현대 서울에 이어 이달 29일부터 다음 달 14일까지 서울 성동구 스테이지35 성수에서 팝업 스토어를 이어간다."
+        },
+        {
+          "role": "issuer",
+          "url": "https://news.samsungcnt.com/en/features/fashion/2026-09-anggae-opens-first-department-store-pop-up-at-the-hyundai-seoul/",
+          "ref": "turn436view0",
+          "bodyRead": true,
+          "evidenceLocation": "L33 2026-09-22; L39 본사 패션 브랜드; L61 September29–October14",
+          "note": "한국어9/17공지와 영어9/22공지의 장소·날짜 일치. 동일 발행인의 번역자료이므로 독립 언론 검증 횟수로 세지 않음."
+        },
+        {
+          "role": "issuer_identity",
+          "url": "https://samsungcnt.com/ir/event-earnings/ir-event.do",
+          "ref": "turn424view2",
+          "bodyRead": true,
+          "evidenceLocation": "회사IR페이지 뉴스룸 링크12→turn441view1에서 위 한국어 사건 링크35로 이동",
+          "note": "뉴스룸이 삼성물산 본사 공식 연결임을 확인. 홈페이지 자체를 사건 날짜 근거로 사용하지 않음."
+        }
+      ],
+      "companyMapping": "브랜드 앙개는 삼성물산 패션부문 자체 사업이다. 자회사 상장종목의 IR를 부모회사 사건으로 중복한 것이 아님.",
+      "correctionCheck": "현재 한글9/17·영문9/22본문 날짜 일치 및 한국어뉴스룸 최신9/23목록 대조. 앙개2026성수취소·스테이지35 검색에서 변경 근거 미발견. 미발견을 정정 부재의 보증으로 주장하지 않음.",
+      "checks": {
+        "primaryPublisherVerified": true,
+        "sourceBodyRead": true,
+        "exactDateVerified": true,
+        "companyParticipationVerified": true,
+        "latestCorrectionsChecked": true,
+        "notAnOldYear": true,
+        "notASubsidiaryDuplicate": true
+      },
+      "channel": "FW 상품을 직접 판매·소개하는 오프라인 매장 개점. 회사 전체 실적에 대한 중요도나 가격 촉매는 입증되지 않았으며 수주·실적 발표가 아니다.",
+      "trustProbability": null,
+      "priceImpact": "ABSTAIN",
+      "status": "PRIMARY_SCHEDULE_VERIFIED_AWAITING_INDEPENDENT_ROOT_REVIEW",
+      "historicalNote": "같은 브랜드5월 성수팝업 공식기사가 검색되지만 신규 과거표본 설치·가격반응 검증은 하지 않았으며 충분한 표본이 아님."
+    }
+  ],
+  "assets": [
+    {
+      "code": "028260",
+      "outcome": "CANDIDATE_REQUIRES_ROOT_REVIEW",
+      "reason": "회사 자체 패션 사업 앙개의 성수 팝업9/29~10/14를 한국어·영어 공식본문에서 확보. 정확한 시간·가격효과는 미확보.",
+      "checkedUrls": [
+        "https://samsungcnt.com/ir/event-earnings/ir-event.do",
+        "https://news.samsungcnt.com/ko/",
+        "https://news.samsungcnt.com/en/features/fashion/2026-09-anggae-opens-first-department-store-pop-up-at-the-hyundai-seoul/",
+        "https://dartbrief.com/disclosures/20260918800688",
+        "https://englishdart.fss.or.kr/dsbh001/main.do?rcpNo=20260918800688"
+      ],
+      "rejectedOrHeld": [
+        {
+          "candidate": "9/18 IR공시",
+          "finding": "AI전재는9/21~24홍콩IR를 가리킴. 영문DART 원문오류이며9/26현재미래일정이아님.",
+          "ref": "turn424view0"
+        },
+        {
+          "candidate": "FutureScape2026데모데이",
+          "finding": "공식 정확한 일자 여전히 미확보. 10월계획을 특정날짜로 바꾸지 않음."
+        },
+        {
+          "candidate": "에버랜드FinalLap",
+          "finding": "회사공식9/18~10/31행사이나시작이미과거. 종료일10/31은기간밖. 신규미래일정으로집계하지않음.",
+          "ref": "turn436view1"
+        }
+      ],
+      "nextAction": "root가두공식본문을독립조회해9/29사건을검토후설치하고tracker를갱신. 가격영향은표본부족유보."
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "outcome": "NOT_PUBLISHED",
+      "reason": "이번에 검색·조회한 공식자료에서9/26이후10/30까지홀딩스자체의신규정확일미확보. 공개자료전체에일정이없다는증명은아님.",
+      "checkedUrls": [
+        "https://www.posco-inc.com/hs91a1-front/app/index.html",
+        "https://www.posco-inc.com/ir/overview",
+        "https://www.posco-inc.com/ir/ir-material",
+        "https://www.posco-inc.com/ir/shareholder-return-policy",
+        "https://www.k5.co.kr/stock/005490/official_notice",
+        "https://www.marketbeat.com/earnings/reports/2026-7-30-posco-stock/",
+        "https://www.marketbeat.com/earnings/reports/2025-10-27-posco-stock/",
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921800102",
+        "https://dartbrief.com/disclosures/20260921800102"
+      ],
+      "findings": [
+        {
+          "ref": "turn466view1",
+          "finding": "최근공시색인9/21해외공시국내신고,8/7배당결정;새Q3IR일정표시는미확보.색인을원문검증으로세지않음."
+        },
+        {
+          "refs": [
+            "turn466view2",
+            "turn466view3",
+            "turn466view4"
+          ],
+          "finding": "공식홈페이지직접연결IR/자료실/주주환원링크가404. 반복호출하지않음."
+        },
+        {
+          "refs": [
+            "turn421search8",
+            "turn421search15"
+          ],
+          "finding": "민간실적달력은10/26추정이며콜날짜10/27및10/30이상충.공식일정으로채택하지않음."
+        },
+        {
+          "ref": "turn460search2",
+          "finding": "SEC2026공시검색결과는기존1/29·4/30IR기록.미래Q3날짜근거아님."
+        },
+        {
+          "finding": "10/27AustCham광양사업장방문은기존보류유지.포스코사업자회사방문을홀딩스독립기업IR로승격하지않음."
+        },
+        {
+          "finding": "아르헨티나2단계준공·호주JV10월계획은정확일미확보."
+        },
+        {
+          "refs": [
+            "turn493view0",
+            "turn494search1"
+          ],
+          "finding": "9/21해외공시DART20260921800102는502.대체AI요약은9/18SEC FormSD자원국정부지급보고서이며미래행사일근거아님.원문확인완료로표시하지않음."
+        }
+      ],
+      "nextAction": "새Q3IR공시가공개되면회사IR개편후정상URL또는SEC6-K본문에서확인.산업시찰과지주사IR구분유지.9/21공시후보는전재상FormSD과거지급보고서이므로우선순위낮춤."
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "outcome": "BLOCKED",
+      "reason": "기업공시IR동적본문목록미노출,회사채증권신고서원문미확보.추가로언론발행일정상충발견해확정처리거부.",
+      "checkedUrls": [
+        "https://investors.koreazinc.co.kr/ko/investors/ir-events/ir-calendar/",
+        "https://investors.koreazinc.co.kr/ko/investors/announcements/disclosure/",
+        "https://www.k5.co.kr/stock/010130/official_notice",
+        "https://www.thebell.co.kr/front/newsview.asp?code=0101&key=202609171718077200106021",
+        "https://v.daum.net/v/20260914110246126"
+      ],
+      "findings": [
+        {
+          "ref": "turn460view1",
+          "location": "L220,L229,L232,L233",
+          "finding": "더벨9/18작성·9/22무료공개본문은수요예측10/1,발행10/16전후,KB·하나주관으로기재.과거조사10/5·10/13보도와충돌.언론보도만으로어느날짜도채택하지않음."
+        },
+        {
+          "ref": "turn466view0",
+          "finding": "최근공시색인은9/22유상증자정정까지이고새채무증권신고서확인불가.이는전수부재증명아님."
+        },
+        {
+          "refs": [
+            "turn424view3",
+            "turn464view0"
+          ],
+          "finding": "공식IR달력및공시페이지접근되나동적사건목록텍스트미노출."
+        },
+        {
+          "refs": [
+            "turn431search14",
+            "turn431search15"
+          ],
+          "finding": "금속공예가상CSR심사9/28~10/1범위는회사사업·가격촉매근거가아니므로확보수를채우기위해채택하지않음."
+        },
+        {
+          "finding": "기존RichmondValley납입9/30→11/30정정확인기록유지.7/21구공시9/30을재사용하지않음."
+        },
+        {
+          "finding": "10/14콜옵션조건은실제행사확정일아님.계약조건을새행사일로채택하지않음."
+        }
+      ],
+      "nextAction": "KB·하나증권공식발행안내또는DART/KIND신규채무증권신고서발행조건표원문을확보해10/1대10/5와10/13대10/16충돌해소.동적공식IR본문은사용가능한브라우저에서한차례확인하고실패시기록."
+    }
+  ],
+  "limitations": [
+    "회사일정확보와주가예측정확도는별개이다.",
+    "확정후보1종목만추가가능하며13종목완료가아니다.",
+    "이파일은독립검토·설치·ZIP검사전연구보고서이며수정전기록은보존했다."
+  ],
+  "attemptHistory": [
+    {
+      "attemptId": "focused-pass-2-underwriters-and-holdings-newsroom",
+      "observedAt": "2026-09-26T12:24:34.867931+00:00",
+      "requestedCodes": [
+        "005490",
+        "010130"
+      ],
+      "newVerifiedFutureEvents": 0,
+      "priorConclusionsPreserved": true,
+      "integrationPerformed": false,
+      "searchBatches": [
+        {
+          "code": "010130",
+          "queries": [
+            "고려아연 2026 10월 site:kbsec.com",
+            "고려아연 2026 10월 site:hanaw.com",
+            "고려아연 2026 회사채 청약공고",
+            "고려아연 2026 증권신고서 filetype:pdf",
+            "고려아연 2026 제14",
+            "고려아연 2026.09.09 신용평가",
+            "고려아연 rs20260909"
+          ],
+          "outcome": "NO_QUALIFYING_CURRENT_NOTICE_FOUND_IN_SEARCH_RESULTS",
+          "note": "Returned older 2025 series-13 filings and unrelated companies. This does not establish global non-publication."
+        },
+        {
+          "code": "005490",
+          "queries": [
+            "포스코홀딩스 2026 10월 site:newsroom.posco.com",
+            "POSCO Holdings 2026 October official event",
+            "포스코홀딩스 2026 10-30 계약 처분",
+            "포스코홀딩스 2026 3분기 기업설명회"
+          ],
+          "outcome": "NO_NEW_QUALIFYING_FUTURE_FIXED_DATE_FOUND_IN_EXAMINED_PUBLISHED_MATERIAL"
+        }
+      ],
+      "sources": [
+        {
+          "code": "010130",
+          "url": "https://www.kbsec.com/",
+          "ref": "turn509view0",
+          "sourceType": "official_underwriter",
+          "accessOutcome": "EMPTY_TEXT_EXTRACTION",
+          "detail": "HTTP tool returned a page with zero text lines; notices list was not inspected. This is not a confirmed absence of notices and not reported as a network error."
+        },
+        {
+          "code": "010130",
+          "url": "https://www.hanaw.com/",
+          "ref": "turn509view1",
+          "sourceType": "official_underwriter",
+          "accessOutcome": "EMPTY_TEXT_EXTRACTION",
+          "detail": "HTTP tool returned a page with zero text lines; notices list was not inspected."
+        },
+        {
+          "code": "010130",
+          "url": "https://www.kisrating.com/",
+          "ref": "turn503view0",
+          "sourceType": "official_rating_agency",
+          "accessOutcome": "BODY_READ",
+          "detail": "Recent evaluation list shows Korea Zinc SB 본평가 AA 안정적 dated 2026-09-09, and CP/STB regular evaluations A1 on the same date. This establishes a rating entry, not issuance/bookbuilding dates."
+        },
+        {
+          "code": "010130",
+          "url": "https://www.kisrating.com/common/images/common/btn_pdf.svg",
+          "ref": "turn510view0",
+          "sourceType": "official_rating_agency_button_asset",
+          "accessOutcome": "DOCUMENT_LINK_UNRESOLVED",
+          "detail": "The exposed PDF button resolved to a shared SVG asset, with unsupported-content error. No actual rating PDF was read; do not portray the SVG failure as an unavailable bond document."
+        },
+        {
+          "code": "005490",
+          "url": "https://newsroom.posco.com/kr/",
+          "ref": "turn503view1",
+          "sourceType": "official_group_newsroom",
+          "accessOutcome": "BODY_READ"
+        },
+        {
+          "code": "005490",
+          "url": "https://newsroom.posco.com/kr/category/프레스센터/보도자료/?tag=포스코홀딩스",
+          "ref": "turn512view1",
+          "sourceType": "official_holdings_news_filter",
+          "accessOutcome": "BODY_READ",
+          "detail": "Examined recent holdings-tagged releases. Latest visible holdings-tagged event article was September 17. No future fixed date meeting this task was found in examined material."
+        },
+        {
+          "code": "005490",
+          "url": "https://newsroom.posco.com/kr/트리플코어-속도내는-포스코그룹-장인화-회장-포/",
+          "ref": "turn512view0",
+          "sourceType": "official_group_newsroom",
+          "accessOutcome": "BODY_READ",
+          "publishedDate": "2026-09-17",
+          "eventDates": [
+            "2026-09-17",
+            "2026-09-18"
+          ],
+          "detail": "POSCO Forum at Songdo R&D center, with direct holding-company/group strategy participation. Already completed as of September 26; not a newly secured future event."
+        },
+        {
+          "code": "005490",
+          "url": "https://newsroom.posco.com/kr/포스코그룹-2026-기후산업국제박람회서-탈탄소-혁신기/",
+          "ref": "turn512view2",
+          "sourceType": "official_group_newsroom",
+          "accessOutcome": "BODY_READ",
+          "publishedDate": "2026-09-14",
+          "eventDates": [
+            "2026-09-16",
+            "2026-09-18"
+          ],
+          "detail": "WCE exhibition September 16–18 explicitly includes POSCO Holdings alongside POSCO, POSCO International, and POSCO E&C. Already completed; not counted as future coverage."
+        },
+        {
+          "code": "005490",
+          "url": "https://m.irgo.co.kr/IR-COMP/005490",
+          "ref": "turn509view2",
+          "sourceType": "company_ir_distribution_channel",
+          "accessOutcome": "BODY_READ",
+          "detail": "Recent IR materials: August 6 value-up and July 30 Q2 results. Latest displayed IR schedule notice July 15 for Q2. October 27 Q3 event in the old-year section is 2025, not 2026."
+        },
+        {
+          "code": "005490",
+          "url": "https://newsroom.posco.com/en/posco-group-and-csiro-hold-critical-minerals-forum-to-strengthen-collaboration-on-low-carbon-ironmaking-technologies/",
+          "refs": [
+            "turn498search1",
+            "turn506search18"
+          ],
+          "sourceType": "official_group_newsroom",
+          "accessOutcome": "SEARCH_RESULT_READ",
+          "detail": "CSIRO forum held August 21, outside the fixed period. October reference concerns the first forum in 2025, not a 2026 future schedule."
+        }
+      ],
+      "codeResults": [
+        {
+          "code": "005490",
+          "status": "NOT_FOUND_IN_EXAMINED_PUBLISHED_MATERIAL",
+          "newFutureEventCount": 0,
+          "distinction": "Accessible official materials were examined. This is not an assertion that the company has no other unpublished or unindexed schedules. Previously blocked DART was not retried.",
+          "nextActions": [
+            "Check newly published official Q3 IR notices or exact-dated holding-company project announcements when they appear.",
+            "If October 27 subsidiary site tour is considered, require explicit holding-company participation and a legitimate event mapping; do not count subsidiary participation as parent IR."
+          ]
+        },
+        {
+          "code": "010130",
+          "status": "PRIMARY_DATE_UNRESOLVED_WITH_MIXED_ACCESS_LIMITS",
+          "newFutureEventCount": 0,
+          "distinction": "Searches found no current underwriter issuance notice; direct underwriter pages had empty extraction and KIS document button was unresolved. Neither absence nor access failure confirms one of the competing dates.",
+          "unresolvedDateConflict": {
+            "bookbuilding": [
+              "2026-10-01",
+              "2026-10-05"
+            ],
+            "issuance": [
+              "2026-10-16",
+              "2026-10-13"
+            ],
+            "adopted": null
+          },
+          "nextActions": [
+            "Retrieve the genuine September 9 KIS Korea Zinc SB evaluation document through its official document interface, if available, to check issue terms.",
+            "Use a newly available KB Securities or Hana Securities subscription notice or DART prospectus to confirm dates; preserve both secondary alternatives without adopting either."
+          ],
+          "preservedCorrections": [
+            "Richmond Valley payment September 30 was postponed to November 30; do not restore the old date.",
+            "October 14 call-option eligibility is not confirmed exercise."
+          ]
+        }
+      ]
+    }
+  ]
+}

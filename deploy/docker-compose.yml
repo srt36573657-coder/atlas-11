@@ -1,0 +1,27 @@
+# ATLAS 11 예약 실행기 — Docker 로 돌리기
+#   준비: cp deploy/atlas11.env.example deploy/atlas11.env   (값은 비워 두어도 된다)
+#   시작: docker compose -f deploy/docker-compose.yml up -d --build
+#   로그: docker compose -f deploy/docker-compose.yml logs -f
+#   멈춤: docker compose -f deploy/docker-compose.yml down     (기록은 아래 volumes 덕에 저장소 폴더에 그대로 남는다)
+# 기록이 남는 곳(컨테이너 밖 = 이 저장소 폴더): reports/ · public/data/ · public/downloads/
+# 폴더 권한이 막히면(컨테이너는 uid 1000 'node' 로 돈다): sudo chown -R 1000:1000 reports public/data public/downloads
+services:
+  atlas11-scheduler:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: atlas11-scheduler:local
+    container_name: atlas11-scheduler
+    restart: unless-stopped
+    env_file:
+      - ./atlas11.env
+    environment:
+      TZ: Asia/Seoul
+      NODE_ENV: production
+    volumes:
+      - ../reports:/opt/atlas11/reports
+      - ../public/data:/opt/atlas11/public/data
+      - ../public/downloads:/opt/atlas11/public/downloads
+    # SIGTERM 뒤 실행 중인 하루치가 끝나기를 기다린다(그 안에 안 끝나면 강제 종료)
+    stop_grace_period: 15m
+    command: ["node", "scripts/atlas11/scheduler.mjs"]

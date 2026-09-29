@@ -1,0 +1,23 @@
+{
+  "pid": 4238,
+  "host": "vm",
+  "startedAt": "2026-09-29T06:41:07.423Z",
+  "lastHeartbeat": "2026-09-29T06:41:07.424Z",
+  "nextRunAt": null,
+  "lastRun": null,
+  "mode": "daemon_fast",
+  "command": [
+    "node",
+    "scripts/atlas11/run_daily.mjs",
+    "--collector",
+    "scripts/atlas11/collect_naver.mjs"
+  ],
+  "runTimeKST": "16:00",
+  "retryEveryMs": 600000,
+  "giveUpKST": "18:00",
+  "lockReplaced": null,
+  "status": "stopped",
+  "stoppedAt": "2026-09-29T06:41:07.424Z",
+  "runs": 0,
+  "lastOutcome": null
+}

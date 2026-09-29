@@ -1,0 +1,247 @@
+/* ATLAS Atelier · editorial layout and interaction presentation.
+   Scope: existing ATLAS surface only. No chart coordinates, paths, data,
+   forecast visibility, DOM order, timer or state changes.
+   Load after atelier-brand.css and previous presentation styles. */
+main[data-design-edition="8.0"][data-atelier] {
+  --atelier-paper:#FFFCF6;
+  --atelier-ground:#F5F1E8;
+  --atelier-ink:#2D241F;
+  --atelier-muted:#5C5148;
+  --atelier-accent:#B94E20;
+  --atelier-rule:#CFC2B1;
+  --atelier-control:#8C7C6D;
+  --atelier-content-offset:208px;
+  box-sizing:border-box;
+  width:100%; max-width:1800px; min-width:0;
+  padding:16px 40px 0;
+  color:var(--atelier-ink);
+}
+/* A121–A126: a compact masthead and one measured content canvas. */
+main[data-design-edition="8.0"][data-atelier]>header {
+  min-height:72px; padding:8px 0 16px; margin-bottom:16px;
+  gap:24px; align-items:center; border-bottom:1px solid var(--atelier-rule);
+  background:var(--atelier-ground); box-shadow:none;
+}
+main[data-atelier] .header-actions {gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+main[data-atelier] .header-actions button {border-color:var(--atelier-control);min-height:44px; padding:10px 16px; border-radius:6px; font-size:13px; line-height:1.4;}
+main[data-atelier] .header-actions .stock-picker-trigger {background:var(--atelier-ink);color:var(--atelier-paper);border-color:var(--atelier-ink);}
+main[data-atelier] .header-actions>button.primary {background:transparent;color:var(--atelier-ink);border-color:var(--atelier-control);}
+main[data-atelier] .header-actions .account-trigger {background:var(--atelier-paper);color:var(--atelier-ink);border-color:var(--atelier-control);}
+main[data-atelier] .storage-indicator {font-size:12px;line-height:1.5;color:var(--atelier-muted);}
+main[data-design-edition="8.0"][data-atelier]>nav {
+  position:fixed; top:112px; bottom:32px;
+  left:max(40px,calc((100vw - 1800px)/2 + 40px));
+  width:176px; padding:8px 0; margin:0;
+  display:flex; flex-direction:column; align-items:stretch; gap:8px;
+  border:0; border-radius:0; background:transparent; box-shadow:none;
+  overflow:auto; overscroll-behavior:contain; scrollbar-width:thin;
+}
+main[data-design-edition="8.0"][data-atelier]>nav button {
+  display:flex; align-items:center; gap:12px; flex:none;
+  min-height:48px; padding:12px 14px; border:1px solid transparent;
+  border-radius:6px; background:transparent; color:var(--atelier-muted);
+  font-size:13px; font-weight:550; line-height:1.5; text-align:left;
+  white-space:normal; overflow-wrap:anywhere;
+}
+main[data-design-edition="8.0"][data-atelier]>nav button.active {
+  background:#EEE4D6; color:var(--atelier-ink); font-weight:750;
+  border-color:#C6B6A2; box-shadow:inset 3px 0 0 var(--atelier-accent);
+}
+main[data-design-edition="8.0"][data-atelier]>nav button:not(.active):hover {background:#EAE0D2;color:var(--atelier-ink);}
+main[data-design-edition="8.0"][data-atelier]>nav .nav-symbol {width:18px;height:18px;flex:none;}
+main[data-design-edition="8.0"][data-atelier]>:is(.atlas-content,.evidence-banner,.record-details,.intro-details,footer) {margin-left:var(--atelier-content-offset);}
+main[data-atelier] :is(.atlas-content,.small-multiples,.mini-card,.section-heading>div,.news-workbench,.score-workbench,.breaking-workbench,.evolution-workbench) {min-width:0;}
+main[data-atelier] .intro-details {margin-block:0 8px;}
+main[data-atelier] .intro-details>summary {padding:4px 0;font-size:12px;line-height:1.7;color:var(--atelier-muted);}
+main[data-atelier]>.evidence-banner {padding:12px 16px;margin-block:8px 12px;gap:12px;border:1px solid #C6B6A2;border-left:3px solid var(--atelier-accent);border-radius:4px;background:#EEE4D6;color:var(--atelier-muted);}
+main[data-atelier]>.record-details {margin-block:8px 24px;border-color:var(--atelier-rule);}
+main[data-atelier] .record-details>summary {padding:8px 0;font-size:13px;line-height:1.6;}
+main[data-atelier] .section-heading {gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:24px;}
+main[data-atelier] .section-heading>div:first-child {flex:1 1 300px;}
+main[data-atelier] .section-heading h2 {margin:4px 0 8px;line-height:1.3;letter-spacing:-.035em;}
+main[data-atelier] .section-heading p {max-width:68ch;margin:0;font-size:15px;line-height:1.75;color:var(--atelier-muted);}
+main[data-atelier] .gallery-picker {flex:none;min-height:44px;padding:10px 16px;border-radius:6px;border-color:var(--atelier-control);background:var(--atelier-paper);color:var(--atelier-ink);}
+main[data-atelier] .stock-search {flex:0 1 240px;max-width:280px;margin-left:0;}
+main[data-atelier] .stock-search>div {background:var(--atelier-paper);border:1px solid var(--atelier-control);border-radius:6px;}
+main[data-atelier] .stock-search input {font-size:16px;min-width:0;background:transparent;}
+/* A130–A136: navigation and collection filters are separate levels. */
+main[data-atelier] .research-toolbar {gap:12px;padding:12px 0 16px;border-bottom:1px solid var(--atelier-rule);margin-bottom:12px;}
+main[data-atelier] .research-lenses {gap:8px;align-items:center;}
+main[data-atelier] .research-lenses button {min-height:44px;padding:10px 14px;border-radius:5px;border:1px solid var(--atelier-control);background:#EDE5D8;color:var(--atelier-ink);font-size:13px;line-height:1.5;}
+main[data-atelier] .research-lenses button[aria-pressed=true] {background:var(--atelier-ink);border-color:var(--atelier-ink);color:var(--atelier-paper);font-weight:700;}
+main[data-atelier] .research-lenses button[aria-pressed=true] span {color:var(--atelier-paper);}
+main[data-atelier] .visible-count {font-size:12px;line-height:1.7;color:var(--atelier-muted);}
+main[data-atelier] .gallery-tools {margin:12px 0;gap:16px;align-items:center;}
+main[data-atelier] .density-switch {border:1px solid var(--atelier-control);padding:3px;border-radius:6px;background:#EDE5D8;}
+main[data-atelier] .density-switch button {min-height:40px;padding:8px 12px;border-radius:3px;line-height:1.5;}
+main[data-atelier] .density-switch button[aria-pressed=true] {background:var(--atelier-paper);color:var(--atelier-ink);font-weight:700;box-shadow:inset 0 0 0 1px var(--atelier-control);}
+main[data-atelier] .lens-help {font-size:13px;line-height:1.75;margin:8px 0 24px;color:var(--atelier-muted);}
+/* A127–A129: roomy cards with aligned identity/quote regions, no text clamping. */
+main[data-atelier] .small-multiples {grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start;}
+main[data-atelier] .small-multiples[data-density=reading] {grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;}
+main[data-atelier] .mini-card {padding:24px 24px 16px;border:1px solid var(--atelier-rule);border-radius:8px;background:var(--atelier-paper);box-shadow:none;overflow:hidden;}
+main[data-atelier] .mini-card:hover {transform:none;border-color:#A58C72;box-shadow:0 4px 20px #2D241F08;}
+main[data-atelier] .mini-card .mini-title {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:16px;min-height:116px;padding:0 0 16px;margin:0 0 16px;border:0;border-bottom:1px solid var(--atelier-rule);background:transparent;text-align:left;}
+main[data-atelier] .mini-card .mini-title>div {min-width:0;}
+main[data-atelier] .mini-card .mini-title h3 {font-size:23px;line-height:1.35;margin:8px 0;letter-spacing:-.035em;word-break:keep-all;overflow-wrap:anywhere;color:var(--atelier-ink);}
+main[data-atelier] .mini-card :is(.stock-identity,.stock-code,.forecast-status,.end-comparison) {font-size:12px;line-height:1.6;color:var(--atelier-muted);}
+main[data-atelier] .mini-card .end-forecast {max-width:172px;gap:4px;}
+main[data-atelier] .mini-card .end-forecast b {font-size:24px;line-height:1.35;color:var(--atelier-ink);font-variant-numeric:tabular-nums;}
+main[data-atelier] .mini-card .end-forecast small {font-size:12px;line-height:1.6;}
+main[data-atelier] .mini-card .stock-current {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;min-height:88px;padding:12px 16px!important;border:0;border-radius:4px;background:#F0E9DC;}
+main[data-atelier] .mini-card .quote-value {gap:8px;flex-wrap:wrap;}
+main[data-atelier] .mini-card .quote-value strong {font-size:26px;line-height:1.4;color:var(--atelier-ink);}
+main[data-atelier] .mini-card :is(.quote-caption,.selected-quote>small,.forecast-origin) {font-size:12px;line-height:1.6;color:var(--atelier-muted);}
+main[data-atelier] .mini-card .forecast-origin {border-left:1px solid #C6B6A2;padding-left:12px;}
+main[data-atelier] .mini-card .stock-controls {gap:8px;padding:12px 0 8px;align-items:center;flex-wrap:wrap;}
+main[data-atelier] .mini-card .stock-controls button {min-height:44px;min-width:44px;padding:10px 14px;border-radius:5px;font-size:13px;line-height:1.5;}
+main[data-atelier] .mini-card .stock-controls button.primary {background:var(--atelier-ink);border-color:var(--atelier-ink);color:var(--atelier-paper);}
+main[data-atelier] .mini-card .stock-controls button:not(.primary) {background:var(--atelier-paper);color:var(--atelier-ink);border-color:var(--atelier-control);}
+main[data-atelier] .mini-card .stock-options {padding:8px 0;gap:8px 12px;justify-content:flex-start;font-size:13px;line-height:1.6;}
+main[data-atelier] .mini-card .stock-options :is(label,button) {min-height:44px;}
+main[data-atelier] .mini-card .stock-options select {min-height:44px;font-size:14px;padding:8px;}
+main[data-atelier] .mini-card .scope-info {padding-top:12px;border-top:1px solid var(--atelier-rule);}
+main[data-atelier] .mini-card :is(.scope-summary,.scope-gap) {margin:8px 0;font-size:12px;line-height:1.75;color:var(--atelier-muted);}
+main[data-atelier] .scope-chips {gap:8px;flex-wrap:wrap;}
+main[data-atelier] .mini-card .scope-chips span {padding:5px 8px;border-radius:3px;background:#EEE5D7;color:var(--atelier-muted);font-size:12px;line-height:1.5;}
+main[data-atelier] .mini-card .scope-chips span[data-empty=true] {opacity:1;background:var(--atelier-paper);border-color:var(--atelier-control);}
+main[data-atelier] .stock-brief-heading {margin:16px 0 12px;gap:12px;}
+main[data-atelier] .watch-button {min-height:44px;min-width:44px;padding:8px 12px;border-radius:5px;color:var(--atelier-ink);border-color:var(--atelier-control);background:var(--atelier-paper);}
+main[data-atelier] .watch-button[aria-pressed=true] {color:var(--atelier-ink);background:#EEE4D6;border-color:var(--atelier-accent);box-shadow:inset 0 -2px var(--atelier-accent);}
+/* A217–A240: feedback changes ink and boundaries, never page geometry. */
+main[data-atelier] :is(button,select,summary) {touch-action:manipulation;}
+main[data-atelier] button {transition:background-color 150ms ease,border-color 150ms ease,color 150ms ease,box-shadow 150ms ease;}
+main[data-atelier] button:active {transform:none;}
+main[data-atelier] :is(button:disabled,select:disabled,input:disabled) {opacity:1;cursor:not-allowed;color:#6C6056;background:#E9E1D4;border-style:dashed;}
+main[data-atelier] .text-button {min-height:44px;min-width:44px;padding:8px;color:var(--atelier-ink);text-underline-offset:4px;}
+main[data-atelier] :is(.date-cell,.evo-date-strip button,.day-step) {min-height:44px;min-width:44px;}
+main[data-atelier] .date-cell[aria-pressed=true] {background:var(--atelier-ink);border-color:var(--atelier-ink);color:var(--atelier-paper);box-shadow:inset 0 -3px var(--atelier-accent);}
+main[data-atelier] .date-cell[aria-pressed=true] :is(small,span) {color:var(--atelier-paper);}
+/* A140–A142: keep existing named focus areas, independently scroll long news. */
+main[data-atelier] .watch-dialog {border-radius:8px;padding:16px;max-width:1760px;background:var(--atelier-paper);box-shadow:0 24px 80px #2D241F28;}
+main[data-atelier] .watch-dialog .dialog-title {gap:12px;align-items:center;padding:0 0 12px;margin-bottom:12px;border-bottom:1px solid var(--atelier-rule);}
+main[data-atelier] .dialog-title button {min-height:44px;min-width:44px;flex:none;}
+main[data-atelier] .focus-card {border:1px solid var(--atelier-rule);border-radius:6px;background:var(--atelier-paper);min-width:0;min-height:0;}
+main[data-atelier] .focus-card .stock-controls {grid-area:controls;gap:8px;padding:8px 16px 4px;flex-wrap:wrap;}
+main[data-atelier] .focus-card .stock-controls button {min-height:44px;min-width:44px;padding:8px 12px;font-size:14px;line-height:1.5;border-radius:5px;}
+main[data-atelier] .focus-card .stock-controls .primary {background:var(--atelier-ink);color:var(--atelier-paper);border-color:var(--atelier-ink);}
+main[data-atelier] .focus-news {min-width:0;min-height:0;background:#F5F1E8;border-color:var(--atelier-rule);}
+main[data-atelier] .focus-news-heading {padding:16px;border-bottom:1px solid var(--atelier-rule);background:#EFE6D8;}
+main[data-atelier] .focus-news-heading[data-waiting=true] {border-left:3px solid var(--atelier-accent);background:#F2E1CE;}
+main[data-atelier] .focus-news-content {min-height:0;overflow:auto;padding:16px;overscroll-behavior:contain;scrollbar-gutter:stable;scroll-padding-block:16px;}
+main[data-atelier] :is(.focus-news-content,.news-reading-detail,.diagnosis-body) p {font-size:16px;line-height:1.85;}
+main[data-atelier] .footer-actions {gap:16px;padding-block:24px;border-top:1px solid var(--atelier-rule);}
+/* A243–A246: pickers remain click-first, no mandatory text entry. */
+main[data-atelier] :is(.picker-grid,.evo-stock-grid,.breaking-stock-grid) {gap:8px;}
+main[data-atelier] .picker-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+main[data-atelier] :is(.picker-grid button,.evo-stock-grid button,.breaking-stock-grid button) {min-height:76px;min-width:0;padding:12px;border:1px solid var(--atelier-control);border-radius:5px;gap:8px;overflow-wrap:anywhere;}
+main[data-atelier] .picker-grid button {display:flex;flex-wrap:wrap;align-content:space-between;}
+main[data-atelier] .picker-grid button>span {min-width:0;flex:1 1 110px;}
+main[data-atelier] .picker-grid button b {font-size:14px;line-height:1.55;white-space:normal;overflow-wrap:anywhere;}
+main[data-atelier] .picker-grid button small {font-size:12px;line-height:1.6;}
+main[data-atelier] .picker-grid button strong {font-size:14px;line-height:1.4;white-space:nowrap;}
+main[data-atelier] .picker-grid button[aria-pressed=true] {background:#EEE4D6;border-color:var(--atelier-accent);box-shadow:inset 0 -2px var(--atelier-accent);}
+main[data-atelier] :is(.picker-filters,.score-filters,.workbench-heading) {gap:16px;}
+main[data-atelier] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea) {min-width:0;max-width:100%;scroll-margin-block:100px 140px;}
+main[data-atelier] .table-scroll {max-width:100%;overflow:auto;overscroll-behavior-inline:contain;scrollbar-gutter:stable;}
+/* A265–A287: the focus ring is ink, separate from saddle-orange selection. */
+main[data-atelier] :is(button,a[href],input,select,textarea,summary,[tabindex]):focus-visible {outline:3px solid var(--atelier-ink);outline-offset:3px;box-shadow:0 0 0 2px var(--atelier-paper);scroll-margin-block:96px 120px;}
+main[data-atelier] :is(.focus-news-content,.news-reading-detail):focus-visible {outline-offset:-4px;}
+main[data-atelier] :is(.skip-link,.date-cell,.picker-grid button):focus-visible {position:relative;z-index:4;}
+main[data-atelier] .skip-link:focus-visible {position:fixed;z-index:120;max-width:calc(100vw - 32px);white-space:normal;}
+@media(min-width:1720px) {
+  main[data-atelier] .small-multiples {grid-template-columns:repeat(3,minmax(0,1fr));}
+  main[data-atelier] .small-multiples[data-density=reading] {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(min-width:1180px) and (max-width:1439px) {
+  main[data-design-edition="8.0"][data-atelier] {padding-inline:24px;}
+  main[data-design-edition="8.0"][data-atelier]>nav {left:24px;}
+}
+@media(min-width:821px) and (max-width:1179px) {
+  main[data-design-edition="8.0"][data-atelier] {--atelier-content-offset:0px;padding:16px 24px 0;}
+  main[data-design-edition="8.0"][data-atelier]>header {position:relative;top:auto;gap:16px;}
+  main[data-design-edition="8.0"][data-atelier]>nav {position:sticky;inset:0 auto auto;width:100%;display:flex;flex-direction:row;gap:8px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding:8px 0;margin:0 0 24px;background:var(--atelier-ground);border-bottom:1px solid var(--atelier-rule);z-index:30;}
+  main[data-design-edition="8.0"][data-atelier]>nav button {flex:0 0 auto;white-space:nowrap;padding-inline:14px;min-height:48px;}
+  main[data-atelier] .header-actions {max-width:68%;}
+  main[data-atelier] .small-multiples,main[data-atelier] .small-multiples[data-density=reading] {gap:20px;}
+  main[data-atelier] .mini-card {padding:20px 20px 16px;}
+}
+@media(min-width:761px) {
+  main[data-atelier] .focus-card {grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);grid-template-areas:'title news' 'current news' 'chart news' 'controls news' 'slider news' 'options news' 'scope news';}
+}
+@media(max-width:820px) {
+  main[data-design-edition="8.0"][data-atelier] {--atelier-content-offset:0px;padding:12px 16px calc(112px + env(safe-area-inset-bottom,0px));}
+  main[data-design-edition="8.0"][data-atelier]>header {position:relative;top:auto;min-height:0;gap:12px;flex-wrap:wrap;padding:4px 0 16px;margin-bottom:12px;}
+  main[data-atelier] .header-actions {max-width:none;width:100%;display:flex;justify-content:flex-start;gap:8px;}
+  main[data-atelier] .header-actions button {font-size:13px;padding:8px 12px;min-height:44px;}
+  main[data-atelier] .header-actions>button.primary {display:inline-flex;align-items:center;}
+  main[data-atelier] .storage-indicator {flex:1 1 120px;min-height:24px;}
+  main[data-design-edition="8.0"][data-atelier]>nav {position:fixed;inset:auto 0 0;width:100%;height:auto;display:flex;flex-direction:row;gap:4px;padding:8px max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));margin:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;justify-content:flex-start;background:var(--atelier-paper);border-top:1px solid var(--atelier-rule);border-radius:0;box-shadow:0 -6px 24px #2D241F08;z-index:45;scroll-padding-inline:12px;}
+  main[data-design-edition="8.0"][data-atelier]>nav button,
+  main[data-design-edition="8.0"][data-atelier]>nav button:nth-child(n+5) {display:flex;flex:0 0 auto;flex-direction:column;justify-content:center;gap:4px;min-width:92px;min-height:64px;padding:8px 10px;text-align:center;font-size:12px;line-height:1.5;white-space:nowrap;}
+  main[data-design-edition="8.0"][data-atelier]>nav button.active {box-shadow:inset 0 -3px var(--atelier-accent);}
+  main[data-atelier] .small-multiples,main[data-atelier] .small-multiples[data-density=reading] {grid-template-columns:minmax(0,1fr);gap:20px;}
+  main[data-atelier] .mini-card,main[data-atelier] .small-multiples[data-density=reading] .mini-card {padding:20px 16px 16px;}
+  main[data-atelier] .mini-card .mini-title {min-height:0;gap:12px;padding-bottom:16px;}
+  main[data-atelier] .mini-card .mini-title h3 {font-size:23px;}
+  main[data-atelier] .mini-card .end-forecast {max-width:152px;}
+  main[data-atelier] .mini-card .end-forecast b {font-size:22px;}
+  main[data-atelier] .mini-card .stock-current {min-height:0;}
+  main[data-atelier] .mini-card .quote-value strong {font-size:25px;}
+  main[data-atelier] .mini-card .stock-controls button {flex-grow:1;min-height:44px;font-size:14px;}
+  main[data-atelier] .mini-card .stock-options {font-size:14px;gap:8px 12px;}
+  main[data-atelier] .mini-card .stock-options select {font-size:16px;}
+  main[data-atelier] .section-heading {gap:12px;margin-bottom:20px;}
+  main[data-atelier] .section-heading>div:first-child {flex:1 1 100%;}
+  main[data-atelier] .section-heading p {font-size:16px;line-height:1.8;}
+  main[data-atelier] .gallery-picker {width:100%;min-height:48px;}
+  main[data-atelier] .research-lenses {width:100%;max-width:100%;flex-wrap:nowrap;overflow:auto;padding:4px 2px 8px;}
+  main[data-atelier] .research-lenses button {flex:none;min-height:44px;}
+  main[data-atelier] .research-toolbar {gap:8px;padding:8px 0 12px;}
+  main[data-atelier] .gallery-tools {align-items:flex-start;gap:12px;}
+  main[data-atelier] .density-switch button {min-height:44px;}
+  main[data-atelier] :is(.picker-grid,.evo-stock-grid,.breaking-stock-grid) {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  main[data-atelier] .picker-grid button {display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;min-height:104px;padding:12px;}
+  main[data-atelier] .picker-grid button>span {flex:0 1 auto;}
+  main[data-atelier] :is(.picker-filters,.score-filters,.workbench-heading) {flex-wrap:wrap;gap:12px;}
+  main[data-atelier] :is(.picker-filters input,.picker-filters select,.score-filters select,.workbench-heading select) {font-size:16px;min-height:44px;}
+  main[data-atelier] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea) {font-size:16px;}
+  main[data-atelier] :is(.news-reading-detail,.daily-reason,.daily-event,.evo-day-panel,.breaking-detail,.breaking-entry,.evo-notes) p {font-size:16px;line-height:1.85;}
+  main[data-atelier] .table-scroll :is(th,td):first-child {position:sticky;left:0;z-index:1;background:var(--atelier-paper);box-shadow:1px 0 0 var(--atelier-rule);}
+  main[data-atelier] .table-scroll thead th:first-child {z-index:3;}
+  main[data-atelier] .footer-actions {gap:12px;padding-block:20px;}
+}
+@media(max-width:760px) {
+  main[data-atelier] .watch-backdrop {padding:0;}
+  main[data-atelier] .watch-dialog {height:100dvh;border-radius:0;padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));}
+  main[data-atelier] .watch-dialog .dialog-title {gap:8px;flex-wrap:wrap;padding-bottom:8px;margin-bottom:8px;}
+  main[data-atelier] .watch-dialog .dialog-title select {font-size:16px;min-height:44px;}
+  main[data-atelier] .focus-card {grid-template-columns:minmax(0,1fr);grid-template-areas:'title' 'current' 'chart' 'controls' 'slider' 'options' 'news';}
+  main[data-atelier] .focus-card .stock-controls {padding:8px;gap:8px;}
+  main[data-atelier] .focus-card .stock-controls button {min-height:44px;}
+  main[data-atelier] .focus-news-heading {padding:12px;gap:8px;}
+  main[data-atelier] .focus-news-content {padding:12px;}
+  main[data-atelier] .focus-card .stock-options {font-size:14px;gap:8px;padding-inline:8px;}
+  main[data-atelier] .focus-card .stock-options label {min-height:44px;}
+  main[data-atelier] .focus-card .stock-options select {min-height:44px;font-size:16px;}
+  main[data-atelier] .date-grid {grid-template-columns:repeat(auto-fit,minmax(44px,1fr));gap:4px;}
+  main[data-atelier] :is(.calendar-block,.date-grid) {min-width:0;max-width:100%;}
+}
+@media(max-width:359px) {
+  main[data-atelier] .mini-card .mini-title {grid-template-columns:minmax(0,1fr);gap:12px;}
+  main[data-atelier] .mini-card .end-forecast {max-width:none;align-items:flex-start;display:flex;flex-wrap:wrap;}
+  main[data-atelier] .mini-card .end-forecast b {font-size:24px;}
+  main[data-atelier] .mini-card .end-comparison {max-width:none;}
+  main[data-atelier] .mini-card .forecast-origin {border-left:0;border-top:1px solid #C6B6A2;padding:8px 0 0;width:100%;}
+  main[data-atelier] .header-actions button {padding-inline:10px;}
+  main[data-atelier] .picker-grid button {padding:10px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  main[data-atelier] *,main[data-atelier] *::before,main[data-atelier] *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+}
+@media(forced-colors:active) {
+  main[data-atelier] :is(button,input,select,textarea,.mini-card,.focus-card,.focus-news,.picker-grid button) {forced-color-adjust:auto;border-color:ButtonText;}
+  main[data-atelier] :is(button,a[href],input,select,textarea,summary,[tabindex]):focus-visible {outline:3px solid Highlight;box-shadow:none;}
+  main[data-atelier] :is(button.active,[aria-pressed=true]) {outline:2px solid Highlight;outline-offset:-3px;}
+  main[data-atelier] :is(button:disabled,select:disabled,input:disabled) {color:GrayText;background:Canvas;border-color:GrayText;}
+}

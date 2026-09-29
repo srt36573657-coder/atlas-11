@@ -1,0 +1,85 @@
+/* ATLAS / 365: original editorial identity. Import after globals.css.
+   Gold is decorative; text uses the darker ink variant. Layout is owned elsewhere. */
+:root {
+  color-scheme: light;
+  --brand-ivory: #f6f2e9;
+  --brand-wine: #382c2a;
+  --brand-gold: #94734a;
+  --brand-gold-ink: #71522e;
+  --background: var(--brand-ivory);
+  --surface: #fffdf9;
+  --surface-raised: #fffaf3;
+  --surface-hover: #eee6da;
+  --surface-inset: #f2ece2;
+  --surface-note: #eae0d1;
+  --text: var(--brand-wine);
+  --muted: #665851;
+  --subtle: #716158;
+  --gold: var(--brand-gold-ink);
+  --gold-hover: #583e22;
+  --on-gold: #fffdf9;
+  --border: #d6c9b8;
+  --control-border: #96816e;
+  --positive: #a12c3a;
+  --negative: #265a88;
+  --success: #306848;
+  --chart-grid: #ddd1c1;
+  --chart-event: #71522e;
+  --chart-band: #cbb58e;
+  --chart-actual: #382c2a;
+  --chart-muted: #716158;
+  --chart-cursor: #71522e;
+  --chart-hover: #eee6da;
+  --chart-forecast: #84603a;
+  --atlas-font: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Segoe UI', sans-serif;
+  --atlas-serif: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --atlas-type-xs: .75rem;
+  --atlas-type-sm: .8125rem;
+  --atlas-type-body: .9375rem;
+  --atlas-type-title: clamp(1.5rem, 1.2rem + .7vw, 2rem);
+}
+body { background:var(--background); color:var(--text); font-family:var(--atlas-font); font-size:var(--atlas-type-body); line-height:1.65; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+button,input,select,textarea { font-family:var(--atlas-font); }
+h1,h2,h3,h4 { color:var(--text); text-wrap:balance; }
+p,li,dd { word-break:keep-all; overflow-wrap:anywhere; }
+.brand h1 { font-family:var(--atlas-serif); font-weight:600; letter-spacing:.14em; line-height:1.05; color:var(--brand-wine); }
+.brand p { color:var(--muted); font-size:var(--atlas-type-xs); letter-spacing:.025em; }
+.brand-mark { background:transparent; box-shadow:none; border-radius:0; color:var(--brand-wine); flex-shrink:0; }
+.brand-mark img { display:block; width:100%; height:100%; object-fit:contain; }
+.section-heading h2 { font-family:var(--atlas-font); font-size:var(--atlas-type-title); font-weight:650; letter-spacing:-.035em; line-height:1.3; }
+.mini-title h3 { font-family:var(--atlas-font); font-weight:700; letter-spacing:-.03em; line-height:1.35; }
+.news-reading-detail h3,.daily-explanation h3 { font-family:var(--atlas-font); letter-spacing:-.025em; line-height:1.4; }
+.news-reading-detail p,.daily-explanation p,.diagnosis-sheet p { line-height:1.8; }
+.stock-identity,.forecast-status,.end-comparison,.mini-card .forecast-origin,.mini-card .scope-summary,.source-card small,.score-workbench td small { font-size:var(--atlas-type-xs); line-height:1.5; }
+.section-kicker { color:var(--brand-gold-ink); font-size:var(--atlas-type-xs); font-weight:650; letter-spacing:.065em; }
+.quote-value,.end-forecast,.daily-values,.score-metrics,.picker-grid strong,table,.date-cell,.stock-options time { font-variant-numeric:tabular-nums lining-nums; }
+.quote-value strong,.end-forecast b,.score-metrics b { letter-spacing:-.035em; font-weight:650; }
+small,.muted { color:var(--muted); }
+a { color:var(--brand-gold-ink); text-decoration-thickness:1px; text-underline-offset:.22em; }
+a:hover { color:var(--gold-hover); text-decoration-thickness:2px; }
+.source-card small { overflow-wrap:anywhere; word-break:break-word; }
+.primary { background:var(--brand-wine); color:var(--on-gold); border-color:var(--brand-wine); }
+.primary:hover { background:#4b3935; border-color:#4b3935; }
+button:disabled { color:var(--muted); opacity:.7; }
+input::placeholder,textarea::placeholder { color:var(--subtle); opacity:1; }
+input,select,textarea { caret-color:var(--brand-wine); accent-color:var(--brand-wine); }
+::selection { background:#ddc9a7; color:var(--brand-wine); }
+:where(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline:3px solid var(--brand-gold-ink); outline-offset:3px; box-shadow:0 0 0 2px var(--surface); }
+.up { color:var(--positive); }.down { color:var(--negative); }
+.forecast-status { color:var(--muted); }
+@media (forced-colors:active) {
+  :where(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline-color:Highlight; box-shadow:none; }
+  .brand-mark { background:Canvas; border:1px solid CanvasText; }
+  .primary { background:ButtonFace; color:ButtonText; border-color:ButtonText; }
+}
+/* First paint: a quiet identity while the unchanged forecast bundle loads. */
+.atlas-loading { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; text-align:center; background:var(--brand-ivory); color:var(--brand-wine); }
+.atlas-loading img { display:block; width:64px; height:64px; margin-bottom:20px; }
+.atlas-loading .loading-edition { font-family:var(--atlas-font); font-size:.6875rem; letter-spacing:.16em; color:var(--brand-gold-ink); text-transform:uppercase; }
+.atlas-loading h1 { margin:12px 0 8px; font-family:var(--atlas-serif); font-weight:600; font-size:clamp(2rem,7vw,3rem); letter-spacing:-.035em; }
+.atlas-loading p { max-width:32rem; margin:8px 0; font-size:.875rem; line-height:1.7; color:var(--muted); }
+.atlas-loading .loading-rule { width:160px; height:2px; margin:22px 0; background:var(--border); overflow:hidden; }
+.atlas-loading .loading-rule::after { content:''; display:block; width:48px; height:100%; background:var(--brand-gold); animation:atlas-loading-drift 1.8s ease-in-out infinite alternate; }
+.app-version { font-family:var(--atlas-font); font-size:.625rem; font-weight:500; line-height:1.4; letter-spacing:.1em; color:var(--muted); }
+@keyframes atlas-loading-drift { from { transform:translateX(0); } to { transform:translateX(112px); } }
+@media (prefers-reduced-motion:reduce) { .atlas-loading .loading-rule::after { animation:none; width:100%; opacity:.65; } }

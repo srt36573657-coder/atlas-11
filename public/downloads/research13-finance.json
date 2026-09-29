@@ -1,0 +1,319 @@
+{
+  "schema": "atlas.research13.agent.v1",
+  "researcher": "finance_13",
+  "observedAt": "2026-09-26T12:27:31.081504Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "reviewedCodes": [
+    "034730",
+    "138040",
+    "029780"
+  ],
+  "verifiedCodes": [],
+  "taskComplete": false,
+  "proposedEvents": [],
+  "priorRecordsPreserved": true,
+  "newFindings": [
+    "메리츠 공식 IR 페이지의 공개 JavaScript에 명시된 동적 목록 요청을 실행해 HTTP 200으로 실제 행사 본문을 읽었다. 최신 등록은 2026-07-24이며 2026-08-12 16:00 2분기 발표이다. 현재 최신 페이지에 3분기 또는 10월 일정은 없다.",
+    "메리츠 공식 보도자료의 공개 목록 요청도 HTTP 200으로 읽었다. 최신 등록은 2026-08-12 상반기 실적이다. 이전의 동적 목록 미노출 기록을 삭제하지 않고 새 조사 결과로 보완한다.",
+    "SK 신고서 20260922000501의 영어 DART 공식 검색 항목을 추가 발견했지만 원문은 한국·영문 모두 502였다. 별도 IB토마토 보도는 9/29 수요예측 후 9/30 확정 총액 공시 계획 후보를 추가 제공한다. 공식 원문 검증이 아니므로 입력하지 않는다.",
+    "삼성카드 민간 실적 예상일은 10/22, 10/30 및 10/22~11/5 범위로 상충한다. 회사 일정표는 2026-07-27이 최신이고 10/28은 2025년이다.",
+    "삼성카드 제2530회 10/20·제2635회 10/16 계약 만기는 공식 KIND 7/22 원문으로 찾았지만 최신 잔액·중도상환이 미확인이므로 확정 추가하지 않았다. 9/21 최신 공시 접수번호와 RISE 공식 보유내역 경로를 후속 확인 대상으로 보존했다."
+  ],
+  "assets": [
+    {
+      "code": "034730",
+      "name": "SK",
+      "outcome": "BLOCKED",
+      "reason": "9/29 수요예측·10/7 발행 후보는 기사 본문에서 재확인했으나 공식 신고서 본문을 대조하지 못했다. 한국 및 영어 DART는 웹 검색 도구와 정상 환경 HTTP에서 502. 주관사 공개 검색은 SK 제319회 원문을 반환하지 않았다. SK증권 첫 페이지는 NetFunnel 진입 절차여서 직접 내부 주소로 건너뛰지 않았다.",
+      "checkedUrls": [
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+        "https://englishdart.fss.or.kr/dsbh001/main.do?rcpNo=20260922000501",
+        "https://sk-inc.com/kr/ir/irArchive.aspx",
+        "https://www.k5.co.kr/stock/034730/official_notice",
+        "https://www.fntimes.com/html/view.php?mobile=1&ud=202609230745252422141825007d_18",
+        "https://ibtomato.com/ExternalView.aspx?no=19638&type=1",
+        "https://www.sks.co.kr/",
+        "https://www.kbsec.com/go.able?linkcd=m50010003"
+      ],
+      "sources": [
+        {
+          "url": "https://englishdart.fss.or.kr/dsbh001/main.do?rcpNo=20260922000501",
+          "role": "regulator",
+          "webRef": "turn442search0",
+          "bodyRead": false,
+          "finding": "공식 검색 결과에서 신고서·제출일·SK주식회사 식별, 원문502(turn445view0). 검색 스니펫을 본문 확인으로 세지 않음."
+        },
+        {
+          "url": "https://www.fntimes.com/html/view.php?mobile=1&ud=202609230745252422141825007d_18",
+          "role": "secondary_date_candidate",
+          "webRef": "turn423view1",
+          "bodyRead": true,
+          "location": "L154, L173-L175",
+          "publishedAt": "2026-09-23T11:09:00+09:00",
+          "snippet": "수요예측은 오는 29일 진행되며, 발행일은 10월 7일이다.",
+          "finding": "공동대표주관사 SK증권·KB증권. 같은 기사의 다른 전재를 독립 원문 검증으로 세지 않음."
+        },
+        {
+          "url": "https://ibtomato.com/ExternalView.aspx?no=19638&type=1",
+          "role": "secondary_discovery_only",
+          "webRef": "turn433view0",
+          "bodyRead": true,
+          "location": "L38, L51, L76",
+          "publishedAt": "2026-09-23T13:49:24+09:00",
+          "snippet": "오는 29일 수요예측을 마친 후 30일 확정 총액 등을 공시할 예정이다.",
+          "finding": "9/30 추가 후보이나 034730 대신 과거003600 코드 링크가 있어 기사 종목 링크 자체를 식별 근거로 사용하지 않는다."
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/034730/official_notice",
+          "role": "secondary_followup_discovery",
+          "webRef": "turn473view3",
+          "bodyRead": true,
+          "location": "L14-L16",
+          "finding": "최신 목록은9/22 17:08 증권신고서. 더 최근 정정 부재를 완전히 증명하지 않음."
+        },
+        {
+          "url": "https://www.sks.co.kr/",
+          "role": "underwriter_public_entry",
+          "bodyRead": true,
+          "finding": "HTTP200이지만 실제 내용은 NetFunnel 진입 스크립트781바이트. 채무증권 일정이 아님."
+        },
+        {
+          "url": "https://www.kbsec.com/go.able?linkcd=m50010003",
+          "role": "underwriter_public_entry",
+          "webRef": "turn437search3",
+          "bodyRead": true,
+          "finding": "수요예측 참가 로그인 안내만 확인. 로그인·참가·금융거래 수행하지 않음."
+        }
+      ],
+      "pendingDates": [
+        {
+          "date": "2026-09-29",
+          "kind": "BOND_BOOKBUILDING",
+          "confirmed": false
+        },
+        {
+          "date": "2026-09-30",
+          "kind": "BOND_AMOUNT_DISCLOSURE",
+          "confirmed": false
+        },
+        {
+          "date": "2026-10-07",
+          "kind": "BOND_ISSUANCE",
+          "confirmed": false
+        }
+      ],
+      "latestCorrectionsChecked": "회사 IR·최신 전재 공시 목록·신고서 접수번호와 회차 검색 실시. 공식 본문 불가로 완전 대조 불가.",
+      "nextAction": "공식 공시 원문 접근이 회복되면 20260922000501의 모집일정과 정정 목록을 함께 확인. 또는 SK/KB증권이 공개하는 제319회 사채 안내·첨부를 확인. 같은502경로의 무한 재시도는 하지 않음.",
+      "trustProbability": null,
+      "priceImpact": "ABSTAIN",
+      "observedAt": "2026-09-26T12:27:31.081504Z"
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "outcome": "NOT_PUBLISHED",
+      "reason": "공식 IR 동적 목록을 실제 읽은 결과 현재 최신 공지는7/24 등록한8/12 16시 실적 발표이다. 공식 보도자료 최신 목록도8/12이다. 이번에 확인한 공식 최신 목록에 9/26 이후10/30 이내 새 확정 일정이 없다. 전 세계 어디에도 일정이 없다는 단정은 아님.",
+      "checkedUrls": [
+        "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+        "https://www.meritzgroup.com/web/ir1_2_search.do",
+        "https://www.meritzgroup.com/web/ko/pr/pr2.do",
+        "https://www.meritzgroup.com/web/pr_search.do",
+        "https://www.meritzgroup.com/web/ko/ir/ir2.do",
+        "https://www.k5.co.kr/stock/138040/official_notice",
+        "https://dartbrief.com/disclosures/20260806800338"
+      ],
+      "sources": [
+        {
+          "url": "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+          "role": "issuer",
+          "webRef": "turn473view0",
+          "bodyRead": true,
+          "location": "공개 HTML Search2('IR013') 및 /web/ir1_2_search.do 목록의 result[0]",
+          "request": {
+            "url": "https://www.meritzgroup.com/web/ir1_2_search.do",
+            "method": "POST",
+            "data": {
+              "bd_div_cd": "IR013",
+              "currentPage": "1"
+            }
+          },
+          "httpStatus": 200,
+          "sourceSnapshot": "reports/research13-finance-sources/meritz-ir-events.json",
+          "evidenceDigest": "254506da997b23fc3dc2a6920df61045f59c2da4afb022776d0df8424036616f",
+          "snippet": "일시: 2026년 8월 12일 수요일 오후 4시",
+          "finding": "총14항목·3페이지 중 최신1페이지5항목은2026Q2,2026Q1,2025연간,2025Q3,2025Q2.3분기2026발표 예정일 미게시."
+        },
+        {
+          "url": "https://www.meritzgroup.com/web/ko/pr/pr2.do",
+          "role": "issuer",
+          "webRef": "turn480view0",
+          "bodyRead": true,
+          "request": {
+            "url": "https://www.meritzgroup.com/web/pr_search.do",
+            "method": "POST",
+            "data": {
+              "bd_div_cd": "PR002",
+              "currentPage": "1"
+            }
+          },
+          "httpStatus": 200,
+          "sourceSnapshot": "reports/research13-finance-sources/meritz-press-list.json",
+          "finding": "최신5건의 등록일8/12,5/14,3/12,3/5,2/11. 최신제목은 상반기 실적; 새10월 일정 발견하지 못함."
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/138040/official_notice",
+          "role": "secondary_followup_discovery",
+          "webRef": "turn473view1",
+          "bodyRead": true,
+          "location": "L14-L18",
+          "finding": "최신9/21자본인정채무증권 발행결정. 기존9/22납입 후보를 미래 일정으로 세지 않음."
+        },
+        {
+          "url": "https://dartbrief.com/disclosures/20260806800338",
+          "role": "secondary_false_positive_review",
+          "webRef": "turn457search0",
+          "bodyRead": true,
+          "finding": "검색결과10/17배당은 현재8/6건이 아닌 관련 공시의2025년 날짜였다. 현재 AI 요약도8/5기준일로 과거여서10월2026으로 채택하지 않음."
+        }
+      ],
+      "latestCorrectionsChecked": "공식IR실제최신목록·공식보도자료실제최신목록·9/21까지전재공시목록 대조.",
+      "nextAction": "공식 IR 공개 목록 IR013 첫 항목의 등록일·본문 변경을 점검하고, 신규3분기 공지가 공개되면 정확한 일시를 읽는다. 기존 동적 목록 미노출 기록은 연구이력에 남긴다.",
+      "trustProbability": null,
+      "priceImpact": "ABSTAIN",
+      "observedAt": "2026-09-26T12:27:31.081504Z"
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "outcome": "BLOCKED",
+      "reason": "공식 회사IR캘린더 최신2026일정은7/27상반기·4/24Q1이다. 10/28은2025년이므로 올해로 복사하지 않는다. 민간사이트의10/22·10/30예상값은 서로 다르고 공식 확정일이 아니다. 7/22 공식 KIND 원문에 제2530회 500억원 10/20 만기 및 제2635회 100억원 10/16 만기가 있으나 9/21 최신 공시의 잔액·중도상환 대조가 아직 안 됐다. 단순 옛 만기표를 현재 유효 사건이나 가격 촉매로 승격하지 않는다.",
+      "checkedUrls": [
+        "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+        "https://www.k5.co.kr/stock/029780/official_notice",
+        "https://www.samsungcard.com/company/introduction/history/UHPPCI0104M0.jsp",
+        "https://kr.investing.com/equities/samsung-card-earnings",
+        "https://etfshopping.com/stock/029780/earnings",
+        "https://bullstory.io/earnings/029780",
+        "https://www.akrostec.com/indices/AKSRHD/events",
+        "https://kind.krx.co.kr/external/2026/07/22/000572/20260722001514/10120.htm",
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000292",
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000310",
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000327",
+        "https://eng.riseetf.co.kr/prod/finderDetail/44G5",
+        "https://www.riseetf.co.kr/prod/finderDetail/44G5?searchFlag=viewtab1"
+      ],
+      "sources": [
+        {
+          "url": "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+          "role": "issuer",
+          "webRef": "turn468view0",
+          "bodyRead": true,
+          "location": "L12-L35",
+          "snippet": "2026년 상반기 경영실적 발표 / 일자 : 7.27",
+          "finding": "2025년3분기10.28을 별도명시. 새2026Q3일시미게시."
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/029780/official_notice",
+          "role": "secondary_followup_discovery",
+          "webRef": "turn473view2",
+          "bodyRead": true,
+          "location": "L12-L17",
+          "finding": "9/21채권서류 다음9/22발행실적보고서가 최신. 이미 경과한 발행을 새 미래사건으로 세지 않음."
+        },
+        {
+          "url": "https://kr.investing.com/equities/samsung-card-earnings",
+          "role": "secondary_estimate_rejected",
+          "webRef": "turn418search0",
+          "finding": "10/22 예상이며 회사 공지 근거 아님."
+        },
+        {
+          "url": "https://etfshopping.com/stock/029780/earnings",
+          "role": "secondary_estimate_rejected",
+          "webRef": "turn471search8",
+          "finding": "10/30 예상으로 Investing와 상충. 원문 공식화하지 않음."
+        },
+        {
+          "url": "https://www.akrostec.com/indices/AKSRHD/events",
+          "role": "secondary_estimate_rejected",
+          "webRef": "turn480search0",
+          "finding": "자체 설명도 회사공식IR미공개이며 제3자예상10/22라고 명시. 지수편입사건이나독립기업확정뉴스로세지않음."
+        },
+        {
+          "url": "https://kind.krx.co.kr/external/2026/07/22/000572/20260722001514/10120.htm",
+          "role": "regulatory_filing_issuer_primary",
+          "webRef": "turn530view1",
+          "bodyRead": true,
+          "location": "L4-L7; L2446; L2511-L2512",
+          "publishedAt": "2026-07-22",
+          "snippet": "2530 / 50,000,000,000 / 2026-10-20; 2635 / 10,000,000,000 / 2026-10-16",
+          "finding": "삼성카드 일괄신고추가서류의 사채 명세. 기재된 계약 만기일은 확인했으나 관측일 현재 유효 잔액·중도상환 여부가 미확인. 계약상 일정 후보로만 보존. 주식 가격 영향은 입증되지 않았다."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000292",
+          "role": "regulatory_filing_primary_blocked",
+          "webRef": "turn517view1",
+          "bodyRead": false,
+          "finding": "K5 공개 HTML에서 정확한 9/21 일괄신고추가서류 접수번호 발견. 웹 원문 열기 오류."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000310",
+          "role": "regulatory_filing_primary_blocked",
+          "webRef": "turn517view2",
+          "bodyRead": false,
+          "finding": "K5 공개 HTML에서 정확한 9/21 투자설명서 접수번호 발견. 웹 원문 열기 오류."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000327",
+          "role": "regulatory_filing_primary_blocked",
+          "webRef": "turn517view3",
+          "bodyRead": false,
+          "finding": "K5 공개 HTML에서 정확한 9/22 발행실적보고 접수번호 발견. 웹 원문 열기 오류."
+        },
+        {
+          "url": "https://eng.riseetf.co.kr/prod/finderDetail/44G5",
+          "role": "asset_manager_primary_search_snapshot_only",
+          "webRef": "turn523search5",
+          "bodyRead": false,
+          "finding": "검색에 노출된 공식 ETF 보유내역 기준일은 2026-09-11, 삼성카드2530 ISIN KR6029782BA8을 포함. 직접 원문은 시간초과(turn530view0). 9/26 현재 잔액 근거로 사용하지 않음."
+        },
+        {
+          "url": "https://www.riseetf.co.kr/prod/finderDetail/44G5?searchFlag=viewtab1",
+          "role": "asset_manager_primary_live_page",
+          "bodyRead": true,
+          "localArtifact": "reports/research13-finance-sources/rise-44G5.html",
+          "finding": "정상 HTTP200으로 149,938bytes HTML 수신. 새 KB자산운용 Next.js 상품 페이지로 연결됨. 479520 RISE KOFR금리액티브(합성), 지수기준20260926까지 표시되나 구성종목 부분은 동적 빈 영역이므로 2530채권 현재 보유 확인 못함. 검색 스냅샷을 원문 검증으로 대체하지 않음."
+        }
+      ],
+      "latestCorrectionsChecked": "공식캘린더·최신공시목록·회사제품출시/공지 및 영문IR 관련 검색 대조. 공식확정일이아닌예상값과구연도제외. 최신 접수번호와 7/22 원문은 확인했으나 9/21 원문 접근 실패로 채무 일정 변경·상환 상태 확인은 미완료.",
+      "nextAction": "9/21 추가서류 20260921000292 또는 투자설명서 20260921000310의 사채 명세와 9/22 보고서 20260922000327 대조로 2530·2635 잔액·중도상환을 확인한다. 현재 보유를 날짜가 있는 공식 KRX/예탁원/KB자산운용 자료로 보완할 수 있다. 확인 전 종목 완료 또는 가격효과로 추가하지 않는다. IR 일정은 회사 공지 대기.",
+      "trustProbability": null,
+      "priceImpact": "ABSTAIN",
+      "candidateSchedules": [
+        {
+          "title": "제2530회 사채 계약상 만기",
+          "date": "2026-10-20",
+          "amountKRW": 50000000000,
+          "status": "CURRENT_OUTSTANDING_NOT_VERIFIED",
+          "priceImpact": "ABSTAIN"
+        },
+        {
+          "title": "제2635회 사채 계약상 만기",
+          "date": "2026-10-16",
+          "amountKRW": 10000000000,
+          "status": "CURRENT_OUTSTANDING_NOT_VERIFIED",
+          "priceImpact": "ABSTAIN"
+        }
+      ],
+      "observedAt": "2026-09-26T12:27:31.081504Z"
+    }
+  ],
+  "limits": [
+    "세 종목 모두 확정 편입 조건 미충족이므로 VERIFIED0/PENDING3이다.",
+    "NOT_PUBLISHED는 확인한 공식 목록에 해당 공지가 없다는 조사 상태이지 향후 일정 존재 가능성의 부정이 아니다.",
+    "일정 후보의 기사 재확인은 공식 원문 확인이나 가격 영향 검증을 대체하지 않는다.",
+    "동적 공개조회는 페이지가 명시한 읽기 요청만 사용했다. 접근제한 우회·로그인·외부메시지·금융거래를 수행하지 않았다."
+  ]
+}

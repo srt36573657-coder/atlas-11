@@ -1,0 +1,60 @@
+/* 8.9: prioritize one task; controls reveal detail without altering price data. */
+main[data-focus-edition] {--focus-ink:#24201c;--focus-paper:#fffdf9;--focus-accent:#82592e;}
+main[data-focus-edition][data-atelier][data-ux] > header {background:#201c19;min-height:64px;padding-block:8px;}
+main[data-focus-edition] .atelier-edition {letter-spacing:.2em;font-size:10px;line-height:1;}
+main[data-focus-edition] .studio-stage {box-shadow:0 18px 50px #3627160a;border-color:#e1d7ca;}
+main[data-focus-edition] .studio-stage-toolbar {background:#fffdf9;}
+main[data-focus-edition][data-atelier][data-ux] .focus-card,
+main[data-focus-edition][data-atelier][data-ux] .studio-stage .focus-card {
+ grid-template-columns:minmax(0,1.8fr) minmax(290px,1fr);
+ grid-template-rows:auto auto auto minmax(240px,1fr) auto auto auto auto;
+ grid-template-areas:'title news' 'current news' 'actions news' 'chart news' 'controls news' 'calendar news' 'slider news' 'options news';
+ height:clamp(720px,calc(100dvh - 180px),940px);overflow:auto;
+}
+main[data-focus-edition] .focus-actions {grid-area:actions;display:flex;gap:6px;padding:4px 18px 10px;flex-wrap:wrap;}
+main[data-focus-edition] .focus-actions button {min-height:44px;font-size:13px;border-radius:22px;padding:8px 14px;background:#f1ebe2;border:1px solid #d9cbbb;color:#4d3826;}
+main[data-focus-edition] .focus-actions button:hover {background:#e2d4c2;}
+main[data-focus-edition] .focus-comparison {display:block!important;background:transparent!important;}
+main[data-focus-edition] .comparison-date {display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:12px;}
+main[data-focus-edition] .comparison-date time {font-size:14px;font-weight:650;font-variant-numeric:tabular-nums;}
+main[data-focus-edition] .comparison-date span {font-size:12px;color:#695b4b;}
+main[data-focus-edition] .comparison-values {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding-bottom:8px;}
+main[data-focus-edition] .comparison-values>div {min-width:0;}
+main[data-focus-edition] .comparison-values span,main[data-focus-edition] .comparison-values small {display:block;font-size:11px;line-height:1.6;color:#6e6050;}
+main[data-focus-edition] .comparison-values strong {display:block;font-size:clamp(14px,1.6vw,23px);font-weight:650;letter-spacing:-.045em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
+main[data-focus-edition] .focus-calendar {grid-area:calendar;min-width:0;padding:0 16px;}
+main[data-focus-edition] .focus-calendar .calendar-block {margin:0;}
+main[data-focus-edition] .focus-calendar .date-grid {display:flex;flex-wrap:nowrap;overflow:auto;scrollbar-width:thin;gap:4px;padding:4px 0 8px;}
+main[data-focus-edition] .focus-calendar .date-cell {flex:0 0 66px;min-height:48px;border-radius:6px;}
+main[data-focus-edition] .focus-calendar .calendar-month {display:none;}
+main[data-focus-edition] .focus-calendar .calendar-caption {font-size:11px;padding-block:4px;}
+main[data-focus-edition] .focus-settings {grid-area:options;min-width:0;margin:0 16px 12px;border-top:1px solid #ded3c4;}
+main[data-focus-edition] .focus-settings>summary {min-height:44px;padding:12px 0;font-size:12px;color:#625340;cursor:pointer;}
+main[data-focus-edition] .focus-settings-body {max-height:260px;overflow:auto;}
+main[data-focus-edition][data-atelier][data-ux] .focus-news {display:grid;grid-template-rows:auto auto minmax(0,1fr);background:#f5f0e8;}
+main[data-focus-edition] .inspector-switch {display:flex;gap:4px;padding:12px 16px;border-bottom:1px solid #ddcfbc;background:#f5f0e8;}
+main[data-focus-edition] .inspector-switch button {flex:1;min-height:44px;padding:8px;font-size:13px;border:1px solid transparent;background:transparent;color:#685945;}
+main[data-focus-edition] .inspector-switch button[aria-pressed=true] {background:#fffdf9;border-color:#c9b596;color:#392919;box-shadow:0 2px 5px #3727180a;}
+main[data-focus-edition] [data-inspector][hidden] {display:none!important;}
+main[data-focus-edition] [data-inspector]>.price-story {margin-top:0;background:#fffdf9;border:1px solid #dfd1bc;border-radius:12px;padding:16px;}
+main[data-focus-edition] [data-inspector]>.price-story>div>b {font-size:18px;line-height:1.5;}
+main[data-focus-edition] [data-inspector] p {line-height:1.85;}
+main[data-focus-edition] .compact-options {display:flex;gap:8px;padding:10px;}
+@media(min-width:821px){main[data-focus-edition][data-atelier][data-ux] .studio-roster{height:clamp(780px,calc(100dvh - 120px),1000px);}}
+@media(max-width:1100px){
+ main[data-focus-edition][data-atelier][data-ux] .focus-card,main[data-focus-edition][data-atelier][data-ux] .studio-stage .focus-card{grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);}
+}
+@media(max-width:820px){
+ main[data-focus-edition][data-atelier][data-ux] .focus-card,main[data-focus-edition][data-atelier][data-ux] .studio-stage .focus-card{
+ height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto 300px auto auto auto auto auto;
+ grid-template-areas:'title' 'current' 'actions' 'chart' 'controls' 'calendar' 'slider' 'options' 'news';overflow:visible;}
+ main[data-focus-edition][data-atelier][data-ux] .focus-news{grid-template-rows:auto auto minmax(160px,auto);}
+ main[data-focus-edition] .focus-news-content {max-height:520px;overflow:auto;}
+ main[data-focus-edition] .comparison-values strong {font-size:17px;}
+ main[data-focus-edition] .focus-actions {gap:4px;padding-inline:12px;}
+ main[data-focus-edition] .focus-actions button {flex:1;padding:8px 4px;font-size:12px;}
+ main[data-focus-edition] .focus-calendar {padding-inline:12px;}
+}
+main[data-focus-edition][data-atelier][data-ux] .focus-card.chart-readable {height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto 340px auto auto auto auto auto;grid-template-areas:'title' 'current' 'actions' 'chart' 'controls' 'calendar' 'slider' 'options' 'news';}
+@media(prefers-reduced-motion:reduce){main[data-focus-edition] *{scroll-behavior:auto;}}
+@media(forced-colors:active){main[data-focus-edition] .inspector-switch button[aria-pressed=true]{outline:2px solid Highlight;}main[data-focus-edition] .focus-actions button{background:ButtonFace;color:ButtonText;border-color:ButtonText;}}

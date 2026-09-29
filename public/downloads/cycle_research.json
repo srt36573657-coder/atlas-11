@@ -1,0 +1,1131 @@
+{
+  "schema": "atlas-cycle-report-1",
+  "id": "519952d45ec5d441ce0fba19fb5e3a36870519390be57a5c356f8ba3346c9ebd",
+  "generatedAt": "2026-09-26T19:31:03.743Z",
+  "protocol": {
+    "id": "atlas-cycle-1.0.2",
+    "plan": "atlas-cycle-plan-1",
+    "mode": "research_only",
+    "universeSize": 52,
+    "forecastStart": "2026-09-17",
+    "forecastEnd": "2026-10-30",
+    "researchStart": "2016-09-17",
+    "parameterSelectionCutoff": "2026-09-16",
+    "trendWindows": [
+      21,
+      63,
+      126,
+      252
+    ],
+    "volatilityWindow": 63,
+    "accelerationLag": 21,
+    "exposureWindow": 252,
+    "minimumExposureRows": 126,
+    "leadLags": [
+      -20,
+      -10,
+      -5,
+      0,
+      5,
+      10,
+      20
+    ],
+    "ridgeCandidates": [
+      0.1,
+      1,
+      10
+    ],
+    "residualRidge": 1,
+    "exposureRidge": 1,
+    "exposurePenaltyBasis": "unit_variance_predictors",
+    "minimumInitialYears": 3,
+    "primaryHorizon": 20,
+    "minimumNonoverlapTrainOrigins": 36,
+    "minimumNonoverlapTestOrigins": 12,
+    "minimumInnerTrainOrigins": 18,
+    "minimumInnerTestOrigins": 6,
+    "stateThreshold": 0.6,
+    "epsilon": 1e-12,
+    "seed": 20260917,
+    "bootstrapDraws": 1000,
+    "blockLength": 20,
+    "defaultEnabled": false,
+    "trustProbability": null
+  },
+  "protocolHash": "cc57406844bdd60575e2b943d2b9149e116a66b9088d79e0bca660a0e782bd57",
+  "baselineId": "2026-09-23-70bdbf50",
+  "origin": "2026-09-23",
+  "end": "2026-10-30",
+  "dataHash": "e92551d834b60708fa91e861bc211e9bbd019c2acfbe7b8724afad20a47e6bd3",
+  "rows": [
+    {
+      "code": "005930",
+      "name": "삼성전자",
+      "sectorName": "반도체와반도체장비",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "009150",
+      "name": "삼성전기",
+      "sectorName": "전자장비와기기",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "373220",
+      "name": "LG에너지솔루션",
+      "sectorName": "전기제품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "005380",
+      "name": "현대차",
+      "sectorName": "자동차",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "207940",
+      "name": "삼성바이오로직스",
+      "sectorName": "제약",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "sectorName": "은행",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "sectorName": "복합기업",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "032830",
+      "name": "삼성생명보험",
+      "sectorName": "생명보험",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012450",
+      "name": "한화에어로스페이스",
+      "sectorName": "우주항공과국방",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034020",
+      "name": "두산에너빌리티",
+      "sectorName": "기계",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "329180",
+      "name": "HD현대중공업",
+      "sectorName": "조선",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "sectorName": "석유와가스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012330",
+      "name": "현대모비스",
+      "sectorName": "자동차부품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "066570",
+      "name": "LG전자",
+      "sectorName": "전자제품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "035420",
+      "name": "NAVER",
+      "sectorName": "양방향미디어와서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010120",
+      "name": "LS ELECTRIC",
+      "sectorName": "전기장비",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "000810",
+      "name": "삼성화재",
+      "sectorName": "손해보험",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "sectorName": "철강",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "sectorName": "비철금속",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "sectorName": "증권",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "015760",
+      "name": "한국전력",
+      "sectorName": "전기유틸리티",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "011200",
+      "name": "HMM",
+      "sectorName": "해운사",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "051910",
+      "name": "LG화학",
+      "sectorName": "화학",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "017670",
+      "name": "SK텔레콤",
+      "sectorName": "무선통신서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "sectorName": "담배",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "196170",
+      "name": "알테오젠",
+      "sectorName": "생물공학",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "018260",
+      "name": "삼성에스디에스",
+      "sectorName": "IT서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "086280",
+      "name": "현대글로비스",
+      "sectorName": "항공화물운송과물류",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "000720",
+      "name": "현대건설",
+      "sectorName": "건설",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "278470",
+      "name": "에이피알",
+      "sectorName": "화장품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "030200",
+      "name": "KT",
+      "sectorName": "다각화된통신서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "003490",
+      "name": "대한항공",
+      "sectorName": "항공사",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "sectorName": "무역회사와판매업체",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "003230",
+      "name": "삼양식품",
+      "sectorName": "식품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "259960",
+      "name": "크래프톤",
+      "sectorName": "게임엔터테인먼트",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "021240",
+      "name": "코웨이",
+      "sectorName": "가정용기기와용품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "352820",
+      "name": "하이브",
+      "sectorName": "방송과엔터테인먼트",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "009830",
+      "name": "한화솔루션",
+      "sectorName": "에너지장비및서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "sectorName": "카드",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "028300",
+      "name": "HLB",
+      "sectorName": "건강관리장비와용품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "034220",
+      "name": "LG디스플레이",
+      "sectorName": "디스플레이 패널",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "sectorName": "건축자재",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "036460",
+      "name": "한국가스공사",
+      "sectorName": "가스유틸리티",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "004170",
+      "name": "신세계",
+      "sectorName": "백화점과일반상점",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "012750",
+      "name": "에스원",
+      "sectorName": "상업서비스와공급품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "sectorName": "섬유,의류,신발,호화품",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "035250",
+      "name": "강원랜드",
+      "sectorName": "호텔,레스토랑,레저",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "257720",
+      "name": "실리콘투",
+      "sectorName": "인터넷과카탈로그소매",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "226950",
+      "name": "올릭스",
+      "sectorName": "생명과학도구및서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "010170",
+      "name": "대한광통신",
+      "sectorName": "통신장비",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "214370",
+      "name": "케어젠",
+      "sectorName": "건강관리업체및서비스",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    },
+    {
+      "code": "030000",
+      "name": "제일기획",
+      "sectorName": "광고",
+      "date": "2026-09-23",
+      "informationCutoff": "2026-09-26T19:31:03.743Z",
+      "mapping": null,
+      "status": "abstain",
+      "market": null,
+      "sector": null,
+      "exposure": null,
+      "correction": null,
+      "candidate": null,
+      "enabled": false,
+      "trustProbability": null,
+      "liveWeight": 0,
+      "reasons": [
+        "공식 업종 대응 미확보"
+      ]
+    }
+  ],
+  "counts": {
+    "assets": 52,
+    "mapped": 0,
+    "features": 0,
+    "candidates": 0,
+    "live": 0
+  },
+  "priceSkillVerified": false,
+  "trustProbability": null,
+  "pairs": [],
+  "audit": {
+    "status": "insufficient_evidence",
+    "enabled": false,
+    "trustProbability": null,
+    "draws": 1000,
+    "seed": 20260917,
+    "horizon": 20,
+    "blockOrigins": 2,
+    "independentCrossValidationCount": null,
+    "dateClusters": 0,
+    "comparisons": [],
+    "protocolHash": "cc57406844bdd60575e2b943d2b9149e116a66b9088d79e0bca660a0e782bd57",
+    "method": "paired_date_block_centered_max_statistic"
+  },
+  "limits": [
+    "10년은 관찰 기간이며 고정 반복 길이가 아님",
+    "공식 지수·당시 빈티지·기업행위·회사별 외부 시험을 별도로 확인",
+    "모의 경로 비율은 실제 적중 확률이 아님"
+  ]
+}

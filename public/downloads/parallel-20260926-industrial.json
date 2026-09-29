@@ -1,0 +1,304 @@
+{
+  "schema": "atlas.parallel-research.v1",
+  "checkedAt": "2026-09-26T11:38:03Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "028260",
+    "005490",
+    "010130",
+    "051910"
+  ],
+  "searchedCount": 4,
+  "confirmedCompanyCodes": [
+    "051910"
+  ],
+  "pendingCodes": [
+    "028260",
+    "005490",
+    "010130"
+  ],
+  "publicationPolicy": "본문에 정확한 공개 시각이 없으면 publishedAt:null. availableAt/firstObservedAt는 실제 관측 시각. 홈페이지 접근을 사건 검증으로 세지 않음. 미래 기사·실적·가격 영향은 생성하지 않음.",
+  "confirmedEvents": [
+    {
+      "id": "REVIEW:COMPANY_EXHIBITION_FAKUMA-051910-20261012",
+      "code": "051910",
+      "name": "LG화학",
+      "title": "LG화학 FAKUMA 2026 소재·기술 전시 참가",
+      "scope": "company",
+      "codes": [
+        "051910"
+      ],
+      "eventDate": "2026-10-12",
+      "eventEndDate": "2026-10-16",
+      "eventLocalTime": "09:00",
+      "eventTimezone": "Europe/Berlin",
+      "eventTimeKorea": "2026-10-12T16:00:00+09:00",
+      "targetDate": "2026-10-13",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T11:38:03Z",
+      "availableAt": "2026-09-26T11:38:03Z",
+      "status": "confirmed_schedule_effect_abstain",
+      "sources": [
+        {
+          "name": "FAKUMA 공식 참가기업 LG Chem Ltd., Engineering Plastics",
+          "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/99946-lg-chem-ltd/",
+          "retrievalRef": "turn386view0",
+          "verification": "원문 직접 확인. 2026 참가, B2-2216 부스. 기업 제품소식 게시일 2026-09-22이나 참가명단 최초 공개시각은 미확보."
+        },
+        {
+          "name": "FAKUMA 공식 개최일과 운영 시간",
+          "url": "https://www.fakuma-messe.de/en/for-visitors/",
+          "retrievalRef": "turn406view0",
+          "verification": "2026-10-12~16, 09:00~17:00 확인. 본문 Monday와 하단 Tuesday의 요일 오탈자 충돌은 기록하되, 숫자 날짜 및 공식 홈페이지·회사 안내가 10/12로 일치."
+        },
+        {
+          "name": "FAKUMA 공식 홈페이지",
+          "url": "https://www.fakuma-messe.de/en/",
+          "retrievalRef": "turn400view3",
+          "verification": "30회 행사 2026-10-12(월)~16(금) 명시."
+        }
+      ],
+      "correctionCheck": "현재 주최자 참가명단·방문안내·공식 회사 SNS 날짜 대조. 발견한 요일 오탈자 외 날짜 변경 근거 미확보. 검색 미발견을 정정 부재 보증으로 해석하지 않음.",
+      "channel": "Engineering Plastics 신소재·시뮬레이션·고객 상담 행사. 현지 오전9시는 한국16시로 장 마감 뒤이므로 반영일10/13. 계약 체결·매출 증가·수익률 확정이 아님.",
+      "priceEffect": "비교 가능한 종목별 과거 사건 표본 미확보로 수치 영향 유보."
+    },
+    {
+      "id": "REVIEW:COMPANY_EXHIBITION_TOKYOPACK-051910-20261014",
+      "code": "051910",
+      "name": "LG화학",
+      "title": "LG화학 TOKYO PACK 2026 포장 소재 전시 참가",
+      "scope": "company",
+      "codes": [
+        "051910"
+      ],
+      "eventDate": "2026-10-14",
+      "eventEndDate": "2026-10-16",
+      "eventLocalTime": "10:00",
+      "eventTimezone": "Asia/Tokyo",
+      "eventTimeKorea": "2026-10-14T10:00:00+09:00",
+      "targetDate": "2026-10-14",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T11:38:03Z",
+      "availableAt": "2026-09-26T11:38:03Z",
+      "status": "confirmed_schedule_effect_abstain",
+      "sources": [
+        {
+          "name": "LG화학 공식 LinkedIn 기업 발표",
+          "url": "https://www.linkedin.com/company/lgchem",
+          "retrievalRef": "turn386view1",
+          "verification": "원문 본문에10/14~16 10:00~17:00 Tokyo Big Sight East Hall,부스7T18를 직접 확인. 상대 표시1w를 정확한 공개날짜로 역산하지 않음. 게시물 개별 고유 링크는 미확보."
+        },
+        {
+          "name": "LG화학 공식 홈페이지의 SNS 연결",
+          "url": "https://www.lgchem.com/main/index?lang=en_US",
+          "retrievalRef": "turn403view0",
+          "verification": "회사 홈페이지의 LinkedIn 연결 https://www.linkedin.com/company/lgchemglobal/ 가 위 lgchem 계정으로 리다이렉트됨을 확인. 검색에서 동명이인 계정을 임의 채택한 것이 아님."
+        }
+      ],
+      "correctionCheck": "현재 회사 공식 계정에서 날짜·부스 확인. 주최자 www.tokyo-pack.jp/en/는 웹 접근 오류이므로 주최자 참가 원문 독립 대조 완료로 표시하지 않음. 취소 검색에서 새 근거는 얻지 못함.",
+      "channel": "포장 소재·디자인·기술지원 제품 전시와 상담. 회사가 자기 참가를 명시했으나 실적·수주 결과는 미공개.",
+      "priceEffect": "비교 가능한 종목별 과거 사건 표본 미확보로 수치 영향 유보."
+    },
+    {
+      "id": "REVIEW:COMPANY_EXHIBITION_APLAR-051910-20261029",
+      "code": "051910",
+      "name": "LG화학",
+      "title": "LG화학 APLAR 2026 전시 참가·전시장 개장",
+      "scope": "company",
+      "codes": [
+        "051910"
+      ],
+      "eventDate": "2026-10-29",
+      "eventEndDate": "2026-11-01",
+      "eventLocalTime": "18:00",
+      "eventTimezone": "Asia/Seoul",
+      "eventTimeKorea": "2026-10-29T18:00:00+09:00",
+      "targetDate": "2026-10-30",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T11:38:03Z",
+      "availableAt": "2026-09-26T11:38:03Z",
+      "status": "confirmed_schedule_effect_abstain",
+      "sources": [
+        {
+          "name": "APLAR 공식 LG Chem 참가기업 페이지",
+          "url": "https://aplarcongress.com/01/lg-chem/",
+          "retrievalRef": "turn371view0",
+          "verification": "2026 부스63,64,65,66을 명시. LG화학 생명과학 소개 및 lgchem.com 연결."
+        },
+        {
+          "name": "APLAR 공식 프로그램",
+          "url": "https://aplarcongress.com/program/",
+          "retrievalRef": "turn386view2",
+          "verification": "10/29 프로그램 18:00~19:30 Welcome Reception and Official Opening of Exhibition Hall. 한국시간 UTC+9 명시."
+        },
+        {
+          "name": "APLAR 공식 행사 일시",
+          "url": "https://aplarcongress.com/social-functions/",
+          "retrievalRef": "turn396view3",
+          "verification": "10/29(목) 18:00~19:30 COEX Exhibition Hall 개장 리셉션 일시를 별도 확인."
+        }
+      ],
+      "correctionCheck": "회사 부스 참가 원문과 주최자 프로그램·행사 상세 날짜를 교차 확인. 전체학회10/28개막은 워크숍 날짜이며 LG 전시 시작일로 앞당기지 않음. 11/1 종료는 참고 메타데이터이고 예측 기간은10/30까지만 유지.",
+      "channel": "생명과학 제품 소개를 위한 학회 전시 참가. 10/29 장 마감 후 전시장 개장에 따른 반영일10/30. LG화학 자체 임상결과 발표나 신약 승인 날짜로 해석하지 않음.",
+      "priceEffect": "비교 가능한 종목별 과거 사건 표본 미확보로 수치 영향 유보."
+    }
+  ],
+  "assets": [
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "status": "date_not_confirmed",
+      "checkedAt": "2026-09-26T11:38:03Z",
+      "conclusion": "회사 자체의 기간 내 신규 확정 예정일 미확보. FutureScape 데모데이는10월만 공지. 종속회사 삼성바이오로직스의 증자 기준일10/6을 삼성물산 독립 기업 사건으로 중복 채택하지 않음.",
+      "sources": [
+        {
+          "url": "https://samsungcnt.com/ir/event-earnings/ir-event.do",
+          "type": "primary",
+          "verified": true,
+          "note": "원문2026목록 최신 표시는9/10. 미래3분기실적 일정 없음."
+        },
+        {
+          "url": "https://futurescape.kr/",
+          "type": "primary",
+          "verified": true,
+          "note": "현재 홈페이지 직접 접근 성공. 정확한10월 데모데이 일자 미확보."
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/028260/official_notice",
+          "type": "secondary_index",
+          "verified": true,
+          "note": "최근 공시목록9/21투자판단,9/18IR확인. 원문접속은아래실패."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260828800769",
+          "type": "primary",
+          "verified": false,
+          "note": "8/28 종속회사 증자 공시 본문 웹 Internal Error. root 브라우저도502 연결거절. 보숲전재10/6은 삼성바이오로직스 기준일."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921800004",
+          "type": "primary",
+          "verified": false,
+          "note": "9/21공시 본문502. 대체전재도접속오류."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918800688",
+          "type": "primary",
+          "verified": false,
+          "note": "9/18IR 본문502. 날짜미확인."
+        }
+      ],
+      "correctionCheck": "최근 공시 색인과 후보 관련 검색을 대조했으나 원문 일부 접근 제한. 정정 없음으로 확정하지 않음.",
+      "nextEvidenceRequired": "FutureScape의 정확한 공식 행사일 또는 삼성물산 자체 IR·공시상 기간 내 미래 일정."
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "status": "date_not_confirmed",
+      "checkedAt": "2026-09-26T11:38:03Z",
+      "conclusion": "홀딩스 자체 신규 확정 일정 미확보. 10/27 광양 산업시찰 날짜는 주최자 원문에서 확인했으나 포스코 사업회사·그룹 사업장 방문이며 홀딩스 자체 IR·가격 촉매 연결 근거 부족으로 보류.",
+      "sources": [
+        {
+          "url": "https://austchamkorea.glueup.com/event/austcham-korea-field-trip-to-posco-gwangyang-195042/",
+          "type": "primary_organizer",
+          "verified": true,
+          "note": "AustCham Korea 10/27 회원 산업시찰. 광양제철소·POSCO-Pilbara·HY Clean Metal 방문. 시간TBC. 확정 주가 이벤트로 자동입력하지 않음."
+        },
+        {
+          "url": "https://www.posco-inc.com/hs91a1-front/app/ir/ir-contact/ir-faq.html",
+          "type": "primary",
+          "verified": true,
+          "note": "현재 조회에서는 동적 FAQ 내용 미노출. 과거확인 '통상10월말' 기록 유지; 정확일 확인으로 표시하지 않음."
+        },
+        {
+          "url": "https://t.me/s/darthacking/145821",
+          "type": "secondary_disclosure_copy",
+          "verified": true,
+          "note": "6/30 HMM인수 조회공시 전재 재공시일12/29로 기간 밖. 원문 재대조 미완료."
+        }
+      ],
+      "correctionCheck": "사업시찰의 현재 주최자 날짜는 확인. HMM 재공시12/29와 리튬JV 10월계획을 기간 내 확정일로 바꾸지 않음. 정정 없음 보증 불가.",
+      "nextEvidenceRequired": "홀딩스 자체 공식 IR 일자 또는 종속사업장 일정이 홀딩스 투자판단 사건에 해당함을 입증하는 공식 문서."
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "status": "date_not_confirmed",
+      "checkedAt": "2026-09-26T11:38:03Z",
+      "conclusion": "기간 내 확정 기업 일정 미확보. 10/14 콜옵션은 보도상 행사 가능 조건 시점으로 실제 행사 확정일이 아님. 10/5 회사채 수요예측도 공시 원문 미확보. 종속회사 납입9/30→11/30 정정 기록 유지.",
+      "sources": [
+        {
+          "url": "https://investors.koreazinc.co.kr/",
+          "type": "primary",
+          "verified": true,
+          "note": "회사IR메인에서2분기실적8/6 확인."
+        },
+        {
+          "url": "https://investors.koreazinc.co.kr/ko/investors/ir-events/ir-calendar/",
+          "type": "primary",
+          "verified": true,
+          "note": "달력 동적목록 미노출, 미래 확정일 확인 실패."
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922800521",
+          "type": "primary_previous_verification",
+          "verified": "previous_run",
+          "note": "9/25 root 본문확인 기록을 계승. 납입11/30·착공11월로 정정된 사건. 이번재접속완료주장아님."
+        },
+        {
+          "url": "https://www3.edaily.co.kr/News/Read?mediaCodeNo=257&newsId=01256246645580120",
+          "type": "secondary",
+          "verified": "search_excerpt",
+          "note": "9/14 보도에서2024/10/14의2년후 또는이사회과반확보중빠른시점이라는 콜옵션 가능조건. 실제 행사 결정 아님."
+        },
+        {
+          "url": "https://www.thebell.co.kr/front/newsview.asp?code=0101&key=202609171718077200106021",
+          "type": "secondary",
+          "verified": "search_excerpt",
+          "note": "10월회사채 계획보도만확인. 원문확정발행일미확보."
+        }
+      ],
+      "correctionCheck": "기존 납입일 정정은 보존. 새 콜옵션 보도를 권리 행사확정일로 승격하지 않음. 원문접근제약·계약세부조건미공개 남음.",
+      "nextEvidenceRequired": "회사채 증권신고서 정확한 일정, 실제 콜옵션 행사 또는 회사 자체 IR 공식 확정문서."
+    },
+    {
+      "code": "051910",
+      "name": "LG화학",
+      "status": "confirmed_schedule_effect_abstain",
+      "checkedAt": "2026-09-26T11:38:03Z",
+      "conclusion": "기업 참가를 직접 명시한3개 행사 일정 확보. FAKUMA10/12~16,TokyoPack10/14~16,APLAR전시장10/29개장. 공개시각미확보는관측시각으로보수적으로처리하며가격효과유보.",
+      "sources": [
+        {
+          "url": "https://www.lgchem.com/company/investment-information/ir-events?lang=ko_KR",
+          "type": "primary",
+          "verified": true,
+          "note": "회사IR최신9/7~11. 2025/10/31실적일올해복사금지."
+        },
+        {
+          "url": "https://www.awakeplus.co.kr/data/view/20260824800215",
+          "type": "secondary_disclosure_copy",
+          "verified": true,
+          "note": "8/24 NCC분할미확정재공시2027/2/23기간밖."
+        },
+        {
+          "url": "https://www.awakeplus.co.kr/data/view/20260824800208",
+          "type": "secondary_disclosure_copy",
+          "verified": true,
+          "note": "8/24 NCC매각미확정재공시2027/2/23기간밖."
+        }
+      ],
+      "correctionCheck": "세 참가 일정은원문현재상태대조. IR실적과NCC거래일은확정하지 않음.",
+      "nextEvidenceRequired": "개별행사와비교할수있는과거동종사건의종목별가격반응표본,발표결과,시장예상대비차이."
+    }
+  ],
+  "limitations": [
+    "3개 확정 일정이 한 기업이므로 확보 종목은1개만 늘어난다.",
+    "기업 전시참가는 날짜 근거이며 미래 실적·가격 영향 검증이 아니다.",
+    "종목별 충분한 과거 사건 표본 없이 상승확률·가격기울기를 만들지 않는다.",
+    "주최자프로그램에 포함된 다른기업의 임상결과를 LG화학뉴스로 섞지 않는다.",
+    "POSCO 그룹사업장 방문과 삼성바이오로직스증자를 지주회사 독립기업뉴스로 중복 계상하지 않는다."
+  ]
+}
