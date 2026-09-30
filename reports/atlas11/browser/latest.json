@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-1",
-  "at": "2026-09-30T14:53:37.575Z",
+  "at": "2026-09-30T14:58:16.514Z",
   "base": "http://localhost:8811",
   "chromium": "playwright bundled chromium (headless)",
   "viewports": {
@@ -342,7 +342,7 @@
       "name": "pc 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 7,
+        "constructions": 8,
         "check": true
       }
     },
@@ -409,7 +409,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cqjk8dg-band-inner\")",
+        "bandFill": "url(\"#c5wwf4t-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -773,7 +773,7 @@
       "name": "mobile 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 7,
+        "constructions": 8,
         "check": true
       }
     },
@@ -840,7 +840,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ctv75t5-band-inner\")",
+        "bandFill": "url(\"#cka32xi-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -877,5 +877,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T14-52-48-367Z"
+  "dir": "reports/atlas11/browser/2026-09-30T14-57-27-402Z"
 }
