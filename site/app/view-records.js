@@ -1,6 +1,8 @@
 /* ATLAS 11 · 기록 검색(8종류 장부 · 날짜/종목/업종/요인/정답오답/원인/모델/채택 상태) · 일일 보고(여섯 문장) · 자동 진화 등록부 */
 import {h, num, pct, pctPoint, korDate, shortDate, stamp, dirWord, dirMark, finite, download, csvCell} from './util.js';
 import {loadLedger, loadData, loadCards, setSummary, url} from './store.js';
+import {headline, editionSource, lineChart} from './frame.js';
+import {bars} from './chart.js';
 
 const f2 = v => finite(v) ? v.toFixed(2) : '—';
 const f3 = v => finite(v) ? v.toFixed(3) : '—';
@@ -11,75 +13,93 @@ const pill = (text, kind = 'muted') => h('span', {class: 'pill ' + kind}, text);
 const CLASS_KIND = {1: 'ok', 2: 'warn', 3: 'warn', 4: 'bad', 5: 'muted'};
 const TYPE_LABEL = {collection: '수집', forecast: '예측', score: '채점', analysis: '원인 분석', factor: '요인', experiment: '실험', model: '모델', operation: '운영'};
 
-/** 여섯 문장 일일 보고 블록 (성적·기록 화면에서 공용) */
+/** 여섯 문장 일일 보고(성적·기록 화면 공용) — 장부에 남은 원문 그대로라 눌러야 열린다(지난 기록은 고쳐 쓰지 않는다) */
+const REPORT_LABELS = {marketChange: '그날 시장에서 확인된 변화', didWell: '잘한 판단', didWrong: '잘못한 판단', unexplained: '아직 설명하지 못한 부분', experiments: '그날 시험하거나 채택·기각한 변경', nextCheck: '확인할 사항'};
 export function sentencesBlock(report) {
   if (!report) return h('p', {class: 'muted'}, '일일 보고가 아직 없습니다(첫 실행 뒤 생성).');
-  const labels = {marketChange: '오늘 시장에서 확인된 변화', didWell: '우리가 잘한 판단', didWrong: '우리가 잘못한 판단', unexplained: '아직 설명하지 못한 부분', experiments: '오늘 시험하거나 채택·기각한 변경', nextCheck: '다음 거래일에 확인할 사항'};
-  return h('div', null, h('ol', {class: 'sentences'}, ...Object.entries(labels).map(([k, label]) => h('li', {'data-speak': `${label}. ${report.sentences[k]}`}, h('b', null, label), h('span', null, report.sentences[k])))), h('p', {class: 'muted xs'}, `${korDate(report.date)} 보고 · 생성 ${stamp(report.generatedAt)} · 상태 ${report.operation?.status ?? '—'} · 운영 모델 ${report.evolution?.operatingModel ?? '—'}`));
+  return h('div', null, h('ol', {class: 'sentences'}, ...Object.entries(REPORT_LABELS).map(([k, label]) => h('li', null, h('b', null, label), h('span', null, report.sentences[k])))), h('p', {class: 'muted xs'}, `${korDate(report.date)} 보고 · 생성 ${stamp(report.generatedAt)} · 운영 모델 `, h('code', null, report.evolution?.operatingModel ?? '—')));
 }
+export function reportDetails(report, {dates = null, loadReport = null} = {}) {
+  const box = h('div'); box.replaceChildren(sentencesBlock(report));
+  const pick = dates?.length && loadReport ? h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), h('select', {class: 'select small', 'aria-label': '보고 날짜', onchange: async ev => { box.replaceChildren(sentencesBlock(await loadReport(ev.target.value))); }}, ...dates.slice().reverse().map(d => h('option', {value: d, selected: d === report?.date}, korDate(d))))) : null;
+  return h('details', {class: 'more report'}, h('summary', null, report ? `${korDate(report.date)} 일일 보고 여섯 문장 열기 · 장부 원문 그대로` : '일일 보고 없음'), pick, box);
+}
+const TYPE_ORDER = ['collection', 'forecast', 'score', 'analysis', 'factor', 'experiment', 'model', 'operation'];
+const groupKey = {score: b => b.classLabel ?? '분류 없음', analysis: b => b.kind === 'daily_aggregate' ? '하루 총괄' : (b.classLabel ?? '분류 없음'), experiment: b => b.status ?? b.decision ?? b.kind ?? '—', model: b => b.status ?? b.kind ?? '—', factor: b => b.status ?? '—', collection: b => b.kind === 'daily_collection' ? `가격 수집 · ${b.status}` : b.kind === 'context_market' ? '시장 지수' : b.kind === 'context_flows' ? '수급' : b.kind ?? '—', forecast: b => b.kind === 'shadow' ? '그림자 발행' : '운영 발행', operation: b => b.kind ?? b.status ?? '—'};
 
-/* ---------- 기록 검색 ---------- */
+/* ---------- 기록 v9: 헤드라인(그날 기록 수) → 날짜별 기록 수(선) → 종류별 막대 → 찾기(결과 막대 · 표는 눌러야 열림) ---------- */
 export async function renderRecords(main, {manifest, hash = ''}) {
   const [ledger, cards] = await Promise.all([loadLedger(), loadCards()]);
   const index = ledger.index, dailyIndex = ledger.index?.dailyReports ?? null;
   const q = Object.fromEntries(new URLSearchParams(hash.split('?')[1] ?? ''));
-  const lastDate = index?.dates?.at(-1) ?? '', firstWithRecords = lastDate && index?.byDate?.[lastDate] ? (['score', 'analysis', 'experiment', 'model', 'forecast', 'collection', 'factor', 'operation'].find(t => index.byDate[lastDate][t] > 0) ?? 'score') : 'score';
+  if (!index || !index.dates.length) { main.replaceChildren(headline({parts: [`${korDate(manifest.actualAsOf)} 기준 기록 `, {figure: '0건'}], source: editionSource(manifest, 'ledger.json')}), h('section', {class: 'panel'}, h('p', null, '기록 장부가 비어 있습니다. 매일 실행기가 처음 돌면 그날부터 쌓입니다.'))); return; }
+  const lastDate = index.dates.at(-1), perDay = d => Object.values(index.byDate[d] ?? {}).reduce((s, x) => s + x, 0), total = Object.values(index.totals).reduce((s, x) => s + x, 0);
+  const firstWithRecords = ['score', 'analysis', 'experiment', 'model', 'forecast', 'collection', 'factor', 'operation'].find(t => index.byDate[lastDate][t] > 0) ?? 'score';
   const filt = {type: q.type ?? firstWithRecords, date: q.date ?? lastDate, code: q.code ?? '', group: q.group ?? '', factor: q.factor ?? '', cls: q.cls ?? '', cause: q.cause ?? '', model: q.model ?? '', status: q.status ?? ''};
-  setSummary(index ? `기록 검색. ${index.dates.length}일치 기록, 종류별 합계: ${Object.entries(index.totals).map(([k, v]) => `${TYPE_LABEL[k]} ${v}건`).join(', ')}.` : '기록 장부가 아직 없습니다. 첫 실행 뒤 생깁니다.');
-  const head = h('section', {class: 'lead'}, h('h1', {class: 'h1', 'data-speak': '기록'}, '기록'), h('p', {class: 'muted'}, '수집·예측·채점·원인 분석·요인·실험·모델·운영 8종류를 날짜별로 남깁니다. 덮어쓰지 않고 덧붙이며, 정정은 이전 기록 ID에 연결됩니다.'));
-  if (!index || !index.dates.length) { main.replaceChildren(head, section('기록 없음', h('p', null, '아직 기록 장부가 비어 있습니다. 매일 실행기(run_daily)가 처음 돌면 그날부터 쌓입니다.'), h('p', {class: 'muted small'}, `발행본 ${ledger.forecastId}`))); return; }
-  // 일일 보고 (최근)
-  const latestReport = ledger.dailyReport ?? null;
-  const reportBox = h('div'), reportSel = h('select', {class: 'select', 'aria-label': '보고 날짜', onchange: async ev => { const r = await loadData('daily/' + ev.target.value + '.json'); reportBox.replaceChildren(sentencesBlock(r)); }}, ...(dailyIndex?.dates ?? []).slice().reverse().map(d => h('option', {value: d, selected: d === latestReport?.date}, korDate(d))));
-  reportBox.replaceChildren(sentencesBlock(latestReport));
-  // 검색 도구
+  setSummary(`${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 8종류, 누적 ${num(total)}건.`);
+  const hl = headline({speak: `${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건`,
+    parts: [`${korDate(lastDate)} 기록 `, {figure: `${num(perDay(lastDate))}건`}, ` · 8종류 · 누적 ${num(total)}건`],
+    source: [['이 숫자', `기록 장부 색인의 ${korDate(lastDate)} 종류별 건수 합(${TYPE_ORDER.filter(t => index.byDate[lastDate][t]).map(t => `${TYPE_LABEL[t]} ${num(index.byDate[lastDate][t])}건`).join(' · ')})`], ['기준 시각', `${stamp(index.generatedAt)} 에 만든 장부 색인`], ['장부 원본', h('span', null, h('code', null, 'reports/atlas11/ledger/<종류>/<날짜>.jsonl'), ' · 덮어쓰지 않고 덧붙임 · 정정은 앞 기록 ID 에 연결')], ...editionSource(manifest, 'ledger.json').slice(2)]});
+  // 증거 그래프: 날짜별 기록 수(마지막 값 = 헤드라인 숫자)
+  const lineBox = h('div'), typeBox = h('div', {class: 'bars'});
+  const evidence = h('section', {class: 'panel', 'aria-label': '헤드라인 숫자의 증거 그래프'}, h('h2', {class: 'panel-title'}, '날짜별 기록 수'), lineBox);
+  const byType = h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, `${korDate(lastDate)} 종류별 기록 수`), typeBox);
+  // 찾기
   const sel = (name, label, options, value) => h('label', {class: 'field'}, h('span', {class: 'lbl'}, label), h('select', {class: 'select small', 'aria-label': label, dataset: {filter: name}, onchange: ev => { filt[name] = ev.target.value; go(); }}, h('option', {value: ''}, '전체'), ...options.map(([v, l]) => h('option', {value: v, selected: v === value}, l))));
   const facetOpts = f => Object.keys(index.facets?.[f] ?? {}).sort().map(k => [k, k]);
   const groups = [...new Set(cards.cards.map(c => c.info?.groupName).filter(Boolean))];
   const groupIds = Object.fromEntries(cards.cards.filter(c => c.info?.group).map(c => [c.info.groupName, c.info.group]));
-  const typeRow = h('div', {class: 'filters types', role: 'group', 'aria-label': '기록 종류'}, ...Object.keys(TYPE_LABEL).map(t => h('button', {class: 'filter' + (filt.type === t ? ' on' : ''), type: 'button', dataset: {type: t}, 'aria-pressed': String(filt.type === t), onclick: () => { filt.type = t; go(); }}, `${TYPE_LABEL[t]} ${index.totals[t] ?? 0}`)));
-  const dateSel = h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), h('select', {class: 'select small', 'aria-label': '날짜', onchange: ev => { filt.date = ev.target.value; go(); }}, h('option', {value: ''}, '전체(최근 30일)'), ...index.dates.slice().reverse().map(d => h('option', {value: d, selected: d === filt.date}, `${korDate(d)} (${Object.values(index.byDate[d]).reduce((s, x) => s + x, 0)})`))));
-  const filters = h('div', {class: 'filters'}, dateSel,
+  const typeRow = h('div', {class: 'filters types', role: 'group', 'aria-label': '기록 종류'}, ...TYPE_ORDER.map(t => h('button', {class: 'filter' + (filt.type === t ? ' on' : ''), type: 'button', dataset: {type: t}, 'aria-pressed': String(filt.type === t), onclick: () => { filt.type = t; go(); }}, TYPE_LABEL[t])));
+  const dateSel = h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), h('select', {class: 'select small', 'aria-label': '날짜', onchange: ev => { filt.date = ev.target.value; go(); }}, h('option', {value: ''}, '최근 30일 전체'), ...index.dates.slice().reverse().map(d => h('option', {value: d, selected: d === filt.date}, `${korDate(d)} · ${num(perDay(d))}건`))));
+  const filters = h('details', {class: 'more'}, h('summary', null, '더 좁히기(종목·업종·요인·분류·원인·모델·채택 상태)'), h('div', {class: 'filters'},
     sel('code', '종목', cards.cards.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => [c.code, `${c.name} ${c.code}`]), filt.code),
     sel('group', '업종(묶음)', groups.map(g => [groupIds[g], g]), filt.group),
     sel('factor', '요인', Array.from({length: 36}, (_, i) => 'F' + String(i + 1).padStart(2, '0')).map(f => [f, f]), filt.factor),
     sel('cls', '정답·오답', ['방향·크기 모두 맞음', '방향 맞고 크기 틀림', '크기 허용·방향 틀림', '방향·크기 모두 틀림', '평가 보류'].map(c => [c, c]), filt.cls),
     sel('cause', '원인 종류', ['자료 오류', '자료 지연', '시장 상태', '업종 변화', '기업 사건', '수급', '심리·과열', '요인 중복', '가중치', '영향 시차', '변동성·범위', '방정식 구조', '미설명'].map(c => [c, c]), filt.cause),
     sel('model', '모델 버전', facetOpts('modelVersions'), filt.model),
-    sel('status', '채택 상태', facetOpts('statuses'), filt.status));
-  const resultBox = h('div', {class: 'records-result', 'aria-live': 'polite'}), countLabel = h('span', {class: 'muted small'});
-  const dlRow = h('div', {class: 'toggles'});
+    sel('status', '채택 상태', facetOpts('statuses'), filt.status)));
+  const resultTitle = h('h3', {class: 'panel-sub'}), resultBars = h('div', {class: 'bars'}), tableBox = h('div'), dlRow = h('div', {class: 'toggles'});
+  const tableFold = h('details', {class: 'more'}, h('summary', null, '기록 표 열기'), tableBox, dlRow);
   async function go() {
     for (const b of typeRow.children) { b.classList.toggle('on', b.dataset.type === filt.type); b.setAttribute('aria-pressed', String(b.dataset.type === filt.type)); }
     const params = new URLSearchParams(Object.entries(filt).filter(([, v]) => v)); history.replaceState(null, '', '#/records?' + params.toString());
     const dates = filt.date ? [filt.date] : index.dates.slice(-30);
-    resultBox.replaceChildren(h('p', {class: 'muted'}, '읽는 중…'));
+    resultTitle.textContent = '읽는 중'; tableBox.replaceChildren();
     let rows = [];
-    for (const d of dates) { const f = `${filt.type}/${d}.json`; if (!index.files[f]) continue; try { rows.push(...await loadData('ledger/' + f, {sha256: index.files[f].sha256})); } catch (e) { resultBox.replaceChildren(h('p', {class: 'warn'}, String(e.message))); return; } }
+    for (const d of dates) { const f = `${filt.type}/${d}.json`; if (!index.files[f]) continue; try { rows.push(...await loadData('ledger/' + f, {sha256: index.files[f].sha256})); } catch (e) { resultTitle.textContent = String(e.message); return; } }
     const superseded = new Set(rows.map(r => r.supersedes).filter(Boolean));
     rows = rows.filter(r => {
       const b = r.body ?? {};
       if (filt.code && b.code !== filt.code) return false;
       if (filt.group && (b.group ?? '') !== filt.group && (b.groupName ?? '') !== filt.group) return false;
-      if (filt.factor && b.factorId !== filt.factor && !(Array.isArray(b.causes) && false)) return false;
+      if (filt.factor && b.factorId !== filt.factor) return false;
       if (filt.cls && b.classLabel !== filt.cls) return false;
       if (filt.cause && !(b.causes ?? []).some(c => (typeof c === 'string' ? c : c.category) === filt.cause)) return false;
       if (filt.model && b.modelVersion !== filt.model && b.operatingModel !== filt.model) return false;
       if (filt.status && b.status !== filt.status) return false;
       return true;
     });
-    countLabel.textContent = `${rows.length}건 (정정으로 대체된 기록 ${rows.filter(r => superseded.has(r.id)).length}건 포함)`;
-    resultBox.replaceChildren(renderTable(filt.type, rows, superseded));
+    const when = filt.date ? korDate(filt.date) : `최근 ${dates.length}일`;
+    resultTitle.textContent = `${when} ${TYPE_LABEL[filt.type]} 기록 ${num(rows.length)}건 · 무엇으로 나뉘나`;
+    const counts = {}; for (const r of rows) { const k = groupKey[filt.type]?.(r.body ?? {}) ?? '—'; counts[k] = (counts[k] ?? 0) + 1; }
+    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    if (entries.length) bars(resultBars, entries.map(([k, v]) => ({label: k, value: v})), {format: v => num(v) + '건'}); else resultBars.replaceChildren(h('p', {class: 'muted'}, '조건에 맞는 기록이 없습니다.'));
+    tableFold.querySelector('summary').textContent = `기록 표 열기 · ${num(rows.length)}건${superseded.size ? ` (정정으로 대체된 기록 ${num(rows.filter(r => superseded.has(r.id)).length)}건 포함)` : ''}`;
+    tableBox.replaceChildren(renderTable(filt.type, rows, superseded));
     dlRow.replaceChildren(...[
       filt.date && index.files[`${filt.type}/${filt.date}.json`] ? h('a', {class: 'ctl btn-download', href: url(`/downloads/atlas11/ledger/${filt.type}-${filt.date}.csv`), download: `ATLAS_${filt.type}_${filt.date}.csv`}, 'CSV 내려받기(그날 전체)') : null,
       h('button', {class: 'ctl btn-download', type: 'button', onclick: () => download(`ATLAS_${filt.type}_${filt.date || 'recent'}_filtered.json`, JSON.stringify(rows, null, 1), 'application/json;charset=utf-8')}, '걸러진 JSON 내려받기'),
       h('button', {class: 'ctl btn-download', type: 'button', onclick: () => download(`ATLAS_${filt.type}_${filt.date || 'recent'}_filtered.csv`, rowsCSV(rows))}, '걸러진 CSV 내려받기')].filter(Boolean));
   }
-  main.replaceChildren(head,
-    section('일일 보고 · 여섯 문장', h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), reportSel)), reportBox),
-    section('기록 검색', typeRow, filters, h('div', {class: 'controls-row'}, countLabel), resultBox, dlRow, h('p', {class: 'muted xs'}, `장부 원본: reports/atlas11/ledger/<종류>/<날짜>.jsonl · 화면은 복사본을 색인의 SHA-256 으로 대조 · 발행본 ${ledger.forecastId}`)));
+  main.replaceChildren(hl, evidence, byType,
+    h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '기록 찾기'), typeRow, h('div', {class: 'filters'}, dateSel), filters, resultTitle, resultBars, tableFold),
+    h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '일일 보고'), reportDetails(ledger.dailyReport ?? null, {dates: dailyIndex?.dates ?? [], loadReport: d => loadData('daily/' + d + '.json')})));
+  lineChart(lineBox, {dates: index.dates, series: [{id: 'n', name: '기록', values: index.dates.map(perDay), cls: 'pred'}], unit: '건', format: v => num(Math.round(v)), yMin: 0, yMax: niceMax(Math.max(...index.dates.map(perDay))), ticks: [0, niceMax(Math.max(...index.dates.map(perDay))) / 2, niceMax(Math.max(...index.dates.map(perDay)))], height: 190, ariaLabel: '날짜별 기록 수: ' + index.dates.map(d => `${korDate(d)} ${num(perDay(d))}건`).join(', ')});
+  bars(typeBox, TYPE_ORDER.map(t => ({label: TYPE_LABEL[t], value: index.byDate[lastDate][t] ?? 0})), {format: v => num(v) + '건'});
   await go();
 }
+const niceMax = v => { const m = Math.pow(10, Math.floor(Math.log10(Math.max(1, v)))); return Math.ceil(v / m * 2) / 2 * m; };
 
 function rowsCSV(rows) {
   const keys = []; for (const r of rows) for (const k of Object.keys(r.body ?? {})) if (!keys.includes(k)) keys.push(k);

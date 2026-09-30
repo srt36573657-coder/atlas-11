@@ -61,6 +61,22 @@ test('화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫
   assert.throws(() => validateViewBundle(tampered, p), /VIEW_ANCHOR/);
   const wrongId = new Map(files); const race = structuredClone(files.get('race.json')); race.forecastId = 'other'; wrongId.set('race.json', race);
   assert.throws(() => validateViewBundle(wrongId, p), /VIEW_FORECAST_ID_MISMATCH/);
+  // v9 전망 헤드라인: 증거 그래프 마지막 값 = 카드 52장에서 센 「상승 선택」 수 = 발행본 값 · 한 숫자만 틀려도 실패
+  const cj = files.get('cards.json'), upNow = p.assets.filter(a => a.rows[1].direction.daily.selected === 'up').length;
+  assert.equal(cj.directionHistory.at(-1).date, p.futureDates[0]); assert.equal(cj.directionHistory.at(-1).predictedUp, upNow); assert.equal(cj.day1.up, upNow);
+  assert.ok(cj.directionHistory.slice(0, -1).every(d => d.date < p.futureDates[0] && d.evaluated > 0 && d.actualUp != null), '앞 점들은 채점이 끝난 날만');
+  const badHead = new Map(files); const cj2 = structuredClone(cj); cj2.directionHistory.at(-1).predictedUp += 1; badHead.set('cards.json', cj2);
+  assert.throws(() => validateViewBundle(badHead, p), /VIEW_HEADLINE_FORECAST/);
+});
+
+test('v9 시장 띠: 수집 기록의 지수 행을 그대로 싣는다 · 숫자·날짜가 아니면 실패', async () => {
+  const {input, calendar} = await realInputs();
+  const p = await latest(); const publications = await readAllPublications(root);
+  const marketIndex = {day: p.actualAsOf, fetchedAt: '2026-09-28T08:00:00Z', file: 'reports/atlas11/context/test.json', items: [{symbol: 'KOSPI', name: '코스피', date: p.actualAsOf, close: 6838.04, change: -32.77, changePct: -0.48, status: 'same_day', sourceName: '네이버 증권 지수', sourceUrl: 'https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1', rawSHA256: 'a'.repeat(64)}]};
+  const files = buildViewBundle({publication: p, marketIndex, input, calendar, publications, now: '2026-09-28T13:40:00.000Z'});
+  const m = files.get('manifest.json'); assert.equal(m.market.items[0].close, 6838.04); assert.equal(m.market.items[0].changePct, -0.48); assert.equal(m.market.usedInForecast, false);
+  const bad = new Map(files); const m2 = structuredClone(m); m2.market.items[0].close = null; bad.set('manifest.json', m2);
+  assert.throws(() => validateViewBundle(bad, p), /VIEW_MARKET/);
 });
 
 test('날짜별 설명: 그 종목 숫자로 만든 문장 · 실제/출발/전망 구분 · 일정 사용 여부 명시', async () => {

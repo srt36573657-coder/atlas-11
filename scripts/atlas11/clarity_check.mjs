@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+/**
+ * ATLAS 화면 또렷함 검사 — 화면 7장 × 보기 4가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200%)에서 여섯 숫자를 잰다.
+ *   node scripts/atlas11/clarity_check.mjs --base http://localhost:8811 --pw <playwright 폴더> --label before|after [--inject]
+ *   결과: reports/atlas11/clarity/<label>.json (화면·보기마다 여섯 숫자와 예시)
+ *   --inject: 일부러 「내일 42 정도.」「곧 많이 오릅니다.」를 넣어 검사기가 1·2·3번을 한 개씩 더 세는지 본다(검사기 자체 시험).
+ */
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+import {measureClarity} from './clarity/measure.mjs';
+
+const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
+const base = arg('--base') ?? 'http://localhost:8811', pwDir = arg('--pw') ?? process.cwd(), label = arg('--label') ?? 'now', inject = process.argv.includes('--inject');
+const onlyScreens = arg('--screens')?.split(','), onlyViews = arg('--views')?.split(',');
+/** 화면 밖이라 그리기를 미룬 칸(content-visibility:auto)도 스크롤하면 보이는 글이므로 모두 그리게 한 뒤 잰다(CSP 안: CSSOM 으로만 바꿈) */
+export async function renderAll(page) { await page.evaluate(() => { for (const el of document.querySelectorAll('*')) if (getComputedStyle(el).contentVisibility === 'auto') el.style.contentVisibility = 'visible'; }); await page.waitForTimeout(150); }
+export const SCREENS = [
+  {id: 'forecast', name: '전망', hash: '#/forecast', wait: '.wl-row, .stock-card'},
+  {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
+  {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart'},
+  {id: 'scores', name: '성적', hash: '#/scores', wait: 'svg.lc, .timeline, .card h2'},
+  {id: 'evolution', name: '진화', hash: '#/evolution', wait: 'svg.evo-chart'},
+  {id: 'records', name: '기록', hash: '#/records', wait: 'svg.lc, .sentences li'},
+  {id: 'status', name: '자료 상태', hash: '#/status', wait: 'svg.lc, .fgrid'},
+];
+export const VIEWS = [
+  {id: 'pc', name: 'PC', viewport: {width: 1280, height: 800}},
+  {id: 'mobile', name: '휴대폰', viewport: {width: 390, height: 844}, mobile: true},
+  {id: 'mobile-dark', name: '휴대폰 어두운 화면', viewport: {width: 390, height: 844}, mobile: true, dark: true},
+  {id: 'pc-200', name: 'PC 글씨 200%', viewport: {width: 1280, height: 800}, font: 4},
+];
+export const KEYS = ['relDays', 'vague', 'bareNumbers', 'graphable', 'lowContrast', 'decoColors'];
+
+if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  const {chromium} = createRequire(path.join(pwDir, 'package.json'))('playwright');
+  const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
+  const out = {schema: 'atlas11-clarity-1', label, at: new Date().toISOString(), base, keys: KEYS, views: {}, inject: null};
+  for (const v of (inject ? VIEWS.slice(0, 1) : VIEWS.filter(x => !onlyViews || onlyViews.includes(x.id)))) {
+    const ctx = await browser.newContext({viewport: v.viewport, isMobile: !!v.mobile, hasTouch: !!v.mobile, colorScheme: v.dark ? 'dark' : 'light', locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);
+    const page = await ctx.newPage();
+    out.views[v.id] = {};
+    for (const s of (inject ? SCREENS.filter(x => x.id === 'evolution') : SCREENS.filter(x => !onlyScreens || onlyScreens.includes(x.id)))) {
+      await page.goto(base + '/' + s.hash, {waitUntil: 'networkidle'});
+      await page.waitForSelector(s.wait, {timeout: 15000}).catch(() => { console.log('기다림 실패', s.id, s.wait); });
+      await page.waitForTimeout(700);
+      await renderAll(page);
+      const m = await page.evaluate(measureClarity);
+      // 헤드라인 숫자를 눌러 연 출처·기준 시각 칸도 같은 잣대(1~3번)로 잰다 — 눌러야 보이는 곳도 무너지면 안 된다
+      const opened = await page.evaluate(() => { const b = [...document.querySelectorAll('.hl-num')]; for (const x of b) if (x.getAttribute('aria-expanded') !== 'true') x.click(); return b.length; });
+      if (opened) { await page.waitForTimeout(120); const src = await page.evaluate(measureClarity, {roots: ['.hl-src'], refTime: false}); m.source = {panels: opened, relDays: src.relDays, vague: src.vague, bareNumbers: src.bareNumbers, formatDates: src.formatDates, samples: {relDays: src.samples.relDays, vague: src.samples.vague, bareNumbers: src.samples.bareNumbers, formatDates: src.samples.formatDates}}; await page.evaluate(() => { for (const x of document.querySelectorAll('.hl-num[aria-expanded="true"]')) x.click(); }); }
+      else m.source = {panels: 0};
+      out.views[v.id][s.id] = m;
+      if (inject) {
+        await page.evaluate(() => { const box = document.createElement('section'); box.className = 'card'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
+        const after = await page.evaluate(measureClarity);
+        const delta = Object.fromEntries(['relDays', 'vague', 'bareNumbers'].map(k => [k, after[k] - m[k]]));
+        out.inject = {screen: s.id, planted: ['내일 42 정도.', '곧 많이 오릅니다.'], delta, caught: delta.relDays >= 1 && delta.vague >= 1 && delta.bareNumbers >= 1};
+        console.log('inject', JSON.stringify(out.inject));
+      }
+    }
+    await ctx.close();
+  }
+  await browser.close();
+  // 표로 보이기
+  for (const [vid, screens] of Object.entries(out.views)) {
+    console.log(`\n[${vid}] ` + ['화면', ...KEYS, '합', '(덤)날짜모양', '글조각', '첫화면', '출처칸 1·2·3·날짜'].join(' | '));
+    for (const [sid, m] of Object.entries(screens)) console.log(`${sid} | ` + KEYS.map(k => m[k]).join(' | ') + ` | ${KEYS.reduce((s, k) => s + m[k], 0)} | ${m.formatDates} | ${m.sentences.length} | ${m.firstView.length} | ${m.source?.panels ? [m.source.relDays, m.source.vague, m.source.bareNumbers, m.source.formatDates].join('·') : '칸 없음'}`);
+  }
+  const dir = path.join(process.cwd(), 'reports/atlas11/clarity'); await fs.mkdir(dir, {recursive: true});
+  await fs.writeFile(path.join(dir, `${inject ? 'inject' : label}.json`), JSON.stringify(out, null, 1));
+  console.log('\nsaved', path.join('reports/atlas11/clarity', `${inject ? 'inject' : label}.json`));
+}

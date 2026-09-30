@@ -1,0 +1,677 @@
+{
+ "schema": "atlas11-clarity-summary-1",
+ "at": "2026-09-30T17:13:08.901Z",
+ "checker": "scripts/atlas11/clarity/measure.mjs (최종판 v3 · before 도 같은 검사기로 다시 잼)",
+ "beforeSite": "git HEAD 7afcddb 의 site/ + 화면 자료(9/30 23:57 빌드)",
+ "afterSite": "이번 v9",
+ "keys": [
+  "relDays",
+  "vague",
+  "bareNumbers",
+  "graphable",
+  "lowContrast",
+  "decoColors"
+ ],
+ "perScreen": {
+  "forecast": {
+   "pc": {
+    "before": {
+     "relDays": 56,
+     "vague": 0,
+     "bareNumbers": 9,
+     "graphable": 2,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 56,
+     "vague": 0,
+     "bareNumbers": 9,
+     "graphable": 2,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 56,
+     "vague": 0,
+     "bareNumbers": 9,
+     "graphable": 2,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 56,
+     "vague": 0,
+     "bareNumbers": 9,
+     "graphable": 2,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   }
+  },
+  "stock": {
+   "pc": {
+    "before": {
+     "relDays": 6,
+     "vague": 2,
+     "bareNumbers": 57,
+     "graphable": 6,
+     "lowContrast": 1,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 6,
+     "vague": 2,
+     "bareNumbers": 55,
+     "graphable": 7,
+     "lowContrast": 1,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 76,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 6,
+     "vague": 2,
+     "bareNumbers": 55,
+     "graphable": 7,
+     "lowContrast": 1,
+     "decoColors": 6
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 6,
+     "vague": 2,
+     "bareNumbers": 57,
+     "graphable": 6,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 76,
+    "afterSum": 0
+   }
+  },
+  "race": {
+   "pc": {
+    "before": {
+     "relDays": 2,
+     "vague": 0,
+     "bareNumbers": 70,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 2,
+     "vague": 0,
+     "bareNumbers": 70,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 2,
+     "vague": 0,
+     "bareNumbers": 70,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 6
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 78,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 2,
+     "vague": 0,
+     "bareNumbers": 70,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0
+   }
+  },
+  "scores": {
+   "pc": {
+    "before": {
+     "relDays": 3,
+     "vague": 1,
+     "bareNumbers": 90,
+     "graphable": 9,
+     "lowContrast": 0,
+     "decoColors": 3
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 106,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 3,
+     "vague": 1,
+     "bareNumbers": 90,
+     "graphable": 9,
+     "lowContrast": 0,
+     "decoColors": 3
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 106,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 3,
+     "vague": 1,
+     "bareNumbers": 90,
+     "graphable": 9,
+     "lowContrast": 0,
+     "decoColors": 3
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 106,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 3,
+     "vague": 1,
+     "bareNumbers": 90,
+     "graphable": 9,
+     "lowContrast": 0,
+     "decoColors": 3
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 106,
+    "afterSum": 0
+   }
+  },
+  "evolution": {
+   "pc": {
+    "before": {
+     "relDays": 7,
+     "vague": 3,
+     "bareNumbers": 12,
+     "graphable": 3,
+     "lowContrast": 1,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 31,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 7,
+     "vague": 3,
+     "bareNumbers": 12,
+     "graphable": 3,
+     "lowContrast": 1,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 31,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 7,
+     "vague": 3,
+     "bareNumbers": 12,
+     "graphable": 3,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 30,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 7,
+     "vague": 3,
+     "bareNumbers": 12,
+     "graphable": 3,
+     "lowContrast": 1,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 31,
+    "afterSum": 0
+   }
+  },
+  "records": {
+   "pc": {
+    "before": {
+     "relDays": 2,
+     "vague": 1,
+     "bareNumbers": 24,
+     "graphable": 4,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 33,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 2,
+     "vague": 1,
+     "bareNumbers": 24,
+     "graphable": 4,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 33,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 2,
+     "vague": 1,
+     "bareNumbers": 24,
+     "graphable": 4,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 33,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 2,
+     "vague": 1,
+     "bareNumbers": 24,
+     "graphable": 4,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 33,
+    "afterSum": 0
+   }
+  },
+  "status": {
+   "pc": {
+    "before": {
+     "relDays": 4,
+     "vague": 1,
+     "bareNumbers": 53,
+     "graphable": 7,
+     "lowContrast": 0,
+     "decoColors": 4
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "mobile": {
+    "before": {
+     "relDays": 4,
+     "vague": 1,
+     "bareNumbers": 53,
+     "graphable": 7,
+     "lowContrast": 0,
+     "decoColors": 4
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "mobile-dark": {
+    "before": {
+     "relDays": 4,
+     "vague": 1,
+     "bareNumbers": 53,
+     "graphable": 7,
+     "lowContrast": 0,
+     "decoColors": 4
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   },
+   "pc-200": {
+    "before": {
+     "relDays": 4,
+     "vague": 1,
+     "bareNumbers": 53,
+     "graphable": 7,
+     "lowContrast": 0,
+     "decoColors": 4
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0
+   }
+  }
+ },
+ "prose": {
+  "forecast": {
+   "before": 88,
+   "after": 66,
+   "deleted": 34,
+   "added": 12,
+   "firstViewBefore": 47,
+   "firstViewAfter": 24,
+   "firstViewDeleted": 32,
+   "firstViewAdded": 9,
+   "ruleDeletedGEAdded": true
+  },
+  "stock": {
+   "before": 121,
+   "after": 41,
+   "deleted": 101,
+   "added": 21,
+   "firstViewBefore": 38,
+   "firstViewAfter": 24,
+   "firstViewDeleted": 25,
+   "firstViewAdded": 11,
+   "ruleDeletedGEAdded": true
+  },
+  "race": {
+   "before": 37,
+   "after": 32,
+   "deleted": 26,
+   "added": 21,
+   "firstViewBefore": 24,
+   "firstViewAfter": 19,
+   "firstViewDeleted": 15,
+   "firstViewAdded": 10,
+   "ruleDeletedGEAdded": true
+  },
+  "scores": {
+   "before": 131,
+   "after": 22,
+   "deleted": 124,
+   "added": 15,
+   "firstViewBefore": 25,
+   "firstViewAfter": 14,
+   "firstViewDeleted": 19,
+   "firstViewAdded": 8,
+   "ruleDeletedGEAdded": true
+  },
+  "evolution": {
+   "before": 59,
+   "after": 30,
+   "deleted": 40,
+   "added": 11,
+   "firstViewBefore": 20,
+   "firstViewAfter": 16,
+   "firstViewDeleted": 8,
+   "firstViewAdded": 4,
+   "ruleDeletedGEAdded": true
+  },
+  "records": {
+   "before": 110,
+   "after": 25,
+   "deleted": 100,
+   "added": 15,
+   "firstViewBefore": 25,
+   "firstViewAfter": 19,
+   "firstViewDeleted": 19,
+   "firstViewAdded": 13,
+   "ruleDeletedGEAdded": true
+  },
+  "status": {
+   "before": 147,
+   "after": 32,
+   "deleted": 141,
+   "added": 26,
+   "firstViewBefore": 22,
+   "firstViewAfter": 13,
+   "firstViewDeleted": 16,
+   "firstViewAdded": 7,
+   "ruleDeletedGEAdded": true
+  }
+ },
+ "proseTotals": {
+  "deleted": 566,
+  "added": 121,
+  "firstDeleted": 134,
+  "firstAdded": 62
+ },
+ "proseDefinition": "문장 = 그래프 표시(그림 글자·막대 이름·값·범례·눈금·순위 막대) 밖의 보이는 글 조각 · 헤드라인 한 줄·시장 띠 한 줄은 각각 1 · 닫힌 접힘 안은 보이지 않는 것으로 셈 · 숫자는 #로 바꿔 날마다 같은 문장으로 셈"
+}

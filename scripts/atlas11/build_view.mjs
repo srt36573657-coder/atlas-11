@@ -91,9 +91,13 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   const deploy = await read('reports/atlas11/operations/deploy-latest.json', null);
   // 관측 수집(시장·수급·뉴스·공시·거시) — 요약 + 종목별 최근 값
   const contextLatest = await read('reports/atlas11/context/latest.json', null);
-  let contextByCode = null;
+  let contextByCode = null, marketIndex = null;
   if (contextLatest?.file) {
     const snap = await read(contextLatest.file, null);
+    // 시장 띠(코스피·코스닥): 같은 수집 기록의 지수 원문 행 · 출처 주소·원문 해시 그대로
+    // 값이 비거나 숫자가 아닌 지수는 싣지 않는다(시장 띠는 「미수집」으로 보이고 발행은 멈추지 않음)
+    if (snap?.index?.length) marketIndex = {day: snap.day, fetchedAt: snap.fetchedAt, file: contextLatest.file, items: snap.index.filter(i => i.rows?.length).map(i => { const r = i.rows.find(x => x.date === snap.day) ?? i.rows.at(-1); return {symbol: i.symbol, name: i.symbol === 'KOSPI' ? '코스피' : i.symbol === 'KOSDAQ' ? '코스닥' : i.symbol, date: r.date, close: r.close, change: r.change ?? null, changePct: r.changePct, status: r.date === snap.day ? 'same_day' : 'earlier_day', sourceName: '네이버 증권 지수', sourceUrl: i.sourceUrl ?? null, rawSHA256: i.rawSHA256 ?? null}; }).filter(x => Number.isFinite(x.close) && Number.isFinite(x.changePct) && /^\d{4}-\d{2}-\d{2}$/.test(x.date ?? ''))};
+    if (marketIndex && !marketIndex.items.length) marketIndex = null;
     if (snap) {
       contextByCode = {};
       for (const a of input.assets) {
@@ -111,7 +115,7 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
     const res = compareTimeline(timeline, recount);
     timeline.check = {ok: res.ok, checked: res.checked, mismatches: res.mismatches.slice(0, 20), method: 'lib/atlas11/timeline_check.mjs — timeline.mjs 를 쓰지 않고 장부 원본에서 다시 셈', at: now};
   }
-  const files = buildViewBundle({publication, timeline, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
+  const files = buildViewBundle({publication, timeline, marketIndex, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
   const dir = path.join(root, 'public/data/atlas11/view');
   await fs.rm(dir + '.next', {recursive: true, force: true});
   await fs.mkdir(path.join(dir + '.next', 'stocks'), {recursive: true});

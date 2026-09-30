@@ -214,3 +214,9 @@ node scripts/atlas11/browser_check.mjs --base http://localhost:8811 --pw <playwr
 - 「진화」 칸 자료는 `public/data/atlas11/view/timeline.json` — `lib/atlas11/timeline.mjs` 가 기록 장부에서 만들고, `lib/atlas11/timeline_check.mjs` 가 따로 다시 세어 결과(`check`)를 붙인다. 매일 실행의 화면 단계(`scripts/atlas11/build_view.mjs`)에서 저절로 새로 만든다.
 - 진화 = 시장 결과로 예측 식이 바뀐 것(모델 기록의 채택·되돌림). 공사 = 사람이 고친 장치 — `node scripts/atlas11/record_construction.mjs --date YYYY-MM-DD --title "…" --heard "시장의 답을 더 잘 듣게 된 점" --commits abc1234` 로 기록 장부(operation · construction)에 덧붙인다.
 - 시험이 없던 날은 실험 장부에 kind `no_test` 한 줄과 까닭이 남는다.
+
+## v9 금융 화면 (2026-10-01)
+- 화면마다 세 박자: ① 맨 위 헤드라인 한 줄(날짜·숫자 · 숫자를 누르면 출처·기준 시각·발행본·SHA-256) ② 증거 그래프(마지막 값 = 헤드라인 숫자) ③ 나머지 비교는 가로 막대 · 자세한 표는 눌러야 열림. 모든 화면 맨 위에 시장 띠(코스피·코스닥 값·등락·기준 시각, 장부의 시장 수집 기록).
+- 색: 오름 빨강 · 내림 파랑 · 경고 갈색만. 나머지는 먹·회색. 글꼴 IBM Plex Sans KR 하나 · 굵기 400·700 · 같은 폭 숫자.
+- 날짜·숫자 모양: 글 「10월 1일(목)」 · 그래프 눈금 「10/01」 · 시각 「16:01 KST」 · 가격 「268,500원」 · 변화 「+3.47%」 · 확률 「57%」 · 지수 「6,838.04포인트」.
+- 또렷함 검사: `node scripts/atlas11/clarity_check.mjs --base http://localhost:8811 --pw <playwright 폴더> --label after` (7화면 × PC·휴대폰·휴대폰 어두운 화면·PC 글씨 200%) · 검사기 자체 시험 `--inject`. 화면 검사 `browser_check.mjs` 는 1~3번(내일·오늘·어제 / 흐릿한 말 / 단위·기준 빠진 숫자)이 0 이 아니면 실패한다.

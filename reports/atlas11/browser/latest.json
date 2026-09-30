@@ -1,71 +1,686 @@
 {
-  "schema": "atlas11-browser-check-1",
-  "at": "2026-09-30T14:58:16.514Z",
+  "schema": "atlas11-browser-check-2",
+  "at": "2026-09-30T17:08:53.466Z",
   "base": "http://localhost:8811",
-  "chromium": "playwright bundled chromium (headless)",
+  "chromium": "playwright chromium (headless)",
   "viewports": {
     "pc": "1280x800",
-    "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)"
+    "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)",
+    "mobile-dark": "390x844 어두운 화면",
+    "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 120,
+  "passed": 201,
   "failed": 0,
+  "clarity": {
+    "pc": {
+      "forecast": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "stock": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "race": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "scores": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "evolution": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "records": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "status": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      }
+    },
+    "mobile": {
+      "forecast": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "stock": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "race": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "scores": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "evolution": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "records": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "status": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      }
+    },
+    "mobile-dark": {
+      "forecast": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "stock": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "race": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "scores": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "evolution": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "records": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "status": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      }
+    },
+    "pc-200": {
+      "forecast": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "stock": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "race": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "scores": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "evolution": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "records": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "status": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      }
+    }
+  },
+  "clarityInfo": [
+    {
+      "view": "pc",
+      "screen": "forecast",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "stock",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "race",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "scores",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "evolution",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "records",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc",
+      "screen": "status",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "forecast",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "stock",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "race",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "scores",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "evolution",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "records",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile",
+      "screen": "status",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "forecast",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "stock",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "race",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "scores",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "evolution",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "records",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "status",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "forecast",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "stock",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "race",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "scores",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "evolution",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "records",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "pc-200",
+      "screen": "status",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    }
+  ],
   "checks": [
     {
-      "name": "pc 첫 화면 52카드",
+      "name": "pc 맨 위 시장 띠: 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
-        "cards": 52
+        "strip": "코스피 6,838.04포인트 −0.48% 코스닥 855.91포인트 +0.72% 9월 30일(수) 15:30 KST 종가"
       }
     },
     {
-      "name": "pc 첫 화면에 실제 내용(카드)이 보임",
+      "name": "pc 전망: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "top": 289,
-        "inViewport": true
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
       }
     },
     {
-      "name": "pc 자료 기준일 표시",
+      "name": "pc 전망: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "chip": "확정 종가 9월 30일"
+        "figure": "15종목",
+        "src": "이 숫자\n52종목 가운데 10월 1일(목) 방향이 「상승」으로 선택된 종목 수 (하락 선택 37종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.09% — 52종목 각"
       }
     },
     {
-      "name": "pc 카드마다 작은 그래프·확률 막대",
+      "name": "pc 전망: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 전망: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "15종목",
+        "last": "15종목"
+      }
+    },
+    {
+      "name": "pc 전망: 52종목 줄",
+      "ok": true,
+      "detail": {
+        "rows": 52
+      }
+    },
+    {
+      "name": "pc 전망: 줄마다 작은 그래프·확률 막대·20거래일 가로 막대",
       "ok": true,
       "detail": {
         "sparks": 52,
-        "pbars": 52
+        "pbars": 52,
+        "hbars": 52
       }
     },
     {
-      "name": "pc 카드마다 1년 범위 띠·묶음 이름(9묶음)",
+      "name": "pc 전망: 목록 머리에 「내일」 대신 날짜",
       "ok": true,
       "detail": {
-        "ranges": 52,
-        "groupNames": 9
+        "head": "종목 9월 30일(수) 종가 등락 10월 1일(목) 선택·확률 10월 30일(금) 중앙 전망 실제 20일 → 전망 20일"
       }
     },
     {
-      "name": "pc 「하락 선택」 거름 단추",
+      "name": "pc 전망: 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
         "filtered": 37
       }
-    },
-    {
-      "name": "pc 발행본 정보 팝오버·무결성 검사",
-      "ok": true,
-      "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-30-atlas11-d63a7866e135fbc2\n기준일\n9월 30일 확정 종가\n발행 시각\n9. 30. 17:22 (한국)\n미래\n20거래일 · 10/01~10/30\n경로\n52종"
-      }
-    },
-    {
-      "name": "pc Esc 로 팝오버 닫힘",
-      "ok": true,
-      "detail": null
     },
     {
       "name": "pc 터치 영역 44px 미만 없음",
@@ -73,28 +688,54 @@
       "detail": []
     },
     {
-      "name": "pc 카드 한 번 눌러 상세 열림",
+      "name": "pc 종목 상세: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "title": "HD현대중공업 329180"
+        "hl": 1,
+        "first": {
+          "top": 153,
+          "bottom": 187,
+          "firstChild": true
+        }
       }
     },
     {
-      "name": "pc 상세 상단 숫자 5개",
+      "name": "pc 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "numbers": 5
+        "figure": "71,423원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 20거래일 뒤(10월 30일(금)) 가격의 한가운데 값(50%) · 80% 범위 62,363원~81,676원\n출발 종가\n68,800원 · 9월 30일(수) 15:30 KST "
       }
     },
     {
-      "name": "pc 그래프가 화면 안에 보임(스크롤 전)",
+      "name": "pc 종목 상세: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "chartTop": 345
+        "figure": "71,423원",
+        "last": "71,423원 (+3.81%)"
       }
     },
     {
-      "name": "pc 실제선·오늘선·띠·경계선·출발점",
+      "name": "pc 상세: 헤드라인에 종목 이름·날짜·원 단위",
+      "ok": true,
+      "detail": {
+        "detailFigure": "71,423원"
+      }
+    },
+    {
+      "name": "pc 상세: 그래프가 첫 화면 안(스크롤 전)",
+      "ok": true,
+      "detail": {
+        "chartTop": 237.59375
+      }
+    },
+    {
+      "name": "pc 상세: 실제선·전망선·띠·경계선·출발점",
       "ok": true,
       "detail": {
         "actual": true,
@@ -105,9 +746,22 @@
       }
     },
     {
-      "name": "pc 세 겹 띠(5~95·10~90·25~75%)와 첫 숫자 강조",
+      "name": "pc 상세: 세 겹 띠(5~95·10~90·25~75%)",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "pc 상세: 가격 눈금에 원 단위",
+      "ok": true,
+      "detail": {
+        "ticks": [
+          "6.0만원",
+          "7.0만원",
+          "8.0만원",
+          "9.0만원",
+          "07/03"
+        ]
+      }
     },
     {
       "name": "pc IBM Plex Sans KR 글씨체 적용",
@@ -115,139 +769,140 @@
       "detail": null
     },
     {
-      "name": "pc 그래프 위 마우스 말풍선",
+      "name": "pc 상세: 그래프 위 마우스 말풍선",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 미래 날짜 눌러 이유 열림(D+3)",
+      "name": "pc 상세: 미래 날짜 눌러 설명 열림(3거래일 뒤)",
       "ok": true,
       "detail": {
-        "cursor": "10월 6일(화) D+3",
-        "explainHead": "10월 6일(화) · D+3 전망"
+        "cursor": "10월 6일(화) · 3거래일 뒤 전망",
+        "explainHead": "10월 6일(화) · 3거래일 뒤 전망"
       }
     },
     {
-      "name": "pc 선택 날짜 분포 상자(5~95%·상자·중앙·출발가)",
+      "name": "pc 상세: 선택 날짜 분포 상자",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 날짜 설명: 한 줄 결론·기여 막대·미확보·출처",
+      "name": "pc 상세: 날짜 설명(한 줄 · 기여 막대 · 미확보 · 출처)",
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 6일 중앙 전망 440,221원 · 출발가 대비 +1.55% · 이 날 상승 56% · 80% 범위 "
+        "oneline": "10월 6일(화) 중앙 전망 69,338원 (출발 종가 대비 +0.78%)"
       }
     },
     {
-      "name": "pc 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
+      "name": "pc 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "10월 1일(목) D+1",
+        "after": "10월 1일(목) · 1거래일 뒤 전망",
         "sameSvg": true
       }
     },
     {
-      "name": "pc 중요 일정에서 정지·확인 대기",
+      "name": "pc 상세: 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "10월 6일 중요 일정 1건"
+        "text": "10월 6일(화) 중요 일정 1건"
       }
     },
     {
-      "name": "pc 확인 뒤 계속 재생",
+      "name": "pc 상세: 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 7일(수) D+4"
+        "resumed": "10월 7일(수) · 4거래일 뒤 전망"
       }
     },
     {
-      "name": "pc 대표 시나리오 선 표시",
+      "name": "pc 상세: 대표 시나리오 선 표시",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc CSV 다운로드 21행(출발 1+전망 20)",
+      "name": "pc 상세: CSV 내려받기 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260930.csv",
+        "name": "ATLAS_111770_20260930.csv",
         "rows": 22
       }
     },
     {
-      "name": "pc 상세 JSON 내려받기(blob · CSP 아래)",
+      "name": "pc 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260930_detail.json"
+        "name": "ATLAS_111770_20260930_detail.json"
       }
     },
     {
-      "name": "pc 종목 정보(1년 범위 띠 · 18칸 · 동조 상위 5)",
+      "name": "pc 상세: 종목 정보(1년 범위 막대 · 기간별 수익률 가로 막대 5 · 나머지 12칸은 눌러야 열림)",
       "ok": true,
       "detail": {
-        "infoKv": 18
+        "infoBars": 5,
+        "infoKv": 12
       }
     },
     {
-      "name": "pc 연쇄 지도 52노드·9묶음 호·1~5차 다섯 칸·연결선",
-      "ok": true,
-      "detail": {
-        "nodes": 52,
-        "arcs": 9,
-        "orders": 5,
-        "links": 31
-      }
-    },
-    {
-      "name": "pc 충격 단추(+10%) → 2차 숫자 부호 바뀜",
-      "ok": true,
-      "detail": {
-        "shockBefore": "−2.65%",
-        "shockAfter": "+5.29%"
-      }
-    },
-    {
-      "name": "pc 시장 통로·직접 통로 설명 문장",
-      "ok": true,
-      "detail": {
-        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
-      }
-    },
-    {
-      "name": "pc 누적(1~5차 합) 칸 추가",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 파급 재생: 1차부터 차례로 켜짐(초반 < 끝)",
-      "ok": true,
-      "detail": {
-        "litEarly": 1,
-        "litLate": 17,
-        "stripLit": 5
-      }
-    },
-    {
-      "name": "pc 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
-      "ok": true,
-      "detail": {
-        "hashBefore": "#/stock/329180",
-        "hashAfter": "#/stock/010120"
-      }
-    },
-    {
-      "name": "pc 이동한 종목에서도 연쇄 지도 다시 그림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 상세: 수급·뉴스·공시 칸(기록 · 예측 미사용) · 외국인·기관·개인 표 · 기사 목록(제목만)",
+      "name": "pc 상세: 수급·기사·공시 칸(눌러서 열림 · 전망 숫자에 넣지 않음 · 외국인·기관·개인 표 · 기사 제목)",
       "ok": true,
       "detail": {
         "ctxRows": 5,
         "ctxNews": 6
       }
+    },
+    {
+      "name": "pc 상세: 연쇄 지도(눌러서 열림) 52노드·9묶음 호·1~5차·연결선",
+      "ok": true,
+      "detail": {
+        "nodes": 52,
+        "arcs": 9,
+        "orders": 5,
+        "links": 27
+      }
+    },
+    {
+      "name": "pc 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
+      "ok": true,
+      "detail": {
+        "shockBefore": "−2.09%",
+        "shockAfter": "+4.18%"
+      }
+    },
+    {
+      "name": "pc 상세: 시장 통로·직접 통로 설명",
+      "ok": true,
+      "detail": {
+        "channel": "시장 통로와 직접 통로 — 영원무역의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.21%(52종목 평균 기준), 이 종목만의 몫은 +8.7"
+      }
+    },
+    {
+      "name": "pc 상세: 누적(1~5차 합) 칸 추가",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 상세: 파급 재생 1차부터 차례로 켜짐",
+      "ok": true,
+      "detail": {
+        "litEarly": 1,
+        "litLate": 14,
+        "stripLit": 5
+      }
+    },
+    {
+      "name": "pc 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
+      "ok": true,
+      "detail": {
+        "hashBefore": "#/stock/111770",
+        "hashAfter": "#/stock/010170"
+      }
+    },
+    {
+      "name": "pc 상세: 이동한 종목에서도 연쇄 지도 다시 그림",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "pc 글씨 200% 에서도 가로 넘침 없음",
@@ -258,36 +913,77 @@
       }
     },
     {
-      "name": "pc 1만원 비교 52선",
+      "name": "pc 1만원 비교: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "pc 1만원 비교: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "10,021원",
+        "src": "이 숫자\n52종목 각각 「1만원 × 10월 30일(금) 중앙 전망 ÷ 9월 30일(수) 종가」를 구해 단순 평균한 값(1위 HD현대중공업 10,777원)\n1만원 넘는 종목\n18종목 · 못 넘는 종목 34종목\n조정\n배"
+      }
+    },
+    {
+      "name": "pc 1만원 비교: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 1만원 비교: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "10,021원",
+        "last": "평균 10,021원"
+      }
+    },
+    {
+      "name": "pc 1만원 비교: 52선 + 굵은 평균선",
       "ok": true,
       "detail": {
         "raceLines": 52
       }
     },
     {
-      "name": "pc 순위 52줄",
+      "name": "pc 1만원 비교: 순위 52줄(가로 막대)",
       "ok": true,
       "detail": {
-        "rankRows": 52
+        "rankRows": 52,
+        "rankBars": 52
       }
     },
     {
-      "name": "pc 순위 종목 선택 → 강조·일정",
+      "name": "pc 1만원 비교: 순위 종목 선택 → 강조·일정",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 전망 구간에서 「오늘부터 향후 수익률 순위」 단추",
+      "name": "pc 1만원 비교: 발행일 1만원 기준에서는 순위 단추가 없음(두 순위가 같아서)",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 「오늘 1만원 출발」로 다시 환산",
+      "name": "pc 1만원 비교: 「20거래일 전 종가 1만원」으로 바꾸면 실제 구간 52선도 그림",
+      "ok": true,
+      "detail": {
+        "startLines": 52
+      }
+    },
+    {
+      "name": "pc 1만원 비교: 20거래일 전 기준 · 전망 구간에서 「발행일부터 수익률」 순위 단추",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 1만원 비교 묶음 단추(전체+9) → 반도체·전자 6선 강조",
+      "name": "pc 1만원 비교: 묶음 단추(전체+9) → 반도체·전자 강조",
       "ok": true,
       "detail": {
         "groupBtns": 10,
@@ -295,12 +991,78 @@
       }
     },
     {
-      "name": "pc 성적 화면(채점 예정표 4칸 + 후향 진단)",
+      "name": "pc 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "pc 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "27종목",
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목)\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를 52종목 평균한 값\n채점 규칙\n보합 경계 ±0."
+      }
+    },
+    {
+      "name": "pc 성적: Esc 로 출처 칸 닫힘",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 진화: 질문·결론 한 문장·표본·막힘이 첫 화면에",
+      "name": "pc 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "27종목",
+        "last": "27종목"
+      }
+    },
+    {
+      "name": "pc 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "pc 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "2.13%",
+        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 104칸을 첫날부터 9월 30일(수)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
+      }
+    },
+    {
+      "name": "pc 진화: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "2.13%",
+        "last": "지금까지 +2.13%"
+      }
+    },
+    {
+      "name": "pc 진화: 질문·결론 낱말·판정일·막힘",
       "ok": true,
       "detail": {
         "word": "아직입니다",
@@ -308,13 +1070,11 @@
       }
     },
     {
-      "name": "pc 진화: 그림 하나 — 합친 값 선의 점 = 사실표 · 마지막 점 글자 = 그림 위 실력 문장의 숫자 · 하루 값 흐린 점 · ○시험만·◆바꿈·▲공사 수 = 사실표 · 판정 시작 선",
+      "name": "pc 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
       "ok": true,
       "detail": {
         "dots": 2,
         "daily": 2,
-        "last": "지금까지 +2.1%",
-        "headlineNumber": "2.1% 덜 틀렸습니다",
         "tests": 1,
         "changes": 0,
         "builds": 3,
@@ -322,14 +1082,14 @@
       }
     },
     {
-      "name": "pc 진화: 그림 글자가 화면에서 11px 이상(휴대폰에서도 줄어들지 않음)",
+      "name": "pc 진화: 그림 글자가 화면에서 11px 이상",
       "ok": true,
       "detail": {
         "tickMin": 11.5
       }
     },
     {
-      "name": "pc 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 박자마다 까닭(3칸)",
+      "name": "pc 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
       "ok": true,
       "detail": {
         "dayRows": 2,
@@ -339,33 +1099,11 @@
       }
     },
     {
-      "name": "pc 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
+      "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
         "constructions": 8,
         "check": true
-      }
-    },
-    {
-      "name": "pc 자료 상태: 36요인 격자·달력·무결성·검사 증거",
-      "ok": true,
-      "detail": {
-        "tiles": 36,
-        "days": 10,
-        "shield": 1
-      }
-    },
-    {
-      "name": "pc 자료 상태: 예약 연결·예약 실행 확인·사이트 배포를 사실대로(연결 ≠ 실행 확인)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시",
-      "ok": true,
-      "detail": {
-        "observedTiles": 13,
-        "hasCtx": true
       }
     },
     {
@@ -374,34 +1112,116 @@
       "detail": null
     },
     {
-      "name": "pc 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
+      "name": "pc 자료 상태: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "sixCount": 6,
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "pc 자료 상태: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "52종목",
+        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n9월 30일(수) 17:22 KST\n받은 곳\n네이버 증권 분봉 원문"
+      }
+    },
+    {
+      "name": "pc 자료 상태: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 자료 상태: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "52종목",
+        "last": "52종목"
+      }
+    },
+    {
+      "name": "pc 자료 상태: 36요인 막대·칸(눌러야 열림) · 달력 · 검사 증거",
+      "ok": true,
+      "detail": {
+        "tiles": 36,
+        "days": 10
+      }
+    },
+    {
+      "name": "pc 자료 상태: 예약 실행 확인·사이트 배포를 사실대로",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 기록: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 113,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "775건",
+        "src": "이 숫자\n기록 장부 색인의 9월 30일(수) 종류별 건수 합(수집 259건 · 예측 1건 · 채점 260건 · 원인 분석 209건 · 요인 36건 · 운영 10건)\n기준 시각\n9월 30일(수) 23:57 KST 에 "
+      }
+    },
+    {
+      "name": "pc 기록: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "775건",
+        "last": "775건"
+      }
+    },
+    {
+      "name": "pc 기록: 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 · 'null' 없음",
+      "ok": true,
+      "detail": {
         "typeBtns": 8,
         "expRows": 0,
         "expExpected": 0,
         "shownDate": "2026-09-30",
-        "totalExperiments": 11,
         "dl": 2
       }
     },
     {
-      "name": "pc 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
+      "name": "pc 기록: 요인 기록 36행 단위 · 결과 막대",
       "ok": true,
       "detail": {
         "factorRecordRows": 36
       }
     },
     {
-      "name": "pc 기록 CSV 내려받기 파일명",
+      "name": "pc 기록: CSV 내려받기 파일명",
       "ok": true,
       "detail": {
         "name": "ATLAS_factor_2026-09-30_filtered.csv"
       }
     },
     {
-      "name": "pc 스푸마토 그래프: 아이보리 바탕·판·띠 경계선 6·실제선 그림자·후광·띠 그라데이션·좌표 변환 없음·모델 칩",
+      "name": "pc 기록: 일일 보고 여섯 문장(눌러야 열림 · 장부 원문 그대로)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)",
       "ok": true,
       "detail": {
         "bg": "rgb(241, 236, 226)",
@@ -409,9 +1229,12 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#c5wwf4t-band-inner\")",
-        "transforms": 0,
-        "modelChip": true
+        "bandFill": "url(\"#cwuy1y7-band-inner\")",
+        "todayStroke": "rgb(166, 62, 44)",
+        "todayDir": "up",
+        "up": "#A63E2C",
+        "down": "#2F5D8A",
+        "transforms": 0
       }
     },
     {
@@ -437,61 +1260,74 @@
       "detail": []
     },
     {
-      "name": "mobile 첫 화면 52카드",
+      "name": "mobile 맨 위 시장 띠: 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
-        "cards": 52
+        "strip": "코스피 6,838.04포인트 −0.48% 코스닥 855.91포인트 +0.72% 9월 30일(수) 15:30 KST 종가"
       }
     },
     {
-      "name": "mobile 첫 화면에 실제 내용(카드)이 보임",
+      "name": "mobile 전망: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "top": 498,
-        "inViewport": true
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 172,
+          "firstChild": true
+        }
       }
     },
     {
-      "name": "mobile 자료 기준일 표시",
+      "name": "mobile 전망: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "chip": "09/30 확정"
+        "figure": "15종목",
+        "src": "이 숫자\n52종목 가운데 10월 1일(목) 방향이 「상승」으로 선택된 종목 수 (하락 선택 37종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.09% — 52종목 각"
       }
     },
     {
-      "name": "mobile 카드마다 작은 그래프·확률 막대",
+      "name": "mobile 전망: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 전망: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "15종목",
+        "last": "15종목"
+      }
+    },
+    {
+      "name": "mobile 전망: 52종목 줄",
+      "ok": true,
+      "detail": {
+        "rows": 52
+      }
+    },
+    {
+      "name": "mobile 전망: 줄마다 작은 그래프·확률 막대·20거래일 가로 막대",
       "ok": true,
       "detail": {
         "sparks": 52,
-        "pbars": 52
+        "pbars": 52,
+        "hbars": 52
       }
     },
     {
-      "name": "mobile 카드마다 1년 범위 띠·묶음 이름(9묶음)",
+      "name": "mobile 전망: 목록 머리에 「내일」 대신 날짜",
       "ok": true,
       "detail": {
-        "ranges": 52,
-        "groupNames": 9
+        "head": "종목 9월 30일(수) 종가 등락 10월 1일(목) 선택·확률 10월 30일(금) 중앙 전망"
       }
     },
     {
-      "name": "mobile 「하락 선택」 거름 단추",
+      "name": "mobile 전망: 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
         "filtered": 37
       }
-    },
-    {
-      "name": "mobile 발행본 정보 팝오버·무결성 검사",
-      "ok": true,
-      "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-30-atlas11-d63a7866e135fbc2\n기준일\n9월 30일 확정 종가\n발행 시각\n9. 30. 17:22 (한국)\n미래\n20거래일 · 10/01~10/30\n경로\n52종"
-      }
-    },
-    {
-      "name": "mobile Esc 로 팝오버 닫힘",
-      "ok": true,
-      "detail": null
     },
     {
       "name": "mobile 터치 영역 44px 미만 없음",
@@ -499,28 +1335,54 @@
       "detail": []
     },
     {
-      "name": "mobile 카드 한 번 눌러 상세 열림",
+      "name": "mobile 종목 상세: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "title": "HD현대중공업 329180"
+        "hl": 1,
+        "first": {
+          "top": 202,
+          "bottom": 278,
+          "firstChild": true
+        }
       }
     },
     {
-      "name": "mobile 상세 상단 숫자 5개",
+      "name": "mobile 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "numbers": 5
+        "figure": "71,423원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 20거래일 뒤(10월 30일(금)) 가격의 한가운데 값(50%) · 80% 범위 62,363원~81,676원\n출발 종가\n68,800원 · 9월 30일(수) 15:30 KST "
       }
     },
     {
-      "name": "mobile 그래프가 화면 안에 보임(스크롤 전)",
+      "name": "mobile 종목 상세: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "chartTop": 639
+        "figure": "71,423원",
+        "last": "71,423원 (+3.81%)"
       }
     },
     {
-      "name": "mobile 실제선·오늘선·띠·경계선·출발점",
+      "name": "mobile 상세: 헤드라인에 종목 이름·날짜·원 단위",
+      "ok": true,
+      "detail": {
+        "detailFigure": "71,423원"
+      }
+    },
+    {
+      "name": "mobile 상세: 그래프가 첫 화면 안(스크롤 전)",
+      "ok": true,
+      "detail": {
+        "chartTop": 388.671875
+      }
+    },
+    {
+      "name": "mobile 상세: 실제선·전망선·띠·경계선·출발점",
       "ok": true,
       "detail": {
         "actual": true,
@@ -531,9 +1393,22 @@
       }
     },
     {
-      "name": "mobile 세 겹 띠(5~95·10~90·25~75%)와 첫 숫자 강조",
+      "name": "mobile 상세: 세 겹 띠(5~95·10~90·25~75%)",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "mobile 상세: 가격 눈금에 원 단위",
+      "ok": true,
+      "detail": {
+        "ticks": [
+          "6.0만원",
+          "8.0만원",
+          "07/03",
+          "07/28",
+          "08/20"
+        ]
+      }
     },
     {
       "name": "mobile IBM Plex Sans KR 글씨체 적용",
@@ -541,144 +1416,145 @@
       "detail": null
     },
     {
-      "name": "mobile 미래 날짜 눌러 이유 열림(D+3)",
+      "name": "mobile 상세: 미래 날짜 눌러 설명 열림(3거래일 뒤)",
       "ok": true,
       "detail": {
-        "cursor": "10월 6일(화) D+3",
-        "explainHead": "10월 6일(화) · D+3 전망"
+        "cursor": "10월 6일(화) · 3거래일 뒤 전망",
+        "explainHead": "10월 6일(화) · 3거래일 뒤 전망"
       }
     },
     {
-      "name": "mobile 선택 날짜 분포 상자(5~95%·상자·중앙·출발가)",
+      "name": "mobile 상세: 선택 날짜 분포 상자",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 날짜 설명: 한 줄 결론·기여 막대·미확보·출처",
+      "name": "mobile 상세: 날짜 설명(한 줄 · 기여 막대 · 미확보 · 출처)",
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 6일 중앙 전망 440,221원 · 출발가 대비 +1.55% · 이 날 상승 56% · 80% 범위 "
+        "oneline": "10월 6일(화) 중앙 전망 69,338원 (출발 종가 대비 +0.78%)"
       }
     },
     {
-      "name": "mobile 날짜를 누르면 이유가 바텀시트로 열림",
+      "name": "mobile 상세: 날짜를 누르면 설명이 바텀시트로 열림",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile Esc 로 바텀시트 닫힘",
+      "name": "mobile 상세: Esc 로 바텀시트 닫힘",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
+      "name": "mobile 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "10월 1일(목) D+1",
+        "after": "10월 1일(목) · 1거래일 뒤 전망",
         "sameSvg": true
       }
     },
     {
-      "name": "mobile 중요 일정에서 정지·확인 대기",
+      "name": "mobile 상세: 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "10월 6일 중요 일정 1건"
+        "text": "10월 6일(화) 중요 일정 1건"
       }
     },
     {
-      "name": "mobile 확인 뒤 계속 재생",
+      "name": "mobile 상세: 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 7일(수) D+4"
+        "resumed": "10월 7일(수) · 4거래일 뒤 전망"
       }
     },
     {
-      "name": "mobile 대표 시나리오 선 표시",
+      "name": "mobile 상세: 대표 시나리오 선 표시",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile CSV 다운로드 21행(출발 1+전망 20)",
+      "name": "mobile 상세: CSV 내려받기 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260930.csv",
+        "name": "ATLAS_111770_20260930.csv",
         "rows": 22
       }
     },
     {
-      "name": "mobile 상세 JSON 내려받기(blob · CSP 아래)",
+      "name": "mobile 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260930_detail.json"
+        "name": "ATLAS_111770_20260930_detail.json"
       }
     },
     {
-      "name": "mobile 종목 정보(1년 범위 띠 · 18칸 · 동조 상위 5)",
+      "name": "mobile 상세: 종목 정보(1년 범위 막대 · 기간별 수익률 가로 막대 5 · 나머지 12칸은 눌러야 열림)",
       "ok": true,
       "detail": {
-        "infoKv": 18
+        "infoBars": 5,
+        "infoKv": 12
       }
     },
     {
-      "name": "mobile 연쇄 지도 52노드·9묶음 호·1~5차 다섯 칸·연결선",
-      "ok": true,
-      "detail": {
-        "nodes": 52,
-        "arcs": 9,
-        "orders": 5,
-        "links": 31
-      }
-    },
-    {
-      "name": "mobile 충격 단추(+10%) → 2차 숫자 부호 바뀜",
-      "ok": true,
-      "detail": {
-        "shockBefore": "−2.65%",
-        "shockAfter": "+5.29%"
-      }
-    },
-    {
-      "name": "mobile 시장 통로·직접 통로 설명 문장",
-      "ok": true,
-      "detail": {
-        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
-      }
-    },
-    {
-      "name": "mobile 누적(1~5차 합) 칸 추가",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 파급 재생: 1차부터 차례로 켜짐(초반 < 끝)",
-      "ok": true,
-      "detail": {
-        "litEarly": 1,
-        "litLate": 17,
-        "stripLit": 5
-      }
-    },
-    {
-      "name": "mobile 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
-      "ok": true,
-      "detail": {
-        "hashBefore": "#/stock/329180",
-        "hashAfter": "#/stock/010120"
-      }
-    },
-    {
-      "name": "mobile 이동한 종목에서도 연쇄 지도 다시 그림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 상세: 수급·뉴스·공시 칸(기록 · 예측 미사용) · 외국인·기관·개인 표 · 기사 목록(제목만)",
+      "name": "mobile 상세: 수급·기사·공시 칸(눌러서 열림 · 전망 숫자에 넣지 않음 · 외국인·기관·개인 표 · 기사 제목)",
       "ok": true,
       "detail": {
         "ctxRows": 5,
         "ctxNews": 6
       }
+    },
+    {
+      "name": "mobile 상세: 연쇄 지도(눌러서 열림) 52노드·9묶음 호·1~5차·연결선",
+      "ok": true,
+      "detail": {
+        "nodes": 52,
+        "arcs": 9,
+        "orders": 5,
+        "links": 27
+      }
+    },
+    {
+      "name": "mobile 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
+      "ok": true,
+      "detail": {
+        "shockBefore": "−2.09%",
+        "shockAfter": "+4.18%"
+      }
+    },
+    {
+      "name": "mobile 상세: 시장 통로·직접 통로 설명",
+      "ok": true,
+      "detail": {
+        "channel": "시장 통로와 직접 통로 — 영원무역의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.21%(52종목 평균 기준), 이 종목만의 몫은 +8.7"
+      }
+    },
+    {
+      "name": "mobile 상세: 누적(1~5차 합) 칸 추가",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 상세: 파급 재생 1차부터 차례로 켜짐",
+      "ok": true,
+      "detail": {
+        "litEarly": 1,
+        "litLate": 14,
+        "stripLit": 5
+      }
+    },
+    {
+      "name": "mobile 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
+      "ok": true,
+      "detail": {
+        "hashBefore": "#/stock/111770",
+        "hashAfter": "#/stock/010170"
+      }
+    },
+    {
+      "name": "mobile 상세: 이동한 종목에서도 연쇄 지도 다시 그림",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "mobile 글씨 200% 에서도 가로 넘침 없음",
@@ -689,36 +1565,77 @@
       }
     },
     {
-      "name": "mobile 1만원 비교 52선",
+      "name": "mobile 1만원 비교: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 198,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "mobile 1만원 비교: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "10,021원",
+        "src": "이 숫자\n52종목 각각 「1만원 × 10월 30일(금) 중앙 전망 ÷ 9월 30일(수) 종가」를 구해 단순 평균한 값(1위 HD현대중공업 10,777원)\n1만원 넘는 종목\n18종목 · 못 넘는 종목 34종목\n조정\n배"
+      }
+    },
+    {
+      "name": "mobile 1만원 비교: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 1만원 비교: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "10,021원",
+        "last": "평균 10,021원"
+      }
+    },
+    {
+      "name": "mobile 1만원 비교: 52선 + 굵은 평균선",
       "ok": true,
       "detail": {
         "raceLines": 52
       }
     },
     {
-      "name": "mobile 순위 52줄",
+      "name": "mobile 1만원 비교: 순위 52줄(가로 막대)",
       "ok": true,
       "detail": {
-        "rankRows": 52
+        "rankRows": 52,
+        "rankBars": 52
       }
     },
     {
-      "name": "mobile 순위 종목 선택 → 강조·일정",
+      "name": "mobile 1만원 비교: 순위 종목 선택 → 강조·일정",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 전망 구간에서 「오늘부터 향후 수익률 순위」 단추",
+      "name": "mobile 1만원 비교: 발행일 1만원 기준에서는 순위 단추가 없음(두 순위가 같아서)",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 「오늘 1만원 출발」로 다시 환산",
+      "name": "mobile 1만원 비교: 「20거래일 전 종가 1만원」으로 바꾸면 실제 구간 52선도 그림",
+      "ok": true,
+      "detail": {
+        "startLines": 52
+      }
+    },
+    {
+      "name": "mobile 1만원 비교: 20거래일 전 기준 · 전망 구간에서 「발행일부터 수익률」 순위 단추",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 1만원 비교 묶음 단추(전체+9) → 반도체·전자 6선 강조",
+      "name": "mobile 1만원 비교: 묶음 단추(전체+9) → 반도체·전자 강조",
       "ok": true,
       "detail": {
         "groupBtns": 10,
@@ -726,12 +1643,78 @@
       }
     },
     {
-      "name": "mobile 성적 화면(채점 예정표 4칸 + 후향 진단)",
+      "name": "mobile 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 172,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "mobile 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "27종목",
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목)\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를 52종목 평균한 값\n채점 규칙\n보합 경계 ±0."
+      }
+    },
+    {
+      "name": "mobile 성적: Esc 로 출처 칸 닫힘",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 진화: 질문·결론 한 문장·표본·막힘이 첫 화면에",
+      "name": "mobile 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "27종목",
+        "last": "27종목"
+      }
+    },
+    {
+      "name": "mobile 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 198,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "mobile 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "2.13%",
+        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 104칸을 첫날부터 9월 30일(수)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
+      }
+    },
+    {
+      "name": "mobile 진화: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "2.13%",
+        "last": "지금까지 +2.13%"
+      }
+    },
+    {
+      "name": "mobile 진화: 질문·결론 낱말·판정일·막힘",
       "ok": true,
       "detail": {
         "word": "아직입니다",
@@ -739,13 +1722,11 @@
       }
     },
     {
-      "name": "mobile 진화: 그림 하나 — 합친 값 선의 점 = 사실표 · 마지막 점 글자 = 그림 위 실력 문장의 숫자 · 하루 값 흐린 점 · ○시험만·◆바꿈·▲공사 수 = 사실표 · 판정 시작 선",
+      "name": "mobile 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
       "ok": true,
       "detail": {
         "dots": 2,
         "daily": 2,
-        "last": "지금까지 +2.1%",
-        "headlineNumber": "2.1% 덜 틀렸습니다",
         "tests": 1,
         "changes": 0,
         "builds": 3,
@@ -753,14 +1734,14 @@
       }
     },
     {
-      "name": "mobile 진화: 그림 글자가 화면에서 11px 이상(휴대폰에서도 줄어들지 않음)",
+      "name": "mobile 진화: 그림 글자가 화면에서 11px 이상",
       "ok": true,
       "detail": {
         "tickMin": 11.5
       }
     },
     {
-      "name": "mobile 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 박자마다 까닭(3칸)",
+      "name": "mobile 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
       "ok": true,
       "detail": {
         "dayRows": 2,
@@ -770,33 +1751,11 @@
       }
     },
     {
-      "name": "mobile 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
+      "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
         "constructions": 8,
         "check": true
-      }
-    },
-    {
-      "name": "mobile 자료 상태: 36요인 격자·달력·무결성·검사 증거",
-      "ok": true,
-      "detail": {
-        "tiles": 36,
-        "days": 10,
-        "shield": 1
-      }
-    },
-    {
-      "name": "mobile 자료 상태: 예약 연결·예약 실행 확인·사이트 배포를 사실대로(연결 ≠ 실행 확인)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시",
-      "ok": true,
-      "detail": {
-        "observedTiles": 13,
-        "hasCtx": true
       }
     },
     {
@@ -805,34 +1764,116 @@
       "detail": null
     },
     {
-      "name": "mobile 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
+      "name": "mobile 자료 상태: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
-        "sixCount": 6,
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 198,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "mobile 자료 상태: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "52종목",
+        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n9월 30일(수) 17:22 KST\n받은 곳\n네이버 증권 분봉 원문"
+      }
+    },
+    {
+      "name": "mobile 자료 상태: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 자료 상태: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "52종목",
+        "last": "52종목"
+      }
+    },
+    {
+      "name": "mobile 자료 상태: 36요인 막대·칸(눌러야 열림) · 달력 · 검사 증거",
+      "ok": true,
+      "detail": {
+        "tiles": 36,
+        "days": 10
+      }
+    },
+    {
+      "name": "mobile 자료 상태: 예약 실행 확인·사이트 배포를 사실대로",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 기록: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "ok": true,
+      "detail": {
+        "hl": 1,
+        "first": {
+          "top": 122,
+          "bottom": 147,
+          "firstChild": true
+        }
+      }
+    },
+    {
+      "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "ok": true,
+      "detail": {
+        "figure": "775건",
+        "src": "이 숫자\n기록 장부 색인의 9월 30일(수) 종류별 건수 합(수집 259건 · 예측 1건 · 채점 260건 · 원인 분석 209건 · 요인 36건 · 운영 10건)\n기준 시각\n9월 30일(수) 23:57 KST 에 "
+      }
+    },
+    {
+      "name": "mobile 기록: Esc 로 출처 칸 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "ok": true,
+      "detail": {
+        "figure": "775건",
+        "last": "775건"
+      }
+    },
+    {
+      "name": "mobile 기록: 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 · 'null' 없음",
+      "ok": true,
+      "detail": {
         "typeBtns": 8,
         "expRows": 0,
         "expExpected": 0,
         "shownDate": "2026-09-30",
-        "totalExperiments": 11,
         "dl": 2
       }
     },
     {
-      "name": "mobile 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
+      "name": "mobile 기록: 요인 기록 36행 단위 · 결과 막대",
       "ok": true,
       "detail": {
         "factorRecordRows": 36
       }
     },
     {
-      "name": "mobile 기록 CSV 내려받기 파일명",
+      "name": "mobile 기록: CSV 내려받기 파일명",
       "ok": true,
       "detail": {
         "name": "ATLAS_factor_2026-09-30_filtered.csv"
       }
     },
     {
-      "name": "mobile 스푸마토 그래프: 아이보리 바탕·판·띠 경계선 6·실제선 그림자·후광·띠 그라데이션·좌표 변환 없음·모델 칩",
+      "name": "mobile 기록: 일일 보고 여섯 문장(눌러야 열림 · 장부 원문 그대로)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)",
       "ok": true,
       "detail": {
         "bg": "rgb(241, 236, 226)",
@@ -840,9 +1881,12 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cka32xi-band-inner\")",
-        "transforms": 0,
-        "modelChip": true
+        "bandFill": "url(\"#cuhfr71-band-inner\")",
+        "todayStroke": "rgb(166, 62, 44)",
+        "todayDir": "up",
+        "up": "#A63E2C",
+        "down": "#2F5D8A",
+        "transforms": 0
       }
     },
     {
@@ -868,14 +1912,163 @@
       "detail": []
     },
     {
-      "name": "dark 다크 모드 토큰 적용(배경·글자)",
+      "name": "dark 다크 모드 토큰 적용(배경·글자·바탕 그라데이션도 어두움)",
       "ok": true,
       "detail": {
         "bg": "rgb(26, 23, 20)",
         "ink": "rgb(241, 235, 224)",
         "errors": []
       }
+    },
+    {
+      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "검사기 자체 시험: 「내일 42 정도.」「곧 많이 오릅니다.」를 넣으면 1·2·3번이 모두 1 이상 늘어난다",
+      "ok": true,
+      "detail": {
+        "relDays": 1,
+        "vague": 1,
+        "bareNumbers": 1
+      }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T14-57-27-402Z"
+  "dir": "reports/atlas11/browser/2026-09-30T17-07-36-182Z"
 }

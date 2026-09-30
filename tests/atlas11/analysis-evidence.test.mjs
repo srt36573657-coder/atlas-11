@@ -65,7 +65,7 @@ test('원인 분석 a3: 기간 증거를 확인된 사실로 붙이고 · 방향
   // 여섯 문장: 같은 날짜의 코스피·코스닥 종가만 앞에 붙인다
   const agg = {date: day, market: {basketReturn: 0.005, up: 51, down: 1, flat: 0}, topMovers: [{name: '삼성전자', change: -0.05}], evaluated: 0, byClass: {}, causeCounts: {}, wrong: []};
   const six = sixSentences({date: day, aggregate: agg, counts: {}, context: {summary: {index: {KOSPI: {date: day, close: 6870.81, changePct: -0.27}, KOSDAQ: {date: '2026-09-28', close: 846.6, changePct: 0.1}}}}});
-  assert.match(six.marketChange, /코스피 6,870\.81\(-0\.27%\)/); assert.ok(!/코스닥/.test(six.marketChange), '날짜가 다른 지수는 붙이지 않는다');
+  assert.match(six.marketChange, /코스피 6,870\.81포인트\(−0\.27%\)/, '지수는 포인트 단위 · 내림은 − 부호(v9)'); assert.match(six.marketChange, /상승 51종목·하락 1종목·보합 0종목/); assert.match(six.marketChange, /^9월 29일\(화\)/); assert.ok(!/코스닥/.test(six.marketChange), '날짜가 다른 지수는 붙이지 않는다');
 });
 
 test('관측 묶음 합치기(실제 응답 재생 두 번): 같은 기사 한 번 · 수급은 나중 수집값 · 기사 수집 구간 기록', async () => {

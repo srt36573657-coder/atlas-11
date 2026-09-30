@@ -1,6 +1,7 @@
 /* ATLAS 11 · 종목 정보 + 연쇄 지도(도미노·나비효과) — 한 종목이 흔들리면 누가 얼마나 따라 흔들리나 (1차 → 5차)
    과거 동조 관계에서 계산한 설명·탐색 도구. 인과 확정이 아니고 전망 숫자에 넣지 않는다. */
-import {h, won, pct, pctPoint, num, wonShort, finite, reducedMotion, DIR, stamp} from './util.js';
+import {h, won, pct, pctPoint, num, wonShort, finite, reducedMotion, DIR, stamp, korDate} from './util.js';
+import {hbar} from './frame.js';
 import {loadJSON} from './store.js';
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -26,43 +27,45 @@ export function propagate(network, code, delta, {damping = network.method?.dampi
   return {code, delta, impliedMarketMove: deltaM, residualShock: residual, levels, cumulative: [...cumulative.entries()].filter(([c]) => c !== code).map(([c, v]) => ({code: c, name: byCode.get(c).name, total: v})).sort((a, b) => Math.abs(b.total) - Math.abs(a.total))};
 }
 
-/* ---------- 종목 정보 ---------- */
+/* ---------- 종목 정보 v9: 1년 범위 막대 · 기간별 수익률 가로 막대 · 나머지 숫자는 눌러야 열림 ---------- */
 const kv = (k, v, cls = '') => h('div', {class: 'kv-item ' + cls}, h('span', {class: 'k'}, k), h('b', {class: 'v'}, v));
 const signCls = v => v > 0 ? 'up' : v < 0 ? 'down' : '';
 export function renderInfo(container, d) {
   const i = d.info; if (!i) { container.replaceChildren(); return; }
-  const rangeBar = h('div', {class: 'range', role: 'img', 'aria-label': `1년 범위 ${wonShort(i.low52)}~${wonShort(i.high52)} 중 현재 위치 ${pctPoint(i.pos52, 0)}`}, h('span', {class: 'range-lo'}, wonShort(i.low52)), h('span', {class: 'range-track'}, h('span', {class: 'range-dot'})), h('span', {class: 'range-hi'}, wonShort(i.high52)));
+  const rangeBar = h('div', {class: 'range', role: 'img', 'aria-label': `1년 범위 ${wonShort(i.low52)}~${wonShort(i.high52)} 안에서 지금 위치 ${pctPoint(i.pos52, 0)}`}, h('span', {class: 'range-lo'}, wonShort(i.low52)), h('span', {class: 'range-track'}, h('span', {class: 'range-dot'})), h('span', {class: 'range-hi'}, wonShort(i.high52)));
   rangeBar.querySelector('.range-dot').style.left = (Math.max(0, Math.min(1, i.pos52 ?? 0)) * 100).toFixed(1) + '%';
+  const rets = [['1주', i.ret5], ['1개월', i.ret21], ['3개월', i.ret63], ['6개월', i.ret126], ['1년', i.ret252]].filter(([, v]) => finite(v)), mx = Math.max(...rets.map(([, v]) => Math.abs(v)));
   container.replaceChildren(
-    h('h3', null, '종목 정보'),
-    h('div', {class: 'info-row', 'data-speak': `1년 범위 ${wonShort(i.low52)}에서 ${wonShort(i.high52)}, 현재 위치 ${pctPoint(i.pos52, 0)}`}, h('span', {class: 'lbl'}, '1년 범위'), rangeBar, h('b', {class: 'small'}, `위치 ${pctPoint(i.pos52, 0)}`)),
-    h('div', {class: 'kv six'}, kv('1주', pct(i.ret5), signCls(i.ret5)), kv('1개월', pct(i.ret21), signCls(i.ret21)), kv('3개월', pct(i.ret63), signCls(i.ret63)), kv('6개월', pct(i.ret126), signCls(i.ret126)), kv('1년', pct(i.ret252), signCls(i.ret252)), kv('20일 변동성(연율)', pctPoint(i.vol20Annual, 0))),
-    h('div', {class: 'kv six'}, kv('60일 최대 낙폭', pct(i.mdd60), 'down'), kv('1년 최대 낙폭', pct(i.mdd252), 'down'), kv('20일 평균 대비', pct(i.close / i.ma20 - 1), signCls(i.close / i.ma20 - 1)), kv('60일 평균 대비', i.ma60 ? pct(i.close / i.ma60 - 1) : '미산출', signCls(i.close / i.ma60 - 1)), kv('120일 평균 대비', i.ma120 ? pct(i.close / i.ma120 - 1) : '미산출', signCls(i.close / i.ma120 - 1)), kv(`거래량(최근 ${i.volumeDays}일 평균 대비)`, i.volumeRatio ? `${num(i.lastVolume)}주 · ${i.volumeRatio.toFixed(2)}배` : '미확보')),
-    h('div', {class: 'kv six'}, kv('시장 베타', i.beta?.toFixed(2) ?? '미산출'), kv('시장 설명력 R²', pctPoint(i.r2, 0)), kv('고유 움직임 비중', pctPoint(i.idioShare, 0)), kv('연간 변동성(2년)', pctPoint(i.volAnnualLong, 0)), kv('묶음', i.groupName ?? '—'), kv('계산 창', `${i.window?.days ?? 504}거래일`)),
-    h('p', {class: 'muted xs'}, '동조 상위 5: ' + (i.topCorrelated ?? []).map(t => `${t.name} ρ ${t.rho.toFixed(2)}`).join(' · ') + ' · 베타·상관은 최근 2년 일별 로그수익률 · 시장 = 52종목 등가중 평균(코스피 아님) · 배당·기업행위 미조정'));
+    h('h2', {class: 'panel-title'}, `${d.name} · ${korDate(d.anchor.date)} 종가까지의 흐름`),
+    h('div', {class: 'info-row'}, h('span', {class: 'lbl'}, '1년 범위'), rangeBar, h('b', {class: 'small'}, `최저에서 ${pctPoint(i.pos52, 0)} 위치`)),
+    h('div', {class: 'bars signed'}, ...rets.map(([k, v]) => h('div', {class: 'bar-row'}, h('span', {class: 'bar-label'}, `최근 ${k} 수익률`), hbar(v, {max: mx, label: pct(v)})))),
+    h('details', {class: 'more'}, h('summary', null, '숫자 더 보기 · 낙폭·평균선·거래량·시장 민감도'),
+      h('div', {class: 'kv six'}, kv('20거래일 변동성(연율)', pctPoint(i.vol20Annual, 0)), kv('60거래일 최대 낙폭', pct(i.mdd60), 'down'), kv('1년 최대 낙폭', pct(i.mdd252), 'down'), kv('20거래일 평균 대비', pct(i.close / i.ma20 - 1), signCls(i.close / i.ma20 - 1)), kv('60거래일 평균 대비', i.ma60 ? pct(i.close / i.ma60 - 1) : '미산출', signCls(i.close / i.ma60 - 1)), kv('120거래일 평균 대비', i.ma120 ? pct(i.close / i.ma120 - 1) : '미산출', signCls(i.close / i.ma120 - 1))),
+      h('div', {class: 'kv six'}, kv(`거래량(최근 ${i.volumeDays}거래일 평균 대비)`, i.volumeRatio ? `${num(i.lastVolume)}주 · ${i.volumeRatio.toFixed(2)}배` : '미확보'), kv('시장 민감도(베타)', finite(i.beta) ? i.beta.toFixed(2) + '배' : '미산출'), kv('시장이 설명하는 몫(R²)', pctPoint(i.r2, 0)), kv('이 종목만의 몫', pctPoint(i.idioShare, 0)), kv('연간 변동성(2년)', pctPoint(i.volAnnualLong, 0)), kv('묶음', i.groupName ?? '—')),
+      h('p', {class: 'muted xs'}, '함께 움직인 상위 5종목(상관계수): ' + (i.topCorrelated ?? []).map(t => `${t.name} ${t.rho.toFixed(2)}`).join(' · ') + ` · 최근 ${i.window?.days ?? 504}거래일 일별 로그수익률 · 시장 = 52종목 같은 비중 평균(코스피 아님) · 배당·기업행위 미조정`)));
 }
 
-/* ---------- 수급·뉴스·공시 (관측 기록 · 예측 미사용) ---------- */
+/* ---------- 수급·기사·공시 (관측 기록 · 예측 미사용) — 눌러야 열린다 ---------- */
 const ctable = (head, rows) => h('div', {class: 'table-wrap'}, h('table', {class: 'table small'}, h('thead', null, h('tr', null, ...head.map(x => h('th', null, x)))), h('tbody', null, ...rows.map(r => h('tr', null, ...r.map(c => h('td', null, c)))))));
-const signed = v => !finite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + num(Math.abs(v));
-const hm = iso => iso ? `${Number(iso.slice(5, 7))}/${Number(iso.slice(8, 10))} ${iso.slice(11, 16)}` : '—';
+const signed = v => !finite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + num(Math.abs(v)) + '주';
+const hm = iso => iso ? `${korDate(iso.slice(0, 10))} ${iso.slice(11, 16)}` : '—';
 export function renderContextBox(container, c) {
-  if (!c) { container.replaceChildren(h('h3', null, '수급·뉴스·공시'), h('p', {class: 'muted'}, '아직 이 종목의 관측 기록이 없습니다. 매 거래일 16:00 실행 때 모읍니다.')); return; }
+  if (!c) { container.replaceChildren(h('summary', null, '수급·기사·공시 기록 · 아직 없음'), h('p', {class: 'muted'}, '아직 이 종목의 관측 기록이 없습니다. 거래일마다 16:01 KST 실행 때 모읍니다.')); return; }
   const flows = (c.flows ?? []).slice().reverse();
-  const flowTable = flows.length ? ctable(['날짜', '외국인', '기관', '개인', '상태'], flows.map(r => [`${Number(r.date.slice(5, 7))}/${Number(r.date.slice(8, 10))}`, h('span', {class: signCls(r.foreignNet)}, signed(r.foreignNet)), h('span', {class: signCls(r.institutionNet)}, signed(r.institutionNet)), h('span', {class: signCls(r.individualNet)}, signed(r.individualNet)), r.status === 'provisional_same_day' ? '잠정' : '보고'])) : h('p', {class: 'muted small'}, '수급 자료를 받지 못했습니다(0 으로 채우지 않음).');
+  const flowTable = flows.length ? ctable(['날짜', '외국인', '기관', '개인', '상태'], flows.map(r => [korDate(r.date), h('span', {class: signCls(r.foreignNet)}, signed(r.foreignNet)), h('span', {class: signCls(r.institutionNet)}, signed(r.institutionNet)), h('span', {class: signCls(r.individualNet)}, signed(r.individualNet)), r.status === 'provisional_same_day' ? '잠정' : '보고'])) : h('p', {class: 'muted small'}, '수급 자료를 받지 못했습니다(0 으로 채우지 않음).');
   const news = c.news ?? [];
-  const newsList = news.length ? h('ul', {class: 'plain small news-list'}, ...news.map(n => h('li', null, h('span', {class: 'muted xs'}, `${hm(n.publishedAt)} · ${n.office ?? ''} `), /^https:\/\/[^\s]+$/.test(n.url ?? '') ? h('a', {href: n.url, target: '_blank', rel: 'noopener noreferrer'}, n.title) : n.title))) : h('p', {class: 'muted small'}, '최근 기사 없음 또는 받지 못함.');
+  const newsList = news.length ? h('ul', {class: 'plain small news-list'}, ...news.map(n => h('li', null, h('span', {class: 'muted xs'}, `${hm(n.publishedAt)} · ${n.office ?? ''} `), /^https:\/\/[^\s]+$/.test(n.url ?? '') ? h('a', {href: n.url, target: '_blank', rel: 'noopener noreferrer'}, n.title) : n.title))) : h('p', {class: 'muted small'}, '받은 기사 없음.');
   const disc = c.disclosures ?? [];
-  const discList = disc.length ? h('ul', {class: 'plain small'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'pill warn'}, '기업행위 · ' + d.actionWord) : null, ' ', d.title))) : h('p', {class: 'muted small'}, '최근 공시 없음 또는 받지 못함.');
+  const discList = disc.length ? h('ul', {class: 'plain small'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'pill warn'}, '기업행위 · ' + d.actionWord) : null, ' ', d.title))) : h('p', {class: 'muted small'}, '받은 공시 없음.');
   container.replaceChildren(
-    h('h3', null, '수급·뉴스·공시 ', h('span', {class: 'pill info'}, '기록 · 예측 미사용')),
-    h('p', {class: 'muted xs'}, `외국인·기관·개인 순매매 수량(주) · 기관은 연기금 포함 합계 · 당일 값은 16:00 에 잠정일 수 있어 다음 날 다시 받아 바뀌면 정정 기록 · 수집 ${stamp(c.fetchedAt)}`),
+    h('summary', null, `수급·기사·공시 기록 열기 · 기사 ${news.length}건 · 공시 ${disc.length}건 · 수급 ${flows.length}거래일(전망 숫자에 넣지 않음)`),
+    h('p', {class: 'muted xs'}, `외국인·기관·개인 순매매 수량(주) · 기관은 연기금 포함 합계 · 16:01 KST 값은 잠정일 수 있어 다음 거래일에 다시 받아 바뀌면 정정 기록 · 수집 ${stamp(c.fetchedAt)}`),
     flowTable,
-    h('h4', null, `최근 기사 ${news.length}건`, c.newsRepublished ? h('span', {class: 'muted xs'}, ` · 같은 제목 재게시 ${c.newsRepublished}건 가림`) : null),
+    h('h4', null, `받은 기사 ${news.length}건`, c.newsRepublished ? h('span', {class: 'muted xs'}, ` · 같은 제목 재게시 ${c.newsRepublished}건 가림`) : null),
     newsList,
-    h('h4', null, '최근 공시'),
+    h('h4', null, `받은 공시 ${disc.length}건`),
     discList,
-    h('p', {class: 'muted xs'}, '출처: 네이버 증권(종목 투자자 동향·뉴스·공시) · 기사 제목만 저장(본문 없음) · 이 값들은 검증을 통과하기 전까지 전망 숫자에 들어가지 않습니다.'));
+    h('p', {class: 'muted xs'}, '출처: 네이버 증권(종목 투자자 동향·뉴스·공시) · 기사 제목만 저장(본문 없음) · 검증을 통과하기 전까지 전망 숫자에 들어가지 않습니다.'));
 }
 
 /* ---------- 연쇄 지도 ---------- */

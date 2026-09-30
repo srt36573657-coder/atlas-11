@@ -1,13 +1,24 @@
-/* ATLAS 11 · 공용 도우미 (형식·날짜·문장) */
+/* ATLAS 11 · 공용 도우미 (형식·날짜·문장)
+   v9 모양은 하나씩: 글 날짜 「10월 1일(목)」 · 그래프 눈금 「10/01」 · 시각 「16:01 KST」
+   숫자: 값은 단위(원·%·%p·포인트·종목·일) · 변화는 부호(+/−) · 소수 자리 고정(가격 0 · 수익률·오차 2 · 확률 0 · 지수 2) */
 export const finite = v => typeof v === 'number' && Number.isFinite(v);
 export const won = v => finite(v) ? Math.round(v).toLocaleString('ko-KR') + '원' : '미산출';
 export const num = (v, d = 0) => finite(v) ? v.toLocaleString('ko-KR', {minimumFractionDigits: d, maximumFractionDigits: d}) : '미산출';
 export const pct = (v, d = 2) => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) * 100).toFixed(d) + '%' : '미산출';
 export const pctPoint = (v, d = 1) => finite(v) ? (v * 100).toFixed(d) + '%' : '미산출';
-export const shortDate = d => d ? d.slice(5).replace('-', '/') : '—';
-export const korDate = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일` : '—';
-export const weekday = d => d ? ['일', '월', '화', '수', '목', '금', '토'][new Date(d + 'T00:00:00Z').getUTCDay()] : '';
-export const stamp = iso => iso ? new Date(iso).toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false, month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : '미확보';
+/** 확률(0~1) → 「57%」 (소수 없음 · 부호 없음: 수준이지 변화가 아님) */
+export const prob = v => finite(v) ? Math.round(v * 100) + '%' : '미산출';
+/** 이미 % 단위인 값(예: 오차 1.54) → 「1.54%」 · 부호가 필요하면 signed */
+export const pctRaw = (v, d = 2, signed = false) => finite(v) ? (signed ? (v > 0 ? '+' : v < 0 ? '−' : '') : v < 0 ? '−' : '') + Math.abs(v).toFixed(d) + '%' : '미산출';
+/** 지수 값 → 「6,838.04포인트」 */
+export const pts = v => finite(v) ? v.toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '포인트' : '미산출';
+export const signCls = v => finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat') : '';
+export const shortDate = d => d ? d.slice(5, 10).replace('-', '/') : '—';
+export const weekday = d => d ? ['일', '월', '화', '수', '목', '금', '토'][new Date(d.slice(0, 10) + 'T00:00:00Z').getUTCDay()] : '';
+export const korDate = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일(${weekday(d)})` : '—';
+/** ISO 시각 → 한국 날짜·시각 */
+export const kst = iso => { const t = new Date(Date.parse(iso) + 9 * 3600000).toISOString(); return {date: t.slice(0, 10), time: t.slice(11, 16)}; };
+export const stamp = iso => iso && Number.isFinite(Date.parse(iso)) ? `${korDate(kst(iso).date)} ${kst(iso).time} KST` : '미확보';
 export const DIR = {up: {word: '상승', mark: '▲', cls: 'up'}, flat: {word: '보합', mark: '—', cls: 'flat'}, down: {word: '하락', mark: '▼', cls: 'down'}};
 export const dirWord = k => DIR[k]?.word ?? '미산출';
 export const dirMark = k => DIR[k]?.mark ?? '';
@@ -51,6 +62,8 @@ export function niceTicks(min, max, count = 4) {
   for (let v = start; v <= max + 1e-9; v += step) ticks.push(Number(v.toFixed(10)));
   return ticks;
 }
-export const wonShort = v => { if (!finite(v)) return '미산출'; const a = Math.abs(v); if (a >= 1e8) return (v / 1e8).toFixed(a >= 1e9 ? 0 : 1) + '억'; if (a >= 1e4) return (v / 1e4).toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '만'; return Math.round(v).toLocaleString('ko-KR'); };
+export const wonShort = v => { if (!finite(v)) return '미산출'; const a = Math.abs(v); if (a >= 1e8) return (v / 1e8).toFixed(a >= 1e9 ? 0 : 1) + '억원'; if (a >= 1e4) return (v / 1e4).toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '만원'; return Math.round(v).toLocaleString('ko-KR') + '원'; };
+/** 그래프 글씨 배율: 글씨 크게(A+)를 누르면 그래프 글자·여백도 같이 커진다(좁은 화면은 그래프 폭이 모자라 1배 유지) */
+export const chartScale = width => { const root = (typeof document !== 'undefined' && parseFloat(getComputedStyle(document.documentElement).fontSize)) || 16; return Math.min(root / 16, Math.max(1, width / 520)); };
 export const todayKST = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
 export const nowKSTClock = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16);

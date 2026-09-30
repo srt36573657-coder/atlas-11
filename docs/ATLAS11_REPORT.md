@@ -168,3 +168,26 @@
 7. **검산** — 화면 자료를 만든 코드(`lib/atlas11/timeline.mjs`)와 따로 짠 검산(`lib/atlas11/timeline_check.mjs`)이 장부 원본에서 다시 세어 36곳 어긋남 0(매 실행 자동 · 화면에 표시). 다른 에이전트가 자기 코드로 다시 세어 33곳 어긋남 0, 일부러 틀린 숫자 1개(9/29 방향 맞힘 35→36)를 넣은 사본에서 그 1곳을 잡았다. 단위 검사 79/79 · 실제 크롬 화면 검사 120/120(PC·모바일).
 8. **5초 시험** — 배경을 모르는 에이전트 4명에게 첫 화면 그림만 보여 줬다. 4명 모두 「아직 바뀐 것이 없고 판정은 10/14 부터, 새로 시험할 것이 없다」로 읽었다. 헷갈린 곳(그림 숫자와 글 숫자의 어긋남 · ●바꿈과 점이 같은 모양 · 「판정까지 10일」 · 낱말 중간 줄바꿈 등)은 고쳤고, 4번째 시험에서 숫자 어긋남은 없었다.
 9. **올라가는 곳** — 저장소에 넣었다. aaa7377.com 에는 10/1 16:01 예약 실행의 배포 단계가 올린다(더 빨리는 사장님이 atlas11-site 「Run workflow」).
+
+## v9 금융 화면 (2026-10-01 새벽) — 약속: 화면마다 맨 위 한 줄은 그대로 남에게 읽어 줘도 틀린 말이 없다
+
+1. **결론** — 7화면 모두 맨 위 헤드라인 한 줄(날짜·숫자 · 숫자를 누르면 출처·기준 시각)을 달았고, 그 숫자를 다른 에이전트가 장부·발행본에서 따로 다시 세어 10곳 모두 같았다. 여섯 숫자는 7화면 × 4보기(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200%) 모두 0.
+2. **여섯 숫자(PC · 같은 최종 검사기로 전·후를 잼)** — 전망 69→0 · 종목 상세 77→0 · 1만원 비교 77→0 · 성적 106→0 · 진화 31→0 · 기록 33→0 · 자료 상태 69→0. 네 보기 모두 후 합 0. 자세히: `reports/atlas11/clarity/summary.json` · 전 `before.json` · 후 `after.json`.
+3. **헤드라인(9/30 장부 기준)**
+   - 전망: 9월 30일(수) 종가 기준 · 10월 1일(목) 52종목 중 상승 선택 **15종목** · 평균 −0.09% 전망 — 증거: 날짜별 상승 선택 수 8→10→**15**(실제로 오른 종목 11→18)
+   - 종목 상세(삼성전자): 9월 30일(수) 종가 268,500원 기준 · 20거래일 뒤 10월 30일(금) 중앙 전망 **277,812원**(+3.47%) — 증거: 가격 그래프의 전망선 끝
+   - 1만원 비교: 9월 30일(수) 종가에 1만원씩 · 10월 30일(금) 중앙 전망 52종목 평균 **10,021원** · 1만원 넘는 종목 18종목 — 증거: 52선 위 굵은 평균선 끝
+   - 성적: 9월 30일(수) 종가 채점 · 1거래일 전망 52종목 중 방향 맞힘 **27종목** · 평균 오차 1.38% — 증거: 날짜별 방향 맞힘 35→**27**
+   - 진화: 9월 30일(수)까지 채점 2일 · 1거래일 전망이 「발행일 종가 그대로」보다 **2.13%** 덜 틀림 · 시장의 답으로 바꾼 모델 0건 — 증거: 합친 값 선 +4.31%→**+2.13%**
+   - 기록: 9월 30일(수) 기록 **775건** · 8종류 · 누적 2,431건 — 증거: 날짜별 기록 수 1→1,655→**775**
+   - 자료 상태: 9월 30일(수) 15:30 KST 종가 · 52종목 중 확정 **52종목**(100%) · 36요인 중 전망에 쓰는 요인 3개(8%) — 증거: 날짜별 확정 종가 52→**52**
+4. **5초 시험** — 배경을 모르는 에이전트 11번(첫 화면 그림 한 장씩). 마지막 판 7화면 모두 헤드라인을 글자 그대로 옮기고 언제·몇·얼마가 장부와 같았다. 1차 부분 통과 3건(상세 「몇」 없음 · 진화 결론 낱말이 헤드라인보다 큼 · 자료 상태 「얼마」 없음)은 고친 뒤 통과. `reports/atlas11/clarity/five-second.json`.
+5. **따로 다시 세기** — 화면 코드·화면 자료를 읽지 않은 에이전트가 자기 스크립트로 장부·발행본에서 10곳을 다시 셈: 10/10 같음. 정의에 따라 달라지는 곳 4가지도 적음. `reports/atlas11/clarity/recount.md` · 스크립트 `reports/atlas11/clarity/recount/`.
+6. **지운 것·더한 것·되살린 것** — 문장(그래프 밖 글 조각) 지움 566 · 더함 121 · 첫 화면만 지움 134 · 더함 62(7화면 모두 지움 ≥ 더함). 덩어리로 지움·접음 67 · 되살림 7(약 10%). `reports/atlas11/clarity/deletions.md`.
+7. **검사기** — `scripts/atlas11/clarity/measure.mjs`(브라우저 안) · `scripts/atlas11/clarity_check.mjs`(7화면 × 4보기) · 화면 검사 `scripts/atlas11/browser_check.mjs` 에 들어감: 1~3번이 0 이 아니면 실패. 일부러 「내일 42 정도.」「곧 많이 오릅니다.」를 넣으면 1·2·3번이 하나씩 늘어 잡음(`inject.json`). 검사기를 고치는 동안 화면이 아니라 검사기의 빈틈을 세 번 찾아 고쳤다: ① 반투명 색을 바탕에 섞어 재기 ② 몸통 그라데이션 바탕을 대비 계산에 넣기(어두운 화면 헤드라인 1.02:1 결함을 이것으로 잡음) ③ 닫힌 접힘 안을 안 보이는 것으로 치기. 전 숫자는 최종 검사기로 옛 사이트(커밋 7afcddb)를 다시 재어 비교했다(처음 잰 값은 `before-v1.json` · `before-v2.json` 로 남김).
+8. **기준 회사 원칙 [가정: 블룸버그] · 공식 글 3개(이름·로고·고유 색은 화면에 쓰지 않음)**
+   - 색은 뜻에만: “Based on our research, we chose to stick with a blue and red ("up" market status and "down" market status) CVD color scheme, while at the same time retaining the default Bloomberg amber color for non-semantic information.” — Designing the Terminal for Color Accessibility, 2021-10-19, https://www.techatbloomberg.com/blog/designing-the-terminal-for-color-accessibility/
+   - 한눈에 읽는 빽빽함: “Information overload? That's kind of the idea. Launchpad's ability to display an immense amount of "at-a-glance" information is an essential part of Terminal subscribers' workflows.” — Relaunching Launchpad, 2017-11-10, https://www.bloomberg.com/ux/2017/11/10/relaunching-launchpad-disguising-ux-revolution-within-evolution/
+   - 한결같음: “Given the depth of our software, and its thousands of functions, consistency of the interface is critical to ensuring our clients are able to navigate through noise and access the data they need — quickly.” — Consistency: More than just a buzzword, 2020-08-11, https://www.bloomberg.com/ux/2020/08/11/consistency-more-than-just-a-buzzword/
+9. **부딪힌 곳과 고른 것** — ① 블룸버그 오름·내림 색(서양 초록·빨강, 색각 보조 파랑·빨강)과 한국 관례(오름 빨강·내림 파랑)가 반대 → 물리 법칙대로 한국 관례. ② 블룸버그는 뜻 없는 정보에 고유 호박색 → 「고유 색 쓰지 않음」·「뜻 없는 장식 색 0」에 따라 먹·회색. ③ 「합이 큰 순서로 고쳐라」 — 검사기를 두 번 고치면서 기록 칸의 전 숫자가 226→33 으로 바뀌었다. 순서는 고칠 때 가진 값(226, 1순위)으로 정했고 최종 값으로는 6순위다. ④ 「첫 그래프의 마지막 값 = 헤드라인 숫자」와 「비교는 가로 막대」 — 개수 헤드라인은 날짜별 선으로 증거를 세우고 나머지 비교를 막대로. ⑤ 헤드라인 「한 줄」 — 휴대폰에서는 글 한 문장이 2~3줄로 접힌다(문장은 하나). ⑥ 「숫자마다 부호」 — 변화(수익률·등락)에만 +/− 를 붙이고 값(가격·개수)에는 붙이지 않음. 검사기는 부호의 뜻까지 가릴 수 없다(한계). ⑦ 긴 작업 스킬 moebius-loop 은 이 세션에 없어 쓰지 못했다.
+10. **바꾼 코드** — 화면 `site/app/`(frame.js 새로 · 전망·상세·1만원·성적·진화·기록·자료 상태 · 색 토큰 · 굵기 두 단계 · 그래프 글씨가 A+ 를 따라 커짐) · 화면 자료 `lib/atlas11/view.mjs`(시장 띠 · 전망 증거 자료 · 검사 VIEW_HEADLINE_FORECAST·VIEW_MARKET) · `scripts/atlas11/build_view.mjs`(시장 지수 행) · 문장 날짜 모양 `timeline.mjs`·`explain.mjs`·`analysis.mjs`(앞으로 쓰는 일일 보고부터) · 검사 3종. 평가 규칙·후보·검증 기간·지난 기록·`atlas11-daily.yml` 은 건드리지 않았다. 단위 검사 80/80 · 실제 크롬 검사 201/201.
