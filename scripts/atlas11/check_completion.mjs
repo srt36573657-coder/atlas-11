@@ -80,10 +80,10 @@ item(6, '중복 실행·부분 수집·재시작·모델 복귀가 작동한 증
 
 // 7. 서버 스케줄러 연결 · 실제 예약 실행 기록
 const wf = await fs.readFile(path.join(root, '.github/workflows/atlas11-daily.yml'), 'utf8').catch(() => '');
-const cron = wf.match(/cron:\s*'([^']+)'/)?.[1] ?? null;
+const crons = [...wf.matchAll(/cron:\s*'([^']+)'/g)].map(m => m[1]), cron = crons[0] ?? null;
 const scheduled = ops.filter(o => o.runtime?.event === 'schedule'), manualGh = ops.filter(o => o.runtime?.host === 'github-actions' && o.runtime?.event !== 'schedule');
 item(7, '서버 스케줄러 연결 상태와 실제 예약 실행 기록', cron && scheduled.length ? '통과' : cron ? '대기' : '미연결',
-  {workflow: '.github/workflows/atlas11-daily.yml', cron, meaning: cron === '0 7 * * 1-5' ? '평일 16:00 KST' : null, scheduledRuns: scheduled.map(o => ({at: o.at, status: o.status, runUrl: o.runtime.runUrl, confirmedTodayStocks: o.confirmedTodayStocks ?? null})), manualGithubRuns: manualGh.length, earlierGithubRunsWithoutRuntimeField: ops.filter(o => !o.runtime && o.at >= '2026-09-29T09:00:00Z').length},
+  {workflow: '.github/workflows/atlas11-daily.yml', crons, meaning: crons.map(c => { const [m, h] = c.split(/\s+/); return `${String((Number(h) + 9) % 24).padStart(2, '0')}:${String(m).padStart(2, '0')} KST`; }).join(' · ') + ' (평일 · 첫째가 기본 · 나머지는 예비)', scheduledRuns: scheduled.map(o => ({at: o.at, status: o.status, runUrl: o.runtime.runUrl, confirmedTodayStocks: o.confirmedTodayStocks ?? null})), manualGithubRuns: manualGh.length, earlierGithubRunsWithoutRuntimeField: ops.filter(o => !o.runtime && o.at >= '2026-09-29T09:00:00Z').length},
   scheduled.length ? null : '첫 예약 실행(평일 16:00 KST) 뒤 다시 검사');
 
 // 8. 화면 캡처 · 그래프 좌표

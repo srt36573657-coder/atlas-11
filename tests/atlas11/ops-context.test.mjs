@@ -76,3 +76,19 @@ test('넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새�
   const st2 = await stageDir(dist, {noindex: false}); await assert.rejects(fs.readFile(path.join(st2, 'robots.txt')));
   assert.equal(await fs.readFile(path.join(dist, '_headers'), 'utf8'), '/*\n  X-Frame-Options: DENY\n', '원본 dist 는 바꾸지 않는다');
 });
+
+test('예비 예약 문: 오늘 52종목 정상 완료·휴장 기록이면 건너뜀 · 부분·실패·어제 기록이면 실행', async () => {
+  const {alreadyDone} = await import('../../scripts/atlas11/already_done.mjs');
+  const now = '2026-09-30T07:37:00.000Z';
+  assert.equal(alreadyDone(null, now).skip, false);
+  assert.equal(alreadyDone({dayKST: '2026-09-29', status: 'complete', exitCode: 0, confirmedTodayStocks: 52, forecastId: 'f'}, now).skip, false, '어제 기록');
+  assert.equal(alreadyDone({dayKST: '2026-09-30', at: '2026-09-30T07:05:00Z', status: 'complete', exitCode: 0, confirmedTodayStocks: 52, forecastId: 'f'}, now).skip, true);
+  assert.equal(alreadyDone({dayKST: '2026-09-30', status: 'partial', exitCode: 2, confirmedTodayStocks: 51, forecastId: 'f'}, now).skip, false, '51/52 부분 실행이면 예비가 다시 시도');
+  assert.equal(alreadyDone({dayKST: '2026-09-30', status: 'failed', exitCode: 2}, now).skip, false);
+  assert.equal(alreadyDone({dayKST: '2026-10-05', status: 'complete', session: false}, '2026-10-05T07:07:00Z').skip, true, '휴장일 기록');
+  const dir = await tempRoot(); await fs.mkdir(path.join(dir, 'reports/atlas11/operations'), {recursive: true});
+  await fs.writeFile(path.join(dir, 'reports/atlas11/operations/latest.json'), JSON.stringify({dayKST: new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10), at: new Date().toISOString(), status: 'complete', exitCode: 0, confirmedTodayStocks: 52, forecastId: 'f'}));
+  const {execFileSync} = await import('node:child_process');
+  const out = execFileSync(process.execPath, [path.join(root, 'scripts/atlas11/already_done.mjs')], {cwd: dir, encoding: 'utf8'});
+  assert.match(out, /^skip=true\nreason=오늘 실행 완료/);
+});

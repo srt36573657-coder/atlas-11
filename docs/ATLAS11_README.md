@@ -159,7 +159,7 @@ node scripts/atlas11/browser_check.mjs --base http://localhost:8811 --pw <playwr
 ## 11. v7 실제 운영 연결 (2026-09-30) — 지금 이렇게 돈다
 
 ### 11.1 매일 16:00 KST · GitHub Actions
-- 저장소 `srt36573657-coder/atlas-11`(비공개) · `.github/workflows/atlas11-daily.yml` · cron `0 7 * * 1-5` = 평일 16:00 KST(GitHub 예약은 몇 분 늦게 시작할 수 있음). 휴장일에는 「거래일 아님」으로 끝난다.
+- 저장소 `srt36573657-coder/atlas-11`(비공개) · `.github/workflows/atlas11-daily.yml` · cron `0 7 * * 1-5` = 평일 16:00 KST(기본) + `7 7` · `37 7` = 16:07 · 16:37 KST(예비). 2026-09-30 16:00 예약이 GitHub 쪽에서 오지 않아(매시 정각 부근 예약은 늦거나 빠질 수 있다는 공식 안내) 예비를 붙였다. 예비 실행은 `gate` 작업이 `scripts/atlas11/already_done.mjs` 로 「오늘 52종목 정상 완료」를 보면 아무것도 하지 않는다. 휴장일에는 「거래일 아님」으로 끝난다.
 - 순서: ① 관측 수집 `collect_context.mjs`(실패해도 다음으로) → ② `run_daily.mjs` + 정규장 종가 수집기 `collect_krx_close.mjs`(52종목 확정까지 10분마다 최대 7번) → ③ 화면 묶음 → ④ 기록 커밋·푸시(영구 보존) → ⑤ Drop ZIP 산출물 → ⑥ 넷리파이 열쇠가 있으면 배포 → ⑦ 배포 기록 커밋.
 - 손으로 돌리는 것: `atlas11-context`(관측만) · `atlas11-site`(화면만 다시 올리기) · `atlas11-collect-check`(종가 수집기만) · `atlas11-probe`(출처 탐침).
 - 운영 기록에 실행 환경 증거가 남는다: `runtime.event`(schedule / workflow_dispatch) · `runtime.runUrl`. 「예약 연결」(워크플로에 cron 있음)과 「예약 실행 확인」(event=schedule 기록 있음)을 화면·검사기에서 따로 적는다.
