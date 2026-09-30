@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-30T13:01:02.395Z",
+  "at": "2026-09-30T13:09:26.552Z",
   "want": "aaa7377",
   "total": 23,
   "matches": [
@@ -12,7 +12,68 @@
       "account": "srt36573657",
       "publishedAt": "2026-09-29T06:48:35.197Z",
       "ssoLogin": false,
-      "hasPassword": false
+      "hasPassword": false,
+      "published": {
+        "deployId": "6abb5f3cbc35e31b0985e311",
+        "title": "Build from drop deployment",
+        "context": "production",
+        "createdAt": "2026-09-29T06:48:28.913Z",
+        "functions": [],
+        "framework": "unknown",
+        "buildSettingsRepo": null,
+        "fileCount": 100,
+        "topLevel": {
+          "readme.txt": 1,
+          "_headers": 1,
+          "app": 11,
+          "atlas-mark.svg": 1,
+          "data": 70,
+          "dist-manifest.json": 1,
+          "docs": 15
+        },
+        "sample": [
+          "/readme.txt",
+          "/_headers",
+          "/app/app.js",
+          "/app/chart.js",
+          "/app/fonts.css",
+          "/app/store.js",
+          "/app/style.css",
+          "/app/util.js",
+          "/app/view-forecast.js",
+          "/app/view-network.js",
+          "/app/view-race.js",
+          "/app/view-records.js",
+          "/app/view-scores.js",
+          "/atlas-mark.svg",
+          "/data/atlas11/archive-fixed-20260917.json",
+          "/data/atlas11/daily/2026-09-29.json",
+          "/data/atlas11/daily/index.json",
+          "/data/atlas11/forecast.json",
+          "/data/atlas11/ledger/analysis/2026-09-29.json",
+          "/data/atlas11/ledger/collection/2026-09-29.json",
+          "/data/atlas11/ledger/experiment/2026-09-29.json",
+          "/data/atlas11/ledger/factor/2026-09-29.json",
+          "/data/atlas11/ledger/index.json",
+          "/data/atlas11/ledger/operation/2026-09-29.json",
+          "/data/atlas11/view/cards.json",
+          "/data/atlas11/view/evolution.json",
+          "/data/atlas11/view/ledger.json",
+          "/data/atlas11/view/manifest.json",
+          "/data/atlas11/view/network.json",
+          "/data/atlas11/view/race.json",
+          "/data/atlas11/view/scores.json",
+          "/data/atlas11/view/status.json",
+          "/data/atlas11/view/stocks/000720.json",
+          "/data/atlas11/view/stocks/000810.json",
+          "/data/atlas11/view/stocks/002380.json",
+          "/data/atlas11/view/stocks/003230.json",
+          "/data/atlas11/view/stocks/003490.json",
+          "/data/atlas11/view/stocks/004170.json",
+          "/data/atlas11/view/stocks/005380.json",
+          "/data/atlas11/view/stocks/005490.json"
+        ]
+      }
     }
   ],
   "atlas11Sites": [
@@ -21,5 +82,10 @@
       "name": "atlas11-spo9ih"
     }
   ],
-  "error": null
+  "error": null,
+  "secretSiteId": {
+    "set": false,
+    "matchesAaa7377": false,
+    "extraSpaces": false
+  }
 }
