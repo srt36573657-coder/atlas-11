@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-09-30T17:41:54.251Z",
+  "at": "2026-09-30T18:23:42.241Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -9,7 +9,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 201,
+  "passed": 244,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -20,6 +20,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -34,6 +35,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -48,6 +50,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -62,6 +65,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -76,6 +80,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -90,6 +95,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -104,6 +110,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -120,6 +127,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -134,6 +142,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -148,6 +157,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -162,6 +172,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -176,6 +187,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -190,6 +202,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -204,6 +217,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -220,6 +234,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -234,6 +249,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -248,6 +264,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -262,6 +279,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -276,6 +294,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -290,6 +309,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -304,6 +324,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -320,6 +341,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -334,6 +356,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -348,6 +371,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -362,6 +386,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -376,6 +401,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -390,6 +416,7 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -404,6 +431,114 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      }
+    },
+    "mobile-dark-200": {
+      "forecast": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "stock": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "race": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "scores": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "evolution": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "records": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "status": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 0,
+        "truncated": 0,
         "formatDates": 0,
         "source": {
           "relDays": 0,
@@ -605,6 +740,55 @@
     },
     {
       "view": "pc-200",
+      "screen": "status",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "forecast",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "stock",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "race",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "scores",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "evolution",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "records",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 0
+    },
+    {
+      "view": "mobile-dark-200",
       "screen": "status",
       "graphable": 0,
       "lowContrast": 0,
@@ -1102,7 +1286,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 11,
+        "constructions": 12,
         "check": true
       }
     },
@@ -1173,8 +1357,8 @@
       "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "4건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 4건)\n기준 시각\n10월 1일(목) 02:37 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "6건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 6건)\n기준 시각\n10월 1일(목) 03:21 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1186,8 +1370,8 @@
       "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "4건",
-        "last": "4건"
+        "figure": "6건",
+        "last": "6건"
       }
     },
     {
@@ -1230,7 +1414,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ckzhee1-band-inner\")",
+        "bandFill": "url(\"#c7niyhc-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1755,7 +1939,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 11,
+        "constructions": 12,
         "check": true
       }
     },
@@ -1826,8 +2010,8 @@
       "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "4건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 4건)\n기준 시각\n10월 1일(목) 02:37 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "6건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 6건)\n기준 시각\n10월 1일(목) 03:21 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1839,8 +2023,8 @@
       "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "4건",
-        "last": "4건"
+        "figure": "6건",
+        "last": "6건"
       }
     },
     {
@@ -1883,7 +2067,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#c5f759g-band-inner\")",
+        "bandFill": "url(\"#cmzv4a5-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1923,7 +2107,17 @@
       }
     },
     {
+      "name": "잘린 글자 pc forecast: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc stock: 0",
       "ok": true,
       "detail": null
     },
@@ -1933,7 +2127,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc race: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc scores: 0",
       "ok": true,
       "detail": null
     },
@@ -1943,7 +2147,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc evolution: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc records: 0",
       "ok": true,
       "detail": null
     },
@@ -1953,7 +2167,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc status: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile forecast: 0",
       "ok": true,
       "detail": null
     },
@@ -1963,7 +2187,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile stock: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile race: 0",
       "ok": true,
       "detail": null
     },
@@ -1973,7 +2207,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile scores: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile evolution: 0",
       "ok": true,
       "detail": null
     },
@@ -1983,7 +2227,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile records: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile status: 0",
       "ok": true,
       "detail": null
     },
@@ -1993,7 +2247,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark forecast: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark stock: 0",
       "ok": true,
       "detail": null
     },
@@ -2003,7 +2267,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark race: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile-dark race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark scores: 0",
       "ok": true,
       "detail": null
     },
@@ -2013,7 +2287,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark evolution: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile-dark evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark records: 0",
       "ok": true,
       "detail": null
     },
@@ -2023,7 +2307,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark status: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 mobile-dark status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc-200 forecast: 0",
       "ok": true,
       "detail": null
     },
@@ -2033,7 +2327,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc-200 stock: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc-200 race: 0",
       "ok": true,
       "detail": null
     },
@@ -2043,7 +2347,17 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc-200 scores: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc-200 scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc-200 evolution: 0",
       "ok": true,
       "detail": null
     },
@@ -2053,12 +2367,92 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc-200 records: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc-200 records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
       "ok": true,
       "detail": null
     },
     {
+      "name": "잘린 글자 pc-200 status: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "또렷함 pc-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 forecast: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 stock: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 race: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 scores: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 evolution: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 records: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 status: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
       "ok": true,
       "detail": null
     },
@@ -2070,7 +2464,20 @@
         "vague": 1,
         "bareNumbers": 1
       }
+    },
+    {
+      "name": "검사기 자체 시험(7번): 잘린 이름·판 끝에서 잘린 값·글이 넘친 선택 상자를 넣으면 잘린 글자가 3 늘어난다",
+      "ok": true,
+      "detail": {
+        "before": 0,
+        "after": 3,
+        "samples": [
+          "줄임표: 한화에어로스페이스",
+          "칸 끝에서 잘림: 관측만 13개",
+          "선택 상자: 10월 1일(목) 상승 확률 높은 순"
+        ]
+      }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T17-40-36-426Z"
+  "dir": "reports/atlas11/browser/2026-09-30T18-22-13-546Z"
 }

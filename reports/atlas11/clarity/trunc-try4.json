@@ -1,7 +1,7 @@
 {
  "schema": "atlas11-clarity-1",
- "label": "after",
- "at": "2026-09-30T18:22:13.860Z",
+ "label": "trunc-try4",
+ "at": "2026-09-30T18:14:57.486Z",
  "base": "http://localhost:8811",
  "keys": [
   "relDays",

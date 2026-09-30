@@ -1,9 +1,9 @@
 {
- "schema": "atlas11-clarity-summary-1",
- "at": "2026-09-30T17:40:23.888Z",
- "checker": "scripts/atlas11/clarity/measure.mjs (최종판 v3 · before 도 같은 검사기로 다시 잼)",
- "beforeSite": "git HEAD 7afcddb 의 site/ + 화면 자료(9/30 23:57 빌드)",
- "afterSite": "이번 v9",
+ "schema": "atlas11-clarity-summary-2",
+ "at": "2026-09-30T18:23:01.380Z",
+ "checker": "scripts/atlas11/clarity/measure.mjs (최종판 v4 · 7번 잘린 글자 추가 · before 도 같은 검사기로 다시 잼)",
+ "beforeSite": "여섯 숫자: git 7afcddb 의 옛 사이트(v8) · 7번 잘린 글자: 10/01 02:47 KST 에 aaa7377.com 에 올라간 v9(c73b2e7)",
+ "afterSite": "v9 + 회사 이름 잘림 고침(10/01 03시)",
  "keys": [
   "relDays",
   "vague",
@@ -11,6 +11,15 @@
   "graphable",
   "lowContrast",
   "decoColors"
+ ],
+ "truncKey": "truncated",
+ "truncDefinition": "잘린 글자 = 「…」 줄임 · 판(overflow hidden) 끝에서 잘린 글자 · 화면 가장자리 밖 · 가로로 밀어야 보이는 칸(일부러 넘기는 날짜 띠 제외) · 글이 넘친 선택 상자 · 칸보다 긴 입력 칸 안내 글 — 잘린 곳 하나를 1로 셈",
+ "views": [
+  "pc",
+  "mobile",
+  "mobile-dark",
+  "pc-200",
+  "mobile-dark-200"
  ],
  "perScreen": {
   "forecast": {
@@ -32,7 +41,10 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile": {
     "before": {
@@ -52,7 +64,14 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 3,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 삼성바이오로직스",
+     "줄임표: 포스코인터내셔널",
+     "줄임표: 한화에어로스페이스"
+    ]
    },
    "mobile-dark": {
     "before": {
@@ -72,7 +91,14 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 3,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 삼성바이오로직스",
+     "줄임표: 포스코인터내셔널",
+     "줄임표: 한화에어로스페이스"
+    ]
    },
    "pc-200": {
     "before": {
@@ -92,7 +118,51 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 18,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "입력 칸 안내 글: 종목 이름·코드",
+     "줄임표: HD현대중공업",
+     "줄임표: 한국가스공사",
+     "줄임표: 삼성생명보험",
+     "줄임표: 한화솔루션",
+     "줄임표: 삼성바이오로직스",
+     "줄임표: 메리츠금융지주",
+     "줄임표: LG디스플레이"
+    ]
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 56,
+     "vague": 0,
+     "bareNumbers": 9,
+     "graphable": 2,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0,
+    "truncatedBefore": 53,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "선택 상자: 10월 1일(목) 상승 확률 높은 순",
+     "줄임표: 영원무역",
+     "줄임표: HD현대중공업",
+     "줄임표: KB금융",
+     "줄임표: 삼성전기",
+     "줄임표: 알테오젠",
+     "줄임표: 한국가스공사",
+     "줄임표: 제일기획"
+    ]
    }
   },
   "stock": {
@@ -114,7 +184,10 @@
      "decoColors": 0
     },
     "beforeSum": 77,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile": {
     "before": {
@@ -134,7 +207,10 @@
      "decoColors": 0
     },
     "beforeSum": 76,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile-dark": {
     "before": {
@@ -154,7 +230,10 @@
      "decoColors": 0
     },
     "beforeSum": 77,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "pc-200": {
     "before": {
@@ -174,7 +253,37 @@
      "decoColors": 0
     },
     "beforeSum": 76,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "가로로 밀어야 보임: 9월 30일(수) · 출발(실제 종가) "
+    ]
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 6,
+     "vague": 2,
+     "bareNumbers": 55,
+     "graphable": 7,
+     "lowContrast": 1,
+     "decoColors": 6
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 77,
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "선택 상자: 삼성전자 005930"
+    ]
    }
   },
   "race": {
@@ -196,7 +305,12 @@
      "decoColors": 0
     },
     "beforeSum": 77,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 한화에어로스페이스"
+    ]
    },
    "mobile": {
     "before": {
@@ -216,7 +330,12 @@
      "decoColors": 0
     },
     "beforeSum": 77,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 한화에어로스페이스"
+    ]
    },
    "mobile-dark": {
     "before": {
@@ -236,7 +355,12 @@
      "decoColors": 0
     },
     "beforeSum": 78,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 한화에어로스페이스"
+    ]
    },
    "pc-200": {
     "before": {
@@ -256,7 +380,45 @@
      "decoColors": 0
     },
     "beforeSum": 77,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "가로로 밀어야 보임: 1위 HD현대중공업 10,777원 2위 ",
+     "줄임표: 한화에어로스페이스"
+    ]
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 2,
+     "vague": 0,
+     "bareNumbers": 70,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 6
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 78,
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "가로로 밀어야 보임: 1위 HD현대중공업 10,777원 2위 ",
+     "줄임표: HD현대중공업",
+     "줄임표: 메리츠금융지주",
+     "줄임표: 포스코인터내셔널",
+     "줄임표: 두산에너빌리티",
+     "줄임표: 삼성바이오로직스",
+     "줄임표: 한화에어로스페이스",
+     "줄임표: POSCO홀딩스"
+    ]
    }
   },
   "scores": {
@@ -278,7 +440,12 @@
      "decoColors": 0
     },
     "beforeSum": 106,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 방향 틀림(실제 보합 3종목 포함)"
+    ]
    },
    "mobile": {
     "before": {
@@ -298,7 +465,12 @@
      "decoColors": 0
     },
     "beforeSum": 106,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 방향 틀림(실제 보합 3종목 포함)"
+    ]
    },
    "mobile-dark": {
     "before": {
@@ -318,7 +490,12 @@
      "decoColors": 0
     },
     "beforeSum": 106,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 방향 틀림(실제 보합 3종목 포함)"
+    ]
    },
    "pc-200": {
     "before": {
@@ -338,7 +515,37 @@
      "decoColors": 0
     },
     "beforeSum": 106,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 방향 틀림(실제 보합 3종목 포함)"
+    ]
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 3,
+     "vague": 1,
+     "bareNumbers": 90,
+     "graphable": 9,
+     "lowContrast": 0,
+     "decoColors": 3
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 106,
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 방향 틀림(실제 보합 3종목 포함)"
+    ]
    }
   },
   "evolution": {
@@ -360,7 +567,10 @@
      "decoColors": 0
     },
     "beforeSum": 31,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile": {
     "before": {
@@ -380,7 +590,10 @@
      "decoColors": 0
     },
     "beforeSum": 31,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile-dark": {
     "before": {
@@ -400,7 +613,10 @@
      "decoColors": 0
     },
     "beforeSum": 30,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "pc-200": {
     "before": {
@@ -420,7 +636,33 @@
      "decoColors": 0
     },
     "beforeSum": 31,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 7,
+     "vague": 3,
+     "bareNumbers": 12,
+     "graphable": 3,
+     "lowContrast": 0,
+     "decoColors": 5
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 30,
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    }
   },
   "records": {
@@ -442,7 +684,10 @@
      "decoColors": 0
     },
     "beforeSum": 33,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile": {
     "before": {
@@ -462,7 +707,10 @@
      "decoColors": 0
     },
     "beforeSum": 33,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "mobile-dark": {
     "before": {
@@ -482,7 +730,10 @@
      "decoColors": 0
     },
     "beforeSum": 33,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
    },
    "pc-200": {
     "before": {
@@ -502,7 +753,35 @@
      "decoColors": 0
     },
     "beforeSum": 33,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 0,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": []
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 2,
+     "vague": 1,
+     "bareNumbers": 24,
+     "graphable": 4,
+     "lowContrast": 0,
+     "decoColors": 2
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 33,
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "선택 상자: 10월 1일(목) · 4건"
+    ]
    }
   },
   "status": {
@@ -524,7 +803,12 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 계수가 모두 영(평균 성분만)"
+    ]
    },
    "mobile": {
     "before": {
@@ -544,7 +828,12 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 계수가 모두 영(평균 성분만)"
+    ]
    },
    "mobile-dark": {
     "before": {
@@ -564,7 +853,12 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 계수가 모두 영(평균 성분만)"
+    ]
    },
    "pc-200": {
     "before": {
@@ -584,31 +878,88 @@
      "decoColors": 0
     },
     "beforeSum": 69,
-    "afterSum": 0
+    "afterSum": 0,
+    "truncatedBefore": 1,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 계수가 모두 영(평균 성분만)"
+    ]
+   },
+   "mobile-dark-200": {
+    "before": {
+     "relDays": 4,
+     "vague": 1,
+     "bareNumbers": 53,
+     "graphable": 7,
+     "lowContrast": 0,
+     "decoColors": 4
+    },
+    "after": {
+     "relDays": 0,
+     "vague": 0,
+     "bareNumbers": 0,
+     "graphable": 0,
+     "lowContrast": 0,
+     "decoColors": 0
+    },
+    "beforeSum": 69,
+    "afterSum": 0,
+    "truncatedBefore": 6,
+    "truncatedAfter": 0,
+    "truncatedBeforeSamples": [
+     "줄임표: 관측만(전망 미사용)",
+     "줄임표: 영이 아닌 계수 있음",
+     "줄임표: 계수가 모두 영(평균 성분만)",
+     "줄임표: 기사(같은 기사 가림)",
+     "줄임표: 기업행위 낱말 공시",
+     "줄임표: 정정(잠정 → 확정)"
+    ]
    }
+  }
+ },
+ "truncTotals": {
+  "pc": {
+   "before": 3,
+   "after": 0
+  },
+  "mobile": {
+   "before": 6,
+   "after": 0
+  },
+  "mobile-dark": {
+   "before": 6,
+   "after": 0
+  },
+  "pc-200": {
+   "before": 22,
+   "after": 0
+  },
+  "mobile-dark-200": {
+   "before": 63,
+   "after": 0
   }
  },
  "prose": {
   "forecast": {
    "before": 88,
-   "after": 66,
+   "after": 67,
    "deleted": 34,
-   "added": 12,
+   "added": 13,
    "firstViewBefore": 47,
-   "firstViewAfter": 24,
+   "firstViewAfter": 25,
    "firstViewDeleted": 32,
-   "firstViewAdded": 9,
+   "firstViewAdded": 10,
    "ruleDeletedGEAdded": true
   },
   "stock": {
    "before": 121,
-   "after": 41,
+   "after": 42,
    "deleted": 101,
-   "added": 21,
+   "added": 22,
    "firstViewBefore": 38,
-   "firstViewAfter": 24,
+   "firstViewAfter": 25,
    "firstViewDeleted": 25,
-   "firstViewAdded": 11,
+   "firstViewAdded": 12,
    "ruleDeletedGEAdded": true
   },
   "race": {
@@ -624,13 +975,13 @@
   },
   "scores": {
    "before": 131,
-   "after": 22,
+   "after": 23,
    "deleted": 124,
-   "added": 15,
+   "added": 16,
    "firstViewBefore": 25,
-   "firstViewAfter": 14,
+   "firstViewAfter": 15,
    "firstViewDeleted": 19,
-   "firstViewAdded": 8,
+   "firstViewAdded": 9,
    "ruleDeletedGEAdded": true
   },
   "evolution": {
@@ -646,9 +997,9 @@
   },
   "records": {
    "before": 110,
-   "after": 25,
+   "after": 26,
    "deleted": 100,
-   "added": 15,
+   "added": 16,
    "firstViewBefore": 25,
    "firstViewAfter": 19,
    "firstViewDeleted": 19,
@@ -669,9 +1020,9 @@
  },
  "proseTotals": {
   "deleted": 566,
-  "added": 121,
+  "added": 125,
   "firstDeleted": 134,
-  "firstAdded": 62
+  "firstAdded": 65
  },
- "proseDefinition": "문장 = 그래프 표시(그림 글자·막대 이름·값·범례·눈금·순위 막대) 밖의 보이는 글 조각 · 헤드라인 한 줄·시장 띠 한 줄은 각각 1 · 닫힌 접힘 안은 보이지 않는 것으로 셈 · 숫자는 #로 바꿔 날마다 같은 문장으로 셈"
+ "proseDefinition": "문장 = 그래프 표시(그림 글자·막대 이름·값·범례·눈금) 밖의 보이는 글 조각 · 헤드라인 한 줄·시장 띠 한 줄은 각각 1 · 닫힌 접힘 안은 보이지 않는 것으로 셈 · 숫자는 #로 바꿔 날마다 같은 문장으로 셈 (PC 보기로 셈)"
 }
