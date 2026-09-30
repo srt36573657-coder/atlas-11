@@ -1,0 +1,10 @@
+{
+  "siteId": "d6ab8a36-88f4-4813-8f8e-365c709912bc",
+  "name": "atlas11-spo9ih",
+  "url": "https://atlas11-spo9ih.netlify.app",
+  "adminUrl": "https://app.netlify.com/projects/atlas11-spo9ih",
+  "createdAt": "2026-09-30T12:11:14.902Z",
+  "foundAt": "2026-09-30T12:14:27.322Z",
+  "createdBy": "scripts/atlas11/deploy_netlify.mjs",
+  "note": "저장 파일이 없어 넷리파이에서 이 스크립트가 전에 만든 사이트를 찾아 다시 씀 · 사이트 번호는 비밀이 아님"
+}

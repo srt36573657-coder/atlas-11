@@ -1,0 +1,15 @@
+{
+  "schema": "atlas11-site-deploy-1",
+  "at": "2026-09-30T12:14:26.902Z",
+  "state": "ready",
+  "siteSource": "found",
+  "siteCreated": false,
+  "siteId": "d6ab8a36-88f4-4813-8f8e-365c709912bc",
+  "url": "https://atlas11-spo9ih.netlify.app",
+  "deployUrl": "https://6abcfd4e141a6426055724e8--atlas11-spo9ih.netlify.app",
+  "deployId": "6abcfd4e141a6426055724e8",
+  "noindex": true,
+  "files": 753,
+  "exitCode": 0,
+  "error": null
+}
