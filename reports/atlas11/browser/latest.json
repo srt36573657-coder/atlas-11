@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-09-30T17:19:09.741Z",
+  "at": "2026-09-30T17:41:54.251Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -1102,7 +1102,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 9,
+        "constructions": 11,
         "check": true
       }
     },
@@ -1173,8 +1173,8 @@
       "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "2건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 2건)\n기준 시각\n10월 1일(목) 02:15 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "4건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 4건)\n기준 시각\n10월 1일(목) 02:37 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1186,8 +1186,8 @@
       "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "2건",
-        "last": "2건"
+        "figure": "4건",
+        "last": "4건"
       }
     },
     {
@@ -1230,7 +1230,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cwmkau9-band-inner\")",
+        "bandFill": "url(\"#ckzhee1-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1755,7 +1755,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 9,
+        "constructions": 11,
         "check": true
       }
     },
@@ -1817,7 +1817,7 @@
         "hl": 1,
         "first": {
           "top": 122,
-          "bottom": 147,
+          "bottom": 172,
           "firstChild": true
         }
       }
@@ -1826,8 +1826,8 @@
       "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "2건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 2건)\n기준 시각\n10월 1일(목) 02:15 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "4건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 4건)\n기준 시각\n10월 1일(목) 02:37 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1839,8 +1839,8 @@
       "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "2건",
-        "last": "2건"
+        "figure": "4건",
+        "last": "4건"
       }
     },
     {
@@ -1883,7 +1883,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cogqdwt-band-inner\")",
+        "bandFill": "url(\"#c5f759g-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -2072,5 +2072,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T17-17-52-550Z"
+  "dir": "reports/atlas11/browser/2026-09-30T17-40-36-426Z"
 }
