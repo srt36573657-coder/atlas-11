@@ -7,7 +7,7 @@ on:
         required: false
         default: '20260929'
       which:
-        description: 'sources | yahoo52 | deep | context | context2'
+        description: 'sources | yahoo52 | deep | context | context2 | netlify'
         required: false
         default: 'sources'
 permissions:
@@ -21,9 +21,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: |
+      - env:
+          NETLIFY_AUTH_TOKEN: ${{ inputs.which == 'netlify' && secrets.NETLIFY_AUTH_TOKEN || '' }}
+        run: |
           mkdir -p reports/atlas11/probe
-          if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; elif [ "${{ inputs.which }}" = "deep" ]; then timeout 300 node scripts/atlas11/probe/deep.mjs || true; elif [ "${{ inputs.which }}" = "context" ]; then timeout 600 node scripts/atlas11/probe/context.mjs "${{ inputs.day || '20260929' }}" || true; elif [ "${{ inputs.which }}" = "context2" ]; then timeout 600 node scripts/atlas11/probe/context2.mjs || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
+          if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; elif [ "${{ inputs.which }}" = "deep" ]; then timeout 300 node scripts/atlas11/probe/deep.mjs || true; elif [ "${{ inputs.which }}" = "context" ]; then timeout 600 node scripts/atlas11/probe/context.mjs "${{ inputs.day || '20260929' }}" || true; elif [ "${{ inputs.which }}" = "context2" ]; then timeout 600 node scripts/atlas11/probe/context2.mjs || true; elif [ "${{ inputs.which }}" = "netlify" ]; then timeout 120 node scripts/atlas11/probe/netlify_sites.mjs || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
       - if: always()
         run: |
           git config user.name atlas11-bot
