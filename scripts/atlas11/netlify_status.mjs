@@ -2,23 +2,26 @@
 /**
  * 넷리파이 사이트 상태 진단 — 올린 화면이 실제로 열리는지(응답 코드)와 사이트 설정(보호·잠금)을 적는다.
  *   node scripts/atlas11/netlify_status.mjs → reports/atlas11/operations/netlify-status.json
+ *   살피는 사이트: 저장소 비밀 NETLIFY_SITE_ID 가 있으면 그 사이트(배포와 같은 곳 · 2026-09-30부터 aaa7377.com), 없으면 deploy/netlify-site.json 의 자동 사이트.
  *   열쇠(NETLIFY_AUTH_TOKEN)는 읽기만 하고 어디에도 쓰지 않는다. 비밀번호 값 같은 민감한 칸은 「있음/없음」만 남긴다.
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const root = process.cwd(), token = process.env.NETLIFY_AUTH_TOKEN;
-const site = JSON.parse(await fs.readFile(path.join(root, 'deploy/netlify-site.json'), 'utf8'));
-const out = {at: new Date().toISOString(), siteId: site.siteId, name: site.name, url: site.url};
+const root = process.cwd(), token = process.env.NETLIFY_AUTH_TOKEN, envId = (process.env.NETLIFY_SITE_ID ?? '').trim();
+const fileSite = JSON.parse(await fs.readFile(path.join(root, 'deploy/netlify-site.json'), 'utf8'));
+const site = envId ? {siteId: envId, name: null, url: null, source: 'env'} : {...fileSite, source: 'file'};
+const out = {at: new Date().toISOString(), siteId: site.siteId, source: site.source, name: site.name ?? null, url: site.url ?? null};
 if (token) {
   try {
     const r = await fetch(`https://api.netlify.com/api/v1/sites/${site.siteId}`, {headers: {Authorization: 'Bearer ' + token}, signal: AbortSignal.timeout(20000)});
     const s = await r.json();
+    if (!site.url) { site.url = s.ssl_url || s.url || null; out.url = site.url; out.name = s.name ?? null; }
     const has = v => v == null || v === '' || v === false ? false : true;
-    out.api = {status: r.status, state: s.state ?? null, published: s.published_deploy?.state ?? null, publishedAt: s.published_deploy?.published_at ?? null, ssl: s.ssl ?? null, passwordSet: has(s.password), hasPassword: s.has_password ?? null, ssoLogin: s.sso_login ?? null, ssoLoginContext: s.sso_login_context ?? null, visitorAccess: Object.fromEntries(Object.entries(s).filter(([k]) => /protect|visitor|password_context|access|sso|rbac|login/i.test(k)).map(([k, v]) => [k, typeof v === 'string' && /password/i.test(k) ? has(v) : v])), accountSlug: s.account_slug ?? null, accountType: s.account_type ?? null, plan: s.plan ?? null};
+    out.api = {status: r.status, state: s.state ?? null, customDomain: s.custom_domain ?? null, published: s.published_deploy?.state ?? null, publishedAt: s.published_deploy?.published_at ?? null, ssl: s.ssl ?? null, passwordSet: has(s.password), hasPassword: s.has_password ?? null, ssoLogin: s.sso_login ?? null, ssoLoginContext: s.sso_login_context ?? null, visitorAccess: Object.fromEntries(Object.entries(s).filter(([k]) => /protect|visitor|password_context|access|sso|rbac|login/i.test(k)).map(([k, v]) => [k, typeof v === 'string' && /password/i.test(k) ? has(v) : v])), accountSlug: s.account_slug ?? null, accountType: s.account_type ?? null, plan: s.plan ?? null};
   } catch (e) { out.apiError = String(e.message).slice(0, 200); }
 }
-for (const u of [site.url, site.url + '/data/atlas11/view/manifest.json']) {
+for (const u of site.url ? [site.url, site.url + '/data/atlas11/view/manifest.json'] : []) {
   try {
     const r = await fetch(u, {redirect: 'manual', signal: AbortSignal.timeout(20000)});
     const text = await r.text();
