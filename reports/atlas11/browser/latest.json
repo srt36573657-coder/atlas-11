@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-09-30T17:08:53.466Z",
+  "at": "2026-09-30T17:19:09.741Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -1077,7 +1077,7 @@
         "daily": 2,
         "tests": 1,
         "changes": 0,
-        "builds": 3,
+        "builds": 4,
         "judge": 1
       }
     },
@@ -1102,7 +1102,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 8,
+        "constructions": 9,
         "check": true
       }
     },
@@ -1173,8 +1173,8 @@
       "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "775건",
-        "src": "이 숫자\n기록 장부 색인의 9월 30일(수) 종류별 건수 합(수집 259건 · 예측 1건 · 채점 260건 · 원인 분석 209건 · 요인 36건 · 운영 10건)\n기준 시각\n9월 30일(수) 23:57 KST 에 "
+        "figure": "2건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 2건)\n기준 시각\n10월 1일(목) 02:15 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1186,8 +1186,8 @@
       "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "775건",
-        "last": "775건"
+        "figure": "2건",
+        "last": "2건"
       }
     },
     {
@@ -1197,15 +1197,16 @@
         "typeBtns": 8,
         "expRows": 0,
         "expExpected": 0,
-        "shownDate": "2026-09-30",
+        "shownDate": "2026-10-01",
         "dl": 2
       }
     },
     {
-      "name": "pc 기록: 요인 기록 36행 단위 · 결과 막대",
+      "name": "pc 기록: 요인 기록 36행 단위(요인 기록이 있는 마지막 날) · 결과 막대",
       "ok": true,
       "detail": {
-        "factorRecordRows": 36
+        "factorRecordRows": 36,
+        "factorDate": "2026-09-30"
       }
     },
     {
@@ -1229,7 +1230,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cwuy1y7-band-inner\")",
+        "bandFill": "url(\"#cwmkau9-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1729,7 +1730,7 @@
         "daily": 2,
         "tests": 1,
         "changes": 0,
-        "builds": 3,
+        "builds": 4,
         "judge": 1
       }
     },
@@ -1754,7 +1755,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 8,
+        "constructions": 9,
         "check": true
       }
     },
@@ -1825,8 +1826,8 @@
       "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "775건",
-        "src": "이 숫자\n기록 장부 색인의 9월 30일(수) 종류별 건수 합(수집 259건 · 예측 1건 · 채점 260건 · 원인 분석 209건 · 요인 36건 · 운영 10건)\n기준 시각\n9월 30일(수) 23:57 KST 에 "
+        "figure": "2건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 2건)\n기준 시각\n10월 1일(목) 02:15 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1838,8 +1839,8 @@
       "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "775건",
-        "last": "775건"
+        "figure": "2건",
+        "last": "2건"
       }
     },
     {
@@ -1849,15 +1850,16 @@
         "typeBtns": 8,
         "expRows": 0,
         "expExpected": 0,
-        "shownDate": "2026-09-30",
+        "shownDate": "2026-10-01",
         "dl": 2
       }
     },
     {
-      "name": "mobile 기록: 요인 기록 36행 단위 · 결과 막대",
+      "name": "mobile 기록: 요인 기록 36행 단위(요인 기록이 있는 마지막 날) · 결과 막대",
       "ok": true,
       "detail": {
-        "factorRecordRows": 36
+        "factorRecordRows": 36,
+        "factorDate": "2026-09-30"
       }
     },
     {
@@ -1881,7 +1883,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cuhfr71-band-inner\")",
+        "bandFill": "url(\"#cogqdwt-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -2070,5 +2072,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T17-07-36-182Z"
+  "dir": "reports/atlas11/browser/2026-09-30T17-17-52-550Z"
 }

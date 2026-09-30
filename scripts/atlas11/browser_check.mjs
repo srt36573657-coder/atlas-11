@@ -224,9 +224,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.locator('#main details.more > summary', {hasText: '기록 표 열기'}).click().catch(() => {}); await page.waitForTimeout(200);
   const expRows = await page.locator('.table.records tbody tr').count(), dl = await page.locator('.btn-download').count(), recText = await page.locator('#main').innerText();
   check(`${label} 기록: 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 · 'null' 없음`, typeBtns === 8 && expRows === expExpected && ledgerIdx.totals.experiment >= 11 && dl >= 2 && !/\bnull\b/.test(recText), {typeBtns, expRows, expExpected, shownDate, dl});
-  await page.locator('.filters.types .filter[data-type="factor"]').click(); await page.waitForTimeout(500);
+  await page.locator('.filters.types .filter[data-type="factor"]').click(); await page.waitForTimeout(300);
+  const factorDate = ledgerIdx.dates.filter(d => ledgerIdx.byDate[d]?.factor).at(-1);
+  if (factorDate) { await page.locator('select[aria-label="날짜"]').selectOption(factorDate); await page.waitForTimeout(500); }
   const factorRecordRows = await page.locator('.table.records tbody tr').count();
-  check(`${label} 기록: 요인 기록 36행 단위 · 결과 막대`, factorRecordRows >= 36 && factorRecordRows % 36 === 0 && await page.locator('.bars .bar-row').count() >= 1, {factorRecordRows});
+  check(`${label} 기록: 요인 기록 36행 단위(요인 기록이 있는 마지막 날) · 결과 막대`, factorRecordRows >= 36 && factorRecordRows % 36 === 0 && await page.locator('.bars .bar-row').count() >= 1, {factorRecordRows, factorDate});
   const [csvDl] = await Promise.all([page.waitForEvent('download', {timeout: 8000}), page.locator('.btn-download', {hasText: '걸러진 CSV'}).click()]);
   check(`${label} 기록: CSV 내려받기 파일명`, /ATLAS_factor_.*\.csv$/.test(csvDl.suggestedFilename()), {name: csvDl.suggestedFilename()});
   await page.locator('details.report > summary').click(); await page.waitForTimeout(150);
