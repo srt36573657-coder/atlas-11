@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-clarity-summary-1",
- "at": "2026-09-30T17:13:08.901Z",
+ "at": "2026-09-30T17:22:36.330Z",
  "checker": "scripts/atlas11/clarity/measure.mjs (최종판 v3 · before 도 같은 검사기로 다시 잼)",
  "beforeSite": "git HEAD 7afcddb 의 site/ + 화면 자료(9/30 23:57 빌드)",
  "afterSite": "이번 v9",
