@@ -1,5 +1,5 @@
 /* ATLAS 11 · 기록 검색(8종류 장부 · 날짜/종목/업종/요인/정답오답/원인/모델/채택 상태) · 일일 보고(여섯 문장) · 자동 진화 등록부 */
-import {h, num, pct, pctPoint, korDate, shortDate, stamp, dirWord, dirMark, finite, download, csvCell} from './util.js';
+import {h, num, pct, pctPoint, korDate, shortDate, stamp, kst, dirWord, dirMark, finite, download, csvCell} from './util.js';
 import {loadLedger, loadData, loadCards, setSummary, url} from './store.js';
 import {headline, editionSource, lineChart} from './frame.js';
 import {bars} from './chart.js';
@@ -38,9 +38,12 @@ export async function renderRecords(main, {manifest, hash = ''}) {
   const filt = {type: q.type ?? firstWithRecords, date: q.date ?? lastDate, code: q.code ?? '', group: q.group ?? '', factor: q.factor ?? '', cls: q.cls ?? '', cause: q.cause ?? '', model: q.model ?? '', status: q.status ?? ''};
   // 헤드라인에 「종류 수」는 넣지 않는다 — 앞 판의 「8종류」는 장부 칸 수였고 기록이 있는 종류는 7이었다(모델 기록 0건).
   //   그날 기록이 한 종류뿐인 날에는 「기록 2건 · 8종류」가 그날 이야기로 들린다. 종류별 건수는 바로 아래 막대가 보여 준다.
-  setSummary(`${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건.`);
-  const hl = headline({speak: `${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건`,
-    parts: [`${korDate(lastDate)} 기록 `, {figure: `${num(perDay(lastDate))}건`}, ` · 누적 ${num(total)}건`],
+  // 「몇 시 몇 분까지」 = 장부 색인을 만든 시각. 그날 기록은 하루 동안 더 붙으므로, 시각이 있어야 나중에 소리 내어 읽어도 틀린 말이 되지 않는다
+  //   (5초 시험에서 「3건이 지금까지인지 마감인지 모르겠다」는 지적을 받고 넣음). 색인을 다음 날 만들었으면 그날은 끝난 날이라 시각을 붙이지 않는다.
+  const ixAt = kst(index.generatedAt), until = ixAt.date === lastDate ? ` ${ixAt.time} KST까지` : '';
+  setSummary(`${korDate(lastDate)}${until} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건.`);
+  const hl = headline({speak: `${korDate(lastDate)}${until} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건`,
+    parts: [`${korDate(lastDate)}${until} 기록 `, {figure: `${num(perDay(lastDate))}건`}, ` · 누적 ${num(total)}건`],
     source: [['이 숫자', `기록 장부 색인의 ${korDate(lastDate)} 종류별 건수 합(${TYPE_ORDER.filter(t => index.byDate[lastDate][t]).map(t => `${TYPE_LABEL[t]} ${num(index.byDate[lastDate][t])}건`).join(' · ')})`], ['기준 시각', `${stamp(index.generatedAt)} 에 만든 장부 색인`], ['장부 원본', h('span', null, h('code', null, 'reports/atlas11/ledger/<종류>/<날짜>.jsonl'), ' · 덮어쓰지 않고 덧붙임 · 정정은 앞 기록 ID 에 연결')], ...editionSource(manifest, 'ledger.json').slice(2)]});
   // 증거 그래프: 날짜별 기록 수(마지막 값 = 헤드라인 숫자)
   const lineBox = h('div'), typeBox = h('div', {class: 'bars'});
