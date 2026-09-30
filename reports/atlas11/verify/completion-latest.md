@@ -1,16 +1,18 @@
-# ATLAS 11 · 완료 증거 검사 — 2026-09-29T22:47:50.865Z
+# ATLAS 11 · 완료 증거 검사 — 2026-09-30T08:25:58.995Z
 
-커밋 8d03782 · 통과 9 · 대기 2 · 미연결 0
+커밋 dd3dc4c · 통과 9 · 대기 2 · 미연결 0
 
 ## 1. 52종목 처리 성공·실패 수 · 36요인 확보·실제 사용·미확보 — 통과
 ```json
 {
  "stocks": 52,
  "confirmedCloses": 52,
- "lastRunConfirmedToday": "52/52 (2026-09-29T11:45:56Z)",
- "factorDay": "2026-09-29",
+ "lastRunConfirmedToday": "52/52 (2026-09-30T08:22:04Z)",
+ "factorDay": "2026-09-30",
  "factorStatus": {
-  "미확보": 33,
+  "관측 기록(일부 성분) · 예측 미사용": 9,
+  "관측 기록 · 예측 미사용": 4,
+  "미확보": 20,
   "수치 입력": 2,
   "분산 모형": 1
  },
@@ -19,26 +21,29 @@
   "F35",
   "F36"
  ],
- "observedNotUsed": [],
- "missing": [
-  "F01",
+ "observedNotUsed": [
   "F02",
   "F03",
   "F04",
   "F05",
   "F06",
   "F07",
-  "F08",
   "F09",
   "F10",
+  "F14",
+  "F16",
+  "F19",
+  "F30",
+  "F33"
+ ],
+ "missing": [
+  "F01",
+  "F08",
   "F12",
   "F13",
-  "F14",
   "F15",
-  "F16",
   "F17",
   "F18",
-  "F19",
   "F20",
   "F21",
   "F22",
@@ -49,23 +54,21 @@
   "F27",
   "F28",
   "F29",
-  "F30",
   "F31",
   "F32",
-  "F33",
   "F34"
  ]
 }
 ```
-필요한 조치: 미확보 33개(기업 실적·수주·재고·공매도·연기금 세부 등)는 열쇠가 필요한 공식 자료(OpenDART·KRX·한국은행 ECOS) 또는 유료 자료가 있어야 함
+필요한 조치: 미확보 20개(기업 실적·수주·재고·공매도·연기금 세부 등)는 열쇠가 필요한 공식 자료(OpenDART·KRX·한국은행 ECOS) 또는 유료 자료가 있어야 함
 
 ## 2. 52종목 출발점 차이 0원 · 다음 실제 거래일 20개 · 휴장일 오류 0 — 통과
 ```json
 {
- "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
- "actualAsOf": "2026-09-29",
+ "forecastId": "2026-09-30-atlas11-d63a7866e135fbc2",
+ "actualAsOf": "2026-09-30",
  "anchorGapZero": "52/52",
- "futureDates": "2026-09-30 ~ 2026-10-29 (20개)",
+ "futureDates": "2026-10-01 ~ 2026-10-30 (20개)",
  "skippedHolidays": [
   "2026-10-05",
   "2026-10-09"
@@ -77,11 +80,11 @@
 ## 3. 과거 전망 보존 · 미래 정보 차단 · 아직 오지 않은 목표일 미채점 — 통과
 ```json
 {
- "publicationFiles": 5,
+ "publicationFiles": 6,
  "publicationFilesModifiedOrDeletedInGit": [],
- "scoredCells": 208,
+ "scoredCells": 468,
  "cellsIssuedAfterTargetCloseOrBeyondActual": 0,
- "latestActual": "2026-09-29"
+ "latestActual": "2026-09-30"
 }
 ```
 
@@ -89,25 +92,26 @@
 ```json
 {
  "liveCellsByClass": {
-  "방향·크기 모두 맞음": 57,
-  "방향·크기 모두 틀림": 18,
-  "방향 맞고 크기 틀림": 48,
-  "크기 허용·방향 틀림": 33
+  "방향·크기 모두 맞음": 134,
+  "방향·크기 모두 틀림": 42,
+  "방향 맞고 크기 틀림": 109,
+  "크기 허용·방향 틀림": 79
  },
  "ledgerTotals": {
-  "collection": 11,
-  "forecast": 3,
-  "score": 784,
-  "analysis": 758,
-  "factor": 72,
+  "collection": 270,
+  "forecast": 4,
+  "score": 1044,
+  "analysis": 967,
+  "factor": 108,
   "experiment": 11,
   "model": 0,
-  "operation": 14
+  "operation": 15
  },
  "ledgerDates": [
-  "2026-09-29"
+  "2026-09-29",
+  "2026-09-30"
  ],
- "csvFiles": 7,
+ "csvFiles": 13,
  "filters": [
   "codes",
   "groups",
@@ -202,12 +206,12 @@
   "backtested": 11,
   "gate_decision": 11,
   "rejected": 11,
-  "no_change": 14
+  "no_change": 15
  },
  "operatingModel": "atlas11-A-1",
  "lastDecision": {
-  "id": "evt-a98176dd24d95fad",
-  "at": "2026-09-29T11:45:56Z",
+  "id": "evt-a1efc51a94439158",
+  "at": "2026-09-30T08:22:04Z",
   "type": "no_change",
   "reason": "오늘 검증한 후보 없음",
   "configSHA256": "0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"
@@ -238,11 +242,6 @@
  ],
  "realRunsWithDuplicatesSkipped": [
   {
-   "at": "2026-09-29T10:06:25Z",
-   "newRecords": 88,
-   "duplicates": 80
-  },
-  {
    "at": "2026-09-29T10:18:08Z",
    "newRecords": 64,
    "duplicates": 104
@@ -261,6 +260,11 @@
    "at": "2026-09-29T11:45:56Z",
    "newRecords": 0,
    "duplicates": 208
+  },
+  {
+   "at": "2026-09-30T08:22:04Z",
+   "newRecords": 260,
+   "duplicates": 208
   }
  ],
  "note": "모델 복귀는 실제로 일어난 적 없음(채택된 후보가 없어 복귀할 대상도 없음) — 검사 입력으로만 확인"
@@ -271,10 +275,14 @@
 ```json
 {
  "workflow": ".github/workflows/atlas11-daily.yml",
- "cron": "0 7 * * 1-5",
- "meaning": "평일 16:00 KST",
+ "crons": [
+  "0 7 * * 1-5",
+  "7 7 * * 1-5",
+  "37 7 * * 1-5"
+ ],
+ "meaning": "16:00 KST · 16:07 KST · 16:37 KST (평일 · 첫째가 기본 · 나머지는 예비)",
  "scheduledRuns": [],
- "manualGithubRuns": 0,
+ "manualGithubRuns": 1,
  "earlierGithubRunsWithoutRuntimeField": 10
 }
 ```
@@ -325,7 +333,7 @@
 ```json
 {
  "day": "2026-09-30",
- "fetchedAt": "2026-09-29T22:27:33Z",
+ "fetchedAt": "2026-09-30T08:21:48Z",
  "sources": "172/172",
  "errors": 0,
  "factorsObserved": [
@@ -345,26 +353,26 @@
  ],
  "index": {
   "KOSPI": {
-   "date": "2026-09-29",
-   "close": 6870.81,
-   "changePct": -0.27,
-   "status": "earlier_day"
+   "date": "2026-09-30",
+   "close": 6838.04,
+   "changePct": -0.48,
+   "status": "same_day"
   },
   "KOSDAQ": {
-   "date": "2026-09-29",
-   "close": 849.8,
-   "changePct": 0.38,
-   "status": "earlier_day"
+   "date": "2026-09-30",
+   "close": 855.91,
+   "changePct": 0.72,
+   "status": "same_day"
   }
  },
  "news": {
   "stocks": 52,
   "raw": 1040,
-  "distinct": 1028,
-  "republished": 12,
+  "distinct": 1023,
+  "republished": 17,
   "sameArticle": 0,
-  "stocksWithTodayNews": 34,
-  "todayDistinct": 156
+  "stocksWithTodayNews": 47,
+  "todayDistinct": 571
  },
  "flows": {
   "stocks": 52,
