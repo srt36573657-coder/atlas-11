@@ -29,6 +29,10 @@ jobs:
       - name: Netlify deploy
         if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
         run: node scripts/atlas11/deploy_netlify.mjs --dir dist
+      - name: Site status (does the page open? protection settings)
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        continue-on-error: true
+        run: node scripts/atlas11/netlify_status.mjs
       - name: No token
         if: ${{ env.NETLIFY_AUTH_TOKEN == '' }}
         run: echo "::warning::NETLIFY_AUTH_TOKEN secret is not set — nothing deployed"
