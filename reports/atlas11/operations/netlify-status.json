@@ -1,22 +1,24 @@
 {
-  "at": "2026-09-30T12:20:11.697Z",
-  "siteId": "d6ab8a36-88f4-4813-8f8e-365c709912bc",
-  "name": "atlas11-spo9ih",
-  "url": "https://atlas11-spo9ih.netlify.app",
+  "at": "2026-09-30T13:38:11.197Z",
+  "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
+  "source": "env",
+  "name": "mulgil",
+  "url": "https://aaa7377.com",
   "api": {
     "status": 200,
     "state": "current",
+    "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-09-30T12:20:10.959Z",
-    "ssl": false,
+    "publishedAt": "2026-09-30T13:38:10.392Z",
+    "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
-    "ssoLogin": true,
+    "ssoLogin": false,
     "ssoLoginContext": "all",
     "visitorAccess": {
-      "sso_login": true,
+      "sso_login": false,
       "sso_login_context": "all",
-      "account_sso_login": true,
+      "account_sso_login": false,
       "account_sso_login_context": "all",
       "password_context": true
     },
@@ -26,22 +28,22 @@
   },
   "fetch": [
     {
-      "url": "https://atlas11-spo9ih.netlify.app",
-      "status": 401,
+      "url": "https://aaa7377.com",
+      "status": 200,
       "wwwAuthenticate": null,
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!DOCTYPE html> <html> <head> <title>Login Redirect</title> </head> <body> <script> window.onload = function() { var fragment = window.location.hash; var url = new URL('https:\\/\\/app.netlify.com\\/edge-access?domain=atlas11-spo9ih.netlify.app\\u0026requested_path=%2F\\u0026site_id=d6ab8a36-88f4-4813-8f"
+      "bodyStart": "<!doctype html> <html lang=\"ko\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> <meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; "
     },
     {
-      "url": "https://atlas11-spo9ih.netlify.app/data/atlas11/view/manifest.json",
-      "status": 401,
+      "url": "https://aaa7377.com/data/atlas11/view/manifest.json",
+      "status": 200,
       "wwwAuthenticate": null,
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!DOCTYPE html> <html> <head> <title>Login Redirect</title> </head> <body> <script> window.onload = function() { var fragment = window.location.hash; var url = new URL('https:\\/\\/app.netlify.com\\/edge-access?domain=atlas11-spo9ih.netlify.app\\u0026requested_path=%2Fdata%2Fatlas11%2Fview%2Fmanifest.js"
+      "bodyStart": "{\"schema\":\"atlas11-view-manifest-1\",\"generatedAt\":\"2026-09-30T13:37:24.124Z\",\"forecastId\":\"2026-09-30-atlas11-d63a7866e135fbc2\",\"modelVersion\":\"atlas11-A-1\",\"issuedAt\":\"2026-09-30T08:22:04Z\",\"actualAsOf\":\"2026-09-30\",\"currentDateKST\":\"2026-09-30\",\"dataStatus\":\"current_close\",\"publicationStatus\":\"liv"
     }
   ]
 }
