@@ -1,6 +1,6 @@
-# ATLAS 11 · 완료 증거 검사 — 2026-09-30T08:25:58.995Z
+# ATLAS 11 · 완료 증거 검사 — 2026-09-30T12:22:11.252Z
 
-커밋 dd3dc4c · 통과 9 · 대기 2 · 미연결 0
+커밋 515aa16 · 통과 10 · 대기 1 · 미연결 0
 
 ## 1. 52종목 처리 성공·실패 수 · 36요인 확보·실제 사용·미확보 — 통과
 ```json
@@ -276,11 +276,11 @@
 {
  "workflow": ".github/workflows/atlas11-daily.yml",
  "crons": [
-  "0 7 * * 1-5",
+  "1 7 * * 1-5",
   "7 7 * * 1-5",
   "37 7 * * 1-5"
  ],
- "meaning": "16:00 KST · 16:07 KST · 16:37 KST (평일 · 첫째가 기본 · 나머지는 예비)",
+ "meaning": "16:01 KST · 16:07 KST · 16:37 KST (평일 · 첫째가 기본 · 나머지는 예비)",
  "scheduledRuns": [],
  "manualGithubRuns": 1,
  "earlierGithubRunsWithoutRuntimeField": 10
@@ -310,7 +310,7 @@
 }
 ```
 
-## 9. 실행 가능한 소스 · 의존성 고정 · 설정 예시 · 운영 설명서 · 배포용 결과물 — 대기
+## 9. 실행 가능한 소스 · 의존성 고정 · 설정 예시 · 운영 설명서 · 배포용 결과물 — 통과
 ```json
 {
  "files": {
@@ -323,11 +323,14 @@
   ".github/workflows/atlas11-context.yml": true,
   "scripts/atlas11/deploy_netlify.mjs": true
  },
- "siteDeploy": null,
+ "siteDeploy": {
+  "state": "ready",
+  "url": "https://atlas11-spo9ih.netlify.app",
+  "at": "2026-09-30T12:19:26.492Z"
+ },
  "dropZip": "매일 실행이 GitHub 산출물(atlas11-drop-<번호>)로 올림"
 }
 ```
-필요한 조치: 넷리파이 열쇠(NETLIFY_AUTH_TOKEN)를 저장소 비밀에 넣으면 매일 화면이 자동으로 올라감(없으면 Drop ZIP 을 손으로 올려야 함)
 
 ## 10. 시장·수급·뉴스·공시·거시 관측 수집(기록 · 예측 미사용) — 통과
 ```json

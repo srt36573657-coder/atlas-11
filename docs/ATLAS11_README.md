@@ -195,6 +195,8 @@ node scripts/atlas11/browser_check.mjs --base http://localhost:8811 --pw <playwr
 - 저장소 비밀 `NETLIFY_AUTH_TOKEN` 하나만 있으면 된다. `NETLIFY_SITE_ID` 가 없으면 새 사이트를 만들어 `deploy/netlify-site.json` 에 적고(비밀 아님), 검색 제외(X-Robots-Tag · robots.txt)를 붙인다.
 - aaa7377.com 은 저장소 비밀 `NETLIFY_SITE_ID` 에 그 사이트 번호를 넣었을 때만 바뀐다.
 - 저장소의 `netlify.toml`(옛 함수 설정)이 끼지 않게 dist 를 저장소 밖 임시 폴더로 복사해서 올린다. 열쇠는 로그·파일에 쓰지 않는다.
+- 2026-09-30 21:14 KST 첫 배포: 사이트 `atlas11-spo9ih` → https://atlas11-spo9ih.netlify.app (753파일 · 상태 ready). 넷리파이 팀 설정(Pro · 팀 로그인 보호 「all」)이 새 사이트에도 걸려 있어, 사장님 넷리파이 계정으로 로그인해야 보인다(로그인 안 하면 401 → 넷리파이 로그인 화면). 누구나 보게 하려면 넷리파이 사이트 설정의 방문자 접근(Visitor access)을 풀어야 한다 — 사장님 결정.
+- 첫 시도에서 기록 커밋이 실패해(다시 만든 화면 파일 때문에 rebase 거부) 사이트 파일이 저장되지 않았다 → 배포 스크립트가 넷리파이에서 전에 만든 `atlas11-xxxxxx` 사이트를 찾아 다시 쓰게 고쳤다(새 주소가 날마다 생기지 않음).
 
 ### 11.7 아직 연결 못 한 것과 필요한 조치
 1. 화면 매일 자동 올리기 — 넷리파이 개인 접근 열쇠를 만들어 저장소 비밀 `NETLIFY_AUTH_TOKEN` 에 넣기(사장님 계정).
