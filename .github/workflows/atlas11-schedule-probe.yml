@@ -1,0 +1,16 @@
+name: atlas11-schedule-probe
+# 진단용(2026-09-30 하루만): 이 저장소에서 GitHub 예약(schedule) 이벤트가 실제로 오는지 본다.
+# 16:00 예약이 오지 않았다 → 정각을 피한 17:50 · 18:10 KST 에 한 번씩 건다. 아무것도 바꾸지 않고 시각만 찍는다.
+# 확인이 끝나면 이 파일은 지운다.
+on:
+  schedule:
+    - cron: '50 8 30 9 *'   # 2026-09-30 17:50 KST
+    - cron: '10 9 30 9 *'   # 2026-09-30 18:10 KST
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: echo "schedule event arrived at $(date -u +%Y-%m-%dT%H:%M:%SZ) (cron ${{ github.event.schedule }})"
