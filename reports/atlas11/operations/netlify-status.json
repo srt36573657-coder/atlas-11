@@ -1,0 +1,47 @@
+{
+  "at": "2026-09-30T12:20:11.697Z",
+  "siteId": "d6ab8a36-88f4-4813-8f8e-365c709912bc",
+  "name": "atlas11-spo9ih",
+  "url": "https://atlas11-spo9ih.netlify.app",
+  "api": {
+    "status": 200,
+    "state": "current",
+    "published": "ready",
+    "publishedAt": "2026-09-30T12:20:10.959Z",
+    "ssl": false,
+    "passwordSet": false,
+    "hasPassword": false,
+    "ssoLogin": true,
+    "ssoLoginContext": "all",
+    "visitorAccess": {
+      "sso_login": true,
+      "sso_login_context": "all",
+      "account_sso_login": true,
+      "account_sso_login_context": "all",
+      "password_context": true
+    },
+    "accountSlug": "srt36573657",
+    "accountType": "Pro",
+    "plan": "nf_team_pro"
+  },
+  "fetch": [
+    {
+      "url": "https://atlas11-spo9ih.netlify.app",
+      "status": 401,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "<!DOCTYPE html> <html> <head> <title>Login Redirect</title> </head> <body> <script> window.onload = function() { var fragment = window.location.hash; var url = new URL('https:\\/\\/app.netlify.com\\/edge-access?domain=atlas11-spo9ih.netlify.app\\u0026requested_path=%2F\\u0026site_id=d6ab8a36-88f4-4813-8f"
+    },
+    {
+      "url": "https://atlas11-spo9ih.netlify.app/data/atlas11/view/manifest.json",
+      "status": 401,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "<!DOCTYPE html> <html> <head> <title>Login Redirect</title> </head> <body> <script> window.onload = function() { var fragment = window.location.hash; var url = new URL('https:\\/\\/app.netlify.com\\/edge-access?domain=atlas11-spo9ih.netlify.app\\u0026requested_path=%2Fdata%2Fatlas11%2Fview%2Fmanifest.js"
+    }
+  ]
+}
