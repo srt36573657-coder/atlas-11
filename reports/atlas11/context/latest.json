@@ -1,23 +1,23 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-09-30",
- "fetchedAt": "2026-09-29T22:27:33Z",
- "file": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+ "fetchedAt": "2026-09-30T08:21:48Z",
+ "file": "reports/atlas11/context/2026-09-30/2026-09-30T08-21-48Z.json",
  "summary": {
   "day": "2026-09-30",
-  "fetchedAt": "2026-09-29T22:27:33Z",
+  "fetchedAt": "2026-09-30T08:21:48Z",
   "index": {
    "KOSPI": {
-    "date": "2026-09-29",
-    "close": 6870.81,
-    "changePct": -0.27,
-    "status": "earlier_day"
+    "date": "2026-09-30",
+    "close": 6838.04,
+    "changePct": -0.48,
+    "status": "same_day"
    },
    "KOSDAQ": {
-    "date": "2026-09-29",
-    "close": 849.8,
-    "changePct": 0.38,
-    "status": "earlier_day"
+    "date": "2026-09-30",
+    "close": 855.91,
+    "changePct": 0.72,
+    "status": "same_day"
    }
   },
   "flows": {
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 52,
    "raw": 1040,
-   "distinct": 1028,
-   "republished": 12,
+   "distinct": 1023,
+   "republished": 17,
    "sameArticle": 0,
-   "stocksWithTodayNews": 34,
-   "todayDistinct": 156
+   "stocksWithTodayNews": 47,
+   "todayDistinct": 571
   },
   "disclosures": {
    "stocks": 52,
    "items": 1040,
-   "corporateActions": 115
+   "corporateActions": 121
   },
   "macro": [
    {
@@ -59,9 +59,9 @@
     "label": "원/달러(네이버 표기 · 은행 고시 기준)",
     "factorId": "F06",
     "latest": {
-     "date": "2026-09-29",
-     "value": 1353,
-     "changePct": -0.51
+     "date": "2026-09-30",
+     "value": 1352.4,
+     "changePct": -0.08
     },
     "rows": 10
    },
@@ -70,8 +70,8 @@
     "label": "S&P 500 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-09-28",
-     "value": 7683.69
+     "date": "2026-09-29",
+     "value": 7670.84
     },
     "rows": 60
    },
@@ -80,8 +80,8 @@
     "label": "나스닥 종합 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-09-28",
-     "value": 26820.38
+     "date": "2026-09-29",
+     "value": 26797.54
     },
     "rows": 60
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 0,
+  "revisions": 36,
   "errors": 0,
   "usedInForecast": false
  },
@@ -237,9 +237,51 @@
    "factorId": "F30",
    "observed": true,
    "stocks": 52,
-   "latestObservation": "2026-09-28",
-   "corporateActions": 115,
+   "latestObservation": "2026-09-30",
+   "corporateActions": 121,
    "recentActions": [
+    {
+     "code": "051910",
+     "title": "(주)LG화학 변경상장(주식소각)",
+     "publishedAt": "2026-09-30T16:53:09+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "259960",
+     "title": "주식회사 크래프톤 주식 소각 결정",
+     "publishedAt": "2026-09-30T16:20:39+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "012330",
+     "title": "현대모비스(주) 회사분할 결정",
+     "publishedAt": "2026-09-30T15:24:30+09:00",
+     "word": "분할"
+    },
+    {
+     "code": "030000",
+     "title": "(주)제일기획 자기주식 취득 결정",
+     "publishedAt": "2026-09-30T08:21:57+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "030000",
+     "title": "(주)제일기획 주식선물 거래정지및거래재개(제일기획 선물)",
+     "publishedAt": "2026-09-30T08:08:00+09:00",
+     "word": "거래정지"
+    },
+    {
+     "code": "030000",
+     "title": "(주)제일기획 주식 소각 결정",
+     "publishedAt": "2026-09-30T07:53:35+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "030000",
+     "title": "(주)제일기획 매매거래정지 및 정지해제(중요내용공시)",
+     "publishedAt": "2026-09-30T07:53:21+09:00",
+     "word": "매매거래정지"
+    },
     {
      "code": "005930",
      "title": "삼성전자(주) 중간(분기)배당락 기준가격 안내(삼성전자우)",
@@ -269,48 +311,6 @@
      "title": "(주)케이티앤지 주식 소각 결정",
      "publishedAt": "2026-09-22T06:50:48+09:00",
      "word": "소각"
-    },
-    {
-     "code": "033780",
-     "title": "(주)케이티앤지 자기주식 취득 결정",
-     "publishedAt": "2026-09-22T06:50:47+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "010120",
-     "title": "엘에스일렉트릭 주식회사 유무상증자 결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-09-22T06:50:19+09:00",
-     "word": "무상증자"
-    },
-    {
-     "code": "005380",
-     "title": "현대자동차(주) 변경상장(주식소각)",
-     "publishedAt": "2026-09-17T06:51:28+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "047050",
-     "title": "(주)포스코인터내셔널 유상증자결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-09-14T06:51:05+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "003490",
-     "title": "(주)대한항공 변경상장(주식소각)",
-     "publishedAt": "2026-09-10T06:51:25+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "030200",
-     "title": "(주)케이티 자기주식취득 신탁계약 해지 결정",
-     "publishedAt": "2026-09-09T06:51:14+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "278470",
-     "title": "(주)에이피알 회사합병 결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-09-09T06:50:32+09:00",
-     "word": "합병"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -324,7 +324,7 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-09-29",
+   "latestObservation": "2026-09-30",
    "calendarLagDays": 5,
    "series": [
     {
@@ -338,8 +338,8 @@
     {
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
-     "latestObservation": "2026-09-29",
-     "value": 1353,
+     "latestObservation": "2026-09-30",
+     "value": 1352.4,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -355,21 +355,21 @@
    "stocks": null,
    "scope": "market",
    "latestObservation": "2026-09-29",
-   "calendarLagDays": 2,
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "SP500",
      "label": "S&P 500 종가",
-     "latestObservation": "2026-09-28",
-     "value": 7683.69,
+     "latestObservation": "2026-09-29",
+     "value": 7670.84,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500&cosd=2026-06-02"
     },
     {
      "series": "NASDAQCOM",
      "label": "나스닥 종합 종가",
-     "latestObservation": "2026-09-28",
-     "value": 26820.38,
+     "latestObservation": "2026-09-29",
+     "value": 26797.54,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2026-06-02"
     },

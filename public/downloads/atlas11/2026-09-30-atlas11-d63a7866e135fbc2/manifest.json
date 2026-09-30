@@ -1,0 +1,538 @@
+{
+  "schema": "atlas11-csv-manifest-1",
+  "forecastId": "2026-09-30-atlas11-d63a7866e135fbc2",
+  "issuedAt": "2026-09-30T08:22:04Z",
+  "actualAsOf": "2026-09-30",
+  "dataStatus": "current_close",
+  "columns": [
+    "날짜",
+    "구분",
+    "예측값",
+    "상단",
+    "하단"
+  ],
+  "rowsPerFile": 21,
+  "anchorRowIncluded": true,
+  "files": [
+    {
+      "code": "005930",
+      "file": "ATLAS_005930_20260930.csv",
+      "sha256": "70ee77b5fab8f5cc5bb8c02ba9ecd3e17329a62a0fec2d369b899d4b88d402be",
+      "anchor": 268500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "009150",
+      "file": "ATLAS_009150_20260930.csv",
+      "sha256": "679d3065e2520f3dbb6e5e6c01d0198d467955834c827a58074801cea8884df1",
+      "anchor": 1513000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "373220",
+      "file": "ATLAS_373220_20260930.csv",
+      "sha256": "cd093e660ddfd69129cf87f2f74277310c999c4f9bb2c9c226e7e5705d9af41c",
+      "anchor": 357000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "005380",
+      "file": "ATLAS_005380_20260930.csv",
+      "sha256": "ed83ded047a0e9d245ecd2549fa8c7a620e3236bab3142aa2e6ff7c5a825f1ca",
+      "anchor": 345000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "207940",
+      "file": "ATLAS_207940_20260930.csv",
+      "sha256": "6ec2853d13f78670b8adebe9718c121dc7df8a2c81306a1c2e596509793524a5",
+      "anchor": 1391000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "105560",
+      "file": "ATLAS_105560_20260930.csv",
+      "sha256": "49057d104f9d9eb759da96fa50ad0e2b01180ca76c2c0625760bf43493ac1aa6",
+      "anchor": 168800,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "028260",
+      "file": "ATLAS_028260_20260930.csv",
+      "sha256": "8f345f340c93c9706d51f3e931c8984b98580a2fae1528d2274acecbd2b310c5",
+      "anchor": 341500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "032830",
+      "file": "ATLAS_032830_20260930.csv",
+      "sha256": "d95666f4a473f94b7cb68b8c564c24ceae1fa86e8201f9f1d709b130f5c761f9",
+      "anchor": 282000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "012450",
+      "file": "ATLAS_012450_20260930.csv",
+      "sha256": "d8df3437b53ca8804ce07fbc959d97356a460705e4753d1adf00736661f435e3",
+      "anchor": 1007000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "034020",
+      "file": "ATLAS_034020_20260930.csv",
+      "sha256": "0a9c6f11f4e9b4fadcec2b7355e101c89808981fc591a3c0df198e540644355c",
+      "anchor": 81600,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "329180",
+      "file": "ATLAS_329180_20260930.csv",
+      "sha256": "3f0d5dd3c09031b5702a8cddbdec59217294e931c942056fbd077d80adb47b11",
+      "anchor": 433500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "034730",
+      "file": "ATLAS_034730_20260930.csv",
+      "sha256": "210645849cbe7856cbdc50e6ffbd82181ca552d8a89205695b2e111629d5f8b6",
+      "anchor": 588000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "012330",
+      "file": "ATLAS_012330_20260930.csv",
+      "sha256": "c7f481e47c7ddef4eab140fb65be469dca6c6f26802ea72fe796e3e993d2e6d3",
+      "anchor": 367000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "066570",
+      "file": "ATLAS_066570_20260930.csv",
+      "sha256": "7d40849e99c97952d6a10ea12b74b3418ce7ce2f7174238c7c015854c274ac3a",
+      "anchor": 212500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "035420",
+      "file": "ATLAS_035420_20260930.csv",
+      "sha256": "52c97f2a2bf9ffc11a259827f80355c4653068395be1ec68f94e67d48ba1c750",
+      "anchor": 193700,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "010120",
+      "file": "ATLAS_010120_20260930.csv",
+      "sha256": "06759f907dc677ee534595973671ad6040b206304010613e3e21dfbf2bee73b8",
+      "anchor": 205000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "000810",
+      "file": "ATLAS_000810_20260930.csv",
+      "sha256": "3659472cf6237a9c731cb46184d9cdb46f78a496acb8622d707574873e2511cf",
+      "anchor": 633000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "005490",
+      "file": "ATLAS_005490_20260930.csv",
+      "sha256": "51f86b93f4da1f7ca33f05e11bb8fbb6abe85fac0723ce46e2acff9426c6724b",
+      "anchor": 306000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "010130",
+      "file": "ATLAS_010130_20260930.csv",
+      "sha256": "ce600856c67bf39a77c81cb9659704bf764f158bf7c8176b26ebc806055fd13b",
+      "anchor": 1070000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "138040",
+      "file": "ATLAS_138040_20260930.csv",
+      "sha256": "860a6c03d4458ae2553f0bedf6162eb0b95d70de252c257d77664bef4d13789c",
+      "anchor": 126300,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "015760",
+      "file": "ATLAS_015760_20260930.csv",
+      "sha256": "007f4ba750b2f1391cfc59c62498ce8cb62d4726072cbdeb674bc03eba334023",
+      "anchor": 29950,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "011200",
+      "file": "ATLAS_011200_20260930.csv",
+      "sha256": "55e1071f1440566e346227ecdc7639b798a24c24df91c16d6125548eb46d15c5",
+      "anchor": 20850,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "051910",
+      "file": "ATLAS_051910_20260930.csv",
+      "sha256": "45744f3c2fc6431bcb953d9974891d277a3f73ef54eedd6e3728701b355ac68d",
+      "anchor": 251000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "017670",
+      "file": "ATLAS_017670_20260930.csv",
+      "sha256": "ace5146be4b7181bc4a5e900a587faa88aa34af8771743eb37517ba721949198",
+      "anchor": 85600,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "033780",
+      "file": "ATLAS_033780_20260930.csv",
+      "sha256": "bd099632089317e028b6b0fa5f657add0164cecb767ec330de4d760ed9687a9e",
+      "anchor": 176200,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "196170",
+      "file": "ATLAS_196170_20260930.csv",
+      "sha256": "dc028915ed466c4c88f59017796527a0e99a276915c1055091606892c84fc2f6",
+      "anchor": 254500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "018260",
+      "file": "ATLAS_018260_20260930.csv",
+      "sha256": "84c8bcb245770fa6bd6bdea3b1d69be4ecdf1d22a7be8915e39274ec57ba9b67",
+      "anchor": 219000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "086280",
+      "file": "ATLAS_086280_20260930.csv",
+      "sha256": "aba83ef878cd9ab4b4e761e64500ce2fdd6b19efa2f15e64c288b570794ad8c0",
+      "anchor": 196800,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "000720",
+      "file": "ATLAS_000720_20260930.csv",
+      "sha256": "10dcebb397f9933537a7741c4700a2c59a2896e453e20f3b9e58507887f56938",
+      "anchor": 117500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "278470",
+      "file": "ATLAS_278470_20260930.csv",
+      "sha256": "0830a053007109a8c4a11ba37761a1571b79696d37b644a66eee9bdd98b08311",
+      "anchor": 366000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "030200",
+      "file": "ATLAS_030200_20260930.csv",
+      "sha256": "6dcba0c01b3a390ba11982feaa664a1c1cc5eee54aa9a82a12b8757b5f50d171",
+      "anchor": 52300,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "003490",
+      "file": "ATLAS_003490_20260930.csv",
+      "sha256": "0a9f173a60c7316a4a5dc70486a45031d2a556f5f98be3c995445de7edd65fe1",
+      "anchor": 32000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "047050",
+      "file": "ATLAS_047050_20260930.csv",
+      "sha256": "103c4129c9a456d1bd10b28cebc62d52391b214136254c2e97fe962818311ad9",
+      "anchor": 56900,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "003230",
+      "file": "ATLAS_003230_20260930.csv",
+      "sha256": "fb1c8ee2a3fc5f52a7d06a6442d524451fd837dfdafe76c339a8037619d94e7d",
+      "anchor": 1213000,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "259960",
+      "file": "ATLAS_259960_20260930.csv",
+      "sha256": "f9a31cc481bfaebe79b2c2cf3878f374145e63fd96eee09b6bd5a75794518e89",
+      "anchor": 194900,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "021240",
+      "file": "ATLAS_021240_20260930.csv",
+      "sha256": "09b5f657cbd93621c19824eefa02fdf451d8b6ed7175435f740abccb76f03143",
+      "anchor": 99400,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "352820",
+      "file": "ATLAS_352820_20260930.csv",
+      "sha256": "f0ab30940673a7dc055c04f285a325661a9ba2b53c2775af3b86f2f992d21762",
+      "anchor": 156600,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "009830",
+      "file": "ATLAS_009830_20260930.csv",
+      "sha256": "5a5752ddeaaed5fbdba8e77dba56bc9a72afe004608bafc9ec47adf53bda2beb",
+      "anchor": 33900,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "029780",
+      "file": "ATLAS_029780_20260930.csv",
+      "sha256": "0994871786da13c7b2950823cf2ea0ed94da65c106cbf533b96c4c91d4ff7d2d",
+      "anchor": 42200,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "028300",
+      "file": "ATLAS_028300_20260930.csv",
+      "sha256": "926886535e4bb279afd2ee35a1422620ae939ad7f5e8241e7eaca25f05987b7c",
+      "anchor": 41400,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "034220",
+      "file": "ATLAS_034220_20260930.csv",
+      "sha256": "a19ef70aea25b688393190f8114fbb068de3318a26dff56d3db92a0d01b4b416",
+      "anchor": 8330,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "002380",
+      "file": "ATLAS_002380_20260930.csv",
+      "sha256": "b6236653a3e6a70b2c806bd2b33fed0ef03322f1893fadf39f86b7cebd4f839f",
+      "anchor": 470500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "036460",
+      "file": "ATLAS_036460_20260930.csv",
+      "sha256": "7b0846de6c988c13410e145b26e71dd6df7cfd87a781e0389365efa9da8bde3f",
+      "anchor": 34800,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "004170",
+      "file": "ATLAS_004170_20260930.csv",
+      "sha256": "3599da434dfd606d75d0416d7246131a7ab1d6c05f2aa27e523b800713c2cd9e",
+      "anchor": 336500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "012750",
+      "file": "ATLAS_012750_20260930.csv",
+      "sha256": "72ff7df181ee4725dd2fd2a989a6aeacd8bf98751c9b9e535a5732c8259796f0",
+      "anchor": 82600,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "111770",
+      "file": "ATLAS_111770_20260930.csv",
+      "sha256": "bddb8c6d294f33978de268d1283d360d71e3e1c277391ac5fbddfd4a2524c3c5",
+      "anchor": 68800,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "035250",
+      "file": "ATLAS_035250_20260930.csv",
+      "sha256": "ef7136f60408ed6adb93b5142667e2e930fbd6d4cdb39bb386a2e2e6562f5af5",
+      "anchor": 14260,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "257720",
+      "file": "ATLAS_257720_20260930.csv",
+      "sha256": "b0a740976b8eb5e3ee709809ffb77e3a62e5be9e421a7e7b150fc2a8deee9aca",
+      "anchor": 38150,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "226950",
+      "file": "ATLAS_226950_20260930.csv",
+      "sha256": "4ed1cc04fe78f1cd101111e03512a412a10a82aeb0348bffa1a0d14b17793970",
+      "anchor": 102500,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "010170",
+      "file": "ATLAS_010170_20260930.csv",
+      "sha256": "7425eac2aa67641252f77011decf79d1cd5cb9b779b1721e2b20c07b4f13b1d3",
+      "anchor": 16680,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "214370",
+      "file": "ATLAS_214370_20260930.csv",
+      "sha256": "888bc8336a22c9908cd8b67071a65d492792a734dcbc8d5a7c9155e9e88a2be5",
+      "anchor": 40850,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    },
+    {
+      "code": "030000",
+      "file": "ATLAS_030000_20260930.csv",
+      "sha256": "d3ca2c9f6130688fd1258e779d6cd7e6ca7b4eb054d34d29486013df33e9e540",
+      "anchor": 18740,
+      "anchorDate": "2026-09-30",
+      "rows": 21,
+      "anchorRowIncluded": true,
+      "futurePoints": 20
+    }
+  ]
+}
