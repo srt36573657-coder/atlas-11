@@ -23,6 +23,7 @@ jobs:
           node-version: 22
       - env:
           NETLIFY_AUTH_TOKEN: ${{ inputs.which == 'netlify' && secrets.NETLIFY_AUTH_TOKEN || '' }}
+          NETLIFY_SITE_ID: ${{ inputs.which == 'netlify' && secrets.NETLIFY_SITE_ID || '' }}
         run: |
           mkdir -p reports/atlas11/probe
           if [ "${{ inputs.which }}" = "yahoo52" ]; then timeout 600 node scripts/atlas11/probe/yahoo52.mjs 600 || true; elif [ "${{ inputs.which }}" = "deep" ]; then timeout 300 node scripts/atlas11/probe/deep.mjs || true; elif [ "${{ inputs.which }}" = "context" ]; then timeout 600 node scripts/atlas11/probe/context.mjs "${{ inputs.day || '20260929' }}" || true; elif [ "${{ inputs.which }}" = "context2" ]; then timeout 600 node scripts/atlas11/probe/context2.mjs || true; elif [ "${{ inputs.which }}" = "netlify" ]; then timeout 120 node scripts/atlas11/probe/netlify_sites.mjs || true; else timeout 600 node scripts/atlas11/probe/sources.mjs "${{ inputs.day || '20260929' }}" || true; fi
