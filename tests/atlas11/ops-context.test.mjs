@@ -63,12 +63,17 @@ test('매일 실행 + 관측 기록: 요인 기록이 「관측 기록 · 예측
 test('넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새로 만들기(파일에 적음) · 올릴 폴더는 저장소 밖 사본 · 새 사이트는 검색 제외', async () => {
   const dir = await tempRoot();
   assert.deepEqual(await resolveSite({token: 't', envSiteId: 'ENV', rootDir: dir}), {siteId: 'ENV', source: 'env', created: false});
-  let calls = 0; const apiImpl = async (method, p, token, body) => { calls++; assert.equal(method, 'POST'); assert.equal(p, '/sites'); assert.equal(token, 't'); return {id: 'NEW-ID', name: body.name, ssl_url: `https://${body.name}.netlify.app`, admin_url: 'https://app.netlify.com/sites/x'}; };
+  let calls = 0; const apiImpl = async (method, p, token, body) => { assert.equal(token, 't'); if (method === 'GET') { assert.match(p, /^\/sites\?/); return [{id: 'OTHER', name: 'someone-else'}]; } calls++; assert.equal(method, 'POST'); assert.equal(p, '/sites'); return {id: 'NEW-ID', name: body.name, ssl_url: `https://${body.name}.netlify.app`, admin_url: 'https://app.netlify.com/sites/x'}; };
   const made = await resolveSite({token: 't', envSiteId: '', rootDir: dir, apiImpl, name: 'atlas11-test'});
   assert.deepEqual([made.siteId, made.source, made.created, made.url], ['NEW-ID', 'created', true, 'https://atlas11-test.netlify.app']);
   const saved = JSON.parse(await fs.readFile(path.join(dir, 'deploy/netlify-site.json'), 'utf8'));
   assert.equal(saved.siteId, 'NEW-ID'); assert.ok(!JSON.stringify(saved).includes('"t"'), '열쇠는 파일에 쓰지 않는다');
   const again = await resolveSite({token: 't', envSiteId: '', rootDir: dir, apiImpl}); assert.equal(again.source, 'file'); assert.equal(calls, 1, '두 번째에는 새로 만들지 않는다');
+  // 저장 파일을 잃어도(기록 커밋 실패) 전에 만든 atlas11-xxxxxx 사이트를 찾아 다시 쓴다 — 새 주소를 또 만들지 않는다
+  const lost = await tempRoot(); let posts = 0;
+  const found = await resolveSite({token: 't', envSiteId: '', rootDir: lost, apiImpl: async (method) => { if (method === 'GET') return [{id: 'OLD', name: 'atlas11-ab12cd', ssl_url: 'https://atlas11-ab12cd.netlify.app', created_at: '2026-09-30T12:11:00Z'}, {id: 'X', name: 'atlas11-notmine-long'}, {id: 'OLDER', name: 'atlas11-zz99zz', created_at: '2026-09-01T00:00:00Z'}]; posts++; return {}; }});
+  assert.deepEqual([found.siteId, found.source, found.created, found.url], ['OLD', 'found', false, 'https://atlas11-ab12cd.netlify.app']); assert.equal(posts, 0);
+  assert.equal(JSON.parse(await fs.readFile(path.join(lost, 'deploy/netlify-site.json'), 'utf8')).siteId, 'OLD');
   const dist = await tempRoot(); await fs.writeFile(path.join(dist, 'index.html'), '<!doctype html>'); await fs.writeFile(path.join(dist, '_headers'), '/*\n  X-Frame-Options: DENY\n');
   const st = await stageDir(dist, {noindex: true});
   assert.ok(!st.startsWith(root)); assert.match(await fs.readFile(path.join(st, '_headers'), 'utf8'), /^\/\*\n {2}X-Robots-Tag: noindex, nofollow, noarchive\n {2}X-Frame-Options: DENY/);

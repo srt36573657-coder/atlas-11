@@ -31,6 +31,16 @@ export async function resolveSite({token, envSiteId = process.env.NETLIFY_SITE_I
   if (envSiteId) return {siteId: envSiteId, source: 'env', created: false};
   let saved = null; try { saved = JSON.parse(await fs.readFile(path.join(rootDir, SITE_FILE), 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   if (saved?.siteId) return {siteId: saved.siteId, source: 'file', created: false, url: saved.url ?? null, name: saved.name ?? null};
+  // 저장 파일이 없을 때: 이 스크립트가 전에 만든 사이트(atlas11-xxxxxx)가 넷리파이에 있으면 그것을 다시 쓴다 — 기록 커밋이 한 번 실패해도 주소가 날마다 새로 생기지 않게
+  try {
+    const list = await apiImpl('GET', '/sites?filter=all&per_page=100&name=atlas11-', token);
+    const mine = (Array.isArray(list) ? list : []).filter(x => /^atlas11-[a-z0-9]{6}$/.test(x?.name ?? '')).sort((a, b) => String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')));
+    if (mine.length) {
+      const f = mine[0], rec = {siteId: f.id, name: f.name, url: f.ssl_url || f.url, adminUrl: f.admin_url ?? null, createdAt: f.created_at ?? null, foundAt: new Date().toISOString(), createdBy: 'scripts/atlas11/deploy_netlify.mjs', note: '저장 파일이 없어 넷리파이에서 이 스크립트가 전에 만든 사이트를 찾아 다시 씀 · 사이트 번호는 비밀이 아님'};
+      await fs.mkdir(path.join(rootDir, 'deploy'), {recursive: true}); await fs.writeFile(path.join(rootDir, SITE_FILE), JSON.stringify(rec, null, 2) + '\n');
+      return {siteId: f.id, source: 'found', created: false, url: rec.url, name: f.name, others: mine.length - 1};
+    }
+  } catch {}
   if (!create) return {siteId: null, source: 'none', created: false};
   const siteName = name ?? `atlas11-${Math.random().toString(36).slice(2, 8)}`;
   const s = await apiImpl('POST', '/sites', token, {name: siteName});
