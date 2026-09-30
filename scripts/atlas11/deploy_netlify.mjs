@@ -53,8 +53,8 @@ export async function stageDir(distDir, {noindex = true} = {}) {
   return tmp;
 }
 
-function run(cmd, args, env) {
-  return new Promise(resolve => { const p = spawn(cmd, args, {env, stdio: ['ignore', 'pipe', 'pipe']}); let out = '', err = ''; p.stdout.on('data', d => { out += d; }); p.stderr.on('data', d => { err += d; }); p.on('close', code => resolve({code, out, err})); });
+function run(cmd, args, env, cwd) {
+  return new Promise(resolve => { const p = spawn(cmd, args, {env, cwd, stdio: ['ignore', 'pipe', 'pipe']}); let out = '', err = ''; p.stdout.on('data', d => { out += d; }); p.stderr.on('data', d => { err += d; }); p.on('close', code => resolve({code, out, err})); });
 }
 
 export async function deploy({distDir = path.join(root, 'dist'), message = null, now = new Date().toISOString()} = {}) {
@@ -62,7 +62,8 @@ export async function deploy({distDir = path.join(root, 'dist'), message = null,
   if (!token) return {state: 'skipped', reason: 'NETLIFY_AUTH_TOKEN 없음 — 저장소 비밀에 넣으면 다음 실행부터 올라감'};
   const site = await resolveSite({token});
   const stage = await stageDir(distDir, {noindex: site.source !== 'env'});
-  const r = await run('npx', ['--yes', 'netlify-cli', 'deploy', '--prod', '--dir', stage, '--site', site.siteId, '--message', message ?? `atlas11 daily ${now.slice(0, 10)}`, '--json'], {...process.env, NETLIFY_AUTH_TOKEN: token, NETLIFY_SITE_ID: site.siteId});
+  // 넷리파이 도구는 실행 위치(cwd)의 netlify.toml 을 읽는다 → 저장소가 아니라 올릴 폴더 안에서 돌린다(옛 함수 설정이 끼지 않게)
+  const r = await run('npx', ['--yes', 'netlify-cli', 'deploy', '--prod', '--dir', stage, '--site', site.siteId, '--message', message ?? `atlas11 daily ${now.slice(0, 10)}`, '--json'], {...process.env, NETLIFY_AUTH_TOKEN: token, NETLIFY_SITE_ID: site.siteId}, stage);
   let out = null; try { out = JSON.parse(r.out.slice(r.out.indexOf('{'))); } catch {}
   const redact = s => String(s ?? '').split(token).join('***').slice(-600);
   const result = {schema: 'atlas11-site-deploy-1', at: now, state: r.code === 0 && out ? 'ready' : 'failed', siteSource: site.source, siteCreated: site.created, siteId: site.siteId, url: out?.url ?? site.url ?? null, deployUrl: out?.deploy_url ?? null, deployId: out?.deploy_id ?? null, noindex: site.source !== 'env', files: (await fs.readdir(stage, {recursive: true})).length, exitCode: r.code, error: r.code === 0 ? null : redact(r.err || r.out)};
