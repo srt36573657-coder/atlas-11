@@ -87,6 +87,14 @@ test('진화 단계: 캐시된 후보 검증 11개를 평가해 사건 장부·�
   const again = await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: dir, runBacktests: true, backtestTimeBudgetMs: 1, build: stubBuild(latest), buildView: stubView(latest)});
   assert.equal(again.evolution.backtested, 0, '이미 판정한 후보는 다시 판정하지 않는다');
   assert.equal((await readEvents(dir)).length, events1.length + 1, '두 번째 실행은 「변경 없음」 사건 하나만 추가');
+  assert.equal(currentRecords(await readRecords(dir, 'experiment')).filter(r => r.body.kind === 'no_test').length, 0, '같은 날 이미 시험했으면 「시험 없음」 기록을 남기지 않는다');
+  // 다음 날: 후보 11개가 모두 판정돼 새로 시험할 것이 없다 → 실험 장부에 「시험 없음」과 까닭이 한 줄 남는다(같은 날 다시 돌아도 한 줄)
+  const nextDay = {rootDir: dir, runBacktests: true, backtestTimeBudgetMs: 1, build: stubBuild(latest), buildView: stubView(latest)};
+  await runDaily({now: '2026-09-29T13:45:00.000Z', ...nextDay});
+  await runDaily({now: '2026-09-29T13:50:00.000Z', ...nextDay});
+  const noTest = currentRecords(await readRecords(dir, 'experiment')).filter(r => r.body.kind === 'no_test');
+  assert.equal(noTest.length, 1); assert.equal(noTest[0].dateKST, '2026-09-29'); assert.equal(noTest[0].body.openCandidates, 0); assert.equal(noTest[0].body.candidatesTotal, 11);
+  assert.match(noTest[0].body.reason, /새로 시험할 후보 없음 — 후보 11개가 모두 판정됨/); assert.equal(noTest[0].body.validationWindow.trainingBefore, '2026-09-17');
 });
 
 test('배포 묶음: index.html 최상위 · 화면 자료·CSV 포함 · 비밀키 없음 · 원본 대용량 제외', async () => {

@@ -177,11 +177,25 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const scoresText = await page.locator('#main').innerText();
   check(`${label} 성적 화면(채점 예정표 4칸 + 후향 진단)`, /채점 예정표|날짜별 성적/.test(scoresText) && /후향 진단/.test(scoresText) && await page.locator('.timeline .tl').count() === 4);
   await shot('05-scores');
-  // 진화
+  // 진화 v8: 질문 하나 · 결론 한 문장 · 막힘 · 그림 하나(점·표시 수 = 사실표) · 날짜마다 세 박자 · 공사 기록 · 검산
   await page.goto(base + '/#/evolution', {waitUntil: 'networkidle'});
-  await page.waitForSelector('.formula');
+  await page.waitForSelector('.evo-hero'); await page.waitForSelector('svg.evo-chart');
+  const tl = await page.evaluate(async () => (await fetch('data/atlas11/view/timeline.json')).json());
   const evo = await page.locator('#main').innerText();
-  check(`${label} 진화 화면 A/B 네 숫자·기각·계산 흐름 그림`, /운영 A 유지/.test(evo) && /9\.31/.test(evo) && /9\.39/.test(evo) && await page.locator('svg.pipeline').count() === 1, null);
+  const heroText = await page.locator('.evo-hero').innerText();
+  check(`${label} 진화: 질문·결론 한 문장·표본·막힘이 첫 화면에`, heroText.includes(tl.question) && heroText.includes(tl.headline.word) && heroText.includes(tl.headline.sentence) && (!tl.blocker || heroText.includes(tl.blocker.line)) && await page.evaluate(() => document.querySelector('.evo-hero').getBoundingClientRect().bottom <= window.innerHeight + 40), {word: tl.headline.word, blocker: tl.blocker?.key});
+  const dots = await page.locator('svg.evo-chart circle.evo-dot').count(), daily = await page.locator('svg.evo-chart circle.evo-daily').count(), tests = await page.locator('svg.evo-chart .evo-test-mark').count(), changes = await page.locator('svg.evo-chart .evo-change-mark').count(), builds = await page.locator('svg.evo-chart .evo-build-mark').count(), judge = await page.locator('svg.evo-chart .evo-judge').count();
+  const sg = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1) + '%', lastCum = tl.chart.cumulative.at(-1);
+  const vals = await page.locator('svg.evo-chart .evo-val').allTextContents();
+  const headlineNumber = lastCum ? `${Math.abs(lastCum.lessWrongPct).toFixed(1)}% ${lastCum.lessWrongPct >= 0 ? '덜' : '더'} 틀렸습니다` : null, skillShown = await page.locator('.evo-skill').innerText();
+  check(`${label} 진화: 그림 하나 — 합친 값 선의 점 = 사실표 · 마지막 점 글자 = 그림 위 실력 문장의 숫자 · 하루 값 흐린 점 · ○시험만·◆바꿈·▲공사 수 = 사실표 · 판정 시작 선`, await page.locator('svg.evo-chart').count() === 1 && dots === tl.chart.cumulative.length && daily === tl.chart.points.length && vals.at(-1) === '지금까지 ' + sg(lastCum.lessWrongPct) && skillShown.includes(headlineNumber) && skillShown === tl.headline.skillLine && tests === tl.chart.tests.length && changes === tl.chart.changes.length && builds === tl.chart.constructions.length && judge === (tl.chart.judgementDate ? 1 : 0), {dots, daily, last: vals.at(-1), headlineNumber, tests, changes, builds, judge});
+  const tickMin = await page.evaluate(() => Math.min(...[...document.querySelectorAll('svg.evo-chart .evo-tick')].map(t => parseFloat(getComputedStyle(t).fontSize) * (t.ownerSVGElement.getBoundingClientRect().width / t.ownerSVGElement.viewBox.baseVal.width))));
+  check(`${label} 진화: 그림 글자가 화면에서 11px 이상(휴대폰에서도 줄어들지 않음)`, tickMin >= 11, {tickMin: Math.round(tickMin * 10) / 10});
+  const dayRows = await page.locator('.evo-day').count(), beats = await page.locator('.evo-day').first().locator('.beat').count();
+  await page.locator('.evo-day').first().locator('summary').click(); await page.waitForTimeout(250);
+  const openedH4 = await page.locator('.evo-day').first().locator('.evo-beat-detail h4').count();
+  check(`${label} 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 박자마다 까닭(3칸)`, dayRows === tl.days.length && beats === 3 && openedH4 === 3, {dayRows, days: tl.days.length, beats, openedH4});
+  check(`${label} 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시`, await page.locator('.evo-build li').count() === tl.constructions.length && /공사 기록 — 사람이 고친 장치\(진화 아님\)/.test(evo) && (tl.check ? evo.includes(tl.check.ok ? `이 화면의 숫자 ${tl.check.checked}곳을 기록 장부에서 따로 다시 세어 모두 같음` : '검산 어긋남') : true), {constructions: tl.constructions.length, check: tl.check?.ok});
   await shot('06-evolution');
   // 자료 상태
   await page.goto(base + '/#/status', {waitUntil: 'networkidle'});
@@ -196,12 +210,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const observedTiles = await page.locator('.ftile.observed').count();
   const hasCtx = await page.evaluate(() => [...document.querySelectorAll('h2')].some(x => /오늘의 시장·수급·거시/.test(x.textContent)));
   check(`${label} 자료 상태: 관측 기록 요인 칸(파랑 점선)과 시장·수급·거시 절 · 예측 미사용 표시`, observedTiles >= 1 && hasCtx && /예측 미사용/.test(statusText), {observedTiles, hasCtx});
-  // v6 진화: 자동 진화 등록부(후보 11 · 네 숫자 · 관문 · 결정) · 36요인 관리표 · 채점 정책
-  await page.goto(base + '/#/evolution', {waitUntil: 'networkidle'}); await page.waitForSelector('.card.panel');
-  const evoText = await page.locator('#main').innerText();
-  const candRows = await page.evaluate(() => { const h = [...document.querySelectorAll('.card.panel h2')].find(x => /후보와 네 숫자/.test(x.textContent)); return h ? h.parentElement.querySelectorAll('tbody tr').length : 0; });
-  const factorRows = await page.evaluate(() => { const h = [...document.querySelectorAll('.card.panel h2')].find(x => /36요인 관리표/.test(x.textContent)); return h ? h.parentElement.querySelectorAll('tbody tr').length : 0; });
-  check(`${label} 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책`, /자동 진화 · 지금 상태/.test(evoText) && candRows === 11 && factorRows === 36 && /채점 정책\(결과 보기 전에 고정\)/.test(evoText) && /9\.3104/.test(evoText) && /기각/.test(evoText), {candRows, factorRows});
+  // v8 진화 전문가용(접힘): 운영 식 · 채택 규칙 — 지운 것 가운데 되살린 한 칸
+  await page.goto(base + '/#/evolution', {waitUntil: 'networkidle'}); await page.waitForSelector('.evo-expert');
+  await page.locator('.evo-expert summary').click(); await page.waitForTimeout(200);
+  const expertText = await page.locator('.evo-expert').innerText();
+  check(`${label} 진화 전문가용: 운영 식·핵심 규칙·관문·실전 관찰 최소 채점일`, await page.locator('.evo-expert .formula').count() === 1 && /핵심 규칙:/.test(expertText) && /관문 direction/.test(expertText) && /최소 10 채점일/.test(expertText), null);
   // v6 기록: 여섯 문장 · 8종류 단추 · 거름 · 실험 기록 표 · 내려받기 · 'null' 글자 없음
   await page.goto(base + '/#/records', {waitUntil: 'networkidle'}); await page.waitForSelector('.sentences li');
   const sixCount = await page.locator('.sentences li').count(), typeBtns = await page.locator('.filters.types .filter').count();

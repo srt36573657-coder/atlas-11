@@ -209,3 +209,8 @@ node scripts/atlas11/browser_check.mjs --base http://localhost:8811 --pw <playwr
 ### 11.8 검사
 - 단위 검사 73/73 (`reports/atlas11/tests.tap`) · 실제 크롬 112/112 (PC·모바일·어두운 화면) · 완료 증거 검사기 `scripts/atlas11/check_completion.mjs` → `reports/atlas11/verify/completion-latest.md`.
 - 오늘 바꾼 코드는 실제 저장소 사본에서 11:00 KST 기준으로 8단계를 끝까지 돌려 본 뒤(모두 ok · 156셀 a3 재분석) 올렸다.
+
+### 진화 칸(v8) · 공사 기록
+- 「진화」 칸 자료는 `public/data/atlas11/view/timeline.json` — `lib/atlas11/timeline.mjs` 가 기록 장부에서 만들고, `lib/atlas11/timeline_check.mjs` 가 따로 다시 세어 결과(`check`)를 붙인다. 매일 실행의 화면 단계(`scripts/atlas11/build_view.mjs`)에서 저절로 새로 만든다.
+- 진화 = 시장 결과로 예측 식이 바뀐 것(모델 기록의 채택·되돌림). 공사 = 사람이 고친 장치 — `node scripts/atlas11/record_construction.mjs --date YYYY-MM-DD --title "…" --heard "시장의 답을 더 잘 듣게 된 점" --commits abc1234` 로 기록 장부(operation · construction)에 덧붙인다.
+- 시험이 없던 날은 실험 장부에 kind `no_test` 한 줄과 까닭이 남는다.

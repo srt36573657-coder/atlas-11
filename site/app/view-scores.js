@@ -1,7 +1,7 @@
-/* ATLAS 11 · 성적(실시간 채점 + 채점 예정표) · 진화(운영 A vs 후보 B + 계산 흐름 그림) · 자료 상태(36요인 격자 · 달력 · 실행 기록 · 검사 증거 · 무결성) */
+/* ATLAS 11 · 성적(실시간 채점 + 채점 예정표) · 자료 상태(36요인 격자 · 달력 · 실행 기록 · 검사 증거 · 무결성) — 진화는 view-evolution.js */
 import {h, num, pct, pctPoint, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, csvCell} from './util.js';
 import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, setSummary, url, state} from './store.js';
-import {sentencesBlock, evolutionAutoSections} from './view-records.js';
+import {sentencesBlock} from './view-records.js';
 
 const section = (title, ...children) => h('section', {class: 'card'}, h('h2', null, title), ...children);
 const table = (head, rows, cls = '') => h('div', {class: 'table-wrap'}, h('table', {class: 'table ' + cls}, h('thead', null, h('tr', null, ...head.map(x => h('th', null, x)))), h('tbody', null, ...rows.map(r => h('tr', null, ...r.map(c => h('td', null, c)))))));
@@ -49,43 +49,6 @@ export async function renderScores(main, {manifest}) {
     ar ? h('div', null, h('h3', null, '9/17 재구성본 참고 대조'), h('p', {class: 'small'}, `${ar.label}. 만들어진 날 ${ar.createdDayKST} · 원본 해시 ${ar.hashMatches ? '일치' : '불일치'}`), table(['날짜', '종목', '평균 오차', '띠 담김'], ar.comparedDatesAfterCreation.map(d => [d.date, d.stocks, f2(d.meanAPE) + '%', pctPoint(d.coverage, 0)]))) : null,
     h('p', {class: 'muted xs'}, h('a', {href: '#/evolution'}, '진화 화면에서 공식·프로토콜·기각 사유 보기 ›'))));
   main.replaceChildren(...parts);
-}
-
-/* ---------- 계산 흐름 그림 (명령서 2절 개념도) ---------- */
-function pipelineSVG() {
-  const NS = 'http://www.w3.org/2000/svg', el = (t, a = {}) => { const e = document.createElementNS(NS, t); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); return e; };
-  const W = 980, H = 250, svg = el('svg', {viewBox: `0 0 ${W} ${H}`, class: 'pipeline', role: 'img', 'aria-label': '계산 흐름: 실제 종가와 자료 → 검사 → 종목별 입력 → 분포 계산과 방향 선택 → 변경 불가 발행 → 화면 · 채점 → 오답 분석 → 검증 통과 시에만 새 모형'});
-  const defs = el('defs'); const m = el('marker', {id: 'arw', viewBox: '0 0 10 10', refX: '9', refY: '5', markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse'}); const mp = el('path', {d: 'M0,0 L10,5 L0,10 z'}); mp.setAttribute('fill', '#5A5E66'); m.append(mp); defs.append(m); svg.append(defs);
-  const boxes = [
-    {x: 10, y: 40, w: 130, t: '실제 종가·자료', s: '가격·달력·일정', k: ''}, {x: 170, y: 40, w: 130, t: '검사', s: '시각·대상·정정·품질', k: ''}, {x: 330, y: 40, w: 130, t: '52종목 입력', s: '자기 수익률·52종목 폭', k: ''},
-    {x: 490, y: 40, w: 150, t: '분포 계산·방향 선택', s: '2만 경로 · 보합 ±0.1%', k: 'key'}, {x: 670, y: 40, w: 130, t: '변경 불가 발행', s: 'SHA-256 ID · 재사용', k: 'key'}, {x: 830, y: 40, w: 140, t: '화면 · 1만원 · 설명', s: '같은 발행본만', k: ''},
-    {x: 670, y: 160, w: 130, t: '다음 실제값 채점', s: '발행 뒤 실현값만', k: ''}, {x: 490, y: 160, w: 150, t: '오답 분석·개선 후보', s: 'A/B 후향 비교', k: ''}, {x: 300, y: 160, w: 160, t: '시간순 검증 통과?', s: '오차↓ 그리고 순위≥ · 자료 관문', k: 'gate'},
-  ];
-  for (const b of boxes) { svg.append(el('rect', {x: b.x, y: b.y, width: b.w, height: 56, rx: 12, class: 'box ' + b.k})); const t = el('text', {x: b.x + b.w / 2, y: b.y + 24, 'text-anchor': 'middle'}); t.textContent = b.t; svg.append(t); const s2 = el('text', {x: b.x + b.w / 2, y: b.y + 42, 'text-anchor': 'middle', class: 'sub'}); s2.textContent = b.s; svg.append(s2); }
-  const arrow = (d, cls = '') => svg.append(el('path', {d, class: 'arrow ' + cls}));
-  arrow('M140,68 L168,68'); arrow('M300,68 L328,68'); arrow('M460,68 L488,68'); arrow('M640,68 L668,68'); arrow('M800,68 L828,68');
-  arrow('M735,96 L735,158'); arrow('M670,188 L642,188'); arrow('M490,188 L462,188');
-  arrow('M300,188 C200,188 200,130 300,80 L328,70', 'loop'); arrow('M380,160 C380,120 480,110 500,96', 'loop');
-  const l1 = el('text', {x: 215, y: 150, class: 'sub'}); l1.textContent = '실패 → 기존 모형 유지 · 실패 보존'; svg.append(l1);
-  const l2 = el('text', {x: 395, y: 118, class: 'sub'}); l2.textContent = '통과 → 새 모형 버전'; svg.append(l2);
-  const l3 = el('text', {x: 745, y: 132, class: 'sub'}); l3.textContent = '매일'; svg.append(l3);
-  return svg;
-}
-
-/* ---------- 진화 ---------- */
-export async function renderEvolution(main, {manifest}) {
-  const ev = await loadEvolution();
-  const cb = ev.candidateB;
-  const au = ev.autoEvolution; setSummary(`진화. 운영 모델 ${au?.operating?.modelVersion ?? 'A'}. ${au ? `후보 ${au.candidates.length}개 중 검증 완료 ${au.candidates.filter(c => c.four).length}, 실전 관찰 ${au.candidates.filter(c => c.statusKey === 'observing').length}, 기각 ${au.candidates.filter(c => c.statusKey === 'rejected').length}, 채택 ${au.adoptions.length}, 복귀 ${au.rollbacks.length}.` : ''} 오답이 나와도 운영 방정식을 바로 바꾸지 않고 검증한 개선만 도입합니다.`);
-  main.replaceChildren(
-    h('section', {class: 'lead'}, h('h1', {class: 'h1', 'data-speak': '진화'}, '진화'), h('p', {class: 'muted', 'data-speak': '오답이 생겨도 즉시 운영 방정식을 바꾸지 않습니다. 검증한 개선만 도입합니다.'}, '오답이 생겨도 즉시 운영 방정식을 바꾸지 않습니다. 새 실제값으로 오늘 전망 재계산은 매일, 계수·모형 교체는 별도 검증 뒤에만.')),
-    section('계산이 도는 길', pipelineSVG(), h('p', {class: 'muted xs'}, '실제값 → 검사 → 종목별 입력 → 분포·방향 → 변경 불가 발행 → 화면. 다음 날 실제값으로 채점하고, 개선 후보는 시간순 검증을 통과할 때만 새 모형이 됩니다. 실패하면 기존 모형을 유지하고 실패를 보존합니다.')),
-    ...evolutionAutoSections(ev.autoEvolution),
-    section('운영 모형 A (현재)', h('p', null, h('b', null, ev.operating.modelVersion), ` · 엔진 ${ev.operating.engine} · 경로 ${num(ev.operating.paths)} · 시드 ${ev.operating.seed}`), h('pre', {class: 'formula'}, ev.operating.formula.join('\n')), table(['학습', '값'], [['계수 동결 기준', ev.operating.training.frozenBefore + ' 이전'], ['최소 학습 / 내부 선택 / 보류', `${ev.operating.training.minimumTrain} / ${ev.operating.training.innerSelection} / ${ev.operating.training.holdout} 거래일`], ['최대 학습', ev.operating.training.maxTrain + ' 거래일'], ['능형 벌점 후보', ev.operating.training.penalties.join(', ')], ['요인 선택', ev.operating.training.selection], ['상태 갱신', ev.operating.state]])),
-    cb ? section('후보 B · 이번 세션 실행 결과', h('p', null, '바뀐 입력: ', ...cb.changedInputs.map(x => h('span', {class: 'badge'}, x))), h('p', {class: 'small'}, '바뀐 공식: ' + cb.changedFormula), table(['', '운영 A', '후보 B'], [['평균 절대 가격 오차율', f2(cb.A.meanErrorPct) + '%', f2(cb.B.meanErrorPct) + '%'], ['상위5 순위 적중 /' + cb.rankMaximum, cb.A.rankHits, cb.B.rankHits], ['오차 차이(B−A) 평균 / 기준일 표준편차', f3(cb.errorDifference.mean) + '%p', f3(cb.errorDifference.sdAcrossOriginDays) + '%p']]), h('h3', null, '블록별'), table(['블록', '기준일 수', 'A 오차', 'B 오차', 'A 적중', 'B 적중'], cb.byBlock.map(b => [b.block, b.days, f2(b.errorA) + '%', f2(b.errorB) + '%', b.rankA, b.rankB])), h('p', null, h('b', null, `결정: 운영 ${cb.decision.selected} 유지 · B 기각`), ` (${cb.decision.reason})`), h('h3', null, '프로토콜(결과를 보기 전에 저장)'), h('ul', {class: 'plain small'}, h('li', null, `${cb.protocol.originDays}기준일 · ${cb.protocol.blocks}블록 × ${cb.protocol.blockDays}일 · 미래 ${cb.protocol.horizon}거래일 · 경로 ${cb.protocol.paths} · 시드 ${cb.protocol.seed}`), h('li', null, cb.protocol.training), h('li', null, `주지표 1: ${cb.protocol.primaryError}`), h('li', null, `주지표 2: ${cb.protocol.rankHits} · 동률 ${cb.protocol.rankTies}`), h('li', null, `채택: ${cb.protocol.adoption}`), h('li', null, `미래 거시 가정: ${cb.protocol.futureMacro} · 지연 ${cb.protocol.lagDays}일(가정)`)), h('h3', null, '미검증 항목'), h('ul', {class: 'plain small'}, ...cb.unverified.map(u => h('li', null, u))), h('p', {class: 'muted xs'}, `실행 ${stamp(cb.startedAt)} ~ ${stamp(cb.finishedAt)} · ${num(cb.rows)}행 · runId ${cb.runId}`)) : section('후보 B', h('p', {class: 'muted'}, '비교 결과 없음')),
-    ev.scenarioStability ? section('대표 시나리오 안정성 (진단)', h('p', {class: 'small'}, `후보·기준 표본 수를 바꿔(${ev.scenarioStability.settings.map(s => s.candidatePaths + '/' + s.referencePaths).join(' → ')}) 다시 골랐을 때: 같은 경로 ${ev.scenarioStability.summary.samePath}/52 · 다른 경로의 평균 절대 차이 ${ev.scenarioStability.summary.meanAbsDiffPct}% (80% 띠 폭 평균 ${ev.scenarioStability.summary.meanBandWidthPct}% 의 ${(ev.scenarioStability.summary.diffToBandRatio * 100).toFixed(0)}%) · 중앙 전망과의 거리 ${ev.scenarioStability.summary.meanDistToMedianA}% / ${ev.scenarioStability.summary.meanDistToMedianB}%`), h('p', {class: 'muted xs'}, `${ev.scenarioStability.note} · 실행 ${stamp(ev.scenarioStability.at)} · 경로 ${num(ev.scenarioStability.paths)}`)) : null,
-    section('비교 이력', table(['실행', 'A 오차', 'B 오차', 'A 적중', 'B 적중', '수치 조건', '채택'], ev.history.map(x => [x.label + ' · ' + stamp(x.at), f2(x.A.meanErrorPct) + '%', f2(x.B.meanErrorPct) + '%', x.A.rankHits, x.B.rankHits, x.numericalGate ? '통과' : '미통과', x.adopted ? '채택' : '기각'])), h('p', {class: 'muted xs'}, ev.adoptionRule)),
-    section('실시간 기록과 후향 실험의 분리', h('ul', {class: 'plain'}, h('li', null, ev.separation.live), h('li', null, ev.separation.retrospective)), ev.archiveReconstruction ? h('p', {class: 'small'}, `보존 확인: 9/17 재구성본(${ev.archiveReconstruction.id}) JSON.stringify SHA256 ${ev.archiveReconstruction.hashMatches ? '일치' : '불일치'} · ${ev.archiveReconstruction.label}`) : null, h('p', {class: 'muted xs'}, `발행본 ${ev.forecastId} · 발행 ${stamp(ev.issuedAt)}`)));
 }
 
 /* ---------- 자료 상태 (보조) ---------- */

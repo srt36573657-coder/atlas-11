@@ -3,7 +3,8 @@ import {h, stamp, speakScreen, stopSpeak, korDate, shortDate} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderForecast, pauseAllPlayers} from './view-forecast.js';
 import {renderRace, pauseRace} from './view-race.js';
-import {renderScores, renderEvolution, renderStatus} from './view-scores.js';
+import {renderScores, renderStatus} from './view-scores.js';
+import {renderEvolution} from './view-evolution.js';
 import {renderRecords} from './view-records.js';
 
 const app = {view: null, manifest: null};

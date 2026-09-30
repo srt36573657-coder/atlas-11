@@ -1,13 +1,13 @@
 {
   "schema": "atlas11-browser-check-1",
-  "at": "2026-09-29T22:44:38.459Z",
-  "base": "http://127.0.0.1:8811",
+  "at": "2026-09-30T14:53:37.575Z",
+  "base": "http://localhost:8811",
   "chromium": "playwright bundled chromium (headless)",
   "viewports": {
     "pc": "1280x800",
     "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)"
   },
-  "passed": 112,
+  "passed": 120,
   "failed": 0,
   "checks": [
     {
@@ -29,7 +29,7 @@
       "name": "pc 자료 기준일 표시",
       "ok": true,
       "detail": {
-        "chip": "확정 종가 9월 29일"
+        "chip": "확정 종가 9월 30일"
       }
     },
     {
@@ -52,14 +52,14 @@
       "name": "pc 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 42
+        "filtered": 37
       }
     },
     {
       "name": "pc 발행본 정보 팝오버·무결성 검사",
       "ok": true,
       "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-29-atlas11-128de9174cfdfa1f\n기준일\n9월 29일 확정 종가\n발행 시각\n9. 29. 20:35 (한국)\n미래\n20거래일 · 09/30~10/29\n경로\n52종"
+        "popText": "이 화면의 발행본\n발행본\n2026-09-30-atlas11-d63a7866e135fbc2\n기준일\n9월 30일 확정 종가\n발행 시각\n9. 30. 17:22 (한국)\n미래\n20거래일 · 10/01~10/30\n경로\n52종"
       }
     },
     {
@@ -123,8 +123,8 @@
       "name": "pc 미래 날짜 눌러 이유 열림(D+3)",
       "ok": true,
       "detail": {
-        "cursor": "10월 2일(금) D+3",
-        "explainHead": "10월 2일(금) · D+3 전망"
+        "cursor": "10월 6일(화) D+3",
+        "explainHead": "10월 6일(화) · D+3 전망"
       }
     },
     {
@@ -137,14 +137,14 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 2일 중앙 전망 435,969원 · 출발가 대비 +1.62% · 이 날 상승 56% · 80% 범위 "
+        "oneline": "10월 6일 중앙 전망 440,221원 · 출발가 대비 +1.55% · 이 날 상승 56% · 80% 범위 "
       }
     },
     {
       "name": "pc 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "9월 30일(수) D+1",
+        "after": "10월 1일(목) D+1",
         "sameSvg": true
       }
     },
@@ -152,14 +152,14 @@
       "name": "pc 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "9월 30일 중요 일정 1건"
+        "text": "10월 6일 중요 일정 1건"
       }
     },
     {
       "name": "pc 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 1일(목) D+2"
+        "resumed": "10월 7일(수) D+4"
       }
     },
     {
@@ -171,7 +171,7 @@
       "name": "pc CSV 다운로드 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260929.csv",
+        "name": "ATLAS_329180_20260930.csv",
         "rows": 22
       }
     },
@@ -179,7 +179,7 @@
       "name": "pc 상세 JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260929_detail.json"
+        "name": "ATLAS_329180_20260930_detail.json"
       }
     },
     {
@@ -300,9 +300,51 @@
       "detail": null
     },
     {
-      "name": "pc 진화 화면 A/B 네 숫자·기각·계산 흐름 그림",
+      "name": "pc 진화: 질문·결론 한 문장·표본·막힘이 첫 화면에",
       "ok": true,
-      "detail": null
+      "detail": {
+        "word": "아직입니다",
+        "blocker": "no_candidates"
+      }
+    },
+    {
+      "name": "pc 진화: 그림 하나 — 합친 값 선의 점 = 사실표 · 마지막 점 글자 = 그림 위 실력 문장의 숫자 · 하루 값 흐린 점 · ○시험만·◆바꿈·▲공사 수 = 사실표 · 판정 시작 선",
+      "ok": true,
+      "detail": {
+        "dots": 2,
+        "daily": 2,
+        "last": "지금까지 +2.1%",
+        "headlineNumber": "2.1% 덜 틀렸습니다",
+        "tests": 1,
+        "changes": 0,
+        "builds": 3,
+        "judge": 1
+      }
+    },
+    {
+      "name": "pc 진화: 그림 글자가 화면에서 11px 이상(휴대폰에서도 줄어들지 않음)",
+      "ok": true,
+      "detail": {
+        "tickMin": 11.5
+      }
+    },
+    {
+      "name": "pc 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 박자마다 까닭(3칸)",
+      "ok": true,
+      "detail": {
+        "dayRows": 2,
+        "days": 2,
+        "beats": 3,
+        "openedH4": 3
+      }
+    },
+    {
+      "name": "pc 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
+      "ok": true,
+      "detail": {
+        "constructions": 7,
+        "check": true
+      }
     },
     {
       "name": "pc 자료 상태: 36요인 격자·달력·무결성·검사 증거",
@@ -327,12 +369,9 @@
       }
     },
     {
-      "name": "pc 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
+      "name": "pc 진화 전문가용: 운영 식·핵심 규칙·관문·실전 관찰 최소 채점일",
       "ok": true,
-      "detail": {
-        "candRows": 11,
-        "factorRows": 36
-      }
+      "detail": null
     },
     {
       "name": "pc 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
@@ -340,25 +379,25 @@
       "detail": {
         "sixCount": 6,
         "typeBtns": 8,
-        "expRows": 11,
-        "expExpected": 11,
-        "shownDate": "2026-09-29",
+        "expRows": 0,
+        "expExpected": 0,
+        "shownDate": "2026-09-30",
         "totalExperiments": 11,
-        "dl": 3
+        "dl": 2
       }
     },
     {
       "name": "pc 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
       "ok": true,
       "detail": {
-        "factorRecordRows": 72
+        "factorRecordRows": 36
       }
     },
     {
       "name": "pc 기록 CSV 내려받기 파일명",
       "ok": true,
       "detail": {
-        "name": "ATLAS_factor_2026-09-29_filtered.csv"
+        "name": "ATLAS_factor_2026-09-30_filtered.csv"
       }
     },
     {
@@ -370,7 +409,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cxedad2-band-inner\")",
+        "bandFill": "url(\"#cqjk8dg-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -416,7 +455,7 @@
       "name": "mobile 자료 기준일 표시",
       "ok": true,
       "detail": {
-        "chip": "09/29 확정"
+        "chip": "09/30 확정"
       }
     },
     {
@@ -439,14 +478,14 @@
       "name": "mobile 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 42
+        "filtered": 37
       }
     },
     {
       "name": "mobile 발행본 정보 팝오버·무결성 검사",
       "ok": true,
       "detail": {
-        "popText": "이 화면의 발행본\n발행본\n2026-09-29-atlas11-128de9174cfdfa1f\n기준일\n9월 29일 확정 종가\n발행 시각\n9. 29. 20:35 (한국)\n미래\n20거래일 · 09/30~10/29\n경로\n52종"
+        "popText": "이 화면의 발행본\n발행본\n2026-09-30-atlas11-d63a7866e135fbc2\n기준일\n9월 30일 확정 종가\n발행 시각\n9. 30. 17:22 (한국)\n미래\n20거래일 · 10/01~10/30\n경로\n52종"
       }
     },
     {
@@ -505,8 +544,8 @@
       "name": "mobile 미래 날짜 눌러 이유 열림(D+3)",
       "ok": true,
       "detail": {
-        "cursor": "10월 2일(금) D+3",
-        "explainHead": "10월 2일(금) · D+3 전망"
+        "cursor": "10월 6일(화) D+3",
+        "explainHead": "10월 6일(화) · D+3 전망"
       }
     },
     {
@@ -519,7 +558,7 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 2일 중앙 전망 435,969원 · 출발가 대비 +1.62% · 이 날 상승 56% · 80% 범위 "
+        "oneline": "10월 6일 중앙 전망 440,221원 · 출발가 대비 +1.55% · 이 날 상승 56% · 80% 범위 "
       }
     },
     {
@@ -536,7 +575,7 @@
       "name": "mobile 재생 1초/거래일 커서 이동 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "9월 30일(수) D+1",
+        "after": "10월 1일(목) D+1",
         "sameSvg": true
       }
     },
@@ -544,14 +583,14 @@
       "name": "mobile 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "9월 30일 중요 일정 1건"
+        "text": "10월 6일 중요 일정 1건"
       }
     },
     {
       "name": "mobile 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 1일(목) D+2"
+        "resumed": "10월 7일(수) D+4"
       }
     },
     {
@@ -563,7 +602,7 @@
       "name": "mobile CSV 다운로드 21행(출발 1+전망 20)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260929.csv",
+        "name": "ATLAS_329180_20260930.csv",
         "rows": 22
       }
     },
@@ -571,7 +610,7 @@
       "name": "mobile 상세 JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20260929_detail.json"
+        "name": "ATLAS_329180_20260930_detail.json"
       }
     },
     {
@@ -692,9 +731,51 @@
       "detail": null
     },
     {
-      "name": "mobile 진화 화면 A/B 네 숫자·기각·계산 흐름 그림",
+      "name": "mobile 진화: 질문·결론 한 문장·표본·막힘이 첫 화면에",
       "ok": true,
-      "detail": null
+      "detail": {
+        "word": "아직입니다",
+        "blocker": "no_candidates"
+      }
+    },
+    {
+      "name": "mobile 진화: 그림 하나 — 합친 값 선의 점 = 사실표 · 마지막 점 글자 = 그림 위 실력 문장의 숫자 · 하루 값 흐린 점 · ○시험만·◆바꿈·▲공사 수 = 사실표 · 판정 시작 선",
+      "ok": true,
+      "detail": {
+        "dots": 2,
+        "daily": 2,
+        "last": "지금까지 +2.1%",
+        "headlineNumber": "2.1% 덜 틀렸습니다",
+        "tests": 1,
+        "changes": 0,
+        "builds": 3,
+        "judge": 1
+      }
+    },
+    {
+      "name": "mobile 진화: 그림 글자가 화면에서 11px 이상(휴대폰에서도 줄어들지 않음)",
+      "ok": true,
+      "detail": {
+        "tickMin": 11.5
+      }
+    },
+    {
+      "name": "mobile 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 박자마다 까닭(3칸)",
+      "ok": true,
+      "detail": {
+        "dayRows": 2,
+        "days": 2,
+        "beats": 3,
+        "openedH4": 3
+      }
+    },
+    {
+      "name": "mobile 진화: 공사 기록 줄 수 = 장부의 공사 기록 수 · 진화와 따로 · 검산 표시",
+      "ok": true,
+      "detail": {
+        "constructions": 7,
+        "check": true
+      }
     },
     {
       "name": "mobile 자료 상태: 36요인 격자·달력·무결성·검사 증거",
@@ -719,12 +800,9 @@
       }
     },
     {
-      "name": "mobile 진화: 자동 진화 상태·후보 11개 네 숫자·관문·결정·요인표 36·채점 정책",
+      "name": "mobile 진화 전문가용: 운영 식·핵심 규칙·관문·실전 관찰 최소 채점일",
       "ok": true,
-      "detail": {
-        "candRows": 11,
-        "factorRows": 36
-      }
+      "detail": null
     },
     {
       "name": "mobile 기록: 여섯 문장 6 · 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 단추 · 'null' 없음",
@@ -732,25 +810,25 @@
       "detail": {
         "sixCount": 6,
         "typeBtns": 8,
-        "expRows": 11,
-        "expExpected": 11,
-        "shownDate": "2026-09-29",
+        "expRows": 0,
+        "expExpected": 0,
+        "shownDate": "2026-09-30",
         "totalExperiments": 11,
-        "dl": 3
+        "dl": 2
       }
     },
     {
       "name": "mobile 기록: 요인 기록 36행 단위(같은 날 여러 실행이면 36의 배수 · 덮어쓰지 않음) · 걸러진 CSV 내려받기 동작",
       "ok": true,
       "detail": {
-        "factorRecordRows": 72
+        "factorRecordRows": 36
       }
     },
     {
       "name": "mobile 기록 CSV 내려받기 파일명",
       "ok": true,
       "detail": {
-        "name": "ATLAS_factor_2026-09-29_filtered.csv"
+        "name": "ATLAS_factor_2026-09-30_filtered.csv"
       }
     },
     {
@@ -762,7 +840,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cwm01oy-band-inner\")",
+        "bandFill": "url(\"#ctv75t5-band-inner\")",
         "transforms": 0,
         "modelChip": true
       }
@@ -799,5 +877,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-29T22-43-56-378Z"
+  "dir": "reports/atlas11/browser/2026-09-30T14-52-48-367Z"
 }
