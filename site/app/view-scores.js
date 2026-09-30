@@ -74,9 +74,10 @@ export async function renderStatus(main, {manifest}) {
   const byDay = new Map(); for (const o of [...(st.operations ?? [])].sort((a, b) => a.at.localeCompare(b.at))) if (o.confirmedTodayStocks != null) byDay.set(kst(o.at).date, o.confirmedTodayStocks);
   if (!byDay.has(st.actualAsOf)) byDay.set(st.actualAsOf, st.prices.finalClose);
   const days = [...byDay.keys()].sort();
-  setSummary(`자료 상태. ${korDate(st.actualAsOf)} 15:30 KST 종가, 52종목 중 확정 종가 ${st.prices.finalClose}종목. 36요인 중 전망에 쓰는 요인 ${used}개, 관측만 ${observedOnly}개, 미확보 ${missing}개.`);
-  const hl = headline({speak: `${korDate(st.actualAsOf)} 15:30 KST 종가, 52종목 중 확정 종가 ${st.prices.finalClose}종목, 36요인 중 전망에 쓰는 요인 ${used}개`,
-    parts: [`${korDate(st.actualAsOf)} 15:30 KST 종가 · 52종목 중 확정 `, {figure: `${st.prices.finalClose}종목`}, `(${Math.round(st.prices.finalClose / 52 * 100)}%) · 36요인 중 전망에 쓰는 요인 ${used}개(${Math.round(used / 36 * 100)}%)`],
+  const nStocks = st.prices.stocks, nFactors = rows.length; // 종목 수·요인 수도 자료에서 센다
+  setSummary(`자료 상태. ${korDate(st.actualAsOf)} 15:30 KST 종가, ${nStocks}종목 중 확정 종가 ${st.prices.finalClose}종목. ${nFactors}요인 중 전망에 쓰는 요인 ${used}개, 관측만 ${observedOnly}개, 미확보 ${missing}개.`);
+  const hl = headline({speak: `${korDate(st.actualAsOf)} 15:30 KST 종가, ${nStocks}종목 중 확정 종가 ${st.prices.finalClose}종목, ${nFactors}요인 중 전망에 쓰는 요인 ${used}개`,
+    parts: [`${korDate(st.actualAsOf)} 15:30 KST 종가 · ${nStocks}종목 중 확정 `, {figure: `${st.prices.finalClose}종목`}, `(${Math.round(st.prices.finalClose / nStocks * 100)}%) · ${nFactors}요인 중 전망에 쓰는 요인 ${used}개(${Math.round(used / nFactors * 100)}%)`],
     source: [['이 숫자', `한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가`], ['마지막 관측', stamp(st.prices.anchorObservedAt)], ['받은 곳', '네이버 증권 분봉 원문(15:30 KST 종가 단일가) · 기업행위 조정 미검증'], ...editionSource(manifest, 'status.json')]});
   const lineBox = h('div');
   const evidence = h('section', {class: 'panel', 'aria-label': '헤드라인 숫자의 증거 그래프'}, h('h2', {class: 'panel-title'}, '날짜별 확정 종가 확보 종목 수(그날 마지막 실행)'), lineBox);

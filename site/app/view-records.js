@@ -36,9 +36,11 @@ export async function renderRecords(main, {manifest, hash = ''}) {
   const lastDate = index.dates.at(-1), perDay = d => Object.values(index.byDate[d] ?? {}).reduce((s, x) => s + x, 0), total = Object.values(index.totals).reduce((s, x) => s + x, 0);
   const firstWithRecords = ['score', 'analysis', 'experiment', 'model', 'forecast', 'collection', 'factor', 'operation'].find(t => index.byDate[lastDate][t] > 0) ?? 'score';
   const filt = {type: q.type ?? firstWithRecords, date: q.date ?? lastDate, code: q.code ?? '', group: q.group ?? '', factor: q.factor ?? '', cls: q.cls ?? '', cause: q.cause ?? '', model: q.model ?? '', status: q.status ?? ''};
-  setSummary(`${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 8종류, 누적 ${num(total)}건.`);
+  // 헤드라인에 「종류 수」는 넣지 않는다 — 앞 판의 「8종류」는 장부 칸 수였고 기록이 있는 종류는 7이었다(모델 기록 0건).
+  //   그날 기록이 한 종류뿐인 날에는 「기록 2건 · 8종류」가 그날 이야기로 들린다. 종류별 건수는 바로 아래 막대가 보여 준다.
+  setSummary(`${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건.`);
   const hl = headline({speak: `${korDate(lastDate)} 기록 ${num(perDay(lastDate))}건, 누적 ${num(total)}건`,
-    parts: [`${korDate(lastDate)} 기록 `, {figure: `${num(perDay(lastDate))}건`}, ` · 8종류 · 누적 ${num(total)}건`],
+    parts: [`${korDate(lastDate)} 기록 `, {figure: `${num(perDay(lastDate))}건`}, ` · 누적 ${num(total)}건`],
     source: [['이 숫자', `기록 장부 색인의 ${korDate(lastDate)} 종류별 건수 합(${TYPE_ORDER.filter(t => index.byDate[lastDate][t]).map(t => `${TYPE_LABEL[t]} ${num(index.byDate[lastDate][t])}건`).join(' · ')})`], ['기준 시각', `${stamp(index.generatedAt)} 에 만든 장부 색인`], ['장부 원본', h('span', null, h('code', null, 'reports/atlas11/ledger/<종류>/<날짜>.jsonl'), ' · 덮어쓰지 않고 덧붙임 · 정정은 앞 기록 ID 에 연결')], ...editionSource(manifest, 'ledger.json').slice(2)]});
   // 증거 그래프: 날짜별 기록 수(마지막 값 = 헤드라인 숫자)
   const lineBox = h('div'), typeBox = h('div', {class: 'bars'});

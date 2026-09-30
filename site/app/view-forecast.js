@@ -26,11 +26,12 @@ async function renderCards(main, manifest) {
   const sorters = {day1: (a, b) => edge(b) - edge(a) || a.code.localeCompare(b.code), day20: (a, b) => b.day20.return - a.day20.return || a.code.localeCompare(b.code), name: (a, b) => a.name.localeCompare(b.name, 'ko'), change: (a, b) => b.change1 - a.change1 || a.code.localeCompare(b.code), band: (a, b) => (b.day20.p90 - b.day20.p10) / b.close - (a.day20.p90 - a.day20.p10) / a.close};
   const filters = {all: () => true, up: c => c.day1.selected === 'up', down: c => c.day1.selected === 'down', close: c => c.day1.closeCall || c.day1.statisticalTie};
   const list = () => [...data.cards].sort(sorters[sortKey] ?? sorters.day1).filter(filters[filterKey] ?? filters.all).filter(c => !q || c.name.includes(q) || c.code.includes(q));
-  setSummary(`${korDate(base)} 종가 기준. ${korDate(target)} 52종목 중 상승 선택 ${d1.up}종목, 하락 선택 ${d1.down}종목. 52종목 평균 ${pct(d1.meanReturn)} 전망.`);
+  const n = data.cards.length; // 종목 수도 발행본 카드에서 센다
+  setSummary(`${korDate(base)} 종가 기준. ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 하락 선택 ${d1.down}종목. ${n}종목 평균 ${pct(d1.meanReturn)} 전망.`);
   // ① 헤드라인 한 줄
-  const hl = headline({speak: `${korDate(base)} 종가 기준, ${korDate(target)} 52종목 중 상승 선택 ${d1.up}종목, 평균 ${pct(d1.meanReturn)} 전망`,
-    parts: [`${korDate(base)} 종가 기준 · ${korDate(target)} 52종목 중 상승 선택 `, {figure: `${d1.up}종목`}, ` · 평균 ${pct(d1.meanReturn)} 전망`],
-    source: [['이 숫자', `52종목 가운데 ${korDate(target)} 방향이 「상승」으로 선택된 종목 수 (하락 선택 ${d1.down}종목 · 보합 선택 ${d1.flat}종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름`], ['평균 전망', `${pct(d1.meanReturn)} — ${d1.meanReturnBasis}`], ...editionSource(manifest, 'cards.json')]});
+  const hl = headline({speak: `${korDate(base)} 종가 기준, ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 평균 ${pct(d1.meanReturn)} 전망`,
+    parts: [`${korDate(base)} 종가 기준 · ${korDate(target)} ${n}종목 중 상승 선택 `, {figure: `${d1.up}종목`}, ` · 평균 ${pct(d1.meanReturn)} 전망`],
+    source: [['이 숫자', `${n}종목 가운데 ${korDate(target)} 방향이 「상승」으로 선택된 종목 수 (하락 선택 ${d1.down}종목 · 보합 선택 ${d1.flat}종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름`], ['평균 전망', `${pct(d1.meanReturn)} — ${d1.meanReturnBasis}`], ...editionSource(manifest, 'cards.json')]});
   // ② 증거 그래프: 날짜별 상승 선택 종목 수(마지막 점 = 헤드라인 숫자) · 실제로 오른 종목 수
   const hist = data.directionHistory, top = Math.max(20, Math.ceil((Math.max(...hist.flatMap(d => [d.predictedUp, d.actualUp ?? 0])) + 2) / 10) * 10);
   const evBox = h('div', {class: 'ev-chart'});

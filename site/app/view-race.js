@@ -20,10 +20,11 @@ export async function renderRace(main, {manifest}) {
   // 헤드라인 숫자: 발행일 종가 1만원씩 → 20거래일 뒤 중앙 전망 52종목 평균(= 그래프 굵은 평균선의 마지막 값)
   const lastVals = data.stocks.map(s => s.fromToday.at(-1).value), mean = lastVals.reduce((a, b) => a + b, 0) / lastVals.length, over = lastVals.filter(v => v > 10000).length;
   const top = data.stocks.map(s => ({name: s.name, v: s.fromToday.at(-1).value})).sort((a, b) => b.v - a.v)[0];
-  setSummary(`1만원 비교. ${korDate(data.anchorDate)} 종가에 52종목을 1만원씩 샀다면, ${korDate(end)} 중앙 전망 평균 ${won(mean)}. 1만원보다 많아지는 종목 ${over}종목. 1위 ${top.name} ${won(top.v)}.`);
-  const hl = headline({speak: `${korDate(data.anchorDate)} 종가에 1만원씩, ${korDate(end)} 중앙 전망 52종목 평균 ${won(mean)}, 1만원 넘는 종목 ${over}종목`,
-    parts: [`${korDate(data.anchorDate)} 종가에 1만원씩 · ${korDate(end)} 중앙 전망 52종목 평균 `, {figure: won(mean)}, ` · 1만원 넘는 종목 ${over}종목`],
-    source: [['이 숫자', `52종목 각각 「1만원 × ${korDate(end)} 중앙 전망 ÷ ${korDate(data.anchorDate)} 종가」를 구해 단순 평균한 값(1위 ${top.name} ${won(top.v)})`], ['1만원 넘는 종목', `${over}종목 · 못 넘는 종목 ${52 - over}종목`], ['조정', '배당·기업행위 미조정 · 수수료·세금 빼지 않음'], ...editionSource(manifest, 'race.json')]});
+  const n = lastVals.length; // 종목 수도 자료에서 센다
+  setSummary(`1만원 비교. ${korDate(data.anchorDate)} 종가에 ${n}종목을 1만원씩 샀다면, ${korDate(end)} 중앙 전망 평균 ${won(mean)}. 1만원보다 많아지는 종목 ${over}종목. 1위 ${top.name} ${won(top.v)}.`);
+  const hl = headline({speak: `${korDate(data.anchorDate)} 종가에 1만원씩, ${korDate(end)} 중앙 전망 ${n}종목 평균 ${won(mean)}, 1만원 넘는 종목 ${over}종목`,
+    parts: [`${korDate(data.anchorDate)} 종가에 1만원씩 · ${korDate(end)} 중앙 전망 ${n}종목 평균 `, {figure: won(mean)}, ` · 1만원 넘는 종목 ${over}종목`],
+    source: [['이 숫자', `${n}종목 각각 「1만원 × ${korDate(end)} 중앙 전망 ÷ ${korDate(data.anchorDate)} 종가」를 구해 단순 평균한 값(1위 ${top.name} ${won(top.v)})`], ['1만원 넘는 종목', `${over}종목 · 못 넘는 종목 ${n - over}종목`], ['조정', '배당·기업행위 미조정 · 수수료·세금 빼지 않음'], ...editionSource(manifest, 'race.json')]});
 
   const chartBox = h('div', {class: 'chart-box'}), rankBox = h('ol', {class: 'rank-list', 'aria-label': '순위'}), newsBox = h('div', {class: 'rank-news'}), cursorLabel = h('span', {class: 'cursor-text'});
   const playBtn = h('button', {class: 'ctl primary', type: 'button'}, '▶ 재생');
