@@ -148,6 +148,52 @@ export function measureClarity(opts = {}) {
   const prose = [...new Set(proseEls.map(proseText).filter(s => s.length >= 2 && /[가-힣]/.test(s)))];
   const firstProse = [...new Set(proseEls.filter(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }).map(proseText).filter(s => s.length >= 2 && /[가-힣]/.test(s)))];
   const firstView = [...new Set(textEls.filter(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }).map(piece).filter(s => s.length >= 2 && /[가-힣A-Za-z]/.test(s)))];
-  return {relDays, vague, bareNumbers: bare, graphable, lowContrast, decoColors: deco.size, hasRefTime, formatDates, sentences, firstView, prose, firstProse,
-    samples: {relDays: relSamples, vague: vagueSamples, bareNumbers: bareSamples, graphable: graphSamples, lowContrast: contrastSamples, decoColors: [...deco.entries()].slice(0, 12).map(([k, v]) => `${k} (${v})`), formatDates: fmtSamples}};
+  // ---- 7 잘린 글자(10/01 03시 추가): 칸이 좁아 「…」로 잘리거나 넘쳐 가려진 글 · 닫힌 선택 상자의 글이 상자보다 긴 것 · 화면 가장자리 밖으로 나간 글 ----
+  //   사장님 휴대폰(10/01 02:49, 어두운 화면·큰 글씨)에서 회사 이름이 한 글자만 보였는데, 1~6번은 글자 내용만 봐서 이것을 세지 못했다 → 목표 0
+  const truncSamples = [], truncEls = new Set();
+  const add = (el, word) => { truncEls.add(el); truncSamples.push(word.replace(/\s+/g, ' ').trim().slice(0, 34)); };
+  // 일부러 옆으로 넘기게 만든 띠(data-scroll="x" · 종목 상세의 날짜 띠 80여 칸)는 뺀다 — 넘겨 보는 조작 칸이지 가려진 글이 아니다
+  const intentional = e => !!e.closest('[data-scroll="x"], .date-strip');
+  const scroller = e => { for (let p = e.parentElement; p && p !== document.body; p = p.parentElement) { const s = CS(p); if (['auto', 'scroll'].includes(s.overflowX)) return true; } return false; };
+  // 글을 잘라 먹는 조상 칸(overflow hidden·clip)의 안쪽 테두리 — 글이 이 밖으로 나가면 잘려 보인다(자료 상태 막대 값 「3개」가 판 끝에서 잘리던 결함)
+  const clipMemo = new Map(), clipOf = e => { if (clipMemo.has(e)) return clipMemo.get(e); const cs = CS(e); const x = ['hidden', 'clip'].includes(cs.overflowX), y = ['hidden', 'clip'].includes(cs.overflowY); let v = null; if (x || y) { const b = e.getBoundingClientRect(); v = {x, y, l: b.left + (parseFloat(cs.borderLeftWidth) || 0), r: b.right - (parseFloat(cs.borderRightWidth) || 0), t: b.top + (parseFloat(cs.borderTopWidth) || 0), b: b.bottom - (parseFloat(cs.borderBottomWidth) || 0)}; } clipMemo.set(e, v); return v; };
+  const range = document.createRange();
+  let canvasCtx = null;
+  for (const r of roots) for (const el of r.querySelectorAll('*')) {
+    if (el.closest('svg') || !shown(el)) continue;
+    const cs = CS(el);
+    if (el.tagName === 'SELECT') {
+      const opt = el.options[el.selectedIndex]; if (!opt) continue;
+      canvasCtx ??= document.createElement('canvas').getContext('2d'); canvasCtx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      const need = canvasCtx.measureText(opt.text).width, room = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (need > room + 1) add(el, '선택 상자: ' + opt.text);
+      continue;
+    }
+    // 입력 칸의 안내 글(「종목 이름·코드」)이 칸보다 긴 것
+    if (el.tagName === 'INPUT' && !el.value && el.placeholder) {
+      canvasCtx ??= document.createElement('canvas').getContext('2d'); canvasCtx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      const need = canvasCtx.measureText(el.placeholder).width, room = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - (el.type === 'search' ? 4 : 0);
+      if (need > room + 1) add(el, '입력 칸 안내 글: ' + el.placeholder);
+      continue;
+    }
+    // 가로로 밀어야 보이는 칸(세로 목록인데 글이 옆으로 넘친 것 — 1만원 비교 순위의 값이 글씨 200% 에서 오른쪽으로 밀려 안 보이던 결함)
+    if (!intentional(el) && ['auto', 'scroll'].includes(cs.overflowX) && el.scrollWidth > el.clientWidth + 1 && (el.innerText || '').trim()) { add(el, '가로로 밀어야 보임: ' + el.innerText); continue; }
+    // 「…」 줄임
+    if (cs.textOverflow === 'ellipsis' && el.scrollWidth > el.clientWidth + 1 && (el.innerText || '').trim()) { add(el, '줄임표: ' + el.innerText); continue; }
+    // 자기 글자(글자 조각의 실제 자리)가 화면 밖이나 잘라 먹는 조상 칸 밖으로 나간 것
+    if (el.classList.contains('sr') || intentional(el)) continue;
+    for (const n of el.childNodes) {
+      if (n.nodeType !== 3 || !n.textContent.trim()) continue;
+      range.selectNodeContents(n); const t = range.getBoundingClientRect(); if (t.width < 1 || t.height < 1) continue;
+      let why = null;
+      if (!scroller(el) && (t.right > innerWidth + 1 || t.left < -1)) why = '화면 밖: ';
+      else for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) { const c = clipOf(p); if (c && ((c.x && (t.right > c.r + 1 || t.left < c.l - 1)) || (c.y && (t.bottom > c.b + 1 || t.top < c.t - 1)))) { why = '칸 끝에서 잘림: '; break; } }
+      if (why) { add(el, why + el.textContent); break; }
+    }
+  }
+  // 잘린 칸 안의 잘린 칸은 한 번만 센다(바깥 칸이 잘리면 안쪽 글도 함께 잘려 보이므로)
+  const truncated = [...truncEls].filter(e => ![...truncEls].some(o => o !== e && o.contains(e))).length;
+  const pageOverflowX = document.documentElement.scrollWidth > innerWidth + 1;
+  return {relDays, vague, bareNumbers: bare, graphable, lowContrast, decoColors: deco.size, truncated: truncated + (pageOverflowX ? 1 : 0), pageOverflowX, hasRefTime, formatDates, sentences, firstView, prose, firstProse,
+    samples: {relDays: relSamples, vague: vagueSamples, bareNumbers: bareSamples, graphable: graphSamples, lowContrast: contrastSamples, decoColors: [...deco.entries()].slice(0, 12).map(([k, v]) => `${k} (${v})`), formatDates: fmtSamples, truncated: truncSamples.slice(0, 60)}};
 }

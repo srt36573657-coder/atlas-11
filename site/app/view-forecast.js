@@ -1,6 +1,6 @@
 /* ATLAS 11 · 전망 — 52종목 카드(첫 화면: 작은 그래프·확률 막대) + 종목 상세(그래프가 주인공 · 두 겹 부채꼴 · 커서 말풍선 · 이유는 「한 줄」부터) */
 import {h, won, pct, pctPoint, pctRaw, prob, num, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, reducedMotion, clamp, wonShort, signCls} from './util.js';
-import {headline, editionSource, lineChart, hbar} from './frame.js';
+import {headline, editionSource, lineChart, hbar, pickBox} from './frame.js';
 import {loadCards, loadStock, prefs, url, state, setSummary} from './store.js';
 import {priceChart, chartTip, sparkline, probBar, contributionBars, quantileBox} from './chart.js';
 import {renderInfo, renderContextBox, renderChain, loadNetwork} from './view-network.js';
@@ -51,7 +51,7 @@ async function renderCards(main, manifest) {
       h('h2', {class: 'panel-title'}, `52종목 · ${korDate(target)} 방향과 ${korDate(end)} 중앙 전망`),
       h('div', {class: 'controls-row'},
         filterBtn('all', '전체'), filterBtn('up', '상승 선택'), filterBtn('down', '하락 선택'), filterBtn('close', '비슷함'),
-        h('label', {class: 'field'}, h('span', {class: 'sr'}, '정렬'), h('select', {class: 'select', 'aria-label': '정렬', onchange: ev => { prefs.set('sort9', ev.target.value); renderCards(main, manifest); }}, ...[['day1', `${korDate(target)} 상승 확률 높은 순`], ['day20', `${korDate(end)} 전망 높은 순`], ['change', `${korDate(base)} 등락 높은 순`], ['band', '범위 넓은 순'], ['name', '이름 순']].map(([v, l]) => h('option', {value: v, selected: v === sortKey}, l)))),
+        h('label', {class: 'field pick-field'}, h('span', {class: 'sr'}, '정렬'), pickBox(h('select', {class: 'select', 'aria-label': '정렬', onchange: ev => { prefs.set('sort9', ev.target.value); renderCards(main, manifest); }}, ...[['day1', `${korDate(target)} 상승 확률 높은 순`], ['day20', `${korDate(end)} 전망 높은 순`], ['change', `${korDate(base)} 등락 높은 순`], ['band', '범위 넓은 순'], ['name', '이름 순']].map(([v, l]) => h('option', {value: v, selected: v === sortKey}, l))))),
         h('label', {class: 'field grow'}, h('span', {class: 'sr'}, '종목 찾기'), h('input', {class: 'input', type: 'search', placeholder: '종목 이름·코드', value: q, oninput: ev => { prefs.set('query', ev.target.value.trim()); render(); }})),
         counter),
       h('div', {class: 'wl-head', 'aria-hidden': 'true'}, h('span', null, '종목'), h('span', {class: 'num'}, `${korDate(base)} 종가`), h('span', {class: 'num'}, '등락'), h('span', null, `${korDate(target)} 선택·확률`), h('span', null, `${korDate(end)} 중앙 전망`), h('span', {class: 'wl-spark-h'}, '실제 20일 → 전망 20일')),
@@ -100,7 +100,7 @@ async function renderDetail(main, manifest, code) {
     parts: [`${d.name} · ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준 · 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 `, {figure: won(r20.p50)}, `(${pct(r20.return)})`],
     source: [['이 숫자', `모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 20거래일 뒤(${korDate(r20.date)}) 가격의 한가운데 값(50%) · 80% 범위 ${won(r20.p10)}~${won(r20.p90)}`], ['출발 종가', `${won(d.anchor.close)} · ${korDate(d.anchor.date)} 15:30 KST 정규장 종가`], ['운영 모델', h('code', null, d.modelVersion ?? d.model?.version ?? '—')], ...editionSource(manifest, 'stocks/' + d.code + '.json')]});
   // ② 가격 그래프(증거) + 재생
-  const chartBox = h('div', {class: 'chart-box'}), explainBox = h('aside', {class: 'explain', 'aria-live': 'polite'}), dateStrip = h('div', {class: 'date-strip', role: 'listbox', 'aria-label': '날짜 선택'});
+  const chartBox = h('div', {class: 'chart-box'}), explainBox = h('aside', {class: 'explain', 'aria-live': 'polite'}), dateStrip = h('div', {class: 'date-strip', role: 'listbox', 'aria-label': '날짜 선택', 'data-scroll': 'x'});
   const isMobile = () => window.matchMedia('(max-width: 899px)').matches;
   const backdrop = h('div', {class: 'sheet-backdrop', hidden: true, onclick: () => closeSheet()});
   let lastFocus = null;
@@ -199,7 +199,7 @@ async function renderDetail(main, manifest, code) {
     h('section', {class: 'detail'},
       h('div', {class: 'detail-top'},
         h('a', {class: 'back', href: '#/forecast'}, '‹ 52종목'),
-        h('div', {class: 'stock-nav'}, h('a', {class: 'ctl icon', href: '#/stock/' + prevCode, 'aria-label': '이전 종목'}, '‹'), selector, h('a', {class: 'ctl icon', href: '#/stock/' + nextCode, 'aria-label': '다음 종목'}, '›')),
+        h('div', {class: 'stock-nav'}, h('a', {class: 'ctl icon', href: '#/stock/' + prevCode, 'aria-label': '이전 종목'}, '‹'), pickBox(selector, {cls: 'stock-pick'}), h('a', {class: 'ctl icon', href: '#/stock/' + nextCode, 'aria-label': '다음 종목'}, '›')),
         h('div', {class: 'chips'}, h('span', {class: 'chip ' + (d.state.label === 'Bull' ? 'up' : d.state.label === 'Bear' ? 'down' : 'flat'), title: d.state.basis}, STATE_WORD[d.state.label] ?? d.state.label), h('span', {class: 'chip muted'}, d.sector))),
       hl,
       h('div', {class: 'detail-body'},

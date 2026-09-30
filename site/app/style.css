@@ -85,7 +85,7 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .stat.up .stat-value { color: var(--up); } .stat.down .stat-value { color: var(--down); } .stat.warn .stat-value { color: var(--warn); }
 .controls-row { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; margin: var(--s2) 0; }
 .field { display: flex; align-items: center; gap: 6px; }
-.field.grow { flex: 1; min-width: 160px; }
+.field.grow { flex: 1 1 11em; min-width: min(160px, 100%); } /* 글씨가 커지면 찾기 칸이 한 줄을 통째로 쓴다(안내 글 「종목 이름·코드」가 잘리지 않게) */
 .field .lbl { font-size: var(--fs-sm); color: var(--muted); }
 .select, .input { min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 0 12px; color: var(--ink); width: 100%; }
 .select.small { min-height: 40px; width: auto; }
@@ -101,7 +101,7 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .stock-card:hover { transform: translateY(-2px); box-shadow: var(--elev-2); }
 .stock-card:focus-visible { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-soft), var(--elev-2); }
 .card-head { display: flex; align-items: center; gap: 6px; }
-.card-head .name { font-weight: 700; font-size: var(--fs-md); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-head .name { font-weight: 700; font-size: var(--fs-md); flex: 1; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
 .card-head .code { font-size: var(--fs-xs); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: 0 0 auto; }
 .status-dot.warn { background: var(--warn); }
@@ -265,7 +265,7 @@ details.more summary { cursor: pointer; font-weight: 700; min-height: 44px; disp
 .rank-row.selected .rank-btn { background: var(--primary-soft); }
 .rank-row.top .rank-no { color: var(--primary-ink); font-weight: 700; }
 .rank-no { font-weight: 700; color: var(--muted); }
-.rank-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-name { font-weight: 700; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
 .rank-move { font-size: var(--fs-xs); min-width: 2em; font-weight: 700; }
 .rank-move.up { color: var(--up); } .rank-move.down { color: var(--down); }
 .rank-val { white-space: nowrap; font-weight: 700; }
@@ -473,10 +473,10 @@ details.more summary { cursor: pointer; font-weight: 700; min-height: 44px; disp
 .range.mini .range-track { height: 5px; }
 .range.mini .range-dot { width: 9px; height: 9px; border-width: 1.5px; }
 .card-range { margin-top: 2px; }
-.card-range .muted { font-size: var(--fs-xs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-range .muted { font-size: var(--fs-xs); overflow-wrap: anywhere; word-break: keep-all; }
 .kv.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .kv.six .kv-item .v { font-size: var(--fs-md); }
-.kv.six .kv-item .k { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kv.six .kv-item .k { overflow-wrap: anywhere; word-break: keep-all; }
 .toggles.shock .lbl { font-weight: 700; }
 .netmap-box { margin: 8px auto 0; max-width: 720px; }
 .netmap { width: 100%; height: auto; display: block; font-family: inherit; }
@@ -513,7 +513,7 @@ details.more summary { cursor: pointer; font-weight: 700; min-height: 44px; disp
 .chain-strip .order-h b { font-size: var(--fs-md); }
 .chain-strip .order-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 40px; border: none; background: var(--paper); border-radius: 8px; padding: 4px 8px; cursor: pointer; color: var(--ink); font-size: var(--fs-sm); text-align: left; width: 100%; border-left: 3px solid var(--flat); transition: box-shadow var(--dur) var(--ease); }
 .chain-strip .order-row:hover { box-shadow: var(--elev-1); }
-.chain-strip .order-row .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chain-strip .order-row .nm { min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
 .chain-strip .order-row.up { border-left-color: var(--up); } .chain-strip .order-row.up b { color: var(--up); }
 .chain-strip .order-row.down { border-left-color: var(--down); } .chain-strip .order-row.down b { color: var(--down); }
 .chain-strip.playing .order:not(.lit) { opacity: .28; }
@@ -794,12 +794,13 @@ a { color: var(--ink); text-decoration-color: var(--neutral-line); text-underlin
 .lc-tip[hidden] { display: none; }
 
 /* 가로 막대(비교) */
-.hb { display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* 가로 막대: 칸이 좁으면(휴대폰·큰 글씨) 값이 막대 아래 줄로 내려간다 — 값이 오른쪽 밖으로 밀려 안 보이지 않게 */
+.hb { display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; row-gap: 2px; min-width: 0; }
 .hb-track { position: relative; flex: 1 1 auto; min-width: 48px; height: 8px; border-radius: 4px; background: var(--flat-soft); overflow: hidden; }
 .hb-track.signed::before { content: ''; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--neutral-line); }
 .hb-fill { position: absolute; top: 0; height: 100%; border-radius: 2px; background: var(--ink); }
 .hb-fill.up { background: var(--up); } .hb-fill.down { background: var(--down); } .hb-fill.flat { background: var(--neutral-line); }
-.hb-val { flex: 0 0 auto; min-width: 4.8em; text-align: right; font-weight: 700; }
+.hb-val { flex: 0 0 auto; min-width: 4.8em; margin-left: auto; text-align: right; font-weight: 700; }
 .hb-val.up { color: var(--up); } .hb-val.down { color: var(--down); }
 
 /* 전망 목록: 한 줄 = 한 종목(종가·등락·방향·20거래일 전망·작은 그래프) */
@@ -808,8 +809,9 @@ a { color: var(--ink); text-decoration-color: var(--neutral-line); text-underlin
 .wl-head { font-size: var(--fs-xs); color: var(--muted); font-weight: 700; padding: 6px 8px; border-bottom: 1px solid var(--line); word-break: keep-all; }
 .wl-row { min-height: 52px; padding: 6px 8px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--hair); border-radius: 6px; }
 .wl-row:hover, .wl-row:focus-visible { background: var(--primary-softer); }
-.wl-name { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
-.wl-name b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 회사 이름은 자르지 않는다(10/01 새벽 사장님 휴대폰에서 「제..」「크」「심」으로 잘림) — 길면 줄을 바꾸고, 종목번호는 자리가 없으면 다음 줄로 */
+.wl-name { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; row-gap: 0; min-width: 0; }
+.wl-name b { min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
 .wl-code { background: none; padding: 0; font-size: var(--fs-xs); color: var(--muted); }
 .wl-price { text-align: right; font-weight: 700; }
 .wl-chg { text-align: right; font-weight: 700; font-size: var(--fs-sm); }
@@ -822,7 +824,9 @@ a { color: var(--ink); text-decoration-color: var(--neutral-line); text-underlin
 .spark .s-band { fill: var(--ink); fill-opacity: .08; }
 .pbar .p-flat { background: var(--neutral-line); }
 @media (max-width: 899px) {
-  .wl-head, .wl-row { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "name price chg" "dir d20 d20"; row-gap: 4px; column-gap: 10px; }
+  /* 휴대폰: 1줄 = 회사 이름(+종목번호) 통째로 · 2줄 = 종가·등락(오른쪽 맞춤) · 3줄 = 방향·확률 | 20거래일 전망 */
+  .wl-head, .wl-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name name" "price chg" "dir d20"; row-gap: 4px; column-gap: 12px; }
+  .wl-row > .wl-name b { font-size: var(--fs-md); }
   .wl-head > :nth-child(1), .wl-row > .wl-name { grid-area: name; }
   .wl-head > :nth-child(2), .wl-row > .wl-price { grid-area: price; }
   .wl-head > :nth-child(3), .wl-row > .wl-chg { grid-area: chg; }
@@ -830,7 +834,26 @@ a { color: var(--ink); text-decoration-color: var(--neutral-line); text-underlin
   .wl-head > :nth-child(5), .wl-row > .wl-20 { grid-area: d20; }
   .wl-head > :nth-child(6), .wl-row > .wl-spark { display: none; }
   .wl-row > .wl-20 { min-width: 150px; }
+  /* 글씨 150% 이상이면 한 칸씩 쌓는다(방향·20거래일 전망도 잘리거나 눌리지 않게) */
+  html[data-font-step="2"] .wl-head, html[data-font-step="2"] .wl-row, html[data-font-step="3"] .wl-head, html[data-font-step="3"] .wl-row, html[data-font-step="4"] .wl-head, html[data-font-step="4"] .wl-row { grid-template-areas: "name name" "price chg" "dir dir" "d20 d20"; }
+  html[data-font-step="2"] .wl-row > .wl-20, html[data-font-step="3"] .wl-row > .wl-20, html[data-font-step="4"] .wl-row > .wl-20 { min-width: 0; }
 }
+/* 브라우저 확대로 화면이 아주 좁아져도(340px 이하) 같은 쌓기 */
+@media (max-width: 340px) {
+  .wl-head, .wl-row { grid-template-areas: "name name" "price chg" "dir dir" "d20 d20"; }
+  .wl-row > .wl-20 { min-width: 0; }
+}
+/* 선택 상자(pickBox): 보이는 글은 줄바꿈되는 칸 · 진짜 선택 상자는 투명하게 덮음 → 휴대폰·큰 글씨에서도 글이 잘리지 않는다 */
+.pick { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; max-width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-grad); color: var(--ink); box-shadow: 0 1px 1px rgba(62,48,28,.04), inset 0 1px 0 rgba(255,255,255,.6); cursor: pointer; }
+.pick.small { min-height: 40px; padding: 6px 10px; }
+.pick-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
+.pick-arrow { flex: 0 0 auto; color: var(--muted); font-size: var(--fs-xs); }
+.pick > select.pick-select { position: absolute; inset: 0; width: 100%; max-width: none; height: 100%; min-height: 0; margin: 0; padding: 0; border: 0; opacity: 0; cursor: pointer; font-size: 16px; }
+.pick:focus-within { outline: 3px solid var(--primary); outline-offset: 2px; }
+.field.pick-field { flex: 1 1 260px; min-width: 0; }
+.field.pick-field .pick { width: 100%; }
+.stock-nav .stock-pick { flex: 1 1 auto; min-width: 0; }
+@media (prefers-color-scheme: dark) { .pick { box-shadow: 0 1px 1px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.04); } }
 .hl-seg { white-space: nowrap; }
 .legend-line .leg-i { display: inline-flex; align-items: center; gap: 6px; }
 .legend-line .leg-i .key { margin-left: 0; }
@@ -842,8 +865,16 @@ a { color: var(--ink); text-decoration-color: var(--neutral-line); text-underlin
   .main::before { background: radial-gradient(800px 500px at 20% 10%, rgba(255,255,255,.04), transparent 65%); }
 }
 .panel-sub { margin: 12px 0 6px; font-size: var(--fs-sm); font-weight: 700; color: var(--ink); }
-.bars .bar-row { grid-template-columns: minmax(6em, 11em) minmax(0, 1fr) 5.5em; }
-.bars .bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bars .bar-row { grid-template-columns: minmax(6em, 11em) minmax(0, 1fr) 5.5em; grid-template-areas: "label track value"; }
+.bars .bar-row > .bar-label { grid-area: label; } .bars .bar-row > .bar-track { grid-area: track; } .bars .bar-row > .bar-value { grid-area: value; }
+.bars .bar-label { min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
+/* 글씨 150% 이상이거나 화면이 아주 좁으면: 이름은 한 줄 통째로, 막대와 값은 그 아래 줄(값 「3개」가 판 끝에서 잘리던 결함) */
+html[data-font-step="2"] .bars .bar-row, html[data-font-step="3"] .bars .bar-row, html[data-font-step="4"] .bars .bar-row { grid-template-columns: minmax(0, 1fr) minmax(4em, auto); grid-template-areas: "label label" "track value"; row-gap: 2px; }
+html[data-font-step="2"] .bars.signed .bar-row, html[data-font-step="3"] .bars.signed .bar-row, html[data-font-step="4"] .bars.signed .bar-row { grid-template-columns: minmax(0, 1fr); grid-template-areas: "label" "bar"; }
+@media (max-width: 340px) {
+  body .bars .bar-row { grid-template-columns: minmax(0, 1fr) minmax(4em, auto); grid-template-areas: "label label" "track value"; row-gap: 2px; }
+  body .bars.signed .bar-row { grid-template-columns: minmax(0, 1fr); grid-template-areas: "label" "bar"; }
+}
 .bars .bar-value { font-variant-numeric: tabular-nums; }
 details.report > summary { font-weight: 700; }
 /* 눌러야 열리는 칸: 열림 표시 ▸/▾ 를 분명히 */
@@ -861,7 +892,8 @@ details.more[open] > summary::before { content: '▾'; }
 .swatch.today.up { border-color: var(--up); } .swatch.today.down { border-color: var(--down); }
 .swatch.band, .swatch.band.outer, .swatch.band.inner { background: var(--band); }
 .swatch.band.outer { opacity: .6; } .swatch.band.inner { opacity: 1.6; }
-.bars.signed .bar-row { grid-template-columns: minmax(7em, 11em) minmax(0, 1fr); }
+.bars.signed .bar-row { grid-template-columns: minmax(7em, 11em) minmax(0, 1fr); grid-template-areas: "label bar"; }
+.bars.signed .bar-row > .hb { grid-area: bar; }
 .bars.signed .hb { width: 100%; }
 details.panel > summary { font-weight: 700; min-height: 44px; }
 .detail .hl { margin-top: 4px; }
@@ -875,8 +907,15 @@ details.panel > summary { font-weight: 700; min-height: 44px; }
 .chart .race-label { fill: var(--ink); }
 .swatch.avg { border-top: 3px solid var(--ink); }
 .swatch.today { border-color: var(--ink); }
-.rank-btn { grid-template-columns: 3em minmax(0, 7.5em) minmax(0, 1fr); }
+.rank-btn { grid-template-columns: 3em minmax(0, 7.5em) minmax(0, 1fr); grid-template-areas: "no name bar"; }
+.rank-btn > .rank-no { grid-area: no; } .rank-btn > .rank-name { grid-area: name; } .rank-btn > .hb { grid-area: bar; }
 .rank-btn .hb { min-width: 0; }
+/* 휴대폰에서 글씨 150% 이상이거나 화면이 아주 좁으면: 이름 한 줄 · 막대와 값은 그 아래 줄(값이 오른쪽으로 밀려 안 보이던 결함) */
+html[data-font-step="2"] .rank-btn, html[data-font-step="3"] .rank-btn, html[data-font-step="4"] .rank-btn { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "no name" "no bar"; row-gap: 2px; }
+html[data-font-step="2"] .rank-btn .hb-val, html[data-font-step="3"] .rank-btn .hb-val, html[data-font-step="4"] .rank-btn .hb-val { min-width: 0; }
+@media (max-width: 340px) { .rank-btn { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "no name" "no bar"; row-gap: 2px; } .rank-list .rank-btn .hb-val { min-width: 0; } }
+/* 한글은 띄어쓰기에서만 줄을 바꾼다(「1만원 비/교」·「내려받/기」처럼 낱말 가운데서 끊기지 않게) · 너무 긴 낱말만 칸 끝에서 끊는다 */
+body { word-break: keep-all; overflow-wrap: break-word; }
 .rank-btn .hb-val { min-width: 5.6em; font-weight: 700; }
 .rank-row.top .rank-no { color: var(--ink); }
 .rank-col .panel-title { margin: 2px 0 8px; }

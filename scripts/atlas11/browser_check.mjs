@@ -4,8 +4,9 @@
  * v9 검사: 화면마다 헤드라인 한 줄(누르면 출처·기준 시각) · 첫 그래프의 마지막 값 = 헤드라인 숫자 · 시장 띠 ·
  *          전망 52줄 · 줄→상세 · 날짜 클릭→설명 · 재생→커서 이동 · 중요 일정 정지·확인 · 1만원 52선(평균선) · 순위 · 성적 · 진화 · 자료 상태 · 기록 ·
  *          CSV·JSON 내려받기 · 콘솔 오류 0 · 요청 실패 0 ·
- *          또렷함 여섯 숫자(7화면 × PC·휴대폰·휴대폰 어두운 화면·PC 글씨 200%) — 1~3번(내일·오늘·어제 / 흐릿한 말 / 부호·단위·기준 시각 빠진 숫자)이 0 이 아니면 실패 ·
- *          검사기 자체 시험(일부러 흐릿한 말·단위 없는 숫자를 넣으면 잡는가)
+ *          또렷함 여섯 숫자(7화면 × PC·휴대폰·휴대폰 어두운 화면·PC 글씨 200%·좁은 휴대폰 어두운 화면 글씨 200%) — 1~3번(내일·오늘·어제 / 흐릿한 말 / 부호·단위·기준 시각 빠진 숫자)이 0 이 아니면 실패 ·
+ *          7번 잘린 글자(「…」 줄임 · 판 끝에서 잘림 · 화면 밖 · 가로로 밀어야 보임 · 글이 넘친 선택 상자)가 0 이 아니면 실패(10/01 새벽 회사 이름 잘림 뒤 추가) ·
+ *          검사기 자체 시험(일부러 흐릿한 말·단위 없는 숫자·잘린 이름을 넣으면 잡는가)
  * 결과: reports/atlas11/browser/<timestamp>/report.json + 스크린샷
  */
 import fs from 'node:fs/promises';
@@ -267,7 +268,9 @@ async function clarityCheck() {
       const m = await page.evaluate(measureClarity);
       await page.evaluate(() => { for (const x of document.querySelectorAll('.hl-num')) x.click(); }); await page.waitForTimeout(100);
       const src = await page.evaluate(measureClarity, {roots: ['.hl-src'], refTime: false});
-      table[v.id][s.id] = {relDays: m.relDays, vague: m.vague, bareNumbers: m.bareNumbers, graphable: m.graphable, lowContrast: m.lowContrast, decoColors: m.decoColors, formatDates: m.formatDates, source: {relDays: src.relDays, vague: src.vague, bareNumbers: src.bareNumbers}};
+      table[v.id][s.id] = {relDays: m.relDays, vague: m.vague, bareNumbers: m.bareNumbers, graphable: m.graphable, lowContrast: m.lowContrast, decoColors: m.decoColors, truncated: m.truncated, formatDates: m.formatDates, source: {relDays: src.relDays, vague: src.vague, bareNumbers: src.bareNumbers}};
+      // 7 잘린 글자(10/01 03시 추가 · 회사 이름이 한 글자만 보이던 결함): 0 이 아니면 실패
+      check(`잘린 글자 ${v.id} ${s.id}: ${m.truncated}`, m.truncated === 0, m.truncated ? {truncated: m.samples.truncated, pageOverflowX: m.pageOverflowX} : undefined);
       const bad13 = m.relDays + m.vague + m.bareNumbers + src.relDays + src.vague + src.bareNumbers;
       check(`또렷함 ${v.id} ${s.id}: 1 내일·오늘·어제 ${m.relDays} · 2 흐릿한 말 ${m.vague} · 3 단위·기준 빠진 숫자 ${m.bareNumbers} (출처 칸 ${src.relDays}·${src.vague}·${src.bareNumbers})`, bad13 === 0, bad13 ? {rel: m.samples.relDays, vague: m.samples.vague, bare: m.samples.bareNumbers, src: src.samples.bareNumbers} : null);
       info.push({view: v.id, screen: s.id, graphable: m.graphable, lowContrast: m.lowContrast, decoColors: m.decoColors});
@@ -282,6 +285,17 @@ async function clarityCheck() {
   const afterPlant = await page.evaluate(measureClarity);
   const delta = {relDays: afterPlant.relDays - before.relDays, vague: afterPlant.vague - before.vague, bareNumbers: afterPlant.bareNumbers - before.bareNumbers};
   check('검사기 자체 시험: 「내일 42 정도.」「곧 많이 오릅니다.」를 넣으면 1·2·3번이 모두 1 이상 늘어난다', delta.relDays >= 1 && delta.vague >= 1 && delta.bareNumbers >= 1, delta);
+  // 7번(잘린 글자) 자체 시험: 「…」로 잘린 회사 이름 하나 · 판 끝에서 잘린 값 하나 · 글이 넘친 선택 상자 하나를 넣으면 셋이 늘어야 한다
+  //   (보안 규칙상 style 속성 글자는 못 쓰므로 CSSOM 으로 모양을 준다)
+  await page.evaluate(() => {
+    const box = document.createElement('section'); box.className = 'panel';
+    const name = document.createElement('div'); name.textContent = '한화에어로스페이스'; Object.assign(name.style, {width: '60px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'});
+    const clip = document.createElement('div'); Object.assign(clip.style, {width: '90px', overflow: 'hidden'}); const inner = document.createElement('div'); Object.assign(inner.style, {width: '260px', textAlign: 'right'}); inner.textContent = '관측만 13개'; clip.append(inner);
+    const sel = document.createElement('select'); Object.assign(sel.style, {width: '70px'}); sel.append(new Option('10월 1일(목) 상승 확률 높은 순'));
+    box.append(name, clip, sel); document.getElementById('main').prepend(box);
+  });
+  const afterCut = await page.evaluate(measureClarity);
+  check('검사기 자체 시험(7번): 잘린 이름·판 끝에서 잘린 값·글이 넘친 선택 상자를 넣으면 잘린 글자가 3 늘어난다', afterCut.truncated - afterPlant.truncated === 3, {before: afterPlant.truncated, after: afterCut.truncated, samples: afterCut.samples.truncated.slice(0, 5)});
   await ctx.close();
   return table;
 }

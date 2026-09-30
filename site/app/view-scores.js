@@ -2,7 +2,7 @@
 import {h, num, pct, pctPoint, pctRaw, won, korDate, shortDate, weekday, stamp, kst, dirWord, dirMark, DIR, finite, download, csvCell} from './util.js';
 import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, setSummary, url, state} from './store.js';
 import {reportDetails} from './view-records.js';
-import {headline, editionSource, lineChart} from './frame.js';
+import {headline, editionSource, lineChart, pickBox} from './frame.js';
 import {bars} from './chart.js';
 
 const section = (title, ...children) => h('section', {class: 'card'}, h('h2', null, title), ...children);
@@ -58,7 +58,7 @@ export async function renderScores(main, {manifest}) {
     h('p', {class: 'muted xs'}, `보류 구간 ${korDate(ho.first)} ~ ${korDate(ho.last)} · ${ho.note}`),
     cb ? table(['A/B 후향 비교', '운영 A', '후보 B', '채택 조건'], [['평균 절대 가격 오차율', pctRaw(cb.A.meanErrorPct), pctRaw(cb.B.meanErrorPct), 'B 가 A 보다 작아야 함'], ['상위 5종목 순위 적중 합계', `${cb.A.rankHits}회/${cb.rankMaximum}회`, `${cb.B.rankHits}회/${cb.rankMaximum}회`, 'B 가 A 이상이어야 함']], 'small') : null);
   main.replaceChildren(hl, evidence,
-    h('section', {class: 'panel'}, dayTitle, h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '채점 날짜'), sel)), h('h3', {class: 'panel-sub'}, '방향'), resultBox, h('h3', {class: 'panel-sub'}, '가격이 80% 범위 안에 들었나'), bandBox, h('h3', {class: 'panel-sub'}, '가격 오차 분포'), distBox, tableFold),
+    h('section', {class: 'panel'}, dayTitle, h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '채점 날짜'), pickBox(sel, {cls: 'small'}))), h('h3', {class: 'panel-sub'}, '방향'), resultBox, h('h3', {class: 'panel-sub'}, '가격이 80% 범위 안에 들었나'), bandBox, h('h3', {class: 'panel-sub'}, '가격 오차 분포'), distBox, tableFold),
     h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '채점 예정표'), pending, retro),
     h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '일일 보고'), reportDetails(ledger?.dailyReport ?? null)));
   lineChart(lineBox, {dates: scored.map(d => d.date), series: [{id: 'hit', name: '방향 맞힘', values: scored.map(d => d.horizonSummary[1].correct), cls: 'pred'}], unit: '종목', format: v => String(Math.round(v)), yMin: 0, yMax: 52, ticks: [0, 26, 52], ref: 26, height: 190, ariaLabel: '날짜별 방향 맞힘: ' + scored.map(d => `${korDate(d.date)} ${d.horizonSummary[1].correct}종목`).join(', ')});

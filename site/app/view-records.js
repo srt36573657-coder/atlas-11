@@ -1,7 +1,7 @@
 /* ATLAS 11 · 기록 검색(8종류 장부 · 날짜/종목/업종/요인/정답오답/원인/모델/채택 상태) · 일일 보고(여섯 문장) · 자동 진화 등록부 */
 import {h, num, pct, pctPoint, korDate, shortDate, stamp, kst, dirWord, dirMark, finite, download, csvCell} from './util.js';
 import {loadLedger, loadData, loadCards, setSummary, url} from './store.js';
-import {headline, editionSource, lineChart} from './frame.js';
+import {headline, editionSource, lineChart, pickBox} from './frame.js';
 import {bars} from './chart.js';
 
 const f2 = v => finite(v) ? v.toFixed(2) : '—';
@@ -55,7 +55,9 @@ export async function renderRecords(main, {manifest, hash = ''}) {
   const groups = [...new Set(cards.cards.map(c => c.info?.groupName).filter(Boolean))];
   const groupIds = Object.fromEntries(cards.cards.filter(c => c.info?.group).map(c => [c.info.groupName, c.info.group]));
   const typeRow = h('div', {class: 'filters types', role: 'group', 'aria-label': '기록 종류'}, ...TYPE_ORDER.map(t => h('button', {class: 'filter' + (filt.type === t ? ' on' : ''), type: 'button', dataset: {type: t}, 'aria-pressed': String(filt.type === t), onclick: () => { filt.type = t; go(); }}, TYPE_LABEL[t])));
-  const dateSel = h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), h('select', {class: 'select small', 'aria-label': '날짜', onchange: ev => { filt.date = ev.target.value; go(); }}, h('option', {value: ''}, '최근 30일 전체'), ...index.dates.slice().reverse().map(d => h('option', {value: d, selected: d === filt.date}, `${korDate(d)} · ${num(perDay(d))}건`))));
+  // 「최근 30일」 대신 날짜로(흐릿한 말 금지) · 선택 상자는 pickBox(휴대폰·큰 글씨에서 글이 잘리지 않게)
+  const span30 = index.dates.slice(-30), spanWord = `${korDate(span30[0])}~${korDate(span30.at(-1))} 전체(${span30.length}일)`;
+  const dateSel = h('label', {class: 'field'}, h('span', {class: 'lbl'}, '날짜'), pickBox(h('select', {class: 'select small', 'aria-label': '날짜', onchange: ev => { filt.date = ev.target.value; go(); }}, h('option', {value: ''}, spanWord), ...index.dates.slice().reverse().map(d => h('option', {value: d, selected: d === filt.date}, `${korDate(d)} · ${num(perDay(d))}건`))), {cls: 'small'}));
   const filters = h('details', {class: 'more'}, h('summary', null, '더 좁히기(종목·업종·요인·분류·원인·모델·채택 상태)'), h('div', {class: 'filters'},
     sel('code', '종목', cards.cards.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => [c.code, `${c.name} ${c.code}`]), filt.code),
     sel('group', '업종(묶음)', groups.map(g => [groupIds[g], g]), filt.group),
@@ -85,7 +87,7 @@ export async function renderRecords(main, {manifest, hash = ''}) {
       if (filt.status && b.status !== filt.status) return false;
       return true;
     });
-    const when = filt.date ? korDate(filt.date) : `최근 ${dates.length}일`;
+    const when = filt.date ? korDate(filt.date) : `${korDate(dates[0])}~${korDate(dates.at(-1))}(${dates.length}일)`;
     resultTitle.textContent = `${when} ${TYPE_LABEL[filt.type]} 기록 ${num(rows.length)}건 · 무엇으로 나뉘나`;
     const counts = {}; for (const r of rows) { const k = groupKey[filt.type]?.(r.body ?? {}) ?? '—'; counts[k] = (counts[k] ?? 0) + 1; }
     const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);

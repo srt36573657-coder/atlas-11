@@ -29,7 +29,11 @@ export const VIEWS = [
   {id: 'mobile', name: '휴대폰', viewport: {width: 390, height: 844}, mobile: true},
   {id: 'mobile-dark', name: '휴대폰 어두운 화면', viewport: {width: 390, height: 844}, mobile: true, dark: true},
   {id: 'pc-200', name: 'PC 글씨 200%', viewport: {width: 1280, height: 800}, font: 4},
+  // 10/01 03시 추가: 사장님 휴대폰(어두운 화면 · 큰 글씨)에서 회사 이름이 잘린 뒤 — 좁은 휴대폰(360)·어두운 화면·글씨 200% 를 한꺼번에(가장 빡빡한 경우)
+  {id: 'mobile-dark-200', name: '좁은 휴대폰 어두운 화면 글씨 200%', viewport: {width: 360, height: 780}, mobile: true, dark: true, font: 4},
 ];
+/** 7번째 숫자 「잘린 글자」 — 여섯 숫자의 합과 섞지 않고 따로 센다(목표 0) */
+export const TRUNC_KEY = 'truncated';
 export const KEYS = ['relDays', 'vague', 'bareNumbers', 'graphable', 'lowContrast', 'decoColors'];
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
@@ -65,8 +69,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   await browser.close();
   // 표로 보이기
   for (const [vid, screens] of Object.entries(out.views)) {
-    console.log(`\n[${vid}] ` + ['화면', ...KEYS, '합', '(덤)날짜모양', '글조각', '첫화면', '출처칸 1·2·3·날짜'].join(' | '));
-    for (const [sid, m] of Object.entries(screens)) console.log(`${sid} | ` + KEYS.map(k => m[k]).join(' | ') + ` | ${KEYS.reduce((s, k) => s + m[k], 0)} | ${m.formatDates} | ${m.sentences.length} | ${m.firstView.length} | ${m.source?.panels ? [m.source.relDays, m.source.vague, m.source.bareNumbers, m.source.formatDates].join('·') : '칸 없음'}`);
+    console.log(`\n[${vid}] ` + ['화면', ...KEYS, '합', '7 잘린 글자', '(덤)날짜모양', '글조각', '첫화면', '출처칸 1·2·3·날짜'].join(' | '));
+    for (const [sid, m] of Object.entries(screens)) console.log(`${sid} | ` + KEYS.map(k => m[k]).join(' | ') + ` | ${KEYS.reduce((s, k) => s + m[k], 0)} | ${m.truncated ?? '—'}${m.truncated ? ' (' + (m.samples?.truncated ?? []).slice(0, 3).join(' / ') + ')' : ''} | ${m.formatDates} | ${m.sentences.length} | ${m.firstView.length} | ${m.source?.panels ? [m.source.relDays, m.source.vague, m.source.bareNumbers, m.source.formatDates].join('·') : '칸 없음'}`);
   }
   const dir = path.join(process.cwd(), 'reports/atlas11/clarity'); await fs.mkdir(dir, {recursive: true});
   await fs.writeFile(path.join(dir, `${inject ? 'inject' : label}.json`), JSON.stringify(out, null, 1));

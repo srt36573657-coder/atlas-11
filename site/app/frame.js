@@ -7,6 +7,15 @@ import {h, korDate, shortDate, stamp, pts, pctRaw, signCls, finite, esc, chartSc
 import {state} from './store.js';
 
 /** 무결성 검사 한 줄(헤드라인 출처 칸 안 · 파일을 더 읽으면 저절로 고쳐 쓴다) */
+/** 선택 상자: 닫힌 선택 상자의 글은 줄을 바꾸지 못해 휴대폰·큰 글씨에서 잘린다(10/01 새벽 사장님 휴대폰).
+ *  보이는 글은 줄바꿈되는 칸에 두고, 진짜 선택 상자는 투명하게 그 위를 덮는다 — 누르면 휴대폰 기본 선택 창이 그대로 뜬다. */
+export function pickBox(select, {cls = ''} = {}) {
+  const text = h('span', {class: 'pick-text', 'aria-hidden': 'true'});
+  const sync = () => { text.textContent = select.options[select.selectedIndex]?.text ?? ''; };
+  select.classList.add('pick-select'); select.addEventListener('change', sync); sync();
+  return h('span', {class: ('pick ' + cls).trim()}, text, h('span', {class: 'pick-arrow', 'aria-hidden': 'true'}, '▾'), select);
+}
+
 export function integrityText() { const i = state.integrity; if (!i.available) return '보안 연결이 아니라 이 기기에서는 확인 불가'; if (i.failed.length) return `실패 ${i.failed.length}개 (${i.failed.join(', ')})`; return `읽은 파일 ${i.checked.length}개 모두 발행본 목록의 SHA-256 과 같음`; }
 document.addEventListener('atlas:integrity', () => { for (const el of document.querySelectorAll('.integrity-text')) el.textContent = integrityText(); });
 
