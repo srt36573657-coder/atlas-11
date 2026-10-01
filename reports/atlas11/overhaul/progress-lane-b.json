@@ -1,0 +1,24 @@
+{
+ "schema": "atlas11-overhaul-progress-lane-1",
+ "lane": "나(진단) · W6~W9",
+ "branch": "worktree-agent-a9c7f03f9d9baba94",
+ "base": "c41f455",
+ "note": "갈래 가와 같은 파일(progress.json)을 동시에 고치지 않으려고 따로 적었다. 본 창이 합칠 때 steps 를 progress.json 에 옮긴다.",
+ "steps": [
+  {"w": "W6", "r": ["R8"], "t": ["T10"], "status": "끝", "commits": ["525a831", "a20f530"],
+   "numbers": {"T10": "plan 커밋 14:12:38 KST(plan.md 혼자) < 첫 결과 커밋 14:21:00 KST(626300b) · 조상", "결함 심기": "3/3 막음"},
+   "files": {"reports/atlas11/overhaul/plan.md": "90446564f9426b3278b42efe2647e461571990014b4e039ab3f75bce1a7bf8f6", "scripts/atlas11/overhaul/checks/W6.mjs": "b8262ea5eb72d0786da189b675a1bc59b5ab7850a00d751d6223ac11a39d497f"}},
+  {"w": "W7", "r": ["R8"], "t": ["T11"], "status": "끝", "commits": ["626300b"],
+   "numbers": {"후향 재현": "A.json 요약·블록·120일 행 차이 0", "T11 후향 dir1sel": "모델 50.53% · 늘 상승 47.90 · 늘 하락 49.41 · 종목 어제 45.98 · 시장 어제 46.43 (저장된 p50 dir1 34.82)", "부트스트랩": "모델이 종목 어제(P 0.9985, 5/6)·시장 어제(P 0.93, 4/6)보다 나음 · 늘 상승(P 0.789, 4/6)·늘 하락(P 0.7545, 4/6)과는 가려지지 않음", "실전 104칸": "모델 62 · 늘 하락 69 · 늘 상승 29 · 종목 어제 38 · 시장 어제 42 · 오차율 1.51% 대 1.54% · 폭 맞음 66 대 66", "판정 제안": "모른다"},
+   "files": {"reports/atlas11/overhaul/part1.json": "deb2dd620f84795ea1060263e058a252ce47677101ad1863fffcdec17f8028a9", "reports/atlas11/overhaul/part1-retro-A-cells.json": "69b730aef84756aec2ac2ad8eecd0cbec1c4e66b6d130799d30e05008f7aa520", "scripts/atlas11/overhaul/checks/W7.mjs": "f9a3c0734fffaed6ed6b26be9a75d26c0a7983f68174baaae343f20159beb865"}},
+  {"w": "W8", "r": ["R8"], "t": ["T13"], "status": "끝 · T13 글자 그대로 실패(판단 필요)", "commits": ["27465ab"],
+   "numbers": {"② 후향": "무게 있는 칸 50.22% 대 무게 0 칸 51.72% · P 0.2525/0.7475 · 블록 3/3 → 모른다", "③ 후향": "공통 식 C 50.16% 대 A 50.53% · P(C 나음) 0.341 · 블록 3/3 → 모른다", "④": "계산 차이 0(특징·분산) · 9/28 rolling20 이 쓴 9/21~9/23 종가 24개(12종목)가 9/29 정정 → 특징 최대 0.0192 · 분산 최대 17.9% → 규칙상 원인이다 · 1일 방향 바뀐 칸 0/52", "T13": "학습 끝 < 기준일 114/120 · 같음 6(블록 첫날) · 미래 자료 없음 120/120 · 민감도(학습 < 기준일)에서 ①②③ 판정 그대로"},
+   "files": {"reports/atlas11/overhaul/part2.json": "aba2b9501b6e67d04f7dbffd2c82be7d6a20f2ce68a3d5062c0b7070e3df466f", "reports/atlas11/overhaul/part3.json": "e36b967094b2aa78edec354b34d6a7bfd98ecb467478e287a5e86758604142a7", "reports/atlas11/overhaul/part3-retro-pooled-cells.json": "f659aa190342d5b0c470923cfeb15339ecb3707243cf7b32a946df6d9f0d2f56", "reports/atlas11/overhaul/part4.json": "db1fc665368df4d2814f760aa74fbc6eef247b77bd1b38a577e939ea2b52a6c3", "scripts/atlas11/overhaul/checks/W8.mjs": "8ef87237ccc368c248201f79b32d72ad3ea67bf592609fd505e281e803e12799"}},
+  {"w": "W9", "r": ["R8"], "t": ["T12", "T14"], "status": "끝 · T14 51/52 실패(판단 필요)", "commits": ["5980335"],
+   "numbers": {"T12": "두 발행본 52/52 차이 0 · 무게 0 32종목만 돌려도 0", "T14": "51/52(032830, 공차의 1.114배·1.047배) · 무게 0 32/32 안 · 뽑기 고름 χ² 486.5(자유도 503)", "잔차 모양": "무게 0 32종목 중 중앙값 < 0 28개 · 평균보다 작은 비율 평균 52.7% · 오른쪽 꼬리 27개", "변형": "확률 차 평균 원래 +5.15%p(하락 29/32) · A 중앙값 +0.72(23/32) · B 대칭 +0.42(24/32) · 3×SE 2.07%p", "판정 제안": "규칙상 모른다(T14 실패) · 무게 0 표본만 보면 하락 쏠림의 원인", "후향 보조": "dir1sel 원래 50.53 · A 49.86(P 0.2865) · B 48.01(원래가 나음 P 0.8815, 5/6)"},
+   "files": {"reports/atlas11/overhaul/part5.json": "cfac6836560c56203eb4f299636efaaaa690141e36215c2bb75dd18d8eb51b1f", "scripts/atlas11/overhaul/checks/W9.mjs": "e6b0b44cf6922b77113a593e16f46a94288db7a143e32fad67e23f742bb79388"}}
+ ],
+ "verdictProposals": {"①": "모른다", "②": "모른다", "③": "모른다", "④": "원인이다(규칙 · 영향 0칸)", "⑤": "모른다(규칙 · T14 51/52)"},
+ "openForRuling": ["T13 글자 그대로 실패 — v1 후향은 기준일 행까지 학습(lib/atlas11/evolve/backtest.mjs:41) · 미래 자료는 없음", "T14 51/52 — 7절 공차를 156개 비교에 하나씩 적용 · 무게 0 표본은 32/32"],
+ "notDone": ["W10(판정표·42칸 반대로 민 항)은 이 갈래 지시 범위 밖", "progress.json 에 옮기기는 본 창이 함"]
+}
