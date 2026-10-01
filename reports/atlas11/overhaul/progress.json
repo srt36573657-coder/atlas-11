@@ -54,8 +54,14 @@
     "결함 심기 T0·D1·D5"
    ],
    "status": "끝",
-   "commits": [],
-   "numbers": {},
+   "commits": [
+    "2da0bd2"
+   ],
+   "numbers": {
+    "D1~D8": "8/8 통과",
+    "T0": "33/33",
+    "결함 심기": "T0·D1·D5 3/3 막음 · 원본 그대로 2/2"
+   },
    "files": {
     "scripts/atlas11/overhaul/check.mjs": "d5baa99c76fc67c09b049efb4c75eaf489a3f4ea0a4d0b3b8f81ba2d3f6e8fa5"
    }
@@ -72,5 +78,19 @@
  "next": [
   "W3(가 · 화면 자료)",
   "W6(나 · 시험 계획)"
+ ],
+ "construction": [
+  {
+   "covers": [
+    "W1",
+    "ECO-01",
+    "W2"
+   ],
+   "commits": [
+    "760e50e",
+    "6340e9e",
+    "2da0bd2"
+   ]
+  }
  ]
 }
