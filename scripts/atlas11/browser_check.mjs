@@ -199,7 +199,9 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     await listFold.locator('summary').click();
     const leadWrong = Number((/틀린 (\d+)건/.exec(lead) ?? [])[1]);
     check(`${label} 성적 · 왜 틀렸나: 네 통 ${binVals.length}개 · 합 ${binSum}건 = 틀린 ${leadWrong}건 = 채점 자료 ${wrongAll}건 = 목록 ${listRows}줄`, binVals.length === 4 && binSum === wrongAll && leadWrong === wrongAll && listRows === wrongAll, {lead, binVals, wrongAll, listRows});
-    await page.locator('.jump-misses').click(); await page.waitForTimeout(700);
+    // 10/01 오후(W4): 「왜 틀렸나」 위에 종목별 칸(52줄)이 들어와 내려갈 거리가 길어짐 — 부드러운 스크롤이 끝날 때까지 최대 4초 기다린다
+    await page.locator('.jump-misses').click();
+    await page.waitForFunction(() => { const t = document.getElementById('misses').getBoundingClientRect().top; return t >= 0 && t < 260; }, null, {timeout: 4000}).catch(() => {});
     const top = await page.evaluate(() => Math.round(document.getElementById('misses').getBoundingClientRect().top));
     check(`${label} 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴`, top >= 0 && top < 260, {top});
   }
@@ -316,12 +318,69 @@ async function clarityCheck() {
   await ctx.close();
   return table;
 }
+/** W4(대개선 명령서 6판 R2~R5 · T7 모서리 16절): 성적 화면 「종목별 맞고 틀림」 — 보기 다섯 × 채점일마다
+ *  줄(표 줄 또는 세 줄 카드) 수 = score-cells.json · 네 칸 합 = 줄 수 · 네 칸 = 그날 네 묶음 · 이름순(가나다) · 가장 긴 이름 안 잘림 ·
+ *  실제 보합 칸에 「실제 보합」 · 오차 끝값(가장 작은·큰 원) 표시 · 잘린 글자 0 · 가로 넘침 없음 · 맞음·틀림은 글자 · 캡처는 reports/atlas11/overhaul/w4-*.png */
+const W4_VIEWS = [
+  {id: '360', viewport: {width: 360, height: 780}, mobile: true, shot: 'w4-360'},
+  {id: '360-dark', viewport: {width: 360, height: 780}, mobile: true, dark: true},
+  {id: '360-dark-200', viewport: {width: 360, height: 780}, mobile: true, dark: true, font: 4},
+  {id: 'pc', viewport: {width: 1280, height: 800}, shot: 'w4-pc'},
+  {id: 'pc-200', viewport: {width: 1280, height: 800}, font: 4},
+];
+const signedWon = v => { const r = Math.round(v); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r).toLocaleString('ko-KR') + '원'; };
+async function scoreCellsCorners() {
+  const sc = await (await fetch(base + '/data/atlas11/view/score-cells.json')).json();
+  const LONG = ['LS ELECTRIC', '한화에어로스페이스'];
+  const shotDir = path.join(process.cwd(), 'reports/atlas11/overhaul');
+  for (const v of W4_VIEWS) {
+    const ctx = await browser.newContext({viewport: v.viewport, deviceScaleFactor: 1, isMobile: !!v.mobile, hasTouch: !!v.mobile, colorScheme: v.dark ? 'dark' : 'light', locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);
+    const page = await ctx.newPage(); const errors = [];
+    page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+    await page.goto(base + '/#/scores', {waitUntil: 'networkidle'});
+    const ready = await page.waitForSelector('#score-cells .quad-cell', {timeout: 10000}).then(() => true).catch(() => false);
+    if (!ready) { check(`W4 모서리 ${v.id}: 「종목별 맞고 틀림」 칸이 보임`, false, {view: v.id}); await ctx.close(); continue; }
+    for (const d of [...sc.dates].reverse()) {
+      await page.selectOption('select[aria-label="채점 날짜"]', d.date); await page.waitForTimeout(200); await renderAll(page);
+      const cells = sc.cells.filter(c => c.date === d.date);
+      const errs = cells.map(c => Math.abs(c.errWon)), lo = cells[errs.indexOf(Math.min(...errs))], hi = cells[errs.indexOf(Math.max(...errs))];
+      const r = await page.evaluate(({LONG, lo, hi}) => {
+        const box = document.getElementById('score-cells');
+        const vis = el => { const b = el.getBoundingClientRect(); return b.width > 0 && b.height > 0; };
+        const rows = [...box.querySelectorAll('[data-code]')].filter(vis);
+        const names = rows.map(el => el.querySelector('.sc-name')?.textContent.trim() ?? '');
+        const sorted = names.every((n, i) => i === 0 || names[i - 1].localeCompare(n, 'ko') <= 0);
+        const long = LONG.map(n => { const el = rows.map(x => x.querySelector('.sc-name')).find(e => e?.textContent.trim() === n); if (!el) return {name: n, present: false}; const b = el.getBoundingClientRect(); const cs = getComputedStyle(el); return {name: n, present: true, fits: el.scrollWidth <= el.clientWidth + 1 && b.left >= 0 && b.right <= innerWidth + 1 && cs.textOverflow !== 'ellipsis' && el.innerText.replace(/\s+/g, ' ').trim() === n}; });
+        const flat = rows.filter(el => el.dataset.actDir === 'flat');
+        const text = code => rows.find(el => el.dataset.code === code)?.innerText.replace(/\s+/g, ' ') ?? '';
+        const words = rows.every(el => (el.innerText.match(/맞음|틀림/g) ?? []).length >= 2); // 방향·폭 판정이 글자로(색만으로가 아니라)
+        return {kind: rows[0]?.tagName === 'TR' ? 'table' : 'cards', n: rows.length, codes: rows.map(el => el.dataset.code), quad: [...box.querySelectorAll('.quad-v')].map(e => parseInt(e.textContent.replace(/[^\d]/g, ''), 10)), title: box.querySelector('.panel-title')?.innerText ?? '', sorted, long, flat: {total: flat.length, shown: flat.filter(el => /실제 보합/.test(el.innerText)).length}, loText: text(lo.code), hiText: text(hi.code), words, overflowX: document.documentElement.scrollWidth > innerWidth + 1};
+      }, {LONG, lo, hi});
+      const m = await page.evaluate(measureClarity);
+      const quadSum = r.quad.reduce((s, x) => s + x, 0), wantFlat = cells.filter(c => c.actDir === 'flat').length;
+      const ok = r.n === d.count && new Set(r.codes).size === d.count && r.quad.length === 4 && quadSum === d.count && r.quad.join(',') === d.groups.join(',') && r.sorted && r.long.every(x => !x.present || x.fits) && r.flat.total === wantFlat && r.flat.shown === wantFlat && r.loText.includes(signedWon(lo.errWon)) && r.hiText.includes(signedWon(hi.errWon)) && r.words && !r.overflowX && m.truncated === 0 && errors.length === 0;
+      check(`W4 모서리 ${v.id} ${d.date}: ${r.kind === 'table' ? '표' : '세 줄 카드'} ${r.n}줄 = ${d.count} · 네 칸 ${r.quad.join('·')} 합 ${quadSum} · 이름순 · 긴 이름 ${r.long.filter(x => x.present).map(x => x.fits ? '안 잘림' : '잘림').join('·') || '없음'} · 보합 ${r.flat.shown}/${wantFlat} · 오차 ${signedWon(lo.errWon)}~${signedWon(hi.errWon)} · 잘린 글자 ${m.truncated}`, ok,
+        {view: v.id, date: d.date, kind: r.kind, rows: r.n, quad: r.quad, groups: d.groups, sorted: r.sorted, long: r.long, flat: r.flat, lo: signedWon(lo.errWon), hi: signedWon(hi.errWon), words: r.words, truncated: m.truncated, truncSamples: m.samples.truncated.slice(0, 4), overflowX: r.overflowX, errors: errors.slice(0, 3), title: r.title});
+      // 캡처(가장 나중 채점일): 첫 화면(칸의 맨 위) + 칸 전체
+      if (v.shot && d.date === sc.dates.at(-1).date) {
+        await page.evaluate(() => document.getElementById('score-cells').scrollIntoView({block: 'start'})); await page.waitForTimeout(150);
+        await page.screenshot({path: path.join(shotDir, v.shot + '.png')});
+        await page.locator('#score-cells').screenshot({path: path.join(shotDir, v.shot + '-full.png')});
+        await page.screenshot({path: path.join(dir, v.shot + '.png')});
+      }
+    }
+    await ctx.close();
+  }
+}
+
 let clarity = null;
 try {
   await scenario('pc', {width: 1280, height: 800});
   await scenario('mobile', {width: 390, height: 844}, {mobile: true});
   await darkCheck();
   clarity = await clarityCheck();
+  await scoreCellsCorners();
 } finally { await browser.close(); }
 const summary = {schema: 'atlas11-browser-check-2', at: new Date().toISOString(), base, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (touch emulation — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면', 'pc-200': '1280x800 글씨 200%'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, clarityInfo: info, checks};
 await fs.writeFile(path.join(dir, 'report.json'), JSON.stringify(summary, null, 2));
