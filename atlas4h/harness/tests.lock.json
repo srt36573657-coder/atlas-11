@@ -1,0 +1,33 @@
+{
+ "schema": "atlas4h-tests-lock-1",
+ "lockedAt": "2026-10-01T09:17:05.909Z",
+ "rule": "시험은 고치지 않는다 · 바꾸려면 사장님이 승인한 변경 요청서와 「atlas4h LOCK:」 커밋",
+ "files": {
+  "atlas4h/tests/harness.test.mjs": "2a4be2f42ae1879bf75fa41cb7e4f79c8648c13939ef9e19b1bd1bd01c32b8d5",
+  "atlas4h/tests/spec-checks.test.mjs": "63be7c6f29f9114bb0a538021b497206a10e2b2329dd4ede56a2cbf8b8ea30cf",
+  "atlas4h/tests/stats.test.mjs": "ca675dcb0aac5404d4e0658eb52f1dcc299bfa71622ac66a6006d36a094540d7",
+  "atlas4h/spec/checks.mjs": "b5e9e6194085d4c54e19348bed2e5d9c463466deec29c9b838795b1cb685e142",
+  "atlas4h/spec/stats.mjs": "a10438d5e10e723730f8f75f289bffa8a218752279379250178525146fcace07",
+  "atlas4h/scripts/check_command.mjs": "d59a8b67a3942889c21e6f146c430e946ac5c63398b6e550b17d944849d346fb",
+  "atlas4h/scripts/check_harness.mjs": "b7d319d02bedf02303c5de4944d6ea8b8f3e1763578f7a4c397450e22061093a",
+  "atlas4h/scripts/run_spec.mjs": "a8aaa450820e8f847fe60797b5ebea51aeddbfab16c00379afb6727f6b34bc73",
+  "atlas4h/spec/fixtures/extremes/K1.json": "27a60fe52e2dca06f0a3c4ba2d1e7b2cc35939d528e1e3829e14dd5473383309",
+  "atlas4h/spec/fixtures/extremes/K2.json": "bbd54c53c34c81745927e10d7bc02037fc2e1792106f9b7168564b6c294b14fe",
+  "atlas4h/spec/fixtures/extremes/K3.json": "20f13c30bde15a204209000c6c3a3864f4e756c923e67540c82c19474394a4c8",
+  "atlas4h/spec/fixtures/extremes/K4.json": "08da72ac77b55653fd0ff7b2fe8e725d4e795da51744ec50c441140d1c9bb169",
+  "atlas4h/spec/fixtures/extremes/K5.json": "391e1b1a5a8dbe209585f56ea9d57d0557e77472cf317d30803a4cfe2f759798",
+  "atlas4h/spec/fixtures/extremes/K6.json": "16421ac44c5589013826f136933c9fd444db3d57a6042a8bb4260f3ce80f8090",
+  "atlas4h/spec/fixtures/extremes/K7.json": "c0a7228aae5246da422146b16b7d3b127def1af2633a716968001e1169a85140",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/boards/2026-10-01.jsonl": "4eb966058af7fbb338b7b73e40c6436a14c412c64987a7c3568cb321bd7a2ae9",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/boards/2026-10-02.jsonl": "02279fcabf26cd6b6ff420f51ee1b346b169d48867d24b593f9f30a246334bb3",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/loops/2026-10-02.jsonl": "2085fe45cf89b87388b67aac5e1652acd5e95669a00e0428b7dfd90d3d7f5f88",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/scores/2026-10-02.jsonl": "3be1f67c645f602b08beded0b8ab16c197f533237322ac209828cd555162b373",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/seals/2026-10-01.jsonl": "b2aadcb89a880d7391a93648afcda021271690b3d38bc4eb6988b58c0d63a3b7",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/seals/2026-10-02.jsonl": "d610a39f986dd095d0099f1da781f9f34916194463ef96967db60987a2ac5eb4",
+  "atlas4h/spec/fixtures/good/atlas4h/ledger/watch/2026-10-02.jsonl": "351595921d0e1bd33fe772265a2843ff9a29b808b7a64b3ee97575d2f12cd2f6",
+  "atlas4h/spec/fixtures/good/atlas4h/seal/judgment.json": "d420192f119ec661240dcc1794fe397202fa6f54d45dbc3debf604ef2ce4c5f7",
+  "atlas4h/spec/fixtures/good/atlas4h/seal/trials.jsonl": "e89a9777a7add75072ddcd6c76303dc2f4c307e0fbc4b1867ca4277308928168",
+  "atlas4h/spec/fixtures/good/atlas4h/seal/weights.json": "5b1a059ecf7b57384fe174bd65b61a28dc285a6fcab0da0f4870f0fa8f655e03",
+  "atlas4h/spec/fixtures/good/public/data/atlas4h/view.json": "50e72940b7d8e58ccd1f955d043767ca509d56135ebcdb52cae95f94865bc210"
+ }
+}

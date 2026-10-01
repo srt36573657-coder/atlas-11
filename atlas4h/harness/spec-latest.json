@@ -1,6 +1,6 @@
 {
  "schema": "atlas4h-spec-latest-1",
- "at": "2026-10-01T18:11:26+09:00",
+ "at": "2026-10-01T18:17:07+09:00",
  "results": [
   {
    "id": "T1",
@@ -65,10 +65,10 @@
   {
    "id": "T11",
    "pass": true,
-   "reason": "atlas4h 커밋 6개 · 파일 29개 — 옛 엔진·기록 변경 0",
+   "reason": "atlas4h 커밋 7개 · 파일 53개 — 옛 엔진·기록 변경 0",
    "counts": {
-    "commits": 6,
-    "changes": 29,
+    "commits": 7,
+    "changes": 53,
     "touched": 0
    }
   },
