@@ -6,16 +6,19 @@
  * - 한 곳만 망가뜨린 복사본(심어 둔 흠)은 맞는 까닭으로 「안 통과」 한다.
  * - 엔진 시험(T4·T15·K1~K7)은 규칙을 지키는 작은 엔진으로는 통과, 규칙을 어기거나 멈추는 엔진으로는 안 통과.
  * - 30판이 넘는 채점(T13)과 재현 결과(T12)는 씨앗을 고정해 이 파일 안에서 만든다 (큰 파일을 두지 않음).
+ * - 변경 요청 atlas4h-01(ECO-01)로 엄해진 열두 곳은 아래 ECO01 에 이 일꾼이 새로 심은 흠으로 잰다(eco: 1~12 = 요청서 번호).
+ *   독립 시험 일꾼의 흠 111개(verify/independent-defects.json)를 그대로 옮기지 않았다 — 같은 자료로 고치고 채점하지 않으려고(감시 S8).
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {
   loadState, CHECKS, IDS, runAll, runExtreme, checkOldEngineUntouched, collectAtlas4hChanges,
-  boardSha256, canonicalJson, FORBIDDEN, EXTREMES_DIR,
+  boardSha256, canonicalJson, FORBIDDEN, EXTREMES_DIR, sourceOrg, loadContract,
 } from '../spec/checks.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -210,6 +213,23 @@ function makeScores(n = 40, seed = 20261005) {
   });
 }
 
+/** T13 용 (ECO-01): 평소 판 normal 줄 중 covN 줄 덮음 + 위기 판 crisis 줄 중 covC 줄 덮음 — 봉인 판이 없는 채점 */
+function scoreRows(normal, covN, crisis, covC) {
+  return Array.from({length: normal + crisis}, (_, i) => {
+    const isCrisis = i >= normal;
+    const k = isCrisis ? i - normal : i;
+    const day = String(5 + Math.floor(i / 3)).padStart(2, '0');
+    return {
+      boardId: `s-202610${day}-${['08', '12', '16'][i % 3]}-${String(i).padStart(4, '0')}`,
+      target: `2026-10-${day}`,
+      scoredAt: `2026-10-${day}T15:41:00+09:00`,
+      actual: {value: 2650, asOf: `2026-10-${day}T15:30:00+09:00`, source: '시험용'},
+      interval: {alpha: 0.2, score: 40, covered: isCrisis ? k < covC : k < covN},
+      crisis: isCrisis,
+    };
+  });
+}
+
 /** T12 용: 재현 60줄 (20날 × 하루 세 판) — 엔진이 기준 셋보다 폭 점수가 낮다 */
 function makeRetro(seed = 20261001) {
   const r = mulberry32(seed);
@@ -249,11 +269,12 @@ function goodState() {
   return s;
 }
 
-/** T11 깨끗한 목록: 새 폴더만 바꾸고, 옛 장부에는 줄을 덧붙이기만 함 */
+/** T11 깨끗한 목록: 새 폴더만 바꾸고, atlas4h 장부에는 줄을 덧붙이기만 함
+ *  (ECO-01 앞에는 옛 장부 reports/atlas11/ledger/ 에 덧붙이기를 깨끗하다고 봤다 — 이제는 옛 기록 전체를 지킨다) */
 const CLEAN = [
   {commit: 'c2717ee', subject: 'atlas4h 1: save the command', status: 'A', path: 'atlas4h/command/original.txt', deletedLines: 0},
   {commit: '70ff430', subject: 'atlas4h 5: board format', status: 'A', path: 'atlas4h/spec/board.md', deletedLines: 0},
-  {commit: '70ff430', subject: 'atlas4h 5: board format', status: 'M', path: 'reports/atlas11/ledger/2026-10.jsonl', deletedLines: 0},
+  {commit: '70ff430', subject: 'atlas4h 5: board format', status: 'M', path: 'atlas4h/ledger/boards/2026-10-02.jsonl', deletedLines: 0, appendOnly: true},
 ];
 const OPTS = {engine: stubEngine, changes: CLEAN, judgmentCommitAt: '2026-10-01T18:21:00+09:00'};
 
@@ -327,9 +348,9 @@ test('정렬 직렬화: 키 순서가 달라도 같은 글자 · 좋은 기록�
   }
 });
 
-test('T10 금지 말: 보통 낱말(사라지다·팔라듐·불확실)은 걸리지 않는다', () => {
+test('T10 금지 말: 보통 낱말(사라지다·사라졌다·사라질·팔라듐·불확실)은 걸리지 않는다', () => {
   const s = goodState();
-  board(s, B1).text.push('걱정이 사라지다 · 사라져 · 사라진 · 사라짐 · 팔라듐 값 · 불확실한 때');
+  board(s, B1).text.push('걱정이 사라지다 · 사라져 · 사라졌다 · 사라질 · 사라진 · 사라짐 · 팔라듐 값 · 불확실한 때');
   const r = CHECKS.T10(s);
   assert.equal(r.pass, true, r.reason);
   for (const word of ['사라', '팔라', '추천', '목표가', '목표 가', '확실', '보장', '무조건']) {
@@ -337,10 +358,66 @@ test('T10 금지 말: 보통 낱말(사라지다·팔라듐·불확실)은 걸�
   }
 });
 
-test('T11: 옛 장부에 줄을 덧붙이기만 한 것은 통과', () => {
+test('T10 헛잡음 고침 (ECO-01 11번): 「사라졌다」·「불확실」은 안 잡고 「사라」만 쓴 글은 잡는다', () => {
+  for (const ok of ['어제 걱정이 사라졌다는 뜻은 아닙니다.', '밤사이 불확실성이 커져 폭을 넓혔습니다.', '불확실']) {
+    const s = goodState();
+    board(s, B1).text.push(ok);
+    const r = CHECKS.T10(s);
+    assert.equal(r.pass, true, `「${ok}」를 잘못 잡음: ${r.reason}`);
+  }
+  for (const bad of ['사라', '지금 사라!', '이 종목 사라. 내일 오름']) {
+    const s = goodState();
+    board(s, B1).text.push(bad);
+    const r = CHECKS.T10(s);
+    assert.equal(r.pass, false, `「${bad}」를 못 잡음`);
+    assert.match(r.reason, /「사라」/);
+  }
+});
+
+test('T11: atlas4h 장부에 줄을 덧붙이기만 한 것은 통과', () => {
   const r = checkOldEngineUntouched(CLEAN);
   assert.equal(r.pass, true, r.reason);
   assert.equal(r.counts.commits, 2);
+});
+
+test('T11 (ECO-01 6번): 옛 장부 reports/atlas11/ledger/ 에 줄 덧붙이기도 이제 잡는다 (옛 기록 전체를 지킴)', () => {
+  const r = checkOldEngineUntouched([...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'reports/atlas11/ledger/2026-10.jsonl', deletedLines: 0, appendOnly: true}]);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /reports\/atlas11\/ledger\/2026-10\.jsonl \(M\)/);
+});
+
+test('T11 (ECO-01 6번): 깃에서 센 목록 — atlas4h 장부 끝에 덧붙이기만 받고, 줄을 중간에 끼우면 잡는다', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas4h-git-'));
+  const git = (...args) => execFileSync('git', ['-C', dir, '-c', 'user.name=시험', '-c', 'user.email=test@example.com', '-c', 'commit.gpgsign=false', ...args], {encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']});
+  try {
+    try {
+      git('init', '-q');
+    } catch {
+      return; // 깃이 없는 곳에서는 건너뜀
+    }
+    const rel = 'atlas4h/ledger/boards/2026-10-02.jsonl';
+    const file = path.join(dir, rel);
+    fs.mkdirSync(path.dirname(file), {recursive: true});
+    fs.writeFileSync(file, '{"id":1}\n{"id":2}\n');
+    git('add', '-A');
+    git('commit', '-q', '-m', 'base');
+    const base = git('rev-parse', 'HEAD').trim();
+    fs.appendFileSync(file, '{"id":3}\n');
+    git('commit', '-q', '-am', 'atlas4h 9: append one line');
+    const appended = collectAtlas4hChanges(dir, base);
+    assert.deepEqual(appended.map(c => [c.status, c.path, c.deletedLines, c.appendOnly]), [['M', rel, 0, true]]);
+    assert.equal(checkOldEngineUntouched(appended).pass, true);
+    const mid = git('rev-parse', 'HEAD').trim();
+    fs.writeFileSync(file, '{"id":1}\n{"id":1.5}\n{"id":2}\n{"id":3}\n');
+    git('commit', '-q', '-am', 'atlas4h 9: insert a line in the middle');
+    const inserted = collectAtlas4hChanges(dir, mid);
+    assert.deepEqual(inserted.map(c => [c.status, c.deletedLines, c.appendOnly]), [['M', 0, false]]);
+    const r = checkOldEngineUntouched(inserted);
+    assert.equal(r.pass, false);
+    assert.match(r.reason, /끝이 아닌 곳에 끼움/);
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
 });
 
 test('T11: 빈 목록·목록 없음은 「안 통과」', () => {
@@ -357,7 +434,32 @@ test('T11: 깃에서 센 목록은 꼴이 맞다 (깃이 없으면 null)', () =>
     assert.ok(c.subject.startsWith('atlas4h'));
     assert.match(c.status, /^[A-Z]/);
     assert.equal(typeof c.path, 'string');
+    if ('appendOnly' in c) assert.ok(c.appendOnly === true || c.appendOnly === false || c.appendOnly === null, c.path);
   }
+});
+
+test('출처 회사(sourceOrg): 같은 회사의 다른 주소는 하나로 센다 (자료 약속 2번 · T7 ①)', () => {
+  assert.equal(sourceOrg('https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1'), 'naver.com');
+  assert.equal(sourceOrg('https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10'), 'naver.com');
+  assert.equal(sourceOrg('https://data-dbg.krx.co.kr/svc/apis/idx/kospi_dd_trd?basDd={YYYYMMDD}'), 'krx.co.kr');
+  assert.equal(sourceOrg('https://ecos.bok.or.kr/api/StatisticSearch/{KEY}/json/kr/1/10/731Y001/D/{YYYYMMDD}/{YYYYMMDD}/0000001'), 'bok.or.kr');
+  assert.equal(sourceOrg('https://openapi.koreainvestment.com:9443'), 'koreainvestment.com');
+  assert.equal(sourceOrg('https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500'), 'stlouisfed.org');
+  assert.equal(sourceOrg('주소가 아닌 글'), null);
+});
+
+test('자료 약속의 출처 둘은 모두 서로 다른 회사 — T7 ① 이 자료 약속과 부딪히지 않는다', () => {
+  const contract = loadContract();
+  assert.ok(contract, '자료 약속(atlas4h/data/variables.json)을 못 읽음');
+  let pairs = 0;
+  for (const v of contract.variables) {
+    const s = v.sources ?? [];
+    if (s.length < 2) continue;
+    pairs++;
+    assert.ok(sourceOrg(s[0].url) && sourceOrg(s[1].url), v.id);
+    assert.notEqual(sourceOrg(s[0].url), sourceOrg(s[1].url), v.id);
+  }
+  assert.ok(pairs >= 5, `출처 둘인 변수 ${pairs}개`);
 });
 
 test('극한 시험 자료 K1~K7: 걸음과 약속이 있고 약속마다 쉬운 설명이 있다', () => {
@@ -371,6 +473,99 @@ test('극한 시험 자료 K1~K7: 걸음과 약속이 있고 약속마다 쉬운
 });
 
 // ───────────────────────── 심어 둔 흠은 맞는 까닭으로 잡힌다 ─────────────────────────
+
+/** 「ok」 코스피를 봉인 가까이 관측한 값으로 바꾸고 「옛값」 표시를 뗀다 (T7 ⑤ 용) */
+function freshKospi(s, id, obs, srcObs = [obs, obs]) {
+  const v = variable(board(s, id), 'kospi');
+  v.observedAt = obs;
+  v.sources.forEach((x, i) => { x.observedAt = srcObs[i]; });
+  v.marks = ['장 닫힘'];
+  return v;
+}
+
+// ── ECO-01 (변경 요청 atlas4h-01): 엄해진 열두 곳마다 이 일꾼이 새로 심은 흠 — eco = 요청서 「고칠 곳」 번호 ──
+// 앞 시험 코드(ECO-01 전)는 이 흠들을 「통과」로 놓친다(T10·T12 는 고친 뒤에도 그대로 잡는지·멈추지 않는지 본다).
+const ECO01 = [
+  // 1 · T2: 출발값 시각(kospi.anchor.asOf)도 봉인 시각 이하 — 판 입력의 시각 칸은 깊이와 상관없이 모두 잰다
+  {eco: 1, id: 'T2', name: '재현 판 출발값이 자료 마감(08:30) 뒤 09:00 값 — 봉인(10/1)보다는 앞', mutate: s => { board(s, B4).kospi.anchor.asOf = '2026-09-01T09:00:00+09:00'; }, reason: /r4h-20260901-08-d4e5f6a7 kospi\.anchor\.asOf/},
+  {eco: 1, id: 'T2', name: '출발값 시각이 비어 있음', mutate: s => { delete board(s, B1).kospi.anchor.asOf; }, reason: /kospi\.anchor\.asOf 시각 없음/},
+  {eco: 1, id: 'T2', name: '시간 초과 판(16시)의 출발값이 봉인 4분 뒤 값', mutate: s => { board(s, B3).kospi.anchor.asOf = '2026-10-02T16:45:00+09:00'; }, reason: /4h-20261002-16-c3d4e5f6 kospi\.anchor\.asOf/},
+  {eco: 1, id: 'T2', name: '변수의 앞 값(previous) 시각이 봉인 뒤', mutate: s => { variable(board(s, B1), 'kospi').previous = {value: 2650.1, observedAt: '2026-10-02T09:00:00+09:00'}; }, reason: /kospi\.previous\.observedAt/},
+  {eco: 1, id: 'T2', name: '봉인 뒤에 나온 발표 결과를 입력에 씀', mutate: s => { board(s, B2).inputs.events = [{name: '미국 고용지표', at: '2026-10-02T21:30:00+09:00', result: 0.2}]; }, reason: /events\[0\]\.at/},
+  // 2 · T3: 자료 파일 목록이 비면 · 커밋 안 된 코드(dirty)면 안 통과
+  {eco: 2, id: 'T3', name: '자료 파일 목록 칸이 통째로 없음', mutate: s => { delete board(s, B2).dataVersion.files; }, reason: /자료 파일 1/},
+  {eco: 2, id: 'T3', name: '자료 파일 이름이 빈 글자', mutate: s => { board(s, B4).dataVersion.files = ['']; }, reason: /자료 파일 1/},
+  {eco: 2, id: 'T3', name: '코드가 깨끗한지(dirty) 안 적음', mutate: s => { delete board(s, B3).code.dirty; }, reason: /커밋 안 된 코드 1/},
+  {eco: 2, id: 'T3', name: 'dirty 를 글자 "false" 로 적음', mutate: s => { board(s, B1).code.dirty = 'false'; }, reason: /커밋 안 된 코드 1/},
+  {eco: 2, id: 'T3', name: '재현 판을 커밋 안 된 코드로 셈', mutate: s => { board(s, B4).code.dirty = true; }, reason: /커밋 안 된 코드 1 — r4h-20260901-08-d4e5f6a7/},
+  // 3 · T6: 판에 있는 예측(코스피·종목)이 모두 맞추기 마디에
+  {eco: 3, id: 'T6', name: '12시 판 마디에서 005930 이 빠짐', mutate: s => { board(s, B2).reconciliation.nodes = ['kospi', '000660', '나머지']; }, reason: /4h-20261002-12-b2c3d4e5: 맞추기 마디에 없는 예측 005930/},
+  {eco: 3, id: 'T6', name: '판에 종목을 더했는데 마디에는 안 더함', mutate: s => { board(s, B1).stocks.push({code: '035420', center: 201500, quantiles: {p10: 198000, p50: 201500, p90: 205000}, status: []}); }, reason: /맞추기 마디에 없는 예측 035420/},
+  {eco: 3, id: 'T6', name: '재현 판 마디에 코스피가 없음', mutate: s => { board(s, B4).reconciliation.nodes = ['005930', '000660', '나머지']; }, reason: /r4h-20260901-08-d4e5f6a7: 맞추기 마디에 없는 예측 kospi/},
+  {eco: 3, id: 'T6', name: '종목 번호가 빈 글자', mutate: s => { board(s, B3).stocks[1].code = ''; }, reason: /번호 없는 종목/},
+  // 4 · T7: 「ok」 이려면 ① 출처 이름·주소(회사)가 다름 ② fetchedAt ③ 값 ④ 자료 약속 허용 폭 ⑤ 봉인 4시간 안 관측
+  {eco: 4, id: 'T7', name: '① 두 출처가 같은 회사(네이버)의 다른 주소', mutate: s => { Object.assign(variable(board(s, B1), 'kospi').sources[1], {name: '네이버 증권 지수 분봉', url: 'https://api.stock.naver.com/chart/domestic/index/KOSPI/minute'}); }, reason: /4h-20261002-08-a1b2c3d4 kospi: 두 출처가 같은 회사 \(naver\.com\)/},
+  {eco: 4, id: 'T7', name: '① 두 출처 이름이 같음 (앞뒤 빈칸만 다름 · 주소는 다름)', mutate: s => { const v = variable(board(s, B4), 'stock-price:000660'); v.sources[1].name = ` ${v.sources[0].name} `; }, reason: /stock-price:000660: 두 출처 이름이 같음/},
+  {eco: 4, id: 'T7', name: '① 둘째 출처 주소가 없음', mutate: s => { delete variable(board(s, B1), 'stock-price:005930').sources[1].url; }, reason: /stock-price:005930: 출처 주소 없음/},
+  {eco: 4, id: 'T7', name: '② 받은 시각이 읽을 수 없는 글', mutate: s => { variable(board(s, B4), 'kospi').fetchedAt = '어제 아침'; }, reason: /r4h-20260901-08-d4e5f6a7 kospi: 받은 시각\(fetchedAt\) 없음/},
+  {eco: 4, id: 'T7', name: '③ 종목 값 칸이 통째로 없음', mutate: s => { delete variable(board(s, B1), 'stock-price:005930').value; }, reason: /stock-price:005930: 「ok」인데 값이 없음/},
+  {eco: 4, id: 'T7', name: '④ 종목 두 출처가 100원 다름 (약속: 같아야 함)', mutate: s => { variable(board(s, B1), 'stock-price:000660').sources[1].value = 182100; }, reason: /두 출처 값이 다름 \(182000 · 182100/},
+  {eco: 4, id: 'T7', name: '④ 재현 판 코스피 두 출처가 0.1% 다름 (허용 0.05%)', mutate: s => { variable(board(s, B4), 'kospi').sources[1].value = 2514.8; }, reason: /두 출처 차이 0\.100% — 허용 0\.050% 넘음/},
+  {eco: 4, id: 'T7', name: '④ 자료 약속에 없는 변수를 「ok」로', mutate: s => {
+    const at = '2026-10-02T06:00:00+09:00';
+    board(s, B1).inputs.variables.push({id: 'gold', market: 'US', value: 2400, observedAt: at, fetchedAt: '2026-10-02T08:00:50+09:00', status: 'ok',
+      sources: [{name: '가 회사 금값', url: 'https://gold.example.com/a', value: 2400, observedAt: at}, {name: '나 기관 금값', url: 'https://data.example.org/b', value: 2400, observedAt: at}]});
+  }, reason: /gold: 자료 약속에 없는 변수/},
+  {eco: 4, id: 'T7', name: '⑤ 봉인 4시간 1분 전 관측인데 「옛값」 없음', mutate: s => { freshKospi(s, B1, '2026-10-02T04:30:40+09:00'); }, reason: /kospi: 봉인 4\.0시간 전 관측인데 「옛값」 없음/},
+  {eco: 4, id: 'T7', name: '⑤ 출처 하나만 6시간 전 관측 (값 시각은 1시간 전)', mutate: s => { freshKospi(s, B1, '2026-10-02T07:31:40+09:00', ['2026-10-02T07:31:40+09:00', '2026-10-02T02:31:40+09:00']); }, reason: /봉인 6\.0시간 전 관측인데 「옛값」 없음/},
+  // 5 · T8: 「봉인」 판에 두 길 계산이 하나도 없으면 안 통과 (숫자 없는 줄은 계산이 아님)
+  {eco: 5, id: 'T8', name: '재현 판(봉인)에 두 길 칸이 통째로 없음', mutate: s => { delete board(s, B4).twoPath; }, reason: /r4h-20260901-08-d4e5f6a7: 봉인 판인데 두 길 계산 없음/},
+  {eco: 5, id: 'T8', name: '두 길 줄은 있는데 숫자가 없음 (어긋남 표시·화면 「확인 중」만)', mutate: s => { board(s, B2).twoPath = [{what: '코스피 가운데 값', tolerance: 0.5, agree: false}]; }, reason: /두 길 숫자 없음/},
+  {eco: 5, id: 'T8', name: '08시 봉인 판의 두 길을 비움', mutate: s => { board(s, B1).twoPath = []; }, reason: /4h-20261002-08-a1b2c3d4: 봉인 판인데 두 길 계산 없음/},
+  // 6 · T11: 옛 기록 전체(reports/atlas11/)를 지킴 · atlas4h 장부·봉인 폴더는 덧붙이기만
+  {eco: 6, id: 'T11', name: '옛 일별 기록 폴더에 새 파일을 더함', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'A', path: 'reports/atlas11/daily/2026-10-02.json', deletedLines: 0}]}, reason: /reports\/atlas11\/daily\/2026-10-02\.json \(A\)/},
+  {eco: 6, id: 'T11', name: '옛 기록을 atlas4h 로 옮김 (이름 바꾸기 — 옛 주소가 지키는 곳)', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'R100', path: 'atlas4h/notes/verify.json', oldPath: 'reports/atlas11/verify/summary.json', deletedLines: 0}]}, reason: /reports\/atlas11\/verify\/summary\.json \(R\)/},
+  {eco: 6, id: 'T11', name: '옛 기록 파일을 지움', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'D', path: 'reports/atlas11/latest.json', deletedLines: 12}]}, reason: /reports\/atlas11\/latest\.json \(D\)/},
+  {eco: 6, id: 'T11', name: 'atlas4h 채점 장부 한 줄을 고침', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'M', path: 'atlas4h/ledger/scores/2026-10-02.jsonl', deletedLines: 1, appendOnly: false}]}, reason: /atlas4h\/ledger\/scores\/2026-10-02\.jsonl \(줄 1개 지우거나 고침\)/},
+  {eco: 6, id: 'T11', name: 'atlas4h 판 장부 중간에 줄을 끼움 (지운 줄 0)', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'M', path: 'atlas4h/ledger/boards/2026-10-02.jsonl', deletedLines: 0, appendOnly: false}]}, reason: /끝이 아닌 곳에 끼움/},
+  {eco: 6, id: 'T11', name: '시도 장부를 지움', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'D', path: 'atlas4h/seal/trials.jsonl', deletedLines: 3}]}, reason: /atlas4h\/seal\/trials\.jsonl \(D\)/},
+  {eco: 6, id: 'T11', name: '봉인한 무게 근거를 고쳐 씀', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'M', path: 'atlas4h/seal/weights.json', deletedLines: 3, appendOnly: false}]}, reason: /atlas4h\/seal\/weights\.json \(줄 3개 지우거나 고침\)/},
+  {eco: 6, id: 'T11', name: '장부 파일 이름을 바꿈', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'R095', path: 'atlas4h/ledger/loops/2026-10-02-old.jsonl', oldPath: 'atlas4h/ledger/loops/2026-10-02.jsonl', deletedLines: 0}]}, reason: /atlas4h\/ledger\/loops\/2026-10-02-old\.jsonl \(R\)/},
+  {eco: 6, id: 'T11', name: '장부 파일을 글자가 아닌 것으로 바꿈 (지운 줄을 못 셈)', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'M', path: 'atlas4h/ledger/watch/2026-10-02.jsonl', deletedLines: null}]}, reason: /줄 \?개 지우거나 고침/},
+  {eco: 6, id: 'T11', name: '덧붙이기인지 깃이 못 알아냄 (appendOnly null)', opts: {changes: [...CLEAN, {commit: 'x2', subject: 'atlas4h 9', status: 'M', path: 'atlas4h/ledger/boards/2026-10-03.jsonl', deletedLines: 0, appendOnly: null}]}, reason: /덧붙이기인지 모름/},
+  // 7 · T13: 평소 판과 위기 판을 따로 센다 — 평소 판 30판 이상일 때만, 평소 판으로 70~90%
+  {eco: 7, id: 'T13', name: '위기 판 11개를 더해 40판을 채움 — 평소 판은 29판 (합치면 80%)', mutate: s => { s.scores = scoreRows(29, 23, 11, 9); }, reason: /평소 판 29판 — 30판이 안 됨/},
+  {eco: 7, id: 'T13', name: '평소 93.3% (너무 넓음)를 위기 빗나감이 가려 합치면 80%', mutate: s => { s.scores = scoreRows(30, 28, 10, 4); }, reason: /평소 판 80% 범위 덮음 93\.3% — 70~90% 밖 \(30판\)/},
+  {eco: 7, id: 'T13', name: '평소 63.3% (너무 좁음)를 위기 덮음이 가려 합치면 72.5%', mutate: s => { s.scores = scoreRows(30, 19, 10, 10); }, reason: /평소 판 80% 범위 덮음 63\.3% — 70~90% 밖/},
+  // 8 · T20: 고른 시도는 SPA 를 거친 목록 안 · 시도 줄마다 sealedAt · SPA p < 0.05
+  {eco: 8, id: 'T20', name: '고른 시도(chose)를 안 적음', mutate: s => { delete s.weights.selections[0].chose; }, reason: /고른 시도\(chose\)를 안 적음/},
+  {eco: 8, id: 'T20', name: '고른 시도 둘 중 하나가 SPA 목록 밖', mutate: s => { s.weights.selections[0].chose = ['trial-0002', 'trial-0003']; }, reason: /trial-0003 가 SPA 를 거친 목록 밖/},
+  {eco: 8, id: 'T20', name: '인용 안 한 시도 줄에도 봉인 시각이 없음', mutate: s => { delete s.trials[2].sealedAt; }, reason: /trial-0003: 시도 결과 봉인 시각\(sealedAt\) 없음/},
+  {eco: 8, id: 'T20', name: '시도 봉인 시각이 읽을 수 없는 글', mutate: s => { s.trials[0].sealedAt = '곧'; }, reason: /trial-0001: 시도 결과 봉인 시각\(sealedAt\) 없음/},
+  {eco: 8, id: 'T20', name: 'SPA p 가 딱 0.05 (못 넘음)', mutate: s => { s.weights.selections[0].spa.p = 0.05; }, reason: /SPA p 0\.05 ≥ 0\.05 인데 고름/},
+  // 9 · T21: 엔진 입력에서 앞 판 id·앞 판 값을 직접 찾는다 (스스로 적은 sawPreviousBoard 만 믿지 않음)
+  {eco: 9, id: 'T21', name: '12시 판 엔진 입력에 08시 판 가운데 값(숫자)', mutate: s => { board(s, B2).engines[0].inputs.push(2649.86); }, reason: /4h-20261002-12-b2c3d4e5 center-nochange: 입력에 앞 판 값 2649\.86/},
+  {eco: 9, id: 'T21', name: '16시 판 엔진 입력에 12시 판 가운데 값(글자)', mutate: s => { board(s, B3).engines[2].inputs.push('2663.15'); }, reason: /width-har: 입력에 앞 판 값 2663\.15/},
+  {eco: 9, id: 'T21', name: '판 입력 변수의 출처가 판 장부 파일', mutate: s => {
+    board(s, B3).inputs.variables.push({id: 'center-prev', market: 'KR', value: 2663.15, observedAt: '2026-10-02T12:12:30+09:00', fetchedAt: '2026-10-02T16:00:30+09:00', status: '한 출처',
+      sources: [{name: 'atlas4h 판 장부', url: 'atlas4h/ledger/boards/2026-10-02.jsonl', value: 2663.15, observedAt: '2026-10-02T12:12:30+09:00'}]});
+  }, reason: /4h-20261002-16-c3d4e5f6 inputs: 앞 판을 가리킴/},
+  {eco: 9, id: 'T21', name: '엔진 입력 이름이 prevBoard', mutate: s => { board(s, B1).engines[1].inputs.push('prevBoard.center'); }, reason: /center-transfer: 입력에 앞 판을 가리킴 「prevBoard\.center」/},
+  {eco: 9, id: 'T21', name: '앞 판 id 를 칸 이름에 숨김', mutate: s => { board(s, B2).engines[3].inputs = ['kospi', {'4h-20261002-08-a1b2c3d4': 'center'}]; }, reason: /width-harx: 입력에 앞 판 id 4h-20261002-08-a1b2c3d4/},
+  {eco: 9, id: 'T21', name: '판 번호 꼴이 다른 앞 판 id 를 엔진 입력에 씀', mutate: s => { board(s, B1).id = 'morning-board-1002'; board(s, B2).engines[1].inputs.push('center@morning-board-1002'); }, reason: /center-transfer: 입력에 앞 판 id morning-board-1002/},
+  // 10 · T23: 감시한 이(by)가 짓는 일꾼(바탕·고리·평가)이면 안 통과
+  {eco: 10, id: 'T23', name: '감시한 이가 평가 일꾼의 에이전트 이름', mutate: s => { s.watch[2].by = 'atlas4h-eval'; }, reason: /loop-20261002-16: 감시한 이가 짓는 일꾼 「atlas4h-eval」/},
+  {eco: 10, id: 'T23', name: '감시한 이가 「바탕일꾼」(띄어쓰기 없음)', mutate: s => { s.watch[0].by = '바탕일꾼'; }, reason: /짓는 일꾼 「바탕일꾼」/},
+  {eco: 10, id: 'T23', name: '감시한 이(by)를 안 적음', mutate: s => { delete s.watch[1].by; }, reason: /loop-20261002-12: 감시한 이\(by\) 없음/},
+  {eco: 10, id: 'T23', name: '고리를 지은 이와 감시한 이가 같은 에이전트', mutate: s => { s.loops[0].by = '에이전트 7f3a'; s.watch[0].by = '에이전트 7f3a'; }, reason: /고리를 지은 이와 같음 「에이전트 7f3a」/},
+  {eco: 10, id: 'T23', name: '감시자 겸 고리 일꾼', mutate: s => { s.watch[1].by = '감시자 겸 고리 일꾼'; }, reason: /짓는 일꾼 「감시자 겸 고리 일꾼」/},
+  // 11 · T10: 「사라졌다」 헛잡음을 고친 뒤에도 「사라」만 쓴 글은 잡는다
+  {eco: 11, id: 'T10', name: '사건 이름에 「사라!」', mutate: s => { board(s, B2).events[0].name = '지금 사라!'; }, reason: /「사라」 4h-20261002-12-b2c3d4e5 events\[0\]\.name/},
+  {eco: 11, id: 'T10', name: '화면 파일 글이 「사라」로 끝남', mutate: s => { s.view.now.screen.chance = '보통 · 위 25% · 이번엔 사라'; }, reason: /「사라」 화면/},
+  // 12 · T12: 줄마다 차이가 똑같으면 멈추지 않고 「DM 셈 불가(차이 분산 0)」로 안 통과
+  {eco: 12, id: 'T12', name: '줄마다 차이가 똑같음 (엔진 40 · 기준 46·47·48)', mutate: s => { for (const r of s.retro.rows) { r.interval.score = 40; r.baselines.forEach((b, k) => { b.interval = 46 + k; }); } }, reason: /못 이김: 「무판」 DM 셈 불가\(차이 분산 0\)/},
+  {eco: 12, id: 'T12', name: '「ATLAS 11」 과만 차이가 늘 7', mutate: s => { for (const r of s.retro.rows) { r.interval.score = Math.round(r.interval.score); r.baselines.find(x => x.id === 'ATLAS 11').interval = r.interval.score + 7; } }, reason: /「ATLAS 11」 DM 셈 불가\(차이 분산 0\)/},
+];
 
 const PLANTED = [
   // T1 봉인 뒤 수정 0
@@ -419,7 +614,7 @@ const PLANTED = [
   // T11 옛 엔진·채점·기록 변경 0
   {id: 'T11', name: '옛 엔진 코드를 고침', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'lib/atlas11/engine.mjs', deletedLines: 1}]}, reason: /lib\/atlas11\/engine\.mjs/},
   {id: 'T11', name: '옛 설정을 고침', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'config/atlas11/model.json', deletedLines: 0}]}, reason: /config\/atlas11/},
-  {id: 'T11', name: '옛 장부의 줄을 고침', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'reports/atlas11/ledger/2026-09.jsonl', deletedLines: 2}]}, reason: /줄 2개 지우거나 고침/},
+  {id: 'T11', name: '옛 장부의 줄을 고침', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'reports/atlas11/ledger/2026-09.jsonl', deletedLines: 2}]}, reason: /reports\/atlas11\/ledger\/2026-09\.jsonl \(M\)/},
   {id: 'T11', name: '옛 장부 파일을 지움', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'D', path: 'reports/atlas11/ledger/2026-08.jsonl', deletedLines: 30}]}, reason: /2026-08\.jsonl \(D\)/},
   {id: 'T11', name: '옛 화면을 덮음', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'A', path: 'site/index.html', deletedLines: 0}]}, reason: /site\/index\.html/},
   {id: 'T11', name: '옛 화면 자료를 덮음', opts: {changes: [...CLEAN, {commit: 'x1', subject: 'atlas4h 9', status: 'M', path: 'public/data/atlas11/latest.json', deletedLines: 0}]}, reason: /public\/data\/atlas11/},
@@ -434,7 +629,7 @@ const PLANTED = [
   {id: 'T12', name: '재현 결과가 없음', mutate: s => { s.retro = null; }, reason: /재현 결과 없음/},
   // T13 80% 덮음 70~90%(30판↑)·위기 따로
   {id: 'T13', name: '모두 덮음 (범위가 너무 넓음)', mutate: s => { for (const x of s.scores) if (x.interval) x.interval.covered = true; s.scores = s.scores.filter(x => !BASE.boards.some(b => b.id === x.boardId)); }, reason: /100\.0% — 70~90% 밖/},
-  {id: 'T13', name: '채점 20판뿐', mutate: s => { s.scores = makeScores(20); }, reason: /20판 — 30판이 안 됨/},
+  {id: 'T13', name: '채점 20판뿐 (평소 17 · 위기 3)', mutate: s => { s.scores = makeScores(20); }, reason: /평소 판 17판 — 30판이 안 됨/},
   {id: 'T13', name: '위기 판이 없음', mutate: s => { for (const x of s.scores) x.crisis = false; }, reason: /위기 판 없음/},
   {id: 'T13', name: '채점 기록의 덮음이 봉인 범위와 다름', mutate: s => { const x = s.scores.find(y => y.boardId === B1); x.interval.covered = !x.interval.covered; }, reason: /봉인 범위와 다름 1개/},
   // T14 화면 숫자 = 봉인 값
@@ -488,6 +683,7 @@ const PLANTED = [
   {id: 'K7', name: '국면 확률을 안 적음', opts: {engine: BAD.noRegime}, reason: /국면 확률 없음/},
   {id: 'K7', name: '사나워도 범위가 그대로', opts: {engine: BAD.flatWidth}, reason: /넓다/},
   ...['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7'].map(id => ({id, name: '엔진이 멈춤', opts: {engine: BAD.throws}, reason: /엔진이 멈춤 — .*일부러 멈춤/})),
+  ...ECO01,
 ];
 
 for (const p of PLANTED) {
@@ -502,6 +698,59 @@ for (const p of PLANTED) {
 
 test(`심은 흠 ${PLANTED.length}개 — 서른 개 시험마다 하나 이상`, () => {
   for (const id of IDS) assert.ok(PLANTED.some(p => p.id === id), `${id} 에 심은 흠이 없음`);
+});
+
+test(`ECO-01 고칠 곳 열둘마다 이 일꾼이 새로 심은 흠이 하나 이상 (모두 ${ECO01.length}개)`, () => {
+  for (let n = 1; n <= 12; n++) assert.ok(ECO01.some(p => p.eco === n), `ECO-01 ${n}번에 심은 흠이 없음`);
+});
+
+test('T12 멈춤 고침 (ECO-01 12번): 줄마다 차이가 똑같아도 멈추지 않고 「DM 셈 불가(차이 분산 0)」로 안 통과', () => {
+  const s = goodState();
+  for (const row of s.retro.rows) {
+    row.interval.score = 40;
+    row.baselines.forEach((b, k) => { b.interval = 46 + k; });
+  }
+  let r;
+  assert.doesNotThrow(() => { r = CHECKS.T12(s); });
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /DM 셈 불가\(차이 분산 0\)/);
+  for (const id of ['무판', '단순 전이식', 'ATLAS 11']) assert.equal(r.counts.baselines[id].p, null, id);
+  const viaAll = runAll(s, OPTS).find(x => x.id === 'T12');
+  assert.equal(viaAll.pass, false);
+  assert.doesNotMatch(viaAll.reason, /시험이 멈춤/);
+});
+
+test('T7 (ECO-01 4번): 표시로 이미 밝힌 것은 잡지 않는다 — 「확인 중」이 붙은 큰 차이 · 딱 4시간 전 관측', () => {
+  const s1 = goodState();
+  const v = variable(board(s1, B1), 'kospi');
+  v.sources[1].value = 2700;
+  v.marks = [...v.marks, '확인 중'];
+  const r1 = CHECKS.T7(s1);
+  assert.equal(r1.pass, true, r1.reason);
+  const s2 = goodState();
+  freshKospi(s2, B1, '2026-10-02T04:31:40+09:00');
+  const r2 = CHECKS.T7(s2);
+  assert.equal(r2.pass, true, r2.reason);
+  const s3 = goodState();
+  freshKospi(s3, B1, '2026-10-02T04:31:39+09:00');
+  assert.match(CHECKS.T7(s3).reason, /「옛값」 없음/);
+});
+
+test('T21 (ECO-01 9번): 변수의 앞 값(previous)·종목 번호 같은 보통 입력은 앞 판으로 잡지 않는다', () => {
+  const s = goodState();
+  board(s, B2).engines[0].inputs.push('kospi.previous', 'stock-price:005930');
+  variable(board(s, B2), 'kospi').previous = {value: 2650.1, observedAt: '2026-10-01T15:30:00+09:00'};
+  const r = CHECKS.T21(s);
+  assert.equal(r.pass, true, r.reason);
+});
+
+test('T13 (ECO-01 7번): 평소 30판 80% · 위기 판은 따로 — 통과 (만든 채점 줄이 제대로인지)', () => {
+  const s = goodState();
+  s.scores = scoreRows(30, 24, 5, 1);
+  const r = CHECKS.T13(s);
+  assert.equal(r.pass, true, r.reason);
+  assert.equal(r.counts.normal, 30);
+  assert.equal(r.counts.crisis.scored, 5);
 });
 
 test('극한 시험은 걸음마다 엔진에 입력 복사본을 준다 (자료 파일이 바뀌지 않음)', () => {

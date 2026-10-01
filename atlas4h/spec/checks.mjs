@@ -10,9 +10,14 @@
  *
  * opts (모두 고를 수 있음)
  *   engine(inputs, seed)       엔진 함수 — 동기 함수. 없으면 T4·T15·K1~K7 은 「엔진 없음」
- *   changes                    T11 바뀐 파일 목록 [{commit, subject, status, path, deletedLines}]
+ *   changes                    T11 바뀐 파일 목록 [{commit, subject, status, path, deletedLines, appendOnly?, oldPath?, newPath?}]
+ *                              appendOnly: 앞 판 글자가 새 판 글자의 앞부분 그대로인가(끝에 덧붙이기만) — true·false·null(모름)
  *   judgmentCommitAt           T19 판정 기준 파일의 커밋 시각 (ISO)
+ *   contract                   T7 자료 약속 (기본: atlas4h/data/variables.json — 출처 둘의 허용 폭 compare)
  *   extremesDir                K1~K7 시험 자료 폴더 (기본: 이 파일 옆 fixtures/extremes)
+ *
+ * 변경 요청 atlas4h-01 (2026-10-01 사장님 승인)로 더 엄하게 고친 곳: T2·T3·T6·T7·T8·T11·T13·T20·T21·T23,
+ * 헛잡음 고침 T10(「사라졌다」) · 멈춤 고침 T12(차이 분산 0). 고친 곳마다 「ECO-01」 쪽지를 달았다.
  *
  * 판 꼴: atlas4h/spec/board.md (atlas4h-board-1). 이 파일이 새로 정한 꼴 셋은 아래 「이 파일이 정한 꼴」.
  *
@@ -52,18 +57,26 @@ export const IDS = [
   'K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7',
 ];
 
+export const STATUS_SEALED = '봉인';
 export const STATUS_KEEP = '시간 초과 → 앞 판 유지';
 export const STATUS_RESEAL = '변수 그대로 → 앞 판 다시 봉인';
 export const BASELINES = ['무판', '단순 전이식', 'ATLAS 11'];
 export const T11_BASE = 'a9187c6';
-const PROTECTED = ['lib/atlas11/', 'scripts/atlas11/', 'config/atlas11/', 'site/', 'public/data/atlas11/'];
-const LEDGER = 'reports/atlas11/ledger/';
+/** T11 지키는 곳 — 이 아래는 atlas4h 커밋이 무엇이든(더하기·고치기·지우기·이름 바꾸기) 건드리면 안 된다.
+ *  ECO-01: 옛 기록 전체 reports/atlas11/ 를 더함(앞에는 reports/atlas11/ledger/ 에 줄 덧붙이기를 받아 줬다). */
+export const PROTECTED = ['lib/atlas11/', 'scripts/atlas11/', 'config/atlas11/', 'site/', 'public/data/atlas11/', 'reports/atlas11/'];
+/** T11 덧붙이기만 받는 곳 (ECO-01) — 새 파일이나 끝에 줄 덧붙이기만. 줄을 고치거나 지우거나 중간에 끼우면 안 통과 */
+export const APPEND_ONLY = ['atlas4h/ledger/', 'atlas4h/seal/'];
 const HOUR = 3600e3;
 const MINUTE = 60e3;
+/** T7 「ok」 변수는 봉인 이만큼 안의 관측 (자료 약속 13번 · staleAfterHours 가 더 짧으면 그 값) */
+export const STALE_HOURS = 4;
+const CONTRACT_FILE = path.join(SPEC_DIR, '..', 'data', 'variables.json');
 
-/** 금지 말 (넘지 않는 선) — 보통 낱말(사라지다·팔라듐·불확실)은 걸리지 않게 */
+/** 금지 말 (넘지 않는 선) — 보통 낱말(사라지다·사라졌다·사라질·팔라듐·불확실)은 걸리지 않게
+ *  ECO-01: 「사라졌다」를 잘못 잡던 것을 고침 — 「사라」 뒤에 지·져·졌·질·진·짐이 오면 보통 낱말 */
 export const FORBIDDEN = [
-  {word: '사라', re: /사라(?![지져진짐])/},
+  {word: '사라', re: /사라(?![지져졌질진짐])/},
   {word: '팔라', re: /팔라(?!듐)/},
   {word: '추천', re: /추천/},
   {word: '목표가', re: /목표\s?가/},
@@ -225,6 +238,69 @@ function numbersInText(s) {
   return (s.match(NUM_IN_TEXT) ?? []).map(t => Number(t.replace(/,/g, ''))).filter(Number.isFinite);
 }
 
+/** 판의 정보 시각 = 봉인 시각·자료 마감 중 이른 쪽 (재현 판은 자료 마감이 훨씬 앞이다) */
+function cutOf(b) {
+  return Math.min(ms(b?.sealedAt), ms(b?.dataCutoff));
+}
+
+/** 시각 칸 이름 — 판 입력 안에서 이 이름의 칸은 모두 자료 시각으로 본다 (T2) */
+const TIME_KEYS = new Set(['observedAt', 'fetchedAt', 'asOf', 'measuredAt']);
+
+/** 시각 칸마다 fn(값, 자리) — 깊이와 상관없이 (출처·앞 값 previous 안까지) */
+function walkTimes(v, where, fn) {
+  if (Array.isArray(v)) v.forEach((x, i) => walkTimes(x, `${where}[${i}]`, fn));
+  else if (v && typeof v === 'object') {
+    for (const [k, x] of Object.entries(v)) {
+      const w = where ? `${where}.${k}` : k;
+      if (TIME_KEYS.has(k)) fn(x, w);
+      else walkTimes(x, w, fn);
+    }
+  }
+}
+
+/** 자료 약속(atlas4h/data/variables.json)을 읽는다. 못 읽으면 null */
+export function loadContract(file = CONTRACT_FILE) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+let contractCache;
+function defaultContract() {
+  if (contractCache === undefined) contractCache = loadContract();
+  return contractCache;
+}
+
+/** 자료 약속에서 변수 하나 — 「stock-price:005930」 은 「stock-price」 줄을 쓴다 */
+function contractOf(contract, id) {
+  const vars = list(contract?.variables);
+  const key = String(id ?? '');
+  return vars.find(x => x?.id === key) ?? vars.find(x => x?.id === key.split(':')[0]) ?? null;
+}
+
+const SECOND_LEVEL = new Set(['co', 'or', 'go', 'ac', 'ne', 're', 'pe', 'ed', 'mil', 'com', 'net', 'org', 'gov', 'edu']);
+/**
+ * 주소의 회사(등록 도메인) — 자료 약속 2번 「같은 회사의 다른 주소는 출처 하나로 센다」
+ *   m.stock.naver.com·api.stock.naver.com → naver.com · data-dbg.krx.co.kr → krx.co.kr · ecos.bok.or.kr → bok.or.kr
+ * 공용 접미사 목록 없이 셈: 끝이 두 글자 나라 이름이고 그 앞이 co·or·go 같은 칸이면 셋, 아니면 끝 둘. 못 읽으면 null.
+ */
+export function sourceOrg(url) {
+  let host;
+  try {
+    host = new URL(String(url)).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+  if (!host) return null;
+  if (/^[\d.]+$/.test(host) || host.startsWith('[')) return host;
+  const parts = host.split('.').filter(Boolean);
+  const take = parts.length > 2 && parts.at(-1).length === 2 && SECOND_LEVEL.has(parts.at(-2)) ? 3 : 2;
+  return parts.slice(-take).join('.');
+}
+
+const show = x => (x !== null && typeof x === 'object' ? JSON.stringify(x) : String(x));
+
 // ───────────────────────────── 봉인·계산 T1~T8 ─────────────────────────────
 
 function T1(state) {
@@ -279,7 +355,7 @@ function T2(state) {
   let unreadable = 0;
   const bad = [];
   for (const b of boards) {
-    const cut = Math.min(ms(b.sealedAt), ms(b.dataCutoff));
+    const cut = cutOf(b);
     if (!Number.isFinite(cut)) {
       unreadable++;
       bad.push(`${b.id}: 봉인 시각·자료 마감 없음`);
@@ -297,15 +373,25 @@ function T2(state) {
         bad.push(`${b.id} ${where}`);
       }
     };
-    for (const v of list(b.inputs?.variables)) {
-      check(v.observedAt, `${v.id}.observedAt`);
-      check(v.fetchedAt, `${v.id}.fetchedAt`);
-      list(v.sources).forEach((s, i) => {
-        check(s.observedAt, `${v.id}.sources[${i}].observedAt`);
-        check(s.fetchedAt, `${v.id}.sources[${i}].fetchedAt`);
-      });
-    }
-    check(b.inputs?.constants?.measuredAt, 'constants.measuredAt');
+    /** 꼭 있어야 하는 시각 — 없으면 「못 읽음」 */
+    const need = (t, where) => {
+      if (t === null || t === undefined) {
+        times++;
+        unreadable++;
+        bad.push(`${b.id} ${where} 시각 없음`);
+      } else check(t, where);
+    };
+    // 변수마다 시각 칸 전부 (값·출처·앞 값 previous 까지) — 자리 이름은 「변수.칸」
+    for (const v of list(b.inputs?.variables)) walkTimes(v, String(v?.id), check);
+    // 변수 밖 입력(상수·달력 등)의 시각 칸
+    for (const [k, x] of Object.entries(b.inputs ?? {})) if (k !== 'variables' && k !== 'events') walkTimes(x, k, check);
+    // 결과가 들어 있는 발표는 그 발표 시각도 자료 시각이다
+    list(b.inputs?.events).forEach((e, i) => {
+      walkTimes(e, `events[${i}]`, check);
+      if (e?.result !== null && e?.result !== undefined) need(e?.at, `events[${i}].at`);
+    });
+    // ECO-01: 코스피 출발값의 시각도 봉인 시각 이하 (출발값은 판이 쓴 자료다)
+    if (b.kospi && typeof b.kospi === 'object') need(b.kospi.anchor?.asOf, 'kospi.anchor.asOf');
   }
   const counts = {boards: boards.length, times, late, unreadable};
   if (!times) return nothing('T2', '잴 시각 없음', counts);
@@ -316,16 +402,21 @@ function T2(state) {
 function T3(state) {
   const boards = list(state.boards);
   if (!boards.length) return nothing('T3');
-  const c = {'코드 판': 0, '자료 판': 0, '씨앗': 0};
+  const c = {'코드 판': 0, '커밋 안 된 코드': 0, '자료 판': 0, '자료 파일': 0, '씨앗': 0};
   const bad = [];
   for (const b of boards) {
     if (!/^[0-9a-f]{7,40}$/.test(String(b.code?.commit ?? ''))) { c['코드 판']++; bad.push(b.id); }
+    // ECO-01: 커밋 안 된 코드로 셈(dirty)이면 코드 판으로 다시 못 돌린다 — 「false」라고 적힌 것만 받는다(없음·글자도 안 통과)
+    if (b.code?.dirty !== false) { c['커밋 안 된 코드']++; bad.push(b.id); }
     if (!/^[0-9a-f]{64}$/.test(String(b.dataVersion?.sha256 ?? ''))) { c['자료 판']++; bad.push(b.id); }
+    // ECO-01: 자료 판의 파일 목록이 비면 어떤 자료로 셌는지 모른다
+    const files = b.dataVersion?.files;
+    if (!Array.isArray(files) || !files.length || !files.every(f => typeof f === 'string' && f.trim() !== '')) { c['자료 파일']++; bad.push(b.id); }
     if (!Number.isInteger(b.seed)) { c['씨앗']++; bad.push(b.id); }
   }
-  const missing = c['코드 판'] + c['자료 판'] + c['씨앗'];
+  const missing = Object.values(c).reduce((a, n) => a + n, 0);
   const counts = {boards: boards.length, missing};
-  if (!missing) return result('T3', true, `판 ${boards.length}개 모두 코드 판·자료 판·씨앗 있음`, counts);
+  if (!missing) return result('T3', true, `판 ${boards.length}개 모두 코드 판(커밋됨)·자료 판(파일 목록)·씨앗 있음`, counts);
   return result('T3', false, `빠짐: ${kv(c)} — ${few(bad)}`, counts);
 }
 
@@ -388,44 +479,119 @@ function T6(state) {
   const bad = [];
   for (const b of boards) {
     const r = b.reconciliation ?? {};
+    const nodes = list(r.nodes).map(x => String(x));
     const level = isNum(b.kospi?.center) ? b.kospi.center : b.kospi?.anchor?.value;
     if (r.method !== 'MinT') bad.push(`${b.id}: 맞추는 법이 MinT 가 아님`);
-    else if (!list(r.nodes).includes('나머지')) bad.push(`${b.id}: 「나머지」 마디 없음`);
+    else if (!nodes.includes('나머지')) bad.push(`${b.id}: 「나머지」 마디 없음`);
     else if (!isNum(r.maxGap) || !isNum(level) || level === 0) bad.push(`${b.id}: 어긋남·코스피 값을 못 읽음`);
     else if (Math.abs(r.maxGap) / Math.abs(level) > 1e-6) bad.push(`${b.id}: 어긋남 ${r.maxGap} (코스피의 ${(Math.abs(r.maxGap) / Math.abs(level)).toExponential(1)})`);
+    // ECO-01: 판에 있는 예측(코스피와 종목 모두)이 맞추기 마디에 있어야 맞춰진 것이다
+    const missing = [];
+    if (!nodes.includes('kospi')) missing.push('kospi');
+    for (const s of list(b.stocks)) {
+      const code = s?.code;
+      if (code === null || code === undefined || String(code).trim() === '') missing.push('(번호 없는 종목)');
+      else if (!nodes.includes(String(code))) missing.push(String(code));
+    }
+    if (missing.length) bad.push(`${b.id}: 맞추기 마디에 없는 예측 ${few(missing, 3)}`);
   }
   const counts = {boards: boards.length, bad: bad.length};
-  if (!bad.length) return result('T6', true, `판 ${boards.length}개 모두 MinT 로 맞춰짐 (나머지 마디 · 어긋남 0)`, counts);
+  if (!bad.length) return result('T6', true, `판 ${boards.length}개 모두 MinT 로 맞춰짐 (코스피·종목 모두 마디 · 나머지 마디 · 어긋남 0)`, counts);
   return result('T6', false, few(bad), counts);
 }
 
 const FEW_SOURCE_OK = ['한 출처', '없음', '확인 중', '옛값'];
 
-function T7(state) {
+/** 두 출처 값의 차이가 자료 약속의 허용 폭 안인가 — 안이면 null, 아니면 까닭 글. 첫째 출처가 기준(자료 약속 1번) */
+function compareProblem(entry, a, b) {
+  const cmp = entry?.compare;
+  if (!entry) return '자료 약속에 없는 변수 — 허용 폭을 모름';
+  if (!cmp || typeof cmp !== 'object') return '자료 약속에 허용 폭 없음';
+  if (a === null || a === undefined || b === null || b === undefined) return '출처 값이 없음 — 견줄 수 없음';
+  if (cmp.rule === 'exact') return isDeepStrictEqual(a, b) ? null : `두 출처 값이 다름 (${show(a)} · ${show(b)} — 약속은 「같아야 함」)`;
+  if (cmp.rule === 'relative') {
+    if (!isNum(a) || !isNum(b) || !isNum(cmp.tolerance) || cmp.tolerance < 0) return '두 출처 값을 견줄 수 없음 (숫자 아님)';
+    const rel = a === 0 ? (b === 0 ? 0 : Infinity) : Math.abs(b - a) / Math.abs(a);
+    if (rel <= cmp.tolerance + 1e-12) return null;
+    return `두 출처 차이 ${(rel * 100).toFixed(3)}% — 허용 ${(cmp.tolerance * 100).toFixed(3)}% 넘음`;
+  }
+  return `자료 약속의 모르는 비교 규칙 「${show(cmp.rule)}」`;
+}
+
+/**
+ * ECO-01: status 「ok」 변수가 모두 지킬 다섯 (+ 앞에 있던 시각·출처 둘·출처 시각)
+ *   ① 출처 둘의 이름·주소가 서로 다르다 — 주소는 회사(등록 도메인)까지 달라야 한다(자료 약속 2번)
+ *   ② fetchedAt 이 있다  ③ 값이 null 이 아니다
+ *   ④ 두 출처 차이가 자료 약속 허용 폭 안 — 넘는데 「확인 중」 표시가 붙어 있으면 이미 밝힌 것으로 본다
+ *   ⑤ 봉인(정보 시각) 4시간 안의 관측 — 넘는데 「옛값」 표시가 붙어 있으면 이미 밝힌 것으로 본다(자료 약속 13번)
+ */
+function okProblems(v, cut, contract, staleMs) {
+  const out = [];
+  const srcs = list(v.sources);
+  const st = statusesOf(v);
+  if (!Number.isFinite(ms(v.observedAt))) out.push('시각 없음');
+  if (srcs.length !== 2) out.push(`「ok」인데 출처 ${srcs.length}개`);
+  else if (!srcs.every(s => Number.isFinite(ms(s?.observedAt)))) out.push('출처 시각 없음');
+  if (srcs.length === 2) {
+    const name = s => (typeof s?.name === 'string' ? s.name.trim().replace(/\s+/g, ' ').toLowerCase() : '');
+    const url = s => (typeof s?.url === 'string' ? s.url.trim() : '');
+    const [a, b] = srcs;
+    if (!name(a) || !name(b)) out.push('출처 이름 없음');
+    else if (name(a) === name(b)) out.push('두 출처 이름이 같음');
+    if (!url(a) || !url(b)) out.push('출처 주소 없음');
+    else if (url(a) === url(b)) out.push('두 출처 주소가 같음');
+    else {
+      const oa = sourceOrg(url(a));
+      const ob = sourceOrg(url(b));
+      if (!oa || !ob) out.push('출처 주소를 못 읽음');
+      else if (oa === ob) out.push(`두 출처가 같은 회사 (${oa}) — 출처 하나로 셈`);
+    }
+  }
+  if (!Number.isFinite(ms(v.fetchedAt))) out.push('받은 시각(fetchedAt) 없음');
+  if (v.value === null || v.value === undefined) out.push('「ok」인데 값이 없음(null)');
+  if (srcs.length === 2 && !st.has('확인 중')) {
+    const p = compareProblem(contractOf(contract, v.id), srcs[0]?.value, srcs[1]?.value);
+    if (p) out.push(p);
+  }
+  if (!st.has('옛값')) {
+    const times = [v.observedAt, ...srcs.map(s => s?.observedAt)].map(ms).filter(Number.isFinite);
+    if (!Number.isFinite(cut)) out.push('봉인 시각이 없어 4시간을 잴 수 없음');
+    else if (times.length) {
+      const age = cut - Math.min(...times);
+      if (age > staleMs) out.push(`봉인 ${(age / HOUR).toFixed(1)}시간 전 관측인데 「옛값」 없음`);
+    }
+  }
+  return out;
+}
+
+function T7(state, opts = {}) {
   const boards = list(state.boards);
   if (!boards.length) return nothing('T7');
+  const contract = opts.contract ?? state.contract ?? defaultContract();
+  const staleH = Math.min(STALE_HOURS, isNum(contract?.staleAfterHours) && contract.staleAfterHours > 0 ? contract.staleAfterHours : STALE_HOURS);
   let variables = 0;
+  let okVariables = 0;
   const bad = [];
   for (const b of boards) {
+    const cut = cutOf(b);
     for (const v of list(b.inputs?.variables)) {
       variables++;
       const st = statusesOf(v);
       const srcs = list(v.sources);
       const where = `${b.id} ${v.id}`;
       if (v.status === 'ok') {
-        if (!Number.isFinite(ms(v.observedAt))) bad.push(`${where}: 시각 없음`);
-        else if (srcs.length !== 2) bad.push(`${where}: 「ok」인데 출처 ${srcs.length}개`);
-        else if (!srcs.every(s => Number.isFinite(ms(s?.observedAt)))) bad.push(`${where}: 출처 시각 없음`);
+        okVariables++;
+        for (const p of okProblems(v, cut, contract, staleH * HOUR)) bad.push(`${where}: ${p}`);
       } else if (srcs.length < 2 && !FEW_SOURCE_OK.some(x => st.has(x))) {
         bad.push(`${where}: 출처 ${srcs.length}개인데 표시가 「${v.status}」`);
       }
       if (st.has('없음') && v.value !== null) bad.push(`${where}: 「없음」인데 값이 ${v.value}`);
     }
   }
-  const counts = {boards: boards.length, variables, bad: bad.length};
+  const counts = {boards: boards.length, variables, okVariables, bad: bad.length};
   if (!variables) return nothing('T7', '변수 없음', counts);
-  if (!bad.length) return result('T7', true, `변수 ${variables}개 모두 시각·출처 둘 (모자라면 표시)`, counts);
-  return result('T7', false, few(bad), counts);
+  if (!bad.length) return result('T7', true, `변수 ${variables}개 모두 시각·출처 둘 (모자라면 표시) · 「ok」 ${okVariables}개는 다섯 조건 지킴`, counts);
+  return result('T7', false, `${bad.length}곳 — ${few(bad)}`, counts);
 }
 
 function T8(state) {
@@ -448,8 +614,16 @@ function T8(state) {
   let disagree = 0;
   const bad = [];
   for (const b of boards) {
-    for (const e of list(b.twoPath)) {
+    const paths = list(b.twoPath);
+    // ECO-01: 새로 셈한 「봉인」 판은 두 길 계산(두 숫자가 다 있는 것)이 하나 이상 있어야 한다.
+    // 앞 판을 그대로 두는 판(시간 초과·다시 봉인)은 새로 세지 않으므로 뺀다.
+    if (b.status === STATUS_SEALED && !paths.some(e => isNum(e?.pathA) && isNum(e?.pathB))) bad.push(`${b.id}: 봉인 판인데 두 길 계산 없음`);
+    for (const e of paths) {
       entries++;
+      if (!isNum(e?.pathA) || !isNum(e?.pathB)) {
+        bad.push(`${b.id} ${e?.what}: 두 길 숫자 없음 (pathA·pathB)`);
+        continue;
+      }
       const tol = isNum(e.tolerance) ? Math.abs(e.tolerance) : 0;
       const gap = Math.abs(e.pathA - e.pathB);
       const differs = !(gap <= tol);
@@ -522,30 +696,66 @@ function T10(state) {
   return result('T10', false, `금지 말 ${hits.length}곳 — ${few(hits)}`, counts);
 }
 
-/** T11 의 속: 바뀐 파일 목록에서 옛 엔진을 건드린 것을 센다 (순수 함수) */
+/**
+ * T11 의 속: 바뀐 파일 목록에서 옛 엔진·옛 기록·덧붙이기만 받는 장부를 어긴 것을 센다 (순수 함수)
+ *   지키는 곳(PROTECTED): 무엇이든 바뀌면 안 통과 — 더하기(A)·고치기(M)·지우기(D)·이름 바꾸기(R)·그 밖
+ *   덧붙이기만 받는 곳(APPEND_ONLY): 새 파일(A) · 지운 줄 0 인 고치기(M) 만 받는다.
+ *     appendOnly 칸이 있으면 true 일 때만 받는다(false = 중간에 끼움 · null = 모름).
+ *   이름 바꾸기는 옛 주소(oldPath)·새 주소(newPath)도 함께 본다. 주소가 없는 줄은 잴 수 없어 안 통과.
+ */
 export function checkOldEngineUntouched(changes) {
   if (!Array.isArray(changes)) return nothing('T11', '깃 기록 없음');
   const commits = new Set(changes.map(c => c?.commit)).size;
   if (!changes.length) return nothing('T11', '바뀐 파일 기록 없음', {commits: 0, changes: 0, touched: 0});
   const bad = [];
+  const under = (dirs, ps) => ps.find(p => dirs.some(dir => p.startsWith(dir)));
   for (const c of changes) {
-    const p = String(c?.path ?? '');
     const st = String(c?.status ?? '?')[0];
-    if (PROTECTED.some(dir => p.startsWith(dir))) bad.push(`${p} (${st})`);
-    else if (p.startsWith(LEDGER)) {
-      if (st === 'A') continue;
-      if (st === 'M' && c.deletedLines === 0) continue;
-      bad.push(`${p} (${st === 'M' ? `줄 ${c.deletedLines ?? '?'}개 지우거나 고침` : st})`);
+    const ps = [c?.path, c?.oldPath, c?.newPath].filter(p => typeof p === 'string' && p !== '');
+    if (!ps.length) {
+      bad.push(`(주소 없는 변경) (${st})`);
+      continue;
     }
+    const prot = under(PROTECTED, ps);
+    if (prot) {
+      bad.push(`${prot} (${st})`);
+      continue;
+    }
+    const app = under(APPEND_ONLY, ps);
+    if (!app) continue;
+    if (st === 'A' && ps.length === 1) continue;
+    if (st === 'M' && c.deletedLines === 0 && (!('appendOnly' in c) || c.appendOnly === true)) continue;
+    let why = st;
+    if (st === 'M') {
+      if (c.deletedLines !== 0) why = `줄 ${c.deletedLines ?? '?'}개 지우거나 고침`;
+      else why = c.appendOnly === false ? '줄을 끝이 아닌 곳에 끼움 — 덧붙이기가 아님' : '덧붙이기인지 모름';
+    }
+    bad.push(`${app} (${why})`);
   }
   const counts = {commits, changes: changes.length, touched: bad.length};
-  if (!bad.length) return result('T11', true, `atlas4h 커밋 ${commits}개 · 파일 ${changes.length}개 — 옛 엔진·기록 변경 0`, counts);
+  if (!bad.length) return result('T11', true, `atlas4h 커밋 ${commits}개 · 파일 ${changes.length}개 — 옛 엔진·기록 변경 0 · 장부는 덧붙이기만`, counts);
   return result('T11', false, `옛 엔진·기록을 건드림 ${bad.length} — ${few(bad)}`, counts);
 }
 
-/** T11 에 줄 목록: base 뒤 「atlas4h」 로 시작하는 커밋의 바뀐 파일 (깃을 못 쓰면 null) */
+/**
+ * T11 에 줄 목록: base 뒤 「atlas4h」 로 시작하는 커밋의 바뀐 파일 (깃을 못 쓰면 null)
+ * 덧붙이기만 받는 곳(APPEND_ONLY)의 고친 파일(M)에는 appendOnly 를 붙인다 — 앞 판 글자가 새 판의 앞부분 그대로인가.
+ */
 export function collectAtlas4hChanges(repoRoot, base = T11_BASE) {
   const git = args => execFileSync('git', ['-C', repoRoot, ...args], {encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 << 20});
+  const blob = spec => {
+    try {
+      return execFileSync('git', ['-C', repoRoot, 'show', spec], {stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 256 << 20});
+    } catch {
+      return null;
+    }
+  };
+  const appendOnly = (commit, p) => {
+    const before = blob(`${commit}^:${p}`);
+    const after = blob(`${commit}:${p}`);
+    if (!before || !after) return null;
+    return after.length >= before.length && after.subarray(0, before.length).equals(before);
+  };
   try {
     const log = git(['log', '--format=%H%x09%s', `${base}..HEAD`]);
     const out = [];
@@ -564,7 +774,9 @@ export function collectAtlas4hChanges(repoRoot, base = T11_BASE) {
       for (let i = 0; i + 1 < names.length; i += 2) {
         const status = names[i].trim();
         const p = names[i + 1];
-        out.push({commit, subject, status, path: p, deletedLines: deleted.has(p) ? deleted.get(p) : null});
+        const row = {commit, subject, status, path: p, deletedLines: deleted.has(p) ? deleted.get(p) : null};
+        if (status[0] === 'M' && APPEND_ONLY.some(dir => p.startsWith(dir))) row.appendOnly = appendOnly(commit, p);
+        out.push(row);
       }
     }
     return out;
@@ -615,7 +827,9 @@ function T12(state) {
     const info = {meanEngine: mean(engine), meanBaseline: mean(b), dm: dm.stat, p: dm.p, T: dm.T};
     counts.baselines[id] = info;
     if (!(info.meanEngine < info.meanBaseline)) lost.push(`「${id}」보다 폭 점수가 낮지 않음`);
-    else if (!(dm.p < 0.05)) lost.push(`「${id}」 DM p ${dm.p === null ? '못 셈' : dm.p.toFixed(3)}`);
+    // ECO-01: 줄마다 차이가 똑같으면 DM 을 셀 수 없다 — 멈추지 않고 「안 통과」 (p 가 null 이면 null < 0.05 가 참이 되는 것도 막음)
+    else if (!isNum(dm.p)) lost.push(`「${id}」 DM 셈 불가(${dm.note === '분산 0' ? '차이 분산 0' : dm.note ?? '까닭 모름'})`);
+    else if (!(dm.p < 0.05)) lost.push(`「${id}」 DM p ${dm.p.toFixed(3)}`);
   }
   if (!lost.length) {
     const ps = BASELINES.map(id => counts.baselines[id].p.toFixed(3)).join(' · ');
@@ -647,20 +861,22 @@ function T13(state) {
     }
     rows.push({covered, crisis: s.crisis === true});
   }
-  const n = rows.length;
-  const hit = rows.filter(r => r.covered).length;
-  const share = n ? hit / n : NaN;
+  // ECO-01: 평소 판과 위기 판을 따로 센다. 70~90% 판정과 30판 문턱은 평소 판만으로 — 위기 판이 평소 판의 빗나감을 가리지 못하게
+  const normal = rows.filter(r => !r.crisis);
   const crisisRows = rows.filter(r => r.crisis);
+  const n = normal.length;
+  const hit = normal.filter(r => r.covered).length;
+  const share = n ? hit / n : NaN;
   const crisisShare = crisisRows.length ? crisisRows.filter(r => r.covered).length / crisisRows.length : null;
   const kup = n ? kupiecLR(n - hit, n, 0.2) : {lr: NaN, p: NaN};
-  const counts = {scored: n, covered: hit, share, kupiecP: kup.p, crisis: {scored: crisisRows.length, share: crisisShare}, unknown, disagree};
+  const counts = {scored: rows.length, normal: n, covered: hit, share, kupiecP: kup.p, crisis: {scored: crisisRows.length, share: crisisShare}, unknown, disagree};
   const pct = x => `${(x * 100).toFixed(1)}%`;
   if (unknown) return result('T13', false, `덮음을 잴 수 없는 채점 ${unknown}개`, counts);
   if (disagree) return result('T13', false, `채점 기록의 덮음이 봉인 범위와 다름 ${disagree}개`, counts);
-  if (n < 30) return result('T13', false, `채점 ${n}판 — 30판이 안 됨`, counts);
-  if (!(share >= 0.7 && share <= 0.9)) return result('T13', false, `80% 범위 덮음 ${pct(share)} — 70~90% 밖 (${n}판)`, counts);
-  if (crisisShare === null) return result('T13', false, `덮음 ${pct(share)} (${n}판) · 위기 판 없음 — 따로 잴 수 없음`, counts);
-  return result('T13', true, `80% 범위 덮음 ${pct(share)} (${n}판) · 위기 ${pct(crisisShare)} (${crisisRows.length}판)`, counts);
+  if (n < 30) return result('T13', false, `평소 판 ${n}판 — 30판이 안 됨 (위기 ${crisisRows.length}판은 따로 셈)`, counts);
+  if (!(share >= 0.7 && share <= 0.9)) return result('T13', false, `평소 판 80% 범위 덮음 ${pct(share)} — 70~90% 밖 (${n}판)`, counts);
+  if (crisisShare === null) return result('T13', false, `평소 덮음 ${pct(share)} (${n}판) · 위기 판 없음 — 따로 잴 수 없음`, counts);
+  return result('T13', true, `평소 판 80% 범위 덮음 ${pct(share)} (${n}판) · 위기 따로 ${pct(crisisShare)} (${crisisRows.length}판)`, counts);
 }
 
 function T14(state) {
@@ -775,33 +991,117 @@ function T20(state) {
   if (!w) return nothing('T20', '무게 근거 없음');
   const sel = list(w.selections);
   if (!sel.length) return nothing('T20', '고른 기록 없음');
-  const trialIds = new Set(list(state.trials).map(t => t?.id));
+  const trials = list(state.trials);
+  const trialIds = new Set(trials.map(t => t?.id));
   const bad = [];
+  // ECO-01: 시도 장부 줄마다 결과 봉인 시각(sealedAt)이 있어야 한다
+  trials.forEach((t, i) => {
+    if (!Number.isFinite(ms(t?.sealedAt))) bad.push(`${t?.id ?? `시도 장부 ${i + 1}째 줄`}: 시도 결과 봉인 시각(sealedAt) 없음`);
+  });
   for (const s of sel) {
     const cited = list(s?.trialIds);
     if (!cited.length) bad.push(`${s?.id}: 시도 번호를 안 적음`);
     const lost = cited.filter(id => !trialIds.has(id));
     if (lost.length) bad.push(`${s?.id}: 장부에 없는 시도 ${few(lost)}`);
+    // ECO-01: 고른 시도(chose)가 SPA 를 거친 목록(trialIds) 안에 있어야 한다
+    const chosen = (Array.isArray(s?.chose) ? s.chose : [s?.chose]).filter(x => x !== null && x !== undefined && x !== '');
+    if (!chosen.length) bad.push(`${s?.id}: 고른 시도(chose)를 안 적음`);
+    const outside = chosen.filter(id => !cited.includes(id));
+    if (outside.length) bad.push(`${s?.id}: 고른 시도 ${few(outside.map(show))} 가 SPA 를 거친 목록 밖`);
     if (!(isNum(s?.spa?.p) && s.spa.p >= 0 && s.spa.p <= 1)) bad.push(`${s?.id}: SPA p 없음`);
+    // ECO-01: SPA 를 못 넘은(p ≥ 0.05) 것을 고르면 안 통과
+    else if (!(s.spa.p < 0.05)) bad.push(`${s?.id}: SPA p ${s.spa.p} ≥ 0.05 인데 고름`);
   }
   const counts = {selections: sel.length, trials: trialIds.size, bad: bad.length};
-  if (!bad.length) return result('T20', true, `고른 기록 ${sel.length}개 — 시도 모두 장부에 있고 SPA 거침`, counts);
+  if (!bad.length) return result('T20', true, `고른 기록 ${sel.length}개 — 시도 모두 장부에 있고(봉인 시각 있음) 고른 시도는 SPA(p < 0.05)를 거침`, counts);
   return result('T20', false, few(bad), counts);
+}
+
+/** 판 번호 꼴 (board.md: 4h-YYYYMMDD-HH-8자 · 재현 판은 r4h-) */
+const BOARD_ID_RE = /r?4h-\d{8}-\d{2}-[0-9a-f]{8}/g;
+const BOARD_ID_FULL_RE = /^r?4h-\d{8}-\d{2}-[0-9a-f]{8}$/;
+/** 앞 판을 가리키는 말 — 「앞 판」·prevBoard·previous-board · 판 장부 파일(ledger/boards) */
+const PREV_BOARD_RE = /앞\s*판|prev(?:ious)?[\s_-]*board|ledger\/boards\//i;
+const PLAIN_NUMBER_RE = /^-?(?:0|[1-9]\d*)(?:\.\d+)?$/;
+
+/** 판이 낸 숫자(엔진이 셈한 것): 코스피 가운데·범위·시나리오 폭 · 종목 가운데·범위 · 화면 값 */
+function boardOutputs(b) {
+  const xs = [];
+  const add = x => { if (isNum(x)) xs.push(x); };
+  add(b?.kospi?.center);
+  Object.values(b?.kospi?.quantiles ?? {}).forEach(add);
+  for (const s of list(b?.kospi?.scenarios)) { add(s?.kospi?.low); add(s?.kospi?.high); }
+  for (const s of list(b?.stocks)) { add(s?.center); Object.values(s?.quantiles ?? {}).forEach(add); }
+  add(b?.screen?.value);
+  return xs;
+}
+
+/**
+ * ECO-01: 엔진 입력에서 앞 판 id·앞 판 값을 직접 찾는다 — 처음 찾은 것의 설명, 없으면 null
+ *   글(값과 칸 이름 모두): 자기 판이 아닌 판 번호 · 장부에 있는 꼴 다른 판 id · 「앞 판」을 가리키는 말
+ *   숫자(isEarlier 가 있을 때만): 앞 판이 낸 숫자와 같은 숫자 (엔진 입력 목록은 변수 이름이라 숫자가 올 까닭이 없다)
+ */
+function findPreviousBoard(v, ownId, oddIds, isEarlier) {
+  let hit = null;
+  const text = s => {
+    for (const m of s.match(BOARD_ID_RE) ?? []) if (m !== ownId) return `앞 판 id ${m}`;
+    for (const id of oddIds) if (id !== ownId && s.includes(id)) return `앞 판 id ${id}`;
+    if (PREV_BOARD_RE.test(s)) return `앞 판을 가리킴 「${s.length > 40 ? `${s.slice(0, 40)}…` : s}」`;
+    if (isEarlier && PLAIN_NUMBER_RE.test(s.trim()) && isEarlier(Number(s.trim()))) return `앞 판 값 ${s.trim()}`;
+    return null;
+  };
+  const walk = x => {
+    if (hit) return;
+    if (typeof x === 'string') hit = text(x);
+    else if (typeof x === 'number') { if (isEarlier && isEarlier(x)) hit = `앞 판 값 ${x}`; }
+    else if (Array.isArray(x)) x.forEach(walk);
+    else if (x && typeof x === 'object') for (const [k, y] of Object.entries(x)) { if (!hit) hit = text(k); walk(y); }
+  };
+  walk(v);
+  return hit;
 }
 
 function T21(state) {
   const boards = list(state.boards);
   if (!boards.length) return nothing('T21');
+  // 판 번호 꼴이 아닌 id 만 글 속에 들어 있는지 하나씩 본다 (꼴이 맞는 id 는 BOARD_ID_RE 가 잡는다)
+  const oddIds = boards.map(b => b?.id).filter(x => typeof x === 'string' && x !== '' && !BOARD_ID_FULL_RE.test(x));
+  // 숫자마다 그 숫자를 낸 판 중 가장 이른 정보 시각 — 「앞 판 값」 = 이 판보다 이른 판이 낸 숫자
+  const firstSeen = new Map();
+  for (const o of boards) {
+    const t = cutOf(o);
+    if (!Number.isFinite(t)) continue;
+    for (const x of boardOutputs(o)) if (!(firstSeen.get(x) <= t)) firstSeen.set(x, t);
+  }
   let engines = 0;
   const bad = [];
-  for (const b of boards) for (const e of list(b.engines)) {
-    engines++;
-    if (e?.sawPreviousBoard !== false) bad.push(`${b.id} ${e?.id}`);
+  const c = {'앞 판을 봤거나 기록 없음': 0, '입력에 앞 판': 0};
+  for (const b of boards) {
+    const cut = cutOf(b);
+    const isEarlier = x => firstSeen.has(x) && firstSeen.get(x) < cut;
+    for (const e of list(b.engines)) {
+      engines++;
+      if (e?.sawPreviousBoard !== false) {
+        c['앞 판을 봤거나 기록 없음']++;
+        bad.push(`${b.id} ${e?.id}`);
+      }
+      const hit = findPreviousBoard(e?.inputs, b.id, oddIds, isEarlier);
+      if (hit) {
+        c['입력에 앞 판']++;
+        bad.push(`${b.id} ${e?.id}: 입력에 ${hit}`);
+      }
+    }
+    // 엔진 함수에 들어간 판 입력(inputs) 전체 — 변수 이름·출처 이름·주소에 앞 판이 섞였나 (자료 값끼리 우연히 같은 숫자는 보지 않음)
+    const hit = findPreviousBoard(b.inputs, b.id, oddIds, null);
+    if (hit) {
+      c['입력에 앞 판']++;
+      bad.push(`${b.id} inputs: ${hit}`);
+    }
   }
   const counts = {boards: boards.length, engines, bad: bad.length};
   if (!engines) return nothing('T21', '엔진 기록 없음', counts);
-  if (!bad.length) return result('T21', true, `엔진 ${engines}개 모두 앞 판 안 봄`, counts);
-  return result('T21', false, `앞 판을 봤거나 기록 없음 ${bad.length} — ${few(bad)}`, counts);
+  if (!bad.length) return result('T21', true, `엔진 ${engines}개 모두 앞 판 안 봄 (기록 · 입력에서 앞 판 id·값 0)`, counts);
+  return result('T21', false, `${kv(c)} — ${few(bad)}`, counts);
 }
 
 function T22(state) {
@@ -825,6 +1125,13 @@ function T22(state) {
   return result('T22', false, few(bad), counts);
 }
 
+/** 짓는 일꾼 이름 (workers/README.md): 바탕·고리·평가 일꾼 · 에이전트 이름 atlas4h-base·loop·eval */
+const BUILDER_RE = /(?:바탕|고리|평가)\s*일꾼|atlas4h-(?:base|loop|eval)\b|\b(?:base|loop|eval(?:uator)?)[\s_-]*(?:worker|agent)\b/i;
+export function isBuilder(by) {
+  const s = String(by ?? '').trim();
+  return BUILDER_RE.test(s) || /^(?:바탕|고리|평가)$/.test(s);
+}
+
 function T23(state) {
   const loops = list(state.loops);
   if (!loops.length) return nothing('T23', '고리 기록 없음');
@@ -841,12 +1148,17 @@ function T23(state) {
       continue;
     }
     for (const w of ws) {
+      // ECO-01: 보는 눈은 짓는 이와 다른 에이전트 — 감시한 이(by)가 없거나 짓는 일꾼(바탕·고리·평가)이면 안 통과
+      const by = typeof w?.by === 'string' ? w.by.trim() : '';
+      if (!by) bad.push(`${l.loopId}: 감시한 이(by) 없음`);
+      else if (isBuilder(by)) bad.push(`${l.loopId}: 감시한 이가 짓는 일꾼 「${by}」`);
+      else if (typeof l.by === 'string' && l.by.trim() === by) bad.push(`${l.loopId}: 감시한 이가 고리를 지은 이와 같음 「${by}」`);
       const nonzero = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'].filter(k => w?.S?.[k] !== 0);
       if (nonzero.length) bad.push(`${l.loopId}: ${nonzero.map(k => `${k}=${w?.S?.[k] ?? '없음'}`).join(' ')}`);
     }
   }
   const counts = {loops: loops.length, watch: list(state.watch).length, bad: bad.length};
-  if (!bad.length) return result('T23', true, `고리 ${loops.length}개 모두 감시 S1~S8 = 0`, counts);
+  if (!bad.length) return result('T23', true, `고리 ${loops.length}개 모두 감시 S1~S8 = 0 · 감시는 짓는 일꾼이 아닌 이`, counts);
   return result('T23', false, few(bad), counts);
 }
 

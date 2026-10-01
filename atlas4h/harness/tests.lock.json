@@ -1,12 +1,12 @@
 {
  "schema": "atlas4h-tests-lock-1",
- "lockedAt": "2026-10-01T09:17:05.909Z",
+ "lockedAt": "2026-10-01T11:13:55.670Z",
  "rule": "시험은 고치지 않는다 · 바꾸려면 사장님이 승인한 변경 요청서와 「atlas4h LOCK:」 커밋",
  "files": {
   "atlas4h/tests/harness.test.mjs": "2a4be2f42ae1879bf75fa41cb7e4f79c8648c13939ef9e19b1bd1bd01c32b8d5",
-  "atlas4h/tests/spec-checks.test.mjs": "63be7c6f29f9114bb0a538021b497206a10e2b2329dd4ede56a2cbf8b8ea30cf",
+  "atlas4h/tests/spec-checks.test.mjs": "6274d306cb648b8242c28fd9aecd9ccc3f91e7b328c56b36f29304a56c0fb86b",
   "atlas4h/tests/stats.test.mjs": "ca675dcb0aac5404d4e0658eb52f1dcc299bfa71622ac66a6006d36a094540d7",
-  "atlas4h/spec/checks.mjs": "b5e9e6194085d4c54e19348bed2e5d9c463466deec29c9b838795b1cb685e142",
+  "atlas4h/spec/checks.mjs": "d3e2824c7e851717e7145ff8f61be2f4d9ff8a411b351a8e5fe823cbe0ce6097",
   "atlas4h/spec/stats.mjs": "a10438d5e10e723730f8f75f289bffa8a218752279379250178525146fcace07",
   "atlas4h/scripts/check_command.mjs": "d59a8b67a3942889c21e6f146c430e946ac5c63398b6e550b17d944849d346fb",
   "atlas4h/scripts/check_harness.mjs": "b7d319d02bedf02303c5de4944d6ea8b8f3e1763578f7a4c397450e22061093a",
