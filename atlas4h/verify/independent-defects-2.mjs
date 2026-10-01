@@ -831,7 +831,10 @@ function preRegisteredCommit() {
 const nowKst = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 19) + '+09:00';
 
 /** 미리 등록 뒤 생성기 실수를 찾았을 때 흠은 그대로 두고 여기에 적는다 */
-const NOTES = {};
+const NOTES = {
+  'D-T5-09': '설명 글의 「10/9 다음 날 등」은 gen 4 = 2026-10-12 08시 판(10/9 휴일 뒤 첫 거래일)을 말함 — 흠 자체는 그대로(미리 등록 뒤 글자도 안 고침)',
+  'D-T8-03': '대상 T8 은 놓쳤지만 T7 이 잡음(두 출처 어긋남을 T7 「ok」 조건으로 봄) — 셈은 대상 시험 기준이라 「놓침」',
+};
 
 async function main() {
   const BASES = {A: buildBaseA, B: buildBaseB};

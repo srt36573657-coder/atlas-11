@@ -1,7 +1,7 @@
 {
  "schema": "atlas4h-independent-defects-2",
- "createdAt": "2026-10-01T21:16:19+09:00",
- "preRegisteredCommit": null,
+ "createdAt": "2026-10-01T21:17:51+09:00",
+ "preRegisteredCommit": "2d77f0cfaf707fa0866d4d9a14304ef22042c312",
  "readingRules": {
   "read": [
    "atlas4h/command/*.txt",
@@ -38,7 +38,72 @@
    "판정 기준 커밋 시각 judgmentCommitAt = 2026-10-01T18:22:00+09:00(T19)",
    "바탕 B(T4 전용) — 0판 엔진 buildBoard 로 지은 판 3개(9/29·9/30·10/1 08시, 코스피·종목 지난 등락 130줄) + 봉인, engine = engine/board.mjs 의 engine"
   ],
-  "baseResults": null
+  "baseResults": {
+   "A": {
+    "T1": "통과",
+    "T2": "통과",
+    "T3": "통과",
+    "T4": "안 통과 — 엔진 없음",
+    "T5": "통과",
+    "T6": "통과",
+    "T7": "통과",
+    "T8": "통과",
+    "T9": "통과",
+    "T10": "통과",
+    "T11": "통과",
+    "T12": "통과",
+    "T13": "통과",
+    "T14": "통과",
+    "T15": "안 통과 — 엔진 없음",
+    "T16": "통과",
+    "T17": "통과",
+    "T18": "통과",
+    "T19": "통과",
+    "T20": "통과",
+    "T21": "통과",
+    "T22": "통과",
+    "T23": "통과",
+    "K1": "안 통과 — 엔진 없음",
+    "K2": "안 통과 — 엔진 없음",
+    "K3": "안 통과 — 엔진 없음",
+    "K4": "안 통과 — 엔진 없음",
+    "K5": "안 통과 — 엔진 없음",
+    "K6": "안 통과 — 엔진 없음",
+    "K7": "안 통과 — 엔진 없음"
+   },
+   "B": {
+    "T1": "통과",
+    "T2": "통과",
+    "T3": "통과",
+    "T4": "통과",
+    "T5": "통과",
+    "T6": "안 통과 — 4h-20260929-08-6ee9517d: 맞추는 법이 MinT 가 아님 · 4h-20260929-08-6ee9517d: 맞추기 마디에 없는 예측 kospi · 005930 · 000660 외 4",
+    "T7": "통과",
+    "T8": "통과",
+    "T9": "안 통과 — 고리 기록 없음",
+    "T10": "통과",
+    "T11": "안 통과 — 깃 기록 없음",
+    "T12": "안 통과 — 재현 결과 없음",
+    "T13": "안 통과 — 채점 없음",
+    "T14": "안 통과 — 화면 파일 없음",
+    "T15": "안 통과 — 극한 안 통과: K1(미국만 쉰 다음 날 08시 (11월 26일 미국 휴장): 코스피 가운데 값 없음) · K2(일부만 끊긴 12시: 코스피 가운데 값 없음) 외 5",
+    "T16": "안 통과 — 무게 근거 없음",
+    "T17": "안 통과 — 사건 확률 기록 없음",
+    "T18": "안 통과 — LLM 을 쓴 재현 판 없음",
+    "T19": "안 통과 — 판정 기준 없음",
+    "T20": "안 통과 — 무게 근거 없음",
+    "T21": "통과",
+    "T22": "통과",
+    "T23": "안 통과 — 고리 기록 없음",
+    "K1": "안 통과 — 미국만 쉰 다음 날 08시 (11월 26일 미국 휴장): 코스피 가운데 값 없음",
+    "K2": "안 통과 — 일부만 끊긴 12시: 코스피 가운데 값 없음",
+    "K3": "안 통과 — 잔잔한 10시: 코스피 가운데 값 없음",
+    "K4": "안 통과 — 12시 — 상한가 하나 · 하한가 하나 · 거래정지 하나: 코스피 가운데 값 없음",
+    "K5": "안 통과 — 발표 전 09시 50분: 코스피 가운데 값 없음",
+    "K6": "안 통과 — 08시: 코스피 가운데 값 없음",
+    "K7": "안 통과 — 08시 잔잔: 코스피 가운데 값 없음"
+   }
+  }
  },
  "defects": [
   {
@@ -3422,5 +3487,2187 @@
   "T22": 7,
   "T23": 9
  },
- "note": "미리 등록 — 결과 없음. 이 커밋 뒤에는 흠·탐침을 지우거나 고치지 않는다."
+ "results": [
+  {
+   "id": "D-T1-01",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1",
+    "T14"
+   ],
+   "targetReason": "봉인과 어긋남 1 (지문 다름 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T1-02",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1"
+   ],
+   "targetReason": "봉인과 어긋남 5 (지문 다름 2 · 봉인 겹침 2 · 판 겹침 1) — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "id": "D-T1-03",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1"
+   ],
+   "targetReason": "봉인과 어긋남 1 (봉인 없음 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T1-04",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1"
+   ],
+   "targetReason": "봉인과 어긋남 1 (지문 다름 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T1-05",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1",
+    "T9"
+   ],
+   "targetReason": "봉인과 어긋남 1 (판 없는 봉인 1) — 4h-20261002-16-c3d4e5f6"
+  },
+  {
+   "id": "D-T1-06",
+   "target": "T1",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T1"
+   ],
+   "targetReason": "봉인과 어긋남 2 (지문 다름 1 · 봉인 겹침 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T1-07",
+   "target": "T1",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "판 41개 모두 봉인 지문과 같음"
+  },
+  {
+   "id": "D-T2-01",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 2 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 sox.observedAt · 4h-20261002-08-a1b2c3d4 sox.sources[0].observedAt"
+  },
+  {
+   "id": "D-T2-02",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.fetchedAt"
+  },
+  {
+   "id": "D-T2-03",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.sources[1].fetchedAt"
+  },
+  {
+   "id": "D-T2-04",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 2 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 sox.observedAt · 4h-20261002-08-a1b2c3d4 sox.sources[0].observedAt"
+  },
+  {
+   "id": "D-T2-05",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.sources[0].observedAt"
+  },
+  {
+   "id": "D-T2-06",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 constants.measuredAt"
+  },
+  {
+   "id": "D-T2-07",
+   "target": "T2",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.anchor.asOf"
+  },
+  {
+   "id": "D-T2-08",
+   "target": "T2",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T2"
+   ],
+   "targetReason": "봉인 뒤 자료 2 · 못 읽은 시각 0 — r4h-20260901-08-d4e5f6a7 sox.observedAt · r4h-20260901-08-d4e5f6a7 sox.sources[0].observedAt"
+  },
+  {
+   "id": "D-T2-09",
+   "target": "T2",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "시각 1136개 모두 봉인·자료 마감 전"
+  },
+  {
+   "id": "D-T3-01",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 씨앗 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T3-02",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 씨앗 1 — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "id": "D-T3-03",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 코드 판 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T3-04",
+   "target": "T3",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 커밋 안 된 코드 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T3-05",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 자료 파일 1 — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "id": "D-T3-06",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 자료 판 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T3-07",
+   "target": "T3",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "판 41개 모두 코드 판(커밋됨)·자료 판(파일 목록)·씨앗 있음"
+  },
+  {
+   "id": "D-T3-08",
+   "target": "T3",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "판 41개 모두 코드 판(커밋됨)·자료 판(파일 목록)·씨앗 있음"
+  },
+  {
+   "id": "D-T3-09",
+   "target": "T3",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T3"
+   ],
+   "targetReason": "빠짐: 코드 판 1 · 커밋 안 된 코드 1 — 4h-20261002-16-c3d4e5f6"
+  },
+  {
+   "id": "D-T4-01",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 3 · 멈춤 0 — 4h-20260929-08-6ee9517d · 4h-20260930-08-9796897d 외 1"
+  },
+  {
+   "id": "D-T4-02",
+   "target": "T4",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 3 · 멈춤 0 — 4h-20260929-08-6ee9517d · 4h-20260930-08-9796897d 외 1"
+  },
+  {
+   "id": "D-T4-03",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 3 · 멈춤 0 — 4h-20260929-08-6ee9517d · 4h-20260930-08-9796897d 외 1"
+  },
+  {
+   "id": "D-T4-04",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 3 · 멈춤 0 — 4h-20260929-08-6ee9517d · 4h-20260930-08-9796897d 외 1"
+  },
+  {
+   "id": "D-T4-05",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 0 · 멈춤 3 — 4h-20260929-08-6ee9517d: 엔진이 멈춤(다시 돌리면 멈춤) · 4h-20260930-08-9796897d: 엔진이 멈춤(다시 돌리면 멈춤) 외 1"
+  },
+  {
+   "id": "D-T4-06",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 1 · 멈춤 0 — 4h-20260930-08-9796897d"
+  },
+  {
+   "id": "D-T4-07",
+   "target": "T4",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T4"
+   ],
+   "targetReason": "다시 돌린 값이 봉인과 다름 1 · 멈춤 0 — 4h-20261001-08-e3ad3b30"
+  },
+  {
+   "id": "D-T4-08",
+   "target": "T4",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "판 3개 다시 돌려 모두 같은 값"
+  },
+  {
+   "id": "D-T5-01",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 확률 합 0.950000"
+  },
+  {
+   "id": "D-T5-02",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5: 확률 합 1.050000"
+  },
+  {
+   "id": "D-T5-03",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님"
+  },
+  {
+   "id": "D-T5-04",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님"
+  },
+  {
+   "id": "D-T5-05",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님"
+  },
+  {
+   "id": "D-T5-06",
+   "target": "T5",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "판 41개 모두 위·가운데·아래 확률 합 100%"
+  },
+  {
+   "id": "D-T5-07",
+   "target": "T5",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 확률 합 100.000000"
+  },
+  {
+   "id": "D-T5-08",
+   "target": "T5",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 확률 합 1.000000"
+  },
+  {
+   "id": "D-T5-09",
+   "target": "T5",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T5"
+   ],
+   "targetReason": "4h-20261012-08-e10f02c6: 확률 합 0.950000",
+   "note": "설명 글의 「10/9 다음 날 등」은 gen 4 = 2026-10-12 08시 판(10/9 휴일 뒤 첫 거래일)을 말함 — 흠 자체는 그대로(미리 등록 뒤 글자도 안 고침)"
+  },
+  {
+   "id": "D-T6-01",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 맞추는 법이 MinT 가 아님"
+  },
+  {
+   "id": "D-T6-02",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 「나머지」 마디 없음"
+  },
+  {
+   "id": "D-T6-03",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5: 맞추기 마디에 없는 예측 000660"
+  },
+  {
+   "id": "D-T6-04",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 어긋남 3.5 (코스피의 1.3e-3)"
+  },
+  {
+   "id": "D-T6-05",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-16-c3d4e5f6: 맞추는 법이 MinT 가 아님 · 4h-20261002-16-c3d4e5f6: 맞추기 마디에 없는 예측 kospi · 005930 · 000660"
+  },
+  {
+   "id": "D-T6-06",
+   "target": "T6",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 맞추기 마디에 없는 예측 kospi"
+  },
+  {
+   "id": "D-T6-07",
+   "target": "T6",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T6"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 어긋남·코스피 값을 못 읽음"
+  },
+  {
+   "id": "D-T7-01",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 kospi: 「ok」인데 출처 1개"
+  },
+  {
+   "id": "D-T7-02",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 kospi: 두 출처가 같은 회사 (naver.com) — 출처 하나로 셈"
+  },
+  {
+   "id": "D-T7-03",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 stock-price:005930: 시각 없음"
+  },
+  {
+   "id": "D-T7-04",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 stock-price:000660: 받은 시각(fetchedAt) 없음"
+  },
+  {
+   "id": "D-T7-05",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 kospi: 봉인 17.0시간 전 관측인데 「옛값」 없음"
+  },
+  {
+   "id": "D-T7-06",
+   "target": "T7",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "변수 246개 모두 시각·출처 둘 (모자라면 표시) · 「ok」 117개는 다섯 조건 지킴"
+  },
+  {
+   "id": "D-T7-07",
+   "target": "T7",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 vkospi: 「없음」인데 값이 0"
+  },
+  {
+   "id": "D-T7-08",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261002-08-a1b2c3d4 kospi: 「ok」인데 출처 0개"
+  },
+  {
+   "id": "D-T7-09",
+   "target": "T7",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "1곳 — 4h-20261007-08-5a00e10d kospi: 「ok」인데 출처 1개"
+  },
+  {
+   "id": "D-T8-01",
+   "target": "T8",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "id": "D-T8-02",
+   "target": "T8",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 코스피 가운데 값: 두 길이 3.5 다른데 「같음」 · 4h-20261002-08-a1b2c3d4 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "id": "D-T8-03",
+   "target": "T8",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [
+    "T7"
+   ],
+   "targetReason": "두 길 40개 — 어긋난 1개는 모두 화면에 「확인 중」",
+   "note": "대상 T8 은 놓쳤지만 T7 이 잡음(두 출처 어긋남을 T7 「ok」 조건으로 봄) — 셈은 대상 시험 기준이라 「놓침」"
+  },
+  {
+   "id": "D-T8-04",
+   "target": "T8",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "두 길 40개 — 어긋난 1개는 모두 화면에 「확인 중」"
+  },
+  {
+   "id": "D-T8-05",
+   "target": "T8",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "두 길 40개 — 어긋난 1개는 모두 화면에 「확인 중」"
+  },
+  {
+   "id": "D-T8-06",
+   "target": "T8",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T8"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 봉인 판인데 두 길 계산 없음"
+  },
+  {
+   "id": "D-T8-07",
+   "target": "T8",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "두 길 40개 — 어긋난 1개는 모두 화면에 「확인 중」"
+  },
+  {
+   "id": "D-T8-08",
+   "target": "T8",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 코스피 가운데 값: 두 길이 5.139999999999873 다른데 「같음」 · 4h-20261002-08-a1b2c3d4 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "id": "D-T8-09",
+   "target": "T8",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8"
+   ],
+   "targetReason": "4h-20261014-08-0b415cd2 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "id": "D-T9-01",
+   "target": "T9",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T9"
+   ],
+   "targetReason": "loop-20261002-08: 44.5분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "id": "D-T9-02",
+   "target": "T9",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8",
+    "T9"
+   ],
+   "targetReason": "loop-20261002-16: 시간 초과인데 판이 「시간 초과 → 앞 판 유지」 아님"
+  },
+  {
+   "id": "D-T9-03",
+   "target": "T9",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T9"
+   ],
+   "targetReason": "loop-20261002-08: 45.0분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "id": "D-T9-04",
+   "target": "T9",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고리 39개 — 40분 넘은 1개는 앞 판 유지"
+  },
+  {
+   "id": "D-T9-05",
+   "target": "T9",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T9"
+   ],
+   "targetReason": "loop-20261002-12: 걸린 시간을 못 읽음"
+  },
+  {
+   "id": "D-T9-06",
+   "target": "T9",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고리 40개 — 40분 넘은 1개는 앞 판 유지"
+  },
+  {
+   "id": "D-T9-07",
+   "target": "T9",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T9"
+   ],
+   "targetReason": "loop-20261021-08: 47.0분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "id": "D-T10-01",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「사라」 4h-20261002-08-a1b2c3d4 text[1]"
+  },
+  {
+   "id": "D-T10-02",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「팔라」 4h-20261002-08-a1b2c3d4 text[1]"
+  },
+  {
+   "id": "D-T10-03",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「추천」 4h-20261002-12-b2c3d4e5 text[1]"
+  },
+  {
+   "id": "D-T10-04",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「목표가」 4h-20261002-08-a1b2c3d4 kospi.scenarios[0].premise"
+  },
+  {
+   "id": "D-T10-05",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「확실」 4h-20261002-08-a1b2c3d4 kospi.scenarios[2].invalidator"
+  },
+  {
+   "id": "D-T10-06",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「보장」 4h-20261002-16-c3d4e5f6 text[1]"
+  },
+  {
+   "id": "D-T10-07",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「무조건」 4h-20261002-08-a1b2c3d4 screen.chance"
+  },
+  {
+   "id": "D-T10-08",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「확실」 화면 now.screen.chance"
+  },
+  {
+   "id": "D-T10-09",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「목표가」 4h-20261002-08-a1b2c3d4 events[0].name"
+  },
+  {
+   "id": "D-T10-10",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「무조건」 4h-20261002-08-a1b2c3d4 kospi.tail[0].what"
+  },
+  {
+   "id": "D-T10-11",
+   "target": "T10",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "금지 말 0 (글 5999개 검사)"
+  },
+  {
+   "id": "D-T10-12",
+   "target": "T10",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T10"
+   ],
+   "targetReason": "금지 말 1곳 — 「추천」 4h-20261022-08-8a62afd8 text[1]"
+  },
+  {
+   "id": "D-T11-01",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — lib/atlas11/score.mjs (M)"
+  },
+  {
+   "id": "D-T11-02",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — scripts/atlas11/run_daily.mjs (D)"
+  },
+  {
+   "id": "D-T11-03",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — lib/atlas11/forecast_v1.mjs (R)"
+  },
+  {
+   "id": "D-T11-04",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/ledger/boards/2026-10-02.jsonl (줄 1개 지우거나 고침)"
+  },
+  {
+   "id": "D-T11-05",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/ledger/seals/2026-10-01.jsonl (D)"
+  },
+  {
+   "id": "D-T11-06",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — reports/atlas11/ledger/score/2026-09-30.jsonl (M)"
+  },
+  {
+   "id": "D-T11-07",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — public/data/atlas11/ledger/score/2026-09-30.json (M)"
+  },
+  {
+   "id": "D-T11-08",
+   "target": "T11",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — lib/atlas11/score_cells.mjs (M)"
+  },
+  {
+   "id": "D-T11-09",
+   "target": "T11",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — scripts/atlas11/atlas4h_bridge.mjs (A)"
+  },
+  {
+   "id": "D-T11-10",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/ledger/archive/boards-2026-10-01.jsonl (R)"
+  },
+  {
+   "id": "D-T11-11",
+   "target": "T11",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "atlas4h 커밋 3개 · 파일 5개 — 옛 엔진·기록 변경 0 · 장부는 덧붙이기만"
+  },
+  {
+   "id": "D-T11-12",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/seal/trials.jsonl (줄 1개 지우거나 고침)"
+  },
+  {
+   "id": "D-T11-13",
+   "target": "T11",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/ledger/scores/2026-10-02.jsonl (줄 1개 지우거나 고침)"
+  },
+  {
+   "id": "D-T11-14",
+   "target": "T11",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T11"
+   ],
+   "targetReason": "옛 엔진·기록을 건드림 1 — atlas4h/ledger/watch/2026-10-02.jsonl (덧붙이기인지 모름)"
+  },
+  {
+   "id": "D-T12-01",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "못 이김: 「ATLAS 11」보다 폭 점수가 낮지 않음"
+  },
+  {
+   "id": "D-T12-02",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "못 이김: 「단순 전이식」보다 폭 점수가 낮지 않음"
+  },
+  {
+   "id": "D-T12-03",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "기준 「ATLAS 11」 점수 없음 — 2026-07-01 · 2026-07-02 외 38 (40줄)"
+  },
+  {
+   "id": "D-T12-04",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "기준 「ATLAS 11」 점수 없음 — 2026-07-01 · 2026-07-02 외 38 (40줄)"
+  },
+  {
+   "id": "D-T12-05",
+   "target": "T12",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "재현 10줄에서 기준 셋 모두 이김 (DM p 0.000 · 0.000 · 0.000)"
+  },
+  {
+   "id": "D-T12-06",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "못 이김: 「무판」 DM p 0.376"
+  },
+  {
+   "id": "D-T12-07",
+   "target": "T12",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "구간 α 가 0.2 가 아닌 줄 40개"
+  },
+  {
+   "id": "D-T12-08",
+   "target": "T12",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "재현 40줄에서 기준 셋 모두 이김 (DM p 0.000 · 0.000 · 0.000)"
+  },
+  {
+   "id": "D-T12-09",
+   "target": "T12",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "재현 40줄에서 기준 셋 모두 이김 (DM p 0.000 · 0.000 · 0.000)"
+  },
+  {
+   "id": "D-T12-10",
+   "target": "T12",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "재현 40줄에서 기준 셋 모두 이김 (DM p 0.000 · 0.000 · 0.000)"
+  },
+  {
+   "id": "D-T12-11",
+   "target": "T12",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T12"
+   ],
+   "targetReason": "엔진 구간 점수 없는 줄 15개"
+  },
+  {
+   "id": "D-T13-01",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "평소 판 80% 범위 덮음 100.0% — 70~90% 밖 (34판)"
+  },
+  {
+   "id": "D-T13-02",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "평소 판 80% 범위 덮음 64.7% — 70~90% 밖 (34판)"
+  },
+  {
+   "id": "D-T13-03",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "평소 판 29판 — 30판이 안 됨 (위기 5판은 따로 셈)"
+  },
+  {
+   "id": "D-T13-04",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "평소 판 80% 범위 덮음 67.6% — 70~90% 밖 (34판)"
+  },
+  {
+   "id": "D-T13-05",
+   "target": "T13",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "평소 판 80% 범위 덮음 82.4% (34판) · 위기 따로 20.0% (5판)"
+  },
+  {
+   "id": "D-T13-06",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "채점 기록의 덮음이 봉인 범위와 다름 7개"
+  },
+  {
+   "id": "D-T13-07",
+   "target": "T13",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T13"
+   ],
+   "targetReason": "평소 판 29판 — 30판이 안 됨 (위기 5판은 따로 셈)"
+  },
+  {
+   "id": "D-T13-08",
+   "target": "T13",
+   "contested": false,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "평소 판 80% 범위 덮음 82.4% (34판) · 위기 따로 80.0% (5판)"
+  },
+  {
+   "id": "D-T13-09",
+   "target": "T13",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "평소 판 80% 범위 덮음 82.4% (34판) · 위기 따로 80.0% (5판)"
+  },
+  {
+   "id": "D-T14-01",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 kospi.center: 화면 2650 · 봉인 2649.86"
+  },
+  {
+   "id": "D-T14-02",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 kospi.quantiles.p10: 화면 2600 · 봉인 2606.69"
+  },
+  {
+   "id": "D-T14-03",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 screen.value: 화면 2649 · 봉인 2649.86"
+  },
+  {
+   "id": "D-T14-04",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T8",
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-12-b2c3d4e5 screen.value: 화면 2663.15 · 봉인 \"확인 중\""
+  },
+  {
+   "id": "D-T14-05",
+   "target": "T14",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "화면 숫자 4개 모두 봉인 값과 같음"
+  },
+  {
+   "id": "D-T14-06",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 4 — 4h-20261002-04-deadbeef: 그런 판 없음"
+  },
+  {
+   "id": "D-T14-07",
+   "target": "T14",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 kospi.center: 화면 2649.9 · 봉인 2649.86"
+  },
+  {
+   "id": "D-T14-08",
+   "target": "T14",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "화면 숫자 4개 모두 봉인 값과 같음"
+  },
+  {
+   "id": "D-T14-09",
+   "target": "T14",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T14"
+   ],
+   "targetReason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 kospi.quantiles.p90: 화면 2700 · 봉인 2692.8"
+  },
+  {
+   "id": "D-T16-01",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 center-transfer: 무판을 못 이겼는데 무게 0.3"
+  },
+  {
+   "id": "D-T16-02",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5 center-analog: 무판을 못 이겼는데 무게 0.2"
+  },
+  {
+   "id": "D-T16-03",
+   "target": "T16",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 center-learn52: 무판을 못 이겼는데 무게 0.1 (근거에 없는 후보)"
+  },
+  {
+   "id": "D-T16-04",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 center-transfer: 무판을 못 이겼는데 무게 0.3"
+  },
+  {
+   "id": "D-T16-05",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16",
+    "T20"
+   ],
+   "targetReason": "무게 근거 없음"
+  },
+  {
+   "id": "D-T16-06",
+   "target": "T16",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "가운데 후보 40개 — 무판을 못 이긴 것은 모두 무게 0"
+  },
+  {
+   "id": "D-T16-07",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 center-transfer: 무판을 못 이겼는데 무게 0.0001"
+  },
+  {
+   "id": "D-T16-08",
+   "target": "T16",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T16"
+   ],
+   "targetReason": "4h-20261020-08-22e69f0c center-transfer: 무판을 못 이겼는데 무게 0.5"
+  },
+  {
+   "id": "D-T17-01",
+   "target": "T17",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 미국 고용지표: 봉인 뒤 정보 2건"
+  },
+  {
+   "id": "D-T17-02",
+   "target": "T17",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5 미국 고용지표: 누수 검사 안 함"
+  },
+  {
+   "id": "D-T17-03",
+   "target": "T17",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261002-16-c3d4e5f6 미국 고용지표: 봉인 뒤 정보 null건"
+  },
+  {
+   "id": "D-T17-04",
+   "target": "T17",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4 미국 고용지표: 누수 검사 안 함"
+  },
+  {
+   "id": "D-T17-05",
+   "target": "T17",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5 FOMC 의사록: 누수 검사 안 함"
+  },
+  {
+   "id": "D-T17-06",
+   "target": "T17",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "사건 41개 모두 누수 검사 · 봉인 뒤 정보 0"
+  },
+  {
+   "id": "D-T17-07",
+   "target": "T17",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "사건 41개 모두 누수 검사 · 봉인 뒤 정보 0"
+  },
+  {
+   "id": "D-T17-08",
+   "target": "T17",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T17"
+   ],
+   "targetReason": "4h-20261013-08-64be0178 미국 고용지표: 봉인 뒤 정보 1건"
+  },
+  {
+   "id": "D-T18-01",
+   "target": "T18",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T18"
+   ],
+   "targetReason": "r4h-20260615-08-851abb72: 겨눈 날 2026-06-15 ≤ 학습 마감 2026-06-30"
+  },
+  {
+   "id": "D-T18-02",
+   "target": "T18",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T18"
+   ],
+   "targetReason": "r4h-20260630-08-7f154226: 겨눈 날 2026-06-30 ≤ 학습 마감 2026-06-30"
+  },
+  {
+   "id": "D-T18-03",
+   "target": "T18",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T18"
+   ],
+   "targetReason": "r4h-20260901-08-d4e5f6a7: 날짜를 못 읽음"
+  },
+  {
+   "id": "D-T18-04",
+   "target": "T18",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T18"
+   ],
+   "targetReason": "r4h-20260901-08-d4e5f6a7: 겨눈 날 2026-09-01 ≤ 학습 마감 2026-09-15"
+  },
+  {
+   "id": "D-T18-05",
+   "target": "T18",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "LLM 재현 판 1개 모두 학습 마감 뒤 날짜"
+  },
+  {
+   "id": "D-T19-01",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "id": "D-T19-02",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 커밋이 첫 채점보다 늦음"
+  },
+  {
+   "id": "D-T19-03",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준에 봉인 시각 없음"
+  },
+  {
+   "id": "D-T19-04",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 없음"
+  },
+  {
+   "id": "D-T19-05",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "id": "D-T19-06",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "id": "D-T19-07",
+   "target": "T19",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T19"
+   ],
+   "targetReason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "id": "D-T20-01",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: 장부에 없는 시도 trial-0009"
+  },
+  {
+   "id": "D-T20-02",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: SPA p 0.2 ≥ 0.05 인데 고름"
+  },
+  {
+   "id": "D-T20-03",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: SPA p 없음"
+  },
+  {
+   "id": "D-T20-04",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "trial-0002: 시도 결과 봉인 시각(sealedAt) 없음"
+  },
+  {
+   "id": "D-T20-05",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: 고른 시도 trial-0003 가 SPA 를 거친 목록 밖"
+  },
+  {
+   "id": "D-T20-06",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: SPA p 0.05 ≥ 0.05 인데 고름"
+  },
+  {
+   "id": "D-T20-07",
+   "target": "T20",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고른 기록 1개 — 시도 모두 장부에 있고(봉인 시각 있음) 고른 시도는 SPA(p < 0.05)를 거침"
+  },
+  {
+   "id": "D-T20-08",
+   "target": "T20",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고른 기록 1개 — 시도 모두 장부에 있고(봉인 시각 있음) 고른 시도는 SPA(p < 0.05)를 거침"
+  },
+  {
+   "id": "D-T20-09",
+   "target": "T20",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고른 기록 1개 — 시도 모두 장부에 있고(봉인 시각 있음) 고른 시도는 SPA(p < 0.05)를 거침"
+  },
+  {
+   "id": "D-T20-10",
+   "target": "T20",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T20"
+   ],
+   "targetReason": "sel-0001: 장부에 없는 시도 trial-0001 · trial-0002"
+  },
+  {
+   "id": "D-T21-01",
+   "target": "T21",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-08-a1b2c3d4 center-nochange"
+  },
+  {
+   "id": "D-T21-02",
+   "target": "T21",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-12-b2c3d4e5 width-har"
+  },
+  {
+   "id": "D-T21-03",
+   "target": "T21",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "입력에 앞 판 1 — 4h-20261002-12-b2c3d4e5 center-nochange: 입력에 앞 판 id 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "id": "D-T21-04",
+   "target": "T21",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "입력에 앞 판 2 — 4h-20261002-12-b2c3d4e5 width-harx: 입력에 앞 판을 가리킴 「prev-board-center」 · 4h-20261002-12-b2c3d4e5 inputs: 앞 판을 가리킴 「prev-board-center」"
+  },
+  {
+   "id": "D-T21-05",
+   "target": "T21",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-08-a1b2c3d4 width-har"
+  },
+  {
+   "id": "D-T21-06",
+   "target": "T21",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T21"
+   ],
+   "targetReason": "앞 판을 봤거나 기록 없음 1 — 4h-20261015-08-f300edb3 width-harx"
+  },
+  {
+   "id": "D-T22-01",
+   "target": "T22",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 빈 칸 F"
+  },
+  {
+   "id": "D-T22-02",
+   "target": "T22",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-12-b2c3d4e5: 구조 번호 없음"
+  },
+  {
+   "id": "D-T22-03",
+   "target": "T22",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-16-c3d4e5f6: 구조 번호 없음"
+  },
+  {
+   "id": "D-T22-04",
+   "target": "T22",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 없는 번호 A7 · 4h-20261002-08-a1b2c3d4: 빈 칸 A"
+  },
+  {
+   "id": "D-T22-05",
+   "target": "T22",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 없는 번호 a1 · a2 외 10 · 4h-20261002-08-a1b2c3d4: 빈 칸 A·B·C·D·E·F"
+  },
+  {
+   "id": "D-T22-06",
+   "target": "T22",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261002-08-a1b2c3d4: 구조 번호 없음"
+  },
+  {
+   "id": "D-T22-07",
+   "target": "T22",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T22"
+   ],
+   "targetReason": "4h-20261008-08-c5325da9: 빈 칸 C"
+  },
+  {
+   "id": "D-T23-01",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-08: S3=1"
+  },
+  {
+   "id": "D-T23-02",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-12: S8=2"
+  },
+  {
+   "id": "D-T23-03",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-16: 감시 기록 없음"
+  },
+  {
+   "id": "D-T23-04",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-08: 감시한 이가 짓는 일꾼 「고리 일꾼」"
+  },
+  {
+   "id": "D-T23-05",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-12: S5=없음"
+  },
+  {
+   "id": "D-T23-06",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-16: S1=없음"
+  },
+  {
+   "id": "D-T23-07",
+   "target": "T23",
+   "contested": true,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261002-08: S4=1"
+  },
+  {
+   "id": "D-T23-08",
+   "target": "T23",
+   "contested": true,
+   "caught": false,
+   "failedChecks": [],
+   "targetReason": "고리 40개 모두 감시 S1~S8 = 0 · 감시는 짓는 일꾼이 아닌 이"
+  },
+  {
+   "id": "D-T23-09",
+   "target": "T23",
+   "contested": false,
+   "caught": true,
+   "failedChecks": [
+    "T23"
+   ],
+   "targetReason": "loop-20261022-08: S6=1"
+  }
+ ],
+ "probeResults": [
+  {
+   "id": "P-01",
+   "near": "T10",
+   "contested": true,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-02",
+   "near": "T10",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-03",
+   "near": "T5",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-04",
+   "near": "T11",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-05",
+   "near": "T11",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-06",
+   "near": "T11",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-07",
+   "near": "T11",
+   "contested": true,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-08",
+   "near": "T11",
+   "contested": true,
+   "falseAlarm": true,
+   "newlyFailed": [
+    {
+     "id": "T11",
+     "reason": "옛 엔진·기록을 건드림 1 — public/data/atlas11/forecast.json (M)"
+    }
+   ]
+  },
+  {
+   "id": "P-09",
+   "near": "T13",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-10",
+   "near": "T21",
+   "contested": true,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-11",
+   "near": "T7",
+   "contested": true,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-12",
+   "near": "T2",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-13",
+   "near": "T9",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-14",
+   "near": "T16",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-15",
+   "near": "T14",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-16",
+   "near": "T8",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-17",
+   "near": "T22",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-18",
+   "near": "T23",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-19",
+   "near": "T18",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-20",
+   "near": "T3",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-21",
+   "near": "T6",
+   "contested": true,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-22",
+   "near": "T19",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-23",
+   "near": "T2",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-24",
+   "near": "T20",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-25",
+   "near": "T8",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  },
+  {
+   "id": "P-26",
+   "near": "T4",
+   "contested": false,
+   "falseAlarm": false,
+   "newlyFailed": []
+  }
+ ],
+ "summary": {
+  "total": 189,
+  "caught": 157,
+  "missed": 32,
+  "strict": {
+   "total": 144,
+   "caught": 136,
+   "missed": 8
+  },
+  "falseAlarms": 1,
+  "falseAlarmsStrict": 0,
+  "probes": 26,
+  "byCheck": {
+   "T1": {
+    "planted": 7,
+    "caught": 6,
+    "strictPlanted": 6,
+    "strictCaught": 6
+   },
+   "T2": {
+    "planted": 9,
+    "caught": 8,
+    "strictPlanted": 7,
+    "strictCaught": 7
+   },
+   "T3": {
+    "planted": 9,
+    "caught": 7,
+    "strictPlanted": 8,
+    "strictCaught": 6
+   },
+   "T4": {
+    "planted": 8,
+    "caught": 7,
+    "strictPlanted": 6,
+    "strictCaught": 6
+   },
+   "T5": {
+    "planted": 9,
+    "caught": 8,
+    "strictPlanted": 7,
+    "strictCaught": 6
+   },
+   "T6": {
+    "planted": 7,
+    "caught": 7,
+    "strictPlanted": 6,
+    "strictCaught": 6
+   },
+   "T7": {
+    "planted": 9,
+    "caught": 8,
+    "strictPlanted": 8,
+    "strictCaught": 7
+   },
+   "T8": {
+    "planted": 9,
+    "caught": 5,
+    "strictPlanted": 6,
+    "strictCaught": 4
+   },
+   "T9": {
+    "planted": 7,
+    "caught": 5,
+    "strictPlanted": 4,
+    "strictCaught": 4
+   },
+   "T10": {
+    "planted": 12,
+    "caught": 11,
+    "strictPlanted": 11,
+    "strictCaught": 11
+   },
+   "T11": {
+    "planted": 14,
+    "caught": 13,
+    "strictPlanted": 10,
+    "strictCaught": 10
+   },
+   "T12": {
+    "planted": 11,
+    "caught": 7,
+    "strictPlanted": 7,
+    "strictCaught": 6
+   },
+   "T13": {
+    "planted": 9,
+    "caught": 6,
+    "strictPlanted": 7,
+    "strictCaught": 6
+   },
+   "T14": {
+    "planted": 9,
+    "caught": 7,
+    "strictPlanted": 6,
+    "strictCaught": 6
+   },
+   "T16": {
+    "planted": 8,
+    "caught": 7,
+    "strictPlanted": 6,
+    "strictCaught": 6
+   },
+   "T17": {
+    "planted": 8,
+    "caught": 6,
+    "strictPlanted": 5,
+    "strictCaught": 5
+   },
+   "T18": {
+    "planted": 5,
+    "caught": 4,
+    "strictPlanted": 3,
+    "strictCaught": 3
+   },
+   "T19": {
+    "planted": 7,
+    "caught": 7,
+    "strictPlanted": 7,
+    "strictCaught": 7
+   },
+   "T20": {
+    "planted": 10,
+    "caught": 7,
+    "strictPlanted": 7,
+    "strictCaught": 7
+   },
+   "T21": {
+    "planted": 6,
+    "caught": 6,
+    "strictPlanted": 5,
+    "strictCaught": 5
+   },
+   "T22": {
+    "planted": 7,
+    "caught": 7,
+    "strictPlanted": 5,
+    "strictCaught": 5
+   },
+   "T23": {
+    "planted": 9,
+    "caught": 8,
+    "strictPlanted": 7,
+    "strictCaught": 7
+   }
+  },
+  "missedStrict": [
+   "D-T3-07",
+   "D-T3-08",
+   "D-T5-06",
+   "D-T7-06",
+   "D-T8-03",
+   "D-T8-04",
+   "D-T12-05",
+   "D-T13-08"
+  ]
+ }
 }
