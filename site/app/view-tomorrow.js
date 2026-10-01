@@ -13,7 +13,7 @@ const longDate = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}
 const seenMemory = new Set();
 /** 소리 상태(앱 전체 한 벌) — app.js 의 🔊 단추가 바꾼다 */
 export const voice = {on: false};
-const story = {run: 0, playing: false, caption: '', onVoice: null};
+const story = {run: 0, playing: false, caption: '', onVoice: null, spoken: Promise.resolve(false)};
 export function stopStory() { story.run++; story.playing = false; story.onVoice = null; }
 /** 🔊 를 켰을 때: 이야기 중이면 지금 글상자를 읽고(다음 장면부터는 장면이 소리를 기다림), 끝났으면 화면 글자를 읽는다 */
 export function voiceTurnedOn() { if (story.onVoice) { story.onVoice(); return true; } return false; }
@@ -133,6 +133,8 @@ export async function renderTomorrow(main, {manifest}) {
   const showCaption = async (text, fade) => { story.caption = text; if (fade) { capBox.classList.add('out'); await sleep(260); } cap.textContent = text; capBox.dataset.speak = text; capBox.classList.remove('out'); };
 
   const ups = dots.filter(x => x.r.sel === 'up'), downs = dots.filter(x => x.r.sel === 'down'), halfDots = dots.filter(x => x.r.close);
+  /** 지금 장면의 말이 끝날 때까지(말했으면 +0.7초) — 도중에 🔊 를 켜서 말이 바뀌면 바뀐 말을 기다린다 */
+  const speechDone = async () => { for (;;) { const p = story.spoken, talked = await p; if (p === story.spoken) { if (talked) await sleep(700); return; } } };
   const later = (me, ms, fn) => setTimeout(() => { if (me === story.run) fn(); }, ms);
   const scenes = [
     {hold: 3200, run: async me => { count(total, '종목', 'ink', '보는 종목', 1800, me); dots.forEach((x, i) => later(me, i * 34, () => shownDot(x))); await sleep(dots.length * 34 + 500); }},
@@ -163,14 +165,15 @@ export async function renderTomorrow(main, {manifest}) {
       if (me !== story.run) return;
       mark(i);
       await showCaption(T[i], i > 0);
-      const spoken = say(T[i]);
+      story.spoken = say(T[i]);
       await s.run(me);
       if (me !== story.run) return;
-      await Promise.all([sleep(s.hold), spoken.then(talked => talked ? sleep(700) : null)]);
+      await Promise.all([sleep(s.hold), speechDone()]);
     }
     if (me === story.run) finish();
   };
-  story.onVoice = () => { if (story.playing) speak(story.caption); else speakScreen(T[4]); };
+  // 장면 중에 🔊 를 켜면 지금 글상자를 읽고, 이 장면도 그 말이 끝날 때까지(+0.7초) 기다린다
+  story.onVoice = () => { if (story.playing) { if (story.caption) story.spoken = say(story.caption); } else speakScreen(T[4]); };
   ctl.addEventListener('click', () => { if (ctl.dataset.mode === 'skip') { story.run++; stopSpeak(); finish(); } else play(); });
 
   if (seen(manifest.forecastId)) { story.run++; finish(); }
