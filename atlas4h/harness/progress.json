@@ -204,12 +204,118 @@
     "E6",
     "F4"
    ]
-  }
- ],
- "next": [
+  },
   {
-   "step": "ECO atlas4h-01",
-   "what": "승인되면 시험을 더 엄하게 고치고 다시 잠근 뒤, 독립 흠 111개를 다시 돌려 잡은 수를 보고",
+   "at": "2026-10-01 19:46 KST",
+   "step": "기획안 시작",
+   "what": "사장님 「이 기획안을 실제 제작할수 있는 코드로 만든다」 → 기획안(plan/build-plan.md) 시작 · 변경 요청 atlas4h-01 승인으로 봄(기획안 3절 1)",
+   "commits": [],
+   "structures": [
+    "A1",
+    "F5"
+   ]
+  },
+  {
+   "at": "2026-10-01 20:14 KST",
+   "step": "1단계 시험 고치기(ECO atlas4h-01)",
+   "what": "잠근 사양 시험 12곳을 더 엄하게 · T10 헛잡음·T12 멈춤 고침 · 다시 잠금(「atlas4h LOCK:」 커밋)",
+   "commits": [
+    "6f8936a"
+   ],
+   "numbers": {
+    "시험 앞": 160,
+    "시험 뒤": 230,
+    "새로 심은 흠": 60,
+    "묶음 1 참고 잡음": "110/111"
+   },
+   "files": [
+    "atlas4h/spec/checks.mjs",
+    "atlas4h/harness/tests.lock.json"
+   ],
+   "structures": [
+    "E6",
+    "F1"
+   ]
+  },
+  {
+   "at": "2026-10-01 20:01 KST",
+   "step": "1단계 자료 모으기",
+   "what": "수집기 collect.mjs(history = 지난 3년 7변수 · now = 15변수 한 장 · 원문 gzip+sha256 · 모으기 장부) · 단추 워크플로 atlas4h-collect(누를 때만) · 출처 둘(열쇠 없이) sp500·vix·wti · 열쇠가 있으면 kospi·usdkrw 도 둘",
+   "commits": [
+    "ef8aaaf"
+   ],
+   "numbers": {
+    "시험": 20
+   },
+   "files": [
+    "atlas4h/collect/collect.mjs",
+    ".github/workflows/atlas4h-collect.yml"
+   ],
+   "structures": [
+    "C5",
+    "E2"
+   ]
+  },
+  {
+   "at": "2026-10-01 20:03 KST",
+   "step": "2단계 엔진 0판·16시 재현",
+   "what": "가운데 = 무판 · 폭 = HAR · 봉인기·채점기 · 16시 판 재현 120거래일×52종목 — 무판보다 구간 점수 5.88% 낮음(DM p 8.3e-7·5.1e-4) · 덮음 73.9% · 전이식·ATLAS 11 「없음」",
+   "commits": [
+    "b8074cc"
+   ],
+   "numbers": {
+    "엔진 평균": 49408.2,
+    "무판 평균": 52494.0,
+    "덮음": 0.7389
+   },
+   "files": [
+    "atlas4h/retro/result-16.json",
+    "atlas4h/retro/summary-16.md"
+   ],
+   "structures": [
+    "B2",
+    "F2",
+    "F3"
+   ]
+  },
+  {
+   "at": "2026-10-01 20:52 KST",
+   "step": "2단계 ATLAS 11 기준",
+   "what": "ATLAS 11 v1(모형 A·512경로·씨앗 20260917) 후향 1거래일 p05~p95 · 출발일 4/6~9/30 120일×52종목 · 저장된 후향 칸 6,240개와 차이 0 · 지금 입력과는 9/21~23 정정 때문에 출발일 4개만 다름",
+   "commits": [
+    "62d695a"
+   ],
+   "numbers": {
+    "줄": 6240,
+    "재현 차이": 0
+   },
+   "files": [
+    "atlas4h/baselines/atlas11-v1-retro.json"
+   ],
+   "structures": [
+    "C1",
+    "C5",
+    "F1"
+   ]
+  },
+  {
+   "at": "2026-10-01 21:18 KST",
+   "step": "감시 S8 독립 흠 묶음 2",
+   "what": "다른 일꾼이 시험 코드를 안 보고 흠 189·탐침 26을 심음 · 결과 전에 목록 커밋(2d77f0c) · 엄한 셈 144 중 136 잡음 · 놓침 8 → 변경 요청 atlas4h-02 · 헛잡음 1(다툼)",
+   "commits": [
+    "2d77f0c",
+    "eb8c608"
+   ],
+   "numbers": {
+    "흠": 189,
+    "잡음": 157,
+    "엄한 흠": 144,
+    "엄한 잡음": 136,
+    "헛잡음": "1/26"
+   },
+   "files": [
+    "atlas4h/verify/independent-defects-2.json"
+   ],
    "structures": [
     "E6",
     "F1",
@@ -217,58 +323,144 @@
    ]
   },
   {
-   "step": "첫 실행 3 남은 것",
-   "what": "보류 11건(호이어 1999 전문 · DM 1995 · Christoffersen 1998 · Platt 1999 · 멍거 · 잡스 1997 등)을 다른 판·사본으로 다시 읽기",
+   "at": "2026-10-01 21:15 KST",
+   "step": "2단계 이어",
+   "what": "08시 판 · 코스피 판(세 시나리오 합 1) · 기준 셋(단순 전이식 해석 [판단] · ATLAS 11 후향 읽기) · 작은 판(상수만 실음) — 16시 재현 점수 차이 0",
+   "commits": [
+    "51f0ddd",
+    "c0a6233"
+   ],
+   "numbers": {
+    "판 크기 앞(B)": 1544835,
+    "판 크기 뒤(B, 가장 큰 것)": 140823,
+    "엔진·채점 시험": 32
+   },
    "structures": [
-    "C5"
+    "C3",
+    "F1"
    ]
   },
   {
-   "step": "그 뒤 7 준비",
-   "what": "엔진 0판(가운데 = 무판 · 폭 = HAR)으로 판 하나를 만들어 봉인·채점까지 한 바퀴 — 평가 일꾼과 「다 됐다」 기준을 먼저 적는다",
+   "at": "2026-10-01 21:21 KST",
+   "step": "시도 장부",
+   "what": "trial-0001(16시 재현 — 결과 뒤 늦게 적음) · trial-0002(08시 재현 — ATLAS 11 견줌은 짓는 일꾼이 미리 봄 · 전이식·코스피는 안 봄) · 둘 다 고르는 데 안 씀",
+   "commits": [
+    "459e947"
+   ],
    "structures": [
-    "A2",
-    "B2",
-    "F3"
+    "E6",
+    "F1"
    ]
   },
   {
-   "step": "그 뒤 7",
-   "what": "지난 기록으로 재현해 T12(폭이 기준 셋을 모두 이김)를 넘는지 — 종목 판(ATLAS 11 기준이 있는 판)으로",
+   "at": "2026-10-01 21:22 KST",
+   "step": "부딪힌 곳·변경 요청 2",
+   "what": "conflicts.md 16~26 · eco-02-tests.md(고칠 곳 9 · 사장님 판단 기다림)",
+   "commits": [
+    "74e7505"
+   ],
    "structures": [
-    "B2",
+    "E4",
+    "F1"
+   ]
+  },
+  {
+   "at": "2026-10-01 21:25 KST",
+   "step": "2단계 08시 재현(중간)",
+   "what": "08시 재현 = result.json(잠긴 T12 가 읽는 곳) · 16시 재현은 result-16.json 으로 옮김 · 무판 「실력」 5.88% · ATLAS 11(후향) 0.12% 「아직 모름」(DM p 0.450·0.466) · 전이식·코스피 「없음」 → T12 안 통과 · 화면에 내지 않음(명령 8)",
+   "commits": [
+    "dbed148",
+    "750982b"
+   ],
+   "numbers": {
+    "ATLAS 11 평균": 49467.2,
+    "엔진 평균": 49408.2,
+    "DM p lag0": 0.4503,
+    "DM p lag5": 0.4662
+   },
+   "files": [
+    "atlas4h/retro/result.json",
+    "atlas4h/retro/summary.md"
+   ],
+   "structures": [
+    "D4",
     "F3",
     "F4",
-    "E6"
+    "F5"
+   ]
+  }
+ ],
+ "next": [
+  {
+   "step": "자료 받기 뒤",
+   "what": "사장님 「지난 자료 받기」(atlas4h-collect · history) 뒤: perVariable.from ≈ 2023-09-24·errors 확인 → 08시 재현 다시(단순 전이식·코스피) → trial-0002 마지막 결과 줄 · T12 결과 보고",
+   "structures": [
+    "C5",
+    "F3",
+    "F4"
    ]
   },
   {
-   "step": "그 뒤 8",
-   "what": "T12를 못 넘으면 화면에 내지 않고 그대로 보고",
+   "step": "감시",
+   "what": "오늘 밤 커밋(6f8936a~) 감시 S1~S10 — 다른 일꾼",
    "structures": [
-    "F5"
+    "E6",
+    "F1"
+   ]
+  },
+  {
+   "step": "3단계 4시간 고리",
+   "what": "atlas4h-loop 워크플로(가벼운·무거운 바퀴 · 40분 넘으면 앞 값 · 멈춤 단추) — 10/2~10/5 · 사장님께 예약 줄 드리기",
+   "structures": [
+    "C3",
+    "E1"
+   ]
+  },
+  {
+   "step": "5단계 엔진 키우기",
+   "what": "ATLAS 11(후향)과 「아직 모름」 → 폭·가운데 시도를 하나씩 시도 장부에 먼저 적고 SPA 로 거름(T12)",
+   "structures": [
+    "E6",
+    "F3",
+    "F6"
+   ]
+  },
+  {
+   "step": "첫 실행 3 남은 것",
+   "what": "보류 11건 다시 읽기",
+   "structures": [
+    "C5"
    ]
   }
  ],
  "blocked": [
   {
-   "what": "잠근 시험의 구멍 15개·헛잡음 1·멈춤 1을 고치는 변경 요청서 atlas4h-01",
+   "what": "「지난 자료 받기」 단추(atlas4h-collect · history)",
+   "needs": "사장님이 한 번 누르기(2026-10-01 20:20 KST 안내)",
+   "affects": [
+    "T12 단순 전이식",
+    "코스피 판",
+    "T5",
+    "T6"
+   ],
+   "structures": [
+    "C5"
+   ]
+  },
+  {
+   "what": "변경 요청서 atlas4h-02(시험을 봉인 판정에 맞춤 · 새 구멍 8 · T20 첫 줄)",
    "needs": "사장님 승인(「atlas4h LOCK:」 커밋으로만 고침 · 검사 H4)",
    "affects": [
-    "T2",
     "T3",
-    "T6",
+    "T5",
     "T7",
     "T8",
-    "T10",
     "T11",
     "T12",
     "T13",
-    "T20",
-    "T21",
-    "T23"
+    "T20"
    ],
-   "file": "atlas4h/harness/eco-01-tests.md",
+   "file": "atlas4h/harness/eco-02-tests.md",
    "structures": [
     "E6",
     "F1"
@@ -328,6 +520,28 @@
    "structures": [
     "C5",
     "E2"
+   ]
+  },
+  {
+   "what": "6단계 화면을 붙일 곳 — 잠긴 T11 이 site/·scripts/atlas11/ 을 지킴",
+   "needs": "6단계 전 변경 요청으로 사장님 판단(conflicts.md 25)",
+   "affects": [
+    "T14",
+    "6단계"
+   ],
+   "structures": [
+    "F5"
+   ]
+  },
+  {
+   "what": "10/30 뒤 ATLAS 11 기준 없음",
+   "needs": "사장님 판단(conflicts.md 15)",
+   "affects": [
+    "T12",
+    "판정문"
+   ],
+   "structures": [
+    "F4"
    ]
   }
  ],

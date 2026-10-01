@@ -1,24 +1,29 @@
 # 넘겨주기 쪽지 (다음 고리가 이것만 보고 시작한다)
 
-- 고친 때: 2026-10-01 18:18 KST · 쓴 이: 바탕 일꾼(첫 실행)
+- 고친 때: 2026-10-01 21:2x KST · 쓴 이: 본 세션(기획안 1·2단계 만들기)
 - 명령문: `atlas4h/command/original.txt` (sha256 `ffe9b40d…0b58c`) · 칸 파일 14개 · 필요한 칸만 다시 읽는다
+- 기획안: `atlas4h/plan/build-plan.md` (일곱 단계 · 사장님 손 순서)
 
 ## 지금 상태 한눈에
-1. 첫 실행 1~6번은 끝났다(6번 봉인 18:19 KST · 커밋 1e4c2bf · `atlas4h/seal/`). 남은 것은 감시 점검.
-2. 엔진 코드는 아직 없다. 판·채점 기록도 0개다. 그래서 통과 목록 30줄 중 실제 통과는 0(사양 현황에서 T11만 「옛 엔진 변경 0」으로 맞음 — 표시는 평가 일꾼 몫).
-3. 시험: `node --test 'atlas4h/tests/*.test.mjs'` (폴더 이름만 주면 Node 22에서 못 찾는다 — 따옴표 별표 꼴로).
+1. 1단계(시험 고치기·자료 모으기)와 2단계(엔진 0판·재현) 코드는 main 에 있다. 통과 표시는 여전히 0/30(표시는 평가 일꾼 몫).
+2. 08시 재현(`retro/result.json`, 잠긴 T12 가 읽는 곳): 무판보다 「실력」 5.88% · ATLAS 11(후향)과는 0.12% 「아직 모름」(DM p 0.450·0.466) · 단순 전이식·코스피는 지난 자료가 없어 「없음」 → **T12 안 통과 → 화면에 내지 않는다(명령 8).**
+3. 16시 재현은 `retro/result-16.json` (무판 견줌만 · 16시엔 기준 둘이 없음 — conflicts.md 16).
+4. 시도 장부 `seal/trials.jsonl`: trial-0001·0002 는 「늦게 적음」이라 고르는 데 쓰지 않는다. 다음 시도부터는 시도 줄을 먼저 커밋하고 돌린다.
+5. 시험: `node --test 'atlas4h/tests/*.test.mjs'` 230 · collect 20 · engine 24 · score 8 · baselines 13. `harness/start.sh` 가 모두 돌린다.
 
 ## 다음 고리가 할 한 가지
-- **먼저:** 변경 요청서 `harness/eco-01-tests.md`(잠근 시험의 구멍 15개)가 승인됐는지 본다. 승인 전에는 시험을 고치지 않는다.
-- **그 뒤 7번 준비: 엔진 0판** — 가운데 = 무판(출발 종가 그대로), 폭 = HAR(밑값 3층) 하나만으로 판을 만들고 봉인·채점까지 한 바퀴. 지난 기록 재현(T12)은 그 다음.
-- 시작 전에 평가 일꾼과 「다 됐다」 기준을 `progress.json` 그 일 칸에 적는다.
+- **지난 자료가 들어왔는지 본다** (`atlas4h/data/history/*.json` · `atlas4h/ledger/collect/*.jsonl`). 들어왔으면:
+  1. `perVariable.<id>.from` 이 2023-09-24 무렵인지, `errors` 가 비었는지 본다.
+  2. `node atlas4h/retro/run.mjs --slot 08` (→ `retro/result.json`·`summary.md`) — 단순 전이식·코스피가 채워진다.
+  3. `seal/trials.jsonl` 에 trial-0002 마지막 결과 줄을 덧붙이고 커밋한다.
+- 안 들어왔으면: 3단계 `atlas4h-loop` 워크플로를 만든다(예약 줄은 사장님이 넣는다).
 
-## 막힌 것 (사장님 일 · `progress.json` blocked)
-- 두 번째 출처 열쇠(KRX Open API · 한국은행 ECOS · OpenDART · FRED API) — GitHub 저장소 비밀 `ATLAS4H_*`
-- 네이버 약관 확인 · 선물(KIS)·VKOSPI 출처 · 4시간 예약(cron은 사장님 계정으로 GitHub 화면에서) · KRX 상업 조항
+## 막힌 것 (`progress.json` blocked)
+- 「지난 자료 받기」 단추(사장님) · 변경 요청서 atlas4h-02(사장님 승인) · 두 번째 출처 열쇠 · 네이버 약관 · 선물·VKOSPI 출처 · 4시간 예약 줄(사장님 계정) · KRX 상업 조항 · 6단계 화면 자리(T11) · 10/30 뒤 ATLAS 11 기준
 
 ## 지킬 것 (짧게)
-- 시험은 고치지 않는다(잠금 H4) · 통과 표시는 평가 일꾼만(H3) · 장부는 덧붙이기만 · 옛 엔진 변경 0(T11)
-- 운영 단추(atlas11-site·atlas11-daily)는 누르지 않는다 — 사장님이 누른다
+- 시험은 고치지 않는다(잠금 H4 — 승인된 변경 요청 + 「atlas4h LOCK:」 커밋만) · 통과 표시는 평가 일꾼만(H3) · 장부·봉인 폴더는 덧붙이기만 · 옛 엔진 변경 0(T11)
+- 운영 단추(atlas11-site·atlas11-daily·atlas4h-collect)는 누르지 않는다 — 사장님이 누른다
+- 엔진을 바꾸는 시도는 결과 전에 `seal/trials.jsonl` 에 먼저 적는다 · 채점에 쓸 자료로 엔진을 맞추지 않는다(S8)
 - 부딪힌 곳은 `harness/conflicts.md` 에 등급과 셋(정직 > 맞음 > 쉬움 > 빠름)으로 정해 적는다
-- `start.sh` 는 돌릴 때마다 `harness/spec-latest.json` 을 새로 쓴다(시각이 바뀜). 그 고리의 일과 함께 커밋해 깨끗한 상태로 끝낸다.
+- `start.sh`·`run_spec.mjs` 는 돌릴 때마다 `harness/spec-latest.json` 을 새로 쓴다. 그 고리의 일과 함께 커밋하거나 되돌려 깨끗한 상태로 끝낸다.
