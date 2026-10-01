@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T22:01:06.847Z",
+  "at": "2026-10-01T22:06:49.981Z",
   "base": "http://localhost:8871",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
@@ -126,7 +126,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 42,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -248,7 +248,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 42,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -370,7 +370,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 42,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -492,7 +492,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 42,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -614,7 +614,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 42,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -680,7 +680,7 @@
       "screen": "game",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 43
+      "decoColors": 42
     },
     {
       "view": "mobile",
@@ -736,7 +736,7 @@
       "screen": "game",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 43
+      "decoColors": 42
     },
     {
       "view": "mobile-dark",
@@ -792,7 +792,7 @@
       "screen": "game",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 43
+      "decoColors": 42
     },
     {
       "view": "pc-200",
@@ -848,7 +848,7 @@
       "screen": "game",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 43
+      "decoColors": 42
     },
     {
       "view": "mobile-dark-200",
@@ -904,7 +904,7 @@
       "screen": "game",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 43
+      "decoColors": 42
     }
   ],
   "checks": [
@@ -1542,7 +1542,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cvtppud-band-inner\")",
+        "bandFill": "url(\"#cfutbdk-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -2015,8 +2015,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 118,
-          "bottom": 194,
+          "top": 125,
+          "bottom": 201,
           "firstChild": true
         }
       }
@@ -2144,8 +2144,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 72,
-          "bottom": 122,
+          "top": 126,
+          "bottom": 176,
           "firstChild": true
         }
       }
@@ -2211,7 +2211,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cw8vdsu-band-inner\")",
+        "bandFill": "url(\"#ciqdpe0-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -3630,5 +3630,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T21-58-35-995Z"
+  "dir": "reports/atlas11/browser/2026-10-01T22-04-20-427Z"
 }

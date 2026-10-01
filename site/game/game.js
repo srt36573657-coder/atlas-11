@@ -81,7 +81,8 @@ function speak(text) { try { const u = new SpeechSynthesisUtterance(text); u.lan
 
 /* ───────── 그림: 기요셰 무늬(솔 르윗 · 베라 몰나르 — 한 규칙에서 52가지 변주) ─────────
    무늬 꼴은 종목 번호로, 물결 높이는 지난 1주 흔들림으로, 겹 수는 오른 날 수로, 도는 방향은 1주 합계 부호로 정한다. */
-const INK = {up: '#a3122a', down: '#1d4796', flat: '#2c6a57', gold: '#a8863f'};
+/* 잉크 색 셋(오름 · 내림 · 보합): dataviz 색 검사기(밝기 띠 · 채도 · 색맹 구분 · 대비)를 다섯 항목 모두 통과한 값 — 2026-10-02 07:05 */
+const INK = {up: '#b0172f', down: '#2a5cb8', flat: '#17805c', gold: '#a8863f'};
 function specOf(c) {
   const sd = [...c.code].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 9973, 7);
   const vol = Math.sqrt(c.week.reduce((a, w) => a + w.ret * w.ret, 0) / c.week.length);
