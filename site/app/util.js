@@ -16,6 +16,8 @@ export const signCls = v => finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat')
 export const shortDate = d => d ? d.slice(5, 10).replace('-', '/') : '—';
 export const weekday = d => d ? ['일', '월', '화', '수', '목', '금', '토'][new Date(d.slice(0, 10) + 'T00:00:00Z').getUTCDay()] : '';
 export const korDate = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일(${weekday(d)})` : '—';
+/** 「내일 하루만」(2026-10-02 사장님 명령) 화면 말: 「내일(10월 2일 금)」 */
+export const tomorrowWord = d => d ? `내일(${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일 ${weekday(d)})` : '내일';
 /** ISO 시각 → 한국 날짜·시각 */
 export const kst = iso => { const t = new Date(Date.parse(iso) + 9 * 3600000).toISOString(); return {date: t.slice(0, 10), time: t.slice(11, 16)}; };
 export const stamp = iso => iso && Number.isFinite(Date.parse(iso)) ? `${korDate(kst(iso).date)} ${kst(iso).time} KST` : '미확보';

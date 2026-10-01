@@ -12,7 +12,8 @@ import {renderRecords} from './view-records.js';
 const app = {view: null, manifest: null};
 const routes = [
   {id: 'forecast', label: '전망', icon: '◔', match: /^#\/(forecast|stock\/\d{6})?$|^$|^#\/?$/, render: renderForecast},
-  {id: 'race', label: '1만원 비교', icon: '≋', match: /^#\/race/, render: renderRace},
+  // 1만원 비교(여러 날 경주)는 「내일 하루만」이면 꺼 둠(2026-10-02 사장님 명령) — 메뉴에서 빼고, 주소로 오면 「꺼 둠」 한 줄만
+  {id: 'race', label: '1만원 비교', icon: '≋', match: /^#\/race/, render: renderRace, off: m => Boolean(m?.tomorrowOnly)},
   {id: 'scores', label: '성적', icon: '✓', match: /^#\/scores/, render: renderScores},
   {id: 'evolution', label: '진화', icon: '↻', match: /^#\/evolution/, render: renderEvolution},
   {id: 'status', label: '자료 상태', icon: '▤', match: /^#\/status/, render: renderStatus, aux: true},
@@ -26,7 +27,7 @@ function header(m) {
   top.replaceChildren(
     h('div', {class: 'top-inner'},
       h('a', {class: 'brand', href: '#/forecast', 'aria-label': 'ATLAS 처음 화면'}, h('span', {class: 'wordmark'}, 'ATLAS')),
-      h('nav', {class: 'top-nav', 'aria-label': '주요 화면'}, ...routes.filter(r => !r.aux).map(r => h('a', {href: '#/' + r.id, class: 'top-link', dataset: {route: r.id}}, r.label))),
+      h('nav', {class: 'top-nav', 'aria-label': '주요 화면'}, ...routes.filter(r => !r.aux && !r.off?.(m)).map(r => h('a', {href: '#/' + r.id, class: 'top-link', dataset: {route: r.id}}, r.label))),
       h('div', {class: 'top-tools'},
         h('button', {class: 'tool', type: 'button', 'aria-label': '글씨 작게', onclick: () => { prefs.set('font', Math.max(0, prefs.get('font', 0) - 1)); applyFont(); route(); }}, 'A−'),
         h('button', {class: 'tool', type: 'button', 'aria-label': '글씨 크게 (최대 200%)', onclick: () => { prefs.set('font', Math.min(FONT_STEPS.length - 1, prefs.get('font', 0) + 1)); applyFont(); route(); }}, 'A+'),
@@ -34,7 +35,7 @@ function header(m) {
         h('a', {class: 'tool aux', href: '#/records', 'aria-label': '기록 검색', dataset: {route: 'records'}}, '기록'),
         h('a', {class: 'tool aux', href: '#/status', 'aria-label': '자료 상태', dataset: {route: 'status'}}, '자료 상태'))),
     marketStrip(m));
-  document.getElementById('bottom').replaceChildren(...routes.filter(r => !r.aux).map(r => h('a', {href: '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true'}, r.icon), h('span', null, r.label))));
+  document.getElementById('bottom').replaceChildren(...routes.filter(r => !r.aux && !r.off?.(m)).map(r => h('a', {href: '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true'}, r.icon), h('span', null, r.label))));
 }
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) el.classList.toggle('active', el.dataset.route === id); }
 
@@ -45,9 +46,14 @@ async function route() {
   markActive(r.id); app.view = r.id; state.summary = '';
   const main = document.getElementById('main');
   main.dataset.view = r.id;
-  try { await r.render(main, {hash, manifest: app.manifest}); }
+  try { await (r.off?.(app.manifest) ? renderOff : r.render)(main, {hash, manifest: app.manifest}); }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
   window.scrollTo({top: 0});
+}
+/** 꺼 둔 화면: 지우지 않고 「꺼 둠」 한 줄만 (futureDays 20 이면 다시 켜짐) */
+function renderOff(main, {manifest}) {
+  state.summary = '1만원 비교는 꺼 두었습니다. ' + (manifest?.tomorrowOnly?.note ?? '');
+  main.replaceChildren(h('section', {class: 'card panel', 'data-off': 'race'}, h('h1', {class: 'panel-title'}, '1만원 비교 · 꺼 둠'), h('p', {class: 'banner off-note', role: 'note'}, `1만원 비교(여러 날 경주)는 꺼 두었습니다(${manifest?.tomorrowOnly?.since ?? '2026-10-02'} 사장님 명령 · 지난 기록은 그대로)`), h('p', null, h('a', {href: '#/forecast'}, '전망 보기 ›'))));
 }
 function failure(title, e) {
   return h('section', {class: 'card failure', role: 'alert'}, h('h1', null, title), h('p', {class: 'muted'}, String(e?.message ?? e)), state.lastGood ? h('p', {class: 'muted'}, `마지막 정상 자료: 발행본 `, h('code', null, state.lastGood.forecastId), ` · 기준 ${korDate(state.lastGood.actualAsOf)} 15:30 KST 종가`) : null, h('button', {class: 'primary', type: 'button', onclick: () => location.reload()}, '다시 불러오기'));

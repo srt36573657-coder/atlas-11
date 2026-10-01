@@ -18,7 +18,8 @@ export async function renderAll(page) { await page.evaluate(() => { for (const e
 export const SCREENS = [
   {id: 'forecast', name: '전망', hash: '#/forecast', wait: '.wl-row, .stock-card'},
   {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
-  {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart'},
+  // 「내일 하루만」(2026-10-02 사장님 명령)이면 1만원 비교는 꺼 둠 — 그래프 대신 「꺼 둠」 한 줄을 기다린다
+  {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart, [data-off="race"]'},
   {id: 'scores', name: '성적', hash: '#/scores', wait: 'svg.lc, .timeline, .card h2'},
   {id: 'evolution', name: '진화', hash: '#/evolution', wait: 'svg.evo-chart'},
   {id: 'records', name: '기록', hash: '#/records', wait: 'svg.lc, .sentences li'},
@@ -55,6 +56,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
       const opened = await page.evaluate(() => { const b = [...document.querySelectorAll('.hl-num')]; for (const x of b) if (x.getAttribute('aria-expanded') !== 'true') x.click(); return b.length; });
       if (opened) { await page.waitForTimeout(120); const src = await page.evaluate(measureClarity, {roots: ['.hl-src'], refTime: false}); m.source = {panels: opened, relDays: src.relDays, vague: src.vague, bareNumbers: src.bareNumbers, formatDates: src.formatDates, samples: {relDays: src.samples.relDays, vague: src.samples.vague, bareNumbers: src.samples.bareNumbers, formatDates: src.samples.formatDates}}; await page.evaluate(() => { for (const x of document.querySelectorAll('.hl-num[aria-expanded="true"]')) x.click(); }); }
       else m.source = {panels: 0};
+      // 내일만: 화면의 전망 표시(data-forecast-date) 가운데 내일(manifest.futureDates[0])이 아닌 것의 수 — 0 이어야 한다
+      m.tomorrowOnly = await page.evaluate(async () => { const mf = await (await fetch('data/atlas11/view/manifest.json')).json(); const t = mf.futureDates[0], all = [...document.querySelectorAll('[data-forecast-date]')].map(e => e.getAttribute('data-forecast-date')); return {on: Boolean(mf.tomorrowOnly), tomorrow: t, marks: all.length, other: all.filter(d => d !== t).length}; }).catch(() => null);
       out.views[v.id][s.id] = m;
       if (inject) {
         await page.evaluate(() => { const box = document.createElement('section'); box.className = 'card'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
@@ -68,6 +71,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   }
   await browser.close();
   // 표로 보이기
+  const otherMarks = Object.values(out.views).flatMap(sc => Object.values(sc)).reduce((s, m) => s + (m.tomorrowOnly?.other ?? 0), 0);
+  out.tomorrowOnly = {on: Object.values(out.views).some(sc => Object.values(sc).some(m => m.tomorrowOnly?.on)), otherForecastMarks: otherMarks};
+  console.log(`내일만: ${out.tomorrowOnly.on ? '켜짐' : '꺼짐(옛 20거래일 화면)'} · 내일 말고의 전망 표시 ${otherMarks}개`);
+  if (out.tomorrowOnly.on && otherMarks) process.exitCode = 1;
   for (const [vid, screens] of Object.entries(out.views)) {
     console.log(`\n[${vid}] ` + ['화면', ...KEYS, '합', '7 잘린 글자', '(덤)날짜모양', '글조각', '첫화면', '출처칸 1·2·3·날짜'].join(' | '));
     for (const [sid, m] of Object.entries(screens)) console.log(`${sid} | ` + KEYS.map(k => m[k]).join(' | ') + ` | ${KEYS.reduce((s, k) => s + m[k], 0)} | ${m.truncated ?? '—'}${m.truncated ? ' (' + (m.samples?.truncated ?? []).slice(0, 3).join(' / ') + ')' : ''} | ${m.formatDates} | ${m.sentences.length} | ${m.firstView.length} | ${m.source?.panels ? [m.source.relDays, m.source.vague, m.source.bareNumbers, m.source.formatDates].join('·') : '칸 없음'}`);

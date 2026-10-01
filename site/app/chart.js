@@ -21,10 +21,12 @@ function path(points, x, y, key = 'value') {
 const bandPath = (rows, x, y) => rows.map((p, i) => `${i ? 'L' : 'M'}${x(p.index).toFixed(2)},${y(p.high).toFixed(2)}`).join('') + [...rows].reverse().map(p => `L${x(p.index).toFixed(2)},${y(p.low).toFixed(2)}`).join('') + 'Z';
 
 /** 종목 상세 차트. bands: [{rows:[{index,low,high}], cls}] 바깥→안쪽 순. 돌려주는 update(cursorIndex) 로 커서만 옮긴다. */
-export function priceChart(container, {dates, series, bands = [], anchorIndex, cursorIndex, onPick, onHover, ariaLabel, yFormat = v => num(v), endFormat = null, reveal = false}) {
+export function priceChart(container, {dates, series, bands = [], anchorIndex, cursorIndex, onPick, onHover, ariaLabel, yFormat = v => num(v), endFormat = null, reveal = false, forecastDots = false, padSlots = 0}) {
+  // 전망 표시(점·띠·끝 글자)에는 그 날짜를 data-forecast-date 로 단다 — 「내일 하루만」 검사기가 센다
+  const lastFuture = idxs => { const i = idxs.filter(i => anchorIndex != null && i > anchorIndex).at(-1); return i == null ? null : dates[i]; };
   const endFmt = endFormat ?? yFormat, kindOf = s => String(s.kind).split(' ')[0];
   const width = Math.max(320, container.clientWidth || 900), mobile = width < 600, k = chartScale(width), height = Math.round((mobile ? 300 : 400) * k), left = (mobile ? 62 : 78) * k, right = (mobile ? 14 : 22) * k, top = 24 * k, bottom = 40 * k;
-  const g = geometry({dates, series, width, height, left, right, top, bottom});
+  const g = geometry({dates, series, width, height, left, right: right + (padSlots > 0 && dates.length > 1 ? padSlots * (width - left - right) / (dates.length - 1 + padSlots) : 0), top, bottom});
   const svg = svgEl('svg', {viewBox: `0 0 ${width} ${height}`, width: '100%', height, role: 'img', 'aria-label': ariaLabel, class: 'chart sfumato'}); svg.style.fontSize = (16 * k) + 'px';
   // 층 0: 정의(띠 그라데이션 · 실제선 그림자 흐림) — 그림자는 선 바로 아래 같은 색·낮은 불투명도라 다른 선으로 읽히지 않는다
   const uid = 'c' + Math.random().toString(36).slice(2, 8), defs = svgEl('defs');
@@ -40,20 +42,23 @@ export function priceChart(container, {dates, series, bands = [], anchorIndex, c
   const animate = reveal && !reducedMotion();
   // 층 3: 범위 띠(투명한 층 겹침 · 각 띠의 실제 경계는 가는 선으로 정확히 읽힘 · 좌표 변형 없음)
   const bandGroup = svgEl('g', {class: 'bands' + (animate ? ' reveal' : '')});
-  for (const b of bands) if (b.rows?.length) { const el = svgEl('path', {d: bandPath(b.rows, g.x, g.y), class: 'band ' + (b.cls ?? '')}); el.style.fill = `url(#${uid}-band-${b.cls ?? 'outer'})`; bandGroup.append(el); } // 스타일시트의 fill 보다 우선하도록 CSSOM 으로 지정(CSP 안)
-  for (const b of bands) if (b.rows?.length) { const r = b.rows; for (const key of ['high', 'low']) bandGroup.append(svgEl('path', {d: r.map((p, i) => `${i ? 'L' : 'M'}${g.x(p.index).toFixed(2)},${g.y(p[key]).toFixed(2)}`).join(''), class: 'band-edge ' + (b.cls ?? '')})); }
+  for (const b of bands) if (b.rows?.length) { const el = svgEl('path', {d: bandPath(b.rows, g.x, g.y), class: 'band ' + (b.cls ?? ''), 'data-forecast-date': lastFuture(b.rows.map(r => r.index))}); el.style.fill = `url(#${uid}-band-${b.cls ?? 'outer'})`; bandGroup.append(el); } // 스타일시트의 fill 보다 우선하도록 CSSOM 으로 지정(CSP 안)
+  for (const b of bands) if (b.rows?.length) { const r = b.rows; for (const key of ['high', 'low']) bandGroup.append(svgEl('path', {d: r.map((p, i) => `${i ? 'L' : 'M'}${g.x(p.index).toFixed(2)},${g.y(p[key]).toFixed(2)}`).join(''), class: 'band-edge ' + (b.cls ?? ''), 'data-forecast-date': lastFuture(r.map(p => p.index))})); }
   svg.append(bandGroup);
   if (anchorIndex != null) { svg.append(svgEl('line', {x1: g.x(anchorIndex), x2: g.x(anchorIndex), y1: top, y2: height - bottom, class: 'boundary'})); svg.append(text({x: g.x(anchorIndex) + 5 * k, y: top + 12 * k, class: 'tick boundary-label'}, '실제 | 전망')); }
   // 층 4: 선 — 실제선은 바로 아래 부드러운 그림자 한 겹(같은 색 · 2px 아래 · 흐림 1.6) 으로 판 위에 놓인 느낌 · 전망선·어제선은 그림자 없음
   const actualSeries = series.find(s => kindOf(s) === 'actual');
   if (actualSeries) svg.append(svgEl('path', {d: path(actualSeries.points, g.x, g.y), class: 'line-shadow', transform: 'translate(0,2)', filter: `url(#${uid}-shadow)`, 'aria-hidden': 'true'}));
-  for (const s of series) { const p = svgEl('path', {d: path(s.points, g.x, g.y), class: 'line ' + s.kind + (animate && kindOf(s) !== 'actual' ? ' draw' : ''), 'data-series': s.id}); svg.append(p); }
+  const isForecast = s => !['actual', 'previous'].includes(kindOf(s));
+  for (const s of series) { const p = svgEl('path', {d: path(s.points, g.x, g.y), class: 'line ' + s.kind + (animate && kindOf(s) !== 'actual' ? ' draw' : ''), 'data-series': s.id, 'data-forecast-date': isForecast(s) ? lastFuture(s.points.map(q => q.index)) : null}); svg.append(p); }
+  // 내일 하루만: 전망은 한 점 — 점으로도 그린다
+  if (forecastDots) for (const s of series.filter(isForecast)) for (const q of s.points.filter(q => anchorIndex != null && q.index > anchorIndex && finite(q.value))) svg.append(svgEl('circle', {cx: g.x(q.index), cy: g.y(q.value), r: 5.5 * k, class: 'forecast-dot ' + s.kind, 'data-forecast-date': dates[q.index]}));
   const anchor = series.find(s => kindOf(s) === 'actual')?.points.at(-1);
   if (anchor && finite(anchor.value)) { svg.append(svgEl('circle', {cx: g.x(anchor.index), cy: g.y(anchor.value), r: 11 * k, class: 'anchor-halo'})); svg.append(svgEl('circle', {cx: g.x(anchor.index), cy: g.y(anchor.value), r: 4.5 * k, class: 'anchor-dot'})); }
   const today = series.find(s => kindOf(s) === 'today'), last = today?.points.at(-1);
   if (last && finite(last.value) && anchor) {
     const above = last.value >= anchor.value;
-    svg.append(text({x: g.x(last.index), y: g.y(last.value) + (above ? -10 : 18) * k, class: 'end-label ' + String(today.kind).split(' ').slice(1).join(' '), 'text-anchor': 'end'}, `${endFmt(last.value)} (${pct(last.value / anchor.value - 1, 2)})`));
+    svg.append(text({x: g.x(last.index), y: g.y(last.value) + (above ? -10 : 18) * k, class: 'end-label ' + String(today.kind).split(' ').slice(1).join(' '), 'text-anchor': 'end', 'data-forecast-date': last.index > anchorIndex ? dates[last.index] : null}, `${endFmt(last.value)} (${pct(last.value / anchor.value - 1, 2)})`));
     svg.append(text({x: g.x(anchor.index) - 8 * k, y: g.y(anchor.value) + (above ? 18 : -10) * k, class: 'end-label actual', 'text-anchor': 'end'}, endFmt(anchor.value)));
   }
   // 커서 묶음: 재생 때 이것만 움직인다
@@ -70,7 +75,7 @@ export function priceChart(container, {dates, series, bands = [], anchorIndex, c
   }
   update(cursorIndex);
   const hit = svgEl('rect', {x: left, y: top, width: width - left - right, height: height - top - bottom, class: 'hit'});
-  const indexAt = ev => { const rect = svg.getBoundingClientRect(), px = (ev.clientX - rect.left) * width / rect.width; const i = Math.round((px - left) / (width - left - right) * (dates.length - 1)); return i >= 0 && i < dates.length ? i : null; };
+  const indexAt = ev => { const rect = svg.getBoundingClientRect(), px = (ev.clientX - rect.left) * width / rect.width; const i = Math.round((px - left) / Math.max(1e-9, g.x(dates.length - 1) - g.x(0)) * (dates.length - 1)); return i >= 0 && i < dates.length ? i : null; };
   const pick = ev => { const i = indexAt(ev); if (i != null) onPick?.(i); };
   hit.addEventListener('click', pick); hit.addEventListener('pointermove', ev => { if (ev.buttons) pick(ev); else onHover?.(indexAt(ev), ev); }); hit.addEventListener('pointerleave', () => onHover?.(null));
   svg.append(hit);
@@ -108,16 +113,18 @@ export function quantileBox(container, {row, anchor}) {
 }
 
 /** 카드용 작은 그래프: 최근 실제 20 + 전망 20(띠) · 출발점 */
-export function sparkline(spark, {width = 200, height = 44, dir = null} = {}) {
+export function sparkline(spark, {width = 200, height = 44, dir = null, dates = null, dot = false} = {}) {
+  const fd = dates?.length ? dates.at(-1) : null; // 전망 표시의 날짜(내일 하루만이면 내일)
   const actual = spark.actual, forecast = spark.forecast, low = spark.low ?? forecast, high = spark.high ?? forecast;
   const all = [...actual, ...forecast, ...low, ...high].filter(finite), min = Math.min(...all), max = Math.max(...all), n = actual.length + forecast.length;
   const x = i => 2 + i / (n - 1) * (width - 4), y = v => 3 + (max - v) / Math.max(1e-9, max - min) * (height - 6);
   const svg = svgEl('svg', {viewBox: `0 0 ${width} ${height}`, class: 'spark', 'aria-hidden': 'true', preserveAspectRatio: 'none'});
   const a0 = actual.length - 1;
   svg.append(svgEl('line', {x1: 2, x2: width - 2, y1: y(actual[a0]), y2: y(actual[a0]), class: 's-base'}));
-  svg.append(svgEl('path', {d: `M${x(a0).toFixed(1)},${y(actual[a0]).toFixed(1)}` + forecast.map((v, j) => `L${x(a0 + j + 1).toFixed(1)},${y(high[j]).toFixed(1)}`).join('') + forecast.map((v, j) => forecast.length - 1 - j).map(j => `L${x(a0 + j + 1).toFixed(1)},${y(low[j]).toFixed(1)}`).join('') + 'Z', class: 's-band'}));
+  svg.append(svgEl('path', {d: `M${x(a0).toFixed(1)},${y(actual[a0]).toFixed(1)}` + forecast.map((v, j) => `L${x(a0 + j + 1).toFixed(1)},${y(high[j]).toFixed(1)}`).join('') + forecast.map((v, j) => forecast.length - 1 - j).map(j => `L${x(a0 + j + 1).toFixed(1)},${y(low[j]).toFixed(1)}`).join('') + 'Z', class: 's-band', 'data-forecast-date': fd}));
   svg.append(svgEl('path', {d: actual.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(''), class: 's-actual'}));
-  svg.append(svgEl('path', {d: `M${x(a0).toFixed(1)},${y(actual[a0]).toFixed(1)}` + forecast.map((v, j) => `L${x(a0 + j + 1).toFixed(1)},${y(v).toFixed(1)}`).join(''), class: 's-forecast ' + (dir ?? '')}));
+  svg.append(svgEl('path', {d: `M${x(a0).toFixed(1)},${y(actual[a0]).toFixed(1)}` + forecast.map((v, j) => `L${x(a0 + j + 1).toFixed(1)},${y(v).toFixed(1)}`).join(''), class: 's-forecast ' + (dir ?? ''), 'data-forecast-date': fd}));
+  if (dot && forecast.length) { const j = forecast.length - 1; svg.append(svgEl('line', {x1: x(a0 + j + 1), x2: x(a0 + j + 1), y1: y(high[j]), y2: y(low[j]), class: 's-whisker', 'data-forecast-date': fd})); svg.append(svgEl('circle', {cx: x(a0 + j + 1), cy: y(forecast[j]), r: 3, class: 's-dot ' + (dir ?? ''), 'data-forecast-date': fd})); }
   svg.append(svgEl('circle', {cx: x(a0), cy: y(actual[a0]), r: 2.5, class: 's-anchor'}));
   return svg;
 }

@@ -61,7 +61,7 @@ export function editionSource(m, file) {
 
 /** 시간 그래프(선): x = 날짜들 · series: [{id, name, values:[number|null], cls}] · unit: 눈금 단위 글자 · 마지막 값에 직접 이름표
  *  눈금은 하나(y 하나) · 격자는 물러나게 · 점은 지름 8px 이상 · 가리키면 그 날 값 말풍선 */
-export function lineChart(container, {dates, series, unit = '', format = v => String(v), yMin = null, yMax = null, ticks = null, height = 220, ariaLabel = '', endLabel = null, band = null, ref = null}) {
+export function lineChart(container, {dates, series, unit = '', format = v => String(v), yMin = null, yMax = null, ticks = null, height = 220, ariaLabel = '', endLabel = null, band = null, ref = null, forecastIndex = null}) {
   const width = Math.max(300, Math.round(container.clientWidth || 640)), mobile = width < 560, k = chartScale(width);
   const left = (mobile ? 58 : 70) * k, right = (mobile ? 76 : 96) * k, top = 16 * k, bottom = 30 * k; height = Math.round(height * k);
   const vals = series.flatMap(s => s.values).filter(finite);
@@ -78,9 +78,9 @@ export function lineChart(container, {dates, series, unit = '', format = v => St
     let d = '', on = false;
     s.values.forEach((v, i) => { if (!finite(v)) { on = false; return; } d += `${on ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`; on = true; });
     svg.append(svgEl('path', {d, class: 'lc-line ' + (s.cls ?? '')}));
-    s.values.forEach((v, i) => { if (finite(v)) { const c = svgEl('circle', {cx: x(i), cy: y(v), r: 4.5 * k, class: 'lc-dot ' + (s.cls ?? '')}); c.append(Object.assign(svgEl('title'), {textContent: `${s.name} · ${korDate(dates[i])} · ${format(v)}${unit}`})); svg.append(c); } });
+    s.values.forEach((v, i) => { if (finite(v)) { const c = svgEl('circle', {cx: x(i), cy: y(v), r: 4.5 * k, class: 'lc-dot ' + (s.cls ?? ''), 'data-forecast-date': i === forecastIndex ? dates[i] : null}); c.append(Object.assign(svgEl('title'), {textContent: `${s.name} · ${korDate(dates[i])} · ${format(v)}${unit}`})); svg.append(c); } });
     const lastI = s.values.findLastIndex(finite);
-    if (lastI >= 0) { const v = s.values[lastI]; svg.append(svgText({x: x(lastI) + 10 * k, y: y(v) + 4 * k, class: 'lc-end ' + (s.cls ?? '')}, (s.endText ?? (format(v) + unit)))); }
+    if (lastI >= 0) { const v = s.values[lastI], t = svgText({x: x(lastI) + 10 * k, y: y(v) + 4 * k, class: 'lc-end ' + (s.cls ?? '')}, (s.endText ?? (format(v) + unit))); if (lastI === forecastIndex) t.setAttribute('data-forecast-date', dates[lastI]); svg.append(t); }
   }
   // 가리키기: 가장 가까운 날의 값 말풍선
   const tip = h('div', {class: 'lc-tip', hidden: true});

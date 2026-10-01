@@ -24,7 +24,9 @@ export async function buildDist() {
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
-  for (const f of ['forecast.json', 'archive-fixed-20260917.json']) if (await exists(path.join(root, 'public/data/atlas11', f))) await fs.copyFile(path.join(root, 'public/data/atlas11', f), path.join(dist, 'data/atlas11', f));
+  // 「내일 하루만」(2026-10-02 사장님 명령): 여러 날 전망 원본(20거래일 발행본·9/17 고정판)은 사이트에 싣지 않는다 — 저장소의 원본은 그대로(지우지 않음)
+  const multiDay = async f => manifest.tomorrowOnly && (f === 'archive-fixed-20260917.json' || JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11', f), 'utf8')).horizon !== 1);
+  for (const f of ['forecast.json', 'archive-fixed-20260917.json']) if (await exists(path.join(root, 'public/data/atlas11', f)) && !(await multiDay(f))) await fs.copyFile(path.join(root, 'public/data/atlas11', f), path.join(dist, 'data/atlas11', f));
   await copyDir(path.join(root, 'public/downloads/atlas11'), path.join(dist, 'downloads/atlas11'));
   // v6: 기록 장부 화면 사본·일일 보고(여섯 문장)·기록 CSV — 화면 「기록」이 읽는다
   for (const d of ['public/data/atlas11/ledger', 'public/data/atlas11/daily']) if (await exists(path.join(root, d))) await copyDir(path.join(root, d), path.join(dist, d.replace('public/', '')));

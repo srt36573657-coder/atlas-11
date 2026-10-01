@@ -28,7 +28,9 @@ const TYPE_ORDER = ['collection', 'forecast', 'score', 'analysis', 'factor', 'ex
 const groupKey = {score: b => b.classLabel ?? '분류 없음', analysis: b => b.kind === 'daily_aggregate' ? '하루 총괄' : (b.classLabel ?? '분류 없음'), experiment: b => b.status ?? b.decision ?? b.kind ?? '—', model: b => b.status ?? b.kind ?? '—', factor: b => b.status ?? '—', collection: b => b.kind === 'daily_collection' ? `가격 수집 · ${b.status}` : b.kind === 'context_market' ? '시장 지수' : b.kind === 'context_flows' ? '수급' : b.kind ?? '—', forecast: b => b.kind === 'shadow' ? '그림자 발행' : '운영 발행', operation: b => b.kind ?? b.status ?? '—'};
 
 /* ---------- 기록 v9: 헤드라인(그날 기록 수) → 날짜별 기록 수(선) → 종류별 막대 → 찾기(결과 막대 · 표는 눌러야 열림) ---------- */
+let TOMORROW = false;
 export async function renderRecords(main, {manifest, hash = ''}) {
+  TOMORROW = Boolean(manifest?.tomorrowOnly);
   const [ledger, cards] = await Promise.all([loadLedger(), loadCards()]);
   const index = ledger.index, dailyIndex = ledger.index?.dailyReports ?? null;
   const q = Object.fromEntries(new URLSearchParams(hash.split('?')[1] ?? ''));
@@ -78,6 +80,9 @@ export async function renderRecords(main, {manifest, hash = ''}) {
     const superseded = new Set(rows.map(r => r.supersedes).filter(Boolean));
     rows = rows.filter(r => {
       const b = r.body ?? {};
+      // 「내일 하루만」(2026-10-02 사장님 명령): 지난 1거래일 채점·분석 기록만 보인다 · 5·10·20거래일 채점과 진화 후보의 20거래일 시험은 꺼 둠(장부 원본은 그대로)
+      if (TOMORROW && ['score', 'analysis'].includes(filt.type) && b.horizon != null && Number(b.horizon) !== 1) return false;
+      if (TOMORROW && filt.type === 'experiment' && /backtest/.test(String(b.kind ?? ''))) return false;
       if (filt.code && b.code !== filt.code) return false;
       if (filt.group && (b.group ?? '') !== filt.group && (b.groupName ?? '') !== filt.group) return false;
       if (filt.factor && b.factorId !== filt.factor) return false;
@@ -95,7 +100,7 @@ export async function renderRecords(main, {manifest, hash = ''}) {
     tableFold.querySelector('summary').textContent = `기록 표 열기 · ${num(rows.length)}건${superseded.size ? ` (정정으로 대체된 기록 ${num(rows.filter(r => superseded.has(r.id)).length)}건 포함)` : ''}`;
     tableBox.replaceChildren(renderTable(filt.type, rows, superseded));
     dlRow.replaceChildren(...[
-      filt.date && index.files[`${filt.type}/${filt.date}.json`] ? h('a', {class: 'ctl btn-download', href: url(`/downloads/atlas11/ledger/${filt.type}-${filt.date}.csv`), download: `ATLAS_${filt.type}_${filt.date}.csv`}, 'CSV 내려받기(그날 전체)') : null,
+      filt.date && index.files[`${filt.type}/${filt.date}.json`] && !(TOMORROW && ['score', 'analysis', 'experiment'].includes(filt.type)) ? h('a', {class: 'ctl btn-download', href: url(`/downloads/atlas11/ledger/${filt.type}-${filt.date}.csv`), download: `ATLAS_${filt.type}_${filt.date}.csv`}, 'CSV 내려받기(그날 전체)') : null,
       h('button', {class: 'ctl btn-download', type: 'button', onclick: () => download(`ATLAS_${filt.type}_${filt.date || 'recent'}_filtered.json`, JSON.stringify(rows, null, 1), 'application/json;charset=utf-8')}, '걸러진 JSON 내려받기'),
       h('button', {class: 'ctl btn-download', type: 'button', onclick: () => download(`ATLAS_${filt.type}_${filt.date || 'recent'}_filtered.csv`, rowsCSV(rows))}, '걸러진 CSV 내려받기')].filter(Boolean));
   }

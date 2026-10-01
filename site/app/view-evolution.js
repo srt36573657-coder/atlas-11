@@ -96,7 +96,7 @@ function dayRow(d, t) {
     L.analysisRecorded ? (() => { const box = h('div', {class: 'bars'}); bars(box, [...L.hypotheses.map(x => ({label: x.word, value: x.cells})), {label: '설명 못 함', value: L.unexplainedCells}].sort((a, b) => b.value - a.value), {format: v => v + '칸'}); return h('div', null, box, L.unexplainedMeanShare != null ? h('p', {class: 'muted xs'}, `오차 가운데 시장 전체로 설명 안 되는 몫 평균 ${pctOf(L.unexplainedMeanShare)}`) : null); })() : h('p', {class: 'small muted'}, '그날 원인 분석 기록이 없습니다.'),
     h('p', {class: 'muted xs'}, L.note));
   const changed = h('div', {class: 'evo-beat-detail'}, h('h4', null, (ch.adopted ? '바꿨다' : ch.rolledBack ? '되돌렸다' : '안 바꿨다') + ' — 까닭'),
-    ch.tested ? h('p', {class: 'small'}, `고칠 거리 ${ch.tested}개를 과거 120일로 시험 · 떨어짐 ${ch.rejected} · 실전 관찰 ${ch.observing}`) : null,
+    ch.tested ? (ch.testsOff ? h('p', {class: 'small muted', 'data-off': 'tests'}, ch.testsOff) : h('p', {class: 'small'}, `고칠 거리 ${ch.tested}개를 과거 120일로 시험 · 떨어짐 ${ch.rejected} · 실전 관찰 ${ch.observing}`)) : null,
     ch.nearMisses.length ? h('div', null, h('p', {class: 'small'}, h('b', null, `한 가지만 모자라 떨어진 것 ${ch.nearMisses.length}개`)), h('ul', {class: 'plain small'}, ...ch.nearMisses.map(n => h('li', null, `${n.label}(${n.familyWord}): `, n.unmet.map(u => u.text).join(' · '))))) : null,
     ch.candidates.length ? h('details', {class: 'more'}, h('summary', null, `시험한 ${ch.candidates.length}개 모두 보기`), h('div', {class: 'table-wrap'}, h('table', {class: 'table small'}, h('thead', null, h('tr', null, ...['고칠 거리', '무엇을 바꿨나', '평균 가격 오차 지금 → 후보', '결과', '모자란 것'].map(x => h('th', null, x)))), h('tbody', null, ...ch.candidates.map(k => h('tr', null, h('td', null, k.label), h('td', null, k.familyWord), h('td', null, `${k.operatingErrorPct?.toFixed(4)}% → ${k.errorPct?.toFixed(4)}%`), h('td', null, k.status ?? k.decision), h('td', null, k.unmet.map(u => u.text).join(' · ') || '—'))))))) : null,
     ch.noTestReason ? h('p', {class: 'small'}, '시험 없음: ' + ch.noTestReason) : null,
@@ -123,6 +123,7 @@ export async function renderEvolution(main, {manifest} = {}) {
       h('p', {class: 'evo-question'}, t.question),
       h('p', {class: 'evo-word'}, t.headline.word),
       h('p', {class: 'evo-sentence'}, judge),
+      t.tomorrowOnly ? h('p', {class: 'banner off-note', role: 'note', 'data-off': 'tests'}, '꺼 둠 · ', t.tomorrowOnly.testsOff) : null,
       b ? h('details', {class: 'evo-blocker' + (b.needsOwnerDecision ? ' owner' : '')}, h('summary', null, h('span', {class: 'tag'}, '막힘'), h('span', null, b.line)), h('ul', {class: 'plain small'}, ...b.detail.map(x => h('li', null, x)))) : null),
     h('section', {class: 'card'}, h('h2', null, '날짜별 예측 실력 · 1거래일 전망'), evolutionChart(t.chart, s), t.check ? h('p', {class: 'xs ' + (t.check.ok ? 'muted' : 'warn')}, t.check.ok ? `검산: 이 화면의 숫자 ${t.check.checked}곳을 기록 장부에서 따로 다시 세어 모두 같음을 확인했습니다.` : `검산 어긋남 ${t.check.mismatches.length}곳: ` + t.check.mismatches.slice(0, 3).map(m => m.field).join(' · ')) : null),
     h('section', {class: 'card'}, h('h2', null, '날짜마다: 시장이 답했다 → 배웠다 → 바꿨다'), h('p', {class: 'muted small'}, '한 줄을 누르면 박자마다 까닭이 열립니다. 늦은 날짜가 위에 있습니다.'), h('div', {class: 'evo-days'}, ...t.days.map(d => dayRow(d, t)))),

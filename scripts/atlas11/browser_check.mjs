@@ -23,6 +23,12 @@ const checks = [], info = [];
 const check = (name, ok, detail = null) => { checks.push({name, ok: Boolean(ok), detail}); console.log((ok ? 'ok   ' : 'FAIL ') + name + (detail ? ' · ' + JSON.stringify(detail).slice(0, 220) : '')); };
 const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
 const digits = s => String(s ?? '').replace(/[^\d.]/g, '');
+// 「내일 하루만」(2026-10-02 00:08 KST 사장님 명령 · config/atlas11/horizon.json): 화면 묶음의 manifest.tomorrowOnly 가 있으면
+//   20거래일 기능(20일 막대·대표 시나리오·여러 날 CSV·1만원 비교) 대신 「내일 하나만 · 꺼 둠 한 줄」을 검사한다. 없으면(futureDays 20) 옛 검사 그대로.
+const viewManifest = await (await fetch(base + '/data/atlas11/view/manifest.json')).json();
+const TOMORROW = Boolean(viewManifest.tomorrowOnly), tomorrowDate = viewManifest.futureDates[0];
+/** 화면의 전망 표시(data-forecast-date) 가운데 내일이 아닌 것의 수 · 내일인 것의 수 */
+const forecastMarks = page => page.evaluate(t => { const all = [...document.querySelectorAll('[data-forecast-date]')].map(e => e.getAttribute('data-forecast-date')); return {other: all.filter(d => d !== t).length, tomorrow: all.filter(d => d === t).length}; }, tomorrowDate);
 
 /** 헤드라인 공통 검사: 한 줄 · 첫 화면 안 · 숫자 단추를 누르면 출처·기준 시각 · Esc 로 닫힘 · 첫 그래프 마지막 값 = 헤드라인 숫자 */
 async function headlineCheck(page, label, screen, lastValueSel) {
@@ -61,9 +67,14 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const rows = await page.locator('.wl-row').count();
   check(`${label} 전망: 52종목 줄`, rows === 52, {rows});
   const sparks = await page.locator('.wl-row .spark').count(), pbars = await page.locator('.wl-row .pbar').count(), hbars = await page.locator('.wl-row .hb').count();
-  check(`${label} 전망: 줄마다 작은 그래프·확률 막대·20거래일 가로 막대`, sparks === 52 && pbars === 52 && hbars === 52, {sparks, pbars, hbars});
+  check(`${label} 전망: 줄마다 작은 그래프·확률 막대·${TOMORROW ? '내일' : '20거래일'} 가로 막대`, sparks === 52 && pbars === 52 && hbars === 52, {sparks, pbars, hbars});
   const head = await page.locator('.wl-head').innerText();
-  check(`${label} 전망: 목록 머리에 「내일」 대신 날짜`, /\d+월 \d+일\(.\) 선택·확률/.test(head.replace(/\s+/g, ' ')) && !/내일/.test(head), {head: head.replace(/\s+/g, ' ').slice(0, 100)});
+  // 2026-10-02 명령으로 「내일(10월 2일 금)」처럼 날짜를 붙인 「내일」은 허용(날짜 없는 「내일」만 실패)
+  check(`${label} 전망: 목록 머리에 날짜(「내일」만 쓰지 않음)`, (TOMORROW ? /내일\(\d+월 \d+일 .\) 선택·확률/ : /\d+월 \d+일\(.\) 선택·확률/).test(head.replace(/\s+/g, ' ')) && !/내일(?!\(\d+월)/.test(head), {head: head.replace(/\s+/g, ' ').slice(0, 100)});
+  if (TOMORROW) {
+    const fm = await forecastMarks(page), heading = await page.locator('#main .hl-line').innerText(), off = await page.locator('#main .off-note').count(), navRace = await page.locator('.top-nav a[data-route="race"]').count();
+    check(`${label} 전망(내일만): 헤드라인 「내일(날짜) 전망」 · 꺼 둠 한 줄 · 전망 표시는 모두 내일 · 1만원 비교 메뉴 없음`, /내일\(\d+월 \d+일 .\) 전망/.test(heading) && off === 1 && fm.other === 0 && fm.tomorrow >= 52 * 3 && navRace === 0, {heading: heading.slice(0, 60), off, fm, navRace});
+  }
   await page.locator('.filter').nth(2).click(); await page.waitForTimeout(200);
   const filtered = await page.locator('.wl-row').count();
   check(`${label} 전망: 「하락 선택」 거름 단추`, filtered > 0 && filtered < 52, {filtered});
@@ -88,10 +99,14 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} IBM Plex Sans KR 글씨체 적용`, fontOk);
   if (!mobile) { const box = await page.locator('.chart-box svg').boundingBox(); await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5); await page.waitForTimeout(150); const tip = await page.locator('.chart-box .tip').count(); check(`${label} 상세: 그래프 위 마우스 말풍선`, tip === 1); await page.mouse.move(0, 0); }
   await shot('02-detail');
-  await page.locator('.date-chip.future').nth(2).click();
+  if (TOMORROW) {
+    const fm = await forecastMarks(page), futureChips = await page.locator('.date-chip.future').count();
+    check(`${label} 상세(내일만): 미래 날짜는 내일 하나 · 전망 표시(점·띠·숫자)는 모두 내일 · 대표 시나리오·여러 날 CSV 없음`, futureChips === 1 && fm.other === 0 && fm.tomorrow >= 3 && await page.locator('.line.scenario').count() === 0 && await page.locator('.toggles .ctl.toggle', {hasText: '대표 시나리오'}).count() === 0, {futureChips, fm});
+  }
+  await page.locator('.date-chip.future').nth(TOMORROW ? 0 : 2).click();
   const cursor = await page.locator('.cursor-text').innerText();
   const explainHead = await page.locator('.explain h2').innerText();
-  check(`${label} 상세: 미래 날짜 눌러 설명 열림(3거래일 뒤)`, /3거래일 뒤/.test(cursor) && /3거래일 뒤/.test(explainHead), {cursor, explainHead});
+  check(`${label} 상세: 미래 날짜 눌러 설명 열림(${TOMORROW ? '내일' : '3거래일 뒤'})`, TOMORROW ? /· 전망$/.test(cursor.trim()) && /· 전망/.test(explainHead) : /3거래일 뒤/.test(cursor) && /3거래일 뒤/.test(explainHead), {cursor, explainHead});
   await page.waitForTimeout(100);
   check(`${label} 상세: 선택 날짜 분포 상자`, await page.locator('.explain svg.qbox .q-50').count() === 1 && await page.locator('.explain svg.qbox .q-anchor').count() === 1);
   const contrib = await page.locator('.explain .cbar').count(), oneline = await page.locator('.explain .oneline').innerText().catch(() => '');
@@ -104,7 +119,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.waitForTimeout(1300);
   const after = await page.locator('.cursor-text').innerText();
   const sameSvg = await page.evaluate(() => document.querySelector('.chart-box svg').__mark === 'same');
-  check(`${label} 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동`, /1거래일 뒤/.test(after) && sameSvg, {after, sameSvg});
+  check(`${label} 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동`, (TOMORROW ? /· 전망$/.test(after.trim()) : /1거래일 뒤/.test(after)) && sameSvg, {after, sameSvg});
   await page.waitForSelector('#notice:not([hidden])', {timeout: 6000}).catch(() => {});
   if (await page.locator('#notice:not([hidden])').count()) {
     check(`${label} 상세: 중요 일정에서 정지·확인 대기`, true, {text: (await page.locator('#notice h2').innerText())});
@@ -114,12 +129,19 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 상세: 확인 뒤 계속 재생`, !/^[^·]*· 1거래일 뒤/.test(resumed) || /2거래일 뒤/.test(resumed), {resumed});
   }
   await page.locator('.player .ctl.primary').click().catch(() => {});
-  await page.locator('.toggles .ctl.toggle').first().click();
-  check(`${label} 상세: 대표 시나리오 선 표시`, await page.locator('.line.scenario').count() === 1);
-  const [download] = await Promise.all([page.waitForEvent('download', {timeout: 8000}), page.locator('a.ctl[download]').click()]);
-  const csvPath = path.join(dir, `${label}-` + download.suggestedFilename()); await download.saveAs(csvPath);
-  const csv = await fs.readFile(csvPath, 'utf8');
-  check(`${label} 상세: CSV 내려받기 21행(출발 1+전망 20)`, csv.trim().split(/\r?\n/).length === 22 && /실제출발/.test(csv), {name: download.suggestedFilename(), rows: csv.trim().split(/\r?\n/).length});
+  if (!TOMORROW) {
+    await page.locator('.toggles .ctl.toggle').first().click();
+    check(`${label} 상세: 대표 시나리오 선 표시`, await page.locator('.line.scenario').count() === 1);
+  }
+  // 내일만: 여러 날 CSV(21행) 링크는 꺼 둠 — 1거래일 발행본(CSV 2행)일 때만 단추가 있고, 있으면 2행(출발 1+내일 1)
+  const csvLinks = await page.locator('a.ctl[download]').count();
+  if (TOMORROW && csvLinks === 0) check(`${label} 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)`, true);
+  else {
+    const [download] = await Promise.all([page.waitForEvent('download', {timeout: 8000}), page.locator('a.ctl[download]').click()]);
+    const csvPath = path.join(dir, `${label}-` + download.suggestedFilename()); await download.saveAs(csvPath);
+    const csv = await fs.readFile(csvPath, 'utf8'), lines = csv.trim().split(/\r?\n/).length;
+    check(TOMORROW ? `${label} 상세(내일만): CSV 내려받기 2행(출발 1+내일 1)` : `${label} 상세: CSV 내려받기 21행(출발 1+전망 20)`, lines === (TOMORROW ? 3 : 22) && /실제출발/.test(csv), {name: download.suggestedFilename(), rows: lines});
+  }
   const [jsonDl] = await Promise.all([page.waitForEvent('download', {timeout: 8000}), page.locator('.toggles .ctl', {hasText: '상세 JSON'}).click()]);
   check(`${label} 상세: JSON 내려받기(blob · CSP 아래)`, /_detail\.json$/.test(jsonDl.suggestedFilename()), {name: jsonDl.suggestedFilename()});
   // 종목 정보 · 수급·기사·공시(눌러야 열림) · 연쇄 지도(눌러야 열림)
@@ -157,7 +179,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const fontSize = await page.evaluate(() => document.documentElement.style.fontSize), overflow200 = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   check(`${label} 글씨 200% 에서도 가로 넘침 없음`, fontSize === '200%' && overflow200 <= 0, {fontSize, overflow200});
   for (let k = 0; k < 4; k++) await page.locator('.tool[aria-label="글씨 작게"]').click();
-  // ---------- 1만원 비교 ----------
+  // ---------- 1만원 비교 ---------- (내일만이면 꺼 둠: 메뉴에 없고 주소로 오면 「꺼 둠」 한 줄만)
+  if (TOMORROW) {
+    await page.goto(base + '/#/race', {waitUntil: 'networkidle'}); await page.waitForSelector('[data-off="race"]');
+    check(`${label} 1만원 비교(내일만): 꺼 둠 한 줄 · 52선 없음`, await page.locator('.race-line').count() === 0 && /꺼 두었습니다/.test(await page.locator('[data-off="race"]').innerText()));
+    await shot('04-race-off');
+  } else {
   await page.goto(base + '/#/race', {waitUntil: 'networkidle'});
   await page.waitForSelector('.race-line');
   await headlineCheck(page, label, '1만원 비교', '.race-avg-label');
@@ -180,6 +207,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.locator('.toggles.groups .ctl[data-group="all"]').click(); await page.waitForTimeout(200);
   await page.locator('.chart-col .toggles .ctl.toggle').nth(0).click().catch(() => {}); await page.waitForTimeout(300);
   await shot('04-race');
+  }
   // ---------- 성적 ----------
   await page.goto(base + '/#/scores', {waitUntil: 'networkidle'});
   await page.waitForSelector('svg.lc');
@@ -260,7 +288,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const hex = s => { const m = String(s).match(/\d+/g); return m ? '#' + m.slice(0, 3).map(x => Number(x).toString(16).padStart(2, '0')).join('').toUpperCase() : s; };
   check(`${label} 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)`, /rgb\(241, 236, 226\)/.test(sf.bg) && sf.plate === 1 && sf.edges === 6 && sf.shadow === 1 && sf.halo === 1 && /url\(/.test(sf.bandFill) && sf.transforms === 0 && (sf.todayDir === 'flat' || hex(sf.todayStroke) === (sf.todayDir === 'up' ? sf.up : sf.down).toUpperCase()), sf);
   const nav = mobile ? await page.locator('.bottom .bottom-link').count() : await page.locator('.top-nav .top-link').count();
-  check(`${label} 주요 메뉴 4개`, nav === 4, {nav});
+  // 2026-10-02 명령: 1만원 비교는 꺼 둠 → 내일만이면 메뉴 셋(전망·성적·진화)
+  check(`${label} 주요 메뉴 ${TOMORROW ? 3 : 4}개`, nav === (TOMORROW ? 3 : 4), {nav});
   check(`${label} 가로 스크롤 없음`, !(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
   check(`${label} 콘솔 오류 0`, consoleErrors.length === 0, consoleErrors.slice(0, 5));
   check(`${label} 실패한 요청 0`, failedRequests.length === 0, failedRequests.slice(0, 5));

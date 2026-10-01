@@ -30,7 +30,8 @@ export function measureClarity(opts = {}) {
   const idents = [...new Set(roots.flatMap(r => [...r.querySelectorAll('code, [data-ident]')]).filter(shown).map(e => e.textContent.trim()).filter(s => s.length >= 4))].sort((a, b) => b.length - a.length);
   const exempt = new Set(roots.flatMap(r => [...r.querySelectorAll('[data-clarity~="headline"], [data-clarity~="strip"]')]).flatMap(e => e.innerText.split('\n').map(s => s.replace(/\s+/g, ' ').trim())).filter(Boolean));
   // 1
-  const relSamples = []; let relDays = 0; for (const l of lines) { const m = l.match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
+  // 2026-10-02 사장님 명령(「ATLAS는 단 하루, 내일만 예측한다」): 바로 뒤에 날짜를 붙인 「내일(10월 2일 금)」은 날짜가 분명하므로 세지 않는다 — 날짜 없는 「내일·오늘·어제」만 센다
+  const relSamples = []; let relDays = 0; for (const l of lines) { const m = l.replace(/내일\(\d{1,2}월 \d{1,2}일[^)]*\)/g, 'ⓓ').match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
   // 2
   const vagueRe = /최근|곧|지금|다음|많이|조금|대부분|크게/;
   const vagueSamples = []; let vague = 0;

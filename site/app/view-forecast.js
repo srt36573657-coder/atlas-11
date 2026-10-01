@@ -1,5 +1,5 @@
 /* ATLAS 11 · 전망 — 52종목 카드(첫 화면: 작은 그래프·확률 막대) + 종목 상세(그래프가 주인공 · 두 겹 부채꼴 · 커서 말풍선 · 이유는 「한 줄」부터) */
-import {h, won, pct, pctPoint, pctRaw, prob, num, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, reducedMotion, clamp, wonShort, signCls} from './util.js';
+import {h, won, pct, pctPoint, pctRaw, prob, num, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, reducedMotion, clamp, wonShort, signCls, tomorrowWord} from './util.js';
 import {headline, editionSource, lineChart, hbar, pickBox} from './frame.js';
 import {loadCards, loadStock, prefs, url, state, setSummary} from './store.js';
 import {priceChart, chartTip, sparkline, probBar, contributionBars, quantileBox} from './chart.js';
@@ -20,17 +20,19 @@ const dirChip = (d, {small = false} = {}) => h('span', {class: 'dir ' + (DIR[d.s
 async function renderCards(main, manifest) {
   const data = await loadCards();
   const d1 = data.day1, target = d1.date, end = manifest.futureDates.at(-1), base = manifest.actualAsOf;
-  const sortKey = prefs.get('sort9', 'day1'), filterKey = prefs.get('filter', 'all');
+  // 「내일 하루만」(2026-10-02 사장님 명령): 내일 하나의 전망만 · 20거래일 숫자 없음 (futureDays 20 이면 옛 화면)
+  const T = Boolean(manifest.tomorrowOnly), TW = tomorrowWord(target), dayN = c => T ? c.day1 : c.day20;
+  const sortKey0 = prefs.get('sort9', 'day1'), sortKey = T && sortKey0 === 'day20' ? 'day1' : sortKey0, filterKey = prefs.get('filter', 'all');
   const q = prefs.get('query', '');
   const edge = c => c.day1.probabilities.up - c.day1.probabilities.down;
-  const sorters = {day1: (a, b) => edge(b) - edge(a) || a.code.localeCompare(b.code), day20: (a, b) => b.day20.return - a.day20.return || a.code.localeCompare(b.code), name: (a, b) => a.name.localeCompare(b.name, 'ko'), change: (a, b) => b.change1 - a.change1 || a.code.localeCompare(b.code), band: (a, b) => (b.day20.p90 - b.day20.p10) / b.close - (a.day20.p90 - a.day20.p10) / a.close};
+  const sorters = {day1: (a, b) => edge(b) - edge(a) || a.code.localeCompare(b.code), day20: (a, b) => dayN(b).return - dayN(a).return || a.code.localeCompare(b.code), name: (a, b) => a.name.localeCompare(b.name, 'ko'), change: (a, b) => b.change1 - a.change1 || a.code.localeCompare(b.code), band: (a, b) => (dayN(b).p90 - dayN(b).p10) / b.close - (dayN(a).p90 - dayN(a).p10) / a.close};
   const filters = {all: () => true, up: c => c.day1.selected === 'up', down: c => c.day1.selected === 'down', close: c => c.day1.closeCall || c.day1.statisticalTie};
   const list = () => [...data.cards].sort(sorters[sortKey] ?? sorters.day1).filter(filters[filterKey] ?? filters.all).filter(c => !q || c.name.includes(q) || c.code.includes(q));
   const n = data.cards.length; // 종목 수도 발행본 카드에서 센다
-  setSummary(`${korDate(base)} 종가 기준. ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 하락 선택 ${d1.down}종목. ${n}종목 평균 ${pct(d1.meanReturn)} 전망.`);
+  setSummary(T ? `${TW} 전망. ${korDate(base)} 종가 기준. ${n}종목 중 상승 선택 ${d1.up}종목, 하락 선택 ${d1.down}종목. ${n}종목 평균 ${pct(d1.meanReturn)}. 내일 말고의 전망은 꺼 두었습니다.` : `${korDate(base)} 종가 기준. ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 하락 선택 ${d1.down}종목. ${n}종목 평균 ${pct(d1.meanReturn)} 전망.`);
   // ① 헤드라인 한 줄
-  const hl = headline({speak: `${korDate(base)} 종가 기준, ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 평균 ${pct(d1.meanReturn)} 전망`,
-    parts: [`${korDate(base)} 종가 기준 · ${korDate(target)} ${n}종목 중 상승 선택 `, {figure: `${d1.up}종목`}, ` · 평균 ${pct(d1.meanReturn)} 전망`],
+  const hl = headline({speak: T ? `${TW} 전망, ${korDate(base)} 종가 기준, ${n}종목 중 상승 선택 ${d1.up}종목, 평균 ${pct(d1.meanReturn)}` : `${korDate(base)} 종가 기준, ${korDate(target)} ${n}종목 중 상승 선택 ${d1.up}종목, 평균 ${pct(d1.meanReturn)} 전망`,
+    parts: T ? [`${TW} 전망 · ${korDate(base)} 종가 기준 · ${n}종목 중 상승 선택 `, {figure: `${d1.up}종목`}, ` · 평균 ${pct(d1.meanReturn)}`] : [`${korDate(base)} 종가 기준 · ${korDate(target)} ${n}종목 중 상승 선택 `, {figure: `${d1.up}종목`}, ` · 평균 ${pct(d1.meanReturn)} 전망`],
     source: [['이 숫자', `${n}종목 가운데 ${korDate(target)} 방향이 「상승」으로 선택된 종목 수 (하락 선택 ${d1.down}종목 · 보합 선택 ${d1.flat}종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름`], ['평균 전망', `${pct(d1.meanReturn)} — ${d1.meanReturnBasis}`], ...editionSource(manifest, 'cards.json')]});
   // ② 증거 그래프: 날짜별 상승 선택 종목 수(마지막 점 = 헤드라인 숫자) · 실제로 오른 종목 수
   const hist = data.directionHistory, top = Math.max(20, Math.ceil((Math.max(...hist.flatMap(d => [d.predictedUp, d.actualUp ?? 0])) + 2) / 10) * 10);
@@ -40,40 +42,41 @@ async function renderCards(main, manifest) {
     evBox,
     h('p', {class: 'legend-line'}, h('span', {class: 'leg-i'}, h('span', {class: 'key pred'}), 'ATLAS 상승 선택(그 날을 겨눈 첫 발행본)'), h('span', {class: 'leg-i'}, h('span', {class: 'key act'}), `실제로 +0.10% 넘게 오른 종목(${korDate(hist.filter(d => d.actualUp != null).at(-1)?.date)}까지 채점)`)));
   // ③ 52종목 가로 막대 목록
-  const max20 = Math.max(...data.cards.map(c => Math.abs(c.day20.return)));
+  const max20 = Math.max(...data.cards.map(c => Math.abs(dayN(c).return)));
+  const offNote = T ? h('p', {class: 'banner off-note', role: 'note', 'data-off': 'multi-day'}, `꺼 둠 · ${TW} 말고의 전망은 모두 꺼 두었습니다(${manifest.tomorrowOnly.since ?? '2026-10-02'} 사장님 명령 · 지난 기록은 그대로)`) : null;
   const grid = h('div', {class: 'wl', role: 'list', 'aria-label': '52종목 목록'});
   const counter = h('span', {class: 'muted small'});
-  const render = () => { const rows = list(); grid.replaceChildren(...rows.map(c => wlRow(c, max20, target))); counter.textContent = `${rows.length}종목 표시`; };
+  const render = () => { const rows = list(); grid.replaceChildren(...rows.map(c => wlRow(c, max20, target, T))); counter.textContent = `${rows.length}종목 표시`; };
   const filterBtn = (key, label) => h('button', {class: 'filter' + (filterKey === key ? ' on' : ''), type: 'button', 'aria-pressed': String(filterKey === key), onclick: () => { prefs.set('filter', key); renderCards(main, manifest); }}, label);
   main.replaceChildren(
-    hl, evidence,
+    hl, offNote, evidence,
     h('section', {class: 'panel', 'aria-label': '52종목 전망'},
-      h('h2', {class: 'panel-title'}, `52종목 · ${korDate(target)} 방향과 ${korDate(end)} 중앙 전망`),
+      h('h2', {class: 'panel-title'}, T ? `52종목 · ${TW} 방향과 중앙 전망` : `52종목 · ${korDate(target)} 방향과 ${korDate(end)} 중앙 전망`),
       h('div', {class: 'controls-row'},
         filterBtn('all', '전체'), filterBtn('up', '상승 선택'), filterBtn('down', '하락 선택'), filterBtn('close', '비슷함'),
-        h('label', {class: 'field pick-field'}, h('span', {class: 'sr'}, '정렬'), pickBox(h('select', {class: 'select', 'aria-label': '정렬', onchange: ev => { prefs.set('sort9', ev.target.value); renderCards(main, manifest); }}, ...[['day1', `${korDate(target)} 상승 확률 높은 순`], ['day20', `${korDate(end)} 전망 높은 순`], ['change', `${korDate(base)} 등락 높은 순`], ['band', '범위 넓은 순'], ['name', '이름 순']].map(([v, l]) => h('option', {value: v, selected: v === sortKey}, l))))),
+        h('label', {class: 'field pick-field'}, h('span', {class: 'sr'}, '정렬'), pickBox(h('select', {class: 'select', 'aria-label': '정렬', onchange: ev => { prefs.set('sort9', ev.target.value); renderCards(main, manifest); }}, ...(T ? [['day1', `${TW} 상승 확률 높은 순`], ['day20', `${TW} 중앙 전망 높은 순`], ['change', `${korDate(base)} 등락 높은 순`], ['band', `${TW} 범위 넓은 순`], ['name', '이름 순']] : [['day1', `${korDate(target)} 상승 확률 높은 순`], ['day20', `${korDate(end)} 전망 높은 순`], ['change', `${korDate(base)} 등락 높은 순`], ['band', '범위 넓은 순'], ['name', '이름 순']]).map(([v, l]) => h('option', {value: v, selected: v === sortKey}, l))))),
         h('label', {class: 'field grow'}, h('span', {class: 'sr'}, '종목 찾기'), h('input', {class: 'input', type: 'search', placeholder: '종목 이름·코드', value: q, oninput: ev => { prefs.set('query', ev.target.value.trim()); render(); }})),
         counter),
-      h('div', {class: 'wl-head', 'aria-hidden': 'true'}, h('span', null, '종목'), h('span', {class: 'num'}, `${korDate(base)} 종가`), h('span', {class: 'num'}, '등락'), h('span', null, `${korDate(target)} 선택·확률`), h('span', null, `${korDate(end)} 중앙 전망`), h('span', {class: 'wl-spark-h'}, '실제 20일 → 전망 20일')),
+      h('div', {class: 'wl-head', 'aria-hidden': 'true'}, h('span', null, '종목'), h('span', {class: 'num'}, `${korDate(base)} 종가`), h('span', {class: 'num'}, '등락'), h('span', null, T ? `${TW} 선택·확률` : `${korDate(target)} 선택·확률`), h('span', null, T ? `${TW} 중앙 전망` : `${korDate(end)} 중앙 전망`), h('span', {class: 'wl-spark-h'}, T ? `실제 20일 → ${shortDate(target)}` : '실제 20일 → 전망 20일')),
       grid,
       h('p', {class: 'foot small'}, `확률은 모의 경로 2만 개에서 센 모형 비율이며 실제 적중률이 아닙니다. 「비슷함」은 가장 큰 두 확률의 차이가 5%p 미만인 종목(${d1.closeCall}종목)입니다. 실제 적중은 「성적」 화면에 있습니다.`),
-      h('details', {class: 'more'}, h('summary', null, '읽는 법'), h('ul', {class: 'plain small'}, h('li', null, '작은 그래프: 검은 선 = 실제 종가 20거래일 · 색 선 = 중앙 전망 20거래일(빨강 오름 · 파랑 내림) · 회색 띠 = 80% 모형 범위'), h('li', null, '가로 막대: 가운데 세로선이 0% · 오른쪽 빨강 = 오름 · 왼쪽 파랑 = 내림 · 막대 길이는 52종목 가운데 가장 큰 값 기준'), h('li', null, '뉴스·전체 FOMO 는 전망 숫자에 넣지 않았습니다')))));
-  lineChart(evBox, {dates: hist.map(d => d.date), series: [{id: 'act', name: '실제로 오른 종목', values: hist.map(d => d.actualUp), cls: 'act'}, {id: 'pred', name: 'ATLAS 상승 선택', values: hist.map(d => d.predictedUp), cls: 'pred'}], unit: '종목', format: v => String(Math.round(v)), yMin: 0, yMax: top, ticks: [0, top / 2, top], height: 200, band: {from: hist.length - 1, to: hist.length - 1, label: '전망'}, ariaLabel: `날짜별 상승 종목 수: ` + hist.map(d => `${korDate(d.date)} ATLAS ${d.predictedUp}종목${d.actualUp != null ? ` · 실제 ${d.actualUp}종목` : ''}`).join(', ')});
+      h('details', {class: 'more'}, h('summary', null, '읽는 법'), h('ul', {class: 'plain small'}, h('li', null, T ? `작은 그래프: 검은 선 = 실제 종가 20거래일 · 끝의 점 = ${TW} 중앙 전망(빨강 오름 · 파랑 내림) · 점을 지나는 세로선과 회색 띠 = 그날 80% 모형 범위` : '작은 그래프: 검은 선 = 실제 종가 20거래일 · 색 선 = 중앙 전망 20거래일(빨강 오름 · 파랑 내림) · 회색 띠 = 80% 모형 범위'), h('li', null, '가로 막대: 가운데 세로선이 0% · 오른쪽 빨강 = 오름 · 왼쪽 파랑 = 내림 · 막대 길이는 52종목 가운데 가장 큰 값 기준'), h('li', null, '뉴스·전체 FOMO 는 전망 숫자에 넣지 않았습니다')))));
+  lineChart(evBox, {dates: hist.map(d => d.date), series: [{id: 'act', name: '실제로 오른 종목', values: hist.map(d => d.actualUp), cls: 'act'}, {id: 'pred', name: 'ATLAS 상승 선택', values: hist.map(d => d.predictedUp), cls: 'pred'}], unit: '종목', format: v => String(Math.round(v)), yMin: 0, yMax: top, ticks: [0, top / 2, top], height: 200, band: {from: hist.length - 1, to: hist.length - 1, label: '전망'}, forecastIndex: hist.length - 1, ariaLabel: `날짜별 상승 종목 수: ` + hist.map(d => `${korDate(d.date)} ATLAS ${d.predictedUp}종목${d.actualUp != null ? ` · 실제 ${d.actualUp}종목` : ''}`).join(', ')});
   render();
   // 효율: 화면이 한가할 때 앞쪽 종목 6개 상세를 미리 받아 두면 줄을 눌렀을 때 바로 열린다
   const idle = window.requestIdleCallback ?? (fn => setTimeout(fn, 400));
   idle(() => { for (const c of list().slice(0, 6)) loadStock(c.code).catch(() => {}); });
 }
 /** 한 줄: 종목 · 종가 · 등락 · 첫 거래일 방향(확률 막대) · 20거래일 중앙 전망(가운데 0 막대) · 작은 그래프 */
-function wlRow(c, max20, target) {
-  const d = c.day1, sel = d.selected, close = d.closeCall || d.statisticalTie;
-  return h('a', {class: 'wl-row', href: '#/stock/' + c.code, role: 'listitem', 'aria-label': `${c.name} · ${korDate(target)} ${dirWord(sel)} ${prob(d.probabilities[sel])} · 20거래일 ${pct(c.day20.return)}`},
+function wlRow(c, max20, target, T = false) {
+  const d = c.day1, sel = d.selected, close = d.closeCall || d.statisticalTie, dn = T ? c.day1 : c.day20, fd = T ? target : null;
+  return h('a', {class: 'wl-row', href: '#/stock/' + c.code, role: 'listitem', 'aria-label': T ? `${c.name} · ${tomorrowWord(target)} ${dirWord(sel)} ${prob(d.probabilities[sel])} · 중앙 전망 ${pct(dn.return)}` : `${c.name} · ${korDate(target)} ${dirWord(sel)} ${prob(d.probabilities[sel])} · 20거래일 ${pct(c.day20.return)}`},
     h('span', {class: 'wl-name'}, h('b', null, c.name), h('code', {class: 'wl-code'}, c.code)),
     h('span', {class: 'wl-price num'}, won(c.close)),
     h('span', {class: 'wl-chg num ' + signCls(c.change1)}, pct(c.change1)),
-    h('span', {class: 'wl-dir'}, h('span', {class: 'wl-dir-t ' + (DIR[sel]?.cls ?? '')}, `${dirMark(sel)} ${dirWord(sel)} ${prob(d.probabilities[sel])}`, close ? h('span', {class: 'badge warn'}, '비슷함') : null), probBar(d.probabilities, {legend: false})),
-    h('span', {class: 'wl-20'}, hbar(c.day20.return, {max: max20, label: pct(c.day20.return)})),
-    h('span', {class: 'wl-spark'}, sparkline(c.spark, {dir: c.day20.selected})));
+    h('span', {class: 'wl-dir', 'data-forecast-date': d.date}, h('span', {class: 'wl-dir-t ' + (DIR[sel]?.cls ?? '')}, `${dirMark(sel)} ${dirWord(sel)} ${prob(d.probabilities[sel])}`, close ? h('span', {class: 'badge warn'}, '비슷함') : null), probBar(d.probabilities, {legend: false})),
+    h('span', {class: 'wl-20', 'data-forecast-date': fd ?? c.day20?.date ?? null}, hbar(dn.return, {max: max20, label: pct(dn.return)})),
+    h('span', {class: 'wl-spark'}, sparkline(c.spark, {dir: T ? c.day1.selected : c.day20.selected, dates: c.spark.forecastDates ?? null, dot: T})));
 }
 
 /* ---------- 종목 상세 v9: 헤드라인(20거래일 뒤 중앙 전망) → 가격 그래프(마지막 값 = 헤드라인 숫자) → 첫 거래일 방향·기간 막대 → 나머지는 눌러야 열림 ---------- */
@@ -81,24 +84,29 @@ const STATE_WORD = {Bull: '상승 추세', Bear: '하락 추세', Neutral: '뚜�
 async function renderDetail(main, manifest, code) {
   const [cards, d, network] = await Promise.all([loadCards(), loadStock(code), loadNetwork().catch(() => null)]);
   const p = player(code);
-  const dates = [...d.actual60.map(r => r.date), ...d.futureDates], anchorIndex = 59;
-  const r1 = d.rows[1], r20 = d.rows[20], dir20 = r20.direction.cumulative.selected;
+  // 「내일 하루만」이면 그래프는 실제 20거래일 + 내일 한 점(내일이 잘 보이게) · 옛 모드는 실제 60거래일 + 전망 20거래일
+  const TT = Boolean(manifest.tomorrowOnly), hist = TT ? d.actual60.slice(-20) : d.actual60;
+  const dates = [...hist.map(r => r.date), ...d.futureDates], anchorIndex = hist.length - 1;
+  if (p.index > dates.length - 1) p.index = anchorIndex;
+  // 「내일 하루만」이면 행은 [출발, 내일] 두 개 — r20 자리는 마지막 행(= 내일) · 옛 모드는 그대로 20거래일 뒤
+  const T = Boolean(manifest.tomorrowOnly), r1 = d.rows[1], r20 = d.rows.at(-1), dir20 = r20.direction.cumulative.selected, TW = tomorrowWord(r1.date);
   const series = () => {
-    const s = [{id: 'actual', kind: 'actual', points: d.actual60.map((r, i) => ({index: i, date: r.date, value: r.close}))},
+    const s = [{id: 'actual', kind: 'actual', points: hist.map((r, i) => ({index: i, date: r.date, value: r.close}))},
       {id: 'today', kind: 'today ' + (DIR[dir20]?.cls ?? ''), points: d.rows.map((r, j) => ({index: anchorIndex + j, date: r.date, value: r.p50, low: r.p10, high: r.p90}))}];
-    if (p.showScenario) s.push({id: 'scenario', kind: 'scenario', points: d.scenario.prices.map((v, j) => ({index: anchorIndex + j, date: d.rows[j].date, value: v}))});
-    if (d.previous && p.showPrevious !== false) s.push({id: 'previous', kind: 'previous', points: d.previous.rows.map(r => ({index: dates.indexOf(r.date), date: r.date, value: r.p50})).filter(x => x.index >= 0)});
+    if (p.showScenario && d.scenario) s.push({id: 'scenario', kind: 'scenario', points: d.scenario.prices.map((v, j) => ({index: anchorIndex + j, date: d.rows[j].date, value: v}))});
+    if (d.previous?.rows && p.showPrevious !== false) s.push({id: 'previous', kind: 'previous', points: d.previous.rows.map(r => ({index: dates.indexOf(r.date), date: r.date, value: r.p50})).filter(x => x.index >= 0)});
     return s;
   };
   // 세 겹 부채꼴: 5~95% · 10~90% · 25~75% (분포의 분위수 그대로 · 대칭으로 바꾸지 않음)
   const bands = [{rows: d.rows.map((r, j) => ({index: anchorIndex + j, low: r.p05, high: r.p95})), cls: 'outer'}, {rows: d.rows.map((r, j) => ({index: anchorIndex + j, low: r.p10, high: r.p90})), cls: 'mid'}, {rows: d.rows.map((r, j) => ({index: anchorIndex + j, low: r.p25, high: r.p75})), cls: 'inner'}];
   const err1 = d.errors?.['1'] ?? d.errors?.[1];
-  setSummary(`${d.name}. ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준. 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}, ${pct(r20.return)}. 80% 범위 ${won(r20.p10)}에서 ${won(r20.p90)}. ${korDate(r1.date)} 방향 ${dirWord(r1.direction.daily.selected)} ${prob(r1.direction.daily.probabilities[r1.direction.daily.selected])}.`);
+  if (T) setSummary(`${d.name}. ${TW} 전망. ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준. 내일 중앙 전망 ${won(r1.p50)}, ${pct(r1.return)}. 80% 범위 ${won(r1.p10)}에서 ${won(r1.p90)}. 내일 방향 ${dirWord(r1.direction.daily.selected)} ${prob(r1.direction.daily.probabilities[r1.direction.daily.selected])}.`);
+  else setSummary(`${d.name}. ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준. 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}, ${pct(r20.return)}. 80% 범위 ${won(r20.p10)}에서 ${won(r20.p90)}. ${korDate(r1.date)} 방향 ${dirWord(r1.direction.daily.selected)} ${prob(r1.direction.daily.probabilities[r1.direction.daily.selected])}.`);
   const baseSummary = () => state.summary;
   // ① 헤드라인
-  const hl = headline({speak: `${d.name}, ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준, 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}, ${pct(r20.return)}`,
-    parts: [`${d.name} · ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준 · 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 `, {figure: won(r20.p50)}, `(${pct(r20.return)})`],
-    source: [['이 숫자', `모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 20거래일 뒤(${korDate(r20.date)}) 가격의 한가운데 값(50%) · 80% 범위 ${won(r20.p10)}~${won(r20.p90)}`], ['출발 종가', `${won(d.anchor.close)} · ${korDate(d.anchor.date)} 15:30 KST 정규장 종가`], ['운영 모델', h('code', null, d.modelVersion ?? d.model?.version ?? '—')], ...editionSource(manifest, 'stocks/' + d.code + '.json')]});
+  const hl = headline({speak: T ? `${d.name}, ${TW} 전망, ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준, 중앙 전망 ${won(r1.p50)}, ${pct(r1.return)}` : `${d.name}, ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준, 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}, ${pct(r20.return)}`,
+    parts: T ? [`${d.name} · ${TW} 전망 · ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준 · 중앙 전망 `, {figure: won(r1.p50)}, `(${pct(r1.return)})`] : [`${d.name} · ${korDate(d.anchor.date)} 종가 ${won(d.anchor.close)} 기준 · 20거래일 뒤 ${korDate(r20.date)} 중앙 전망 `, {figure: won(r20.p50)}, `(${pct(r20.return)})`],
+    source: [['이 숫자', T ? `모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 ${TW} 가격의 한가운데 값(50%) · 80% 범위 ${won(r1.p10)}~${won(r1.p90)}` : `모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 20거래일 뒤(${korDate(r20.date)}) 가격의 한가운데 값(50%) · 80% 범위 ${won(r20.p10)}~${won(r20.p90)}`], ['출발 종가', `${won(d.anchor.close)} · ${korDate(d.anchor.date)} 15:30 KST 정규장 종가`], ['운영 모델', h('code', null, d.modelVersion ?? d.model?.version ?? '—')], ...editionSource(manifest, 'stocks/' + d.code + '.json')]});
   // ② 가격 그래프(증거) + 재생
   const chartBox = h('div', {class: 'chart-box'}), explainBox = h('aside', {class: 'explain', 'aria-live': 'polite'}), dateStrip = h('div', {class: 'date-strip', role: 'listbox', 'aria-label': '날짜 선택', 'data-scroll': 'x'});
   const isMobile = () => window.matchMedia('(max-width: 899px)').matches;
@@ -111,21 +119,22 @@ async function renderDetail(main, manifest, code) {
   const playBtn = h('button', {class: 'ctl primary', type: 'button', 'aria-label': '재생 또는 정지'}, '▶ 재생');
   const speedSel = h('select', {class: 'select small', 'aria-label': '재생 속도', onchange: ev => { p.speed = Number(ev.target.value); prefs.set('speed', p.speed); }}, ...[[0.5, '느리게 · 하루 2초'], [1, '보통 · 하루 1초'], [2, '빠르게 · 하루 0.5초']].map(([v, l]) => h('option', {value: v, selected: v === p.speed}, l)));
   const slider = h('input', {class: 'slider', type: 'range', min: 0, max: dates.length - 1, step: 1, value: p.index, 'aria-label': '날짜 커서', oninput: ev => { setIndex(Number(ev.target.value)); }});
-  const scenarioBtn = h('button', {class: 'ctl toggle' + (p.showScenario ? ' on' : ''), type: 'button', 'aria-pressed': String(Boolean(p.showScenario)), onclick: ev => { p.showScenario = !p.showScenario; ev.currentTarget.classList.toggle('on', p.showScenario); ev.currentTarget.setAttribute('aria-pressed', String(p.showScenario)); draw(); }}, '대표 시나리오 보기');
+  const scenarioBtn = !d.scenario ? null : h('button', {class: 'ctl toggle' + (p.showScenario ? ' on' : ''), type: 'button', 'aria-pressed': String(Boolean(p.showScenario)), onclick: ev => { p.showScenario = !p.showScenario; ev.currentTarget.classList.toggle('on', p.showScenario); ev.currentTarget.setAttribute('aria-pressed', String(p.showScenario)); draw(); }}, '대표 시나리오 보기');
   const prevLabel = d.previous ? `직전 발행 전망(${korDate(d.previous.actualAsOf ?? d.previous.rows?.[0]?.date)}) 보기` : null;
-  const prevBtn = d.previous ? h('button', {class: 'ctl toggle' + (p.showPrevious !== false ? ' on' : ''), type: 'button', 'aria-pressed': String(p.showPrevious !== false), onclick: ev => { p.showPrevious = p.showPrevious === false; ev.currentTarget.classList.toggle('on', p.showPrevious !== false); draw(); }}, prevLabel) : h('span', {class: 'muted small'}, '직전 거래일 발행본 없음');
-  const csvBtn = h('a', {class: 'ctl', href: url(d.csvUrl), download: d.csvUrl.split('/').pop()}, 'CSV 내려받기');
+  const prevBtn = T ? null : d.previous ? h('button', {class: 'ctl toggle' + (p.showPrevious !== false ? ' on' : ''), type: 'button', 'aria-pressed': String(p.showPrevious !== false), onclick: ev => { p.showPrevious = p.showPrevious === false; ev.currentTarget.classList.toggle('on', p.showPrevious !== false); draw(); }}, prevLabel) : h('span', {class: 'muted small'}, '직전 거래일 발행본 없음');
+  // 여러 날 CSV 는 꺼 둠 — 묶음에 링크가 있을 때(1거래일 발행본 CSV 2행)만 단추를 단다
+  const csvBtn = d.csvUrl ? h('a', {class: 'ctl', href: url(d.csvUrl), download: d.csvUrl.split('/').pop()}, 'CSV 내려받기') : null;
   const jsonBtn = h('button', {class: 'ctl', type: 'button', onclick: () => download(`ATLAS_${d.code}_${d.actualAsOf.replaceAll('-', '')}_detail.json`, JSON.stringify(d, null, 1), 'application/json;charset=utf-8')}, '상세 JSON');
-  const after = i => i > anchorIndex ? `${i - anchorIndex}거래일 뒤 전망` : i === anchorIndex ? '출발(실제 종가)' : '실제 종가';
+  const after = i => i > anchorIndex ? (T ? '전망' : `${i - anchorIndex}거래일 뒤 전망`) : i === anchorIndex ? '출발(실제 종가)' : '실제 종가';
   function tipFor(i) {
     if (i == null) return null;
     const date = dates[i], x = d.explain[date]; if (!x) return null;
-    if (x.kind === 'forecast') return `<b>${korDate(date)} · ${x.horizon}거래일 뒤</b><br>중앙 ${won(x.p50)} (${pct(x.cumulativeReturn)})<br>80% 범위 ${wonShort(x.p10)}~${wonShort(x.p90)}<br>${dirMark(x.direction.daily.selected)} ${dirWord(x.direction.daily.selected)} ${prob(x.direction.daily.probabilities[x.direction.daily.selected])}`;
+    if (x.kind === 'forecast') return `<b>${korDate(date)} · ${T ? '전망' : x.horizon + '거래일 뒤'}</b><br>중앙 ${won(x.p50)} (${pct(x.cumulativeReturn)})<br>80% 범위 ${wonShort(x.p10)}~${wonShort(x.p90)}<br>${dirMark(x.direction.daily.selected)} ${dirWord(x.direction.daily.selected)} ${prob(x.direction.daily.probabilities[x.direction.daily.selected])}`;
     return `<b>${korDate(date)}${x.kind === 'anchor' ? ' 출발' : ' 실제'}</b><br>종가 ${won(x.close)}${x.dailyChange != null ? ' (' + pct(x.dailyChange) + ')' : ''}`;
   }
   let chart = null, firstDraw = !p.drawnOnce;
   function drawChart() {
-    chart = priceChart(chartBox, {dates, series: series(), bands, anchorIndex, cursorIndex: p.index, reveal: firstDraw, yFormat: v => wonShort(v), endFormat: v => won(v), ariaLabel: `${d.name} 실제 종가 60거래일과 전망 20거래일 그래프 · 마지막 점 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}`, onPick: i => { stop(); setIndex(i); openSheet(); }, onHover: (i, ev) => { if (i == null) { chartTip(chartBox, chart.svg, {index: null}); return; } const g = chart.geometry; chartTip(chartBox, chart.svg, {index: i, x: g.x(i), y: g.top, html: tipFor(i)}); }});
+    chart = priceChart(chartBox, {dates, series: series(), bands, anchorIndex, cursorIndex: p.index, reveal: firstDraw, yFormat: v => wonShort(v), endFormat: v => won(v), ariaLabel: T ? `${d.name} 실제 종가 20거래일과 ${TW} 전망 한 점 그래프 · 내일 중앙 전망 ${won(r1.p50)}` : `${d.name} 실제 종가 60거래일과 전망 20거래일 그래프 · 마지막 점 ${korDate(r20.date)} 중앙 전망 ${won(r20.p50)}`, forecastDots: T, padSlots: T ? 1.2 : 0, onPick: i => { stop(); setIndex(i); openSheet(); }, onHover: (i, ev) => { if (i == null) { chartTip(chartBox, chart.svg, {index: null}); return; } const g = chart.geometry; chartTip(chartBox, chart.svg, {index: i, x: g.x(i), y: g.top, html: tipFor(i)}); }});
     firstDraw = false; p.drawnOnce = true;
   }
   /* 커서만 옮긴다 — 재생 중에 그래프 전체를 다시 그리지 않는다 */
@@ -181,16 +190,17 @@ async function renderDetail(main, manifest, code) {
       if (hist.length) parts.push(h('details', {class: 'more'}, h('summary', null, `이 날을 겨눈 과거 전망 ${hist.length}건 열기 · 발행 당시 값 그대로`), h('ul', {class: 'events history'}, ...hist.map(c => h('li', {class: 'hist ' + (c.directionCorrect ? 'up' : 'down')}, h('b', null, `${korDate(c.originDate)} 발행 · ${c.horizon}거래일 뒤`), h('span', {class: 'badge ' + (c.class === 4 ? 'warn' : '')}, c.classLabel), h('div', {class: 'small'}, `당시 예측 ${won(c.p50)}(${wonShort(c.p10)}~${wonShort(c.p90)}), 실제 ${won(c.actual)}, 오차 ${pctRaw(c.ape)}, 방향 ${dirWord(c.predictedDirection)}→${dirWord(c.actualDirection)} ${c.directionCorrect ? '맞힘' : '틀림'}`), c.causes?.length ? h('div', {class: 'muted xs'}, '원인 가설: ' + c.causes.join(' · ')) : null, c.facts?.length ? h('details', {class: 'more'}, h('summary', null, '근거 보기'), h('ul', {class: 'plain xs'}, ...c.facts.map(f => h('li', null, f)), ...(c.hypotheses ?? []).map(hp => h('li', null, `[가설] ${hp.category}: ${hp.evidence}`)))) : null, h('div', {class: 'muted xs'}, '모델 ', h('code', null, c.modelVersion), ' · 발행본 ', h('code', null, c.forecastId)))))));
     }
     parts.push(h('div', {class: 'sources xs'}, '출처: ', ...(x.sources ?? []).filter(s => s.url).slice(0, 6).map(s => h('a', {href: s.url, target: '_blank', rel: 'noopener'}, s.name))));
+    if (x.kind === 'forecast') for (const el of parts.slice(1)) el?.setAttribute?.('data-forecast-date', date);
     explainBox.replaceChildren(...parts);
   }
   const kv = (k, v, cls = '') => h('div', {class: 'kv-item ' + cls}, h('span', {class: 'k'}, k), h('b', {class: 'v'}, v));
-  dateStrip.replaceChildren(...dates.map((date, i) => h('button', {class: 'date-chip' + (i > anchorIndex ? ' future' : i === anchorIndex ? ' anchor' : ''), type: 'button', role: 'option', dataset: {index: i}, 'aria-selected': 'false', title: `${korDate(date)} · ${after(i)}`, onclick: () => { stop(); setIndex(i); openSheet(); }}, shortDate(date))));
+  dateStrip.replaceChildren(...dates.map((date, i) => h('button', {class: 'date-chip' + (i > anchorIndex ? ' future' : i === anchorIndex ? ' anchor' : ''), type: 'button', role: 'option', dataset: {index: i}, 'data-forecast-date': i > anchorIndex ? date : null, 'aria-selected': 'false', title: `${korDate(date)} · ${after(i)}`, onclick: () => { stop(); setIndex(i); openSheet(); }}, shortDate(date))));
   const selector = h('select', {class: 'select stock-select', 'aria-label': '종목 선택', onchange: ev => { location.hash = '#/stock/' + ev.target.value; }}, ...cards.cards.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => h('option', {value: c.code, selected: c.code === code}, `${c.name} ${c.code}`)));
   const idx = cards.cards.findIndex(c => c.code === code), prevCode = cards.cards[(idx + 51) % 52].code, nextCode = cards.cards[(idx + 1) % 52].code;
   // ③ 첫 거래일 방향(확률 막대) · 지난 채점 한 줄
   const d1 = r1.direction.daily;
-  const firstDay = h('section', {class: 'panel', 'aria-label': `${korDate(r1.date)} 방향`},
-    h('h2', {class: 'panel-title'}, `${korDate(r1.date)} 방향 · `, h('span', {class: DIR[d1.selected]?.cls ?? ''}, `${dirMark(d1.selected)} ${dirWord(d1.selected)} ${prob(d1.probabilities[d1.selected])}`), (d1.closeCall || d1.statisticalTie) ? h('span', {class: 'badge warn'}, '비슷함') : null),
+  const firstDay = h('section', {class: 'panel', 'aria-label': `${korDate(r1.date)} 방향`, 'data-forecast-date': r1.date},
+    h('h2', {class: 'panel-title'}, T ? `${TW} 방향 · ` : `${korDate(r1.date)} 방향 · `, h('span', {class: DIR[d1.selected]?.cls ?? ''}, `${dirMark(d1.selected)} ${dirWord(d1.selected)} ${prob(d1.probabilities[d1.selected])}`), (d1.closeCall || d1.statisticalTie) ? h('span', {class: 'badge warn'}, '비슷함') : null),
     probBar(d1.probabilities, {large: true}),
     h('p', {class: 'small muted'}, `${korDate(r1.date)} 중앙 전망 ${won(r1.p50)} (${pct(r1.return)}) · 모형 비율이며 실제 적중률이 아님`),
     err1?.ape != null ? h('p', {class: 'small'}, `지난 채점: ${korDate(err1.targetDate)} 1거래일 전망 오차 ${pctRaw(err1.ape)} · 방향 ${err1.directionCorrect ? '맞힘' : '틀림'} · 80% 범위 ${err1.covered ? '안' : '밖'}`) : h('p', {class: 'small muted'}, `첫 채점 ${korDate(manifest.firstScorableDate)} 종가 뒤`));
@@ -201,15 +211,15 @@ async function renderDetail(main, manifest, code) {
         h('a', {class: 'back', href: '#/forecast'}, '‹ 52종목'),
         h('div', {class: 'stock-nav'}, h('a', {class: 'ctl icon', href: '#/stock/' + prevCode, 'aria-label': '이전 종목'}, '‹'), pickBox(selector, {cls: 'stock-pick'}), h('a', {class: 'ctl icon', href: '#/stock/' + nextCode, 'aria-label': '다음 종목'}, '›')),
         h('div', {class: 'chips'}, h('span', {class: 'chip ' + (d.state.label === 'Bull' ? 'up' : d.state.label === 'Bear' ? 'down' : 'flat'), title: d.state.basis}, STATE_WORD[d.state.label] ?? d.state.label), h('span', {class: 'chip muted'}, d.sector))),
-      hl,
+      hl, T ? h('p', {class: 'banner off-note', role: 'note', 'data-off': 'multi-day'}, `꺼 둠 · ${TW} 말고의 전망(20거래일 길·대표 시나리오·여러 날 CSV)은 꺼 두었습니다(${manifest.tomorrowOnly.since ?? '2026-10-02'} 사장님 명령 · 지난 기록은 그대로)`) : null,
       h('div', {class: 'detail-body'},
         h('div', {class: 'chart-col'},
-          h('div', {class: 'legend'}, leg('actual', '실제 종가 60거래일'), leg('today ' + (DIR[dir20]?.cls ?? ''), `이번 전망 중앙값(${korDate(manifest.actualAsOf)} 발행)`), leg('band outer', '90% 범위'), leg('band', '80% 범위'), leg('band inner', '50% 범위'), d.previous ? leg('previous', '직전 발행 전망') : null, p.showScenario ? leg('scenario', '대표 시나리오') : null),
+          h('div', {class: 'legend'}, leg('actual', T ? '실제 종가 20거래일' : '실제 종가 60거래일'), leg('today ' + (DIR[dir20]?.cls ?? ''), `이번 전망 중앙값(${korDate(manifest.actualAsOf)} 발행)`), leg('band outer', '90% 범위'), leg('band', '80% 범위'), leg('band inner', '50% 범위'), d.previous ? leg('previous', '직전 발행 전망') : null, p.showScenario ? leg('scenario', '대표 시나리오') : null),
           chartBox,
           h('div', {class: 'player'}, playBtn, h('button', {class: 'ctl', type: 'button', 'aria-label': '하루 전', onclick: () => { stop(); setIndex(p.index - 1); }}, '‹'), h('button', {class: 'ctl', type: 'button', 'aria-label': '하루 뒤', onclick: () => { stop(); setIndex(p.index + 1); }}, '›'), cursorLabel, speedSel, reasonBtn),
           slider, dateStrip,
           h('div', {class: 'toggles'}, scenarioBtn, prevBtn, csvBtn, jsonBtn),
-          h('details', {class: 'more'}, h('summary', null, '그래프 읽는 법'), h('ul', {class: 'plain small'}, h('li', null, '전망선은 출발 종가(실제 마지막 점)에서 미래 20거래일 중앙값을 이은 선입니다 · 빨강 = 20거래일 뒤 오름 쪽 · 파랑 = 내림 쪽'), h('li', null, '세 겹 띠는 모의 분포의 25%~75% · 10%~90% · 5%~95% 구간 그대로입니다(대칭으로 바꾸지 않음)'), h('li', null, `대표 시나리오는 모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 중심에 가까운 경로 하나이며, 그 경로 전체가 일어날 확률은 표시하지 않습니다`)))),
+          h('details', {class: 'more'}, h('summary', null, '그래프 읽는 법'), h('ul', {class: 'plain small'}, h('li', null, T ? `전망은 출발 종가(실제 마지막 점)에서 ${TW} 중앙값 한 점까지입니다 · 빨강 = 오름 쪽 · 파랑 = 내림 쪽` : '전망선은 출발 종가(실제 마지막 점)에서 미래 20거래일 중앙값을 이은 선입니다 · 빨강 = 20거래일 뒤 오름 쪽 · 파랑 = 내림 쪽'), h('li', null, '세 겹 띠는 모의 분포의 25%~75% · 10%~90% · 5%~95% 구간 그대로입니다(대칭으로 바꾸지 않음)'), T ? h('li', null, `${TW} 말고의 전망(20거래일 길·대표 시나리오 등)은 꺼 두었습니다`) : h('li', null, `대표 시나리오는 모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 중심에 가까운 경로 하나이며, 그 경로 전체가 일어날 확률은 표시하지 않습니다`)))),
         backdrop, explainBox),
       firstDay, infoBox, ctxBox, chainBox));
   chartBox.style.position = 'relative';

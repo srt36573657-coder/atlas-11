@@ -8,6 +8,14 @@ import {readAllPublications} from '../../lib/atlas11/forecast.mjs';
 import {realInputs, readJSON, root} from './helpers.mjs';
 
 async function latest() { return readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'); }
+// 「내일 하루만」 스위치(config/atlas11/horizon.json) — 옛 20거래일 화면 검사는 스위치 20 으로, 새 검사는 스위치 1 로 돌린다
+const LEGACY = {futureDays: 20, tomorrowOnly: false, since: null};
+const TOMORROW = {futureDays: 1, tomorrowOnly: true, since: '2026-10-02', file: 'config/atlas11/horizon.json', configSHA256: null, config: null};
+/** contract.md §1 그대로: 20거래일 발행본을 1거래일 발행본 꼴([출발, 내일] · scenario null · horizon 1)로 줄인 시험용 고정본 */
+export function oneDayPublication(p) {
+  return {...p, horizon: 1, futureDates: [p.futureDates[0]], policy: {...p.policy, id: 'atlas11-tomorrow-A-1', horizon: 1}, tomorrowOnly: {futureDays: 1, since: '2026-10-02', config: 'config/atlas11/horizon.json', configSHA256: 'test'},
+    summary: {...p.summary, futurePointsPerStock: 1, closeCallStocksDay20: null}, assets: p.assets.map(a => ({...a, rows: a.rows.slice(0, 2), scenario: null, errors: {'1': null}}))};
+}
 
 test('채점: 발행 뒤 실제값만 · 실현값 없는 목표일은 채점하지 않음 · 보관 참조본 제외 · Brier', async () => {
   const {input, calendar} = await realInputs();
@@ -46,7 +54,7 @@ test('1만원 비교: 52선 · 같은 시작일 1만원 · 순위 동률 규칙 
 test('화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫자 일치 · 종목별 설명이 서로 다름 · 변조 시 실패', async () => {
   const {input, calendar} = await realInputs();
   const p = await latest(); const publications = await readAllPublications(root);
-  const files = buildViewBundle({publication: p, input, calendar, publications, now: '2026-09-28T13:40:00.000Z'});
+  const files = buildViewBundle({publication: p, input, calendar, publications, horizon: LEGACY, now: '2026-09-28T13:40:00.000Z'});
   assert.equal(files.size, 62); // 10/01: 「왜 틀렸나」 misses.json 추가 · 10/01 오후(대개선 W3): 종목별 채점 칸 score-cells.json 추가
   assert.equal(validateViewBundle(files, p), true);
   const m = files.get('manifest.json'); assert.equal(m.forecastId, p.forecastId); assert.equal(Object.keys(m.files).length, 61);
@@ -73,7 +81,7 @@ test('v9 시장 띠: 수집 기록의 지수 행을 그대로 싣는다 · 숫�
   const {input, calendar} = await realInputs();
   const p = await latest(); const publications = await readAllPublications(root);
   const marketIndex = {day: p.actualAsOf, fetchedAt: '2026-09-28T08:00:00Z', file: 'reports/atlas11/context/test.json', items: [{symbol: 'KOSPI', name: '코스피', date: p.actualAsOf, close: 6838.04, change: -32.77, changePct: -0.48, status: 'same_day', sourceName: '네이버 증권 지수', sourceUrl: 'https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1', rawSHA256: 'a'.repeat(64)}]};
-  const files = buildViewBundle({publication: p, marketIndex, input, calendar, publications, now: '2026-09-28T13:40:00.000Z'});
+  const files = buildViewBundle({publication: p, marketIndex, input, calendar, publications, horizon: LEGACY, now: '2026-09-28T13:40:00.000Z'});
   const m = files.get('manifest.json'); assert.equal(m.market.items[0].close, 6838.04); assert.equal(m.market.items[0].changePct, -0.48); assert.equal(m.market.usedInForecast, false);
   const bad = new Map(files); const m2 = structuredClone(m); m2.market.items[0].close = null; bad.set('manifest.json', m2);
   assert.throws(() => validateViewBundle(bad, p), /VIEW_MARKET/);
@@ -87,4 +95,38 @@ test('날짜별 설명: 그 종목 숫자로 만든 문장 · 실제/출발/전�
   const x = e.byDate[p.futureDates[0]];
   assert.match(x.text, /중앙 전망/); assert.match(x.text, /모형 비율은 실제 적중률이 아닙니다/);
   assert.ok(x.events.every(ev => ev.used === false)); assert.ok(x.missing.length >= 2); assert.ok(x.sources.length >= 1);
+});
+
+test('내일 하루만(2026-10-02 사장님 명령): 20거래일 발행본이어도 묶음에는 내일 하나의 전망만 · 1거래일 발행본과 숫자 같음 · 바꾸면 실패', async () => {
+  const {input, calendar} = await realInputs();
+  const p = await latest(), publications = await readAllPublications(root), t = p.futureDates[0];
+  const check = (files, pub) => {
+    assert.equal(validateViewBundle(files, pub), true);
+    const m = files.get('manifest.json'), cj = files.get('cards.json');
+    assert.equal(m.horizon, 1); assert.deepEqual(m.futureDates, [t]); assert.ok(m.tomorrowOnly?.note?.includes('꺼 둠'));
+    assert.equal(cj.cards.length, 52); assert.ok(cj.cards.every(c => !c.day5 && !c.day20 && c.day1.date === t && c.spark.forecast.length === 1 && c.spark.forecastDates[0] === t));
+    for (let i = 1; i < 52; i++) { const a = cj.cards[i - 1], b = cj.cards[i]; assert.ok(a.day1.return > b.day1.return || (a.day1.return === b.day1.return && a.code < b.code), '내일 등락 높은 순 · 같으면 코드 순'); }
+    for (const a of pub.assets) { const d = files.get('stocks/' + a.code + '.json'); assert.equal(d.rows.length, 2); assert.equal(d.rows[1].date, t); assert.equal(d.scenario, null); assert.equal(d.previous, null); assert.deepEqual(Object.values(d.explain).filter(x => x.kind === 'forecast').map(x => x.date), [t]); assert.ok(d.scoreHistory.every(c => c.horizon === 1)); }
+    const race = files.get('race.json'); assert.equal(race.status, '꺼 둠'); assert.equal(race.stocks.length, 0);
+    const sc = files.get('scores.json'); assert.deepEqual(sc.horizons, [1]); assert.ok(sc.byDate.every(d => d.rows.every(r => Object.keys(r.horizons).join() === '1'))); assert.ok(sc.schedule.every(x => x.horizon === 1 && x.targetDate <= t));
+    const ev = files.get('evolution.json'); assert.ok(!('archiveReconstruction' in ev)); assert.ok(ev.tomorrowOnly.archiveReconstruction.includes('꺼 둠'));
+    return files;
+  };
+  const f20 = check(buildViewBundle({publication: p, input, calendar, publications, horizon: TOMORROW, now: '2026-09-28T13:40:00.000Z'}), p);
+  const one = oneDayPublication(p);
+  const f1 = check(buildViewBundle({publication: one, input, calendar, publications, horizon: TOMORROW, now: '2026-09-28T13:40:00.000Z'}), one);
+  // 같은 내일 숫자(20거래일 계산의 첫날 = 1거래일 발행본의 내일)
+  assert.deepEqual(f20.get('cards.json').cards.map(c => [c.code, c.day1]), f1.get('cards.json').cards.map(c => [c.code, c.day1]));
+  for (const a of p.assets) assert.deepEqual(f20.get('stocks/' + a.code + '.json').rows, f1.get('stocks/' + a.code + '.json').rows);
+  // 여러 날 CSV 링크: 20거래일 발행본(21행 CSV)은 없음 · 1거래일 발행본(2행 CSV)은 있음
+  assert.ok(p.assets.every(a => f20.get('stocks/' + a.code + '.json').csvUrl === null)); assert.equal(f20.get('manifest.json').csvManifest, null);
+  assert.ok(one.assets.every(a => f1.get('stocks/' + a.code + '.json').csvUrl === a.csvUrl));
+  // 변조: 카드에 20거래일 숫자를 다시 넣거나, 내일 뒤 날짜를 아무 파일에나 넣으면 실패
+  const bad = new Map(f20); const cj = structuredClone(f20.get('cards.json')); cj.cards[0].day20 = {date: p.futureDates[19], p50: 1}; bad.set('cards.json', cj);
+  assert.throws(() => validateViewBundle(bad, p), /VIEW_TOMORROW_CARD/);
+  const bad2 = new Map(f20); const ev = structuredClone(f20.get('evolution.json')); ev.operating.note = p.futureDates[4] + ' 전망'; bad2.set('evolution.json', ev);
+  assert.throws(() => validateViewBundle(bad2, p), /VIEW_TOMORROW_DATES_AFTER/);
+  // 스위치 20 이면 옛 묶음 그대로(1만원 비교 52선 · 20거래일 카드)
+  const legacy = buildViewBundle({publication: p, input, calendar, publications, horizon: LEGACY, now: '2026-09-28T13:40:00.000Z'});
+  assert.equal(legacy.get('race.json').stocks.length, 52); assert.ok(legacy.get('cards.json').cards.every(c => c.day20 && c.day5)); assert.equal(legacy.get('manifest.json').horizon, 20);
 });

@@ -990,3 +990,10 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   .sc-wide { display: block; }
   .sc-cards, .sc-ids { display: none; }
 }
+
+/* 「내일 하루만」(2026-10-02): 전망은 내일 한 점 — 점과 80% 범위 세로선 · 꺼 둔 기능은 한 줄 */
+.chart .forecast-dot { fill: var(--today); stroke: var(--paper, #fff); stroke-width: 2; }
+.chart .forecast-dot.up { fill: var(--up); } .chart .forecast-dot.down { fill: var(--down); }
+.spark .s-dot { fill: var(--muted); stroke: none; } .spark .s-dot.up { fill: var(--up); } .spark .s-dot.down { fill: var(--down); }
+.spark .s-whisker { stroke: var(--ink); stroke-opacity: .35; stroke-width: 2; }
+.off-note { font-weight: 600; }

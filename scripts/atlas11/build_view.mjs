@@ -13,6 +13,7 @@ import {generateCandidates} from '../../lib/atlas11/evolve/models.mjs';
 import {decodeEntities} from '../../lib/atlas11/context.mjs';
 import {buildTimeline} from '../../lib/atlas11/timeline.mjs';
 import {recountTimeline, compareTimeline} from '../../lib/atlas11/timeline_check.mjs';
+import {loadHorizon} from '../../lib/atlas11/horizon.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -53,6 +54,8 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
 export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   const [publication, input, calendar, publications, abLatest, factorStatus, operation] = await Promise.all([read('public/data/atlas11/forecast.json'), read('public/data/input.json'), read('public/data/rolling-calendar.json'), readAllPublications(root), read('reports/atlas11/ab/latest.json', null), read('public/data/factor36-status.json', null), read('reports/atlas11/operations/latest.json', null)]);
   validateForecast11(publication);
+  // 「내일 하루만」 스위치(사장님 명령 2026-10-02) — 화면 묶음은 내일 하나의 전망만 · 진화 칸 통계는 1거래일 뒤만
+  const horizon = loadHorizon(root), oneDay = c => !horizon.tomorrowOnly || Number(c?.horizon) === 1;
   const ab = abLatest ? await read('reports/atlas11/ab/' + abLatest.runId + '/result.json', null) : null;
   const previousCandidate = await read('reports/prediction-candidate/result.json', null);
   const abHistory = [previousCandidate ? {label: '이전 세션 실행(2026-09-28 10:47Z) · 이번 실행 아님', at: previousCandidate.at, A: previousCandidate.A, B: previousCandidate.B, numericalGate: previousCandidate.numericalGate, adopted: false} : null, ab ? {label: '이번 세션 실행', at: ab.finishedAt, A: ab.A, B: ab.B, numericalGate: ab.numericalGate, adopted: false, runId: ab.runId} : null].filter(Boolean);
@@ -121,16 +124,16 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   }
   // 진화 칸 — 질문 하나(「ATLAS는 시장의 답을 받아들여 나아졌는가?」)에 답하는 날짜별 사실표. 근거는 기록 장부 하나 · 평가 규칙은 읽기만.
   const current = async type => currentRecords(await readRecords(root, type));
-  const timeline = evolveConfig ? buildTimeline({scores: (await current('score')).map(r => r.body), analyses: (await current('analysis')).map(r => r.body), experiments: await current('experiment'), operations: await current('operation'), models: await current('model'), config: evolveConfig, sessions: calendar?.sessions ?? [], actualAsOf: publication.actualAsOf, forecastId: publication.forecastId, issuedAt: publication.issuedAt, now}) : null;
+  const timeline = evolveConfig ? buildTimeline({scores: (await current('score')).map(r => r.body).filter(oneDay), analyses: (await current('analysis')).map(r => r.body), experiments: await current('experiment'), operations: await current('operation'), models: await current('model'), config: evolveConfig, sessions: calendar?.sessions ?? [], actualAsOf: publication.actualAsOf, forecastId: publication.forecastId, issuedAt: publication.issuedAt, now}) : null;
   // 검산: timeline.mjs 를 쓰지 않는 따로 센 값과 맞대어 결과를 화면 자료에 붙인다(어긋나면 화면에 「검산 어긋남」으로 보인다)
   if (timeline) {
-    const recount = recountTimeline({scoreBodies: (await current('score')).map(r => r.body), experimentRecords: await current('experiment'), operationRecords: await current('operation'), modelRecords: await current('model'), sessions: calendar?.sessions ?? [], actualAsOf: publication.actualAsOf, minScoredDates: evolveConfig.liveObservation?.minScoredDates ?? 10});
+    const recount = recountTimeline({scoreBodies: (await current('score')).map(r => r.body).filter(oneDay), experimentRecords: await current('experiment'), operationRecords: await current('operation'), modelRecords: await current('model'), sessions: calendar?.sessions ?? [], actualAsOf: publication.actualAsOf, minScoredDates: evolveConfig.liveObservation?.minScoredDates ?? 10});
     const res = compareTimeline(timeline, recount);
     timeline.check = {ok: res.ok, checked: res.checked, mismatches: res.mismatches.slice(0, 20), method: 'lib/atlas11/timeline_check.mjs — timeline.mjs 를 쓰지 않고 장부 원본에서 다시 셈', at: now};
   }
   // 「왜 틀렸나」: 원인 분석 칸(장부)을 그대로 넘긴다 — 네 통 나누기는 lib/atlas11/misses.mjs(규칙은 결과 보기 전에 고정)
   const missCells = (await current('analysis')).filter(r => r.body?.kind === 'cell' && r.body?.horizon === 1);
-  return buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
+  return buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
