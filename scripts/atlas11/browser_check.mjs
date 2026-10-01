@@ -129,6 +129,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 상세: 확인 뒤 계속 재생`, !/^[^·]*· 1거래일 뒤/.test(resumed) || /2거래일 뒤/.test(resumed), {resumed});
   }
   await page.locator('.player .ctl.primary').click().catch(() => {});
+  // 재생이 다음 중요 일정에서 또 멈추면 알림 창이 단추를 가린다 — 닫고 정지한 뒤 다음 조작(20거래일 화면에서 재생이 길어 생기던 끊김)
+  for (let k = 0; k < 3 && await page.locator('#notice:not([hidden])').count(); k++) { await page.locator('#notice button').click().catch(() => {}); await page.waitForTimeout(150); await page.locator('.player .ctl.primary', {hasText: '정지'}).click().catch(() => {}); }
   if (!TOMORROW) {
     await page.locator('.toggles .ctl.toggle').first().click();
     check(`${label} 상세: 대표 시나리오 선 표시`, await page.locator('.line.scenario').count() === 1);

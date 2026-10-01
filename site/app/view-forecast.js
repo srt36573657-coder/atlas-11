@@ -49,7 +49,7 @@ async function renderCards(main, manifest) {
   const render = () => { const rows = list(); grid.replaceChildren(...rows.map(c => wlRow(c, max20, target, T))); counter.textContent = `${rows.length}종목 표시`; };
   const filterBtn = (key, label) => h('button', {class: 'filter' + (filterKey === key ? ' on' : ''), type: 'button', 'aria-pressed': String(filterKey === key), onclick: () => { prefs.set('filter', key); renderCards(main, manifest); }}, label);
   main.replaceChildren(
-    hl, offNote, evidence,
+    ...[hl, offNote, evidence].filter(Boolean), // 꺼 둠 한 줄은 내일만일 때만(옛 화면에 「null」 글자가 생기지 않게)
     h('section', {class: 'panel', 'aria-label': '52종목 전망'},
       h('h2', {class: 'panel-title'}, T ? `52종목 · ${TW} 방향과 중앙 전망` : `52종목 · ${korDate(target)} 방향과 ${korDate(end)} 중앙 전망`),
       h('div', {class: 'controls-row'},
