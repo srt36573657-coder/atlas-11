@@ -31,7 +31,7 @@
   - ATLAS 11 = `public/data/atlas11/forecast.json` 의 지금 발행본과 그 안의 `previous` 중 **봉인 시각 전에 나온** 마지막 발행본의 같은 목표일 1거래일 전망 p10·p50·p90(judgment 「1거래일 전망」). 없으면 「없음」 + 까닭. 16시 판은 「없음」(17시 뒤 발행). 코스피는 ATLAS 11 없음(judgment units.kospi).
   - 채점은 이 줄의 값으로 한다(채점 때 자료를 다시 읽어 기준을 새로 세지 않음 — conflicts 22).
 - `scores/` — 목표 종가가 「목표일 15:30 뒤에 받은 고리 장」에 쓸 수 있는 상태로 나온 판·대상만, 대상마다 한 줄(`boardId`·`code`). 같은 `boardId|code` 는 다시 쓰지 않는다. `scoredAt` = 실제 채점 시각, `actual {value, asOf, source, status, snapshot}`, 위기 날은 judgment 대로(코스피 지난 자료가 없으면 `crisis: null` + `crisisWhy`). 파일 날짜 = 채점한 날.
-- `loops/` — board.md 꼴 + `slotAt`·`kind`(무거운/가벼운)·`mode`(그림자)·`stop`·`lateMinutes`(시작 − 판 시각)·`minutes`(끝 − 판 시각, 40분 규칙의 잣대)·단계별 한 줄(`steps`)·`structures`·`by: "고리 스크립트"`. `startedAt`·`endedAt` 은 실제 시각(T9 는 이 둘의 차를 잰다).
+- `loops/` — board.md 꼴 + `slotAt`·`kind`(무거운/가벼운)·`mode`(그림자)·`stop`·`lateMinutes`(시작 − 판 시각)·`minutes`(끝 − 판 시각, 40분 규칙의 잣대)·단계별 한 줄(`steps`)·`structures`·`by: "고리 스크립트"`. [판단] `startedAt` = 판 시각(이 바퀴가 시작해야 했던 때), `ranAt` = 실제로 돌기 시작한 때, `endedAt` = 실제로 끝난 때 — 그래서 T9(끝 − 시작 ≤ 40분, 넘으면 「시간 초과 → 앞 판 유지」)가 GitHub 이 늦게 출발한 것까지 잰다.
 - `watch/` — S1·S2·S4·S7 은 숫자, S3·S5·S6·S8·S9·S10 은 「잴 수 없음 — 다른 에이전트 몫」. 곁 확인: 봉인 지문 · 금지 말 · 장부에서 지워진 줄 수(깃 HEAD 와 견줌). **그래서 T23 은 다른 에이전트 감시가 판단 줄을 채우기 전에는 통과하지 않는다** — 일부러 0 으로 채우지 않았다.
 
 ## 아직 없는 것 (숫자가 없으면 「없음」)

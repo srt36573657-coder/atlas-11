@@ -440,7 +440,8 @@ export function runTurn(opts = {}) {
   for (let k = 2; taken.has(loopId); k++) loopId = `${baseId}-${k}`;
   const loop = {
     schema: 'atlas4h-loop-1', loopId, slot, slotAt, kind, mode: MODE_SHADOW, stop: stop.stop, ...(stop.stop ? {stopBy: stop.by ?? null, stopSource: stop.source} : {}),
-    startedAt: isoKst(startMs), endedAt: null, lateMinutes: Math.round(((startMs - slotAtMs) / MIN) * 10) / 10, minutes: null,
+    // [판단] startedAt = 판 시각(이 바퀴가 시작해야 했던 때 · 40분의 잣대) · ranAt = 실제로 돌기 시작한 때 — T9 가 끝 − 시작으로 40분을 잰다
+    startedAt: slotAt, ranAt: isoKst(startMs), endedAt: null, lateMinutes: Math.round(((startMs - slotAtMs) / MIN) * 10) / 10, minutes: null,
     status: null, boardId: null, boardStatus: null, snapshot: null, scored: 0, baselines: 0, by: LOOP_BY,
     steps: {모으기: null, 검사: null, '가운데·폭 엔진': null, '사건 확률': NOT_YET, '섞기·범위': null, 시나리오: null, '합치기·반론': NOT_YET, '봉인·적용': null, 기록: null},
     structures: ['A1', 'A3', 'B2', 'C5', 'D6', 'E2', 'F1', 'F4'],
@@ -467,7 +468,7 @@ export function runTurn(opts = {}) {
     let seal = null;
     if (prevAny) {
       const at = clock();
-      const {id: _old, ...rest} = prevAny;
+      const {id: _old, resealOf: _r, keepOf: _k, ...rest} = prevAny;
       const body = {...rest, slot, kind, createdAt: isoKst(startMs), sealedAt: isoKst(at), dataCutoff: isoKst(at), status: STATUS_KEEP,
         keepOf: prevAny.id, inputs: {...prevAny.inputs, variables: refreshStale(prevAny.inputs.variables, at)}, code: {commit: git.commit, dirty: git.dirty},
         text: ['시간 안에 끝내지 못해 새로 셈하지 않고 앞 값을 그대로 두었습니다.']};
@@ -538,7 +539,7 @@ export function runTurn(opts = {}) {
     // 변수 그대로 → 계산 없이 앞 판을 다시 봉인 (값·상수·두 길은 앞 판 그대로 · 변수는 이번에 다시 받은 것 — 값·상태·관측 시각이 같다)
     if (overdue()) return keep('검사까지 40분을 넘김');
     const at = clock();
-    const {id: _old, ...rest} = prevSealed;
+    const {id: _old, resealOf: _r, keepOf: _k, ...rest} = prevSealed;
     const body = {...rest, slot, kind, createdAt: isoKst(startMs), sealedAt: isoKst(at), dataCutoff: isoKst(at), status: STATUS_RESEAL, resealOf: prevSealed.id,
       code: {commit: git.commit, dirty: git.dirty}, seed: Number(slotDate.replaceAll('-', '')) * 100 + Number(slot),
       dataVersion: {sha256: sha256(canonicalJson(Object.fromEntries(files.map(f => [f, fileHashes[f] ?? null])))), files, fileSha256: Object.fromEntries(files.map(f => [f, fileHashes[f] ?? null]))},

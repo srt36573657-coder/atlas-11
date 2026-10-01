@@ -48,8 +48,11 @@ test('늦으면 시간 초과 → 앞 판 유지 (새 계산 없음 · 고리 �
   assert.deepEqual(b.board.stocks, a.board.stocks);
   assert.equal(b.baselines, null);
   assert.equal(readLines(root, 'loops').length, 2);
-  // 40분 넘게 걸린 고리(시작 04:00 끝 04:45) — 판이 「앞 판 유지」라 T9 통과
-  const loops = readLines(root, 'loops').map(l => ({...l, startedAt: l.slotAt}));
+  // 40분 넘긴 고리(판 시각 04:00 → 끝 04:45) — 판이 「앞 판 유지」라 T9 통과
+  const loops = readLines(root, 'loops');
+  assert.equal(loops[1].startedAt, '2026-10-02T04:00:00+09:00');
+  assert.equal(loops[1].ranAt, '2026-10-02T04:45:00+09:00');
+  assert.ok(loops[1].minutes > 40);
   assert.equal(CHECKS.T9({loops, boards: readLines(root, 'boards')}).pass, true);
   // 앞 판이 없으면 남길 판도 없다
   const {root: r2} = makeRepo();
