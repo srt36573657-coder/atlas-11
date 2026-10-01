@@ -185,7 +185,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.waitForSelector('svg.lc');
   await headlineCheck(page, label, '성적', '.lc .lc-end.pred');
   const scoresText = await page.locator('#main').innerText();
-  check(`${label} 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림`, await page.locator('.bars .bar-row').count() >= 9 && /채점 예정표/.test(scoresText) && /후향 진단 열기/.test(scoresText) && /종목별 채점 표 열기/.test(scoresText), null);
+  check(`${label} 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림`, await page.locator('.bars .bar-row').count() >= 9 && /채점 예정표/.test(scoresText) && /후향 진단 열기/.test(scoresText) && /80% 범위 표와 내려받기 열기/.test(scoresText), null);
   // 왜 틀렸나(10/01): 네 통 막대의 합 = 틀린 수 = 채점 자료의 방향 틀림 합 = 눌러서 연 목록 줄 수 · 「까닭 보기」 단추로 칸까지 내려감
   {
     const sc = await (await fetch(base + '/data/atlas11/view/scores.json')).json();
@@ -318,17 +318,62 @@ async function clarityCheck() {
   await ctx.close();
   return table;
 }
-/** W4(대개선 명령서 6판 R2~R5 · T7 모서리 16절): 성적 화면 「종목별 맞고 틀림」 — 보기 다섯 × 채점일마다
- *  줄(표 줄 또는 세 줄 카드) 수 = score-cells.json · 네 칸 합 = 줄 수 · 네 칸 = 그날 네 묶음 · 이름순(가나다) · 가장 긴 이름 안 잘림 ·
- *  실제 보합 칸에 「실제 보합」 · 오차 끝값(가장 작은·큰 원) 표시 · 잘린 글자 0 · 가로 넘침 없음 · 맞음·틀림은 글자 · 캡처는 reports/atlas11/overhaul/w4-*.png */
+/** W4(대개선 명령서 6판 R2~R5 · T7 모서리 16절 · 따지는 이 G1~G6): 성적 화면 「네 묶음」(그날 판 아래)과 「종목별 맞고 틀림」(「왜 틀렸나」 아래)
+ *  보기 다섯 × 채점일마다: 줄(표 줄 또는 네 줄 카드) 수 = score-cells.json 보인 수 · 네 칸 = 그날 묶음(합 = 줄 수) · 보류 수 표시 · 가나다순 ·
+ *  가장 긴 이름 안 잘림 · 실제 보합 칸에 「보합」 · 예측 방향 옆 확률 · 가운데 값 표시(보합권·반대쪽) 수 · 「−0.00%」 없음 · 오차 끝값 ·
+ *  360px·글씨 100% 에서 카드 4줄 이하 · 줄 앞 「·」 없음 · 잘린 글자 0 · 가로 넘침 없음 · 맞음·틀림은 글자
+ *  결함 심기(G6): 카드 하나 지우기 · 긴 이름 자르기 · 「보합」 표시 지우기 → 같은 판정이 각각 실패로 잡아야 한다 · 캡처는 reports/atlas11/overhaul/w4-*.png */
 const W4_VIEWS = [
-  {id: '360', viewport: {width: 360, height: 780}, mobile: true, shot: 'w4-360'},
-  {id: '360-dark', viewport: {width: 360, height: 780}, mobile: true, dark: true},
+  {id: '360', viewport: {width: 360, height: 780}, mobile: true, shot: 'w4-360', lines4: true, plant: true},
+  {id: '360-dark', viewport: {width: 360, height: 780}, mobile: true, dark: true, lines4: true},
   {id: '360-dark-200', viewport: {width: 360, height: 780}, mobile: true, dark: true, font: 4},
   {id: 'pc', viewport: {width: 1280, height: 800}, shot: 'w4-pc'},
   {id: 'pc-200', viewport: {width: 1280, height: 800}, font: 4},
 ];
 const signedWon = v => { const r = Math.round(v); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r).toLocaleString('ko-KR') + '원'; };
+const markOf = c => (Math.abs(c.predRet) <= 0.001 ? '보합권' : (c.predRet > 0 && c.predDir === 'down') || (c.predRet < 0 && c.predDir === 'up') ? '반대쪽' : null);
+/** 브라우저 안에서 잰다(바깥 변수 없음) */
+function w4Probe({LONG, lo, hi}) {
+  const quad = document.getElementById('score-quad'), box = document.getElementById('score-cells');
+  const vis = el => { const b = el.getBoundingClientRect(); return b.width > 0 && b.height > 0; };
+  const rows = [...box.querySelectorAll('[data-code]')].filter(vis);
+  const names = rows.map(el => el.querySelector('.sc-name')?.textContent.trim() ?? '');
+  const sorted = names.every((n, i) => i === 0 || names[i - 1].localeCompare(n, 'ko') <= 0);
+  const long = LONG.map(n => { const el = rows.map(x => x.querySelector('.sc-name')).find(e => e?.textContent.trim() === n); if (!el) return {name: n, present: false}; const b = el.getBoundingClientRect(); const cs = getComputedStyle(el); return {name: n, present: true, fits: el.scrollWidth <= el.clientWidth + 1 && b.left >= 0 && b.right <= innerWidth + 1 && cs.textOverflow !== 'ellipsis' && el.innerText.replace(/\s+/g, ' ').trim() === n}; });
+  const flat = rows.filter(el => el.dataset.actDir === 'flat');
+  const text = code => rows.find(el => el.dataset.code === code)?.innerText.replace(/\s+/g, ' ') ?? '';
+  const lines = rows.filter(el => el.tagName === 'LI').map(el => [...el.querySelectorAll('p')].reduce((t, p) => t + Math.round(p.getBoundingClientRect().height / parseFloat(getComputedStyle(p).lineHeight)), 0));
+  let leadDots = 0;
+  for (const el of rows.filter(x => x.tagName === 'LI')) for (const p of el.querySelectorAll('p')) { const left = p.getBoundingClientRect().left; const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) for (let k = 0; k < n.textContent.length; k++) { if (n.textContent[k] !== '·') continue; const r = document.createRange(); r.setStart(n, k); r.setEnd(n, k + 1); if (r.getBoundingClientRect().left - left < 3) leadDots++; } }
+  return {kind: rows[0]?.tagName === 'TR' ? 'table' : 'cards', n: rows.length, codes: rows.map(el => el.dataset.code), quad: [...quad.querySelectorAll('.quad-v')].map(e => parseInt(e.textContent.replace(/[^\d]/g, ''), 10)), quadTitle: quad.querySelector('.panel-title')?.innerText ?? '', listTitle: box.querySelector('.panel-title')?.innerText ?? '', heldItems: quad.querySelectorAll('.sc-held li').length, sorted, long,
+    flat: {total: flat.length, shown: flat.filter(el => el.querySelector('.sc-adir')?.textContent.trim() === '보합').length},
+    probs: rows.filter(el => /^(상승|보합|하락)\s\d+%$/.test(el.querySelector('.sc-pdir')?.textContent.trim() ?? '')).length, marks: rows.map(el => el.querySelector('.sc-mark')?.textContent.replace(/[()\s]/g, '') || null),
+    minus0: box.innerText.includes('−0.00%'), loText: text(lo.code), hiText: text(hi.code), words: rows.every(el => (el.innerText.match(/맞음|틀림/g) ?? []).length >= 2), maxLines: Math.max(0, ...lines), leadDots,
+    quadAboveMisses: quad.getBoundingClientRect().top < (document.getElementById('misses')?.getBoundingClientRect().top ?? Infinity), listBelowMisses: box.getBoundingClientRect().top > (document.getElementById('misses')?.getBoundingClientRect().top ?? -Infinity), overflowX: document.documentElement.scrollWidth > innerWidth + 1};
+}
+/** 판정(Node 쪽) — 실패한 항목 이름을 돌려준다 */
+function w4Fails(r, d, cells, m, v, errors) {
+  const f = [], quadSum = r.quad.reduce((s, x) => s + x, 0), wantFlat = cells.filter(c => c.actDir === 'flat').length;
+  const errs = cells.map(c => Math.abs(c.errWon)), lo = cells[errs.indexOf(Math.min(...errs))], hi = cells[errs.indexOf(Math.max(...errs))];
+  const wantMarks = cells.map(markOf).filter(Boolean).sort().join(','), gotMarks = r.marks.filter(Boolean).sort().join(',');
+  if (r.n !== d.count || new Set(r.codes).size !== d.count) f.push('줄 수');
+  if (r.quad.length !== 4 || quadSum !== d.count || r.quad.join(',') !== d.groups.join(',')) f.push('네 칸');
+  if (d.held ? !(r.quadTitle.includes(`보류 ${d.held}종목`) && r.heldItems === d.held) : (/보류/.test(r.quadTitle) || r.heldItems)) f.push('보류 표시');
+  if (!r.sorted) f.push('가나다순');
+  if (!r.long.every(x => !x.present || x.fits)) f.push('긴 이름');
+  if (r.flat.total !== wantFlat || r.flat.shown !== wantFlat) f.push('보합 표시');
+  if (r.probs !== d.count) f.push('예측 방향 확률');
+  if (gotMarks !== wantMarks) f.push('가운데 값 표시');
+  if (r.minus0) f.push('−0.00%');
+  if (!r.loText.includes(signedWon(lo.errWon)) || !r.hiText.includes(signedWon(hi.errWon))) f.push('오차 끝값');
+  if (!r.words) f.push('맞음·틀림 글자');
+  if (v.lines4 && r.maxLines > 4) f.push('카드 4줄');
+  if (r.leadDots) f.push('줄 앞 「·」');
+  if (!r.quadAboveMisses || !r.listBelowMisses) f.push('자리(네 칸 위 · 목록은 왜 틀렸나 아래)');
+  if (r.overflowX || m.truncated !== 0) f.push('잘림·넘침');
+  if (errors.length) f.push('콘솔 오류');
+  return {fails: f, lo, hi, wantFlat};
+}
 async function scoreCellsCorners() {
   const sc = await (await fetch(base + '/data/atlas11/view/score-cells.json')).json();
   const LONG = ['LS ELECTRIC', '한화에어로스페이스'];
@@ -339,32 +384,35 @@ async function scoreCellsCorners() {
     const page = await ctx.newPage(); const errors = [];
     page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
     await page.goto(base + '/#/scores', {waitUntil: 'networkidle'});
-    const ready = await page.waitForSelector('#score-cells .quad-cell', {timeout: 10000}).then(() => true).catch(() => false);
-    if (!ready) { check(`W4 모서리 ${v.id}: 「종목별 맞고 틀림」 칸이 보임`, false, {view: v.id}); await ctx.close(); continue; }
+    const ready = await page.waitForSelector('#score-quad .quad-cell', {timeout: 10000}).then(() => true).catch(() => false);
+    if (!ready) { check(`W4 모서리 ${v.id}: 「네 묶음」 칸이 보임`, false, {view: v.id}); await ctx.close(); continue; }
     for (const d of [...sc.dates].reverse()) {
       await page.selectOption('select[aria-label="채점 날짜"]', d.date); await page.waitForTimeout(200); await renderAll(page);
       const cells = sc.cells.filter(c => c.date === d.date);
-      const errs = cells.map(c => Math.abs(c.errWon)), lo = cells[errs.indexOf(Math.min(...errs))], hi = cells[errs.indexOf(Math.max(...errs))];
-      const r = await page.evaluate(({LONG, lo, hi}) => {
-        const box = document.getElementById('score-cells');
-        const vis = el => { const b = el.getBoundingClientRect(); return b.width > 0 && b.height > 0; };
-        const rows = [...box.querySelectorAll('[data-code]')].filter(vis);
-        const names = rows.map(el => el.querySelector('.sc-name')?.textContent.trim() ?? '');
-        const sorted = names.every((n, i) => i === 0 || names[i - 1].localeCompare(n, 'ko') <= 0);
-        const long = LONG.map(n => { const el = rows.map(x => x.querySelector('.sc-name')).find(e => e?.textContent.trim() === n); if (!el) return {name: n, present: false}; const b = el.getBoundingClientRect(); const cs = getComputedStyle(el); return {name: n, present: true, fits: el.scrollWidth <= el.clientWidth + 1 && b.left >= 0 && b.right <= innerWidth + 1 && cs.textOverflow !== 'ellipsis' && el.innerText.replace(/\s+/g, ' ').trim() === n}; });
-        const flat = rows.filter(el => el.dataset.actDir === 'flat');
-        const text = code => rows.find(el => el.dataset.code === code)?.innerText.replace(/\s+/g, ' ') ?? '';
-        const words = rows.every(el => (el.innerText.match(/맞음|틀림/g) ?? []).length >= 2); // 방향·폭 판정이 글자로(색만으로가 아니라)
-        return {kind: rows[0]?.tagName === 'TR' ? 'table' : 'cards', n: rows.length, codes: rows.map(el => el.dataset.code), quad: [...box.querySelectorAll('.quad-v')].map(e => parseInt(e.textContent.replace(/[^\d]/g, ''), 10)), title: box.querySelector('.panel-title')?.innerText ?? '', sorted, long, flat: {total: flat.length, shown: flat.filter(el => /실제 보합/.test(el.innerText)).length}, loText: text(lo.code), hiText: text(hi.code), words, overflowX: document.documentElement.scrollWidth > innerWidth + 1};
-      }, {LONG, lo, hi});
+      const ends = (() => { const e = cells.map(c => Math.abs(c.errWon)); return {lo: cells[e.indexOf(Math.min(...e))], hi: cells[e.indexOf(Math.max(...e))]}; })();
+      const r = await page.evaluate(w4Probe, {LONG, ...ends});
       const m = await page.evaluate(measureClarity);
-      const quadSum = r.quad.reduce((s, x) => s + x, 0), wantFlat = cells.filter(c => c.actDir === 'flat').length;
-      const ok = r.n === d.count && new Set(r.codes).size === d.count && r.quad.length === 4 && quadSum === d.count && r.quad.join(',') === d.groups.join(',') && r.sorted && r.long.every(x => !x.present || x.fits) && r.flat.total === wantFlat && r.flat.shown === wantFlat && r.loText.includes(signedWon(lo.errWon)) && r.hiText.includes(signedWon(hi.errWon)) && r.words && !r.overflowX && m.truncated === 0 && errors.length === 0;
-      check(`W4 모서리 ${v.id} ${d.date}: ${r.kind === 'table' ? '표' : '세 줄 카드'} ${r.n}줄 = ${d.count} · 네 칸 ${r.quad.join('·')} 합 ${quadSum} · 이름순 · 긴 이름 ${r.long.filter(x => x.present).map(x => x.fits ? '안 잘림' : '잘림').join('·') || '없음'} · 보합 ${r.flat.shown}/${wantFlat} · 오차 ${signedWon(lo.errWon)}~${signedWon(hi.errWon)} · 잘린 글자 ${m.truncated}`, ok,
-        {view: v.id, date: d.date, kind: r.kind, rows: r.n, quad: r.quad, groups: d.groups, sorted: r.sorted, long: r.long, flat: r.flat, lo: signedWon(lo.errWon), hi: signedWon(hi.errWon), words: r.words, truncated: m.truncated, truncSamples: m.samples.truncated.slice(0, 4), overflowX: r.overflowX, errors: errors.slice(0, 3), title: r.title});
-      // 캡처(가장 나중 채점일): 첫 화면(칸의 맨 위) + 칸 전체
+      const {fails, lo, hi, wantFlat} = w4Fails(r, d, cells, m, v, errors);
+      check(`W4 모서리 ${v.id} ${d.date}: ${r.kind === 'table' ? '표' : '네 줄 카드'} ${r.n}줄 = ${d.count}(보류 ${d.held}) · 네 칸 ${r.quad.join('·')} · 이름순 · 긴 이름 ${r.long.filter(x => x.present).map(x => x.fits ? '안 잘림' : '잘림').join('·') || '없음'} · 보합 ${r.flat.shown}/${wantFlat} · 확률 ${r.probs}/${d.count} · 가운데 값 표시 ${r.marks.filter(Boolean).length} · 카드 최대 ${r.maxLines}줄 · 줄 앞 「·」 ${r.leadDots} · 오차 ${signedWon(lo.errWon)}~${signedWon(hi.errWon)} · 잘린 글자 ${m.truncated}`, fails.length === 0,
+        {view: v.id, date: d.date, kind: r.kind, rows: r.n, held: d.held, quad: r.quad, groups: d.groups, fails, long: r.long, flat: r.flat, probs: r.probs, marks: r.marks.filter(Boolean).length, maxLines: r.maxLines, leadDots: r.leadDots, truncated: m.truncated, truncSamples: m.samples.truncated.slice(0, 4), errors: errors.slice(0, 3)});
+      // 결함 심기(G6 · 가장 나중 채점일 · 360px): 심은 결함마다 같은 판정이 실패로 잡아야 한다(심은 뒤 날짜를 다시 골라 화면을 새로 그림)
+      if (v.plant && d.date === sc.dates.at(-1).date) {
+        const plants = [
+          ['카드 하나 지우기', () => document.querySelector('#score-cells .sc-card')?.remove(), '줄 수'],
+          ['긴 이름 자르기', () => { const el = [...document.querySelectorAll('#score-cells .sc-card .sc-name')].find(e => e.textContent.trim() === '한화에어로스페이스'); if (el) Object.assign(el.style, {display: 'inline-block', width: '60px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', verticalAlign: 'bottom'}); }, '긴 이름'],
+          ['「실제 보합」 표시 지우기', () => { const el = document.querySelector('#score-cells .sc-card[data-act-dir="flat"] .sc-adir'); if (el) el.textContent = ''; }, '보합 표시'],
+        ];
+        for (const [name, plant, want] of plants) {
+          await page.evaluate(plant); await page.waitForTimeout(80);
+          const rp = await page.evaluate(w4Probe, {LONG, ...ends}), mp = await page.evaluate(measureClarity);
+          const res = w4Fails(rp, d, cells, mp, v, errors);
+          check(`W4 결함 심기 ${name} → 판정이 「${want}」로 잡음`, res.fails.includes(want), {planted: name, caught: res.fails.includes(want), fails: res.fails, date: d.date, view: v.id});
+          await page.selectOption('select[aria-label="채점 날짜"]', sc.dates[0].date); await page.waitForTimeout(120); await page.selectOption('select[aria-label="채점 날짜"]', d.date); await page.waitForTimeout(200);
+        }
+      }
+      // 캡처(가장 나중 채점일): 네 칸이 보이는 첫 화면 + 목록 칸 전체
       if (v.shot && d.date === sc.dates.at(-1).date) {
-        await page.evaluate(() => document.getElementById('score-cells').scrollIntoView({block: 'start'})); await page.waitForTimeout(150);
+        await page.evaluate(() => document.getElementById('score-quad').scrollIntoView({block: 'start'})); await page.waitForTimeout(150);
         await page.screenshot({path: path.join(shotDir, v.shot + '.png')});
         await page.locator('#score-cells').screenshot({path: path.join(shotDir, v.shot + '-full.png')});
         await page.screenshot({path: path.join(dir, v.shot + '.png')});
