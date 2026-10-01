@@ -70,7 +70,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.waitForSelector('.t-ring .t-dot');
   await page.waitForTimeout(1400); // 점 톡톡(52 × 14ms + 0.5초)이 끝날 때까지
   const first = await page.evaluate(() => ({title: document.querySelector('.t-title')?.textContent, when: document.querySelector('.t-when')?.textContent, dots: document.querySelectorAll('.t-ring .t-dot').length, up: document.querySelectorAll('.t-ring .t-dot.up').length, down: document.querySelectorAll('.t-ring .t-dot.down').length, half: document.querySelectorAll('.t-ring .t-dot.half').length, story: document.querySelector('.t-page')?.dataset.story, cap: document.querySelectorAll('.t-cap').length, progress: document.querySelectorAll('.t-progress').length, ctl: document.querySelectorAll('#t-ctl').length, links: document.querySelectorAll('#main .t-links').length, num: document.querySelector('.t-num')?.innerText.trim(), of: document.querySelector('.t-of')?.innerText.trim(), say: document.querySelector('.t-say')?.innerText.trim(), visible: getComputedStyle(document.querySelector('#t-after')).visibility, tools: [...document.querySelectorAll('#top button')].map(b => b.textContent.trim()), tabs: [...document.querySelectorAll('.bottom .bottom-link')].map(a => a.innerText.trim())}));
-  check(`${label} 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 ${upN}·내릴 ${downN}·속 빈 ${halfN}) · 가운데 「${upN}」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 둘`, first.title === '내일' && first.when === longKor(tomorrowDate) && first.dots === 52 && first.up === upN && first.down === downN && first.half === halfN && first.story === 'off' && first.cap === 0 && first.progress === 0 && first.ctl === 0 && first.links === 0 && first.num === String(upN) && first.of === '52종목 중 오를 쪽' && first.say === `나머지 ${downN}종목은 내릴 쪽입니다.\n속이 빈 ${halfN}개는 거의 반반입니다.` && first.visible === 'visible' && first.tools.length === 2 && first.tools[0] === '가' && first.tabs.join(',') === '내일,성적', first);
+  check(`${label} 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 ${upN}·내릴 ${downN}·속 빈 ${halfN}) · 가운데 「${upN}」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)`, first.title === '내일' && first.when === longKor(tomorrowDate) && first.dots === 52 && first.up === upN && first.down === downN && first.half === halfN && first.story === 'off' && first.cap === 0 && first.progress === 0 && first.ctl === 0 && first.links === 0 && first.num === String(upN) && first.of === '52종목 중 오를 쪽' && first.say === `나머지 ${downN}종목은 내릴 쪽입니다.\n속이 빈 ${halfN}개는 거의 반반입니다.` && first.visible === 'visible' && first.tools.length === 2 && first.tools[0] === '가' && first.tabs.join(',') === '내일,게임,성적', first);
   const orderOk = await page.evaluate(() => { const k = [...document.querySelectorAll('.t-ring .t-dot')].map(c => c.classList.contains('up') ? (c.classList.contains('half') ? 1 : 0) : (c.classList.contains('half') ? 2 : 3)); return k.every((v, i) => i === 0 || v >= k[i - 1]); });
   check(`${label} 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림`, orderOk);
   const fin = await page.evaluate(() => ({rows: document.querySelectorAll('.t-row').length, pills: document.querySelectorAll('.t-row .t-pill').length, more: document.querySelector('.t-more')?.textContent, heads: [...document.querySelectorAll('.t-h2')].map(x => x.innerText.trim()), hollow: [...document.querySelectorAll('.t-dot.half')].every(c => (getComputedStyle(c).fill === 'transparent' || getComputedStyle(c).fill === 'rgba(0, 0, 0, 0)') && getComputedStyle(c).stroke !== 'none' && c.getAttribute('r') === '6.2'), solid: [...document.querySelectorAll('.t-dot:not(.half)')].every(c => getComputedStyle(c).stroke === 'none' && c.getAttribute('r') === '7.4'), foot: document.querySelector('.t-foot')?.innerText.trim()}));
@@ -323,7 +323,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 2026-10-02 01:34 사장님 승인 3차 디자인: 아래 탭 둘(내일 · 성적) — PC 도 같은 탭(진화는 성적·자료 상태의 글 링크로)
   const nav = await page.locator('.bottom .bottom-link').count();
   // 2026-10-02 명령: 1만원 비교는 꺼 둠 → 내일만이면 메뉴 셋(전망·성적·진화)
-  check(`${label} 주요 메뉴(아래 탭) 2개`, nav === 2, {nav});
+  // 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」: 아래 탭 셋(내일 · 게임 · 성적) — 게임은 따로 된 쪽(game/)으로 가는 링크
+  check(`${label} 주요 메뉴(아래 탭) 3개(내일 · 게임 · 성적)`, nav === 3 && await page.locator('.bottom .bottom-link[data-route="game"][href="game/"]').count() === 1, {nav});
   check(`${label} 가로 스크롤 없음`, !(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
   check(`${label} 콘솔 오류 0`, consoleErrors.length === 0, consoleErrors.slice(0, 5));
   check(`${label} 실패한 요청 0`, failedRequests.length === 0, failedRequests.slice(0, 5));
@@ -339,6 +340,48 @@ async function darkCheck() {
   await context.close();
 }
 /** 또렷함 여섯 숫자: 7화면 × 4보기 · 1~3번 0 이 아니면 실패 · 4~6번은 기록 */
+/** 아틀라스 게임(game/) — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」 · 06:13 「승격하라」 · 06:19 「이정훈 대표 방식 가운데 · 보조 다섯」 · 06:34 「하루에 한 번」
+ *  사이트 보안 규칙(CSP)을 켠 채로(우회 없이) 연다. 시계를 목표일 07:00(걸기 열림)과 10:00(08:00 마감 뒤)로 고정해 두 번 본다.
+ *  본다: 콘솔 오류 0 · 카드 52장 · 아래 탭 셋 · 가운데 「이정훈 대표 방식」(원문 기다림) + 보조 다섯 · 전망 표시는 모두 내일 ·
+ *        열림: 두 장을 놓고 낙관 → 이 기기에 저장 → 다시 열어도 그대로 · 닫힘: 걸기 단추 「마감」 ·
+ *        연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서의 줄마다 「실제 등락 → 맞힘·틀림·보합 → 손익」이 게임 규칙(±0.1%)과 맞음 */
+async function gameCheck() {
+  const game = await (await fetch(base + '/data/atlas11/view/game.json')).json();
+  for (const [label, viewport, mobile] of [['pc', {width: 1280, height: 800}, false], ['mobile', {width: 390, height: 844}, true]]) {
+    for (const [when, at] of [['open', `${game.live.target}T07:00:00+09:00`], ['closed', `${game.live.target}T10:00:00+09:00`]]) {
+      const ctx = await browser.newContext({viewport, isMobile: mobile, hasTouch: mobile, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+      const page = await ctx.newPage(); const errors = [];
+      page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); }); page.on('pageerror', e => errors.push('pageerror: ' + e.message));
+      await page.clock.setFixedTime(new Date(at));
+      await page.goto(base + '/game/', {waitUntil: 'networkidle'}); await page.waitForSelector('#main .card', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(500);
+      const st = () => page.evaluate(() => ({cards: document.querySelectorAll('#shoe button').length, tabs: [...document.querySelectorAll('nav.tabs a')].map(a => a.innerText.trim()).join(','), sealDisabled: document.querySelector('#seal').disabled, sealText: document.querySelector('#sealText').textContent.trim(),
+        center: document.querySelector('#center h3')?.textContent.trim(), centerState: document.querySelector('#center .state')?.textContent.trim(), aux: [...document.querySelectorAll('#aux button b')].map(b => b.textContent.trim()).join(','), marks: [...document.querySelectorAll('#main [data-forecast-date]')].map(e => e.dataset.forecastDate), stored: (() => { try { return JSON.parse(localStorage.getItem('atlas-game:v1') || 'null'); } catch { return null; } })()}));
+      const s0 = await st();
+      check(`게임 ${label} ${when}: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 ${tomorrowDate}`,
+        !errors.length && s0.cards === 52 && s0.tabs === '내일,게임,성적' && s0.center === '이정훈 대표 방식' && /원문 기다림/.test(s0.centerState) && s0.aux === '켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리' && s0.marks.length >= 1 && s0.marks.every(d => d === tomorrowDate), {errors: errors.slice(0, 3), ...s0, marks: s0.marks.length, stored: undefined});
+      if (when === 'open') {
+        await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
+        await page.click('#seal'); await page.waitForTimeout(300);
+        const s1 = await st(), bet = s1.stored?.bets?.[game.live.target];
+        await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('#main .card'); await page.waitForTimeout(300);
+        const s2 = await st(), bet2 = s2.stored?.bets?.[game.live.target];
+        check(`게임 ${label} 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)`, bet?.locked === true && bet.lev && bet.inv && bet.lev !== bet.inv && bet2?.locked === true && s2.sealText === '낙관 지우기', {bet, sealText: s2.sealText});
+        // 연습 판: 정산 증서가 게임 규칙과 맞는가
+        await page.click('#tab-practice'); await page.waitForTimeout(250);
+        await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
+        await page.click('#seal'); await page.waitForTimeout(250); await page.click('#seal'); await page.waitForTimeout(1500);
+        const cert = await page.evaluate(() => [...document.querySelectorAll('.cert .cert-row:not(.sum)')].map(r => ({side: r.children[0].textContent.trim(), body: r.children[1].textContent.trim(), pnl: r.children[2].textContent.trim()})));
+        const amt = await page.evaluate(() => [...document.querySelectorAll('#chips-lev .chip, #chips-inv .chip')].filter(c => c.getAttribute('aria-pressed') === 'true').map(c => c.getAttribute('aria-label')));
+        const okRows = cert.length === 2 && cert.every(r => { const m = r.body.match(/실제 ([+−-]?)(\d+\.\d+)% · (맞힘|틀림|보합)/); if (!m) return false; const ret = (m[1] === '−' || m[1] === '-' ? -1 : 1) * Number(m[2]) / 100, o = ret > 0.001 ? 'up' : ret < -0.001 ? 'down' : 'flat', side = r.side === '레버리지' ? 'up' : 'down', want = o === 'flat' ? '보합' : o === side ? '맞힘' : '틀림'; const sign = r.pnl.startsWith('+') ? 1 : r.pnl.startsWith('−') ? -1 : 0; return m[3] === want && sign === (want === '맞힘' ? 1 : want === '틀림' ? -1 : 0); });
+        check(`게임 ${label} 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음`, okRows && await page.locator('.cert canvas.border').count() === 1, {cert, amt});
+        await page.screenshot({path: path.join(dir, `game-${label}-certificate.png`), fullPage: false});
+      } else {
+        check(`게임 ${label} 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음`, s0.sealDisabled && s0.sealText === '마감', {sealText: s0.sealText});
+      }
+      await ctx.close();
+    }
+  }
+}
 async function clarityCheck() {
   const table = {};
   for (const v of VIEWS) {
@@ -497,6 +540,7 @@ try {
   await scenario('mobile', {width: 390, height: 844}, {mobile: true});
   await darkCheck();
   clarity = await clarityCheck();
+  await gameCheck();
   await scoreCellsCorners();
 } finally { await browser.close(); }
 const summary = {schema: 'atlas11-browser-check-2', at: new Date().toISOString(), base, tomorrowOnly: TOMORROW, tomorrowDate: TOMORROW ? tomorrowDate : null, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (touch emulation — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면', 'pc-200': '1280x800 글씨 200%'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, clarityInfo: info, checks};

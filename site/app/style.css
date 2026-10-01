@@ -1105,3 +1105,6 @@ body[data-view="forecast"] .main { max-width: 560px; padding: 0 16px 120px; }
   .t-page[data-story="off"] .t-dot { animation: t-pop .5s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i) * 14ms); }
   @keyframes t-pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
 }
+
+/* 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」: 아래 탭 셋(내일 · 게임 · 성적) — 390px 폭에서도 한 줄에 들어가게 사이를 줄인다 */
+.bottom[data-tabs="3"] { gap: clamp(16px, 8vw, 96px); }

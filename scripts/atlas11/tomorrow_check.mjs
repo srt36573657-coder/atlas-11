@@ -76,7 +76,8 @@ if (base) {
   const require = createRequire(path.join(pw, 'node_modules', 'x.js'));
   const {chromium} = require('playwright');
   const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
-  const routes = ['#/forecast', '#/stock/005930', '#/race', '#/scores', '#/evolution', '#/status', '#/records'];
+  // 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」: 아틀라스 게임(game/)도 같은 잣대(전망 표시는 내일만 · 내일 뒤 날짜 글자 0)로 본다
+  const routes = ['#/forecast', '#/stock/005930', '#/race', '#/scores', '#/evolution', '#/status', '#/records', 'game/'];
   const pages = [];
   for (const width of [1280, 390]) {
     const ctx = await browser.newContext({viewport: {width, height: 900}, bypassCSP: true});

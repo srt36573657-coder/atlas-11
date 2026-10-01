@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="아틀라스 게임 · ATLAS 52종목을 카드 52장으로. 하루 한 번, 레버리지 한 장과 인버스 한 장을 걸고 52억으로 자동으로 거는 ATLAS와 겨룹니다. 게임 돈이며 실제 거래와 관계없습니다.">
+<title>아틀라스 게임 · ATLAS</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../app/fonts.css">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+<div class="room">
+  <header class="top" id="top">
+    <a class="brand" href="./" aria-label="아틀라스 게임 맨 위로"><canvas class="emblem" id="emblem" aria-hidden="true"></canvas><span class="wm"><b>아틀라스 게임</b><small>주식 52종목 · 카드 52장</small></span></a>
+    <div class="tools">
+      <button class="round-btn" id="fontBtn" type="button" aria-label="글씨 크기 바꾸기">가</button>
+      <button class="round-btn" id="voiceBtn" type="button" aria-label="화면 글자 소리로 듣기" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <p class="loading" id="loading">카드를 섞는 중입니다…</p>
+    <div id="game" hidden>
+      <section class="marquee" aria-label="두 지갑">
+        <div class="purse me"><p class="k">내 돈</p><p class="flaps" id="meNow"></p><p class="chg" id="meChg"></p></div>
+        <p class="vs" aria-hidden="true">대</p>
+        <div class="purse at"><p class="k">ATLAS 돈</p><p class="flaps" id="atNow"></p><p class="chg" id="atChg"></p></div>
+      </section>
+      <nav class="rounds" role="tablist" aria-label="판 고르기">
+        <button role="tab" id="tab-live" aria-selected="true" type="button"><b>실전 판</b><span id="tabLiveDate"></span><span id="tabLiveNote"></span></button>
+        <button role="tab" id="tab-practice" aria-selected="false" type="button"><b>연습 판</b><span id="tabPracDate"></span><span>종가가 나온 판</span></button>
+      </nav>
+      <div class="clock" id="clock" aria-live="polite"></div>
+      <p class="basis" id="basis"></p>
+
+      <div class="chapters">
+        <section class="ch ch-rule" id="ch1" aria-labelledby="ch1h">
+          <header class="ch-h"><span class="num" aria-hidden="true">I</span><h2 id="ch1h">법칙</h2></header>
+          <div class="layout3" id="rule"></div>
+          <ol class="day" id="day" aria-label="하루 한 번 시간표"></ol>
+          <p class="duel" id="duel"></p>
+        </section>
+
+        <section class="ch ch-plate" id="ch2" aria-labelledby="ch2h">
+          <header class="ch-h"><span class="num" aria-hidden="true">II</span><h2 id="ch2h">논리 판화</h2></header>
+          <p class="lead" id="plateLead"></p>
+          <figure class="frame">
+            <div class="mat">
+              <p class="axis-y top" id="axTop"></p>
+              <p class="qrow" id="qTop"></p>
+              <div class="plate" id="plateBox"><canvas id="plateCv" role="img" aria-label=""></canvas></div>
+              <p class="qrow" id="qBottom"></p>
+              <p class="axis-y bottom" id="axBottom"></p>
+              <p class="axis-x" id="axX"></p>
+            </div>
+          </figure>
+          <div class="label" id="plateLabel"></div>
+        </section>
+
+        <section class="ch ch-card" id="ch3" aria-labelledby="ch3h">
+          <header class="ch-h"><span class="num" aria-hidden="true">III</span><h2 id="ch3h">카드</h2></header>
+          <div class="quads" id="quads" role="group" aria-label="카드 묶음 고르기"></div>
+          <div class="viewer" id="bigBox"></div>
+          <div class="navrow">
+            <button class="nav" id="prev" type="button" aria-label="앞 카드"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="count" id="count"></p>
+            <button class="nav" id="next" type="button" aria-label="다음 카드"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+          <div class="place">
+            <button class="p-lev" id="putLev" type="button">레버리지에 놓기</button>
+            <button class="p-inv" id="putInv" type="button">인버스에 놓기</button>
+          </div>
+          <div class="shoe" id="shoe" aria-hidden="true"></div>
+        </section>
+
+        <section class="ch ch-table" id="ch4" aria-labelledby="ch4h">
+          <header class="ch-h"><span class="num" aria-hidden="true">IV</span><h2 id="ch4h">테이블</h2></header>
+          <div class="table3d"><div class="rail">
+            <div class="felt" id="felt">
+              <div class="zone lev">
+                <h3>레버리지</h3><p class="pay">오르면 건 돈의 2배를 돌려받음</p>
+                <div class="slot" id="slot-lev"></div>
+                <div class="chips" id="chips-lev" role="group" aria-label="레버리지에 걸 돈"></div>
+              </div>
+              <div class="zone tie"><h3>보합</h3><p class="pay">±0.1% 안이면 건 돈을 돌려받음</p></div>
+              <div class="zone inv">
+                <h3>인버스</h3><p class="pay">내리면 건 돈의 2배를 돌려받음</p>
+                <div class="slot" id="slot-inv"></div>
+                <div class="chips" id="chips-inv" role="group" aria-label="인버스에 걸 돈"></div>
+              </div>
+              <div class="sealmark" id="sealMark" aria-hidden="true"></div>
+            </div>
+          </div></div>
+          <button class="seal-btn" id="seal" type="button"><span class="seal-ico" aria-hidden="true"></span><span id="sealText">낙관 찍고 걸기</span></button>
+          <p class="note" id="sealNote" aria-live="polite"></p>
+        </section>
+
+        <section class="ch ch-result" id="ch5" aria-labelledby="ch5h">
+          <header class="ch-h"><span class="num" aria-hidden="true">V</span><h2 id="ch5h">정산</h2></header>
+          <div id="result"></div>
+        </section>
+
+        <section class="ch ch-atlas" id="ch6" aria-labelledby="ch6h">
+          <header class="ch-h"><span class="num" aria-hidden="true">VI</span><h2 id="ch6h">ATLAS 자동 베팅</h2></header>
+          <p class="lead">ATLAS는 52억 원으로 52장 모두에 겁니다. 카드마다 1억 원으로 시작합니다.</p>
+          <div class="center" id="center"></div>
+          <p class="aux-h">보조 다섯 · 세계에 널리 알려진 투자법과 베팅법</p>
+          <div class="aux" id="aux" role="group" aria-label="보조 베팅법 다섯"></div>
+          <div class="formula" id="formula"></div>
+          <div class="today" id="today"></div>
+          <div class="rec">
+            <h3 id="recTitle"></h3>
+            <div class="chart" id="chart"></div>
+            <div class="beads" id="beads"></div>
+            <div class="facts" id="facts"></div>
+          </div>
+          <p class="note" id="realNote"></p>
+        </section>
+      </div>
+
+      <details class="why" id="why">
+        <summary>VII · 만든 생각 — 방식 36가지 · 참고 180곳 · 가설 8가지 · 잡스 11번</summary>
+        <div id="whyBody"></div>
+      </details>
+      <p class="src" id="src"></p>
+    </div>
+  </main>
+</div>
+<nav class="tabs" aria-label="주요 화면">
+  <a href="../#/forecast"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/></g></svg>내일</a>
+  <a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="11" height="15" rx="2"/><path d="M9 21h9a2 2 0 0 0 2-2V8"/></svg>게임</a>
+  <a href="../#/scores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>성적</a>
+</nav>
+<noscript><p>이 게임은 자바스크립트가 켜져 있어야 동작합니다.</p></noscript>
+<script type="module" src="game.js"></script>
+</body>
+</html>

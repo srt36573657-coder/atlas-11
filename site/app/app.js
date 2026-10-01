@@ -14,8 +14,12 @@ const app = {view: null, manifest: null};
 /* 3차(2026-10-02 01:34 사장님 승인 3차 디자인 · 「aaa7377에 연결해봐」): 아래 탭은 둘 — 「내일」(#/forecast · 처음 화면) · 「성적」.
    진화는 지우지 않고 성적·자료 상태 화면에서 글 링크로 연다. 종목 상세(#/stock/CODE)는 그대로(「내일」 탭에 속함). */
 const TABS = ['forecast', 'scores'];
+/* 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」: 아래 탭 가운데에 「게임」(아틀라스 게임 · 따로 된 쪽 game/)을 더한다.
+   게임은 이 앱의 # 화면이 아니라 다른 쪽이므로 routes 에 넣지 않고 아래 탭에만 링크로 둔다. */
+const GAME_TAB = {href: 'game/', route: 'game', label: '게임'};
 const ICON = {
   forecast: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/></g></svg>',
+  game: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="11" height="15" rx="2"/><path d="M9 21h9a2 2 0 0 0 2-2V8"/></svg>',
   scores: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>',
 };
 const routes = [
@@ -51,7 +55,11 @@ function header() {
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); if (app.view !== 'forecast') route(); }}, '가'),
     speakBtn));
   fontLabel();
-  document.getElementById('bottom').replaceChildren(...TABS.map(id => routes.find(r => r.id === id)).map(r => h('a', {href: '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, r.label))));
+  const tab = (href, id, label) => h('a', {href, class: 'bottom-link', dataset: {route: id}}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[id]}), h('span', {class: 'label'}, label));
+  const links = TABS.map(id => routes.find(r => r.id === id)).map(r => tab('#/' + r.id, r.id, r.label));
+  links.splice(1, 0, tab(GAME_TAB.href, GAME_TAB.route, GAME_TAB.label)); // 내일 · 게임 · 성적
+  const bottom = document.getElementById('bottom'); bottom.dataset.tabs = String(links.length);
+  bottom.replaceChildren(...links);
 }
 function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.setAttribute('aria-label', `글씨 크기 ${FONT_STEPS[Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0)))]}% (누를 때마다 커지고 200% 다음은 100%)`); }
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) el.classList.toggle('active', el.dataset.route === id); }

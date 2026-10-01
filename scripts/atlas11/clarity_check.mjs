@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ATLAS 화면 또렷함 검사 — 화면 7장 × 보기 4가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200%)에서 여섯 숫자를 잰다.
+ * ATLAS 화면 또렷함 검사 — 화면 8장(7장 + 2026-10-02 게임) × 보기 4가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200%)에서 여섯 숫자를 잰다.
  *   node scripts/atlas11/clarity_check.mjs --base http://localhost:8811 --pw <playwright 폴더> --label before|after [--inject]
  *   결과: reports/atlas11/clarity/<label>.json (화면·보기마다 여섯 숫자와 예시)
  *   --inject: 일부러 「내일 42 정도.」「곧 많이 오릅니다.」를 넣어 검사기가 1·2·3번을 한 개씩 더 세는지 본다(검사기 자체 시험).
@@ -26,6 +26,8 @@ export const SCREENS = [
   {id: 'evolution', name: '진화', hash: '#/evolution', wait: 'svg.evo-chart'},
   {id: 'records', name: '기록', hash: '#/records', wait: 'svg.lc, .sentences li'},
   {id: 'status', name: '자료 상태', hash: '#/status', wait: 'svg.lc, .fgrid'},
+  // 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」: 아틀라스 게임(따로 된 쪽 game/) — 카드가 그려지고 판화가 찍힐 때까지 기다린 뒤 잰다
+  {id: 'game', name: '게임', hash: 'game/', wait: '#main .card', settle: async page => { await page.waitForTimeout(900); }},
 ];
 export const VIEWS = [
   {id: 'pc', name: 'PC', viewport: {width: 1280, height: 800}},
@@ -60,7 +62,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
       if (opened) { await page.waitForTimeout(120); const src = await page.evaluate(measureClarity, {roots: ['.hl-src'], refTime: false}); m.source = {panels: opened, relDays: src.relDays, vague: src.vague, bareNumbers: src.bareNumbers, formatDates: src.formatDates, samples: {relDays: src.samples.relDays, vague: src.samples.vague, bareNumbers: src.samples.bareNumbers, formatDates: src.samples.formatDates}}; await page.evaluate(() => { for (const x of document.querySelectorAll('.hl-num[aria-expanded="true"]')) x.click(); }); }
       else m.source = {panels: 0};
       // 내일만: 화면의 전망 표시(data-forecast-date) 가운데 내일(manifest.futureDates[0])이 아닌 것의 수 — 0 이어야 한다
-      m.tomorrowOnly = await page.evaluate(async () => { const mf = await (await fetch('data/atlas11/view/manifest.json')).json(); const t = mf.futureDates[0], all = [...document.querySelectorAll('[data-forecast-date]')].map(e => e.getAttribute('data-forecast-date')); return {on: Boolean(mf.tomorrowOnly), tomorrow: t, marks: all.length, other: all.filter(d => d !== t).length}; }).catch(() => null);
+      // 화면 묶음 주소는 사이트 맨 위(base) 기준으로 — 게임처럼 다른 쪽(game/)에서 재도 같은 manifest 를 읽는다
+      m.tomorrowOnly = await page.evaluate(async b => { const mf = await (await fetch(b + '/data/atlas11/view/manifest.json')).json(); const t = mf.futureDates[0], all = [...document.querySelectorAll('[data-forecast-date]')].map(e => e.getAttribute('data-forecast-date')); return {on: Boolean(mf.tomorrowOnly), tomorrow: t, marks: all.length, other: all.filter(d => d !== t).length}; }, base).catch(() => null);
       out.views[v.id][s.id] = m;
       if (inject) {
         await page.evaluate(() => { const box = document.createElement('section'); box.className = 'card'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
