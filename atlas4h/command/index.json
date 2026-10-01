@@ -1,0 +1,169 @@
+{
+ "schema": "atlas4h-command-index-1",
+ "source": "사장님 첨부 8156f13b-attachment.txt (2026-10-01 17:06 KST)",
+ "original": {
+  "file": "original.txt",
+  "bytes": 17439,
+  "lines": 346,
+  "lineEnding": "CRLF",
+  "trailingNewline": false,
+  "sha256": "ffe9b40d9dd19f788bc60ca1ed35a1717f49afa54584153f7e24c274bee0b58c"
+ },
+ "sections": [
+  {
+   "file": "00-head.txt",
+   "title": "자료 머리",
+   "lines": [
+    1,
+    4
+   ],
+   "firstLine": "<자료>",
+   "lastLine": "",
+   "sha256": "ff15a75aeab5419acec17cc7c757229dfd2ca3f960f0add94f58bb4a4be7c05f"
+  },
+  {
+   "file": "01-structures36.txt",
+   "title": "36구조",
+   "lines": [
+    5,
+    51
+   ],
+   "firstLine": "<36구조 — A→F 순서로만, 기본은 안 지운다>",
+   "lastLine": "",
+   "sha256": "8bb275b11c4e774a30ecdbd47d356c9547fe64fbe2eae50e685f27b1371e2f49"
+  },
+  {
+   "file": "02-watch.txt",
+   "title": "감시",
+   "lines": [
+    52,
+    64
+   ],
+   "firstLine": "<감시 — 보는 눈은 짓는 이와 다른 에이전트>",
+   "lastLine": "",
+   "sha256": "934da9312c6ba4f784079e77b762811c7cd6f5a467b6ccccce8eb673b8d916c0"
+  },
+  {
+   "file": "03-harness.txt",
+   "title": "하네스",
+   "lines": [
+    65,
+    90
+   ],
+   "firstLine": "<하네스 — 오래 도는 일꾼의 판(앤트로픽 방식)>",
+   "lastLine": "",
+   "sha256": "87395e5db142bc9b6eb61d26d51a8d7f6bc490607a82e067ada1914f087a5ed1"
+  },
+  {
+   "file": "04-learning.txt",
+   "title": "학습",
+   "lines": [
+    91,
+    100
+   ],
+   "firstLine": "<학습 — 쓰고, 재고, 고친다>",
+   "lastLine": "",
+   "sha256": "738ec4b71919d75d3bdbf41f0e0d7ddbd632aec450e01d992b4ed5486fc1a3da"
+  },
+  {
+   "file": "05-learned.txt",
+   "title": "배운것",
+   "lines": [
+    101,
+    112
+   ],
+   "firstLine": "<배운것 — 2026. 10. 1.>",
+   "lastLine": "",
+   "sha256": "02c2f56ccbb3b600cffa79d22860cf85b5c90e009327d9edcc4ebcb2cdb4583d"
+  },
+  {
+   "file": "06-constants-variables.txt",
+   "title": "상수와_변수",
+   "lines": [
+    113,
+    130
+   ],
+   "firstLine": "<상수와_변수>",
+   "lastLine": "",
+   "sha256": "d815b020e7c916b5f34e4aa2a5eba4cf17ce2ffe2a55b0217aec4e84d879b4aa"
+  },
+  {
+   "file": "07-loop.txt",
+   "title": "고리",
+   "lines": [
+    131,
+    143
+   ],
+   "firstLine": "<고리 — 4시간마다 한 바퀴>",
+   "lastLine": "",
+   "sha256": "e65211fe51ccb2f138105d019a03b6366c498ac42c35d2253894e88b42c6c7ad"
+  },
+  {
+   "file": "08-engine.txt",
+   "title": "엔진",
+   "lines": [
+    144,
+    199
+   ],
+   "firstLine": "<엔진>",
+   "lastLine": "",
+   "sha256": "f6d3efd906be58b5050f5b0b09bcc75f3b72a31a7dff39a0755132ffbcc6a766"
+  },
+  {
+   "file": "09-scoring-evolution.txt",
+   "title": "채점과_진화",
+   "lines": [
+    200,
+    219
+   ],
+   "firstLine": "<채점과_진화>",
+   "lastLine": "",
+   "sha256": "944a2432a1f132dbfdb808be14cfc8de014b2ecade4affe90e5a31da3dd3dbaa"
+  },
+  {
+   "file": "10-spec.txt",
+   "title": "사양",
+   "lines": [
+    220,
+    248
+   ],
+   "firstLine": "<사양 — 시험 코드로 돌린다, 괄호=검증법>",
+   "lastLine": "",
+   "sha256": "5004c4c0ad667abaa7e2283a118459dbb5fbc49f3047d269858f1a5bc7de47f5"
+  },
+  {
+   "file": "11-extremes.txt",
+   "title": "극한",
+   "lines": [
+    249,
+    258
+   ],
+   "firstLine": "<극한 — 깨짐 0·숫자 맞음>",
+   "lastLine": "",
+   "sha256": "b150bd9ac0e85402060423a370814aa3b624dacea0da38b41a885da4c6327cdc"
+  },
+  {
+   "file": "12-sources.txt",
+   "title": "원문(+ 자료 닫기)",
+   "lines": [
+    259,
+    281
+   ],
+   "firstLine": "<원문 — 읽고 쓸지 정한다>",
+   "lastLine": "",
+   "sha256": "28304c1020d9401e984fdafb20f9ed3b8d12650bfdf94576eb2cc8100710d6e0"
+  },
+  {
+   "file": "13-command.txt",
+   "title": "명령",
+   "lines": [
+    282,
+    346
+   ],
+   "firstLine": "<명령 — 지킬 것은 이 아래가 전부다>",
+   "lastLine": "</명령>",
+   "sha256": "5f3ab214d6ced8accf903abdbaedbccab64e98d17a7e3c2e1f5752b96ea6c96c"
+  }
+ ],
+ "rule": "칸 파일을 순서대로 이어 붙이면 original.txt 와 바이트까지 같다(atlas4h/scripts/check_command.mjs 가 확인)"
+}
