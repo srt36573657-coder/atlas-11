@@ -57,6 +57,12 @@ export default async function W9({report, rel, ROOT}) {
     const ok = ra.copyCheckMeanEqualsA?.sameSummaryAsA === true && ra.copyCheckMeanEqualsA?.sameCells === true && po.dir1selOriginal.every((v, k) => v === A1[k]) && bm.pCand === ra.bootstrap.A_median_vs_original.pCandBetter && bm.pRef === ra.bootstrap.A_median_vs_original.pRefBetter && bs.pCand === ra.bootstrap.B_symmetric_vs_original.pCandBetter && bs.pRef === ra.bootstrap.B_symmetric_vs_original.pRefBetter && bm.bc === ra.bootstrap.A_median_vs_original.blocksCandBetter && bs.br === ra.bootstrap.B_symmetric_vs_original.blocksRefBetter;
     report('W9:보조후향', ok, {label: '후향 · 판정에 안 씀', dir1selPct: {original: ra.original.dir1selPct, A_median: ra.A_median.dir1selPct, B_symmetric: ra.B_symmetric.dir1selPct}, A_median: {pBetter: bm.pCand, pWorse: bm.pRef, blocks: [bm.bc, bm.br]}, B_symmetric: {pBetter: bs.pCand, pWorse: bs.pRef, blocks: [bs.bc, bs.br]}});
   }
+  // 계획 밖 · 결과를 본 뒤: T14 정확 재현(실제 뽑기 횟수로 가중한 직접 셈 = 발행 156/156) · 두 발행본 같은 뽑기
+  const ph = part.posthoc;
+  if (ph) {
+    const rec = Object.values(ph.T14ExactReconstruction), fw = Object.values(ph.familyWiseMaxZ);
+    report('W9:T14정확재현', rec.length === 2 && rec.every(r => r.reproducedExactly === 156 && r.comparisons === 156) && ph.samePicksInBothPublications === true && fw.every(f => f.shareMaxAbsZOver3 > 0 && f.shareMaxAbsZOver3 < 1 && f.shareMaxAbsZOver4 < f.shareMaxAbsZOver3), {label: ph.label, reproduced: rec.map(r => r.reproducedExactly), samePicks: ph.samePicksInBothPublications, over3: fw.map(f => f.shareMaxAbsZOver3), over4: fw.map(f => f.shareMaxAbsZOver4)});
+  }
   // 결함 심기(10절): 칸 수 하나를 바꾼 사본 → 변형 표가 달라져 막혀야 한다
   const P0 = part.publications[part.decision.primary], idx0 = P0.zeroFlags.map((z, i) => z ? i : -1).filter(i => i >= 0), bad = structuredClone(P0.variants.median.perStockCounts);
   bad[idx0[0]].down += 400; bad[idx0[0]].up -= 400;

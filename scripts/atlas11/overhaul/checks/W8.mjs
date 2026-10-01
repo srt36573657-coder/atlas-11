@@ -66,6 +66,13 @@ export default async function W8({report, sha, rel, ROOT}) {
     const ok = ss.T13.A.equalToOrigin + ss.T13.A.afterOrigin + ss.T13.C.equalToOrigin + ss.T13.C.afterOrigin === 0 && v1 === ss.verdicts['①'] && v2 === ss.verdicts['②'] && v3 === ss.verdicts['③'] && v1 === p1.decision.verdict && v2 === p2.decision.verdict && v3 === p3.decision.verdict;
     report('T13:민감도', ok, {label: '계획 밖 · 학습 r.date < 기준일', strictBefore: [ss.T13.A.strictTrainingEndBeforeOrigin, ss.T13.C.strictTrainingEndBeforeOrigin], verdicts: {'①': v1, '②': v2, '③': v3}, sameAsV1: ok, dir1selPct: ss.dir1selPct});
   }
+  // 계획 밖 · 결과를 본 뒤: ④ 발행 방식 영향(정정 종가 24개만 바꿔 운영 모의 계산으로 다시 돌림)
+  const ip = p4.posthoc?.impactPublishedMethod;
+  if (ip) {
+    const f = ip.flips.find(x => x.code === '035250');
+    const ok = ip.swappedCloses === 24 && ip.modelsIdenticalAfterSwap === true && ip.flipsPublishedMethod === 1 && ip.flipsExact === 0 && f && f.published.selected === 'up' && f.correctedPublishedMethod.selected === 'down' && f.exactCorrected.tie === true && f.actual === 'down' && ip.wrongCellsChanged <= 1 && p4.decision.reportText === '규칙상 원인이다 = 값 다름 · 발행 방식으로 1칸(035250) 바뀜, 정확 셈으로는 동률 · 오답 42칸 중 바뀌는 칸 ≤ 1 · 9/30 목표 0';
+    report('W8:④발행방식영향', ok, {label: ip.label, flipsPublished: ip.flipsPublishedMethod, flipsExact: ip.flipsExact, cell: f && {code: f.code, published: f.published, corrected: f.correctedPublishedMethod, exactTie: f.exactCorrected.up}});
+  }
   // 결함 심기(10절): 무게 0 표시 하나를 바꾼 사본 → ② 기준일 값이 달라져 막혀야 한다
   const bad = structuredClone(A), c = Object.fromEntries(bad.columns.map((n, j) => [n, j])); bad.cells[0][c.zero] = 1 - bad.cells[0][c.zero];
   const w2 = dir1selBy(bad, (r, cc) => r[cc.zero] === 0);

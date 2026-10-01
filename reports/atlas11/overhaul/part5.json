@@ -6235,6 +6235,89 @@
    "lib/atlas11/simulate.mjs:103 1일 방향 = expm1(r) 가 ±0.1% 밖인지",
    "lib/atlas11/simulate.mjs:32-38 가장 높은 확률 · 같으면 보합→상승→하락",
    "lib/factor36.mjs:61-62 무게 0 이면 절편·β 모두 0 → μ = 0"
-  ]
+  ],
+  "reportText": "규칙상 모른다(T14 글자대로 51/52 · eco/03 판단 기다림) · ⑤ 는 하락 쏠림의 원인이지 오답의 원인이 아니다 · A·B 는 후향 이득 없음 → W11 후보 아님"
+ },
+ "posthoc": {
+  "label": "계획 밖 · 결과를 본 뒤",
+  "T14ExactReconstruction": {
+   "2026-09-28-rolling20-13cd892134e517b4": {
+    "label": "계획 밖 · 결과를 본 뒤",
+    "comparisons": 156,
+    "reproducedExactly": 156,
+    "picksFrom": "rng(20260917) 경로마다 20개 중 첫째 → 공유 날짜 504개 중 하나",
+    "pickCountsSha256": "e2a45ae1c7f1fca8c247071284c1f49a96e9486a467d689024ba247cf9c243b2"
+   },
+   "2026-09-29-atlas11-128de9174cfdfa1f": {
+    "label": "계획 밖 · 결과를 본 뒤",
+    "comparisons": 156,
+    "reproducedExactly": 156,
+    "picksFrom": "rng(20260917) 경로마다 20개 중 첫째 → 공유 날짜 504개 중 하나",
+    "pickCountsSha256": "e2a45ae1c7f1fca8c247071284c1f49a96e9486a467d689024ba247cf9c243b2"
+   }
+  },
+  "samePicksInBothPublications": true,
+  "familyWiseMaxZ": {
+   "2026-09-28-rolling20-13cd892134e517b4": {
+    "label": "계획 밖 · 결과를 본 뒤",
+    "replications": 2000,
+    "rngSeeds": "1000003 + 반복 번호(lib rng)",
+    "shareMaxAbsZOver3": 0.287,
+    "shareMaxAbsZOver4": 0.009
+   },
+   "2026-09-29-atlas11-128de9174cfdfa1f": {
+    "label": "계획 밖 · 결과를 본 뒤",
+    "replications": 2000,
+    "rngSeeds": "1000003 + 반복 번호(lib rng)",
+    "shareMaxAbsZOver3": 0.294,
+    "shareMaxAbsZOver4": 0.0065
+   }
+  },
+  "note": "두 발행본은 같은 난수·같은 공유 날짜 수(504)라 1일 뽑기 횟수가 똑같다 → 032830 의 차이는 한 사건이다. 실제 뽑기 횟수로 가중한 직접 셈은 156개 확률을 모두 그대로 낸다 → 계산은 맞고, 차이는 뽑기 횟수의 우연이다. T14 는 글자대로 실패로 둔다.",
+  "tiltNotMisses": "⑤ 는 하락 쏠림(예측 하락 86 대 실제 하락 69)을 설명한다. 오답을 설명하지는 않는다 — A·B 는 후향 정답률을 올리지 못했다(A 49.86% 대 50.53% · P 0.29 · B 48.01% · 원래가 나음 P 0.88 · 5/6 블록). 결정표대로 W11 후보로 보내지 않는다.",
+  "exactVsSimulatedZero32": {
+   "2026-09-28-rolling20-13cd892134e517b4": {
+    "mean": {
+     "simulatedGapPp": 5.09,
+     "exactGapPp": 4.71,
+     "simulatedDown": 29,
+     "exactDown": 28
+    },
+    "median": {
+     "simulatedGapPp": 0.68,
+     "exactGapPp": 0.29,
+     "simulatedDown": 22,
+     "exactDown": 18
+    },
+    "symmetric": {
+     "simulatedGapPp": 0.42,
+     "exactGapPp": 0,
+     "simulatedDown": 24,
+     "exactDown": 0
+    }
+   },
+   "2026-09-29-atlas11-128de9174cfdfa1f": {
+    "mean": {
+     "simulatedGapPp": 5.15,
+     "exactGapPp": 4.76,
+     "simulatedDown": 29,
+     "exactDown": 29
+    },
+    "median": {
+     "simulatedGapPp": 0.72,
+     "exactGapPp": 0.31,
+     "simulatedDown": 23,
+     "exactDown": 17
+    },
+    "symmetric": {
+     "simulatedGapPp": 0.42,
+     "exactGapPp": 0,
+     "simulatedDown": 24,
+     "exactDown": 0
+    }
+   }
+  },
+  "builtAt": "2026-10-01 15:47 KST",
+  "builtOnCommit": "ba89f96"
  }
 }
