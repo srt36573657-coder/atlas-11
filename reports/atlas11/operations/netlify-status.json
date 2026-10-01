@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-30T20:36:07.113Z",
+  "at": "2026-10-01T01:50:39.022Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-09-30T20:36:05.998Z",
+    "publishedAt": "2026-10-01T01:50:38.082Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-view-manifest-1\",\"generatedAt\":\"2026-09-30T20:35:20.978Z\",\"forecastId\":\"2026-09-30-atlas11-d63a7866e135fbc2\",\"modelVersion\":\"atlas11-A-1\",\"issuedAt\":\"2026-09-30T08:22:04Z\",\"actualAsOf\":\"2026-09-30\",\"currentDateKST\":\"2026-09-30\",\"dataStatus\":\"current_close\",\"publicationStatus\":\"liv"
+      "bodyStart": "{\"schema\":\"atlas11-view-manifest-1\",\"generatedAt\":\"2026-10-01T01:49:50.995Z\",\"forecastId\":\"2026-09-30-atlas11-d63a7866e135fbc2\",\"modelVersion\":\"atlas11-A-1\",\"issuedAt\":\"2026-09-30T08:22:04Z\",\"actualAsOf\":\"2026-09-30\",\"currentDateKST\":\"2026-09-30\",\"dataStatus\":\"current_close\",\"publicationStatus\":\"liv"
     }
   ]
 }
