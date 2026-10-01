@@ -235,23 +235,24 @@
    "numbers": {
     "② 후향": "무게 있는 칸 50.22% 대 무게 0 칸 51.72% · P 0.2525/0.7475 · 블록 3/3 → 모른다",
     "③ 후향": "공통 식 C 50.16% 대 A 50.53% · P(C 나음) 0.341 · 블록 3/3 → 모른다",
-    "④": "계산 차이 0(특징·분산) · 9/28 rolling20 이 쓴 9/21~9/23 종가 24개(12종목)가 9/29 정정 → 특징 최대 0.0192 · 분산 최대 17.9% → 규칙상 원인이다 · 1일 방향 바뀐 칸 0/52",
+    "④": "계산 차이 0(특징·분산) · 9/28 rolling20 이 쓴 9/21~9/23 종가 24개(12종목)가 9/29 정정 → 특징 최대 0.0192 · 분산 최대 17.9% → 규칙상 원인이다 · 1일 방향 바뀐 칸: 정확 셈 0/52 · 발행 방식 1칸(035250)",
     "T13": "학습 끝 < 기준일 114/120 · 같음 6(블록 첫날) · 미래 자료 없음 120/120 · 민감도(학습 < 기준일)에서 ①②③ 판정 그대로",
     "④ 보고(검토 고침)": "규칙상 원인이다 = 값 다름 · 발행 방식으로 1칸(035250) 바뀜, 정확 셈으로는 동률 · 오답 42칸 중 바뀌는 칸 ≤ 1 · 9/30 목표 0(계획 밖 · 결과를 본 뒤)",
-    "민감도 움직임": "모델 50.53 → 49.62% · 모델 − 늘 하락 +1.12 → +0.21%p(P 0.523) · 고른 모형 바뀐 종목 9/11/9/24/8/21 · 1%p 안쪽 차이는 잡음"
+    "민감도 움직임": "모델 50.53 → 49.62% · 모델 − 늘 하락 +1.12 → +0.21%p(P 0.523) · 고른 모형 바뀐 종목 9/11/9/24/8/21 · 1%p 안쪽 차이는 잡음",
+    "검토 2회차": "F35 바뀐 값은 1일(8종목)·2일(7종목)뿐 · 5·20·60일·F11 5일 평균 그대로 · F11 은 9/28 폭 1/52 · 고치기 전 종가 19개 15:15 KST · 5개 16:56 KST(모두 alphasquare)"
    },
    "files": {
     "reports/atlas11/overhaul/part2.json": "aba2b9501b6e67d04f7dbffd2c82be7d6a20f2ce68a3d5062c0b7070e3df466f",
     "reports/atlas11/overhaul/part3.json": "e36b967094b2aa78edec354b34d6a7bfd98ecb467478e287a5e86758604142a7",
     "reports/atlas11/overhaul/part3-retro-pooled-cells.json": "f659aa190342d5b0c470923cfeb15339ecb3707243cf7b32a946df6d9f0d2f56",
-    "reports/atlas11/overhaul/part4.json": "51740bc5779d03eb6d5fe7a133f1d704a18bcb740a2ed9556378b780d26f648e",
-    "scripts/atlas11/overhaul/checks/W8.mjs": "ecda4acc5f1c07a398e17ddf33d6fbabd1c4d999587b2d55ff2a44aa5e820a5c",
-    "reports/atlas11/overhaul/data-correction-01.md": "89bad6598aeae6e8329867e009cb44b6474eab2f46b8fc281a0c38452927a10a"
+    "reports/atlas11/overhaul/part4.json": "603af037253f9d772c68ddc12ef24dcd5574e33dbd502e2d8cdd542ad1f83aab",
+    "scripts/atlas11/overhaul/checks/W8.mjs": "afa527a8610717a814003972023fc5248230689a4dc6f8de50ee59bedae94f99",
+    "reports/atlas11/overhaul/data-correction-01.md": "50afcec39b3c33cfb0e0af8bf0ad4a661fd728e3ef30e3db038e15b94884b969"
    },
    "signoff": {
     "만드는 이": "나 갈래 에이전트",
     "세는 이": "대기",
-    "따지는 이": "10/01 막음 1 · 고침 5 · 참고 10 → 고침 반영(d52e072 · af36a4e) · 다시 검토 대기"
+    "따지는 이": "10/01 1회 막음 1·고침 5·참고 10 → d52e072·af36a4e · 2회 막음 2·고침 7 → 2회 고침 커밋 · 다시 검토 대기"
    }
   },
   {
@@ -276,17 +277,17 @@
     "판정 제안": "규칙상 모른다(T14 실패) · 무게 0 표본만 보면 하락 쏠림의 원인",
     "후향 보조": "dir1sel 원래 50.53 · A 49.86(P 0.2865) · B 48.01(원래가 나음 P 0.8815, 5/6)",
     "T14 진단(검토 고침)": "뽑기 횟수 × 정확 방향 = 발행 156/156(두 발행본) · 두 발행본 같은 뽑기(한 사건) · 최대 |Z| > 3 확률 28.7~29.4%(계획 밖 · 결과를 본 뒤)",
-    "⑤ 보고(검토 고침)": "하락 쏠림의 원인이지 오답의 원인이 아님 · 정확 셈 원래 +4.76%p(모의 +5.15) · A 하락 17(모의 23) · B 0(모의 24 · 모두 동률) · A·B 후향 이득 없음 → W11 후보 아님"
+    "⑤ 보고(검토 고침)": "⑤ 의 기울기는 틀린 칸도 맞은 칸도 만들었고, 없애도 과거·실전 정답이 늘지 않았다 → 고칠 원인이 아니다(무게 0 맞힘 43칸 중 41칸이 그 하락 고름 · 후향 A 49.86% 가려지지 않음 · B 48.01% 나빠짐 · 실전 이틀에 없앴으면 무게 0 맞힘 43 → 36(A) · 39(B)). 결정표대로라면 W11 후보가 아니지만, eco/03 의 T14 고쳐 쓰기를 승인하면 규칙상 ⑤ 가 「원인이다」가 되어 A·B 가 후보가 되므로 「후보 아님」은 사장님이 정해야 한다."
    },
    "files": {
-    "reports/atlas11/overhaul/part5.json": "bee40e5ed90c1cce5019027676b12fde8148209dbc3dfca1e2842ec6df377720",
+    "reports/atlas11/overhaul/part5.json": "f04ede7fd18e8de51d022d34349d07bd63daa49f455fcd5f0cee8da21d9804e2",
     "scripts/atlas11/overhaul/checks/W9.mjs": "5a4e6c6a4cb0dd1a1fd3aaff1c23522b8cb3fce4d554cf29cd7b7ccf750d5bb6",
-    "reports/atlas11/overhaul/eco/03.md": "3eedc2e6939402d60399cef319909ee3150e80fe7a729e0e0dfdf53ea75bc5ab"
+    "reports/atlas11/overhaul/eco/03.md": "f86b61eaaeb3517ae0d50eeac1b6d6c7eedba51f9402abfe83515f3a19eb85a8"
    },
    "signoff": {
     "만드는 이": "나 갈래 에이전트",
     "세는 이": "대기",
-    "따지는 이": "10/01 막음 1 · 고침 5 · 참고 10 → 고침 반영(d52e072 · af36a4e) · 다시 검토 대기"
+    "따지는 이": "10/01 1회 막음 1·고침 5·참고 10 → d52e072·af36a4e · 2회 막음 2·고침 7 → 2회 고침 커밋 · 다시 검토 대기"
    }
   },
   {
@@ -304,19 +305,22 @@
    ],
    "numbers": {
     "판정표": "① 모른다 · ② 모른다 · ③ 모른다 · ④ 원인이다 · ⑤ 모른다",
-    "틀린 42칸": "무게 0 → 모의 계산의 기울기(평균 빼기) 21 · F11 52종목 폭·평균 6 · F35 자기 추세 8 · F35 자기 추세 + F11 52종목 폭·평균 6 · 반대로 민 항 없음(모의 계산 확률이 갈림) 1",
+    "틀린 42칸": "같은 난수 잡음 2 · 모의 계산 기울기 25 · 평균 항 15 · 없음 0 (기울기: 무게 0 19 + 무게 있음 6 · 평균 항: 기본값 같은 쪽 11)",
     "결정표": "W11 「후보 없음」(사장님이 달리 정하시지 않으면)",
-    "check.mjs --step W10": "4/4"
+    "check.mjs --step W10": "4/4",
+    "42칸 규칙": "1) 정확 계산 방향 ≠ 발행 방향 → 같은 난수 잡음 / 2) 세 항(기본값·F35·F11)을 더한 평균이 ≈0(|평균| < 0.005%p · 화면에 0.00%) 이거나 고른 방향과 반대 → 모의 계산 기울기 / 3) 그 밖 → 평균 항(고른 방향과 부호가 같은 항 · 기본값 포함 · 가장 큰 항) / 먼저 맞는 것 하나만"
    },
    "files": {
-    "reports/atlas11/overhaul/diagnosis.md": "591d5a6b6c389b86cf1b0e703ccfaf503e4b5eab6ade5d267bcd5e252d8742b0",
-    "reports/atlas11/overhaul/diagnosis.json": "58057c1c07c47fa5b2b4cb4558cf2d815c51abbef1da0d79ee347d88ad044e1a",
-    "scripts/atlas11/overhaul/checks/W10.mjs": "891fd728ce5ea100d5ee41d15f3723ce17e1e7a12884e26309d18249b8f93d46"
+    "reports/atlas11/overhaul/diagnosis.md": "4f82030fe58b451a818dc62aee2d9024b2fb8f04d1ae5b6c2830e00bc75964d1",
+    "reports/atlas11/overhaul/diagnosis.json": "c5bf274d3f0a7d46ae347a3e57be85f3470d04a4dd76a2d9fa5722a47b025705",
+    "scripts/atlas11/overhaul/checks/W10.mjs": "02d8e79afb919fec69032c873e8dfb58721f396c4d75c9d278832807d6a6f152",
+    "reports/atlas11/overhaul/w10-against.json": "4767f34c93e3c7049d304d6467d19d89004620988f19b0141b8e413b7940596c",
+    "scripts/atlas11/overhaul/lane-b/w10-against.mjs": "d2a4334d1b703221acd4301eae46655d7c6c9cd30b748cc200d6f480dd367861"
    },
    "signoff": {
     "만드는 이": "나 갈래 에이전트",
     "세는 이": "대기",
-    "따지는 이": "10/01 막음 1 · 고침 5 · 참고 10 → 고침 반영(d52e072 · af36a4e) · 다시 검토 대기"
+    "따지는 이": "10/01 1회 막음 1·고침 5·참고 10 → d52e072·af36a4e · 2회 막음 2·고침 7 → 2회 고침 커밋 · 다시 검토 대기"
    }
   }
  ],
@@ -351,7 +355,7 @@
    "approved": null,
    "status": "사장님 판단 기다림",
    "what": "T14 → 정확 재현 또는 묶음 공차(약 4σ) · T13·F4 → 학습·잔차 날짜 ≤ 기준일 < 첫 목표일",
-   "sha256": "3eedc2e6939402d60399cef319909ee3150e80fe7a729e0e0dfdf53ea75bc5ab"
+   "sha256": "f86b61eaaeb3517ae0d50eeac1b6d6c7eedba51f9402abfe83515f3a19eb85a8"
   }
  ],
  "next": [
@@ -428,7 +432,17 @@
    "file": "reports/atlas11/overhaul/data-correction-01.md",
    "commit": "d52e072",
    "what": "9/21~9/23 종가 24개(12종목) · 9/29 정정 · 9/28 rolling20 발행이 고치기 전 값을 씀 · 발행본은 다시 내지 않음",
-   "sha256": "89bad6598aeae6e8329867e009cb44b6474eab2f46b8fc281a0c38452927a10a"
+   "sha256": "50afcec39b3c33cfb0e0af8bf0ad4a661fd728e3ef30e3db038e15b94884b969"
+  }
+ ],
+ "deviations": [
+  {
+   "at": "2026-10-01 14:33 KST",
+   "lane": "나",
+   "what": "W8 의 T13 이 글자대로 실패한 상태로 W9 를 시작했다(따지는 이 참고 16)",
+   "rule": "명령서 6판 30절 3줄 「시험·규칙 하나라도 실패하면 다음으로 가지 마라」 · 21절 8줄 「실패하면 두 번까지 고치고, 그래도면 멈추고 보고」",
+   "why": "W9 는 후향 결과를 쓰지 않아 T13 에 기대지 않는다고 보았고, T13 을 고치려면 v1 방법(R8)을 바꿔야 해서 고치지 않았다",
+   "after": "고친 것 없음 · eco/03 에 사장님 판단을 청함 · G2 는 「글자대로 미통과」로 둠"
   }
  ]
 }

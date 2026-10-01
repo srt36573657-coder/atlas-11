@@ -5,8 +5,8 @@
  "requirement": "R8",
  "label": "후향",
  "plan": "reports/atlas11/overhaul/plan.md ②",
- "builtAt": "2026-10-01 14:32 KST",
- "builtOnCommit": "626300b",
+ "builtAt": "2026-10-01 16:26 KST",
+ "builtOnCommit": "15d5ff8",
  "oneThingChanged": "없음 — 같은 A 후향 실행(part1-retro-A-cells.json) 안에서 그 블록에 무게(절편·β 7개)가 모두 0인 종목의 칸과 아닌 칸으로 나눔",
  "source": {
   "file": "reports/atlas11/overhaul/part1-retro-A-cells.json",
