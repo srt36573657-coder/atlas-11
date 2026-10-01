@@ -1,6 +1,6 @@
 # 넘겨주기 쪽지 (다음 고리가 이것만 보고 시작한다)
 
-- 고친 때: 2026-10-01 21:48 KST(감시 bb12723 뒤) · 쓴 이: 본 세션(기획안 1·2단계 만들기)
+- 고친 때: 2026-10-01 22:11 KST(3단계 고리 코드 합친 뒤) · 쓴 이: 본 세션(기획안 1·2단계 만들기)
 - 명령문: `atlas4h/command/original.txt` (sha256 `ffe9b40d…0b58c`) · 칸 파일 14개 · 필요한 칸만 다시 읽는다
 - 기획안: `atlas4h/plan/build-plan.md` (일곱 단계 · 사장님 손 순서)
 
@@ -9,14 +9,15 @@
 2. 08시 재현(`retro/result.json`, 잠긴 T12 가 읽는 곳): 무판보다 「실력」 5.88% · ATLAS 11(후향)과는 원 단위 0.12% 「아직 모름」(DM p 0.450·0.466), 출발값 % 곁 확인으로는 −0.58% 「앞 판으로」(ATLAS 11 이 조금 나음) · 단순 전이식·코스피는 지난 자료가 없어 「없음」 → **T12 안 통과 → 화면에 내지 않는다(명령 8).**
 3. 16시 재현은 `retro/result-16.json` (무판 견줌만 · 16시엔 기준 둘이 없음 — conflicts.md 16).
 4. 시도 장부 `seal/trials.jsonl`: trial-0001·0002 는 「늦게 적음」이라 고르는 데 쓰지 않는다. 다음 시도부터는 시도 줄을 먼저 커밋하고 돌린다.
-5. 시험: `node --test 'atlas4h/tests/*.test.mjs'` 230 · collect 20 · engine 24 · score 8 · baselines 13. `harness/start.sh` 가 모두 돌린다.
+5. 시험: `node --test 'atlas4h/tests/*.test.mjs'` 230 · collect 20 · engine 24 · score 8 · baselines 13(+1 건너뜀) · loop 10. `harness/start.sh` 가 모두 돌린다.
+6. 3단계 고리 코드(`atlas4h/loop/` · `.github/workflows/atlas4h-loop.yml`)는 들어왔지만 **꺼 둔 상태**다(예약 줄 없음 · 단추로만). 예약 줄은 감시를 거친 뒤 사장님께 드린다(`loop/cron-lines.md`).
 
 ## 다음 고리가 할 한 가지
 - **지난 자료가 들어왔는지 본다** (`atlas4h/data/history/*.json` · `atlas4h/ledger/collect/*.jsonl`). 들어왔으면:
   1. `perVariable.<id>.from` 이 2023-09-24 무렵인지, `errors` 가 비었는지 본다.
   2. `node atlas4h/retro/run.mjs --slot 08` (→ `retro/result.json`·`summary.md`) — 단순 전이식·코스피가 채워진다.
   3. `seal/trials.jsonl` 에 trial-0002 마지막 결과 줄을 덧붙이고 커밋한다.
-- 안 들어왔으면: 3단계 `atlas4h-loop` 워크플로를 만든다(예약 줄은 사장님이 넣는다).
+- 안 들어왔으면: 3단계 고리 코드를 다른 에이전트로 감시하고, 무거운 바퀴의 지난 자료 새로 받기를 정한다. 예약 줄은 그 뒤에 사장님께 드린다.
 
 ## 막힌 것 (`progress.json` blocked)
 - 「지난 자료 받기」 단추(사장님) · 변경 요청서 atlas4h-02(사장님 승인) · 두 번째 출처 열쇠 · 네이버 약관 · 선물·VKOSPI 출처 · 4시간 예약 줄(사장님 계정) · KRX 상업 조항 · 6단계 화면 자리(T11) · 10/30 뒤 ATLAS 11 기준
