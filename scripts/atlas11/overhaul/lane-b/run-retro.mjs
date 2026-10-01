@@ -26,12 +26,14 @@ if (strict) {
   const inner = fitBlock;
   fitBlock = (designs, o, s) => inner ? inner(designs.map(d => ({...d, rows: d.rows.filter(r => r.date < o.date)})), o, s) : designs.map(d => fitSpecModel(d.rows.filter(r => r.date < o.date), s, {featureFactors: d.featureFactors}));
 }
-if (center !== 'mean') { const m = await import('./simulate-variant.mjs'); simulate = (models, panel, assets, dates, opt) => m.simulateJointVariant(models, panel, assets, dates, {...opt, center}); }
+// --copy: 평균 중심도 시험 사본(simulateJointVariant)으로 돌려 운영 판(A.json)과 한 자리도 같은지 본다
+const useCopy = center !== 'mean' || process.argv.includes('--copy');
+if (useCopy) { const m = await import('./simulate-variant.mjs'); simulate = (models, panel, assets, dates, opt) => m.simulateJointVariant(models, panel, assets, dates, {...opt, center}); }
 const t0 = Date.now();
 const run = runRetro(input, spec, {protocol, fitBlock, simulate: simulate ?? undefined, onProgress: (k, n, d) => { if (k % 20 === 0) console.error(JSON.stringify({model, center, completed: k, total: n, origin: d, elapsedMs: Date.now() - t0})); }});
 const stored = model === 'A' && center === 'mean' && !strict ? readJSON('reports/atlas11/evolve/backtests/A.json') : null;
 const reproduction = stored ? sameAsStored(run, stored) : null;
-const result = {schema: 'atlas11-overhaul-retro-cells-1', label: '후향', model, center, strictTrainingBeforeOrigin: strict, protocol, protocolSHA256: sha256(JSON.stringify(protocol)).slice(0, 16), input: {...RETRO_INPUT, sha256: inputSHA}, elapsedMs: Date.now() - t0, reproduction, ...run};
+const result = {schema: 'atlas11-overhaul-retro-cells-1', label: '후향', model, center, simulationCopy: useCopy, strictTrainingBeforeOrigin: strict, protocol, protocolSHA256: sha256(JSON.stringify(protocol)).slice(0, 16), input: {...RETRO_INPUT, sha256: inputSHA}, elapsedMs: Date.now() - t0, reproduction, ...run};
 fs.mkdirSync(path.dirname(path.resolve(out)), {recursive: true});
 fs.writeFileSync(out, JSON.stringify(result));
 console.log(JSON.stringify({model, center, out, elapsedMs: result.elapsedMs, reproduction: reproduction && {identical: reproduction.identical, diffCount: reproduction.diffCount}, summary: run.summary}));
