@@ -1,0 +1,62 @@
+{
+ "schema": "atlas4h-evidence-1",
+ "what": "atlas11-daily 실행 기록(GitHub Actions API · 읽기만)",
+ "fetchedAt": "2026-10-01T18:30:18+09:00",
+ "url": "https://api.github.com/repos/srt36573657-coder/atlas-11/actions/workflows/atlas11-daily.yml/runs?per_page=20",
+ "totalCount": 6,
+ "runs": [
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "success",
+   "createdAt": "2026-09-30T08:21:32Z",
+   "createdAtKST": "2026-09-30 17:21 KST",
+   "headSha": "9a66a53"
+  },
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "success",
+   "createdAt": "2026-09-29T11:45:36Z",
+   "createdAtKST": "2026-09-29 20:45 KST",
+   "headSha": "7dbafe6"
+  },
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "success",
+   "createdAt": "2026-09-29T11:42:11Z",
+   "createdAtKST": "2026-09-29 20:42 KST",
+   "headSha": "4a8d167"
+  },
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "success",
+   "createdAt": "2026-09-29T11:34:53Z",
+   "createdAtKST": "2026-09-29 20:34 KST",
+   "headSha": "f42554b"
+  },
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "createdAt": "2026-09-29T10:48:03Z",
+   "createdAtKST": "2026-09-29 19:48 KST",
+   "headSha": "b1b05d9"
+  },
+  {
+   "event": "workflow_dispatch",
+   "status": "completed",
+   "conclusion": "success",
+   "createdAt": "2026-09-29T09:19:16Z",
+   "createdAtKST": "2026-09-29 18:19 KST",
+   "headSha": "ae8dfc3"
+  }
+ ],
+ "summary": {
+  "scheduleRuns": 0,
+  "dispatchRuns": 6,
+  "runsOn2026-10-01KST": 0
+ }
+}
