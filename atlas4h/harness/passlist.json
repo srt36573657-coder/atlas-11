@@ -1,0 +1,307 @@
+{
+ "schema": "atlas4h-passlist-1",
+ "rule": "통과 표시(status)는 평가 일꾼만 바꾼다 · 바꿀 때 changedBy=「평가 일꾼」, evaluatorCommit=그 커밋, evidence=시험 결과 파일과 숫자 · 시험 코드는 고치지 않는다(tests.lock.json)",
+ "startedAt": "2026-10-01 17:5x KST",
+ "items": [
+  {
+   "id": "T1",
+   "group": "봉인·계산",
+   "text": "봉인 뒤 수정 0",
+   "how": "기록 대조",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T2",
+   "group": "봉인·계산",
+   "text": "봉인 시각 뒤 자료 사용 0",
+   "how": "시각 대조",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T3",
+   "group": "봉인·계산",
+   "text": "봉인에 코드 판·자료 판·씨앗이 다 있음",
+   "how": "목록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T4",
+   "group": "봉인·계산",
+   "text": "같은 입력이면 같은 출력",
+   "how": "재실행",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T5",
+   "group": "봉인·계산",
+   "text": "세 시나리오 확률 합 100%",
+   "how": "계산",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T6",
+   "group": "봉인·계산",
+   "text": "종목·코스피가 MinT로 맞춰짐",
+   "how": "계산",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T7",
+   "group": "봉인·계산",
+   "text": "변수마다 시각·출처 둘",
+   "how": "목록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T8",
+   "group": "봉인·계산",
+   "text": "두 길 계산 일치, 아니면 '확인 중'",
+   "how": "대조",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T9",
+   "group": "운영·채점",
+   "text": "고리 40분 안",
+   "how": "시각",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T10",
+   "group": "운영·채점",
+   "text": "금지 말 0",
+   "how": "검색",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T11",
+   "group": "운영·채점",
+   "text": "옛 엔진·채점·기록 변경 0",
+   "how": "목록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T12",
+   "group": "운영·채점",
+   "text": "재현에서 폭이 기준 셋 모두를 이김",
+   "how": "점수",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T13",
+   "group": "운영·채점",
+   "text": "80% 덮음 70~90%(30판↑)·위기 따로",
+   "how": "",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T14",
+   "group": "운영·채점",
+   "text": "화면 숫자 = 봉인 값",
+   "how": "대조",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T15",
+   "group": "운영·채점",
+   "text": "극한 조건 K1~K7 통과",
+   "how": "실행",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T16",
+   "group": "운영·채점",
+   "text": "무판을 못 이긴 가운데 후보의 무게 0",
+   "how": "점수",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T17",
+   "group": "누수·감시",
+   "text": "검색 결과에 봉인 뒤 정보 0",
+   "how": "누수 검사",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T18",
+   "group": "누수·감시",
+   "text": "LLM 판 재현은 학습 마감 뒤만",
+   "how": "시각",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T19",
+   "group": "누수·감시",
+   "text": "판정 기준이 첫 채점 전에 봉인됨",
+   "how": "시각",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T20",
+   "group": "누수·감시",
+   "text": "시도가 장부에 다 있고 SPA를 거침",
+   "how": "목록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T21",
+   "group": "누수·감시",
+   "text": "엔진들이 앞 판 값을 안 봄",
+   "how": "기록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T22",
+   "group": "누수·감시",
+   "text": "답마다 쓴 구조 번호가 있음",
+   "how": "목록",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "T23",
+   "group": "누수·감시",
+   "text": "감시 S1~S8이 모두 0",
+   "how": "감시 장부",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K1",
+   "group": "극한",
+   "text": "미국 휴장·한국 휴장이 엇갈린 날",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K2",
+   "group": "극한",
+   "text": "자료 끊김·한 출처만 있는 날",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K3",
+   "group": "극한",
+   "text": "서킷브레이커·사이드카 발동",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K4",
+   "group": "극한",
+   "text": "상한가·하한가·거래정지 종목",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K5",
+   "group": "극한",
+   "text": "발표가 장중에 나온 날(갭 아닌 장중 충격)",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K6",
+   "group": "극한",
+   "text": "4시간 안에 변수가 크게 뒤집힌 날",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  },
+  {
+   "id": "K7",
+   "group": "극한",
+   "text": "국면이 바뀌는 날(잔잔→사나움)",
+   "how": "실행 · 깨짐 0·숫자 맞음",
+   "status": "안 통과",
+   "changedBy": null,
+   "evaluatorCommit": null,
+   "evidence": null
+  }
+ ]
+}
