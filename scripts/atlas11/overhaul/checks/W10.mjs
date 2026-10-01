@@ -22,9 +22,13 @@ export default async function W10({report, sha, rel}) {
   report('W10:판정표', probs.length === 0 && same, {rows: d.verdictTable.length, verdicts: d.verdictTable.map(t => t.판정), problems: probs, sameAsPartFiles: same});
   // 틀린 42칸: w10-against.json 과 셈·줄이 같은가
   const wbuf = fs.readFileSync(rel('reports/atlas11/overhaul/w10-against.json')), w = JSON.parse(wbuf.toString('utf8'));
-  const recount = {}; for (const r of w.rows) { const k = r.against.join(' + '); recount[k] = (recount[k] ?? 0) + 1; } // 두 항이면 「A + B」 한 묶음
-  const countsSame = JSON.stringify(Object.entries(d.wrongCells.counts).sort()) === JSON.stringify(Object.entries(w.counts).sort()) && Object.entries(w.counts).every(([k, v]) => recount[k] === v);
-  const rowsSame = d.wrongCells.rows.length === 42 && w.rows.length === 42 && d.wrongCells.rows.every((r, i) => r.code === w.rows[i].code && r.date === w.rows[i].date && JSON.stringify(r.against) === JSON.stringify(w.rows[i].against));
+  const recount = {}; for (const r of w.rows) recount[r.reason] = (recount[r.reason] ?? 0) + 1; // 까닭은 칸마다 하나(먼저 맞는 규칙)
+  const countsSame = JSON.stringify(Object.entries(d.wrongCells.counts).sort()) === JSON.stringify(Object.entries(w.counts).sort()) && Object.entries(w.counts).every(([k, v]) => (recount[k] ?? 0) === v);
+  const rowsSame = d.wrongCells.rows.length === 42 && w.rows.length === 42 && d.wrongCells.rows.every((r, i) => r.code === w.rows[i].code && r.date === w.rows[i].date && r.reason === w.rows[i].reason);
+  // 생성기를 다시 돌려 커밋된 w10-against.json 과 바이트가 같은가(따지는 이 M1)
+  const {buildAgainst} = await import(rel('scripts/atlas11/overhaul/lane-b/w10-against.mjs'));
+  const regenerated = buildAgainst(), sameBytes = regenerated === wbuf.toString('utf8');
+  report('W10:w10-against재생성', sameBytes, {sha256Committed: sha(wbuf), sha256Regenerated: sha(Buffer.from(regenerated)), counts: w.counts});
   report('W10:틀린42칸', countsSame && rowsSame && d.wrongCells.sha256 === sha(wbuf) && Object.values(w.counts).reduce((s, v) => s + v, 0) === 42, {counts: d.wrongCells.counts, total: d.wrongCells.total});
   // G2 상태와 판단을 기다리는 일
   report('W10:G2·eco03', /글자대로 미통과: T13·T14/.test(d.gateG2.status) && fs.existsSync(rel('reports/atlas11/overhaul/eco/03.md')) && fs.existsSync(rel('reports/atlas11/overhaul/data-correction-01.md')) && fs.existsSync(rel('reports/atlas11/overhaul/diagnosis.md')), {gateG2: d.gateG2.status});

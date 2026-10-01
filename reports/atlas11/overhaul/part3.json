@@ -5,8 +5,8 @@
  "requirement": "R8",
  "label": "후향",
  "plan": "reports/atlas11/overhaul/plan.md ③",
- "builtAt": "2026-10-01 14:32 KST",
- "builtOnCommit": "626300b",
+ "builtAt": "2026-10-01 16:26 KST",
+ "builtOnCommit": "15d5ff8",
  "oneThingChanged": "평균 식 계수(절편 + β 7개)를 52종목이 함께 쓰는 한 벌로(쌓은 학습 행에 같은 fitRidge · 같은 벌점 목록 {zero,1,10} · 벌점은 52종목 평균 선택 구간 CRPS 로 하나) · 변동폭 종류·잔차는 종목별 그대로 · 기준일·난수·경로 같음",
  "code": "scripts/atlas11/overhaul/lane-b/pooled.mjs",
  "sameProtocol": {

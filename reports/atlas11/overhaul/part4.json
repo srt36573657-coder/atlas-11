@@ -7,8 +7,8 @@
   "T13"
  ],
  "plan": "reports/atlas11/overhaul/plan.md ④",
- "builtAt": "2026-10-01 14:32 KST",
- "builtOnCommit": "626300b",
+ "builtAt": "2026-10-01 16:26 KST",
+ "builtOnCommit": "15d5ff8",
  "oneThingChanged": "입력값을 운영 코드를 쓰지 않는 내 코드(scripts/atlas11/overhaul/lane-b/inputs.mjs)로 원 종가에서 다시 셈 · 그리고 가장 나중 자료판 종가로 다시 셈",
  "usedValuesHow": "운영이 쓴 값 = 되살린 입력·모델(발행본과 입력 지문·계수 모두 같음)에 lib 함수를 운영과 같은 순서로 적용(simulate.mjs:53-57) · 발행본 1일째 기여(F35·F11)·평균·p50 과 한 자리까지 같은지 확인",
  "publications": [
@@ -262,7 +262,7 @@
  "threshold": 1e-9,
  "maxDifferenceAll": 0.1789661771939699,
  "notUsedFactors": {
-  "statement": "36요인 중 숫자로 계산에 들어가는 것은 F35(자기 1·2·5·20·60일 평균)·F11(52종목 폭·5일 평균) 평균 식과 F36(잔차 변동폭) 분산뿐이다. 나머지 33개는 계수가 없고 모의 계산에 들어가지 않으므로 이 1거래일 오답의 원인이 될 수 없다.",
+  "statement": "36요인 중 숫자로 계산에 들어가는 것은 F35(자기 1·2·5·20·60일 평균)·F11(52종목 폭·5일 평균) 평균 식과 F36(잔차 변동폭) 분산뿐이다. 나머지 33개는 계수가 없고 모의 계산에 들어가지 않으므로, 「틀린 입력값」이라는 뜻에서 이 1거래일 오답의 원인이 될 수 없다(빠진 요인이라는 뜻에서는 이 진단이 따지지 않았다).",
   "codeLines": [
    "lib/factor36.mjs:55 FEATURE_FACTORS = F35×5, F11×2",
    "lib/factor36.mjs:68 fitVolatility(F36 = 잔차 분산 · 상수/GARCH)",
@@ -1636,7 +1636,7 @@
     }
    ]
   },
-  "builtAt": "2026-10-01 15:47 KST",
-  "builtOnCommit": "ba89f96"
+  "builtAt": "2026-10-01 16:27 KST",
+  "builtOnCommit": "15d5ff8"
  }
 }

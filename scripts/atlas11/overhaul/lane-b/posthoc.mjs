@@ -110,11 +110,14 @@ for (const code of ['029780', '002380', '034220']) {
 part4.posthoc = {label: LABEL, impactPublishedMethod: impactPublished, strictMovement: movement, power, nearTieRepeats: {label: LABEL, note: '난수 20260917 이 매일 같은 뽑기 순서를 써서, 상승·하락 확률이 거의 같은 종목은 날마다 같은 쪽으로 기운다(무게 0 종목은 날마다 μ = 0 · 잔차 표도 같음)', stocks: near}, builtAt: kstNow(), builtOnCommit: gitHead()};
 part4.decision.reportText = impactPublished.report;
 part4.decision.impactCorrection = '앞서 적은 「1일 방향 바뀐 칸 0/52」는 정확 셈(동률이면 상승)에서 나온 값이다. 발행 방식(모의 계산)으로는 035250 한 칸이 상승→하락으로 바뀐다(정확 셈으로는 상승·하락이 같은 동률).';
+const zeroLive = live.filter(c => c.zero), zeroRight = zeroLive.filter(c => c.dirOk).length, zeroRightDown = zeroLive.filter(c => c.dirOk && c.pred === 'down').length;
+const sumLive = k => Object.values(part5.publications).reduce((a, P) => a + P.liveImpact.rightZero[k], 0), zeroRightA = sumLive('median'), zeroRightB = sumLive('symmetric');
+if (sumLive('published') !== zeroRight) throw Error('LIVE_ZERO_RIGHT_MISMATCH');
 part5.posthoc = {label: LABEL, T14ExactReconstruction: t14Recon, samePicksInBothPublications: samePicks, familyWiseMaxZ: fam,
   note: '두 발행본은 같은 난수·같은 공유 날짜 수(504)라 1일 뽑기 횟수가 똑같다 → 032830 의 차이는 한 사건이다. 실제 뽑기 횟수로 가중한 직접 셈은 156개 확률을 모두 그대로 낸다 → 계산은 맞고, 차이는 뽑기 횟수의 우연이다. T14 는 글자대로 실패로 둔다.',
-  tiltNotMisses: '⑤ 는 하락 쏠림(예측 하락 86 대 실제 하락 69)을 설명한다. 오답을 설명하지는 않는다 — A·B 는 후향 정답률을 올리지 못했다(A 49.86% 대 50.53% · P 0.29 · B 48.01% · 원래가 나음 P 0.88 · 5/6 블록). 결정표대로 W11 후보로 보내지 않는다.',
+  tiltNotMisses: `⑤ 의 기울기는 틀린 칸도 맞은 칸도 만들었고, 없애도 과거·실전 정답이 늘지 않았다 → 고칠 원인이 아니다(무게 0 맞힘 ${zeroRight}칸 중 ${zeroRightDown}칸이 그 하락 고름 · 후향 A ${part5.retroAux.A_median.dir1selPct}% 가려지지 않음 · B ${part5.retroAux.B_symmetric.dir1selPct}% 나빠짐 · 실전 이틀에 없앴으면 무게 0 맞힘 ${zeroRight} → ${zeroRightA}(A) · ${zeroRightB}(B)). 결정표대로라면 W11 후보가 아니지만, eco/03 의 T14 고쳐 쓰기를 승인하면 규칙상 ⑤ 가 「원인이다」가 되어 A·B 가 후보가 되므로 「후보 아님」은 사장님이 정해야 한다.`,
   exactVsSimulatedZero32: Object.fromEntries(Object.entries(part5.publications).map(([id, P]) => [id, Object.fromEntries(Object.entries(P.variants).map(([k, v]) => [k, {simulatedGapPp: r2(v.zero32.meanGapPp), exactGapPp: r2(v.zero32.exactMeanGapPp), simulatedDown: v.zero32.downChoices, exactDown: v.zero32.exactDownChoices}]))])),
   builtAt: kstNow(), builtOnCommit: gitHead()};
-part5.decision.reportText = '규칙상 모른다(T14 글자대로 51/52 · eco/03 판단 기다림) · ⑤ 는 하락 쏠림의 원인이지 오답의 원인이 아니다 · A·B 는 후향 이득 없음 → W11 후보 아님';
+part5.decision.reportText = `규칙상 모른다(T14 글자대로 51/52 · eco/03 판단 기다림) · ⑤ 의 기울기는 틀린 칸도 맞은 칸도 만들었고, 없애도 과거·실전 정답이 늘지 않았다 → 고칠 원인이 아니다(무게 0 맞힘 ${zeroRight}칸 중 ${zeroRightDown}칸이 그 하락 고름 · 후향 A ${part5.retroAux.A_median.dir1selPct}% 가려지지 않음 · B ${part5.retroAux.B_symmetric.dir1selPct}% 나빠짐 · 실전 이틀 무게 0 맞힘 ${zeroRight} → ${zeroRightA}(A) · ${zeroRightB}(B))`;
 const s4 = writeJSON('reports/atlas11/overhaul/part4.json', part4), s5 = writeJSON('reports/atlas11/overhaul/part5.json', part5);
 console.log(JSON.stringify({s4, s5, impact: {flipsPublished: impactPublished.flipsPublishedMethod, flipsExact: impactPublished.flipsExact, wrongChanged: impactPublished.wrongCellsChanged, becomeRight: impactPublished.wrongCellsBecomeRight, flips: flips.map(f => [f.code, f.published, f.correctedPublishedMethod, f.exactCorrected])}, t14Recon, samePicks, fam, movement, power, near}, null, 1));

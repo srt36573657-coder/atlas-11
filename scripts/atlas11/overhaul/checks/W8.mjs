@@ -48,7 +48,7 @@ export default async function W8({report, sha, rel, ROOT}) {
   const same4 = p4.publications.every(pub => counts[pub.forecastId] === pub.latestVintageVsUsed.changedClosesInWindow && pub.inputDigestMatchesPublication && pub.modelParamsIdenticalToPublication && pub.usedValuesMatchPublication.dayOneP50 === 52 && pub.usedValuesMatchPublication.contributionsF35F11 === 52);
   const maxAll = Math.max(...p4.publications.flatMap(pub => [pub.ownRecomputeVsUsed.maxAbsFeature, pub.ownRecomputeVsUsed.maxRelVariance, pub.ownRecomputeVsUsed.maxAbsContributionVsPublished, pub.latestVintageVsUsed.maxAbsFeature, pub.latestVintageVsUsed.maxRelVariance, pub.latestVintageVsUsed.maxAbsContributionVsPublished]));
   const v4 = maxAll > 1e-9 ? '원인이다' : '아니다';
-  report('W8:④', same4 && maxAll === p4.maxDifferenceAll && v4 === p4.decision.verdict, {changedClosesInWindow: counts, verdict: v4, maxAll, ownMaxFeature: p4.publications.map(pub => pub.ownRecomputeVsUsed.maxAbsFeature), flips: p4.publications.map(pub => pub.impactOnDayOneDirection.flipCount)});
+  report('W8:④', same4 && maxAll === p4.maxDifferenceAll && v4 === p4.decision.verdict, {changedClosesInWindow: counts, verdict: v4, maxAll, ownMaxFeature: p4.publications.map(pub => pub.ownRecomputeVsUsed.maxAbsFeature), flipsExactCount: p4.publications.map(pub => pub.impactOnDayOneDirection.flipCount), flipsBasis: '정확 셈(잔차 표 전체 · 동률이면 상승) — 발행 방식(모의 계산)으로는 9/28 rolling20 에서 1칸(035250): W8:④발행방식영향 줄'});
   // v1 features 후보 기각 사유가 state.json 원문 그대로인가
   const st = read('reports/atlas11/evolve/state.json');
   const quoted = p4.v1FeatureCandidates.candidates.length === 3 && p4.v1FeatureCandidates.candidates.every(c => st.candidates[c.candidateId]?.history.find(h => h.type === 'rejected')?.reason === c.rejectedReason);

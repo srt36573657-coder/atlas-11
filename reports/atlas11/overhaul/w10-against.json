@@ -1,566 +1,1563 @@
 {
- "schema": "atlas11-overhaul-w10-against-1",
+ "schema": "atlas11-overhaul-w10-against-2",
  "cells": 42,
+ "rule": [
+  "1) 정확 계산 방향 ≠ 발행 방향 → 같은 난수 잡음",
+  "2) 세 항(기본값·F35·F11)을 더한 평균이 ≈0(|평균| < 0.005%p · 화면에 0.00%) 이거나 고른 방향과 반대 → 모의 계산 기울기",
+  "3) 그 밖 → 평균 항(고른 방향과 부호가 같은 항 · 기본값 포함 · 가장 큰 항)",
+  "먼저 맞는 것 하나만"
+ ],
+ "nearZeroPp": 0.005,
  "counts": {
-  "무게 0 → 모의 계산의 기울기(평균 빼기)": 21,
-  "F11 52종목 폭·평균": 6,
-  "F35 자기 추세": 8,
-  "F35 자기 추세 + F11 52종목 폭·평균": 6,
-  "반대로 민 항 없음(모의 계산 확률이 갈림)": 1
+  "같은 난수 잡음": 2,
+  "모의 계산 기울기": 25,
+  "평균 항": 15,
+  "없음": 0
+ },
+ "detail": {
+  "모의 계산 기울기": {
+   "zeroWeight": 19,
+   "weighted": 6,
+   "weightedCells": [
+    {
+     "date": "2026-09-29",
+     "code": "009150",
+     "name": "삼성전기",
+     "meanPp": 0.17946967926221571,
+     "predDir": "down"
+    },
+    {
+     "date": "2026-09-29",
+     "code": "021240",
+     "name": "코웨이",
+     "meanPp": 0.051604962538451225,
+     "predDir": "down"
+    },
+    {
+     "date": "2026-09-29",
+     "code": "033780",
+     "name": "KT&G",
+     "meanPp": 0.0004830184926401472,
+     "predDir": "down"
+    },
+    {
+     "date": "2026-09-29",
+     "code": "196170",
+     "name": "알테오젠",
+     "meanPp": 0.001618722399861463,
+     "predDir": "down"
+    },
+    {
+     "date": "2026-09-30",
+     "code": "047050",
+     "name": "포스코인터내셔널",
+     "meanPp": 0.0475758631166592,
+     "predDir": "down"
+    },
+    {
+     "date": "2026-09-30",
+     "code": "051910",
+     "name": "LG화학",
+     "meanPp": 0.06304801962193492,
+     "predDir": "down"
+    }
+   ]
+  },
+  "같은 난수 잡음": [
+   {
+    "date": "2026-09-29",
+    "code": "029780",
+    "name": "삼성카드",
+    "exact": {
+     "up": 0.4642857142857143,
+     "flat": 0.06746031746031746,
+     "down": 0.46825396825396826,
+     "selected": "down"
+    },
+    "published": {
+     "up": 0.4676,
+     "flat": 0.0649,
+     "down": 0.4675,
+     "selected": "up"
+    }
+   },
+   {
+    "date": "2026-09-30",
+    "code": "029780",
+    "name": "삼성카드",
+    "exact": {
+     "up": 0.4642857142857143,
+     "flat": 0.06746031746031746,
+     "down": 0.46825396825396826,
+     "selected": "down"
+    },
+    "published": {
+     "up": 0.4676,
+     "flat": 0.0649,
+     "down": 0.4675,
+     "selected": "up"
+    }
+   }
+  ],
+  "평균 항": {
+   "cells": 15,
+   "interceptSameSide": 11,
+   "interceptLargest": [
+    {
+     "date": "2026-09-29",
+     "code": "028300",
+     "name": "HLB",
+     "interceptPp": -0.13792907948612187,
+     "meanPp": -0.15622412545937156
+    },
+    {
+     "date": "2026-09-29",
+     "code": "036460",
+     "name": "한국가스공사",
+     "interceptPp": -0.033888880182728426,
+     "meanPp": -0.035286337154685925
+    },
+    {
+     "date": "2026-09-29",
+     "code": "105560",
+     "name": "KB금융",
+     "interceptPp": 0.09372291807818366,
+     "meanPp": 0.18751486579310503
+    },
+    {
+     "date": "2026-09-30",
+     "code": "005930",
+     "name": "삼성전자",
+     "interceptPp": 0.15539897090403176,
+     "meanPp": 0.26875741582536006
+    },
+    {
+     "date": "2026-09-30",
+     "code": "032830",
+     "name": "삼성생명보험",
+     "interceptPp": 0.14658488620162205,
+     "meanPp": 0.18470483931809198
+    },
+    {
+     "date": "2026-09-30",
+     "code": "105560",
+     "name": "KB금융",
+     "interceptPp": 0.09372291807818366,
+     "meanPp": 0.1139951748573802
+    }
+   ],
+   "largest": {
+    "F35": 7,
+    "intercept": 6,
+    "F11": 2
+   }
+  }
  },
  "rows": [
   {
    "date": "2026-09-29",
    "code": "003230",
    "name": "삼양식품",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.82%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "unknown"
+   "published": {
+    "up": 0.42485,
+    "flat": 0.032,
+    "down": 0.54315,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.42857142857142855,
+    "flat": 0.031746031746031744,
+    "down": 0.5396825396825397,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-fad1b65f7411b5f1",
+   "analysisId": "analysis-d41efb4a7fc1e083"
   },
   {
    "date": "2026-09-29",
    "code": "009150",
    "name": "삼성전기",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.18% = 절편 +0.30% + 자기 추세 +0.07% + 52종목 폭·평균 -0.19% · 실제 +1.93%",
-   "against": [
-    "F11 52종목 폭·평균"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4599,
+    "flat": 0.0454,
+    "down": 0.4947,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4662698412698413,
+    "flat": 0.04365079365079365,
+    "down": 0.49007936507936506,
+    "selected": "down"
+   },
+   "meanPp": 0.17946967926221571,
+   "terms": {
+    "intercept": 0.29913287559735047,
+    "F35": 0.06687631133430319,
+    "F11": -0.186539507669359
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-bba86d6a380a0fc3",
+   "analysisId": "analysis-509dcd46b0e910af"
   },
   {
    "date": "2026-09-29",
    "code": "009830",
    "name": "한화솔루션",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.17% = 절편 +0.01% + 자기 추세 +0.22% + 52종목 폭·평균 -0.06% · 실제 -2.55%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.49525,
+    "flat": 0.02625,
+    "down": 0.4785,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.49404761904761907,
+    "flat": 0.025793650793650792,
+    "down": 0.4801587301587302,
+    "selected": "up"
+   },
+   "meanPp": 0.17052094113907296,
+   "terms": {
+    "intercept": 0.011976074507454845,
+    "F35": 0.21583845330235976,
+    "F11": -0.05729358667073564
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35"
    ],
-   "bin": "close"
+   "largestTerm": "F35",
+   "scoreId": "score-0c403f95f6affb8d",
+   "analysisId": "analysis-87c021d885aa6110"
   },
   {
    "date": "2026-09-29",
    "code": "010120",
    "name": "LS ELECTRIC",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.24%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "unknown"
+   "published": {
+    "up": 0.4381,
+    "flat": 0.03555,
+    "down": 0.52635,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.44047619047619047,
+    "flat": 0.03571428571428571,
+    "down": 0.5238095238095238,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-46536fea5a8288cf",
+   "analysisId": "analysis-2e5e8737e25cdf32"
   },
   {
    "date": "2026-09-29",
    "code": "012750",
    "name": "에스원",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.24%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.47765,
+    "flat": 0.03765,
+    "down": 0.4847,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4781746031746032,
+    "flat": 0.037698412698412696,
+    "down": 0.48412698412698413,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-35af37a8825f9eb6",
+   "analysisId": "analysis-e13b96fd10f8dda3"
   },
   {
    "date": "2026-09-29",
    "code": "021240",
    "name": "코웨이",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "flat",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.05% = 절편 +0.07% + 자기 추세 -0.02% + 52종목 폭·평균 +0.00% · 실제 -0.10%",
-   "against": [
-    "F11 52종목 폭·평균"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.45555,
+    "flat": 0.04335,
+    "down": 0.5011,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4583333333333333,
+    "flat": 0.04365079365079365,
+    "down": 0.498015873015873,
+    "selected": "down"
+   },
+   "meanPp": 0.051604962538451225,
+   "terms": {
+    "intercept": 0.07224936274201475,
+    "F35": -0.023603256387721153,
+    "F11": 0.0029588561841575028
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-f4fb50608338fad9",
+   "analysisId": "analysis-ab47f0d01153a09a"
   },
   {
    "date": "2026-09-29",
    "code": "028300",
    "name": "HLB",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.16% = 절편 -0.14% + 자기 추세 +0.02% + 52종목 폭·평균 -0.04% · 실제 +1.13%",
-   "against": [
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.4644,
+    "flat": 0.0376,
+    "down": 0.498,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.46825396825396826,
+    "flat": 0.037698412698412696,
+    "down": 0.49404761904761907,
+    "selected": "down"
+   },
+   "meanPp": -0.15622412545937156,
+   "terms": {
+    "intercept": -0.13792907948612187,
+    "F35": 0.018139382962164562,
+    "F11": -0.03643442893559858
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F11"
    ],
-   "bin": "close"
+   "largestTerm": "intercept",
+   "scoreId": "score-66edbb73d6f10095",
+   "analysisId": "analysis-d274740b70b51689"
   },
   {
    "date": "2026-09-29",
    "code": "029780",
    "name": "삼성카드",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 -1.96%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4676,
+    "flat": 0.0649,
+    "down": 0.4675,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.4642857142857143,
+    "flat": 0.06746031746031746,
+    "down": 0.46825396825396826,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "같은 난수 잡음",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-b7ec86b2ec714d0e",
+   "analysisId": "analysis-e7cee1204823ec53"
   },
   {
    "date": "2026-09-29",
    "code": "030200",
    "name": "KT",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "flat",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 0.00%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4654,
+    "flat": 0.07895,
+    "down": 0.45565,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.4642857142857143,
+    "flat": 0.07936507936507936,
+    "down": 0.45634920634920634,
+    "selected": "up"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-5fa12e82f1958d79",
+   "analysisId": "analysis-4b8b617f99072040"
   },
   {
    "date": "2026-09-29",
    "code": "033780",
    "name": "KT&G",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.00% = 절편 +0.07% + 자기 추세 -0.08% + 52종목 폭·평균 +0.01% · 실제 +1.03%",
-   "against": [
-    "F35 자기 추세"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4473,
+    "flat": 0.0571,
+    "down": 0.4956,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.44841269841269843,
+    "flat": 0.057539682539682536,
+    "down": 0.49404761904761907,
+    "selected": "down"
+   },
+   "meanPp": 0.0004830184926401472,
+   "terms": {
+    "intercept": 0.07028893528928928,
+    "F35": -0.07814052709938799,
+    "F11": 0.00833461030273268
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-ab401e8e1570a11e",
+   "analysisId": "analysis-2d407766f5982c26"
   },
   {
    "date": "2026-09-29",
    "code": "034730",
    "name": "SK",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +1.38%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4624,
+    "flat": 0.0276,
+    "down": 0.51,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.47023809523809523,
+    "flat": 0.025793650793650792,
+    "down": 0.503968253968254,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-f1b1d88cef03bb84",
+   "analysisId": "analysis-9d3cee6749673e82"
   },
   {
    "date": "2026-09-29",
    "code": "035250",
    "name": "강원랜드",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.03% = 절편 -0.00% + 자기 추세 -0.05% + 52종목 폭·평균 +0.08% · 실제 -0.14%",
-   "against": [
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.47815,
+    "flat": 0.0612,
+    "down": 0.46065,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.48214285714285715,
+    "flat": 0.061507936507936505,
+    "down": 0.45634920634920634,
+    "selected": "up"
+   },
+   "meanPp": 0.0295355409975889,
+   "terms": {
+    "intercept": -0.00081400338285453,
+    "F35": -0.05332452068206776,
+    "F11": 0.0836740650625295
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "F11"
    ],
-   "bin": "close"
+   "largestTerm": "F11",
+   "scoreId": "score-dcca4e57f112e230",
+   "analysisId": "analysis-ae33d60f08ea45d7"
   },
   {
    "date": "2026-09-29",
    "code": "036460",
    "name": "한국가스공사",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "flat",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.04% = 절편 -0.03% + 자기 추세 -0.03% + 52종목 폭·평균 +0.03% · 실제 0.00%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.4586,
+    "flat": 0.0572,
+    "down": 0.4842,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4623015873015873,
+    "flat": 0.057539682539682536,
+    "down": 0.4801587301587302,
+    "selected": "down"
+   },
+   "meanPp": -0.035286337154685925,
+   "terms": {
+    "intercept": -0.033888880182728426,
+    "F35": -0.031968946555431824,
+    "F11": 0.030571489583465224
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35"
    ],
-   "bin": "close"
+   "largestTerm": "intercept",
+   "scoreId": "score-ddba9d7805b2e790",
+   "analysisId": "analysis-60cd1efbb1a30c84"
   },
   {
    "date": "2026-09-29",
    "code": "105560",
    "name": "KB금융",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.19% = 절편 +0.09% + 자기 추세 +0.02% + 52종목 폭·평균 +0.07% · 실제 -0.40%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.5161,
+    "flat": 0.05875,
+    "down": 0.42515,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.5218253968253969,
+    "flat": 0.057539682539682536,
+    "down": 0.42063492063492064,
+    "selected": "up"
+   },
+   "meanPp": 0.18751486579310503,
+   "terms": {
+    "intercept": 0.09372291807818366,
+    "F35": 0.020904687691171316,
+    "F11": 0.07288726002381873
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35",
+    "F11"
    ],
-   "bin": "flow"
+   "largestTerm": "intercept",
+   "scoreId": "score-74bc2073ba4110cc",
+   "analysisId": "analysis-104639fc87e4605d"
   },
   {
    "date": "2026-09-29",
    "code": "196170",
    "name": "알테오젠",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.00% = 절편 +0.01% + 자기 추세 +0.16% + 52종목 폭·평균 -0.17% · 실제 +0.40%",
-   "against": [
-    "F11 52종목 폭·평균"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4706,
+    "flat": 0.0208,
+    "down": 0.5086,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4742063492063492,
+    "flat": 0.021825396825396824,
+    "down": 0.503968253968254,
+    "selected": "down"
+   },
+   "meanPp": 0.001618722399861463,
+   "terms": {
+    "intercept": 0.014091404756185847,
+    "F35": 0.1585901370720644,
+    "F11": -0.17106281942837204
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-365ad412ea2864ec",
+   "analysisId": "analysis-137e1db60b618770"
   },
   {
    "date": "2026-09-29",
    "code": "214370",
    "name": "케어젠",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +5.04%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "flow"
+   "published": {
+    "up": 0.43945,
+    "flat": 0.0241,
+    "down": 0.53645,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4444444444444444,
+    "flat": 0.021825396825396824,
+    "down": 0.5337301587301587,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-19d49334da402390",
+   "analysisId": "analysis-cb85d8a58e9ff8e8"
   },
   {
    "date": "2026-09-29",
    "code": "329180",
    "name": "HD현대중공업",
+   "forecastId": "2026-09-28-rolling20-13cd892134e517b4",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.38% = 절편 +0.10% + 자기 추세 +0.33% + 52종목 폭·평균 -0.05% · 실제 -2.94%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.5353,
+    "flat": 0.0325,
+    "down": 0.4322,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.5376984126984127,
+    "flat": 0.031746031746031744,
+    "down": 0.4305555555555556,
+    "selected": "up"
+   },
+   "meanPp": 0.3787995036562188,
+   "terms": {
+    "intercept": 0.09736141691801148,
+    "F35": 0.3332491119431617,
+    "F11": -0.051811025204608674
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35"
    ],
-   "bin": "flow"
+   "largestTerm": "F35",
+   "scoreId": "score-dcc4425f2737f9e5",
+   "analysisId": "analysis-6ec384724cc780ba"
   },
   {
    "date": "2026-09-30",
    "code": "000720",
    "name": "현대건설",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.43%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "flow"
+   "published": {
+    "up": 0.43095,
+    "flat": 0.0274,
+    "down": 0.54165,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4305555555555556,
+    "flat": 0.027777777777777776,
+    "down": 0.5416666666666666,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-982417b6f293daa8",
+   "analysisId": "analysis-dd695627301b131d"
   },
   {
    "date": "2026-09-30",
    "code": "003490",
    "name": "대한항공",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.12% = 절편 +0.04% + 자기 추세 -0.21% + 52종목 폭·평균 +0.05% · 실제 +1.91%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.4148,
+    "flat": 0.03745,
+    "down": 0.54775,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.41865079365079366,
+    "flat": 0.03968253968253968,
+    "down": 0.5416666666666666,
+    "selected": "down"
+   },
+   "meanPp": -0.1162504527424136,
+   "terms": {
+    "intercept": 0.04198129336053361,
+    "F35": -0.2087961966548588,
+    "F11": 0.050564450551855496
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "F35"
    ],
-   "bin": "unknown"
+   "largestTerm": "F35",
+   "scoreId": "score-2ada94c808bebce6",
+   "analysisId": "analysis-5d9cf266dad0688f"
   },
   {
    "date": "2026-09-30",
    "code": "005490",
    "name": "POSCO홀딩스",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.66%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "flow"
+   "published": {
+    "up": 0.4601,
+    "flat": 0.0192,
+    "down": 0.5207,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4642857142857143,
+    "flat": 0.01984126984126984,
+    "down": 0.5158730158730159,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-ec47bec351568e71",
+   "analysisId": "analysis-49a000cc6a781e7a"
   },
   {
    "date": "2026-09-30",
    "code": "005930",
    "name": "삼성전자",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.27% = 절편 +0.16% + 자기 추세 +0.04% + 52종목 폭·평균 +0.07% · 실제 -1.47%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.49205,
+    "flat": 0.03815,
+    "down": 0.4698,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.49603174603174605,
+    "flat": 0.03571428571428571,
+    "down": 0.46825396825396826,
+    "selected": "up"
+   },
+   "meanPp": 0.26875741582536006,
+   "terms": {
+    "intercept": 0.15539897090403176,
+    "F35": 0.04466326607437009,
+    "F11": 0.06869517884707975
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35",
+    "F11"
    ],
-   "bin": "close"
+   "largestTerm": "intercept",
+   "scoreId": "score-30c00cad5048d12f",
+   "analysisId": "analysis-7464cd48cbbdb90c"
   },
   {
    "date": "2026-09-30",
    "code": "009150",
    "name": "삼성전기",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.67% = 절편 +0.30% + 자기 추세 +0.05% + 52종목 폭·평균 +0.32% · 실제 -0.98%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.558,
+    "flat": 0.02535,
+    "down": 0.41665,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.5615079365079365,
+    "flat": 0.027777777777777776,
+    "down": 0.4107142857142857,
+    "selected": "up"
+   },
+   "meanPp": 0.6717780110317296,
+   "terms": {
+    "intercept": 0.29913287559735047,
+    "F35": 0.05407396784103143,
+    "F11": 0.3185711675931312
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35",
+    "F11"
    ],
-   "bin": "unknown"
+   "largestTerm": "F11",
+   "scoreId": "score-894510e13f7af8ee",
+   "analysisId": "analysis-7e3a68d20f01be3f"
   },
   {
    "date": "2026-09-30",
    "code": "009830",
    "name": "한화솔루션",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.03% = 절편 +0.01% + 자기 추세 -0.15% + 52종목 폭·평균 +0.11% · 실제 +4.31%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.46875,
+    "flat": 0.0265,
+    "down": 0.50475,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.46825396825396826,
+    "flat": 0.025793650793650792,
+    "down": 0.5059523809523809,
+    "selected": "down"
+   },
+   "meanPp": -0.03452178751521687,
+   "terms": {
+    "intercept": 0.011976074507454845,
+    "F35": -0.15151039692680526,
+    "F11": 0.10501253490406003
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "F35"
    ],
-   "bin": "close"
+   "largestTerm": "F35",
+   "scoreId": "score-d60185dec5321597",
+   "analysisId": "analysis-ccf69e356fc6958d"
   },
   {
    "date": "2026-09-30",
    "code": "010120",
    "name": "LS ELECTRIC",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "flat",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 0.00%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "unknown"
+   "published": {
+    "up": 0.4381,
+    "flat": 0.03555,
+    "down": 0.52635,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.44047619047619047,
+    "flat": 0.03571428571428571,
+    "down": 0.5238095238095238,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-bb3d42c865f193a4",
+   "analysisId": "analysis-1e67eded0ced4765"
   },
   {
    "date": "2026-09-30",
    "code": "010130",
    "name": "고려아연",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.56%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "flow"
+   "published": {
+    "up": 0.40635,
+    "flat": 0.05045,
+    "down": 0.5432,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.40476190476190477,
+    "flat": 0.051587301587301584,
+    "down": 0.5436507936507936,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-539c951cf3ae1995",
+   "analysisId": "analysis-9d4438c364797e71"
   },
   {
    "date": "2026-09-30",
    "code": "010170",
    "name": "대한광통신",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.48%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "unknown"
+   "published": {
+    "up": 0.40955,
+    "flat": 0.01565,
+    "down": 0.5748,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4126984126984127,
+    "flat": 0.013888888888888888,
+    "down": 0.5734126984126984,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-30bf16ea5e8cc86a",
+   "analysisId": "analysis-a500029d5ef8e843"
   },
   {
    "date": "2026-09-30",
    "code": "012330",
    "name": "현대모비스",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "flat",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 0.00%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "unknown"
+   "published": {
+    "up": 0.43185,
+    "flat": 0.03915,
+    "down": 0.529,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.43452380952380953,
+    "flat": 0.037698412698412696,
+    "down": 0.5277777777777778,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-843faffee7ff98a4",
+   "analysisId": "analysis-a86b5474f77cb21f"
   },
   {
    "date": "2026-09-30",
    "code": "018260",
    "name": "삼성에스디에스",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +1.15%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4526,
+    "flat": 0.0651,
+    "down": 0.4823,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4603174603174603,
+    "flat": 0.06547619047619048,
+    "down": 0.4742063492063492,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-f6cd14b16880f79d",
+   "analysisId": "analysis-de08f14e0c7d2390"
   },
   {
    "date": "2026-09-30",
    "code": "028300",
    "name": "HLB",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.52% = 절편 -0.14% + 자기 추세 -0.41% + 52종목 폭·평균 +0.03% · 실제 +3.11%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.4037,
+    "flat": 0.03915,
+    "down": 0.55715,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4087301587301587,
+    "flat": 0.03968253968253968,
+    "down": 0.5515873015873016,
+    "selected": "down"
+   },
+   "meanPp": -0.5193199481141095,
+   "terms": {
+    "intercept": -0.13792907948612187,
+    "F35": -0.41062203283311927,
+    "F11": 0.029231164205193026
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35"
    ],
-   "bin": "unknown"
+   "largestTerm": "F35",
+   "scoreId": "score-ba336bb56b97f39e",
+   "analysisId": "analysis-196f90c8e7265715"
   },
   {
    "date": "2026-09-30",
    "code": "029780",
    "name": "삼성카드",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 -0.71%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4676,
+    "flat": 0.0649,
+    "down": 0.4675,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.4642857142857143,
+    "flat": 0.06746031746031746,
+    "down": 0.46825396825396826,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "같은 난수 잡음",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-b52ee35c861db7e3",
+   "analysisId": "analysis-1b829fd8533816fc"
   },
   {
    "date": "2026-09-30",
    "code": "030200",
    "name": "KT",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 -1.13%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.463,
+    "flat": 0.08135,
+    "down": 0.45565,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.4623015873015873,
+    "flat": 0.08134920634920635,
+    "down": 0.45634920634920634,
+    "selected": "up"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-849aee6c51e310bb",
+   "analysisId": "analysis-688e07b3ea2d5816"
   },
   {
    "date": "2026-09-30",
    "code": "032830",
    "name": "삼성생명보험",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.18% = 절편 +0.15% + 자기 추세 +0.02% + 52종목 폭·평균 +0.01% · 실제 -2.93%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.48025,
+    "flat": 0.0459,
+    "down": 0.47385,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.49206349206349204,
+    "flat": 0.04365079365079365,
+    "down": 0.4642857142857143,
+    "selected": "up"
+   },
+   "meanPp": 0.18470483931809198,
+   "terms": {
+    "intercept": 0.14658488620162205,
+    "F35": 0.024605597232693788,
+    "F11": 0.01351435588385097
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35",
+    "F11"
    ],
-   "bin": "close"
+   "largestTerm": "intercept",
+   "scoreId": "score-f24e7da96c4fc6d3",
+   "analysisId": "analysis-38add413b84297a4"
   },
   {
    "date": "2026-09-30",
    "code": "034020",
    "name": "두산에너빌리티",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +2.38%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "flow"
+   "published": {
+    "up": 0.44615,
+    "flat": 0.0322,
+    "down": 0.52165,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4503968253968254,
+    "flat": 0.031746031746031744,
+    "down": 0.5178571428571429,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-5e5eddd22bf083cd",
+   "analysisId": "analysis-7f8c33485f6cc3a3"
   },
   {
    "date": "2026-09-30",
    "code": "034730",
    "name": "SK",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.34%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4624,
+    "flat": 0.0276,
+    "down": 0.51,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.47023809523809523,
+    "flat": 0.025793650793650792,
+    "down": 0.503968253968254,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-e377698c774a3b1e",
+   "analysisId": "analysis-980ec2755b0e4a08"
   },
   {
    "date": "2026-09-30",
    "code": "047050",
    "name": "포스코인터내셔널",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.05% = 절편 +0.01% + 자기 추세 +0.06% + 52종목 폭·평균 -0.02% · 실제 +4.60%",
-   "against": [
-    "F11 52종목 폭·평균"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.4592,
+    "flat": 0.0491,
+    "down": 0.4917,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4642857142857143,
+    "flat": 0.047619047619047616,
+    "down": 0.4880952380952381,
+    "selected": "down"
+   },
+   "meanPp": 0.0475758631166592,
+   "terms": {
+    "intercept": 0.010286280867305847,
+    "F35": 0.058140078928460626,
+    "F11": -0.02085049667913978
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-96ee0f3bbc016e98",
+   "analysisId": "analysis-3391dbd99f77437b"
   },
   {
    "date": "2026-09-30",
    "code": "051910",
    "name": "LG화학",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.06% = 절편 -0.01% + 자기 추세 +0.05% + 52종목 폭·평균 +0.02% · 실제 +0.40%",
-   "against": [
-    "반대로 민 항 없음(모의 계산 확률이 갈림)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.48195,
+    "flat": 0.0239,
+    "down": 0.49415,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4861111111111111,
+    "flat": 0.023809523809523808,
+    "down": 0.49007936507936506,
+    "selected": "down"
+   },
+   "meanPp": 0.06304801962193492,
+   "terms": {
+    "intercept": -0.008734983615522373,
+    "F35": 0.05189046823715516,
+    "F11": 0.01989253500026361
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-64c8c8f74535ef71",
+   "analysisId": "analysis-85303bece89ea5c3"
   },
   {
    "date": "2026-09-30",
    "code": "105560",
    "name": "KB금융",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.11% = 절편 +0.09% + 자기 추세 +0.02% + 52종목 폭·평균 +0.00% · 실제 -2.71%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.49925,
+    "flat": 0.05775,
+    "down": 0.443,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.5059523809523809,
+    "flat": 0.05555555555555555,
+    "down": 0.4384920634920635,
+    "selected": "up"
+   },
+   "meanPp": 0.1139951748573802,
+   "terms": {
+    "intercept": 0.09372291807818366,
+    "F35": 0.01950566988887436,
+    "F11": 0.0007665868903341112
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35",
+    "F11"
    ],
-   "bin": "flow"
+   "largestTerm": "intercept",
+   "scoreId": "score-4974e7b7317997a6",
+   "analysisId": "analysis-26600cb19f0793a2"
   },
   {
    "date": "2026-09-30",
    "code": "207940",
    "name": "삼성바이오로직스",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.43%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.45915,
+    "flat": 0.0742,
+    "down": 0.46665,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4583333333333333,
+    "flat": 0.07341269841269842,
+    "down": 0.46825396825396826,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-67bed5ff60def5b2",
+   "analysisId": "analysis-455eb93e4cb7bdc4"
   },
   {
    "date": "2026-09-30",
    "code": "257720",
    "name": "실리콘투",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "flat",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 -0.01% = 절편 -0.01% + 자기 추세 -0.10% + 52종목 폭·평균 +0.10% · 실제 0.00%",
-   "against": [
-    "F35 자기 추세"
+   "published": {
+    "up": 0.4638,
+    "flat": 0.03375,
+    "down": 0.50245,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.46825396825396826,
+    "flat": 0.03373015873015873,
+    "down": 0.498015873015873,
+    "selected": "down"
+   },
+   "meanPp": -0.012759771185793755,
+   "terms": {
+    "intercept": -0.00795541133128719,
+    "F35": -0.10258828305798064,
+    "F11": 0.09778392320351245
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "intercept",
+    "F35"
    ],
-   "bin": "close"
+   "largestTerm": "F35",
+   "scoreId": "score-a00ee6c09af25b47",
+   "analysisId": "analysis-3218d31672bfba35"
   },
   {
    "date": "2026-09-30",
    "code": "259960",
    "name": "크래프톤",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "up",
    "actDir": "down",
    "zeroWeight": false,
-   "modelContribution": "선택 모형의 기대 누적 +0.03% = 절편 -0.06% + 자기 추세 +0.07% + 52종목 폭·평균 +0.02% · 실제 -1.91%",
-   "against": [
-    "F35 자기 추세",
-    "F11 52종목 폭·평균"
+   "published": {
+    "up": 0.4811,
+    "flat": 0.0568,
+    "down": 0.4621,
+    "selected": "up"
+   },
+   "exact": {
+    "up": 0.4880952380952381,
+    "flat": 0.05952380952380952,
+    "down": 0.4523809523809524,
+    "selected": "up"
+   },
+   "meanPp": 0.03102966398067509,
+   "terms": {
+    "intercept": -0.06225121736613111,
+    "F35": 0.07152431448250103,
+    "F11": 0.021756566864324058
+   },
+   "reason": "평균 항",
+   "sameSideTerms": [
+    "F35",
+    "F11"
    ],
-   "bin": "close"
+   "largestTerm": "F35",
+   "scoreId": "score-b0946915372a6f8d",
+   "analysisId": "analysis-5d7434f505e567d9"
   },
   {
    "date": "2026-09-30",
    "code": "278470",
    "name": "에이피알",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +0.97%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.47585,
+    "flat": 0.02985,
+    "down": 0.4943,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.4722222222222222,
+    "flat": 0.02976190476190476,
+    "down": 0.498015873015873,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-d48a2ea84f82a6c4",
+   "analysisId": "analysis-24aeab64f949fab5"
   },
   {
    "date": "2026-09-30",
    "code": "373220",
    "name": "LG에너지솔루션",
+   "forecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
    "predDir": "down",
    "actDir": "up",
    "zeroWeight": true,
-   "modelContribution": "선택 모형의 기대 누적 0.00% = 절편 0.00% + 자기 추세 0.00% + 52종목 폭·평균 0.00% · 실제 +1.28%",
-   "against": [
-    "무게 0 → 모의 계산의 기울기(평균 빼기)"
-   ],
-   "bin": "close"
+   "published": {
+    "up": 0.47695,
+    "flat": 0.0288,
+    "down": 0.49425,
+    "selected": "down"
+   },
+   "exact": {
+    "up": 0.48214285714285715,
+    "flat": 0.02976190476190476,
+    "down": 0.4880952380952381,
+    "selected": "down"
+   },
+   "meanPp": 0,
+   "terms": {
+    "intercept": 0,
+    "F35": 0,
+    "F11": 0
+   },
+   "reason": "모의 계산 기울기",
+   "sameSideTerms": [],
+   "largestTerm": null,
+   "scoreId": "score-b9fc219c1b35efb5",
+   "analysisId": "analysis-13373118b27fdf5f"
   }
  ],
- "note": "틀린 42칸마다 반대로 민 항 · 근거 = 기록 장부 원인 분석 칸 modelContribution(같은 칸 가장 나중 판) · 무게 0 = 세 항 모두 0.00% · 인과 아님(모형 내부 설명)"
+ "sources": {
+  "ledger": {
+   "reports/atlas11/ledger/score/2026-09-29.jsonl": "51232cc35952a91a55da6debab9777b9f59bfc321893ead6dd9d2e6394862fda",
+   "reports/atlas11/ledger/score/2026-09-30.jsonl": "860ca69b930896fb6a8192b53b00f9a3edc609a9a24bd71e1985eac9bbdd1d02",
+   "reports/atlas11/ledger/analysis/2026-09-29.jsonl": "ad5d539c285c80b5a143681662f22e877a6749d415c09d3f9b27b5c3ed446b6d",
+   "reports/atlas11/ledger/analysis/2026-09-30.jsonl": "8790da9d5fd7b437fe9b0ebcc393cb7707f8bb013dd81f630aa75a16ecdc4670"
+  },
+  "publications": {
+   "2026-09-28-rolling20-13cd892134e517b4": "208bf9b6d70e4c607c9455d6f58fb4f525ab4d493fc2f02a41ac93027a625f96",
+   "2026-09-29-atlas11-128de9174cfdfa1f": "93887b5111cda2247244f88ec83056359f1b14c07bb56abeb5cd5e6353bc6e18"
+  },
+  "exact": "scripts/atlas11/overhaul/lane-b/simulate-variant.mjs exactDayOne(공유 날짜 504개 잔차 표 · W9 T14 정확 재현과 같은 μ·h)"
+ },
+ "note": "틀린 42칸이 그 방향을 고르게 된 까닭(모형 안의 설명 · 인과 아님) · 장부 = 정정 안 된 1거래일 칸(가장 나중 at) · 세 항 = 발행본 1일째 factor36(기본값 = 절편 · F35 · F11) · 평균 = 세 항의 합(1일째 평균 로그수익률)"
 }
