@@ -1,0 +1,205 @@
+{
+ "schema": "atlas4h-watch-1",
+ "at": "2026-10-01T21:43:54+09:00",
+ "by": "감시자",
+ "range": "4a6d7b6..5c46a19",
+ "head": "5c46a19",
+ "commits": 13,
+ "note": "짓지 않은 다른 에이전트가 셌다. 고치지 않았다. 통과 표시는 바꾸지 않았다. 「at」은 이 파일을 다 쓴 시각(TZ=Asia/Seoul date 로 잼).",
+ "S": {
+  "S1": 19,
+  "S2": 3,
+  "S3": 0,
+  "S4": 1,
+  "S5": 0,
+  "S6": 1,
+  "S7": 0,
+  "S8": 0,
+  "S9": "잴 수 없음 — 실시간 채점 0개(재현만 있음)",
+  "S10": "13 중 지킴 4 · 일부 4 · 아직 5"
+ },
+ "S1Detail": {
+  "이 범위에서 새로 생김": "retro/summary.md 6(구조 번호 0) · retro/summary-16.md 6(구조 번호 0) · harness/conflicts.md 16~26 절 6(구조 번호 0) · harness/eco-02-tests.md 1(D 칸 빔 — 쓴 구조 A1·A3·B1·C3·E6·F1·F5)",
+  "풀림": "harness/progress.json 의 D 칸 — 새 done 줄(21:25)에 D4",
+  "앞 감시에서 남은 것(이 범위 밖 · 바뀐 것 없음)": "data/contract.md 6 · sources/part-abc.md 3 · part-def.md 2 · part-engine.md 1",
+  "세는 법": "앞 감시(watch-first-run-2)와 같이 결정·판정을 담은 글을 「답」으로 셈. 자료 설명 README(baselines·verify)·넘겨주기 쪽지·장부 줄은 세지 않음"
+ },
+ "S10Detail": {
+  "1": "일부(그대로) — 끝날 시각 알림의 근거가 채팅뿐",
+  "2": "지킴",
+  "3": "일부(그대로) — 보류 11건(progress next 「보류 11건 다시 읽기」)",
+  "4": "지킴",
+  "5": "일부 — ECO-01 뒤 독립 흠 묶음 2 엄한 셈 144 중 8 놓침(변경 요청서 atlas4h-02 사장님 판단 기다림)",
+  "6": "지킴 — seal/judgment.json·judgment-2.json 변경 0 · 채점 기록 0. 시도 장부 「결과 전에 적기」 어김 2건은 T20 몫으로 따로 적음",
+  "7": "일부 — 08시 재현은 했고 무판·ATLAS 11(후향)과 견줌. 단순 전이식·코스피는 지난 자료가 없어 「없음」",
+  "8": "지킴 — site/·public/data/ 변경 0 · 「T12 안 통과 → 화면에 안 냄」을 요약·쪽지에 적음",
+  "9": "아직", "10": "아직", "11": "아직 — 예약 줄은 사장님 손(막힘)", "12": "아직", "13": "아직 — 고리 0번"
+ },
+ "structures": ["A1", "A2", "A3", "C1", "C5", "E2", "E6", "F1", "F2"],
+ "emptyGroups": "B · D — 이 감시 답도 두 칸이 비어 「미완」",
+ "checks": {
+  "1 덧붙이기만": "seal/ 에서 바뀐 파일은 trials.jsonl 하나 — 459e947 이 3줄, 750982b 가 1줄 덧붙임, 지운·고친 줄 0. atlas4h/ledger/ 는 아직 없음. progress.json 의 done 앞 10줄·corrections 9줄은 값이 한 글자도 같음(JSON 비교) — next·blocked 만 바뀜(ruleNote 대로)",
+  "2 옛 엔진": "scripts/atlas11 · lib/atlas11 · config/atlas11 · site · public/data · reports/atlas11 · tests/atlas11 · .github/workflows/atlas11-* 변경 0. atlas4h 밖에서 바뀐 것은 새 파일 .github/workflows/atlas4h-collect.yml 하나",
+  "3 잠긴 시험": "잠긴 길(tests·spec/checks·stats·fixtures·scripts·tests.lock.json)을 바꾼 커밋은 6f8936a(atlas4h LOCK: ECO atlas4h-01) 하나. eco-01-tests.md 승인 줄 있음. check_harness H1~H6 통과(잠금 26파일 지문 같음)",
+  "4 통과 목록": "harness/passlist.json 변경 0",
+  "5 숫자": "감시가 result.json·result-16.json 6,240줄에서 다시 셈 — 엔진 평균 49,408.1946 · 무판 52,494.0326 · 실력 0.058785 · DM p 8.2756e-7/5.1492e-4 · ATLAS 11 평균 49,467.2171 · 실력 0.001193 · p 0.45029/0.46616 · % 곁 확인 15.2185/15.8320(0.038754)·15.1300(−0.005847, p 0.9008/0.8666) · 덮음 엔진 4,611 · 무판 4,437 · ATLAS 11 4,583 / 6,240 · CRPS 7,665.067/7,807.377 · 브라이어 0.532645/0.531510/0.531548 — 파일·요약·커밋 제목과 모두 같음. 08시 t 판과 16시 t−1 판의 엔진·무판 점수 6,240줄 차이 0. ATLAS 11 구간 점수를 p10·p90·실제값으로 다시 셈 — 차이 ≤ 5e-7. 기준값 README: 폭 평균 8.259% · 안 4,583 · 아래 870 · 위 787 · 겹친 출발일 98 · 다른 출발일 4(칸 110) 모두 같음. 흠 묶음 2: 189·157·144·136·헛잡음 1/26·다툼 45(놓침 24)·시험마다 표 22줄 모두 같음. ECO-01 묶음 1 참고 110/111·102/103 은 짓는 이 임시 파일 oldcheck/independent-defects.after-eco01.json(20:11:51)과 같음 — 저장소에는 그 근거 파일이 없음. 시험 수 230·20·24·8 같음",
+  "6 시각": "커밋 13개의 글쓴 시각·올린 시각과 저장소 reflog(main · 짓는 이 작업 폴더)를 맞댐. 짜 맞춘 시각처럼 보이던 21:14:00(c0a6233)·21:25:00(750982b)은 reflog 에 그대로 있어 실제 시각. 틀린 것: 「21:15 KST」(W2) · progress 「21:15 KST」(W6)",
+  "7 시도 장부 · S8": "엔진 값은 결과를 본 뒤 바뀌지 않음 — 16시 결과(20:03, 코드 지문 = b8074cc 파일)와 08시 결과(21:24, 코드 dbed148)의 엔진 점수 차이 0 · 짓는 이 임시 실행(21:08·21:10·21:24)도 값이 같음. 08시 판 고르기는 엔진 점수를 바꾸지 못함(16시 t−1 판과 같음)이라 엔진을 좋게 보이게 고른 것이 아님. 원 단위를 판정 단위로 둔 것은 ATLAS 11 결과 전(20:03 summary-16.md)부터라 뒤에 고른 것이 아님. 늦게 적음 두 건의 시인은 맞으나 시각이 틀림(W2)",
+  "8 금지 말": "새로 더한 줄 가운데 금지 말은 시험·흠 심기 재료와 검사 코드 속에만 있음. 엔진 판 글·시나리오 전제·틀림 표시·요약·쪽지에는 0",
+  "9 없음·딱지": "단순 전이식·코스피 「없음」 · 가짜 재료는 「시험용 가짜 자료 [예시]」·synthetic-* 이름 · ATLAS 11 값에 「후향」(result.json 줄 label · 요약 결론 8 · 커밋 제목) · 해석은 요약 5절 [판단] — 빠진 곳은 W14",
+  "10 커밋 규칙": "13개 모두 제목 「atlas4h」 · 무엇:·왜: · 끝 두 줄 그대로",
+  "11 안전": "열쇠 꼴 글자는 시험용 가짜 값뿐(SECRET-ecos-key-7f3a9c · 흠 D-T3-07). 수집기는 주소·오류·장부에서 열쇠를 {KEY}로 바꿈. 새 워크플로는 workflow_dispatch 만 · git add 는 atlas4h/data/history·ledger·raw 만 · 사이트 올리기 없음 · [skip ci]. dispatches 를 부르는 코드 0(찾은 것은 그것을 잡는 검사 한 줄)",
+  "12 돌려 본 것": "bash atlas4h/harness/start.sh — 끝까지 0(명령문 잠금 ok · H1~H6 통과 · 기본 230 · 수집 20 · 엔진·채점 32 · 사양 보고 통과 2/안 통과 28) → spec-latest.json 은 git checkout 으로 되돌림. node scripts/atlas11/overhaul/check.mjs --rules — 8/8 통과. 기준값 시험(start.sh 밖) 14개도 따로 돌려 통과"
+ },
+ "findings": [
+  {
+   "id": "W1",
+   "S": "기타(하네스 H5)",
+   "severity": "막음",
+   "file": ".github/workflows/atlas4h-collect.yml",
+   "line": 57,
+   "what": "수집 워크플로가 올리는 커밋 글에 「무엇:」「왜:」와 끝 두 줄이 없다. 사장님이 「지난 자료 받기」 단추를 한 번 누르면 그 커밋 때문에 하네스 검사 H5 가 깨지고, start.sh 가 「하네스 검사」에서 멈춘다. 올린 기록은 고쳐 쓰지 않고(commit-rule 6) check_harness.mjs 는 잠긴 파일이라, 한 번 생기면 변경 요청 없이는 풀 수 없다",
+   "evidence": "57줄 git commit -q -m \"atlas4h collect ${MODE} … KST [skip ci]\" · check_harness.mjs 108~110줄: a9187c6..HEAD 에서 atlas4h 를 건드린 합치기 아닌 커밋마다 「무엇:」「왜:」를 찾음(139줄 H5) · 이 커밋은 atlas4h/data/history·ledger·raw 를 건드림 · start.sh 8줄 「check_harness.mjs || exit 1」",
+   "suggest": "단추를 누르기 전에 워크플로의 커밋 글에 「무엇: …」「왜: …」 두 줄과 끝 두 줄을 넣는다(워크플로는 잠긴 파일이 아님). 그 전에는 progress.json blocked 1번에 「누르지 마십시오 — W1」을 적는다"
+  },
+  {
+   "id": "W2",
+   "S": "S4",
+   "severity": "고침",
+   "file": "atlas4h/seal/trials.jsonl",
+   "line": 4,
+   "what": "trial-0002 의 시인 「짓는 일꾼이 21:15 KST에 ATLAS 11 견줌을 이미 셈」의 시각이 틀렸다. 실제로는 늦어도 21:08:22 KST에 봤다(7분 앞). 같은 「21:15」가 conflicts.md 17번(41줄)·커밋 459e947·750982b 본문에도 있다. 또 「단순 전이식·코스피는 아무도 보지 않았다」 — 진짜 자료로는 맞지만, 같은 21:08 실행이 시험용 가짜 지난 자료로 두 부분을 셈해 화면에 냈다(가짜라 진짜 정보는 없음)",
+   "evidence": "짓는 이 임시 폴더(저장소 밖) /tmp/claude-0/-home-claude/7580db81-3e59-5485-baf7-bb7f97703c97/scratchpad/ — try08.mjs(21:08:18)가 run({slot:'08'})를 돌리고 t12.reason 을 찍음 · s08.md(21:08:26) 머리 「만든 때: 2026-10-01T21:08:22+09:00」 · 결론 1 「못 이김: 「ATLAS 11」 DM p 0.448」 · 결론 5 「ATLAS 11 평균 49,467.2 → 실력 0.12% · DM p 0.450 · 0.466」 · 결론 4·7 단순 전이식 「실력」 8.25% · 코스피 「앞 판으로」(hist/sox.json·kospi.json = 「시험용 가짜 자료 [예시]」) · cli08.md 21:10:36 같은 값. 값은 마지막 커밋 결과와 같음(고친 흔적 없음)",
+   "suggest": "trials.jsonl 에 정정 줄을 덧붙인다(고치지 않음): 「trial-0002 첫 봄 ≤ 21:08:22 KST(21:15 아님) · 단순 전이식·코스피는 가짜 [예시] 자료로만 셈해 봄」. conflicts.md 에도 덧붙인다"
+  },
+  {
+   "id": "W3",
+   "S": "기타(장부 가리킴)",
+   "severity": "고침",
+   "file": "atlas4h/seal/trials.jsonl",
+   "line": 3,
+   "what": "trial-0001(16시 재현) 결과 줄이 「atlas4h/retro/result.json」·「summary.md」를 가리키는데, 3분 뒤 dbed148 이 16시 재현을 result-16.json·summary-16.md 로 옮기고 그 자리에 08시 재현을 넣었다. 덧붙이기만 하는 장부가 지금은 다른 파일(08시 재현)을 가리킨다",
+   "evidence": "3줄 \"file\": \"atlas4h/retro/result.json\" · \"source\": \"atlas4h/retro/summary.md (2026-10-01 20:03 KST)\" · dbed148 이름 옮김 — 74e7505:result.json 과 dbed148:result-16.json 이 같은 덩어리 74e63e3 · 750982b 가 result.json 을 08시 재현으로 새로 씀",
+   "suggest": "정정 줄을 덧붙인다: 「trial-0001 결과 파일 → atlas4h/retro/result-16.json·summary-16.md (dbed148 에서 옮김)」"
+  },
+  {
+   "id": "W4",
+   "S": "기타(셋 ② 정직)",
+   "severity": "고침",
+   "file": "atlas4h/harness/handoff.md",
+   "line": 9,
+   "what": "ATLAS 11 견줌 머리말이 원 단위 「실력 0.12% · 아직 모름」만 적는다. 같은 결과의 % 곁 확인은 반대 부호다: 엔진 15.218 대 ATLAS 11 15.130 → 실력 −0.58% → 봉인 판정 말로 「앞 판으로」(DM p 0.901·0.867). 원 단위 평균은 값 비싼 종목이 끌고 간다. 같은 빠짐이 커밋 750982b 제목·progress.json 368줄(21:25)·trials.jsonl 5줄에도 있다. 다음 고리(5단계)가 이 머리말로 시작한다",
+   "evidence": "result.json summary.stocks.vs['ATLAS 11'].pct = meanEngine 15.218461 · meanBaseline 15.129996 · skill −0.005847 · p 0.9008/0.8666 · verdict 「앞 판으로」 — 감시가 6,240줄에서 다시 셈해 같음 · summary.md 2절 표 6번째 줄에는 적혀 있음. 원 단위를 판정 단위로 둔 것은 ATLAS 11 결과 전(summary-16.md 20:03)부터라 S8 은 아님",
+   "suggest": "쪽지·다음 progress 줄에 「% 곁 확인 −0.58%(앞 판으로, p 0.90) — 두 단위 모두 유의 아님」을 함께 적는다. 판정 단위를 봉인 판정에 적을지(judgment-3, 실제 채점 0개일 때만)는 사장님 판단 거리로 올린다"
+  },
+  {
+   "id": "W5",
+   "S": "S6",
+   "severity": "고침",
+   "file": "atlas4h/harness/handoff.md",
+   "line": 12,
+   "what": "쪽지가 「… baselines 13. harness/start.sh 가 모두 돌린다」고 적었지만 start.sh 는 기준값 시험(atlas4h/baselines/test)을 돌리지 않는다. 확인 없이 「모두」라고 적은 곳",
+   "evidence": "start.sh 9~11줄은 atlas4h/tests · collect/test · engine/test·score/test 만 돌림 · 감시가 기준값 시험을 따로 돌림 — 14개 정의(1개는 skip) 모두 통과",
+   "suggest": "start.sh 에 기준값 시험 한 줄을 더하거나(잠긴 파일 아님) 쪽지 문장을 「start.sh 는 기준값 시험을 돌리지 않음」으로 고친다"
+  },
+  {
+   "id": "W6",
+   "S": "S4",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/harness/progress.json",
+   "line": 326,
+   "what": "새 done 줄 「2단계 이어」의 at 「2026-10-01 21:15 KST」이 어느 커밋 시각과도 맞지 않는다",
+   "evidence": "51f0ddd 글쓴 시각 21:11:27 · c0a6233 21:14:00(짓는 이 작업 폴더 reflog 1790856687·1790856840) · 둘 다 main 에 21:19:49(main reflog 1790857189)",
+   "suggest": "다음 정정 줄에서 커밋 시각(21:11 글씀 · 21:19 main)으로 적는다"
+  },
+  {
+   "id": "W7",
+   "S": "S4",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/harness/conflicts.md",
+   "line": 45,
+   "what": "판 크기 숫자의 근거 파일이 저장소에 없다 — 「약 1.5 MB」(progress 334줄 1,544,835 B) · 「코스피를 넣으면 약 147 KB」 · 「지난 등락 523개」",
+   "evidence": "커밋된 결과에는 옛 판 크기 기록이 없음(result-16.json summary 에 boardBytes 없음) · 147 KB 는 짓는 이 임시 실행 s08.md(가짜 코스피 자료) 「143.6 KB」 = 147,046 B 뿐 · 코드는 HISTORY_DAYS = 500 + 22 + 1 + 1 = 524(constants.mjs 17줄, 0판 board.mjs 17줄 같음)",
+   "suggest": "잰 값을 파일로 남기거나 [임시 셈] 딱지를 단다 · 523 과 524 중 맞는 쪽을 확인한다"
+  },
+  {
+   "id": "W8",
+   "S": "기타",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/harness/conflicts.md",
+   "line": 50,
+   "what": "「ATLAS 11 후향 = 저장된 후향 칸과 차이 0」(62d695a 제목 · trials.jsonl 4줄 · conflicts 26)은 p50·방향 확률 등 저장된 칸에 대한 말이다. 구간 점수에 쓰는 p10·p90 은 저장된 칸에 없어 v1 계산기와 맞댄 것뿐이고, 겹치는 출발일도 120 중 98이다",
+   "evidence": "atlas11-v1-retro.json reproduction: columnsCompared 에 p10·p90 없음 · overlapWithOutput 98 · samePathsV1VsPublication 7,280칸 — baselines/README.md 는 이를 바르게 적음",
+   "suggest": "「차이 0」을 옮겨 적을 때 「p50·방향 확률 차이 0 · p10·p90 은 v1 계산기와 같음」으로 적는다"
+  },
+  {
+   "id": "W9",
+   "S": "기타",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/retro/summary-16.md",
+   "line": 3,
+   "what": "16시 재현 요약 머리가 「코드 4a6d7b6a8394」라고만 적는다. 실제로는 커밋 안 된 바뀜이 있는 상태에서 돌았다",
+   "evidence": "result-16.json code = {commit 4a6d7b6a8394, dirty: true} · 감시가 파일 지문을 맞댐 — 여섯 파일 모두 b8074cc 의 파일과 같음",
+   "suggest": "다음 쪽지나 정정 줄에 「16시 재현 코드 = b8074cc 파일(돌 때 4a6d7b6 + 바뀜)」을 적는다"
+  },
+  {
+   "id": "W10",
+   "S": "기타",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/harness/eco-01-tests.md",
+   "line": 30,
+   "what": "잠긴 시험을 고친 근거인 승인 줄이 사장님 말 「이 기획안을 실제 제작할수 있는 코드로 만든다」(19:46 KST)를 기획안 3절(「시작」 한마디 = atlas4h-01 허락)로 읽은 것이다. 그 말의 원문은 harness/evidence 에 없어 감시가 열어 볼 수 없다",
+   "evidence": "harness/evidence 에는 2026-10-01-atlas11-daily-runs.json 하나뿐 · plan/build-plan.md 3절 1",
+   "suggest": "사장님 말 원문(시각 포함)을 evidence 파일로 남긴다"
+  },
+  {
+   "id": "W11",
+   "S": "S8",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/seal/trials.jsonl",
+   "line": 2,
+   "what": "16시 재현이 20:03 한 번만 돌았는지는 기록이 없어 확인할 수 없다. 엔진 값(창 500 · 바닥 1e-8 · k 0.5σ)을 처음 정할 때 재현 결과를 봤는지 감시가 가릴 수 없다",
+   "evidence": "짓는 이 작업 폴더 reflog: 19:49:33 시작 → 20:03:29 커밋 a997604 하나 · result-16.json createdAt 20:03:00 · 그 사이 다른 실행 흔적 없음(있다는 흔적도 없다는 흔적도 없음)",
+   "suggest": "conflicts 17 의 약속(엔진 바꿈은 시도 줄을 먼저 커밋한 뒤 돌린다)을 지키면 다음부터는 가릴 수 있다"
+  },
+  {
+   "id": "W12",
+   "S": "S8",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/verify/README.md",
+   "line": 24,
+   "what": "독립 흠 묶음 2 는 미리 등록을 지켰다 — 등록(2d77f0c) 뒤 흠 189·탐침 26 의 칸이 하나도 안 바뀌었다. 다만 등록 전에 바탕에 runAll 을 돌려 결과 글을 봤고(README 가 스스로 적음), README 는 메모를 D-T5-09 하나라고 적었지만 D-T8-03 메모도 있다",
+   "evidence": "감시가 2d77f0c 와 eb8c608 의 defects·probes 를 칸마다 맞댐 — 바뀐 칸 0 · 짓는 이 임시 폴더 base1~3.mjs(20:56~21:03)가 바탕에 runAll · independent-defects-2.mjs NOTES 에 D-T5-09·D-T8-03",
+   "suggest": "README 메모 문장에 D-T8-03 을 더한다"
+  },
+  {
+   "id": "W13",
+   "S": "기타",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/harness/commit-rule.md",
+   "line": 5,
+   "what": "커밋 규칙 1 「atlas4h <단계>: …」 꼴이 아닌 제목이 둘 — c0a6233 「atlas4h 재현 요약에 …」 · 74e7505 「atlas4h 부딪힌 곳 16~26 · …」(쌍점 없음). 수집 봇 커밋도 같음",
+   "evidence": "git log 제목",
+   "suggest": "다음 커밋부터 「atlas4h <단계>:」 꼴"
+  },
+  {
+   "id": "W14",
+   "S": "기타",
+   "counted": false,
+   "severity": "참고",
+   "file": "atlas4h/seal/trials.jsonl",
+   "line": 5,
+   "what": "trial-0002 결과 줄의 「ATLAS 11」 칸에 「후향」 딱지가 없다(시도 줄에는 있음)",
+   "evidence": "5줄 \"ATLAS 11\": {\"meanEngine\": 49408.2, \"meanBaseline\": 49467.2, …} — label 없음",
+   "suggest": "W2·W3 정정 줄에 함께 「ATLAS 11 = 후향」을 적는다"
+  }
+ ]
+}
