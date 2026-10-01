@@ -1,0 +1,59 @@
+name: atlas4h-collect
+# ATLAS 4시간 엔진 1단계 — 자료 모으기 단추. 사장님이 누를 때만 돈다(예약 없음 · 사이트 올리기 없음).
+#   history = 코스피·반도체지수·S&P500·VIX·원달러·WTI·브렌트 지난 3년 (출처 둘이면 둘 다)
+#   now     = 변수 열다섯의 지금 값 한 장 (4시간 고리용)
+# 쓰는 곳은 atlas4h/data/history · atlas4h/ledger · atlas4h/raw 뿐이다.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'history = 지난 3년 받기 · now = 지금 값 한 장'
+        required: true
+        default: history
+        type: choice
+        options:
+          - history
+          - now
+permissions:
+  contents: write
+concurrency:
+  group: atlas4h
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 자료 모으기
+        env:
+          MODE: ${{ inputs.mode }}
+          # 열쇠는 있을 때만 쓴다(없으면 그 둘째 출처는 빠진다). 수집기는 열쇠를 화면·파일에 쓰지 않는다.
+          ATLAS4H_KRX_KEY: ${{ secrets.ATLAS4H_KRX_KEY }}
+          ATLAS4H_ECOS_KEY: ${{ secrets.ATLAS4H_ECOS_KEY }}
+          ATLAS4H_DART_KEY: ${{ secrets.ATLAS4H_DART_KEY }}
+          ATLAS4H_FRED_KEY: ${{ secrets.ATLAS4H_FRED_KEY }}
+        run: node atlas4h/collect/collect.mjs --mode "$MODE"
+      - name: 기록 올리기
+        if: always()
+        shell: bash
+        env:
+          MODE: ${{ inputs.mode }}
+        run: |
+          git config user.name atlas4h-bot
+          git config user.email atlas4h-bot@users.noreply.github.com
+          for p in atlas4h/data/history atlas4h/ledger atlas4h/raw; do
+            if [ -e "$p" ]; then git add -- "$p"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "바뀐 것 없음 — 올리지 않음"
+            exit 0
+          fi
+          git commit -q -m "atlas4h collect ${MODE} $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST [skip ci]"
+          git pull --rebase -q
+          git push
