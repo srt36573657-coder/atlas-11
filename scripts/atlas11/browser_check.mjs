@@ -186,6 +186,23 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await headlineCheck(page, label, '성적', '.lc .lc-end.pred');
   const scoresText = await page.locator('#main').innerText();
   check(`${label} 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림`, await page.locator('.bars .bar-row').count() >= 9 && /채점 예정표/.test(scoresText) && /후향 진단 열기/.test(scoresText) && /종목별 채점 표 열기/.test(scoresText), null);
+  // 왜 틀렸나(10/01): 네 통 막대의 합 = 틀린 수 = 채점 자료의 방향 틀림 합 = 눌러서 연 목록 줄 수 · 「까닭 보기」 단추로 칸까지 내려감
+  {
+    const sc = await (await fetch(base + '/data/atlas11/view/scores.json')).json();
+    const wrongAll = sc.byDate.reduce((s, d) => s + d.rows.filter(r => r.horizons?.['1']?.status === 'evaluated' && r.horizons['1'].directionCorrect === false).length, 0);
+    const lead = await page.locator('#misses .miss-lead').innerText().catch(() => '');
+    const binVals = await page.locator('#misses .bars').first().locator('.bar-value').allInnerTexts();
+    const binSum = binVals.reduce((s, t) => s + (parseInt(t.replace(/[^\d]/g, ''), 10) || 0), 0);
+    const listFold = page.locator('#misses details.more', {hasText: '목록 열기'});
+    await listFold.locator('summary').click(); await page.waitForTimeout(150);
+    const listRows = await listFold.locator('tbody tr').count();
+    await listFold.locator('summary').click();
+    const leadWrong = Number((/틀린 (\d+)건/.exec(lead) ?? [])[1]);
+    check(`${label} 성적 · 왜 틀렸나: 네 통 ${binVals.length}개 · 합 ${binSum}건 = 틀린 ${leadWrong}건 = 채점 자료 ${wrongAll}건 = 목록 ${listRows}줄`, binVals.length === 4 && binSum === wrongAll && leadWrong === wrongAll && listRows === wrongAll, {lead, binVals, wrongAll, listRows});
+    await page.locator('.jump-misses').click(); await page.waitForTimeout(700);
+    const top = await page.evaluate(() => Math.round(document.getElementById('misses').getBoundingClientRect().top));
+    check(`${label} 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴`, top >= 0 && top < 260, {top});
+  }
   await shot('05-scores');
   // ---------- 진화 ----------
   await page.goto(base + '/#/evolution', {waitUntil: 'networkidle'});

@@ -940,3 +940,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .chart .end-label, .chart .race-label { font-size: .75em; }
 .evo-chart .evo-val.last { font-size: .81em; }
 .lc-band-label, .chart .race-tag, .qbox .q-label { font-size: .69em; }
+/* 성적 · 왜 틀렸나(10/01) */
+.miss-lead { font-weight: 700; margin: 2px 0 10px; }
+.jump-misses { margin: 8px 0 4px; }
+#misses { scroll-margin-top: 120px; }
+#misses details.more .table td:last-child { min-width: 12em; }

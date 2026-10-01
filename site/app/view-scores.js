@@ -1,6 +1,6 @@
 /* ATLAS 11 · 성적(실시간 채점 + 채점 예정표) · 자료 상태(36요인 격자 · 달력 · 실행 기록 · 검사 증거 · 무결성) — 진화는 view-evolution.js */
-import {h, num, pct, pctPoint, pctRaw, won, korDate, shortDate, weekday, stamp, kst, dirWord, dirMark, DIR, finite, download, csvCell} from './util.js';
-import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, setSummary, url, state} from './store.js';
+import {h, num, pct, pctPoint, pctRaw, won, korDate, shortDate, weekday, stamp, kst, dirWord, dirMark, DIR, finite, download, csvCell, reducedMotion} from './util.js';
+import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, loadMisses, setSummary, url, state} from './store.js';
 import {reportDetails} from './view-records.js';
 import {headline, editionSource, lineChart, pickBox} from './frame.js';
 import {bars} from './chart.js';
@@ -57,12 +57,51 @@ export async function renderScores(main, {manifest}) {
     table(['지표', '운영 A', '비교 기준(평균 0 · 분산 고정)'], [['CRPS(낮을수록 좋음)', f3(ho.crps), f3(ho.baselineCRPS)], ['방향 정답률', pctPoint(ho.directionAccuracy), pctPoint(ho.baselineDirectionAccuracy)], ['80% 범위 담김', pctPoint(ho.coverage), pctPoint(ho.baselineCoverage)], ['가격 절대오차', pctPoint(ho.absolutePriceError), pctPoint(ho.baselineAbsolutePriceError)]], 'small'),
     h('p', {class: 'muted xs'}, `보류 구간 ${korDate(ho.first)} ~ ${korDate(ho.last)} · ${ho.note}`),
     cb ? table(['A/B 후향 비교', '운영 A', '후보 B', '채택 조건'], [['평균 절대 가격 오차율', pctRaw(cb.A.meanErrorPct), pctRaw(cb.B.meanErrorPct), 'B 가 A 보다 작아야 함'], ['상위 5종목 순위 적중 합계', `${cb.A.rankHits}회/${cb.rankMaximum}회`, `${cb.B.rankHits}회/${cb.rankMaximum}회`, 'B 가 A 이상이어야 함']], 'small') : null);
-  main.replaceChildren(hl, evidence,
-    h('section', {class: 'panel'}, dayTitle, h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '채점 날짜'), pickBox(sel, {cls: 'small'}))), h('h3', {class: 'panel-sub'}, '방향'), resultBox, h('h3', {class: 'panel-sub'}, '가격이 80% 범위 안에 들었나'), bandBox, h('h3', {class: 'panel-sub'}, '가격 오차 분포'), distBox, tableFold),
+  const misses = await loadMisses().catch(() => null);
+  main.replaceChildren(...[hl, evidence,
+    h('section', {class: 'panel'}, dayTitle, h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '채점 날짜'), pickBox(sel, {cls: 'small'}))), h('h3', {class: 'panel-sub'}, '방향'), resultBox, misses?.counts?.wrong ? h('button', {class: 'ctl jump-misses', type: 'button', onclick: () => document.getElementById('misses')?.scrollIntoView({behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'})}, '방향이 틀린 까닭 보기 ↓') : null, h('h3', {class: 'panel-sub'}, '가격이 80% 범위 안에 들었나'), bandBox, h('h3', {class: 'panel-sub'}, '가격 오차 분포'), distBox, tableFold),
+    missPanel(misses),
     h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '채점 예정표'), pending, retro),
-    h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '일일 보고'), reportDetails(ledger?.dailyReport ?? null)));
+    h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '일일 보고'), reportDetails(ledger?.dailyReport ?? null))].filter(Boolean));
   lineChart(lineBox, {dates: scored.map(d => d.date), series: [{id: 'hit', name: '방향 맞힘', values: scored.map(d => d.horizonSummary[1].correct), cls: 'pred'}], unit: '종목', format: v => String(Math.round(v)), yMin: 0, yMax: 52, ticks: [0, 26, 52], ref: 26, height: 190, ariaLabel: '날짜별 방향 맞힘: ' + scored.map(d => `${korDate(d.date)} ${d.horizonSummary[1].correct}종목`).join(', ')});
   renderDay(latest.date);
+}
+
+/* ---------- 왜 틀렸나(10/01 사장님 요청): 틀린 1거래일 전망을 네 통으로 · 한꺼번에 민 까닭(「하락」 쏠림)
+   숫자는 misses.json(매일 실행 때 장부의 채점·원인 분석으로 다시 만듦) · 비교는 막대 · 목록·대조·규칙은 눌러야 열림 ---------- */
+const signedP = (v, d = 1) => finite(v) ? `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(d)}%p` : '미산출';
+const share = (a, b) => b ? Math.round(a / b * 100) : 0;
+function missPanel(m) {
+  if (!m || !m.counts?.wrong || !m.dates?.length) return null;
+  const n = m.counts.cells, w = m.counts.wrong, L = m.lean, ns = m.noSignal, sg = m.signal;
+  const span = m.dates.length > 1 ? `${korDate(m.firstDate)}~${korDate(m.lastDate)} 채점 ${m.dates.length}일` : `${korDate(m.firstDate)} 채점`;
+  const lean = L.wrongFromDown >= L.wrongFromUp ? {word: '「하락」', n: L.wrongFromDown, tail: '오르거나 그대로였음'} : {word: '「상승」', n: L.wrongFromUp, tail: '내리거나 그대로였음'};
+  const binBox = h('div', {class: 'bars'}), leanBox = h('div', {class: 'bars'}), hitBox = h('div', {class: 'bars'}), rangeBox = h('div', {class: 'bars'});
+  bars(binBox, m.bins.map(b => ({label: b.label, value: m.binTotals[b.id] ?? 0})), {max: w, format: v => v + '건'});
+  bars(leanBox, [{label: `예측 「하락」 (${n}건 중)`, value: L.predictedDown}, {label: `실제 하락 (${n}건 중)`, value: L.observedDown}], {max: n, format: v => `${v}건(${share(v, n)}%)`});
+  bars(hitBox, [ns.cells ? {label: `신호 없던 ${ns.cells}건 중 맞힘 ${ns.right}건`, value: share(ns.right, ns.cells)} : null, sg.cells ? {label: `신호 있던 ${sg.cells}건 중 맞힘 ${sg.right}건`, value: share(sg.right, sg.cells)} : null].filter(Boolean), {max: 100, format: v => v + '%'});
+  if (ns.ranges?.length) bars(rangeBox, ns.ranges.map(r => ({label: `예상 범위 ${r.from}~${r.to}% · ${r.n}건(「하락」 ${r.down}건)`, value: Math.max(0, r.tilt)})), {max: Math.max(...ns.ranges.map(r => r.tilt), 1), format: v => signedP(v)});
+  const days = m.dates.map(d => `${korDate(d)} ${pctRaw(m.byDate[d].basketPct, 2, true)}`).join(' · ');
+  const allDown = L.downDays === m.dates.length;
+  const byBin = m.bins.map(b => [b, m.list.filter(x => x.bin === b.id)]).filter(([, xs]) => xs.length);
+  const dirTxt = (k, extra) => `${dirMark(k)}${dirWord(k)} ${extra}`;
+  return h('section', {class: 'panel', id: 'misses', 'aria-label': '왜 틀렸나'},
+    h('h2', {class: 'panel-title'}, `왜 틀렸나 · 1거래일 전망 · ${span}`),
+    h('p', {class: 'miss-lead'}, `틀린 ${w}건 중 ${lean.n}건은 ${lean.word}이라 했는데 ${lean.tail}`),
+    h('h3', {class: 'panel-sub'}, `틀린 ${w}건을 네 통으로`), binBox,
+    h('h3', {class: 'panel-sub'}, '여러 종목을 한꺼번에 틀리게 한 까닭: 「하락」 쏠림'), leanBox,
+    h('p', {class: 'small'}, `모델 신호가 없던 종목(모델이 기대한 등락 0.00%) ${ns.cells}건 중 ${ns.down}건을 「하락」으로 고름 · 하락 확률이 상승 확률보다 평균 ${signedP(ns.tilt)}`),
+    h('h3', {class: 'panel-sub'}, '맞힌 비율'), hitBox,
+    h('p', {class: 'muted small'}, `52종목 평균: ${days}${allDown ? ` · 채점한 ${m.dates.length}일 모두 내린 날이라, 맞힌 ${m.counts.right}건 중 ${ns.rightDown}건은 신호 없는 종목에서 고른 「하락」이 맞은 것 · 오르는 날의 성적은 아직 없음` : ` · 맞힌 ${m.counts.right}건 중 ${ns.rightDown}건은 신호 없는 종목에서 고른 「하락」`}`),
+    ns.ranges?.length ? h('details', {class: 'more'}, h('summary', null, `흔들림이 넓을수록 「하락」 쪽으로 기욺 열기 · 신호 없던 종목 ${ns.rangedCells}건`), rangeBox, h('p', {class: 'muted xs'}, '예상 범위 = 그 종목의 80% 범위 폭 · 막대 = 하락 확률 − 상승 확률 평균 · 왜 기우는지는 아직 모름(시험 후보)')) : null,
+    h('details', {class: 'more'}, h('summary', null, `틀린 ${w}건 목록 열기 · 통별`),
+      ...byBin.flatMap(([b, xs]) => [h('h3', {class: 'panel-sub'}, `${b.label} ${xs.length}건`),
+        table(['날짜', '종목', '예측', '실제', '까닭'], xs.map(x => [korDate(x.date), x.name, dirTxt(x.predicted, finite(x.prob) ? Math.round(x.prob * 100) + '%' : ''), dirTxt(x.observed, pct(x.actualReturn)), x.note ? `${x.why} · ${x.note}` : x.why]))])),
+    h('details', {class: 'more'}, h('summary', null, '맞힌 종목과 견준 결과 열기'),
+      table(['근거 종류', '틀린 쪽', '맞힌 쪽', '판정'], m.contrast.map(c => [c.label, `${c.wrongWith}/${c.wrong}건(${share(c.wrongWith, c.wrong)}%)`, `${c.rightWith}/${c.right}건(${share(c.rightWith, c.right)}%)`, c.passes ? '틀린 쪽에 더 많음' : '맞힌 쪽에 같거나 더 많음 → 까닭으로 보지 않음'])),
+      h('p', {class: 'muted xs'}, '「전망 전에 알 수 있던 기업 일정」은 건수가 적어 판단이 약함')),
+    h('details', {class: 'more'}, h('summary', null, '나누는 규칙 열기 · 결과를 보기 전에 정함'),
+      h('ul', {class: 'plain small'}, ...m.rules.map(r => h('li', null, r))), h('p', {class: 'muted xs'}, m.basis)));
 }
 
 /* ---------- 자료 상태 v9: 헤드라인(확정 종가 종목 수) → 날짜별 확정 종가 확보 수(선) → 36요인·관측 기록 막대 → 표는 눌러야 열림 ---------- */
