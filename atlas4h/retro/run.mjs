@@ -31,6 +31,7 @@ import {scoreBoard, loadAtlas11Retro, ATLAS11_RETRO_FILE, NOTE_A11_EARLY, NOTE_T
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
 export const BASELINE_IDS = ['무판', '단순 전이식', 'ATLAS 11'];
+export const SCENARIO_RULE = 'k = 0.5·σ̂(다음 날 흔들림) · 위 = [출발값·e^k, max(p95, 출발값·e^k)] · 가운데 = [출발값·e^−k, 출발값·e^k] · 아래 = [min(p05, 출발값·e^−k), 출발값·e^−k] · 확률 = 같은 잔차 분포에서 +k 위·사이·−k 아래 몫(합 1 · 범위 끝은 같은 분포의 5%·95% 분위수)';
 export const KOSPI_BASELINE_IDS = ['무판', '단순 전이식'];
 
 const r4 = x => (Number.isFinite(x) ? Math.round(x * 1e4) / 1e4 : null);
@@ -218,6 +219,7 @@ export function run({slot = '16', end = '2026-09-30', days = 120, inputFile = pa
     seal: slot === '16' ? '출발일 16:00 KST (그날 15:30 종가 뒤)' : '목표일 08:00 KST (앞 거래일 15:30 종가 뒤 · 밤사이 미국 장 마감 뒤)',
     leakage: '출발일 종가까지의 자료만 · HAR 맞춤 줄은 1거래일 엠바고 · 1일 앞 목표라 겹치는 관측(정화 대상) 없음 · 반도체지수는 봉인 시각 전에 마감한 미국 장만 · ATLAS 11 은 봉인 전 발행분만',
     slot12: '12시 판은 재현하지 않음 (judgment-2: 12시 판 단순 전이식 「없음」)',
+    scenarioRule: SCENARIO_RULE,
     summary: {
       slot,
       origins: {first: origins[0], last: origins.at(-1), count: origins.length},
@@ -328,6 +330,7 @@ export function summaryMd(result, {outFile = null} = {}) {
   lines.push('- [판단] 단순 전이식: s = 반도체지수 종가 → 종가 등락(%) 중 미국 장 마감(뉴욕 16:00, 서머타임이면 05:00 KST · 아니면 06:00 KST)이 앞 한국 장 마감(15:30) 뒤·봉인 앞인 장의 것. 여럿이면 가장 늦은 하나 · 없으면(미국 휴장) s = 0 · 갭 = 0.20 + 0.31·s · 장중 = 0.27·갭 · 분위수 = 출발값 × (1 + (갭 + 장중)/100) × (1 + 무판의 경험 변화율 분위수).');
   lines.push('- [판단] ATLAS 11: 후향 파일에서 목표일·종목이 같고 출발일이 판의 출발일인 줄 · 구간은 p10·p90 · 브라이어는 오름·보합·내림 확률 · CRPS 는 분위수 7개라 「없음」.');
   lines.push('- [판단] 위기 날: 목표일 코스피 하루 변화 크기 ≥ 봉인 때 지난 250거래일 하루 변화 크기의 90% 분위수.');
+  lines.push(`- [판단] 코스피·종목 세 시나리오 경계: ${SCENARIO_RULE}.`);
   lines.push(`- 누수: ${result.leakage}.`);
   lines.push('');
   lines.push('## 6. 일반인 눈높이 설명');
