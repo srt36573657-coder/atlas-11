@@ -1,0 +1,7155 @@
+{
+ "schema": "atlas4h-history-1",
+ "id": "sp500",
+ "fetchedAt": "2026-10-01T14:59:23.929Z",
+ "from": "2023-09-25",
+ "to": "2026-09-30",
+ "observedAtRule": "날짜만 있는 값은 그 시장 마감 16:00:00 America/New_York 로 본다(약속 10)",
+ "compare": {
+  "rule": "relative",
+  "tolerance": 0.0005
+ },
+ "sources": [
+  {
+   "name": "naver",
+   "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=10",
+   "fetchedAt": "2026-10-01T14:59:36.218Z",
+   "rawSha256": "d2b8fa46d5f87be81062b65ffcb684a787381577a32b420c80d6a8a52ff73554",
+   "rows": 752,
+   "pages": [
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=10",
+     "rawSha256": "2192fdb9fee881c0bedf11bdb31cf05a770f92d04d3faeee95c5d339d635af61"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=2&pageSize=10",
+     "rawSha256": "823e8260cc0eb5cddf621885860184c939ccf1eb56379fb4425446f3b935a8ac"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=3&pageSize=10",
+     "rawSha256": "b0b3fa013120b3df85dcf4c6d673e1e45a7ef7a1b05f563dcc626ce53f5d21a1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=4&pageSize=10",
+     "rawSha256": "8350adbe24907c2efd62bfe7a7299384da0e1ade57b120ac162811359f03977d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=5&pageSize=10",
+     "rawSha256": "77b19cb2d683c2b4776ecb7981969b378b8fdec80a2262920d4cb7b2cd630c74"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=6&pageSize=10",
+     "rawSha256": "2e4021f7c90cff922df7ff37af17f3815fae8f4c87643ebc22f08a5fdd9f7ddd"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=7&pageSize=10",
+     "rawSha256": "b1fe37965cb69b6f6ae1718fa4079ee49cb6093120a4774e22983f93ba7626b8"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=8&pageSize=10",
+     "rawSha256": "fd061651b888b3e60fbb4fea71ccbb9fc7d636e817eb1b0307867155a1f1cf33"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=9&pageSize=10",
+     "rawSha256": "15f2c5c15a13e6a1379fc2bc91c2371e6f93668349ff59ebcbd7cc94f43d8b45"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=10&pageSize=10",
+     "rawSha256": "01bdacc82b630f3bcf1fa432a041c26c502e0845500ea3552c38daaf63800fdc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=11&pageSize=10",
+     "rawSha256": "1d6efd5bc894307e9eb3423652e4e697b9a311fdc1db980d493d4dc39a4fe191"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=12&pageSize=10",
+     "rawSha256": "4049f83612717688c63693d93efea07c81bd48fe48f61a612b430bfb36adcd54"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=13&pageSize=10",
+     "rawSha256": "1e72b2d6dacd783700a5d3e598af81edc1fe0957d60e8050e2c3c0c66240f088"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=14&pageSize=10",
+     "rawSha256": "692b047a7dbd0b1cdcde8cd6d1fa99d07c7eb1b78e589e25e3336b85a249787d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=15&pageSize=10",
+     "rawSha256": "7bcdcd09663e41ea2b5fbf8450505cba67318d65020ca4d246d4e3a9b5164fd6"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=16&pageSize=10",
+     "rawSha256": "7425c4fefe7243e7ad35f669b334f99b08b0ce8be0dd9e5af2faf33cd6dd1e46"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=17&pageSize=10",
+     "rawSha256": "0781fdf0852efa551bf13138ed883364b058b8a5b95866992d704c1db8570ef7"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=18&pageSize=10",
+     "rawSha256": "8a7c5bab2c0426db217eff4472ef7800ed274d53347311f6fdcaa1df88d4fff5"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=19&pageSize=10",
+     "rawSha256": "0278afb0f2e1fbd13444bebea76c626b1591e8cb528f59b9c925e52ca289df7f"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=20&pageSize=10",
+     "rawSha256": "4603984ca9a25d2931f03900687f9fd4028d1a735e6612e2fbce7022d6fbe7ee"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=21&pageSize=10",
+     "rawSha256": "dd4d2597c595238debaf496bc467bbd1f8ce1b6caa598f20478913e87be09c59"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=22&pageSize=10",
+     "rawSha256": "ac127c956f3b7e185a0ee0ce39bba60f88a38a369d00f0ee6a3aa226b485b307"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=23&pageSize=10",
+     "rawSha256": "ec03918f40a790fb7b2b614a0db9c76d3b8f3ccf5b9bd3c43dd1280852c6785a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=24&pageSize=10",
+     "rawSha256": "6971ad38774bf503f928874f962feb9708a8e4b99fd4b72a283243168de8da98"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=25&pageSize=10",
+     "rawSha256": "72ab2976b065ecbbf91f19b5da1f93ee7a063dbaecfe4d4ef0e92e84698c6c55"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=26&pageSize=10",
+     "rawSha256": "812e1ff10faeb76675c78eddd9fe61a5e80c706cf07c01591ee7cac27fafca6c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=27&pageSize=10",
+     "rawSha256": "6dbac86c4f5859363928e3e145feb21c33c641bc9ab6ffbdf9413cf74a583f72"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=28&pageSize=10",
+     "rawSha256": "3cc394833f008cc8c7e59f318f343ac2c5e4779d08f6a94d6c4bd1feb09586f2"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=29&pageSize=10",
+     "rawSha256": "cb9c3df7b6e50defda72f234cca7a3b6dea89a77363c9d6dc3b97e1292a177fc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=30&pageSize=10",
+     "rawSha256": "ffe371e99c4f710c7c1830bc4c9905444f0a034b46295519c7f3c5b343d3f409"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=31&pageSize=10",
+     "rawSha256": "1ab72d1c27527aa7ad9ceffa2fa5f5fa17aa8371019c3345f3b44b81b676c048"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=32&pageSize=10",
+     "rawSha256": "301d523403c8bc1b6973c7fd3f2b0ed08f571c763cc37ca3e4e25d07e4f6249c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=33&pageSize=10",
+     "rawSha256": "3bea6492ee2bb85e2d12a0daaf13293346850185abc44b6d9d62e81d87cb9cb8"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=34&pageSize=10",
+     "rawSha256": "59fef0ba857844ebcb54303fd2af83d88480ee6dd247ba3f4f3c6c735281a2b4"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=35&pageSize=10",
+     "rawSha256": "5bfa5b68c049b8039bf958ba65a059f7625964fc241f0d347440c3a6895cdad7"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=36&pageSize=10",
+     "rawSha256": "bf12901c9006f2d64a76f2ca91ab74789ab8be125d4a73fd38ccbb5db18acb1e"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=37&pageSize=10",
+     "rawSha256": "77aeb3ba9980bec4a5d06ced1f7a48d52d7edba42b66c7de2bf331b1807a4a29"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=38&pageSize=10",
+     "rawSha256": "7b39cab58ca09b0455c698df01c440a7dccda00af6d28b0489af1aa054faad87"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=39&pageSize=10",
+     "rawSha256": "83985143923d9b0ed24466e064b16fa641ea70281504c1a339289d4a29214027"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=40&pageSize=10",
+     "rawSha256": "ff7cf880c62fb4bb2f91a5042a3673d56fd8ff7d82427de00260b2156518fb03"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=41&pageSize=10",
+     "rawSha256": "c95b21c905c9c2fbd8e9b4d69067e740b22818d4282d702ed25dcd5c2e002bbc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=42&pageSize=10",
+     "rawSha256": "2cfc76fc7c7f52b1bac5492d931af0b0a3a600212ad4b02b85c84facecbe1b4d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=43&pageSize=10",
+     "rawSha256": "ceed44b3a7451c09f5817100f5554663efbcf657884a9e04c65ddd97f8cabe5e"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=44&pageSize=10",
+     "rawSha256": "52a6e3435ecb84db3ba5b845a2349f2db0976f14ad303615c8b94bc558a321bc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=45&pageSize=10",
+     "rawSha256": "80da2205316292cd815d2c68b79ca1f4944feca7d79c8a2ffd56e4aed549d2e7"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=46&pageSize=10",
+     "rawSha256": "54058d99cb50a6fb9418d0bff358086c9b22f08e99949276c7ed10a0111fb269"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=47&pageSize=10",
+     "rawSha256": "74a7b661de51543b524af76c69896cb059c2a02bebb8e0b18522cc63e3a0f2cc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=48&pageSize=10",
+     "rawSha256": "48d4efbd6ee7ac57d6af6040090e4de007cd6fb69b47a85dd56a3ab172980db0"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=49&pageSize=10",
+     "rawSha256": "a9cbff6b4cd08f04fc7c3e229252acb72b13b5fe350e63d4e5c43197341c6a8b"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=50&pageSize=10",
+     "rawSha256": "f622ff26502755102556c76c74dcff6edd25de0347881498ccc3e159ca2f8110"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=51&pageSize=10",
+     "rawSha256": "88cf3a0d539cd9a6da99e0e4ab8efe0d41f803be818dfecab23eaf938aada566"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=52&pageSize=10",
+     "rawSha256": "2050fc0c3687f87b85bb9d4e041d159507a9595468dded89c743043ccb093cbf"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=53&pageSize=10",
+     "rawSha256": "c56c4e06232db46fdbbcc3e296edc7b13035b1e24ccdfeeb1fb797365f3c1cdf"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=54&pageSize=10",
+     "rawSha256": "855243e806cba592ee7910ab43f0233397366c37fee7e7a6eefa4ccf01c5f2b0"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=55&pageSize=10",
+     "rawSha256": "13b1a8244f5be560b6c1b4bfe57c8f47c826950d0ec66d1e1c73063756b0fce1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=56&pageSize=10",
+     "rawSha256": "5fdb00f87c48181d1fbca9dcde792a2b2b0f0c023227f8c6d13c8c35523453f3"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=57&pageSize=10",
+     "rawSha256": "716c282f5e1be999910549f820f8d33f4953da59eb63cf61d8e0ca0f17aed259"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=58&pageSize=10",
+     "rawSha256": "113dc415f6ccaaf76b07b50e78dbe142cb02c505f8c165fab81924bf4cdf0c07"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=59&pageSize=10",
+     "rawSha256": "32d819ebe0650367a8485af238b96d039d63892625fad0044ee6471e77f169b6"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=60&pageSize=10",
+     "rawSha256": "1edc0a846e0d5e0b6f6875322cecb275965e9648abc7a0010188b4de90fc5f2a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=61&pageSize=10",
+     "rawSha256": "fe80c643210fb5f219a2de936ac358817bdc7a21263ede03ebf2990db850b51f"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=62&pageSize=10",
+     "rawSha256": "20296c0d93ebe6dd7f3a42b64b45fbc182f476c5b5a308e52ce395eda0be46c0"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=63&pageSize=10",
+     "rawSha256": "b82732cec23b2ef282385f5201b435605088e56227a8493245393d9aabbb2e72"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=64&pageSize=10",
+     "rawSha256": "be57c098b27c4de4952a091d8977047ef179763f40c48a14c31f680bc48f499c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=65&pageSize=10",
+     "rawSha256": "243269370d8a9a588bd2111fde4407739153adb16a6afbf3eadedd212ce8ada8"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=66&pageSize=10",
+     "rawSha256": "89666ce3e622c39d7d4cf54e389b02e85c545d5e70867809a36f7d1f6839adc2"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=67&pageSize=10",
+     "rawSha256": "f480084f0d115329507a67e76769369b14d9df59986e811c969f5a220a5b8af5"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=68&pageSize=10",
+     "rawSha256": "5dc9268b9dbddc7bfddaf7680edbb05f0b39432b06cff9a97335b622b10e5e71"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=69&pageSize=10",
+     "rawSha256": "a509907d4e56bba3958e1fdb1c145a0ea3947c1bb86eb1078a58085d87a45684"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=70&pageSize=10",
+     "rawSha256": "ff96d294b157af575536ea3c17b8a8c369e5a0783e8e956cff0e8f91bc772012"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=71&pageSize=10",
+     "rawSha256": "0fb4cef1d8a61f17639ad09025d650956bbb0ed8806acfe47cf1eda1a905bf0a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=72&pageSize=10",
+     "rawSha256": "6ca9a4a56b6483c7c7bc8a0ca9bf7f0d0f0ece8f3f4f9d1c1a8b42490e50de35"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=73&pageSize=10",
+     "rawSha256": "b27f428648b91962d02278912ef293b62fbe9ce10a74ee3df54bf5b5ae0079bf"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=74&pageSize=10",
+     "rawSha256": "090d273e92de02456a946d0cc2595ae895966d6cf1723cd89a96b2be598594db"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=75&pageSize=10",
+     "rawSha256": "65bd7fa308d0c206d788a9436c37b61b3e3494db3203d983471c5257be0b4abe"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=76&pageSize=10",
+     "rawSha256": "4aaf2562332c02f8228059e72d920328f99aecefe95d11b42e19cb81edff5768"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.INX/price?page=77&pageSize=10",
+     "rawSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+   ]
+  },
+  {
+   "name": "fred",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500&cosd=2023-09-25",
+   "fetchedAt": "2026-10-01T14:59:36.533Z",
+   "rawSha256": "94ffd4966784e1bdbcf64558649dac5436206c6f1f26ce1287ec9cd29949fc02",
+   "rows": 757
+  }
+ ],
+ "counts": {
+  "ok": 752,
+  "한 출처": 5,
+  "확인 중": 0,
+  "옛값": 0,
+  "없음": 0
+ },
+ "series": [
+  {
+   "date": "2023-09-25",
+   "value": 4337.44,
+   "sources": {
+    "fred": 4337.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-26",
+   "value": 4273.53,
+   "sources": {
+    "fred": 4273.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-27",
+   "value": 4274.51,
+   "sources": {
+    "fred": 4274.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-28",
+   "value": 4299.7,
+   "sources": {
+    "fred": 4299.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-29",
+   "value": 4288.05,
+   "sources": {
+    "fred": 4288.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-02",
+   "value": 4288.39,
+   "sources": {
+    "naver": 4288.39,
+    "fred": 4288.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-03",
+   "value": 4229.45,
+   "sources": {
+    "naver": 4229.45,
+    "fred": 4229.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-04",
+   "value": 4263.75,
+   "sources": {
+    "naver": 4263.75,
+    "fred": 4263.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-05",
+   "value": 4258.19,
+   "sources": {
+    "naver": 4258.19,
+    "fred": 4258.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-06",
+   "value": 4308.5,
+   "sources": {
+    "naver": 4308.5,
+    "fred": 4308.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-09",
+   "value": 4335.66,
+   "sources": {
+    "naver": 4335.66,
+    "fred": 4335.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-10",
+   "value": 4358.24,
+   "sources": {
+    "naver": 4358.24,
+    "fred": 4358.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-11",
+   "value": 4376.95,
+   "sources": {
+    "naver": 4376.95,
+    "fred": 4376.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-12",
+   "value": 4349.61,
+   "sources": {
+    "naver": 4349.61,
+    "fred": 4349.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-13",
+   "value": 4327.78,
+   "sources": {
+    "naver": 4327.78,
+    "fred": 4327.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-16",
+   "value": 4373.63,
+   "sources": {
+    "naver": 4373.63,
+    "fred": 4373.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-17",
+   "value": 4373.2,
+   "sources": {
+    "naver": 4373.2,
+    "fred": 4373.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-18",
+   "value": 4314.6,
+   "sources": {
+    "naver": 4314.6,
+    "fred": 4314.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-19",
+   "value": 4278,
+   "sources": {
+    "naver": 4278,
+    "fred": 4278
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-20",
+   "value": 4224.16,
+   "sources": {
+    "naver": 4224.16,
+    "fred": 4224.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-23",
+   "value": 4217.04,
+   "sources": {
+    "naver": 4217.04,
+    "fred": 4217.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-24",
+   "value": 4247.68,
+   "sources": {
+    "naver": 4247.68,
+    "fred": 4247.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-25",
+   "value": 4186.77,
+   "sources": {
+    "naver": 4186.77,
+    "fred": 4186.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-26",
+   "value": 4137.23,
+   "sources": {
+    "naver": 4137.23,
+    "fred": 4137.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-27",
+   "value": 4117.37,
+   "sources": {
+    "naver": 4117.37,
+    "fred": 4117.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-30",
+   "value": 4166.82,
+   "sources": {
+    "naver": 4166.82,
+    "fred": 4166.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-31",
+   "value": 4193.8,
+   "sources": {
+    "naver": 4193.8,
+    "fred": 4193.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-01",
+   "value": 4237.86,
+   "sources": {
+    "naver": 4237.86,
+    "fred": 4237.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-02",
+   "value": 4317.78,
+   "sources": {
+    "naver": 4317.78,
+    "fred": 4317.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-03",
+   "value": 4358.34,
+   "sources": {
+    "naver": 4358.34,
+    "fred": 4358.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-06",
+   "value": 4365.98,
+   "sources": {
+    "naver": 4365.98,
+    "fred": 4365.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-07",
+   "value": 4378.38,
+   "sources": {
+    "naver": 4378.38,
+    "fred": 4378.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-08",
+   "value": 4382.78,
+   "sources": {
+    "naver": 4382.78,
+    "fred": 4382.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-09",
+   "value": 4347.35,
+   "sources": {
+    "naver": 4347.35,
+    "fred": 4347.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-10",
+   "value": 4415.24,
+   "sources": {
+    "naver": 4415.24,
+    "fred": 4415.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-13",
+   "value": 4411.55,
+   "sources": {
+    "naver": 4411.55,
+    "fred": 4411.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-14",
+   "value": 4495.7,
+   "sources": {
+    "naver": 4495.7,
+    "fred": 4495.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-15",
+   "value": 4502.88,
+   "sources": {
+    "naver": 4502.88,
+    "fred": 4502.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-16",
+   "value": 4508.24,
+   "sources": {
+    "naver": 4508.24,
+    "fred": 4508.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-17",
+   "value": 4514.02,
+   "sources": {
+    "naver": 4514.02,
+    "fred": 4514.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-20",
+   "value": 4547.38,
+   "sources": {
+    "naver": 4547.38,
+    "fred": 4547.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-21",
+   "value": 4538.19,
+   "sources": {
+    "naver": 4538.19,
+    "fred": 4538.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-22",
+   "value": 4556.62,
+   "sources": {
+    "naver": 4556.62,
+    "fred": 4556.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-24",
+   "value": 4559.34,
+   "sources": {
+    "naver": 4559.34,
+    "fred": 4559.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-27",
+   "value": 4550.43,
+   "sources": {
+    "naver": 4550.43,
+    "fred": 4550.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-28",
+   "value": 4554.89,
+   "sources": {
+    "naver": 4554.89,
+    "fred": 4554.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-29",
+   "value": 4550.58,
+   "sources": {
+    "naver": 4550.58,
+    "fred": 4550.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-30",
+   "value": 4567.8,
+   "sources": {
+    "naver": 4567.8,
+    "fred": 4567.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-01",
+   "value": 4594.63,
+   "sources": {
+    "naver": 4594.63,
+    "fred": 4594.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-04",
+   "value": 4569.78,
+   "sources": {
+    "naver": 4569.78,
+    "fred": 4569.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-05",
+   "value": 4567.18,
+   "sources": {
+    "naver": 4567.18,
+    "fred": 4567.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-06",
+   "value": 4549.34,
+   "sources": {
+    "naver": 4549.34,
+    "fred": 4549.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-07",
+   "value": 4585.59,
+   "sources": {
+    "naver": 4585.59,
+    "fred": 4585.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-08",
+   "value": 4604.37,
+   "sources": {
+    "naver": 4604.37,
+    "fred": 4604.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-11",
+   "value": 4622.44,
+   "sources": {
+    "naver": 4622.44,
+    "fred": 4622.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-12",
+   "value": 4643.7,
+   "sources": {
+    "naver": 4643.7,
+    "fred": 4643.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-13",
+   "value": 4707.09,
+   "sources": {
+    "naver": 4707.09,
+    "fred": 4707.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-14",
+   "value": 4719.55,
+   "sources": {
+    "naver": 4719.55,
+    "fred": 4719.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-15",
+   "value": 4719.19,
+   "sources": {
+    "naver": 4719.19,
+    "fred": 4719.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-18",
+   "value": 4740.56,
+   "sources": {
+    "naver": 4740.56,
+    "fred": 4740.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-19",
+   "value": 4768.37,
+   "sources": {
+    "naver": 4768.37,
+    "fred": 4768.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-20",
+   "value": 4698.35,
+   "sources": {
+    "naver": 4698.35,
+    "fred": 4698.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-21",
+   "value": 4746.75,
+   "sources": {
+    "naver": 4746.75,
+    "fred": 4746.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-22",
+   "value": 4754.63,
+   "sources": {
+    "naver": 4754.63,
+    "fred": 4754.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-26",
+   "value": 4774.75,
+   "sources": {
+    "naver": 4774.75,
+    "fred": 4774.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-27",
+   "value": 4781.58,
+   "sources": {
+    "naver": 4781.58,
+    "fred": 4781.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-28",
+   "value": 4783.35,
+   "sources": {
+    "naver": 4783.35,
+    "fred": 4783.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-29",
+   "value": 4769.83,
+   "sources": {
+    "naver": 4769.83,
+    "fred": 4769.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-02",
+   "value": 4742.83,
+   "sources": {
+    "naver": 4742.83,
+    "fred": 4742.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-03",
+   "value": 4704.81,
+   "sources": {
+    "naver": 4704.81,
+    "fred": 4704.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-04",
+   "value": 4688.68,
+   "sources": {
+    "naver": 4688.68,
+    "fred": 4688.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-05",
+   "value": 4697.24,
+   "sources": {
+    "naver": 4697.24,
+    "fred": 4697.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-08",
+   "value": 4763.54,
+   "sources": {
+    "naver": 4763.54,
+    "fred": 4763.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-09",
+   "value": 4756.5,
+   "sources": {
+    "naver": 4756.5,
+    "fred": 4756.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-10",
+   "value": 4783.45,
+   "sources": {
+    "naver": 4783.45,
+    "fred": 4783.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-11",
+   "value": 4780.24,
+   "sources": {
+    "naver": 4780.24,
+    "fred": 4780.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-12",
+   "value": 4783.83,
+   "sources": {
+    "naver": 4783.83,
+    "fred": 4783.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-16",
+   "value": 4765.98,
+   "sources": {
+    "naver": 4765.98,
+    "fred": 4765.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-17",
+   "value": 4739.21,
+   "sources": {
+    "naver": 4739.21,
+    "fred": 4739.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-18",
+   "value": 4780.94,
+   "sources": {
+    "naver": 4780.94,
+    "fred": 4780.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-19",
+   "value": 4839.81,
+   "sources": {
+    "naver": 4839.81,
+    "fred": 4839.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-22",
+   "value": 4850.43,
+   "sources": {
+    "naver": 4850.43,
+    "fred": 4850.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-23",
+   "value": 4864.6,
+   "sources": {
+    "naver": 4864.6,
+    "fred": 4864.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-24",
+   "value": 4868.55,
+   "sources": {
+    "naver": 4868.55,
+    "fred": 4868.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-25",
+   "value": 4894.16,
+   "sources": {
+    "naver": 4894.16,
+    "fred": 4894.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-26",
+   "value": 4890.97,
+   "sources": {
+    "naver": 4890.97,
+    "fred": 4890.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-29",
+   "value": 4927.93,
+   "sources": {
+    "naver": 4927.93,
+    "fred": 4927.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-30",
+   "value": 4924.97,
+   "sources": {
+    "naver": 4924.97,
+    "fred": 4924.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-31",
+   "value": 4845.65,
+   "sources": {
+    "naver": 4845.65,
+    "fred": 4845.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-01",
+   "value": 4906.19,
+   "sources": {
+    "naver": 4906.19,
+    "fred": 4906.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-02",
+   "value": 4958.61,
+   "sources": {
+    "naver": 4958.61,
+    "fred": 4958.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-05",
+   "value": 4942.81,
+   "sources": {
+    "naver": 4942.81,
+    "fred": 4942.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-06",
+   "value": 4954.23,
+   "sources": {
+    "naver": 4954.23,
+    "fred": 4954.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-07",
+   "value": 4995.06,
+   "sources": {
+    "naver": 4995.06,
+    "fred": 4995.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-08",
+   "value": 4997.91,
+   "sources": {
+    "naver": 4997.91,
+    "fred": 4997.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-09",
+   "value": 5026.61,
+   "sources": {
+    "naver": 5026.61,
+    "fred": 5026.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-12",
+   "value": 5021.84,
+   "sources": {
+    "naver": 5021.84,
+    "fred": 5021.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-13",
+   "value": 4953.17,
+   "sources": {
+    "naver": 4953.17,
+    "fred": 4953.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-14",
+   "value": 5000.62,
+   "sources": {
+    "naver": 5000.62,
+    "fred": 5000.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-15",
+   "value": 5029.73,
+   "sources": {
+    "naver": 5029.73,
+    "fred": 5029.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-16",
+   "value": 5005.57,
+   "sources": {
+    "naver": 5005.57,
+    "fred": 5005.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-20",
+   "value": 4975.51,
+   "sources": {
+    "naver": 4975.51,
+    "fred": 4975.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-21",
+   "value": 4981.8,
+   "sources": {
+    "naver": 4981.8,
+    "fred": 4981.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-22",
+   "value": 5087.03,
+   "sources": {
+    "naver": 5087.03,
+    "fred": 5087.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-23",
+   "value": 5088.8,
+   "sources": {
+    "naver": 5088.8,
+    "fred": 5088.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-26",
+   "value": 5069.53,
+   "sources": {
+    "naver": 5069.53,
+    "fred": 5069.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-27",
+   "value": 5078.18,
+   "sources": {
+    "naver": 5078.18,
+    "fred": 5078.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-28",
+   "value": 5069.76,
+   "sources": {
+    "naver": 5069.76,
+    "fred": 5069.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-29",
+   "value": 5096.27,
+   "sources": {
+    "naver": 5096.27,
+    "fred": 5096.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-01",
+   "value": 5137.08,
+   "sources": {
+    "naver": 5137.08,
+    "fred": 5137.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-04",
+   "value": 5130.95,
+   "sources": {
+    "naver": 5130.95,
+    "fred": 5130.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-05",
+   "value": 5078.65,
+   "sources": {
+    "naver": 5078.65,
+    "fred": 5078.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-06",
+   "value": 5104.76,
+   "sources": {
+    "naver": 5104.76,
+    "fred": 5104.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-07",
+   "value": 5157.36,
+   "sources": {
+    "naver": 5157.36,
+    "fred": 5157.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-08",
+   "value": 5123.69,
+   "sources": {
+    "naver": 5123.69,
+    "fred": 5123.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-11",
+   "value": 5117.94,
+   "sources": {
+    "naver": 5117.94,
+    "fred": 5117.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-12",
+   "value": 5175.27,
+   "sources": {
+    "naver": 5175.27,
+    "fred": 5175.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-13",
+   "value": 5165.31,
+   "sources": {
+    "naver": 5165.31,
+    "fred": 5165.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-14",
+   "value": 5150.48,
+   "sources": {
+    "naver": 5150.48,
+    "fred": 5150.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-15",
+   "value": 5117.09,
+   "sources": {
+    "naver": 5117.09,
+    "fred": 5117.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-18",
+   "value": 5149.42,
+   "sources": {
+    "naver": 5149.42,
+    "fred": 5149.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-19",
+   "value": 5178.51,
+   "sources": {
+    "naver": 5178.51,
+    "fred": 5178.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-20",
+   "value": 5224.62,
+   "sources": {
+    "naver": 5224.62,
+    "fred": 5224.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-21",
+   "value": 5241.53,
+   "sources": {
+    "naver": 5241.53,
+    "fred": 5241.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-22",
+   "value": 5234.18,
+   "sources": {
+    "naver": 5234.18,
+    "fred": 5234.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-25",
+   "value": 5218.19,
+   "sources": {
+    "naver": 5218.19,
+    "fred": 5218.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-26",
+   "value": 5203.58,
+   "sources": {
+    "naver": 5203.58,
+    "fred": 5203.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-27",
+   "value": 5248.49,
+   "sources": {
+    "naver": 5248.49,
+    "fred": 5248.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-28",
+   "value": 5254.35,
+   "sources": {
+    "naver": 5254.35,
+    "fred": 5254.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-01",
+   "value": 5243.77,
+   "sources": {
+    "naver": 5243.77,
+    "fred": 5243.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-02",
+   "value": 5205.81,
+   "sources": {
+    "naver": 5205.81,
+    "fred": 5205.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-03",
+   "value": 5211.49,
+   "sources": {
+    "naver": 5211.49,
+    "fred": 5211.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-04",
+   "value": 5147.21,
+   "sources": {
+    "naver": 5147.21,
+    "fred": 5147.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-05",
+   "value": 5204.34,
+   "sources": {
+    "naver": 5204.34,
+    "fred": 5204.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-08",
+   "value": 5202.39,
+   "sources": {
+    "naver": 5202.39,
+    "fred": 5202.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-09",
+   "value": 5209.91,
+   "sources": {
+    "naver": 5209.91,
+    "fred": 5209.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-10",
+   "value": 5160.64,
+   "sources": {
+    "naver": 5160.64,
+    "fred": 5160.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-11",
+   "value": 5199.06,
+   "sources": {
+    "naver": 5199.06,
+    "fred": 5199.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-12",
+   "value": 5123.41,
+   "sources": {
+    "naver": 5123.41,
+    "fred": 5123.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-15",
+   "value": 5061.82,
+   "sources": {
+    "naver": 5061.82,
+    "fred": 5061.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-16",
+   "value": 5051.41,
+   "sources": {
+    "naver": 5051.41,
+    "fred": 5051.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-17",
+   "value": 5022.21,
+   "sources": {
+    "naver": 5022.21,
+    "fred": 5022.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-18",
+   "value": 5011.12,
+   "sources": {
+    "naver": 5011.12,
+    "fred": 5011.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-19",
+   "value": 4967.23,
+   "sources": {
+    "naver": 4967.23,
+    "fred": 4967.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-22",
+   "value": 5010.6,
+   "sources": {
+    "naver": 5010.6,
+    "fred": 5010.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-23",
+   "value": 5070.55,
+   "sources": {
+    "naver": 5070.55,
+    "fred": 5070.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-24",
+   "value": 5071.63,
+   "sources": {
+    "naver": 5071.63,
+    "fred": 5071.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-25",
+   "value": 5048.42,
+   "sources": {
+    "naver": 5048.42,
+    "fred": 5048.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-26",
+   "value": 5099.96,
+   "sources": {
+    "naver": 5099.96,
+    "fred": 5099.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-29",
+   "value": 5116.17,
+   "sources": {
+    "naver": 5116.17,
+    "fred": 5116.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-30",
+   "value": 5035.69,
+   "sources": {
+    "naver": 5035.69,
+    "fred": 5035.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-01",
+   "value": 5018.39,
+   "sources": {
+    "naver": 5018.39,
+    "fred": 5018.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-02",
+   "value": 5064.2,
+   "sources": {
+    "naver": 5064.2,
+    "fred": 5064.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-03",
+   "value": 5127.79,
+   "sources": {
+    "naver": 5127.79,
+    "fred": 5127.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-06",
+   "value": 5180.74,
+   "sources": {
+    "naver": 5180.74,
+    "fred": 5180.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-07",
+   "value": 5187.7,
+   "sources": {
+    "naver": 5187.7,
+    "fred": 5187.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-08",
+   "value": 5187.67,
+   "sources": {
+    "naver": 5187.67,
+    "fred": 5187.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-09",
+   "value": 5214.08,
+   "sources": {
+    "naver": 5214.08,
+    "fred": 5214.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-10",
+   "value": 5222.68,
+   "sources": {
+    "naver": 5222.68,
+    "fred": 5222.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-13",
+   "value": 5221.42,
+   "sources": {
+    "naver": 5221.42,
+    "fred": 5221.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-14",
+   "value": 5246.68,
+   "sources": {
+    "naver": 5246.68,
+    "fred": 5246.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-15",
+   "value": 5308.15,
+   "sources": {
+    "naver": 5308.15,
+    "fred": 5308.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-16",
+   "value": 5297.1,
+   "sources": {
+    "naver": 5297.1,
+    "fred": 5297.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-17",
+   "value": 5303.27,
+   "sources": {
+    "naver": 5303.27,
+    "fred": 5303.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-20",
+   "value": 5308.13,
+   "sources": {
+    "naver": 5308.13,
+    "fred": 5308.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-21",
+   "value": 5321.41,
+   "sources": {
+    "naver": 5321.41,
+    "fred": 5321.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-22",
+   "value": 5307.01,
+   "sources": {
+    "naver": 5307.01,
+    "fred": 5307.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-23",
+   "value": 5267.84,
+   "sources": {
+    "naver": 5267.84,
+    "fred": 5267.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-24",
+   "value": 5304.72,
+   "sources": {
+    "naver": 5304.72,
+    "fred": 5304.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-28",
+   "value": 5306.04,
+   "sources": {
+    "naver": 5306.04,
+    "fred": 5306.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-29",
+   "value": 5266.95,
+   "sources": {
+    "naver": 5266.95,
+    "fred": 5266.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-30",
+   "value": 5235.48,
+   "sources": {
+    "naver": 5235.48,
+    "fred": 5235.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-31",
+   "value": 5277.51,
+   "sources": {
+    "naver": 5277.51,
+    "fred": 5277.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-03",
+   "value": 5283.4,
+   "sources": {
+    "naver": 5283.4,
+    "fred": 5283.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-04",
+   "value": 5291.34,
+   "sources": {
+    "naver": 5291.34,
+    "fred": 5291.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-05",
+   "value": 5354.03,
+   "sources": {
+    "naver": 5354.03,
+    "fred": 5354.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-06",
+   "value": 5352.96,
+   "sources": {
+    "naver": 5352.96,
+    "fred": 5352.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-07",
+   "value": 5346.99,
+   "sources": {
+    "naver": 5346.99,
+    "fred": 5346.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-10",
+   "value": 5360.79,
+   "sources": {
+    "naver": 5360.79,
+    "fred": 5360.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-11",
+   "value": 5375.32,
+   "sources": {
+    "naver": 5375.32,
+    "fred": 5375.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-12",
+   "value": 5421.03,
+   "sources": {
+    "naver": 5421.03,
+    "fred": 5421.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-13",
+   "value": 5433.74,
+   "sources": {
+    "naver": 5433.74,
+    "fred": 5433.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-14",
+   "value": 5431.6,
+   "sources": {
+    "naver": 5431.6,
+    "fred": 5431.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-17",
+   "value": 5473.23,
+   "sources": {
+    "naver": 5473.23,
+    "fred": 5473.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-18",
+   "value": 5487.03,
+   "sources": {
+    "naver": 5487.03,
+    "fred": 5487.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-20",
+   "value": 5473.17,
+   "sources": {
+    "naver": 5473.17,
+    "fred": 5473.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-21",
+   "value": 5464.62,
+   "sources": {
+    "naver": 5464.62,
+    "fred": 5464.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-24",
+   "value": 5447.87,
+   "sources": {
+    "naver": 5447.87,
+    "fred": 5447.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-25",
+   "value": 5469.3,
+   "sources": {
+    "naver": 5469.3,
+    "fred": 5469.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-26",
+   "value": 5477.9,
+   "sources": {
+    "naver": 5477.9,
+    "fred": 5477.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-27",
+   "value": 5482.87,
+   "sources": {
+    "naver": 5482.87,
+    "fred": 5482.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-28",
+   "value": 5460.48,
+   "sources": {
+    "naver": 5460.48,
+    "fred": 5460.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-01",
+   "value": 5475.09,
+   "sources": {
+    "naver": 5475.09,
+    "fred": 5475.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-02",
+   "value": 5509.01,
+   "sources": {
+    "naver": 5509.01,
+    "fred": 5509.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-03",
+   "value": 5537.02,
+   "sources": {
+    "naver": 5537.02,
+    "fred": 5537.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-05",
+   "value": 5567.19,
+   "sources": {
+    "naver": 5567.19,
+    "fred": 5567.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-08",
+   "value": 5572.85,
+   "sources": {
+    "naver": 5572.85,
+    "fred": 5572.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-09",
+   "value": 5576.98,
+   "sources": {
+    "naver": 5576.98,
+    "fred": 5576.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-10",
+   "value": 5633.91,
+   "sources": {
+    "naver": 5633.91,
+    "fred": 5633.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-11",
+   "value": 5584.54,
+   "sources": {
+    "naver": 5584.54,
+    "fred": 5584.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-12",
+   "value": 5615.35,
+   "sources": {
+    "naver": 5615.35,
+    "fred": 5615.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-15",
+   "value": 5631.22,
+   "sources": {
+    "naver": 5631.22,
+    "fred": 5631.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-16",
+   "value": 5667.2,
+   "sources": {
+    "naver": 5667.2,
+    "fred": 5667.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-17",
+   "value": 5588.27,
+   "sources": {
+    "naver": 5588.27,
+    "fred": 5588.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-18",
+   "value": 5544.59,
+   "sources": {
+    "naver": 5544.59,
+    "fred": 5544.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-19",
+   "value": 5505,
+   "sources": {
+    "naver": 5505,
+    "fred": 5505
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-22",
+   "value": 5564.41,
+   "sources": {
+    "naver": 5564.41,
+    "fred": 5564.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-23",
+   "value": 5555.74,
+   "sources": {
+    "naver": 5555.74,
+    "fred": 5555.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-24",
+   "value": 5427.13,
+   "sources": {
+    "naver": 5427.13,
+    "fred": 5427.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-25",
+   "value": 5399.22,
+   "sources": {
+    "naver": 5399.22,
+    "fred": 5399.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-26",
+   "value": 5459.1,
+   "sources": {
+    "naver": 5459.1,
+    "fred": 5459.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-29",
+   "value": 5463.54,
+   "sources": {
+    "naver": 5463.54,
+    "fred": 5463.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-30",
+   "value": 5436.44,
+   "sources": {
+    "naver": 5436.44,
+    "fred": 5436.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-31",
+   "value": 5522.3,
+   "sources": {
+    "naver": 5522.3,
+    "fred": 5522.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-01",
+   "value": 5446.68,
+   "sources": {
+    "naver": 5446.68,
+    "fred": 5446.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-02",
+   "value": 5346.56,
+   "sources": {
+    "naver": 5346.56,
+    "fred": 5346.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-05",
+   "value": 5186.33,
+   "sources": {
+    "naver": 5186.33,
+    "fred": 5186.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-06",
+   "value": 5240.03,
+   "sources": {
+    "naver": 5240.03,
+    "fred": 5240.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-07",
+   "value": 5199.5,
+   "sources": {
+    "naver": 5199.5,
+    "fred": 5199.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-08",
+   "value": 5319.31,
+   "sources": {
+    "naver": 5319.31,
+    "fred": 5319.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-09",
+   "value": 5344.16,
+   "sources": {
+    "naver": 5344.16,
+    "fred": 5344.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-12",
+   "value": 5344.39,
+   "sources": {
+    "naver": 5344.39,
+    "fred": 5344.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-13",
+   "value": 5434.43,
+   "sources": {
+    "naver": 5434.43,
+    "fred": 5434.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-14",
+   "value": 5455.21,
+   "sources": {
+    "naver": 5455.21,
+    "fred": 5455.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-15",
+   "value": 5543.22,
+   "sources": {
+    "naver": 5543.22,
+    "fred": 5543.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-16",
+   "value": 5554.25,
+   "sources": {
+    "naver": 5554.25,
+    "fred": 5554.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-19",
+   "value": 5608.25,
+   "sources": {
+    "naver": 5608.25,
+    "fred": 5608.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-20",
+   "value": 5597.12,
+   "sources": {
+    "naver": 5597.12,
+    "fred": 5597.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-21",
+   "value": 5620.85,
+   "sources": {
+    "naver": 5620.85,
+    "fred": 5620.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-22",
+   "value": 5570.64,
+   "sources": {
+    "naver": 5570.64,
+    "fred": 5570.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-23",
+   "value": 5634.61,
+   "sources": {
+    "naver": 5634.61,
+    "fred": 5634.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-26",
+   "value": 5616.84,
+   "sources": {
+    "naver": 5616.84,
+    "fred": 5616.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-27",
+   "value": 5625.8,
+   "sources": {
+    "naver": 5625.8,
+    "fred": 5625.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-28",
+   "value": 5592.18,
+   "sources": {
+    "naver": 5592.18,
+    "fred": 5592.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-29",
+   "value": 5591.96,
+   "sources": {
+    "naver": 5591.96,
+    "fred": 5591.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-30",
+   "value": 5648.4,
+   "sources": {
+    "naver": 5648.4,
+    "fred": 5648.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-03",
+   "value": 5528.93,
+   "sources": {
+    "naver": 5528.93,
+    "fred": 5528.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-04",
+   "value": 5520.07,
+   "sources": {
+    "naver": 5520.07,
+    "fred": 5520.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-05",
+   "value": 5503.41,
+   "sources": {
+    "naver": 5503.41,
+    "fred": 5503.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-06",
+   "value": 5408.42,
+   "sources": {
+    "naver": 5408.42,
+    "fred": 5408.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-09",
+   "value": 5471.05,
+   "sources": {
+    "naver": 5471.05,
+    "fred": 5471.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-10",
+   "value": 5495.52,
+   "sources": {
+    "naver": 5495.52,
+    "fred": 5495.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-11",
+   "value": 5554.13,
+   "sources": {
+    "naver": 5554.13,
+    "fred": 5554.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-12",
+   "value": 5595.76,
+   "sources": {
+    "naver": 5595.76,
+    "fred": 5595.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-13",
+   "value": 5626.02,
+   "sources": {
+    "naver": 5626.02,
+    "fred": 5626.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-16",
+   "value": 5633.09,
+   "sources": {
+    "naver": 5633.09,
+    "fred": 5633.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-17",
+   "value": 5634.58,
+   "sources": {
+    "naver": 5634.58,
+    "fred": 5634.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-18",
+   "value": 5618.26,
+   "sources": {
+    "naver": 5618.26,
+    "fred": 5618.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-19",
+   "value": 5713.64,
+   "sources": {
+    "naver": 5713.64,
+    "fred": 5713.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-20",
+   "value": 5702.55,
+   "sources": {
+    "naver": 5702.55,
+    "fred": 5702.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-23",
+   "value": 5718.57,
+   "sources": {
+    "naver": 5718.57,
+    "fred": 5718.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-24",
+   "value": 5732.93,
+   "sources": {
+    "naver": 5732.93,
+    "fred": 5732.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-25",
+   "value": 5722.26,
+   "sources": {
+    "naver": 5722.26,
+    "fred": 5722.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-26",
+   "value": 5745.37,
+   "sources": {
+    "naver": 5745.37,
+    "fred": 5745.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-27",
+   "value": 5738.17,
+   "sources": {
+    "naver": 5738.17,
+    "fred": 5738.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-30",
+   "value": 5762.48,
+   "sources": {
+    "naver": 5762.48,
+    "fred": 5762.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-01",
+   "value": 5708.75,
+   "sources": {
+    "naver": 5708.75,
+    "fred": 5708.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-02",
+   "value": 5709.54,
+   "sources": {
+    "naver": 5709.54,
+    "fred": 5709.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-03",
+   "value": 5699.94,
+   "sources": {
+    "naver": 5699.94,
+    "fred": 5699.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-04",
+   "value": 5751.07,
+   "sources": {
+    "naver": 5751.07,
+    "fred": 5751.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-07",
+   "value": 5695.94,
+   "sources": {
+    "naver": 5695.94,
+    "fred": 5695.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-08",
+   "value": 5751.13,
+   "sources": {
+    "naver": 5751.13,
+    "fred": 5751.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-09",
+   "value": 5792.04,
+   "sources": {
+    "naver": 5792.04,
+    "fred": 5792.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-10",
+   "value": 5780.05,
+   "sources": {
+    "naver": 5780.05,
+    "fred": 5780.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-11",
+   "value": 5815.03,
+   "sources": {
+    "naver": 5815.03,
+    "fred": 5815.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-14",
+   "value": 5859.85,
+   "sources": {
+    "naver": 5859.85,
+    "fred": 5859.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-15",
+   "value": 5815.26,
+   "sources": {
+    "naver": 5815.26,
+    "fred": 5815.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-16",
+   "value": 5842.47,
+   "sources": {
+    "naver": 5842.47,
+    "fred": 5842.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-17",
+   "value": 5841.47,
+   "sources": {
+    "naver": 5841.47,
+    "fred": 5841.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-18",
+   "value": 5864.67,
+   "sources": {
+    "naver": 5864.67,
+    "fred": 5864.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-21",
+   "value": 5853.98,
+   "sources": {
+    "naver": 5853.98,
+    "fred": 5853.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-22",
+   "value": 5851.2,
+   "sources": {
+    "naver": 5851.2,
+    "fred": 5851.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-23",
+   "value": 5797.42,
+   "sources": {
+    "naver": 5797.42,
+    "fred": 5797.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-24",
+   "value": 5809.86,
+   "sources": {
+    "naver": 5809.86,
+    "fred": 5809.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-25",
+   "value": 5808.12,
+   "sources": {
+    "naver": 5808.12,
+    "fred": 5808.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-28",
+   "value": 5823.52,
+   "sources": {
+    "naver": 5823.52,
+    "fred": 5823.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-29",
+   "value": 5832.92,
+   "sources": {
+    "naver": 5832.92,
+    "fred": 5832.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-30",
+   "value": 5813.67,
+   "sources": {
+    "naver": 5813.67,
+    "fred": 5813.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-31",
+   "value": 5705.45,
+   "sources": {
+    "naver": 5705.45,
+    "fred": 5705.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-01",
+   "value": 5728.8,
+   "sources": {
+    "naver": 5728.8,
+    "fred": 5728.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-04",
+   "value": 5712.69,
+   "sources": {
+    "naver": 5712.69,
+    "fred": 5712.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-05",
+   "value": 5782.76,
+   "sources": {
+    "naver": 5782.76,
+    "fred": 5782.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-06",
+   "value": 5929.04,
+   "sources": {
+    "naver": 5929.04,
+    "fred": 5929.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-07",
+   "value": 5973.1,
+   "sources": {
+    "naver": 5973.1,
+    "fred": 5973.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-08",
+   "value": 5995.54,
+   "sources": {
+    "naver": 5995.54,
+    "fred": 5995.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-11",
+   "value": 6001.35,
+   "sources": {
+    "naver": 6001.35,
+    "fred": 6001.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-12",
+   "value": 5983.99,
+   "sources": {
+    "naver": 5983.99,
+    "fred": 5983.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-13",
+   "value": 5985.38,
+   "sources": {
+    "naver": 5985.38,
+    "fred": 5985.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-14",
+   "value": 5949.17,
+   "sources": {
+    "naver": 5949.17,
+    "fred": 5949.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-15",
+   "value": 5870.62,
+   "sources": {
+    "naver": 5870.62,
+    "fred": 5870.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-18",
+   "value": 5893.62,
+   "sources": {
+    "naver": 5893.62,
+    "fred": 5893.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-19",
+   "value": 5916.98,
+   "sources": {
+    "naver": 5916.98,
+    "fred": 5916.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-20",
+   "value": 5917.11,
+   "sources": {
+    "naver": 5917.11,
+    "fred": 5917.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-21",
+   "value": 5948.71,
+   "sources": {
+    "naver": 5948.71,
+    "fred": 5948.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-22",
+   "value": 5969.34,
+   "sources": {
+    "naver": 5969.34,
+    "fred": 5969.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-25",
+   "value": 5987.37,
+   "sources": {
+    "naver": 5987.37,
+    "fred": 5987.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-26",
+   "value": 6021.63,
+   "sources": {
+    "naver": 6021.63,
+    "fred": 6021.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-27",
+   "value": 5998.74,
+   "sources": {
+    "naver": 5998.74,
+    "fred": 5998.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-29",
+   "value": 6032.38,
+   "sources": {
+    "naver": 6032.38,
+    "fred": 6032.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-02",
+   "value": 6047.15,
+   "sources": {
+    "naver": 6047.15,
+    "fred": 6047.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-03",
+   "value": 6049.88,
+   "sources": {
+    "naver": 6049.88,
+    "fred": 6049.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-04",
+   "value": 6086.49,
+   "sources": {
+    "naver": 6086.49,
+    "fred": 6086.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-05",
+   "value": 6075.11,
+   "sources": {
+    "naver": 6075.11,
+    "fred": 6075.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-06",
+   "value": 6090.27,
+   "sources": {
+    "naver": 6090.27,
+    "fred": 6090.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-09",
+   "value": 6052.85,
+   "sources": {
+    "naver": 6052.85,
+    "fred": 6052.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-10",
+   "value": 6034.91,
+   "sources": {
+    "naver": 6034.91,
+    "fred": 6034.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-11",
+   "value": 6084.19,
+   "sources": {
+    "naver": 6084.19,
+    "fred": 6084.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-12",
+   "value": 6051.25,
+   "sources": {
+    "naver": 6051.25,
+    "fred": 6051.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-13",
+   "value": 6051.09,
+   "sources": {
+    "naver": 6051.09,
+    "fred": 6051.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-16",
+   "value": 6074.08,
+   "sources": {
+    "naver": 6074.08,
+    "fred": 6074.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-17",
+   "value": 6050.61,
+   "sources": {
+    "naver": 6050.61,
+    "fred": 6050.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-18",
+   "value": 5872.16,
+   "sources": {
+    "naver": 5872.16,
+    "fred": 5872.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-19",
+   "value": 5867.08,
+   "sources": {
+    "naver": 5867.08,
+    "fred": 5867.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-20",
+   "value": 5930.85,
+   "sources": {
+    "naver": 5930.85,
+    "fred": 5930.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-23",
+   "value": 5974.07,
+   "sources": {
+    "naver": 5974.07,
+    "fred": 5974.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-24",
+   "value": 6040.04,
+   "sources": {
+    "naver": 6040.04,
+    "fred": 6040.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-26",
+   "value": 6037.59,
+   "sources": {
+    "naver": 6037.59,
+    "fred": 6037.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-27",
+   "value": 5970.84,
+   "sources": {
+    "naver": 5970.84,
+    "fred": 5970.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-30",
+   "value": 5906.94,
+   "sources": {
+    "naver": 5906.94,
+    "fred": 5906.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-31",
+   "value": 5881.63,
+   "sources": {
+    "naver": 5881.63,
+    "fred": 5881.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-02",
+   "value": 5868.55,
+   "sources": {
+    "naver": 5868.55,
+    "fred": 5868.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-03",
+   "value": 5942.47,
+   "sources": {
+    "naver": 5942.47,
+    "fred": 5942.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-06",
+   "value": 5975.38,
+   "sources": {
+    "naver": 5975.38,
+    "fred": 5975.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-07",
+   "value": 5909.03,
+   "sources": {
+    "naver": 5909.03,
+    "fred": 5909.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-08",
+   "value": 5918.25,
+   "sources": {
+    "naver": 5918.25,
+    "fred": 5918.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-10",
+   "value": 5827.04,
+   "sources": {
+    "naver": 5827.04,
+    "fred": 5827.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-13",
+   "value": 5836.22,
+   "sources": {
+    "naver": 5836.22,
+    "fred": 5836.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-14",
+   "value": 5842.91,
+   "sources": {
+    "naver": 5842.91,
+    "fred": 5842.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-15",
+   "value": 5949.91,
+   "sources": {
+    "naver": 5949.91,
+    "fred": 5949.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-16",
+   "value": 5937.34,
+   "sources": {
+    "naver": 5937.34,
+    "fred": 5937.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-17",
+   "value": 5996.66,
+   "sources": {
+    "naver": 5996.66,
+    "fred": 5996.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-21",
+   "value": 6049.24,
+   "sources": {
+    "naver": 6049.24,
+    "fred": 6049.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-22",
+   "value": 6086.37,
+   "sources": {
+    "naver": 6086.37,
+    "fred": 6086.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-23",
+   "value": 6118.71,
+   "sources": {
+    "naver": 6118.71,
+    "fred": 6118.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-24",
+   "value": 6101.24,
+   "sources": {
+    "naver": 6101.24,
+    "fred": 6101.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-27",
+   "value": 6012.28,
+   "sources": {
+    "naver": 6012.28,
+    "fred": 6012.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-28",
+   "value": 6067.7,
+   "sources": {
+    "naver": 6067.7,
+    "fred": 6067.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-29",
+   "value": 6039.31,
+   "sources": {
+    "naver": 6039.31,
+    "fred": 6039.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-30",
+   "value": 6071.17,
+   "sources": {
+    "naver": 6071.17,
+    "fred": 6071.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-31",
+   "value": 6040.53,
+   "sources": {
+    "naver": 6040.53,
+    "fred": 6040.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-03",
+   "value": 5994.57,
+   "sources": {
+    "naver": 5994.57,
+    "fred": 5994.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-04",
+   "value": 6037.88,
+   "sources": {
+    "naver": 6037.88,
+    "fred": 6037.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-05",
+   "value": 6061.48,
+   "sources": {
+    "naver": 6061.48,
+    "fred": 6061.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-06",
+   "value": 6083.57,
+   "sources": {
+    "naver": 6083.57,
+    "fred": 6083.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-07",
+   "value": 6025.99,
+   "sources": {
+    "naver": 6025.99,
+    "fred": 6025.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-10",
+   "value": 6066.44,
+   "sources": {
+    "naver": 6066.44,
+    "fred": 6066.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-11",
+   "value": 6068.5,
+   "sources": {
+    "naver": 6068.5,
+    "fred": 6068.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-12",
+   "value": 6051.97,
+   "sources": {
+    "naver": 6051.97,
+    "fred": 6051.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-13",
+   "value": 6115.07,
+   "sources": {
+    "naver": 6115.07,
+    "fred": 6115.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-14",
+   "value": 6114.63,
+   "sources": {
+    "naver": 6114.63,
+    "fred": 6114.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-18",
+   "value": 6129.58,
+   "sources": {
+    "naver": 6129.58,
+    "fred": 6129.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-19",
+   "value": 6144.15,
+   "sources": {
+    "naver": 6144.15,
+    "fred": 6144.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-20",
+   "value": 6117.52,
+   "sources": {
+    "naver": 6117.52,
+    "fred": 6117.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-21",
+   "value": 6013.13,
+   "sources": {
+    "naver": 6013.13,
+    "fred": 6013.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-24",
+   "value": 5983.25,
+   "sources": {
+    "naver": 5983.25,
+    "fred": 5983.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-25",
+   "value": 5955.25,
+   "sources": {
+    "naver": 5955.25,
+    "fred": 5955.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-26",
+   "value": 5956.06,
+   "sources": {
+    "naver": 5956.06,
+    "fred": 5956.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-27",
+   "value": 5861.57,
+   "sources": {
+    "naver": 5861.57,
+    "fred": 5861.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-28",
+   "value": 5954.5,
+   "sources": {
+    "naver": 5954.5,
+    "fred": 5954.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-03",
+   "value": 5849.72,
+   "sources": {
+    "naver": 5849.72,
+    "fred": 5849.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-04",
+   "value": 5778.15,
+   "sources": {
+    "naver": 5778.15,
+    "fred": 5778.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-05",
+   "value": 5842.63,
+   "sources": {
+    "naver": 5842.63,
+    "fred": 5842.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-06",
+   "value": 5738.52,
+   "sources": {
+    "naver": 5738.52,
+    "fred": 5738.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-07",
+   "value": 5770.2,
+   "sources": {
+    "naver": 5770.2,
+    "fred": 5770.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-10",
+   "value": 5614.56,
+   "sources": {
+    "naver": 5614.56,
+    "fred": 5614.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-11",
+   "value": 5572.07,
+   "sources": {
+    "naver": 5572.07,
+    "fred": 5572.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-12",
+   "value": 5599.3,
+   "sources": {
+    "naver": 5599.3,
+    "fred": 5599.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-13",
+   "value": 5521.52,
+   "sources": {
+    "naver": 5521.52,
+    "fred": 5521.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-14",
+   "value": 5638.94,
+   "sources": {
+    "naver": 5638.94,
+    "fred": 5638.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-17",
+   "value": 5675.12,
+   "sources": {
+    "naver": 5675.12,
+    "fred": 5675.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-18",
+   "value": 5614.66,
+   "sources": {
+    "naver": 5614.66,
+    "fred": 5614.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-19",
+   "value": 5675.29,
+   "sources": {
+    "naver": 5675.29,
+    "fred": 5675.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-20",
+   "value": 5662.89,
+   "sources": {
+    "naver": 5662.89,
+    "fred": 5662.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-21",
+   "value": 5667.56,
+   "sources": {
+    "naver": 5667.56,
+    "fred": 5667.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-24",
+   "value": 5767.57,
+   "sources": {
+    "naver": 5767.57,
+    "fred": 5767.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-25",
+   "value": 5776.65,
+   "sources": {
+    "naver": 5776.65,
+    "fred": 5776.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-26",
+   "value": 5712.2,
+   "sources": {
+    "naver": 5712.2,
+    "fred": 5712.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-27",
+   "value": 5693.31,
+   "sources": {
+    "naver": 5693.31,
+    "fred": 5693.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-28",
+   "value": 5580.94,
+   "sources": {
+    "naver": 5580.94,
+    "fred": 5580.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-31",
+   "value": 5611.85,
+   "sources": {
+    "naver": 5611.85,
+    "fred": 5611.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-01",
+   "value": 5633.07,
+   "sources": {
+    "naver": 5633.07,
+    "fred": 5633.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-02",
+   "value": 5670.97,
+   "sources": {
+    "naver": 5670.97,
+    "fred": 5670.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-03",
+   "value": 5396.52,
+   "sources": {
+    "naver": 5396.52,
+    "fred": 5396.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-04",
+   "value": 5074.08,
+   "sources": {
+    "naver": 5074.08,
+    "fred": 5074.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-07",
+   "value": 5062.25,
+   "sources": {
+    "naver": 5062.25,
+    "fred": 5062.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-08",
+   "value": 4982.77,
+   "sources": {
+    "naver": 4982.77,
+    "fred": 4982.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-09",
+   "value": 5456.9,
+   "sources": {
+    "naver": 5456.9,
+    "fred": 5456.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-10",
+   "value": 5268.05,
+   "sources": {
+    "naver": 5268.05,
+    "fred": 5268.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-11",
+   "value": 5363.36,
+   "sources": {
+    "naver": 5363.36,
+    "fred": 5363.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-14",
+   "value": 5405.97,
+   "sources": {
+    "naver": 5405.97,
+    "fred": 5405.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-15",
+   "value": 5396.63,
+   "sources": {
+    "naver": 5396.63,
+    "fred": 5396.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-16",
+   "value": 5275.7,
+   "sources": {
+    "naver": 5275.7,
+    "fred": 5275.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-17",
+   "value": 5282.7,
+   "sources": {
+    "naver": 5282.7,
+    "fred": 5282.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-21",
+   "value": 5158.2,
+   "sources": {
+    "naver": 5158.2,
+    "fred": 5158.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-22",
+   "value": 5287.76,
+   "sources": {
+    "naver": 5287.76,
+    "fred": 5287.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-23",
+   "value": 5375.86,
+   "sources": {
+    "naver": 5375.86,
+    "fred": 5375.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-24",
+   "value": 5484.77,
+   "sources": {
+    "naver": 5484.77,
+    "fred": 5484.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-25",
+   "value": 5525.21,
+   "sources": {
+    "naver": 5525.21,
+    "fred": 5525.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-28",
+   "value": 5528.75,
+   "sources": {
+    "naver": 5528.75,
+    "fred": 5528.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-29",
+   "value": 5560.83,
+   "sources": {
+    "naver": 5560.83,
+    "fred": 5560.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-30",
+   "value": 5569.06,
+   "sources": {
+    "naver": 5569.06,
+    "fred": 5569.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-01",
+   "value": 5604.14,
+   "sources": {
+    "naver": 5604.14,
+    "fred": 5604.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-02",
+   "value": 5686.67,
+   "sources": {
+    "naver": 5686.67,
+    "fred": 5686.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-05",
+   "value": 5650.38,
+   "sources": {
+    "naver": 5650.38,
+    "fred": 5650.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-06",
+   "value": 5606.91,
+   "sources": {
+    "naver": 5606.91,
+    "fred": 5606.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-07",
+   "value": 5631.28,
+   "sources": {
+    "naver": 5631.28,
+    "fred": 5631.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-08",
+   "value": 5663.94,
+   "sources": {
+    "naver": 5663.94,
+    "fred": 5663.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-09",
+   "value": 5659.91,
+   "sources": {
+    "naver": 5659.91,
+    "fred": 5659.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-12",
+   "value": 5844.19,
+   "sources": {
+    "naver": 5844.19,
+    "fred": 5844.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-13",
+   "value": 5886.55,
+   "sources": {
+    "naver": 5886.55,
+    "fred": 5886.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-14",
+   "value": 5892.58,
+   "sources": {
+    "naver": 5892.58,
+    "fred": 5892.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-15",
+   "value": 5916.93,
+   "sources": {
+    "naver": 5916.93,
+    "fred": 5916.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-16",
+   "value": 5958.38,
+   "sources": {
+    "naver": 5958.38,
+    "fred": 5958.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-19",
+   "value": 5963.6,
+   "sources": {
+    "naver": 5963.6,
+    "fred": 5963.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-20",
+   "value": 5940.46,
+   "sources": {
+    "naver": 5940.46,
+    "fred": 5940.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-21",
+   "value": 5844.61,
+   "sources": {
+    "naver": 5844.61,
+    "fred": 5844.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-22",
+   "value": 5842.01,
+   "sources": {
+    "naver": 5842.01,
+    "fred": 5842.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-23",
+   "value": 5802.82,
+   "sources": {
+    "naver": 5802.82,
+    "fred": 5802.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-27",
+   "value": 5921.54,
+   "sources": {
+    "naver": 5921.54,
+    "fred": 5921.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-28",
+   "value": 5888.55,
+   "sources": {
+    "naver": 5888.55,
+    "fred": 5888.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-29",
+   "value": 5912.17,
+   "sources": {
+    "naver": 5912.17,
+    "fred": 5912.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-30",
+   "value": 5911.69,
+   "sources": {
+    "naver": 5911.69,
+    "fred": 5911.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-02",
+   "value": 5935.94,
+   "sources": {
+    "naver": 5935.94,
+    "fred": 5935.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-03",
+   "value": 5970.37,
+   "sources": {
+    "naver": 5970.37,
+    "fred": 5970.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-04",
+   "value": 5970.81,
+   "sources": {
+    "naver": 5970.81,
+    "fred": 5970.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-05",
+   "value": 5939.3,
+   "sources": {
+    "naver": 5939.3,
+    "fred": 5939.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-06",
+   "value": 6000.36,
+   "sources": {
+    "naver": 6000.36,
+    "fred": 6000.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-09",
+   "value": 6005.88,
+   "sources": {
+    "naver": 6005.88,
+    "fred": 6005.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-10",
+   "value": 6038.81,
+   "sources": {
+    "naver": 6038.81,
+    "fred": 6038.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-11",
+   "value": 6022.24,
+   "sources": {
+    "naver": 6022.24,
+    "fred": 6022.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-12",
+   "value": 6045.26,
+   "sources": {
+    "naver": 6045.26,
+    "fred": 6045.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-13",
+   "value": 5976.97,
+   "sources": {
+    "naver": 5976.97,
+    "fred": 5976.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-16",
+   "value": 6033.11,
+   "sources": {
+    "naver": 6033.11,
+    "fred": 6033.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-17",
+   "value": 5982.72,
+   "sources": {
+    "naver": 5982.72,
+    "fred": 5982.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-18",
+   "value": 5980.87,
+   "sources": {
+    "naver": 5980.87,
+    "fred": 5980.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-20",
+   "value": 5967.84,
+   "sources": {
+    "naver": 5967.84,
+    "fred": 5967.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-23",
+   "value": 6025.17,
+   "sources": {
+    "naver": 6025.17,
+    "fred": 6025.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-24",
+   "value": 6092.18,
+   "sources": {
+    "naver": 6092.18,
+    "fred": 6092.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-25",
+   "value": 6092.16,
+   "sources": {
+    "naver": 6092.16,
+    "fred": 6092.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-26",
+   "value": 6141.02,
+   "sources": {
+    "naver": 6141.02,
+    "fred": 6141.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-27",
+   "value": 6173.07,
+   "sources": {
+    "naver": 6173.07,
+    "fred": 6173.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-30",
+   "value": 6204.95,
+   "sources": {
+    "naver": 6204.95,
+    "fred": 6204.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-01",
+   "value": 6198.01,
+   "sources": {
+    "naver": 6198.01,
+    "fred": 6198.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-02",
+   "value": 6227.42,
+   "sources": {
+    "naver": 6227.42,
+    "fred": 6227.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-03",
+   "value": 6279.35,
+   "sources": {
+    "naver": 6279.35,
+    "fred": 6279.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-07",
+   "value": 6229.98,
+   "sources": {
+    "naver": 6229.98,
+    "fred": 6229.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-08",
+   "value": 6225.52,
+   "sources": {
+    "naver": 6225.52,
+    "fred": 6225.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-09",
+   "value": 6263.26,
+   "sources": {
+    "naver": 6263.26,
+    "fred": 6263.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-10",
+   "value": 6280.46,
+   "sources": {
+    "naver": 6280.46,
+    "fred": 6280.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-11",
+   "value": 6259.75,
+   "sources": {
+    "naver": 6259.75,
+    "fred": 6259.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-14",
+   "value": 6268.56,
+   "sources": {
+    "naver": 6268.56,
+    "fred": 6268.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-15",
+   "value": 6243.76,
+   "sources": {
+    "naver": 6243.76,
+    "fred": 6243.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-16",
+   "value": 6263.7,
+   "sources": {
+    "naver": 6263.7,
+    "fred": 6263.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-17",
+   "value": 6297.36,
+   "sources": {
+    "naver": 6297.36,
+    "fred": 6297.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-18",
+   "value": 6296.79,
+   "sources": {
+    "naver": 6296.79,
+    "fred": 6296.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-21",
+   "value": 6305.6,
+   "sources": {
+    "naver": 6305.6,
+    "fred": 6305.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-22",
+   "value": 6309.62,
+   "sources": {
+    "naver": 6309.62,
+    "fred": 6309.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-23",
+   "value": 6358.91,
+   "sources": {
+    "naver": 6358.91,
+    "fred": 6358.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-24",
+   "value": 6363.35,
+   "sources": {
+    "naver": 6363.35,
+    "fred": 6363.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-25",
+   "value": 6388.64,
+   "sources": {
+    "naver": 6388.64,
+    "fred": 6388.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-28",
+   "value": 6389.77,
+   "sources": {
+    "naver": 6389.77,
+    "fred": 6389.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-29",
+   "value": 6370.86,
+   "sources": {
+    "naver": 6370.86,
+    "fred": 6370.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-30",
+   "value": 6362.9,
+   "sources": {
+    "naver": 6362.9,
+    "fred": 6362.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-31",
+   "value": 6339.39,
+   "sources": {
+    "naver": 6339.39,
+    "fred": 6339.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-01",
+   "value": 6238.01,
+   "sources": {
+    "naver": 6238.01,
+    "fred": 6238.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-04",
+   "value": 6329.94,
+   "sources": {
+    "naver": 6329.94,
+    "fred": 6329.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-05",
+   "value": 6299.19,
+   "sources": {
+    "naver": 6299.19,
+    "fred": 6299.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-06",
+   "value": 6345.06,
+   "sources": {
+    "naver": 6345.06,
+    "fred": 6345.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-07",
+   "value": 6340,
+   "sources": {
+    "naver": 6340,
+    "fred": 6340
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-08",
+   "value": 6389.45,
+   "sources": {
+    "naver": 6389.45,
+    "fred": 6389.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-11",
+   "value": 6373.45,
+   "sources": {
+    "naver": 6373.45,
+    "fred": 6373.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-12",
+   "value": 6445.76,
+   "sources": {
+    "naver": 6445.76,
+    "fred": 6445.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-13",
+   "value": 6466.58,
+   "sources": {
+    "naver": 6466.58,
+    "fred": 6466.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-14",
+   "value": 6468.54,
+   "sources": {
+    "naver": 6468.54,
+    "fred": 6468.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-15",
+   "value": 6449.8,
+   "sources": {
+    "naver": 6449.8,
+    "fred": 6449.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-18",
+   "value": 6449.15,
+   "sources": {
+    "naver": 6449.15,
+    "fred": 6449.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-19",
+   "value": 6411.37,
+   "sources": {
+    "naver": 6411.37,
+    "fred": 6411.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-20",
+   "value": 6395.78,
+   "sources": {
+    "naver": 6395.78,
+    "fred": 6395.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-21",
+   "value": 6370.17,
+   "sources": {
+    "naver": 6370.17,
+    "fred": 6370.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-22",
+   "value": 6466.91,
+   "sources": {
+    "naver": 6466.91,
+    "fred": 6466.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-25",
+   "value": 6439.32,
+   "sources": {
+    "naver": 6439.32,
+    "fred": 6439.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-26",
+   "value": 6465.94,
+   "sources": {
+    "naver": 6465.94,
+    "fred": 6465.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-27",
+   "value": 6481.4,
+   "sources": {
+    "naver": 6481.4,
+    "fred": 6481.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-28",
+   "value": 6501.86,
+   "sources": {
+    "naver": 6501.86,
+    "fred": 6501.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-29",
+   "value": 6460.26,
+   "sources": {
+    "naver": 6460.26,
+    "fred": 6460.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-02",
+   "value": 6415.54,
+   "sources": {
+    "naver": 6415.54,
+    "fred": 6415.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-03",
+   "value": 6448.26,
+   "sources": {
+    "naver": 6448.26,
+    "fred": 6448.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-04",
+   "value": 6502.08,
+   "sources": {
+    "naver": 6502.08,
+    "fred": 6502.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-05",
+   "value": 6481.5,
+   "sources": {
+    "naver": 6481.5,
+    "fred": 6481.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-08",
+   "value": 6495.15,
+   "sources": {
+    "naver": 6495.15,
+    "fred": 6495.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-09",
+   "value": 6512.61,
+   "sources": {
+    "naver": 6512.61,
+    "fred": 6512.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-10",
+   "value": 6532.04,
+   "sources": {
+    "naver": 6532.04,
+    "fred": 6532.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-11",
+   "value": 6587.47,
+   "sources": {
+    "naver": 6587.47,
+    "fred": 6587.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-12",
+   "value": 6584.29,
+   "sources": {
+    "naver": 6584.29,
+    "fred": 6584.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-15",
+   "value": 6615.28,
+   "sources": {
+    "naver": 6615.28,
+    "fred": 6615.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-16",
+   "value": 6606.76,
+   "sources": {
+    "naver": 6606.76,
+    "fred": 6606.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-17",
+   "value": 6600.35,
+   "sources": {
+    "naver": 6600.35,
+    "fred": 6600.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-18",
+   "value": 6631.96,
+   "sources": {
+    "naver": 6631.96,
+    "fred": 6631.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-19",
+   "value": 6664.36,
+   "sources": {
+    "naver": 6664.36,
+    "fred": 6664.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-22",
+   "value": 6693.75,
+   "sources": {
+    "naver": 6693.75,
+    "fred": 6693.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-23",
+   "value": 6656.92,
+   "sources": {
+    "naver": 6656.92,
+    "fred": 6656.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-24",
+   "value": 6637.97,
+   "sources": {
+    "naver": 6637.97,
+    "fred": 6637.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-25",
+   "value": 6604.72,
+   "sources": {
+    "naver": 6604.72,
+    "fred": 6604.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-26",
+   "value": 6643.7,
+   "sources": {
+    "naver": 6643.7,
+    "fred": 6643.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-29",
+   "value": 6661.21,
+   "sources": {
+    "naver": 6661.21,
+    "fred": 6661.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-30",
+   "value": 6688.46,
+   "sources": {
+    "naver": 6688.46,
+    "fred": 6688.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-01",
+   "value": 6711.2,
+   "sources": {
+    "naver": 6711.2,
+    "fred": 6711.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-02",
+   "value": 6715.35,
+   "sources": {
+    "naver": 6715.35,
+    "fred": 6715.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-03",
+   "value": 6715.79,
+   "sources": {
+    "naver": 6715.79,
+    "fred": 6715.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-06",
+   "value": 6740.28,
+   "sources": {
+    "naver": 6740.28,
+    "fred": 6740.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-07",
+   "value": 6714.59,
+   "sources": {
+    "naver": 6714.59,
+    "fred": 6714.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-08",
+   "value": 6753.72,
+   "sources": {
+    "naver": 6753.72,
+    "fred": 6753.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-09",
+   "value": 6735.11,
+   "sources": {
+    "naver": 6735.11,
+    "fred": 6735.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-10",
+   "value": 6552.51,
+   "sources": {
+    "naver": 6552.51,
+    "fred": 6552.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-13",
+   "value": 6654.72,
+   "sources": {
+    "naver": 6654.72,
+    "fred": 6654.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-14",
+   "value": 6644.31,
+   "sources": {
+    "naver": 6644.31,
+    "fred": 6644.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-15",
+   "value": 6671.06,
+   "sources": {
+    "naver": 6671.06,
+    "fred": 6671.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-16",
+   "value": 6629.07,
+   "sources": {
+    "naver": 6629.07,
+    "fred": 6629.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-17",
+   "value": 6664.01,
+   "sources": {
+    "naver": 6664.01,
+    "fred": 6664.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-20",
+   "value": 6735.13,
+   "sources": {
+    "naver": 6735.13,
+    "fred": 6735.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-21",
+   "value": 6735.35,
+   "sources": {
+    "naver": 6735.35,
+    "fred": 6735.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-22",
+   "value": 6699.4,
+   "sources": {
+    "naver": 6699.4,
+    "fred": 6699.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-23",
+   "value": 6738.44,
+   "sources": {
+    "naver": 6738.44,
+    "fred": 6738.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-24",
+   "value": 6791.69,
+   "sources": {
+    "naver": 6791.69,
+    "fred": 6791.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-27",
+   "value": 6875.16,
+   "sources": {
+    "naver": 6875.16,
+    "fred": 6875.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-28",
+   "value": 6890.89,
+   "sources": {
+    "naver": 6890.89,
+    "fred": 6890.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-29",
+   "value": 6890.59,
+   "sources": {
+    "naver": 6890.59,
+    "fred": 6890.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-30",
+   "value": 6822.34,
+   "sources": {
+    "naver": 6822.34,
+    "fred": 6822.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-31",
+   "value": 6840.2,
+   "sources": {
+    "naver": 6840.2,
+    "fred": 6840.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-03",
+   "value": 6851.97,
+   "sources": {
+    "naver": 6851.97,
+    "fred": 6851.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-04",
+   "value": 6771.55,
+   "sources": {
+    "naver": 6771.55,
+    "fred": 6771.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-05",
+   "value": 6796.29,
+   "sources": {
+    "naver": 6796.29,
+    "fred": 6796.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-06",
+   "value": 6720.32,
+   "sources": {
+    "naver": 6720.32,
+    "fred": 6720.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-07",
+   "value": 6728.8,
+   "sources": {
+    "naver": 6728.8,
+    "fred": 6728.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-10",
+   "value": 6832.43,
+   "sources": {
+    "naver": 6832.43,
+    "fred": 6832.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-11",
+   "value": 6846.61,
+   "sources": {
+    "naver": 6846.61,
+    "fred": 6846.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-12",
+   "value": 6850.92,
+   "sources": {
+    "naver": 6850.92,
+    "fred": 6850.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-13",
+   "value": 6737.49,
+   "sources": {
+    "naver": 6737.49,
+    "fred": 6737.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-14",
+   "value": 6734.11,
+   "sources": {
+    "naver": 6734.11,
+    "fred": 6734.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-17",
+   "value": 6672.41,
+   "sources": {
+    "naver": 6672.41,
+    "fred": 6672.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-18",
+   "value": 6617.32,
+   "sources": {
+    "naver": 6617.32,
+    "fred": 6617.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-19",
+   "value": 6642.16,
+   "sources": {
+    "naver": 6642.16,
+    "fred": 6642.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-20",
+   "value": 6538.76,
+   "sources": {
+    "naver": 6538.76,
+    "fred": 6538.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-21",
+   "value": 6602.99,
+   "sources": {
+    "naver": 6602.99,
+    "fred": 6602.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-24",
+   "value": 6705.12,
+   "sources": {
+    "naver": 6705.12,
+    "fred": 6705.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-25",
+   "value": 6765.88,
+   "sources": {
+    "naver": 6765.88,
+    "fred": 6765.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-26",
+   "value": 6812.61,
+   "sources": {
+    "naver": 6812.61,
+    "fred": 6812.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-28",
+   "value": 6849.09,
+   "sources": {
+    "naver": 6849.09,
+    "fred": 6849.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-01",
+   "value": 6812.63,
+   "sources": {
+    "naver": 6812.63,
+    "fred": 6812.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-02",
+   "value": 6829.37,
+   "sources": {
+    "naver": 6829.37,
+    "fred": 6829.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-03",
+   "value": 6849.72,
+   "sources": {
+    "naver": 6849.72,
+    "fred": 6849.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-04",
+   "value": 6857.12,
+   "sources": {
+    "naver": 6857.12,
+    "fred": 6857.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-05",
+   "value": 6870.4,
+   "sources": {
+    "naver": 6870.4,
+    "fred": 6870.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-08",
+   "value": 6846.51,
+   "sources": {
+    "naver": 6846.51,
+    "fred": 6846.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-09",
+   "value": 6840.51,
+   "sources": {
+    "naver": 6840.51,
+    "fred": 6840.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-10",
+   "value": 6886.68,
+   "sources": {
+    "naver": 6886.68,
+    "fred": 6886.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-11",
+   "value": 6901,
+   "sources": {
+    "naver": 6901,
+    "fred": 6901
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-12",
+   "value": 6827.41,
+   "sources": {
+    "naver": 6827.41,
+    "fred": 6827.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-15",
+   "value": 6816.51,
+   "sources": {
+    "naver": 6816.51,
+    "fred": 6816.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-16",
+   "value": 6800.26,
+   "sources": {
+    "naver": 6800.26,
+    "fred": 6800.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-17",
+   "value": 6721.43,
+   "sources": {
+    "naver": 6721.43,
+    "fred": 6721.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-18",
+   "value": 6774.76,
+   "sources": {
+    "naver": 6774.76,
+    "fred": 6774.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-19",
+   "value": 6834.5,
+   "sources": {
+    "naver": 6834.5,
+    "fred": 6834.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-22",
+   "value": 6878.49,
+   "sources": {
+    "naver": 6878.49,
+    "fred": 6878.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-23",
+   "value": 6909.79,
+   "sources": {
+    "naver": 6909.79,
+    "fred": 6909.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-24",
+   "value": 6932.05,
+   "sources": {
+    "naver": 6932.05,
+    "fred": 6932.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-26",
+   "value": 6929.94,
+   "sources": {
+    "naver": 6929.94,
+    "fred": 6929.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-29",
+   "value": 6905.74,
+   "sources": {
+    "naver": 6905.74,
+    "fred": 6905.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-30",
+   "value": 6896.24,
+   "sources": {
+    "naver": 6896.24,
+    "fred": 6896.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-31",
+   "value": 6845.5,
+   "sources": {
+    "naver": 6845.5,
+    "fred": 6845.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-02",
+   "value": 6858.47,
+   "sources": {
+    "naver": 6858.47,
+    "fred": 6858.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-05",
+   "value": 6902.05,
+   "sources": {
+    "naver": 6902.05,
+    "fred": 6902.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-06",
+   "value": 6944.82,
+   "sources": {
+    "naver": 6944.82,
+    "fred": 6944.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-07",
+   "value": 6920.93,
+   "sources": {
+    "naver": 6920.93,
+    "fred": 6920.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-08",
+   "value": 6921.46,
+   "sources": {
+    "naver": 6921.46,
+    "fred": 6921.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-09",
+   "value": 6966.28,
+   "sources": {
+    "naver": 6966.28,
+    "fred": 6966.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-12",
+   "value": 6977.27,
+   "sources": {
+    "naver": 6977.27,
+    "fred": 6977.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-13",
+   "value": 6963.74,
+   "sources": {
+    "naver": 6963.74,
+    "fred": 6963.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-14",
+   "value": 6926.6,
+   "sources": {
+    "naver": 6926.6,
+    "fred": 6926.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-15",
+   "value": 6944.47,
+   "sources": {
+    "naver": 6944.47,
+    "fred": 6944.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-16",
+   "value": 6940.01,
+   "sources": {
+    "naver": 6940.01,
+    "fred": 6940.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-20",
+   "value": 6796.86,
+   "sources": {
+    "naver": 6796.86,
+    "fred": 6796.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-21",
+   "value": 6875.62,
+   "sources": {
+    "naver": 6875.62,
+    "fred": 6875.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-22",
+   "value": 6913.35,
+   "sources": {
+    "naver": 6913.35,
+    "fred": 6913.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-23",
+   "value": 6915.61,
+   "sources": {
+    "naver": 6915.61,
+    "fred": 6915.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-26",
+   "value": 6950.23,
+   "sources": {
+    "naver": 6950.23,
+    "fred": 6950.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-27",
+   "value": 6978.6,
+   "sources": {
+    "naver": 6978.6,
+    "fred": 6978.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-28",
+   "value": 6978.03,
+   "sources": {
+    "naver": 6978.03,
+    "fred": 6978.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-29",
+   "value": 6969.01,
+   "sources": {
+    "naver": 6969.01,
+    "fred": 6969.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-30",
+   "value": 6939.03,
+   "sources": {
+    "naver": 6939.03,
+    "fred": 6939.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-02",
+   "value": 6976.44,
+   "sources": {
+    "naver": 6976.44,
+    "fred": 6976.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-03",
+   "value": 6917.81,
+   "sources": {
+    "naver": 6917.81,
+    "fred": 6917.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-04",
+   "value": 6882.72,
+   "sources": {
+    "naver": 6882.72,
+    "fred": 6882.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-05",
+   "value": 6798.4,
+   "sources": {
+    "naver": 6798.4,
+    "fred": 6798.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-06",
+   "value": 6932.3,
+   "sources": {
+    "naver": 6932.3,
+    "fred": 6932.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-09",
+   "value": 6964.82,
+   "sources": {
+    "naver": 6964.82,
+    "fred": 6964.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-10",
+   "value": 6941.81,
+   "sources": {
+    "naver": 6941.81,
+    "fred": 6941.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-11",
+   "value": 6941.47,
+   "sources": {
+    "naver": 6941.47,
+    "fred": 6941.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-12",
+   "value": 6832.76,
+   "sources": {
+    "naver": 6832.76,
+    "fred": 6832.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-13",
+   "value": 6836.17,
+   "sources": {
+    "naver": 6836.17,
+    "fred": 6836.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-17",
+   "value": 6843.22,
+   "sources": {
+    "naver": 6843.22,
+    "fred": 6843.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-18",
+   "value": 6881.31,
+   "sources": {
+    "naver": 6881.31,
+    "fred": 6881.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-19",
+   "value": 6861.89,
+   "sources": {
+    "naver": 6861.89,
+    "fred": 6861.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-20",
+   "value": 6909.51,
+   "sources": {
+    "naver": 6909.51,
+    "fred": 6909.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-23",
+   "value": 6837.75,
+   "sources": {
+    "naver": 6837.75,
+    "fred": 6837.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-24",
+   "value": 6890.07,
+   "sources": {
+    "naver": 6890.07,
+    "fred": 6890.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-25",
+   "value": 6946.13,
+   "sources": {
+    "naver": 6946.13,
+    "fred": 6946.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-26",
+   "value": 6908.86,
+   "sources": {
+    "naver": 6908.86,
+    "fred": 6908.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-27",
+   "value": 6878.88,
+   "sources": {
+    "naver": 6878.88,
+    "fred": 6878.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-02",
+   "value": 6881.62,
+   "sources": {
+    "naver": 6881.62,
+    "fred": 6881.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-03",
+   "value": 6816.63,
+   "sources": {
+    "naver": 6816.63,
+    "fred": 6816.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-04",
+   "value": 6869.5,
+   "sources": {
+    "naver": 6869.5,
+    "fred": 6869.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-05",
+   "value": 6830.71,
+   "sources": {
+    "naver": 6830.71,
+    "fred": 6830.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-06",
+   "value": 6740.02,
+   "sources": {
+    "naver": 6740.02,
+    "fred": 6740.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-09",
+   "value": 6795.99,
+   "sources": {
+    "naver": 6795.99,
+    "fred": 6795.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-10",
+   "value": 6781.48,
+   "sources": {
+    "naver": 6781.48,
+    "fred": 6781.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-11",
+   "value": 6775.8,
+   "sources": {
+    "naver": 6775.8,
+    "fred": 6775.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-12",
+   "value": 6672.62,
+   "sources": {
+    "naver": 6672.62,
+    "fred": 6672.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-13",
+   "value": 6632.19,
+   "sources": {
+    "naver": 6632.19,
+    "fred": 6632.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-16",
+   "value": 6699.38,
+   "sources": {
+    "naver": 6699.38,
+    "fred": 6699.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-17",
+   "value": 6716.09,
+   "sources": {
+    "naver": 6716.09,
+    "fred": 6716.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-18",
+   "value": 6624.7,
+   "sources": {
+    "naver": 6624.7,
+    "fred": 6624.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-19",
+   "value": 6606.49,
+   "sources": {
+    "naver": 6606.49,
+    "fred": 6606.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-20",
+   "value": 6506.48,
+   "sources": {
+    "naver": 6506.48,
+    "fred": 6506.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-23",
+   "value": 6581,
+   "sources": {
+    "naver": 6581,
+    "fred": 6581
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-24",
+   "value": 6556.37,
+   "sources": {
+    "naver": 6556.37,
+    "fred": 6556.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-25",
+   "value": 6591.9,
+   "sources": {
+    "naver": 6591.9,
+    "fred": 6591.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-26",
+   "value": 6477.16,
+   "sources": {
+    "naver": 6477.16,
+    "fred": 6477.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-27",
+   "value": 6368.85,
+   "sources": {
+    "naver": 6368.85,
+    "fred": 6368.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-30",
+   "value": 6343.72,
+   "sources": {
+    "naver": 6343.72,
+    "fred": 6343.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-31",
+   "value": 6528.52,
+   "sources": {
+    "naver": 6528.52,
+    "fred": 6528.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-01",
+   "value": 6575.32,
+   "sources": {
+    "naver": 6575.32,
+    "fred": 6575.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-02",
+   "value": 6582.69,
+   "sources": {
+    "naver": 6582.69,
+    "fred": 6582.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-06",
+   "value": 6611.83,
+   "sources": {
+    "naver": 6611.83,
+    "fred": 6611.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-07",
+   "value": 6616.85,
+   "sources": {
+    "naver": 6616.85,
+    "fred": 6616.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-08",
+   "value": 6782.81,
+   "sources": {
+    "naver": 6782.81,
+    "fred": 6782.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-09",
+   "value": 6824.66,
+   "sources": {
+    "naver": 6824.66,
+    "fred": 6824.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-10",
+   "value": 6816.89,
+   "sources": {
+    "naver": 6816.89,
+    "fred": 6816.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-13",
+   "value": 6886.24,
+   "sources": {
+    "naver": 6886.24,
+    "fred": 6886.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-14",
+   "value": 6967.38,
+   "sources": {
+    "naver": 6967.38,
+    "fred": 6967.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-15",
+   "value": 7022.95,
+   "sources": {
+    "naver": 7022.95,
+    "fred": 7022.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-16",
+   "value": 7041.28,
+   "sources": {
+    "naver": 7041.28,
+    "fred": 7041.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-17",
+   "value": 7126.06,
+   "sources": {
+    "naver": 7126.06,
+    "fred": 7126.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-20",
+   "value": 7109.14,
+   "sources": {
+    "naver": 7109.14,
+    "fred": 7109.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-21",
+   "value": 7064.01,
+   "sources": {
+    "naver": 7064.01,
+    "fred": 7064.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-22",
+   "value": 7137.9,
+   "sources": {
+    "naver": 7137.9,
+    "fred": 7137.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-23",
+   "value": 7108.4,
+   "sources": {
+    "naver": 7108.4,
+    "fred": 7108.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-24",
+   "value": 7165.08,
+   "sources": {
+    "naver": 7165.08,
+    "fred": 7165.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-27",
+   "value": 7173.91,
+   "sources": {
+    "naver": 7173.91,
+    "fred": 7173.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-28",
+   "value": 7138.8,
+   "sources": {
+    "naver": 7138.8,
+    "fred": 7138.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-29",
+   "value": 7135.95,
+   "sources": {
+    "naver": 7135.95,
+    "fred": 7135.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-30",
+   "value": 7209.01,
+   "sources": {
+    "naver": 7209.01,
+    "fred": 7209.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-01",
+   "value": 7230.12,
+   "sources": {
+    "naver": 7230.12,
+    "fred": 7230.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-04",
+   "value": 7200.75,
+   "sources": {
+    "naver": 7200.75,
+    "fred": 7200.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-05",
+   "value": 7259.22,
+   "sources": {
+    "naver": 7259.22,
+    "fred": 7259.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-06",
+   "value": 7365.12,
+   "sources": {
+    "naver": 7365.12,
+    "fred": 7365.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-07",
+   "value": 7337.11,
+   "sources": {
+    "naver": 7337.11,
+    "fred": 7337.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-08",
+   "value": 7398.93,
+   "sources": {
+    "naver": 7398.93,
+    "fred": 7398.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-11",
+   "value": 7412.84,
+   "sources": {
+    "naver": 7412.84,
+    "fred": 7412.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-12",
+   "value": 7400.96,
+   "sources": {
+    "naver": 7400.96,
+    "fred": 7400.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-13",
+   "value": 7444.25,
+   "sources": {
+    "naver": 7444.25,
+    "fred": 7444.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-14",
+   "value": 7501.24,
+   "sources": {
+    "naver": 7501.24,
+    "fred": 7501.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-15",
+   "value": 7408.5,
+   "sources": {
+    "naver": 7408.5,
+    "fred": 7408.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-18",
+   "value": 7403.05,
+   "sources": {
+    "naver": 7403.05,
+    "fred": 7403.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-19",
+   "value": 7353.61,
+   "sources": {
+    "naver": 7353.61,
+    "fred": 7353.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-20",
+   "value": 7432.97,
+   "sources": {
+    "naver": 7432.97,
+    "fred": 7432.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-21",
+   "value": 7445.72,
+   "sources": {
+    "naver": 7445.72,
+    "fred": 7445.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-22",
+   "value": 7473.47,
+   "sources": {
+    "naver": 7473.47,
+    "fred": 7473.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-26",
+   "value": 7519.12,
+   "sources": {
+    "naver": 7519.12,
+    "fred": 7519.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-27",
+   "value": 7520.36,
+   "sources": {
+    "naver": 7520.36,
+    "fred": 7520.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-28",
+   "value": 7563.63,
+   "sources": {
+    "naver": 7563.63,
+    "fred": 7563.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-29",
+   "value": 7580.06,
+   "sources": {
+    "naver": 7580.06,
+    "fred": 7580.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-01",
+   "value": 7599.96,
+   "sources": {
+    "naver": 7599.96,
+    "fred": 7599.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-02",
+   "value": 7609.78,
+   "sources": {
+    "naver": 7609.78,
+    "fred": 7609.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-03",
+   "value": 7553.68,
+   "sources": {
+    "naver": 7553.68,
+    "fred": 7553.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-04",
+   "value": 7584.31,
+   "sources": {
+    "naver": 7584.31,
+    "fred": 7584.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-05",
+   "value": 7383.74,
+   "sources": {
+    "naver": 7383.74,
+    "fred": 7383.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-08",
+   "value": 7405.73,
+   "sources": {
+    "naver": 7405.73,
+    "fred": 7405.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-09",
+   "value": 7386.65,
+   "sources": {
+    "naver": 7386.65,
+    "fred": 7386.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-10",
+   "value": 7266.99,
+   "sources": {
+    "naver": 7266.99,
+    "fred": 7266.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-11",
+   "value": 7394.3,
+   "sources": {
+    "naver": 7394.3,
+    "fred": 7394.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-12",
+   "value": 7431.46,
+   "sources": {
+    "naver": 7431.46,
+    "fred": 7431.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-15",
+   "value": 7554.29,
+   "sources": {
+    "naver": 7554.29,
+    "fred": 7554.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-16",
+   "value": 7511.35,
+   "sources": {
+    "naver": 7511.35,
+    "fred": 7511.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-17",
+   "value": 7420.1,
+   "sources": {
+    "naver": 7420.1,
+    "fred": 7420.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-18",
+   "value": 7500.58,
+   "sources": {
+    "naver": 7500.58,
+    "fred": 7500.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-22",
+   "value": 7472.79,
+   "sources": {
+    "naver": 7472.79,
+    "fred": 7472.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-23",
+   "value": 7365.46,
+   "sources": {
+    "naver": 7365.46,
+    "fred": 7365.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-24",
+   "value": 7358.22,
+   "sources": {
+    "naver": 7358.22,
+    "fred": 7358.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-25",
+   "value": 7357.49,
+   "sources": {
+    "naver": 7357.49,
+    "fred": 7357.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-26",
+   "value": 7354.02,
+   "sources": {
+    "naver": 7354.02,
+    "fred": 7354.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-29",
+   "value": 7440.43,
+   "sources": {
+    "naver": 7440.43,
+    "fred": 7440.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-30",
+   "value": 7499.36,
+   "sources": {
+    "naver": 7499.36,
+    "fred": 7499.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-01",
+   "value": 7483.23,
+   "sources": {
+    "naver": 7483.23,
+    "fred": 7483.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-02",
+   "value": 7483.24,
+   "sources": {
+    "naver": 7483.24,
+    "fred": 7483.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-06",
+   "value": 7537.43,
+   "sources": {
+    "naver": 7537.43,
+    "fred": 7537.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-07",
+   "value": 7503.85,
+   "sources": {
+    "naver": 7503.85,
+    "fred": 7503.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-08",
+   "value": 7482.71,
+   "sources": {
+    "naver": 7482.71,
+    "fred": 7482.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-09",
+   "value": 7543.64,
+   "sources": {
+    "naver": 7543.64,
+    "fred": 7543.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-10",
+   "value": 7575.39,
+   "sources": {
+    "naver": 7575.39,
+    "fred": 7575.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-13",
+   "value": 7515.34,
+   "sources": {
+    "naver": 7515.34,
+    "fred": 7515.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-14",
+   "value": 7543.59,
+   "sources": {
+    "naver": 7543.59,
+    "fred": 7543.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-15",
+   "value": 7572.4,
+   "sources": {
+    "naver": 7572.4,
+    "fred": 7572.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-16",
+   "value": 7533.77,
+   "sources": {
+    "naver": 7533.77,
+    "fred": 7533.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-17",
+   "value": 7457.69,
+   "sources": {
+    "naver": 7457.69,
+    "fred": 7457.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-20",
+   "value": 7443.28,
+   "sources": {
+    "naver": 7443.28,
+    "fred": 7443.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-21",
+   "value": 7509.2,
+   "sources": {
+    "naver": 7509.2,
+    "fred": 7509.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-22",
+   "value": 7498.96,
+   "sources": {
+    "naver": 7498.96,
+    "fred": 7498.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-23",
+   "value": 7408.3,
+   "sources": {
+    "naver": 7408.3,
+    "fred": 7408.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-24",
+   "value": 7411.98,
+   "sources": {
+    "naver": 7411.98,
+    "fred": 7411.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-27",
+   "value": 7413.18,
+   "sources": {
+    "naver": 7413.18,
+    "fred": 7413.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-28",
+   "value": 7428.78,
+   "sources": {
+    "naver": 7428.78,
+    "fred": 7428.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-29",
+   "value": 7316.15,
+   "sources": {
+    "naver": 7316.15,
+    "fred": 7316.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-30",
+   "value": 7437.63,
+   "sources": {
+    "naver": 7437.63,
+    "fred": 7437.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-31",
+   "value": 7489.72,
+   "sources": {
+    "naver": 7489.72,
+    "fred": 7489.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-03",
+   "value": 7600.5,
+   "sources": {
+    "naver": 7600.5,
+    "fred": 7600.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-04",
+   "value": 7736.52,
+   "sources": {
+    "naver": 7736.52,
+    "fred": 7736.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-05",
+   "value": 7723.55,
+   "sources": {
+    "naver": 7723.55,
+    "fred": 7723.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-06",
+   "value": 7709.96,
+   "sources": {
+    "naver": 7709.96,
+    "fred": 7709.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-07",
+   "value": 7757.64,
+   "sources": {
+    "naver": 7757.64,
+    "fred": 7757.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-10",
+   "value": 7753.11,
+   "sources": {
+    "naver": 7753.11,
+    "fred": 7753.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-11",
+   "value": 7728.2,
+   "sources": {
+    "naver": 7728.2,
+    "fred": 7728.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-12",
+   "value": 7748.5,
+   "sources": {
+    "naver": 7748.5,
+    "fred": 7748.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-13",
+   "value": 7798.99,
+   "sources": {
+    "naver": 7798.99,
+    "fred": 7798.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-14",
+   "value": 7785.76,
+   "sources": {
+    "naver": 7785.76,
+    "fred": 7785.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-17",
+   "value": 7745.06,
+   "sources": {
+    "naver": 7745.06,
+    "fred": 7745.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-18",
+   "value": 7691.76,
+   "sources": {
+    "naver": 7691.76,
+    "fred": 7691.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-19",
+   "value": 7707.98,
+   "sources": {
+    "naver": 7707.98,
+    "fred": 7707.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-20",
+   "value": 7641.16,
+   "sources": {
+    "naver": 7641.16,
+    "fred": 7641.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-21",
+   "value": 7674.37,
+   "sources": {
+    "naver": 7674.37,
+    "fred": 7674.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-24",
+   "value": 7652.86,
+   "sources": {
+    "naver": 7652.86,
+    "fred": 7652.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-25",
+   "value": 7677.28,
+   "sources": {
+    "naver": 7677.28,
+    "fred": 7677.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-26",
+   "value": 7675.7,
+   "sources": {
+    "naver": 7675.7,
+    "fred": 7675.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-27",
+   "value": 7730.99,
+   "sources": {
+    "naver": 7730.99,
+    "fred": 7730.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-28",
+   "value": 7711.76,
+   "sources": {
+    "naver": 7711.76,
+    "fred": 7711.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-31",
+   "value": 7686.14,
+   "sources": {
+    "naver": 7686.14,
+    "fred": 7686.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-01",
+   "value": 7631.47,
+   "sources": {
+    "naver": 7631.47,
+    "fred": 7631.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-02",
+   "value": 7666.6,
+   "sources": {
+    "naver": 7666.6,
+    "fred": 7666.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-03",
+   "value": 7747.71,
+   "sources": {
+    "naver": 7747.71,
+    "fred": 7747.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-04",
+   "value": 7718.6,
+   "sources": {
+    "naver": 7718.6,
+    "fred": 7718.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-08",
+   "value": 7673.52,
+   "sources": {
+    "naver": 7673.52,
+    "fred": 7673.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-09",
+   "value": 7636.36,
+   "sources": {
+    "naver": 7636.36,
+    "fred": 7636.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-10",
+   "value": 7591.7,
+   "sources": {
+    "naver": 7591.7,
+    "fred": 7591.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-11",
+   "value": 7656.98,
+   "sources": {
+    "naver": 7656.98,
+    "fred": 7656.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-14",
+   "value": 7619.98,
+   "sources": {
+    "naver": 7619.98,
+    "fred": 7619.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-15",
+   "value": 7585.73,
+   "sources": {
+    "naver": 7585.73,
+    "fred": 7585.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-16",
+   "value": 7551.81,
+   "sources": {
+    "naver": 7551.81,
+    "fred": 7551.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-17",
+   "value": 7637.76,
+   "sources": {
+    "naver": 7637.76,
+    "fred": 7637.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-18",
+   "value": 7650.5,
+   "sources": {
+    "naver": 7650.5,
+    "fred": 7650.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-21",
+   "value": 7764.7,
+   "sources": {
+    "naver": 7764.7,
+    "fred": 7764.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-22",
+   "value": 7764.64,
+   "sources": {
+    "naver": 7764.64,
+    "fred": 7764.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-23",
+   "value": 7706.03,
+   "sources": {
+    "naver": 7706.03,
+    "fred": 7706.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-24",
+   "value": 7704.13,
+   "sources": {
+    "naver": 7704.13,
+    "fred": 7704.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-25",
+   "value": 7743.41,
+   "sources": {
+    "naver": 7743.41,
+    "fred": 7743.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-28",
+   "value": 7683.69,
+   "sources": {
+    "naver": 7683.69,
+    "fred": 7683.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-29",
+   "value": 7670.84,
+   "sources": {
+    "naver": 7670.84,
+    "fred": 7670.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-30",
+   "value": 7651.54,
+   "sources": {
+    "naver": 7651.54,
+    "fred": 7651.54
+   },
+   "status": "ok"
+  }
+ ]
+}
