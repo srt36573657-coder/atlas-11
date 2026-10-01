@@ -17,7 +17,8 @@ const onlyScreens = arg('--screens')?.split(','), onlyViews = arg('--views')?.sp
 export async function renderAll(page) { await page.evaluate(() => { for (const el of document.querySelectorAll('*')) if (getComputedStyle(el).contentVisibility === 'auto') el.style.contentVisibility = 'visible'; }); await page.waitForTimeout(150); }
 export const SCREENS = [
   // 2026-10-02 01:34 사장님 승인 3차 디자인: 첫 화면 「내일」 = 52점 원 + 이야기 다섯 장면 — 원이 그려지면 이야기를 건너뛰어(「건너뛰기」) 끝 장면과 목록을 잰다
-  {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { await page.locator('#t-ctl[data-mode="skip"]').click({timeout: 3000}).catch(() => {}); await page.waitForTimeout(900); }},
+  // 2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면): 이야기를 꺼 두어 건너뛰기 단추가 없다 — 단추가 있을 때만 누르고(없으면 3초를 기다리지 않음), 점이 다 나타날 때까지(52 × 14ms + 0.5초) 기다린 뒤 잰다
+  {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { const skip = page.locator('#t-ctl[data-mode="skip"]'); if (await skip.count()) await skip.click({timeout: 3000}).catch(() => {}); await page.waitForTimeout(1300); }},
   {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
   // 「내일 하루만」(2026-10-02 사장님 명령)이면 1만원 비교는 꺼 둠 — 그래프 대신 「꺼 둠」 한 줄을 기다린다
   {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart, [data-off="race"]'},

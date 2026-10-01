@@ -1,21 +1,28 @@
-/* ATLAS 11 · 3차 첫 화면 「내일」 (2026-10-02 01:34 사장님 승인 3차 디자인 · 「aaa7377에 연결해봐」)
+/* ATLAS 11 · 첫 화면 「내일」
+   2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면 그림 「ATLAS_2차_전체.png」): 2차 모습으로 되돌림.
+     원은 처음에 점이 톡톡 나타나기만 한다(점마다 14ms 차이 · 0.5초 · 움직임 줄이기 설정이면 없음).
+     글상자·진행 점·건너뛰기/다시 보기·아래 「기록 · 자료 상태」 링크는 이 화면에 없다(그 링크는 성적 화면 아래로 옮김).
+     글자는 그림 그대로: 가운데 숫자만 · 「52종목 중 오를 쪽」 · 「나머지 40종목은 내릴 쪽입니다. / 속이 빈 28개는 거의 반반입니다.」
+     · 「오를 쪽 12」「내릴 쪽 40」 · 「9월 29일 35/52」 · 「10월 1일 목요일 종가로 계산」.
+   3차 이야기(다섯 장면 · 2026-10-02 01:34 사장님 승인)는 STORY = false 로 꺼 둠 — 지우지 않음. true 로 바꾸면 3차 그대로 돈다.
    한 물건: 52종목 원 하나. 12시 방향부터 시계 방향으로 ① 분명히 오를 쪽 ② 오를 쪽이지만 거의 반반 ③ 내릴 쪽이지만 거의 반반 ④ 분명히 내릴 쪽.
    오를 쪽 빨강(#ff3b30) · 내릴 쪽 파랑(#0a84ff) · 거의 반반(day1.closeCall || day1.statisticalTie)은 속이 빈 원.
-   이야기 다섯 장면(글상자 = 소리 = 같은 말) — 새 발행본(forecastId)마다 한 번만 돈다 · 「다시 보기」로 다시 · 움직임 줄이기 설정이면 바로 끝 장면.
-   근거: 애플 HIG Motion — 목적이 있을 때만 움직이고, 움직임만으로 뜻을 전하지 않으며(글·소리로도), 사람이 끊을 수 있게, 자주 하는 조작에는 넣지 않는다.
    「내일 하루만」(2026-10-02 00:08 사장님 명령): 전망은 내일(manifest.futureDates[0]) 하나만 · 전망 요소마다 data-forecast-date. */
 import {h, won, pct, prob, korDate, weekday, finite, speak, speakScreen, stopSpeak, reducedMotion} from './util.js';
 import {state, loadCards, loadScores, prefs} from './store.js';
+
+/** 3차 이야기(장면) 스위치 — 2026-10-02 04:16 사장님 「이때로 돌아가」로 꺼 둠(지우지 않음) */
+const STORY = false;
 
 const NS = 'http://www.w3.org/2000/svg';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const longDate = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일 ${weekday(d)}요일` : '';
 const seenMemory = new Set();
-/** 소리 상태(앱 전체 한 벌) — app.js 의 🔊 단추가 바꾼다 */
+/** 소리 상태(앱 전체 한 벌) — app.js 의 소리 단추가 바꾼다 */
 export const voice = {on: false};
 const story = {run: 0, playing: false, caption: '', onVoice: null, spoken: Promise.resolve(false)};
 export function stopStory() { story.run++; story.playing = false; story.onVoice = null; }
-/** 🔊 를 켰을 때: 이야기 중이면 지금 글상자를 읽고(다음 장면부터는 장면이 소리를 기다림), 끝났으면 화면 글자를 읽는다 */
+/** 소리를 켰을 때: 이야기 중이면 지금 글상자를 읽고(다음 장면부터는 장면이 소리를 기다림), 끝났으면 화면 글자를 읽는다 */
 export function voiceTurnedOn() { if (story.onVoice) { story.onVoice(); return true; } return false; }
 
 const seen = id => { if (seenMemory.has(id)) return true; return prefs.get('storySeen', null) === id; };
@@ -51,7 +58,8 @@ export async function renderTomorrow(main, {manifest}) {
     `속이 빈 ${halves}개는 오를 확률과 내릴 확률이 거의 같습니다.`,
     `그래서 내일은 ${total}종목 중 ${upRows.length}종목이 오를 쪽입니다.`,
   ];
-  state.summary = T[4];
+  const lead = `${total}종목 중 ${upRows.length}종목이 오를 쪽입니다.`;
+  state.summary = STORY ? T[4] : `${lead} 나머지 ${downRows.length}종목은 내릴 쪽입니다. 속이 빈 ${halves}개는 거의 반반입니다.`;
 
   // ── 머리: 큰 제목 「내일」 + 내일 날짜 ──
   const head = h('header', {class: 't-head'},
@@ -65,19 +73,23 @@ export async function renderTomorrow(main, {manifest}) {
     const a = -Math.PI / 2 + i / order.length * Math.PI * 2, c = document.createElementNS(NS, 'circle');
     c.setAttribute('cx', (C + R * Math.cos(a)).toFixed(2)); c.setAttribute('cy', (C + R * Math.sin(a)).toFixed(2)); c.setAttribute('r', '7');
     c.setAttribute('class', `t-dot ${r.sel}${r.close ? ' half' : ''}`); c.setAttribute('data-forecast-date', r.date); c.setAttribute('data-code', r.code);
+    c.style.setProperty('--i', String(i));
     const t = document.createElementNS(NS, 'title'); t.textContent = `${r.name} · ${r.close ? '거의 반반' : r.sel === 'up' ? '오를 쪽' : '내릴 쪽'}`; c.append(t);
     svg.append(c); dots.push({el: c, r});
   });
   const numN = h('span', {class: 't-n'}, ''), numU = h('span', {class: 't-u'}, '');
-  const num = h('div', {class: 't-num', 'data-forecast-date': tomorrow}, numN, numU), of = h('div', {class: 't-of'}, '');
-  const dial = h('div', {class: 't-dial', role: 'img', 'aria-label': `${total}종목: 오를 쪽 ${upRows.length}종목, 내릴 쪽 ${downRows.length}종목, 그중 거의 반반 ${halves}개`}, svg, h('div', {class: 't-center'}, num, of));
+  const num = h('div', {class: 't-num', 'data-forecast-date': tomorrow}, ...(STORY ? [numN, numU] : [numN])), of = h('div', {class: 't-of'}, '');
+  const dial = h('div', {class: 't-dial', role: 'img', 'aria-label': `${total}종목: 오를 쪽 ${upRows.length}종목, 내릴 쪽 ${downRows.length}종목, 그중 거의 반반 ${halves}개`, ...(STORY ? {} : {'data-speak': lead})}, svg, h('div', {class: 't-center'}, num, of));
   const cap = h('span', {class: 't-cap-text'}, '');
   const capBox = h('div', {class: 't-cap', 'aria-live': 'polite', 'data-clarity': 'dated', 'data-speak': ''}, cap);
   const bar = h('div', {class: 't-progress', role: 'img', 'aria-label': ''}, ...T.map(() => h('i')));
   const ctl = h('button', {class: 't-ctl', id: 't-ctl', type: 'button', dataset: {mode: 'skip'}}, '건너뛰기');
   const steps = h('div', {class: 't-steps'}, bar, ctl);
+  // 2차: 원 아래 두 줄(그림 그대로)
+  const sayLines = h('p', {class: 't-say', 'data-speak': `나머지 ${downRows.length}종목은 내릴 쪽입니다. 속이 빈 ${halves}개는 거의 반반입니다.`},
+    `나머지 ${downRows.length}종목은 내릴 쪽입니다.`, h('br'), `속이 빈 ${halves}개는 거의 반반입니다.`);
 
-  // ── 아래 목록(이야기가 끝나면 올라온다) ──
+  // ── 아래 목록 ──
   const row = r => h('a', {class: 't-row', href: `#/stock/${r.code}`, 'data-forecast-date': r.date, 'data-code': r.code},
     h('div', {class: 't-left'}, h('div', {class: 't-name'}, r.name), h('div', {class: 't-note'}, r.close ? '거의 반반' : `${r.sel === 'up' ? '오를' : '내릴'} 확률 ${prob(r.p)}`)),
     h('div', {class: 't-right'}, h('div', {class: 't-price'}, won(r.p50)), h('span', {class: `t-pill ${finite(r.ret) && Math.abs(r.ret) < 0.001 ? 'flat' : (r.ret ?? 0) >= 0 ? 'up' : 'down'}`, 'data-forecast-date': r.date}, pct(r.ret))));
@@ -97,31 +109,41 @@ export async function renderTomorrow(main, {manifest}) {
   if (days.length) {
     const right = days.reduce((s, d) => s + d.right, 0), n = days.reduce((s, d) => s + d.n, 0), share = right / n;
     const line = `${n}번 가운데 ${right}번 맞혔습니다.` + (share >= 0.4 && share <= 0.6 ? ' 하루 방향은 아직 반반에 가깝습니다.' : '');
-    const bars = days.map(d => { const fill = h('i'); fill.style.width = (d.right / d.n * 100).toFixed(1) + '%'; return h('div', {class: 't-day'}, h('div', {class: 't-b'}, fill), h('p', null, `${Number(d.date.slice(5, 7))}월 ${Number(d.date.slice(8, 10))}일 `, h('b', null, String(d.right)), `/${d.n}종목`)); });
+    const bars = days.map(d => { const fill = h('i'); fill.style.width = (d.right / d.n * 100).toFixed(1) + '%'; return h('div', {class: 't-day'}, h('div', {class: 't-b'}, fill), h('p', null, `${Number(d.date.slice(5, 7))}월 ${Number(d.date.slice(8, 10))}일 `, h('b', null, String(d.right)), STORY ? `/${d.n}종목` : `/${d.n}`)); });
     scoreCard.append(h('div', {class: 't-big'}, `${Math.round(share * 100)}%`, h('small', null, '방향을 맞힌 몫')), h('div', {class: 't-days'}, ...bars), h('p', {class: 't-honest', 'data-speak': ''}, line));
   } else scoreCard.append(h('p', {class: 't-honest', 'data-speak': ''}, '아직 채점이 끝난 날이 없습니다.'));
 
-  const after = h('div', {class: 't-after hide', id: 't-after'},
-    h('h2', {class: 't-h2', 'data-speak': ''}, `오를 쪽 ${upRows.length}종목`), gUp,
-    h('h2', {class: 't-h2', 'data-speak': ''}, `내릴 쪽 ${downRows.length}종목`), gDown,
+  const after = h('div', {class: STORY ? 't-after hide' : 't-after', id: 't-after'},
+    h('h2', {class: 't-h2', 'data-speak': ''}, STORY ? `오를 쪽 ${upRows.length}종목` : `오를 쪽 ${upRows.length}`), gUp,
+    h('h2', {class: 't-h2', 'data-speak': ''}, STORY ? `내릴 쪽 ${downRows.length}종목` : `내릴 쪽 ${downRows.length}`), gDown,
     h('h2', {class: 't-h2'}, '지난 3번의 성적'), scoreCard,
-    h('p', {class: 't-foot'}, `${korDate(manifest.actualAsOf)} 종가로 계산`),
-    h('p', {class: 't-links'}, h('a', {href: '#/records'}, '기록'), h('a', {href: '#/status'}, '자료 상태')));
+    h('p', {class: 't-foot'}, STORY ? `${korDate(manifest.actualAsOf)} 종가로 계산` : `${longDate(manifest.actualAsOf)} 종가로 계산`),
+    ...(STORY ? [h('p', {class: 't-links'}, h('a', {href: '#/records'}, '기록'), h('a', {href: '#/status'}, '자료 상태'))] : []));
+
+  // ── 가운데 숫자 ──
+  const setNum = (v, unit, color, label) => { numN.textContent = String(v); numU.textContent = unit; num.dataset.tone = color; of.textContent = label; };
+  const col = d => d.r.sel === 'up' ? 'var(--t-up)' : 'var(--t-down)';
+
+  if (!STORY) {
+    // ── 2차: 처음부터 다 보임 · 점만 톡톡(CSS) · 속 찬 점 r 7.4 · 속 빈 점 r 6.2 + 선 2.6(2차 시안 그대로) ──
+    for (const d of dots) { d.el.setAttribute('r', d.r.close ? '6.2' : '7.4'); const s = d.el.style; s.fill = d.r.close ? 'transparent' : col(d); s.stroke = d.r.close ? col(d) : 'none'; }
+    setNum(upRows.length, '', 'ink', `${total}종목 중 오를 쪽`);
+    main.replaceChildren(h('section', {class: 't-page', 'data-story': 'off'}, head, dial, sayLines, after));
+    story.run++; story.playing = false; story.onVoice = null;
+    return;
+  }
 
   main.replaceChildren(h('section', {class: 't-page', 'data-story': 'playing'}, head, dial, capBox, steps, after));
   const page = main.firstElementChild;
 
   // ── 점 모양 ──
   const look = (d, {fill = 'transparent', stroke, opacity = 1, scale = 1}) => { const s = d.el.style; s.fill = fill; s.stroke = stroke; s.opacity = String(opacity); s.transform = `scale(${scale})`; };
-  const col = d => d.r.sel === 'up' ? 'var(--t-up)' : 'var(--t-down)';
   const idle = d => look(d, {stroke: 'var(--t-idle)', opacity: 0, scale: 0.2});
   const shownDot = d => look(d, {stroke: 'var(--t-idle)'});
   const solid = d => look(d, {fill: col(d), stroke: col(d)});
   const ring = d => look(d, {stroke: col(d)});
   const final = d => (d.r.close ? ring : solid)(d);
 
-  // ── 가운데 숫자 ──
-  const setNum = (v, unit, color, label) => { numN.textContent = String(v); numU.textContent = unit; num.dataset.tone = color; of.textContent = label; };
   const count = async (to, unit, color, label, ms, me) => {
     setNum(0, unit, color, label);
     const t0 = performance.now();
@@ -133,7 +155,7 @@ export async function renderTomorrow(main, {manifest}) {
   const showCaption = async (text, fade) => { story.caption = text; if (fade) { capBox.classList.add('out'); await sleep(260); } cap.textContent = text; capBox.dataset.speak = text; capBox.classList.remove('out'); };
 
   const ups = dots.filter(x => x.r.sel === 'up'), downs = dots.filter(x => x.r.sel === 'down'), halfDots = dots.filter(x => x.r.close);
-  /** 지금 장면의 말이 끝날 때까지(말했으면 +0.7초) — 도중에 🔊 를 켜서 말이 바뀌면 바뀐 말을 기다린다 */
+  /** 지금 장면의 말이 끝날 때까지(말했으면 +0.7초) — 도중에 소리를 켜서 말이 바뀌면 바뀐 말을 기다린다 */
   const speechDone = async () => { for (;;) { const p = story.spoken, talked = await p; if (p === story.spoken) { if (talked) await sleep(700); return; } } };
   const later = (me, ms, fn) => setTimeout(() => { if (me === story.run) fn(); }, ms);
   const scenes = [
@@ -172,7 +194,7 @@ export async function renderTomorrow(main, {manifest}) {
     }
     if (me === story.run) finish();
   };
-  // 장면 중에 🔊 를 켜면 지금 글상자를 읽고, 이 장면도 그 말이 끝날 때까지(+0.7초) 기다린다
+  // 장면 중에 소리를 켜면 지금 글상자를 읽고, 이 장면도 그 말이 끝날 때까지(+0.7초) 기다린다
   story.onVoice = () => { if (story.playing) { if (story.caption) story.spoken = say(story.caption); } else speakScreen(T[4]); };
   ctl.addEventListener('click', () => { if (ctl.dataset.mode === 'skip') { story.run++; stopSpeak(); finish(); } else play(); });
 

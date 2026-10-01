@@ -1093,3 +1093,15 @@ body[data-view="forecast"] .main { max-width: 560px; padding: 0 16px 120px; }
 .t-foot { text-align: center; font-size: 0.9375rem; color: var(--t-sub); margin-top: 22px; }
 .t-links { display: flex; justify-content: center; gap: 22px; margin-top: 2px; font-size: 0.9375rem; }
 @media (prefers-reduced-motion: reduce) { .t-dot, .t-num, .t-cap .t-cap-text, .t-after, .t-progress i { transition: none !important; } }
+
+/* ===================== 2차로 되돌림 (2026-10-02 04:16 사장님 「이때로 돌아가」 · 2차 화면 그림) =====================
+   이야기 없이 원·두 줄·목록·성적이 처음부터 다 보인다. 점만 톡톡 나타난다(점마다 14ms · 0.5초 · 움직임 줄이기면 없음).
+   3차 이야기 칸(.t-cap · .t-steps · .t-after.hide)은 꺼 둔 이야기 스위치(view-tomorrow.js STORY)에서만 쓴다 — 지우지 않음. */
+.t-page[data-story="off"] .t-dial { margin-top: 26px; }
+.t-page[data-story="off"] .t-dot { transition: none; stroke-width: 2.6; }
+.t-say { text-align: center; margin: 22px 4px 0; font-size: 1.1875rem; line-height: 1.55; color: var(--t-sub); }
+.t-page[data-story="off"] .t-h2 { margin-top: 34px; }
+@media (prefers-reduced-motion: no-preference) {
+  .t-page[data-story="off"] .t-dot { animation: t-pop .5s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i) * 14ms); }
+  @keyframes t-pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+}

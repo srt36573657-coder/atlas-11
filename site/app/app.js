@@ -68,6 +68,8 @@ async function route() {
     // 「내일」 밖의 화면: 시장 띠(코스피·코스닥·기준 시각)는 본문 맨 위에 그대로 · 성적·자료 상태에는 진화로 가는 글 링크
     if (r.id !== 'forecast') main.prepend(marketStrip(app.manifest));
     if (r.id === 'scores' || r.id === 'status') main.append(h('p', {class: 'evo-link'}, h('a', {href: '#/evolution'}, '진화 기록 보기 ›')));
+    // 2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면): 「내일」 아래에 있던 「기록 · 자료 상태」 링크를 성적 화면 아래로 옮김(가는 길은 그대로)
+    if (r.id === 'scores') main.append(h('p', {class: 't-links'}, h('a', {href: '#/records'}, '기록'), h('a', {href: '#/status'}, '자료 상태')));
   }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
   window.scrollTo({top: 0});
