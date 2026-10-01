@@ -1,32 +1,24 @@
 /**
  * ATLAS 4시간 엔진 0판 · 판 짓기·봉인 (atlas4h-board-1 · atlas4h/spec/board.md 그대로)
  *
- *   buildInputs(input, {asof, at, history})  input.json 에서 출발일 이하 자료만 골라 판의 inputs 를 만든다
- *   engine(inputs, seed)                     사양 checks.mjs 의 엔진 꼴 — 같은 입력·씨앗이면 같은 결과(동기)
- *   buildBoard({...})                        판 하나 (봉인 지문을 넣기 전)
- *   sealRecord(board, commit)                봉인 기록 {boardId, sealedAt, sha256, commit}
+ *   buildInputs(input, {asof, at, histories})  출발일(asof) 이하 자료만 골라 판의 inputs 를 만든다 — 변수(지금 값) + 상수(맞춘 상태)
+ *   engine(inputs, seed)                       사양 checks.mjs 의 엔진 꼴 — 상수 + 지금 변수만으로 판을 낸다(동기 · 순수 · 같은 입력이면 같은 결과)
+ *   buildBoard({...})                          판 하나 (봉인 지문을 넣기 전)
+ *   sealRecord(board, commit)                  봉인 기록 {boardId, sealedAt, sha256, commit}
  *
  * 가운데 = 무판(출발값 그대로) · 폭 = HAR(밑값 3층) · 분포 = 걸러낸 지난 기록(좌우 따로).
- * 코스피 지난 자료가 입력에 없으면 코스피 판은 null, 변수 kospi 는 「없음」(값 null). 짐작해 만들지 않는다.
+ * 판은 지난 등락 목록을 싣지 않는다(작은 판): 봉인 때 constants.mjs 가 잰 상수만 싣는다(판 하나 150 KB 아래 목표).
+ * 코스피 지난 자료(atlas4h/data/history/kospi.json)가 없으면 코스피 판은 null, 변수 kospi 는 「없음」(값 null). 짐작해 만들지 않는다.
  */
 import {canonicalJson, boardSha256, sha256} from '../spec/checks.mjs';
-import {harModel, HAR_WINDOW, VAR_FLOOR, EMBARGO} from './har.mjs';
-import {forecastBlock, FLAT_BAND, SCENARIO_K} from './dist.mjs';
+import {measureSeries, validState, blockFromConstants, methodOf, HISTORY_DAYS} from './constants.mjs';
+import {isoKst, nextSession, KST} from './clock.mjs';
+import {changesUpTo, rowOf, closeObservedAt} from './history.mjs';
 
+export {isoKst, nextSession, HISTORY_DAYS};
 export const ENGINE_VERSION = 'atlas4h-engine-0';
-export const HISTORY_DAYS = HAR_WINDOW + 22 + EMBARGO + 1; // 판에 싣는 지난 등락 수 (맞춤 창 + 달 평균 + 엠바고)
 export const STRUCTURES = ['A1', 'A2', 'B2', 'C3', 'D6', 'E5', 'F1'];
-const KST = '+09:00';
-
-export function isoKst(ms) {
-  const d = new Date(ms + 9 * 3600e3);
-  return `${d.toISOString().slice(0, 19)}${KST}`;
-}
-
-/** 거래일 목록에서 date 다음 거래일 */
-export function nextSession(sessions, date) {
-  return sessions.find(s => s > date) ?? null;
-}
+export const STALE_HOURS = 4;
 
 /** 종가 행의 관측 시각 — 원문에 있으면 그것, 없으면 그날 15:30 KST(정규장 종가가 정해지는 때) */
 function observedAtOf(row) {
@@ -34,29 +26,73 @@ function observedAtOf(row) {
   return `${row.date}T15:30:00${KST}`;
 }
 
+/** 종목 하루 등락(%) 목록 — 출발일 이하 종가만 · 0판과 같은 셈 (오늘 ÷ 어제 − 1) × 100 */
+export function stockChanges(rows) {
+  const out = [];
+  for (let i = 1; i < rows.length; i++) out.push((rows[i].close / rows[i - 1].close - 1) * 100);
+  return out;
+}
+
+/**
+ * 코스피 변수 — 지난 자료 파일의 출발일 줄. 줄이 없거나 값이 없으면 「없음」/「확인 중」(값 null).
+ * 봉인보다 4시간 넘게 앞선 값(장 앞 판: 전날 15:30 종가)은 표시 「옛값」·「장 닫힘」을 붙인다(자료 약속 13번).
+ * 받은 때(fetchedAt)가 봉인 뒤면 null (재현 판 — 자료는 나중에 받았다).
+ */
+function kospiVariable(h, asof, at) {
+  const none = note => ({id: 'kospi', value: null, status: '없음', observedAt: null, fetchedAt: null, sources: [], note});
+  if (!h || h.none) return none(h?.why ?? '코스피 지난 자료 없음 — atlas4h/data/history/kospi.json 없음 (atlas4h-collect 전)');
+  const row = rowOf(h.series, asof);
+  if (!row) return none(`코스피 ${asof} 줄 없음`);
+  const observedAt = closeObservedAt('kospi', asof);
+  const docFetched = typeof h.doc.fetchedAt === 'string' ? h.doc.fetchedAt : null;
+  const fetchedAt = docFetched && Date.parse(docFetched) <= Date.parse(at) ? isoKst(Date.parse(docFetched)) : null;
+  const srcMeta = new Map((h.doc.sources ?? []).map(s => [s.name, s]));
+  const sources = Object.entries(row.sources ?? {}).map(([name, value]) => ({
+    name, url: srcMeta.get(name)?.url ?? null, value, observedAt,
+    ...(fetchedAt ? {fetchedAt} : {}),
+    ...(srcMeta.get(name)?.rawSha256 ? {rawSha256: srcMeta.get(name).rawSha256} : {}),
+  }));
+  const marks = [];
+  if (Date.parse(at) - Date.parse(observedAt) > STALE_HOURS * 3600e3) marks.push('옛값', '장 닫힘');
+  const usable = typeof row.value === 'number' && Number.isFinite(row.value) && row.value > 0;
+  if (!usable) {
+    return {id: 'kospi', value: null, status: row.status === '확인 중' ? '확인 중' : '없음', marks: row.status === '확인 중' ? ['확인 중', ...marks] : marks,
+      observedAt, fetchedAt, sources, note: `코스피 ${asof} 값 없음 (${row.status ?? '?'})`};
+  }
+  const ch = changesUpTo(h.series, asof);
+  const last = ch.at(-1);
+  return {
+    id: 'kospi', value: row.value, observedAt, fetchedAt,
+    status: row.status === 'ok' ? 'ok' : '한 출처', marks, sources,
+    ...(last && last.date === asof ? {prevClose: last.prev, lastChangePct: last.changePct} : {}),
+  };
+}
+
 /**
  * 판의 inputs — 출발일(asof) 이하 자료만.
- *   input   public/data/input.json 덩어리
- *   at      판을 만드는 때(ISO) — fetchedAt 이 이보다 늦으면 안 되므로 확인용
+ *   input      public/data/input.json 덩어리 (52종목 종가)
+ *   at         봉인 시각(ISO) — fetchedAt 이 이보다 늦으면 null · 상수의 measuredAt = 이 시각
+ *   histories  loadHistories() 결과 {kospi, …} (없으면 코스피 「없음」)
  */
-export function buildInputs(input, {asof, at, historyDays = HISTORY_DAYS}) {
+export function buildInputs(input, {asof, at, histories = {}}) {
   const variables = [];
-  // 코스피 — 이 저장소에는 아직 지난 자료가 없다(1단계 collect 전). 「없음」, 값 null, 0 으로 채우지 않는다.
-  variables.push({id: 'kospi', value: null, status: '없음', observedAt: null, fetchedAt: null, sources: [],
-    note: '코스피 지난 자료 없음 — public/data/input.json 에 코스피 없음 (1단계 atlas4h-collect 전)'});
+  const values = {kospi: null, stocks: {}};
+  const kv = kospiVariable(histories.kospi, asof, at);
+  variables.push(kv);
+  if (kv.value !== null && histories.kospi && !histories.kospi.none) {
+    values.kospi = measureSeries(changesUpTo(histories.kospi.series, asof).map(c => c.changePct));
+  }
   for (const a of input.assets) {
     const rows = a.prices.filter(p => p.date <= asof);
     if (rows.length < 2 || rows.at(-1).date !== asof) {
       variables.push({id: `stock-price:${a.code}`, value: null, status: '없음', observedAt: null, fetchedAt: null, sources: [],
         note: `${asof} 종가 없음`});
+      values.stocks[a.code] = null;
       continue;
     }
     const last = rows.at(-1);
     const prev = rows.at(-2);
-    const hist = [];
-    for (let i = Math.max(1, rows.length - historyDays); i < rows.length; i++) {
-      hist.push({date: rows[i].date, changePct: (rows[i].close / rows[i - 1].close - 1) * 100});
-    }
+    const changes = stockChanges(rows);
     const observedAt = observedAtOf(last);
     const retrieved = typeof last.observedAt === 'string' ? observedAt : isoKst(Date.parse(a.priceSource.retrievedAt));
     const fetchedAt = Date.parse(retrieved) > Date.parse(at) ? null : retrieved;
@@ -76,56 +112,48 @@ export function buildInputs(input, {asof, at, historyDays = HISTORY_DAYS}) {
       status: '한 출처', // input.json quality = single_source
       sources: [src],
       prevClose: prev.close,
-      history: hist,
+      lastChangePct: changes.at(-1),
     });
+    values.stocks[a.code] = measureSeries(changes);
   }
-  const method = {
-    engine: ENGINE_VERSION,
-    center: '무판 (출발값 그대로)',
-    width: {model: 'HAR 하루 자료 · r² · 어제·5일·22일', window: HAR_WINDOW, floor: VAR_FLOOR, embargo: EMBARGO},
-    dist: {model: '걸러낸 지난 기록 · 좌우 따로', quantiles: 19, flatBand: FLAT_BAND, scenarioK: SCENARIO_K},
-  };
+  const method = methodOf(ENGINE_VERSION);
   return {
     variables,
-    constants: {version: `c-${asof.replaceAll('-', '')}-har0`, sha256: sha256(canonicalJson(method)), measuredAt: at, method},
+    constants: {
+      version: `c-${asof.replaceAll('-', '')}-har0`,
+      sha256: sha256(canonicalJson({method, values})),
+      measuredAt: at,
+      method,
+      values,
+    },
   };
-}
-
-/** 한 변수(지난 등락이 있는 것)의 판 덩어리 — 줄이 모자라면 null */
-function blockFor(v, label) {
-  const hist = Array.isArray(v.history) ? v.history : [];
-  if (!(typeof v.value === 'number' && v.value > 0) || hist.length < 30) return null;
-  const r = hist.map(h => Math.log1p(h.changePct / 100));
-  const m = harModel(r);
-  if (!m) return null;
-  const b = forecastBlock(v.value, m.sigmaNext, m.z, {label});
-  b.har = {beta: m.beta.map(x => Number(x.toPrecision(10))), rows: m.rows};
-  return {block: b, model: m};
 }
 
 /**
- * 엔진 함수 (사양 checks.mjs 꼴) — 동기 · 같은 입력·씨앗이면 같은 결과.
- * 씨앗은 받아 두지만 0판은 난수를 쓰지 않는다(분포를 표본에서 바로 센다).
+ * 엔진 함수 (사양 checks.mjs 꼴) — 동기 · 순수 · 같은 입력·씨앗이면 같은 결과.
+ * 상수(inputs.constants.values) + 지금 변수(출발값)만 쓴다. 지난 등락 목록은 보지 않는다.
+ * 씨앗은 받아 두지만 0판은 난수를 쓰지 않는다. 상수가 없거나 꼴이 다르면 그 대상은 「없음」(멈추지 않음).
  */
 export function engine(inputs, seed) {
   const vars = Array.isArray(inputs?.variables) ? inputs.variables : [];
+  const values = inputs?.constants?.values && typeof inputs.constants.values === 'object' ? inputs.constants.values : {};
   const outVars = vars.map(v => ({id: v.id, value: v.value ?? null, status: v.status ?? '없음', marks: Array.isArray(v.marks) ? v.marks : []}));
+  const anchorOk = v => typeof v?.value === 'number' && Number.isFinite(v.value) && v.value > 0;
   let kospi = null;
-  const kv = vars.find(v => v.id === 'kospi');
-  if (kv) {
-    const k = blockFor(kv, 'kospi');
-    if (k) kospi = {anchor: {value: kv.value, asOf: kv.observedAt ?? null}, ...k.block};
+  const kv = vars.find(v => v?.id === 'kospi');
+  if (kv && anchorOk(kv) && validState(values.kospi)) {
+    kospi = {anchor: {value: kv.value, asOf: kv.observedAt ?? null}, ...blockFromConstants(kv.value, values.kospi, 'kospi')};
   }
   const stocks = [];
   for (const v of vars) {
-    if (typeof v.id !== 'string' || !v.id.startsWith('stock-price:')) continue;
+    if (typeof v?.id !== 'string' || !v.id.startsWith('stock-price:')) continue;
     const code = v.id.slice('stock-price:'.length);
-    const k = blockFor(v, 'price');
-    if (!k) {
+    const c = values.stocks?.[code];
+    if (!anchorOk(v) || !validState(c)) {
       stocks.push({code, center: null, quantiles: null, status: ['없음']});
       continue;
     }
-    stocks.push({code, ...k.block, status: [v.status ?? '없음']});
+    stocks.push({code, ...blockFromConstants(v.value, c, 'price'), status: [v.status ?? '없음']});
   }
   return {
     createdAt: inputs?.now ?? null,
@@ -144,11 +172,16 @@ export function engine(inputs, seed) {
 /** 두 길: 가운데(출발값) = ① 변수 값 그대로 ② 전날 종가 × (1 + 마지막 등락) — 다르면 「확인 중」 */
 export function twoPathOf(inputs, out) {
   const rows = [];
+  const kv = inputs.variables.find(x => x.id === 'kospi');
+  if (out.kospi && Number.isFinite(kv?.prevClose) && Number.isFinite(kv?.lastChangePct)) {
+    const pathB = kv.prevClose * (1 + kv.lastChangePct / 100);
+    const tolerance = 0.05;
+    rows.push({what: '코스피 가운데 값', pathA: out.kospi.center, pathB: Math.round(pathB * 1e6) / 1e6, tolerance, agree: Math.abs(out.kospi.center - pathB) <= tolerance});
+  }
   for (const s of out.stocks) {
     if (s.center === null) continue;
     const v = inputs.variables.find(x => x.id === `stock-price:${s.code}`);
-    const last = v.history.at(-1);
-    const pathB = v.prevClose * (1 + last.changePct / 100);
+    const pathB = v.prevClose * (1 + v.lastChangePct / 100);
     const tolerance = 0.5;
     rows.push({what: `${s.code} 가운데 값`, pathA: s.center, pathB: Math.round(pathB * 1e6) / 1e6, tolerance, agree: Math.abs(s.center - pathB) <= tolerance});
   }
@@ -158,8 +191,10 @@ export function twoPathOf(inputs, out) {
 /**
  * 판 하나. 봉인 지문은 sealRecord 가 이 판 그대로를 정렬 직렬화해 센다.
  *   slot "16" · kind "무거운"/"가벼운" · createdAt·sealedAt ISO(KST) · target 목표 거래일
+ *   files       쓴 자료 파일(저장소 기준 경로) · fileHashes {파일: 내용 sha256} — dataVersion.sha256 = 그 지문들의 정렬 직렬화 sha256
+ *   retro       재현 판이면 이름이 r4h- 로 시작 (board.md · 사양 BOARD_ID_RE)
  */
-export function buildBoard({inputs, seed, slot, kind, createdAt, sealedAt, target, commit, dirty, files, retro = false, slotDate = String(sealedAt).slice(0, 10)}) {
+export function buildBoard({inputs, seed, slot, kind, createdAt, sealedAt, target, commit, dirty, files, fileHashes = null, retro = false, slotDate = String(sealedAt).slice(0, 10)}) {
   const out = engine(inputs, seed);
   const twoPath = twoPathOf(inputs, out);
   const disagree = twoPath.filter(t => !t.agree).length;
@@ -175,16 +210,20 @@ export function buildBoard({inputs, seed, slot, kind, createdAt, sealedAt, targe
     target: {date: target, what: '봉인 뒤 첫 종가'},
     status: '봉인',
     code: {commit, dirty},
-    dataVersion: {sha256: sha256(canonicalJson(inputs)), files},
+    dataVersion: fileHashes
+      ? {sha256: sha256(canonicalJson(Object.fromEntries(files.map(f => [f, fileHashes[f] ?? null])))), files, fileSha256: Object.fromEntries(files.map(f => [f, fileHashes[f] ?? null]))}
+      : {sha256: sha256(canonicalJson(inputs)), files, note: '파일 지문을 못 받아 inputs 의 정렬 직렬화 sha256 을 적음'},
     seed,
     inputs,
     engines: [
-      {id: 'center-nochange', role: '가운데', weight: 1, inputs: ['stock-price'], sawPreviousBoard: false},
-      {id: 'width-har', role: '폭', weight: 1, inputs: ['stock-price'], sawPreviousBoard: false},
+      {id: 'center-nochange', role: '가운데', weight: 1, inputs: out.kospi ? ['kospi', 'stock-price'] : ['stock-price'], sawPreviousBoard: false},
+      {id: 'width-har', role: '폭', weight: 1, inputs: out.kospi ? ['kospi', 'stock-price'] : ['stock-price'], sawPreviousBoard: false},
     ],
     kospi: out.kospi,
     stocks: out.stocks,
-    reconciliation: {method: '없음', nodes: [], maxGap: null, why: '코스피 판이 없어 위·아래 마디를 맞출 수 없음 (MinT 는 코스피 자료가 생긴 뒤)'},
+    reconciliation: out.kospi
+      ? {method: '없음', nodes: [], maxGap: null, why: 'MinT 맞추기는 5단계 — 0판은 코스피·종목을 따로 낸다'}
+      : {method: '없음', nodes: [], maxGap: null, why: '코스피 판이 없어 위·아래 마디를 맞출 수 없음 (MinT 는 코스피 자료가 생긴 뒤)'},
     twoPath,
     events: [],
     llm: {used: false},
@@ -197,8 +236,8 @@ export function buildBoard({inputs, seed, slot, kind, createdAt, sealedAt, targe
     ],
   };
   if (retro) body.retro = true;
-  // 판 이름 = 4h-<판 날짜>-<시각>-<내용 지문 앞 8자> · 판 날짜 = 그 시각 판의 날짜(출발일)
-  const id = `4h-${retro ? 'retro-' : ''}${slotDate.replaceAll('-', '')}-${slot}-${sha256(canonicalJson(body)).slice(0, 8)}`;
+  // 판 이름 = 4h-<판 날짜>-<시각>-<내용 지문 앞 8자> (재현 판은 r4h-) · 판 날짜 = 그 시각 판의 한국 날짜
+  const id = `${retro ? 'r4h' : '4h'}-${slotDate.replaceAll('-', '')}-${slot}-${sha256(canonicalJson(body)).slice(0, 8)}`;
   return {id, ...body};
 }
 

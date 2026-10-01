@@ -12,7 +12,7 @@ import {forecastBlock, QKEYS, TAUS, sidedZ} from '../dist.mjs';
 import {buildInputs, buildBoard, engine, sealRecord} from '../board.mjs';
 import {makeBoard} from '../run.mjs';
 import {canonicalJson, boardSha256, FORBIDDEN, CHECKS} from '../../spec/checks.mjs';
-import {crpsFromQuantiles, brier3, outcomeOf, scoreBoard, noChangeBaseline} from '../../score/score.mjs';
+import {crpsFromQuantiles, brier3, outcomeOf, scoreBoard, noChangeBaseline, stockChangesUpTo} from '../../score/score.mjs';
 import {crpsFromSamples, intervalScore} from '../../spec/stats.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -188,6 +188,7 @@ test('채점: 16시 봉인 판은 다음 종가로 채점 · 무판은 지난 25
   const at = '2026-09-30T16:00:00+09:00';
   const inputs = buildInputs(INPUT, {asof: '2026-09-30', at});
   const board = buildBoard({inputs, seed: 2026093016, slot: '16', kind: '무거운', createdAt: at, sealedAt: at, target: '2026-10-01', commit: 'abc1234', dirty: false, files: ['public/data/input.json'], retro: true});
+  assert.match(board.id, /^r4h-20260930-16-[0-9a-f]{8}$/);
   const {lines} = scoreBoard(board, INPUT, {scoredAt: AT});
   assert.equal(lines.length, 52);
   const l = lines[0];
@@ -195,7 +196,7 @@ test('채점: 16시 봉인 판은 다음 종가로 채점 · 무판은 지난 25
   assert.ok(Number.isFinite(l.interval.score) && Number.isFinite(l.crps));
   assert.equal(l.baselines.find(b => b.id === '단순 전이식').note, '없음');
   const v = board.inputs.variables.find(x => x.id === `stock-price:${l.code}`);
-  const nc = noChangeBaseline(v.value, v.history);
+  const nc = noChangeBaseline(v.value, stockChangesUpTo(INPUT, l.code, '2026-09-30'));
   assert.equal(nc.q19.length, 19);
   assert.ok(Math.abs(l.baselines[0].interval - intervalScore(nc.p10, nc.p90, l.actual.value, 0.2)) < 1e-5);
 });

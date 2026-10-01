@@ -2,8 +2,10 @@
 /**
  * ATLAS 4시간 엔진 0판 · 판 하나를 짓고 봉인해 장부에 덧붙인다 (덧붙이기만 · 고치지 않음)
  *
- *   node atlas4h/engine/run.mjs --slot 16 --asof 2026-10-01 [--ledger DIR] [--input FILE] [--seed N] [--dry]
+ *   node atlas4h/engine/run.mjs --slot 16 --asof 2026-10-01 [--ledger DIR] [--input FILE] [--history DIR] [--seed N] [--dry]
  *
+ *   --asof    판 날짜(그 시각 판의 한국 날짜). 16·20시 판은 그날 종가가 출발값, 00·04·08시 판은 앞 거래일 종가가 출발값(clock.mjs slotPlan)
+ *   --history 지난 자료 폴더(기본 atlas4h/data/history) — kospi.json 이 있으면 코스피 판도 낸다
  *   --ledger  장부 폴더. 안 주면 임시 폴더에 쓴다(진짜 atlas4h/ledger/ 에는 이 단계에서 쓰지 않는다).
  *   --dry     짓기만 하고 쓰지 않는다.
  * 쓰는 곳: DIR/boards/<봉인 날짜>.jsonl · DIR/seals/<봉인 날짜>.jsonl
@@ -13,12 +15,14 @@ import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {buildInputs, buildBoard, sealRecord, nextSession, isoKst} from './board.mjs';
+import {buildInputs, buildBoard, sealRecord, isoKst} from './board.mjs';
+import {slotPlan} from './clock.mjs';
+import {loadHistories, fileSha256, HISTORY_DIR} from './history.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 export function parseArgs(argv) {
-  const o = {slot: '16', asof: null, ledger: null, input: path.join(ROOT, 'public/data/input.json'), seed: null, dry: false};
+  const o = {slot: '16', asof: null, ledger: null, input: path.join(ROOT, 'public/data/input.json'), history: path.join(ROOT, HISTORY_DIR), seed: null, dry: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--dry') o.dry = true;
@@ -26,6 +30,7 @@ export function parseArgs(argv) {
     else if (a === '--asof') o.asof = argv[++i];
     else if (a === '--ledger') o.ledger = argv[++i];
     else if (a === '--input') o.input = argv[++i];
+    else if (a === '--history') o.history = argv[++i];
     else if (a === '--seed') o.seed = Number(argv[++i]);
     else throw new Error(`모르는 칸: ${a}`);
   }
@@ -44,18 +49,20 @@ export function gitState(root = ROOT) {
   }
 }
 
-/** 판 하나 짓기 (쓰지 않음) */
-export function makeBoard({input, slot, asof, at = isoKst(Date.now()), seed = null, git = gitState(), file = 'public/data/input.json'}) {
+/** 판 하나 짓기 (쓰지 않음) — asof = 판 날짜(한국) · 출발일·목표일은 slotPlan */
+export function makeBoard({input, slot, asof, at = isoKst(Date.now()), seed = null, git = gitState(), file = 'public/data/input.json', histories = {}, fileHashes = null}) {
   const sessions = input.calendar.sessions;
-  if (!sessions.includes(asof)) throw new Error(`${asof} 는 거래일이 아니다 (input.json calendar)`);
-  const target = nextSession(sessions, asof);
-  const inputs = buildInputs(input, {asof, at});
+  const plan = slotPlan(sessions, slot, asof);
+  if (!plan.anchorDate) throw new Error(`${asof} ${slot}시 판의 출발일(거래일)이 없다 (input.json calendar)`);
+  if (!plan.target) throw new Error(`${asof} ${slot}시 판의 목표 거래일이 없다 (input.json calendar)`);
+  const inputs = buildInputs(input, {asof: plan.anchorDate, at, histories});
   const s = Number.isInteger(seed) ? seed : Number(asof.replaceAll('-', '')) * 100 + Number(slot);
+  const files = [file, ...(histories.kospi && !histories.kospi.none && inputs.variables[0].value !== null ? [histories.kospi.file] : [])];
   const board = buildBoard({
     inputs, seed: s, slot, kind: ['08', '16'].includes(slot) ? '무거운' : '가벼운',
-    createdAt: at, sealedAt: at, target, commit: git.commit, dirty: git.dirty, files: [file], slotDate: asof,
+    createdAt: at, sealedAt: at, target: plan.target, commit: git.commit, dirty: git.dirty, files, fileHashes, slotDate: asof,
   });
-  return {board, seal: sealRecord(board, git.commit)};
+  return {board, seal: sealRecord(board, git.commit), plan};
 }
 
 function appendLine(file, obj) {
@@ -65,8 +72,12 @@ function appendLine(file, obj) {
 
 export function main(argv = process.argv.slice(2)) {
   const o = parseArgs(argv);
-  const input = JSON.parse(fs.readFileSync(o.input, 'utf8'));
-  const {board, seal} = makeBoard({input, slot: o.slot, asof: o.asof, seed: Number.isInteger(o.seed) ? o.seed : null});
+  const buf = fs.readFileSync(o.input);
+  const input = JSON.parse(buf.toString('utf8'));
+  const histories = loadHistories(o.history, ['kospi'], ROOT);
+  const file = path.relative(ROOT, path.resolve(o.input)).split(path.sep).join('/');
+  const fileHashes = {[file]: fileSha256(buf), ...(histories.kospi.none ? {} : {[histories.kospi.file]: histories.kospi.sha256})};
+  const {board, seal} = makeBoard({input, slot: o.slot, asof: o.asof, seed: Number.isInteger(o.seed) ? o.seed : null, histories, file, fileHashes});
   const day = board.sealedAt.slice(0, 10);
   const ok = board.stocks.filter(s => s.center !== null).length;
   const say = `판 ${board.id} · 목표 ${board.target.date} · 종목 ${ok}/${board.stocks.length} · 코스피 ${board.kospi ? '있음' : '없음'} · 지문 ${seal.sha256.slice(0, 12)}`;

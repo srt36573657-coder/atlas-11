@@ -58,31 +58,58 @@ function share(xs, pred) {
 }
 
 /**
+ * 잔차 분포의 「맞춘 상태」 — 판에 지난 기록 대신 싣는 상수 (constants.mjs 가 봉인 때 잰다)
+ *   zq     19개 τ 의 좌우 따로 센 z 분위수 sz.q(τ) (가운데 0)
+ *   n      잔차 수 · up·down 방향 문턱(±0.10%) 밖 개수 · scUp·scDown 시나리오 문턱(±k) 밖 개수
+ *   tails  좌우 따로 센 아래·위 잔차 수
+ * [판단] 방향·시나리오 문턱(ln 1.001 · ±0.5σ̂)은 σ̂ 에 달려 있고 σ̂ 도 상수(HAR 계수 + 밑값 3층)에서 나오므로
+ *        문턱 밖 개수를 봉인 때 세어 싣는다 — 잔차 표본 500개를 판에 싣지 않고도 forecastBlock 과 한 자리도 같은 확률을 낸다.
+ */
+export function distState(sigma, z) {
+  const sz = sidedZ(z);
+  const zq = TAUS.map(tau => sz.q(tau));
+  const rets = sz.centered.map(x => sigma * x); // 내일 로그 수익률 표본
+  const lnUp = Math.log1p(FLAT_BAND);
+  const lnDown = Math.log1p(-FLAT_BAND);
+  const k = SCENARIO_K * sigma;
+  return {
+    zq,
+    n: rets.length,
+    up: share(rets, x => x > lnUp).c,
+    down: share(rets, x => x < lnDown).c,
+    scUp: share(rets, x => x > k).c,
+    scDown: share(rets, x => x < -k).c,
+    tails: {down: sz.down, up: sz.up},
+  };
+}
+
+/**
  * 한 대상(종목·코스피)의 판 덩어리
  *   anchor   출발값(마지막 종가)
  *   sigma    σ̂(t+1) (하루 로그 수익률 표준편차)
  *   z        표준화 잔차
  */
 export function forecastBlock(anchor, sigma, z, {label = '값'} = {}) {
-  const sz = sidedZ(z);
+  return blockFromState(anchor, sigma, distState(sigma, z), {label});
+}
+
+/**
+ * 맞춘 상태(distState) + 출발값 + σ̂ → 판 덩어리. 지난 기록 없이 돈다(엔진 함수가 쓰는 길).
+ * 시나리오 경계(코스피·종목 같음): 위 = [출발값·e^k, max(p95, 출발값·e^k)] · 가운데 = [출발값·e^−k, 출발값·e^k] ·
+ *   아래 = [min(p05, 출발값·e^−k), 출발값·e^−k] · k = 0.5·σ̂ · 확률은 같은 잔차 분포에서 ±k 밖 몫 (합 = 1)
+ */
+export function blockFromState(anchor, sigma, st, {label = '값'} = {}) {
   const quantiles = {};
   TAUS.forEach((tau, i) => {
-    quantiles[QKEYS[i]] = round(anchor * Math.exp(sigma * sz.q(tau)), 4);
+    quantiles[QKEYS[i]] = round(anchor * Math.exp(sigma * st.zq[i]), 4);
   });
   quantiles.p50 = anchor; // 가운데 = 무판(출발값 그대로)
-  const rets = sz.centered.map(x => sigma * x); // 내일 로그 수익률 표본
-  const lnUp = Math.log1p(FLAT_BAND);
-  const lnDown = Math.log1p(-FLAT_BAND);
-  const up = share(rets, x => x > lnUp);
-  const down = share(rets, x => x < lnDown);
-  const n = rets.length;
-  const direction = {up: up.c / n, flat: (n - up.c - down.c) / n, down: down.c / n};
+  const n = st.n;
+  const direction = {up: st.up / n, flat: (n - st.up - st.down) / n, down: st.down / n};
   const k = SCENARIO_K * sigma;
-  const sUp = share(rets, x => x > k);
-  const sDown = share(rets, x => x < -k);
-  const pUp = sUp.c / n;
-  const pDown = sDown.c / n;
-  const pMid = (n - sUp.c - sDown.c) / n;
+  const pUp = st.scUp / n;
+  const pDown = st.scDown / n;
+  const pMid = (n - st.scUp - st.scDown) / n;
   const kPct = (Math.exp(k) - 1) * 100;
   const kTxt = `${round(kPct, 2)}%`;
   const hiP = Math.max(quantiles.p95, anchor * Math.exp(k));
@@ -113,6 +140,6 @@ export function forecastBlock(anchor, sigma, z, {label = '값'} = {}) {
     direction,
     scenarios,
     sigma: round(sigma, 8),
-    tails: {down: sz.down, up: sz.up},
+    tails: {down: st.tails.down, up: st.tails.up},
   };
 }
