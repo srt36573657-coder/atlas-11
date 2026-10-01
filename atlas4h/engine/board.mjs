@@ -74,12 +74,13 @@ function kospiVariable(h, asof, at) {
  *   at         봉인 시각(ISO) — fetchedAt 이 이보다 늦으면 null · 상수의 measuredAt = 이 시각
  *   histories  loadHistories() 결과 {kospi, …} (없으면 코스피 「없음」)
  */
-export function buildInputs(input, {asof, at, histories = {}}) {
+export function buildInputs(input, {asof, at, histories = {}, withConstants = true}) {
   const variables = [];
   const values = {kospi: null, stocks: {}};
   const kv = kospiVariable(histories.kospi, asof, at);
   variables.push(kv);
-  if (kv.value !== null && histories.kospi && !histories.kospi.none) {
+  // withConstants = false: 변수만 짓고 상수(HAR 맞춤)는 세지 않는다 — 고리의 「변수 그대로?」 검사용(계산 없이 견주기)
+  if (withConstants && kv.value !== null && histories.kospi && !histories.kospi.none) {
     values.kospi = measureSeries(changesUpTo(histories.kospi.series, asof).map(c => c.changePct));
   }
   for (const a of input.assets) {
@@ -114,8 +115,9 @@ export function buildInputs(input, {asof, at, histories = {}}) {
       prevClose: prev.close,
       lastChangePct: changes.at(-1),
     });
-    values.stocks[a.code] = measureSeries(changes);
+    values.stocks[a.code] = withConstants ? measureSeries(changes) : null;
   }
+  if (!withConstants) return {variables};
   const method = methodOf(ENGINE_VERSION);
   return {
     variables,
