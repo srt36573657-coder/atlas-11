@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T06:37:28.231Z",
+  "at": "2026-10-01T07:51:48.169Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -1308,7 +1308,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 15,
+        "constructions": 18,
         "check": true
       }
     },
@@ -1436,7 +1436,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#csh3k79-band-inner\")",
+        "bandFill": "url(\"#cmytxxp-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1906,7 +1906,7 @@
       "name": "mobile 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
       "ok": true,
       "detail": {
-        "top": 230
+        "top": 239
       }
     },
     {
@@ -1915,8 +1915,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 115,
-          "bottom": 191,
+          "top": 114,
+          "bottom": 190,
           "firstChild": true
         }
       }
@@ -1983,7 +1983,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 15,
+        "constructions": 18,
         "check": true
       }
     },
@@ -2111,7 +2111,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#c6wvfmf-band-inner\")",
+        "bandFill": "url(\"#cnqkf8p-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -3035,5 +3035,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T06-35-49-205Z"
+  "dir": "reports/atlas11/browser/2026-10-01T07-50-09-037Z"
 }
