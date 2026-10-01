@@ -9,5 +9,6 @@ echo "== 하네스 검사"; node atlas4h/scripts/check_harness.mjs || exit 1
 echo "== 기본 시험"; node --test --test-reporter=dot 'atlas4h/tests/*.test.mjs' || exit 1
 echo "== 자료 모으기 시험"; node --test --test-reporter=dot 'atlas4h/collect/test/*.test.mjs' || exit 1
 echo "== 엔진·채점 시험"; node --test --test-reporter=dot 'atlas4h/engine/test/*.test.mjs' 'atlas4h/score/test/*.test.mjs' || exit 1
+echo "== 기준값 시험"; node --test --test-reporter=dot 'atlas4h/baselines/test/*.test.mjs' || exit 1
 echo "== 사양 현황(보고만 · 통과 표시는 평가 일꾼만 바꾼다)"; node atlas4h/scripts/run_spec.mjs | tail -n 1
 echo "== 넘겨주기 쪽지"; sed -n '1,40p' atlas4h/harness/handoff.md

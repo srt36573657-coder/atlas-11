@@ -54,6 +54,16 @@ jobs:
             echo "바뀐 것 없음 — 올리지 않음"
             exit 0
           fi
-          git commit -q -m "atlas4h collect ${MODE} $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST [skip ci]"
+          # 커밋 글은 깃 기록 규칙(atlas4h/harness/commit-rule.md)대로 — 하네스 H5 가 「무엇:」「왜:」를 본다
+          {
+            echo "atlas4h 자료 모으기 ${MODE}: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST [skip ci]"
+            echo
+            echo "무엇: 자료 모으기 mode=${MODE} — atlas4h/data/history · atlas4h/raw · atlas4h/ledger 에 수집기가 쓴 파일만 올림"
+            echo "왜: 사장님이 atlas4h-collect 단추를 누름 (workflow_dispatch · 실행 ${GITHUB_RUN_ID})"
+            echo
+            echo "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+            echo "Claude-Session: https://claude.ai/code/session_0136T4eo8jpTLMmK9LpiQk4A"
+          } > "$RUNNER_TEMP/atlas4h-commit-msg.txt"
+          git commit -q -F "$RUNNER_TEMP/atlas4h-commit-msg.txt"
           git pull --rebase -q
           git push
