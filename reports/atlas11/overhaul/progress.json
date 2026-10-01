@@ -1,0 +1,76 @@
+{
+ "schema": "atlas11-overhaul-progress-1",
+ "prompt": {
+  "file": "reports/atlas11/overhaul/prompt-v6.md",
+  "version": 6,
+  "sha256": "47b17f0df07523bac142be1dc7d2a638e5223127868b81991d7f1d83be0640ae"
+ },
+ "base": "45dbca0",
+ "gates": {
+  "G0": {
+   "status": "통과",
+   "at": "2026-10-01 13:52 KST",
+   "by": "사장님 「진행」",
+   "evidence": "T0 33/33(6판 정답표 · recount-2.json)"
+  }
+ },
+ "steps": [
+  {
+   "w": "W1",
+   "r": [
+    "R12"
+   ],
+   "t": [
+    "T0"
+   ],
+   "status": "끝",
+   "commits": [
+    "760e50e",
+    "6340e9e"
+   ],
+   "numbers": {
+    "T0 · 5판 정답표": "26/33(다른 7개 까닭 찾음 · t0-1.json)",
+    "T0 · 6판 정답표": "33/33"
+   },
+   "files": {
+    "reports/atlas11/overhaul/expected.json": "b1bd52cdd60d6402937d12cc75b6d454eb4ce04cebb4b709cf2a41a44d381bff",
+    "reports/atlas11/overhaul/recount-2.json": "b1bd52cdd60d6402937d12cc75b6d454eb4ce04cebb4b709cf2a41a44d381bff",
+    "reports/atlas11/overhaul/recount-cells.json": "86daf565f924a4d5b0a732d409275c00df9ece3815d94878528f884765ccec58",
+    "reports/atlas11/overhaul/t0-1.json": "c35d1ac2b7152e94cb305b8423c4062afaea9237938c60afba8c86f4788fc6e4"
+   },
+   "signoff": {
+    "만드는 이": "본 창",
+    "세는 이": "에이전트 a9562a75(기록 장부만 읽음)",
+    "따지는 이": "W3부터"
+   }
+  },
+  {
+   "w": "W2",
+   "r": [
+    "R12"
+   ],
+   "t": [
+    "D1~D8",
+    "결함 심기 T0·D1·D5"
+   ],
+   "status": "끝",
+   "commits": [],
+   "numbers": {},
+   "files": {
+    "scripts/atlas11/overhaul/check.mjs": "d5baa99c76fc67c09b049efb4c75eaf489a3f4ea0a4d0b3b8f81ba2d3f6e8fa5"
+   }
+  }
+ ],
+ "eco": [
+  {
+   "id": "01",
+   "file": "reports/atlas11/overhaul/eco/01.md",
+   "commit": "6340e9e",
+   "approved": "2026-10-01 13:52 KST 사장님 「진행」"
+  }
+ ],
+ "next": [
+  "W3(가 · 화면 자료)",
+  "W6(나 · 시험 계획)"
+ ]
+}
