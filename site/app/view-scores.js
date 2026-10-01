@@ -54,7 +54,7 @@ export async function renderScores(main, {manifest}) {
   const quadTitle = h('h2', {class: 'panel-title'}), quadBox = h('div', {class: 'quad', role: 'list', 'aria-label': '네 묶음 종목 수'}), heldBox = h('div', {class: 'sc-held'});
   const quadPanel = cellsFile ? h('section', {class: 'panel sc-panel', id: 'score-quad', 'aria-label': '네 묶음'}, quadTitle, quadBox, heldBox,
     h('p', {class: 'muted small sc-rule'}, '방향: 출발 종가 대비 ±0.10% 밖이면 상승·하락, 안이면 보합 · 예측 방향은 상승·보합·하락 가운데 확률이 가장 높은 쪽(옆의 % 가 그 확률)'),
-    h('p', {class: 'muted small sc-rule'}, '예측 가격은 가운데 값 · 그 등락 옆 「보합권」은 ±0.10% 안이라 방향을 확률로만 고른 칸, 「반대쪽」은 고른 방향과 등락이 반대인 칸'),
+    h('p', {class: 'muted small sc-rule'}, '예측 가격은 가운데 값 · 그 등락이 ±0.10% 안이면 「보합권」(방향을 확률로만 고른 칸이라 등락 부호와 방향이 달라도 「보합권」만 붙임), ±0.10% 밖인데 고른 방향과 등락이 반대면 「반대쪽」'),
     h('p', {class: 'muted small sc-rule'}, '폭: 오차율 = |예측 − 실제| ÷ 실제 종가 · 1.50% 이하면 맞음 · 오차(원) = 예측 − 실제')) : null;
   const listTitle = h('h2', {class: 'panel-title'}), scList = h('div', {class: 'sc-list'});
   const listPanel = cellsFile ? h('section', {class: 'panel sc-panel', id: 'score-cells', 'aria-label': '종목별 맞고 틀림'}, listTitle, scList) : null;
@@ -79,6 +79,9 @@ export async function renderScores(main, {manifest}) {
     dayTitle.textContent = `${korDate(date)} 종가 · 1거래일 전망 ${hs[1].evaluated}종목`;
     const inBand = rows.filter(r => r.horizons['1'].covered === true).length;
     bars(resultBox, [{label: '방향 맞힘', value: hs[1].correct}, {label: `방향 틀림(실제 보합 ${hs[1].flatActual}종목 포함)`, value: hs[1].wrong}], {max: hs[1].evaluated, format: v => v + '종목'});
+    // 따지는 이 N2: 보류가 있는 날은 이 막대(채점판 기준)와 위 네 칸(보류 뺌)의 맞힘 수가 다르므로 그 까닭을 막대 밑에 적는다
+    const heldN = cellsFile ? heldOf(date).length : 0;
+    if (heldN) resultBox.append(h('p', {class: 'muted small'}, `이 막대는 채점판 기준이라 보류 ${heldN}종목도 들어 있음 · 위 네 칸과 종목별 목록에서는 뺌`));
     bars(bandBox, [{label: '80% 범위 안', value: inBand}, {label: '80% 범위 밖', value: rows.length - inBand}], {max: hs[1].evaluated, format: v => v + '종목'});
     bars(distBox, BINS.map(([a, b, label]) => ({label, value: rows.filter(r => r.horizons['1'].ape >= a && r.horizons['1'].ape < b).length})), {max: hs[1].evaluated, format: v => v + '종목'});
     // 아래 종목별 목록에 없는 것만: 종목마다 80% 범위(아래 끝~위 끝)와 안·밖 · 1·5·10·20거래일 CSV·JSON 내려받기
@@ -106,7 +109,7 @@ export async function renderScores(main, {manifest}) {
 
 /* ---------- 종목별 맞고 틀림(10/01 오후 · 대개선 명령서 6판 W4 · R2~R5 · 따지는 이 G1~G4): 숫자는 score-cells.json(장부 채점 기록 · 채점판과 대조) 하나에서
    네 칸 = 그날 네 묶음 수(합 = 보인 종목 수 · 보류는 따로) → 종목마다 한 줄: 넓은 화면은 표(본문 폭 56rem 이상), 좁은 화면·큰 글씨는 네 줄 카드
-   맞음·틀림은 글자로 · 빨강·파랑은 등락 숫자(오름·내림)에만 · 예측 방향 옆에 그 확률 · 가운데 값이 ±0.10% 안이면 「보합권」, 반대면 「반대쪽」
+   맞음·틀림은 글자로 · 빨강·파랑은 등락 숫자(오름·내림)에만 · 예측 방향 옆에 그 확률 · 가운데 값이 ±0.10% 안이면 「보합권」, 밖에서 고른 방향과 반대면 「반대쪽」
    회사 이름은 자르지 않고 줄만 바꾼다 · 「·」 는 줄 앞에 오지 않는다(앞 낱말에 붙임) ---------- */
 const GROUPS = [['①', '방향·폭 모두 맞음'], ['②', '방향 맞음·폭 틀림'], ['③', '방향 틀림·폭 맞음'], ['④', '둘 다 틀림']];
 const SC_HEAD = ['종목', '출발 종가', '예측 가격·등락·방향', '실제 종가·등락·방향', '오차(원)·오차율', '방향 판정', '폭 판정', '네 묶음', '기록'];
