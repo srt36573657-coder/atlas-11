@@ -1,0 +1,71 @@
+{
+ "schema": "atlas4h-watch-1",
+ "at": "2026-10-01T18:43:00+09:00",
+ "by": "감시자",
+ "head": "87ddec4",
+ "before": "c245fa9 (watch-first-run.json)",
+ "watched": "c245fa9..87ddec4 의 커밋 셋(a6c3ff3 · f044b3a · 87ddec4) — 고친 곳과 새로 생긴 답만",
+ "structures": ["A2", "C5", "E3", "E6", "F1", "F4"],
+ "emptyGroups": "B D — 이 감시 답도 「미완」",
+ "S": {"S1": 19, "S2": 2, "S3": 0, "S4": 1, "S5": 0, "S6": 1, "S7": 0, "S8": 0},
+ "Sbefore": {"S1": 22, "S2": 2, "S3": 2, "S4": 5, "S5": 0, "S6": 1, "S7": 0, "S8": 1},
+ "S1Detail": {
+  "풀림": "conflicts.md 3→0(33줄 앞 A→F 줄) · 판정 기준 4→0(judgment-2.json AtoF · judgment-2.md 8줄) · progress.json 3→1",
+  "남음": "contract.md 6 · part-abc.md 3 · part-def.md 2 · part-engine.md 1 · progress.json 1(D 칸)",
+  "새로 생김": "harness/eco-01-tests.md 6(구조 번호 0개)"
+ },
+ "S9": "채점 없음 → 잴 수 없음 (atlas4h/ledger 없음)",
+ "S10": {
+  "kept": 3,
+  "partly": 3,
+  "of": 6,
+  "notYet": 7,
+  "items": {
+   "1": "일부(그대로) — 끝날 시각 알림은 progress.json endTimeNotice(17:41~17:42 KST 채팅 · 21:00 KST)로 뒤늦게 적힘. 채팅은 감시가 열 수 없어 확인 못 함",
+   "2": "지킴",
+   "3": "일부(그대로) — 보류 11건 그대로(sources 변경 없음)",
+   "4": "지킴",
+   "5": "지킴 → 일부 — 다른 일꾼의 독립 흠 시험에서 엄한 셈 103개 중 15개를 시험이 놓침(verify/independent-defects.json summary.strict). 사양을 시험으로 다 옮기지 못한 것",
+   "6": "지킴 — judgment.json·judgment.md·trials.jsonl 은 1e4c2bf 뒤 변경 0. judgment-2 는 채점 0개일 때 덧붙임",
+   "7-13": "아직 차례 아님. atlas4h 밖 변경 0"
+  }
+ },
+ "judgment2": {
+  "sealRuleKept": true,
+  "sealedAt": "2026-10-01T18:31:22+09:00",
+  "commit": "a6c3ff3 2026-10-01 18:31:57 KST",
+  "scores": 0,
+  "judgmentJsonUnchanged": true,
+  "supersedesSha256Matches": true,
+  "note": "judgment.json 의 rule(「바꿀 때는 새 판정 기준 파일을 덧붙이고 그 뒤 채점부터만 쓴다」)대로 덧붙임. 봉인 뒤 정보 중 쓴 것은 감시 결과뿐이고 시장 결과는 0"
+ },
+ "fixedCheck": [
+  {"was": "S4 first-run-report.md 1줄 18:25", "now": "풀림 — 「18:20 첫 판」이 81f99ba 18:20:32 와 같음. 「18:3x」는 숫자가 흐림(셈 밖)"},
+  {"was": "S4 10/1 예약 0회 (보고 15줄 · conflicts 21줄)", "now": "풀림 — evidence 파일을 다시 셈: 실행 6 · 모두 workflow_dispatch · 예약 0 · 10/1 KST 0"},
+  {"was": "S4 progress.json 198줄 10/1", "now": "남음 — 지금 320줄. 숫자는 evidence 로 맞지만 든 출처가 아직 「atlas11-daily 주석」(주석은 9/29·30 만)"},
+  {"was": "S4 progress.json 81줄 17:58", "now": "숫자는 풀림(17:44 = 70ff430) — 그러나 고친 방법이 새 문제(아래 findings 「덧붙이기만」)"},
+  {"was": "S4 참고 E1 인용 문구", "now": "풀림 — 「T17(728줄 근처)」: checks.mjs 728줄이 leakCheck 를 읽음"},
+  {"was": "S3 보고 18줄 B6", "now": "풀림 — 조건(미국 97개 · 거품 몫 ≤26%) · [짐작] · 봉인 기준에 없음 [사실]"},
+  {"was": "S3 judgment.md 37줄 12시 [가정]", "now": "풀림 — judgment-2 에서 「없음」"},
+  {"was": "S6 보고 42줄 「1~6번은 깔렸다」", "now": "그 말은 풀림 — 같은 줄에 새 넘침(아래)"},
+  {"was": "S2 progress.json next·blocked", "now": "풀림 — 열한 칸 모두 구조 번호"},
+  {"was": "S8 92/92", "now": "풀림 — 다른 일꾼의 흠 111개(엄한 셈 103개)로 따로 잼: 잡음 90/111 · 엄한 셈 88/103 · 놓침 15. 숫자 셋 다 파일과 같음"}
+ ],
+ "findings": [
+  {"S": "S1", "file": "atlas4h/harness/eco-01-tests.md", "line": 1, "what": "새 답(변경 요청서)에 구조 번호가 없음 — 여섯 칸 다 빔", "fix": "「쓴 구조: …」 줄 덧붙이기"},
+  {"S": "S1", "file": "atlas4h/data/contract.md", "line": 1, "what": "그대로 — 여섯 칸 다 빔", "fix": "구조 번호 줄"},
+  {"S": "S1", "file": "atlas4h/sources/part-abc.md", "line": 74, "what": "그대로 — A·B·D 빔", "fix": "빈 칸 채우기 또는 「미완」"},
+  {"S": "S1", "file": "atlas4h/sources/part-def.md", "line": 115, "what": "그대로 — B·D 빔", "fix": "빈 칸 채우기 또는 「미완」"},
+  {"S": "S1", "file": "atlas4h/sources/part-engine.md", "line": 220, "what": "그대로 — A 빔", "fix": "빈 칸 채우기 또는 「미완」"},
+  {"S": "S1", "file": "atlas4h/harness/progress.json", "line": 10, "what": "done·next·blocked 를 다 합쳐도 D 칸이 빔", "fix": "D 칸을 쓴 칸이 있으면 적기, 없으면 「미완」"},
+  {"S": "S2", "file": "atlas4h/data/contract.md", "line": 1, "what": "그대로 — 구조 번호 0", "fix": "구조 번호 줄"},
+  {"S": "S2", "file": "atlas4h/harness/eco-01-tests.md", "line": 1, "what": "새로 생김 — 구조 번호 0", "fix": "구조 번호 줄"},
+  {"S": "S4", "file": "atlas4h/harness/progress.json", "line": 320, "what": "「9/29·9/30·10/1 예약 0회」의 출처가 아직 「atlas11-daily 주석」 — 10/1 은 그 주석에 없음(evidence 파일에는 있음)", "fix": "출처를 harness/evidence/2026-10-01-atlas11-daily-runs.json 으로 — 덧붙이는 정정 줄로"},
+  {"S": "S6", "file": "atlas4h/harness/first-run-report.md", "line": 42, "what": "「2·4·5·6번은 명령문 글대로 다 됐다」[사실] — 같은 줄이 「시험 코드는 구멍 15개가 확인돼」라고 적음. 5번(사양을 시험으로 옮기기)을 다 됐다고 할 수 없음", "fix": "「5번 일부(엄한 셈 103개 중 15개 놓침)」로"},
+  {"S": "S10", "file": "atlas4h/harness/progress.json", "line": 9, "what": "새로 생김 — 장부 규칙은 「덧붙이기만」인데 a6c3ff3 이 done 칸 시각 넷을 그 자리에서 덮어씀(17:30~17:41 · 17:58 · 18:10 · 18:18 → 새 값). 넘지 않는 선 「기록은 지우지도 덮지도 않는다」와도 부딪힘. 옛 값은 깃 기록에만 남음", "fix": "덮은 넷을 되살리고 정정 줄을 덧붙이기(되살릴지는 짓는 이·사장님이 정함)"},
+  {"S": "S8", "counted": false, "file": "atlas4h/harness/eco-01-tests.md", "line": 27, "what": "계획 속 위험 — 「고친 뒤 같은 독립 흠 111개를 다시 돌려」 잰다고 적음. 놓친 15개를 보고 고친 뒤 같은 111개로 재면 같은 자료로 고치고 잰 셈", "fix": "고친 뒤에는 또 다른 일꾼이 새로 심은 흠 묶음으로 재기"},
+  {"S": "S4", "counted": false, "file": "atlas4h/harness/progress.json", "line": 193, "what": "참고(1분): f044b3a 「18:38」 — 커밋 18:37:57. 다른 칸은 분을 버린 값(18:31:57 → 18:31)", "fix": "18:37"},
+  {"S": "S4", "counted": false, "file": "atlas4h/harness/first-run-report.md", "line": 42, "what": "참고(확인 불가): 「21:00 KST」·「17:41~17:42 KST 채팅」 — 근거가 채팅뿐이라 감시가 열 수 없음", "fix": "채팅 원문을 evidence 파일로 남기기"},
+  {"S": "선", "counted": false, "file": "atlas4h/harness/conflicts.md", "line": 33, "what": "참고: 14번이 절대 등급 줄(금지 말)의 범위를 「판·화면」으로 정함 — 짓는 이가 정한 해석. 그 범위 안에서는 0", "fix": "절대 줄의 범위라 사장님 확인 거리로 올리기"}
+ ]
+}
