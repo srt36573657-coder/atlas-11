@@ -159,14 +159,68 @@
     "F4",
     "E6"
    ]
+  },
+  {
+   "at": "2026-10-01 18:28 KST",
+   "step": "감시",
+   "what": "감시자(짓는 이와 다른 에이전트)가 첫 실행 답 여덟을 S1~S10으로 셈 → S1 22 · S2 2 · S3 2 · S4 5 · S5 0 · S6 1 · S7 0 · S8 1 · S9 잴 수 없음(채점 없음) · S10 지킴 4/6·일부 2",
+   "commits": [
+    "c245fa9"
+   ],
+   "files": [
+    "atlas4h/harness/watch-first-run.json"
+   ],
+   "structures": [
+    "E3",
+    "E6",
+    "F4"
+   ]
+  },
+  {
+   "at": "2026-10-01 18:31 KST",
+   "step": "감시 뒤 고침",
+   "what": "S3 2·S4 5·S6 1·S2·S1(부딪힌 곳 A→F 줄)·S10 1번 끝날 시각을 고침 · 12시 단순 전이식 [가정]은 judgment-2.json 으로 「없음」(judgment.json 은 그대로)",
+   "commits": [
+    "a6c3ff3"
+   ],
+   "structures": [
+    "E4",
+    "F1",
+    "F6"
+   ]
+  },
+  {
+   "at": "2026-10-01 18:38 KST",
+   "step": "감시 S8 독립 시험",
+   "what": "다른 일꾼이 사양 글만 보고 흠 111개를 심음 → 잡음 90 · 놓침 21(다툼 8 빼면 103개 중 88 · 놓침 15) · 헛잡음 1(「사라졌다」) · 멈춤 1(T12)",
+   "commits": [
+    "f044b3a"
+   ],
+   "numbers": {
+    "심은 흠": 111,
+    "잡음": 90,
+    "놓침": 21,
+    "다툼 뺀 심은 흠": 103,
+    "다툼 뺀 잡음": 88,
+    "다툼 뺀 놓침": 15
+   },
+   "files": [
+    "atlas4h/verify/independent-defects.json"
+   ],
+   "structures": [
+    "E1",
+    "E6",
+    "F4"
+   ]
   }
  ],
  "next": [
   {
-   "step": "감시",
-   "what": "짓는 이와 다른 에이전트가 첫 실행 결과물에 <감시> S1~S10을 돈다 → 잡은 것을 고친다",
+   "step": "ECO atlas4h-01",
+   "what": "승인되면 시험을 더 엄하게 고치고 다시 잠근 뒤, 독립 흠 111개를 다시 돌려 잡은 수를 보고",
    "structures": [
-    "E4",
+    "E6",
+    "F1",
     "F4"
    ]
   },
@@ -205,6 +259,29 @@
   }
  ],
  "blocked": [
+  {
+   "what": "잠근 시험의 구멍 15개·헛잡음 1·멈춤 1을 고치는 변경 요청서 atlas4h-01",
+   "needs": "사장님 승인(「atlas4h LOCK:」 커밋으로만 고침 · 검사 H4)",
+   "affects": [
+    "T2",
+    "T3",
+    "T6",
+    "T7",
+    "T8",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T20",
+    "T21",
+    "T23"
+   ],
+   "file": "atlas4h/harness/eco-01-tests.md",
+   "structures": [
+    "E6",
+    "F1"
+   ]
+  },
   {
    "what": "두 번째 출처 열쇠: KRX Open API · 한국은행 ECOS · OpenDART · FRED API",
    "needs": "사장님이 열쇠를 받아 GitHub 저장소 비밀에 넣기(이름 ATLAS4H_*)",
