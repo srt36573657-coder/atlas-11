@@ -5,8 +5,9 @@
  *   node atlas4h/retro/run.mjs [--slot 16|08] [--end 2026-09-30] [--days 120] [--input FILE] [--history DIR] [--atlas11 FILE]
  *                               [--out FILE] [--summary FILE] [--dry]
  *
- *   16시 판: 출발일 t 16:00 KST 봉인(그날 15:30 종가 뒤) → 목표 = 다음 거래일 종가. 기본 쓰는 곳 atlas4h/retro/result.json · summary.md
- *   08시 판: 목표일 t 08:00 KST 봉인 · 출발값 = 앞 거래일(t−1) 종가 · 목표 = t 종가. 기본 쓰는 곳 atlas4h/retro/result-08.json · summary-08.md
+ *   16시 판: 출발일 t 16:00 KST 봉인(그날 15:30 종가 뒤) → 목표 = 다음 거래일 종가. 기본 쓰는 곳 atlas4h/retro/result-16.json · summary-16.md
+ *   08시 판: 목표일 t 08:00 KST 봉인 · 출발값 = 앞 거래일(t−1) 종가 · 목표 = t 종가. 기본 쓰는 곳 atlas4h/retro/result.json · summary.md
+ *   (잠긴 T12 는 result.json 만 읽는다 — 기준 셋이 다 있는 판은 08시 판뿐이라 08시 재현을 result.json 에 둔다 · conflicts.md 16)
  *   --end 는 마지막 출발일(기본 2026-09-30) · 출발일 120개 → 목표일 2026-04-07 … 2026-10-01 (두 판 시각 모두 같은 목표일)
  *   --history 지난 자료 폴더(기본 atlas4h/data/history · kospi.json·sox.json) · --atlas11 ATLAS 11 후향 파일(기본 atlas4h/baselines/atlas11-v1-retro.json)
  *
@@ -162,8 +163,8 @@ function slimRow(l, origin) {
 export function run({slot = '16', end = '2026-09-30', days = 120, inputFile = path.join(ROOT, 'public/data/input.json'), historyDir = path.join(ROOT, HISTORY_DIR),
   atlas11File = path.join(ROOT, ATLAS11_RETRO_FILE), out = null, summary = null, now = isoKst(Date.now()), write = true, git = gitState()} = {}) {
   if (!['08', '16'].includes(slot)) throw new Error(`재현 판 시각은 08 또는 16: ${slot}`);
-  const outFile = out ?? path.join(HERE, slot === '16' ? 'result.json' : `result-${slot}.json`);
-  const summaryFile = summary ?? path.join(HERE, slot === '16' ? 'summary.md' : `summary-${slot}.md`);
+  const outFile = out ?? path.join(HERE, slot === '08' ? 'result.json' : `result-${slot}.json`);
+  const summaryFile = summary ?? path.join(HERE, slot === '08' ? 'summary.md' : `summary-${slot}.md`);
   const buf = fs.readFileSync(inputFile);
   const input = JSON.parse(buf.toString('utf8'));
   const inputRel = path.relative(ROOT, path.resolve(inputFile)).split(path.sep).join('/');
