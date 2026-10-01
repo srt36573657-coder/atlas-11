@@ -1,0 +1,3426 @@
+{
+ "schema": "atlas4h-independent-defects-2",
+ "createdAt": "2026-10-01T21:16:19+09:00",
+ "preRegisteredCommit": null,
+ "readingRules": {
+  "read": [
+   "atlas4h/command/*.txt",
+   "atlas4h/spec/board.md",
+   "atlas4h/data/contract.md",
+   "atlas4h/data/variables.json",
+   "atlas4h/seal/judgment.json",
+   "atlas4h/seal/judgment-2.json",
+   "atlas4h/harness/passlist.json",
+   "atlas4h/harness/conflicts.md",
+   "atlas4h/spec/fixtures/good/**",
+   "atlas4h/engine/board.mjs · har.mjs·dist.mjs 일부(T4 엔진을 부르는 법만)",
+   "atlas4h/verify/README.md"
+  ],
+  "notRead": [
+   "atlas4h/spec/checks.mjs 본문",
+   "atlas4h/tests/**",
+   "atlas4h/verify/independent-defects.mjs·.json(묶음 1)",
+   "atlas4h/harness/eco-01-tests.md",
+   "atlas4h/harness/watch-*",
+   "first-run-report.md",
+   "progress.json",
+   "handoff.md",
+   "6f8936a·f044b3a 의 차이"
+  ],
+  "seen": "바탕을 맞출 때 runAll 이 바탕에 낸 결과 글(reason)은 봤음 — 흠은 그 뒤에도 사양 글에서만 골랐고, 미리 등록 전에는 흠·탐침에 시험을 한 번도 돌리지 않았음"
+ },
+ "base": {
+  "fixture": "atlas4h/spec/fixtures/good",
+  "addedMaterials": [
+   "뒤 판 37개(2026-10-05 ~ 11-25 평일, 10/9 뺌) — 08시 판을 본떠 날짜·값을 옮기고 봉인 지문을 새로 셈 · 판마다 봉인·채점·고리·감시 한 줄(T13: 평소 34판 중 28 덮음 82.4% · 위기 5판 중 4 덮음)",
+   "재현 결과 atlas4h/retro/result.json — 2026-07-01부터 평일 40줄(08시), 내 구간 점수가 무판·단순 전이식·ATLAS 11 보다 늘 6~11 낮음(T12)",
+   "커밋 목록 changes — ef8aaaf·b8074cc 에서 새로 더한 파일 4개(T11)",
+   "판정 기준 커밋 시각 judgmentCommitAt = 2026-10-01T18:22:00+09:00(T19)",
+   "바탕 B(T4 전용) — 0판 엔진 buildBoard 로 지은 판 3개(9/29·9/30·10/1 08시, 코스피·종목 지난 등락 130줄) + 봉인, engine = engine/board.mjs 의 engine"
+  ],
+  "baseResults": null
+ },
+ "defects": [
+  {
+   "id": "D-T1-01",
+   "target": "T1",
+   "base": "A",
+   "what": "08시 판 가운데 값을 봉인 뒤 2649.86 → 2651 로 고침(봉인 지문은 그대로)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "봉인한 판은 고치지 않는다. 봉인 뒤 자료는 안 쓴다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-02",
+   "target": "T1",
+   "base": "A",
+   "what": "12시 판을 글만 바꿔 같은 id 로 한 줄 더 덧붙이고 새 봉인 줄도 덧붙임(다시 봉인)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "봉인한 판은 고치지 않는다. 봉인 뒤 자료는 안 쓴다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-03",
+   "target": "T1",
+   "base": "A",
+   "what": "08시 판의 봉인 줄을 지움(판은 남음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "봉인 기록 `{boardId, sealedAt, sha256, commit}` — `sha256` = 판을 「정렬 직렬화」한 글자의 sha256"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-04",
+   "target": "T1",
+   "base": "A",
+   "what": "08시 판 봉인 줄의 sha256 을 12시 판 지문으로 바꿔 씀",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "봉인 기록 `{boardId, sealedAt, sha256, commit}` — `sha256` = 판을 「정렬 직렬화」한 글자의 sha256"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-05",
+   "target": "T1",
+   "base": "A",
+   "what": "봉인된 16시 판 줄을 판 장부에서 지움(봉인 줄은 남음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-06",
+   "target": "T1",
+   "base": "A",
+   "what": "늦은 비교 뒤 08시 판 코스피 변수에 「늦은 확인: 다름」을 판 안에 써넣고 새 봉인 줄을 덧붙임(옛 봉인 줄 남음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "19. 늦은 비교에서 다르면 봉인된 판은 고치지 않고 「늦은 확인: 다름」 기록만 덧붙인다. (T1 · 절대)"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T1-07",
+   "target": "T1",
+   "base": "A",
+   "what": "08시 판 sealedAt 을 08:35 로 고치고 지문만 새로 맞춤(봉인 줄의 sealedAt 은 08:31:40 그대로)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T1 봉인 뒤 수정 0 (기록 대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "봉인 기록 `{boardId, sealedAt, sha256, commit}` — `sha256` = 판을 「정렬 직렬화」한 글자의 sha256"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "판 지문은 맞고 시각 칸만 봉인 기록과 어긋남 — 「봉인 뒤 수정」을 지문 대조로만 읽으면 안 잡혀도 된다고 볼 수 있음"
+  },
+  {
+   "id": "D-T2-01",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 반도체지수 observedAt 을 봉인(08:31:40) 뒤 08:40 으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "11. 봉인 시각보다 늦은 `observedAt` 이나 `fetchedAt` 을 가진 값은 쓰지 않는다. (T2 · 절대)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-02",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 코스피 변수 fetchedAt 을 08:35 로(출처 것은 그대로)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "11. 봉인 시각보다 늦은 `observedAt` 이나 `fetchedAt` 을 가진 값은 쓰지 않는다. (T2 · 절대)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-03",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 코스피 둘째 출처(KRX) fetchedAt 만 08:45 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-04",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 반도체지수 observedAt 을 UTC 표기 2026-10-02T00:10:00Z(= 09:10 KST, 봉인 뒤)로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "11. 봉인 시각보다 늦은 `observedAt` 이나 `fetchedAt` 을 가진 값은 쓰지 않는다. (T2 · 절대)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-05",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 코스피 첫째 출처 observedAt 을 날짜만 「2026-10-02」로(그날 15:30 마감으로 봄 → 봉인 뒤)",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "10. 날짜만 있는 값은 그날 가장 늦은 때로 본다 — 시장 값은 그 시장 마감, 공시는 23:59:59. (T2 · T17)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-06",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 상수 measuredAt 을 그날 16:40(봉인 뒤)으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T2 봉인 시각 뒤 자료 사용 0 (시각 대조)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "봉인한 판은 고치지 않는다. 봉인 뒤 자료는 안 쓴다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-07",
+   "target": "T2",
+   "base": "A",
+   "what": "08시 판 코스피 출발값 asOf 를 그날 15:30(봉인 뒤 종가)으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T2 봉인 시각 뒤 자료 사용 0 (시각 대조)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "봉인한 판은 고치지 않는다. 봉인 뒤 자료는 안 쓴다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T2-08",
+   "target": "T2",
+   "base": "A",
+   "what": "재현 판(자료 마감 9/1 08:30) 반도체지수 observedAt 을 9/1 09:10 으로 — 봉인(10/1)보다는 앞이지만 자료 마감 뒤",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T2 봉인 시각 뒤 자료 사용 0 (시각 대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "사양 글은 「봉인 시각」만 말함. 재현 판에서 자료 마감(dataCutoff)을 봉인 시각으로 읽어야 하는지는 읽는 사람마다 갈림"
+  },
+  {
+   "id": "D-T2-09",
+   "target": "T2",
+   "base": "A",
+   "what": "12시 판 dataCutoff 를 봉인(12:12:30) 뒤 12:30 으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T2 봉인 시각 뒤 자료 사용 0 (시각 대조)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "봉인 뒤 시각을 가진 값 자체는 없음 — 마감 칸만 늦음"
+  },
+  {
+   "id": "D-T3-01",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 seed 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-02",
+   "target": "T3",
+   "base": "A",
+   "what": "12시 판 seed 를 null 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-03",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 code.commit 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-04",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 code.dirty = true(커밋 안 된 코드로 봉인)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "커밋 해시는 있음 — 「코드 판이 있음」을 해시만 있으면 된다고 읽을 수 있음"
+  },
+  {
+   "id": "D-T3-05",
+   "target": "T3",
+   "base": "A",
+   "what": "12시 판 dataVersion.files 를 빈 목록으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-06",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 dataVersion.sha256 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-07",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 KRX 출처 주소에 열쇠(AUTH_KEY=…)를 그대로 적음",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "7. 열쇠(API 키)는 GitHub 저장소 비밀에만 두고 파일·기록·화면에 쓰지 않는다. (T3)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-08",
+   "target": "T3",
+   "base": "A",
+   "what": "08시 판 반도체지수 출처의 rawSha256(원문 지문)을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "23. 받은 바이트 그대로 보관하고, 그 sha256 을 값 옆에 적는다. (T3)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T3-09",
+   "target": "T3",
+   "base": "A",
+   "what": "16시 판 code 칸 통째로 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-01",
+   "target": "T4",
+   "base": "B",
+   "what": "엔진이 Math.random 으로 가운데·분위수를 ±0.5 흔듦(판도 그 엔진으로 지음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "24. 같은 원문을 다시 해석하면 같은 값이 나와야 한다. (T4)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-02",
+   "target": "T4",
+   "base": "B",
+   "what": "엔진이 1e-9 비율의 아주 작은 난수 흔들림을 넣음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "부동소수 허용 폭 안의 차이 — 비교에 작은 허용 폭을 두는 것도 옳은 읽기"
+  },
+  {
+   "id": "D-T4-03",
+   "target": "T4",
+   "base": "B",
+   "what": "엔진이 부른 횟수의 홀짝에 따라 가운데 값을 0.01 바꿈(상태가 남는 엔진)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-04",
+   "target": "T4",
+   "base": "B",
+   "what": "씨앗으로 흔드는 엔진 — 판은 씨앗+1 로 지었는데 판에는 원래 씨앗을 적음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-05",
+   "target": "T4",
+   "base": "B",
+   "what": "엔진이 같은 입력을 두 번째 받으면 멈춤(던짐)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-06",
+   "target": "T4",
+   "base": "B",
+   "what": "봉인된 판의 종목 가운데 값을 +1 고쳐 다시 봉인(같은 입력의 엔진 출력과 다름)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-07",
+   "target": "T4",
+   "base": "B",
+   "what": "판을 지은 뒤 입력(코스피 마지막 등락)을 +0.5%p 고쳐 다시 봉인(출력은 옛 입력의 것)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T4-08",
+   "target": "T4",
+   "base": "B",
+   "what": "엔진이 받은 입력에 지난 등락 한 줄을 덧붙이고 계산함(입력을 고치는 엔진 — 같은 객체로 두 번 돌리면 달라짐)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "시험이 입력을 복사해 넘기면 한 번 다시 돌린 값은 같음 — 입력을 고치는 것 자체를 T4 흠으로 볼지 갈림"
+  },
+  {
+   "id": "D-T5-01",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판 확률 0.25·0.5·0.2(합 95%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T5 세 시나리오 확률 합 100% (계산)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-02",
+   "target": "T5",
+   "base": "A",
+   "what": "12시 판 확률 0.3·0.5·0.25(합 105%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T5 세 시나리오 확률 합 100% (계산)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-03",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판 시나리오 둘(가운데 지움, 위·아래 0.5·0.5 — 합은 100%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-04",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판에 넷째 시나리오 「꼬리」(확률 0) 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-05",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판 시나리오 이름 「위」를 「상승」으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-06",
+   "target": "T5",
+   "base": "A",
+   "what": "12시 판 「가운데」의 invalidator 를 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T5-07",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판 확률을 백분율 25·50·25 로 적음",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "T5 줄 글자는 「합 100%」 — 백분율 표기를 같은 뜻으로 읽을 수도 있음"
+  },
+  {
+   "id": "D-T5-08",
+   "target": "T5",
+   "base": "A",
+   "what": "08시 판 확률 0.6·0.6·−0.2(합은 1, 음수 확률)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "확률은 그 분포에서 나온다(합 100%)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "사양은 합만 말함 — 음수 확률까지 T5 가 볼지 갈림"
+  },
+  {
+   "id": "D-T5-09",
+   "target": "T5",
+   "base": "A",
+   "what": "뒤 판(10/9 다음 날 등) 하나의 확률 0.25·0.45·0.25(합 95%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T5 세 시나리오 확률 합 100% (계산)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-01",
+   "target": "T6",
+   "base": "A",
+   "what": "08시 판 맞추는 법 「OLS」",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T6 종목·코스피가 MinT로 맞춰짐 (계산)"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "종목과 코스피는 MinT 조정으로 서로 맞춘다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-02",
+   "target": "T6",
+   "base": "A",
+   "what": "08시 판 마디에서 「나머지」를 뺌",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`reconciliation`: 코스피는 52종목의 합이 아니므로 「나머지」 마디를 둔다. `maxGap` = 맞춘 뒤 위·아래 마디의 어긋남 최댓값(T6)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-03",
+   "target": "T6",
+   "base": "A",
+   "what": "12시 판 마디에서 종목 000660 을 뺌(판에는 그 종목 예측 있음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T6 종목·코스피가 MinT로 맞춰짐 (계산)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-04",
+   "target": "T6",
+   "base": "A",
+   "what": "08시 판 maxGap 3.5(맞춘 뒤에도 위·아래가 어긋남)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`reconciliation`: 코스피는 52종목의 합이 아니므로 「나머지」 마디를 둔다. `maxGap` = 맞춘 뒤 위·아래 마디의 어긋남 최댓값(T6)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-05",
+   "target": "T6",
+   "base": "A",
+   "what": "16시 판 reconciliation 칸 통째로 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T6 종목·코스피가 MinT로 맞춰짐 (계산)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-06",
+   "target": "T6",
+   "base": "A",
+   "what": "08시 판 마디에서 「kospi」를 뺌",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T6 종목·코스피가 MinT로 맞춰짐 (계산)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`reconciliation`: 코스피는 52종목의 합이 아니므로 「나머지」 마디를 둔다. `maxGap` = 맞춘 뒤 위·아래 마디의 어긋남 최댓값(T6)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T6-07",
+   "target": "T6",
+   "base": "A",
+   "what": "08시 판 maxGap = null(맞춘 결과를 안 적음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`reconciliation`: 코스피는 52종목의 합이 아니므로 「나머지」 마디를 둔다. `maxGap` = 맞춘 뒤 위·아래 마디의 어긋남 최댓값(T6)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "null 을 「셀 수 없음」으로 둘지 흠으로 볼지 갈림"
+  },
+  {
+   "id": "D-T7-01",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 코스피(「ok」) 둘째 출처를 지움 — 표시는 ok 그대로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "1. 변수마다 출처를 둘 적는다 — 첫째는 값, 둘째는 맞는지 보는 데 쓴다. (T7)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-02",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 코스피 둘째 출처를 KRX 대신 네이버의 다른 주소로(같은 회사)",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "2. 같은 회사의 다른 주소는 출처 하나로 센다 — 둘째는 다른 회사·기관이어야 한다. (T7)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-03",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 005930(「ok」) 변수 observedAt 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "8. 값마다 시각 둘을 붙인다 — `observedAt`(값이 생긴 때) · `fetchedAt`(받은 때). (T7 · T2)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-04",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 000660(「ok」) 변수 fetchedAt 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "8. 값마다 시각 둘을 붙인다 — `observedAt`(값이 생긴 때) · `fetchedAt`(받은 때). (T7 · T2)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-05",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 코스피(17시간 전 값)의 「옛값」 표시를 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "13. `observedAt` 이 봉인 시각보다 4시간 넘게 앞서면 「옛값」을 붙인다. (T7)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-06",
+   "target": "T7",
+   "base": "A",
+   "what": "12시 판 반도체지수 「한 출처」인데 출처 목록이 비었음(값은 있음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-07",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 VKOSPI(「없음」) 값을 null 대신 0 으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "21. 결측을 0 으로 채우지 않는다 — 앞 값으로 채우지도 않고, 앞 값은 「옛값」을 달 때만 쓴다. (절대)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "0 채움 금지는 다른 칸(절대 규칙) — T7 이 볼 일인지 갈림"
+  },
+  {
+   "id": "D-T7-08",
+   "target": "T7",
+   "base": "A",
+   "what": "08시 판 코스피 「ok」인데 출처 둘 다 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T7-09",
+   "target": "T7",
+   "base": "A",
+   "what": "뒤 판 하나(gen 2) 코스피 「ok」 둘째 출처 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T7 변수마다 시각·출처 둘 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-01",
+   "target": "T8",
+   "base": "A",
+   "what": "12시 판(두 길 어긋남) 화면 값을 「확인 중」 대신 숫자 2663.15 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T8 두 길 계산 일치, 아니면 '확인 중' (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-02",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 두 길 pathB 2653.36(차이 3.5 > 허용 0.5)인데 agree: true",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T8 두 길 계산 일치, 아니면 '확인 중' (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-03",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 코스피 두 출처 2650.1 · 2662.0(허용 폭 넘음)인데 「ok」로 씀",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "16. 차이가 허용 폭(`variables.json` 의 `compare`)을 넘으면 「확인 중」으로 두고 그 고리에서 쓰지 않는다. (T8)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-04",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 코스피 값을 둘째 출처 값(2650.4)으로 씀 — 첫째는 2650.1",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "3. 값은 늘 첫째 출처 것을 쓴다 — 둘 중 마음에 드는 쪽을 고르지 않는다. (T8)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-05",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 코스피를 「확인 중」으로 두고도 가운데·폭 엔진 입력에 그대로 씀",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    },
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "16. 차이가 허용 폭(`variables.json` 의 `compare`)을 넘으면 「확인 중」으로 두고 그 고리에서 쓰지 않는다. (T8)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "「계산에 안 씀」을 엔진 입력 목록으로 재야 하는지 갈림"
+  },
+  {
+   "id": "D-T8-06",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판(보통 봉인) twoPath 를 빈 목록으로 — 두 길 계산이 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T8 두 길 계산 일치, 아니면 '확인 중' (대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "두 길이 없는 판을 흠으로 볼지(「일치」를 못 보임) 볼 것 없음으로 둘지 갈림"
+  },
+  {
+   "id": "D-T8-07",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 코스피 둘째 출처 observedAt 을 하루 앞(9/30 종가)으로 — 다른 날 값끼리 견줌",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "15. 두 출처는 같은 기준끼리만 비교한다 — 같은 날짜 종가끼리, 또는 `observedAt` 이 5분 안인 값끼리. (T8)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "견줄 수 없는 짝일 때 무엇이 되어야 하는지(한 출처? 확인 중?) 사양이 정하지 않음"
+  },
+  {
+   "id": "D-T8-08",
+   "target": "T8",
+   "base": "A",
+   "what": "08시 판 두 길 pathB 2655.0 · agree 칸 없음 · 화면은 숫자",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T8-09",
+   "target": "T8",
+   "base": "A",
+   "what": "뒤 판 하나(gen 6) 두 길 어긋남(agree: false)인데 화면은 숫자",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T9-01",
+   "target": "T9",
+   "base": "A",
+   "what": "08시 고리 44.5분(상태 ok, 판은 새로 봉인)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    },
+    {
+     "file": "atlas4h/command/07-loop.txt",
+     "text": "40분 안에 못 끝내면 앞 값 유지, '시간 초과'."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T9-02",
+   "target": "T9",
+   "base": "A",
+   "what": "16시 고리는 41.2분인데 그 판 상태를 「봉인」(새 값)으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/07-loop.txt",
+     "text": "40분 안에 못 끝내면 앞 값 유지, '시간 초과'."
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`status`: 「봉인」 · 「시간 초과 → 앞 판 유지」 · 「변수 그대로 → 앞 판 다시 봉인」 중 하나."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T9-03",
+   "target": "T9",
+   "base": "A",
+   "what": "08시 고리 끝 시각 08:45(45분)인데 minutes 칸은 31.6 그대로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T9-04",
+   "target": "T9",
+   "base": "A",
+   "what": "뒤 판 하나(gen 9)의 고리 줄이 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "고리 기록이 없는 판을 T9 가 볼지(재현 판처럼 고리 없는 판도 있음) 갈림"
+  },
+  {
+   "id": "D-T9-05",
+   "target": "T9",
+   "base": "A",
+   "what": "12시 고리 endedAt·minutes 를 null 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "끝 시각이 없으면 잴 수 없음 — 흠인지 「모름」인지 갈림"
+  },
+  {
+   "id": "D-T9-06",
+   "target": "T9",
+   "base": "A",
+   "what": "12시 판을 시작 52분 뒤(12:52:30)에 봉인 — 고리 기록은 12.4분",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "고리 줄과 판 봉인 시각이 어긋날 때 어느 쪽으로 잴지 갈림"
+  },
+  {
+   "id": "D-T9-07",
+   "target": "T9",
+   "base": "A",
+   "what": "뒤 판 하나(gen 11) 고리 47분(상태 ok)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    },
+    {
+     "file": "atlas4h/command/07-loop.txt",
+     "text": "40분 안에 못 끝내면 앞 값 유지, '시간 초과'."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-01",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 글에 「지금 사라.」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "금지 말: 사라·팔라·추천·목표가·확실·보장·무조건"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-02",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 글에 「반도체주는 팔라는 신호입니다.」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-03",
+   "target": "T10",
+   "base": "A",
+   "what": "12시 판 글에 「가운데 시나리오를 추천합니다.」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-04",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 「위」 전제에 「목표가 2700 돌파」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-05",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 「아래」 invalidator 를 「확실히 가운데 값 위로 올라감」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-06",
+   "target": "T10",
+   "base": "A",
+   "what": "16시 판 글에 「덮음을 보장합니다.」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-07",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 screen.chance 에 「무조건 위」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-08",
+   "target": "T10",
+   "base": "A",
+   "what": "화면 파일(view.json) 지금 판 chance 에 「확실」",
+   "specQuote": [
+    {
+     "file": "atlas4h/harness/conflicts.md",
+     "text": "금지 말은 사람에게 보이는 엔진 출력(판의 글·화면)에 적용한다(T10이 잼)."
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-09",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 사건 이름 「목표가 발표」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-10",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 큰 사고 칸(tail)에 「무조건 손절 구간」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T10-11",
+   "target": "T10",
+   "base": "A",
+   "what": "08시 판 글에 「지금 사세요.」(목록 말의 높임 꼴)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "금지 말: 사라·팔라·추천·목표가·확실·보장·무조건"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "금지 말 목록은 「사라」 글자 — 같은 뜻 다른 꼴까지 덮는지 갈림"
+  },
+  {
+   "id": "D-T10-12",
+   "target": "T10",
+   "base": "A",
+   "what": "뒤 판 하나(gen 12) 글에 「이 판은 추천 판입니다.」",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-01",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 채점 lib/atlas11/score.mjs 를 고침(3줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-02",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 엔진 scripts/atlas11/run_daily.mjs 를 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-03",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 엔진 lib/atlas11/forecast.mjs 이름 바꿈 → forecast_v1.mjs",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-04",
+   "target": "T11",
+   "base": "A",
+   "what": "새 기록 atlas4h/ledger/boards/2026-10-02.jsonl 을 덮어씀(1줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-05",
+   "target": "T11",
+   "base": "A",
+   "what": "봉인 기록 atlas4h/ledger/seals/2026-10-01.jsonl 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-06",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 채점 기록 reports/atlas11/ledger/score/2026-09-30.jsonl 을 고침(2줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-07",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 화면 기록 public/data/atlas11/ledger/score/2026-09-30.json 을 고침",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-08",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 채점 코드 lib/atlas11/score_cells.mjs 에 줄만 덧붙임(지운 줄 0)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "「지우지도 덮지도」만 읽으면 덧붙임은 허용 — T11 「변경 0」으로 읽으면 흠"
+  },
+  {
+   "id": "D-T11-09",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 엔진 폴더에 새 파일 scripts/atlas11/atlas4h_bridge.mjs 를 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "새 파일 더하기가 옛 엔진 「변경」인지 갈림"
+  },
+  {
+   "id": "D-T11-10",
+   "target": "T11",
+   "base": "A",
+   "what": "새 기록 atlas4h/ledger/boards/2026-10-01.jsonl 을 archive 로 옮김(이름 바꿈)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-11",
+   "target": "T11",
+   "base": "A",
+   "what": "옛 엔진 예약 .github/workflows/atlas11-daily.yml 을 고침",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "예약 파일이 「옛 엔진」에 드는지 갈림"
+  },
+  {
+   "id": "D-T11-12",
+   "target": "T11",
+   "base": "A",
+   "what": "시도 장부 atlas4h/seal/trials.jsonl 을 덮어씀(1줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-13",
+   "target": "T11",
+   "base": "A",
+   "what": "채점 기록 atlas4h/ledger/scores/2026-10-02.jsonl 을 덮어씀(1줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T11-14",
+   "target": "T11",
+   "base": "A",
+   "what": "감시 기록 atlas4h/ledger/watch/2026-10-02.jsonl 고침 — 덧붙이기만인지 모름(appendOnly null)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "모르는 것을 흠으로 셀지 갈림"
+  },
+  {
+   "id": "D-T12-01",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 40줄 모두 ATLAS 11 구간 점수가 내 것보다 5 낮음(ATLAS 11 을 못 이김)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T12 재현에서 폭이 기준 셋 모두를 이김 (점수)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "기준 셋: 무판·단순 전이식·ATLAS 11"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-02",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 40줄 모두 단순 전이식 = 내 점수(비김)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T12 재현에서 폭이 기준 셋 모두를 이김 (점수)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-03",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 40줄 모두 ATLAS 11 「없음」(interval null)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T12 재현에서 폭이 기준 셋 모두를 이김 (점수)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "기준 셋: 무판·단순 전이식·ATLAS 11"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-04",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 40줄에서 ATLAS 11 항목을 빼버림",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T12 재현에서 폭이 기준 셋 모두를 이김 (점수)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "기준 셋: 무판·단순 전이식·ATLAS 11"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-05",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 10줄뿐(모두 크게 이김)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "같은 시각 판 30개 미만이면 「아직 모름」(표본 정직 F4)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-06",
+   "target": "T12",
+   "base": "A",
+   "what": "무판보다 평균은 0.3 낮지만 들쭉날쭉(DM 유의 아님)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "이겼는지는 DM 검정으로(겹친 창·자기상관 보정)."
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "실력 > 0 그리고 DM 유의"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-07",
+   "target": "T12",
+   "base": "A",
+   "what": "재현 줄의 구간 점수가 α = 0.1 (80% 범위가 아님)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "\"alpha\": 0.2"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T12-08",
+   "target": "T12",
+   "base": "A",
+   "what": "앞 20줄을 두 번 적어 40줄로 부풀림(같은 판 겹침)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "같은 시각 판 30개 미만이면 「아직 모름」(표본 정직 F4)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "「겹치면 하나」(F4)를 T12 가 세는지 갈림"
+  },
+  {
+   "id": "D-T12-09",
+   "target": "T12",
+   "base": "A",
+   "what": "08시 20줄 + 16시 20줄(같은 시각 판은 20개씩)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "견줄 땐 같은 시각 판끼리만 견준다."
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "같은 시각 판 30개 미만이면 「아직 모름」(표본 정직 F4)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "같은 시각 판마다 30개를 따로 채워야 하는지 갈림"
+  },
+  {
+   "id": "D-T12-10",
+   "target": "T12",
+   "base": "A",
+   "what": "40줄 모두 12시 판인데 단순 전이식 숫자가 있음(12시 단순 전이식은 「없음」이어야 함)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment-2.json",
+     "text": "12시 판 행은 단순 전이식이 「없음」이므로 T12 재현 표에 넣지 않는다(그 사실을 재현 결과에 적는다)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "숫자가 없으면 짐작하지 말고 '없음'."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "12시 줄을 표에서 빼야 하는지·숫자를 지어낸 것인지 T12 가 볼 일인지 갈림"
+  },
+  {
+   "id": "D-T12-11",
+   "target": "T12",
+   "base": "A",
+   "what": "내 구간 점수가 15줄에서 null(남은 25줄만 셀 수 있음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "같은 시각 판 30개 미만이면 「아직 모름」(표본 정직 F4)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "null 줄을 빼고 30 미만이면 「아직 모름」으로 볼지 갈림"
+  },
+  {
+   "id": "D-T13-01",
+   "target": "T13",
+   "base": "A",
+   "what": "평소 판 34개 모두 덮음(100% — 범위가 너무 넓음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-02",
+   "target": "T13",
+   "base": "A",
+   "what": "평소 판 덮음 22/34(64.7%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-03",
+   "target": "T13",
+   "base": "A",
+   "what": "평소 판 채점 29개뿐(30 미만, 덮음 79%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-04",
+   "target": "T13",
+   "base": "A",
+   "what": "평소 판 덮음 23/34(67.6%) · 위기 5/5 — 합치면 71.8% 로 감춰짐",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "위기 구간(흔들림 상위 10%)의 덮음은 따로 잰다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-05",
+   "target": "T13",
+   "base": "A",
+   "what": "위기 판 덮음 1/5(20%) — 평소 판은 그대로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "위기 때 덮음이 모자라면 그때는 폭을 넓게 둔다."
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "덮음을 따로 잰다 · 모자라면 그 구간 폭을 넓게 둔다"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "위기 덮음이 모자랄 때 T13 이 안 통과여야 하는지(「따로 잰다」만 요구하는지) 갈림"
+  },
+  {
+   "id": "D-T13-06",
+   "target": "T13",
+   "base": "A",
+   "what": "실제 종가는 범위 밖인데 covered: true 로 적음(7줄 — 참 덮음 61.8%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-07",
+   "target": "T13",
+   "base": "A",
+   "what": "평소 판 29개 + 한 판 채점 줄을 두 번(30줄, 판은 29개)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-08",
+   "target": "T13",
+   "base": "A",
+   "what": "채점 5줄이 장부에 없는 판(봉인 안 된 판)을 가리킴 — 봉인된 평소 판은 29개",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "'맞힌 기록'은 봉인된 판만으로 센다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T13-09",
+   "target": "T13",
+   "base": "A",
+   "what": "모든 채점 줄의 interval.alpha = 0.1",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "\"alpha\": 0.2"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "판의 p10·p90 은 그대로라 덮음은 80% 범위로도 셀 수 있음 — α 칸만 틀림"
+  },
+  {
+   "id": "D-T14-01",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지난 판(08시) 가운데 값 2650(봉인 2649.86)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T14-02",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지난 판 p10 2600(봉인 2606.69)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T14-03",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지난 판 screen.value 2649(봉인 2649.86)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T14-04",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지금 판(12시, 봉인은 「확인 중」)에 숫자 2663.15",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T14-05",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 chance 의 퍼센트가 봉인과 다름(위 30% · 가운데 45%)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "chance 는 글 칸 — 글 속 숫자까지 「화면 숫자」로 볼지 갈림"
+  },
+  {
+   "id": "D-T14-06",
+   "target": "T14",
+   "base": "A",
+   "what": "화면에 장부에 없는 판 id(04시) 덩어리와 숫자",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "'맞힌 기록'은 봉인된 판만으로 센다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T14-07",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지난 판 가운데 값을 반올림 2649.9 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "보이는 자리 수로 반올림한 것을 같다고 볼지 갈림"
+  },
+  {
+   "id": "D-T14-08",
+   "target": "T14",
+   "base": "A",
+   "what": "화면에 boardId 없는 숫자 덩어리(가운데 2700)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "boardId 없는 덩어리를 어느 판과 대조할지 사양이 정하지 않음"
+  },
+  {
+   "id": "D-T14-09",
+   "target": "T14",
+   "base": "A",
+   "what": "화면 지난 판 p90 2700(봉인 2692.8)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-01",
+   "target": "T16",
+   "base": "A",
+   "what": "08시 판 단순 전이식(무판 못 이김) 무게 0.3 · 무판 0.7",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "후보는 DM 검정으로 무판을 이길 때만 무게를 얻는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-02",
+   "target": "T16",
+   "base": "A",
+   "what": "12시 판에 닮은 날(center-analog, 못 이김) 무게 0.2 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-03",
+   "target": "T16",
+   "base": "A",
+   "what": "08시 판에 무게 근거(weights.json)에 없는 가운데 후보 center-learn52 무게 0.1",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "후보는 DM 검정으로 무판을 이길 때만 무게를 얻는다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "근거 파일에 없는 후보를 「못 이긴 것」으로 볼지 갈림"
+  },
+  {
+   "id": "D-T16-04",
+   "target": "T16",
+   "base": "A",
+   "what": "weights.json 에서 단순 전이식 beatsNoChange: true(그러나 DM p 0.41) · 08시 판 무게 0.3",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "후보는 DM 검정으로 무판을 이길 때만 무게를 얻는다."
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "실력 > 0 그리고 DM 유의"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-05",
+   "target": "T16",
+   "base": "A",
+   "what": "weights.json 이 없는데 08시 판 단순 전이식 무게 0.3",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-06",
+   "target": "T16",
+   "base": "A",
+   "what": "08시 판 단순 전이식 역할 이름을 「중심」으로 바꾸고 무게 0.3",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "역할 이름이 「가운데」가 아니면 T16 이 볼지 갈림"
+  },
+  {
+   "id": "D-T16-07",
+   "target": "T16",
+   "base": "A",
+   "what": "08시 판 단순 전이식 무게 0.0001",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T16-08",
+   "target": "T16",
+   "base": "A",
+   "what": "뒤 판 하나(gen 10) 단순 전이식 무게 0.5",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T17-01",
+   "target": "T17",
+   "base": "A",
+   "what": "08시 판 사건 postSealHits 2",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`events[].leakCheck.postSealHits` = 0(T17)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T17-02",
+   "target": "T17",
+   "base": "A",
+   "what": "12시 판 사건 leakCheck 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`events[].leakCheck.postSealHits` = 0(T17)."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "검색 결과에 봉인 뒤 정보가 섞였는지 먼저 거른다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T17-03",
+   "target": "T17",
+   "base": "A",
+   "what": "16시 판 사건 postSealHits = null",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`events[].leakCheck.postSealHits` = 0(T17)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T17-04",
+   "target": "T17",
+   "base": "A",
+   "what": "08시 판 사건 leakCheck.checked 0(에이전트 6이 찾았는데 하나도 안 거름)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "검색 결과에 봉인 뒤 정보가 섞였는지 먼저 거른다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "검사 수 0 을 흠으로 볼지 갈림"
+  },
+  {
+   "id": "D-T17-05",
+   "target": "T17",
+   "base": "A",
+   "what": "12시 판에 누수 검사 없는 둘째 사건(FOMC 의사록) 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`events[].leakCheck.postSealHits` = 0(T17)."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "검색 결과에 봉인 뒤 정보가 섞였는지 먼저 거른다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T17-06",
+   "target": "T17",
+   "base": "A",
+   "what": "08시 판 사건 근거에 봉인 뒤(09:15) 게시된 기사 — postSealHits 는 0 으로 적음",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "12. 뉴스·공시·검색 결과는 게시 시각이 봉인 시각 전인 것만 쓰고, 게시 시각이 없으면 안 쓴다. (T17)"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T17 검색 결과에 봉인 뒤 정보 0 (누수 검사)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "사건 근거 목록(evidence)은 판 형식에 없는 칸 — 시험이 읽어야 하는지 갈림"
+  },
+  {
+   "id": "D-T17-07",
+   "target": "T17",
+   "base": "A",
+   "what": "08시 판 사건 근거에 게시 시각 없는 기사",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "12. 뉴스·공시·검색 결과는 게시 시각이 봉인 시각 전인 것만 쓰고, 게시 시각이 없으면 안 쓴다. (T17)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "판 형식에 없는 칸이라 갈림"
+  },
+  {
+   "id": "D-T17-08",
+   "target": "T17",
+   "base": "A",
+   "what": "뒤 판 하나(gen 5) 사건 postSealHits 1",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`events[].leakCheck.postSealHits` = 0(T17)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T18-01",
+   "target": "T18",
+   "base": "A",
+   "what": "LLM 쓴 재현 판(목표 2026-06-15 — 학습 마감 6/30 앞)을 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`llm.trainingCutoff`: 재현(지난 기록으로 돌린 판)에서는 `target.date` 가 이 날보다 뒤여야 한다(T18)."
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "LLM이 낀 판의 재현은 모델 학습 마감(이 모델 2026-06-30) 뒤 목표일만 채점(T18)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T18-02",
+   "target": "T18",
+   "base": "A",
+   "what": "LLM 쓴 재현 판(목표 2026-06-30 = 학습 마감 날)을 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`llm.trainingCutoff`: 재현(지난 기록으로 돌린 판)에서는 `target.date` 가 이 날보다 뒤여야 한다(T18)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T18-03",
+   "target": "T18",
+   "base": "A",
+   "what": "재현 판 llm.trainingCutoff 를 지움(LLM 씀)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`llm.trainingCutoff`: 재현(지난 기록으로 돌린 판)에서는 `target.date` 가 이 날보다 뒤여야 한다(T18)."
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "LLM이 낀 판은 모델이 모르는 기간으로만 채점한다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "마감을 모르면 잴 수 없음 — 흠인지 「모름」인지 갈림"
+  },
+  {
+   "id": "D-T18-04",
+   "target": "T18",
+   "base": "A",
+   "what": "재현 판 학습 마감 2026-09-15(목표 9/1 보다 뒤)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`llm.trainingCutoff`: 재현(지난 기록으로 돌린 판)에서는 `target.date` 가 이 날보다 뒤여야 한다(T18)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T18-05",
+   "target": "T18",
+   "base": "A",
+   "what": "retro 표시 없는 재현 판(자료 마감 6/15, 봉인 10/1, LLM 씀, 목표 6/15)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "LLM이 낀 판은 모델이 모르는 기간으로만 채점한다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "재현 판을 표시로 가를지 시각(자료 마감 ≪ 봉인)으로 가를지 갈림"
+  },
+  {
+   "id": "D-T19-01",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 sealedAt 을 첫 채점(10/2 15:41) 뒤 16:00 으로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "첫 채점 전에 봉인한다. 고치지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-02",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 커밋 시각이 첫 채점 뒤(10/2 16:05)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "6. 판정 기준과 시도 장부를 첫 채점 전에 봉인해라."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-03",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 sealedAt 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-04",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 파일이 없음(채점은 있음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "6. 판정 기준과 시도 장부를 첫 채점 전에 봉인해라."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-05",
+   "target": "T19",
+   "base": "A",
+   "what": "재현 판을 판정 기준 봉인(18:20) 전 18:10 에 채점한 줄을 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "첫 채점 전에 봉인한다. 고치지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-06",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 sealedAt = 첫 채점 시각(10/2 15:41:00, 같은 때)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T19-07",
+   "target": "T19",
+   "base": "A",
+   "what": "판정 기준 sealedAt 을 UTC 표기 2026-10-02T07:00:00Z(= 16:00 KST, 첫 채점 뒤)로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-01",
+   "target": "T20",
+   "base": "A",
+   "what": "고른 기록의 시도 목록에 장부에 없는 trial-0009",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "모든 시도를 결과 보기 전에 atlas4h/seal/trials.jsonl 에 적는다(T20)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-02",
+   "target": "T20",
+   "base": "A",
+   "what": "고른 기록 SPA p = 0.2",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "SPA(Hansen 2005) p < 0.05 일 때만 「기준을 이겼다」"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-03",
+   "target": "T20",
+   "base": "A",
+   "what": "고른 기록에서 spa 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "시도는 다 적고, SPA 검정으로 우연을 거른다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-04",
+   "target": "T20",
+   "base": "A",
+   "what": "시도 trial-0002 의 sealedAt 을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "모든 시도를 결과 보기 전에 atlas4h/seal/trials.jsonl 에 적는다(T20)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-05",
+   "target": "T20",
+   "base": "A",
+   "what": "고른 것(chose)이 trial-0003 — 견준 시도 목록(0001·0002)에 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "시도는 다 적고, SPA 검정으로 우연을 거른다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-06",
+   "target": "T20",
+   "base": "A",
+   "what": "고른 기록 SPA p = 0.05(문턱 p < 0.05 와 같음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "SPA(Hansen 2005) p < 0.05 일 때만 「기준을 이겼다」"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T20-07",
+   "target": "T20",
+   "base": "A",
+   "what": "시도 trial-0002 를 고른 기록(18:25) 뒤 18:40 에 봉인",
+   "specQuote": [
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "모든 시도를 결과 보기 전에 atlas4h/seal/trials.jsonl 에 적는다(T20)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "「결과 보기 전」을 무게 파일 봉인 시각으로 잴지 갈림"
+  },
+  {
+   "id": "D-T20-08",
+   "target": "T20",
+   "base": "A",
+   "what": "08시 판에 시도 장부에 없는 폭 엔진 width-tree(무게 0.2)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "text": "시도는 다 적고, SPA 검정으로 우연을 거른다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "판에 쓴 엔진마다 시도 줄이 있어야 하는지 갈림"
+  },
+  {
+   "id": "D-T20-09",
+   "target": "T20",
+   "base": "A",
+   "what": "시도 장부에 같은 id(trial-0002)의 다른 시도가 한 줄 더 있음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "id 겹침을 T20 이 볼지 갈림"
+  },
+  {
+   "id": "D-T20-10",
+   "target": "T20",
+   "base": "A",
+   "what": "시도 장부가 비었음(고른 기록은 그대로)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/seal/judgment.json",
+     "text": "모든 시도를 결과 보기 전에 atlas4h/seal/trials.jsonl 에 적는다(T20)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T21-01",
+   "target": "T21",
+   "base": "A",
+   "what": "08시 판 무판 엔진 sawPreviousBoard: true",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T21-02",
+   "target": "T21",
+   "base": "A",
+   "what": "12시 판 HAR 엔진 sawPreviousBoard 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T21-03",
+   "target": "T21",
+   "base": "A",
+   "what": "12시 판 무판 엔진 입력에 앞 판 id(08시 판)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T21 엔진들이 앞 판 값을 안 봄 (기록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T21-04",
+   "target": "T21",
+   "base": "A",
+   "what": "12시 판 입력 변수에 앞 판 가운데 값(2649.86)을 넣고 HAR-X 가 씀",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T21 엔진들이 앞 판 값을 안 봄 (기록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T21-05",
+   "target": "T21",
+   "base": "A",
+   "what": "08시 판 HAR 엔진 sawPreviousBoard: \"false\"(글자)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "글자 \"false\" 를 거짓으로 읽을지 갈림"
+  },
+  {
+   "id": "D-T21-06",
+   "target": "T21",
+   "base": "A",
+   "what": "뒤 판 하나(gen 7) HAR-X 엔진 sawPreviousBoard: true",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T22-01",
+   "target": "T22",
+   "base": "A",
+   "what": "08시 판 구조 번호에 F 칸이 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "text": "여섯 칸 중 하나라도 비면 그 답은 '미완'이다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T22-02",
+   "target": "T22",
+   "base": "A",
+   "what": "12시 판 구조 번호 빈 목록",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T22 답마다 쓴 구조 번호가 있음 (목록)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T22-03",
+   "target": "T22",
+   "base": "A",
+   "what": "16시 판 structures 칸을 지움",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T22 답마다 쓴 구조 번호가 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T22-04",
+   "target": "T22",
+   "base": "A",
+   "what": "08시 판 A 칸 번호를 없는 번호 「A7」 하나로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "text": "여섯 칸 중 하나라도 비면 그 답은 '미완'이다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T22-05",
+   "target": "T22",
+   "base": "A",
+   "what": "08시 판 구조 번호를 소문자(a1·b1…)로",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "대소문자를 같은 번호로 볼지 갈림"
+  },
+  {
+   "id": "D-T22-06",
+   "target": "T22",
+   "base": "A",
+   "what": "08시 판 구조 번호를 목록 대신 한 줄 글 「A1·B1·C3·D4·E1·F1」로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T22 답마다 쓴 구조 번호가 있음 (목록)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "꼴이 다른 것을 흠으로 볼지 갈림"
+  },
+  {
+   "id": "D-T22-07",
+   "target": "T22",
+   "base": "A",
+   "what": "뒤 판 하나(gen 3) 구조 번호에 C 칸이 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-01",
+   "target": "T23",
+   "base": "A",
+   "what": "08시 고리 감시 S3 = 1",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-02",
+   "target": "T23",
+   "base": "A",
+   "what": "12시 고리 감시 S8 = 2",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-03",
+   "target": "T23",
+   "base": "A",
+   "what": "16시 고리의 감시 줄이 없음",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-04",
+   "target": "T23",
+   "base": "A",
+   "what": "08시 고리 감시를 짓는 일꾼(「고리 일꾼」)이 함",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "text": "<감시 — 보는 눈은 짓는 이와 다른 에이전트>"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "text": "감시자: <감시>를 돈다. 짓는 일꾼과 다른 에이전트."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-05",
+   "target": "T23",
+   "base": "A",
+   "what": "12시 고리 감시에서 S5 칸이 빠짐",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-06",
+   "target": "T23",
+   "base": "A",
+   "what": "16시 고리 감시 S1 = null",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "D-T23-07",
+   "target": "T23",
+   "base": "A",
+   "what": "08시 고리 감시 두 줄 — 먼저 S4 = 1, 뒤에 모두 0(다시 돌려 덮음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "마지막 줄만 볼지 모든 줄을 볼지 갈림"
+  },
+  {
+   "id": "D-T23-08",
+   "target": "T23",
+   "base": "A",
+   "what": "08시 고리 감시 시각이 고리 끝(08:31:36) 전 08:20",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "text": "<감시 — 보는 눈은 짓는 이와 다른 에이전트>"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "감시 시각 순서를 T23 이 볼지 갈림"
+  },
+  {
+   "id": "D-T23-09",
+   "target": "T23",
+   "base": "A",
+   "what": "뒤 판 하나(gen 12) 고리 감시 S6 = 1",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  }
+ ],
+ "probes": [
+  {
+   "id": "P-01",
+   "near": "T10",
+   "base": "A",
+   "what": "08시 판 글 「반도체 걱정이 사라졌습니다.」(「사라지다」 속 글자)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "금지 말을 글자 겹침으로 셀지 낱말로 셀지 갈림(conflicts 14 는 글자 겹침을 금지 말로 안 봄)"
+  },
+  {
+   "id": "P-02",
+   "near": "T10",
+   "base": "A",
+   "what": "08시 판 글 「목표일 종가로 채점합니다.」(「목표가」 아님)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`text`·`screen.chance` 등 사람이 읽는 글에는 금지 말(사라·팔라·추천·목표가·확실·보장·무조건)이 없다(T10)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-03",
+   "near": "T5",
+   "base": "A",
+   "what": "08시 판 시나리오를 p10·p90 으로 나눔 — 위 0.1 · 가운데 0.8 · 아래 0.1(범위·chance 도 맞춤)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`kospi.scenarios`: 「위」「가운데」「아래」 정확히 셋, `prob` 합 = 1(T5). 각자 `invalidator`(틀렸다는 표시) 하나."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "확률은 그 분포에서 나온다(합 100%)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-04",
+   "near": "T11",
+   "base": "A",
+   "what": "새 기록 atlas4h/ledger/boards/2026-10-02.jsonl 에 덧붙이기만(지운 줄 0)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-05",
+   "near": "T11",
+   "base": "A",
+   "what": "새 날짜 기록 파일 atlas4h/ledger/seals/2026-10-03.jsonl 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "모든 기록은 덧붙이기만 합니다(JSON 한 줄 = 기록 하나). 고치지도 지우지도 않습니다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-06",
+   "near": "T11",
+   "base": "A",
+   "what": "문서 atlas4h/README.md 고침",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T11 옛 엔진·채점·기록 변경 0 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-07",
+   "near": "T11",
+   "base": "A",
+   "what": "새 엔진 atlas4h/engine/board.mjs 고침(5줄 지움)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "봉인된 앞 판 엔진 코드도 「옛 엔진」으로 볼지 갈림"
+  },
+  {
+   "id": "P-08",
+   "near": "T11",
+   "base": "A",
+   "what": "ATLAS 11 자기 매일 커밋(atlas11 daily)이 public/data/atlas11/forecast.json 을 고침",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "text": "옛 엔진·채점·기록은 지우지도 덮지도 않는다."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "옛 엔진이 스스로 도는 커밋까지 T11 이 볼지 갈림"
+  },
+  {
+   "id": "P-09",
+   "near": "T13",
+   "base": "A",
+   "what": "16시 판(시간 초과 → 앞 판 유지)도 채점 줄을 더함(목표 10/5)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "text": "안 바꿔도 그 고리의 판은 봉인해 채점에 넣는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-10",
+   "near": "T21",
+   "base": "A",
+   "what": "「변수 그대로 → 앞 판 다시 봉인」 판을 새 id 로 더함(08시 판 값 그대로, 12:05 봉인)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/07-loop.txt",
+     "text": "변수가 그대로면 계산 없이 앞 판을 다시 봉인한다."
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`status`: 「봉인」 · 「시간 초과 → 앞 판 유지」 · 「변수 그대로 → 앞 판 다시 봉인」 중 하나."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "앞 판 값을 그대로 다시 봉인한 것을 「엔진이 앞 판을 봄」으로 읽을 수도 있음"
+  },
+  {
+   "id": "P-11",
+   "near": "T7",
+   "base": "A",
+   "what": "08시 판 출처들에서 fetchedAt 을 뺌(board.md 보기처럼 변수 칸에만 둠)",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "8. 값마다 시각 둘을 붙인다 — `observedAt`(값이 생긴 때) · `fetchedAt`(받은 때). (T7 · T2)"
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "board.md 보기의 출처에는 fetchedAt 이 없음 — 출처마다 있어야 하는지 갈림"
+  },
+  {
+   "id": "P-12",
+   "near": "T2",
+   "base": "A",
+   "what": "08시 판에 다음 날 예정 사건(10/5 21:30) 하나 더 — 예정 시각은 자료가 아님",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-13",
+   "near": "T9",
+   "base": "A",
+   "what": "08시 고리 39.9분(판도 08:39:50 봉인)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T9 고리 40분 안 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-14",
+   "near": "T16",
+   "base": "A",
+   "what": "08시 판 폭 엔진 무게를 0.5·0.5 로(폭은 T16 대상 아님)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`engines[]`: `sawPreviousBoard`는 모두 `false`(T21). 「가운데」 후보 중 무판을 못 이긴 것은 `weight: 0`(T16 · 근거는 `atlas4h/seal/weights.json`)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-15",
+   "near": "T14",
+   "base": "A",
+   "what": "화면 파일에 숫자 아닌 칸 더함(updatedAt · note)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T14 화면 숫자 = 봉인 값 (대조)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-16",
+   "near": "T8",
+   "base": "A",
+   "what": "08시 판 두 길 pathB 2650.2(차이 0.34 ≤ 허용 0.5) · agree: true",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`twoPath`: 같은 숫자를 두 길로 센 것. 어긋나면 `agree: false` 이고 그 숫자는 화면에 「확인 중」(T8)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-17",
+   "near": "T22",
+   "base": "A",
+   "what": "08시 판 구조 번호 순서를 바꾸고 맞는 번호(A3·B4·F6)를 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`structures`: A~F 여섯 칸에서 하나 이상씩(감시 S1·S2 · T22)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-18",
+   "near": "T23",
+   "base": "A",
+   "what": "08시 고리 감시 S9 caught 2 · improved true · S10 kept 12/13(T23 은 S1~S8 만)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T23 감시 S1~S8이 모두 0 (감시 장부)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-19",
+   "near": "T18",
+   "base": "A",
+   "what": "LLM 안 쓴 재현 판(목표 2026-06-15)을 더함",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`llm.trainingCutoff`: 재현(지난 기록으로 돌린 판)에서는 `target.date` 가 이 날보다 뒤여야 한다(T18)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-20",
+   "near": "T3",
+   "base": "A",
+   "what": "08시 판 씨앗 0(맞는 정수 씨앗)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T3 봉인에 코드 판·자료 판·씨앗이 다 있음 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-21",
+   "near": "T6",
+   "base": "A",
+   "what": "08시 판 maxGap 1e-9(맞춘 뒤 부동소수 찌꺼기)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`reconciliation`: 코스피는 52종목의 합이 아니므로 「나머지」 마디를 둔다. `maxGap` = 맞춘 뒤 위·아래 마디의 어긋남 최댓값(T6)."
+    }
+   ],
+   "contested": true,
+   "contestedWhy": "아주 작은 어긋남을 0 으로 볼 허용 폭은 사양에 없음"
+  },
+  {
+   "id": "P-22",
+   "near": "T19",
+   "base": "A",
+   "what": "판정 기준 sealedAt 을 같은 때의 UTC 표기 2026-10-01T09:20:00Z 로",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-23",
+   "near": "T2",
+   "base": "A",
+   "what": "08시 판 코스피 observedAt 을 같은 때의 UTC 표기 2026-10-01T06:30:00Z 로(변수·출처 모두)",
+   "specQuote": [
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`observedAt`·`fetchedAt`(출처 것 포함)은 모두 `sealedAt` 이하. 봉인 뒤 자료는 없다(T2)."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-24",
+   "near": "T20",
+   "base": "A",
+   "what": "시도 장부에 고르지 않은 시도 trial-0004 하나 더(봉인 시각 있음)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-25",
+   "near": "T8",
+   "base": "A",
+   "what": "08시 판 S&P500 에 둘째 출처(FRED)가 어긋나 「확인 중」 — 어느 엔진도 S&P500 을 안 씀",
+   "specQuote": [
+    {
+     "file": "atlas4h/data/contract.md",
+     "text": "16. 차이가 허용 폭(`variables.json` 의 `compare`)을 넘으면 「확인 중」으로 두고 그 고리에서 쓰지 않는다. (T8)"
+    },
+    {
+     "file": "atlas4h/spec/board.md",
+     "text": "`inputs.variables[]`: 값마다 `observedAt`·`fetchedAt`·출처 둘(`sources` 2개). 출처가 하나면 `status` 「한 출처」, 4시간이 넘었으면 「옛값」, 두 출처가 어긋나면 「확인 중」(계산에 안 씀), 값이 없으면 「없음」(`value: null`). 0으로 채우지 않는다."
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  },
+  {
+   "id": "P-26",
+   "near": "T4",
+   "base": "B",
+   "what": "엔진 출력을 새 객체로 다시 만들어 돌려줌(값은 같고 키 순서만 다름)",
+   "specQuote": [
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "text": "T4 같은 입력이면 같은 출력 (재실행)"
+    }
+   ],
+   "contested": false,
+   "contestedWhy": null
+  }
+ ],
+ "plantedByCheck": {
+  "T1": 7,
+  "T2": 9,
+  "T3": 9,
+  "T4": 8,
+  "T5": 9,
+  "T6": 7,
+  "T7": 9,
+  "T8": 9,
+  "T9": 7,
+  "T10": 12,
+  "T11": 14,
+  "T12": 11,
+  "T13": 9,
+  "T14": 9,
+  "T16": 8,
+  "T17": 8,
+  "T18": 5,
+  "T19": 7,
+  "T20": 10,
+  "T21": 6,
+  "T22": 7,
+  "T23": 9
+ },
+ "note": "미리 등록 — 결과 없음. 이 커밋 뒤에는 흠·탐침을 지우거나 고치지 않는다."
+}
