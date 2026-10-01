@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T17:10:16.394Z",
-  "base": "http://localhost:8851",
+  "at": "2026-10-01T19:32:01.571Z",
+  "base": "http://127.0.0.1:8841",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
   "chromium": "playwright chromium (headless)",
@@ -11,19 +11,19 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 250,
+  "passed": 248,
   "failed": 0,
   "clarity": {
     "pc": {
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 0,
+        "bareNumbers": 4,
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 4,
+        "formatDates": 5,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -125,12 +125,12 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 0,
+        "bareNumbers": 4,
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 4,
+        "formatDates": 5,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -232,12 +232,12 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 0,
+        "bareNumbers": 4,
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 4,
+        "formatDates": 5,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -339,12 +339,12 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 0,
+        "bareNumbers": 4,
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 4,
+        "formatDates": 5,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -446,12 +446,12 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 0,
+        "bareNumbers": 4,
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 4,
+        "formatDates": 5,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -799,7 +799,7 @@
   ],
   "checks": [
     {
-      "name": "pc 내일: 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 첫 장면 글상자 · 진행 점 5 · 건너뛰기 · 맨 위 단추 둘 · 아래 탭 둘",
+      "name": "pc 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 둘",
       "ok": true,
       "detail": {
         "title": "내일",
@@ -808,10 +808,15 @@
         "up": 12,
         "down": 40,
         "half": 28,
-        "cap": "ATLAS가 보는 52종목입니다.",
-        "progress": 5,
-        "mode": "skip",
-        "ctl": "건너뛰기",
+        "story": "off",
+        "cap": 0,
+        "progress": 0,
+        "ctl": 0,
+        "links": 0,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "say": "나머지 40종목은 내릴 쪽입니다.\n속이 빈 28개는 거의 반반입니다.",
+        "visible": "visible",
         "tools": [
           "가",
           ""
@@ -828,44 +833,41 @@
       "detail": null
     },
     {
-      "name": "pc 내일: 둘째 장면 글상자 「이 중 12종목이 내일 오를 쪽입니다.」",
+      "name": "pc 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
       "ok": true,
       "detail": {
-        "scene2": "이 중 12종목이 내일 오를 쪽입니다."
-      }
-    },
-    {
-      "name": "pc 내일: 건너뛰기 → 끝 장면(가운데 12종목 · 「52종목 중 오를 쪽」 · 글상자 끝 문장) · 목록 올라옴(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 속 빈 원 · 다시 보기",
-      "ok": true,
-      "detail": {
-        "cap": "그래서 내일은 52종목 중 12종목이 오를 쪽입니다.",
-        "num": "12종목",
-        "of": "52종목 중 오를 쪽",
-        "mode": "replay",
-        "ctl": "다시 보기",
         "rows": 17,
         "pills": 17,
         "more": "35종목 더 보기",
         "heads": [
-          "오를 쪽 12종목",
-          "내릴 쪽 40종목",
+          "오를 쪽 12",
+          "내릴 쪽 40",
           "지난 3번의 성적"
         ],
-        "visible": "visible",
         "hollow": true,
-        "foot": "10월 1일(목) 종가로 계산"
+        "solid": true,
+        "foot": "10월 1일 목요일 종가로 계산"
       }
     },
     {
-      "name": "pc 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 반반 문장은 40~60%일 때만",
+      "name": "pc 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
       "ok": true,
       "detail": {
         "card": {
           "big": "52%",
-          "days": 3,
+          "days": [
+            "9월 29일 35/52",
+            "9월 30일 27/52",
+            "10월 1일 19/52"
+          ],
           "honest": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
         },
-        "want": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
+        "want": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다.",
+        "wantDays": [
+          "9월 29일 35/52",
+          "9월 30일 27/52",
+          "10월 1일 19/52"
+        ]
       }
     },
     {
@@ -884,27 +886,42 @@
       "detail": null
     },
     {
-      "name": "pc 내일: 같은 발행본을 다시 열면 이야기를 다시 돌리지 않음(끝 장면 · 다시 보기)",
+      "name": "pc 내일(2차): 점이 톡톡 나타남(t-pop · 0.5초 · 점마다 14ms) · 끝나면 52점 모두 보임",
       "ok": true,
       "detail": {
-        "mode": "replay",
-        "story": "done"
+        "names": "t-pop",
+        "d0": "0s",
+        "d1": "0.014s",
+        "dur": "0.5s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0
       }
     },
     {
-      "name": "pc 내일: 「다시 보기」 → 첫 장면부터 다시",
+      "name": "pc 내일(2차): 다시 열어도 이야기 없이 같은 화면(건너뛰기·다시 보기 없음)",
       "ok": true,
       "detail": {
-        "mode": "skip",
-        "cap": "ATLAS가 보는 52종목입니다."
+        "names": "t-pop",
+        "d0": "0s",
+        "d1": "0.014s",
+        "dur": "0.5s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0
       }
     },
     {
-      "name": "pc 내일: 움직임 줄이기 설정이면 처음부터 끝 장면(이야기 없음 · 글상자 끝 문장)",
+      "name": "pc 내일(2차): 움직임 줄이기 설정이면 점이 움직이지 않고 처음부터 다 보임",
       "ok": true,
       "detail": {
-        "mode": "replay",
-        "cap": "그래서 내일은 52종목 중 12종목이 오를 쪽입니다.",
+        "names": "none",
+        "d0": "0s",
+        "d1": "0s",
+        "dur": "0s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0,
         "visible": "visible"
       }
     },
@@ -1414,7 +1431,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cw49xdx-band-inner\")",
+        "bandFill": "url(\"#ctyxefm-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -1445,7 +1462,7 @@
       "detail": []
     },
     {
-      "name": "mobile 내일: 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 첫 장면 글상자 · 진행 점 5 · 건너뛰기 · 맨 위 단추 둘 · 아래 탭 둘",
+      "name": "mobile 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 둘",
       "ok": true,
       "detail": {
         "title": "내일",
@@ -1454,10 +1471,15 @@
         "up": 12,
         "down": 40,
         "half": 28,
-        "cap": "ATLAS가 보는 52종목입니다.",
-        "progress": 5,
-        "mode": "skip",
-        "ctl": "건너뛰기",
+        "story": "off",
+        "cap": 0,
+        "progress": 0,
+        "ctl": 0,
+        "links": 0,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "say": "나머지 40종목은 내릴 쪽입니다.\n속이 빈 28개는 거의 반반입니다.",
+        "visible": "visible",
         "tools": [
           "가",
           ""
@@ -1474,44 +1496,41 @@
       "detail": null
     },
     {
-      "name": "mobile 내일: 둘째 장면 글상자 「이 중 12종목이 내일 오를 쪽입니다.」",
+      "name": "mobile 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
       "ok": true,
       "detail": {
-        "scene2": "이 중 12종목이 내일 오를 쪽입니다."
-      }
-    },
-    {
-      "name": "mobile 내일: 건너뛰기 → 끝 장면(가운데 12종목 · 「52종목 중 오를 쪽」 · 글상자 끝 문장) · 목록 올라옴(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 속 빈 원 · 다시 보기",
-      "ok": true,
-      "detail": {
-        "cap": "그래서 내일은 52종목 중 12종목이 오를 쪽입니다.",
-        "num": "12종목",
-        "of": "52종목 중 오를 쪽",
-        "mode": "replay",
-        "ctl": "다시 보기",
         "rows": 17,
         "pills": 17,
         "more": "35종목 더 보기",
         "heads": [
-          "오를 쪽 12종목",
-          "내릴 쪽 40종목",
+          "오를 쪽 12",
+          "내릴 쪽 40",
           "지난 3번의 성적"
         ],
-        "visible": "visible",
         "hollow": true,
-        "foot": "10월 1일(목) 종가로 계산"
+        "solid": true,
+        "foot": "10월 1일 목요일 종가로 계산"
       }
     },
     {
-      "name": "mobile 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 반반 문장은 40~60%일 때만",
+      "name": "mobile 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
       "ok": true,
       "detail": {
         "card": {
           "big": "52%",
-          "days": 3,
+          "days": [
+            "9월 29일 35/52",
+            "9월 30일 27/52",
+            "10월 1일 19/52"
+          ],
           "honest": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
         },
-        "want": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
+        "want": "156번 가운데 81번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다.",
+        "wantDays": [
+          "9월 29일 35/52",
+          "9월 30일 27/52",
+          "10월 1일 19/52"
+        ]
       }
     },
     {
@@ -1530,27 +1549,42 @@
       "detail": null
     },
     {
-      "name": "mobile 내일: 같은 발행본을 다시 열면 이야기를 다시 돌리지 않음(끝 장면 · 다시 보기)",
+      "name": "mobile 내일(2차): 점이 톡톡 나타남(t-pop · 0.5초 · 점마다 14ms) · 끝나면 52점 모두 보임",
       "ok": true,
       "detail": {
-        "mode": "replay",
-        "story": "done"
+        "names": "t-pop",
+        "d0": "0s",
+        "d1": "0.014s",
+        "dur": "0.5s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0
       }
     },
     {
-      "name": "mobile 내일: 「다시 보기」 → 첫 장면부터 다시",
+      "name": "mobile 내일(2차): 다시 열어도 이야기 없이 같은 화면(건너뛰기·다시 보기 없음)",
       "ok": true,
       "detail": {
-        "mode": "skip",
-        "cap": "ATLAS가 보는 52종목입니다."
+        "names": "t-pop",
+        "d0": "0s",
+        "d1": "0.014s",
+        "dur": "0.5s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0
       }
     },
     {
-      "name": "mobile 내일: 움직임 줄이기 설정이면 처음부터 끝 장면(이야기 없음 · 글상자 끝 문장)",
+      "name": "mobile 내일(2차): 움직임 줄이기 설정이면 점이 움직이지 않고 처음부터 다 보임",
       "ok": true,
       "detail": {
-        "mode": "replay",
-        "cap": "그래서 내일은 52종목 중 12종목이 오를 쪽입니다.",
+        "names": "none",
+        "d0": "0s",
+        "d1": "0s",
+        "dur": "0s",
+        "minOpacity": 1,
+        "story": "off",
+        "ctl": 0,
         "visible": "visible"
       }
     },
@@ -1869,8 +1903,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 113,
-          "bottom": 189,
+          "top": 125,
+          "bottom": 201,
           "firstChild": true
         }
       }
@@ -2065,7 +2099,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cr4oymf-band-inner\")",
+        "bandFill": "url(\"#ch2q6m4-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -2110,9 +2144,19 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
-      "detail": null
+      "detail": {
+        "rel": [],
+        "vague": [],
+        "bare": [
+          "12 ⟵ 12",
+          "오를 쪽 12 ⟵ 12",
+          "내릴 쪽 40 ⟵ 40",
+          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
+        ],
+        "src": []
+      }
     },
     {
       "name": "잘린 글자 pc stock: 0",
@@ -2180,9 +2224,19 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
-      "detail": null
+      "detail": {
+        "rel": [],
+        "vague": [],
+        "bare": [
+          "12 ⟵ 12",
+          "오를 쪽 12 ⟵ 12",
+          "내릴 쪽 40 ⟵ 40",
+          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
+        ],
+        "src": []
+      }
     },
     {
       "name": "잘린 글자 mobile stock: 0",
@@ -2250,9 +2304,19 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
-      "detail": null
+      "detail": {
+        "rel": [],
+        "vague": [],
+        "bare": [
+          "12 ⟵ 12",
+          "오를 쪽 12 ⟵ 12",
+          "내릴 쪽 40 ⟵ 40",
+          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
+        ],
+        "src": []
+      }
     },
     {
       "name": "잘린 글자 mobile-dark stock: 0",
@@ -2320,9 +2384,19 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
-      "detail": null
+      "detail": {
+        "rel": [],
+        "vague": [],
+        "bare": [
+          "12 ⟵ 12",
+          "오를 쪽 12 ⟵ 12",
+          "내릴 쪽 40 ⟵ 40",
+          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
+        ],
+        "src": []
+      }
     },
     {
       "name": "잘린 글자 pc-200 stock: 0",
@@ -2390,9 +2464,19 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
-      "detail": null
+      "detail": {
+        "rel": [],
+        "vague": [],
+        "bare": [
+          "12 ⟵ 12",
+          "오를 쪽 12 ⟵ 12",
+          "내릴 쪽 40 ⟵ 40",
+          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
+        ],
+        "src": []
+      }
     },
     {
       "name": "잘린 글자 mobile-dark-200 stock: 0",
@@ -3226,5 +3310,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T17-08-04-683Z"
+  "dir": "reports/atlas11/browser/2026-10-01T19-29-54-049Z"
 }
