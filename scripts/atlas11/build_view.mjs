@@ -39,6 +39,18 @@ export async function loadArchiveReconstruction(input) {
 }
 
 export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
+  const files = await buildViewFiles({now});
+  const dir = path.join(root, 'public/data/atlas11/view');
+  await fs.rm(dir + '.next', {recursive: true, force: true});
+  await fs.mkdir(path.join(dir + '.next', 'stocks'), {recursive: true});
+  for (const [name, value] of files) await fs.writeFile(path.join(dir + '.next', name), JSON.stringify(value));
+  await fs.rm(dir, {recursive: true, force: true}); await fs.rename(dir + '.next', dir);
+  const manifest = files.get('manifest.json');
+  return {forecastId: manifest.forecastId, files: files.size, dir: path.relative(root, dir), scoreTargetDate: manifest.scoreTargetDate, firstScorableDate: manifest.firstScorableDate, scoredDates: manifest.scoredDates, bytes: [...files.values()].reduce((s, v) => s + Buffer.byteLength(JSON.stringify(v)), 0)};
+}
+
+/** 화면 묶음을 메모리에서만 만든다(파일에 쓰지 않음) — 대개선 검사(T4 · 두 번 만들기)도 이것을 쓴다 */
+export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   const [publication, input, calendar, publications, abLatest, factorStatus, operation] = await Promise.all([read('public/data/atlas11/forecast.json'), read('public/data/input.json'), read('public/data/rolling-calendar.json'), readAllPublications(root), read('reports/atlas11/ab/latest.json', null), read('public/data/factor36-status.json', null), read('reports/atlas11/operations/latest.json', null)]);
   validateForecast11(publication);
   const ab = abLatest ? await read('reports/atlas11/ab/' + abLatest.runId + '/result.json', null) : null;
@@ -68,7 +80,8 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   const factorRecords = currentRecords(await readRecords(root, 'factor')), lastFactorDay = factorRecords.map(r => r.body.day).sort().at(-1);
   // 같은 날 여러 번 실행하면 요인 기록이 여러 벌 쌓인다(덮어쓰지 않음) — 현황표는 요인마다 그날 마지막 기록 하나
   if (evolve) { const lastByFactor = new Map(); for (const r of factorRecords.filter(r => r.body.day === lastFactorDay).sort((a, b) => String(a.at).localeCompare(String(b.at)))) lastByFactor.set(r.body.factorId, {...r.body, recordedAt: r.at, recordId: r.id}); evolve.factorTable = [...lastByFactor.values()].sort((a, b) => a.factorId.localeCompare(b.factorId)); evolve.factorTableNote = `${lastFactorDay} 기록 ${factorRecords.filter(r => r.body.day === lastFactorDay).length}건 중 요인마다 마지막 기록`; }
-  const scoreRecords = currentRecords(await readRecords(root, 'score')).map(r => r.body).filter(c => c.kind === 'live');
+  const scoreLedger = currentRecords(await readRecords(root, 'score'));
+  const scoreRecords = scoreLedger.map(r => r.body).filter(c => c.kind === 'live');
   const analysisRecords = currentRecords(await readRecords(root, 'analysis')).map(r => r.body).filter(a => a.kind === 'cell');
   const scoreHistory = {byCode: {}};
   for (const c of scoreRecords) { const an = analysisRecords.findLast(a => a.forecastId === c.forecastId && a.code === c.code && a.targetDate === c.targetDate); /* 같은 셀을 새 방법으로 다시 분석하면 기록이 덧붙는다 → 마지막(최신) 분석을 보인다 */ (scoreHistory.byCode[c.code] ??= []).push({forecastId: c.forecastId, modelVersion: c.modelVersion, originDate: c.originDate, targetDate: c.targetDate, horizon: c.horizon, p50: c.predicted.p50, p10: c.lower, p90: c.upper, actual: c.actual, ape: c.ape, priceError: c.priceError, predictedDirection: c.predictedDirection, actualDirection: c.actualDirection, directionCorrect: c.directionCorrect, priceHit: c.priceHit, covered: c.covered, class: c.class, classLabel: c.classLabel, brier: c.brier, causes: an?.causes ?? null, facts: an?.facts ?? null, hypotheses: an?.hypotheses ?? null, analysisVersion: an?.analysisVersion ?? null, evidence: an?.evidence ? {news: an.evidence.news, disclosures: {count: an.evidence.disclosures.count, corporateActions: an.evidence.disclosures.corporateActions}, flows: an.evidence.flows} : null}); }
@@ -117,14 +130,7 @@ export async function buildAndWriteView({now = new Date().toISOString()} = {}) {
   }
   // 「왜 틀렸나」: 원인 분석 칸(장부)을 그대로 넘긴다 — 네 통 나누기는 lib/atlas11/misses.mjs(규칙은 결과 보기 전에 고정)
   const missCells = (await current('analysis')).filter(r => r.body?.kind === 'cell' && r.body?.horizon === 1);
-  const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
-  const dir = path.join(root, 'public/data/atlas11/view');
-  await fs.rm(dir + '.next', {recursive: true, force: true});
-  await fs.mkdir(path.join(dir + '.next', 'stocks'), {recursive: true});
-  for (const [name, value] of files) await fs.writeFile(path.join(dir + '.next', name), JSON.stringify(value));
-  await fs.rm(dir, {recursive: true, force: true}); await fs.rename(dir + '.next', dir);
-  const manifest = files.get('manifest.json');
-  return {forecastId: manifest.forecastId, files: files.size, dir: path.relative(root, dir), scoreTargetDate: manifest.scoreTargetDate, firstScorableDate: manifest.firstScorableDate, scoredDates: manifest.scoredDates, bytes: [...files.values()].reduce((s, v) => s + Buffer.byteLength(JSON.stringify(v)), 0)};
+  return buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
