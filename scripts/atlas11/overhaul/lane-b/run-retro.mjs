@@ -12,7 +12,7 @@ import {ROOT, RETRO_INPUT, inputAt, readJSON, sha256} from './common.mjs';
 import {runRetro, protocolOf, sameAsStored} from './retro.mjs';
 
 const arg = k => { const i = process.argv.indexOf(k); return i < 0 ? null : process.argv[i + 1]; };
-const model = arg('--model') ?? 'A', center = arg('--center') ?? 'mean', out = arg('--out');
+const model = arg('--model') ?? 'A', center = arg('--center') ?? 'mean', out = arg('--out'), strict = process.argv.includes('--strict');
 if (!out) { console.error('--out 이 필요하다'); process.exit(2); }
 const config = readJSON('config/atlas11/evolution.v1.json');
 const protocol = protocolOf(config);
@@ -20,12 +20,18 @@ const {input, sha256: inputSHA} = inputAt(RETRO_INPUT.commit, RETRO_INPUT.path, 
 const spec = config.operating.spec;
 let fitBlock = null, simulate;
 if (model === 'pooled') fitBlock = (await import('./pooled.mjs')).pooledFitBlock;
+// --strict: T13 글자 그대로(학습 끝 < 기준일)를 지키는 민감도 판 — 블록 첫날 행을 학습에서 뺀다(v1 은 r.date <= o.date · backtest.mjs:41)
+if (strict) {
+  const {fitSpecModel} = await import('../../../../lib/atlas11/evolve/models.mjs');
+  const inner = fitBlock;
+  fitBlock = (designs, o, s) => inner ? inner(designs.map(d => ({...d, rows: d.rows.filter(r => r.date < o.date)})), o, s) : designs.map(d => fitSpecModel(d.rows.filter(r => r.date < o.date), s, {featureFactors: d.featureFactors}));
+}
 if (center !== 'mean') { const m = await import('./simulate-variant.mjs'); simulate = (models, panel, assets, dates, opt) => m.simulateJointVariant(models, panel, assets, dates, {...opt, center}); }
 const t0 = Date.now();
 const run = runRetro(input, spec, {protocol, fitBlock, simulate: simulate ?? undefined, onProgress: (k, n, d) => { if (k % 20 === 0) console.error(JSON.stringify({model, center, completed: k, total: n, origin: d, elapsedMs: Date.now() - t0})); }});
-const stored = model === 'A' && center === 'mean' ? readJSON('reports/atlas11/evolve/backtests/A.json') : null;
+const stored = model === 'A' && center === 'mean' && !strict ? readJSON('reports/atlas11/evolve/backtests/A.json') : null;
 const reproduction = stored ? sameAsStored(run, stored) : null;
-const result = {schema: 'atlas11-overhaul-retro-cells-1', label: '후향', model, center, protocol, protocolSHA256: sha256(JSON.stringify(protocol)).slice(0, 16), input: {...RETRO_INPUT, sha256: inputSHA}, elapsedMs: Date.now() - t0, reproduction, ...run};
+const result = {schema: 'atlas11-overhaul-retro-cells-1', label: '후향', model, center, strictTrainingBeforeOrigin: strict, protocol, protocolSHA256: sha256(JSON.stringify(protocol)).slice(0, 16), input: {...RETRO_INPUT, sha256: inputSHA}, elapsedMs: Date.now() - t0, reproduction, ...run};
 fs.mkdirSync(path.dirname(path.resolve(out)), {recursive: true});
 fs.writeFileSync(out, JSON.stringify(result));
 console.log(JSON.stringify({model, center, out, elapsedMs: result.elapsedMs, reproduction: reproduction && {identical: reproduction.identical, diffCount: reproduction.diffCount}, summary: run.summary}));
