@@ -1,0 +1,819 @@
+{
+ "schema": "atlas4h-verify-1",
+ "at": "2026-10-01T18:37:32+09:00",
+ "by": "독립 시험 일꾼",
+ "base": "atlas4h/spec/fixtures/good",
+ "goodState": {
+  "T1": true,
+  "T2": true,
+  "T3": true,
+  "T4": false,
+  "T5": true,
+  "T6": true,
+  "T7": true,
+  "T8": true,
+  "T9": true,
+  "T10": true,
+  "T11": false,
+  "T12": false,
+  "T13": false,
+  "T14": true,
+  "T15": false,
+  "T16": true,
+  "T17": true,
+  "T18": true,
+  "T19": false,
+  "T20": true,
+  "T21": true,
+  "T22": true,
+  "T23": true,
+  "K1": false,
+  "K2": false,
+  "K3": false,
+  "K4": false,
+  "K5": false,
+  "K6": false,
+  "K7": false
+ },
+ "extraGood": {
+  "T12": {
+   "pass": true,
+   "reason": "재현 20줄에서 기준 셋 모두 이김 (DM p 0.000 · 0.000 · 0.000)"
+  },
+  "T13": {
+   "pass": true,
+   "reason": "80% 범위 덮음 78.1% (32판) · 위기 50.0% (2판)"
+  },
+  "T19": {
+   "pass": true,
+   "reason": "판정 기준 봉인·커밋 모두 첫 채점 전"
+  },
+  "T11": {
+   "pass": true,
+   "reason": "atlas4h 커밋 2개 · 파일 3개 — 옛 엔진·기록 변경 0"
+  },
+  "T11_viaCHECKS": {
+   "pass": true,
+   "reason": "atlas4h 커밋 2개 · 파일 3개 — 옛 엔진·기록 변경 0"
+  }
+ },
+ "defects": [
+  {
+   "check": "T1",
+   "what": "08시 판 가운데 값 2649.86 → 2649.87 (판 id·봉인 기록 그대로)",
+   "caught": true,
+   "reason": "봉인과 어긋남 1 (지문 다름 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T1",
+   "what": "12시 판 설명 글 끝에 빈칸 한 칸 덧붙임",
+   "caught": true,
+   "reason": "봉인과 어긋남 1 (지문 다름 1) — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "check": "T1",
+   "what": "08시 판을 고친 줄을 같은 id 로 하나 더 덧붙임(원래 줄은 그대로 둠)",
+   "caught": true,
+   "reason": "봉인과 어긋남 2 (지문 다름 1 · 판 겹침 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T1",
+   "what": "08시 판을 고친 뒤 새 지문으로 봉인 기록을 하나 더 덧붙임(다시 봉인)",
+   "caught": true,
+   "reason": "봉인과 어긋남 2 (지문 다름 1 · 봉인 겹침 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T1",
+   "what": "12시 판의 봉인 기록 줄을 지움(봉인 지문 없는 판)",
+   "caught": true,
+   "reason": "봉인과 어긋남 1 (봉인 없음 1) — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "check": "T1",
+   "what": "08시 판 시나리오 확률을 0.25/0.5/0.25 → 0.3/0.45/0.25 로 고침(합은 그대로 1)",
+   "caught": true,
+   "reason": "봉인과 어긋남 1 (지문 다름 1) — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T2",
+   "what": "변수 observedAt = 봉인 시각 + 1초",
+   "caught": true,
+   "reason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 sox.observedAt"
+  },
+  {
+   "check": "T2",
+   "what": "출처(sources[]) 하나의 fetchedAt 만 봉인 뒤 1분",
+   "caught": true,
+   "reason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.sources[1].fetchedAt"
+  },
+  {
+   "check": "T2",
+   "what": "UTC 표기 \"2026-10-02T00:00:00Z\"(= 09:00 KST, 08:31:40 봉인 뒤)로 observedAt 적음",
+   "caught": true,
+   "reason": "봉인 뒤 자료 3 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 kospi.observedAt · 4h-20261002-08-a1b2c3d4 kospi.sources[0].observedAt 외 1"
+  },
+  {
+   "check": "T2",
+   "what": "재현 판: 자료 마감(9/1 08:30) 뒤인 9/1 09:00 관측값 사용 — 봉인(10/1)보다는 앞",
+   "caught": true,
+   "reason": "봉인 뒤 자료 3 · 못 읽은 시각 0 — r4h-20260901-08-d4e5f6a7 kospi.observedAt · r4h-20260901-08-d4e5f6a7 kospi.sources[0].observedAt 외 1"
+  },
+  {
+   "check": "T2",
+   "what": "코스피 출발값 anchor.asOf 가 봉인 뒤 5분",
+   "caught": false,
+   "reason": "시각 96개 모두 봉인·자료 마감 전"
+  },
+  {
+   "check": "T2",
+   "what": "상수 측정 시각 constants.measuredAt 이 봉인 뒤 10분",
+   "caught": true,
+   "reason": "봉인 뒤 자료 1 · 못 읽은 시각 0 — 4h-20261002-08-a1b2c3d4 constants.measuredAt",
+   "contested": true
+  },
+  {
+   "check": "T3",
+   "what": "08시 판에서 seed 칸을 지움",
+   "caught": true,
+   "reason": "빠짐: 씨앗 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T3",
+   "what": "seed = null",
+   "caught": true,
+   "reason": "빠짐: 씨앗 1 — 4h-20261002-08-a1b2c3d4"
+  },
+  {
+   "check": "T3",
+   "what": "code.commit = \"\" (빈 글자)",
+   "caught": true,
+   "reason": "빠짐: 코드 판 1 — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "check": "T3",
+   "what": "dataVersion.sha256 칸을 지움(files 는 남김)",
+   "caught": true,
+   "reason": "빠짐: 자료 판 1 — 4h-20261002-12-b2c3d4e5"
+  },
+  {
+   "check": "T3",
+   "what": "dataVersion.files = [] (자료 파일 목록 비움)",
+   "caught": false,
+   "reason": "판 4개 모두 코드 판·자료 판·씨앗 있음"
+  },
+  {
+   "check": "T3",
+   "what": "code.dirty = true (커밋 안 된 코드로 셈)",
+   "caught": false,
+   "reason": "판 4개 모두 코드 판·자료 판·씨앗 있음",
+   "contested": true
+  },
+  {
+   "check": "T5",
+   "what": "확률 0.333·0.333·0.333 (합 0.999)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 확률 합 0.999000"
+  },
+  {
+   "check": "T5",
+   "what": "시나리오 둘(위 0.5·아래 0.5) — 합은 1",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님"
+  },
+  {
+   "check": "T5",
+   "what": "확률을 백분율로 적음 25·50·25 (합 100)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 확률 합 100.000000"
+  },
+  {
+   "check": "T5",
+   "what": "음수 확률 0.6·0.6·-0.2 (합 1)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 확률 합 1.000000"
+  },
+  {
+   "check": "T5",
+   "what": "이름이 「위」「가운데」「옆」 (아래 없음) — 합 1",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님"
+  },
+  {
+   "check": "T5",
+   "what": "네 번째 시나리오(확률 0) 덧붙임 — 합 1",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 이름이 위·가운데·아래 셋이 아님",
+   "contested": true
+  },
+  {
+   "check": "T6",
+   "what": "reconciliation.method = \"OLS\"",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 맞추는 법이 MinT 가 아님"
+  },
+  {
+   "check": "T6",
+   "what": "maxGap = 0.4 (맞춘 뒤에도 어긋남 남음)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 어긋남 0.4 (코스피의 1.5e-4)"
+  },
+  {
+   "check": "T6",
+   "what": "마디에서 「나머지」 빠짐",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5: 「나머지」 마디 없음"
+  },
+  {
+   "check": "T6",
+   "what": "reconciliation 칸 통째로 없음",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5: 맞추는 법이 MinT 가 아님"
+  },
+  {
+   "check": "T6",
+   "what": "마디에 종목 000660 이 빠짐(판에는 000660 예측이 있음)",
+   "caught": false,
+   "reason": "판 4개 모두 MinT 로 맞춰짐 (나머지 마디 · 어긋남 0)"
+  },
+  {
+   "check": "T7",
+   "what": "status \"ok\" 인데 출처 하나",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 kospi: 「ok」인데 출처 1개"
+  },
+  {
+   "check": "T7",
+   "what": "status \"ok\" · 출처 둘이 같은 이름·같은 주소(중복)",
+   "caught": false,
+   "reason": "변수 24개 모두 시각·출처 둘 (모자라면 표시)"
+  },
+  {
+   "check": "T7",
+   "what": "status \"ok\" 인데 fetchedAt 없음",
+   "caught": false,
+   "reason": "변수 24개 모두 시각·출처 둘 (모자라면 표시)"
+  },
+  {
+   "check": "T7",
+   "what": "값 없음인데 value 0 으로 채움(status 「없음」)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 vkospi: 「없음」인데 값이 0"
+  },
+  {
+   "check": "T7",
+   "what": "value null 인데 status \"ok\"",
+   "caught": false,
+   "reason": "변수 24개 모두 시각·출처 둘 (모자라면 표시)"
+  },
+  {
+   "check": "T7",
+   "what": "두 출처 값이 2% 어긋나는데 status \"ok\"(확인 중 아님)",
+   "caught": false,
+   "reason": "변수 24개 모두 시각·출처 둘 (모자라면 표시)"
+  },
+  {
+   "check": "T7",
+   "what": "봉인 5시간 전 관측값인데 status \"ok\"·표시 없음(옛값이어야)",
+   "caught": false,
+   "reason": "변수 24개 모두 시각·출처 둘 (모자라면 표시)"
+  },
+  {
+   "check": "T8",
+   "what": "pathA 2652.0 · pathB 2655.0 · 허용 0.5 인데 agree: true 로 적음",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 코스피 가운데 값: 두 길이 3 다른데 「같음」 · 4h-20261002-08-a1b2c3d4 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "check": "T8",
+   "what": "agree: false 인데 화면 값이 숫자(2663.15)",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "check": "T8",
+   "what": "agree: false 인데 pathA·pathB 가 같음(거짓 어긋남 — 숫자를 숨김)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 코스피 가운데 값: 어긋난 숫자가 화면에 나옴"
+  },
+  {
+   "check": "T8",
+   "what": "봉인 판의 twoPath 를 비움 [] (두 길을 안 셈)",
+   "caught": false,
+   "reason": "두 길 2개 — 어긋난 1개는 모두 화면에 「확인 중」",
+   "contested": true
+  },
+  {
+   "check": "T9",
+   "what": "41분 걸린 고리를 status \"ok\" 로 적음",
+   "caught": true,
+   "reason": "loop-20261002-08: 41.0분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "check": "T9",
+   "what": "minutes 39.5 로 적었지만 시작~끝은 41분",
+   "caught": true,
+   "reason": "loop-20261002-08: 41.0분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "check": "T9",
+   "what": "40분 30초(40.5) · status \"ok\"",
+   "caught": true,
+   "reason": "loop-20261002-12: 40.5분인데 「시간 초과」 표시 없음"
+  },
+  {
+   "check": "T9",
+   "what": "시간 초과 고리인데 그 판은 새로 「봉인」(앞 판 유지 아님)",
+   "caught": true,
+   "reason": "loop-20261002-16: 시간 초과인데 판이 「시간 초과 → 앞 판 유지」 아님"
+  },
+  {
+   "check": "T9",
+   "what": "끝 시각 없는 고리(endedAt·minutes 없음) · status \"ok\"",
+   "caught": true,
+   "reason": "loop-20261002-12: 걸린 시간을 못 읽음"
+  },
+  {
+   "check": "T10",
+   "what": "설명 글 긴 문장 속 「확실」: \"외국인 순매수가 이어지면 2700 돌파가 확실해 보입니다.\"",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「확실」 4h-20261002-08-a1b2c3d4 text[1]"
+  },
+  {
+   "check": "T10",
+   "what": "화면 가능성 줄 끝에 「무조건」",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「무조건」 4h-20261002-08-a1b2c3d4 screen.chance"
+  },
+  {
+   "check": "T10",
+   "what": "시나리오 전제(premise) 속 「목표가」",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「목표가」 4h-20261002-08-a1b2c3d4 kospi.scenarios[0].premise"
+  },
+  {
+   "check": "T10",
+   "what": "사건 이름 속 「추천」",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「추천」 4h-20261002-12-b2c3d4e5 events[0].name"
+  },
+  {
+   "check": "T10",
+   "what": "꼬리 위험 글에 「보장」 활용형 \"반등이 보장됩니다\"",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「보장」 4h-20261002-08-a1b2c3d4 kospi.tail[0].what"
+  },
+  {
+   "check": "T10",
+   "what": "화면 파일(view.json) 가능성 줄에 「추천」",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「추천」 화면 now.screen.chance"
+  },
+  {
+   "check": "T10",
+   "what": "시나리오 틀렸다는 표시(invalidator)에 「팔라」",
+   "caught": true,
+   "reason": "금지 말 1곳 — 「팔라」 4h-20261002-08-a1b2c3d4 kospi.scenarios[2].invalidator"
+  },
+  {
+   "check": "T11",
+   "what": "옛 엔진 파일 lib/atlas11/analysis.mjs 수정(M, 지운 줄 3)",
+   "caught": true,
+   "reason": "옛 엔진·기록을 건드림 1 — lib/atlas11/analysis.mjs (M)",
+   "viaCHECKS": {
+    "caught": true,
+    "reason": "옛 엔진·기록을 건드림 1 — lib/atlas11/analysis.mjs (M)"
+   }
+  },
+  {
+   "check": "T11",
+   "what": "옛 일별 기록 public/data/atlas11/daily/2026-09-29.json 삭제(D)",
+   "caught": true,
+   "reason": "옛 엔진·기록을 건드림 1 — public/data/atlas11/daily/2026-09-29.json (D)",
+   "viaCHECKS": {
+    "caught": true,
+    "reason": "옛 엔진·기록을 건드림 1 — public/data/atlas11/daily/2026-09-29.json (D)"
+   }
+  },
+  {
+   "check": "T11",
+   "what": "옛 보고 파일 reports/atlas11/ab/ab-db46556a729dde8b/protocol.json 이름 바꿈(R100)",
+   "caught": false,
+   "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0",
+   "viaCHECKS": {
+    "caught": false,
+    "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0"
+   }
+  },
+  {
+   "check": "T11",
+   "what": "옛 스크립트 scripts/atlas11/ab_backtest.mjs 수정(M, 지운 줄 0 — 덮어쓰기 없이 덧붙임만)",
+   "caught": true,
+   "reason": "옛 엔진·기록을 건드림 1 — scripts/atlas11/ab_backtest.mjs (M)",
+   "viaCHECKS": {
+    "caught": true,
+    "reason": "옛 엔진·기록을 건드림 1 — scripts/atlas11/ab_backtest.mjs (M)"
+   }
+  },
+  {
+   "check": "T11",
+   "what": "옛 보고 파일 reports/atlas11/overhaul/progress.json 수정(M, 지운 줄 4)",
+   "caught": false,
+   "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0",
+   "viaCHECKS": {
+    "caught": false,
+    "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0"
+   }
+  },
+  {
+   "check": "T11",
+   "what": "atlas4h 장부 줄을 고침(M, 지운 줄 1) — 기록은 덧붙이기만",
+   "caught": false,
+   "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0",
+   "viaCHECKS": {
+    "caught": false,
+    "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0"
+   },
+   "contested": true
+  },
+  {
+   "check": "T11",
+   "what": "봉인한 판정 기준 atlas4h/seal/judgment.json 수정(M, 지운 줄 2)",
+   "caught": false,
+   "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0",
+   "viaCHECKS": {
+    "caught": false,
+    "reason": "atlas4h 커밋 3개 · 파일 4개 — 옛 엔진·기록 변경 0"
+   },
+   "contested": true
+  },
+  {
+   "check": "T12",
+   "what": "한 기준(무판)에 평균 0.1 차로 짐(줄마다 다른 차이)",
+   "caught": true,
+   "reason": "못 이김: 「무판」보다 폭 점수가 낮지 않음"
+  },
+  {
+   "check": "T12",
+   "what": "기준 둘만 적음(ATLAS 11 줄 없음)",
+   "caught": true,
+   "reason": "기준 「ATLAS 11」 점수 없음 — 2026-09-01 · 2026-09-02 외 18 (20줄)"
+  },
+  {
+   "check": "T12",
+   "what": "alpha 0.1(90% 폭)로 셈 — 80% 폭이 아님",
+   "caught": true,
+   "reason": "구간 α 가 0.2 가 아닌 줄 20개"
+  },
+  {
+   "check": "T12",
+   "what": "재현 줄이 하나도 없음 rows: []",
+   "caught": true,
+   "reason": "재현 채점 줄 없음"
+  },
+  {
+   "check": "T12",
+   "what": "폭 점수가 기준 셋보다 모두 큼(나쁨)",
+   "caught": true,
+   "reason": "못 이김: 「무판」보다 폭 점수가 낮지 않음 · 「단순 전이식」보다 폭 점수가 낮지 않음 · 「ATLAS 11」보다 폭 점수가 낮지 않음"
+  },
+  {
+   "check": "T13",
+   "what": "평소 30판 중 20판만 덮음(66.7%)",
+   "caught": true,
+   "reason": "80% 범위 덮음 65.6% — 70~90% 밖 (32판)"
+  },
+  {
+   "check": "T13",
+   "what": "평소 30판 중 28판 덮음(93.3% — 폭이 너무 넓음)",
+   "caught": true,
+   "reason": "80% 범위 덮음 90.6% — 70~90% 밖 (32판)"
+  },
+  {
+   "check": "T13",
+   "what": "평소 30줄이지만 15판을 두 번씩 채점(서로 다른 판 15개)",
+   "caught": true,
+   "reason": "채점 17판 — 30판이 안 됨"
+  },
+  {
+   "check": "T13",
+   "what": "평소 30줄 중 1줄을 위기로 돌림 — 평소 판은 29판",
+   "caught": false,
+   "reason": "80% 범위 덮음 78.1% (32판) · 위기 33.3% (3판)"
+  },
+  {
+   "check": "T13",
+   "what": "평소 30판 덮음 66.7%(20/30) + 위기 10판 모두 덮음 → 합치면 75%로 가려짐",
+   "caught": false,
+   "reason": "80% 범위 덮음 75.0% (40판) · 위기 100.0% (10판)"
+  },
+  {
+   "check": "T13",
+   "what": "위기 날 2줄을 평소로 섞음(crisis: false) — 위기를 따로 안 잼",
+   "caught": true,
+   "reason": "덮음 78.1% (32판) · 위기 판 없음 — 따로 잴 수 없음"
+  },
+  {
+   "check": "T13",
+   "what": "덮음 칸 covered 를 모든 줄에서 지움",
+   "caught": true,
+   "reason": "덮음을 잴 수 없는 채점 32개"
+  },
+  {
+   "check": "T14",
+   "what": "view.json 08시 판 가운데 값 2649.86 → 2649.87",
+   "caught": true,
+   "reason": "봉인 값과 다른 화면 숫자 2 — 4h-20261002-08-a1b2c3d4 kospi.center: 화면 2649.87 · 봉인 2649.86 · 4h-20261002-08-a1b2c3d4 screen.value: 화면 2649.87 · 봉인 2649.86"
+  },
+  {
+   "check": "T14",
+   "what": "view.json 08시 판 p90 2692.8 → 2693.8",
+   "caught": true,
+   "reason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 kospi.quantiles.p90: 화면 2693.8 · 봉인 2692.8"
+  },
+  {
+   "check": "T14",
+   "what": "view.json 지금 판(12시 · 「확인 중」)을 숫자 2663.15 로 냄",
+   "caught": true,
+   "reason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-12-b2c3d4e5 screen.value: 화면 2663.15 · 봉인 \"확인 중\""
+  },
+  {
+   "check": "T14",
+   "what": "봉인 판 안의 screen.value(2652.0)가 같은 판 kospi.center(2649.86)와 다름",
+   "caught": true,
+   "reason": "봉인 값과 다른 화면 숫자 1 — 4h-20261002-08-a1b2c3d4 screen.value: 화면 2649.86 · 봉인 2652"
+  },
+  {
+   "check": "T14",
+   "what": "view.json 에 봉인 기록 없는 판 id 의 숫자를 덧붙임",
+   "caught": true,
+   "reason": "봉인 값과 다른 화면 숫자 4 — 4h-20261002-04-ffffffff: 그런 판 없음"
+  },
+  {
+   "check": "T16",
+   "what": "center-transfer(무판 못 이김) 무게 0 → 0.3",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 center-transfer: 무판을 못 이겼는데 무게 0.3"
+  },
+  {
+   "check": "T16",
+   "what": "center-transfer 무게 0.0001 (아주 작은 0 아님)",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5 center-transfer: 무판을 못 이겼는데 무게 0.0001"
+  },
+  {
+   "check": "T16",
+   "what": "weights.json 에 beatsNoChange: true 로 적었지만 DM p = 0.41, 판 무게 0.3",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 center-transfer: 무판을 못 이겼는데 무게 0.3"
+  },
+  {
+   "check": "T16",
+   "what": "weights.json 근거 목록에 없는 가운데 후보(center-momentum)가 무게 0.2",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 center-momentum: 무판을 못 이겼는데 무게 0.2 (근거에 없는 후보)"
+  },
+  {
+   "check": "T17",
+   "what": "leakCheck.postSealHits = 1",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 미국 고용지표: 봉인 뒤 정보 1건"
+  },
+  {
+   "check": "T17",
+   "what": "leakCheck 칸 없음",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5 미국 고용지표: 누수 검사 안 함"
+  },
+  {
+   "check": "T17",
+   "what": "leakCheck.checked = 0 (하나도 안 봤는데 0건)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4 미국 고용지표: 누수 검사 안 함"
+  },
+  {
+   "check": "T18",
+   "what": "재현 판 목표일 2026-06-15 (학습 마감 06-30 앞)",
+   "caught": true,
+   "reason": "r4h-20260901-08-d4e5f6a7: 겨눈 날 2026-06-15 ≤ 학습 마감 2026-06-30"
+  },
+  {
+   "check": "T18",
+   "what": "재현 판 목표일 = 학습 마감일 2026-06-30 (뒤가 아님)",
+   "caught": true,
+   "reason": "r4h-20260901-08-d4e5f6a7: 겨눈 날 2026-06-30 ≤ 학습 마감 2026-06-30"
+  },
+  {
+   "check": "T18",
+   "what": "재현 판 llm.trainingCutoff 없음 (used: true)",
+   "caught": true,
+   "reason": "r4h-20260901-08-d4e5f6a7: 날짜를 못 읽음"
+  },
+  {
+   "check": "T18",
+   "what": "retro 표시를 지운 재현 판: 자료 마감 6/1·봉인 10/1·목표 6/1 (학습 마감 앞)",
+   "caught": true,
+   "reason": "LLM 을 쓴 재현 판 없음"
+  },
+  {
+   "check": "T19",
+   "what": "판정 기준 봉인 = 첫 채점 + 1분 (커밋도 같은 때)",
+   "caught": true,
+   "reason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "check": "T19",
+   "what": "판정 기준 sealedAt 은 앞이지만 파일 커밋이 첫 채점 뒤(날짜를 앞으로 적음)",
+   "caught": true,
+   "reason": "판정 기준 커밋이 첫 채점보다 늦음"
+  },
+  {
+   "check": "T19",
+   "what": "판정 기준 봉인(18:18:39) 전에 채점한 줄(18:00)이 하나 있음",
+   "caught": true,
+   "reason": "판정 기준 봉인이 첫 채점보다 늦음"
+  },
+  {
+   "check": "T19",
+   "what": "판정 기준에 sealedAt 칸 없음",
+   "caught": true,
+   "reason": "판정 기준에 봉인 시각 없음"
+  },
+  {
+   "check": "T20",
+   "what": "고른 기록 trialIds 에 장부에 없는 trial-0004",
+   "caught": true,
+   "reason": "sel-0001: 장부에 없는 시도 trial-0004"
+  },
+  {
+   "check": "T20",
+   "what": "고른 기록에 spa 칸 없음",
+   "caught": true,
+   "reason": "sel-0001: SPA p 없음"
+  },
+  {
+   "check": "T20",
+   "what": "고른 시도(chose) trial-0003 이 trialIds 목록 밖",
+   "caught": false,
+   "reason": "고른 기록 1개 — 시도 모두 장부에 있고 SPA 거침"
+  },
+  {
+   "check": "T20",
+   "what": "시도 장부 trial-0002 의 sealedAt 없음(결과 봉인 안 됨)",
+   "caught": false,
+   "reason": "고른 기록 1개 — 시도 모두 장부에 있고 SPA 거침"
+  },
+  {
+   "check": "T20",
+   "what": "SPA p = 0.31 (못 넘었는데 고름)",
+   "caught": false,
+   "reason": "고른 기록 1개 — 시도 모두 장부에 있고 SPA 거침",
+   "contested": true
+  },
+  {
+   "check": "T21",
+   "what": "width-harx sawPreviousBoard: true",
+   "caught": true,
+   "reason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-12-b2c3d4e5 width-harx"
+  },
+  {
+   "check": "T21",
+   "what": "sawPreviousBoard 칸 없음",
+   "caught": true,
+   "reason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-08-a1b2c3d4 width-har"
+  },
+  {
+   "check": "T21",
+   "what": "sawPreviousBoard: \"false\" (글자)",
+   "caught": true,
+   "reason": "앞 판을 봤거나 기록 없음 1 — 4h-20261002-08-a1b2c3d4 center-nochange"
+  },
+  {
+   "check": "T21",
+   "what": "엔진 입력에 앞 판 id(board:4h-20261002-08-…)가 있는데 sawPreviousBoard false",
+   "caught": false,
+   "reason": "엔진 16개 모두 앞 판 안 봄"
+  },
+  {
+   "check": "T22",
+   "what": "구조 번호에서 F 칸이 빠짐(A~E 만)",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 빈 칸 F"
+  },
+  {
+   "check": "T22",
+   "what": "structures = []",
+   "caught": true,
+   "reason": "4h-20261002-12-b2c3d4e5: 구조 번호 없음"
+  },
+  {
+   "check": "T22",
+   "what": "F1·F2 를 없는 칸 G1 로 바꿈",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 없는 번호 G1 · 4h-20261002-08-a1b2c3d4: 빈 칸 F"
+  },
+  {
+   "check": "T22",
+   "what": "번호 없는 칸 이름 \"F\" 만 적음",
+   "caught": true,
+   "reason": "4h-20261002-08-a1b2c3d4: 없는 번호 F · 4h-20261002-08-a1b2c3d4: 빈 칸 F"
+  },
+  {
+   "check": "T22",
+   "what": "structures 칸 통째로 없음",
+   "caught": true,
+   "reason": "4h-20261002-16-c3d4e5f6: 구조 번호 없음"
+  },
+  {
+   "check": "T23",
+   "what": "감시 기록에 S7 칸이 없음",
+   "caught": true,
+   "reason": "loop-20261002-12: S7=없음"
+  },
+  {
+   "check": "T23",
+   "what": "S4 = 1",
+   "caught": true,
+   "reason": "loop-20261002-08: S4=1"
+  },
+  {
+   "check": "T23",
+   "what": "S8 = null (안 잼)",
+   "caught": true,
+   "reason": "loop-20261002-16: S8=없음"
+  },
+  {
+   "check": "T23",
+   "what": "16시 고리의 감시 기록 줄이 없음",
+   "caught": true,
+   "reason": "loop-20261002-16: 감시 기록 없음"
+  },
+  {
+   "check": "T23",
+   "what": "감시자가 짓는 이와 같음 by: \"고리 일꾼\"",
+   "caught": false,
+   "reason": "고리 3개 모두 감시 S1~S8 = 0",
+   "contested": true
+  },
+  {
+   "check": "T23",
+   "what": "S3 = \"0\" (글자) · S5 = 0.5",
+   "caught": true,
+   "reason": "loop-20261002-12: S5=0.5"
+  }
+ ],
+ "probes": [
+  {
+   "check": "T10",
+   "what": "정상 낱말 「불확실성」",
+   "falseAlarm": false,
+   "reason": "금지 말 0 (글 560개 검사)"
+  },
+  {
+   "check": "T10",
+   "what": "정상 낱말 「사라졌다」",
+   "falseAlarm": true,
+   "reason": "금지 말 1곳 — 「사라」 4h-20261002-08-a1b2c3d4 text[1]"
+  },
+  {
+   "check": "T12",
+   "what": "좋은 재현 — 줄마다 차이가 똑같음(40 대 46·47·48)",
+   "falseAlarm": true,
+   "crashed": true,
+   "reason": "ERROR Cannot read properties of null (reading 'toFixed')"
+  }
+ ],
+ "summary": {
+  "planted": 111,
+  "caught": 90,
+  "missed": 21,
+  "missedList": [
+   "T2: 코스피 출발값 anchor.asOf 가 봉인 뒤 5분",
+   "T3: dataVersion.files = [] (자료 파일 목록 비움)",
+   "T3: code.dirty = true (커밋 안 된 코드로 셈) [다툼]",
+   "T6: 마디에 종목 000660 이 빠짐(판에는 000660 예측이 있음)",
+   "T7: status \"ok\" · 출처 둘이 같은 이름·같은 주소(중복)",
+   "T7: status \"ok\" 인데 fetchedAt 없음",
+   "T7: value null 인데 status \"ok\"",
+   "T7: 두 출처 값이 2% 어긋나는데 status \"ok\"(확인 중 아님)",
+   "T7: 봉인 5시간 전 관측값인데 status \"ok\"·표시 없음(옛값이어야)",
+   "T8: 봉인 판의 twoPath 를 비움 [] (두 길을 안 셈) [다툼]",
+   "T11: 옛 보고 파일 reports/atlas11/ab/ab-db46556a729dde8b/protocol.json 이름 바꿈(R100)",
+   "T11: 옛 보고 파일 reports/atlas11/overhaul/progress.json 수정(M, 지운 줄 4)",
+   "T11: atlas4h 장부 줄을 고침(M, 지운 줄 1) — 기록은 덧붙이기만 [다툼]",
+   "T11: 봉인한 판정 기준 atlas4h/seal/judgment.json 수정(M, 지운 줄 2) [다툼]",
+   "T13: 평소 30줄 중 1줄을 위기로 돌림 — 평소 판은 29판",
+   "T13: 평소 30판 덮음 66.7%(20/30) + 위기 10판 모두 덮음 → 합치면 75%로 가려짐",
+   "T20: 고른 시도(chose) trial-0003 이 trialIds 목록 밖",
+   "T20: 시도 장부 trial-0002 의 sealedAt 없음(결과 봉인 안 됨)",
+   "T20: SPA p = 0.31 (못 넘었는데 고름) [다툼]",
+   "T21: 엔진 입력에 앞 판 id(board:4h-20261002-08-…)가 있는데 sawPreviousBoard false",
+   "T23: 감시자가 짓는 이와 같음 by: \"고리 일꾼\" [다툼]"
+  ],
+  "strict": {
+   "planted": 103,
+   "caught": 88,
+   "missed": 15
+  },
+  "contestedNote": "contested(다툼) = 사양 글이 그 흠까지 덮는지 읽는 사람마다 갈릴 수 있는 것"
+ }
+}
