@@ -1,6 +1,6 @@
 /* ATLAS 11 · 성적(실시간 채점 + 채점 예정표) · 자료 상태(36요인 격자 · 달력 · 실행 기록 · 검사 증거 · 무결성) — 진화는 view-evolution.js */
 import {h, num, pct, pctPoint, pctRaw, won, korDate, shortDate, weekday, stamp, kst, dirWord, dirMark, DIR, finite, download, csvCell, reducedMotion} from './util.js';
-import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, loadMisses, setSummary, url, state} from './store.js';
+import {loadScores, loadEvolution, loadStatus, loadCards, loadLedger, loadMisses, loadScoreCells, setSummary, url, state} from './store.js';
 import {reportDetails} from './view-records.js';
 import {headline, editionSource, lineChart, pickBox} from './frame.js';
 import {bars} from './chart.js';
@@ -27,10 +27,15 @@ export async function renderScores(main, {manifest}) {
   }
   const hs1 = latest.horizonSummary[1];
   const ids = [...new Set(latest.rows.map(r => r.horizons['1']).filter(c => c?.status === 'evaluated').map(c => c.forecastId))];
-  setSummary(`${korDate(latest.date)} 종가 채점. 1거래일 전망 ${hs1.evaluated}종목 중 방향 맞힘 ${hs1.correct}종목, 평균 오차 ${pctRaw(hs1.meanAPE)}.`);
-  const hl = headline({speak: `${korDate(latest.date)} 종가 채점, 1거래일 전망 ${hs1.evaluated}종목 중 방향 맞힘 ${hs1.correct}종목, 평균 오차 ${pctRaw(hs1.meanAPE)}`,
-    parts: [`${korDate(latest.date)} 종가 채점 · 1거래일 전망 ${hs1.evaluated}종목 중 방향 맞힘 `, {figure: `${hs1.correct}종목`}, ` · 평균 오차 ${pctRaw(hs1.meanAPE)}`],
-    source: [['이 숫자', `예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 ${hs1.wrong}종목(그중 실제 보합 ${hs1.flatActual}종목)`], ['평균 오차', `|중앙 전망 − 실제 종가| ÷ 실제 종가 를 ${hs1.evaluated}종목 평균한 값`], ['채점 규칙', `보합 경계 ±${((s.delta ?? 0.001) * 100).toFixed(2)}% · 같은 거래일에 여러 번 발행하면 먼저 발행한 것만 채점 · 규칙은 결과를 보기 전에 고정${sp ? `(${sp.version})` : ''}`], ['채점한 발행본', h('span', null, ...ids.map(id => h('code', null, id)))], ...editionSource(manifest, 'scores.json')]});
+  // 맨 위 한 줄(명령서 6판 R5): 아래 「종목별 맞고 틀림」과 같은 파일(score-cells.json)에서 센 숫자 — 그 파일이 없을 때만 채점판 요약
+  const cellsFile = await loadScoreCells().catch(() => null);
+  const topCells = cellsFile?.cells?.filter(c => c.date === latest.date) ?? [];
+  const H = topCells.length ? {n: topCells.length, correct: topCells.filter(c => c.dirOk).length, flat: topCells.filter(c => !c.dirOk && c.actDir === 'flat').length, meanAPE: topCells.reduce((t, c) => t + c.ape * 100, 0) / topCells.length, file: 'score-cells.json'}
+    : {n: hs1.evaluated, correct: hs1.correct, flat: hs1.flatActual, meanAPE: hs1.meanAPE, file: 'scores.json'};
+  setSummary(`${korDate(latest.date)} 종가 채점. 1거래일 전망 ${H.n}종목 중 방향 맞힘 ${H.correct}종목, 평균 오차 ${pctRaw(H.meanAPE)}.`);
+  const hl = headline({speak: `${korDate(latest.date)} 종가 채점, 1거래일 전망 ${H.n}종목 중 방향 맞힘 ${H.correct}종목, 평균 오차 ${pctRaw(H.meanAPE)}`,
+    parts: [`${korDate(latest.date)} 종가 채점 · 1거래일 전망 ${H.n}종목 중 방향 맞힘 `, {figure: `${H.correct}종목`}, ` · 평균 오차 ${pctRaw(H.meanAPE)}`],
+    source: [['이 숫자', `예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 ${H.n - H.correct}종목(그중 실제 보합 ${H.flat}종목)${H.file === 'score-cells.json' ? ' · 아래 「종목별 맞고 틀림」과 같은 파일에서 셈' : ''}`], ['평균 오차', `|중앙 전망 − 실제 종가| ÷ 실제 종가 를 ${H.n}종목 평균한 값`], ['채점 규칙', `보합 경계 ±${((s.delta ?? 0.001) * 100).toFixed(2)}% · 같은 거래일에 여러 번 발행하면 먼저 발행한 것만 채점 · 규칙은 결과를 보기 전에 고정${sp ? `(${sp.version})` : ''}`], ['채점한 발행본', h('span', null, ...ids.map(id => h('code', null, id)))], ...editionSource(manifest, H.file)]});
   // 증거 그래프: 날짜별 방향 맞힘(마지막 값 = 헤드라인 숫자) · 가운데 기준선 = 52종목의 절반
   const lineBox = h('div');
   const evidence = h('section', {class: 'panel', 'aria-label': '헤드라인 숫자의 증거 그래프'}, h('h2', {class: 'panel-title'}, '날짜별 1거래일 전망 방향 맞힘'), lineBox,
@@ -39,7 +44,23 @@ export async function renderScores(main, {manifest}) {
   const sel = h('select', {class: 'select small', 'aria-label': '채점 날짜', onchange: ev => renderDay(ev.target.value)}, ...scored.slice().reverse().map(d => h('option', {value: d.date, selected: d.date === latest.date}, korDate(d.date))));
   const dayTitle = h('h2', {class: 'panel-title'}), distBox = h('div', {class: 'bars'}), resultBox = h('div', {class: 'bars'}), bandBox = h('div', {class: 'bars'}), tableFold = h('details', {class: 'more'});
   const BINS = [[0, 0.5, '0.5% 미만'], [0.5, 1, '0.5%~1%'], [1, 2, '1%~2%'], [2, 3, '2%~3%'], [3, Infinity, '3% 이상']];
+  // 종목별 맞고 틀림(W4): 날짜 고르개를 따른다 · 숫자는 score-cells.json 하나에서
+  const scTitle = h('h2', {class: 'panel-title'}), quadBox = h('div', {class: 'quad', role: 'list', 'aria-label': '네 묶음 종목 수'}), scList = h('div', {class: 'sc-list'});
+  const scPanel = cellsFile ? h('section', {class: 'panel sc-panel', id: 'score-cells', 'aria-label': '종목별 맞고 틀림'}, scTitle, quadBox,
+    h('p', {class: 'muted small sc-rule'}, '방향: 출발 종가 대비 ±0.10% 밖이면 상승·하락, 안이면 보합 · 예측 방향은 상승·보합·하락 가운데 확률이 가장 높은 쪽(예측 가격의 등락과 다를 수 있음)'),
+    h('p', {class: 'muted small sc-rule'}, '폭: 오차율 = |예측 가격 − 실제 종가| ÷ 실제 종가 · 1.50% 이하면 맞음 · 종목은 가나다순'),
+    scList) : null;
+  const renderCells = date => {
+    if (!scPanel) return;
+    const rows = cellsFile.cells.filter(c => c.date === date).sort((a, b) => a.name.localeCompare(b.name, 'ko') || (a.code < b.code ? -1 : 1));
+    scTitle.textContent = `${korDate(date)} 종가 · 종목별 맞고 틀림 · ${rows.length}종목`;
+    quadCells(quadBox, [1, 2, 3, 4].map(g => rows.filter(c => c.group === g).length), rows.length);
+    scList.replaceChildren(
+      h('div', {class: 'sc-wide'}, h('table', {class: 'table sc-table'}, h('thead', null, h('tr', null, ...SC_HEAD.map(x => h('th', {scope: 'col'}, x)))), h('tbody', null, ...rows.map(scoreRow)))),
+      h('ol', {class: 'sc-cards'}, ...rows.map(scoreCard)));
+  };
   const renderDay = date => {
+    renderCells(date);
     const d = scored.find(x => x.date === date), hs = d.horizonSummary;
     const rows = d.rows.filter(r => r.horizons['1']?.status === 'evaluated').sort((a, b) => a.horizons['1'].ape - b.horizons['1'].ape);
     dayTitle.textContent = `${korDate(date)} 종가 · 1거래일 전망 ${hs[1].evaluated}종목`;
@@ -60,11 +81,49 @@ export async function renderScores(main, {manifest}) {
   const misses = await loadMisses().catch(() => null);
   main.replaceChildren(...[hl, evidence,
     h('section', {class: 'panel'}, dayTitle, h('div', {class: 'controls-row'}, h('label', {class: 'field'}, h('span', {class: 'lbl'}, '채점 날짜'), pickBox(sel, {cls: 'small'}))), h('h3', {class: 'panel-sub'}, '방향'), resultBox, misses?.counts?.wrong ? h('button', {class: 'ctl jump-misses', type: 'button', onclick: () => document.getElementById('misses')?.scrollIntoView({behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'})}, '방향이 틀린 까닭 보기 ↓') : null, h('h3', {class: 'panel-sub'}, '가격이 80% 범위 안에 들었나'), bandBox, h('h3', {class: 'panel-sub'}, '가격 오차 분포'), distBox, tableFold),
+    scPanel,
     missPanel(misses),
     h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '채점 예정표'), pending, retro),
     h('section', {class: 'panel'}, h('h2', {class: 'panel-title'}, '일일 보고'), reportDetails(ledger?.dailyReport ?? null))].filter(Boolean));
   lineChart(lineBox, {dates: scored.map(d => d.date), series: [{id: 'hit', name: '방향 맞힘', values: scored.map(d => d.horizonSummary[1].correct), cls: 'pred'}], unit: '종목', format: v => String(Math.round(v)), yMin: 0, yMax: 52, ticks: [0, 26, 52], ref: 26, height: 190, ariaLabel: '날짜별 방향 맞힘: ' + scored.map(d => `${korDate(d.date)} ${d.horizonSummary[1].correct}종목`).join(', ')});
   renderDay(latest.date);
+}
+
+/* ---------- 종목별 맞고 틀림(10/01 오후 · 대개선 명령서 6판 W4 · R2~R5): 숫자는 score-cells.json(장부 채점 기록 · 채점판과 대조) 하나에서
+   네 칸 = 그날 네 묶음 수(합 = 종목 수) → 종목마다 한 줄: 넓은 화면은 표, 좁은 화면·큰 글씨는 세 줄 카드(본문 폭 52rem 이상일 때만 표)
+   맞음·틀림은 글자로 · 빨강·파랑은 등락 숫자(오름·내림)에만 · 회사 이름은 자르지 않고 줄만 바꾼다 ---------- */
+const GROUPS = [['①', '방향·폭 모두 맞음'], ['②', '방향 맞음·폭 틀림'], ['③', '방향 틀림·폭 맞음'], ['④', '둘 다 틀림']];
+const SC_HEAD = ['채점일', '종목', '예측 가격·등락', '실제 종가·등락', '오차(원)·오차율', '방향 판정', '폭 판정', '네 묶음'];
+const verdict = ok => ok ? '맞음' : '틀림';
+const signedWon = v => { const r = Math.round(v); return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r).toLocaleString('ko-KR') + '원'; };
+const retDir = r => r > 0.001 ? 'up' : r < -0.001 ? 'down' : 'flat';
+const retSpan = (r, cls) => h('span', {class: `sc-r ${retDir(r)} ${cls}`}, pct(r));
+const dirPair = c => `예측 ${dirWord(c.predDir)} → 실제 ${dirWord(c.actDir)}`;
+function quadCells(box, counts, n) {
+  box.replaceChildren(...GROUPS.map(([mark, label], i) => {
+    const fill = h('span', {class: 'quad-fill'}); fill.style.width = (n ? counts[i] / n * 100 : 0).toFixed(1) + '%';
+    return h('div', {class: 'quad-cell', role: 'listitem', dataset: {group: String(i + 1)}}, h('span', {class: 'quad-k'}, `${mark} ${label}`), h('b', {class: 'quad-v'}, `${counts[i]}종목`), h('span', {class: 'quad-bar', 'aria-hidden': 'true'}, fill));
+  }));
+}
+function scoreRow(c) {
+  const [mark, label] = GROUPS[c.group - 1];
+  return h('tr', {dataset: {code: c.code, actDir: c.actDir, group: String(c.group)}},
+    h('td', {class: 'sc-date'}, korDate(c.date)),
+    h('th', {scope: 'row', class: 'sc-name'}, c.name),
+    h('td', {class: 'num'}, h('span', {class: 'sc-v'}, won(c.p50)), retSpan(c.predRet, 'sc-v')),
+    h('td', {class: 'num'}, h('span', {class: 'sc-v'}, won(c.actual)), retSpan(c.actRet, 'sc-v')),
+    h('td', {class: 'num'}, h('span', {class: 'sc-v'}, signedWon(c.errWon)), h('span', {class: 'sc-v'}, pctPoint(c.ape, 2))),
+    h('td', null, h('b', {class: 'sc-v'}, verdict(c.dirOk)), h('span', {class: 'sc-sub'}, dirPair(c))),
+    h('td', null, h('b', {class: 'sc-v'}, verdict(c.sizeOk))),
+    h('td', {class: 'sc-gl'}, `${mark} ${label}`));
+}
+function scoreCard(c) {
+  const [mark, label] = GROUPS[c.group - 1];
+  return h('li', {class: 'sc-card', dataset: {code: c.code, actDir: c.actDir, group: String(c.group)}},
+    h('p', {class: 'sc-l1'}, h('b', {class: 'sc-name'}, c.name), ' · ', h('span', {class: 'sc-gl'}, `${mark} ${label}`)),
+    // 줄이 좁으면 마디(예측 … · → 실제 … · 오차 … · 방향 … · 폭 …) 사이에서 먼저 줄을 바꾼다(마디 안의 숫자는 끊지 않음)
+    h('p', {class: 'sc-l2'}, h('span', {class: 'sc-seg'}, '예측 ', h('span', {class: 'nw'}, won(c.p50)), ' ', retSpan(c.predRet, 'nw')), ' ', h('span', {class: 'sc-seg'}, '→ 실제 ', h('span', {class: 'nw'}, won(c.actual)), ' ', retSpan(c.actRet, 'nw'))),
+    h('p', {class: 'sc-l3'}, h('span', {class: 'sc-seg'}, '오차 ', h('span', {class: 'nw'}, signedWon(c.errWon)), ' · ', h('span', {class: 'nw'}, pctPoint(c.ape, 2))), ' ', h('span', {class: 'sc-seg'}, `· 방향 ${verdict(c.dirOk)}(${dirPair(c)})`), ' ', h('span', {class: 'sc-seg'}, `· 폭 ${verdict(c.sizeOk)}`)));
 }
 
 /* ---------- 왜 틀렸나(10/01 사장님 요청): 틀린 1거래일 전망을 네 통으로 · 한꺼번에 민 까닭(「하락」 쏠림)

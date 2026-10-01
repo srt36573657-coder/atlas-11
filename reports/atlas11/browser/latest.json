@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T01:32:20.895Z",
+  "at": "2026-10-01T05:35:17.384Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -9,7 +9,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 248,
+  "passed": 258,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -1191,7 +1191,7 @@
       "ok": true,
       "detail": {
         "figure": "27종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목)\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를 52종목 평균한 값\n채점 규칙\n보합 경계 ±0."
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목) · 아래 「종목별 맞고 틀림」과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 "
       }
     },
     {
@@ -1231,7 +1231,7 @@
       "name": "pc 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
       "ok": true,
       "detail": {
-        "top": 120
+        "top": 229
       }
     },
     {
@@ -1308,7 +1308,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 13,
+        "constructions": 14,
         "check": true
       }
     },
@@ -1436,7 +1436,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ctk7hth-band-inner\")",
+        "bandFill": "url(\"#c0qxokk-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1585,7 +1585,7 @@
       "name": "mobile 상세: 그래프가 첫 화면 안(스크롤 전)",
       "ok": true,
       "detail": {
-        "chartTop": 388.671875
+        "chartTop": 388.5625
       }
     },
     {
@@ -1866,7 +1866,7 @@
       "ok": true,
       "detail": {
         "figure": "27종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목)\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를 52종목 평균한 값\n채점 규칙\n보합 경계 ±0."
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목) · 아래 「종목별 맞고 틀림」과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 "
       }
     },
     {
@@ -1906,7 +1906,7 @@
       "name": "mobile 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
       "ok": true,
       "detail": {
-        "top": 120
+        "top": 251
       }
     },
     {
@@ -1983,7 +1983,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 13,
+        "constructions": 14,
         "check": true
       }
     },
@@ -2111,7 +2111,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#coy4ipg-band-inner\")",
+        "bandFill": "url(\"#cec19rs-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -2521,7 +2521,477 @@
           "선택 상자: 10월 1일(목) 상승 확률 높은 순"
         ]
       }
+    },
+    {
+      "name": "W4 모서리 360 2026-09-30: 세 줄 카드 52줄 = 52 · 네 칸 20·7·16·9 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 +11원~+21,356원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360",
+        "date": "2026-09-30",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "groups": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "+11원",
+        "hi": "+21,356원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 30일(수) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 360 2026-09-29: 세 줄 카드 52줄 = 52 · 네 칸 19·16·11·6 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 −3원~+34,972원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360",
+        "date": "2026-09-29",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "groups": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "−3원",
+        "hi": "+34,972원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 29일(화) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 360-dark 2026-09-30: 세 줄 카드 52줄 = 52 · 네 칸 20·7·16·9 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 +11원~+21,356원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark",
+        "date": "2026-09-30",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "groups": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "+11원",
+        "hi": "+21,356원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 30일(수) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 360-dark 2026-09-29: 세 줄 카드 52줄 = 52 · 네 칸 19·16·11·6 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 −3원~+34,972원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark",
+        "date": "2026-09-29",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "groups": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "−3원",
+        "hi": "+34,972원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 29일(화) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 360-dark-200 2026-09-30: 세 줄 카드 52줄 = 52 · 네 칸 20·7·16·9 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 +11원~+21,356원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark-200",
+        "date": "2026-09-30",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "groups": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "+11원",
+        "hi": "+21,356원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 30일(수) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 360-dark-200 2026-09-29: 세 줄 카드 52줄 = 52 · 네 칸 19·16·11·6 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 −3원~+34,972원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark-200",
+        "date": "2026-09-29",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "groups": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "−3원",
+        "hi": "+34,972원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 29일(화) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 pc 2026-09-30: 표 52줄 = 52 · 네 칸 20·7·16·9 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 +11원~+21,356원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc",
+        "date": "2026-09-30",
+        "kind": "table",
+        "rows": 52,
+        "quad": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "groups": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "+11원",
+        "hi": "+21,356원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 30일(수) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 pc 2026-09-29: 표 52줄 = 52 · 네 칸 19·16·11·6 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 −3원~+34,972원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc",
+        "date": "2026-09-29",
+        "kind": "table",
+        "rows": 52,
+        "quad": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "groups": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "−3원",
+        "hi": "+34,972원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 29일(화) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 pc-200 2026-09-30: 세 줄 카드 52줄 = 52 · 네 칸 20·7·16·9 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 +11원~+21,356원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc-200",
+        "date": "2026-09-30",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "groups": [
+          20,
+          7,
+          16,
+          9
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "+11원",
+        "hi": "+21,356원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 30일(수) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
+    },
+    {
+      "name": "W4 모서리 pc-200 2026-09-29: 세 줄 카드 52줄 = 52 · 네 칸 19·16·11·6 합 52 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 오차 −3원~+34,972원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc-200",
+        "date": "2026-09-29",
+        "kind": "cards",
+        "rows": 52,
+        "quad": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "groups": [
+          19,
+          16,
+          11,
+          6
+        ],
+        "sorted": true,
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 3,
+          "shown": 3
+        },
+        "lo": "−3원",
+        "hi": "+34,972원",
+        "words": true,
+        "truncated": 0,
+        "truncSamples": [],
+        "overflowX": false,
+        "errors": [],
+        "title": "9월 29일(화) 종가 · 종목별 맞고 틀림 · 52종목"
+      }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T01-30-56-413Z"
+  "dir": "reports/atlas11/browser/2026-10-01T05-33-33-405Z"
 }

@@ -945,3 +945,39 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .jump-misses { margin: 8px 0 4px; }
 #misses { scroll-margin-top: 120px; }
 #misses details.more .table td:last-child { min-width: 12em; }
+/* 성적 · 종목별 맞고 틀림(10/01 오후 · 대개선 W4): 네 칸 + 종목별 줄 — 본문 폭이 52rem(글씨 크기를 따라 늘어남) 이상이면 표, 아니면 세 줄 카드
+   맞음·틀림은 글자 · 색은 등락 숫자(오름 빨강 · 내림 파랑 · ±0.10% 안 회색)에만 · 회사 이름은 자르지 않고 줄만 바꿈 */
+.sc-panel { container: scpanel / inline-size; }
+.quad { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 8px; margin: 4px 0 10px; }
+.quad-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--hair); background: var(--paper); }
+.quad-k { font-size: var(--fs-sm); font-weight: 700; overflow-wrap: anywhere; word-break: keep-all; }
+.quad-v { font-size: var(--fs-xl); font-weight: 700; font-variant-numeric: tabular-nums; }
+.quad-bar { display: block; height: 6px; margin-top: 4px; border-radius: 3px; background: var(--flat-soft); overflow: hidden; }
+.quad-fill { display: block; height: 100%; background: var(--ink); }
+.sc-rule { margin: 2px 0; }
+.sc-list { margin-top: 10px; }
+.sc-wide { display: none; }
+.sc-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sc-card { min-width: 0; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--hair); background: var(--paper); }
+.sc-card p { margin: 0; line-height: 1.5; }
+.sc-card .sc-l1 { font-size: var(--fs-md); margin-bottom: 2px; }
+.sc-card .sc-name { font-weight: 700; overflow-wrap: anywhere; word-break: keep-all; }
+.sc-card .sc-l2, .sc-card .sc-l3 { font-size: var(--fs-sm); }
+.sc-card .nw { white-space: nowrap; }
+.sc-card .sc-seg { display: inline-block; max-width: 100%; }
+#score-cells { scroll-margin-top: 120px; }
+.sc-r { font-weight: 700; }
+.sc-r.up { color: var(--up); } .sc-r.down { color: var(--down); } .sc-r.flat { color: var(--muted); }
+.sc-table th, .sc-table td { padding: 7px 8px; }
+.sc-table thead th { white-space: normal; word-break: keep-all; }
+.sc-table tbody th { color: var(--ink); font-size: var(--fs-sm); font-weight: 700; white-space: normal; word-break: keep-all; overflow-wrap: anywhere; letter-spacing: 0; }
+.sc-table td.num { text-align: right; }
+.sc-table .sc-v { display: block; white-space: nowrap; }
+.sc-table .sc-sub { display: block; font-size: var(--fs-xs); color: var(--muted); }
+.sc-table .sc-date, .sc-table .sc-gl { word-break: keep-all; }
+.sc-table tbody tr:nth-child(even) td, .sc-table tbody tr:nth-child(even) th { background: rgba(62,48,28,.025); }
+@media (prefers-color-scheme: dark) { .sc-table tbody tr:nth-child(even) td, .sc-table tbody tr:nth-child(even) th { background: rgba(255,255,255,.025); } }
+@container scpanel (min-width: 52rem) {
+  .sc-wide { display: block; }
+  .sc-cards { display: none; }
+}

@@ -53,6 +53,7 @@ export const loadScores = () => loadJSON('scores.json');
 export const loadEvolution = () => loadJSON('evolution.json');
 export const loadStatus = () => loadJSON('status.json');
 export const loadMisses = () => loadJSON('misses.json');
+export const loadScoreCells = () => loadJSON('score-cells.json');
 
 /* 기기 저장(이 기기에만) — 글씨 크기·정렬·재생 속도 */
 export const prefs = {
