@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T19:32:01.571Z",
-  "base": "http://127.0.0.1:8841",
+  "at": "2026-10-01T22:01:06.847Z",
+  "base": "http://localhost:8871",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
   "chromium": "playwright chromium (headless)",
@@ -11,7 +11,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 248,
+  "passed": 268,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -112,6 +112,21 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "game": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 1,
+        "lowContrast": 0,
+        "decoColors": 43,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -226,6 +241,21 @@
           "vague": 0,
           "bareNumbers": 0
         }
+      },
+      "game": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 1,
+        "lowContrast": 0,
+        "decoColors": 43,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
       }
     },
     "mobile-dark": {
@@ -326,6 +356,21 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "game": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 1,
+        "lowContrast": 0,
+        "decoColors": 43,
         "truncated": 0,
         "formatDates": 0,
         "source": {
@@ -440,6 +485,21 @@
           "vague": 0,
           "bareNumbers": 0
         }
+      },
+      "game": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 1,
+        "lowContrast": 0,
+        "decoColors": 43,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
       }
     },
     "mobile-dark-200": {
@@ -547,6 +607,21 @@
           "vague": 0,
           "bareNumbers": 0
         }
+      },
+      "game": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 1,
+        "lowContrast": 0,
+        "decoColors": 43,
+        "truncated": 0,
+        "formatDates": 0,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
       }
     }
   },
@@ -601,6 +676,13 @@
       "decoColors": 1
     },
     {
+      "view": "pc",
+      "screen": "game",
+      "graphable": 1,
+      "lowContrast": 0,
+      "decoColors": 43
+    },
+    {
       "view": "mobile",
       "screen": "forecast",
       "graphable": 0,
@@ -650,6 +732,13 @@
       "decoColors": 1
     },
     {
+      "view": "mobile",
+      "screen": "game",
+      "graphable": 1,
+      "lowContrast": 0,
+      "decoColors": 43
+    },
+    {
       "view": "mobile-dark",
       "screen": "forecast",
       "graphable": 0,
@@ -699,6 +788,13 @@
       "decoColors": 1
     },
     {
+      "view": "mobile-dark",
+      "screen": "game",
+      "graphable": 1,
+      "lowContrast": 0,
+      "decoColors": 43
+    },
+    {
       "view": "pc-200",
       "screen": "forecast",
       "graphable": 0,
@@ -748,6 +844,13 @@
       "decoColors": 1
     },
     {
+      "view": "pc-200",
+      "screen": "game",
+      "graphable": 1,
+      "lowContrast": 0,
+      "decoColors": 43
+    },
+    {
       "view": "mobile-dark-200",
       "screen": "forecast",
       "graphable": 0,
@@ -795,11 +898,18 @@
       "graphable": 0,
       "lowContrast": 0,
       "decoColors": 1
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "game",
+      "graphable": 1,
+      "lowContrast": 0,
+      "decoColors": 43
     }
   ],
   "checks": [
     {
-      "name": "pc 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 둘",
+      "name": "pc 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)",
       "ok": true,
       "detail": {
         "title": "내일",
@@ -823,6 +933,7 @@
         ],
         "tabs": [
           "내일",
+          "게임",
           "성적"
         ]
       }
@@ -1431,7 +1542,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ctyxefm-band-inner\")",
+        "bandFill": "url(\"#cvtppud-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -1440,10 +1551,10 @@
       }
     },
     {
-      "name": "pc 주요 메뉴(아래 탭) 2개",
+      "name": "pc 주요 메뉴(아래 탭) 3개(내일 · 게임 · 성적)",
       "ok": true,
       "detail": {
-        "nav": 2
+        "nav": 3
       }
     },
     {
@@ -1462,7 +1573,7 @@
       "detail": []
     },
     {
-      "name": "mobile 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 둘",
+      "name": "mobile 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)",
       "ok": true,
       "detail": {
         "title": "내일",
@@ -1486,6 +1597,7 @@
         ],
         "tabs": [
           "내일",
+          "게임",
           "성적"
         ]
       }
@@ -1903,8 +2015,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 125,
-          "bottom": 201,
+          "top": 118,
+          "bottom": 194,
           "firstChild": true
         }
       }
@@ -2032,8 +2144,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 126,
-          "bottom": 176,
+          "top": 72,
+          "bottom": 122,
           "firstChild": true
         }
       }
@@ -2099,7 +2211,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ch2q6m4-band-inner\")",
+        "bandFill": "url(\"#cw8vdsu-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -2108,10 +2220,10 @@
       }
     },
     {
-      "name": "mobile 주요 메뉴(아래 탭) 2개",
+      "name": "mobile 주요 메뉴(아래 탭) 3개(내일 · 게임 · 성적)",
       "ok": true,
       "detail": {
-        "nav": 2
+        "nav": 3
       }
     },
     {
@@ -2219,6 +2331,16 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 pc game: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "잘린 글자 mobile forecast: 0",
       "ok": true,
       "detail": null
@@ -2295,6 +2417,16 @@
     },
     {
       "name": "또렷함 mobile status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile game: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
       "ok": true,
       "detail": null
     },
@@ -2379,6 +2511,16 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark game: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "잘린 글자 pc-200 forecast: 0",
       "ok": true,
       "detail": null
@@ -2455,6 +2597,16 @@
     },
     {
       "name": "또렷함 pc-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc-200 game: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
       "ok": true,
       "detail": null
     },
@@ -2539,6 +2691,16 @@
       "detail": null
     },
     {
+      "name": "잘린 글자 mobile-dark-200 game: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "검사기 자체 시험: 「내일 42 정도.」「곧 많이 오릅니다.」를 넣으면 1·2·3번이 모두 1 이상 늘어난다",
       "ok": true,
       "detail": {
@@ -2558,6 +2720,164 @@
           "칸 끝에서 잘림: 관측만 13개",
           "선택 상자: 10월 1일(목) 상승 확률 높은 순"
         ]
+      }
+    },
+    {
+      "name": "게임 pc open: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
+      "ok": true,
+      "detail": {
+        "errors": [],
+        "cards": 52,
+        "tabs": "내일,게임,성적",
+        "sealDisabled": true,
+        "sealText": "낙관 찍고 걸기",
+        "center": "이정훈 대표 방식",
+        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
+        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
+        "marks": 1
+      }
+    },
+    {
+      "name": "게임 pc 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)",
+      "ok": true,
+      "detail": {
+        "bet": {
+          "lev": "105560",
+          "inv": "329180",
+          "levAmt": 100000000,
+          "invAmt": 100000000,
+          "locked": true,
+          "revealed": false,
+          "open": {
+            "lev": false,
+            "inv": false
+          },
+          "placedAt": "2026-10-01T22:00:00.000Z"
+        },
+        "sealText": "낙관 지우기"
+      }
+    },
+    {
+      "name": "게임 pc 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음",
+      "ok": true,
+      "detail": {
+        "cert": [
+          {
+            "side": "레버리지",
+            "body": "영원무역 · 실제 +0.73% · 맞힘",
+            "pnl": "+1억 원"
+          },
+          {
+            "side": "인버스",
+            "body": "HD현대중공업 · 실제 −0.46% · 맞힘",
+            "pnl": "+1억 원"
+          }
+        ],
+        "amt": [
+          "레버리지에 1억 원",
+          "인버스에 1억 원"
+        ]
+      }
+    },
+    {
+      "name": "게임 pc closed: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
+      "ok": true,
+      "detail": {
+        "errors": [],
+        "cards": 52,
+        "tabs": "내일,게임,성적",
+        "sealDisabled": true,
+        "sealText": "마감",
+        "center": "이정훈 대표 방식",
+        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
+        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
+        "marks": 1
+      }
+    },
+    {
+      "name": "게임 pc 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음",
+      "ok": true,
+      "detail": {
+        "sealText": "마감"
+      }
+    },
+    {
+      "name": "게임 mobile open: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
+      "ok": true,
+      "detail": {
+        "errors": [],
+        "cards": 52,
+        "tabs": "내일,게임,성적",
+        "sealDisabled": true,
+        "sealText": "낙관 찍고 걸기",
+        "center": "이정훈 대표 방식",
+        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
+        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
+        "marks": 1
+      }
+    },
+    {
+      "name": "게임 mobile 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)",
+      "ok": true,
+      "detail": {
+        "bet": {
+          "lev": "105560",
+          "inv": "329180",
+          "levAmt": 100000000,
+          "invAmt": 100000000,
+          "locked": true,
+          "revealed": false,
+          "open": {
+            "lev": false,
+            "inv": false
+          },
+          "placedAt": "2026-10-01T22:00:00.000Z"
+        },
+        "sealText": "낙관 지우기"
+      }
+    },
+    {
+      "name": "게임 mobile 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음",
+      "ok": true,
+      "detail": {
+        "cert": [
+          {
+            "side": "레버리지",
+            "body": "영원무역 · 실제 +0.73% · 맞힘",
+            "pnl": "+1억 원"
+          },
+          {
+            "side": "인버스",
+            "body": "HD현대중공업 · 실제 −0.46% · 맞힘",
+            "pnl": "+1억 원"
+          }
+        ],
+        "amt": [
+          "레버리지에 1억 원",
+          "인버스에 1억 원"
+        ]
+      }
+    },
+    {
+      "name": "게임 mobile closed: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
+      "ok": true,
+      "detail": {
+        "errors": [],
+        "cards": 52,
+        "tabs": "내일,게임,성적",
+        "sealDisabled": true,
+        "sealText": "마감",
+        "center": "이정훈 대표 방식",
+        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
+        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
+        "marks": 1
+      }
+    },
+    {
+      "name": "게임 mobile 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음",
+      "ok": true,
+      "detail": {
+        "sealText": "마감"
       }
     },
     {
@@ -3310,5 +3630,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T19-29-54-049Z"
+  "dir": "reports/atlas11/browser/2026-10-01T21-58-35-995Z"
 }
