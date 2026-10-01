@@ -1,0 +1,28 @@
+{
+ "schema": "atlas4h-view-1",
+ "builtAt": "2026-10-02T12:13:00+09:00",
+ "now": {
+  "boardId": "4h-20261002-12-b2c3d4e5",
+  "screen": {
+   "value": "확인 중",
+   "boardTime": "12시 판",
+   "chance": "보통 · 위 25% · 가운데 50% · 아래 25%"
+  }
+ },
+ "history": [
+  {
+   "boardId": "4h-20261002-08-a1b2c3d4",
+   "kospi": {
+    "center": 2649.86,
+    "quantiles": {
+     "p10": 2606.69,
+     "p90": 2692.8
+    }
+   },
+   "screen": {
+    "value": 2649.86,
+    "boardTime": "08시 판"
+   }
+  }
+ ]
+}

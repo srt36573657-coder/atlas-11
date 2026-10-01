@@ -1,0 +1,200 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K4",
+ "text": "상한가·하한가·거래정지 종목",
+ "seed": 20261015,
+ "steps": [
+  {
+   "name": "12시 — 상한가 하나 · 하한가 하나 · 거래정지 하나",
+   "inputs": {
+    "now": "2026-10-15T12:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2655,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2655,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "stock-price:005930",
+      "market": "KR",
+      "prevClose": 61200,
+      "marks": [
+       "가격 제한"
+      ],
+      "compare": {
+       "rule": "exact",
+       "tolerance": 0
+      },
+      "sources": [
+       {
+        "name": "네이버 분봉",
+        "value": 79560,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:00+09:00"
+       },
+       {
+        "name": "KRX 종목 시세",
+        "value": 79560,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:01+09:00"
+       }
+      ]
+     },
+     {
+      "id": "stock-price:000660",
+      "market": "KR",
+      "prevClose": 180000,
+      "marks": [
+       "거래정지"
+      ],
+      "compare": {
+       "rule": "exact",
+       "tolerance": 0
+      },
+      "sources": [
+       {
+        "name": "네이버 분봉",
+        "value": null,
+        "observedAt": null,
+        "fetchedAt": "2026-10-15T12:01:02+09:00"
+       },
+       {
+        "name": "KRX 종목 시세",
+        "value": null,
+        "observedAt": null,
+        "fetchedAt": "2026-10-15T12:01:03+09:00"
+       }
+      ]
+     },
+     {
+      "id": "stock-price:035420",
+      "market": "KR",
+      "prevClose": 200000,
+      "compare": {
+       "rule": "exact",
+       "tolerance": 0
+      },
+      "sources": [
+       {
+        "name": "네이버 분봉",
+        "value": 140000,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:04+09:00"
+       },
+       {
+        "name": "KRX 종목 시세",
+        "value": 140000,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:05+09:00"
+       }
+      ]
+     },
+     {
+      "id": "stock-price:051910",
+      "market": "KR",
+      "prevClose": 300000,
+      "compare": {
+       "rule": "exact",
+       "tolerance": 0
+      },
+      "sources": [
+       {
+        "name": "네이버 분봉",
+        "value": 303500,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:06+09:00"
+       },
+       {
+        "name": "KRX 종목 시세",
+        "value": 303500,
+        "observedAt": "2026-10-15T12:00:00+09:00",
+        "fetchedAt": "2026-10-15T12:01:07+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "stockStatus",
+   "code": "005930",
+   "includes": [
+    "가격 제한"
+   ],
+   "say": "상한가에 닿은 종목은 「가격 제한」"
+  },
+  {
+   "type": "stockWithin",
+   "code": "005930",
+   "low": 42840,
+   "high": 79560,
+   "say": "상한가 종목 범위는 전날 종가 ±30% 안 (42,840~79,560)"
+  },
+  {
+   "type": "stockStatus",
+   "code": "035420",
+   "includes": [
+    "가격 제한"
+   ],
+   "say": "하한가에 닿은 종목은 「가격 제한」"
+  },
+  {
+   "type": "stockWithin",
+   "code": "035420",
+   "low": 140000,
+   "high": 260000,
+   "say": "하한가 종목 범위는 전날 종가 ±30% 안 (140,000~260,000)"
+  },
+  {
+   "type": "stockWithin",
+   "code": "051910",
+   "low": 210000,
+   "high": 390000,
+   "say": "보통 종목 범위도 전날 종가 ±30% 안 (210,000~390,000)"
+  },
+  {
+   "type": "stockStatus",
+   "code": "000660",
+   "includes": [
+    "거래정지"
+   ],
+   "say": "거래정지 종목은 「거래정지」"
+  },
+  {
+   "type": "stockNotZero",
+   "code": "000660",
+   "say": "거래정지 종목 값을 0 으로 적지 않는다"
+  },
+  {
+   "type": "variableValue",
+   "id": "stock-price:000660",
+   "isNull": true,
+   "say": "거래정지 종목 값은 「없음」(비움)"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

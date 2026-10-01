@@ -1,0 +1,192 @@
+{
+ "schema": "atlas4h-spec-latest-1",
+ "at": "2026-10-01T18:11:26+09:00",
+ "results": [
+  {
+   "id": "T1",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T2",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T3",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T4",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "T5",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T6",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T7",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T8",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T9",
+   "pass": false,
+   "reason": "고리 기록 없음",
+   "counts": {}
+  },
+  {
+   "id": "T10",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T11",
+   "pass": true,
+   "reason": "atlas4h 커밋 6개 · 파일 29개 — 옛 엔진·기록 변경 0",
+   "counts": {
+    "commits": 6,
+    "changes": 29,
+    "touched": 0
+   }
+  },
+  {
+   "id": "T12",
+   "pass": false,
+   "reason": "재현 결과 없음",
+   "counts": {}
+  },
+  {
+   "id": "T13",
+   "pass": false,
+   "reason": "채점 없음",
+   "counts": {}
+  },
+  {
+   "id": "T14",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T15",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "T16",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T17",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T18",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T19",
+   "pass": false,
+   "reason": "판정 기준 없음",
+   "counts": {}
+  },
+  {
+   "id": "T20",
+   "pass": false,
+   "reason": "무게 근거 없음",
+   "counts": {}
+  },
+  {
+   "id": "T21",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T22",
+   "pass": false,
+   "reason": "판 없음",
+   "counts": {}
+  },
+  {
+   "id": "T23",
+   "pass": false,
+   "reason": "고리 기록 없음",
+   "counts": {}
+  },
+  {
+   "id": "K1",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K2",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K3",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K4",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K5",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K6",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  },
+  {
+   "id": "K7",
+   "pass": false,
+   "reason": "엔진 없음",
+   "counts": {}
+  }
+ ],
+ "passed": 1,
+ "failed": 29
+}

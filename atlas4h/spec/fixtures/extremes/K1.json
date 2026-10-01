@@ -1,0 +1,282 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K1",
+ "text": "미국 휴장·한국 휴장이 엇갈린 날",
+ "seed": 20261127,
+ "steps": [
+  {
+   "name": "미국만 쉰 다음 날 08시 (11월 26일 미국 휴장)",
+   "inputs": {
+    "now": "2026-11-27T08:00:00+09:00",
+    "calendar": {
+     "us": {
+      "closed": [
+       "2026-11-26"
+      ],
+      "session": "2026-11-26"
+     }
+    },
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2701.2,
+        "observedAt": "2026-11-26T15:30:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:30+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2701.2,
+        "observedAt": "2026-11-26T15:30:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:30+09:00"
+       }
+      ]
+     },
+     {
+      "id": "sox",
+      "market": "US",
+      "changePct": 1.2,
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 해외지수 .SOX",
+        "value": 5321.4,
+        "observedAt": "2026-11-26T06:00:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:21+09:00",
+        "sessionDate": "2026-11-25"
+       }
+      ]
+     },
+     {
+      "id": "vix",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "네이버 해외지수 .VIX",
+        "value": 15.2,
+        "observedAt": "2026-11-26T06:15:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:22+09:00",
+        "sessionDate": "2026-11-25"
+       },
+       {
+        "name": "FRED VIXCLS",
+        "value": 15.2,
+        "observedAt": "2026-11-26T06:15:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:23+09:00",
+        "sessionDate": "2026-11-25"
+       }
+      ]
+     },
+     {
+      "id": "sp500",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 해외지수 .INX",
+        "value": 6702.5,
+        "observedAt": "2026-11-27T06:00:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:24+09:00",
+        "sessionDate": "2026-11-26"
+       },
+       {
+        "name": "FRED SP500",
+        "value": 6702.5,
+        "observedAt": "2026-11-27T06:00:00+09:00",
+        "fetchedAt": "2026-11-27T08:00:25+09:00",
+        "sessionDate": "2026-11-26"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "한국만 쉰 연휴 뒤 첫 08시 (9월 24~26일 한국 휴장 · 미국은 사흘 열림)",
+   "inputs": {
+    "now": "2026-09-28T08:00:00+09:00",
+    "calendar": {
+     "kr": {
+      "lastSession": "2026-09-23"
+     },
+     "us": {
+      "closed": [],
+      "session": "2026-09-25"
+     }
+    },
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2588,
+        "observedAt": "2026-09-23T15:30:00+09:00",
+        "fetchedAt": "2026-09-28T08:00:30+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2588,
+        "observedAt": "2026-09-23T15:30:00+09:00",
+        "fetchedAt": "2026-09-28T08:00:30+09:00"
+       }
+      ]
+     },
+     {
+      "id": "sox",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 해외지수 .SOX",
+        "value": 5402,
+        "observedAt": "2026-09-26T05:00:00+09:00",
+        "fetchedAt": "2026-09-28T08:00:21+09:00",
+        "sessionDate": "2026-09-25"
+       }
+      ],
+      "history": [
+       {
+        "date": "2026-09-22",
+        "changePct": 2
+       },
+       {
+        "date": "2026-09-23",
+        "changePct": 1
+       },
+       {
+        "date": "2026-09-24",
+        "changePct": -2
+       },
+       {
+        "date": "2026-09-25",
+        "changePct": 0.5
+       }
+      ]
+     },
+     {
+      "id": "sp500",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 해외지수 .INX",
+        "value": 6650,
+        "observedAt": "2026-09-26T05:00:00+09:00",
+        "fetchedAt": "2026-09-28T08:00:22+09:00",
+        "sessionDate": "2026-09-25"
+       }
+      ],
+      "history": [
+       {
+        "date": "2026-09-23",
+        "changePct": 0.4
+       },
+       {
+        "date": "2026-09-24",
+        "changePct": -0.8
+       },
+       {
+        "date": "2026-09-25",
+        "changePct": 0.3
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "sox",
+   "includes": [
+    "옛값",
+    "장 닫힘"
+   ],
+   "say": "미국이 쉰 날 반도체지수는 「옛값 · 장 닫힘」"
+  },
+  {
+   "type": "variableValue",
+   "step": 0,
+   "id": "sox",
+   "equals": 5321.4,
+   "say": "미국이 쉰 날 반도체지수 값은 그대로 둔다 (0 으로 안 바꿈)"
+  },
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "vix",
+   "includes": [
+    "옛값",
+    "장 닫힘"
+   ],
+   "say": "미국이 쉰 날 VIX 도 「옛값 · 장 닫힘」"
+  },
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "sp500",
+   "includes": [
+    "확인 중"
+   ],
+   "say": "달력은 쉰 날인데 그날 날짜가 붙은 값은 「확인 중」"
+  },
+  {
+   "type": "number",
+   "step": 1,
+   "path": "derived.usCumulativePct.sox",
+   "equals": -0.5251000000000117,
+   "tol": 0.000001,
+   "say": "한국이 쉰 사흘의 반도체지수 등락을 곱해 쌓은 값 = −0.5251%"
+  },
+  {
+   "type": "number",
+   "step": 1,
+   "path": "derived.usCumulativePct.sp500",
+   "equals": -0.10440960000001054,
+   "tol": 0.000001,
+   "say": "한국이 쉰 사흘의 S&P500 등락을 곱해 쌓은 값 = −0.1044%"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

@@ -1,0 +1,3 @@
+{"id":"trial-0001","at":"2026-10-01T18:10:00+09:00","what":"폭: HAR 하나만","engine":"width-har","sealedAt":"2026-10-01T18:10:30+09:00"}
+{"id":"trial-0002","at":"2026-10-01T18:12:00+09:00","what":"폭: HAR-X (반도체지수·VKOSPI 더함)","engine":"width-harx","sealedAt":"2026-10-01T18:12:30+09:00"}
+{"id":"trial-0003","at":"2026-10-01T18:14:00+09:00","what":"가운데: 단순 전이식","engine":"center-transfer","sealedAt":"2026-10-01T18:14:30+09:00"}

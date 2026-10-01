@@ -1,0 +1,176 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K6",
+ "text": "4시간 안에 변수가 크게 뒤집힌 날",
+ "seed": 20261019,
+ "steps": [
+  {
+   "name": "08시",
+   "inputs": {
+    "now": "2026-10-19T08:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2660,
+        "observedAt": "2026-10-16T15:30:00+09:00",
+        "fetchedAt": "2026-10-19T08:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2660,
+        "observedAt": "2026-10-16T15:30:00+09:00",
+        "fetchedAt": "2026-10-19T08:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "usdkrw",
+      "market": "FX",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.005
+      },
+      "sources": [
+       {
+        "name": "네이버 환율",
+        "value": 1380,
+        "observedAt": "2026-10-19T07:55:00+09:00",
+        "fetchedAt": "2026-10-19T08:00:30+09:00"
+       },
+       {
+        "name": "한국은행 ECOS",
+        "value": 1380.4,
+        "observedAt": "2026-10-19T07:55:00+09:00",
+        "fetchedAt": "2026-10-19T08:00:31+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "11시 — 환율이 3시간 만에 1.6% 뛰고 선물 값은 두 출처가 엇갈림",
+   "inputs": {
+    "now": "2026-10-19T11:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2641,
+        "observedAt": "2026-10-19T10:59:00+09:00",
+        "fetchedAt": "2026-10-19T11:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "usdkrw",
+      "market": "FX",
+      "threshold": 0.008,
+      "previous": {
+       "value": 1380,
+       "observedAt": "2026-10-19T07:55:00+09:00"
+      },
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.005
+      },
+      "sources": [
+       {
+        "name": "네이버 환율",
+        "value": 1401.5,
+        "observedAt": "2026-10-19T10:50:00+09:00",
+        "fetchedAt": "2026-10-19T10:50:20+09:00"
+       },
+       {
+        "name": "한국은행 ECOS",
+        "value": 1401.2,
+        "observedAt": "2026-10-19T10:50:00+09:00",
+        "fetchedAt": "2026-10-19T10:50:40+09:00"
+       }
+      ]
+     },
+     {
+      "id": "futures-kospi200",
+      "market": "KR",
+      "threshold": 0.01,
+      "previous": {
+       "value": 360,
+       "observedAt": "2026-10-19T08:00:00+09:00"
+      },
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "KRX Open API 선물",
+        "value": 352.1,
+        "observedAt": "2026-10-19T10:59:00+09:00",
+        "fetchedAt": "2026-10-19T11:00:30+09:00"
+       },
+       {
+        "name": "KIS 증권 API",
+        "value": 357.9,
+        "observedAt": "2026-10-19T10:59:00+09:00",
+        "fetchedAt": "2026-10-19T11:00:31+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "variableStatus",
+   "step": 1,
+   "id": "usdkrw",
+   "includes": [
+    "크게 바뀜"
+   ],
+   "say": "두 출처로 다시 확인한 큰 변화는 「크게 바뀜」"
+  },
+  {
+   "type": "trigger",
+   "step": 1,
+   "eventAt": "2026-10-19T10:50:00+09:00",
+   "withinMinutes": 30,
+   "say": "문턱을 넘은 뒤 30분 안에 방아쇠 판"
+  },
+  {
+   "type": "variableStatus",
+   "step": 1,
+   "id": "futures-kospi200",
+   "includes": [
+    "확인 중"
+   ],
+   "say": "다시 받은 두 값이 엇갈리면 「확인 중」"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

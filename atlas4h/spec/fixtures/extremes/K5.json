@@ -1,0 +1,129 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K5",
+ "text": "발표가 장중에 나온 날 (갭 아닌 장중 충격)",
+ "seed": 20261016,
+ "steps": [
+  {
+   "name": "발표 전 09시 50분",
+   "inputs": {
+    "now": "2026-10-16T09:50:00+09:00",
+    "events": [
+     {
+      "name": "한국 금리 결정 [예시]",
+      "at": "2026-10-16T10:00:00+09:00",
+      "result": null
+     }
+    ],
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2655,
+        "observedAt": "2026-10-16T09:50:00+09:00",
+        "fetchedAt": "2026-10-16T09:50:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vkospi 첫째 출처",
+        "value": 17,
+        "observedAt": "2026-10-16T09:45:00+09:00",
+        "fetchedAt": "2026-10-16T09:50:21+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "발표 20분 뒤 10시 20분 — 장중에 1.8% 밀림",
+   "inputs": {
+    "now": "2026-10-16T10:20:00+09:00",
+    "events": [
+     {
+      "name": "한국 금리 결정 [예시]",
+      "at": "2026-10-16T10:00:00+09:00",
+      "result": "나쁨"
+     }
+    ],
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2607.2,
+        "observedAt": "2026-10-16T10:20:00+09:00",
+        "fetchedAt": "2026-10-16T10:20:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vkospi 첫째 출처",
+        "value": 21,
+        "observedAt": "2026-10-16T10:15:00+09:00",
+        "fetchedAt": "2026-10-16T10:20:21+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "trigger",
+   "step": 1,
+   "eventAt": "2026-10-16T10:00:00+09:00",
+   "withinMinutes": 30,
+   "say": "장중 발표 뒤 30분 안에 방아쇠 판"
+  },
+  {
+   "type": "centerMoves",
+   "fromStep": 0,
+   "toStep": 1,
+   "direction": "down",
+   "say": "가운데 값이 장중 값을 따라 내려간다 (어제 종가에 머물지 않음)"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

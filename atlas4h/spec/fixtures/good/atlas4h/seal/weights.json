@@ -1,0 +1,35 @@
+{
+ "schema": "atlas4h-weights-1",
+ "sealedAt": "2026-10-01T18:25:00+09:00",
+ "baseline": "center-nochange",
+ "candidates": [
+  {
+   "id": "center-transfer",
+   "beatsNoChange": false,
+   "dm": {
+    "p": 0.41
+   }
+  },
+  {
+   "id": "center-analog",
+   "beatsNoChange": false,
+   "dm": {
+    "p": 0.63
+   }
+  }
+ ],
+ "selections": [
+  {
+   "id": "sel-0001",
+   "what": "폭 엔진 섞는 비율",
+   "trialIds": [
+    "trial-0001",
+    "trial-0002"
+   ],
+   "chose": "trial-0002",
+   "spa": {
+    "p": 0.03
+   }
+  }
+ ]
+}
