@@ -27,16 +27,27 @@ export async function buildDist() {
   // 「내일 하루만」(2026-10-02 사장님 명령): 여러 날 전망 원본(20거래일 발행본·9/17 고정판)은 사이트에 싣지 않는다 — 저장소의 원본은 그대로(지우지 않음)
   const multiDay = async f => manifest.tomorrowOnly && (f === 'archive-fixed-20260917.json' || JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11', f), 'utf8')).horizon !== 1);
   for (const f of ['forecast.json', 'archive-fixed-20260917.json']) if (await exists(path.join(root, 'public/data/atlas11', f)) && !(await multiDay(f))) await fs.copyFile(path.join(root, 'public/data/atlas11', f), path.join(dist, 'data/atlas11', f));
-  await copyDir(path.join(root, 'public/downloads/atlas11'), path.join(dist, 'downloads/atlas11'));
+  // 「내일 하루만」이면 여러 날 CSV(20거래일 발행본 폴더·옛 rolling 폴더)도 사이트에 싣지 않는다 — 저장소 원본은 그대로.
+  //   싣는 것: CSV 가 2행(출발 + 내일)인 발행본 폴더 · 채점 기록 CSV(ledger)
+  if (manifest.tomorrowOnly) {
+    const dl = path.join(root, 'public/downloads/atlas11');
+    for (const e of await fs.readdir(dl, {withFileTypes: true})) {
+      if (!e.isDirectory()) continue;
+      if (e.name === 'ledger') { await copyDir(path.join(dl, e.name), path.join(dist, 'downloads/atlas11', e.name)); continue; }
+      let m = null; try { m = JSON.parse(await fs.readFile(path.join(dl, e.name, 'manifest.json'), 'utf8')); } catch (err) { if (err.code !== 'ENOENT') throw err; }
+      if (m?.rowsPerFile === 2) await copyDir(path.join(dl, e.name), path.join(dist, 'downloads/atlas11', e.name));
+    }
+  } else await copyDir(path.join(root, 'public/downloads/atlas11'), path.join(dist, 'downloads/atlas11'));
   // v6: 기록 장부 화면 사본·일일 보고(여섯 문장)·기록 CSV — 화면 「기록」이 읽는다
   for (const d of ['public/data/atlas11/ledger', 'public/data/atlas11/daily']) if (await exists(path.join(root, d))) await copyDir(path.join(root, d), path.join(dist, d.replace('public/', '')));
-  if (await exists(path.join(root, 'public/downloads/rolling'))) await copyDir(path.join(root, 'public/downloads/rolling'), path.join(dist, 'downloads/rolling'));
+  if (!manifest.tomorrowOnly && await exists(path.join(root, 'public/downloads/rolling'))) await copyDir(path.join(root, 'public/downloads/rolling'), path.join(dist, 'downloads/rolling'));
   await fs.mkdir(path.join(dist, 'docs'), {recursive: true});
   for (const f of ['ATLAS11_README.md', 'ATLAS11_REPORT.md']) if (await exists(path.join(root, 'docs', f))) await fs.copyFile(path.join(root, 'docs', f), path.join(dist, 'docs', f));
   await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n");
   // 검사 증거(실제 브라우저 검사 보고·캡처·단위 검사·독립 검증) — 화면 「자료 상태」에서 연다
   await fs.mkdir(path.join(dist, 'docs/evidence'), {recursive: true});
-  try { const latest = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/browser/latest.json'), 'utf8')); await fs.writeFile(path.join(dist, 'docs/evidence/browser-report.json'), JSON.stringify(latest, null, 1)); const src = path.join(root, latest.dir); for (const f of await fs.readdir(src)) if (/^(pc|mobile)-0[1-8][a-z]?-.*\.png$/.test(f)) await fs.copyFile(path.join(src, f), path.join(dist, 'docs/evidence', f)); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  // 「내일 하루만」이면 그 모드로 찍은 브라우저 검사 캡처만 싣는다(옛 20거래일 화면 캡처는 여러 날 전망이 보이므로 싣지 않음 · 저장소 원본은 그대로)
+  try { const latest = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/browser/latest.json'), 'utf8')); if (manifest.tomorrowOnly && latest.tomorrowOnly !== true) throw Object.assign(Error('옛 화면 캡처'), {code: 'ENOENT'}); await fs.writeFile(path.join(dist, 'docs/evidence/browser-report.json'), JSON.stringify(latest, null, 1)); const src = path.join(root, latest.dir); for (const f of await fs.readdir(src)) if (/^(pc|mobile)-0[1-8][a-z]?-.*\.png$/.test(f)) await fs.copyFile(path.join(src, f), path.join(dist, 'docs/evidence', f)); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   for (const [from, to] of [['reports/atlas11/tests.tap', 'tests.tap'], ['reports/atlas11/verify/independent-check.md', 'independent-check.md']]) if (await exists(path.join(root, from))) await fs.copyFile(path.join(root, from), path.join(dist, 'docs/evidence', to));
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음\n발행본 ${manifest.forecastId} · 기준일 ${manifest.actualAsOf} · 발행 ${manifest.issuedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n서버·매일 수집·예약 실행은 포함되지 않습니다. 전체 소스 ZIP 의 docs/ATLAS11_README.md 를 보세요.\n`);

@@ -1,7 +1,9 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T07:51:48.169Z",
-  "base": "http://localhost:8811",
+  "at": "2026-10-01T16:03:17.523Z",
+  "base": "http://localhost:8826",
+  "tomorrowOnly": true,
+  "tomorrowDate": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
     "pc": "1280x800",
@@ -9,7 +11,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 261,
+  "passed": 248,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -21,7 +23,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 9,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -36,7 +38,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 3,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -62,7 +64,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -128,7 +130,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 9,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -143,7 +145,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 3,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -169,7 +171,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -235,7 +237,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 9,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -250,7 +252,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 3,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -276,7 +278,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -342,7 +344,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 9,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -357,7 +359,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 3,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -383,7 +385,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -449,7 +451,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 9,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -464,7 +466,7 @@
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
-        "formatDates": 0,
+        "formatDates": 3,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -490,7 +492,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -573,7 +575,7 @@
     {
       "view": "pc",
       "screen": "scores",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 0
     },
@@ -622,7 +624,7 @@
     {
       "view": "mobile",
       "screen": "scores",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 0
     },
@@ -671,7 +673,7 @@
     {
       "view": "mobile-dark",
       "screen": "scores",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 0
     },
@@ -720,7 +722,7 @@
     {
       "view": "pc-200",
       "screen": "scores",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 0
     },
@@ -769,7 +771,7 @@
     {
       "view": "mobile-dark-200",
       "screen": "scores",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 0
     },
@@ -800,7 +802,7 @@
       "name": "pc 맨 위 시장 띠: 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
-        "strip": "코스피 6,838.04포인트 −0.48% 코스닥 855.91포인트 +0.72% 9월 30일(수) 15:30 KST 종가"
+        "strip": "코스피 6,971.35포인트 +1.95% 코스닥 894.29포인트 +4.48% 10월 1일(목) 15:30 KST 종가"
       }
     },
     {
@@ -819,8 +821,8 @@
       "name": "pc 전망: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "15종목",
-        "src": "이 숫자\n52종목 가운데 10월 1일(목) 방향이 「상승」으로 선택된 종목 수 (하락 선택 37종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.09% — 52종목 각"
+        "figure": "12종목",
+        "src": "이 숫자\n52종목 가운데 10월 2일(금) 방향이 「상승」으로 선택된 종목 수 (하락 선택 40종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.12% — 52종목 각"
       }
     },
     {
@@ -832,8 +834,8 @@
       "name": "pc 전망: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "15종목",
-        "last": "15종목"
+        "figure": "12종목",
+        "last": "12종목"
       }
     },
     {
@@ -844,7 +846,7 @@
       }
     },
     {
-      "name": "pc 전망: 줄마다 작은 그래프·확률 막대·20거래일 가로 막대",
+      "name": "pc 전망: 줄마다 작은 그래프·확률 막대·내일 가로 막대",
       "ok": true,
       "detail": {
         "sparks": 52,
@@ -853,17 +855,30 @@
       }
     },
     {
-      "name": "pc 전망: 목록 머리에 「내일」 대신 날짜",
+      "name": "pc 전망: 목록 머리에 날짜(「내일」만 쓰지 않음)",
       "ok": true,
       "detail": {
-        "head": "종목 9월 30일(수) 종가 등락 10월 1일(목) 선택·확률 10월 30일(금) 중앙 전망 실제 20일 → 전망 20일"
+        "head": "종목 10월 1일(목) 종가 등락 내일(10월 2일 금) 선택·확률 내일(10월 2일 금) 중앙 전망 실제 20일 → 10/02"
+      }
+    },
+    {
+      "name": "pc 전망(내일만): 헤드라인 「내일(날짜) 전망」 · 꺼 둠 한 줄 · 전망 표시는 모두 내일 · 1만원 비교 메뉴 없음",
+      "ok": true,
+      "detail": {
+        "heading": "내일(10월 2일 금) 전망 · 10월 1일(목) 종가 기준 · 52종목 중 상승 선택 12종목 · 평균 −",
+        "off": 1,
+        "fm": {
+          "other": 0,
+          "tomorrow": 314
+        },
+        "navRace": 0
       }
     },
     {
       "name": "pc 전망: 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 37
+        "filtered": 40
       }
     },
     {
@@ -887,8 +902,8 @@
       "name": "pc 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "71,423원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 20거래일 뒤(10월 30일(금)) 가격의 한가운데 값(50%) · 80% 범위 62,363원~81,676원\n출발 종가\n68,800원 · 9월 30일(수) 15:30 KST "
+        "figure": "166,669원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
       }
     },
     {
@@ -900,22 +915,22 @@
       "name": "pc 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "71,423원",
-        "last": "71,423원 (+3.81%)"
+        "figure": "166,669원",
+        "last": "166,669원 (+0.40%)"
       }
     },
     {
       "name": "pc 상세: 헤드라인에 종목 이름·날짜·원 단위",
       "ok": true,
       "detail": {
-        "detailFigure": "71,423원"
+        "detailFigure": "166,669원"
       }
     },
     {
       "name": "pc 상세: 그래프가 첫 화면 안(스크롤 전)",
       "ok": true,
       "detail": {
-        "chartTop": 237.59375
+        "chartTop": 298.59375
       }
     },
     {
@@ -939,11 +954,11 @@
       "ok": true,
       "detail": {
         "ticks": [
-          "6.0만원",
-          "7.0만원",
-          "8.0만원",
-          "9.0만원",
-          "07/03"
+          "17.0만원",
+          "18.0만원",
+          "09/02",
+          "09/04",
+          "09/08"
         ]
       }
     },
@@ -958,11 +973,22 @@
       "detail": null
     },
     {
-      "name": "pc 상세: 미래 날짜 눌러 설명 열림(3거래일 뒤)",
+      "name": "pc 상세(내일만): 미래 날짜는 내일 하나 · 전망 표시(점·띠·숫자)는 모두 내일 · 대표 시나리오·여러 날 CSV 없음",
       "ok": true,
       "detail": {
-        "cursor": "10월 6일(화) · 3거래일 뒤 전망",
-        "explainHead": "10월 6일(화) · 3거래일 뒤 전망"
+        "futureChips": 1,
+        "fm": {
+          "other": 0,
+          "tomorrow": 14
+        }
+      }
+    },
+    {
+      "name": "pc 상세: 미래 날짜 눌러 설명 열림(내일)",
+      "ok": true,
+      "detail": {
+        "cursor": "10월 2일(금) · 전망",
+        "explainHead": "10월 2일(금) · 전망"
       }
     },
     {
@@ -975,14 +1001,14 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 6일(화) 중앙 전망 69,338원 (출발 종가 대비 +0.78%)"
+        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
       }
     },
     {
       "name": "pc 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "10월 1일(목) · 1거래일 뒤 전망",
+        "after": "10월 2일(금) · 전망",
         "sameSvg": true
       }
     },
@@ -990,34 +1016,26 @@
       "name": "pc 상세: 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "10월 6일(화) 중요 일정 1건"
+        "text": "10월 2일(금) 중요 일정 1건"
       }
     },
     {
       "name": "pc 상세: 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 7일(수) · 4거래일 뒤 전망"
+        "resumed": "10월 2일(금) · 전망"
       }
     },
     {
-      "name": "pc 상세: 대표 시나리오 선 표시",
+      "name": "pc 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
       "ok": true,
       "detail": null
-    },
-    {
-      "name": "pc 상세: CSV 내려받기 21행(출발 1+전망 20)",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_111770_20260930.csv",
-        "rows": 22
-      }
     },
     {
       "name": "pc 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_111770_20260930_detail.json"
+        "name": "ATLAS_105560_20261001_detail.json"
       }
     },
     {
@@ -1043,22 +1061,22 @@
         "nodes": 52,
         "arcs": 9,
         "orders": 5,
-        "links": 27
+        "links": 28
       }
     },
     {
       "name": "pc 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
       "ok": true,
       "detail": {
-        "shockBefore": "−2.09%",
-        "shockAfter": "+4.18%"
+        "shockBefore": "−3.54%",
+        "shockAfter": "+7.08%"
       }
     },
     {
       "name": "pc 상세: 시장 통로·직접 통로 설명",
       "ok": true,
       "detail": {
-        "channel": "시장 통로와 직접 통로 — 영원무역의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.21%(52종목 평균 기준), 이 종목만의 몫은 +8.7"
+        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
       }
     },
     {
@@ -1071,7 +1089,7 @@
       "ok": true,
       "detail": {
         "litEarly": 1,
-        "litLate": 14,
+        "litLate": 15,
         "stripLit": 5
       }
     },
@@ -1079,7 +1097,7 @@
       "name": "pc 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
       "ok": true,
       "detail": {
-        "hashBefore": "#/stock/111770",
+        "hashBefore": "#/stock/105560",
         "hashAfter": "#/stock/010170"
       }
     },
@@ -1097,82 +1115,9 @@
       }
     },
     {
-      "name": "pc 1만원 비교: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 113,
-          "bottom": 147,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "pc 1만원 비교: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "10,021원",
-        "src": "이 숫자\n52종목 각각 「1만원 × 10월 30일(금) 중앙 전망 ÷ 9월 30일(수) 종가」를 구해 단순 평균한 값(1위 HD현대중공업 10,777원)\n1만원 넘는 종목\n18종목 · 못 넘는 종목 34종목\n조정\n배"
-      }
-    },
-    {
-      "name": "pc 1만원 비교: Esc 로 출처 칸 닫힘",
+      "name": "pc 1만원 비교(내일만): 꺼 둠 한 줄 · 52선 없음",
       "ok": true,
       "detail": null
-    },
-    {
-      "name": "pc 1만원 비교: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "10,021원",
-        "last": "평균 10,021원"
-      }
-    },
-    {
-      "name": "pc 1만원 비교: 52선 + 굵은 평균선",
-      "ok": true,
-      "detail": {
-        "raceLines": 52
-      }
-    },
-    {
-      "name": "pc 1만원 비교: 순위 52줄(가로 막대)",
-      "ok": true,
-      "detail": {
-        "rankRows": 52,
-        "rankBars": 52
-      }
-    },
-    {
-      "name": "pc 1만원 비교: 순위 종목 선택 → 강조·일정",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 1만원 비교: 발행일 1만원 기준에서는 순위 단추가 없음(두 순위가 같아서)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 1만원 비교: 「20거래일 전 종가 1만원」으로 바꾸면 실제 구간 52선도 그림",
-      "ok": true,
-      "detail": {
-        "startLines": 52
-      }
-    },
-    {
-      "name": "pc 1만원 비교: 20거래일 전 기준 · 전망 구간에서 「발행일부터 수익률」 순위 단추",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 1만원 비교: 묶음 단추(전체+9) → 반도체·전자 강조",
-      "ok": true,
-      "detail": {
-        "groupBtns": 10,
-        "hl": 6
-      }
     },
     {
       "name": "pc 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
@@ -1190,8 +1135,8 @@
       "name": "pc 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "27종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
+        "figure": "19종목",
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 33종목(그중 실제 보합 4종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
       }
     },
     {
@@ -1203,8 +1148,8 @@
       "name": "pc 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "27종목",
-        "last": "27종목"
+        "figure": "19종목",
+        "last": "19종목"
       }
     },
     {
@@ -1213,18 +1158,18 @@
       "detail": null
     },
     {
-      "name": "pc 성적 · 왜 틀렸나: 네 통 4개 · 합 42건 = 틀린 42건 = 채점 자료 42건 = 목록 42줄",
+      "name": "pc 성적 · 왜 틀렸나: 네 통 4개 · 합 75건 = 틀린 75건 = 채점 자료 75건 = 목록 75줄",
       "ok": true,
       "detail": {
-        "lead": "틀린 42건 중 29건은 「하락」이라 했는데 오르거나 그대로였음",
+        "lead": "틀린 75건 중 55건은 「하락」이라 했는데 오르거나 그대로였음",
         "binVals": [
-          "26건",
-          "8건",
+          "43건",
+          "20건",
           "0건",
-          "8건"
+          "12건"
         ],
-        "wrongAll": 42,
-        "listRows": 42
+        "wrongAll": 75,
+        "listRows": 75
       }
     },
     {
@@ -1250,8 +1195,8 @@
       "name": "pc 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "2.13%",
-        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 104칸을 첫날부터 9월 30일(수)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
+        "figure": "0.51%",
+        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 156칸을 첫날부터 10월 1일(목)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
       }
     },
     {
@@ -1263,8 +1208,8 @@
       "name": "pc 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "2.13%",
-        "last": "지금까지 +2.13%"
+        "figure": "0.51%",
+        "last": "지금까지 +0.51%"
       }
     },
     {
@@ -1279,12 +1224,12 @@
       "name": "pc 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
       "ok": true,
       "detail": {
-        "dots": 2,
-        "daily": 2,
-        "tests": 1,
+        "dots": 3,
+        "daily": 3,
+        "tests": 0,
         "changes": 0,
         "builds": 4,
-        "judge": 1
+        "judge": 0
       }
     },
     {
@@ -1298,8 +1243,8 @@
       "name": "pc 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
       "ok": true,
       "detail": {
-        "dayRows": 2,
-        "days": 2,
+        "dayRows": 3,
+        "days": 3,
         "beats": 3,
         "openedH4": 3
       }
@@ -1334,7 +1279,7 @@
       "ok": true,
       "detail": {
         "figure": "52종목",
-        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n9월 30일(수) 17:22 KST\n받은 곳\n네이버 증권 분봉 원문"
+        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n10월 1일(목) 18:53 KST\n받은 곳\n네이버 증권 분봉 원문"
       }
     },
     {
@@ -1379,8 +1324,8 @@
       "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "8건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 8건)\n기준 시각\n10월 1일(목) 10:30 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "532건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(수집 114건 · 예측 1건 · 채점 312건 · 원인 분석 53건 · 요인 36건 · 실험 1건 · 운영 15건)\n기준 시각\n10월 1일(목) 18:53"
       }
     },
     {
@@ -1392,8 +1337,8 @@
       "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "8건",
-        "last": "8건"
+        "figure": "532건",
+        "last": "532건"
       }
     },
     {
@@ -1401,8 +1346,8 @@
       "ok": true,
       "detail": {
         "typeBtns": 8,
-        "expRows": 0,
-        "expExpected": 0,
+        "expRows": 1,
+        "expExpected": 1,
         "shownDate": "2026-10-01",
         "dl": 2
       }
@@ -1412,14 +1357,14 @@
       "ok": true,
       "detail": {
         "factorRecordRows": 36,
-        "factorDate": "2026-09-30"
+        "factorDate": "2026-10-01"
       }
     },
     {
       "name": "pc 기록: CSV 내려받기 파일명",
       "ok": true,
       "detail": {
-        "name": "ATLAS_factor_2026-09-30_filtered.csv"
+        "name": "ATLAS_factor_2026-10-01_filtered.csv"
       }
     },
     {
@@ -1436,19 +1381,19 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cmytxxp-band-inner\")",
-        "todayStroke": "rgb(166, 62, 44)",
-        "todayDir": "up",
+        "bandFill": "url(\"#c40hmsq-band-inner\")",
+        "todayStroke": "rgb(47, 93, 138)",
+        "todayDir": "down",
         "up": "#A63E2C",
         "down": "#2F5D8A",
         "transforms": 0
       }
     },
     {
-      "name": "pc 주요 메뉴 4개",
+      "name": "pc 주요 메뉴 3개",
       "ok": true,
       "detail": {
-        "nav": 4
+        "nav": 3
       }
     },
     {
@@ -1470,7 +1415,7 @@
       "name": "mobile 맨 위 시장 띠: 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
-        "strip": "코스피 6,838.04포인트 −0.48% 코스닥 855.91포인트 +0.72% 9월 30일(수) 15:30 KST 종가"
+        "strip": "코스피 6,971.35포인트 +1.95% 코스닥 894.29포인트 +4.48% 10월 1일(목) 15:30 KST 종가"
       }
     },
     {
@@ -1489,8 +1434,8 @@
       "name": "mobile 전망: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "15종목",
-        "src": "이 숫자\n52종목 가운데 10월 1일(목) 방향이 「상승」으로 선택된 종목 수 (하락 선택 37종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.09% — 52종목 각"
+        "figure": "12종목",
+        "src": "이 숫자\n52종목 가운데 10월 2일(금) 방향이 「상승」으로 선택된 종목 수 (하락 선택 40종목 · 보합 선택 0종목) — 세 방향 중 모의 경로 비율이 가장 큰 쪽을 고름\n평균 전망\n−0.12% — 52종목 각"
       }
     },
     {
@@ -1502,8 +1447,8 @@
       "name": "mobile 전망: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "15종목",
-        "last": "15종목"
+        "figure": "12종목",
+        "last": "12종목"
       }
     },
     {
@@ -1514,7 +1459,7 @@
       }
     },
     {
-      "name": "mobile 전망: 줄마다 작은 그래프·확률 막대·20거래일 가로 막대",
+      "name": "mobile 전망: 줄마다 작은 그래프·확률 막대·내일 가로 막대",
       "ok": true,
       "detail": {
         "sparks": 52,
@@ -1523,17 +1468,30 @@
       }
     },
     {
-      "name": "mobile 전망: 목록 머리에 「내일」 대신 날짜",
+      "name": "mobile 전망: 목록 머리에 날짜(「내일」만 쓰지 않음)",
       "ok": true,
       "detail": {
-        "head": "종목 9월 30일(수) 종가 등락 10월 1일(목) 선택·확률 10월 30일(금) 중앙 전망"
+        "head": "종목 10월 1일(목) 종가 등락 내일(10월 2일 금) 선택·확률 내일(10월 2일 금) 중앙 전망"
+      }
+    },
+    {
+      "name": "mobile 전망(내일만): 헤드라인 「내일(날짜) 전망」 · 꺼 둠 한 줄 · 전망 표시는 모두 내일 · 1만원 비교 메뉴 없음",
+      "ok": true,
+      "detail": {
+        "heading": "내일(10월 2일 금) 전망 · 10월 1일(목) 종가 기준 · 52종목 중 상승 선택 12종목 · 평균 −",
+        "off": 1,
+        "fm": {
+          "other": 0,
+          "tomorrow": 314
+        },
+        "navRace": 0
       }
     },
     {
       "name": "mobile 전망: 「하락 선택」 거름 단추",
       "ok": true,
       "detail": {
-        "filtered": 37
+        "filtered": 40
       }
     },
     {
@@ -1557,8 +1515,8 @@
       "name": "mobile 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "71,423원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 20거래일 뒤(10월 30일(금)) 가격의 한가운데 값(50%) · 80% 범위 62,363원~81,676원\n출발 종가\n68,800원 · 9월 30일(수) 15:30 KST "
+        "figure": "166,669원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
       }
     },
     {
@@ -1570,22 +1528,22 @@
       "name": "mobile 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "71,423원",
-        "last": "71,423원 (+3.81%)"
+        "figure": "166,669원",
+        "last": "166,669원 (+0.40%)"
       }
     },
     {
       "name": "mobile 상세: 헤드라인에 종목 이름·날짜·원 단위",
       "ok": true,
       "detail": {
-        "detailFigure": "71,423원"
+        "detailFigure": "166,669원"
       }
     },
     {
       "name": "mobile 상세: 그래프가 첫 화면 안(스크롤 전)",
       "ok": true,
       "detail": {
-        "chartTop": 388.5625
+        "chartTop": 491.5625
       }
     },
     {
@@ -1609,11 +1567,11 @@
       "ok": true,
       "detail": {
         "ticks": [
-          "6.0만원",
-          "8.0만원",
-          "07/03",
-          "07/28",
-          "08/20"
+          "17.0만원",
+          "18.0만원",
+          "09/02",
+          "09/08",
+          "09/14"
         ]
       }
     },
@@ -1623,11 +1581,22 @@
       "detail": null
     },
     {
-      "name": "mobile 상세: 미래 날짜 눌러 설명 열림(3거래일 뒤)",
+      "name": "mobile 상세(내일만): 미래 날짜는 내일 하나 · 전망 표시(점·띠·숫자)는 모두 내일 · 대표 시나리오·여러 날 CSV 없음",
       "ok": true,
       "detail": {
-        "cursor": "10월 6일(화) · 3거래일 뒤 전망",
-        "explainHead": "10월 6일(화) · 3거래일 뒤 전망"
+        "futureChips": 1,
+        "fm": {
+          "other": 0,
+          "tomorrow": 14
+        }
+      }
+    },
+    {
+      "name": "mobile 상세: 미래 날짜 눌러 설명 열림(내일)",
+      "ok": true,
+      "detail": {
+        "cursor": "10월 2일(금) · 전망",
+        "explainHead": "10월 2일(금) · 전망"
       }
     },
     {
@@ -1640,7 +1609,7 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 6일(화) 중앙 전망 69,338원 (출발 종가 대비 +0.78%)"
+        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
       }
     },
     {
@@ -1657,7 +1626,7 @@
       "name": "mobile 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
       "ok": true,
       "detail": {
-        "after": "10월 1일(목) · 1거래일 뒤 전망",
+        "after": "10월 2일(금) · 전망",
         "sameSvg": true
       }
     },
@@ -1665,34 +1634,26 @@
       "name": "mobile 상세: 중요 일정에서 정지·확인 대기",
       "ok": true,
       "detail": {
-        "text": "10월 6일(화) 중요 일정 1건"
+        "text": "10월 2일(금) 중요 일정 1건"
       }
     },
     {
       "name": "mobile 상세: 확인 뒤 계속 재생",
       "ok": true,
       "detail": {
-        "resumed": "10월 7일(수) · 4거래일 뒤 전망"
+        "resumed": "10월 2일(금) · 전망"
       }
     },
     {
-      "name": "mobile 상세: 대표 시나리오 선 표시",
+      "name": "mobile 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
       "ok": true,
       "detail": null
-    },
-    {
-      "name": "mobile 상세: CSV 내려받기 21행(출발 1+전망 20)",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_111770_20260930.csv",
-        "rows": 22
-      }
     },
     {
       "name": "mobile 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_111770_20260930_detail.json"
+        "name": "ATLAS_105560_20261001_detail.json"
       }
     },
     {
@@ -1718,22 +1679,22 @@
         "nodes": 52,
         "arcs": 9,
         "orders": 5,
-        "links": 27
+        "links": 28
       }
     },
     {
       "name": "mobile 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
       "ok": true,
       "detail": {
-        "shockBefore": "−2.09%",
-        "shockAfter": "+4.18%"
+        "shockBefore": "−3.54%",
+        "shockAfter": "+7.08%"
       }
     },
     {
       "name": "mobile 상세: 시장 통로·직접 통로 설명",
       "ok": true,
       "detail": {
-        "channel": "시장 통로와 직접 통로 — 영원무역의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.21%(52종목 평균 기준), 이 종목만의 몫은 +8.7"
+        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
       }
     },
     {
@@ -1746,7 +1707,7 @@
       "ok": true,
       "detail": {
         "litEarly": 1,
-        "litLate": 14,
+        "litLate": 15,
         "stripLit": 5
       }
     },
@@ -1754,7 +1715,7 @@
       "name": "mobile 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
       "ok": true,
       "detail": {
-        "hashBefore": "#/stock/111770",
+        "hashBefore": "#/stock/105560",
         "hashAfter": "#/stock/010170"
       }
     },
@@ -1772,82 +1733,9 @@
       }
     },
     {
-      "name": "mobile 1만원 비교: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 122,
-          "bottom": 198,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "10,021원",
-        "src": "이 숫자\n52종목 각각 「1만원 × 10월 30일(금) 중앙 전망 ÷ 9월 30일(수) 종가」를 구해 단순 평균한 값(1위 HD현대중공업 10,777원)\n1만원 넘는 종목\n18종목 · 못 넘는 종목 34종목\n조정\n배"
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: Esc 로 출처 칸 닫힘",
+      "name": "mobile 1만원 비교(내일만): 꺼 둠 한 줄 · 52선 없음",
       "ok": true,
       "detail": null
-    },
-    {
-      "name": "mobile 1만원 비교: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "10,021원",
-        "last": "평균 10,021원"
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: 52선 + 굵은 평균선",
-      "ok": true,
-      "detail": {
-        "raceLines": 52
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: 순위 52줄(가로 막대)",
-      "ok": true,
-      "detail": {
-        "rankRows": 52,
-        "rankBars": 52
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: 순위 종목 선택 → 강조·일정",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 1만원 비교: 발행일 1만원 기준에서는 순위 단추가 없음(두 순위가 같아서)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 1만원 비교: 「20거래일 전 종가 1만원」으로 바꾸면 실제 구간 52선도 그림",
-      "ok": true,
-      "detail": {
-        "startLines": 52
-      }
-    },
-    {
-      "name": "mobile 1만원 비교: 20거래일 전 기준 · 전망 구간에서 「발행일부터 수익률」 순위 단추",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 1만원 비교: 묶음 단추(전체+9) → 반도체·전자 강조",
-      "ok": true,
-      "detail": {
-        "groupBtns": 10,
-        "hl": 6
-      }
     },
     {
       "name": "mobile 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
@@ -1865,8 +1753,8 @@
       "name": "mobile 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "27종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 3종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
+        "figure": "19종목",
+        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 33종목(그중 실제 보합 4종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
       }
     },
     {
@@ -1878,8 +1766,8 @@
       "name": "mobile 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "27종목",
-        "last": "27종목"
+        "figure": "19종목",
+        "last": "19종목"
       }
     },
     {
@@ -1888,18 +1776,18 @@
       "detail": null
     },
     {
-      "name": "mobile 성적 · 왜 틀렸나: 네 통 4개 · 합 42건 = 틀린 42건 = 채점 자료 42건 = 목록 42줄",
+      "name": "mobile 성적 · 왜 틀렸나: 네 통 4개 · 합 75건 = 틀린 75건 = 채점 자료 75건 = 목록 75줄",
       "ok": true,
       "detail": {
-        "lead": "틀린 42건 중 29건은 「하락」이라 했는데 오르거나 그대로였음",
+        "lead": "틀린 75건 중 55건은 「하락」이라 했는데 오르거나 그대로였음",
         "binVals": [
-          "26건",
-          "8건",
+          "43건",
+          "20건",
           "0건",
-          "8건"
+          "12건"
         ],
-        "wrongAll": 42,
-        "listRows": 42
+        "wrongAll": 75,
+        "listRows": 75
       }
     },
     {
@@ -1925,8 +1813,8 @@
       "name": "mobile 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "2.13%",
-        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 104칸을 첫날부터 9월 30일(수)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
+        "figure": "0.51%",
+        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 156칸을 첫날부터 10월 1일(목)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
       }
     },
     {
@@ -1938,8 +1826,8 @@
       "name": "mobile 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "2.13%",
-        "last": "지금까지 +2.13%"
+        "figure": "0.51%",
+        "last": "지금까지 +0.51%"
       }
     },
     {
@@ -1954,12 +1842,12 @@
       "name": "mobile 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
       "ok": true,
       "detail": {
-        "dots": 2,
-        "daily": 2,
-        "tests": 1,
+        "dots": 3,
+        "daily": 3,
+        "tests": 0,
         "changes": 0,
         "builds": 4,
-        "judge": 1
+        "judge": 0
       }
     },
     {
@@ -1973,8 +1861,8 @@
       "name": "mobile 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
       "ok": true,
       "detail": {
-        "dayRows": 2,
-        "days": 2,
+        "dayRows": 3,
+        "days": 3,
         "beats": 3,
         "openedH4": 3
       }
@@ -2009,7 +1897,7 @@
       "ok": true,
       "detail": {
         "figure": "52종목",
-        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n9월 30일(수) 17:22 KST\n받은 곳\n네이버 증권 분봉 원문"
+        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n10월 1일(목) 18:53 KST\n받은 곳\n네이버 증권 분봉 원문"
       }
     },
     {
@@ -2054,8 +1942,8 @@
       "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "8건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 8건)\n기준 시각\n10월 1일(목) 10:30 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "532건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(수집 114건 · 예측 1건 · 채점 312건 · 원인 분석 53건 · 요인 36건 · 실험 1건 · 운영 15건)\n기준 시각\n10월 1일(목) 18:53"
       }
     },
     {
@@ -2067,8 +1955,8 @@
       "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "8건",
-        "last": "8건"
+        "figure": "532건",
+        "last": "532건"
       }
     },
     {
@@ -2076,8 +1964,8 @@
       "ok": true,
       "detail": {
         "typeBtns": 8,
-        "expRows": 0,
-        "expExpected": 0,
+        "expRows": 1,
+        "expExpected": 1,
         "shownDate": "2026-10-01",
         "dl": 2
       }
@@ -2087,14 +1975,14 @@
       "ok": true,
       "detail": {
         "factorRecordRows": 36,
-        "factorDate": "2026-09-30"
+        "factorDate": "2026-10-01"
       }
     },
     {
       "name": "mobile 기록: CSV 내려받기 파일명",
       "ok": true,
       "detail": {
-        "name": "ATLAS_factor_2026-09-30_filtered.csv"
+        "name": "ATLAS_factor_2026-10-01_filtered.csv"
       }
     },
     {
@@ -2111,19 +1999,19 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cnqkf8p-band-inner\")",
-        "todayStroke": "rgb(166, 62, 44)",
-        "todayDir": "up",
+        "bandFill": "url(\"#cqr5knd-band-inner\")",
+        "todayStroke": "rgb(47, 93, 138)",
+        "todayDir": "down",
         "up": "#A63E2C",
         "down": "#2F5D8A",
         "transforms": 0
       }
     },
     {
-      "name": "mobile 주요 메뉴 4개",
+      "name": "mobile 주요 메뉴 3개",
       "ok": true,
       "detail": {
-        "nav": 4
+        "nav": 3
       }
     },
     {
@@ -2523,6 +2411,97 @@
       }
     },
     {
+      "name": "W4 모서리 360 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360",
+        "date": "2026-10-01",
+        "kind": "cards",
+        "rows": 52,
+        "held": 0,
+        "quad": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "groups": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "fails": [],
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 4,
+          "shown": 4
+        },
+        "probs": 52,
+        "marks": 26,
+        "maxLines": 4,
+        "leadDots": 0,
+        "truncated": 0,
+        "truncSamples": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "W4 결함 심기 카드 하나 지우기 → 판정이 「줄 수」로 잡음",
+      "ok": true,
+      "detail": {
+        "planted": "카드 하나 지우기",
+        "caught": true,
+        "fails": [
+          "줄 수",
+          "보합 표시",
+          "예측 방향 확률",
+          "가운데 값 표시",
+          "오차 끝값"
+        ],
+        "date": "2026-10-01",
+        "view": "360"
+      }
+    },
+    {
+      "name": "W4 결함 심기 긴 이름 자르기 → 판정이 「긴 이름」로 잡음",
+      "ok": true,
+      "detail": {
+        "planted": "긴 이름 자르기",
+        "caught": true,
+        "fails": [
+          "긴 이름",
+          "잘림·넘침"
+        ],
+        "date": "2026-10-01",
+        "view": "360"
+      }
+    },
+    {
+      "name": "W4 결함 심기 「실제 보합」 표시 지우기 → 판정이 「보합 표시」로 잡음",
+      "ok": true,
+      "detail": {
+        "planted": "「실제 보합」 표시 지우기",
+        "caught": true,
+        "fails": [
+          "보합 표시"
+        ],
+        "date": "2026-10-01",
+        "view": "360"
+      }
+    },
+    {
       "name": "W4 모서리 360 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
       "ok": true,
       "detail": {
@@ -2570,48 +2549,6 @@
       }
     },
     {
-      "name": "W4 결함 심기 카드 하나 지우기 → 판정이 「줄 수」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "카드 하나 지우기",
-        "caught": true,
-        "fails": [
-          "줄 수",
-          "예측 방향 확률",
-          "가운데 값 표시"
-        ],
-        "date": "2026-09-30",
-        "view": "360"
-      }
-    },
-    {
-      "name": "W4 결함 심기 긴 이름 자르기 → 판정이 「긴 이름」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "긴 이름 자르기",
-        "caught": true,
-        "fails": [
-          "긴 이름",
-          "잘림·넘침"
-        ],
-        "date": "2026-09-30",
-        "view": "360"
-      }
-    },
-    {
-      "name": "W4 결함 심기 「실제 보합」 표시 지우기 → 판정이 「보합 표시」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "「실제 보합」 표시 지우기",
-        "caught": true,
-        "fails": [
-          "보합 표시"
-        ],
-        "date": "2026-09-30",
-        "view": "360"
-      }
-    },
-    {
       "name": "W4 모서리 360 2026-09-29: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
       "ok": true,
       "detail": {
@@ -2651,6 +2588,53 @@
         },
         "probs": 52,
         "marks": 28,
+        "maxLines": 4,
+        "leadDots": 0,
+        "truncated": 0,
+        "truncSamples": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "W4 모서리 360-dark 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark",
+        "date": "2026-10-01",
+        "kind": "cards",
+        "rows": 52,
+        "held": 0,
+        "quad": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "groups": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "fails": [],
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 4,
+          "shown": 4
+        },
+        "probs": 52,
+        "marks": 26,
         "maxLines": 4,
         "leadDots": 0,
         "truncated": 0,
@@ -2753,6 +2737,53 @@
       }
     },
     {
+      "name": "W4 모서리 360-dark-200 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 10줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "360-dark-200",
+        "date": "2026-10-01",
+        "kind": "cards",
+        "rows": 52,
+        "held": 0,
+        "quad": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "groups": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "fails": [],
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 4,
+          "shown": 4
+        },
+        "probs": 52,
+        "marks": 26,
+        "maxLines": 10,
+        "leadDots": 0,
+        "truncated": 0,
+        "truncSamples": [],
+        "errors": []
+      }
+    },
+    {
       "name": "W4 모서리 360-dark-200 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 9줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
       "ok": true,
       "detail": {
@@ -2840,6 +2871,53 @@
         "probs": 52,
         "marks": 28,
         "maxLines": 10,
+        "leadDots": 0,
+        "truncated": 0,
+        "truncSamples": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "W4 모서리 pc 2026-10-01: 표 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 0줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc",
+        "date": "2026-10-01",
+        "kind": "table",
+        "rows": 52,
+        "held": 0,
+        "quad": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "groups": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "fails": [],
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 4,
+          "shown": 4
+        },
+        "probs": 52,
+        "marks": 26,
+        "maxLines": 0,
         "leadDots": 0,
         "truncated": 0,
         "truncSamples": [],
@@ -2941,6 +3019,53 @@
       }
     },
     {
+      "name": "W4 모서리 pc-200 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
+      "ok": true,
+      "detail": {
+        "view": "pc-200",
+        "date": "2026-10-01",
+        "kind": "cards",
+        "rows": 52,
+        "held": 0,
+        "quad": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "groups": [
+          12,
+          7,
+          22,
+          11
+        ],
+        "fails": [],
+        "long": [
+          {
+            "name": "LS ELECTRIC",
+            "present": true,
+            "fits": true
+          },
+          {
+            "name": "한화에어로스페이스",
+            "present": true,
+            "fits": true
+          }
+        ],
+        "flat": {
+          "total": 4,
+          "shown": 4
+        },
+        "probs": 52,
+        "marks": 26,
+        "maxLines": 4,
+        "leadDots": 0,
+        "truncated": 0,
+        "truncSamples": [],
+        "errors": []
+      }
+    },
+    {
       "name": "W4 모서리 pc-200 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
       "ok": true,
       "detail": {
@@ -3035,5 +3160,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T07-50-09-037Z"
+  "dir": "reports/atlas11/browser/2026-10-01T16-01-45-420Z"
 }

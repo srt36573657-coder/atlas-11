@@ -461,7 +461,7 @@ try {
   clarity = await clarityCheck();
   await scoreCellsCorners();
 } finally { await browser.close(); }
-const summary = {schema: 'atlas11-browser-check-2', at: new Date().toISOString(), base, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (touch emulation — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면', 'pc-200': '1280x800 글씨 200%'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, clarityInfo: info, checks};
+const summary = {schema: 'atlas11-browser-check-2', at: new Date().toISOString(), base, tomorrowOnly: TOMORROW, tomorrowDate: TOMORROW ? tomorrowDate : null, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (touch emulation — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면', 'pc-200': '1280x800 글씨 200%'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, clarityInfo: info, checks};
 await fs.writeFile(path.join(dir, 'report.json'), JSON.stringify(summary, null, 2));
 await fs.writeFile(path.join(process.cwd(), 'reports/atlas11/browser/latest.json'), JSON.stringify({...summary, dir: path.relative(process.cwd(), dir)}, null, 2));
 console.log(JSON.stringify({passed: summary.passed, failed: summary.failed, dir}));
