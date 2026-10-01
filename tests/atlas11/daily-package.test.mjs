@@ -2,13 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {runDaily, offlineCollector} from '../../lib/atlas11/daily.mjs';
+import {runDaily, offlineCollector, TOMORROW_NO_TEST_REASON} from '../../lib/atlas11/daily.mjs';
+import {readAllPublications} from '../../lib/atlas11/forecast.mjs';
+import {scoreAllPublications} from '../../lib/atlas11/analysis.mjs';
+import {isLivePublication} from '../../lib/atlas11/score.mjs';
+import {rollingScoreRecord} from '../../lib/rolling-operation.mjs';
 import {readRecords, currentRecords} from '../../lib/atlas11/records.mjs';
 import {readEvents} from '../../lib/atlas11/evolve/registry.mjs';
 import {tempRoot, root, readJSON, INPUT_928} from './helpers.mjs';
 
-/** 실제 자료 사본 + 설정 + 등록부(비어 있음). 후향 검증은 돌리지 않는다(runBacktests:false) — 검증 결과 캐시만 복사해 판정 흐름을 검사한다 */
-async function fixtureRoot({withBacktests = false} = {}) {
+/** 실제 자료 사본 + 설정 + 등록부(비어 있음). 후향 검증은 돌리지 않는다(runBacktests:false) — 검증 결과 캐시만 복사해 판정 흐름을 검사한다
+ *  「내일 하루만」 스위치(config/atlas11/horizon.json)는 tomorrow:true 일 때만 복사한다 — 없으면 옛 20거래일 동작(옛 검사는 그대로 이 모드로 돈다) */
+async function fixtureRoot({withBacktests = false, tomorrow = false} = {}) {
   const dir = await tempRoot();
   await fs.mkdir(path.join(dir, 'public/data'), {recursive: true}); await fs.copyFile(path.join(root, INPUT_928), path.join(dir, 'public/data/input.json'));
   await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.copyFile(path.join(root, 'reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), path.join(dir, 'public/data/atlas11/forecast.json'));
@@ -17,6 +22,7 @@ async function fixtureRoot({withBacktests = false} = {}) {
   const latest = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json');
   await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
   if (withBacktests) { const src = path.join(root, 'reports/atlas11/evolve/backtests'); await fs.mkdir(path.join(dir, 'reports/atlas11/evolve/backtests'), {recursive: true}); for (const f of await fs.readdir(src)) if (f.endsWith('.json')) await fs.copyFile(path.join(src, f), path.join(dir, 'reports/atlas11/evolve/backtests', f)); }
+  if (tomorrow) await fs.copyFile(path.join(root, 'config/atlas11/horizon.json'), path.join(dir, 'config/atlas11/horizon.json'));
   return {dir, latest};
 }
 const stubBuild = latest => async ({modelSpec, modelVersion, shadow}) => ({forecastId: shadow ? 'shadow-' + shadow.candidateId : latest.forecastId, reused: true, createdForecastFiles: 0, summary: latest.summary, actualAsOf: latest.actualAsOf});
@@ -95,6 +101,39 @@ test('진화 단계: 캐시된 후보 검증 11개를 평가해 사건 장부·�
   const noTest = currentRecords(await readRecords(dir, 'experiment')).filter(r => r.body.kind === 'no_test');
   assert.equal(noTest.length, 1); assert.equal(noTest[0].dateKST, '2026-09-29'); assert.equal(noTest[0].body.openCandidates, 0); assert.equal(noTest[0].body.candidatesTotal, 11);
   assert.match(noTest[0].body.reason, /새로 시험할 후보 없음 — 후보 11개가 모두 판정됨/); assert.equal(noTest[0].body.validationWindow.trainingBefore, '2026-09-17');
+});
+
+test('내일 하루만(스위치 1): 새 채점·대기는 1거래일만 · 후보 20거래일 시험 꺼 둠(no_test 한 줄 · 같은 날 한 번) · 발행 기록 futurePoints 1 · 보고서에 꺼 둠 한 줄', async () => {
+  const {dir, latest} = await fixtureRoot({withBacktests: true, tomorrow: true});
+  const oneDay = {...latest.summary, futurePointsPerStock: 1, closeCallStocksDay20: null};
+  const build = async ({shadow}) => ({forecastId: shadow ? 'shadow-' + shadow.candidateId : latest.forecastId, reused: true, createdForecastFiles: 0, summary: oneDay, actualAsOf: latest.actualAsOf});
+  const opts = {rootDir: dir, runBacktests: true, backtestTimeBudgetMs: 1, build, buildView: stubView(latest)};
+  const run = await runDaily({now: '2026-09-28T13:45:00.000Z', ...opts});
+  assert.equal(run.horizon.tomorrowOnly, true); assert.deepEqual(run.horizon.activeHorizons, [1]);
+  assert.equal(run.evolution.backtested, 0, '캐시가 있어도 후보 시험을 돌리지 않는다'); assert.equal(run.evolution.backtestsOff.reason, TOMORROW_NO_TEST_REASON);
+  assert.equal(run.scoring.pending, 52, '9/28 발행본(20거래일)의 대기 목표도 1거래일(9/29)만 · 옛 모드는 1000개 넘음');
+  const exps = currentRecords(await readRecords(dir, 'experiment'));
+  assert.equal(exps.filter(r => r.body.kind === 'backtest').length, 0);
+  let noTest = exps.filter(r => r.body.kind === 'no_test'); assert.equal(noTest.length, 1); assert.equal(noTest[0].body.reason, '내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠'); assert.equal(noTest[0].body.backtestsOff, true);
+  const fc = currentRecords(await readRecords(dir, 'forecast')).find(r => r.body.kind === 'operating'); assert.equal(fc.body.futurePoints, 1);
+  const scores = JSON.parse(await fs.readFile(path.join(dir, 'public/data/rolling-scores.json'), 'utf8')); assert.deepEqual(scores.horizons, [1]); assert.deepEqual(Object.keys(scores.assets[0].horizons), ['1']);
+  const report = JSON.parse(await fs.readFile(path.join(dir, 'public/data/atlas11/daily/2026-09-28.json'), 'utf8'));
+  assert.ok(report.sections[0].lines.some(l => /내일 말고의 전망은 꺼 둠/.test(l))); assert.match(report.sentences.nextCheck, /1일 목표/); assert.doesNotMatch(report.sentences.nextCheck, /20일/);
+  // 같은 날 다시 돌아도 「시험 없음」은 한 줄
+  await runDaily({now: '2026-09-28T13:50:00.000Z', ...opts});
+  noTest = currentRecords(await readRecords(dir, 'experiment')).filter(r => r.body.kind === 'no_test'); assert.equal(noTest.length, 1);
+});
+
+test('채점 거리 스위치: 내일 하루만이면 지난 발행본의 2~20거래일 목표는 채점·대기 목록에 들어가지 않는다 · 1거래일 셀은 옛 채점과 같다', async () => {
+  const policy = await readJSON('config/atlas11/scoring-policy.v1.json'), calendar = await readJSON('public/data/rolling-calendar.json'), input = await readJSON('public/data/input.json');
+  const pubs = (await readAllPublications(root)).filter(isLivePublication), now = input.actualAsOf + 'T13:45:00.000Z';
+  const legacy = scoreAllPublications(pubs, input, {calendar, now, policy}), one = scoreAllPublications(pubs, input, {calendar, now, policy, horizons: [1]});
+  assert.ok(legacy.cells.some(c => c.horizon > 1) || legacy.pending.some(c => c.horizon > 1), '옛 모드는 2거래일 이상 목표가 있다');
+  assert.ok(one.cells.every(c => c.horizon === 1) && one.pending.every(c => c.horizon === 1));
+  assert.deepStrictEqual(one.cells, legacy.cells.filter(c => c.horizon === 1)); assert.deepStrictEqual(one.pending, legacy.pending.filter(c => c.horizon === 1));
+  const rec1 = rollingScoreRecord(pubs, input, {now, calendar, horizons: [1]}); assert.deepEqual(rec1.horizons, [1]); assert.deepEqual(Object.keys(rec1.assets[0].horizons), ['1']);
+  const recAll = rollingScoreRecord(pubs, input, {now, calendar}); assert.deepEqual(recAll.horizons, [1, 5, 10, 20]);
+  assert.deepStrictEqual(rec1.assets.map(a => a.horizons[1]), recAll.assets.map(a => a.horizons[1]));
 });
 
 test('배포 묶음: index.html 최상위 · 화면 자료·CSV 포함 · 비밀키 없음 · 원본 대용량 제외', async () => {

@@ -62,3 +62,20 @@ test('방향 선택 규칙: 동률은 flat→up→down 순, 근소 차이 표시
   assert.equal(directionOf(0.0005), 'flat'); assert.equal(directionOf(0.002), 'up'); assert.equal(directionOf(-0.002), 'down');
   assert.equal(SIMULATION_POLICY.tieRule, 'flat_then_up_then_down');
 });
+
+test('내일 하루만(rngStepsPerPath 20 · 걸음 1): 내일 행이 20거래일 계산 1일째 행과 모든 숫자가 같다 · 시나리오 꺼 둠 · 기본값은 옛 호출 그대로', async () => {
+  const f = await fitted(400);
+  const twenty = simulateAtlas11(f.models, f.panel, f.input.assets, f.futureDates, {paths: 400, seed: 20260917, external: f.external});
+  const one = simulateAtlas11(f.models, f.panel, f.input.assets, f.futureDates.slice(0, 1), {paths: 400, seed: 20260917, external: f.external, rngStepsPerPath: 20});
+  for (let i = 0; i < 52; i++) {
+    assert.equal(one.rows[i].length, 1); assert.equal(one.scenarios[i], null, '여러 날 경로(대표 시나리오)는 계산하지 않는다');
+    const a = one.rows[i][0], b = twenty.rows[i][0];
+    for (const k of ['p05', 'p10', 'p25', 'p50', 'p75', 'p90', 'p95', 'mean', 'return', 'lossPathShare']) assert.equal(a[k], b[k], `${i} ${k}`);
+    assert.deepStrictEqual(a, b, '행 전체(방향 확률·선택·하루 움직임·요인 기여)가 같다');
+  }
+  assert.equal(one.audit.computedSteps, 1); assert.equal(one.audit.rngStepsPerPath, 20); assert.equal(one.audit.skippedDrawsPerPath, 19); assert.equal(twenty.audit.computedSteps, undefined, '옛 호출의 감사 기록은 그대로');
+  // 버리는 난수를 건너뛰지 않으면(경로마다 1개) 다른 경로가 된다 — 순서를 지키는 것이 같은 숫자의 조건
+  const naive = simulateAtlas11(f.models, f.panel, f.input.assets, f.futureDates.slice(0, 1), {paths: 400, seed: 20260917, external: f.external});
+  assert.notDeepEqual(naive.rows.map(r => r[0].p50), twenty.rows.map(r => r[0].p50));
+  assert.throws(() => simulateAtlas11(f.models, f.panel, f.input.assets, f.futureDates, {paths: 400, external: f.external, rngStepsPerPath: 5}), /JOINT_RNG_STEPS/);
+});

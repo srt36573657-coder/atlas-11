@@ -113,11 +113,11 @@ test('등록부: 사건 장부 재생으로 상태 · 채택은 operating 을 �
 
 test('발행본과 모델 명세: 운영 A 명세는 forecastId 를 바꾸지 않는다 · 후보 명세는 다른 ID·모델 버전 · 그림자 발행은 공개 상태가 아니다', async () => {
   const {input, calendar, registry, records} = await realInputs(); const news = await readJSON('public/data/atlas11/news-events.json');
-  const base = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', newsAssets: news.assets});
-  const same = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', newsAssets: news.assets, modelSpec: config.operating.spec, modelVersion: 'atlas11-A-1'});
+  const base = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', futureDays: 20, newsAssets: news.assets});
+  const same = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', futureDays: 20, newsAssets: news.assets, modelSpec: config.operating.spec, modelVersion: 'atlas11-A-1'});
   assert.equal(same.forecastId, base.forecastId); assert.equal(same.modelVersion, 'atlas11-A-1'); assert.deepEqual(same.assets[0].rows[20].p50, base.assets[0].rows[20].p50);
-  const cand = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', newsAssets: news.assets, modelSpec: {family: 'penalty', penalties: [3, 30]}, modelVersion: 'atlas11-cand-94bdc0454e5e-2'});
+  const cand = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', futureDays: 20, newsAssets: news.assets, modelSpec: {family: 'penalty', penalties: [3, 30]}, modelVersion: 'atlas11-cand-94bdc0454e5e-2'});
   assert.notEqual(cand.forecastId, base.forecastId); assert.equal(cand.modelVersion, 'atlas11-cand-94bdc0454e5e-2'); assert.equal(cand.publicationStatus, 'live_research_forecast'); assert.equal(cand.summary.anchorMatches, 52);
-  const shadow = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', newsAssets: news.assets, modelSpec: {family: 'penalty', penalties: [3, 30]}, modelVersion: 'shadow-cand-94bdc0454e5e', shadow: {candidateId: 'cand-94bdc0454e5e', shadowOf: base.forecastId}});
+  const shadow = buildForecast11({input, recordsPayload: records, registry, calendar, issuedAt: ISSUED, paths: 120, implementationSHA256: 'test', futureDays: 20, newsAssets: news.assets, modelSpec: {family: 'penalty', penalties: [3, 30]}, modelVersion: 'shadow-cand-94bdc0454e5e', shadow: {candidateId: 'cand-94bdc0454e5e', shadowOf: base.forecastId}});
   assert.equal(shadow.publicationStatus, 'shadow_forecast'); assert.equal(shadow.shadowOf, base.forecastId); assert.notEqual(shadow.forecastId, cand.forecastId);
 });
