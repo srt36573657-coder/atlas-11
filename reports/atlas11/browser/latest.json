@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-09-30T18:23:42.241Z",
+  "at": "2026-10-01T01:32:20.895Z",
   "base": "http://localhost:8811",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -9,7 +9,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 244,
+  "passed": 248,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -1213,6 +1213,28 @@
       "detail": null
     },
     {
+      "name": "pc 성적 · 왜 틀렸나: 네 통 4개 · 합 42건 = 틀린 42건 = 채점 자료 42건 = 목록 42줄",
+      "ok": true,
+      "detail": {
+        "lead": "틀린 42건 중 29건은 「하락」이라 했는데 오르거나 그대로였음",
+        "binVals": [
+          "26건",
+          "8건",
+          "0건",
+          "8건"
+        ],
+        "wrongAll": 42,
+        "listRows": 42
+      }
+    },
+    {
+      "name": "pc 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
+      "ok": true,
+      "detail": {
+        "top": 120
+      }
+    },
+    {
       "name": "pc 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
@@ -1286,7 +1308,7 @@
       "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 12,
+        "constructions": 13,
         "check": true
       }
     },
@@ -1357,8 +1379,8 @@
       "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "6건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 6건)\n기준 시각\n10월 1일(목) 03:21 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "8건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 8건)\n기준 시각\n10월 1일(목) 10:30 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -1370,8 +1392,8 @@
       "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "6건",
-        "last": "6건"
+        "figure": "8건",
+        "last": "8건"
       }
     },
     {
@@ -1414,7 +1436,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#c7niyhc-band-inner\")",
+        "bandFill": "url(\"#ctk7hth-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -1866,6 +1888,28 @@
       "detail": null
     },
     {
+      "name": "mobile 성적 · 왜 틀렸나: 네 통 4개 · 합 42건 = 틀린 42건 = 채점 자료 42건 = 목록 42줄",
+      "ok": true,
+      "detail": {
+        "lead": "틀린 42건 중 29건은 「하락」이라 했는데 오르거나 그대로였음",
+        "binVals": [
+          "26건",
+          "8건",
+          "0건",
+          "8건"
+        ],
+        "wrongAll": 42,
+        "listRows": 42
+      }
+    },
+    {
+      "name": "mobile 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
+      "ok": true,
+      "detail": {
+        "top": 120
+      }
+    },
+    {
       "name": "mobile 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
       "ok": true,
       "detail": {
@@ -1939,7 +1983,7 @@
       "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
       "ok": true,
       "detail": {
-        "constructions": 12,
+        "constructions": 13,
         "check": true
       }
     },
@@ -2010,8 +2054,8 @@
       "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "6건",
-        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 6건)\n기준 시각\n10월 1일(목) 03:21 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
+        "figure": "8건",
+        "src": "이 숫자\n기록 장부 색인의 10월 1일(목) 종류별 건수 합(운영 8건)\n기준 시각\n10월 1일(목) 10:30 KST 에 만든 장부 색인\n장부 원본\nreports/atlas11/ledger/<종류>/<날짜>.jso"
       }
     },
     {
@@ -2023,8 +2067,8 @@
       "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "6건",
-        "last": "6건"
+        "figure": "8건",
+        "last": "8건"
       }
     },
     {
@@ -2067,7 +2111,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cmzv4a5-band-inner\")",
+        "bandFill": "url(\"#coy4ipg-band-inner\")",
         "todayStroke": "rgb(166, 62, 44)",
         "todayDir": "up",
         "up": "#A63E2C",
@@ -2479,5 +2523,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-09-30T18-22-13-546Z"
+  "dir": "reports/atlas11/browser/2026-10-01T01-30-56-413Z"
 }
