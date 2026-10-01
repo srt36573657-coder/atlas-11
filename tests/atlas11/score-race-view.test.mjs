@@ -47,9 +47,9 @@ test('화면 묶음: 모든 화면 같은 발행본 · 카드/상세/1만원 숫
   const {input, calendar} = await realInputs();
   const p = await latest(); const publications = await readAllPublications(root);
   const files = buildViewBundle({publication: p, input, calendar, publications, now: '2026-09-28T13:40:00.000Z'});
-  assert.equal(files.size, 61); // 10/01: 「왜 틀렸나」 misses.json 추가
+  assert.equal(files.size, 62); // 10/01: 「왜 틀렸나」 misses.json 추가 · 10/01 오후(대개선 W3): 종목별 채점 칸 score-cells.json 추가
   assert.equal(validateViewBundle(files, p), true);
-  const m = files.get('manifest.json'); assert.equal(m.forecastId, p.forecastId); assert.equal(Object.keys(m.files).length, 60);
+  const m = files.get('manifest.json'); assert.equal(m.forecastId, p.forecastId); assert.equal(Object.keys(m.files).length, 61);
   // v5: 관계망 파일 · 카드/상세의 종목 정보 · 1만원 비교의 묶음 — 같은 발행본 · 같은 기준일 · 카드와 상세의 베타가 같음
   const net = files.get('network.json'); assert.equal(net.forecastId, p.forecastId); assert.equal(net.actualAsOf, p.actualAsOf); assert.equal(net.nodes.length, 52); assert.equal(net.groups.reduce((s, g) => s + g.codes.length, 0), 52);
   const c0 = files.get('cards.json').cards[0], d0 = files.get('stocks/' + c0.code + '.json'); assert.equal(c0.info.beta, d0.info.beta); assert.equal(d0.info.close, d0.anchor.close); assert.ok(d0.info.high52 >= d0.anchor.close && d0.info.low52 <= d0.anchor.close);
