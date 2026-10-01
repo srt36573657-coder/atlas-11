@@ -1,0 +1,610 @@
+{
+  "schema": "atlas4h-variables-1",
+  "madeAtKST": "2026-10-01T17:30:25+09:00",
+  "staleAfterHours": 4,
+  "variables": [
+    {
+      "id": "kospi",
+      "nameKo": "코스피 지수",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "KR",
+      "sessionTimesKST": "정규장 09:00~15:30 (한국 거래일만) · 종가는 15:30 종가 단일가로 정해짐",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 지수 일별 (m.stock.naver.com)",
+          "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1",
+          "field": "[].closePrice (날짜 [].localTradedAt) · openPrice · highPrice · lowPrice",
+          "timezone": "Asia/Seoul",
+          "publishTime": "장중에 바뀌고 15:30 뒤 그날 종가. 12시 장중 값은 https://api.stock.naver.com/chart/domestic/index/KOSPI/minute?startDateTime={YYYYMMDD}1155&endDateTime={YYYYMMDD}1200 의 [].currentPrice (러너 200 · 해석기 없음)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseIndexPrices",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진(ATLAS 11)이 이미 매일 쓰는 출처"
+        },
+        {
+          "name": "KRX Open API · KOSPI 시리즈 일별시세정보",
+          "url": "https://data-dbg.krx.co.kr/svc/apis/idx/kospi_dd_trd?basDd={YYYYMMDD}",
+          "field": "OutBlock_1[].CLSPRC_IDX (IDX_NM='코스피') — 필드 이름은 2차 자료라 열쇠를 받은 뒤 공식 명세로 다시 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "다음 영업일 08:00 (2차 자료)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(머리글 AUTH_KEY) 필요 · 하루 10,000회 · 2010년 이후 자료 · '상업적 이익 추구 금지'(2차 자료) — 이용약관 원문은 열쇠 신청 때 확인. 서비스 목록(KOSPI 시리즈 일별시세정보)은 openapi.krx.co.kr 에서 이 세션 확인"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.0005},
+      "missingRule": "없음",
+      "notes": "같은 날짜 종가끼리만 비교한다. 둘째 출처는 다음 날 08:00에 나오므로 그 전 고리 값은 「한 출처」. 12시 장중 값은 첫째 출처 하나뿐. 허용 폭은 시작값 — 30거래일마다 실제 차이로 다시 정한다."
+    },
+    {
+      "id": "sox",
+      "nameKo": "미국 반도체지수 (필라델피아 반도체지수)",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "US",
+      "sessionTimesKST": "미국 정규장 22:30~다음 날 05:00 (서머타임, 10/30까지) · 23:30~06:00 (11/2부터) · 미국 휴장일엔 새 값 없음",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 해외지수 일별 (api.stock.naver.com)",
+          "url": "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10",
+          "field": "[].closePrice (시각 [].localTradedAt, 미국 동부 시각 예 2026-09-29T17:15:59-04:00)",
+          "timezone": "America/New_York (EST5EDT)",
+          "publishTime": "미국 장 마감(16:00 ET) 뒤 그날 종가 — 옛 엔진 실측: 9/29 종가가 한국 9/30 07:27 에 있음. 장중 값은 https://api.stock.naver.com/index/.SOX/basic 의 closePrice·localTradedAt (같은 꼴 .INX/basic 은 러너 200 · .SOX/basic 은 아직 안 받아 봄)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseNaverSeries",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진(ATLAS 11)이 이미 매일 쓰는 출처"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.0005},
+      "missingRule": "없음",
+      "notes": "둘째 출처 없음 → gaps 'sox'. 야후(^SOX)는 약관 2(d)(ix)가 자동 수집을 막아 고르지 않는다(이 세션 확인). 같은 회사(네이버)의 다른 주소는 둘째 출처로 세지 않는다. 갭 전이식(갭 = 0.20 + 0.31 × 전날 반도체지수)의 입력이라 가장 급하다."
+    },
+    {
+      "id": "sp500",
+      "nameKo": "S&P500",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "US",
+      "sessionTimesKST": "미국 정규장 22:30~다음 날 05:00 (서머타임, 10/30까지) · 23:30~06:00 (11/2부터)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 해외지수 일별 (api.stock.naver.com)",
+          "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=10",
+          "field": "[].closePrice (시각 [].localTradedAt)",
+          "timezone": "America/New_York (EST5EDT)",
+          "publishTime": "미국 장 마감 뒤 그날 종가. 장중 값은 https://api.stock.naver.com/index/.INX/basic 의 closePrice·localTradedAt (delayTime 0 '실시간' 표기 · 러너 200)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseNaverSeries",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 이 주소는 옛 엔진 탐침(reports/atlas11/probe/context2/world-inx-price.json)에서 200"
+        },
+        {
+          "name": "FRED SP500 (원 제공: S&P 다우존스 지수)",
+          "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500",
+          "field": "CSV 열 SP500 (머리줄 observation_date,SP500 · 값 '.' 은 없음)",
+          "timezone": "America/New_York (날짜만)",
+          "publishTime": "다음 날 늦게 — 옛 엔진 실측: 9/29 종가가 한국 9/30 07:27 엔 없고 17:21 엔 있음",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseFredCSV",
+          "terms": "FRED 시계열 쪽 원문(이 세션 확인): 'Reproduction of S&P 500 in any form is prohibited except with the prior written permission of S&P Dow Jones Indices LLC.' — 대조용으로만 쓰고 화면에 원값을 다시 싣기 전 확인 필요. 10년치만 제공"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.0005},
+      "missingRule": "없음",
+      "notes": "같은 날짜 종가끼리만 비교. 08시 고리(밤 미국)에는 FRED가 아직 안 나와 「한 출처」. FRED는 브라우저 머리글로는 러너에서 응답이 없고 User-Agent curl/8.5.0 으로 받는다(옛 엔진 FRED_UA)."
+    },
+    {
+      "id": "futures-kospi200",
+      "nameKo": "코스피200 선물 (주간·야간)",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "KR",
+      "sessionTimesKST": "주간 08:45~15:45 · 야간 18:00~다음 날 06:00 (한국거래소 자체 야간시장, 2025년 6월부터)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "KRX Open API · 선물 일별매매정보 (주식선물 외)",
+          "url": "https://data-dbg.krx.co.kr/svc/apis/drv/fut_bydd_trd?basDd={YYYYMMDD}",
+          "field": "OutBlock_1[] 중 코스피200 선물 근월물의 TDD_CLSPRC · SETL_PRC — 필드 이름과 야간 거래 포함 여부는 열쇠를 받은 뒤 공식 명세로 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "다음 영업일 08:00 (2차 자료) — 하루 한 번",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(머리글 AUTH_KEY) 필요 · 하루 10,000회 · '상업적 이익 추구 금지'(2차 자료) — 이용약관 원문은 열쇠 신청 때 확인. 서비스 목록(선물 일별매매정보)은 이 세션 확인"
+        },
+        {
+          "name": "한국투자증권 KIS Developers · 국내선물옵션 시세 (야간 포함)",
+          "url": "https://openapi.koreainvestment.com:9443",
+          "field": "국내선물옵션 > (야간)선물옵션 현재가 — 정확한 경로·거래ID·필드는 https://apiportal.koreainvestment.com/apiservice-category 문서로 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "실시간 (계좌·앱키 필요)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "계좌와 앱키 필요(안내 쪽 이 세션 확인: '(야간)선물옵션' 항목 있음). 약관 원문 미확인"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.0005},
+      "missingRule": "없음",
+      "notes": "20·00·04시 고리에서 가장 쓸모 있는 밤 신호지만 지금은 받을 길이 없다 — 열쇠 둘 다 필요(gaps 'keys'). 약관을 확인 못 한 포털 값은 고르지 않는다. 근월물이 바뀌는 날(만기)은 같은 종목끼리만 비교."
+    },
+    {
+      "id": "futures-us",
+      "nameKo": "미국 지수 선물 (E-mini S&P500 · 나스닥100)",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "US",
+      "sessionTimesKST": "CME 전자거래 거의 하루 내내: 07:00~다음 날 06:00 (서머타임 · 06:00~07:00 쉼) · 11/2부터 08:00~다음 날 07:00",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "한국투자증권 KIS Developers · 해외선물옵션 시세",
+          "url": "https://openapi.koreainvestment.com:9443",
+          "field": "해외선물옵션 > 해외선물종목현재가 (ES·NQ 근월물) — 정확한 경로·거래ID·필드는 https://apiportal.koreainvestment.com/apiservice-category 문서로 확인",
+          "timezone": "America/Chicago (CME)",
+          "publishTime": "실시간 (계좌·앱키 필요 · CME 시세 신청이 따로 필요한지 미확인)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "계좌와 앱키 필요(안내 쪽 이 세션 확인: '해외선물종목현재가' 있음). 약관 원문 미확인"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.0005},
+      "missingRule": "없음",
+      "notes": "둘째 출처 없음 → gaps 'futures-us'. 야후(ES=F · NQ=F)는 약관 2(d)(ix)가 자동 수집을 막아 고르지 않는다(이 세션 확인). 12·16·20시 고리에서 미국 쪽 움직임을 보는 유일한 변수."
+    },
+    {
+      "id": "vix",
+      "nameKo": "VIX (미국 변동성 지수)",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "US",
+      "sessionTimesKST": "미국 장 마감값 16:15 ET = 한국 05:15 (서머타임) · 06:15 (11/2부터)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 해외지수 일별 (api.stock.naver.com)",
+          "url": "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=10",
+          "field": "[].closePrice (시각 [].localTradedAt 예 2026-09-28T16:15:00-04:00)",
+          "timezone": "America/New_York (EST5EDT)",
+          "publishTime": "16:15 ET 마감 뒤 · 15분 늦은 값 표기(delayTime 15)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseNaverSeries",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진에서는 FRED가 실패할 때만 쓰는 대체 출처"
+        },
+        {
+          "name": "FRED VIXCLS (원 제공: Cboe)",
+          "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS",
+          "field": "CSV 열 VIXCLS",
+          "timezone": "America/New_York (날짜만)",
+          "publishTime": "1~2 영업일 늦음 — 옛 엔진 실측: 한국 9/30 17:21 에 9/28 값이 마지막",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseFredCSV",
+          "terms": "FRED API 약관(이 세션 확인): 시계열은 원 제공자 저작권 — 개인 용도 밖은 원 제공자 허락 필요. Cboe 공식 CSV(https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv · 머리줄 DATE,OPEN,HIGH,LOW,CLOSE · 이 세션 확인)는 Cboe 'Use of Content'가 데이터 사용 전 사전 승인을 요구해 고르지 않음"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.002},
+      "missingRule": "없음",
+      "notes": "같은 날짜 마감값끼리만 비교. FRED가 늦어 4시간 고리에서는 대개 「한 출처」이고, 하루 이틀 뒤 늦은 확인으로 맞춰 본다. 2026-09-29 탐침에서 FRED VIXCLS는 60초 시간 초과가 한 번 있었다."
+    },
+    {
+      "id": "usdkrw",
+      "nameKo": "원달러 환율",
+      "kind": "변수",
+      "unit": "원/달러",
+      "market": "FX",
+      "sessionTimesKST": "서울 외환시장 09:00~다음 날 02:00 · 은행 고시는 하루 여러 번",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 시장지표 환율 (하나은행 고시)",
+          "url": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10",
+          "field": "[].closePrice (날짜 [].localTradedAt) — 하나은행 고시 매매기준율. 지금 값은 https://api.stock.naver.com/marketindex/exchange/FX_USDKRW 의 exchangeInfo.closePrice · exchangeInfo.localTradedAt (예 2026-09-30T06:39:11+09:00 · 러너 200)",
+          "timezone": "Asia/Seoul",
+          "publishTime": "은행 고시 때마다(하루 여러 회차)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseNaverSeries",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진(ATLAS 11)이 이미 매일 쓰는 출처"
+        },
+        {
+          "name": "한국은행 ECOS · 원/미국달러 매매기준율 (통계표 731Y001 · 항목 0000001)",
+          "url": "https://ecos.bok.or.kr/api/StatisticSearch/{KEY}/json/kr/1/10/731Y001/D/{YYYYMMDD}/{YYYYMMDD}/0000001",
+          "field": "StatisticSearch.row[].DATA_VALUE (날짜 row[].TIME) — 서울외국환중개 공표치를 한국은행이 다시 낸 값",
+          "timezone": "Asia/Seoul",
+          "publishTime": "하루 한 번 — 원값(서울외국환중개)은 새벽 1~2시에 올라오고 ECOS는 그보다 늦음(갱신 시각은 아직 아무도 안 잼 · 2차 자료)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "none",
+          "existingParser": null,
+          "terms": "인증키 필요(무료 신청). 약관 원문 미확인. 통계표·항목 번호는 2차 자료(GitHub 공개 코드)에서 확인"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.005},
+      "missingRule": "없음",
+      "notes": "두 값은 정의가 다르다(은행 고시 vs 시장평균 매매기준율) — 허용 폭을 0.5%로 넓게 시작하고 30거래일마다 실제 차이로 다시 정한다. FRED DEXKOUS(뉴욕 정오 매입률 · 옛 엔진이 받음 · 러너 200)는 일주일가량 늦어 4시간 비교에 못 쓰고 지난 기록 점검용으로만 둔다."
+    },
+    {
+      "id": "vkospi",
+      "nameKo": "VKOSPI (코스피200 변동성지수)",
+      "kind": "변수",
+      "unit": "지수 포인트",
+      "market": "KR",
+      "sessionTimesKST": "코스피200 옵션 주간 거래 시간에 계산 — 정확한 시간 확인 필요",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "KRX Open API · 파생상품지수 시세정보",
+          "url": "https://data-dbg.krx.co.kr/svc/apis/idx/drvprod_dd_trd?basDd={YYYYMMDD}",
+          "field": "OutBlock_1[].CLSPRC_IDX (IDX_NM 이 코스피200 변동성지수인 줄) — 이 목록에 VKOSPI가 있는지와 필드 이름은 열쇠를 받은 뒤 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "다음 영업일 08:00 (2차 자료) — 하루 한 번",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(머리글 AUTH_KEY) 필요 · 하루 10,000회 · '상업적 이익 추구 금지'(2차 자료). 서비스 목록(파생상품지수 시세정보)은 이 세션 확인 · 경로 drvprod_dd_trd 는 2차 자료"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.002},
+      "missingRule": "없음",
+      "notes": "4시간 값(장중) 출처가 없고, 하루 한 번 값도 다음 날 08:00 에 나온다 → gaps 'vkospi'. HAR-X(폭 엔진 ②)의 입력이라 없으면 ② 는 VKOSPI 없이 돌린다(0으로 채우지 않는다)."
+    },
+    {
+      "id": "wti",
+      "nameKo": "유가 WTI",
+      "kind": "변수",
+      "unit": "달러/배럴",
+      "market": "OIL",
+      "sessionTimesKST": "뉴욕상업거래소 전자거래 07:00~다음 날 06:00 (서머타임) · 11/2부터 08:00~07:00",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 시장지표 에너지 (WTI 근월물)",
+          "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=1&pageSize=10",
+          "field": "[].closePrice (시각 [].localTradedAt 예 2026-09-29T16:00:00-05:00) · openPrice · highPrice · lowPrice",
+          "timezone": "America/Chicago (표기 -05:00)",
+          "publishTime": "거래일 마감 뒤 — 옛 엔진 탐침: 한국 9/30 07:13 에 9/29 값 있음",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseNaverSeries",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진에서는 FRED가 실패할 때만 쓰는 대체 출처"
+        },
+        {
+          "name": "FRED DCOILWTICO (원 자료: 미국 에너지정보청 EIA · 쿠싱 현물)",
+          "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO",
+          "field": "CSV 열 DCOILWTICO",
+          "timezone": "America/Chicago (날짜만)",
+          "publishTime": "일주일 가까이 늦음 — 옛 엔진 실측: 한국 9/30 17:21 에 9/22 값이 마지막",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseFredCSV",
+          "terms": "FRED API 약관(이 세션 확인): 원 제공자 조건을 따른다. 원 자료는 미국 정부(EIA) — EIA 'free of charge … Copyrights and Reuse Policy'(이 세션 확인). EIA 공식 API는 열쇠 필요"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.02},
+      "missingRule": "없음",
+      "notes": "선물 근월물과 현물은 정의가 달라(만기 바뀔 때 차이가 큼) 허용 폭 2%로 시작한다. 둘째 출처가 늦어 4시간 고리에서는 거의 늘 「한 출처」. 큰 사고 칸 예시(유가 5% 급등)의 입력."
+    },
+    {
+      "id": "brent",
+      "nameKo": "유가 브렌트",
+      "kind": "변수",
+      "unit": "달러/배럴",
+      "market": "OIL",
+      "sessionTimesKST": "ICE 브렌트 선물 전자거래 — 거의 하루 내내 (정확한 시간 확인 필요)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "FRED DCOILBRENTEU (원 자료: EIA · 유럽 브렌트 현물)",
+          "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU",
+          "field": "CSV 열 DCOILBRENTEU",
+          "timezone": "Europe/London (날짜만)",
+          "publishTime": "같은 EIA 현물인 WTI(DCOILWTICO)처럼 일주일 가까이 늦을 것으로 봄 — 이 시계열은 아직 안 받아 봄",
+          "reachableFrom": "unknown",
+          "checkedFrom": "none",
+          "existingParser": "lib/atlas11/context.mjs:parseFredCSV",
+          "terms": "FRED API 약관(이 세션 확인): 원 제공자 조건을 따른다. 원 자료는 미국 정부(EIA)"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.02},
+      "missingRule": "없음",
+      "notes": "4시간 값 출처도, 둘째 출처도 없다 → gaps 'brent'. 같은 주소 꼴(FRED fredgraph.csv)의 다른 시계열은 러너에서 받아지지만 이 시계열 자체는 아직."
+    },
+    {
+      "id": "events-us",
+      "nameKo": "미국 발표 일정 (경제지표 · 연준 회의)",
+      "kind": "변수",
+      "unit": "발표 한 건 (이름 · 날짜 · 시각)",
+      "market": "US",
+      "sessionTimesKST": "경제지표 대부분 08:30 ET = 21:30 (서머타임) · 22:30 (11/2부터) · 연준 회의 결과 시각은 일정 쪽에 안 적혀 있어 확인 필요",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "미국 노동통계국(BLS) 2026 발표 일정 + 연준 FOMC 일정",
+          "url": "https://www.bls.gov/schedule/2026/home.htm",
+          "field": "발표 이름 · 요일 · 날짜 · 시각 (예: Consumer Price Index — Wednesday, October 14, 2026 | 08:30 AM · Employment Situation — Friday, October 2, 2026 | 08:30 AM). 연준: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm (2026: 1/27-28 · 3/17-18 · 4/28-29 · 6/16-17 · 7/28-29 · 9/15-16 · 10/27-28 · 12/8-9)",
+          "timezone": "America/New_York",
+          "publishTime": "한 해 일정을 미리 냄 (바뀌면 고침)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "미국 정부 공식 쪽 — 약관 원문 미확인. 두 쪽 모두 이 세션에서 내용 확인"
+        },
+        {
+          "name": "FRED 발표 달력 API (releases/dates)",
+          "url": "https://api.stlouisfed.org/fred/releases/dates?api_key={KEY}&file_type=json&include_release_dates_with_no_data=true&realtime_start={YYYY-MM-DD}",
+          "field": "release_dates[].release_name · date — 앞으로 있을 날짜는 include_release_dates_with_no_data=true 일 때만 나옴",
+          "timezone": "날짜만 (시각 없음)",
+          "publishTime": "수시",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "FRED API 약관(이 세션 확인): 열쇠(32자) 필요 · 사용량 제한을 둘 수 있음 · 서버 안정을 해치는 사용 금지"
+        }
+      ],
+      "compare": {"rule": "exact", "tolerance": 0},
+      "missingRule": "없음",
+      "notes": "날짜는 두 출처로 맞추고, 시각(분)은 기관 쪽에만 있어 시각은 「한 출처」. '큰 발표 30분 뒤' 방아쇠(고리)를 위해 시각을 UTC 로 바꿔 둔다. 발표된 실제 숫자는 이 목록이 아니라 사건 확률 일꾼이 다룬다."
+    },
+    {
+      "id": "events-kr",
+      "nameKo": "한국 발표 일정 (금통위 · 통계)",
+      "kind": "변수",
+      "unit": "발표 한 건 (이름 · 날짜 · 시각)",
+      "market": "KR",
+      "sessionTimesKST": "기관마다 다름 — 확인 필요",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "한국은행 통화정책방향 결정회의(금통위) 일정",
+          "url": "https://www.bok.or.kr",
+          "field": "회의 날짜 — 일정이 실린 정확한 쪽 주소는 확인 필요",
+          "timezone": "Asia/Seoul",
+          "publishTime": "한 해 일정을 미리 냄",
+          "reachableFrom": "unknown",
+          "checkedFrom": "none",
+          "existingParser": null,
+          "terms": "공공기관 — 약관 원문 미확인"
+        }
+      ],
+      "compare": {"rule": "exact", "tolerance": 0},
+      "missingRule": "없음",
+      "notes": "둘째 출처 없음 → gaps 'events-kr'. 통계청 공표 일정 · 수출입 통계(매달 1일 무렵)도 넣어야 하지만 출처 주소를 아직 확인하지 못했다."
+    },
+    {
+      "id": "events-earnings",
+      "nameKo": "실적 발표 · 공시 (52종목)",
+      "kind": "변수",
+      "unit": "공시 한 건 (제목 · 날짜 · 시각)",
+      "market": "KR",
+      "sessionTimesKST": "공시는 아무 때나 — 장중 공시는 극한 K5",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 종목 공시",
+          "url": "https://m.stock.naver.com/api/stock/{code}/disclosure?pageSize=20&page=1",
+          "field": "[].title · [].datetime (시간대 표기 없음 → Asia/Seoul 로 봄) · [].disclosureId · [].itemCode",
+          "timezone": "Asia/Seoul (원문에 표기 없음)",
+          "publishTime": "공시가 뜬 뒤 곧",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "lib/atlas11/context.mjs:parseDisclosures",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진(ATLAS 11)이 이미 매일 쓰는 출처"
+        },
+        {
+          "name": "금융감독원 OpenDART · 공시검색 API",
+          "url": "https://opendart.fss.or.kr/api/list.json?crtfc_key={KEY}&corp_code={8자리}&bgn_de={YYYYMMDD}&end_de={YYYYMMDD}",
+          "field": "list[].rcept_no · report_nm · rcept_dt (날짜만) · stock_code",
+          "timezone": "Asia/Seoul (날짜만)",
+          "publishTime": "공시 접수 뒤 곧 (시각 필드 없음)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(crtfc_key · 40자) 필요. 약관 원문 미확인. DART 웹 공시 목록 https://dart.fss.or.kr/dsac001/mainAll.do 은 러너 200 (옛 엔진 탐침)"
+        }
+      ],
+      "compare": {"rule": "exact", "tolerance": 0},
+      "missingRule": "없음",
+      "notes": "같은 공시가 두 곳에 다 있어야 「확인」(제목·날짜). DART API에는 시각이 없어 시각은 네이버 「한 출처」. 실적 '예정일' 출처와 미국 큰 반도체 회사 실적 일정 출처는 아직 없다(gaps 'events-kr' 와 함께 적음)."
+    },
+    {
+      "id": "stock-price",
+      "nameKo": "종목 값 (ATLAS 52종목)",
+      "kind": "변수",
+      "unit": "원",
+      "market": "KR",
+      "sessionTimesKST": "정규장 09:00~15:30 · 16시 고리부터는 15:30 종가 단일가 값만 (시간외·NXT 값은 섞지 않음)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 국내 종목 분봉",
+          "url": "https://api.stock.naver.com/chart/domestic/item/{code}/minute?startDateTime={YYYYMMDD}{HHMM}&endDateTime={YYYYMMDD}{HHMM}",
+          "field": "[].currentPrice (봉 시각 [].localDateTime = YYYYMMDDHHMMSS) · 15:30:00 봉 = 정규장 종가 · accumulatedTradingVolume",
+          "timezone": "Asia/Seoul",
+          "publishTime": "분마다 · 15:30 종가 단일가 봉은 15:30 에 한 번 정해짐 · 15:40 뒤 봉은 시간외라 쓰지 않음",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": "scripts/atlas11/collect_krx_close.mjs:closingAuctionBar",
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 옛 엔진(ATLAS 11)이 이미 매일 쓰는 출처"
+        },
+        {
+          "name": "KRX Open API · 유가증권 일별매매정보 (코스닥 종목은 코스닥 일별매매정보 sto/ksq_bydd_trd)",
+          "url": "https://data-dbg.krx.co.kr/svc/apis/sto/stk_bydd_trd?basDd={YYYYMMDD}",
+          "field": "OutBlock_1[].TDD_CLSPRC (ISU_CD = 종목코드) — 필드 이름은 열쇠를 받은 뒤 공식 명세로 다시 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "다음 영업일 08:00 (2차 자료)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(머리글 AUTH_KEY) 필요 · 하루 10,000회 · '상업적 이익 추구 금지'(2차 자료). 서비스 목록(유가증권·코스닥 일별매매정보)은 이 세션 확인"
+        }
+      ],
+      "compare": {"rule": "exact", "tolerance": 0},
+      "missingRule": "없음",
+      "notes": "52종목 = public/data/input.json 의 assets[].code (005930 삼성전자 … 030000 제일기획). 어느 종목이 코스닥인지 input.json 에 표시가 없어 확인 필요(예: 196170 알테오젠). 종가는 원 단위로 똑같아야 한다. closingAuctionBar 는 15:30 봉만 읽는다 — 12시 봉은 새 해석기가 필요하고, 12시 장중 값이 KRX만의 값인지 NXT가 섞인 값인지 아직 모른다(gaps 'intraday-basis'). 옛 엔진의 대조처(매일경제 시세판)는 약관 미확인이라 둘째로 고르지 않는다."
+    },
+    {
+      "id": "stock-trading-value",
+      "nameKo": "거래대금 (ATLAS 52종목)",
+      "kind": "변수",
+      "unit": "원",
+      "market": "KR",
+      "sessionTimesKST": "정규장 09:00~15:30 (15:30 뒤에는 시간외 거래가 더해짐)",
+      "cadence": "4h",
+      "sources": [
+        {
+          "name": "네이버 증권 국내 종목 실시간 (polling.finance.naver.com)",
+          "url": "https://polling.finance.naver.com/api/realtime/domestic/stock/{code}",
+          "field": "datas[0].accumulatedTradingValueRaw (원) · datas[0].localTradedAt · 거래 상태 datas[0].tradeStopType.name · datas[0].marketStatus — 맨 위 값은 KRX 값, NXT를 합친 값은 integratedPriceInfo 에 따로 있음",
+          "timezone": "Asia/Seoul",
+          "publishTime": "70초마다 (pollingInterval 70000)",
+          "reachableFrom": "github-actions",
+          "checkedFrom": "code",
+          "existingParser": null,
+          "terms": "네이버 약관 원문을 이 세션에서 못 읽음(policy.naver.com 접속이 막힘) — 자동 수집을 막는 조항이 있는지 사장님 확인 필요. 이 주소는 옛 엔진 탐침(reports/atlas11/probe/deep/naver-polling-005930.json)에서 200"
+        },
+        {
+          "name": "KRX Open API · 유가증권 일별매매정보 (코스닥 종목은 sto/ksq_bydd_trd)",
+          "url": "https://data-dbg.krx.co.kr/svc/apis/sto/stk_bydd_trd?basDd={YYYYMMDD}",
+          "field": "OutBlock_1[].ACC_TRDVAL (원 · ISU_CD = 종목코드) — 필드 이름은 열쇠를 받은 뒤 공식 명세로 다시 확인",
+          "timezone": "Asia/Seoul",
+          "publishTime": "다음 영업일 08:00 (2차 자료)",
+          "reachableFrom": "unknown",
+          "checkedFrom": "session",
+          "existingParser": null,
+          "terms": "인증키(머리글 AUTH_KEY) 필요 · 하루 10,000회 · '상업적 이익 추구 금지'(2차 자료)"
+        }
+      ],
+      "compare": {"rule": "relative", "tolerance": 0.01},
+      "missingRule": "없음",
+      "notes": "두 출처가 시간외 거래를 넣는 범위가 다를 수 있어 1%로 시작한다. 장중 거래대금은 첫째 출처 하나뿐. 'accumulatedTradingValue'(예 '4조 2,538억')는 글자라서 쓰지 않고 Raw 값을 쓴다. 거래정지 종목은 0이 아니라 「없음(거래정지)」."
+    }
+  ],
+  "constants": [
+    {
+      "id": "har-base",
+      "nameKo": "밑값 3층(HAR) — 어제·주·달 흔들림",
+      "computedFrom": [
+        "kospi: 정규장 종가로 만든 하루 등락 기록 (봉인 시각 전 것만)",
+        "어제 1거래일 흔들림 · 지난 5거래일 평균 · 지난 22거래일 평균",
+        "한국 휴장 달력 (public/data/rolling-calendar.json · 휴장일은 건너뛰고 0으로 넣지 않음)"
+      ],
+      "refresh": "16시",
+      "notes": "흔들림의 정확한 셈(절댓값 또는 제곱)은 엔진 문서에서 정한다. 종목 상수는 그 종목 기록(stock-price)으로 따로 잰다."
+    },
+    {
+      "id": "transfer-coef",
+      "nameKo": "전이계수 (갭 = 0.20 + 0.31 × 전날 미국 반도체지수)",
+      "computedFrom": [
+        "sox: 미국 날짜별 등락",
+        "kospi: 한국 날짜별 갭 = 시가 ÷ 전날 정규장 종가 − 1",
+        "미국·한국 휴장 달력으로 날짜를 맞춘 짝 (K1: 한국이 쉰 날의 미국 등락은 다음 한국 거래일까지 쌓아 맞춤)"
+      ],
+      "refresh": "16시",
+      "notes": "시작값은 9월 2일 실측(폭락기 표본 · 설명력 23%) — 다시 잰다. 짝을 만들 때 봉인 시각 뒤 값은 쓰지 않는다."
+    },
+    {
+      "id": "gap-share",
+      "nameKo": "갭 비중 (갭이 하루 등락의 58% · 장중 = 0.27 × 갭)",
+      "computedFrom": [
+        "kospi: 시가 · 종가 · 전날 정규장 종가 기록",
+        "갭 = 시가 ÷ 전날 종가 − 1 · 장중 = 종가 ÷ 시가 − 1"
+      ],
+      "refresh": "16시",
+      "notes": "시작값은 9월 2일 실측(−3% 밑 갭이면 장중 −2.65%, 되돌린 날 0). 9월 2일 셈법이 적힌 원 기록 위치는 확인 필요."
+    },
+    {
+      "id": "stock-beta",
+      "nameKo": "종목별 코스피 민감도",
+      "computedFrom": [
+        "stock-price: 52종목 정규장 종가 하루 등락",
+        "kospi: 같은 날짜 정규장 종가 하루 등락",
+        "거래정지일·상하한가일 표시 (K4: 그날은 빼고 셈)"
+      ],
+      "refresh": "16시",
+      "notes": "같은 날짜끼리만 짝 짓는다. 기업행위(분할·병합 등) 날은 공시(events-earnings · 옛 엔진 parseDisclosures 의 corporateAction)로 표시해 뺀다."
+    },
+    {
+      "id": "factor-weights-36",
+      "nameKo": "36요인 무게",
+      "computedFrom": [
+        "public/data/factor36-registry.json (요인 정의 F01~F36 · 읽기만)",
+        "요인별 관측 기록 (옛 엔진 reports/atlas11/context — 읽기만)",
+        "봉인된 4시간 판의 채점 기록 (학습 기간과 채점 기간을 나눔)"
+      ],
+      "refresh": "16시",
+      "notes": "채점에 쓸 자료로 엔진을 맞추지 않는다(넘지 않는 선). 무게를 바꾸면 바꾼 까닭과 날짜를 장부에 적는다."
+    },
+    {
+      "id": "downside-ratio",
+      "nameKo": "나쁜 쪽 배수 (나쁜 충격이 좋은 충격보다 3~4배)",
+      "computedFrom": [
+        "kospi: 하루 등락 기록 — 나쁜 날과 좋은 날의 크기 비교",
+        "events-us · events-kr · events-earnings: 발표별 좋으면/나쁘면 값(충격표)"
+      ],
+      "refresh": "16시",
+      "notes": "시작값은 9월 2일 실측. 폭의 좌우를 따로 둘 때 쓴다."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "sox",
+      "what": "미국 반도체지수 — 둘째 출처 없음 (네이버 하나뿐)",
+      "plan": "러너 탐침으로 지수 주인(나스닥) 공식 쪽의 접속과 약관을 확인한다(후보 · 아직 확인 안 함). 야후는 약관이 막아 쓰지 않는다. 그 전까지 값은 「한 출처」 표시로만 쓴다."
+    },
+    {
+      "id": "futures-us",
+      "what": "미국 지수 선물 — 출처가 열쇠 필요한 하나(KIS)뿐, 둘째 없음",
+      "plan": "사장님이 증권 계좌 API(KIS) 신청을 정하면 그것을 첫째로. 둘째는 러너 탐침으로 찾되 약관을 먼저 읽는다. 그 전까지 변수 값은 「없음」."
+    },
+    {
+      "id": "vkospi",
+      "what": "VKOSPI — 4시간(장중) 출처 없음 · 하루 한 번 출처(KRX)도 열쇠 필요 · 둘째 없음",
+      "plan": "KRX Open API 열쇠를 받아 파생상품지수 목록에 VKOSPI가 있는지 확인한다. 장중 값은 러너 탐침으로 찾는다. 그 전까지 HAR-X 는 VKOSPI 없이 돌린다."
+    },
+    {
+      "id": "brent",
+      "what": "유가 브렌트 — 4시간 출처 없음 · 늦은 하루 값(FRED) 하나뿐 · 그 시계열도 러너에서 아직 안 받아 봄",
+      "plan": "러너에서 FRED DCOILBRENTEU 를 한 번 받아 본다. 4시간 값은 WTI(wti)로 대신하고, 브렌트는 기록용으로만 둔다."
+    },
+    {
+      "id": "events-kr",
+      "what": "한국 발표 일정(금통위·통계청·수출입)과 실적 예정일 — 정확한 쪽 주소 미확인 · 둘째 출처 없음",
+      "plan": "한국은행·통계청 일정 쪽 주소를 확인해 첫째로 적고, 둘째는 공공 자료 안에서 찾는다. 미국 큰 반도체 회사 실적 일정 출처도 함께 찾는다."
+    },
+    {
+      "id": "keys",
+      "what": "열쇠(API 키)가 있어야 쓰는 출처 다섯 — KRX Open API(AUTH_KEY) · 한국은행 ECOS · OpenDART(crtfc_key) · FRED API(api_key) · KIS(계좌·앱키)",
+      "plan": "사장님이 신청해 GitHub 저장소 비밀(Settings → Secrets and variables → Actions)에 넣는다. 이름 제안: ATLAS4H_KRX_AUTH_KEY · ATLAS4H_ECOS_KEY · ATLAS4H_DART_KEY · ATLAS4H_FRED_KEY · ATLAS4H_KIS_APP_KEY/ATLAS4H_KIS_APP_SECRET. 열쇠는 파일·기록에 절대 쓰지 않는다."
+    },
+    {
+      "id": "terms-naver",
+      "what": "네이버 약관 — 자동 수집 조항을 이 세션에서 못 읽음(접속 막힘). 변수 열다섯 가운데 아홉의 첫째 출처가 네이버",
+      "plan": "사장님이 네이버 약관을 확인해 쓸지 정한다. 못 쓰게 되면 지수·종목은 KRX Open API, 환율은 ECOS 로 바꾸고, 해외 지수(반도체·S&P500·VIX)는 새 출처가 필요하다."
+    },
+    {
+      "id": "holiday-calendar-us",
+      "what": "미국 휴장 달력 출처 없음 (한국은 public/data/rolling-calendar.json 에 출처 셋)",
+      "plan": "뉴욕증권거래소 공식 휴장 쪽과 둘째 공식 출처를 확인해 K1(휴장 엇갈림) 처리에 쓴다. 그 전까지는 미국 지수 값의 날짜(localTradedAt)로만 판단한다."
+    },
+    {
+      "id": "late-second-source",
+      "what": "둘째 출처가 늦게 나오는 변수 — sp500·vix·wti(FRED 하루~일주일 늦음) · kospi·stock-price·stock-trading-value·futures-kospi200·vkospi(KRX 다음 날 08:00)",
+      "plan": "그 사이 고리 값은 「한 출처」로 쓰고, 둘째가 나오면 다시 비교해 장부에 덧붙인다(봉인 판은 고치지 않는다). 다르면 그 변수를 쓴 판에 「늦은 확인: 다름」을 남긴다."
+    },
+    {
+      "id": "intraday-basis",
+      "what": "12시 장중 종목 값과 거래대금이 KRX만의 값인지 NXT(대체거래소)가 섞인 값인지 모름",
+      "plan": "러너 탐침에서 같은 시각 분봉 값과 실시간(polling) 맨 위 값·integratedPriceInfo 를 함께 받아 비교한다. 확인 전까지 장중 종목 값은 「확인 중」으로 두고 쓰지 않는다."
+    }
+  ]
+}
