@@ -31,6 +31,14 @@ const routes = [
 const FONT_STEPS = [100, 125, 150, 175, 200];
 
 function applyFont() { const step = Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0))); document.documentElement.style.fontSize = FONT_STEPS[step] + '%'; document.documentElement.dataset.fontStep = String(step); }
+/** 소리 단추 그림 — 선으로 그린 확성기(이모지 대신 · 3차 시안과 같은 그림, 글자색을 따른다) */
+function speakerIcon() {
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  for (const [k, v] of Object.entries({width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', focusable: 'false'})) svg.setAttribute(k, String(v));
+  for (const d of ['M11 5 6 9H3v6h3l5 4z', 'M15.5 8.5a5 5 0 0 1 0 7', 'M18.5 5.5a9 9 0 0 1 0 13']) { const path = document.createElementNS(ns, 'path'); path.setAttribute('d', d); svg.append(path); }
+  return svg;
+}
+
 /** 맨 위: 둥근 단추 둘만 — 「가」(글씨 100→125→150→175→200→100%) · 🔊(소리) */
 function header() {
   const top = document.getElementById('top');
@@ -38,7 +46,7 @@ function header() {
     voice.on = !voice.on; speakBtn.classList.toggle('on', voice.on); speakBtn.setAttribute('aria-pressed', String(voice.on));
     if (!voice.on) { stopSpeak(); return; }
     if (!(app.view === 'forecast' && voiceTurnedOn())) speakScreen(state.summary || '읽을 내용이 없습니다');
-  }}, h('span', {'aria-hidden': 'true'}, '🔊'));
+  }}, speakerIcon());
   top.replaceChildren(h('div', {class: 'top-inner'},
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); if (app.view !== 'forecast') route(); }}, '가'),
     speakBtn));
