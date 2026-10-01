@@ -90,7 +90,7 @@ function missPanel(m) {
     h('p', {class: 'miss-lead'}, `틀린 ${w}건 중 ${lean.n}건은 ${lean.word}이라 했는데 ${lean.tail}`),
     h('h3', {class: 'panel-sub'}, `틀린 ${w}건을 네 통으로`), binBox,
     h('h3', {class: 'panel-sub'}, '여러 종목을 한꺼번에 틀리게 한 까닭: 「하락」 쏠림'), leanBox,
-    h('p', {class: 'small'}, `모델 신호가 없던 종목(모델이 기대한 등락 0.00%) ${ns.cells}건 중 ${ns.down}건을 「하락」으로 고름 · 하락 확률이 상승 확률보다 평균 ${signedP(ns.tilt)}`),
+    h('p', {class: 'small'}, `모델 신호가 없던 종목(기본값·자기 추세·52종목 폭·평균 세 항이 모두 0.00%) ${ns.cells}건 중 ${ns.down}건을 「하락」으로 고름 · 하락 확률이 상승 확률보다 평균 ${signedP(ns.tilt)}`),
     h('h3', {class: 'panel-sub'}, '맞힌 비율'), hitBox,
     h('p', {class: 'muted small'}, `52종목 평균: ${days}${allDown ? ` · 채점한 ${m.dates.length}일 모두 내린 날이라, 맞힌 ${m.counts.right}건 중 ${ns.rightDown}건은 신호 없는 종목에서 고른 「하락」이 맞은 것 · 오르는 날의 성적은 아직 없음` : ` · 맞힌 ${m.counts.right}건 중 ${ns.rightDown}건은 신호 없는 종목에서 고른 「하락」`}`),
     ns.ranges?.length ? h('details', {class: 'more'}, h('summary', null, `흔들림이 넓을수록 「하락」 쪽으로 기욺 열기 · 신호 없던 종목 ${ns.rangedCells}건`), rangeBox, h('p', {class: 'muted xs'}, '예상 범위 = 그 종목의 80% 범위 폭 · 막대 = 하락 확률 − 상승 확률 평균 · 왜 기우는지는 아직 모름(시험 후보)')) : null,
