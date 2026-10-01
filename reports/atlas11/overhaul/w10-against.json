@@ -1546,6 +1546,87 @@
    "analysisId": "analysis-13373118b27fdf5f"
   }
  ],
+ "zeroWeight": {
+  "cells": 64,
+  "right": 43,
+  "rightDown": 41,
+  "rightByReason": {
+   "모의 계산 기울기": 40,
+   "같은 난수 잡음": 3
+  },
+  "rightDownByReason": {
+   "모의 계산 기울기": 38,
+   "같은 난수 잡음": 3
+  },
+  "wrongByReason": {
+   "모의 계산 기울기": 19,
+   "같은 난수 잡음": 2
+  },
+  "tiltRightByDir": {
+   "down": 38,
+   "up": 2
+  },
+  "tiltWrongByDir": {
+   "down": 17,
+   "up": 2
+  },
+  "noiseRight": [
+   {
+    "date": "2026-09-29",
+    "code": "002380",
+    "name": "KCC",
+    "predDir": "down",
+    "exact": {
+     "up": 0.4742063492063492,
+     "flat": 0.051587301587301584,
+     "down": 0.4742063492063492,
+     "selected": "up"
+    },
+    "published": {
+     "up": 0.47015,
+     "flat": 0.0517,
+     "down": 0.47815,
+     "selected": "down"
+    }
+   },
+   {
+    "date": "2026-09-29",
+    "code": "034220",
+    "name": "LG디스플레이",
+    "predDir": "down",
+    "exact": {
+     "up": 0.4801587301587302,
+     "flat": 0.03968253968253968,
+     "down": 0.4801587301587302,
+     "selected": "up"
+    },
+    "published": {
+     "up": 0.4754,
+     "flat": 0.0396,
+     "down": 0.485,
+     "selected": "down"
+    }
+   },
+   {
+    "date": "2026-09-30",
+    "code": "002380",
+    "name": "KCC",
+    "predDir": "down",
+    "exact": {
+     "up": 0.4742063492063492,
+     "flat": 0.051587301587301584,
+     "down": 0.4742063492063492,
+     "selected": "up"
+    },
+    "published": {
+     "up": 0.47015,
+     "flat": 0.0517,
+     "down": 0.47815,
+     "selected": "down"
+    }
+   }
+  ]
+ },
  "sources": {
   "ledger": {
    "reports/atlas11/ledger/score/2026-09-29.jsonl": "51232cc35952a91a55da6debab9777b9f59bfc321893ead6dd9d2e6394862fda",

@@ -245,7 +245,7 @@
     "reports/atlas11/overhaul/part2.json": "aba2b9501b6e67d04f7dbffd2c82be7d6a20f2ce68a3d5062c0b7070e3df466f",
     "reports/atlas11/overhaul/part3.json": "e36b967094b2aa78edec354b34d6a7bfd98ecb467478e287a5e86758604142a7",
     "reports/atlas11/overhaul/part3-retro-pooled-cells.json": "f659aa190342d5b0c470923cfeb15339ecb3707243cf7b32a946df6d9f0d2f56",
-    "reports/atlas11/overhaul/part4.json": "603af037253f9d772c68ddc12ef24dcd5574e33dbd502e2d8cdd542ad1f83aab",
+    "reports/atlas11/overhaul/part4.json": "07c595a0391983fd9326cb3faff4c6c207632bbc471c125a75fb3904074e966b",
     "scripts/atlas11/overhaul/checks/W8.mjs": "afa527a8610717a814003972023fc5248230689a4dc6f8de50ee59bedae94f99",
     "reports/atlas11/overhaul/data-correction-01.md": "50afcec39b3c33cfb0e0af8bf0ad4a661fd728e3ef30e3db038e15b94884b969"
    },
@@ -277,12 +277,12 @@
     "판정 제안": "규칙상 모른다(T14 실패) · 무게 0 표본만 보면 하락 쏠림의 원인",
     "후향 보조": "dir1sel 원래 50.53 · A 49.86(P 0.2865) · B 48.01(원래가 나음 P 0.8815, 5/6)",
     "T14 진단(검토 고침)": "뽑기 횟수 × 정확 방향 = 발행 156/156(두 발행본) · 두 발행본 같은 뽑기(한 사건) · 최대 |Z| > 3 확률 28.7~29.4%(계획 밖 · 결과를 본 뒤)",
-    "⑤ 보고(검토 고침)": "⑤ 의 기울기는 틀린 칸도 맞은 칸도 만들었고, 없애도 과거·실전 정답이 늘지 않았다 → 고칠 원인이 아니다(무게 0 맞힘 43칸 중 41칸이 그 하락 고름 · 후향 A 49.86% 가려지지 않음 · B 48.01% 나빠짐 · 실전 이틀에 없앴으면 무게 0 맞힘 43 → 36(A) · 39(B)). 결정표대로라면 W11 후보가 아니지만, eco/03 의 T14 고쳐 쓰기를 승인하면 규칙상 ⑤ 가 「원인이다」가 되어 A·B 가 후보가 되므로 「후보 아님」은 사장님이 정해야 한다."
+    "⑤ 보고(검토 고침)": "⑤ 의 기울기는 틀린 칸도 맞은 칸도 만들었고, 없애도 과거·실전 정답이 늘지 않았다 → 고칠 원인이 아니다(무게 0 맞힘 43칸 중 41칸이 하락 고름 — 38칸 기울기 · 3칸 같은 난수 잡음(KCC 09/29 · LG디스플레이 09/29 · KCC 09/30) · 무게 0 칸에서 기울기가 정한 맞음 40(하락 38 · 상승 2) 대 틀림 19(하락 17 · 상승 2) · 후향 A 49.86% 가려지지 않음 · B 48.01% 나빠짐 · 실전 이틀에 없앴으면 무게 0 맞힘 43 → 36(A) · 39(B)). 결정표대로라면 W11 후보가 아니지만, eco/03 의 T14 고쳐 쓰기를 승인하면 규칙상 ⑤ 가 「원인이다」가 되어 A·B 가 후보가 되므로 「후보 아님」은 사장님이 정해야 한다."
    },
    "files": {
-    "reports/atlas11/overhaul/part5.json": "f04ede7fd18e8de51d022d34349d07bd63daa49f455fcd5f0cee8da21d9804e2",
+    "reports/atlas11/overhaul/part5.json": "7c99e6d1bd17e430ce0247ef911880dbcc747438b82d07634e3115541bef045d",
     "scripts/atlas11/overhaul/checks/W9.mjs": "5a4e6c6a4cb0dd1a1fd3aaff1c23522b8cb3fce4d554cf29cd7b7ccf750d5bb6",
-    "reports/atlas11/overhaul/eco/03.md": "f86b61eaaeb3517ae0d50eeac1b6d6c7eedba51f9402abfe83515f3a19eb85a8"
+    "reports/atlas11/overhaul/eco/03.md": "3b6d0f3fedc0c3b62b67ef7541e9c1306bc4a5c3d6015c9998bdc2ea15c3e637"
    },
    "signoff": {
     "만드는 이": "나 갈래 에이전트",
@@ -307,15 +307,16 @@
     "판정표": "① 모른다 · ② 모른다 · ③ 모른다 · ④ 원인이다 · ⑤ 모른다",
     "틀린 42칸": "같은 난수 잡음 2 · 모의 계산 기울기 25 · 평균 항 15 · 없음 0 (기울기: 무게 0 19 + 무게 있음 6 · 평균 항: 기본값 같은 쪽 11)",
     "결정표": "W11 「후보 없음」(사장님이 달리 정하시지 않으면)",
-    "check.mjs --step W10": "4/4",
-    "42칸 규칙": "1) 정확 계산 방향 ≠ 발행 방향 → 같은 난수 잡음 / 2) 세 항(기본값·F35·F11)을 더한 평균이 ≈0(|평균| < 0.005%p · 화면에 0.00%) 이거나 고른 방향과 반대 → 모의 계산 기울기 / 3) 그 밖 → 평균 항(고른 방향과 부호가 같은 항 · 기본값 포함 · 가장 큰 항) / 먼저 맞는 것 하나만"
+    "check.mjs --step W10": "5/5",
+    "42칸 규칙": "1) 정확 계산 방향 ≠ 발행 방향 → 같은 난수 잡음 / 2) 세 항(기본값·F35·F11)을 더한 평균이 ≈0(|평균| < 0.005%p · 화면에 0.00%) 이거나 고른 방향과 반대 → 모의 계산 기울기 / 3) 그 밖 → 평균 항(고른 방향과 부호가 같은 항 · 기본값 포함 · 가장 큰 항) / 먼저 맞는 것 하나만",
+    "무게 0 칸(3회차)": "맞힘 43 중 하락 41 — 기울기 38 · 같은 난수 잡음 3(KCC 09-29 · LG디스플레이 09-29 · KCC 09-30) · 기울기가 정한 맞음 40(하락 38) 대 틀림 19(하락 17)"
    },
    "files": {
-    "reports/atlas11/overhaul/diagnosis.md": "4f82030fe58b451a818dc62aee2d9024b2fb8f04d1ae5b6c2830e00bc75964d1",
-    "reports/atlas11/overhaul/diagnosis.json": "c5bf274d3f0a7d46ae347a3e57be85f3470d04a4dd76a2d9fa5722a47b025705",
+    "reports/atlas11/overhaul/diagnosis.md": "2a08fc44601efc2510c4f2c1c51116b3504d082b356fb94f96e891e1ed6d3b4a",
+    "reports/atlas11/overhaul/diagnosis.json": "382a7e09fbdfc2f917d9674123a18a25fb76bae7fe4cfe23a84bbf37f0262743",
     "scripts/atlas11/overhaul/checks/W10.mjs": "02d8e79afb919fec69032c873e8dfb58721f396c4d75c9d278832807d6a6f152",
-    "reports/atlas11/overhaul/w10-against.json": "4767f34c93e3c7049d304d6467d19d89004620988f19b0141b8e413b7940596c",
-    "scripts/atlas11/overhaul/lane-b/w10-against.mjs": "d2a4334d1b703221acd4301eae46655d7c6c9cd30b748cc200d6f480dd367861"
+    "reports/atlas11/overhaul/w10-against.json": "659acdfc5fc1f37cb291e2520d13b2b2a701f0e506206870204753675f4b66da",
+    "scripts/atlas11/overhaul/lane-b/w10-against.mjs": "7008869d2d715f15f88f42f581bb47298b503cb8822a5ae5e25f74911050b551"
    },
    "signoff": {
     "만드는 이": "나 갈래 에이전트",
@@ -355,7 +356,7 @@
    "approved": null,
    "status": "사장님 판단 기다림",
    "what": "T14 → 정확 재현 또는 묶음 공차(약 4σ) · T13·F4 → 학습·잔차 날짜 ≤ 기준일 < 첫 목표일",
-   "sha256": "f86b61eaaeb3517ae0d50eeac1b6d6c7eedba51f9402abfe83515f3a19eb85a8"
+   "sha256": "3b6d0f3fedc0c3b62b67ef7541e9c1306bc4a5c3d6015c9998bdc2ea15c3e637"
   }
  ],
  "next": [
