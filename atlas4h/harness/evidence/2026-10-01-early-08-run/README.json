@@ -1,0 +1,27 @@
+{
+ "schema": "atlas4h-evidence-1",
+ "what": "08시 재현을 시도 장부에 적기 전에 짓는 일꾼이 미리 돌린 기록 (감시 W2)",
+ "copiedAt": "2026-10-01T21:48:04+09:00",
+ "files": [
+  {
+   "file": "try08.mjs",
+   "mtimeKST": "2026-10-01T21:08:18+09:00",
+   "sha256": "e75db4d94595ae6c0db9c5607f62243547a92165b3d4a8a0d1439bba2bcc1586",
+   "shows": "writeHistoryFixture(가짜 [예시] 지난 자료)로 sox·kospi 를 만들고 실제 input.json·ATLAS 11 후향 파일로 run({slot:'08'}) 을 돌림"
+  },
+  {
+   "file": "s08.md",
+   "mtimeKST": "2026-10-01T21:08:26+09:00",
+   "madeAt": "2026-10-01T21:08:22+09:00",
+   "sha256": "3fa90d74c543bd31fdf91e68a7db495e4ad2e9028e33abed3ad0c8743048d362",
+   "shows": "ATLAS 11 견줌(실제 자료) DM p 0.450·0.466 · 줄 단위 0.448 · 단순 전이식·코스피 숫자는 가짜 자료라 뜻 없음"
+  },
+  {
+   "file": "r08.json (복사 안 함 · 4,960,738 B)",
+   "mtimeKST": "2026-10-01T21:08:26+09:00",
+   "sha256": "8a5271456889005d87a94b2795110e3aa743fd20b489f0e5e52bfa4b2a1ab21e",
+   "shows": "위 실행의 결과 파일 — 크기 때문에 지문만 남김"
+  }
+ ],
+ "source": "본 세션 임시 폴더(scratchpad) — 저장소 밖이라 지워질 수 있어 복사함"
+}
