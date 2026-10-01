@@ -58,34 +58,63 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   page.on('response', r => { if (r.status() >= 400) failedRequests.push(r.status() + ' ' + r.url()); });
   const shot = name => page.screenshot({path: path.join(dir, `${label}-${name}.png`), fullPage: false});
   const closeSheet = async () => { if (await page.locator('.explain.open').count()) { await page.locator('.explain .close').click(); await page.waitForTimeout(350); } };
-  // ---------- 전망(첫 화면) ----------
+  // ---------- 내일(첫 화면) ----------
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 첫 화면 = 큰 제목 「내일」 + 52점 원 + 이야기 다섯 장면(글상자) + 아래 목록 · 맨 위는 둥근 단추 둘(가 · 🔊).
+  //   옛 전망 화면의 검사(맨 위 시장 띠 · 헤드라인 한 줄 · 52줄 · 작은 그래프·확률 막대·가로 막대 · 목록 머리 · 거름 단추 · 꺼 둠 한 줄)는
+  //   그 요소가 이 화면에서 없어졌으므로 아래 검사로 바꿨다(시장 띠는 「내일」 밖의 화면 본문 맨 위로 옮겨 종목 상세에서 검사).
+  const cardsDoc = await (await fetch(base + '/data/atlas11/view/cards.json')).json();
+  const upN = cardsDoc.cards.filter(c => c.day1?.selected === 'up').length, downN = cardsDoc.cards.filter(c => c.day1?.selected === 'down').length, halfN = cardsDoc.cards.filter(c => c.day1 && (c.day1.closeCall || c.day1.statisticalTie)).length;
   await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'});
-  await page.waitForSelector('.wl-row');
-  const strip = await page.locator('#top .mstrip').innerText();
-  check(`${label} 맨 위 시장 띠: 코스피·코스닥 값·등락·기준 시각`, /코스피 [\d,.]+포인트/.test(strip.replace(/\s+/g, ' ')) && /코스닥/.test(strip) && /[+−]\d+\.\d{2}%/.test(strip) && /\d+월 \d+일\(.\) 15:30 KST 종가/.test(strip), {strip: strip.replace(/\s+/g, ' ')});
-  await headlineCheck(page, label, '전망', '.lc .lc-end.pred');
-  const rows = await page.locator('.wl-row').count();
-  check(`${label} 전망: 52종목 줄`, rows === 52, {rows});
-  const sparks = await page.locator('.wl-row .spark').count(), pbars = await page.locator('.wl-row .pbar').count(), hbars = await page.locator('.wl-row .hb').count();
-  check(`${label} 전망: 줄마다 작은 그래프·확률 막대·${TOMORROW ? '내일' : '20거래일'} 가로 막대`, sparks === 52 && pbars === 52 && hbars === 52, {sparks, pbars, hbars});
-  const head = await page.locator('.wl-head').innerText();
-  // 2026-10-02 명령으로 「내일(10월 2일 금)」처럼 날짜를 붙인 「내일」은 허용(날짜 없는 「내일」만 실패)
-  check(`${label} 전망: 목록 머리에 날짜(「내일」만 쓰지 않음)`, (TOMORROW ? /내일\(\d+월 \d+일 .\) 선택·확률/ : /\d+월 \d+일\(.\) 선택·확률/).test(head.replace(/\s+/g, ' ')) && !/내일(?!\(\d+월)/.test(head), {head: head.replace(/\s+/g, ' ').slice(0, 100)});
-  if (TOMORROW) {
-    const fm = await forecastMarks(page), heading = await page.locator('#main .hl-line').innerText(), off = await page.locator('#main .off-note').count(), navRace = await page.locator('.top-nav a[data-route="race"]').count();
-    check(`${label} 전망(내일만): 헤드라인 「내일(날짜) 전망」 · 꺼 둠 한 줄 · 전망 표시는 모두 내일 · 1만원 비교 메뉴 없음`, /내일\(\d+월 \d+일 .\) 전망/.test(heading) && off === 1 && fm.other === 0 && fm.tomorrow >= 52 * 3 && navRace === 0, {heading: heading.slice(0, 60), off, fm, navRace});
+  await page.waitForSelector('.t-ring .t-dot');
+  const story0 = await page.evaluate(() => ({title: document.querySelector('.t-title')?.textContent, when: document.querySelector('.t-when')?.textContent, dots: document.querySelectorAll('.t-ring .t-dot').length, up: document.querySelectorAll('.t-ring .t-dot.up').length, down: document.querySelectorAll('.t-ring .t-dot.down').length, half: document.querySelectorAll('.t-ring .t-dot.half').length, cap: document.querySelector('.t-cap')?.innerText.trim(), progress: document.querySelectorAll('.t-progress i').length, mode: document.querySelector('#t-ctl')?.dataset.mode, ctl: document.querySelector('#t-ctl')?.textContent, tools: [...document.querySelectorAll('#top button')].map(b => b.textContent.trim()), tabs: [...document.querySelectorAll('.bottom .bottom-link')].map(a => a.innerText.trim())}));
+  check(`${label} 내일: 큰 제목 「내일」·내일 날짜 · 52점 원(오를 ${upN}·내릴 ${downN}·속 빈 ${halfN}) · 첫 장면 글상자 · 진행 점 5 · 건너뛰기 · 맨 위 단추 둘 · 아래 탭 둘`, story0.title === '내일' && story0.when === `${Number(tomorrowDate.slice(5, 7))}월 ${Number(tomorrowDate.slice(8, 10))}일 ${['일', '월', '화', '수', '목', '금', '토'][new Date(tomorrowDate + 'T00:00:00Z').getUTCDay()]}요일` && story0.dots === 52 && story0.up === upN && story0.down === downN && story0.half === halfN && story0.cap === 'ATLAS가 보는 52종목입니다.' && story0.progress === 5 && story0.mode === 'skip' && story0.ctl === '건너뛰기' && story0.tools.length === 2 && story0.tools[0] === '가' && story0.tabs.join(',') === '내일,성적', story0);
+  const orderOk = await page.evaluate(() => { const k = [...document.querySelectorAll('.t-ring .t-dot')].map(c => c.classList.contains('up') ? (c.classList.contains('half') ? 1 : 0) : (c.classList.contains('half') ? 2 : 3)); return k.every((v, i) => i === 0 || v >= k[i - 1]); });
+  check(`${label} 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림`, orderOk);
+  const scene2 = await page.waitForFunction(() => /종목이 내일 오를 쪽입니다\.$/.test(document.querySelector('.t-cap')?.innerText.trim() ?? ''), null, {timeout: 12000}).then(() => page.evaluate(() => document.querySelector('.t-cap').innerText.trim())).catch(() => null);
+  check(`${label} 내일: 둘째 장면 글상자 「이 중 ${upN}종목이 내일 오를 쪽입니다.」`, scene2 === `이 중 ${upN}종목이 내일 오를 쪽입니다.`, {scene2});
+  await page.locator('#t-ctl').click(); await page.waitForTimeout(1000);
+  const fin = await page.evaluate(() => ({cap: document.querySelector('.t-cap')?.innerText.trim(), num: document.querySelector('.t-num')?.innerText.trim(), of: document.querySelector('.t-of')?.innerText.trim(), mode: document.querySelector('#t-ctl')?.dataset.mode, ctl: document.querySelector('#t-ctl')?.textContent, rows: document.querySelectorAll('.t-row').length, pills: document.querySelectorAll('.t-row .t-pill').length, more: document.querySelector('.t-more')?.textContent, heads: [...document.querySelectorAll('.t-h2')].map(x => x.innerText.trim()), visible: getComputedStyle(document.querySelector('#t-after')).visibility, hollow: [...document.querySelectorAll('.t-dot.half')].every(c => getComputedStyle(c).fill === 'transparent' || getComputedStyle(c).fill === 'rgba(0, 0, 0, 0)'), foot: document.querySelector('.t-foot')?.innerText.trim()}));
+  check(`${label} 내일: 건너뛰기 → 끝 장면(가운데 ${upN}종목 · 「52종목 중 오를 쪽」 · 글상자 끝 문장) · 목록 올라옴(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 속 빈 원 · 다시 보기`, fin.cap === `그래서 내일은 52종목 중 ${upN}종목이 오를 쪽입니다.` && fin.num === `${upN}종목` && fin.of === '52종목 중 오를 쪽' && fin.mode === 'replay' && fin.ctl === '다시 보기' && fin.visible === 'visible' && fin.rows === upN + Math.min(5, downN) && fin.pills === fin.rows && (downN <= 5 || fin.more === `${downN - 5}종목 더 보기`) && fin.heads[0] === `오를 쪽 ${upN}종목` && fin.heads[1] === `내릴 쪽 ${downN}종목` && fin.heads[2] === '지난 3번의 성적' && fin.hollow && /^\d+월 \d+일\(.\) 종가로 계산$/.test(fin.foot), fin);
+  {
+    const sc = await (await fetch(base + '/data/atlas11/view/scores.json')).json();
+    const last3 = sc.byDate.map(d => { const ev = d.rows.map(r => r.horizons?.['1']).filter(x => x?.status === 'evaluated' && typeof x.directionCorrect === 'boolean'); return {date: d.date, n: ev.length, right: ev.filter(x => x.directionCorrect).length}; }).filter(d => d.n).sort((a, b) => a.date < b.date ? -1 : 1).slice(-3);
+    const n = last3.reduce((s, d) => s + d.n, 0), right = last3.reduce((s, d) => s + d.right, 0);
+    const card = await page.evaluate(() => ({big: document.querySelector('.t-big')?.childNodes[0]?.textContent, days: document.querySelectorAll('.t-day').length, honest: document.querySelector('.t-honest')?.innerText.trim()}));
+    const share = n ? right / n : null, want = n ? `${n}번 가운데 ${right}번 맞혔습니다.` + (share >= 0.4 && share <= 0.6 ? ' 하루 방향은 아직 반반에 가깝습니다.' : '') : '아직 채점이 끝난 날이 없습니다.';
+    check(`${label} 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 ${last3.length}날 · ${right}/${n}) · 반반 문장은 40~60%일 때만`, (!n || card.big === `${Math.round(share * 100)}%`) && card.days === last3.length && card.honest === want, {card, want});
   }
-  await page.locator('.filter').nth(2).click(); await page.waitForTimeout(200);
-  const filtered = await page.locator('.wl-row').count();
-  check(`${label} 전망: 「하락 선택」 거름 단추`, filtered > 0 && filtered < 52, {filtered});
-  await page.locator('.filter').nth(0).click(); await page.waitForTimeout(200);
+  if (TOMORROW) {
+    const fm = await forecastMarks(page);
+    check(`${label} 내일(내일만): 전망 표시(원 점 52 · 가운데 숫자 · 줄 · 알약)는 모두 내일 · 1만원 비교 메뉴 없음`, fm.other === 0 && fm.tomorrow >= 52 + 1 + fin.rows * 2 && await page.locator('.bottom-link[data-route="race"]').count() === 0, {fm});
+  }
+  await page.locator('.t-more').click(); await page.waitForTimeout(150);
+  check(`${label} 내일: 「더 보기」 → 내릴 쪽 ${downN}종목 모두`, await page.locator('.t-row').count() === upN + downN && (await page.locator('.t-more').innerText()).trim() === '접기');
+  await page.locator('.t-more').click(); await page.waitForTimeout(100);
+  // 한 번만(HIG Motion): 같은 발행본을 다시 열면 이야기 없이 끝 장면 · 「다시 보기」는 다시 돈다 · 움직임 줄이기면 바로 끝 장면
+  await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForTimeout(300);
+  const again = await page.evaluate(() => ({mode: document.querySelector('#t-ctl')?.dataset.mode, story: document.querySelector('.t-page')?.dataset.story}));
+  check(`${label} 내일: 같은 발행본을 다시 열면 이야기를 다시 돌리지 않음(끝 장면 · 다시 보기)`, again.mode === 'replay' && again.story === 'done', again);
+  await page.locator('#t-ctl').click(); await page.waitForTimeout(700);
+  const replay = await page.evaluate(() => ({mode: document.querySelector('#t-ctl')?.dataset.mode, cap: document.querySelector('.t-cap')?.innerText.trim()}));
+  check(`${label} 내일: 「다시 보기」 → 첫 장면부터 다시`, replay.mode === 'skip' && replay.cap === 'ATLAS가 보는 52종목입니다.', replay);
+  await page.locator('#t-ctl').click(); await page.waitForTimeout(900);
+  await page.evaluate(() => { try { localStorage.clear(); } catch {} }); await page.emulateMedia({reducedMotion: 'reduce'});
+  await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForTimeout(200);
+  const reduced = await page.evaluate(() => ({mode: document.querySelector('#t-ctl')?.dataset.mode, cap: document.querySelector('.t-cap')?.innerText.trim(), visible: getComputedStyle(document.querySelector('#t-after')).visibility}));
+  check(`${label} 내일: 움직임 줄이기 설정이면 처음부터 끝 장면(이야기 없음 · 글상자 끝 문장)`, reduced.mode === 'replay' && reduced.visible === 'visible' && reduced.cap === `그래서 내일은 52종목 중 ${upN}종목이 오를 쪽입니다.`, reduced);
+  await page.emulateMedia({reducedMotion: 'no-preference'});
+  const focusRing = await page.evaluate(() => { const b = document.querySelector('#t-ctl'); b.focus({focusVisible: true}); const cs = getComputedStyle(b); return {style: cs.outlineStyle, width: parseFloat(cs.outlineWidth)}; });
+  check(`${label} 내일: 키보드 초점 표시(테두리 3px)`, focusRing.style !== 'none' && focusRing.width >= 2, focusRing);
   await shot('01-forecast');
   const small = await page.evaluate(() => [...document.querySelectorAll('button, a.ctl, a.tool, .bottom-link, .top-link')].filter(el => { const r = el.getBoundingClientRect(); return r.width && r.height && (r.height < 44 || r.width < 44); }).map(el => el.className + ':' + Math.round(el.getBoundingClientRect().width) + 'x' + Math.round(el.getBoundingClientRect().height)));
   check(`${label} 터치 영역 44px 미만 없음`, small.length === 0, small.slice(0, 8));
   // ---------- 줄 → 상세 ----------
-  await page.locator('.wl-row').first().click();
+  await page.locator('.t-row').first().click();
   await page.waitForSelector('.detail svg.chart');
   await page.waitForTimeout(200);
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 맨 위는 단추 둘뿐 — 시장 띠는 「내일」 밖의 화면 본문 맨 위(#main .mstrip)로 옮김
+  const strip = await page.locator('#main .mstrip').innerText();
+  check(`${label} 시장 띠(본문 맨 위): 코스피·코스닥 값·등락·기준 시각`, /코스피 [\d,.]+포인트/.test(strip.replace(/\s+/g, ' ')) && /코스닥/.test(strip) && /[+−]\d+\.\d{2}%/.test(strip) && /\d+월 \d+일\(.\) 15:30 KST 종가/.test(strip), {strip: strip.replace(/\s+/g, ' ')});
   const detailFigure = await headlineCheck(page, label, '종목 상세', '.chart-box .end-label.up, .chart-box .end-label.down, .chart-box .end-label.flat');
   check(`${label} 상세: 헤드라인에 종목 이름·날짜·원 단위`, /원$/.test(detailFigure) && /\d+월 \d+일\(.\)/.test(await page.locator('.hl-line').innerText()), {detailFigure});
   const chartTop = await page.evaluate(() => document.querySelector('.chart-box svg').getBoundingClientRect().top);
@@ -176,11 +205,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동`, hashBefore !== hashAfter && /^#\/stock\/\d{6}$/.test(hashAfter), {hashBefore, hashAfter});
   await page.waitForSelector('details.chain > summary'); await page.locator('details.chain > summary').click(); await page.waitForSelector('details.chain svg.netmap');
   check(`${label} 상세: 이동한 종목에서도 연쇄 지도 다시 그림`, await page.locator('.netmap .node.src').count() === 1 && (await page.locator('.netmap .node.src').getAttribute('data-code')) === hashAfter.slice(-6));
-  for (let k = 0; k < 4; k++) await page.locator('.tool[aria-label^="글씨 크게"]').click();
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 글씨 단추는 「가」 하나(누를 때마다 100→125→150→175→200→100%)
+  for (let k = 0; k < 4; k++) { await page.locator('#font-btn').click(); await page.waitForTimeout(150); }
   await page.waitForTimeout(200);
   const fontSize = await page.evaluate(() => document.documentElement.style.fontSize), overflow200 = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   check(`${label} 글씨 200% 에서도 가로 넘침 없음`, fontSize === '200%' && overflow200 <= 0, {fontSize, overflow200});
-  for (let k = 0; k < 4; k++) await page.locator('.tool[aria-label="글씨 작게"]').click();
+  await page.locator('#font-btn').click(); await page.waitForTimeout(150);
+  check(`${label} 「가」를 한 번 더 누르면 200% 다음 100%`, await page.evaluate(() => document.documentElement.style.fontSize) === '100%');
   // ---------- 1만원 비교 ---------- (내일만이면 꺼 둠: 메뉴에 없고 주소로 오면 「꺼 둠」 한 줄만)
   if (TOMORROW) {
     await page.goto(base + '/#/race', {waitUntil: 'networkidle'}); await page.waitForSelector('[data-off="race"]');
@@ -288,10 +319,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.goto(base + '/#/stock/005930', {waitUntil: 'networkidle'}); await page.waitForSelector('.chart-box svg.chart.sfumato');
   const sf = await page.evaluate(() => { const svg = document.querySelector('.chart-box svg.chart'); const b = getComputedStyle(document.body).backgroundColor; const bandFill = getComputedStyle(svg.querySelector('.band.inner')).fill; const today = svg.querySelector('.line.today'); return {bg: b, plate: svg.querySelectorAll('.plate').length, edges: svg.querySelectorAll('.band-edge').length, shadow: svg.querySelectorAll('.line-shadow').length, halo: svg.querySelectorAll('.anchor-halo').length, bandFill, todayStroke: getComputedStyle(today).stroke, todayDir: today.classList.contains('up') ? 'up' : today.classList.contains('down') ? 'down' : 'flat', up: getComputedStyle(document.documentElement).getPropertyValue('--up').trim(), down: getComputedStyle(document.documentElement).getPropertyValue('--down').trim(), transforms: [...svg.querySelectorAll('.line, .band')].filter(e => /skew|matrix/.test(e.getAttribute('transform') || '')).length}; });
   const hex = s => { const m = String(s).match(/\d+/g); return m ? '#' + m.slice(0, 3).map(x => Number(x).toString(16).padStart(2, '0')).join('').toUpperCase() : s; };
-  check(`${label} 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)`, /rgb\(241, 236, 226\)/.test(sf.bg) && sf.plate === 1 && sf.edges === 6 && sf.shadow === 1 && sf.halo === 1 && /url\(/.test(sf.bandFill) && sf.transforms === 0 && (sf.todayDir === 'flat' || hex(sf.todayStroke) === (sf.todayDir === 'up' ? sf.up : sf.down).toUpperCase()), sf);
-  const nav = mobile ? await page.locator('.bottom .bottom-link').count() : await page.locator('.top-nav .top-link').count();
+  check(`${label} 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)`, /rgb\(242, 242, 247\)/.test(sf.bg) /* 2026-10-02 01:34 사장님 승인 3차 디자인: 바탕은 묶음 회색 #f2f2f7 (옛 rgb(241, 236, 226)) */ && sf.plate === 1 && sf.edges === 6 && sf.shadow === 1 && sf.halo === 1 && /url\(/.test(sf.bandFill) && sf.transforms === 0 && (sf.todayDir === 'flat' || hex(sf.todayStroke) === (sf.todayDir === 'up' ? sf.up : sf.down).toUpperCase()), sf);
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 아래 탭 둘(내일 · 성적) — PC 도 같은 탭(진화는 성적·자료 상태의 글 링크로)
+  const nav = await page.locator('.bottom .bottom-link').count();
   // 2026-10-02 명령: 1만원 비교는 꺼 둠 → 내일만이면 메뉴 셋(전망·성적·진화)
-  check(`${label} 주요 메뉴 ${TOMORROW ? 3 : 4}개`, nav === (TOMORROW ? 3 : 4), {nav});
+  check(`${label} 주요 메뉴(아래 탭) 2개`, nav === 2, {nav});
   check(`${label} 가로 스크롤 없음`, !(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
   check(`${label} 콘솔 오류 0`, consoleErrors.length === 0, consoleErrors.slice(0, 5));
   check(`${label} 실패한 요청 0`, failedRequests.length === 0, failedRequests.slice(0, 5));
@@ -302,7 +334,7 @@ async function darkCheck() {
   const page = await context.newPage(); const errors = []; page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto(base + '/#/stock/005930', {waitUntil: 'networkidle'}); await page.waitForSelector('.chart-box svg');
   const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor), ink = await page.evaluate(() => getComputedStyle(document.body).color), bgImage = await page.evaluate(() => getComputedStyle(document.body).backgroundImage);
-  check('dark 다크 모드 토큰 적용(배경·글자·바탕 그라데이션도 어두움)', bg === 'rgb(26, 23, 20)' && ink === 'rgb(241, 235, 224)' && /rgb\(28, 25, 21\)/.test(bgImage) && errors.length === 0, {bg, ink, errors: errors.slice(0, 3)});
+  check('dark 다크 모드 토큰 적용(배경·글자·바탕 그라데이션도 어두움)', bg === 'rgb(0, 0, 0)' && ink === 'rgb(241, 235, 224)' && bgImage === 'none' /* 2026-10-02 01:34 사장님 승인 3차 디자인: 어두운 바탕은 #000 · 그라데이션 없음 (옛 rgb(26, 23, 20) · rgb(28, 25, 21) 그라데이션) */ && errors.length === 0, {bg, ink, errors: errors.slice(0, 3)});
   await page.screenshot({path: path.join(dir, 'dark-02-detail.png')});
   await context.close();
 }
@@ -314,7 +346,7 @@ async function clarityCheck() {
     if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);
     const page = await ctx.newPage(); table[v.id] = {};
     for (const s of SCREENS) {
-      await page.goto(base + '/' + s.hash, {waitUntil: 'networkidle'}); await page.waitForSelector(s.wait, {timeout: 15000}).catch(() => {}); await page.waitForTimeout(500); await renderAll(page);
+      await page.goto(base + '/' + s.hash, {waitUntil: 'networkidle'}); await page.waitForSelector(s.wait, {timeout: 15000}).catch(() => {}); if (s.settle) await s.settle(page); await page.waitForTimeout(500); await renderAll(page);
       const m = await page.evaluate(measureClarity);
       await page.evaluate(() => { for (const x of document.querySelectorAll('.hl-num')) x.click(); }); await page.waitForTimeout(100);
       const src = await page.evaluate(measureClarity, {roots: ['.hl-src'], refTime: false});
@@ -329,7 +361,8 @@ async function clarityCheck() {
   }
   // 검사기 자체 시험: 흐릿한 말 하나 · 단위 없는 숫자 하나를 일부러 넣으면 1·2·3번이 하나씩 늘어야 한다
   const ctx = await browser.newContext({viewport: {width: 1280, height: 800}, locale: 'ko-KR'}); const page = await ctx.newPage();
-  await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'}); await page.waitForSelector('.wl-row'); await renderAll(page);
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 첫 화면은 이야기를 건너뛴 끝 장면에서 잰다
+  await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.locator('#t-ctl[data-mode="skip"]').click({timeout: 3000}).catch(() => {}); await page.waitForSelector('.t-row'); await page.waitForTimeout(900); await renderAll(page);
   const before = await page.evaluate(measureClarity);
   await page.evaluate(() => { const box = document.createElement('section'); box.className = 'panel'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
   const afterPlant = await page.evaluate(measureClarity);

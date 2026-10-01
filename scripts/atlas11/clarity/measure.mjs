@@ -31,7 +31,11 @@ export function measureClarity(opts = {}) {
   const exempt = new Set(roots.flatMap(r => [...r.querySelectorAll('[data-clarity~="headline"], [data-clarity~="strip"]')]).flatMap(e => e.innerText.split('\n').map(s => s.replace(/\s+/g, ' ').trim())).filter(Boolean));
   // 1
   // 2026-10-02 사장님 명령(「ATLAS는 단 하루, 내일만 예측한다」): 바로 뒤에 날짜를 붙인 「내일(10월 2일 금)」은 날짜가 분명하므로 세지 않는다 — 날짜 없는 「내일·오늘·어제」만 센다
-  const relSamples = []; let relDays = 0; for (const l of lines) { const m = l.replace(/내일\(\d{1,2}월 \d{1,2}일[^)]*\)/g, 'ⓓ').match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 큰 제목 「내일」 바로 아래에 내일 날짜(「10월 2일 금요일」 · [data-clarity~="date-anchor"])가 보이는 화면에서는
+  //   제목·글상자([data-clarity~="dated"])의 「내일」이 그 날짜를 가리키므로 세지 않는다 — 다른 곳의 「내일」과 「오늘·어제」는 그대로 센다(검사기 자체 시험이 그대로 잡는다)
+  const anchorOn = roots.some(r => [...r.querySelectorAll('[data-clarity~="date-anchor"]')].some(e => shown(e) && /\d{1,2}월 \d{1,2}일/.test(e.textContent)));
+  const datedLines = new Set(anchorOn ? roots.flatMap(r => [...r.querySelectorAll('[data-clarity~="dated"]')]).filter(shown).flatMap(e => e.innerText.split('\n').map(s => s.replace(/\s+/g, ' ').trim())).filter(Boolean) : []);
+  const relSamples = []; let relDays = 0; for (const l of lines) { const m = (datedLines.has(l) ? l.replace(/내일/g, 'ⓓ') : l).replace(/내일\(\d{1,2}월 \d{1,2}일[^)]*\)/g, 'ⓓ').match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
   // 2
   const vagueRe = /최근|곧|지금|다음|많이|조금|대부분|크게/;
   const vagueSamples = []; let vague = 0;

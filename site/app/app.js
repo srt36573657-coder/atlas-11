@@ -8,10 +8,19 @@ import {renderRace, pauseRace} from './view-race.js';
 import {renderScores, renderStatus} from './view-scores.js';
 import {renderEvolution} from './view-evolution.js';
 import {renderRecords} from './view-records.js';
+import {renderTomorrow, stopStory, voice, voiceTurnedOn} from './view-tomorrow.js';
 
 const app = {view: null, manifest: null};
+/* 3차(2026-10-02 01:34 사장님 승인 3차 디자인 · 「aaa7377에 연결해봐」): 아래 탭은 둘 — 「내일」(#/forecast · 처음 화면) · 「성적」.
+   진화는 지우지 않고 성적·자료 상태 화면에서 글 링크로 연다. 종목 상세(#/stock/CODE)는 그대로(「내일」 탭에 속함). */
+const TABS = ['forecast', 'scores'];
+const ICON = {
+  forecast: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/></g></svg>',
+  scores: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>',
+};
 const routes = [
-  {id: 'forecast', label: '전망', icon: '◔', match: /^#\/(forecast|stock\/\d{6})?$|^$|^#\/?$/, render: renderForecast},
+  {id: 'forecast', label: '내일', icon: '◔', match: /^#\/(forecast)?$|^$|^#\/?$/, render: renderTomorrow},
+  {id: 'stock', label: '종목', tab: 'forecast', match: /^#\/stock\/\d{6}$/, render: renderForecast, aux: true},
   // 1만원 비교(여러 날 경주)는 「내일 하루만」이면 꺼 둠(2026-10-02 사장님 명령) — 메뉴에서 빼고, 주소로 오면 「꺼 둠」 한 줄만
   {id: 'race', label: '1만원 비교', icon: '≋', match: /^#\/race/, render: renderRace, off: m => Boolean(m?.tomorrowOnly)},
   {id: 'scores', label: '성적', icon: '✓', match: /^#\/scores/, render: renderScores},
@@ -22,31 +31,36 @@ const routes = [
 const FONT_STEPS = [100, 125, 150, 175, 200];
 
 function applyFont() { const step = Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0))); document.documentElement.style.fontSize = FONT_STEPS[step] + '%'; document.documentElement.dataset.fontStep = String(step); }
-function header(m) {
+/** 맨 위: 둥근 단추 둘만 — 「가」(글씨 100→125→150→175→200→100%) · 🔊(소리) */
+function header() {
   const top = document.getElementById('top');
-  top.replaceChildren(
-    h('div', {class: 'top-inner'},
-      h('a', {class: 'brand', href: '#/forecast', 'aria-label': 'ATLAS 처음 화면'}, h('span', {class: 'wordmark'}, 'ATLAS')),
-      h('nav', {class: 'top-nav', 'aria-label': '주요 화면'}, ...routes.filter(r => !r.aux && !r.off?.(m)).map(r => h('a', {href: '#/' + r.id, class: 'top-link', dataset: {route: r.id}}, r.label))),
-      h('div', {class: 'top-tools'},
-        h('button', {class: 'tool', type: 'button', 'aria-label': '글씨 작게', onclick: () => { prefs.set('font', Math.max(0, prefs.get('font', 0) - 1)); applyFont(); route(); }}, 'A−'),
-        h('button', {class: 'tool', type: 'button', 'aria-label': '글씨 크게 (최대 200%)', onclick: () => { prefs.set('font', Math.min(FONT_STEPS.length - 1, prefs.get('font', 0) + 1)); applyFont(); route(); }}, 'A+'),
-        h('button', {class: 'tool speak', type: 'button', 'aria-label': '이 화면 읽어주기', 'aria-pressed': 'false', onclick: ev => { const b = ev.currentTarget; if (b.classList.toggle('on')) { b.setAttribute('aria-pressed', 'true'); if (!speakScreen(state.summary || '읽을 내용이 없습니다')) b.classList.remove('on'); setTimeout(() => { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); }, 30000); } else { stopSpeak(); b.setAttribute('aria-pressed', 'false'); } }}, '🔊'),
-        h('a', {class: 'tool aux', href: '#/records', 'aria-label': '기록 검색', dataset: {route: 'records'}}, '기록'),
-        h('a', {class: 'tool aux', href: '#/status', 'aria-label': '자료 상태', dataset: {route: 'status'}}, '자료 상태'))),
-    marketStrip(m));
-  document.getElementById('bottom').replaceChildren(...routes.filter(r => !r.aux && !r.off?.(m)).map(r => h('a', {href: '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true'}, r.icon), h('span', null, r.label))));
+  const speakBtn = h('button', {class: 'round speak', id: 'voice-btn', type: 'button', 'aria-label': '소리로 듣기', 'aria-pressed': 'false', onclick: () => {
+    voice.on = !voice.on; speakBtn.classList.toggle('on', voice.on); speakBtn.setAttribute('aria-pressed', String(voice.on));
+    if (!voice.on) { stopSpeak(); return; }
+    if (!(app.view === 'forecast' && voiceTurnedOn())) speakScreen(state.summary || '읽을 내용이 없습니다');
+  }}, h('span', {'aria-hidden': 'true'}, '🔊'));
+  top.replaceChildren(h('div', {class: 'top-inner'},
+    h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); if (app.view !== 'forecast') route(); }}, '가'),
+    speakBtn));
+  fontLabel();
+  document.getElementById('bottom').replaceChildren(...TABS.map(id => routes.find(r => r.id === id)).map(r => h('a', {href: '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, r.label))));
 }
+function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.setAttribute('aria-label', `글씨 크기 ${FONT_STEPS[Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0)))]}% (누를 때마다 커지고 200% 다음은 100%)`); }
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) el.classList.toggle('active', el.dataset.route === id); }
 
 async function route() {
   const hash = location.hash || '#/forecast';
   const r = routes.find(r => r.match.test(hash)) ?? routes[0];
-  pauseAllPlayers(); pauseRace(); stopSpeak();
-  markActive(r.id); app.view = r.id; state.summary = '';
+  pauseAllPlayers(); pauseRace(); stopSpeak(); stopStory();
+  markActive(r.tab ?? r.id); app.view = r.id; state.summary = '';
   const main = document.getElementById('main');
-  main.dataset.view = r.id;
-  try { await (r.off?.(app.manifest) ? renderOff : r.render)(main, {hash, manifest: app.manifest}); }
+  main.dataset.view = r.id; document.body.dataset.view = r.id;
+  try {
+    await (r.off?.(app.manifest) ? renderOff : r.render)(main, {hash, manifest: app.manifest});
+    // 「내일」 밖의 화면: 시장 띠(코스피·코스닥·기준 시각)는 본문 맨 위에 그대로 · 성적·자료 상태에는 진화로 가는 글 링크
+    if (r.id !== 'forecast') main.prepend(marketStrip(app.manifest));
+    if (r.id === 'scores' || r.id === 'status') main.append(h('p', {class: 'evo-link'}, h('a', {href: '#/evolution'}, '진화 기록 보기 ›')));
+  }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
   window.scrollTo({top: 0});
 }
@@ -84,7 +98,7 @@ async function start() {
   main.replaceChildren(h('section', {class: 'card loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '발행본 목록(manifest.json)을 읽는 중입니다…'), h('div', {class: 'skeleton-grid', 'aria-hidden': 'true'}, ...Array.from({length: 8}, () => h('div', {class: 'skeleton'})))));
   try { app.manifest = await loadManifest(); }
   catch (e) { main.replaceChildren(failure('발행본을 읽지 못했습니다', e)); return; }
-  header(app.manifest);
+  header();
   window.addEventListener('hashchange', route);
   document.addEventListener('visibilitychange', () => { if (document.hidden) { pauseAllPlayers(); pauseRace(); } });
   setInterval(watchManifest, 5 * 60 * 1000);

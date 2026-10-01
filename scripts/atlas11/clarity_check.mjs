@@ -16,7 +16,8 @@ const onlyScreens = arg('--screens')?.split(','), onlyViews = arg('--views')?.sp
 /** 화면 밖이라 그리기를 미룬 칸(content-visibility:auto)도 스크롤하면 보이는 글이므로 모두 그리게 한 뒤 잰다(CSP 안: CSSOM 으로만 바꿈) */
 export async function renderAll(page) { await page.evaluate(() => { for (const el of document.querySelectorAll('*')) if (getComputedStyle(el).contentVisibility === 'auto') el.style.contentVisibility = 'visible'; }); await page.waitForTimeout(150); }
 export const SCREENS = [
-  {id: 'forecast', name: '전망', hash: '#/forecast', wait: '.wl-row, .stock-card'},
+  // 2026-10-02 01:34 사장님 승인 3차 디자인: 첫 화면 「내일」 = 52점 원 + 이야기 다섯 장면 — 원이 그려지면 이야기를 건너뛰어(「건너뛰기」) 끝 장면과 목록을 잰다
+  {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { await page.locator('#t-ctl[data-mode="skip"]').click({timeout: 3000}).catch(() => {}); await page.waitForTimeout(900); }},
   {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
   // 「내일 하루만」(2026-10-02 사장님 명령)이면 1만원 비교는 꺼 둠 — 그래프 대신 「꺼 둠」 한 줄을 기다린다
   {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart, [data-off="race"]'},
@@ -49,6 +50,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
     for (const s of (inject ? SCREENS.filter(x => x.id === 'evolution') : SCREENS.filter(x => !onlyScreens || onlyScreens.includes(x.id)))) {
       await page.goto(base + '/' + s.hash, {waitUntil: 'networkidle'});
       await page.waitForSelector(s.wait, {timeout: 15000}).catch(() => { console.log('기다림 실패', s.id, s.wait); });
+      if (s.settle) await s.settle(page);
       await page.waitForTimeout(700);
       await renderAll(page);
       const m = await page.evaluate(measureClarity);

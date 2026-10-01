@@ -41,11 +41,13 @@ export const download = (name, text, type = 'text/csv;charset=utf-8') => {
   const a = document.createElement('a'); a.href = url; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500);
 };
 export const csvCell = v => `"${String(v ?? '').replaceAll('"', '""')}"`;
-export function speak(text) {
+/** 소리로 읽기(ko-KR · 빠르기 0.9) · onend: 다 읽었거나 멈췄을 때 부른다(3차 「내일」 이야기는 장면이 말 끝을 기다린다) */
+export function speak(text, {onend = null} = {}) {
   try {
     if (!('speechSynthesis' in window)) return false;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text); u.lang = 'ko-KR'; u.rate = 0.9; u.pitch = 1.0; u.volume = 0.96;
+    if (onend) { u.onend = () => onend(); u.onerror = () => onend(); }
     const voice = window.speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('ko')); if (voice) u.voice = voice;
     window.speechSynthesis.speak(u); return true;
   } catch { return false; }
