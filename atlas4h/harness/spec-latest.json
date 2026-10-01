@@ -1,6 +1,6 @@
 {
  "schema": "atlas4h-spec-latest-1",
- "at": "2026-10-01T18:17:07+09:00",
+ "at": "2026-10-01T18:19:25+09:00",
  "results": [
   {
    "id": "T1",
@@ -65,10 +65,10 @@
   {
    "id": "T11",
    "pass": true,
-   "reason": "atlas4h 커밋 7개 · 파일 53개 — 옛 엔진·기록 변경 0",
+   "reason": "atlas4h 커밋 9개 · 파일 70개 — 옛 엔진·기록 변경 0",
    "counts": {
-    "commits": 7,
-    "changes": 53,
+    "commits": 9,
+    "changes": 70,
     "touched": 0
    }
   },
@@ -117,7 +117,7 @@
   {
    "id": "T19",
    "pass": false,
-   "reason": "판정 기준 없음",
+   "reason": "채점 없음",
    "counts": {}
   },
   {
