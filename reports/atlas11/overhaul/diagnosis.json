@@ -1,0 +1,630 @@
+{
+ "schema": "atlas11-overhaul-diagnosis-1",
+ "work": "W10",
+ "requirements": [
+  "R6",
+  "R7"
+ ],
+ "tests": [
+  "T15"
+ ],
+ "builtAt": "2026-10-01 15:52 KST",
+ "builtOnCommit": "d52e072",
+ "verdictTable": [
+  {
+   "부품": "① 방정식 꼴(기본값 + F35 + F11)",
+   "판정": "모른다",
+   "숫자": "후향 1일 방향 맞음 모델 50.53% · 늘 상승 47.9%(모델이 나을 P 0.789 · 4/6) · 늘 하락 49.41%(P 0.7545 · 4/6) · 종목 어제 45.98%(모델 나음 P 0.9985 · 5/6) · 시장 어제 46.43%(모델 나음 P 0.93 · 4/6) · 실전 104칸 모델 62 대 늘 하락 69(이틀치 · 판정 안 씀)",
+   "문턱": "규칙이 낫다(P ≥ 0.80 그리고 6블록 중 ≥ 4(기준일 블록 부트스트랩 · 20일 블록 · 2,000번 · 난수 20260929)) → 원인이다 · 모델이 네 규칙 모두보다 낫다 → 아니다 · 그 밖 모른다",
+   "코드 줄": [
+    "lib/factor36.mjs:53",
+    "lib/factor36.mjs:57",
+    "lib/factor36.mjs:67",
+    "lib/factor36.mjs:92"
+   ]
+  },
+  {
+   "부품": "② 종목별 무게",
+   "판정": "모른다",
+   "숫자": "후향 무게 있는 칸 50.22% 대 무게 0 칸 51.72% · P(무게 있는 칸이 나음) 0.2525 · 블록 3/3 · 학습 하루 뺀 판 P 0.696 · 두 무리(다른 종목) 견줌이지 무게 시험이 아님",
+   "문턱": "무게 있는 칸이 낫다(P ≥ 0.80 그리고 6블록 중 ≥ 4(기준일 블록 부트스트랩 · 20일 블록 · 2,000번 · 난수 20260929)) → 원인이다 · 무게 0 칸이 낫다 → 아니다 · 그 밖 모른다",
+   "코드 줄": [
+    "lib/factor36.mjs:61",
+    "lib/factor36.mjs:62",
+    "lib/factor36.mjs:92"
+   ]
+  },
+  {
+   "부품": "③ 52종목 공통 식(무게 한 벌)",
+   "판정": "모른다",
+   "숫자": "후향 공통 식 C 50.16% 대 A 50.53% · P(C가 나음) 0.341 · 블록 3/3 · 학습 하루 뺀 판 P 0.585",
+   "문턱": "C가 낫다(P ≥ 0.80 그리고 6블록 중 ≥ 4(기준일 블록 부트스트랩 · 20일 블록 · 2,000번 · 난수 20260929)) → 원인이다 · A가 낫다 → 아니다 · 그 밖 모른다",
+   "코드 줄": [
+    "lib/factor36.mjs:86",
+    "lib/atlas11/evolve/backtest.mjs:41",
+    "scripts/atlas11/overhaul/lane-b/pooled.mjs:36"
+   ]
+  },
+  {
+   "부품": "④ 세 요인 입력값(F35·F11·F36)",
+   "판정": "원인이다",
+   "숫자": "계산 차이 0 · 9/28 rolling20 이 쓴 9/21~9/23 종가 24개(12종목)가 9/29 정정 · 특징 최대 0.019231 · 분산 최대 17.9% · 발행 방식으로 1칸(035250) 바뀜 · 정확 셈으로는 동률(바뀜 0) · 오답 42칸 중 바뀌는 칸 ≤ 1 · 9/30 목표 0",
+   "문턱": "특징값·기여 절대 차이 또는 분산 상대 차이 > 1e-9 → 원인이다(결정표: 후보 아님 · 자료 정정 기록 + 보고) · 모두 ≤ 1e-9 → 아니다",
+   "코드 줄": [
+    "lib/factor36.mjs:47",
+    "lib/factor36.mjs:53",
+    "lib/atlas11/simulate.mjs:57",
+    "lib/factor36-simulation.mjs:10"
+   ]
+  },
+  {
+   "부품": "⑤ 모의 계산·방향 고르기",
+   "판정": "모른다",
+   "숫자": "T12 차이 0 · T14 51/52(032830 공차의 1.11배 · 뽑기 횟수로 직접 셈 156/156 같음) · 무게 0 32종목 확률 차 모의 +5.15%p(정확 +4.76) → A +0.72(정확 +0.31) · B +0.42(정확 0.00) · 「하락」 29/32 → A 23(정확 17) · B 24(정확 0) · 변화 -4.44·-4.74%p 대 3×SE 2.07%p · 후향 A 49.86%(P 0.2865) · B 48.01%(원래가 나음 P 0.8815 · 5/6) 대 원래 50.53%",
+   "문턱": "T12·T14 통과 뒤 변형 A·B 가 확률 차 평균을 3×SE(보수적) 넘게 바꾸면 원인이다 · 둘 다 3×SE 이하 → 아니다 · T12·T14 실패 → 모른다",
+   "코드 줄": [
+    "lib/factor36.mjs:84",
+    "lib/atlas11/simulate.mjs:52",
+    "lib/atlas11/simulate.mjs:64",
+    "lib/atlas11/simulate.mjs:103",
+    "lib/atlas11/simulate.mjs:32"
+   ]
+  }
+ ],
+ "wrongCells": {
+  "source": "reports/atlas11/overhaul/w10-against.json",
+  "sha256": "21bf813f39dd459e6c0cd11b8af0c63c2d7dec0e4ec876c2c5165f1692128775",
+  "total": 42,
+  "counts": {
+   "무게 0 → 모의 계산의 기울기(평균 빼기)": 21,
+   "F11 52종목 폭·평균": 6,
+   "F35 자기 추세": 8,
+   "F35 자기 추세 + F11 52종목 폭·평균": 6,
+   "반대로 민 항 없음(모의 계산 확률이 갈림)": 1
+  },
+  "rows": [
+   {
+    "date": "2026-09-29",
+    "code": "003230",
+    "name": "삼양식품",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "009150",
+    "name": "삼성전기",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "009830",
+    "name": "한화솔루션",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "010120",
+    "name": "LS ELECTRIC",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "012750",
+    "name": "에스원",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "021240",
+    "name": "코웨이",
+    "predDir": "down",
+    "actDir": "flat",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "028300",
+    "name": "HLB",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "029780",
+    "name": "삼성카드",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "030200",
+    "name": "KT",
+    "predDir": "up",
+    "actDir": "flat",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "033780",
+    "name": "KT&G",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "034730",
+    "name": "SK",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "035250",
+    "name": "강원랜드",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "036460",
+    "name": "한국가스공사",
+    "predDir": "down",
+    "actDir": "flat",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "105560",
+    "name": "KB금융",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "196170",
+    "name": "알테오젠",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "214370",
+    "name": "케어젠",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-29",
+    "code": "329180",
+    "name": "HD현대중공업",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "000720",
+    "name": "현대건설",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "003490",
+    "name": "대한항공",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "005490",
+    "name": "POSCO홀딩스",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "005930",
+    "name": "삼성전자",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "009150",
+    "name": "삼성전기",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "009830",
+    "name": "한화솔루션",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "010120",
+    "name": "LS ELECTRIC",
+    "predDir": "down",
+    "actDir": "flat",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "010130",
+    "name": "고려아연",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "010170",
+    "name": "대한광통신",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "012330",
+    "name": "현대모비스",
+    "predDir": "down",
+    "actDir": "flat",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "018260",
+    "name": "삼성에스디에스",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "028300",
+    "name": "HLB",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "029780",
+    "name": "삼성카드",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "030200",
+    "name": "KT",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "032830",
+    "name": "삼성생명보험",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "034020",
+    "name": "두산에너빌리티",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "034730",
+    "name": "SK",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "047050",
+    "name": "포스코인터내셔널",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "051910",
+    "name": "LG화학",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": false,
+    "against": [
+     "반대로 민 항 없음(모의 계산 확률이 갈림)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "105560",
+    "name": "KB금융",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "207940",
+    "name": "삼성바이오로직스",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "257720",
+    "name": "실리콘투",
+    "predDir": "down",
+    "actDir": "flat",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "259960",
+    "name": "크래프톤",
+    "predDir": "up",
+    "actDir": "down",
+    "zeroWeight": false,
+    "against": [
+     "F35 자기 추세",
+     "F11 52종목 폭·평균"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "278470",
+    "name": "에이피알",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   },
+   {
+    "date": "2026-09-30",
+    "code": "373220",
+    "name": "LG에너지솔루션",
+    "predDir": "down",
+    "actDir": "up",
+    "zeroWeight": true,
+    "against": [
+     "무게 0 → 모의 계산의 기울기(평균 빼기)"
+    ]
+   }
+  ]
+ },
+ "showsAndNot": "이 진단이 보인 것: 계산은 발행본과 한 자리도 같게 다시 나왔고(T12·④), 하락 쏠림(예측 하락 86 대 실제 하락 69)은 무게 0 종목에서 평균을 빼는 모의 계산이 만든 것이며(⑤), 그 쏠림은 과거 120일에서 실제로 하락이 잦았던 것과 맞아 정답률을 깎지 않았다(무게 0 칸 확률 차 +5.33%p 대 실제 +6.49%p). 보이지 못한 것: 다섯 부품 중 어느 것을 고치면 1일 정답률이 오른다는 증거는 없다 — ①②③은 차이가 1%p 안팎이라 이 검정력(필요한 차이 약 0.7~2.7%p)으로는 가려지지 않았고, ⑤의 A·B는 후향 정답률을 올리지 못했으며, ④는 한 칸만 바꾼다. 틀린 42칸의 「반대로 민 항」은 모형 안의 설명일 뿐 원인 증명이 아니다.",
+ "decisionTable": {
+  "⑤": "A·B 는 후향 이득 없음(A 49.86% · P 0.29 · B 48.01% · 원래가 나음 P 0.88 · 5/6) → W11 후보 아님",
+  "③": "공통 식 C 후향 이득 없음(50.16 대 50.53 · P 0.34) → 후보 아님",
+  "④": "자료 정정 기록(data-correction-01.md) + 보고 · 후보 아님",
+  "①": "모른다 → 다음 판 과제로 보고(결정표 5줄은 「①만 원인」일 때)",
+  "②": "모른다 · 후보 없음",
+  "outcome": "W11 「후보 없음」(사장님이 달리 정하시지 않으면)"
+ },
+ "openRulings": [
+  {
+   "eco": "reports/atlas11/overhaul/eco/03.md",
+   "items": [
+    "T14 → 정확 재현(차이 0) 또는 묶음 공차(156개 비교에 약 4σ)",
+    "T13·F4 → 「학습·잔차 날짜 ≤ 기준일 < 첫 목표일」(120/120 통과)"
+   ],
+   "status": "사장님 판단 기다림"
+  }
+ ],
+ "gateG2": {
+  "status": "글자대로 미통과: T13·T14 — eco/03 판단 기다림",
+  "T10": "pass",
+  "T11": "pass",
+  "T12": "pass",
+  "T13": "fail(글자대로) · 미래 자료 없음 120/120",
+  "T14": "fail(글자대로) · 51/52 · 정확 재현 156/156",
+  "T15": "판정표 5줄 · 세는 이·따지는 이 확인 기다림"
+ },
+ "predictionsVsResults": [
+  {
+   "부품": "①",
+   "계획": "맞다면 모델 dir1sel 45~50%, 가장 나은 규칙 ≥ 모델(P ≥ 0.80)",
+   "결과": "모델 50.53% · 규칙이 나은 경우 없음(가장 가까운 늘 상승 P(규칙 나음) 0.211)"
+  },
+  {
+   "부품": "②",
+   "계획": "맞다면 무게 0 칸이 2%p 넘게 낮음",
+   "결과": "무게 0 칸이 1.5%p 높음(51.72 대 50.22)"
+  },
+  {
+   "부품": "③",
+   "계획": "맞다면 C − A ≥ +1%p",
+   "결과": "−0.37%p(50.16 대 50.53)"
+  },
+  {
+   "부품": "④",
+   "계획": "맞다면 1e-9 넘는 차이 목록 · 아니면 ≤ 1e-12",
+   "결과": "계산 차이 0 · 자료판 차이 종가 24개(9/28 발행만)"
+  },
+  {
+   "부품": "⑤",
+   "계획": "맞다면 중앙값 < 0 이 24개 이상 · 평균보다 작은 비율 51~53% · 원래 약 +5%p · A·B 평균 크기 ≤ 1%p · 「하락」 29 → 14~18 · T12 0 · T14 52/52",
+   "결과": "중앙값 < 0 28/32 · 52.69% · 원래 +5.15%p · A +0.72 · B +0.42 · 「하락」 A 23·B 24(모의) / 17·0(정확) · T12 0 · T14 51/52"
+  }
+ ],
+ "references": [
+  "검정력이 낮다: P ≥ 0.80 에 대략 필요한 평균 차 0.71~2.7%p · 90% 구간 반폭 1.4~5.29%p (계획 밖 · 결과를 본 뒤)",
+  "학습 하루(블록 첫날)만 빼도 모델 50.53 → 49.62% · 모델 − 늘 하락 +1.12 → +0.21%p(P 0.523) · 고른 모형이 바뀐 종목 9/11/9/24/8/21개(블록마다 52개 중) → 1%p 안쪽 차이는 이 흔들림 안이다",
+  "후향 입력 input.json@30dcfb2 의 가격 이력은 검증 끝이 아니다(priceBasisReview: historyCompletelyRepaired false · 「이전 후향을 인증으로 보지 말 것」)",
+  "후향은 칸마다 경로 512개라 확률 하나의 몬테카를로 표준오차가 약 2.2%p다 → 상승·하락이 비슷한 칸은 잡음으로 갈린다",
+  "난수 20260917 을 날마다 같게 써서 동률 근처 종목이 날마다 같은 쪽으로 기운다: 삼성카드(029780) 차이 0.01·0.01%p → 상승 · 실제 하락·하락 · KCC(002380) 차이 0.8·0.8%p → 하락 · 실제 하락·하락 · LG디스플레이(034220) 차이 0.96·1.19%p → 하락 · 실제 하락·하락",
+  "실전 채점은 이틀(9/29·9/30) 104칸뿐이다 — 판정에 쓰지 않았다(F8)"
+ ],
+ "posthocLabel": "「계획 밖 · 결과를 본 뒤」: ④ 발행 방식 영향 · T14 정확 재현·묶음 확률 · 민감도 움직임 · 검정력 · 동률 반복 · ⑤ 보조 후향은 계획에 「판정에 안 씀」으로 적은 것",
+ "files": {
+  "reports/atlas11/overhaul/part1.json": "deb2dd620f84795ea1060263e058a252ce47677101ad1863fffcdec17f8028a9",
+  "reports/atlas11/overhaul/part2.json": "aba2b9501b6e67d04f7dbffd2c82be7d6a20f2ce68a3d5062c0b7070e3df466f",
+  "reports/atlas11/overhaul/part3.json": "e36b967094b2aa78edec354b34d6a7bfd98ecb467478e287a5e86758604142a7",
+  "reports/atlas11/overhaul/part4.json": "51740bc5779d03eb6d5fe7a133f1d704a18bcb740a2ed9556378b780d26f648e",
+  "reports/atlas11/overhaul/part5.json": "bee40e5ed90c1cce5019027676b12fde8148209dbc3dfca1e2842ec6df377720",
+  "reports/atlas11/overhaul/w10-against.json": "21bf813f39dd459e6c0cd11b8af0c63c2d7dec0e4ec876c2c5165f1692128775",
+  "reports/atlas11/overhaul/data-correction-01.md": "89bad6598aeae6e8329867e009cb44b6474eab2f46b8fc281a0c38452927a10a",
+  "reports/atlas11/overhaul/eco/03.md": "3eedc2e6939402d60399cef319909ee3150e80fe7a729e0e0dfdf53ea75bc5ab"
+ }
+}
