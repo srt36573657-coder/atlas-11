@@ -1,0 +1,263 @@
+{
+  "schema": "atlas11-factor-trial-protocol-1",
+  "id": "factor13-trial-v1",
+  "registeredAt": "2026-10-02T14:52:00+09:00",
+  "registeredBeforeResults": true,
+  "orderedBy": "사장님 2026-10-02 14:31 「일단 그렇게 해봐」 — 가) 매일 관측만 하던 13가지 재료: 모으기 → 시험 → 좋아진 것만 켜기",
+  "question": "지금 예측에 안 쓰는 재료를 하나씩 더하면 「내일 오를지 내릴지」 맞힘이 좋아지는가",
+  "kind": "retrospective_후향 · 가격 이력 단일 제공자 · 거시 값은 지금 받은 값에 공개 시각 규칙을 적용(당시 빈티지 파일 아님)",
+  "engine": "운영 경로 그대로: 기본 7특징(F35·F11) + 재료 1개 → fitFactorModel(종목마다 안쪽 40일 CRPS 로 재료 수락 여부 결정) → simulateAtlas11(내일 하루만 · 경로마다 난수 20개 · 같은 난수) · 재료의 미래 값은 기준일 값 고정(carry)",
+  "library": {
+    "file": "lib/atlas11/factor_trial.mjs",
+    "sha256AtRegistration": "34d1d968c5c595f17316d0c6d371d44e1464d26e1e6b73687d9a027176f952fd"
+  },
+  "window": {
+    "originDays": 120,
+    "blocks": 6,
+    "blockDays": 20,
+    "horizon": 1,
+    "actualAsOf": "public/data/input.json 의 actualAsOf(실행 때 기록)",
+    "refit": "블록(20기준일) 앞에서 다시 맞추고 블록 안에서는 계수 고정",
+    "trainingBefore": "2026-09-17 (FACTOR36_POLICY 그대로)"
+  },
+  "simulation": {
+    "paths": 20000,
+    "seed": 20260917,
+    "rngStepsPerPath": 20,
+    "note": "운영 발행과 같은 경로 수·씨앗·난수 순서"
+  },
+  "releaseRules": {
+    "us_close_next_day": "미국 장 마감 값 → 다음 날 한국 발행부터",
+    "fred_daily_2d": "FRED 일별(재무부·연준·EIA·Cboe 등) → 이틀 뒤 한국 발행부터",
+    "h10_weekly": "연준 H.10 환율 → 다음 주 월요일 발표 · 하루 더 여유를 둬 다음 주 수요일 한국 발행부터",
+    "h41_weekly": "연준 H.4.1 총자산(수요일 값) → 목요일 발표 · 하루 더 여유를 둬 토요일 뒤 한국 발행부터",
+    "krx_flows_next_day": "종목별 투자자 수급(당일 값은 발행 시각에 없음·잠정) → 다음 날 발행부터",
+    "kr_market_next_day": "국내 금리·지수(네이버 표기) → 다음 날 발행부터"
+  },
+  "releaseRuleCheck": "2026-10-01 18:53 KST 실제 수집 묶음(reports/atlas11/context/2026-10-01)의 최신 관측일로 규칙이 늦게 잡혔는지(보수적인지) 점검해 결과에 남김",
+  "candidates": [
+    {
+      "id": "F02-DGS2",
+      "factorId": "F02",
+      "name": "미국 정책금리·기대",
+      "label": "미국 2년 국채금리 5일 변화",
+      "series": "DGS2",
+      "kind": "macro",
+      "release": "fred_daily_2d",
+      "transform": "diff5",
+      "unit": "percentage_points_change_5obs",
+      "maxAgeDays": 10,
+      "license": "public_domain_citation_requested",
+      "stage": 1
+    },
+    {
+      "id": "F04-DFII10",
+      "factorId": "F04",
+      "name": "미국 실질금리",
+      "label": "미국 10년 실질금리 5일 변화",
+      "series": "DFII10",
+      "kind": "macro",
+      "release": "fred_daily_2d",
+      "transform": "diff5",
+      "unit": "percentage_points_change_5obs",
+      "maxAgeDays": 10,
+      "license": "public_domain_citation_requested",
+      "stage": 1
+    },
+    {
+      "id": "F05-BAA10Y",
+      "factorId": "F05",
+      "name": "신용 스프레드",
+      "label": "미국 Baa 회사채 − 국채10년 수준",
+      "series": "BAA10Y",
+      "kind": "macro",
+      "release": "fred_daily_2d",
+      "transform": "level",
+      "unit": "percentage_points",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 1
+    },
+    {
+      "id": "F06-DEXKOUS",
+      "factorId": "F06",
+      "name": "원/달러 환율",
+      "label": "원/달러 5일 변화율(로그)",
+      "series": "DEXKOUS",
+      "kind": "macro",
+      "release": "h10_weekly",
+      "transform": "logdiff5",
+      "unit": "log_change_5obs",
+      "maxAgeDays": 21,
+      "license": "public_domain_citation_requested",
+      "stage": 1
+    },
+    {
+      "id": "F07-WALCL",
+      "factorId": "F07",
+      "name": "통화·은행 유동성",
+      "label": "연준 총자산 4주 변화율(로그)",
+      "series": "WALCL",
+      "kind": "macro",
+      "release": "h41_weekly",
+      "transform": "logdiff4",
+      "unit": "log_change_4obs",
+      "maxAgeDays": 21,
+      "license": "public_domain_citation_requested",
+      "stage": 1
+    },
+    {
+      "id": "F09-SP500",
+      "factorId": "F09",
+      "name": "글로벌 주식시장 흐름",
+      "label": "S&P 500 직전 하루 수익률(로그)",
+      "series": "SP500",
+      "kind": "macro",
+      "release": "us_close_next_day",
+      "transform": "logdiff1",
+      "unit": "log_change_1obs",
+      "maxAgeDays": 7,
+      "license": "preapproval_required",
+      "stage": 1
+    },
+    {
+      "id": "F10-VIXCLS",
+      "factorId": "F10",
+      "name": "위험 회피·시장 변동성",
+      "label": "VIX 수준(로그)",
+      "series": "VIXCLS",
+      "kind": "macro",
+      "release": "fred_daily_2d",
+      "transform": "loglevel",
+      "unit": "log_level",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 1
+    },
+    {
+      "id": "F03-KR3YT",
+      "factorId": "F03",
+      "name": "장단기 시장금리 곡선",
+      "label": "국고채 3년 5일 변화",
+      "series": "KR3YT=RR",
+      "kind": "macro",
+      "release": "kr_market_next_day",
+      "transform": "diff5",
+      "unit": "percentage_points_change_5obs",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 2
+    },
+    {
+      "id": "F33-WTI",
+      "factorId": "F33",
+      "name": "원자재·에너지 원가",
+      "label": "WTI 5일 변화율(로그)",
+      "series": "DCOILWTICO",
+      "kind": "macro",
+      "release": "fred_daily_2d",
+      "transform": "logdiff5",
+      "unit": "log_change_5obs",
+      "maxAgeDays": 10,
+      "license": "public_domain_citation_requested",
+      "stage": 2
+    },
+    {
+      "id": "F14-FOREIGN",
+      "factorId": "F14",
+      "name": "외국인 현물 수급",
+      "label": "외국인 순매수 5일 합 ÷ 5일 거래량(종목별)",
+      "field": "foreignNet",
+      "kind": "flows",
+      "release": "krx_flows_next_day",
+      "transform": "flowShare5",
+      "unit": "net_shares_over_volume_5d",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 2
+    },
+    {
+      "id": "F16-INSTITUTION",
+      "factorId": "F16",
+      "name": "국내 기관 수급",
+      "label": "기관 순매수 5일 합 ÷ 5일 거래량(종목별 · 연기금 포함 합계)",
+      "field": "institutionNet",
+      "kind": "flows",
+      "release": "krx_flows_next_day",
+      "transform": "flowShare5",
+      "unit": "net_shares_over_volume_5d",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 2
+    },
+    {
+      "id": "F19-INDIVIDUAL",
+      "factorId": "F19",
+      "name": "개인 투자자 수급",
+      "label": "개인 순매수 5일 합 ÷ 5일 거래량(종목별)",
+      "field": "individualNet",
+      "kind": "flows",
+      "release": "krx_flows_next_day",
+      "transform": "flowShare5",
+      "unit": "net_shares_over_volume_5d",
+      "maxAgeDays": 10,
+      "license": "review_required",
+      "stage": 2
+    }
+  ],
+  "notTestable": [
+    {
+      "factorId": "F30",
+      "name": "자본조달·기업행위",
+      "reason": "공시 제목(낱말)뿐이라 숫자 재료가 아니고, 3년치 공시 목록은 열쇠가 필요한 출처(DART)에서만 받을 수 있음 → 이번 시험에서 빠짐(자료 없음)"
+    }
+  ],
+  "stages": {
+    "1": "지금 저장소에 3년 기록이 있는 7가지(F02·F04·F05·F06·F07·F09·F10) — 바로 시험",
+    "2": "3년 기록을 모은 뒤(atlas11-backfill 버튼) 시험하는 5가지(F03·F33·F14·F16·F19) — 같은 규칙"
+  },
+  "metrics": {
+    "primary": "내일 방향 맞힘률 = 맞음 ÷ (맞음 + 틀림) · 예측 방향 = 운영 규칙(모의 확률 최댓값 · 동률 flat→up→down) · 실제 방향 = ±0.1% 경계 · 실제가 보합인 칸은 따로 셈(맞힘률 분모에서 뺌) · 예측이 보합이고 실제가 오르거나 내리면 틀림",
+    "secondary": [
+      "내일 가격 오차율 평균 |p50−실제|÷실제×100",
+      "내일 Brier(세 갈래)",
+      "80% 띠 담김"
+    ],
+    "unit": "52종목 × 120기준일 = 6,240칸(종목·날짜가 서로 독립 시험이 아님)"
+  },
+  "adoption": {
+    "primary": "B 맞힘률 > A 맞힘률",
+    "uncertainty": {
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "minProbability": 0.8,
+      "minBetterBlocks": 4
+    },
+    "guards": {
+      "priceError": "B 가격 오차율 ≤ A",
+      "brier": "B Brier ≤ A + 0.01",
+      "brierTolerance": 0.01,
+      "coverage": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+    },
+    "all": "맞힘률·블록·부트스트랩·가격 오차·Brier·담김을 모두 통과해야 「통과」",
+    "combined": "단독 통과가 2가지 이상이면 통과한 것을 함께 넣은 후보 하나를 같은 규칙으로 한 번 더 시험(단독 최고보다 나을 때만 그것을 고름)",
+    "afterPass": "통과해도 바로 켜지 않는다 → 운영과 나란히 그림자 발행 10채점일(evolution.v1 liveObservation 기준: 후보 1·5일 오차 ≤ 운영 AND 방향 정답률 ≥ 운영 − 0.02) → 충족하면 켬. 사용권(license)이 permitted 가 아닌 출처는 켜기 전에 사용권 확인 필요",
+    "notPassed": "통과 못 한 재료는 계수 0 그대로(지금과 같음) · 결과와 이유를 그대로 기록"
+  },
+  "multipleTesting": "재료 12가지를 따로 시험하므로 우연히 통과하는 것이 1가지쯤 나올 수 있다 → 그래서 통과 뒤에도 그림자 10채점일을 거친다",
+  "leakageChecks": [
+    "학습 종료일 ≤ 기준일(넘으면 중단)",
+    "재료 값은 공개 규칙상 그 발행일까지 받을 수 있던 관측만",
+    "목표일 실제값은 모형·재료 선택에 쓰지 않음",
+    "결측을 0 으로 채우지 않음(빠진 앞 구간은 버림)"
+  ],
+  "unchanged": [
+    "config/atlas11/scoring-policy.v1.json",
+    "config/atlas11/evolution.v1.json",
+    "운영 발행 엔진(lib/factor36.mjs · lib/atlas11/forecast.mjs · simulate.mjs)",
+    "atlas11-daily 예약 줄"
+  ],
+  "outputs": "reports/atlas11/factor-trial/<runId>/(protocol.json · result.json · days.csv) · reports/atlas11/factor-trial/registry.jsonl(덧붙이기만)"
+}
