@@ -9,7 +9,8 @@
   "engine": "운영 경로 그대로: 기본 7특징(F35·F11) + 재료 1개 → fitFactorModel(종목마다 안쪽 40일 CRPS 로 재료 수락 여부 결정) → simulateAtlas11(내일 하루만 · 경로마다 난수 20개 · 같은 난수) · 재료의 미래 값은 기준일 값 고정(carry)",
   "library": {
     "file": "lib/atlas11/factor_trial.mjs",
-    "sha256AtRegistration": "34d1d968c5c595f17316d0c6d371d44e1464d26e1e6b73687d9a027176f952fd"
+    "sha256AtRegistration": "34d1d968c5c595f17316d0c6d371d44e1464d26e1e6b73687d9a027176f952fd",
+    "sha256Current": "269b20d0b9a9406744c8651b702629c861d243a82c770412f43715e8a5b5e2ba"
   },
   "window": {
     "originDays": 120,
@@ -32,9 +33,10 @@
     "h10_weekly": "연준 H.10 환율 → 다음 주 월요일 발표 · 하루 더 여유를 둬 다음 주 수요일 한국 발행부터",
     "h41_weekly": "연준 H.4.1 총자산(수요일 값) → 목요일 발표 · 하루 더 여유를 둬 토요일 뒤 한국 발행부터",
     "krx_flows_next_day": "종목별 투자자 수급(당일 값은 발행 시각에 없음·잠정) → 다음 날 발행부터",
-    "kr_market_next_day": "국내 금리·지수(네이버 표기) → 다음 날 발행부터"
+    "kr_market_next_day": "국내 금리·지수(네이버 표기) → 다음 날 발행부터",
+    "eia_weekly": "EIA 유가(FRED) → 매주 수요일에 몰아서 올라옴 · 하루 더 여유를 둬 관측일 다음 수요일 + 2일(금요일) 한국 발행부터"
   },
-  "releaseRuleCheck": "2026-10-01 18:53 KST 실제 수집 묶음(reports/atlas11/context/2026-10-01)의 최신 관측일로 규칙이 늦게 잡혔는지(보수적인지) 점검해 결과에 남김",
+  "releaseRuleCheck": "매일 발행 시각대(16:00 KST 이후) 실제 수집 묶음의 최신 관측일로, 규칙이 다음 관측일을 그날 쓰지 않는지(너무 이르지 않은지) 점검해 결과에 남김",
   "candidates": [
     {
       "id": "F02-DGS2",
@@ -155,10 +157,10 @@
       "label": "WTI 5일 변화율(로그)",
       "series": "DCOILWTICO",
       "kind": "macro",
-      "release": "fred_daily_2d",
+      "release": "eia_weekly",
       "transform": "logdiff5",
       "unit": "log_change_5obs",
-      "maxAgeDays": 10,
+      "maxAgeDays": 14,
       "license": "public_domain_citation_requested",
       "stage": 2
     },
@@ -259,5 +261,19 @@
     "운영 발행 엔진(lib/factor36.mjs · lib/atlas11/forecast.mjs · simulate.mjs)",
     "atlas11-daily 예약 줄"
   ],
-  "outputs": "reports/atlas11/factor-trial/<runId>/(protocol.json · result.json · days.csv) · reports/atlas11/factor-trial/registry.jsonl(덧붙이기만)"
+  "outputs": "reports/atlas11/factor-trial/<runId>/(protocol.json · result.json · days.csv) · reports/atlas11/factor-trial/registry.jsonl(덧붙이기만)",
+  "amendments": [
+    {
+      "n": 1,
+      "at": "2026-10-02T15:24:00+09:00",
+      "change": "F33-WTI 공개 규칙 fred_daily_2d → eia_weekly(관측일 다음 수요일 + 2일) · maxAgeDays 10 → 14 · 규칙 점검은 16:00 KST 이후 수집 묶음만",
+      "reason": "1단계 결과의 규칙 점검에서 EIA 유가가 FRED 에 주 1번(수요일) 몰아서 올라오는 것을 확인(9/30 수집 최신 9/22 · 10/1 수집 최신 9/29) → 「이틀 뒤」는 너무 이름 · 아침 07:27 수동 수집은 발행 시각 대표가 아님",
+      "affected": [
+        "F33-WTI"
+      ],
+      "resultsSeenForAffected": false,
+      "stage1Affected": false,
+      "protocolSHA256Before": "be1913973ee7eb8d6f2d730192879362c185b56c20f95f445026b7ae1f79f6af"
+    }
+  ]
 }

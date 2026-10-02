@@ -11,11 +11,26 @@ test('공개 규칙: 미국 마감 다음 날 · FRED 이틀 · H.10 다음 주 
   assert.equal(RELEASE_RULES.h10_weekly.usableFrom('2026-09-21'), '2026-09-30'); // 같은 주 월요일 값도 같은 날
   assert.equal(RELEASE_RULES.h41_weekly.usableFrom('2026-09-23'), '2026-09-26');
   assert.equal(RELEASE_RULES.krx_flows_next_day.usableFrom('2026-10-01'), '2026-10-02');
+  // EIA 유가: 주 1번(수요일) 몰아서 → 다음 수요일 + 2일
+  assert.equal(RELEASE_RULES.eia_weekly.usableFrom('2026-09-22'), '2026-09-25');
+  assert.equal(RELEASE_RULES.eia_weekly.usableFrom('2026-09-23'), '2026-10-02');
+  assert.equal(RELEASE_RULES.eia_weekly.usableFrom('2026-09-29'), '2026-10-02');
+});
+
+test('EIA 유가 규칙: 2026-09-30 수집(최신 9/22)·10-01 수집(최신 9/29) 모두에서 너무 이르지 않다', () => {
+  const c = cand('F33-WTI');
+  assert.equal(c.release, 'eia_weekly');
+  assert.equal(checkReleaseRule(c, '2026-09-22', '2026-09-30').ruleIsConservative, true);
+  assert.equal(checkReleaseRule(c, '2026-09-29', '2026-10-01').ruleIsConservative, true);
 });
 
 test('2026-10-01 18:53 KST 실제 수집 최신일로 본 규칙은 너무 이르지 않다(다음 관측일을 그날 쓰지 않음)', () => {
   const seen = {'F09-SP500': '2026-09-30', 'F10-VIXCLS': '2026-09-29', 'F04-DFII10': '2026-09-29', 'F05-BAA10Y': '2026-09-29', 'F02-DGS2': '2026-09-29', 'F06-DEXKOUS': '2026-09-25', 'F07-WALCL': '2026-09-23', 'F03-KR3YT': '2026-09-30', 'F33-WTI': '2026-09-29'};
-  for (const [id, latest] of Object.entries(seen)) { const r = checkReleaseRule(cand(id), latest, '2026-10-01'); assert.equal(r.ruleIsConservative, true, id); assert.ok(r.usableFromObserved <= '2026-10-01', id + ' 받은 값을 그날 쓸 수 있어야 함'); }
+  for (const [id, latest] of Object.entries(seen)) {
+    const r = checkReleaseRule(cand(id), latest, '2026-10-01'); assert.equal(r.ruleIsConservative, true, id);
+    // 유가(F33)만 일부러 하루 늦게 잡음(주 1번 공개 · 휴일 밀림 여유) · 나머지는 받은 값을 그날 쓸 수 있어야 함
+    if (id === 'F33-WTI') assert.equal(r.lateByDays, 1); else assert.ok(r.usableFromObserved <= '2026-10-01', id + ' 받은 값을 그날 쓸 수 있어야 함');
+  }
 });
 
 test('변환: 수준·로그수준·5일 차이·로그 차이·수급 몫 · 받을 수 없던 값은 안 씀 · 오래되면 null', () => {

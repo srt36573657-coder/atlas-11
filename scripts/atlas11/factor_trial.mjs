@@ -69,7 +69,8 @@ async function releaseChecks() {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
     for (const f of await listDir(`reports/atlas11/context/${day}`)) {
       const c = await readJSON(`reports/atlas11/context/${day}/${f}`);
-      const kst = new Date(Date.parse(c.fetchedAt) + 9 * 3600000).toISOString().slice(0, 10);
+      const kstISO = new Date(Date.parse(c.fetchedAt) + 9 * 3600000).toISOString(), kst = kstISO.slice(0, 10);
+      if (kstISO.slice(11, 16) < '16:00') continue; // 발행 시각대(16:00 KST 이후 매일 수집)만 본다 — 아침 수동 수집은 발행 때 받을 수 있던 값을 대표하지 않음
       for (const cand of TRIAL_CANDIDATES.filter(x => x.kind === 'macro')) { const m = (c.macro ?? []).find(x => x.id === cand.series); if (m?.rows?.length) out.push({candidate: cand.id, fetchedAt: c.fetchedAt, ...checkReleaseRule(cand, m.rows.at(-1).date, kst)}); }
     }
   }
@@ -100,6 +101,9 @@ async function runSide(cand) {
       data = {rows: null, conflicts: [], sources: []};
       for (let i = 0; i < input.assets.length; i++) { const fr = await flowRows(input.assets[i].code); data.sources.push(...fr.sources); const valueOn = featureByIssueDate(fr.rows.map(r => ({...r, value: r[cand.field]})), cand, panel.dates); designs.push({...trialDesign(base[i], panel, valueOn), valueOn}); }
     }
+    // 기록이 짧으면(첫 기준일 전 학습160+선택40+평가60 = 260행 미만) 시험 못 함 — 0 으로 채우거나 늘리지 않는다
+    const short = designs.map((d, i) => ({code: input.assets[i].code, rows: d.rows.filter(r => r.date <= origins[0].date && r.date < '2026-09-17').length})).filter(x => x.rows < 260);
+    if (short.length) { const out = {complete: false, id, candidate: cand, status: 'data_short', reason: `첫 기준일 전 기록이 260거래일보다 짧은 종목 ${short.length}곳 → 시험 못 함`, short: short.slice(0, 10), sources: data.sources}; await fs.writeFile(path.join(dir, 'sides', id + '.json'), JSON.stringify(out)); log({side: id, status: 'data_short', stocks: short.length}); return out; }
     const missingAtOrigins = origins.filter(o => designs.some(d => !Number.isFinite(d.valueOn.get(o.date)))).map(o => o.date);
     if (missingAtOrigins.length) { const out = {complete: false, id, candidate: cand, status: 'data_missing', reason: '기준일에 재료 값이 없음(기록 부족) → 시험 못 함', missingOrigins: missingAtOrigins.length, firstMissing: missingAtOrigins[0], sources: data.sources}; await fs.writeFile(path.join(dir, 'sides', id + '.json'), JSON.stringify(out)); log({side: id, status: 'data_missing', missing: missingAtOrigins.length}); return out; }
   }
@@ -131,7 +135,7 @@ if (flag('--summarize') || !only) {
   }
   const releaseRuleChecks = await releaseChecks();
   const passed = results.filter(r => r.judge?.passed);
-  const result = {schema: 'atlas11-factor-trial-result-1', runId, smoke, stage, protocolId: protocol.id, protocolSHA256, libSHA256, libraryChangedSinceRegistration: libSHA256 !== protocol.library.sha256AtRegistration, registeredAt: protocol.registeredAt, inputSHA256, actualAsOf: input.actualAsOf, finishedAt: new Date().toISOString(), paths, origins: origins.length, firstOrigin: origins[0].date, lastOrigin: origins.at(-1).date, lastTarget: origins.at(-1).targets[0], stocks: input.assets.length, cells: origins.length * input.assets.length,
+  const result = {schema: 'atlas11-factor-trial-result-1', runId, smoke, stage, protocolId: protocol.id, protocolSHA256, libSHA256, libraryChangedSinceRegistration: libSHA256 !== (protocol.library.sha256Current ?? protocol.library.sha256AtRegistration), amendments: (protocol.amendments ?? []).map(a => ({n: a.n, at: a.at, change: a.change})), registeredAt: protocol.registeredAt, inputSHA256, actualAsOf: input.actualAsOf, finishedAt: new Date().toISOString(), paths, origins: origins.length, firstOrigin: origins[0].date, lastOrigin: origins.at(-1).date, lastTarget: origins.at(-1).targets[0], stocks: input.assets.length, cells: origins.length * input.assets.length,
     A: {summary: A.summary, byBlock: A.byBlock}, results, passed: passed.map(r => r.id), combinedNeeded: passed.length >= 2, notTestable: NOT_TESTABLE, releaseRuleChecks, releaseRuleViolations: releaseRuleChecks.filter(x => !x.ruleIsConservative).length,
     note: '후향 시험 · 가격 이력 단일 제공자 · 거시 값은 지금 받은 값(당시 빈티지 아님)에 공개 시각 규칙 적용 · 6,240칸은 서로 독립 시험이 아님 · 통과해도 그림자 10채점일 뒤에 켬', trustProbability: null, liveAdvantageProven: false};
   await fs.writeFile(path.join(dir, 'result.json'), JSON.stringify(result, null, 1));
