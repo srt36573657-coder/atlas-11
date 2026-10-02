@@ -1,0 +1,1518 @@
+{
+ "schema": "atlas11-factor-trial-result-1",
+ "runId": "ft-b66c17a98d2dec6f",
+ "smoke": false,
+ "stage": 1,
+ "protocolId": "factor13-trial-v1",
+ "protocolSHA256": "be1913973ee7eb8d6f2d730192879362c185b56c20f95f445026b7ae1f79f6af",
+ "libSHA256": "34d1d968c5c595f17316d0c6d371d44e1464d26e1e6b73687d9a027176f952fd",
+ "libraryChangedSinceRegistration": false,
+ "registeredAt": "2026-10-02T14:52:00+09:00",
+ "inputSHA256": "0d432d2ff749f8ac7aafc1ec59cb34ef8b1ec97e7ac58cd388fd1b139768a258",
+ "actualAsOf": "2026-10-01",
+ "finishedAt": "2026-10-02T06:15:42.764Z",
+ "paths": 20000,
+ "origins": 120,
+ "firstOrigin": "2026-04-06",
+ "lastOrigin": "2026-09-30",
+ "lastTarget": "2026-10-01",
+ "stocks": 52,
+ "cells": 6240,
+ "A": {
+  "summary": {
+   "right": 3125,
+   "wrong": 2925,
+   "flatActual": 190,
+   "hitRate": 0.5165289256198347,
+   "ape1": 3.011525509123722,
+   "brier1": 0.5316136817764422,
+   "coverage1": 0.734935897435897,
+   "origins": 120
+  },
+  "byBlock": [
+   {
+    "block": 1,
+    "first": "2026-04-06",
+    "last": "2026-05-04",
+    "right": 455,
+    "wrong": 544,
+    "flatActual": 41,
+    "hitRate": 0.45545545545545546,
+    "ape1": 2.4169355000574195,
+    "brier1": 0.5460209558173078,
+    "coverage1": 0.7980769230769231,
+    "origins": 20
+   },
+   {
+    "block": 2,
+    "first": "2026-05-06",
+    "last": "2026-06-04",
+    "right": 544,
+    "wrong": 473,
+    "flatActual": 23,
+    "hitRate": 0.5349065880039331,
+    "ape1": 3.4442142744782642,
+    "brier1": 0.5275460292548078,
+    "coverage1": 0.6394230769230769,
+    "origins": 20
+   },
+   {
+    "block": 3,
+    "first": "2026-06-05",
+    "last": "2026-07-02",
+    "right": 535,
+    "wrong": 482,
+    "flatActual": 23,
+    "hitRate": 0.5260570304818093,
+    "ape1": 3.800993239909178,
+    "brier1": 0.5203503779278845,
+    "coverage1": 0.6663461538461539,
+    "origins": 20
+   },
+   {
+    "block": 4,
+    "first": "2026-07-03",
+    "last": "2026-07-31",
+    "right": 557,
+    "wrong": 460,
+    "flatActual": 23,
+    "hitRate": 0.5476892822025565,
+    "ape1": 3.8333618840761394,
+    "brier1": 0.5191164486442307,
+    "coverage1": 0.6663461538461538,
+    "origins": 20
+   },
+   {
+    "block": 5,
+    "first": "2026-08-03",
+    "last": "2026-08-31",
+    "right": 504,
+    "wrong": 503,
+    "flatActual": 33,
+    "hitRate": 0.5004965243296922,
+    "ape1": 2.6322055127956214,
+    "brier1": 0.5343370313365384,
+    "coverage1": 0.7865384615384616,
+    "origins": 20
+   },
+   {
+    "block": 6,
+    "first": "2026-09-01",
+    "last": "2026-09-30",
+    "right": 530,
+    "wrong": 463,
+    "flatActual": 47,
+    "hitRate": 0.5337361530715005,
+    "ape1": 1.9414426434257066,
+    "brier1": 0.5423112476778845,
+    "coverage1": 0.8528846153846151,
+    "origins": 20
+   }
+  ]
+ },
+ "results": [
+  {
+   "id": "F02-DGS2",
+   "factorId": "F02",
+   "name": "미국 정책금리·기대",
+   "label": "미국 2년 국채금리 5일 변화",
+   "license": "public_domain_citation_requested",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3113,
+    "wrong": 2937,
+    "flatActual": 190,
+    "hitRate": 0.5145454545454545,
+    "ape1": 3.0118040777020814,
+    "brier1": 0.531609731536859,
+    "coverage1": 0.7341346153846151,
+    "origins": 120
+   },
+   "hitDiffPctPoints": -0.19834710743801276,
+   "acceptedStocksByBlock": [
+    14,
+    20,
+    16,
+    20,
+    19,
+    9
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "hitRate",
+     "blocks",
+     "bootstrap",
+     "priceError"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": false,
+      "A": 0.5165289256198347,
+      "B": 0.5145454545454545,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 1,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.0145,
+      "ci90": [
+       -0.0034756703078450135,
+       -0.0004924491135915865
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": false,
+      "A": 3.011525509123722,
+      "B": 3.0118040777020814,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.531609731536859,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7341346153846151,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.45245245245245247,
+      "better": false
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5299901671583087,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5250737463126843,
+      "better": false
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5467059980334317,
+      "better": false
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.5024826216484608,
+      "better": true
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5297079556898288,
+      "better": false
+     }
+    ]
+   },
+   "data": {
+    "rows": 936,
+    "first": "2023-01-03",
+    "last": "2026-09-29",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-DGS2.json",
+      "added": 933
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 2
+     },
+     {
+      "source": "reports/atlas11/context/2026-10-01/2026-10-01T09-53-34Z.json",
+      "added": 1
+     }
+    ]
+   }
+  },
+  {
+   "id": "F04-DFII10",
+   "factorId": "F04",
+   "name": "미국 실질금리",
+   "label": "미국 10년 실질금리 5일 변화",
+   "license": "public_domain_citation_requested",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3116,
+    "wrong": 2934,
+    "flatActual": 190,
+    "hitRate": 0.5150413223140495,
+    "ape1": 3.0121956959487313,
+    "brier1": 0.5318039757003205,
+    "coverage1": 0.7347756410256406,
+    "origins": 120
+   },
+   "hitDiffPctPoints": -0.14876033057851235,
+   "acceptedStocksByBlock": [
+    11,
+    19,
+    10,
+    19,
+    13,
+    5
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "hitRate",
+     "blocks",
+     "bootstrap",
+     "priceError"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": false,
+      "A": 0.5165289256198347,
+      "B": 0.5150413223140495,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 3,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.1475,
+      "ci90": [
+       -0.003961703532519012,
+       0.0008226390259953309
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": false,
+      "A": 3.011525509123722,
+      "B": 3.0121956959487313,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.5318039757003205,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7347756410256406,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.45645645645645644,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5270403146509341,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.528023598820059,
+      "better": true
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5467059980334317,
+      "better": false
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.49652432969215493,
+      "better": false
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5347432024169184,
+      "better": true
+     }
+    ]
+   },
+   "data": {
+    "rows": 936,
+    "first": "2023-01-03",
+    "last": "2026-09-29",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-DFII10.json",
+      "added": 933
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 2
+     },
+     {
+      "source": "reports/atlas11/context/2026-10-01/2026-10-01T09-53-34Z.json",
+      "added": 1
+     }
+    ]
+   }
+  },
+  {
+   "id": "F05-BAA10Y",
+   "factorId": "F05",
+   "name": "신용 스프레드",
+   "label": "미국 Baa 회사채 − 국채10년 수준",
+   "license": "review_required",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3134,
+    "wrong": 2916,
+    "flatActual": 190,
+    "hitRate": 0.5180165289256199,
+    "ape1": 3.0098878041654875,
+    "brier1": 0.531302842690705,
+    "coverage1": 0.7346153846153843,
+    "origins": 120
+   },
+   "hitDiffPctPoints": 0.14876033057852345,
+   "acceptedStocksByBlock": [
+    25,
+    17,
+    17,
+    16,
+    23,
+    14
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "bootstrap"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": true,
+      "A": 0.5165289256198347,
+      "B": 0.5180165289256199,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": true,
+      "better": 4,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.777,
+      "ci90": [
+       -0.0018115942028985588,
+       0.004468718967229446
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": true,
+      "A": 3.011525509123722,
+      "B": 3.0098878041654875,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.531302842690705,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7346153846153843,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.4594594594594595,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5329400196656834,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5329400196656834,
+      "better": true
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5526057030481809,
+      "better": true
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.49354518371400197,
+      "better": false
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5357502517623364,
+      "better": true
+     }
+    ]
+   },
+   "data": {
+    "rows": 934,
+    "first": "2023-01-03",
+    "last": "2026-09-29",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-BAA10Y.json",
+      "added": 931
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 2
+     },
+     {
+      "source": "reports/atlas11/context/2026-10-01/2026-10-01T09-53-34Z.json",
+      "added": 1
+     }
+    ]
+   }
+  },
+  {
+   "id": "F06-DEXKOUS",
+   "factorId": "F06",
+   "name": "원/달러 환율",
+   "label": "원/달러 5일 변화율(로그)",
+   "license": "public_domain_citation_requested",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3136,
+    "wrong": 2914,
+    "flatActual": 190,
+    "hitRate": 0.5183471074380165,
+    "ape1": 3.0122739867414796,
+    "brier1": 0.5324039143830126,
+    "coverage1": 0.7338141025641024,
+    "origins": 120
+   },
+   "hitDiffPctPoints": 0.181818181818183,
+   "acceptedStocksByBlock": [
+    20,
+    21,
+    22,
+    23,
+    27,
+    12
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "blocks",
+     "bootstrap",
+     "priceError"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": true,
+      "A": 0.5165289256198347,
+      "B": 0.5183471074380165,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 3,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.6675,
+      "ci90": [
+       -0.0049358341559723184,
+       0.009653794940079896
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": false,
+      "A": 3.011525509123722,
+      "B": 3.0122739867414796,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.5324039143830126,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7338141025641024,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.47647647647647645,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5250737463126843,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5162241887905604,
+      "better": false
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5447394296951819,
+      "better": false
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.5074478649453823,
+      "better": true
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5397784491440081,
+      "better": true
+     }
+    ]
+   },
+   "data": {
+    "rows": 935,
+    "first": "2023-01-03",
+    "last": "2026-09-25",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-DEXKOUS.json",
+      "added": 930
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 5
+     }
+    ]
+   }
+  },
+  {
+   "id": "F07-WALCL",
+   "factorId": "F07",
+   "name": "통화·은행 유동성",
+   "label": "연준 총자산 4주 변화율(로그)",
+   "license": "public_domain_citation_requested",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3124,
+    "wrong": 2926,
+    "flatActual": 190,
+    "hitRate": 0.5163636363636364,
+    "ape1": 3.0136459320377242,
+    "brier1": 0.5323884379895837,
+    "coverage1": 0.7323717948717944,
+    "origins": 120
+   },
+   "hitDiffPctPoints": -0.01652892561982977,
+   "acceptedStocksByBlock": [
+    18,
+    20,
+    27,
+    29,
+    26,
+    21
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "hitRate",
+     "blocks",
+     "bootstrap",
+     "priceError"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": false,
+      "A": 0.5165289256198347,
+      "B": 0.5163636363636364,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 2,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.473,
+      "ci90": [
+       -0.011471648639790222,
+       0.012637179913535135
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": false,
+      "A": 3.011525509123722,
+      "B": 3.0136459320377242,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.5323884379895837,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7323717948717944,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.48348348348348347,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5260570304818093,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5142576204523107,
+      "better": false
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5309734513274337,
+      "better": false
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.5203574975173784,
+      "better": true
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5226586102719033,
+      "better": false
+     }
+    ]
+   },
+   "data": {
+    "rows": 195,
+    "first": "2023-01-04",
+    "last": "2026-09-23",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-WALCL.json",
+      "added": 195
+     }
+    ]
+   }
+  },
+  {
+   "id": "F09-SP500",
+   "factorId": "F09",
+   "name": "글로벌 주식시장 흐름",
+   "label": "S&P 500 직전 하루 수익률(로그)",
+   "license": "preapproval_required",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3107,
+    "wrong": 2943,
+    "flatActual": 190,
+    "hitRate": 0.5135537190082644,
+    "ape1": 3.0134084249097044,
+    "brier1": 0.5321166261666667,
+    "coverage1": 0.7334935897435897,
+    "origins": 120
+   },
+   "hitDiffPctPoints": -0.2975206611570247,
+   "acceptedStocksByBlock": [
+    16,
+    25,
+    21,
+    21,
+    23,
+    16
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "hitRate",
+     "blocks",
+     "bootstrap",
+     "priceError"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": false,
+      "A": 0.5165289256198347,
+      "B": 0.5135537190082644,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 3,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.266,
+      "ci90": [
+       -0.010329890036654521,
+       0.0041281373844120894
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": false,
+      "A": 3.011525509123722,
+      "B": 3.0134084249097044,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.5321166261666667,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7334935897435897,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.4624624624624625,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5240904621435595,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5231071779744346,
+      "better": false
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5506391347099312,
+      "better": true
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.5084409136047666,
+      "better": true
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.5115810674723061,
+      "better": false
+     }
+    ]
+   },
+   "data": {
+    "rows": 939,
+    "first": "2023-01-03",
+    "last": "2026-09-30",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-SP500.json",
+      "added": 936
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 1
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-30T08-21-48Z.json",
+      "added": 1
+     },
+     {
+      "source": "reports/atlas11/context/2026-10-01/2026-10-01T09-53-34Z.json",
+      "added": 1
+     }
+    ]
+   }
+  },
+  {
+   "id": "F10-VIXCLS",
+   "factorId": "F10",
+   "name": "위험 회피·시장 변동성",
+   "label": "VIX 수준(로그)",
+   "license": "review_required",
+   "status": "tested",
+   "A": {
+    "right": 3125,
+    "wrong": 2925,
+    "flatActual": 190,
+    "hitRate": 0.5165289256198347,
+    "ape1": 3.011525509123722,
+    "brier1": 0.5316136817764422,
+    "coverage1": 0.734935897435897,
+    "origins": 120
+   },
+   "B": {
+    "right": 3108,
+    "wrong": 2942,
+    "flatActual": 190,
+    "hitRate": 0.5137190082644628,
+    "ape1": 3.0110409585307667,
+    "brier1": 0.5312673157155449,
+    "coverage1": 0.7346153846153844,
+    "origins": 120
+   },
+   "hitDiffPctPoints": -0.2809917355371838,
+   "acceptedStocksByBlock": [
+    25,
+    25,
+    25,
+    26,
+    27,
+    22
+   ],
+   "judge": {
+    "passed": false,
+    "decision": "not_adopted",
+    "failed": [
+     "hitRate",
+     "blocks",
+     "bootstrap"
+    ],
+    "gates": {
+     "hitRate": {
+      "passed": false,
+      "A": 0.5165289256198347,
+      "B": 0.5137190082644628,
+      "rule": "B 맞힘률 > A 맞힘률"
+     },
+     "blocks": {
+      "passed": false,
+      "better": 3,
+      "of": 6,
+      "rule": "6블록 중 B 가 더 나은 블록 ≥ 4"
+     },
+     "bootstrap": {
+      "passed": false,
+      "method": "block_bootstrap_over_origin_days",
+      "blockLength": 20,
+      "resamples": 2000,
+      "seed": 20260929,
+      "probabilityBBetter": 0.309,
+      "ci90": [
+       -0.012263838249917058,
+       0.007088691064952246
+      ],
+      "rule": "P(B 맞힘률 > A) ≥ 0.8"
+     },
+     "priceError": {
+      "passed": true,
+      "A": 3.011525509123722,
+      "B": 3.0110409585307667,
+      "rule": "B 가격 오차율 ≤ A"
+     },
+     "brier": {
+      "passed": true,
+      "A": 0.5316136817764422,
+      "B": 0.5312673157155449,
+      "rule": "B Brier ≤ A + 0.01"
+     },
+     "coverage": {
+      "passed": true,
+      "A": 0.734935897435897,
+      "B": 0.7346153846153844,
+      "rule": "B 80% 띠 담김이 [0.70, 0.90] 안 또는 |B−0.80| ≤ |A−0.80| + 0.03"
+     }
+    },
+    "byBlock": [
+     {
+      "block": 1,
+      "hitA": 0.45545545545545546,
+      "hitB": 0.47347347347347346,
+      "better": true
+     },
+     {
+      "block": 2,
+      "hitA": 0.5349065880039331,
+      "hitB": 0.5181907571288102,
+      "better": false
+     },
+     {
+      "block": 3,
+      "hitA": 0.5260570304818093,
+      "hitB": 0.5309734513274337,
+      "better": true
+     },
+     {
+      "block": 4,
+      "hitA": 0.5476892822025565,
+      "hitB": 0.5555555555555556,
+      "better": true
+     },
+     {
+      "block": 5,
+      "hitA": 0.5004965243296922,
+      "hitB": 0.48957298907646474,
+      "better": false
+     },
+     {
+      "block": 6,
+      "hitA": 0.5337361530715005,
+      "hitB": 0.513595166163142,
+      "better": false
+     }
+    ]
+   },
+   "data": {
+    "rows": 966,
+    "first": "2023-01-03",
+    "last": "2026-09-29",
+    "conflicts": [],
+    "sources": [
+     {
+      "source": "reports/completion/market-VIXCLS.json",
+      "added": 961
+     },
+     {
+      "source": "reports/atlas11/context/2026-09-30/2026-09-29T22-27-33Z.json",
+      "added": 4
+     },
+     {
+      "source": "reports/atlas11/context/2026-10-01/2026-10-01T09-53-34Z.json",
+      "added": 1
+     }
+    ]
+   }
+  }
+ ],
+ "passed": [],
+ "combinedNeeded": false,
+ "notTestable": [
+  {
+   "factorId": "F30",
+   "name": "자본조달·기업행위",
+   "reason": "공시 제목(낱말)뿐이라 숫자 재료가 아니고, 3년치 공시 목록은 열쇠가 필요한 출처(DART)에서만 받을 수 있음 → 이번 시험에서 빠짐(자료 없음)"
+  }
+ ],
+ "releaseRuleChecks": [
+  {
+   "candidate": "F02-DGS2",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "DGS2",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F04-DFII10",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "DFII10",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F05-BAA10Y",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "BAA10Y",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F06-DEXKOUS",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "DEXKOUS",
+   "release": "h10_weekly",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-25",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-28",
+   "usableFromNext": "2026-10-07",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F07-WALCL",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "WALCL",
+   "release": "h41_weekly",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-23",
+   "usableFromObserved": "2026-09-26",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-03",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F09-SP500",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "SP500",
+   "release": "us_close_next_day",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-29",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-09-30",
+   "ruleIsConservative": false,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F10-VIXCLS",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "VIXCLS",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F03-KR3YT",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "KR3YT=RR",
+   "release": "kr_market_next_day",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F33-WTI",
+   "fetchedAt": "2026-09-29T22:27:33Z",
+   "series": "DCOILWTICO",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-22",
+   "usableFromObserved": "2026-09-24",
+   "nextObservation": "2026-09-23",
+   "usableFromNext": "2026-09-25",
+   "ruleIsConservative": false,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F02-DGS2",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "DGS2",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F04-DFII10",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "DFII10",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F05-BAA10Y",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "BAA10Y",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F06-DEXKOUS",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "DEXKOUS",
+   "release": "h10_weekly",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-25",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-28",
+   "usableFromNext": "2026-10-07",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F07-WALCL",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "WALCL",
+   "release": "h41_weekly",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-23",
+   "usableFromObserved": "2026-09-26",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-03",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F09-SP500",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "SP500",
+   "release": "us_close_next_day",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F10-VIXCLS",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "VIXCLS",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-28",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-29",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F03-KR3YT",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "KR3YT=RR",
+   "release": "kr_market_next_day",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-01",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F33-WTI",
+   "fetchedAt": "2026-09-30T08:21:48Z",
+   "series": "DCOILWTICO",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-09-30",
+   "observedLatestDate": "2026-09-22",
+   "usableFromObserved": "2026-09-24",
+   "nextObservation": "2026-09-23",
+   "usableFromNext": "2026-09-25",
+   "ruleIsConservative": false,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F02-DGS2",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "DGS2",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F04-DFII10",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "DFII10",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F05-BAA10Y",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "BAA10Y",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F06-DEXKOUS",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "DEXKOUS",
+   "release": "h10_weekly",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-25",
+   "usableFromObserved": "2026-09-30",
+   "nextObservation": "2026-09-28",
+   "usableFromNext": "2026-10-07",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F07-WALCL",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "WALCL",
+   "release": "h41_weekly",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-23",
+   "usableFromObserved": "2026-09-26",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-03",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F09-SP500",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "SP500",
+   "release": "us_close_next_day",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-30",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-10-01",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F10-VIXCLS",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "VIXCLS",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F03-KR3YT",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "KR3YT=RR",
+   "release": "kr_market_next_day",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-30",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-10-01",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  },
+  {
+   "candidate": "F33-WTI",
+   "fetchedAt": "2026-10-01T09:53:34Z",
+   "series": "DCOILWTICO",
+   "release": "fred_daily_2d",
+   "collectionDayKST": "2026-10-01",
+   "observedLatestDate": "2026-09-29",
+   "usableFromObserved": "2026-10-01",
+   "nextObservation": "2026-09-30",
+   "usableFromNext": "2026-10-02",
+   "ruleIsConservative": true,
+   "lateByDays": 0
+  }
+ ],
+ "releaseRuleViolations": 3,
+ "note": "후향 시험 · 가격 이력 단일 제공자 · 거시 값은 지금 받은 값(당시 빈티지 아님)에 공개 시각 규칙 적용 · 6,240칸은 서로 독립 시험이 아님 · 통과해도 그림자 10채점일 뒤에 켬",
+ "trustProbability": null,
+ "liveAdvantageProven": false
+}
