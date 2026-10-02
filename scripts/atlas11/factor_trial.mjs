@@ -83,7 +83,7 @@ await fs.mkdir(path.join(dir, 'sides'), {recursive: true});
 
 const {panel, origins} = rollingBacktestPlan(input, {originDays: win.originDays, blocks: win.blocks, blockDays: win.blockDays, horizon: win.horizon});
 const base = input.assets.map((a, i) => examplesFor(panel, i));
-const stageCandidates = TRIAL_CANDIDATES.filter(c => c.stage <= stage);
+const stageCandidates = TRIAL_CANDIDATES.filter(c => c.stage === stage); // 단계마다 그 단계 후보만(이미 판정한 1단계를 새 입력으로 다시 시험하지 않음)
 const only = arg('--only')?.split(',') ?? null;
 
 async function sideFile(id) { try { return JSON.parse(await fs.readFile(path.join(dir, 'sides', id + '.json'), 'utf8')); } catch (e) { if (e.code === 'ENOENT') return null; throw e; } }
