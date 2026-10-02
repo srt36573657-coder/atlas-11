@@ -2253,10 +2253,10 @@
  "lastAdoptionDate": null,
  "cooldownUntilTradingDayIndex": null,
  "sequence": 1,
- "events": 60,
- "lastEventAt": "2026-10-01T09:53:49Z",
+ "events": 67,
+ "lastEventAt": "2026-10-02T14:39:16Z",
  "lastNoChange": {
-  "at": "2026-10-01T09:53:49Z",
-  "reason": "오늘 검증한 후보 없음"
+  "at": "2026-10-02T14:39:16Z",
+  "reason": "오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠"
  }
 }

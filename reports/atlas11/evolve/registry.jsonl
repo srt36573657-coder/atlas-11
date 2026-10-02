@@ -58,3 +58,10 @@
 {"id":"evt-a98176dd24d95fad","at":"2026-09-29T11:45:56Z","type":"no_change","reason":"오늘 검증한 후보 없음","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
 {"id":"evt-a1efc51a94439158","at":"2026-09-30T08:22:04Z","type":"no_change","reason":"오늘 검증한 후보 없음","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
 {"id":"evt-9b14b901f07b3e64","at":"2026-10-01T09:53:49Z","type":"no_change","reason":"오늘 검증한 후보 없음","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-9bc50dbc9154954c","at":"2026-10-02T13:38:22Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-5addf9e1059dead4","at":"2026-10-02T13:48:56Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-0a3a1fb7e635ff11","at":"2026-10-02T13:59:00Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-3c8cff8fc447ac93","at":"2026-10-02T14:09:04Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-083913419e0f169b","at":"2026-10-02T14:19:08Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-63accdd0afc7df87","at":"2026-10-02T14:29:12Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"evt-28ede48b8715ceb8","at":"2026-10-02T14:39:16Z","type":"no_change","reason":"오늘 검증한 후보 없음 · 내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠","configSHA256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}

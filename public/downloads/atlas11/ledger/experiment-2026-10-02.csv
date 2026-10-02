@@ -1,0 +1,2 @@
+﻿id,type,dateKST,at,supersedes,correctionReason,links,kind,day,candidatesTotal,openCandidates,rejectedCandidates,observingCandidates,reason,validationWindow,backtestsOff,switch,status
+experiment-697644afcb9a9a33,experiment,2026-10-02,2026-10-02T13:38:22Z,,,{},no_test,2026-10-02,11,0,11,0,내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠,"{""trainingBefore"":""2026-09-17"",""originDays"":120}",true,"{""futureDays"":1,""since"":""2026-10-02"",""config"":""config/atlas11/horizon.json"",""configSHA256"":""dbde8aadaf0d05c1fbb400106d9a3c699099949223c23e89fa582fd2c646e7c9""}",변경 없음
