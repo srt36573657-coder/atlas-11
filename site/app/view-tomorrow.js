@@ -5,11 +5,15 @@
      글자는 그림 그대로: 가운데 숫자만 · 「52종목 중 오를 쪽」 · 「나머지 40종목은 내릴 쪽입니다. / 속이 빈 28개는 거의 반반입니다.」
      · 「오를 쪽 12」「내릴 쪽 40」 · 「9월 29일 35/52」 · 「10월 1일 목요일 종가로 계산」.
    3차 이야기(다섯 장면 · 2026-10-02 01:34 사장님 승인)는 STORY = false 로 꺼 둠 — 지우지 않음. true 로 바꾸면 3차 그대로 돈다.
+   2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점 톡톡(0.7초) 대신 점이 12시부터 시계 방향으로 하나씩 천천히 나온다
+     (점마다 0.36초 · 네 묶음이 바뀔 때 0.7초 쉼 · 모두 22초쯤). 점이 나올 때마다 가운데에 그 회사 이름과 「오를 쪽 · 확률 58%」가 뜬다.
+     다 나오면 가운데는 2차 그대로(오를 쪽 수 · 「52종목 중 오를 쪽」). 그 뒤에도 점을 누르면 그 회사 이름이 2.5초 떴다가 돌아간다.
+     움직임 줄이기 설정이면 처음부터 다 보인다(이름은 점을 누르면 뜸). 상태는 .t-page[data-roll] = playing · done · tap.
    한 물건: 52종목 원 하나. 12시 방향부터 시계 방향으로 ① 분명히 오를 쪽 ② 오를 쪽이지만 거의 반반 ③ 내릴 쪽이지만 거의 반반 ④ 분명히 내릴 쪽.
    오를 쪽 빨강(#ff3b30) · 내릴 쪽 파랑(#0a84ff) · 거의 반반(day1.closeCall || day1.statisticalTie)은 속이 빈 원.
    「내일 하루만」(2026-10-02 00:08 사장님 명령): 전망은 내일(manifest.futureDates[0]) 하나만 · 전망 요소마다 data-forecast-date. */
 import {h, won, pct, prob, korDate, weekday, finite, speak, speakScreen, stopSpeak, reducedMotion} from './util.js';
-import {state, loadCards, loadScores, prefs} from './store.js';
+import {state, loadCards, loadScores, loadJSON, prefs} from './store.js';
 
 /** 3차 이야기(장면) 스위치 — 2026-10-02 04:16 사장님 「이때로 돌아가」로 꺼 둠(지우지 않음) */
 const STORY = false;
@@ -39,7 +43,7 @@ function say(text) {
 }
 
 export async function renderTomorrow(main, {manifest}) {
-  const [cardsDoc, scores] = await Promise.all([loadCards(), loadScores().catch(() => null)]);
+  const [cardsDoc, scores, whyDoc] = await Promise.all([loadCards(), loadScores().catch(() => null), loadJSON('why.json').catch(() => null)]);
   const tomorrow = manifest.futureDates?.[0];
   const rows = (cardsDoc.cards ?? []).filter(c => c.day1).map(c => {
     const d1 = c.day1, sel = d1.selected === 'up' || d1.selected === 'down' ? d1.selected : (finite(d1.return) && d1.return < 0 ? 'down' : 'up');
@@ -125,11 +129,81 @@ export async function renderTomorrow(main, {manifest}) {
   const col = d => d.r.sel === 'up' ? 'var(--t-up)' : 'var(--t-down)';
 
   if (!STORY) {
-    // ── 2차: 처음부터 다 보임 · 점만 톡톡(CSS) · 속 찬 점 r 7.4 · 속 빈 점 r 6.2 + 선 2.6(2차 시안 그대로) ──
+    // ── 2차: 원·두 줄·목록·성적이 처음부터 보임 · 속 찬 점 r 7.4 · 속 빈 점 r 6.2 + 선 2.6(2차 시안 그대로) ──
     for (const d of dots) { d.el.setAttribute('r', d.r.close ? '6.2' : '7.4'); const s = d.el.style; s.fill = d.r.close ? 'transparent' : col(d); s.stroke = d.r.close ? col(d) : 'none'; }
     setNum(upRows.length, '', 'ink', `${total}종목 중 오를 쪽`);
-    main.replaceChildren(h('section', {class: 't-page', 'data-story': 'off'}, head, dial, sayLines, after));
+    // ── 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점이 하나씩 나오며 가운데에 회사 이름 ──
+    const rollName = h('div', {class: 't-roll-name'}), rollSide = h('div', {class: 't-roll-side'});
+    dial.querySelector('.t-center').append(h('div', {class: 't-roll', 'aria-live': 'off'}, rollName, rollSide));
+    const cursor = document.createElementNS(NS, 'circle'); cursor.setAttribute('class', 't-cursor'); cursor.setAttribute('r', '13'); cursor.setAttribute('cx', '0'); cursor.setAttribute('cy', '0'); svg.append(cursor);
+    // ── 2026-10-02 14:08 사장님 「36가지 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 원 아래 「왜 그렇게 봤나」 ──
+    //   고른 종목(점이 나올 때마다 · 다 나오면 12시 첫 점 · 점을 누르면 그 종목)의 하루 기대 등락 몫을 높은 순으로 + 36가지 설계 점수표(높은 순 · 쓰는지 안 쓰는지)
+    const fById = new Map((whyDoc?.factors ?? []).map(f => [f.id, f]));
+    const whyBox = h('section', {class: 't-why', 'aria-label': '왜 그렇게 봤나'});
+    const paths = whyDoc?.paths ? `${whyDoc.paths >= 10000 && whyDoc.paths % 10000 === 0 ? `${whyDoc.paths / 10000}만` : whyDoc.paths.toLocaleString('ko-KR')} 개 길` : '모의 길';
+    const renderWhy = d => {
+      const w = whyDoc?.stocks?.[d.r.code];
+      if (!w) { whyBox.replaceChildren(); return; }
+      whyBox.dataset.code = d.r.code;
+      const r4 = v => Math.round(v * 1e4) / 1e4 || 0; // 0.01%p 아래는 0.00%(부호 없이)
+      const items = [{label: '평균 성분', sub: '이 종목의 평소 하루 흐름', value: w.intercept}, ...w.parts.map(x => ({label: fById.get(x.id)?.name ?? x.id, sub: `${x.id} · 몫 ${Math.round(x.share ?? 0)}%`, value: x.value}))]
+        .filter(x => finite(x.value)).map(x => ({...x, value: r4(x.value)})).sort((a, b) => b.value - a.value);
+      const mx = Math.max(1e-9, ...items.map(x => Math.abs(x.value))), tone = v => v > 0 ? 'up' : v < 0 ? 'down' : '';
+      const bar = x => { const fill = h('i', {class: tone(x.value)}); fill.style.width = (Math.abs(x.value) / mx * 100).toFixed(1) + '%'; return h('li', null, h('div', {class: 't-why-k'}, h('b', null, x.label), h('span', null, x.sub)), h('div', {class: 't-why-b'}, fill), h('span', {class: 't-why-v ' + tone(x.value)}, pct(x.value))); };
+      const side = d.r.sel === 'up' ? '오를' : '내릴', flip = finite(w.mean) && ((w.mean > 0 && d.r.sel === 'down') || (w.mean < 0 && d.r.sel === 'up'));
+      const used = (whyDoc.factors ?? []).filter(f => f.role !== 'not_used'), total36 = (whyDoc.factors ?? []).length;
+      whyBox.replaceChildren(
+        h('h2', {class: 't-why-h'}, `왜 ${side} 쪽으로 봤나 · ${d.r.name}`),
+        h('p', {class: 't-why-dir'}, `${paths} 가운데 오른 길 ${prob(w.up)} · 내린 길 ${prob(w.down)} → ${side} 쪽${d.r.close ? ' · 거의 반반' : ''}`),
+        h('p', {class: 't-why-cap'}, '하루 기대 등락을 이루는 몫 · 높은 순'),
+        h('ul', {class: 't-why-bars'}, ...items.map(bar)),
+        h('p', {class: 't-why-sum'}, '합계 = 하루 기대 등락 ', h('b', {class: tone(w.mean)}, pct(w.mean))),
+        ...(flip ? [h('p', {class: 't-why-note'}, `평균은 ${w.mean > 0 ? '오를' : '내릴'} 쪽이지만, 방향은 ${paths}을 센 비율로 정합니다 · 큰 길 몇 개가 평균을 끌어당긴 경우입니다`)] : []),
+        h('p', {class: 't-why-note'}, `${total36}가지 가운데 이 예측에 들어간 것 ${used.length}가지(평균 몫 ${used.filter(f => f.role === 'conditional_mean').length}가지 · 흔들림 폭 ${used.filter(f => f.role === 'variance').length}가지) · 나머지 ${total36 - used.length}가지는 자료를 아직 못 모았거나 검증 전이라 넣지 않았습니다`),
+        h('details', {class: 't-why-36'}, h('summary', null, `${total36}가지 점수표 · 높은 순`),
+          h('p', {class: 't-why-note'}, '점수 = 설계 때 미리 매긴 중요도(작동 원리 · 넓이 · 기간 · 관측 · 0점~100점) · 실제로 맞힌 정도가 아닙니다'),
+          h('ol', null, ...(whyDoc.factors ?? []).map(f => h('li', {class: f.role !== 'not_used' ? 'on' : ''}, h('b', null, f.name), h('span', {class: 't-why-sc'}, ` ${f.score}점`), h('span', {class: 't-why-st'}, f.role === 'conditional_mean' ? '씀 · 평균 몫' : f.role === 'variance' ? '씀 · 흔들림 폭' : '안 씀'))))));
+    };
+    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, head, dial, sayLines, whyBox, after);
+    main.replaceChildren(page);
     story.run++; story.playing = false; story.onVoice = null;
+    const me = story.run;
+    const sideOf = r => `${r.sel === 'up' ? '오를' : '내릴'} 쪽 · ${r.close ? '거의 반반' : `확률 ${prob(r.p)}`}`;
+    const sizeOf = n => n.length <= 4 ? 's' : n.length <= 6 ? 'm' : n.length <= 8 ? 'l' : 'xl';
+    const showName = d => {
+      rollName.textContent = d.r.name; rollName.dataset.size = sizeOf(d.r.name); rollSide.textContent = sideOf(d.r); rollSide.dataset.tone = d.r.sel;
+      cursor.style.transform = `translate(${d.el.getAttribute('cx')}px, ${d.el.getAttribute('cy')}px)`; cursor.classList.add('on');
+    };
+    if (!reducedMotion()) {
+      page.dataset.roll = 'playing';
+      (async () => {
+        await sleep(600);
+        let prev = null;
+        for (const d of dots) {
+          if (me !== story.run) return;
+          if (prev !== null && key(d.r) !== prev) await sleep(700); // 네 묶음(분명히 오름 → 오름·반반 → 내림·반반 → 분명히 내림)이 바뀔 때 숨 한 번
+          if (me !== story.run) return;
+          d.el.classList.add('on'); showName(d); renderWhy(d); prev = key(d.r);
+          await sleep(360);
+        }
+        await sleep(900);
+        if (me !== story.run) return;
+        page.dataset.roll = 'done'; cursor.classList.remove('on'); renderWhy(dots[0]);
+      })();
+    }
+    renderWhy(dots[0]); // 처음(움직임 줄이기면 끝까지): 12시 첫 점 — 분명히 오를 쪽 가운데 맨 앞
+    for (const d of dots) if (reducedMotion()) d.el.classList.add('on');
+    // 다 나온 뒤: 점(원 둘레 어디든)을 누르면 그 회사 이름이 2.5초 떴다가 숫자로 돌아간다
+    let tapT = 0;
+    svg.addEventListener('click', e => {
+      if (page.dataset.roll === 'playing') return;
+      const rc = svg.getBoundingClientRect(), x = (e.clientX - rc.left) / rc.width * 300 - C, y = (e.clientY - rc.top) / rc.height * 300 - C;
+      if (Math.hypot(x, y) < R - 40) return; // 가운데 숫자 쪽은 점이 아니다
+      let a = Math.atan2(y, x) + Math.PI / 2; if (a < 0) a += Math.PI * 2;
+      const d = dots[Math.round(a / (Math.PI * 2) * dots.length) % dots.length];
+      clearTimeout(tapT); page.dataset.roll = 'tap'; showName(d); renderWhy(d);
+      tapT = setTimeout(() => { if (page.dataset.roll === 'tap') { page.dataset.roll = 'done'; cursor.classList.remove('on'); } }, 2500);
+    });
     return;
   }
 

@@ -66,15 +66,21 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const upN = cardsDoc.cards.filter(c => c.day1?.selected === 'up').length, downN = cardsDoc.cards.filter(c => c.day1?.selected === 'down').length, halfN = cardsDoc.cards.filter(c => c.day1 && (c.day1.closeCall || c.day1.statisticalTie)).length;
   const actualAsOf = viewManifest.actualAsOf;
   const longKor = d => `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일 ${['일', '월', '화', '수', '목', '금', '토'][new Date(d + 'T00:00:00Z').getUTCDay()]}요일`;
+  // 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점이 하나씩 나오는 데 22초쯤 걸린다 —
+  //   다 나온 모습(움직임 줄이기면 처음부터 그 모습)으로 2차 글자·목록을 먼저 보고, 점이 나오는 움직임은 아래에서 따로 본다
+  await page.emulateMedia({reducedMotion: 'reduce'});
   await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'});
   await page.waitForSelector('.t-ring .t-dot');
-  await page.waitForTimeout(1400); // 점 톡톡(52 × 14ms + 0.5초)이 끝날 때까지
+  await page.waitForTimeout(400);
   const first = await page.evaluate(() => ({title: document.querySelector('.t-title')?.textContent, when: document.querySelector('.t-when')?.textContent, dots: document.querySelectorAll('.t-ring .t-dot').length, up: document.querySelectorAll('.t-ring .t-dot.up').length, down: document.querySelectorAll('.t-ring .t-dot.down').length, half: document.querySelectorAll('.t-ring .t-dot.half').length, story: document.querySelector('.t-page')?.dataset.story, cap: document.querySelectorAll('.t-cap').length, progress: document.querySelectorAll('.t-progress').length, ctl: document.querySelectorAll('#t-ctl').length, links: document.querySelectorAll('#main .t-links').length, num: document.querySelector('.t-num')?.innerText.trim(), of: document.querySelector('.t-of')?.innerText.trim(), say: document.querySelector('.t-say')?.innerText.trim(), visible: getComputedStyle(document.querySelector('#t-after')).visibility, tools: [...document.querySelectorAll('#top button')].map(b => b.textContent.trim()), tabs: [...document.querySelectorAll('.bottom .bottom-link')].map(a => a.innerText.trim())}));
   check(`${label} 내일(2차): 큰 제목 「내일」·내일 날짜 · 52점 원(오를 ${upN}·내릴 ${downN}·속 빈 ${halfN}) · 가운데 「${upN}」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)`, first.title === '내일' && first.when === longKor(tomorrowDate) && first.dots === 52 && first.up === upN && first.down === downN && first.half === halfN && first.story === 'off' && first.cap === 0 && first.progress === 0 && first.ctl === 0 && first.links === 0 && first.num === String(upN) && first.of === '52종목 중 오를 쪽' && first.say === `나머지 ${downN}종목은 내릴 쪽입니다.\n속이 빈 ${halfN}개는 거의 반반입니다.` && first.visible === 'visible' && first.tools.length === 2 && first.tools[0] === '가' && first.tabs.join(',') === '내일,게임,성적', first);
   const orderOk = await page.evaluate(() => { const k = [...document.querySelectorAll('.t-ring .t-dot')].map(c => c.classList.contains('up') ? (c.classList.contains('half') ? 1 : 0) : (c.classList.contains('half') ? 2 : 3)); return k.every((v, i) => i === 0 || v >= k[i - 1]); });
   check(`${label} 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림`, orderOk);
   const fin = await page.evaluate(() => ({rows: document.querySelectorAll('.t-row').length, pills: document.querySelectorAll('.t-row .t-pill').length, more: document.querySelector('.t-more')?.textContent, heads: [...document.querySelectorAll('.t-h2')].map(x => x.innerText.trim()), hollow: [...document.querySelectorAll('.t-dot.half')].every(c => (getComputedStyle(c).fill === 'transparent' || getComputedStyle(c).fill === 'rgba(0, 0, 0, 0)') && getComputedStyle(c).stroke !== 'none' && c.getAttribute('r') === '6.2'), solid: [...document.querySelectorAll('.t-dot:not(.half)')].every(c => getComputedStyle(c).stroke === 'none' && c.getAttribute('r') === '7.4'), foot: document.querySelector('.t-foot')?.innerText.trim()}));
   check(`${label} 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 ${upN}」「내릴 쪽 ${downN}」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「${longKor(actualAsOf)} 종가로 계산」`, fin.rows === upN + Math.min(5, downN) && fin.pills === fin.rows && (downN <= 5 || fin.more === `${downN - 5}종목 더 보기`) && fin.heads[0] === `오를 쪽 ${upN}` && fin.heads[1] === `내릴 쪽 ${downN}` && fin.heads[2] === '지난 3번의 성적' && fin.hollow && fin.solid && fin.foot === `${longKor(actualAsOf)} 종가로 계산`, fin);
+  // 2026-10-02 14:08 사장님 「36가지를 점수화 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 원 아래 「왜 그렇게 봤나」
+  const why = await page.evaluate(() => ({h: document.querySelector('.t-why-h')?.innerText.trim(), code: document.querySelector('.t-why')?.dataset.code, firstCode: document.querySelector('.t-ring .t-dot')?.dataset.code, vals: [...document.querySelectorAll('.t-why-v')].map(x => Number(x.innerText.replace('−', '-').replace('%', ''))), n36: document.querySelectorAll('.t-why-36 li').length, sc: [...document.querySelectorAll('.t-why-36 .t-why-sc')].map(x => Number(x.innerText.replace(/[^\d]/g, '')))}));
+  check(`${label} 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(${why.vals.join(' ≥ ')}) · 36가지 점수표가 높은 순(36줄)`, why.code === why.firstCode && /^왜 (오를|내릴) 쪽으로 봤나 · /.test(why.h) && why.vals.length >= 1 && why.vals.every((v, i) => i === 0 || v <= why.vals[i - 1]) && why.n36 === 36 && why.sc.length === 36 && why.sc.every((v, i) => i === 0 || v <= why.sc[i - 1]), why);
   {
     const sc = await (await fetch(base + '/data/atlas11/view/scores.json')).json();
     const last3 = sc.byDate.map(d => { const ev = d.rows.map(r => r.horizons?.['1']).filter(x => x?.status === 'evaluated' && typeof x.directionCorrect === 'boolean'); return {date: d.date, n: ev.length, right: ev.filter(x => x.directionCorrect).length}; }).filter(d => d.n).sort((a, b) => a.date < b.date ? -1 : 1).slice(-3);
@@ -91,17 +97,32 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   await page.locator('.t-more').click(); await page.waitForTimeout(150);
   check(`${label} 내일: 「더 보기」 → 내릴 쪽 ${downN}종목 모두`, await page.locator('.t-row').count() === upN + downN && (await page.locator('.t-more').innerText()).trim() === '접기');
   await page.locator('.t-more').click(); await page.waitForTimeout(100);
-  // 점 톡톡(2차 시안 그대로): 움직임을 허용하면 점마다 t-pop(0.5초 · 14ms 차이) · 움직임 줄이기면 움직임 없이 바로 · 둘 다 끝에는 52점이 모두 보임 · 다시 열어도 이야기 없음
-  const popOf = () => page.evaluate(() => { const cs = [...document.querySelectorAll('.t-ring .t-dot')].map(x => getComputedStyle(x)); return {names: [...new Set(cs.map(s => s.animationName))].join(','), d0: cs[0]?.animationDelay, d1: cs[1]?.animationDelay, dur: cs[0]?.animationDuration, minOpacity: Math.min(...cs.map(s => Number(s.opacity))), story: document.querySelector('.t-page')?.dataset.story, ctl: document.querySelectorAll('#t-ctl').length}; });
-  const pop = await popOf();
-  check(`${label} 내일(2차): 점이 톡톡 나타남(t-pop · 0.5초 · 점마다 14ms) · 끝나면 52점 모두 보임`, pop.names === 't-pop' && pop.d0 === '0s' && pop.d1 === '0.014s' && pop.dur === '0.5s' && pop.minOpacity === 1, pop);
-  await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForTimeout(1400);
-  const again = await popOf();
-  check(`${label} 내일(2차): 다시 열어도 이야기 없이 같은 화면(건너뛰기·다시 보기 없음)`, again.story === 'off' && again.ctl === 0 && again.minOpacity === 1, again);
+  // 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 움직임을 허용하면 점이 12시부터 시계 방향으로 하나씩(점마다 0.36초) 나오고,
+  //   가운데에 막 나온 점의 회사 이름과 「오를 쪽 · 확률 N%」(또는 「· 거의 반반」)가 뜬다 · 다 나오면 2차 그대로(숫자 · 「52종목 중 오를 쪽」) ·
+  //   그 뒤 점을 누르면 그 회사 이름이 2.5초 · 움직임 줄이기면 처음부터 다 보임(위에서 본 모습)
+  const nameOf = code => cardsDoc.cards.find(c => c.code === code)?.name;
+  const rollOf = () => page.evaluate(() => { const ds = [...document.querySelectorAll('.t-ring .t-dot')], on = ds.map(c => c.classList.contains('on')), k = on.lastIndexOf(true), cs = ds.map(c => getComputedStyle(c));
+    return {roll: document.querySelector('.t-page')?.dataset.roll, on: on.filter(Boolean).length, prefix: on.every((v, i) => i === 0 || !v || on[i - 1]), lastCode: k >= 0 ? ds[k].dataset.code : null, name: document.querySelector('.t-roll-name')?.innerText.trim(), side: document.querySelector('.t-roll-side')?.innerText.trim(),
+      numShown: getComputedStyle(document.querySelector('.t-num')).display !== 'none', num: document.querySelector('.t-num')?.innerText.trim(), of: document.querySelector('.t-of')?.innerText.trim(), hiddenOff: ds.filter((c, i) => !on[i]).every((c, i) => Number(getComputedStyle(c).opacity) === 0), minOpacity: Math.min(...cs.map(x => Number(x.opacity))), story: document.querySelector('.t-page')?.dataset.story, ctl: document.querySelectorAll('#t-ctl').length}; });
+  await page.emulateMedia({reducedMotion: 'no-preference'});
+  await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForTimeout(3000);
+  const roll = await rollOf();
+  check(`${label} 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 ${roll.on}개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「${roll.name}」 · 「${roll.side}」 · 건너뛰기 단추 없음`, roll.roll === 'playing' && roll.on >= 3 && roll.on <= 12 && roll.prefix && roll.hiddenOff && roll.name === nameOf(roll.lastCode) && /^(오를|내릴) 쪽 · (확률 \d+%|거의 반반)$/.test(roll.side) && !roll.numShown && roll.story === 'off' && roll.ctl === 0, roll);
+  if (label === 'pc') {
+    await page.waitForSelector('.t-page[data-roll="done"]', {timeout: 45000});
+    const done = await rollOf();
+    check(`${label} 내일: 52개가 다 나오면 가운데는 2차 그대로(「${upN}」 · 「52종목 중 오를 쪽」) · 52점 모두 보임`, done.roll === 'done' && done.on === 52 && done.minOpacity === 1 && done.numShown && done.num === String(upN) && done.of === '52종목 중 오를 쪽', done);
+    const pos = await page.evaluate(() => { const c = document.querySelectorAll('.t-ring .t-dot')[20], r = c.getBoundingClientRect(); return {x: r.left + r.width / 2, y: r.top + r.height / 2, code: c.dataset.code}; });
+    await page.mouse.click(pos.x, pos.y); await page.waitForTimeout(450);
+    const tap = {...await rollOf(), whyCode: await page.evaluate(() => document.querySelector('.t-why')?.dataset.code)};
+    await page.waitForTimeout(2600);
+    const back = await rollOf();
+    check(`${label} 내일: 다 나온 뒤 점을 누르면 그 회사 이름(「${tap.name}」)이 뜨고 「왜 그렇게 봤나」도 그 종목으로 · 2.5초 뒤 숫자로 돌아감`, tap.roll === 'tap' && tap.name === nameOf(pos.code) && tap.whyCode === pos.code && !tap.numShown && back.roll === 'done' && back.numShown, {tap, back: back.roll});
+  }
   await page.evaluate(() => { try { localStorage.clear(); } catch {} }); await page.emulateMedia({reducedMotion: 'reduce'});
   await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForTimeout(200);
-  const reduced = {...await popOf(), visible: await page.evaluate(() => getComputedStyle(document.querySelector('#t-after')).visibility)};
-  check(`${label} 내일(2차): 움직임 줄이기 설정이면 점이 움직이지 않고 처음부터 다 보임`, reduced.names === 'none' && reduced.minOpacity === 1 && reduced.visible === 'visible', reduced);
+  const reduced = {...await rollOf(), visible: await page.evaluate(() => getComputedStyle(document.querySelector('#t-after')).visibility)};
+  check(`${label} 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임`, reduced.roll === 'done' && reduced.on === 52 && reduced.minOpacity === 1 && reduced.numShown && reduced.visible === 'visible', reduced);
   await page.emulateMedia({reducedMotion: 'no-preference'});
   const focusRing = await page.evaluate(() => { const b = document.querySelector('.t-more'); b.focus({focusVisible: true}); const cs = getComputedStyle(b); return {style: cs.outlineStyle, width: parseFloat(cs.outlineWidth)}; });
   check(`${label} 내일: 키보드 초점 표시(테두리 3px)`, focusRing.style !== 'none' && focusRing.width >= 2, focusRing);
@@ -410,6 +431,7 @@ async function clarityCheck() {
   // 검사기 자체 시험: 흐릿한 말 하나 · 단위 없는 숫자 하나를 일부러 넣으면 1·2·3번이 하나씩 늘어야 한다
   const ctx = await browser.newContext({viewport: {width: 1280, height: 800}, locale: 'ko-KR'}); const page = await ctx.newPage();
   // 2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면): 이야기가 없으므로 건너뛰기 없이 바로 잰다(3차 때는 이야기를 건너뛴 끝 장면에서 쟀다)
+  await page.emulateMedia({reducedMotion: 'reduce'}); // 2026-10-02 14:01 점이 하나씩 나오는 화면 — 다 나온 모습에서 잰다
   await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForSelector('.t-row'); await page.waitForTimeout(900); await renderAll(page);
   const before = await page.evaluate(measureClarity);
   await page.evaluate(() => { const box = document.createElement('section'); box.className = 'panel'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });

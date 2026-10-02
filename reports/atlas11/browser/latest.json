@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-01T22:06:49.981Z",
+  "at": "2026-10-02T05:16:39.987Z",
   "base": "http://localhost:8871",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 268,
+  "passed": 270,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -19,8 +19,8 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 4,
-        "graphable": 0,
-        "lowContrast": 0,
+        "graphable": 1,
+        "lowContrast": 3,
         "decoColors": 3,
         "truncated": 0,
         "formatDates": 5,
@@ -141,8 +141,8 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 4,
-        "graphable": 0,
-        "lowContrast": 0,
+        "graphable": 1,
+        "lowContrast": 3,
         "decoColors": 3,
         "truncated": 0,
         "formatDates": 5,
@@ -263,7 +263,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 4,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -385,7 +385,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 4,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -507,7 +507,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 4,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -629,8 +629,8 @@
     {
       "view": "pc",
       "screen": "forecast",
-      "graphable": 0,
-      "lowContrast": 0,
+      "graphable": 1,
+      "lowContrast": 3,
       "decoColors": 3
     },
     {
@@ -685,8 +685,8 @@
     {
       "view": "mobile",
       "screen": "forecast",
-      "graphable": 0,
-      "lowContrast": 0,
+      "graphable": 1,
+      "lowContrast": 3,
       "decoColors": 3
     },
     {
@@ -741,7 +741,7 @@
     {
       "view": "mobile-dark",
       "screen": "forecast",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 3
     },
@@ -797,7 +797,7 @@
     {
       "view": "pc-200",
       "screen": "forecast",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 3
     },
@@ -853,7 +853,7 @@
     {
       "view": "mobile-dark-200",
       "screen": "forecast",
-      "graphable": 0,
+      "graphable": 1,
       "lowContrast": 0,
       "decoColors": 3
     },
@@ -961,6 +961,59 @@
       }
     },
     {
+      "name": "pc 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(0.38 ≥ 0.1 ≥ 0) · 36가지 점수표가 높은 순(36줄)",
+      "ok": true,
+      "detail": {
+        "h": "왜 오를 쪽으로 봤나 · HD현대중공업",
+        "code": "329180",
+        "firstCode": "329180",
+        "vals": [
+          0.38,
+          0.1,
+          0
+        ],
+        "n36": 36,
+        "sc": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
       "name": "pc 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
       "ok": true,
       "detail": {
@@ -997,39 +1050,80 @@
       "detail": null
     },
     {
-      "name": "pc 내일(2차): 점이 톡톡 나타남(t-pop · 0.5초 · 점마다 14ms) · 끝나면 52점 모두 보임",
+      "name": "pc 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
       "ok": true,
       "detail": {
-        "names": "t-pop",
-        "d0": "0s",
-        "d1": "0.014s",
-        "dur": "0.5s",
+        "roll": "playing",
+        "on": 7,
+        "prefix": true,
+        "lastCode": "047050",
+        "name": "포스코인터내셔널",
+        "side": "오를 쪽 · 거의 반반",
+        "numShown": false,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "hiddenOff": true,
+        "minOpacity": 0,
+        "story": "off",
+        "ctl": 0
+      }
+    },
+    {
+      "name": "pc 내일: 52개가 다 나오면 가운데는 2차 그대로(「12」 · 「52종목 중 오를 쪽」) · 52점 모두 보임",
+      "ok": true,
+      "detail": {
+        "roll": "done",
+        "on": 52,
+        "prefix": true,
+        "lastCode": "010170",
+        "name": "대한광통신",
+        "side": "내릴 쪽 · 확률 57%",
+        "numShown": true,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "hiddenOff": true,
         "minOpacity": 1,
         "story": "off",
         "ctl": 0
       }
     },
     {
-      "name": "pc 내일(2차): 다시 열어도 이야기 없이 같은 화면(건너뛰기·다시 보기 없음)",
+      "name": "pc 내일: 다 나온 뒤 점을 누르면 그 회사 이름(「코웨이」)이 뜨고 「왜 그렇게 봤나」도 그 종목으로 · 2.5초 뒤 숫자로 돌아감",
       "ok": true,
       "detail": {
-        "names": "t-pop",
-        "d0": "0s",
-        "d1": "0.014s",
-        "dur": "0.5s",
-        "minOpacity": 1,
-        "story": "off",
-        "ctl": 0
+        "tap": {
+          "roll": "tap",
+          "on": 52,
+          "prefix": true,
+          "lastCode": "010170",
+          "name": "코웨이",
+          "side": "내릴 쪽 · 거의 반반",
+          "numShown": false,
+          "num": "12",
+          "of": "52종목 중 오를 쪽",
+          "hiddenOff": true,
+          "minOpacity": 1,
+          "story": "off",
+          "ctl": 0,
+          "whyCode": "021240"
+        },
+        "back": "done"
       }
     },
     {
-      "name": "pc 내일(2차): 움직임 줄이기 설정이면 점이 움직이지 않고 처음부터 다 보임",
+      "name": "pc 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임",
       "ok": true,
       "detail": {
-        "names": "none",
-        "d0": "0s",
-        "d1": "0s",
-        "dur": "0s",
+        "roll": "done",
+        "on": 52,
+        "prefix": true,
+        "lastCode": "010170",
+        "name": "",
+        "side": "",
+        "numShown": true,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "hiddenOff": true,
         "minOpacity": 1,
         "story": "off",
         "ctl": 0,
@@ -1542,7 +1636,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cfutbdk-band-inner\")",
+        "bandFill": "url(\"#cpwt613-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -1625,6 +1719,59 @@
       }
     },
     {
+      "name": "mobile 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(0.38 ≥ 0.1 ≥ 0) · 36가지 점수표가 높은 순(36줄)",
+      "ok": true,
+      "detail": {
+        "h": "왜 오를 쪽으로 봤나 · HD현대중공업",
+        "code": "329180",
+        "firstCode": "329180",
+        "vals": [
+          0.38,
+          0.1,
+          0
+        ],
+        "n36": 36,
+        "sc": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
       "name": "mobile 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 81/156) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
       "ok": true,
       "detail": {
@@ -1661,39 +1808,38 @@
       "detail": null
     },
     {
-      "name": "mobile 내일(2차): 점이 톡톡 나타남(t-pop · 0.5초 · 점마다 14ms) · 끝나면 52점 모두 보임",
+      "name": "mobile 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
       "ok": true,
       "detail": {
-        "names": "t-pop",
-        "d0": "0s",
-        "d1": "0.014s",
-        "dur": "0.5s",
-        "minOpacity": 1,
+        "roll": "playing",
+        "on": 7,
+        "prefix": true,
+        "lastCode": "047050",
+        "name": "포스코인터내셔널",
+        "side": "오를 쪽 · 거의 반반",
+        "numShown": false,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "hiddenOff": true,
+        "minOpacity": 0,
         "story": "off",
         "ctl": 0
       }
     },
     {
-      "name": "mobile 내일(2차): 다시 열어도 이야기 없이 같은 화면(건너뛰기·다시 보기 없음)",
+      "name": "mobile 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임",
       "ok": true,
       "detail": {
-        "names": "t-pop",
-        "d0": "0s",
-        "d1": "0.014s",
-        "dur": "0.5s",
-        "minOpacity": 1,
-        "story": "off",
-        "ctl": 0
-      }
-    },
-    {
-      "name": "mobile 내일(2차): 움직임 줄이기 설정이면 점이 움직이지 않고 처음부터 다 보임",
-      "ok": true,
-      "detail": {
-        "names": "none",
-        "d0": "0s",
-        "d1": "0s",
-        "dur": "0s",
+        "roll": "done",
+        "on": 52,
+        "prefix": true,
+        "lastCode": "010170",
+        "name": "",
+        "side": "",
+        "numShown": true,
+        "num": "12",
+        "of": "52종목 중 오를 쪽",
+        "hiddenOff": true,
         "minOpacity": 1,
         "story": "off",
         "ctl": 0,
@@ -2015,8 +2161,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 125,
-          "bottom": 201,
+          "top": 118,
+          "bottom": 194,
           "firstChild": true
         }
       }
@@ -2144,8 +2290,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 126,
-          "bottom": 176,
+          "top": 72,
+          "bottom": 122,
           "firstChild": true
         }
       }
@@ -2211,7 +2357,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#ciqdpe0-band-inner\")",
+        "bandFill": "url(\"#cqpm6p4-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -3630,5 +3776,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-01T22-04-20-427Z"
+  "dir": "reports/atlas11/browser/2026-10-02T05-13-44-192Z"
 }

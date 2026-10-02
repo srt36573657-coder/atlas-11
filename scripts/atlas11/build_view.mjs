@@ -15,6 +15,7 @@ import {buildTimeline} from '../../lib/atlas11/timeline.mjs';
 import {recountTimeline, compareTimeline} from '../../lib/atlas11/timeline_check.mjs';
 import {loadHorizon} from '../../lib/atlas11/horizon.mjs';
 import {buildGame} from '../../lib/atlas11/game.mjs';
+import {buildWhy} from '../../lib/atlas11/why.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -137,6 +138,8 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
   // 아틀라스 게임(2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」): 화면 묶음에 game.json 한 장을 더한다 — 발행본·입력 종가와 후향 판(있으면 읽기만)에서만 만든다
   files.set('game.json', buildGame({publication, publications, input, retro: await read('atlas4h/baselines/atlas11-v1-retro.json', null)}));
+  // 2026-10-02 14:08 사장님 「36가지 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 「내일」 원 화면의 「왜 그렇게 봤나」 자료 한 장
+  files.set('why.json', buildWhy({publication, registry: await read('public/data/factor36-registry.json', null), statusFactors: files.get('status.json')?.factors}));
   return files;
 }
 

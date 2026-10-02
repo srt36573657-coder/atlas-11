@@ -18,7 +18,10 @@ export async function renderAll(page) { await page.evaluate(() => { for (const e
 export const SCREENS = [
   // 2026-10-02 01:34 사장님 승인 3차 디자인: 첫 화면 「내일」 = 52점 원 + 이야기 다섯 장면 — 원이 그려지면 이야기를 건너뛰어(「건너뛰기」) 끝 장면과 목록을 잰다
   // 2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면): 이야기를 꺼 두어 건너뛰기 단추가 없다 — 단추가 있을 때만 누르고(없으면 3초를 기다리지 않음), 점이 다 나타날 때까지(52 × 14ms + 0.5초) 기다린 뒤 잰다
-  {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { const skip = page.locator('#t-ctl[data-mode="skip"]'); if (await skip.count()) await skip.click({timeout: 3000}).catch(() => {}); await page.waitForTimeout(1300); }},
+  // 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점이 하나씩 나오는 데 22초쯤 — 다 나온 모습(움직임 줄이기와 같은 모습)을 잰다
+  {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { const skip = page.locator('#t-ctl[data-mode="skip"]'); if (await skip.count()) await skip.click({timeout: 3000}).catch(() => {});
+    if (await page.locator('.t-page[data-roll="playing"]').count()) { await page.emulateMedia({reducedMotion: 'reduce'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.emulateMedia({reducedMotion: 'no-preference'}); }
+    await page.waitForTimeout(600); }},
   {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
   // 「내일 하루만」(2026-10-02 사장님 명령)이면 1만원 비교는 꺼 둠 — 그래프 대신 「꺼 둠」 한 줄을 기다린다
   {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart, [data-off="race"]'},
