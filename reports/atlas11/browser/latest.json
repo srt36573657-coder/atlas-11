@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-03T15:33:50.601Z",
+  "at": "2026-10-03T17:12:40.031Z",
   "base": "http://localhost:8871",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 277,
+  "passed": 279,
   "failed": 2,
   "clarity": {
     "pc": {
@@ -20,10 +20,10 @@
         "vague": 0,
         "bareNumbers": 4,
         "graphable": 1,
-        "lowContrast": 3,
+        "lowContrast": 57,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 5,
+        "formatDates": 6,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -142,10 +142,10 @@
         "vague": 0,
         "bareNumbers": 4,
         "graphable": 1,
-        "lowContrast": 3,
+        "lowContrast": 57,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 5,
+        "formatDates": 6,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -267,7 +267,7 @@
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 5,
+        "formatDates": 6,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -389,7 +389,7 @@
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 5,
+        "formatDates": 6,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -511,7 +511,7 @@
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 5,
+        "formatDates": 6,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -630,7 +630,7 @@
       "view": "pc",
       "screen": "forecast",
       "graphable": 1,
-      "lowContrast": 3,
+      "lowContrast": 57,
       "decoColors": 3
     },
     {
@@ -686,7 +686,7 @@
       "view": "mobile",
       "screen": "forecast",
       "graphable": 1,
-      "lowContrast": 3,
+      "lowContrast": 57,
       "decoColors": 3
     },
     {
@@ -944,6 +944,17 @@
       "detail": null
     },
     {
+      "name": "pc 내일: 「업종 대표 52종목 · 9월 17일부터」 · 「업종 대표 52종목 한눈에」 이름표 52개(원과 같은 순서·같은 쪽·같은 반반 · ▲▼ 표시 · 누르면 그 종목) · 「이 52곳은 어떻게 골랐나」(1줄) · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "uni": "업종 대표 52종목 · 9월 17일부터",
+        "chips": 52,
+        "cut": 0,
+        "how": "이 52곳은 어떻게 골랐나",
+        "howN": 1
+      }
+    },
+    {
       "name": "pc 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
       "ok": true,
       "detail": {
@@ -1040,7 +1051,7 @@
       "detail": {
         "fm": {
           "other": 0,
-          "tomorrow": 88
+          "tomorrow": 140
         }
       }
     },
@@ -1310,6 +1321,7 @@
       "detail": {
         "nodes": 52,
         "arcs": 9,
+        "groupsN": 9,
         "orders": 5,
         "links": 31
       }
@@ -1636,7 +1648,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cqzjaao-band-inner\")",
+        "bandFill": "url(\"#cmbatzt-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -1700,6 +1712,17 @@
       "name": "mobile 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "mobile 내일: 「업종 대표 52종목 · 9월 17일부터」 · 「업종 대표 52종목 한눈에」 이름표 52개(원과 같은 순서·같은 쪽·같은 반반 · ▲▼ 표시 · 누르면 그 종목) · 「이 52곳은 어떻게 골랐나」(1줄) · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "uni": "업종 대표 52종목 · 9월 17일부터",
+        "chips": 52,
+        "cut": 0,
+        "how": "이 52곳은 어떻게 골랐나",
+        "howN": 1
+      }
     },
     {
       "name": "mobile 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
@@ -1798,7 +1821,7 @@
       "detail": {
         "fm": {
           "other": 0,
-          "tomorrow": 88
+          "tomorrow": 140
         }
       }
     },
@@ -2031,6 +2054,7 @@
       "detail": {
         "nodes": 52,
         "arcs": 9,
+        "groupsN": 9,
         "orders": 5,
         "links": 31
       }
@@ -2161,8 +2185,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 113,
-          "bottom": 189,
+          "top": -1278,
+          "bottom": -1202,
           "firstChild": true
         }
       }
@@ -2357,7 +2381,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#clr2xp8-band-inner\")",
+        "bandFill": "url(\"#c6kckib-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -4149,5 +4173,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-03T15-30-59-260Z"
+  "dir": "reports/atlas11/browser/2026-10-03T17-09-45-860Z"
 }
