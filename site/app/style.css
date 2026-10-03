@@ -1101,6 +1101,25 @@ body[data-view="forecast"] .main { max-width: 560px; padding: 0 16px 120px; }
 .t-page[data-story="off"] .t-dot { transition: none; stroke-width: 2.6; }
 .t-say { text-align: center; margin: 22px 4px 0; font-size: 1.1875rem; line-height: 1.55; color: var(--t-sub); }
 .t-page[data-story="off"] .t-h2 { margin-top: 34px; }
+/* 2026-10-04 사장님 「오를 수 있는 52개 우량 종목을 찾아 첫 화면에 배열」: 날짜 밑 「어떤 52곳인가」 한 줄 · 원 밑 52곳 이름표(원과 같은 순서)
+   글자는 글자 색(검정/흰색) · 오를·내릴은 ▲▼ 표시와 테두리 색으로(색 하나에만 기대지 않음) · 거의 반반은 바탕 없이 테두리만 */
+.t-uni { margin: 6px 4px 0; font-size: 1.0625rem; color: var(--t-sub); }
+.t-uni b { color: var(--t-ink); font-weight: 700; }
+.t-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.t-chip { display: flex; align-items: center; gap: 6px; min-height: 46px; padding: 6px 10px; border-radius: 12px; text-decoration: none; color: var(--t-ink); background: var(--t-card); border: 1.5px solid transparent; font-size: 1rem; line-height: 1.25; word-break: keep-all; overflow-wrap: anywhere; }
+.t-chip[data-len="l"] .t-chip-n { font-size: 0.875rem; }
+.t-chip.up { border-color: var(--t-up); background: color-mix(in srgb, var(--t-up) 12%, var(--t-card)); }
+.t-chip.down { border-color: var(--t-down); background: color-mix(in srgb, var(--t-down) 12%, var(--t-card)); }
+.t-chip.half { background: var(--t-card); border-style: dashed; }
+.t-chip:active { background: var(--t-fill); }
+.t-chip-m { flex: none; font-size: 0.8125rem; }
+.t-chip.up .t-chip-m, .t-grid-key .up { color: var(--t-up); } .t-chip.down .t-chip-m, .t-grid-key .down { color: var(--t-down); }
+.t-chip-n { min-width: 0; }
+.t-grid-key { margin: 10px 4px 0; font-size: 0.9375rem; color: var(--t-sub); }
+.t-uni-how { margin: 12px 0 0; padding: 12px 14px; background: var(--t-card); border-radius: 14px; color: var(--t-ink); }
+.t-uni-how summary { cursor: pointer; font-size: 1rem; font-weight: 600; min-height: 28px; }
+.t-uni-how ul { margin: 8px 0 0; padding-left: 1.2em; font-size: 0.9375rem; line-height: 1.6; color: var(--t-ink2); }
+.t-uni-note { margin: 8px 0 0; font-size: 0.875rem; color: var(--t-sub); }
 /* 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점 톡톡(0.7초) 대신 하나씩 천천히(점마다 0.36초) — 나올 때 가운데에 회사 이름 ·
    다 나오면 2차 그대로(숫자 · 「52종목 중 오를 쪽」) · 점을 누르면 이름이 2.5초. 상태: .t-page[data-roll] = playing · done · tap */
 .t-page[data-roll] .t-dot { transition: opacity .35s ease, transform .5s cubic-bezier(.2, 1.6, .35, 1); cursor: pointer; }

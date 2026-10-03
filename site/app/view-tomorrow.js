@@ -66,9 +66,15 @@ export async function renderTomorrow(main, {manifest}) {
   state.summary = STORY ? T[4] : `${lead} 나머지 ${downRows.length}종목은 내릴 쪽입니다. 속이 빈 ${halves}개는 거의 반반입니다.`;
 
   // ── 머리: 큰 제목 「내일」 + 내일 날짜 ──
+  // 2026-10-04 00:51 사장님 「52개 업종에서 찾는 게 아니라 오를 수 있는 52개 우량 종목을 찾아 첫 화면에 배열하는 구조로 싹 변경하자」 · 「알아서 해」
+  //   → 날짜 밑에 「어떤 52곳인가」 한 줄 · 원 밑에 52곳을 이름으로 한눈에(원과 같은 순서: 분명히 오를 쪽 → … → 분명히 내릴 쪽) · 「이 52곳은 어떻게 골랐나」(눌러서 열림)
+  //   말: 「튼튼한 회사 52곳」 — 사라·추천 같은 말은 쓰지 않는다(고른 기준은 숫자로 잰 회사 상태 · 오를지 내릴지는 ATLAS가 날마다 따로 적음)
+  const uni = manifest.universeSet ?? {label: `${rows.length}종목`, how: []};
+  const md = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일` : '';
   const head = h('header', {class: 't-head'},
     h('h1', {class: 't-title', 'data-clarity': 'dated'}, '내일'),
-    h('p', {class: 't-when', 'data-clarity': 'date-anchor', 'data-forecast-date': tomorrow}, longDate(tomorrow)));
+    h('p', {class: 't-when', 'data-clarity': 'date-anchor', 'data-forecast-date': tomorrow}, longDate(tomorrow)),
+    h('p', {class: 't-uni', 'data-universe': uni.id ?? '', 'data-speak': `${uni.label}입니다.`}, h('b', null, uni.label), uni.selectedOn ? ` · ${md(uni.selectedOn)}${uni.id === 'u1-sector52' ? '부터' : ' 고름'}` : ''));
 
   // ── 둥근 판: 12시 방향부터 시계 방향 ──
   const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 300 300'); svg.setAttribute('class', 't-ring'); svg.setAttribute('aria-hidden', 'true');
@@ -164,7 +170,15 @@ export async function renderTomorrow(main, {manifest}) {
           h('p', {class: 't-why-note'}, '점수 = 설계 때 미리 매긴 중요도(작동 원리 · 넓이 · 기간 · 관측 · 0점~100점) · 실제로 맞힌 정도가 아닙니다'),
           h('ol', null, ...(whyDoc.factors ?? []).map(f => h('li', {class: f.role !== 'not_used' ? 'on' : ''}, h('b', null, f.name), h('span', {class: 't-why-sc'}, ` ${f.score}점`), h('span', {class: 't-why-st'}, f.role === 'conditional_mean' ? '씀 · 평균 몫' : f.role === 'variance' ? '씀 · 흔들림 폭' : '안 씀'))))));
     };
-    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, head, dial, sayLines, whyBox, after);
+    // ── 52곳 한눈에: 원과 같은 순서 · ▲ 오를 쪽(빨강) ▼ 내릴 쪽(파랑) · 테두리만 = 거의 반반 · 누르면 그 종목 ──
+    const chip = r => h('a', {class: `t-chip ${r.sel}${r.close ? ' half' : ''}`, 'data-len': [...r.name].length >= 8 ? 'l' : 's', href: `#/stock/${r.code}`, 'data-forecast-date': r.date, 'data-code': r.code, 'aria-label': `${r.name} · ${r.sel === 'up' ? '오를' : '내릴'} 쪽${r.close ? ' · 거의 반반' : ''}`},
+      h('span', {class: 't-chip-m', 'aria-hidden': 'true'}, r.sel === 'up' ? '▲' : '▼'), h('span', {class: 't-chip-n'}, r.name));
+    const grid = h('section', {class: 't-grid', 'aria-label': `${uni.label} 한눈에`},
+      h('h2', {class: 't-h2', 'data-speak': ''}, `${uni.label} 한눈에`),
+      h('div', {class: 't-chips'}, ...order.map(chip)),
+      h('p', {class: 't-grid-key'}, h('span', {class: 'up'}, '▲'), ' 오를 쪽 · ', h('span', {class: 'down'}, '▼'), ' 내릴 쪽 · 점선 테두리 = 거의 반반'),
+      ...(uni.how?.length ? [h('details', {class: 't-uni-how'}, h('summary', null, `이 ${rows.length}곳은 어떻게 골랐나`), h('ul', null, ...uni.how.map(x => h('li', null, x))), h('p', {class: 't-uni-note'}, '오를지 내릴지는 고를 때 쓰지 않았습니다 · ATLAS가 날마다 따로 적습니다'))] : []));
+    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, head, dial, sayLines, grid, whyBox, after);
     main.replaceChildren(page);
     story.run++; story.playing = false; story.onVoice = null;
     const me = story.run;
