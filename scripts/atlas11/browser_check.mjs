@@ -311,9 +311,10 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)`, dots === tl.chart.cumulative.length && daily === tl.chart.points.length && tests === tl.chart.tests.length && changes === tl.chart.changes.length && builds === tl.chart.constructions.length && judge === (tl.chart.judgementDate ? 1 : 0), {dots, daily, tests, changes, builds, judge});
   const tickMin = await page.evaluate(() => Math.min(...[...document.querySelectorAll('svg.evo-chart .evo-tick')].map(t => parseFloat(getComputedStyle(t).fontSize) * (t.ownerSVGElement.getBoundingClientRect().width / t.ownerSVGElement.viewBox.baseVal.width))));
   check(`${label} 진화: 그림 글자가 화면에서 11px 이상`, tickMin >= 11, {tickMin: Math.round(tickMin * 10) / 10});
-  const dayRows = await page.locator('.evo-day').count(), beats = await page.locator('.evo-day').first().locator('.beat').count();
-  await page.locator('.evo-day').first().locator('summary').click(); await page.waitForTimeout(250);
-  const openedH4 = await page.locator('.evo-day').first().locator('.evo-beat-detail h4').count();
+  // 채점 기록이 없는 날(앞 거래일 발행이 멈춘 날 · 예: 2026-10-06)은 「빈 날」 줄 — 세 박자 검사는 채점이 있는 가장 늦은 날 줄로 한다
+  const dayRows = await page.locator('.evo-day').count(), scoredRow = page.locator('.evo-day:not(.empty)').first(), beats = await scoredRow.locator('.beat').count();
+  await scoredRow.locator('summary').click(); await page.waitForTimeout(250);
+  const openedH4 = await scoredRow.locator('.evo-beat-detail h4').count();
   check(`${label} 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸`, dayRows === tl.days.length && beats === 3 && openedH4 === 3, {dayRows, days: tl.days.length, beats, openedH4});
   check(`${label} 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시`, await page.locator('.evo-build li').count() === tl.constructions.length && /공사 기록 \d+건 열기/.test(evo) && (tl.check ? evo.includes(tl.check.ok ? `이 화면의 숫자 ${tl.check.checked}곳을 기록 장부에서 따로 다시 세어 모두 같음` : '검산 어긋남') : true), {constructions: tl.constructions.length, check: tl.check?.ok});
   await page.locator('.evo-expert summary').click(); await page.waitForTimeout(200);
@@ -418,7 +419,10 @@ async function gameCheck() {
         await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('#main .card'); await page.waitForTimeout(300);
         const s2 = await st(), bet2 = s2.stored?.bets?.[game.live.target];
         check(`게임 ${label} 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)`, bet?.locked === true && bet.lev && bet.inv && bet.lev !== bet.inv && bet2?.locked === true && s2.sealText === '낙관 지우기', {bet, sealText: s2.sealText});
-        // 연습 판: 정산 증서가 게임 규칙과 맞는가
+        // 연습 판: 정산 증서가 게임 규칙과 맞는가 — 연습 판(지금 발행본의 기준일을 목표로 한 앞 발행본)이 없는 날은 탭이 숨는다(예: 2026-10-06 — 10/2 발행이 멈춰 10/6 을 목표로 한 판이 없음)
+        if (!game.practice) {
+          check(`게임 ${label} 연습 판: 이번 발행본의 기준일(${game.live?.anchor ?? '기준일'})을 목표로 한 앞 발행본이 없음 → 연습 탭 숨김`, await page.locator('#tab-practice').isHidden(), {practice: null});
+        } else {
         await page.click('#tab-practice'); await page.waitForTimeout(250);
         await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
         await page.click('#seal'); await page.waitForTimeout(250); await page.click('#seal'); await page.waitForTimeout(1500);
@@ -427,6 +431,7 @@ async function gameCheck() {
         const okRows = cert.length === 2 && cert.every(r => { const m = r.body.match(/실제 ([+−-]?)(\d+\.\d+)% · (맞힘|틀림|보합)/); if (!m) return false; const ret = (m[1] === '−' || m[1] === '-' ? -1 : 1) * Number(m[2]) / 100, o = ret > 0.001 ? 'up' : ret < -0.001 ? 'down' : 'flat', side = r.side === '레버리지' ? 'up' : 'down', want = o === 'flat' ? '보합' : o === side ? '맞힘' : '틀림'; const sign = r.pnl.startsWith('+') ? 1 : r.pnl.startsWith('−') ? -1 : 0; return m[3] === want && sign === (want === '맞힘' ? 1 : want === '틀림' ? -1 : 0); });
         check(`게임 ${label} 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음`, okRows && await page.locator('.cert canvas.border').count() === 1, {cert, amt});
         await page.screenshot({path: path.join(dir, `game-${label}-certificate.png`), fullPage: false});
+        }
       } else {
         check(`게임 ${label} 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음`, s0.sealDisabled && s0.sealText === '마감', {sealText: s0.sealText});
       }

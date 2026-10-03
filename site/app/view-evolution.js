@@ -87,7 +87,7 @@ function distanceTable(d) {
 function dayRow(d, t) {
   const summary = h('summary', null, h('span', {class: 'evo-date'}, korDate(d.date)),
     h('span', {class: 'beats'}, beat('시장이 답했다', d.line.answer, 'answer'), h('span', {class: 'beat-arrow', 'aria-hidden': 'true'}, '→'), beat('배웠다', d.line.learned, 'learned'), h('span', {class: 'beat-arrow', 'aria-hidden': 'true'}, '→'), beat(d.changed?.adopted ? '바꿨다' : d.changed?.rolledBack ? '되돌렸다' : '안 바꿨다', d.line.changed, 'changed')));
-  if (!d.scored) return h('details', {class: 'evo-day empty'}, summary, h('p', {class: 'small muted'}, '이 거래일에는 채점 기록이 장부에 없습니다(실행이 없었거나 실패). 빈 날도 지우지 않고 보입니다.'));
+  if (!d.scored) return h('details', {class: 'evo-day empty'}, summary, h('p', {class: 'small muted'}, '이 거래일에는 채점 기록이 장부에 없습니다(이 날을 목표로 낸 전망이 없었거나 — 앞 거래일 발행이 멈춘 날 — 실행이 없었거나 실패). 빈 날도 지우지 않고 보입니다.'));
   const c = d.classes, ch = d.changed, L = d.learned;
   const answer = h('div', {class: 'evo-beat-detail'}, h('h4', null, '시장이 답했다 — 확인된 사실'),
     h('p', {class: 'small'}, `채점 ${d.evaluated}칸: 둘 다 맞음 ${c[1]} · 방향만 맞음 ${c[2]} · 크기만 맞음 ${c[3]} · 둘 다 틀림 ${c[4]}`, h('span', {class: 'muted xs'}, ' (「크기」 = 가격 차이가 허용 폭 안)')),
