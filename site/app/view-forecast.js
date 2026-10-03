@@ -1,7 +1,8 @@
 /* ATLAS 11 · 전망 — 52종목 카드(첫 화면: 작은 그래프·확률 막대) + 종목 상세(그래프가 주인공 · 두 겹 부채꼴 · 커서 말풍선 · 이유는 「한 줄」부터) */
 import {h, won, pct, pctPoint, pctRaw, prob, num, korDate, shortDate, weekday, stamp, dirWord, dirMark, DIR, finite, download, reducedMotion, clamp, wonShort, signCls, tomorrowWord} from './util.js';
 import {headline, editionSource, lineChart, hbar, pickBox} from './frame.js';
-import {loadCards, loadStock, prefs, url, state, setSummary} from './store.js';
+import {loadCards, loadStock, loadJSON, prefs, url, state, setSummary} from './store.js';
+import {roadBox, agendaBox, marketBox, howBox, rowsOf} from './view-side.js';
 import {priceChart, chartTip, sparkline, probBar, contributionBars, quantileBox} from './chart.js';
 import {renderInfo, renderContextBox, renderChain, loadNetwork} from './view-network.js';
 
@@ -82,7 +83,7 @@ function wlRow(c, max20, target, T = false) {
 /* ---------- 종목 상세 v9: 헤드라인(20거래일 뒤 중앙 전망) → 가격 그래프(마지막 값 = 헤드라인 숫자) → 첫 거래일 방향·기간 막대 → 나머지는 눌러야 열림 ---------- */
 const STATE_WORD = {Bull: '상승 추세', Bear: '하락 추세', Neutral: '뚜렷한 추세 없음'};
 async function renderDetail(main, manifest, code) {
-  const [cards, d, network] = await Promise.all([loadCards(), loadStock(code), loadNetwork().catch(() => null)]);
+  const [cards, d, network, agenda] = await Promise.all([loadCards(), loadStock(code), loadNetwork().catch(() => null), loadJSON('agenda.json').catch(() => null)]);
   const p = player(code);
   // 「내일 하루만」이면 그래프는 실제 20거래일 + 내일 한 점(내일이 잘 보이게) · 옛 모드는 실제 60거래일 + 전망 20거래일
   const TT = Boolean(manifest.tomorrowOnly), hist = TT ? d.actual60.slice(-20) : d.actual60;
@@ -205,10 +206,15 @@ async function renderDetail(main, manifest, code) {
     h('p', {class: 'small muted'}, `${korDate(r1.date)} 중앙 전망 ${won(r1.p50)} (${pct(r1.return)}) · 모형 비율이며 실제 적중률이 아님`),
     err1?.ape != null ? h('p', {class: 'small'}, `지난 채점: ${korDate(err1.targetDate)} 1거래일 전망 오차 ${pctRaw(err1.ape)} · 방향 ${err1.directionCorrect ? '맞힘' : '틀림'} · 80% 범위 ${err1.covered ? '안' : '밖'}`) : h('p', {class: 'small muted'}, `첫 채점 ${korDate(manifest.firstScorableDate)} 종가 뒤`));
   const infoBox = h('section', {class: 'panel info', 'aria-label': '종목 정보'}), ctxBox = h('details', {class: 'more panel ctx'}), chainBox = h('details', {class: 'more panel chain'});
+  // 2026-10-04 08:19 사장님 「바카라 그 표가 곳곳에」 · 「그 회사들 예정된 뉴스나 공시 나타나게 · 얼마나 중요한지」: 출목표 칸 · 일정·공시 칸(★)
+  const closes21 = d.actual60.slice(-21).map(r => r.close), mine = rowsOf(cards, r1.date).find(x => x.code === code), sideW = mine?.sel === 'down' ? '내릴 쪽' : '오를 쪽';
+  const roadPanel = h('section', {class: 'panel road-panel', 'aria-label': '출목표'}, h('h2', {class: 'panel-title'}, `출목표 · 지난 ${closes21.length - 1}거래일(바카라 큰길)`), roadBox(closes21, {note: true, title: false}));
+  const agendaPanel = h('section', {class: 'panel agenda-panel', 'aria-label': '다가오는 일정과 공시'}, h('h2', {class: 'panel-title'}, '다가오는 일정 · 공시 중요도(★)'),
+    agendaBox(agenda?.byCode?.[code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null}), marketBox(agenda, {max: 8}), howBox(agenda));
   main.replaceChildren(
     h('section', {class: 'detail'},
       h('div', {class: 'detail-top'},
-        h('a', {class: 'back', href: '#/forecast'}, '‹ 52종목'),
+        h('a', {class: 'back', href: mine ? '#/' + mine.sel : '#/forecast'}, mine ? `‹ ${sideW}` : '‹ 52종목'),
         h('div', {class: 'stock-nav'}, h('a', {class: 'ctl icon', href: '#/stock/' + prevCode, 'aria-label': '이전 종목'}, '‹'), pickBox(selector, {cls: 'stock-pick'}), h('a', {class: 'ctl icon', href: '#/stock/' + nextCode, 'aria-label': '다음 종목'}, '›')),
         h('div', {class: 'chips'}, h('span', {class: 'chip ' + (d.state.label === 'Bull' ? 'up' : d.state.label === 'Bear' ? 'down' : 'flat'), title: d.state.basis}, STATE_WORD[d.state.label] ?? d.state.label), h('span', {class: 'chip muted'}, d.sector))),
       hl, T ? h('p', {class: 'banner off-note', role: 'note', 'data-off': 'multi-day'}, `꺼 둠 · ${TW} 말고의 전망(20거래일 길·대표 시나리오·여러 날 CSV)은 꺼 두었습니다(${manifest.tomorrowOnly.since ?? '2026-10-02'} 사장님 명령 · 지난 기록은 그대로)`) : null,
@@ -221,7 +227,7 @@ async function renderDetail(main, manifest, code) {
           h('div', {class: 'toggles'}, scenarioBtn, prevBtn, csvBtn, jsonBtn),
           h('details', {class: 'more'}, h('summary', null, '그래프 읽는 법'), h('ul', {class: 'plain small'}, h('li', null, T ? `전망은 출발 종가(실제 마지막 점)에서 ${TW} 중앙값 한 점까지입니다 · 빨강 = 오름 쪽 · 파랑 = 내림 쪽` : '전망선은 출발 종가(실제 마지막 점)에서 미래 20거래일 중앙값을 이은 선입니다 · 빨강 = 20거래일 뒤 오름 쪽 · 파랑 = 내림 쪽'), h('li', null, '세 겹 띠는 모의 분포의 25%~75% · 10%~90% · 5%~95% 구간 그대로입니다(대칭으로 바꾸지 않음)'), T ? h('li', null, `${TW} 말고의 전망(20거래일 길·대표 시나리오 등)은 꺼 두었습니다`) : h('li', null, `대표 시나리오는 모의 경로 ${num(manifest.summary?.paths ?? 20000)}개 가운데 중심에 가까운 경로 하나이며, 그 경로 전체가 일어날 확률은 표시하지 않습니다`)))),
         backdrop, explainBox),
-      firstDay, infoBox, ctxBox, chainBox));
+      firstDay, roadPanel, agendaPanel, infoBox, ctxBox, chainBox));
   chartBox.style.position = 'relative';
   draw();
   renderInfo(infoBox, d);

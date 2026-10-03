@@ -129,6 +129,14 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 
 /* ── III 카드 ── */
 .quads { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 14px; }
+/* 2026-10-04 「게임도 그렇게」: 두 묶음(▲ 오를 쪽 · ▼ 내릴 쪽) — 큰 단추 하나 + 그 아래 네 갈래 중 둘 · 전체는 맨 뒤 */
+.quads .side-g { display: grid; gap: 6px; justify-items: center; padding: 8px; border-radius: 18px; border: 1px solid var(--gold-faint); }
+.quads .side-g .subs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.quads .side-b { font-weight: 700; font-size: 1.0625rem; padding: 8px 16px; }
+.quads .side-b.up { color: var(--up); } .quads .side-b.down { color: var(--down); }
+.quads .side-b[aria-pressed="true"] { color: #17130a; } /* 눌린 단추는 금색 바탕에 검은 글자(다른 단추와 같게) */
+.quads .sub { font-size: .875rem; min-height: 40px; }
+.quads .all-b { align-self: center; }
 .quads button { min-height: 44px; padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(201,167,94,.3); background: #111115; color: var(--ink2); font-size: .9375rem; }
 .quads button b { font-family: var(--mono); font-weight: 500; color: var(--ink); margin-left: 4px; }
 .quads button[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: #17130a; }
@@ -178,6 +186,7 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .why3 li { display: grid; grid-template-columns: 3.1em 1fr; gap: 6px; align-items: baseline; font-size: .875rem; line-height: 1.35; }
 .why3 li > span:first-child { font-family: var(--serif); font-weight: 800; font-size: .75rem; color: var(--gold-ink); letter-spacing: .04em; }
 .why3 .up { color: var(--up-soft); font-weight: 700; } .why3 .down { color: var(--down-soft); font-weight: 700; }
+.why3 .lv { font-weight: 800; letter-spacing: -.06em; margin-right: 2px; } .why3 .lv3 { color: var(--pink); } .why3 .lv2 { color: var(--pink2); } .why3 .lv1 { color: var(--gold-ink); font-weight: 600; }
 .abet { margin-top: auto; text-align: center; font-size: .875rem; color: var(--pink2); }
 .abet b { color: var(--pink); }
 .c-bot { display: flex; justify-content: flex-end; }
@@ -197,7 +206,10 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .place button[aria-pressed="true"].p-lev { background: rgba(163,18,42,.35); color: #fff; }
 .place button[aria-pressed="true"].p-inv { background: rgba(29,71,150,.42); color: #fff; }
 .place button:disabled { filter: grayscale(.8) brightness(.85); }
-.shoe { display: flex; justify-content: center; gap: 0; margin-top: 16px; padding: 10px 6px 0; height: 46px; }
+.shoe { display: grid; gap: 4px; justify-content: center; margin-top: 16px; padding: 10px 6px 0; }
+.shoe .shoe-row { display: flex; align-items: flex-end; justify-content: center; height: 46px; padding-left: 4px; }
+.shoe .shoe-lab { font-size: .75rem; color: var(--ink3); margin-right: 10px; white-space: nowrap; align-self: center; }
+.shoe .shoe-row.up .shoe-lab { color: var(--up); } .shoe .shoe-row.down .shoe-lab { color: var(--down); }
 .shoe button { width: 9px; height: 34px; margin: 0 -2px; border-radius: 2px; border: none; padding: 0; background: linear-gradient(90deg, #6f5420, #f1d99c 45%, #8a6a2c); box-shadow: -1px 0 0 rgba(0,0,0,.6); transition: transform .2s var(--ease); }
 .shoe button.on { transform: translateY(-8px); background: linear-gradient(90deg, #fff4d6, #f1d99c); }
 .shoe button.mine { box-shadow: -1px 0 0 rgba(0,0,0,.6), 0 4px 0 -1px var(--seal); }

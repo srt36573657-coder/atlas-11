@@ -14,6 +14,8 @@
    「내일 하루만」(2026-10-02 00:08 사장님 명령): 전망은 내일(manifest.futureDates[0]) 하나만 · 전망 요소마다 data-forecast-date. */
 import {h, won, pct, prob, korDate, weekday, finite, speak, speakScreen, stopSpeak, reducedMotion} from './util.js';
 import {state, loadCards, loadScores, loadJSON, prefs} from './store.js';
+import {roadOf, roadSvg, roadKey, unitText} from './road.js';
+import {sideRows} from './view-side.js';
 
 /** 3차 이야기(장면) 스위치 — 2026-10-02 04:16 사장님 「이때로 돌아가」로 꺼 둠(지우지 않음) */
 const STORY = false;
@@ -47,7 +49,7 @@ export async function renderTomorrow(main, {manifest}) {
   const tomorrow = manifest.futureDates?.[0];
   const rows = (cardsDoc.cards ?? []).filter(c => c.day1).map(c => {
     const d1 = c.day1, sel = d1.selected === 'up' || d1.selected === 'down' ? d1.selected : (finite(d1.return) && d1.return < 0 ? 'down' : 'up');
-    return {code: c.code, name: c.name, sel, close: Boolean(d1.closeCall || d1.statisticalTie || (d1.selected !== 'up' && d1.selected !== 'down')), p: d1.probabilities?.[sel], p50: d1.p50, ret: d1.return, date: d1.date ?? tomorrow};
+    return {code: c.code, name: c.name, sel, close: Boolean(d1.closeCall || d1.statisticalTie || (d1.selected !== 'up' && d1.selected !== 'down')), p: d1.probabilities?.[sel], p50: d1.p50, ret: d1.return, date: d1.date ?? tomorrow, c: c.c ?? null};
   });
   const total = rows.length;
   const key = r => (r.sel === 'up' ? (r.close ? 1 : 0) : (r.close ? 2 : 3));
@@ -176,6 +178,8 @@ export async function renderTomorrow(main, {manifest}) {
       whyBox.replaceChildren(
         h('h2', {class: 't-why-h'}, `왜 ${side} 쪽으로 봤나 · ${d.r.name}`),
         h('p', {class: 't-why-dir'}, `${paths} 가운데 오른 길 ${prob(w.up)} · 내린 길 ${prob(w.down)} → ${side} 쪽${d.r.close ? ' · 거의 반반' : ''}`),
+        // 2026-10-04 「바카라 그 표가 곳곳에」: 고른 종목의 출목표(지난 20거래일) — 지난 기록을 읽은 표 · 다음 날을 맞히는 말이 아님
+        ...(Array.isArray(d.r.c) && d.r.c.length > 2 ? [(road => h('div', {class: 't-why-road'}, h('p', {class: 't-why-cap'}, `출목표 · 지난 ${road.days}거래일${road.unit !== 0.01 ? ' · ' + unitText(road) : ''}`), roadSvg(road), roadKey(road, {note: false})))(roadOf(d.r.c))] : []),
         h('p', {class: 't-why-cap'}, '하루 기대 등락을 이루는 몫 · 높은 순'),
         h('ul', {class: 't-why-bars'}, ...items.map(bar)),
         h('p', {class: 't-why-sum'}, '합계 = 하루 기대 등락 ', h('b', {class: tone(w.mean)}, pct(w.mean))),
@@ -185,15 +189,23 @@ export async function renderTomorrow(main, {manifest}) {
           h('p', {class: 't-why-note'}, '점수 = 설계 때 미리 매긴 중요도(작동 원리 · 넓이 · 기간 · 관측 · 0점~100점) · 실제로 맞힌 정도가 아닙니다'),
           h('ol', null, ...(whyDoc.factors ?? []).map(f => h('li', {class: f.role !== 'not_used' ? 'on' : ''}, h('b', null, f.name), h('span', {class: 't-why-sc'}, ` ${f.score}점`), h('span', {class: 't-why-st'}, f.role === 'conditional_mean' ? '씀 · 평균 몫' : f.role === 'variance' ? '씀 · 흔들림 폭' : '안 씀'))))));
     };
-    // ── 52곳 한눈에: 원과 같은 순서 · ▲ 오를 쪽(빨강) ▼ 내릴 쪽(파랑) · 테두리만 = 거의 반반 · 누르면 그 종목 ──
-    const chip = r => h('a', {class: `t-chip ${r.sel}${r.close ? ' half' : ''}`, 'data-len': [...r.name].length >= 8 ? 'l' : 's', href: `#/stock/${r.code}`, 'data-forecast-date': r.date, 'data-code': r.code, 'aria-label': `${r.name} · ${r.sel === 'up' ? '오를' : '내릴'} 쪽${r.close ? ' · 거의 반반' : ''}`},
-      h('span', {class: 't-chip-m', 'aria-hidden': 'true'}, r.sel === 'up' ? '▲' : '▼'), h('span', {class: 't-chip-n'}, r.name));
-    const grid = h('section', {class: 't-grid', 'aria-label': `${uni.label} 한눈에`},
-      h('h2', {class: 't-h2', 'data-speak': ''}, `${uni.label} 한눈에`),
-      h('div', {class: 't-chips'}, ...order.map(chip)),
-      h('p', {class: 't-grid-key'}, h('span', {class: 'up'}, '▲'), ' 오를 쪽 · ', h('span', {class: 'down'}, '▼'), ' 내릴 쪽 · 점선 테두리 = 거의 반반'),
+    // ── 2026-10-04 08:19 사장님 「정리 정돈 — 상승할 것 같은 회사들만 한곳에, 그렇지 않은 회사들도 한곳으로 · 페이지 만들어서」 ──
+    //   원 아래는 두 문(오를 쪽 · 내릴 쪽)만 — 회사마다 출목표·다가오는 일정·공시 중요도는 문을 열면(#/up · #/down) · 긴 목록과 52곳 이름표는 그쪽으로 옮김
+    const W2 = {up: '오를 쪽', down: '내릴 쪽'};
+    const door = side => { const list = sideRows(rows.map(r => ({...r, half: r.close})), side), names = list.slice(0, 6).map(r => r.name).join(' · ') + (list.length > 6 ? ` 외 ${list.length - 6}곳` : '');
+      return h('a', {class: `t-door ${side}`, href: '#/' + side, 'data-side': side, 'data-count': String(list.length), 'aria-label': `${W2[side]} ${list.length}곳 보기 · 출목표 · 다가오는 일정 · 공시 중요도`},
+        h('div', {class: 't-door-h', 'data-speak': `${W2[side]} ${list.length}곳`}, h('span', {class: 't-door-m', 'aria-hidden': 'true'}, side === 'up' ? '▲' : '▼'), h('b', null, W2[side]), h('span', {class: 't-door-n'}, `${list.length}곳`), h('span', {class: 't-door-go', 'aria-hidden': 'true'}, '›')),
+        h('p', {class: 't-door-names'}, list.length ? names : '없음'),
+        h('p', {class: 't-door-sub'}, '출목표 · 다가오는 일정 · 공시 중요도(★)')); };
+    const doors = h('section', {class: 't-doors', 'aria-label': `${uni.label} · 오를 쪽 · 내릴 쪽`},
+      h('h2', {class: 't-doors-h'}, `${uni.label} · 두 묶음`),
+      door('up'), door('down'),
       ...(uni.how?.length ? [h('details', {class: 't-uni-how'}, h('summary', null, `이 ${rows.length}곳은 어떻게 골랐나`), h('ul', null, ...uni.how.map(x => h('li', null, x))), h('p', {class: 't-uni-note'}, '오를지 내릴지는 고를 때 쓰지 않았습니다 · ATLAS가 날마다 따로 적습니다'))] : []));
-    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, ...(nextCard ? [nextCard] : []), head, dial, sayLines, grid, whyBox, after);
+    // 아래: 지난 3번의 성적과 계산 기준일만(긴 목록은 두 쪽으로 옮김)
+    const afterTidy = h('div', {class: 't-after', id: 't-after'},
+      h('h2', {class: 't-h2'}, '지난 3번의 성적'), scoreCard,
+      h('p', {class: 't-foot'}, `${longDate(manifest.actualAsOf)} 종가로 계산`));
+    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, ...(nextCard ? [nextCard] : []), head, dial, sayLines, doors, whyBox, afterTidy);
     main.replaceChildren(page);
     story.run++; story.playing = false; story.onVoice = null;
     const me = story.run;

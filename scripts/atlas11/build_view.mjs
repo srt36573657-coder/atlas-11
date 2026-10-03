@@ -121,8 +121,9 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   // 관측 수집(시장·수급·뉴스·공시·거시) — 요약 + 종목별 최근 값
   const contextLatest = await read('reports/atlas11/context/latest.json', null);
   let contextByCode = null, marketIndex = null;
+  let contextSnap = null;
   if (contextLatest?.file) {
-    const snap = await read(contextLatest.file, null);
+    const snap = await read(contextLatest.file, null); contextSnap = snap;
     // 시장 띠(코스피·코스닥): 같은 수집 기록의 지수 원문 행 · 출처 주소·원문 해시 그대로
     // 값이 비거나 숫자가 아닌 지수는 싣지 않는다(시장 띠는 「미수집」으로 보이고 발행은 멈추지 않음)
     if (snap?.index?.length) marketIndex = {day: snap.day, fetchedAt: snap.fetchedAt, file: contextLatest.file, items: snap.index.filter(i => i.rows?.length).map(i => { const r = i.rows.find(x => x.date === snap.day) ?? i.rows.at(-1); return {symbol: i.symbol, name: i.symbol === 'KOSPI' ? '코스피' : i.symbol === 'KOSDAQ' ? '코스닥' : i.symbol, date: r.date, close: r.close, change: r.change ?? null, changePct: r.changePct, status: r.date === snap.day ? 'same_day' : 'earlier_day', sourceName: '네이버 증권 지수', sourceUrl: i.sourceUrl ?? null, rawSHA256: i.rawSHA256 ?? null}; }).filter(x => Number.isFinite(x.close) && Number.isFinite(x.changePct) && /^\d{4}-\d{2}-\d{2}$/.test(x.date ?? ''))};
@@ -146,7 +147,7 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   }
   // 「왜 틀렸나」: 원인 분석 칸(장부)을 그대로 넘긴다 — 네 통 나누기는 lib/atlas11/misses.mjs(규칙은 결과 보기 전에 고정)
   const missCells = (await current('analysis')).filter(r => r.body?.kind === 'cell' && r.body?.horizon === 1);
-  const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, scoreInput, rowCodes, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, universeNext, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
+  const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, scoreInput, rowCodes, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, universeNext, contextSnap, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
   // 아틀라스 게임(2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」): 화면 묶음에 game.json 한 장을 더한다 — 발행본·입력 종가와 후향 판(있으면 읽기만)에서만 만든다
   files.set('game.json', buildGame({publication, publications, input: scoreInput, retro: await read('atlas4h/baselines/atlas11-v1-retro.json', null)}));
   // 2026-10-02 14:08 사장님 「36가지 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 「내일」 원 화면의 「왜 그렇게 봤나」 자료 한 장

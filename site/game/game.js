@@ -5,7 +5,10 @@
    2026-10-02 06:34 「하루에 한 번」 — 하루 한 번, 08:00 전에 낙관을 찍어 건다(넥스트레이드 장전 거래 08:00 · 거래소 동시호가 08:30 전).
    자료: ../data/atlas11/view/game.json(scripts/atlas11/build_view.mjs → lib/atlas11/game.mjs · 발행본과 입력 종가에서만 만든다)
    정산 규칙(게임): 전날 종가 → 목표일 15:30 종가. 맞히면 건 돈의 2배를 돌려받고, 틀리면 잃고, ±0.1% 안이면 돌려받는다. 실제 거래와 관계없다.
-   사이트 보안 규칙(CSP): 글 속 style 을 쓰지 않는다 — 모양 값은 CSSOM(style.setProperty · cssText)으로만. */
+   사이트 보안 규칙(CSP): 글 속 style 을 쓰지 않는다 — 모양 값은 CSSOM(style.setProperty · cssText)으로만.
+   2026-10-04 08:19 사장님 「정리 정돈 — 상승할 것 같은 회사들만 한곳에, 그렇지 않은 회사들도 한곳으로 · 게임도 그렇게」 · 「예정된 뉴스나 공시와 중요도」:
+     카드 묶음을 「▲ 오를 쪽」(이어 오름 · 돌아 오름) · 「▼ 내릴 쪽」(꺾여 내림 · 이어 내림) 두 묶음으로 · 처음엔 오를 쪽 · 카드 신발도 두 줄
+     카드마다 「일정」(다가오는 회사·업종 일정 중 가장 중요한 것) · 「공시」(지난 30일 가장 중요한 것) 한 줄씩 — ../data/atlas11/view/agenda.json(사이트와 같은 표) */
 import {FLAT_BAND, outcome, settle, SYSTEMS, CENTER, AUX, runSystem, kellyFraction} from './engine.js';
 import {METHODS, REFS, HYP, JOBS} from './refs.js';
 
@@ -201,7 +204,7 @@ function sealSvg(chars, {size = 100} = {}) {
 }
 
 /* ───────── 자료 · 상태 ───────── */
-let D = null, ROUNDS = {}, PLAN = {}, POOLED = {}, RUNS = {};
+let D = null, ROUNDS = {}, PLAN = {}, POOLED = {}, RUNS = {}, AGENDA = null;
 const KEY = 'atlas-game:v1';
 const loadP = () => { try { const v = JSON.parse(localStorage.getItem(KEY) || 'null'); return v && typeof v === 'object' ? v : null; } catch { return null; } };
 const P = Object.assign({purse: 3e8, bets: {}, history: [], method: 'kelly'}, loadP() || {});
@@ -209,7 +212,7 @@ const saveP = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catc
 const AMTS = [1e7, 5e7, 1e8, 1.5e8];
 const AMT = {10000000: ['1천만', 'c1'], 50000000: ['5천만', 'c2'], 100000000: ['1억', 'pl'], 150000000: ['1.5억', 'pl dark']};
 const fresh = () => ({lev: null, inv: null, levAmt: 1e8, invAmt: 1e8, locked: false, revealed: false, open: {lev: false, inv: false}});
-const S = {round: 'live', method: SYSTEMS[CENTER].ready ? CENTER : (AUX.includes(P.method) ? P.method : 'kelly'), idx: 0, quad: 'all', fresh: [], bets: {practice: fresh()}, plateAnimate: false, dealt: null, sealAnim: false};
+const S = {round: 'live', method: SYSTEMS[CENTER].ready ? CENTER : (AUX.includes(P.method) ? P.method : 'kelly'), idx: 0, quad: 'up', fresh: [], bets: {practice: fresh()}, plateAnimate: false, dealt: null, sealAnim: false};
 const R = () => ROUNDS[S.round];
 const B = () => S.round === 'live' ? (P.bets[ROUNDS.live.target] ||= {...fresh()}) : S.bets.practice;
 const liveOpen = () => Date.now() < ROUNDS.live.closeAt;
@@ -489,17 +492,33 @@ function onPlateClick(e) {
 }
 function openCard(code) {
   const c = R().by[code]; if (!c) return;
-  if (S.quad !== 'all' && S.quad !== c.quad) S.quad = c.quad;
+  if (!filtered().some(x => x.code === code)) S.quad = sideOfCard(c); // 고른 카드가 지금 묶음에 없으면 그 카드의 쪽으로
   S.idx = list().findIndex(x => x.code === code); S.dealt = code; render();
   $('#ch3').scrollIntoView({behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start'});
 }
 
 /* ───────── III 카드 ───────── */
-const list = () => S.quad === 'all' ? R().deck : R().deck.filter(c => c.quad === S.quad);
+/* 묶음: 전체 · 오를 쪽(이어 오름 + 돌아 오름) · 내릴 쪽(꺾여 내림 + 이어 내림) · 네 갈래 하나 — 사이트 첫 화면의 두 문과 같은 나누기(ATLAS가 본 쪽) */
+const sideOfCard = c => c.quad === 'cont-up' || c.quad === 'rev-up' ? 'up' : 'down';
+const SIDE_NAME = {all: '전체', up: '오를 쪽', down: '내릴 쪽'};
+const filtered = () => { const d = R().deck; return S.quad === 'all' ? d : S.quad === 'up' || S.quad === 'down' ? d.filter(c => sideOfCard(c) === S.quad) : d.filter(c => c.quad === S.quad); };
+const list = () => { const f = filtered(); return f.length ? f : R().deck; }; // 빈 묶음이면 전체(카드가 없는 화면을 만들지 않음)
+const filterName = () => filtered().length ? (SIDE_NAME[S.quad] ?? QUADS[S.quad]?.name ?? '전체') : '전체';
 function renderQuads() {
-  const R0 = R(), cnt = {}; for (const c of R0.deck) cnt[c.quad] = (cnt[c.quad] ?? 0) + 1;
-  $('#quads').replaceChildren(h('button', {type: 'button', 'aria-pressed': String(S.quad === 'all'), onclick: () => { S.quad = 'all'; S.idx = 0; render(); }}, '전체', h('b', null, `${R0.deck.length}장`)),
-    ...Object.keys(QUADS).map(k => h('button', {type: 'button', 'aria-pressed': String(S.quad === k), disabled: !cnt[k], title: QUADS[k].says, onclick: () => { S.quad = k; S.idx = 0; render(); }}, QUADS[k].name, h('b', null, `${cnt[k] ?? 0}장`))));
+  const R0 = R(), cnt = {}, side = {up: 0, down: 0}; for (const c of R0.deck) { cnt[c.quad] = (cnt[c.quad] ?? 0) + 1; side[sideOfCard(c)]++; }
+  const btn = (key, label, n, cls, title) => h('button', {type: 'button', class: cls, 'aria-pressed': String(S.quad === key), disabled: !n, title, onclick: () => { S.quad = key; S.idx = 0; render(); }}, label, h('b', null, `${n ?? 0}장`));
+  const group = (k, label, quads) => h('div', {class: 'side-g ' + k}, btn(k, label, side[k], 'side-b ' + k, k === 'up' ? 'ATLAS가 오를 쪽으로 본 카드' : 'ATLAS가 내릴 쪽으로 본 카드'),
+    h('div', {class: 'subs'}, ...quads.map(q => btn(q, QUADS[q].name, cnt[q], 'sub', QUADS[q].says))));
+  $('#quads').replaceChildren(group('up', '▲ 오를 쪽', ['cont-up', 'rev-up']), group('down', '▼ 내릴 쪽', ['turn-down', 'cont-down']), btn('all', '전체', R0.deck.length, 'all-b', `${R0.deck.length}장 모두`));
+}
+/** 일정·공시 한 줄(사이트와 같은 표 agenda.json) — 가장 중요한 것 하나 · 같으면 가까운 날 / 최근 */
+const STARS = {3: '★★★', 2: '★★', 1: '★'};
+function agendaLines(code) {
+  const a = AGENDA?.byCode?.[code];
+  if (!a) return [h('li', null, h('span', null, '일정'), h('span', null, AGENDA ? '확인된 일정 없음' : '일정 표를 읽지 못함'))];
+  const ev = [...(a.upcoming ?? [])].sort((x, y) => y.level - x.level || x.date.localeCompare(y.date))[0], ds = (a.disclosures ?? [])[0];
+  return [h('li', null, h('span', null, '일정'), h('span', null, ev ? [h('b', {class: 'lv lv' + ev.level}, STARS[ev.level]), ` ${kday(ev.date)} ${ev.name}`] : '확인된 회사·업종 일정 없음')),
+    h('li', null, h('span', null, '공시'), h('span', null, ds ? [h('b', {class: 'lv lv' + ds.level}, STARS[ds.level]), ` ${kday(ds.publishedAt.slice(0, 10))} ${ds.title}`] : `지난 ${a.disclosureDays ?? 30}일 공시 없음`))];
 }
 function bigCard(c) {
   const sd = SUITS[c.suit], R0 = R(), ab = atlasBets(R0, S.method).find(x => x.code === c.code), res = revealed() ? c.actual : null, pp = Math.round(c.p * 100);
@@ -515,7 +534,8 @@ function bigCard(c) {
     h('ul', {class: 'why3'},
       h('li', null, h('span', null, '사실'), h('span', null, '지난 1주 ', h('span', {class: dirOf(c.weekRet)}, pct(c.weekRet)), ` · 오른 날 ${wkUps}일`)),
       h('li', null, h('span', null, 'ATLAS'), h('span', null, `${kday(R0.target)} `, h('span', {class: c.f.sel}, `${fside} ${pp}%`), c.f.close ? ' · 거의 반반' : '')),
-      h('li', null, h('span', null, '기록'), h('span', null, c.hit && c.hit.n ? `이 종목 방향을 맞힌 비율 ${Math.round(c.hit.k / c.hit.n * 100)}% · ${c.hit.days}거래일 후향` : '후향 기록 없음'))),
+      h('li', null, h('span', null, '기록'), h('span', null, c.hit && c.hit.n ? `이 종목 방향을 맞힌 비율 ${Math.round(c.hit.k / c.hit.n * 100)}% · ${c.hit.days}거래일 후향` : '후향 기록 없음')),
+      ...agendaLines(c.code)),
     h('p', {class: 'abet'}, 'ATLAS 자동: ', h('b', null, ab && ab.amount ? `${ab.side === 'up' ? '레버리지' : '인버스'} ${wonS(ab.amount)}` : '쉼')),
     h('div', {class: 'c-bot'}, idx()),
     res ? h('div', {class: 'stamp ' + dirOf(res.ret)}, `실제 ${pct(res.ret, 2)}`, h('small', null, `${kday(R0.target)} 종가 ${res.close.toLocaleString('ko-KR')}원`)) : null,
@@ -540,10 +560,10 @@ function renderCard() {
   const L = list(); S.idx = Math.max(0, Math.min(L.length - 1, S.idx));
   const c = L[S.idx], b = B();
   $('#bigBox').replaceChildren(bigCard(c)); S.dealt = null;
-  $('#count').textContent = `${S.quad === 'all' ? '전체' : QUADS[S.quad].name} ${L.length}장 중 ${S.idx + 1}번째`;
+  $('#count').textContent = `${filterName()} ${L.length}장 중 ${S.idx + 1}번째`;
   const lock = lockedNow();
   for (const [id, side, label] of [['#putLev', 'lev', '레버리지'], ['#putInv', 'inv', '인버스']]) { const el = $(id); el.disabled = lock; el.setAttribute('aria-pressed', String(b[side] === c.code)); el.textContent = b[side] === c.code ? `${label}에 놓임` : `${label}에 놓기`; }
-  $('#shoe').replaceChildren(...R().deck.map(d => h('button', {class: (d.code === c.code ? 'on' : '') + (b.lev === d.code || b.inv === d.code ? ' mine' : ''), type: 'button', tabindex: '-1', onclick: () => openCard(d.code)})));
+  $('#shoe').replaceChildren(...['up', 'down'].map(k => h('div', {class: 'shoe-row ' + k}, h('span', {class: 'shoe-lab'}, SIDE_NAME[k]), ...R().deck.filter(d => sideOfCard(d) === k).map(d => h('button', {class: (d.code === c.code ? 'on' : '') + (b.lev === d.code || b.inv === d.code ? ' mine' : ''), type: 'button', tabindex: '-1', onclick: () => openCard(d.code)})))));
 }
 
 /* ───────── IV 테이블 ───────── */
@@ -738,7 +758,7 @@ function put(side) {
 }
 function screenText() {
   const R0 = R(), b = B(), cnt = {}; for (const c of R0.deck) cnt[c.quad] = (cnt[c.quad] ?? 0) + 1;
-  const t = [`아틀라스 게임. ${R0.title}, ${kday(R0.target)}.`, `내 돈 ${wonS(P.purse)}, ATLAS ${wonS(runOf('real', S.method).end)}.`, ...Object.keys(QUADS).map(k => `${QUADS[k].name} ${cnt[k] ?? 0}장.`),
+  const t = [`아틀라스 게임. ${R0.title}, ${kday(R0.target)}.`, `내 돈 ${wonS(P.purse)}, ATLAS ${wonS(runOf('real', S.method).end)}.`, `오를 쪽 ${R0.deck.filter(c => sideOfCard(c) === 'up').length}장, 내릴 쪽 ${R0.deck.filter(c => sideOfCard(c) === 'down').length}장.`, ...Object.keys(QUADS).map(k => `${QUADS[k].name} ${cnt[k] ?? 0}장.`),
     `레버리지 자리 ${b.lev && R0.by[b.lev] ? R0.by[b.lev].name + ' ' + won(b.levAmt) : '비어 있음'}. 인버스 자리 ${b.inv && R0.by[b.inv] ? R0.by[b.inv].name + ' ' + won(b.invAmt) : '비어 있음'}.`];
   const rt = resultText(); if (rt) t.push(rt);
   return t.join(' ');
@@ -748,6 +768,8 @@ async function start() {
     const r = await fetch('../data/atlas11/view/game.json', {cache: 'no-cache'});
     if (!r.ok) throw Error(`게임 자료를 받지 못했습니다(${r.status})`);
     D = await r.json();
+    // 일정·공시 표(없어도 게임은 돈다)
+    try { const ra = await fetch('../data/atlas11/view/agenda.json', {cache: 'no-cache'}); if (ra.ok) AGENDA = await ra.json(); } catch { AGENDA = null; }
   } catch (e) { $('#loading').replaceWith(h('p', {class: 'err'}, `게임 자료를 열지 못했습니다. ${e.message}`)); return; }
   ROUNDS = {live: prep(D.live, 'live')};
   if (D.practice && D.practice.stocks.every(x => x.actual)) ROUNDS.practice = prep(D.practice, 'practice');
@@ -760,8 +782,8 @@ async function start() {
   $('#src').replaceChildren(`자료: ATLAS 발행본(실전 판 = ${kday(D.live.actualAsOf)} 종가로 낸 판${D.practice ? `, 연습 판 = ${kday(D.practice.actualAsOf)} 종가로 낸 판` : ''}) · 출목표와 종가 선 = 한국거래소 15:30 종가`,
     ...(D.hist ? [' · ATLAS 기록과 맞힌 비율 = 후향(', h('span', {'data-ident': ''}, D.hist.method), `, ${kday(D.hist.dates[0])}~${kday(D.hist.dates.at(-1))})`] : []),
     ' · ATLAS 확률은 아직 보정하지 않은 모형 빈도입니다 · 무늬의 「거의 반반」 = 1위와 2위 확률 차이가 작거나 통계적으로 못 가르는 경우 · 게임 돈이며 실제 거래와 관계없습니다 · 투자 조언이 아닙니다.');
-  $('#tab-live').addEventListener('click', () => { S.round = 'live'; S.idx = 0; S.quad = 'all'; render(); });
-  $('#tab-practice').addEventListener('click', () => { if (!ROUNDS.practice) return; S.round = 'practice'; S.idx = 0; S.quad = 'all'; render(); });
+  $('#tab-live').addEventListener('click', () => { S.round = 'live'; S.idx = 0; S.quad = 'up'; render(); });
+  $('#tab-practice').addEventListener('click', () => { if (!ROUNDS.practice) return; S.round = 'practice'; S.idx = 0; S.quad = 'up'; render(); });
   $('#prev').addEventListener('click', () => go(-1));
   $('#next').addEventListener('click', () => go(1));
   $('#putLev').addEventListener('click', () => put('lev'));

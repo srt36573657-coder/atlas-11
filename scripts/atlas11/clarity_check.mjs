@@ -22,6 +22,9 @@ export const SCREENS = [
   {id: 'forecast', name: '내일', hash: '#/forecast', wait: '.t-ring .t-dot, .wl-row, .stock-card', settle: async page => { const skip = page.locator('#t-ctl[data-mode="skip"]'); if (await skip.count()) await skip.click({timeout: 3000}).catch(() => {});
     if (await page.locator('.t-page[data-roll="playing"]').count()) { await page.emulateMedia({reducedMotion: 'reduce'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.emulateMedia({reducedMotion: 'no-preference'}); }
     await page.waitForTimeout(600); }},
+  // 2026-10-04 사장님 「정리 정돈 — 오를 쪽·내릴 쪽 페이지」: 두 쪽도 같은 잣대로(출목표 · 일정·공시 중요도 칸 포함)
+  {id: 'up', name: '오를 쪽', hash: '#/up', wait: '.s-card, .s-page'},
+  {id: 'down', name: '내릴 쪽', hash: '#/down', wait: '.s-card, .s-page'},
   {id: 'stock', name: '종목 상세', hash: '#/stock/005930', wait: 'svg.chart'},
   // 「내일 하루만」(2026-10-02 사장님 명령)이면 1만원 비교는 꺼 둠 — 그래프 대신 「꺼 둠」 한 줄을 기다린다
   {id: 'race', name: '1만원 비교', hash: '#/race', wait: 'svg.chart, [data-off="race"]'},

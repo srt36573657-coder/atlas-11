@@ -9,6 +9,7 @@ import {renderScores, renderStatus} from './view-scores.js';
 import {renderEvolution} from './view-evolution.js';
 import {renderRecords} from './view-records.js';
 import {renderTomorrow, stopStory, voice, voiceTurnedOn} from './view-tomorrow.js';
+import {renderSide} from './view-side.js';
 
 const app = {view: null, manifest: null};
 /* 3차(2026-10-02 01:34 사장님 승인 3차 디자인 · 「aaa7377에 연결해봐」): 아래 탭은 둘 — 「내일」(#/forecast · 처음 화면) · 「성적」.
@@ -25,6 +26,8 @@ const ICON = {
 const routes = [
   {id: 'forecast', label: '내일', icon: '◔', match: /^#\/(forecast)?$|^$|^#\/?$/, render: renderTomorrow},
   {id: 'stock', label: '종목', tab: 'forecast', match: /^#\/stock\/\d{6}$/, render: renderForecast, aux: true},
+  // 2026-10-04 08:19 사장님 「상승할 것 같은 회사들만 한곳에, 그렇지 않은 회사들도 한곳으로 — 페이지 만들어서」: 오를 쪽 · 내릴 쪽 쪽(「내일」 탭에 속함)
+  {id: 'side', label: '오를 쪽·내릴 쪽', tab: 'forecast', match: /^#\/(up|down)$/, render: renderSide, aux: true},
   // 1만원 비교(여러 날 경주)는 「내일 하루만」이면 꺼 둠(2026-10-02 사장님 명령) — 메뉴에서 빼고, 주소로 오면 「꺼 둠」 한 줄만
   {id: 'race', label: '1만원 비교', icon: '≋', match: /^#\/race/, render: renderRace, off: m => Boolean(m?.tomorrowOnly)},
   {id: 'scores', label: '성적', icon: '✓', match: /^#\/scores/, render: renderScores},

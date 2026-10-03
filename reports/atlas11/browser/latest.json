@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-2",
-  "at": "2026-10-03T23:06:25.786Z",
+  "at": "2026-10-03T23:51:20.939Z",
   "base": "http://localhost:8823",
   "tomorrowOnly": true,
   "tomorrowDate": "2026-10-02",
@@ -11,19 +11,49 @@
     "mobile-dark": "390x844 어두운 화면",
     "pc-200": "1280x800 글씨 200%"
   },
-  "passed": 279,
-  "failed": 4,
+  "passed": 319,
+  "failed": 2,
   "clarity": {
     "pc": {
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 4,
+        "bareNumbers": 2,
         "graphable": 1,
-        "lowContrast": 57,
-        "decoColors": 3,
+        "lowContrast": 3,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 6,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "up": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 26,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "down": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 82,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -36,9 +66,9 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 3,
+        "formatDates": 4,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -140,12 +170,42 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 4,
+        "bareNumbers": 2,
         "graphable": 1,
-        "lowContrast": 57,
-        "decoColors": 3,
+        "lowContrast": 3,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 6,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "up": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 26,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "down": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 82,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -158,9 +218,9 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 3,
+        "formatDates": 4,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -262,12 +322,42 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 4,
+        "bareNumbers": 2,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 6,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "up": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 26,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "down": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 82,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -280,9 +370,9 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 3,
+        "formatDates": 4,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -384,12 +474,42 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 4,
+        "bareNumbers": 2,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 3,
-        "truncated": 1,
+        "decoColors": 6,
+        "truncated": 0,
         "formatDates": 6,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "up": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 26,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "down": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 82,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -402,9 +522,9 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 3,
+        "formatDates": 4,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -506,12 +626,42 @@
       "forecast": {
         "relDays": 0,
         "vague": 0,
-        "bareNumbers": 4,
+        "bareNumbers": 2,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 3,
-        "truncated": 1,
+        "decoColors": 6,
+        "truncated": 0,
         "formatDates": 6,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "up": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 26,
+        "source": {
+          "relDays": 0,
+          "vague": 0,
+          "bareNumbers": 0
+        }
+      },
+      "down": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 6,
+        "truncated": 0,
+        "formatDates": 82,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -524,9 +674,9 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 3,
+        "formatDates": 4,
         "source": {
           "relDays": 0,
           "vague": 0,
@@ -630,15 +780,29 @@
       "view": "pc",
       "screen": "forecast",
       "graphable": 1,
-      "lowContrast": 57,
-      "decoColors": 3
+      "lowContrast": 3,
+      "decoColors": 6
+    },
+    {
+      "view": "pc",
+      "screen": "up",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
+    },
+    {
+      "view": "pc",
+      "screen": "down",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
     },
     {
       "view": "pc",
       "screen": "stock",
       "graphable": 0,
       "lowContrast": 0,
-      "decoColors": 1
+      "decoColors": 6
     },
     {
       "view": "pc",
@@ -686,15 +850,29 @@
       "view": "mobile",
       "screen": "forecast",
       "graphable": 1,
-      "lowContrast": 57,
-      "decoColors": 3
+      "lowContrast": 3,
+      "decoColors": 6
+    },
+    {
+      "view": "mobile",
+      "screen": "up",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
+    },
+    {
+      "view": "mobile",
+      "screen": "down",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
     },
     {
       "view": "mobile",
       "screen": "stock",
       "graphable": 0,
       "lowContrast": 0,
-      "decoColors": 1
+      "decoColors": 6
     },
     {
       "view": "mobile",
@@ -743,14 +921,28 @@
       "screen": "forecast",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 3
+      "decoColors": 6
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "up",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
+    },
+    {
+      "view": "mobile-dark",
+      "screen": "down",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
     },
     {
       "view": "mobile-dark",
       "screen": "stock",
       "graphable": 0,
       "lowContrast": 0,
-      "decoColors": 1
+      "decoColors": 6
     },
     {
       "view": "mobile-dark",
@@ -799,14 +991,28 @@
       "screen": "forecast",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 3
+      "decoColors": 6
+    },
+    {
+      "view": "pc-200",
+      "screen": "up",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
+    },
+    {
+      "view": "pc-200",
+      "screen": "down",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
     },
     {
       "view": "pc-200",
       "screen": "stock",
       "graphable": 0,
       "lowContrast": 0,
-      "decoColors": 1
+      "decoColors": 6
     },
     {
       "view": "pc-200",
@@ -855,14 +1061,28 @@
       "screen": "forecast",
       "graphable": 1,
       "lowContrast": 0,
-      "decoColors": 3
+      "decoColors": 6
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "up",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
+    },
+    {
+      "view": "mobile-dark-200",
+      "screen": "down",
+      "graphable": 0,
+      "lowContrast": 0,
+      "decoColors": 6
     },
     {
       "view": "mobile-dark-200",
       "screen": "stock",
       "graphable": 0,
       "lowContrast": 0,
-      "decoColors": 1
+      "decoColors": 6
     },
     {
       "view": "mobile-dark-200",
@@ -944,14 +1164,49 @@
       "detail": null
     },
     {
-      "name": "pc 내일: 「업종 대표 52종목 · 9월 17일부터」 · 「업종 대표 52종목 한눈에」 이름표 52개(원과 같은 순서·같은 쪽·같은 반반 · ▲▼ 표시 · 누르면 그 종목) · 「이 52곳은 어떻게 골랐나」(1줄) · 잘린 이름 0",
+      "name": "pc 내일: 「업종 대표 52종목 · 9월 17일부터」 · 원 밑 두 문 「▲ 오를 쪽 12곳 ›」「▼ 내릴 쪽 40곳 ›」(앞 6곳 이름 · 누르면 그 쪽) · 「이 52곳은 어떻게 골랐나」(1줄) · 긴 목록·이름표 없음",
       "ok": true,
       "detail": {
-        "uni": "업종 대표 52종목 · 9월 17일부터",
-        "chips": 52,
-        "cut": 0,
-        "how": "이 52곳은 어떻게 골랐나",
-        "howN": 1
+        "g": {
+          "uni": "업종 대표 52종목 · 9월 17일부터",
+          "uniId": "u1-sector52",
+          "doors": [
+            {
+              "side": "up",
+              "href": "#/up",
+              "count": "12",
+              "head": "▲ 오를 쪽 12곳 ›",
+              "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
+            },
+            {
+              "side": "down",
+              "href": "#/down",
+              "count": "40",
+              "head": "▼ 내릴 쪽 40곳 ›",
+              "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
+            }
+          ],
+          "chips": 0,
+          "rows": 0,
+          "how": "이 52곳은 어떻게 골랐나",
+          "howN": 1
+        },
+        "want": [
+          {
+            "side": "up",
+            "href": "#/up",
+            "count": "12",
+            "head": "▲ 오를 쪽 12곳 ›",
+            "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
+          },
+          {
+            "side": "down",
+            "href": "#/down",
+            "count": "40",
+            "head": "▼ 내릴 쪽 40곳 ›",
+            "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
+          }
+        ]
       }
     },
     {
@@ -980,20 +1235,34 @@
       }
     },
     {
-      "name": "pc 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
+      "name": "pc 내일(정리): 아래는 「지난 3번의 성적」과 계산 기준일만(오를 쪽·내릴 쪽 긴 목록은 두 쪽으로 옮김) · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
       "ok": true,
       "detail": {
-        "rows": 17,
-        "pills": 17,
-        "more": "35종목 더 보기",
+        "rows": 0,
+        "pills": 0,
+        "more": null,
         "heads": [
-          "오를 쪽 12",
-          "내릴 쪽 40",
           "지난 3번의 성적"
         ],
         "hollow": true,
         "solid": true,
         "foot": "10월 1일 목요일 종가로 계산"
+      }
+    },
+    {
+      "name": "pc 내일: 「왜 그렇게 봤나」에 그 종목 출목표(동그라미 53개 = 빨강 25 + 파랑 28 · 「요즘은 내림 쪽」)",
+      "ok": true,
+      "detail": {
+        "wr": {
+          "beads": 53,
+          "up": 25,
+          "story": "요즘은 내림 쪽"
+        },
+        "want": {
+          "cells": 53,
+          "up": 25,
+          "story": "요즘은 내림 쪽"
+        }
       }
     },
     {
@@ -1076,14 +1345,9 @@
       "detail": {
         "fm": {
           "other": 0,
-          "tomorrow": 140
+          "tomorrow": 54
         }
       }
-    },
-    {
-      "name": "pc 내일: 「더 보기」 → 내릴 쪽 40종목 모두",
-      "ok": true,
-      "detail": null
     },
     {
       "name": "pc 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
@@ -1180,6 +1444,68 @@
       "detail": []
     },
     {
+      "name": "pc 오를 쪽 쪽: 「오를 쪽 12곳」 · 탭 둘(개수) · 카드 12장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "bad": [],
+        "tabs": [
+          [
+            "#/up",
+            "▲ 오를 쪽 12곳",
+            "page"
+          ],
+          [
+            "#/down",
+            "▼ 내릴 쪽 40곳",
+            null
+          ]
+        ],
+        "market": 5,
+        "cut": 0
+      }
+    },
+    {
+      "name": "pc 오를 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
+      "ok": true,
+      "detail": {
+        "fm": {
+          "other": 0,
+          "tomorrow": 24
+        }
+      }
+    },
+    {
+      "name": "pc 내릴 쪽 쪽: 「내릴 쪽 40곳」 · 탭 둘(개수) · 카드 40장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "bad": [],
+        "tabs": [
+          [
+            "#/up",
+            "▲ 오를 쪽 12곳",
+            null
+          ],
+          [
+            "#/down",
+            "▼ 내릴 쪽 40곳",
+            "page"
+          ]
+        ],
+        "market": 5,
+        "cut": 0
+      }
+    },
+    {
+      "name": "pc 내릴 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
+      "ok": true,
+      "detail": {
+        "fm": {
+          "other": 0,
+          "tomorrow": 80
+        }
+      }
+    },
+    {
       "name": "pc 시장 띠(본문 맨 위): 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
@@ -1202,8 +1528,8 @@
       "name": "pc 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "433,333원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 416,509원~452,782원\n출발 종가\n431,500원 · 10월 1일(목) 15:30 KST 정규장 "
+        "figure": "166,669원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
       }
     },
     {
@@ -1215,15 +1541,15 @@
       "name": "pc 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "433,333원",
-        "last": "433,333원 (+0.42%)"
+        "figure": "166,669원",
+        "last": "166,669원 (+0.40%)"
       }
     },
     {
       "name": "pc 상세: 헤드라인에 종목 이름·날짜·원 단위",
       "ok": true,
       "detail": {
-        "detailFigure": "433,333원"
+        "detailFigure": "166,669원"
       }
     },
     {
@@ -1254,11 +1580,11 @@
       "ok": true,
       "detail": {
         "ticks": [
-          "42.0만원",
-          "44.0만원",
-          "46.0만원",
-          "48.0만원",
-          "09/02"
+          "17.0만원",
+          "18.0만원",
+          "09/02",
+          "09/04",
+          "09/08"
         ]
       }
     },
@@ -1301,7 +1627,7 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 2일(금) 중앙 전망 433,333원 (출발 종가 대비 +0.42%)"
+        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
       }
     },
     {
@@ -1313,6 +1639,20 @@
       }
     },
     {
+      "name": "pc 상세: 중요 일정에서 정지·확인 대기",
+      "ok": true,
+      "detail": {
+        "text": "10월 2일(금) 중요 일정 1건"
+      }
+    },
+    {
+      "name": "pc 상세: 확인 뒤 계속 재생",
+      "ok": true,
+      "detail": {
+        "resumed": "10월 2일(금) · 전망"
+      }
+    },
+    {
       "name": "pc 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
       "ok": true,
       "detail": null
@@ -1321,7 +1661,7 @@
       "name": "pc 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20261001_detail.json"
+        "name": "ATLAS_105560_20261001_detail.json"
       }
     },
     {
@@ -1330,6 +1670,28 @@
       "detail": {
         "infoBars": 5,
         "infoKv": 12
+      }
+    },
+    {
+      "name": "pc 상세: 출목표 칸(동그라미 35개 · 「오르다가 요즘 꺾임」 · 읽는 법) · 일정 0줄 · 공시 4줄(별 = agenda.json) · 시장 일정 5줄 · 「출목표와 별(★) 읽는 법」 · 뒤로 「‹ 오를 쪽」",
+      "ok": true,
+      "detail": {
+        "dv": {
+          "beads": 35,
+          "up": 17,
+          "story": "오르다가 요즘 꺾임",
+          "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림\n막대 길이 = 동그라미 개수",
+          "ev": 0,
+          "ds": 4,
+          "market": 5,
+          "how": "출목표와 별(★) 읽는 법",
+          "back": "‹ 오를 쪽"
+        },
+        "want": {
+          "beads": 35,
+          "ev": 0,
+          "ds": 4
+        }
       }
     },
     {
@@ -1348,22 +1710,22 @@
         "arcs": 9,
         "groupsN": 9,
         "orders": 5,
-        "links": 31
+        "links": 28
       }
     },
     {
       "name": "pc 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
       "ok": true,
       "detail": {
-        "shockBefore": "−2.65%",
-        "shockAfter": "+5.29%"
+        "shockBefore": "−3.54%",
+        "shockAfter": "+7.08%"
       }
     },
     {
       "name": "pc 상세: 시장 통로·직접 통로 설명",
       "ok": true,
       "detail": {
-        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
+        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
       }
     },
     {
@@ -1376,7 +1738,7 @@
       "ok": true,
       "detail": {
         "litEarly": 1,
-        "litLate": 17,
+        "litLate": 15,
         "stripLit": 5
       }
     },
@@ -1384,8 +1746,8 @@
       "name": "pc 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
       "ok": true,
       "detail": {
-        "hashBefore": "#/stock/329180",
-        "hashAfter": "#/stock/010120"
+        "hashBefore": "#/stock/105560",
+        "hashAfter": "#/stock/010170"
       }
     },
     {
@@ -1477,8 +1839,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 113,
-          "bottom": 147,
+          "top": 112,
+          "bottom": 146,
           "firstChild": true
         }
       }
@@ -1673,7 +2035,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cgrbk41-band-inner\")",
+        "bandFill": "url(\"#cfyz2wu-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -1739,14 +2101,49 @@
       "detail": null
     },
     {
-      "name": "mobile 내일: 「업종 대표 52종목 · 9월 17일부터」 · 「업종 대표 52종목 한눈에」 이름표 52개(원과 같은 순서·같은 쪽·같은 반반 · ▲▼ 표시 · 누르면 그 종목) · 「이 52곳은 어떻게 골랐나」(1줄) · 잘린 이름 0",
+      "name": "mobile 내일: 「업종 대표 52종목 · 9월 17일부터」 · 원 밑 두 문 「▲ 오를 쪽 12곳 ›」「▼ 내릴 쪽 40곳 ›」(앞 6곳 이름 · 누르면 그 쪽) · 「이 52곳은 어떻게 골랐나」(1줄) · 긴 목록·이름표 없음",
       "ok": true,
       "detail": {
-        "uni": "업종 대표 52종목 · 9월 17일부터",
-        "chips": 52,
-        "cut": 0,
-        "how": "이 52곳은 어떻게 골랐나",
-        "howN": 1
+        "g": {
+          "uni": "업종 대표 52종목 · 9월 17일부터",
+          "uniId": "u1-sector52",
+          "doors": [
+            {
+              "side": "up",
+              "href": "#/up",
+              "count": "12",
+              "head": "▲ 오를 쪽 12곳 ›",
+              "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
+            },
+            {
+              "side": "down",
+              "href": "#/down",
+              "count": "40",
+              "head": "▼ 내릴 쪽 40곳 ›",
+              "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
+            }
+          ],
+          "chips": 0,
+          "rows": 0,
+          "how": "이 52곳은 어떻게 골랐나",
+          "howN": 1
+        },
+        "want": [
+          {
+            "side": "up",
+            "href": "#/up",
+            "count": "12",
+            "head": "▲ 오를 쪽 12곳 ›",
+            "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
+          },
+          {
+            "side": "down",
+            "href": "#/down",
+            "count": "40",
+            "head": "▼ 내릴 쪽 40곳 ›",
+            "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
+          }
+        ]
       }
     },
     {
@@ -1775,20 +2172,34 @@
       }
     },
     {
-      "name": "mobile 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 12」「내릴 쪽 40」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
+      "name": "mobile 내일(정리): 아래는 「지난 3번의 성적」과 계산 기준일만(오를 쪽·내릴 쪽 긴 목록은 두 쪽으로 옮김) · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
       "ok": true,
       "detail": {
-        "rows": 17,
-        "pills": 17,
-        "more": "35종목 더 보기",
+        "rows": 0,
+        "pills": 0,
+        "more": null,
         "heads": [
-          "오를 쪽 12",
-          "내릴 쪽 40",
           "지난 3번의 성적"
         ],
         "hollow": true,
         "solid": true,
         "foot": "10월 1일 목요일 종가로 계산"
+      }
+    },
+    {
+      "name": "mobile 내일: 「왜 그렇게 봤나」에 그 종목 출목표(동그라미 53개 = 빨강 25 + 파랑 28 · 「요즘은 내림 쪽」)",
+      "ok": true,
+      "detail": {
+        "wr": {
+          "beads": 53,
+          "up": 25,
+          "story": "요즘은 내림 쪽"
+        },
+        "want": {
+          "cells": 53,
+          "up": 25,
+          "story": "요즘은 내림 쪽"
+        }
       }
     },
     {
@@ -1871,14 +2282,9 @@
       "detail": {
         "fm": {
           "other": 0,
-          "tomorrow": 140
+          "tomorrow": 54
         }
       }
-    },
-    {
-      "name": "mobile 내일: 「더 보기」 → 내릴 쪽 40종목 모두",
-      "ok": true,
-      "detail": null
     },
     {
       "name": "mobile 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
@@ -1933,6 +2339,68 @@
       "detail": []
     },
     {
+      "name": "mobile 오를 쪽 쪽: 「오를 쪽 12곳」 · 탭 둘(개수) · 카드 12장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "bad": [],
+        "tabs": [
+          [
+            "#/up",
+            "▲ 오를 쪽 12곳",
+            "page"
+          ],
+          [
+            "#/down",
+            "▼ 내릴 쪽 40곳",
+            null
+          ]
+        ],
+        "market": 5,
+        "cut": 0
+      }
+    },
+    {
+      "name": "mobile 오를 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
+      "ok": true,
+      "detail": {
+        "fm": {
+          "other": 0,
+          "tomorrow": 24
+        }
+      }
+    },
+    {
+      "name": "mobile 내릴 쪽 쪽: 「내릴 쪽 40곳」 · 탭 둘(개수) · 카드 40장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
+      "ok": true,
+      "detail": {
+        "bad": [],
+        "tabs": [
+          [
+            "#/up",
+            "▲ 오를 쪽 12곳",
+            null
+          ],
+          [
+            "#/down",
+            "▼ 내릴 쪽 40곳",
+            "page"
+          ]
+        ],
+        "market": 5,
+        "cut": 0
+      }
+    },
+    {
+      "name": "mobile 내릴 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
+      "ok": true,
+      "detail": {
+        "fm": {
+          "other": 0,
+          "tomorrow": 80
+        }
+      }
+    },
+    {
       "name": "mobile 시장 띠(본문 맨 위): 코스피·코스닥 값·등락·기준 시각",
       "ok": true,
       "detail": {
@@ -1945,8 +2413,8 @@
       "detail": {
         "hl": 1,
         "first": {
-          "top": 236,
-          "bottom": 312,
+          "top": 214,
+          "bottom": 290,
           "firstChild": true
         }
       }
@@ -1955,8 +2423,8 @@
       "name": "mobile 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
       "ok": true,
       "detail": {
-        "figure": "433,333원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 416,509원~452,782원\n출발 종가\n431,500원 · 10월 1일(목) 15:30 KST 정규장 "
+        "figure": "166,669원",
+        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
       }
     },
     {
@@ -1968,22 +2436,22 @@
       "name": "mobile 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
       "ok": true,
       "detail": {
-        "figure": "433,333원",
-        "last": "433,333원 (+0.42%)"
+        "figure": "166,669원",
+        "last": "166,669원 (+0.40%)"
       }
     },
     {
       "name": "mobile 상세: 헤드라인에 종목 이름·날짜·원 단위",
       "ok": true,
       "detail": {
-        "detailFigure": "433,333원"
+        "detailFigure": "166,669원"
       }
     },
     {
       "name": "mobile 상세: 그래프가 첫 화면 안(스크롤 전)",
       "ok": true,
       "detail": {
-        "chartTop": 525.671875
+        "chartTop": 503.671875
       }
     },
     {
@@ -2007,11 +2475,11 @@
       "ok": true,
       "detail": {
         "ticks": [
-          "42.5만원",
-          "45.0만원",
-          "47.5만원",
+          "17.0만원",
+          "18.0만원",
           "09/02",
-          "09/08"
+          "09/08",
+          "09/14"
         ]
       }
     },
@@ -2049,7 +2517,7 @@
       "ok": true,
       "detail": {
         "contrib": 4,
-        "oneline": "10월 2일(금) 중앙 전망 433,333원 (출발 종가 대비 +0.42%)"
+        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
       }
     },
     {
@@ -2071,6 +2539,20 @@
       }
     },
     {
+      "name": "mobile 상세: 중요 일정에서 정지·확인 대기",
+      "ok": true,
+      "detail": {
+        "text": "10월 2일(금) 중요 일정 1건"
+      }
+    },
+    {
+      "name": "mobile 상세: 확인 뒤 계속 재생",
+      "ok": true,
+      "detail": {
+        "resumed": "10월 2일(금) · 전망"
+      }
+    },
+    {
       "name": "mobile 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
       "ok": true,
       "detail": null
@@ -2079,7 +2561,7 @@
       "name": "mobile 상세: JSON 내려받기(blob · CSP 아래)",
       "ok": true,
       "detail": {
-        "name": "ATLAS_329180_20261001_detail.json"
+        "name": "ATLAS_105560_20261001_detail.json"
       }
     },
     {
@@ -2088,6 +2570,28 @@
       "detail": {
         "infoBars": 5,
         "infoKv": 12
+      }
+    },
+    {
+      "name": "mobile 상세: 출목표 칸(동그라미 35개 · 「오르다가 요즘 꺾임」 · 읽는 법) · 일정 0줄 · 공시 4줄(별 = agenda.json) · 시장 일정 5줄 · 「출목표와 별(★) 읽는 법」 · 뒤로 「‹ 오를 쪽」",
+      "ok": true,
+      "detail": {
+        "dv": {
+          "beads": 35,
+          "up": 17,
+          "story": "오르다가 요즘 꺾임",
+          "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림\n막대 길이 = 동그라미 개수",
+          "ev": 0,
+          "ds": 4,
+          "market": 5,
+          "how": "출목표와 별(★) 읽는 법",
+          "back": "‹ 오를 쪽"
+        },
+        "want": {
+          "beads": 35,
+          "ev": 0,
+          "ds": 4
+        }
       }
     },
     {
@@ -2106,22 +2610,22 @@
         "arcs": 9,
         "groupsN": 9,
         "orders": 5,
-        "links": 31
+        "links": 28
       }
     },
     {
       "name": "mobile 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
       "ok": true,
       "detail": {
-        "shockBefore": "−2.65%",
-        "shockAfter": "+5.29%"
+        "shockBefore": "−3.54%",
+        "shockAfter": "+7.08%"
       }
     },
     {
       "name": "mobile 상세: 시장 통로·직접 통로 설명",
       "ok": true,
       "detail": {
-        "channel": "시장 통로와 직접 통로 — HD현대중공업의 +10% 중 시장 전체가 같이 움직이는 몫은 +2.30%(52종목 평균 기준), 이 종목만의 몫은 +"
+        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
       }
     },
     {
@@ -2134,7 +2638,7 @@
       "ok": true,
       "detail": {
         "litEarly": 1,
-        "litLate": 17,
+        "litLate": 15,
         "stripLit": 5
       }
     },
@@ -2142,8 +2646,8 @@
       "name": "mobile 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
       "ok": true,
       "detail": {
-        "hashBefore": "#/stock/329180",
-        "hashAfter": "#/stock/010120"
+        "hashBefore": "#/stock/105560",
+        "hashAfter": "#/stock/010170"
       }
     },
     {
@@ -2431,7 +2935,7 @@
         "edges": 6,
         "shadow": 1,
         "halo": 1,
-        "bandFill": "url(\"#cv0kvok-band-inner\")",
+        "bandFill": "url(\"#cv42icd-band-inner\")",
         "todayStroke": "rgb(47, 93, 138)",
         "todayDir": "down",
         "up": "#A63E2C",
@@ -2476,19 +2980,37 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
+      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
       "detail": {
         "rel": [],
         "vague": [],
         "bare": [
           "12 ⟵ 12",
-          "오를 쪽 12 ⟵ 12",
-          "내릴 쪽 40 ⟵ 40",
           "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
         ],
         "src": []
       }
+    },
+    {
+      "name": "잘린 글자 pc up: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc down: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "잘린 글자 pc stock: 0",
@@ -2566,19 +3088,37 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
+      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
       "detail": {
         "rel": [],
         "vague": [],
         "bare": [
           "12 ⟵ 12",
-          "오를 쪽 12 ⟵ 12",
-          "내릴 쪽 40 ⟵ 40",
           "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
         ],
         "src": []
       }
+    },
+    {
+      "name": "잘린 글자 mobile up: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile down: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "잘린 글자 mobile stock: 0",
@@ -2656,19 +3196,37 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
       "detail": {
         "rel": [],
         "vague": [],
         "bare": [
           "12 ⟵ 12",
-          "오를 쪽 12 ⟵ 12",
-          "내릴 쪽 40 ⟵ 40",
           "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
         ],
         "src": []
       }
+    },
+    {
+      "name": "잘린 글자 mobile-dark up: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark down: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "잘린 글자 mobile-dark stock: 0",
@@ -2741,29 +3299,42 @@
       "detail": null
     },
     {
-      "name": "잘린 글자 pc-200 forecast: 1",
-      "ok": false,
-      "detail": {
-        "truncated": [
-          "칸 끝에서 잘림: 46%방향을 맞힌 몫"
-        ],
-        "pageOverflowX": false
-      }
+      "name": "잘린 글자 pc-200 forecast: 0",
+      "ok": true,
+      "detail": null
     },
     {
-      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
+      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
       "detail": {
         "rel": [],
         "vague": [],
         "bare": [
           "12 ⟵ 12",
-          "오를 쪽 12 ⟵ 12",
-          "내릴 쪽 40 ⟵ 40",
           "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
         ],
         "src": []
       }
+    },
+    {
+      "name": "잘린 글자 pc-200 up: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 pc-200 down: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "잘린 글자 pc-200 stock: 0",
@@ -2836,29 +3407,42 @@
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile-dark-200 forecast: 1",
-      "ok": false,
-      "detail": {
-        "truncated": [
-          "칸 끝에서 잘림: 46%방향을 맞힌 몫"
-        ],
-        "pageOverflowX": false
-      }
+      "name": "잘린 글자 mobile-dark-200 forecast: 0",
+      "ok": true,
+      "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 4 (그 가운데 2차 그림 글자 4곳 뺌) (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
       "ok": true,
       "detail": {
         "rel": [],
         "vague": [],
         "bare": [
           "12 ⟵ 12",
-          "오를 쪽 12 ⟵ 12",
-          "내릴 쪽 40 ⟵ 40",
           "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
         ],
         "src": []
       }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 up: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 down: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "잘린 글자 mobile-dark-200 stock: 0",
@@ -3003,6 +3587,60 @@
       }
     },
     {
+      "name": "게임 pc open: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
+      "ok": true,
+      "detail": {
+        "gq": {
+          "sides": [
+            [
+              "up",
+              "▲오를쪽12장",
+              "true"
+            ],
+            [
+              "down",
+              "▼내릴쪽40장",
+              "false"
+            ]
+          ],
+          "subs": 4,
+          "all": "전체52장",
+          "count": "오를 쪽 12장 중 1번째",
+          "rows": [
+            [
+              "up",
+              12
+            ],
+            [
+              "down",
+              40
+            ]
+          ],
+          "code": "105560",
+          "lines": [
+            [
+              "일정",
+              null
+            ],
+            [
+              "공시",
+              "★★"
+            ]
+          ]
+        },
+        "wantLines": [
+          [
+            "일정",
+            null
+          ],
+          [
+            "공시",
+            "★★"
+          ]
+        ]
+      }
+    },
+    {
       "name": "게임 pc 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)",
       "ok": true,
       "detail": {
@@ -3095,6 +3733,60 @@
       }
     },
     {
+      "name": "게임 pc closed: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
+      "ok": true,
+      "detail": {
+        "gq": {
+          "sides": [
+            [
+              "up",
+              "▲오를쪽12장",
+              "true"
+            ],
+            [
+              "down",
+              "▼내릴쪽40장",
+              "false"
+            ]
+          ],
+          "subs": 4,
+          "all": "전체52장",
+          "count": "오를 쪽 12장 중 1번째",
+          "rows": [
+            [
+              "up",
+              12
+            ],
+            [
+              "down",
+              40
+            ]
+          ],
+          "code": "105560",
+          "lines": [
+            [
+              "일정",
+              null
+            ],
+            [
+              "공시",
+              "★★"
+            ]
+          ]
+        },
+        "wantLines": [
+          [
+            "일정",
+            null
+          ],
+          [
+            "공시",
+            "★★"
+          ]
+        ]
+      }
+    },
+    {
       "name": "게임 pc 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음",
       "ok": true,
       "detail": {
@@ -3149,6 +3841,60 @@
         "story": "오르다가 요즘 꺾임",
         "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
         "over": []
+      }
+    },
+    {
+      "name": "게임 mobile open: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
+      "ok": true,
+      "detail": {
+        "gq": {
+          "sides": [
+            [
+              "up",
+              "▲오를쪽12장",
+              "true"
+            ],
+            [
+              "down",
+              "▼내릴쪽40장",
+              "false"
+            ]
+          ],
+          "subs": 4,
+          "all": "전체52장",
+          "count": "오를 쪽 12장 중 1번째",
+          "rows": [
+            [
+              "up",
+              12
+            ],
+            [
+              "down",
+              40
+            ]
+          ],
+          "code": "105560",
+          "lines": [
+            [
+              "일정",
+              null
+            ],
+            [
+              "공시",
+              "★★"
+            ]
+          ]
+        },
+        "wantLines": [
+          [
+            "일정",
+            null
+          ],
+          [
+            "공시",
+            "★★"
+          ]
+        ]
       }
     },
     {
@@ -3241,6 +3987,60 @@
         "story": "오르다가 요즘 꺾임",
         "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
         "over": []
+      }
+    },
+    {
+      "name": "게임 mobile closed: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
+      "ok": true,
+      "detail": {
+        "gq": {
+          "sides": [
+            [
+              "up",
+              "▲오를쪽12장",
+              "true"
+            ],
+            [
+              "down",
+              "▼내릴쪽40장",
+              "false"
+            ]
+          ],
+          "subs": 4,
+          "all": "전체52장",
+          "count": "오를 쪽 12장 중 1번째",
+          "rows": [
+            [
+              "up",
+              12
+            ],
+            [
+              "down",
+              40
+            ]
+          ],
+          "code": "105560",
+          "lines": [
+            [
+              "일정",
+              null
+            ],
+            [
+              "공시",
+              "★★"
+            ]
+          ]
+        },
+        "wantLines": [
+          [
+            "일정",
+            null
+          ],
+          [
+            "공시",
+            "★★"
+          ]
+        ]
       }
     },
     {
@@ -4233,5 +5033,5 @@
       }
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-03T23-03-31-117Z"
+  "dir": "reports/atlas11/browser/2026-10-03T23-48-26-276Z"
 }

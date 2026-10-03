@@ -14,6 +14,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {measureClarity} from './clarity/measure.mjs';
 import {SCREENS, VIEWS, renderAll} from './clarity_check.mjs';
+import {roadOf, roadStory} from '../../site/app/road.js';
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
 const base = arg('--base') ?? 'http://localhost:8811', pwDir = arg('--pw') ?? process.cwd();
 const {chromium} = createRequire(path.join(pwDir, 'package.json'))('playwright');
@@ -78,15 +79,20 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 내일(2차): 큰 제목 「${wantTitle}」·예측 날짜 · 52점 원(오를 ${upN}·내릴 ${downN}·속 빈 ${halfN}) · 가운데 「${upN}」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)`, first.title === wantTitle && first.when === longKor(tomorrowDate) && first.dots === 52 && first.up === upN && first.down === downN && first.half === halfN && first.story === 'off' && first.cap === 0 && first.progress === 0 && first.ctl === 0 && first.links === 0 && first.num === String(upN) && first.of === '52종목 중 오를 쪽' && first.say === `나머지 ${downN}종목은 내릴 쪽입니다.\n속이 빈 ${halfN}개는 거의 반반입니다.` && first.visible === 'visible' && first.tools.length === 2 && first.tools[0] === '가' && first.tabs.join(',') === '내일,게임,성적', first);
   const orderOk = await page.evaluate(() => { const k = [...document.querySelectorAll('.t-ring .t-dot')].map(c => c.classList.contains('up') ? (c.classList.contains('half') ? 1 : 0) : (c.classList.contains('half') ? 2 : 3)); return k.every((v, i) => i === 0 || v >= k[i - 1]); });
   check(`${label} 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림`, orderOk);
-  // 2026-10-04 사장님 「오를 수 있는 52개 우량 종목을 찾아 첫 화면에 배열」: 날짜 밑 「어떤 52곳인가」 한 줄 · 원 밑 52곳 이름표(원과 같은 순서 · 같은 쪽 · 같은 반반) · 「어떻게 골랐나」
+  // 2026-10-04 사장님 「오를 수 있는 52개 우량 종목을 찾아 첫 화면에 배열」 → 08:19 「정리 정돈 — 오를 쪽은 한곳에, 그렇지 않은 회사는 한곳으로 · 페이지 만들어서」:
+  //   날짜 밑 「어떤 52곳인가」 한 줄 · 원 밑은 두 문(▲ 오를 쪽 N곳 · ▼ 내릴 쪽 N곳 — 앞 6곳 이름 · 누르면 #/up · #/down) · 「어떻게 골랐나」 · 긴 목록·52곳 이름표는 없음
+  const sideOfCard = c => c.day1.selected === 'up' || c.day1.selected === 'down' ? c.day1.selected : (c.day1.return < 0 ? 'down' : 'up');
+  const halfOf = c => Boolean(c.day1.closeCall || c.day1.statisticalTie || (c.day1.selected !== 'up' && c.day1.selected !== 'down'));
+  const sideList = side => cardsDoc.cards.filter(c => c.day1 && sideOfCard(c) === side).sort((a, b) => Number(halfOf(a)) - Number(halfOf(b)) || (b.day1.probabilities[side] ?? 0) - (a.day1.probabilities[side] ?? 0) || (side === 'up' ? b.day1.return - a.day1.return : a.day1.return - b.day1.return) || a.code.localeCompare(b.code));
+  const W2 = {up: '오를 쪽', down: '내릴 쪽'};
   {
     const set = viewManifest.universeSet ?? null;
-    const g = await page.evaluate(() => ({uni: document.querySelector('.t-uni')?.innerText.trim(), uniId: document.querySelector('.t-uni')?.dataset.universe, ring: [...document.querySelectorAll('.t-ring .t-dot')].map(c => [c.dataset.code, c.classList.contains('up') ? 'up' : 'down', c.classList.contains('half')]),
-      chips: [...document.querySelectorAll('.t-chip')].map(c => [c.dataset.code, c.classList.contains('up') ? 'up' : 'down', c.classList.contains('half'), c.querySelector('.t-chip-m')?.textContent, c.getAttribute('href')]), cut: [...document.querySelectorAll('.t-chip-n')].filter(e => e.scrollWidth > e.clientWidth + 1).length,
-      how: document.querySelector('.t-uni-how summary')?.innerText.trim(), howN: document.querySelectorAll('.t-uni-how li').length, h2: document.querySelector('.t-grid .t-h2')?.innerText.trim()}));
-    const same = g.chips.length === 52 && g.chips.every((c, i) => g.ring[i] && c[0] === g.ring[i][0] && c[1] === g.ring[i][1] && c[2] === g.ring[i][2] && c[3] === (c[1] === 'up' ? '▲' : '▼') && c[4] === '#/stock/' + c[0]);
-    check(`${label} 내일: 「${g.uni}」 · 「${g.h2}」 이름표 ${g.chips.length}개(원과 같은 순서·같은 쪽·같은 반반 · ▲▼ 표시 · 누르면 그 종목) · 「${g.how}」(${g.howN}줄) · 잘린 이름 ${g.cut}`,
-      Boolean(set) && g.uniId === set.id && g.uni.startsWith(set.label) && g.h2 === `${set.label} 한눈에` && same && g.cut === 0 && g.how === '이 52곳은 어떻게 골랐나' && g.howN === (set.how?.length ?? 0) && g.howN >= 1, {uni: g.uni, chips: g.chips.length, cut: g.cut, how: g.how, howN: g.howN});
+    const g = await page.evaluate(() => ({uni: document.querySelector('.t-uni')?.innerText.trim(), uniId: document.querySelector('.t-uni')?.dataset.universe,
+      doors: [...document.querySelectorAll('.t-door')].map(d => ({side: d.dataset.side, href: d.getAttribute('href'), count: d.dataset.count, head: d.querySelector('.t-door-h')?.innerText.replace(/\s+/g, ' ').trim(), names: d.querySelector('.t-door-names')?.textContent.trim()})),
+      chips: document.querySelectorAll('.t-chip').length, rows: document.querySelectorAll('.t-row').length, how: document.querySelector('.t-doors .t-uni-how summary')?.innerText.trim(), howN: document.querySelectorAll('.t-doors .t-uni-how li').length}));
+    const want = ['up', 'down'].map(k => { const l = sideList(k); return {side: k, href: '#/' + k, count: String(l.length), head: `${k === 'up' ? '▲' : '▼'} ${W2[k]} ${l.length}곳 ›`, names: l.length ? l.slice(0, 6).map(c => c.name).join(' · ') + (l.length > 6 ? ` 외 ${l.length - 6}곳` : '') : '없음'}; });
+    check(`${label} 내일: 「${g.uni}」 · 원 밑 두 문 「${g.doors.map(d => d.head).join('」「')}」(앞 6곳 이름 · 누르면 그 쪽) · 「${g.how}」(${g.howN}줄) · 긴 목록·이름표 없음`,
+      Boolean(set) && g.uniId === set.id && g.uni.startsWith(set.label) && JSON.stringify(g.doors) === JSON.stringify(want) && g.chips === 0 && g.rows === 0 && g.how === `이 ${cardsDoc.cards.length}곳은 어떻게 골랐나` && g.howN === (set.how?.length ?? 0) && g.howN >= 1, {g, want});
   }
   // 2026-10-04 07:40 사장님 「aaa7377에 올려」: 바뀔 52곳 미리 보기 — 설정에 바꿀 묶음이 있고 아직 안 바꿨을 때만 맨 위에 ·
   //   이름표 52개(새 입력 순서 그대로 · 링크 아님 · 「새」 수 = 새로 들어온 수) · 바꾸는 날·첫 예측 목표일 · 「어떻게 골랐나」 · 「빠지는 N곳」 · 잘린 이름 0 · 전망 표시 없음
@@ -105,10 +111,15 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       check(`${label} 내일: 맨 위 「${nx.label}」 미리 보기 — 「${v?.tag}」 · 이름표 ${v?.codes.length}개(새 입력 순서 · 「새」 ${v?.news}개 = 새로 들어온 ${nx.added}곳) · 「${v?.sums?.[0]}」(${v?.howN}줄) · 「${v?.sums?.[1]}」 · 링크·전망 표시 0 · 잘린 이름 ${v?.cut}`, ok, v && {...v, codes: v.codes.length, names: v.names.length, newCodes: v.newCodes.length, out: v.out.slice(0, 60)});
     }
   }
-  const fin = await page.evaluate(() => ({rows: document.querySelectorAll('.t-row').length, pills: document.querySelectorAll('.t-row .t-pill').length, more: document.querySelector('.t-more')?.textContent, heads: [...document.querySelectorAll('#t-after .t-h2')].map(x => x.innerText.trim()), hollow: [...document.querySelectorAll('.t-dot.half')].every(c => (getComputedStyle(c).fill === 'transparent' || getComputedStyle(c).fill === 'rgba(0, 0, 0, 0)') && getComputedStyle(c).stroke !== 'none' && c.getAttribute('r') === '6.2'), solid: [...document.querySelectorAll('.t-dot:not(.half)')].every(c => getComputedStyle(c).stroke === 'none' && c.getAttribute('r') === '7.4'), foot: document.querySelector('.t-foot')?.innerText.trim()}));
-  check(`${label} 내일(2차): 목록(오를 쪽 전부 + 내릴 쪽 5 + 더 보기) · 묶음 제목 「오를 쪽 ${upN}」「내릴 쪽 ${downN}」「지난 3번의 성적」 · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「${longKor(actualAsOf)} 종가로 계산」`, fin.rows === upN + Math.min(5, downN) && fin.pills === fin.rows && (downN <= 5 || fin.more === `${downN - 5}종목 더 보기`) && fin.heads[0] === `오를 쪽 ${upN}` && fin.heads[1] === `내릴 쪽 ${downN}` && fin.heads[2] === '지난 3번의 성적' && fin.hollow && fin.solid && fin.foot === `${longKor(actualAsOf)} 종가로 계산`, fin);
+  const fin = await page.evaluate(() => ({rows: document.querySelectorAll('.t-row').length, pills: document.querySelectorAll('.t-row .t-pill').length, more: document.querySelector('.t-more')?.textContent ?? null, heads: [...document.querySelectorAll('#t-after .t-h2')].map(x => x.innerText.trim()), hollow: [...document.querySelectorAll('.t-dot.half')].every(c => (getComputedStyle(c).fill === 'transparent' || getComputedStyle(c).fill === 'rgba(0, 0, 0, 0)') && getComputedStyle(c).stroke !== 'none' && c.getAttribute('r') === '6.2'), solid: [...document.querySelectorAll('.t-dot:not(.half)')].every(c => getComputedStyle(c).stroke === 'none' && c.getAttribute('r') === '7.4'), foot: document.querySelector('.t-foot')?.innerText.trim()}));
+  check(`${label} 내일(정리): 아래는 「지난 3번의 성적」과 계산 기준일만(오를 쪽·내릴 쪽 긴 목록은 두 쪽으로 옮김) · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「${longKor(actualAsOf)} 종가로 계산」`, fin.rows === 0 && fin.more === null && fin.heads.join('|') === '지난 3번의 성적' && fin.hollow && fin.solid && fin.foot === `${longKor(actualAsOf)} 종가로 계산`, fin);
   // 2026-10-02 14:08 사장님 「36가지를 점수화 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 원 아래 「왜 그렇게 봤나」
   const why = await page.evaluate(() => ({h: document.querySelector('.t-why-h')?.innerText.trim(), code: document.querySelector('.t-why')?.dataset.code, firstCode: document.querySelector('.t-ring .t-dot')?.dataset.code, vals: [...document.querySelectorAll('.t-why-v')].map(x => Number(x.innerText.replace('−', '-').replace('%', ''))), n36: document.querySelectorAll('.t-why-36 li').length, sc: [...document.querySelectorAll('.t-why-36 .t-why-sc')].map(x => Number(x.innerText.replace(/[^\d]/g, '')))}));
+  {
+    const firstCard = cardsDoc.cards.find(c => c.code === why.code), road = firstCard?.c ? roadOf(firstCard.c) : null;
+    const wr = await page.evaluate(() => ({beads: document.querySelectorAll('.t-why .t-why-road svg.road .bead').length, up: document.querySelectorAll('.t-why .t-why-road svg.road .bead.up').length, story: document.querySelector('.t-why .rk-story')?.textContent}));
+    check(`${label} 내일: 「왜 그렇게 봤나」에 그 종목 출목표(동그라미 ${wr.beads}개 = 빨강 ${road?.all.up} + 파랑 ${road?.all.down} · 「${wr.story}」)`, Boolean(road) && wr.beads === road.cells.length && wr.up === road.all.up && wr.story === roadStory(road).text, {wr, want: road && {cells: road.cells.length, up: road.all.up, story: roadStory(road).text}});
+  }
   check(`${label} 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(${why.vals.join(' ≥ ')}) · 36가지 점수표가 높은 순(36줄)`, why.code === why.firstCode && /^왜 (오를|내릴) 쪽으로 봤나 · /.test(why.h) && why.vals.length >= 1 && why.vals.every((v, i) => i === 0 || v <= why.vals[i - 1]) && why.n36 === 36 && why.sc.length === 36 && why.sc.every((v, i) => i === 0 || v <= why.sc[i - 1]), why);
   {
     const sc = await (await fetch(base + '/data/atlas11/view/scores.json')).json();
@@ -123,9 +134,6 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const fm = await forecastMarks(page);
     check(`${label} 내일(내일만): 전망 표시(원 점 52 · 가운데 숫자 · 줄 · 알약)는 모두 내일 · 1만원 비교 메뉴 없음`, fm.other === 0 && fm.tomorrow >= 52 + 1 + fin.rows * 2 && await page.locator('.bottom-link[data-route="race"]').count() === 0, {fm});
   }
-  await page.locator('.t-more').click(); await page.waitForTimeout(150);
-  check(`${label} 내일: 「더 보기」 → 내릴 쪽 ${downN}종목 모두`, await page.locator('.t-row').count() === upN + downN && (await page.locator('.t-more').innerText()).trim() === '접기');
-  await page.locator('.t-more').click(); await page.waitForTimeout(100);
   // 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 움직임을 허용하면 점이 12시부터 시계 방향으로 하나씩(점마다 0.36초) 나오고,
   //   가운데에 막 나온 점의 회사 이름과 「오를 쪽 · 확률 N%」(또는 「· 거의 반반」)가 뜬다 · 다 나오면 2차 그대로(숫자 · 「52종목 중 오를 쪽」) ·
   //   그 뒤 점을 누르면 그 회사 이름이 2.5초 · 움직임 줄이기면 처음부터 다 보임(위에서 본 모습)
@@ -154,13 +162,40 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const reduced = {...await rollOf(), visible: await page.evaluate(() => getComputedStyle(document.querySelector('#t-after')).visibility)};
   check(`${label} 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임`, reduced.roll === 'done' && reduced.on === 52 && reduced.minOpacity === 1 && reduced.numShown && reduced.visible === 'visible', reduced);
   await page.emulateMedia({reducedMotion: 'no-preference'});
-  const focusRing = await page.evaluate(() => { const b = document.querySelector('.t-more'); b.focus({focusVisible: true}); const cs = getComputedStyle(b); return {style: cs.outlineStyle, width: parseFloat(cs.outlineWidth)}; });
+  const focusRing = await page.evaluate(() => { const b = document.querySelector('.t-door'); b.focus({focusVisible: true}); const cs = getComputedStyle(b); return {style: cs.outlineStyle, width: parseFloat(cs.outlineWidth)}; });
   check(`${label} 내일: 키보드 초점 표시(테두리 3px)`, focusRing.style !== 'none' && focusRing.width >= 2, focusRing);
   await shot('01-forecast');
   const small = await page.evaluate(() => [...document.querySelectorAll('button, a.ctl, a.tool, .bottom-link, .top-link')].filter(el => { const r = el.getBoundingClientRect(); return r.width && r.height && (r.height < 44 || r.width < 44); }).map(el => el.className + ':' + Math.round(el.getBoundingClientRect().width) + 'x' + Math.round(el.getBoundingClientRect().height)));
   check(`${label} 터치 영역 44px 미만 없음`, small.length === 0, small.slice(0, 8));
-  // ---------- 줄 → 상세 ----------
-  await page.locator('.t-row').first().click();
+  // ---------- 오를 쪽 · 내릴 쪽 쪽(2026-10-04 08:19 「정리 정돈 — 페이지 만들어서」 · 「바카라 그 표가 곳곳에」 · 「예정된 뉴스나 공시와 중요도」) ----------
+  //   문을 누르면 그 쪽 · 위 두 탭(개수) · 큰 제목 「오를 쪽 N곳」 · 회사 카드 N장(첫 화면 문과 같은 순서) · 카드마다 확률(내일 표시) · 출목표 동그라미 수와 흐름 한 마디 =
+  //   road.js 로 다시 센 값 · 다가오는 일정 ≤3줄 · 공시 ≤3줄의 별 = agenda.json · 시장 전체 일정 ≤6줄 · 링크 안 링크 없음 · 잘린 이름 0
+  const agenda = await (await fetch(base + '/data/atlas11/view/agenda.json')).json(), STAR = {3: '★★★', 2: '★★', 1: '★'};
+  for (const side of ['up', 'down']) {
+    if (side === 'up') { await page.locator('.t-door.up').click(); } else { await page.locator('.s-tab.down').click(); }
+    await page.waitForSelector('.s-page[data-side="' + side + '"]'); await page.waitForTimeout(250);
+    const want = sideList(side), sv = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.s-title')?.textContent, tabs: [...document.querySelectorAll('.s-tab')].map(a => [a.getAttribute('href'), a.innerText.replace(/\s+/g, ' ').trim(), a.getAttribute('aria-current')]),
+      market: [...document.querySelectorAll('.s-market .ag-li')].map(li => [li.querySelector('.lv')?.textContent, li.querySelector('.ag-name')?.textContent]),
+      cards: [...document.querySelectorAll('.s-card')].map(c => ({code: c.dataset.code, name: c.querySelector('.s-name')?.textContent, href: c.querySelector('.s-name-row')?.getAttribute('href'), pill: c.querySelector('.s-pill')?.textContent, pillDate: c.querySelector('.s-pill')?.dataset.forecastDate, beads: c.querySelectorAll('svg.road .bead').length, up: c.querySelectorAll('svg.road .bead.up').length, story: c.querySelector('.rk-story')?.textContent,
+        ev: [...c.querySelectorAll('.ag-ev .ag-li')].map(li => [li.querySelector('.lv')?.textContent, li.querySelector('.ag-name')?.firstChild?.textContent]), ds: [...c.querySelectorAll('.ag-ds .ag-li')].map(li => [li.querySelector('.lv')?.textContent, li.querySelector('.ag-name')?.textContent]), nested: c.querySelectorAll('a a').length})),
+      cut: [...document.querySelectorAll('.s-name, .ag-name, .s-pill')].filter(e => e.scrollWidth > e.clientWidth + 1).length}));
+    const bad = [];
+    want.forEach((c, i) => {
+      const got = sv.cards[i], road = roadOf(c.c), half = halfOf(c), p = c.day1.probabilities[side], a = agenda.byCode[c.code] ?? {upcoming: [], disclosures: []};
+      const pill = half ? `거의 반반 · ${side === 'up' ? '오를' : '내릴'} ${Math.round(p * 100)}%` : `${side === 'up' ? '오를' : '내릴'} 확률 ${Math.round(p * 100)}%`;
+      const ok = got && got.code === c.code && got.name === c.name && got.href === '#/stock/' + c.code && got.pill === pill && got.pillDate === tomorrowDate && got.beads === road.cells.length && got.up === road.all.up && got.story === roadStory(road).text
+        && JSON.stringify(got.ev) === JSON.stringify(a.upcoming.slice(0, 3).map(e => [STAR[e.level], e.name])) && JSON.stringify(got.ds) === JSON.stringify(a.disclosures.slice(0, 3).map(d => [STAR[d.level], d.title])) && got.nested === 0;
+      if (!ok) bad.push({want: c.code, got: got && {...got, ev: got.ev.length, ds: got.ds.length}});
+    });
+    const wantTabs = ['up', 'down'].map(k => ['#/' + k, `${k === 'up' ? '▲' : '▼'}${W2[k]} ${sideList(k).length}곳`, k === side ? 'page' : null]);
+    check(`${label} ${W2[side]} 쪽: 「${sv.title}」 · 탭 둘(개수) · 카드 ${sv.cards.length}장(첫 화면 문과 같은 순서) · 카드마다 확률(${tomorrowDate} 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 ${sv.market.length}줄 · 잘린 이름 ${sv.cut}`,
+      sv.hash === '#/' + side && sv.title === `${W2[side]} ${want.length}곳` && JSON.stringify(sv.tabs.map(t => [t[0], t[1].replace(/\s+/g, ''), t[2]])) === JSON.stringify(wantTabs.map(t => [t[0], t[1].replace(/\s+/g, ''), t[2]])) && sv.cards.length === want.length && bad.length === 0
+        && JSON.stringify(sv.market) === JSON.stringify(agenda.market.slice(0, 6).map(e => [STAR[e.level], e.name])) && sv.cut === 0, {bad: bad.slice(0, 3), tabs: sv.tabs, market: sv.market.length, cut: sv.cut});
+    if (TOMORROW) { const fm = await forecastMarks(page); check(`${label} ${W2[side]} 쪽(내일만): 전망 표시는 모두 ${tomorrowDate} · 일정·공시에는 전망 표시 없음`, fm.other === 0 && fm.tomorrow >= want.length * 2 && await page.locator('.s-ag [data-forecast-date], .s-market [data-forecast-date]').count() === 0, {fm}); }
+  }
+  // ---------- 쪽 → 상세(맨 위 카드) ----------
+  await page.locator('.s-tab.up').click(); await page.waitForSelector('.s-page[data-side="up"] .s-card');
+  await page.locator('.s-card .s-name-row').first().click();
   await page.waitForSelector('.detail svg.chart');
   await page.waitForTimeout(200);
   // 2026-10-02 01:34 사장님 승인 3차 디자인: 맨 위는 단추 둘뿐 — 시장 띠는 「내일」 밖의 화면 본문 맨 위(#main .mstrip)로 옮김
@@ -232,6 +267,14 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 상세: 종목 정보(1년 범위 막대 · 기간별 수익률 가로 막대 5 · 나머지 12칸은 눌러야 열림)`, infoBars === 5 && infoKv === 12 && await page.locator('.panel.info details:not([open])').count() === 1, {infoBars, infoKv});
   await page.locator('details.ctx > summary').click(); await page.waitForTimeout(200);
   const ctxText = await page.locator('details.ctx').innerText(), ctxRows = await page.locator('details.ctx table tbody tr').count(), ctxNews = await page.locator('details.ctx .news-list li').count();
+  {
+    // 2026-10-04 「바카라 그 표가 곳곳에」 · 「예정된 뉴스나 공시와 중요도」: 종목 화면에도 출목표 칸(지난 20거래일 · 힘 저울 · 흐름 · 읽는 법) · 일정·공시 칸(모두 · 별) · 시장 일정 ≤8줄
+    const code = (await page.evaluate(() => location.hash)).slice(-6), dj = await (await fetch(base + `/data/atlas11/view/stocks/${code}.json`)).json(), road = roadOf(dj.actual60.slice(-21).map(r => r.close)), a = agenda.byCode[code];
+    const dv = await page.evaluate(() => ({beads: document.querySelectorAll('.road-panel svg.road .bead').length, up: document.querySelectorAll('.road-panel svg.road .bead.up').length, story: document.querySelector('.road-panel .rk-story')?.textContent, note: document.querySelector('.road-panel .rk-note')?.innerText ?? '',
+      ev: [...document.querySelectorAll('.agenda-panel .ag-ev .ag-li')].map(li => li.querySelector('.lv')?.textContent), ds: [...document.querySelectorAll('.agenda-panel .ag-ds .ag-li')].map(li => li.querySelector('.lv')?.textContent), market: document.querySelectorAll('.agenda-panel .s-market .ag-li').length, how: document.querySelector('.agenda-panel .s-how summary')?.textContent, back: document.querySelector('.detail-top .back')?.textContent}));
+    check(`${label} 상세: 출목표 칸(동그라미 ${dv.beads}개 · 「${dv.story}」 · 읽는 법) · 일정 ${dv.ev.length}줄 · 공시 ${dv.ds.length}줄(별 = agenda.json) · 시장 일정 ${dv.market}줄 · 「${dv.how}」 · 뒤로 「${dv.back}」`,
+      dv.beads === road.cells.length && dv.up === road.all.up && dv.story === roadStory(road).text && /동그라미 하나 = \d+%/.test(dv.note) && Boolean(a) && dv.ev.join() === a.upcoming.map(e => STAR[e.level]).join() && dv.ds.join() === a.disclosures.map(d => STAR[d.level]).join() && dv.market === Math.min(8, agenda.market.length) && dv.how === '출목표와 별(★) 읽는 법' && dv.back === '‹ 오를 쪽', {dv: {...dv, ev: dv.ev.length, ds: dv.ds.length}, want: {beads: road.cells.length, ev: a?.upcoming.length, ds: a?.disclosures.length}});
+  }
   check(`${label} 상세: 수급·기사·공시 칸(눌러서 열림 · 전망 숫자에 넣지 않음 · 외국인·기관·개인 표 · 기사 제목)`, /전망 숫자에 넣지 않음/.test(ctxText) && /외국인/.test(ctxText) && ctxRows >= 1 && ctxNews >= 1, {ctxRows, ctxNews});
   await page.locator('details.chain > summary').click();
   await page.waitForSelector('details.chain svg.netmap');
@@ -432,6 +475,19 @@ async function gameCheck() {
         check(`게임 ${label} ${when}: 출목표 — 하나 = ${unit * 100}% · 동그라미 ${rd.circles} = 빨강 ${A.up} + 파랑 ${A.down} · 기호 ${rd.kinds}가지 · 처음 ${D - 5}일 「${WORD[E.side]}」(${E.up} 대 ${E.down}) · 최근 5일 「${WORD[N.side]}」(${N.up} 대 ${N.down}) · 막대 색 맞음 · 흐름 「${rd.story}」 · 넘친 글자 ${rd.over.length}`,
           Boolean(st) && unit > 0 && rd.circles === A.up + A.down && rd.kinds === 1 && rowsOk && rd.story === story && rd.note.includes(`동그라미 하나 = ${unit * 100}%`) && rd.note.includes('막대 길이 = 동그라미 개수') && rd.over.length === 0, rd);
       }
+      // 2026-10-04 08:19 「게임도 그렇게」: 카드 묶음 = ▲ 오를 쪽(이어 오름 · 돌아 오름) · ▼ 내릴 쪽(꺾여 내림 · 이어 내림) · 전체 — 처음엔 오를 쪽 · 카드 신발 두 줄
+      //   카드에 「일정」(다가오는 회사·업종 일정 중 가장 중요한 것) · 「공시」(지난 30일 가장 중요한 것) 한 줄씩 — 별은 agenda.json 과 같음
+      {
+        const agenda = await (await fetch(base + '/data/atlas11/view/agenda.json')).json(), STAR = {3: '★★★', 2: '★★', 1: '★'};
+        const upSide = st => st.f.sel === 'up' || (st.f.sel === 'flat' && st.f.up >= st.f.down), nUp = game.live.stocks.filter(upSide).length, nDown = game.live.stocks.length - nUp;
+        const gq = await page.evaluate(() => ({sides: [...document.querySelectorAll('#quads .side-b')].map(b => [b.classList.contains('up') ? 'up' : 'down', b.innerText.replace(/\s+/g, ''), b.getAttribute('aria-pressed')]), subs: document.querySelectorAll('#quads .sub').length, all: document.querySelector('#quads .all-b')?.innerText.replace(/\s+/g, ''), count: document.querySelector('#count')?.textContent,
+          rows: [...document.querySelectorAll('#shoe .shoe-row')].map(r => [r.classList.contains('up') ? 'up' : 'down', r.querySelectorAll('button').length]), code: document.querySelector('#bigBox [data-ident]')?.textContent.trim(), lines: [...document.querySelectorAll('#bigBox .why3 li')].filter(li => ['일정', '공시'].includes(li.children[0]?.textContent)).map(li => [li.children[0].textContent, li.children[1]?.querySelector('.lv')?.textContent ?? null])}));
+        const a = agenda.byCode[gq.code], ev = a ? [...a.upcoming].sort((x, y) => y.level - x.level || x.date.localeCompare(y.date))[0] : null, ds = a?.disclosures?.[0] ?? null;
+        const wantLines = [['일정', ev ? STAR[ev.level] : null], ['공시', ds ? STAR[ds.level] : null]];
+        check(`게임 ${label} ${when}: 카드 묶음 「▲ 오를 쪽 ${nUp}장」(눌림) · 「▼ 내릴 쪽 ${nDown}장」 · 네 갈래 · 「전체 52장」 · 「${gq.count}」 · 카드 신발 ${gq.rows.map(r => r[1]).join('+')} · 카드에 일정 「${gq.lines[0]?.[1] ?? '없음'}」 · 공시 「${gq.lines[1]?.[1] ?? '없음'}」`,
+          JSON.stringify(gq.sides) === JSON.stringify([['up', `▲오를쪽${nUp}장`, 'true'], ['down', `▼내릴쪽${nDown}장`, 'false']]) && gq.subs === 4 && gq.all === `전체${game.live.stocks.length}장` && gq.count === `오를 쪽 ${nUp}장 중 1번째`
+            && JSON.stringify(gq.rows) === JSON.stringify([['up', nUp], ['down', nDown]]) && Boolean(a) && JSON.stringify(gq.lines) === JSON.stringify(wantLines), {gq, wantLines});
+      }
       if (when === 'open') {
         await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
         await page.click('#seal'); await page.waitForTimeout(300);
@@ -488,7 +544,8 @@ async function clarityCheck() {
   const ctx = await browser.newContext({viewport: {width: 1280, height: 800}, locale: 'ko-KR'}); const page = await ctx.newPage();
   // 2026-10-02 04:16 사장님 「이때로 돌아가」(2차 화면): 이야기가 없으므로 건너뛰기 없이 바로 잰다(3차 때는 이야기를 건너뛴 끝 장면에서 쟀다)
   await page.emulateMedia({reducedMotion: 'reduce'}); // 2026-10-02 14:01 점이 하나씩 나오는 화면 — 다 나온 모습에서 잰다
-  await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForSelector('.t-row'); await page.waitForTimeout(900); await renderAll(page);
+  // 2026-10-04 정리 정돈: 첫 화면의 긴 목록(.t-row)은 두 쪽으로 옮김 — 두 문(.t-door)이 그려진 뒤 잰다
+  await page.goto(base + '/#/forecast', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-ring .t-dot'); await page.waitForSelector('.t-door'); await page.waitForTimeout(900); await renderAll(page);
   const before = await page.evaluate(measureClarity);
   await page.evaluate(() => { const box = document.createElement('section'); box.className = 'panel'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
   const afterPlant = await page.evaluate(measureClarity);
