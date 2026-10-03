@@ -162,7 +162,7 @@ export function proposeFromBundle(bundle, {input, now}) {
   let next = null;
   if (sel.ok) {
     const histories = Object.fromEntries(sel.picked.map(c => [c.code, {rows: c._rows, url: c.fchart.url, fetchedAt: c.fchart.fetchedAt}]));
-    next = buildNextInput(input, sel.picked, {histories, now, proposalId: id});
+    next = buildNextInput(input, sel.picked, {histories, now, proposalId: id, rules: sel.rules});
   }
   return {proposal, next, candidates: candidates.map(strip)};
 }
