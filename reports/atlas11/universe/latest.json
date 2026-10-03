@@ -1,0 +1,23 @@
+{
+ "id": "u2-quality52-2026-10-04",
+ "dir": "reports/atlas11/universe/2026-10-04",
+ "ok": true,
+ "picked": 52,
+ "createdAt": "2026-10-03T16:38:36Z",
+ "counts": {
+  "candidates": 401,
+  "passed": 140,
+  "picked": 52,
+  "cappedBySector": 18,
+  "failReasons": {
+   "ROE 5% 미만": 108,
+   "결산 자료 없음": 103,
+   "시가총액 300위 밖": 101,
+   "가격 이력 없음": 101,
+   "2년 연속 흑자 아님": 76,
+   "부채비율 150% 초과": 59,
+   "가격 이력 부족": 27,
+   "업종 모름": 17
+  }
+ }
+}

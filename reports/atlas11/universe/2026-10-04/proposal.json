@@ -1,0 +1,2773 @@
+{
+ "schema": "atlas11-universe-proposal-1",
+ "id": "u2-quality52-2026-10-04",
+ "createdAt": "2026-10-03T16:38:36Z",
+ "collectedAt": "2026-10-03T16:40:47.931Z",
+ "asOf": "2026-10-02",
+ "ok": true,
+ "rules": {
+  "version": "q52-v1",
+  "label": "튼튼한 회사 52곳",
+  "poolTop": 300,
+  "minHistoryRows": 600,
+  "completeSessions": 505,
+  "profitYears": 2,
+  "roeMinPct": 5,
+  "debtMaxPct": 150,
+  "perSectorMax": 4,
+  "count": 52,
+  "weights": {
+   "roe": 0.4,
+   "debt": 0.3,
+   "size": 0.3
+  },
+  "financialSectors": [
+   "은행",
+   "증권",
+   "생명보험",
+   "손해보험",
+   "카드",
+   "기타금융",
+   "창업투자"
+  ],
+  "relax": [
+   {
+    "debtMaxPct": 200
+   },
+   {
+    "roeMinPct": 3
+   },
+   {
+    "profitYears": 1
+   }
+  ],
+  "says": "시가총액 상위 300곳 중 2년 연속 흑자 · 부채비율 150% 이하(금융회사 제외) · ROE 5% 이상인 회사를 점수(ROE 40% · 빚 적음 30% · 회사 크기 30%) 순으로 52곳 · 한 업종 4곳까지",
+  "applied": {
+   "step": 0,
+   "version": "q52-v1",
+   "label": "튼튼한 회사 52곳",
+   "poolTop": 300,
+   "minHistoryRows": 600,
+   "completeSessions": 505,
+   "profitYears": 2,
+   "roeMinPct": 5,
+   "debtMaxPct": 150,
+   "perSectorMax": 4,
+   "count": 52,
+   "weights": {
+    "roe": 0.4,
+    "debt": 0.3,
+    "size": 0.3
+   },
+   "financialSectors": [
+    "은행",
+    "증권",
+    "생명보험",
+    "손해보험",
+    "카드",
+    "기타금융",
+    "창업투자"
+   ],
+   "relax": [
+    {
+     "debtMaxPct": 200
+    },
+    {
+     "roeMinPct": 3
+    },
+    {
+     "profitYears": 1
+    }
+   ],
+   "says": "시가총액 상위 300곳 중 2년 연속 흑자 · 부채비율 150% 이하(금융회사 제외) · ROE 5% 이상인 회사를 점수(ROE 40% · 빚 적음 30% · 회사 크기 30%) 순으로 52곳 · 한 업종 4곳까지"
+  }
+ },
+ "counts": {
+  "candidates": 401,
+  "passed": 140,
+  "picked": 52,
+  "cappedBySector": 18,
+  "failReasons": {
+   "ROE 5% 미만": 108,
+   "결산 자료 없음": 103,
+   "시가총액 300위 밖": 101,
+   "가격 이력 없음": 101,
+   "2년 연속 흑자 아님": 76,
+   "부채비율 150% 초과": 59,
+   "가격 이력 부족": 27,
+   "업종 모름": 17
+  }
+ },
+ "listSource": "json",
+ "requests": {
+  "total": 1121,
+  "ok": 1121,
+  "failed": 0,
+  "sample": []
+ },
+ "errors": [],
+ "financeSources": {
+  "finance_json": 298,
+  "none": 103
+ },
+ "picked": [
+  {
+   "rank": 1,
+   "code": "402340",
+   "name": "SK스퀘어",
+   "market": "KOSPI",
+   "sector": "반도체와반도체장비",
+   "group": "semi",
+   "capRank": 3,
+   "marketCapEok": 1525041,
+   "score": 0.9674,
+   "parts": {
+    "roe": 0.9424,
+    "debt": 0.9823,
+    "size": 0.9856
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 104556,
+    "op": 87974,
+    "opPrev": 39206,
+    "net": 88187,
+    "netPrev": 36505,
+    "roe": 37.82,
+    "debt": 9.01,
+    "opm": 84.14
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 37.8% · 부채비율 9% · 시가총액 3위"
+  },
+  {
+   "rank": 2,
+   "code": "042700",
+   "name": "한미반도체",
+   "market": "KOSPI",
+   "sector": "반도체와반도체장비",
+   "group": "semi",
+   "capRank": 26,
+   "marketCapEok": 259249,
+   "score": 0.9065,
+   "parts": {
+    "roe": 0.9281,
+    "debt": 0.885,
+    "size": 0.8993
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 5767,
+    "op": 2514,
+    "opPrev": 2554,
+    "net": 2140,
+    "netPrev": 1526,
+    "roe": 34.76,
+    "debt": 17.82,
+    "opm": 43.59
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 34.8% · 부채비율 18% · 시가총액 26위"
+  },
+  {
+   "rank": 3,
+   "code": "000660",
+   "name": "SK하이닉스",
+   "market": "KOSPI",
+   "sector": "반도체와반도체장비",
+   "group": "semi",
+   "capRank": 2,
+   "marketCapEok": 13455669,
+   "score": 0.8514,
+   "parts": {
+    "roe": 0.9856,
+    "debt": 0.531,
+    "size": 0.9928
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 971467,
+    "op": 472063,
+    "opPrev": 234673,
+    "net": 429479,
+    "netPrev": 197969,
+    "roe": 44.15,
+    "debt": 45.95,
+    "opm": 48.59
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 44.1% · 부채비율 46% · 시가총액 2위"
+  },
+  {
+   "rank": 4,
+   "code": "403870",
+   "name": "HPSP",
+   "market": "KOSDAQ",
+   "sector": "반도체와반도체장비",
+   "group": "semi",
+   "capRank": 103,
+   "marketCapEok": 54483,
+   "score": 0.7908,
+   "parts": {
+    "roe": 0.8921,
+    "debt": 0.8496,
+    "size": 0.5971
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 1730,
+    "op": 899,
+    "opPrev": 939,
+    "net": 727,
+    "netPrev": 863,
+    "roe": 24.79,
+    "debt": 19.95,
+    "opm": 51.98
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 24.8% · 부채비율 20% · 시가총액 103위"
+  },
+  {
+   "rank": 5,
+   "code": "196170",
+   "name": "알테오젠",
+   "market": "KOSDAQ",
+   "sector": "생물공학",
+   "group": "bio",
+   "capRank": 42,
+   "marketCapEok": 180755,
+   "score": 0.7627,
+   "parts": {
+    "roe": 0.9568,
+    "debt": 0.4248,
+    "size": 0.8417
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 2159,
+    "op": 1069,
+    "opPrev": 254,
+    "net": 1452,
+    "netPrev": 607,
+    "roe": 39.42,
+    "debt": 53.76,
+    "opm": 49.52
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 39.4% · 부채비율 54% · 시가총액 42위"
+  },
+  {
+   "rank": 6,
+   "code": "138040",
+   "name": "메리츠금융지주",
+   "market": "KOSPI",
+   "sector": "증권",
+   "group": "fin",
+   "capRank": 35,
+   "marketCapEok": 215543,
+   "score": 0.7572,
+   "parts": {
+    "roe": 0.8705,
+    "debt": 0.5,
+    "size": 0.8633
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 203170,
+    "op": 28727,
+    "opPrev": 31889,
+    "net": 23501,
+    "netPrev": 23334,
+    "roe": 22.53,
+    "debt": 1102.87,
+    "opm": 14.14
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 22.5% · 금융회사(빚 기준 제외) · 시가총액 35위"
+  },
+  {
+   "rank": 7,
+   "code": "326030",
+   "name": "SK바이오팜",
+   "market": "KOSPI",
+   "sector": "제약",
+   "group": "bio",
+   "capRank": 100,
+   "marketCapEok": 59831,
+   "score": 0.7301,
+   "parts": {
+    "roe": 0.9496,
+    "debt": 0.5487,
+    "size": 0.6187
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 7067,
+    "op": 2039,
+    "opPrev": 963,
+    "net": 2533,
+    "netPrev": 2270,
+    "roe": 39.28,
+    "debt": 45.03,
+    "opm": 28.86
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 39.3% · 부채비율 45% · 시가총액 100위"
+  },
+  {
+   "rank": 8,
+   "code": "071050",
+   "name": "한국금융지주",
+   "market": "KOSPI",
+   "sector": "증권",
+   "group": "fin",
+   "capRank": 67,
+   "marketCapEok": 100530,
+   "score": 0.7011,
+   "parts": {
+    "roe": 0.8058,
+    "debt": 0.5,
+    "size": 0.7626
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 194661,
+    "op": 23453,
+    "opPrev": 11997,
+    "net": 20244,
+    "netPrev": 10459,
+    "roe": 18.66,
+    "debt": 1025.35,
+    "opm": 12.05
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 18.7% · 금융회사(빚 기준 제외) · 시가총액 67위"
+  },
+  {
+   "rank": 9,
+   "code": "003230",
+   "name": "삼양식품",
+   "market": "KOSPI",
+   "sector": "식품",
+   "group": "cons",
+   "capRank": 76,
+   "marketCapEok": 91526,
+   "score": 0.6913,
+   "parts": {
+    "roe": 0.9353,
+    "debt": 0.3451,
+    "size": 0.7122
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 23518,
+    "op": 5242,
+    "opPrev": 3446,
+    "net": 3887,
+    "netPrev": 2713,
+    "roe": 37.59,
+    "debt": 72.74,
+    "opm": 22.29
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 37.6% · 부채비율 73% · 시가총액 76위"
+  },
+  {
+   "rank": 10,
+   "code": "005830",
+   "name": "DB손해보험",
+   "market": "KOSPI",
+   "sector": "손해보험",
+   "group": "fin",
+   "capRank": 61,
+   "marketCapEok": 119538,
+   "score": 0.6874,
+   "parts": {
+    "roe": 0.7554,
+    "debt": 0.5,
+    "size": 0.7842
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 230479,
+    "op": 23840,
+    "opPrev": 24249,
+    "net": 17906,
+    "netPrev": 18532,
+    "roe": 17.75,
+    "debt": 576.91,
+    "opm": 10.34
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 17.8% · 금융회사(빚 기준 제외) · 시가총액 61위"
+  },
+  {
+   "rank": 11,
+   "code": "145020",
+   "name": "휴젤",
+   "market": "KOSDAQ",
+   "sector": "생물공학",
+   "group": "bio",
+   "capRank": 199,
+   "marketCapEok": 22577,
+   "score": 0.67,
+   "parts": {
+    "roe": 0.741,
+    "debt": 0.9646,
+    "size": 0.2806
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 4251,
+    "op": 2009,
+    "opPrev": 1662,
+    "net": 1470,
+    "netPrev": 1431,
+    "roe": 16.06,
+    "debt": 9.86,
+    "opm": 47.25
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 16.1% · 부채비율 10% · 시가총액 199위"
+  },
+  {
+   "rank": 12,
+   "code": "267260",
+   "name": "HD현대일렉트릭",
+   "market": "KOSPI",
+   "sector": "전기장비",
+   "group": "heavy",
+   "capRank": 30,
+   "marketCapEok": 244400,
+   "score": 0.6646,
+   "parts": {
+    "roe": 0.9712,
+    "debt": 0.0354,
+    "size": 0.8849
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 40795,
+    "op": 9953,
+    "opPrev": 6690,
+    "net": 7318,
+    "netPrev": 4984,
+    "roe": 41.5,
+    "debt": 134.63,
+    "opm": 24.4
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 41.5% · 부채비율 135% · 시가총액 30위"
+  },
+  {
+   "rank": 13,
+   "code": "214150",
+   "name": "클래시스",
+   "market": "KOSDAQ",
+   "sector": "건강관리장비와용품",
+   "group": "bio",
+   "capRank": 216,
+   "marketCapEok": 20125,
+   "score": 0.6602,
+   "parts": {
+    "roe": 0.8993,
+    "debt": 0.7788,
+    "size": 0.223
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 3368,
+    "op": 1706,
+    "opPrev": 1224,
+    "net": 1320,
+    "netPrev": 975,
+    "roe": 26.21,
+    "debt": 27.73,
+    "opm": 50.65
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 26.2% · 부채비율 28% · 시가총액 216위"
+  },
+  {
+   "rank": 14,
+   "code": "214450",
+   "name": "파마리서치",
+   "market": "KOSDAQ",
+   "sector": "건강관리장비와용품",
+   "group": "bio",
+   "capRank": 146,
+   "marketCapEok": 31896,
+   "score": 0.6593,
+   "parts": {
+    "roe": 0.9065,
+    "debt": 0.5575,
+    "size": 0.4317
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 5363,
+    "op": 2144,
+    "opPrev": 1261,
+    "net": 1683,
+    "netPrev": 889,
+    "roe": 26.88,
+    "debt": 44.21,
+    "opm": 39.98
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 26.9% · 부채비율 44% · 시가총액 146위"
+  },
+  {
+   "rank": 15,
+   "code": "039490",
+   "name": "키움증권",
+   "market": "KOSPI",
+   "sector": "증권",
+   "group": "fin",
+   "capRank": 91,
+   "marketCapEok": 67931,
+   "score": 0.6565,
+   "parts": {
+    "roe": 0.7698,
+    "debt": 0.5,
+    "size": 0.6619
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 171217,
+    "op": 14882,
+    "opPrev": 10982,
+    "net": 11150,
+    "netPrev": 8349,
+    "roe": 18.12,
+    "debt": 1107.51,
+    "opm": 8.69
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 18.1% · 금융회사(빚 기준 제외) · 시가총액 91위"
+  },
+  {
+   "rank": 16,
+   "code": "000270",
+   "name": "기아",
+   "market": "KOSPI",
+   "sector": "자동차",
+   "group": "auto",
+   "capRank": 15,
+   "marketCapEok": 441948,
+   "score": 0.6523,
+   "parts": {
+    "roe": 0.6331,
+    "debt": 0.3805,
+    "size": 0.9496
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 1141409,
+    "op": 90781,
+    "opPrev": 126671,
+    "net": 75542,
+    "netPrev": 97750,
+    "roe": 12.92,
+    "debt": 61.76,
+    "opm": 7.95
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 12.9% · 부채비율 62% · 시가총액 15위"
+  },
+  {
+   "rank": 17,
+   "code": "086280",
+   "name": "현대글로비스",
+   "market": "KOSPI",
+   "sector": "항공화물운송과물류",
+   "group": "auto",
+   "capRank": 52,
+   "marketCapEok": 150750,
+   "score": 0.6507,
+   "parts": {
+    "roe": 0.777,
+    "debt": 0.3274,
+    "size": 0.8058
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 295664,
+    "op": 20730,
+    "opPrev": 17529,
+    "net": 17347,
+    "netPrev": 10995,
+    "roe": 18.13,
+    "debt": 78.92,
+    "opm": 7.01
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 18.1% · 부채비율 79% · 시가총액 52위"
+  },
+  {
+   "rank": 18,
+   "code": "383220",
+   "name": "F&F",
+   "market": "KOSPI",
+   "sector": "섬유,의류,신발,호화품",
+   "group": "cons",
+   "capRank": 176,
+   "marketCapEok": 26508,
+   "score": 0.6443,
+   "parts": {
+    "roe": 0.8777,
+    "debt": 0.6106,
+    "size": 0.3669
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 19340,
+    "op": 4686,
+    "opPrev": 4507,
+    "net": 4007,
+    "netPrev": 3560,
+    "roe": 23.16,
+    "debt": 41.13,
+    "opm": 24.23
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 23.2% · 부채비율 41% · 시가총액 176위"
+  },
+  {
+   "rank": 19,
+   "code": "001450",
+   "name": "현대해상",
+   "market": "KOSPI",
+   "sector": "손해보험",
+   "group": "fin",
+   "capRank": 129,
+   "marketCapEok": 40621,
+   "score": 0.6399,
+   "parts": {
+    "roe": 0.8417,
+    "debt": 0.5,
+    "size": 0.5108
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 181104,
+    "op": 12610,
+    "opPrev": 12441,
+    "net": 10198,
+    "netPrev": 8505,
+    "roe": 20.6,
+    "debt": 877.79,
+    "opm": 6.96
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 20.6% · 금융회사(빚 기준 제외) · 시가총액 129위"
+  },
+  {
+   "rank": 20,
+   "code": "000810",
+   "name": "삼성화재",
+   "market": "KOSPI",
+   "sector": "손해보험",
+   "group": "fin",
+   "capRank": 24,
+   "marketCapEok": 280833,
+   "score": 0.6378,
+   "parts": {
+    "roe": 0.5396,
+    "debt": 0.5,
+    "size": 0.9065
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 247785,
+    "op": 26591,
+    "opPrev": 26496,
+    "net": 20203,
+    "netPrev": 20768,
+    "roe": 10.97,
+    "debt": 352.98,
+    "opm": 10.73
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 11.0% · 금융회사(빚 기준 제외) · 시가총액 24위"
+  },
+  {
+   "rank": 21,
+   "code": "006800",
+   "name": "미래에셋증권",
+   "market": "KOSPI",
+   "sector": "증권",
+   "group": "fin",
+   "capRank": 44,
+   "marketCapEok": 171595,
+   "score": 0.6378,
+   "parts": {
+    "roe": 0.5935,
+    "debt": 0.5,
+    "size": 0.8345
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 292830,
+    "op": 19151,
+    "opPrev": 11881,
+    "net": 15829,
+    "netPrev": 9255,
+    "roe": 12.36,
+    "debt": 1015.01,
+    "opm": 6.54
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 12.4% · 금융회사(빚 기준 제외) · 시가총액 44위"
+  },
+  {
+   "rank": 22,
+   "code": "259960",
+   "name": "크래프톤",
+   "market": "KOSPI",
+   "sector": "게임엔터테인먼트",
+   "group": "net",
+   "capRank": 75,
+   "marketCapEok": 91603,
+   "score": 0.634,
+   "parts": {
+    "roe": 0.5144,
+    "debt": 0.708,
+    "size": 0.7194
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 33266,
+    "op": 10544,
+    "opPrev": 11825,
+    "net": 7337,
+    "netPrev": 13026,
+    "roe": 10.6,
+    "debt": 31.31,
+    "opm": 31.7
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 10.6% · 부채비율 31% · 시가총액 75위"
+  },
+  {
+   "rank": 23,
+   "code": "082920",
+   "name": "비츠로셀",
+   "market": "KOSDAQ",
+   "sector": "전기제품",
+   "group": "chem",
+   "capRank": 270,
+   "marketCapEok": 13406,
+   "score": 0.6311,
+   "parts": {
+    "roe": 0.7986,
+    "debt": 0.9381,
+    "size": 0.1007
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 2431,
+    "op": 693,
+    "opPrev": 519,
+    "net": 569,
+    "netPrev": 513,
+    "roe": 18.56,
+    "debt": 12.21,
+    "opm": 28.5
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 18.6% · 부채비율 12% · 시가총액 270위"
+  },
+  {
+   "rank": 24,
+   "code": "257720",
+   "name": "실리콘투",
+   "market": "KOSDAQ",
+   "sector": "인터넷과카탈로그소매",
+   "group": "cons",
+   "capRank": 184,
+   "marketCapEok": 24394,
+   "score": 0.6241,
+   "parts": {
+    "roe": 1,
+    "debt": 0.4159,
+    "size": 0.3309
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 11163,
+    "op": 2054,
+    "opPrev": 1376,
+    "net": 1686,
+    "netPrev": 1207,
+    "roe": 46.89,
+    "debt": 55.09,
+    "opm": 18.4
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 46.9% · 부채비율 55% · 시가총액 184위"
+  },
+  {
+   "rank": 25,
+   "code": "271560",
+   "name": "오리온",
+   "market": "KOSPI",
+   "sector": "식품",
+   "group": "cons",
+   "capRank": 124,
+   "marketCapEok": 41782,
+   "score": 0.6235,
+   "parts": {
+    "roe": 0.4892,
+    "debt": 0.8938,
+    "size": 0.5324
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 33324,
+    "op": 5583,
+    "opPrev": 5436,
+    "net": 3906,
+    "netPrev": 5332,
+    "roe": 10.51,
+    "debt": 17.55,
+    "opm": 16.75
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 10.5% · 부채비율 18% · 시가총액 124위"
+  },
+  {
+   "rank": 26,
+   "code": "033780",
+   "name": "KT&G",
+   "market": "KOSPI",
+   "sector": "담배",
+   "group": "cons",
+   "capRank": 41,
+   "marketCapEok": 183537,
+   "score": 0.6232,
+   "parts": {
+    "roe": 0.5827,
+    "debt": 0.4513,
+    "size": 0.8489
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 65797,
+    "op": 13437,
+    "opPrev": 11888,
+    "net": 11023,
+    "netPrev": 11650,
+    "roe": 11.77,
+    "debt": 51.98,
+    "opm": 20.42
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 11.8% · 부채비율 52% · 시가총액 41위"
+  },
+  {
+   "rank": 27,
+   "code": "105560",
+   "name": "KB금융",
+   "market": "KOSPI",
+   "sector": "은행",
+   "group": "fin",
+   "capRank": 8,
+   "marketCapEok": 597294,
+   "score": 0.6198,
+   "parts": {
+    "roe": 0.446,
+    "debt": 0.5,
+    "size": 0.9712
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 812307,
+    "op": 85177,
+    "opPrev": 80453,
+    "net": 58407,
+    "netPrev": 50286,
+    "roe": 9.98,
+    "debt": 1211.73,
+    "opm": 10.49
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 10.0% · 금융회사(빚 기준 제외) · 시가총액 8위"
+  },
+  {
+   "rank": 28,
+   "code": "128940",
+   "name": "한미약품",
+   "market": "KOSPI",
+   "sector": "제약",
+   "group": "bio",
+   "capRank": 96,
+   "marketCapEok": 64567,
+   "score": 0.6194,
+   "parts": {
+    "roe": 0.6978,
+    "debt": 0.4867,
+    "size": 0.6475
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 15475,
+    "op": 2578,
+    "opPrev": 2162,
+    "net": 1871,
+    "netPrev": 1404,
+    "roe": 14.52,
+    "debt": 50.23,
+    "opm": 16.66
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 14.5% · 부채비율 50% · 시가총액 96위"
+  },
+  {
+   "rank": 29,
+   "code": "052690",
+   "name": "한전기술",
+   "market": "KOSPI",
+   "sector": "전기유틸리티",
+   "group": "util",
+   "capRank": 113,
+   "marketCapEok": 48425,
+   "score": 0.6194,
+   "parts": {
+    "roe": 0.6763,
+    "debt": 0.6018,
+    "size": 0.5612
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 5188,
+    "op": 355,
+    "opPrev": 709,
+    "net": 854,
+    "netPrev": 585,
+    "roe": 14.2,
+    "debt": 41.7,
+    "opm": 6.83
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 14.2% · 부채비율 42% · 시가총액 113위"
+  },
+  {
+   "rank": 30,
+   "code": "041510",
+   "name": "에스엠",
+   "market": "KOSDAQ",
+   "sector": "방송과엔터테인먼트",
+   "group": "net",
+   "capRank": 232,
+   "marketCapEok": 18041,
+   "score": 0.6063,
+   "parts": {
+    "roe": 0.9784,
+    "debt": 0.5221,
+    "size": 0.1942
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 11749,
+    "op": 1830,
+    "opPrev": 873,
+    "net": 3594,
+    "netPrev": 8,
+    "roe": 41.65,
+    "debt": 47.76,
+    "opm": 15.58
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 41.6% · 부채비율 48% · 시가총액 232위"
+  },
+  {
+   "rank": 31,
+   "code": "014680",
+   "name": "한솔케미칼",
+   "market": "KOSPI",
+   "sector": "화학",
+   "group": "chem",
+   "capRank": 154,
+   "marketCapEok": 29953,
+   "score": 0.5955,
+   "parts": {
+    "roe": 0.6835,
+    "debt": 0.6637,
+    "size": 0.4101
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 8840,
+    "op": 1562,
+    "opPrev": 1288,
+    "net": 1481,
+    "netPrev": 1249,
+    "roe": 14.34,
+    "debt": 35.94,
+    "opm": 17.67
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 14.3% · 부채비율 36% · 시가총액 154위"
+  },
+  {
+   "rank": 32,
+   "code": "035900",
+   "name": "JYP Ent.",
+   "market": "KOSDAQ",
+   "sector": "방송과엔터테인먼트",
+   "group": "net",
+   "capRank": 271,
+   "marketCapEok": 13325,
+   "score": 0.59,
+   "parts": {
+    "roe": 0.9137,
+    "debt": 0.6549,
+    "size": 0.0935
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 8219,
+    "op": 1552,
+    "opPrev": 1283,
+    "net": 1606,
+    "netPrev": 977,
+    "roe": 29.21,
+    "debt": 36.19,
+    "opm": 18.89
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 29.2% · 부채비율 36% · 시가총액 271위"
+  },
+  {
+   "rank": 33,
+   "code": "009540",
+   "name": "HD한국조선해양",
+   "market": "KOSPI",
+   "sector": "조선",
+   "group": "heavy",
+   "capRank": 32,
+   "marketCapEok": 231074,
+   "score": 0.5816,
+   "parts": {
+    "roe": 0.7626,
+    "debt": 0.0442,
+    "size": 0.8777
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 299332,
+    "op": 39045,
+    "opPrev": 14341,
+    "net": 29284,
+    "netPrev": 14546,
+    "roe": 17.78,
+    "debt": 133.86,
+    "opm": 13.04
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 17.8% · 부채비율 134% · 시가총액 32위"
+  },
+  {
+   "rank": 34,
+   "code": "021240",
+   "name": "코웨이",
+   "market": "KOSPI",
+   "sector": "가정용기기와용품",
+   "group": "cons",
+   "capRank": 86,
+   "marketCapEok": 72466,
+   "score": 0.5803,
+   "parts": {
+    "roe": 0.7842,
+    "debt": 0.2124,
+    "size": 0.6763
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 49636,
+    "op": 8787,
+    "opPrev": 7954,
+    "net": 6175,
+    "netPrev": 5655,
+    "roe": 18.14,
+    "debt": 93.71,
+    "opm": 17.7
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 18.1% · 부채비율 94% · 시가총액 86위"
+  },
+  {
+   "rank": 35,
+   "code": "018260",
+   "name": "삼성에스디에스",
+   "market": "KOSPI",
+   "sector": "IT서비스",
+   "group": "semi",
+   "capRank": 45,
+   "marketCapEok": 169457,
+   "score": 0.5753,
+   "parts": {
+    "roe": 0.2734,
+    "debt": 0.7257,
+    "size": 0.8273
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 139299,
+    "op": 9571,
+    "opPrev": 9111,
+    "net": 7827,
+    "netPrev": 7895,
+    "roe": 7.89,
+    "debt": 31.09,
+    "opm": 6.87
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 7.9% · 부채비율 31% · 시가총액 45위"
+  },
+  {
+   "rank": 36,
+   "code": "086790",
+   "name": "하나금융지주",
+   "market": "KOSPI",
+   "sector": "은행",
+   "group": "fin",
+   "capRank": 19,
+   "marketCapEok": 351177,
+   "score": 0.5752,
+   "parts": {
+    "roe": 0.3669,
+    "debt": 0.5,
+    "size": 0.9281
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 689436,
+    "op": 53509,
+    "opPrev": 48552,
+    "net": 40366,
+    "netPrev": 37685,
+    "roe": 9.17,
+    "debt": 1377.89,
+    "opm": 7.76
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 9.2% · 금융회사(빚 기준 제외) · 시가총액 19위"
+  },
+  {
+   "rank": 37,
+   "code": "011200",
+   "name": "HMM",
+   "market": "KOSPI",
+   "sector": "해운사",
+   "group": "auto",
+   "capRank": 36,
+   "marketCapEok": 201853,
+   "score": 0.5673,
+   "parts": {
+    "roe": 0.1655,
+    "debt": 0.8142,
+    "size": 0.8561
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 108914,
+    "op": 14612,
+    "opPrev": 35128,
+    "net": 18787,
+    "netPrev": 37821,
+    "roe": 6.9,
+    "debt": 26.31,
+    "opm": 13.42
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 6.9% · 부채비율 26% · 시가총액 36위"
+  },
+  {
+   "rank": 38,
+   "code": "175330",
+   "name": "JB금융지주",
+   "market": "KOSPI",
+   "sector": "은행",
+   "group": "fin",
+   "capRank": 106,
+   "marketCapEok": 54091,
+   "score": 0.5644,
+   "parts": {
+    "roe": 0.5935,
+    "debt": 0.5,
+    "size": 0.5899
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 46305,
+    "op": 9523,
+    "opPrev": 9061,
+    "net": 7300,
+    "netPrev": 6930,
+    "roe": 12.36,
+    "debt": 1084.16,
+    "opm": 20.57
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 12.4% · 금융회사(빚 기준 제외) · 시가총액 106위"
+  },
+  {
+   "rank": 39,
+   "code": "055550",
+   "name": "신한지주",
+   "market": "KOSPI",
+   "sector": "은행",
+   "group": "fin",
+   "capRank": 13,
+   "marketCapEok": 497148,
+   "score": 0.5637,
+   "parts": {
+    "roe": 0.3165,
+    "debt": 0.5,
+    "size": 0.9568
+   },
+   "debtExempt": true,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 646820,
+    "op": 70234,
+    "opPrev": 64587,
+    "net": 50845,
+    "netPrev": 45582,
+    "roe": 8.72,
+    "debt": 1201.94,
+    "opm": 10.86
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 8.7% · 금융회사(빚 기준 제외) · 시가총액 13위"
+  },
+  {
+   "rank": 40,
+   "code": "111770",
+   "name": "영원무역",
+   "market": "KOSPI",
+   "sector": "섬유,의류,신발,호화품",
+   "group": "cons",
+   "capRank": 155,
+   "marketCapEok": 29822,
+   "score": 0.5513,
+   "parts": {
+    "roe": 0.6115,
+    "debt": 0.6195,
+    "size": 0.4029
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 40636,
+    "op": 5144,
+    "opPrev": 3156,
+    "net": 4263,
+    "netPrev": 2945,
+    "roe": 12.66,
+    "debt": 39.25,
+    "opm": 12.66
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 12.7% · 부채비율 39% · 시가총액 155위"
+  },
+  {
+   "rank": 41,
+   "code": "071970",
+   "name": "HD현대마린엔진",
+   "market": "KOSPI",
+   "sector": "조선",
+   "group": "heavy",
+   "capRank": 246,
+   "marketCapEok": 16638,
+   "score": 0.5511,
+   "parts": {
+    "roe": 0.964,
+    "debt": 0.3717,
+    "size": 0.1799
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 4024,
+    "op": 759,
+    "opPrev": 332,
+    "net": 1651,
+    "netPrev": 758,
+    "roe": 41.36,
+    "debt": 66.64,
+    "opm": 18.87
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 41.4% · 부채비율 67% · 시가총액 246위"
+  },
+  {
+   "rank": 42,
+   "code": "012330",
+   "name": "현대모비스",
+   "market": "KOSPI",
+   "sector": "자동차부품",
+   "group": "auto",
+   "capRank": 21,
+   "marketCapEok": 346258,
+   "score": 0.5495,
+   "parts": {
+    "roe": 0.2518,
+    "debt": 0.5752,
+    "size": 0.9209
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 611181,
+    "op": 33575,
+    "opPrev": 30735,
+    "net": 36647,
+    "netPrev": 40602,
+    "roe": 7.68,
+    "debt": 43.05,
+    "opm": 5.49
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 7.7% · 부채비율 43% · 시가총액 21위"
+  },
+  {
+   "rank": 43,
+   "code": "068270",
+   "name": "셀트리온",
+   "market": "KOSPI",
+   "sector": "제약",
+   "group": "bio",
+   "capRank": 17,
+   "marketCapEok": 424759,
+   "score": 0.5482,
+   "parts": {
+    "roe": 0.0863,
+    "debt": 0.7699,
+    "size": 0.9424
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 41625,
+    "op": 11685,
+    "opPrev": 4920,
+    "net": 10315,
+    "netPrev": 4189,
+    "roe": 5.94,
+    "debt": 28.71,
+    "opm": 28.07
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 5.9% · 부채비율 29% · 시가총액 17위"
+  },
+  {
+   "rank": 44,
+   "code": "009150",
+   "name": "삼성전기",
+   "market": "KOSPI",
+   "sector": "전자장비와기기",
+   "group": "semi",
+   "capRank": 4,
+   "marketCapEok": 1177920,
+   "score": 0.5472,
+   "parts": {
+    "roe": 0.2626,
+    "debt": 0.4956,
+    "size": 0.9784
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 113145,
+    "op": 9133,
+    "opPrev": 7350,
+    "net": 7310,
+    "netPrev": 7032,
+    "roe": 7.7,
+    "debt": 48.98,
+    "opm": 8.07
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 7.7% · 부채비율 49% · 시가총액 4위"
+  },
+  {
+   "rank": 45,
+   "code": "002380",
+   "name": "KCC",
+   "market": "KOSPI",
+   "sector": "건축자재",
+   "group": "chem",
+   "capRank": 130,
+   "marketCapEok": 40558,
+   "score": 0.5449,
+   "parts": {
+    "roe": 0.8849,
+    "debt": 0.1327,
+    "size": 0.5036
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 64838,
+    "op": 4276,
+    "opPrev": 4711,
+    "net": 15385,
+    "netPrev": 3266,
+    "roe": 23.51,
+    "debt": 114.76,
+    "opm": 6.59
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 23.5% · 부채비율 115% · 시가총액 130위"
+  },
+  {
+   "rank": 46,
+   "code": "026960",
+   "name": "동서",
+   "market": "KOSPI",
+   "sector": "식품",
+   "group": "cons",
+   "capRank": 168,
+   "marketCapEok": 27467,
+   "score": 0.5353,
+   "parts": {
+    "roe": 0.3022,
+    "debt": 1,
+    "size": 0.3813
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 5329,
+    "op": 453,
+    "opPrev": 445,
+    "net": 1465,
+    "netPrev": 1590,
+    "roe": 8.48,
+    "debt": 3.52,
+    "opm": 8.51
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 8.5% · 부채비율 4% · 시가총액 168위"
+  },
+  {
+   "rank": 47,
+   "code": "009970",
+   "name": "영원무역홀딩스",
+   "market": "KOSPI",
+   "sector": "섬유,의류,신발,호화품",
+   "group": "cons",
+   "capRank": 207,
+   "marketCapEok": 21322,
+   "score": 0.5351,
+   "parts": {
+    "roe": 0.6259,
+    "debt": 0.6903,
+    "size": 0.259
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 48950,
+    "op": 7355,
+    "opPrev": 5170,
+    "net": 6065,
+    "netPrev": 4956,
+    "roe": 12.83,
+    "debt": 32.34,
+    "opm": 15.02
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 12.8% · 부채비율 32% · 시가총액 207위"
+  },
+  {
+   "rank": 48,
+   "code": "214370",
+   "name": "케어젠",
+   "market": "KOSDAQ",
+   "sector": "건강관리업체및서비스",
+   "group": "bio",
+   "capRank": 197,
+   "marketCapEok": 22829,
+   "score": 0.5333,
+   "parts": {
+    "roe": 0.3741,
+    "debt": 0.9912,
+    "size": 0.2878
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 728,
+    "op": 204,
+    "opPrev": 343,
+    "net": 201,
+    "netPrev": 323,
+    "roe": 9.23,
+    "debt": 8.85,
+    "opm": 28.02
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 9.2% · 부채비율 9% · 시가총액 197위"
+  },
+  {
+   "rank": 49,
+   "code": "008930",
+   "name": "한미사이언스",
+   "market": "KOSPI",
+   "sector": "제약",
+   "group": "bio",
+   "capRank": 135,
+   "marketCapEok": 37615,
+   "score": 0.53,
+   "parts": {
+    "roe": 0.6475,
+    "debt": 0.4071,
+    "size": 0.4964
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 13570,
+    "op": 1387,
+    "opPrev": 989,
+    "net": 1177,
+    "netPrev": 567,
+    "roe": 13.13,
+    "debt": 55.24,
+    "opm": 10.22
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 13.1% · 부채비율 55% · 시가총액 135위"
+  },
+  {
+   "rank": 50,
+   "code": "035420",
+   "name": "NAVER",
+   "market": "KOSPI",
+   "sector": "양방향미디어와서비스",
+   "group": "net",
+   "capRank": 23,
+   "marketCapEok": 292325,
+   "score": 0.5299,
+   "parts": {
+    "roe": 0.2014,
+    "debt": 0.5841,
+    "size": 0.9137
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 120350,
+    "op": 22081,
+    "opPrev": 19793,
+    "net": 18187,
+    "netPrev": 19320,
+    "roe": 7.36,
+    "debt": 41.9,
+    "opm": 18.35
+   },
+   "financeSource": "finance_json",
+   "carried": true,
+   "why": "2025.12 결산 ROE 7.4% · 부채비율 42% · 시가총액 23위"
+  },
+  {
+   "rank": 51,
+   "code": "192080",
+   "name": "더블유게임즈",
+   "market": "KOSPI",
+   "sector": "게임엔터테인먼트",
+   "group": "net",
+   "capRank": 280,
+   "marketCapEok": 12238,
+   "score": 0.5272,
+   "parts": {
+    "roe": 0.554,
+    "debt": 0.9469,
+    "size": 0.0719
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 7199,
+    "op": 2321,
+    "opPrev": 2487,
+    "net": 1798,
+    "netPrev": 2433,
+    "roe": 11.33,
+    "debt": 11.83,
+    "opm": 32.25
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 11.3% · 부채비율 12% · 시가총액 280위"
+  },
+  {
+   "rank": 52,
+   "code": "028050",
+   "name": "삼성E&A",
+   "market": "KOSPI",
+   "sector": "건설",
+   "group": "heavy",
+   "capRank": 73,
+   "marketCapEok": 93786,
+   "score": 0.5148,
+   "parts": {
+    "roe": 0.6691,
+    "debt": 0.0973,
+    "size": 0.7266
+   },
+   "debtExempt": false,
+   "metrics": {
+    "source": "finance_json",
+    "fiscalYear": "2025.12",
+    "prevYear": "2024.12",
+    "revenue": 90288,
+    "op": 7921,
+    "opPrev": 9716,
+    "net": 6483,
+    "netPrev": 6387,
+    "roe": 13.76,
+    "debt": 125.8,
+    "opm": 8.77
+   },
+   "financeSource": "finance_json",
+   "carried": false,
+   "why": "2025.12 결산 ROE 13.8% · 부채비율 126% · 시가총액 73위"
+  }
+ ],
+ "notPicked": [
+  {
+   "code": "373220",
+   "name": "LG에너지솔루션",
+   "capRank": 5,
+   "sector": "전기제품",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "005380",
+   "name": "현대차",
+   "capRank": 6,
+   "sector": "자동차",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "207940",
+   "name": "삼성바이오로직스",
+   "capRank": 7,
+   "sector": "제약",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 17)"
+   ]
+  },
+  {
+   "code": "032830",
+   "name": "삼성생명",
+   "capRank": 9,
+   "sector": "생명보험",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "012450",
+   "name": "한화에어로스페이스",
+   "capRank": 11,
+   "sector": "우주항공과국방",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 16)",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "034020",
+   "name": "두산에너빌리티",
+   "capRank": 12,
+   "sector": "기계",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "329180",
+   "name": "HD현대중공업",
+   "capRank": 14,
+   "sector": "조선",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "006400",
+   "name": "삼성SDI",
+   "capRank": 16,
+   "sector": "전기제품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "066570",
+   "name": "LG전자",
+   "capRank": 20,
+   "sector": "전자제품",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "010120",
+   "name": "LS ELECTRIC",
+   "capRank": 22,
+   "sector": "전기장비",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 3)"
+   ]
+  },
+  {
+   "code": "298040",
+   "name": "효성중공업",
+   "capRank": 25,
+   "sector": "전기장비",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "096770",
+   "name": "SK이노베이션",
+   "capRank": 27,
+   "sector": "석유와가스",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "005490",
+   "name": "POSCO홀딩스",
+   "capRank": 29,
+   "sector": "철강",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "042660",
+   "name": "한화오션",
+   "capRank": 31,
+   "sector": "조선",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "000150",
+   "name": "두산",
+   "capRank": 34,
+   "sector": "복합기업",
+   "fails": [
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "015760",
+   "name": "한국전력",
+   "capRank": 37,
+   "sector": "전기유틸리티",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "017670",
+   "name": "SK텔레콤",
+   "capRank": 38,
+   "sector": "무선통신서비스",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "010950",
+   "name": "S-Oil",
+   "capRank": 39,
+   "sector": "석유와가스",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "051910",
+   "name": "LG화학",
+   "capRank": 40,
+   "sector": "화학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "010140",
+   "name": "삼성중공업",
+   "capRank": 43,
+   "sector": "조선",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "003550",
+   "name": "LG",
+   "capRank": 46,
+   "sector": "복합기업",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "079550",
+   "name": "LIG디펜스앤에어로스페이스",
+   "capRank": 47,
+   "sector": "우주항공과국방",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "003670",
+   "name": "포스코퓨처엠",
+   "capRank": 48,
+   "sector": "화학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "267250",
+   "name": "HD현대",
+   "capRank": 50,
+   "sector": "조선",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "035720",
+   "name": "카카오",
+   "capRank": 53,
+   "sector": "양방향미디어와서비스",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "278470",
+   "name": "에이피알",
+   "capRank": 54,
+   "sector": "화장품",
+   "fails": [
+    "가격 이력 부족(632일 · 빠진 날 0 · 멈춘 날 9)"
+   ]
+  },
+  {
+   "code": "047810",
+   "name": "한국항공우주",
+   "capRank": 57,
+   "sector": "우주항공과국방",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "000720",
+   "name": "현대건설",
+   "capRank": 58,
+   "sector": "건설",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "064350",
+   "name": "현대로템",
+   "capRank": 59,
+   "sector": "우주항공과국방",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "086520",
+   "name": "에코프로",
+   "capRank": 60,
+   "sector": "화학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "003490",
+   "name": "대한항공",
+   "capRank": 62,
+   "sector": "항공사",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "247540",
+   "name": "에코프로비엠",
+   "capRank": 63,
+   "sector": "전기제품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "443060",
+   "name": "HD현대마린솔루션",
+   "capRank": 66,
+   "sector": "조선",
+   "fails": [
+    "가격 이력 부족(585일 · 빠진 날 0 · 멈춘 날 0)"
+   ]
+  },
+  {
+   "code": "000500",
+   "name": "가온전선",
+   "capRank": 71,
+   "sector": "전기장비",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 2)",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "006260",
+   "name": "LS",
+   "capRank": 74,
+   "sector": "전기장비",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "180640",
+   "name": "한진칼",
+   "capRank": 78,
+   "sector": "항공사",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "277810",
+   "name": "레인보우로보틱스",
+   "capRank": 79,
+   "sector": "기계",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "009830",
+   "name": "한화솔루션",
+   "capRank": 80,
+   "sector": "에너지장비및서비스",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "090430",
+   "name": "아모레퍼시픽",
+   "capRank": 82,
+   "sector": "화장품",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "047040",
+   "name": "대우건설",
+   "capRank": 85,
+   "sector": "건설",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "064400",
+   "name": "LG씨엔에스",
+   "capRank": 87,
+   "sector": "IT서비스",
+   "fails": [
+    "가격 이력 부족(406일 · 빠진 날 99 · 멈춘 날 0)"
+   ]
+  },
+  {
+   "code": "062040",
+   "name": "산일전기",
+   "capRank": 88,
+   "sector": "전기장비",
+   "fails": [
+    "가격 이력 부족(529일 · 빠진 날 0 · 멈춘 날 0)"
+   ]
+  },
+  {
+   "code": "000880",
+   "name": "한화",
+   "capRank": 90,
+   "sector": "복합기업",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 17)",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "352820",
+   "name": "하이브",
+   "capRank": 92,
+   "sector": "방송과엔터테인먼트",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "222800",
+   "name": "심텍",
+   "capRank": 94,
+   "sector": "전자장비와기기",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "058470",
+   "name": "리노공업",
+   "capRank": 95,
+   "sector": "반도체와반도체장비",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 11)"
+   ]
+  },
+  {
+   "code": "377300",
+   "name": "카카오페이",
+   "capRank": 104,
+   "sector": "IT서비스",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 2)",
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "028300",
+   "name": "HLB",
+   "capRank": 105,
+   "sector": "건강관리장비와용품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "011790",
+   "name": "SKC",
+   "capRank": 108,
+   "sector": "화학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "036570",
+   "name": "NC",
+   "capRank": 109,
+   "sector": "게임엔터테인먼트",
+   "fails": [
+    "2년 연속 흑자 아님"
+   ]
+  },
+  {
+   "code": "000250",
+   "name": "삼천당제약",
+   "capRank": 110,
+   "sector": "제약",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "454910",
+   "name": "두산로보틱스",
+   "capRank": 114,
+   "sector": "기계",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "088980",
+   "name": "맥쿼리인프라",
+   "capRank": 115,
+   "sector": null,
+   "fails": [
+    "업종 모름",
+    "결산 자료 없음"
+   ]
+  },
+  {
+   "code": "066970",
+   "name": "엘앤에프",
+   "capRank": 116,
+   "sector": "전기제품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "108490",
+   "name": "로보티즈",
+   "capRank": 118,
+   "sector": "기계",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "010060",
+   "name": "OCI홀딩스",
+   "capRank": 120,
+   "sector": "화학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "440110",
+   "name": "파두",
+   "capRank": 122,
+   "sector": "반도체와반도체장비",
+   "fails": [
+    "가격 이력 부족(767일 · 빠진 날 0 · 멈춘 날 29)",
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "034220",
+   "name": "LG디스플레이",
+   "capRank": 123,
+   "sector": "디스플레이 패널",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "103590",
+   "name": "일진전기",
+   "capRank": 127,
+   "sector": "전기장비",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "051900",
+   "name": "LG생활건강",
+   "capRank": 128,
+   "sector": "화장품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "082740",
+   "name": "한화엔진",
+   "capRank": 131,
+   "sector": "조선",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "004020",
+   "name": "현대제철",
+   "capRank": 132,
+   "sector": "철강",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "018880",
+   "name": "한온시스템",
+   "capRank": 133,
+   "sector": "자동차부품",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "001040",
+   "name": "CJ",
+   "capRank": 134,
+   "sector": "복합기업",
+   "fails": [
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "067310",
+   "name": "하나마이크론",
+   "capRank": 136,
+   "sector": "반도체와반도체장비",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "036460",
+   "name": "한국가스공사",
+   "capRank": 141,
+   "sector": "가스유틸리티",
+   "fails": [
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "004170",
+   "name": "신세계",
+   "capRank": 148,
+   "sector": "백화점과일반상점",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "192820",
+   "name": "코스맥스",
+   "capRank": 149,
+   "sector": "화장품",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "141080",
+   "name": "리가켐바이오",
+   "capRank": 150,
+   "sector": "제약",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "087010",
+   "name": "펩트론",
+   "capRank": 152,
+   "sector": "생물공학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "336260",
+   "name": "두산퓨얼셀",
+   "capRank": 153,
+   "sector": "에너지장비및서비스",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "011780",
+   "name": "금호석유화학",
+   "capRank": 157,
+   "sector": "화학",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "007340",
+   "name": "DN오토모티브",
+   "capRank": 158,
+   "sector": "자동차부품",
+   "fails": [
+    "가격 이력 부족(840일 · 빠진 날 0 · 멈춘 날 7)"
+   ]
+  },
+  {
+   "code": "031210",
+   "name": "서울보증보험",
+   "capRank": 159,
+   "sector": "손해보험",
+   "fails": [
+    "가격 이력 부족(380일 · 빠진 날 125 · 멈춘 날 0)"
+   ]
+  },
+  {
+   "code": "251270",
+   "name": "넷마블",
+   "capRank": 160,
+   "sector": "게임엔터테인먼트",
+   "fails": [
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "298380",
+   "name": "에이비엘바이오",
+   "capRank": 162,
+   "sector": "생물공학",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "023530",
+   "name": "롯데쇼핑",
+   "capRank": 163,
+   "sector": "백화점과일반상점",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "302440",
+   "name": "SK바이오사이언스",
+   "capRank": 164,
+   "sector": "제약",
+   "fails": [
+    "2년 연속 흑자 아님",
+    "ROE 5% 미만"
+   ]
+  },
+  {
+   "code": "017800",
+   "name": "현대엘리베이터",
+   "capRank": 165,
+   "sector": "기계",
+   "fails": [
+    "부채비율 150% 초과"
+   ]
+  },
+  {
+   "code": "006360",
+   "name": "GS건설",
+   "capRank": 166,
+   "sector": "건설",
+   "fails": [
+    "ROE 5% 미만",
+    "부채비율 150% 초과"
+   ]
+  }
+ ],
+ "previous": {
+  "id": "u1-sector52",
+  "codes": [
+   "005930",
+   "009150",
+   "373220",
+   "005380",
+   "207940",
+   "105560",
+   "028260",
+   "032830",
+   "012450",
+   "034020",
+   "329180",
+   "034730",
+   "012330",
+   "066570",
+   "035420",
+   "010120",
+   "000810",
+   "005490",
+   "010130",
+   "138040",
+   "015760",
+   "011200",
+   "051910",
+   "017670",
+   "033780",
+   "196170",
+   "018260",
+   "086280",
+   "000720",
+   "278470",
+   "030200",
+   "003490",
+   "047050",
+   "003230",
+   "259960",
+   "021240",
+   "352820",
+   "009830",
+   "029780",
+   "028300",
+   "034220",
+   "002380",
+   "036460",
+   "004170",
+   "012750",
+   "111770",
+   "035250",
+   "257720",
+   "226950",
+   "010170",
+   "214370",
+   "030000"
+  ]
+ },
+ "overlap": {
+  "kept": [
+   "196170",
+   "138040",
+   "003230",
+   "086280",
+   "000810",
+   "259960",
+   "257720",
+   "033780",
+   "105560",
+   "021240",
+   "018260",
+   "011200",
+   "111770",
+   "012330",
+   "009150",
+   "002380",
+   "214370",
+   "035420"
+  ],
+  "added": [
+   "402340",
+   "042700",
+   "000660",
+   "403870",
+   "326030",
+   "071050",
+   "005830",
+   "145020",
+   "267260",
+   "214150",
+   "214450",
+   "039490",
+   "000270",
+   "383220",
+   "001450",
+   "006800",
+   "082920",
+   "271560",
+   "128940",
+   "052690",
+   "041510",
+   "014680",
+   "035900",
+   "009540",
+   "086790",
+   "175330",
+   "055550",
+   "071970",
+   "068270",
+   "026960",
+   "009970",
+   "008930",
+   "192080",
+   "028050"
+  ],
+  "dropped": [
+   "005930",
+   "373220",
+   "005380",
+   "207940",
+   "028260",
+   "032830",
+   "012450",
+   "034020",
+   "329180",
+   "034730",
+   "066570",
+   "010120",
+   "005490",
+   "010130",
+   "015760",
+   "051910",
+   "017670",
+   "000720",
+   "278470",
+   "030200",
+   "003490",
+   "047050",
+   "352820",
+   "009830",
+   "029780",
+   "028300",
+   "034220",
+   "036460",
+   "004170",
+   "012750",
+   "035250",
+   "226950",
+   "010170",
+   "030000"
+  ]
+ },
+ "bundle": {
+  "file": "reports/atlas11/universe/2026-10-04/bundle.json.gz",
+  "sha256": "6be0920b954230b4d8f30658000d483f38d65b2c3f8216564dcc554231f29727",
+  "bytes": 4956137
+ },
+ "nextInput": {
+  "file": "reports/atlas11/universe/2026-10-04/next-input.json",
+  "sha256": "b698caaf50db05c8ea012b5a1631a87f540671b7d2b9053662f1941f3ec2a03b",
+  "actualAsOf": "2026-10-02",
+  "assets": 52
+ }
+}
