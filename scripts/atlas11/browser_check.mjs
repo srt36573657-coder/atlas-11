@@ -380,6 +380,14 @@ async function gameCheck() {
       const s0 = await st();
       check(`게임 ${label} ${when}: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 ${tomorrowDate}`,
         !errors.length && s0.cards === 52 && s0.tabs === '내일,게임,성적' && s0.center === '이정훈 대표 방식' && /원문 기다림/.test(s0.centerState) && s0.aux === '켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리' && s0.marks.length >= 1 && s0.marks.every(d => d === tomorrowDate), {errors: errors.slice(0, 3), ...s0, marks: s0.marks.length, stored: undefined});
+      // 크기 출목표(2026-10-03 사장님 「많이 움직이면 많이, 적게 움직이면 적게」): 첫 카드의 동그라미 수 = 날마다 max(1, round(|등락| ÷ 한 알)) 의 합 · 꿴 줄 = 같은 날 이웃 알 수 · 읽는 법 줄
+      {
+        const rd = await page.evaluate(() => { const c = document.querySelector('#bigBox .card'), svg = c?.querySelector('svg.road'); return {code: c?.querySelector('[data-ident]')?.textContent.trim(), label: svg?.getAttribute('aria-label') ?? '', circles: svg?.querySelectorAll('circle').length ?? 0, threads: svg?.querySelectorAll('g[opacity] line').length ?? 0, key: c?.querySelector('.road-key')?.textContent ?? ''}; });
+        const unit = Number(/동그라미 하나 = (\d+)%/.exec(rd.label)?.[1]) / 100, st = (game.live.stocks ?? []).find(x => x.code === rd.code);
+        const per = st ? st.c.slice(1).map((v, i) => v / st.c[i] - 1).filter(r => Math.abs(r) > 0.001).map(r => Math.max(1, Math.round(Math.abs(r) / unit))) : [];
+        const want = per.reduce((a, b) => a + b, 0), wantThreads = per.reduce((a, b) => a + b - 1, 0);
+        check(`게임 ${label} ${when}: 출목표 크기 — 동그라미 하나 = ${unit * 100}% · 동그라미 ${rd.circles}개 = 날마다 크기만큼 ${want}개 · 꿴 줄 ${rd.threads} = ${wantThreads} · 읽는 법 줄`, Boolean(st) && unit > 0 && rd.circles === want && rd.threads === wantThreads && rd.key.includes(`하나 = ${unit * 100}%`), rd);
+      }
       if (when === 'open') {
         await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
         await page.click('#seal'); await page.waitForTimeout(300);

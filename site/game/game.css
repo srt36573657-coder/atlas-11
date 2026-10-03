@@ -159,6 +159,10 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .eye-h b { font-family: var(--sans); font-size: .8125rem; color: var(--pink); letter-spacing: 0; }
 .eye-h b.up { color: var(--up-soft); } .eye-h b.down { color: var(--down-soft); }
 .road, .spark { display: block; width: 100%; height: auto; margin-top: 3px; }
+/* 출목표 읽는 법 — 2026-10-03 크기 출목표(동그라미 하나 = 1%) */
+.road-key { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 5px 0 0; font-size: .75rem; line-height: 1.35; color: var(--pink2); }
+.road-key span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.rk-i { width: 12px; height: 12px; flex: none; } .rk-i.wide { width: 26px; }
 .why3 { list-style: none; padding: 0; display: grid; gap: 3px; border-top: 1px solid rgba(122,92,32,.35); padding-top: 6px; }
 .why3 li { display: grid; grid-template-columns: 3.1em 1fr; gap: 6px; align-items: baseline; font-size: .875rem; line-height: 1.35; }
 .why3 li > span:first-child { font-family: var(--serif); font-weight: 800; font-size: .75rem; color: var(--gold-ink); letter-spacing: .04em; }
