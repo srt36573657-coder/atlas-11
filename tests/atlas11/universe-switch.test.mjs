@@ -69,6 +69,11 @@ test('바꾸는 날: 옛 발행본은 옛 종목 가격으로 채점(새 기록�
   assert.equal(r2.universe, undefined, '이미 바꿈 → 바꿀 일 없음'); assert.equal(r2.universeId, 'u2-test');
   assert.equal(currentRecords(await readRecords(dir, 'operation')).filter(x => x.body.kind === 'universe_switch').length, 1);
   assert.equal(currentRecords(await readRecords(dir, 'score')).map(x => x.body).filter(c => c.kind === 'live' && c.targetDate === TODAY && c.horizon === 1).length, 52);
+  // 바꾼 뒤 다시 센 채점판(rolling-scores.json): 날짜마다 그날의 52종목만(옛 날짜 = 옛 52종목 · 물러난 종목이 합쳐진 입력이라도 80줄이 되지 않음)
+  const rs = JSON.parse(await fs.readFile(path.join(dir, 'public/data/rolling-scores.json'), 'utf8'));
+  assert.ok(rs.byDate.length >= 1 && rs.byDate.every(d => d.rows.length === 52), JSON.stringify(rs.byDate.map(d => [d.date, d.rows.length])));
+  assert.deepEqual(rs.byDate.find(d => d.date === TODAY).rows.map(r => r.code), old.assets.map(a => a.code), '옛 날짜 줄은 옛 52종목 · 옛 순서 그대로');
+  assert.equal(rs.byDate.find(d => d.date === TODAY).evaluatedStocks, 52);
 });
 
 test('새 종목 종가가 하나라도 빠지면 바꾸지 않고 옛 종목으로 계속 · 받은 것은 작업본에 이어 둠', async () => {

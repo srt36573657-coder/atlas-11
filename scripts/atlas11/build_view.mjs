@@ -16,7 +16,7 @@ import {recountTimeline, compareTimeline} from '../../lib/atlas11/timeline_check
 import {loadHorizon} from '../../lib/atlas11/horizon.mjs';
 import {buildGame} from '../../lib/atlas11/game.mjs';
 import {buildWhy} from '../../lib/atlas11/why.mjs';
-import {loadRetired, scoringInput} from '../../lib/atlas11/universe-switch.mjs';
+import {loadRetired, scoringInput, universeCodesOn} from '../../lib/atlas11/universe-switch.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -58,7 +58,7 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   const [publication, input, calendar, publications, abLatest, factorStatus, operation] = await Promise.all([read('public/data/atlas11/forecast.json'), read('public/data/input.json'), read('public/data/rolling-calendar.json'), readAllPublications(root), read('reports/atlas11/ab/latest.json', null), read('public/data/factor36-status.json', null), read('reports/atlas11/operations/latest.json', null)]);
   validateForecast11(publication);
   // 종목을 바꾼 뒤에도 옛 발행본 채점·게임 지난 판은 옛 종목 가격으로(물러난 종목 보관본을 합친 입력) — 지금 종목 화면은 input 그대로
-  const scoreInput = scoringInput(input, await loadRetired(root));
+  const retired = await loadRetired(root), scoreInput = scoringInput(input, retired), rowCodes = universeCodesOn(input, retired);
   // 「내일 하루만」 스위치(사장님 명령 2026-10-02) — 화면 묶음은 내일 하나의 전망만 · 진화 칸 통계는 1거래일 뒤만
   const horizon = loadHorizon(root), oneDay = c => !horizon.tomorrowOnly || Number(c?.horizon) === 1;
   const ab = abLatest ? await read('reports/atlas11/ab/' + abLatest.runId + '/result.json', null) : null;
@@ -138,7 +138,7 @@ export async function buildViewFiles({now = new Date().toISOString()} = {}) {
   }
   // 「왜 틀렸나」: 원인 분석 칸(장부)을 그대로 넘긴다 — 네 통 나누기는 lib/atlas11/misses.mjs(규칙은 결과 보기 전에 고정)
   const missCells = (await current('analysis')).filter(r => r.body?.kind === 'cell' && r.body?.horizon === 1);
-  const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, scoreInput, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
+  const files = buildViewBundle({publication, timeline, marketIndex, analysisRecords: missCells, scoreRecords: scoreLedger, input, scoreInput, rowCodes, calendar, publications, ab, abHistory, factorStatus, operations, scenarioStability, evolve, ledger, scoreHistory, dailyReport, schedule, deploy, context: contextLatest, contextByCode, horizon, archive: {id: archive.id, createdAt: archive.createdAt, createdDayKST: archive.createdDayKST, hashMatches: archive.hashMatches, comparedDatesAfterCreation: archive.comparedDatesAfterCreation, label: archive.label, file: '/data/atlas11/archive-fixed-20260917.json'}, operation: operation ? {at: operation.at, status: operation.status, exitCode: operation.exitCode, collection: operation.collection ?? null, forecastId: operation.forecastId ?? null, runtime: operation.runtime ?? null} : null, now});
   // 아틀라스 게임(2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」): 화면 묶음에 game.json 한 장을 더한다 — 발행본·입력 종가와 후향 판(있으면 읽기만)에서만 만든다
   files.set('game.json', buildGame({publication, publications, input: scoreInput, retro: await read('atlas4h/baselines/atlas11-v1-retro.json', null)}));
   // 2026-10-02 14:08 사장님 「36가지 … 종류와 점수 · 가장 높은 순 · 왜 그 종목을 오를 쪽으로 봤나 · 종목별로」: 「내일」 원 화면의 「왜 그렇게 봤나」 자료 한 장
