@@ -130,3 +130,22 @@ test('내일 하루만(2026-10-02 사장님 명령): 20거래일 발행본이어
   const legacy = buildViewBundle({publication: p, input, calendar, publications, horizon: LEGACY, now: '2026-09-28T13:40:00.000Z'});
   assert.equal(legacy.get('race.json').stocks.length, 52); assert.ok(legacy.get('cards.json').cards.every(c => c.day20 && c.day5)); assert.equal(legacy.get('manifest.json').horizon, 20);
 });
+
+test('내일 하루만 · 발행이 멈춰 발행본이 묵은 날(2026-10-03 고침): 묶음 만든 날까지의 기록 날짜는 통과 · 그 뒤 날짜는 여전히 실패', async () => {
+  const {input, calendar} = await realInputs();
+  const p = await latest(), publications = await readAllPublications(root), t = p.futureDates[0];
+  const files = buildViewBundle({publication: p, input, calendar, publications, horizon: TOMORROW, now: '2026-09-28T13:40:00.000Z'});
+  assert.equal(validateViewBundle(files, p), true);
+  // 10/2 23:04 실행처럼: 내일(t) 뒤 날짜에 묶음을 다시 만들고 그날 기록이 장부에 들어감
+  const day = d => new Date(Date.parse(d + 'T00:00:00Z') + 86400000 * 3).toISOString().slice(0, 10), built = day(t);
+  const stale = new Map(files), m = structuredClone(files.get('manifest.json')); m.generatedAt = built + 'T00:01:37+09:00'; stale.set('manifest.json', m);
+  const ev = structuredClone(files.get('evolution.json')); ev.operating.note = built + ' 하루 기록'; stale.set('evolution.json', ev);
+  assert.equal(validateViewBundle(stale, p), true, '묶음 만든 날의 기록 날짜는 전망이 아님');
+  // 묶음 만든 날보다 뒤 날짜는 여전히 막힘
+  const leak = new Map(stale), ev2 = structuredClone(ev); ev2.operating.note = p.futureDates[10] + ' 전망'; leak.set('evolution.json', ev2);
+  assert.ok(p.futureDates[10] > built);
+  assert.throws(() => validateViewBundle(leak, p), /VIEW_TOMORROW_DATES_AFTER/);
+  // 발행본이 묵지 않은 날(만든 날 ≤ 내일)에는 예전 규칙 그대로: 내일 뒤 날짜면 실패
+  const fresh = new Map(files), ev3 = structuredClone(files.get('evolution.json')); ev3.operating.note = built + ' 기록'; fresh.set('evolution.json', ev3);
+  assert.throws(() => validateViewBundle(fresh, p), /VIEW_TOMORROW_DATES_AFTER/);
+});
