@@ -1,0 +1,34 @@
+name: atlas11-universe
+# 「튼튼한 회사 52곳」 고르기 자료 모으기 — 사장님이 버튼을 눌러야만 돈다(예약 없음).
+#   2026-10-04 00:51 사장님 「52개 업종에서 찾는 게 아니라 오를 수 있는 52개 우량 종목을 찾아 첫 화면에 배열하는 구조로 싹 변경하자」 · 01:00 「알아서 해」
+#   하는 일: 시가총액 목록 · 업종 이름 · 회사 요약 · 결산 · 일봉을 받아 원문 그대로 보관(bundle.json.gz)
+#            → 규칙(lib/atlas11/universe.mjs)대로 52곳을 고른 「제안」(proposal.json)과 새 입력(next-input.json)을 reports/atlas11/universe/<날짜>/ 에 저장
+#   하지 않는 일: 지금 화면의 52종목 바꾸기 · 전망 · 발행 · 채점 (종목을 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-universe
+  cancel-in-progress: false
+jobs:
+  universe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Collect and select
+        run: timeout 1500 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "collect_universe exit $?"
+      - name: Commit
+        if: always()
+        shell: bash
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -A reports/atlas11/universe
+          if git diff --cached --quiet; then echo "nothing to commit"; else git commit -m "atlas11 universe $(date +%Y-%m-%d) [skip ci]" && for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done; fi

@@ -1,0 +1,197 @@
+/**
+ * ATLAS 11 · 「튼튼한 회사 52곳」 고르기 자료 모으기 — .github/workflows/atlas11-universe.yml 에서 사장님이 단추를 눌러야만 돈다.
+ *   node scripts/atlas11/collect_universe.mjs --now ISO [--out-dir reports/atlas11/universe/<날짜>] [--fixture dir] [--from-bundle file.json.gz]
+ *
+ * 하는 일(전망·발행·채점은 하지 않는다 · 지금 화면의 52종목도 바꾸지 않는다 — 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
+ *   ① 시가총액 목록(코스피·코스닥) ② 업종 이름표 ③ 후보마다 회사 요약(시총·업종) → 시가총액 순위 ④ 상위 300곳 결산 자료와 일봉 이력
+ *   ⑤ 받은 원문을 통째로 bundle.json.gz 에 보관(규칙을 고쳐도 다시 받지 않고 같은 원문으로 다시 고를 수 있게) ⑥ 규칙(lib/atlas11/universe.mjs)대로 52곳 → proposal.json
+ *   ⑦ 새 입력(next-input.json) — 지금 52종목에 이미 있는 종목은 지금 가격 기록을 그대로 이어 쓴다
+ * 원천(모두 네이버 · 이 저장소의 다른 수집기와 같은 곳)
+ *   목록  https://m.stock.naver.com/api/stocks/marketValue/{KOSPI|KOSDAQ}?page=&pageSize=100  (안 되면 https://finance.naver.com/sise/sise_market_sum.naver?sosok=0|1&page=)
+ *   업종  https://finance.naver.com/sise/sise_group.naver?type=upjong   (업종 번호 = 회사 요약의 industryCode)
+ *   요약  https://m.stock.naver.com/api/stock/{code}/integration   (2026-09-29 실제 응답 확인됨)
+ *   결산  https://m.stock.naver.com/api/stock/{code}/finance/annual  (안 되면 https://finance.naver.com/item/main.naver?code= 의 「기업실적분석」 표)
+ *   일봉  https://fchart.stock.naver.com/sise.nhn?symbol={code}&timeframe=day&count=840&requestType=0
+ */
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import zlib from 'node:zlib';
+import {createHash} from 'node:crypto';
+import {fetchWithRetry, parseFchartXml} from './collect_naver.mjs';
+import {QUALITY52, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
+import {groupIdOfSector} from '../../lib/atlas11/groups.mjs';
+
+const sha = s => createHash('sha256').update(s).digest('hex');
+const kst = iso => new Date(Date.parse(iso) + 9 * 3600000).toISOString();
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+export const URLS = Object.freeze({
+  mvJson: (market, page) => `https://m.stock.naver.com/api/stocks/marketValue/${market}?page=${page}&pageSize=100`,
+  mvHtml: (sosok, page) => `https://finance.naver.com/sise/sise_market_sum.naver?sosok=${sosok}&page=${page}`,
+  upjong: 'https://finance.naver.com/sise/sise_group.naver?type=upjong',
+  integration: code => `https://m.stock.naver.com/api/stock/${code}/integration`,
+  financeJson: code => `https://m.stock.naver.com/api/stock/${code}/finance/annual`,
+  financeHtml: code => `https://finance.naver.com/item/main.naver?code=${code}`,
+  fchart: code => `https://fchart.stock.naver.com/sise.nhn?symbol=${code}&timeframe=day&count=840&requestType=0`,
+});
+const MARKETS = Object.freeze([{market: 'KOSPI', sosok: 0, jsonPages: 4, htmlPages: 8, take: 400}, {market: 'KOSDAQ', sosok: 1, jsonPages: 2, htmlPages: 3, take: 150}]);
+
+/** 재생 모드: <dir>/urls.json 의 {url: 파일} 대로 읽는다(없는 주소는 404) */
+export function fixtureMapFetch(dir) {
+  let map = null;
+  return async url => {
+    map ??= JSON.parse(await fs.readFile(path.join(dir, 'urls.json'), 'utf8'));
+    const file = map[url]; if (!file) return new Response('fixture missing', {status: 404});
+    const bytes = await fs.readFile(path.join(dir, file));
+    return new Response(bytes, {status: 200, headers: {'content-type': file.endsWith('.json') ? 'application/json; charset=utf-8' : file.endsWith('.xml') ? 'text/xml; charset=utf-8' : 'text/html; charset=utf-8'}});
+  };
+}
+async function pool(items, limit, worker, delayMs = 0) {
+  const out = new Array(items.length); let next = 0;
+  await Promise.all(Array.from({length: Math.max(1, Math.min(limit, items.length))}, async () => { while (next < items.length) { const i = next++; out[i] = await worker(items[i], i); if (delayMs) await sleep(delayMs); } }));
+  return out;
+}
+
+/** 네트워크로 받기 → bundle(원문 그대로) */
+export async function collectBundle({now, fetch = globalThis.fetch, concurrency = 3, politeDelayMs = 200, fallbackCodes = [], log = () => {}} = {}) {
+  const requests = [], errors = [];
+  const get = async url => {
+    const t0 = Date.now();
+    try { const r = await fetchWithRetry(url, {fetch, retries: 2, backoffMs: [800, 2400], timeoutMs: 20000}); requests.push({url, status: r.status, bytes: r.bytes.length, ms: Date.now() - t0}); return {url, status: r.status, text: r.text, rawHash: r.rawHash, fetchedAt: r.fetchedAt}; }
+    catch (e) { requests.push({url, status: e.attempts?.at(-1)?.status ?? 0, error: String(e.message).slice(0, 160), ms: Date.now() - t0}); return {url, status: e.attempts?.at(-1)?.status ?? 0, text: null, error: String(e.message).slice(0, 160)}; }
+  };
+  // ① 시가총액 목록
+  const lists = {source: null, pages: []};
+  let pool0 = [];
+  for (const m of MARKETS) {
+    let rows = [], pages = [];
+    // JSON 이 한 쪽이라도 틀리면(받기 실패·모양 다름) 그 시장은 처음부터 HTML 표로 · 빈 쪽이 나오면 거기서 끝(목록 끝)
+    let jsonFailed = false;
+    for (let p = 1; p <= m.jsonPages; p++) { const r = await get(URLS.mvJson(m.market, p)); pages.push({market: m.market, kind: 'json', ...r}); try { if (!r.text) throw Error('no body'); const got = parseMarketValueJson(r.text, m.market); if (!got.length) break; rows.push(...got); } catch (e) { errors.push({step: 'list_json', market: m.market, page: p, error: String(e.message)}); jsonFailed = true; break; } }
+    let source = 'json';
+    if (jsonFailed || !rows.length) {
+      source = 'html'; rows = [];
+      for (let p = 1; p <= m.htmlPages; p++) { const r = await get(URLS.mvHtml(m.sosok, p)); pages.push({market: m.market, kind: 'html', ...r}); try { if (!r.text) throw Error('no body'); rows.push(...parseMarketSumHtml(r.text, m.market)); } catch (e) { errors.push({step: 'list_html', market: m.market, page: p, error: String(e.message)}); break; } }
+    }
+    lists.pages.push(...pages); lists.source = lists.source && lists.source !== source ? 'mixed' : source;
+    const seen = new Set(); pool0.push(...rows.filter(r => !seen.has(r.code) && seen.add(r.code)).slice(0, m.take));
+    log(`목록 ${m.market} ${source} ${rows.length}`);
+  }
+  let poolCodes = [...new Map(pool0.filter(r => !notCommon(r.code, r.name)).map(r => [r.code, r])).values()];
+  // 목록을 둘 다 못 받으면: 지금 52종목 + 그 업종의 시가총액 큰 이웃(회사 요약의 industryCompareInfo · 실제 응답 확인됨)으로 후보를 만든다
+  if (!poolCodes.length && fallbackCodes.length) {
+    lists.source = 'peers';
+    const seen = new Map(fallbackCodes.map(code => [code, {code, name: null, market: null, endType: null, listValue: null}]));
+    await pool(fallbackCodes, concurrency, async code => { const r = await get(URLS.integration(code)); try { for (const p of parseIntegration(r.text).industryPeers) if (/^\d{6}$/.test(p.code) && !seen.has(p.code)) seen.set(p.code, {code: p.code, name: p.name, market: null, endType: null, listValue: null}); } catch (e) { errors.push({step: 'peers', code, error: String(e.message)}); } }, politeDelayMs);
+    poolCodes = [...seen.values()].filter(r => !notCommon(r.code, r.name ?? ''));
+    log(`목록 대신 이웃 ${poolCodes.length}`);
+  }
+  // ② 업종 이름표
+  const upjong = await get(URLS.upjong);
+  // ③ 회사 요약(시총·업종)
+  const stocks = {};
+  await pool(poolCodes, concurrency, async r => { stocks[r.code] = {list: r, integration: await get(URLS.integration(r.code))}; }, politeDelayMs);
+  log(`요약 ${Object.keys(stocks).length}`);
+  // ④ 시가총액 상위 300곳(보통주) — 결산 · 일봉
+  const ranked = rankByCap(stocks).slice(0, QUALITY52.poolTop);
+  await pool(ranked, concurrency, async ({code}) => {
+    const s = stocks[code];
+    const fj = await get(URLS.financeJson(code)); let finance = {kind: 'json', ...fj};
+    let ok = false; try { if (fj.text) { parseFinanceJson(fj.text); ok = true; } } catch { ok = false; }
+    if (!ok) { const fh = await get(URLS.financeHtml(code)); const at = fh.text?.indexOf('cop_analysis') ?? -1; finance = {kind: 'html', url: fh.url, status: fh.status, error: fh.error, jsonStatus: fj.status, jsonError: fj.error ?? (fj.text ? 'FINANCE_JSON_SHAPE' : null), text: at >= 0 ? fh.text.slice(at, fh.text.indexOf('</table>', at) + 8) : null, jsonText: fj.text ? fj.text.slice(0, 4000) : null}; }
+    s.finance = finance;
+    const fc = await get(URLS.fchart(code));
+    let rows = null; try { rows = fc.text ? parseFchartXml(fc.text).rows.map(r => [r.date.replaceAll('-', ''), r.open, r.high, r.low, r.close, r.volume]) : null; } catch (e) { errors.push({step: 'fchart', code, error: String(e.message)}); }
+    s.fchart = {url: fc.url, status: fc.status, fetchedAt: fc.fetchedAt ?? null, rawHash: fc.rawHash ?? null, error: fc.error ?? null, rows};
+  }, politeDelayMs);
+  log(`결산·일봉 ${ranked.length}`);
+  const failed = requests.filter(r => r.error || !(r.status >= 200 && r.status < 300)).length;
+  return {schema: BUNDLE_SCHEMA, now, collectedAt: new Date().toISOString(), lists, upjong, stocks, errors, requests: {total: requests.length, ok: requests.length - failed, failed, sample: requests.filter(r => r.error).slice(0, 20)}};
+}
+function rankByCap(stocks) {
+  const rows = [];
+  for (const [code, s] of Object.entries(stocks)) {
+    let integ = null; try { integ = s.integration?.text ? parseIntegration(s.integration.text) : null; } catch { integ = null; }
+    const name = integ?.name ?? s.list?.name ?? '';
+    if (!integ || !(integ.marketCapEok > 0) || notCommon(code, name) || (integ.endType && integ.endType !== 'stock')) continue;
+    rows.push({code, cap: integ.marketCapEok});
+  }
+  return rows.sort((a, b) => b.cap - a.cap || a.code.localeCompare(b.code)).map((r, i) => ({...r, capRank: i + 1}));
+}
+
+/** bundle → 후보 목록(네트워크 없음) */
+export function candidatesFromBundle(bundle, {sessions, asOf, input = null}) {
+  let upjong = []; try { upjong = bundle.upjong?.text ? parseUpjongList(bundle.upjong.text) : []; } catch { upjong = []; }
+  const sectorOf = new Map(upjong.map(u => [u.no, u.name]));
+  // 업종 이름표를 못 받았거나 빠진 번호: 지금 52종목의 업종 이름(입력)과 그 회사 요약의 업종 번호를 짝지어 채운다
+  for (const a of input?.assets ?? []) { try { const n = parseIntegration(bundle.stocks[a.code]?.integration?.text ?? '').industryCode; if (n && !sectorOf.has(n) && a.sector) sectorOf.set(n, a.sector); } catch { /* 요약 없음 */ } }
+  const ranks = new Map(rankByCap(bundle.stocks).map(r => [r.code, r.capRank]));
+  const out = [];
+  for (const [code, s] of Object.entries(bundle.stocks)) {
+    if (!ranks.has(code)) continue;
+    const integ = parseIntegration(s.integration.text);
+    let fin = null, finError = null;
+    try { fin = s.finance?.text ? (s.finance.kind === 'json' ? parseFinanceJson(s.finance.text) : parseCopAnalysisHtml(s.finance.text)) : null; } catch (e) { finError = String(e.message); }
+    const rows = (s.fchart?.rows ?? []).map(([d, o, h, l, c, v]) => ({date: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, open: o, high: h, low: l, close: c, volume: v}));
+    out.push({code, name: integ.name ?? s.list?.name, market: s.list?.market ?? null, endType: integ.endType, industryCode: integ.industryCode, sector: sectorOf.get(integ.industryCode) ?? null,
+      capRank: ranks.get(code), marketCapEok: integ.marketCapEok, eps: integ.eps, bps: integ.bps, per: integ.per, pbr: integ.pbr, dividendYield: integ.dividendYield,
+      metrics: financeMetrics(fin), financeSource: fin?.source ?? null, financeError: finError ?? s.finance?.error ?? null,
+      history: s.fchart?.rows ? historyCheck(rows, sessions, {asOf}) : null, rowsCount: rows.length, fchart: {url: s.fchart?.url ?? null, fetchedAt: s.fchart?.fetchedAt ?? null, rawHash: s.fchart?.rawHash ?? null}, _rows: rows});
+  }
+  return out.sort((a, b) => a.capRank - b.capRank);
+}
+
+/** 마지막으로 끝난 거래일(15:40 KST 이후면 그날 포함) */
+export function lastCompletedSession(sessions, now) {
+  const k = kst(now), day = k.slice(0, 10), clock = k.slice(11, 16);
+  return sessions.filter(d => d < day || (d === day && clock >= '15:40')).at(-1) ?? null;
+}
+
+/** bundle → proposal + 새 입력 (쓰지는 않음) */
+export function proposeFromBundle(bundle, {input, now}) {
+  const sessions = input.calendar.sessions, asOf = lastCompletedSession(sessions, bundle.now ?? now), day = kst(bundle.now ?? now).slice(0, 10);
+  const candidates = candidatesFromBundle(bundle, {sessions, asOf, input});
+  const sel = selectQuality52(candidates);
+  const id = `u2-quality52-${day}`;
+  const strip = c => { const {_rows, ...rest} = c; return rest; };
+  const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number(c.score.toFixed(4)), parts: Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])), debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c)}));
+  const nearMiss = sel.checked.filter(c => c.fails.length).slice(0, 80).map(c => ({code: c.code, name: c.name, capRank: c.capRank, sector: c.sector, fails: c.fails}));
+  const proposal = {schema: UNIVERSE_SCHEMA, id, createdAt: now, collectedAt: bundle.collectedAt, asOf, ok: sel.ok, rules: {...QUALITY52, applied: {step: sel.step, ...sel.rules}}, counts: sel.counts,
+    listSource: bundle.lists?.source ?? null, requests: bundle.requests, errors: (bundle.errors ?? []).slice(0, 50), financeSources: tallyBy(candidates, c => c.financeSource ?? (c.financeError ? 'error' : 'none')),
+    picked, notPicked: nearMiss, previous: {id: input.universe?.id ?? 'u1-sector52', codes: input.assets.map(a => a.code)},
+    overlap: {kept: picked.filter(p => p.carried).map(p => p.code), added: picked.filter(p => !p.carried).map(p => p.code), dropped: input.assets.filter(a => !picked.some(p => p.code === a.code)).map(a => a.code)}};
+  let next = null;
+  if (sel.ok) {
+    const histories = Object.fromEntries(sel.picked.map(c => [c.code, {rows: c._rows, url: c.fchart.url, fetchedAt: c.fchart.fetchedAt}]));
+    next = buildNextInput(input, sel.picked, {histories, now, proposalId: id});
+  }
+  return {proposal, next, candidates: candidates.map(strip)};
+}
+const tallyBy = (xs, f) => xs.reduce((m, x) => { const k = f(x); m[k] = (m[k] ?? 0) + 1; return m; }, {});
+
+export async function writeOutputs({rootDir, outDir, bundle, proposal, next}) {
+  const dir = path.join(rootDir, outDir); await fs.mkdir(dir, {recursive: true});
+  const bundleText = JSON.stringify(bundle), gz = zlib.gzipSync(Buffer.from(bundleText), {level: 9});
+  await fs.writeFile(path.join(dir, 'bundle.json.gz'), gz);
+  proposal.bundle = {file: path.join(outDir, 'bundle.json.gz'), sha256: sha(gz), bytes: gz.length};
+  if (next) { const text = JSON.stringify(next); await fs.writeFile(path.join(dir, 'next-input.json'), text); proposal.nextInput = {file: path.join(outDir, 'next-input.json'), sha256: sha(text), actualAsOf: next.actualAsOf, assets: next.assets.length}; }
+  await fs.writeFile(path.join(dir, 'proposal.json'), JSON.stringify(proposal, null, 1));
+  await fs.writeFile(path.join(rootDir, 'reports/atlas11/universe/latest.json'), JSON.stringify({id: proposal.id, dir: outDir, ok: proposal.ok, picked: proposal.picked.length, createdAt: proposal.createdAt, counts: proposal.counts}, null, 1));
+  return proposal;
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  const arg = k => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
+  const root = process.cwd(), now = arg('--now') ?? new Date().toISOString(), day = kst(now).slice(0, 10);
+  const outDir = arg('--out-dir') ?? `reports/atlas11/universe/${day}`;
+  const input = JSON.parse(await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'));
+  let bundle;
+  if (arg('--from-bundle')) bundle = JSON.parse(zlib.gunzipSync(await fs.readFile(arg('--from-bundle'))).toString('utf8'));
+  else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m)});
+  await fs.mkdir(path.join(root, 'reports/atlas11/universe'), {recursive: true});
+  let proposal, next;
+  try { ({proposal, next} = proposeFromBundle(bundle, {input, now})); }
+  catch (e) { proposal = {schema: UNIVERSE_SCHEMA, id: `u2-quality52-${day}`, createdAt: now, ok: false, error: String(e.stack ?? e.message).slice(0, 2000), picked: [], counts: null, requests: bundle.requests}; next = null; }
+  const written = await writeOutputs({rootDir: root, outDir, bundle, proposal, next});
+  console.log(JSON.stringify({id: written.id, ok: written.ok, picked: written.picked.length, counts: written.counts, requests: bundle.requests?.total, failed: bundle.requests?.failed, listSource: bundle.lists?.source, error: written.error ?? null}));
+  process.exitCode = written.ok ? 0 : 3;
+}
