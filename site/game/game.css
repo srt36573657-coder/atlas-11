@@ -159,16 +159,16 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .eye-h b { font-family: var(--sans); font-size: .8125rem; color: var(--pink); letter-spacing: 0; }
 .eye-h b.up { color: var(--up-soft); } .eye-h b.down { color: var(--down-soft); }
 .road, .spark { display: block; width: 100%; height: auto; margin-top: 3px; }
-/* 출목표 읽는 법 — 2026-10-03 크기 출목표(동그라미 하나 = 1%) */
-.road-key { margin: 5px 0 0; font-size: .75rem; line-height: 1.35; color: var(--pink2); }
-.road-key p { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0; }
-.road-key p + p { margin-top: 2px; }
-.road-key span { display: inline-flex; align-items: center; gap: 4px; }
-/* 내일 자리: 바카라판처럼 다음 칸을 깜빡인다(움직임 줄이기 설정이면 멈춤) */
-.road .ghost, .rk-i .ghost { animation: road-blink 1.6s ease-in-out infinite; }
-@keyframes road-blink { 0%, 100% { opacity: 1; } 50% { opacity: .22; } }
-@media (prefers-reduced-motion: reduce) { .road .ghost, .rk-i .ghost { animation: none; } }
-.rk-i { width: 12px; height: 12px; flex: none; } .rk-i.wide { width: 26px; }
+/* 출목표 읽는 법 + 힘 저울 — 2026-10-03 23:59 「쉬우면서 딱 봐도 판단되게」: 기호 둘(빨강·파랑) · 막대 하나 · 판단 한 줄 */
+.road-key { margin: 6px 0 0; color: var(--pink2); }
+.rk-how { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 0; font-size: .8125rem; line-height: 1.35; }
+.rk-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid; display: inline-block; flex: none; }
+.rk-dot.up { border-color: var(--up-soft); } .rk-dot.down { border-color: var(--down-soft); margin-left: 8px; }
+.rk-scale { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-family: var(--sans); font-weight: 700; font-size: .875rem; }
+.rk-scale .up { color: var(--up-soft); } .rk-scale .down { color: var(--down-soft); }
+.rk-scale .scale { flex: 1; height: 12px; display: block; }
+.rk-verdict { margin: 4px 0 0; text-align: center; font-family: var(--sans); font-weight: 800; font-size: 1rem; color: var(--pink); }
+.rk-verdict.up { color: var(--up-soft); } .rk-verdict.down { color: var(--down-soft); }
 .why3 { list-style: none; padding: 0; display: grid; gap: 3px; border-top: 1px solid rgba(122,92,32,.35); padding-top: 6px; }
 .why3 li { display: grid; grid-template-columns: 3.1em 1fr; gap: 6px; align-items: baseline; font-size: .875rem; line-height: 1.35; }
 .why3 li > span:first-child { font-family: var(--serif); font-weight: 800; font-size: .75rem; color: var(--gold-ink); letter-spacing: .04em; }
