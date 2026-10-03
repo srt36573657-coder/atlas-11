@@ -229,12 +229,15 @@ function prep(round, key) {
   return {...round, key, title: key === 'live' ? '실전 판' : '연습 판', deck, by: Object.fromEntries(deck.map(c => [c.code, c])), closeAt: Date.parse(round.target + `T${LOCK}:00+09:00`)};
 }
 /* 바카라 큰길(大路) + 크기 — 2026-10-03 23:22 사장님 「많이 움직이면 많이, 적게 움직이면 적게 · 바카라 표기 참 좋아」
-   2026-10-03 23:59 「어려워 · 쉬우면서 딱 봐도 판단되게」 → 기호를 둘로 줄임: 빨간 동그라미 = 1% 오름 · 파란 동그라미 = 1% 내림
+   23:59 「어려워 · 쉬우면서 딱 봐도 판단되게」 → 기호 둘: 빨간 동그라미 = 1% 오름 · 파란 동그라미 = 1% 내림
+   2026-10-04 00:10 「좋아 · 더 쉽게 더 지혜롭게」 → 힘 저울 두 줄(처음 15일 · 최근 5일), 맨 아래는 흐름 한 마디(9가지 중 하나)
    · 하루 등락을 1% 단위로 반올림한 수만큼 동그라미를 쌓는다(0.5% 안쪽 잔물결은 그리지 않음 — 주식의 점수 도표 Point & Figure 와 같은 생각)
    · 같은 쪽이 이어지면 아래로, 바뀌면 새 줄 · 여섯 칸이 차거나 막히면 오른쪽으로(용꼬리) — 바카라 큰길 규칙 그대로
-   · 표 아래 「힘 저울」: 20거래일 빨간 동그라미 수 대 파란 동그라미 수 → 어느 쪽 힘이 셌는지 한 줄
+   · 흐름 한 마디 = 「처음 15일 힘」 뒤에 「최근 5일 힘」을 이어 읽은 것: 오르다가 요즘 꺾임 · 내리다가 요즘 반등 …
+     (20일 전체가 아니라 앞뒤를 나눠야 「~하다가 요즘 ~」이 말 그대로 맞다 — 20일 전체로 읽으면 내리다 최근에 크게 오른 종목이 「계속 오르는 흐름」으로 잘못 읽힘)
+     지난 기록을 읽은 말 · 다음 날을 맞히는 말이 아님
    · 아주 크게 움직이는 종목(1%로 24줄 넘음)만 한 칸을 2%·3%·5% 로 키우고 「하나 = ○%」로 적는다 */
-const ROAD_UNITS = [0.01, 0.02, 0.03, 0.05], ROAD_MAX_COLS = 24;
+const ROAD_UNITS = [0.01, 0.02, 0.03, 0.05], ROAD_MAX_COLS = 24, ROAD_RECENT = 5;
 function roadLayout(rets, unit) {
   const cells = [], occ = new Set();
   let last = null, colStart = -1, col = 0, row = 0, turned = false;
@@ -249,6 +252,8 @@ function roadLayout(rets, unit) {
   });
   return {cells, cols: cells.length ? Math.max(...cells.map(c => c.col)) + 1 : 0};
 }
+/** 저울 하나: 빨간 수 대 파란 수 — 동그라미가 1개 이하면 잠잠 · 차이가 1개 또는 전체의 10% 이하면 비슷 */
+const balance = (up, down) => ({up, down, side: up + down <= 1 ? 'still' : Math.abs(up - down) <= Math.max(1, (up + down) * .1) ? 'flat' : up > down ? 'up' : 'down'});
 function roadOf(closes) {
   const rets = closes.slice(1).map((c, i) => c / closes[i] - 1);
   let unit = ROAD_UNITS[0], lay = roadLayout(rets, unit);
@@ -259,20 +264,27 @@ function roadOf(closes) {
   let len = 0, i = rets.length - 1;
   for (; i >= 0; i--) { const o = outcome(rets[i]); if (o === 'flat') continue; if (o !== side) break; len++; }
   const from = i + 1, ret = side ? closes.at(-1) / closes[from] - 1 : 0;
-  const upBeads = lay.cells.filter(c => c.side === 'up').length, downBeads = lay.cells.length - upBeads;
-  return {...lay, unit, upBeads, downBeads, ups, downs, flats, days: rets.length, streak: {side, len, ret}, total: closes.at(-1) / closes[0] - 1};
+  const count = (cells, sd) => cells.filter(c => c.side === sd).length, cut = rets.length - ROAD_RECENT;
+  const early = lay.cells.filter(c => c.day < cut), recent = lay.cells.filter(c => c.day >= cut);
+  const all = balance(count(lay.cells, 'up'), count(lay.cells, 'down'));
+  const before = balance(count(early, 'up'), count(early, 'down')), now = balance(count(recent, 'up'), count(recent, 'down'));
+  return {...lay, unit, all, before, now, beforeDays: Math.max(0, cut), recentDays: Math.min(ROAD_RECENT, rets.length), ups, downs, flats, days: rets.length, streak: {side, len, ret}, total: closes.at(-1) / closes[0] - 1};
 }
-/** 힘 저울: 빨간 동그라미 수 대 파란 동그라미 수 — 차이가 전체의 10% 이하(또는 1칸)면 비슷함 */
-function roadVerdict(road) {
-  const up = road.upBeads, down = road.downBeads, all = up + down;
-  const d = `${road.days}거래일 동안`;
-  if (!all) return {side: 'flat', text: `${road.days}거래일 내내 거의 안 움직임`};
-  if (Math.abs(up - down) <= Math.max(1, all * .1)) return {side: 'flat', text: `${d} 오른 힘과 내린 힘이 비슷함`};
-  return up > down ? {side: 'up', text: `${d} 오른 힘이 더 셈`} : {side: 'down', text: `${d} 내린 힘이 더 셈`};
+/** 흐름 한 마디: 처음 15일 힘 → 최근 5일 힘 (아홉 칸 표) — 글자 색은 최근 5일 쪽 */
+const STORY = {
+  up: {up: '계속 오르는 흐름', flat: '오르다가 요즘 쉬는 중', down: '오르다가 요즘 꺾임'},
+  flat: {up: '요즘은 오름 쪽', flat: '뚜렷한 쪽 없음', down: '요즘은 내림 쪽'},
+  down: {up: '내리다가 요즘 반등', flat: '내리다가 요즘 쉬는 중', down: '계속 내리는 흐름'}};
+function roadStory(road) {
+  const calm = x => x === 'still' ? 'flat' : x, b = road.before.side, n = road.now.side;
+  if (b === 'still' && n === 'still') return {side: 'flat', text: `${road.days}거래일 내내 거의 안 움직임`};
+  return {side: calm(n), text: STORY[calm(b)][calm(n)]};
 }
+/* 저울 옆 낱말 — 좁은 칸에 들어가게 짧게: 동그라미가 1개 이하(0.5칸 안쪽 잔물결뿐)면 「잠잠함」 */
+const WORD = {up: '오름이 셈', down: '내림이 셈', flat: '비슷함', still: '잠잠함'};
 function roadSvg(road) {
   const cs = 12, cols = Math.max(20, road.cols), unitPct = Math.round(road.unit * 100);
-  const svg = s('svg', {class: 'road', viewBox: `0 0 ${cols * cs} ${6 * cs}`, role: 'img', 'aria-label': `출목표 ${road.days}거래일 · 동그라미 하나 = ${unitPct}% 움직임: 빨간 동그라미 ${road.upBeads}개(오름) · 파란 동그라미 ${road.downBeads}개(내림) · ${roadVerdict(road).text}`});
+  const svg = s('svg', {class: 'road', viewBox: `0 0 ${cols * cs} ${6 * cs}`, role: 'img', 'aria-label': `출목표 ${road.days}거래일 · 동그라미 하나 = ${unitPct}% 움직임: 빨간 동그라미 ${road.all.up}개(오름) · 파란 동그라미 ${road.all.down}개(내림) · 처음 ${road.beforeDays}거래일 빨강 ${road.before.up}개 · 파랑 ${road.before.down}개 · 최근 ${road.recentDays}거래일 빨강 ${road.now.up}개 · 파랑 ${road.now.down}개 · ${roadStory(road).text}`});
   const grid = s('g', {stroke: 'rgba(122,92,32,.22)', 'stroke-width': .6});
   for (let c = 0; c <= cols; c++) grid.append(s('line', {x1: c * cs, y1: 0, x2: c * cs, y2: 6 * cs}));
   for (let r = 0; r <= 6; r++) grid.append(s('line', {x1: 0, y1: r * cs, x2: cols * cs, y2: r * cs}));
@@ -280,18 +292,23 @@ function roadSvg(road) {
   for (const c of road.cells) svg.append(s('circle', {class: 'bead', cx: c.col * cs + cs / 2, cy: c.row * cs + cs / 2, r: 4.3, fill: 'none', stroke: c.side === 'up' ? INK.up : INK.down, 'stroke-width': 1.9}));
   return svg;
 }
-/* 표 아래 한 덩어리: 읽는 법 한 줄 + 힘 저울(막대 하나와 한 줄 판단) */
+/* 표 아래: 힘 저울 두 줄(처음 15일 · 최근 5일) → 흐름 한 마디 → 작은 읽는 법
+   막대 = 그 기간의 빨간 동그라미 수 대 파란 동그라미 수 · 「비슷함」이면 막대를 옅게(이긴 쪽 없음) · 「잠잠함」이면 빈 막대 */
 function roadKey(road) {
-  const unitPct = Math.round(road.unit * 100), v = roadVerdict(road), all = road.upBeads + road.downBeads, w = 240;
-  const upW = all ? road.upBeads / all * w : w / 2;
-  const bar = s('svg', {class: 'scale', viewBox: `0 0 ${w} 10`, preserveAspectRatio: 'none', 'aria-hidden': 'true'},
-    s('rect', {x: 0, y: 1, width: w, height: 8, rx: 4, fill: 'rgba(122,92,32,.15)'}),
-    ...(road.upBeads ? [s('rect', {x: 0, y: 1, width: Math.max(4, upW - 1), height: 8, rx: 4, fill: INK.up})] : []),
-    ...(road.downBeads ? [s('rect', {x: Math.min(w - 4, upW + 1), y: 1, width: Math.max(4, w - upW - 1), height: 8, rx: 4, fill: INK.down})] : []));
+  const unitPct = Math.round(road.unit * 100), story = roadStory(road), w = 240;
+  const bar = b => {
+    const all = b.up + b.down, upW = all ? b.up / all * w : w / 2, show = b.side !== 'still', dim = b.side === 'flat' ? .5 : null;
+    return s('svg', {class: 'scale', viewBox: `0 0 ${w} 10`, preserveAspectRatio: 'none', 'aria-hidden': 'true'},
+      s('title', {}, `빨간 동그라미 ${b.up}개 · 파란 동그라미 ${b.down}개`),
+      s('rect', {x: 0, y: 1, width: w, height: 8, rx: 4, fill: 'rgba(122,92,32,.15)'}),
+      ...(show && b.up ? [s('rect', {x: 0, y: 1, width: Math.max(4, upW - (b.down ? 1 : 0)), height: 8, rx: 4, fill: INK.up, 'fill-opacity': dim})] : []),
+      ...(show && b.down ? [s('rect', {x: b.up ? Math.min(w - 4, upW + 1) : 0, y: 1, width: Math.max(4, w - upW - (b.up ? 1 : 0)), height: 8, rx: 4, fill: INK.down, 'fill-opacity': dim})] : []));
+  };
+  const row = (label, b) => h('div', {class: 'rk-row', 'data-up': String(b.up), 'data-down': String(b.down), 'data-side': b.side}, h('span', {class: 'rk-lab'}, label), bar(b), h('b', {class: 'rk-word ' + b.side}, WORD[b.side]));
   return h('div', {class: 'road-key'},
-    h('p', {class: 'rk-how'}, h('span', {class: 'rk-dot up', 'aria-hidden': 'true'}), `빨강 = ${unitPct}% 오름`, h('span', {class: 'rk-dot down', 'aria-hidden': 'true'}), `파랑 = ${unitPct}% 내림`),
-    h('div', {class: 'rk-scale'}, h('span', {class: 'up'}, `${road.upBeads}칸`), bar, h('span', {class: 'down'}, `${road.downBeads}칸`)),
-    h('p', {class: 'rk-verdict ' + v.side}, v.text));
+    road.beforeDays ? row(`처음 ${road.beforeDays}일`, road.before) : null, row(`최근 ${road.recentDays}일`, road.now),
+    h('p', {class: 'rk-story ' + story.side}, story.text),
+    h('p', {class: 'rk-note'}, h('span', {}, `동그라미 하나 = ${unitPct}% · 빨강 오름 · 파랑 내림`), h('span', {}, '막대 길이 = 동그라미 개수')));
 }
 function sparkSvg(closes, total) {
   const w = 240, hh = 46, lo = Math.min(...closes), hi = Math.max(...closes), pad = (hi - lo) * .12 || 1;

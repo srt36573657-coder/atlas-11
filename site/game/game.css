@@ -159,16 +159,18 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .eye-h b { font-family: var(--sans); font-size: .8125rem; color: var(--pink); letter-spacing: 0; }
 .eye-h b.up { color: var(--up-soft); } .eye-h b.down { color: var(--down-soft); }
 .road, .spark { display: block; width: 100%; height: auto; margin-top: 3px; }
-/* 출목표 읽는 법 + 힘 저울 — 2026-10-03 23:59 「쉬우면서 딱 봐도 판단되게」: 기호 둘(빨강·파랑) · 막대 하나 · 판단 한 줄 */
-.road-key { margin: 6px 0 0; color: var(--pink2); }
-.rk-how { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 0; font-size: .8125rem; line-height: 1.35; }
-.rk-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid; display: inline-block; flex: none; }
-.rk-dot.up { border-color: var(--up-soft); } .rk-dot.down { border-color: var(--down-soft); margin-left: 8px; }
-.rk-scale { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-family: var(--sans); font-weight: 700; font-size: .875rem; }
-.rk-scale .up { color: var(--up-soft); } .rk-scale .down { color: var(--down-soft); }
-.rk-scale .scale { flex: 1; height: 12px; display: block; }
-.rk-verdict { margin: 4px 0 0; text-align: center; font-family: var(--sans); font-weight: 800; font-size: 1rem; color: var(--pink); }
-.rk-verdict.up { color: var(--up-soft); } .rk-verdict.down { color: var(--down-soft); }
+/* 출목표 아래 — 2026-10-04 00:10 「더 쉽게 더 지혜롭게」: 힘 저울 두 줄(처음 15일 · 최근 5일) → 흐름 한 마디 → 작은 읽는 법 */
+.road-key { margin: 8px 0 0; color: var(--pink2); }
+.rk-row { display: grid; grid-template-columns: 4.3rem 1fr 4.3rem; align-items: center; gap: 8px; margin-top: 4px; }
+.rk-lab { font-size: .8125rem; font-weight: 700; color: var(--gold-ink); white-space: nowrap; }
+.rk-row .scale { width: 100%; height: 12px; display: block; }
+.rk-word { font-family: var(--sans); font-size: .875rem; font-weight: 800; text-align: right; white-space: nowrap; color: var(--pink2); }
+.rk-word.up { color: var(--up-soft); } .rk-word.down { color: var(--down-soft); }
+.rk-story { margin: 8px 0 0; text-align: center; font-family: var(--sans); font-weight: 800; font-size: 1.125rem; color: var(--pink); word-break: keep-all; text-wrap: balance; }
+.rk-story.up { color: var(--up-soft); } .rk-story.down { color: var(--down-soft); }
+/* 읽는 법 두 줄(동그라미 뜻 · 막대 뜻) — 좁은 폰(320~360px)에서도 낱말 중간에서 끊기지 않게 줄마다 따로 */
+.rk-note { margin: 3px 0 0; text-align: center; font-size: .75rem; line-height: 1.4; color: var(--pink2); opacity: .85; word-break: keep-all; text-wrap: balance; }
+.rk-note > span { display: block; }
 .why3 { list-style: none; padding: 0; display: grid; gap: 3px; border-top: 1px solid rgba(122,92,32,.35); padding-top: 6px; }
 .why3 li { display: grid; grid-template-columns: 3.1em 1fr; gap: 6px; align-items: baseline; font-size: .875rem; line-height: 1.35; }
 .why3 li > span:first-child { font-family: var(--serif); font-weight: 800; font-size: .75rem; color: var(--gold-ink); letter-spacing: .04em; }

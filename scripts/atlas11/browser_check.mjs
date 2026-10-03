@@ -380,16 +380,24 @@ async function gameCheck() {
       const s0 = await st();
       check(`게임 ${label} ${when}: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 ${tomorrowDate}`,
         !errors.length && s0.cards === 52 && s0.tabs === '내일,게임,성적' && s0.center === '이정훈 대표 방식' && /원문 기다림/.test(s0.centerState) && s0.aux === '켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리' && s0.marks.length >= 1 && s0.marks.every(d => d === tomorrowDate), {errors: errors.slice(0, 3), ...s0, marks: s0.marks.length, stored: undefined});
-      // 크기 출목표(2026-10-03 23:22 사장님 「많이 움직이면 많이, 적게 움직이면 적게」 · 23:59 「어려워 · 쉬우면서 딱 봐도 판단되게」):
-      //   첫 카드의 빨간 동그라미 수 = 오른 날마다 반올림(등락 ÷ 한 칸)의 합 · 파란 것도 같음 · 기호는 빨강·파랑 둘뿐 · 힘 저울 숫자가 동그라미 수와 같음 · 판단 한 줄
+      // 크기 출목표(2026-10-03 23:22 「많이 움직이면 많이」 · 23:59 「쉬우면서 딱 봐도 판단되게」 · 10-04 00:10 「더 쉽게 더 지혜롭게」):
+      //   첫 카드: 동그라미 수 = 날마다 반올림(|등락| ÷ 한 칸)의 합 · 기호 한 모양 · 힘 저울 두 줄(처음 15일 · 최근 5일)의 빨강·파랑 수와 낱말
+      //   · 막대 색(비슷함 = 옅게 · 잠잠함 = 빈 막대) · 흐름 한 마디(처음 → 최근, 아홉 칸 표) · 글자 넘침 0
       {
-        const rd = await page.evaluate(() => { const c = document.querySelector('#bigBox .card'), svg = c?.querySelector('svg.road'), k = c?.querySelector('.road-key'); const beads = [...(svg?.querySelectorAll('circle') ?? [])]; return {code: c?.querySelector('[data-ident]')?.textContent.trim(), label: svg?.getAttribute('aria-label') ?? '', circles: beads.length, kinds: [...new Set(beads.map(b => (b.getAttribute('fill') ?? '') + '|' + (b.getAttribute('stroke-dasharray') ?? '') + '|' + b.getAttribute('r')))].length, scale: [...(k?.querySelectorAll('.rk-scale > span') ?? [])].map(x => x.textContent.trim()), verdict: k?.querySelector('.rk-verdict')?.textContent.trim() ?? '', how: k?.querySelector('.rk-how')?.textContent ?? ''}; });
+        const rd = await page.evaluate(() => { const c = document.querySelector('#bigBox .card'), svg = c?.querySelector('svg.road'), k = c?.querySelector('.road-key'); const beads = [...(svg?.querySelectorAll('circle') ?? [])]; return {code: c?.querySelector('[data-ident]')?.textContent.trim(), label: svg?.getAttribute('aria-label') ?? '', circles: beads.length, kinds: [...new Set(beads.map(b => (b.getAttribute('fill') ?? '') + '|' + (b.getAttribute('stroke-dasharray') ?? '') + '|' + b.getAttribute('r')))].length, rows: [...(k?.querySelectorAll('.rk-row') ?? [])].map(r => ({lab: r.querySelector('.rk-lab')?.textContent.trim(), up: Number(r.dataset.up), down: Number(r.dataset.down), word: r.querySelector('.rk-word')?.textContent.trim(), paint: [...r.querySelectorAll('svg.scale rect')].slice(1).map(x => x.getAttribute('fill-opacity') ?? '1')})), story: k?.querySelector('.rk-story')?.textContent.trim() ?? '', note: k?.querySelector('.rk-note')?.textContent ?? '', over: [...(k?.querySelectorAll('.rk-lab, .rk-word, .rk-story, .rk-note > span') ?? [])].filter(e => e.scrollWidth > e.clientWidth + 1).map(e => e.textContent.trim())}; });
         const unit = Number(/동그라미 하나 = (\d+)%/.exec(rd.label)?.[1]) / 100, st = (game.live.stocks ?? []).find(x => x.code === rd.code);
-        const rets = st ? st.c.slice(1).map((v, i) => v / st.c[i] - 1) : [], n = r => Math.round(Math.abs(r) / unit);
-        const up = rets.filter(r => r > 0).reduce((a, r) => a + n(r), 0), down = rets.filter(r => r < 0).reduce((a, r) => a + n(r), 0);
-        const D = rets.length, verdict = !(up + down) ? `${D}거래일 내내 거의 안 움직임` : Math.abs(up - down) <= Math.max(1, (up + down) * .1) ? `${D}거래일 동안 오른 힘과 내린 힘이 비슷함` : up > down ? `${D}거래일 동안 오른 힘이 더 셈` : `${D}거래일 동안 내린 힘이 더 셈`;
-        check(`게임 ${label} ${when}: 출목표 — 하나 = ${unit * 100}% · 빨강 ${up} + 파랑 ${down} = 동그라미 ${rd.circles} · 기호 ${rd.kinds}가지(같은 모양) · 힘 저울 ${rd.scale.join(' 대 ')} · 「${rd.verdict}」`,
-          Boolean(st) && unit > 0 && rd.circles === up + down && rd.kinds === 1 && rd.scale.join() === `${up}칸,${down}칸` && rd.verdict === verdict && rd.how.includes(`빨강 = ${unit * 100}% 오름`) && rd.how.includes(`파랑 = ${unit * 100}% 내림`), rd);
+        const rets = st ? st.c.slice(1).map((v, i) => v / st.c[i] - 1) : [], n = r => Math.round(Math.abs(r) / unit), D = rets.length;
+        const sum = (rs, sign) => rs.filter(r => sign > 0 ? r > 0 : r < 0).reduce((a, r) => a + n(r), 0);
+        const bal = (u, d) => u + d <= 1 ? 'still' : Math.abs(u - d) <= Math.max(1, (u + d) * .1) ? 'flat' : u > d ? 'up' : 'down';
+        const side = rs => { const o = {up: sum(rs, 1), down: sum(rs, -1)}; o.side = bal(o.up, o.down); return o; };
+        const A = side(rets), E = side(rets.slice(0, Math.max(0, D - 5))), N = side(rets.slice(-5)), calm = x => x === 'still' ? 'flat' : x;
+        const WORD = {up: '오름이 셈', down: '내림이 셈', flat: '비슷함', still: '잠잠함'}, TABLE = {up: {up: '계속 오르는 흐름', flat: '오르다가 요즘 쉬는 중', down: '오르다가 요즘 꺾임'}, flat: {up: '요즘은 오름 쪽', flat: '뚜렷한 쪽 없음', down: '요즘은 내림 쪽'}, down: {up: '내리다가 요즘 반등', flat: '내리다가 요즘 쉬는 중', down: '계속 내리는 흐름'}};
+        const story = E.side === 'still' && N.side === 'still' ? `${D}거래일 내내 거의 안 움직임` : TABLE[calm(E.side)][calm(N.side)];
+        const paintOk = (row, x) => x.side === 'still' ? row.paint.length === 0 : row.paint.length === (x.up ? 1 : 0) + (x.down ? 1 : 0) && row.paint.every(o => o === (x.side === 'flat' ? '0.5' : '1'));
+        const rowOk = (row, lab, x) => Boolean(row) && row.lab === lab && row.up === x.up && row.down === x.down && row.word === WORD[x.side] && paintOk(row, x);
+        const rowsOk = rd.rows.length === 2 && rowOk(rd.rows[0], `처음 ${D - 5}일`, E) && rowOk(rd.rows[1], '최근 5일', N);
+        check(`게임 ${label} ${when}: 출목표 — 하나 = ${unit * 100}% · 동그라미 ${rd.circles} = 빨강 ${A.up} + 파랑 ${A.down} · 기호 ${rd.kinds}가지 · 처음 ${D - 5}일 「${WORD[E.side]}」(${E.up} 대 ${E.down}) · 최근 5일 「${WORD[N.side]}」(${N.up} 대 ${N.down}) · 막대 색 맞음 · 흐름 「${rd.story}」 · 넘친 글자 ${rd.over.length}`,
+          Boolean(st) && unit > 0 && rd.circles === A.up + A.down && rd.kinds === 1 && rowsOk && rd.story === story && rd.note.includes(`동그라미 하나 = ${unit * 100}%`) && rd.note.includes('막대 길이 = 동그라미 개수') && rd.over.length === 0, rd);
       }
       if (when === 'open') {
         await page.click('#putLev'); await page.click('#next'); await page.click('#putInv'); await page.waitForTimeout(150);
