@@ -160,8 +160,14 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .eye-h b.up { color: var(--up-soft); } .eye-h b.down { color: var(--down-soft); }
 .road, .spark { display: block; width: 100%; height: auto; margin-top: 3px; }
 /* 출목표 읽는 법 — 2026-10-03 크기 출목표(동그라미 하나 = 1%) */
-.road-key { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 5px 0 0; font-size: .75rem; line-height: 1.35; color: var(--pink2); }
-.road-key span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.road-key { margin: 5px 0 0; font-size: .75rem; line-height: 1.35; color: var(--pink2); }
+.road-key p { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0; }
+.road-key p + p { margin-top: 2px; }
+.road-key span { display: inline-flex; align-items: center; gap: 4px; }
+/* 내일 자리: 바카라판처럼 다음 칸을 깜빡인다(움직임 줄이기 설정이면 멈춤) */
+.road .ghost, .rk-i .ghost { animation: road-blink 1.6s ease-in-out infinite; }
+@keyframes road-blink { 0%, 100% { opacity: 1; } 50% { opacity: .22; } }
+@media (prefers-reduced-motion: reduce) { .road .ghost, .rk-i .ghost { animation: none; } }
 .rk-i { width: 12px; height: 12px; flex: none; } .rk-i.wide { width: 26px; }
 .why3 { list-style: none; padding: 0; display: grid; gap: 3px; border-top: 1px solid rgba(122,92,32,.35); padding-top: 6px; }
 .why3 li { display: grid; grid-template-columns: 3.1em 1fr; gap: 6px; align-items: baseline; font-size: .875rem; line-height: 1.35; }
@@ -171,7 +177,7 @@ h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
 .abet b { color: var(--pink); }
 .c-bot { display: flex; justify-content: flex-end; }
 .c-bot .idx { transform: rotate(180deg); }
-.stamp { position: absolute; z-index: 3; left: 50%; top: 40%; transform: translate(-50%, -50%) rotate(-8deg); padding: 6px 14px; border: 3px solid currentColor; border-radius: 8px; font-family: var(--serif); font-weight: 800; font-size: 1.15rem; text-align: center; background: rgba(246,239,227,.82); line-height: 1.2; }
+.stamp { position: absolute; z-index: 3; left: 50%; top: 64%; transform: translate(-50%, -50%) rotate(-8deg); padding: 6px 14px; border: 3px solid currentColor; border-radius: 8px; font-family: var(--serif); font-weight: 800; font-size: 1.15rem; text-align: center; background: rgba(246,239,227,.82); line-height: 1.2; }
 .stamp small { display: block; font-size: .75rem; font-family: var(--sans); font-weight: 700; }
 .stamp.up { color: var(--up-soft); } .stamp.down { color: var(--down-soft); } .stamp.flat { color: var(--tie-ink); }
 .stamp.win { color: var(--up-soft); } .stamp.lose { color: var(--down-soft); } .stamp.push { color: var(--tie-ink); }

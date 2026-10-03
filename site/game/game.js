@@ -232,73 +232,92 @@ function prep(round, key) {
    하루 움직임을 「동그라미 하나 = 1%」 알로 바꿔 쌓는다(주식의 점수 도표 Point & Figure 와 같은 생각 · 크게 움직인 날은 알이 많다)
    · 같은 쪽이 이어지면 아래로, 바뀌면 새 줄 · 여섯 칸이 차거나 막히면 오른쪽으로(용꼬리) — 바카라 큰길 규칙 그대로
    · 같은 날 알은 가는 줄로 꿴다(꼬치 하나 = 하루) · 반 알(0.5%)이 안 되는 움직임은 작은 동그라미 하나 · 보합(±0.1%)은 앞 알에 초록 빗금
-   · 줄이 24칸을 넘을 만큼 크게 움직인 종목은 한 알을 2%·3%·5% 로 키우고, 표 위에 「동그라미 하나 = ○%」를 적는다 */
-const ROAD_UNITS = [0.01, 0.02, 0.03, 0.05], ROAD_MAX_COLS = 24;
-function roadLayout(rets, unit) {
+   · 줄이 24칸을 넘을 만큼 크게 움직인 종목은 한 알을 2%·3%·5% 로 키우고, 표 아래 「하나 = ○%」를 적는다(카드끼리 같은 잣대로 비교되게 1%가 기본)
+   2026-10-03 23:37 사장님 「더 지혜롭게 더 스마트하게」
+   · 자기 잣대: 그 종목의 「평소 하루 움직임」(20거래일 등락 크기의 가운데 값 · 0.3% 아래면 0.3%)의 3배를 넘은 날은 알을 꽉 채운다 — 같은 3%라도 조용한 종목에선 큰일
+     (2배로 하면 날의 20%·알의 43%가 꽉 차 「특별한 날」 뜻이 흐려짐 · 3배면 날의 8.5% — 52종목 20거래일 실측, 종목마다 가운데 1일)
+   · 다음 날 자리: 다음 알이 들어갈 칸에 그 날(목표일) ATLAS 생각을 깜빡이는 점선 알로 — 바카라판이 다음 자리를 깜빡여 보여 주듯 · ATLAS 도 반반(근소)이면 회색
+   · 결과가 나오면 그 자리에 진짜 알(크기만큼)이 금테를 두르고 들어간다 */
+const ROAD_UNITS = [0.01, 0.02, 0.03, 0.05], ROAD_MAX_COLS = 24, ROAD_BIG = 3, ROAD_NORMAL_FLOOR = 0.003;
+function roadLayout(rets, unit, normal) {
   const cells = [], occ = new Set();
   let last = null, colStart = -1, col = 0, row = 0, turned = false, pendingTies = 0;
   rets.forEach((r, day) => {
     const o = outcome(r);
     if (o === 'flat') { if (cells.length) cells.at(-1).ties++; else pendingTies++; return; }
-    const n = Math.round(Math.abs(r) / unit), small = n === 0;
+    const n = Math.round(Math.abs(r) / unit), small = n === 0, big = Math.abs(r) >= ROAD_BIG * normal;
     for (let k = 0; k < Math.max(1, n); k++) {
       if (o !== last) { colStart++; while (occ.has(colStart + ',0')) colStart++; col = colStart; row = 0; turned = false; }
       else if (!turned && row < 5 && !occ.has(col + ',' + (row + 1))) row++;
       else { col++; turned = true; }
-      occ.add(col + ',' + row); cells.push({col, row, side: o, day, small, ties: pendingTies}); pendingTies = 0; last = o;
+      occ.add(col + ',' + row); cells.push({col, row, side: o, day, small, big, ties: pendingTies}); pendingTies = 0; last = o;
     }
   });
   return {cells, cols: cells.length ? Math.max(...cells.map(c => c.col)) + 1 : 0};
 }
 function roadOf(closes) {
   const rets = closes.slice(1).map((c, i) => c / closes[i] - 1);
-  let unit = ROAD_UNITS[0], lay = roadLayout(rets, unit);
-  for (const u of ROAD_UNITS.slice(1)) { if (lay.cols <= ROAD_MAX_COLS) break; unit = u; lay = roadLayout(rets, u); }
+  const abs = rets.map(Math.abs).sort((a, b) => a - b), mid = abs.length ? (abs[(abs.length - 1) >> 1] + abs[abs.length >> 1]) / 2 : 0, normal = Math.max(ROAD_NORMAL_FLOOR, mid);
+  let unit = ROAD_UNITS[0], lay = roadLayout(rets, unit, normal);
+  for (const u of ROAD_UNITS.slice(1)) { if (lay.cols <= ROAD_MAX_COLS) break; unit = u; lay = roadLayout(rets, u, normal); }
   const ups = rets.filter(r => outcome(r) === 'up').length, downs = rets.filter(r => outcome(r) === 'down').length, flats = rets.length - ups - downs;
   // 지금 이어지는 줄(보합은 줄을 끊지 않는다)과 그 동안의 등락 — 날 수로 센다
   const side = [...rets].reverse().map(outcome).find(o => o !== 'flat') ?? null;
   let len = 0, i = rets.length - 1;
   for (; i >= 0; i--) { const o = outcome(rets[i]); if (o === 'flat') continue; if (o !== side) break; len++; }
   const from = i + 1, ret = side ? closes.at(-1) / closes[from] - 1 : 0;
-  return {...lay, unit, beads: lay.cells.length, ups, downs, flats, days: rets.length, streak: {side, len, ret}, total: closes.at(-1) / closes[0] - 1};
+  const bigDays = rets.filter(r => outcome(r) !== 'flat' && Math.abs(r) >= ROAD_BIG * normal).length;
+  return {...lay, rets, unit, normal, bigDays, beads: lay.cells.length, ups, downs, flats, days: rets.length, streak: {side, len, ret}, total: closes.at(-1) / closes[0] - 1};
 }
-function roadSvg(road) {
-  const cs = 12, cols = Math.max(20, road.cols), unitPct = Math.round(road.unit * 100);
-  const svg = s('svg', {class: 'road', viewBox: `0 0 ${cols * cs} ${6 * cs}`, role: 'img', 'aria-label': `출목표 ${road.days}거래일 · 동그라미 하나 = ${unitPct}%: 오른 날 ${road.ups}일, 내린 날 ${road.downs}일, 보합 ${road.flats}일, 동그라미 ${road.beads}개`});
+/** opt.next: 결과가 나온 다음 날 등락(있으면 진짜 알 · 금테) · opt.lean: 'up' | 'down' | 'even'(ATLAS 반반) | null — 결과 전 내일 자리 */
+function roadSvg(road, {next = null, lean = null, forecastDate = null, day = '다음 날'} = {}) {
+  const cs = 12, unitPct = Math.round(road.unit * 100), extra = next != null ? next : lean === 'up' ? road.unit : lean === 'down' ? -road.unit : lean === 'even' ? road.unit : null;
+  const lay = extra == null ? road : roadLayout([...road.rets, extra], road.unit, road.normal), D = road.rets.length;
+  const cols = Math.max(20, lay.cols), normalPct = (road.normal * 100).toFixed(1);
+  const say = next != null ? ` · 다음 날 결과 ${pct(next)}` : lean === 'up' || lean === 'down' ? ` · ${day} 자리 ATLAS ${lean === 'up' ? '오를 쪽' : '내릴 쪽'}` : lean === 'even' ? ` · ${day} 자리 ATLAS 반반` : '';
+  const svg = s('svg', {class: 'road', viewBox: `0 0 ${cols * cs} ${6 * cs}`, role: 'img', 'aria-label': `출목표 ${road.days}거래일 · 동그라미 하나 = ${unitPct}%: 오른 날 ${road.ups}일, 내린 날 ${road.downs}일, 보합 ${road.flats}일, 동그라미 ${road.beads}개 · 평소 하루 ${normalPct}%의 ${ROAD_BIG}배를 넘은 날 ${road.bigDays}일(꽉 찬 알)${say}`});
   const grid = s('g', {stroke: 'rgba(122,92,32,.22)', 'stroke-width': .6});
   for (let c = 0; c <= cols; c++) grid.append(s('line', {x1: c * cs, y1: 0, x2: c * cs, y2: 6 * cs}));
   for (let r = 0; r <= 6; r++) grid.append(s('line', {x1: 0, y1: r * cs, x2: cols * cs, y2: r * cs}));
   svg.append(grid);
-  const at = c => [c.col * cs + cs / 2, c.row * cs + cs / 2], rad = c => c.small ? 2.5 : 4.3, ink = c => c.side === 'up' ? INK.up : INK.down;
+  const ghostOf = c => next == null && c.day === D, freshOf = c => next != null && c.day === D;
+  const at = c => [c.col * cs + cs / 2, c.row * cs + cs / 2], rad = c => c.small && !ghostOf(c) ? 2.5 : 4.3;
+  const ink = c => ghostOf(c) && lean === 'even' ? '#8a8172' : c.side === 'up' ? INK.up : INK.down;
   // 꼬치: 같은 날 이웃 알을 테두리에서 테두리까지 가는 줄로 잇는다
-  const thread = s('g', {'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: .75});
-  for (let i = 1; i < road.cells.length; i++) {
-    const a = road.cells[i - 1], b = road.cells[i];
-    if (a.day !== b.day) continue;
+  const thread = s('g', {class: 'thread', 'stroke-width': 1.3, 'stroke-linecap': 'round', opacity: .75});
+  for (let i = 1; i < lay.cells.length; i++) {
+    const a = lay.cells[i - 1], b = lay.cells[i];
+    if (a.day !== b.day || ghostOf(a)) continue;
     const [x1, y1] = at(a), [x2, y2] = at(b), d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d;
     thread.append(s('line', {x1: x1 + ux * rad(a), y1: y1 + uy * rad(a), x2: x2 - ux * rad(b), y2: y2 - uy * rad(b), stroke: ink(a)}));
   }
   svg.append(thread);
-  for (const c of road.cells) {
+  for (const c of lay.cells) {
     const [x, y] = at(c), r = rad(c);
-    svg.append(s('circle', {cx: x, cy: y, r, fill: 'none', stroke: ink(c), 'stroke-width': c.small ? 1.5 : 1.9}));
+    if (ghostOf(c)) { const g = s('circle', {class: 'ghost', cx: x, cy: y, r, fill: 'none', stroke: ink(c), 'stroke-width': 1.6, 'stroke-dasharray': '2.2 1.6'}); if (forecastDate) g.setAttribute('data-forecast-date', forecastDate); svg.append(g); continue; }
+    if (freshOf(c)) svg.append(s('circle', {class: 'halo', cx: x, cy: y, r: r + 1.6, fill: 'none', stroke: '#c9a75e', 'stroke-width': 1.2}));
+    const solid = c.big && !c.small;
+    svg.append(s('circle', {class: 'bead' + (solid ? ' solid' : '') + (freshOf(c) ? ' fresh' : ''), cx: x, cy: y, r, fill: solid ? ink(c) : 'none', stroke: ink(c), 'stroke-width': c.small ? 1.5 : 1.9}));
     if (c.ties) svg.append(s('line', {x1: x - 4.5, y1: y + 4.5, x2: x + 4.5, y2: y - 4.5, stroke: '#2f8f6d', 'stroke-width': 1.8, 'stroke-linecap': 'round'}));
   }
   return svg;
 }
-/* 출목표 읽는 법 한 줄 — 그림 기호와 같은 모양으로 */
-function roadKey(road) {
+/* 출목표 읽는 법 — 그림 기호와 같은 모양으로 두 줄(크기 · 자기 잣대와 내일) */
+function roadKey(road, {next = null, lean = null, day = '다음 날'} = {}) {
   const unitPct = Math.round(road.unit * 100), mini = (kind) => {
     const wide = kind === 'skewer', v = s('svg', {class: 'rk-i' + (wide ? ' wide' : ''), viewBox: wide ? '0 0 26 12' : '0 0 12 12', 'aria-hidden': 'true'});
     if (kind === 'one') v.append(s('circle', {cx: 6, cy: 6, r: 4.3, fill: 'none', stroke: INK.up, 'stroke-width': 1.9}));
     if (kind === 'skewer') { v.append(s('line', {x1: 10.3, y1: 6, x2: 15.7, y2: 6, stroke: INK.down, 'stroke-width': 1.3, opacity: .75})); for (const cx of [6, 20]) v.append(s('circle', {cx, cy: 6, r: 4.3, fill: 'none', stroke: INK.down, 'stroke-width': 1.9})); }
     if (kind === 'small') v.append(s('circle', {cx: 6, cy: 6, r: 2.5, fill: 'none', stroke: INK.up, 'stroke-width': 1.5}));
+    if (kind === 'solid') v.append(s('circle', {cx: 6, cy: 6, r: 4.3, fill: INK.down, stroke: INK.down, 'stroke-width': 1.9}));
+    if (kind === 'ghost') v.append(s('circle', {class: 'ghost', cx: 6, cy: 6, r: 4.3, fill: 'none', stroke: lean === 'even' ? '#8a8172' : lean === 'down' ? INK.down : INK.up, 'stroke-width': 1.6, 'stroke-dasharray': '2.2 1.6'}));
+    if (kind === 'fresh') { v.append(s('circle', {cx: 6, cy: 6, r: 5.6, fill: 'none', stroke: '#c9a75e', 'stroke-width': 1.2})); v.append(s('circle', {cx: 6, cy: 6, r: 3.6, fill: 'none', stroke: INK.up, 'stroke-width': 1.6})); }
     return v;
   };
-  return h('p', {class: 'road-key'},
-    h('span', null, mini('one'), `하나 = ${unitPct}%`),
-    h('span', null, mini('skewer'), '꿴 줄 = 같은 날'),
-    h('span', null, mini('small'), `작은 것 = ${unitPct / 2}% 안쪽`));
+  const tail = next != null ? h('span', null, mini('fresh'), '금테 = 방금 나온 결과') : lean === 'even' ? h('span', null, mini('ghost'), `회색 깜빡임 = ${day} ATLAS 반반`) : lean ? h('span', null, mini('ghost'), `깜빡임 = ${day} ATLAS 생각`) : null;
+  return h('div', {class: 'road-key'},
+    h('p', null, h('span', null, mini('one'), `하나 = ${unitPct}%`), h('span', null, mini('skewer'), '꿴 줄 = 같은 날'), h('span', null, mini('small'), `작은 것 = ${unitPct / 2}% 안쪽`)),
+    h('p', null, h('span', null, mini('solid'), `꽉 찬 것 = 평소 하루(${(road.normal * 100).toFixed(1)}%)의 ${ROAD_BIG}배 넘은 날`), ...(tail ? [tail] : [])));
 }
 function sparkSvg(closes, total) {
   const w = 240, hh = 46, lo = Math.min(...closes), hi = Math.max(...closes), pad = (hi - lo) * .12 || 1;
@@ -494,13 +513,15 @@ function renderQuads() {
 function bigCard(c) {
   const sd = SUITS[c.suit], R0 = R(), ab = atlasBets(R0, S.method).find(x => x.code === c.code), res = revealed() ? c.actual : null, pp = Math.round(c.p * 100);
   const fside = c.f.sel === 'up' ? '오를 쪽' : c.f.sel === 'down' ? '내릴 쪽' : '보합 쪽', road = c.road, st = road.streak;
+  // 내일 자리: 결과가 나왔으면 진짜 알 · 아니면 ATLAS 생각(근소하면 반반 · 보합 선택이면 자리 없음)
+  const roadOpt = res ? {next: res.ret, day: kday(R0.target)} : {lean: c.f.close ? 'even' : c.f.sel === 'up' || c.f.sel === 'down' ? c.f.sel : null, forecastDate: S.round === 'live' ? R0.target : null, day: kday(R0.target)};
   const wkUps = c.week.filter(w => w.ret > FLAT_BAND).length;
   const idx = () => h('div', {class: 'idx', 'aria-hidden': 'true'}, h('span', {class: 'g'}, sd.g), h('b', null, pp + '%'));
   const card = h('article', {class: `card ${c.suit}`, 'aria-label': `${c.name} 카드. ${sd.name}, ${sd.means}. ATLAS ${fside} ${pp}퍼센트.`, ...(S.round === 'live' ? {'data-forecast-date': R0.target} : {})},
     h('canvas', {class: 'ros', 'data-code': c.code, 'aria-hidden': 'true'}),
     h('div', {class: 'c-top'}, idx(), h('p', {class: 'ed'}, `${kday(R0.target)} 판`, h('br'), `52장 중 ${c.no}번째`)),
     h('div', {class: 'c-name'}, h('h3', null, c.name), h('p', null, `${c.sector} · `, h('span', {class: 'mono', 'data-ident': ''}, c.code), ` · ${kday(R0.actualAsOf)} 종가 ${c.close.toLocaleString('ko-KR')}원`)),
-    h('div', {class: 'eye'}, h('p', {class: 'eye-h'}, h('span', null, `카지노의 눈 · 출목표 ${road.days}거래일`), h('b', {class: st.side ?? ''}, st.side ? `${st.len}일째 ${st.side === 'up' ? '오름' : '내림'} · ${pct(st.ret)}` : '줄 없음')), roadSvg(road), roadKey(road)),
+    h('div', {class: 'eye'}, h('p', {class: 'eye-h'}, h('span', null, `카지노의 눈 · 출목표 ${road.days}거래일`), h('b', {class: st.side ?? ''}, st.side ? `${st.len}일째 ${st.side === 'up' ? '오름' : '내림'} · ${pct(st.ret)}` : '줄 없음')), roadSvg(road, roadOpt), roadKey(road, roadOpt)),
     h('div', {class: 'eye'}, h('p', {class: 'eye-h'}, h('span', null, `주식의 눈 · 종가 ${c.c.length}거래일`), h('b', {class: road.total >= 0 ? 'up' : 'down'}, `${road.days}거래일 ${pct(road.total)}`)), sparkSvg(c.c, road.total)),
     h('ul', {class: 'why3'},
       h('li', null, h('span', null, '사실'), h('span', null, '지난 1주 ', h('span', {class: dirOf(c.weekRet)}, pct(c.weekRet)), ` · 오른 날 ${wkUps}일`)),
