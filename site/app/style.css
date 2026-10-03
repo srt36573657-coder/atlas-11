@@ -1120,6 +1120,23 @@ body[data-view="forecast"] .main { max-width: 560px; padding: 0 16px 120px; }
 .t-uni-how summary { cursor: pointer; font-size: 1rem; font-weight: 600; min-height: 28px; }
 .t-uni-how ul { margin: 8px 0 0; padding-left: 1.2em; font-size: 0.9375rem; line-height: 1.6; color: var(--t-ink2); }
 .t-uni-note { margin: 8px 0 0; font-size: 0.875rem; color: var(--t-sub); }
+/* 2026-10-04 07:40 사장님 「aaa7377에 올려」: 바뀔 52곳 미리 보기 — 바꾸기 전까지만 맨 위 · 이름만(누를 곳 없음 · 링크 아님) · 「새」 = 이번에 새로 들어온 회사
+   빨강·파랑은 오를·내릴 표시에만 쓰므로 여기는 글자 색과 회색만 */
+.t-next { margin: 4px 0 22px; padding: 16px 14px 14px; background: var(--t-card); border-radius: 16px; color: var(--t-ink); }
+.t-next-tag { display: inline-block; margin: 0; padding: 3px 10px; border-radius: 999px; background: var(--t-ink); color: var(--t-bg); font-size: 0.875rem; font-weight: 700; }
+.t-next-h { margin: 8px 0 0; font-size: 1.625rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+.t-next-when { margin: 6px 0 0; font-size: 1.0625rem; line-height: 1.55; color: var(--t-ink2); }
+.t-next-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+.t-next-chip { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 44px; padding: 6px 10px; border-radius: 12px; background: var(--t-bg); border: 1.5px solid var(--t-sep); color: var(--t-ink); font-size: 1rem; line-height: 1.25; word-break: keep-all; overflow-wrap: anywhere; }
+.t-next-chip[data-len="l"] .t-next-n { font-size: 0.875rem; }
+.t-next-n { min-width: 0; }
+.t-next-new { flex: none; font-size: 0.75rem; font-weight: 700; line-height: 1.4; padding: 1px 7px; border-radius: 999px; background: var(--t-ink); color: var(--t-bg); }
+.t-next-key { margin: 10px 2px 0; font-size: 0.9375rem; line-height: 1.5; color: var(--t-sub); }
+.t-next-key .t-next-new { margin-right: 2px; }
+.t-next-how { margin: 10px 0 0; padding: 10px 12px; background: var(--t-bg); border-radius: 12px; color: var(--t-ink); }
+.t-next-how summary { cursor: pointer; font-size: 1rem; font-weight: 600; min-height: 28px; }
+.t-next-how ul { margin: 8px 0 0; padding-left: 1.2em; font-size: 0.9375rem; line-height: 1.6; color: var(--t-ink2); }
+.t-next-out p { margin: 8px 0 0; font-size: 0.9375rem; line-height: 1.6; color: var(--t-ink2); word-break: keep-all; }
 /* 2026-10-02 14:01 사장님 「동그라미 천천히 나오고 회사 이름 나오게 해봐」: 점 톡톡(0.7초) 대신 하나씩 천천히(점마다 0.36초) — 나올 때 가운데에 회사 이름 ·
    다 나오면 2차 그대로(숫자 · 「52종목 중 오를 쪽」) · 점을 누르면 이름이 2.5초. 상태: .t-page[data-roll] = playing · done · tap */
 .t-page[data-roll] .t-dot { transition: opacity .35s ease, transform .5s cubic-bezier(.2, 1.6, .35, 1); cursor: pointer; }

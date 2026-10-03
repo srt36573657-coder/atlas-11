@@ -71,8 +71,23 @@ export async function renderTomorrow(main, {manifest}) {
   //   말: 「튼튼한 회사 52곳」 — 사라·추천 같은 말은 쓰지 않는다(고른 기준은 숫자로 잰 회사 상태 · 오를지 내릴지는 ATLAS가 날마다 따로 적음)
   const uni = manifest.universeSet ?? {label: `${rows.length}종목`, how: []};
   const md = d => d ? `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일` : '';
+  // 발행이 멈춰 이 화면의 예측 날이 이미 지났으면(그날 15:30 장 마감 뒤) 큰 제목을 「내일」 대신 「지난 예측」으로
+  //   — 2026-10-04: 10/2 저녁 발행이 51/52 로 멈춘 뒤 10/4 에도 「내일 · 10월 2일 금요일」이 보였다(날짜는 그대로 둠)
+  const past = Boolean(tomorrow) && Date.now() >= Date.parse(tomorrow + 'T15:30:00+09:00');
+  // ── 바뀔 52곳 미리 보기(2026-10-04 07:40 사장님 「aaa7377에 올려」) — 바꾸기 전까지만 맨 위에 이름만 ──
+  //   새 52곳의 오를까·내릴까는 바꾸는 날 장 마감 뒤 실행부터 낸다(장이 열린 날 마감 뒤 발행만 채점하므로) · 이름표는 누를 곳이 없어 링크가 아님
+  const nx = manifest.universeNext, mdw = d => d ? `${md(d)}(${weekday(d)})` : '';
+  const nextCard = nx?.companies?.length ? h('section', {class: 't-next', 'aria-label': `${nx.label} 미리 보기`, 'data-universe': nx.id},
+    h('p', {class: 't-next-tag'}, nx.from ? `${mdw(nx.from)}부터` : `바뀔 ${nx.companies.length}곳`),
+    h('h2', {class: 't-next-h', 'data-speak': ''}, nx.label),
+    h('p', {class: 't-next-when', 'data-speak': ''}, nx.from && nx.firstTarget ? `${mdw(nx.from)} 장이 끝난 뒤부터 이 ${nx.companies.length}곳이 ${mdw(nx.firstTarget)}에 오를지 내릴지를 적습니다. 그때부터 첫 화면이 이 ${nx.companies.length}곳으로 바뀝니다.` : `첫 화면이 이 ${nx.companies.length}곳으로 바뀝니다.`),
+    h('div', {class: 't-next-chips'}, ...nx.companies.map(c => h('span', {class: `t-next-chip${c.isNew ? ' new' : ''}`, 'data-code': c.code, 'data-len': [...c.name].length >= 8 ? 'l' : 's'},
+      h('span', {class: 't-next-n'}, c.name), ...(c.isNew ? [h('span', {class: 't-next-new'}, '새')] : [])))),
+    h('p', {class: 't-next-key'}, h('span', {class: 't-next-new'}, '새'), ` = 새로 들어온 ${nx.added}곳 · 나머지 ${nx.kept}곳은 지금의 ${nx.now}에서 이어짐`),
+    ...(nx.how?.length ? [h('details', {class: 't-next-how'}, h('summary', null, `이 ${nx.companies.length}곳은 어떻게 골랐나`), h('ul', null, ...nx.how.map(x => h('li', null, x))), h('p', {class: 't-uni-note'}, '오를지 내릴지는 고를 때 쓰지 않았습니다 · ATLAS가 날마다 따로 적습니다'))] : []),
+    ...(nx.dropped?.length ? [h('details', {class: 't-next-how t-next-out'}, h('summary', null, `빠지는 ${nx.dropped.length}곳`), h('p', null, nx.dropped.map(d => d.name).join(' · ')))] : [])) : null;
   const head = h('header', {class: 't-head'},
-    h('h1', {class: 't-title', 'data-clarity': 'dated'}, '내일'),
+    h('h1', {class: 't-title', 'data-clarity': 'dated', ...(past ? {'data-past': 'true'} : {})}, past ? '지난 예측' : '내일'),
     h('p', {class: 't-when', 'data-clarity': 'date-anchor', 'data-forecast-date': tomorrow}, longDate(tomorrow)),
     h('p', {class: 't-uni', 'data-universe': uni.id ?? '', 'data-speak': `${uni.label}입니다.`}, h('b', null, uni.label), uni.selectedOn ? ` · ${md(uni.selectedOn)}${uni.id === 'u1-sector52' ? '부터' : ' 고름'}` : ''));
 
@@ -178,7 +193,7 @@ export async function renderTomorrow(main, {manifest}) {
       h('div', {class: 't-chips'}, ...order.map(chip)),
       h('p', {class: 't-grid-key'}, h('span', {class: 'up'}, '▲'), ' 오를 쪽 · ', h('span', {class: 'down'}, '▼'), ' 내릴 쪽 · 점선 테두리 = 거의 반반'),
       ...(uni.how?.length ? [h('details', {class: 't-uni-how'}, h('summary', null, `이 ${rows.length}곳은 어떻게 골랐나`), h('ul', null, ...uni.how.map(x => h('li', null, x))), h('p', {class: 't-uni-note'}, '오를지 내릴지는 고를 때 쓰지 않았습니다 · ATLAS가 날마다 따로 적습니다'))] : []));
-    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, head, dial, sayLines, grid, whyBox, after);
+    const page = h('section', {class: 't-page', 'data-story': 'off', 'data-roll': 'done'}, ...(nextCard ? [nextCard] : []), head, dial, sayLines, grid, whyBox, after);
     main.replaceChildren(page);
     story.run++; story.playing = false; story.onVoice = null;
     const me = story.run;
