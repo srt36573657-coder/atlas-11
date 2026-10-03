@@ -151,7 +151,7 @@ export function proposeFromBundle(bundle, {input, now}) {
   const sessions = input.calendar.sessions, asOf = lastCompletedSession(sessions, bundle.now ?? now), day = kst(bundle.now ?? now).slice(0, 10);
   const candidates = candidatesFromBundle(bundle, {sessions, asOf, input});
   const sel = selectQuality52(candidates);
-  const id = `u2-quality52-${day}`;
+  const id = `u2-${QUALITY52.version}-${day}`;
   const strip = c => { const {_rows, ...rest} = c; return rest; };
   const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number(c.score.toFixed(4)), parts: Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])), debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c)}));
   const nearMiss = sel.checked.filter(c => c.fails.length).slice(0, 80).map(c => ({code: c.code, name: c.name, capRank: c.capRank, sector: c.sector, fails: c.fails}));
@@ -168,11 +168,10 @@ export function proposeFromBundle(bundle, {input, now}) {
 }
 const tallyBy = (xs, f) => xs.reduce((m, x) => { const k = f(x); m[k] = (m[k] ?? 0) + 1; return m; }, {});
 
-export async function writeOutputs({rootDir, outDir, bundle, proposal, next}) {
+export async function writeOutputs({rootDir, outDir, bundle, proposal, next, bundleRef = null}) {
   const dir = path.join(rootDir, outDir); await fs.mkdir(dir, {recursive: true});
-  const bundleText = JSON.stringify(bundle), gz = zlib.gzipSync(Buffer.from(bundleText), {level: 9});
-  await fs.writeFile(path.join(dir, 'bundle.json.gz'), gz);
-  proposal.bundle = {file: path.join(outDir, 'bundle.json.gz'), sha256: sha(gz), bytes: gz.length};
+  if (bundleRef) { const gz = await fs.readFile(path.join(rootDir, bundleRef)); proposal.bundle = {file: bundleRef, sha256: sha(gz), bytes: gz.length, reused: true}; } // 같은 원문으로 다시 고름(다시 받지 않음)
+  else { const gz = zlib.gzipSync(Buffer.from(JSON.stringify(bundle)), {level: 9}); await fs.writeFile(path.join(dir, 'bundle.json.gz'), gz); proposal.bundle = {file: path.join(outDir, 'bundle.json.gz'), sha256: sha(gz), bytes: gz.length}; }
   if (next) { const text = JSON.stringify(next); await fs.writeFile(path.join(dir, 'next-input.json'), text); proposal.nextInput = {file: path.join(outDir, 'next-input.json'), sha256: sha(text), actualAsOf: next.actualAsOf, assets: next.assets.length}; }
   await fs.writeFile(path.join(dir, 'proposal.json'), JSON.stringify(proposal, null, 1));
   await fs.writeFile(path.join(rootDir, 'reports/atlas11/universe/latest.json'), JSON.stringify({id: proposal.id, dir: outDir, ok: proposal.ok, picked: proposal.picked.length, createdAt: proposal.createdAt, counts: proposal.counts}, null, 1));
@@ -190,8 +189,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   await fs.mkdir(path.join(root, 'reports/atlas11/universe'), {recursive: true});
   let proposal, next;
   try { ({proposal, next} = proposeFromBundle(bundle, {input, now})); }
-  catch (e) { proposal = {schema: UNIVERSE_SCHEMA, id: `u2-quality52-${day}`, createdAt: now, ok: false, error: String(e.stack ?? e.message).slice(0, 2000), picked: [], counts: null, requests: bundle.requests}; next = null; }
-  const written = await writeOutputs({rootDir: root, outDir, bundle, proposal, next});
+  catch (e) { proposal = {schema: UNIVERSE_SCHEMA, id: `u2-${QUALITY52.version}-${day}`, createdAt: now, ok: false, error: String(e.stack ?? e.message).slice(0, 2000), picked: [], counts: null, requests: bundle.requests}; next = null; }
+  const written = await writeOutputs({rootDir: root, outDir, bundle, proposal, next, bundleRef: arg('--from-bundle') ? path.relative(root, path.resolve(arg('--from-bundle'))) : null});
   console.log(JSON.stringify({id: written.id, ok: written.ok, picked: written.picked.length, counts: written.counts, requests: bundle.requests?.total, failed: bundle.requests?.failed, listSource: bundle.lists?.source, error: written.error ?? null}));
   process.exitCode = written.ok ? 0 : 3;
 }

@@ -46,12 +46,14 @@ test('기업실적분석 표(HTML): 연간 칸만 · 추정(E)은 빼고 마지�
   assert.deepEqual(Object.values(financeMetrics(j)).slice(1), ['2025.12', '2024.12', null, 1200, 1000, 900, 800, 11.2, 45.6, null]);
 });
 
-test('가격 이력 점검: 600일 · 마지막 505거래일에 빠진 날·멈춘 날이 없어야', async () => {
+test('가격 이력 점검: 600일 · 마지막 505거래일에 빠진 날이 없어야 · 거래정지 날(회사 분할·액면분할)은 종가가 있으니 괜찮음(q52-v2)', async () => {
   const sessions = (await readJSON('public/data/rolling-calendar.json')).sessions.filter(d => d <= '2026-10-02');
   const rows = sessions.map((d, i) => ({date: d, close: 1000 + i, volume: 10}));
   assert.equal(historyCheck(rows, sessions, {asOf: '2026-10-02'}).ok, true);
   assert.equal(historyCheck(rows.filter(r => r.date !== '2026-05-06'), sessions, {asOf: '2026-10-02'}).ok, false);
-  assert.equal(historyCheck(rows.map(r => r.date === '2026-09-01' ? {...r, volume: 0} : r), sessions, {asOf: '2026-10-02'}).halted, 1);
+  const halted = rows.map(r => r.date === '2026-09-01' ? {...r, volume: 0} : r);
+  assert.equal(historyCheck(halted, sessions, {asOf: '2026-10-02'}).halted, 1); assert.equal(historyCheck(halted, sessions, {asOf: '2026-10-02'}).ok, true);
+  assert.equal(historyCheck(halted, sessions, {asOf: '2026-10-02', haltedDaysAllowed: false}).ok, false, 'q52-v1 은 멈춘 날도 뺐다');
   assert.equal(historyCheck(rows.slice(-599), sessions, {asOf: '2026-10-02'}).ok, false);
   assert.equal(lastCompletedSession(sessions.concat(['2026-10-06']), '2026-10-06T06:00:00Z'), '2026-10-02'); // 15:00 KST — 장이 안 끝남
   assert.equal(lastCompletedSession(sessions.concat(['2026-10-06']), '2026-10-06T06:45:00Z'), '2026-10-06');
@@ -94,7 +96,7 @@ function fakeFetch(stocks, sessions, {kosdaqJson = false, htmlFinance = new Set(
     if (u.pathname === '/item/main.naver') { const s = by(u.searchParams.get('code')); return s ? res(COP({'영업이익': [1, s.opPrev, s.op, 9], '당기순이익': [1, s.netPrev, s.net, 9], 'ROE(지배주주)': [1, s.roe, s.roe, 9], '부채비율': [1, s.debt, s.debt, 9]}), 'text/html') : no(); }
     if (u.hostname === 'fchart.stock.naver.com') {
       const s = by(u.searchParams.get('symbol')); if (!s) return no();
-      const n = Number(s.code.slice(0, 5)) % 97, rows = sessions.map((d, i) => `<item data="${d.replaceAll('-', '')}|${n + 1000 + i}|${n + 1010 + i}|${n + 990 + i}|${n + 1000 + i}|${s.code === '100150' && d === '2026-08-03' ? 0 : 100 + i}" />`);
+      const n = Number(s.code.slice(0, 5)) % 97, rows = sessions.filter(d => !(s.code === '100150' && d === '2026-08-03')).map((d, i) => `<item data="${d.replaceAll('-', '')}|${n + 1000 + i}|${n + 1010 + i}|${n + 990 + i}|${n + 1000 + i}|${s.code === '100160' && d === '2026-08-03' ? 0 : 100 + i}" />`);
       return res(`<?xml version="1.0" encoding="EUC-KR" ?><protocol><chartdata symbol="${s.code}" name="${s.name}" count="840" timeframe="day" precision="0">${rows.join('')}</chartdata></protocol>`, 'text/xml');
     }
     return no();
@@ -112,11 +114,14 @@ test('끝까지: 목록(코스피 JSON · 코스닥은 HTML로 넘어감) → �
   const A = proposal.rules.applied; assert.ok([0, 1, 2, 3].includes(A.step)); // 합성 세상은 빚 많은 곳이 많아 1단계(200%)까지 늦출 수 있다
   const codes = proposal.picked.map(p => p.code);
   assert.ok(!codes.includes('100005') && !codes.includes('199990'), '우선주·스팩 제외');
-  assert.ok(!codes.includes('100150'), '멈춘 날이 있는 종목 제외');
+  assert.ok(!codes.includes('100150'), '빠진 날이 있는 종목 제외');
+  assert.ok(proposal.notPicked.every(x => x.code !== '100160' || !x.fails.some(f => f.startsWith('가격 이력'))), '거래정지 날만 있는 종목은 이력 문을 넘는다');
   for (const p of proposal.picked) { const s = stocks.find(x => x.code === p.code); assert.ok(s.op > 0 && (A.profitYears < 2 || s.opPrev > 0) || ['은행', '증권', '손해보험'].includes(s.sector), p.code); assert.ok(s.roe >= A.roeMinPct); assert.ok(s.debt <= A.debtMaxPct || ['은행', '증권', '손해보험'].includes(s.sector)); }
   const perSector = proposal.picked.reduce((m, p) => m.set(p.sector, (m.get(p.sector) ?? 0) + 1), new Map());
   assert.ok(Math.max(...perSector.values()) <= 4, '한 업종 4곳까지');
-  assert.equal(next.assets.length, 52); assert.equal(next.universe.id, 'u2-quality52-2026-10-04');
+  assert.equal(next.assets.length, 52); assert.equal(next.universe.id, 'u2-q52-v2-2026-10-04'); assert.equal(next.universe.rules, 'q52-v2');
+  // q52-v2: 조건을 다 넘은 회사 가운데 시가총액 큰 순(합성 세상은 코드 순 = 시가총액 순)
+  assert.ok(proposal.picked.every((p, i) => i === 0 || proposal.picked[i - 1].marketCapEok >= p.marketCapEok), '시가총액 큰 순');
   if (codes.includes(oldCode)) assert.deepEqual(next.assets.find(a => a.code === oldCode).prices, input.assets[0].prices, '겹치는 종목은 옛 가격 기록 그대로');
   const fresh = next.assets.find(a => a.code !== oldCode);
   assert.equal(fresh.prices.at(-1).date, '2026-10-02'); assert.ok(fresh.prices.length >= 600);
