@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-3",
-  "at": "2026-10-04T14:52:10.997Z",
+  "at": "2026-10-04T15:04:20.088Z",
   "base": "http://localhost:8823",
   "prediction": "off",
   "boardId": "board-2026-10-02-4e997b10",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 29,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 1
       },
@@ -83,7 +83,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -93,7 +93,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -103,7 +103,7 @@
         "bareNumbers": 0,
         "graphable": 29,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 1
       },
@@ -145,7 +145,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -155,7 +155,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -165,7 +165,7 @@
         "bareNumbers": 0,
         "graphable": 29,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 1
       },
@@ -207,7 +207,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -217,7 +217,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -227,7 +227,7 @@
         "bareNumbers": 0,
         "graphable": 29,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 1
       },
@@ -269,7 +269,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -279,7 +279,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -289,7 +289,7 @@
         "bareNumbers": 0,
         "graphable": 29,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 1
       },
@@ -378,31 +378,31 @@
       "ok": true,
       "detail": {
         "legend": [
-          "c2 rgb(147, 189, 255)",
-          "c1 rgb(220, 234, 255)",
-          "n rgb(255, 255, 255)",
-          "h1 rgb(255, 220, 215)",
-          "h2 rgb(255, 138, 128)",
-          "h3 rgb(192, 0, 24)"
+          "c2 rgb(227, 234, 245)",
+          "c1 rgb(239, 243, 249)",
+          "n rgb(255, 254, 252)",
+          "h1 rgb(252, 244, 242)",
+          "h2 rgb(249, 234, 232)",
+          "h3 rgb(246, 225, 223)"
         ],
         "bgOf": {
           "h3": [
-            "rgb(192, 0, 24)"
+            "rgb(246, 225, 223)"
           ],
           "h2": [
-            "rgb(255, 138, 128)"
+            "rgb(249, 234, 232)"
           ],
           "h1": [
-            "rgb(255, 220, 215)"
+            "rgb(252, 244, 242)"
           ],
           "n": [
-            "rgb(255, 255, 255)"
+            "rgb(255, 254, 252)"
           ],
           "c1": [
-            "rgb(220, 234, 255)"
+            "rgb(239, 243, 249)"
           ],
           "c2": [
-            "rgb(147, 189, 255)"
+            "rgb(227, 234, 245)"
           ]
         }
       }
@@ -1120,31 +1120,31 @@
       "ok": true,
       "detail": {
         "legend": [
-          "c2 rgb(147, 189, 255)",
-          "c1 rgb(220, 234, 255)",
-          "n rgb(255, 255, 255)",
-          "h1 rgb(255, 220, 215)",
-          "h2 rgb(255, 138, 128)",
-          "h3 rgb(192, 0, 24)"
+          "c2 rgb(227, 234, 245)",
+          "c1 rgb(239, 243, 249)",
+          "n rgb(255, 254, 252)",
+          "h1 rgb(252, 244, 242)",
+          "h2 rgb(249, 234, 232)",
+          "h3 rgb(246, 225, 223)"
         ],
         "bgOf": {
           "h3": [
-            "rgb(192, 0, 24)"
+            "rgb(246, 225, 223)"
           ],
           "h2": [
-            "rgb(255, 138, 128)"
+            "rgb(249, 234, 232)"
           ],
           "h1": [
-            "rgb(255, 220, 215)"
+            "rgb(252, 244, 242)"
           ],
           "n": [
-            "rgb(255, 255, 255)"
+            "rgb(255, 254, 252)"
           ],
           "c1": [
-            "rgb(220, 234, 255)"
+            "rgb(239, 243, 249)"
           ],
           "c2": [
-            "rgb(147, 189, 255)"
+            "rgb(227, 234, 245)"
           ]
         }
       }
@@ -1679,13 +1679,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(9573px → 9573px) · 고른 묶음 「흐름별」 그대로",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(9555px → 9555px) · 고른 묶음 「흐름별」 그대로",
       "ok": true,
       "detail": {
-        "yBefore": 9573,
+        "yBefore": 9555,
         "back": {
           "hash": "#/road",
-          "y": 9573,
+          "y": 9555,
           "mode": "flow"
         }
       }
@@ -2443,5 +2443,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-04T14-50-59-111Z"
+  "dir": "reports/atlas11/browser/2026-10-04T15-03-09-464Z"
 }
