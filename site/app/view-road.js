@@ -49,7 +49,10 @@ function tile(c, road, g, scale) {
     newsLine(c.brief));
 }
 
-export async function renderRoad(main, {manifest} = {}) {
+/** 한 번 쉬기(브라우저가 그때까지 붙인 것을 그리도록) */
+const frame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+
+export async function renderRoad(main, {manifest, restoring = false} = {}) {
   const board = await loadBoard();
   const groups = board.groups ?? [], groupOf = new Map(groups.map(g => [g.id, g]));
   const items = board.companies.map(c => { const road = roadOf(c.c); return {c, road, key: flowKey(road), g: groupOf.get(c.group?.id) ?? c.group ?? null}; });
@@ -63,15 +66,19 @@ export async function renderRoad(main, {manifest} = {}) {
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   let view = prefs.get('roadView', 'ind'); if (!ROAD_MODES.some(m => m.id === view)) view = 'ind';
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-  const jump = key => { document.getElementById('f-' + key)?.scrollIntoView({behavior: reduce(), block: 'start'}); };
+  let ready = Promise.resolve();
+  const jump = async key => { await ready; document.getElementById('f-' + key)?.scrollIntoView({behavior: reduce(), block: 'start'}); };
 
+  // 2026-10-05 365곳: 칸이 두 배가 되어 한꺼번에 그리면 첫 화면이 늦게 뜸 — 묶음 머리를 먼저 붙이고 칸은 조금씩(한 번에 24ms 쯤) 붙인다
+  //   다 붙이면 data-ready · 회사 화면에서 되돌아올 때(보던 자리로 돌아가야 할 때)는 한꺼번에 그린 뒤 자리를 맞춘다
+  //   묶음 하나 = {sec: 머리만 있는 묶음(빈 칸 판) · tiles: 칸을 만드는 함수들}
   // ① 업종별 — 36칸 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안은 시가총액 큰 순
   const indView = () => groups.map((g, k) => { const xs = g.codes.map(code => itemOf.get(code)).filter(Boolean), sc = sparkScale(xs.map(x => x.c));
-    return h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
+    return {sec: () => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
       h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
         h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
       h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
-      h('div', {class: 'f-grid'}, ...xs.map(x => tile(x.c, x.road, null, sc)))); });
+      h('div', {class: 'f-grid'})), tiles: xs.map(x => () => tile(x.c, x.road, null, sc))}; });
   // ② 흐름별 — 흐름 목록(몇 곳인지 막대로 · 누르면 그 묶음으로) → 묶음마다 회사 칸(지난 20거래일 많이 오른 순)
   // 흐름 목록 줄마다 묶음 평균 선 — 「흐름별」을 열면 첫 화면부터 그래프가 보이게(2026-10-05 00:26 「출목표 처음 보이는 곳에 그곳에 바로 그래프도 보여야 한다는거야 클릭해서 들어가는게 아니라 그래야 직관이잖아」)
   //   같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 줄이 같은 눈금
@@ -84,25 +91,39 @@ export async function renderRoad(main, {manifest} = {}) {
       h('span', {class: 'f-lab'}, f.text), meanSpark(r, msc, `${f.text} ${f.items.length}곳 평균 선 · 지난 ${Math.max(0, r.length - 1)}거래일 · 첫날 대비 ${r.length ? pct(r.at(-1), 1) : '없음'}`), h('b', {class: 'f-n'}, `${f.items.length}곳`), h('span', {class: 'f-track', 'aria-hidden': 'true'}, bar)));
   };
   const flowView = () => [
-    h('section', {class: 't-sec f-index', 'aria-label': '흐름 목록'},
+    {sec: () => h('section', {class: 't-sec f-index', 'aria-label': '흐름 목록'},
       h('h2', {class: 't-h2'}, `흐름 ${flows.length}가지`),
       h('p', {class: 't-sub'}, `앞 ${before}거래일 → 끝 ${recent}거래일의 오른 날·내린 날 동그라미 수로 나눔 · 줄마다 묶음 평균 선(모든 줄 같은 눈금 ${pct(msc.lo, 0)} ~ ${pct(msc.hi, 0)}) · 누르면 그 묶음으로`),
-      h('ol', {class: 'f-list'}, ...flows.map(flowRow))),
+      h('ol', {class: 'f-list'}, ...flows.map(flowRow))), tiles: []},
     ...flows.map(f => { const sc = sparkScale(f.items.map(x => x.c));
-      return h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
+      return {sec: () => h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
         h('h2', {class: 't-h2'}, f.text, h('small', null, ` · ${f.items.length}곳`)),
         h('p', {class: 't-sub'}, `${f.key === 'still' ? `${days}거래일 동안 동그라미가 거의 없음` : `앞 ${before}거래일: ${SIDE_WORD[f.key.split('-')[0]]} → 끝 ${recent}거래일: ${SIDE_WORD[f.key.split('-')[1]]} · 지난 20거래일 많이 오른 순`} · ${scaleText(sc)}`),
-        h('div', {class: 'f-grid'}, ...f.items.map(x => tile(x.c, x.road, x.g, sc)))); })];
+        h('div', {class: 'f-grid'})), tiles: f.items.map(x => () => tile(x.c, x.road, x.g, sc))}; })];
 
   const body = h('div', {class: 'f-body'});
   const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set('roadView', view); draw(); } }},
     m.text, h('small', null, m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
   const say = () => { state.summary = `${korDate(to)} 종가 기준. ` + (view === 'ind' ? `출목표 ${n}곳, 업종별. ${groups.slice(0, 3).map((g, i) => `${i + 1}위 ${g.label} ${pct(g.change20, 1)}`).join(', ')}.` : `출목표 ${n}곳, 흐름별. ${flows.slice(0, 3).map(f => `${f.text.replace(' → ', ' 다음 ')} ${f.items.length}곳`).join(', ')}.`); };
-  function draw() {
-    for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
-    body.dataset.mode = view; body.replaceChildren(...(view === 'ind' ? indView() : flowView())); say();
+  let gen = 0;
+  /** 묶음을 붙인다 — progressive 면 24ms 마다 한 번 쉬며(첫 화면이 먼저 뜸) · 다른 묶는 법을 누르면 하던 것은 그만둠 */
+  async function fill(parts, progressive) {
+    const my = ++gen; let t0 = performance.now();
+    for (const p of parts) {
+      const sec = p.sec(), grid = sec.querySelector('.f-grid'); body.append(sec);
+      for (const make of p.tiles) {
+        grid.append(make());
+        if (progressive && performance.now() - t0 > 24) { await frame(); if (my !== gen) return; t0 = performance.now(); }
+      }
+    }
+    body.dataset.ready = '';
   }
-  draw();
+  function draw(progressive = true) {
+    for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
+    body.dataset.mode = view; delete body.dataset.ready; body.replaceChildren(); say();
+    ready = fill(view === 'ind' ? indView() : flowView(), progressive);
+    return ready;
+  }
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, `출목표 ${n}곳`),
@@ -112,4 +133,5 @@ export async function renderRoad(main, {manifest} = {}) {
     h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs),
     body,
     foot(manifest ?? state.manifest)));
+  await draw(!restoring); // 처음 열 때는 조금씩 · 되돌아올 때는 한꺼번에(그 뒤 보던 자리로)
 }

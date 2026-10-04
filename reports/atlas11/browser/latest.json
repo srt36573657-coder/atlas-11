@@ -1,9 +1,9 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-04T20:43:22.437Z",
+  "at": "2026-10-04T20:52:25.589Z",
   "base": "http://localhost:8823",
   "prediction": "off",
-  "boardId": "board-2026-10-02-20b1c6b7",
+  "boardId": "board-2026-10-02-ecb86694",
   "asOf": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -3229,5 +3229,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-04T20-41-56-574Z"
+  "dir": "reports/atlas11/browser/2026-10-04T20-51-00-984Z"
 }

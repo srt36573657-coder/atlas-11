@@ -206,7 +206,7 @@ html[data-font-step="3"] .mv-track, html[data-font-step="4"] .mv-track { grid-co
 .rd-h b { color: var(--ink); }
 .rd-h b.chg20.up, .b-box-h small .chg20.up { color: var(--up-ink); } .rd-h b.chg20.down { color: var(--down-ink); } .rd-h b.chg20.flat { color: var(--sub); }
 .road { display: block; width: 100%; height: auto; }
-.road .road-grid line { stroke: var(--sep); stroke-width: .6; }
+.road .road-grid path { fill: none; stroke: var(--sep); stroke-width: .6; }
 .road .bead { fill: none; stroke-width: 1.9; }
 .road .bead.up { stroke: var(--up); } .road .bead.down { stroke: var(--down); fill: var(--down); } /* 오른 날 빈 동그라미 · 내린 날 찬 동그라미 — 모양으로도 읽힘 */
 .road-key { margin-top: 8px; display: grid; gap: 4px; }

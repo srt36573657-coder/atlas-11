@@ -295,7 +295,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 
   // ③-2 출목표 한 판(#/road) — 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 잡스라면 그리고 애플이라면 해서 추가로 더 만들어」
   //   업종별(처음) = 36칸 판 차례 · 업종 안은 판의 차례 / 흐름별 = 아홉 칸 표의 흐름(+거의 안 움직임)마다 · 지난 20거래일 많이 오른 순 · 칸마다 출목표 = 따로 센 값
-  await page.goto(base + '/#/road', {waitUntil: 'networkidle'}); await page.waitForSelector('.f-tile'); await page.waitForTimeout(300);
+  await page.goto(base + '/#/road', {waitUntil: 'networkidle'}); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300); // 칸은 조금씩 붙임 — 다 붙인 뒤(data-ready) 잰다
   await shot('04-road');
   const roadRead = () => page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, mode: document.querySelector('.f-body')?.dataset.mode,
     segs: [...document.querySelectorAll('.f-seg-b')].map(b => `${b.dataset.mode}:${b.getAttribute('aria-pressed')}:${b.textContent.trim()}`),
@@ -320,7 +320,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 출목표 한 판(업종별): 화면이 옆으로 넘치지 않음(${r1.sw}px ≤ ${r1.iw}px)`, r1.sw <= r1.iw, {sw: r1.sw, iw: r1.iw});
   await wordsCheck(page, `${label} 출목표 한 판(업종별)`);
   // 흐름별로 바꾸기
-  const seg = page.locator('.f-seg-b[data-mode="flow"]'); if (mobile) await seg.tap(); else await seg.click(); await page.waitForTimeout(300);
+  const seg = page.locator('.f-seg-b[data-mode="flow"]'); if (mobile) await seg.tap(); else await seg.click(); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); await page.waitForTimeout(300);
   const r2 = await roadRead();
   const flowsWant = FLOW_ORDER_W.map(k => ({k, items: board.companies.filter(c => flowWant(roadOf(c.c)) === k).sort((a, b) => b.change20 - a.change20 || a.code.localeCompare(b.code))})).filter(f => f.items.length);
   const flowMis = flowsWant.map((f, i) => { const s = r2.secs[i], row = r2.rows[i]; return s && s.id === f.k && s.name === flowTextW(f.k) && s.codes.join() === f.items.map(c => c.code).join() && row?.flow === f.k && row?.lab === flowTextW(f.k) && row?.n === `${f.items.length}곳` ? null : {k: f.k, s: s && {...s, codes: s.codes.length}, row}; }).filter(Boolean);
@@ -348,7 +348,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const rc = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()]}));
   check(`${label} 출목표 한 판 → ${mobile ? '터치' : '누름'} → 회사 화면 #/stock/${pk.code}(「${rc.title}」) · 되돌아가기 「${rc.back[1]}」`, rc.hash === '#/stock/' + pk.code && rc.title === pk.name && rc.back[0] === '#/road' && rc.back[1] === '‹ 출목표', rc);
   const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
-  await page.waitForSelector('.f-tile'); await page.waitForTimeout(400);
+  await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(400);
   const back = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode}));
   check(`${label} 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(${yBefore}px → ${back.y}px) · 고른 묶음 「흐름별」 그대로`, back.hash === '#/road' && Math.abs(back.y - yBefore) <= 2 && back.mode === 'flow', {yBefore, back});
   // 지금 탭을 한 번 더 누르면 맨 위로(화면은 그대로)
@@ -356,7 +356,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const tt = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode}));
   check(`${label} 출목표 탭을 한 번 더 ${mobile ? '터치' : '누름'} → 맨 위로(${tt.y}px) · 화면은 그대로`, tt.hash === '#/road' && tt.y === 0 && tt.mode === 'flow', tt);
   // 다시 업종별로(다음 검사들이 처음 모습을 보도록)
-  const seg2 = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await seg2.tap(); else await seg2.click(); await page.waitForTimeout(200);
+  const seg2 = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await seg2.tap(); else await seg2.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(200);
   check(`${label} 출목표 한 판: 업종별로 되돌림`, (await page.evaluate(() => document.querySelector('.f-body')?.dataset.mode)) === 'ind');
 
   // ④ 지운 화면의 옛 주소 → 처음 화면
@@ -379,7 +379,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 async function darkCheck() {
   const context = await browser.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, colorScheme: 'dark', locale: 'ko-KR'});
   const page = await context.newPage();
-  for (const [hash, wait, name] of [['#/', '.t-tile', 'home'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
+  for (const [hash, wait, name] of [['#/', '.t-tile', 'home'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-body[data-ready] .f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
     await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector(wait); await page.waitForTimeout(300);
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await page.screenshot({path: path.join(dir, `mobile-dark-${name}.png`)});

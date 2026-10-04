@@ -65,10 +65,11 @@ export function roadSvg(road, {minCols = 20} = {}) {
   const cs = 12, cols = Math.max(minCols, road.cols);
   const svg = s('svg', {class: 'road', viewBox: `0 0 ${cols * cs} ${6 * cs}`, role: 'img', 'data-cols': cols,
     'aria-label': `출목표 ${road.days}거래일 · ${unitText(road)} 움직임: 빨간 동그라미 ${road.all.up}개(오름) · 파란 동그라미 ${road.all.down}개(내림) · 처음 ${road.beforeDays}거래일 빨강 ${road.before.up}개 · 파랑 ${road.before.down}개 · 최근 ${road.recentDays}거래일 빨강 ${road.now.up}개 · 파랑 ${road.now.down}개 · ${roadStory(road).text}`});
-  const grid = s('g', {class: 'road-grid'});
-  for (let c = 0; c <= cols; c++) grid.append(s('line', {x1: c * cs, y1: 0, x2: c * cs, y2: 6 * cs}));
-  for (let r = 0; r <= 6; r++) grid.append(s('line', {x1: 0, y1: r * cs, x2: cols * cs, y2: r * cs}));
-  svg.append(grid);
+  // 칸 줄은 선 하나(path)로 — 2026-10-05 365곳: 칸마다 선 28개를 따로 만들면 출목표 한 판이 3만 마디가 넘어 느려짐(모양은 같음)
+  let d = '';
+  for (let c = 0; c <= cols; c++) d += `M${c * cs} 0V${6 * cs}`;
+  for (let r = 0; r <= 6; r++) d += `M0 ${r * cs}H${cols * cs}`;
+  svg.append(s('g', {class: 'road-grid'}, s('path', {d})));
   for (const c of road.cells) svg.append(s('circle', {class: 'bead ' + c.side, cx: c.col * cs + cs / 2, cy: c.row * cs + cs / 2, r: 4.3}));
   return svg;
 }

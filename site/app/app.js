@@ -92,10 +92,13 @@ async function route() {
   document.documentElement.toggleAttribute('data-drawn', drawn.has(r.id)); drawn.add(r.id); // 이 화면을 이미 한 번 그렸으면 선 그리기 움직임 없이
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;
-  try { await r.render(main, {hash, manifest: app.manifest}); }
+  // 보던 자리로 돌아갈 화면이면 다 그린 뒤 그 자리로 · 아니면 그리기 전에 맨 위로(조금씩 그리는 동안 사람이 내려 본 자리를 끝에 되돌리지 않게)
+  const restoring = KEEP_SCROLL.has(r.id) && scrollMemo.has(r.id);
+  if (!restoring) window.scrollTo({top: 0});
+  try { await r.render(main, {hash, manifest: app.manifest, restoring}); }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
   setTimeout(() => { if (app.view === r.id) document.documentElement.setAttribute('data-drawn', ''); }, 450); // 다 그린 뒤에는 같은 화면 안에서 다시 그려도(묶음 바꾸기) 움직이지 않음
-  window.scrollTo({top: KEEP_SCROLL.has(r.id) ? (scrollMemo.get(r.id) ?? 0) : 0});
+  if (restoring && app.view === r.id) window.scrollTo({top: scrollMemo.get(r.id) ?? 0});
 }
 function failure(title, e) {
   return h('section', {class: 'b-box failure', role: 'alert'}, h('h1', {class: 'b-box-h'}, title), h('p', {class: 'muted'}, String(e?.message ?? e)), h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'));
