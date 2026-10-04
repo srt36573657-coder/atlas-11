@@ -5,8 +5,12 @@
  *   node scripts/atlas11/browser_check.mjs --base http://localhost:8823 --pw <playwright 폴더>
  * 보는 것(PC 1280×800 · 휴대폰 390×844 터치 흉내 — 실제 아이폰 기기 검증 아님)
  *   2026-10-05 02:44 「잡스였다면」 개혁(보고서 「잡스였다면 ATLAS 개혁 공부」)에 맞춰 고침 — 첫 줄 결론 · 칸 하나에 넷 · 앞날 말 걷어 냄 · 연속 글 대신 오른 날 수 · 화면 잇기
- *   처음 화면: 제목 「불장 N개」 = 판의 불장 수 · 결론 한 줄(업종 몇 개가 올랐나 · 기간) · 업종 칸 = 판의 업종 차례 그대로(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 오름/내림 선) ·
- *         칸 바탕은 한 색 · 색 보기표 없음 · 「불장 밖에서 많이 오른 22곳」 = 판(이름 · 업종 · 작은 선 그래프 같은 눈금 · 변화) · 칸을 누르면 그 업종 화면
+ *   처음 화면(탭 「불장」): 제목 「불장 N개」 = 판의 불장 수 · 결론 한 줄(업종 몇 개가 올랐나 · 기간) · 업종 칸 = 판의 업종 차례 그대로(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 오름/내림 선) ·
+ *         칸 바탕은 한 색 · 색 보기표 없음 · 칸을 누르면 그 업종 화면 · 22곳 목록은 처음 화면에 없음(자기 탭)
+ *   2026-10-05 05:07 「해」 — 아래 탭 다섯(불장 · 예비 · 22곳 · 출목표 · 일정):
+ *     「예비」(#/similar) 불장 닮은 7곳 = 판 · 판의 셈을 이 검사기가 따로 다시 셈(공통점 후보 아홉 · 절반 넘게 · 10%p · 한 업종 2곳) · 줄마다 공통점 ✓ · 같은 눈금 선 그래프 · 공통점 막대 · 저녁 7시 들고 남 칸 = 판 ·
+ *        줄 → 회사 → 「‹ 불장 닮은 N곳」 → 보던 자리 · 회사 화면에서도 「예비」 탭 눌림
+ *     「22곳」(#/rise) 불장 밖에서 많이 오른 22곳 = 판(이름 · 업종 · 작은 선 그래프 같은 눈금 · 변화) · 줄 → 회사 → 「‹ 불장 밖에서 많이 오른 N곳」
  *   업종 화면 36장 모두: 머리(n칸 가운데 n위 · 불장 · 평균 · 몇 곳 올랐나) · 「누가 끌었나」 막대(차례 · 값 · 방향 · 길이) · 카드(합쳐서 180장 = 판 · 겹침 없음 · 넷만: 이름·변화 · 선 그래프 · 수급 · 기사) ·
  *         앞날 말 없음 · 옆으로 넘치지 않음 · 회사 화면 「‹ 업종」 → 그 업종 · 없는 업종 주소 → 알림
  *   출목표 한 판(#/road · 2026-10-04 22:12): 업종별(처음) = 36칸 판 차례 · 흐름별 = 아홉 칸 표 흐름마다 · 칸 180개 모두(이름 · 변화 · 선 그래프 · 출목표 동그라미 · 오른 날 수 · 업종 · 수급 · 기사) = 따로 센 값 ·
@@ -99,17 +103,16 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const N = board.companies.length, G = board.groups.length, HOT = board.hot?.items ?? [], NEXT = board.next?.items ?? [], H = `처음 화면(업종 ${G}칸)`, byCodeB0 = new Map(board.companies.map(c => [c.code, c]));
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(400);
   await shot('01-home');
-  const top = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), kinds: document.querySelector('.b-kinds')?.textContent.trim() ?? null, nextH: document.querySelector('.t-sec .t-h2')?.innerText.trim(), promise: document.querySelector('.b-promise-box summary')?.innerText.trim(), footPromise: document.querySelector('.b-foot .b-promise')?.innerText.trim(), late: [...document.querySelectorAll('.b-late')].map(e => e.innerText.trim()), strip: document.querySelector('.mstrip')?.innerText.replace(/\s+/g, ' ').trim(),
+  const top = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), kinds: document.querySelector('.b-kinds')?.textContent.trim() ?? null, ncRows: document.querySelectorAll('.nc-row').length, promise: document.querySelector('.b-promise-box summary')?.innerText.trim(), footPromise: document.querySelector('.b-foot .b-promise')?.innerText.trim(), late: [...document.querySelectorAll('.b-late')].map(e => e.innerText.trim()), strip: document.querySelector('.mstrip')?.innerText.replace(/\s+/g, ' ').trim(),
     active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.innerText.replace(/\s+/g, '').trim()),
     tiles: [...document.querySelectorAll('.t-grid > .t-tile')].map(a => ({id: a.dataset.group, href: a.getAttribute('href'), sign: [...a.classList].find(c => c.startsWith('s-'))?.slice(2) ?? null, bg: getComputedStyle(a).backgroundColor, rank: a.querySelector('.t-rank')?.textContent.trim() ?? null, fire: a.querySelector('.t-fire')?.textContent.trim() ?? null, name: a.querySelector('.t-name')?.textContent.trim(), chg: a.querySelector('.t-chg')?.textContent.trim(), dsign: a.querySelector('.t-chg')?.dataset.sign ?? 'flat', up: a.querySelector('.t-up')?.textContent.trim(), kids: a.children.length})),
     legend: document.querySelectorAll('.t-legend, .t-sw').length,
-    next: [...document.querySelectorAll('.nc-list .nc-row')].map(a => { const sp = a.querySelector('.spark'); return {href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim(), sp: sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi} : null}; }),
     cards: document.querySelectorAll('.b-card').length, text52: /(?<!\d)52\s?(종목|곳)|업종 대표/.test(document.body.textContent)}));
   const kindsWant = board.kinds ? [`업종 ${G}개`, `우량주 ${board.kinds.quality ?? 0}곳`, `시대 트렌드 ${board.kinds.trend ?? 0}곳`, board.kinds.profit ? `흑자 ${board.kinds.profit}곳` : null, board.kinds.size ? `채움 ${board.kinds.size}곳` : null].filter(Boolean).join(' · ') : null;
   const fromM = mode(board.companies.map(c => c.cFrom)), toM = mode(board.companies.map(c => c.date));
   const upsG = board.groups.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
-  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 ${top.tabs.join('·')}(처음 화면 눌림) · 처음 화면엔 회사 카드 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
-    top.title === `불장 ${HOT.length}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === `${N}곳,출목표,일정` && top.active === 'home' && top.cards === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, next: undefined, legend: undefined});
+  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 ${top.tabs.join('·')}(「불장」 눌림) · 처음 화면엔 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
+    top.title === `불장 ${HOT.length}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === `불장,예비,${NEXT.length}곳,출목표,일정` && top.active === 'home' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
   const tileMis = board.groups.map((g, i) => { const t = top.tiles[i]; return t && t.id === g.id && t.href === '#/i/' + g.id && t.name === g.label && (g.hot ? t.fire === `불장 ${i + 1}위` && t.rank === null : t.rank === `${i + 1}위` && t.fire === null) && t.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && t.up === upWant(g) && t.sign === signW(g.change20) && t.dsign === signW(g.change20) && t.kids === 4 ? null : {i, g: g.label, t}; }).filter(Boolean);
   check(`${label} ${H}: 업종 칸 ${top.tiles.length}개 = 판의 업종 ${G}개 · 칸마다 넷(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 ▲▼ · 몇 곳 올랐나) · 차례 · 오름/내림 선 · 누르면 갈 주소가 판과 같음`, top.tiles.length === G && !tileMis.length, {tileMis: tileMis.slice(0, 3)});
   const fires = top.tiles.map((t, i) => t.fire ? i : -1).filter(i => i >= 0);
@@ -117,8 +120,6 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 칸 바탕은 한 색(세기 색 없음) · 색 보기표 없음(2026-10-05 잡스 개혁 — 설명표가 따로 필요하면 그림이 스스로 말하지 못한다는 신호 · 애플 WWDC17)
   const bgs = new Set(top.tiles.map(t => t.bg));
   check(`${label} ${H}: 칸 바탕 ${bgs.size}색(한 색) · 색 보기표 없음 · 오름 칸 ${top.tiles.filter(t => t.sign === 'up').length}개 · 내림 칸 ${top.tiles.filter(t => t.sign === 'down').length}개`, bgs.size === 1 && top.legend === 0, {bgs: [...bgs], legend: top.legend});
-  const scN = scaleW(NEXT.map(x => byCodeB0.get(x.code)));
-  check(`${label} ${H}: 「${top.nextH}」 = 판(${NEXT.length}곳 · 앞날 말 없는 이름) · 줄마다 이름·업종·작은 선 그래프(종가 ${board.companies[0].c.length}개 · ${NEXT.length}곳 같은 눈금)·20거래일 변화·회사 화면 링크가 판과 같음 · 불장 업종 회사 없음 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지`, board.next && top.nextH === `불장 밖에서 많이 오른 ${NEXT.length}곳` && top.next.length === NEXT.length && NEXT.every((x, i) => top.next[i]?.href === '#/stock/' + x.code && top.next[i]?.name === x.name && top.next[i]?.ind === x.groupLabel && top.next[i]?.chg === p1(x.change20) && top.next[i]?.sp?.n === byCodeB0.get(x.code).c.length && top.next[i]?.sp?.lo === scN.lo.toFixed(4) && top.next[i]?.sp?.hi === scN.hi.toFixed(4)) && !NEXT.some(x => HOT.some(hh => hh.id === x.groupId)) && Object.values(NEXT.reduce((m, x) => (m[x.groupId] = (m[x.groupId] ?? 0) + 1, m), {})).every(v => v <= (board.next.perIndustry ?? 2)), {nextH: top.nextH, next: top.next.slice(0, 3)});
   check(`${label} ${H}: 「${top.promise}」 접힌 칸 · 맨 아래 약속 한 줄 「${top.footPromise}」`, top.promise === 'ATLAS가 하지 않는 일 7가지' && top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: top.promise, footPromise: top.footPromise});
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
   check(`${label} ${H}: 시장 띠(코스피·코스닥 · 기준 날짜)`, manifest.market ? manifest.market.items.every(i => top.strip.includes(i.name)) && top.strip.includes(kd(manifest.market.items[0].date) + ' 15:30 KST 종가') : /시장 지수 없음/.test(top.strip), {strip: top.strip});
@@ -182,14 +183,82 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const backLoc = page.locator('.c-back'); if (mobile) await backLoc.tap(); else await backLoc.click();
   await page.waitForSelector(`article.i-page[data-group="${hg.id}"]`); await page.waitForTimeout(150);
   check(`${label} 회사 화면 「‹ ${hg.label}」 ${mobile ? '터치' : '누름'} → 그 업종 화면으로 돌아옴`, (await page.evaluate(() => location.hash)) === '#/i/' + hg.id);
-  // 다음 불장 후보 1위 줄 → 회사 화면(되돌아가기는 그 회사의 업종)
-  if (NEXT.length) {
-    await page.evaluate(() => { location.hash = '#/'; }); await page.waitForSelector('.nc-row'); await page.waitForTimeout(200);
-    const n0 = NEXT[0], row = page.locator(`.nc-row[href="#/stock/${n0.code}"]`); await row.scrollIntoViewIfNeeded();
-    if (mobile) await row.tap(); else await row.click();
-    await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
-    const nr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: document.querySelector('.c-back')?.getAttribute('href')}));
-    check(`${label} 불장 밖에서 많이 오른 곳 첫 줄 「${n0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 = 그 회사 업종 「${n0.groupLabel}」`, nr.hash === '#/stock/' + n0.code && nr.title === n0.name && nr.back === '#/i/' + n0.groupId, nr);
+  // ①-3 탭 「22곳」(#/rise · 2026-10-05 05:07 「해」 — 처음 화면 아래에 있던 목록을 자기 탭으로) — 판과 같은 22곳 · 줄 → 회사 → 「‹ 불장 밖에서 많이 오른 N곳」 → 보던 자리
+  {
+    const t22 = page.locator('.bottom-link[data-route="rise"]'); if (mobile) await t22.tap(); else await t22.click();
+    await page.waitForSelector('.r-page'); await page.waitForTimeout(300);
+    await shot('02b-rise');
+    const rr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, moves: document.querySelector('.r-moves')?.innerText.trim() ?? null,
+      next: [...document.querySelectorAll('.nc-list .nc-row')].map(a => { const sp = a.querySelector('.spark'); return {href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim(), sp: sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi} : null}; }),
+      sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    const scN = scaleW(NEXT.map(x => byCodeB0.get(x.code)));
+    check(`${label} 탭 「22곳」 ${mobile ? '터치' : '누름'} → #/rise · 제목 「${rr.title}」 · 「${rr.when}」 · 탭 「22곳」 눌림`, rr.hash === '#/rise' && rr.title === `불장 밖에서 많이 오른 ${NEXT.length}곳` && rr.when === `불장 ${HOT.length}개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지` && rr.active === 'rise', {...rr, next: undefined});
+    check(`${label} 「22곳」: 줄 ${rr.next.length}개 = 판(${NEXT.length}곳) · 줄마다 이름·업종·작은 선 그래프(종가 ${board.companies[0].c.length}개 · ${NEXT.length}곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · 옆으로 넘치지 않음`, board.next && rr.next.length === NEXT.length && NEXT.every((x, i) => rr.next[i]?.href === '#/stock/' + x.code && rr.next[i]?.name === x.name && rr.next[i]?.ind === x.groupLabel && rr.next[i]?.chg === p1(x.change20) && rr.next[i]?.sp?.n === byCodeB0.get(x.code).c.length && rr.next[i]?.sp?.lo === scN.lo.toFixed(4) && rr.next[i]?.sp?.hi === scN.hi.toFixed(4)) && !NEXT.some(x => HOT.some(hh => hh.id === x.groupId)) && Object.values(NEXT.reduce((m, x) => (m[x.groupId] = (m[x.groupId] ?? 0) + 1, m), {})).every(v => v <= (board.next.perIndustry ?? 2)) && rr.sw <= rr.iw, {next: rr.next.slice(0, 3), sw: rr.sw});
+    const mv = board.moves, movesWant = mv && !mv.first ? `저녁 7시 기록 ${kd(mv.from)} → ${kd(mv.to)} · 새로 든 곳 ${mv.nextIn.length}곳(${mv.nextIn.map(x => x.name).join(' · ') || '없음'}) · 빠진 곳 ${mv.nextOut.length}곳(${mv.nextOut.map(x => x.name).join(' · ') || '없음'})` : null;
+    check(`${label} 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(${movesWant ? '있음' : '기록이 둘보다 적어 없음'})`, rr.moves === movesWant, {moves: rr.moves, movesWant});
+    await wordsCheck(page, `${label} 「22곳」`);
+    if (NEXT.length) {
+      const n0 = NEXT[Math.min(5, NEXT.length - 1)], row = page.locator(`.nc-row[href="#/stock/${n0.code}"]`); await row.scrollIntoViewIfNeeded();
+      const y0 = await page.evaluate(() => Math.round(scrollY));
+      if (mobile) await row.tap(); else await row.click();
+      await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
+      const nr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
+      check(`${label} 「22곳」 줄 「${n0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${nr.back[1]}」 · 탭 「22곳」 눌린 채로`, nr.hash === '#/stock/' + n0.code && nr.title === n0.name && nr.back[0] === '#/rise' && nr.back[1] === `‹ 불장 밖에서 많이 오른 ${NEXT.length}곳` && nr.active === 'rise', nr);
+      const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
+      await page.waitForSelector('.r-page .nc-row'); await page.waitForTimeout(400);
+      const rb = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)}));
+      check(`${label} 회사 화면 「‹ 불장 밖에서 많이 오른 ${NEXT.length}곳」 → 22곳 · 보던 자리(${y0}px → ${rb.y}px)`, rb.hash === '#/rise' && Math.abs(rb.y - y0) <= 2, {y0, rb});
+    }
+  }
+  // ①-4 탭 「예비」(#/similar · 2026-10-05 05:03 「불장에 공통된점을 찾아 아직 불징이 아닌 종목 7개를」 · 05:07 「해」) — 이 검사기가 판의 셈을 따로 다시 센다
+  {
+    const SIM = board.similar, ts = page.locator('.bottom-link[data-route="similar"]'); if (mobile) await ts.tap(); else await ts.click();
+    await page.waitForSelector('.s-page'); await page.waitForTimeout(300);
+    await shot('02c-similar');
+    // 따로 센 공통점 후보 아홉(화면·판 코드와 따로 적음) — true / false / null(모름)
+    const fin = v => typeof v === 'number' && Number.isFinite(v);
+    const TW = {ups: c => c.c?.length >= 21 ? c.c.slice(1).filter((v, i) => v / c.c[i] - 1 > 0.001).length >= 10 : null, r5: c => c.c?.length >= 6 ? c.c.at(-1) > c.c.at(-6) : null, r20: c => fin(c.change20) ? c.change20 > 0 : null,
+      fgn: c => fin(c.brief?.flows?.foreign) ? c.brief.flows.foreign > 0 : null, ins: c => fin(c.brief?.flows?.institution) ? c.brief.flows.institution > 0 : null, hold: c => c.brief?.flows?.holdPct ? c.brief.flows.holdPct.last > c.brief.flows.holdPct.first : null,
+      y1: c => fin(c.info?.ret252) ? c.info.ret252 > 0 : null, top: c => fin(c.info?.pos52) ? c.info.pos52 >= 0.8 : null, news: c => c.brief && !c.brief.missing.includes('기사') && fin(c.brief.newsNamed) ? c.brief.newsNamed > 0 : null};
+    const hotIds = new Set(HOT.map(x => x.id)), hotCs = board.companies.filter(c => hotIds.has(c.group?.id)), restCs = board.companies.filter(c => !hotIds.has(c.group?.id));
+    const tal = (cs, f) => { const v = cs.map(f).filter(x => x !== null); return {yes: v.filter(Boolean).length, known: v.length}; }, rt = x => x.known ? x.yes / x.known : 0;
+    const tw = Object.entries(TW).map(([id, f]) => { const h = tal(hotCs, f), r = tal(restCs, f); return {id, h, r, gap: rt(h) - rt(r)}; });
+    let commonW = tw.filter(t => t.h.known && rt(t.h) > 0.5 && t.gap > 0.10); if (hotCs.length && commonW.length < 3) commonW = [...commonW, ...tw.filter(t => t.h.known && t.gap > 0 && !commonW.includes(t)).sort((a, b) => b.gap - a.gap).slice(0, 3 - commonW.length)];
+    const cIds = Object.keys(TW).filter(id => commonW.some(t => t.id === id)), needW = Math.floor(cIds.length / 2) + 1;
+    const scored = restCs.map(c => ({c, has: cIds.filter(id => TW[id](c) === true)})).filter(x => cIds.length && x.has.length >= needW).sort((a, b) => b.has.length - a.has.length || (fin(b.c.change20) ? b.c.change20 : -Infinity) - (fin(a.c.change20) ? a.c.change20 : -Infinity) || a.c.code.localeCompare(b.c.code));
+    const per = new Map(), simW = []; for (const x of scored) { const g = x.c.group?.id ?? 'none'; if ((per.get(g) ?? 0) >= 2) continue; per.set(g, (per.get(g) ?? 0) + 1); simW.push(x); if (simW.length === 7) break; }
+    check(`${label} 「예비」: 판의 닮은 ${SIM.items.length}곳 = 이 검사기가 따로 센 ${simW.length}곳(공통점 ${cIds.join('·')} · ${needW}가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)`, SIM.common.join() === cIds.join() && SIM.items.map(x => x.code).join() === simW.map(x => x.c.code).join() && SIM.items.every((x, i) => x.has.join() === simW[i].has.join()), {board: SIM.items.map(x => x.name), mine: simW.map(x => x.c.name), common: SIM.common, cIds});
+    const sr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      mvx: (() => { const b = document.querySelector('.mvx'); return b ? {state: b.dataset.state, head: b.querySelector('.mvx-h')?.innerText.replace(/\s+/g, ' ').trim(), rows: [...b.querySelectorAll('.mvx-row')].map(r => ({kind: r.dataset.kind, n: +r.dataset.n, who: r.querySelector('.mvx-who')?.textContent.trim()})), n22: b.querySelector('.mvx-22')?.textContent.trim() ?? null} : null; })(),
+      rows: [...document.querySelectorAll('.sm-row')].map(a => { const sp = a.querySelector('.spark'); return {href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim(), cnt: a.querySelector('.sm-cnt > b')?.textContent.trim(), chips: [...a.querySelectorAll('.sm-chip')].map(c => `${c.dataset.trait}:${c.classList.contains('on') ? 'on' : c.classList.contains('unk') ? 'unk' : 'off'}:${c.querySelector('.sm-ck')?.textContent}`), sp: sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi} : null}; }),
+      bars: [...document.querySelectorAll('.tr-row')].map(r => ({id: r.dataset.trait, w: [...r.querySelectorAll('.tr-fill')].map(f => parseFloat(f.style.width)), vals: [...r.querySelectorAll('.tr-val')].map(v => v.textContent.trim()), ns: [...r.querySelectorAll('.tr-n')].map(v => v.textContent.trim())})),
+      sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    const commonT = SIM.common.map(id => SIM.traits.find(t => t.id === id));
+    check(`${label} 탭 「예비」 ${mobile ? '터치' : '누름'} → #/similar · 제목 「${sr.title}」 · 「${sr.when}」 · 탭 「예비」 눌림`, sr.hash === '#/similar' && sr.title === `불장 닮은 ${SIM.items.length}곳` && sr.when === `불장 ${HOT.length}개 업종 ${SIM.hotCompanies}곳의 공통점 ${SIM.common.length}가지를 많이 가진, 불장 밖 회사 · ${kd(toM)} 종가` && sr.active === 'similar', {...sr, rows: undefined, bars: undefined, mvx: undefined});
+    const scS = scaleW(SIM.items.map(x => byCodeB0.get(x.code)));
+    const rowMis = SIM.items.map((x, i) => { const r = sr.rows[i]; const chipsWant = commonT.map(t => `${t.id}:${x.has.includes(t.id) ? 'on:✓' : x.unknown.includes(t.id) ? 'unk:?' : 'off:·'}`);
+      return r && r.href === '#/stock/' + x.code && r.name === x.name && r.ind === x.groupLabel && r.chg === p1(x.change20) && r.cnt === `공통점 ${commonT.length}가지 중 ${x.matched}가지` && r.chips.join() === chipsWant.join() && r.sp?.n === byCodeB0.get(x.code).c.length && r.sp?.lo === scS.lo.toFixed(4) && r.sp?.hi === scS.hi.toFixed(4) ? null : {i, x: x.name, r}; }).filter(Boolean);
+    check(`${label} 「예비」: 줄 ${sr.rows.length}개 = 판 · 줄마다 차례 · 이름 · 업종 · 20거래일 변화 · 「공통점 n가지 중 m가지」 · 공통점 표시(✓ 가짐 · 「·」 안 가짐 · 「?」 모름 — 색만이 아님) · 선 그래프(${SIM.items.length}곳 같은 눈금) · 옆으로 넘치지 않음`, sr.rows.length === SIM.items.length && !rowMis.length && sr.sw <= sr.iw, {rowMis: rowMis.slice(0, 2), sw: sr.sw});
+    const pc = x => `${Math.round((x.known ? x.yes / x.known : 0) * 100)}%`;
+    const barMisS = commonT.map((t, i) => { const b = sr.bars[i], w = x => Math.max(1, (x.known ? x.yes / x.known : 0) * 100); return b && b.id === t.id && Math.abs(b.w[0] - w(t.hot)) < 0.01 && Math.abs(b.w[1] - w(t.rest)) < 0.01 && b.vals.join() === `${pc(t.hot)},${pc(t.rest)}` && b.ns.join() === `${t.hot.yes}/${t.hot.known}곳,${t.rest.yes}/${t.rest.known}곳` ? null : {t: t.id, b}; }).filter(Boolean);
+    check(`${label} 「예비」: 공통점 막대 ${sr.bars.length}줄 = 판의 공통점 ${commonT.length}가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)`, sr.bars.length === commonT.length && !barMisS.length, {barMisS: barMisS.slice(0, 2)});
+    const mv = board.moves, names = xs => xs.length ? xs.map(x => x.label ?? (x.groupLabel ? `${x.name}(${x.groupLabel})` : x.name)).join(' · ') : '없음';
+    const mvOk = !mv ? sr.mvx?.state === 'none' : mv.first ? sr.mvx?.state === 'first' && sr.mvx.head.includes(`${kd(mv.to)} 종가 · 처음 기록`)
+      : sr.mvx?.state === 'moves' && sr.mvx.head.startsWith(`저녁 7시 들고 남 ${kd(mv.from)} 종가 → ${kd(mv.to)} 종가 · `) && [['hot-in', mv.hotIn], ['hot-out', mv.hotOut], ['became', mv.becameHot], ['sim-in', mv.similarIn], ['sim-out', mv.similarOut]].every(([k, xs], i) => sr.mvx.rows[i]?.kind === k && sr.mvx.rows[i]?.n === xs.length && sr.mvx.rows[i]?.who === names(xs)) && sr.mvx.n22 === `22곳: 새로 든 곳 ${mv.nextIn.length}곳 · 빠진 곳 ${mv.nextOut.length}곳`;
+    check(`${label} 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(${!mv ? '기록 없음' : mv.first ? '처음 기록' : `${mv.from} → ${mv.to}`})`, mvOk, sr.mvx);
+    await wordsCheck(page, `${label} 「예비」`);
+    if (SIM.items.length) {
+      const s0 = SIM.items.at(-1), row = page.locator(`.sm-row[href="#/stock/${s0.code}"]`); await row.scrollIntoViewIfNeeded();
+      const y0 = await page.evaluate(() => Math.round(scrollY));
+      if (mobile) await row.tap(); else await row.click();
+      await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
+      const cr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
+      check(`${label} 「예비」 줄 「${s0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${cr.back[1]}」 · 탭 「예비」 눌린 채로`, cr.hash === '#/stock/' + s0.code && cr.title === s0.name && cr.back[0] === '#/similar' && cr.back[1] === `‹ 불장 닮은 ${SIM.items.length}곳` && cr.active === 'similar', cr);
+      const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
+      await page.waitForSelector('.s-page .sm-row'); await page.waitForTimeout(400);
+      const sb = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)}));
+      check(`${label} 회사 화면 「‹ 불장 닮은 ${SIM.items.length}곳」 → 예비 · 보던 자리(${y0}px → ${sb.y}px)`, sb.hash === '#/similar' && Math.abs(sb.y - y0) <= 2, {y0, sb});
+    }
   }
   // 없는 업종 주소 → 알림 + 처음 화면으로 가는 길
   await page.evaluate(() => { location.hash = '#/i/zzzzzzzz'; }); await page.waitForSelector('.b-page .b-note'); await page.waitForTimeout(100);
@@ -310,7 +379,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 async function darkCheck() {
   const context = await browser.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, colorScheme: 'dark', locale: 'ko-KR'});
   const page = await context.newPage();
-  for (const [hash, wait, name] of [['#/', '.t-tile', 'home'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/road', '.f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
+  for (const [hash, wait, name] of [['#/', '.t-tile', 'home'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
     await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector(wait); await page.waitForTimeout(300);
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await page.screenshot({path: path.join(dir, `mobile-dark-${name}.png`)});
@@ -364,7 +433,7 @@ try {
 } finally { await browser.close(); }
 // 배포 묶음: 게임 쪽은 없고 옛 주소는 처음 화면으로 돌린다(넷리파이 _redirects)
 try { const red = await fs.readFile(path.join(process.cwd(), 'dist/_redirects'), 'utf8'); let game = true; try { await fs.access(path.join(process.cwd(), 'dist/game')); } catch { game = false; } check(`배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (${red.trim().split('\n').length}줄)`, !game && /^\/game\/\*\s+\/\s+302$/m.test(red)); } catch (e) { check('배포 묶음 dist/ 를 읽지 못함', false, {e: e.message}); }
-const summary = {schema: 'atlas11-browser-check-3', at: new Date().toISOString(), base, prediction: 'off', boardId: manifest.boardId, asOf: manifest.asOf, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, checks};
+const summary = {schema: 'atlas11-browser-check-4', at: new Date().toISOString(), base, prediction: 'off', boardId: manifest.boardId, asOf: manifest.asOf, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, checks};
 await fs.writeFile(path.join(dir, 'report.json'), JSON.stringify(summary, null, 2));
 await fs.writeFile(path.join(process.cwd(), 'reports/atlas11/browser/latest.json'), JSON.stringify({...summary, dir: path.relative(process.cwd(), dir)}, null, 2));
 console.log(JSON.stringify({passed: summary.passed, failed: summary.failed, dir}));

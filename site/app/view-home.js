@@ -8,15 +8,17 @@
        칸 바탕의 세기 색과 색 보기표는 덜어 냄: 칸 차례가 이미 크기를 말한다 · 빨강 세기를 키우면 판단을 흔든다(Bazley 외 2021) · 위 가는 선 하나만 오름 빨강 / 내림 파랑
      · 「다음 불장 후보」 → 「불장 밖에서 많이 오른 22곳」 — 셈법과 22곳은 그대로, 앞날을 말하는 이름만 지난 일을 말하는 이름으로(사장님 「예측 없음」 · 투자 조언으로 읽힐 위험)
        한 줄에 넷: 이름 · 업종 · 작은 선 그래프(22곳 같은 눈금) · ▲변화
-     · 회사 종류 줄은 접힌 「어떤 회사들인가」 안으로 · 「ATLAS가 하지 않는 일」을 밝힌다(잡스: 안 한 일도 자랑) */
+     · 회사 종류 줄은 접힌 「어떤 회사들인가」 안으로 · 「ATLAS가 하지 않는 일」을 밝힌다(잡스: 안 한 일도 자랑)
+   2026-10-05 05:03 「불장 그리고 뭐뭐가 있잖아 그걸 탭 처리로 하지 지금은 밑으로 내려애ㅣㅑ 하잖아」 · 05:07 「해」
+     — 아래 탭 다섯(불장 · 예비 · 22곳 · 출목표 · 일정) · 이 화면(탭 「불장」)은 36칸 판만 · 22곳은 탭 「22곳」(view-rise.js) · 닮은 7곳은 탭 「예비」(view-similar.js) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
-import {nextBox, foot, promiseBox, sparkSvg, sparkScale} from './parts.js';
+import {nextBox, foot, promiseBox} from './parts.js';
 
-const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
+export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
 /** 가장 많은 값(같으면 늦은 날) — 한 회사 종가가 늦어도 판 전체의 기간 글이 흔들리지 않게 */
-const mode = xs => { const n = new Map(); for (const x of xs) if (x) n.set(x, (n.get(x) ?? 0) + 1); return [...n].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? 1 : -1))[0]?.[0] ?? null; };
+export const mode = xs => { const n = new Map(); for (const x of xs) if (x) n.set(x, (n.get(x) ?? 0) + 1); return [...n].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? 1 : -1))[0]?.[0] ?? null; };
 /** 「업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳」(없는 것은 빼고) */
 export const kindsLine = (k, n) => [`업종 ${n}개`, `우량주 ${k.quality ?? 0}곳`, `시대 트렌드 ${k.trend ?? 0}곳`, k.profit ? `흑자 ${k.profit}곳` : null, k.size ? `채움 ${k.size}곳` : null].filter(Boolean).join(' · ');
 export const upLine = g => g.measured ? (g.up === g.measured ? `${g.measured}곳 모두 오름` : g.up === 0 ? '오른 곳 없음' : `${g.measured}곳 중 ${g.up}곳 오름`) : '변화 없음';
@@ -31,17 +33,6 @@ function tile(g, i) {
     h('span', {class: 't-name'}, g.label),
     h('span', {class: 't-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'), // 세모(▲▼)는 style.css 가 붙임 — 글자는 그대로
     h('span', {class: 't-up'}, upLine(g)));
-}
-/** 불장 밖에서 많이 오른 회사(한 업종 2곳까지) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(모든 줄 같은 눈금) · ▲변화 */
-function nextList(next, byCode) {
-  const items = next?.items ?? [];
-  if (!items.length) return h('p', {class: 'muted small'}, '불장 업종 밖에서 지난 20거래일 동안 오른 회사가 없습니다');
-  const sc = sparkScale(items.map(x => byCode.get(x.code)).filter(Boolean));
-  return h('ol', {class: 'nc-list'}, ...items.map(x => { const c = byCode.get(x.code);
-    return h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + x.code},
-      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, x.name), h('small', {class: 'nc-ind'}, x.groupLabel ?? '')),
-      c ? sparkSvg(c, sc) : h('span', {class: 'sp-none'}, '선 그래프 없음'),
-      h('b', {class: 'chg20 nc-chg ' + (signCls(x.change20) || 'flat')}, pct(x.change20, 1)))); }));
 }
 function setBox(set, board, groups) {
   const how = set?.how ?? [];
@@ -59,10 +50,10 @@ function setBox(set, board, groups) {
 export async function renderHome(main, {manifest}) {
   const board = await loadBoard();
   const set = manifest.universeSet ?? {}, late = board.late ?? [], n = board.companies.length;
-  const groups = board.groups?.length ? board.groups : [], byCode = new Map(board.companies.map(c => [c.code, c]));
+  const groups = board.groups?.length ? board.groups : [];
   const sizes = new Set(groups.map(g => g.codes.length)), per = sizes.size === 1 ? [...sizes][0] : null;
-  const hot = board.hot?.items ?? [], nn = board.next?.items?.length ?? 0, from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
-  state.summary = `${korDate(to)} 종가 기준. 불장 ${hot.length}개. ${headLine(groups, n, from, to)}. ${hot.slice(0, 3).map((x, i) => `${i + 1}위 ${x.label} ${pct(x.change20, 1)}`).join(', ')}. 불장 밖에서 많이 오른 회사 ${nn}곳.`;
+  const hot = board.hot?.items ?? [], from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
+  state.summary = `${korDate(to)} 종가 기준. 불장 ${hot.length}개. ${headLine(groups, n, from, to)}. ${hot.slice(0, 3).map((x, i) => `${i + 1}위 ${x.label} ${pct(x.change20, 1)}`).join(', ')}.`;
   main.replaceChildren(h('div', {class: 'b-page t-page'},
     marketStrip(manifest),
     nextBox(manifest.universeNext),
@@ -73,10 +64,6 @@ export async function renderHome(main, {manifest}) {
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
     h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map(tile)),
     h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} 15:30 종가`),
-    h('section', {class: 't-sec', 'aria-label': `불장 밖에서 많이 오른 ${nn}곳`},
-      h('h2', {class: 't-h2', 'data-speak': ''}, `불장 밖에서 많이 오른 ${nn}곳`),
-      h('p', {class: 't-sub'}, `불장 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · 선 그래프는 ${nn}곳이 같은 눈금(점선 = 첫날 종가) · 누르면 회사 화면`),
-      nextList(board.next, byCode)),
     setBox(set, board, groups),
     promiseBox(),
     foot(manifest)));

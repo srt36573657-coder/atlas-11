@@ -71,9 +71,10 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .round { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--fill); color: var(--ink); display: grid; place-items: center; font: 700 1.125rem/1 var(--font); cursor: pointer; padding: 0; flex: none; transition: background-color .2s ease-out, color .2s ease-out; }
 .round.on { background: var(--ink); color: var(--bg); }
 
-/* 아래 탭 셋 */
-.bottom { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: center; gap: clamp(6px, 6vw, 88px); background: var(--bar); border-top: 1px solid var(--sep); /* 숫자 뒤는 늘 맑게 — 유리(흐림) 효과 없음 · 은빛 선은 위 막대 하나뿐 */ padding-bottom: env(safe-area-inset-bottom); }
-.bottom-link { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 84px; min-height: 60px; text-decoration: none; color: var(--sub); font-size: .9375rem; font-weight: 500; transition: color .2s ease-out; }
+/* 아래 탭 다섯(2026-10-05 05:07 「해」 — 불장 · 예비 · 22곳 · 출목표 · 일정) — 한 줄에 고르게 · 칸 폭 112px 까지
+   탭 이름 글씨는 17px 에서 멈춘다(글씨 단추 200% 에서도 다섯이 한 줄에 — 애플 탭 막대처럼 본문 글씨만 커짐) */
+.bottom { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: center; gap: 0; background: var(--bar); border-top: 1px solid var(--sep); /* 숫자 뒤는 늘 맑게 — 유리(흐림) 효과 없음 · 은빛 선은 위 막대 하나뿐 */ padding: 0 4px env(safe-area-inset-bottom); }
+.bottom-link { position: relative; flex: 1 1 0; max-width: 112px; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; text-decoration: none; color: var(--sub); font-size: min(.9375rem, 17px); font-weight: 500; white-space: nowrap; transition: color .2s ease-out; }
 .bottom-link .icon { display: block; width: 28px; height: 28px; }
 .bottom-link .icon svg { width: 28px; height: 28px; display: block; }
 .bottom-link.active { color: var(--ink); font-weight: 700; }
@@ -359,6 +360,60 @@ html[data-drawn] .spark .sp-line, html[data-drawn] .lc-line, html[data-drawn] .s
 .nw-h { color: var(--sub); }
 .nw-t { color: var(--ink); font-weight: 500; overflow-wrap: anywhere; }
 
+/* 「불장 닮은 7곳」(탭 「예비」 · 2026-10-05 05:07 「해」) — 맨 위 「저녁 7시 들고 남」(위 막대와 같은 먹빛 바탕 · 은빛 선) · 7곳 줄 · 공통점 막대 */
+.mvx { margin: 14px 0 0; padding: 12px 14px 12px; border-radius: 16px; background: var(--band); box-shadow: inset 0 -1px 0 var(--eun);
+  --ink: var(--band-ink); --sub: var(--band-sub); --fill: var(--band-fill); --link: var(--band-ink); color: var(--ink); }
+.mvx-h { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-size: 1.0625rem; }
+.mvx-when { font-size: .875rem; color: var(--sub); }
+.mvx-note { margin: 6px 0 0; font-size: .9375rem; color: var(--ink); line-height: 1.5; }
+.mvx-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+/* 한 줄씩 이어 씀(표시 · 무엇 · 이름들) — 줄이 넘치면 표시 다음 자리에서 이어짐(매달린 들여쓰기) · 첫 화면에 7곳 줄이 보이도록 낮게 */
+.mvx-row { padding: 5px 0 5px 1.6em; text-indent: -1.6em; font-size: .9375rem; line-height: 1.45; border-top: 1px solid var(--band-fill); }
+.mvx-row:first-child { border-top: 0; }
+.mvx-mark { display: inline-block; width: 1.6em; text-indent: 0; text-align: center; font-weight: 700; }
+.mvx-what { font-weight: 700; margin-right: .5em; }
+.mvx-who { color: var(--ink); overflow-wrap: anywhere; }
+.mvx-row[data-n="0"] .mvx-who { color: var(--sub); }
+.mvx-22 { margin: 6px 0 0; font-size: .875rem; color: var(--sub); }
+.sm-sec { margin-top: 18px; }
+.sm-list { list-style: none; margin: 4px 0 0; padding: 0; counter-reset: sm; }
+.sm-li { counter-increment: sm; }
+.sm-no::before { content: counter(sm); }
+.sm-row { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) 84px auto; grid-template-areas: "n m g c" ". k k k"; align-items: center; gap: 6px 10px; min-height: 56px; padding: 10px 2px; border-bottom: 1px solid var(--sep); color: var(--ink); text-decoration: none; }
+.sm-list li:last-child .sm-row { border-bottom: 0; }
+.sm-row:active { background: var(--fill); }
+.sm-no { grid-area: n; font-size: .9375rem; font-weight: 700; color: var(--sub); text-align: center; }
+.sm-row > .nc-mid { grid-area: m; }
+.sm-row > .spark, .sm-row > .sp-none { grid-area: g; width: 84px; }
+.sm-row > .nc-chg { grid-area: c; }
+.sm-cnt { grid-area: k; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: .8125rem; line-height: 1.5; }
+.sm-cnt > b { margin-right: 2px; }
+.sm-chip { display: inline-flex; align-items: baseline; gap: 3px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--sep); color: var(--sub); white-space: nowrap; }
+.sm-chip.on { background: var(--fill); border-color: transparent; color: var(--ink); font-weight: 700; }
+.sm-chip.unk { border-style: dashed; }
+.sm-ck { font-weight: 700; }
+html[data-font-step="2"] .sm-row, html[data-font-step="3"] .sm-row, html[data-font-step="4"] .sm-row { grid-template-columns: 1.4rem minmax(0, 1fr) auto; grid-template-areas: "n m m" ". g c" ". k k"; gap: 4px 10px; }
+html[data-font-step="2"] .sm-row > .spark, html[data-font-step="3"] .sm-row > .spark, html[data-font-step="4"] .sm-row > .spark { width: 100%; max-width: 12rem; }
+html[data-font-step="2"] .sm-chip, html[data-font-step="3"] .sm-chip, html[data-font-step="4"] .sm-chip { white-space: normal; }
+/* 공통점 막대 — 불장 회사 · 나머지 회사 가운데 몇 %가 가졌나(오르내림이 아니라 먹빛 · 회색 · 줄마다 「불장 55곳」 「나머지 125곳」 글자) */
+.tr-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+.tr-row { padding: 12px 14px; background: var(--card); border-radius: 14px; box-shadow: 0 0 0 1px var(--hair), var(--lift); }
+.tr-h { margin: 0 0 6px; display: grid; gap: 1px; }
+.tr-h b { font-size: 1.0625rem; } .tr-rule { font-size: .8125rem; color: var(--sub); line-height: 1.45; }
+.tr-line { display: grid; grid-template-columns: 6.4em minmax(0, 1fr) 2.8em auto; align-items: center; gap: 8px; min-height: 26px; font-size: .875rem; }
+.tr-who { color: var(--ink2); white-space: nowrap; }
+.tr-track { position: relative; height: 10px; border-radius: 5px; background: var(--fill); }
+.tr-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; }
+.tr-fill.hot { background: var(--ink); } .tr-fill.rest { background: var(--sub); }
+.tr-val { text-align: right; } .tr-n { color: var(--sub); white-space: nowrap; }
+html[data-font-step="3"] .tr-line, html[data-font-step="4"] .tr-line { grid-template-columns: minmax(0, 1fr) auto auto; }
+html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-column: 1 / -1; grid-row: 2; }
+.tr-all { margin: 8px 0 0; padding-left: 1.2em; font-size: .875rem; line-height: 1.6; color: var(--ink2); }
+.tr-all b { color: var(--ink); }
+/* 22곳 화면 — 저녁 7시 기록끼리 견준 들고 남 한 줄 */
+.r-moves { margin: 10px 4px 0; color: var(--ink2); line-height: 1.5; }
+.r-sub { margin-top: 14px; }
+
 /* 일정 화면 */
 .a-days { display: grid; gap: 12px; margin-top: 6px; }
 .a-day-h { margin: 0 0 2px; padding-bottom: 4px; font-size: .9375rem; font-weight: 700; color: var(--ink2); border-bottom: 1px solid var(--sep); }
@@ -375,5 +430,6 @@ html[data-drawn] .spark .sp-line, html[data-drawn] .lc-line, html[data-drawn] .s
   body[data-view="industry"] .b-head, body[data-view="industry"] .mv-list, body[data-view="industry"] .b-how { max-width: 720px; }
   body[data-view="home"] .b-head, body[data-view="home"] .nx, body[data-view="home"] .b-how, body[data-view="home"] .b-box { max-width: 720px; }
   body[data-view="agenda"] .main { max-width: 720px; }
+  body[data-view="similar"] .main, body[data-view="similar"] .top-inner, body[data-view="rise"] .main, body[data-view="rise"] .top-inner { max-width: 720px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

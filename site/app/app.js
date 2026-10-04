@@ -7,7 +7,10 @@
    지금 탭을 한 번 더 누르면 맨 위로 · 출목표 한 판은 회사 화면에 갔다 와도 보던 자리 그대로(아이폰 탭 막대처럼).
    지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)는 처음 화면으로 돌린다.
    2026-10-05 02:44 「잡스였다면」 개혁: 불러오는 동안 파일 이름 같은 기술 말 대신 회색 자리 표시(애플 HIG 「바로 열리고, 빈칸 대신 자리 표시」)
-     · 그래프 선 그리기(0.3초)는 화면마다 처음 한 번만 — 같은 화면을 다시 그릴 때(묶음 바꾸기 · 글씨 단추)는 움직이지 않는다(애플 HIG 움직임: 목적이 있을 때만) */
+     · 그래프 선 그리기(0.3초)는 화면마다 처음 한 번만 — 같은 화면을 다시 그릴 때(묶음 바꾸기 · 글씨 단추)는 움직이지 않는다(애플 HIG 움직임: 목적이 있을 때만)
+   2026-10-05 05:03 사장님 「탬을 두개 더 만든다 … 불장 그리고 뭐뭐가 있잖아 그걸 탭 처리로 하지 지금은 밑으로 내려애ㅣㅑ 하잖아」 · 05:07 「해」
+     아래 탭 다섯: 불장(#/ · 36칸 판) · 예비(#/similar · 불장 닮은 7곳 · 저녁 7시 들고 남) · 22곳(#/rise · 불장 밖에서 많이 오른 곳) · 출목표(#/road) · 일정(#/agenda)
+     업종·회사 화면은 들어온 탭에 속한다(예비 탭에서 회사를 누르면 예비 탭이 눌린 채로) */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome} from './view-home.js';
@@ -15,23 +18,31 @@ import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
 import {renderRoad} from './view-road.js';
+import {renderSimilar} from './view-similar.js';
+import {renderRise} from './view-rise.js';
 
-const app = {view: null, manifest: null};
+const app = {view: null, manifest: null, tab: 'home'};
 const ICON = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
   road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="5" r="2.6"/><circle cx="5" cy="12" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="12" cy="5" r="2.6"/><circle cx="19" cy="5" r="2.6"/><circle cx="19" cy="12" r="2.6"/></svg>',
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
+  // 예비: 반짝임 하나(큰 별 + 작은 별) — 「눈여겨볼 것」
+  similar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 11.9 9.1 17.5 11 11.9 12.9 10 18.5 8.1 12.9 2.5 11 8.1 9.1z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>',
+  // 22곳: 차례 목록(점 셋 + 줄 셋)
+  rise: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11.5M9 12h11.5M9 18h11.5"/><circle cx="4.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg>',
 };
 const routes = [
-  {id: 'home', label: '회사', match: /^(#\/?)?$/, render: renderHome},
-  {id: 'industry', tab: 'home', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
-  {id: 'stock', tab: 'home', match: /^#\/stock\/\d{6}$/, render: renderCompany},
+  {id: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
+  {id: 'stock', tab: 'from', match: /^#\/stock\/\d{6}$/, render: renderCompany},
+  {id: 'similar', label: '예비', match: /^#\/similar$/, render: renderSimilar},
+  {id: 'rise', label: '22곳', match: /^#\/rise$/, render: renderRise},
   {id: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
   {id: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
 ];
-const TABS = ['home', 'road', 'agenda'];
-/** 보던 자리 기억(출목표 한 판만) — 회사 화면에 갔다 돌아오면 그 자리 */
-const KEEP_SCROLL = new Set(['road']), scrollMemo = new Map();
+const TABS = ['home', 'similar', 'rise', 'road', 'agenda'];
+/** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
+const KEEP_SCROLL = new Set(['road', 'similar', 'rise']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
 const drawn = new Set();
 const FONT_STEPS = [100, 125, 150, 175, 200];
@@ -56,8 +67,8 @@ function header() {
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
     speakBtn));
   fontLabel();
-  // 처음 화면 탭 이름 = 지금 묶음의 곳 수(판 목록을 못 읽으면 「회사」)
-  const label = r => r.id === 'home' && Number.isInteger(app.manifest?.companies) ? `${app.manifest.companies}곳` : r.label;
+  // 「22곳」 탭 이름 = 판에 실린 곳 수(판 목록에 없으면 22곳)
+  const label = r => r.id === 'rise' && Number.isInteger(app.manifest?.counts?.next) ? `${app.manifest.counts.next}곳` : r.label;
   // 지금 보고 있는 탭을 다시 누르면 맨 위로(주소가 그대로라 화면은 다시 그리지 않음)
   const toTop = (e, r) => { if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
   const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
@@ -75,7 +86,9 @@ async function route() {
   stopSpeak(); voice.on = false; document.getElementById('voice-btn')?.classList.remove('on'); document.getElementById('voice-btn')?.setAttribute('aria-pressed', 'false');
   if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
   if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
-  markActive(r.tab ?? r.id); app.view = r.id; state.summary = '';
+  // 업종·회사 화면은 들어온 탭이 눌린 채로(탭 막대에 없는 화면) · 탭 화면이면 그 탭을 기억
+  if (TABS.includes(r.id)) app.tab = r.id;
+  markActive(r.tab === 'from' ? app.tab : r.tab ?? r.id); app.view = r.id; state.summary = '';
   document.documentElement.toggleAttribute('data-drawn', drawn.has(r.id)); drawn.add(r.id); // 이 화면을 이미 한 번 그렸으면 선 그리기 움직임 없이
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;

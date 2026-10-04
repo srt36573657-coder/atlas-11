@@ -1,9 +1,9 @@
 {
-  "schema": "atlas11-browser-check-3",
-  "at": "2026-10-04T18:56:54.368Z",
+  "schema": "atlas11-browser-check-4",
+  "at": "2026-10-04T20:43:22.437Z",
   "base": "http://localhost:8823",
   "prediction": "off",
-  "boardId": "board-2026-10-02-ac6d4125",
+  "boardId": "board-2026-10-02-20b1c6b7",
   "asOf": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 225,
+  "passed": 281,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -52,6 +52,26 @@
         "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "similar": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "rise": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
         "truncated": 0,
         "formatDates": 0
       },
@@ -117,6 +137,26 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "similar": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "rise": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "stock": {
         "relDays": 0,
         "vague": 0,
@@ -176,6 +216,26 @@
         "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "similar": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "rise": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
         "truncated": 0,
         "formatDates": 0
       },
@@ -241,6 +301,26 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "similar": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "rise": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "stock": {
         "relDays": 0,
         "vague": 0,
@@ -303,6 +383,26 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "similar": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "rise": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 1,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "stock": {
         "relDays": 0,
         "vague": 0,
@@ -327,13 +427,13 @@
   },
   "checks": [
     {
-      "name": "pc 처음 화면(업종 36칸): 제목 「불장 11개」 = 판의 불장 11개 · 결론 한 줄 「업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 21개 오름 · 가장 많은 회사의 기간) · 아래 탭 180곳·출목표·일정(처음 화면 눌림) · 처음 화면엔 회사 카드 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳」",
+      "name": "pc 처음 화면(업종 36칸): 제목 「불장 11개」 = 판의 불장 11개 · 결론 한 줄 「업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 21개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 불장·예비·22곳·출목표·일정(「불장」 눌림) · 처음 화면엔 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳」",
       "ok": true,
       "detail": {
         "title": "불장 11개",
         "when": "업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지",
         "kinds": "업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳",
-        "nextH": "불장 밖에서 많이 오른 22곳",
+        "ncRows": 0,
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
         "late": [
@@ -342,7 +442,9 @@
         "strip": "10월 2일(금) 15:30 KST 종가 코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11%",
         "active": "home",
         "tabs": [
-          "180곳",
+          "불장",
+          "예비",
+          "22곳",
           "출목표",
           "일정"
         ],
@@ -384,48 +486,6 @@
           "rgb(255, 254, 252)"
         ],
         "legend": 0
-      }
-    },
-    {
-      "name": "pc 처음 화면(업종 36칸): 「불장 밖에서 많이 오른 22곳」 = 판(22곳 · 앞날 말 없는 이름) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크가 판과 같음 · 불장 업종 회사 없음 · 한 업종 2곳까지",
-      "ok": true,
-      "detail": {
-        "nextH": "불장 밖에서 많이 오른 22곳",
-        "next": [
-          {
-            "href": "#/stock/028300",
-            "name": "HLB",
-            "ind": "의료기기",
-            "chg": "+21.3%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          },
-          {
-            "href": "#/stock/052690",
-            "name": "한전기술",
-            "ind": "전력·가스",
-            "chg": "+19.8%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          },
-          {
-            "href": "#/stock/000150",
-            "name": "두산",
-            "ind": "복합기업",
-            "chg": "+19.4%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          }
-        ]
       }
     },
     {
@@ -530,12 +590,199 @@
       "detail": null
     },
     {
-      "name": "pc 불장 밖에서 많이 오른 곳 첫 줄 「HLB」 누름 → 회사 화면 · 되돌아가기 = 그 회사 업종 「의료기기」",
+      "name": "pc 탭 「22곳」 누름 → #/rise · 제목 「불장 밖에서 많이 오른 22곳」 · 「불장 11개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 탭 「22곳」 눌림",
       "ok": true,
       "detail": {
-        "hash": "#/stock/028300",
-        "title": "HLB",
-        "back": "#/i/i5f38fbf6"
+        "hash": "#/rise",
+        "title": "불장 밖에서 많이 오른 22곳",
+        "when": "불장 11개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지",
+        "active": "rise",
+        "moves": null,
+        "sw": 1280,
+        "iw": 1280
+      }
+    },
+    {
+      "name": "pc 「22곳」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "next": [
+          {
+            "href": "#/stock/028300",
+            "name": "HLB",
+            "ind": "의료기기",
+            "chg": "+21.3%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          },
+          {
+            "href": "#/stock/052690",
+            "name": "한전기술",
+            "ind": "전력·가스",
+            "chg": "+19.8%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          },
+          {
+            "href": "#/stock/000150",
+            "name": "두산",
+            "ind": "복합기업",
+            "chg": "+19.4%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          }
+        ],
+        "sw": 1280
+      }
+    },
+    {
+      "name": "pc 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(기록이 둘보다 적어 없음)",
+      "ok": true,
+      "detail": {
+        "moves": null,
+        "movesWant": null
+      }
+    },
+    {
+      "name": "pc 「22곳」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 「22곳」 줄 「NC」 누름 → 회사 화면 · 되돌아가기 「‹ 불장 밖에서 많이 오른 22곳」 · 탭 「22곳」 눌린 채로",
+      "ok": true,
+      "detail": {
+        "hash": "#/stock/036570",
+        "title": "NC",
+        "back": [
+          "#/rise",
+          "‹ 불장 밖에서 많이 오른 22곳"
+        ],
+        "active": "rise"
+      }
+    },
+    {
+      "name": "pc 회사 화면 「‹ 불장 밖에서 많이 오른 22곳」 → 22곳 · 보던 자리(0px → 0px)",
+      "ok": true,
+      "detail": {
+        "y0": 0,
+        "rb": {
+          "hash": "#/rise",
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "pc 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·ins·y1 · 3가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
+      "ok": true,
+      "detail": {
+        "board": [
+          "DN오토모티브",
+          "두산로보틱스",
+          "LG에너지솔루션",
+          "KG스틸",
+          "에스엘",
+          "NICE평가정보",
+          "레인보우로보틱스"
+        ],
+        "mine": [
+          "DN오토모티브",
+          "두산로보틱스",
+          "LG에너지솔루션",
+          "KG스틸",
+          "에스엘",
+          "NICE평가정보",
+          "레인보우로보틱스"
+        ],
+        "common": [
+          "ups",
+          "r5",
+          "r20",
+          "ins",
+          "y1"
+        ],
+        "cIds": [
+          "ups",
+          "r5",
+          "r20",
+          "ins",
+          "y1"
+        ]
+      }
+    },
+    {
+      "name": "pc 탭 「예비」 누름 → #/similar · 제목 「불장 닮은 7곳」 · 「불장 11개 업종 55곳의 공통점 5가지를 많이 가진, 불장 밖 회사 · 10월 2일(금) 종가」 · 탭 「예비」 눌림",
+      "ok": true,
+      "detail": {
+        "hash": "#/similar",
+        "title": "불장 닮은 7곳",
+        "when": "불장 11개 업종 55곳의 공통점 5가지를 많이 가진, 불장 밖 회사 · 10월 2일(금) 종가",
+        "active": "similar",
+        "sw": 1280,
+        "iw": 1280
+      }
+    },
+    {
+      "name": "pc 「예비」: 줄 7개 = 판 · 줄마다 차례 · 이름 · 업종 · 20거래일 변화 · 「공통점 n가지 중 m가지」 · 공통점 표시(✓ 가짐 · 「·」 안 가짐 · 「?」 모름 — 색만이 아님) · 선 그래프(7곳 같은 눈금) · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "rowMis": [],
+        "sw": 1280
+      }
+    },
+    {
+      "name": "pc 「예비」: 공통점 막대 5줄 = 판의 공통점 5가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
+      "ok": true,
+      "detail": {
+        "barMisS": []
+      }
+    },
+    {
+      "name": "pc 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(기록 없음)",
+      "ok": true,
+      "detail": {
+        "state": "none",
+        "head": "저녁 7시 들고 남",
+        "rows": [],
+        "n22": null
+      }
+    },
+    {
+      "name": "pc 「예비」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 「예비」 줄 「레인보우로보틱스」 누름 → 회사 화면 · 되돌아가기 「‹ 불장 닮은 7곳」 · 탭 「예비」 눌린 채로",
+      "ok": true,
+      "detail": {
+        "hash": "#/stock/277810",
+        "title": "레인보우로보틱스",
+        "back": [
+          "#/similar",
+          "‹ 불장 닮은 7곳"
+        ],
+        "active": "similar"
+      }
+    },
+    {
+      "name": "pc 회사 화면 「‹ 불장 닮은 7곳」 → 예비 · 보던 자리(661px → 661px)",
+      "ok": true,
+      "detail": {
+        "y0": 661,
+        "sb": {
+          "hash": "#/similar",
+          "y": 661
+        }
       }
     },
     {
@@ -1138,10 +1385,10 @@
       }
     },
     {
-      "name": "pc 무결성: 「읽은 파일 7개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "pc 무결성: 「읽은 파일 9개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 7개 모두 판 목록의 SHA-256 과 같음"
+        "integ": "읽은 파일 9개 모두 판 목록의 SHA-256 과 같음"
       }
     },
     {
@@ -1163,13 +1410,13 @@
       }
     },
     {
-      "name": "mobile 처음 화면(업종 36칸): 제목 「불장 11개」 = 판의 불장 11개 · 결론 한 줄 「업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 21개 오름 · 가장 많은 회사의 기간) · 아래 탭 180곳·출목표·일정(처음 화면 눌림) · 처음 화면엔 회사 카드 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳」",
+      "name": "mobile 처음 화면(업종 36칸): 제목 「불장 11개」 = 판의 불장 11개 · 결론 한 줄 「업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 21개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 불장·예비·22곳·출목표·일정(「불장」 눌림) · 처음 화면엔 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳」",
       "ok": true,
       "detail": {
         "title": "불장 11개",
         "when": "업종 36개 가운데 21개 오름 · 180곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지",
         "kinds": "업종 36개 · 우량주 114곳 · 시대 트렌드 51곳 · 흑자 11곳 · 채움 4곳",
-        "nextH": "불장 밖에서 많이 오른 22곳",
+        "ncRows": 0,
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
         "late": [
@@ -1178,7 +1425,9 @@
         "strip": "10월 2일(금) 15:30 KST 종가 코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11%",
         "active": "home",
         "tabs": [
-          "180곳",
+          "불장",
+          "예비",
+          "22곳",
           "출목표",
           "일정"
         ],
@@ -1220,48 +1469,6 @@
           "rgb(255, 254, 252)"
         ],
         "legend": 0
-      }
-    },
-    {
-      "name": "mobile 처음 화면(업종 36칸): 「불장 밖에서 많이 오른 22곳」 = 판(22곳 · 앞날 말 없는 이름) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크가 판과 같음 · 불장 업종 회사 없음 · 한 업종 2곳까지",
-      "ok": true,
-      "detail": {
-        "nextH": "불장 밖에서 많이 오른 22곳",
-        "next": [
-          {
-            "href": "#/stock/028300",
-            "name": "HLB",
-            "ind": "의료기기",
-            "chg": "+21.3%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          },
-          {
-            "href": "#/stock/052690",
-            "name": "한전기술",
-            "ind": "전력·가스",
-            "chg": "+19.8%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          },
-          {
-            "href": "#/stock/000150",
-            "name": "두산",
-            "ind": "복합기업",
-            "chg": "+19.4%",
-            "sp": {
-              "n": 21,
-              "lo": "-0.1109",
-              "hi": "0.4367"
-            }
-          }
-        ]
       }
     },
     {
@@ -1366,12 +1573,199 @@
       "detail": null
     },
     {
-      "name": "mobile 불장 밖에서 많이 오른 곳 첫 줄 「HLB」 터치 → 회사 화면 · 되돌아가기 = 그 회사 업종 「의료기기」",
+      "name": "mobile 탭 「22곳」 터치 → #/rise · 제목 「불장 밖에서 많이 오른 22곳」 · 「불장 11개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 탭 「22곳」 눌림",
       "ok": true,
       "detail": {
-        "hash": "#/stock/028300",
-        "title": "HLB",
-        "back": "#/i/i5f38fbf6"
+        "hash": "#/rise",
+        "title": "불장 밖에서 많이 오른 22곳",
+        "when": "불장 11개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지",
+        "active": "rise",
+        "moves": null,
+        "sw": 390,
+        "iw": 390
+      }
+    },
+    {
+      "name": "mobile 「22곳」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "next": [
+          {
+            "href": "#/stock/028300",
+            "name": "HLB",
+            "ind": "의료기기",
+            "chg": "+21.3%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          },
+          {
+            "href": "#/stock/052690",
+            "name": "한전기술",
+            "ind": "전력·가스",
+            "chg": "+19.8%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          },
+          {
+            "href": "#/stock/000150",
+            "name": "두산",
+            "ind": "복합기업",
+            "chg": "+19.4%",
+            "sp": {
+              "n": 21,
+              "lo": "-0.1109",
+              "hi": "0.4367"
+            }
+          }
+        ],
+        "sw": 390
+      }
+    },
+    {
+      "name": "mobile 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(기록이 둘보다 적어 없음)",
+      "ok": true,
+      "detail": {
+        "moves": null,
+        "movesWant": null
+      }
+    },
+    {
+      "name": "mobile 「22곳」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 「22곳」 줄 「NC」 터치 → 회사 화면 · 되돌아가기 「‹ 불장 밖에서 많이 오른 22곳」 · 탭 「22곳」 눌린 채로",
+      "ok": true,
+      "detail": {
+        "hash": "#/stock/036570",
+        "title": "NC",
+        "back": [
+          "#/rise",
+          "‹ 불장 밖에서 많이 오른 22곳"
+        ],
+        "active": "rise"
+      }
+    },
+    {
+      "name": "mobile 회사 화면 「‹ 불장 밖에서 많이 오른 22곳」 → 22곳 · 보던 자리(0px → 0px)",
+      "ok": true,
+      "detail": {
+        "y0": 0,
+        "rb": {
+          "hash": "#/rise",
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "mobile 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·ins·y1 · 3가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
+      "ok": true,
+      "detail": {
+        "board": [
+          "DN오토모티브",
+          "두산로보틱스",
+          "LG에너지솔루션",
+          "KG스틸",
+          "에스엘",
+          "NICE평가정보",
+          "레인보우로보틱스"
+        ],
+        "mine": [
+          "DN오토모티브",
+          "두산로보틱스",
+          "LG에너지솔루션",
+          "KG스틸",
+          "에스엘",
+          "NICE평가정보",
+          "레인보우로보틱스"
+        ],
+        "common": [
+          "ups",
+          "r5",
+          "r20",
+          "ins",
+          "y1"
+        ],
+        "cIds": [
+          "ups",
+          "r5",
+          "r20",
+          "ins",
+          "y1"
+        ]
+      }
+    },
+    {
+      "name": "mobile 탭 「예비」 터치 → #/similar · 제목 「불장 닮은 7곳」 · 「불장 11개 업종 55곳의 공통점 5가지를 많이 가진, 불장 밖 회사 · 10월 2일(금) 종가」 · 탭 「예비」 눌림",
+      "ok": true,
+      "detail": {
+        "hash": "#/similar",
+        "title": "불장 닮은 7곳",
+        "when": "불장 11개 업종 55곳의 공통점 5가지를 많이 가진, 불장 밖 회사 · 10월 2일(금) 종가",
+        "active": "similar",
+        "sw": 390,
+        "iw": 390
+      }
+    },
+    {
+      "name": "mobile 「예비」: 줄 7개 = 판 · 줄마다 차례 · 이름 · 업종 · 20거래일 변화 · 「공통점 n가지 중 m가지」 · 공통점 표시(✓ 가짐 · 「·」 안 가짐 · 「?」 모름 — 색만이 아님) · 선 그래프(7곳 같은 눈금) · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "rowMis": [],
+        "sw": 390
+      }
+    },
+    {
+      "name": "mobile 「예비」: 공통점 막대 5줄 = 판의 공통점 5가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
+      "ok": true,
+      "detail": {
+        "barMisS": []
+      }
+    },
+    {
+      "name": "mobile 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(기록 없음)",
+      "ok": true,
+      "detail": {
+        "state": "none",
+        "head": "저녁 7시 들고 남",
+        "rows": [],
+        "n22": null
+      }
+    },
+    {
+      "name": "mobile 「예비」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 「예비」 줄 「레인보우로보틱스」 터치 → 회사 화면 · 되돌아가기 「‹ 불장 닮은 7곳」 · 탭 「예비」 눌린 채로",
+      "ok": true,
+      "detail": {
+        "hash": "#/stock/277810",
+        "title": "레인보우로보틱스",
+        "back": [
+          "#/similar",
+          "‹ 불장 닮은 7곳"
+        ],
+        "active": "similar"
+      }
+    },
+    {
+      "name": "mobile 회사 화면 「‹ 불장 닮은 7곳」 → 예비 · 보던 자리(849px → 849px)",
+      "ok": true,
+      "detail": {
+        "y0": 849,
+        "sb": {
+          "hash": "#/similar",
+          "y": 849
+        }
       }
     },
     {
@@ -1974,10 +2368,10 @@
       }
     },
     {
-      "name": "mobile 무결성: 「읽은 파일 7개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "mobile 무결성: 「읽은 파일 9개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 7개 모두 판 목록의 SHA-256 과 같음"
+        "integ": "읽은 파일 9개 모두 판 목록의 SHA-256 과 같음"
       }
     },
     {
@@ -2007,6 +2401,20 @@
     },
     {
       "name": "어두운 화면 industry: 바탕이 검정(rgb(0, 0, 0))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(0, 0, 0)"
+      }
+    },
+    {
+      "name": "어두운 화면 similar: 바탕이 검정(rgb(0, 0, 0))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(0, 0, 0)"
+      }
+    },
+    {
+      "name": "어두운 화면 rise: 바탕이 검정(rgb(0, 0, 0))",
       "ok": true,
       "detail": {
         "bg": "rgb(0, 0, 0)"
@@ -2106,6 +2514,44 @@
     },
     {
       "name": "또렷함 pc road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc similar: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc similar: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc similar: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc rise: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc rise: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc rise: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2224,6 +2670,44 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile similar: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile similar: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile similar: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile rise: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile rise: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile rise: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile stock: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -2334,6 +2818,44 @@
     },
     {
       "name": "또렷함 mobile-dark road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark similar: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark similar: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark similar: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark rise: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark rise: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark rise: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2452,6 +2974,44 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc-200 similar: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 similar: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 similar: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 rise: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 rise: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 rise: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc-200 stock: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -2566,6 +3126,44 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark-200 similar: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 similar: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 similar: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark-200 rise: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 rise: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 rise: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark-200 stock: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -2631,5 +3229,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-04T18-55-40-088Z"
+  "dir": "reports/atlas11/browser/2026-10-04T20-41-56-574Z"
 }

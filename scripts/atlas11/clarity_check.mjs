@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ATLAS 화면 또렷함 검사 — 화면 6장(36칸 판 · 업종 · 출목표 업종별 · 출목표 흐름별 · 회사 · 일정) × 보기 5가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200% · 좁은 휴대폰 어두운 화면 글씨 200%)에서 여섯 숫자를 잰다.
+ * ATLAS 화면 또렷함 검사 — 화면 8장(36칸 판 · 업종 · 출목표 업종별 · 출목표 흐름별 · 닮은 7곳 · 22곳 · 회사 · 일정) × 보기 5가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200% · 좁은 휴대폰 어두운 화면 글씨 200%)에서 여섯 숫자를 잰다.
  *   node scripts/atlas11/clarity_check.mjs --base http://localhost:8811 --pw <playwright 폴더> --label before|after [--inject]
  *   결과: reports/atlas11/clarity/<label>.json (화면·보기마다 여섯 숫자와 예시)
  *   --inject: 일부러 「내일 42 정도.」「곧 많이 오릅니다.」를 넣어 검사기가 1·2·3번을 한 개씩 더 세는지 본다(검사기 자체 시험).
@@ -23,6 +23,9 @@ export const SCREENS = [
   // 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 … 추가로 더 만들어」: 출목표 한 판 — 업종별(처음) · 흐름별(단추를 눌러서)
   {id: 'road', name: '출목표(업종별)', hash: '#/road', wait: '.f-tile'},
   {id: 'road-flow', name: '출목표(흐름별)', hash: '#/road', wait: '.f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="flow"]').click(); await page.waitForSelector('.f-body[data-mode="flow"] .f-tile'); }},
+  // 2026-10-05 05:07 「해」: 탭 다섯 — 「예비」(불장 닮은 7곳 · 저녁 7시 들고 남) · 「22곳」(불장 밖에서 많이 오른 곳)
+  {id: 'similar', name: '불장 닮은 7곳', hash: '#/similar', wait: '.sm-row, .s-page .b-note'},
+  {id: 'rise', name: '22곳', hash: '#/rise', wait: '.nc-row, .r-page .muted'},
   {id: 'stock', name: '회사', hash: '#/stock/005930', wait: '.c-chart svg.lc'},
   {id: 'agenda', name: '일정', hash: '#/agenda', wait: '.a-days, .b-box'},
 ];
