@@ -75,7 +75,8 @@ export async function renderCompany(main, {hash, manifest}) {
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, s.name),
-      h('p', {class: 'b-when'}, h('code', null, s.code), s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
+      // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
+      h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true}),
       h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : '')),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,

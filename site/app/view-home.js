@@ -39,7 +39,9 @@ function setBox(set, board, groups) {
   return h('details', {class: 'b-how'}, h('summary', null, '어떤 회사들인가 · 어떻게 셌나'),
     h('ul', null, board.kinds ? h('li', {class: 'b-kinds'}, kindsLine(board.kinds, groups.length)) : null,
       ...how.map(x => h('li', null, x)), set?.selectedOn ? h('li', null, `${korDate(set.selectedOn)}에 고름`) : null,
-      h('li', null, `업종 ${groups.length}개: 네이버 증권 업종 이름(화면에는 짧게 줄인 이름 · 업종 화면에 원래 이름) · 작은 업종 몇 개는 합침(보험 · 자동차·부품 · 인터넷·IT서비스 · 식품·담배 · 은행·카드 · 유통 · 운송 · 철강·금속 · 통신 · 전력·가스)`),
+      board.companies.some(c => c.ksic)
+        ? h('li', null, `업종 ${groups.length}개: 한국거래소 업종(한국표준산업분류 · 「제조업」 같은 끝말은 줄인 이름 · 업종 화면에 원래 이름) · 한국거래소 업종을 모르는 회사는 네이버 증권 업종으로 묶음`)
+        : h('li', null, `업종 ${groups.length}개: 네이버 증권 업종 이름(화면에는 짧게 줄인 이름 · 업종 화면에 원래 이름) · 작은 업종 몇 개는 합침(보험 · 자동차·부품 · 인터넷·IT서비스 · 식품·담배 · 은행·카드 · 유통 · 운송 · 철강·금속 · 통신 · 전력·가스)`),
       h('li', null, '표시: 우량 = 우량 네 조건을 모두 넘음 · 트렌드 = 시대 트렌드 업종 · 흑자 = 둘 다 아니지만 최근 결산 흑자(업종 5곳을 채우려고 넣음) · 채움 = 업종 5곳을 채우려고 넣은 그 업종 큰 회사'),
       h('li', null, `칸 차례: ${board.order}`),
       h('li', null, '불장: 지난 20거래일 동안 업종 5곳 종가가 평균 많이 오른 업종(오른 업종만 · 11개까지) · 불장 밖에서 많이 오른 곳: 불장 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 회사(한 업종 2곳까지 · 22곳까지)'),
