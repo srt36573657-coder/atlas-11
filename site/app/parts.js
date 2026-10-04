@@ -1,4 +1,4 @@
-/* ATLAS 11 · 52곳 판 공용 부품 — 일정·공시 줄(★) · 출목표 칸 · 시장 일정 · 읽는 법 · 바뀔 52곳 미리 보기 · 값 줄 · 맨 아래 출처 줄
+/* ATLAS 11 · 판 공용 부품 — 일정·공시 줄(★) · 출목표 칸 · 시장 일정 · 읽는 법 · 바뀔 묶음 미리 보기 · 값 줄 · 맨 아래 출처 줄
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」 — 앞날 값은 어디에도 없다
    일정 이름·공시 제목은 공식 이름 그대로라(「SEDEX 2026」 · 「2단계 가격제한폭」) 또렷함 검사에서 식별자(data-ident)로 센다 — 우리 숫자가 아님. */
 import {h, won, pct, korDate, stamp, signCls, signMark, finite} from './util.js';
@@ -76,24 +76,31 @@ export function priceLine(c, {big = false} = {}) {
   const chg = c.change1, cls = signCls(chg);
   return h('p', {class: 'b-price' + (big ? ' big' : '')},
     h('span', {class: 'b-close'}, won(c.close)),
-    h('span', {class: 'b-chg ' + cls}, finite(chg) ? (chg === 0 ? '전날과 같음' : `${signMark(chg)} ${pct(chg)}`) : '전날 종가 없음'),
+    h('span', {class: 'b-chg ' + cls}, finite(chg) ? (c.prevGap ? `${chg === 0 ? '같음' : `${signMark(chg)} ${pct(chg)}`} · ${korDate(c.prevDate)} 종가보다` : chg === 0 ? '전날과 같음' : `${signMark(chg)} ${pct(chg)}`) : '전날 종가 없음'),
     h('span', {class: 'b-date'}, `${korDate(c.date)} 15:30 종가`));
 }
-/** 바뀔 52곳 미리 보기 — 바꾸기 전까지만 · 이름만(누를 곳 없음) · 「새」 = 이번에 새로 들어오는 회사 */
+/** 바뀔 묶음 미리 보기 — 바꾸기 전까지만 · 이름만(누를 곳 없음) · 「새」 = 이번에 새로 들어오는 회사 */
 export function nextBox(n) {
   if (!n?.companies?.length) return null;
   const when = n.from ? `${korDate(n.from)} 16:00 매일 실행 때 바뀝니다` : `${korDate(n.switchOn)}부터 매일 실행 때 바뀝니다`;
   const len = s => s.length >= 7 ? 'l' : 's';
-  return h('section', {class: 'nx', 'aria-label': `바뀔 52곳 미리 보기 · ${n.label}`},
+  const total = n.companies.length;
+  return h('section', {class: 'nx', 'aria-label': `바뀔 ${total}곳 미리 보기 · ${n.label}`},
     h('p', {class: 'nx-tag'}, '미리 보기'),
     h('h2', {class: 'nx-h', 'data-speak': ''}, `${n.label}으로 바뀝니다`),
     h('p', {class: 'nx-when', 'data-speak': ''}, `${when} · 새 회사들의 그날 종가를 모두 받아야 바뀌고, 못 받으면 그다음 거래일에 다시 합니다`),
     h('p', {class: 'nx-when'}, `그대로 남는 회사 ${n.kept}곳 · 새로 들어오는 회사 ${n.added}곳`),
-    h('details', {class: 'nx-how'}, h('summary', null, `새 52곳 이름 보기 · 새로 들어오는 회사 ${n.added}곳 표시`),
+    n.kinds ? h('p', {class: 'nx-when'}, `우량주 ${n.kinds.quality}곳 · 시대 트렌드 ${n.kinds.trend}곳`) : null,
+    h('details', {class: 'nx-how'}, h('summary', null, `새 ${total}곳 이름 보기 · 새로 들어오는 회사 ${n.added}곳 표시`),
       h('div', {class: 'nx-chips'}, ...n.companies.map(c => h('span', {class: 'nx-chip', 'data-len': len(c.name)}, h('span', {class: 'nx-n'}, c.name), c.isNew ? h('span', {class: 'nx-new', title: '이번에 새로 들어오는 회사'}, '새') : null))),
       h('p', {class: 'nx-key'}, h('span', {class: 'nx-new'}, '새'), ' = 이번에 새로 들어오는 회사', n.selectedOn ? ` · ${korDate(n.selectedOn)}에 고름` : '')),
     n.how?.length ? h('details', {class: 'nx-how'}, h('summary', null, '어떻게 골랐나'), h('ul', null, ...n.how.map(x => h('li', null, x)))) : null,
     n.dropped?.length ? h('details', {class: 'nx-how'}, h('summary', null, `빠지는 회사 ${n.dropped.length}곳`), h('p', {class: 'nx-out'}, n.dropped.map(d => d.name).join(' · '))) : null);
+}
+/** 우량/트렌드 표시(색 대신 글자 · 우량 = 네 조건을 모두 넘은 회사 · 트렌드 = 우량 조건은 못 넘었지만 시대 트렌드 업종) */
+export function kindBadge(kind) {
+  if (kind !== 'quality' && kind !== 'trend') return null;
+  return h('span', {class: 'b-kind ' + kind, title: kind === 'quality' ? '우량 조건 네 가지(2년 연속 흑자 · ROE 5% 이상 · 부채비율 150% 이하)를 모두 넘은 회사' : '우량 조건은 못 넘었지만 시대 트렌드 업종의 회사'}, kind === 'quality' ? '우량' : '트렌드');
 }
 /** 맨 아래: 만든 시각 · 판 이름 · 무결성 */
 export function foot(m) {

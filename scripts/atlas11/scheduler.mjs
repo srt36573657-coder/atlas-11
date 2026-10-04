@@ -48,10 +48,10 @@ export function classifyRun({exitCode, json}) {
   if (!json) return 'crashed';
   if (json.status === 'already_running_or_unresolved_lock') return 'lock_conflict';
   if (json.status === 'failed_validation' || json.status === 'failed') return 'failed';
-  const confirmed = Number.isFinite(json.confirmedTodayStocks) ? json.confirmedTodayStocks : null;
-  // 2026-10-04 15:37 「이제 예측을 하지 않는다」 뒤 실행기(prediction:'off')는 발행본이 없다 — 52 확정이면 끝(옛 실행기 결과는 발행본 id 로 봄)
-  if (exitCode === 2 && json.status === 'partial') return confirmed !== null && confirmed >= 52 && (json.prediction === 'off' || json.forecastId) ? 'complete_with_warnings' : 'retry';
-  if (confirmed !== null && confirmed < 52) return 'retry';
+  const confirmed = Number.isFinite(json.confirmedTodayStocks) ? json.confirmedTodayStocks : null, want = Number.isInteger(json.expectedStocks) ? json.expectedStocks : 52;
+  // 2026-10-04 15:37 「이제 예측을 하지 않는다」 뒤 실행기(prediction:'off')는 발행본이 없다 — 그 묶음 모두 확정이면 끝(옛 실행기 결과는 발행본 id 로 봄) · 곳 수는 실행 기록의 expectedStocks(없으면 52)
+  if (exitCode === 2 && json.status === 'partial') return confirmed !== null && confirmed >= want && (json.prediction === 'off' || json.forecastId) ? 'complete_with_warnings' : 'retry';
+  if (confirmed !== null && confirmed < want) return 'retry';
   return 'failed';
 }
 export const RETRYABLE = Object.freeze(['retry', 'lock_conflict', 'crashed']);

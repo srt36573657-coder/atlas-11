@@ -91,6 +91,27 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .b-date { font-size: .875rem; color: var(--sub); }
 .b-price.big { margin: 10px 0 0; } .b-price.big .b-close { font-size: 2rem; letter-spacing: -.02em; } .b-price.big .b-chg { font-size: 1.125rem; }
 
+/* 갈래(2026-10-04 180곳 · 시대 트렌드 8갈래 + 그 밖) — 갈래 단추 · 접었다 펴는 칸 · 우량/트렌드 표시(색이 아니라 글자와 테두리) */
+.b-kinds { margin: 6px 0 0; font-size: 1.0625rem; font-weight: 700; color: var(--ink2); }
+.g-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+.g-chip { display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1.5px solid var(--sep); background: var(--card); color: var(--ink); font-size: 1rem; font-weight: 600; cursor: pointer; text-align: left; }
+.g-chip b { font-size: .875rem; font-weight: 700; color: var(--sub); white-space: nowrap; }
+.g-chip:active { background: var(--fill); }
+.g-list { display: grid; gap: 12px; margin-top: 14px; }
+.g-sec { background: transparent; scroll-margin-top: 64px; }
+.g-sum { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-height: 52px; padding: 12px 14px; border-radius: 16px; background: var(--card); cursor: pointer; list-style: none; }
+.g-sum::-webkit-details-marker { display: none; }
+.g-sum::before { content: '▸'; color: var(--sub); flex: none; }
+.g-sec[open] > .g-sum::before { content: '▾'; }
+.g-label { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.g-count { font-size: 1.0625rem; font-weight: 700; color: var(--ink2); white-space: nowrap; }
+.g-kinds { font-size: .875rem; color: var(--sub); }
+.g-sec > .b-list { margin-top: 10px; }
+.b-kind { flex: none; align-self: center; font-size: .8125rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; line-height: 1.5; }
+.b-kind.quality { background: var(--ink); color: var(--bg); }
+.b-kind.trend { border: 1.5px dashed var(--ink); color: var(--ink); }
+.b-when .b-kind { margin-left: 2px; vertical-align: 2px; }
+
 /* 출목표(site/app/road.js) — 속 빈 동그라미 · 칸 선은 옅게 */
 .rd-box { margin: 0; }
 .rd-h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; margin: 0 0 6px; font-size: .875rem; color: var(--sub); }

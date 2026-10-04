@@ -1,0 +1,35 @@
+{
+ "schema": "atlas11-universe-rehearsal-1",
+ "at": "2026-10-04T18:48:00+09:00",
+ "commit": "ec91060 + 이 기록과 함께 올린 커밋(180곳으로 바꾸는 설정)",
+ "order": "2026-10-04 18:10 사장님 「이제 이런식으로 180개 회사를 찾는다 우량주 그리고 시대 트랜드 주식만」 · 18:24 「알아서 해」",
+ "what": "2026-10-06(화) 16:05 KST 매일 실행 예행연습 — 저장소 시험 사본에서 runDaily 를 실제 수집기(collect_krx_close · 15:30 분봉)로 돌리고 화면 묶음 · 배포 묶음 · 화면 검사까지",
+ "closes": "가짜 분봉 응답 — 지난 날 봉은 저장된 종가와 같은 값 · 10월 6일 봉은 마지막 종가 ×1.01 · 실제 시세 아님(길이 맞는지만 봄)",
+ "cases": [
+  {
+   "case": "180곳 모두 10월 6일 종가가 들어온 날",
+   "status": "complete",
+   "exitCode": 0,
+   "steps": ["1_calendar:ok", "2_collect:ok", "3_validate_store:ok", "4_universe:ok", "5_record_view:ok"],
+   "universe": {"switched": true, "from": "u1-sector52", "to": "u2-qt180-v1-2026-10-04", "kept": 39, "added": 141, "confirmedToday": 180, "retiredFile": "reports/atlas11/universe/retired/u1-sector52.json"},
+   "confirmedTodayStocks": 180,
+   "expectedStocks": 180,
+   "actualAsOf": "2026-10-06",
+   "requests": {"total": 889, "byDay": {"2026-09-29": 141, "2026-09-30": 141, "2026-10-01": 143, "2026-10-02": 232, "2026-10-06": 232}, "note": "새로 들어오는 141곳은 정규장 종가 행이 없어 지난 4거래일 분봉도 받는다(이날 한 번만) · 그다음 거래일부터는 180곳 × 2번(직전 날 맞춰 보기 + 그날) = 360번"},
+   "board": {"boardId": "board-2026-10-06-62ccd8fa", "companies": 180, "kinds": {"quality": 146, "trend": 34}, "groups": "AI·반도체 34(우량 31·트렌드 3) · 전력·원전·에너지 14(8·6) · 2차전지 6(2·4) · 조선·방산·우주 13(4·9) · 기계·로봇·원전 설비 7(3·4) · 바이오·헬스 16(14·2) · K-뷰티·푸드·콘텐츠 17(13·4) · AI 플랫폼·소프트웨어 6(4·2) · 그 밖 우량주 67(67·0)", "viewFiles": 183, "late": 0},
+   "drop": {"files": 495, "bytes": 5957092},
+   "browserCheck": {"passed": 110, "failed": 0}
+  },
+  {
+   "case": "새 회사 한 곳(SK하이닉스 000660)의 10월 6일 종가가 아직 없는 날",
+   "status": "complete",
+   "exitCode": 0,
+   "universe": {"switched": false, "confirmedToday": 179, "reason": "새 180곳 오늘(2026-10-06) 확정 종가 179/180 · 180곳 모두 확인될 때만 바꿈 · 오늘은 지금 종목으로 계속"},
+   "confirmedTodayStocks": 52,
+   "expectedStocks": 52,
+   "board": {"boardId": "board-2026-10-06-a57aea43", "viewFiles": 55},
+   "then": "지금 52곳으로 그날을 마치고(예비 16:07 · 16:37 은 52/52 라 건너뜀) · 다음 거래일(10월 7일(수)) 16:00 실행 때 다시 바꾸기를 시도"
+  }
+ ],
+ "time": "[가정] 실제 요청 한 번 0.2~0.4초 + 쉼 0.15초 → 10월 6일 수집 약 5~8분 · 작업 제한 120분 안"
+}

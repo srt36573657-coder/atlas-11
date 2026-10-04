@@ -5,7 +5,7 @@
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from './util.js';
 import {state, loadStock, loadAgenda} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
-import {agendaBox, roadBox, priceLine, foot} from './parts.js';
+import {agendaBox, roadBox, priceLine, foot, kindBadge} from './parts.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -54,7 +54,7 @@ export async function renderCompany(main, {hash, manifest}) {
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, s.name),
-      h('p', {class: 'b-when'}, h('code', null, s.code), ` · ${s.sector ?? ''}`),
+      h('p', {class: 'b-when'}, h('code', null, s.code), ` · ${s.sector ?? ''}`, s.theme ? ` · ${s.theme.label} 갈래` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true})),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),

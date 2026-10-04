@@ -15,6 +15,7 @@ import zlib from 'node:zlib';
 import {promisify} from 'node:util';
 import {CONTEXT_SCHEMA, CONTEXT_URLS, MACRO_SERIES, FRED_UA, macroURL, parseFredCSV, parseNaverSeries, parseIndexPrices, parseFlows, parseNews, parseDisclosures, flowRevisions, markProvisional, factorObservations, summarizeContext, sha256} from '../../lib/atlas11/context.mjs';
 import {appendRecord} from '../../lib/atlas11/records.mjs';
+import {loadUniverseConfig, switchDue, loadNextInput} from '../../lib/atlas11/universe-switch.mjs';
 
 const gzip = promisify(zlib.gzip);
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
@@ -66,11 +67,20 @@ export async function collectContext({now = new Date().toISOString(), rootDir = 
   const input = await readJSON(path.join(rootDir, 'public/data/input.json'));
   const calendar = await readJSON(path.join(rootDir, 'public/data/rolling-calendar.json'), input.calendar);
   const sessions = calendar.sessions, {day, hm} = koreaParts(now);
-  const assets = input.assets.filter(a => !codes || codes.includes(a.code)).map(a => ({code: a.code, name: a.name}));
+  let assets = input.assets.filter(a => !codes || codes.includes(a.code)).map(a => ({code: a.code, name: a.name}));
   if (!sessions.includes(day)) return {status: 'not_trading_day', day, written: null};
+  // 종목을 바꾸는 날(config/atlas11/universe.json next.switchOn 이후 · 아직 안 바꿈)에는 새 묶음 회사도 함께 모은다
+  //   이 수집은 16:00 매일 실행보다 먼저 돌므로, 이렇게 해야 바꾼 첫날 저녁부터 새 회사들의 공시·기사·수급이 화면에 보인다(2026-10-04 180곳)
+  let nextUniverse = null, nextError = null;
+  if (!codes) {
+    try {
+      const cfg = await loadUniverseConfig(rootDir);
+      if (switchDue(cfg, input, day)) { const nx = await loadNextInput(rootDir, cfg.next), have = new Set(assets.map(a => a.code)), extra = nx.input.assets.filter(a => !have.has(a.code)).map(a => ({code: a.code, name: a.name})); assets = [...assets, ...extra]; nextUniverse = {id: cfg.next.id, count: nx.input.assets.length, added: extra.length, from: nx.from}; }
+    } catch (e) { nextError = String(e.message); }
+  }
   const afterClose = hm >= '15:40';
   const f = fetcher ?? makeFetcher({fixtures});
-  const errors = [], sources = [];
+  const errors = nextError ? [{kind: 'universe_next', key: 'next', error: nextError}] : [], sources = [];
   const take = async (kind, key, url, parse, opts) => {
     const r = await f.get(url, opts);
     sources.push({kind, key, url, ok: r.ok, fetchedAt: r.fetchedAt ?? null, rawSHA256: r.ok ? sha256(r.text) : null, attempts: r.attempts});
@@ -107,7 +117,7 @@ export async function collectContext({now = new Date().toISOString(), rootDir = 
   const flowsMarked = markProvisional(flows, day);
   const revisions = flowRevisions(previous?.flows ?? [], flowsMarked);
   const seenNews = new Set((previous?.news ?? []).flatMap(n => n.items.map(i => i.id))), seenDisc = new Set((previous?.disclosures ?? []).flatMap(d => d.items.map(i => i.id)));
-  const ctx = {schema: CONTEXT_SCHEMA, day, fetchedAt: now, afterClose, assets: assets.length, index, flows: flowsMarked, news, disclosures, macro, revisions, errors, sources: sources.map(({attempts, ...s}) => ({...s, attempts: attempts?.length ?? 0})), previousSnapshot: previous ? {day: previous.day, fetchedAt: previous.fetchedAt} : null, usedInForecast: false,
+  const ctx = {schema: CONTEXT_SCHEMA, day, fetchedAt: now, afterClose, assets: assets.length, ...(nextUniverse ? {nextUniverse} : {}), index, flows: flowsMarked, news, disclosures, macro, revisions, errors, sources: sources.map(({attempts, ...s}) => ({...s, attempts: attempts?.length ?? 0})), previousSnapshot: previous ? {day: previous.day, fetchedAt: previous.fetchedAt} : null, usedInForecast: false,
     policy: {prices: '종가·시고저·거래량은 이 수집기에서 받지 않는다(정규장 값 확인 불가 · 대체거래소 거래 섞임)', missing: '결측은 null · 0 으로 채우지 않음', sameDayFlows: '당일 투자자 수급은 16:00 에 잠정일 수 있어 provisional_same_day 로 표시 · 다음 수집에서 값이 바뀌면 revisions 에 기록', beforeClose: '15:40 KST 전 실행이면 당일 행을 버린다'}};
   ctx.summary = summarizeContext(ctx);
   ctx.factors = factorObservations(ctx, sessions);
