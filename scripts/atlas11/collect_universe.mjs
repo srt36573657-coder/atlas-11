@@ -18,7 +18,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {fetchWithRetry, parseFchartXml} from './collect_naver.mjs';
-import {QUALITY52, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
+import {QUALITY52, QT180, selectQualityTrend, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
 import {groupIdOfSector} from '../../lib/atlas11/groups.mjs';
 
 const sha = s => createHash('sha256').update(s).digest('hex');
@@ -147,15 +147,19 @@ export function lastCompletedSession(sessions, now) {
 }
 
 /** bundle → proposal + 새 입력 (쓰지는 않음) */
-export function proposeFromBundle(bundle, {input, now}) {
+/** 규칙 판 이름 → 규칙(기본은 config/atlas11/universe.json 의 selectRules · 없으면 q52-v2) */
+export const RULE_SETS = Object.freeze({'q52-v2': QUALITY52, 'qt180-v1': QT180});
+export function proposeFromBundle(bundle, {input, now, rules = QUALITY52}) {
   const sessions = input.calendar.sessions, asOf = lastCompletedSession(sessions, bundle.now ?? now), day = kst(bundle.now ?? now).slice(0, 10);
   const candidates = candidatesFromBundle(bundle, {sessions, asOf, input});
-  const sel = selectQuality52(candidates);
-  const id = `u2-${QUALITY52.version}-${day}`;
+  // 2026-10-04 18:10 「180개 회사 · 우량주 그리고 시대 트랜드 주식만」 → qt180-v1 은 우량 전부 + 트렌드 업종으로 채움
+  const sel = rules.mix === 'quality-first' ? selectQualityTrend(candidates, rules) : selectQuality52(candidates, rules);
+  const id = `u2-${rules.version}-${day}`;
   const strip = c => { const {_rows, ...rest} = c; return rest; };
-  const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number(c.score.toFixed(4)), parts: Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])), debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c)}));
+  const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number.isFinite(c.score) ? Number(c.score.toFixed(4)) : null, parts: c.parts ? Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])) : null, debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c),
+    ...(c.kind ? {kind: c.kind, trend: c.trend ? {id: c.trend.id, label: c.trend.label} : null, fails: c.fails.map(x => x.replace(/\(.*\)/, ''))} : {})}));
   const nearMiss = sel.checked.filter(c => c.fails.length).slice(0, 80).map(c => ({code: c.code, name: c.name, capRank: c.capRank, sector: c.sector, fails: c.fails}));
-  const proposal = {schema: UNIVERSE_SCHEMA, id, createdAt: now, collectedAt: bundle.collectedAt, asOf, ok: sel.ok, rules: {...QUALITY52, applied: {step: sel.step, ...sel.rules}}, counts: sel.counts,
+  const proposal = {schema: UNIVERSE_SCHEMA, id, createdAt: now, collectedAt: bundle.collectedAt, asOf, ok: sel.ok, rules: {...rules, perSectorMax: Number.isFinite(rules.perSectorMax) ? rules.perSectorMax : null, applied: {step: sel.step, ...sel.rules, perSectorMax: Number.isFinite(sel.rules.perSectorMax) ? sel.rules.perSectorMax : null}}, counts: sel.counts,
     listSource: bundle.lists?.source ?? null, requests: bundle.requests, errors: (bundle.errors ?? []).slice(0, 50), financeSources: tallyBy(candidates, c => c.financeSource ?? (c.financeError ? 'error' : 'none')),
     picked, notPicked: nearMiss, previous: {id: input.universe?.id ?? 'u1-sector52', codes: input.assets.map(a => a.code)},
     overlap: {kept: picked.filter(p => p.carried).map(p => p.code), added: picked.filter(p => !p.carried).map(p => p.code), dropped: input.assets.filter(a => !picked.some(p => p.code === a.code)).map(a => a.code)}};
@@ -187,9 +191,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   if (arg('--from-bundle')) bundle = JSON.parse(zlib.gunzipSync(await fs.readFile(arg('--from-bundle'))).toString('utf8'));
   else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m)});
   await fs.mkdir(path.join(root, 'reports/atlas11/universe'), {recursive: true});
+  // 규칙 판: --rules 이름 → config/atlas11/universe.json 의 selectRules → q52-v2
+  let config = null; try { config = JSON.parse(await fs.readFile(path.join(root, 'config/atlas11/universe.json'), 'utf8')); } catch { config = null; }
+  const ruleName = arg('--rules') ?? config?.selectRules ?? 'q52-v2', rules = RULE_SETS[ruleName];
+  if (!rules) throw Error('UNKNOWN_RULES ' + ruleName);
   let proposal, next;
-  try { ({proposal, next} = proposeFromBundle(bundle, {input, now})); }
-  catch (e) { proposal = {schema: UNIVERSE_SCHEMA, id: `u2-${QUALITY52.version}-${day}`, createdAt: now, ok: false, error: String(e.stack ?? e.message).slice(0, 2000), picked: [], counts: null, requests: bundle.requests}; next = null; }
+  try { ({proposal, next} = proposeFromBundle(bundle, {input, now, rules})); }
+  catch (e) { proposal = {schema: UNIVERSE_SCHEMA, id: `u2-${rules.version}-${day}`, createdAt: now, ok: false, error: String(e.stack ?? e.message).slice(0, 2000), picked: [], counts: null, requests: bundle.requests}; next = null; }
   const written = await writeOutputs({rootDir: root, outDir, bundle, proposal, next, bundleRef: arg('--from-bundle') ? path.relative(root, path.resolve(arg('--from-bundle'))) : null});
   console.log(JSON.stringify({id: written.id, ok: written.ok, picked: written.picked.length, counts: written.counts, requests: bundle.requests?.total, failed: bundle.requests?.failed, listSource: bundle.lists?.source, error: written.error ?? null}));
   process.exitCode = written.ok ? 0 : 3;
