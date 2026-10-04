@@ -125,6 +125,56 @@ export function moverBars(companies) {
   });
   return h('ul', {class: 'mv-list', 'aria-label': `${companies.length}곳의 지난 20거래일 변화`}, ...rows);
 }
+/* ── 회사 한 곳의 선 그래프 · 수급 · 기사(출목표 한 판 칸과 업종 카드가 함께 쓴다) ──
+   2026-10-04 22:51 사장님 「출목표만 있으면 않돼 그래프로 있어야 해 그리고 그 회사들 뉴스와 수급도」
+   · 선 그래프: 출목표와 같은 21개 종가(지난 20거래일) · 첫날 종가에 옅은 점선(선이 그 위면 첫날보다 높음) · 마지막 날 점 · 첫날보다 높으면 빨강, 낮으면 파랑
+     넓이를 칠하지 않는다(바닥이 0 이 아닌 넓이는 크기를 부풀려 보이게 함) · 화면 폭에 맞춰 커져도 비율은 그대로
+   · 수급: 최근 5거래일 외국인·기관 순매수 합(주) — 가운데 0 에서 좌우 막대(둘 중 큰 값이 반 폭) · 잠정인 날은 적는다
+   · 기사: 가장 최근 기사 가운데 회사 이름이 든 1건(언론사 · 시각) — 제목은 원문 그대로(식별자) · 없으면 없다고 적는다 */
+const SVGNS = 'http://www.w3.org/2000/svg';
+const sv = (tag, attrs = {}, ...kids) => { const el = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) el.setAttribute(k, String(v)); for (const c of kids) if (c) el.append(c); return el; };
+/** 첫날 대비 변화(0 = 첫날 종가) — 지난 20거래일 21개 종가 */
+const retsOf = c => { const cs = (c?.c ?? []).filter(v => finite(v) && v > 0); return cs.length < 2 ? [] : cs.map(v => v / cs[0] - 1); };
+/** 한 묶음(업종 5곳 · 흐름 한 가지)이 함께 쓰는 눈금 — 같은 눈금이라야 칸끼리 크기를 견줄 수 있다 · 위아래로 적어도 3% */
+export function sparkScale(companies) {
+  const all = companies.flatMap(retsOf);
+  return {lo: Math.min(-0.03, ...all), hi: Math.max(0.03, ...all)};
+}
+export const scaleText = sc => `선 그래프 눈금은 이 묶음이 함께 씀(${pct(sc.lo, 0)} ~ ${pct(sc.hi, 0)} · 점선이 첫날 종가)`;
+export function sparkSvg(c, scale = null) {
+  const cs = (c?.c ?? []).filter(v => finite(v) && v > 0), rs = retsOf(c);
+  if (cs.length < 2) return h('span', {class: 'sp-none'}, '선 그래프 없음(종가가 모자람)');
+  const sc = scale ?? sparkScale([c]), W = 200, H = 50, P = 5, span = sc.hi - sc.lo || 1;
+  const x = i => P + i * (W - 2 * P) / (cs.length - 1), y = r => P + (sc.hi - r) / span * (H - 2 * P);
+  const side = cs.at(-1) > cs[0] ? 'up' : cs.at(-1) < cs[0] ? 'down' : 'flat';
+  return sv('svg', {class: 'spark ' + side, viewBox: `0 0 ${W} ${H}`, role: 'img', 'data-points': cs.length, 'data-lo': sc.lo.toFixed(4), 'data-hi': sc.hi.toFixed(4),
+    'aria-label': `선 그래프 · 지난 ${cs.length - 1}거래일 종가 · ${korDate(c.cFrom)} ${won(cs[0])}에서 ${korDate(c.date)} ${won(cs.at(-1))}로(${pct(rs.at(-1), 1)}) · 가장 높은 종가 ${won(Math.max(...cs))} · 가장 낮은 종가 ${won(Math.min(...cs))}`},
+    sv('line', {class: 'sp-base', x1: P, x2: W - P, y1: y(0).toFixed(1), y2: y(0).toFixed(1)}),
+    sv('polyline', {class: 'sp-line', points: rs.map((r, i) => `${x(i).toFixed(1)},${y(r).toFixed(1)}`).join(' ')}),
+    sv('circle', {class: 'sp-end', cx: x(cs.length - 1).toFixed(1), cy: y(rs.at(-1)).toFixed(1), r: 3.4}));
+}
+/** 주 단위 순매수 → 「+12만주」 「−1,071만주」 「+3,400주」 「−1.2억주」 */
+export const sharesText = v => { if (!finite(v)) return '없음'; const a = Math.abs(v), sg = v > 0 ? '+' : v < 0 ? '−' : ''; return a >= 1e8 ? `${sg}${(a / 1e8).toFixed(1)}억주` : a >= 1e4 ? `${sg}${Math.round(a / 1e4).toLocaleString('ko-KR')}만주` : `${sg}${a.toLocaleString('ko-KR')}주`; };
+const notYet = '아직 모으지 않음';
+export function flowBars(brief) {
+  const f = brief?.flows;
+  if (!f) return h('span', {class: 'fl fl-none'}, h('span', {class: 'fl-h'}, '수급'), h('span', {class: 'fl-miss'}, !brief || brief.missing?.includes('수급') ? notYet : '수급 자료 없음'));
+  const max = Math.max(1, Math.abs(f.foreign), Math.abs(f.institution)), side = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+  const row = (label, v) => {
+    const bar = h('span', {class: 'fl-bar ' + side(v)}); bar.style.width = `${Math.max(2, Math.abs(v) / max * 50)}%`; if (v < 0) bar.style.right = '50%'; else bar.style.left = '50%';
+    return h('span', {class: 'fl-row', 'data-who': label}, h('span', {class: 'fl-lab'}, label), h('span', {class: 'fl-track', 'aria-hidden': 'true'}, h('span', {class: 'fl-zero'}), bar), h('b', {class: 'fl-val ' + side(v)}, sharesText(v)));
+  };
+  return h('span', {class: 'fl', 'data-days': f.days, 'aria-label': `수급 · ${korDate(f.from)}부터 ${korDate(f.to)}까지 ${f.days}거래일 순매수 합 · 외국인 ${sharesText(f.foreign)} · 기관 ${sharesText(f.institution)}${f.provisional.length ? ` · ${f.provisional.map(korDate).join(', ')} 값은 잠정` : ''}`},
+    h('span', {class: 'fl-h'}, `수급 · ${f.days}거래일 합`, h('small', null, ` · ${korDate(f.to)}까지${f.provisional.length ? ` · ${f.provisional.length === 1 && f.provisional[0] === f.to ? '마지막 날' : f.provisional.map(korDate).join('·')} 잠정` : ''}`)),
+    row('외국인', f.foreign), row('기관', f.institution));
+}
+export function newsLine(brief) {
+  const n = brief?.news;
+  if (!n) return h('span', {class: 'nw nw-none'}, h('span', {class: 'nw-h'}, '기사'), h('span', {class: 'nw-miss'}, !brief || brief.missing?.includes('기사') ? notYet : brief.newsCount ? `회사 이름이 든 기사 없음 · 모은 기사 ${brief.newsCount}건은 회사 화면에` : '모은 기사 없음'));
+  // 언론사 이름(「아이뉴스24」 같은)도 원문 이름이라 식별자로 둔다 — 이름 속 숫자를 단위 없는 숫자로 세지 않게
+  return h('span', {class: 'nw'}, h('span', {class: 'nw-h'}, `기사 · ${stamp(n.publishedAt)} · `, n.office ? h('span', {'data-ident': ''}, n.office) : '언론사 이름 없음'), h('span', {class: 'nw-t', 'data-ident': ''}, n.title));
+}
+
 /** 맨 아래: 만든 시각 · 판 이름 · 무결성 */
 export function foot(m) {
   return h('footer', {class: 'b-foot'},

@@ -4,12 +4,13 @@
    여기서는 두 가지로 모은다(단추 둘 · 고른 것은 이 기기에 기억):
      ① 업종별 — 36칸 판 차례 그대로 업종 5곳을 나란히(회사는 탁자와 달리 같은 업종끼리 함께 움직인다 — 다섯이 함께 빨간지 한눈에)
      ② 흐름별 — 180곳의 표를 우리가 먼저 읽어 「흐름이 같은 것끼리」 묶는다(흐름 = 처음 15거래일과 최근 5거래일의 빨강·파랑 수 · road.js 아홉 칸 표 그대로)
-   칸: 이름 · 20거래일 변화 · (흐름별이면 업종) · 출목표 · 지금 며칠째 같은 쪽인가 — 누르면 회사 화면(되돌아오면 보던 자리)
+   칸: 이름 · 20거래일 변화 · (흐름별이면 업종) · 선 그래프(같은 20거래일 종가) · 출목표 · 지금 며칠째 같은 쪽인가 · 수급(외국인·기관 5거래일 합) · 이름이 든 최근 기사 1건
+       — 22:51 「출목표만 있으면 않돼 그래프로 있어야 해 그리고 그 회사들 뉴스와 수급도」 · 누르면 회사 화면(되돌아오면 보던 자리)
    지난 종가로 그린 표일 뿐 앞날 값은 없다 — 카지노 화면의 「다음 예상」 같은 칸은 두지 않는다 */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowBars, newsLine} from './parts.js';
 import {upLine} from './view-home.js';
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
@@ -24,16 +25,24 @@ export const flowText = (key, days = 20) => key === 'still' ? `${days}거래일 
 const nowSide = key => key === 'still' ? 'flat' : key.split('-')[1];
 /** 지금 같은 쪽으로 몇 거래일째인가(보합은 건너뜀) */
 export const streakText = road => road.streak.side ? `${road.streak.side === 'up' ? '오름' : '내림'} ${road.streak.len}일째` : '움직임 없음';
+/** 수급·기사를 모은 곳 수 — 다 모으지 못했으면 몇 곳인지와 언제 모은 것인지 적는다 */
+function ctxNote(cs) {
+  const got = cs.filter(c => c.brief && !c.brief.missing?.includes('수급') && !c.brief.missing?.includes('기사')).length, day = cs.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
+  return h('p', {class: 'f-ctx small', 'data-got': got}, got === cs.length ? `수급·기사: ${cs.length}곳 모두 · ${day ? korDate(day) + ' 관측 수집' : ''}` : `수급·기사: ${cs.length}곳 가운데 ${got}곳만 모았음${day ? `(${korDate(day)} 관측 수집)` : ''} · 나머지 ${cs.length - got}곳은 다음 관측 수집 때 채움`);
+}
 /** 묶는 법 두 가지(앞이 처음 보이는 것) */
 export const ROAD_MODES = [{id: 'ind', text: '업종별'}, {id: 'flow', text: '흐름별'}];
 
-function tile(c, road, g) {
+function tile(c, road, g, scale) {
   const st = road.streak.side ?? 'flat';
   return h('a', {class: 'f-tile', href: '#/stock/' + c.code, 'data-code': c.code},
     h('span', {class: 'f-top'}, h('span', {class: 'f-name'}, c.name), h('b', {class: 'chg20 f-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음')),
     g ? h('span', {class: 'f-ind'}, g.label) : null,
+    sparkSvg(c, scale),
     roadSvg(road, {minCols: 20}),
-    h('span', {class: 'f-cap'}, h('b', {class: 'f-st ' + st}, streakText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null));
+    h('span', {class: 'f-cap'}, h('b', {class: 'f-st ' + st}, streakText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null),
+    flowBars(c.brief),
+    newsLine(c.brief));
 }
 
 export async function renderRoad(main, {manifest} = {}) {
@@ -53,11 +62,12 @@ export async function renderRoad(main, {manifest} = {}) {
   const jump = key => { document.getElementById('f-' + key)?.scrollIntoView({behavior: reduce(), block: 'start'}); };
 
   // ① 업종별 — 36칸 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안은 시가총액 큰 순
-  const indView = () => groups.map((g, k) => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
-    h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
-      h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
-    h('p', {class: 't-sub'}, `5곳 지난 20거래일 평균 · ${upLine(g)}`),
-    h('div', {class: 'f-grid'}, ...g.codes.map(code => itemOf.get(code)).filter(Boolean).map(x => tile(x.c, x.road, null)))));
+  const indView = () => groups.map((g, k) => { const xs = g.codes.map(code => itemOf.get(code)).filter(Boolean), sc = sparkScale(xs.map(x => x.c));
+    return h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
+      h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
+        h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
+      h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
+      h('div', {class: 'f-grid'}, ...xs.map(x => tile(x.c, x.road, null, sc)))); });
   // ② 흐름별 — 흐름 목록(몇 곳인지 막대로 · 누르면 그 묶음으로) → 묶음마다 회사 칸(지난 20거래일 많이 오른 순)
   const flowRow = f => {
     const bar = h('span', {class: 'f-bar ' + nowSide(f.key)}); bar.style.width = `${Math.max(2, f.items.length / max * 100)}%`;
@@ -69,10 +79,11 @@ export async function renderRoad(main, {manifest} = {}) {
       h('h2', {class: 't-h2'}, `흐름 ${flows.length}가지`),
       h('p', {class: 't-sub'}, `처음 ${before}거래일과 최근 ${recent}거래일의 빨강·파랑 수로 나눔 · 누르면 그 묶음으로`),
       h('ol', {class: 'f-list'}, ...flows.map(flowRow))),
-    ...flows.map(f => h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
-      h('h2', {class: 't-h2'}, f.text, h('small', null, ` · ${f.items.length}곳`)),
-      h('p', {class: 't-sub'}, f.key === 'still' ? `${days}거래일 동안 동그라미가 거의 없음` : `처음 ${before}거래일: ${SIDE_WORD[f.key.split('-')[0]]} → 최근 ${recent}거래일: ${SIDE_WORD[f.key.split('-')[1]]} · 지난 20거래일 많이 오른 순`),
-      h('div', {class: 'f-grid'}, ...f.items.map(x => tile(x.c, x.road, x.g)))))];
+    ...flows.map(f => { const sc = sparkScale(f.items.map(x => x.c));
+      return h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
+        h('h2', {class: 't-h2'}, f.text, h('small', null, ` · ${f.items.length}곳`)),
+        h('p', {class: 't-sub'}, `${f.key === 'still' ? `${days}거래일 동안 동그라미가 거의 없음` : `처음 ${before}거래일: ${SIDE_WORD[f.key.split('-')[0]]} → 최근 ${recent}거래일: ${SIDE_WORD[f.key.split('-')[1]]} · 지난 20거래일 많이 오른 순`} · ${scaleText(sc)}`),
+        h('div', {class: 'f-grid'}, ...f.items.map(x => tile(x.c, x.road, x.g, sc)))); })];
 
   const body = h('div', {class: 'f-body'});
   const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set('roadView', view); draw(); } }},
@@ -87,7 +98,8 @@ export async function renderRoad(main, {manifest} = {}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, `출목표 ${n}곳`),
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지 · 한 화면에 모두`),
-      h('p', {class: 'f-key muted small'}, '동그라미 하나 = 하루 1% 움직임(크게 움직인 회사는 칸에 적음) · 빨강 오름 · 파랑 내림 · 같은 쪽이 이어지면 아래로, 바뀌면 옆 줄로')),
+      h('p', {class: 'f-key muted small'}, '칸마다: 선 그래프(같은 20거래일 종가) · 출목표(동그라미 하나 = 하루 1% 움직임 · 크게 움직인 회사는 칸에 적음 · 빨강 오름 · 파랑 내림 · 같은 쪽이 이어지면 아래로, 바뀌면 옆 줄로) · 수급 · 회사 이름이 든 최근 기사'),
+      ctxNote(board.companies)),
     h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs),
     body,
     h('p', {class: 'b-kinds muted small'}, '지난 종가로 그린 표입니다 · 앞날 값은 셈하지 않습니다'),

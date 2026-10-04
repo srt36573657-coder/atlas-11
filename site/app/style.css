@@ -251,6 +251,7 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 .f-h-chg { margin-left: auto; font-size: 1.125rem; letter-spacing: 0; } .f-h-chg.up { color: var(--up-ink); } .f-h-chg.down { color: var(--down-ink); } .f-h-chg.flat { color: var(--sub); }
 .f-body[data-mode="ind"] .f-sec { margin-top: 26px; }
 .f-key { margin: 8px 0 0; line-height: 1.5; }
+.f-ctx { margin: 6px 0 0; color: var(--ink2); font-weight: 700; line-height: 1.5; }
 .f-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; }
 .f-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "l n" "t t"; align-items: baseline; gap: 2px 10px; min-height: 52px; padding: 8px 2px; border: 0; border-bottom: 1px solid var(--sep); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
 .f-list li:last-child .f-row { border-bottom: 0; }
@@ -274,10 +275,43 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 .f-unit { color: var(--sub); }
 /* 한 줄에 놓인 칸끼리 이름 · 출목표 · 아랫줄 높이를 맞춘다(이름이 두 줄인 칸이 있어도 표가 같은 높이에서 시작) — subgrid 를 모르는 브라우저는 그냥 쌓임 */
 @supports (grid-template-rows: subgrid) {
-  .f-body[data-mode="ind"] .f-tile { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 3px; align-content: start; }
-  .f-body[data-mode="flow"] .f-tile { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 3px; align-content: start; }
-  .f-tile .road { align-self: start; }
+  .f-body[data-mode="ind"] .f-tile { display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 5px; align-content: start; }
+  .f-body[data-mode="flow"] .f-tile { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 5px; align-content: start; }
+  .f-tile .road, .f-tile .spark { align-self: start; }
 }
+.f-tile .spark { margin-top: 4px; }
+.f-tile .fl, .f-tile .nw { padding-top: 6px; border-top: 1px solid var(--sep); }
+
+/* 선 그래프(지난 20거래일 종가 · 첫날 종가 점선 · 마지막 날 점) — 출목표 한 판 칸 · 업종 카드 */
+.spark { display: block; width: 100%; height: auto; aspect-ratio: 4 / 1; overflow: visible; }
+.sp-base { stroke: var(--sub); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.sp-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.spark.up .sp-line { stroke: var(--up); } .spark.down .sp-line { stroke: var(--down); } .spark.flat .sp-line { stroke: var(--sub); }
+.sp-end { stroke: var(--card); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.spark.up .sp-end { fill: var(--up); } .spark.down .sp-end { fill: var(--down); } .spark.flat .sp-end { fill: var(--sub); }
+.sp-none { font-size: .8125rem; color: var(--sub); }
+.gr-box { margin: 10px 0 0; }
+.gr-h { margin: 0 0 4px; font-size: .875rem; color: var(--sub); } .gr-h small { font-size: .8125rem; }
+.bf-box { display: grid; gap: 10px; margin: 12px 0 0; }
+/* 수급(외국인·기관 최근 5거래일 순매수 합) — 좁으면 「이름 … 값」 아래에 막대, 넓으면 한 줄 */
+.fl { display: grid; gap: 4px; font-size: .8125rem; line-height: 1.35; container-type: inline-size; }
+.fl-h { color: var(--ink2); font-weight: 700; } .fl-h small { font-size: .8125rem; font-weight: 500; color: var(--sub); }
+.fl-row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2px 8px; }
+.fl-lab { color: var(--ink2); }
+.fl-val { justify-self: end; white-space: nowrap; } .fl-val.up { color: var(--up-ink); } .fl-val.down { color: var(--down-ink); } .fl-val.flat { color: var(--sub); }
+.fl-track { grid-column: 1 / -1; grid-row: 2; position: relative; height: 6px; border-radius: 3px; background: var(--fill); }
+.fl-zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--ink2); }
+.fl-bar { position: absolute; top: 0; bottom: 0; border-radius: 3px; } .fl-bar.up { background: var(--up); } .fl-bar.down { background: var(--down); } .fl-bar.flat { background: var(--sub); }
+@container (min-width: 15rem) {
+  .fl-row { grid-template-columns: 3.4em minmax(0, 1fr) auto; }
+  .fl-track { grid-column: 2; grid-row: 1; height: 8px; border-radius: 4px; }
+  .fl-val { grid-column: 3; }
+}
+.fl-miss, .nw-miss { color: var(--sub); }
+/* 기사(회사 이름이 든 가장 최근 1건 · 제목은 원문 그대로) */
+.nw { display: grid; gap: 2px; font-size: .8125rem; line-height: 1.4; }
+.nw-h { color: var(--sub); }
+.nw-t { color: var(--ink); font-weight: 500; overflow-wrap: anywhere; }
 
 /* 일정 화면 */
 .a-days { display: grid; gap: 12px; margin-top: 6px; }
