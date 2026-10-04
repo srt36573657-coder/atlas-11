@@ -33,7 +33,10 @@ export const URLS = Object.freeze({
   financeHtml: code => `https://finance.naver.com/item/main.naver?code=${code}`,
   fchart: code => `https://fchart.stock.naver.com/sise.nhn?symbol=${code}&timeframe=day&count=840&requestType=0`,
 });
-const MARKETS = Object.freeze([{market: 'KOSPI', sosok: 0, jsonPages: 4, htmlPages: 8, take: 400}, {market: 'KOSDAQ', sosok: 1, jsonPages: 2, htmlPages: 3, take: 150}]);
+// 2026-10-04 21:04 사장님 「업종 36개에서 180개 회사를 찾아…」 — 업종마다 5곳을 채우려면 300위 밖 회사도 봐야 한다 → 목록을 더 깊이(코스피·코스닥 각 600곳) · 결산·일봉은 시가총액 900위까지
+const MARKETS = Object.freeze([{market: 'KOSPI', sosok: 0, jsonPages: 6, htmlPages: 12, take: 600}, {market: 'KOSDAQ', sosok: 1, jsonPages: 6, htmlPages: 12, take: 600}]);
+/** 결산 자료·일봉을 받는 깊이(시가총액 순위) — 고르기 규칙의 poolTop(300 등)과 따로 · 규칙은 자기 poolTop 안에서만 고른다 */
+export const BUNDLE_DEPTH = 900;
 
 /** 재생 모드: <dir>/urls.json 의 {url: 파일} 대로 읽는다(없는 주소는 404) */
 export function fixtureMapFetch(dir) {
@@ -91,8 +94,8 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
   const stocks = {};
   await pool(poolCodes, concurrency, async r => { stocks[r.code] = {list: r, integration: await get(URLS.integration(r.code))}; }, politeDelayMs);
   log(`요약 ${Object.keys(stocks).length}`);
-  // ④ 시가총액 상위 300곳(보통주) — 결산 · 일봉
-  const ranked = rankByCap(stocks).slice(0, QUALITY52.poolTop);
+  // ④ 시가총액 상위 BUNDLE_DEPTH 곳(보통주) — 결산 · 일봉
+  const ranked = rankByCap(stocks).slice(0, BUNDLE_DEPTH);
   await pool(ranked, concurrency, async ({code}) => {
     const s = stocks[code];
     const fj = await get(URLS.financeJson(code)); let finance = {kind: 'json', ...fj};
@@ -185,7 +188,10 @@ export async function writeOutputs({rootDir, outDir, bundle, proposal, next, bun
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
   const arg = k => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
   const root = process.cwd(), now = arg('--now') ?? new Date().toISOString(), day = kst(now).slice(0, 10);
-  const outDir = arg('--out-dir') ?? `reports/atlas11/universe/${day}`;
+  // 같은 날 폴더가 이미 있으면 덮어쓰지 않고 시각을 붙인 새 폴더(옛 원문·제안은 그대로 둔다)
+  const exists = async d => fs.access(path.join(root, d)).then(() => true, () => false);
+  let outDir = arg('--out-dir') ?? `reports/atlas11/universe/${day}`;
+  if (!arg('--out-dir') && await exists(outDir)) outDir = `reports/atlas11/universe/${day}-${kst(now).slice(11, 16).replace(':', '')}`;
   const input = JSON.parse(await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'));
   let bundle;
   if (arg('--from-bundle')) bundle = JSON.parse(zlib.gunzipSync(await fs.readFile(arg('--from-bundle'))).toString('utf8'));
