@@ -1,9 +1,9 @@
 {
   "schema": "atlas11-browser-check-3",
-  "at": "2026-10-04T15:08:46.230Z",
+  "at": "2026-10-04T15:32:44.172Z",
   "base": "http://localhost:8823",
   "prediction": "off",
-  "boardId": "board-2026-10-02-42725474",
+  "boardId": "board-2026-10-02-ac6d4125",
   "asOf": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 215,
+  "passed": 217,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -39,21 +39,21 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 29,
+        "graphable": 28,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "road-flow": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 10,
+        "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -101,21 +101,21 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 29,
+        "graphable": 28,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "road-flow": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 10,
+        "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -163,21 +163,21 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 29,
+        "graphable": 28,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "road-flow": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 10,
+        "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -225,21 +225,21 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 29,
+        "graphable": 28,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "road-flow": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 10,
+        "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -287,21 +287,21 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 29,
+        "graphable": 28,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "road-flow": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 10,
+        "graphable": 9,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
-        "formatDates": 1
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -626,7 +626,7 @@
       "detail": null
     },
     {
-      "name": "pc 회사 유비쿼스: 이름 · 종가 11,750원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 26개 · 일정 0·공시 0줄 = 일정표",
+      "name": "pc 회사 유비쿼스: 이름 · 종가 11,750원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 26개 · 일정 0·공시 1줄 = 일정표",
       "ok": true,
       "detail": {
         "title": "유비쿼스",
@@ -649,16 +649,16 @@
           "▲ +27.16%"
         ],
         "ev": 0,
-        "ds": 0,
+        "ds": 1,
         "beads": 26
       }
     },
     {
-      "name": "pc 회사 유비쿼스: 수급·기사·공시 기록 열림 · 기사 0건 = 0 · 수급 0거래일 = 0",
+      "name": "pc 회사 유비쿼스: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
       "ok": true,
       "detail": {
-        "news": 0,
-        "flows": 0
+        "news": 6,
+        "flows": 5
       }
     },
     {
@@ -667,22 +667,22 @@
       "detail": null
     },
     {
-      "name": "pc 일정: 시장 5건 · 회사·업종 24건(12날) · 예고 공시 22건 · ★★★ 공시 20건 = 일정표 · 아래 탭 「일정」 눌림",
+      "name": "pc 일정: 시장 5건 · 회사·업종 24건(12날) · 예고 공시 95건 · ★★★ 공시 89건 = 일정표 · 아래 탭 「일정」 눌림",
       "ok": true,
       "detail": {
         "a": {
           "market": 5,
           "company": 24,
-          "notices": 22,
-          "big": 20,
+          "notices": 95,
+          "big": 89,
           "days": 12,
           "active": "agenda"
         },
         "want": {
           "market": 5,
           "company": 24,
-          "notices": 22,
-          "big": 20
+          "notices": 95,
+          "big": 89
         }
       }
     },
@@ -850,7 +850,7 @@
             "note": "5곳 지난 20거래일 평균 · 5곳 중 1곳 오름 · 선 그래프 눈금은 이 묶음이 함께 씀(−30% ~ +8% · 점선이 첫날 종가)"
           }
         ],
-        "ctx": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움",
+        "ctx": "수급·기사: 180곳 모두 · 10월 2일(금) 기준",
         "sw": 1280,
         "iw": 1280
       }
@@ -870,12 +870,12 @@
       }
     },
     {
-      "name": "pc 출목표 한 판(업종별): 칸 180개마다 선 그래프(종가 21개 · 업종 5곳 같은 눈금 · 눈금 글) · 수급 · 회사 이름이 든 최근 기사 = 판 · 「수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움」",
+      "name": "pc 출목표 한 판(업종별): 칸 180개마다 선 그래프(종가 21개 · 업종 5곳 같은 눈금 · 눈금 글) · 수급 · 회사 이름이 든 최근 기사 = 판 · 「수급·기사: 180곳 모두 · 10월 2일(금) 기준」",
       "ok": true,
       "detail": {
         "bt1": [],
-        "ctx": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움",
-        "ctxWant": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움"
+        "ctx": "수급·기사: 180곳 모두 · 10월 2일(금) 기준",
+        "ctxWant": "수급·기사: 180곳 모두 · 10월 2일(금) 기준"
       }
     },
     {
@@ -896,6 +896,13 @@
       "ok": true,
       "detail": {
         "flowMis": []
+      }
+    },
+    {
+      "name": "pc 출목표 한 판(흐름별): 흐름 목록 10줄마다 묶음 평균 선(종가 21개 · 모든 줄 같은 눈금 −11% ~ +21% · 오름/내림 색) — 첫 화면부터 그래프",
+      "ok": true,
+      "detail": {
+        "miniMis": []
       }
     },
     {
@@ -937,13 +944,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(5269px → 5269px) · 고른 묶음 「흐름별」 그대로",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(5744px → 5744px) · 고른 묶음 「흐름별」 그대로",
       "ok": true,
       "detail": {
-        "yBefore": 5269,
+        "yBefore": 5744,
         "back": {
           "hash": "#/road",
-          "y": 5269,
+          "y": 5744,
           "mode": "flow"
         }
       }
@@ -1368,7 +1375,7 @@
       "detail": null
     },
     {
-      "name": "mobile 회사 유비쿼스: 이름 · 종가 11,750원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 26개 · 일정 0·공시 0줄 = 일정표",
+      "name": "mobile 회사 유비쿼스: 이름 · 종가 11,750원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 26개 · 일정 0·공시 1줄 = 일정표",
       "ok": true,
       "detail": {
         "title": "유비쿼스",
@@ -1391,16 +1398,16 @@
           "▲ +27.16%"
         ],
         "ev": 0,
-        "ds": 0,
+        "ds": 1,
         "beads": 26
       }
     },
     {
-      "name": "mobile 회사 유비쿼스: 수급·기사·공시 기록 열림 · 기사 0건 = 0 · 수급 0거래일 = 0",
+      "name": "mobile 회사 유비쿼스: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
       "ok": true,
       "detail": {
-        "news": 0,
-        "flows": 0
+        "news": 6,
+        "flows": 5
       }
     },
     {
@@ -1409,22 +1416,22 @@
       "detail": null
     },
     {
-      "name": "mobile 일정: 시장 5건 · 회사·업종 24건(12날) · 예고 공시 22건 · ★★★ 공시 20건 = 일정표 · 아래 탭 「일정」 눌림",
+      "name": "mobile 일정: 시장 5건 · 회사·업종 24건(12날) · 예고 공시 95건 · ★★★ 공시 89건 = 일정표 · 아래 탭 「일정」 눌림",
       "ok": true,
       "detail": {
         "a": {
           "market": 5,
           "company": 24,
-          "notices": 22,
-          "big": 20,
+          "notices": 95,
+          "big": 89,
           "days": 12,
           "active": "agenda"
         },
         "want": {
           "market": 5,
           "company": 24,
-          "notices": 22,
-          "big": 20
+          "notices": 95,
+          "big": 89
         }
       }
     },
@@ -1592,7 +1599,7 @@
             "note": "5곳 지난 20거래일 평균 · 5곳 중 1곳 오름 · 선 그래프 눈금은 이 묶음이 함께 씀(−30% ~ +8% · 점선이 첫날 종가)"
           }
         ],
-        "ctx": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움",
+        "ctx": "수급·기사: 180곳 모두 · 10월 2일(금) 기준",
         "sw": 390,
         "iw": 390
       }
@@ -1612,12 +1619,12 @@
       }
     },
     {
-      "name": "mobile 출목표 한 판(업종별): 칸 180개마다 선 그래프(종가 21개 · 업종 5곳 같은 눈금 · 눈금 글) · 수급 · 회사 이름이 든 최근 기사 = 판 · 「수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움」",
+      "name": "mobile 출목표 한 판(업종별): 칸 180개마다 선 그래프(종가 21개 · 업종 5곳 같은 눈금 · 눈금 글) · 수급 · 회사 이름이 든 최근 기사 = 판 · 「수급·기사: 180곳 모두 · 10월 2일(금) 기준」",
       "ok": true,
       "detail": {
         "bt1": [],
-        "ctx": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움",
-        "ctxWant": "수급·기사: 180곳 가운데 37곳만 모았음(10월 2일(금) 기준) · 나머지 143곳은 다음 관측 수집 때 채움"
+        "ctx": "수급·기사: 180곳 모두 · 10월 2일(금) 기준",
+        "ctxWant": "수급·기사: 180곳 모두 · 10월 2일(금) 기준"
       }
     },
     {
@@ -1638,6 +1645,13 @@
       "ok": true,
       "detail": {
         "flowMis": []
+      }
+    },
+    {
+      "name": "mobile 출목표 한 판(흐름별): 흐름 목록 10줄마다 묶음 평균 선(종가 21개 · 모든 줄 같은 눈금 −11% ~ +21% · 오름/내림 색) — 첫 화면부터 그래프",
+      "ok": true,
+      "detail": {
+        "miniMis": []
       }
     },
     {
@@ -1679,13 +1693,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(9555px → 9555px) · 고른 묶음 「흐름별」 그대로",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(11174px → 11174px) · 고른 묶음 「흐름별」 그대로",
       "ok": true,
       "detail": {
-        "yBefore": 9555,
+        "yBefore": 11174,
         "back": {
           "hash": "#/road",
-          "y": 9555,
+          "y": 11174,
           "mode": "flow"
         }
       }
@@ -1898,7 +1912,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 pc road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -1917,7 +1931,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 pc road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2012,7 +2026,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2031,7 +2045,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2126,7 +2140,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile-dark road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2145,7 +2159,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile-dark road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2240,7 +2254,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 pc-200 road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2259,7 +2273,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 pc-200 road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2354,7 +2368,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile-dark-200 road: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2373,7 +2387,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 1",
+      "name": "또렷함 mobile-dark-200 road-flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -2443,5 +2457,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-04T15-07-35-063Z"
+  "dir": "reports/atlas11/browser/2026-10-04T15-31-29-241Z"
 }

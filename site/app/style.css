@@ -263,11 +263,12 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 .f-key { margin: 8px 0 0; line-height: 1.5; }
 .f-ctx { margin: 6px 0 0; color: var(--ink2); font-weight: 700; line-height: 1.5; }
 .f-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; }
-.f-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "l n" "t t"; align-items: baseline; gap: 2px 10px; min-height: 52px; padding: 8px 2px; border: 0; border-bottom: 1px solid var(--sep); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.f-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "l g n" "t t t"; align-items: center; gap: 2px 10px; min-height: 52px; padding: 8px 2px; border: 0; border-bottom: 1px solid var(--sep); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
 .f-list li:last-child .f-row { border-bottom: 0; }
 .f-row:active { background: var(--fill); }
 .f-lab { grid-area: l; font-size: 1.0625rem; font-weight: 700; overflow-wrap: anywhere; }
 .f-n { grid-area: n; font-size: 1.0625rem; white-space: nowrap; }
+.f-row .spark.mini { grid-area: g; width: 84px; aspect-ratio: 4 / 1; }
 .f-track { grid-area: t; position: relative; display: block; height: 8px; border-radius: 4px; background: var(--fill); }
 .f-bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
 .f-bar.up { background: var(--up); } .f-bar.down { background: var(--down); } .f-bar.flat { background: var(--sub); }

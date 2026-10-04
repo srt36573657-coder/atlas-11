@@ -10,7 +10,7 @@
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot, sparkSvg, sparkScale, scaleText, flowBars, newsLine} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowBars, newsLine, meanRets, meanSpark} from './parts.js';
 import {upLine} from './view-home.js';
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
@@ -69,15 +69,20 @@ export async function renderRoad(main, {manifest} = {}) {
       h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
       h('div', {class: 'f-grid'}, ...xs.map(x => tile(x.c, x.road, null, sc)))); });
   // ② 흐름별 — 흐름 목록(몇 곳인지 막대로 · 누르면 그 묶음으로) → 묶음마다 회사 칸(지난 20거래일 많이 오른 순)
+  // 흐름 목록 줄마다 묶음 평균 선 — 「흐름별」을 열면 첫 화면부터 그래프가 보이게(2026-10-05 00:26 「출목표 처음 보이는 곳에 그곳에 바로 그래프도 보여야 한다는거야 클릭해서 들어가는게 아니라 그래야 직관이잖아」)
+  //   같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 줄이 같은 눈금
+  const means = new Map(flows.map(f => [f.key, meanRets(f.items.map(x => x.c).filter(c => c.date === to))])), msc = sparkScale([]);
+  for (const r of means.values()) for (const v of r) { msc.lo = Math.min(msc.lo, v); msc.hi = Math.max(msc.hi, v); }
   const flowRow = f => {
     const bar = h('span', {class: 'f-bar ' + nowSide(f.key)}); bar.style.width = `${Math.max(2, f.items.length / max * 100)}%`;
+    const r = means.get(f.key);
     return h('li', null, h('button', {class: 'f-row', type: 'button', 'data-flow': f.key, onclick: () => jump(f.key)},
-      h('span', {class: 'f-lab'}, f.text), h('b', {class: 'f-n'}, `${f.items.length}곳`), h('span', {class: 'f-track', 'aria-hidden': 'true'}, bar)));
+      h('span', {class: 'f-lab'}, f.text), meanSpark(r, msc, `${f.text} ${f.items.length}곳 평균 선 · 지난 ${Math.max(0, r.length - 1)}거래일 · 첫날 대비 ${r.length ? pct(r.at(-1), 1) : '없음'}`), h('b', {class: 'f-n'}, `${f.items.length}곳`), h('span', {class: 'f-track', 'aria-hidden': 'true'}, bar)));
   };
   const flowView = () => [
     h('section', {class: 't-sec f-index', 'aria-label': '흐름 목록'},
       h('h2', {class: 't-h2'}, `흐름 ${flows.length}가지`),
-      h('p', {class: 't-sub'}, `처음 ${before}거래일과 최근 ${recent}거래일의 빨강·파랑 수로 나눔 · 누르면 그 묶음으로`),
+      h('p', {class: 't-sub'}, `처음 ${before}거래일과 최근 ${recent}거래일의 빨강·파랑 수로 나눔 · 줄마다 묶음 평균 선(모든 줄 같은 눈금 ${pct(msc.lo, 0)} ~ ${pct(msc.hi, 0)}) · 누르면 그 묶음으로`),
       h('ol', {class: 'f-list'}, ...flows.map(flowRow))),
     ...flows.map(f => { const sc = sparkScale(f.items.map(x => x.c));
       return h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
@@ -98,7 +103,7 @@ export async function renderRoad(main, {manifest} = {}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, `출목표 ${n}곳`),
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지 · 한 화면에 모두`),
-      h('p', {class: 'f-key muted small'}, '칸마다: 선 그래프(같은 20거래일 종가) · 출목표(동그라미 하나 = 하루 1% 움직임 · 크게 움직인 회사는 칸에 적음 · 빨강 오름 · 파랑 내림 · 같은 쪽이 이어지면 아래로, 바뀌면 옆 줄로) · 수급 · 회사 이름이 든 최근 기사'),
+      h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빨강 오름 · 파랑 내림) · 수급 · 기사'),
       ctxNote(board.companies)),
     h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs),
     body,

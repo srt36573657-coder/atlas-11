@@ -11,6 +11,9 @@
  * v2(9/30 밤 → 10/1 새벽, 화면을 고치기 전에 확정): ① 식별자(<code>·[data-ident] 안의 커밋 해시·발행본 ID)는 숫자로 세지 않는다
  *   ② 반투명 색은 실제로 칠해지는 바탕 위에 섞은 뒤 채도를 잰다(6% 불투명 테두리가 「장식 색」으로 잡히던 것 바로잡음)
  *   ③ 4번의 「·로 이은 숫자 셋」에서 헤드라인 한 줄·시장 띠([data-clarity~=headline|strip])는 뺀다 — 헤드라인은 글로 두라는 명령이고 증거 그래프가 바로 아래에 있다
+ * v3(2026-10-05 00:40 · 출목표 한 판에 180곳 기사 제목이 보이게 된 뒤): ⑤ 식별자(기사 제목 · 언론사 이름 · [data-ident])는 우리가 쓴 글이 아니라 원문 그대로이므로
+ *   1번(내일·오늘·어제)과 2번(흐릿한 말)에서도 세지 않는다(「두산, 다음 도약 위한 준비 끝」 같은 제목) — 앞날 말은 따로 판 묶음 검사와 화면 낱말 검사가 원문 제목까지 본다
+ *   ⑥ 식별자로 볼 최소 길이 4 → 3 글자(「뉴스1」 같은 언론사 이름 속 숫자를 단위 없는 숫자로 세던 것) · 검사기 자체 시험(심은 「내일 42 정도.」)은 그대로 잡는다
  *   ④ 덤(여섯 숫자 밖): formatDates = 글 날짜가 「10월 1일(목)」 모양이 아니거나 「9. 30.」 같은 다른 모양인 수 · sentences = 보이는 문장 목록(지운 수·더한 수 세기용)
  */
 export function measureClarity(opts = {}) {
@@ -27,7 +30,8 @@ export function measureClarity(opts = {}) {
   const htmlText = roots.map(r => r.innerText).join('\n');
   const lines = [...htmlText.split('\n'), ...svgTexts].map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
   const sample = (arr, x) => { if (arr.length < 8) arr.push(x); };
-  const idents = [...new Set(roots.flatMap(r => [...r.querySelectorAll('code, [data-ident]')]).filter(shown).map(e => e.textContent.trim()).filter(s => s.length >= 4))].sort((a, b) => b.length - a.length);
+  const idents = [...new Set(roots.flatMap(r => [...r.querySelectorAll('code, [data-ident]')]).filter(shown).map(e => e.textContent.trim()).filter(s => s.length >= 3))].sort((a, b) => b.length - a.length);
+  const noIdent = l => idents.reduce((t, id) => t.split(id).join(' ⓘ '), l), ourLines = lines.map(noIdent); // 1·2번은 원문(식별자)을 뺀 우리 글만
   const exempt = new Set(roots.flatMap(r => [...r.querySelectorAll('[data-clarity~="headline"], [data-clarity~="strip"]')]).flatMap(e => e.innerText.split('\n').map(s => s.replace(/\s+/g, ' ').trim())).filter(Boolean));
   // 1
   // 2026-10-02 사장님 명령(「ATLAS는 단 하루, 내일만 예측한다」): 바로 뒤에 날짜를 붙인 「내일(10월 2일 금)」은 날짜가 분명하므로 세지 않는다 — 날짜 없는 「내일·오늘·어제」만 센다
@@ -35,11 +39,11 @@ export function measureClarity(opts = {}) {
   //   제목·글상자([data-clarity~="dated"])의 「내일」이 그 날짜를 가리키므로 세지 않는다 — 다른 곳의 「내일」과 「오늘·어제」는 그대로 센다(검사기 자체 시험이 그대로 잡는다)
   const anchorOn = roots.some(r => [...r.querySelectorAll('[data-clarity~="date-anchor"]')].some(e => shown(e) && /\d{1,2}월 \d{1,2}일/.test(e.textContent)));
   const datedLines = new Set(anchorOn ? roots.flatMap(r => [...r.querySelectorAll('[data-clarity~="dated"]')]).filter(shown).flatMap(e => e.innerText.split('\n').map(s => s.replace(/\s+/g, ' ').trim())).filter(Boolean) : []);
-  const relSamples = []; let relDays = 0; for (const l of lines) { const m = (datedLines.has(l) ? l.replace(/내일/g, 'ⓓ') : l).replace(/내일\(\d{1,2}월 \d{1,2}일[^)]*\)/g, 'ⓓ').match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
+  const relSamples = []; let relDays = 0; for (const l of ourLines) { const m = (datedLines.has(l) ? l.replace(/내일/g, 'ⓓ') : l).replace(/내일\(\d{1,2}월 \d{1,2}일[^)]*\)/g, 'ⓓ').match(/내일|오늘|어제/g); if (m) { relDays += m.length; sample(relSamples, l.slice(0, 80)); } }
   // 2
   const vagueRe = /최근|곧|지금|다음|많이|조금|대부분|크게/;
   const vagueSamples = []; let vague = 0;
-  for (const l of lines) for (const s of l.split(/(?<=[.!?])\s+/)) if (vagueRe.test(s) && !/\d/.test(s)) { vague++; sample(vagueSamples, s.slice(0, 80)); }
+  for (const l of ourLines) for (const s of l.split(/(?<=[.!?])\s+/)) if (vagueRe.test(s) && !/\d/.test(s)) { vague++; sample(vagueSamples, s.slice(0, 80)); }
   // 3 — 날짜·시각·종목 코드·영문 식별자는 먼저 걷어 내고, 남은 숫자 뒤에 단위가 있는지 본다
   const strip = l => idents.reduce((s, id) => s.split(id).join(' ⓘ '), l)
     .replace(/\d{4}-\d{2}-\d{2}(T[\d:.]+Z?)?/g, ' ⓓ ').replace(/\d{1,2}월\s?\d{1,2}일/g, ' ⓓ ').replace(/\b\d{1,2}\/\d{1,2}\b(?!\s*(일|개|종목|칸|%))/g, ' ⓓ ').replace(/\d{1,2}:\d{2}(:\d{2})?/g, ' ⓣ ')

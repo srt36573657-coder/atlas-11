@@ -153,6 +153,18 @@ export function sparkSvg(c, scale = null) {
     sv('polyline', {class: 'sp-line', points: rs.map((r, i) => `${x(i).toFixed(1)},${y(r).toFixed(1)}`).join(' ')}),
     sv('circle', {class: 'sp-end', cx: x(cs.length - 1).toFixed(1), cy: y(rs.at(-1)).toFixed(1), r: 3.4}));
 }
+/** 묶음 평균 선(흐름 목록 줄마다) — 같은 날짜까지 종가가 있는 회사들의 첫날 대비 변화를 날마다 평균 · 모든 줄이 같은 눈금 */
+export const meanRets = cs => { const ok = cs.filter(c => (c.c?.length ?? 0) >= 2 && c.c.every(v => finite(v) && v > 0)), n = Math.min(...ok.map(c => c.c.length));
+  return ok.length ? Array.from({length: n}, (_, i) => ok.reduce((t, c) => t + c.c[i] / c.c[0] - 1, 0) / ok.length) : []; };
+export function meanSpark(rets, sc, label) {
+  if (rets.length < 2) return h('span', {class: 'sp-none'}, '선 없음');
+  const W = 120, H = 30, P = 3, span = sc.hi - sc.lo || 1, x = i => P + i * (W - 2 * P) / (rets.length - 1), y = r => P + (sc.hi - r) / span * (H - 2 * P);
+  const side = rets.at(-1) > 0 ? 'up' : rets.at(-1) < 0 ? 'down' : 'flat';
+  return sv('svg', {class: 'spark mini ' + side, viewBox: `0 0 ${W} ${H}`, role: 'img', 'data-points': rets.length, 'data-lo': sc.lo.toFixed(4), 'data-hi': sc.hi.toFixed(4), 'aria-label': label},
+    sv('line', {class: 'sp-base', x1: P, x2: W - P, y1: y(0).toFixed(1), y2: y(0).toFixed(1)}),
+    sv('polyline', {class: 'sp-line', points: rets.map((r, i) => `${x(i).toFixed(1)},${y(r).toFixed(1)}`).join(' ')}),
+    sv('circle', {class: 'sp-end', cx: x(rets.length - 1).toFixed(1), cy: y(rets.at(-1)).toFixed(1), r: 2.6}));
+}
 /** 주 단위 순매수 → 「+12만주」 「−1,071만주」 「+3,400주」 「−1.2억주」 */
 export const sharesText = v => { if (!finite(v)) return '없음'; const a = Math.abs(v), sg = v > 0 ? '+' : v < 0 ? '−' : ''; return a >= 1e8 ? `${sg}${(a / 1e8).toFixed(1)}억주` : a >= 1e4 ? `${sg}${Math.round(a / 1e4).toLocaleString('ko-KR')}만주` : `${sg}${a.toLocaleString('ko-KR')}주`; };
 const notYet = '아직 모으지 않음';
