@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-3",
-  "at": "2026-10-04T15:32:44.172Z",
+  "at": "2026-10-04T17:31:57.594Z",
   "base": "http://localhost:8823",
   "prediction": "off",
   "boardId": "board-2026-10-02-ac6d4125",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 28,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -83,7 +83,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       },
@@ -93,7 +93,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -103,7 +103,7 @@
         "bareNumbers": 0,
         "graphable": 28,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -145,7 +145,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -155,7 +155,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -165,7 +165,7 @@
         "bareNumbers": 0,
         "graphable": 28,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -207,7 +207,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       },
@@ -217,7 +217,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -227,7 +227,7 @@
         "bareNumbers": 0,
         "graphable": 28,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -269,7 +269,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -279,7 +279,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -289,7 +289,7 @@
         "bareNumbers": 0,
         "graphable": 28,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
       },
@@ -944,13 +944,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(5744px → 5744px) · 고른 묶음 「흐름별」 그대로",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(5764px → 5764px) · 고른 묶음 「흐름별」 그대로",
       "ok": true,
       "detail": {
-        "yBefore": 5744,
+        "yBefore": 5764,
         "back": {
           "hash": "#/road",
-          "y": 5744,
+          "y": 5764,
           "mode": "flow"
         }
       }
@@ -1693,13 +1693,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(11174px → 11174px) · 고른 묶음 「흐름별」 그대로",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(11214px → 11214px) · 고른 묶음 「흐름별」 그대로",
       "ok": true,
       "detail": {
-        "yBefore": 11174,
+        "yBefore": 11214,
         "back": {
           "hash": "#/road",
-          "y": 11174,
+          "y": 11214,
           "mode": "flow"
         }
       }
@@ -2457,5 +2457,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-04T15-31-29-241Z"
+  "dir": "reports/atlas11/browser/2026-10-04T17-30-39-758Z"
 }

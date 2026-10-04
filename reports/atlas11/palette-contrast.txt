@@ -17,6 +17,17 @@ light warn/card 6.28
 light up/card 5.84
 light down/card 6.19
 light ink/fill 15.45
+light band-ink/band 16.45
+light band-sub/band 6.93
+light band-ink/band-fill 12.96
+light eun/band 7.94
+light fire-ink/fire-bg 16.45
+light geum/band 5.46
+light geum/bar 3.43
+light geum/seg-on 3.43
+light geum/card 3.43
+light geum/bg 3.12
+light band/bg 17.02 (card/bg 1.10)
 dark ink/bg 18.31
 dark ink2/bg 13.69
 dark sub/bg 7.72
@@ -36,3 +47,14 @@ dark warn/card 9.85
 dark up/card 5.42
 dark down/card 5.50
 dark ink/fill 13.33
+dark band-ink/band 14.66
+dark band-sub/band 6.18
+dark band-ink/band-fill 12.28
+dark eun/band 3.32
+dark fire-ink/fire-bg 12.29
+dark geum/band 4.87
+dark geum/bar 5.46
+dark geum/seg-on 3.75
+dark geum/card 5.09
+dark geum/bg 6.08
+dark band/bg 1.25 (card/bg 1.20)

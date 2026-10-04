@@ -5,7 +5,7 @@
      · 칸을 누르면 그 업종 5곳(#/i/<업종>) → 회사를 누르면 회사 화면 — 두 번이면 어디든
      · 상자를 덧대지 않는다 — 큰 굵은 제목 · 간격 · 칸 색으로 무엇이 중요한지 보인다
    칸 색은 크기(지난 20거래일 평균 변화), 「불장」 글자는 차례(오른 업종 가운데 1~11위) — 색만으로 뜻을 전하지 않는다(글자 · 부호 · 차례 번호) */
-import {h, korDate, pct, finite} from './util.js';
+import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
 import {nextBox, foot, kindBadge, heatOf, heatLegend, HEAT_KEY} from './parts.js';
@@ -23,7 +23,7 @@ function tile(g, i) {
   return h('a', {class: `t-tile heat-${heat}${g.hot ? ' t-hot' : ''}`, href: '#/i/' + g.id, 'data-group': g.id, 'aria-label': `${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${g.hot ? ' · 불장' : ''}`},
     h('span', {class: 't-top'}, h('span', {class: 't-rank'}, `${i + 1}위`), g.hot ? h('span', {class: 't-fire'}, '불장') : null),
     h('span', {class: 't-name'}, g.label),
-    h('span', {class: 't-chg'}, finite(g.change20) ? pct(g.change20, 1) : '없음'),
+    h('span', {class: 't-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'), // 세모(▲▼)는 style.css 가 붙임 — 글자는 그대로
     h('span', {class: 't-up'}, upLine(g)));
 }
 /** 다음 불장 후보 — 불장 업종 밖에서 지난 20거래일 동안 많이 오른 회사(한 업종 2곳까지) */

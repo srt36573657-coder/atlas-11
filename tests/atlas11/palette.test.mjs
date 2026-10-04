@@ -23,7 +23,20 @@ test('색 토큰 대비: 본문 글자 7:1 · 보조 글자·링크·오름·내
     }
     // 둥근 단추·알약(바탕 --fill)의 글자는 본문 글자색
     const f = contrast(t.ink, t.fill); report.push(`${mode} ink/fill ${f.toFixed(2)}`); assert.ok(f >= 7, `${mode} 단추 글자 대비 ${f.toFixed(2)}`);
+    // 2026-10-05 마이바흐 공부 적용: 위 막대(먹빛 · --band) 안 글자·단추 · 은빛 선 · 금빛(놋쇠빛 하나)이 닿는 모든 바탕 · 「불장」 알약
+    for (const [fg, bg, min] of [['band-ink', 'band', 7], ['band-sub', 'band', 4.5], ['band-ink', 'band-fill', 7], ['eun', 'band', 3], ['fire-ink', 'fire-bg', 7],
+      ['geum', 'band', 3], ['geum', 'bar', 3], ['geum', 'seg-on', 3], ['geum', 'card', 3], ['geum', 'bg', 3]]) {
+      assert.ok(t[fg] && t[bg], `${mode} 토큰 --${fg} · --${bg} 이 있어야 한다`);
+      const r = contrast(t[fg], t[bg]); report.push(`${mode} ${fg}/${bg} ${r.toFixed(2)}`); assert.ok(r >= min, `${mode} ${fg} on ${bg} = ${r.toFixed(2)} < ${min}`);
+    }
+    // 위 막대와 본문은 눈에 띄게 다른 두 바탕(두 색) — 밝은 화면 1.5:1 이상 · 밤 판은 검정 위로 올라온 판(--card)만큼 이상(어두운 쪽 휘도 대비는 공식이 눌러 잼)
+    const two = contrast(t.band, t.bg), raised = contrast(t.card, t.bg), need2 = mode === 'light' ? 1.5 : raised;
+    report.push(`${mode} band/bg ${two.toFixed(2)} (card/bg ${raised.toFixed(2)})`); assert.ok(two >= need2, `${mode} 두 바탕이 너무 비슷함 ${two.toFixed(2)} < ${need2.toFixed(2)}`);
   }
+  // 금빛은 하나 — 밝은·어두운 화면 같은 놋쇠빛 · 샴페인색(옛 핀스트라이프 #c9ad7a · 옛 「불장」 글씨 #e2c98f)은 남지 않음
+  const dark = {...light, ...tokens(darkBlock)};
+  assert.equal(light.geum, dark.geum, '금빛은 밝은·어두운 화면 같은 하나');
+  assert.ok(!/#c9ad7a|#e2c98f|#8c7449|--pin\b/i.test(css), '샴페인색 선·글씨가 남아 있으면 안 된다');
   await fs.mkdir(path.join(root, 'reports/atlas11'), {recursive: true});
   await fs.writeFile(path.join(root, 'reports/atlas11/palette-contrast.txt'), report.join('\n') + '\n');
 });
