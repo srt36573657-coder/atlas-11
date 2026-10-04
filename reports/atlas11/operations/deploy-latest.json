@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-04T13:49:48.322Z",
+  "at": "2026-10-04T16:14:17.574Z",
   "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "url": "https://aaa7377.com",
-  "deployUrl": "https://6ac259a369bdacf72b9c9581--mulgil.netlify.app",
-  "deployId": "6ac259a369bdacf72b9c9581",
+  "deployUrl": "https://6ac27b834b47c8258edfc923--mulgil.netlify.app",
+  "deployId": "6ac27b834b47c8258edfc923",
   "noindex": false,
-  "files": 511,
+  "files": 605,
   "exitCode": 0,
   "error": null
 }
