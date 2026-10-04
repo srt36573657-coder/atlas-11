@@ -5,21 +5,15 @@ import path from 'node:path';
 import {runDaily, offlineCollector, runtimeInfo} from '../../lib/atlas11/daily.mjs';
 import {readRecords, currentRecords} from '../../lib/atlas11/records.mjs';
 import {resolveSite, stageDir} from '../../scripts/atlas11/deploy_netlify.mjs';
-import {tempRoot, root, readJSON, INPUT_928} from './helpers.mjs';
+import {tempRoot, root, INPUT_928} from './helpers.mjs';
 
 async function fixtureRoot() {
   const dir = await tempRoot();
-  await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true});
+  await fs.mkdir(path.join(dir, 'public/data'), {recursive: true});
   await fs.copyFile(path.join(root, INPUT_928), path.join(dir, 'public/data/input.json'));
-  await fs.copyFile(path.join(root, 'reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), path.join(dir, 'public/data/atlas11/forecast.json'));
-  for (const f of ['public/data/rolling-calendar.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
-  const latest = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json');
-  await fs.mkdir(path.join(dir, 'reports/atlas11/versions'), {recursive: true});
-  await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
-  return {dir, latest};
+  await fs.copyFile(path.join(root, 'public/data/rolling-calendar.json'), path.join(dir, 'public/data/rolling-calendar.json'));
+  return {dir};
 }
-const stubBuild = latest => async ({shadow}) => ({forecastId: shadow ? 'shadow-' + shadow.candidateId : latest.forecastId, reused: true, createdForecastFiles: 0, summary: latest.summary, actualAsOf: latest.actualAsOf});
-const stubView = latest => async () => ({forecastId: latest.forecastId, files: 60});
 
 test('실행 환경 증거: GitHub 러너 변수 → 서버·실행 주소 · 예약 실행은 schedule 이벤트일 때만 · 로컬은 수동', () => {
   const gh = runtimeInfo({GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'schedule', GITHUB_REPOSITORY: 'o/r', GITHUB_RUN_ID: '42', GITHUB_SHA: 'abc', RUNNER_OS: 'Linux'});
@@ -28,36 +22,29 @@ test('실행 환경 증거: GitHub 러너 변수 → 서버·실행 주소 · �
   const local = runtimeInfo({}); assert.equal(local.host, 'local'); assert.equal(local.scheduledRun, false); assert.equal(local.serverInstalled, false);
 });
 
-test('매일 실행 + 관측 기록: 요인 기록이 「관측 기록 · 예측 미사용」과 「수치 입력」「미확보」를 가르고 · 운영 기록에 예약 실행 증거가 남는다', async () => {
-  const {dir, latest} = await fixtureRoot();
-  await fs.mkdir(path.join(dir, 'reports/atlas11/context'), {recursive: true});
-  await fs.writeFile(path.join(dir, 'reports/atlas11/context/latest.json'), JSON.stringify({schema: 'atlas11-context-latest-1', day: '2026-09-28', fetchedAt: '2026-09-28T07:01:00Z', file: 'reports/atlas11/context/2026-09-28/x.json', usedInForecast: false, factors: {
-    F14: {factorId: 'F14', observed: true, stocks: 52, latestObservation: '2026-09-28', lagSessions: 0, componentOnly: false, label: '외국인 순매매 수량(종목별)', note: '잠정 가능', usedInForecast: false},
-    F16: {factorId: 'F16', observed: true, stocks: 52, latestObservation: '2026-09-28', lagSessions: 0, componentOnly: true, label: '기관 합계', note: '연기금 포함', usedInForecast: false},
-    F06: {factorId: 'F06', observed: true, stocks: null, scope: 'market', latestObservation: '2026-09-25', calendarLagDays: 3, componentOnly: true, label: '원/달러', series: [{series: 'DEXKOUS', latestObservation: '2026-09-25', value: 1400}], usedInForecast: false},
-    F35: {factorId: 'F35', observed: true, stocks: 52, latestObservation: '2026-09-28', lagSessions: 0, componentOnly: false, label: '가짜: 이미 예측에 쓰는 요인', usedInForecast: false}}}));
+test('매일 실행(예측 없음 · 2026-10-04 15:37): 운영 기록에 예약 실행 증거가 남고 · 예측·채점·분석·요인·실험·모델 기록은 새로 쓰지 않는다 · 화면 묶음 단계는 부른다', async () => {
+  const {dir} = await fixtureRoot();
   const env = {GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'schedule', GITHUB_REPOSITORY: 'o/r', GITHUB_RUN_ID: '7'};
-  const r = await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: dir, collector: offlineCollector, runBacktests: false, build: stubBuild(latest), buildView: stubView(latest), env});
-  assert.equal(r.runtime.host, 'github-actions'); assert.equal(r.scheduledRunInstalled, true); assert.equal(r.contextDay, '2026-09-28');
+  let viewCalls = 0;
+  const r = await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: dir, collector: offlineCollector, buildView: async () => { viewCalls++; return {boardId: 'b', files: 3}; }, env});
+  assert.equal(r.runtime.host, 'github-actions'); assert.equal(r.scheduledRunInstalled, true); assert.equal(r.prediction, 'off'); assert.equal(viewCalls, 1);
+  assert.ok(!('forecastId' in r) && !('scoredDates' in r) && !('newForecast' in r), '예측·채점 칸이 없다');
+  assert.deepEqual(r.steps.map(s => s.step), ['1_calendar', '2_collect', '3_validate_store', '5_record_view']);
+  assert.equal(r.exitCode, 2, '수집기가 없으면(오프라인) 거래일 마감 뒤 실행은 부분 실행'); assert.equal(r.collection.attempted, false);
   const op = (await readRecords(dir, 'operation')).map(x => x.body).find(b => b.kind === 'daily_run');
-  assert.equal(op.runtime.event, 'schedule'); assert.equal(op.runtime.runUrl, 'https://github.com/o/r/actions/runs/7'); assert.equal(op.scheduledRunInstalled, true);
-  const fac = new Map(currentRecords(await readRecords(dir, 'factor')).map(x => [x.body.factorId, x.body]));
-  assert.equal(fac.size, 36);
-  assert.equal(fac.get('F14').status, '관측 기록 · 예측 미사용'); assert.equal(fac.get('F14').observedStocks, 52); assert.equal(fac.get('F14').usedInForecast, false); assert.equal(fac.get('F14').stocksUsing, 0);
-  assert.equal(fac.get('F16').status, '관측 기록(일부 성분) · 예측 미사용');
-  assert.equal(fac.get('F06').status, '관측 기록(일부 성분) · 예측 미사용'); assert.match(fac.get('F06').freshness, /3일 전/); assert.deepEqual(fac.get('F06').observedSeries, ['DEXKOUS']);
-  assert.equal(fac.get('F35').status, '수치 입력', '예측에 이미 쓰는 요인은 관측 기록보다 「수치 입력」이 먼저다'); assert.equal(fac.get('F35').usedInForecast, true);
-  assert.equal(fac.get('F01').status, '미확보');
+  assert.equal(op.prediction, 'off'); assert.equal(op.runtime.event, 'schedule'); assert.equal(op.runtime.runUrl, 'https://github.com/o/r/actions/runs/7'); assert.equal(op.scheduledRunInstalled, true);
+  for (const type of ['forecast', 'score', 'analysis', 'factor', 'experiment', 'model']) assert.equal((await readRecords(dir, type)).length, 0, type + ' 기록은 쓰지 않는다');
+  assert.equal((await readRecords(dir, 'collection')).length, 1, '수집 기록은 남긴다(시도하지 못한 것도)');
   // 손으로 시작한 실행은 예약 실행이 아니라고 적는다
-  const {dir: d2, latest: l2} = await fixtureRoot();
-  const m = await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: d2, collector: offlineCollector, runBacktests: false, build: stubBuild(l2), buildView: stubView(l2), env: {GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'workflow_dispatch'}});
+  const {dir: d2} = await fixtureRoot();
+  const m = await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: d2, collector: offlineCollector, env: {GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'workflow_dispatch'}});
   assert.equal(m.scheduledRunInstalled, false); assert.equal(m.runtime.event, 'workflow_dispatch');
-  // 관측 파일이 오래됐으면(이틀 이상 전 거래일) 쓰지 않는다
-  const {dir: d3, latest: l3} = await fixtureRoot();
-  await fs.mkdir(path.join(d3, 'reports/atlas11/context'), {recursive: true}); await fs.writeFile(path.join(d3, 'reports/atlas11/context/latest.json'), JSON.stringify({day: '2026-09-22', factors: {F14: {observed: true, stocks: 52}}}));
-  await runDaily({now: '2026-09-28T13:45:00.000Z', rootDir: d3, collector: offlineCollector, runBacktests: false, build: stubBuild(l3), buildView: stubView(l3), env: {}});
-  const f3 = new Map(currentRecords(await readRecords(d3, 'factor')).map(x => [x.body.factorId, x.body]));
-  assert.equal(f3.get('F14').status, '미확보');
+  // 휴장일·장 마감 전: 아무것도 받지 않고 정상 종료(예비 예약이 다시 돌지 않게)
+  const {dir: d3} = await fixtureRoot();
+  const off = await runDaily({now: '2026-10-05T07:10:00.000Z', rootDir: d3, collector: async () => { throw Error('부르면 안 됨'); }, env: {}});
+  assert.equal(off.exitCode, 0); assert.equal(off.status, 'complete'); assert.equal(off.skippedReason, '거래일이 아님');
+  const early = await runDaily({now: '2026-09-29T05:00:00.000Z', rootDir: d3, collector: async () => { throw Error('부르면 안 됨'); }, env: {}});
+  assert.equal(early.exitCode, 0); assert.match(early.skippedReason, /마감\(15:30\) 전/);
 });
 
 test('넷리파이: 사이트 번호는 환경변수 → 저장 파일 → 새로 만들기(파일에 적음) · 올릴 폴더는 저장소 밖 사본 · 새 사이트는 검색 제외', async () => {

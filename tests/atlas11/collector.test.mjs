@@ -267,21 +267,19 @@ test('CLI: --fixture --now --out --codes → JSON 출력 · 파일 저장 · 실
   assert.equal(c.code, 2); assert.equal(JSON.parse(c.stdout.trim().split('\n').at(-1)).errors[0].code, 'FETCH_FAILED');
 });
 
-test('run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52', async () => {
+test('run_daily 흐름(runDaily 에 주입 · 임시 사본): 실행기 시계(--now)로 도장 찍은 관측이 검증·저널을 통과해 confirmedTodayStocks=52 · 예측 없음', async () => {
   const dir = await tempRoot();
-  await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.mkdir(path.join(dir, 'reports/atlas11/versions'), {recursive: true});
   await fs.mkdir(path.join(dir, 'public/data'), {recursive: true}); await fs.copyFile(path.join(root, 'tests/atlas11/fixtures/input-2026-09-28.json'), path.join(dir, 'public/data/input.json'));
-  await fs.mkdir(path.join(dir, 'public/data/atlas11'), {recursive: true}); await fs.copyFile(path.join(root, 'reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), path.join(dir, 'public/data/atlas11/forecast.json'));
-  for (const f of ['public/data/rolling-calendar.json', 'public/data/factor36-registry.json', 'public/data/atlas11/view/network.json', 'config/atlas11/evolution.v1.json', 'config/atlas11/scoring-policy.v1.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
-  const latest = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'); await fs.writeFile(path.join(dir, 'reports/atlas11/versions', latest.forecastId + '.json'), JSON.stringify(latest));
+  for (const f of ['public/data/rolling-calendar.json']) { await fs.mkdir(path.dirname(path.join(dir, f)), {recursive: true}); await fs.copyFile(path.join(root, f), path.join(dir, f)); }
   const real = await readJSON('tests/atlas11/fixtures/input-2026-09-28.json'), today = '2026-09-29';
   // 오늘 봉 하나만 주는 합성 응답(count=1) — 저장된 과거 행과 부딪히지 않는다
   const f = stubFetch(async url => { const s = symbolOf(url), prev = real.assets.find(a => a.code === s)?.prices.at(-1)?.close ?? 10000; const c = Math.round(prev * 1.01); return respond(xml(s, [{date: today, open: prev, high: Math.max(prev, c), low: Math.min(prev, c), close: c, volume: 123456}])); });
   const collector = (input, window) => collect(input, window, {fetch: f, now: NOW, count: 1, finalityDelayMs: 0, politeDelayMs: 0, market: [], sleep: noSleep});
-  const result = await runDaily({now: NOW, rootDir: dir, collector, runBacktests: false});
+  const result = await runDaily({now: NOW, rootDir: dir, collector});
   assert.equal(result.collection.provider, PROVIDER); assert.equal(result.collection.observations, 52); assert.deepEqual(result.collection.errors, []);
   assert.equal(result.confirmedTodayStocks, 52); assert.equal(result.actualAsOf, today); assert.equal(result.inputChanged, true); assert.equal(result.freshStocks, 52);
-  assert.equal(result.forecastWithheldReason, 'build 미주입', '발행기는 주입하지 않았다(이 검사는 수집·검증만 본다)');
+  assert.equal(result.prediction, 'off', '2026-10-04 15:37 「이제 예측을 하지 않는다」 — 발행·채점 단계가 없다'); assert.ok(!('forecastId' in result) && !('newForecast' in result));
+  assert.equal(result.status, 'complete'); assert.equal(result.exitCode, 0);
   const written = JSON.parse(await fs.readFile(path.join(dir, 'public/data/input.json'), 'utf8')), row = written.assets.find(a => a.code === '005930').prices.at(-1);
   assert.equal(row.date, today); assert.equal(row.finalClose, true); assert.equal(row.observedAt, NOW); assert.equal(new URL(row.sourceUrl).hostname, 'fchart.stock.naver.com'); assert.equal(row.quality, 'single_source');
   const added = written.priceRevisions.slice(real.priceRevisions?.length ?? 0).filter(x => x.date === today); // 이 실행이 새로 붙인 정정 기록만(저장소에 이미 있던 기록은 제외)

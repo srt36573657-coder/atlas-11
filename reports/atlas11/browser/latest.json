@@ -1,64 +1,29 @@
 {
-  "schema": "atlas11-browser-check-2",
-  "at": "2026-10-03T23:51:20.939Z",
+  "schema": "atlas11-browser-check-3",
+  "at": "2026-10-04T07:14:22.840Z",
   "base": "http://localhost:8823",
-  "tomorrowOnly": true,
-  "tomorrowDate": "2026-10-02",
+  "prediction": "off",
+  "boardId": "board-2026-10-02-58e0077b",
+  "asOf": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
     "pc": "1280x800",
-    "mobile": "390x844 (touch emulation — 실제 아이폰 기기 검증 아님)",
-    "mobile-dark": "390x844 어두운 화면",
-    "pc-200": "1280x800 글씨 200%"
+    "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
+    "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 319,
-  "failed": 2,
+  "passed": 114,
+  "failed": 0,
   "clarity": {
     "pc": {
-      "forecast": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 2,
-        "graphable": 1,
-        "lowContrast": 3,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 6,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "up": {
+      "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 26,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "down": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 82,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -66,151 +31,31 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 4,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
-      "race": {
+      "agenda": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "scores": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "evolution": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "records": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "status": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "game": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 42,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       }
     },
     "mobile": {
-      "forecast": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 2,
-        "graphable": 1,
-        "lowContrast": 3,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 6,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "up": {
+      "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 26,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "down": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 82,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -218,151 +63,31 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 4,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
-      "race": {
+      "agenda": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "scores": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "evolution": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "records": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "status": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "game": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 42,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       }
     },
     "mobile-dark": {
-      "forecast": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 2,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 6,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "up": {
+      "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 26,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "down": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 82,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -370,151 +95,31 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 4,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
-      "race": {
+      "agenda": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "scores": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "evolution": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "records": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "status": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "game": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 42,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       }
     },
     "pc-200": {
-      "forecast": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 2,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 6,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "up": {
+      "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 26,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "down": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 82,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -522,151 +127,31 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 4,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
-      "race": {
+      "agenda": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "scores": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "evolution": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "records": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "status": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "game": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 42,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       }
     },
     "mobile-dark-200": {
-      "forecast": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 2,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 6,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "up": {
+      "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 26,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "down": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 6,
-        "truncated": 0,
-        "formatDates": 82,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
       "stock": {
         "relDays": 0,
@@ -674,2343 +159,705 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 4,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       },
-      "race": {
+      "agenda": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 2,
         "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "scores": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "evolution": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "records": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 0,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "status": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 0,
-        "lowContrast": 0,
-        "decoColors": 1,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
-      },
-      "game": {
-        "relDays": 0,
-        "vague": 0,
-        "bareNumbers": 0,
-        "graphable": 1,
-        "lowContrast": 0,
-        "decoColors": 42,
-        "truncated": 0,
-        "formatDates": 0,
-        "source": {
-          "relDays": 0,
-          "vague": 0,
-          "bareNumbers": 0
-        }
+        "formatDates": 0
       }
     }
   },
-  "clarityInfo": [
-    {
-      "view": "pc",
-      "screen": "forecast",
-      "graphable": 1,
-      "lowContrast": 3,
-      "decoColors": 6
-    },
-    {
-      "view": "pc",
-      "screen": "up",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc",
-      "screen": "down",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc",
-      "screen": "stock",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc",
-      "screen": "race",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc",
-      "screen": "scores",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "pc",
-      "screen": "evolution",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc",
-      "screen": "records",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc",
-      "screen": "status",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "pc",
-      "screen": "game",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 42
-    },
-    {
-      "view": "mobile",
-      "screen": "forecast",
-      "graphable": 1,
-      "lowContrast": 3,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile",
-      "screen": "up",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile",
-      "screen": "down",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile",
-      "screen": "stock",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile",
-      "screen": "race",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile",
-      "screen": "scores",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile",
-      "screen": "evolution",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile",
-      "screen": "records",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile",
-      "screen": "status",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile",
-      "screen": "game",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 42
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "forecast",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "up",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "down",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "stock",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "race",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "scores",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "evolution",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "records",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "status",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile-dark",
-      "screen": "game",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 42
-    },
-    {
-      "view": "pc-200",
-      "screen": "forecast",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc-200",
-      "screen": "up",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc-200",
-      "screen": "down",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc-200",
-      "screen": "stock",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "pc-200",
-      "screen": "race",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc-200",
-      "screen": "scores",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "pc-200",
-      "screen": "evolution",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc-200",
-      "screen": "records",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "pc-200",
-      "screen": "status",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "pc-200",
-      "screen": "game",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 42
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "forecast",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "up",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "down",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "stock",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 6
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "race",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "scores",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "evolution",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "records",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 0
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "status",
-      "graphable": 0,
-      "lowContrast": 0,
-      "decoColors": 1
-    },
-    {
-      "view": "mobile-dark-200",
-      "screen": "game",
-      "graphable": 1,
-      "lowContrast": 0,
-      "decoColors": 42
-    }
-  ],
   "checks": [
     {
-      "name": "pc 내일(2차): 큰 제목 「지난 예측」·예측 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)",
+      "name": "pc 52곳: 제목 「업종 대표 52종목」 = 판의 묶음 이름 · 「10월 2일(금) 15:30 종가 · 한국거래소 정규장」 · 아래 탭 52곳·일정(52곳 눌림)",
       "ok": true,
       "detail": {
-        "title": "지난 예측",
-        "when": "10월 2일 금요일",
-        "dots": 52,
-        "up": 12,
-        "down": 40,
-        "half": 28,
-        "story": "off",
-        "cap": 0,
-        "progress": 0,
-        "ctl": 0,
-        "links": 0,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "say": "나머지 40종목은 내릴 쪽입니다.\n속이 빈 28개는 거의 반반입니다.",
-        "visible": "visible",
-        "tools": [
-          "가",
-          ""
+        "title": "업종 대표 52종목",
+        "when": "10월 2일(금) 15:30 종가 · 한국거래소 정규장",
+        "late": [
+          "삼성바이오로직스: 10월 1일(목) 종가 · 10월 2일(금) 종가는 아직 받지 못함"
         ],
+        "strip": "코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11% 10월 2일(금) 15:30 KST 종가",
+        "cards": 52,
+        "active": "home",
         "tabs": [
-          "내일",
-          "게임",
-          "성적"
+          "52곳",
+          "일정"
         ]
       }
     },
     {
-      "name": "pc 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림",
+      "name": "pc 52곳: 늦은 종가 표시 1줄 = 판의 늦은 회사 1곳",
       "ok": true,
-      "detail": null
+      "detail": [
+        "삼성바이오로직스: 10월 1일(목) 종가 · 10월 2일(금) 종가는 아직 받지 못함"
+      ]
     },
     {
-      "name": "pc 내일: 「업종 대표 52종목 · 9월 17일부터」 · 원 밑 두 문 「▲ 오를 쪽 12곳 ›」「▼ 내릴 쪽 40곳 ›」(앞 6곳 이름 · 누르면 그 쪽) · 「이 52곳은 어떻게 골랐나」(1줄) · 긴 목록·이름표 없음",
-      "ok": true,
-      "detail": {
-        "g": {
-          "uni": "업종 대표 52종목 · 9월 17일부터",
-          "uniId": "u1-sector52",
-          "doors": [
-            {
-              "side": "up",
-              "href": "#/up",
-              "count": "12",
-              "head": "▲ 오를 쪽 12곳 ›",
-              "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
-            },
-            {
-              "side": "down",
-              "href": "#/down",
-              "count": "40",
-              "head": "▼ 내릴 쪽 40곳 ›",
-              "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
-            }
-          ],
-          "chips": 0,
-          "rows": 0,
-          "how": "이 52곳은 어떻게 골랐나",
-          "howN": 1
-        },
-        "want": [
-          {
-            "side": "up",
-            "href": "#/up",
-            "count": "12",
-            "head": "▲ 오를 쪽 12곳 ›",
-            "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
-          },
-          {
-            "side": "down",
-            "href": "#/down",
-            "count": "40",
-            "head": "▼ 내릴 쪽 40곳 ›",
-            "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
-          }
-        ]
-      }
-    },
-    {
-      "name": "pc 내일: 맨 위 「튼튼한 회사 52곳」 미리 보기 — 「10월 6일(화)부터」 · 이름표 52개(새 입력 순서 · 「새」 28개 = 새로 들어온 28곳) · 「이 52곳은 어떻게 골랐나」(5줄) · 「빠지는 28곳」 · 링크·전망 표시 0 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "first": true,
-        "id": "u2-q52-v2-2026-10-04",
-        "tag": "10월 6일(화)부터",
-        "h": "튼튼한 회사 52곳",
-        "when": "10월 6일(화) 장이 끝난 뒤부터 이 52곳이 10월 7일(수)에 오를지 내릴지를 적습니다. 그때부터 첫 화면이 이 52곳으로 바뀝니다.",
-        "codes": 52,
-        "names": 52,
-        "news": 28,
-        "newCodes": 28,
-        "key": "새 = 새로 들어온 28곳 · 나머지 24곳은 지금의 업종 대표 52종목에서 이어짐",
-        "sums": [
-          "이 52곳은 어떻게 골랐나",
-          "빠지는 28곳"
-        ],
-        "howN": 5,
-        "out": "LG에너지솔루션 · 현대차 · 삼성생명보험 · 한화에어로스페이스 · 두산에너빌리티 · HD현대중공업 · LG",
-        "links": 0,
-        "marks": 0,
-        "cut": 0
-      }
-    },
-    {
-      "name": "pc 내일(정리): 아래는 「지난 3번의 성적」과 계산 기준일만(오를 쪽·내릴 쪽 긴 목록은 두 쪽으로 옮김) · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
-      "ok": true,
-      "detail": {
-        "rows": 0,
-        "pills": 0,
-        "more": null,
-        "heads": [
-          "지난 3번의 성적"
-        ],
-        "hollow": true,
-        "solid": true,
-        "foot": "10월 1일 목요일 종가로 계산"
-      }
-    },
-    {
-      "name": "pc 내일: 「왜 그렇게 봤나」에 그 종목 출목표(동그라미 53개 = 빨강 25 + 파랑 28 · 「요즘은 내림 쪽」)",
-      "ok": true,
-      "detail": {
-        "wr": {
-          "beads": 53,
-          "up": 25,
-          "story": "요즘은 내림 쪽"
-        },
-        "want": {
-          "cells": 53,
-          "up": 25,
-          "story": "요즘은 내림 쪽"
-        }
-      }
-    },
-    {
-      "name": "pc 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(0.38 ≥ 0.1 ≥ 0) · 36가지 점수표가 높은 순(36줄)",
-      "ok": true,
-      "detail": {
-        "h": "왜 오를 쪽으로 봤나 · HD현대중공업",
-        "code": "329180",
-        "firstCode": "329180",
-        "vals": [
-          0.38,
-          0.1,
-          0
-        ],
-        "n36": 36,
-        "sc": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      }
-    },
-    {
-      "name": "pc 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 72/155) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
-      "ok": true,
-      "detail": {
-        "card": {
-          "big": "46%",
-          "days": [
-            "9월 30일 27/52",
-            "10월 1일 19/52",
-            "10월 2일 26/51"
-          ],
-          "honest": "155번 가운데 72번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
-        },
-        "want": "155번 가운데 72번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다.",
-        "wantDays": [
-          "9월 30일 27/52",
-          "10월 1일 19/52",
-          "10월 2일 26/51"
-        ]
-      }
-    },
-    {
-      "name": "pc 내일(내일만): 전망 표시(원 점 52 · 가운데 숫자 · 줄 · 알약)는 모두 내일 · 1만원 비교 메뉴 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 54
-        }
-      }
-    },
-    {
-      "name": "pc 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
-      "ok": true,
-      "detail": {
-        "roll": "playing",
-        "on": 7,
-        "prefix": true,
-        "lastCode": "047050",
-        "name": "포스코인터내셔널",
-        "side": "오를 쪽 · 거의 반반",
-        "numShown": false,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "hiddenOff": true,
-        "minOpacity": 0,
-        "story": "off",
-        "ctl": 0
-      }
-    },
-    {
-      "name": "pc 내일: 52개가 다 나오면 가운데는 2차 그대로(「12」 · 「52종목 중 오를 쪽」) · 52점 모두 보임",
-      "ok": true,
-      "detail": {
-        "roll": "done",
-        "on": 52,
-        "prefix": true,
-        "lastCode": "010170",
-        "name": "대한광통신",
-        "side": "내릴 쪽 · 확률 57%",
-        "numShown": true,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "hiddenOff": true,
-        "minOpacity": 1,
-        "story": "off",
-        "ctl": 0
-      }
-    },
-    {
-      "name": "pc 내일: 다 나온 뒤 점을 누르면 그 회사 이름(「코웨이」)이 뜨고 「왜 그렇게 봤나」도 그 종목으로 · 2.5초 뒤 숫자로 돌아감",
-      "ok": true,
-      "detail": {
-        "tap": {
-          "roll": "tap",
-          "on": 52,
-          "prefix": true,
-          "lastCode": "010170",
-          "name": "코웨이",
-          "side": "내릴 쪽 · 거의 반반",
-          "numShown": false,
-          "num": "12",
-          "of": "52종목 중 오를 쪽",
-          "hiddenOff": true,
-          "minOpacity": 1,
-          "story": "off",
-          "ctl": 0,
-          "whyCode": "021240"
-        },
-        "back": "done"
-      }
-    },
-    {
-      "name": "pc 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임",
-      "ok": true,
-      "detail": {
-        "roll": "done",
-        "on": 52,
-        "prefix": true,
-        "lastCode": "010170",
-        "name": "",
-        "side": "",
-        "numShown": true,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "hiddenOff": true,
-        "minOpacity": 1,
-        "story": "off",
-        "ctl": 0,
-        "visible": "visible"
-      }
-    },
-    {
-      "name": "pc 내일: 키보드 초점 표시(테두리 3px)",
-      "ok": true,
-      "detail": {
-        "style": "solid",
-        "width": 3
-      }
-    },
-    {
-      "name": "pc 터치 영역 44px 미만 없음",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "pc 오를 쪽 쪽: 「오를 쪽 12곳」 · 탭 둘(개수) · 카드 12장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "bad": [],
-        "tabs": [
-          [
-            "#/up",
-            "▲ 오를 쪽 12곳",
-            "page"
-          ],
-          [
-            "#/down",
-            "▼ 내릴 쪽 40곳",
-            null
-          ]
-        ],
-        "market": 5,
-        "cut": 0
-      }
-    },
-    {
-      "name": "pc 오를 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 24
-        }
-      }
-    },
-    {
-      "name": "pc 내릴 쪽 쪽: 「내릴 쪽 40곳」 · 탭 둘(개수) · 카드 40장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "bad": [],
-        "tabs": [
-          [
-            "#/up",
-            "▲ 오를 쪽 12곳",
-            null
-          ],
-          [
-            "#/down",
-            "▼ 내릴 쪽 40곳",
-            "page"
-          ]
-        ],
-        "market": 5,
-        "cut": 0
-      }
-    },
-    {
-      "name": "pc 내릴 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 80
-        }
-      }
-    },
-    {
-      "name": "pc 시장 띠(본문 맨 위): 코스피·코스닥 값·등락·기준 시각",
+      "name": "pc 52곳: 시장 띠(코스피·코스닥 · 기준 날짜)",
       "ok": true,
       "detail": {
         "strip": "코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11% 10월 2일(금) 15:30 KST 종가"
       }
     },
     {
-      "name": "pc 종목 상세: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "name": "pc 52곳: 카드 52장 · 판 차례 그대로 · 이름·종가·날짜·출목표 동그라미 수(빨강 포함)·회사 화면 링크가 판과 같음",
       "ok": true,
       "detail": {
-        "hl": 1,
-        "first": {
-          "top": 161,
-          "bottom": 195,
-          "firstChild": true
+        "mism": []
+      }
+    },
+    {
+      "name": "pc 52곳: 카드마다 일정·공시 줄 수(각 2줄까지) = 일정표",
+      "ok": true,
+      "detail": {
+        "agMis": []
+      }
+    },
+    {
+      "name": "pc 52곳: 바뀔 52곳 미리 보기 「튼튼한 회사 52곳으로 바뀝니다」 · 10월 6일(화) 16:00 · 이름 칸은 접혀 있다가 열면 52곳 · 「새」 28 = 28",
+      "ok": true,
+      "detail": {
+        "nx": {
+          "h": "튼튼한 회사 52곳으로 바뀝니다",
+          "when": "10월 6일(화) 16:00 매일 실행 때 바뀝니다 · 새 회사들의 그날 종가를 모두 받아야 바뀌고, 못 받으면 그다음 거래일에 다시 합니다",
+          "closed": true,
+          "first": true
+        },
+        "chips": {
+          "n": 52,
+          "news": 28
         }
       }
     },
     {
-      "name": "pc 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "166,669원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
-      }
-    },
-    {
-      "name": "pc 종목 상세: Esc 로 출처 칸 닫힘",
+      "name": "pc 52곳: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "166,669원",
-        "last": "166,669원 (+0.40%)"
-      }
-    },
-    {
-      "name": "pc 상세: 헤드라인에 종목 이름·날짜·원 단위",
-      "ok": true,
-      "detail": {
-        "detailFigure": "166,669원"
-      }
-    },
-    {
-      "name": "pc 상세: 그래프가 첫 화면 안(스크롤 전)",
-      "ok": true,
-      "detail": {
-        "chartTop": 306.59375
-      }
-    },
-    {
-      "name": "pc 상세: 실제선·전망선·띠·경계선·출발점",
-      "ok": true,
-      "detail": {
-        "actual": true,
-        "today": true,
-        "band": true,
-        "boundary": true,
-        "anchor": true
-      }
-    },
-    {
-      "name": "pc 상세: 세 겹 띠(5~95·10~90·25~75%)",
+      "name": "pc 52곳 → 누름 → 회사 화면 #/stock/009150",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 상세: 가격 눈금에 원 단위",
+      "name": "pc 회사 삼성전자: 이름 · 종가 276,000원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 40개 · 일정 1·공시 2줄 = 일정표",
       "ok": true,
       "detail": {
+        "title": "삼성전자",
+        "price": "276,000원",
+        "date": "10월 2일(금) 15:30 종가",
         "ticks": [
-          "17.0만원",
-          "18.0만원",
-          "09/02",
-          "09/04",
-          "09/08"
-        ]
+          "207,000원",
+          "251,500원",
+          "296,000원",
+          "07/07",
+          "08/20",
+          "10/02"
+        ],
+        "path": 60,
+        "info": [
+          "362,500원",
+          "79,700원",
+          "69%",
+          "▲ +5.75%",
+          "▲ +252.94%"
+        ],
+        "ev": 1,
+        "ds": 2,
+        "beads": 40
       }
     },
     {
-      "name": "pc IBM Plex Sans KR 글씨체 적용",
+      "name": "pc 회사 삼성전자: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
+      "ok": true,
+      "detail": {
+        "news": 6,
+        "flows": 5
+      }
+    },
+    {
+      "name": "pc 회사 삼성전자(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 상세: 그래프 위 마우스 말풍선",
+      "name": "pc 회사 삼성바이오로직스: 이름 · 종가 1,429,000원 · 「10월 1일(목) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/01 · 1년 최고·최저 · 출목표 23개 · 일정 3·공시 9줄 = 일정표",
+      "ok": true,
+      "detail": {
+        "title": "삼성바이오로직스",
+        "price": "1,429,000원",
+        "date": "10월 1일(목) 15:30 종가",
+        "ticks": [
+          "1,325,000원",
+          "1,467,000원",
+          "1,609,000원",
+          "07/06",
+          "08/19",
+          "10/01"
+        ],
+        "path": 60,
+        "info": [
+          "1,965,000원",
+          "1,243,000원",
+          "26%",
+          "▼ −5.86%",
+          "▼ −6.28%"
+        ],
+        "ev": 3,
+        "ds": 9,
+        "beads": 23
+      }
+    },
+    {
+      "name": "pc 회사 삼성바이오로직스: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
+      "ok": true,
+      "detail": {
+        "news": 6,
+        "flows": 5
+      }
+    },
+    {
+      "name": "pc 회사 삼성바이오로직스(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 상세(내일만): 미래 날짜는 내일 하나 · 전망 표시(점·띠·숫자)는 모두 내일 · 대표 시나리오·여러 날 CSV 없음",
+      "name": "pc 회사 제일기획: 이름 · 종가 18,700원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 17개 · 일정 0·공시 5줄 = 일정표",
       "ok": true,
       "detail": {
-        "futureChips": 1,
-        "fm": {
-          "other": 0,
-          "tomorrow": 14
-        }
+        "title": "제일기획",
+        "price": "18,700원",
+        "date": "10월 2일(금) 15:30 종가",
+        "ticks": [
+          "17,300원",
+          "18,645원",
+          "19,990원",
+          "07/07",
+          "08/20",
+          "10/02"
+        ],
+        "path": 60,
+        "info": [
+          "23,150원",
+          "17,300원",
+          "24%",
+          "▼ −2.50%",
+          "▼ −6.97%"
+        ],
+        "ev": 0,
+        "ds": 5,
+        "beads": 17
       }
     },
     {
-      "name": "pc 상세: 미래 날짜 눌러 설명 열림(내일)",
+      "name": "pc 회사 제일기획: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
       "ok": true,
       "detail": {
-        "cursor": "10월 2일(금) · 전망",
-        "explainHead": "10월 2일(금) · 전망"
+        "news": 6,
+        "flows": 5
       }
     },
     {
-      "name": "pc 상세: 선택 날짜 분포 상자",
+      "name": "pc 회사 제일기획(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 상세: 날짜 설명(한 줄 · 기여 막대 · 미확보 · 출처)",
+      "name": "pc 일정: 시장 5건 · 회사·업종 30건(12날) · 예고 공시 34건 · ★★★ 공시 27건 = 일정표 · 아래 탭 「일정」 눌림",
       "ok": true,
       "detail": {
-        "contrib": 4,
-        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
-      }
-    },
-    {
-      "name": "pc 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
-      "ok": true,
-      "detail": {
-        "after": "10월 2일(금) · 전망",
-        "sameSvg": true
-      }
-    },
-    {
-      "name": "pc 상세: 중요 일정에서 정지·확인 대기",
-      "ok": true,
-      "detail": {
-        "text": "10월 2일(금) 중요 일정 1건"
-      }
-    },
-    {
-      "name": "pc 상세: 확인 뒤 계속 재생",
-      "ok": true,
-      "detail": {
-        "resumed": "10월 2일(금) · 전망"
-      }
-    },
-    {
-      "name": "pc 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 상세: JSON 내려받기(blob · CSP 아래)",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_105560_20261001_detail.json"
-      }
-    },
-    {
-      "name": "pc 상세: 종목 정보(1년 범위 막대 · 기간별 수익률 가로 막대 5 · 나머지 12칸은 눌러야 열림)",
-      "ok": true,
-      "detail": {
-        "infoBars": 5,
-        "infoKv": 12
-      }
-    },
-    {
-      "name": "pc 상세: 출목표 칸(동그라미 35개 · 「오르다가 요즘 꺾임」 · 읽는 법) · 일정 0줄 · 공시 4줄(별 = agenda.json) · 시장 일정 5줄 · 「출목표와 별(★) 읽는 법」 · 뒤로 「‹ 오를 쪽」",
-      "ok": true,
-      "detail": {
-        "dv": {
-          "beads": 35,
-          "up": 17,
-          "story": "오르다가 요즘 꺾임",
-          "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림\n막대 길이 = 동그라미 개수",
-          "ev": 0,
-          "ds": 4,
+        "a": {
           "market": 5,
-          "how": "출목표와 별(★) 읽는 법",
-          "back": "‹ 오를 쪽"
+          "company": 30,
+          "notices": 34,
+          "big": 27,
+          "days": 12,
+          "active": "agenda"
         },
         "want": {
-          "beads": 35,
-          "ev": 0,
-          "ds": 4
+          "market": 5,
+          "company": 30,
+          "notices": 34,
+          "big": 27
         }
       }
     },
     {
-      "name": "pc 상세: 수급·기사·공시 칸(눌러서 열림 · 전망 숫자에 넣지 않음 · 외국인·기관·개인 표 · 기사 제목)",
-      "ok": true,
-      "detail": {
-        "ctxRows": 5,
-        "ctxNews": 6
-      }
-    },
-    {
-      "name": "pc 상세: 연쇄 지도(눌러서 열림) 52노드·9묶음 호·1~5차·연결선",
-      "ok": true,
-      "detail": {
-        "nodes": 52,
-        "arcs": 9,
-        "groupsN": 9,
-        "orders": 5,
-        "links": 28
-      }
-    },
-    {
-      "name": "pc 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
-      "ok": true,
-      "detail": {
-        "shockBefore": "−3.54%",
-        "shockAfter": "+7.08%"
-      }
-    },
-    {
-      "name": "pc 상세: 시장 통로·직접 통로 설명",
-      "ok": true,
-      "detail": {
-        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
-      }
-    },
-    {
-      "name": "pc 상세: 누적(1~5차 합) 칸 추가",
+      "name": "pc 일정: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 상세: 파급 재생 1차부터 차례로 켜짐",
+      "name": "pc 옛 주소 #/forecast → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "litEarly": 1,
-        "litLate": 15,
-        "stripLit": 5
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
+      "name": "pc 옛 주소 #/up → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "hashBefore": "#/stock/105560",
-        "hashAfter": "#/stock/010170"
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 상세: 이동한 종목에서도 연쇄 지도 다시 그림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 글씨 200% 에서도 가로 넘침 없음",
+      "name": "pc 옛 주소 #/down → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "fontSize": "200%",
-        "overflow200": 0
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 「가」를 한 번 더 누르면 200% 다음 100%",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 1만원 비교(내일만): 꺼 둠 한 줄 · 52선 없음",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "name": "pc 옛 주소 #/scores → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "hl": 1,
-        "first": {
-          "top": 113,
-          "bottom": 147,
-          "firstChild": true
-        }
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
+      "name": "pc 옛 주소 #/race → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "figure": "26종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 4종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 성적: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
+      "name": "pc 옛 주소 #/evolution → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "figure": "26종목",
-        "last": "26종목"
+        "hash": "#/",
+        "cards": 52
       }
     },
     {
-      "name": "pc 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 성적 · 왜 틀렸나: 네 통 4개 · 합 100건 = 틀린 100건 = 채점 자료 100건 = 목록 100줄",
+      "name": "pc 옛 주소 #/status → 처음 화면(#/ · 카드 52장)",
       "ok": true,
       "detail": {
-        "lead": "틀린 100건 중 76건은 「하락」이라 했는데 오르거나 그대로였음",
-        "binVals": [
-          "56건",
-          "20건",
-          "1건",
-          "23건"
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "pc 옛 주소 #/records → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "pc 옛 주소 #/game → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "pc 무결성: 「읽은 파일 6개 모두 판 목록의 SHA-256 과 같음」",
+      "ok": true,
+      "detail": {
+        "integ": "읽은 파일 6개 모두 판 목록의 SHA-256 과 같음"
+      }
+    },
+    {
+      "name": "pc 글씨 단추: 125% 로 커짐",
+      "ok": true,
+      "detail": {
+        "fs1": [
+          "125%",
+          "1"
+        ]
+      }
+    },
+    {
+      "name": "pc 콘솔 오류 0 · 요청 실패 0",
+      "ok": true,
+      "detail": {
+        "consoleErrors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "mobile 52곳: 제목 「업종 대표 52종목」 = 판의 묶음 이름 · 「10월 2일(금) 15:30 종가 · 한국거래소 정규장」 · 아래 탭 52곳·일정(52곳 눌림)",
+      "ok": true,
+      "detail": {
+        "title": "업종 대표 52종목",
+        "when": "10월 2일(금) 15:30 종가 · 한국거래소 정규장",
+        "late": [
+          "삼성바이오로직스: 10월 1일(목) 종가 · 10월 2일(금) 종가는 아직 받지 못함"
         ],
-        "wrongAll": 100,
-        "listRows": 100
-      }
-    },
-    {
-      "name": "pc 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
-      "ok": true,
-      "detail": {
-        "top": 244
-      }
-    },
-    {
-      "name": "pc 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 112,
-          "bottom": 146,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "pc 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "0.51%",
-        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 156칸을 첫날부터 10월 1일(목)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
-      }
-    },
-    {
-      "name": "pc 진화: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "0.51%",
-        "last": "지금까지 +0.51%"
-      }
-    },
-    {
-      "name": "pc 진화: 질문·결론 낱말·판정일·막힘",
-      "ok": true,
-      "detail": {
-        "word": "아직입니다",
-        "blocker": "no_candidates"
-      }
-    },
-    {
-      "name": "pc 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
-      "ok": true,
-      "detail": {
-        "dots": 3,
-        "daily": 3,
-        "tests": 0,
-        "changes": 0,
-        "builds": 4,
-        "judge": 0
-      }
-    },
-    {
-      "name": "pc 진화: 그림 글자가 화면에서 11px 이상",
-      "ok": true,
-      "detail": {
-        "tickMin": 11.5
-      }
-    },
-    {
-      "name": "pc 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
-      "ok": true,
-      "detail": {
-        "dayRows": 3,
-        "days": 3,
-        "beats": 3,
-        "openedH4": 3
-      }
-    },
-    {
-      "name": "pc 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
-      "ok": true,
-      "detail": {
-        "constructions": 18,
-        "check": true
-      }
-    },
-    {
-      "name": "pc 진화 전문가용: 운영 식·핵심 규칙·관문·실전 관찰 최소 채점일",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 자료 상태: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 113,
-          "bottom": 147,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "pc 자료 상태: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "52종목",
-        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n10월 1일(목) 18:53 KST\n받은 곳\n네이버 증권 분봉 원문"
-      }
-    },
-    {
-      "name": "pc 자료 상태: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 자료 상태: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": false,
-      "detail": {
-        "figure": "52종목",
-        "last": "51종목"
-      }
-    },
-    {
-      "name": "pc 자료 상태: 36요인 막대·칸(눌러야 열림) · 달력 · 검사 증거",
-      "ok": true,
-      "detail": {
-        "tiles": 36,
-        "days": 10
-      }
-    },
-    {
-      "name": "pc 자료 상태: 예약 실행 확인·사이트 배포를 사실대로",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 기록: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 113,
-          "bottom": 147,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "pc 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "266건",
-        "src": "이 숫자\n기록 장부 색인의 10월 2일(금) 종류별 건수 합(수집 113건 · 채점 51건 · 원인 분석 52건 · 요인 36건 · 실험 1건 · 운영 13건)\n기준 시각\n10월 2일(금) 23:39 KST 에 만든"
-      }
-    },
-    {
-      "name": "pc 기록: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "266건",
-        "last": "266건"
-      }
-    },
-    {
-      "name": "pc 기록: 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 · 'null' 없음",
-      "ok": true,
-      "detail": {
-        "typeBtns": 8,
-        "expRows": 1,
-        "expExpected": 1,
-        "shownDate": "2026-10-02",
-        "dl": 2
-      }
-    },
-    {
-      "name": "pc 기록: 요인 기록 36행 단위(요인 기록이 있는 마지막 날) · 결과 막대",
-      "ok": true,
-      "detail": {
-        "factorRecordRows": 36,
-        "factorDate": "2026-10-02"
-      }
-    },
-    {
-      "name": "pc 기록: CSV 내려받기 파일명",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_factor_2026-10-02_filtered.csv"
-      }
-    },
-    {
-      "name": "pc 기록: 일일 보고 여섯 문장(눌러야 열림 · 장부 원문 그대로)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)",
-      "ok": true,
-      "detail": {
-        "bg": "rgb(242, 242, 247)",
-        "plate": 1,
-        "edges": 6,
-        "shadow": 1,
-        "halo": 1,
-        "bandFill": "url(\"#cfyz2wu-band-inner\")",
-        "todayStroke": "rgb(47, 93, 138)",
-        "todayDir": "down",
-        "up": "#A63E2C",
-        "down": "#2F5D8A",
-        "transforms": 0
-      }
-    },
-    {
-      "name": "pc 주요 메뉴(아래 탭) 3개(내일 · 게임 · 성적)",
-      "ok": true,
-      "detail": {
-        "nav": 3
-      }
-    },
-    {
-      "name": "pc 가로 스크롤 없음",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "pc 콘솔 오류 0",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "pc 실패한 요청 0",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "mobile 내일(2차): 큰 제목 「지난 예측」·예측 날짜 · 52점 원(오를 12·내릴 40·속 빈 28) · 가운데 「12」 · 「52종목 중 오를 쪽」 · 두 줄 · 목록이 처음부터 보임 · 글상자·진행 점·건너뛰기·아래 링크 없음 · 맨 위 단추 둘 · 아래 탭 셋(내일 · 게임 · 성적 — 2026-10-02 05:58 사장님 「aaa7377에 연결해야 한다」)",
-      "ok": true,
-      "detail": {
-        "title": "지난 예측",
-        "when": "10월 2일 금요일",
-        "dots": 52,
-        "up": 12,
-        "down": 40,
-        "half": 28,
-        "story": "off",
-        "cap": 0,
-        "progress": 0,
-        "ctl": 0,
-        "links": 0,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "say": "나머지 40종목은 내릴 쪽입니다.\n속이 빈 28개는 거의 반반입니다.",
-        "visible": "visible",
-        "tools": [
-          "가",
-          ""
-        ],
+        "strip": "코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11% 10월 2일(금) 15:30 KST 종가",
+        "cards": 52,
+        "active": "home",
         "tabs": [
-          "내일",
-          "게임",
-          "성적"
+          "52곳",
+          "일정"
         ]
       }
     },
     {
-      "name": "mobile 내일: 원은 12시부터 시계 방향으로 분명히 오름 → 오름이지만 반반 → 내림이지만 반반 → 분명히 내림",
+      "name": "mobile 52곳: 늦은 종가 표시 1줄 = 판의 늦은 회사 1곳",
       "ok": true,
-      "detail": null
+      "detail": [
+        "삼성바이오로직스: 10월 1일(목) 종가 · 10월 2일(금) 종가는 아직 받지 못함"
+      ]
     },
     {
-      "name": "mobile 내일: 「업종 대표 52종목 · 9월 17일부터」 · 원 밑 두 문 「▲ 오를 쪽 12곳 ›」「▼ 내릴 쪽 40곳 ›」(앞 6곳 이름 · 누르면 그 쪽) · 「이 52곳은 어떻게 골랐나」(1줄) · 긴 목록·이름표 없음",
-      "ok": true,
-      "detail": {
-        "g": {
-          "uni": "업종 대표 52종목 · 9월 17일부터",
-          "uniId": "u1-sector52",
-          "doors": [
-            {
-              "side": "up",
-              "href": "#/up",
-              "count": "12",
-              "head": "▲ 오를 쪽 12곳 ›",
-              "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
-            },
-            {
-              "side": "down",
-              "href": "#/down",
-              "count": "40",
-              "head": "▼ 내릴 쪽 40곳 ›",
-              "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
-            }
-          ],
-          "chips": 0,
-          "rows": 0,
-          "how": "이 52곳은 어떻게 골랐나",
-          "howN": 1
-        },
-        "want": [
-          {
-            "side": "up",
-            "href": "#/up",
-            "count": "12",
-            "head": "▲ 오를 쪽 12곳 ›",
-            "names": "KB금융 · HD현대중공업 · 영원무역 · KT&G · 삼성전기 · 제일기획 외 6곳"
-          },
-          {
-            "side": "down",
-            "href": "#/down",
-            "count": "40",
-            "head": "▼ 내릴 쪽 40곳 ›",
-            "names": "대한광통신 · 실리콘투 · 고려아연 · 삼양식품 · 현대건설 · HLB 외 34곳"
-          }
-        ]
-      }
-    },
-    {
-      "name": "mobile 내일: 맨 위 「튼튼한 회사 52곳」 미리 보기 — 「10월 6일(화)부터」 · 이름표 52개(새 입력 순서 · 「새」 28개 = 새로 들어온 28곳) · 「이 52곳은 어떻게 골랐나」(5줄) · 「빠지는 28곳」 · 링크·전망 표시 0 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "first": true,
-        "id": "u2-q52-v2-2026-10-04",
-        "tag": "10월 6일(화)부터",
-        "h": "튼튼한 회사 52곳",
-        "when": "10월 6일(화) 장이 끝난 뒤부터 이 52곳이 10월 7일(수)에 오를지 내릴지를 적습니다. 그때부터 첫 화면이 이 52곳으로 바뀝니다.",
-        "codes": 52,
-        "names": 52,
-        "news": 28,
-        "newCodes": 28,
-        "key": "새 = 새로 들어온 28곳 · 나머지 24곳은 지금의 업종 대표 52종목에서 이어짐",
-        "sums": [
-          "이 52곳은 어떻게 골랐나",
-          "빠지는 28곳"
-        ],
-        "howN": 5,
-        "out": "LG에너지솔루션 · 현대차 · 삼성생명보험 · 한화에어로스페이스 · 두산에너빌리티 · HD현대중공업 · LG",
-        "links": 0,
-        "marks": 0,
-        "cut": 0
-      }
-    },
-    {
-      "name": "mobile 내일(정리): 아래는 「지난 3번의 성적」과 계산 기준일만(오를 쪽·내릴 쪽 긴 목록은 두 쪽으로 옮김) · 속 빈 원 r 6.2 · 속 찬 원 r 7.4 · 「10월 1일 목요일 종가로 계산」",
-      "ok": true,
-      "detail": {
-        "rows": 0,
-        "pills": 0,
-        "more": null,
-        "heads": [
-          "지난 3번의 성적"
-        ],
-        "hollow": true,
-        "solid": true,
-        "foot": "10월 1일 목요일 종가로 계산"
-      }
-    },
-    {
-      "name": "mobile 내일: 「왜 그렇게 봤나」에 그 종목 출목표(동그라미 53개 = 빨강 25 + 파랑 28 · 「요즘은 내림 쪽」)",
-      "ok": true,
-      "detail": {
-        "wr": {
-          "beads": 53,
-          "up": 25,
-          "story": "요즘은 내림 쪽"
-        },
-        "want": {
-          "cells": 53,
-          "up": 25,
-          "story": "요즘은 내림 쪽"
-        }
-      }
-    },
-    {
-      "name": "mobile 내일: 원 아래 「왜 그렇게 봤나」 — 12시 첫 점 종목의 하루 기대 몫이 높은 순(0.38 ≥ 0.1 ≥ 0) · 36가지 점수표가 높은 순(36줄)",
-      "ok": true,
-      "detail": {
-        "h": "왜 오를 쪽으로 봤나 · HD현대중공업",
-        "code": "329180",
-        "firstCode": "329180",
-        "vals": [
-          0.38,
-          0.1,
-          0
-        ],
-        "n36": 36,
-        "sc": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      }
-    },
-    {
-      "name": "mobile 내일: 지난 3번의 성적 = 채점 자료의 1거래일 방향(마지막 3날 · 72/155) · 막대 이름 「9월 29일 35/52」 모양 · 반반 문장은 40~60%일 때만",
-      "ok": true,
-      "detail": {
-        "card": {
-          "big": "46%",
-          "days": [
-            "9월 30일 27/52",
-            "10월 1일 19/52",
-            "10월 2일 26/51"
-          ],
-          "honest": "155번 가운데 72번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다."
-        },
-        "want": "155번 가운데 72번 맞혔습니다. 하루 방향은 아직 반반에 가깝습니다.",
-        "wantDays": [
-          "9월 30일 27/52",
-          "10월 1일 19/52",
-          "10월 2일 26/51"
-        ]
-      }
-    },
-    {
-      "name": "mobile 내일(내일만): 전망 표시(원 점 52 · 가운데 숫자 · 줄 · 알약)는 모두 내일 · 1만원 비교 메뉴 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 54
-        }
-      }
-    },
-    {
-      "name": "mobile 내일: 점이 12시부터 하나씩 천천히 나옴(3초에 7개 · 안 나온 점은 안 보임) · 가운데에 막 나온 점의 회사 이름 「포스코인터내셔널」 · 「오를 쪽 · 거의 반반」 · 건너뛰기 단추 없음",
-      "ok": true,
-      "detail": {
-        "roll": "playing",
-        "on": 7,
-        "prefix": true,
-        "lastCode": "047050",
-        "name": "포스코인터내셔널",
-        "side": "오를 쪽 · 거의 반반",
-        "numShown": false,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "hiddenOff": true,
-        "minOpacity": 0,
-        "story": "off",
-        "ctl": 0
-      }
-    },
-    {
-      "name": "mobile 내일: 움직임 줄이기 설정이면 점이 하나씩 나오지 않고 처음부터 52점 · 숫자가 다 보임",
-      "ok": true,
-      "detail": {
-        "roll": "done",
-        "on": 52,
-        "prefix": true,
-        "lastCode": "010170",
-        "name": "",
-        "side": "",
-        "numShown": true,
-        "num": "12",
-        "of": "52종목 중 오를 쪽",
-        "hiddenOff": true,
-        "minOpacity": 1,
-        "story": "off",
-        "ctl": 0,
-        "visible": "visible"
-      }
-    },
-    {
-      "name": "mobile 내일: 키보드 초점 표시(테두리 3px)",
-      "ok": true,
-      "detail": {
-        "style": "solid",
-        "width": 3
-      }
-    },
-    {
-      "name": "mobile 터치 영역 44px 미만 없음",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "mobile 오를 쪽 쪽: 「오를 쪽 12곳」 · 탭 둘(개수) · 카드 12장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "bad": [],
-        "tabs": [
-          [
-            "#/up",
-            "▲ 오를 쪽 12곳",
-            "page"
-          ],
-          [
-            "#/down",
-            "▼ 내릴 쪽 40곳",
-            null
-          ]
-        ],
-        "market": 5,
-        "cut": 0
-      }
-    },
-    {
-      "name": "mobile 오를 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 24
-        }
-      }
-    },
-    {
-      "name": "mobile 내릴 쪽 쪽: 「내릴 쪽 40곳」 · 탭 둘(개수) · 카드 40장(첫 화면 문과 같은 순서) · 카드마다 확률(2026-10-02 표시) · 출목표 동그라미·흐름 = road.js 셈 · 일정·공시 별 = agenda.json · 시장 일정 5줄 · 잘린 이름 0",
-      "ok": true,
-      "detail": {
-        "bad": [],
-        "tabs": [
-          [
-            "#/up",
-            "▲ 오를 쪽 12곳",
-            null
-          ],
-          [
-            "#/down",
-            "▼ 내릴 쪽 40곳",
-            "page"
-          ]
-        ],
-        "market": 5,
-        "cut": 0
-      }
-    },
-    {
-      "name": "mobile 내릴 쪽 쪽(내일만): 전망 표시는 모두 2026-10-02 · 일정·공시에는 전망 표시 없음",
-      "ok": true,
-      "detail": {
-        "fm": {
-          "other": 0,
-          "tomorrow": 80
-        }
-      }
-    },
-    {
-      "name": "mobile 시장 띠(본문 맨 위): 코스피·코스닥 값·등락·기준 시각",
+      "name": "mobile 52곳: 시장 띠(코스피·코스닥 · 기준 날짜)",
       "ok": true,
       "detail": {
         "strip": "코스피 7,003.74포인트 +0.46% 코스닥 893.29포인트 −0.11% 10월 2일(금) 15:30 KST 종가"
       }
     },
     {
-      "name": "mobile 종목 상세: 헤드라인 한 줄이 맨 위·첫 화면 안",
+      "name": "mobile 52곳: 카드 52장 · 판 차례 그대로 · 이름·종가·날짜·출목표 동그라미 수(빨강 포함)·회사 화면 링크가 판과 같음",
       "ok": true,
       "detail": {
-        "hl": 1,
-        "first": {
-          "top": 214,
-          "bottom": 290,
-          "firstChild": true
+        "mism": []
+      }
+    },
+    {
+      "name": "mobile 52곳: 카드마다 일정·공시 줄 수(각 2줄까지) = 일정표",
+      "ok": true,
+      "detail": {
+        "agMis": []
+      }
+    },
+    {
+      "name": "mobile 52곳: 바뀔 52곳 미리 보기 「튼튼한 회사 52곳으로 바뀝니다」 · 10월 6일(화) 16:00 · 이름 칸은 접혀 있다가 열면 52곳 · 「새」 28 = 28",
+      "ok": true,
+      "detail": {
+        "nx": {
+          "h": "튼튼한 회사 52곳으로 바뀝니다",
+          "when": "10월 6일(화) 16:00 매일 실행 때 바뀝니다 · 새 회사들의 그날 종가를 모두 받아야 바뀌고, 못 받으면 그다음 거래일에 다시 합니다",
+          "closed": true,
+          "first": true
+        },
+        "chips": {
+          "n": 52,
+          "news": 28
         }
       }
     },
     {
-      "name": "mobile 종목 상세: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "166,669원",
-        "src": "이 숫자\n모의 경로 20,000개 가운데 내일(10월 2일 금) 가격의 한가운데 값(50%) · 80% 범위 162,742원~171,161원\n출발 종가\n166,000원 · 10월 1일(목) 15:30 KST 정규장 "
-      }
-    },
-    {
-      "name": "mobile 종목 상세: Esc 로 출처 칸 닫힘",
+      "name": "mobile 52곳: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 종목 상세: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "166,669원",
-        "last": "166,669원 (+0.40%)"
-      }
-    },
-    {
-      "name": "mobile 상세: 헤드라인에 종목 이름·날짜·원 단위",
-      "ok": true,
-      "detail": {
-        "detailFigure": "166,669원"
-      }
-    },
-    {
-      "name": "mobile 상세: 그래프가 첫 화면 안(스크롤 전)",
-      "ok": true,
-      "detail": {
-        "chartTop": 503.671875
-      }
-    },
-    {
-      "name": "mobile 상세: 실제선·전망선·띠·경계선·출발점",
-      "ok": true,
-      "detail": {
-        "actual": true,
-        "today": true,
-        "band": true,
-        "boundary": true,
-        "anchor": true
-      }
-    },
-    {
-      "name": "mobile 상세: 세 겹 띠(5~95·10~90·25~75%)",
+      "name": "mobile 52곳 → 터치 → 회사 화면 #/stock/009150",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 상세: 가격 눈금에 원 단위",
+      "name": "mobile 회사 삼성전자: 이름 · 종가 276,000원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 40개 · 일정 1·공시 2줄 = 일정표",
       "ok": true,
       "detail": {
+        "title": "삼성전자",
+        "price": "276,000원",
+        "date": "10월 2일(금) 15:30 종가",
         "ticks": [
-          "17.0만원",
-          "18.0만원",
-          "09/02",
-          "09/08",
-          "09/14"
+          "207,000원",
+          "251,500원",
+          "296,000원",
+          "07/07",
+          "08/20",
+          "10/02"
+        ],
+        "path": 60,
+        "info": [
+          "362,500원",
+          "79,700원",
+          "69%",
+          "▲ +5.75%",
+          "▲ +252.94%"
+        ],
+        "ev": 1,
+        "ds": 2,
+        "beads": 40
+      }
+    },
+    {
+      "name": "mobile 회사 삼성전자: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
+      "ok": true,
+      "detail": {
+        "news": 6,
+        "flows": 5
+      }
+    },
+    {
+      "name": "mobile 회사 삼성전자(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 회사 삼성바이오로직스: 이름 · 종가 1,429,000원 · 「10월 1일(목) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/01 · 1년 최고·최저 · 출목표 23개 · 일정 3·공시 9줄 = 일정표",
+      "ok": true,
+      "detail": {
+        "title": "삼성바이오로직스",
+        "price": "1,429,000원",
+        "date": "10월 1일(목) 15:30 종가",
+        "ticks": [
+          "1,325,000원",
+          "1,467,000원",
+          "1,609,000원",
+          "07/06",
+          "08/19",
+          "10/01"
+        ],
+        "path": 60,
+        "info": [
+          "1,965,000원",
+          "1,243,000원",
+          "26%",
+          "▼ −5.86%",
+          "▼ −6.28%"
+        ],
+        "ev": 3,
+        "ds": 9,
+        "beads": 23
+      }
+    },
+    {
+      "name": "mobile 회사 삼성바이오로직스: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
+      "ok": true,
+      "detail": {
+        "news": 6,
+        "flows": 5
+      }
+    },
+    {
+      "name": "mobile 회사 삼성바이오로직스(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 회사 제일기획: 이름 · 종가 18,700원 · 「10월 2일(금) 15:30 종가」 · 지난 60거래일 선(점 60) · 마지막 눈금 10/02 · 1년 최고·최저 · 출목표 17개 · 일정 0·공시 5줄 = 일정표",
+      "ok": true,
+      "detail": {
+        "title": "제일기획",
+        "price": "18,700원",
+        "date": "10월 2일(금) 15:30 종가",
+        "ticks": [
+          "17,300원",
+          "18,645원",
+          "19,990원",
+          "07/07",
+          "08/20",
+          "10/02"
+        ],
+        "path": 60,
+        "info": [
+          "23,150원",
+          "17,300원",
+          "24%",
+          "▼ −2.50%",
+          "▼ −6.97%"
+        ],
+        "ev": 0,
+        "ds": 5,
+        "beads": 17
+      }
+    },
+    {
+      "name": "mobile 회사 제일기획: 수급·기사·공시 기록 열림 · 기사 6건 = 6 · 수급 5거래일 = 5",
+      "ok": true,
+      "detail": {
+        "news": 6,
+        "flows": 5
+      }
+    },
+    {
+      "name": "mobile 회사 제일기획(기록 열림): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 일정: 시장 5건 · 회사·업종 30건(12날) · 예고 공시 34건 · ★★★ 공시 27건 = 일정표 · 아래 탭 「일정」 눌림",
+      "ok": true,
+      "detail": {
+        "a": {
+          "market": 5,
+          "company": 30,
+          "notices": 34,
+          "big": 27,
+          "days": 12,
+          "active": "agenda"
+        },
+        "want": {
+          "market": 5,
+          "company": 30,
+          "notices": 34,
+          "big": 27
+        }
+      }
+    },
+    {
+      "name": "mobile 일정: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 옛 주소 #/forecast → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/up → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/down → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/scores → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/race → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/evolution → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/status → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/records → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 옛 주소 #/game → 처음 화면(#/ · 카드 52장)",
+      "ok": true,
+      "detail": {
+        "hash": "#/",
+        "cards": 52
+      }
+    },
+    {
+      "name": "mobile 무결성: 「읽은 파일 6개 모두 판 목록의 SHA-256 과 같음」",
+      "ok": true,
+      "detail": {
+        "integ": "읽은 파일 6개 모두 판 목록의 SHA-256 과 같음"
+      }
+    },
+    {
+      "name": "mobile 글씨 단추: 125% 로 커짐",
+      "ok": true,
+      "detail": {
+        "fs1": [
+          "125%",
+          "1"
         ]
       }
     },
     {
-      "name": "mobile IBM Plex Sans KR 글씨체 적용",
+      "name": "mobile 콘솔 오류 0 · 요청 실패 0",
+      "ok": true,
+      "detail": {
+        "consoleErrors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "어두운 화면 home: 바탕이 검정(rgb(0, 0, 0))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(0, 0, 0)"
+      }
+    },
+    {
+      "name": "어두운 화면 company: 바탕이 검정(rgb(0, 0, 0))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(0, 0, 0)"
+      }
+    },
+    {
+      "name": "어두운 화면 agenda: 바탕이 검정(rgb(0, 0, 0))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(0, 0, 0)"
+      }
+    },
+    {
+      "name": "화면 폭 pc home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc home: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 상세(내일만): 미래 날짜는 내일 하나 · 전망 표시(점·띠·숫자)는 모두 내일 · 대표 시나리오·여러 날 CSV 없음",
-      "ok": true,
-      "detail": {
-        "futureChips": 1,
-        "fm": {
-          "other": 0,
-          "tomorrow": 14
-        }
-      }
-    },
-    {
-      "name": "mobile 상세: 미래 날짜 눌러 설명 열림(내일)",
-      "ok": true,
-      "detail": {
-        "cursor": "10월 2일(금) · 전망",
-        "explainHead": "10월 2일(금) · 전망"
-      }
-    },
-    {
-      "name": "mobile 상세: 선택 날짜 분포 상자",
+      "name": "또렷함 pc home: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 상세: 날짜 설명(한 줄 · 기여 막대 · 미확보 · 출처)",
+      "name": "화면 폭 pc stock: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
-        "contrib": 4,
-        "oneline": "10월 2일(금) 중앙 전망 166,669원 (출발 종가 대비 +0.40%)"
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
       }
-    },
-    {
-      "name": "mobile 상세: 날짜를 누르면 설명이 바텀시트로 열림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 상세: Esc 로 바텀시트 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 상세: 재생 하루 1초 · 그래프는 다시 그리지 않고 커서만 이동",
-      "ok": true,
-      "detail": {
-        "after": "10월 2일(금) · 전망",
-        "sameSvg": true
-      }
-    },
-    {
-      "name": "mobile 상세: 중요 일정에서 정지·확인 대기",
-      "ok": true,
-      "detail": {
-        "text": "10월 2일(금) 중요 일정 1건"
-      }
-    },
-    {
-      "name": "mobile 상세: 확인 뒤 계속 재생",
-      "ok": true,
-      "detail": {
-        "resumed": "10월 2일(금) · 전망"
-      }
-    },
-    {
-      "name": "mobile 상세(내일만): 여러 날 CSV 단추 없음(꺼 둠)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 상세: JSON 내려받기(blob · CSP 아래)",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_105560_20261001_detail.json"
-      }
-    },
-    {
-      "name": "mobile 상세: 종목 정보(1년 범위 막대 · 기간별 수익률 가로 막대 5 · 나머지 12칸은 눌러야 열림)",
-      "ok": true,
-      "detail": {
-        "infoBars": 5,
-        "infoKv": 12
-      }
-    },
-    {
-      "name": "mobile 상세: 출목표 칸(동그라미 35개 · 「오르다가 요즘 꺾임」 · 읽는 법) · 일정 0줄 · 공시 4줄(별 = agenda.json) · 시장 일정 5줄 · 「출목표와 별(★) 읽는 법」 · 뒤로 「‹ 오를 쪽」",
-      "ok": true,
-      "detail": {
-        "dv": {
-          "beads": 35,
-          "up": 17,
-          "story": "오르다가 요즘 꺾임",
-          "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림\n막대 길이 = 동그라미 개수",
-          "ev": 0,
-          "ds": 4,
-          "market": 5,
-          "how": "출목표와 별(★) 읽는 법",
-          "back": "‹ 오를 쪽"
-        },
-        "want": {
-          "beads": 35,
-          "ev": 0,
-          "ds": 4
-        }
-      }
-    },
-    {
-      "name": "mobile 상세: 수급·기사·공시 칸(눌러서 열림 · 전망 숫자에 넣지 않음 · 외국인·기관·개인 표 · 기사 제목)",
-      "ok": true,
-      "detail": {
-        "ctxRows": 5,
-        "ctxNews": 6
-      }
-    },
-    {
-      "name": "mobile 상세: 연쇄 지도(눌러서 열림) 52노드·9묶음 호·1~5차·연결선",
-      "ok": true,
-      "detail": {
-        "nodes": 52,
-        "arcs": 9,
-        "groupsN": 9,
-        "orders": 5,
-        "links": 28
-      }
-    },
-    {
-      "name": "mobile 상세: 충격 단추(+10%) → 2차 숫자 부호 바뀜",
-      "ok": true,
-      "detail": {
-        "shockBefore": "−3.54%",
-        "shockAfter": "+7.08%"
-      }
-    },
-    {
-      "name": "mobile 상세: 시장 통로·직접 통로 설명",
-      "ok": true,
-      "detail": {
-        "channel": "시장 통로와 직접 통로 — KB금융의 +10% 중 시장 전체가 같이 움직이는 몫은 +3.75%(52종목 평균 기준), 이 종목만의 몫은 +7.0"
-      }
-    },
-    {
-      "name": "mobile 상세: 누적(1~5차 합) 칸 추가",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 상세: 파급 재생 1차부터 차례로 켜짐",
-      "ok": true,
-      "detail": {
-        "litEarly": 1,
-        "litLate": 15,
-        "stripLit": 5
-      }
-    },
-    {
-      "name": "mobile 상세: 연쇄 칸의 종목을 누르면 그 종목 상세로 이동",
-      "ok": true,
-      "detail": {
-        "hashBefore": "#/stock/105560",
-        "hashAfter": "#/stock/010170"
-      }
-    },
-    {
-      "name": "mobile 상세: 이동한 종목에서도 연쇄 지도 다시 그림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 글씨 200% 에서도 가로 넘침 없음",
-      "ok": true,
-      "detail": {
-        "fontSize": "200%",
-        "overflow200": 0
-      }
-    },
-    {
-      "name": "mobile 「가」를 한 번 더 누르면 200% 다음 100%",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 1만원 비교(내일만): 꺼 둠 한 줄 · 52선 없음",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 성적: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 126,
-          "bottom": 176,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "mobile 성적: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "26종목",
-        "src": "이 숫자\n예측한 방향(상승·보합·하락)과 실제 방향이 같은 종목 수 · 틀림 25종목(그중 실제 보합 4종목) · 아래 네 칸·종목별 목록과 같은 파일에서 셈\n평균 오차\n|중앙 전망 − 실제 종가| ÷ 실제 종가 를"
-      }
-    },
-    {
-      "name": "mobile 성적: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 성적: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "26종목",
-        "last": "26종목"
-      }
-    },
-    {
-      "name": "mobile 성적: 방향·범위·오차 분포 막대 · 채점 예정표 4줄 · 표와 후향 진단은 눌러야 열림",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 성적 · 왜 틀렸나: 네 통 4개 · 합 100건 = 틀린 100건 = 채점 자료 100건 = 목록 100줄",
-      "ok": true,
-      "detail": {
-        "lead": "틀린 100건 중 76건은 「하락」이라 했는데 오르거나 그대로였음",
-        "binVals": [
-          "56건",
-          "20건",
-          "1건",
-          "23건"
-        ],
-        "wrongAll": 100,
-        "listRows": 100
-      }
-    },
-    {
-      "name": "mobile 성적 · 「방향이 틀린 까닭 보기」 단추로 칸이 화면 위쪽에 옴",
-      "ok": true,
-      "detail": {
-        "top": 239
-      }
-    },
-    {
-      "name": "mobile 진화: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 113,
-          "bottom": 189,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "mobile 진화: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "0.51%",
-        "src": "이 숫자\nATLAS 의 평균 가격 오차율이 「발행일 종가 그대로」의 평균 가격 오차율보다 몇 % 작은가 · 1거래일 뒤 156칸을 첫날부터 10월 1일(목)까지 합쳐 셈\n발행일 종가 그대로\n예측을 낸 날의 종가가 그"
-      }
-    },
-    {
-      "name": "mobile 진화: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 진화: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "0.51%",
-        "last": "지금까지 +0.51%"
-      }
-    },
-    {
-      "name": "mobile 진화: 질문·결론 낱말·판정일·막힘",
-      "ok": true,
-      "detail": {
-        "word": "아직입니다",
-        "blocker": "no_candidates"
-      }
-    },
-    {
-      "name": "mobile 진화: 그림의 점·표시 수 = 사실표(합친 값 점 · 하루 점 · 시험 · 바꿈 · 공사 · 판정 시작 선)",
-      "ok": true,
-      "detail": {
-        "dots": 3,
-        "daily": 3,
-        "tests": 0,
-        "changes": 0,
-        "builds": 4,
-        "judge": 0
-      }
-    },
-    {
-      "name": "mobile 진화: 그림 글자가 화면에서 11px 이상",
-      "ok": true,
-      "detail": {
-        "tickMin": 11.5
-      }
-    },
-    {
-      "name": "mobile 진화: 날짜 줄 수 = 사실표 날짜 수 · 줄마다 세 박자 · 누르면 까닭 3칸",
-      "ok": true,
-      "detail": {
-        "dayRows": 3,
-        "days": 3,
-        "beats": 3,
-        "openedH4": 3
-      }
-    },
-    {
-      "name": "mobile 진화: 공사 기록(눌러야 열림) 줄 수 = 장부 공사 기록 수 · 검산 표시",
-      "ok": true,
-      "detail": {
-        "constructions": 18,
-        "check": true
-      }
-    },
-    {
-      "name": "mobile 진화 전문가용: 운영 식·핵심 규칙·관문·실전 관찰 최소 채점일",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 자료 상태: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 126,
-          "bottom": 202,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "mobile 자료 상태: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "52종목",
-        "src": "이 숫자\n한국거래소 정규장 종가(15:30 KST 종가 단일가)를 받아 같은 방법으로 한 번 더 대조한 종목 수 · 이 발행본의 출발가\n마지막 관측\n10월 1일(목) 18:53 KST\n받은 곳\n네이버 증권 분봉 원문"
-      }
-    },
-    {
-      "name": "mobile 자료 상태: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 자료 상태: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": false,
-      "detail": {
-        "figure": "52종목",
-        "last": "51종목"
-      }
-    },
-    {
-      "name": "mobile 자료 상태: 36요인 막대·칸(눌러야 열림) · 달력 · 검사 증거",
-      "ok": true,
-      "detail": {
-        "tiles": 36,
-        "days": 10
-      }
-    },
-    {
-      "name": "mobile 자료 상태: 예약 실행 확인·사이트 배포를 사실대로",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 기록: 헤드라인 한 줄이 맨 위·첫 화면 안",
-      "ok": true,
-      "detail": {
-        "hl": 1,
-        "first": {
-          "top": 126,
-          "bottom": 176,
-          "firstChild": true
-        }
-      }
-    },
-    {
-      "name": "mobile 기록: 헤드라인 숫자를 누르면 출처·기준 시각이 열림",
-      "ok": true,
-      "detail": {
-        "figure": "266건",
-        "src": "이 숫자\n기록 장부 색인의 10월 2일(금) 종류별 건수 합(수집 113건 · 채점 51건 · 원인 분석 52건 · 요인 36건 · 실험 1건 · 운영 13건)\n기준 시각\n10월 2일(금) 23:39 KST 에 만든"
-      }
-    },
-    {
-      "name": "mobile 기록: Esc 로 출처 칸 닫힘",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 기록: 첫 그래프의 마지막 값 = 헤드라인 숫자",
-      "ok": true,
-      "detail": {
-        "figure": "266건",
-        "last": "266건"
-      }
-    },
-    {
-      "name": "mobile 기록: 종류 8 · 실험 기록 행 = 그날 색인 수 · 누적 실험 11건 이상 · 내려받기 · 'null' 없음",
-      "ok": true,
-      "detail": {
-        "typeBtns": 8,
-        "expRows": 1,
-        "expExpected": 1,
-        "shownDate": "2026-10-02",
-        "dl": 2
-      }
-    },
-    {
-      "name": "mobile 기록: 요인 기록 36행 단위(요인 기록이 있는 마지막 날) · 결과 막대",
-      "ok": true,
-      "detail": {
-        "factorRecordRows": 36,
-        "factorDate": "2026-10-02"
-      }
-    },
-    {
-      "name": "mobile 기록: CSV 내려받기 파일명",
-      "ok": true,
-      "detail": {
-        "name": "ATLAS_factor_2026-10-02_filtered.csv"
-      }
-    },
-    {
-      "name": "mobile 기록: 일일 보고 여섯 문장(눌러야 열림 · 장부 원문 그대로)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 스푸마토 바탕·판·띠 경계선 6·실제선 그림자·후광·좌표 변환 없음 · 전망선 색 = 방향(오름 빨강·내림 파랑)",
-      "ok": true,
-      "detail": {
-        "bg": "rgb(242, 242, 247)",
-        "plate": 1,
-        "edges": 6,
-        "shadow": 1,
-        "halo": 1,
-        "bandFill": "url(\"#cv42icd-band-inner\")",
-        "todayStroke": "rgb(47, 93, 138)",
-        "todayDir": "down",
-        "up": "#A63E2C",
-        "down": "#2F5D8A",
-        "transforms": 0
-      }
-    },
-    {
-      "name": "mobile 주요 메뉴(아래 탭) 3개(내일 · 게임 · 성적)",
-      "ok": true,
-      "detail": {
-        "nav": 3
-      }
-    },
-    {
-      "name": "mobile 가로 스크롤 없음",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "mobile 콘솔 오류 0",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "mobile 실패한 요청 0",
-      "ok": true,
-      "detail": []
-    },
-    {
-      "name": "dark 다크 모드 토큰 적용(배경·글자·바탕 그라데이션도 어두움)",
-      "ok": true,
-      "detail": {
-        "bg": "rgb(0, 0, 0)",
-        "ink": "rgb(241, 235, 224)",
-        "errors": []
-      }
-    },
-    {
-      "name": "잘린 글자 pc forecast: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": {
-        "rel": [],
-        "vague": [],
-        "bare": [
-          "12 ⟵ 12",
-          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
-        ],
-        "src": []
-      }
-    },
-    {
-      "name": "잘린 글자 pc up: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc down: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
     },
     {
       "name": "잘린 글자 pc stock: 0",
@@ -3018,107 +865,56 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 pc race: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc scores: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc evolution: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc records: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc status: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc game: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile forecast: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
+      "name": "화면 폭 pc agenda: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
-        "rel": [],
-        "vague": [],
-        "bare": [
-          "12 ⟵ 12",
-          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
-        ],
-        "src": []
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
       }
     },
     {
-      "name": "잘린 글자 mobile up: 0",
+      "name": "잘린 글자 pc agenda: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile down: 0",
+      "name": "화면 폭 mobile home: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile home: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile home: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "화면 폭 mobile stock: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
     },
     {
       "name": "잘린 글자 mobile stock: 0",
@@ -3126,107 +922,56 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile race: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile scores: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile evolution: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile records: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile status: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile game: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark forecast: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
+      "name": "화면 폭 mobile agenda: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
-        "rel": [],
-        "vague": [],
-        "bare": [
-          "12 ⟵ 12",
-          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
-        ],
-        "src": []
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
       }
     },
     {
-      "name": "잘린 글자 mobile-dark up: 0",
+      "name": "잘린 글자 mobile agenda: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile-dark down: 0",
+      "name": "화면 폭 mobile-dark home: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark home: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark home: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark stock: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
     },
     {
       "name": "잘린 글자 mobile-dark stock: 0",
@@ -3234,107 +979,56 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile-dark race: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark scores: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark evolution: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark records: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark status: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark game: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 forecast: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
+      "name": "화면 폭 mobile-dark agenda: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
-        "rel": [],
-        "vague": [],
-        "bare": [
-          "12 ⟵ 12",
-          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
-        ],
-        "src": []
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
       }
     },
     {
-      "name": "잘린 글자 pc-200 up: 0",
+      "name": "잘린 글자 mobile-dark agenda: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 pc-200 down: 0",
+      "name": "화면 폭 pc-200 home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 home: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc-200 home: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 stock: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
     },
     {
       "name": "잘린 글자 pc-200 stock: 0",
@@ -3342,107 +1036,56 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 pc-200 race: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 scores: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 evolution: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 records: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 status: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 pc-200 game: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 pc-200 game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 forecast: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 forecast: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 2 (그 가운데 2차 그림 글자 2곳 뺌) (출처 칸 0·0·0)",
+      "name": "화면 폭 pc-200 agenda: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
-        "rel": [],
-        "vague": [],
-        "bare": [
-          "12 ⟵ 12",
-          "화면에 기준 시각(「9월 30일(수) … 15:30 KST」 또는 「… 종가」)이 없음"
-        ],
-        "src": []
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
       }
     },
     {
-      "name": "잘린 글자 mobile-dark-200 up: 0",
+      "name": "잘린 글자 pc-200 agenda: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 up: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 pc-200 agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile-dark-200 down: 0",
+      "name": "화면 폭 mobile-dark-200 home: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 home: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 down: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark-200 home: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark-200 stock: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
     },
     {
       "name": "잘린 글자 mobile-dark-200 stock: 0",
@@ -3450,67 +1093,26 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark-200 stock: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "잘린 글자 mobile-dark-200 race: 0",
+      "name": "화면 폭 mobile-dark-200 agenda: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 agenda: 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 race: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 scores: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 scores: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 evolution: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 evolution: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 records: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 records: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 status: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 status: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "잘린 글자 mobile-dark-200 game: 0",
-      "ok": true,
-      "detail": null
-    },
-    {
-      "name": "또렷함 mobile-dark-200 game: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 (출처 칸 0·0·0)",
+      "name": "또렷함 mobile-dark-200 agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -3524,1514 +1126,23 @@
       }
     },
     {
-      "name": "검사기 자체 시험(7번): 잘린 이름·판 끝에서 잘린 값·글이 넘친 선택 상자를 넣으면 잘린 글자가 3 늘어난다",
+      "name": "검사기 자체 시험(7번): 「…」로 잘린 회사 이름 하나를 넣으면 잘린 글자가 1 늘어난다",
       "ok": true,
       "detail": {
         "before": 0,
-        "after": 3,
-        "samples": [
-          "줄임표: 한화에어로스페이스",
-          "칸 끝에서 잘림: 관측만 13개",
-          "선택 상자: 10월 1일(목) 상승 확률 높은 순"
-        ]
+        "after": 1
       }
     },
     {
-      "name": "게임 pc open: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
+      "name": "검사기 자체 시험(앞날 말): 화면에 「전망 · 오를 쪽」을 넣으면 잡는다",
       "ok": true,
-      "detail": {
-        "errors": [],
-        "cards": 52,
-        "tabs": "내일,게임,성적",
-        "sealDisabled": true,
-        "sealText": "낙관 찍고 걸기",
-        "center": "이정훈 대표 방식",
-        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
-        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
-        "marks": 1
-      }
+      "detail": null
     },
     {
-      "name": "게임 pc open: 출목표 — 하나 = 1% · 동그라미 35 = 빨강 17 + 파랑 18 · 기호 1가지 · 처음 15일 「오름이 셈」(16 대 12) · 최근 5일 「내림이 셈」(1 대 6) · 막대 색 맞음 · 흐름 「오르다가 요즘 꺾임」 · 넘친 글자 0",
+      "name": "배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (4줄)",
       "ok": true,
-      "detail": {
-        "code": "105560",
-        "label": "출목표 20거래일 · 동그라미 하나 = 1% 움직임: 빨간 동그라미 17개(오름) · 파란 동그라미 18개(내림) · 처음 15거래일 빨강 16개 · 파랑 12개 · 최근 5거래일 빨강 1개 · 파랑 6개 · 오르다가 요즘 꺾임",
-        "circles": 35,
-        "kinds": 1,
-        "rows": [
-          {
-            "lab": "처음 15일",
-            "up": 16,
-            "down": 12,
-            "word": "오름이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          },
-          {
-            "lab": "최근 5일",
-            "up": 1,
-            "down": 6,
-            "word": "내림이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          }
-        ],
-        "story": "오르다가 요즘 꺾임",
-        "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
-        "over": []
-      }
-    },
-    {
-      "name": "게임 pc open: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
-      "ok": true,
-      "detail": {
-        "gq": {
-          "sides": [
-            [
-              "up",
-              "▲오를쪽12장",
-              "true"
-            ],
-            [
-              "down",
-              "▼내릴쪽40장",
-              "false"
-            ]
-          ],
-          "subs": 4,
-          "all": "전체52장",
-          "count": "오를 쪽 12장 중 1번째",
-          "rows": [
-            [
-              "up",
-              12
-            ],
-            [
-              "down",
-              40
-            ]
-          ],
-          "code": "105560",
-          "lines": [
-            [
-              "일정",
-              null
-            ],
-            [
-              "공시",
-              "★★"
-            ]
-          ]
-        },
-        "wantLines": [
-          [
-            "일정",
-            null
-          ],
-          [
-            "공시",
-            "★★"
-          ]
-        ]
-      }
-    },
-    {
-      "name": "게임 pc 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)",
-      "ok": true,
-      "detail": {
-        "bet": {
-          "lev": "105560",
-          "inv": "329180",
-          "levAmt": 100000000,
-          "invAmt": 100000000,
-          "locked": true,
-          "revealed": false,
-          "open": {
-            "lev": false,
-            "inv": false
-          },
-          "placedAt": "2026-10-01T22:00:00.000Z"
-        },
-        "sealText": "낙관 지우기"
-      }
-    },
-    {
-      "name": "게임 pc 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음",
-      "ok": true,
-      "detail": {
-        "cert": [
-          {
-            "side": "레버리지",
-            "body": "영원무역 · 실제 +0.73% · 맞힘",
-            "pnl": "+1억 원"
-          },
-          {
-            "side": "인버스",
-            "body": "HD현대중공업 · 실제 −0.46% · 맞힘",
-            "pnl": "+1억 원"
-          }
-        ],
-        "amt": [
-          "레버리지에 1억 원",
-          "인버스에 1억 원"
-        ]
-      }
-    },
-    {
-      "name": "게임 pc closed: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
-      "ok": true,
-      "detail": {
-        "errors": [],
-        "cards": 52,
-        "tabs": "내일,게임,성적",
-        "sealDisabled": true,
-        "sealText": "마감",
-        "center": "이정훈 대표 방식",
-        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
-        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
-        "marks": 1
-      }
-    },
-    {
-      "name": "게임 pc closed: 출목표 — 하나 = 1% · 동그라미 35 = 빨강 17 + 파랑 18 · 기호 1가지 · 처음 15일 「오름이 셈」(16 대 12) · 최근 5일 「내림이 셈」(1 대 6) · 막대 색 맞음 · 흐름 「오르다가 요즘 꺾임」 · 넘친 글자 0",
-      "ok": true,
-      "detail": {
-        "code": "105560",
-        "label": "출목표 20거래일 · 동그라미 하나 = 1% 움직임: 빨간 동그라미 17개(오름) · 파란 동그라미 18개(내림) · 처음 15거래일 빨강 16개 · 파랑 12개 · 최근 5거래일 빨강 1개 · 파랑 6개 · 오르다가 요즘 꺾임",
-        "circles": 35,
-        "kinds": 1,
-        "rows": [
-          {
-            "lab": "처음 15일",
-            "up": 16,
-            "down": 12,
-            "word": "오름이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          },
-          {
-            "lab": "최근 5일",
-            "up": 1,
-            "down": 6,
-            "word": "내림이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          }
-        ],
-        "story": "오르다가 요즘 꺾임",
-        "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
-        "over": []
-      }
-    },
-    {
-      "name": "게임 pc closed: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
-      "ok": true,
-      "detail": {
-        "gq": {
-          "sides": [
-            [
-              "up",
-              "▲오를쪽12장",
-              "true"
-            ],
-            [
-              "down",
-              "▼내릴쪽40장",
-              "false"
-            ]
-          ],
-          "subs": 4,
-          "all": "전체52장",
-          "count": "오를 쪽 12장 중 1번째",
-          "rows": [
-            [
-              "up",
-              12
-            ],
-            [
-              "down",
-              40
-            ]
-          ],
-          "code": "105560",
-          "lines": [
-            [
-              "일정",
-              null
-            ],
-            [
-              "공시",
-              "★★"
-            ]
-          ]
-        },
-        "wantLines": [
-          [
-            "일정",
-            null
-          ],
-          [
-            "공시",
-            "★★"
-          ]
-        ]
-      }
-    },
-    {
-      "name": "게임 pc 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음",
-      "ok": true,
-      "detail": {
-        "sealText": "마감"
-      }
-    },
-    {
-      "name": "게임 mobile open: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
-      "ok": true,
-      "detail": {
-        "errors": [],
-        "cards": 52,
-        "tabs": "내일,게임,성적",
-        "sealDisabled": true,
-        "sealText": "낙관 찍고 걸기",
-        "center": "이정훈 대표 방식",
-        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
-        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
-        "marks": 1
-      }
-    },
-    {
-      "name": "게임 mobile open: 출목표 — 하나 = 1% · 동그라미 35 = 빨강 17 + 파랑 18 · 기호 1가지 · 처음 15일 「오름이 셈」(16 대 12) · 최근 5일 「내림이 셈」(1 대 6) · 막대 색 맞음 · 흐름 「오르다가 요즘 꺾임」 · 넘친 글자 0",
-      "ok": true,
-      "detail": {
-        "code": "105560",
-        "label": "출목표 20거래일 · 동그라미 하나 = 1% 움직임: 빨간 동그라미 17개(오름) · 파란 동그라미 18개(내림) · 처음 15거래일 빨강 16개 · 파랑 12개 · 최근 5거래일 빨강 1개 · 파랑 6개 · 오르다가 요즘 꺾임",
-        "circles": 35,
-        "kinds": 1,
-        "rows": [
-          {
-            "lab": "처음 15일",
-            "up": 16,
-            "down": 12,
-            "word": "오름이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          },
-          {
-            "lab": "최근 5일",
-            "up": 1,
-            "down": 6,
-            "word": "내림이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          }
-        ],
-        "story": "오르다가 요즘 꺾임",
-        "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
-        "over": []
-      }
-    },
-    {
-      "name": "게임 mobile open: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
-      "ok": true,
-      "detail": {
-        "gq": {
-          "sides": [
-            [
-              "up",
-              "▲오를쪽12장",
-              "true"
-            ],
-            [
-              "down",
-              "▼내릴쪽40장",
-              "false"
-            ]
-          ],
-          "subs": 4,
-          "all": "전체52장",
-          "count": "오를 쪽 12장 중 1번째",
-          "rows": [
-            [
-              "up",
-              12
-            ],
-            [
-              "down",
-              40
-            ]
-          ],
-          "code": "105560",
-          "lines": [
-            [
-              "일정",
-              null
-            ],
-            [
-              "공시",
-              "★★"
-            ]
-          ]
-        },
-        "wantLines": [
-          [
-            "일정",
-            null
-          ],
-          [
-            "공시",
-            "★★"
-          ]
-        ]
-      }
-    },
-    {
-      "name": "게임 mobile 실전 판(목표일 07:00): 두 장 놓고 낙관 → 이 기기에 저장 → 다시 열어도 낙관 그대로(「낙관 지우기」)",
-      "ok": true,
-      "detail": {
-        "bet": {
-          "lev": "105560",
-          "inv": "329180",
-          "levAmt": 100000000,
-          "invAmt": 100000000,
-          "locked": true,
-          "revealed": false,
-          "open": {
-            "lev": false,
-            "inv": false
-          },
-          "placedAt": "2026-10-01T22:00:00.000Z"
-        },
-        "sealText": "낙관 지우기"
-      }
-    },
-    {
-      "name": "게임 mobile 연습 판: 두 장 → 낙관 → 젖혀 열기 → 정산 증서 두 줄이 게임 규칙(±0.1% · 맞힘 +건 돈 · 틀림 −건 돈 · 보합 0)과 맞음",
-      "ok": true,
-      "detail": {
-        "cert": [
-          {
-            "side": "레버리지",
-            "body": "영원무역 · 실제 +0.73% · 맞힘",
-            "pnl": "+1억 원"
-          },
-          {
-            "side": "인버스",
-            "body": "HD현대중공업 · 실제 −0.46% · 맞힘",
-            "pnl": "+1억 원"
-          }
-        ],
-        "amt": [
-          "레버리지에 1억 원",
-          "인버스에 1억 원"
-        ]
-      }
-    },
-    {
-      "name": "게임 mobile closed: 콘솔 오류 0(보안 규칙 켬) · 카드 52장 · 아래 탭 셋 · 가운데 이정훈 대표 방식(원문 기다림) · 보조 다섯 · 전망 표시는 모두 2026-10-02",
-      "ok": true,
-      "detail": {
-        "errors": [],
-        "cards": 52,
-        "tabs": "내일,게임,성적",
-        "sealDisabled": true,
-        "sealText": "마감",
-        "center": "이정훈 대표 방식",
-        "centerState": "원문 기다림 · 원문이 오면 이 자리에서 켭니다",
-        "aux": "켈리 공식,2% 규칙,정액 분할,마틴게일,파롤리",
-        "marks": 1
-      }
-    },
-    {
-      "name": "게임 mobile closed: 출목표 — 하나 = 1% · 동그라미 35 = 빨강 17 + 파랑 18 · 기호 1가지 · 처음 15일 「오름이 셈」(16 대 12) · 최근 5일 「내림이 셈」(1 대 6) · 막대 색 맞음 · 흐름 「오르다가 요즘 꺾임」 · 넘친 글자 0",
-      "ok": true,
-      "detail": {
-        "code": "105560",
-        "label": "출목표 20거래일 · 동그라미 하나 = 1% 움직임: 빨간 동그라미 17개(오름) · 파란 동그라미 18개(내림) · 처음 15거래일 빨강 16개 · 파랑 12개 · 최근 5거래일 빨강 1개 · 파랑 6개 · 오르다가 요즘 꺾임",
-        "circles": 35,
-        "kinds": 1,
-        "rows": [
-          {
-            "lab": "처음 15일",
-            "up": 16,
-            "down": 12,
-            "word": "오름이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          },
-          {
-            "lab": "최근 5일",
-            "up": 1,
-            "down": 6,
-            "word": "내림이 셈",
-            "paint": [
-              "1",
-              "1"
-            ]
-          }
-        ],
-        "story": "오르다가 요즘 꺾임",
-        "note": "동그라미 하나 = 1% · 빨강 오름 · 파랑 내림막대 길이 = 동그라미 개수",
-        "over": []
-      }
-    },
-    {
-      "name": "게임 mobile closed: 카드 묶음 「▲ 오를 쪽 12장」(눌림) · 「▼ 내릴 쪽 40장」 · 네 갈래 · 「전체 52장」 · 「오를 쪽 12장 중 1번째」 · 카드 신발 12+40 · 카드에 일정 「없음」 · 공시 「★★」",
-      "ok": true,
-      "detail": {
-        "gq": {
-          "sides": [
-            [
-              "up",
-              "▲오를쪽12장",
-              "true"
-            ],
-            [
-              "down",
-              "▼내릴쪽40장",
-              "false"
-            ]
-          ],
-          "subs": 4,
-          "all": "전체52장",
-          "count": "오를 쪽 12장 중 1번째",
-          "rows": [
-            [
-              "up",
-              12
-            ],
-            [
-              "down",
-              40
-            ]
-          ],
-          "code": "105560",
-          "lines": [
-            [
-              "일정",
-              null
-            ],
-            [
-              "공시",
-              "★★"
-            ]
-          ]
-        },
-        "wantLines": [
-          [
-            "일정",
-            null
-          ],
-          [
-            "공시",
-            "★★"
-          ]
-        ]
-      }
-    },
-    {
-      "name": "게임 mobile 실전 판(목표일 10:00 · 08:00 마감 뒤): 걸기 단추 「마감」·눌리지 않음",
-      "ok": true,
-      "detail": {
-        "sealText": "마감"
-      }
-    },
-    {
-      "name": "W4 모서리 360 2026-10-02: 네 줄 카드 51줄 = 51(보류 0) · 네 칸 20·6·10·15 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 51/51 · 가운데 값 표시 22 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~−40,544원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360",
-        "date": "2026-10-02",
-        "kind": "cards",
-        "rows": 51,
-        "held": 0,
-        "quad": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "groups": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 51,
-        "marks": 22,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 결함 심기 카드 하나 지우기 → 판정이 「줄 수」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "카드 하나 지우기",
-        "caught": true,
-        "fails": [
-          "줄 수",
-          "예측 방향 확률",
-          "가운데 값 표시"
-        ],
-        "date": "2026-10-02",
-        "view": "360"
-      }
-    },
-    {
-      "name": "W4 결함 심기 긴 이름 자르기 → 판정이 「긴 이름」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "긴 이름 자르기",
-        "caught": true,
-        "fails": [
-          "긴 이름",
-          "잘림·넘침"
-        ],
-        "date": "2026-10-02",
-        "view": "360"
-      }
-    },
-    {
-      "name": "W4 결함 심기 「실제 보합」 표시 지우기 → 판정이 「보합 표시」로 잡음",
-      "ok": true,
-      "detail": {
-        "planted": "「실제 보합」 표시 지우기",
-        "caught": true,
-        "fails": [
-          "보합 표시"
-        ],
-        "date": "2026-10-02",
-        "view": "360"
-      }
-    },
-    {
-      "name": "W4 모서리 360 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360",
-        "date": "2026-10-01",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "groups": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 52,
-        "marks": 26,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360",
-        "date": "2026-09-30",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "groups": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 27,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360 2026-09-29: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360",
-        "date": "2026-09-29",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "groups": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 28,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark 2026-10-02: 네 줄 카드 51줄 = 51(보류 0) · 네 칸 20·6·10·15 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 51/51 · 가운데 값 표시 22 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~−40,544원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark",
-        "date": "2026-10-02",
-        "kind": "cards",
-        "rows": 51,
-        "held": 0,
-        "quad": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "groups": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 51,
-        "marks": 22,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark",
-        "date": "2026-10-01",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "groups": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 52,
-        "marks": 26,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark",
-        "date": "2026-09-30",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "groups": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 27,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark 2026-09-29: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark",
-        "date": "2026-09-29",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "groups": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 28,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark-200 2026-10-02: 네 줄 카드 51줄 = 51(보류 0) · 네 칸 20·6·10·15 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 51/51 · 가운데 값 표시 22 · 카드 최대 10줄 · 줄 앞 「·」 0 · 오차 +11원~−40,544원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark-200",
-        "date": "2026-10-02",
-        "kind": "cards",
-        "rows": 51,
-        "held": 0,
-        "quad": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "groups": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 51,
-        "marks": 22,
-        "maxLines": 10,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark-200 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 10줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark-200",
-        "date": "2026-10-01",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "groups": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 52,
-        "marks": 26,
-        "maxLines": 10,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark-200 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 9줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark-200",
-        "date": "2026-09-30",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "groups": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 27,
-        "maxLines": 9,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 360-dark-200 2026-09-29: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 10줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "360-dark-200",
-        "date": "2026-09-29",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "groups": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 28,
-        "maxLines": 10,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc 2026-10-02: 표 51줄 = 51(보류 0) · 네 칸 20·6·10·15 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 51/51 · 가운데 값 표시 22 · 카드 최대 0줄 · 줄 앞 「·」 0 · 오차 +11원~−40,544원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc",
-        "date": "2026-10-02",
-        "kind": "table",
-        "rows": 51,
-        "held": 0,
-        "quad": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "groups": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 51,
-        "marks": 22,
-        "maxLines": 0,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc 2026-10-01: 표 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 0줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc",
-        "date": "2026-10-01",
-        "kind": "table",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "groups": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 52,
-        "marks": 26,
-        "maxLines": 0,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc 2026-09-30: 표 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 0줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc",
-        "date": "2026-09-30",
-        "kind": "table",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "groups": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 27,
-        "maxLines": 0,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc 2026-09-29: 표 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 0줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc",
-        "date": "2026-09-29",
-        "kind": "table",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "groups": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 28,
-        "maxLines": 0,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc-200 2026-10-02: 네 줄 카드 51줄 = 51(보류 0) · 네 칸 20·6·10·15 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 51/51 · 가운데 값 표시 22 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~−40,544원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc-200",
-        "date": "2026-10-02",
-        "kind": "cards",
-        "rows": 51,
-        "held": 0,
-        "quad": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "groups": [
-          20,
-          6,
-          10,
-          15
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 51,
-        "marks": 22,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc-200 2026-10-01: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 12·7·22·11 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 4/4 · 확률 52/52 · 가운데 값 표시 26 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −5원~−44,101원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc-200",
-        "date": "2026-10-01",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "groups": [
-          12,
-          7,
-          22,
-          11
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 4,
-          "shown": 4
-        },
-        "probs": 52,
-        "marks": 26,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc-200 2026-09-30: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 20·7·16·9 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 27 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 +11원~+21,356원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc-200",
-        "date": "2026-09-30",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "groups": [
-          20,
-          7,
-          16,
-          9
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 27,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
-    },
-    {
-      "name": "W4 모서리 pc-200 2026-09-29: 네 줄 카드 52줄 = 52(보류 0) · 네 칸 19·16·11·6 · 이름순 · 긴 이름 안 잘림·안 잘림 · 보합 3/3 · 확률 52/52 · 가운데 값 표시 28 · 카드 최대 4줄 · 줄 앞 「·」 0 · 오차 −3원~+34,972원 · 잘린 글자 0",
-      "ok": true,
-      "detail": {
-        "view": "pc-200",
-        "date": "2026-09-29",
-        "kind": "cards",
-        "rows": 52,
-        "held": 0,
-        "quad": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "groups": [
-          19,
-          16,
-          11,
-          6
-        ],
-        "fails": [],
-        "long": [
-          {
-            "name": "LS ELECTRIC",
-            "present": true,
-            "fits": true
-          },
-          {
-            "name": "한화에어로스페이스",
-            "present": true,
-            "fits": true
-          }
-        ],
-        "flat": {
-          "total": 3,
-          "shown": 3
-        },
-        "probs": 52,
-        "marks": 28,
-        "maxLines": 4,
-        "leadDots": 0,
-        "truncated": 0,
-        "truncSamples": [],
-        "errors": []
-      }
+      "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-03T23-48-26-276Z"
+  "dir": "reports/atlas11/browser/2026-10-04T07-13-45-747Z"
 }

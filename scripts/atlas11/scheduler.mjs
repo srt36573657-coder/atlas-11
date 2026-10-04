@@ -49,7 +49,8 @@ export function classifyRun({exitCode, json}) {
   if (json.status === 'already_running_or_unresolved_lock') return 'lock_conflict';
   if (json.status === 'failed_validation' || json.status === 'failed') return 'failed';
   const confirmed = Number.isFinite(json.confirmedTodayStocks) ? json.confirmedTodayStocks : null;
-  if (exitCode === 2 && json.status === 'partial') return confirmed !== null && confirmed >= 52 && json.forecastId ? 'complete_with_warnings' : 'retry';
+  // 2026-10-04 15:37 「이제 예측을 하지 않는다」 뒤 실행기(prediction:'off')는 발행본이 없다 — 52 확정이면 끝(옛 실행기 결과는 발행본 id 로 봄)
+  if (exitCode === 2 && json.status === 'partial') return confirmed !== null && confirmed >= 52 && (json.prediction === 'off' || json.forecastId) ? 'complete_with_warnings' : 'retry';
   if (confirmed !== null && confirmed < 52) return 'retry';
   return 'failed';
 }

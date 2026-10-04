@@ -1,13 +1,13 @@
 // 일정·공시 표(agenda.json) — 2026-10-04 08:19 사장님 「그 회사들 예정된 뉴스나 공시 나타나게 해주고 얼마나 중요한지 표기해줘」
-// 바뀌지 않는 실제 파일로 본다: 10/1 발행본(reports/atlas11/versions) · 10/2 관측 묶음(reports/atlas11/context) · 10/4 새 52종목 입력(reports/atlas11/universe)
+//   15:37 「이제 예측을 하지 않는다」 뒤: 발행본 없이 확인된 일정표(public/data/atlas11/schedule-events.json)에서 바로 읽는다
+// 바뀌지 않는 실제 파일로 본다: 확인된 일정표 · 10/2 관측 묶음(reports/atlas11/context) · 9/28 입력 사본(옛 52곳) · 10/4 새 52종목 입력(reports/atlas11/universe)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildAgenda, eventLevel, disclosureLevel, noticeOf, shortTitle, LEVELS} from '../../lib/atlas11/agenda.mjs';
-import {buildViewBundle, validateViewBundle} from '../../lib/atlas11/view.mjs';
-import {readAllPublications} from '../../lib/atlas11/forecast.mjs';
-import {realInputs, readJSON, root} from './helpers.mjs';
+import {hidesPrediction} from '../../lib/atlas11/board.mjs';
+import {readJSON, INPUT_928} from './helpers.mjs';
 
-const PUB = 'reports/atlas11/versions/2026-10-01-atlas11-ddcd76430dec96dc.json', SNAP = 'reports/atlas11/context/2026-10-02/2026-10-02T13-38-11Z.json';
+const EVENTS = 'public/data/atlas11/schedule-events.json', SNAP = 'reports/atlas11/context/2026-10-02/2026-10-02T13-38-11Z.json';
 const NOW = '2026-10-03T23:30:00.000Z'; // 10/4(일) 08:30 KST
 const inputOf = p => ({assets: p.assets.map(a => ({code: a.code, name: a.name, sector: a.sector}))});
 
@@ -29,9 +29,9 @@ test('중요도 규칙: 일정은 종류로(금리 결정 ★★★ · 물가·�
 });
 
 test('일정·공시 표: 시장 공통 일정은 한 번만 · 회사 일정은 그 회사에만 · 업종 일정은 같은 업종에만 · 묶음 만든 날 이전 일정 없음 · 공시는 최근 30일', async () => {
-  const pub = await readJSON(PUB), snap = await readJSON(SNAP), input = inputOf(pub);
-  const a = buildAgenda({publication: pub, input, snap, now: NOW});
-  assert.equal(a.builtDay, '2026-10-04'); assert.equal(Object.keys(a.byCode).length, 52); assert.equal(a.forecastId, pub.forecastId);
+  const ev = await readJSON(EVENTS), snap = await readJSON(SNAP), input = inputOf(await readJSON(INPUT_928));
+  const a = buildAgenda({events: ev.events, input, snap, now: NOW});
+  assert.equal(a.builtDay, '2026-10-04'); assert.equal(Object.keys(a.byCode).length, 52); assert.ok(!('forecastId' in a), '발행본에 묶이지 않는다');
   assert.deepEqual(a.market.map(e => [e.date, e.kind, e.level]), [['2026-10-06', 'JOBS', 2], ['2026-10-15', 'CPI', 2], ['2026-10-16', 'PPI', 1], ['2026-10-22', 'BOK', 3], ['2026-10-29', 'FOMC', 3]]);
   assert.ok(a.market.every(e => e.source && /^https:\/\//.test(e.source.url)), '시장 일정마다 공식 출처 주소');
   const all = Object.values(a.byCode).flatMap(b => b.upcoming);
@@ -39,37 +39,36 @@ test('일정·공시 표: 시장 공통 일정은 한 번만 · 회사 일정은
   const sb = a.byCode['207940'];
   assert.deepEqual(sb.upcoming.filter(e => e.scope === 'company').map(e => [e.date, e.level]), [['2026-10-06', 3], ['2026-10-28', 3]], '삼성바이오로직스 유상증자 두 단계');
   for (const [code, b] of Object.entries(a.byCode)) {
-    const sector = pub.assets.find(x => x.code === code).sector;
-    for (const e of b.upcoming) { const src = pub.assets.flatMap(x => x.news ?? []).find(n => n.id === e.id); assert.ok(src.scope.type === 'company' ? src.scope.codes.includes(code) : src.scope.sectors.includes(sector), `${code} ${e.name}`); }
+    const sector = input.assets.find(x => x.code === code).sector;
+    for (const e of b.upcoming) { const src = ev.events.find(n => n.id === e.id); assert.ok(src.scope.type === 'company' ? src.scope.codes.includes(code) : src.scope.sectors.includes(sector), `${code} ${e.name}`); }
     assert.ok(b.disclosures.every(d => d.publishedAt.slice(0, 10) >= '2026-09-04' && d.publishedAt.slice(0, 10) <= '2026-10-04'));
     assert.ok(b.disclosures.every((d, i, arr) => i === 0 || arr[i - 1].level > d.level || (arr[i - 1].level === d.level && arr[i - 1].publishedAt >= d.publishedAt)), '중요한 순 · 같으면 최근 순');
     assert.equal(new Set(b.disclosures.map(d => d.publishedAt.slice(0, 10) + '|' + d.title)).size, b.disclosures.length, '같은 날 같은 제목은 한 줄(몇 건인지 times)');
   }
   // 관측 묶음이 없으면 공시 칸은 비우고 「공시」가 빠졌다고 적는다(0 으로 채우지 않음)
-  const none = buildAgenda({publication: pub, input, snap: null, now: NOW});
+  const none = buildAgenda({events: ev.events, input, snap: null, now: NOW});
   assert.ok(Object.values(none.byCode).every(b => b.disclosures.length === 0 && b.missing.includes('공시')));
 });
 
+test('앞날을 짐작하는 말(전망·예상·목표가·추천 …)이 든 일정 이름·공시 제목은 싣지 않고 뺀 수만 적는다 · 「송전망」은 앞날 말이 아님', async () => {
+  const input = {assets: [{code: '000001', name: '가짜', sector: '은행'}]};
+  const events = [{id: 'A', name: '회장 후보 추천 절차', kind: 'COMPANY_GOVERNANCE_RECOMMENDATION', date: '2026-10-10', scope: {type: 'company', codes: ['000001']}},
+    {id: 'B', name: '송전망 공사 착공식', kind: 'COMPANY_EVENT', date: '2026-10-11', scope: {type: 'company', codes: ['000001']}}];
+  const snap = {day: '2026-10-02', disclosures: [{code: '000001', items: [{publishedAt: '2026-10-01T09:00:00+09:00', title: '영업실적등에대한전망(공정공시)'}, {publishedAt: '2026-10-01T10:00:00+09:00', title: '기업설명회(IR) 개최(안내공시)'}]}]};
+  const a = buildAgenda({events, input, snap, now: NOW, hide: hidesPrediction});
+  assert.deepEqual(a.byCode['000001'].upcoming.map(e => e.id), ['B']); assert.equal(a.eventsHidden, 1);
+  assert.deepEqual(a.byCode['000001'].disclosures.map(d => d.title), ['기업설명회(IR) 개최(안내공시)']); assert.equal(a.byCode['000001'].disclosuresHidden, 1);
+  const plain = buildAgenda({events, input, snap, now: NOW});
+  assert.equal(plain.byCode['000001'].upcoming.length, 2, '거르기 함수가 없으면 그대로'); assert.equal(plain.eventsHidden, 0);
+  assert.equal(hidesPrediction('가온전선, 가공선 현지 생산으로 미국 송전망 시장 진출'), false); assert.equal(hidesPrediction('3분기 최대 실적 전망'), true); assert.equal(hidesPrediction('고려아연 목표가↓'), true);
+});
+
 test('종목을 바꾼 뒤(새 52곳): 업종 일정은 새 회사에도 업종 이름으로 붙고 · 빠진 회사의 회사 일정은 나오지 않는다', async () => {
-  const pub = await readJSON(PUB), next = await readJSON('reports/atlas11/universe/2026-10-04-v2/next-input.json');
-  const a = buildAgenda({publication: pub, input: next, now: NOW});
+  const ev = await readJSON(EVENTS), next = await readJSON('reports/atlas11/universe/2026-10-04-v2/next-input.json');
+  const a = buildAgenda({events: ev.events, input: next, now: NOW});
   assert.equal(Object.keys(a.byCode).length, 52);
   assert.ok(a.byCode['000660'].upcoming.some(e => e.kind === 'INDUSTRY_SEDEX-2026'), 'SK하이닉스(새로 들어옴 · 반도체) ← 반도체대전');
   assert.ok(a.byCode['207940'].upcoming.some(e => e.kind === 'CAPITAL_INCREASE'), '삼성바이오로직스(그대로) 회사 일정 유지');
   const codes = new Set(next.assets.map(x => x.code));
-  for (const b of Object.values(a.byCode)) for (const e of b.upcoming.filter(x => x.scope === 'company')) { const src = pub.assets.flatMap(x => x.news ?? []).find(n => n.id === e.id); assert.ok(src.scope.codes.some(c => codes.has(c))); }
-});
-
-test('화면 묶음: 일정 표의 내일 뒤 날짜는 일정이라 통과 · 다른 파일에 넣은 내일 뒤 날짜는 여전히 실패 · 카드마다 출목표용 종가 21개', async () => {
-  const {input, calendar} = await realInputs();
-  const p = await readJSON('reports/atlas11/versions/2026-09-28-atlas11-27e1f65cfc167be9.json'), publications = await readAllPublications(root), snap = await readJSON(SNAP);
-  const TOMORROW = {futureDays: 1, tomorrowOnly: true, since: '2026-10-02', file: 'config/atlas11/horizon.json', configSHA256: null, config: null};
-  const files = buildViewBundle({publication: p, input, calendar, publications, horizon: TOMORROW, contextSnap: snap, now: NOW});
-  const ag = files.get('agenda.json');
-  assert.ok(ag.market.length >= 1 && ag.market.every(e => e.date > p.futureDates[0]), '내일(9/29) 뒤 일정이 들어 있다');
-  assert.equal(validateViewBundle(files, p), true);
-  assert.ok(files.get('manifest.json').files['agenda.json'].sha256, '화면이 다시 계산해 대조할 해시');
-  assert.ok(files.get('cards.json').cards.every(c => c.c.length === 21 && c.c.at(-1) === c.close), '종가 21개 · 마지막 = 출발 종가');
-  const leak = new Map(files), cj = structuredClone(files.get('cards.json')); cj.cards[0].note = ag.market.at(-1).date + ' 일정'; leak.set('cards.json', cj);
-  assert.throws(() => validateViewBundle(leak, p), /VIEW_TOMORROW_DATES_AFTER/);
+  for (const b of Object.values(a.byCode)) for (const e of b.upcoming.filter(x => x.scope === 'company')) { const src = ev.events.find(n => n.id === e.id); assert.ok(src.scope.codes.some(c => codes.has(c))); }
 });

@@ -14,7 +14,8 @@ export function alreadyDone(latest, now = new Date().toISOString()) {
   const today = koreaDay(now);
   if (!latest || latest.dayKST !== today) return {skip: false, reason: '오늘 실행 기록 없음'};
   if (latest.session === false && latest.status === 'complete') return {skip: true, reason: '휴장일 기록 이미 있음'};
-  if (latest.status === 'complete' && latest.exitCode === 0 && latest.confirmedTodayStocks === 52 && latest.forecastId) return {skip: true, reason: `오늘 실행 완료(${latest.at} · 52/52 · ${latest.forecastId})`};
+  // 2026-10-04 예측을 지운 뒤로는 발행본이 없다 — 52곳 종가가 다 모이고 정상 종료면 오늘 일은 끝난 것
+  if (latest.status === 'complete' && latest.exitCode === 0 && latest.confirmedTodayStocks === 52) return {skip: true, reason: `오늘 실행 완료(${latest.at} · 52/52)`};
   return {skip: false, reason: `오늘 앞선 실행이 끝나지 않음(${latest.status ?? '상태 없음'} · 종료코드 ${latest.exitCode ?? '—'} · 확정 ${latest.confirmedTodayStocks ?? '—'}/52)`};
 }
 

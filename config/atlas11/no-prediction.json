@@ -1,0 +1,36 @@
+{
+ "schema": "atlas11-no-prediction-1",
+ "order": {
+  "at": "2026-10-04 15:37 KST",
+  "by": "사장님",
+  "text": [
+   "이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라"
+  ]
+ },
+ "removed": [
+  "매일 실행의 예측 만들기(발행) · 그림자 발행 · 채점 · 원인 분석 · 진화(후보 시험·채택·되돌림) 단계",
+  "사이트 화면: 「내일」 원 · 오를 쪽·내릴 쪽 · 게임 · 성적 · 진화 · 1만원 비교 · 기록 · 자료 상태 · 종목 화면의 전망 그래프·확률·「왜 그렇게 봤나」·연쇄 지도",
+  "예측 엔진 코드(lib/atlas11 의 발행·모의·채점·분석·진화·게임 묶음)와 그 검사 · 요인 시험 자료 모으기 단추(atlas11-backfill) · 4시간 엔진 단추(atlas4h-collect · atlas4h-loop)와 엔진 코드"
+ ],
+ "kept": [
+  "매일 16:00 실제 종가(정규장 15:30) 모으기 · 공시·기사·수급 모으기",
+  "2026-10-06 「튼튼한 회사 52곳」으로 종목 바꾸기(이름 · 지난 주가 · 일정만 보여 줌)",
+  "사이트 화면: 52곳(지난 주가 · 출목표 · 다가오는 일정·공시 ★) · 일정 · 종목 화면(실제 종가 그래프 · 출목표 · 일정·공시 · 수급·기사)"
+ ],
+ "archived": "지난 예측 기록(reports/atlas11/versions 발행본 · reports/atlas11/ledger 의 예측·채점·분석·실험·모델·요인 장부 · public/data/atlas11/forecast.json · public/downloads/atlas11 · public/data/atlas11/ledger · public/data/atlas11/daily · atlas4h 의 명령문·자료·장부·봉인·결과)은 지우지 않고 저장소에 보관만 한다 — 사이트에 싣지 않고 화면에 내지 않는다 · 마지막 예측 화면 묶음(public/data/atlas11/view)과 지운 코드는 git 커밋 1958247 에 그대로 남아 있다",
+ "site": {
+  "screens": [
+   "52곳(#/)",
+   "회사(#/stock/코드)",
+   "일정(#/agenda)"
+  ],
+  "oldAddresses": "지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)와 game/ 은 처음 화면으로",
+  "bundle": "public/data/atlas11/view = manifest.json · board.json · agenda.json · stocks/<코드>.json (lib/atlas11/board.mjs · 묶음 검사 validateBoard 가 예측 열쇠·앞날 말·앞날 종가를 막는다)",
+  "othersWords": "기사 제목·공시 제목·일정 이름에 앞날을 짐작하는 말(전망·예상·목표가·추천 …)이 있으면 싣지 않고 뺀 수만 적는다"
+ },
+ "notDeleted": [
+  "옛 엔진 코드(저장소 맨 위 lib/*.mjs · scripts/*.mjs · tests/*.test.mjs 등 v6~v10)는 돌지 않는 보관본으로 남김 — 매일 실행이 쓰는 lib/rolling-operation.mjs · lib/input-revisions.mjs · lib/rolling-calendar.mjs 가 그 폴더에 함께 있음",
+  "관측 수집(scripts/atlas11/collect_context.mjs)의 요인 표시(factors)는 수집 기록의 일부라 그대로 — 화면에는 내지 않음",
+  "config/atlas11 의 예측 설정 파일(horizon · scoring-policy · evolution)은 그 명령의 기록으로 남김(쓰는 코드는 지움)"
+ ]
+}
