@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * ATLAS 11 · 시장·수급·뉴스·공시·거시 관측 수집기 (16:00 매일 실행의 앞 단계 · 실패해도 본 실행은 계속)
- *   node scripts/atlas11/collect_context.mjs [--now ISO] [--root DIR] [--fixtures DIR] [--codes 005930,196170]
+ *   node scripts/atlas11/collect_context.mjs [--now ISO] [--root DIR] [--fixtures DIR] [--codes 005930,196170] [--closed-day last-session]
+ *   --closed-day last-session: 휴장일에 손으로 돌릴 때만 — 바로 앞 거래일을 기준일로 모은다(매일 실행은 이 옵션 없이 돌아 휴장일엔 아무것도 쓰지 않음)
  * 쓰는 것
  *   reports/atlas11/context/<day>/<시각>.json      그날 관측 묶음(해석한 값 · 출처 주소 · 원문 해시 · 오류)
  *   reports/atlas11/raw/context/<day>/<시각>.json.gz 받은 원문 그대로(주소 → 본문)
@@ -63,12 +64,20 @@ async function latestPreviousSnapshot(rootDir, day) {
   return null;
 }
 
-export async function collectContext({now = new Date().toISOString(), rootDir = process.cwd(), fixtures = null, codes = null, fetcher = null, log = () => {}} = {}) {
+export async function collectContext({now = new Date().toISOString(), rootDir = process.cwd(), fixtures = null, codes = null, fetcher = null, log = () => {}, closedDay = null} = {}) {
   const input = await readJSON(path.join(rootDir, 'public/data/input.json'));
   const calendar = await readJSON(path.join(rootDir, 'public/data/rolling-calendar.json'), input.calendar);
-  const sessions = calendar.sessions, {day, hm} = koreaParts(now);
+  const sessions = calendar.sessions, {day: today, hm} = koreaParts(now);
   let assets = input.assets.filter(a => !codes || codes.includes(a.code)).map(a => ({code: a.code, name: a.name}));
-  if (!sessions.includes(day)) return {status: 'not_trading_day', day, written: null};
+  // 휴장일: 보통은 아무것도 쓰지 않는다(16:00 매일 실행) · 손으로 누른 수집(--closed-day last-session)만 바로 앞 거래일을 기준일로 모은다
+  //   2026-10-04 밤 사장님이 휴장일(일요일)에 atlas11-context 를 눌렀으나 「not_trading_day」로 아무것도 안 모여, 180곳 수급·기사를 바로 채우려고 더함
+  //   기준일 장은 이미 끝났으므로 마감 뒤 값(afterClose) · 그날 수급은 잠정이 아니라 보고값 · 받은 시각(fetchedAt)은 실제 시각 그대로
+  let day = today, closedDayRun = null;
+  if (!sessions.includes(today)) {
+    const prev = closedDay === 'last-session' ? sessions.filter(d => d < today).sort().at(-1) ?? null : null;
+    if (!prev) return {status: 'not_trading_day', day: today, written: null};
+    day = prev; closedDayRun = {actualDay: today, effectiveDay: prev};
+  }
   // 종목을 바꾸는 날(config/atlas11/universe.json next.switchOn 이후 · 아직 안 바꿈)에는 새 묶음 회사도 함께 모은다
   //   이 수집은 16:00 매일 실행보다 먼저 돌므로, 이렇게 해야 바꾼 첫날 저녁부터 새 회사들의 공시·기사·수급이 화면에 보인다(2026-10-04 180곳)
   let nextUniverse = null, nextError = null;
@@ -78,7 +87,7 @@ export async function collectContext({now = new Date().toISOString(), rootDir = 
       if (switchDue(cfg, input, day)) { const nx = await loadNextInput(rootDir, cfg.next), have = new Set(assets.map(a => a.code)), extra = nx.input.assets.filter(a => !have.has(a.code)).map(a => ({code: a.code, name: a.name})); assets = [...assets, ...extra]; nextUniverse = {id: cfg.next.id, count: nx.input.assets.length, added: extra.length, from: nx.from}; }
     } catch (e) { nextError = String(e.message); }
   }
-  const afterClose = hm >= '15:40';
+  const afterClose = closedDayRun ? true : hm >= '15:40';
   const f = fetcher ?? makeFetcher({fixtures});
   const errors = nextError ? [{kind: 'universe_next', key: 'next', error: nextError}] : [], sources = [];
   const take = async (kind, key, url, parse, opts) => {
@@ -114,10 +123,10 @@ export async function collectContext({now = new Date().toISOString(), rootDir = 
   }
   // 정정(잠정 → 확정) · 이전 묶음과 비교
   const previous = await latestPreviousSnapshot(rootDir, day);
-  const flowsMarked = markProvisional(flows, day);
+  const flowsMarked = markProvisional(flows, closedDayRun ? today : day);
   const revisions = flowRevisions(previous?.flows ?? [], flowsMarked);
   const seenNews = new Set((previous?.news ?? []).flatMap(n => n.items.map(i => i.id))), seenDisc = new Set((previous?.disclosures ?? []).flatMap(d => d.items.map(i => i.id)));
-  const ctx = {schema: CONTEXT_SCHEMA, day, fetchedAt: now, afterClose, assets: assets.length, ...(nextUniverse ? {nextUniverse} : {}), index, flows: flowsMarked, news, disclosures, macro, revisions, errors, sources: sources.map(({attempts, ...s}) => ({...s, attempts: attempts?.length ?? 0})), previousSnapshot: previous ? {day: previous.day, fetchedAt: previous.fetchedAt} : null, usedInForecast: false,
+  const ctx = {schema: CONTEXT_SCHEMA, day, fetchedAt: now, afterClose, ...(closedDayRun ? {closedDayRun} : {}), assets: assets.length, ...(nextUniverse ? {nextUniverse} : {}), index, flows: flowsMarked, news, disclosures, macro, revisions, errors, sources: sources.map(({attempts, ...s}) => ({...s, attempts: attempts?.length ?? 0})), previousSnapshot: previous ? {day: previous.day, fetchedAt: previous.fetchedAt} : null, usedInForecast: false,
     policy: {prices: '종가·시고저·거래량은 이 수집기에서 받지 않는다(정규장 값 확인 불가 · 대체거래소 거래 섞임)', missing: '결측은 null · 0 으로 채우지 않음', sameDayFlows: '당일 투자자 수급은 16:00 에 잠정일 수 있어 provisional_same_day 로 표시 · 다음 수집에서 값이 바뀌면 revisions 에 기록', beforeClose: '15:40 KST 전 실행이면 당일 행을 버린다'}};
   ctx.summary = summarizeContext(ctx);
   ctx.factors = factorObservations(ctx, sessions);
@@ -138,11 +147,11 @@ export async function collectContext({now = new Date().toISOString(), rootDir = 
   for (const d of disclosures) { const fresh = d.items.filter(i => !seenDisc.has(i.id)); if (!fresh.length) continue; const r = await rec({kind: 'context_disclosures', day, code: d.code, name: d.name, items: fresh, corporateActions: fresh.filter(i => i.corporateAction).length, sourceUrl: d.sourceUrl, rawSHA256: d.rawSHA256, status: fresh.some(i => i.corporateAction) ? '기업행위 공시' : '새 공시', usedInForecast: false}); if (!r.duplicate) records++; }
   const status = sources.every(s => !s.ok) ? 'failed' : errors.length ? 'partial' : 'ok';
   log({status, day, file: latest.file, errors: errors.length, records});
-  return {status, day, afterClose, written: latest.file, records, errors: errors.length, summary: ctx.summary, factorsObserved: Object.values(ctx.factors).filter(x => x.observed).map(x => x.factorId)};
+  return {status, day, afterClose, ...(closedDayRun ? {closedDayRun} : {}), written: latest.file, records, errors: errors.length, summary: ctx.summary, factorsObserved: Object.values(ctx.factors).filter(x => x.observed).map(x => x.factorId)};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
-  const out = await collectContext({now: arg('--now') ?? new Date().toISOString(), rootDir: arg('--root') ?? process.cwd(), fixtures: arg('--fixtures'), codes: arg('--codes')?.split(',') ?? null});
+  const out = await collectContext({now: arg('--now') ?? new Date().toISOString(), rootDir: arg('--root') ?? process.cwd(), fixtures: arg('--fixtures'), codes: arg('--codes')?.split(',') ?? null, closedDay: arg('--closed-day')});
   console.log(JSON.stringify(out));
   process.exitCode = out.status === 'failed' ? 2 : 0;
 }

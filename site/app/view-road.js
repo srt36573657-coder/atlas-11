@@ -28,7 +28,7 @@ export const streakText = road => road.streak.side ? `${road.streak.side === 'up
 /** 수급·기사를 모은 곳 수 — 다 모으지 못했으면 몇 곳인지와 언제 모은 것인지 적는다 */
 function ctxNote(cs) {
   const got = cs.filter(c => c.brief && !c.brief.missing?.includes('수급') && !c.brief.missing?.includes('기사')).length, day = cs.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
-  return h('p', {class: 'f-ctx small', 'data-got': got}, got === cs.length ? `수급·기사: ${cs.length}곳 모두 · ${day ? korDate(day) + ' 관측 수집' : ''}` : `수급·기사: ${cs.length}곳 가운데 ${got}곳만 모았음${day ? `(${korDate(day)} 관측 수집)` : ''} · 나머지 ${cs.length - got}곳은 다음 관측 수집 때 채움`);
+  return h('p', {class: 'f-ctx small', 'data-got': got}, got === cs.length ? `수급·기사: ${cs.length}곳 모두${day ? ` · ${korDate(day)} 기준` : ''}` : `수급·기사: ${cs.length}곳 가운데 ${got}곳만 모았음${day ? `(${korDate(day)} 기준)` : ''} · 나머지 ${cs.length - got}곳은 다음 관측 수집 때 채움`);
 }
 /** 묶는 법 두 가지(앞이 처음 보이는 것) */
 export const ROAD_MODES = [{id: 'ind', text: '업종별'}, {id: 'flow', text: '흐름별'}];

@@ -1,5 +1,6 @@
 name: atlas11-context
 # 관측 수집기만 한 번 돌려 결과를 기록한다(종가·채점·발행은 하지 않음) — 매일 실행 앞 단계와 같은 코드
+# 휴장일에 누르면 바로 앞 거래일을 기준일로 모은다(--closed-day last-session · 2026-10-04 밤 일요일에 눌렀을 때 아무것도 안 모였던 일로 더함)
 on:
   workflow_dispatch:
 permissions:
@@ -19,7 +20,7 @@ jobs:
         with:
           node-version: 22
       - name: Context collection
-        run: timeout 600 node scripts/atlas11/collect_context.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" || true
+        run: timeout 600 node scripts/atlas11/collect_context.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --closed-day last-session || true
       - name: Commit
         if: always()
         shell: bash
