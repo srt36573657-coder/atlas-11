@@ -19,7 +19,7 @@ export const SCREENS = [
   // 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
   // 2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」: 36칸 판 · 업종(불장 1위 업종) · 회사 · 일정
   {id: 'home', name: '36칸 판', hash: '#/', wait: '.t-tile'},
-  {id: 'industry', name: '업종', hash: board => '#/i/' + (board?.hot?.items?.[0]?.id ?? board?.groups?.[0]?.id ?? ''), wait: '.b-card .road'},
+  {id: 'industry', name: '업종', hash: board => '#/i/' + (board?.hot?.items?.[0]?.id ?? board?.groups?.[0]?.id ?? ''), wait: '.b-card .spark'},
   // 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 … 추가로 더 만들어」: 출목표 한 판 — 업종별(처음) · 흐름별(단추를 눌러서)
   {id: 'road', name: '출목표(업종별)', hash: '#/road', wait: '.f-tile'},
   {id: 'road-flow', name: '출목표(흐름별)', hash: '#/road', wait: '.f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="flow"]').click(); await page.waitForSelector('.f-body[data-mode="flow"] .f-tile'); }},

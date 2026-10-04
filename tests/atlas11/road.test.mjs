@@ -14,7 +14,8 @@ test('정한 값: 한 칸 1%·2%·3%·5% · 24줄 · 최근 5일 · 흐름 한 �
 
 test('52곳 실제 종가(9/28 입력 사본 · 판과 같은 21개)로: 동그라미 수 = 날마다 반올림(|등락| ÷ 한 칸)의 합 · 두 저울 · 흐름 한 마디가 따로 센 값과 같다', async () => {
   const input = await readJSON(INPUT_928);
-  const TABLE = {up: {up: '계속 오르는 흐름', flat: '오르다가 요즘 쉬는 중', down: '오르다가 요즘 꺾임'}, flat: {up: '요즘은 오름 쪽', flat: '뚜렷한 쪽 없음', down: '요즘은 내림 쪽'}, down: {up: '내리다가 요즘 반등', flat: '내리다가 요즘 쉬는 중', down: '계속 내리는 흐름'}};
+  // 2026-10-05 「잡스였다면」 개혁: 앞으로 이어질 듯 들리는 말(계속·요즘·반등) 대신 지난 두 구간을 그대로(앞 15거래일 → 끝 5거래일)
+  const TABLE = {up: {up: '오름 → 오름', flat: '오름 → 비슷', down: '오름 → 내림'}, flat: {up: '비슷 → 오름', flat: '비슷 → 비슷', down: '비슷 → 내림'}, down: {up: '내림 → 오름', flat: '내림 → 비슷', down: '내림 → 내림'}};
   for (const a of input.assets) {
     const st = companyOf(a, {limitDay: '2026-09-28'});
     assert.equal(st.c.length, 21, a.code + ' 종가 21개'); assert.equal(st.c.at(-1), st.close, a.code + ' 마지막 = 판의 종가');
@@ -36,5 +37,5 @@ test('빈 값·짧은 값도 깨지지 않는다 · 같은 쪽은 아래로, 바
   const lay = roadLayout([0.021, 0.012, -0.03], 0.01); // 오름 2개 → 오름 1개(아래로) → 내림 3개(새 줄)
   assert.deepEqual(lay.cells.map(c => [c.col, c.row, c.side]), [[0, 0, 'up'], [0, 1, 'up'], [0, 2, 'up'], [1, 0, 'down'], [1, 1, 'down'], [1, 2, 'down']]);
   assert.equal(balance(1, 0).side, 'still'); assert.equal(balance(5, 5).side, 'flat'); assert.equal(balance(9, 2).side, 'up');
-  assert.equal(WORD.flat, '비슷함'); assert.equal(STORY.down.up, '내리다가 요즘 반등');
+  assert.equal(WORD.flat, '비슷함'); assert.equal(STORY.down.up, '내림 → 오름');
 });

@@ -5,7 +5,9 @@
    2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 잡스라면 그리고 애플이라면 해서 추가로 더 만들어」 — 출목표 한 판(#/road)
    아래 탭 셋: 처음 화면(#/ · 이름은 지금 묶음의 곳 수 「180곳」) · 「출목표」(#/road) · 「일정」(#/agenda) — 업종·회사 화면은 처음 화면에 속한다.
    지금 탭을 한 번 더 누르면 맨 위로 · 출목표 한 판은 회사 화면에 갔다 와도 보던 자리 그대로(아이폰 탭 막대처럼).
-   지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)는 처음 화면으로 돌린다. */
+   지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)는 처음 화면으로 돌린다.
+   2026-10-05 02:44 「잡스였다면」 개혁: 불러오는 동안 파일 이름 같은 기술 말 대신 회색 자리 표시(애플 HIG 「바로 열리고, 빈칸 대신 자리 표시」)
+     · 그래프 선 그리기(0.3초)는 화면마다 처음 한 번만 — 같은 화면을 다시 그릴 때(묶음 바꾸기 · 글씨 단추)는 움직이지 않는다(애플 HIG 움직임: 목적이 있을 때만) */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome} from './view-home.js';
@@ -30,6 +32,8 @@ const routes = [
 const TABS = ['home', 'road', 'agenda'];
 /** 보던 자리 기억(출목표 한 판만) — 회사 화면에 갔다 돌아오면 그 자리 */
 const KEEP_SCROLL = new Set(['road']), scrollMemo = new Map();
+/** 선 그리기 움직임을 이미 보인 화면 */
+const drawn = new Set();
 const FONT_STEPS = [100, 125, 150, 175, 200];
 
 function applyFont() { const step = Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0))); document.documentElement.style.fontSize = FONT_STEPS[step] + '%'; document.documentElement.dataset.fontStep = String(step); }
@@ -72,10 +76,12 @@ async function route() {
   if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
   if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
   markActive(r.tab ?? r.id); app.view = r.id; state.summary = '';
+  document.documentElement.toggleAttribute('data-drawn', drawn.has(r.id)); drawn.add(r.id); // 이 화면을 이미 한 번 그렸으면 선 그리기 움직임 없이
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;
   try { await r.render(main, {hash, manifest: app.manifest}); }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
+  setTimeout(() => { if (app.view === r.id) document.documentElement.setAttribute('data-drawn', ''); }, 450); // 다 그린 뒤에는 같은 화면 안에서 다시 그려도(묶음 바꾸기) 움직이지 않음
   window.scrollTo({top: KEEP_SCROLL.has(r.id) ? (scrollMemo.get(r.id) ?? 0) : 0});
 }
 function failure(title, e) {
@@ -96,7 +102,8 @@ async function watchManifest() {
 async function start() {
   applyFont();
   const main = document.getElementById('main');
-  main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료 목록(manifest.json)을 읽는 중입니다…')));
+  main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료를 불러오는 중입니다'),
+    h('div', {class: 'sk', 'aria-hidden': 'true'}, h('span', {class: 'sk-t'}), h('span', {class: 'sk-l'}), h('span', {class: 'sk-g'}))));
   try { app.manifest = await loadManifest(); }
   catch (e) { main.replaceChildren(failure('자료 목록을 읽지 못했습니다', e)); return; }
   header();

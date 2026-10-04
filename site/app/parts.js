@@ -8,7 +8,8 @@ import {integrityText} from './frame.js';
 export const LV = {3: '★★★', 2: '★★', 1: '★'};
 export const LV_WORD = {3: '아주 중요', 2: '중요', 1: '참고'};
 
-const star = level => h('b', {class: 'lv lv' + level, title: LV_WORD[level], 'aria-label': `${LV_WORD[level]}(별 ${level}개)`}, LV[level]);
+/** 별(★)만으로 뜻을 전하지 않는다 — 별 옆에 말(아주 중요 · 중요 · 참고) · 2026-10-05 「잡스였다면」 개혁 */
+const star = level => h('b', {class: 'lv lv' + level, title: LV_WORD[level], 'aria-label': `${LV_WORD[level]}(별 ${level}개)`}, LV[level], h('small', {class: 'lv-w', 'aria-hidden': 'true'}, ' ' + LV_WORD[level]));
 /** 회사 이름 링크(여럿이면 「 · 」로 잇는다) */
 const whoLinks = who => (Array.isArray(who) ? who : [who]).flatMap((w, i) => [i ? ' · ' : null, h('a', {class: 'ag-who', href: '#/stock/' + w.code}, w.name)]);
 
@@ -104,14 +105,7 @@ export function kindBadge(kind) {
   const k = KIND_TEXT[kind]; if (!k) return null;
   return h('span', {class: 'b-kind ' + kind, title: k[1]}, k[0]);
 }
-/** 36칸 판 칸 색 — 지난 20거래일 평균 변화의 크기(빨강 오름 · 파랑 내림 · 한국 시장 관례) · 뜻은 색만이 아니라 부호와 글자로도 */
-export const heatOf = v => !finite(v) ? 'na' : v >= 0.15 ? 'h3' : v >= 0.08 ? 'h2' : v >= 0.03 ? 'h1' : v > -0.03 ? 'n' : v > -0.08 ? 'c1' : 'c2';
-export const HEAT_KEY = '빨강이 짙을수록 많이 오름(+3% · +8% · +15% 이상) · 파랑이 짙을수록 많이 내림(−3% · −8% 아래) · −3%~+3% 는 색 없음 · 칸마다 숫자도 함께 적음';
-/** 칸 색 보기표 — 색 여섯 칸과 그 범위(밝은·어두운 화면 모두 같은 말) */
-export const HEAT_STEPS = [['c2', '−8% 아래'], ['c1', '−3% 아래'], ['n', '−3%~+3%'], ['h1', '+3% 이상'], ['h2', '+8% 이상'], ['h3', '+15% 이상']];
-export function heatLegend() {
-  return h('ol', {class: 't-legend', 'aria-label': '칸 색 = 지난 20거래일 평균 변화'}, ...HEAT_STEPS.map(([k, t]) => h('li', {'data-heat': k}, h('span', {class: 't-sw heat-' + k, 'aria-hidden': 'true'}), t)));
-}
+/* 36칸 판 칸 색의 세기와 색 보기표는 2026-10-05 「잡스였다면」 개혁에서 덜어 냄 — 칸 차례가 크기를 말하고, 칸 위 가는 선 하나가 오름(빨강)·내림(파랑)만 말한다 */
 /** 업종 화면 「누가 끌었나」 — 5곳의 지난 20거래일 변화를 가운데 0 에서 좌우로 뻗은 막대로(가장 큰 값이 반 폭) · 폭은 CSSOM 으로만(글 속 style 속성 없음) */
 export function moverBars(companies) {
   const vals = companies.map(c => c.change20).filter(finite), max = Math.max(0.01, ...vals.map(Math.abs));
@@ -168,17 +162,15 @@ export function meanSpark(rets, sc, label) {
 /** 주 단위 순매수 → 「+12만주」 「−1,071만주」 「+3,400주」 「−1.2억주」 */
 export const sharesText = v => { if (!finite(v)) return '없음'; const a = Math.abs(v), sg = v > 0 ? '+' : v < 0 ? '−' : ''; return a >= 1e8 ? `${sg}${(a / 1e8).toFixed(1)}억주` : a >= 1e4 ? `${sg}${Math.round(a / 1e4).toLocaleString('ko-KR')}만주` : `${sg}${a.toLocaleString('ko-KR')}주`; };
 const notYet = '아직 모으지 않음';
-export function flowBars(brief) {
+/** 수급 한 줄: 「수급 5거래일 · 외국인 +7,954주 · 기관 +13만주」 · 잠정인 날은 적는다 · 언제까지인지는 그 화면 머리 한 줄(출목표 「수급·기사: … 기준」 · 업종 「수급: … 까지 5거래일 합」)과 읽어 주기 글에
+   2026-10-05 「잡스였다면」 개혁: 칸 하나에 넷까지(애플 WWDC20) — 막대 두 줄 대신 부호 달린 숫자 한 줄(색만이 아니라 + · − 로) */
+export function flowLine(brief) {
   const f = brief?.flows;
-  if (!f) return h('span', {class: 'fl fl-none'}, h('span', {class: 'fl-h'}, '수급'), h('span', {class: 'fl-miss'}, !brief || brief.missing?.includes('수급') ? notYet : '수급 자료 없음'));
-  const max = Math.max(1, Math.abs(f.foreign), Math.abs(f.institution)), side = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
-  const row = (label, v) => {
-    const bar = h('span', {class: 'fl-bar ' + side(v)}); bar.style.width = `${Math.max(2, Math.abs(v) / max * 50)}%`; if (v < 0) bar.style.right = '50%'; else bar.style.left = '50%';
-    return h('span', {class: 'fl-row', 'data-who': label}, h('span', {class: 'fl-lab'}, label), h('span', {class: 'fl-track', 'aria-hidden': 'true'}, h('span', {class: 'fl-zero'}), bar), h('b', {class: 'fl-val ' + side(v)}, sharesText(v)));
-  };
+  if (!f) return h('span', {class: 'fl fl-none'}, h('span', {class: 'fl-h'}, '수급 · '), h('span', {class: 'fl-miss'}, !brief || brief.missing?.includes('수급') ? notYet : '수급 자료 없음'));
+  const side = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat', pv = f.provisional.length ? ` · ${f.provisional.length === 1 && f.provisional[0] === f.to ? '마지막 날' : f.provisional.map(korDate).join('·')} 잠정` : '';
+  const val = (label, v) => h('span', {class: 'fl-it', 'data-who': label}, `${label} `, h('b', {class: 'fl-val ' + side(v)}, sharesText(v)));
   return h('span', {class: 'fl', 'data-days': f.days, 'aria-label': `수급 · ${korDate(f.from)}부터 ${korDate(f.to)}까지 ${f.days}거래일 순매수 합 · 외국인 ${sharesText(f.foreign)} · 기관 ${sharesText(f.institution)}${f.provisional.length ? ` · ${f.provisional.map(korDate).join(', ')} 값은 잠정` : ''}`},
-    h('span', {class: 'fl-h'}, `수급 · ${f.days}거래일 합`, h('small', null, ` · ${korDate(f.to)}까지${f.provisional.length ? ` · ${f.provisional.length === 1 && f.provisional[0] === f.to ? '마지막 날' : f.provisional.map(korDate).join('·')} 잠정` : ''}`)),
-    row('외국인', f.foreign), row('기관', f.institution));
+    h('span', {class: 'fl-h'}, `수급 ${f.days}거래일${pv}`), ' · ', val('외국인', f.foreign), ' · ', val('기관', f.institution));
 }
 export function newsLine(brief) {
   const n = brief?.news;
@@ -187,10 +179,18 @@ export function newsLine(brief) {
   return h('span', {class: 'nw'}, h('span', {class: 'nw-h'}, `기사 · ${stamp(n.publishedAt)} · `, n.office ? h('span', {'data-ident': ''}, n.office) : '언론사 이름 없음'), h('span', {class: 'nw-t', 'data-ident': ''}, n.title));
 }
 
-/** 맨 아래: 만든 시각 · 판 이름 · 무결성 */
+/** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */
+export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '어느 회사를 고르라고 하지 않습니다', '알림을 보내지 않습니다',
+  '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익을 셈하지 않습니다', '값이 늦거나 빠지면 그렇다고 적습니다(0 으로 채우지 않음)'];
+export function promiseBox() {
+  return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${NOT_DO.length}가지`), h('ul', null, ...NOT_DO.map(x => h('li', null, x))));
+}
+/** 맨 아래: 약속 한 줄 · 출처 · 기술 정보(만든 시각 · 판 이름 · 무결성 — 접어 둠) */
 export function foot(m) {
   return h('footer', {class: 'b-foot'},
-    h('p', null, `자료를 만든 시각 ${stamp(m?.generatedAt)} · 판 `, h('code', null, m?.boardId ?? '없음')),
-    h('p', null, '무결성: ', h('span', {class: 'integrity-text'}, integrityText())),
-    h('p', null, '종가 출처: 한국거래소 정규장 15:30 종가(네이버 증권 분봉 원문) · 수급·기사·공시: 네이버 증권 · 일정: 공식 발표처'));
+    h('p', {class: 'b-promise'}, '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다'),
+    h('p', null, '종가: 한국거래소 정규장 15:30 종가(네이버 증권) · 수급·기사·공시: 네이버 증권 · 일정: 공식 발표처 · 거래일 16:00에 새로 올림'),
+    h('details', {class: 'b-tech'}, h('summary', null, '기술 정보'),
+      h('p', null, `자료를 만든 시각 ${stamp(m?.generatedAt)} · 판 `, h('code', null, m?.boardId ?? '없음')),
+      h('p', null, '무결성: ', h('span', {class: 'integrity-text'}, integrityText()))));
 }

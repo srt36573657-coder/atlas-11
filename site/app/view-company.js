@@ -1,11 +1,13 @@
 /* ATLAS 11 · 회사 화면(#/stock/CODE) — 예측 없음 · 뒤로 가기는 그 회사의 업종 화면(#/i/<업종>) · 출목표 한 판에서 왔으면 그 판
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
    지난 60거래일 실제 종가 선 · 출목표(지난 20거래일) · 지난 1년 숫자 · 일정·공시 모두(★) · 수급·기사·공시 기록(눌러야 열림)
-   기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs). */
+   기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs).
+   2026-10-05 02:44 「잡스였다면」 개혁 — 앞 화면과 이어 보이기: 머리에 「지난 20거래일 ▲변화」(판·출목표 칸과 같은 숫자) · 60거래일 그래프 안에 그 20거래일을 옅은 띠로
+     · 끝에 「같은 업종 4곳」(근처에 무엇이 있나 — 애플 WWDC17 길 찾기) */
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from './util.js';
-import {state, loadStock, loadAgenda} from './store.js';
+import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
-import {agendaBox, roadBox, priceLine, foot, kindBadge} from './parts.js';
+import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale} from './parts.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -43,11 +45,25 @@ function contextBox(c) {
   return box;
 }
 
+/** 같은 업종의 다른 회사(판의 업종 차례 그대로) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(같은 눈금) · ▲변화 */
+function nearBox(board, s) {
+  const g = (board?.groups ?? []).find(x => x.id === s.group?.id); if (!g) return null;
+  const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean);
+  if (!cs.length) return null;
+  const sc = sparkScale(cs);
+  return h('section', {class: 'b-box c-near', 'aria-label': `같은 업종 ${cs.length}곳`},
+    h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
+    h('ol', {class: 'nc-list'}, ...cs.map(c => h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + c.code},
+      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name), h('small', {class: 'nc-ind'}, c.sector ?? '')),
+      sparkSvg(c, sc),
+      h('b', {class: 'chg20 nc-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음'))))));
+}
+
 export async function renderCompany(main, {hash, manifest}) {
   const code = hash.match(/\d{6}/)[0];
-  const [s, agenda] = await Promise.all([loadStock(code), loadAgenda().catch(() => null)]);
-  const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date;
-  state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.`;
+  const [s, agenda, board] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null)]);
+  const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date, band = s.cFrom ? rows.findIndex(r => r.date === s.cFrom) : -1;
+  state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}`;
   const chartBox = h('div', {class: 'c-chart'});
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
@@ -57,13 +73,15 @@ export async function renderCompany(main, {hash, manifest}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, s.name),
       h('p', {class: 'b-when'}, h('code', null, s.code), s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
-      priceLine(s, {big: true})),
-    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지` : '')), chartBox,
+      priceLine(s, {big: true}),
+      h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : '')),
+    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false})),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '지난 1년 숫자'), infoGrid(s)),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),
     contextBox(s.context),
+    nearBox(board, s),
     foot(manifest)));
-  closeChart(chartBox, rows, {ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}`});
+  closeChart(chartBox, rows, {band: band > 0 ? band : null, ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}${band > 0 ? ` · ${korDate(rows[band].date)}부터 끝까지 옅은 띠(지난 20거래일)` : ''}`});
 }

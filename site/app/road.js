@@ -4,7 +4,8 @@
    · 하루 등락을 1% 단위로 반올림한 수만큼 동그라미(빨강 오름 · 파랑 내림) · 0.5% 안쪽 잔물결은 그리지 않음
    · 같은 쪽이 이어지면 아래로, 바뀌면 새 줄 · 여섯 칸이 차거나 막히면 오른쪽으로(용꼬리)
    · 아주 크게 움직이는 종목(1%로 24줄 넘음)만 한 칸을 2%·3%·5% 로 키우고 「하나 = ○%」로 적는다
-   · 힘 저울 두 줄(처음 15일 · 최근 5일) → 흐름 한 마디(아홉 칸 표) — 지난 기록을 읽은 말
+   · 힘 저울 두 줄(처음 15일 · 최근 5일) → 흐름 한 마디(아홉 칸 표 · 「앞 → 끝」) — 지난 기록을 읽은 말
+   · 동그라미 모양도 뜻을 나른다: 오른 날 = 빈 동그라미 · 내린 날 = 찬 동그라미(색을 못 가려도 읽힘 · style.css)
    색은 화면 글자색 체계(--up 빨강 · --down 파랑)를 CSS 로 입힌다 · 글 속 style 을 쓰지 않는다(사이트 보안 규칙) */
 export const FLAT_BAND = 0.001; // ±0.1% 안쪽은 보합으로 센다
 export const outcome = r => r > FLAT_BAND ? 'up' : r < -FLAT_BAND ? 'down' : 'flat';
@@ -41,11 +42,12 @@ export function roadOf(closes) {
   return {...lay, unit, all: balance(count(lay.cells, 'up'), count(lay.cells, 'down')), before: balance(count(early, 'up'), count(early, 'down')), now: balance(count(recent, 'up'), count(recent, 'down')),
     beforeDays: Math.max(0, cut), recentDays: Math.min(ROAD_RECENT, rets.length), ups, downs, flats: rets.length - ups - downs, days: rets.length, streak: {side, len, ret}, total: cs.length > 1 ? cs.at(-1) / cs[0] - 1 : 0};
 }
-/** 흐름 한 마디: 처음 15일 힘 → 최근 5일 힘 (아홉 칸 표) — 글자 색은 최근 5일 쪽 */
+/** 흐름 한 마디: 앞 15거래일 → 끝 5거래일 (아홉 칸 표) — 글자 색은 끝 5거래일 쪽
+   2026-10-05 02:44 「잡스였다면」 개혁: 「계속 오르는 흐름」 「요즘」 「반등」처럼 앞으로도 이어질 듯 들리는 말을 걷어 내고 지난 두 구간을 그대로 적는다(앞 → 끝) */
 export const STORY = {
-  up: {up: '계속 오르는 흐름', flat: '오르다가 요즘 쉬는 중', down: '오르다가 요즘 꺾임'},
-  flat: {up: '요즘은 오름 쪽', flat: '뚜렷한 쪽 없음', down: '요즘은 내림 쪽'},
-  down: {up: '내리다가 요즘 반등', flat: '내리다가 요즘 쉬는 중', down: '계속 내리는 흐름'}};
+  up: {up: '오름 → 오름', flat: '오름 → 비슷', down: '오름 → 내림'},
+  flat: {up: '비슷 → 오름', flat: '비슷 → 비슷', down: '비슷 → 내림'},
+  down: {up: '내림 → 오름', flat: '내림 → 비슷', down: '내림 → 내림'}};
 export function roadStory(road) {
   const calm = x => x === 'still' ? 'flat' : x, b = road.before.side, n = road.now.side;
   if (b === 'still' && n === 'still') return {side: 'flat', text: `${road.days}거래일 내내 거의 안 움직임`};
@@ -85,5 +87,5 @@ export function roadKey(road, {note = true} = {}) {
   return e('div', {class: 'road-key'},
     road.beforeDays ? row(`처음 ${road.beforeDays}일`, road.before) : null, row(`최근 ${road.recentDays}일`, road.now),
     e('p', {class: 'rk-story ' + story.side}, story.text),
-    note ? e('p', {class: 'rk-note'}, e('span', {}, `${unitText(road)} · 빨강 오름 · 파랑 내림`), e('span', {}, '막대 길이 = 동그라미 개수')) : null);
+    note ? e('p', {class: 'rk-note'}, e('span', {}, `${unitText(road)} · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날`), e('span', {}, '막대 길이 = 동그라미 개수')) : null);
 }
