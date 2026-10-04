@@ -1,35 +1,429 @@
 {
- "id": "u2-qt180-v1-2026-10-04",
- "dir": "reports/atlas11/universe/2026-10-04-2125",
+ "id": "u2-i36-v1-2026-10-04",
+ "dir": "reports/atlas11/universe/2026-10-04-i36",
  "ok": true,
  "picked": 180,
- "createdAt": "2026-10-04T12:25:06Z",
+ "createdAt": "2026-10-04T12:39:00Z",
  "counts": {
   "candidates": 940,
-  "quality": 146,
-  "trendOnly": 86,
+  "pool": 740,
+  "unknownIndustry": 98,
+  "industriesInPool": 41,
+  "industriesFilled": 36,
+  "industriesStrict": 30,
+  "industries": 36,
   "picked": 180,
-  "pickedQuality": 146,
-  "pickedTrend": 34,
-  "byTrend": {
-   "AI·반도체": 34,
-   "전력·원전·에너지": 14,
-   "2차전지": 6,
-   "조선·방산·우주": 13,
-   "기계·로봇·원전 설비": 7,
-   "바이오·헬스": 16,
-   "K-뷰티·푸드·콘텐츠": 17,
-   "AI 플랫폼·소프트웨어": 6
+  "kinds": {
+   "quality": 114,
+   "trend": 51,
+   "profit": 11,
+   "size": 4
   },
-  "otherQuality": 67,
+  "pickedQuality": 114,
+  "pickedTrend": 51,
+  "chosen": [
+   {
+    "rank": 1,
+    "industry": "반도체와반도체장비",
+    "sectors": [
+     "반도체와반도체장비"
+    ],
+    "strict": 106,
+    "filled": 0,
+    "capEok": 31487010
+   },
+   {
+    "rank": 2,
+    "industry": "은행·카드",
+    "sectors": [
+     "은행",
+     "카드"
+    ],
+    "strict": 10,
+    "filled": 0,
+    "capEok": 1856161
+   },
+   {
+    "rank": 3,
+    "industry": "전자장비와기기",
+    "sectors": [
+     "전자장비와기기"
+    ],
+    "strict": 31,
+    "filled": 0,
+    "capEok": 1479759
+   },
+   {
+    "rank": 4,
+    "industry": "전기제품",
+    "sectors": [
+     "전기제품"
+    ],
+    "strict": 27,
+    "filled": 0,
+    "capEok": 1476323
+   },
+   {
+    "rank": 5,
+    "industry": "조선",
+    "sectors": [
+     "조선"
+    ],
+    "strict": 15,
+    "filled": 0,
+    "capEok": 1253033
+   },
+   {
+    "rank": 6,
+    "industry": "제약",
+    "sectors": [
+     "제약"
+    ],
+    "strict": 53,
+    "filled": 0,
+    "capEok": 1236114
+   },
+   {
+    "rank": 7,
+    "industry": "우주항공과국방",
+    "sectors": [
+     "우주항공과국방"
+    ],
+    "strict": 12,
+    "filled": 0,
+    "capEok": 1129428
+   },
+   {
+    "rank": 8,
+    "industry": "전기장비",
+    "sectors": [
+     "전기장비"
+    ],
+    "strict": 19,
+    "filled": 0,
+    "capEok": 1008865
+   },
+   {
+    "rank": 9,
+    "industry": "복합기업",
+    "sectors": [
+     "복합기업"
+    ],
+    "strict": 3,
+    "filled": 2,
+    "capEok": 997547
+   },
+   {
+    "rank": 10,
+    "industry": "석유와가스",
+    "sectors": [
+     "석유와가스"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 969897
+   },
+   {
+    "rank": 11,
+    "industry": "자동차·부품",
+    "sectors": [
+     "자동차",
+     "자동차부품"
+    ],
+    "strict": 23,
+    "filled": 0,
+    "capEok": 916464
+   },
+   {
+    "rank": 12,
+    "industry": "인터넷·IT서비스",
+    "sectors": [
+     "양방향미디어와서비스",
+     "IT서비스"
+    ],
+    "strict": 29,
+    "filled": 0,
+    "capEok": 769238
+   },
+   {
+    "rank": 13,
+    "industry": "기계",
+    "sectors": [
+     "기계"
+    ],
+    "strict": 30,
+    "filled": 0,
+    "capEok": 765055
+   },
+   {
+    "rank": 14,
+    "industry": "증권",
+    "sectors": [
+     "증권"
+    ],
+    "strict": 17,
+    "filled": 0,
+    "capEok": 667438
+   },
+   {
+    "rank": 15,
+    "industry": "보험",
+    "sectors": [
+     "생명보험",
+     "손해보험"
+    ],
+    "strict": 9,
+    "filled": 0,
+    "capEok": 513531
+   },
+   {
+    "rank": 16,
+    "industry": "운송",
+    "sectors": [
+     "해운사",
+     "항공화물운송과물류",
+     "항공사"
+    ],
+    "strict": 6,
+    "filled": 0,
+    "capEok": 409097
+   },
+   {
+    "rank": 17,
+    "industry": "식품·담배",
+    "sectors": [
+     "담배",
+     "식품"
+    ],
+    "strict": 24,
+    "filled": 0,
+    "capEok": 371349
+   },
+   {
+    "rank": 18,
+    "industry": "화장품",
+    "sectors": [
+     "화장품"
+    ],
+    "strict": 17,
+    "filled": 0,
+    "capEok": 318680
+   },
+   {
+    "rank": 19,
+    "industry": "생물공학",
+    "sectors": [
+     "생물공학"
+    ],
+    "strict": 18,
+    "filled": 0,
+    "capEok": 278863
+   },
+   {
+    "rank": 20,
+    "industry": "전력·가스",
+    "sectors": [
+     "전기유틸리티",
+     "가스유틸리티"
+    ],
+    "strict": 6,
+    "filled": 0,
+    "capEok": 270592
+   },
+   {
+    "rank": 21,
+    "industry": "철강·금속",
+    "sectors": [
+     "철강",
+     "비철금속"
+    ],
+    "strict": 5,
+    "filled": 0,
+    "capEok": 262914
+   },
+   {
+    "rank": 22,
+    "industry": "게임엔터테인먼트",
+    "sectors": [
+     "게임엔터테인먼트"
+    ],
+    "strict": 16,
+    "filled": 0,
+    "capEok": 206850
+   },
+   {
+    "rank": 23,
+    "industry": "에너지장비및서비스",
+    "sectors": [
+     "에너지장비및서비스"
+    ],
+    "strict": 13,
+    "filled": 0,
+    "capEok": 169978
+   },
+   {
+    "rank": 24,
+    "industry": "건설",
+    "sectors": [
+     "건설"
+    ],
+    "strict": 10,
+    "filled": 0,
+    "capEok": 156475
+   },
+   {
+    "rank": 25,
+    "industry": "건강관리장비와용품",
+    "sectors": [
+     "건강관리장비와용품"
+    ],
+    "strict": 27,
+    "filled": 0,
+    "capEok": 128385
+   },
+   {
+    "rank": 26,
+    "industry": "방송과엔터테인먼트",
+    "sectors": [
+     "방송과엔터테인먼트"
+    ],
+    "strict": 8,
+    "filled": 0,
+    "capEok": 114347
+   },
+   {
+    "rank": 27,
+    "industry": "유통",
+    "sectors": [
+     "백화점과일반상점",
+     "인터넷과카탈로그소매"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 109124
+   },
+   {
+    "rank": 28,
+    "industry": "가정용기기와용품",
+    "sectors": [
+     "가정용기기와용품"
+    ],
+    "strict": 4,
+    "filled": 1,
+    "capEok": 105560
+   },
+   {
+    "rank": 29,
+    "industry": "섬유,의류,신발,호화품",
+    "sectors": [
+     "섬유,의류,신발,호화품"
+    ],
+    "strict": 9,
+    "filled": 0,
+    "capEok": 105460
+   },
+   {
+    "rank": 30,
+    "industry": "건축자재",
+    "sectors": [
+     "건축자재"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 69464
+   },
+   {
+    "rank": 31,
+    "industry": "생명과학도구및서비스",
+    "sectors": [
+     "생명과학도구및서비스"
+    ],
+    "strict": 8,
+    "filled": 0,
+    "capEok": 67211
+   },
+   {
+    "rank": 32,
+    "industry": "화학",
+    "sectors": [
+     "화학"
+    ],
+    "strict": 15,
+    "filled": 0,
+    "capEok": 57105
+   },
+   {
+    "rank": 33,
+    "industry": "호텔,레스토랑,레저",
+    "sectors": [
+     "호텔,레스토랑,레저"
+    ],
+    "strict": 5,
+    "filled": 0,
+    "capEok": 54226
+   },
+   {
+    "rank": 34,
+    "industry": "상업서비스와공급품",
+    "sectors": [
+     "상업서비스와공급품"
+    ],
+    "strict": 5,
+    "filled": 0,
+    "capEok": 49811
+   },
+   {
+    "rank": 35,
+    "industry": "건강관리업체및서비스",
+    "sectors": [
+     "건강관리업체및서비스"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 37306
+   },
+   {
+    "rank": 36,
+    "industry": "통신장비",
+    "sectors": [
+     "통신장비"
+    ],
+    "strict": 6,
+    "filled": 0,
+    "capEok": 36288
+   }
+  ],
+  "notChosenFilled": [],
+  "short": [
+   {
+    "industry": "무역회사와판매업체",
+    "have": 4
+   },
+   {
+    "industry": "통신",
+    "have": 3
+   },
+   {
+    "industry": "디스플레이 패널",
+    "have": 3
+   },
+   {
+    "industry": "광고",
+    "have": 2
+   },
+   {
+    "industry": "전자제품",
+    "have": 1
+   }
+  ],
   "failReasons": {
-   "시가총액 300위 밖": 640,
    "ROE 5% 미만": 401,
    "2년 연속 흑자 아님": 337,
    "부채비율 150% 초과": 147,
    "업종 모름": 98,
    "가격 이력 부족": 77,
    "결산 자료 없음": 43,
+   "시가총액 900위 밖": 40,
    "가격 이력 없음": 40
   }
  }

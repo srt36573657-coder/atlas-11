@@ -50,15 +50,15 @@ export async function renderCompany(main, {hash, manifest}) {
   state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.`;
   const chartBox = h('div', {class: 'c-chart'});
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
-    h('a', {class: 'c-back', href: '#/'}, `‹ ${manifest.universeSet?.label ?? '52곳'}`),
+    h('a', {class: 'c-back', href: '#/'}, `‹ ${manifest.universeSet?.label ?? '처음 화면'}`),
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, s.name),
-      h('p', {class: 'b-when'}, h('code', null, s.code), ` · ${s.sector ?? ''}`, s.theme ? ` · ${s.theme.label} 갈래` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
+      h('p', {class: 'b-when'}, h('code', null, s.code), s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true})),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
-    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '')), roadBox(s.c, {note: true, title: false})),
+    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false})),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '지난 1년 숫자'), infoGrid(s)),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),
     contextBox(s.context),

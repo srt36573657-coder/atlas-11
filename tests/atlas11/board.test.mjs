@@ -76,7 +76,9 @@ test('바뀔 52곳 미리 보기: 바꾸는 날(10/6) 16:00 실행 전이면 그
 
 test('지금 저장소 자료로 만든 판(배포 때와 같은 길 · scripts/atlas11/build_view.mjs)이 검사를 통과한다', async () => {
   const now = new Date().toISOString(), files = await buildViewFiles({now}), m = files.get('manifest.json');
-  assert.equal(m.prediction, 'off'); assert.ok(m.companies === 52 && files.get('board.json').companies.length === 52);
+  const input = await readJSON('public/data/input.json'), b = files.get('board.json');
+  assert.equal(m.prediction, 'off'); assert.ok(m.companies === input.assets.length && b.companies.length === input.assets.length, '판 곳 수 = 지금 묶음 곳 수(2026-10-04 21:39 부터 180곳)');
+  assert.ok(b.groups.reduce((t, g) => t + g.count, 0) === b.companies.length && b.hot && b.next, '업종 칸 · 요즘 불장 업종 · 다음 불장 후보');
   assert.equal(validateBoard(files, {input: await readJSON('public/data/input.json'), now}), true);
 });
 

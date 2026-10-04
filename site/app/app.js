@@ -1,6 +1,7 @@
-/* ATLAS 11 · 껍데기·길찾기 — 52곳 판(예측 없음)
+/* ATLAS 11 · 껍데기·길찾기 — 우량주·시대 트렌드 180곳 판(예측 없음)
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
-   아래 탭 둘: 처음 화면(#/ · 이름은 지금 묶음의 곳 수 「52곳」·「180곳」) · 「일정」(#/agenda) — 회사 화면(#/stock/CODE)은 처음 화면에 속한다.
+   2026-10-04 20:52 「대표 52개념도 삭제해 총 180개에서 섹타를 구분해」 — 처음 화면은 180곳을 섹터로 나눠 보인다.
+   아래 탭 둘: 처음 화면(#/ · 이름은 지금 묶음의 곳 수 「180곳」) · 「일정」(#/agenda) — 회사 화면(#/stock/CODE)은 처음 화면에 속한다.
    지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)는 처음 화면으로 돌린다. */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
@@ -14,7 +15,7 @@ const ICON = {
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
 };
 const routes = [
-  {id: 'home', label: '52곳', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'home', label: '회사', match: /^(#\/?)?$/, render: renderHome},
   {id: 'stock', tab: 'home', match: /^#\/stock\/\d{6}$/, render: renderCompany},
   {id: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
 ];
@@ -41,7 +42,7 @@ function header() {
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
     speakBtn));
   fontLabel();
-  // 처음 화면 탭 이름 = 지금 묶음의 곳 수(52곳 → 2026-10-06 부터 180곳)
+  // 처음 화면 탭 이름 = 지금 묶음의 곳 수(판 목록을 못 읽으면 「회사」)
   const label = r => r.id === 'home' && Number.isInteger(app.manifest?.companies) ? `${app.manifest.companies}곳` : r.label;
   const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));

@@ -1,9 +1,9 @@
 /**
- * ATLAS 11 · 배포 묶음 — dist/ (index.html 최상위) 와 ZIP · 52곳 판(예측 없음)
+ * ATLAS 11 · 배포 묶음 — dist/ (index.html 최상위) 와 ZIP · 지금 묶음 판(예측 없음)
  *   node scripts/atlas11/package.mjs [--out ../out] [--no-full]
  *   (1) ATLAS11_Drop_<boardId>.zip : dist/ 내용 그대로 (Netlify Drop 용)
  *   (2) ATLAS11_Full_<boardId>.zip : 전체 소스·원자료·기록 (node_modules · dist · out 제외)
- * 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 … 표현하지 마라」: 사이트에는 화면(site/)과 52곳 판 묶음(public/data/atlas11/view)만 싣는다.
+ * 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 … 표현하지 마라」: 사이트에는 화면(site/)과 판 묶음(public/data/atlas11/view)만 싣는다.
  *   지난 예측 기록(발행본 · 장부 사본 · 일일 보고 · CSV · 검사 캡처)은 저장소에 보관만 하고 사이트에 싣지 않는다.
  * 비밀키는 어떤 ZIP 에도 넣지 않는다 (grep 검사).
  */
@@ -21,7 +21,7 @@ const copyDir = async (from, to) => { await fs.mkdir(to, {recursive: true}); for
 
 export async function buildDist() {
   const manifest = JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11/view/manifest.json'), 'utf8'));
-  if (manifest.prediction !== 'off' || !manifest.boardId) throw Error('NOT_A_BOARD_BUNDLE — public/data/atlas11/view 는 52곳 판 묶음이어야 합니다(node scripts/atlas11/build_view.mjs)');
+  if (manifest.prediction !== 'off' || !manifest.boardId) throw Error('NOT_A_BOARD_BUNDLE — public/data/atlas11/view 는 판 묶음이어야 합니다(node scripts/atlas11/build_view.mjs)');
   const dist = path.join(root, 'dist');
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
@@ -30,7 +30,7 @@ export async function buildDist() {
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
   await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n');
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
-  await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · 52곳 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
+  await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사
   const secretPattern = /(FRED_API_KEY|NAVER_CLIENT_SECRET|KRX_API_KEY|NETLIFY_AUTH_TOKEN|AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|-----BEGIN (RSA |EC )?PRIVATE KEY-----)\s*[:=]\s*['"]?[A-Za-z0-9_\-]{8,}/;
   const files = []; const walk = async d => { for (const e of await fs.readdir(d, {withFileTypes: true})) { const f = path.join(d, e.name); if (e.isDirectory()) await walk(f); else files.push(f); } }; await walk(dist);

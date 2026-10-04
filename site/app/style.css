@@ -7,7 +7,7 @@
 :root {
   --font: 'IBM Plex Sans KR', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
   --bg: #f2f2f7; --card: #ffffff; --ink: #000000; --ink2: #3a3a3c; --sub: #6c6c70; --sep: #d1d1d6; --fill: #e5e5ea; --link: #0060df;
-  --up: #ff3b30; --down: #0a84ff; --up-ink: #d70015; --down-ink: #0060df; --warn: #8a5300;
+  --up: #ff3b30; --down: #0a84ff; --up-ink: #d70015; --down-ink: #0060df; --warn: #8a5300; --hot-bg: #c00018; --hot-ink: #ffffff;
   --bar: rgba(249,249,249,.94); --bar-line: #c6c6c8;
 }
 @media (prefers-color-scheme: dark) {
@@ -91,9 +91,10 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .b-date { font-size: .875rem; color: var(--sub); }
 .b-price.big { margin: 10px 0 0; } .b-price.big .b-close { font-size: 2rem; letter-spacing: -.02em; } .b-price.big .b-chg { font-size: 1.125rem; }
 
-/* 갈래(2026-10-04 180곳 · 시대 트렌드 8갈래 + 그 밖) — 갈래 단추 · 접었다 펴는 칸 · 우량/트렌드 표시(색이 아니라 글자와 테두리) */
+/* 업종(2026-10-04 21:04 업종 36개 · 180곳) — 업종 바로 가기(접어 둠) · 접었다 펴는 칸 · 우량/트렌드 표시(색이 아니라 글자와 테두리) */
 .b-kinds { margin: 6px 0 0; font-size: 1.0625rem; font-weight: 700; color: var(--ink2); }
-.g-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+.g-index { margin-top: 14px; }
+.g-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
 .g-chip { display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1.5px solid var(--sep); background: var(--card); color: var(--ink); font-size: 1rem; font-weight: 600; cursor: pointer; text-align: left; }
 .g-chip b { font-size: .875rem; font-weight: 700; color: var(--sub); white-space: nowrap; }
 .g-chip:active { background: var(--fill); }
@@ -106,16 +107,32 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .g-label { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .g-count { font-size: 1.0625rem; font-weight: 700; color: var(--ink2); white-space: nowrap; }
 .g-kinds { font-size: .875rem; color: var(--sub); }
+.g-chg { font-size: .9375rem; color: var(--sub); white-space: nowrap; }
+.g-hot { flex: none; align-self: center; font-size: .8125rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; line-height: 1.5; background: var(--hot-bg); color: var(--hot-ink); }
+.chg20 { font-weight: 700; white-space: nowrap; }
+/* 요즘 불장 업종 11개 · 다음 불장 후보 22곳 — 번호 · 이름 · 20거래일 변화(빨강 오름 · 파랑 내림 · 글자로도 +/−) */
+.hot-list, .nc-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; }
+.hot-row, .nc-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; width: 100%; min-height: 44px; padding: 8px 2px; border: 0; border-bottom: 1px solid var(--sep); background: transparent; color: var(--ink); font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.hot-list li:last-child .hot-row, .nc-list li:last-child .nc-row { border-bottom: 0; }
+.hot-row:active, .nc-row:active { background: var(--fill); }
+.hot-n { flex: none; min-width: 2.4em; font-size: .9375rem; font-weight: 700; color: var(--sub); }
+.hot-l, .nc-name { font-size: 1.125rem; font-weight: 700; overflow-wrap: anywhere; }
+.hot-row .chg20, .nc-row .chg20 { margin-left: auto; font-size: 1.0625rem; }
+.hot-up, .nc-ind { flex-basis: 100%; padding-left: calc(2.4em + 10px); font-size: .875rem; color: var(--sub); }
+.nc-row .b-kind { align-self: center; }
 .g-sec > .b-list { margin-top: 10px; }
 .b-kind { flex: none; align-self: center; font-size: .8125rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; line-height: 1.5; }
 .b-kind.quality { background: var(--ink); color: var(--bg); }
 .b-kind.trend { border: 1.5px dashed var(--ink); color: var(--ink); }
+.b-kind.profit { border: 1.5px solid var(--sub); color: var(--ink2); }
+.b-kind.size { border: 1.5px dotted var(--sub); color: var(--ink2); }
 .b-when .b-kind { margin-left: 2px; vertical-align: 2px; }
 
 /* 출목표(site/app/road.js) — 속 빈 동그라미 · 칸 선은 옅게 */
 .rd-box { margin: 0; }
 .rd-h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; margin: 0 0 6px; font-size: .875rem; color: var(--sub); }
 .rd-h b { color: var(--ink); }
+.rd-h b.chg20.up, .b-box-h small .chg20.up { color: var(--up-ink); } .rd-h b.chg20.down { color: var(--down-ink); } .rd-h b.chg20.flat { color: var(--sub); }
 .road { display: block; width: 100%; height: auto; }
 .road .road-grid line { stroke: var(--sep); stroke-width: .6; }
 .road .bead { fill: none; stroke-width: 1.9; }

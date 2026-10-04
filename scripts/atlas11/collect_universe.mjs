@@ -18,7 +18,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {fetchWithRetry, parseFchartXml} from './collect_naver.mjs';
-import {QUALITY52, QT180, selectQualityTrend, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
+import {QUALITY52, QT180, I36, selectQualityTrend, selectIndustry36, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
 import {groupIdOfSector} from '../../lib/atlas11/groups.mjs';
 
 const sha = s => createHash('sha256').update(s).digest('hex');
@@ -151,15 +151,16 @@ export function lastCompletedSession(sessions, now) {
 
 /** bundle → proposal + 새 입력 (쓰지는 않음) */
 /** 규칙 판 이름 → 규칙(기본은 config/atlas11/universe.json 의 selectRules · 없으면 q52-v2) */
-export const RULE_SETS = Object.freeze({'q52-v2': QUALITY52, 'qt180-v1': QT180});
+export const RULE_SETS = Object.freeze({'q52-v2': QUALITY52, 'qt180-v1': QT180, 'i36-v1': I36});
 export function proposeFromBundle(bundle, {input, now, rules = QUALITY52}) {
   const sessions = input.calendar.sessions, asOf = lastCompletedSession(sessions, bundle.now ?? now), day = kst(bundle.now ?? now).slice(0, 10);
   const candidates = candidatesFromBundle(bundle, {sessions, asOf, input});
   // 2026-10-04 18:10 「180개 회사 · 우량주 그리고 시대 트랜드 주식만」 → qt180-v1 은 우량 전부 + 트렌드 업종으로 채움
-  const sel = rules.mix === 'quality-first' ? selectQualityTrend(candidates, rules) : selectQuality52(candidates, rules);
+  // 2026-10-04 21:04 「업종 36개에서 180개 회사를 찾아…」 → i36-v1 은 업종마다 5곳 · 36개 업종
+  const sel = rules.mix === 'industry' ? selectIndustry36(candidates, rules) : rules.mix === 'quality-first' ? selectQualityTrend(candidates, rules) : selectQuality52(candidates, rules);
   const id = `u2-${rules.version}-${day}`;
   const strip = c => { const {_rows, ...rest} = c; return rest; };
-  const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number.isFinite(c.score) ? Number(c.score.toFixed(4)) : null, parts: c.parts ? Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])) : null, debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c),
+  const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, ...(c.industry ? {industry: c.industry, industryRank: c.industryRank} : {}), group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number.isFinite(c.score) ? Number(c.score.toFixed(4)) : null, parts: c.parts ? Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])) : null, debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c),
     ...(c.kind ? {kind: c.kind, trend: c.trend ? {id: c.trend.id, label: c.trend.label} : null, fails: c.fails.map(x => x.replace(/\(.*\)/, ''))} : {})}));
   const nearMiss = sel.checked.filter(c => c.fails.length).slice(0, 80).map(c => ({code: c.code, name: c.name, capRank: c.capRank, sector: c.sector, fails: c.fails}));
   const proposal = {schema: UNIVERSE_SCHEMA, id, createdAt: now, collectedAt: bundle.collectedAt, asOf, ok: sel.ok, rules: {...rules, perSectorMax: Number.isFinite(rules.perSectorMax) ? rules.perSectorMax : null, applied: {step: sel.step, ...sel.rules, perSectorMax: Number.isFinite(sel.rules.perSectorMax) ? sel.rules.perSectorMax : null}}, counts: sel.counts,

@@ -45,11 +45,11 @@ export function agendaBox(entry, {max = 3, builtDay = null, code = null} = {}) {
     entry.disclosuresHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 공시 제목 ${entry.disclosuresHidden}건은 싣지 않음`) : null);
 }
 /** 출목표 칸: 표 · 힘 저울 두 줄 · 흐름 한 마디 (한 칸이 1% 가 아니면 그 크기를 적는다) */
-export function roadBox(closes, {note = false, title = true, from = null} = {}) {
+export function roadBox(closes, {note = false, title = true, from = null, change = null} = {}) {
   if (!Array.isArray(closes) || closes.length < 3) return h('p', {class: 'muted small'}, '출목표를 그릴 종가가 모자랍니다.');
   const road = roadOf(closes);
   return h('div', {class: 'rd-box'},
-    title ? h('p', {class: 'rd-h'}, h('span', null, `출목표 · 지난 ${road.days}거래일`, from ? ` · ${korDate(from)}부터` : ''), road.unit !== 0.01 ? h('b', null, unitText(road)) : null) : null,
+    title ? h('p', {class: 'rd-h'}, h('span', null, `출목표 · 지난 ${road.days}거래일`, from ? ` · ${korDate(from)}부터` : '', finite(change) ? ' · ' : '', finite(change) ? h('b', {class: 'chg20 ' + signCls(change)}, pct(change, 1)) : null), road.unit !== 0.01 ? h('b', null, unitText(road)) : null) : null,
     roadSvg(road), roadKey(road, {note}));
 }
 /** 시장 전체 일정(모든 회사에 해당) — max 0 이면 모두 */
@@ -97,10 +97,12 @@ export function nextBox(n) {
     n.how?.length ? h('details', {class: 'nx-how'}, h('summary', null, '어떻게 골랐나'), h('ul', null, ...n.how.map(x => h('li', null, x)))) : null,
     n.dropped?.length ? h('details', {class: 'nx-how'}, h('summary', null, `빠지는 회사 ${n.dropped.length}곳`), h('p', {class: 'nx-out'}, n.dropped.map(d => d.name).join(' · '))) : null);
 }
-/** 우량/트렌드 표시(색 대신 글자 · 우량 = 네 조건을 모두 넘은 회사 · 트렌드 = 우량 조건은 못 넘었지만 시대 트렌드 업종) */
+/** 고른 까닭 표시(색 대신 글자 · 우량 = 네 조건을 모두 넘은 회사 · 트렌드 = 우량 조건은 못 넘었지만 시대 트렌드 업종 · 흑자 = 둘 다 아니지만 최근 결산 흑자 · 채움 = 업종 5곳을 채우려고 넣은 그 업종 큰 회사) */
+const KIND_TEXT = {quality: ['우량', '우량 조건 네 가지(2년 연속 흑자 · ROE 5% 이상 · 부채비율 150% 이하)를 모두 넘은 회사'], trend: ['트렌드', '우량 조건은 못 넘었지만 시대 트렌드 업종의 회사'],
+  profit: ['흑자', '우량·트렌드는 아니지만 최근 결산 흑자인 그 업종의 큰 회사(업종 5곳을 채우려고 넣음)'], size: ['채움', '업종 5곳을 채우려고 넣은 그 업종의 큰 회사(최근 결산 흑자 아님)']};
 export function kindBadge(kind) {
-  if (kind !== 'quality' && kind !== 'trend') return null;
-  return h('span', {class: 'b-kind ' + kind, title: kind === 'quality' ? '우량 조건 네 가지(2년 연속 흑자 · ROE 5% 이상 · 부채비율 150% 이하)를 모두 넘은 회사' : '우량 조건은 못 넘었지만 시대 트렌드 업종의 회사'}, kind === 'quality' ? '우량' : '트렌드');
+  const k = KIND_TEXT[kind]; if (!k) return null;
+  return h('span', {class: 'b-kind ' + kind, title: k[1]}, k[0]);
 }
 /** 맨 아래: 만든 시각 · 판 이름 · 무결성 */
 export function foot(m) {

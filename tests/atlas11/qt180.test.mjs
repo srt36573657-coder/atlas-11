@@ -39,28 +39,36 @@ test('고르기 qt180-v1: 우량 네 조건을 모두 넘은 회사는 전부(14
   assert.deepEqual(proposal.picked.map(p => p.code), sel.picked.map(c => c.code));
 });
 
-test('설정: 10월 6일(화) 바꾸기는 180곳을 가리키고 · 새 입력 파일의 해시가 설정과 같고 · 180곳 모두 가격 이력이 있다 · 다시 고르기도 qt180-v1', async () => {
-  const cfg = await readJSON(UNIVERSE_CONFIG), text = await fs.readFile(path.join(root, cfg.next.input), 'utf8'), next = JSON.parse(text);
-  assert.equal(cfg.next.id, 'u2-qt180-v1-2026-10-04'); assert.equal(cfg.next.switchOn, '2026-10-06'); assert.equal(cfg.next.count, 180); assert.equal(cfg.selectRules, 'qt180-v1');
-  assert.equal(createHash('sha256').update(text).digest('hex'), cfg.next.inputSHA256);
-  assert.equal(next.universe.id, cfg.next.id); assert.equal(next.assets.length, 180); assert.equal(new Set(next.assets.map(a => a.code)).size, 180);
+test('설정 기록: 10월 6일(화)로 잡았던 180곳(qt180) 바꾸기는 업종 36개(i36)로 대신했다고 history 에 남고 · 그 새 입력 파일은 해시 그대로 보관', async () => {
+  const cfg = await readJSON(UNIVERSE_CONFIG), h = cfg.history?.find(x => x.next?.id === 'u2-qt180-v1-2026-10-04');
+  assert.ok(h, 'qt180 설정이 history 에 남음'); assert.match(h.status, /대신함/);
+  const text = await fs.readFile(path.join(root, h.next.input), 'utf8'), next = JSON.parse(text);
+  assert.equal(createHash('sha256').update(text).digest('hex'), h.next.inputSHA256);
+  assert.equal(next.universe.id, h.next.id); assert.equal(next.assets.length, 180); assert.equal(new Set(next.assets.map(a => a.code)).size, 180);
   assert.ok(next.assets.every(a => a.prices.filter(p => p.close > 0).length >= 260), '1년 숫자를 셀 만큼(260거래일 이상)');
-  assert.ok(next.assets.every(a => a.quality?.kind === 'quality' || a.quality?.kind === 'trend'));
-  assert.ok(cfg.history?.some(h => h.next?.id === 'u2-q52-v2-2026-10-04'), '대신한 52곳 설정은 기록으로 남음');
+  assert.ok(cfg.history.some(x => x.next?.id === 'u2-q52-v2-2026-10-04'), '그 전 52곳 설정도 기록으로 남음');
 });
 
-test('판 묶음(180곳으로 바꾼 뒤를 흉내): 갈래 9개(8갈래 + 그 밖 우량주)가 회사를 한 번씩만 담고 · 우량·트렌드 수가 맞고 · 묶음 검사 통과', async () => {
+test('판 묶음(qt180 180곳 입력으로): 업종 칸이 회사를 한 번씩만 · 요즘 불장 업종(오른 업종만 · 11개까지 · 큰 순) · 다음 불장 후보(불장 업종 밖 · 오른 회사만 · 한 업종 2곳까지 · 22곳까지) · 묶음 검사가 고친 판을 잡음', async () => {
   const next = await readJSON(DIR + '/next-input.json'), now = '2026-10-04T09:30:00.000Z';
   const files = buildBoard({input: next, now}), b = files.get('board.json');
-  assert.equal(b.companies.length, 180); assert.deepEqual(b.kinds, {quality: 146, trend: 34});
-  assert.deepEqual(b.groups.map(g => g.label), [...TREND_GROUPS.map(g => g.label), '그 밖 우량주']);
+  assert.equal(b.companies.length, 180); assert.deepEqual(b.kinds, {quality: 146, trend: 34, profit: 0, size: 0});
   assert.equal(b.groups.reduce((s, g) => s + g.count, 0), 180);
-  assert.ok(b.groups.at(-1).trend === 0, '그 밖 갈래에는 트렌드 회사가 없다(트렌드는 8갈래 업종에서만)');
-  assert.ok(b.companies.every(c => (c.theme?.id ?? 'other') === b.groups.find(g => g.codes.includes(c.code)).id));
+  assert.equal(b.groups.length, new Set(next.assets.map(a => a.sector)).size, '업종 칸 = 네이버 업종 수');
+  assert.ok(b.companies.every(c => b.groups.find(g => g.codes.includes(c.code)).id === c.group.id));
+  const hot = b.hot.items, nx = b.next.items;
+  assert.ok(hot.length <= 11 && hot.every((x, i) => x.change20 > 0 && (!i || hot[i - 1].change20 >= x.change20)));
+  assert.deepEqual(hot.map(x => x.id), b.groups.filter(g => g.change20 > 0).slice(0, 11).map(g => g.id), '불장 = 20거래일 오름이 가장 큰 업종부터');
+  const hotIds = new Set(hot.map(x => x.id)), per = {};
+  for (const x of nx) per[x.groupId] = (per[x.groupId] ?? 0) + 1;
+  assert.ok(nx.length <= 22 && nx.every((x, i) => x.change20 > 0 && !hotIds.has(x.groupId) && (!i || nx[i - 1].change20 >= x.change20)) && Object.values(per).every(v => v <= 2));
+  const c20 = c => c.c.length === 21 ? c.c[20] / c.c[0] - 1 : null, g0 = b.groups[0], cs = g0.codes.map(code => b.companies.find(c => c.code === code));
+  assert.ok(Math.abs(g0.change20 - cs.map(c20).filter(v => v != null).reduce((t, v) => t + v, 0) / cs.filter(c => c20(c) != null).length) < 1e-5, '업종 20거래일 = 회사들 평균(종가 21개로 셈)');
   assert.equal(validateBoard(files, {input: next, now}), true);
-  const broken = new Map(files); const bb = structuredClone(b); bb.groups[0].codes.push(bb.groups[1].codes[0]); bb.groups[0].count++; broken.set('board.json', bb);
-  const m = structuredClone(files.get('manifest.json')); m.files['board.json'].sha256 = createHash('sha256').update(JSON.stringify(bb)).digest('hex'); broken.set('manifest.json', m);
-  assert.throws(() => validateBoard(broken, {input: next, now}), /BOARD_GROUPS/);
+  const tamper = (fn, re) => { const broken = new Map(files), bb = structuredClone(b); fn(bb); broken.set('board.json', bb); const m = structuredClone(files.get('manifest.json')); m.files['board.json'].sha256 = createHash('sha256').update(JSON.stringify(bb)).digest('hex'); broken.set('manifest.json', m); assert.throws(() => validateBoard(broken, {input: next, now}), re); };
+  tamper(bb => { bb.groups[0].codes.push(bb.groups[1].codes[0]); bb.groups[0].count++; }, /BOARD_GROUPS/);
+  tamper(bb => { bb.hot.items.reverse(); }, /BOARD_HOT/);
+  tamper(bb => { const hg = bb.groups.find(g => g.hot), c = bb.companies.find(x => x.code === hg.codes[0]); bb.next.items[0] = {code: c.code, name: c.name, groupId: hg.id, groupLabel: hg.label, change20: c.change20, kind: c.kind}; }, /BOARD_NEXT/);
 });
 
 test('관측 수집: 바꾸는 날에는 새 묶음 회사도 함께 모은다(바꾼 첫날 저녁부터 공시·기사가 보이게) · 바꾸기 전 날에는 지금 회사만', async () => {

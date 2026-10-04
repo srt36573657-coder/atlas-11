@@ -61,30 +61,44 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   page.on('response', r => { if (r.status() >= 400) failedRequests.push(r.status() + ' ' + r.url()); });
   const shot = name => page.screenshot({path: path.join(dir, `${label}-${name}.png`), fullPage: false});
 
-  // ① 처음 화면(52곳 → 2026-10-06 부터 180곳 · 시대 트렌드 8갈래 + 그 밖으로 묶음 · 2026-10-04 18:24 「알아서 해」)
+  // ① 처음 화면(업종 36개 · 180곳 · 요즘 불장 업종 11개 · 다음 불장 후보 22곳 · 2026-10-04 21:04)
   const N = board.companies.length, H = `처음 화면(${N}곳)`;
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.b-card .road'); await page.waitForTimeout(400);
   await shot('01-home');
   const top = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), kinds: document.querySelector('.b-kinds')?.innerText.trim() ?? null, late: [...document.querySelectorAll('.b-late')].map(e => e.innerText.trim()), strip: document.querySelector('.mstrip')?.innerText.replace(/\s+/g, ' ').trim(),
     active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.innerText.replace(/\s+/g, '').trim()),
-    chips: [...document.querySelectorAll('.g-chip')].map(b => b.innerText.replace(/\s+/g, ' ').trim()), open: [...document.querySelectorAll('details.g-sec')].map(d => d.open), cardsNow: document.querySelectorAll('.b-card').length}));
-  check(`${label} ${H}: 제목 「${top.title}」 = 판의 묶음 이름 · 「${top.when}」 · 아래 탭 ${top.tabs.join('·')}(처음 화면 눌림)${board.kinds ? ` · 「${top.kinds}」` : ''}`, top.title === manifest.universeSet.label && top.when === `${kd(board.asOf)} 15:30 종가 · 한국거래소 정규장` && top.tabs.join() === `${N}곳,일정` && top.active === 'home' && (!board.kinds || top.kinds === `우량주 ${board.kinds.quality}곳 · 시대 트렌드 ${board.kinds.trend}곳`), top);
-  check(`${label} ${H}: 갈래 단추 ${top.chips.length}개 = 판의 갈래(이름·곳 수) · 처음에는 첫 갈래만 펼침 · 그려진 카드 ${top.cardsNow}장 = 첫 갈래 ${board.groups[0].count}곳`, top.chips.join('|') === board.groups.map(g => `${g.label} ${g.count}곳`).join('|') && top.open.length === board.groups.length && top.open.filter(Boolean).length === 1 && top.open[0] === true && top.cardsNow === board.groups[0].count, {chips: top.chips, open: top.open, cardsNow: top.cardsNow});
+    chips: [...document.querySelectorAll('.g-chip')].map(b => b.textContent.replace(/\s+/g, ' ').replace(/(\S)(\d+곳)$/, '$1 $2').trim()), open: [...document.querySelectorAll('details.g-sec')].map(d => d.open), cardsNow: document.querySelectorAll('.b-card').length,
+    hot: [...document.querySelectorAll('.hot-list .hot-row')].map(b => ({id: b.dataset.group, label: b.querySelector('.hot-l')?.textContent.trim(), chg: b.querySelector('.chg20')?.textContent.trim()})), next: [...document.querySelectorAll('.nc-list .nc-row')].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim()})),
+    text52: /(?<!\d)52\s?(종목|곳)|업종 대표/.test(document.body.textContent)}));
+  check(`${label} ${H}: 제목 「${top.title}」 = 판의 묶음 이름 · 「${top.when}」 · 아래 탭 ${top.tabs.join('·')}(처음 화면 눌림)${board.kinds ? ` · 「${top.kinds}」` : ''}`, top.title === manifest.universeSet.label && top.when === `${kd(board.asOf)} 15:30 종가 · 한국거래소 정규장` && top.tabs.join() === `${N}곳,일정` && top.active === 'home' && (!board.kinds || top.kinds === [`업종 ${board.groups.length}개`, `우량주 ${board.kinds.quality ?? 0}곳`, `시대 트렌드 ${board.kinds.trend ?? 0}곳`, board.kinds.profit ? `흑자 ${board.kinds.profit}곳` : null, board.kinds.size ? `채움 ${board.kinds.size}곳` : null].filter(Boolean).join(' · ')) && !top.text52, {...top, hot: undefined, next: undefined});
+  const p1 = v => (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) * 100).toFixed(1) + '%';
+  check(`${label} ${H}: 요즘 불장 업종 ${top.hot.length}개 = 판(${board.hot?.items.length ?? 0}) · 이름·20거래일 변화가 판과 같고 큰 순 · 모두 오른 업종`, board.hot && top.hot.length === board.hot.items.length && board.hot.items.every((x, i) => top.hot[i]?.id === x.id && top.hot[i]?.label === x.label && top.hot[i]?.chg === p1(x.change20) && x.change20 > 0 && (!i || board.hot.items[i - 1].change20 >= x.change20)), {hot: top.hot.slice(0, 3)});
+  check(`${label} ${H}: 다음 불장 후보 ${top.next.length}곳 = 판(${board.next?.items.length ?? 0}) · 이름·업종·20거래일 변화·회사 화면 링크가 판과 같음 · 불장 업종 회사 없음 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지`, board.next && top.next.length === board.next.items.length && board.next.items.every((x, i) => top.next[i]?.href === '#/stock/' + x.code && top.next[i]?.name === x.name && top.next[i]?.ind === x.groupLabel && top.next[i]?.chg === p1(x.change20)) && !board.next.items.some(x => board.hot.items.some(hh => hh.id === x.groupId)) && Object.values(board.next.items.reduce((m, x) => (m[x.groupId] = (m[x.groupId] ?? 0) + 1, m), {})).every(v => v <= (board.next.perIndustry ?? 2)), {next: top.next.slice(0, 3)});
+  check(`${label} ${H}: 업종 단추 ${top.chips.length}개 = 판의 업종(이름·곳 수) · 처음에는 첫 업종만 펼침 · 그려진 카드 ${top.cardsNow}장 = 첫 업종 ${board.groups[0].count}곳`, top.chips.join('|') === board.groups.map(g => `${g.label} ${g.count}곳`).join('|') && top.open.length === board.groups.length && top.open.filter(Boolean).length === 1 && top.open[0] === true && top.cardsNow === board.groups[0].count, {chips: top.chips, open: top.open, cardsNow: top.cardsNow});
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
   check(`${label} ${H}: 시장 띠(코스피·코스닥 · 기준 날짜)`, manifest.market ? manifest.market.items.every(i => top.strip.includes(i.name)) && top.strip.includes(kd(manifest.market.items[0].date) + ' 15:30 KST 종가') : /시장 지수 없음/.test(top.strip), {strip: top.strip});
-  // 마지막 갈래 단추를 누르면 그 갈래가 펼쳐지고 그 자리로 간다
+  // 업종 바로 가기(접힌 칸)를 열고 마지막 업종 단추를 누르면 그 업종이 펼쳐지고 그 자리로 간다
   const lastG = board.groups.at(-1);
+  await page.locator('.g-index > summary').click(); await page.waitForTimeout(150);
   await page.locator(`.g-chip[data-group="${lastG.id}"]`).click(); await page.waitForTimeout(400);
   const jumped = await page.evaluate(id => { const d = document.getElementById('g-' + id), r = d.getBoundingClientRect(); return {open: d.open, top: Math.round(r.top), cards: d.querySelectorAll('.b-card').length}; }, lastG.id);
-  check(`${label} ${H}: 「${lastG.label}」 단추 → 그 갈래가 펼쳐지고(카드 ${jumped.cards}장 = ${lastG.count}) 화면 위쪽으로 옴`, jumped.open && jumped.cards === lastG.count && jumped.top >= 0 && jumped.top < 200, jumped);
+  check(`${label} ${H}: 「${lastG.label}」 단추 → 그 업종이 펼쳐지고(카드 ${jumped.cards}장 = ${lastG.count}) 화면 위쪽으로 옴`, jumped.open && jumped.cards === lastG.count && jumped.top >= 0 && jumped.top < 200, jumped);
+  // 불장 업종 줄을 누르면 그 업종 칸이 펼쳐지고 그 자리로 간다(셋째 줄)
+  if (board.hot?.items.length >= 3) {
+    const hg = board.hot.items[2], gg = board.groups.find(g => g.id === hg.id);
+    await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(100);
+    await page.locator(`.hot-row[data-group="${hg.id}"]`).click(); await page.waitForTimeout(400);
+    const hj = await page.evaluate(id => { const d = document.getElementById('g-' + id), r = d.getBoundingClientRect(); return {open: d.open, top: Math.round(r.top), cards: d.querySelectorAll('.b-card').length}; }, hg.id);
+    check(`${label} ${H}: 불장 「${hg.label}」 줄 → 그 업종 칸이 펼쳐지고(카드 ${hj.cards}장 = ${gg.count}) 화면 위쪽으로 옴`, hj.open && hj.cards === gg.count && hj.top >= 0 && hj.top < 200, hj);
+  }
   // 모든 갈래를 펼쳐 카드 전부를 판과 맞대어 본다(갈래마다 판의 codes 차례 그대로)
   await page.evaluate(() => { for (const d of document.querySelectorAll('details.g-sec')) d.open = true; }); await page.waitForTimeout(600);
   const home = await page.evaluate(() => ({sections: [...document.querySelectorAll('details.g-sec')].map(d => ({id: d.dataset.group, codes: [...d.querySelectorAll('.b-card')].map(c => c.dataset.code)})),
     cards: [...document.querySelectorAll('.b-card')].map(c => ({code: c.dataset.code, name: c.querySelector('.b-name')?.textContent.trim(), kind: c.querySelector('.b-kind')?.textContent.trim() ?? null, price: c.querySelector('.b-close')?.textContent.trim(), date: c.querySelector('.b-date')?.textContent.trim(), /* 화면 밖 카드는 그리기를 미루므로(content-visibility) innerText 대신 textContent */ beads: c.querySelectorAll('.road .bead').length, up: c.querySelectorAll('.road .bead.up').length, ev: c.querySelectorAll('.ag-ev .ag-li').length, ds: c.querySelectorAll('.ag-ds .ag-li').length, href: c.querySelector('.b-name-row')?.getAttribute('href')}))}));
   const sectionsOk = home.sections.map(x => `${x.id}:${x.codes.join(',')}`).join('|') === board.groups.map(g => `${g.id}:${g.codes.join(',')}`).join('|');
-  const byCode = new Map(home.cards.map(c => [c.code, c])), KIND = {quality: '우량', trend: '트렌드'};
+  const byCode = new Map(home.cards.map(c => [c.code, c])), KIND = {quality: '우량', trend: '트렌드', profit: '흑자', size: '채움'};
   const mism = board.companies.filter(c => { const hc = byCode.get(c.code); const road = roadOf(c.c); return !hc || hc.name !== c.name || hc.kind !== (KIND[c.kind] ?? null) || hc.price !== won(c.close) || hc.date !== `${kd(c.date)} 15:30 종가` || hc.beads !== road.cells.length || hc.up !== road.all.up || hc.href !== '#/stock/' + c.code; }).map(c => c.code);
-  check(`${label} ${H}: 카드 ${home.cards.length}장 · 갈래마다 판의 차례 그대로 · 이름·우량/트렌드 표시·종가·날짜·출목표 동그라미 수(빨강 포함)·회사 화면 링크가 판과 같음`, home.cards.length === N && byCode.size === N && sectionsOk && !mism.length, {mism: mism.slice(0, 5), sectionsOk});
+  check(`${label} ${H}: 카드 ${home.cards.length}장 · 업종마다 판의 차례 그대로 · 이름·우량/트렌드 표시·종가·날짜·출목표 동그라미 수(빨강 포함)·회사 화면 링크가 판과 같음`, home.cards.length === N && byCode.size === N && sectionsOk && !mism.length, {mism: mism.slice(0, 5), sectionsOk});
   const agMis = board.companies.filter(c => { const e = agenda.byCode[c.code], hc = byCode.get(c.code); return hc?.ev !== Math.min(2, e.upcoming.length) || hc?.ds !== Math.min(2, e.disclosures.length); }).map(c => c.code);
   check(`${label} ${H}: 카드마다 일정·공시 줄 수(각 2줄까지) = 일정표`, !agMis.length, {agMis: agMis.slice(0, 5)});
   if (manifest.universeNext) {
@@ -95,7 +109,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const chips = await page.evaluate(() => ({n: document.querySelectorAll('.nx-chip').length, news: document.querySelectorAll('.nx-chip .nx-new').length, names: [...document.querySelectorAll('.nx-chip .nx-n')].map(e => e.innerText.trim())}));
     check(`${label} ${H}: 바뀔 묶음 미리 보기 「${nx.h}」 · ${kd(n.from)} 16:00 · 이름 칸은 접혀 있다가 열면 ${chips.n}곳 = ${total} · 「새」 ${chips.news} = ${n.added}${n.kinds ? ` · 우량 ${n.kinds.quality} · 트렌드 ${n.kinds.trend}` : ''}`, nx.first && nx.h === `${n.label}으로 바뀝니다` && nx.when.startsWith(`${kd(n.from)} 16:00 매일 실행 때 바뀝니다`) && nx.closed === true && chips.n === total && chips.news === n.added && chips.names.join() === n.companies.map(c => c.name).join() && (!n.kinds || nx.lines.includes(`우량주 ${n.kinds.quality}곳 · 시대 트렌드 ${n.kinds.trend}곳`)), {nx, chips: {n: chips.n, news: chips.news}});
   }
-  await wordsCheck(page, `${label} ${H}(갈래 모두 펼침)`);
+  await wordsCheck(page, `${label} ${H}(업종 모두 펼침)`);
   // 이름 누르기(휴대폰은 터치) → 회사 화면
   const pick = board.companies[1];
   const link = page.locator(`.b-card[data-code="${pick.code}"] .b-name-row`); await link.scrollIntoViewIfNeeded();
@@ -132,7 +146,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   for (const old of ['#/forecast', '#/up', '#/down', '#/scores', '#/race', '#/evolution', '#/status', '#/records', '#/game']) {
     await page.goto(base + '/' + old, {waitUntil: 'networkidle'}); await page.waitForSelector('.b-card'); await page.waitForTimeout(150);
     const r = await page.evaluate(() => ({hash: location.hash, cards: document.querySelectorAll('.b-card').length, title: document.querySelector('.b-title')?.innerText.trim()}));
-    check(`${label} 옛 주소 ${old} → 처음 화면(#/ · 「${r.title}」 · 첫 갈래 카드 ${r.cards}장)`, r.hash === '#/' && r.title === manifest.universeSet.label && r.cards === board.groups[0].count, r);
+    check(`${label} 옛 주소 ${old} → 처음 화면(#/ · 「${r.title}」 · 첫 업종 카드 ${r.cards}장)`, r.hash === '#/' && r.title === manifest.universeSet.label && r.cards === board.groups[0].count, r);
   }
   // ⑤ 무결성 · 글씨 단추
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.b-card'); await page.waitForTimeout(300);
