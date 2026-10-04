@@ -104,6 +104,27 @@ export function kindBadge(kind) {
   const k = KIND_TEXT[kind]; if (!k) return null;
   return h('span', {class: 'b-kind ' + kind, title: k[1]}, k[0]);
 }
+/** 36칸 판 칸 색 — 지난 20거래일 평균 변화의 크기(빨강 오름 · 파랑 내림 · 한국 시장 관례) · 뜻은 색만이 아니라 부호와 글자로도 */
+export const heatOf = v => !finite(v) ? 'na' : v >= 0.15 ? 'h3' : v >= 0.08 ? 'h2' : v >= 0.03 ? 'h1' : v > -0.03 ? 'n' : v > -0.08 ? 'c1' : 'c2';
+export const HEAT_KEY = '빨강이 짙을수록 많이 오름(+3% · +8% · +15% 이상) · 파랑이 짙을수록 많이 내림(−3% · −8% 아래) · −3%~+3% 는 색 없음 · 칸마다 숫자도 함께 적음';
+/** 칸 색 보기표 — 색 여섯 칸과 그 범위(밝은·어두운 화면 모두 같은 말) */
+export const HEAT_STEPS = [['c2', '−8% 아래'], ['c1', '−3% 아래'], ['n', '−3%~+3%'], ['h1', '+3% 이상'], ['h2', '+8% 이상'], ['h3', '+15% 이상']];
+export function heatLegend() {
+  return h('ol', {class: 't-legend', 'aria-label': '칸 색 = 지난 20거래일 평균 변화'}, ...HEAT_STEPS.map(([k, t]) => h('li', {'data-heat': k}, h('span', {class: 't-sw heat-' + k, 'aria-hidden': 'true'}), t)));
+}
+/** 업종 화면 「누가 끌었나」 — 5곳의 지난 20거래일 변화를 가운데 0 에서 좌우로 뻗은 막대로(가장 큰 값이 반 폭) · 폭은 CSSOM 으로만(글 속 style 속성 없음) */
+export function moverBars(companies) {
+  const vals = companies.map(c => c.change20).filter(finite), max = Math.max(0.01, ...vals.map(Math.abs));
+  const rows = companies.map(c => {
+    const v = c.change20, bar = h('span', {class: 'mv-bar ' + (finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat') : 'flat')});
+    if (finite(v)) { bar.style.width = `${Math.max(1.5, Math.abs(v) / max * 50)}%`; if (v < 0) bar.style.right = '50%'; else bar.style.left = '50%'; }
+    return h('li', {class: 'mv-row', 'data-code': c.code},
+      h('a', {class: 'mv-name', href: '#/stock/' + c.code}, c.name),
+      h('span', {class: 'mv-track', 'aria-hidden': 'true'}, h('span', {class: 'mv-zero'}), bar),
+      h('b', {class: 'mv-val chg20 ' + (finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat') : 'flat')}, finite(v) ? pct(v, 1) : '없음'));
+  });
+  return h('ul', {class: 'mv-list', 'aria-label': `${companies.length}곳의 지난 20거래일 변화`}, ...rows);
+}
 /** 맨 아래: 만든 시각 · 판 이름 · 무결성 */
 export function foot(m) {
   return h('footer', {class: 'b-foot'},

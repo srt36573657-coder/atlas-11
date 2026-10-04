@@ -1,4 +1,4 @@
-/* ATLAS 11 · 회사 화면(#/stock/CODE) — 예측 없음
+/* ATLAS 11 · 회사 화면(#/stock/CODE) — 예측 없음 · 뒤로 가기는 그 회사의 업종 화면(#/i/<업종>) · 출목표 한 판에서 왔으면 그 판
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
    지난 60거래일 실제 종가 선 · 출목표(지난 20거래일) · 지난 1년 숫자 · 일정·공시 모두(★) · 수급·기사·공시 기록(눌러야 열림)
    기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs). */
@@ -50,7 +50,9 @@ export async function renderCompany(main, {hash, manifest}) {
   state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.`;
   const chartBox = h('div', {class: 'c-chart'});
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
-    h('a', {class: 'c-back', href: '#/'}, `‹ ${manifest.universeSet?.label ?? '처음 화면'}`),
+    // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
+    state.from === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표')
+      : h('a', {class: 'c-back', href: s.group?.id ? '#/i/' + s.group.id : '#/'}, `‹ ${s.group?.label ?? manifest.universeSet?.label ?? '처음 화면'}`),
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, s.name),

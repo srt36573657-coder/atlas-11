@@ -1,25 +1,35 @@
 /* ATLAS 11 · 껍데기·길찾기 — 우량주·시대 트렌드 180곳 판(예측 없음)
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
    2026-10-04 20:52 「대표 52개념도 삭제해 총 180개에서 섹타를 구분해」 — 처음 화면은 180곳을 섹터로 나눠 보인다.
-   아래 탭 둘: 처음 화면(#/ · 이름은 지금 묶음의 곳 수 「180곳」) · 「일정」(#/agenda) — 회사 화면(#/stock/CODE)은 처음 화면에 속한다.
+   2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」 — 처음 화면(36칸 판) → 업종 화면(#/i/<업종>) → 회사 화면(#/stock/CODE) · 두 번이면 어디든
+   2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 잡스라면 그리고 애플이라면 해서 추가로 더 만들어」 — 출목표 한 판(#/road)
+   아래 탭 셋: 처음 화면(#/ · 이름은 지금 묶음의 곳 수 「180곳」) · 「출목표」(#/road) · 「일정」(#/agenda) — 업종·회사 화면은 처음 화면에 속한다.
+   지금 탭을 한 번 더 누르면 맨 위로 · 출목표 한 판은 회사 화면에 갔다 와도 보던 자리 그대로(아이폰 탭 막대처럼).
    지운 화면의 옛 주소(#/forecast · #/up · #/down · #/scores · #/race · #/evolution · #/status · #/records)는 처음 화면으로 돌린다. */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome} from './view-home.js';
 import {renderCompany} from './view-company.js';
+import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
+import {renderRoad} from './view-road.js';
 
 const app = {view: null, manifest: null};
 const ICON = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
+  road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="5" r="2.6"/><circle cx="5" cy="12" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="12" cy="5" r="2.6"/><circle cx="19" cy="5" r="2.6"/><circle cx="19" cy="12" r="2.6"/></svg>',
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
 };
 const routes = [
   {id: 'home', label: '회사', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'industry', tab: 'home', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
   {id: 'stock', tab: 'home', match: /^#\/stock\/\d{6}$/, render: renderCompany},
+  {id: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
   {id: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
 ];
-const TABS = ['home', 'agenda'];
+const TABS = ['home', 'road', 'agenda'];
+/** 보던 자리 기억(출목표 한 판만) — 회사 화면에 갔다 돌아오면 그 자리 */
+const KEEP_SCROLL = new Set(['road']), scrollMemo = new Map();
 const FONT_STEPS = [100, 125, 150, 175, 200];
 
 function applyFont() { const step = Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0))); document.documentElement.style.fontSize = FONT_STEPS[step] + '%'; document.documentElement.dataset.fontStep = String(step); }
@@ -44,7 +54,9 @@ function header() {
   fontLabel();
   // 처음 화면 탭 이름 = 지금 묶음의 곳 수(판 목록을 못 읽으면 「회사」)
   const label = r => r.id === 'home' && Number.isInteger(app.manifest?.companies) ? `${app.manifest.companies}곳` : r.label;
-  const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
+  // 지금 보고 있는 탭을 다시 누르면 맨 위로(주소가 그대로라 화면은 다시 그리지 않음)
+  const toTop = (e, r) => { if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
+  const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));
 }
 function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.setAttribute('aria-label', `글씨 크기 ${FONT_STEPS[Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0)))]}% (누를 때마다 커지고 200% 다음은 100%)`); }
@@ -57,12 +69,14 @@ async function route() {
   // 지운 화면의 옛 주소 → 처음 화면(주소 줄도 「#/」로 바꿔 둔다)
   if (!r) { r = routes[0]; hash = '#/'; history.replaceState(null, '', location.pathname + location.search + '#/'); }
   stopSpeak(); voice.on = false; document.getElementById('voice-btn')?.classList.remove('on'); document.getElementById('voice-btn')?.setAttribute('aria-pressed', 'false');
+  if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
+  if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
   markActive(r.tab ?? r.id); app.view = r.id; state.summary = '';
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;
   try { await r.render(main, {hash, manifest: app.manifest}); }
   catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
-  window.scrollTo({top: 0});
+  window.scrollTo({top: KEEP_SCROLL.has(r.id) ? (scrollMemo.get(r.id) ?? 0) : 0});
 }
 function failure(title, e) {
   return h('section', {class: 'b-box failure', role: 'alert'}, h('h1', {class: 'b-box-h'}, title), h('p', {class: 'muted'}, String(e?.message ?? e)), h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'));

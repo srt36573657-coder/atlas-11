@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ATLAS 화면 또렷함 검사 — 52곳 판 화면 3장(52곳 · 회사 · 일정) × 보기 5가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200% · 좁은 휴대폰 어두운 화면 글씨 200%)에서 여섯 숫자를 잰다.
+ * ATLAS 화면 또렷함 검사 — 화면 6장(36칸 판 · 업종 · 출목표 업종별 · 출목표 흐름별 · 회사 · 일정) × 보기 5가지(PC · 휴대폰 · 휴대폰 어두운 화면 · PC 글씨 200% · 좁은 휴대폰 어두운 화면 글씨 200%)에서 여섯 숫자를 잰다.
  *   node scripts/atlas11/clarity_check.mjs --base http://localhost:8811 --pw <playwright 폴더> --label before|after [--inject]
  *   결과: reports/atlas11/clarity/<label>.json (화면·보기마다 여섯 숫자와 예시)
  *   --inject: 일부러 「내일 42 정도.」「곧 많이 오릅니다.」를 넣어 검사기가 1·2·3번을 한 개씩 더 세는지 본다(검사기 자체 시험).
@@ -16,11 +16,18 @@ const onlyScreens = arg('--screens')?.split(','), onlyViews = arg('--views')?.sp
 /** 화면 밖이라 그리기를 미룬 칸(content-visibility:auto)도 스크롤하면 보이는 글이므로 모두 그리게 한 뒤 잰다(CSP 안: CSSOM 으로만 바꿈) */
 export async function renderAll(page) { await page.evaluate(() => { for (const el of document.querySelectorAll('*')) if (getComputedStyle(el).contentVisibility === 'auto') el.style.contentVisibility = 'visible'; }); await page.waitForTimeout(150); }
 export const SCREENS = [
-  // 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」: 화면은 셋 — 52곳 · 회사 · 일정
-  {id: 'home', name: '52곳', hash: '#/', wait: '.b-card .road'},
+  // 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
+  // 2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」: 36칸 판 · 업종(불장 1위 업종) · 회사 · 일정
+  {id: 'home', name: '36칸 판', hash: '#/', wait: '.t-tile'},
+  {id: 'industry', name: '업종', hash: board => '#/i/' + (board?.hot?.items?.[0]?.id ?? board?.groups?.[0]?.id ?? ''), wait: '.b-card .road'},
+  // 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 … 추가로 더 만들어」: 출목표 한 판 — 업종별(처음) · 흐름별(단추를 눌러서)
+  {id: 'road', name: '출목표(업종별)', hash: '#/road', wait: '.f-tile'},
+  {id: 'road-flow', name: '출목표(흐름별)', hash: '#/road', wait: '.f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="flow"]').click(); await page.waitForSelector('.f-body[data-mode="flow"] .f-tile'); }},
   {id: 'stock', name: '회사', hash: '#/stock/005930', wait: '.c-chart svg.lc'},
   {id: 'agenda', name: '일정', hash: '#/agenda', wait: '.a-days, .b-box'},
 ];
+/** 화면 주소 — 업종 화면은 판(board.json)에 따라 정해진다 */
+export const screenHash = (s, board) => typeof s.hash === 'function' ? s.hash(board) : s.hash;
 export const VIEWS = [
   {id: 'pc', name: 'PC', viewport: {width: 1280, height: 800}},
   {id: 'mobile', name: '휴대폰', viewport: {width: 390, height: 844}, mobile: true},
@@ -37,13 +44,14 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const {chromium} = createRequire(path.join(pwDir, 'package.json'))('playwright');
   const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
   const out = {schema: 'atlas11-clarity-1', label, at: new Date().toISOString(), base, keys: KEYS, views: {}, inject: null};
+  const board = await (await fetch(base + '/data/atlas11/view/board.json')).json().catch(() => null);
   for (const v of (inject ? VIEWS.slice(0, 1) : VIEWS.filter(x => !onlyViews || onlyViews.includes(x.id)))) {
     const ctx = await browser.newContext({viewport: v.viewport, isMobile: !!v.mobile, hasTouch: !!v.mobile, colorScheme: v.dark ? 'dark' : 'light', locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);
     const page = await ctx.newPage();
     out.views[v.id] = {};
     for (const s of (inject ? SCREENS.filter(x => x.id === 'home') : SCREENS.filter(x => !onlyScreens || onlyScreens.includes(x.id)))) {
-      await page.goto(base + '/' + s.hash, {waitUntil: 'networkidle'});
+      await page.goto(base + '/' + screenHash(s, board), {waitUntil: 'networkidle'});
       await page.waitForSelector(s.wait, {timeout: 15000}).catch(() => { console.log('기다림 실패', s.id, s.wait); });
       if (s.settle) await s.settle(page);
       await page.waitForTimeout(700);
