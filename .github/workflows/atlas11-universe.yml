@@ -4,6 +4,8 @@ name: atlas11-universe
 #   하는 일: 시가총액 목록 · 업종 이름 · 회사 요약 · 결산 · 일봉을 받아 원문 그대로 보관(bundle.json.gz)
 #            → 규칙(lib/atlas11/universe.mjs)대로 52곳을 고른 「제안」(proposal.json)과 새 입력(next-input.json)을 reports/atlas11/universe/<날짜>/ 에 저장
 #   하지 않는 일: 지금 화면의 52종목 바꾸기 · 전망 · 발행 · 채점 (종목을 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
+#   2026-10-05 05:07 사장님 「지금 180개를 365개로 한다 업종도 늘리고 더 세분화 한다」 — 목록 코스피·코스닥 각 900곳 · 결산·일봉 1300위까지 · 한국거래소 KIND 업종 · 네이버 업종 이름 새 길
+#     → 받는 양이 늘어 시간을 늘림(30분 → 70분 · 스크립트 25분 → 65분)
 on:
   workflow_dispatch:
 permissions:
@@ -14,7 +16,7 @@ concurrency:
 jobs:
   universe:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 70
     env:
       TZ: Asia/Seoul
     steps:
@@ -23,7 +25,7 @@ jobs:
         with:
           node-version: 22
       - name: Collect and select
-        run: timeout 1500 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "collect_universe exit $?"
+        run: timeout 3900 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "collect_universe exit $?"
       - name: Commit
         if: always()
         shell: bash

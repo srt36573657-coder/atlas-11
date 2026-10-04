@@ -93,7 +93,7 @@ test('실제 묶음: 21:31 원자료로 i36-v1 을 다시 고르면 저장된 �
   assert.equal(again.proposal.ok, true);
   assert.deepEqual(again.proposal.picked.map(p => p.code), proposal.picked.map(p => p.code));
   const cfg = await readJSON(UNIVERSE_CONFIG), text = await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'), input = JSON.parse(text);
-  assert.equal(cfg.current.id, 'u2-i36-v1-2026-10-04'); assert.equal(cfg.next, null); assert.equal(cfg.selectRules, 'i36-v1');
+  assert.equal(cfg.current.id, 'u2-i36-v1-2026-10-04'); assert.equal(cfg.next, null); assert.ok(['i36-v1', 's365-v1'].includes(cfg.selectRules), '2026-10-05 05:07 「365개로」 뒤 다음 고르기는 s365-v1');
   assert.equal(input.universe.id, cfg.current.id); assert.equal(createHash('sha256').update(text).digest('hex'), cfg.current.inputSHA256);
   assert.equal(input.assets.length, 180); assert.equal(new Set(input.assets.map(a => a.code)).size, 180);
   const by = {}; for (const a of input.assets) by[a.industry ?? a.sector] = (by[a.industry ?? a.sector] ?? 0) + 1;
