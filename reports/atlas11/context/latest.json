@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-02",
- "fetchedAt": "2026-10-02T13:38:11Z",
- "file": "reports/atlas11/context/2026-10-02/2026-10-02T13-38-11Z.json",
+ "fetchedAt": "2026-10-04T15:23:07Z",
+ "file": "reports/atlas11/context/2026-10-02/2026-10-04T15-23-07Z.json",
  "summary": {
   "day": "2026-10-02",
-  "fetchedAt": "2026-10-02T13:38:11Z",
+  "fetchedAt": "2026-10-04T15:23:07Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-02",
@@ -21,27 +21,27 @@
    }
   },
   "flows": {
-   "stocks": 52,
-   "stocksWithToday": 52,
+   "stocks": 180,
+   "stocksWithToday": 180,
    "provisional": true,
-   "foreignNetSharesSum": 47300,
-   "institutionNetSharesSum": 904749,
-   "individualNetSharesSum": -3122588,
+   "foreignNetSharesSum": 116324,
+   "institutionNetSharesSum": 4054734,
+   "individualNetSharesSum": -6962470,
    "note": "수량(주) 합계 · 종목마다 주가가 달라 금액 합계가 아님 · 당일 값은 잠정일 수 있음"
   },
   "news": {
-   "stocks": 52,
-   "raw": 1040,
-   "distinct": 1033,
-   "republished": 7,
+   "stocks": 180,
+   "raw": 3584,
+   "distinct": 3557,
+   "republished": 27,
    "sameArticle": 0,
-   "stocksWithTodayNews": 46,
-   "todayDistinct": 517
+   "stocksWithTodayNews": 106,
+   "todayDistinct": 587
   },
   "disclosures": {
-   "stocks": 52,
-   "items": 1040,
-   "corporateActions": 122
+   "stocks": 180,
+   "items": 3600,
+   "corporateActions": 368
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-02",
-     "value": 1346.5,
-     "changePct": -0.96
+     "value": 1349,
+     "changePct": -0.77
     },
     "rows": 10
    },
@@ -70,8 +70,8 @@
     "label": "S&P 500 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-10-01",
-     "value": 7666.45
+     "date": "2026-10-02",
+     "value": 7722.72
     },
     "rows": 60
    },
@@ -80,8 +80,8 @@
     "label": "나스닥 종합 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-10-01",
-     "value": 26871.6
+     "date": "2026-10-02",
+     "value": 27190.86
     },
     "rows": 60
    },
@@ -90,9 +90,9 @@
     "label": "필라델피아 반도체지수 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-10-01",
-     "value": 12829,
-     "changePct": 1.59
+     "date": "2026-10-02",
+     "value": 13136.68,
+     "changePct": 2.4
     },
     "rows": 10
    },
@@ -111,8 +111,8 @@
     "label": "미국 10년 물가연동채 실질수익률",
     "factorId": "F04",
     "latest": {
-     "date": "2026-09-30",
-     "value": 2.93
+     "date": "2026-10-01",
+     "value": 2.88
     },
     "rows": 60
    },
@@ -121,8 +121,8 @@
     "label": "미국 Baa 회사채 − 국채10년",
     "factorId": "F05",
     "latest": {
-     "date": "2026-09-30",
-     "value": 1.47
+     "date": "2026-10-01",
+     "value": 1.49
     },
     "rows": 60
    },
@@ -131,7 +131,7 @@
     "label": "미국 실효 연방기금금리",
     "factorId": "F02",
     "latest": {
-     "date": "2026-09-30",
+     "date": "2026-10-01",
      "value": 3.88
     },
     "rows": 60
@@ -141,8 +141,8 @@
     "label": "미국 국채 2년(정책 기대의 시장 대용)",
     "factorId": "F02",
     "latest": {
-     "date": "2026-09-30",
-     "value": 4.88
+     "date": "2026-10-01",
+     "value": 4.78
     },
     "rows": 60
    },
@@ -197,10 +197,10 @@
   "F14": {
    "factorId": "F14",
    "observed": true,
-   "stocks": 52,
+   "stocks": 180,
    "latestObservation": "2026-10-02",
    "lagSessions": 0,
-   "provisionalToday": true,
+   "provisionalToday": false,
    "label": "외국인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 값은 16:00 에 잠정일 수 있어 다음 날 다시 받아 바뀌면 정정 기록",
@@ -210,10 +210,10 @@
   "F16": {
    "factorId": "F16",
    "observed": true,
-   "stocks": 52,
+   "stocks": 180,
    "latestObservation": "2026-10-02",
    "lagSessions": 0,
-   "provisionalToday": true,
+   "provisionalToday": false,
    "label": "기관 합계 순매매 수량(종목별)",
    "componentOnly": true,
    "note": "정의는 연기금 제외 기관 · 받은 값은 연기금이 포함된 기관 합계 → 일부 성분",
@@ -223,10 +223,10 @@
   "F19": {
    "factorId": "F19",
    "observed": true,
-   "stocks": 52,
+   "stocks": 180,
    "latestObservation": "2026-10-02",
    "lagSessions": 0,
-   "provisionalToday": true,
+   "provisionalToday": false,
    "label": "개인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 잠정 가능",
@@ -236,10 +236,22 @@
   "F30": {
    "factorId": "F30",
    "observed": true,
-   "stocks": 52,
-   "latestObservation": "2026-10-01",
-   "corporateActions": 122,
+   "stocks": 180,
+   "latestObservation": "2026-10-02",
+   "corporateActions": 368,
    "recentActions": [
+    {
+     "code": "009970",
+     "title": "(주)영원무역홀딩스 주식 소각 결정",
+     "publishedAt": "2026-10-02T16:52:08+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "033240",
+     "title": "자화전자(주) 자기주식취득 신탁계약 체결 결정",
+     "publishedAt": "2026-10-02T14:18:35+09:00",
+     "word": "자기주식"
+    },
     {
      "code": "028260",
      "title": "삼성물산(주) (정정)유상증자결정(종속회사의 주요경영사항)",
@@ -271,16 +283,22 @@
      "word": "유상증자"
     },
     {
+     "code": "086790",
+     "title": "(주)하나금융지주 (정정)주식 소각 결정",
+     "publishedAt": "2026-10-01T06:50:22+09:00",
+     "word": "소각"
+    },
+    {
      "code": "009830",
      "title": "한화솔루션(주) 유상증자결정(종속회사의 주요경영사항)",
      "publishedAt": "2026-09-30T06:53:20+09:00",
      "word": "유상증자"
     },
     {
-     "code": "051910",
-     "title": "(주)LG화학 변경상장(주식소각)",
-     "publishedAt": "2026-09-30T06:52:32+09:00",
-     "word": "소각"
+     "code": "088350",
+     "title": "한화생명보험(주) 유상증자결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-09-30T06:53:10+09:00",
+     "word": "유상증자"
     },
     {
      "code": "259960",
@@ -289,28 +307,10 @@
      "word": "소각"
     },
     {
-     "code": "012330",
-     "title": "현대모비스(주) 회사분할 결정",
-     "publishedAt": "2026-09-30T06:51:05+09:00",
-     "word": "분할"
-    },
-    {
-     "code": "030000",
-     "title": "(주)제일기획 자기주식 취득 결정",
-     "publishedAt": "2026-09-30T06:50:02+09:00",
+     "code": "093050",
+     "title": "(주)LF 자기주식 취득 결정",
+     "publishedAt": "2026-09-30T06:51:15+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "030000",
-     "title": "(주)제일기획 주식선물 거래정지및거래재개(제일기획 선물)",
-     "publishedAt": "2026-09-30T06:50:02+09:00",
-     "word": "거래정지"
-    },
-    {
-     "code": "030000",
-     "title": "(주)제일기획 주식 소각 결정",
-     "publishedAt": "2026-09-30T06:50:01+09:00",
-     "word": "소각"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-02",
-     "value": 1346.5,
+     "value": 1349,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -354,30 +354,30 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-01",
-   "calendarLagDays": 1,
+   "latestObservation": "2026-10-02",
+   "calendarLagDays": 0,
    "series": [
     {
      "series": "SP500",
      "label": "S&P 500 종가",
-     "latestObservation": "2026-10-01",
-     "value": 7666.45,
+     "latestObservation": "2026-10-02",
+     "value": 7722.72,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500&cosd=2026-06-04"
     },
     {
      "series": "NASDAQCOM",
      "label": "나스닥 종합 종가",
-     "latestObservation": "2026-10-01",
-     "value": 26871.6,
+     "latestObservation": "2026-10-02",
+     "value": 27190.86,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2026-06-04"
     },
     {
      "series": ".SOX",
      "label": "필라델피아 반도체지수 종가",
-     "latestObservation": "2026-10-01",
-     "value": 12829,
+     "latestObservation": "2026-10-02",
+     "value": 13136.68,
      "unit": "index",
      "sourceUrl": "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10"
     }
@@ -414,14 +414,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-09-30",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-01",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "DFII10",
      "label": "미국 10년 물가연동채 실질수익률",
-     "latestObservation": "2026-09-30",
-     "value": 2.93,
+     "latestObservation": "2026-10-01",
+     "value": 2.88,
      "unit": "percent",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-06-04"
     }
@@ -436,14 +436,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-09-30",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-01",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "BAA10Y",
      "label": "미국 Baa 회사채 − 국채10년",
-     "latestObservation": "2026-09-30",
-     "value": 1.47,
+     "latestObservation": "2026-10-01",
+     "value": 1.49,
      "unit": "percentage_points",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA10Y&cosd=2026-06-04"
     }
@@ -458,13 +458,13 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-09-30",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-01",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "DFF",
      "label": "미국 실효 연방기금금리",
-     "latestObservation": "2026-09-30",
+     "latestObservation": "2026-10-01",
      "value": 3.88,
      "unit": "percent",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF&cosd=2026-06-04"
@@ -472,8 +472,8 @@
     {
      "series": "DGS2",
      "label": "미국 국채 2년(정책 기대의 시장 대용)",
-     "latestObservation": "2026-09-30",
-     "value": 4.88,
+     "latestObservation": "2026-10-01",
+     "value": 4.78,
      "unit": "percent",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS2&cosd=2026-06-04"
     }
