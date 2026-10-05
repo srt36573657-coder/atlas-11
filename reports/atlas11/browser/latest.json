@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T05:36:36.178Z",
+  "at": "2026-10-05T05:46:44.269Z",
   "base": "http://localhost:8881",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 359,
+  "passed": 384,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,17 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "road-sun": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -153,7 +163,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -163,7 +173,17 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "road-sun": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +193,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -255,7 +275,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -265,7 +285,17 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "road-sun": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -275,7 +305,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -357,7 +387,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -367,7 +397,17 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "road-sun": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -377,7 +417,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -459,7 +499,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -469,7 +509,17 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "road-sun": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -479,7 +529,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1318,7 +1368,7 @@
       "detail": null
     },
     {
-      "name": "pc 출목표: 제목 「출목표 365곳」 = 판 365곳 · 「지난 20거래일 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 아래 탭 「출목표」 눌림 · 처음 = 오른 순 첫 탭(단추 rise:true:오른 순 365곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지)",
+      "name": "pc 출목표: 제목 「출목표 365곳」 = 판 365곳 · 「지난 20거래일 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 아래 탭 「출목표」 눌림 · 처음 = 오른 순 첫 탭(단추 rise:true:오른 순 365곳 | sun:false:태양 53곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지)",
       "ok": true,
       "detail": {
         "title": "출목표 365곳",
@@ -1328,6 +1378,7 @@
         "tab": "r1",
         "segs": [
           "rise:true:오른 순 365곳",
+          "sun:false:태양 53곳",
           "ind:false:업종별 73개",
           "flow:false:흐름별 10가지"
         ],
@@ -1419,6 +1470,13 @@
         },
         "mean": null,
         "ctx": "수급·기사: 365곳 가운데 167곳만 모았음(10월 2일(금) 기준) · 나머지 198곳은 다음 관측 수집 때 채움",
+        "stripHidden": false,
+        "pagerN": 1,
+        "lead2": null,
+        "go": {
+          "t": "태양 53곳 한곳에 모아 보기 ›",
+          "sun": true
+        },
         "sw": 1280,
         "iw": 1280
       }
@@ -1510,6 +1568,14 @@
       }
     },
     {
+      "name": "pc 출목표 맨 위 태양 상자: 단추 「태양 53곳 한곳에 모아 보기 ›」(태양 그림) — 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」",
+      "ok": true,
+      "detail": {
+        "t": "태양 53곳 한곳에 모아 보기 ›",
+        "sun": true
+      }
+    },
+    {
       "name": "pc 출목표 오른 순(첫 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -1578,7 +1644,7 @@
       }
     },
     {
-      "name": "pc 출목표 「업종별」 누름 → 단추 rise:false:오른 순 365곳 | ind:true:업종별 73개 | flow:false:흐름별 10가지 · 탭 12개 = 큰 갈래 12개(갈래 평균이 큰 순 · 탭마다 갈래 평균) · 첫 탭 「반도체」 · 「큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것」",
+      "name": "pc 출목표 「업종별」 누름 → 단추 rise:false:오른 순 365곳 | sun:false:태양 53곳 | ind:true:업종별 73개 | flow:false:흐름별 10가지 · 탭 12개 = 큰 갈래 12개(갈래 평균이 큰 순 · 탭마다 갈래 평균) · 첫 탭 「반도체」 · 「큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것」",
       "ok": true,
       "detail": {
         "tabs": [
@@ -1729,13 +1795,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1009px → 1009px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1071px → 1071px)",
       "ok": true,
       "detail": {
-        "yBefore": 1009,
+        "yBefore": 1071,
         "back": {
           "hash": "#/road",
-          "y": 1009,
+          "y": 1071,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -1750,6 +1816,56 @@
         "mode": "flow",
         "tab": "flat-up"
       }
+    },
+    {
+      "name": "pc 출목표 태양 상자 단추 누름 → 묶는 법 「태양」(단추 rise:false:오른 순 365곳 | sun:true:태양 53곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지) · 화면은 묶는 법 자리로(위에서 64px) · 탭 줄·넘김 단추 없음",
+      "ok": true,
+      "detail": {
+        "mode": "sun",
+        "segs": [
+          "rise:false:오른 순 365곳",
+          "sun:true:태양 53곳",
+          "ind:false:업종별 73개",
+          "flow:false:흐름별 10가지"
+        ],
+        "stripHidden": true,
+        "pagerN": 0,
+        "segY": 64,
+        "hint": "태양 53곳만 한곳에 · 지난 20거래일 많이 오른 차례"
+      }
+    },
+    {
+      "name": "pc 출목표 태양 한곳: 칸 53개 = 따로 센 태양 53곳 모두 · 오른 순 그대로(성호전자 · 엑스게이트 · 원익홀딩스 …) · 묶음 8개(「오른 순 1위~20위 · 태양 n곳」) · 맨 위 「1위~73위 안 44곳 · 밖 9곳」",
+      "ok": true,
+      "detail": {
+        "tiles": 53,
+        "secs": [
+          "f-s1:오른 순 1위~20위:17",
+          "f-s21:오른 순 21위~40위:13",
+          "f-s41:오른 순 41위~60위:12",
+          "f-s61:오른 순 61위~80위:4",
+          "f-s81:오른 순 81위~100위:3",
+          "f-s101:오른 순 101위~120위:2",
+          "f-s121:오른 순 121위~140위:1",
+          "f-s141:오른 순 141위~160위:1"
+        ],
+        "lead": "태양 53곳 = 오른 회사 출목표의 공통 모양 5가지를 모두 가진 곳 · 오른 순 1위~73위 안 44곳 · 밖 9곳"
+      }
+    },
+    {
+      "name": "pc 출목표 태양 한곳: 칸마다 태양 표 · 이름·업종·20거래일 변화·출목표·링크 = 판 · 선 그래프(묶음마다 같은 눈금) · 수급 · 기사 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "tmS": [],
+        "smS": [],
+        "btS": [],
+        "sw": 1280
+      }
+    },
+    {
+      "name": "pc 출목표 태양 한곳: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "pc 흐름별을 보다 일정 탭 → 출목표 탭 누름 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 엑스게이트 · 원익홀딩스",
@@ -2675,7 +2791,7 @@
       "detail": null
     },
     {
-      "name": "mobile 출목표: 제목 「출목표 365곳」 = 판 365곳 · 「지난 20거래일 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 아래 탭 「출목표」 눌림 · 처음 = 오른 순 첫 탭(단추 rise:true:오른 순 365곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지)",
+      "name": "mobile 출목표: 제목 「출목표 365곳」 = 판 365곳 · 「지난 20거래일 · 9월 2일(수)부터 10월 2일(금) 15:30 종가까지」 · 아래 탭 「출목표」 눌림 · 처음 = 오른 순 첫 탭(단추 rise:true:오른 순 365곳 | sun:false:태양 53곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지)",
       "ok": true,
       "detail": {
         "title": "출목표 365곳",
@@ -2685,6 +2801,7 @@
         "tab": "r1",
         "segs": [
           "rise:true:오른 순 365곳",
+          "sun:false:태양 53곳",
           "ind:false:업종별 73개",
           "flow:false:흐름별 10가지"
         ],
@@ -2776,6 +2893,13 @@
         },
         "mean": null,
         "ctx": "수급·기사: 365곳 가운데 167곳만 모았음(10월 2일(금) 기준) · 나머지 198곳은 다음 관측 수집 때 채움",
+        "stripHidden": false,
+        "pagerN": 1,
+        "lead2": null,
+        "go": {
+          "t": "태양 53곳 한곳에 모아 보기 ›",
+          "sun": true
+        },
         "sw": 390,
         "iw": 390
       }
@@ -2867,6 +2991,14 @@
       }
     },
     {
+      "name": "mobile 출목표 맨 위 태양 상자: 단추 「태양 53곳 한곳에 모아 보기 ›」(태양 그림) — 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」",
+      "ok": true,
+      "detail": {
+        "t": "태양 53곳 한곳에 모아 보기 ›",
+        "sun": true
+      }
+    },
+    {
       "name": "mobile 출목표 오른 순(첫 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -2927,7 +3059,7 @@
       }
     },
     {
-      "name": "mobile 출목표 「업종별」 터치 → 단추 rise:false:오른 순 365곳 | ind:true:업종별 73개 | flow:false:흐름별 10가지 · 탭 12개 = 큰 갈래 12개(갈래 평균이 큰 순 · 탭마다 갈래 평균) · 첫 탭 「반도체」 · 「큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것」",
+      "name": "mobile 출목표 「업종별」 터치 → 단추 rise:false:오른 순 365곳 | sun:false:태양 53곳 | ind:true:업종별 73개 | flow:false:흐름별 10가지 · 탭 12개 = 큰 갈래 12개(갈래 평균이 큰 순 · 탭마다 갈래 평균) · 첫 탭 「반도체」 · 「큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것」",
       "ok": true,
       "detail": {
         "tabs": [
@@ -3078,13 +3210,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1496px → 1496px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1566px → 1566px)",
       "ok": true,
       "detail": {
-        "yBefore": 1496,
+        "yBefore": 1566,
         "back": {
           "hash": "#/road",
-          "y": 1496,
+          "y": 1566,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -3099,6 +3231,56 @@
         "mode": "flow",
         "tab": "flat-up"
       }
+    },
+    {
+      "name": "mobile 출목표 태양 상자 단추 터치 → 묶는 법 「태양」(단추 rise:false:오른 순 365곳 | sun:true:태양 53곳 | ind:false:업종별 73개 | flow:false:흐름별 10가지) · 화면은 묶는 법 자리로(위에서 64px) · 탭 줄·넘김 단추 없음",
+      "ok": true,
+      "detail": {
+        "mode": "sun",
+        "segs": [
+          "rise:false:오른 순 365곳",
+          "sun:true:태양 53곳",
+          "ind:false:업종별 73개",
+          "flow:false:흐름별 10가지"
+        ],
+        "stripHidden": true,
+        "pagerN": 0,
+        "segY": 64,
+        "hint": "태양 53곳만 한곳에 · 지난 20거래일 많이 오른 차례"
+      }
+    },
+    {
+      "name": "mobile 출목표 태양 한곳: 칸 53개 = 따로 센 태양 53곳 모두 · 오른 순 그대로(성호전자 · 엑스게이트 · 원익홀딩스 …) · 묶음 8개(「오른 순 1위~20위 · 태양 n곳」) · 맨 위 「1위~73위 안 44곳 · 밖 9곳」",
+      "ok": true,
+      "detail": {
+        "tiles": 53,
+        "secs": [
+          "f-s1:오른 순 1위~20위:17",
+          "f-s21:오른 순 21위~40위:13",
+          "f-s41:오른 순 41위~60위:12",
+          "f-s61:오른 순 61위~80위:4",
+          "f-s81:오른 순 81위~100위:3",
+          "f-s101:오른 순 101위~120위:2",
+          "f-s121:오른 순 121위~140위:1",
+          "f-s141:오른 순 141위~160위:1"
+        ],
+        "lead": "태양 53곳 = 오른 회사 출목표의 공통 모양 5가지를 모두 가진 곳 · 오른 순 1위~73위 안 44곳 · 밖 9곳"
+      }
+    },
+    {
+      "name": "mobile 출목표 태양 한곳: 칸마다 태양 표 · 이름·업종·20거래일 변화·출목표·링크 = 판 · 선 그래프(묶음마다 같은 눈금) · 수급 · 기사 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "tmS": [],
+        "smS": [],
+        "btS": [],
+        "sw": 390
+      }
+    },
+    {
+      "name": "mobile 출목표 태양 한곳: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "mobile 흐름별을 보다 일정 탭 → 출목표 탭 터치 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 엑스게이트 · 원익홀딩스",
@@ -3384,6 +3566,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc road-sun: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc road-sun: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc road-sun: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc road-flow: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -3570,6 +3771,25 @@
     },
     {
       "name": "또렷함 mobile road-ind: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile road-sun: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile road-sun: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile road-sun: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -3764,6 +3984,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark road-sun: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark road-sun: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark road-sun: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark road-flow: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -3950,6 +4189,25 @@
     },
     {
       "name": "또렷함 pc-200 road-ind: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 road-sun: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 road-sun: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 road-sun: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -4144,6 +4402,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark-200 road-sun: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 road-sun: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 road-sun: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark-200 road-flow: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -4266,5 +4543,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T05-33-55-714Z"
+  "dir": "reports/atlas11/browser/2026-10-05T05-43-54-942Z"
 }

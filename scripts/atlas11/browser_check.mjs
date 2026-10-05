@@ -358,6 +358,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     secs: [...document.querySelectorAll('.f-body > .f-sec')].map(s => ({domId: s.id, id: s.dataset.group ?? s.dataset.flow, rank: s.querySelector('.f-h-rank')?.textContent.trim() ?? null, name: (s.querySelector('.f-h-name') ?? s.querySelector('.t-h2'))?.firstChild?.textContent.trim(), fire: !!s.querySelector('.f-h .t-fire'), chg: s.querySelector('.f-h-chg')?.textContent.trim() ?? null, codes: [...s.querySelectorAll('.f-tile')].map(t => t.dataset.code)})),
     tiles: [...document.querySelectorAll('.f-tile')].map(t => ({code: t.dataset.code, href: t.getAttribute('href'), name: t.querySelector('.f-name')?.textContent.trim(), chg: t.querySelector('.f-chg')?.textContent.trim(), ind: t.querySelector('.f-ind')?.textContent.trim() ?? null, beads: t.querySelectorAll('.road .bead').length, up: t.querySelectorAll('.road .bead.up').length, st: t.querySelector('.f-st')?.textContent.trim(), unit: t.querySelector('.f-unit')?.textContent.trim() ?? null, sec: t.closest('.f-sec')?.id ?? null, sp: (() => { const sp = t.querySelector('.spark'); return sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi, side: ['up', 'down', 'flat'].find(k => sp.classList.contains(k)) ?? null, pts: sp.querySelector('.sp-line')?.getAttribute('points')?.trim().split(/\s+/).length ?? 0} : null; })(), fl: [...t.querySelectorAll('.fl .fl-val')].map(e => e.textContent.trim()), flMiss: t.querySelector('.fl-miss')?.textContent.trim() ?? null, nwT: t.querySelector('.nw-t')?.textContent.trim() ?? null, nwH: t.querySelector('.nw-h')?.textContent.trim() ?? null, nwMiss: t.querySelector('.nw-miss')?.textContent.trim() ?? null, spk: t.dataset.sparkle ?? null, spkT: t.querySelector('.f-spk')?.textContent.trim() ?? null, sun: !!t.querySelector('.f-spk svg.sun .sun-rays line')})),
     notes: [...document.querySelectorAll('.f-body > .f-sec')].map(sct => ({id: sct.id, note: [...sct.querySelectorAll(':scope > .t-sub')].map(p => p.textContent.trim()).join(' ')})), ctx: document.querySelector('.f-ctx')?.textContent.trim() ?? null,
+    stripHidden: document.querySelector('.f-tabs')?.hidden ?? null, pagerN: document.querySelectorAll('.f-body > .f-pager').length, lead2: document.querySelector('.f-body > .f-lead')?.textContent.trim() ?? null,
+    go: (() => { const g = document.querySelector('.f-spk-go'); return g ? {t: g.textContent.trim(), sun: !!g.querySelector('svg.sun .sun-rays line')} : null; })(),
     sw: document.documentElement.scrollWidth, iw: innerWidth}));
   const secScale = r => new Map(r.secs.map(x => [x.domId, scaleW(x.codes.map(code => byCodeB.get(code)))]));
   const briefTileMis = r => { const sc = secScale(r); return r.tiles.map(t => ({code: t.code, bad: briefMisW(t, byCodeB.get(t.code), sc.get(t.sec))})).filter(x => x.bad.length).concat(r.notes.filter(n => !n.note.includes(scaleTextW(sc.get(n.id)))).map(n => ({sec: n.id, note: n.note.slice(-60)}))); };
@@ -397,7 +399,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const flowsWant = FLOW_ORDER_W.map(k => ({k, items: board.companies.filter(c => flowWant(roadOf(c.c)) === k).sort(riseDesc)})).filter(f => f.items.length)
     .map(f => ({...f, avg: avgW(f.items)})).sort((a, b) => b.avg - a.avg);
   const chipW = k => k === 'still' ? '거의 안 움직임' : flowTextW(k);
-  const segsWant = on => [`rise:${on === 'rise'}:오른 순 ${N}곳`, `ind:${on === 'ind'}:업종별 ${G}개`, `flow:${on === 'flow'}:흐름별 ${flowsWant.length}가지`].join('|');
+  const segsWant = on => [`rise:${on === 'rise'}:오른 순 ${N}곳`, ...(spkW.size ? [`sun:${on === 'sun'}:태양 ${spkW.size}곳`] : []), `ind:${on === 'ind'}:업종별 ${G}개`, `flow:${on === 'flow'}:흐름별 ${flowsWant.length}가지`].join('|'); // 태양 = 2026-10-05 14:40 「한 곳으로 모아줘」
   const riseLabels = chunksW.map((xs, k) => `${k * CH + 1}위~${k * CH + xs.length}위`);
   const starW = codes => { const n = spkCount(codes); return n ? `☀${n}곳` : ''; };
   const tabsWant = {rise: sel => chunksW.map((xs, k) => `r${k * CH + 1}|${k === sel}|${riseLabels[k]}||${starW(xs.map(c => c.code))}`),
@@ -415,6 +417,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       && r0.spkBox.list.length === kW && r0.spkBox.list.every((x, i) => { const [id, short, nb] = x.split('|'); return id === commonW[i].id && short === commonW[i].short && +nb > 0; })
       && r0.spkBox.all.length === SHAPE_W.length && shapeW.every((t, i) => { const x = r0.spkBox.all[i], on = commonW.includes(t); return x && x.id === t.id && x.common === String(on) && x.text.startsWith(`${on ? '✓' : '·'} ${t.name} — `) && x.text.endsWith(`오른 ${topNW}곳 가운데 ${t.a}곳(${pcW(t.a, topNW)}) · 나머지 ${restW.length}곳 가운데 ${t.b}곳(${pcW(t.b, restW.length)})`); }),
     {spkBox: r0.spkBox, want: {n: spkW.size, common: commonW.map(t => `${t.id} ${t.a}/${topNW} ${t.b}/${restW.length}`)}});
+  check(`${label} 출목표 맨 위 태양 상자: 단추 「${r0.go?.t}」(태양 그림) — 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」`, !spkW.size ? r0.go === null : r0.go?.t === `태양 ${spkW.size}곳 한곳에 모아 보기 ›` && r0.go.sun, r0.go);
   await wordsCheck(page, `${label} 출목표 오른 순(첫 탭)`);
   {
     const seen = [], mis = [], tileMis = [], briefMis = [], over = [], spkMis = []; let spkSeen = 0;
@@ -523,6 +526,23 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     await press(page.locator('.bottom-link[data-route="road"]')); await page.waitForTimeout(900);
     const tt = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, tab: document.querySelector('.f-body')?.dataset.tab}));
     check(`${label} 출목표 탭을 한 번 더 ${mobile ? '터치' : '누름'} → 맨 위로(${tt.y}px) · 묶는 법·탭은 그대로(${tt.mode} · ${tt.tab})`, tt.hash === '#/road' && tt.y === 0 && tt.mode === 'flow' && tt.tab === f3.k, tt);
+  }
+  // ③ 태양 — 한곳에 모아 보기(2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘 그래야 저기 이용하는 사람들이 쉬울 거 아냐」)
+  //   맨 위 상자 단추 → 묶는 법 「태양」 · 태양 칸만 오른 순 그대로 모두(「더 보기」 없이) · 오른 순 자리 20칸마다 묶음 머리 · 탭 줄·넘김 단추 없음
+  if (spkW.size) {
+    const goBtn = page.locator('.f-spk-go'); await goBtn.scrollIntoViewIfNeeded(); await press(goBtn);
+    await page.waitForSelector('.f-body[data-mode="sun"][data-ready] .f-tile'); await page.waitForTimeout(900);
+    const sr = await roadRead(), segY = await page.evaluate(() => Math.round(document.querySelector('.f-seg').getBoundingClientRect().top));
+    const sunsW = rankedW.filter(c => spkW.has(c.code)), inTopW = rankedW.slice(0, topNW).filter(c => spkW.has(c.code)).length;
+    const bandsW = chunksW.map((xs, k) => ({a: k * CH + 1, b: k * CH + xs.length, xs: xs.filter(c => spkW.has(c.code))})).filter(x => x.xs.length);
+    const secOk = sr.secs.length === bandsW.length && bandsW.every((w, j) => { const s = sr.secs[j]; return s && s.domId === `f-s${w.a}` && s.name === `오른 순 ${w.a}위~${w.b}위` && s.codes.join() === w.xs.map(c => c.code).join() && (sr.notes[j]?.note ?? '').startsWith(`${w.b - w.a + 1}곳 가운데 ${w.xs.length}곳 · 지난 20거래일 많이 오른 차례 · `); });
+    check(`${label} 출목표 태양 상자 단추 ${mobile ? '터치' : '누름'} → 묶는 법 「태양」(단추 ${sr.segs.join(' | ')}) · 화면은 묶는 법 자리로(위에서 ${segY}px) · 탭 줄·넘김 단추 없음`, sr.mode === 'sun' && sr.segs.join('|') === segsWant('sun') && sr.stripHidden === true && sr.pagerN === 0 && segY >= 40 && segY <= 100 && sr.hint === `태양 ${spkW.size}곳만 한곳에 · 지난 20거래일 많이 오른 차례`, {mode: sr.mode, segs: sr.segs, stripHidden: sr.stripHidden, pagerN: sr.pagerN, segY, hint: sr.hint});
+    check(`${label} 출목표 태양 한곳: 칸 ${sr.tiles.length}개 = 따로 센 태양 ${spkW.size}곳 모두 · 오른 순 그대로(${sunsW.slice(0, 3).map(c => c.name).join(' · ')} …) · 묶음 ${sr.secs.length}개(「오른 순 1위~20위 · 태양 n곳」) · 맨 위 「1위~${topNW}위 안 ${inTopW}곳 · 밖 ${spkW.size - inTopW}곳」`,
+      sr.tiles.length === spkW.size && sr.tiles.map(t => t.code).join() === sunsW.map(c => c.code).join() && secOk && sr.lead2 === `태양 ${spkW.size}곳 = 오른 회사 출목표의 공통 모양 ${kW}가지를 모두 가진 곳 · 오른 순 1위~${topNW}위 안 ${inTopW}곳 · 밖 ${spkW.size - inTopW}곳`,
+      {tiles: sr.tiles.length, secs: sr.secs.map(x => `${x.domId}:${x.name}:${x.codes.length}`), lead: sr.lead2});
+    const tmS = tileMisOf(sr.tiles, true), smS = spkMisOf(sr.tiles), btS = briefTileMis(sr);
+    check(`${label} 출목표 태양 한곳: 칸마다 태양 표 · 이름·업종·20거래일 변화·출목표·링크 = 판 · 선 그래프(묶음마다 같은 눈금) · 수급 · 기사 · 옆으로 넘치지 않음`, !tmS.length && !smS.length && !btS.length && sr.sw <= sr.iw, {tmS: tmS.slice(0, 3), smS: smS.slice(0, 3), btS: btS.slice(0, 2), sw: sr.sw});
+    await wordsCheck(page, `${label} 출목표 태양 한곳`);
   }
   // 다른 아래 탭에서 출목표 탭을 누르면 늘 「오른 순」 첫 탭(1위~20위) 맨 위 — 흐름별 셋째 탭을 보다 떠났어도
   {

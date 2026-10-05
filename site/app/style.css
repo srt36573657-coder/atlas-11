@@ -544,3 +544,14 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
   .f-tile.sparkle { background-image: linear-gradient(110deg, transparent 38%, rgba(255, 190, 110, .06) 47%, rgba(255, 226, 180, .09) 50%, rgba(255, 190, 110, .06) 53%, transparent 62%); } /* 어두운 화면: 빛줄기가 지나갈 때도 흐린 글자 대비 4.5 넘게 */
 }
 @media (prefers-reduced-motion: reduce) { .f-tile.sparkle, .sun-rays, .sun-glow { animation: none; } .f-tile.sparkle { background-image: none; } }
+/* 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘 그래야 저기 이용하는 사람들이 쉬울 거 아냐」 — 묶는 법 넷째 「☀ 태양」 · 맨 위 상자 「한곳에 모아 보기」 단추 */
+.f-seg { max-width: 34rem; }
+.f-seg-sun .sun { width: 1.25em; height: 1.25em; margin-right: 2px; vertical-align: -.25em; }
+/* 큰 글씨(150% 넘게)면 묶는 법 넷을 두 줄 두 칸으로 — 「오른 / 순」처럼 낱말이 갈라지지 않게 */
+html[data-font-step="2"] .f-seg, html[data-font-step="3"] .f-seg, html[data-font-step="4"] .f-seg { flex-wrap: wrap; }
+html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-font-step="4"] .f-seg-b { flex: 1 1 calc(50% - 2px); }
+.f-tabs[hidden] { display: none; }
+.f-spk-go { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; min-height: 50px; margin: 12px 0 0; padding: 8px 14px; border: 0; border-radius: 12px; background: var(--ink); color: var(--card); font: inherit; font-size: 1.0625rem; font-weight: 700; line-height: 1.3; cursor: pointer; box-shadow: 0 0 0 2px var(--sun), 0 0 12px var(--sun-glow); }
+.f-spk-go .sun { width: 1.7em; height: 1.7em; }
+.f-spk-go:active { transform: scale(.98); }
+.f-spk-go:focus-visible { outline: 3px solid var(--geum); outline-offset: 3px; }
