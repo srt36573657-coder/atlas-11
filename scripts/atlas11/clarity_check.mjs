@@ -25,6 +25,7 @@ export const SCREENS = [
   // 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 … 추가로 더 만들어」: 출목표 한 판 — 업종별(처음) · 흐름별(단추를 눌러서)
   // 2026-10-05 365곳: 출목표 칸은 조금씩 붙인다 — 다 붙인 뒤(data-ready) 잰다
   // 2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로」 → 「모든 배치가 가장 많이 상승한순으로」: 처음 = 오른 순 · 업종별 · 흐름별은 단추를 눌러서
+  // 2026-10-05 12:28 「그 안에 탭을 더」: 묶는 법마다 첫 탭을 잰다(탭끼리 칸 모양은 같고 검사기 browser_check 가 탭을 모두 눌러 셈)
   {id: 'road', name: '출목표(오른 순)', hash: '#/road', wait: '.f-body[data-mode="rise"][data-ready] .f-tile'},
   {id: 'road-ind', name: '출목표(업종별)', hash: '#/road', wait: '.f-body[data-ready] .f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="ind"]').click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); }},
   {id: 'road-flow', name: '출목표(흐름별)', hash: '#/road', wait: '.f-body[data-ready] .f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="flow"]').click(); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); }},

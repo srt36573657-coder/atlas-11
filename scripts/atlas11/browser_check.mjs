@@ -339,111 +339,168 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 일정: 시장 ${a.market}건 · 회사·업종 ${a.company}건(${a.days}날) · 예고 공시 ${a.notices}건 · ★★★ 공시 ${a.big}건 = 일정표 · 아래 탭 「일정」 눌림`, a.market === agenda.market.length && a.company === ev.size && a.notices === notices && a.big === big && a.active === 'agenda', {a, want: {market: agenda.market.length, company: ev.size, notices, big}});
   await wordsCheck(page, `${label} 일정`);
 
-  // ③-2 출목표 한 판(#/road) — 2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 잡스라면 그리고 애플이라면 해서 추가로 더 만들어」
-  //   업종별(처음) = 36칸 판 차례 · 업종 안은 판의 차례 / 흐름별 = 아홉 칸 표의 흐름(+거의 안 움직임)마다 · 지난 20거래일 많이 오른 순 · 칸마다 출목표 = 따로 센 값
-  await page.goto(base + '/#/road', {waitUntil: 'networkidle'}); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300); // 칸은 조금씩 붙임 — 다 붙인 뒤(data-ready) 잰다
+  // ③-2 출목표(#/road) — 묶는 법 셋 × 그 안의 탭
+  //   2026-10-04 22:12 「에볼루션에 바카라 출몰표 한곳에 모여 있는것도 … 추가로 더 만들어」 · 22:51 「그래프로 있어야 해 그리고 그 회사들 뉴스와 수급도」
+  //   2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」 · 12:28 「출목표를 클릭하면 지금 365개 다 나오잖아 불편해 … 그 안에 탭을 더 만들어서 편하면서도 직관적으로」
+  //   탭을 하나씩 모두 눌러 365곳이 빠짐·겹침 없이 이 검사기가 따로 줄 세운 차례대로 나오는지 센다(오른 순 19개 · 업종별 12개 · 흐름별 10가지)
+  await page.goto(base + '/#/road', {waitUntil: 'networkidle'}); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300);
   await shot('04-road');
-  const roadRead = () => page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, mode: document.querySelector('.f-body')?.dataset.mode,
+  const roadRead = () => page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, mode: document.querySelector('.f-body')?.dataset.mode, tab: document.querySelector('.f-body')?.dataset.tab ?? null,
     segs: [...document.querySelectorAll('.f-seg-b')].map(b => `${b.dataset.mode}:${b.getAttribute('aria-pressed')}:${b.textContent.trim()}`),
+    hint: document.querySelector('.f-tabs-h')?.textContent.trim() ?? null,
+    strip: (() => { const s = document.querySelector('.f-tabs'); return s ? {role: s.getAttribute('role'), scroll: s.dataset.scroll ?? null} : null; })(),
+    tabs: [...document.querySelectorAll('.f-tabs .f-tab')].map(b => `${b.dataset.tab}|${b.getAttribute('aria-selected')}|${b.querySelector('.f-tab-l')?.textContent.trim()}|${b.querySelector('.f-tab-n')?.textContent.trim() ?? ''}`),
+    lead: document.querySelector('.f-body > .f-lead')?.textContent.trim() ?? null,
+    more: document.querySelector('.f-body > .f-more')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
+    pager: (() => { const g = document.querySelector('.f-body > .f-pager'); return g ? {next: g.querySelector('.f-pg-next')?.textContent.trim() ?? null, prev: g.querySelector('.f-pg-prev')?.textContent.trim() ?? null, pos: g.querySelector('.f-pg-pos')?.textContent.trim() ?? null} : null; })(),
+    mean: (() => { const m = document.querySelector('.f-body .f-mean .spark.mini'); return m ? {n: +m.dataset.points, lo: m.dataset.lo, hi: m.dataset.hi, side: ['up', 'down', 'flat'].find(k => m.classList.contains(k)) ?? null} : null; })(),
     secs: [...document.querySelectorAll('.f-body > .f-sec')].map(s => ({domId: s.id, id: s.dataset.group ?? s.dataset.flow, rank: s.querySelector('.f-h-rank')?.textContent.trim() ?? null, name: (s.querySelector('.f-h-name') ?? s.querySelector('.t-h2'))?.firstChild?.textContent.trim(), fire: !!s.querySelector('.f-h .t-fire'), chg: s.querySelector('.f-h-chg')?.textContent.trim() ?? null, codes: [...s.querySelectorAll('.f-tile')].map(t => t.dataset.code)})),
-    rows: [...document.querySelectorAll('.f-row')].map(b => { const m = b.querySelector('.spark.mini'); return {flow: b.dataset.flow, lab: b.querySelector('.f-lab')?.textContent.trim(), n: b.querySelector('.f-n')?.textContent.trim(), mini: m ? {n: +m.dataset.points, lo: m.dataset.lo, hi: m.dataset.hi, side: ['up', 'down', 'flat'].find(k => m.classList.contains(k)) ?? null} : null}; }),
     tiles: [...document.querySelectorAll('.f-tile')].map(t => ({code: t.dataset.code, href: t.getAttribute('href'), name: t.querySelector('.f-name')?.textContent.trim(), chg: t.querySelector('.f-chg')?.textContent.trim(), ind: t.querySelector('.f-ind')?.textContent.trim() ?? null, beads: t.querySelectorAll('.road .bead').length, up: t.querySelectorAll('.road .bead.up').length, st: t.querySelector('.f-st')?.textContent.trim(), unit: t.querySelector('.f-unit')?.textContent.trim() ?? null, sec: t.closest('.f-sec')?.id ?? null, sp: (() => { const sp = t.querySelector('.spark'); return sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi, side: ['up', 'down', 'flat'].find(k => sp.classList.contains(k)) ?? null, pts: sp.querySelector('.sp-line')?.getAttribute('points')?.trim().split(/\s+/).length ?? 0} : null; })(), fl: [...t.querySelectorAll('.fl .fl-val')].map(e => e.textContent.trim()), flMiss: t.querySelector('.fl-miss')?.textContent.trim() ?? null, nwT: t.querySelector('.nw-t')?.textContent.trim() ?? null, nwH: t.querySelector('.nw-h')?.textContent.trim() ?? null, nwMiss: t.querySelector('.nw-miss')?.textContent.trim() ?? null})),
     notes: [...document.querySelectorAll('.f-body > .f-sec')].map(sct => ({id: sct.id, note: [...sct.querySelectorAll(':scope > .t-sub')].map(p => p.textContent.trim()).join(' ')})), ctx: document.querySelector('.f-ctx')?.textContent.trim() ?? null,
-    famHidden: document.querySelector('.f-fam')?.hidden ?? null, sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    sw: document.documentElement.scrollWidth, iw: innerWidth}));
   const secScale = r => new Map(r.secs.map(x => [x.domId, scaleW(x.codes.map(code => byCodeB.get(code)))]));
   const briefTileMis = r => { const sc = secScale(r); return r.tiles.map(t => ({code: t.code, bad: briefMisW(t, byCodeB.get(t.code), sc.get(t.sec))})).filter(x => x.bad.length).concat(r.notes.filter(n => !n.note.includes(scaleTextW(sc.get(n.id)))).map(n => ({sec: n.id, note: n.note.slice(-60)}))); };
   const ctxGot = board.companies.filter(c => c.brief && !c.brief.missing.includes('수급') && !c.brief.missing.includes('기사')).length, ctxDay = board.companies.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
   const ctxWant = ctxGot === N ? `수급·기사: ${N}곳 모두${ctxDay ? ` · ${kd(ctxDay)} 기준` : ''}` : `수급·기사: ${N}곳 가운데 ${ctxGot}곳만 모았음${ctxDay ? `(${kd(ctxDay)} 기준)` : ''} · 나머지 ${N - ctxGot}곳은 다음 관측 수집 때 채움`;
   const tileMisOf = (tiles, withInd) => tiles.filter(t => { const c = byCodeB.get(t.code), road = c && roadOf(c.c); return !c || t.href !== '#/stock/' + c.code || t.name !== c.name || t.chg !== (Number.isFinite(c.change20) ? p1(c.change20) : '없음') || t.beads !== road.cells.length || t.up !== road.all.up || t.st !== upDaysW(c) || t.unit !== (road.unit > 0.01 ? `동그라미 하나 = ${Math.round(road.unit * 100)}%` : null) || (withInd ? t.ind !== board.groups.find(g => g.id === c.group?.id)?.label : t.ind !== null); }).map(t => t.code);
-  // ⓪ 처음 = 「오른 순」(2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」 → 「모든 배치가 가장 많이 상승한순으로」)
-  //   365곳을 이 검사기가 따로 줄 세운 지난 20거래일 많이 오른 차례와 맞댐 · 20곳씩 끊은 머리 「1위~20위」 · 묶음마다 첫·끝 값
-  const rankedW = [...board.companies].sort(riseDesc), flowCountW = new Set(board.companies.map(c => flowWant(roadOf(c.c)))).size;
-  const segsWant = on => [`rise:${on === 'rise'}:오른 순 ${N}곳`, `ind:${on === 'ind'}:업종별 ${G}개`, `flow:${on === 'flow'}:흐름별 ${flowCountW}가지`].join('|');
-  const r0 = await roadRead();
-  check(`${label} 출목표 한 판: 제목 「${r0.title}」 = 판 ${N}곳 · 「${r0.when}」 · 아래 탭 「출목표」 눌림 · 처음 보이는 묶음 = 오른 순(단추 ${r0.segs.join(' | ')})`, r0.title === `출목표 ${N}곳` && r0.when === `지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지 · 한 화면에 모두` && r0.active === 'road' && r0.mode === 'rise' && r0.segs.join('|') === segsWant('rise'), {...r0, secs: undefined, tiles: undefined, notes: undefined});
-  const CH = 20, chunksW = Array.from({length: Math.ceil(N / CH)}, (_, i) => rankedW.slice(i * CH, i * CH + CH));
-  const riseMis = chunksW.map((xs, k) => { const s = r0.secs[k], a = k * CH + 1, b = k * CH + xs.length, note = r0.notes[k]?.note ?? '';
-    return s && s.domId === `f-r${a}` && s.name === `${a}위~${b}위` && s.codes.join() === xs.map(c => c.code).join() && note.startsWith(`지난 20거래일 많이 오른 차례 · ${a}위 ${p1(xs[0].change20)} ~ ${b}위 ${p1(xs.at(-1).change20)} · `) ? null : {k, s: s && {...s, codes: s.codes.slice(0, 3)}, note}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(오른 순): 묶음 ${r0.secs.length}개(20곳씩) · 칸 차례 = 이 검사기가 따로 줄 세운 지난 20거래일 많이 오른 순(1위 ${rankedW[0].name} ${p1(rankedW[0].change20)} … ${N}위 ${rankedW.at(-1).name} ${p1(rankedW.at(-1).change20)}) · 머리 「a위~b위」 · 묶음마다 첫·끝 값`, r0.secs.length === chunksW.length && !riseMis.length, {riseMis: riseMis.slice(0, 2)});
-  const tm0 = tileMisOf(r0.tiles, true);
-  check(`${label} 출목표 한 판(오른 순): 칸 ${r0.tiles.length}개 = 판 ${N}곳(겹침 없음) · 칸마다 이름·업종 이름·20거래일 변화·출목표 동그라미·「오른 날 n일」·회사 화면 링크 = 판`, r0.tiles.length === N && new Set(r0.tiles.map(t => t.code)).size === N && !tm0.length, {tm0: tm0.slice(0, 5)});
-  const bt0 = briefTileMis(r0);
-  check(`${label} 출목표 한 판(오른 순): 칸마다 선 그래프(20곳 묶음마다 같은 눈금 · 눈금 글) · 수급 · 기사 = 판 · 「${r0.ctx}」`, !bt0.length && r0.ctx === ctxWant, {bt0: bt0.slice(0, 4), ctx: r0.ctx, ctxWant});
-  check(`${label} 출목표 한 판(오른 순): 화면이 옆으로 넘치지 않음(${r0.sw}px ≤ ${r0.iw}px) · 큰 갈래 단추는 업종별에서만`, r0.sw <= r0.iw && r0.famHidden === true, {sw: r0.sw, iw: r0.iw, famHidden: r0.famHidden});
-  await wordsCheck(page, `${label} 출목표 한 판(오른 순)`);
-  // 업종별로 바꾸기
-  { const sI = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await sI.tap(); else await sI.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(300); }
-  const r1 = await roadRead();
-  check(`${label} 출목표 한 판: 「업종별」 ${mobile ? '터치' : '누름'} → 묶는 법 업종별(단추 ${r1.segs.join(' | ')}) · 큰 갈래 단추 보임`, r1.mode === 'ind' && r1.segs.join('|') === segsWant('ind') && r1.famHidden === false, {mode: r1.mode, segs: r1.segs, famHidden: r1.famHidden});
-  const secMis = board.groups.map((g, k) => { const s = r1.secs[k], want = g.codes.map(code => byCodeB.get(code)).sort(riseDesc).map(c => c.code); return s && s.id === g.id && s.rank === `${k + 1}위` && s.name === g.label && s.fire === Boolean(g.hot) && s.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && s.codes.join() === want.join() ? null : {k, g: g.label, s}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(업종별): 묶음 ${r1.secs.length}개 = 판의 업종 ${G}개 · 업종 차례(지난 20거래일 평균이 큰 순) · n위·이름·「불장」·평균 · 업종 안 회사도 많이 오른 순`, r1.secs.length === G && !secMis.length, {secMis: secMis.slice(0, 2)});
-  const tm1 = tileMisOf(r1.tiles, false);
-  check(`${label} 출목표 한 판(업종별): 칸 ${r1.tiles.length}개 = 판 ${N}곳(겹침 없음) · 이름·20거래일 변화·출목표 동그라미 수(오른 날 포함)·「20거래일 중 오른 날 n일」(연속 글 없음)·「동그라미 하나 = n%」·회사 화면 링크를 따로 센 값과 맞댐`, r1.tiles.length === N && new Set(r1.tiles.map(t => t.code)).size === N && !tm1.length, {tm1: tm1.slice(0, 5)});
-  const bt1 = briefTileMis(r1);
-  check(`${label} 출목표 한 판(업종별): 칸 ${r1.tiles.length}개마다 선 그래프(종가 ${board.companies[0].c.length}개 · 업종 5곳 같은 눈금 · 눈금 글) · 수급 · 회사 이름이 든 최근 기사 = 판 · 「${r1.ctx}」`, !bt1.length && r1.ctx === ctxWant, {bt1: bt1.slice(0, 4), ctx: r1.ctx, ctxWant});
-  check(`${label} 출목표 한 판(업종별): 화면이 옆으로 넘치지 않음(${r1.sw}px ≤ ${r1.iw}px)`, r1.sw <= r1.iw, {sw: r1.sw, iw: r1.iw});
-  await wordsCheck(page, `${label} 출목표 한 판(업종별)`);
-  // 흐름별로 바꾸기
-  const seg = page.locator('.f-seg-b[data-mode="flow"]'); if (mobile) await seg.tap(); else await seg.click(); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); await page.waitForTimeout(300);
-  const r2 = await roadRead();
-  // 흐름 묶음 차례 = 묶음 평균(그 묶음 회사들의 지난 20거래일 변화 평균)이 큰 순 · 같으면 아홉 칸 표 차례(2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」)
+  const press = async loc => { if (mobile) await loc.tap(); else await loc.click(); };
+  const waitTab = id => page.waitForSelector(`.f-body[data-tab="${id}"][data-ready] .f-tile`);
+  /** 「더 보기」를 다 눌러 그 탭을 모두 펼친다(누른 수를 돌려줌) */
+  const expandAll = async () => { let k = 0; for (; k < 40; k++) { const m = page.locator('.f-body > .f-more'); if (!(await m.count())) break; await press(m); await page.waitForTimeout(60); } return k; };
+  // 이 검사기가 따로 세운 차례 — 오른 순(20곳씩) · 큰 갈래(갈래 평균이 큰 순) · 흐름(묶음 평균이 큰 순 · 같으면 아홉 칸 표 차례)
+  const rankedW = [...board.companies].sort(riseDesc), CH = 20, chunksW = Array.from({length: Math.ceil(N / CH)}, (_, i) => rankedW.slice(i * CH, i * CH + CH));
+  const famW = familiesByRise(board.groups), rd0 = roadOf(board.companies[0].c);
   const avgW = xs => { const v = xs.map(c => c.change20).filter(Number.isFinite); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : -Infinity; };
   const flowsWant = FLOW_ORDER_W.map(k => ({k, items: board.companies.filter(c => flowWant(roadOf(c.c)) === k).sort(riseDesc)})).filter(f => f.items.length)
     .map(f => ({...f, avg: avgW(f.items)})).sort((a, b) => b.avg - a.avg);
-  const flowMis = flowsWant.map((f, i) => { const s = r2.secs[i], row = r2.rows[i]; return s && s.id === f.k && s.name === flowTextW(f.k) && s.codes.join() === f.items.map(c => c.code).join() && row?.flow === f.k && row?.lab === flowTextW(f.k) && row?.n === `${f.items.length}곳` ? null : {k: f.k, s: s && {...s, codes: s.codes.length}, row}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(흐름별 ${mobile ? '터치' : '누름'}): 흐름 ${r2.secs.length}가지 = 따로 나눈 ${flowsWant.length}가지 · 차례(묶음 평균 지난 20거래일 변화가 큰 순: ${flowsWant.map(f => p1(f.avg)).join(' · ')}) · 이름 · 곳 수(합 ${r2.secs.reduce((s, x) => s + x.codes.length, 0)} = ${N}) · 묶음 안은 20거래일 많이 오른 순 · 흐름 목록 줄도 같음`, r2.mode === 'flow' && r2.secs.length === flowsWant.length && !flowMis.length && r2.segs.join('|') === segsWant('flow'), {flowMis: flowMis.slice(0, 2), segs: r2.segs});
-  // 흐름 목록 줄마다 묶음 평균 선(2026-10-05 00:26 「출목표 처음 보이는 곳에 … 바로 그래프도」) — 같은 날 종가까지 있는 회사만 날마다 평균 · 모든 줄 같은 눈금
+  const chipW = k => k === 'still' ? '거의 안 움직임' : flowTextW(k);
+  const segsWant = on => [`rise:${on === 'rise'}:오른 순 ${N}곳`, `ind:${on === 'ind'}:업종별 ${G}개`, `flow:${on === 'flow'}:흐름별 ${flowsWant.length}가지`].join('|');
+  const riseLabels = chunksW.map((xs, k) => `${k * CH + 1}위~${k * CH + xs.length}위`);
+  const tabsWant = {rise: sel => chunksW.map((xs, k) => `r${k * CH + 1}|${k === sel}|${riseLabels[k]}|`),
+    ind: sel => famW.map((f, k) => `${f.fam.id}|${k === sel}|${f.fam.label}|${Number.isFinite(f.avg) ? p1(f.avg) : '없음'}`),
+    flow: sel => flowsWant.map((f, k) => `${f.k}|${k === sel}|${chipW(f.k)}|${f.items.length}곳`)};
+  const pagerWant = (labels, i) => ({next: i + 1 < labels.length ? `${i + 2}번째 탭 · ${labels[i + 1]} 보기 ›` : null, prev: i > 0 ? `‹ ${i}번째 탭 · ${labels[i - 1]}` : null, pos: `탭 ${labels.length}개 가운데 ${i + 1}번째`});
+  const pagerOk = (r, labels, i) => { const w = pagerWant(labels, i); return r.pager?.next === w.next && r.pager?.prev === w.prev && r.pager?.pos === w.pos; };
+
+  // ⓪ 처음 = 「오른 순」 첫 탭(1위~20위)
+  const r0 = await roadRead();
+  check(`${label} 출목표: 제목 「${r0.title}」 = 판 ${N}곳 · 「${r0.when}」 · 아래 탭 「출목표」 눌림 · 처음 = 오른 순 첫 탭(단추 ${r0.segs.join(' | ')})`, r0.title === `출목표 ${N}곳` && r0.when === `지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지` && r0.active === 'road' && r0.mode === 'rise' && r0.tab === 'r1' && r0.segs.join('|') === segsWant('rise'), {...r0, secs: undefined, tiles: undefined, notes: undefined});
+  check(`${label} 출목표 오른 순: 탭 ${r0.tabs.length}개 = 20곳씩 ${chunksW.length}개(「${riseLabels[0]}」 … 「${riseLabels.at(-1)}」) · 첫 탭 고름 · 탭 줄 = 옆으로 밀어 보는 tablist · 「${r0.hint}」 · 한 번에 칸 ${r0.tiles.length}개`, r0.tabs.join() === tabsWant.rise(0).join() && r0.strip?.role === 'tablist' && r0.strip?.scroll === 'x' && r0.hint === `탭 ${chunksW.length}개 · 20곳씩 · 지난 20거래일 많이 오른 차례` && r0.tiles.length === CH, {tabs: r0.tabs.slice(0, 3), strip: r0.strip, hint: r0.hint, tiles: r0.tiles.length});
+  await wordsCheck(page, `${label} 출목표 오른 순(첫 탭)`);
+  {
+    const seen = [], mis = [], tileMis = [], briefMis = [], over = [];
+    for (let k = 0; k < chunksW.length; k++) {
+      if (k) { await press(page.locator('.f-body .f-pg-next')); await waitTab('r' + (k * CH + 1)); await page.waitForTimeout(k === 1 ? 800 : 60); }
+      const r = k ? await roadRead() : r0, xs = chunksW[k], a = k * CH + 1, b = a + xs.length - 1, s = r.secs[0], note = r.notes[0]?.note ?? '';
+      if (k === 1) { const y = await page.evaluate(() => Math.round(document.querySelector('.f-seg').getBoundingClientRect().top)); check(`${label} 출목표 맨 아래 「${pagerWant(riseLabels, 0).next}」 ${mobile ? '터치' : '누름'} → 그 탭 · 화면은 묶는 법 단추 자리로 올라감(위에서 ${y}px)`, r.tab === 'r21' && y >= 40 && y <= 100, {y, tab: r.tab}); }
+      if (!(r.tab === 'r' + a && r.tabs.join() === tabsWant.rise(k).join() && r.secs.length === 1 && s?.domId === `f-r${a}` && s?.name === `${a}위~${b}위` && s?.codes.join() === xs.map(c => c.code).join() && note.startsWith(`지난 20거래일 많이 오른 차례 · ${a}위 ${p1(xs[0].change20)} ~ ${b}위 ${p1(xs.at(-1).change20)} · `) && r.more === null && pagerOk(r, riseLabels, k))) mis.push({k, tab: r.tab, sec: s && {...s, codes: s.codes.length}, pager: r.pager, more: r.more});
+      seen.push(...r.tiles.map(t => t.code));
+      const tm = tileMisOf(r.tiles, true); if (tm.length) tileMis.push({k, tm: tm.slice(0, 3)});
+      const bt = briefTileMis(r); if (bt.length) briefMis.push({k, bt: bt.slice(0, 2)});
+      if (r.sw > r.iw) over.push({k, sw: r.sw, iw: r.iw});
+    }
+    check(`${label} 출목표 오른 순: 탭 ${chunksW.length}개를 맨 아래 넘김 단추로 하나씩 — 탭마다 20곳 = 이 검사기가 따로 줄 세운 지난 20거래일 많이 오른 차례(1위 ${rankedW[0].name} ${p1(rankedW[0].change20)} … ${N}위 ${rankedW.at(-1).name} ${p1(rankedW.at(-1).change20)}) · 머리 「a위~b위」 · 첫·끝 값 · 넘김 단추 글 · 「탭 n개 가운데 m번째」`, !mis.length, {mis: mis.slice(0, 2)});
+    check(`${label} 출목표 오른 순: 탭 ${chunksW.length}개 칸 합 ${seen.length}개 = 판 ${N}곳(겹침·빠짐 없음) · 칸마다 이름·업종 이름·20거래일 변화·출목표 동그라미·「오른 날 n일」·「동그라미 하나 = n%」·회사 화면 링크 = 판`, seen.length === N && new Set(seen).size === N && !tileMis.length, {tileMis: tileMis.slice(0, 2)});
+    check(`${label} 출목표 오른 순: 칸마다 선 그래프(20곳 탭마다 같은 눈금 · 눈금 글) · 수급 · 기사 = 판 · 「${r0.ctx}」 · 탭 ${chunksW.length}개 모두 옆으로 넘치지 않음`, !briefMis.length && r0.ctx === ctxWant && !over.length, {briefMis: briefMis.slice(0, 2), ctx: r0.ctx, ctxWant, over});
+    await wordsCheck(page, `${label} 출목표 오른 순(마지막 탭)`);
+    const t1 = page.locator('.f-tabs .f-tab[data-tab="r1"]'); await press(t1); await waitTab('r1'); await page.waitForTimeout(200);
+    const rb = await page.evaluate(() => { const s = document.querySelector('.f-tabs'), b = s.querySelector('[aria-selected="true"]'), sr = s.getBoundingClientRect(), br = b.getBoundingClientRect(); return {tab: document.querySelector('.f-body').dataset.tab, sel: b.dataset.tab, inView: br.left >= sr.left - 1 && br.right <= sr.right + 1, first: document.querySelector('.f-tile')?.dataset.code}; });
+    check(`${label} 출목표 탭 줄 「${riseLabels[0]}」 ${mobile ? '터치' : '누름'} → 첫 탭으로 · 고른 탭이 탭 줄 안에 보임`, rb.tab === 'r1' && rb.sel === 'r1' && rb.inView && rb.first === rankedW[0].code, rb);
+    if (!mobile) {
+      await page.locator('.f-tabs .f-tab[data-tab="r1"]').focus(); await page.keyboard.press('ArrowRight'); await waitTab('r21');
+      const kb = await page.evaluate(() => ({tab: document.querySelector('.f-body').dataset.tab, focus: document.activeElement?.dataset?.tab ?? null}));
+      await page.keyboard.press('Home'); await waitTab('r1');
+      check(`${label} 출목표 탭 줄: 오른쪽 화살표 글쇠 → 둘째 탭(${kb.tab} · 초점도 그 탭) · Home → 첫 탭`, kb.tab === 'r21' && kb.focus === 'r21' && (await page.evaluate(() => document.querySelector('.f-body').dataset.tab)) === 'r1', kb);
+    }
+  }
+  // ① 업종별 — 큰 갈래 12개가 탭
+  await press(page.locator('.f-seg-b[data-mode="ind"]')); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(250);
+  {
+    const i0 = await roadRead(), famLabels = famW.map(f => f.fam.label);
+    check(`${label} 출목표 「업종별」 ${mobile ? '터치' : '누름'} → 단추 ${i0.segs.join(' | ')} · 탭 ${i0.tabs.length}개 = 큰 갈래 ${famW.length}개(갈래 평균이 큰 순 · 탭마다 갈래 평균) · 첫 탭 「${famLabels[0]}」 · 「${i0.hint}」`, i0.mode === 'ind' && i0.segs.join('|') === segsWant('ind') && i0.tab === famW[0].fam.id && i0.tabs.join() === tabsWant.ind(0).join() && i0.hint === `큰 갈래 탭 ${famW.length}개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것`, {tabs: i0.tabs.slice(0, 3), hint: i0.hint, tab: i0.tab});
+    const seen = [], mis = [], tileMis = [], briefMis = [], over = []; let maxShown = 0;
+    for (const [k, f] of famW.entries()) {
+      if (k) { await press(page.locator(`.f-tabs .f-tab[data-tab="${f.fam.id}"]`)); await waitTab(f.fam.id); await page.waitForTimeout(60); }
+      const first = await page.evaluate(() => document.querySelectorAll('.f-body .f-tile').length); maxShown = Math.max(maxShown, first);
+      await expandAll();
+      const r = await roadRead(), gs = board.groups.filter(g => familyOf(g.label).id === f.fam.id), cnt = gs.reduce((t, g) => t + g.codes.length, 0);
+      const secOk = r.secs.length === gs.length && gs.every((g, j) => { const s = r.secs[j], gi = board.groups.indexOf(g), want = g.codes.map(code => byCodeB.get(code)).sort(riseDesc).map(c => c.code); return s && s.id === g.id && s.rank === `${gi + 1}위` && s.name === g.label && s.fire === Boolean(g.hot) && s.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && s.codes.join() === want.join(); });
+      if (!(r.tab === f.fam.id && r.tabs.join() === tabsWant.ind(k).join() && secOk && r.lead === `${f.fam.label} · 업종 ${gs.length}개 · ${cnt}곳 · 갈래 평균 ${Number.isFinite(f.avg) ? p1(f.avg) : '없음'}` && pagerOk(r, famLabels, k) && first === Math.min(cnt, cnt <= 45 ? cnt : 20))) mis.push({k, fam: f.fam.label, tab: r.tab, lead: r.lead, secs: r.secs.map(s => s.id), pager: r.pager, first});
+      seen.push(...r.tiles.map(t => t.code));
+      const tm = tileMisOf(r.tiles, false); if (tm.length) tileMis.push({k, tm: tm.slice(0, 3)});
+      const bt = briefTileMis(r); if (bt.length) briefMis.push({k, bt: bt.slice(0, 2)});
+      if (r.sw > r.iw) over.push({k, sw: r.sw, iw: r.iw});
+    }
+    check(`${label} 출목표 업종별: 탭 ${famW.length}개를 하나씩 — 탭마다 그 갈래 업종 묶음만(판 차례 · n위·이름·「불장」·평균) · 업종 안은 많이 오른 순 · 맨 위 「갈래 · 업종 n개 · m곳 · 갈래 평균」 · 넘김 단추 · 처음 보이는 칸 많아야 ${maxShown}개`, !mis.length && maxShown <= 45, {mis: mis.slice(0, 2), maxShown});
+    check(`${label} 출목표 업종별: 탭 ${famW.length}개 칸 합 ${seen.length}개 = 판 ${N}곳(겹침·빠짐 없음) · 칸마다 이름·변화·출목표·「오른 날 n일」·링크 = 판(업종 이름은 묶음 머리에)`, seen.length === N && new Set(seen).size === N && !tileMis.length, {tileMis: tileMis.slice(0, 2)});
+    check(`${label} 출목표 업종별: 칸마다 선 그래프(업종 5곳 같은 눈금 · 눈금 글) · 수급 · 기사 = 판 · 탭 ${famW.length}개 모두 옆으로 넘치지 않음`, !briefMis.length && !over.length, {briefMis: briefMis.slice(0, 2), over});
+    await wordsCheck(page, `${label} 출목표 업종별(마지막 탭)`);
+  }
+  // ② 흐름별 — 흐름 10가지가 탭 · 탭 머리에 묶음 평균 선(모든 흐름 같은 눈금) · 45곳이 넘으면 20곳씩 「더 보기」
+  await press(page.locator('.f-seg-b[data-mode="flow"]')); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); await page.waitForTimeout(250);
   const meanW = cs => { const ok = cs.filter(c => c.date === toM); const n = Math.min(...ok.map(c => c.c.length)); return ok.length ? Array.from({length: n}, (_, i) => ok.reduce((t, c) => t + c.c[i] / c.c[0] - 1, 0) / ok.length) : []; };
   const meansW = new Map(flowsWant.map(f => [f.k, meanW(f.items)])), allM = [...meansW.values()].flat(), mlo = Math.min(-0.03, ...allM), mhi = Math.max(0.03, ...allM);
-  const miniMis = flowsWant.map((f, i) => { const m = r2.rows[i]?.mini, r = meansW.get(f.k); return m && m.n === r.length && m.lo === mlo.toFixed(4) && m.hi === mhi.toFixed(4) && m.side === (r.at(-1) > 0 ? 'up' : r.at(-1) < 0 ? 'down' : 'flat') ? null : {k: f.k, m}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(흐름별): 흐름 목록 ${r2.rows.length}줄마다 묶음 평균 선(종가 ${meansW.get(flowsWant[0].k).length}개 · 모든 줄 같은 눈금 ${pW(mlo, 0)} ~ ${pW(mhi, 0)} · 오름/내림 색) — 첫 화면부터 그래프`, !miniMis.length, {miniMis: miniMis.slice(0, 3)});
-  const tm2 = tileMisOf(r2.tiles, true);
-  check(`${label} 출목표 한 판(흐름별): 칸 ${r2.tiles.length}개 = 판 ${N}곳 · 칸마다 업종 이름까지 판과 같음`, r2.tiles.length === N && new Set(r2.tiles.map(t => t.code)).size === N && !tm2.length, {tm2: tm2.slice(0, 5)});
-  const bt2 = briefTileMis(r2);
-  check(`${label} 출목표 한 판(흐름별): 칸마다 선 그래프(흐름 묶음마다 같은 눈금) · 수급 · 기사 = 판`, !bt2.length, {bt2: bt2.slice(0, 4)});
-  await wordsCheck(page, `${label} 출목표 한 판(흐름별)`);
-  // 흐름 목록 셋째 줄을 누르면 그 묶음이 화면 위쪽으로
-  const f3 = flowsWant[2] ?? flowsWant[0], frow = page.locator(`.f-row[data-flow="${f3.k}"]`);
-  if (mobile) await frow.tap(); else await frow.click(); await page.waitForTimeout(900);
-  const fj = await page.evaluate(k => Math.round(document.getElementById('f-' + k).getBoundingClientRect().top), f3.k);
-  check(`${label} 출목표 한 판: 흐름 목록 「${flowTextW(f3.k)}」 줄 → 그 묶음이 화면 위쪽으로(위에서 ${fj}px)`, fj >= 0 && fj < 200, {fj});
-  // 칸 누르기 → 회사 화면(되돌아가기 「‹ 출목표」) → 되돌아오면 보던 자리 · 고른 묶음(흐름별) 그대로
-  const pk = f3.items[0], tl = page.locator(`.f-tile[data-code="${pk.code}"]`); await tl.scrollIntoViewIfNeeded();
-  const yBefore = await page.evaluate(() => Math.round(scrollY));
-  if (mobile) await tl.tap(); else await tl.click();
-  await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
-  const rc = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()]}));
-  check(`${label} 출목표 한 판 → ${mobile ? '터치' : '누름'} → 회사 화면 #/stock/${pk.code}(「${rc.title}」) · 되돌아가기 「${rc.back[1]}」`, rc.hash === '#/stock/' + pk.code && rc.title === pk.name && rc.back[0] === '#/road' && rc.back[1] === '‹ 출목표', rc);
-  const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
-  await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(400);
-  const back = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode}));
-  check(`${label} 회사 화면 「‹ 출목표」 → 출목표 한 판 · 보던 자리(${yBefore}px → ${back.y}px) · 고른 묶음 「흐름별」 그대로`, back.hash === '#/road' && Math.abs(back.y - yBefore) <= 2 && back.mode === 'flow', {yBefore, back});
-  // 지금 탭을 한 번 더 누르면 맨 위로(화면은 그대로)
-  const tab = page.locator('.bottom-link[data-route="road"]'); if (mobile) await tab.tap(); else await tab.click(); await page.waitForTimeout(900);
-  const tt = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode}));
-  check(`${label} 출목표 탭을 한 번 더 ${mobile ? '터치' : '누름'} → 맨 위로(${tt.y}px) · 화면은 그대로`, tt.hash === '#/road' && tt.y === 0 && tt.mode === 'flow', tt);
-  // 다시 업종별로(다음 검사들이 처음 모습을 보도록)
-  const seg2 = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await seg2.tap(); else await seg2.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(200);
-  check(`${label} 출목표 한 판: 업종별로 되돌림`, (await page.evaluate(() => document.querySelector('.f-body')?.dataset.mode)) === 'ind');
-  // 큰 갈래 단추(2026-10-05 「잡스라면」 — 업종별에서만 보임) — 누르면 그 갈래 업종 묶음만 · 「모두」로 되돌림
   {
-    const segI = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await segI.tap(); else await segI.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(150);
-    const famW = familiesByRise(board.groups), f1 = famW[1] ?? famW[0];
-    const fr0 = await page.evaluate(() => ({shown: !document.querySelector('.f-fam')?.hidden, btns: [...document.querySelectorAll('.f-fam .fm-b')].map(b => `${b.dataset.family}|${b.getAttribute('aria-pressed')}|${b.querySelector('.fm-n')?.textContent.trim()}`)}));
-    const fb = page.locator(`.f-fam .fm-b[data-family="${f1.fam.id}"]`); if (mobile) await fb.tap(); else await fb.click(); await page.waitForTimeout(200);
-    const fr1 = await page.evaluate(() => [...document.querySelectorAll('.f-body > .f-sec')].filter(x => !x.hidden).map(x => x.dataset.group));
-    const fa = page.locator('.f-fam .fm-b[data-family="all"]'); if (mobile) await fa.tap(); else await fa.click(); await page.waitForTimeout(150);
-    const fr2 = await page.evaluate(() => [...document.querySelectorAll('.f-body > .f-sec')].filter(x => !x.hidden).length);
-    const btnsWant = [`all|true|${N}곳`, ...famW.map(f => `${f.fam.id}|false|${Number.isFinite(f.avg) ? p1(f.avg) : '없음'}`)];
-    check(`${label} 출목표 업종별: 큰 갈래 단추 ${fr0.btns.length}개(「모두」 + ${famW.length}) · 갈래 평균이 큰 순 · 단추마다 갈래 평균 · 「${f1.fam.label}」 → 묶음 ${fr1.length}개 = 그 갈래 업종 ${f1.groups.length}개 · 「모두」 → ${fr2}개 = ${G}개`, fr0.shown && fr0.btns.join() === btnsWant.join() && fr1.join() === board.groups.filter(g => familyOf(g.label).id === f1.fam.id).map(g => g.id).join() && fr2 === G, {fr0, btnsWant, fr1, fr2});
+    const q0 = await roadRead(), f0 = flowsWant[0], flowLabels = flowsWant.map(f => chipW(f.k));
+    check(`${label} 출목표 「흐름별」 ${mobile ? '터치' : '누름'} → 탭 ${q0.tabs.length}가지 = 따로 나눈 흐름 ${flowsWant.length}가지(묶음 평균 지난 20거래일 변화가 큰 순: ${flowsWant.map(f => p1(f.avg)).join(' · ')}) · 탭마다 곳 수 · 첫 탭 「${flowLabels[0]}」`, q0.mode === 'flow' && q0.segs.join('|') === segsWant('flow') && q0.tab === f0.k && q0.tabs.join() === tabsWant.flow(0).join() && q0.hint === `흐름 탭 ${flowsWant.length}가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 ${rd0.beforeDays}거래일 → 끝 ${rd0.recentDays}거래일의 오른 날·내린 날 동그라미 수로 나눔`, {tabs: q0.tabs.slice(0, 3), hint: q0.hint});
+    // 「더 보기」 — 첫 탭(가장 큰 흐름일 때가 많음)
+    const total0 = f0.items.length, big0 = total0 > 45;
+    const moreSteps = [];
+    if (big0) {
+      let shownN = 20, r = q0;
+      for (let guard = 0; guard < 40 && r.more; guard++) {
+        moreSteps.push({shown: r.tiles.length, more: r.more, okOrder: r.tiles.map(t => t.code).join() === f0.items.slice(0, shownN).map(c => c.code).join(), okLabel: r.more === `이 탭 ${shownN + 1}위~${Math.min(total0, shownN + 20)}위 더 보기 · 남은 ${total0 - shownN}곳`});
+        const mb = page.locator('.f-body > .f-more'); await mb.scrollIntoViewIfNeeded(); await page.waitForTimeout(60); const y0 = await page.evaluate(() => Math.round(scrollY)); await press(mb); await page.waitForTimeout(80); shownN = Math.min(total0, shownN + 20); r = await roadRead();
+        const y1 = await page.evaluate(() => Math.round(scrollY)); moreSteps.at(-1).still = Math.abs(y1 - y0) <= 2;
+      }
+      moreSteps.push({shown: r.tiles.length, more: r.more, okOrder: r.tiles.map(t => t.code).join() === f0.items.map(c => c.code).join(), okLabel: r.more === null, still: true});
+    }
+    check(`${label} 출목표 흐름별 첫 탭 「${flowLabels[0]}」 ${total0}곳: ${big0 ? `처음 20곳 · 「더 보기」 ${moreSteps.length - 1}번에 ${total0}곳 모두(차례 그대로 · 글에 다음 등수와 남은 곳 수 · 누르는 동안 화면은 그 자리)` : '45곳 이하라 한 번에 모두'}`, big0 ? q0.tiles.length === 20 && moreSteps.every(s => s.okOrder && s.okLabel && s.still) && moreSteps.at(-1).shown === total0 : q0.tiles.length === total0 && q0.more === null, {moreSteps});
+    const seen = [], mis = [], tileMis = [], briefMis = [], over = [];
+    for (const [k, f] of flowsWant.entries()) {
+      if (k) { await press(page.locator(`.f-tabs .f-tab[data-tab="${f.k}"]`)); await waitTab(f.k); await page.waitForTimeout(60); }
+      const first = await page.evaluate(() => document.querySelectorAll('.f-body .f-tile').length);
+      await expandAll();
+      const r = await roadRead(), s = r.secs[0], m = meansW.get(f.k);
+      const meanOk = r.mean && r.mean.n === m.length && r.mean.lo === mlo.toFixed(4) && r.mean.hi === mhi.toFixed(4) && r.mean.side === (m.at(-1) > 0 ? 'up' : m.at(-1) < 0 ? 'down' : 'flat');
+      if (!(r.tab === f.k && r.tabs.join() === tabsWant.flow(k).join() && r.secs.length === 1 && s?.id === f.k && s?.name === flowTextW(f.k) && s?.codes.join() === f.items.map(c => c.code).join() && meanOk && pagerOk(r, flowLabels, k) && (k === 0 || first === (f.items.length > 45 ? 20 : f.items.length)))) mis.push({k, flow: f.k, tab: r.tab, sec: s && {...s, codes: s.codes.length}, mean: r.mean, pager: r.pager, first});
+      seen.push(...r.tiles.map(t => t.code));
+      const tm = tileMisOf(r.tiles, true); if (tm.length) tileMis.push({k, tm: tm.slice(0, 3)});
+      const bt = briefTileMis(r); if (bt.length) briefMis.push({k, bt: bt.slice(0, 2)});
+      if (r.sw > r.iw) over.push({k, sw: r.sw, iw: r.iw});
+    }
+    check(`${label} 출목표 흐름별: 탭 ${flowsWant.length}가지를 하나씩 — 탭마다 그 흐름 회사만(많이 오른 순) · 머리 이름 · 묶음 평균 선(종가 ${meansW.get(f0.k).length}개 · 흐름 ${flowsWant.length}가지 같은 눈금 ${pW(mlo, 0)} ~ ${pW(mhi, 0)} · 오름/내림 색) · 45곳이 넘는 탭은 처음 20곳 · 넘김 단추`, !mis.length, {mis: mis.slice(0, 2)});
+    check(`${label} 출목표 흐름별: 탭 ${flowsWant.length}가지 칸 합 ${seen.length}개 = 판 ${N}곳(겹침·빠짐 없음) · 칸마다 업종 이름까지 판과 같음`, seen.length === N && new Set(seen).size === N && !tileMis.length, {tileMis: tileMis.slice(0, 2)});
+    check(`${label} 출목표 흐름별: 칸마다 선 그래프(흐름마다 같은 눈금) · 수급 · 기사 = 판 · 탭 ${flowsWant.length}가지 모두 옆으로 넘치지 않음`, !briefMis.length && !over.length, {briefMis: briefMis.slice(0, 2), over});
+    await wordsCheck(page, `${label} 출목표 흐름별(마지막 탭)`);
+    // 셋째 탭 칸 → 회사 화면(「‹ 출목표」) → 되돌아오면 같은 묶는 법 · 같은 탭 · 보던 자리
+    const f3 = flowsWant[2] ?? flowsWant[0];
+    await press(page.locator(`.f-tabs .f-tab[data-tab="${f3.k}"]`)); await waitTab(f3.k); await page.waitForTimeout(150);
+    const pk = f3.items[Math.min(5, f3.items.length - 1)], tl = page.locator(`.f-tile[data-code="${pk.code}"]`); await tl.scrollIntoViewIfNeeded(); await page.waitForTimeout(150);
+    const yBefore = await page.evaluate(() => Math.round(scrollY));
+    await press(tl); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
+    const rc = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()]}));
+    check(`${label} 출목표 흐름별 「${chipW(f3.k)}」 칸 ${mobile ? '터치' : '누름'} → 회사 화면 #/stock/${pk.code}(「${rc.title}」) · 되돌아가기 「${rc.back[1]}」`, rc.hash === '#/stock/' + pk.code && rc.title === pk.name && rc.back[0] === '#/road' && rc.back[1] === '‹ 출목표', rc);
+    await press(page.locator('.c-back')); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(400);
+    const back = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, tab: document.querySelector('.f-body')?.dataset.tab}));
+    check(`${label} 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(${back.tab}) · 보던 자리(${yBefore}px → ${back.y}px)`, back.hash === '#/road' && back.mode === 'flow' && back.tab === f3.k && Math.abs(back.y - yBefore) <= 2, {yBefore, back});
+    // 지금 탭(아래 「출목표」)을 한 번 더 누르면 맨 위로 · 묶는 법과 탭은 그대로
+    await press(page.locator('.bottom-link[data-route="road"]')); await page.waitForTimeout(900);
+    const tt = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, tab: document.querySelector('.f-body')?.dataset.tab}));
+    check(`${label} 출목표 탭을 한 번 더 ${mobile ? '터치' : '누름'} → 맨 위로(${tt.y}px) · 묶는 법·탭은 그대로(${tt.mode} · ${tt.tab})`, tt.hash === '#/road' && tt.y === 0 && tt.mode === 'flow' && tt.tab === f3.k, tt);
   }
-  // 다른 탭에서 출목표 탭을 누르면 늘 「오른 순」 맨 위(2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」) — 업종별을 보다 떠났어도
+  // 다른 아래 탭에서 출목표 탭을 누르면 늘 「오른 순」 첫 탭(1위~20위) 맨 위 — 흐름별 셋째 탭을 보다 떠났어도
   {
-    const ta = page.locator('.bottom-link[data-route="agenda"]'); if (mobile) await ta.tap(); else await ta.click();
+    await press(page.locator('.bottom-link[data-route="agenda"]'));
     await page.waitForFunction(() => location.hash === '#/agenda' && !document.querySelector('.f-body') && document.querySelector('.bottom-link.active')?.dataset.route === 'agenda'); await page.waitForTimeout(200);
-    const tr = page.locator('.bottom-link[data-route="road"]'); if (mobile) await tr.tap(); else await tr.click(); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300);
-    const rr = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, pressed: document.querySelector('.f-seg-b[aria-pressed="true"]')?.dataset.mode, first: [...document.querySelectorAll('.f-tile')].slice(0, 3).map(t => t.dataset.code)}));
-    check(`${label} 업종별을 보다 일정 탭 → 출목표 탭 ${mobile ? '터치' : '누름'} → 「오른 순」 맨 위(${rr.y}px) · 첫 칸 ${rankedW.slice(0, 3).map(c => c.name).join(' · ')}`, rr.hash === '#/road' && rr.mode === 'rise' && rr.pressed === 'rise' && rr.y === 0 && rr.first.join() === rankedW.slice(0, 3).map(c => c.code).join(), rr);
+    await press(page.locator('.bottom-link[data-route="road"]')); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300);
+    const rr = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, tab: document.querySelector('.f-body')?.dataset.tab, pressed: document.querySelector('.f-seg-b[aria-pressed="true"]')?.dataset.mode, sel: document.querySelector('.f-tab[aria-selected="true"]')?.dataset.tab, first: [...document.querySelectorAll('.f-tile')].slice(0, 3).map(t => t.dataset.code), n: document.querySelectorAll('.f-tile').length}));
+    check(`${label} 흐름별을 보다 일정 탭 → 출목표 탭 ${mobile ? '터치' : '누름'} → 「오른 순」 첫 탭 「${riseLabels[0]}」 맨 위(${rr.y}px) · 칸 ${rr.n}개 · 첫 칸 ${rankedW.slice(0, 3).map(c => c.name).join(' · ')}`, rr.hash === '#/road' && rr.mode === 'rise' && rr.pressed === 'rise' && rr.tab === 'r1' && rr.sel === 'r1' && rr.y === 0 && rr.n === CH && rr.first.join() === rankedW.slice(0, 3).map(c => c.code).join(), rr);
+    // 업종별 · 흐름별도 첫 탭부터(들어올 때 모든 탭을 처음으로)
+    await press(page.locator('.f-seg-b[data-mode="flow"]')); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); await page.waitForTimeout(150);
+    const ft = await page.evaluate(() => ({tab: document.querySelector('.f-body')?.dataset.tab, n: document.querySelectorAll('.f-tile').length}));
+    check(`${label} 그때 「흐름별」을 누르면 첫 탭 「${chipW(flowsWant[0].k)}」부터(펼친 「더 보기」도 처음으로 · 칸 ${ft.n}개)`, ft.tab === flowsWant[0].k && ft.n === (flowsWant[0].items.length > 45 ? 20 : flowsWant[0].items.length), ft);
+    await press(page.locator('.f-seg-b[data-mode="rise"]')); await page.waitForSelector('.f-body[data-mode="rise"][data-ready] .f-tile'); await page.waitForTimeout(100);
   }
 
   // ④ 지운 화면의 옛 주소 → 처음 화면

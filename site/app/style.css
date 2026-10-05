@@ -326,7 +326,7 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 /* 한 줄에 놓인 칸끼리 이름 · 출목표 · 아랫줄 높이를 맞춘다(이름이 두 줄인 칸이 있어도 표가 같은 높이에서 시작) — subgrid 를 모르는 브라우저는 그냥 쌓임 */
 @supports (grid-template-rows: subgrid) {
   .f-body[data-mode="ind"] .f-tile { display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 5px; align-content: start; }
-  .f-body[data-mode="flow"] .f-tile { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 5px; align-content: start; }
+  .f-body[data-mode="flow"] .f-tile, .f-body[data-mode="rise"] .f-tile { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 5px; align-content: start; }
   .f-tile .road, .f-tile .spark { align-self: start; }
 }
 .f-tile .spark { margin-top: 4px; }
@@ -424,7 +424,7 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
   body[data-view="agenda"] .top-inner { max-width: 720px; }
   body[data-view="industry"] .main, body[data-view="industry"] .top-inner { max-width: 1040px; }
   body[data-view="road"] .main, body[data-view="road"] .top-inner { max-width: 1120px; }
-  body[data-view="road"] .b-head, body[data-view="road"] .f-index { max-width: 720px; }
+  body[data-view="road"] .b-head, body[data-view="road"] .f-tabs-h { max-width: 720px; }
   body[data-view="road"] .f-grid { grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); gap: 10px; }
   body[data-view="home"] .b-list, body[data-view="industry"] .b-list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
   body[data-view="industry"] .b-head, body[data-view="industry"] .mv-list, body[data-view="industry"] .b-how { max-width: 720px; }
@@ -479,3 +479,29 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .hf-avg { font-size: .9375rem; color: var(--sub); white-space: nowrap; } .hf-avg b { font-size: 1.0625rem; }
 .hf-h { flex-wrap: wrap; row-gap: 2px; } /* 글씨 200% · 360px 에서 「n개 평균」이 들어가면 「불장 업종 n개」를 다음 줄로(옆으로 넘치지 않게) */
 .fm-b[aria-pressed="true"] .fm-n { color: inherit; } /* 고른 단추(먹색 바탕) 위에서는 빨강·파랑 대신 바탕과 대비가 큰 글자색 */
+/* 2026-10-05 12:28 「365개 다 나오잖아 불편해 … 그 안에 탭을 더 만들어서 편하면서도 직관적으로」 — 출목표 묶는 법 아래 탭 한 줄 · 한 번에 한 탭
+   휴대폰: 탭 줄을 옆으로 밀어 봄(끝의 탭이 반쯤 보여 더 있음을 알림) · 넓은 화면: 여러 줄 · 고른 탭은 먹색(갈래 단추와 같은 옷) */
+.f-seg { scroll-margin-top: 64px; }
+.f-tabs-h { margin: 14px 2px 6px; }
+.f-tabs { position: relative; display: flex; gap: 6px; margin: 0 -2px; padding: 2px 2px 8px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; }
+.f-tabs::-webkit-scrollbar { display: none; }
+.f-tab { flex: none; scroll-snap-align: start; display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font: inherit; font-size: 1rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.f-tab-n { font-size: .875rem; font-weight: 500; color: var(--sub); } .f-tab-n.up { color: var(--up-ink); } .f-tab-n.down { color: var(--down-ink); }
+.f-tab[aria-selected="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.f-tab[aria-selected="true"] .f-tab-n { color: inherit; }
+.f-tab:active { transform: scale(.98); }
+.f-tab:focus-visible, .f-pg:focus-visible, .f-more:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+@media (min-width: 760px) { .f-tabs { flex-wrap: wrap; overflow-x: visible; } }
+.f-lead { margin: 16px 2px 0; }
+.f-mean { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 6px 2px 0; }
+.f-mean .spark.mini { width: 120px; aspect-ratio: 4 / 1; }
+.f-more { display: block; width: 100%; min-height: 48px; margin: 14px 0 0; padding: 10px 16px; border-radius: 14px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
+.f-more small { font-size: .9375rem; font-weight: 500; color: var(--sub); }
+.f-pager { display: flex; flex-direction: column; gap: 8px; margin: 28px 0 0; }
+.f-pg { min-height: 52px; padding: 10px 16px; border-radius: 14px; font: inherit; font-size: 1.0625rem; font-weight: 700; line-height: 1.35; cursor: pointer; overflow-wrap: anywhere; }
+.f-pg-next { border: 1px solid var(--ink); background: var(--ink); color: var(--card); }
+.f-pg-prev { border: 1px solid var(--sep); background: var(--card); color: var(--ink); }
+.f-pg:active, .f-more:active { transform: scale(.98); }
+.f-pg-pos { margin: 2px 0 0; text-align: center; color: var(--sub); }
+.f-nw { white-space: nowrap; } /* 「21위~40위」 · 「오름 → 비슷」은 줄을 바꿔도 한 덩어리로 */
+@media (min-width: 760px) { .f-pager { flex-direction: row; align-items: center; } .f-pg-prev { order: 1; } .f-pg-pos { order: 2; flex: 1 1 auto; } .f-pg-next { order: 3; } .f-pg { min-width: 16rem; } }
