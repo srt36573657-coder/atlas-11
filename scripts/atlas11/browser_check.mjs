@@ -686,13 +686,18 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 }
 
 async function darkCheck() {
+  // 밤 화면 바탕 = style.css 첫 어두운 덩어리의 --bg — 2026-10-05 16:29 사장님 「청자가 낫다」: 옛 밤 판 검정(#000) → 밤 청자(docs/design/celadon)
+  //   검사기는 색 값을 따로 적지 않고 화면 옷(style.css)에서 읽는다 · 그 값의 글자 대비는 tests/atlas11/palette.test.mjs 가 잰다(기준 그대로)
+  const css = await (await fetch(base + '/app/style.css')).text(), dm = css.indexOf('@media (prefers-color-scheme: dark)'), ra = css.indexOf(':root {', dm);
+  const darkHex = css.slice(ra, css.indexOf('}', ra)).match(/--bg:\s*(#[0-9A-Fa-f]{6})/)?.[1] ?? '#000000';
+  const darkBg = `rgb(${[1, 3, 5].map(i => parseInt(darkHex.slice(i, i + 2), 16)).join(', ')})`;
   const context = await browser.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, colorScheme: 'dark', locale: 'ko-KR'});
   const page = await context.newPage();
   for (const [hash, wait, name] of [['#/', '.h-page .hs-seg', 'home'], ['#/map', '.t-tile', 'map'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-body[data-ready] .f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
     await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector(wait); await page.waitForTimeout(300);
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await page.screenshot({path: path.join(dir, `mobile-dark-${name}.png`)});
-    check(`어두운 화면 ${name}: 바탕이 검정(${bg})`, bg === 'rgb(0, 0, 0)', {bg});
+    check(`어두운 화면 ${name}: 바탕이 밤 바탕색 ${darkHex}(${bg})`, bg === darkBg, {bg, darkBg});
   }
   await context.close();
 }

@@ -18,32 +18,32 @@
    ⑥ 어두운 화면 = 「밤 판」: 같은 구조, 불만 낮추고 금빛은 같은 하나 · 빈 자리(불러오는 중)에만 손으로 그은 듯한 은빛 선
    색 이름은 우리말: 한지빛(바탕) · 비단빛(판) · 먹빛(글자 · 위 막대) · 은빛(가르는 선) · 놋쇠빛(금빛 하나) — 마이바흐 이름·표지·무늬·글꼴·색 이름은 쓰지 않음
    2026-10-05 02:44 「잡스였다면」 개혁(보고서 「잡스였다면 ATLAS 개혁 공부」): 36칸 판 칸 바탕의 세기 색·색 보기표를 덜어 냄(칸 위 선 하나만 오름 빨강 · 내림 파랑)
-     · 출목표 동그라미: 오른 날 빈 동그라미 · 내린 날 찬 동그라미(모양으로도 읽힘) · 수급은 막대 대신 한 줄 · 묶음 이름이 화면 위에 붙어 따라옴 · 불러오는 동안 회색 자리 */
+     · 출목표 동그라미: 오른 날 빈 동그라미 · 내린 날 찬 동그라미(모양으로도 읽힘) · 수급은 막대 대신 한 줄 · 묶음 이름이 화면 위에 붙어 따라옴 · 불러오는 동안 회색 자리
+   2026-10-05 16:29 사장님 「청자가 낫다」 — 바탕 · 글씨 · 여백을 2번 청자로(docs/design/celadon) */
 :root {
-  --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
-  /* 한지빛 바탕 · 비단빛 판 · 먹빛 글자 */
-  --bg: #f5f3ef; --card: #fffefc; --ink: #121110; --ink2: #3a3732; --sub: #69635a; --sep: #e2ddd4; --fill: #ece8e1; --link: #121110;
-  --up: #c8102e; --down: #1d5bc6; --up-ink: #a50e26; --down-ink: #164a9e; --warn: #8a5300;
-  --fire-bg: #121110; --fire-ink: #f3efe7; --seg-on: #fffefc;
-  --bar: #fffefc;
-  /* 두 바탕: 위 막대(먹빛) · 본문(한지빛) — 사이에 은빛 선 하나 */
-  --band: #121110; --band-ink: #f3efe7; --band-sub: #a39c90; --band-fill: #2a2723;
-  --eun: #a7a8ac;
-  /* 놋쇠빛 — 금빛은 이 하나뿐(밝은·어두운 화면 같은 색 · 닿는 바탕 모두 3:1 이상) */
-  --geum: #a8853a;
-  /* 아주 가는 테두리 · 옅은 그림자 */
-  --hair: rgba(80, 64, 40, .13); --lift: 0 1px 1px rgba(40, 30, 15, .04), 0 6px 20px rgba(40, 30, 15, .06);
+  --font: 'Gowun Batang', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
+  /* 비색 바탕 · 백토빛 판 · 숲먹 글자 */
+  --bg: #E2EBE5; --card: #F8FBF7; --ink: #17302A; --ink2: #2C4840; --sub: #4A6258; --sep: #D0DED5; --fill: #E3ECE6; --link: #17302A;
+  --up: #B4232F; --down: #1F4FB5; --up-ink: #A41F2A; --down-ink: #1C47A3; --warn: #7D4C00;
+  --fire-bg: #2E5B4E; --fire-ink: #F0F8F3; --seg-on: #F8FBF7;
+  --bar: #F8FBF7;
+  /* 위 막대: 짙은 청자 · 둥근 단추 · 아래 상감 선(백토빛) */
+  --band: #1B3B32; --band-ink: #F2F8F4; --band-sub: #BFD6CB; --band-fill: #2A5247;
+  --eun: #F8FBF7;
+  /* 옥빛 — 밝은·어두운 화면 같은 하나(고른 탭 선 · 고른 단추 선 · 이름 옆 인장) */
+  --geum: #4F8F77;
+  --hair: rgba(46, 91, 78, .10); --lift: 0 1px 1px rgba(23, 48, 42, .03), 0 8px 24px rgba(23, 48, 42, .07);
 }
 @media (prefers-color-scheme: dark) {
-  /* 밤 판: 같은 구조 · 불만 낮춤 · 금빛은 같은 하나 */
-  :root { --bg: #000000; --card: #1a1917; --ink: #f3efe7; --ink2: #d6d0c5; --sub: #a39c90; --sep: #34312c; --fill: #272522; --link: #f3efe7;
-    --up: #ff4d5e; --down: #4d8dff; --up-ink: #ff7b86; --down-ink: #7eaeff; --warn: #ffb340;
-    --fire-bg: #d6d0c5; --fire-ink: #121110; --seg-on: #34312c;
-    --bar: #121110;
-    --band: #1f1d1a; --band-ink: #f3efe7; --band-sub: #a39c90; --band-fill: #2e2b27;
-    --eun: #6e6e73;
-    --geum: #a8853a;
-    --hair: rgba(243, 239, 231, .10); --lift: 0 0 0 0 transparent; } /* 그림자 목록 안의 none 은 규칙 전체를 무효로 만든다 — 투명 그림자로 */
+  /* 밤 청자(2026-10-05 16:29 「청자가 낫다」): 같은 구조 · 불만 낮춤 · 옥빛은 같은 하나 — 옛 밤 판(검정 바탕 · 놋쇠빛)은 머리 주석 ⑥ */
+  :root { --bg: #0D1714; --card: #15231E; --ink: #E8F1EB; --ink2: #CADBD1; --sub: #9BB3A7; --sep: #283B34; --fill: #1C2D27; --link: #E8F1EB;
+    --up: #FF5A66; --down: #5C97FF; --up-ink: #FF8088; --down-ink: #86B2FF; --warn: #FFB547;
+    --fire-bg: #BFD9CB; --fire-ink: #0D1714; --seg-on: #283B34;
+    --bar: #0A1310;
+    --band: #13261F; --band-ink: #E8F1EB; --band-sub: #9BB3A7; --band-fill: #1E342C;
+    --eun: #6FA48C;
+    --geum: #4F8F77;
+    --hair: rgba(232, 241, 235, .10); --lift: 0 0 0 0 transparent; } /* 그림자 목록 안의 none 은 규칙 전체를 무효로 만든다 — 투명 그림자로 */
 }
 * { box-sizing: border-box; }
 html { font-size: 100%; -webkit-text-size-adjust: 100%; background: var(--bg); }
@@ -639,3 +639,32 @@ html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-
 .c-near-go, .i-road { margin: 8px 2px 0; font-size: .9375rem; }
 .c-near-go a, .i-road a { color: var(--link); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; display: inline-flex; align-items: center; min-height: 44px; }
 /* F6 울타리 뒷면(2026-10-05 15:24 「잡스가 … 36가지」) — 화면 코드가 더는 쓰지 않는 옷을 덜어 냄: 옛 흐름 목록(.f-list · .f-row · .f-lab · .f-n · .f-track · .f-bar — 12:28 탭이 대신) · 옛 그래프 칸(.gr-box · .gr-h) · 옛 업종 글(.b-sector) · 옛 22곳 한 줄(.r-moves) · 옛 큰 갈래 묶음 숨김(.f-fam) */
+/* ── ② 모양 ── */
+/* 여백: 화면 옆 16 → 20px · 칸 사이 12 → 16px · 한 줄 높이 58 → 62px · 줄 간격 1.5 → 1.55 · 둥근 모서리 16 → 22px */
+body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'260'%20height%3D'260'%3E%3Cg%20fill%3D'none'%20stroke%3D'%232E5B4E'%20stroke-opacity%3D'.07'%20stroke-width%3D'.8'%3E%3Cpath%20d%3D'M10%2040L60%2052L85%2020L130%2060L190%2044L250%2070'%2F%3E%3Cpath%20d%3D'M60%2052L70%20110L40%20160L80%20220L60%20260'%2F%3E%3Cpath%20d%3D'M130%2060L150%20120L210%20140L240%20200'%2F%3E%3Cpath%20d%3D'M150%20120L100%20170L130%20230L200%20250'%2F%3E%3Cpath%20d%3D'M0%20120L40%20160'%2F%3E%3Cpath%20d%3D'M210%20140L260%20120'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+.main { padding-left: 20px; padding-right: 20px; }
+.top-inner { padding-left: 20px; padding-right: 16px; }
+.mstrip { margin-bottom: 10px; padding-top: 10px; }
+.hs-seg { margin-top: 8px; margin-bottom: 6px; }
+.b-head { margin-top: 20px; }
+.b-title { font-size: 2.375rem; font-weight: 700; letter-spacing: -.03em; }
+.b-when { margin-top: 9px; }
+.hf-flows { gap: 16px; margin-top: 20px; }
+.hf-card { padding: 16px 16px 6px; border-radius: 22px; }
+.hf-row { min-height: 62px; }
+.t-grid { gap: 10px; }
+.t-tile { border-radius: 18px; }
+.b-box, .b-how, .mvx, .tr-row, .b-card, .f-tile { border-radius: 22px; }
+.b-how { box-shadow: 0 0 0 1px var(--hair), var(--lift); }
+.f-seg { border-radius: 16px; }
+.f-seg-b { border-radius: 14px; }
+.fm-row { margin: 0 -20px; padding: 2px 20px 6px; scroll-padding: 0 20px; }
+.hf-chg, .t-chg, .b-c20, .nc-chg, .f-chg, .mv-val { font-variant-numeric: lining-nums tabular-nums; font-feature-settings: "lnum" 1, "tnum" 1; }
+.mvx.mvx-quiet { --ink: #17302A; --sub: #4A6258; --fill: #E3ECE6; --link: #17302A; margin-top: 8px; }
+/* 상징: 위 막대 = 짙은 청자 · 아래 가장자리에 상감처럼 가는 선 두 줄(백토빛 · 옥빛) */
+.top { background: linear-gradient(180deg, #22463C, #1B3B32); box-shadow: inset 0 -1px 0 rgba(248, 251, 247, .85), inset 0 -4px 0 #1B3B32, inset 0 -5px 0 rgba(111, 164, 140, .9); }
+@media (prefers-color-scheme: dark) {
+  body { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'260'%20height%3D'260'%3E%3Cg%20fill%3D'none'%20stroke%3D'%23BFD9CB'%20stroke-opacity%3D'.06'%20stroke-width%3D'.8'%3E%3Cpath%20d%3D'M10%2040L60%2052L85%2020L130%2060L190%2044L250%2070'%2F%3E%3Cpath%20d%3D'M60%2052L70%20110L40%20160L80%20220L60%20260'%2F%3E%3Cpath%20d%3D'M130%2060L150%20120L210%20140L240%20200'%2F%3E%3Cpath%20d%3D'M150%20120L100%20170L130%20230L200%20250'%2F%3E%3Cpath%20d%3D'M0%20120L40%20160'%2F%3E%3Cpath%20d%3D'M210%20140L260%20120'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+  .mvx.mvx-quiet { --ink: #E8F1EB; --sub: #9BB3A7; --fill: #1C2D27; --link: #E8F1EB; }
+  .top { background: linear-gradient(180deg, #183129, #13261F); box-shadow: inset 0 -1px 0 rgba(191, 217, 203, .40), inset 0 -4px 0 #13261F, inset 0 -5px 0 rgba(111, 164, 140, .65); }
+}
