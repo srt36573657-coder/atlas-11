@@ -57,8 +57,10 @@ const nowSide = key => key === 'still' ? 'flat' : key.split('-')[1];
 export const upDaysText = road => `${road.days}거래일 중 오른 날 ${road.ups}일`;
 /** 수급·기사를 모은 곳 수 — 다 모으지 못했으면 몇 곳인지와 언제 모은 것인지 적는다 */
 function ctxNote(cs) {
-  const got = cs.filter(c => c.brief && !c.brief.missing?.includes('수급') && !c.brief.missing?.includes('기사')).length, day = cs.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
-  return h('p', {class: 'f-ctx small', 'data-got': got}, got === cs.length ? `수급·기사: ${cs.length}곳 모두${day ? ` · ${korDate(day)} 기준` : ''}` : `수급·기사: ${cs.length}곳 가운데 ${got}곳만 모았음${day ? `(${korDate(day)} 기준)` : ''} · 나머지 ${cs.length - got}곳은 다음 관측 수집 때 채움`);
+  // 미국 판은 수급 공개 자료가 없어 기사만 센다(util.js place.flows === false · 2026-10-05 18:02 「미국 주식도」)
+  const noFlows = place.flows === false, what = noFlows ? '기사' : '수급·기사';
+  const got = cs.filter(c => c.brief && (noFlows || !c.brief.missing?.includes('수급')) && !c.brief.missing?.includes('기사')).length, day = cs.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
+  return h('p', {class: 'f-ctx small', 'data-got': got}, got === cs.length ? `${what}: ${cs.length}곳 모두${day ? ` · ${korDate(day)} 기준` : ''}` : `${what}: ${cs.length}곳 가운데 ${got}곳만 모았음${day ? `(${korDate(day)} 기준)` : ''} · 나머지 ${cs.length - got}곳은 다음 ${noFlows ? '자료 받기' : '관측 수집'} 때 채움`);
 }
 /** 묶는 법 셋(앞이 처음 보이는 것) — 「오른 순」이 처음(2026-10-05 11:36) */
 export const ROAD_MODES = [{id: 'rise', text: '오른 순'}, {id: 'sun', text: '태양'}, {id: 'ind', text: '업종별'}, {id: 'flow', text: '흐름별'}]; // 태양 = 2026-10-05 14:40 「한 곳으로 모아줘」
@@ -68,6 +70,7 @@ export const RISE_CHUNK = 20;
 export const ROAD_VIEW_KEY = 'roadView2';
 /** 칸 읽는 법 한 줄 */
 const KEY_TEXT = '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사';
+const keyText = () => place.flows === false ? KEY_TEXT.replace(' · 수급 · 기사', ' · 기사(미국은 수급 자료 없음)') : KEY_TEXT; // 미국 판
 
 /** 칸 하나 — spk = 태양(오른 회사 출목표의 공통 모양 n가지를 모두 가짐)이면 그 n · 아니면 0 · to = 판의 종가 날(그보다 늦은 회사는 「n월 n일 종가까지」 — 「잡스가 … 36가지」 F1) */
 function tile(c, road, g, scale, spk = 0, to = null) {
@@ -298,12 +301,12 @@ export async function renderRoad(main, {manifest} = {}) {
     hint.textContent = HINT[view](TABS[view]); drawTabs(); strip.hidden = TABS[view].length < 2; drawPage(); centerTab();
   }
   const find = findBox(ranked, shp);
-  const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: KEY_TEXT});
+  const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: keyText()});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), find.btn), // 개수는 제목 곁 작은 글(규칙 2) · 오른쪽 「찾기」(E1)
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),
-      spkBox ? null : h('p', {class: 'f-key muted small'}, KEY_TEXT), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
+      spkBox ? null : h('p', {class: 'f-key muted small'}, keyText()), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
       ctxNote(board.companies), find.form),
     spkBox,
     segBox, hint, strip, body,

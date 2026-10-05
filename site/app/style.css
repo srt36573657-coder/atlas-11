@@ -675,3 +675,10 @@ body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xml
 .mkt-b[aria-current="page"] { background: var(--ink); color: var(--band); }
 .mkt-b:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
 html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7px; font-size: .8125rem; }
+/* 시장 단추가 있으면 좁은 휴대폰 · 큰 글씨에서 위 막대가 한 줄을 넘는다(360px · 글씨 200% 에서 459px) — 「ATLAS」 글자는 숨기고 인장(하늘 그림)만 둔다
+   막대가 두 줄이 되면 아래 묶음 이름(.f-h · 위에서 56px 에 붙음)을 가리므로 줄 바꿈 대신 · 처음 화면으로 가는 길과 이름(aria-label 「ATLAS 처음 화면」)은 그대로 */
+@media (max-width: 380px) { .top .has-mkt .wordmark { font-size: 0; letter-spacing: 0; min-width: 44px; } .top .has-mkt .wordmark::before { margin-right: 0; width: 20px; height: 20px; } }
+@media (max-width: 599px) {
+  html[data-font-step="1"] .top .has-mkt .wordmark, html[data-font-step="2"] .top .has-mkt .wordmark, html[data-font-step="3"] .top .has-mkt .wordmark, html[data-font-step="4"] .top .has-mkt .wordmark { font-size: 0; letter-spacing: 0; min-width: 44px; }
+  html[data-font-step="1"] .top .has-mkt .wordmark::before, html[data-font-step="2"] .top .has-mkt .wordmark::before, html[data-font-step="3"] .top .has-mkt .wordmark::before, html[data-font-step="4"] .top .has-mkt .wordmark::before { margin-right: 0; width: 20px; height: 20px; }
+}

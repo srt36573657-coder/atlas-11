@@ -71,8 +71,11 @@ function header() {
   }}, speakerIcon());
   // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
-  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => h('a', {class: 'mkt-b', href: p.href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null}, p.label))) : null;
-  document.getElementById('top').replaceChildren(h('div', {class: 'top-inner'},
+  //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
+  const tabHash = () => /^#\/(map|road|agenda|similar|rise)?$/.test(location.hash) ? location.hash : '';
+  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => h('a', {class: 'mkt-b', href: p.href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null,
+    onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', p.href + tabHash()); }}, p.label))) : null;
+  document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
     mkt,
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
