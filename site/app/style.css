@@ -449,13 +449,6 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .hf-up { font-size: .875rem; color: var(--sub); }
 .hf-chg { margin-top: 0; font-size: 1.25rem; text-align: right; }
 .hf-rank { grid-area: r; justify-self: start; } .hf-g { grid-area: g; } .hf-chg { grid-area: c; } /* 순위 표시는 위 · 이름은 아래 · 변화는 오른쪽 — 고정 폭 칸이 없어 글씨 200% · 좁은 휴대폰에서도 넘치지 않음 */
-.fm-box { margin: 14px 0 0; }
-.fm-sub { margin-bottom: 4px; }
-.fm-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.fm-b { display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font-size: 1rem; font-weight: 700; line-height: 1.2; cursor: pointer; }
-.fm-n { font-size: .875rem; font-weight: 500; }
-.fm-b[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
-.fm-b:active { transform: scale(.98); }
 .fm-note { margin: 8px 2px 0; }
 .t-tile[hidden] { display: none; }
 /* 저녁 7시 들고 남 — 탭 「불장」 세 화면 스위치 바로 아래 같은 자리(24번) · 견줄 기록이 아직 없으면 먹빛 칸 대신 조용한 한 줄 · 견준 기록이 있으면 한 줄 요약 + 눌러서 이름 */
@@ -468,7 +461,6 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .hf-l { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
 .hf-avg { font-size: .9375rem; color: var(--sub); white-space: nowrap; } .hf-avg b { font-size: 1.0625rem; }
 .hf-h { flex-wrap: wrap; row-gap: 2px; } /* 글씨 200% · 360px 에서 「n개 평균」이 들어가면 「불장 업종 n개」를 다음 줄로(옆으로 넘치지 않게) */
-.fm-b[aria-pressed="true"] .fm-n { color: inherit; } /* 고른 단추(먹색 바탕) 위에서는 빨강·파랑 대신 바탕과 대비가 큰 글자색 */
 /* 2026-10-05 12:28 「365개 다 나오잖아 불편해 … 그 안에 탭을 더 만들어서 편하면서도 직관적으로」 — 출목표 묶는 법 아래 탭 한 줄 · 한 번에 한 탭
    휴대폰: 탭 줄을 옆으로 밀어 봄(끝의 탭이 반쯤 보여 더 있음을 알림) · 넓은 화면: 여러 줄 · 고른 탭은 먹색(갈래 단추와 같은 옷) */
 .f-seg { scroll-margin-top: 64px; }
@@ -546,11 +538,7 @@ html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-
 .f-spk-go:focus-visible { outline: 3px solid var(--geum); outline-offset: 3px; }
 /* 2026-10-05 15:24 사장님 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」 — 1묶음(바로 줄일 것)
    A3 업종 탭 큰 갈래 단추: 휴대폰(폭 640px 아래)에서는 옆으로 미는 한 줄(여섯 줄 → 한 줄 · 끝 단추가 반쯤 보여 더 있다는 것을 알림) · 넓은 화면은 여러 줄 그대로 */
-@media (max-width: 640px) {
-  .fm-row { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px 6px; scroll-padding: 0 16px; }
-  .fm-row::-webkit-scrollbar { display: none; }
-  .fm-b { flex: none; scroll-snap-align: start; white-space: nowrap; }
-}
+/* (옛 · 2026-10-06 00:21 까지) 위 A3 의 한 줄 미는 갈래 단추 — 지금은 탭 「지도」의 지도 한 장(landmap.js)이 갈래 고르기를 한다 · 단추 모양(.fm-*)은 지움 */
 /* A5 늦은 종가: 작고 조용한 한 줄(굵은 주황 두 줄 → 보통 굵기 작은 글 · 색은 그대로라 대비도 그대로) */
 .b-late { font-size: .8125rem; font-weight: 500; line-height: 1.4; }
 /* A6 저녁 7시 들고 남 — 기록이 없을 때는 한 줄(제목 · 설명을 작은 글로) */
@@ -644,7 +632,6 @@ body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xml
 .b-how { box-shadow: 0 0 0 1px var(--hair), var(--lift); }
 .f-seg { border-radius: 16px; }
 .f-seg-b { border-radius: 14px; }
-.fm-row { margin: 0 -20px; padding: 2px 20px 6px; scroll-padding: 0 20px; }
 .hf-chg, .t-chg, .b-c20, .nc-chg, .f-chg, .mv-val { font-variant-numeric: lining-nums tabular-nums; font-feature-settings: "lnum" 1, "tnum" 1; }
 .mvx.mvx-quiet { --ink: #17302A; --sub: #4A6258; --fill: #E3ECE6; --link: #17302A; margin-top: 8px; }
 /* 상징: 위 막대 = 짙은 청자 · 아래 가장자리에 상감처럼 가는 선 두 줄(백토빛 · 옥빛) */
@@ -696,3 +683,27 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
 .fd-try { display: flex; flex-wrap: wrap; gap: 8px; }
 .fd-try-b { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--sep); border-radius: 999px; background: var(--card); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; } /* 바탕과 같은 색이면 누르는 단추로 안 보여 흰 칸 + 테 */
 .fd-try-b:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+
+/* ───────── 2026-10-06 00:21 사장님 「자 더 깊이 본질로 간다 잡스라면 이 아틀란스를 어떻게 만들었을까? 그리고 개선하라」 ─────────
+   탭 「지도」(옛 「업종」 · #/map) 맨 위 지도 한 장(site/app/landmap.js) — 로고 5번 「땅 나누기」가 화면에서 커진 것
+   땅 = 큰 갈래(판 색 · 모서리 12px) · 칸 = 업종(빨강 · 파랑 세기 = 지난 20거래일 평균 크기 · --k 0.14~1 · 칸 안에는 글자 없음)
+   글자(갈래 이름 · 평균)는 땅 맨 위 판 색 줄(칸을 가리지 않음 · 대비 4.5:1 이상) · 고른 땅은 옥빛 테 · 고르지 않은 땅은 칸만 옅게(글자는 그대로 진하게)
+   (옛 탭 「업종」 머리의 큰 갈래 단추 12개 .fm-* 는 이 지도로 바뀜 — 규칙 1 하나 넣으면 하나 뺀다) */
+.lm-box { margin: 14px 0 0; }
+.lm { position: relative; width: 100%; }
+.lm-n { position: absolute; display: flex; flex-direction: column; padding: 0; margin: 0; border: 0; border-radius: 12px; overflow: hidden; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 0 0 1px var(--hair); transition: transform .12s ease-out, box-shadow .2s ease-out; }
+.lm-n:active { transform: scale(.985); }
+.lm-n:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+.lm-n[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--geum); z-index: 1; }
+.lm-cells { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 2px 2px; transition: opacity .2s ease-out; }
+.lm-row { flex: 1; display: flex; gap: 2px; }
+.lm-c { flex: 1; border-radius: 6px; background: var(--fill); }
+.lm-c.s-up { background: color-mix(in srgb, var(--up) calc(var(--k) * 78%), var(--fill)); }
+.lm-c.s-down { background: color-mix(in srgb, var(--down) calc(var(--k) * 78%), var(--fill)); }
+.lm.has-pick .lm-n[aria-pressed="false"] .lm-cells { opacity: .32; }
+.lm-lab { flex: none; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; max-width: 100%; padding: 4px 8px 4px; line-height: 1.25; word-break: keep-all; }
+.lm-name { font-size: .875rem; font-weight: 700; color: var(--ink); }
+.lm-avg { font-size: .8125rem; }
+.lm-key { margin: 8px 2px 0; }
+.lm-all { margin-left: 4px; min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .lm-n, .lm-cells { transition: none; } }
