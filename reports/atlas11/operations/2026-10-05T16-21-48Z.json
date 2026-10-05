@@ -1,0 +1,97 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-10-05T16:21:48Z",
+  "dayKST": "2026-10-06",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-10-05T16:21:48.667Z",
+      "status": "ok",
+      "durationMs": 18,
+      "session": true,
+      "afterClose": false,
+      "day": "2026-10-06",
+      "cutoff": "2026-10-02"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-10-05T16:21:48.685Z",
+      "status": "ok",
+      "durationMs": 1,
+      "skipped": true,
+      "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-10-05T16:21:48.686Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-10-05T16:21:48.722Z",
+      "view": {
+        "boardId": "board-2026-10-02-87e2ba38",
+        "asOf": "2026-10-02",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 2846413,
+        "similar": [
+          "스피어",
+          "에스비비테크",
+          "쏠리드",
+          "SK디스커버리",
+          "한화시스템",
+          "미래에셋벤처투자",
+          "한국공항"
+        ],
+        "moves": "처음 기록 2026-10-02",
+        "evening": null
+      },
+      "status": "ok",
+      "durationMs": 683
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu24",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "37340039373",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/37340039373",
+    "commit": "85c0287ef9417c0b09c8f984f3ef73ec3e1ffdb8",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-10-06",
+  "session": true,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-10-06",
+    "status": "before_regular_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": false,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": true
+  },
+  "cutoff": "2026-10-02",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
+  "inputSnapshotSHA256": "d40cf02bd998f56716d0eb18330eea14fbcdddf1f573401f6393bf3d5a99636b",
+  "expectedStocks": 365,
+  "finishedAt": "2026-10-05T16:21:49.405Z"
+}
