@@ -1,430 +1,1078 @@
 {
- "id": "u2-i36-v1-2026-10-04",
- "dir": "reports/atlas11/universe/2026-10-04-i36",
- "ok": true,
- "picked": 180,
- "createdAt": "2026-10-04T12:39:00Z",
+ "id": "u2-s365-v1-2026-10-05",
+ "dir": "reports/atlas11/universe/2026-10-05",
+ "ok": false,
+ "picked": 330,
+ "createdAt": "2026-10-05T00:01:06Z",
  "counts": {
-  "candidates": 940,
-  "pool": 740,
-  "unknownIndustry": 98,
-  "industriesInPool": 41,
-  "industriesFilled": 36,
-  "industriesStrict": 30,
-  "industries": 36,
-  "picked": 180,
+  "candidates": 1375,
+  "pool": 1196,
+  "withKsic": 1196,
+  "unknownIndustry": 0,
+  "groupsKsic": 129,
+  "groupsKsicFilled": 56,
+  "groupsNaverFilled": 10,
+  "industries": 66,
+  "picked": 330,
   "kinds": {
-   "quality": 114,
-   "trend": 51,
-   "profit": 11,
-   "size": 4
+   "quality": 188,
+   "trend": 99,
+   "size": 11,
+   "profit": 32
   },
-  "pickedQuality": 114,
-  "pickedTrend": 51,
+  "pickedQuality": 188,
+  "pickedTrend": 99,
   "chosen": [
    {
     "rank": 1,
-    "industry": "반도체와반도체장비",
-    "sectors": [
-     "반도체와반도체장비"
+    "industry": "통신·방송 장비",
+    "by": "ksic",
+    "names": [
+     "통신 및 방송 장비 제조업"
     ],
-    "strict": 106,
+    "size": 30,
+    "strict": 30,
     "filled": 0,
-    "capEok": 31487010
+    "capEok": 16520038
    },
    {
     "rank": 2,
-    "industry": "은행·카드",
-    "sectors": [
-     "은행",
-     "카드"
+    "industry": "반도체",
+    "by": "ksic",
+    "names": [
+     "반도체 제조업"
     ],
-    "strict": 10,
+    "size": 42,
+    "strict": 42,
     "filled": 0,
-    "capEok": 1856161
+    "capEok": 13627358
    },
    {
     "rank": 3,
-    "industry": "전자장비와기기",
-    "sectors": [
-     "전자장비와기기"
+    "industry": "기타 금융",
+    "by": "ksic",
+    "names": [
+     "기타 금융업"
     ],
-    "strict": 31,
+    "size": 68,
+    "strict": 49,
     "filled": 0,
-    "capEok": 1479759
+    "capEok": 3389726
    },
    {
     "rank": 4,
-    "industry": "전기제품",
-    "sectors": [
-     "전기제품"
+    "industry": "전자부품",
+    "by": "ksic",
+    "names": [
+     "전자부품 제조업"
     ],
-    "strict": 27,
+    "size": 73,
+    "strict": 73,
     "filled": 0,
-    "capEok": 1476323
+    "capEok": 1774916
    },
    {
     "rank": 5,
-    "industry": "조선",
-    "sectors": [
-     "조선"
+    "industry": "일차전지·이차전지",
+    "by": "ksic",
+    "names": [
+     "일차전지 및 이차전지 제조업"
     ],
-    "strict": 15,
+    "size": 17,
+    "strict": 17,
     "filled": 0,
-    "capEok": 1253033
+    "capEok": 1615424
    },
    {
     "rank": 6,
-    "industry": "제약",
-    "sectors": [
-     "제약"
-    ],
-    "strict": 53,
-    "filled": 0,
-    "capEok": 1236114
-   },
-   {
-    "rank": 7,
-    "industry": "우주항공과국방",
-    "sectors": [
-     "우주항공과국방"
-    ],
-    "strict": 12,
-    "filled": 0,
-    "capEok": 1129428
-   },
-   {
-    "rank": 8,
-    "industry": "전기장비",
-    "sectors": [
-     "전기장비"
-    ],
-    "strict": 19,
-    "filled": 0,
-    "capEok": 1008865
-   },
-   {
-    "rank": 9,
-    "industry": "복합기업",
-    "sectors": [
-     "복합기업"
-    ],
-    "strict": 3,
-    "filled": 2,
-    "capEok": 997547
-   },
-   {
-    "rank": 10,
-    "industry": "석유와가스",
-    "sectors": [
-     "석유와가스"
-    ],
-    "strict": 2,
-    "filled": 3,
-    "capEok": 969897
-   },
-   {
-    "rank": 11,
     "industry": "자동차·부품",
-    "sectors": [
+    "by": "naver",
+    "names": [
      "자동차",
      "자동차부품"
     ],
-    "strict": 23,
+    "size": 12,
+    "strict": 9,
     "filled": 0,
-    "capEok": 916464
+    "capEok": 1247759
+   },
+   {
+    "rank": 7,
+    "industry": "기초 의약물질",
+    "by": "ksic",
+    "names": [
+     "기초 의약물질 제조업"
+    ],
+    "size": 26,
+    "strict": 26,
+    "filled": 0,
+    "capEok": 1145184
+   },
+   {
+    "rank": 8,
+    "industry": "선박·보트 건조",
+    "by": "ksic",
+    "names": [
+     "선박 및 보트 건조업"
+    ],
+    "size": 10,
+    "strict": 10,
+    "filled": 0,
+    "capEok": 873917
+   },
+   {
+    "rank": 9,
+    "industry": "전동기, 발전기·전기 변환 · 공급 · 제어 장치",
+    "by": "ksic",
+    "names": [
+     "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업"
+    ],
+    "size": 18,
+    "strict": 18,
+    "filled": 0,
+    "capEok": 871080
+   },
+   {
+    "rank": 10,
+    "industry": "항공기,우주선·부품",
+    "by": "ksic",
+    "names": [
+     "항공기,우주선 및 부품 제조업"
+    ],
+    "size": 5,
+    "strict": 5,
+    "filled": 0,
+    "capEok": 694422
+   },
+   {
+    "rank": 11,
+    "industry": "일반 목적용 기계",
+    "by": "ksic",
+    "names": [
+     "일반 목적용 기계 제조업"
+    ],
+    "size": 22,
+    "strict": 22,
+    "filled": 0,
+    "capEok": 653235
    },
    {
     "rank": 12,
-    "industry": "인터넷·IT서비스",
-    "sectors": [
-     "양방향미디어와서비스",
-     "IT서비스"
+    "industry": "특수 목적용 기계",
+    "by": "ksic",
+    "names": [
+     "특수 목적용 기계 제조업"
     ],
-    "strict": 29,
+    "size": 93,
+    "strict": 93,
     "filled": 0,
-    "capEok": 769238
+    "capEok": 592158
    },
    {
     "rank": 13,
-    "industry": "기계",
-    "sectors": [
-     "기계"
+    "industry": "기타 전문 도매",
+    "by": "ksic",
+    "names": [
+     "기타 전문 도매업"
     ],
-    "strict": 30,
+    "size": 13,
+    "strict": 7,
     "filled": 0,
-    "capEok": 765055
+    "capEok": 575050
    },
    {
     "rank": 14,
-    "industry": "증권",
-    "sectors": [
-     "증권"
-    ],
-    "strict": 17,
-    "filled": 0,
-    "capEok": 667438
-   },
-   {
-    "rank": 15,
     "industry": "보험",
-    "sectors": [
-     "생명보험",
-     "손해보험"
+    "by": "ksic",
+    "names": [
+     "보험업"
     ],
-    "strict": 9,
+    "size": 9,
+    "strict": 8,
     "filled": 0,
     "capEok": 513531
    },
    {
-    "rank": 16,
-    "industry": "운송",
-    "sectors": [
-     "해운사",
-     "항공화물운송과물류",
-     "항공사"
+    "rank": 15,
+    "industry": "금융 지원 서비스",
+    "by": "ksic",
+    "names": [
+     "금융 지원 서비스업"
     ],
-    "strict": 6,
+    "size": 21,
+    "strict": 17,
     "filled": 0,
-    "capEok": 409097
+    "capEok": 473619
+   },
+   {
+    "rank": 16,
+    "industry": "자료처리, 호스팅, 포털·기타 인터넷 정보매개 서비스",
+    "by": "ksic",
+    "names": [
+     "자료처리, 호스팅, 포털 및 기타 인터넷 정보매개 서비스업"
+    ],
+    "size": 10,
+    "strict": 10,
+    "filled": 0,
+    "capEok": 467821
    },
    {
     "rank": 17,
-    "industry": "식품·담배",
-    "sectors": [
-     "담배",
-     "식품"
+    "industry": "자동차 신품 부품",
+    "by": "ksic",
+    "names": [
+     "자동차 신품 부품 제조업"
     ],
-    "strict": 24,
+    "size": 34,
+    "strict": 18,
     "filled": 0,
-    "capEok": 371349
+    "capEok": 405240
    },
    {
     "rank": 18,
-    "industry": "화장품",
-    "sectors": [
-     "화장품"
+    "industry": "기타 화학제품",
+    "by": "ksic",
+    "names": [
+     "기타 화학제품 제조업"
     ],
-    "strict": 17,
+    "size": 48,
+    "strict": 36,
     "filled": 0,
-    "capEok": 318680
+    "capEok": 329294
    },
    {
     "rank": 19,
-    "industry": "생물공학",
-    "sectors": [
-     "생물공학"
+    "industry": "자연과학·공학 연구개발",
+    "by": "ksic",
+    "names": [
+     "자연과학 및 공학 연구개발업"
     ],
-    "strict": 18,
+    "size": 30,
+    "strict": 30,
     "filled": 0,
-    "capEok": 278863
+    "capEok": 324860
    },
    {
     "rank": 20,
-    "industry": "전력·가스",
-    "sectors": [
-     "전기유틸리티",
-     "가스유틸리티"
+    "industry": "소프트웨어 개발·공급",
+    "by": "ksic",
+    "names": [
+     "소프트웨어 개발 및 공급업"
     ],
-    "strict": 6,
+    "size": 67,
+    "strict": 67,
     "filled": 0,
-    "capEok": 270592
+    "capEok": 299783
    },
    {
     "rank": 21,
-    "industry": "철강·금속",
-    "sectors": [
-     "철강",
-     "비철금속"
+    "industry": "1차 비철금속",
+    "by": "ksic",
+    "names": [
+     "1차 비철금속 제조업"
     ],
-    "strict": 5,
-    "filled": 0,
-    "capEok": 262914
+    "size": 6,
+    "strict": 3,
+    "filled": 2,
+    "capEok": 268013
    },
    {
     "rank": 22,
-    "industry": "게임엔터테인먼트",
-    "sectors": [
-     "게임엔터테인먼트"
+    "industry": "해상 운송",
+    "by": "ksic",
+    "names": [
+     "해상 운송업"
     ],
-    "strict": 16,
-    "filled": 0,
-    "capEok": 206850
+    "size": 5,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 249384
    },
    {
     "rank": 23,
-    "industry": "에너지장비및서비스",
-    "sectors": [
-     "에너지장비및서비스"
+    "industry": "전력·가스",
+    "by": "naver",
+    "names": [
+     "전기유틸리티",
+     "가스유틸리티",
+     "복합유틸리티"
     ],
-    "strict": 13,
-    "filled": 0,
-    "capEok": 169978
+    "size": 6,
+    "strict": 3,
+    "filled": 2,
+    "capEok": 242100
    },
    {
     "rank": 24,
-    "industry": "건설",
-    "sectors": [
-     "건설"
+    "industry": "절연선·케이블",
+    "by": "ksic",
+    "names": [
+     "절연선 및 케이블 제조업"
     ],
-    "strict": 10,
-    "filled": 0,
-    "capEok": 156475
+    "size": 5,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 238570
    },
    {
     "rank": 25,
-    "industry": "건강관리장비와용품",
-    "sectors": [
-     "건강관리장비와용품"
+    "industry": "식품·담배",
+    "by": "naver",
+    "names": [
+     "담배",
+     "식품"
     ],
-    "strict": 27,
+    "size": 14,
+    "strict": 14,
     "filled": 0,
-    "capEok": 128385
+    "capEok": 223828
    },
    {
     "rank": 26,
-    "industry": "방송과엔터테인먼트",
-    "sectors": [
-     "방송과엔터테인먼트"
+    "industry": "의약품",
+    "by": "ksic",
+    "names": [
+     "의약품 제조업"
     ],
-    "strict": 8,
+    "size": 58,
+    "strict": 58,
     "filled": 0,
-    "capEok": 114347
+    "capEok": 212169
    },
    {
     "rank": 27,
-    "industry": "유통",
-    "sectors": [
-     "백화점과일반상점",
-     "인터넷과카탈로그소매"
+    "industry": "전기 통신",
+    "by": "ksic",
+    "names": [
+     "전기 통신업"
     ],
-    "strict": 2,
-    "filled": 3,
-    "capEok": 109124
+    "size": 8,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 201138
    },
    {
     "rank": 28,
-    "industry": "가정용기기와용품",
-    "sectors": [
-     "가정용기기와용품"
+    "industry": "기타 식품",
+    "by": "ksic",
+    "names": [
+     "기타 식품 제조업"
     ],
-    "strict": 4,
-    "filled": 1,
-    "capEok": 105560
+    "size": 15,
+    "strict": 15,
+    "filled": 0,
+    "capEok": 197542
    },
    {
     "rank": 29,
-    "industry": "섬유,의류,신발,호화품",
-    "sectors": [
-     "섬유,의류,신발,호화품"
+    "industry": "컴퓨터 프로그래밍, 시스템 통합·관리",
+    "by": "ksic",
+    "names": [
+     "컴퓨터 프로그래밍, 시스템 통합 및 관리업"
     ],
-    "strict": 9,
+    "size": 15,
+    "strict": 15,
     "filled": 0,
-    "capEok": 105460
+    "capEok": 185161
    },
    {
     "rank": 30,
-    "industry": "건축자재",
-    "sectors": [
-     "건축자재"
+    "industry": "건축기술, 엔지니어링·관련 기술 서비스",
+    "by": "ksic",
+    "names": [
+     "건축기술, 엔지니어링 및 관련 기술 서비스업"
     ],
-    "strict": 2,
-    "filled": 3,
-    "capEok": 69464
+    "size": 8,
+    "strict": 7,
+    "filled": 0,
+    "capEok": 184207
    },
    {
     "rank": 31,
-    "industry": "생명과학도구및서비스",
-    "sectors": [
-     "생명과학도구및서비스"
+    "industry": "토목 건설",
+    "by": "ksic",
+    "names": [
+     "토목 건설업"
     ],
-    "strict": 8,
-    "filled": 0,
-    "capEok": 67211
+    "size": 8,
+    "strict": 1,
+    "filled": 4,
+    "capEok": 178015
    },
    {
     "rank": 32,
-    "industry": "화학",
-    "sectors": [
-     "화학"
+    "industry": "운송",
+    "by": "naver",
+    "names": [
+     "항공화물운송과물류",
+     "도로와철도운송",
+     "해운사"
     ],
-    "strict": 15,
+    "size": 12,
+    "strict": 6,
     "filled": 0,
-    "capEok": 57105
+    "capEok": 173165
    },
    {
     "rank": 33,
-    "industry": "호텔,레스토랑,레저",
-    "sectors": [
-     "호텔,레스토랑,레저"
+    "industry": "기초 화학물질",
+    "by": "ksic",
+    "names": [
+     "기초 화학물질 제조업"
     ],
-    "strict": 5,
+    "size": 36,
+    "strict": 20,
     "filled": 0,
-    "capEok": 54226
+    "capEok": 167022
    },
    {
     "rank": 34,
-    "industry": "상업서비스와공급품",
-    "sectors": [
-     "상업서비스와공급품"
+    "industry": "항공 여객 운송",
+    "by": "ksic",
+    "names": [
+     "항공 여객 운송업"
     ],
-    "strict": 5,
-    "filled": 0,
-    "capEok": 49811
+    "size": 6,
+    "strict": 0,
+    "filled": 5,
+    "capEok": 139928
    },
    {
     "rank": 35,
-    "industry": "건강관리업체및서비스",
-    "sectors": [
-     "건강관리업체및서비스"
+    "industry": "상품 중개",
+    "by": "ksic",
+    "names": [
+     "상품 중개업"
     ],
+    "size": 6,
     "strict": 2,
     "filled": 3,
-    "capEok": 37306
+    "capEok": 127474
    },
    {
     "rank": 36,
-    "industry": "통신장비",
-    "sectors": [
-     "통신장비"
+    "industry": "의료용품·기타 의약 관련제품",
+    "by": "ksic",
+    "names": [
+     "의료용품 및 기타 의약 관련제품 제조업"
     ],
+    "size": 17,
+    "strict": 17,
+    "filled": 0,
+    "capEok": 113636
+   },
+   {
+    "rank": 37,
+    "industry": "오디오물 출판·원판 녹음",
+    "by": "ksic",
+    "names": [
+     "오디오물 출판 및 원판 녹음업"
+    ],
+    "size": 5,
+    "strict": 5,
+    "filled": 0,
+    "capEok": 106957
+   },
+   {
+    "rank": 38,
+    "industry": "가정용기기와용품",
+    "by": "naver",
+    "names": [
+     "가정용기기와용품"
+    ],
+    "size": 6,
+    "strict": 3,
+    "filled": 2,
+    "capEok": 97330
+   },
+   {
+    "rank": 39,
+    "industry": "측정, 시험, 항해, 제어·기타 정밀기기 제조업; 광학기기 제외",
+    "by": "ksic",
+    "names": [
+     "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외"
+    ],
+    "size": 14,
+    "strict": 14,
+    "filled": 0,
+    "capEok": 88415
+   },
+   {
+    "rank": 40,
+    "industry": "종합 소매",
+    "by": "ksic",
+    "names": [
+     "종합 소매업"
+    ],
+    "size": 12,
+    "strict": 3,
+    "filled": 2,
+    "capEok": 71064
+   },
+   {
+    "rank": 41,
+    "industry": "기계장비·관련 물품 도매",
+    "by": "ksic",
+    "names": [
+     "기계장비 및 관련 물품 도매업"
+    ],
+    "size": 8,
+    "strict": 8,
+    "filled": 0,
+    "capEok": 69458
+   },
+   {
+    "rank": 42,
+    "industry": "건물 건설",
+    "by": "ksic",
+    "names": [
+     "건물 건설업"
+    ],
+    "size": 9,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 67086
+   },
+   {
+    "rank": 43,
+    "industry": "상품 종합 도매",
+    "by": "ksic",
+    "names": [
+     "상품 종합 도매업"
+    ],
+    "size": 6,
+    "strict": 2,
+    "filled": 3,
+    "capEok": 62719
+   },
+   {
+    "rank": 44,
+    "industry": "호텔,레스토랑,레저",
+    "by": "naver",
+    "names": [
+     "호텔,레스토랑,레저"
+    ],
+    "size": 8,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 60677
+   },
+   {
+    "rank": 45,
+    "industry": "신탁업·집합투자",
+    "by": "ksic",
+    "names": [
+     "신탁업 및 집합투자업"
+    ],
+    "size": 7,
+    "strict": 3,
+    "filled": 2,
+    "capEok": 56339
+   },
+   {
+    "rank": 46,
+    "industry": "의료용 기기",
+    "by": "ksic",
+    "names": [
+     "의료용 기기 제조업"
+    ],
+    "size": 20,
+    "strict": 20,
+    "filled": 0,
+    "capEok": 49534
+   },
+   {
+    "rank": 47,
+    "industry": "화학섬유",
+    "by": "ksic",
+    "names": [
+     "화학섬유 제조업"
+    ],
+    "size": 5,
+    "strict": 0,
+    "filled": 5,
+    "capEok": 47663
+   },
+   {
+    "rank": 48,
+    "industry": "봉제의복",
+    "by": "ksic",
+    "names": [
+     "봉제의복 제조업"
+    ],
+    "size": 8,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 43234
+   },
+   {
+    "rank": 49,
+    "industry": "구조용 금속제품, 탱크·증기발생기",
+    "by": "ksic",
+    "names": [
+     "구조용 금속제품, 탱크 및 증기발생기 제조업"
+    ],
+    "size": 8,
     "strict": 6,
     "filled": 0,
-    "capEok": 36288
+    "capEok": 40055
+   },
+   {
+    "rank": 50,
+    "industry": "1차 철강",
+    "by": "ksic",
+    "names": [
+     "1차 철강 제조업"
+    ],
+    "size": 24,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 32924
+   },
+   {
+    "rank": 51,
+    "industry": "섬유,의류,신발,호화품",
+    "by": "naver",
+    "names": [
+     "섬유,의류,신발,호화품"
+    ],
+    "size": 10,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 30544
+   },
+   {
+    "rank": 52,
+    "industry": "그외 기타 전문, 과학·기술 서비스",
+    "by": "ksic",
+    "names": [
+     "그외 기타 전문, 과학 및 기술 서비스업"
+    ],
+    "size": 7,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 30217
+   },
+   {
+    "rank": 53,
+    "industry": "전기·통신 공사",
+    "by": "ksic",
+    "names": [
+     "전기 및 통신 공사업"
+    ],
+    "size": 8,
+    "strict": 5,
+    "filled": 0,
+    "capEok": 28218
+   },
+   {
+    "rank": 54,
+    "industry": "회사 본부·경영 컨설팅 서비스",
+    "by": "ksic",
+    "names": [
+     "회사 본부 및 경영 컨설팅 서비스업"
+    ],
+    "size": 8,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 25472
+   },
+   {
+    "rank": 55,
+    "industry": "플라스틱제품",
+    "by": "ksic",
+    "names": [
+     "플라스틱제품 제조업"
+    ],
+    "size": 14,
+    "strict": 10,
+    "filled": 0,
+    "capEok": 24497
+   },
+   {
+    "rank": 56,
+    "industry": "시멘트, 석회, 플라스터·그 제품",
+    "by": "ksic",
+    "names": [
+     "시멘트, 석회, 플라스터 및 그 제품 제조업"
+    ],
+    "size": 8,
+    "strict": 0,
+    "filled": 5,
+    "capEok": 23940
+   },
+   {
+    "rank": 57,
+    "industry": "기타 금속 가공제품",
+    "by": "ksic",
+    "names": [
+     "기타 금속 가공제품 제조업"
+    ],
+    "size": 7,
+    "strict": 7,
+    "filled": 0,
+    "capEok": 19561
+   },
+   {
+    "rank": 58,
+    "industry": "영화, 비디오물, 방송프로그램 제작·배급",
+    "by": "ksic",
+    "names": [
+     "영화, 비디오물, 방송프로그램 제작 및 배급업"
+    ],
+    "size": 6,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 18553
+   },
+   {
+    "rank": 59,
+    "industry": "기타 정보 서비스",
+    "by": "ksic",
+    "names": [
+     "기타 정보 서비스업"
+    ],
+    "size": 6,
+    "strict": 5,
+    "filled": 0,
+    "capEok": 18312
+   },
+   {
+    "rank": 60,
+    "industry": "화학",
+    "by": "naver",
+    "names": [
+     "화학"
+    ],
+    "size": 8,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 15532
+   },
+   {
+    "rank": 61,
+    "industry": "텔레비전 방송",
+    "by": "ksic",
+    "names": [
+     "텔레비전 방송업"
+    ],
+    "size": 6,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 13952
+   },
+   {
+    "rank": 62,
+    "industry": "건설",
+    "by": "naver",
+    "names": [
+     "건설"
+    ],
+    "size": 5,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 11595
+   },
+   {
+    "rank": 63,
+    "industry": "교육서비스",
+    "by": "naver",
+    "names": [
+     "교육서비스"
+    ],
+    "size": 6,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 10712
+   },
+   {
+    "rank": 64,
+    "industry": "동물용 사료·조제식품",
+    "by": "ksic",
+    "names": [
+     "동물용 사료 및 조제식품 제조업"
+    ],
+    "size": 6,
+    "strict": 6,
+    "filled": 0,
+    "capEok": 10472
+   },
+   {
+    "rank": 65,
+    "industry": "기타 사업지원 서비스",
+    "by": "ksic",
+    "names": [
+     "기타 사업지원 서비스업"
+    ],
+    "size": 5,
+    "strict": 4,
+    "filled": 1,
+    "capEok": 9517
+   },
+   {
+    "rank": 66,
+    "industry": "영상·음향기기",
+    "by": "ksic",
+    "names": [
+     "영상 및 음향기기 제조업"
+    ],
+    "size": 5,
+    "strict": 5,
+    "filled": 0,
+    "capEok": 8764
    }
   ],
   "notChosenFilled": [],
   "short": [
    {
-    "industry": "무역회사와판매업체",
+    "industry": "석유 정제품",
     "have": 4
    },
    {
-    "industry": "통신",
-    "have": 3
+    "industry": "은행·저축기관",
+    "have": 4
    },
    {
-    "industry": "디스플레이 패널",
-    "have": 3
+    "industry": "고무제품",
+    "have": 4
+   },
+   {
+    "industry": "연료용 가스 제조·배관공급",
+    "have": 4
    },
    {
     "industry": "광고",
+    "have": 4
+   },
+   {
+    "industry": "알코올음료",
+    "have": 4
+   },
+   {
+    "industry": "가정용 기기",
+    "have": 4
+   },
+   {
+    "industry": "여행사·기타 여행보조 서비스",
+    "have": 4
+   },
+   {
+    "industry": "동·식물성 유지·낙농제품",
+    "have": 4
+   },
+   {
+    "industry": "일반 교습 학원",
+    "have": 4
+   },
+   {
+    "industry": "자동차용 엔진·자동차",
+    "have": 3
+   },
+   {
+    "industry": "기타 운송관련 서비스",
+    "have": 3
+   },
+   {
+    "industry": "기타 비금속 광물제품",
+    "have": 3
+   },
+   {
+    "industry": "유원지·기타 오락관련 서비스",
+    "have": 3
+   },
+   {
+    "industry": "음·식료품·담배 도매",
+    "have": 3
+   },
+   {
+    "industry": "기타 전기장비",
+    "have": 3
+   },
+   {
+    "industry": "생활용품 도매",
+    "have": 3
+   },
+   {
+    "industry": "도로 화물 운송",
+    "have": 3
+   },
+   {
+    "industry": "합성고무·플라스틱 물질",
+    "have": 3
+   },
+   {
+    "industry": "섬유, 의복, 신발·가죽제품 소매",
+    "have": 3
+   },
+   {
+    "industry": "자동차 판매",
+    "have": 3
+   },
+   {
+    "industry": "전기",
     "have": 2
    },
    {
-    "industry": "전자제품",
+    "industry": "무기·총포탄",
+    "have": 2
+   },
+   {
+    "industry": "그외 기타 운송장비",
+    "have": 2
+   },
+   {
+    "industry": "운송장비 임대",
+    "have": 2
+   },
+   {
+    "industry": "기타 상품 전문 소매",
+    "have": 2
+   },
+   {
+    "industry": "유리·유리제품",
+    "have": 2
+   },
+   {
+    "industry": "일반·생활 숙박시설 운영",
+    "have": 2
+   },
+   {
+    "industry": "보험·연금관련 서비스",
+    "have": 2
+   },
+   {
+    "industry": "가죽, 가방·유사제품",
+    "have": 2
+   },
+   {
+    "industry": "기타 종이·판지 제품",
+    "have": 2
+   },
+   {
+    "industry": "부동산 임대·공급",
+    "have": 2
+   },
+   {
+    "industry": "컴퓨터·주변장치",
+    "have": 2
+   },
+   {
+    "industry": "골판지, 종이 상자·종이용기",
+    "have": 2
+   },
+   {
+    "industry": "가구",
+    "have": 2
+   },
+   {
+    "industry": "비료, 농약·살균, 살충제",
+    "have": 2
+   },
+   {
+    "industry": "도축, 육류 가공·저장 처리",
+    "have": 2
+   },
+   {
+    "industry": "기타 전문 서비스",
+    "have": 2
+   },
+   {
+    "industry": "수산물 가공·저장 처리",
+    "have": 2
+   },
+   {
+    "industry": "곡물가공품, 전분·전분제품",
+    "have": 2
+   },
+   {
+    "industry": "기타 과학기술 서비스",
+    "have": 2
+   },
+   {
+    "industry": "전구·조명장치",
+    "have": 2
+   },
+   {
+    "industry": "육상 여객 운송",
+    "have": 2
+   },
+   {
+    "industry": "연료 소매",
+    "have": 2
+   },
+   {
+    "industry": "실내건축·건축마무리 공사",
+    "have": 2
+   },
+   {
+    "industry": "그외 기타 제품",
+    "have": 2
+   },
+   {
+    "industry": "사진장비·광학기기",
+    "have": 2
+   },
+   {
+    "industry": "펄프, 종이·판지",
+    "have": 2
+   },
+   {
+    "industry": "폐기물 처리",
+    "have": 2
+   },
+   {
+    "industry": "무점포 소매",
+    "have": 2
+   },
+   {
+    "industry": "의복 액세서리",
+    "have": 2
+   },
+   {
+    "industry": "담배",
+    "have": 1
+   },
+   {
+    "industry": "그외 기타 개인 서비스",
+    "have": 1
+   },
+   {
+    "industry": "경비, 경호·탐정",
+    "have": 1
+   },
+   {
+    "industry": "재 보험",
+    "have": 1
+   },
+   {
+    "industry": "증기, 냉·온수·공기조절 공급",
+    "have": 1
+   },
+   {
+    "industry": "비알코올음료·얼음",
+    "have": 1
+   },
+   {
+    "industry": "개인·가정용품 임대",
+    "have": 1
+   },
+   {
+    "industry": "나무제품",
+    "have": 1
+   },
+   {
+    "industry": "자동차 차체나 트레일러",
     "have": 1
    }
   ],
   "failReasons": {
-   "ROE 5% 미만": 401,
-   "2년 연속 흑자 아님": 337,
-   "부채비율 150% 초과": 147,
-   "업종 모름": 98,
-   "가격 이력 부족": 77,
-   "결산 자료 없음": 43,
-   "시가총액 900위 밖": 40,
-   "가격 이력 없음": 40
+   "ROE 5% 미만": 617,
+   "2년 연속 흑자 아님": 524,
+   "부채비율 150% 초과": 222,
+   "가격 이력 부족": 104,
+   "결산 자료 없음": 78,
+   "시가총액 1300위 밖": 75,
+   "가격 이력 없음": 75
   }
  }
 }
