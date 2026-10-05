@@ -29,7 +29,7 @@ function infoGrid(s) {
 function briefBox(board, s) {
   const bc = board?.companies?.find(c => c.code === s.code);
   if (!bc?.brief) return null;
-  return h('section', {class: 'b-box c-brief', 'aria-label': '수급·기사'}, h('h2', {class: 'b-box-h'}, '수급·기사', h('small', null, ' · 한 줄씩 · 자세한 기록은 아래 「수급·기사·공시 기록」')), h('div', {class: 'bf-box'}, flowLine(bc.brief), newsLine(bc.brief)));
+  return h('section', {class: 'b-box c-brief', 'aria-label': '수급·기사'}, h('h2', {class: 'b-box-h'}, '수급·기사', h('small', null, ' · 한 줄씩 · 자세한 기록은 아래 「수급·기사·공시 기록」')), h('div', {class: 'bf-box'}, flowLine(bc.brief), newsLine(bc.brief, {here: true})));
 }
 function contextBox(c) {
   const box = h('details', {class: 'b-how c-ctx'});

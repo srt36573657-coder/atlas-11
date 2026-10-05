@@ -172,9 +172,10 @@ export function flowLine(brief) {
   return h('span', {class: 'fl', 'data-days': f.days, 'aria-label': `수급 · ${korDate(f.from)}부터 ${korDate(f.to)}까지 ${f.days}거래일 순매수 합 · 외국인 ${sharesText(f.foreign)} · 기관 ${sharesText(f.institution)}${f.provisional.length ? ` · ${f.provisional.map(korDate).join(', ')} 값은 잠정` : ''}`},
     h('span', {class: 'fl-h'}, `수급 ${f.days}거래일${pv}`), ' · ', val('외국인', f.foreign), ' · ', val('기관', f.institution));
 }
-export function newsLine(brief) {
+/** here: 회사 화면 안이면 「회사 화면에」 대신 「아래 「수급·기사·공시 기록」에」(2026-10-05 15:24 「잡스가 … 36가지」 C1 — 회사 화면이 저를 가리키지 않게) */
+export function newsLine(brief, {here = false} = {}) {
   const n = brief?.news;
-  if (!n) return h('span', {class: 'nw nw-none'}, h('span', {class: 'nw-h'}, '기사'), h('span', {class: 'nw-miss'}, !brief || brief.missing?.includes('기사') ? notYet : brief.newsCount ? `회사 이름이 든 기사 없음 · 모은 기사 ${brief.newsCount}건은 회사 화면에` : '모은 기사 없음'));
+  if (!n) return h('span', {class: 'nw nw-none'}, h('span', {class: 'nw-h'}, '기사'), h('span', {class: 'nw-miss'}, !brief || brief.missing?.includes('기사') ? notYet : brief.newsCount ? `회사 이름이 든 기사 없음 · 모은 기사 ${brief.newsCount}건은 ${here ? '아래 「수급·기사·공시 기록」에' : '회사 화면에'}` : '모은 기사 없음'));
   // 언론사 이름(「아이뉴스24」 같은)도 원문 이름이라 식별자로 둔다 — 이름 속 숫자를 단위 없는 숫자로 세지 않게
   return h('span', {class: 'nw'}, h('span', {class: 'nw-h'}, `기사 · ${stamp(n.publishedAt)} · `, n.office ? h('span', {'data-ident': ''}, n.office) : '언론사 이름 없음'), h('span', {class: 'nw-t', 'data-ident': ''}, n.title));
 }
@@ -192,7 +193,8 @@ const at = iso => iso && Number.isFinite(Date.parse(iso)) ? `${korDate(kst(iso).
 /** 저녁 7시 들고 남 — 기록 둘을 맞대어 본 값(판에 적힌 그대로) */
 export function movesBox(mv) {
   const head = sub => h('p', {class: 'mvx-h'}, h('b', null, '저녁 7시 들고 남'), sub ? h('span', {class: 'mvx-when'}, sub) : null);
-  if (!mv) return h('section', {class: 'mvx mvx-quiet', 'aria-label': '저녁 7시 들고 남', 'data-state': 'none'}, head('아직 기록 없음 · 거래일 19:00마다 적고 앞 기록과 견줌'));
+  // 기록이 없을 때는 한 줄만(2026-10-05 15:24 「잡스가 … 36가지」 A6 — 빈 칸이 세 화면 맨 위 두 줄을 차지하지 않게)
+  if (!mv) return h('section', {class: 'mvx mvx-quiet mvx-none', 'aria-label': '저녁 7시 들고 남', 'data-state': 'none'}, head('아직 기록 없음 · 거래일 19:00마다 적음'));
   if (mv.first) return h('section', {class: 'mvx mvx-quiet', 'aria-label': '저녁 7시 들고 남', 'data-state': 'first'}, head(`${korDate(mv.to)} 종가 · 처음 기록(${at(mv.at)})`),
     h('p', {class: 'mvx-note'}, '처음 기록이라 견줄 앞 기록이 없습니다 · 다음 거래일 19:00 기록부터 들고 난 업종·회사를 적습니다'));
   return h('section', {class: 'mvx', 'aria-label': '저녁 7시 들고 남', 'data-state': 'moves'}, head(`${korDate(mv.from)} 종가 → ${korDate(mv.to)} 종가 · ${at(mv.at)} 기록`),

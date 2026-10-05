@@ -27,15 +27,19 @@ export async function renderIndustry(main, {hash, manifest}) {
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const industries = [...new Set(cs.map(c => c.sector).filter(Boolean))], ksics = [...new Set(cs.map(c => c.ksic).filter(Boolean))], sc = sparkScale(cs), fday = cs.map(c => c.brief?.flows?.to).filter(Boolean).sort().at(-1) ?? null;
-  state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}${board.groups.length}칸 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.`;
+  // 「73칸 가운데」 → 「업종 73개 가운데」(2026-10-05 15:24 「잡스가 … 36가지」 C2 — 탭 「업종」 제목 「업종 73개」와 같은 말)
+  state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
     back,
     h('header', {class: 'b-head'},
-      h('p', {class: 'i-rank'}, `${board.groups.length}칸 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null),
+      h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
-      h('p', {class: 'i-src muted small'}, `${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)} 15:30 종가까지 · ` : ''}${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`)),
+      //   2026-10-05 15:24 「잡스가 … 36가지」 A4: 출처 이름 두세 줄은 접어 두고 기간 한 줄만 — 「누가 끌었나」가 첫 화면에
+      g.from && g.to ? h('p', {class: 'i-src muted small'}, `${korDate(g.from)}부터 ${korDate(g.to)} 15:30 종가까지`) : null,
+      h('details', {class: 'i-names'}, h('summary', null, '업종 이름 출처'),
+        h('p', {class: 'muted small'}, `${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`))),
     h('section', {class: 't-sec', 'aria-label': '누가 끌었나'},
       h('h2', {class: 't-h2'}, '누가 끌었나'),
       h('p', {class: 't-sub'}, `${cs.length}곳의 지난 20거래일 변화 · 가운데 줄이 0% · 오른쪽 빨강은 오름, 왼쪽 파랑은 내림`),

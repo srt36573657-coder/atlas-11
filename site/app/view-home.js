@@ -25,7 +25,8 @@ export const kindsLine = (k, n) => [`업종 ${n}개`, `우량주 ${k.quality ?? 
 export const upLine = g => g.measured ? (g.up === g.measured ? `${g.measured}곳 모두 오름` : g.up === 0 ? '오른 곳 없음' : `${g.measured}곳 중 ${g.up}곳 오름`) : '변화 없음';
 /** 결론 한 문장 — 업종 몇 개가 올랐나(지난 20거래일 평균이 0 보다 큰 업종) */
 export const headLine = (groups, n, from, to) => `업종 ${groups.length}개 가운데 ${groups.filter(g => finite(g.change20) && g.change20 > 0).length}개 오름 · ${n}곳 · 지난 20거래일 · ${span(from, to)}`;
-const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late'}, `${c.name}: ${c.date ? korDate(c.date) + ' 종가' : '종가 없음'} · ${korDate(board.asOf)} 종가는 아직 받지 못함`));
+/** 늦은 종가 한 줄 — 2026-10-05 15:24 「잡스가 … 36가지」 A5: 굵은 주황 두 줄 → 작고 조용한 한 줄(알리되 소리치지 않게 · 글은 그대로 정직하게) */
+const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late'}, `${c.name}: ${c.date ? korDate(c.date) + ' 종가' : '종가 없음'} · ${korDate(board.asOf)} 종가 아직 못 받음`));
 
 /* ───────── 탭 「불장」(#/) — 불장 업종만 · 같은 큰 갈래끼리 한 장 ───────── */
 
@@ -98,14 +99,19 @@ function familyFilter(groups, grid, note) {
     ...fams.map(f => ({id: f.fam.id, label: f.fam.label, n: f.groups.length, up: ups(f.groups), avg: f.avg}))]
     .map(x => h('button', {class: 'fm-b', type: 'button', 'data-family': x.id, 'aria-pressed': 'false', 'aria-label': `${x.label} · 업종 ${x.n}개 가운데 ${x.up}개 오름${x.avg == null ? '' : ` · 갈래 평균 ${pct(x.avg, 1)}`}`, onclick: () => { pick = x.id; prefs.set('mapFamily', pick); apply(); }},
       h('span', {class: 'fm-l'}, x.label), h('small', {class: 'fm-n' + (x.avg == null ? '' : ' ' + (signCls(x.avg) || 'flat'))}, x.avg == null ? `${x.n}개` : (finite(x.avg) ? pct(x.avg, 1) : '없음'))));
+  // 2026-10-05 15:24 「잡스가 … 36가지」 A3: 휴대폰에서는 갈래 단추 12개를 옆으로 미는 한 줄로(여섯 줄 → 한 줄 · 73칸이 첫 화면에) — 넓은 화면은 그대로 여러 줄
+  const row = h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기', 'data-scroll': 'x'}, ...btns);
+  /** 고른 단추를 줄 가운데로(화면은 위아래로 움직이지 않게 줄만 옆으로) */
+  const center = () => { const b = row.querySelector('[aria-pressed="true"]'); if (b && row.scrollWidth > row.clientWidth + 1) row.scrollLeft = Math.max(0, b.offsetLeft - row.offsetLeft - (row.clientWidth - b.offsetWidth) / 2); };
   function apply() {
     for (const b of btns) b.setAttribute('aria-pressed', String(b.dataset.family === pick));
     let shown = 0; for (const t of grid.children) { const on = pick === 'all' || t.dataset.family === pick; t.hidden = !on; if (on) shown++; }
     const f = fams.find(x => x.fam.id === pick);
     note.textContent = pick === 'all' ? `모두 · 업종 ${groups.length}개` : `${f?.fam.label ?? ''} · 업종 ${shown}개만 보는 중 · 「모두」를 누르면 ${groups.length}개`;
+    requestAnimationFrame(center);
   }
   apply();
-  return h('div', {class: 'fm-box'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래 · 지난 20거래일 갈래 평균이 큰 순'), h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기'}, ...btns));
+  return h('div', {class: 'fm-box'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래 · 지난 20거래일 갈래 평균이 큰 순'), row);
 }
 
 export async function renderMap(main, {manifest}) {

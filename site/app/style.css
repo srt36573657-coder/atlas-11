@@ -555,3 +555,27 @@ html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-
 .f-spk-go .sun { width: 1.7em; height: 1.7em; }
 .f-spk-go:active { transform: scale(.98); }
 .f-spk-go:focus-visible { outline: 3px solid var(--geum); outline-offset: 3px; }
+/* 2026-10-05 15:24 사장님 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」 — 1묶음(바로 줄일 것)
+   A3 업종 탭 큰 갈래 단추: 휴대폰(폭 640px 아래)에서는 옆으로 미는 한 줄(여섯 줄 → 한 줄 · 끝 단추가 반쯤 보여 더 있다는 것을 알림) · 넓은 화면은 여러 줄 그대로 */
+@media (max-width: 640px) {
+  .fm-row { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px 6px; scroll-padding: 0 16px; }
+  .fm-row::-webkit-scrollbar { display: none; }
+  .fm-b { flex: none; scroll-snap-align: start; white-space: nowrap; }
+}
+/* A5 늦은 종가: 작고 조용한 한 줄(굵은 주황 두 줄 → 보통 굵기 작은 글 · 색은 그대로라 대비도 그대로) */
+.b-late { font-size: .8125rem; font-weight: 500; line-height: 1.4; }
+/* A6 저녁 7시 들고 남 — 기록이 없을 때는 한 줄(제목 · 설명을 작은 글로) */
+.mvx-none .mvx-h { font-size: .875rem; gap: 0 8px; }
+.mvx-none .mvx-when { font-size: .8125rem; }
+/* A4 업종 화면 업종 이름 출처(접힘) */
+.i-names { margin: 4px 0 0; }
+.i-names summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; list-style: none; font-size: .875rem; font-weight: 700; color: var(--sub); }
+.i-names summary::-webkit-details-marker { display: none; }
+.i-names summary::before { content: '▸'; } .i-names[open] > summary::before { content: '▾'; }
+.i-names p { margin: 2px 0 0; line-height: 1.5; }
+/* D1 · D2 일정 공시 목록 접기(앞 10건만 펼침) */
+.ag-fold { margin: 6px 0 0; }
+.ag-fold > summary { display: flex; align-items: center; gap: 6px; min-height: 44px; cursor: pointer; list-style: none; font-weight: 700; color: var(--ink); }
+.ag-fold > summary::-webkit-details-marker { display: none; }
+.ag-fold > summary::before { content: '▸'; color: var(--sub); } .ag-fold[open] > summary::before { content: '▾'; }
+.ag-fold > summary small { font-weight: 500; color: var(--sub); }
