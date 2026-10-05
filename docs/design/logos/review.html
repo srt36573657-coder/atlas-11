@@ -1,0 +1,8 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="icon" href="data:,"><link rel="stylesheet" href="../app/fonts.css">
+<style>body{margin:0;background:#888;font-family:'Gowun Batang',serif}.row{display:flex;gap:6px;align-items:center;padding:6px;border-bottom:1px solid #666}.t{width:120px;font-size:13px;color:#fff}.l{background:#F8FBF7;padding:6px;border-radius:8px}.d{background:#13261F;padding:6px;border-radius:8px}.i{background:#1B3B32;border-radius:14px;width:64px;height:64px;display:grid;place-items:center}.s{display:flex;gap:4px;align-items:center;background:#13261F;padding:6px;border-radius:6px}</style></head>
+<body><div id="r"></div><script src="marks.js"></script><script>
+const {MARKS, NOW, svg} = window.LOGO; const r = document.getElementById('r');
+for (const m of [...MARKS, NOW]) { const d = document.createElement('div'); d.className = 'row';
+  d.innerHTML = `<div class="t">${m.name}</div><div class="l">${svg(m,'light',120)}</div><div class="d">${svg(m,'dark',120)}</div><div class="i">${svg(m,'icon',46)}</div><div class="s">${svg(m,'dark',32)}${svg(m,'dark',20)}${svg(m,'dark',16)}</div><div class="l">${svg(m,'light',16)}</div>`; r.append(d); }
+document.fonts.ready.then(()=>{window.READY=true;});
+</script></body></html>
