@@ -21,7 +21,7 @@ import {renderHome, renderMap} from './view-home.js';
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
-import {renderRoad, resetRoad, openSun} from './view-road.js';
+import {renderRoad, resetRoad, openSun, openAt, openGroup} from './view-road.js';
 import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
 
@@ -91,8 +91,9 @@ async function route() {
   let hash = location.hash;
   if (hash === '#main') { document.getElementById('main')?.focus(); return; } // 「본문으로 건너뛰기」는 화면을 바꾸지 않는다
   // 「태양 모아 보기 ›」(#/road/sun · 2026-10-05 15:24 「잡스가 … 36가지」 B5 · E) — 어느 화면에서든 출목표 묶는 법 「태양」 맨 위로 · 주소 줄은 #/road 로
-  const toSun = hash === '#/road/sun';
-  if (toSun) { openSun(); hash = '#/road'; history.replaceState(null, '', location.pathname + location.search + '#/road'); }
+  //   #/road/at/CODE = 회사 화면 「오른 순 n위 · 출목표 자리 ›」 · #/road/g/GROUP = 업종 화면 「출목표에서 … 보기 ›」(그 칸 · 그 업종 묶음으로)
+  const at = hash.match(/^#\/road\/at\/(\d{6})$/)?.[1], grp = hash.match(/^#\/road\/g\/([a-z0-9]+)$/)?.[1], toSun = hash === '#/road/sun' || !!at || !!grp;
+  if (toSun) { if (at) openAt(at); else if (grp) openGroup(grp); else openSun(); hash = '#/road'; history.replaceState(null, '', location.pathname + location.search + '#/road'); }
   let r = routes.find(x => x.match.test(hash));
   // 지운 화면의 옛 주소 → 처음 화면(주소 줄도 「#/」로 바꿔 둔다)
   if (!r) { r = routes[0]; hash = '#/'; history.replaceState(null, '', location.pathname + location.search + '#/'); }

@@ -38,7 +38,7 @@
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon, sunTag} from './parts.js';
 import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {SHAPES, SHAPE_PICS, sunOf} from './shapes.js';
@@ -115,6 +115,33 @@ function sparkleBox(shp, gather, {to, keyText}) {
       h('p', null, `${korDate(to)} 종가까지 지난 20거래일 출목표 모양을 견준 것일 뿐 앞날을 맞히지 않습니다`)));
 }
 
+/** 돋보기 그림 */
+const findIcon = () => sv('svg', {class: 'f-find-ic', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, sv('circle', {cx: 10.5, cy: 10.5, r: 6.5}), sv('path', {d: 'M15.4 15.4 20.5 20.5'}));
+/** 회사 이름 찾기(2026-10-05 15:24 「잡스가 … 36가지」 E1) — 365곳 가운데 이름(또는 종목 코드)으로 · 맞는 회사 8곳까지 바로 아래에 · 누르면 회사 화면
+   제목 줄 오른쪽 「찾기」 단추를 눌러야 열림 — 닫혀 있으면 첫 화면을 차지하지 않는다 · 이름이 그 글자로 시작하는 회사가 앞 · 그다음은 오른 순 */
+function findBox(ranked, shp) {
+  const N = ranked.length, norm = t => String(t ?? '').replace(/\s+/g, '').toLowerCase();
+  const input = h('input', {class: 'f-find-in', id: 'f-find-in', type: 'search', placeholder: `회사 이름 · ${N}곳`, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'go', 'aria-describedby': 'f-find-msg'});
+  const msg = h('p', {class: 'f-find-msg small', id: 'f-find-msg', role: 'status', 'aria-live': 'polite'}), list = h('ul', {class: 'f-find-list'});
+  let hits = [];
+  const show = () => {
+    const q = norm(input.value);
+    if (!q) { hits = []; list.replaceChildren(); msg.textContent = ''; return; }
+    hits = ranked.map((x, i) => ({x, i})).filter(({x}) => norm(x.c.name).includes(q) || x.c.code.startsWith(q))
+      .sort((a, b) => (norm(b.x.c.name).startsWith(q) - norm(a.x.c.name).startsWith(q)) || a.i - b.i);
+    list.replaceChildren(...hits.slice(0, 8).map(({x, i}) => h('li', null, h('a', {class: 'f-find-hit', href: '#/stock/' + x.c.code, 'data-code': x.c.code},
+      h('span', {class: 'f-find-n'}, x.c.name, sunTag(shp.sparkle.has(x.c.code))),
+      h('small', {class: 'f-find-s'}, `오른 순 ${i + 1}위 · ${finite(x.c.change20) ? pct(x.c.change20, 1) : '없음'}${x.g ? ' · ' + x.g.label : ''}`)))));
+    msg.textContent = !hits.length ? `「${input.value.trim()}」 이름의 회사가 ${N}곳 안에 없습니다` : hits.length > 8 ? `${hits.length}곳 가운데 8곳 · 글자를 더 넣으면 좁혀짐` : `${hits.length}곳`;
+  };
+  input.addEventListener('input', show);
+  const form = h('form', {class: 'f-find', id: 'f-find', role: 'search', 'aria-label': `회사 이름 찾기 · ${N}곳`, hidden: true, onsubmit: e => { e.preventDefault(); show(); if (hits[0]) location.hash = '#/stock/' + hits[0].x.c.code; }},
+    h('label', {class: 'sr-only', for: 'f-find-in'}, '회사 이름 찾기'), input, msg, list);
+  const btn = h('button', {class: 'f-find-b', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'f-find', onclick: () => {
+    const open = form.hidden; form.hidden = !open; btn.setAttribute('aria-expanded', String(open)); if (open) input.focus(); }}, findIcon(), ' 찾기');
+  return {btn, form};
+}
+
 /** 출목표 안의 탭 — 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(2026-10-05 12:28) */
 export const MORE_STEP = 20, PAGE_MAX = 45;
 const tabKey = m => 'roadTab:' + m;
@@ -124,6 +151,12 @@ const shownMemo = new Map();
 export function resetRoad() { prefs.set(ROAD_VIEW_KEY, 'rise'); for (const m of ROAD_MODES) prefs.set(tabKey(m.id), null); shownMemo.clear(); }
 /** 다른 화면의 「태양 모아 보기 ›」(#/road/sun → app.js) — 묶는 법 「태양」 맨 위로(2026-10-05 15:24 「잡스가 … 36가지」 B5 · E) */
 export function openSun() { prefs.set(ROAD_VIEW_KEY, 'sun'); prefs.set(tabKey('sun'), null); shownMemo.clear(); }
+/** 다른 화면에서 출목표의 그 자리로(「잡스가 … 36가지」 E3 · E5) — 그린 뒤 그 칸(또는 업종 묶음)으로 내려가 잠깐 테를 두름 */
+let pending = null;
+/** #/road/at/CODE — 회사 화면 「오른 순 n위 · 출목표 자리 ›」: 묶는 법 「오른 순」 · 그 회사가 든 탭 · 그 칸 */
+export function openAt(code) { prefs.set(ROAD_VIEW_KEY, 'rise'); shownMemo.clear(); pending = {code}; }
+/** #/road/g/GROUP — 업종 화면 「출목표에서 보기 ›」: 묶는 법 「업종별」 · 그 업종이 든 큰 갈래 탭 · 그 업종 묶음 */
+export function openGroup(id) { prefs.set(ROAD_VIEW_KEY, 'ind'); shownMemo.clear(); pending = {group: id}; }
 /** 탭 줄에 쓰는 흐름 이름(「20거래일 내내 거의 안 움직임」은 탭에서 짧게) */
 const flowChip = key => key === 'still' ? '거의 안 움직임' : flowText(key);
 
@@ -192,6 +225,11 @@ export async function renderRoad(main, {manifest} = {}) {
     flow: ts => `흐름 탭 ${ts.length}가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 ${before}거래일 → 끝 ${recent}거래일의 오른 날·내린 날 동그라미 수로 나눔`,
     sun: () => `태양 ${shp.sparkle.size}곳만 한곳에 · 지난 20거래일 많이 오른 차례`};
 
+  // 다른 화면에서 「그 자리」로 왔으면(openAt · openGroup) 그 회사 · 업종이 든 탭을 고른다
+  if (pending?.code) { const i = ranked.findIndex(x => x.c.code === pending.code); if (i >= 0) prefs.set(tabKey('rise'), 'r' + (Math.floor(i / RISE_CHUNK) * RISE_CHUNK + 1)); else pending = null; }
+  if (pending?.group) { const g = groupOf.get(pending.group), t = g && TABS.ind.find(x => x.id === familyOf(g.label).id), f = t && fams.find(x => x.fam.id === t.id);
+    if (t && f) { const k = f.groups.findIndex(x => x.id === g.id), upto = f.groups.slice(0, k + 1).reduce((a, x) => a + x.codes.length, 0); prefs.set(tabKey('ind'), t.id); shownMemo.set('ind:' + t.id, Math.max(MORE_STEP, upto)); } // 그 업종 묶음까지 펼쳐 둔다
+    else pending = null; }
   let view = prefs.get(ROAD_VIEW_KEY, 'rise'); if (!TABS[view]) view = 'rise';
   const tabOf = m => { const id = prefs.get(tabKey(m), null), ts = TABS[m]; return ts.find(t => t.id === id) ?? ts[0]; };
   let cur = tabOf(view), shown = 0;
@@ -259,15 +297,19 @@ export async function renderRoad(main, {manifest} = {}) {
     for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
     hint.textContent = HINT[view](TABS[view]); drawTabs(); strip.hidden = TABS[view].length < 2; drawPage(); centerTab();
   }
+  const find = findBox(ranked, shp);
   const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: KEY_TEXT});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), // 개수는 제목 곁 작은 글(규칙 2 · 불장 · 업종 탭과 같은 모양)
+      h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), find.btn), // 개수는 제목 곁 작은 글(규칙 2) · 오른쪽 「찾기」(E1)
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
       spkBox ? null : h('p', {class: 'f-key muted small'}, KEY_TEXT), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
-      ctxNote(board.companies)),
+      ctxNote(board.companies), find.form),
     spkBox,
     segBox, hint, strip, body,
     foot(manifest ?? state.manifest)));
   draw(); // 한 탭은 많아야 45곳이라 한꺼번에 그린다 — 되돌아올 때는 app.js 가 보던 자리로
+  if (pending) { const want = pending; pending = null;
+    requestAnimationFrame(() => { const el = want.code ? body.querySelector(`.f-tile[data-code="${want.code}"]`) : body.querySelector(`#f-${want.group}`); if (!el) return;
+      el.scrollIntoView({block: want.code ? 'center' : 'start'}); el.classList.add('f-hit'); if (want.code) el.focus({preventScroll: true}); setTimeout(() => el.classList.remove('f-hit'), 2600); }); }
 }
