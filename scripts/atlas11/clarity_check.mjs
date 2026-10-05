@@ -28,6 +28,7 @@ export const SCREENS = [
   // 2026-10-05 12:28 「그 안에 탭을 더」: 묶는 법마다 첫 탭을 잰다(탭끼리 칸 모양은 같고 검사기 browser_check 가 탭을 모두 눌러 셈)
   {id: 'road', name: '출목표(오른 순)', hash: '#/road', wait: '.f-body[data-mode="rise"][data-ready] .f-tile'},
   {id: 'road-ind', name: '출목표(업종별)', hash: '#/road', wait: '.f-body[data-ready] .f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="ind"]').click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); }},
+  {id: 'road-sun', name: '출목표(태양)', hash: '#/road', wait: '.f-body[data-ready] .f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="sun"]').click(); await page.waitForSelector('.f-body[data-mode="sun"][data-ready] .f-tile'); }}, // 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」
   {id: 'road-flow', name: '출목표(흐름별)', hash: '#/road', wait: '.f-body[data-ready] .f-tile', settle: async page => { await page.locator('.f-seg-b[data-mode="flow"]').click(); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); }},
   // 2026-10-05 05:07 「해」: 탭 다섯 — 「예비」(불장 닮은 7곳 · 저녁 7시 들고 남) · 「22곳」(불장 밖에서 오름 상위)
   {id: 'similar', name: '예비', hash: '#/similar', wait: '.sm-row, .s-page .b-note'},
