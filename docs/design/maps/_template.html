@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 N</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 이 샘플만의 모양은 여기에 */
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  // ① 지도 그리기 — document.getElementById('map') 안에 SVG 를 넣는다(폭 392 안쪽)
+  // ② L.fill({num, title, sub, question, legend, reads, foot, why}) — 글자는 모두 data.js 에서 셈한 값으로
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

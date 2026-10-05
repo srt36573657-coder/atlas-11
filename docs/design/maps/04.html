@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 4</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 04 지하철 노선도 — 노선 색은 이름 구별용(빨강 · 파랑은 오름 · 내림에만 남겨 둠)
+   여덟 빛: 먹(AI·반도체) · 초록(2차전지) · 청회색(전력) · 갈색(기계) · 보라(K-콘텐츠) · 올리브(조선·방산) · 금빛(플랫폼) · 청록(바이오)
+   나란히 · 위아래로 붙는 노선끼리 색맹 모사(ΔE ≥ 8)와 보통 눈(ΔE ≥ 15)에서 갈리는지, 이름표 글자 대비(≥ 4.5)를 밝은 · 어두운 화면 따로 셈으로 확인 */
+:root {
+  --ln-ai-chip: #34433D; --ln-battery: #2E9B52; --ln-power: #627387; --ln-machine-robot: #8B5D38;
+  --ln-k-culture: #7357C8; --ln-ship-defense: #5F7D16; --ln-platform: #AF8B1C; --ln-bio: #137D8E;
+  --ring: #FFFFFF; --cap-edge: #17302A; --tag-bg: #17302A; --tag-ink: #F8FBF7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ln-ai-chip: #AAB4AF; --ln-battery: #3AAB66; --ln-power: #7F8EA0; --ln-machine-robot: #936238;
+    --ln-k-culture: #967FE2; --ln-ship-defense: #87A22E; --ln-platform: #CBA733; --ln-bio: #24ADB2;
+    --ring: #E8F1EB; --cap-edge: #0D1714; --tag-bg: #E8F1EB; --tag-ink: #0D1714;
+  }
+}
+.sh-map svg text { font-family: var(--font); }
+.mp-note { margin: 6px 4px 1px; font-size: 13px; line-height: 1.4; color: var(--sub); }
+.sh-legend .lg > span { text-wrap: balance; }
+.sh-read li > span, .sh-why, .sh-foot p { text-wrap: pretty; }
+.nb { white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const map = document.getElementById('map');
+  // 크기 약속(px) — 역 이름 14 · 오르내림 13 · 노선 이름표 13 · 환승 꼬리표 11
+  const NS = 14, PS = 13, TS = 13, GS = 11;
+  const S = 35, PILL_H = 22, PILL_GAP = 16, G = 18, R = 6.5, RING = 2.5, LW = 6.5, LDX = 13, PAIR = 12, RAD = 12, MAX = 0.3;
+  const pctTxt = v => `${L.tri(v)} ${L.pct(v)}`;
+  const n20 = K.dates20.length - 1;
+
+  // ① 노선(시대 흐름) · 역(업종) 셈 — 역 = 그 흐름 회사가 1곳이라도 든 업종 · 노선 위 순서 = 지난 20거래일 많이 오른 순
+  const themed = K.companies.filter(c => c.theme);
+  const lines = K.themes.map(t => {
+    const ids = [...new Set(themed.filter(c => c.theme === t.id).map(c => c.group))];
+    const st = ids.map(id => K.groupOf(id)).filter(Boolean)
+      .sort((a, b) => b.change20 - a.change20 || a.label.localeCompare(b.label, 'ko'));
+    return {id: t.id, label: t.label, st, mean: L.mean(st.map(g => g.change20)),
+      up: st.filter(g => g.change20 > 0).length, down: st.filter(g => g.change20 < 0).length,
+      color: L.tok('--ln-' + t.id) || L.tok('--sub')};
+  }).filter(l => l.st.length);
+  const byId = new Map(lines.map(l => [l.id, l]));
+  const linesOf = new Map();
+  for (const l of lines) for (const g of l.st) { if (!linesOf.has(g.id)) linesOf.set(g.id, []); linesOf.get(g.id).push(l); }
+  const stations = [...linesOf.keys()].map(id => K.groupOf(id));
+  const transfers = stations.filter(g => linesOf.get(g.id).length > 1);
+  const offLine = K.groups.filter(g => !linesOf.has(g.id));
+
+  // ② 글자 폭 재기(글꼴을 받은 뒤 실제 폭)
+  const meas = L.sv('svg', {width: 1, height: 1, 'aria-hidden': 'true', style: 'position:absolute;left:0;top:0;visibility:hidden'});
+  map.append(meas);
+  const mq = new Map();
+  const q = (txt, size) => { const k = size + '|' + txt; if (!mq.has(k)) { const t = L.sv('text', {'font-size': size, 'font-weight': 700}, txt); meas.append(t); mq.set(k, t); } };
+  for (const g of stations) { q(g.label, NS); q(pctTxt(g.change20), PS); }
+  for (const l of lines) q(l.label, TS);
+  q('환승', GS);
+  meas.getBBox();
+  await document.fonts.ready;
+  await new Promise(r => requestAnimationFrame(() => r()));
+  await document.fonts.ready;
+  const widths = new Map([...mq].map(([k, t]) => [k, t.getComputedTextLength()]));
+  meas.remove();
+  const tw = (txt, size) => widths.get(size + '|' + txt);
+  const TAG_W = tw('환승', GS) + 10;
+  const isT = g => transfers.includes(g);
+  const nameW = g => tw(g.label, NS) + (isT(g) ? 5 + TAG_W : 0);
+  const labW = g => Math.max(nameW(g), tw(pctTxt(g.change20), PS));
+
+  // ③ 자리 잡기 — 세 줄기(왼 · 가운데 · 오른). 노선마다 한 줄기에 위에서 아래로 쌓고, 환승역을 나누는 두 노선은 이웃 줄기에 둔다
+  const cs = getComputedStyle(map);
+  const W = Math.floor(map.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  // 세로줄 나눔(이름 폭 · 이름표 폭에 맞춰 정함) — 한 세로줄 안에서는 역 평균이 높은 노선을 위에, 환승 노선은 맨 아래
+  const PLAN = [['ai-chip', 'machine-robot', 'platform'], ['battery', 'k-culture'], ['power', 'ship-defense', 'bio']];
+  const lanes = PLAN.map(ids => ids.map(id => byId.get(id)).filter(Boolean));
+  for (const l of lines) if (!lanes.some(ln => ln.includes(l))) lanes[1].push(l);
+  const inT = l => l.st.some(isT);
+  for (const ln of lanes) ln.sort((a, b) => (inT(a) - inT(b)) || b.mean - a.mean);
+  // 줄기 폭 = 그 줄기에 실제로 이름이 놓이는 역의 가장 긴 이름(환승역 이름은 오른 줄기 쪽에 놓이므로 가운데 줄기 폭에서 뺌)
+  const maxW = lanes.map((ln, li) => Math.max(0, ...ln.flatMap(l => l.st.filter(g => !(li === 1 && isT(g))).map(labW))));
+  const X = [12, 0, 0];
+  X[2] = Math.floor(W - 3 - maxW[2] - LDX);
+  { const lo = X[0] + LDX + maxW[0] + 10 + LW / 2, hi = X[2] - LDX - maxW[1] - 10 - LW / 2; X[1] = Math.round((lo + hi) / 2); }
+
+  const TOP = 2;
+  const geo = new Map();
+  const straight = (l, x, top) => {
+    const y0 = top + PILL_H + PILL_GAP;
+    const st = l.st.map((g, i) => ({g, x, y: y0 + i * S, l}));
+    return {l, x, top, st, pts: [[x, top + PILL_H / 2], [x, st.at(-1).y]], bottom: st.at(-1).y + 23};
+  };
+  const stack = (li, from = TOP) => { let top = from; for (const l of lanes[li]) { if (geo.has(l.id) && geo.get(l.id).jog) continue; const g = straight(l, X[li], top); geo.set(l.id, g); top = g.bottom + G; } };
+  stack(0); stack(2);
+
+  // 환승: 가운데 줄기 노선이 45° 로 꺾여 오른 줄기 노선 곁으로 가서 한 역을 나눈 뒤 다시 갈라진다
+  const T = transfers[0];
+  let jl = null, sl = null;
+  if (T) {
+    const two = linesOf.get(T.id);
+    const laneOf = l => lanes.findIndex(ln => ln.includes(l));
+    [jl, sl] = two.slice(0, 2).sort((a, b) => laneOf(a) - laneOf(b));
+    if (laneOf(jl) !== 1 || laneOf(sl) !== 2) { jl = sl = null; }
+  }
+  const stub1 = 26, stub2 = 16, stub3 = 12, dx2 = 24, stub4 = 8;
+  const placeMiddle = () => {
+    let top = TOP;
+    for (const l of lanes[1]) {
+      if (l !== jl) { const g = straight(l, X[1], top); geo.set(l.id, g); top = g.bottom + G; continue; }
+      const sGeo = geo.get(sl.id), yT = sGeo.st.find(s => s.g === T).y, xS = sGeo.x, xJ = xS - PAIR;
+      const iT = jl.st.indexOf(T), dx = xJ - X[1];
+      const yBefore = yT - stub2 - dx - stub1;
+      const st = jl.st.map((g, i) => i < iT ? {g, x: X[1], y: yBefore - (iT - 1 - i) * S, l}
+        : i === iT ? {g, x: xJ, y: yT, l, transfer: true}
+        : {g, x: xJ - dx2, y: yT + stub3 + dx2 + stub4 + (i - iT - 1) * S, l});
+      const jtop = st[0].y - PILL_GAP - PILL_H;
+      const need = top - jtop;
+      if (need > 0) return need; // 위 노선과 겹침 → 오른 줄기를 그만큼 내린 뒤 다시
+      const pts = [[X[1], jtop + PILL_H / 2], [X[1], yBefore + stub1], [xJ, yBefore + stub1 + dx], [xJ, yT + stub3]];
+      if (iT < jl.st.length - 1) pts.push([xJ - dx2, yT + stub3 + dx2], [xJ - dx2, st.at(-1).y]);
+      geo.set(jl.id, {l: jl, x: X[1], top: jtop, st, pts, bottom: st.at(-1).y + 23, jog: true, xS, xJ, yT});
+      top = st.at(-1).y + 23 + G;
+    }
+    return 0;
+  };
+  if (jl) {
+    const need = placeMiddle();
+    if (need > 0) { // 오른 줄기에서 환승 노선(과 그 아래)을 need 만큼 내리고 가운데를 다시 놓음
+      const sIdx = lanes[2].indexOf(sl); let top = TOP;
+      for (const [i, l] of lanes[2].entries()) { const g = straight(l, X[2], top + (i === sIdx ? need : 0)); geo.set(l.id, g); top = g.bottom + G; }
+      placeMiddle();
+    }
+  } else {
+    stack(1);
+  }
+
+  // ④ 겹침 검사 도구
+  const segs = [];
+  for (const g of geo.values()) for (let i = 1; i < g.pts.length; i++) segs.push({l: g.l, a: g.pts[i - 1], b: g.pts[i]});
+  const hitSeg = (box, s, pad = LW / 2 + 2) => { const [ax, ay] = s.a, [bx, by] = s.b; const n = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 2)); for (let k = 0; k <= n; k++) { const x = ax + (bx - ax) * k / n, y = ay + (by - ay) * k / n; if (x > box[0] - pad && x < box[2] + pad && y > box[1] - pad && y < box[3] + pad) return true; } return false; };
+  const hitBox = (a, b, pad = 2) => a[0] < b[2] + pad && b[0] < a[2] + pad && a[1] < b[3] + pad && b[1] < a[3] + pad;
+  const H0 = Math.max(...[...geo.values()].map(g => g.bottom)) + 2;
+  const outside = box => box[0] < 0 || box[2] > W || box[1] < 0 || box[3] > H0;
+
+  // ⑤ 역 이름 자리(오른쪽 먼저 · 막히면 왼쪽)
+  const allSt = [];
+  for (const g of geo.values()) for (const s of g.st) if (!(s.transfer && jl && g.l === jl)) allSt.push(s);
+  const labels = [];
+  for (const s of allSt) {
+    const w = labW(s.g), tr = isT(s.g);
+    const rx = tr && jl ? geo.get(jl.id).xS + 9 + 6 : s.x + LDX;
+    const right = {side: 'R', x: rx, box: [rx - 2, s.y - 9, rx + w + 2, s.y + 23]};
+    const left = {side: 'L', x: s.x - LDX, box: [s.x - LDX - w - 2, s.y - 9, s.x - LDX + 2, s.y + 23]};
+    const ok = c => !outside(c.box) && !segs.some(sg => hitSeg(c.box, sg)) && !labels.some(o => hitBox(o.box, c.box));
+    const pick = [right, left].find(ok) || right;
+    labels.push({s, ...pick, w, bad: !ok(pick)});
+  }
+
+  // ⑥ 노선 이름표(출발역 위) — 줄의 왼쪽 끝에서 시작, 막히면 왼쪽으로 조금씩 옮김
+  const pills = [];
+  for (const g of geo.values()) {
+    const w = Math.ceil(tw(g.l.label, TS) + 13), y = g.top;
+    const cands = [];
+    for (let d = 0; d <= w - 18; d += 2) cands.push(g.x - 9 - d);
+    let best = null;
+    for (let x0 of cands) {
+      x0 = Math.max(1, Math.min(W - 1 - w, x0));
+      const box = [x0, y, x0 + w, y + PILL_H];
+      const bad = labels.some(o => hitBox(o.box, box, 3)) || pills.some(p => hitBox(p.box, box, 4)) ||
+        segs.some(sg => sg.l !== g.l && hitSeg(box, sg, LW / 2 + 3));
+      if (!bad) { best = {g, box, x0, w}; break; }
+    }
+    if (!best) { const x0 = Math.max(1, g.x - 9); best = {g, box: [x0, y, x0 + w, y + PILL_H], x0, w, bad: true}; }
+    pills.push(best);
+  }
+
+  // ⑦ 그리기
+  const H = Math.ceil(H0);
+  const svg = L.sv('svg', {id: 'metro', viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img',
+    'aria-label': `지하철 노선도 모양 지도 — 노선 ${lines.length}개 · 역 ${stations.length}개`});
+  const roundPath = (pts, r) => {
+    let d = `M${pts[0][0]},${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+      const l1 = Math.hypot(x1 - x0, y1 - y0), l2 = Math.hypot(x2 - x1, y2 - y1), rr = Math.min(r, l1 / 2, l2 / 2);
+      const ax = x1 - (x1 - x0) / l1 * rr, ay = y1 - (y1 - y0) / l1 * rr, bx = x1 + (x2 - x1) / l2 * rr, by = y1 + (y2 - y1) / l2 * rr;
+      d += ` L${ax.toFixed(1)},${ay.toFixed(1)} Q${x1},${y1} ${bx.toFixed(1)},${by.toFixed(1)}`;
+    }
+    const [xe, ye] = pts.at(-1);
+    return d + ` L${xe},${ye}`;
+  };
+  const gLines = L.sv('g', {fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round'});
+  for (const g of geo.values()) gLines.append(L.sv('path', {d: roundPath(g.pts, RAD), stroke: g.l.color, 'stroke-width': LW}));
+  svg.append(gLines);
+
+  // 이름표 글자색: 노선 색 위에서 더 잘 읽히는 쪽(밝은 글자 · 어두운 글자 대비를 셈)
+  const lum = hex => { const [r, g, b] = L.rgb(hex).map(x => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+  const cr = (a, b) => { const [h, l] = [lum(a), lum(b)].sort((x, y) => y - x); return (h + 0.05) / (l + 0.05); };
+  const bestInk = hex => { const d = L.tok('--map-ink-dark'), li = L.tok('--map-ink-light'); return cr(hex, li) >= cr(hex, d) ? li : d; };
+  const gPills = L.sv('g');
+  for (const p of pills) {
+    gPills.append(L.sv('rect', {x: p.x0, y: p.box[1], width: p.w, height: PILL_H, rx: PILL_H / 2, fill: p.g.l.color}));
+    gPills.append(L.sv('text', {x: p.x0 + p.w / 2, y: p.box[1] + 15.5, 'text-anchor': 'middle', 'font-size': TS, 'font-weight': 700, fill: bestInk(p.g.l.color)}, p.g.l.label));
+  }
+  svg.append(gPills);
+
+  const gSt = L.sv('g');
+  for (const s of allSt) {
+    if (isT(s.g) && jl) {
+      const J = geo.get(jl.id);
+      gSt.append(L.sv('rect', {x: J.xJ - 9.5, y: J.yT - 9.5, width: J.xS - J.xJ + 19, height: 19, rx: 9.5, fill: 'var(--ring)', stroke: 'var(--cap-edge)', 'stroke-width': 1.6}));
+      for (const x of [J.xJ, J.xS]) gSt.append(L.sv('circle', {cx: x, cy: J.yT, r: 4.6, fill: L.heat(s.g.change20, MAX)}));
+      continue;
+    }
+    gSt.append(L.sv('circle', {cx: s.x, cy: s.y, r: R, fill: L.heat(s.g.change20, MAX), stroke: 'var(--ring)', 'stroke-width': RING}));
+  }
+  svg.append(gSt);
+
+  const gLab = L.sv('g', {'paint-order': 'stroke', stroke: 'var(--card)', 'stroke-width': 3, 'stroke-linejoin': 'round'});
+  for (const lb of labels) {
+    const s = lb.s, v = s.g.change20, anchor = lb.side === 'R' ? 'start' : 'end';
+    gLab.append(L.sv('text', {x: lb.x, y: s.y + 5, 'text-anchor': anchor, 'font-size': NS, 'font-weight': 700, fill: 'var(--ink)', 'data-k': s.g.id}, s.g.label));
+    gLab.append(L.sv('text', {x: lb.x, y: s.y + 20, 'text-anchor': anchor, 'font-size': PS, 'font-weight': 700, fill: v > 0 ? 'var(--up-ink)' : v < 0 ? 'var(--down-ink)' : 'var(--sub)', 'data-k': s.g.id}, pctTxt(v)));
+    if (isT(s.g)) {
+      const tx = lb.side === 'R' ? lb.x + tw(s.g.label, NS) + 5 : lb.x - tw(s.g.label, NS) - 5 - TAG_W;
+      gLab.append(L.sv('rect', {x: tx, y: s.y - 7.5, width: TAG_W, height: 16, rx: 5, fill: 'var(--tag-bg)', stroke: 'none'}));
+      gLab.append(L.sv('text', {x: tx + TAG_W / 2, y: s.y + 4.5, 'text-anchor': 'middle', 'font-size': GS, 'font-weight': 700, fill: 'var(--tag-ink)', stroke: 'none', 'data-k': s.g.id}, '환승'));
+    }
+  }
+  svg.append(gLab);
+
+  const head = L.el('div', {class: 'sh-maphead'},
+    L.el('span', {html: `<b>노선 ${lines.length}개 · 역 ${stations.length}개</b>`}),
+    L.el('span', null, `${L.korDate(K.place.from)} → ${L.korDate(K.place.asOf)}`));
+  const note = L.el('p', {class: 'mp-note'}, `노선 없는 업종 ${offLine.length}개는 이 지도에 없음`);
+  map.replaceChildren(head, svg, note);
+
+  // 검사 기록(사진 찍을 때 확인용 · 화면에는 안 보임)
+  const issues = [];
+  labels.forEach((a, i) => { if (a.bad) issues.push('label-blocked ' + a.s.g.label); labels.slice(i + 1).forEach(b => { if (hitBox(a.box, b.box, 0)) issues.push('label×label ' + a.s.g.label + ' / ' + b.s.g.label); }); });
+  pills.forEach(p => { if (p.bad) issues.push('pill-blocked ' + p.g.l.label); });
+  window.MAPCHECK = {W, H, X, issues, pills: pills.map(p => [p.g.l.label, Math.round(p.x0), Math.round(p.box[1]), p.w])};
+
+  // ⑧ 범례 · 읽은 것 · 근거
+  const lc = id => byId.get(id)?.color ?? L.tok('--sub');
+  const sw = (...kids) => L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}, ...kids);
+  const lineSw = sw(...[['ai-chip', 6], ['k-culture', 13], ['bio', 20]].map(([id, y]) => L.sv('line', {x1: 5, y1: y, x2: 49, y2: y, stroke: lc(id), 'stroke-width': 4.5, 'stroke-linecap': 'round'})));
+  const stSw = sw(L.sv('line', {x1: 4, y1: 13, x2: 50, y2: 13, stroke: lc('platform'), 'stroke-width': 5, 'stroke-linecap': 'round'}),
+    L.sv('circle', {cx: 27, cy: 13, r: 6, fill: L.heat(0.1, MAX), stroke: 'var(--ring)', 'stroke-width': 2.2}));
+  const startSw = sw(L.sv('line', {x1: 9, y1: 13, x2: 50, y2: 13, stroke: lc('ai-chip'), 'stroke-width': 4.5, 'stroke-linecap': 'round'}),
+    L.sv('rect', {x: 1, y: 6, width: 15, height: 14, rx: 7, fill: lc('ai-chip')}),
+    ...[[26, 0.3], [37, 0.1], [48, 0.01]].map(([x, v]) => L.sv('circle', {cx: x, cy: 13, r: 4.6, fill: L.heat(v, MAX), stroke: 'var(--ring)', 'stroke-width': 1.8})));
+  const trV = T ? T.change20 : -0.09;
+  const trSw = sw(L.sv('line', {x1: 21, y1: 0, x2: 21, y2: 26, stroke: lc('k-culture'), 'stroke-width': 4.5}),
+    L.sv('line', {x1: 32, y1: 0, x2: 32, y2: 26, stroke: lc('bio'), 'stroke-width': 4.5}),
+    L.sv('rect', {x: 13.5, y: 6.5, width: 26, height: 13, rx: 6.5, fill: 'var(--ring)', stroke: 'var(--cap-edge)', 'stroke-width': 1.4}),
+    ...[21, 32].map(x => L.sv('circle', {cx: x, cy: 13, r: 3.4, fill: L.heat(trV, MAX)})));
+
+  const hot = [...lines].sort((a, b) => b.mean - a.mean)[0];
+  const cold = [...lines].sort((a, b) => a.mean - b.mean)[0];
+  const josaWa = w => { const c = w.charCodeAt(w.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? '과' : '와'; };
+  const kNum = n => ({1: '한', 2: '두', 3: '세', 4: '네'})[n] ?? String(n);
+  const pb = v => `<b class="${L.cls(v)} nb">${pctTxt(v)}</b>`;
+  const nm = s => `<b class="nb">${s}</b>`;
+  const hotTxt = hot.up === hot.st.length ? `역 ${hot.st.length}개가 모두 올라` : `역 ${hot.st.length}개 중 ${hot.up}개가 올라`;
+  const coldTxt = cold.down === cold.st.length ? `역 ${cold.st.length}개가 모두 내려` : `역 ${cold.st.length}개 중 ${cold.down}개가 내려`;
+  let read3;
+  if (T) {
+    const two = linesOf.get(T.id);
+    const howMany = transfers.length === 1 ? '한 곳뿐' : `${kNum(transfers.length)} 곳 중 하나`;
+    read3 = `환승역은 ${nm(T.label)} ${pb(T.change20)} ${howMany} — ${nm(two[0].label)}${josaWa(two[0].label)} ${nm(two[1].label)} 노선이 함께 지나는 업종`;
+  } else {
+    read3 = `환승역은 없음 — 역 ${stations.length}개가 모두 한 노선에만 듦`;
+  }
+  const late = themed.filter(c => c.c60last && c.c60last !== K.place.asOf);
+  const counts = [...new Set(stations.map(g => g.count))];
+
+  L.fill({
+    num: 4,
+    title: '지하철 노선도',
+    sub: '노선 = 시대 흐름 · 역 = 업종',
+    question: '이 지도가 답하는 물음: <b>요즘 시대 흐름(노선) 가운데, 어느 노선의 역들이 붉게(올랐나) 켜졌나?</b>',
+    legend: [
+      [lineSw, `<b>노선</b> = 시대 흐름(ATLAS 가 정한 트렌드 묶음) · 노선 색은 구별용`],
+      [stSw, `<b>역</b> = 그 흐름 회사가 있는 업종`],
+      [L.ramp(MAX), `<b>역 색</b> = 지난 ${n20}거래일 — 빨강 오름 · 파랑 내림`],
+      [startSw, `<b>출발역</b>(이름표 쪽)일수록 많이 오른 역`],
+      [trSw, `<b>환승역</b> = 두 흐름에 함께 든 업종`],
+    ],
+    reads: [
+      `가장 붉은 노선은 ${nm(hot.label)} — ${hotTxt} 평균 ${pb(hot.mean)}`,
+      `가장 식은 노선은 ${nm(cold.label)} — ${coldTxt} 평균 ${pb(cold.mean)}`,
+      read3,
+    ].map(t => `<span>${t}</span>`), // li 가 두 칸 격자라 글 전체를 한 덩이로 감쌈
+    why: `<b>잘 보이는 것</b>: 흐름(노선)별로 무리 지어 어느 줄이 붉은지 · <b>잘 안 보이는 것</b>: 노선 없는 업종 ${offLine.length}개, 회사 크기`,
+    foot: [
+      `한국 ${K.companies.length}곳 가운데 시대 흐름이 붙은 ${themed.length}곳 · ${L.korDate(K.place.asOf)} ${K.place.close} 종가 · 지난 ${n20}거래일 = ${L.korDate(K.place.from)}~${L.korDate(K.place.asOf)}`,
+      `노선(시대 흐름)은 ATLAS 가 고를 때 정한 트렌드 묶음 · 역 값 = 그 업종 회사 ${counts.length === 1 ? counts[0] + '곳' : '들'} 지난 ${n20}거래일 평균`,
+      `그 흐름 회사가 1곳이라도 든 업종을 역으로 놓음 · 같은 세로줄에서는 역 평균이 높은 노선을 위에 · 역 사이 간격은 뜻 없음`,
+      `노선 색은 노선을 가르는 이름표 색 — 빨강 · 파랑은 역 색(오르내림)에만 씀`,
+      ...late.map(c => `${c.name}(${c.groupLabel} 역)은 ${L.korDate(c.c60last)} 종가까지 — 판과 같음`),
+      '샘플 — 아직 사이트에 없음',
+    ],
+  });
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

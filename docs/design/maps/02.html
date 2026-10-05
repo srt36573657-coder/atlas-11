@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 2</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 샘플 2 — 1년 전과 지금 땅: 위 = 1년 전(어림) 땅 · 아래 = 지금 땅 · 두 지도는 같은 짜임(같은 자리 = 같은 갈래)
+   칸 색 = 갈래 구별만(빨강 · 파랑 아님) · 빨강 · 파랑은 「땅 몫 바뀜」 막대에만 */
+.m2-svg text { font-family: var(--font); }
+.m2-list { margin: 16px 4px 2px; }
+.m2-lhead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--sep); }
+.m2-lhead b { font-size: 16px; font-weight: 700; }
+.m2-lhead span { font-size: 13px; color: var(--sub); }
+.m2-row { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 50px 46px; column-gap: 8px; align-items: center; min-height: 31px; border-bottom: 1px solid var(--hair); }
+.m2-row:last-child { border-bottom: 0; }
+.m2-row.m2-turn { border-top: 1px solid var(--sep); }
+.m2-chip { width: 12px; height: 12px; border-radius: 3px; box-shadow: inset 0 0 0 1px var(--hair); }
+.m2-name { font-size: 15px; font-weight: 700; white-space: nowrap; }
+.m2-nums { font-size: 14px; color: var(--sub); white-space: nowrap; text-align: right; }
+.m2-nums b { color: var(--ink); font-weight: 700; }
+.m2-bar { position: relative; height: 8px; border-radius: 4px; background: var(--fill); }
+.m2-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+.m2-val { font-size: 14px; font-weight: 700; text-align: right; white-space: nowrap; }
+.m2-note { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: var(--sub); }
+.m2-nw { white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr'), P = K.place, A = L.A, fin = L.finite;
+  const BACK = 252; // ret252 의 뜻: 마지막 종가 ÷ 252거래일 전 종가 − 1 (lib/atlas11/board.mjs 정의 그대로)
+  const one = v => (Math.round(v * 10) / 10).toFixed(1);          // 소수 한 자리
+  const nameOf = c => c.name;
+
+  // ── ① 셈: 갈래마다 지금 땅(시가총액 합) · 1년 전 땅(어림 = 시가총액 ÷ (1 + 1년 변화)) ──
+  const fams = K.families.map(f => ({id: f.id, label: f.label, now: 0, then: 0, n: 0}));
+  const byId = new Map(fams.map(f => [f.id, f]));
+  const noCap = [], noRet = [], badRet = [];
+  for (const c of K.companies) {
+    const f = byId.get(c.fam);
+    if (!f || !fin(c.cap) || c.cap <= 0) { noCap.push(c); continue; }   // 크기 없음 → 두 지도 모두에서 뺌
+    if (!fin(c.ret252)) { noRet.push(c); continue; }                      // 1년 변화 없음 → 두 지도 모두에서 뺌(같은 회사끼리 견주려고)
+    if (c.ret252 <= -1) { badRet.push(c); continue; }                     // −100% 이하 → 나눌 수 없음 → 뺌
+    f.now += c.cap; f.then += c.cap / (1 + c.ret252); f.n++;
+  }
+  const used = L.sum(fams.map(f => f.n));
+  const N = L.sum(fams.map(f => f.now)), T = L.sum(fams.map(f => f.then));
+  for (const f of fams) {
+    f.sNow = N ? f.now / N : 0; f.sThen = T ? f.then / T : 0;
+    f.pNow = Math.round(f.sNow * 1000) / 10; f.pThen = Math.round(f.sThen * 1000) / 10;   // 화면에 보이는 몫(%)
+    f.dp = Math.round((f.pNow - f.pThen) * 10) / 10;                                    // 보이는 두 몫의 차이(%p) — 화면 숫자끼리 맞게
+    f.swing = f.sNow - f.sThen;
+  }
+  const ratio = N / T;
+  const order = fams.filter(f => f.now > 0 && f.then > 0).sort((a, b) => b.now - a.now);   // 지금 땅 큰 순 = 두 지도의 같은 짜임
+  const bySwing = fams.slice().sort((a, b) => b.swing - a.swing);                          // 몫이 넓어진 순
+  const gain = bySwing[0], loss = bySwing.at(-1);
+  const grewLand = fams.filter(f => f.then > 0 && f.now > f.then).length;                   // 몫과 따로, 땅 자체가 넓어진 갈래 수
+  const late = K.companies.filter(c => c.c60last && c.c60last !== P.asOf);                  // 마지막 종가가 기준일이 아닌 곳
+  const capPick = /(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})/.exec(A.sources?.krCap ?? '');   // 고를 때(시가총액 받은 때)
+  const pickWhen = capPick ? `${L.md(capPick[1])} ${Number(capPick[2]) < 12 ? '아침' : Number(capPick[2]) < 18 ? '낮' : '저녁'}` : '고를 때';
+  const days20 = (K.dates20?.length ?? 1) - 1;
+
+  // ── ② 칸 색: 갈래 구별만 하는 차분한 12색(빨강 · 파랑 쪽 빛깔은 쓰지 않음) — OKLCH(밝기 · 짙기 · 빛깔)로 고르게 ──
+  const oklch = (l, c, hDeg) => {
+    const h = hDeg * Math.PI / 180, a = c * Math.cos(h), b = c * Math.sin(h);
+    const l_ = l + 0.3963377774 * a + 0.2158037573 * b, m_ = l - 0.1055613458 * a - 0.0638541728 * b, s_ = l - 0.0894841775 * a - 1.2914855480 * b;
+    const L3 = l_ ** 3, M3 = m_ ** 3, S3 = s_ ** 3;
+    const lin = [4.0767416621 * L3 - 3.3077115913 * M3 + 0.2309699292 * S3, -1.2684380046 * L3 + 2.6097574011 * M3 - 0.3413193965 * S3, -0.0041960863 * L3 - 0.7034186147 * M3 + 1.7076147010 * S3];
+    return '#' + lin.map(v => { v = Math.min(1, Math.max(0, v)); v = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055; return Math.round(v * 255).toString(16).padStart(2, '0'); }).join('');
+  };
+  // [빛깔(도), 짙기, 밝기 단(0 · 1 · 2)] — 청자 · 모래 · 올리브 · 돌 · 연보라 · 황토 · 자두 · 청록 · 라일락 · 쑥 · 흙 · 잿빛 흙
+  // 빛깔은 빨강(0~40도 · 345~360도) · 파랑(225~285도) 쪽을 피함(돌빛 mach 만 짙기 0.016 의 잿빛) · 이웃 칸끼리 OKLab 거리 0.058 이상
+  const HUE = {semi: [165, .055, 1], fin: [85, .055, 0], energy: [125, .070, 2], mach: [250, .016, 2], auto: [315, .050, 1], elec: [98, .085, 1],
+    bio: [340, .045, 2], cons: [192, .065, 2], soft: [300, .035, 0], mat: [145, .050, 0], media: [55, .055, 1], build: [62, .034, 2]};
+  const LV = {light: [.905, .845, .78], dark: [.36, .44, .52]};
+  const paint = () => {
+    const lv = LV[matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'];
+    for (const f of fams) { const [h, c, step] = HUE[f.id] ?? [0, 0, 1]; f.col = oklch(lv[step], c, h); f.ink = L.inkOn(f.col); }
+  };
+  const won = v => L.won(v).replace(/ /g, ' ');   // 「2,504조 원」이 두 줄로 갈라지지 않게
+
+  // ── ③ 땅 나누기: 지금 지도로 줄 짜임을 정하고(squarify), 1년 전 지도에도 같은 짜임을 씀 → 같은 자리 = 같은 갈래 ──
+  const squarify = (vals, x, y, w, h) => {
+    const total = L.sum(vals), scale = w * h / total, rows = [];
+    let rest = vals.map((v, i) => ({i, a: v * scale})), rw = w, rh = h;
+    const worst = (row, side) => { const s = row.reduce((t, r) => t + r.a, 0), mx = Math.max(...row.map(r => r.a)), mn = Math.min(...row.map(r => r.a)); return Math.max(side * side * mx / (s * s), (s * s) / (side * side * mn)); };
+    while (rest.length) {
+      const side = Math.min(rw, rh); let row = [rest[0]], k = 1;
+      while (k < rest.length && worst([...row, rest[k]], side) <= worst(row, side)) { row.push(rest[k]); k++; }
+      const s = row.reduce((t, r) => t + r.a, 0), vert = rw >= rh;
+      rows.push({idx: row.map(r => r.i), vert});
+      if (vert) rw -= s / rh; else rh -= s / rw;                       // 남은 땅을 줄여 가며 다음 줄을 정한다
+      rest = rest.slice(k);
+    }
+    return {rows, rects: place(vals, rows, x, y, w, h)};
+  };
+  const place = (vals, rows, x, y, w, h) => {
+    const total = L.sum(vals), scale = w * h / total, out = [];
+    let rx = x, ry = y, rw = w, rh = h;
+    for (const row of rows) {
+      const s = row.idx.reduce((t, i) => t + vals[i] * scale, 0);
+      if (row.vert) { const cw = s / rh; let cy = ry; for (const i of row.idx) { const ch = vals[i] * scale / cw; out[i] = {x: rx, y: cy, w: cw, h: ch}; cy += ch; } rx += cw; rw -= cw; }
+      else { const ch = s / rw; let cx = rx; for (const i of row.idx) { const cw = vals[i] * scale / ch; out[i] = {x: cx, y: ry, w: cw, h: ch}; cx += cw; } ry += ch; rh -= ch; }
+    }
+    return out;
+  };
+
+  // 글자 폭을 재기 전에 화면에 쓸 글자의 글꼴 조각을 받아 둔다
+  const glyphs = [...new Set(fams.map(f => f.label).join('') + '0123456789.,%→▲▼ ·()1년전어림지금월일땅전체조원배사이몫')].join('');
+  await Promise.all([700, 400].map(wt => document.fonts.load(`${wt} 16px "Gowun Batang"`, glyphs).catch(() => null)));
+
+  const host = document.getElementById('map');
+  const draw = () => {
+    paint();
+    const cs = getComputedStyle(host);
+    const W = Math.floor(host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+    const H = 300;                                         // 지금 지도(더 큰 쪽) 높이
+    const big = Math.max(N, T), kT = Math.sqrt(T / big), kN = Math.sqrt(N / big);   // 넓이가 땅 전체에 맞게(같은 꼴 · 가운데)
+    const wT = W * kT, hT = H * kT, xT = (W - wT) / 2, wN = W * kN, hN = H * kN, xN = (W - wN) / 2;
+    const capH = 28, gapH = 60;
+    const yT = capH, yNcap = yT + hT + gapH, yN = yNcap + capH, Htot = Math.ceil(yN + hN + 1);
+    const svg = L.sv('svg', {class: 'm2-svg', viewBox: `0 0 ${W} ${Htot}`, width: W, height: Htot, role: 'img',
+      'aria-label': `위: 1년 전 땅(어림) · 아래: 지금 땅 — 갈래 ${order.length}개`});
+    const defs = L.sv('defs'); svg.append(defs);
+
+    const vNow = order.map(f => f.now), vThen = order.map(f => f.then);
+    const {rows, rects: rN} = squarify(vNow, xN, yN, wN, hN);
+    const rT = place(vThen, rows, xT, yT, wT, hT);
+
+    const head = (x, w, y, left, right) => {
+      svg.append(L.sv('text', {x, y, 'font-size': 15, 'font-weight': 700, style: 'fill: var(--ink)'}, left));
+      svg.append(L.sv('text', {x: x + w, y, 'font-size': 14, 'text-anchor': 'end', style: 'fill: var(--sub)'}, right));
+    };
+    // 칸 이름표: 큰 글씨부터 맞춰 보고, 안 들어가면 이름을 「·」에서 두 줄로 · 그래도 안 되면 한 줄 · 이름만 · 없음(억지로 줄이지 않음 — 13px 아래로 안 내림)
+    const split = name => {   // 「2차전지·에너지」 → [「2차전지·」, 「에너지」] — 두 줄 중 긴 줄이 가장 짧게
+      let best = null;
+      for (let i = 0; i < name.length - 1; i++) if (name[i] === '·') {
+        const a = name.slice(0, i + 1), b = name.slice(i + 1), w = Math.max(L.textW(a, 13), L.textW(b, 13));
+        if (!best || w < best.w) best = {a, b, w};
+      }
+      return best;
+    };
+    const label = (r, f, share, hero) => {
+      const name = f.label, pct = one(share * 100) + '%', pad = hero ? 11 : 7, sp = split(name);
+      const cands = [];   // 줄마다 [글, 크기, 굵기, 앞줄과의 사이]
+      for (const [sN, sP] of hero ? [[18, 34], [17, 28], [16, 24], [15, 20], [15, 15]] : [[15, 15], [14, 14], [13, 13]])
+        cands.push([[name, sN, 700, 0.84 * sN], [pct, sP, 400, 4 + 0.8 * sP]]);
+      if (sp) for (const s of [15, 14, 13]) cands.push([[sp.a, s, 700, 0.84 * s], [sp.b, s, 700, 1.15 * s], [pct, s, 400, 4 + 0.8 * s]]);
+      if (sp) cands.push([[sp.a, 13, 700, 0.84 * 13], [sp.b, 13, 700, 1.15 * 13]]);   // 몫(%)이 안 들어가면 이름만 두 줄(몫은 아래 목록에)
+      for (const lines of cands) {
+        const needW = Math.max(...lines.map(([t, s]) => L.textW(t, s))) + pad * 2;
+        const needH = pad * 2 + L.sum(lines.map(l => l[3])) + 0.15 * lines.at(-1)[1];
+        if (needW > r.w || needH > r.h) continue;
+        let y = r.y + pad;
+        for (const [t, s, wt, dy] of lines) { y += dy; svg.append(L.sv('text', {x: r.x + pad, y, 'font-size': s, 'font-weight': wt, fill: f.ink, 'fill-opacity': wt === 400 ? .9 : null}, t)); }
+        return lines.length;
+      }
+      const s = 13, wName = L.textW(name, s), wPct = L.textW(pct, s), mid = r.y + r.h / 2 + s * 0.36;
+      if (wName + 5 + wPct + 12 <= r.w && s + 11 <= r.h) {
+        svg.append(L.sv('text', {x: r.x + 6, y: mid, 'font-size': s, fill: f.ink}, L.sv('tspan', {'font-weight': 700}, name), L.sv('tspan', {dx: 5, 'fill-opacity': .9}, pct)));
+        return 1;
+      }
+      if (wName + 12 <= r.w && s + 11 <= r.h) { svg.append(L.sv('text', {x: r.x + 6, y: mid, 'font-size': s, 'font-weight': 700, fill: f.ink}, name)); return 1; }
+      return 0;
+    };
+    const plate = (rects, key, x, y, w, h, id) => {
+      defs.append(L.sv('clipPath', {id}, L.sv('rect', {x, y, width: w, height: h, rx: 9})));
+      const g = L.sv('g', {'clip-path': `url(#${id})`});
+      order.forEach((f, i) => { const r = rects[i]; if (r && r.w > 0 && r.h > 0) g.append(L.sv('rect', {x: r.x, y: r.y, width: r.w, height: r.h, fill: f.col, style: 'stroke: var(--map-line); stroke-width: 2'}, L.sv('title', null, `${f.label} ${one((key === 'now' ? f.sNow : f.sThen) * 100)}%`))); });
+      svg.append(g);
+      const heroI = rects.reduce((bi, r, i) => (r.w * r.h > rects[bi].w * rects[bi].h ? i : bi), 0);
+      order.forEach((f, i) => { const r = rects[i]; if (r) label(r, f, key === 'now' ? f.sNow : f.sThen, i === heroI); });
+    };
+
+    head(xT, wT, yT - 9, '1년 전(어림)', `땅 전체 ${won(T)}`);
+    plate(rT, 'then', xT, yT, wT, hT, 'm2-clip-then');
+    // 두 지도 사이: 1년 사이 땅 전체가 몇 배가 되었나(위 → 아래로 읽게 작은 꺾쇠)
+    const mid = W / 2, c0 = yT + hT;
+    svg.append(L.sv('text', {x: mid, y: c0 + 27, 'text-anchor': 'middle', 'font-size': 14, style: 'fill: var(--sub)'},
+      '1년 사이 땅 전체 ', L.sv('tspan', {'font-size': 16, 'font-weight': 700, style: `fill: var(${ratio >= 1 ? '--up-ink' : '--down-ink'})`}, `${ratio >= 1 ? '▲' : '▼'} ${one(ratio)}배`)));
+    svg.append(L.sv('path', {d: `M${mid - 6} ${c0 + 37} L${mid} ${c0 + 43} L${mid + 6} ${c0 + 37}`, fill: 'none', style: 'stroke: var(--sub); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round'}));
+    head(xN, wN, yN - 9, `지금 · ${L.korDate(P.asOf)}`, `땅 전체 ${won(N)}`);
+    plate(rN, 'now', xN, yN, wN, hN, 'm2-clip-now');
+
+    // ── 땅 몫 바뀜(지도 칸 안) ──
+    const list = L.el('div', {class: 'm2-list'});
+    list.append(L.el('div', {class: 'm2-lhead'}, L.el('b', null, '땅 몫 바뀜'), L.el('span', null, '땅 몫 1년 전 → 지금 · 넓어진 순')));
+    const maxAbs = Math.max(...bySwing.map(f => Math.abs(f.dp)), 0.1);
+    let prev = null;
+    for (const f of bySwing) {
+      const sg = Math.sign(f.dp);
+      const chip = L.el('span', {class: 'm2-chip'}); chip.style.background = f.col;
+      const bar = L.el('span', {class: 'm2-bar'}), fillI = L.el('i');
+      fillI.style.width = (f.dp ? Math.max(3, Math.abs(f.dp) / maxAbs * 50) : 0) + 'px';
+      fillI.style.background = f.dp > 0 ? 'var(--up)' : 'var(--down)';
+      bar.append(fillI);
+      list.append(L.el('div', {class: 'm2-row' + (prev === 1 && sg < 1 ? ' m2-turn' : ''), title: `${f.label}: 1년 전 ${one(f.pThen)}% → 지금 ${one(f.pNow)}%`},
+        chip, L.el('span', {class: 'm2-name'}, f.label),
+        L.el('span', {class: 'm2-nums', html: `${one(f.pThen)}% → <b>${one(f.pNow)}%</b>`}),
+        bar, L.el('b', {class: 'm2-val ' + L.cls(f.dp)}, `${L.tri(f.dp)}${one(Math.abs(f.dp))}`)));
+      prev = sg;
+    }
+    list.append(L.el('p', {class: 'm2-note', html: `숫자 = 두 몫의 차이(%p) · ▼는 <b>몫</b>이 줄었다는 뜻 — 땅 자체는 ${fams.length}갈래 가운데 <b>${grewLand}갈래</b>가 1년 전보다 넓습니다(땅 전체가 ${one(ratio)}배라서)`}));
+
+    host.replaceChildren(
+      L.el('div', {class: 'sh-maphead'}, L.el('b', null, `${P.label} ${used}곳 · 큰 갈래 ${order.length}`), L.el('span', null, `1년 전 → ${L.korDate(P.asOf)}`)),
+      svg, list);
+  };
+  // ── ④ 범례 · 읽은 것 · 근거 ──
+  const swSvg = (...kids) => L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26, 'aria-hidden': 'true'}, ...kids);
+  const R = (x, y, w, h, fill, rx = 2) => L.sv('rect', {x, y, width: w, height: h, rx, fill});
+  const legendOf = () => { const c = order.map(f => f.col); return [
+    [swSvg(R(0, 0, 31, 26, c[0]), R(33, 0, 21, 15, c[1]), R(33, 17, 21, 9, c[2])),
+      '<b>넓이</b> = 시가총액(회사 크기) — 갈래마다 회사 크기를 더한 땅'],
+    [swSvg(R(16, 0, 22, 9, c[0], 1.5), R(2, 12, 50, 14, c[0], 2)),
+      '<b>위 지도</b> = 1년 전(어림) — 땅 전체가 작았던 만큼 작게 그림'],
+    [swSvg(R(0, 0, 12, 26, c[0]), R(14, 0, 12, 26, c[1]), R(28, 0, 12, 26, c[2]), R(42, 0, 12, 26, c[3])),
+      '<b>칸 색 · 자리</b> = 갈래 구별(뜻 없음) — 두 지도에서 같은 색 · 같은 자리 = 같은 갈래'],
+    [swSvg(L.sv('rect', {x: 0, y: 3, width: 46, height: 8, rx: 4, style: 'fill: var(--up)'}), L.sv('rect', {x: 0, y: 15, width: 24, height: 8, rx: 4, style: 'fill: var(--down)'})),
+      '<b class="up">▲빨강</b> · <b class="down">▼파랑</b> = 땅 몫이 넓어짐 · 좁아짐(땅 몫 = 그 지도 안에서 차지한 %)'],
+  ]; };
+  // 읽은 것 한 줄 = 한 덩이(<span>) — 목록 줄이 격자라서 덩이가 나뉘면 글이 칸마다 흩어진다
+  const nw = t => `<span class="m2-nw">${t}</span>`;   // 숫자 묶음이 줄 끝에서 갈라지지 않게
+  const swingLine = f => nw(`<b>${one(f.pThen)}%</b> → <b>${one(f.pNow)}%</b>`) + ' ' + nw(`<b class="${L.cls(f.dp)}">${L.tri(f.dp)}${one(Math.abs(f.dp))}%p</b>`);
+  const reads = [
+    `1년 사이 땅 전체가 ${nw(`<b class="${L.cls(ratio - 1)}">${ratio >= 1 ? '▲' : '▼'} ${one(ratio)}배</b>(어림)`)} — ${nw(`<b>${won(T)}</b> → <b>${won(N)}</b>`)}`,
+    `가장 넓어진 갈래는 <b>${gain.label}</b> — 땅 몫 ${swingLine(gain)}`,
+    `가장 좁아진 갈래는 <b>${loss.label}</b> — 땅 몫 ${swingLine(loss)}`,
+  ].map(t => `<span>${t}</span>`);
+  const skipped = noCap.length + noRet.length + badRet.length;
+  const foot = [
+    `${P.label} ${K.companies.length}곳 · 지금 땅 = 고를 때(${pickWhen}) 받은 시가총액 · 1년 전 땅 = 지금 시가총액 ÷ (1 + 1년 변화) — <b>주식 수가 1년 내내 같다고 보고 어림</b>`,
+    `1년 변화 = ${BACK}거래일 전 종가 → ${L.korDate(P.asOf)} 종가${late.length ? ` · ${late.map(c => `${nameOf(c)}는 ${L.korDate(c.c60last)} 종가까지`).join(' · ')}` : ''}`,
+    `1년 변화가 빠진 곳 ${noRet.length}곳 · −100% 이하인 곳 ${badRet.length}곳 · 시가총액이 빠진 곳 ${noCap.length}곳 — ${skipped ? `${skipped}곳은 두 지도 모두에서 빼고 ${used}곳으로 셈` : `${used}곳 모두 셈`}`,
+    '샘플 — 아직 사이트에 없음',
+  ];
+  const texts = () => L.fill({
+    num: 2, title: '1년 전과 지금 땅', sub: '역사 지도처럼 두 장 · 넓이 = 회사 크기',
+    question: '이 지도가 답하는 물음: <b>1년 사이 어느 갈래의 땅이 넓어지고, 어느 갈래의 땅이 좁아졌나?</b>',
+    legend: legendOf(), reads, foot,
+    why: `<b>잘 보이는 것</b>: 1년 동안 땅의 주인이 바뀐 것 · <b>잘 안 보이는 것</b>: 어림이라 주식 수 변화(새 주식 · 자사주 소각)는 빠짐 · 지금 고른 ${used}곳만 셈(지금 ${used}곳에 없는 회사는 1년 전 땅에도 없음) · 요즘 ${days20}거래일은 따로 안 보임`,
+  });
+  draw(); texts();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { draw(); texts(); });   // 화면 밝기를 바꾸면 칸 색도 다시
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

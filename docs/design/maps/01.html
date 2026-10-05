@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 1 · 땅 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 01 땅 지도 — 지도를 카드 폭 끝까지(392px) 펴서 글자 자리를 넓히고, 아래 두 모서리는 카드의 둥근 모서리가 감싼다 */
+#map { padding: 10px 0 0; }
+#map .sh-maphead { margin: 2px 14px 9px; }
+#map svg text { font-family: var(--font); }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const P = K.place;
+  const W = 392, H = 600;          // 지도 크기(카드 안쪽 폭 그대로 · 글자가 줄지 않게 1:1)
+  const MAX = 0.3;                 // 색이 가장 진해지는 변화(±30%) — L.heat 와 범례가 같은 값을 씀
+  const DAYS = K.dates20.length - 1;
+  const CORNER = 17;               // 카드 아래 둥근 모서리(안쪽 반지름) — 이름이 모서리에 잘리지 않게
+
+  // ⓪ 글자 폭을 재기 전에 지도에 쓸 글자의 글꼴 조각을 먼저 받는다(안 받으면 폭을 잘못 잼)
+  const glyphs = [...new Set(K.companies.map(c => c.name).join('') + K.families.map(f => f.label).join('') + '0123456789.+−%▲▼ ')].join('');
+  await Promise.all([
+    document.fonts.load('700 16px "Gowun Batang"', glyphs),
+    document.fonts.load('400 16px "Gowun Batang"', glyphs),
+    document.fonts.load('700 16px "Pretendard Variable"', '▲▼−+%'),
+    document.fonts.load('400 16px "Pretendard Variable"', '▲▼−+%'),
+  ]).catch(() => {});
+  const wCache = new Map();
+  const tw = (s, px) => { const k = px + '|' + s; if (!wCache.has(k)) wCache.set(k, L.textW(s, px)); return wCache.get(k); };
+
+  // ① 땅 나누기 — 나라(큰 갈래 12) → 도(업종 73) → 마을(회사 365) · 넓이 = 시가총액
+  const fams = K.families.map(f => {
+    const inds = K.groupsOf(f.id).map(g => {
+      const cos = K.companiesOf(g.id).filter(c => L.finite(c.cap) && c.cap > 0).map(c => ({c, value: c.cap}));
+      return {g, cos, value: L.sum(cos.map(x => x.value))};
+    }).filter(x => x.value > 0);
+    return {f, inds, value: L.sum(inds.map(x => x.value)), n: L.sum(inds.map(x => x.cos.length))};
+  }).filter(x => x.value > 0);
+  L.squarify(fams, 0, 0, W, H);
+  for (const F of fams) {
+    L.squarify(F.inds, F.x, F.y, F.w, F.h);
+    for (const I of F.inds) L.squarify(I.cos, I.x, I.y, I.w, I.h);
+  }
+  const cells = fams.flatMap(F => F.inds.flatMap(I => I.cos));
+  const total = L.sum(cells.map(x => x.value));
+
+  // ② 그리기
+  const line = L.tok('--map-line'), card = L.tok('--card'), ink = L.tok('--ink');
+  const svg = L.sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `${P.label} ${cells.length}곳 땅 지도`});
+  const gCell = L.sv('g', {stroke: line, 'stroke-width': 0.6});
+  const gInd = L.sv('g', {fill: 'none', stroke: line, 'stroke-width': 1.5});
+  const gFam = L.sv('g', {fill: 'none', stroke: line, 'stroke-width': 3});
+  const gLab = L.sv('g', {'text-anchor': 'middle'});
+  const gPill = L.sv('g');
+  for (const C of cells) {
+    C.fill = L.heat(C.c.change20, MAX);
+    gCell.append(L.sv('rect', {x: C.x, y: C.y, width: C.w, height: C.h, fill: C.fill}));
+  }
+  for (const F of fams) {
+    for (const I of F.inds) gInd.append(L.sv('rect', {x: I.x, y: I.y, width: I.w, height: I.h}));
+    gFam.append(L.sv('rect', {x: F.x, y: F.y, width: F.w, height: F.h}));
+  }
+
+  // ③ 회사 이름 자리 셈 — 칸 가운데 · 큰 칸은 크게(최대 20px) · 둘째 줄에 ▲▼ 변화 · 아주 큰 칸은 셋째 줄에 땅 몫
+  //    안 들어가면 한 줄(이름만) · 그래도 안 되면 뺀다(억지로 줄이지 않음 · 13px 아래로 안 내림)
+  const LH = 1.2, PX = 3, PY = 2, SHARE3 = 0.05;
+  const hit = (a, b, m = 2) => a.x < b.x + b.w + m && b.x < a.x + a.w + m && a.y < b.y + b.h + m && b.y < a.y + a.h + m;
+  const inCorner = b => b.y + b.h > H - CORNER && (b.x < CORNER || b.x + b.w > W - CORNER);
+  const pc = x => Math.round(x * 100) + '%';
+  function placeLabel(C, pills) {
+    const v = C.c.change20, name = C.c.name, chg = `${L.tri(v)} ${L.pct(v)}`.trim();
+    const R0 = {x: C.x + 1.5, y: C.y + 1.5, w: C.w - 3, h: C.h - 3};   // 선 두께 몫을 빼고 실제로 보이는 칸
+    if (R0.w < 20 || R0.h < 16) return null;
+    const regions = [R0];
+    for (const p of pills) if (hit(p, R0, 0)) {
+      const below = p.y + p.h + 2, right = p.x + p.w + 2, above = p.y - 2;
+      if (R0.y + R0.h - below > 0) regions.push({x: R0.x, y: below, w: R0.w, h: R0.y + R0.h - below});
+      if (above - R0.y > 0) regions.push({x: R0.x, y: R0.y, w: R0.w, h: above - R0.y});
+      if (R0.x + R0.w - right > 0) regions.push({x: right, y: R0.y, w: R0.x + R0.w - right, h: R0.h});
+    }
+    const sMax = Math.max(13, Math.min(20, Math.floor(Math.sqrt(C.w * C.h) / 9)));
+    const layouts = [];
+    if (C.value / total >= SHARE3) for (let s = sMax; s >= 13; s--) layouts.push([[name, s, 700], [chg, Math.max(13, s - 3), 400], [`땅의 ${pc(C.value / total)}`, Math.max(13, s - 5), 400]]);
+    for (let s = sMax; s >= 13; s--) layouts.push([[name, s, 700], [chg, Math.max(13, s - 3), 400]]);
+    for (let s = sMax; s >= 13; s--) layouts.push([[name, s, 700]]);
+    for (const lay of layouts) {
+      const bw = Math.max(...lay.map(([s, px]) => tw(s, px))), bh = L.sum(lay.map(([, px]) => px * LH)) + (lay.length - 1) * 1;
+      for (const R of regions) {
+        if (bw + PX * 2 > R.w || bh + PY * 2 > R.h) continue;
+        const box = {x: R.x + (R.w - bw) / 2, y: R.y + (R.h - bh) / 2, w: bw, h: bh};
+        if (pills.some(p => hit(p, box)) || inCorner(box)) continue;
+        return {lay, box};
+      }
+    }
+    return null;
+  }
+  for (const C of cells) C.ideal = placeLabel(C, []);
+
+  // ④ 나라 이름표 — 굵게 15px · 나라 땅 왼쪽 위가 먼저 · 안 들어가면 「·」에서 두 줄로
+  //    왼쪽 위가 그 나라 회사 이름을 가리면 같은 나라 땅의 다른 모서리로 옮김(가릴 것이 없을 때만) · 어디에도 안 들어가면 뺀다
+  const FS = 15, PLH = 19, PPX = 6, PPY = 3, INSET = 4;
+  const pills = [];
+  for (const F of fams) {
+    const t = F.f.label, parts = t.split('·');
+    const opts = [[t]];
+    for (let k = 1; k < parts.length; k++) opts.push([parts.slice(0, k).join('·') + '·', parts.slice(k).join('·')]);
+    const own = F.inds.flatMap(I => I.cos).filter(C => C.ideal);
+    let pick = null, fallback = null;
+    for (const lines of opts) {
+      const pw = Math.max(...lines.map(s => tw(s, FS))) + PPX * 2, ph = lines.length * PLH + PPY * 2;
+      if (pw + INSET * 2 > F.w || ph + INSET * 2 > F.h) continue;
+      const spots = [[F.x + INSET, F.y + INSET], [F.x + INSET, F.y + F.h - INSET - ph], [F.x + F.w - INSET - pw, F.y + INSET], [F.x + F.w - INSET - pw, F.y + F.h - INSET - ph]]
+        .map(([x, y]) => ({x, y, w: pw, h: ph, lines, F})).filter(p => !inCorner(p));
+      if (!spots.length) continue;
+      if (!fallback) fallback = spots[0];
+      pick = spots.find(p => !own.some(C => hit(p, C.ideal.box)));
+      if (pick) break;
+    }
+    pick = pick || fallback;
+    if (pick) { pills.push(pick); F.pill = true; }
+  }
+  for (const p of pills) {
+    gPill.append(L.sv('rect', {x: p.x, y: p.y, width: p.w, height: p.h, rx: 7, fill: card, 'fill-opacity': 0.9}));
+    p.lines.forEach((s, i) => gPill.append(L.sv('text', {x: p.x + PPX, y: p.y + PPY + PLH * (i + 0.5), 'dominant-baseline': 'central', 'font-size': FS, 'font-weight': 700, fill: ink, 'data-k': p.F.f.id}, s)));
+  }
+
+  // ⑤ 회사 이름 놓기 — 이름표를 비켜서
+  let named = 0;
+  for (const C of cells) {
+    const done = placeLabel(C, pills);
+    if (!done) continue;
+    named++;
+    const col = L.inkOn(C.fill), cx = done.box.x + done.box.w / 2;
+    let y = done.box.y;
+    for (const [s, px, wt] of done.lay) {
+      gLab.append(L.sv('text', {x: cx, y: y + px * LH / 2, 'dominant-baseline': 'central', 'font-size': px, 'font-weight': wt, fill: col, 'data-k': C.c.code}, s));
+      y += px * LH + 1;
+    }
+  }
+  svg.append(gCell, gInd, gFam, gLab, gPill);
+  const head = L.el('div', {class: 'sh-maphead'}, L.el('span', {html: `<b>${P.label} ${cells.length}곳</b>`}), L.el('span', null, `${L.korDate(P.from)} → ${L.korDate(P.asOf)}`));
+  document.getElementById('map').append(head, svg);
+
+  // ⑤ 범례 칸(작은 그림) — 넓이 · 굵은 선 · 가는 선
+  const neutral = L.mix(L.tok('--map-flat'), L.tok('--sub'), 0.45);
+  const swArea = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26},
+    L.sv('rect', {x: 0, y: 0, width: 26, height: 26, rx: 2, fill: neutral}),
+    L.sv('rect', {x: 29, y: 9, width: 17, height: 17, rx: 2, fill: neutral}),
+    L.sv('rect', {x: 49, y: 21, width: 5, height: 5, rx: 1, fill: neutral}));
+  const swFam = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26},
+    L.sv('rect', {x: 0, y: 0, width: 54, height: 26, fill: neutral}),
+    L.sv('line', {x1: 27, y1: 0, x2: 27, y2: 26, stroke: line, 'stroke-width': 3}));
+  const swInd = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26},
+    L.sv('rect', {x: 0, y: 0, width: 54, height: 26, fill: neutral}),
+    L.sv('path', {d: 'M0 15H30M14 15V26M30 9H54M43 9V26', stroke: line, 'stroke-width': 0.8, fill: 'none'}),
+    L.sv('line', {x1: 30, y1: 0, x2: 30, y2: 26, stroke: line, 'stroke-width': 1.5}));
+
+  // ⑥ 읽은 것 셋 — 모두 셈한 값
+  const famRank = [...fams].sort((a, b) => b.value - a.value);
+  const top = famRank[0];
+  const red = cells.filter(x => x.c.change20 > 0), blue = cells.filter(x => x.c.change20 < 0), flat = cells.filter(x => x.c.change20 === 0);
+  const redShare = L.sum(red.map(x => x.value)) / total, blueShare = L.sum(blue.map(x => x.value)) / total;
+  const bigRed = [...red].sort((a, b) => b.value - a.value)[0].c, bigBlue = [...blue].sort((a, b) => b.value - a.value)[0].c;
+  const chg = c => `<b class="${L.cls(c.change20)}">${L.tri(c.change20)} ${L.pct(c.change20)}</b>`;
+  const top2 = [...cells].sort((a, b) => b.value - a.value).slice(0, 2);
+  const top2Share = L.sum(top2.map(x => x.value)) / total;
+
+  // 근거 — 시가총액 받은 때(자료의 출처 글에서) · 마지막 종가가 다른 회사
+  const capWhen = (() => { const m = /(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})/.exec((L.A.sources && L.A.sources.krCap) || ''); if (!m) return '고를 때'; const h = +m[2]; return `고를 때(${L.md(m[1])} ${h < 12 ? '아침' : h < 18 ? '낮' : '저녁'})`; })();
+  const late = K.companies.filter(c => c.c60last && c.c60last !== P.asOf);
+  const eunNeun = s => { const ch = s.charCodeAt(s.length - 1); return ch >= 0xAC00 && ch <= 0xD7A3 && (ch - 0xAC00) % 28 ? '은' : '는'; };
+  const one = s => `<span>${s}</span>`;   // 읽은 것 한 줄 = 칸 하나(줄 칸이 격자라서 한 덩이로 묶음)
+
+  L.fill({
+    num: 1,
+    title: '땅 지도',
+    sub: `넓이 = 회사 크기 · 색 = 지난 ${DAYS}거래일`,
+    question: `이 지도가 답하는 물음: <b>시장 땅은 누가 얼마나 차지하고, 그 땅은 지난 ${DAYS}거래일 동안 붉었나(올랐나) 푸르렀나(내렸나)?</b>`,
+    legend: [
+      [swArea, `<b>넓이</b> = 시가총액(회사 크기)`],
+      [L.ramp(MAX), `<b>색</b> = 지난 ${DAYS}거래일 변화 — 빨강 오름 · 파랑 내림 · 진할수록 크게(±${Math.round(MAX * 100)}%에서 가장 진함)`],
+      [swFam, `<b>굵은 선</b> = 큰 갈래(나라) ${fams.length}개`],
+      [swInd, `<b>가는 선</b> = 업종(도) ${L.sum(fams.map(F => F.inds.length))}개 · <b>작은 칸</b> = 회사(마을) ${cells.length}곳`],
+    ],
+    reads: [
+      `가장 넓은 나라는 <b>${top.f.label}</b> — ${top.n}곳이 ${cells.length}곳 땅의 <b>${pc(top.value / total)}</b>`,
+      `붉은 땅(오름) <b class="up">${pc(redShare)}</b> · 푸른 땅(내림) <b class="down">${pc(blueShare)}</b> — 회사 수로는 붉은 ${red.length}곳 · 푸른 ${blue.length}곳${flat.length ? ` · 그대로 ${flat.length}곳` : ''}`,
+      `가장 큰 붉은 회사는 <b>${bigRed.name}</b> ${chg(bigRed)} · 가장 큰 푸른 회사는 <b>${bigBlue.name}</b> ${chg(bigBlue)}`,
+    ].map(one),
+    why: `<b>잘 보이는 것:</b> 누가 땅을 얼마나 차지했고 그 땅이 붉은지 푸른지 · <b>잘 안 보이는 것:</b> 작은 회사 — ${top2.map(x => x.c.name).join(' · ')} ${top2.length}곳이 땅의 ${pc(top2Share)}라 ${cells.length - named}곳은 이름 없는 작은 칸`,
+    foot: [
+      `${P.label} ${cells.length}곳 · 넓이 = ${capWhen} 받은 시가총액 · 색 = ${L.korDate(P.from)} 종가 → ${L.korDate(P.asOf)} ${P.close} 종가`,
+      ...late.map(c => `${c.name}${eunNeun(c.name)} ${L.korDate(c.c60last)} 종가까지`),
+      ...(() => {   // 이름표가 안 들어간 작은 나라 — 지도 어디쯤인지(가로 · 세로 셋으로 나눈 자리)도 셈해서
+        const small = fams.filter(F => !F.pill);
+        if (!small.length) return [];
+        const where = F => { const cx = F.x + F.w / 2, cy = F.y + F.h / 2; return `${cx < W / 3 ? '왼쪽' : cx > W * 2 / 3 ? '오른쪽' : '가운데'} ${cy < H / 3 ? '위' : cy > H * 2 / 3 ? '아래' : '가운데'}`; };
+        const spots = [...new Set(small.map(where))], nm = F => `<span style="white-space:nowrap">${F.f.label}</span>`;
+        return [spots.length === 1
+          ? `이름표가 안 들어간 작은 나라 ${small.length}개(지도 ${spots[0]}): ${small.map(nm).join(', ')}`
+          : `이름표가 안 들어간 작은 나라 ${small.length}개: ${small.map(F => `${nm(F)}(${where(F)})`).join(', ')}`];
+      })(),
+      '샘플 — 아직 사이트에 없음',
+    ],
+  });
+  window.MAP01 = {named, cells: cells.length, pills: pills.map(p => p.lines.join('')), noPill: fams.filter(F => !F.pill).map(F => F.f.label)};
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

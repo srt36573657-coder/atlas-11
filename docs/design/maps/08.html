@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 8 · 돈의 강</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 8 · 돈의 강 — 이 샘플만의 모양 */
+#map svg text { font-family: var(--font); }
+#map .halo { paint-order: stroke; stroke-width: 4px; stroke-linejoin: round; }
+.nw { white-space: nowrap; }
+.sh-legend .lg2 { display: block; font-size: 15px; color: var(--sub); }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const P = K.place;
+  const map = document.getElementById('map');
+  const tok = L.tok;
+
+  /* ① 자료 — 수급(5거래일 동안 산 주 수 − 판 주 수)이 있는 곳만 */
+  const ok = c => c.flows && [c.close, c.flows.foreign, c.flows.institution, c.flows.individual].every(L.finite);
+  const F = K.companies.filter(ok);
+  const nAll = K.companies.length, nF = F.length;
+  // 기간: 가장 흔한 from → to (모두 같으면 sameDates)
+  const keyOf = c => [c.flows.from, c.flows.to, c.flows.days].join('|');
+  const tally = new Map(); F.forEach(c => tally.set(keyOf(c), (tally.get(keyOf(c)) || 0) + 1));
+  const periods = [...tally].sort((a, b) => b[1] - a[1]);
+  const [dFrom, dTo, dDaysS] = periods[0][0].split('|'); const dDays = Number(dDaysS);
+  const sameDates = periods.length === 1;
+  const late = F.filter(c => c.c60last && c.c60last !== P.asOf);       // 마지막 종가가 asOf 가 아닌 곳
+  const eok = (sh, c) => sh * c.close / 1e8;                            // 주 수 × 종가 → 억 원(어림)
+  const INV = [{k: 'fo', name: '외국인'}, {k: 'in', name: '기관'}];
+  const fams = K.families.map(f => {
+    const cs = F.filter(c => c.fam === f.id);
+    return {id: f.id, label: f.label, n: cs.length,
+      fo: L.sum(cs.map(c => eok(c.flows.foreign, c))),
+      in: L.sum(cs.map(c => eok(c.flows.institution, c))),
+      ind: L.sum(cs.map(c => eok(c.flows.individual, c)))};
+  }).filter(f => f.n > 0).sort((a, b) => (b.fo + b.in) - (a.fo + a.in));   // 외국인 + 기관 합이 큰 곳이 위
+  const T = {fo: L.sum(fams.map(f => f.fo)), in: L.sum(fams.map(f => f.in)), ind: L.sum(fams.map(f => f.ind))};
+  const gapOf = c => eok(c.flows.foreign + c.flows.institution + c.flows.individual, c); // 세 손 합(0 이 아니면 다른 손)
+  const gapTop = [...F].sort((a, b) => Math.abs(gapOf(b)) - Math.abs(gapOf(a)))[0];
+
+  /* 글자 꼴 */
+  const won = v => L.won(Math.abs(v), false);                                   // '7조 7,523억 원'
+  const sgn = v => v > 0 ? '▲' : v < 0 ? '▼' : '';
+  const num = v => Math.round(Math.abs(v)) === 0 ? '0' : `${sgn(v)}${Math.round(Math.abs(v)).toLocaleString('ko-KR')}억`;
+  const inkOf = v => v > 0 ? tok('--up-ink') : v < 0 ? tok('--down-ink') : tok('--sub');
+  // 받침 따라 조사(은/는 · 이/가)
+  const josa = (w, withB, noB) => { const ch = w.charCodeAt(w.length - 1); return ch >= 0xAC00 && ch <= 0xD7A3 ? ((ch - 0xAC00) % 28 ? withB : noB) : `${withB}(${noB})`; };
+
+  /* 글씨를 먼저 받아 두고 폭을 잰다 */
+  const allTxt = fams.map(f => f.label + f.n).join('') + '외국인기관산판돈억원곳이조0123456789,▲▼·→ ';
+  await Promise.all([...['700 15px', '400 15px', '400 13px', '700 13px'].map(s => document.fonts.load(`${s} "Gowun Batang"`, allTxt)),
+    document.fonts.load('400 13px "Pretendard Variable"', '▲▼→·')]).catch(() => {});
+  const FONT = tok('--font');
+  const cv = document.createElement('canvas').getContext('2d');
+  const tw = (s, px, wt = 700) => { cv.font = `${wt} ${px}px ${FONT}`; return cv.measureText(String(s)).width; };
+
+  /* ② 지도 */
+  const cst = getComputedStyle(map);
+  const W = Math.floor(map.clientWidth - parseFloat(cst.paddingLeft) - parseFloat(cst.paddingRight));
+  const FN = 15, FS = 13, HEAD = 26, RH = 38, MINW = 2, MAXW = 112, LABH = 38, CURVE = 14;
+  const UP = tok('--map-up'), DN = tok('--map-down'), CARD = tok('--card'), INK2 = tok('--ink2');
+
+  // 강(띠): 갈래 × (외국인 · 기관) — 산 쪽이면 샘 → 마을(빨강), 판 쪽이면 마을 → 빠져나감(파랑)
+  const links = [];
+  for (const f of fams) for (const inv of INV) { const v = f[inv.k]; if (Math.round(Math.abs(v)) > 0) links.push({f, inv, v, buy: v > 0}); }
+  const maxAbs = Math.max(...links.map(l => Math.abs(l.v)));
+  const kW = MAXW / maxAbs;                                    // 폭 ∝ 억 원(가장 큰 강 = MAXW)
+  links.forEach(l => { l.w = Math.max(MINW, Math.abs(l.v) * kW); });
+
+  // 오른쪽 마을 글 칸
+  const nameW = Math.max(...fams.map(f => tw(f.label, FN) + 4 + tw(`${f.n}곳`, FS, 400)));
+  const c1W = Math.max(tw('외국인', FS, 400), ...fams.map(f => tw(num(f.fo), FS)));
+  const c2W = Math.max(tw('기관', FS, 400), ...fams.map(f => tw(num(f.in), FS)));
+  const labW = Math.max(nameW, c1W + 14 + c2W);
+  const VBW = 5, xV = Math.floor(W - labW - 8 - VBW), lx = xV + VBW + 7;
+  const col1 = lx + c1W, col2 = col1 + 14 + c2W;
+
+  // 왼쪽 샘 · 빠짐 칸
+  const leftW = Math.max(tw('외국인', FN), tw('판 돈', FS));
+  const LBW = 5, xL = Math.ceil(leftW) + 7, x0 = xL + LBW, x1 = xV, xm = (x0 + x1) / 2;
+
+  // 마을 자리(위 → 아래)
+  let y = HEAD;
+  for (const f of fams) {
+    f.links = links.filter(l => l.f === f);
+    f.sumW = L.sum(f.links.map(l => l.w));
+    f.barH = Math.max(8, f.sumW);
+    f.rowH = Math.max(RH, f.barH + 14);
+    f.cy = y + f.rowH / 2;
+    y += f.rowH;
+  }
+  const colBottom = y;
+
+  // 왼쪽 마디: 위 = 샘(산 돈) · 아래 = 빠짐(판 돈)
+  const mk = (inv, buy) => { const n = {inv, buy, links: links.filter(l => l.inv === inv && l.buy === buy)}; n.h = L.sum(n.links.map(l => l.w)); n.links.forEach(l => { l.node = n; }); return n; };
+  const wy = n => L.sum(n.links.map(l => l.w * l.f.cy)) / n.h;          // 이어진 마을들의 무게 가운데
+  const springs = INV.map(inv => mk(inv, true)).filter(n => n.links.length);
+  const exits = INV.map(inv => mk(inv, false)).filter(n => n.links.length).sort((a, b) => wy(a) - wy(b));
+  const nodes = [...springs, ...exits]; nodes.forEach((n, i) => { n.idx = i; });
+  // 마을 쪽 붙는 자리: 왼쪽 마디 차례(샘 → 빠짐) — 강끼리 덜 꼬이게
+  for (const f of fams) { f.links.sort((a, b) => a.node.idx - b.node.idx); let yy = f.cy - f.sumW / 2; for (const l of f.links) { l.vy0 = yy; yy += l.w; } }
+  // 왼쪽 마디 쪽: 마을 높이 차례
+  for (const n of nodes) { n.links.sort((a, b) => a.vy0 - b.vy0); let off = 0; for (const l of n.links) { l.off = off; off += l.w; } }
+  // 샘: 위에서부터 차례로
+  { let cyP = -Infinity, botP = HEAD;
+    for (const n of springs) { const cy = Math.max(HEAD + LABH / 2 + 2, cyP + LABH + 8, botP + 12 + n.h / 2); n.cy = cy; n.y0 = cy - n.h / 2; cyP = cy; botP = n.y0 + n.h; } }
+  // 빠짐: 아래에서부터 — 그 마디의 가장 굵은 강이 수평이 되게, 아래 마디와 겹치지 않게
+  { let cyN = Infinity, topN = Infinity;
+    for (const n of [...exits].reverse()) {
+      const big = n.links.reduce((a, b) => (b.w > a.w ? b : a));
+      const bend = n === exits[exits.length - 1] ? CURVE : 0;             // 맨 아래 강은 조금 내려가며 굽게
+      const y0 = Math.min(big.vy0 - big.off + bend, topN - 12 - n.h, cyN - LABH - 8 - n.h / 2);
+      n.y0 = y0; n.cy = y0 + n.h / 2; cyN = n.cy; topN = n.y0;
+    } }
+  nodes.forEach(n => n.links.forEach(l => { l.ny0 = n.y0 + l.off; }));
+  const lastN = exits[exits.length - 1] || springs[springs.length - 1];
+  const H = Math.ceil(Math.max(colBottom, lastN.cy + LABH / 2, lastN.y0 + lastN.h) + 6);
+
+  const svg = L.sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': '외국인 · 기관의 돈이 갈래별로 들어가고 빠져나간 강 지도'});
+  const defs = L.sv('defs'); svg.append(defs);
+  const opOf = w => w >= 40 ? 0.5 : w >= 10 ? 0.62 : 0.85;
+  const bandD = l => { const a0 = l.ny0, b0 = l.ny0 + l.w, a1 = l.vy0, b1 = l.vy0 + l.w;
+    return `M${x0},${a0}C${xm},${a0} ${xm},${a1} ${x1},${a1}L${x1},${b1}C${xm},${b1} ${xm},${b0} ${x0},${b0}Z`; };
+  // 가는 강을 먼저 깔고 굵은 강을 위에 — 칠은 판 색과 미리 섞은 불투명 색(엇갈리는 곳은 큰 강 밑으로 지나감)
+  for (const l of [...links].sort((a, b) => a.w - b.w)) svg.append(L.sv('path', {d: bandD(l), fill: L.mix(CARD, l.buy ? UP : DN, opOf(l.w))}));
+  // 마디(샘 · 빠짐 · 마을)
+  for (const n of nodes) svg.append(L.sv('rect', {x: xL, y: n.y0, width: LBW, height: Math.max(3, n.h), rx: 2, fill: INK2, 'fill-opacity': 0.75}));
+  for (const f of fams) svg.append(L.sv('rect', {x: xV, y: f.cy - f.barH / 2, width: VBW, height: f.barH, rx: 2, fill: INK2, 'fill-opacity': 0.75}));
+
+  // 왼쪽 글: 누가 · 산 돈 / 판 돈
+  for (const n of nodes) {
+    svg.append(L.sv('text', {x: xL - 6, y: n.cy - 1, 'text-anchor': 'end', 'font-size': FN, 'font-weight': 700, fill: tok('--ink')}, n.inv.name));
+    svg.append(L.sv('text', {x: xL - 6, y: n.cy + 17, 'text-anchor': 'end', 'font-size': FS, 'font-weight': 700, fill: n.buy ? tok('--up-ink') : tok('--down-ink')}, n.buy ? '산 돈' : '판 돈'));
+  }
+  // 오른쪽 머리: 외국인 · 기관
+  svg.append(L.sv('text', {x: col1, y: 16, 'text-anchor': 'end', 'font-size': FS, fill: tok('--sub')}, '외국인'));
+  svg.append(L.sv('text', {x: col2, y: 16, 'text-anchor': 'end', 'font-size': FS, fill: tok('--sub')}, '기관'));
+  // 마을 글: 이름 · n곳 / 외국인 · 기관 숫자(억 원)
+  for (const f of fams) {
+    svg.append(L.sv('text', {x: lx, y: f.cy - 3, 'font-size': FN, 'font-weight': 700, fill: tok('--ink')}, f.label,
+      L.sv('tspan', {dx: 4, 'font-size': FS, 'font-weight': 400, fill: tok('--sub')}, `${f.n}곳`)));
+    svg.append(L.sv('text', {x: col1, y: f.cy + 14, 'text-anchor': 'end', 'font-size': FS, 'font-weight': 700, fill: inkOf(f.fo)}, num(f.fo)));
+    svg.append(L.sv('text', {x: col2, y: f.cy + 14, 'text-anchor': 'end', 'font-size': FS, 'font-weight': 700, fill: inkOf(f.in)}, num(f.in)));
+  }
+  map.append(L.el('div', {class: 'sh-maphead'}, L.el('span', {html: `<b>수급 자료 있는 ${nF}곳</b>`}), L.el('span', null, `${L.md(dFrom)} → ${L.md(dTo)} · ${dDays}거래일`)));
+  map.append(svg);
+  // 가장 큰 강 셋에 금액(강을 따라 적음)
+  const top3 = [...links].sort((a, b) => Math.abs(b.v) - Math.abs(a.v)).slice(0, 3);
+  top3.forEach((l, i) => {
+    const bg = L.mix(CARD, l.buy ? UP : DN, opOf(l.w)), ink = L.inkOn(bg);
+    const who = `${l.inv.name}${josa(l.inv.name, '이', '가')}`;
+    const t1 = `${who} ${l.buy ? '산' : '판'} 돈`, t2 = `${sgn(l.v)} ${won(l.v)}`;
+    const midY = (l.ny0 + l.vy0) / 2 + l.w / 2;
+    if (l.w >= 2 * FN + 16 && Math.max(tw(t1, FN, 400), tw(t2, FN)) < x1 - x0 - 16) {
+      svg.append(L.sv('text', {x: xm, y: midY - 3, 'text-anchor': 'middle', 'font-size': FN, fill: ink}, t1));
+      svg.append(L.sv('text', {x: xm, y: midY + 16, 'text-anchor': 'middle', 'font-size': FN, 'font-weight': 700, fill: ink}, t2));
+      return;
+    }
+    const id = `rv${i}`, a = l.ny0 + l.w / 2, b = l.vy0 + l.w / 2;
+    const cp = L.sv('path', {id, d: `M${x0},${a}C${xm},${a} ${xm},${b} ${x1},${b}`}); defs.append(cp);
+    const inside = l.w >= FS + 3, s = `${l.inv.name} ${t2}`;
+    // 강 밖에 적을 때는 마을 쪽으로 붙여(강들이 덜 엇갈리는 곳) — 글이 강 끝을 넘지 않게
+    const len = cp.getTotalLength(), half = tw(s, FS) / 2 + 8;
+    const at = inside ? 0.5 : Math.min(0.66, Math.max(0.5, 1 - half / len));
+    svg.append(L.sv('text', {'font-size': FS, 'font-weight': 700, dy: inside ? 4.5 : -(l.w / 2 + 5), class: 'halo',
+      fill: inside ? ink : (l.buy ? tok('--up-ink') : tok('--down-ink')), stroke: inside ? bg : CARD},
+      L.sv('textPath', {href: `#${id}`, startOffset: `${(at * 100).toFixed(1)}%`, 'text-anchor': 'middle'}, s)));
+  });
+
+  /* ③ 범례 · 읽은 것 · 근거 */
+  const swSvg = (...kids) => L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}, ...kids);
+  const swBand = (color, op, ya, yb, wd) => L.sv('path', {d: `M5,${ya}C27,${ya} 27,${yb} 49,${yb}L49,${yb + wd}C27,${yb + wd} 27,${ya + wd} 5,${ya + wd}Z`, fill: color, 'fill-opacity': op});
+  const bar = (x, y0, h) => L.sv('rect', {x, y: y0, width: 4, height: h, rx: 1, fill: INK2});
+  const lgWidth = swSvg(L.sv('rect', {x: 2, y: 4, width: 50, height: 2, rx: 1, fill: INK2, 'fill-opacity': 0.7}), L.sv('rect', {x: 2, y: 10, width: 50, height: 13, rx: 2, fill: INK2, 'fill-opacity': 0.45}));
+  const lgUp = swSvg(swBand(UP, 0.8, 4, 15, 6), bar(1, 2, 10), bar(49, 13, 10));
+  const lgDn = swSvg(swBand(DN, 0.8, 15, 4, 6), bar(1, 13, 10), bar(49, 2, 10));
+  const lgLeft = swSvg(bar(14, 2, 8), bar(14, 15, 9), L.sv('rect', {x: 18, y: 4, width: 30, height: 3, fill: UP, 'fill-opacity': 0.85}), L.sv('rect', {x: 18, y: 18, width: 30, height: 4, fill: DN, 'fill-opacity': 0.85}));
+  const lgRight = swSvg(bar(8, 3, 20), L.sv('rect', {x: 16, y: 6, width: 32, height: 4, rx: 1, fill: INK2}), L.sv('rect', {x: 16, y: 16, width: 14, height: 3, rx: 1, fill: tok('--up-ink')}), L.sv('rect', {x: 34, y: 16, width: 14, height: 3, rx: 1, fill: tok('--down-ink')}));
+
+  const foB = [...fams].sort((a, b) => b.fo - a.fo)[0], foS = [...fams].sort((a, b) => a.fo - b.fo)[0];
+  const inB = [...fams].sort((a, b) => b.in - a.in)[0], inS = [...fams].sort((a, b) => a.in - b.in)[0];
+  const amt = (v, pre = '') => `<b class="${L.cls(v)} nw">${sgn(v)} ${pre}${won(v)}</b>`;
+  const mostLine = (who, B, S, k) => `${who}${josa(who, '이', '가')} 가장 많이 산 갈래는 <b>${B.label}</b> <span class="nw">(${amt(B[k], '어림 ')})</span> · 가장 많이 판 갈래는 <b>${S.label}</b> <span class="nw">(${amt(S[k])})</span>`;
+  const big2 = T.fo + T.in;
+  const side3 = Math.sign(T.ind) !== 0 && Math.sign(T.fo) === Math.sign(T.in) && Math.sign(T.ind) === -Math.sign(T.fo) ? '반대쪽' : '같은 쪽';
+  const ratio = Math.abs(T.ind) > 0 ? Math.round(Math.abs(big2) / Math.abs(T.ind)) : null;
+  const read3 = `개인은 ${nF}곳 합계 ${amt(T.ind)} — 외국인 · 기관(합계 ${amt(big2)})과 ${side3}?` + (ratio && ratio >= 2 ? ` 크기는 그 ${ratio}분의 1쯤` : '');
+
+  L.fill({
+    num: 8,
+    title: '돈의 강',
+    sub: `강 폭 = ${dDays}거래일 동안 사고판 돈 · 빨강 = 산 돈 · 파랑 = 판 돈`,
+    question: `이 지도가 답하는 물음: <b>지난 ${dDays}거래일, 외국인과 기관의 돈은 어느 갈래로 들어가고 어디서 빠져나왔나?</b>`,
+    legend: [
+      [lgWidth, `<b>강 폭</b> = ${dDays}거래일 동안 산 돈 − 판 돈<span class="lg2">어림 · 억 원 · 굵을수록 큰 돈</span>`],
+      [lgUp, `<b>빨강 강</b> = 더 많이 산 곳(들어감)<span class="lg2">샘에서 마을로</span>`],
+      [lgDn, `<b>파랑 강</b> = 더 많이 판 곳(빠져나감)<span class="lg2">마을에서 왼쪽 아래로</span>`],
+      [lgLeft, `<b>왼쪽 샘</b> = 누가(외국인 · 기관)<span class="lg2">위는 산 돈, 아래는 판 돈</span>`],
+      [lgRight, `<b>오른쪽 마을</b> = 어느 갈래<span class="lg2">위일수록 더 많이 산 곳</span>`],
+    ],
+    reads: [mostLine('외국인', foB, foS, 'fo'), mostLine('기관', inB, inS, 'in'), read3].map(t => `<span>${t}</span>`),   // li 가 칸(grid)이라 한 덩이로 감쌈
+    why: `<b class="nw">잘 보이는 것:</b> 큰손(외국인 · 기관) 돈이 들어간 갈래와 빠져나간 갈래, 가장 큰 강이 얼마나 큰지 · <b class="nw">잘 안 보이는 것:</b> ${nAll}곳 가운데 ${nF}곳만, 금액은 어림, ${dDays}거래일만, 작은 강끼리의 차이(가는 실처럼 보임)`,
+    foot: [
+      `기준: 한국 · 수급 자료 있는 ${nF}곳(전체 ${nAll}곳 가운데) · ${L.korDate(dFrom)} ~ ${L.korDate(dTo)} ${dDays}거래일` + (sameDates ? ` · ${nF}곳 모두 같은 기간` : ` · ${periods[0][1]}곳의 기간(다른 기간 ${nF - periods[0][1]}곳)`),
+      `금액은 어림: 주 수 × ${L.korDate(P.asOf)} 종가 ÷ 1억 = 억 원(날마다의 값이 아닌 마지막 종가로 셈)` + (late.length ? ` · ${late.map(c => c.name).join(' · ')}${josa(late[late.length - 1].name, '은', '는')} ${L.korDate(late[0].c60last)} 종가(${L.md(P.asOf)} 종가 없음)` : ''),
+      `갈래마다 더함 — 같은 갈래 안에서 산 곳과 판 곳은 서로 지워짐 · 마을 차례 = 외국인 + 기관 합이 큰 순 · 마을 옆 n곳 = 그 갈래에서 수급 자료 있는 곳 수`,
+      `세 손(외국인 · 기관 · 개인)만 셈 — 세 손을 더해도 0 이 안 되는 곳이 있음(가장 큰 곳: ${gapTop.name} ${sgn(gapOf(gapTop))} ${won(gapOf(gapTop))}) · 나머지는 이 자료에 없는 손`,
+      `출처: 판의 수급 자료(외국인 · 기관 · 개인 순매수 주 수) · 갈래 = ATLAS 큰 갈래 ${K.families.length}개`,
+      `샘플 — 아직 사이트에 없음`,
+    ],
+  });
+
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>
