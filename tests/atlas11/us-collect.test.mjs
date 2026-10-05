@@ -57,7 +57,9 @@ test('자료 받기 흐름(가짜 응답): 1,500곳 → 365곳 · 추정 칸 버
     assert.equal(ctx.index.length, 3); assert.ok(ctx.news.length >= 300);
     const runs = await fs.readdir('reports/atlas11/us/runs'), run = path.join('reports/atlas11/us/runs', runs[0]);
     const files = (await fs.readdir(run)).sort();
-    assert.deepEqual(files, ['candidates.json.gz', 'context.json.gz', 'input.json.gz', 'log.json', 'proposal.json', 'samples']);
+    assert.deepEqual(files, ['candidates.json.gz', 'context.json.gz', 'history.json.gz', 'input.json.gz', 'log.json', 'proposal.json', 'samples']);
+    const hist = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(run, 'history.json.gz'))).toString());
+    assert.equal(Object.keys(hist.rows).length, 1500, '1,500곳 일봉(날짜 · 종가)을 모두 남김 — 규칙을 고칠 때 다시 받지 않게');
     const cand = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(run, 'candidates.json.gz'))).toString());
     assert.equal(cand.candidates.length, 1500);
     // 두 번째는 같은 365곳 그대로(update) — 일봉만 새로
