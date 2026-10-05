@@ -1,0 +1,38 @@
+# ATLAS 미국 주식 판 — 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」
+#   지금(1단계)은 「어느 자료 출처가 깃허브 실행기에서 열리나」만 시험한다(mode=probe · 처음 값).
+#   결과는 reports/atlas11/us/ 에만 적는다 — 한국 판 파일(public/data/atlas11/view · reports/atlas11/operations …)은 건드리지 않는다.
+#   예약(cron)은 두지 않는다 — 사장님이 「Run workflow」를 누를 때만 돈다(예약 줄은 저장소 주인만 살릴 수 있음 · docs/ATLAS_원칙.md 규칙 7).
+name: 미국 주식 자료 받기
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'probe = 자료 출처 시험(처음)'
+        required: false
+        default: 'probe'
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-us
+  cancel-in-progress: false
+jobs:
+  us:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 미국 자료 출처 시험
+        if: inputs.mode == 'probe' || inputs.mode == ''
+        run: timeout 900 node scripts/atlas11/us/probe.mjs || true
+      - name: 기록 올리기(reports/atlas11/us 만)
+        if: always()
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -f reports/atlas11/us
+          git commit -q -m "atlas11 us ${{ inputs.mode || 'probe' }} [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
