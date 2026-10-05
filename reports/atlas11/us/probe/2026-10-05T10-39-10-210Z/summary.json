@@ -1,0 +1,651 @@
+{
+ "at": "2026-10-05T10:39:23.268Z",
+ "runner": "GitHub Actions 1000000079",
+ "summary": [
+  {
+   "name": "naver_nasdaq_cap",
+   "url": "https://api.stock.naver.com/stock/exchange/NASDAQ/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 55372,
+   "type": "application/json;charset=UTF-8",
+   "ms": 987,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ]
+   }
+  },
+  {
+   "name": "naver_nyse_cap",
+   "url": "https://api.stock.naver.com/stock/exchange/NYSE/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 54019,
+   "type": "application/json;charset=UTF-8",
+   "ms": 192,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ]
+   }
+  },
+  {
+   "name": "naver_amex_cap",
+   "url": "https://api.stock.naver.com/stock/exchange/AMEX/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 48806,
+   "type": "application/json;charset=UTF-8",
+   "ms": 178,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ]
+   }
+  },
+  {
+   "name": "naver_m_nasdaq_cap",
+   "url": "https://m.stock.naver.com/api/stocks/marketValue/NASDAQ?page=1&pageSize=20",
+   "status": 404,
+   "bytes": 0,
+   "type": null,
+   "ms": 691,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "naver_aapl_basic",
+   "url": "https://api.stock.naver.com/stock/AAPL.O/basic",
+   "status": 200,
+   "bytes": 6841,
+   "type": "application/json;charset=UTF-8",
+   "ms": 145,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ]
+   }
+  },
+  {
+   "name": "naver_aapl_integration",
+   "url": "https://api.stock.naver.com/stock/AAPL.O/integration",
+   "status": 200,
+   "bytes": 46124,
+   "type": "application/json;charset=UTF-8",
+   "ms": 159,
+   "err": null,
+   "shape": {
+    "keys": [
+     "reports",
+     "industryCompareInfo",
+     "corporateOverview",
+     "consensusInfo",
+     "summaries"
+    ]
+   }
+  },
+  {
+   "name": "naver_aapl_finance_annual",
+   "url": "https://api.stock.naver.com/stock/AAPL.O/finance/annual",
+   "status": 200,
+   "bytes": 2419,
+   "type": "application/json;charset=UTF-8",
+   "ms": 144,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ]
+   }
+  },
+  {
+   "name": "naver_aapl_price",
+   "url": "https://api.stock.naver.com/stock/AAPL.O/price?page=1&pageSize=30",
+   "status": 200,
+   "bytes": 16394,
+   "type": "application/json;charset=UTF-8",
+   "ms": 145,
+   "err": null,
+   "shape": {
+    "array": 30,
+    "first": "{\"stockExchangeType\":{\"code\":\"NSQ\",\"zoneId\":\"EST5EDT\",\"nationType\":\"USA\",\"delayTime\":0,\"startTime\":\"0930\",\"endTime\":\"1600\",\"closePriceSendTime\":\"2031\",\"nameKor\":\"나스닥 증권거래소\",\"nameEng\":\"NASDAQ Stock Exchange\",\"name\":\"NASDAQ\",\"nationCode\":\"USA\",\"nationName\":\"미국\",\"stockType\":\"worldstock\"},\"localTradedAt\":\"2026-10-02T16:00:00-04:00\",\"closePrice\":\"333.69\",\"compareToPreviousPrice\":{\"code\":\"2\",\"text\":\"상승\""
+   }
+  },
+  {
+   "name": "naver_aapl_chart_day",
+   "url": "https://api.stock.naver.com/chart/foreign/item/AAPL.O/day?startDateTime=202608260000&endDateTime=202610052359",
+   "status": 200,
+   "bytes": 3701,
+   "type": "application/json;charset=UTF-8",
+   "ms": 143,
+   "err": null,
+   "shape": {
+    "array": 27,
+    "first": "{\"localDate\":\"20260826\",\"closePrice\":313.45,\"openPrice\":310.3,\"highPrice\":315.43,\"lowPrice\":308.8001,\"accumulatedTradingVolume\":34024486}"
+   }
+  },
+  {
+   "name": "naver_aapl_chart_candle",
+   "url": "https://api.stock.naver.com/chart/foreign/item/AAPL.O?periodType=dayCandle",
+   "status": 200,
+   "bytes": 15236,
+   "type": "application/json;charset=UTF-8",
+   "ms": 152,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "infoType",
+     "periodType",
+     "newlyListed",
+     "stockExchangeType",
+     "hasVolume",
+     "decimalUnit",
+     "priceInfos"
+    ]
+   }
+  },
+  {
+   "name": "naver_aapl_news",
+   "url": "https://api.stock.naver.com/news/stock/AAPL.O?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 2919,
+   "type": "application/json;charset=UTF-8",
+   "ms": 152,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"total\":1,\"items\":[{\"id\":\"0080005422185\",\"officeId\":\"008\",\"articleId\":\"0005422185\",\"officeName\":\"머니투데이\",\"datetime\":\"202610051837\",\"type\":1,\"title\":\"간만에 테슬라가 순매수 1위…주가 하락하자 샌디스크·메타 매수[서학...\",\"body\":\"미국 증시가 국채수익률 상승에 약세를 보인 가운데 서학개미들의 매도세가 잦아들고 주가가 하락한 종목에 저가 매수세가 유입되면서 주간 순매수 규모가 7억7000만달러를 넘어섰다. 많이 오른 기술주에 대한 차익 매물이 상당 부분... \",\"photoType\":1,\"imageOriginLink\":\"https://imgnews.pstatic.net/image/ori"
+   }
+  },
+  {
+   "name": "naver_aapl_news_world",
+   "url": "https://api.stock.naver.com/news/worldStock/AAPL.O?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1776,
+   "type": "application/json;charset=UTF-8",
+   "ms": 151,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":0,\"subcontent\":\"샌프란시스코, 10월 2일 (로이터) - 애플은 금요일, AI 에이전트가 맥에 저장된 모든 데이터에 대한 접근 권한을 요청할 때 이를 더 명확하게 알릴 수 있도록 맥 운영체제를 변경할 계획이라고 밝혔다. 일부 사용자들은 미사용 구독 서비스를 해지하거나 더 좋은 가격을 협상하는 등 복잡한 작업을 수행할 수 있는 메타의 AI 에이전트 ‘뮤즈(Muse)’를...\",\"thumbUrl\":null,\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2762010\",\"tit\":\"애플은 메타의 ‘뮤즈’가 불만을 야기한 데 이어, 맥 데이터에 대한 AI 요청을 표시하겠다고 밝혔다\",\"dt\":\"20261003073818\"}"
+   }
+  },
+  {
+   "name": "naver_jpm_basic",
+   "url": "https://api.stock.naver.com/stock/JPM/basic",
+   "status": 200,
+   "bytes": 6720,
+   "type": "application/json;charset=UTF-8",
+   "ms": 165,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ]
+   }
+  },
+  {
+   "name": "naver_jpm_n_basic",
+   "url": "https://api.stock.naver.com/stock/JPM.N/basic",
+   "status": 409,
+   "bytes": 61,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ]
+   }
+  },
+  {
+   "name": "naver_jpm_finance_annual",
+   "url": "https://api.stock.naver.com/stock/JPM/finance/annual",
+   "status": 200,
+   "bytes": 2383,
+   "type": "application/json;charset=UTF-8",
+   "ms": 146,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ]
+   }
+  },
+  {
+   "name": "naver_index_spx",
+   "url": "https://api.stock.naver.com/index/.INX/basic",
+   "status": 200,
+   "bytes": 5241,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "compareToPreviousClosePriceRaw"
+    ]
+   }
+  },
+  {
+   "name": "naver_index_ixic",
+   "url": "https://api.stock.naver.com/index/.IXIC/basic",
+   "status": 200,
+   "bytes": 5269,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "compareToPreviousClosePriceRaw"
+    ]
+   }
+  },
+  {
+   "name": "naver_index_spx_price",
+   "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=10",
+   "status": 200,
+   "bytes": 5787,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 10,
+    "first": "{\"stockExchangeType\":{\"code\":\"NYS\",\"zoneId\":\"EST5EDT\",\"nationType\":\"USA\",\"delayTime\":0,\"startTime\":\"0930\",\"endTime\":\"1600\",\"closePriceSendTime\":\"2031\",\"nameKor\":\"뉴욕 거래소\",\"nameEng\":\"New York Stock Exchange\",\"name\":\"NYSE\",\"nationCode\":\"USA\",\"nationName\":\"미국\",\"stockType\":\"worldstock\"},\"localTradedAt\":\"2026-10-02T16:59:13-04:00\",\"worldIndexSymbol\":\".INX\",\"openPrice\":\"7,726.24\",\"highPrice\":\"7,754.67\",\""
+   }
+  },
+  {
+   "name": "naver_industry_list",
+   "url": "https://api.stock.naver.com/stock/industry/list?nationType=USA",
+   "status": 404,
+   "bytes": 140,
+   "type": "application/json;charset=UTF-8",
+   "ms": 216,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timestamp",
+     "status",
+     "error",
+     "message",
+     "path"
+    ]
+   }
+  },
+  {
+   "name": "sec_tickers",
+   "url": "https://www.sec.gov/files/company_tickers_exchange.json",
+   "status": 403,
+   "bytes": 1925,
+   "type": "text/html",
+   "ms": 45,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "sec_submissions_aapl",
+   "url": "https://data.sec.gov/submissions/CIK0000320193.json",
+   "status": 403,
+   "bytes": 4815,
+   "type": "text/html",
+   "ms": 101,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "sec_frames_net_2024",
+   "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/NetIncomeLoss/USD/CY2024.json",
+   "status": 403,
+   "bytes": 4815,
+   "type": "text/html",
+   "ms": 32,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "sec_frames_equity_2024q4",
+   "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/StockholdersEquity/USD/CY2024Q4I.json",
+   "status": 403,
+   "bytes": 4815,
+   "type": "text/html",
+   "ms": 63,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "sec_frames_liab_2024q4",
+   "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/Liabilities/USD/CY2024Q4I.json",
+   "status": 403,
+   "bytes": 4815,
+   "type": "text/html",
+   "ms": 29,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "sec_frames_op_2024",
+   "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/OperatingIncomeLoss/USD/CY2024.json",
+   "status": 403,
+   "bytes": 4815,
+   "type": "text/html",
+   "ms": 81,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "wiki_sp500",
+   "url": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+   "status": 200,
+   "bytes": 570128,
+   "type": "text/html; charset=UTF-8",
+   "ms": 26,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "nasdaq_screener",
+   "url": "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true",
+   "status": 200,
+   "bytes": 2216202,
+   "type": "application/json; charset=utf-8",
+   "ms": 99,
+   "err": null,
+   "shape": {
+    "keys": [
+     "data",
+     "message",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "nasdaq_hist_aapl",
+   "url": "https://api.nasdaq.com/api/quote/AAPL/historical?assetclass=stocks&fromdate=2026-08-26&limit=60",
+   "status": 200,
+   "bytes": 3317,
+   "type": "application/json; charset=utf-8",
+   "ms": 169,
+   "err": null,
+   "shape": {
+    "keys": [
+     "data",
+     "message",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "stooq_aapl",
+   "url": "https://stooq.com/q/d/l/?s=aapl.us&i=d",
+   "status": 403,
+   "bytes": 226,
+   "type": "text/html",
+   "ms": 630,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "stooq_spx",
+   "url": "https://stooq.com/q/d/l/?s=%5Espx&i=d",
+   "status": 403,
+   "bytes": 226,
+   "type": "text/html",
+   "ms": 150,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "nasdaq_fin_aapl",
+   "url": "https://api.nasdaq.com/api/company/AAPL/financials?frequency=1",
+   "status": 200,
+   "bytes": 10680,
+   "type": "application/json; charset=utf-8",
+   "ms": 17,
+   "err": null,
+   "shape": {
+    "keys": [
+     "data",
+     "message",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "nasdaq_fin_jpm",
+   "url": "https://api.nasdaq.com/api/company/JPM/financials?frequency=1",
+   "status": 200,
+   "bytes": 10527,
+   "type": "application/json; charset=utf-8",
+   "ms": 42,
+   "err": null,
+   "shape": {
+    "keys": [
+     "data",
+     "message",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "nasdaq_fin_brkb",
+   "url": "https://api.nasdaq.com/api/company/BRK.B/financials?frequency=1",
+   "status": 200,
+   "bytes": 10734,
+   "type": "application/json; charset=utf-8",
+   "ms": 27,
+   "err": null,
+   "shape": {
+    "keys": [
+     "data",
+     "message",
+     "status"
+    ]
+   }
+  },
+  {
+   "name": "yahoo_ts_aapl",
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?symbol=AAPL&type=annualTotalLiabilitiesNetMinorityInterest,annualStockholdersEquity,annualNetIncome,annualOperatingIncome&period1=1609459200&period2=1798761600",
+   "status": 200,
+   "bytes": 5687,
+   "type": "application/json;charset=utf-8",
+   "ms": 58,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timeseries"
+    ]
+   }
+  },
+  {
+   "name": "naver_aapl_finance_quarter",
+   "url": "https://api.stock.naver.com/stock/AAPL.O/finance/quarter",
+   "status": 200,
+   "bytes": 3107,
+   "type": "application/json;charset=UTF-8",
+   "ms": 554,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ]
+   }
+  },
+  {
+   "name": "yahoo_q1_aapl",
+   "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=1mo&interval=1d",
+   "status": 200,
+   "bytes": 3408,
+   "type": "application/json;charset=utf-8",
+   "ms": 80,
+   "err": null,
+   "shape": {
+    "keys": [
+     "chart"
+    ]
+   }
+  },
+  {
+   "name": "yahoo_q2_aapl",
+   "url": "https://query2.finance.yahoo.com/v8/finance/chart/AAPL?range=1mo&interval=1d",
+   "status": 200,
+   "bytes": 3408,
+   "type": "application/json;charset=utf-8",
+   "ms": 65,
+   "err": null,
+   "shape": {
+    "keys": [
+     "chart"
+    ]
+   }
+  }
+ ]
+}
