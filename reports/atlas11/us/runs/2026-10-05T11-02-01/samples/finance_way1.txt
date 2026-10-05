@@ -1,0 +1,1 @@
+{"itemCode":"C_pn","financePeriodType":"annual","financeInfo":null,"corporationSummary":null}

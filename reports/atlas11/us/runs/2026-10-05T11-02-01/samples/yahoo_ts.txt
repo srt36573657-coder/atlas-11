@@ -1,0 +1,1 @@
+{"timeseries":{"result":[{"meta":{"symbol":["BRKA"],"type":["annualTotalLiabilitiesNetMinorityInterest"]}},{"meta":{"symbol":["BRKA"],"type":["annualNetIncome"]}},{"meta":{"symbol":["BRKA"],"type":["annualOperatingIncome"]}},{"meta":{"symbol":["BRKA"],"type":["annualStockholdersEquity"]}}],"error":null}}
