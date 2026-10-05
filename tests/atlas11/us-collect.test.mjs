@@ -50,7 +50,7 @@ function fakeFetch(url) {
   return {ok: false, status: 404, text: async () => 'not found', headers: new Map()};
 }
 
-test('자료 받기 흐름(가짜 응답): 1,500곳 → 365곳 · 추정 칸 버림 · ETF 빠짐 · 이력 짧은 회사 빠짐 · 입력 · 기록 폴더', async () => {
+test('자료 받기 흐름(가짜 응답): 후보 전부 → 365곳 · 추정 칸 버림 · ETF 빠짐 · 이력 짧은 회사 빠짐 · 입력 · 기록 폴더', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'atlas-usc-')), cwd = process.cwd(), real = globalThis.fetch;
   globalThis.fetch = async url => fakeFetch(String(url));
   process.env.ATLAS_US_PAUSE = '0';
@@ -84,9 +84,9 @@ test('자료 받기 흐름(가짜 응답): 1,500곳 → 365곳 · 추정 칸 버
     const files = (await fs.readdir(run)).sort();
     assert.deepEqual(files, ['candidates.json.gz', 'context.json.gz', 'history.json.gz', 'input.json.gz', 'log.json', 'proposal.json', 'samples']);
     const hist = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(run, 'history.json.gz'))).toString());
-    assert.equal(Object.keys(hist.rows).length, 1500, '1,500곳 일봉(날짜 · 종가)을 모두 남김 — 규칙을 고칠 때 다시 받지 않게');
+    assert.equal(Object.keys(hist.rows).length, companies.length - 1, '후보 모두의 일봉(날짜 · 종가)을 남김 — 규칙을 고칠 때 다시 받지 않게(ETF 1곳만 목록에서 빠짐)');
     const cand = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(run, 'candidates.json.gz'))).toString());
-    assert.equal(cand.candidates.length, 1500);
+    assert.equal(cand.candidates.length, companies.length - 1);
     // 두 번째는 같은 365곳 그대로(update) — 일봉만 새로
     const r2 = await collect({mode: 'auto'});
     assert.equal(r2.mode, 'update');
