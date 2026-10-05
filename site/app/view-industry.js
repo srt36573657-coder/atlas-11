@@ -26,7 +26,7 @@ export async function renderIndustry(main, {hash, manifest}) {
   const board = await loadBoard();
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
   // 들어온 탭으로(2026-10-05 「잡스라면」 17번) · 출목표 탭에서 회사 화면을 거쳐 왔으면 「‹ 출목표」(「잡스가 … 36가지」 E6 — 아래 탭과 되돌아가기가 같은 곳)
-  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
+  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 지도') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));
