@@ -54,6 +54,12 @@ const T = [
   // ⑤ Stooq 일봉(CSV)
   ['stooq_aapl', 'https://stooq.com/q/d/l/?s=aapl.us&i=d', {'User-Agent': UA}],
   ['stooq_spx', 'https://stooq.com/q/d/l/?s=%5Espx&i=d', {'User-Agent': UA}],
+  // ⑤-2 부채비율(빚 ÷ 자기자본)을 줄 곳 — 네이버 해외 결산 표에는 ROE · 부채비율이 없다(2026-10-05 19:36 첫 실행에서 확인)
+  ['nasdaq_fin_aapl', 'https://api.nasdaq.com/api/company/AAPL/financials?frequency=1', {'User-Agent': UA, Accept: 'application/json, text/plain, */*', Origin: 'https://www.nasdaq.com', Referer: 'https://www.nasdaq.com/'}],
+  ['nasdaq_fin_jpm', 'https://api.nasdaq.com/api/company/JPM/financials?frequency=1', {'User-Agent': UA, Accept: 'application/json, text/plain, */*', Origin: 'https://www.nasdaq.com', Referer: 'https://www.nasdaq.com/'}],
+  ['nasdaq_fin_brkb', 'https://api.nasdaq.com/api/company/BRK.B/financials?frequency=1', {'User-Agent': UA, Accept: 'application/json, text/plain, */*', Origin: 'https://www.nasdaq.com', Referer: 'https://www.nasdaq.com/'}],
+  ['yahoo_ts_aapl', 'https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?symbol=AAPL&type=annualTotalLiabilitiesNetMinorityInterest,annualStockholdersEquity,annualNetIncome,annualOperatingIncome&period1=1609459200&period2=1798761600', {'User-Agent': UA}],
+  ['naver_aapl_finance_quarter', 'https://api.stock.naver.com/stock/AAPL.O/finance/quarter', naver],
   // ⑥ 야후(다시 확인)
   ['yahoo_q1_aapl', 'https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=1mo&interval=1d', {'User-Agent': UA}],
   ['yahoo_q2_aapl', 'https://query2.finance.yahoo.com/v8/finance/chart/AAPL?range=1mo&interval=1d', {'User-Agent': UA}],
@@ -62,7 +68,7 @@ const summary = [];
 for (const [name, url, headers] of T) {
   const t = Date.now(); let status = 0, text = '', err = null, type = null;
   try { const r = await fetch(url, {headers, signal: AbortSignal.timeout(25000)}); status = r.status; type = r.headers.get('content-type'); text = await r.text(); } catch (e) { err = String(e?.cause?.code ?? e?.message ?? e).slice(0, 200); }
-  await fs.writeFile(path.join(out, `${name}.txt`), text.slice(0, 20000));
+  await fs.writeFile(path.join(out, `${name}.txt`), text.slice(0, /^(nasdaq_fin|yahoo_ts)/.test(name) ? 80000 : 20000));
   let shape = null;
   try { const j = JSON.parse(text); shape = Array.isArray(j) ? {array: j.length, first: JSON.stringify(j[0]).slice(0, 400)} : {keys: Object.keys(j).slice(0, 30)}; } catch {}
   summary.push({name, url, status, bytes: text.length, type, ms: Date.now() - t, err, shape});
