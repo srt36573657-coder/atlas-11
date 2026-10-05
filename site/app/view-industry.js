@@ -10,7 +10,7 @@ import {state, loadBoard} from './store.js';
 import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, sunTag, sunNum} from './parts.js';
 import {sunOf, sunCount} from './shapes.js';
 import {upLine} from './view-home.js';
-import {riseDesc} from './family.js';
+import {riseDesc, familyOf} from './family.js';
 
 /** 회사 카드 — sun = 태양 회사면 이름 곁 작은 해(2026-10-05 15:24 「잡스가 … 36가지」 B3 · 카드는 그대로 넷) */
 function card(c, scale, sun = false) {
@@ -25,7 +25,8 @@ export async function renderIndustry(main, {hash, manifest}) {
   const id = hash.replace(/^#\/i\//, '');
   const board = await loadBoard();
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
-  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장'); // 들어온 탭으로(2026-10-05 「잡스라면」 17번)
+  // 들어온 탭으로(2026-10-05 「잡스라면」 17번) · 출목표 탭에서 회사 화면을 거쳐 왔으면 「‹ 출목표」(「잡스가 … 36가지」 E6 — 아래 탭과 되돌아가기가 같은 곳)
+  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));
@@ -50,6 +51,8 @@ export async function renderIndustry(main, {hash, manifest}) {
     h('section', {class: 't-sec', 'aria-label': `${g.label} ${cs.length}곳`},
       h('h2', {class: 't-h2'}, `${cs.length}곳`, h('small', null, ' · 지난 20거래일 많이 오른 순 · 누르면 회사 화면(출목표 · 일정 · 공시)')),
       h('p', {class: 't-sub'}, `${scaleText(sc)}${fday ? ` · 수급: ${korDate(fday)}까지 5거래일 합(외국인·기관 순매수)` : ''}`),
-      h('div', {class: 'b-list'}, ...cs.map(c => card(c, sc, shp.sparkle.has(c.code))))),
+      h('div', {class: 'b-list'}, ...cs.map(c => card(c, sc, shp.sparkle.has(c.code)))),
+      // 출목표의 그 업종 묶음으로(「잡스가 … 36가지」 E5) — 같은 큰 갈래 업종들의 출목표를 한 화면에서 견줌
+      h('p', {class: 'i-road'}, h('a', {href: '#/road/g/' + g.id}, `출목표에서 「${familyOf(g.label).label}」 갈래와 함께 보기 ›`))),
     foot(manifest)));
 }

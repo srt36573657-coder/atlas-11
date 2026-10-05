@@ -66,6 +66,18 @@ function sunCheck(shp, code, asOf) {
       h('a', {class: 'sun-go', href: '#/road/sun'}, `출목표에서 태양 ${shp.sparkle.size}곳 모아 보기 ›`)));
 }
 
+/** 오른 순 자리 · 앞뒤 회사(2026-10-05 15:24 「잡스가 … 36가지」 E2 · E3 · E4) — 「‹ 11위 · 오른 순 365곳 가운데 12위 · 13위 ›」
+   가운데를 누르면 출목표 「오른 순」의 그 칸으로(#/road/at/CODE) · 양옆은 오른 순 바로 앞 · 뒤 회사(되돌아가지 않고 넘겨 보기) */
+function rankNav(board, s) {
+  const ranked = [...(board?.companies ?? [])].sort(riseDesc), i = ranked.findIndex(c => c.code === s.code), N = ranked.length;
+  if (i < 0) return null;
+  const prev = ranked[i - 1], next = ranked[i + 1];
+  return h('nav', {class: 'c-rank', 'aria-label': `오른 순 ${N}곳 가운데 ${i + 1}위 · 앞뒤 회사`},
+    prev ? h('a', {class: 'c-rk-b c-rk-prev', href: '#/stock/' + prev.code, 'aria-label': `오른 순 ${i}위 ${prev.name}`, title: prev.name}, `‹ ${i}위`) : h('span', {class: 'c-rk-b c-rk-none', 'aria-hidden': 'true'}),
+    h('a', {class: 'c-rk-mid', href: '#/road/at/' + s.code}, `오른 순 ${N}곳 가운데 ${i + 1}위`, h('small', null, ' · 출목표 자리 ›')),
+    next ? h('a', {class: 'c-rk-b c-rk-next', href: '#/stock/' + next.code, 'aria-label': `오른 순 ${i + 2}위 ${next.name}`, title: next.name}, `${i + 2}위 ›`) : h('span', {class: 'c-rk-b c-rk-none', 'aria-hidden': 'true'}));
+}
+
 /** 같은 업종의 다른 회사(지난 20거래일 많이 오른 순 · 2026-10-05 11:36) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(같은 눈금) · ▲변화 */
 function nearBox(board, s, shp = null) {
   const g = (board?.groups ?? []).find(x => x.id === s.group?.id); if (!g) return null;
@@ -74,6 +86,7 @@ function nearBox(board, s, shp = null) {
   const sc = sparkScale(cs);
   return h('section', {class: 'b-box c-near', 'aria-label': `같은 업종 ${cs.length}곳`},
     h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 많이 오른 순 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
+    h('p', {class: 'c-near-go'}, h('a', {href: '#/i/' + g.id}, `${g.label} 업종 화면 · 누가 끌었나 ›`)), // 출목표에서 왔어도 그 업종 화면으로 가는 길(E6)
     h('ol', {class: 'nc-list'}, ...cs.map(c => h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + c.code},
       h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name, sunTag(shp?.sparkle.has(c.code))), h('small', {class: 'nc-ind'}, c.sector ?? '')),
       sparkSvg(c, sc),
@@ -100,7 +113,7 @@ export async function renderCompany(main, {hash, manifest}) {
       // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
       h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true}),
-      h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : '')),
+      h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : ''), rankNav(board, s)),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false}), sunCheck(shp, s.code, board?.asOf ?? s.date)),

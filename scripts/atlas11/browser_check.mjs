@@ -379,6 +379,38 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       check(`${label} 회사 ${c.name}: 수급·기사 칸 기사 줄 「${nm ?? '기사 있음'}」 — 회사 화면이 저를 가리키지 않음`, nm === want, {nm, want}); }
   }
 
+  // ②-2 이어 보기(2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」 E2~E6)
+  {
+    const RK = [...board.companies].sort(riseDesc), press2 = async loc => { await loc.scrollIntoViewIfNeeded(); if (mobile) await loc.tap(); else await loc.click(); };
+    const rankRead = () => page.evaluate(() => { const n = document.querySelector('.c-rank'); return n ? {prev: n.querySelector('.c-rk-prev')?.getAttribute('href') ?? null, prevT: n.querySelector('.c-rk-prev')?.textContent.trim() ?? null, next: n.querySelector('.c-rk-next')?.getAttribute('href') ?? null, nextT: n.querySelector('.c-rk-next')?.textContent.trim() ?? null, mid: n.querySelector('.c-rk-mid')?.textContent.trim(), midHref: n.querySelector('.c-rk-mid')?.getAttribute('href')} : null; });
+    const rkMis = [];
+    for (const i of [0, 12, RK.length - 1]) { const c = RK[i]; await page.goto(base + '/#/stock/' + c.code, {waitUntil: 'networkidle'}); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(150);
+      const r = await rankRead(), want = {prev: i ? '#/stock/' + RK[i - 1].code : null, prevT: i ? `‹ ${i}위` : null, next: RK[i + 1] ? '#/stock/' + RK[i + 1].code : null, nextT: RK[i + 1] ? `${i + 2}위 ›` : null, mid: `오른 순 ${RK.length}곳 가운데 ${i + 1}위 · 출목표 자리 ›`, midHref: '#/road/at/' + c.code};
+      if (JSON.stringify(r) !== JSON.stringify(want)) rkMis.push({i, r, want}); }
+    check(`${label} 회사 화면 오른 순 자리 「‹ n위 · 오른 순 ${RK.length}곳 가운데 n위 · n위 ›」 = 따로 센 차례(1위 · 13위 · ${RK.length}위)`, !rkMis.length, {rkMis: rkMis.slice(0, 2)});
+    // 13위 회사에서 「14위 ›」 → 14위 회사 · 가운데 → 출목표 오른 순 그 칸(테)
+    await page.goto(base + '/#/stock/' + RK[12].code, {waitUntil: 'networkidle'}); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(150);
+    await press2(page.locator('.c-rk-next')); await page.waitForFunction(code => location.hash === '#/stock/' + code && document.querySelector('.c-chart svg.lc'), RK[13].code); await page.waitForTimeout(200);
+    const t14 = await page.evaluate(() => document.querySelector('.b-title')?.innerText.trim());
+    check(`${label} 회사 화면 「14위 ›」 ${mobile ? '터치' : '누름'} → 오른 순 14위 「${t14}」 회사 화면`, t14 === RK[13].name, {t14});
+    await press2(page.locator('.c-rk-mid')); await page.waitForSelector('.f-body[data-mode="rise"][data-ready] .f-tile.f-hit'); await page.waitForTimeout(300);
+    const at = await page.evaluate(() => { const t = document.querySelector('.f-tile.f-hit'), b = t?.getBoundingClientRect(); return {hash: location.hash, tab: document.querySelector('.f-body')?.dataset.tab, code: t?.dataset.code, focus: document.activeElement === t, inView: b ? b.top >= 0 && b.bottom <= innerHeight + 1 || (b.top < innerHeight / 2 && b.bottom > innerHeight / 2) : false, active: document.querySelector('.bottom-link.active')?.dataset.route}; });
+    check(`${label} 회사 화면 「오른 순 … 14위 · 출목표 자리 ›」 → 출목표 「오른 순」 「1위~20위」 탭의 그 칸(금빛 테 · 화면 가운데 · 초점)`, at.hash === '#/road' && at.tab === 'r1' && at.code === RK[13].code && at.focus && at.inView && at.active === 'road', at);
+    // 그 칸 → 회사 → 같은 업종 칸 「… 업종 화면 ›」 → 업종 화면 「‹ 출목표」(아래 탭 「출목표」 눌린 채로)
+    await press2(page.locator(`.f-tile[data-code="${RK[13].code}"]`)); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(200);
+    const g13 = board.groups.find(g => g.id === RK[13].group?.id), ng = await page.evaluate(() => ({href: document.querySelector('.c-near-go a')?.getAttribute('href') ?? null, t: document.querySelector('.c-near-go a')?.textContent.trim() ?? null}));
+    check(`${label} 회사 화면 같은 업종 칸 「${ng.t}」 → #/i/${g13?.id}`, ng.href === '#/i/' + g13?.id && ng.t === `${g13?.label} 업종 화면 · 누가 끌었나 ›`, ng);
+    await press2(page.locator('.c-near-go a')); await page.waitForSelector(`article.i-page[data-group="${g13.id}"] .b-card`); await page.waitForTimeout(200);
+    const ib = await page.evaluate(() => ({back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route, road: document.querySelector('.i-road a')?.getAttribute('href') ?? null, roadT: document.querySelector('.i-road a')?.textContent.trim() ?? null}));
+    const fam13 = familyOf(g13.label);
+    check(`${label} 출목표 → 회사 → 업종 화면: 되돌아가기 「${ib.back[1]}」 · 아래 탭 「출목표」 눌림 · 「${ib.roadT}」`, ib.back[0] === '#/road' && ib.back[1] === '‹ 출목표' && ib.active === 'road' && ib.road === '#/road/g/' + g13.id && ib.roadT === `출목표에서 「${fam13.label}」 갈래와 함께 보기 ›`, ib);
+    // 업종 화면 「출목표에서 … 함께 보기 ›」 → 출목표 「업종별」 그 갈래 탭 · 그 업종 묶음(금빛 테 · 화면 위)
+    await press2(page.locator('.i-road a')); await page.waitForSelector(`.f-body[data-mode="ind"][data-ready] #f-${g13.id}.f-hit`); await page.waitForTimeout(300);
+    const ig = await page.evaluate(id => { const sct = document.getElementById('f-' + id), b = sct?.getBoundingClientRect(); return {hash: location.hash, tab: document.querySelector('.f-body')?.dataset.tab, top: b ? Math.round(b.top) : null, codes: [...(sct?.querySelectorAll('.f-tile') ?? [])].length}; }, g13.id);
+    check(`${label} 업종 화면 「출목표에서 … 함께 보기 ›」 → 출목표 「업종별」 「${fam13.label}」 탭 · 「${g13.label}」 묶음 칸 ${ig.codes}개(화면 위 ${ig.top}px)`, ig.hash === '#/road' && ig.tab === fam13.id && ig.codes === g13.codes.length && ig.top !== null && ig.top >= -2 && ig.top < 200, ig);
+    await page.evaluate(() => { for (const k of Object.keys(localStorage)) if (k.startsWith('atlas11:road')) localStorage.removeItem(k); }); // 아래 출목표 검사는 처음 들어온 사람처럼
+  }
+
   // ③ 일정
   await page.goto(base + '/#/agenda', {waitUntil: 'networkidle'}); await page.waitForSelector('.b-box'); await page.waitForTimeout(300);
   await shot('03-agenda');
@@ -474,6 +506,29 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 2026-10-05 15:24 「잡스가 … 36가지」 A1 · A2 — 태양 상자는 제목 · 뜻 한 줄 · 모양 그림 · 단추 · 읽는 법(접힘) · 칸 읽는 법도 그 접힘 안 · 휴대폰 첫 화면에 첫 칸
   check(`${label} 출목표 첫 화면: 태양 상자 뜻 한 줄 「${r0.spkS}」 · 칸 읽는 법은 접힘 안 · 첫 칸 ${r0.first}px(${mobile ? `휴대폰 첫 화면 ${r0.ih}px 안` : 'PC'})`, (!spkW.size || (r0.spkS === `오른 회사들의 공통 모양 ${kW}가지를 모두 가진 곳` && r0.keyIn && r0.keyHead === 0)) && (!mobile || r0.first < r0.ih), {spkS: r0.spkS, keyIn: r0.keyIn, keyHead: r0.keyHead, first: r0.first, ih: r0.ih});
   await wordsCheck(page, `${label} 출목표 오른 순(첫 탭)`);
+  // E1 회사 이름 찾기(2026-10-05 15:24 「잡스가 … 36가지」) — 제목 줄 「찾기」 → 글자 넣기 → 맞는 회사 8곳까지(이름이 그 글자로 시작하는 곳 먼저 · 그다음 오른 순) → 이름 끝까지 넣고 Enter → 회사 화면
+  {
+    const norm = t => t.replace(/\s+/g, '').toLowerCase(), uniq = rankedW.slice(5).find(c => !rankedW.some(o => o !== c && norm(o.name).includes(norm(c.name))));
+    const q = uniq.name.slice(0, 1), qn = norm(q);
+    const want = rankedW.map((c, i) => ({c, i})).filter(({c}) => norm(c.name).includes(qn) || c.code.startsWith(qn)).sort((a, b) => (norm(b.c.name).startsWith(qn) - norm(a.c.name).startsWith(qn)) || a.i - b.i);
+    const fb = page.locator('.f-find-b'); await press(fb); await page.waitForTimeout(150);
+    const fi = page.locator('#f-find-in'); await fi.fill(q); await page.waitForTimeout(150);
+    const findRead = () => page.evaluate(() => ({open: !document.querySelector('.f-find')?.hidden, exp: document.querySelector('.f-find-b')?.getAttribute('aria-expanded'), focus: document.activeElement?.id ?? null, msg: document.querySelector('.f-find-msg')?.textContent.trim(), hits: [...document.querySelectorAll('.f-find-hit')].map(a => ({code: a.dataset.code, href: a.getAttribute('href'), n: a.querySelector('.f-find-n')?.textContent.trim(), s: a.querySelector('.f-find-s')?.textContent.trim(), sun: !!a.querySelector('svg.sun-tag')})), sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    const fr = await findRead();
+    const hitOk = fr.open && fr.exp === 'true' && fr.focus === 'f-find-in' && fr.hits.length === Math.min(8, want.length) && want.slice(0, 8).every((w, k) => { const x = fr.hits[k]; return x && x.code === w.c.code && x.n === w.c.name && x.href === '#/stock/' + w.c.code && x.sun === SUNW.set.has(w.c.code) && x.s === `오른 순 ${w.i + 1}위 · ${Number.isFinite(w.c.change20) ? p1(w.c.change20) : '없음'} · ${board.groups.find(g => g.id === w.c.group?.id)?.label}`; })
+      && fr.msg === (want.length > 8 ? `${want.length}곳 가운데 8곳 · 글자를 더 넣으면 좁혀짐` : `${want.length}곳`) && fr.sw <= fr.iw;
+    check(`${label} 출목표 「찾기」 → 「${q}」 넣음 → 맞는 회사 ${fr.hits.length}곳 보임(「${fr.msg}」 · 그 글자로 시작하는 이름 먼저 · 오른 순 자리 · 태양 해) = 따로 센 값`, hitOk, {fr: {...fr, hits: fr.hits.slice(0, 3)}, want: want.slice(0, 3).map(w => w.c.name)});
+    await fi.fill('없는회사이름'); await page.waitForTimeout(120);
+    const nf = await findRead();
+    check(`${label} 출목표 「찾기」: 없는 이름 → 「${nf.msg}」 · 줄 0개`, nf.msg === `「없는회사이름」 이름의 회사가 ${N}곳 안에 없습니다` && nf.hits.length === 0, {msg: nf.msg, n: nf.hits.length});
+    await fi.fill(uniq.name); await page.waitForTimeout(120); await fi.press('Enter');
+    await page.waitForFunction(code => location.hash === '#/stock/' + code && document.querySelector('.c-chart svg.lc'), uniq.code); await page.waitForTimeout(200);
+    const fc = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: document.querySelector('.c-back')?.textContent.trim()}));
+    check(`${label} 출목표 「찾기」: 「${uniq.name}」 넣고 Enter → 그 회사 화면 · 되돌아가기 「${fc.back}」`, fc.hash === '#/stock/' + uniq.code && fc.title === uniq.name && fc.back === '‹ 출목표', fc);
+    await press(page.locator('.c-back')); await page.waitForSelector('.f-body[data-mode="rise"][data-ready] .f-tile'); await page.waitForTimeout(300);
+    const fz = await page.evaluate(() => ({hidden: document.querySelector('.f-find')?.hidden, tab: document.querySelector('.f-body')?.dataset.tab}));
+    check(`${label} 회사 화면 「‹ 출목표」 → 출목표 그대로(찾기 칸은 닫힘 · 탭 ${fz.tab})`, fz.hidden === true && fz.tab === 'r1', fz);
+  }
   {
     const seen = [], mis = [], tileMis = [], briefMis = [], over = [], spkMis = []; let spkSeen = 0;
     for (let k = 0; k < chunksW.length; k++) {
