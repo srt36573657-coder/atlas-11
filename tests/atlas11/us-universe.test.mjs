@@ -33,8 +33,8 @@ test('우량 네 조건 — 2년 흑자 · ROE 5% · 부채비율 150% · 보통
 });
 
 test('보통주가 아닌 것(ETF · 우선주 · 워런트 · 스팩 · 리츠)은 뺀다 · 시대 트렌드 업종은 업종 이름(한국말)으로 가른다', () => {
-  for (const nameEn of ['SPDR S&P 500 ETF Trust', 'Bank of America Corp Preferred Series L', 'Foo Acquisition Corp', 'Bar Warrants']) assert.equal(usNotCommon({nameEn}), true, nameEn);
-  assert.equal(usNotCommon({nameEn: 'Prologis Inc', industry: '리츠'}), true);
+  for (const nameEn of ['SPDR S&P 500 ETF Trust', 'Bank of America Corp Preferred Series L', 'Foo Acquisition Corp', 'Bar Warrants', 'Taiwan Semiconductor Manufacturing Co Ltd ADR', 'Baz American Depositary Shares']) assert.equal(usNotCommon({nameEn}), true, nameEn);
+  assert.equal(usNotCommon({nameEn: 'Prologis Inc', industry: '부동산 투자 신탁(리츠)'}), false, '미국 리츠는 보통주라 남김');
   assert.equal(usNotCommon({nameEn: 'Apple Inc', industry: '컴퓨터·휴대폰'}), false);
   assert.equal(usNotCommon({common: false, nameEn: 'X'}), true);
   assert.equal(usTrendOf('반도체')?.id, 'ai-chip');
