@@ -13,13 +13,16 @@
      · 업종 탭 갈래 단추도 같은 순 · 단추에 갈래 평균 · 73칸은 처음부터 지난 20거래일 평균이 큰 차례
    2026-10-06 00:21 「자 더 깊이 본질로 간다 잡스라면 이 아틀란스를 어떻게 만들었을까? 그리고 개선하라」 — 탭 「업종」 → 탭 「지도」:
      · 맨 위에 지도 한 장(landmap.js · 땅 = 큰 갈래 · 칸 = 업종 · 색 = 지난 20거래일) — 로고 5번 「땅 나누기」가 화면에서 커진 것
-     · 땅을 누르면 아래 73칸이 그 갈래만 — 옛 큰 갈래 단추 12개(familyFilter)를 지도가 대신(규칙 1) · 73칸 · 칸 넷 · 오른 순은 그대로 */
+     · 땅을 누르면 아래 73칸이 그 갈래만 — 옛 큰 갈래 단추 12개(familyFilter)를 지도가 대신(규칙 1) · 73칸 · 칸 넷 · 오른 순은 그대로
+   2026-10-06 07:03 사장님(휴대폰 사진과 함께) 「왜 3단 클릭 구조가 아니지?」 — 지도는 세 번이면 회사: 땅 → 그 갈래 화면(#/map/f/<갈래> · renderLand) → 업종 → 회사
+     · 옛 판은 땅을 누르면 지도 아래 73칸만 걸러졌다 — 휴대폰에서는 그 칸들이 화면 밖이라 눌러도 아무 일이 없는 것처럼 보였다
+     · 넣으면서 뺀 것(규칙 1): 땅 거르기 · 「모두 보기」 단추 · 거르기 안내 줄 · 기억해 두던 고른 갈래(prefs mapFamily) */
 import {h, korDate, pct, finite, signCls, place} from './util.js';
-import {state, loadBoard, prefs} from './store.js';
+import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
 import {foot, promiseBox, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
 import {sunOf, sunCount} from './shapes.js';
-import {FAMILIES, OTHER, familyOf, familiesByRise} from './family.js';
+import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -75,13 +78,16 @@ export async function renderHome(main, {manifest}) {
 
 /** 칸 하나 — 넷: 「불장 n위」(또는 n위) · 이름 · ▲변화 · 몇 곳 오름 · 누르면 그 업종 화면
    2026-10-05 15:24 「잡스가 … 36가지」 B4: 첫 줄 오른쪽에 그 업종의 태양 수(「☀2곳」 · 없으면 비움 — 칸은 그대로 넷) */
-function tile(g, i, shp) {
+function tile(g, i, shp, {band = false} = {}) {
   const sg = signCls(g.change20) || 'flat', k = shp ? sunCount(shp, g.codes) : 0;
-  return h('a', {class: `t-tile s-${sg}${g.hot ? ' t-hot' : ''}`, href: '#/i/' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'data-sun': String(k), 'aria-label': `${g.hot ? '불장 ' : ''}${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${k ? ` · 태양 ${k}곳` : ''}`},
+  const a = h('a', {class: `t-tile s-${sg}${g.hot ? ' t-hot' : ''}`, href: '#/i/' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'data-sun': String(k), 'aria-label': `${g.hot ? '불장 ' : ''}${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${k ? ` · 태양 ${k}곳` : ''}`},
     h('span', {class: 't-top'}, g.hot ? h('span', {class: 't-fire'}, `불장 ${i + 1}위`) : h('span', {class: 't-rank'}, `${i + 1}위`), sunNum(k, 'sun-n t-sun')),
     h('span', {class: 't-name'}, g.label),
     h('span', {class: 't-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'), // 세모(▲▼)는 style.css 가 붙임 — 글자는 그대로
     h('span', {class: 't-up'}, upLine(g)));
+  // 갈래 화면(#/map/f/…)의 칸은 맨 위에 지도 칸과 같은 색 띠 — 지도의 땅을 크게 펼친 것으로 보이게(2026-10-06 07:03 「3단 클릭」)
+  if (band) { const b = h('span', {class: 'lm-c t-band s-' + sg, 'aria-hidden': 'true'}); const kk = finite(g.change20) ? Math.min(1, Math.abs(g.change20) / 0.3) : 0; b.style.setProperty('--k', (0.14 + 0.86 * Math.pow(kk, 0.75)).toFixed(3)); a.prepend(b); }
+  return a;
 }
 function setBox(set, board, groups) {
   const how = set?.how ?? [];
@@ -101,20 +107,10 @@ function setBox(set, board, groups) {
 }
 /** (옛 · 2026-10-06 00:21 까지) 큰 갈래 단추 12개 — 「모두」 + 갈래 평균이 큰 순 · 누르면 그 갈래 칸만 · 휴대폰에서는 옆으로 미는 한 줄(A3)
    지금 — 지도 한 장(landmap.js)이 그 일을 한다: 땅을 누르면 그 갈래 칸만 · 같은 땅을 한 번 더 누르거나 「모두 보기」면 73칸 모두 · 고른 것은 이 기기에 기억(옛 키 그대로) */
-function mapBox(groups, grid, note) {
-  const ids = new Set(groups.map(g => familyOf(g.label).id));
-  let pick = prefs.get('mapFamily', 'all'); if (pick !== 'all' && !ids.has(pick)) pick = 'all';
-  const all = h('button', {class: 'lm-all', type: 'button', onclick: () => { pick = 'all'; prefs.set('mapFamily', pick); apply(); }}, '모두 보기');
-  const map = landMap(groups, {onPick: id => { pick = pick === id ? 'all' : id; prefs.set('mapFamily', pick); apply(); }});
-  function apply() {
-    map.setPick(pick);
-    let shown = 0; for (const t of grid.children) { const on = pick === 'all' || t.dataset.family === pick; t.hidden = !on; if (on) shown++; }
-    const L = map.lands.find(x => x.fam.id === pick);
-    note.replaceChildren(...(pick === 'all' ? [`땅을 누르면 그 갈래 업종만 · 보이는 칸: 업종 ${groups.length}개 모두`] : [`${L?.fam.label ?? ''} · 업종 ${shown}개만 보는 중 · `, all])); // replaceChildren 은 null 을 「null」 글자로 넣는다 — 빈 것 없이
-  }
-  apply();
+function mapBox(groups) {
+  const map = landMap(groups);
   return {map, box: h('div', {class: 'lm-box'}, map.el,
-    h('p', {class: 'lm-key muted xs'}, '땅 = 큰 갈래(넓이 = 업종 수 · 자리는 날마다 같음) · 칸 = 업종(땅 안 위 왼쪽부터 오른 순) · 색 = 지난 20거래일 평균 — 빨강 오름 · 파랑 내림 · 진할수록 변화가 큼'))};
+    h('p', {class: 'lm-key muted xs'}, '땅 = 큰 갈래(넓이 = 업종 수 · 자리는 날마다 같음) · 칸 = 업종(땅 안 위 왼쪽부터 오른 순) · 색 = 지난 20거래일 평균 — 빨강 오름 · 파랑 내림 · 진할수록 변화가 큼 · 땅을 누르면 그 갈래 업종'))};
 }
 
 export async function renderMap(main, {manifest}) {
@@ -126,8 +122,7 @@ export async function renderMap(main, {manifest}) {
   state.summary = `지도. ${korDate(to)} 종가 기준. 업종 ${groups.length}개. ${headLine(groups, n, from, to)}.`; // 태양 수는 아래 grid 를 만든 뒤 덧붙임
   const shp = sunOf(board); if (shp.sparkle.size) state.summary += ` 태양 ${shp.sparkle.size}곳.`;
   const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map((g, i) => tile(g, i, shp)));
-  const note = h('p', {class: 'fm-note muted small', role: 'status', 'aria-live': 'polite'});
-  const mb = mapBox(groups, grid, note);
+  const mb = mapBox(groups); state.land = null; // 지도 첫 장 — 업종 화면 「‹ 되돌아가기」는 지도로
   main.replaceChildren(h('div', {class: 'b-page t-page'},
     marketStrip(manifest),
     h('header', {class: 'b-head'},
@@ -135,11 +130,36 @@ export async function renderMap(main, {manifest}) {
       h('p', {class: 'b-when', 'data-speak': ''}, headLine(groups, n, from, to)),
       ...lateLines(late, board)),
     mb.box,
-    note,
     grid,
     h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     setBox(set, board, groups),
     foot(manifest)));
   mb.map.lay(); // 화면에 붙은 뒤 폭을 재서 그림(큰 글씨면 지도가 길어짐)
+}
+
+/* ───────── 지도 둘째 장 — 갈래 화면(#/map/f/<갈래>) ─────────
+   2026-10-06 07:03 사장님 「왜 3단 클릭 구조가 아니지?」 — 지도에서 땅을 누르면 오는 곳(세 번이면 회사: 땅 → 업종 → 회사)
+   · 그 갈래 업종 칸을 크게 — 칸 맨 위 띠는 지도 칸과 같은 색 · 차례는 지도 땅 안과 같다(오른 순 · 위 왼쪽이 가장 많이 오른 업종)
+   · 칸의 순위는 지도 73칸 순위 그대로 · 칸을 누르면 업종 화면 · 업종 화면의 되돌아가기는 이 화면(「‹ 갈래 이름」) */
+export async function renderLand(main, {hash, manifest}) {
+  const board = await loadBoard();
+  const id = hash.split('/').pop(), groups = board.groups ?? [];
+  const fam = [...FAMILIES, OTHER].find(f => f.id === id), gs = [...groups.filter(g => familyOf(g.label).id === id)].sort(riseDesc);
+  const back = h('a', {class: 'c-back', href: '#/map'}, '‹ 지도');
+  if (!fam || !gs.length) { state.land = null; state.summary = '이 갈래는 지금 판에 없습니다.'; main.replaceChildren(h('div', {class: 'b-page t-page l-page'}, back, h('p', {class: 'b-note'}, '이 갈래는 지금 판에 없습니다'), foot(manifest))); return; }
+  state.land = id; // 업종 화면 「‹ 되돌아가기」가 이 갈래 화면으로 오게
+  const shp = sunOf(board), avg = meanOf(gs.map(g => g.change20)), up = gs.filter(g => finite(g.change20) && g.change20 > 0).length;
+  const avgT = finite(avg) ? pct(avg, Math.abs(avg) < 0.0005 ? 2 : 1) : '없음';
+  const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
+  state.summary = `${fam.label}. 업종 ${gs.length}개 가운데 ${up}개 오름. 갈래 평균 ${avgT}. ${gs.slice(0, 3).map((g, i) => `${i + 1}. ${g.label} ${pct(g.change20, 1)}`).join(', ')}.`;
+  main.replaceChildren(h('div', {class: 'b-page t-page l-page', 'data-family': id},
+    marketStrip(manifest),
+    back,
+    h('header', {class: 'b-head'},
+      h('h1', {class: 'b-title', 'data-speak': ''}, fam.label + ' ', h('span', {class: 'b-count'}, `업종 ${gs.length}개`)),
+      h('p', {class: 'b-when', 'data-speak': ''}, `업종 ${gs.length}개 가운데 ${up}개 오름 · 갈래 평균 ${avgT} · 지난 20거래일 · ${span(from, to)}`)),
+    h('nav', {class: 't-grid l-grid', 'aria-label': `${fam.label} 업종 ${gs.length}개 · 지난 20거래일 변화가 큰 차례`}, ...gs.map(g => tile(g, groups.indexOf(g), shp, {band: true}))),
+    h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나 · 위 왼쪽부터 지난 20거래일 평균 변화가 큰 차례(지도 땅 안과 같음) · 순위는 업종 ${groups.length}개 가운데 · 누르면 그 업종`),
+    foot(manifest)));
 }

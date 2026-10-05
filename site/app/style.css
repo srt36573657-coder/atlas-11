@@ -160,7 +160,7 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .t-chg[data-sign="up"] { color: var(--up-ink); } .t-chg[data-sign="down"] { color: var(--down-ink); }
 .t-tile:active { transform: scale(.98); }
 .t-tile, .f-tile { transition: transform .12s ease-out; }
-.t-top { display: flex; align-items: center; justify-content: space-between; gap: 4px; min-height: 1.4rem; }
+.t-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 4px; min-height: 1.4rem; } /* 2026-10-06 07:03 줄바꿈 허용: 휴대폰(390px)에서 「불장 n위」 + 「☀n곳」이 칸 오른쪽 끝을 넘던 11칸 */
 .t-rank { font-size: .8125rem; font-weight: 700; }
 .t-fire { flex: none; font-size: .75rem; font-weight: 700; letter-spacing: .04em; line-height: 1.5; padding: 0 8px; border-radius: 999px; background: var(--fire-bg); color: var(--fire-ink); }
 .t-name { font-size: 1.0625rem; font-weight: 700; line-height: 1.25; letter-spacing: -.01em; overflow-wrap: anywhere; }
@@ -449,8 +449,7 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .hf-up { font-size: .875rem; color: var(--sub); }
 .hf-chg { margin-top: 0; font-size: 1.25rem; text-align: right; }
 .hf-rank { grid-area: r; justify-self: start; } .hf-g { grid-area: g; } .hf-chg { grid-area: c; } /* 순위 표시는 위 · 이름은 아래 · 변화는 오른쪽 — 고정 폭 칸이 없어 글씨 200% · 좁은 휴대폰에서도 넘치지 않음 */
-.fm-note { margin: 8px 2px 0; }
-.t-tile[hidden] { display: none; }
+/* (옛 · 2026-10-06 07:03 까지) .fm-note · .t-tile[hidden] — 지도 땅을 누르면 73칸을 거르던 안내 줄 · 숨긴 칸. 이제 땅을 누르면 갈래 화면으로 간다(규칙 1) */
 /* 저녁 7시 들고 남 — 탭 「불장」 세 화면 스위치 바로 아래 같은 자리(24번) · 견줄 기록이 아직 없으면 먹빛 칸 대신 조용한 한 줄 · 견준 기록이 있으면 한 줄 요약 + 눌러서 이름 */
 .mvx.mvx-quiet { margin: 6px 0 0; padding: 4px 2px; background: none; box-shadow: none; border-radius: 0; --ink: #121110; --sub: #69635a; --fill: #ece8e1; --link: #121110; }
 @media (prefers-color-scheme: dark) { .mvx.mvx-quiet { --ink: #f3efe7; --sub: #a39c90; --fill: #272522; --link: #f3efe7; } }
@@ -687,23 +686,24 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
 /* ───────── 2026-10-06 00:21 사장님 「자 더 깊이 본질로 간다 잡스라면 이 아틀란스를 어떻게 만들었을까? 그리고 개선하라」 ─────────
    탭 「지도」(옛 「업종」 · #/map) 맨 위 지도 한 장(site/app/landmap.js) — 로고 5번 「땅 나누기」가 화면에서 커진 것
    땅 = 큰 갈래(판 색 · 모서리 12px) · 칸 = 업종(빨강 · 파랑 세기 = 지난 20거래일 평균 크기 · --k 0.14~1 · 칸 안에는 글자 없음)
-   글자(갈래 이름 · 평균)는 땅 맨 위 판 색 줄(칸을 가리지 않음 · 대비 4.5:1 이상) · 고른 땅은 옥빛 테 · 고르지 않은 땅은 칸만 옅게(글자는 그대로 진하게)
+   글자(갈래 이름 · 평균)는 땅 맨 위 판 색 줄(칸을 가리지 않음 · 대비 4.5:1 이상)
+   2026-10-06 07:03 사장님 「왜 3단 클릭 구조가 아니지?」 — 땅 하나 = 그 갈래 화면으로 가는 링크(a) · 옛 고른 땅 테(aria-pressed) · 옅게(has-pick) · 「모두 보기」(.lm-all)는 뺌
    (옛 탭 「업종」 머리의 큰 갈래 단추 12개 .fm-* 는 이 지도로 바뀜 — 규칙 1 하나 넣으면 하나 뺀다) */
 .lm-box { margin: 14px 0 0; }
 .lm { position: relative; width: 100%; }
-.lm-n { position: absolute; display: flex; flex-direction: column; padding: 0; margin: 0; border: 0; border-radius: 12px; overflow: hidden; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 0 0 1px var(--hair); transition: transform .12s ease-out, box-shadow .2s ease-out; }
+.lm-n { position: absolute; display: flex; flex-direction: column; padding: 0; margin: 0; border: 0; border-radius: 12px; overflow: hidden; background: var(--card); color: var(--ink); font: inherit; text-align: left; text-decoration: none; cursor: pointer; box-shadow: 0 0 0 1px var(--hair); transition: transform .12s ease-out, box-shadow .2s ease-out; }
 .lm-n:active { transform: scale(.985); }
 .lm-n:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
-.lm-n[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--geum); z-index: 1; }
 .lm-cells { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 2px 2px; transition: opacity .2s ease-out; }
 .lm-row { flex: 1; display: flex; gap: 2px; }
 .lm-c { flex: 1; border-radius: 6px; background: var(--fill); }
 .lm-c.s-up { background: color-mix(in srgb, var(--up) calc(var(--k) * 78%), var(--fill)); }
 .lm-c.s-down { background: color-mix(in srgb, var(--down) calc(var(--k) * 78%), var(--fill)); }
-.lm.has-pick .lm-n[aria-pressed="false"] .lm-cells { opacity: .32; }
 .lm-lab { flex: none; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; max-width: 100%; padding: 4px 8px 4px; line-height: 1.25; word-break: keep-all; }
 .lm-name { font-size: .875rem; font-weight: 700; color: var(--ink); }
 .lm-avg { font-size: .8125rem; }
 .lm-key { margin: 8px 2px 0; }
-.lm-all { margin-left: 4px; min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+/* 지도 둘째 장(갈래 화면 #/map/f/<갈래> · view-home.js renderLand) — 업종 칸 맨 위에 지도 칸과 같은 색 띠(.lm-c 색 그대로) · 땅을 크게 펼친 것으로 보이게 */
+.l-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); } /* 갈래 화면은 칸을 크게(휴대폰 두 줄) — 땅을 펼친 것 */
+.t-band { flex: none; display: block; height: 1.25rem; margin: -9px -10px 6px; border-top-left-radius: inherit; border-top-right-radius: inherit; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; }
 @media (prefers-reduced-motion: reduce) { .lm-n, .lm-cells { transition: none; } }

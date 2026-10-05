@@ -17,7 +17,7 @@
    2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기) */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
-import {renderHome, renderMap} from './view-home.js';
+import {renderHome, renderMap, renderLand} from './view-home.js';
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
@@ -43,6 +43,7 @@ const ICON = {
 const routes = [
   {id: 'home', tab: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
   {id: 'map', tab: 'map', label: '지도', match: /^#\/map$/, render: renderMap}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 옛 이름 「업종」 · 주소는 그대로(#/map)
+  {id: 'land', tab: 'map', match: /^#\/map\/f\/[a-z0-9]+$/, render: renderLand}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 지도 땅 → 그 갈래 화면 → 업종 → 회사
   {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
   {id: 'stock', tab: 'from', match: /^#\/stock\/[A-Za-z0-9][A-Za-z0-9.\-]{0,11}$/, render: renderCompany}, // 한국 6자리 · 미국 영문 기호(2026-10-05 18:02 「미국 주식도」)
   {id: 'similar', tab: 'home', label: '예비', match: /^#\/similar$/, render: renderSimilar},
