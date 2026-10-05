@@ -1,0 +1,158 @@
+{
+ "startedAt": "2026-10-05T10:44:43.979Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-05T10:44:45.497Z",
+   "mode": "select",
+   "run": "reports/atlas11/us/runs/2026-10-05T10-44-43",
+   "newYork": {
+    "date": "2026-10-05",
+    "hm": "06:44",
+    "weekday": 1
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T10:44:46.845Z",
+   "kind": "list",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/exchange/NYSE/marketValue"
+  },
+  {
+   "name": "목록",
+   "at": "2026-10-05T10:44:57.736Z",
+   "seen": {
+    "NYSE": 1100,
+    "NASDAQ": 1100,
+    "AMEX": 200
+   },
+   "merged": 2400,
+   "stocks": 1500,
+   "top5": [
+    "엔비디아(NVDA) 반도체",
+    "애플(AAPL) 전화 및 소형 장치",
+    "마이크로소프트(MSFT) 소프트웨어",
+    "아마존닷컴(AMZN) 백화점",
+    "TSMC ADR(TSM) 반도체"
+   ]
+  },
+  {
+   "name": "나라",
+   "at": "2026-10-05T10:44:58.787Z",
+   "screener": 7001,
+   "matched": 1477,
+   "notUS": 304
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T10:44:59.079Z",
+   "kind": "finance",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/SPCX.O/finance/annual"
+  },
+  {
+   "name": "결산",
+   "at": "2026-10-05T10:46:19.709Z",
+   "asked": 1500,
+   "got": 1500,
+   "source": {
+    "nasdaq": 1400,
+    "naver": 100
+   },
+   "withDebt": 1332,
+   "withRoe": 1397
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T10:46:19.912Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/AAPL.O/day"
+  },
+  {
+   "name": "일봉",
+   "at": "2026-10-05T10:47:34.607Z",
+   "asked": 1500,
+   "got": 1500,
+   "latest": "2026-10-02",
+   "rows": 295
+  },
+  {
+   "name": "고르기",
+   "at": "2026-10-05T10:47:34.624Z",
+   "ok": false,
+   "picked": 340,
+   "industries": 68,
+   "kinds": {
+    "quality": 193,
+    "trend": 55,
+    "profit": 86,
+    "size": 6
+   },
+   "pool": 1121,
+   "filled": 68,
+   "failTop": [
+    [
+     "부채비율 150% 초과",
+     479
+    ],
+    [
+     "2년 연속 흑자 아님",
+     328
+    ],
+    [
+     "미국 회사 아님",
+     304
+    ],
+    [
+     "ROE 5% 미만",
+     293
+    ],
+    [
+     "보통주 아님",
+     172
+    ],
+    [
+     "부채비율 모름",
+     99
+    ]
+   ]
+  },
+  {
+   "name": "멈춤",
+   "at": "2026-10-05T10:47:35.178Z",
+   "error": "US_SELECT_SHORT 340곳 · 업종 68개 — reports/atlas11/us/runs/2026-10-05T10-44-43/proposal.json 의 counts.short 확인"
+  }
+ ],
+ "samples": {
+  "list": {
+   "url": "https://api.stock.naver.com/stock/exchange/NYSE/marketValue?page=1&pageSize=100",
+   "status": 200,
+   "ms": 1342
+  },
+  "screener": {
+   "url": "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true",
+   "status": 200,
+   "ms": 1031
+  },
+  "nasdaq_fin": {
+   "url": "https://api.nasdaq.com/api/company/NVDA/financials?frequency=1",
+   "status": 200,
+   "ms": 24
+  },
+  "finance": {
+   "url": "https://api.stock.naver.com/stock/SPCX.O/finance/annual",
+   "status": 200,
+   "ms": 182
+  },
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/AAPL.O/day?startDateTime=202508010000&endDateTime=202610052359",
+   "status": 200,
+   "ms": 201
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-05T10:47:35.178Z",
+ "error": "US_SELECT_SHORT 340곳 · 업종 68개 — reports/atlas11/us/runs/2026-10-05T10-44-43/proposal.json 의 counts.short 확인"
+}
