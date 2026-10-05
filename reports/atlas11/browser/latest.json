@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T08:43:28.059Z",
-  "base": "http://localhost:8881",
+  "at": "2026-10-05T11:13:27.684Z",
+  "base": "http://localhost:8883",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
   "asOf": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 442,
+  "passed": 452,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -81,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -91,7 +91,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -101,7 +101,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -111,7 +111,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       }
@@ -133,7 +133,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -143,7 +143,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -153,7 +153,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -163,7 +163,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +173,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -183,7 +183,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -193,7 +193,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -203,7 +203,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -213,7 +213,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -223,7 +223,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -233,7 +233,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       }
@@ -357,7 +357,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -367,7 +367,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -377,7 +377,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -387,7 +387,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -397,7 +397,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -407,7 +407,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -417,7 +417,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 13,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -427,7 +427,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -437,7 +437,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -447,7 +447,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -457,7 +457,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       }
@@ -4315,6 +4315,122 @@
       }
     },
     {
+      "name": "미국 판 묶음: 예측 끔 · 시장 미국 · 365곳 · 업종 73개",
+      "ok": true,
+      "detail": {
+        "companies": 365,
+        "groups": 73,
+        "asOf": "2026-10-02"
+      }
+    },
+    {
+      "name": "미국 판 단추: 한국 판 위 막대 「한국 · 미국」 · 한국이 눌린 채",
+      "ok": true,
+      "detail": [
+        {
+          "id": "kr",
+          "t": "한국",
+          "cur": "page"
+        },
+        {
+          "id": "us",
+          "t": "미국",
+          "cur": null
+        }
+      ]
+    },
+    {
+      "name": "「미국」 누름 → 미국 판 출목표 그대로(/us/#/road) · 「365곳」 = 미국 판 365곳 · 미국이 눌린 채",
+      "ok": true,
+      "detail": {
+        "r1": {
+          "url": "/us/#/road",
+          "n": "365곳"
+        },
+        "k2": [
+          {
+            "id": "kr",
+            "t": "한국",
+            "cur": null
+          },
+          {
+            "id": "us",
+            "t": "미국",
+            "cur": "page"
+          }
+        ]
+      }
+    },
+    {
+      "name": "미국 판 불장: 시장 띠 「10월 2일(금) 16:00 뉴욕 시각 종가」 · S&P 500 · 나스닥 종합 · 다우존스 = 판(뉴욕 지수)",
+      "ok": true,
+      "detail": {
+        "st": {
+          "time": "10월 2일(금) 16:00 뉴욕 시각 종가",
+          "names": [
+            "S&P 500",
+            "나스닥 종합",
+            "다우존스"
+          ],
+          "title": "불장 업종 11개"
+        },
+        "wantStrip": "10월 2일(금) 16:00 뉴욕 시각 종가"
+      }
+    },
+    {
+      "name": "미국 회사 화면 P: 「에버퓨어」 · 값 「140.14달러」 = 판 종가(달러 · 소수 둘째 자리) · 「10월 2일(금) 16:00(뉴욕) 종가」",
+      "ok": true,
+      "detail": {
+        "cp": {
+          "name": "에버퓨어",
+          "close": "140.14달러",
+          "date": "10월 2일(금) 16:00(뉴욕) 종가",
+          "flow": "수급 · 미국은 투자자별(외국인·기관) 매매를 날마다 공개하지 않음",
+          "integ": "읽은 파일 3개 모두 판 목록의 SHA-256 과 같음"
+        },
+        "wantClose": "140.14달러"
+      }
+    },
+    {
+      "name": "미국 회사 화면: 수급 줄 「수급 · 미국은 투자자별(외국인·기관) 매매를 날마다 공개하지 않음」 — 미국은 투자자별 매매 공개 자료가 없다고 적음(0 으로 채우지 않음)",
+      "ok": true,
+      "detail": {
+        "flow": "수급 · 미국은 투자자별(외국인·기관) 매매를 날마다 공개하지 않음"
+      }
+    },
+    {
+      "name": "미국 판 일정: 공시 칸 「미국 공시는 아직 싣지 않음」 한 칸 · 한국 공시 칸 둘(예고 · ★★★) 없음",
+      "ok": true,
+      "detail": {
+        "disc": "미국 공시는 아직 싣지 않음",
+        "krDisc": 0,
+        "integ": "읽은 파일 3개 모두 판 목록의 SHA-256 과 같음"
+      }
+    },
+    {
+      "name": "미국 판 무결성: 「읽은 파일 3개 모두 판 목록의 SHA-256 과 같음」",
+      "ok": true,
+      "detail": {
+        "integ": "읽은 파일 3개 모두 판 목록의 SHA-256 과 같음"
+      }
+    },
+    {
+      "name": "「한국」 누름 → 한국 판 일정 그대로(/#/agenda) · 시장 띠 「10월 2일(금) 15:30 KST 종가」",
+      "ok": true,
+      "detail": {
+        "url": "/#/agenda",
+        "strip": "10월 2일(금) 15:30 KST 종가"
+      }
+    },
+    {
+      "name": "미국 판 화면들: 콘솔 오류 0 · 요청 실패 0",
+      "ok": true,
+      "detail": {
+        "errs": [],
+        "failed": []
+      }
+    },
+    {
       "name": "화면 폭 pc home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -5382,10 +5498,10 @@
       "detail": null
     },
     {
-      "name": "배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (4줄)",
+      "name": "배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (5줄)",
       "ok": true,
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T08-40-23-873Z"
+  "dir": "reports/atlas11/browser/2026-10-05T11-10-20-822Z"
 }
