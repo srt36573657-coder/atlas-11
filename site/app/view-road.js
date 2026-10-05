@@ -25,13 +25,19 @@
        흐름별 = 흐름 10가지(묶음 평균이 큰 순 · 옛 흐름 목록을 탭이 대신 · 묶음 평균 선은 그 탭 머리에)
      · 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(오름 → 오름 90곳 같은 큰 흐름) · 맨 아래 넘김 단추(「2번째 탭 · 21위~40위 보기 ›」)
      · 휴대폰에서는 탭 줄을 옆으로 밀어 봄(고른 탭이 가운데로) · 넓은 화면에서는 여러 줄 · 화살표 글쇠로도 넘김
-     · 고른 탭은 이 기기에 기억(회사 화면에서 되돌아오면 보던 탭 · 자리 그대로) · 다른 아래 탭에서 들어오면 늘 「오른 순」 1위~20위 맨 위(app.js → resetRoad) */
+     · 고른 탭은 이 기기에 기억(회사 화면에서 되돌아오면 보던 탭 · 자리 그대로) · 다른 아래 탭에서 들어오면 늘 「오른 순」 1위~20위 맨 위(app.js → resetRoad)
+   2026-10-05 13:53 사장님 「이렇게 출목표를 보면 상승할 때에 묘한 공통점들이 있을 거 아냐 … 반짝반짝 반짝 해가지고 바보도 알 수 있게끔 … 기획 좀 해 봐 그리고 만들어 봐」:
+     · 오른 순 위 20%의 출목표에 많이 보이는 모양(shapes.js — 후보 8가지 · 예비 탭과 같은 잣대)을 모두 가진 칸이 반짝인다(금빛 테 · 빛이 한 번씩 지나감 · 「✦ 오른 회사 모양 n가지 모두」)
+     · 맨 위 「✦ 반짝이는 칸 n곳」 상자 — 모양마다 작은 출목표 그림 · 펼치면 후보 8가지가 오른 곳 · 나머지에서 몇 %인지
+     · 탭마다 반짝 수(「✦17곳」) — 어느 탭에 반짝이는 칸이 있는지 · 움직임 줄이기 설정이면 빛은 지나가지 않고 금빛 테만
+     · 지난 20거래일 모양을 견준 것일 뿐 앞날을 맞히지 않는다(2026-10-04 15:37) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv} from './parts.js';
 import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
+import {SHAPES, SHAPE_PICS, shapeBoard} from './shapes.js';
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
 export const FLOW_ORDER = ['up-up', 'flat-up', 'down-up', 'up-flat', 'flat-flat', 'still', 'down-flat', 'up-down', 'flat-down', 'down-down'];
@@ -57,15 +63,42 @@ export const RISE_CHUNK = 20;
 /** 이 기기에 기억하는 묶는 법 — 옛 열쇠(roadView)는 「업종별」이 처음이던 때 것이라 새 열쇠로(옛 값을 따르지 않게) */
 export const ROAD_VIEW_KEY = 'roadView2';
 
-function tile(c, road, g, scale) {
-  return h('a', {class: 'f-tile', href: '#/stock/' + c.code, 'data-code': c.code},
+/** 칸 하나 — spk = 반짝(오른 회사 출목표의 공통 모양 n가지를 모두 가짐)이면 그 n · 아니면 0 */
+function tile(c, road, g, scale, spk = 0) {
+  return h('a', {class: 'f-tile' + (spk ? ' sparkle' : ''), href: '#/stock/' + c.code, 'data-code': c.code, 'data-sparkle': spk ? String(spk) : null},
     h('span', {class: 'f-top'}, h('span', {class: 'f-name'}, c.name), h('b', {class: 'chg20 f-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음')),
     g ? h('span', {class: 'f-ind'}, g.label) : null,
     sparkSvg(c, scale),
     roadSvg(road, {minCols: 20}),
-    h('span', {class: 'f-cap'}, h('span', {class: 'f-st'}, upDaysText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null),
+    h('span', {class: 'f-cap'}, spk ? h('span', {class: 'f-spk-row'}, h('span', {class: 'f-spk'}, h('span', {class: 'f-spk-i', 'aria-hidden': 'true'}, '✦'), ` 오른 모양 ${spk}가지`)) : null,
+      h('span', {class: 'f-st'}, upDaysText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null),
     flowLine(c.brief),
     newsLine(c.brief));
+}
+
+/** 모양 그림 — 작은 출목표(8칸 × 6줄) · 눈여겨볼 줄은 옅은 금빛 바탕(SHAPE_PICS) */
+function shapePic(id) {
+  const P = SHAPE_PICS[id]; if (!P) return null;
+  const cs = 8, cols = 8, rows = 6, W = cols * cs, H = rows * cs;
+  let d = ''; for (let c = 0; c <= cols; c++) d += `M${c * cs} 0V${H}`; for (let r = 0; r <= rows; r++) d += `M0 ${r * cs}H${W}`;
+  return sv('svg', {class: 'road spk-pic', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true'},
+    P.mark ? sv('rect', {class: 'spk-mark', x: P.mark[0] * cs, y: 0, width: (P.mark[1] - P.mark[0] + 1) * cs, height: H, rx: 2}) : null,
+    sv('g', {class: 'road-grid'}, sv('path', {d})),
+    ...P.cells.map(([c, r, side]) => sv('circle', {class: 'bead ' + side, cx: c * cs + cs / 2, cy: r * cs + cs / 2, r: 2.8})));
+}
+const pcOf = x => `${x.n ? Math.round(x.yes / x.n * 100) : 0}%`;
+/** 맨 위 「✦ 반짝이는 칸」 상자 — 무엇이 반짝이나(모양 그림) · 펼치면 후보 8가지와 고른 법 */
+function sparkleBox(shp) {
+  const commonT = shp.common.map(id => shp.traits.find(t => t.id === id));
+  if (!commonT.length) return null;
+  return h('section', {class: 'f-spk-box', 'aria-label': `반짝이는 칸 ${shp.sparkle.size}곳`},
+    h('p', {class: 'f-spk-h'}, h('span', {class: 'f-spk-i', 'aria-hidden': 'true'}, '✦'), ` 반짝이는 칸 ${shp.sparkle.size}곳`),
+    h('p', {class: 'f-spk-t'}, `지난 20거래일 많이 오른 ${shp.topN}곳(오른 순 1위~${shp.topN}위)의 출목표에 많이 보이는 모양 ${commonT.length}가지를 모두 가진 곳`),
+    h('ul', {class: 'f-spk-list'}, ...commonT.map(t => h('li', {class: 'f-spk-li', 'data-shape': t.id}, shapePic(t.id), h('span', {class: 'f-spk-n'}, t.short)))),
+    h('details', {class: 'f-spk-how'}, h('summary', null, `모양마다 몇 %인가 · 후보 ${SHAPES.length}가지`),
+      h('ul', {class: 'f-spk-all'}, ...shp.traits.map(t => h('li', {'data-shape': t.id, 'data-common': String(t.common)}, h('b', null, `${t.common ? '✓' : '·'} ${t.name}`), ` — ${t.text} · 오른 ${t.top.n}곳 가운데 ${t.top.yes}곳(${pcOf(t.top)}) · 나머지 ${t.rest.n}곳 가운데 ${t.rest.yes}곳(${pcOf(t.rest)})`))),
+      h('p', null, `✓ 공통 모양 = 오른 ${shp.topN}곳의 50% 넘게 가졌고 나머지보다 10%p 넘게 많이 가진 모양 · 반짝 = 그 ${commonT.length}가지를 모두 가진 곳`),
+      h('p', null, '지난 20거래일 출목표 모양을 견준 것일 뿐 앞날을 맞히지 않습니다')));
 }
 
 /** 출목표 안의 탭 — 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(2026-10-05 12:28) */
@@ -90,6 +123,7 @@ export async function renderRoad(main, {manifest} = {}) {
   const flows = FLOW_ORDER.map(k => ({key: k, text: flowText(k, days), items: by.get(k)})).filter(f => f.items.length)
     .map(f => ({...f, avg: meanOf(f.items.map(x => x.c.change20))})).sort((a, b) => (Number.isFinite(b.avg) ? b.avg : -Infinity) - (Number.isFinite(a.avg) ? a.avg : -Infinity)); // 묶음 평균이 큰 순
   const fams = familiesByRise(groups), n = items.length;
+  const shp = shapeBoard(board.companies), nCommon = shp.common.length, spkOf = c => shp.sparkle.has(c.code) ? nCommon : 0; // 반짝(13:53)
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   // 흐름마다 묶음 평균 선 — 같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 흐름이 같은 눈금(탭을 넘겨도 견줄 수 있게)
@@ -125,6 +159,7 @@ export async function renderRoad(main, {manifest} = {}) {
           h('span', {class: 'f-mean-t small'}, `묶음 평균 선 · 첫날 대비 ${last} · 흐름 ${flows.length}가지 같은 눈금(${pct(msc.lo, 0)} ~ ${pct(msc.hi, 0)})`)),
         h('div', {class: 'f-grid'}))}]}; });
   const TABS = {rise: riseTabs(), ind: indTabs(), flow: flowTabs()};
+  for (const ts of Object.values(TABS)) for (const t of ts) t.spk = t.parts.reduce((k, p) => k + p.items.filter(x => shp.sparkle.has(x.c.code)).length, 0); // 탭마다 반짝 수
   const HINT = {rise: ts => `탭 ${ts.length}개 · 20곳씩 · 지난 20거래일 많이 오른 차례`,
     ind: ts => `큰 갈래 탭 ${ts.length}개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것`,
     flow: ts => `흐름 탭 ${ts.length}가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 ${before}거래일 → 끝 ${recent}거래일의 오른 날·내린 날 동그라미 수로 나눔`};
@@ -139,14 +174,15 @@ export async function renderRoad(main, {manifest} = {}) {
   const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set(ROAD_VIEW_KEY, view); cur = tabOf(view); draw(); } }},
     m.text, h('small', null, m.id === 'rise' ? ` ${n}곳` : m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
   const segBox = h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs);
-  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.`; };
+  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.${cur.spk ? ` 반짝이는 칸 ${cur.spk}곳.` : ''}`; };
   /** 고른 탭을 탭 줄 가운데로(화면은 위아래로 움직이지 않게 줄만 옆으로) */
   const centerTab = () => { const b = strip.querySelector('[aria-selected="true"]'); if (b && strip.scrollWidth > strip.clientWidth + 1) strip.scrollLeft = Math.max(0, b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2); };
   const markTabs = () => { for (const b of strip.children) { const on = b.dataset.tab === cur.id; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; } };
   function drawTabs() {
     strip.setAttribute('aria-label', HINT[view](TABS[view]));
     strip.replaceChildren(...TABS[view].map(t => h('button', {class: 'f-tab', type: 'button', role: 'tab', id: 'ft-' + t.id, 'data-tab': t.id, 'aria-controls': 'f-body', 'aria-selected': 'false', tabindex: '-1', onclick: () => pick(t, false)},
-      h('span', {class: 'f-tab-l'}, t.label), t.small ? h('small', {class: 'f-tab-n' + (t.cls ? ' ' + t.cls : '')}, t.small) : null)));
+      h('span', {class: 'f-tab-l'}, t.label), t.small ? h('small', {class: 'f-tab-n' + (t.cls ? ' ' + t.cls : '')}, t.small) : null,
+      t.spk ? h('small', {class: 'f-tab-s', 'aria-label': `반짝 ${t.spk}곳`}, `✦${t.spk}곳`) : null)));
     markTabs();
   }
   /** 맨 아래 넘김 단추 — 「2번째 탭 · 21위~40위 보기 ›」 · 「‹ 1번째 탭 · 1위~20위」 */
@@ -167,7 +203,7 @@ export async function renderRoad(main, {manifest} = {}) {
     for (const p of cur.parts) {
       if (k >= shown) break;
       const sec = p.sec(), grid = sec.querySelector('.f-grid');
-      for (const x of p.items) { if (k >= shown) break; grid.append(tile(x.c, x.road, p.withInd ? x.g : null, p.sc)); k++; }
+      for (const x of p.items) { if (k >= shown) break; grid.append(tile(x.c, x.road, p.withInd ? x.g : null, p.sc, spkOf(x.c))); k++; }
       kids.push(sec);
     }
     if (shown < total) kids.push(h('button', {class: 'f-more', type: 'button', onclick: () => more(total)}, '이 탭 ', h('span', {class: 'f-nw'}, `${shown + 1}위~${Math.min(total, shown + MORE_STEP)}위`), ' 더 보기', h('small', {class: 'f-nw'}, ` · 남은 ${total - shown}곳`)));
@@ -200,6 +236,7 @@ export async function renderRoad(main, {manifest} = {}) {
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
       h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사'),
       ctxNote(board.companies)),
+    sparkleBox(shp),
     segBox, hint, strip, body,
     foot(manifest ?? state.manifest)));
   draw(); // 한 탭은 많아야 45곳이라 한꺼번에 그린다 — 되돌아올 때는 app.js 가 보던 자리로

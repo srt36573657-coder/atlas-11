@@ -126,7 +126,7 @@ export function moverBars(companies) {
    · 수급: 최근 5거래일 외국인·기관 순매수 합(주) — 가운데 0 에서 좌우 막대(둘 중 큰 값이 반 폭) · 잠정인 날은 적는다
    · 기사: 가장 최근 기사 가운데 회사 이름이 든 1건(언론사 · 시각) — 제목은 원문 그대로(식별자) · 없으면 없다고 적는다 */
 const SVGNS = 'http://www.w3.org/2000/svg';
-const sv = (tag, attrs = {}, ...kids) => { const el = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) el.setAttribute(k, String(v)); for (const c of kids) if (c) el.append(c); return el; };
+export const sv = (tag, attrs = {}, ...kids) => { const el = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) el.setAttribute(k, String(v)); for (const c of kids) if (c) el.append(c); return el; };
 /** 첫날 대비 변화(0 = 첫날 종가) — 지난 20거래일 21개 종가 */
 const retsOf = c => { const cs = (c?.c ?? []).filter(v => finite(v) && v > 0); return cs.length < 2 ? [] : cs.map(v => v / cs[0] - 1); };
 /** 한 묶음(업종 5곳 · 흐름 한 가지)이 함께 쓰는 눈금 — 같은 눈금이라야 칸끼리 크기를 견줄 수 있다 · 위아래로 적어도 3% */
