@@ -1,0 +1,26 @@
+stocks used: 365  windows: 254499  t-date range: 20230522 .. 20260407
+unit counts: {0.01: 226474, 0.02: 25320, 0.03: 2387, 0.05: 318}  cols>24 after 0.05: 33
+
+set                n     up50   down33
+all           254499   0.2642   0.1160
+P1 <2025      142809   0.1775   0.1262
+P2 >=2025     111690   0.3752   0.1028
+
+up50=1 windows: 67250  up50=0 windows: 187249
+shape             n  sh|up=1  sh|up=0  up50|sh  dn33|sh
+bigRedDay    145985   0.6985   0.5288   0.3218   0.1624
+bigBlueDay   108093   0.5083   0.3947   0.3163   0.1612
+longRed      179355   0.8053   0.6686   0.3020   0.1432
+quiet          7762   0.0066   0.0391   0.0572   0.0234
+noBigBlue     45318   0.1134   0.2013   0.1682   0.0517
+
+per-period shape view (n, up50|shape, down33|shape):
+  bigRedDay  P1 n=75605 up=0.2236 dn=0.1847 | base up=0.1775  ;  P2 n=70380 up=0.4272 dn=0.1384 | base up=0.3752
+  bigBlueDay P1 n=58306 up=0.2190 dn=0.1767 | base up=0.1775  ;  P2 n=49787 up=0.4302 dn=0.1431 | base up=0.3752
+  longRed    P1 n=94894 up=0.2050 dn=0.1607 | base up=0.1775  ;  P2 n=84461 up=0.4109 dn=0.1235 | base up=0.3752
+  quiet      P1 n=4909 up=0.0301 dn=0.0016 | base up=0.1775  ;  P2 n=2853 up=0.1038 dn=0.0610 | base up=0.3752
+  noBigBlue  P1 n=27357 up=0.1025 dn=0.0516 | base up=0.1775  ;  P2 n=17961 up=0.2682 dn=0.0519 | base up=0.3752
+
+000660 20250102 -> t=20250102  up50=1 down33=0 red=25 blue=15 unit=0.01 cols=9 bigRedDay=0 bigBlueDay=1 longRed=1 quiet=0 noBigBlue=0
+000660 20250602 -> t=20250602  up50=1 down33=0 red=29 blue=12 unit=0.01 cols=12 bigRedDay=1 bigBlueDay=0 longRed=1 quiet=0 noBigBlue=0
+000660 20251001 -> t=20251001  up50=1 down33=0 red=46 blue=12 unit=0.01 cols=24 bigRedDay=1 bigBlueDay=1 longRed=1 quiet=0 noBigBlue=0
