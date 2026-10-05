@@ -14,9 +14,21 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const IND = Array.from({length: 90}, (_, i) => `업종${String(i).padStart(2, '0')}`);
 const days = []; for (let d = new Date('2025-07-01T00:00:00Z'); d <= new Date('2026-10-02T00:00:00Z'); d = new Date(d.getTime() + 864e5)) if (d.getUTCDay() % 6) days.push(d.toISOString().slice(0, 10));
 const companies = Array.from({length: 1650}, (_, i) => ({sym: 'S' + i, ex: i % 10 === 9 ? 'AMEX' : i % 2 ? 'NASDAQ' : 'NYSE', ind: IND[i % 90], cap: 5e12 / (i + 1)}));
+const nq = v => v == null ? '--' : (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('en-US');
 function fakeFetch(url) {
   const u = new URL(url), ok = body => ({ok: true, status: 200, text: async () => JSON.stringify(body), headers: new Map()});
   let m;
+  // 나스닥 종목표(나라) — S11 · S12 는 캐나다 회사라고 해 본다
+  if (u.host === 'api.nasdaq.com' && u.pathname === '/api/screener/stocks') return ok({data: {rows: companies.map(c => ({symbol: c.sym, country: /^S1[12]$/.test(c.sym) ? 'Canada' : 'United States', marketCap: String(c.cap)}))}});
+  // 나스닥 결산표 — S5 로 끝나는 회사는 없음(404 → 네이버 결산으로) · S2 로 끝나면 자기자본 마이너스
+  if (u.host === 'api.nasdaq.com' && (m = u.pathname.match(/^\/api\/company\/([^/]+)\/financials$/))) {
+    const sym = decodeURIComponent(m[1]), i = Number(sym.replace(/\D/g, ''));
+    if (i % 10 === 5) return {ok: false, status: 404, text: async () => '{"data":null}', headers: new Map()};
+    const loss = i % 4 === 1, eq = i % 10 === 2 ? -500 : 1000, liab = i % 7 === 0 ? 3000 : 800;
+    const hd = {value1: 'Period Ending:', value2: '12/31/2025', value3: '12/31/2024', value4: '12/31/2023', value5: '12/31/2022'}, row = (label, v) => ({value1: label, value2: nq(v), value3: nq(v), value4: nq(v), value5: nq(v)});
+    return ok({data: {symbol: sym, incomeStatementTable: {headers: hd, rows: [row('Total Revenue', 5000), row('Operating Income', loss ? -50 : 300), row('Net Income', loss ? -30 : 150)]},
+      balanceSheetTable: {headers: hd, rows: [row('Total Liabilities', liab), row('Total Equity', eq)]}, financialRatiosTable: {headers: hd, rows: [{value1: 'After Tax ROE', value2: '15%', value3: '15%', value4: '15%', value5: '15%'}]}}, status: {rCode: 200}});
+  }
   if ((m = u.pathname.match(/\/stock\/exchange\/(\w+)\/marketValue$/))) {
     const page = Number(u.searchParams.get('page')), size = Number(u.searchParams.get('pageSize')), list = companies.filter(c => c.ex === m[1]);
     return ok({stocks: list.slice((page - 1) * size, page * size).map(c => ({stockEndType: c.sym === 'S7' ? 'etf' : 'stock', reutersCode: c.sym + (c.ex === 'NASDAQ' ? '.O' : ''), symbolCode: c.sym, stockName: '회사' + c.sym.slice(1), stockNameEng: 'Company ' + c.sym,
@@ -50,10 +62,18 @@ test('자료 받기 흐름(가짜 응답): 1,500곳 → 365곳 · 추정 칸 버
     const input = JSON.parse(await fs.readFile('public/data/atlas11/us/input.json', 'utf8')), ctx = JSON.parse(await fs.readFile('public/data/atlas11/us/context.json', 'utf8'));
     assert.equal(input.place, 'us'); assert.equal(input.assets.length, 365); assert.match(input.universe.id, /^us1-n365-v1-\d{4}-\d{2}-\d{2}$/);
     assert.ok(!input.assets.some(a => a.code === 'S7'), 'ETF 는 빠짐');
+    assert.ok(!input.assets.some(a => a.code === 'S11' || a.code === 'S12'), '나라가 캐나다인 회사는 빠짐(미국 회사만)');
+    assert.ok(!input.assets.some(a => Number(a.code.slice(1)) % 10 === 2 && a.quality.kind === 'quality'), '자기자본 마이너스 회사는 우량이 아님');
+    const src = input.assets.reduce((t, a) => (t[a.quality.metrics?.source] = (t[a.quality.metrics?.source] ?? 0) + 1, t), {});
+    assert.ok(src.nasdaq > 200 && src.naver > 0, `결산은 나스닥 먼저 · 없으면 네이버(${JSON.stringify(src)})`);
     assert.ok(!input.assets.some(a => Number(a.code.slice(1)) % 50 === 3), '일봉 100개뿐인 회사는 빠짐');
     assert.ok(input.assets.every(a => a.prices.length >= 253 && a.prices.every(p => p.close > 0)));
-    const q = input.assets.find(a => a.quality.kind === 'quality');
-    assert.equal(q.quality.metrics.fiscalYear, '2025.12.', '추정(E) 칸은 버리고 마지막 확정 해');
+    const qn = input.assets.find(a => a.quality.kind === 'quality' && a.quality.metrics.source === 'naver');
+    if (qn) assert.equal(qn.quality.metrics.fiscalYear, '2025.12.', '네이버 결산: 추정(E) 칸은 버리고 마지막 확정 해');
+    const q = input.assets.find(a => a.quality.kind === 'quality' && a.quality.metrics.source === 'nasdaq');
+    assert.equal(q.quality.metrics.fiscalYear, '2025-12-31', '나스닥 결산: 가장 최근 결산 해');
+    assert.equal(q.quality.metrics.debt, 80, '부채비율 = 부채 총계 ÷ 자기자본(800 ÷ 1,000)');
+    assert.equal(q.quality.metrics.roe, 15, 'ROE = 순이익 ÷ 자기자본(150 ÷ 1,000)');
     assert.ok(input.assets.filter(a => a.quality.kind === 'quality').length > 200);
     assert.ok(input.calendar.sessions.length >= 253);
     assert.equal(ctx.index.length, 3); assert.ok(ctx.news.length >= 300);
@@ -89,4 +109,24 @@ test('원문 읽기 조각 — 숫자 · 날짜 · 한글 금액 · 기호 · �
   const n = parseUsNews([{tit: '애플 &amp; 신제품', ohnm: '연합뉴스', dt: '20261004093000', oid: '001', aid: '0001'}], 'AAPL');
   assert.equal(n.items[0].title, '애플 & 신제품'); assert.equal(n.items[0].url, 'https://n.news.naver.com/mnews/article/001/0001'); assert.equal(n.items[0].publishedAt, '2026-10-04T09:30:00+09:00');
   assert.deepEqual(parseIndex({result: [{localTradedAt: '2026-10-01', closePrice: '100'}, {localTradedAt: '2026-10-02', closePrice: '101'}]}).map(r => r.changePct), [1]);
+});
+
+test('나스닥 결산표 읽기 — 돈 글자 · 날짜 · 영업이익 · 순이익 · ROE · 부채비율 · 자기자본 마이너스', async () => {
+  const {money, mdy, parseNasdaqFin, nasdaqMetrics, parseScreener} = await import('../../lib/atlas11/us/nasdaq.mjs');
+  assert.equal(money('$416,161,000'), 416161000); assert.equal(money('-$321,000'), -321000); assert.equal(money('($5)'), -5); assert.equal(money('--'), null); assert.equal(money('151.9%'), 151.9);
+  assert.equal(mdy('9/27/2025'), '2025-09-27');
+  // 2026-10-05 19:39 깃허브 실행기 시험에서 받은 애플 결산표 모양 그대로(숫자는 그 원문 값)
+  const hd = {value1: 'Period Ending:', value2: '9/27/2025', value3: '9/28/2024', value4: '9/30/2023', value5: '9/24/2022'};
+  const j = {data: {symbol: 'AAPL', incomeStatementTable: {headers: hd, rows: [{value1: 'Operating Income', value2: '$133,050,000', value3: '$123,216,000', value4: '$114,301,000', value5: '$119,437,000'}, {value1: 'Net Income', value2: '$112,010,000', value3: '$93,736,000', value4: '$96,995,000', value5: '$99,803,000'}]},
+    balanceSheetTable: {headers: hd, rows: [{value1: 'Total Liabilities', value2: '$285,508,000', value3: '$308,030,000', value4: '', value5: ''}, {value1: 'Total Equity', value2: '$73,733,000', value3: '$56,950,000', value4: '', value5: ''}]}}};
+  const m = nasdaqMetrics(parseNasdaqFin(j));
+  assert.equal(m.fiscalYear, '2025-09-27'); assert.equal(m.prevYear, '2024-09-28');
+  assert.equal(m.op, 133050000); assert.equal(m.opPrev, 123216000); assert.equal(m.net, 112010000); assert.equal(m.netPrev, 93736000);
+  assert.equal(m.roe, 151.91, 'ROE = 112,010 ÷ 73,733 — 나스닥 「After Tax ROE 151.91298%」와 같음');
+  assert.equal(m.debt, 387.22, '부채비율 = 285,508 ÷ 73,733');
+  const neg = nasdaqMetrics(parseNasdaqFin({data: {incomeStatementTable: {headers: hd, rows: [{value1: 'Net Income', value2: '$5'}]}, balanceSheetTable: {headers: hd, rows: [{value1: 'Total Equity', value2: '-$10'}, {value1: 'Total Liabilities', value2: '$50'}]}}}));
+  assert.equal(neg.equityNeg, true); assert.equal(neg.roe, null); assert.equal(neg.debt, null);
+  assert.equal(nasdaqMetrics(parseNasdaqFin({data: null})), null);
+  const sc = parseScreener({data: {rows: [{symbol: 'BRK/B', country: 'United States', marketCap: '1000.00'}, {symbol: 'RY', country: 'Canada'}]}});
+  assert.equal(sc.get('BRK.B').country, 'United States'); assert.equal(sc.get('RY').country, 'Canada');
 });

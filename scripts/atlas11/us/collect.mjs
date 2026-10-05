@@ -18,6 +18,7 @@ import {createHash} from 'node:crypto';
 import {NAVER_US, parseList, parseDay, parseFinance, metricsOf, parseUsNews, parseIndex} from '../../../lib/atlas11/us/naver.mjs';
 import {US365, selectUs365, usHowLines, usIsFinancial} from '../../../lib/atlas11/us/universe.mjs';
 import {US_INDEX, usCloseFinal, newYork} from '../../../lib/atlas11/us/place.mjs';
+import {NASDAQ, parseNasdaqFin, nasdaqMetrics, parseScreener} from '../../../lib/atlas11/us/nasdaq.mjs';
 
 const root = process.cwd();
 const arg = (name, d = null) => { const i = process.argv.indexOf(name); return i < 0 ? d : process.argv[i + 1]; };
@@ -32,12 +33,12 @@ const log = {startedAt: now.toISOString(), steps: [], samples: {}, failures: {}}
 const step = (name, info) => { const row = {name, at: new Date().toISOString(), ...info}; log.steps.push(row); console.log(`[${row.at.slice(11, 19)}] ${name} ${JSON.stringify(info)}`); };
 
 /** 받기 — 429 · 5xx · 끊김은 쉬었다가 다시(3번까지) · 원문 견본은 종류마다 첫 성공 하나 · 첫 실패 하나만 남긴다 */
-async function get(url, kind, {tries = 3} = {}) {
+async function get(url, kind, {tries = 3, headers = NAVER_US.headers} = {}) {
   let last = null;
   for (let k = 0; k < tries; k++) {
     const t = Date.now();
     try {
-      const r = await fetch(url, {headers: NAVER_US.headers, signal: AbortSignal.timeout(20000)});
+      const r = await fetch(url, {headers, signal: AbortSignal.timeout(20000)});
       const text = await r.text();
       if (r.ok) {
         let json = null; try { json = JSON.parse(text); } catch {}
@@ -109,10 +110,19 @@ const historyCheck = (rows, latest) => ({rows: rows.length, last: rows.at(-1)?.d
 async function selectMode() {
   const list = await universeList();
   if (list.length < 500) throw Error(`US_LIST_SHORT ${list.length} — 시가총액 목록을 충분히 받지 못함(reports 의 samples 확인)`);
-  // ② 결산
-  const fins = await pool(list, 6, async c => { const r = await getAny(NAVER_US.ways.finance(c.reuters), 'finance', j => parseFinance(j).cols.length > 0); if (!r.ok) return null; try { return metricsOf(parseFinance(r.json)); } catch { return null; } });
-  const withM = fins.filter(Boolean).length;
-  step('결산', {asked: list.length, got: withM, sampleRows: fins.find(Boolean)?.rowsSeen ?? null});
+  // ①-2 나라 — 나스닥 종목표 한 번(전 종목) · 미국 회사만 고를 때 씀(못 받으면 나라를 모르는 채로 · 빼지 않음)
+  const sc = await get(NASDAQ.screener, 'screener', {headers: NASDAQ.headers});
+  const screen = sc.ok ? parseScreener(sc.json) : new Map();
+  step('나라', {screener: screen.size, matched: list.filter(c => screen.has(c.code)).length, notUS: list.filter(c => (screen.get(c.code)?.country ?? '') && screen.get(c.code).country !== 'United States').length});
+  // ② 결산 — 나스닥 결산표(영업이익 · 순이익 · 부채 · 자기자본)를 먼저 · 안 되면 네이버 결산(EBIT · PBR÷PER · 부채비율 없음)
+  const fins = await pool(list, 5, async c => {
+    const r = await get(NASDAQ.fin(c.code), 'nasdaq_fin', {headers: NASDAQ.headers});
+    if (r.ok) { try { const m = nasdaqMetrics(parseNasdaqFin(r.json)); if (m && (m.net != null || m.op != null)) return {...m, source: 'nasdaq'}; } catch {} }
+    const n = await getAny(NAVER_US.ways.finance(c.reuters), 'finance', j => parseFinance(j).cols.length > 0); if (!n.ok) return null;
+    try { const m = metricsOf(parseFinance(n.json)); return m ? {...m, source: 'naver'} : null; } catch { return null; }
+  });
+  const withM = fins.filter(Boolean).length, bySrc = fins.reduce((t, m) => (m && (t[m.source] = (t[m.source] ?? 0) + 1), t), {});
+  step('결산', {asked: list.length, got: withM, source: bySrc, withDebt: fins.filter(m => m?.debt != null).length, withRoe: fins.filter(m => m?.roe != null).length});
   // ③ 일봉
   const to = ymd(now), from = ymd(new Date(now.getTime() - 430 * 864e5));
   const hist = await pool(list, 6, c => history(c, from, to));
@@ -120,7 +130,7 @@ async function selectMode() {
   step('일봉', {asked: list.length, got: hist.filter(h => h.rows.length).length, latest, rows: hist.map(h => h.rows.length).sort((a, b) => b - a)[Math.floor(list.length / 2)] ?? 0});
   const candidates = list.map((c, i) => {
     const m = fins[i], fin = usIsFinancial(c);
-    return {...c, financial: fin, metrics: m ? {fiscalYear: m.fiscalYear, prevYear: m.prevYear, revenue: m.revenue, op: m.op, opPrev: m.opPrev, net: m.net, netPrev: m.netPrev, roe: m.roe, debt: m.debt} : null, history: historyCheck(hist[i].rows, latest)};
+    return {...c, country: screen.get(c.code)?.country ?? null, financial: fin, metrics: m ? {fiscalYear: m.fiscalYear, prevYear: m.prevYear, revenue: m.revenue, op: m.op, opPrev: m.opPrev, net: m.net, netPrev: m.netPrev, roe: m.roe, debt: m.debt, equityNeg: m.equityNeg ?? false, source: m.source, basis: m.basis ?? null} : null, history: historyCheck(hist[i].rows, latest)};
   });
   // ④ 고르기
   const sel = selectUs365(candidates);
@@ -130,12 +140,12 @@ async function selectMode() {
   await writeGz(path.join(RUN, 'history.json.gz'), {schema: 'atlas11-us-history-1', at: now.toISOString(), from, to, basis: 'NAVER_WORLD_DAY · 뉴욕 17:00 지나 굳은 종가만',
     rows: Object.fromEntries(list.map((c, i) => [c.code, hist[i].rows.map(r => [r.date, r.close])])), urls: Object.fromEntries(list.map((c, i) => [c.code, hist[i].url]))});
   await writeGz(path.join(RUN, 'candidates.json.gz'), {schema: 'atlas11-us-candidates-1', at: now.toISOString(), rules: {...US365, trendGroups: US365.trendGroups.map(g => ({id: g.id, label: g.label, words: String(g.words)}))},
-    candidates: sel.checked.map(c => ({code: c.code, reuters: c.reuters, name: c.name, nameEn: c.nameEn, exchange: c.exchange, industry: c.industry, industryCode: c.industryCode, capUsd: c.capUsd, capRank: c.capRank, financial: c.financial, metrics: c.metrics, history: c.history, fails: c.fails, trend: c.trend ? c.trend.id : null}))});
+    candidates: sel.checked.map(c => ({code: c.code, reuters: c.reuters, name: c.name, nameEn: c.nameEn, exchange: c.exchange, country: c.country ?? null, industry: c.industry, industryCode: c.industryCode, capUsd: c.capUsd, capRank: c.capRank, financial: c.financial, metrics: c.metrics, history: c.history, fails: c.fails, sameCompanyOf: c.sameCompanyOf ?? null, trend: c.trend ? c.trend.id : null}))});
   await writeJSON(path.join(RUN, 'proposal.json'), {schema: 'atlas11-us-proposal-1', at: now.toISOString(), ok: sel.ok, rules: US365.version, counts: sel.counts,
     picked: sel.picked.map(p => ({rank: p.rank, code: p.code, name: p.name, nameEn: p.nameEn, industry: p.industry, kind: p.kind, capRank: p.capRank, industryRank: p.industryRank}))}, true);
   if (!sel.ok) throw Error(`US_SELECT_SHORT ${sel.picked.length}곳 · 업종 ${sel.counts.industries}개 — reports/atlas11/us/runs/${stamp}/proposal.json 의 counts.short 확인`);
   const id = `us1-n365-v1-${newYork(now).date}`;
-  const universe = {id, label: US365.label, rules: US365.version, says: US365.says, selectedAt: now.toISOString(), how: usHowLines(US365, '네이버 증권 해외주식(시가총액 · 업종 · 결산 · 일봉)'), proposal: path.join(RUN, 'proposal.json')};
+  const universe = {id, label: US365.label, rules: US365.version, says: US365.says, selectedAt: now.toISOString(), how: usHowLines(US365, '네이버 증권 해외주식(한글 이름 · 업종 · 시가총액 · 종가) · 나스닥 결산표(영업이익 · 순이익 · 부채 · 자기자본) · 나스닥 종목표(나라)'), proposal: path.join(RUN, 'proposal.json')};
   return {universe, picked: sel.picked, rows};
 }
 
@@ -193,7 +203,7 @@ export async function collect({mode = 'auto'} = {}) {
     quality: {rules: US365.version, rank: p.rank, kind: p.kind, capRank: p.capRank, capUsd: p.capUsd, metrics: p.metrics ?? null, roe: p.metrics?.roe ?? null, debt: p.metrics?.debt ?? null, debtExempt: p.debtExempt ?? usIsFinancial(p), fails: p.fails ?? [], trend: p.trend ? (p.trend.id ?? p.trend) : null},
     prices: (got.rows.get(p.code) ?? []).map(r => ({date: r.date, close: r.close, ...(r.sourceUrl ? {closeBasis: r.closeBasis, sourceUrl: r.sourceUrl, observedAt: r.observedAt} : {})}))}));
   const input = {schema: 'atlas11-us-input-1', place: 'us', retrievedAt: now.toISOString(), mode: m,
-    sources: {prices: '네이버 증권 해외주식', names: '네이버 증권 해외주식(한글 이름)', industry: '네이버 증권 해외주식 업종', finance: '네이버 증권 해외주식 결산(확정 칸만)', news: ctx.sources.news},
+    sources: {prices: '네이버 증권 해외주식', names: '네이버 증권 해외주식(한글 이름)', industry: '네이버 증권 해외주식 업종', finance: '나스닥 결산표(nasdaq.com) · 없으면 네이버 증권 해외주식 결산', country: '나스닥 종목표(nasdaq.com)', news: ctx.sources.news},
     calendar: {timezone: 'America/New_York', basis: '365곳 가운데 절반 넘게 종가가 있는 날', sessions}, universe: got.universe, assets};
   await writeJSON(US_DATA + '/input.json', input);
   await writeJSON(US_DATA + '/context.json', ctx);
