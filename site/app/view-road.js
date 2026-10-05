@@ -118,32 +118,7 @@ function sparkleBox(shp, gather, {to, keyText}) {
       h('p', null, `${korDate(to)} 종가까지 지난 20거래일 출목표 모양을 견준 것일 뿐 앞날을 맞히지 않습니다`)));
 }
 
-/** 돋보기 그림 */
-const findIcon = () => sv('svg', {class: 'f-find-ic', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, sv('circle', {cx: 10.5, cy: 10.5, r: 6.5}), sv('path', {d: 'M15.4 15.4 20.5 20.5'}));
-/** 회사 이름 찾기(2026-10-05 15:24 「잡스가 … 36가지」 E1) — 365곳 가운데 이름(또는 종목 코드)으로 · 맞는 회사 8곳까지 바로 아래에 · 누르면 회사 화면
-   제목 줄 오른쪽 「찾기」 단추를 눌러야 열림 — 닫혀 있으면 첫 화면을 차지하지 않는다 · 이름이 그 글자로 시작하는 회사가 앞 · 그다음은 오른 순 */
-function findBox(ranked, shp) {
-  const N = ranked.length, norm = t => String(t ?? '').replace(/\s+/g, '').toLowerCase();
-  const input = h('input', {class: 'f-find-in', id: 'f-find-in', type: 'search', placeholder: `회사 이름 · ${N}곳`, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'go', 'aria-describedby': 'f-find-msg'});
-  const msg = h('p', {class: 'f-find-msg small', id: 'f-find-msg', role: 'status', 'aria-live': 'polite'}), list = h('ul', {class: 'f-find-list'});
-  let hits = [];
-  const show = () => {
-    const q = norm(input.value);
-    if (!q) { hits = []; list.replaceChildren(); msg.textContent = ''; return; }
-    hits = ranked.map((x, i) => ({x, i})).filter(({x}) => norm(x.c.name).includes(q) || x.c.code.startsWith(q))
-      .sort((a, b) => (norm(b.x.c.name).startsWith(q) - norm(a.x.c.name).startsWith(q)) || a.i - b.i);
-    list.replaceChildren(...hits.slice(0, 8).map(({x, i}) => h('li', null, h('a', {class: 'f-find-hit', href: '#/stock/' + x.c.code, 'data-code': x.c.code},
-      h('span', {class: 'f-find-n'}, x.c.name, sunTag(shp.sparkle.has(x.c.code))),
-      h('small', {class: 'f-find-s'}, `오른 순 ${i + 1}위 · ${finite(x.c.change20) ? pct(x.c.change20, 1) : '없음'}${x.g ? ' · ' + x.g.label : ''}`)))));
-    msg.textContent = !hits.length ? `「${input.value.trim()}」 이름의 회사가 ${N}곳 안에 없습니다` : hits.length > 8 ? `${hits.length}곳 가운데 8곳 · 글자를 더 넣으면 좁혀짐` : `${hits.length}곳`;
-  };
-  input.addEventListener('input', show);
-  const form = h('form', {class: 'f-find', id: 'f-find', role: 'search', 'aria-label': `회사 이름 찾기 · ${N}곳`, hidden: true, onsubmit: e => { e.preventDefault(); show(); if (hits[0]) location.hash = '#/stock/' + hits[0].x.c.code; }},
-    h('label', {class: 'sr-only', for: 'f-find-in'}, '회사 이름 찾기'), input, msg, list);
-  const btn = h('button', {class: 'f-find-b', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'f-find', onclick: () => {
-    const open = form.hidden; form.hidden = !open; btn.setAttribute('aria-expanded', String(open)); if (open) input.focus(); }}, findIcon(), ' 찾기');
-  return {btn, form};
-}
+/* 회사 이름 찾기(옛 E1 · 제목 줄 「찾기」 단추)는 2026-10-05 20:24 「종목을 찾는 기능」에서 아래 탭 「찾기」(view-find.js)로 옮겼다 — 한국 · 미국 판을 함께 찾는 한 곳 */
 
 /** 출목표 안의 탭 — 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(2026-10-05 12:28) */
 export const MORE_STEP = 20, PAGE_MAX = 45;
@@ -300,14 +275,13 @@ export async function renderRoad(main, {manifest} = {}) {
     for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
     hint.textContent = HINT[view](TABS[view]); drawTabs(); strip.hidden = TABS[view].length < 2; drawPage(); centerTab();
   }
-  const find = findBox(ranked, shp);
   const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: keyText()});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
-      h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), find.btn), // 개수는 제목 곁 작은 글(규칙 2) · 오른쪽 「찾기」(E1)
+      h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`))), // 개수는 제목 곁 작은 글(규칙 2) · 찾기는 아래 탭 「찾기」로
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),
       spkBox ? null : h('p', {class: 'f-key muted small'}, keyText()), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
-      ctxNote(board.companies), find.form),
+      ctxNote(board.companies)),
     spkBox,
     segBox, hint, strip, body,
     foot(manifest ?? state.manifest)));

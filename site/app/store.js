@@ -30,9 +30,23 @@ export const loadBoard = () => loadJSON('board.json');
 export const loadAgenda = () => loadJSON('agenda.json');
 export const loadStock = code => loadJSON('stocks/' + code + '.json');
 
+/** 다른 시장 판(한국 판에서 미국 판 · 미국 판에서 한국 판) — 「찾기」가 두 판을 함께 찾을 때(2026-10-05 20:24 「종목을 찾는 기능」)
+   그 판의 목록(manifest) → 판(board) · 판 목록에 적힌 SHA-256 과 맞대어 다르면 쓰지 않는다(보안 연결 · localhost 에서만 잴 수 있음) */
+const placeCache = new Map();
+export function loadPlaceBoard(href) {
+  if (!placeCache.has(href)) placeCache.set(href, (async () => {
+    const get = async name => { const r = await fetch(href + 'data/atlas11/view/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(`${href} ${name} (HTTP ${r.status})`); return r.text(); };
+    const m = JSON.parse(await get('manifest.json')), text = await get('board.json'), b = JSON.parse(text);
+    if (b.boardId !== m.boardId) throw Error(`${href} 판 이름이 서로 다름`);
+    if (state.integrity.available && m.files?.['board.json']?.sha256 && await sha256Hex(text) !== m.files['board.json'].sha256) throw Error(`${href} 판 해시가 다름`);
+    return {manifest: m, board: b};
+  })().catch(e => { placeCache.delete(href); throw e; }));
+  return placeCache.get(href);
+}
+
 /* 기기 저장(이 기기에만) — 글씨 크기 · 탭 자리
    미국 판(/us/)은 같은 주소 안이라 저장 칸을 따로 둔다(「atlas11:us:」 — 한국 판의 출목표 탭 자리와 섞이지 않게) · 글씨 크기는 두 판이 함께(2026-10-05 18:02 「미국 주식도」) */
-const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARED = new Set(['font']);
+const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARED = new Set(['font', 'findRecent']); // 「최근 찾은 회사」도 두 판이 함께
 const keyOf = key => 'atlas11:' + (SHARED.has(key) ? '' : scope) + key;
 export const prefs = {
   get(key, fallback) { try { const v = localStorage.getItem(keyOf(key)); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },

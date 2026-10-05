@@ -24,6 +24,7 @@ import {renderAgenda} from './view-agenda.js';
 import {renderRoad, resetRoad, openSun, openAt, openGroup} from './view-road.js';
 import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
+import {renderFind} from './view-find.js';
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
@@ -32,6 +33,8 @@ const ICON = {
   map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
   road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="5" r="2.6"/><circle cx="5" cy="12" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="12" cy="5" r="2.6"/><circle cx="19" cy="5" r="2.6"/><circle cx="19" cy="12" r="2.6"/></svg>',
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
+  // 찾기: 돋보기(2026-10-05 20:24 「종목을 찾는 기능」)
+  find: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 20.5 20.5"/></svg>',
   // 예비: 반짝임 하나(큰 별 + 작은 별) — 「눈여겨볼 것」
   similar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 11.9 9.1 17.5 11 11.9 12.9 10 18.5 8.1 12.9 2.5 11 8.1 9.1z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>',
   // 22곳: 차례 목록(점 셋 + 줄 셋)
@@ -46,10 +49,11 @@ const routes = [
   {id: 'rise', tab: 'home', label: '오름 상위', match: /^#\/rise$/, render: renderRise},
   {id: 'road', tab: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
   {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
+  {id: 'find', tab: 'find', label: '찾기', match: /^#\/find$/, render: renderFind}, // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 한국 · 미국 판을 함께
 ];
-const TABS = ['home', 'map', 'road', 'agenda'];
+const TABS = ['home', 'map', 'road', 'agenda', 'find'];
 /** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
-const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map']), scrollMemo = new Map();
+const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map', 'find']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
 const drawn = new Set();
 const FONT_STEPS = [100, 125, 150, 175, 200];
@@ -147,6 +151,7 @@ async function start() {
   catch (e) { main.replaceChildren(failure('자료 목록을 읽지 못했습니다', e)); return; }
   setPlace(app.manifest.place); // 미국 판이면 달러 · 뉴욕 16:00 종가 · 수급 없음(util.js place) — 한국 판 manifest 에는 place 가 없어 한국 값 그대로
   try { const r = await fetch('/places.json', {cache: 'no-cache'}); if (r.ok) { const p = await r.json(); if (Array.isArray(p?.places)) app.places = p.places.filter(x => x && x.id && x.href && x.label); } } catch {}
+  state.places = app.places; // 「찾기」가 다른 시장 판도 함께 찾도록
   header();
   window.addEventListener('hashchange', route);
   setInterval(watchManifest, 5 * 60 * 1000);

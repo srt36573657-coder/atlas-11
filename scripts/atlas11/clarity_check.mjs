@@ -35,6 +35,8 @@ export const SCREENS = [
   {id: 'rise', name: '오름 상위', hash: '#/rise', wait: '.nc-row, .r-page .muted'},
   {id: 'stock', name: '회사', hash: '#/stock/005930', wait: '.c-chart svg.lc'},
   {id: 'agenda', name: '일정', hash: '#/agenda', wait: '.a-days, .b-box'},
+  // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」: 아래 탭 「찾기」 — 이름 두 글자를 넣은 화면(한국 · 미국 판 줄이 함께)을 잰다
+  {id: 'find', name: '찾기', hash: '#/find', wait: '.fd-page #fd-in', settle: async page => { await page.locator('#fd-in').fill('반도'); await page.waitForTimeout(250); }},
 ];
 /** 화면 주소 — 업종 화면은 판(board.json)에 따라 정해진다 */
 export const screenHash = (s, board) => typeof s.hash === 'function' ? s.hash(board) : s.hash;

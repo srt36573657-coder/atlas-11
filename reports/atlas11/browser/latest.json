@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T11:13:27.684Z",
-  "base": "http://localhost:8883",
+  "at": "2026-10-05T11:42:27.600Z",
+  "base": "http://localhost:8885",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
   "asOf": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 452,
+  "passed": 481,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -122,6 +122,16 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "find": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       }
@@ -236,6 +246,16 @@
         "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
+      },
+      "find": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 7,
+        "truncated": 0,
+        "formatDates": 0
       }
     },
     "mobile-dark": {
@@ -346,6 +366,16 @@
         "graphable": 0,
         "lowContrast": 0,
         "decoColors": 2,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "find": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       }
@@ -460,6 +490,16 @@
         "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
+      },
+      "find": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 7,
+        "truncated": 0,
+        "formatDates": 0
       }
     },
     "mobile-dark-200": {
@@ -572,6 +612,16 @@
         "decoColors": 2,
         "truncated": 0,
         "formatDates": 0
+      },
+      "find": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 4,
+        "truncated": 0,
+        "formatDates": 0
       }
     }
   },
@@ -593,7 +643,7 @@
       }
     },
     {
-      "name": "pc 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 넷 불장·업종·출목표·일정(「불장」 눌림) · 73칸 판은 여기 없음",
+      "name": "pc 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 다섯 불장·업종·출목표·일정·찾기(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
         "title": "불장 업종 11개",
@@ -604,7 +654,8 @@
           "불장",
           "업종",
           "출목표",
-          "일정"
+          "일정",
+          "찾기"
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
@@ -695,7 +746,7 @@
       }
     },
     {
-      "name": "pc 탭 「업종」(업종 73칸): 제목 「업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 53개 오름 · 365곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 53개 오름 · 가장 많은 회사의 기간) · 아래 탭 넷 불장·업종·출목표·일정(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
+      "name": "pc 탭 「업종」(업종 73칸): 제목 「업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 53개 오름 · 365곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 53개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 불장·업종·출목표·일정·찾기(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
       "ok": true,
       "detail": {
         "title": "업종 73개",
@@ -712,7 +763,8 @@
           "불장",
           "업종",
           "출목표",
-          "일정"
+          "일정",
+          "찾기"
         ],
         "cards": 0,
         "text52": false
@@ -1820,7 +1872,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 809,
+        "first": 808,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -1924,13 +1976,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 809px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 808px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 809,
+        "first": 808,
         "ih": 800
       }
     },
@@ -1938,65 +1990,6 @@
       "name": "pc 출목표 오른 순(첫 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
-    },
-    {
-      "name": "pc 출목표 「찾기」 → 「필」 넣음 → 맞는 회사 2곳 보임(「2곳」 · 그 글자로 시작하는 이름 먼저 · 오른 순 자리 · 태양 해) = 따로 센 값",
-      "ok": true,
-      "detail": {
-        "fr": {
-          "open": true,
-          "exp": "true",
-          "focus": "f-find-in",
-          "msg": "2곳",
-          "hits": [
-            {
-              "code": "161580",
-              "href": "#/stock/161580",
-              "n": "필옵틱스",
-              "s": "오른 순 6위 · +57.9% · 전자장비",
-              "sun": true
-            },
-            {
-              "code": "378340",
-              "href": "#/stock/378340",
-              "n": "필에너지",
-              "s": "오른 순 86위 · +15.8% · 2차전지 장비",
-              "sun": true
-            }
-          ],
-          "sw": 1280,
-          "iw": 1280
-        },
-        "want": [
-          "필옵틱스",
-          "필에너지"
-        ]
-      }
-    },
-    {
-      "name": "pc 출목표 「찾기」: 없는 이름 → 「「없는회사이름」 이름의 회사가 365곳 안에 없습니다」 · 줄 0개",
-      "ok": true,
-      "detail": {
-        "msg": "「없는회사이름」 이름의 회사가 365곳 안에 없습니다",
-        "n": 0
-      }
-    },
-    {
-      "name": "pc 출목표 「찾기」: 「필옵틱스」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 출목표」",
-      "ok": true,
-      "detail": {
-        "hash": "#/stock/161580",
-        "title": "필옵틱스",
-        "back": "‹ 출목표"
-      }
-    },
-    {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 그대로(찾기 칸은 닫힘 · 탭 r1)",
-      "ok": true,
-      "detail": {
-        "hidden": true,
-        "tab": "r1"
-      }
     },
     {
       "name": "pc 출목표 맨 아래 「2번째 탭 · 21위~40위 보기 ›」 누름 → 그 탭 · 화면은 묶는 법 단추 자리로 올라감(위에서 64px)",
@@ -2312,6 +2305,207 @@
       }
     },
     {
+      "name": "pc 아래 탭 「찾기」 누름 → #/find · 제목 「찾기 730곳」(= 한국 365곳 · 미국 365곳) · 글 칸에 바로 커서 · 보기 단추 4개",
+      "ok": true,
+      "detail": {
+        "hash": "#/find",
+        "title": "찾기 730곳",
+        "focus": "fd-in",
+        "active": "find",
+        "tries": [
+          "삼성전자",
+          "엔비디아",
+          "ㅅㅅㅈㅈ (초성)",
+          "NVDA (기호)"
+        ],
+        "sw": 1280,
+        "iw": 1280
+      }
+    },
+    {
+      "name": "pc 찾기 「가」 → 9곳 보임(「9곳」) = find.js 로 센 9곳의 앞 9곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "9곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            },
+            {
+              "code": "MSGS",
+              "place": "us",
+              "href": "/us/#/stock/MSGS",
+              "name": "매디슨 스퀘어 가든 스포츠",
+              "sun": false,
+              "mkt": "미국"
+            },
+            {
+              "code": "030190",
+              "place": "kr",
+              "href": "#/stock/030190",
+              "name": "NICE평가정보",
+              "sun": false,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500",
+          "us:MSGS",
+          "kr:030190"
+        ]
+      }
+    },
+    {
+      "name": "pc 찾기 「ㄱㅇㅈㅅ」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500"
+        ]
+      }
+    },
+    {
+      "name": "pc 찾기 「000500」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500"
+        ]
+      }
+    },
+    {
+      "name": "pc 찾기 「엔비디아」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "NVDA",
+              "place": "us",
+              "href": "/us/#/stock/NVDA",
+              "name": "엔비디아",
+              "sun": false,
+              "mkt": "미국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "us:NVDA"
+        ]
+      }
+    },
+    {
+      "name": "pc 찾기 「nvda」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "NVDA",
+              "place": "us",
+              "href": "/us/#/stock/NVDA",
+              "name": "엔비디아",
+              "sun": false,
+              "mkt": "미국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "us:NVDA"
+        ]
+      }
+    },
+    {
+      "name": "pc 찾기: 없는 이름 → 「「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다」 · 줄 0개",
+      "ok": true,
+      "detail": {
+        "msg": "「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다",
+        "hits": [],
+        "recent": false
+      }
+    },
+    {
+      "name": "pc 찾기: 「가온전선」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 찾기」",
+      "ok": true,
+      "detail": {
+        "title": "가온전선",
+        "back": "‹ 찾기"
+      }
+    },
+    {
+      "name": "pc 회사 화면 「‹ 찾기」 → 찾기 그대로(넣은 글자 「가온전선」 · 줄 1개)",
+      "ok": true,
+      "detail": {
+        "hash": "#/find",
+        "value": "가온전선",
+        "n": 1
+      }
+    },
+    {
+      "name": "pc 찾기: 글자를 지우면 「최근 찾은 회사」 — 첫 줄 가온전선",
+      "ok": true,
+      "detail": {
+        "recent": true,
+        "first": {
+          "code": "000500",
+          "place": "kr",
+          "href": "#/stock/000500",
+          "name": "가온전선",
+          "sun": true,
+          "mkt": "한국"
+        }
+      }
+    },
+    {
+      "name": "pc 찾기: 미국 「엔비디아」 줄 누름 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「233.95달러」",
+      "ok": true,
+      "detail": {
+        "path": "/us/#/stock/NVDA",
+        "title": "엔비디아",
+        "close": "233.95달러"
+      }
+    },
+    {
       "name": "pc 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
       "ok": true,
       "detail": {
@@ -2393,10 +2587,10 @@
       }
     },
     {
-      "name": "pc 무결성: 「읽은 파일 14개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "pc 무결성: 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 14개 모두 판 목록의 SHA-256 과 같음"
+        "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
       }
     },
     {
@@ -2434,7 +2628,7 @@
       }
     },
     {
-      "name": "mobile 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 넷 불장·업종·출목표·일정(「불장」 눌림) · 73칸 판은 여기 없음",
+      "name": "mobile 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 다섯 불장·업종·출목표·일정·찾기(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
         "title": "불장 업종 11개",
@@ -2445,7 +2639,8 @@
           "불장",
           "업종",
           "출목표",
-          "일정"
+          "일정",
+          "찾기"
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
@@ -2536,7 +2731,7 @@
       }
     },
     {
-      "name": "mobile 탭 「업종」(업종 73칸): 제목 「업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 53개 오름 · 365곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 53개 오름 · 가장 많은 회사의 기간) · 아래 탭 넷 불장·업종·출목표·일정(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
+      "name": "mobile 탭 「업종」(업종 73칸): 제목 「업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 53개 오름 · 365곳 · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지」(업종 53개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 불장·업종·출목표·일정·찾기(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
       "ok": true,
       "detail": {
         "title": "업종 73개",
@@ -2553,7 +2748,8 @@
           "불장",
           "업종",
           "출목표",
-          "일정"
+          "일정",
+          "찾기"
         ],
         "cards": 0,
         "text52": false
@@ -3781,65 +3977,6 @@
       "detail": null
     },
     {
-      "name": "mobile 출목표 「찾기」 → 「필」 넣음 → 맞는 회사 2곳 보임(「2곳」 · 그 글자로 시작하는 이름 먼저 · 오른 순 자리 · 태양 해) = 따로 센 값",
-      "ok": true,
-      "detail": {
-        "fr": {
-          "open": true,
-          "exp": "true",
-          "focus": "f-find-in",
-          "msg": "2곳",
-          "hits": [
-            {
-              "code": "161580",
-              "href": "#/stock/161580",
-              "n": "필옵틱스",
-              "s": "오른 순 6위 · +57.9% · 전자장비",
-              "sun": true
-            },
-            {
-              "code": "378340",
-              "href": "#/stock/378340",
-              "n": "필에너지",
-              "s": "오른 순 86위 · +15.8% · 2차전지 장비",
-              "sun": true
-            }
-          ],
-          "sw": 390,
-          "iw": 390
-        },
-        "want": [
-          "필옵틱스",
-          "필에너지"
-        ]
-      }
-    },
-    {
-      "name": "mobile 출목표 「찾기」: 없는 이름 → 「「없는회사이름」 이름의 회사가 365곳 안에 없습니다」 · 줄 0개",
-      "ok": true,
-      "detail": {
-        "msg": "「없는회사이름」 이름의 회사가 365곳 안에 없습니다",
-        "n": 0
-      }
-    },
-    {
-      "name": "mobile 출목표 「찾기」: 「필옵틱스」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 출목표」",
-      "ok": true,
-      "detail": {
-        "hash": "#/stock/161580",
-        "title": "필옵틱스",
-        "back": "‹ 출목표"
-      }
-    },
-    {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 그대로(찾기 칸은 닫힘 · 탭 r1)",
-      "ok": true,
-      "detail": {
-        "hidden": true,
-        "tab": "r1"
-      }
-    },
-    {
       "name": "mobile 출목표 맨 아래 「2번째 탭 · 21위~40위 보기 ›」 터치 → 그 탭 · 화면은 묶는 법 단추 자리로 올라감(위에서 64px)",
       "ok": true,
       "detail": {
@@ -4145,6 +4282,207 @@
       }
     },
     {
+      "name": "mobile 아래 탭 「찾기」 터치 → #/find · 제목 「찾기 730곳」(= 한국 365곳 · 미국 365곳) · 글 칸에 바로 커서 · 보기 단추 4개",
+      "ok": true,
+      "detail": {
+        "hash": "#/find",
+        "title": "찾기 730곳",
+        "focus": "fd-in",
+        "active": "find",
+        "tries": [
+          "삼성전자",
+          "엔비디아",
+          "ㅅㅅㅈㅈ (초성)",
+          "NVDA (기호)"
+        ],
+        "sw": 390,
+        "iw": 390
+      }
+    },
+    {
+      "name": "mobile 찾기 「가」 → 9곳 보임(「9곳」) = find.js 로 센 9곳의 앞 9곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "9곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            },
+            {
+              "code": "MSGS",
+              "place": "us",
+              "href": "/us/#/stock/MSGS",
+              "name": "매디슨 스퀘어 가든 스포츠",
+              "sun": false,
+              "mkt": "미국"
+            },
+            {
+              "code": "030190",
+              "place": "kr",
+              "href": "#/stock/030190",
+              "name": "NICE평가정보",
+              "sun": false,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500",
+          "us:MSGS",
+          "kr:030190"
+        ]
+      }
+    },
+    {
+      "name": "mobile 찾기 「ㄱㅇㅈㅅ」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500"
+        ]
+      }
+    },
+    {
+      "name": "mobile 찾기 「000500」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 가온전선(한국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "000500",
+              "place": "kr",
+              "href": "#/stock/000500",
+              "name": "가온전선",
+              "sun": true,
+              "mkt": "한국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "kr:000500"
+        ]
+      }
+    },
+    {
+      "name": "mobile 찾기 「엔비디아」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "NVDA",
+              "place": "us",
+              "href": "/us/#/stock/NVDA",
+              "name": "엔비디아",
+              "sun": false,
+              "mkt": "미국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "us:NVDA"
+        ]
+      }
+    },
+    {
+      "name": "mobile 찾기 「nvda」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "ok": true,
+      "detail": {
+        "got": {
+          "msg": "1곳",
+          "hits": [
+            {
+              "code": "NVDA",
+              "place": "us",
+              "href": "/us/#/stock/NVDA",
+              "name": "엔비디아",
+              "sun": false,
+              "mkt": "미국"
+            }
+          ],
+          "recent": false
+        },
+        "want": [
+          "us:NVDA"
+        ]
+      }
+    },
+    {
+      "name": "mobile 찾기: 없는 이름 → 「「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다」 · 줄 0개",
+      "ok": true,
+      "detail": {
+        "msg": "「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다",
+        "hits": [],
+        "recent": false
+      }
+    },
+    {
+      "name": "mobile 찾기: 「가온전선」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 찾기」",
+      "ok": true,
+      "detail": {
+        "title": "가온전선",
+        "back": "‹ 찾기"
+      }
+    },
+    {
+      "name": "mobile 회사 화면 「‹ 찾기」 → 찾기 그대로(넣은 글자 「가온전선」 · 줄 1개)",
+      "ok": true,
+      "detail": {
+        "hash": "#/find",
+        "value": "가온전선",
+        "n": 1
+      }
+    },
+    {
+      "name": "mobile 찾기: 글자를 지우면 「최근 찾은 회사」 — 첫 줄 가온전선",
+      "ok": true,
+      "detail": {
+        "recent": true,
+        "first": {
+          "code": "000500",
+          "place": "kr",
+          "href": "#/stock/000500",
+          "name": "가온전선",
+          "sun": true,
+          "mkt": "한국"
+        }
+      }
+    },
+    {
+      "name": "mobile 찾기: 미국 「엔비디아」 줄 터치 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「233.95달러」",
+      "ok": true,
+      "detail": {
+        "path": "/us/#/stock/NVDA",
+        "title": "엔비디아",
+        "close": "233.95달러"
+      }
+    },
+    {
       "name": "mobile 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
       "ok": true,
       "detail": {
@@ -4226,10 +4564,10 @@
       }
     },
     {
-      "name": "mobile 무결성: 「읽은 파일 14개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "mobile 무결성: 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 14개 모두 판 목록의 SHA-256 과 같음"
+        "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
       }
     },
     {
@@ -4640,6 +4978,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc find: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc find: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc find: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile home: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -4845,6 +5202,25 @@
     },
     {
       "name": "또렷함 mobile agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile find: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile find: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile find: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -5058,6 +5434,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark find: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark find: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark find: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc-200 home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -5263,6 +5658,25 @@
     },
     {
       "name": "또렷함 pc-200 agenda: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 find: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 find: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 find: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -5476,6 +5890,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark-200 find: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 find: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 find: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "검사기 자체 시험: 「내일 42 정도.」「곧 많이 오릅니다.」를 넣으면 1·2·3번이 모두 1 이상 늘어난다",
       "ok": true,
       "detail": {
@@ -5503,5 +5936,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T11-10-20-822Z"
+  "dir": "reports/atlas11/browser/2026-10-05T11-39-11-504Z"
 }
