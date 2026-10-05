@@ -1,0 +1,99 @@
+{
+ "set": "all",
+ "stocks": 1287,
+ "windows": 852852,
+ "cut": 1032,
+ "shapes": [
+  {
+   "id": "longRed",
+   "name": "긴 빨강 줄",
+   "text": "빨강 동그라미 6개 이상이 끊김 없이 이어짐(한 줄을 꽉 채움)",
+   "site": true
+  },
+  {
+   "id": "redTwice",
+   "name": "빨강이 파랑의 2배",
+   "text": "빨강 동그라미가 파랑의 2배 이상",
+   "site": true
+  },
+  {
+   "id": "bigRedDay",
+   "name": "하루 빨강 5개",
+   "text": "하루에 빨강 동그라미 5개 이상인 날이 있음",
+   "site": true
+  },
+  {
+   "id": "recentRed",
+   "name": "끝 5일 빨강",
+   "text": "최근 5거래일 빨강이 파랑보다 2개 이상 많음",
+   "site": true
+  },
+  {
+   "id": "lastRed",
+   "name": "끝 줄 빨강",
+   "text": "맨 오른쪽 끝 줄(가장 최근 줄)이 빨강",
+   "site": true
+  },
+  {
+   "id": "shortBlue",
+   "name": "짧은 파랑 줄",
+   "text": "파랑 줄이 모두 2개 이하",
+   "site": true
+  },
+  {
+   "id": "noBigBlue",
+   "name": "큰 파랑 날 없음",
+   "text": "하루에 파랑 동그라미 3개 이상인 날이 없음",
+   "site": true
+  },
+  {
+   "id": "redCols",
+   "name": "빨강 줄이 더 많음",
+   "text": "빨강 줄 수가 파랑 줄 수보다 많음",
+   "site": true
+  },
+  {
+   "id": "quiet",
+   "name": "잔잔함",
+   "text": "동그라미가 모두 10개 이하(한 칸 = 1%일 때) — 20거래일 동안 움직임이 작음",
+   "site": false
+  },
+  {
+   "id": "blueMore",
+   "name": "파랑이 더 많음",
+   "text": "파랑 동그라미가 빨강보다 많음 — 지난 20거래일 내림이 셈",
+   "site": false
+  },
+  {
+   "id": "turnUp",
+   "name": "끝에서 돌아섬",
+   "text": "끝 줄이 빨강이고 바로 앞 파랑 줄이 3개 이상",
+   "site": false
+  },
+  {
+   "id": "freshBigRed",
+   "name": "끝 5일 큰 빨강",
+   "text": "최근 5거래일 안에 하루 빨강 5개 이상인 날이 있음",
+   "site": false
+  },
+  {
+   "id": "redLonger",
+   "name": "빨강 줄이 길어짐",
+   "text": "끝 빨강 줄이 3개 이상이고 그 앞 어느 빨강 줄보다 김",
+   "site": false
+  },
+  {
+   "id": "bigBlueDay",
+   "name": "하루 파랑 5개",
+   "text": "하루에 파랑 동그라미 5개 이상인 날이 있음(하루 빨강 5개의 거울)",
+   "site": false
+  }
+ ],
+ "win": 20,
+ "ahead": 120,
+ "up": 1.5,
+ "down": 0.6666666666666666,
+ "jump": 0.31,
+ "bundle": "reports/atlas11/universe/2026-10-05-0940/bundle.json.gz",
+ "at": "2026-10-05T16:28:20.106Z"
+}
