@@ -12,7 +12,7 @@
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {marketStrip} from './frame.js';
-import {foot, promiseBox, hotSwitch, hotCounts} from './parts.js';
+import {foot, promiseBox, hotSwitch, hotCounts, movesBox} from './parts.js';
 import {FAMILIES, OTHER, familyOf, groupByFamily} from './family.js';
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -47,6 +47,7 @@ export async function renderHome(main, {manifest}) {
   main.replaceChildren(h('div', {class: 'b-page h-page'},
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
+    movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '불장 ', h('span', {class: 'b-count'}, `업종 ${hot.length}개`)),
       hot.length ? h('p', {class: 'b-when hf-sum', 'data-speak': ''}, `큰 흐름 ${flows.length}개 — ${flows.map(f => f.fam.label).join(' · ')}`) : null,

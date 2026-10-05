@@ -468,3 +468,9 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .fm-b:active { transform: scale(.98); }
 .fm-note { margin: 8px 2px 0; }
 .t-tile[hidden] { display: none; }
+/* 저녁 7시 들고 남 — 탭 「불장」 세 화면 스위치 바로 아래 같은 자리(24번) · 견줄 기록이 아직 없으면 먹빛 칸 대신 조용한 한 줄 · 견준 기록이 있으면 한 줄 요약 + 눌러서 이름 */
+.mvx.mvx-quiet { margin: 6px 0 0; padding: 4px 2px; background: none; box-shadow: none; border-radius: 0; --ink: #121110; --sub: #69635a; --fill: #ece8e1; --link: #121110; }
+@media (prefers-color-scheme: dark) { .mvx.mvx-quiet { --ink: #f3efe7; --sub: #a39c90; --fill: #272522; --link: #f3efe7; } }
+.mvx-quiet .mvx-h { font-size: .9375rem; } .mvx-quiet .mvx-note { margin-top: 2px; font-size: .875rem; color: var(--sub); }
+.mvx-more { margin: 6px 0 0; } .mvx-sum { cursor: pointer; font-size: .9375rem; line-height: 1.5; color: var(--ink); }
+.f-sec[hidden], .f-fam[hidden] { display: none; }
