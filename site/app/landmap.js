@@ -5,7 +5,8 @@
    · 땅 하나 = 큰 갈래(family.js · ATLAS 가 업종 이름을 보고 묶은 것) · 땅 넓이 = 그 갈래의 업종 수(업종마다 5곳이라 회사 수와 같은 비율)
    · 땅 안의 칸 하나 = 업종 하나(넓이 같음) · 칸 색 = 지난 20거래일 평균(빨강 오름 · 파랑 내림 · 진할수록 크게 · ±30% 에서 가장 진함)
    · 땅 자리는 날마다 같다(넓이가 업종 수로만 정해짐) — 지도는 자리가 같아야 외워진다 · 땅 안의 칸은 오른 순(규칙 9 · 위 왼쪽이 가장 많이 오른 업종)
-   · 땅을 누르면 아래 칸들이 그 갈래 업종만(옛 큰 갈래 단추 12개를 이 지도가 대신 — 규칙 1 하나 넣으면 하나 뺀다)
+   · 땅을 누르면 그 갈래 화면(#/map/f/<갈래> · view-home.js renderLand) — 2026-10-06 07:03 사장님 「왜 3단 클릭 구조가 아니지?」: 땅 → 업종 → 회사, 세 번이면 회사
+     (옛 00:21 판: 땅을 누르면 지도 아래 73칸이 그 갈래만 남았다 — 휴대폰에서는 그 칸들이 화면 밖이라 눌러도 아무 일이 없는 것처럼 보였다 · 땅 안의 작은 칸은 누를 수 없었다)
    · 글자(갈래 이름 · 평균)는 땅 맨 위 한 줄(칸을 가리지 않음) — 큰 글씨에서 넘치거나 칸 자리가 모자라면 지도를 세로로 키워 다시 그린다(잘린 글자 0)
    빨강 · 파랑은 칸(작은 땅 조각)에만 · 글자는 판 색 바탕 위(대비 4.5:1 이상) · 칸은 그림이라 화면 읽기 프로그램에는 땅 단추 이름으로 읽힘 */
 import {h, pct, finite, signCls} from './util.js';
@@ -40,22 +41,22 @@ function rowsOf(n, w, hh) {
   return rows;
 }
 
-/** 지도 한 장 — groups: 판의 업종(판 차례) · onPick(갈래 id) · 돌려주는 것: {el, lands, lay(), setPick(id)} */
-export function landMap(groups, {onPick} = {}) {
+/** 지도 한 장 — groups: 판의 업종(판 차례) · 땅 하나 = 그 갈래 화면으로 가는 링크 · 돌려주는 것: {el, lands, lay()} */
+export function landMap(groups) {
   const by = new Map();
   for (const g of groups) { const f = familyOf(g.label); if (!by.has(f.id)) by.set(f.id, {fam: f, groups: []}); by.get(f.id).groups.push(g); }
   const lands = [...by.values()].sort((a, b) => ORDER.indexOf(a.fam.id) - ORDER.indexOf(b.fam.id)).map((x, i) => {
     const gs = [...x.groups].sort(riseDesc), avg = meanOf(gs.map(g => g.change20)), up = gs.filter(g => finite(g.change20) && g.change20 > 0).length;
     return {i, fam: x.fam, groups: gs, avg, up, value: gs.length};
   });
-  const el = h('div', {class: 'lm', role: 'group', 'aria-label': `지도 · 큰 갈래 ${lands.length}개 · 땅을 누르면 그 갈래 업종만`});
+  const el = h('nav', {class: 'lm', 'aria-label': `지도 · 큰 갈래 ${lands.length}개 · 땅을 누르면 그 갈래 업종`});
   const btns = lands.map(L => {
     const cells = h('span', {class: 'lm-cells', 'aria-hidden': 'true'});
     // 이름은 「·」 뒤에서만 줄을 바꿈(「인터넷·」 / 「소프트웨어」 — 낱말 가운데서 끊지 않게) · 0 에 아주 가까운 평균은 둘째 자리까지(「−0.0%」 대신 「−0.02%」)
     const avgT = finite(L.avg) ? pct(L.avg, Math.abs(L.avg) < 0.0005 ? 2 : 1) : '없음';
     const lab = h('span', {class: 'lm-lab'}, h('b', {class: 'lm-name'}, L.fam.label.replace(/·/g, '·\u200b')), h('small', {class: 'lm-avg chg20 ' + (signCls(L.avg) || 'flat')}, avgT));
-    const b = h('button', {class: 'lm-n', type: 'button', 'data-family': L.fam.id, 'data-n': String(L.groups.length), 'aria-pressed': 'false',
-      'aria-label': `${L.fam.label} · 업종 ${L.groups.length}개 가운데 ${L.up}개 오름 · 갈래 평균 ${avgT}`, onclick: () => onPick?.(L.fam.id)}, lab, cells);
+    const b = h('a', {class: 'lm-n', href: '#/map/f/' + L.fam.id, 'data-family': L.fam.id, 'data-n': String(L.groups.length),
+      'aria-label': `${L.fam.label} · 업종 ${L.groups.length}개 가운데 ${L.up}개 오름 · 갈래 평균 ${avgT} · 누르면 그 갈래 업종`}, lab, cells);
     return {L, b, cells, lab};
   });
   el.append(...btns.map(x => x.b));
@@ -90,11 +91,7 @@ export function landMap(groups, {onPick} = {}) {
       H = Math.round(H * 1.08);
     }
   }
-  function setPick(id) {
-    el.classList.toggle('has-pick', id !== 'all');
-    for (const x of btns) x.b.setAttribute('aria-pressed', String(x.L.fam.id === id));
-  }
   if (typeof ResizeObserver !== 'undefined') { let last = 0; new ResizeObserver(() => { const w = el.clientWidth; if (w && w !== last) { last = w; lay(); } }).observe(el); }
   document.fonts?.ready?.then(() => lay());
-  return {el, lands, lay, setPick};
+  return {el, lands, lay};
 }
