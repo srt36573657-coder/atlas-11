@@ -112,6 +112,9 @@ async function wordsCheck(page, label) {
   const badIdent = t.idents.filter(x => PREDICTION_WORDS.test(x));
   check(`${label}: 앞날 말·쓰지 않는 말 없음(우리 글 ${bad.length} · 공식 이름 ${badIdent.length}) · 예측 표시 ${t.marks}`, !bad.length && !badIdent.length && t.marks === 0, bad.length || badIdent.length ? {bad: bad.slice(0, 5), badIdent: badIdent.slice(0, 3)} : null);
 }
+/** 「보던 자리」를 재기 전에 누를 줄을 화면 가운데로 — 2026-10-06 00:50 고침: 줄이 아래 탭 막대 밑에 걸리면(10/6 00:41 「저녁 7시 들고 남」 첫 기록이 생겨 그 칸이 길어지자 「오름 상위」 6번째 줄이 그 자리)
+ *  Playwright 가 누르기 직전에 화면을 다시 내려(28px → 416px) 잰 자리와 누른 자리가 달라짐 · 사이트는 누른 자리(416px)로 정확히 돌아왔음 — 사람은 가려진 줄을 누르지 않는다 */
+async function toMid(loc) { await loc.scrollIntoViewIfNeeded(); await loc.evaluate(el => el.scrollIntoView({block: 'center', behavior: 'instant'})); }
 
 async function scenario(label, viewport, {mobile = false} = {}) {
   const context = await browser.newContext({viewport, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
@@ -296,7 +299,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(${rr.mvx}) = 판(${mvState}) · 옛 한 줄 없음`, rr.mvx === mvState && rr.moves === null, {mvx: rr.mvx, moves: rr.moves});
     await wordsCheck(page, `${label} 「오름 상위」`);
     if (NEXT.length) {
-      const n0 = NEXT[Math.min(5, NEXT.length - 1)], row = page.locator(`.nc-row[href="#/stock/${n0.code}"]`); await row.scrollIntoViewIfNeeded();
+      const n0 = NEXT[Math.min(5, NEXT.length - 1)], row = page.locator(`.nc-row[href="#/stock/${n0.code}"]`); await toMid(row);
       const y0 = await page.evaluate(() => Math.round(scrollY));
       if (mobile) await row.tap(); else await row.click();
       await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
@@ -347,7 +350,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(${!mv ? '기록 없음' : mv.first ? '처음 기록' : `${mv.from} → ${mv.to}`})`, mvOk, sr.mvx);
     await wordsCheck(page, `${label} 「예비」`);
     if (SIM.items.length) {
-      const s0 = SIM.items.at(-1), row = page.locator(`.sm-row[href="#/stock/${s0.code}"]`); await row.scrollIntoViewIfNeeded();
+      const s0 = SIM.items.at(-1), row = page.locator(`.sm-row[href="#/stock/${s0.code}"]`); await toMid(row);
       const y0 = await page.evaluate(() => Math.round(scrollY));
       if (mobile) await row.tap(); else await row.click();
       await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
@@ -616,7 +619,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     // 셋째 탭 칸 → 회사 화면(「‹ 출목표」) → 되돌아오면 같은 묶는 법 · 같은 탭 · 보던 자리
     const f3 = flowsWant[2] ?? flowsWant[0];
     await press(page.locator(`.f-tabs .f-tab[data-tab="${f3.k}"]`)); await waitTab(f3.k); await page.waitForTimeout(150);
-    const pk = f3.items[Math.min(5, f3.items.length - 1)], tl = page.locator(`.f-tile[data-code="${pk.code}"]`); await tl.scrollIntoViewIfNeeded(); await page.waitForTimeout(150);
+    const pk = f3.items[Math.min(5, f3.items.length - 1)], tl = page.locator(`.f-tile[data-code="${pk.code}"]`); await toMid(tl); await page.waitForTimeout(150);
     const yBefore = await page.evaluate(() => Math.round(scrollY));
     await press(tl); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
     const rc = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()]}));
