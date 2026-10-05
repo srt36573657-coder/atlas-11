@@ -8,12 +8,14 @@
      · 15번 「불장」 이름 아래 73칸 전부가 나오던 어긋남을 풀었다 — 73칸 판은 탭 「업종」(#/map)으로, 탭 「불장」은 불장 업종만
      · 20번 불장 11칸을 큰 흐름으로 — 같은 큰 갈래(family.js)의 불장 업종을 한 장에 · 갈래 이름은 ATLAS 가 업종 이름을 보고 묶은 것
      · 19번 73칸 위에 큰 갈래 층 — 업종 탭 맨 위 갈래 단추(누르면 그 갈래 업종만 · 칸 차례는 판 차례 그대로)
-     · 28번 이름에서 숫자를 뺐다 — 제목은 「불장」 · 「업종」, 개수는 제목 곁 작은 글 */
+     · 28번 이름에서 숫자를 뺐다 — 제목은 「불장」 · 「업종」, 개수는 제목 곁 작은 글
+   2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로 배치해줘」 — 큰 흐름 장은 갈래 평균(그 갈래 업종들의 지난 20거래일 평균)이 큰 순 · 장 안 업종도 오른 순
+     · 업종 탭 갈래 단추도 같은 순 · 단추에 갈래 평균 · 73칸은 처음부터 지난 20거래일 평균이 큰 차례 */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {marketStrip} from './frame.js';
 import {foot, promiseBox, hotSwitch, hotCounts, movesBox} from './parts.js';
-import {FAMILIES, OTHER, familyOf, groupByFamily} from './family.js';
+import {FAMILIES, OTHER, familyOf, familiesByRise} from './family.js';
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
 /** 가장 많은 값(같으면 늦은 날) — 한 회사 종가가 늦어도 판 전체의 기간 글이 흔들리지 않게 */
@@ -30,7 +32,7 @@ const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late'}, `${c.
 /** 큰 흐름 한 장 — 갈래 이름 · 불장 업종 몇 개 · 업종 줄(「불장 n위」 · 이름 · ▲변화 · 몇 곳 오름 · 누르면 그 업종) */
 function flowCard(f, groups) {
   return h('section', {class: 'hf-card', 'data-family': f.fam.id, 'aria-label': `${f.fam.label} · 불장 업종 ${f.groups.length}개`},
-    h('p', {class: 'hf-h'}, h('b', {class: 'hf-name'}, f.fam.label), h('span', {class: 'hf-n'}, `불장 업종 ${f.groups.length}개`)),
+    h('p', {class: 'hf-h'}, h('span', {class: 'hf-l'}, h('b', {class: 'hf-name'}, f.fam.label), h('span', {class: 'hf-avg'}, `${f.groups.length}개 평균 `, h('b', {class: 'chg20 ' + (signCls(f.avg) || 'flat')}, finite(f.avg) ? pct(f.avg, 1) : '없음'))), h('span', {class: 'hf-n'}, `불장 업종 ${f.groups.length}개`)),
     h('ul', {class: 'hf-list'}, ...f.groups.map(g => { const i = groups.indexOf(g);
       return h('li', null, h('a', {class: 'hf-row', href: '#/i/' + g.id, 'data-group': g.id, 'aria-label': `불장 ${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}`},
         h('span', {class: 't-fire hf-rank'}, `불장 ${i + 1}위`),
@@ -42,7 +44,7 @@ export async function renderHome(main, {manifest}) {
   const board = await loadBoard();
   const groups = board.groups ?? [], hot = groups.filter(g => g.hot), late = board.late ?? [];
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
-  const flows = groupByFamily(hot);
+  const flows = familiesByRise(hot); // 가장 많이 오른 큰 흐름부터(갈래 평균이 큰 순)
   state.summary = `${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.`;
   main.replaceChildren(h('div', {class: 'b-page h-page'},
     marketStrip(manifest),
@@ -88,13 +90,14 @@ function setBox(set, board, groups) {
 }
 /** 큰 갈래 단추 — 「모두」 + 판에 있는 갈래(가장 앞 칸 차례대로) · 누르면 그 갈래 칸만 · 고른 것은 이 기기에 기억 */
 function familyFilter(groups, grid, note) {
-  const fams = groupByFamily(groups);
+  const fams = familiesByRise(groups); // 갈래 평균이 큰 순(가장 많이 오른 갈래부터)
   const ids = new Set(fams.map(f => f.fam.id));
   let pick = prefs.get('mapFamily', 'all'); if (pick !== 'all' && !ids.has(pick)) pick = 'all';
-  const btns = [{id: 'all', label: '모두', n: groups.length, up: groups.filter(g => finite(g.change20) && g.change20 > 0).length},
-    ...fams.map(f => ({id: f.fam.id, label: f.fam.label, n: f.groups.length, up: f.groups.filter(g => finite(g.change20) && g.change20 > 0).length}))]
-    .map(x => h('button', {class: 'fm-b', type: 'button', 'data-family': x.id, 'aria-pressed': 'false', 'aria-label': `${x.label} · 업종 ${x.n}개 가운데 ${x.up}개 오름`, onclick: () => { pick = x.id; prefs.set('mapFamily', pick); apply(); }},
-      h('span', {class: 'fm-l'}, x.label), h('small', {class: 'fm-n'}, `${x.up}/${x.n}`)));
+  const ups = gs => gs.filter(g => finite(g.change20) && g.change20 > 0).length;
+  const btns = [{id: 'all', label: '모두', n: groups.length, up: ups(groups), avg: null},
+    ...fams.map(f => ({id: f.fam.id, label: f.fam.label, n: f.groups.length, up: ups(f.groups), avg: f.avg}))]
+    .map(x => h('button', {class: 'fm-b', type: 'button', 'data-family': x.id, 'aria-pressed': 'false', 'aria-label': `${x.label} · 업종 ${x.n}개 가운데 ${x.up}개 오름${x.avg == null ? '' : ` · 갈래 평균 ${pct(x.avg, 1)}`}`, onclick: () => { pick = x.id; prefs.set('mapFamily', pick); apply(); }},
+      h('span', {class: 'fm-l'}, x.label), h('small', {class: 'fm-n' + (x.avg == null ? '' : ' ' + (signCls(x.avg) || 'flat'))}, x.avg == null ? `${x.n}개` : (finite(x.avg) ? pct(x.avg, 1) : '없음'))));
   function apply() {
     for (const b of btns) b.setAttribute('aria-pressed', String(b.dataset.family === pick));
     let shown = 0; for (const t of grid.children) { const on = pick === 'all' || t.dataset.family === pick; t.hidden = !on; if (on) shown++; }
@@ -102,7 +105,7 @@ function familyFilter(groups, grid, note) {
     note.textContent = pick === 'all' ? `모두 · 업종 ${groups.length}개` : `${f?.fam.label ?? ''} · 업종 ${shown}개만 보는 중 · 「모두」를 누르면 ${groups.length}개`;
   }
   apply();
-  return h('div', {class: 'fm-box'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래 · 오른 업종/업종 수'), h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기'}, ...btns));
+  return h('div', {class: 'fm-box'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래 · 지난 20거래일 갈래 평균이 큰 순'), h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기'}, ...btns));
 }
 
 export async function renderMap(main, {manifest}) {

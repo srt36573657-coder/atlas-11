@@ -474,3 +474,8 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .mvx-quiet .mvx-h { font-size: .9375rem; } .mvx-quiet .mvx-note { margin-top: 2px; font-size: .875rem; color: var(--sub); }
 .mvx-more { margin: 6px 0 0; } .mvx-sum { cursor: pointer; font-size: .9375rem; line-height: 1.5; color: var(--ink); }
 .f-sec[hidden], .f-fam[hidden] { display: none; }
+/* 2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」 — 큰 흐름 장 머리에 갈래 평균(차례를 정한 값을 보이게) · 갈래 단추의 평균 글 */
+.hf-l { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
+.hf-avg { font-size: .9375rem; color: var(--sub); white-space: nowrap; } .hf-avg b { font-size: 1.0625rem; }
+.hf-h { flex-wrap: wrap; row-gap: 2px; } /* 글씨 200% · 360px 에서 「n개 평균」이 들어가면 「불장 업종 n개」를 다음 줄로(옆으로 넘치지 않게) */
+.fm-b[aria-pressed="true"] .fm-n { color: inherit; } /* 고른 단추(먹색 바탕) 위에서는 빨강·파랑 대신 바탕과 대비가 큰 글자색 */

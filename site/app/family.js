@@ -36,3 +36,15 @@ export function groupByFamily(groups) {
   for (const g of groups) { const f = familyOf(g.label); if (!out.has(f.id)) out.set(f.id, {fam: f, groups: []}); out.get(f.id).groups.push(g); }
   return [...out.values()];
 }
+
+/** 가장 많이 오른 순 — 지난 20거래일 변화가 큰 차례(값이 없으면 맨 뒤 · 같으면 code/id 차례)
+   2026-10-05 11:36 사장님 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」 → 「모든 배치가 가장 많이 상승한순으로 배치해줘」 */
+export const riseDesc = (a, b) => (Number.isFinite(b?.change20) ? b.change20 : -Infinity) - (Number.isFinite(a?.change20) ? a.change20 : -Infinity)
+  || String(a?.code ?? a?.id ?? '').localeCompare(String(b?.code ?? b?.id ?? ''));
+/** 평균(값 있는 것만 · 없으면 null) */
+export const meanOf = xs => { const v = xs.filter(Number.isFinite); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
+/** 큰 갈래를 가장 많이 오른 순으로 — 갈래 평균 = 그 갈래 업종들의 지난 20거래일 평균을 다시 평균 낸 값 · 갈래 안 업종도 오른 순 */
+export function familiesByRise(groups) {
+  return groupByFamily(groups).map(f => ({fam: f.fam, groups: [...f.groups].sort(riseDesc), avg: meanOf(f.groups.map(g => g.change20))}))
+    .sort((a, b) => (Number.isFinite(b.avg) ? b.avg : -Infinity) - (Number.isFinite(a.avg) ? a.avg : -Infinity) || a.fam.id.localeCompare(b.fam.id));
+}

@@ -9,6 +9,7 @@ import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard} from './store.js';
 import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine} from './parts.js';
 import {upLine} from './view-home.js';
+import {riseDesc} from './family.js';
 
 function card(c, scale) {
   return h('section', {class: 'b-card', 'data-code': c.code, 'aria-label': c.name},
@@ -24,7 +25,7 @@ export async function renderIndustry(main, {hash, manifest}) {
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
   const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장'); // 들어온 탭으로(2026-10-05 「잡스라면」 17번)
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
-  const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean);
+  const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const industries = [...new Set(cs.map(c => c.sector).filter(Boolean))], ksics = [...new Set(cs.map(c => c.ksic).filter(Boolean))], sc = sparkScale(cs), fday = cs.map(c => c.brief?.flows?.to).filter(Boolean).sort().at(-1) ?? null;
   state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}${board.groups.length}칸 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
@@ -40,7 +41,7 @@ export async function renderIndustry(main, {hash, manifest}) {
       h('p', {class: 't-sub'}, `${cs.length}곳의 지난 20거래일 변화 · 가운데 줄이 0% · 오른쪽 빨강은 오름, 왼쪽 파랑은 내림`),
       moverBars(cs)),
     h('section', {class: 't-sec', 'aria-label': `${g.label} ${cs.length}곳`},
-      h('h2', {class: 't-h2'}, `${cs.length}곳`, h('small', null, ' · 시가총액 큰 순 · 누르면 회사 화면(출목표 · 일정 · 공시)')),
+      h('h2', {class: 't-h2'}, `${cs.length}곳`, h('small', null, ' · 지난 20거래일 많이 오른 순 · 누르면 회사 화면(출목표 · 일정 · 공시)')),
       h('p', {class: 't-sub'}, `${scaleText(sc)}${fday ? ` · 수급: ${korDate(fday)}까지 5거래일 합(외국인·기관 순매수)` : ''}`),
       h('div', {class: 'b-list'}, ...cs.map(c => card(c, sc)))),
     foot(manifest)));

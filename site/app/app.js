@@ -76,7 +76,9 @@ function header() {
   // 탭 이름에는 숫자를 넣지 않는다(2026-10-05 「잡스라면」 28번) — 개수는 화면 안에
   const label = r => r.label;
   // 지금 보고 있는 탭을 다시 누르면 맨 위로(주소가 그대로라 화면은 다시 그리지 않음)
-  const toTop = (e, r) => { if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
+  // 다른 탭에서 「출목표」를 누르면 늘 「오른 순」 맨 위로(2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로」) — 회사 화면에서 되돌아올 때는 보던 묶는 법 · 자리 그대로
+  const toTop = (e, r) => { if (r.id === 'road' && app.view !== 'road') { prefs.set('roadView2', 'rise'); scrollMemo.delete('road'); }
+    if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
   const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));
 }
