@@ -1,0 +1,361 @@
+{
+  "appVersion": "7.8.0",
+  "libraryBaseVersion": 24,
+  "checkedAt": "2026-09-26T21:09:14.690Z",
+  "designItems": 36,
+  "tests": {
+    "passed": 202,
+    "failed": 0,
+    "sha256": "4ac03b4d12e52380198b5bcbc0957cc192be273ad395a77c1227bd18d5053c49"
+  },
+  "preservedForecasts": 15,
+  "originalSHA256": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+  "candidateId": "2026-09-23-70bdbf50",
+  "engineChanged": false,
+  "pricesChanged": false,
+  "newsAdded": 0,
+  "protectedFiles": 55,
+  "dataChanges": "currentModelValidation.tests receipt only",
+  "pixelBrowserVerified": false,
+  "allNewsComplete": false,
+  "remainingNewsCompanies": 7,
+  "netlifyDeployed": false,
+  "precision": {
+    "status": "PASS",
+    "assets": 52,
+    "rows": 1248,
+    "paths": 20000,
+    "priorForecastsPreserved": 14,
+    "originalSHA256": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+    "maximumMeanChange": 0,
+    "exactFirstStepStocks": 52,
+    "predictiveAccuracyCertified": false,
+    "trustProbability": null
+  },
+  "items": [
+    {
+      "id": 1,
+      "group": "기본 조형",
+      "title": "여백 체계",
+      "change": "4·8·12·16·24·32·48px 공통 간격으로 제목·카드·설명 사이의 리듬을 맞췄습니다.",
+      "file": "src/globals.css",
+      "marker": "--space-7:48px",
+      "status": "implemented"
+    },
+    {
+      "id": 2,
+      "group": "기본 조형",
+      "title": "서체의 역할",
+      "change": "제목에는 명조 계열, 설명과 조작에는 고딕 계열을 적용했습니다. 외부 폰트 요청은 없습니다.",
+      "file": "src/globals.css",
+      "marker": "--font-editorial:",
+      "status": "implemented"
+    },
+    {
+      "id": 3,
+      "group": "기본 조형",
+      "title": "숫자 정렬",
+      "change": "가격·변화·일정 수·날짜에 고정 폭 숫자를 적용했습니다.",
+      "file": "src/globals.css",
+      "marker": "tabular-nums lining-nums",
+      "status": "implemented"
+    },
+    {
+      "id": 4,
+      "group": "기본 조형",
+      "title": "와인색의 깊이",
+      "change": "배경과 카드의 명암을 나누고 과한 그림자 대신 얇은 경계를 사용했습니다.",
+      "file": "src/globals.css",
+      "marker": "radial-gradient(ellipse at 14%",
+      "status": "implemented"
+    },
+    {
+      "id": 5,
+      "group": "기본 조형",
+      "title": "브랜드 인장",
+      "change": "A 마크를 금색 이중 테두리 인장으로 다듬고 버전 표기를 보조 정보로 낮췄습니다.",
+      "file": "src/globals.css",
+      "marker": "outline-offset:4px; box-shadow:inset",
+      "status": "implemented"
+    },
+    {
+      "id": 6,
+      "group": "기본 조형",
+      "title": "첫 화면의 읽기 순서",
+      "change": "소개에 뉴스 근거 → 날짜별 전망 → 실제 비교의 세 단계를 붙였습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"intro-process\"",
+      "status": "implemented"
+    },
+    {
+      "id": 7,
+      "group": "탐색",
+      "title": "따라오는 화면 메뉴",
+      "change": "긴 종목 목록을 내려도 화면 메뉴를 사용할 수 있도록 상단에 고정했습니다.",
+      "file": "src/globals.css",
+      "marker": "main>nav { position:sticky;",
+      "status": "implemented"
+    },
+    {
+      "id": 8,
+      "group": "탐색",
+      "title": "메뉴 키보드 탐색",
+      "change": "좌우·Home·End로 메뉴 초점을 이동합니다. 초점 이동만으로 화면이나 재생을 바꾸지 않습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "const navKey=",
+      "status": "implemented"
+    },
+    {
+      "id": 9,
+      "group": "탐색",
+      "title": "본문 바로가기",
+      "change": "키보드 사용자는 반복되는 머리말을 건너뛰고 현재 화면 본문으로 이동할 수 있습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"skip-link\"",
+      "status": "implemented"
+    },
+    {
+      "id": 10,
+      "group": "탐색",
+      "title": "검색 조작",
+      "change": "라벨·돋보기·검색어 삭제·Escape 초기화와 삭제 후 초점 복귀를 추가했습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"stock-search\"",
+      "status": "implemented"
+    },
+    {
+      "id": 11,
+      "group": "탐색",
+      "title": "검색 결과 맥락",
+      "change": "현재 검색어와 종목 수를 함께 알리고 스크린리더에도 결과 수를 전달합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "aria-live=\"polite\" aria-atomic=\"true\"",
+      "status": "implemented"
+    },
+    {
+      "id": 12,
+      "group": "탐색",
+      "title": "카드 크기 선택",
+      "change": "모아 보기와 크게 보기를 선택합니다. 같은 52종목·순서·저장값을 유지합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "data-density={density}",
+      "status": "implemented"
+    },
+    {
+      "id": 13,
+      "group": "종목 카드",
+      "title": "종목의 식별",
+      "change": "업종·코드 배지·종목명·10/30 값을 서로 다른 위계로 구분했습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"stock-identity\"",
+      "status": "implemented"
+    },
+    {
+      "id": 14,
+      "group": "종목 카드",
+      "title": "판단 상태 배지",
+      "change": "판단 유보를 글자·모양·테두리로 표시하여 색만으로 상태를 전달하지 않습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "data-evidence-status=\"research_only\"><i",
+      "status": "implemented"
+    },
+    {
+      "id": 15,
+      "group": "종목 카드",
+      "title": "선택 가격과 출발 가격",
+      "change": "선택값의 종류·날짜와 실제 종가 출발점을 구분하는 제목·구획을 다듬었습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"quote-kind\"",
+      "status": "implemented"
+    },
+    {
+      "id": 16,
+      "group": "종목 카드",
+      "title": "뉴스 범위 칩",
+      "change": "시장·지수·업종·기업의 연결 수를 독립 칩으로 표시하고 0건도 숨기지 않습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"scope-chips\"",
+      "status": "implemented"
+    },
+    {
+      "id": 17,
+      "group": "종목 카드",
+      "title": "관심 조작의 명확성",
+      "change": "관심 버튼의 경계·여백·모바일 누름 영역을 키우고 기존 등록·해제 상태를 유지했습니다.",
+      "file": "src/globals.css",
+      "marker": ".watch-button { border-radius:5px;",
+      "status": "implemented"
+    },
+    {
+      "id": 18,
+      "group": "종목 카드",
+      "title": "핵심 날짜 강조",
+      "change": "세 날짜 바로가기의 상단 선과 큰 날짜 숫자로 이름·날짜·값의 읽는 순서를 나눴습니다.",
+      "file": "src/globals.css",
+      "marker": ".smart-dates button { border-top:2px",
+      "status": "implemented"
+    },
+    {
+      "id": 19,
+      "group": "날짜와 그래프",
+      "title": "그래프 읽는 법",
+      "change": "접이식 읽기 안내와 52개 SVG의 설명을 추가해 실선·점선·일정의 뜻을 제공합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "function ReadingGuide",
+      "status": "implemented"
+    },
+    {
+      "id": 20,
+      "group": "날짜와 그래프",
+      "title": "슬라이더 맥락",
+      "change": "양 끝 날짜와 선택한 전체 날짜를 붙이고 보조기기에도 날짜를 전달합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "aria-valuetext={`${p.date}",
+      "status": "implemented"
+    },
+    {
+      "id": 21,
+      "group": "날짜와 그래프",
+      "title": "달력 경계와 일정 표시",
+      "change": "9월·10월 경계와 일정 점 범례를 추가하고 접근성 이름에는 연결 사건 수를 넣었습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"calendar-month\"",
+      "status": "implemented"
+    },
+    {
+      "id": 22,
+      "group": "날짜와 그래프",
+      "title": "날짜 키보드 탐색",
+      "change": "44개 날짜는 Tab 한 번으로 진입하고 좌우·Home·End로 탐색합니다. Enter 또는 클릭으로 선택합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "const keyboard=",
+      "status": "implemented"
+    },
+    {
+      "id": 23,
+      "group": "날짜와 그래프",
+      "title": "선택 날짜 자동 노출",
+      "change": "선택한 날짜가 가로 날짜 칸 밖에 있으면 그 영역 안에서 스크롤합니다. 페이지 전체를 움직이지 않습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "active.offsetLeft-rail.offsetLeft",
+      "status": "implemented"
+    },
+    {
+      "id": 24,
+      "group": "날짜와 그래프",
+      "title": "하루 앞뒤 조작",
+      "change": "집중 화면에서 하루 전·후 버튼으로 이동하며 처음·마지막에서 버튼을 비활성화합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "aria-label=\"이전 날짜\"",
+      "status": "implemented"
+    },
+    {
+      "id": 25,
+      "group": "집중 화면과 설명",
+      "title": "집중 화면 머리말",
+      "change": "종목 선택과 전체 전망 기간을 한 줄에 정리하고 좁은 화면에서는 보조 문구를 줄입니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"focus-period\"",
+      "status": "implemented"
+    },
+    {
+      "id": 26,
+      "group": "집중 화면과 설명",
+      "title": "재생 진행 상태",
+      "change": "선택 날짜 번호/44일과 재생·설명 대기 상태를 조작부 바로 위에 표시합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"playback-state\"",
+      "status": "implemented"
+    },
+    {
+      "id": 27,
+      "group": "집중 화면과 설명",
+      "title": "날짜의 성격",
+      "change": "실제 관측·모형 전망·휴장일 참고·자료 미확보를 설명 제목 앞에서 구분합니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"date-kind\"",
+      "status": "implemented"
+    },
+    {
+      "id": 28,
+      "group": "집중 화면과 설명",
+      "title": "설명 수치의 위계",
+      "change": "날짜별 가격·직전 대비·모형 평균·범위를 두 열의 분리된 수치 영역으로 정리했습니다.",
+      "file": "src/globals.css",
+      "marker": ".daily-values { display:grid;",
+      "status": "implemented"
+    },
+    {
+      "id": 29,
+      "group": "집중 화면과 설명",
+      "title": "출처 카드",
+      "change": "뉴스와 날짜별 설명의 출처에 기관명·도메인·새 창 표시를 붙여 이동할 곳을 알 수 있게 했습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "function SourceLink",
+      "status": "implemented"
+    },
+    {
+      "id": 30,
+      "group": "집중 화면과 설명",
+      "title": "중요 뉴스 대기 강조",
+      "change": "중요 뉴스에서 설명 제목 경계와 멈춤 안내를 강조합니다. 확인 없이 자동으로 지나가지 않습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "data-waiting={Boolean(p.stop)}",
+      "status": "implemented"
+    },
+    {
+      "id": 31,
+      "group": "완성도와 접근성",
+      "title": "빈 결과 화면",
+      "change": "검색 아이콘·상황에 맞는 문구·전체 52종목 복구 버튼을 정돈했습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "data-empty-stocks><svg",
+      "status": "implemented"
+    },
+    {
+      "id": 32,
+      "group": "완성도와 접근성",
+      "title": "모바일 누름 영역",
+      "change": "주요 메뉴·필터·관심·재생·닫기 조작의 모바일 높이를 44px 이상으로 맞췄습니다.",
+      "file": "src/globals.css",
+      "marker": ".watch-button,.smart-dates button,.stock-controls button,.footer-actions button { min-height:44px; }",
+      "status": "implemented"
+    },
+    {
+      "id": 33,
+      "group": "완성도와 접근성",
+      "title": "표의 추적성",
+      "change": "긴 표의 머리글을 고정하고 교차 행 배경·초점 행 강조·숫자 정렬을 적용했습니다.",
+      "file": "src/globals.css",
+      "marker": ".table-scroll thead th { position:sticky;",
+      "status": "implemented"
+    },
+    {
+      "id": 34,
+      "group": "완성도와 접근성",
+      "title": "좁고 낮은 화면",
+      "change": "모바일 안전 여백과 조작부 줄바꿈, 낮은 화면의 간격 축소를 추가했습니다. 실제 픽셀 검사는 별도입니다.",
+      "file": "src/globals.css",
+      "marker": "@media(min-width:761px) and (max-height:680px)",
+      "status": "implemented"
+    },
+    {
+      "id": 35,
+      "group": "완성도와 접근성",
+      "title": "움직임·고대비 설정",
+      "change": "움직임 줄이기 및 강제 고대비 설정에서 장식·선택 상태·경계가 읽히도록 규칙을 확장했습니다.",
+      "file": "src/globals.css",
+      "marker": "@media(forced-colors:active) {\n .forecast-status",
+      "status": "implemented"
+    },
+    {
+      "id": 36,
+      "group": "완성도와 접근성",
+      "title": "마지막 화면",
+      "change": "브랜드·자료 설명·맨 위로·36개 개선 기록을 분리한 간결한 푸터를 만들었습니다.",
+      "file": "src/atlas.tsx",
+      "marker": "className=\"footer-signature\"",
+      "status": "implemented"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {pulseRows,pulseDomain,pulseTurns} from '../lib/forecast-pulse.mjs';
+const b=JSON.parse(fs.readFileSync('public/data/atlas.json'));
+test('all 52 daily changes exactly equal saved adjacent-session price ratios',()=>{const before=JSON.stringify(b);for(const a of b.candidate.assets){const r=pulseRows(a,b.input.calendar.sessions);for(let i=1;i<r.length;i++)if(r[i].rate!==null)assert.equal(r[i].rate,r[i].p50/r[i-1].p50-1);const d=pulseDomain(r);assert.ok(r.every(v=>v.p50>=d.min&&v.p50<=d.max));}assert.equal(JSON.stringify(b),before);});
+test('positive negative and zero rates, neutral not an invented wave',()=>{const sessions=['2026-09-17','2026-09-18','2026-09-21','2026-09-22'];const r=pulseRows({rows:sessions.map((date,i)=>({date,p50:[100,110,99,99][i]}))},sessions);assert.deepEqual(r.map(x=>x.sign),['missing','up','down','flat']);assert.deepEqual(pulseTurns(r),['2026-09-21']);assert.ok(pulseDomain(r).rateMax>=.1);});
+test('missing trading day not presented as a daily move',()=>{const r=pulseRows({rows:[{date:'2026-09-17',p50:100},{date:'2026-09-21',p50:105}]},['2026-09-17','2026-09-18','2026-09-21']);assert.equal(r[1].rate,null);});
+test('duplicate dates rejected',()=>assert.throws(()=>pulseRows({rows:[{date:'2026-09-17',p50:1},{date:'2026-09-17',p50:2}]},['2026-09-17'])));
+
+test('holiday rows never create a trading-day column',()=>{const r=pulseRows({rows:[{date:'2026-09-18',p50:100},{date:'2026-09-19',p50:999},{date:'2026-09-21',p50:101}]},['2026-09-18','2026-09-21']);assert.deepEqual(r.map(x=>x.date),['2026-09-18','2026-09-21']);assert.equal(r[1].rate,101/100-1);});

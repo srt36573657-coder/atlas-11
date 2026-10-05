@@ -1,0 +1,352 @@
+{
+  "schema": "atlas11-operation-2",
+  "at": "2026-10-02T14:09:04Z",
+  "dayKST": "2026-10-02",
+  "status": "partial",
+  "exitCode": 2,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-10-02T14:09:04.884Z",
+      "status": "ok",
+      "durationMs": 14,
+      "session": true,
+      "afterClose": true,
+      "day": "2026-10-02",
+      "cutoff": "2026-10-02"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-10-02T14:09:04.900Z",
+      "status": "ok",
+      "durationMs": 1194,
+      "attempted": true,
+      "observations": 0,
+      "errors": 1,
+      "recordId": "collection-f392306084712d68"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-10-02T14:09:06.094Z",
+      "status": "ok",
+      "durationMs": 666,
+      "changed": false,
+      "confirmedToday": 51,
+      "actualAsOf": "2026-10-01",
+      "inputSnapshotSHA256": "df5acb97970a7bca13b0e03223b83a27fd5a88da22ebdef75724cf76c09c6fe9"
+    },
+    {
+      "step": "4_score",
+      "startedAt": "2026-10-02T14:09:06.991Z",
+      "status": "ok",
+      "durationMs": 73,
+      "evaluated": 311,
+      "newRecords": 0,
+      "duplicates": 311,
+      "pending": 53
+    },
+    {
+      "step": "5_analyze",
+      "startedAt": "2026-10-02T14:09:07.065Z",
+      "status": "ok",
+      "durationMs": 111,
+      "cells": 0,
+      "newRecords": 0,
+      "aggregateDate": "2026-10-02"
+    },
+    {
+      "step": "6_publish",
+      "startedAt": "2026-10-02T14:09:07.177Z",
+      "status": "ok",
+      "durationMs": 1,
+      "skipped": true,
+      "reason": "오늘(2026-10-02) 확정 종가 확인 51/52 · 52개 전부 확인될 때만 발행 · 이전 발행본 유지"
+    },
+    {
+      "step": "7_evolve",
+      "startedAt": "2026-10-02T14:09:07.178Z",
+      "status": "ok",
+      "durationMs": 72,
+      "backtested": 0,
+      "adopted": 0,
+      "rejected": 0,
+      "observing": 0,
+      "rolledBack": 0,
+      "operatingModel": "atlas11-A-1"
+    },
+    {
+      "step": "8_report_view",
+      "startedAt": "2026-10-02T14:09:07.251Z",
+      "view": {
+        "forecastId": "2026-10-01-atlas11-ddcd76430dec96dc",
+        "files": 65,
+        "dir": "public/data/atlas11/view",
+        "scoreTargetDate": "2026-10-02",
+        "firstScorableDate": "2026-09-29",
+        "scoredDates": 4,
+        "bytes": 3954687
+      },
+      "status": "ok",
+      "durationMs": 1287,
+      "dailyReport": "2026-10-02",
+      "ledgerTotals": {
+        "collection": 494,
+        "forecast": 5,
+        "score": 1407,
+        "analysis": 1072,
+        "factor": 180,
+        "experiment": 13,
+        "model": 0,
+        "operation": 53
+      }
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu24",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "37014188501",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/37014188501",
+    "commit": "6106d1a7958f28fe0e7814f28bf903714dda5ade",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "warnings": [],
+  "horizon": {
+    "futureDays": 1,
+    "tomorrowOnly": true,
+    "since": "2026-10-02",
+    "config": "config/atlas11/horizon.json",
+    "configSHA256": "dbde8aadaf0d05c1fbb400106d9a3c699099949223c23e89fa582fd2c646e7c9",
+    "activeHorizons": [
+      1
+    ],
+    "off": "내일 말고의 전망은 꺼 둠(2026-10-02 사장님 명령 · 지난 기록은 그대로)"
+  },
+  "configVersion": "v1",
+  "configSHA256": "0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340",
+  "scoringPolicyVersion": "v1",
+  "scoringPolicySHA256": "395c9821305b8226a6958855ef8efb9257a46bcaf938fc0ba85c80126311e746",
+  "previousForecastId": "2026-10-01-atlas11-ddcd76430dec96dc",
+  "operatingModel": "atlas11-A-1",
+  "day": "2026-10-02",
+  "session": true,
+  "afterClose": true,
+  "calendarGate": {
+    "day": "2026-10-02",
+    "status": "await_final_provider_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": true,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": false
+  },
+  "cutoff": "2026-10-02",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "publishEnd": "2026-10-30",
+  "afterPublishEnd": false,
+  "collection": {
+    "attempted": true,
+    "provider": "naver_minute_1530_closing_auction",
+    "observations": 0,
+    "errors": [
+      {
+        "code": "REVIEWED_ROW_MISMATCH",
+        "stockCode": "207940",
+        "day": "2026-10-01",
+        "reviewedClose": 1429000,
+        "fetchedClose": 1418993,
+        "message": "직전 검토 종가와 15:30 봉이 다름 · 이 종목은 넘기지 않음"
+      }
+    ],
+    "delayed": false,
+    "stats": {
+      "stocks": 52,
+      "succeeded": 51,
+      "failed": 1,
+      "finalizedToday": 0,
+      "crossChecked": 1,
+      "requests": 2,
+      "durationMs": 1189
+    },
+    "durationMs": 1189
+  },
+  "collectionRecordId": "collection-f392306084712d68",
+  "inputChanged": false,
+  "actualAsOf": "2026-10-01",
+  "freshStocks": 0,
+  "confirmedTodayStocks": 51,
+  "confirmedTodayCodes": [
+    "000720",
+    "000810",
+    "002380",
+    "003230",
+    "003490",
+    "004170",
+    "005380",
+    "005490",
+    "005930",
+    "009150",
+    "009830",
+    "010120",
+    "010130",
+    "010170",
+    "011200",
+    "012330",
+    "012450",
+    "012750",
+    "015760",
+    "017670",
+    "018260",
+    "021240",
+    "028260",
+    "028300",
+    "029780",
+    "030000",
+    "030200",
+    "032830",
+    "033780",
+    "034020",
+    "034220",
+    "034730",
+    "035250",
+    "035420",
+    "036460",
+    "047050",
+    "051910",
+    "066570",
+    "086280",
+    "105560",
+    "111770",
+    "138040",
+    "196170",
+    "214370",
+    "226950",
+    "257720",
+    "259960",
+    "278470",
+    "329180",
+    "352820",
+    "373220"
+  ],
+  "retainedStoredClose": true,
+  "inputSnapshotSHA256": "df5acb97970a7bca13b0e03223b83a27fd5a88da22ebdef75724cf76c09c6fe9",
+  "unconfirmedCodes": [
+    "207940"
+  ],
+  "scoreId": "970143d0e48036250a4b373af7147c5764083a9573471ecaacd5c7c858edb037",
+  "scoredDates": 4,
+  "scoring": {
+    "evaluated": 311,
+    "evaluatedLive": 311,
+    "pending": 53,
+    "uniqueTargetDates": 4,
+    "byClass": {
+      "방향·크기 모두 맞음": 109,
+      "방향·크기 모두 틀림": 53,
+      "방향 맞고 크기 틀림": 68,
+      "크기 허용·방향 틀림": 81
+    },
+    "exclusionReasons": {
+      "발행 뒤 목표만 채점(목표일 마감 후 발행)": 52,
+      "실제 종가 미확보": 1
+    },
+    "newRecords": 0,
+    "duplicates": 311,
+    "corrected": 0,
+    "cutoff": "2026-10-02",
+    "summary": {
+      "live": {
+        "n": 311,
+        "byHorizon": {
+          "1": {
+            "n": 311,
+            "uniqueDates": 4,
+            "meanAPE": 1.5366396053044957,
+            "directionAccuracy": 0.5691318327974276,
+            "priceHitRate": 0.6109324758842444,
+            "coverage80": 0.8810289389067524,
+            "meanIntervalScoreRel": 0.08038116346662091,
+            "meanBrier": 0.5489230737138268,
+            "meanBandWidthPct": 6.884129850806423,
+            "byClass": {
+              "방향·크기 모두 맞음": 109,
+              "방향 맞고 크기 틀림": 68,
+              "크기 허용·방향 틀림": 81,
+              "방향·크기 모두 틀림": 53,
+              "평가 보류": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "observationsSnapshots": 4,
+  "reanalyzed": 0,
+  "analysis": {
+    "cellAnalyses": 0,
+    "newRecords": 0,
+    "aggregateDate": "2026-10-02"
+  },
+  "forecastId": "2026-10-01-atlas11-ddcd76430dec96dc",
+  "newForecast": false,
+  "liveForecastStocks": 0,
+  "forecastWithheldReason": "오늘(2026-10-02) 확정 종가 확인 51/52 · 52개 전부 확인될 때만 발행 · 이전 발행본 유지",
+  "contextDay": "2026-10-02",
+  "evolution": {
+    "backtested": 0,
+    "adopted": 0,
+    "rejected": 0,
+    "observing": 0,
+    "rolledBack": 0,
+    "promoted": [],
+    "notes": [],
+    "backtestsOff": {
+      "reason": "내일 하루만 명령(2026-10-02)으로 지난날 20거래일 시험 꺼 둠",
+      "since": "2026-10-02",
+      "config": "config/atlas11/horizon.json"
+    },
+    "operatingModel": "atlas11-A-1",
+    "candidatesTotal": 11,
+    "states": {
+      "cand-cada92bb6a02": "기각",
+      "cand-94bdc0454e5e": "기각",
+      "cand-e8a6bf641e5a": "기각",
+      "cand-61932e5bacf4": "기각",
+      "cand-99b1f5f4a26c": "기각",
+      "cand-52f5c4516030": "기각",
+      "cand-006aefb23808": "기각",
+      "cand-d935b67d4ce5": "기각",
+      "cand-f5472cad05be": "기각",
+      "cand-93d57983854e": "기각",
+      "cand-563996496016": "기각"
+    }
+  },
+  "operatingModelAfter": "atlas11-A-1",
+  "viewPending": false,
+  "finishedAt": "2026-10-02T14:09:08.538Z",
+  "dailyReport": {
+    "date": "2026-10-02",
+    "version": 4,
+    "md": "reports/atlas11/daily/2026-10-02.md"
+  },
+  "ledger": {
+    "totals": {
+      "collection": 494,
+      "forecast": 5,
+      "score": 1407,
+      "analysis": 1072,
+      "factor": 180,
+      "experiment": 13,
+      "model": 0,
+      "operation": 53
+    },
+    "dates": 5
+  }
+}

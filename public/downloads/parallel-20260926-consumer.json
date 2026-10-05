@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "assignment": "consumer_ir",
+  "runDateKorea": "2026-09-26",
+  "observedAt": "2026-09-26T11:39:22.996630Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "033780",
+    "047050",
+    "002380",
+    "111770"
+  ],
+  "reviewedCount": 4,
+  "newConfirmedCount": 0,
+  "allAssignedReviewed": true,
+  "allConfirmed": false,
+  "newEvents": [],
+  "assets": [
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "status": "date_not_confirmed",
+      "newEvents": [],
+      "conclusion": "2026년 공식 IR 일정의 최신 행사는 8/24~25. 9/29~10/3 NDR은 2025년 자료이며 올해로 복사하지 않는다. 9/22 공시의 자사주 취득기간은 소각 확정일과 다르므로 10월 임의 날짜를 추가하지 않는다.",
+      "correctionReview": "공식 IR 연도 구분과 소각 공시 후보를 재검색했다. 2026-09-22 소각의 정확한 미래 실시일을 담은 새 정정 원문은 확보하지 못했다. 정정이 전혀 없다는 뜻은 아니다.",
+      "sources": [
+        {
+          "title": "KT&G 공식 IR 행사",
+          "url": "https://www.ktng.com/ir/ir-archives/events",
+          "reference": "turn362view0",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "KT&G 공식 뉴스룸",
+          "url": "https://www.ktng.com/media/news/press-release",
+          "reference": "turn391view0",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "KT&G 공시 경로",
+          "url": "https://www.ktng.com/ir/disclosure-info/disclosures",
+          "reference": "turn395view2",
+          "level": "primary",
+          "accessStatus": "page_read_no_filing_body",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "9/22 주식소각 전재 요약",
+          "url": "https://dartbrief.com/disclosures/20260922800292",
+          "reference": "turn405view2",
+          "level": "secondary_ai_summary",
+          "accessStatus": "read",
+          "publicationDate": "2026-09-22",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "title": "해외 NDR 9/29~10/3",
+          "reason": "2025년 행사"
+        },
+        {
+          "title": "10/29 실적 발표",
+          "reason": "민간 예상 캘린더이며 공식 IR 확정 공지 미확보",
+          "sourceUrl": "https://kr.investing.com/equities/kt-g-corp"
+        },
+        {
+          "title": "9/23~12/22 자사주 취득",
+          "reason": "기존 조사에 기록된 진행 기간. 취득 완료·소각일 미확정, 기간 중 임의 날짜를 단일 충격으로 사용 금지",
+          "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000256"
+        }
+      ]
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "status": "date_not_confirmed",
+      "newEvents": [],
+      "conclusion": "공식 IR 최신 행사는 9/16 미국 셰일가스 사업설명회. 첨부 원문은 9/14 본계약 완료와 11월 중순 거래종결 목표를 구분한다. 종결 목표는 대상기간 밖이고 확정 날짜도 아니다.",
+      "correctionReview": "9/16 공식 발표자료와 회사 IR 최신 목록을 대조. 10월 종결이라는 가정을 배제했고, 새 정확 날짜를 담은 정정 공시는 확보하지 못했다.",
+      "sources": [
+        {
+          "title": "포스코인터내셔널 공식 IR 활동",
+          "url": "https://www.poscointl.com/irActivity",
+          "reference": "turn362view1",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "미국 셰일가스 자산 인수 공식 사업설명회 PDF",
+          "url": "https://www.poscointl.com/upload/file/202609/202609166e0c1e9b5e1f49daaaa570068773b9b9NBuG2KQ.pdf",
+          "reference": "turn372view4",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": "2026-09-16",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "한국해비타트 공사 재입찰 공고",
+          "url": "https://habitat.or.kr/kor/news/notice?ca=&idx=6645&page=1&sel_search=&txt_search=&viewMode=view",
+          "reference": "turn362search14",
+          "level": "primary",
+          "accessStatus": "search_excerpt_only",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "title": "미국 셰일가스 거래종결",
+          "reason": "공식 PDF p6에 11월 중순 목표. 10/30 이후이고 정확한 일자 미정"
+        },
+        {
+          "title": "10/27 실적 발표",
+          "reason": "민간 캘린더 예상, 공식 발표일 미확보",
+          "sourceUrl": "https://kr.investing.com/equities/daewoo-international-corp-earnings"
+        },
+        {
+          "title": "태양광 발전설비 5개소 공사 10/16",
+          "reason": "사회공헌 사업 입찰의 계약기한. 실제 준공·실적발표일 또는 해당 상장사 가격 사건이라고 볼 근거 미확보"
+        }
+      ]
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "status": "date_not_confirmed",
+      "newEvents": [],
+      "conclusion": "공식 IR 최신 일정은 8/19. 9/17 자산양도 공시 후보의 2차 전재에는 2026년10월~2027년2월이라는 월 범위만 있고, 정확 거래일을 확인하지 못했다. 분기 거래기간 시작일10/1을 신규 기업 사건으로 바꾸지 않는다.",
+      "correctionReview": "공식 IR 공시목록의 9/17 자산양도와 계열사 상품·용역거래 공시를 찾았으나 DART 본문 502로 원문 확인 미완료. 전재의 금액 단위 오류를 발견해 AI 요약은 입력 근거로 채택하지 않는다.",
+      "sources": [
+        {
+          "title": "KCC 공식 IR 페이지",
+          "url": "https://kccworld.irpage.co.kr/",
+          "reference": "turn366view1",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "KCC 9/17 특수관계인 자산양도 원문",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260917000136",
+          "reference": "turn372view2",
+          "level": "primary",
+          "accessStatus": "502_body_unavailable",
+          "publicationDate": "2026-09-17",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "KCC 9/17 계열회사 상품용역 거래 원문",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260917000129",
+          "reference": "turn372view3",
+          "level": "primary",
+          "accessStatus": "502_body_unavailable",
+          "publicationDate": "2026-09-17",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "자산양도 2차 AI 요약",
+          "url": "https://dartbrief.com/disclosures/20260917000136",
+          "reference": "turn405view1",
+          "level": "secondary_ai_summary",
+          "accessStatus": "read",
+          "publicationDate": "2026-09-17",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "KCC 공식 웹진",
+          "url": "https://webzine.kccworld.co.kr/",
+          "reference": "turn387view1",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "title": "백금·로듐 유휴자산 양도",
+          "reason": "2차 출처상10월~다음해2월의 범위만 표시. 10/1로 임의 지정 금지. 56,412백만원은 564.12억원이며 전재의5,641억원 환산은 틀림"
+        },
+        {
+          "title": "4분기 계열사 거래10/1",
+          "reason": "분기 적용 시작일일 뿐 개별 공시·대금 수취 확정일이 아님"
+        },
+        {
+          "title": "김천공장 탄소무배출설비 입찰10/19",
+          "reason": "입찰 자격등록 마감에 관한 2차 정보로 기업 실적 발표나 가격 촉매 미입증",
+          "sourceUrl": "https://bid24.kr/b/R26BK01713254"
+        }
+      ]
+    },
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "status": "date_not_confirmed",
+      "newEvents": [],
+      "conclusion": "공식 영원무역 IR 자료 최신8/21, 공식 공시목록 최신8/26. 8/11 승인 밸류업 자료의 자사주 매입 목표는2027년까지이고 정확한10월 날짜가 없다. 홀딩스의 별도 자사주 소각 계획을111770에 연결하지 않는다.",
+      "correctionReview": "공식목록에서8/11 정정 공정공시·배당 공시를 추적했다. KIND 본문 미반환과 보숲 본문 미로딩을 보존한다. 미래AI의10/15·100원 배당 주장은 기존9/18·1,050원 조사와 충돌하여 원문 확인 전 전부 제외한다.",
+      "sources": [
+        {
+          "title": "영원무역 공식 IR",
+          "url": "https://www.youngone.co.kr/invest/youngone/ir-yo/",
+          "reference": "turn366view2",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "영원무역 공식 공시 목록",
+          "url": "https://www.youngone.co.kr/invest/youngone/disclosure",
+          "reference": "turn372view0",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "영원무역 기업가치제고 PDF",
+          "url": "https://www.youngone.co.kr/board/download/284/",
+          "reference": "turn402view1",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": "2026-08-12",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "배당 공시 KIND 경로",
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?acptno=20260811000745&method=search",
+          "reference": "turn377view2",
+          "level": "primary",
+          "accessStatus": "viewer_no_body",
+          "publicationDate": "2026-08-11",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "정정 공정공시 KIND 경로",
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?acptno=20260811000905&method=search",
+          "reference": "turn377view1",
+          "level": "primary",
+          "accessStatus": "viewer_no_body",
+          "publicationDate": "2026-08-11",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "미래AI 배당 요약",
+          "url": "https://www.meerae.ai/insights/20260811800745/",
+          "reference": "turn395view0",
+          "level": "secondary_ai_summary",
+          "accessStatus": "read",
+          "publicationDate": "2026-08-11",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "보숲 배당 전재 경로",
+          "url": "https://www.bosoop.com/disclosures/20260811800745/",
+          "reference": "turn405view0",
+          "level": "secondary_reprint",
+          "accessStatus": "body_unavailable",
+          "publicationDate": "2026-08-11",
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        },
+        {
+          "title": "영원무역 공식 회사 뉴스",
+          "url": "https://www.youngone.co.kr/promotion/news/",
+          "reference": "turn387view0",
+          "level": "primary",
+          "accessStatus": "read",
+          "publicationDate": null,
+          "publicationTime": null,
+          "observedAt": "2026-09-26T11:39:22.996630Z"
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "title": "10/15 현금·현물배당",
+          "reason": "AI 작성 2차 기사만 있으며 공시 원문 대조 미완료. 금액·기준일 등도 기존 조사와 충돌하므로 새 확정일로 추가 금지"
+        },
+        {
+          "title": "자사주500억원 매입",
+          "reason": "공식 계획은2027년까지, 10월 특정일 미정"
+        },
+        {
+          "title": "홀딩스 하반기5.5% 소각",
+          "reason": "상장사009970의 별도 계획.111770에 복사 금지"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "미확보는 일정이 존재하지 않는다는 단정이 아니다.",
+    "본문 접근 실패·공시 정정 미대조를 성공으로 표시하지 않는다.",
+    "기업고유 원문·정확일·대상을 모두 충족하지 못한 후보는 뉴스 엔진에 입력하지 않는다.",
+    "이 조사는 실제 적중확률 검증이나 주가 영향 입증이 아니다."
+  ]
+}

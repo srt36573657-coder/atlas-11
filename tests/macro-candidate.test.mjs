@@ -1,0 +1,4 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{laggedMacro,macroDesign}from'../lib/macro-candidate.mjs';
+test('future macro observation cannot change earlier candidate',()=>{const rows=[{date:'2026-09-01',value:2}];assert.deepEqual(laggedMacro(rows,'2026-09-10'),laggedMacro([...rows,{date:'2026-09-09',value:999}],'2026-09-10'));});
+test('missing or stale never becomes zero',()=>{assert.equal(laggedMacro([],'2026-09-10'),null);assert.equal(laggedMacro([{date:'2026-01-01',value:3}],'2026-09-10'),null);assert.equal(macroDesign([{date:'2026-09-10',x:[1],y:2}],[{rows:[]}]).length,0);});
+test('conflicting same date rejected and zero remains observed',()=>{assert.throws(()=>laggedMacro([{date:'2026-09-01',value:2},{date:'2026-09-01',value:3}],'2026-09-10'));assert.equal(laggedMacro([{date:'2026-09-01',value:0}],'2026-09-10').value,0);});

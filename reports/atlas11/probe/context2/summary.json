@@ -1,0 +1,162 @@
+[
+ {
+  "name": "fx-api-usdkrw-prices.json",
+  "url": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2650,
+  "ms": 916,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:20.386Z"
+ },
+ {
+  "name": "fx-m-usdkrw-prices.json",
+  "url": "https://m.stock.naver.com/front-api/marketIndex/prices?category=exchange&reutersCode=FX_USDKRW&page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json; charset=utf-8",
+  "bytes": 2707,
+  "ms": 852,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:21.238Z"
+ },
+ {
+  "name": "fx-api-usdkrw-basic.json",
+  "url": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2415,
+  "ms": 151,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:21.389Z"
+ },
+ {
+  "name": "fx-m-exchange-detail.json",
+  "url": "https://m.stock.naver.com/front-api/marketIndex/productDetail?category=exchange&reutersCode=FX_USDKRW",
+  "status": 200,
+  "type": "application/json; charset=utf-8",
+  "bytes": 2241,
+  "ms": 156,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:21.545Z"
+ },
+ {
+  "name": "world-inx-price.json",
+  "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 5787,
+  "ms": 152,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:21.697Z"
+ },
+ {
+  "name": "world-ixic-price.json",
+  "url": "https://api.stock.naver.com/index/.IXIC/price?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 5868,
+  "ms": 151,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:21.848Z"
+ },
+ {
+  "name": "world-sox-price.json",
+  "url": "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 5858,
+  "ms": 155,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.003Z"
+ },
+ {
+  "name": "world-vix-price.json",
+  "url": "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 5374,
+  "ms": 153,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.156Z"
+ },
+ {
+  "name": "world-inx-basic.json",
+  "url": "https://api.stock.naver.com/index/.INX/basic",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 5247,
+  "ms": 156,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.312Z"
+ },
+ {
+  "name": "bond-us10y-prices.json",
+  "url": "https://api.stock.naver.com/marketindex/bond/US10YT=RR/prices?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2417,
+  "ms": 152,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.464Z"
+ },
+ {
+  "name": "bond-m-us10y.json",
+  "url": "https://m.stock.naver.com/front-api/marketIndex/prices?category=bond&reutersCode=US10YT%3DRR&page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json; charset=utf-8",
+  "bytes": 2474,
+  "ms": 149,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.613Z"
+ },
+ {
+  "name": "bond-m-kr3y.json",
+  "url": "https://m.stock.naver.com/front-api/marketIndex/prices?category=bond&reutersCode=KR3YT%3DRR&page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json; charset=utf-8",
+  "bytes": 2486,
+  "ms": 165,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.778Z"
+ },
+ {
+  "name": "energy-wti-prices.json",
+  "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2384,
+  "ms": 148,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:22.926Z"
+ },
+ {
+  "name": "energy-m-wti.json",
+  "url": "https://m.stock.naver.com/front-api/marketIndex/prices?category=energy&reutersCode=CLcv1&page=1&pageSize=10",
+  "status": 200,
+  "type": "application/json; charset=utf-8",
+  "bytes": 2441,
+  "ms": 149,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:23.075Z"
+ },
+ {
+  "name": "fred-60s-DEXKOUS.csv",
+  "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXKOUS&cosd=2026-08-01",
+  "status": 200,
+  "type": "application/csv",
+  "bytes": 778,
+  "ms": 1002,
+  "err": null,
+  "fetchedAt": "2026-09-29T22:13:24.077Z"
+ },
+ {
+  "name": "fred-60s-VIXCLS.csv",
+  "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-08-01",
+  "status": 0,
+  "type": "",
+  "bytes": 0,
+  "ms": 60002,
+  "err": "The operation was aborted due to timeout",
+  "fetchedAt": "2026-09-29T22:14:24.079Z"
+ }
+]

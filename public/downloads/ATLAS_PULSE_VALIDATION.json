@@ -1,0 +1,17 @@
+{
+  "version": "9.1.1",
+  "at": "2026-09-28T02:17:24.255Z",
+  "scope": "display_only_no_numerical_change",
+  "tests": 4,
+  "browserChecks": 12,
+  "browserPassed": true,
+  "dataSHA256": "235925fafa9010c7f036a4028fd7614bd855f5e54402f88b31f7d377402c455c",
+  "dailyMovementSHA256": "2be4e22dcc05f7b770e46f3a0c8340c1bd77d5e721384baeb8bd46b4b423dec0",
+  "sourceEngineUnchanged": true,
+  "forecastPricesUnchanged": true,
+  "accuracyImprovementClaimed": false,
+  "fullRegressionRerun": false,
+  "actualAsOf": "2026-09-23",
+  "fomoPriceImpactEnabled": false,
+  "liveDeployed": false
+}

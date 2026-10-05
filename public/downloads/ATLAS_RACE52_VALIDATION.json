@@ -1,0 +1,24 @@
+{
+  "version": "9.3.0",
+  "at": "2026-09-28T03:27:55.064Z",
+  "forecastId": "2026-09-23-wave-169bd2b1fd8b",
+  "forecastSHA256": "06aacb4f3b92872f24ffb229dcebc13388b2064d07df0a6955076235705ab9d1",
+  "forecastUnchanged": true,
+  "sourceSHA256": "235925fafa9010c7f036a4028fd7614bd855f5e54402f88b31f7d377402c455c",
+  "unitTests": 25,
+  "browserChecks": 17,
+  "browserPassed": true,
+  "simultaneousSeries": 52,
+  "playback": "trading_session_1000ms",
+  "staleVersionMismatchTested": true,
+  "atomicInputSnapshot": true,
+  "mobileWidths": [
+    320,
+    390
+  ],
+  "iOSSafariPhysicalDeviceTested": false,
+  "actualAsOf": "2026-09-23",
+  "fomoPriceImpact": false,
+  "rankProbabilityEnabled": false,
+  "liveDeployed": false
+}

@@ -1,0 +1,150 @@
+/* ATLAS Design365 — shell, navigation and stock discovery. D123–D183.
+   Presentation only: no ordering, data, model, timer or account behavior changes.
+   Sources: Fluent 2 Nav; Material Design Cards (official legacy guidance).
+   Desktop geometry is scoped above 1000px; mobile geometry is separately owned. */
+@media (min-width:1001px) {
+  /* D123 — intentional reading canvas */
+  main[data-design-edition="8.0"] { max-width:1880px; padding:12px 28px 0; }
+  /* D124 — compact header */
+  main[data-design-edition="8.0"]>header { min-height:66px; padding:8px 0 12px; margin-bottom:14px; }
+  /* D125 — quiet chrome divider */
+  main[data-design-edition="8.0"]>header { border-bottom:1px solid #382c2a24; background:#f6f2e9; box-shadow:0 4px 18px #382c2a04; }
+  /* D133 — persistent, modest sidebar */
+  main[data-design-edition="8.0"]>nav { width:168px; top:104px; bottom:24px; left:max(20px,calc((100vw - 1840px)/2)); padding:8px; gap:6px; border:1px solid #382c2a12; border-radius:16px; background:#eee8de; }
+  /* D137 — one content alignment */
+  main[data-design-edition="8.0"]>.atlas-content,
+  main[data-design-edition="8.0"]>.evidence-banner,
+  main[data-design-edition="8.0"]>.record-details,
+  main[data-design-edition="8.0"]>.intro-details,
+  main[data-design-edition="8.0"]>footer { margin-left:192px; }
+  /* D155 — readable card columns */
+  .small-multiples { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; align-items:start; }
+  /* D156 — deliberate large reading cards */
+  .small-multiples[data-density="reading"] { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; }
+}
+@media (min-width:1500px) {
+  .small-multiples { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .small-multiples[data-density="reading"] { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+/* D126 — restrained editorial wordmark */
+.brand h1 { color:#382c2a; font-family:Georgia,'Times New Roman',serif; letter-spacing:.11em; font-weight:500; }
+/* D127 — small, distinctive brand seal */
+.brand-mark { background:#fffdf9; color:#382c2a; border:1px solid #94734a; border-radius:12px; box-shadow:inset 0 0 0 3px #fffdf9; }
+/* D128 — plain supporting identity */
+.brand p { color:#655951; letter-spacing:.02em; line-height:1.5; }
+/* D129 — consistent header actions */
+.header-actions { gap:8px; align-items:center; }
+.header-actions button { border-radius:10px; border-color:#382c2a30; box-shadow:none; font-weight:600; }
+/* D130 — choose a stock before configuration */
+.header-actions .stock-picker-trigger { background:#382c2a; color:#fffaf2; border-color:#382c2a; }
+.header-actions>button.primary { background:transparent; color:#382c2a; border-color:#382c2a40; }
+/* D131 — account is secondary, clearly actionable */
+.header-actions .account-trigger { background:#fffdf8; color:#382c2a; }
+/* D132 — service state remains visible, unembellished */
+.storage-indicator { color:#655951; font-size:12px; line-height:1.4; font-weight:400; }
+/* D134 — current page has shape and weight as well as color */
+main[data-design-edition="8.0"]>nav button.active { background:#382c2a; color:#fffaf2; font-weight:700; box-shadow:inset 3px 0 0 #b89a72; }
+/* D135 — navigation feedback without movement */
+main[data-design-edition="8.0"]>nav button:not(.active):hover { color:#382c2a; background:#e5dccd; }
+/* D136 — labels stay readable rather than ellipsized */
+main[data-design-edition="8.0"]>nav button { line-height:1.5; overflow-wrap:break-word; border-radius:10px; display:flex; align-items:center; gap:10px; }
+main[data-design-edition="8.0"]>nav .nav-symbol { width:18px; height:18px; flex:none; }
+main[data-design-edition="8.0"]>nav button>span { min-width:0; }
+/* D138 — introduction is a quiet expandable preface */
+.intro-details>summary { color:#655951; font-size:12px; line-height:1.6; padding-block:6px; }
+/* D139 — research state reads as a status, not an alarm */
+.evidence-banner { background:#eee6d8; border:1px solid #94734a36; border-left:3px solid #94734a; border-radius:9px; color:#514239; gap:10px; }
+/* D140 — forecast record has a clear summary line */
+.record-details>summary { color:#655951; font-size:12px; line-height:1.65; padding-block:7px; }
+/* D141 — a small section locator */
+.section-kicker { color:#765b39; font-size:12px; font-weight:700; letter-spacing:.09em; line-height:1.6; }
+/* D142 — discoverable, readable gallery title */
+.section-heading h2 { color:#382c2a; letter-spacing:-.035em; font-weight:650; line-height:1.3; margin-block:5px 7px; }
+/* D143 — direct supporting instruction */
+.section-heading p { color:#655951; line-height:1.65; max-width:72ch; }
+/* D144 — browse without typing */
+.gallery-picker { color:#382c2a; background:#fffdf8; border:1px solid #94734a88; border-radius:10px; font-weight:650; min-height:44px; }
+/* D145 — search has a visible, stable label */
+.stock-search label { color:#655951; letter-spacing:0; font-weight:600; margin-bottom:5px; }
+/* D146 — contained search affordance */
+.stock-search>div { background:#fffdf8; border:1px solid #382c2a38; border-radius:10px; box-shadow:none; }
+.stock-search input { background:transparent; color:#382c2a; }
+/* D147 — filtering is a discrete control band */
+.research-toolbar { gap:12px; padding-block:8px 12px; border-bottom:1px solid #382c2a18; margin-bottom:12px; }
+/* D148 — filters are comfortable click targets */
+.research-lenses button { min-height:42px; background:#eae3d7; color:#514239; border:1px solid transparent; border-radius:10px; padding-inline:12px; font-weight:550; }
+/* D149 — active filter does not rely on color alone */
+.research-lenses button[aria-pressed="true"] { background:#382c2a; color:#fffaf2; font-weight:750; border-color:#382c2a; }
+/* D150 — counts belong to their filter */
+.research-lenses button span { border-radius:5px; padding:2px 5px; background:#382c2a0d; color:inherit; font-variant-numeric:tabular-nums; }
+.research-lenses button[aria-pressed="true"] span { color:#fffaf2; background:#ffffff1a; }
+/* D151 — result count is supplemental but legible */
+.visible-count { color:#655951; font-size:12px; line-height:1.6; }
+.visible-count b { color:#382c2a; font-variant-numeric:tabular-nums; }
+/* D152 — reading controls occupy one consistent row */
+.gallery-tools { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-block:10px; }
+/* D153 — density is a segmented choice */
+.density-switch { background:#eee8de; border:1px solid #382c2a24; border-radius:10px; padding:3px; }
+.density-switch button { border-radius:7px; background:transparent; box-shadow:none; min-height:36px; }
+.density-switch button[aria-pressed="true"] { background:#fffdf8; color:#382c2a; box-shadow:0 1px 3px #382c2a14; }
+/* D154 — rank definition stays close to its results */
+.lens-help { color:#655951; font-size:12px; line-height:1.7; margin-block:10px 20px; }
+/* D157 — calm card surface */
+.mini-card { background:#fffdf8; border:1px solid #d8cdbf; border-radius:16px; box-shadow:0 2px 6px #382c2a05; }
+/* D158 — hover signals detail without moving the chart */
+.mini-card:hover { border-color:#94734a; box-shadow:0 6px 20px #382c2a0c; transform:none; }
+/* D159 — coherent interior keyline */
+.mini-card { padding:17px 16px 12px; }
+/* D160 — title is a clear detail entry point */
+.mini-card .mini-title { align-items:flex-start; gap:12px; padding:0 0 13px; margin-bottom:12px; border-bottom:1px solid #382c2a14; border-radius:0; text-align:left; }
+.mini-card .mini-title h3 { color:#382c2a; line-height:1.35; margin-block:6px; font-weight:700; letter-spacing:-.03em; }
+/* D161 — sector is metadata, not a competing headline */
+.mini-card .stock-identity { color:#655951; font-size:12px; line-height:1.5; }
+/* D162 — codes are compact yet distinct */
+.mini-card .stock-code { color:#655951; font-variant-numeric:tabular-nums; letter-spacing:.045em; padding-left:5px; }
+/* D163 — research status remains explicit on every card */
+.mini-card .forecast-status { color:#655951; font-size:12px; line-height:1.6; }
+/* D164 — endpoint uses stable digits */
+.mini-card .end-forecast b { color:#382c2a; font-variant-numeric:tabular-nums; letter-spacing:-.04em; line-height:1.4; }
+/* D165 — comparison base stays attached to its number */
+.mini-card .end-comparison { color:#655951; font-size:12px; line-height:1.55; max-width:20ch; }
+/* D166 — selected date quote has a separate tonal field */
+.mini-card .stock-current { background:#f2ece2; border:1px solid #382c2a0d; border-radius:10px; }
+/* D167 — selected-date caption is readable */
+.mini-card .quote-caption { color:#655951; line-height:1.5; gap:6px; flex-wrap:wrap; }
+/* D168 — forecast origin is subordinate but preserved */
+.mini-card .forecast-origin { border-left:1px solid #382c2a26; color:#655951; line-height:1.6; padding-left:10px; }
+/* D169 — actions occupy a consistent row below the chart */
+.mini-card .stock-controls { gap:7px; padding-block:9px; align-items:center; flex-wrap:wrap; }
+/* D170 — play is the single prominent card action */
+.mini-card .stock-controls button.primary { background:#382c2a; color:#fffaf2; border-color:#382c2a; font-weight:650; border-radius:9px; min-height:40px; }
+/* D171 — supporting controls stay visually secondary */
+.mini-card .stock-controls button:not(.primary) { background:#fffdf8; border:1px solid #d8cdbf; color:#514239; border-radius:9px; min-height:40px; }
+/* D172 — options remain a lighter group */
+.mini-card .stock-options { gap:8px 12px; color:#655951; line-height:1.6; padding-block:5px; }
+/* D173 — scope chips expose scope, not fake impact */
+.mini-card .scope-chips span { background:#eee8de; color:#514239; border:1px solid #382c2a10; border-radius:6px; padding:4px 7px; line-height:1.4; }
+/* D174 — zero count remains legible */
+.mini-card .scope-chips span[data-empty="true"] { background:#fffdf8; color:#74665c; border-style:dashed; opacity:1; }
+/* D175 — missing evidence has a plain, non-alarm treatment */
+.mini-card .scope-gap { color:#655951; font-size:12px; line-height:1.6; padding-block:6px; }
+/* D176 — save action is visible without hovering */
+.watch-button { border:1px solid #d8cdbf; border-radius:8px; background:#fffdf8; color:#655951; min-height:40px; padding-inline:10px; }
+.watch-button[aria-pressed="true"] { color:#604721; border-color:#94734a; background:#f0e5d4; font-weight:650; }
+/* D177 — ancillary research has a recognizable disclosure */
+.research-drawer>summary { color:#655951; line-height:1.65; padding-block:10px; border-top:1px solid #382c2a18; font-weight:550; }
+/* D178 — empty state retains the surrounding collection context */
+.empty-stocks { background:#fffdf8; border:1px dashed #baa98f; border-radius:16px; padding:36px 24px; text-align:center; color:#382c2a; }
+.empty-stocks p { color:#655951; max-width:48ch; line-height:1.7; }
+/* D179 — illustration stays supporting, not dominant */
+.empty-stocks svg { width:48px; height:48px; color:#94734a; margin-bottom:14px; }
+/* D180 — one explicit recovery action */
+.empty-stocks button { background:#382c2a; color:#fffaf2; border-color:#382c2a; border-radius:10px; min-height:44px; margin-top:10px; }
+/* D181 — picker cards are evenly separated, directly clickable */
+.picker-grid { gap:10px; }
+.picker-grid button { background:#fffdf8; border:1px solid #d8cdbf; border-radius:10px; min-height:72px; padding:14px; color:#382c2a; }
+/* D182 — selected stock is differentiated without layout shift */
+.picker-grid button[aria-pressed="true"] { border:1px solid #94734a; box-shadow:inset 0 0 0 1px #94734a; background:#f0e5d4; }
+/* D183 — secondary links have a quiet destination row */
+.footer-actions { gap:12px; padding-block:16px; border-top:1px solid #382c2a20; color:#655951; }
+.footer-actions a,.footer-actions button { font-size:12px; line-height:1.6; }

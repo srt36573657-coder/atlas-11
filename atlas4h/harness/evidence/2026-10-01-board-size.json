@@ -1,0 +1,26 @@
+{
+ "schema": "atlas4h-evidence-1",
+ "what": "판 하나 크기 — 작은 판으로 옮기기 전과 뒤 (감시 W7)",
+ "measuredAt": "2026-10-01T21:48:04+09:00",
+ "how": "임시 worktree 에서 node atlas4h/engine/run.mjs --slot <시> --asof 2026-10-01 --ledger <임시> 로 판 하나를 짓고 그 줄의 바이트를 셈(줄바꿈 뺌)",
+ "before": {
+  "code": "b8074cc",
+  "slot": "16",
+  "bytes": 1544805,
+  "historyPerStock": 524,
+  "note": "inputs.variables[].history 에 지난 등락 524개(엔진 HISTORY_DAYS = 500 + 22 + 1 + 1) — conflicts.md 21 의 「523개」는 틀림"
+ },
+ "after": [
+  {
+   "code": "72f56be",
+   "slot": "16",
+   "bytes": 144076
+  },
+  {
+   "code": "72f56be",
+   "slot": "08",
+   "bytes": 144082
+  }
+ ],
+ "note": "코스피 지난 자료가 아직 없어 코스피 칸이 빈 판이다. 가짜 코스피를 넣은 판은 짓는 일꾼 보고로 약 147 KB(파일 근거 없음)"
+}

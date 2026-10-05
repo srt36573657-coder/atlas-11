@@ -1,0 +1,1279 @@
+{
+  "schema": "atlas-rebuild52-research-v1",
+  "researcher": "rebuild52_research_b",
+  "checkedAt": "2026-09-26T13:18:16.662434Z",
+  "assignment": {
+    "startIndex": 26,
+    "endIndex": 51,
+    "count": 26,
+    "codes": [
+      "018260",
+      "086280",
+      "000720",
+      "278470",
+      "030200",
+      "003490",
+      "047050",
+      "003230",
+      "259960",
+      "021240",
+      "352820",
+      "009830",
+      "029780",
+      "028300",
+      "034220",
+      "002380",
+      "036460",
+      "004170",
+      "012750",
+      "111770",
+      "035250",
+      "257720",
+      "226950",
+      "010170",
+      "214370",
+      "030000"
+    ]
+  },
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "productionInputModified": false,
+  "inputSha256": "dd1c0bd8af0c4e173f5d843933b850d3d915cf0674b7a1a233b8094f14968fab",
+  "previousResearchReleaseId": "official-news-20260926-7",
+  "summary": {
+    "assetsRechecked": 26,
+    "newCandidateRecords": 7,
+    "materialObservedCorrections": 1,
+    "newExactCompanyBusinessOrAdministrativeCalendars": 4,
+    "monthOnlyCandidates": 1,
+    "unverifiedExactTalkCandidates": 1,
+    "allCompanyDatesConfirmed": false,
+    "numericalImpactsApproved": 0
+  },
+  "policy": [
+    "회사 IR·공시·사업 뉴스와 주최자 일정을 묶어 재조회했다. 접근 실패를 무한 반복하지 않고 기록했다.",
+    "기업 행사·자회사 행사·업종 행사·확인된 관측 결과·행정 기준일을 분리한다. 일정 수는 가격 예측 품질 또는 독립 표본 수가 아니다.",
+    "과거 조사 근거와 접근 제한 기록을 보존한다. 이번에 읽지 않은 기존 개별 원문은 현재 본문 재확인으로 집계하지 않는다.",
+    "게시 시각이 없으면 임의로 만들지 않는다. 신규 관측은 이번 관측 시각 이후에만 사용하고 9/17 입력으로 소급하지 않는다.",
+    "새 후보는 수치 반영을 모두 유보한다. FDA 승인도 기대 대비 차이·과거 유효 표본·가격 빈티지 없이 상승률이나 적중 확률을 만들지 않는다.",
+    "홈페이지·목록에 향후 일정이 없다는 것은 회사에 향후 뉴스가 없다는 증거가 아니다. 전체 인터넷/모든 공시 전수 완료를 주장하지 않는다."
+  ],
+  "assets": [
+    {
+      "code": "018260",
+      "name": "삼성에스디에스",
+      "sector": "IT서비스",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed",
+      "finding": "공식 IR 예정 행사는 준비 중으로 표시된다. 뉴스 목록의 9/8 Real Summit을 미래 일정으로 재사용하지 않았다. Brity Works의 10월 출시 보도는 회사 본문의 정확한 날짜를 확보하지 못했다.",
+      "checks": [
+        {
+          "url": "https://www.samsungsds.com/kr/investor/ir_events/about_ir_events.html",
+          "webRef": "turn561view0",
+          "access": "body_verified",
+          "finding": "공식 IR upcoming 영역에 준비 중으로 표시.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.samsungsds.com/kr/news/index.html",
+          "webRef": "turn577view2",
+          "access": "body_verified",
+          "finding": "9/15와 9/8 회사 뉴스 확인. 정확한 10월 발표 날짜 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.samsungsds.com/kr/news/sds20260908.html",
+          "webRef": "turn579view0",
+          "access": "body_verified",
+          "finding": "Real Summit 기사 본문에서 10월 확정일 확인 못 함.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "4502acc31bec1ac45d898f58928bda388160eed4ee47f35463e0ffb0bf91877e",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "086280",
+      "name": "현대글로비스",
+      "sector": "항공화물운송과물류",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "prior_verified_current_access_failed",
+      "finding": "기존 9/30 13:30 IR 원문 확인 기록은 보존한다. 이번 DART 재접속은 실패했고 최신 검색 색인만 같은 공시를 반환했다.",
+      "checks": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923800318",
+          "webRef": "turn559view0",
+          "access": "access_failed",
+          "finding": "기존 9/23 IR 공시 재접속 실패.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.k5.co.kr/stock/086280/official_notice",
+          "webRef": "turn559search3",
+          "access": "secondary_search_only",
+          "finding": "9/23 공시가 최신 색인에 나타남. 본문 검증의 대체 아님.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T07:05:02.639Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 2,
+        "historyCount": 0,
+        "sha256": "d109f4a2f0006cc94b2311452fcfc3ae48e4446966ad82015a0d0d0ef3b8c7e0",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "000720",
+      "name": "현대건설",
+      "sector": "건설",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "prior_verified_current_access_failed",
+      "finding": "기존 9/30 14:30 Mirae Corporate Day 일정의 과거 원문 확인 기록을 유지한다. 이번 DART 재접속은 실패했다.",
+      "checks": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923800045",
+          "webRef": "turn559view1",
+          "access": "access_failed",
+          "finding": "기존 9/23 IR 공시 재접속 실패.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://dartbrief.com/disclosures/20260923800045",
+          "webRef": "turn559search0",
+          "access": "secondary_search_only",
+          "finding": "IR 안내 검색 결과. 새 원문 검증으로 집계하지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T10:41:03.919Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 2,
+        "historyCount": 0,
+        "sha256": "5399ace2640114798ac0ae8cb575ea2c844ef3bd82c8ada0bd08455de011972d",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "278470",
+      "name": "에이피알",
+      "sector": "화장품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "new_governance_calendar_verified",
+      "finding": "에이피알 공식 9/9 공고가 소규모 합병 반대의사 표시 권리의 주주확정 기준일 9/28을 명시한다. 합병 실행일·가격 효과와 구분한다. 9/16 DART 정정 본문 접근은 실패했다.",
+      "checks": [
+        {
+          "url": "https://www.apr-in.com/public-notice-view.php?page=1&wr_id=85",
+          "webRef": "turn591view0",
+          "access": "body_verified",
+          "finding": "9/9 게시. APR Factory 합병 관련 9/28 주주확정 기준일.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.apr-in.com/public-notice.php",
+          "webRef": "turn585view1",
+          "access": "body_verified",
+          "finding": "공식 공고 목록의 최신 9/9 기준일 공고.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.apr-in.com/ir-calendar.php",
+          "webRef": "turn561view1",
+          "access": "body_verified",
+          "finding": "최근 9/24 및 9/21~23 IR 목록 확인.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260916000451",
+          "webRef": "turn582view2",
+          "access": "access_failed",
+          "finding": "9/16 정정 합병 공시 본문 미대조. 다른 합병 단계 날짜 채택 금지.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "bb9a0d06c3d17d4b12c2ae3451f28780b404cf06a5c9b95f68b75ae2d6b011e9",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:278470:MERGER-RECORD:20260928"
+      ],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "030200",
+      "name": "KT",
+      "sector": "다각화된통신서비스",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed_js_shell",
+      "finding": "공식 IR 뉴스 경로는 본문 없는 JS 화면만 반환했다. Smart Life Week 주최 일정은 재확인했으나 KT의 참가 확정이나 독립 기업 일정으로 세지 않는다.",
+      "checks": [
+        {
+          "url": "https://corp.kt.com/html/investors/resources/news.html",
+          "webRef": "turn564view0",
+          "access": "js_shell",
+          "finding": "추출 11줄, 실질적인 날짜·공시 본문 없음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://corp.kt.com/html/investors/main.html",
+          "webRef": "turn561search2",
+          "access": "search_only",
+          "finding": "공식 IR 경로 검색 확인. 사건 본문 아님.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "8bedacf05e4a861875d84c508169494e3e430591d5612ebe6df3d070725a6318",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "003490",
+      "name": "대한항공",
+      "sector": "항공사",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_company_policy_reverified",
+      "finding": "대한항공 공식 페이지의 2026/10/1 발권 기준 국제선 유류할증료 적용 정책을 재확인했다. 별도 신규 사건으로 중복하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.koreanair.com/contents/footer/customer-support/notice/2026/2610-infuel",
+          "webRef": "turn561view2",
+          "access": "body_verified",
+          "finding": "2026/10/1 발권 기준 정책. 표 캡션에 2025년 오래된 문구가 남아 있어 명시적 2026 적용 문장과 열을 사용해야 함.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "ffe43de73fd303fbf1e2806b7493279bc70d14660561c1aa17f86613ae8ad41b",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "sector": "무역회사와판매업체",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed",
+      "finding": "공식 IR 활동 목록의 최근 공개 항목은 9/16 미국 셰일가스 사업설명 및 9/9 행사다. 확인한 목록에서 미래 기업 날짜를 찾지 못했다. 이전 All Energy Australia 참가·후원 후보의 원문 제한을 유지한다.",
+      "checks": [
+        {
+          "url": "https://www.poscointl.com/irActivity",
+          "webRef": "turn564view4",
+          "access": "body_verified",
+          "finding": "9/16 및 9/9 목록 확인. 정확한 향후 기업 이벤트 본문 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 10,
+        "historyCount": 2,
+        "sha256": "8d50e1ad14203dd85fa59595ceda5a07667e62b0f3d47fa374d4b22b91fb2412",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "003230",
+      "name": "삼양식품",
+      "sector": "식품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed",
+      "finding": "삼양식품 IR 목록은 8/14 2분기 자료와 8/12 중간배당 공고를 확인했다. SIAL 행사 일정만으로 삼양식품 참가를 확정하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.samyangfoods.com/kor/ir/list.do",
+          "webRef": "turn566view7",
+          "access": "body_verified",
+          "finding": "2분기 IR 자료 및 중간배당 관련 목록. 향후 확정일 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "50c8631275db285642415c57b59a1df5af12de8a3c72bc99bf72b03cf95bb1a5",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "259960",
+      "name": "크래프톤",
+      "sector": "게임엔터테인먼트",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "new_business_calendar_verified",
+      "finding": "KRAFTON JAPAN의 발행 보도자료에서 The Ascent Switch 2 예약 판매 시작 10/6 10:00 JST를 확인했다. 출시는 12/3으로 기간 밖이다.",
+      "checks": [
+        {
+          "url": "https://prtimes.jp/main/html/rd/p/000000424.000082433.html",
+          "webRef": "turn577view0",
+          "access": "body_verified_issuer_release",
+          "finding": "2026/9/10 12:30 JST 회사 발행. 예약 판매 10/6 10:00 JST, 출시 12/3. KRAFTON·Neon Giant 및 부모회사 연결 본문 포함.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://krafton.com/ir/investor-events/event",
+          "webRef": "turn577view1",
+          "access": "access_failed",
+          "finding": "현재 IR 이벤트 경로 접근 실패.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "3d54eea7a32cc728551ed845e51ddd91be2e2db6e90d5375b13215711523344d",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:259960:ASCENT-PREORDER:20261006"
+      ],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "021240",
+      "name": "코웨이",
+      "sector": "가정용기기와용품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_month_only_verified",
+      "finding": "코웨이 공식 9/22 보도자료는 웨어러블 보행 보조 로봇 10월 출시 예정만 명시한다. 날짜를 10/1 등으로 만들어 넣지 않는다.",
+      "checks": [
+        {
+          "url": "https://company.coway.com/newsroom/press/1028",
+          "webRef": "turn566view5",
+          "access": "body_verified",
+          "finding": "2026/9/22 게시. 2026년 10월 출시 계획, 구체적인 일자 없음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "abd3c7ce297b11f47353f083df7b91ce526a5041f8f8704edbaee0585f372637",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:021240:WEARABLE-LAUNCH:202610"
+      ],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "352820",
+      "name": "하이브",
+      "sector": "방송과엔터테인먼트",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_business_campaign_reverified",
+      "finding": "HYBE CINE FEST 영화 축제 공식 Weverse 공지를 다시 읽었다. 글로벌 예매·한국 예매·축제 개막은 하나의 사업 캠페인의 단계이며 독립 표본 여러 개로 세지 않는다. BOYNEXTDOOR의 별도 과거 근거는 보존하되 이번에 다시 읽었다고 주장하지 않는다.",
+      "checks": [
+        {
+          "url": "https://weverse.io/bts/notice/39450",
+          "webRef": "turn566view6",
+          "access": "body_verified",
+          "finding": "글로벌 예매 9/30 6am PDT/9am EDT(한국 22시), 한국 예매 10/15 10시 KST, 주 행사 10/24~31. 예매 단계와 매출 결과를 구분.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "b47c1168829969529362497a171934b1d2c9e28bd39278f672943a50575f2174",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "009830",
+      "name": "한화솔루션",
+      "sector": "에너지장비및서비스",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_source_access_failed",
+      "finding": "회사 뉴스 검색 결과를 확인했으나 현재 목록 본문 접근은 실패했다. Smart Energy Plus 주최 일정은 재확인했고 회사 참가 증거와 구분했다.",
+      "checks": [
+        {
+          "url": "https://www.hanwhasolutions.com/ko/cs/news/list",
+          "webRef": "turn566view3",
+          "access": "access_failed",
+          "finding": "검색상 7/29 2분기 뉴스가 보였으나 본문 접근 실패.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "b508c173f8debc5888cd0e41abdbfee86c0f713832cc4f9a7881bec4b2db9fa0",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "sector": "카드",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_published_in_checked_calendar",
+      "finding": "공식 IR 달력은 2026/7/27 반기, 4/24 1분기까지다. 10/28은 2025년 일정이다. 기존 채권 만기 후보는 최근 잔액 검증 없이 가격 사건으로 채택하지 않는다.",
+      "checks": [
+        {
+          "url": "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+          "webRef": "turn571view8",
+          "access": "body_verified",
+          "finding": "2026 반기 7/27, 1분기 4/24. 10/28은 2025년 항목이므로 2026 복사 금지.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 15,
+        "historyCount": 2,
+        "sha256": "640f52afeb8c8f1f130db2600e5da16cf5a9443444d54385ec6a599e21dd75af",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "028300",
+      "name": "HLB",
+      "sector": "건강관리장비와용품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "material_observed_outcome_correction_verified",
+      "finding": "FDA와 Elevar 공식 본문은 Lyrfigtu(lirafugratinib)가 미국 9/23 승인됐다고 명시한다. Elevar는 HLB Co., Ltd.의 다수 지분 자회사임을 명시한다. 운영 입력에 HLB 기업 사건은 없었다. 이번 검색의 과거 9/27 PDUFA 예정 후보를 미래 미확정 사건으로 추가하지 않고 승인 관측 사실로 다뤄야 한다.",
+      "checks": [
+        {
+          "url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-lirafugratinib-previously-treated-unresectable-locally-advanced-or-metastatic",
+          "webRef": "turn587view4",
+          "access": "body_verified",
+          "finding": "FDA가 2026/9/23 승인과 Elevar Therapeutics를 명시.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://elevartx.com/2026/09/23/elevar-fda-approval-lyrfigtu-2/",
+          "webRef": "turn589view3",
+          "access": "body_verified",
+          "finding": "9/23 발표. Elevar가 HLB Co., Ltd. majority-owned subsidiary라고 명시. 정확한 게시 시각 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.hlbkorea.com/",
+          "webRef": "turn566view2",
+          "access": "access_failed",
+          "finding": "모회사 홈페이지 403/호스팅 오류. 우회하지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.drugs.com/nda/lirafugratinib_260330.html",
+          "webRef": "turn581search4",
+          "access": "secondary_search_only",
+          "finding": "과거 9/27 PDUFA 예정 보도 검색. 현재 FDA 승인 원문보다 우선할 수 없음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "1b8de1549985bcac46f018fab26b90e2cd4fe42df12767071f6d479694895440",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:028300:FDA-APPROVED:20260923"
+      ],
+      "allCompanyMaterialDatesConfirmed": false,
+      "operationalEventToCorrect": null
+    },
+    {
+      "code": "034220",
+      "name": "LG디스플레이",
+      "sector": "디스플레이 패널",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed",
+      "finding": "공식 IR 활동의 최신 내용은 8/24~25 UBS 행사 및 7/22 2분기 발표다. 2025년 10/30 또는 통상적인 분기 월을 2026 확정일로 복사하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.lgdisplay.com/kor/company/investment/ir-activity",
+          "webRef": "turn571view7",
+          "access": "body_verified",
+          "finding": "최근 8월 IR과 7/22 2분기 실적. 향후 3분기 발표일 확인 못 함.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "dda1f239fa0ccc8036f7fe992fa17f0675dbba6c6b31de9b0f25ddd7940eee79",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "sector": "건축자재",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_subsidiary_business_calendar_reverified",
+      "finding": "Fakuma 주최자 목록은 Momentive Performance Materials GmbH 참가와 부스 A4-4307을 확인한다. KCC 자체 IR이 아니라 자회사 사업 일정이다. 기존 지분 연결 및 개막 시각 검증은 보존하고 이번에 새로 다 읽었다고 하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+          "webRef": "turn591view3",
+          "access": "body_verified",
+          "finding": "Momentive Performance Materials GmbH, Fakuma2026, 부스 A4-4307.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.kccworld.co.kr/ir/main.do",
+          "webRef": "turn589view1",
+          "access": "access_failed",
+          "finding": "IR 탐색 경로 접근 실패. 사건 증거로 사용하지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 10,
+        "historyCount": 2,
+        "sha256": "0b2e8d5951b889a4210cdb8fce9998828fd46507fe289f368a70100e8c20abf0",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "036460",
+      "name": "한국가스공사",
+      "sector": "가스유틸리티",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "new_governance_calendar_verified",
+      "finding": "한국가스공사 공식 9/18 공고는 10/6 주주총회 권리 주주확정 기준일을 명시한다. 주주총회 개최일이나 배당일이 아니다. 기존 할부 적용 월과도 다른 행정 일정이다.",
+      "checks": [
+        {
+          "url": "https://www.kogas.or.kr/site/koGas/bbs/View.do?Key=1050705000000&boardIdx=47771&cbIdx=58&pageIndex=1&pageOffset=0&searchKey=&searchValue=",
+          "webRef": "turn568view0",
+          "access": "body_verified",
+          "finding": "9/18 주주총회 기준일 공고. 10/6 기준일. 정확한 공시 시각 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "84447e4ebdcf423c32099b29f1037c254cba22276672fb723f42a24cd4f4f4e4",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:036460:VOTING-RECORD:20261006"
+      ],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "004170",
+      "name": "신세계",
+      "sector": "백화점과일반상점",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_ir_date_not_confirmed",
+      "finding": "공식 전자공시 목록과 IR 일정을 재확인했다. 9/18 IR 공시 제목은 보이지만 행사 날짜 본문을 확보하지 못했다. 기존 면세점 행사 근거는 보존하되 이번 재접속 성공으로 표시하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.shinsegae.com/company/ir-ko/electronic-notice.do",
+          "webRef": "turn579view2",
+          "access": "body_verified_index",
+          "finding": "9/26 현재 공시 목록. 최신 9/21 특수관계 거래와 9/18 IR 제목.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.shinsegae.com/company/ir-ko/ir.do",
+          "webRef": "turn579view3",
+          "access": "body_verified",
+          "finding": "현재 추출된 2026 IR 달력은 5월까지 표시. 10월 정확한 발표일 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T11:41:41.477Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 4,
+        "historyCount": 1,
+        "sha256": "a0a1a8663d08787290c35285c07cc028d10ed468c83b00922cd4b32bf62af2b0",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "012750",
+      "name": "에스원",
+      "sector": "상업서비스와공급품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_business_calendar_reverified",
+      "finding": "WOONGJIN IT의 공식 회사 계정 공지에서 10/12 14~17시 에스원 공동 세미나를 재확인했다. 사업 설명 일정이며 계약 체결이나 주가 상승 증거가 아니다.",
+      "checks": [
+        {
+          "url": "https://kr.linkedin.com/posts/woongjin-it_%EC%9B%85%EC%A7%84-%EC%97%90%EC%8A%A4%EC%9B%90-aws-activity-7502615166002483200-__Uv",
+          "webRef": "turn577view6",
+          "access": "body_verified_cohost",
+          "finding": "10/12 14:00~17:00 KST 공동 세미나. 게시일은 상대 표시여서 정확한 시각으로 환산하지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.s1.co.kr/en/ir/ir/news",
+          "webRef": "turn591view1",
+          "access": "body_verified",
+          "finding": "최근 회사 뉴스 목록 확인. 별도의 확정 실적 발표일을 확보하지 못함.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T05:04:03.096Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 2,
+        "historyCount": 0,
+        "sha256": "ed1416f066dbca1b5187d608c790556bf315bbab0029cacfac169f678f53ee04",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "sector": "섬유,의류,신발,호화품",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_business_calendar_reverified",
+      "finding": "주최자 목록의 법인은 Youngone Corporation(영원무역)이며 Munich 부스 B30/B31이다. 영원무역홀딩스와 혼동하지 않는다. 과거 개막 날짜·시각 근거는 보존한다.",
+      "checks": [
+        {
+          "url": "https://www.youngone.co.kr/invest/youngone/ir-yo/",
+          "webRef": "turn587view0",
+          "access": "body_verified",
+          "finding": "영원무역 공식 IR, 최근 8/21 2분기 자료.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.performancedays.com/supplier/youngone-corporation.html",
+          "webRef": "turn579view5",
+          "access": "body_verified",
+          "finding": "주최자 목록에 Youngone Corporation, Munich B30/B31.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 13,
+        "historyCount": 2,
+        "sha256": "beb64fc84891b06df8d05a7810138d4abfa33968c153743ebdb1552806a4084f",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "035250",
+      "name": "강원랜드",
+      "sector": "호텔,레스토랑,레저",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "prior_verified_current_access_failed",
+      "finding": "기존 M650 10/1 개장·10/7 행사 원문 확인 기록을 유지한다. 이번 회사 보도자료 재접속은 실패했다. 같은 사업의 단계를 독립 매출 충격으로 계산하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+          "webRef": "turn568view4",
+          "access": "access_failed",
+          "finding": "기존 공식 M650 원문 현재 접근 실패. 이전 검증 이력 보존.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T11:41:41.477Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 3,
+        "historyCount": 1,
+        "sha256": "21962c0fc0cae44ec188c474572c503d9c382675e30e47a6c7421dbeb06f2043",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "257720",
+      "name": "실리콘투",
+      "sector": "인터넷과카탈로그소매",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_confirmed",
+      "finding": "실리콘투 공식 IR 자료실의 최신 항목은 8/19 2분기 Fact Sheet와 8/13 실적이다. K-Beauty 주최자 접근 실패 기록과 개별 회사 참가 미확인을 유지한다.",
+      "checks": [
+        {
+          "url": "https://www.siliconii.com/sub/sub05_02.php",
+          "webRef": "turn585view4",
+          "access": "body_verified",
+          "finding": "최신 8/19 Q2 Fact Sheet, 8/13 Q2 실적. 정확한 미래 회사 일정 미확보.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "50d28da5b60cebc2ed2963a7f856c44f0e839cd8d619ddab33ffdbab3199bbae",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "226950",
+      "name": "올릭스",
+      "sector": "생명과학도구및서비스",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_company_ir_reverified",
+      "finding": "금융위원회 공동 주최자 공식 본문에 10/7 KOSDAQ IR Day 참가사로 올릭스가 명시된다. 이전 KIRS 접근 제한 기록을 삭제하지 않는다.",
+      "checks": [
+        {
+          "url": "https://www.fsc.go.kr/po010104/87714?curPage=2&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=",
+          "webRef": "turn579view4",
+          "access": "body_verified_cohost",
+          "finding": "10/7 행사와 올릭스 참가 명단을 확인.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 9,
+        "historyCount": 2,
+        "sha256": "5afcbbfb370237162b275b8333ca54700746f624bdacf27368b41cbb8cb9789d",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "010170",
+      "name": "대한광통신",
+      "sector": "통신장비",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "existing_business_calendar_reverified",
+      "finding": "SEDEX 주최자 2026 디렉터리에 대한광통신 법인명·부스 D219·10/14~16이 확인된다. 이미 상환·전환된 전환사채를 만기 충격으로 복구하지 않는다.",
+      "checks": [
+        {
+          "url": "https://sedex.org/public_html/information/information_directory_view.asp?board_seq=3939&page=1&search_category=&search_field=+&search_keyword=",
+          "webRef": "turn591view2",
+          "access": "body_verified_organizer",
+          "finding": "2026/10/14~16 COEX, Taihan Fiberoptics, D219.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.taihanfiber.com/about/investor.html",
+          "webRef": "turn589view0",
+          "access": "access_failed",
+          "finding": "회사 투자자 경로 재접속 실패.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "company_schedule_confirmed",
+        "sourceCount": 10,
+        "historyCount": 2,
+        "sha256": "46c23f8005b82373d08c62e424b26f405efeba12c47367195c4c5ddb08965f6d",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "214370",
+      "name": "케어젠",
+      "sector": "건강관리업체및서비스",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "exhibition_verified_oral_date_still_pending",
+      "finding": "EURETINA 주최자에서 CAREGEN CO LTD 전시와 10/1~4 행사를 확인했다. 회사의 10/4 CG-P5 발표 검색 결과는 있지만 회사 본문 403 및 주최자 세부 발표 목록 미대조로 구두 발표 날짜 확정에는 쓰지 않는다.",
+      "checks": [
+        {
+          "url": "https://euretina.org/vienna-2026/exhibitors/",
+          "webRef": "turn575view1",
+          "access": "body_verified_organizer",
+          "finding": "CAREGEN CO LTD, 부스 D16, CG-P5 소개. 홍보문구는 임상 효능 사실로 채택하지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://euretina.org/vienna-2026/",
+          "webRef": "turn575view2",
+          "access": "body_verified_organizer",
+          "finding": "행사는 Vienna 2026/10/1~4.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.caregen.co.kr/133/?bmode=view&idx=172528743",
+          "webRef": "turn568view3",
+          "access": "access_failed_search_excerpt_only",
+          "finding": "검색 제목/발췌에 10/4 CG-P5 임상1상 발표. 원문 확인 미완료.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.caregen.co.kr/133/?bmode=view&idx=173097750",
+          "webRef": "turn573view0",
+          "access": "http_403",
+          "finding": "추가 회사 보도자료 접근 거부.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://www.caregen.co.kr/133/?bmode=view&idx=173282083",
+          "webRef": "turn573view1",
+          "access": "http_403",
+          "finding": "검색의 10월 연구 계획은 결과가 아니며 일자 미확인.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        },
+        {
+          "url": "https://euretina.org/vienna-2026/programme-list-view/",
+          "webRef": "turn575view0",
+          "access": "body_verified_no_specific_talk_match",
+          "finding": "공개 프로그램에서 CG-P5/Almeida 일치 항목 미확인. 하위 프로그램 링크 도구 열기 실패를 승인 증거로 바꾸지 않음.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-25T00:11:42.918Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 1,
+        "historyCount": 0,
+        "sha256": "3e2ec49e750e8cd022da170a007bc9e6662f8c473c891b0ea27b0563066ffe2a",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [
+        "REBUILD:214370:EURETINA-EXHIBIT:20261001",
+        "REBUILD:214370:CGP5-ORAL-PENDING"
+      ],
+      "allCompanyMaterialDatesConfirmed": false
+    },
+    {
+      "code": "030000",
+      "name": "제일기획",
+      "sector": "광고",
+      "checkedAt": "2026-09-26T13:18:16.662434Z",
+      "status": "company_date_not_published_in_checked_calendar",
+      "finding": "공식 IR Upcoming에 예정 이벤트가 없고 최신 과거 행사 8/27과 2분기 실적 7/24가 표시된다. 민간의 10/30 실적 추정과 광고제 심사 참여를 기업 확정 가격 사건으로 채택하지 않는다.",
+      "checks": [
+        {
+          "url": "https://na.cheil.com/kr/ir/",
+          "webRef": "turn571view6",
+          "access": "body_verified",
+          "finding": "공식 Upcoming은 예정 없음. 이는 앞으로 회사 뉴스가 없다는 증명이 아님.",
+          "observedAt": "2026-09-26T13:18:16.662434Z"
+        }
+      ],
+      "previousResearch": {
+        "checkedAt": "2026-09-26T12:35:47.989Z",
+        "status": "date_not_confirmed",
+        "sourceCount": 12,
+        "historyCount": 2,
+        "sha256": "d21f8dd79d8c197633393d388cb9bdb02b4fa8f620fca70cd93e8b1df15d826e",
+        "preservedIn": "public/data/atlas.json input.newsResearch.assets"
+      },
+      "existingCompanyEventIds": [],
+      "newCandidateIds": [],
+      "allCompanyMaterialDatesConfirmed": false
+    }
+  ],
+  "candidates": [
+    {
+      "id": "REBUILD:028300:FDA-APPROVED:20260923",
+      "code": "028300",
+      "legalCompany": "HLB",
+      "name": "Lyrfigtu FDA 승인 관측",
+      "scope": "company",
+      "kind": "REGULATORY_APPROVAL_OBSERVED",
+      "status": "observed_correction",
+      "announcementOrEventDate": "2026-09-23",
+      "datePrecision": "day_time_unknown",
+      "publicationDate": "2026-09-23",
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "America/New_York",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn587view4",
+        "turn589view3"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "FDA와 다수 지분 자회사 공식 원문으로 승인 확인. 입력의 기존 HLB 기업 사건은 없었다. 오래된 9/27 PDUFA 예정 검색 후보를 새 미래 사건으로 잘못 추가하지 않는다. 승인 사실과 주가 상승은 다른 주장이다.",
+      "targetDateCandidate": "2026-09-28",
+      "targetDateCandidateBasis": "미국 공개일 전체가 지난 후 한국 휴장 뒤 거래일을 택하는 보수적 배치 후보. 정확한 최초 가격 반응일 확정 아님. 거래 달력과 공개 시각 재확인 필요.",
+      "supersedesScheduledDate": "2026-09-27",
+      "ownershipEvidence": "Elevar official statement: majority-owned subsidiary of HLB Co., Ltd.",
+      "correctionStatus": "운영 HLB 기업 사건은 없었음. 이번 조사에서 검색된 과거 9/27 예정 후보는 현재 관측된 9/23 승인으로 기각하며 9/17 계산에 소급하지 않음",
+      "operationalEventToCorrect": null
+    },
+    {
+      "id": "REBUILD:259960:ASCENT-PREORDER:20261006",
+      "code": "259960",
+      "legalCompany": "크래프톤",
+      "name": "The Ascent Switch 2 예약 판매 시작",
+      "scope": "company",
+      "kind": "PRODUCT_PREORDER",
+      "status": "business_calendar",
+      "announcementOrEventDate": "2026-10-06",
+      "datePrecision": "day",
+      "publicationDate": "2026-09-10",
+      "publishedAt": "2026-09-10T12:30:00+09:00",
+      "publicationTime": "12:30",
+      "timeZone": "Asia/Tokyo",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn577view0"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "KRAFTON JAPAN 회사 발행 보도자료. 출시 12/3은 고정 기간 밖. 매출·가격 효과 미확보.",
+      "eventTime": "10:00",
+      "targetDate": "2026-10-06",
+      "correctionStatus": "현재 issuer release 본문 확인; 별도 정정 공시 전수 대조 아님"
+    },
+    {
+      "id": "REBUILD:278470:MERGER-RECORD:20260928",
+      "code": "278470",
+      "legalCompany": "에이피알",
+      "name": "소규모 합병 반대의사 표시 권리 주주확정 기준일",
+      "scope": "company",
+      "kind": "GOVERNANCE_RECORD_DATE",
+      "status": "administrative_calendar",
+      "announcementOrEventDate": "2026-09-28",
+      "datePrecision": "day",
+      "publicationDate": "2026-09-09",
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "Asia/Seoul",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn591view0",
+        "turn585view1"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "합병 완료일·주총일·배당일이 아님. DART 9/16 정정 본문 미대조로 다른 단계 날짜는 추가하지 않음.",
+      "targetDate": null,
+      "correctionStatus": "공식 현재 공고 확인, DART 후속 정정 내용 접근 제한"
+    },
+    {
+      "id": "REBUILD:036460:VOTING-RECORD:20261006",
+      "code": "036460",
+      "legalCompany": "한국가스공사",
+      "name": "주주총회 권리 주주확정 기준일",
+      "scope": "company",
+      "kind": "GOVERNANCE_RECORD_DATE",
+      "status": "administrative_calendar",
+      "announcementOrEventDate": "2026-10-06",
+      "datePrecision": "day",
+      "publicationDate": "2026-09-18",
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "Asia/Seoul",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn568view0"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "주총 개최일·배당일이 아닌 기준일. 가격 촉매나 지급일로 표기 금지.",
+      "targetDate": null,
+      "correctionStatus": "현재 공식 공고 본문 확인; 게시 시각 미표시"
+    },
+    {
+      "id": "REBUILD:021240:WEARABLE-LAUNCH:202610",
+      "code": "021240",
+      "legalCompany": "코웨이",
+      "name": "보행 보조 웨어러블 로봇 10월 출시 계획",
+      "scope": "company",
+      "kind": "PRODUCT_LAUNCH_MONTH_ONLY",
+      "status": "month_only",
+      "announcementOrEventDate": null,
+      "datePrecision": "month",
+      "publicationDate": "2026-09-22",
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "Asia/Seoul",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn566view5"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "공식 보도자료가 일자를 주지 않음. 10/1로 임의 변환하지 않음.",
+      "eventMonth": "2026-10",
+      "targetDate": null,
+      "correctionStatus": "현재 공식 본문 확인"
+    },
+    {
+      "id": "REBUILD:214370:EURETINA-EXHIBIT:20261001",
+      "code": "214370",
+      "legalCompany": "케어젠",
+      "name": "EURETINA2026 CAREGEN 전시 참가",
+      "scope": "company",
+      "kind": "EXHIBITION_PARTICIPATION",
+      "status": "business_calendar",
+      "announcementOrEventDate": "2026-10-01",
+      "datePrecision": "day",
+      "publicationDate": null,
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "Europe/Vienna",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn575view1",
+        "turn575view2"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "주최자에 회사 참가 확인. CG-P5 구두 발표 10/4는 회사 원문·주최 세션 세부 미대조로 별도 미확인 후보.",
+      "dateEnd": "2026-10-04",
+      "eventTime": null,
+      "targetDate": null,
+      "correctionStatus": "현재 주최자 회사 목록 및 행사 기간 확인; 게시일 미표시"
+    },
+    {
+      "id": "REBUILD:214370:CGP5-ORAL-PENDING",
+      "code": "214370",
+      "legalCompany": "케어젠",
+      "name": "CG-P5 EURETINA 구두 발표 후보",
+      "scope": "company",
+      "kind": "CLINICAL_PRESENTATION_CANDIDATE",
+      "status": "search_only_pending",
+      "announcementOrEventDate": null,
+      "datePrecision": "month",
+      "publicationDate": null,
+      "publishedAt": null,
+      "publicationTime": null,
+      "timeZone": "Europe/Vienna",
+      "firstObservedAt": "2026-09-26T13:18:16.662434Z",
+      "availableAt": "2026-09-26T13:18:16.662434Z",
+      "availabilityBasis": "이번 조사 관측 시각; 최초 웹 공개 당시 빈티지를 복원했다고 주장하지 않음",
+      "sourceRefs": [
+        "turn573search4",
+        "turn568view3",
+        "turn575view0"
+      ],
+      "direction": "abstain",
+      "trustProbability": null,
+      "quantitativeUseEligible": false,
+      "missingForQuantitativeUse": [
+        "사전 시장 예상 대비 차이",
+        "비교 가능한 독립 과거 사건과 당시 자료 빈티지",
+        "가격 기업행위 조정 검증",
+        "새 자료에 대한 독립 순차 검증"
+      ],
+      "notes": "검색의 10/4 날짜를 원문 완료로 승격하지 않음. 임상 결과·효능·수익률을 생성하지 않음.",
+      "candidateDateUnverified": "2026-10-04",
+      "targetDate": null,
+      "correctionStatus": "회사 본문 403, 주최자 세부 세션 미확인"
+    }
+  ],
+  "industryRechecks": [
+    {
+      "id": "SLW2026",
+      "url": "https://smartlifeweek.seoul.kr/eng/contents/945.do?mid=1029",
+      "webRef": "turn592view0",
+      "access": "body_verified",
+      "dateStart": "2026-10-06",
+      "dateEnd": "2026-10-08",
+      "finding": "서울시 주최 날짜 확인. SDS/KT 참가확정은 아님."
+    },
+    {
+      "id": "KES2026",
+      "url": "https://www.coex.co.kr/exhibitions/kes-2026한국전자전/",
+      "webRef": "turn592view1",
+      "access": "body_verified",
+      "dateStart": "2026-10-13",
+      "dateEnd": "2026-10-16",
+      "finding": "10시 개막 KST. 코웨이/LG디스플레이 참가확정은 아님."
+    },
+    {
+      "id": "KBEAUTY2026",
+      "url": "https://kioca.org/k-beauty-expo-korea-2026/",
+      "webRef": "turn592view2",
+      "access": "http_502",
+      "finding": "이전 일정 근거 보존. 이번 재접속 실패. 실리콘투 기업 참가확정 아님."
+    },
+    {
+      "id": "SIAL2026",
+      "url": "https://www.sialparis.com/the-show/why-visit-SIAL-Paris",
+      "webRef": "turn592view3",
+      "access": "body_verified",
+      "dateStart": "2026-10-17",
+      "dateEnd": "2026-10-21",
+      "finding": "행사 개최 기간 확인. 삼양식품 참가확정 아님."
+    },
+    {
+      "id": "STEAM-NEXT-202610",
+      "url": "https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest/2026october?l=koreana",
+      "webRef": "turn595view0",
+      "access": "body_verified",
+      "dateStart": "2026-10-19",
+      "dateEnd": "2026-10-26",
+      "finding": "태평양 지역 10시 개막. 한국 10/20 적용 후보; 정확한 시간은 America/Los_Angeles DST로 변환. 크래프톤 참가확정 아님."
+    },
+    {
+      "id": "ESMO2026",
+      "url": "https://www.ifema.es/en/esmo-congress",
+      "webRef": "turn595view1",
+      "access": "body_verified",
+      "dateStart": "2026-10-23",
+      "dateEnd": "2026-10-27",
+      "finding": "Madrid 개최 기간 확인. HLB 발표/참가 증거 아님."
+    },
+    {
+      "id": "SMARTENERGY2026",
+      "url": "https://www.coex.co.kr/exhibitions/스마트에너지플러스-2026-2/",
+      "webRef": "turn595view2",
+      "access": "body_verified",
+      "dateStart": "2026-10-28",
+      "dateEnd": "2026-10-30",
+      "finding": "10/28 10시 KST 개최. 한화솔루션 개별 참가확정 아님."
+    },
+    {
+      "id": "KOS2026",
+      "url": "https://www.kosmeeting.org/abstract/2026_136/booth/sub02.html",
+      "webRef": "turn595view3",
+      "access": "body_returned_date_not_confirmed",
+      "finding": "추출 86줄에 2026 검색 일치 없음. 이전 10/30 근거 보존하되 이번 페이지로 날짜 재확인 성공 주장 안 함."
+    }
+  ],
+  "notImplemented": "이 보고서는 조사 결과이며 생산 뉴스 입력·계산 코드·계수·모형을 변경하지 않았다."
+}

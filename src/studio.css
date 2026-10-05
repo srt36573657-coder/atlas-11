@@ -1,0 +1,302 @@
+/* ATLAS 8.8 Studio: a new composition, preserving financial display semantics.
+   Last stylesheet. Only layout, type, surfaces and interaction presentation. */
+:root {
+  --studio-night:#261e19;
+  --studio-night-raised:#392c23;
+  --studio-cream:#f5f1e8;
+  --studio-sheet:#fffcf6;
+  --studio-ink:#2d241f;
+  --studio-muted:#65584b;
+  --studio-copper:#9b4d2f;
+  --studio-line:#d8cbbb;
+  --studio-light-muted:#d8c9b7;
+}
+
+main[data-design-edition="8.0"][data-atelier][data-ux] {
+  max-width:1900px;
+  padding:0 24px 0;
+  background:var(--studio-cream);
+}
+/* A dark masthead anchors the navigation; the working canvas remains ivory. */
+main[data-design-edition="8.0"][data-atelier][data-ux] > header {
+  min-height:68px;
+  margin:0 -24px;
+  padding:10px 24px;
+  background:var(--studio-night);
+  border:0;
+  color:var(--studio-sheet);
+  gap:16px;
+}
+main[data-atelier][data-ux] > header .brand h1 {font-size:1.625rem;color:var(--studio-sheet);letter-spacing:.18em;}
+main[data-atelier][data-ux] > header .brand p {font-size:.8125rem;color:var(--studio-light-muted);margin-top:4px;}
+main[data-atelier][data-ux] > header .atelier-edition {color:var(--studio-light-muted);border-color:#78604c;}
+main[data-atelier][data-ux] > header .brand-mark {background:var(--studio-sheet);border-radius:50%;padding:3px;}
+main[data-atelier][data-ux] > header .header-actions {gap:8px;}
+main[data-atelier][data-ux] > header .header-actions button {
+  min-height:44px;
+  background:var(--studio-night-raised);
+  border:1px solid #a08a75;
+  border-radius:6px;
+  color:var(--studio-sheet);
+  padding:8px 14px;
+  font-size:.875rem;
+}
+main[data-atelier][data-ux] > header .header-actions button:hover {background:#4a382b;}
+main[data-atelier][data-ux] > header :is(button,a):focus-visible {outline-color:var(--studio-sheet);box-shadow:none;}
+main[data-atelier][data-ux] .workspace-context {padding-top:10px;gap:4px 20px;font-size:.8125rem;line-height:1.5;}
+main[data-atelier][data-ux] .workspace-data-status {padding:2px 0;gap:4px 16px;font-size:.8125rem;align-items:center;}
+main[data-atelier][data-ux] .workspace-data-status .text-button {margin-left:auto;font-size:.8125rem;padding-block:4px;}
+main[data-atelier][data-ux] > .record-details {margin:0;padding:0;border:0;}
+main[data-atelier][data-ux] > .record-details > summary {font-size:.8125rem;min-height:44px;padding:8px 0;}
+main[data-design-edition="8.0"][data-atelier][data-ux] > nav {
+  background:var(--studio-night);
+  color:var(--studio-sheet);
+  border:0;
+  border-radius:8px;
+  gap:4px;
+  margin:4px 0 16px;
+  padding:6px;
+  box-shadow:none;
+}
+main[data-design-edition="8.0"][data-atelier][data-ux] > nav button {
+  color:var(--studio-light-muted);
+  background:transparent;
+  min-height:48px;
+  padding:10px 24px;
+  border-radius:5px;
+  font-size:.9375rem;
+  font-weight:500;
+}
+main[data-design-edition="8.0"][data-atelier][data-ux] > nav button.active {
+  color:var(--studio-night);
+  background:var(--studio-sheet);
+  border-color:var(--studio-sheet);
+  box-shadow:none;
+  font-weight:600;
+}
+main[data-design-edition="8.0"][data-atelier][data-ux] > nav button:not(.active):hover {background:var(--studio-night-raised);color:var(--studio-sheet);}
+main[data-design-edition="8.0"][data-atelier][data-ux] > nav button:focus-visible {outline-color:var(--studio-sheet);outline-offset:-3px;box-shadow:none;}
+
+/* One editorial heading, then directly into the working instrument. */
+main[data-atelier][data-ux] .studio-heading {display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;margin:0 0 12px;}
+main[data-atelier][data-ux] .studio-heading > div:first-child {min-width:0;flex:1 1 24rem;}
+main[data-atelier][data-ux] .studio-heading :is(.section-kicker,.studio-eyebrow) {font-size:.75rem;font-weight:600;letter-spacing:.13em;color:var(--studio-copper);margin-bottom:6px;}
+main[data-atelier][data-ux] .studio-heading h2 {font-size:clamp(1.75rem,2.2vw,2.25rem);line-height:1.25;letter-spacing:-.045em;margin:0 0 6px;font-weight:600;}
+main[data-atelier][data-ux] .studio-heading p {font-size:.9375rem;color:var(--studio-muted);line-height:1.65;margin:0;max-width:68ch;}
+main[data-atelier][data-ux] :is(.studio-view-switch,.studio-mode-switch) {display:flex;gap:4px;background:#e6dccd;border:1px solid #c6b6a2;padding:4px;border-radius:7px;}
+main[data-atelier][data-ux] :is(.studio-view-switch,.studio-mode-switch) button {min-height:44px;padding:8px 16px;background:transparent;border-color:transparent;color:var(--studio-muted);font-size:.875rem;}
+main[data-atelier][data-ux] :is(.studio-view-switch,.studio-mode-switch) button[aria-pressed=true] {background:var(--studio-sheet);color:var(--studio-ink);border-color:#a68b70;box-shadow:none;font-weight:600;}
+main[data-atelier][data-ux] .studio-layout {display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start;margin:0 0 24px;}
+
+/* Roster: 52 real instruments, an explicit selected row and stable numeric edge. */
+main[data-atelier][data-ux] .studio-roster {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  height:clamp(560px,calc(100dvh - 250px),760px);
+  background:var(--studio-night);
+  border:1px solid var(--studio-night);
+  border-radius:10px;
+  color:var(--studio-sheet);
+  overflow:hidden;
+}
+main[data-atelier][data-ux] .studio-roster > :is(header,h3,p,.studio-roster-heading,.studio-roster-head) {flex:none;margin:0;padding:18px 16px;color:var(--studio-light-muted);font-size:.8125rem;line-height:1.6;background:transparent;}
+main[data-atelier][data-ux] .studio-roster > :is(header,.studio-roster-heading,.studio-roster-head) {border-bottom:1px solid #604e40;display:flex;justify-content:space-between;gap:12px;}
+main[data-atelier][data-ux] .studio-roster :is(h3,b) {color:var(--studio-sheet);font-size:.9375rem;line-height:1.5;}
+main[data-atelier][data-ux] .studio-roster-list {min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-color:#ae957b var(--studio-night);padding:8px;}
+main[data-atelier][data-ux] .studio-roster > button,
+main[data-atelier][data-ux] .studio-roster-list > button {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  flex:none;
+  width:100%;
+  min-width:0;
+  min-height:72px;
+  border:1px solid transparent;
+  border-bottom-color:#5c493b;
+  border-radius:5px;
+  padding:12px 10px;
+  margin:0 0 4px;
+  background:transparent;
+  color:var(--studio-sheet);
+  text-align:left;
+  box-shadow:none;
+  font-variant-numeric:tabular-nums;
+}
+main[data-atelier][data-ux] .studio-roster button > span {min-width:0;flex:1 1 8rem;}
+main[data-atelier][data-ux] .studio-roster button :is(b,small) {display:block;overflow-wrap:anywhere;}
+main[data-atelier][data-ux] .studio-roster button small {color:var(--studio-light-muted);font-size:.75rem;line-height:1.6;margin-top:3px;}
+main[data-atelier][data-ux] .studio-roster button strong {font-size:.875rem;font-weight:500;color:var(--studio-sheet);margin-left:auto;white-space:nowrap;}
+main[data-atelier][data-ux] .studio-roster button[aria-pressed=true] {background:var(--studio-sheet);color:var(--studio-ink);border-color:var(--studio-sheet);}
+main[data-atelier][data-ux] .studio-roster button[aria-pressed=true] :is(b,strong) {color:var(--studio-ink);}
+main[data-atelier][data-ux] .studio-roster button[aria-pressed=true] small {color:var(--studio-muted);}
+main[data-atelier][data-ux] .studio-roster button:not([aria-pressed=true]):hover {background:var(--studio-night-raised);border-color:#a58c72;}
+main[data-atelier][data-ux] .studio-roster button:focus-visible {outline:3px solid var(--studio-sheet);outline-offset:-4px;box-shadow:none;}
+main[data-atelier][data-ux] .studio-roster button[aria-pressed=true]:focus-visible {outline-color:var(--studio-copper);}
+main[data-atelier][data-ux] .studio-roster-list > button[data-studio-code] {
+  display:grid;
+  grid-template-columns:1.5rem minmax(0,1fr) auto;
+  grid-template-areas:'rank name value' '. spark spark';
+  gap:5px 8px;
+  align-items:center;
+}
+main[data-atelier][data-ux] .studio-roster .studio-rank {grid-area:rank;align-self:start;font-size:.75rem;line-height:1.8;color:var(--studio-light-muted);}
+main[data-atelier][data-ux] .studio-roster .studio-stock-name {grid-area:name;}
+main[data-atelier][data-ux] .studio-roster-list button > strong {grid-area:value;}
+main[data-atelier][data-ux] .studio-roster-list button > svg {grid-area:spark;width:92px;max-width:100%;height:26px;justify-self:end;color:var(--studio-light-muted);overflow:visible;}
+main[data-atelier][data-ux] .studio-roster-list button > svg path {stroke-dasharray:4 3;}
+main[data-atelier][data-ux] .studio-roster-list button[aria-pressed=true] :is(.studio-rank,svg) {color:var(--studio-muted);}
+
+/* Stage: a single large graph, not another small-multiple card. */
+main[data-atelier][data-ux] .studio-stage {min-width:0;background:var(--studio-sheet);border:1px solid var(--studio-line);border-radius:10px;overflow:visible;}
+main[data-atelier][data-ux] .studio-stage-toolbar {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 16px;background:#eee5d8;border-bottom:1px solid var(--studio-line);border-radius:10px 10px 0 0;}
+main[data-atelier][data-ux] .studio-stage-toolbar > :is(span,p) {min-width:0;font-size:.8125rem;line-height:1.6;color:var(--studio-muted);margin:0;}
+main[data-atelier][data-ux] .studio-stage-toolbar button {min-height:44px;font-size:.875rem;}
+main[data-atelier][data-ux] .studio-stage .focus-card {
+  height:clamp(560px,calc(100dvh - 250px),760px);
+  min-height:0;
+  grid-template-columns:minmax(0,1.85fr) minmax(280px,1fr);
+  grid-template-rows:auto auto minmax(220px,1fr) auto auto auto auto;
+  grid-template-areas:'title news' 'current news' 'chart news' 'controls news' 'slider news' 'options news' 'scope news';
+  gap:0;
+  border:0;
+  border-radius:10px;
+  overflow:auto;
+  background:var(--studio-sheet);
+}
+main[data-atelier][data-ux] .studio-stage .focus-card .mini-title {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;margin:0;padding:18px 20px 12px;background:var(--studio-sheet);border-bottom:1px solid var(--studio-line);text-align:left;}
+main[data-atelier][data-ux] .studio-stage .focus-card .mini-title h3 {font-size:clamp(1.5rem,2vw,2rem);line-height:1.25;margin:5px 0;letter-spacing:-.035em;}
+main[data-atelier][data-ux] .studio-stage .focus-card .mini-title :is(.stock-identity,.forecast-status) {font-size:.75rem;}
+main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast {max-width:190px;align-items:flex-end;}
+main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast b {font-size:1.5rem;}
+main[data-atelier][data-ux] .studio-stage .focus-card .stock-current {margin:8px 20px 4px;background:#f3ede3;border-radius:5px;}
+main[data-atelier][data-ux] .studio-stage .focus-card .quote-value strong {font-size:1.75rem;font-weight:600;}
+main[data-atelier][data-ux] .studio-stage .focus-card .chart-wrap {height:100%;min-height:220px;margin:0 16px;border:0;border-radius:0;}
+main[data-atelier][data-ux] .studio-stage .focus-card .stock-controls {padding:10px 16px 4px;border-top:1px solid var(--studio-line);gap:8px;}
+main[data-atelier][data-ux] .studio-stage .focus-card .stock-controls .primary {background:var(--studio-night);border-color:var(--studio-night);color:var(--studio-sheet);}
+main[data-atelier][data-ux] .studio-stage .focus-card .stock-timeline {margin:4px 16px;}
+main[data-atelier][data-ux] .studio-stage .focus-card .stock-options {font-size:.8125rem;padding:4px 16px;gap:4px 12px;}
+main[data-atelier][data-ux] .studio-stage .focus-card .scope-info {font-size:.8125rem;padding:4px 16px 12px;}
+main[data-atelier][data-ux] .studio-stage .focus-card .scope-summary {font-size:.75rem;line-height:1.6;margin:2px 0 6px;}
+main[data-atelier][data-ux] .studio-stage .focus-news {background:#f1e9dd;border-left:1px solid var(--studio-line);overflow:hidden;}
+main[data-atelier][data-ux] .studio-stage .focus-news-heading {padding:18px 20px;background:#e7dbcb;border-bottom:1px solid #c9b69d;}
+main[data-atelier][data-ux] .studio-stage .focus-news-heading h3 {font-size:1.0625rem;font-weight:600;}
+main[data-atelier][data-ux] .studio-stage .focus-news-heading span {font-size:.8125rem;color:var(--studio-muted);}
+main[data-atelier][data-ux] .studio-stage .focus-news-content {overflow:auto;max-height:none;min-height:0;padding:16px;}
+main[data-atelier][data-ux] .studio-stage .focus-news-content > .price-story {background:var(--studio-sheet);border:1px solid var(--studio-line);border-radius:6px;}
+
+/* The title/tools and filters/view switch each share a row on wide screens. */
+@media (min-width:69rem) {
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:start;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .studio-heading {grid-column:1;grid-row:1;margin:0;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .studio-heading > div:first-child {flex:1 1 24rem;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .gallery-tools {grid-column:2;grid-row:1;justify-self:end;align-self:center;margin:0;max-width:280px;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .gallery-tools > summary {margin:0;padding:8px 0;font-size:.8125rem;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .gallery-tools[open] {grid-column:1/-1;grid-row:3;width:100%;max-width:none;justify-self:stretch;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .research-toolbar {grid-column:1;grid-row:2;padding:0;margin:0;min-height:52px;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .studio-view-switch {grid-column:2;grid-row:2;align-self:center;}
+  main[data-atelier][data-ux] .atlas-content:has(> .studio-layout):not(:has(> .session-note)) > .studio-layout {grid-column:1/-1;grid-row:4;margin-top:0;}
+}
+
+@media (max-width:78rem) {
+  main[data-atelier][data-ux] .studio-layout {grid-template-columns:210px minmax(0,1fr);gap:12px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card {grid-template-columns:minmax(0,1.6fr) minmax(250px,1fr);}
+  main[data-atelier][data-ux] .studio-stage .focus-card .mini-title {padding-inline:16px;grid-template-columns:minmax(0,1fr);}
+  main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast {max-width:none;align-items:flex-start;}
+}
+
+/* Tablet and phone: roster becomes a horizontal rail, not a second vertical page. */
+@media (max-width:64rem) {
+  main[data-atelier][data-ux] .studio-layout {grid-template-columns:minmax(0,1fr);gap:12px;}
+  main[data-atelier][data-ux] .studio-roster {height:auto;display:block;border-radius:8px;}
+  main[data-atelier][data-ux] .studio-roster > :is(header,h3,p,.studio-roster-heading,.studio-roster-head) {padding:10px 14px;font-size:.8125rem;}
+  main[data-atelier][data-ux] .studio-roster-list {display:flex;gap:8px;overflow-x:auto;overflow-y:visible;padding:8px 12px 12px;scrollbar-gutter:auto;scroll-padding-inline:12px;}
+  main[data-atelier][data-ux] .studio-roster-list > button {flex:0 0 155px;min-height:84px;width:155px;margin:0;border-color:#78604c;padding:10px 12px;}
+  main[data-atelier][data-ux] .studio-roster-list > button[data-studio-code] {grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'name rank' 'spark value';gap:6px;}
+  main[data-atelier][data-ux] .studio-roster-list button > svg {width:54px;height:22px;justify-self:start;}
+  main[data-atelier][data-ux] .studio-roster button > span {flex-basis:100%;}
+  main[data-atelier][data-ux] .studio-roster button strong {margin-left:0;}
+  main[data-atelier][data-ux] .studio-stage .focus-card {grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);height:clamp(560px,calc(100dvh - 250px),760px);}
+}
+
+@media (max-width:51.25rem) {
+  main[data-design-edition="8.0"][data-atelier][data-ux] {padding:0 12px calc(7rem + env(safe-area-inset-bottom,0px));}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > header {margin-inline:-12px;padding:12px;min-height:68px;gap:8px;}
+  main[data-atelier][data-ux] > header .brand h1 {font-size:1.375rem;}
+  main[data-atelier][data-ux] > header .brand p {font-size:.75rem;}
+  main[data-atelier][data-ux] > header .header-actions {margin-left:auto;width:auto;max-width:100%;}
+  main[data-atelier][data-ux] > header .header-actions button {font-size:.8125rem;padding:8px 10px;}
+  main[data-atelier][data-ux] .workspace-context {font-size:.75rem;gap:4px 12px;}
+  main[data-atelier][data-ux] .workspace-data-status {font-size:.75rem;gap:0 8px;}
+  main[data-atelier][data-ux] .workspace-data-status .text-button {font-size:.75rem;}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > nav {border-radius:0;margin:0;padding:6px max(8px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));gap:4px;}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > nav button {min-height:60px;min-width:0;font-size:.75rem;padding:6px 4px;gap:4px;}
+  main[data-atelier][data-ux] .studio-heading {margin:12px 0 8px;gap:8px;}
+  main[data-atelier][data-ux] .studio-heading > div:first-child {flex-basis:100%;}
+  main[data-atelier][data-ux] .studio-heading h2 {font-size:1.5rem;line-height:1.3;}
+  main[data-atelier][data-ux] .studio-heading p {font-size:.8125rem;}
+  main[data-atelier][data-ux] :is(.studio-view-switch,.studio-mode-switch) {width:100%;}
+  main[data-atelier][data-ux] :is(.studio-view-switch,.studio-mode-switch) button {flex:1;min-width:0;}
+  main[data-atelier][data-ux] .studio-heading ~ .research-toolbar {padding:4px 0 0;}
+  main[data-atelier][data-ux] .studio-heading ~ .gallery-tools {margin:0 0 6px;}
+  main[data-atelier][data-ux] .studio-roster > .studio-roster-heading {padding-block:8px;}
+  main[data-atelier][data-ux] .studio-roster-list {padding-block:6px 8px;}
+  main[data-atelier][data-ux] .studio-stage-toolbar {padding:8px 12px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card,
+  main[data-atelier][data-ux] .studio-stage .focus-card.chart-readable {
+    height:auto;
+    min-height:0;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:auto auto clamp(260px,38dvh,380px) auto auto auto auto auto;
+    grid-template-areas:'title' 'current' 'chart' 'controls' 'slider' 'options' 'scope' 'news';
+    overflow:visible;
+  }
+  main[data-atelier][data-ux] .studio-stage .focus-card .mini-title {padding:14px 16px 10px;grid-template-columns:minmax(0,1fr) auto;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .mini-title h3 {font-size:1.5rem;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast {max-width:140px;align-items:flex-end;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast b {font-size:1.1875rem;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .stock-current {margin:8px 12px 4px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .quote-value strong {font-size:1.5rem;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .chart-wrap {min-height:0;margin:0 8px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .stock-controls {padding:10px 12px 4px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .stock-timeline {margin-inline:12px;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .stock-options {padding-inline:12px;}
+  main[data-atelier][data-ux] .studio-stage .focus-news {border-left:0;border-top:1px solid var(--studio-line);display:block;overflow:visible;}
+  main[data-atelier][data-ux] .studio-stage .focus-news-heading {padding:16px;}
+  main[data-atelier][data-ux] .studio-stage .focus-news-content {min-height:0;max-height:36rem;overflow:auto;padding:16px;}
+}
+
+@media (max-width:25rem) {
+  main[data-atelier][data-ux] > header {flex-wrap:wrap;}
+  main[data-atelier][data-ux] > header .header-actions {width:100%;justify-content:flex-start;margin-left:0;}
+  main[data-atelier][data-ux] .studio-heading h2 {font-size:1.5625rem;}
+  main[data-atelier][data-ux] .studio-stage .focus-card .mini-title {grid-template-columns:minmax(0,1fr);}
+  main[data-atelier][data-ux] .studio-stage .focus-card .end-forecast {max-width:none;align-items:flex-start;}
+  main[data-atelier][data-ux] .studio-roster-list > button {flex-basis:144px;width:144px;}
+}
+
+/* Larger type / low height must not be trapped in an instrument-sized viewport. */
+main[data-atelier][data-ux] .studio-stage .focus-card.chart-readable {height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto 20rem auto auto auto auto auto;grid-template-areas:'title' 'current' 'chart' 'controls' 'slider' 'options' 'scope' 'news';}
+main[data-atelier][data-ux] .studio-stage .focus-card.chart-readable .focus-news {display:block;overflow:visible;border-left:0;border-top:1px solid var(--studio-line);}
+main[data-atelier][data-ux] .studio-stage .focus-card.chart-readable .focus-news-content {max-height:none;overflow:visible;}
+@media (max-height:42rem) {
+  main[data-atelier][data-ux] .studio-stage .focus-card {height:auto;min-height:560px;}
+  main[data-atelier][data-ux] .studio-stage .focus-news-content {max-height:none;overflow:visible;}
+  main[data-atelier][data-ux] .studio-stage .focus-news {overflow:visible;}
+}
+@media (prefers-reduced-motion:reduce) {
+  main[data-atelier][data-ux] .studio-layout *,main[data-atelier][data-ux] .studio-heading * {animation:none;transition:none;scroll-behavior:auto;}
+}
+@media (forced-colors:active) {
+  main[data-design-edition="8.0"][data-atelier][data-ux] > :is(header,nav),
+  main[data-atelier][data-ux] :is(.studio-roster,.studio-stage,.studio-stage-toolbar,.studio-stage .focus-news,.studio-stage .focus-news-heading) {background:Canvas;color:CanvasText;border-color:CanvasText;}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > nav button,
+  main[data-atelier][data-ux] .studio-roster button,
+  main[data-atelier][data-ux] > header .header-actions button {background:ButtonFace;color:ButtonText;border-color:ButtonText;}
+  main[data-atelier][data-ux] .studio-roster button :is(b,strong,small),
+  main[data-atelier][data-ux] > header .brand :is(h1,p) {color:CanvasText;}
+  main[data-atelier][data-ux] .studio-roster button[aria-pressed=true] {outline:3px solid Highlight;outline-offset:-4px;}
+}

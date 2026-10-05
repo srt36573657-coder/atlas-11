@@ -1,0 +1,6184 @@
+{
+ "schema": "atlas4h-history-1",
+ "id": "kospi",
+ "fetchedAt": "2026-10-01T14:59:23.929Z",
+ "from": "2023-09-25",
+ "to": "2026-10-01",
+ "observedAtRule": "날짜만 있는 값은 그 시장 마감 15:30:00 Asia/Seoul 로 본다(약속 10)",
+ "compare": {
+  "rule": "relative",
+  "tolerance": 0.0005
+ },
+ "sources": [
+  {
+   "name": "naver",
+   "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1",
+   "fetchedAt": "2026-10-01T14:59:35.679Z",
+   "rawSha256": "3fa23c4937e2228b2310f99869534ed186cc1621dcea67ab6c69f36f12a44547",
+   "rows": 732,
+   "pages": [
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1",
+     "rawSha256": "fbdf70db4f2629456c7255bc7c8cf835a253672aeb89ad71bbf5d72870e4890d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=2",
+     "rawSha256": "f221a1f4bb485eb726353cb9d23297a09d50a3cac2b79c723d4f2886b522358e"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=3",
+     "rawSha256": "b58a0f2c1bf3ac8fb43b7aa57a5b36d115c41692a58aa1d9044159ead7e97dd6"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=4",
+     "rawSha256": "1521d65997298156a7d1e3ac1a48fb15772c060e1722b99d4b35aaab6d9c383d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=5",
+     "rawSha256": "84c3f44354d5a7ac1d807d91e1ea43b694e2715e0c509759d55fb9212f29075d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=6",
+     "rawSha256": "b71901b0f3fc7c8effabfc1780fc2cf39b98ab98935780e859d568431a343f2c"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=7",
+     "rawSha256": "cab7b11ee1a453c377820428b02f239b6ebfb18a92c5b034ff3d67eb79edf800"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=8",
+     "rawSha256": "7929abf19cdf920bdae30e26a558acd77ddb7363653ca6421bab7e995539d3d0"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=9",
+     "rawSha256": "32abee53329a4e784a19475fa1e4c9345be68bdd392633f30852200391f19c22"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=10",
+     "rawSha256": "208653887e2bb92b1de0eae4ff1da779a6e6a07c201a259a619adb38420bb687"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=11",
+     "rawSha256": "f26dea83c0658867532727b96bfccdd21754e415ba19755d927c01ea0a05eda7"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=12",
+     "rawSha256": "0205b082942e94912df25ae7b97ddef873f62980cacf032e75f43b04809733ce"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=13",
+     "rawSha256": "f18ab2e69aec39594e8cd9e27deeb4884b991b00d33b36e2226055556c1d4586"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=14",
+     "rawSha256": "091222c8ce9e593ba56fbba53e435c3d7316130f1ab42474d4afead3dda25d81"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=15",
+     "rawSha256": "cc04a198a10833671fe2e5251a8f8feeeafa6b05094b70a6cea247367f5faede"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=16",
+     "rawSha256": "fbc427369464511b383ad493678d7674f05a87151ec45f75116dde3588f46685"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=17",
+     "rawSha256": "2c0b025b7742f8279c558256dab35945b4a307aee48107c02d47cfa024087963"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=18",
+     "rawSha256": "c521bc9e70bbdcf32c894c34048e8599d67195139ab37b65419279217993d614"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=19",
+     "rawSha256": "3ff4b9fdef3fca94266a164d0cc1377dc627569123110db44885fcfd9b2ba0c1"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=20",
+     "rawSha256": "806034b510dc3b13ffac9e64d564ac7e2e7d95fa070a6344a61c4acb61433bb8"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=21",
+     "rawSha256": "07e321d48fb6f57357c1ac77aae27f4af51d99a151b91e77b0294b8e8aed6848"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=22",
+     "rawSha256": "38e441a3a9366f5027270975abe775307e2fc6ae4f6fafbdd143b965541f0d93"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=23",
+     "rawSha256": "da264a55e7df479c5733418001be03c73b554860e11e363bd19bd3d990a5f224"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=24",
+     "rawSha256": "03dd3bbf1853ab22a820e251b1a13dfbb8598db0fbaafefc65509308a557ccdb"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=25",
+     "rawSha256": "78f15f1b58d3a4957990483d070983f8fb72ab733a4f33b327ed15f86eab67a9"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=26",
+     "rawSha256": "6a69620daca8cc0c103d235327f0026843f991cfb96ec45dd6997eda0fbf68cc"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=27",
+     "rawSha256": "a69bd58b36eb5c2a422b5121b3a76c619ca733af460cb5483ec2aa59b985ea31"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=28",
+     "rawSha256": "3ecf9b1ab515e1bcd7998a66859f851a748d0c7cdbb58ec833267a149136e9b4"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=29",
+     "rawSha256": "b17e5ae2a664a980f626d5eed47f1eab0651258ab9bad23b7887ce1874fbca79"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=30",
+     "rawSha256": "9e7b3db643d6c0e6c7913c7ca5e50f4fad42064e96ee3d31d734d33972e26f97"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=31",
+     "rawSha256": "13c2ead4b9eb14e9681254797685fc253c689076fea7fa9a37b34f8d4b2045e3"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=32",
+     "rawSha256": "b63bc2f59c6cc345b3d79e04140b701fe72f97efb2a5ebf3f385039c72feed9d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=33",
+     "rawSha256": "7f65a92b5be2b3fb0cbe31b0de3cf3560c1553ddcf13d7e467593ad5df3e171f"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=34",
+     "rawSha256": "5adaaa1d4094ca48ac79569e08e6ec60286492200c4d2e7f40f258b7939941c2"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=35",
+     "rawSha256": "4efb44f7701b1e68888086c18242b95b8f320e68ef5e86b2cb00eb7943ffd6a4"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=36",
+     "rawSha256": "80a908d3d1f5d638c7d3fa8ee2551adc2aa87abf99f52fd506a0a33c0f96083c"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=37",
+     "rawSha256": "c2ab68750fcc887491837eae3b246fcb8a0d58e3c0fb3f21e1360fd0aea1bca7"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=38",
+     "rawSha256": "9d0601a202efd0e330ad1fa0833fa641c72cb7d5d8fa3d598a1b94eddbec9663"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=39",
+     "rawSha256": "9109509577dd61348f3d8f6f1edb5bb6bec0e39bdeebaec8167b722304a65076"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=40",
+     "rawSha256": "62aba38c0e2f4c471e8ce8cb05fd276204cfed8f2ee386a0cc0aa25ab2658d9d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=41",
+     "rawSha256": "e5866b38fe7f86e60f51b8013a10b66d50b5e543348f53bd777b8a1f3f068c23"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=42",
+     "rawSha256": "c6900cb6e96f9b84ffca06586e9106491fb83fea9897491ad81ba6bf47a5d3bd"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=43",
+     "rawSha256": "90ef439c8047a9f87109951e5f8bb4876f94d7cdfcaa766021844e90f8b67c85"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=44",
+     "rawSha256": "e1334ce433fa170bf0f8cc020edff4180cf23c6cc57935103d1440c02e87d46e"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=45",
+     "rawSha256": "f5c86d057662903c40e3983d2d79019b55cf675b658b9a65fa03bd5cffecbe4a"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=46",
+     "rawSha256": "4c2cd59a1b2d2d31dd20093ac1d13c4fd681c418ac460066ae9623d3bf603e22"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=47",
+     "rawSha256": "300f6f56c033b59b56a114b3639034289ec250a0843ab12eb193e02d73dc6766"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=48",
+     "rawSha256": "114fdfc398cb287cde3fcc60ed79f7638b44844072eb978c7a895fb0f83bc13e"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=49",
+     "rawSha256": "c2eda6885eaa1b251346971f3e50daa3614fbba8fa0668dad6119a7ab2237cfc"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=50",
+     "rawSha256": "344a3c928ab286ddc7f813b003e9de05ddc66bc19d9a6271895d7f89af056713"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=51",
+     "rawSha256": "a9cafd14cc78e59749ae3e67f46bed182c7efa58847f2920a1c92b22e28bfd0b"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=52",
+     "rawSha256": "4033dadc96a0dd02a93bea897d8de7bc07f0220b7f1999c18965517d01c2fb02"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=53",
+     "rawSha256": "2ddd57c8aef382a8531099b2710038e2ab01de52df890ed12f60a59990a202ee"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=54",
+     "rawSha256": "3b7bd9aba9628000e6d92d6958d06a7ec9663a789bf6b897e5a04da4017df6a5"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=55",
+     "rawSha256": "21e05da72405ed3569f3e6bb6c889677f64d7dad9c0d3cb7cbe3f30519580c4e"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=56",
+     "rawSha256": "3bd49f52cc4e774c694246e933c00d85754289d454a802e6c13f3dca21e6f055"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=57",
+     "rawSha256": "21096b7bad7c1557073aa9957ff77409529bed8f03dd91c6f8fec51556f0166a"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=58",
+     "rawSha256": "784857f8949fa43934ceae8fe83e400a37cf5663aace84e5430196b3d0da7cea"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=59",
+     "rawSha256": "09b452b26527b03d69be67d1d089ffb7ee89e4f4eb7f3882aced1f4c76adf2fe"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=60",
+     "rawSha256": "a6f69001c1aa6706c3ccb24676dab84a849c5a56e07ff18aece5e3fafbd493d6"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=61",
+     "rawSha256": "e5dca3084555f80c6a71b61ad10f50244017c43e01cea8af506979c2f3540ac4"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=62",
+     "rawSha256": "41dd09af8c34164fafc4f5c3d778d16c808096e896f123a9176cd6e943d729f8"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=63",
+     "rawSha256": "b94448ee3ddb96123051fc46fc06979d162cf04e7505e34c78893cfed3dfecc1"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=64",
+     "rawSha256": "d15b75e1244f33e3deda8f9a808eb8d5be80dfe42a2da01e56a714b5656b4962"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=65",
+     "rawSha256": "fe9dae2ef4b71097f5e0d72a80fbafa024ac110aaf3c57edd0b111697ced9b78"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=66",
+     "rawSha256": "54fd55044b1451ded35365450f9d8c1260a34b49ad3ffba0fac282c758181798"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=67",
+     "rawSha256": "37f2c7b820c25da70eeb1d2bb8568907b1d635ac8944ac666d93ab4fc350fb22"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=68",
+     "rawSha256": "22d781cdeb972f1aac6297ccc69bd033e50d091d3382f610ac57e388e90f12da"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=69",
+     "rawSha256": "0f2c378c8deb9ca3f4d02a4a404e5b6ff908282d0bee1ad57466258bf1ed46b0"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=70",
+     "rawSha256": "696d963ccb47713aeda39f6362db14576a9cb478744ad8b2071a262bb0b59608"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=71",
+     "rawSha256": "2ed7f28a2fdc99d09b8239245407943162506b6eefa3b2f9f17cbb74ec39ad3d"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=72",
+     "rawSha256": "fdf2fc99d86381057b803948771f3d500151f9f47e4f864aefe81d4b82857979"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=73",
+     "rawSha256": "247962cc6f85e66c1c8700594c3fb00dfa7eee4632963719383564e8971cb68c"
+    },
+    {
+     "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=74",
+     "rawSha256": "4606c1d795b828b31fa2bc9bbb374f94c666d699a101217adc532b4162faaaa7"
+    }
+   ]
+  }
+ ],
+ "counts": {
+  "ok": 0,
+  "한 출처": 732,
+  "확인 중": 0,
+  "옛값": 0,
+  "없음": 0
+ },
+ "series": [
+  {
+   "date": "2023-09-25",
+   "value": 2495.76,
+   "sources": {
+    "naver": 2495.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-26",
+   "value": 2462.97,
+   "sources": {
+    "naver": 2462.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-27",
+   "value": 2465.07,
+   "sources": {
+    "naver": 2465.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-04",
+   "value": 2405.69,
+   "sources": {
+    "naver": 2405.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-05",
+   "value": 2403.6,
+   "sources": {
+    "naver": 2403.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-06",
+   "value": 2408.73,
+   "sources": {
+    "naver": 2408.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-10",
+   "value": 2402.58,
+   "sources": {
+    "naver": 2402.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-11",
+   "value": 2450.08,
+   "sources": {
+    "naver": 2450.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-12",
+   "value": 2479.82,
+   "sources": {
+    "naver": 2479.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-13",
+   "value": 2456.15,
+   "sources": {
+    "naver": 2456.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-16",
+   "value": 2436.24,
+   "sources": {
+    "naver": 2436.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-17",
+   "value": 2460.17,
+   "sources": {
+    "naver": 2460.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-18",
+   "value": 2462.6,
+   "sources": {
+    "naver": 2462.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-19",
+   "value": 2415.8,
+   "sources": {
+    "naver": 2415.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-20",
+   "value": 2375,
+   "sources": {
+    "naver": 2375
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-23",
+   "value": 2357.02,
+   "sources": {
+    "naver": 2357.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-24",
+   "value": 2383.51,
+   "sources": {
+    "naver": 2383.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-25",
+   "value": 2363.17,
+   "sources": {
+    "naver": 2363.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-26",
+   "value": 2299.08,
+   "sources": {
+    "naver": 2299.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-27",
+   "value": 2302.81,
+   "sources": {
+    "naver": 2302.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-30",
+   "value": 2310.55,
+   "sources": {
+    "naver": 2310.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-31",
+   "value": 2277.99,
+   "sources": {
+    "naver": 2277.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-01",
+   "value": 2301.56,
+   "sources": {
+    "naver": 2301.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-02",
+   "value": 2343.12,
+   "sources": {
+    "naver": 2343.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-03",
+   "value": 2368.34,
+   "sources": {
+    "naver": 2368.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-06",
+   "value": 2502.37,
+   "sources": {
+    "naver": 2502.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-07",
+   "value": 2443.96,
+   "sources": {
+    "naver": 2443.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-08",
+   "value": 2421.62,
+   "sources": {
+    "naver": 2421.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-09",
+   "value": 2427.08,
+   "sources": {
+    "naver": 2427.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-10",
+   "value": 2409.66,
+   "sources": {
+    "naver": 2409.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-13",
+   "value": 2403.76,
+   "sources": {
+    "naver": 2403.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-14",
+   "value": 2433.25,
+   "sources": {
+    "naver": 2433.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-15",
+   "value": 2486.67,
+   "sources": {
+    "naver": 2486.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-16",
+   "value": 2488.18,
+   "sources": {
+    "naver": 2488.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-17",
+   "value": 2469.85,
+   "sources": {
+    "naver": 2469.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-20",
+   "value": 2491.2,
+   "sources": {
+    "naver": 2491.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-21",
+   "value": 2510.42,
+   "sources": {
+    "naver": 2510.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-22",
+   "value": 2511.7,
+   "sources": {
+    "naver": 2511.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-23",
+   "value": 2514.96,
+   "sources": {
+    "naver": 2514.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-24",
+   "value": 2496.63,
+   "sources": {
+    "naver": 2496.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-27",
+   "value": 2495.66,
+   "sources": {
+    "naver": 2495.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-28",
+   "value": 2521.76,
+   "sources": {
+    "naver": 2521.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-29",
+   "value": 2519.81,
+   "sources": {
+    "naver": 2519.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-30",
+   "value": 2535.29,
+   "sources": {
+    "naver": 2535.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-01",
+   "value": 2505.01,
+   "sources": {
+    "naver": 2505.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-04",
+   "value": 2514.95,
+   "sources": {
+    "naver": 2514.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-05",
+   "value": 2494.28,
+   "sources": {
+    "naver": 2494.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-06",
+   "value": 2495.38,
+   "sources": {
+    "naver": 2495.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-07",
+   "value": 2492.07,
+   "sources": {
+    "naver": 2492.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-08",
+   "value": 2517.85,
+   "sources": {
+    "naver": 2517.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-11",
+   "value": 2525.36,
+   "sources": {
+    "naver": 2525.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-12",
+   "value": 2535.27,
+   "sources": {
+    "naver": 2535.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-13",
+   "value": 2510.66,
+   "sources": {
+    "naver": 2510.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-14",
+   "value": 2544.18,
+   "sources": {
+    "naver": 2544.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-15",
+   "value": 2563.56,
+   "sources": {
+    "naver": 2563.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-18",
+   "value": 2566.86,
+   "sources": {
+    "naver": 2566.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-19",
+   "value": 2568.55,
+   "sources": {
+    "naver": 2568.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-20",
+   "value": 2614.3,
+   "sources": {
+    "naver": 2614.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-21",
+   "value": 2600.02,
+   "sources": {
+    "naver": 2600.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-22",
+   "value": 2599.51,
+   "sources": {
+    "naver": 2599.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-26",
+   "value": 2602.59,
+   "sources": {
+    "naver": 2602.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-27",
+   "value": 2613.5,
+   "sources": {
+    "naver": 2613.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-28",
+   "value": 2655.28,
+   "sources": {
+    "naver": 2655.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-02",
+   "value": 2669.81,
+   "sources": {
+    "naver": 2669.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-03",
+   "value": 2607.31,
+   "sources": {
+    "naver": 2607.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-04",
+   "value": 2587.02,
+   "sources": {
+    "naver": 2587.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-05",
+   "value": 2578.08,
+   "sources": {
+    "naver": 2578.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-08",
+   "value": 2567.82,
+   "sources": {
+    "naver": 2567.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-09",
+   "value": 2561.24,
+   "sources": {
+    "naver": 2561.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-10",
+   "value": 2541.98,
+   "sources": {
+    "naver": 2541.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-11",
+   "value": 2540.27,
+   "sources": {
+    "naver": 2540.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-12",
+   "value": 2525.05,
+   "sources": {
+    "naver": 2525.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-15",
+   "value": 2525.99,
+   "sources": {
+    "naver": 2525.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-16",
+   "value": 2497.59,
+   "sources": {
+    "naver": 2497.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-17",
+   "value": 2435.9,
+   "sources": {
+    "naver": 2435.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-18",
+   "value": 2440.04,
+   "sources": {
+    "naver": 2440.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-19",
+   "value": 2472.74,
+   "sources": {
+    "naver": 2472.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-22",
+   "value": 2464.35,
+   "sources": {
+    "naver": 2464.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-23",
+   "value": 2478.61,
+   "sources": {
+    "naver": 2478.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-24",
+   "value": 2469.69,
+   "sources": {
+    "naver": 2469.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-25",
+   "value": 2470.34,
+   "sources": {
+    "naver": 2470.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-26",
+   "value": 2478.56,
+   "sources": {
+    "naver": 2478.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-29",
+   "value": 2500.65,
+   "sources": {
+    "naver": 2500.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-30",
+   "value": 2498.81,
+   "sources": {
+    "naver": 2498.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-31",
+   "value": 2497.09,
+   "sources": {
+    "naver": 2497.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-01",
+   "value": 2542.46,
+   "sources": {
+    "naver": 2542.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-02",
+   "value": 2615.31,
+   "sources": {
+    "naver": 2615.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-05",
+   "value": 2591.31,
+   "sources": {
+    "naver": 2591.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-06",
+   "value": 2576.2,
+   "sources": {
+    "naver": 2576.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-07",
+   "value": 2609.58,
+   "sources": {
+    "naver": 2609.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-08",
+   "value": 2620.32,
+   "sources": {
+    "naver": 2620.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-13",
+   "value": 2649.64,
+   "sources": {
+    "naver": 2649.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-14",
+   "value": 2620.42,
+   "sources": {
+    "naver": 2620.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-15",
+   "value": 2613.8,
+   "sources": {
+    "naver": 2613.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-16",
+   "value": 2648.76,
+   "sources": {
+    "naver": 2648.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-19",
+   "value": 2680.26,
+   "sources": {
+    "naver": 2680.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-20",
+   "value": 2657.79,
+   "sources": {
+    "naver": 2657.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-21",
+   "value": 2653.31,
+   "sources": {
+    "naver": 2653.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-22",
+   "value": 2664.27,
+   "sources": {
+    "naver": 2664.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-23",
+   "value": 2667.7,
+   "sources": {
+    "naver": 2667.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-26",
+   "value": 2647.08,
+   "sources": {
+    "naver": 2647.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-27",
+   "value": 2625.05,
+   "sources": {
+    "naver": 2625.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-28",
+   "value": 2652.29,
+   "sources": {
+    "naver": 2652.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-29",
+   "value": 2642.36,
+   "sources": {
+    "naver": 2642.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-04",
+   "value": 2674.27,
+   "sources": {
+    "naver": 2674.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-05",
+   "value": 2649.4,
+   "sources": {
+    "naver": 2649.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-06",
+   "value": 2641.49,
+   "sources": {
+    "naver": 2641.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-07",
+   "value": 2647.62,
+   "sources": {
+    "naver": 2647.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-08",
+   "value": 2680.35,
+   "sources": {
+    "naver": 2680.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-11",
+   "value": 2659.84,
+   "sources": {
+    "naver": 2659.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-12",
+   "value": 2681.81,
+   "sources": {
+    "naver": 2681.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-13",
+   "value": 2693.57,
+   "sources": {
+    "naver": 2693.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-14",
+   "value": 2718.76,
+   "sources": {
+    "naver": 2718.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-15",
+   "value": 2666.84,
+   "sources": {
+    "naver": 2666.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-18",
+   "value": 2685.84,
+   "sources": {
+    "naver": 2685.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-19",
+   "value": 2656.17,
+   "sources": {
+    "naver": 2656.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-20",
+   "value": 2690.14,
+   "sources": {
+    "naver": 2690.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-21",
+   "value": 2754.86,
+   "sources": {
+    "naver": 2754.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-22",
+   "value": 2748.56,
+   "sources": {
+    "naver": 2748.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-25",
+   "value": 2737.57,
+   "sources": {
+    "naver": 2737.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-26",
+   "value": 2757.09,
+   "sources": {
+    "naver": 2757.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-27",
+   "value": 2755.11,
+   "sources": {
+    "naver": 2755.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-28",
+   "value": 2745.82,
+   "sources": {
+    "naver": 2745.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-29",
+   "value": 2746.63,
+   "sources": {
+    "naver": 2746.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-01",
+   "value": 2747.86,
+   "sources": {
+    "naver": 2747.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-02",
+   "value": 2753.16,
+   "sources": {
+    "naver": 2753.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-03",
+   "value": 2706.97,
+   "sources": {
+    "naver": 2706.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-04",
+   "value": 2742,
+   "sources": {
+    "naver": 2742
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-05",
+   "value": 2714.21,
+   "sources": {
+    "naver": 2714.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-08",
+   "value": 2717.65,
+   "sources": {
+    "naver": 2717.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-09",
+   "value": 2705.16,
+   "sources": {
+    "naver": 2705.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-11",
+   "value": 2706.96,
+   "sources": {
+    "naver": 2706.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-12",
+   "value": 2681.82,
+   "sources": {
+    "naver": 2681.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-15",
+   "value": 2670.43,
+   "sources": {
+    "naver": 2670.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-16",
+   "value": 2609.63,
+   "sources": {
+    "naver": 2609.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-17",
+   "value": 2584.18,
+   "sources": {
+    "naver": 2584.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-18",
+   "value": 2634.7,
+   "sources": {
+    "naver": 2634.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-19",
+   "value": 2591.86,
+   "sources": {
+    "naver": 2591.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-22",
+   "value": 2629.44,
+   "sources": {
+    "naver": 2629.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-23",
+   "value": 2623.02,
+   "sources": {
+    "naver": 2623.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-24",
+   "value": 2675.75,
+   "sources": {
+    "naver": 2675.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-25",
+   "value": 2628.62,
+   "sources": {
+    "naver": 2628.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-26",
+   "value": 2656.33,
+   "sources": {
+    "naver": 2656.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-29",
+   "value": 2687.44,
+   "sources": {
+    "naver": 2687.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-30",
+   "value": 2692.06,
+   "sources": {
+    "naver": 2692.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-02",
+   "value": 2683.65,
+   "sources": {
+    "naver": 2683.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-03",
+   "value": 2676.63,
+   "sources": {
+    "naver": 2676.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-07",
+   "value": 2734.36,
+   "sources": {
+    "naver": 2734.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-08",
+   "value": 2745.05,
+   "sources": {
+    "naver": 2745.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-09",
+   "value": 2712.14,
+   "sources": {
+    "naver": 2712.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-10",
+   "value": 2727.63,
+   "sources": {
+    "naver": 2727.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-13",
+   "value": 2727.21,
+   "sources": {
+    "naver": 2727.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-14",
+   "value": 2730.34,
+   "sources": {
+    "naver": 2730.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-16",
+   "value": 2753,
+   "sources": {
+    "naver": 2753
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-17",
+   "value": 2724.62,
+   "sources": {
+    "naver": 2724.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-20",
+   "value": 2742.14,
+   "sources": {
+    "naver": 2742.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-21",
+   "value": 2724.18,
+   "sources": {
+    "naver": 2724.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-22",
+   "value": 2723.46,
+   "sources": {
+    "naver": 2723.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-23",
+   "value": 2721.81,
+   "sources": {
+    "naver": 2721.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-24",
+   "value": 2687.6,
+   "sources": {
+    "naver": 2687.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-27",
+   "value": 2722.99,
+   "sources": {
+    "naver": 2722.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-28",
+   "value": 2722.85,
+   "sources": {
+    "naver": 2722.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-29",
+   "value": 2677.3,
+   "sources": {
+    "naver": 2677.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-30",
+   "value": 2635.44,
+   "sources": {
+    "naver": 2635.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-31",
+   "value": 2636.52,
+   "sources": {
+    "naver": 2636.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-03",
+   "value": 2682.52,
+   "sources": {
+    "naver": 2682.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-04",
+   "value": 2662.1,
+   "sources": {
+    "naver": 2662.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-05",
+   "value": 2689.5,
+   "sources": {
+    "naver": 2689.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-07",
+   "value": 2722.67,
+   "sources": {
+    "naver": 2722.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-10",
+   "value": 2701.17,
+   "sources": {
+    "naver": 2701.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-11",
+   "value": 2705.32,
+   "sources": {
+    "naver": 2705.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-12",
+   "value": 2728.17,
+   "sources": {
+    "naver": 2728.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-13",
+   "value": 2754.89,
+   "sources": {
+    "naver": 2754.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-14",
+   "value": 2758.42,
+   "sources": {
+    "naver": 2758.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-17",
+   "value": 2744.1,
+   "sources": {
+    "naver": 2744.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-18",
+   "value": 2763.92,
+   "sources": {
+    "naver": 2763.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-19",
+   "value": 2797.33,
+   "sources": {
+    "naver": 2797.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-20",
+   "value": 2807.63,
+   "sources": {
+    "naver": 2807.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-21",
+   "value": 2784.26,
+   "sources": {
+    "naver": 2784.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-24",
+   "value": 2764.73,
+   "sources": {
+    "naver": 2764.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-25",
+   "value": 2774.39,
+   "sources": {
+    "naver": 2774.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-26",
+   "value": 2792.05,
+   "sources": {
+    "naver": 2792.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-27",
+   "value": 2784.06,
+   "sources": {
+    "naver": 2784.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-28",
+   "value": 2797.82,
+   "sources": {
+    "naver": 2797.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-01",
+   "value": 2804.31,
+   "sources": {
+    "naver": 2804.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-02",
+   "value": 2780.86,
+   "sources": {
+    "naver": 2780.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-03",
+   "value": 2794.01,
+   "sources": {
+    "naver": 2794.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-04",
+   "value": 2824.94,
+   "sources": {
+    "naver": 2824.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-05",
+   "value": 2862.23,
+   "sources": {
+    "naver": 2862.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-08",
+   "value": 2857.76,
+   "sources": {
+    "naver": 2857.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-09",
+   "value": 2867.38,
+   "sources": {
+    "naver": 2867.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-10",
+   "value": 2867.99,
+   "sources": {
+    "naver": 2867.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-11",
+   "value": 2891.35,
+   "sources": {
+    "naver": 2891.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-12",
+   "value": 2857,
+   "sources": {
+    "naver": 2857
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-15",
+   "value": 2860.92,
+   "sources": {
+    "naver": 2860.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-16",
+   "value": 2866.09,
+   "sources": {
+    "naver": 2866.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-17",
+   "value": 2843.29,
+   "sources": {
+    "naver": 2843.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-18",
+   "value": 2824.35,
+   "sources": {
+    "naver": 2824.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-19",
+   "value": 2795.46,
+   "sources": {
+    "naver": 2795.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-22",
+   "value": 2763.51,
+   "sources": {
+    "naver": 2763.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-23",
+   "value": 2774.29,
+   "sources": {
+    "naver": 2774.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-24",
+   "value": 2758.71,
+   "sources": {
+    "naver": 2758.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-25",
+   "value": 2710.65,
+   "sources": {
+    "naver": 2710.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-26",
+   "value": 2731.9,
+   "sources": {
+    "naver": 2731.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-29",
+   "value": 2765.53,
+   "sources": {
+    "naver": 2765.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-30",
+   "value": 2738.19,
+   "sources": {
+    "naver": 2738.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-31",
+   "value": 2770.69,
+   "sources": {
+    "naver": 2770.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-01",
+   "value": 2777.68,
+   "sources": {
+    "naver": 2777.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-02",
+   "value": 2676.19,
+   "sources": {
+    "naver": 2676.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-05",
+   "value": 2441.55,
+   "sources": {
+    "naver": 2441.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-06",
+   "value": 2522.15,
+   "sources": {
+    "naver": 2522.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-07",
+   "value": 2568.41,
+   "sources": {
+    "naver": 2568.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-08",
+   "value": 2556.73,
+   "sources": {
+    "naver": 2556.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-09",
+   "value": 2588.43,
+   "sources": {
+    "naver": 2588.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-12",
+   "value": 2618.3,
+   "sources": {
+    "naver": 2618.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-13",
+   "value": 2621.5,
+   "sources": {
+    "naver": 2621.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-14",
+   "value": 2644.5,
+   "sources": {
+    "naver": 2644.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-16",
+   "value": 2697.23,
+   "sources": {
+    "naver": 2697.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-19",
+   "value": 2674.36,
+   "sources": {
+    "naver": 2674.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-20",
+   "value": 2696.63,
+   "sources": {
+    "naver": 2696.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-21",
+   "value": 2701.13,
+   "sources": {
+    "naver": 2701.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-22",
+   "value": 2707.67,
+   "sources": {
+    "naver": 2707.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-23",
+   "value": 2701.69,
+   "sources": {
+    "naver": 2701.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-26",
+   "value": 2698.01,
+   "sources": {
+    "naver": 2698.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-27",
+   "value": 2689.25,
+   "sources": {
+    "naver": 2689.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-28",
+   "value": 2689.83,
+   "sources": {
+    "naver": 2689.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-29",
+   "value": 2662.28,
+   "sources": {
+    "naver": 2662.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-30",
+   "value": 2674.31,
+   "sources": {
+    "naver": 2674.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-02",
+   "value": 2681,
+   "sources": {
+    "naver": 2681
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-03",
+   "value": 2664.63,
+   "sources": {
+    "naver": 2664.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-04",
+   "value": 2580.8,
+   "sources": {
+    "naver": 2580.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-05",
+   "value": 2575.5,
+   "sources": {
+    "naver": 2575.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-06",
+   "value": 2544.28,
+   "sources": {
+    "naver": 2544.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-09",
+   "value": 2535.93,
+   "sources": {
+    "naver": 2535.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-10",
+   "value": 2523.43,
+   "sources": {
+    "naver": 2523.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-11",
+   "value": 2513.37,
+   "sources": {
+    "naver": 2513.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-12",
+   "value": 2572.09,
+   "sources": {
+    "naver": 2572.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-13",
+   "value": 2575.41,
+   "sources": {
+    "naver": 2575.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-19",
+   "value": 2580.8,
+   "sources": {
+    "naver": 2580.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-20",
+   "value": 2593.37,
+   "sources": {
+    "naver": 2593.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-23",
+   "value": 2602.01,
+   "sources": {
+    "naver": 2602.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-24",
+   "value": 2631.68,
+   "sources": {
+    "naver": 2631.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-25",
+   "value": 2596.32,
+   "sources": {
+    "naver": 2596.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-26",
+   "value": 2671.57,
+   "sources": {
+    "naver": 2671.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-27",
+   "value": 2649.78,
+   "sources": {
+    "naver": 2649.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-30",
+   "value": 2593.27,
+   "sources": {
+    "naver": 2593.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-02",
+   "value": 2561.69,
+   "sources": {
+    "naver": 2561.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-04",
+   "value": 2569.71,
+   "sources": {
+    "naver": 2569.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-07",
+   "value": 2610.38,
+   "sources": {
+    "naver": 2610.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-08",
+   "value": 2594.36,
+   "sources": {
+    "naver": 2594.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-10",
+   "value": 2599.16,
+   "sources": {
+    "naver": 2599.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-11",
+   "value": 2596.91,
+   "sources": {
+    "naver": 2596.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-14",
+   "value": 2623.29,
+   "sources": {
+    "naver": 2623.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-15",
+   "value": 2633.45,
+   "sources": {
+    "naver": 2633.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-16",
+   "value": 2610.36,
+   "sources": {
+    "naver": 2610.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-17",
+   "value": 2609.3,
+   "sources": {
+    "naver": 2609.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-18",
+   "value": 2593.82,
+   "sources": {
+    "naver": 2593.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-21",
+   "value": 2604.92,
+   "sources": {
+    "naver": 2604.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-22",
+   "value": 2570.7,
+   "sources": {
+    "naver": 2570.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-23",
+   "value": 2599.62,
+   "sources": {
+    "naver": 2599.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-24",
+   "value": 2581.03,
+   "sources": {
+    "naver": 2581.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-25",
+   "value": 2583.27,
+   "sources": {
+    "naver": 2583.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-28",
+   "value": 2612.43,
+   "sources": {
+    "naver": 2612.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-29",
+   "value": 2617.8,
+   "sources": {
+    "naver": 2617.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-30",
+   "value": 2593.79,
+   "sources": {
+    "naver": 2593.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-31",
+   "value": 2556.15,
+   "sources": {
+    "naver": 2556.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-01",
+   "value": 2542.36,
+   "sources": {
+    "naver": 2542.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-04",
+   "value": 2588.97,
+   "sources": {
+    "naver": 2588.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-05",
+   "value": 2576.88,
+   "sources": {
+    "naver": 2576.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-06",
+   "value": 2563.51,
+   "sources": {
+    "naver": 2563.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-07",
+   "value": 2564.63,
+   "sources": {
+    "naver": 2564.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-08",
+   "value": 2561.15,
+   "sources": {
+    "naver": 2561.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-11",
+   "value": 2531.66,
+   "sources": {
+    "naver": 2531.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-12",
+   "value": 2482.57,
+   "sources": {
+    "naver": 2482.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-13",
+   "value": 2417.08,
+   "sources": {
+    "naver": 2417.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-14",
+   "value": 2418.86,
+   "sources": {
+    "naver": 2418.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-15",
+   "value": 2416.86,
+   "sources": {
+    "naver": 2416.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-18",
+   "value": 2469.07,
+   "sources": {
+    "naver": 2469.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-19",
+   "value": 2471.95,
+   "sources": {
+    "naver": 2471.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-20",
+   "value": 2482.29,
+   "sources": {
+    "naver": 2482.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-21",
+   "value": 2480.63,
+   "sources": {
+    "naver": 2480.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-22",
+   "value": 2501.24,
+   "sources": {
+    "naver": 2501.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-25",
+   "value": 2534.34,
+   "sources": {
+    "naver": 2534.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-26",
+   "value": 2520.36,
+   "sources": {
+    "naver": 2520.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-27",
+   "value": 2503.06,
+   "sources": {
+    "naver": 2503.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-28",
+   "value": 2504.67,
+   "sources": {
+    "naver": 2504.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-29",
+   "value": 2455.91,
+   "sources": {
+    "naver": 2455.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-02",
+   "value": 2454.48,
+   "sources": {
+    "naver": 2454.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-03",
+   "value": 2500.1,
+   "sources": {
+    "naver": 2500.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-04",
+   "value": 2464,
+   "sources": {
+    "naver": 2464
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-05",
+   "value": 2441.85,
+   "sources": {
+    "naver": 2441.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-06",
+   "value": 2428.16,
+   "sources": {
+    "naver": 2428.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-09",
+   "value": 2360.58,
+   "sources": {
+    "naver": 2360.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-10",
+   "value": 2417.84,
+   "sources": {
+    "naver": 2417.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-11",
+   "value": 2442.51,
+   "sources": {
+    "naver": 2442.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-12",
+   "value": 2482.12,
+   "sources": {
+    "naver": 2482.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-13",
+   "value": 2494.46,
+   "sources": {
+    "naver": 2494.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-16",
+   "value": 2488.97,
+   "sources": {
+    "naver": 2488.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-17",
+   "value": 2456.81,
+   "sources": {
+    "naver": 2456.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-18",
+   "value": 2484.43,
+   "sources": {
+    "naver": 2484.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-19",
+   "value": 2435.93,
+   "sources": {
+    "naver": 2435.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-20",
+   "value": 2404.15,
+   "sources": {
+    "naver": 2404.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-23",
+   "value": 2442.01,
+   "sources": {
+    "naver": 2442.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-24",
+   "value": 2440.52,
+   "sources": {
+    "naver": 2440.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-26",
+   "value": 2429.67,
+   "sources": {
+    "naver": 2429.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-27",
+   "value": 2404.77,
+   "sources": {
+    "naver": 2404.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-30",
+   "value": 2399.49,
+   "sources": {
+    "naver": 2399.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-02",
+   "value": 2398.94,
+   "sources": {
+    "naver": 2398.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-03",
+   "value": 2441.92,
+   "sources": {
+    "naver": 2441.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-06",
+   "value": 2488.64,
+   "sources": {
+    "naver": 2488.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-07",
+   "value": 2492.1,
+   "sources": {
+    "naver": 2492.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-08",
+   "value": 2521.05,
+   "sources": {
+    "naver": 2521.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-09",
+   "value": 2521.9,
+   "sources": {
+    "naver": 2521.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-10",
+   "value": 2515.78,
+   "sources": {
+    "naver": 2515.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-13",
+   "value": 2489.56,
+   "sources": {
+    "naver": 2489.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-14",
+   "value": 2497.4,
+   "sources": {
+    "naver": 2497.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-15",
+   "value": 2496.81,
+   "sources": {
+    "naver": 2496.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-16",
+   "value": 2527.49,
+   "sources": {
+    "naver": 2527.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-17",
+   "value": 2523.55,
+   "sources": {
+    "naver": 2523.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-20",
+   "value": 2520.05,
+   "sources": {
+    "naver": 2520.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-21",
+   "value": 2518.03,
+   "sources": {
+    "naver": 2518.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-22",
+   "value": 2547.06,
+   "sources": {
+    "naver": 2547.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-23",
+   "value": 2515.49,
+   "sources": {
+    "naver": 2515.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-24",
+   "value": 2536.8,
+   "sources": {
+    "naver": 2536.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-31",
+   "value": 2517.37,
+   "sources": {
+    "naver": 2517.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-03",
+   "value": 2453.95,
+   "sources": {
+    "naver": 2453.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-04",
+   "value": 2481.69,
+   "sources": {
+    "naver": 2481.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-05",
+   "value": 2509.27,
+   "sources": {
+    "naver": 2509.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-06",
+   "value": 2536.75,
+   "sources": {
+    "naver": 2536.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-07",
+   "value": 2521.92,
+   "sources": {
+    "naver": 2521.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-10",
+   "value": 2521.27,
+   "sources": {
+    "naver": 2521.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-11",
+   "value": 2539.05,
+   "sources": {
+    "naver": 2539.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-12",
+   "value": 2548.39,
+   "sources": {
+    "naver": 2548.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-13",
+   "value": 2583.17,
+   "sources": {
+    "naver": 2583.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-14",
+   "value": 2591.05,
+   "sources": {
+    "naver": 2591.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-17",
+   "value": 2610.42,
+   "sources": {
+    "naver": 2610.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-18",
+   "value": 2626.81,
+   "sources": {
+    "naver": 2626.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-19",
+   "value": 2671.52,
+   "sources": {
+    "naver": 2671.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-20",
+   "value": 2654.06,
+   "sources": {
+    "naver": 2654.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-21",
+   "value": 2654.58,
+   "sources": {
+    "naver": 2654.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-24",
+   "value": 2645.27,
+   "sources": {
+    "naver": 2645.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-25",
+   "value": 2630.29,
+   "sources": {
+    "naver": 2630.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-26",
+   "value": 2641.09,
+   "sources": {
+    "naver": 2641.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-27",
+   "value": 2621.75,
+   "sources": {
+    "naver": 2621.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-28",
+   "value": 2532.78,
+   "sources": {
+    "naver": 2532.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-04",
+   "value": 2528.92,
+   "sources": {
+    "naver": 2528.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-05",
+   "value": 2558.13,
+   "sources": {
+    "naver": 2558.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-06",
+   "value": 2576.16,
+   "sources": {
+    "naver": 2576.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-07",
+   "value": 2563.48,
+   "sources": {
+    "naver": 2563.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-10",
+   "value": 2570.39,
+   "sources": {
+    "naver": 2570.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-11",
+   "value": 2537.6,
+   "sources": {
+    "naver": 2537.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-12",
+   "value": 2574.82,
+   "sources": {
+    "naver": 2574.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-13",
+   "value": 2573.64,
+   "sources": {
+    "naver": 2573.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-14",
+   "value": 2566.36,
+   "sources": {
+    "naver": 2566.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-17",
+   "value": 2610.69,
+   "sources": {
+    "naver": 2610.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-18",
+   "value": 2612.34,
+   "sources": {
+    "naver": 2612.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-19",
+   "value": 2628.62,
+   "sources": {
+    "naver": 2628.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-20",
+   "value": 2637.1,
+   "sources": {
+    "naver": 2637.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-21",
+   "value": 2643.13,
+   "sources": {
+    "naver": 2643.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-24",
+   "value": 2632.07,
+   "sources": {
+    "naver": 2632.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-25",
+   "value": 2615.81,
+   "sources": {
+    "naver": 2615.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-26",
+   "value": 2643.94,
+   "sources": {
+    "naver": 2643.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-27",
+   "value": 2607.15,
+   "sources": {
+    "naver": 2607.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-28",
+   "value": 2557.98,
+   "sources": {
+    "naver": 2557.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-31",
+   "value": 2481.12,
+   "sources": {
+    "naver": 2481.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-01",
+   "value": 2521.39,
+   "sources": {
+    "naver": 2521.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-02",
+   "value": 2505.86,
+   "sources": {
+    "naver": 2505.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-03",
+   "value": 2486.7,
+   "sources": {
+    "naver": 2486.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-04",
+   "value": 2465.42,
+   "sources": {
+    "naver": 2465.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-07",
+   "value": 2328.2,
+   "sources": {
+    "naver": 2328.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-08",
+   "value": 2334.23,
+   "sources": {
+    "naver": 2334.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-09",
+   "value": 2293.7,
+   "sources": {
+    "naver": 2293.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-10",
+   "value": 2445.06,
+   "sources": {
+    "naver": 2445.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-11",
+   "value": 2432.72,
+   "sources": {
+    "naver": 2432.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-14",
+   "value": 2455.89,
+   "sources": {
+    "naver": 2455.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-15",
+   "value": 2477.41,
+   "sources": {
+    "naver": 2477.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-16",
+   "value": 2447.43,
+   "sources": {
+    "naver": 2447.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-17",
+   "value": 2470.41,
+   "sources": {
+    "naver": 2470.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-18",
+   "value": 2483.42,
+   "sources": {
+    "naver": 2483.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-21",
+   "value": 2488.42,
+   "sources": {
+    "naver": 2488.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-22",
+   "value": 2486.64,
+   "sources": {
+    "naver": 2486.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-23",
+   "value": 2525.56,
+   "sources": {
+    "naver": 2525.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-24",
+   "value": 2522.33,
+   "sources": {
+    "naver": 2522.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-25",
+   "value": 2546.3,
+   "sources": {
+    "naver": 2546.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-28",
+   "value": 2548.86,
+   "sources": {
+    "naver": 2548.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-29",
+   "value": 2565.42,
+   "sources": {
+    "naver": 2565.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-30",
+   "value": 2556.61,
+   "sources": {
+    "naver": 2556.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-02",
+   "value": 2559.79,
+   "sources": {
+    "naver": 2559.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-07",
+   "value": 2573.8,
+   "sources": {
+    "naver": 2573.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-08",
+   "value": 2579.48,
+   "sources": {
+    "naver": 2579.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-09",
+   "value": 2577.27,
+   "sources": {
+    "naver": 2577.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-12",
+   "value": 2607.33,
+   "sources": {
+    "naver": 2607.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-13",
+   "value": 2608.42,
+   "sources": {
+    "naver": 2608.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-14",
+   "value": 2640.57,
+   "sources": {
+    "naver": 2640.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-15",
+   "value": 2621.36,
+   "sources": {
+    "naver": 2621.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-16",
+   "value": 2626.87,
+   "sources": {
+    "naver": 2626.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-19",
+   "value": 2603.42,
+   "sources": {
+    "naver": 2603.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-20",
+   "value": 2601.8,
+   "sources": {
+    "naver": 2601.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-21",
+   "value": 2625.58,
+   "sources": {
+    "naver": 2625.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-22",
+   "value": 2593.67,
+   "sources": {
+    "naver": 2593.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-23",
+   "value": 2592.09,
+   "sources": {
+    "naver": 2592.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-26",
+   "value": 2644.4,
+   "sources": {
+    "naver": 2644.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-27",
+   "value": 2637.22,
+   "sources": {
+    "naver": 2637.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-28",
+   "value": 2670.15,
+   "sources": {
+    "naver": 2670.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-29",
+   "value": 2720.64,
+   "sources": {
+    "naver": 2720.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-30",
+   "value": 2697.67,
+   "sources": {
+    "naver": 2697.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-02",
+   "value": 2698.97,
+   "sources": {
+    "naver": 2698.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-04",
+   "value": 2770.84,
+   "sources": {
+    "naver": 2770.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-05",
+   "value": 2812.05,
+   "sources": {
+    "naver": 2812.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-09",
+   "value": 2855.77,
+   "sources": {
+    "naver": 2855.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-10",
+   "value": 2871.85,
+   "sources": {
+    "naver": 2871.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-11",
+   "value": 2907.04,
+   "sources": {
+    "naver": 2907.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-12",
+   "value": 2920.03,
+   "sources": {
+    "naver": 2920.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-13",
+   "value": 2894.62,
+   "sources": {
+    "naver": 2894.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-16",
+   "value": 2946.66,
+   "sources": {
+    "naver": 2946.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-17",
+   "value": 2950.3,
+   "sources": {
+    "naver": 2950.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-18",
+   "value": 2972.19,
+   "sources": {
+    "naver": 2972.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-19",
+   "value": 2977.74,
+   "sources": {
+    "naver": 2977.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-20",
+   "value": 3021.84,
+   "sources": {
+    "naver": 3021.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-23",
+   "value": 3014.47,
+   "sources": {
+    "naver": 3014.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-24",
+   "value": 3103.64,
+   "sources": {
+    "naver": 3103.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-25",
+   "value": 3108.25,
+   "sources": {
+    "naver": 3108.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-26",
+   "value": 3079.56,
+   "sources": {
+    "naver": 3079.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-27",
+   "value": 3055.94,
+   "sources": {
+    "naver": 3055.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-30",
+   "value": 3071.7,
+   "sources": {
+    "naver": 3071.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-01",
+   "value": 3089.65,
+   "sources": {
+    "naver": 3089.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-02",
+   "value": 3075.06,
+   "sources": {
+    "naver": 3075.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-03",
+   "value": 3116.27,
+   "sources": {
+    "naver": 3116.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-04",
+   "value": 3054.28,
+   "sources": {
+    "naver": 3054.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-07",
+   "value": 3059.47,
+   "sources": {
+    "naver": 3059.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-08",
+   "value": 3114.95,
+   "sources": {
+    "naver": 3114.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-09",
+   "value": 3133.74,
+   "sources": {
+    "naver": 3133.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-10",
+   "value": 3183.23,
+   "sources": {
+    "naver": 3183.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-11",
+   "value": 3175.77,
+   "sources": {
+    "naver": 3175.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-14",
+   "value": 3202.03,
+   "sources": {
+    "naver": 3202.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-15",
+   "value": 3215.28,
+   "sources": {
+    "naver": 3215.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-16",
+   "value": 3186.38,
+   "sources": {
+    "naver": 3186.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-17",
+   "value": 3192.29,
+   "sources": {
+    "naver": 3192.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-18",
+   "value": 3188.07,
+   "sources": {
+    "naver": 3188.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-21",
+   "value": 3210.81,
+   "sources": {
+    "naver": 3210.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-22",
+   "value": 3169.94,
+   "sources": {
+    "naver": 3169.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-23",
+   "value": 3183.77,
+   "sources": {
+    "naver": 3183.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-24",
+   "value": 3190.45,
+   "sources": {
+    "naver": 3190.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-25",
+   "value": 3196.05,
+   "sources": {
+    "naver": 3196.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-28",
+   "value": 3209.52,
+   "sources": {
+    "naver": 3209.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-29",
+   "value": 3230.57,
+   "sources": {
+    "naver": 3230.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-30",
+   "value": 3254.47,
+   "sources": {
+    "naver": 3254.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-31",
+   "value": 3245.44,
+   "sources": {
+    "naver": 3245.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-01",
+   "value": 3119.41,
+   "sources": {
+    "naver": 3119.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-04",
+   "value": 3147.75,
+   "sources": {
+    "naver": 3147.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-05",
+   "value": 3198,
+   "sources": {
+    "naver": 3198
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-06",
+   "value": 3198.14,
+   "sources": {
+    "naver": 3198.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-07",
+   "value": 3227.68,
+   "sources": {
+    "naver": 3227.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-08",
+   "value": 3210.01,
+   "sources": {
+    "naver": 3210.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-11",
+   "value": 3206.77,
+   "sources": {
+    "naver": 3206.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-12",
+   "value": 3189.91,
+   "sources": {
+    "naver": 3189.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-13",
+   "value": 3224.37,
+   "sources": {
+    "naver": 3224.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-14",
+   "value": 3225.66,
+   "sources": {
+    "naver": 3225.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-18",
+   "value": 3177.28,
+   "sources": {
+    "naver": 3177.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-19",
+   "value": 3151.56,
+   "sources": {
+    "naver": 3151.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-20",
+   "value": 3130.09,
+   "sources": {
+    "naver": 3130.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-21",
+   "value": 3141.74,
+   "sources": {
+    "naver": 3141.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-22",
+   "value": 3168.73,
+   "sources": {
+    "naver": 3168.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-25",
+   "value": 3209.86,
+   "sources": {
+    "naver": 3209.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-26",
+   "value": 3179.36,
+   "sources": {
+    "naver": 3179.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-27",
+   "value": 3187.16,
+   "sources": {
+    "naver": 3187.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-28",
+   "value": 3196.32,
+   "sources": {
+    "naver": 3196.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-29",
+   "value": 3186.01,
+   "sources": {
+    "naver": 3186.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-01",
+   "value": 3142.93,
+   "sources": {
+    "naver": 3142.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-02",
+   "value": 3172.35,
+   "sources": {
+    "naver": 3172.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-03",
+   "value": 3184.42,
+   "sources": {
+    "naver": 3184.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-04",
+   "value": 3200.83,
+   "sources": {
+    "naver": 3200.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-05",
+   "value": 3205.12,
+   "sources": {
+    "naver": 3205.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-08",
+   "value": 3219.59,
+   "sources": {
+    "naver": 3219.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-09",
+   "value": 3260.05,
+   "sources": {
+    "naver": 3260.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-10",
+   "value": 3314.53,
+   "sources": {
+    "naver": 3314.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-11",
+   "value": 3344.2,
+   "sources": {
+    "naver": 3344.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-12",
+   "value": 3395.54,
+   "sources": {
+    "naver": 3395.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-15",
+   "value": 3407.31,
+   "sources": {
+    "naver": 3407.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-16",
+   "value": 3449.62,
+   "sources": {
+    "naver": 3449.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-17",
+   "value": 3413.4,
+   "sources": {
+    "naver": 3413.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-18",
+   "value": 3461.3,
+   "sources": {
+    "naver": 3461.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-19",
+   "value": 3445.24,
+   "sources": {
+    "naver": 3445.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-22",
+   "value": 3468.65,
+   "sources": {
+    "naver": 3468.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-23",
+   "value": 3486.19,
+   "sources": {
+    "naver": 3486.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-24",
+   "value": 3472.14,
+   "sources": {
+    "naver": 3472.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-25",
+   "value": 3471.11,
+   "sources": {
+    "naver": 3471.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-26",
+   "value": 3386.05,
+   "sources": {
+    "naver": 3386.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-29",
+   "value": 3431.21,
+   "sources": {
+    "naver": 3431.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-30",
+   "value": 3424.6,
+   "sources": {
+    "naver": 3424.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-01",
+   "value": 3455.83,
+   "sources": {
+    "naver": 3455.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-02",
+   "value": 3549.21,
+   "sources": {
+    "naver": 3549.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-10",
+   "value": 3610.6,
+   "sources": {
+    "naver": 3610.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-13",
+   "value": 3584.55,
+   "sources": {
+    "naver": 3584.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-14",
+   "value": 3561.81,
+   "sources": {
+    "naver": 3561.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-15",
+   "value": 3657.28,
+   "sources": {
+    "naver": 3657.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-16",
+   "value": 3748.37,
+   "sources": {
+    "naver": 3748.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-17",
+   "value": 3748.89,
+   "sources": {
+    "naver": 3748.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-20",
+   "value": 3814.69,
+   "sources": {
+    "naver": 3814.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-21",
+   "value": 3823.84,
+   "sources": {
+    "naver": 3823.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-22",
+   "value": 3883.68,
+   "sources": {
+    "naver": 3883.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-23",
+   "value": 3845.56,
+   "sources": {
+    "naver": 3845.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-24",
+   "value": 3941.59,
+   "sources": {
+    "naver": 3941.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-27",
+   "value": 4042.83,
+   "sources": {
+    "naver": 4042.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-28",
+   "value": 4010.41,
+   "sources": {
+    "naver": 4010.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-29",
+   "value": 4081.15,
+   "sources": {
+    "naver": 4081.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-30",
+   "value": 4086.89,
+   "sources": {
+    "naver": 4086.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-31",
+   "value": 4107.5,
+   "sources": {
+    "naver": 4107.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-03",
+   "value": 4221.87,
+   "sources": {
+    "naver": 4221.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-04",
+   "value": 4121.74,
+   "sources": {
+    "naver": 4121.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-05",
+   "value": 4004.42,
+   "sources": {
+    "naver": 4004.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-06",
+   "value": 4026.45,
+   "sources": {
+    "naver": 4026.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-07",
+   "value": 3953.76,
+   "sources": {
+    "naver": 3953.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-10",
+   "value": 4073.24,
+   "sources": {
+    "naver": 4073.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-11",
+   "value": 4106.39,
+   "sources": {
+    "naver": 4106.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-12",
+   "value": 4150.39,
+   "sources": {
+    "naver": 4150.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-13",
+   "value": 4170.63,
+   "sources": {
+    "naver": 4170.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-14",
+   "value": 4011.57,
+   "sources": {
+    "naver": 4011.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-17",
+   "value": 4089.25,
+   "sources": {
+    "naver": 4089.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-18",
+   "value": 3953.62,
+   "sources": {
+    "naver": 3953.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-19",
+   "value": 3929.51,
+   "sources": {
+    "naver": 3929.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-20",
+   "value": 4004.85,
+   "sources": {
+    "naver": 4004.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-21",
+   "value": 3853.26,
+   "sources": {
+    "naver": 3853.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-24",
+   "value": 3846.06,
+   "sources": {
+    "naver": 3846.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-25",
+   "value": 3857.78,
+   "sources": {
+    "naver": 3857.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-26",
+   "value": 3960.87,
+   "sources": {
+    "naver": 3960.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-27",
+   "value": 3986.91,
+   "sources": {
+    "naver": 3986.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-28",
+   "value": 3926.59,
+   "sources": {
+    "naver": 3926.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-01",
+   "value": 3920.37,
+   "sources": {
+    "naver": 3920.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-02",
+   "value": 3994.93,
+   "sources": {
+    "naver": 3994.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-03",
+   "value": 4036.3,
+   "sources": {
+    "naver": 4036.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-04",
+   "value": 4028.51,
+   "sources": {
+    "naver": 4028.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-05",
+   "value": 4100.05,
+   "sources": {
+    "naver": 4100.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-08",
+   "value": 4154.85,
+   "sources": {
+    "naver": 4154.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-09",
+   "value": 4143.55,
+   "sources": {
+    "naver": 4143.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-10",
+   "value": 4135,
+   "sources": {
+    "naver": 4135
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-11",
+   "value": 4110.62,
+   "sources": {
+    "naver": 4110.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-12",
+   "value": 4167.16,
+   "sources": {
+    "naver": 4167.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-15",
+   "value": 4090.59,
+   "sources": {
+    "naver": 4090.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-16",
+   "value": 3999.13,
+   "sources": {
+    "naver": 3999.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-17",
+   "value": 4056.41,
+   "sources": {
+    "naver": 4056.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-18",
+   "value": 3994.51,
+   "sources": {
+    "naver": 3994.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-19",
+   "value": 4020.55,
+   "sources": {
+    "naver": 4020.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-22",
+   "value": 4105.93,
+   "sources": {
+    "naver": 4105.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-23",
+   "value": 4117.32,
+   "sources": {
+    "naver": 4117.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-24",
+   "value": 4108.62,
+   "sources": {
+    "naver": 4108.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-26",
+   "value": 4129.68,
+   "sources": {
+    "naver": 4129.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-29",
+   "value": 4220.56,
+   "sources": {
+    "naver": 4220.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-30",
+   "value": 4214.17,
+   "sources": {
+    "naver": 4214.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-02",
+   "value": 4309.63,
+   "sources": {
+    "naver": 4309.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-05",
+   "value": 4457.52,
+   "sources": {
+    "naver": 4457.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-06",
+   "value": 4525.48,
+   "sources": {
+    "naver": 4525.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-07",
+   "value": 4551.06,
+   "sources": {
+    "naver": 4551.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-08",
+   "value": 4552.37,
+   "sources": {
+    "naver": 4552.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-09",
+   "value": 4586.32,
+   "sources": {
+    "naver": 4586.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-12",
+   "value": 4624.79,
+   "sources": {
+    "naver": 4624.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-13",
+   "value": 4692.64,
+   "sources": {
+    "naver": 4692.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-14",
+   "value": 4723.1,
+   "sources": {
+    "naver": 4723.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-15",
+   "value": 4797.55,
+   "sources": {
+    "naver": 4797.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-16",
+   "value": 4840.74,
+   "sources": {
+    "naver": 4840.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-19",
+   "value": 4904.66,
+   "sources": {
+    "naver": 4904.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-20",
+   "value": 4885.75,
+   "sources": {
+    "naver": 4885.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-21",
+   "value": 4909.93,
+   "sources": {
+    "naver": 4909.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-22",
+   "value": 4952.53,
+   "sources": {
+    "naver": 4952.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-23",
+   "value": 4990.07,
+   "sources": {
+    "naver": 4990.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-26",
+   "value": 4949.59,
+   "sources": {
+    "naver": 4949.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-27",
+   "value": 5084.85,
+   "sources": {
+    "naver": 5084.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-28",
+   "value": 5170.81,
+   "sources": {
+    "naver": 5170.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-29",
+   "value": 5221.25,
+   "sources": {
+    "naver": 5221.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-30",
+   "value": 5224.36,
+   "sources": {
+    "naver": 5224.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-02",
+   "value": 4949.67,
+   "sources": {
+    "naver": 4949.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-03",
+   "value": 5288.08,
+   "sources": {
+    "naver": 5288.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-04",
+   "value": 5371.1,
+   "sources": {
+    "naver": 5371.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-05",
+   "value": 5163.57,
+   "sources": {
+    "naver": 5163.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-06",
+   "value": 5089.14,
+   "sources": {
+    "naver": 5089.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-09",
+   "value": 5298.04,
+   "sources": {
+    "naver": 5298.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-10",
+   "value": 5301.69,
+   "sources": {
+    "naver": 5301.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-11",
+   "value": 5354.49,
+   "sources": {
+    "naver": 5354.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-12",
+   "value": 5522.27,
+   "sources": {
+    "naver": 5522.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-13",
+   "value": 5507.01,
+   "sources": {
+    "naver": 5507.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-19",
+   "value": 5677.25,
+   "sources": {
+    "naver": 5677.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-20",
+   "value": 5808.53,
+   "sources": {
+    "naver": 5808.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-23",
+   "value": 5846.09,
+   "sources": {
+    "naver": 5846.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-24",
+   "value": 5969.64,
+   "sources": {
+    "naver": 5969.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-25",
+   "value": 6083.86,
+   "sources": {
+    "naver": 6083.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-26",
+   "value": 6307.27,
+   "sources": {
+    "naver": 6307.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-27",
+   "value": 6244.13,
+   "sources": {
+    "naver": 6244.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-03",
+   "value": 5791.91,
+   "sources": {
+    "naver": 5791.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-04",
+   "value": 5093.54,
+   "sources": {
+    "naver": 5093.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-05",
+   "value": 5583.9,
+   "sources": {
+    "naver": 5583.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-06",
+   "value": 5584.87,
+   "sources": {
+    "naver": 5584.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-09",
+   "value": 5251.87,
+   "sources": {
+    "naver": 5251.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-10",
+   "value": 5532.59,
+   "sources": {
+    "naver": 5532.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-11",
+   "value": 5609.95,
+   "sources": {
+    "naver": 5609.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-12",
+   "value": 5583.25,
+   "sources": {
+    "naver": 5583.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-13",
+   "value": 5487.24,
+   "sources": {
+    "naver": 5487.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-16",
+   "value": 5549.85,
+   "sources": {
+    "naver": 5549.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-17",
+   "value": 5640.48,
+   "sources": {
+    "naver": 5640.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-18",
+   "value": 5925.03,
+   "sources": {
+    "naver": 5925.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-19",
+   "value": 5763.22,
+   "sources": {
+    "naver": 5763.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-20",
+   "value": 5781.2,
+   "sources": {
+    "naver": 5781.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-23",
+   "value": 5405.75,
+   "sources": {
+    "naver": 5405.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-24",
+   "value": 5553.92,
+   "sources": {
+    "naver": 5553.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-25",
+   "value": 5642.21,
+   "sources": {
+    "naver": 5642.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-26",
+   "value": 5460.46,
+   "sources": {
+    "naver": 5460.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-27",
+   "value": 5438.87,
+   "sources": {
+    "naver": 5438.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-30",
+   "value": 5277.3,
+   "sources": {
+    "naver": 5277.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-31",
+   "value": 5052.46,
+   "sources": {
+    "naver": 5052.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-01",
+   "value": 5478.7,
+   "sources": {
+    "naver": 5478.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-02",
+   "value": 5234.05,
+   "sources": {
+    "naver": 5234.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-03",
+   "value": 5377.3,
+   "sources": {
+    "naver": 5377.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-06",
+   "value": 5450.33,
+   "sources": {
+    "naver": 5450.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-07",
+   "value": 5494.78,
+   "sources": {
+    "naver": 5494.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-08",
+   "value": 5872.34,
+   "sources": {
+    "naver": 5872.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-09",
+   "value": 5778.01,
+   "sources": {
+    "naver": 5778.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-10",
+   "value": 5858.87,
+   "sources": {
+    "naver": 5858.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-13",
+   "value": 5808.62,
+   "sources": {
+    "naver": 5808.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-14",
+   "value": 5967.75,
+   "sources": {
+    "naver": 5967.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-15",
+   "value": 6091.39,
+   "sources": {
+    "naver": 6091.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-16",
+   "value": 6226.05,
+   "sources": {
+    "naver": 6226.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-17",
+   "value": 6191.92,
+   "sources": {
+    "naver": 6191.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-20",
+   "value": 6219.09,
+   "sources": {
+    "naver": 6219.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-21",
+   "value": 6388.47,
+   "sources": {
+    "naver": 6388.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-22",
+   "value": 6417.93,
+   "sources": {
+    "naver": 6417.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-23",
+   "value": 6475.81,
+   "sources": {
+    "naver": 6475.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-24",
+   "value": 6475.63,
+   "sources": {
+    "naver": 6475.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-27",
+   "value": 6615.03,
+   "sources": {
+    "naver": 6615.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-28",
+   "value": 6641.02,
+   "sources": {
+    "naver": 6641.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-29",
+   "value": 6690.9,
+   "sources": {
+    "naver": 6690.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-30",
+   "value": 6598.87,
+   "sources": {
+    "naver": 6598.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-04",
+   "value": 6936.99,
+   "sources": {
+    "naver": 6936.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-06",
+   "value": 7384.56,
+   "sources": {
+    "naver": 7384.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-07",
+   "value": 7490.05,
+   "sources": {
+    "naver": 7490.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-08",
+   "value": 7498,
+   "sources": {
+    "naver": 7498
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-11",
+   "value": 7822.24,
+   "sources": {
+    "naver": 7822.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-12",
+   "value": 7643.15,
+   "sources": {
+    "naver": 7643.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-13",
+   "value": 7844.01,
+   "sources": {
+    "naver": 7844.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-14",
+   "value": 7981.41,
+   "sources": {
+    "naver": 7981.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-15",
+   "value": 7493.18,
+   "sources": {
+    "naver": 7493.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-18",
+   "value": 7516.04,
+   "sources": {
+    "naver": 7516.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-19",
+   "value": 7271.66,
+   "sources": {
+    "naver": 7271.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-20",
+   "value": 7208.95,
+   "sources": {
+    "naver": 7208.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-21",
+   "value": 7815.59,
+   "sources": {
+    "naver": 7815.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-22",
+   "value": 7847.71,
+   "sources": {
+    "naver": 7847.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-26",
+   "value": 8047.51,
+   "sources": {
+    "naver": 8047.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-27",
+   "value": 8228.7,
+   "sources": {
+    "naver": 8228.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-28",
+   "value": 8185.29,
+   "sources": {
+    "naver": 8185.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-29",
+   "value": 8476.15,
+   "sources": {
+    "naver": 8476.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-01",
+   "value": 8788.38,
+   "sources": {
+    "naver": 8788.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-02",
+   "value": 8801.49,
+   "sources": {
+    "naver": 8801.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-04",
+   "value": 8639.41,
+   "sources": {
+    "naver": 8639.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-05",
+   "value": 8160.59,
+   "sources": {
+    "naver": 8160.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-08",
+   "value": 7484.41,
+   "sources": {
+    "naver": 7484.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-09",
+   "value": 8096.93,
+   "sources": {
+    "naver": 8096.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-10",
+   "value": 7730.82,
+   "sources": {
+    "naver": 7730.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-11",
+   "value": 7763.95,
+   "sources": {
+    "naver": 7763.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-12",
+   "value": 8123.62,
+   "sources": {
+    "naver": 8123.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-15",
+   "value": 8545.98,
+   "sources": {
+    "naver": 8545.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-16",
+   "value": 8726.6,
+   "sources": {
+    "naver": 8726.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-17",
+   "value": 8864.24,
+   "sources": {
+    "naver": 8864.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-18",
+   "value": 9063.84,
+   "sources": {
+    "naver": 9063.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-19",
+   "value": 9052.42,
+   "sources": {
+    "naver": 9052.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-22",
+   "value": 9114.55,
+   "sources": {
+    "naver": 9114.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-23",
+   "value": 8203.84,
+   "sources": {
+    "naver": 8203.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-24",
+   "value": 8471.02,
+   "sources": {
+    "naver": 8471.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-25",
+   "value": 8930.3,
+   "sources": {
+    "naver": 8930.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-26",
+   "value": 8411.21,
+   "sources": {
+    "naver": 8411.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-29",
+   "value": 8394.65,
+   "sources": {
+    "naver": 8394.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-30",
+   "value": 8476.48,
+   "sources": {
+    "naver": 8476.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-01",
+   "value": 8303.41,
+   "sources": {
+    "naver": 8303.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-02",
+   "value": 7648.09,
+   "sources": {
+    "naver": 7648.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-03",
+   "value": 8088.34,
+   "sources": {
+    "naver": 8088.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-06",
+   "value": 8051.33,
+   "sources": {
+    "naver": 8051.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-07",
+   "value": 7656.31,
+   "sources": {
+    "naver": 7656.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-08",
+   "value": 7246.79,
+   "sources": {
+    "naver": 7246.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-09",
+   "value": 7291.91,
+   "sources": {
+    "naver": 7291.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-10",
+   "value": 7475.94,
+   "sources": {
+    "naver": 7475.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-13",
+   "value": 6806.93,
+   "sources": {
+    "naver": 6806.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-14",
+   "value": 6856.83,
+   "sources": {
+    "naver": 6856.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-15",
+   "value": 7284.41,
+   "sources": {
+    "naver": 7284.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-16",
+   "value": 6820.6,
+   "sources": {
+    "naver": 6820.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-20",
+   "value": 6516.27,
+   "sources": {
+    "naver": 6516.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-21",
+   "value": 6747.95,
+   "sources": {
+    "naver": 6747.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-22",
+   "value": 6797.7,
+   "sources": {
+    "naver": 6797.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-23",
+   "value": 7096.89,
+   "sources": {
+    "naver": 7096.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-24",
+   "value": 6690.62,
+   "sources": {
+    "naver": 6690.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-27",
+   "value": 6755.75,
+   "sources": {
+    "naver": 6755.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-28",
+   "value": 6023.66,
+   "sources": {
+    "naver": 6023.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-29",
+   "value": 5663.24,
+   "sources": {
+    "naver": 5663.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-30",
+   "value": 5593.56,
+   "sources": {
+    "naver": 5593.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-31",
+   "value": 6595.45,
+   "sources": {
+    "naver": 6595.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-03",
+   "value": 6257.45,
+   "sources": {
+    "naver": 6257.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-04",
+   "value": 6358.95,
+   "sources": {
+    "naver": 6358.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-05",
+   "value": 6598.26,
+   "sources": {
+    "naver": 6598.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-06",
+   "value": 6296.38,
+   "sources": {
+    "naver": 6296.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-07",
+   "value": 6258.77,
+   "sources": {
+    "naver": 6258.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-10",
+   "value": 6299.66,
+   "sources": {
+    "naver": 6299.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-11",
+   "value": 6345.53,
+   "sources": {
+    "naver": 6345.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-12",
+   "value": 6579.04,
+   "sources": {
+    "naver": 6579.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-13",
+   "value": 6813.34,
+   "sources": {
+    "naver": 6813.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-14",
+   "value": 6977.94,
+   "sources": {
+    "naver": 6977.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-18",
+   "value": 6869.83,
+   "sources": {
+    "naver": 6869.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-19",
+   "value": 6471.17,
+   "sources": {
+    "naver": 6471.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-20",
+   "value": 6852.58,
+   "sources": {
+    "naver": 6852.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-21",
+   "value": 6912.95,
+   "sources": {
+    "naver": 6912.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-24",
+   "value": 6696.96,
+   "sources": {
+    "naver": 6696.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-25",
+   "value": 6742.74,
+   "sources": {
+    "naver": 6742.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-26",
+   "value": 6808.21,
+   "sources": {
+    "naver": 6808.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-27",
+   "value": 6912.37,
+   "sources": {
+    "naver": 6912.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-28",
+   "value": 6788.88,
+   "sources": {
+    "naver": 6788.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-31",
+   "value": 6820.02,
+   "sources": {
+    "naver": 6820.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-01",
+   "value": 6835.8,
+   "sources": {
+    "naver": 6835.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-02",
+   "value": 6562.72,
+   "sources": {
+    "naver": 6562.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-03",
+   "value": 6579.48,
+   "sources": {
+    "naver": 6579.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-04",
+   "value": 6687.21,
+   "sources": {
+    "naver": 6687.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-07",
+   "value": 6995.39,
+   "sources": {
+    "naver": 6995.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-08",
+   "value": 6954.52,
+   "sources": {
+    "naver": 6954.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-09",
+   "value": 7051.64,
+   "sources": {
+    "naver": 7051.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-10",
+   "value": 7033.92,
+   "sources": {
+    "naver": 7033.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-11",
+   "value": 6909.91,
+   "sources": {
+    "naver": 6909.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-14",
+   "value": 6684.37,
+   "sources": {
+    "naver": 6684.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-15",
+   "value": 6627.26,
+   "sources": {
+    "naver": 6627.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-16",
+   "value": 6717.97,
+   "sources": {
+    "naver": 6717.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-17",
+   "value": 6715.41,
+   "sources": {
+    "naver": 6715.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-18",
+   "value": 6894.23,
+   "sources": {
+    "naver": 6894.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-21",
+   "value": 7007.72,
+   "sources": {
+    "naver": 7007.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-22",
+   "value": 7017.91,
+   "sources": {
+    "naver": 7017.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-23",
+   "value": 7080.92,
+   "sources": {
+    "naver": 7080.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-28",
+   "value": 6889.74,
+   "sources": {
+    "naver": 6889.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-29",
+   "value": 6870.81,
+   "sources": {
+    "naver": 6870.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-30",
+   "value": 6838.04,
+   "sources": {
+    "naver": 6838.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-10-01",
+   "value": 6971.35,
+   "sources": {
+    "naver": 6971.35
+   },
+   "status": "한 출처"
+  }
+ ]
+}

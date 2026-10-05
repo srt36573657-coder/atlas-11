@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "assets": 52,
+  "rows": 1248,
+  "paths": 20000,
+  "priorForecastsPreserved": 14,
+  "originalSHA256": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+  "maximumMeanChange": 0,
+  "exactFirstStepStocks": 52,
+  "predictiveAccuracyCertified": false,
+  "trustProbability": null,
+  "tests": {
+    "passed": 202,
+    "failed": 0,
+    "sha256": "4ac03b4d12e52380198b5bcbc0957cc192be273ad395a77c1227bd18d5053c49"
+  },
+  "createdAt": "2026-09-26T21:08:57.217Z",
+  "candidateId": "2026-09-23-70bdbf50",
+  "newsComplete": false,
+  "remainingNewsCompanies": 7,
+  "newVerifiedScheduledEvents": 0,
+  "stopHookVerified": false,
+  "workGuardMode": "manual_completion_gate",
+  "singleCdfError": 0.009603227913199206,
+  "wholeForecastCdfError": 0.01641311776341146
+}

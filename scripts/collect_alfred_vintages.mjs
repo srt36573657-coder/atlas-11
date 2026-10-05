@@ -1,0 +1,5 @@
+import fs from'node:fs/promises';import{collectVintages}from'../lib/alfred-vintage-collector.mjs';
+const dir='reports/access-repair';await fs.mkdir(dir+'/raw',{recursive:true});const input=JSON.parse(await fs.readFile('public/data/atlas.json','utf8')).input;
+const sessions=input.calendar.sessions.filter(d=>d<=input.actualAsOf);const dates=[sessions.at(-1),sessions.at(-21),sessions.at(-41),sessions.at(-61),sessions.at(-81),sessions.at(-101)];
+const result=await collectVintages({apiKey:process.env.FRED_API_KEY,dates,onSnapshot:async({body,observation})=>{await fs.writeFile(dir+'/raw/'+observation.rawHash+'.json',body,{flag:'wx'}).catch(e=>{if(e.code!=='EEXIST')throw e;});}});
+result.at=new Date().toISOString();await fs.writeFile(dir+'/vintage-collection-'+result.at.replaceAll(':','-')+'.json',JSON.stringify(result,null,2));await fs.writeFile(dir+'/latest.json',JSON.stringify(result,null,2));console.log(JSON.stringify({status:result.status,requests:result.requests,accepted:result.accepted.length,failed:result.failures.length,reason:result.reason}));process.exitCode=result.exitCode;

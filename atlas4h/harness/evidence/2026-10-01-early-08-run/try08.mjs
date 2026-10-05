@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+const W = '/home/claude/atlas/ATLAS/.claude/worktrees/agent-aeb8a33d58eff75c4';
+const SP = '/tmp/claude-0/-home-claude/7580db81-3e59-5485-baf7-bb7f97703c97/scratchpad';
+const {writeHistoryFixture} = await import(`${W}/atlas4h/engine/test/history-fixture.mjs`);
+const input = JSON.parse(fs.readFileSync(`${W}/public/data/input.json`, 'utf8'));
+const dir = `${SP}/hist`;
+fs.rmSync(dir, {recursive: true, force: true});
+writeHistoryFixture(dir, {sessions: input.calendar.sessions});
+const {run} = await import(`${W}/atlas4h/retro/run.mjs`);
+const t0 = Date.now();
+const r = run({slot: '08', historyDir: dir, out: `${SP}/r08.json`, summary: `${SP}/s08.md`, git: {commit: 'abc1234abcd', dirty: false}});
+console.log('ms', Date.now() - t0, 'rows', r.rows.length, 'kospiRows', r.kospiRows.length, r.summary.boardBytes, r.summary.targets);
+console.log(JSON.stringify(r.rows[0]));
+console.log(JSON.stringify(r.kospiRows[0]));
+console.log(r.summary.t12.reason);
+console.log(fs.statSync(`${SP}/r08.json`).size);
+// compare with 16 regression: engine interval for same (target, code) should be equal
+const r16 = JSON.parse(fs.readFileSync(`${SP}/r16.json`, 'utf8'));
+const m = new Map(r16.rows.map(x => [`${x.target}|${x.code}`, x]));
+let d = 0; for (const x of r.rows) d = Math.max(d, Math.abs(x.interval.score - m.get(`${x.target}|${x.code}`).interval.score));
+console.log('08 vs 16 engine interval max diff', d);
+const notes = r.rows.filter(x => x.baselines[1].note).map(x => x.target + ' ' + x.baselines[1].note);
+console.log([...new Set(notes)]);

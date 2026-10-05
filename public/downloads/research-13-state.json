@@ -1,0 +1,1072 @@
+{
+  "schema": 1,
+  "revision": 24,
+  "window": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "targets": [
+    "028260",
+    "034730",
+    "005490",
+    "010130",
+    "138040",
+    "033780",
+    "047050",
+    "029780",
+    "002380",
+    "111770",
+    "226950",
+    "010170",
+    "030000"
+  ],
+  "createdAt": "2026-09-26T12:06:40.372Z",
+  "rows": {
+    "111770": {
+      "code": "111770",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:22:37.898Z",
+          "code": "111770",
+          "outcome": "VERIFIED",
+          "reason": "주최자 공식 자료와 부스 명단에서 영원무역 법인 참가 및 10/13~14를 대조. 회사 IR의 코드111770·영문명·주소 일치.",
+          "evidence": {
+            "code": "111770",
+            "eventId": "REVIEW:111770:PERFORMANCE-DAYS:20261013",
+            "eventDate": "2026-10-13",
+            "targetDate": "2026-10-14",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://www.performancedays.com/press-releases.html?cid=45703&file=files/performancedays/content/press/press-releases/Englisch/PRESS+RELEASE+3RD+HALL+1+(1).pdf",
+            "observedAt": "2026-09-26T12:22:37.648Z",
+            "researcher": "/root/consumer_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "PDF p1, lines12-14 and24-30; lines123-177,205-209; lines125-151; lines167,279-281; lines67-71,164-169",
+            "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+            "evidenceDigest": "3c07b904a9e1ef539c2993c49e85b9806d2578ecb45dfda601516b302a5981fe",
+            "reviewedDigest": "3c07b904a9e1ef539c2993c49e85b9806d2578ecb45dfda601516b302a5981fe",
+            "digestBasis": "retained review packet; not complete publisher webpage hash",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN",
+            "throughSubsidiary": null,
+            "directIssuerParticipation": true
+          }
+        }
+      ],
+      "evidence": {
+        "code": "111770",
+        "eventId": "REVIEW:111770:PERFORMANCE-DAYS:20261013",
+        "eventDate": "2026-10-13",
+        "targetDate": "2026-10-14",
+        "publisherRole": "organizer",
+        "sourceUrl": "https://www.performancedays.com/press-releases.html?cid=45703&file=files/performancedays/content/press/press-releases/Englisch/PRESS+RELEASE+3RD+HALL+1+(1).pdf",
+        "observedAt": "2026-09-26T12:22:37.648Z",
+        "researcher": "/root/consumer_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "PDF p1, lines12-14 and24-30; lines123-177,205-209; lines125-151; lines167,279-281; lines67-71,164-169",
+        "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+        "evidenceDigest": "3c07b904a9e1ef539c2993c49e85b9806d2578ecb45dfda601516b302a5981fe",
+        "reviewedDigest": "3c07b904a9e1ef539c2993c49e85b9806d2578ecb45dfda601516b302a5981fe",
+        "digestBasis": "retained review packet; not complete publisher webpage hash",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN",
+        "throughSubsidiary": null,
+        "directIssuerParticipation": true
+      },
+      "reviewHistory": [],
+      "nextCheckAt": null
+    },
+    "138040": {
+      "code": "138040",
+      "state": "BLOCKED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:19.804Z",
+          "code": "138040",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "공식 IR 동적 목록을 실제 읽은 결과 현재 최신 공지는7/24 등록한8/12 16시 실적 발표이다. 공식 보도자료 최신 목록도8/12이다. 이번에 확인한 공식 최신 목록에 9/26 이후10/30 이내 새 확정 일정이 없다. 전 세계 어디에도 일정이 없다는 단정은 아님.",
+          "checkedUrls": [
+            "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+            "https://www.meritzgroup.com/web/ir1_2_search.do",
+            "https://www.meritzgroup.com/web/ko/pr/pr2.do",
+            "https://www.meritzgroup.com/web/pr_search.do",
+            "https://www.meritzgroup.com/web/ko/ir/ir2.do",
+            "https://www.k5.co.kr/stock/138040/official_notice",
+            "https://dartbrief.com/disclosures/20260806800338"
+          ],
+          "nextAction": "공식 IR 공개 목록 IR013 첫 항목의 등록일·본문 변경을 점검하고, 신규3분기 공지가 공개되면 정확한 일시를 읽는다. 기존 동적 목록 미노출 기록은 연구이력에 남긴다.",
+          "report": "reports/research13-finance.json",
+          "researcher": "finance_13",
+          "preservedPreviousReport": "reports/parallel-20260926-finance.json"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "138040",
+          "outcome": "BLOCKED",
+          "reason": "공식 IR 목록은 동적으로 구성되며 이번 조회에서 기간 내 행사 본문을 확보하지 못함. 보조 목록 요청의 빈 응답만으로 미발표를 확정하지 않음.",
+          "checkedUrls": [
+            "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+            "https://www.meritzgroup.com/web/ir1_2_search.do"
+          ],
+          "nextAction": "공식 IR행사 목록의 완전한 본문 또는 KIND 개최 공시 확보."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-26T23:31:03.743Z"
+    },
+    "226950": {
+      "code": "226950",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:21:43.584Z",
+          "code": "226950",
+          "outcome": "VERIFIED",
+          "reason": "연구자와 부모가 각각 공식 일정 본문·대상·날짜를 대조. 가격 영향은 별도로 유보.",
+          "evidence": {
+            "code": "226950",
+            "eventId": "REVIEW:COMPANY_IR-226950-20261007",
+            "eventDate": "2026-10-07",
+            "targetDate": "2026-10-07",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://www.fsc.go.kr/po010104/87714?curPage=2&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=",
+            "observedAt": "2026-09-26T12:21:43.323Z",
+            "researcher": "/root/smallcap_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "L281 publication date; L304-315 October 7 calendar column lists OliX; L319 joint organizers; L362 explicitly states KOSDAQ IR on October 7",
+            "dateBasis": "한국 주최자의 시간대 없는 달력 날짜 2026-10-07을 사용한다. 기업별 발표 시각은 미확보이며 00:00/09:00 등 가공 시각을 만들지 않는다. 표본 부족으로 가격 수치는 유보한다.",
+            "evidenceDigest": "81f3f13112ccae86f5b3f0e99728e08dc6a3039a5a7a4b5ec5017d4434cbec26",
+            "reviewedDigest": "81f3f13112ccae86f5b3f0e99728e08dc6a3039a5a7a4b5ec5017d4434cbec26",
+            "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN"
+          }
+        }
+      ],
+      "evidence": {
+        "code": "226950",
+        "eventId": "REVIEW:COMPANY_IR-226950-20261007",
+        "eventDate": "2026-10-07",
+        "targetDate": "2026-10-07",
+        "publisherRole": "organizer",
+        "sourceUrl": "https://www.fsc.go.kr/po010104/87714?curPage=2&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=",
+        "observedAt": "2026-09-26T12:21:43.323Z",
+        "researcher": "/root/smallcap_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "L281 publication date; L304-315 October 7 calendar column lists OliX; L319 joint organizers; L362 explicitly states KOSDAQ IR on October 7",
+        "dateBasis": "한국 주최자의 시간대 없는 달력 날짜 2026-10-07을 사용한다. 기업별 발표 시각은 미확보이며 00:00/09:00 등 가공 시각을 만들지 않는다. 표본 부족으로 가격 수치는 유보한다.",
+        "evidenceDigest": "81f3f13112ccae86f5b3f0e99728e08dc6a3039a5a7a4b5ec5017d4434cbec26",
+        "reviewedDigest": "81f3f13112ccae86f5b3f0e99728e08dc6a3039a5a7a4b5ec5017d4434cbec26",
+        "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN"
+      },
+      "reviewHistory": [],
+      "nextCheckAt": null
+    },
+    "028260": {
+      "code": "028260",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:21:43.276Z",
+          "code": "028260",
+          "outcome": "VERIFIED",
+          "reason": "연구자와 부모가 각각 공식 일정 본문·대상·날짜를 대조. 가격 영향은 별도로 유보.",
+          "evidence": {
+            "code": "028260",
+            "eventId": "REVIEW:COMPANY_POPUP_ANGGAE_SEONGSU-028260-20260929",
+            "eventDate": "2026-09-29",
+            "targetDate": "2026-09-29",
+            "publisherRole": "issuer",
+            "sourceUrl": "https://news.samsungcnt.com/ko/%EC%A0%84%EC%B2%B4%EA%B8%B0%EC%82%AC/%ED%8C%A8%EC%85%98%EB%B6%80%EB%AC%B8/2026-09-%EC%8B%A0%EC%98%88-%EC%97%AC%EC%84%B1%EB%B3%B5-%EC%95%99%EA%B0%9C-%EB%8D%94%ED%98%84%EB%8C%80-%EC%84%9C%EC%9A%B8%EC%84%9C-%ED%8C%9D%EC%97%85-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4/",
+            "observedAt": "2026-09-26T12:21:43.000Z",
+            "researcher": "/root/industrial_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "L35 게시일2026.09.17; L53 삼성물산 패션부문 브랜드; L62 성수9/29~10/14와9/29개점 첫날 행사",
+            "dateBasis": "서울 성동구 매장의 달력 개점일. 정확한 개점 시간은 원문에 없어 만들지 않음. 대상일은9/29 거래일이며 장중 반응시간 확정은 아님.",
+            "evidenceDigest": "05a6285599d6ded4e1b6215e1a9c561abaa3e55d7270b37fdbbbb9a6e8fd1029",
+            "reviewedDigest": "05a6285599d6ded4e1b6215e1a9c561abaa3e55d7270b37fdbbbb9a6e8fd1029",
+            "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN"
+          }
+        }
+      ],
+      "evidence": {
+        "code": "028260",
+        "eventId": "REVIEW:COMPANY_POPUP_ANGGAE_SEONGSU-028260-20260929",
+        "eventDate": "2026-09-29",
+        "targetDate": "2026-09-29",
+        "publisherRole": "issuer",
+        "sourceUrl": "https://news.samsungcnt.com/ko/%EC%A0%84%EC%B2%B4%EA%B8%B0%EC%82%AC/%ED%8C%A8%EC%85%98%EB%B6%80%EB%AC%B8/2026-09-%EC%8B%A0%EC%98%88-%EC%97%AC%EC%84%B1%EB%B3%B5-%EC%95%99%EA%B0%9C-%EB%8D%94%ED%98%84%EB%8C%80-%EC%84%9C%EC%9A%B8%EC%84%9C-%ED%8C%9D%EC%97%85-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4/",
+        "observedAt": "2026-09-26T12:21:43.000Z",
+        "researcher": "/root/industrial_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "L35 게시일2026.09.17; L53 삼성물산 패션부문 브랜드; L62 성수9/29~10/14와9/29개점 첫날 행사",
+        "dateBasis": "서울 성동구 매장의 달력 개점일. 정확한 개점 시간은 원문에 없어 만들지 않음. 대상일은9/29 거래일이며 장중 반응시간 확정은 아님.",
+        "evidenceDigest": "05a6285599d6ded4e1b6215e1a9c561abaa3e55d7270b37fdbbbb9a6e8fd1029",
+        "reviewedDigest": "05a6285599d6ded4e1b6215e1a9c561abaa3e55d7270b37fdbbbb9a6e8fd1029",
+        "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN"
+      },
+      "reviewHistory": [],
+      "nextCheckAt": null
+    },
+    "034730": {
+      "code": "034730",
+      "state": "BLOCKED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:19.474Z",
+          "code": "034730",
+          "outcome": "BLOCKED",
+          "reason": "9/29 수요예측·10/7 발행 후보는 기사 본문에서 재확인했으나 공식 신고서 본문을 대조하지 못했다. 한국 및 영어 DART는 웹 검색 도구와 정상 환경 HTTP에서 502. 주관사 공개 검색은 SK 제319회 원문을 반환하지 않았다. SK증권 첫 페이지는 NetFunnel 진입 절차여서 직접 내부 주소로 건너뛰지 않았다.",
+          "checkedUrls": [
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+            "https://englishdart.fss.or.kr/dsbh001/main.do?rcpNo=20260922000501",
+            "https://sk-inc.com/kr/ir/irArchive.aspx",
+            "https://www.k5.co.kr/stock/034730/official_notice",
+            "https://www.fntimes.com/html/view.php?mobile=1&ud=202609230745252422141825007d_18",
+            "https://ibtomato.com/ExternalView.aspx?no=19638&type=1",
+            "https://www.sks.co.kr/",
+            "https://www.kbsec.com/go.able?linkcd=m50010003"
+          ],
+          "nextAction": "공식 공시 원문 접근이 회복되면 20260922000501의 모집일정과 정정 목록을 함께 확인. 또는 SK/KB증권이 공개하는 제319회 사채 안내·첨부를 확인. 같은502경로의 무한 재시도는 하지 않음.",
+          "report": "reports/research13-finance.json",
+          "researcher": "finance_13",
+          "preservedPreviousReport": "reports/parallel-20260926-finance.json"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "034730",
+          "outcome": "BLOCKED",
+          "reason": "제319회 회사채 접수번호는 검색되지만 DART 원문이 웹 조회와 직접 HTTP에서 열리지 않아 수요예측·발행일 및 최종 정정 여부를 확정하지 못함.",
+          "checkedUrls": [
+            "https://englishdart.fss.or.kr/dsbh001/main.do?rcpNo=20260922000501",
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+            "https://www.sk-inc.com/kr/ir/irArchive.aspx"
+          ],
+          "nextAction": "DART 20260922000501 원문·정정본 또는 SK/대표주관사의 공식 증권신고서 첨부 확보."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-26T23:31:03.743Z"
+    },
+    "005490": {
+      "code": "005490",
+      "state": "BLOCKED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:20.465Z",
+          "code": "005490",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "이번에 검색·조회한 공식자료에서9/26이후10/30까지홀딩스자체의신규정확일미확보. 공개자료전체에일정이없다는증명은아님.",
+          "checkedUrls": [
+            "https://www.posco-inc.com/hs91a1-front/app/index.html",
+            "https://www.posco-inc.com/ir/overview",
+            "https://www.posco-inc.com/ir/ir-material",
+            "https://www.posco-inc.com/ir/shareholder-return-policy",
+            "https://www.k5.co.kr/stock/005490/official_notice",
+            "https://www.marketbeat.com/earnings/reports/2026-7-30-posco-stock/",
+            "https://www.marketbeat.com/earnings/reports/2025-10-27-posco-stock/",
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921800102",
+            "https://dartbrief.com/disclosures/20260921800102"
+          ],
+          "nextAction": "새Q3IR공시가공개되면회사IR개편후정상URL또는SEC6-K본문에서확인.산업시찰과지주사IR구분유지.9/21공시후보는전재상FormSD과거지급보고서이므로우선순위낮춤.",
+          "report": "reports/research13-industrial.json",
+          "researcher": "/root/industrial_13",
+          "preservedPreviousReport": "reports/parallel-20260926-industrial.json"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "005490",
+          "outcome": "BLOCKED",
+          "reason": "회사 새 홈페이지의 IR 경로를 재확인했으나 IR 상세 조회 오류로 3분기 발표의 정확한 날짜를 확정하지 못함.",
+          "checkedUrls": [
+            "https://www.posco-inc.com/hs91a1-front/app/index.html",
+            "https://www.posco-inc.com/ir/ir-material"
+          ],
+          "nextAction": "IR 상세 페이지 변경 및 KIND의 기업설명회 개최 공시 확인."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-26T23:31:03.743Z"
+    },
+    "010130": {
+      "code": "010130",
+      "state": "BLOCKED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:20.755Z",
+          "code": "010130",
+          "outcome": "BLOCKED",
+          "reason": "기업공시IR동적본문목록미노출,회사채증권신고서원문미확보.추가로언론발행일정상충발견해확정처리거부.",
+          "checkedUrls": [
+            "https://investors.koreazinc.co.kr/ko/investors/ir-events/ir-calendar/",
+            "https://investors.koreazinc.co.kr/ko/investors/announcements/disclosure/",
+            "https://www.k5.co.kr/stock/010130/official_notice",
+            "https://www.thebell.co.kr/front/newsview.asp?code=0101&key=202609171718077200106021",
+            "https://v.daum.net/v/20260914110246126"
+          ],
+          "nextAction": "KB·하나증권공식발행안내또는DART/KIND신규채무증권신고서발행조건표원문을확보해10/1대10/5와10/13대10/16충돌해소.동적공식IR본문은사용가능한브라우저에서한차례확인하고실패시기록.",
+          "report": "reports/research13-industrial.json",
+          "researcher": "/root/industrial_13",
+          "preservedPreviousReport": "reports/parallel-20260926-industrial.json"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "010130",
+          "outcome": "BLOCKED",
+          "reason": "회사채 일정 관련 보도는 있으나 공식 IR·공시 페이지에서 본문 날짜와 정정 여부를 확보하지 못함. 종전 상충 날짜를 그대로 확정하지 않음.",
+          "checkedUrls": [
+            "https://investors.koreazinc.co.kr/ko/investors/ir-events/ir-calendar/",
+            "https://investors.koreazinc.co.kr/ko/investors/announcements/disclosure/",
+            "https://m.sateconomy.co.kr/news/view/1065608866791104"
+          ],
+          "nextAction": "고려아연·KB증권·하나증권 또는 DART의 최종 증권신고서에서 수요예측·납입일 확인."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-26T23:31:03.743Z"
+    },
+    "033780": {
+      "code": "033780",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:21.129Z",
+          "code": "033780",
+          "outcome": "BLOCKED",
+          "reason": "TFWA2026Cannes organiser list available but relevantK-page4/5 failed502. Secondary exhibitor list includesKT&G; insufficient to confirm. AsiaPacific2026KT&Glist is a different spring event. Prior2025NDR and2024Cannes excluded.",
+          "checkedUrls": [
+            "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026",
+            "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=3",
+            "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=4",
+            "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=5"
+          ],
+          "nextAction": "Revisit public2026TFWA participant detail when available; currentcandidatepending.",
+          "report": "reports/research13-consumer.json",
+          "researcher": "/root/consumer_13",
+          "preservedPreviousReport": "reports/parallel-20260926-consumer.json"
+        },
+        {
+          "at": "2026-09-26T12:35:47.200Z",
+          "code": "033780",
+          "outcome": "VERIFIED",
+          "reason": "시행사 KT&G가 명시된 공식 입주자모집공고와 현행 사업 홈페이지에서 2026년 10월 5~8일 계약 기간을 대조했다. 전문 43쪽에 10:00~16:30이 명시된다. 발표 결과·가격 효과는 유보.",
+          "evidence": {
+            "code": "033780",
+            "eventId": "REVIEW:033780:GRANPEAK-CONTRACT-OPEN:20261005",
+            "eventDate": "2026-10-05",
+            "targetDate": "2026-10-06",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%B6%95%EC%95%BD.pdf",
+            "observedAt": "2026-09-26T12:35:46.803Z",
+            "researcher": "/root/consumer_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "Official brief PDF p1 L118-134; full notice PDF p43; current project calendar; root calendar comparison.",
+            "dateBasis": "Official full notice: 2026-10-05 10:00 Asia/Seoul. Existing validated application calendar maps the non-trading day to 2026-10-06.",
+            "evidenceDigest": "5a620c8f106de28c87c80ac7a003e6e8d6f27fb597a8bd96f1d456f3296e8da8",
+            "reviewedDigest": "5a620c8f106de28c87c80ac7a003e6e8d6f27fb597a8bd96f1d456f3296e8da8",
+            "digestBasis": "retained review packet; not complete publisher webpage hash",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN"
+          }
+        }
+      ],
+      "evidence": {
+        "code": "033780",
+        "eventId": "REVIEW:033780:GRANPEAK-CONTRACT-OPEN:20261005",
+        "eventDate": "2026-10-05",
+        "targetDate": "2026-10-06",
+        "publisherRole": "organizer",
+        "sourceUrl": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%B6%95%EC%95%BD.pdf",
+        "observedAt": "2026-09-26T12:35:46.803Z",
+        "researcher": "/root/consumer_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "Official brief PDF p1 L118-134; full notice PDF p43; current project calendar; root calendar comparison.",
+        "dateBasis": "Official full notice: 2026-10-05 10:00 Asia/Seoul. Existing validated application calendar maps the non-trading day to 2026-10-06.",
+        "evidenceDigest": "5a620c8f106de28c87c80ac7a003e6e8d6f27fb597a8bd96f1d456f3296e8da8",
+        "reviewedDigest": "5a620c8f106de28c87c80ac7a003e6e8d6f27fb597a8bd96f1d456f3296e8da8",
+        "digestBasis": "retained review packet; not complete publisher webpage hash",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN"
+      },
+      "reviewHistory": [],
+      "nextCheckAt": null
+    },
+    "047050": {
+      "code": "047050",
+      "state": "NOT_PUBLISHED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:21.466Z",
+          "code": "047050",
+          "outcome": "BLOCKED",
+          "reason": "New organiser evidence points to KoreaPavilion-support role; KEIA official notice originalbody stillmissing. Do not call ownexhibitor or contractannouncement.",
+          "checkedUrls": [
+            "https://www.all-energy.com.au/en-gb/exhibitor-directory.html?page=2",
+            "https://www.poscointl.com/irActivity",
+            "https://www.keia.kr/"
+          ],
+          "nextAction": "Find government copy of KEIA2026-43notice / currentorganiser exhibitor profile and exacthours, then reviewrole.",
+          "report": "reports/research13-consumer.json",
+          "researcher": "/root/consumer_13",
+          "preservedPreviousReport": "reports/parallel-20260926-consumer.json"
+        },
+        {
+          "at": "2026-09-26T12:35:47.586Z",
+          "code": "047050",
+          "outcome": "BLOCKED",
+          "reason": "The October 28-29 organiser calendar is verified, but a support-role search snippet and secondary summaries do not establish a distinct POSCO International company event. Primary KEIA page is forbidden; government attachment fetch failed. No event installed.",
+          "checkedUrls": [
+            "https://www.all-energy.com.au/en-gb/exhibitor-directory.html?page=2",
+            "https://www.poscointl.com/irActivity",
+            "https://www.keia.kr/",
+            "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123511",
+            "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000761137&fileSn=0",
+            "https://www.export119.go.kr/?menucode=20301&page=107&tmenu=bbs",
+            "https://browncg.co.kr/ko/bbs/download.php?bo_table=notice&no=0&wr_id=1311"
+          ],
+          "nextAction": "Revisit official KEIA original 2026-43 and July additional recruitment or accessible organiser KEIA profile; verify actual POSCO delegation role, exact program date/hours, and changes. Do not replace missing proof with generic sponsorship or forecast earnings dates.",
+          "report": "reports/research13-consumer.json",
+          "researcher": "/root/consumer_13"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "047050",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "공식 9/16 미국 셰일가스 인수 설명자료 확보. 9/14 계약 및 11월 중순 거래종결 목표로, 9/17~10/30의 정확한 새 예정일을 채우는 근거가 아님. 전시회 참가 확정 원문도 미확보.",
+          "checkedUrls": [
+            "https://www.poscointl.com/irActivity",
+            "https://www.poscointl.com/upload/file/202609/202609166e0c1e9b5e1f49daaaa570068773b9b9NBuG2KQ.pdf"
+          ],
+          "nextAction": "기간 내 IR·인수 일정 정정 또는 All-Energy 출전자 명단의 회사 참가 근거 확인."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-27T03:31:03.743Z"
+    },
+    "029780": {
+      "code": "029780",
+      "state": "NOT_PUBLISHED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:20.129Z",
+          "code": "029780",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "공식 회사IR캘린더 최신2026일정은7/27상반기·4/24Q1이다. 10/28은2025년이므로 올해로 복사하지 않는다. 민간사이트의10/22·10/30예상값은 서로 다르고 공식 확정일이 아니다.",
+          "checkedUrls": [
+            "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+            "https://www.k5.co.kr/stock/029780/official_notice",
+            "https://www.samsungcard.com/company/introduction/history/UHPPCI0104M0.jsp",
+            "https://kr.investing.com/equities/samsung-card-earnings",
+            "https://etfshopping.com/stock/029780/earnings",
+            "https://bullstory.io/earnings/029780",
+            "https://www.akrostec.com/indices/AKSRHD/events"
+          ],
+          "nextAction": "회사IR캘린더 또는 실적전망/기업설명회 안내공시에2026Q3일시가 새로 공개될 때확인. 민간예상날짜로0건을채우지않음.",
+          "report": "reports/research13-finance.json",
+          "researcher": "finance_13",
+          "preservedPreviousReport": "reports/parallel-20260926-finance.json"
+        },
+        {
+          "at": "2026-09-26T12:28:39.246Z",
+          "code": "029780",
+          "outcome": "BLOCKED",
+          "reason": "공식 회사IR캘린더 최신2026일정은7/27상반기·4/24Q1이다. 10/28은2025년이므로 올해로 복사하지 않는다. 민간사이트의10/22·10/30예상값은 서로 다르고 공식 확정일이 아니다. 7/22 공식 KIND 원문에 제2530회 500억원 10/20 만기 및 제2635회 100억원 10/16 만기가 있으나 9/21 최신 공시의 잔액·중도상환 대조가 아직 안 됐다. 단순 옛 만기표를 현재 유효 사건이나 가격 촉매로 승격하지 않는다.",
+          "checkedUrls": [
+            "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp",
+            "https://www.k5.co.kr/stock/029780/official_notice",
+            "https://www.samsungcard.com/company/introduction/history/UHPPCI0104M0.jsp",
+            "https://kr.investing.com/equities/samsung-card-earnings",
+            "https://etfshopping.com/stock/029780/earnings",
+            "https://bullstory.io/earnings/029780",
+            "https://www.akrostec.com/indices/AKSRHD/events",
+            "https://kind.krx.co.kr/external/2026/07/22/000572/20260722001514/10120.htm",
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000292",
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000310",
+            "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000327",
+            "https://eng.riseetf.co.kr/prod/finderDetail/44G5",
+            "https://www.riseetf.co.kr/prod/finderDetail/44G5?searchFlag=viewtab1"
+          ],
+          "nextAction": "9/21 추가서류 20260921000292 또는 투자설명서 20260921000310의 사채 명세와 9/22 보고서 20260922000327 대조로 2530·2635 잔액·중도상환을 확인한다. 현재 보유를 날짜가 있는 공식 KRX/예탁원/KB자산운용 자료로 보완할 수 있다. 확인 전 종목 완료 또는 가격효과로 추가하지 않는다. IR 일정은 회사 공지 대기.",
+          "report": "reports/research13-finance.json",
+          "researcher": "finance_13"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "029780",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "공식 IR 달력의 2026년 항목은 7/27 상반기와 4/24 1분기 발표. 10/28은 2025년 항목이므로 올해로 바꾸지 않음. 최신 채권 잔액·조기상환 상태도 미확인.",
+          "checkedUrls": [
+            "https://biz.samsungcard.com/company/IR/investor-relatioin/calender/UHPPCI0143M0.jsp"
+          ],
+          "nextAction": "2026년 3분기 발표 일정 게시 또는 최신 채권 발행·잔액 공식 자료 확인."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-27T03:31:03.743Z"
+    },
+    "002380": {
+      "code": "002380",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:22:38.228Z",
+          "code": "002380",
+          "outcome": "VERIFIED",
+          "reason": "주최자가 모멘티브 참가를 명시하고 모멘티브 공식 기업 소개가 KCC의 간접 완전자회사 관계를 명시. KCC 자체 IR 참가나 독립 기업 뉴스로 중복 계산하지 않음.",
+          "evidence": {
+            "code": "002380",
+            "eventId": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+            "eventDate": "2026-10-12",
+            "targetDate": "2026-10-13",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+            "observedAt": "2026-09-26T12:22:37.950Z",
+            "researcher": "/root/consumer_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "lines0-1,34-43,55; PDF p2 lines43-46; lines795,800-801,838; company post",
+            "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+            "evidenceDigest": "ddc2e509f6bf1338cc2415f78b46947f0f8e1df8984ce720d880a978d1fa63d1",
+            "reviewedDigest": "ddc2e509f6bf1338cc2415f78b46947f0f8e1df8984ce720d880a978d1fa63d1",
+            "digestBasis": "retained review packet; not complete publisher webpage hash",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN",
+            "throughSubsidiary": {
+              "company": "Momentive Performance Materials",
+              "ownership": "indirect_wholly_owned",
+              "ownershipSource": "https://www.momentive.com/en-us/company/company-overview",
+              "exhibitingEntity": "Momentive Performance Materials GmbH"
+            },
+            "directIssuerParticipation": false
+          }
+        },
+        {
+          "at": "2026-09-26T12:27:19.098Z",
+          "code": "002380",
+          "outcome": "VERIFIED",
+          "reason": "주최자가 모멘티브 참가를 명시하고 모멘티브 공식 기업 소개가 KCC의 간접 완전자회사 관계를 명시. KCC 자체 IR 참가나 독립 기업 뉴스로 중복 계산하지 않음. 독일 전시 법인의 공식 자회사 명단까지 추가 대조.",
+          "evidence": {
+            "code": "002380",
+            "eventId": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+            "eventDate": "2026-10-12",
+            "targetDate": "2026-10-13",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+            "observedAt": "2026-09-26T12:27:18.796Z",
+            "researcher": "/root/consumer_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "lines0-1,34-43,55; PDF p2 lines43-46; lines795,800-801,838; company post; official subsidiaries L931-933",
+            "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+            "evidenceDigest": "992b94e59027b269ea312381a56f1bbeed10ede3cbdcc4a1e2bb73676784a7c6",
+            "reviewedDigest": "992b94e59027b269ea312381a56f1bbeed10ede3cbdcc4a1e2bb73676784a7c6",
+            "digestBasis": "retained review packet; not complete publisher webpage hash",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN",
+            "throughSubsidiary": {
+              "company": "Momentive Performance Materials",
+              "ownership": "indirect_wholly_owned",
+              "ownershipSource": "https://www.momentive.com/en-us/company/company-overview",
+              "exhibitingEntity": "Momentive Performance Materials GmbH"
+            },
+            "directIssuerParticipation": false
+          }
+        }
+      ],
+      "evidence": {
+        "code": "002380",
+        "eventId": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+        "eventDate": "2026-10-12",
+        "targetDate": "2026-10-13",
+        "publisherRole": "organizer",
+        "sourceUrl": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+        "observedAt": "2026-09-26T12:27:18.796Z",
+        "researcher": "/root/consumer_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "lines0-1,34-43,55; PDF p2 lines43-46; lines795,800-801,838; company post; official subsidiaries L931-933",
+        "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+        "evidenceDigest": "992b94e59027b269ea312381a56f1bbeed10ede3cbdcc4a1e2bb73676784a7c6",
+        "reviewedDigest": "992b94e59027b269ea312381a56f1bbeed10ede3cbdcc4a1e2bb73676784a7c6",
+        "digestBasis": "retained review packet; not complete publisher webpage hash",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN",
+        "throughSubsidiary": {
+          "company": "Momentive Performance Materials",
+          "ownership": "indirect_wholly_owned",
+          "ownershipSource": "https://www.momentive.com/en-us/company/company-overview",
+          "exhibitingEntity": "Momentive Performance Materials GmbH"
+        },
+        "directIssuerParticipation": false
+      },
+      "reviewHistory": [
+        {
+          "code": "002380",
+          "eventId": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+          "eventDate": "2026-10-12",
+          "targetDate": "2026-10-13",
+          "publisherRole": "organizer",
+          "sourceUrl": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+          "observedAt": "2026-09-26T12:22:37.950Z",
+          "researcher": "/root/consumer_13",
+          "reviewer": "/root",
+          "checks": {
+            "primaryPublisherVerified": true,
+            "sourceBodyRead": true,
+            "exactDateVerified": true,
+            "companyParticipationVerified": true,
+            "latestCorrectionsChecked": true,
+            "notAnOldYear": true,
+            "notASubsidiaryDuplicate": true
+          },
+          "evidenceLocation": "lines0-1,34-43,55; PDF p2 lines43-46; lines795,800-801,838; company post",
+          "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+          "evidenceDigest": "ddc2e509f6bf1338cc2415f78b46947f0f8e1df8984ce720d880a978d1fa63d1",
+          "reviewedDigest": "ddc2e509f6bf1338cc2415f78b46947f0f8e1df8984ce720d880a978d1fa63d1",
+          "digestBasis": "retained review packet; not complete publisher webpage hash",
+          "trustProbability": null,
+          "priceImpact": "ABSTAIN",
+          "throughSubsidiary": {
+            "company": "Momentive Performance Materials",
+            "ownership": "indirect_wholly_owned",
+            "ownershipSource": "https://www.momentive.com/en-us/company/company-overview",
+            "exhibitingEntity": "Momentive Performance Materials GmbH"
+          },
+          "directIssuerParticipation": false
+        }
+      ],
+      "nextCheckAt": null
+    },
+    "010170": {
+      "code": "010170",
+      "state": "VERIFIED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:21:43.946Z",
+          "code": "010170",
+          "outcome": "VERIFIED",
+          "reason": "연구자와 부모가 각각 공식 일정 본문·대상·날짜를 대조. 가격 영향은 별도로 유보.",
+          "evidence": {
+            "code": "010170",
+            "eventId": "REVIEW:COMPANY_EXHIBITION-010170-20261014",
+            "eventDate": "2026-10-14",
+            "targetDate": "2026-10-14",
+            "publisherRole": "organizer",
+            "sourceUrl": "https://sedex.org/public_html/information/information_directory_view.asp?board_seq=3939&page=1&search_category=&search_field=+&search_keyword=",
+            "observedAt": "2026-09-26T12:21:43.633Z",
+            "researcher": "/root/smallcap_13",
+            "reviewer": "/root",
+            "checks": {
+              "primaryPublisherVerified": true,
+              "sourceBodyRead": true,
+              "exactDateVerified": true,
+              "companyParticipationVerified": true,
+              "latestCorrectionsChecked": true,
+              "notAnOldYear": true,
+              "notASubsidiaryDuplicate": true
+            },
+            "evidenceLocation": "L39-41 event year/date; L51 current-year directory; L54-62 named issuer and booth D219; L69-79 displayed fiber-laser products",
+            "dateBasis": "서울 현지 개장 2026-10-14 10:00은 한국 장중이다. 따라서 개장일 10/14를 사용하며 전시 기간을 매일 독립 사건으로 복제하지 않는다.",
+            "evidenceDigest": "c2baa3a4a8c907d88fcd33ef55f11195a0346a82c35c29cb368d4f4671bef6eb",
+            "reviewedDigest": "c2baa3a4a8c907d88fcd33ef55f11195a0346a82c35c29cb368d4f4671bef6eb",
+            "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+            "trustProbability": null,
+            "priceImpact": "ABSTAIN"
+          }
+        }
+      ],
+      "evidence": {
+        "code": "010170",
+        "eventId": "REVIEW:COMPANY_EXHIBITION-010170-20261014",
+        "eventDate": "2026-10-14",
+        "targetDate": "2026-10-14",
+        "publisherRole": "organizer",
+        "sourceUrl": "https://sedex.org/public_html/information/information_directory_view.asp?board_seq=3939&page=1&search_category=&search_field=+&search_keyword=",
+        "observedAt": "2026-09-26T12:21:43.633Z",
+        "researcher": "/root/smallcap_13",
+        "reviewer": "/root",
+        "checks": {
+          "primaryPublisherVerified": true,
+          "sourceBodyRead": true,
+          "exactDateVerified": true,
+          "companyParticipationVerified": true,
+          "latestCorrectionsChecked": true,
+          "notAnOldYear": true,
+          "notASubsidiaryDuplicate": true
+        },
+        "evidenceLocation": "L39-41 event year/date; L51 current-year directory; L54-62 named issuer and booth D219; L69-79 displayed fiber-laser products",
+        "dateBasis": "서울 현지 개장 2026-10-14 10:00은 한국 장중이다. 따라서 개장일 10/14를 사용하며 전시 기간을 매일 독립 사건으로 복제하지 않는다.",
+        "evidenceDigest": "c2baa3a4a8c907d88fcd33ef55f11195a0346a82c35c29cb368d4f4671bef6eb",
+        "reviewedDigest": "c2baa3a4a8c907d88fcd33ef55f11195a0346a82c35c29cb368d4f4671bef6eb",
+        "digestBasis": "SHA256 of retained review packet, not a claim to hash the complete publisher webpage",
+        "trustProbability": null,
+        "priceImpact": "ABSTAIN"
+      },
+      "reviewHistory": [],
+      "nextCheckAt": null
+    },
+    "030000": {
+      "code": "030000",
+      "state": "NOT_PUBLISHED",
+      "attempts": [
+        {
+          "at": "2026-09-26T12:27:21.800Z",
+          "code": "030000",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "기간내 미래 회사 확정일은 여전히 미확보. 공식 한국IR Events의Upcoming은 일정없음, 최신실적자료는2026Q2다. 공식News 및 회사LinkedIn의 최근공개본문도 검토했지만10/30실적예상일을 확정할 회사 공시를 찾지 못했다.",
+          "checkedUrls": [
+            "https://na.cheil.com/kr/ir/",
+            "https://na.cheil.com/kr/ir/financials/result",
+            "https://www.cheil.com/kr/news/",
+            "https://www.linkedin.com/company/cheil-worldwide-inc-",
+            "https://www.k5.co.kr/stock/030000/official_notice",
+            "https://www.tipranks.com/stocks/kr%3A030000/earnings/q2-2026-report?custom18=stockpage&llf=earnings-event-entry"
+          ],
+          "nextAction": "Monitor issuer IR Upcoming and KIND/DART new earnings-preannouncement/IR notices for030000; re-check source content changes, not unchanged third-party estimated dates. Keep pending until direct body confirms an exact in-window future date.",
+          "report": "reports/research13-smallcap.json",
+          "researcher": "/root/smallcap_13",
+          "preservedPreviousReport": "reports/parallel-20260926-smallcap.json"
+        },
+        {
+          "at": "2026-09-26T19:31:03.743Z",
+          "code": "030000",
+          "outcome": "NOT_PUBLISHED",
+          "reason": "공식 IR Upcoming에 예정 이벤트가 없다고 표시됨. Past의 최신 행사는 8/27로 대상 기간 밖. 추정 실적일을 확정일로 채우지 않음.",
+          "checkedUrls": [
+            "https://na.cheil.com/kr/ir/"
+          ],
+          "nextAction": "IR Upcoming 또는 KIND 실적발표·기업설명회 공시가 갱신되면 확인."
+        }
+      ],
+      "evidence": null,
+      "reviewHistory": [],
+      "nextCheckAt": "2026-09-26T23:31:03.743Z"
+    }
+  },
+  "journal": [
+    {
+      "revision": 1,
+      "at": "2026-09-26T12:21:43.276Z",
+      "code": "028260",
+      "outcome": "VERIFIED",
+      "resultDigest": "0a7a22b4a1446e5c9b86580ba72bb9a94aba6a067e2d727d96e4125fdb5d902b",
+      "previous": null,
+      "digest": "eb36294c742bd2f8feb663a96f61091bf900c396936dab1c4aedba92f68e6a93"
+    },
+    {
+      "revision": 2,
+      "at": "2026-09-26T12:21:43.584Z",
+      "code": "226950",
+      "outcome": "VERIFIED",
+      "resultDigest": "e0831d9c1058a1548fda47cb572091d4ee07f4b7a8b796b1d645f55f385c425c",
+      "previous": "eb36294c742bd2f8feb663a96f61091bf900c396936dab1c4aedba92f68e6a93",
+      "digest": "87e1a916ea40a350b67b8547a566aa81967c97b9cb8466f9e2863c05adab1448"
+    },
+    {
+      "revision": 3,
+      "at": "2026-09-26T12:21:43.946Z",
+      "code": "010170",
+      "outcome": "VERIFIED",
+      "resultDigest": "aeeeb107ec8027a592245ee64d4d81f55407a4e0b80d6eb47874a64bae9eb5ec",
+      "previous": "87e1a916ea40a350b67b8547a566aa81967c97b9cb8466f9e2863c05adab1448",
+      "digest": "1fe6333d89e6c857325a53d0739138b4c7e7f61a167c24654b73964d528ffbec"
+    },
+    {
+      "revision": 4,
+      "at": "2026-09-26T12:22:37.898Z",
+      "code": "111770",
+      "outcome": "VERIFIED",
+      "resultDigest": "e0933da40f5bcb0de51df5d597c8683710f77d2852471e917158ffa959d05893",
+      "previous": "1fe6333d89e6c857325a53d0739138b4c7e7f61a167c24654b73964d528ffbec",
+      "digest": "5cfa89182ad0ea76df701aadd1be735bde8342bcf8b3196de0595a87be60ae50"
+    },
+    {
+      "revision": 5,
+      "at": "2026-09-26T12:22:38.228Z",
+      "code": "002380",
+      "outcome": "VERIFIED",
+      "resultDigest": "a952577942fcf2cb328123ad3b2feb29d20c85857b45c30f3298f637ca1938f8",
+      "previous": "5cfa89182ad0ea76df701aadd1be735bde8342bcf8b3196de0595a87be60ae50",
+      "digest": "7b7727d4c6d4b3138f74c9fc8563f4c4fc8fa48fe68dcea926dbe5cc609f87e1"
+    },
+    {
+      "revision": 6,
+      "at": "2026-09-26T12:27:19.098Z",
+      "code": "002380",
+      "outcome": "VERIFIED",
+      "resultDigest": "952c1cf5a7af7b00ece69f10202474abd660cdb256df731a827473c4e97a42b8",
+      "previous": "7b7727d4c6d4b3138f74c9fc8563f4c4fc8fa48fe68dcea926dbe5cc609f87e1",
+      "digest": "ad1620f6233f0f49f3176a3f7338e22a48f16b30246439e99b57cc7e06e4246b"
+    },
+    {
+      "revision": 7,
+      "at": "2026-09-26T12:27:19.474Z",
+      "code": "034730",
+      "outcome": "BLOCKED",
+      "resultDigest": "49faae55d4b2e7824e430f1eb0f9ee35e12f29db558c6f39409fe44ec95ab6d2",
+      "previous": "ad1620f6233f0f49f3176a3f7338e22a48f16b30246439e99b57cc7e06e4246b",
+      "digest": "f89db93c4895ce179c4a0e7ec154c549418c5b78f5b14f447397731820942aaf"
+    },
+    {
+      "revision": 8,
+      "at": "2026-09-26T12:27:19.804Z",
+      "code": "138040",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "89a021c503b19cec6e7f86b3a592c8daeee4e23961ccffe93f01313c798c727d",
+      "previous": "f89db93c4895ce179c4a0e7ec154c549418c5b78f5b14f447397731820942aaf",
+      "digest": "1ea1007638abdef18d68fc552bdd2225ab8243ee0b0c6b87d77090bd9c3ead07"
+    },
+    {
+      "revision": 9,
+      "at": "2026-09-26T12:27:20.129Z",
+      "code": "029780",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "43033728dbd276c665f6b593c5d59b8210ec45fcb4e2051b2ddb82ee602ead81",
+      "previous": "1ea1007638abdef18d68fc552bdd2225ab8243ee0b0c6b87d77090bd9c3ead07",
+      "digest": "0521aabe2c2ca1d08a0f9f54ad1dcc68c9c4f9a9801fda278f377296fe0f458a"
+    },
+    {
+      "revision": 10,
+      "at": "2026-09-26T12:27:20.465Z",
+      "code": "005490",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "3b8752a5956ab623ee08e6011c167f5c3ce61e3037962381221e868e8de91c74",
+      "previous": "0521aabe2c2ca1d08a0f9f54ad1dcc68c9c4f9a9801fda278f377296fe0f458a",
+      "digest": "5dce711b95a4f8df740e8333e7a1be8535c796ef18feb4b9d850931f2c04b0b2"
+    },
+    {
+      "revision": 11,
+      "at": "2026-09-26T12:27:20.755Z",
+      "code": "010130",
+      "outcome": "BLOCKED",
+      "resultDigest": "78f7af17fb97c7191dc89fe60d2317976b91052495ec687f7a730b8911371796",
+      "previous": "5dce711b95a4f8df740e8333e7a1be8535c796ef18feb4b9d850931f2c04b0b2",
+      "digest": "386a5e1106695832532e4e48e10a3a44e38d44f6444e90382c92afded8c7a6a0"
+    },
+    {
+      "revision": 12,
+      "at": "2026-09-26T12:27:21.129Z",
+      "code": "033780",
+      "outcome": "BLOCKED",
+      "resultDigest": "177c5ca1bc098e790285137afe2bde9ad0d58276b7d6cf91eefa501f17a1fa2d",
+      "previous": "386a5e1106695832532e4e48e10a3a44e38d44f6444e90382c92afded8c7a6a0",
+      "digest": "555120a8f6b4f933abdb23076f237014697a6673811a25e22a63e86310476842"
+    },
+    {
+      "revision": 13,
+      "at": "2026-09-26T12:27:21.466Z",
+      "code": "047050",
+      "outcome": "BLOCKED",
+      "resultDigest": "e431700f020f4344c28963e449afa4aae160a867b22279870fa7c45703a21ce5",
+      "previous": "555120a8f6b4f933abdb23076f237014697a6673811a25e22a63e86310476842",
+      "digest": "cb9f062dbd4f6dedb7e1d465daceac790e3dc4132726771fdb5ad1952d1f7188"
+    },
+    {
+      "revision": 14,
+      "at": "2026-09-26T12:27:21.800Z",
+      "code": "030000",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "ba8dec98633b5b4599551ee23f34d6a12b789ecc3590bc4a142ac47f26f5ed75",
+      "previous": "cb9f062dbd4f6dedb7e1d465daceac790e3dc4132726771fdb5ad1952d1f7188",
+      "digest": "f6e867bb5277c13454eacc344c21573f8d82c1f48c04931881aaa1fd5605ac27"
+    },
+    {
+      "revision": 15,
+      "at": "2026-09-26T12:28:39.246Z",
+      "code": "029780",
+      "outcome": "BLOCKED",
+      "resultDigest": "cf44d6ffeb1439f7922be0ce027e0dfdf688b25822bd20f24b8f0b885658c003",
+      "previous": "f6e867bb5277c13454eacc344c21573f8d82c1f48c04931881aaa1fd5605ac27",
+      "digest": "828a82d88abade67ac69059edc7323b8585cbc88d035dc8f09855ddf7e6d5798"
+    },
+    {
+      "revision": 16,
+      "at": "2026-09-26T12:35:47.200Z",
+      "code": "033780",
+      "outcome": "VERIFIED",
+      "resultDigest": "da7405344f55c43e7c014d55ab9ffe6f33027006148c1d8719c862a4951d4ed4",
+      "previous": "828a82d88abade67ac69059edc7323b8585cbc88d035dc8f09855ddf7e6d5798",
+      "digest": "28f61ffcf791a6cf9b7b2a8b52fa05f749fb3d0c4367b93ceb4229b4c2347cb6"
+    },
+    {
+      "revision": 17,
+      "at": "2026-09-26T12:35:47.586Z",
+      "code": "047050",
+      "outcome": "BLOCKED",
+      "resultDigest": "f14155c5045fbfc8ff66d013fbd5bd51863b9c29c9ed3df0264e1aec5ed226b6",
+      "previous": "28f61ffcf791a6cf9b7b2a8b52fa05f749fb3d0c4367b93ceb4229b4c2347cb6",
+      "digest": "8751137db111cf709e7629499d8ee145bbf9846a4083fa485038e698172c03f0"
+    },
+    {
+      "revision": 18,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "034730",
+      "outcome": "BLOCKED",
+      "resultDigest": "cb0dfbc5206e8a6c2666bd6db799c3817850a2dd9ec2a28f182b7cd6a3cc39d8",
+      "previous": "8751137db111cf709e7629499d8ee145bbf9846a4083fa485038e698172c03f0",
+      "digest": "b39558e2f66781a15a0d15246aac4c0b20999ad39b4b0bf8906d8cd71fe3c2ce"
+    },
+    {
+      "revision": 19,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "005490",
+      "outcome": "BLOCKED",
+      "resultDigest": "9d4249e4f3ab400fa58e3cc42ed78a78a72b7e401d8aaaab365b0b1ff90c781c",
+      "previous": "b39558e2f66781a15a0d15246aac4c0b20999ad39b4b0bf8906d8cd71fe3c2ce",
+      "digest": "3b7ecf360225f9c2f01f9f7d6c66c62728b559a0a0ed35b5b505eb56127d12d2"
+    },
+    {
+      "revision": 20,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "010130",
+      "outcome": "BLOCKED",
+      "resultDigest": "efec06b8d4a265bedadfae889e5480acb59d0ca5b258343adac1457015c253ef",
+      "previous": "3b7ecf360225f9c2f01f9f7d6c66c62728b559a0a0ed35b5b505eb56127d12d2",
+      "digest": "46c8729860a75b2c197b25fac251df04d5b836c6841bbff66cc1587bf4706322"
+    },
+    {
+      "revision": 21,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "138040",
+      "outcome": "BLOCKED",
+      "resultDigest": "28862cd00586db2388c7f0511be542fde75edae93580f539ab35c4a75a8e7f97",
+      "previous": "46c8729860a75b2c197b25fac251df04d5b836c6841bbff66cc1587bf4706322",
+      "digest": "c409480bd9630e9439a52b2553299b9fb7cde095940c3fa4f26c964800216bd0"
+    },
+    {
+      "revision": 22,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "047050",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "e55b5272de5176d3ce6414a9ce06403a7dd5f45ff4f155bfcecef24ff4e767b4",
+      "previous": "c409480bd9630e9439a52b2553299b9fb7cde095940c3fa4f26c964800216bd0",
+      "digest": "b779eaf1c9ac8a8be78e41e03fc355baa9e1b76c1e7e529fbee7464fc6e61e03"
+    },
+    {
+      "revision": 23,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "029780",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "5856d5fce143d0649a752e5a912ec54fa0f66fc7831eab1fdb7b8c29c8fdca9d",
+      "previous": "b779eaf1c9ac8a8be78e41e03fc355baa9e1b76c1e7e529fbee7464fc6e61e03",
+      "digest": "05779927b3a9d25c73c24ee01cd75395007829e45b46650978a1d82b327a4433"
+    },
+    {
+      "revision": 24,
+      "at": "2026-09-26T19:31:03.743Z",
+      "code": "030000",
+      "outcome": "NOT_PUBLISHED",
+      "resultDigest": "bcc4923376716cd9a75c20a6dce4dd1a39e9d383a0ad24e50db999c0f32b3e40",
+      "previous": "05779927b3a9d25c73c24ee01cd75395007829e45b46650978a1d82b327a4433",
+      "digest": "f78a8ed723f6ada4bd7703229ca45d753f917d891198a47d41fee909646f786e"
+    }
+  ]
+}

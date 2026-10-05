@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="EUC-KR" ?>
+
+<protocol>
+
+
+
+	
+	
+			<chartdata symbol="005930" name="삼성전자" count="3" timeframe="day" precision="0" origintime="19900103">
+			
+				<item data="20260923|284500|286500|281000|286500|20864376" />
+			
+				<item data="20260928|284500|285500|268500|270000|21346064" />
+			
+				<item data="20260929|266000|276000|266000|275000|15653425" />
+			
+	
+
+
+	</chartdata>
+</protocol>

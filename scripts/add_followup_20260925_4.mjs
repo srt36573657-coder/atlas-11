@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+const p='public/data/researched-news.json',s=JSON.parse(fs.readFileSync(p));
+if(s.releaseId==='official-news-20260925-4')process.exit(0);
+if(s.releaseId!=='official-news-20260925-3')throw Error('새 자료 충돌: 기존 릴리스를 보존하세요.');
+const at=new Date().toISOString(),releaseId='official-news-20260925-4';
+const id='REVIEW:COMPANY_IR-086280-20260930',url='https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923800318';
+s.events.push({id,name:'현대글로비스 미래에셋 Korea Corporate Day 2026 기업설명회',kind:'COMPANY_IR',eventDate:'2026-09-30',announcementDate:'2026-09-30',targetDate:'2026-09-30',scope:{type:'company',codes:['086280']},availableAt:at,firstObservedAt:at,publishedAt:null,status:'scheduled',sources:[{name:'DART 현대글로비스 2026.09.23 기업설명회 개최 공시',url,retrievedAt:at}],channel:'한국시간 13:30, 서울. 국내 기관 투자자에게 경영실적·사업현황 설명. 실적 발표 결과나 수주 확정이 아니며 비교 표본 부족으로 수치 영향 유보.',reference:'DART 본문 직접 확인 · 결과 미공개 · 가격 효과 미검증',dateBasis:'공식 개최 예정일. 당일 주가 반응을 보장하지 않음.',importance:'review',reviewReleaseId:releaseId});
+const row=s.research.assets.find(r=>r.code==='086280');Object.assign(row,{status:'company_schedule_confirmed',checkedAt:at,note:'9/30 13:30 미래에셋 Korea Corporate Day 기업설명회. DART 9/23 공시 본문 확인. 해당 기업에만 연결하며 비교 표본 부족으로 수치 영향 유보.',researchBasis:'회사명·일시·장소·참석 대상·주요 내용을 DART iframe 본문에서 직접 대조.'});row.sources.unshift({name:'DART 기업설명회 공시',url});
+const cheil=s.research.assets.find(r=>r.code==='030000');cheil.note+=' 9/25 한국 공식 IR 화면은 예정 행사가 없다고 표시. 전체 기업 뉴스 부재를 뜻하지 않음.';cheil.sources.unshift({name:'제일기획 한국 IR',url:'https://www.cheil.com/kr/ir/'});cheil.checkedAt=at;
+const ktg=s.research.assets.find(r=>r.code==='033780');ktg.note+=' 9/25 공식 영문 IR 목록 최신 행사는 8/24~25. 2025년 9~10월 일정은 올해에 복사하지 않음. 9/22 자사주 공시 후보는 별도 원문 검증 필요.';ktg.sources.unshift({name:'KT&G 공식 IR 일정',url:'https://en.ktng.com/ir/ir-archives/events'});ktg.checkedAt=at;
+const f=s.research.followup25;f.fullyConfirmedCompanyScheduleCodes=[...new Set([...f.fullyConfirmedCompanyScheduleCodes,'086280'])];f.unresolvedCodes=f.requestedCodes.filter(c=>!f.fullyConfirmedCompanyScheduleCodes.includes(c));f.complete=false;f.note=`25종목 중 ${f.fullyConfirmedCompanyScheduleCodes.length}종목 공식 일정 확인, ${f.unresolvedCodes.length}종목 미확인. 일정 확인은 가격 효과·예측력 입증이 아님.`;
+s.research.batchReviewHistory=[...(s.research.batchReviewHistory??[]),s.research.batchReview];
+s.research.batchReview={checkedAt:at,requestedCodes:f.requestedCodes,companyPagesAttempted:52,policy:'52개 저장 출처 재접속. 홈페이지 접근 성공은 개별 사건 확인과 구분. 접근 제한 및 기존 근거 유지. 미확보 종목 묶음 조사.',newlyConfirmedCodes:['086280'],accessReport:'reports/company-access-20260925.json',industryPagesAttempted:11,indexMembershipConfirmed:false};
+s.releaseId=releaseId;s.checkedAt=at;Object.assign(s.research,{releaseId,checkedAt:at,eventIds:s.events.map(e=>e.id)});fs.writeFileSync(p,JSON.stringify(s));console.log({releaseId,newEvent:id,unresolved:f.unresolvedCodes.length});

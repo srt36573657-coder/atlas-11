@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import{createHash}from'node:crypto';
+import{collectSources52}from'../lib/news-collection52.mjs';
+import{collectFomoV2}from'../lib/fomo-collector-v2.mjs';
+const sha=s=>createHash('sha256').update(s).digest('hex');
+const bundle=JSON.parse(await fs.readFile('public/data/atlas.json')),input=bundle.input,at=new Date().toISOString(),dir='reports/factor36/runs/'+at.replace(/[:.]/g,'-');await fs.mkdir(dir,{recursive:true});await fs.mkdir('reports/factor36/snapshots',{recursive:true});
+const snapshots=[];const keep=async s=>{const h=s.metadata.contentSha256;snapshots.push({url:s.source?.url,sha256:h,observedAt:s.metadata.observedAt});await fs.writeFile('reports/factor36/snapshots/'+h+'.bin',s.body);await fs.writeFile('reports/factor36/snapshots/'+h+'.json',JSON.stringify(s.metadata));};
+const fomo=await collectFomoV2(input,{naverId:process.env.NAVER_CLIENT_ID,naverSecret:process.env.NAVER_CLIENT_SECRET,onSnapshot:keep,sourceOptions:{deadlineMs:20000,timeoutMs:4000,maxAttempts:1,perHostConcurrency:2,circuitThreshold:2}});
+await fs.writeFile(dir+'/fomo-collection.json',JSON.stringify(fomo));
+const definitions=[['F06','DEXKOUS'],['F03','IRLTLT01KRM156N'],['F04','DFII10'],['F10','VIXCLS']];const codes=input.assets.map(a=>a.code).sort(),sources=definitions.map(([factorId,series])=>{const csv='https://fred.stlouisfed.org/graph/fredgraph.csv?id='+series;return{id:'source:'+sha(csv).slice(0,24),url:csv,host:'fred.stlouisfed.org',codes,references:[],config:{enabled:true},factorId,series};});const registry={codes,sources,assets:input.assets.map(a=>({code:a.code,sourceIds:sources.map(s=>s.id)}))};
+const macro=await collectSources52(registry,{deadlineMs:15000,timeoutMs:4000,maxAttempts:1,perHostConcurrency:1,circuitThreshold:2,onSnapshot:keep});
+const report={schema:'atlas-factor36-collection-1',at,priceAsOf:input.actualAsOf,retainedPrices:true,price:fomo.price,search:fomo.search,flow:fomo.flow,macro:macro.report,snapshots,newApprovedFactorRecords:0,macroReviewRequired:true,exitCode:2,notes:['원자료 요청과 정상 응답·수치 승인 구분','현재 가격 이력의 기업행위·당시 빈티지 미검증','예정 뉴스는 기존 확인 원문을 재사용했으며 새 회사 뉴스 검증 아님']};
+await fs.writeFile(dir+'/collection.json',JSON.stringify(report,null,2));await fs.writeFile('reports/factor36/collection-latest.json',JSON.stringify(report,null,2));await fs.writeFile('public/data/factor36-collection.json',JSON.stringify(report));
+console.log(JSON.stringify({at,priceSuccess:fomo.price.successfulSources,priceFailed:fomo.price.failedSources,priceDeferred:fomo.price.deferredSources,macroSuccess:macro.report.successfulSources,macroFailed:macro.report.failedSources,macroDeferred:macro.report.deferredSources,searchNotConfigured:fomo.search.filter(x=>x.status==='not_configured').length,dir}));process.exitCode=2;

@@ -1,0 +1,2050 @@
+{
+ "schema": "atlas4h-sources-1",
+ "part": "엔진",
+ "readAtKST": "2026-10-01 17:14~17:34 KST",
+ "howRead": "이 세션에서 curl은 회사 출입 규칙(프록시 403)으로 막혀, 원문은 WebFetch(문서를 글로 바꾼 뒤 작은 모델이 요청한 대목을 옮겨 줌)로만 읽었다. 인용은 원문에서 옮겨 온 글이지만 글자 하나까지 같은지는 코더가 PDF로 한 번 더 대조해야 한다. 두 번 읽어 다르게 나온 숫자·식(AIA 표 10, DtACI의 η)은 적지 않았다.",
+ "counts": {
+  "items": 23,
+  "fullText": 15,
+  "abstractOnly": 5,
+  "notRead": 3,
+  "쓴다": 7,
+  "조건부": 12,
+  "안 쓴다": 0,
+  "보류": 4
+ },
+ "items": [
+  {
+   "id": "E01-gneiting-raftery-2007",
+   "group": "점수",
+   "commandLabel": "점수: CRPS·구간·브라이어(JASA 2007)",
+   "usedBy": [
+    "12-sources.txt:10",
+    "09-scoring-evolution.txt:4",
+    "09-scoring-evolution.txt:6",
+    "01-structures36.txt:39"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 10,
+     "text": "점수: CRPS·구간·브라이어(JASA 2007)"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 4,
+     "text": "분포 CRPS·범위 구간 점수·확률 브라이어"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 6,
+     "text": "실력 = 1 − 내 오차 ÷ 기준 오차"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 39,
+     "text": "F2 바른 점수: 확률·범위에 맞는 점수만 쓴다"
+    }
+   ],
+   "original": {
+    "title": "Strictly Proper Scoring Rules, Prediction, and Estimation",
+    "authors": [
+     "Tilmann Gneiting",
+     "Adrian E. Raftery"
+    ],
+    "year": 2007,
+    "venue": "Journal of the American Statistical Association (2007) — 권·호는 이번에 따로 확인 안 함(본문 쪽 번호 359~370을 봄)",
+    "url": "https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(저자 Raftery 누리집에 있는 학술지 판)",
+   "verified": [
+    {
+     "claim": "09:4 분포는 CRPS로 채점한다",
+     "quote": "the CRPS generalizes the absolute error and reduces to absolute error if F is a point measure.",
+     "location": "p.367, 4.2절(식 (20)·(21) 곁)",
+     "verdict": "맞음",
+     "note": "뜻: CRPS는 분포 전체를 채점하고, 값 하나만 내면 보통의 '절대 오차'와 같아진다."
+    },
+    {
+     "claim": "09:4 범위는 구간 점수로 채점한다",
+     "quote": "Putting α1 = α/2 , α2 = 1 − α/2 , s1(x) = s2(x) = 2x/α , and h(x) =−2x/α in (42), and reversing the sign of the scoring rule, yields the negatively oriented interval score, … The forecaster is rewarded for narrow prediction intervals, and he or she incurs a penalty, the size of which depends on α, if the observation misses the interval.",
+     "location": "p.370, 6.2절, 식 (43) 앞뒤",
+     "verdict": "맞음",
+     "note": "뜻: 범위가 좁을수록 좋고, 실제 값이 범위 밖이면 α에 따라 벌점. 식 (43)은 '낮을수록 좋음' 쪽이다(부호는 따로 한 번 더 읽어 확인)."
+    },
+    {
+     "claim": "09:4 확률은 브라이어로 채점한다",
+     "quote": "S(p,i) = 2p_i − Σ_j p_j² − 1",
+     "location": "p.363, Example 1",
+     "verdict": "맞음",
+     "note": "뜻: 원문은 '높을수록 좋음' 쪽의 이차 점수로 적는다. 같은 쪽에서 −Σ(δ_ij − p_j)² 와 같다고 함께 읽힘."
+    },
+    {
+     "claim": "09:6 실력 = 1 − 내 오차 ÷ 기준 오차",
+     "quote": "Unfortunately, skill scores of the form (8) are generally improper, even if the underlying scoring rule S is proper.",
+     "location": "p.360, 2.3절",
+     "verdict": "일부 맞음",
+     "note": "뜻: '실력 점수'는 보여 주기엔 좋지만 그 자체는 바른 점수가 아니다. 이겼는지 판정은 점수 차의 검정(DM)으로 한다."
+    },
+    {
+     "claim": "부호 약속(원문 전체)",
+     "quote": "We take scoring rules to be positively oriented rewards that a forecaster wishes to maximize.",
+     "location": "p.359",
+     "verdict": "맞음",
+     "note": "주의: 원문 CRPS 식 (20)·(21)은 앞에 − 가 붙은 '높을수록 좋음'이다. 엔진은 모두 '낮을수록 좋음(벌점)'으로 저장하므로 부호를 뒤집어 쓴다."
+    }
+   ],
+   "formula": "[모두 '낮을수록 좋음'으로 저장 — 원문 부호를 뒤집음]\nCRPS(F, y) = ∫ (F(z) − 1{z ≥ y})² dz = E|X − y| − ½·E|X − X′|   (원문 식 (20)·(21)의 부호를 뒤집은 것)\n  표본 m개 x_1..x_m 로 셈: CRPS ≈ (1/m)·Σ_i |x_i − y| − (1/(2m²))·Σ_i Σ_j |x_i − x_j|   [식 (21)에 표본을 그대로 넣은 것 — 내가 옮긴 셈법]\n구간 점수(원문 식 (43)): IS_α(l, u; y) = (u − l) + (2/α)·(l − y)·1{y < l} + (2/α)·(y − u)·1{y > u}\n  80% 범위면 α = 0.2 → 벗어난 거리 1당 벌점 10\n브라이어(두 갈래 사건, 좋게/나쁘게): BS = (p − o)², o ∈ {0, 1}\n  원문 이차 점수 S = 2p_i − Σ p_j² − 1 는 두 갈래에서 −2·BS 와 같다 [내가 한 셈]\n실력(09:6): 실력 = 1 − 평균벌점(엔진) ÷ 평균벌점(기준) — 화면용. 원문 2.3절: 이런 실력 점수는 대개 바른 점수가 아니다 → 판정은 DM으로",
+   "decision": "쓴다",
+   "condition": "점수는 모두 벌점 쪽으로 부호를 맞춰 저장한다. 실력 숫자는 보여 주기에만 쓰고, 이겼는지는 점수 차 검정으로 정한다.",
+   "reason": "분포·범위·확률마다 맞는 '바른 점수'가 원문에 식 번호와 함께 있다(F2).",
+   "reliability": "10점 — 동료심사 학술지(JASA) 원문, 저자 누리집 사본",
+   "structuresUsed": [
+    "F2",
+    "F3",
+    "C5"
+   ],
+   "notes": "식 (43)의 부호는 두 번째로 따로 읽어 'reversing the sign … negatively oriented' 문장으로 확인했다."
+  },
+  {
+   "id": "E02-diebold-mariano-1995",
+   "group": "비교",
+   "commandLabel": "비교: DM 검정(1995 원문)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "08-engine.txt:5",
+    "09-scoring-evolution.txt:8",
+    "09-scoring-evolution.txt:9",
+    "10-spec.txt:19",
+    "13-command.txt:23"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 5,
+     "text": "후보는 DM 검정으로 무판을 이길 때만 무게를 얻는다."
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 8,
+     "text": "이겼는지는 DM 검정으로(겹친 창·자기상관 보정)."
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 9,
+     "text": "봉인한 판정: 실력 > 0·DM 유의 → '실력'"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 19,
+     "text": "T16 무판을 못 이긴 가운데 후보의 무게 0 (점수)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 23,
+     "text": "① 맞다: 폭은 기준을 이기고, 방향은 검증될 때만"
+    }
+   ],
+   "original": {
+    "title": "Comparing Predictive Accuracy",
+    "authors": [
+     "Francis X. Diebold",
+     "Roberto S. Mariano"
+    ],
+    "year": 1995,
+    "venue": "Journal of Business & Economic Statistics (1995)",
+    "url": "https://www.nber.org/system/files/working_papers/t0169/t0169.pdf"
+   },
+   "readDirectly": false,
+   "readScope": "못 읽음",
+   "verified": [
+    {
+     "claim": "08:5·09:8 DM 검정(겹친 창·자기상관 보정)",
+     "quote": "없음",
+     "location": "못 읽음",
+     "verdict": "확인 못 함",
+     "note": "NBER 판(t0169)은 그림 스캔이라 글자가 없었고, 학술지 사본(uc3m)은 머리글만 읽혔고, 저자 누리집 판은 403으로 막혔다."
+    }
+   ],
+   "formula": "없음 — 1995 원문을 못 읽어 그 식을 적지 않는다. 같은 저자의 2015년 글(E03)에서 읽은 식을 쓴다.",
+   "decision": "보류",
+   "condition": "글자가 든 1995 원문을 열면 다시 정한다.",
+   "reason": "원문을 직접 못 읽었다(04-learning 8줄 「원문을 직접 읽은 것만 쓴다」).",
+   "reliability": "10점 학술지(JBES)이나 못 읽음",
+   "structuresUsed": [
+    "C5",
+    "F3"
+   ],
+   "notes": "시도한 곳: nber.org t0169(스캔), economia.uc3m.es 사본(머리글만), sas.upenn.edu ~fdiebold paper68(403), web.archive.org(막힘), tandfonline(403)."
+  },
+  {
+   "id": "E03-diebold-2015",
+   "group": "비교",
+   "commandLabel": "비교: DM 검정(저자의 2015 정리 글)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "08-engine.txt:5",
+    "09-scoring-evolution.txt:8",
+    "09-scoring-evolution.txt:9",
+    "10-spec.txt:15",
+    "10-spec.txt:19",
+    "13-command.txt:23"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 5,
+     "text": "후보는 DM 검정으로 무판을 이길 때만 무게를 얻는다."
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 8,
+     "text": "이겼는지는 DM 검정으로(겹친 창·자기상관 보정)."
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 9,
+     "text": "봉인한 판정: 실력 > 0·DM 유의 → '실력'"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 15,
+     "text": "T12 재현에서 폭이 기준 셋 모두를 이김 (점수)"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 19,
+     "text": "T16 무판을 못 이긴 가운데 후보의 무게 0 (점수)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 23,
+     "text": "① 맞다: 폭은 기준을 이기고, 방향은 검증될 때만"
+    }
+   ],
+   "original": {
+    "title": "Comparing Predictive Accuracy, Twenty Years Later: A Personal Perspective on the Use and Abuse of Diebold-Mariano Tests",
+    "authors": [
+     "Francis X. Diebold"
+    ],
+    "year": 2012,
+    "venue": "NBER Working Paper 18391 (2012. 9.) — 뒤에 Journal of Business & Economic Statistics(2015)에 실렸다고 알려짐(학술지판은 안 열어 봄)",
+    "url": "https://www.nber.org/system/files/working_papers/w18391/w18391.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(NBER 판)",
+   "verified": [
+    {
+     "claim": "09:8 이겼는지는 DM 검정으로",
+     "quote": "DM12 = d̄12 / σ̂_d̄12 → N(0, 1)",
+     "location": "p.2, 식 (2)",
+     "verdict": "맞음",
+     "note": "뜻: 두 판의 점수 차 평균을 그 표준오차로 나눈 값. 크면 차이가 우연이 아니다."
+    },
+    {
+     "claim": "09:8 자기상관 보정",
+     "quote": "Diebold and Mariano (1995) use σ̂_d̄ = √(ĝ(0)/T), where ĝ(0) is a lag-window estimator of the loss differential spectrum at frequency zero.",
+     "location": "p.2",
+     "verdict": "일부 맞음",
+     "note": "자기상관을 lag-window로 보정한다는 것까지 확인. 겹친 창(h걸음)에 맞춰 몇 칸까지 자를지는 이 글에서 못 찾음."
+    },
+    {
+     "claim": "DM의 전제",
+     "quote": "Assumption DM: E(d12t) = µ, ∀t; cov(d12t, d12(t−τ)) = γ(τ), ∀t; 0 < var(d12t) = σ² < ∞",
+     "location": "p.2, 식 (1)",
+     "verdict": "맞음",
+     "note": "뜻: 점수 차가 '공분산 정상'이어야 한다. 국면이 크게 바뀌면 이 전제가 흔들린다."
+    },
+    {
+     "claim": "08:5 후보는 DM 검정으로 무판을 이길 때만 무게 / 10:15 T12 재현에서 이김",
+     "quote": "The DM test was intended for comparing forecasts; it has been, and remains, useful in that regard. The DM test was not intended for comparing models.",
+     "location": "p.1 초록, p.12 맺음",
+     "verdict": "일부 맞음",
+     "note": "봉인된 실제 판끼리 견주는 데는 맞다. 재현(지난 자료로 만든 판)으로 '모형'을 고를 때 DM 하나로 결론 내는 것은 저자가 의도한 쓰임이 아니다."
+    }
+   ],
+   "formula": "d_t = 벌점(기준 판)_t − 벌점(엔진 판)_t   (같은 시각 판끼리, 벌점 = CRPS·IS·BS 중 하나)\nd̄ = (1/T)·Σ d_t\nDM = d̄ / σ̂_d̄,  σ̂_d̄ = √(ĝ(0)/T)   (Diebold 2015 식 (2)와 p.2 문장)\nĝ(0) = γ̂(0) + 2·Σ_{τ=1..L} w_τ·γ̂(τ)   (영 주파수 장기 분산의 lag-window 추정; γ̂(τ) = d의 τ칸 자기공분산)\n  L(자를 길이)·w_τ(창 모양): 1995 원문·HLN 1997을 못 읽어 [확인 필요] — 설정값으로 두고 봉인 기록에 적는다\n판정: DM > 0 이고 N(0,1) 기준으로 유의하면 '엔진이 기준보다 낫다'. 작은 표본 보정 식은 보류(E04).",
+   "decision": "조건부",
+   "condition": "봉인된 판(같은 시각 판끼리)의 점수 차에만 쓴다. 재현으로 모형을 고를 땐 DM 하나로 정하지 않고 MCS·SPA와 함께 본다. 자를 길이 L은 원문 확인 전까지 설정값으로 봉인한다.",
+   "reason": "DM 식과 '판을 견주는 도구이지 모형을 견주는 도구가 아니다'라는 저자 경고를 직접 읽었다. 1995 원문의 세부(자를 길이)는 못 읽었다.",
+   "reliability": "10점 — DM 검정 저자 본인의 글(NBER 판 읽음, 학술지판은 안 열어 봄)",
+   "structuresUsed": [
+    "F3",
+    "F4",
+    "E6",
+    "C5"
+   ],
+   "notes": "1995 원문 대신 같은 저자의 정리 글로 식을 확인했다. 실렸다는 학술지 정보는 검색 결과의 Patton 토론 글 제목으로만 봤다."
+  },
+  {
+   "id": "E04-harvey-leybourne-newbold-1997",
+   "group": "비교",
+   "commandLabel": "비교: DM 작은 표본 보정(HLN 1997)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "09-scoring-evolution.txt:8"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 8,
+     "text": "이겼는지는 DM 검정으로(겹친 창·자기상관 보정)."
+    }
+   ],
+   "original": {
+    "title": "Testing the equality of prediction mean squared errors",
+    "authors": [
+     "David Harvey",
+     "Stephen Leybourne",
+     "Paul Newbold"
+    ],
+    "year": 1997,
+    "venue": "International Journal of Forecasting 13(2), 281–291",
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S0169207096007194"
+   },
+   "readDirectly": true,
+   "readScope": "초록만",
+   "verified": [
+    {
+     "claim": "09:8 겹친 창·작은 표본 보정",
+     "quote": "We analyse the behaviour of two possible tests, and of modifications of these tests designed to circumvent shortcomings in the original formulations. As a result of this analysis, a recommendation for one particular testing approach is made for practical applications.",
+     "location": "초록",
+     "verdict": "확인 못 함",
+     "note": "보정한 판이 있다는 것만 초록에서 확인. 보정 식(배수와 t분포 자유도)은 본문을 못 읽어 모른다."
+    }
+   ],
+   "formula": "없음 — 보정 식을 원문에서 못 읽었다.",
+   "decision": "보류",
+   "condition": "본문을 열면 보정 식을 옮기고 다시 정한다.",
+   "reason": "필요한 것은 식인데 초록에는 식이 없다.",
+   "reliability": "10점 학술지(IJF) — 초록만 읽음(본문 사본 주소는 421 오류)",
+   "structuresUsed": [
+    "F4",
+    "C5"
+   ],
+   "notes": "시도한 곳: eurequa.univ-paris1.fr 사본(421), ScienceDirect 본문(504·초록만)."
+  },
+  {
+   "id": "E05-giacomini-white-2006",
+   "group": "비교",
+   "commandLabel": "비교: GW 검정(조건부 예측력)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "09-scoring-evolution.txt:15",
+    "08-engine.txt:6"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 15,
+     "text": "언제 이기는지는 GW 검정으로 조건별로 본다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 6,
+     "text": "이기는 조건(국면·발표일)에서만 그 무게를 쓴다."
+    }
+   ],
+   "original": {
+    "title": "Tests of Conditional Predictive Ability",
+    "authors": [
+     "Raffaella Giacomini",
+     "Halbert White"
+    ],
+    "year": 2006,
+    "venue": "Econometrica 74(6), 1545–1578 — 읽은 것은 저자들의 UCSD 판(2003. 4.)",
+    "url": "https://escholarship.org/content/qt5jk0j5jh/qt5jk0j5jh.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(저자 판, 2003)",
+   "verified": [
+    {
+     "claim": "09:15 언제 이기는지는 GW 검정으로 조건별로",
+     "quote": "H₀ : E[Lₜ₊τ(Yₜ₊τ, f̂ₘ,ₜ) − Lₜ₊τ(Yₜ₊τ, ĝₘ,ₜ)|Fₜ] ≡ E[ΔLₘ,ₜ₊τ|Fₜ]=0 almost surely t =1, 2, ... .",
+     "location": "p.10, 식 (3)",
+     "verdict": "맞음",
+     "note": "뜻: 그때 알고 있던 정보(F_t) 아래에서 두 방법의 점수 차 기댓값이 0인지 본다."
+    },
+    {
+     "claim": "08:6 이기는 조건(국면·발표일)에서만 그 무게를 쓴다",
+     "quote": "Then choose g if h'ₜα̂ₙ > c and choose f if h'ₜα̂ₙ < c, where c is a user-specified threshold.",
+     "location": "p.14",
+     "verdict": "맞음",
+     "note": "뜻: 조건 h_t로 점수 차를 미리 맞혀 보고 그때그때 고르는 규칙이 원문에 있다."
+    },
+    {
+     "claim": "평가 대상은 '방법'",
+     "quote": "An important distinction between our approach and the existing literature is that we consider the object of the evaluation to be what we call the 'forecasting method', which includes not only the forecast model but also a number of choices that must be made by the forecaster",
+     "location": "p.2",
+     "verdict": "맞음",
+     "note": "모형 + 추정 창 + 추정법을 한 덩어리로 평가한다."
+    },
+    {
+     "claim": "전제: 굴리는 창",
+     "quote": "the forecasts are formulated at time t and are based on a moving window of the data which discards old observations",
+     "location": "p.3",
+     "verdict": "맞음",
+     "note": "옛 자료를 버리는 고정 길이 창이 전제다. 자료를 계속 쌓는 창이면 이 검정의 전제와 다르다."
+    }
+   ],
+   "formula": "ΔL_{t+τ} = 벌점(f)_{t+τ} − 벌점(g)_{t+τ}\nZ_{t+τ} = h_t · ΔL_{t+τ}   (h_t: 그 시각에 아는 조건 q칸 — 예: 1, 국면 확률, 발표일 표시)\nZ̄ = (1/n)·Σ Z_{t+τ}\nT = n · Z̄′ · Ω̂⁻¹ · Z̄  → χ²_q   (원문 p.11, Theorem 1)\nτ = 1: Ω̂ = (1/n)·Σ Z Z′   (원문 p.11)\nτ > 1: Ω̃ = (1/n)·Σ Z_{t+τ}Z′_{t+τ} + (1/n)·Σ_{j} w_{n,j}·Σ_t [Z_{t+τ}Z′_{t+τ−j} + Z_{t+τ−j}Z′_{t+τ}]   (원문 p.14; j의 끝은 추출 글자가 깨져 [확인 필요])\n고르기(원문 p.14): ΔL을 h_t에 회귀해 α̂를 얻고, h_t′α̂ > c 이면 g, < c 이면 f",
+   "decision": "조건부",
+   "condition": "추정 창을 고정 길이로 굴릴 때만 쓴다(원문 p.3 전제). 여러 걸음(τ>1) 분산 식의 j 끝은 원문 p.14를 보고 확정한다.",
+   "reason": "조건별로 '언제 이기나'를 검정하고 고르는 규칙까지 원문에 있다. 단 전제(굴리는 창)를 지켜야 한다.",
+   "reliability": "10점 — Econometrica 실린 글의 저자 판(UCSD 2003)",
+   "structuresUsed": [
+    "F3",
+    "B5",
+    "F4"
+   ],
+   "notes": "Econometrica 권·호·쪽은 econometricsociety.org 쪽에서 읽음. 학술지판 본문은 안 열어 봄(로그인 필요)."
+  },
+  {
+   "id": "E06-hansen-lunde-nason-2011",
+   "group": "고르기",
+   "commandLabel": "고르기: MCS(모형 신뢰 집합)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "09-scoring-evolution.txt:13",
+    "01-structures36.txt:41"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 13,
+     "text": "남길 방법은 '모형 신뢰 집합'(MCS)으로 고른다."
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 41,
+     "text": "F4 표본 정직: 겹치면 하나, 작으면 '모른다'"
+    }
+   ],
+   "original": {
+    "title": "The Model Confidence Set",
+    "authors": [
+     "Peter R. Hansen",
+     "Asger Lunde",
+     "James M. Nason"
+    ],
+    "year": 2011,
+    "venue": "Econometrica 79(2), 453–497",
+    "url": "https://www.kevinsheppard.com/files/teaching/mfe/advanced-econometrics/Hansen_Lunde_Nason.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(학술지 판, 강의 누리집 사본)",
+   "verified": [
+    {
+     "claim": "09:13 남길 방법은 MCS로 고른다",
+     "quote": "lim inf_{n→∞} P(M∗ ⊂ M∗₁₋α) ≥ 1 − α",
+     "location": "p.459, Theorem 1",
+     "verdict": "맞음",
+     "note": "뜻: 가장 나은 방법들이 1−α 확률로 집합 안에 남는다."
+    },
+    {
+     "claim": "01:41 F4 표본 정직 — 작으면 '모른다'",
+     "quote": "uninformative data yield a MCS with many models, whereas informative data yield a MCS with only a few models",
+     "location": "p.454",
+     "verdict": "맞음",
+     "note": "자료가 적으면 여러 방법이 함께 남는다 — 억지로 하나를 고르지 않는다."
+    },
+    {
+     "claim": "p값 규칙",
+     "quote": "i ∈ M∗₁₋α if and only if p̂ᵢ ≥ α",
+     "location": "p.462, Theorem 3",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "formula": "d_{ij,t} = L_{i,t} − L_{j,t}   (원문 p.457)\nd̄_ij = (1/n)·Σ_t d_{ij,t},  d̄_i· = (1/m)·Σ_{j∈M} d̄_ij   (원문 3.1.2절)\nt_ij = d̄_ij / √var̂(d̄_ij),  t_i· = d̄_i· / √var̂(d̄_i·)\nT_R = max_{i,j∈M} |t_ij|,  T_max = max_{i∈M} t_i·   (원문 p.465)\n빼는 것: e_max = argmax_i t_i·  (또는 e_R = argmax_i sup_j t_ij)\n되풀이: 검정이 '같다'를 기각하면 하나 빼고 다시 → 남은 것이 M̂*_{1−α};  i ∈ M̂* ⇔ p̂_i ≥ α\n분산·임계값: 블록 붓스트랩(원문 모의실험 B = 1000, 블록 길이 2; 실제 자료 예에서 블록 길이 12)",
+   "decision": "쓴다",
+   "condition": "점수(CRPS·IS·BS)마다 따로 돌리고, 붓스트랩 블록 길이와 횟수는 봉인 기록에 적는다.",
+   "reason": "'남길 방법 고르기'와 '자료가 적으면 여럿을 남긴다'가 원문 정리로 받쳐진다(F4).",
+   "reliability": "10점 — Econometrica 실린 판",
+   "structuresUsed": [
+    "F3",
+    "F4",
+    "E6"
+   ],
+   "notes": "var̂(d̄)를 붓스트랩으로 얻는다는 세부 문장은 3.1.2절에서 따로 찾지 못했고, 붓스트랩 설정 숫자는 모의실험·적용 절에서 읽었다."
+  },
+  {
+   "id": "E07-hansen-2005-spa",
+   "group": "고르기",
+   "commandLabel": "고르기: SPA 검정(우연 거르기)",
+   "usedBy": [
+    "12-sources.txt:11",
+    "09-scoring-evolution.txt:12",
+    "10-spec.txt:24",
+    "01-structures36.txt:36"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 11,
+     "text": "비교: DM·GW 검정 · 고르기: MCS·SPA"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 12,
+     "text": "시도는 다 적고, SPA 검정으로 우연을 거른다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 24,
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 36,
+     "text": "E6 겉맞춤 경계: 시도 수를 세고 우연을 거른다"
+    }
+   ],
+   "original": {
+    "title": "A Test for Superior Predictive Ability",
+    "authors": [
+     "Peter Reinhard Hansen"
+    ],
+    "year": 2005,
+    "venue": "Journal of Business & Economic Statistics (2005) — 읽은 본에서 권·호 확인 못 함",
+    "url": "https://www.academia.edu/114903558/A_Test_for_Superior_Predictive_Ability"
+   },
+   "readDirectly": true,
+   "readScope": "전문(academia.edu 올림본, 판 불명, 추출 글자 일부 깨짐)",
+   "verified": [
+    {
+     "claim": "09:12 시도는 다 적고 SPA 검정으로 우연을 거른다 / 10:24 T20",
+     "quote": "We propose a new test for superior predictive ability. The new test compares favorable to the reality check for data snooping (RC), because the former is more powerful and less sensitive to poor and irrelevant alternatives.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "뜻: 많이 시도하면 우연히 이긴 것이 섞인다. SPA는 시도 수를 감안해 '기준보다 나은 것이 정말 있나'를 본다."
+    },
+    {
+     "claim": "검정 통계량",
+     "quote": "T^SPA_n ≡ max[max_{k=1,...,m} (n^{1/2}d̄_k/ω̂_k), 0]",
+     "location": "본문(쪽 번호 못 봄)",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "귀무가설과 차이의 방향",
+     "quote": "d_{k,t} ≡ L(ξ_t, δ_{0,t−h}) − L(ξ_t, δ_{k,t−h}), k = 1, . . . , m",
+     "location": "본문(쪽 번호 못 봄)",
+     "verdict": "맞음",
+     "note": "H0: μ ≤ 0 — 기준(0번)보다 나은 대안이 없다."
+    }
+   ],
+   "formula": "d_{k,t} = L(기준 0번)_t − L(대안 k)_t,  d̄_k = (1/n)·Σ_t d_{k,t}   (양수면 대안이 나음)\nT^SPA = max[ max_k n^{1/2}·d̄_k / ω̂_k , 0 ]\nω̂²_k = γ̂_{0,k} + 2·Σ_i κ(n, i)·γ̂_{i,k}   (stationary bootstrap에 맞춘 무게 κ)\n가운데 맞춤: μ̂^c_k = d̄_k · 1{ n^{1/2}·d̄_k/ω̂_k ≤ −√(2·log log n) };  μ̂^l_k = min(d̄_k, 0);  μ̂^u_k = 0\n붓스트랩: Politis & Romano(1994) stationary bootstrap — 확률 q로 새 블록 시작\n[주의] 지시함수 안이 추출에서 '√n^{1/2}'로 깨져 읽혔다 — 학술지판과 대조 필요",
+   "decision": "조건부",
+   "condition": "읽은 본의 판을 확인 못 했고 글자가 일부 깨졌다. 학술지판과 식을 한 번 더 대조한 뒤 봉인한다. 시도 장부(T20)에 든 모든 시도를 넣고 돌린다.",
+   "reason": "식은 읽었으나 출처 판이 불명(C5 — 신빙성 먼저).",
+   "reliability": "10점 학술지 글, 다만 올림본이라 판 불명",
+   "structuresUsed": [
+    "E6",
+    "F3",
+    "C5"
+   ],
+   "notes": "UNC 저장소(cdr.lib.unc.edu) 판은 robots 오류로 못 열었다."
+  },
+  {
+   "id": "E08-corsi-2009-har",
+   "group": "폭",
+   "commandLabel": "폭: HAR(2009)",
+   "usedBy": [
+    "12-sources.txt:12",
+    "08-engine.txt:9",
+    "05-learned.txt:3"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 12,
+     "text": "폭: HAR(2009)·나무 모형(2023)"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 9,
+     "text": "① HAR: 밑값 3층(어제·주·달)"
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 3,
+     "text": "2 폭은 맞힐 수 있다. HAR가 기준이다."
+    }
+   ],
+   "original": {
+    "title": "A Simple Approximate Long-Memory Model of Realized Volatility",
+    "authors": [
+     "Fulvio Corsi"
+    ],
+    "year": 2009,
+    "venue": "Journal of Financial Econometrics (2009) — 읽은 것은 저자 판 'A Simple Long Memory Model of Realized Volatility'(2004. 11. 13.)",
+    "url": "https://www.greta.it/old/jae/poster/06_1_Corsi.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(저자 판, 2004)",
+   "verified": [
+    {
+     "claim": "08:9 ① HAR: 밑값 3층(어제·주·달)",
+     "quote": "RV^(d)_{t+1d} = c + β^(d)RV^(d)_t + β^(w)RV^(w)_t + β^(m)RV^(m)_t + ω_{t+1d}",
+     "location": "4.3절, 식 (13)",
+     "verdict": "맞음",
+     "note": "하루·한 주·한 달 세 층의 실현 변동성으로 다음 날을 맞힌다."
+    },
+    {
+     "claim": "세 층인 까닭",
+     "quote": "we can identify three primary volatility components: the short-term with daily or higher dealing frequency, the medium-term typically made of portfolio manager who rebalance their positions weekly, and the long-term with a characteristic time of one or more months.",
+     "location": "본문(가설 설명)",
+     "verdict": "맞음",
+     "note": "하루·주·달 단위로 사고파는 사람들이 따로 있다는 생각."
+    },
+    {
+     "claim": "05:3 폭은 맞힐 수 있다. HAR가 기준이다",
+     "quote": "out of sample, the parsimonious HAR(3) model steadily outperforms the others at all the three time horizons considered (1 day, 1 week and 2 weeks)",
+     "location": "본문(표본 밖 결과)",
+     "verdict": "일부 맞음",
+     "note": "미국 자료의 하루 실현 변동성에서 1일·1주·2주 모두 나았다. 4시간 코스피 범위는 이 글이 다룬 대상이 아니다."
+    },
+    {
+     "claim": "추정법",
+     "quote": "We then employ the Newey-West covariance correction with a conservative number of lags equal to 20.",
+     "location": "본문(추정 절)",
+     "verdict": "맞음",
+     "note": "보통 회귀(OLS) + Newey–West 보정."
+    }
+   ],
+   "formula": "RV_{t+1} = c + β_d·RV_t + β_w·RV^{(w)}_t + β_m·RV^{(m)}_t + ω_{t+1}   (Corsi 저자 판 식 (13))\nRV^{(w)}_t = 지난 5일 RV 평균 (식 (4): 1/5 합),  RV^{(m)}_t = 지난 22일 RV 평균\n  달 층(22일)은 이 판에서 식을 못 찾아 E09의 식 (5) 'RV_{t−1|t−22}'에 맞춘다\n추정: OLS, 표준오차는 Newey–West(원문은 늦춤 20)\n엔진 쓰임: 이 값을 '넘어야 할 막대(기준)'로 둔다. 4시간 판으로 옮기는 법은 원문에 없다 [판단 필요]",
+   "decision": "쓴다",
+   "condition": "기준 모형(넘어야 할 막대)으로 쓴다. 4시간 범위로 옮기는 방법은 원문 밖이라 그림자 운전에서 따로 잰다.",
+   "reason": "세 층 식과 표본 밖에서 앞선 결과가 저자 글에 있다(B2 — 기준을 늘 곁에).",
+   "reliability": "10점 — 학술지 글의 저자 판(학술지판은 안 열어 봄)",
+   "structuresUsed": [
+    "B2",
+    "F3"
+   ],
+   "notes": "학술지판 권·쪽(7권 2호 174–196)은 IDEAS 목록 주소에서만 봄."
+  },
+  {
+   "id": "E09-christensen-siggaard-veliyev-2023",
+   "group": "폭",
+   "commandLabel": "폭: 나무 모형(2023)",
+   "usedBy": [
+    "12-sources.txt:12",
+    "08-engine.txt:10",
+    "08-engine.txt:11",
+    "05-learned.txt:3"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 12,
+     "text": "폭: HAR(2009)·나무 모형(2023)"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 10,
+     "text": "② HAR-X: ①에 반도체지수·VKOSPI·발표일"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 11,
+     "text": "③ 나무 모형 ④ 미세조정한 시계열 기초 모형"
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 3,
+     "text": "2 폭은 맞힐 수 있다. HAR가 기준이다."
+    }
+   ],
+   "original": {
+    "title": "A Machine Learning Approach to Volatility Forecasting",
+    "authors": [
+     "Kim Christensen",
+     "Mathias Siggaard",
+     "Bezirgen Veliyev"
+    ],
+    "year": 2023,
+    "venue": "Journal of Financial Econometrics 21(5), 1680–1727 (doi 10.1093/jjfinec/nbac020) — 읽은 것은 같은 글의 arXiv 판(2601.13014, 2026. 1. 19. 올림)",
+    "url": "https://arxiv.org/pdf/2601.13014"
+   },
+   "readDirectly": true,
+   "readScope": "전문(arXiv 판)",
+   "verified": [
+    {
+     "claim": "08:11 ③ 나무 모형 / 12:12 나무 모형(2023)",
+     "quote": "The best-in-class tree-based approach is the random forest. It delivers a 9.9% reduction in MSE against HAR.",
+     "location": "결과 절, 표 3 곁(예측 변수를 모두 넣은 MALL 묶음)",
+     "verdict": "일부 맞음",
+     "note": "나무 모형 가운데 랜덤 포레스트가 HAR보다 MSE를 9.9% 줄였다(두 번 읽어 같은 숫자). 변수를 다 넣은 묶음의 결과다."
+    },
+    {
+     "claim": "08:11 나무 모형을 어떤 것으로",
+     "quote": "Since gradient boosting produces a sequential model based on an ensemble of weak learners, it places more weight on outlying observations in contrast to classical tree-based approaches. Hence, it is unsurprising that random forest does a better job than gradient boosting, given the low signal-noise ratio in the data.",
+     "location": "결과 절",
+     "verdict": "일부 맞음",
+     "note": "나무 모형이면 랜덤 포레스트. 부스팅은 튀는 값에 끌려 덜 맞았다."
+    },
+    {
+     "claim": "05:3 HAR가 기준이다",
+     "quote": "In spite of this, ML is competitive and beats the HAR lineage, even when the only predictors are the daily, weekly, and monthly lags of realized variance. The forecast gains are more pronounced at longer horizons.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "HAR는 '기준'으로 쓰였고, 기계학습이 그 기준을 이겼다 — 특히 먼 기간에서."
+    },
+    {
+     "claim": "짧은 기간(하루 앞)",
+     "quote": "The lagged values of realized variance are strong determinants of future volatility, so there is not much room for improvement.",
+     "location": "결과 절(하루 앞)",
+     "verdict": "맞음",
+     "note": "하루 앞에서는 HAR보다 나아질 여지가 적다. 4시간 판은 그보다 더 짧다."
+    },
+    {
+     "claim": "08:10 ② HAR-X(변수 더하기)",
+     "quote": "ML also excels at locating incremental information about future volatility from additional predictors.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "변수를 더하면 기계학습이 그 정보를 잘 찾았다. 우리 변수(반도체지수·VKOSPI·발표일)는 이 글의 변수가 아니다."
+    }
+   ],
+   "formula": "기준 HAR(원문 식 (5)): RV_t = β0 + β1·RV_{t−1} + β2·RV_{t−1|t−5} + β3·RV_{t−1|t−22} + u_t\n견줄 틀: 같은 입력(밑값 3층 ± 변수), 같은 손실 MSE(원문 식 (26)), DM·MCS로 HAR와 견준다(원문도 이 둘을 씀)\n랜덤 포레스트의 설정값(나무 수 등): 이번에 옮기지 않음 [못 찾음]\n자료(원문): 다우존스 지수 구성 종목 29개, 2001. 1. 29.~2017. 12. 31.(4,257 거래일), 5분 수익률(하루 78개)",
+   "decision": "조건부",
+   "condition": "랜덤 포레스트만 후보로 둔다. 그림자 운전에서 HAR를 DM·MCS로 이길 때만 무게를 준다(08:12). 그라디언트 부스팅은 넣지 않는다.",
+   "reason": "나무 모형이 HAR를 이긴 결과는 있으나, 미국 하루 자료이고 하루 앞에서는 나아질 여지가 적다고 원문이 적었다.",
+   "reliability": "10점 — JFEC 실린 글의 arXiv 판(같은 제목·저자)",
+   "structuresUsed": [
+    "F3",
+    "E6",
+    "B2"
+   ],
+   "notes": "arXiv 쪽 '관련 DOI'가 nbac032로 읽혔으나, doi.org/10.1093/jjfinec/nbac020 이 21권 5호 1680쪽 글로 이어져 nbac020을 적었다. 08:11의 '④ 미세조정한 시계열 기초 모형'은 원문 목록(12-sources)에 없어 이번에 다루지 않았다."
+  },
+  {
+   "id": "E10-gibbs-candes-2024-dtaci",
+   "group": "범위",
+   "commandLabel": "범위: DtACI(JMLR 2024)",
+   "usedBy": [
+    "12-sources.txt:13",
+    "08-engine.txt:22",
+    "08-engine.txt:23",
+    "08-engine.txt:24",
+    "05-learned.txt:4"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 13,
+     "text": "범위: DtACI(JMLR 2024)·커버리지 검정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 22,
+     "text": "목표: 80% 범위는 실제로 80% 안팎을 덮는다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 23,
+     "text": "컨포멀은 흔들림에 맞춰 늘고 준다(JMLR 2024)."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 24,
+     "text": "위기 구간(흔들림 상위 10%)의 덮음은 따로 잰다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 4,
+     "text": "3 범위: 적응형 컨포멀은 위기 때 좁아질 수 있다."
+    }
+   ],
+   "original": {
+    "title": "Conformal Inference for Online Prediction with Arbitrary Distribution Shifts",
+    "authors": [
+     "Isaac Gibbs",
+     "Emmanuel J. Candès"
+    ],
+    "year": 2024,
+    "venue": "Journal of Machine Learning Research 25 (2024) 1–36",
+    "url": "https://jmlr.org/papers/volume25/22-1218/22-1218.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(JMLR 원문)",
+   "verified": [
+    {
+     "claim": "08:23 컨포멀은 흔들림에 맞춰 늘고 준다",
+     "quote": "αt+1 = αt + γ(α − errt)",
+     "location": "2.2절, 식 (4)",
+     "verdict": "맞음",
+     "note": "식에서 읽은 뜻: 빗나가면(err=1) α_t가 줄어 범위가 넓어지고, 맞으면 조금씩 좁아진다."
+    },
+    {
+     "claim": "08:22 80% 범위는 실제로 80% 안팎을 덮는다",
+     "quote": "if limt→∞ ηt = limt→∞ σt = 0, then limT→∞ (1/T) ∑^T_{t=1} errt a.s. = α",
+     "location": "Theorem 6",
+     "verdict": "일부 맞음",
+     "note": "긴 기간 평균으로 맞춘다는 보장이다. 짧은 구간은 국소 보장(Theorem 4)으로 따로 본다."
+    },
+    {
+     "claim": "실험에서 지역 덮음",
+     "quote": "DtACI is able adapt to both the presence and size of these shifts and obtain a local coverage rate near the target level of 1 − α = 0.9 over all time steps and conditions.",
+     "location": "4절 실험(추출이 4.2.1로 가리킴)",
+     "verdict": "맞음",
+     "note": "주식 넷(Nvidia, AMD, BlackBerry, Fannie Mae)·GARCH(1,1) 바탕 실험 — 미국 일별 자료."
+    },
+    {
+     "claim": "05:4 적응형 컨포멀은 위기 때 좁아질 수 있다",
+     "quote": "DtACI correctly gives a small step-size in the first phase when the distribution shifts are small. However, once when we enter the second stage and the distribution shifts jump in magnitude, AgACI is slow to react",
+     "location": "p.16(4.1절)",
+     "verdict": "일부 맞음",
+     "note": "원문은 '좁아진다'고 쓰지 않는다. 흔들림이 갑자기 커질 때 '늦게 따라가는' 것은 다른 방법(AgACI) 이야기이고, DtACI는 목표 근처를 지켰다."
+    }
+   ],
+   "formula": "범위 만들기(원문 식 (3)): Ĉ_t(β) = { y : S_t^y ≤ Quantile(1 − β, D_t^y) }   (S: 맞음 정도 점수, D: 지난 점수 모음)\n빗나감: err_t = 1{ Y_t ∉ Ĉ_t(α_t) }\nACI(원문 식 (4)): α_{t+1} = α_t + γ·(α − err_t)   (80% 범위면 α = 0.2)\nDtACI(원문 알고리즘 1):\n  전문가 k개, γ_i ∈ {0.001, 0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128}\n  β_t = sup{ β : Y_t ∈ Ĉ_t(β) }\n  ℓ(β_t, θ) = α·(β_t − θ) − min{0, β_t − θ}   (pinball 손실)\n  w̄_t^i = w_t^i · exp(−η·ℓ(β_t, α_t^i));  W̄_t = Σ_i w̄_t^i\n  w_{t+1}^i = (1 − σ)·w̄_t^i + W̄_t·σ/k\n  p_t^i = w_t^i / Σ_j w_t^j;  내놓는 α_t = α_t^i (확률 p_t^i)\n  전문가마다: err_t^i = 1{Y_t ∉ Ĉ_t(α_t^i)},  α_{t+1}^i = α_t^i + γ_i·(α − err_t^i)\n  σ = 1/(2·|I|), |I| = 500 (원문 실험값)\n  η: 두 번 읽은 식이 서로 달라 적지 않는다 — 원문 3.1절을 직접 보고 넣는다 [확인 필요]\n위기 구간 덮음(08:24): 흔들림 상위 10% 판만 따로 빗나감 비율을 센다 — 이 나눔 기준(10%)은 원문에 없다",
+   "decision": "쓴다",
+   "condition": "위기 구간(흔들림 상위 10%)의 덮음은 따로 잰다(08:24). η는 원문 3.1절을 보고 넣기 전엔 봉인하지 않는다.",
+   "reason": "흔들림에 맞춰 범위를 늘리고 줄이는 식과 보장이 원문에 있고, 주식 실험에서도 목표 근처를 지켰다.",
+   "reliability": "10점 — JMLR 원문",
+   "structuresUsed": [
+    "F2",
+    "F4",
+    "B5"
+   ],
+   "notes": "'긴 기간 평균만 보장하고 짧은 구간은 보장 못 한다'는 문장은 원문에서 그대로는 못 찾았다(국소 보장 식은 있음)."
+  },
+  {
+   "id": "E11-kupiec-1995",
+   "group": "범위",
+   "commandLabel": "범위: 커버리지 검정(덮는 비율)",
+   "usedBy": [
+    "12-sources.txt:13",
+    "08-engine.txt:22",
+    "08-engine.txt:26",
+    "10-spec.txt:16"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 13,
+     "text": "범위: DtACI(JMLR 2024)·커버리지 검정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 22,
+     "text": "목표: 80% 범위는 실제로 80% 안팎을 덮는다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 26,
+     "text": "덮는 비율과 '빗나감이 몰리는지'를 둘 다 검사한다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 16,
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "original": {
+    "title": "Techniques for Verifying the Accuracy of Risk Measurement Models",
+    "authors": [
+     "Paul H. Kupiec"
+    ],
+    "year": 1995,
+    "venue": "Federal Reserve Board, Finance and Economics Discussion Series 95-24 (1995. 5.) — 학술지판(Journal of Derivatives)은 안 열어 봄",
+    "url": "https://fraser.stlouisfed.org/files/docs/publications/bog_feds/feds_1995-024.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(연준 연구 시리즈 저자 판)",
+   "verified": [
+    {
+     "claim": "08:22·08:26 덮는 비율을 검사한다",
+     "quote": "Under the null hypothesis, p = p*, the statistic given in expression (6) has a Chi-Square distribution with one degree of freedom.",
+     "location": "식 (6) 곁",
+     "verdict": "맞음",
+     "note": "빗나간 비율이 정한 값(80% 범위면 20%)과 같은지 χ²(자유도 1)로 본다."
+    },
+    {
+     "claim": "10:16 T13 80% 덮음 70~90%(30판↑)",
+     "quote": "large sample sizes will be required to accurately estimate the true underlying proportion of failures from a sample of observations on the process.",
+     "location": "본문(식 (6) 뒤)",
+     "verdict": "일부 맞음",
+     "note": "[계산] 식 (6)에 n=30, p=0.2를 넣으면 5% 기준으로 빗나감 3~10번(덮음 66.7~90%)은 '틀렸다'고 못 한다 — T13의 70~90%와 거의 같다. n=60이면 70.0~88.3%, n=120이면 73.3~86.7%로 좁아진다."
+    }
+   ],
+   "formula": "x = 빗나간 판 수, n = 판 수, p = 1 − 0.8 = 0.2 (80% 범위)\nLR_uc = −2·ln[(1 − p)^{n−x}·p^x] + 2·ln[(1 − x/n)^{n−x}·(x/n)^x]  ~ χ²(1)   (원문 식 (6))\n  5% 기준 임계값 3.841 [χ²(1) 표의 값]\n  [계산] '틀렸다고 못 하는' 빗나감 수: n=30 → 3~10, n=60 → 7~18, n=120 → 16~32, n=250 → 39~62\n첫 빗나감까지 걸린 판 수 V로 보는 검정(원문 식 (2)): LR = −2·log[ p(1 − p)^{V−1} / ((1/V)(1 − 1/V)^{V−1}) ]",
+   "decision": "쓴다",
+   "condition": "판 수가 적으면 '맞다'가 아니라 '틀렸다고 못 한다'로 적는다(F4). 빗나감이 몰리는지는 이 검정이 못 본다 → E12.",
+   "reason": "덮는 비율 검정 식과 '표본이 커야 한다'는 경고가 원문에 있다.",
+   "reliability": "10점 — 연준(Federal Reserve Board) 공식 연구 시리즈의 저자 판",
+   "structuresUsed": [
+    "F2",
+    "F4",
+    "F3"
+   ],
+   "notes": "계산 줄의 숫자는 원문 식 (6)에 값을 넣어 이번에 직접 셈한 것이다(원문 표 2의 숫자는 옮기지 않음)."
+  },
+  {
+   "id": "E12-christoffersen-1998",
+   "group": "범위",
+   "commandLabel": "범위: 커버리지 검정(빗나감이 몰리는지)",
+   "usedBy": [
+    "12-sources.txt:13",
+    "08-engine.txt:26"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 13,
+     "text": "범위: DtACI(JMLR 2024)·커버리지 검정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 26,
+     "text": "덮는 비율과 '빗나감이 몰리는지'를 둘 다 검사한다."
+    }
+   ],
+   "original": {
+    "title": "Evaluating Interval Forecasts",
+    "authors": [
+     "Peter F. Christoffersen"
+    ],
+    "year": 1998,
+    "venue": "International Economic Review 39(4), 841–862",
+    "url": "https://ideas.repec.org/a/ier/iecrev/v39y1998i4p841-62.html"
+   },
+   "readDirectly": false,
+   "readScope": "못 읽음(RePEc 요약 속 원문 한 조각만)",
+   "verified": [
+    {
+     "claim": "08:26 '빗나감이 몰리는지'도 검사한다",
+     "quote": "implicitly assumes homoskedastic errors even when this is clearly violated and proceed by merely testing for correct unconditional coverage",
+     "location": "초록(RePEc 요약 속 인용 조각)",
+     "verdict": "확인 못 함",
+     "note": "'덮는 비율만 보면 모자란다'는 문제 제기만 확인. 몰림(독립) 검정의 식은 못 읽었다."
+    }
+   ],
+   "formula": "없음 — 원문을 못 읽어 몰림(독립) 검정 식을 적지 않는다.",
+   "decision": "보류",
+   "condition": "원문 PDF를 열면 다시 정한다. 그때까지 08:26의 '몰림' 검사는 식이 비어 있다.",
+   "reason": "원문을 못 읽었다.",
+   "reliability": "10점 학술지(IER)이나 못 읽음",
+   "structuresUsed": [
+    "C5",
+    "F4"
+   ],
+   "notes": "시도한 곳: jstor(자바스크립트 막힘), researchgate(429), 검색으로 다른 사본 못 찾음."
+  },
+  {
+   "id": "E13-yao-vehtari-simpson-gelman-2018",
+   "group": "섞기",
+   "commandLabel": "섞기: 쌓기(2018)",
+   "usedBy": [
+    "12-sources.txt:14",
+    "08-engine.txt:12"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 14,
+     "text": "섞기: 쌓기(2018), 같은 비율이라는 강한 기준"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 12,
+     "text": "쌓기로 섞되, 같은 비율을 확실히 이길 때만 다르게."
+    }
+   ],
+   "original": {
+    "title": "Using Stacking to Average Bayesian Predictive Distributions",
+    "authors": [
+     "Yuling Yao",
+     "Aki Vehtari",
+     "Daniel Simpson",
+     "Andrew Gelman"
+    ],
+    "year": 2018,
+    "venue": "Bayesian Analysis (doi 10.1214/17-BA1091) — 읽은 것은 arXiv 판 1704.02030 v3",
+    "url": "https://arxiv.org/pdf/1704.02030"
+   },
+   "readDirectly": true,
+   "readScope": "전문(arXiv 판)",
+   "verified": [
+    {
+     "claim": "08:12 쌓기로 섞되",
+     "quote": "max_{w} (1/n) Σ_{i=1}^{n} S(Σ_{k=1}^{K} w_k p̂_{k,-i}, y_i), s.t. w_k ≥ 0, Σ_{k=1}^{K} w_k = 1",
+     "location": "2.1절, 식 (2.2)",
+     "verdict": "맞음",
+     "note": "뜻: 바른 점수 S가 가장 좋아지도록 무게 w(0 이상, 합 1)를 고른다."
+    },
+    {
+     "claim": "CRPS로도 쌓을 수 있나",
+     "quote": "We take the idea of stacking from the point estimation literature and generalize to the combination of predictive distributions, extending the utility function to any proper scoring rule, using Pareto smoothed importance sampling to efficiently compute the required leave-one-out posterior distributions and regularization to get more stability.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "바른 점수면 무엇이든 된다 — CRPS도 된다."
+    },
+    {
+     "claim": "시간 순서가 있는 자료",
+     "quote": "없음",
+     "location": "못 찾음",
+     "verdict": "확인 못 함",
+     "note": "원문은 '하나 빼고 맞히기(LOO)'로 무게를 잰다. 시계열 이야기는 못 찾았다 → 미래가 섞이지 않게 '봉인 때 낸 판'으로만 잰다 [판단]."
+    }
+   ],
+   "formula": "무게 고르기(원문 식 (2.2), 엔진은 S = −CRPS):\n  max_w (1/n)·Σ_i S( Σ_k w_k·p̂_{k,i}, y_i ),  w_k ≥ 0, Σ_k w_k = 1\n  p̂_{k,i}: 원문은 i를 뺀 나머지로 맞힌 분포 — 엔진은 그 판이 봉인될 때 낸 분포 [판단: 시간 순서 지키기]\n로그 점수판(원문 2.1절): max_w (1/n)·Σ_i log Σ_k w_k·p(y_i | y_{−i}, M_k)\n같은 비율 기준: w_k = 1/K. 쌓기 무게는 같은 비율을 CRPS 점수 차 DM으로 확실히 이길 때만 쓴다(08:12)",
+   "decision": "조건부",
+   "condition": "무게는 봉인된 지난 판으로만 잰다(LOO 대신). 같은 비율(1/K)을 DM으로 확실히 이길 때만 쌓기 무게를 쓴다.",
+   "reason": "쌓기 식은 원문에 있으나 원문은 시간 순서 없는 자료를 전제로 무게를 잰다.",
+   "reliability": "10점 — Bayesian Analysis 실린 글의 arXiv 판",
+   "structuresUsed": [
+    "D5",
+    "E6",
+    "F2"
+   ],
+   "notes": "'쌓기 vs 같은 비율'을 직접 견준 문장은 원문에서 못 찾았다."
+  },
+  {
+   "id": "E14-smith-wallis-2009",
+   "group": "섞기",
+   "commandLabel": "섞기: 같은 비율이라는 강한 기준(조합 수수께끼)",
+   "usedBy": [
+    "12-sources.txt:14",
+    "08-engine.txt:12"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 14,
+     "text": "섞기: 쌓기(2018), 같은 비율이라는 강한 기준"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 12,
+     "text": "쌓기로 섞되, 같은 비율을 확실히 이길 때만 다르게."
+    }
+   ],
+   "original": {
+    "title": "A Simple Explanation of the Forecast Combination Puzzle",
+    "authors": [
+     "Jeremy Smith",
+     "Kenneth F. Wallis"
+    ],
+    "year": 2009,
+    "venue": "Oxford Bulletin of Economics and Statistics 71(3), 331–355",
+    "url": "https://wrap.warwick.ac.uk/id/eprint/28157"
+   },
+   "readDirectly": true,
+   "readScope": "초록만(저장소에 본문 없음)",
+   "verified": [
+    {
+     "claim": "08:12 같은 비율을 확실히 이길 때만 다르게",
+     "quote": "This article presents a formal explanation of the forecast combination puzzle, that simple combinations of point forecasts are repeatedly found to outperform sophisticated weighted combinations in empirical applications. The explanation lies in the effect of finite-sample error in estimating the combining weights.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "뜻: 무게를 추정하는 오차 때문에 단순 평균이 자주 이긴다. 단, '점 예측' 이야기다."
+    }
+   ],
+   "formula": "식은 쓰지 않는다(초록만 읽음). 규칙만: 기본은 같은 비율(1/K).",
+   "decision": "조건부",
+   "condition": "초록의 주장만 쓴다(본문 숫자 안 씀). 분포 섞기에 그대로 옮겨지는지는 이 초록으로 알 수 없다.",
+   "reason": "'같은 비율이 강한 기준'이라는 명령 줄을 초록이 바로 받친다.",
+   "reliability": "10점 학술지 — 초록만 읽음(본문은 구독 막힘)",
+   "structuresUsed": [
+    "D5",
+    "E6",
+    "B2"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "E15-claeskens-magnus-vasnev-wang-2016",
+   "group": "섞기",
+   "commandLabel": "섞기: 같은 비율이라는 강한 기준(이론 설명)",
+   "usedBy": [
+    "12-sources.txt:14",
+    "08-engine.txt:12"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 14,
+     "text": "섞기: 쌓기(2018), 같은 비율이라는 강한 기준"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 12,
+     "text": "쌓기로 섞되, 같은 비율을 확실히 이길 때만 다르게."
+    }
+   ],
+   "original": {
+    "title": "The forecast combination puzzle: A simple theoretical explanation",
+    "authors": [
+     "Gerda Claeskens",
+     "Jan R. Magnus",
+     "Andrey L. Vasnev",
+     "Wendun Wang"
+    ],
+    "year": 2016,
+    "venue": "International Journal of Forecasting 32(3), 754–762",
+    "url": "https://repub.eur.nl/pub/81568/"
+   },
+   "readDirectly": true,
+   "readScope": "초록만(저장소 쪽)",
+   "verified": [
+    {
+     "claim": "08:12 같은 비율을 확실히 이길 때만 다르게",
+     "quote": "If the fact that the weights are random rather than fixed is taken into account during the optimality derivation, then the forecast combination will be biased (even when the original forecasts are unbiased), and its variance will be larger than in the fixed-weight case. In particular, there is no guarantee that the 'optimal' forecast combination will be better than the equal-weight case, or even improve on the original forecasts.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "뜻: 무게를 자료로 추정하면 치우침과 흔들림이 생겨 '최적' 무게가 같은 비율보다 낫다는 보장이 없다."
+    }
+   ],
+   "formula": "식은 쓰지 않는다(초록만 읽음).",
+   "decision": "조건부",
+   "condition": "초록의 주장만 쓴다.",
+   "reason": "같은 비율을 기본으로 두는 까닭을 이론 쪽에서 받친다.",
+   "reliability": "10점 학술지 — 초록만 읽음(저자 판 wip34.pdf는 연결 시간 초과)",
+   "structuresUsed": [
+    "D5",
+    "E6"
+   ],
+   "notes": "저장소 쪽 표기가 'Claeskels'로 읽혔으나 검색 결과의 글 제목 쪽 이름은 Claeskens."
+  },
+  {
+   "id": "E16-choi-zhu-li-2025",
+   "group": "합치기",
+   "commandLabel": "합치기: 「토론이냐 투표냐」(NeurIPS 2025)",
+   "usedBy": [
+    "12-sources.txt:15",
+    "05-learned.txt:5",
+    "08-engine.txt:35",
+    "08-engine.txt:38"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 15,
+     "text": "합치기: 「토론이냐 투표냐」(NeurIPS 2025)"
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 5,
+     "text": "4 에이전트 이득은 토론보다 합치기, 판정자 하나는 병목"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 35,
+     "text": "D5대로 합치고, 갈리면 폭을 넓힌다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 38,
+     "text": "모델은 섞어 쓴다 — 같은 모델끼리는 같은 실수를 한다."
+    }
+   ],
+   "original": {
+    "title": "Debate or Vote: Which Yields Better Decisions in Multi-Agent Large Language Models?",
+    "authors": [
+     "Hyeong Kyu Choi",
+     "Xiaojin Zhu",
+     "Sharon Li"
+    ],
+    "year": 2025,
+    "venue": "NeurIPS 2025 (arXiv 2508.17536 v2의 'Comments: NeurIPS 2025 Spotlight')",
+    "url": "https://arxiv.org/pdf/2508.17536"
+   },
+   "readDirectly": true,
+   "readScope": "전문(arXiv 판)",
+   "verified": [
+    {
+     "claim": "05:5 에이전트 이득은 토론보다 합치기",
+     "quote": "Through extensive experiments across seven NLP benchmarks, we find that Majority Voting alone accounts for most of the performance gains typically attributed to MAD.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "뜻: 여러 에이전트가 낫다는 효과의 대부분은 '투표로 합친 것'에서 나왔다."
+    },
+    {
+     "claim": "토론만으로는 안 나아진다",
+     "quote": "We prove that it induces a martingale over agents' belief trajectories, implying that debate alone does not improve expected correctness.",
+     "location": "초록(4절 Theorem 2)",
+     "verdict": "맞음",
+     "note": "뜻: 토론을 거듭해도 맞을 기댓값은 그대로다."
+    },
+    {
+     "claim": "05:5 판정자 하나는 병목",
+     "quote": "The final aggregated output after T rounds is: y(T) = V(y(1,T), y(2,T), ⋯, y(N,T)).",
+     "location": "2절",
+     "verdict": "확인 못 함",
+     "note": "이 글은 마지막을 투표(V)로 정한다. '판정자 하나'와 견준 실험은 이 글에 없다 → AIA 보고서(E17)가 받친다."
+    },
+    {
+     "claim": "08:38 같은 모델끼리는 같은 실수를 한다",
+     "quote": "Even in these heterogeneous settings, Majority Voting mostly paralleled MAD variants.",
+     "location": "6절, 표 4",
+     "verdict": "확인 못 함",
+     "note": "섞은 것은 '역할(페르소나)'이지 다른 모델이 아니다. '같은 모델이면 같은 실수' 문장은 못 찾았다."
+    }
+   ],
+   "formula": "에이전트 N개가 따로 낸 답 y(i) → 합치기 y = V(y(1..N))   (원문 2절, 실험 N = 5)\n엔진은 확률을 내므로 V = 가운데 값(08:18). 토론 단계는 넣지 않는다 —\n  원문 정리 2: 이웃의 평균 믿음이 자기 믿음과 같으면 믿음은 마팅게일(기대 개선 0)",
+   "decision": "쓴다",
+   "condition": "합치기는 따로 낸 답의 가운데 값·투표로 한다. 토론 단계는 '고치는 쪽으로 기울인' 경우가 아니면 넣지 않는다.",
+   "reason": "투표가 이득 대부분을 낸다는 실험과, 토론만으로는 기대 개선이 없다는 정리가 원문에 있다.",
+   "reliability": "10점 — NeurIPS 2025(동료심사 학회) 글의 arXiv 판",
+   "structuresUsed": [
+    "D5",
+    "E4",
+    "C6"
+   ],
+   "notes": "arXiv 저자 표기는 'Sharon Li'(같은 사람을 Yixuan Li로도 부른다는 것은 이번에 확인 안 함)."
+  },
+  {
+   "id": "E17-aia-forecaster-2025",
+   "group": "사건 확률",
+   "commandLabel": "사건 확률: AIA 예보단(2025)",
+   "usedBy": [
+    "12-sources.txt:16",
+    "08-engine.txt:15",
+    "08-engine.txt:16",
+    "08-engine.txt:17",
+    "08-engine.txt:18",
+    "08-engine.txt:36",
+    "08-engine.txt:37",
+    "05-learned.txt:5",
+    "05-learned.txt:6",
+    "05-learned.txt:7",
+    "05-learned.txt:8",
+    "10-spec.txt:21",
+    "10-spec.txt:22",
+    "13-command.txt:20"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 16,
+     "text": "사건 확률: AIA 예보단(2025)·플랫 보정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 15,
+     "text": "발표마다 좋게·나쁘게 나올 확률을 따로 낸다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 16,
+     "text": "에이전트 5~10이 각자 찾고 각자 확률을 낸다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 17,
+     "text": "검색 결과에 봉인 뒤 정보가 섞였는지 먼저 거른다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 18,
+     "text": "합치기는 가운데 값. 반반 쪽 움츠림은 보정해 편다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 36,
+     "text": "감독은 갈린 까닭을 찾아 새 자료를 더 찾는다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 37,
+     "text": "감독은 다시 판정하지 않는다. 새 자료로만 바꾼다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 5,
+     "text": "4 에이전트 이득은 토론보다 합치기, 판정자 하나는 병목"
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 6,
+     "text": "5 감독은 다시 판정 말고 새 자료를 더 찾아야 한다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 7,
+     "text": "6 LLM 확률은 반반 쪽으로 움츠린다. 보정해 편다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 8,
+     "text": "7 LLM은 지난 결과를 이미 알 수 있다(재현 의심)."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 21,
+     "text": "T17 검색 결과에 봉인 뒤 정보 0 (누수 검사)"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 22,
+     "text": "T18 LLM 판 재현은 학습 마감 뒤만 (시각)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 20,
+     "text": "LLM이 낀 판은 모델이 모르는 기간으로만 채점한다."
+    }
+   ],
+   "original": {
+    "title": "AIA Forecaster: Technical Report",
+    "authors": [
+     "Rohan Alur",
+     "Bradly C. Stadie",
+     "Daniel Kang",
+     "Ryan Chen",
+     "Matt McManus",
+     "Michael Rickert",
+     "Tyler Lee",
+     "Michael Federici",
+     "Richard Zhu",
+     "Dennis Fogerty",
+     "Hayley Williamson",
+     "Nina Lozinski",
+     "Aaron Linsky",
+     "Jasjeet S. Sekhon"
+    ],
+    "year": 2025,
+    "venue": "arXiv 2511.07678 v1 (2025. 11. 10.) — 저자들의 기술 보고서(동료심사 아님)",
+    "url": "https://arxiv.org/pdf/2511.07678v1"
+   },
+   "readDirectly": true,
+   "readScope": "전문(arXiv PDF·HTML 판, 여러 번 나눠 읽음)",
+   "verified": [
+    {
+     "claim": "05:7 LLM 확률은 반반 쪽으로 움츠린다. 보정해 편다",
+     "quote": "It turns out that LLMs have an annoying bias, likely stemming from post-training via reinforcement learning from human feedback (RLHF) (Kaufmann et al., 2023), which makes them hedge toward 0.5 when making predictions. These pitfalls can be corrected rather easily with statistical corrections such as Platt scaling.",
+     "location": "3.2절",
+     "verdict": "맞음",
+     "note": "두 번 읽어 같은 문장."
+    },
+    {
+     "claim": "12:16 플랫 보정",
+     "quote": "We demonstrate that Equation 2 is mathematically identical to applying Platt scaling to the geometric mean of forecasts with a Platt coefficient of d in Appendix G. Using Platt scaling on the arithmetic mean of k forecasts results in the lowest Brier score, as shown in Table 11.",
+     "location": "7.3절",
+     "verdict": "맞음",
+     "note": "두 번 읽어 같은 문장."
+    },
+    {
+     "claim": "보정 계수",
+     "quote": "Neyman and Roughgarden (2022) propose a parameter value of d = √3. We adopt this convention in our work to avoid the risk of overfitting to the benchmarks we consider.",
+     "location": "7.3절",
+     "verdict": "맞음",
+     "note": "√3은 남의 글(Neyman & Roughgarden 2022)에서 가져온 고정값 — 그 글은 안 읽었다."
+    },
+    {
+     "claim": "08:16 에이전트 5~10이 각자 찾고 각자 확률을 낸다",
+     "quote": "Each forecasting agent operates independently. … We adopt 10 forecasts per question as a conservative standard in this work.",
+     "location": "3절 / 7.1절",
+     "verdict": "맞음",
+     "note": "따로 찾고 따로 낸다. 10개를 기본으로 썼다(두 번 읽어 같음)."
+    },
+    {
+     "claim": "08:18 합치기는 가운데 값",
+     "quote": "In Table 9, we further demonstrate that minor variations of this approach, like taking the median of 10 forecasts, or taking the trimmed mean (by discarding the smallest and largest of the 10 forecasts), perform comparably to simple averaging.",
+     "location": "7.1절, 표 9",
+     "verdict": "맞음",
+     "note": "가운데 값도 평균과 비슷했다. 가장 낮은 브라이어는 '평균 + 플랫'(표 11)."
+    },
+    {
+     "claim": "05:5 판정자 하나는 병목",
+     "quote": "When we do this, we see somewhat surprisingly that the resulting aggregated prediction is substantially less accurate than a simple average of predictions.",
+     "location": "7.2절",
+     "verdict": "맞음",
+     "note": "LLM 하나가 모든 예보를 읽고 다시 판정하면 단순 평균보다 나빴다."
+    },
+    {
+     "claim": "05:6 감독은 다시 판정 말고 새 자료를 더 찾는다 / 08:36",
+     "quote": "Rather than asking a supervisor LLM to aggregate all forecasts directly, we instead instruct a supervisor agent to examine all forecasts' reasoning traces and identify sources of ambiguity or disagreement.",
+     "location": "7.2절",
+     "verdict": "맞음",
+     "note": "감독은 갈린 곳을 찾고 검색어를 내 새 자료를 찾는다."
+    },
+    {
+     "claim": "08:37 감독은 다시 판정하지 않는다. 새 자료로만 바꾼다",
+     "quote": "Finally, the supervisor generates an updated forecast along with its confidence that the forecast was updated in the correct direction (\"high,\" \"medium\" or \"low\"). High confidence updates are used in place of the simple mean, while medium or low confidence updates are discarded.",
+     "location": "7.2절",
+     "verdict": "일부 맞음",
+     "note": "감독도 새 값을 내지만, 새 검색 뒤 '확신 높음'일 때만 평균을 바꾸고 나머지는 버린다."
+    },
+    {
+     "claim": "08:17 검색 결과에 봉인 뒤 정보가 섞였는지 먼저 거른다 / 10:21 T17",
+     "quote": "We then develop an LLM-as-a-judge pipeline that reviews search provider responses and flags those that exhibit foreknowledge bias … we estimate that ∼ 1.65% of all search results include some form of foreknowledge bias.",
+     "location": "5.2절",
+     "verdict": "일부 맞음",
+     "note": "거르는 방법은 맞다. 다만 그들 자료에서도 검색 결과의 약 1.65%에 '미리 앎'이 섞였다 — T17의 '0'은 거르는 장치를 둬도 쉽지 않다."
+    },
+    {
+     "claim": "05:8 LLM은 지난 결과를 이미 알 수 있다 / 13:20 / 10:22 T18",
+     "quote": "its pretraining cutoff (October 2023) is well before the events which appear in ForecastBench and MarketLiquid, which precludes any form of pretraining lookahead bias",
+     "location": "부록 B, 각주 18",
+     "verdict": "맞음",
+     "note": "그래서 그들은 '학습 마감보다 뒤에 끝나는 질문'으로 채점했다 — 13:20·T18과 같은 방식."
+    }
+   ],
+   "formula": "1) 에이전트 k개(원문 기본 10)가 따로 검색하고 따로 확률 p_i를 낸다\n2) 검색 결과마다 '봉인 시각 뒤 정보'를 거르는 판정 단계를 먼저 둔다(원문 5.2절)\n3) 합치기: p̃ = 가운데 값(p_1..p_k)   (원문: 가운데 값 ≈ 평균)\n4) 펴기(플랫): logit(p̂) = d·logit(p̃),  logit(p) = ln(p/(1−p)),  d = √3 ≈ 1.73 고정\n   원문 식 (2): ln(p̂/(1−p̂)) = (d/n)·Σ_i ln(p_i/(1−p_i))  ← '기하 평균에 플랫'과 같다고 원문이 적음\n   '산술 평균에 플랫'이 가장 낮은 브라이어(원문 표 11) — 그 정확한 식(부록 G)은 못 읽었다 [확인 필요: 위 4)는 표 11 문장을 식으로 옮긴 것]\n5) 감독: 갈린 까닭을 찾아 새 검색 → 새 값은 '확신 높음'일 때만 가운데 값을 바꾼다\n[참고 숫자, 원문 표 11, FB-7-21] 고정 √3 플랫 0.1076 · 보정 없음 0.1140 (브라이어, 낮을수록 좋음)",
+   "decision": "조건부",
+   "condition": "그들 시험은 세계 사건 질문(ForecastBench 등)이다. 한국 발표·실적에서도 맞는지 그림자 운전으로 다시 잰 뒤에 쓴다. √3은 고정값으로 시작하고 우리 채점 자료로 맞추지 않는다(겉맞춤 경계).",
+   "reason": "반반 쪽 움츠림·플랫 보정·따로 찾기·가운데 값·누수 거르기·학습 마감 뒤 채점이 모두 원문에 있다. 다만 동료심사 전 기술 보고서이고 시험 문제가 우리와 다르다.",
+   "reliability": "저자들의 기술 보고서 — 04-learning이 인정하는 '저자 기술 보고서'에 든다. 동료심사 아님 → 숫자는 그들 시험 조건에서만",
+   "structuresUsed": [
+    "D5",
+    "E6",
+    "F1",
+    "F2"
+   ],
+   "notes": "표 10(감독 비교)의 숫자는 세 번 읽어 한 번이 다르게 나와 적지 않았다(방향 '감독 > 평균'만 씀). 표 11 숫자는 한 번 읽음."
+  },
+  {
+   "id": "E18-baron-et-al-2014",
+   "group": "사건 확률",
+   "commandLabel": "사건 확률: 플랫 보정(펴기 근거 — 사람 예보 합치기)",
+   "usedBy": [
+    "12-sources.txt:16",
+    "08-engine.txt:18"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 16,
+     "text": "사건 확률: AIA 예보단(2025)·플랫 보정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 18,
+     "text": "합치기는 가운데 값. 반반 쪽 움츠림은 보정해 편다."
+    }
+   ],
+   "original": {
+    "title": "Two Reasons to Make Aggregated Probability Forecasts More Extreme",
+    "authors": [
+     "Jonathan Baron",
+     "Barbara A. Mellers",
+     "Philip E. Tetlock",
+     "Eric Stone",
+     "Lyle H. Ungar"
+    ],
+    "year": 2014,
+    "venue": "Decision Analysis 11(2), 133–145",
+    "url": "https://pubsonline.informs.org/doi/10.1287/deca.2014.0293"
+   },
+   "readDirectly": true,
+   "readScope": "초록만(첫 두 문장)",
+   "verified": [
+    {
+     "claim": "08:18 반반 쪽 움츠림은 보정해 편다",
+     "quote": "When aggregating the probability estimates of many individuals to form a consensus probability estimate of an uncertain future event, it is common to combine them using a simple weighted average. Such aggregated probabilities correspond more closely to the real world if they are transformed by pushing them closer to 0 or 1.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "뜻: 여러 사람 확률을 평균 내면 0이나 1 쪽으로 밀어 줘야 더 맞는다. LLM 이야기는 아니다."
+    }
+   ],
+   "formula": "식은 쓰지 않는다(초록만). 펴는 식은 E17의 식을 쓴다.",
+   "decision": "조건부",
+   "condition": "초록 첫 두 문장의 주장만 쓴다.",
+   "reason": "'합친 확률은 펴야 한다'는 명령 줄을 받친다(AIA도 이 글을 인용).",
+   "reliability": "10점 학술지 — 초록만 읽음",
+   "structuresUsed": [
+    "D5",
+    "F2"
+   ],
+   "notes": "초록의 나머지 문장은 읽은 도구가 풀어 써서 원문 문장으로 옮기지 않았다."
+  },
+  {
+   "id": "E19-satopaa-et-al-2014",
+   "group": "사건 확률",
+   "commandLabel": "사건 확률: 플랫 보정(로짓 합치기)",
+   "usedBy": [
+    "12-sources.txt:16",
+    "08-engine.txt:18"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 16,
+     "text": "사건 확률: AIA 예보단(2025)·플랫 보정"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 18,
+     "text": "합치기는 가운데 값. 반반 쪽 움츠림은 보정해 편다."
+    }
+   ],
+   "original": {
+    "title": "Combining multiple probability predictions using a simple logit model",
+    "authors": [
+     "Ville A. Satopää",
+     "Jonathan Baron",
+     "Dean P. Foster",
+     "Barbara A. Mellers",
+     "Philip E. Tetlock",
+     "Lyle H. Ungar"
+    ],
+    "year": 2014,
+    "venue": "International Journal of Forecasting 30(2), 344–356",
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S0169207013001635"
+   },
+   "readDirectly": true,
+   "readScope": "초록만",
+   "verified": [
+    {
+     "claim": "08:18 합친 확률을 편다(모수 하나짜리 식)",
+     "quote": "The resulting aggregator has a simple analytical form that depends on a single, easily-interpretable parameter. This makes it computationally simple, attractive for further development, and robust against overfitting.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "모수 하나짜리 로짓 합치기 — 식 자체는 초록에 없어 AIA 식 (2)로 확인(AIA가 이 글을 인용)."
+    }
+   ],
+   "formula": "E17의 식 (2): ln(p̂/(1−p̂)) = (d/n)·Σ ln(p_i/(1−p_i)) — 이 글의 원식과 같은지는 본문을 못 읽어 [확인 필요]",
+   "decision": "조건부",
+   "condition": "초록의 주장만 쓴다. 식은 E17에서 읽은 것을 쓴다.",
+   "reason": "모수 하나라 겉맞춤에 강하다는 주장이 고정 √3 방식과 맞는다.",
+   "reliability": "10점 학술지 — 초록만 읽음",
+   "structuresUsed": [
+    "D5",
+    "E6"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "E20-platt-1999",
+   "group": "사건 확률",
+   "commandLabel": "사건 확률: 플랫 보정(Platt 원문)",
+   "usedBy": [
+    "12-sources.txt:16"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 16,
+     "text": "사건 확률: AIA 예보단(2025)·플랫 보정"
+    }
+   ],
+   "original": {
+    "title": "Probabilistic Outputs for Support Vector Machines and Comparisons to Regularized Likelihood Methods",
+    "authors": [
+     "John C. Platt"
+    ],
+    "year": 1999,
+    "venue": "Advances in Large Margin Classifiers(MIT Press)의 한 장 — 이번에 확인 안 함",
+    "url": ""
+   },
+   "readDirectly": false,
+   "readScope": "못 읽음",
+   "verified": [
+    {
+     "claim": "12:16 플랫 보정",
+     "quote": "없음",
+     "location": "못 읽음",
+     "verdict": "확인 못 함",
+     "note": "원문 PDF를 찾지 못했다(위키·블로그만 나옴 — 안 씀). 엔진이 쓰는 '플랫 보정'은 AIA 보고서의 서술과 표 11로만 확인했다."
+    }
+   ],
+   "formula": "없음",
+   "decision": "보류",
+   "condition": "원문을 열면 다시 정한다. 그때까지 플랫 보정의 근거는 E17(AIA).",
+   "reason": "원문을 못 읽었다.",
+   "reliability": "못 읽음",
+   "structuresUsed": [
+    "C5"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "E21-wickramasuriya-athanasopoulos-hyndman-2019",
+   "group": "맞추기",
+   "commandLabel": "맞추기: MinT(2019)",
+   "usedBy": [
+    "12-sources.txt:17",
+    "08-engine.txt:41",
+    "10-spec.txt:8"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 17,
+     "text": "맞추기: MinT(2019) · 관리: SR 11-7"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 41,
+     "text": "종목과 코스피는 MinT 조정으로 서로 맞춘다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 8,
+     "text": "T6 종목·코스피가 MinT로 맞춰짐 (계산)"
+    }
+   ],
+   "original": {
+    "title": "Optimal Forecast Reconciliation for Hierarchical and Grouped Time Series Through Trace Minimization",
+    "authors": [
+     "Shanika L. Wickramasuriya",
+     "George Athanasopoulos",
+     "Rob J. Hyndman"
+    ],
+    "year": 2019,
+    "venue": "Journal of the American Statistical Association (2019) — 읽은 것은 저자 판 Monash Working Paper 22/17(2018. 1. 23. 판); 학술지 권·호는 확인 안 함",
+    "url": "https://robjhyndman.com/papers/mint.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(저자 판)",
+   "verified": [
+    {
+     "claim": "08:41 종목과 코스피는 MinT 조정으로 서로 맞춘다 / 10:8 T6",
+     "quote": "the optimal reconcilation matrix, which minimizes tr[SPWhP'S'] such that SPS = S, is given by P = (S'W−1h S)−1S'W−1h,",
+     "location": "p.8, Theorem 1, 식 (9)",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "S(모으는 행렬)의 뜻",
+     "quote": "This leads to the convenient general matrix representation yt = Sbt, (1) where S is a 'summing matrix' of order m × n which aggregates the bottom level series to the series at aggregation levels above.",
+     "location": "p.4–5",
+     "verdict": "일부 맞음",
+     "note": "원문 S는 '더하기' 행렬이다. 코스피는 52종목의 합이 아니다(나머지 종목·시가총액 무게) → '나머지' 칸과 무게가 든 S가 필요하다 [판단]. 무게 든 S가 정리 1에 그대로 들어가는지는 원문 문장으로 확인 못 함."
+    },
+    {
+     "claim": "맞춘 값이 나빠지지 않나",
+     "quote": "the MinT reconciled forecasts are at least as good as the incoherent base forecasts",
+     "location": "p.9",
+     "verdict": "맞음",
+     "note": "원문 틀(정리 1) 안에서."
+    }
+   ],
+   "formula": "y_t = S·b_t   (아래 칸 b: 52종목 + '나머지' 1칸 [판단]; 위 칸: 코스피)\n맞춘 값: ỹ = S·P·ŷ,  P = (S′·W_h⁻¹·S)⁻¹·S′·W_h⁻¹   (원문 Theorem 1, 식 (9))\n치우침 없음 조건: S·P·S = S (원문 p.5)\nW_h 고르기(원문 2.4절): OLS = k_h·I / WLS = k_h·diag(Ŵ_1) / MinT(Sample) = k_h·Ŵ_1 / MinT(Shrink):\n  Ŵ_1 = (1/T)·Σ_t ê_t(1)·ê_t(1)′   (한 걸음 앞 기초 예측의 오차)\n  Ŵ*_{1,D} = λ_D·Ŵ_{1,D} + (1 − λ_D)·Ŵ_1,   λ̂_D = Σ_{i≠j} Var̂(r̂_ij) / Σ_{i≠j} r̂_ij²   (Ŵ_{1,D}: 대각만 남긴 것, r̂_ij: 상관)\n코스피 줄의 무게(시가총액 비율)는 봉인 기록에 적는다 [판단]",
+   "decision": "조건부",
+   "condition": "아래 칸을 52종목 + '나머지' 하나로 두고, 코스피 줄의 무게를 봉인 기록에 적은 뒤 쓴다. W는 MinT(Shrink)부터.",
+   "reason": "맞추는 식과 '맞춘 값이 기초 예측보다 나쁘지 않다'는 결과가 원문에 있다. 다만 원문 S는 더하기 행렬이고 코스피는 52종목의 합이 아니다.",
+   "reliability": "10점 — JASA 실린 글의 저자 판(Monash WP)",
+   "structuresUsed": [
+    "C1",
+    "F2"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "E22-sr-11-7",
+   "group": "관리",
+   "commandLabel": "관리: SR 11-7",
+   "usedBy": [
+    "12-sources.txt:17",
+    "02-watch.txt:1",
+    "08-engine.txt:25",
+    "09-scoring-evolution.txt:3",
+    "13-command.txt:19"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 17,
+     "text": "맞추기: MinT(2019) · 관리: SR 11-7"
+    },
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "line": 1,
+     "text": "<감시 — 보는 눈은 짓는 이와 다른 에이전트>"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 25,
+     "text": "위기 때 덮음이 모자라면 그때는 폭을 넓게 둔다."
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 3,
+     "text": "판마다 봉인 뒤 첫 종가로 채점한다."
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 19,
+     "text": "채점에 쓸 자료로 엔진을 맞추지 않는다."
+    }
+   ],
+   "original": {
+    "title": "Supervisory Guidance on Model Risk Management (SR 11-7 별지)",
+    "authors": [
+     "Board of Governors of the Federal Reserve System",
+     "Office of the Comptroller of the Currency"
+    ],
+    "year": 2011,
+    "venue": "SR Letter 11-7 (2011. 4. 4.)",
+    "url": "https://www.federalreserve.gov/boarddocs/srletters/2011/sr1107a1.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(연준 공식 PDF)",
+   "verified": [
+    {
+     "claim": "02:1 보는 눈은 짓는 이와 다른 에이전트",
+     "quote": "A guiding principle for managing model risk is 'effective challenge' of models, that is, critical analysis by objective, informed parties who can identify model limitations and assumptions and produce appropriate changes.",
+     "location": "p.4",
+     "verdict": "맞음",
+     "note": "뜻: 객관적이고 아는 사람이 따져 묻고 고치게 하는 것이 모형 관리의 중심이다."
+    },
+    {
+     "claim": "09:3 봉인 뒤 첫 종가로 채점 / 13:19 채점에 쓸 자료로 엔진을 맞추지 않는다",
+     "quote": "Back-testing is one form of outcomes analysis; specifically, it involves the comparison of actual outcomes with model forecasts during a sample time period not used in model development and at an observation frequency that matches the forecast horizon or performance window of the model.",
+     "location": "p.14",
+     "verdict": "맞음",
+     "note": "뜻: 만들 때 안 쓴 기간으로, 예측 길이에 맞춘 간격으로 채점한다."
+    },
+    {
+     "claim": "08:25 위기 때 덮음이 모자라면 그때는 폭을 넓게 둔다",
+     "quote": "it can be prudent for banks to account for model uncertainty by explicitly adjusting model inputs or calculations to produce more severe or adverse model output in the interest of conservatism.",
+     "location": "p.8",
+     "verdict": "맞음",
+     "note": "뜻: 모형이 불확실하면 일부러 더 보수적으로 잡는 것이 신중하다."
+    },
+    {
+     "claim": "12:17 관리 기준이 지금도 SR 11-7인가",
+     "quote": "the attached Revised Guidance on Model Risk Management, which supersedes and replaces SR letter 11-7, Guidance on Model Risk Management (issued April 4, 2011)",
+     "location": "SR 26-2 본문(2026. 4. 17.)",
+     "verdict": "틀림",
+     "note": "SR 11-7은 2026. 4. 17. SR 26-2로 대체됐다 — 명령 줄의 이름은 옛 문서다."
+    }
+   ],
+   "formula": "식 없음. 점검 줄: ①짓는 이와 다른 감시자(효과적 도전) ②만들 때 안 쓴 기간으로 뒤돌아 채점 ③불확실하면 보수적으로(폭 넓힘) ④문서·목록(시도 장부)",
+   "decision": "조건부",
+   "condition": "옛 원칙(효과적 도전·뒤돌아 채점·보수적 조정)의 출처로만 쓰고, 지금 기준은 SR 26-2(E23)로 적는다.",
+   "reason": "원칙은 원문으로 확인했으나 문서가 2026년에 대체됐다.",
+   "reliability": "10점 — 미국 연준·OCC 공식 감독 지침 원문(대체됨)",
+   "structuresUsed": [
+    "E4",
+    "F1",
+    "C5"
+   ],
+   "notes": "sr1107.htm 쪽 글에는 대체 안내가 안 보였고, 대체 사실은 SR 26-2 쪽 글에서 읽었다."
+  },
+  {
+   "id": "E23-sr-26-2",
+   "group": "관리",
+   "commandLabel": "관리: SR 11-7을 대체한 SR 26-2(2026)",
+   "usedBy": [
+    "12-sources.txt:17",
+    "02-watch.txt:1",
+    "09-scoring-evolution.txt:3"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 17,
+     "text": "맞추기: MinT(2019) · 관리: SR 11-7"
+    },
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "line": 1,
+     "text": "<감시 — 보는 눈은 짓는 이와 다른 에이전트>"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 3,
+     "text": "판마다 봉인 뒤 첫 종가로 채점한다."
+    }
+   ],
+   "original": {
+    "title": "Revised Guidance on Model Risk Management (SR 26-2 별지)",
+    "authors": [
+     "Board of Governors of the Federal Reserve System"
+    ],
+    "year": 2026,
+    "venue": "SR Letter 26-2 (2026. 4. 17.)",
+    "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602a1.pdf"
+   },
+   "readDirectly": true,
+   "readScope": "전문(연준 공식 SR 26-2 글과 별지)",
+   "verified": [
+    {
+     "claim": "12:17 관리(지금 기준)",
+     "quote": "the attached Revised Guidance on Model Risk Management, which supersedes and replaces SR letter 11-7, Guidance on Model Risk Management (issued April 4, 2011)",
+     "location": "SR 26-2 본문",
+     "verdict": "맞음",
+     "note": "2026. 4. 17.부터 이 문서가 기준이다."
+    },
+    {
+     "claim": "02:1 효과적 도전은 그대로인가",
+     "quote": "Sound model risk management also involves 'effective challenge,' which refers to the critical analysis conducted by objective experts who evaluate model risk and effect appropriate changes throughout the model lifecycle, from model development to ongoing monitoring.",
+     "location": "p.4",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "09:3 결과와 맞대어 채점",
+     "quote": "Outcomes analysis compares model outputs to corresponding real-world outcomes to assess model performance relative to model objectives and business use.",
+     "location": "p.9",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "12:17 관리 지침이 엔진 전체(AI 예보단 포함)에 맞나",
+     "quote": "Generative AI and agentic AI models are novel and rapidly evolving. As such, they are not within the scope of this guidance.",
+     "location": "p.3, 각주 3",
+     "verdict": "일부 맞음",
+     "note": "숫자 모형(HAR·컨포멀 등)에는 맞고, 생성형·에이전트 AI(사건 확률 예보단)는 이 지침 범위 밖이라고 원문이 적었다 → 예보단 관리는 우리 감시(S1~S10)와 채점으로만."
+    }
+   ],
+   "formula": "식 없음. 점검 줄: ①효과적 도전 ②결과와 맞대기(뒤돌아 채점 포함) ③중요도에 맞춘 깊이 ④모형 목록과 문서 ⑤생성형·에이전트 AI는 범위 밖",
+   "decision": "쓴다",
+   "condition": "숫자 모형 관리의 기준으로 쓴다. 생성형·에이전트 AI 부분은 범위 밖임을 함께 적는다.",
+   "reason": "SR 11-7을 대체한 지금의 공식 지침이고, 원칙(효과적 도전·결과 맞대기)이 그대로 있다.",
+   "reliability": "10점 — 미국 연준 공식 감독 지침 원문",
+   "structuresUsed": [
+    "E4",
+    "F1",
+    "F6"
+   ],
+   "notes": "OCC·FDIC가 함께 냈다는 것은 검색 결과로만 봤다(이번에 그 쪽 원문은 안 열어 봄)."
+  }
+ ],
+ "learnedCheck": [
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 2,
+    "text": "1 방향은 어떤 모델도 무판을 잘 못 이긴다."
+   },
+   "verdict": "받치는 원문 없음",
+   "by": [],
+   "note": "엔진 칸 원문이 방향 예측을 다루지 않는다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 3,
+    "text": "2 폭은 맞힐 수 있다. HAR가 기준이다."
+   },
+   "verdict": "일부 맞음",
+   "by": [
+    "E08",
+    "E09"
+   ],
+   "note": "HAR는 기준으로 쓰이고 표본 밖에서 잘 맞았다. 다만 나무 모형·신경망이 HAR를 이긴 결과도 있고(먼 기간), 둘 다 미국 하루 자료라 4시간 코스피 범위와는 대상이 다르다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 4,
+    "text": "3 범위: 적응형 컨포멀은 위기 때 좁아질 수 있다."
+   },
+   "verdict": "원문과 다름(일부)",
+   "by": [
+    "E10"
+   ],
+   "note": "원문에 '좁아진다'는 말이 없다. 늦게 따라감(AgACI)만 있다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 5,
+    "text": "4 에이전트 이득은 토론보다 합치기, 판정자 하나는 병목"
+   },
+   "verdict": "맞음",
+   "by": [
+    "E16",
+    "E17"
+   ],
+   "note": "앞쪽은 「토론이냐 투표냐」, 뒤쪽('판정자 하나')은 AIA 7.2절이 받친다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 6,
+    "text": "5 감독은 다시 판정 말고 새 자료를 더 찾아야 한다."
+   },
+   "verdict": "맞음",
+   "by": [
+    "E17"
+   ],
+   "note": "AIA 감독은 갈린 곳을 찾아 새로 검색한다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 7,
+    "text": "6 LLM 확률은 반반 쪽으로 움츠린다. 보정해 편다."
+   },
+   "verdict": "맞음",
+   "by": [
+    "E17",
+    "E18",
+    "E19"
+   ],
+   "note": "AIA: LLM은 0.5 쪽으로 움츠린다 → 플랫(√3)으로 편다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 8,
+    "text": "7 LLM은 지난 결과를 이미 알 수 있다(재현 의심)."
+   },
+   "verdict": "맞음",
+   "by": [
+    "E17"
+   ],
+   "note": "AIA: 검색 결과의 약 1.65%에 미리 앎, 그래서 학습 마감 뒤 질문으로 채점."
+  }
+ ],
+ "unsupportedLines": [
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 2,
+    "text": "1 방향은 어떤 모델도 무판을 잘 못 이긴다."
+   },
+   "status": "받치는 원문 없음",
+   "why": "엔진 칸 원문 가운데 '방향은 무판을 못 이긴다'를 다룬 글이 없다(HAR·나무 모형은 변동성, DM·MCS·SPA는 검정 도구)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/05-learned.txt",
+    "line": 4,
+    "text": "3 범위: 적응형 컨포멀은 위기 때 좁아질 수 있다."
+   },
+   "status": "원문과 다름(일부)",
+   "why": "Gibbs & Candès 2024는 '좁아진다'고 쓰지 않는다. 흔들림이 갑자기 커질 때 늦게 따라간 것은 AgACI이고, DtACI는 지역 덮음이 목표 근처였다(E10)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 38,
+    "text": "모델은 섞어 쓴다 — 같은 모델끼리는 같은 실수를 한다."
+   },
+   "status": "받치는 원문 없음",
+   "why": "「토론이냐 투표냐」에 '같은 모델이면 같은 실수' 문장이 없다. 섞은 실험은 역할(페르소나)이었다(E16)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 26,
+    "text": "덮는 비율과 '빗나감이 몰리는지'를 둘 다 검사한다."
+   },
+   "status": "받치는 원문 없음(지금)",
+   "why": "'빗나감이 몰리는지' 검정(Christoffersen 1998)을 못 읽었다(E12 보류). 덮는 비율(Kupiec)만 받쳐진다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/09-scoring-evolution.txt",
+    "line": 8,
+    "text": "이겼는지는 DM 검정으로(겹친 창·자기상관 보정)."
+   },
+   "status": "일부만 받침",
+   "why": "DM 식은 받쳐지나 '겹친 창' 보정의 자를 길이와 작은 표본 보정 식(1995 원문·HLN 1997)은 못 읽었다(E02·E04 보류)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/09-scoring-evolution.txt",
+    "line": 6,
+    "text": "실력 = 1 − 내 오차 ÷ 기준 오차"
+   },
+   "status": "일부만 받침",
+   "why": "Gneiting & Raftery 2.3절: 이런 실력 점수는 대개 바른 점수가 아니다 → 화면용으로만(E01)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 24,
+    "text": "위기 구간(흔들림 상위 10%)의 덮음은 따로 잰다."
+   },
+   "status": "일부만 받침",
+   "why": "위기 구간을 따로 재는 것은 국소 덮음 생각과 맞지만 '상위 10%' 나눔 기준은 원문에 없다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/10-spec.txt",
+    "line": 16,
+    "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+   },
+   "status": "일부만 받침",
+   "why": "'70~90%'는 원문 숫자가 아니다. [계산] Kupiec 식으로 n=30이면 66.7~90%가 '틀렸다고 못 함'이라 거의 같다(E11)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 35,
+    "text": "D5대로 합치고, 갈리면 폭을 넓힌다."
+   },
+   "status": "받치는 원문 없음",
+   "why": "'갈리면 폭을 넓힌다'를 다룬 원문이 엔진 칸에 없다(AIA는 갈림을 새 검색으로 푼다)."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 40,
+    "text": "소수가 새 증거로 다수를 뒤집을 때만 값을 바꾼다."
+   },
+   "status": "일부만 받침",
+   "why": "AIA 감독 규칙('확신 높음'일 때만 평균을 바꿈)과 닮았으나 '소수·다수' 규칙 자체는 원문에 없다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 11,
+    "text": "③ 나무 모형 ④ 미세조정한 시계열 기초 모형"
+   },
+   "status": "원문 목록 밖",
+   "why": "'④ 미세조정한 시계열 기초 모형'은 12-sources 엔진 칸에 원문이 없다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/08-engine.txt",
+    "line": 13,
+    "text": "좌우는 따로: 나쁜 쪽이 3~4배 세다."
+   },
+   "status": "원문 목록 밖",
+   "why": "'나쁜 쪽이 3~4배'는 9월 2일 실측(06-constants)이고 엔진 칸 원문이 다루지 않는다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/09-scoring-evolution.txt",
+    "line": 14,
+    "text": "누수 막기: 겹친 기간은 비우고 검증(정화·엠바고)"
+   },
+   "status": "원문 목록 밖",
+   "why": "정화·엠바고의 원문이 12-sources 엔진 칸에 없다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/09-scoring-evolution.txt",
+    "line": 16,
+    "text": "국면은 문턱 대신 확률로 본다(국면 전환 모형)."
+   },
+   "status": "원문 목록 밖",
+   "why": "국면 전환 모형의 원문이 12-sources 엔진 칸에 없다."
+  },
+  {
+   "ref": {
+    "file": "atlas4h/command/12-sources.txt",
+    "line": 17,
+    "text": "맞추기: MinT(2019) · 관리: SR 11-7"
+   },
+   "status": "이름이 옛 문서",
+   "why": "SR 11-7은 2026. 4. 17. SR 26-2로 대체됐다(E22·E23)."
+  }
+ ]
+}

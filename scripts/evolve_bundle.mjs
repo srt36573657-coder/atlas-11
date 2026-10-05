@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';import {createHash}from'node:crypto';import{updateEvolution}from'../lib/evolution.mjs';
+const file=new URL('../public/data/atlas.json',import.meta.url),b=JSON.parse(await fs.readFile(file,'utf8'));
+const now=new Date().toISOString(),sha=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
+const originalSHA=sha(b.original),versions=[b.original,...(b.priorVersions??[]),b.candidate];
+if(originalSHA!=='1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca')throw Error('Original hash mismatch');
+const before=JSON.stringify(versions);
+b.evolution=updateEvolution({input:b.input,versions,original:b.original,active:b.candidate.id,evaluationLedger:b.evaluationLedger??[],evolution:b.evolution,originalSHA},now);
+if(JSON.stringify(versions)!==before)throw Error('Historical forecasts mutated');
+const tmp=new URL('../public/data/atlas.evolution.next.json',import.meta.url);await fs.writeFile(tmp,JSON.stringify(b));await fs.rename(tmp,file);
+const last=b.evolution.versions.at(-1);console.log(JSON.stringify({issuedAt:last?.issuedAt,evolutionVersions:b.evolution.versions.length,stocks:last?.assets.length,trained:last?.assets.filter(a=>a.training.status==='TRAINED').length,originalSHA,originalVersions:versions.length}));

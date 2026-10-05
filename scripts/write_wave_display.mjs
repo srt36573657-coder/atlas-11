@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';import{createHash}from'node:crypto';import{gzipSync,gunzipSync}from'node:zlib';import{validateWaveBundle}from'../lib/wave-bundle.mjs';
+const raw=await fs.readFile('public/data/atlas.json'),b=JSON.parse(raw),wave=JSON.parse(gunzipSync(await fs.readFile('public/data/news-wave.json.gz')));
+if(createHash('sha256').update(raw).digest('hex')!==wave.sourceSHA256)throw Error('Cannot attach different source snapshot');
+const before=JSON.stringify(wave.candidate);wave.displayContext={input:b.input,eventGate:b.candidate.eventGate,newsCoverage:b.candidate.newsCoverage,evidenceCoverage:b.candidate.evidenceCoverage,sourceSHA256:wave.sourceSHA256};validateWaveBundle(wave);if(JSON.stringify(wave.candidate)!==before)throw Error('Forecast changed');await fs.writeFile('public/data/news-wave.json.gz',gzipSync(JSON.stringify(wave),{level:9}));console.log('Atomic view snapshot written; numeric forecast unchanged');

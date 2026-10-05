@@ -1,0 +1,30 @@
+{
+  "forecastId": "2026-10-01-atlas11-ddcd76430dec96dc",
+  "issuedAt": "2026-10-01T09:53:49Z",
+  "actualAsOf": "2026-10-01",
+  "reused": false,
+  "createdForecastFiles": 52,
+  "csvFiles": 52,
+  "archive": "reports/atlas11/versions/2026-10-01-atlas11-ddcd76430dec96dc.json",
+  "publicationSHA256": "3950e69abff433dcd7d02b502b47a92be6dba56122e3e486dc9aaa94cd947b5f",
+  "summary": {
+    "stocks": 52,
+    "anchorMatches": 52,
+    "futurePointsPerStock": 20,
+    "afterIssuanceFuturePoints": 20,
+    "csvFiles": 52,
+    "chosenMethod": "A",
+    "methodReason": "B(실질금리·환율)는 후향 비교에서 오차가 나빠 기각 · A 유지",
+    "newCurrentCloseStocks": 52,
+    "finalCloseStocks": 52,
+    "previousForecastStocks": 52,
+    "closeCallStocksDay1": 28,
+    "closeCallStocksDay20": 31,
+    "newsEvents": 375,
+    "newsNumericEvents": 0,
+    "fullFomoStocks": 0,
+    "priceHeatStocks": 52,
+    "trustProbability": null,
+    "liveAdvantageProven": false
+  }
+}

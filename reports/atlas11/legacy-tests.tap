@@ -1,0 +1,4033 @@
+TAP version 13
+# Subtest: account login binds nonce and issuer identity to an HttpOnly signed session
+ok 1 - account login binds nonce and issuer identity to an HttpOnly signed session
+  ---
+  duration_ms: 48.668025
+  type: 'test'
+  ...
+# Subtest: watchlist persists per Google subject and refuses stale writes and foreign codes
+ok 2 - watchlist persists per Google subject and refuses stale writes and foreign codes
+  ---
+  duration_ms: 9.639979
+  type: 'test'
+  ...
+# Subtest: missing Google configuration and expired nonce cannot pretend a save succeeded
+ok 3 - missing Google configuration and expired nonce cannot pretend a save succeeded
+  ---
+  duration_ms: 1.78595
+  type: 'test'
+  ...
+# Subtest: wrong nonce and unverified email are rejected before issuing a session
+ok 4 - wrong nonce and unverified email are rejected before issuing a session
+  ---
+  duration_ms: 2.592338
+  type: 'test'
+  ...
+# Subtest: day vintage is not a fabricated publication timestamp
+ok 5 - day vintage is not a fabricated publication timestamp
+  ---
+  duration_ms: 9.002565
+  type: 'test'
+  ...
+# Subtest: latest data substituted for requested vintage rejected
+ok 6 - latest data substituted for requested vintage rejected
+  ---
+  duration_ms: 0.255438
+  type: 'test'
+  ...
+# Subtest: truncation duplicate future date invalid value rejected
+ok 7 - truncation duplicate future date invalid value rejected
+  ---
+  duration_ms: 0.354465
+  type: 'test'
+  ...
+# Subtest: no credential means no fabricated collection success or request
+ok 8 - no credential means no fabricated collection success or request
+  ---
+  duration_ms: 0.490094
+  type: 'test'
+  ...
+# Subtest: bounded authenticated run saves exact response and strips secret
+ok 9 - bounded authenticated run saves exact response and strips secret
+  ---
+  duration_ms: 60.148701
+  type: 'test'
+  ...
+# Subtest: authorization error stops subsequent requests
+ok 10 - authorization error stops subsequent requests
+  ---
+  duration_ms: 0.460529
+  type: 'test'
+  ...
+# Subtest: network errors cannot leak secret URLs
+ok 11 - network errors cannot leak secret URLs
+  ---
+  duration_ms: 0.488946
+  type: 'test'
+  ...
+# Subtest: request budget and future plan rejected
+ok 12 - request budget and future plan rejected
+  ---
+  duration_ms: 0.311403
+  type: 'test'
+  ...
+# Subtest: single-view components: selected forecast controls score rows and evolution values; alternative evolution record replaces rather than overlays
+ok 13 - single-view components: selected forecast controls score rows and evolution values; alternative evolution record replaces rather than overlays
+  ---
+  duration_ms: 568.034788
+  type: 'test'
+  ...
+# Subtest: single-view archive: unavailable news forecast draws no proxy; valid news forecast and optional range never add A
+ok 14 - single-view archive: unavailable news forecast draws no proxy; valid news forecast and optional range never add A
+  ---
+  duration_ms: 563.740441
+  type: 'test'
+  ...
+# Subtest: single-view breaking chart: selected operating record and explicit later research record replace one another
+ok 15 - single-view breaking chart: selected operating record and explicit later research record replace one another
+  ---
+  duration_ms: 57.922979
+  type: 'test'
+  ...
+# Subtest: archived Atelier preserves its geometry; 9.4 trading-day geometry has a separate browser check
+ok 16 - archived Atelier preserves its geometry; 9.4 trading-day geometry has a separate browser check
+  ---
+  duration_ms: 3.978622
+  type: 'test'
+  ...
+# Subtest: Atelier loaded CSS parses and final text/financial tokens have measurable contrast
+ok 17 - Atelier loaded CSS parses and final text/financial tokens have measurable contrast
+  ---
+  duration_ms: 45.254214
+  type: 'test'
+  ...
+# Subtest: Atelier styles do not erase scientific labels, actual curves or uncertainty semantics
+ok 18 - Atelier styles do not erase scientific labels, actual curves or uncertainty semantics
+  ---
+  duration_ms: 0.352822
+  type: 'test'
+  ...
+# Subtest: Atelier preserves keyboard focus, reduced motion and forced colors fallback in loaded CSS
+ok 19 - Atelier preserves keyboard focus, reduced motion and forced colors fallback in loaded CSS
+  ---
+  duration_ms: 21.293704
+  type: 'test'
+  ...
+# Subtest: Atelier preserves all prior issued forecast identities while allowing daily inputs and new versions
+ok 20 - Atelier preserves all prior issued forecast identities while allowing daily inputs and new versions
+  ---
+  duration_ms: 2898.63904
+  type: 'test'
+  ...
+# Subtest: Atelier actual observations stay solid and all research paths keep dashed matching legend keys
+ok 21 - Atelier actual observations stay solid and all research paths keep dashed matching legend keys
+  ---
+  duration_ms: 6.792332
+  type: 'test'
+  ...
+# Subtest: Atelier scoped panel controls and primary labels use actual contrasting tokens
+ok 22 - Atelier scoped panel controls and primary labels use actual contrasting tokens
+  ---
+  duration_ms: 18.274753
+  type: 'test'
+  ...
+# Subtest: Atelier includes narrow-screen layout, reachable navigation and minimum touch controls
+ok 23 - Atelier includes narrow-screen layout, reachable navigation and minimum touch controls
+  ---
+  duration_ms: 15.072367
+  type: 'test'
+  ...
+# Subtest: Atelier 320px gallery date grids accommodate 44px targets without seven-column clipping
+ok 24 - Atelier 320px gallery date grids accommodate 44px targets without seven-column clipping
+  ---
+  duration_ms: 12.280121
+  type: 'test'
+  ...
+# Subtest: historical folds exclude discontinuous prior60 even if their future20 is continuous
+ok 25 - historical folds exclude discontinuous prior60 even if their future20 is continuous
+  ---
+  duration_ms: 68.554691
+  type: 'test'
+  ...
+# Subtest: continuous training retains all six historical folds
+ok 26 - continuous training retains all six historical folds
+  ---
+  duration_ms: 29.598271
+  type: 'test'
+  ...
+# Subtest: one-step quantiles preserve representable final prices despite exp intermediary range
+ok 27 - one-step quantiles preserve representable final prices despite exp intermediary range
+  ---
+  duration_ms: 1.492978
+  type: 'test'
+  ...
+# Subtest: genuinely unrepresentable final prices still fail and ordinary outputs stay unchanged
+ok 28 - genuinely unrepresentable final prices still fail and ordinary outputs stay unchanged
+  ---
+  duration_ms: 0.656034
+  type: 'test'
+  ...
+# Subtest: wrong phase sample excluded, same phase retained
+ok 29 - wrong phase sample excluded, same phase retained
+  ---
+  duration_ms: 6.120413
+  type: 'test'
+  ...
+# Subtest: same id phase conflicts rejected independent of insertion order
+ok 30 - same id phase conflicts rejected independent of insertion order
+  ---
+  duration_ms: 16.790606
+  type: 'test'
+  ...
+# Subtest: distinct economic occurrences of same type on one day excluded; repost retained once
+ok 31 - distinct economic occurrences of same type on one day excluded; repost retained once
+  ---
+  duration_ms: 7.515891
+  type: 'test'
+  ...
+# Subtest: 8.0.1 release preserves 16 earlier forecasts, exact inputs, original, ledger and histories
+ok 32 - 8.0.1 release preserves 16 earlier forecasts, exact inputs, original, ledger and histories
+  ---
+  duration_ms: 4562.526779
+  type: 'test'
+  ...
+# Subtest: audit release rejects numerical input alteration or earlier forecast rewrite
+ok 33 - audit release rejects numerical input alteration or earlier forecast rewrite
+  ---
+  duration_ms: 4522.449766
+  type: 'test'
+  ...
+# Subtest: audit release rejects removed evaluation ledger and wrong model promotion
+ok 34 - audit release rejects removed evaluation ledger and wrong model promotion
+  ---
+  duration_ms: 5730.652176
+  type: 'test'
+  ...
+# Subtest: initial state derives active research baselines and preserves saved bundle/reports
+ok 35 - initial state derives active research baselines and preserves saved bundle/reports
+  ---
+  duration_ms: 13407.778769
+  type: 'test'
+  ...
+# Subtest: same-model persisted state repairs stale research baselines without mutating saved state
+ok 36 - same-model persisted state repairs stale research baselines without mutating saved state
+  ---
+  duration_ms: 12179.96268
+  type: 'test'
+  ...
+# Subtest: manual writes journal price/news inserts edits deletes and replay original cutoff
+ok 37 - manual writes journal price/news inserts edits deletes and replay original cutoff
+  ---
+  duration_ms: 13.474179
+  type: 'test'
+  ...
+# Subtest: input revision advances once on real change; no-op and caller mutation cannot affect state
+ok 38 - input revision advances once on real change; no-op and caller mutation cannot affect state
+  ---
+  duration_ms: 6.277291
+  type: 'test'
+  ...
+# Subtest: publication corrections journal; explicit full snapshots remove obsolete evidence while parser patches preserve it
+ok 39 - publication corrections journal; explicit full snapshots remove obsolete evidence while parser patches preserve it
+  ---
+  duration_ms: 1.832944
+  type: 'test'
+  ...
+# Subtest: unavailable and invalid point forecasts never become zero-price scores
+ok 40 - unavailable and invalid point forecasts never become zero-price scores
+  ---
+  duration_ms: 1.80924
+  type: 'test'
+  ...
+# Subtest: latest evaluated vintage is independent of merge insertion order
+ok 41 - latest evaluated vintage is independent of merge insertion order
+  ---
+  duration_ms: 0.486814
+  type: 'test'
+  ...
+# Subtest: audit rejects overlapping target windows without enabling model
+ok 42 - audit rejects overlapping target windows without enabling model
+  ---
+  duration_ms: 4.044964
+  type: 'test'
+  ...
+# Subtest: audit identical duplicates and input ordering do not change result
+ok 43 - audit identical duplicates and input ordering do not change result
+  ---
+  duration_ms: 7.631958
+  type: 'test'
+  ...
+# Subtest: audit conflicting duplicates fail closed regardless of ordering
+ok 44 - audit conflicting duplicates fail closed regardless of ordering
+  ---
+  duration_ms: 1.328943
+  type: 'test'
+  ...
+# Subtest: audit conflicting target dates fail closed
+ok 45 - audit conflicting target dates fail closed
+  ---
+  duration_ms: 0.888313
+  type: 'test'
+  ...
+# Subtest: audit accepts adjacent half-open return windows sharing a boundary
+ok 46 - audit accepts adjacent half-open return windows sharing a boundary
+  ---
+  duration_ms: 1.04631
+  type: 'test'
+  ...
+# Subtest: large genuine losses remain in stock and common-day distributions; no amplitude deletion
+ok 47 - large genuine losses remain in stock and common-day distributions; no amplitude deletion
+  ---
+  duration_ms: 5673.617607
+  type: 'test'
+  ...
+# Subtest: revised news retains a deep copy of the old record and reconstructs the earlier forecast
+ok 48 - revised news retains a deep copy of the old record and reconstructs the earlier forecast
+  ---
+  duration_ms: 12676.634849
+  type: 'test'
+  ...
+# Subtest: logged later price corrections cannot leak into an earlier as-of forecast
+ok 49 - logged later price corrections cannot leak into an earlier as-of forecast
+  ---
+  duration_ms: 11077.979032
+  type: 'test'
+  ...
+# Subtest: hidden future duplicate and invalid historical sources cannot alter accepted samples or price rows
+ok 50 - hidden future duplicate and invalid historical sources cannot alter accepted samples or price rows
+  ---
+  duration_ms: 9800.099745
+  type: 'test'
+  ...
+# Subtest: same event under another ID is deduplicated, while semantically equal scope order is stable
+ok 51 - same event under another ID is deduplicated, while semantically equal scope order is stable
+  ---
+  duration_ms: 9891.8943
+  type: 'test'
+  ...
+# Subtest: a missing prior session cannot be silently replaced by an older return in an event sample
+ok 52 - a missing prior session cannot be silently replaced by an older return in an event sample
+  ---
+  duration_ms: 34.265467
+  type: 'test'
+  ...
+# Subtest: Monte Carlo error and source counts cannot become a fabricated trust percentage
+ok 53 - Monte Carlo error and source counts cannot become a fabricated trust percentage
+  ---
+  duration_ms: 4823.783596
+  type: 'test'
+  ...
+# Subtest: evaluation windows are disjoint; bootstrap works on date clusters and proper interval scores penalize misses
+ok 54 - evaluation windows are disjoint; bootstrap works on date clusters and proper interval scores penalize misses
+  ---
+  duration_ms: 0.596745
+  type: 'test'
+  ...
+# Subtest: reviewed benchmark import is immutable and identical research cannot duplicate prices or logs
+ok 55 - reviewed benchmark import is immutable and identical research cannot duplicate prices or logs
+  ---
+  duration_ms: 9.480405
+  type: 'test'
+  ...
+# Subtest: same research ID with changed values cannot replace the reviewed source record
+ok 56 - same research ID with changed values cannot replace the reviewed source record
+  ---
+  duration_ms: 1.640585
+  type: 'test'
+  ...
+# Subtest: future observation in row or primary evidence is rejected, including idempotent replay under past now
+ok 57 - future observation in row or primary evidence is rejected, including idempotent replay under past now
+  ---
+  duration_ms: 0.825555
+  type: 'test'
+  ...
+# Subtest: conflicting preexisting index close fails atomically and preserves both original bundle and incoming research
+ok 58 - conflicting preexisting index close fails atomically and preserves both original bundle and incoming research
+  ---
+  duration_ms: 0.430514
+  type: 'test'
+  ...
+# Subtest: press research remains an observed diagnostic and never upgrades failed NAVER, vintage or future-forecast certification
+ok 59 - press research remains an observed diagnostic and never upgrades failed NAVER, vintage or future-forecast certification
+  ---
+  duration_ms: 1.104915
+  type: 'test'
+  ...
+# Subtest: benchmark actual excess is same-horizon beta=1 diagnostic and never a forecast
+ok 60 - benchmark actual excess is same-horizon beta=1 diagnostic and never a forecast
+  ---
+  duration_ms: 1.679405
+  type: 'test'
+  ...
+# Subtest: subtracting the same actual market return from prediction and outcome leaves error unchanged
+ok 61 - subtracting the same actual market return from prediction and outcome leaves error unchanged
+  ---
+  duration_ms: 0.266789
+  type: 'test'
+  ...
+# Subtest: benchmark rejects missing, duplicate, conflicting and mismatched series
+ok 62 - benchmark rejects missing, duplicate, conflicting and mismatched series
+  ---
+  duration_ms: 0.429767
+  type: 'test'
+  ...
+# Subtest: benchmark rejects unseen, before-close, missing-source and wrong-code rows
+ok 63 - benchmark rejects unseen, before-close, missing-source and wrong-code rows
+  ---
+  duration_ms: 0.353479
+  type: 'test'
+  ...
+# Subtest: benchmark cannot substitute nearest date or calendar holiday
+ok 64 - benchmark cannot substitute nearest date or calendar holiday
+  ---
+  duration_ms: 0.149736
+  type: 'test'
+  ...
+# Subtest: only cutoff-matched, seal-bound market forecast permits separate excess diagnostics
+ok 65 - only cutoff-matched, seal-bound market forecast permits separate excess diagnostics
+  ---
+  duration_ms: 0.607827
+  type: 'test'
+  ...
+# Subtest: unresolved benchmark correction blocks descriptive excess and preserves conflict evidence
+ok 66 - unresolved benchmark correction blocks descriptive excess and preserves conflict evidence
+  ---
+  duration_ms: 0.142856
+  type: 'test'
+  ...
+# Subtest: NAVER daily parser preserves exact dates, closes, source digest and single-provider status
+ok 67 - NAVER daily parser preserves exact dates, closes, source digest and single-provider status
+  ---
+  duration_ms: 10.15675
+  type: 'test'
+  ...
+# Subtest: NAVER daily parser fails closed on wrong code/schema/invalid date/duplicate/price/non-session
+ok 68 - NAVER daily parser fails closed on wrong code/schema/invalid date/duplicate/price/non-session
+  ---
+  duration_ms: 1.047898
+  type: 'test'
+  ...
+# Subtest: NAVER parser never stores unclosed or out-of-range prices
+ok 69 - NAVER parser never stores unclosed or out-of-range prices
+  ---
+  duration_ms: 0.933306
+  type: 'test'
+  ...
+# Subtest: collector performs one request, no mutation, retains old observations on repeated values
+ok 70 - collector performs one request, no mutation, retains old observations on repeated values
+  ---
+  duration_ms: 8.139366
+  type: 'test'
+  ...
+# Subtest: collector HTTP/schema/redirect/large responses fail without replacing lastgood
+ok 71 - collector HTTP/schema/redirect/large responses fail without replacing lastgood
+  ---
+  duration_ms: 1.217438
+  type: 'test'
+  ...
+# Subtest: collector enforces deadline even when injected fetch ignores abort
+ok 72 - collector enforces deadline even when injected fetch ignores abort
+  ---
+  duration_ms: 15.234201
+  type: 'test'
+  ...
+# Subtest: collector records before/after conflict and never silently updates old closes
+ok 73 - collector records before/after conflict and never silently updates old closes
+  ---
+  duration_ms: 0.886989
+  type: 'test'
+  ...
+# Subtest: latest-table gap remains partial and fixed period is never extended
+ok 74 - latest-table gap remains partial and fixed period is never extended
+  ---
+  duration_ms: 0.972216
+  type: 'test'
+  ...
+# Subtest: invalid prior rows never become silent duplicates and unresolved conflict keeps partial status
+ok 75 - invalid prior rows never become silent duplicates and unresolved conflict keeps partial status
+  ---
+  duration_ms: 1.0804
+  type: 'test'
+  ...
+# Subtest: review-only bridge preserves actual body/link distinction and registry code
+ok 76 - review-only bridge preserves actual body/link distinction and registry code
+  ---
+  duration_ms: 4.181648
+  type: 'test'
+  ...
+# Subtest: repeated checks and cached observation do not create new records
+ok 77 - repeated checks and cached observation do not create new records
+  ---
+  duration_ms: 0.975603
+  type: 'test'
+  ...
+# Subtest: changed source hash retains immutable previous candidate revisions
+ok 78 - changed source hash retains immutable previous candidate revisions
+  ---
+  duration_ms: 0.669937
+  type: 'test'
+  ...
+# Subtest: invalid URL, unknown code, missing/future observation never become candidates
+ok 79 - invalid URL, unknown code, missing/future observation never become candidates
+  ---
+  duration_ms: 1.957567
+  type: 'test'
+  ...
+# Subtest: HTTP zero failure stays explicit; disconnected is not live monitoring
+ok 80 - HTTP zero failure stays explicit; disconnected is not live monitoring
+  ---
+  duration_ms: 0.473223
+  type: 'test'
+  ...
+# Subtest: document cap keeps source history and no automatic economic duplicate claim
+ok 81 - document cap keeps source history and no automatic economic duplicate claim
+  ---
+  duration_ms: 2.212786
+  type: 'test'
+  ...
+# Subtest: after fixed period bridge preserves state without new records
+ok 82 - after fixed period bridge preserves state without new records
+  ---
+  duration_ms: 0.225161
+  type: 'test'
+  ...
+# Subtest: synthetic independently grouped own-phase samples yield reproducible shrinkage, not a probability
+ok 83 - synthetic independently grouped own-phase samples yield reproducible shrinkage, not a probability
+  ---
+  duration_ms: 4.639414
+  type: 'test'
+  ...
+# Subtest: manual confirmation and arbitrary delta alone cannot bypass evidence
+ok 84 - manual confirmation and arbitrary delta alone cannot bypass evidence
+  ---
+  duration_ms: 0.869381
+  type: 'test'
+  ...
+# Subtest: fewer than five, other stock, other phase, and fabricated residuals are rejected
+ok 85 - fewer than five, other stock, other phase, and fabricated residuals are rejected
+  ---
+  duration_ms: 4.235609
+  type: 'test'
+  ...
+# Subtest: future observations and future conflicting duplicates cannot alter earlier admissible sample
+ok 86 - future observations and future conflicting duplicates cannot alter earlier admissible sample
+  ---
+  duration_ms: 2.981051
+  type: 'test'
+  ...
+# Subtest: duplicate group reprints do not increase count; conflicting same-group observations are excluded
+ok 87 - duplicate group reprints do not increase count; conflicting same-group observations are excluded
+  ---
+  duration_ms: 7.63654
+  type: 'test'
+  ...
+# Subtest: different IDs on the same response day are not independent samples
+ok 88 - different IDs on the same response day are not independent samples
+  ---
+  duration_ms: 0.835375
+  type: 'test'
+  ...
+# Subtest: calendar verifies one trading session and blocks post-event expectation
+ok 89 - calendar verifies one trading session and blocks post-event expectation
+  ---
+  duration_ms: 1.641518
+  type: 'test'
+  ...
+# Subtest: baseline already priced event, same phase included, or residual evolution correction blocks double addition
+ok 90 - baseline already priced event, same phase included, or residual evolution correction blocks double addition
+  ---
+  duration_ms: 3.324126
+  type: 'test'
+  ...
+# Subtest: a different confirmed phase needs explicit nonoverlap review, not automatic same-event rejection
+ok 91 - a different confirmed phase needs explicit nonoverlap review, not automatic same-event rejection
+  ---
+  duration_ms: 1.482271
+  type: 'test'
+  ...
+# Subtest: retracted/reported/unverified events and correction with old review remain held
+ok 92 - retracted/reported/unverified events and correction with old review remain held
+  ---
+  duration_ms: 5.671983
+  type: 'test'
+  ...
+# Subtest: extreme losses remain, null price evidence and after-period calculations are held
+ok 93 - extreme losses remain, null price evidence and after-period calculations are held
+  ---
+  duration_ms: 1.817183
+  type: 'test'
+  ...
+# Subtest: event registration is idempotent, observed time is server assigned and claims stay unverified
+ok 94 - event registration is idempotent, observed time is server assigned and claims stay unverified
+  ---
+  duration_ms: 2.339298
+  type: 'test'
+  ...
+# Subtest: unqualified REVISE remains WATCH; KEEP preserves baseline without claiming improvement
+ok 95 - unqualified REVISE remains WATCH; KEEP preserves baseline without claiming improvement
+  ---
+  duration_ms: 7.722908
+  type: 'test'
+  ...
+# Subtest: qualified synthetic own-stock impact is applied once to future rows and frozen history is untouched
+ok 96 - qualified synthetic own-stock impact is applied once to future rows and frozen history is untouched
+  ---
+  duration_ms: 4.091798
+  type: 'test'
+  ...
+# Subtest: a second article in the same economic phase cannot apply another numerical shock
+ok 97 - a second article in the same economic phase cannot apply another numerical shock
+  ---
+  duration_ms: 2.538575
+  type: 'test'
+  ...
+# Subtest: unresolved same-day important phase overlap blocks numerical revision
+ok 98 - unresolved same-day important phase overlap blocks numerical revision
+  ---
+  duration_ms: 4.103764
+  type: 'test'
+  ...
+# Subtest: correction and retraction append lineage while old decisions and forecasts remain frozen
+ok 99 - correction and retraction append lineage while old decisions and forecasts remain frozen
+  ---
+  duration_ms: 4.720258
+  type: 'test'
+  ...
+# Subtest: future observed, conflicted and non-session prices cannot be scored; expiry is unchanged
+ok 100 - future observed, conflicted and non-session prices cannot be scored; expiry is unchanged
+  ---
+  duration_ms: 1.671696
+  type: 'test'
+  ...
+# Subtest: price-maintenance reference freezes only a quote actually observed before issuance
+ok 101 - price-maintenance reference freezes only a quote actually observed before issuance
+  ---
+  duration_ms: 0.894797
+  type: 'test'
+  ...
+# Subtest: ambiguous baseline or actual timestamps and invalid imported issuance never score
+ok 102 - ambiguous baseline or actual timestamps and invalid imported issuance never score
+  ---
+  duration_ms: 1.292214
+  type: 'test'
+  ...
+# Subtest: index membership absence and forked correction lineage prevent numerical revision
+ok 103 - index membership absence and forked correction lineage prevent numerical revision
+  ---
+  duration_ms: 2.137596
+  type: 'test'
+  ...
+# Subtest: explicit fresh correction replaces the prior impulse against the same frozen baseline, never compounds it
+ok 104 - explicit fresh correction replaces the prior impulse against the same frozen baseline, never compounds it
+  ---
+  duration_ms: 4.208968
+  type: 'test'
+  ...
+# Subtest: a second phase numerical revision cannot silently replace an outstanding independent impulse
+ok 105 - a second phase numerical revision cannot silently replace an outstanding independent impulse
+  ---
+  duration_ms: 2.399316
+  type: 'test'
+  ...
+# Subtest: breaking independent review: declared complete synthetic evidence recomputes residual and preserves inputs
+ok 106 - breaking independent review: declared complete synthetic evidence recomputes residual and preserves inputs
+  ---
+  duration_ms: 2.89712
+  type: 'test'
+  ...
+# Subtest: breaking independent review: user verification checkbox and arbitrary delta never confer eligibility
+ok 107 - breaking independent review: user verification checkbox and arbitrary delta never confer eligibility
+  ---
+  duration_ms: 0.359706
+  type: 'test'
+  ...
+# Subtest: breaking independent review: unrelated stock sample cannot become own-stock evidence
+ok 108 - breaking independent review: unrelated stock sample cannot become own-stock evidence
+  ---
+  duration_ms: 0.525558
+  type: 'test'
+  ...
+# Subtest: breaking independent review: republished group does not add sample and future conflicting copy does not rewrite past evidence
+ok 109 - breaking independent review: republished group does not add sample and future conflicting copy does not rewrite past evidence
+  ---
+  duration_ms: 8.45007
+  type: 'test'
+  ...
+# Subtest: breaking independent review: overlapping response windows and mismatched residual claims are held
+ok 110 - breaking independent review: overlapping response windows and mismatched residual claims are held
+  ---
+  duration_ms: 0.788713
+  type: 'test'
+  ...
+# Subtest: breaking independent review: future event, stale baseline review and fixed end cannot permit revision
+ok 111 - breaking independent review: future event, stale baseline review and fixed end cannot permit revision
+  ---
+  duration_ms: 0.672108
+  type: 'test'
+  ...
+# Subtest: breaking independent review: discovery cannot be backdated and registration is idempotent
+ok 112 - breaking independent review: discovery cannot be backdated and registration is idempotent
+  ---
+  duration_ms: 2.054142
+  type: 'test'
+  ...
+# Subtest: breaking independent review: reviewed revision is one future impulse and source snapshots are immutable
+ok 113 - breaking independent review: reviewed revision is one future impulse and source snapshots are immutable
+  ---
+  duration_ms: 6.753307
+  type: 'test'
+  ...
+# Subtest: breaking independent review: price revision appends paired same-date vintages without rewriting KEEP history
+ok 114 - breaking independent review: price revision appends paired same-date vintages without rewriting KEEP history
+  ---
+  duration_ms: 6.145162
+  type: 'test'
+  ...
+# Subtest: breaking independent review: correction lineage and merge conflicts preserve old evidence; fixed end freezes state
+ok 115 - breaking independent review: correction lineage and merge conflicts preserve old evidence; fixed end freezes state
+  ---
+  duration_ms: 4.284338
+  type: 'test'
+  ...
+# Subtest: breaking independent review: malformed restored event time cannot authorize KEEP
+ok 116 - breaking independent review: malformed restored event time cannot authorize KEEP
+  ---
+  duration_ms: 0.502925
+  type: 'test'
+  ...
+# Subtest: breaking independent review: derived research rows never extend beyond October 30
+ok 117 - breaking independent review: derived research rows never extend beyond October 30
+  ---
+  duration_ms: 0.523624
+  type: 'test'
+  ...
+# Subtest: breaking independent review: correction replaces latest branch against frozen baseline instead of accumulating shocks
+ok 118 - breaking independent review: correction replaces latest branch against frozen baseline instead of accumulating shocks
+  ---
+  duration_ms: 3.721316
+  type: 'test'
+  ...
+# Subtest: breaking record and decision persist through service without altering baseline/evolution
+ok 119 - breaking record and decision persist through service without altering baseline/evolution
+  ---
+  duration_ms: 9.5205
+  type: 'test'
+  ...
+# Subtest: breaking histories survive release hydration and unchanged GET keeps identity
+ok 120 - breaking histories survive release hydration and unchanged GET keeps identity
+  ---
+  duration_ms: 3.385083
+  type: 'test'
+  ...
+# Subtest: parallel refresh merge preserves manual events and conflicting releases without deletion
+ok 121 - parallel refresh merge preserves manual events and conflicting releases without deletion
+  ---
+  duration_ms: 4.886096
+  type: 'test'
+  ...
+# Subtest: breaking UI: explicit targets, KST publication, candidate review, future-only line and gated JSON request
+ok 122 - breaking UI: explicit targets, KST publication, candidate review, future-only line and gated JSON request
+  ---
+  duration_ms: 748.634749
+  type: 'test'
+  ...
+# Subtest: release guard rejects stale entry points and stale or unfinished static data
+ok 123 - release guard rejects stale entry points and stale or unfinished static data
+  ---
+  duration_ms: 18.685962
+  type: 'test'
+  ...
+# Subtest: official local calendar dates are identical under UTC, Seoul, London and New York server timezones
+ok 124 - official local calendar dates are identical under UTC, Seoul, London and New York server timezones
+  ---
+  duration_ms: 377.332716
+  type: 'test'
+  ...
+# Subtest: negative earnings remain valid observations; missing is not zero
+ok 125 - negative earnings remain valid observations; missing is not zero
+  ---
+  duration_ms: 0.942041
+  type: 'test'
+  ...
+# Subtest: surprise requires same company and pre-release recorded expectation
+ok 126 - surprise requires same company and pre-release recorded expectation
+  ---
+  duration_ms: 4.424965
+  type: 'test'
+  ...
+# Subtest: date-only publication and revised retroactive expectations cannot qualify
+ok 127 - date-only publication and revised retroactive expectations cannot qualify
+  ---
+  duration_ms: 0.113441
+  type: 'test'
+  ...
+# Subtest: accounting identity conflict is retained and blocks ratio
+ok 128 - accounting identity conflict is retained and blocks ratio
+  ---
+  duration_ms: 0.147492
+  type: 'test'
+  ...
+# Subtest: commodity monthly gaps are not bridged or daily-repeated shocks
+ok 129 - commodity monthly gaps are not bridged or daily-repeated shocks
+  ---
+  duration_ms: 17.124148
+  type: 'test'
+  ...
+# Subtest: all actual reviewed company facts keep source hashes and abstain from price impact
+ok 130 - all actual reviewed company facts keep source hashes and abstain from price impact
+  ---
+  duration_ms: 136.380647
+  type: 'test'
+  ...
+# Subtest: World Bank original workbook and parsed rows preserve missing data and unverified exposures
+ok 131 - World Bank original workbook and parsed rows preserve missing data and unverified exposures
+  ---
+  duration_ms: 62.497086
+  type: 'test'
+  ...
+# Subtest: flow missing values never become zero; grouping and signed units parse
+ok 132 - flow missing values never become zero; grouping and signed units parse
+  ---
+  duration_ms: 5.259119
+  type: 'test'
+  ...
+# Subtest: CSV parser preserves code leading zeros and quoted thousands
+ok 133 - CSV parser preserves code leading zeros and quoted thousands
+  ---
+  duration_ms: 1.473109
+  type: 'test'
+  ...
+# Subtest: official raw bytes and company membership enforced
+ok 134 - official raw bytes and company membership enforced
+  ---
+  duration_ms: 0.746614
+  type: 'test'
+  ...
+# Subtest: aggregate pension cannot be imported as National Pension Service
+ok 135 - aggregate pension cannot be imported as National Pension Service
+  ---
+  duration_ms: 0.601452
+  type: 'test'
+  ...
+# Subtest: investor record duplicate identical dedup and conflicting corrections refuse
+ok 136 - investor record duplicate identical dedup and conflicting corrections refuse
+  ---
+  duration_ms: 0.377072
+  type: 'test'
+  ...
+# Subtest: institution excludes pension and uses prior turnover without clipping negative values
+ok 137 - institution excludes pension and uses prior turnover without clipping negative values
+  ---
+  duration_ms: 0.747253
+  type: 'test'
+  ...
+# Subtest: unknown pension or absent prior denominator cannot fabricate institution ex pension
+ok 138 - unknown pension or absent prior denominator cannot fabricate institution ex pension
+  ---
+  duration_ms: 1.486877
+  type: 'test'
+  ...
+# Subtest: unpublished or future observed rows are unavailable at historical cutoffs
+ok 139 - unpublished or future observed rows are unavailable at historical cutoffs
+  ---
+  duration_ms: 0.288396
+  type: 'test'
+  ...
+# Subtest: NPS holding stock and daily flow cannot be confused; omitted companies remain null
+ok 140 - NPS holding stock and daily flow cannot be confused; omitted companies remain null
+  ---
+  duration_ms: 0.604084
+  type: 'test'
+  ...
+# Subtest: zero outstanding supply and unverified index membership cannot pass import
+ok 141 - zero outstanding supply and unverified index membership cannot pass import
+  ---
+  duration_ms: 0.548195
+  type: 'test'
+  ...
+# Subtest: NPS actual archived source extraction preserves yearly units and all matched companies
+ok 142 - NPS actual archived source extraction preserves yearly units and all matched companies
+  ---
+  duration_ms: 1473.022553
+  type: 'test'
+  ...
+# Subtest: KOFIA actual market aggregates retain units and cannot claim stock-level credit
+ok 143 - KOFIA actual market aggregates retain units and cannot claim stock-level credit
+  ---
+  duration_ms: 2.185236
+  type: 'test'
+  ...
+# Subtest: flow collector keeps access failures and error pages separate from source acquisition
+ok 144 - flow collector keeps access failures and error pages separate from source acquisition
+  ---
+  duration_ms: 56.061173
+  type: 'test'
+  ...
+# Subtest: flow collector enforces streaming size and archives only successfully validated bodies
+ok 145 - flow collector enforces streaming size and archives only successfully validated bodies
+  ---
+  duration_ms: 1.23943
+  type: 'test'
+  ...
+# Subtest: Korean 16:00 boundary, holidays and fixed end are respected
+ok 146 - Korean 16:00 boundary, holidays and fixed end are respected
+  ---
+  duration_ms: 18.238343
+  type: 'test'
+  ...
+# Subtest: KRX extreme loss valid OHLC preserved with provenance, no cutoff filter
+ok 147 - KRX extreme loss valid OHLC preserved with provenance, no cutoff filter
+  ---
+  duration_ms: 1.92067
+  type: 'test'
+  ...
+# Subtest: KRX wrong date, duplicate, unit or OHLC rejects atomically
+ok 148 - KRX wrong date, duplicate, unit or OHLC rejects atomically
+  ---
+  duration_ms: 6.661525
+  type: 'test'
+  ...
+# Subtest: KRX code can be verified standard ISIN but unrelated companies excluded
+ok 149 - KRX code can be verified standard ISIN but unrelated companies excluded
+  ---
+  duration_ms: 1.476186
+  type: 'test'
+  ...
+# Subtest: KRX missing fields do not become zero and private source denied
+ok 150 - KRX missing fields do not become zero and private source denied
+  ---
+  duration_ms: 1.784188
+  type: 'test'
+  ...
+# Subtest: NAVER symbol and completed session validated, no artificial turnover
+ok 151 - NAVER symbol and completed session validated, no artificial turnover
+  ---
+  duration_ms: 2.964736
+  type: 'test'
+  ...
+# Subtest: Missing attention and flow remain null; price heat never masquerades as FOMO
+ok 152 - Missing attention and flow remain null; price heat never masquerades as FOMO
+  ---
+  duration_ms: 20.558025
+  type: 'test'
+  ...
+# Subtest: New OHLC source conflicting with stored close is withheld and logged
+ok 153 - New OHLC source conflicting with stored close is withheld and logged
+  ---
+  duration_ms: 22.282709
+  type: 'test'
+  ...
+# Subtest: First observed history cannot claim an earlier publication
+ok 154 - First observed history cannot claim an earlier publication
+  ---
+  duration_ms: 1.129102
+  type: 'test'
+  ...
+# Subtest: Collector uses one shared OHLCV request per target and does not invent missing FOMO
+ok 155 - Collector uses one shared OHLCV request per target and does not invent missing FOMO
+  ---
+  duration_ms: 836.283066
+  type: 'test'
+  ...
+# Subtest: Actual daily provider table excludes live quote and nonfinal current day
+ok 156 - Actual daily provider table excludes live quote and nonfinal current day
+  ---
+  duration_ms: 2.440254
+  type: 'test'
+  ...
+# Subtest: Provider requested code, body identity, numeric units and duplicates enforced
+ok 157 - Provider requested code, body identity, numeric units and duplicates enforced
+  ---
+  duration_ms: 4.288368
+  type: 'test'
+  ...
+# Subtest: official rows preserve null, negative real yield and observation date
+ok 158 - official rows preserve null, negative real yield and observation date
+  ---
+  duration_ms: 10.850278
+  type: 'test'
+  ...
+# Subtest: series mix-up invalid dates and future observations fail closed
+ok 159 - series mix-up invalid dates and future observations fail closed
+  ---
+  duration_ms: 0.79997
+  type: 'test'
+  ...
+# Subtest: same-day source disagreement is quarantined rather than last-write-wins
+ok 160 - same-day source disagreement is quarantined rather than last-write-wins
+  ---
+  duration_ms: 0.5151
+  type: 'test'
+  ...
+# Subtest: partial extraction gaps are never interpolated or advertised complete
+ok 161 - partial extraction gaps are never interpolated or advertised complete
+  ---
+  duration_ms: 0.418326
+  type: 'test'
+  ...
+# Subtest: Korean treasury factor cannot silently consume US treasury or bank call rate
+ok 162 - Korean treasury factor cannot silently consume US treasury or bank call rate
+  ---
+  duration_ms: 0.188792
+  type: 'test'
+  ...
+# Subtest: Fed target effective date is not a surprise or historical publication timestamp
+ok 163 - Fed target effective date is not a surprise or historical publication timestamp
+  ---
+  duration_ms: 0.55677
+  type: 'test'
+  ...
+# Subtest: future malformed or conflicting factor rows cannot alter historical eligibility or canonical digest
+ok 164 - future malformed or conflicting factor rows cannot alter historical eligibility or canonical digest
+  ---
+  duration_ms: 10.166281
+  type: 'test'
+  ...
+# Subtest: index membership requires explicit codes, source hash, public timestamp and effective period
+ok 165 - index membership requires explicit codes, source hash, public timestamp and effective period
+  ---
+  duration_ms: 2.113275
+  type: 'test'
+  ...
+# Subtest: bounded source validation rejects private, link-local and credential-bearing URLs
+ok 166 - bounded source validation rejects private, link-local and credential-bearing URLs
+  ---
+  duration_ms: 0.429208
+  type: 'test'
+  ...
+# Subtest: an adequate continuous recent history is accepted without inventing older observations
+ok 167 - an adequate continuous recent history is accepted without inventing older observations
+  ---
+  duration_ms: 82.40094
+  type: 'test'
+  ...
+# Subtest: a recent missing day requires a complete new 260-row suffix rather than zero imputation
+ok 168 - a recent missing day requires a complete new 260-row suffix rather than zero imputation
+  ---
+  duration_ms: 79.546686
+  type: 'test'
+  ...
+# Subtest: duplicate economic exposure exclusion is independent of factor record input order
+ok 169 - duplicate economic exposure exclusion is independent of factor record input order
+  ---
+  duration_ms: 318.348355
+  type: 'test'
+  ...
+# Subtest: FOMO core evidence is stock-specific and its score has no forced positive price effect
+ok 170 - FOMO core evidence is stock-specific and its score has no forced positive price effect
+  ---
+  duration_ms: 312.276859
+  type: 'test'
+  ...
+# Subtest: append-only merging owns all previous and new objects, and never aliases the journal
+ok 171 - append-only merging owns all previous and new objects, and never aliases the journal
+  ---
+  duration_ms: 0.531327
+  type: 'test'
+  ...
+# Subtest: additional-factor choice is frozen before holdout and robust to row input order
+ok 172 - additional-factor choice is frozen before holdout and robust to row input order
+  ---
+  duration_ms: 213.939347
+  type: 'test'
+  ...
+# Subtest: joint residual normalization, extreme losses and arithmetic price means remain finite
+ok 173 - joint residual normalization, extreme losses and arithmetic price means remain finite
+  ---
+  duration_ms: 53.339413
+  type: 'test'
+  ...
+# Subtest: explicit correction lineage preserves prior as-of value and deep before/after while ambiguity stays blocked
+ok 174 - explicit correction lineage preserves prior as-of value and deep before/after while ambiguity stays blocked
+  ---
+  duration_ms: 0.965391
+  type: 'test'
+  ...
+# Subtest: direction, price error, coverage and interval width are separate heldout diagnostics
+ok 175 - direction, price error, coverage and interval width are separate heldout diagnostics
+  ---
+  duration_ms: 68.62952
+  type: 'test'
+  ...
+# Subtest: actual snapshot bytes must match hash and collector must attest reading article body
+ok 176 - actual snapshot bytes must match hash and collector must attest reading article body
+  ---
+  duration_ms: 4.324964
+  type: 'test'
+  ...
+# Subtest: date-only publication remains time-unknown and current observation is never backdated
+ok 177 - date-only publication remains time-unknown and current observation is never backdated
+  ---
+  duration_ms: 0.734064
+  type: 'test'
+  ...
+# Subtest: verified period sum stays one observation and is not expanded into daily training samples
+ok 178 - verified period sum stays one observation and is not expanded into daily training samples
+  ---
+  duration_ms: 2.134607
+  type: 'test'
+  ...
+# Subtest: missing numeric values, units and periods remain null and unavailable rather than zero
+ok 179 - missing numeric values, units and periods remain null and unavailable rather than zero
+  ---
+  duration_ms: 0.730024
+  type: 'test'
+  ...
+# Subtest: HTTPS, snapshot paths and explicit universe targets fail closed
+ok 180 - HTTPS, snapshot paths and explicit universe targets fail closed
+  ---
+  duration_ms: 0.80568
+  type: 'test'
+  ...
+# Subtest: same URL and identical observation are deduplicated across agent files without counting extra samples
+ok 181 - same URL and identical observation are deduplicated across agent files without counting extra samples
+  ---
+  duration_ms: 0.695777
+  type: 'test'
+  ...
+# Subtest: conflicting same-target same-period values are retained but both withheld from usable numeric count
+ok 182 - conflicting same-target same-period values are retained but both withheld from usable numeric count
+  ---
+  duration_ms: 7.601418
+  type: 'test'
+  ...
+# Subtest: an observation cannot silently introduce an unrelated company or factor
+ok 183 - an observation cannot silently introduce an unrelated company or factor
+  ---
+  duration_ms: 0.338179
+  type: 'test'
+  ...
+# Subtest: future observations cannot affect a past evidence view even if their other fields are malformed
+ok 184 - future observations cannot affect a past evidence view even if their other fields are malformed
+  ---
+  duration_ms: 0.969057
+  type: 'test'
+  ...
+# Subtest: collector-detected source totals conflict is preserved and cannot re-enter usable numbers
+ok 185 - collector-detected source totals conflict is preserved and cannot re-enter usable numbers
+  ---
+  duration_ms: 0.702147
+  type: 'test'
+  ...
+# Subtest: duplicate same-value observations retain any conflict flag regardless of source and input order
+ok 186 - duplicate same-value observations retain any conflict flag regardless of source and input order
+  ---
+  duration_ms: 1.558722
+  type: 'test'
+  ...
+# Subtest: Korea close gate, holiday retention and period end are explicit
+ok 187 - Korea close gate, holiday retention and period end are explicit
+  ---
+  duration_ms: 1.521203
+  type: 'test'
+  ...
+# Subtest: real large losses retained with full before-after price journal and CAS
+ok 188 - real large losses retained with full before-after price journal and CAS
+  ---
+  duration_ms: 9.038921
+  type: 'test'
+  ...
+# Subtest: intraday, contamination and contradictory dates fail before any mutation
+ok 189 - intraday, contamination and contradictory dates fail before any mutation
+  ---
+  duration_ms: 0.624661
+  type: 'test'
+  ...
+# Subtest: daily report keeps issuance cutoff and treats stock rows as dependent
+ok 190 - daily report keeps issuance cutoff and treats stock rows as dependent
+  ---
+  duration_ms: 0.93722
+  type: 'test'
+  ...
+# Subtest: multi-date provider batches merge by stock with per-row evidence
+ok 191 - multi-date provider batches merge by stock with per-row evidence
+  ---
+  duration_ms: 0.491405
+  type: 'test'
+  ...
+# Subtest: hosted legacy refresh cannot silently publish the retired engine
+ok 192 - hosted legacy refresh cannot silently publish the retired engine
+  ---
+  duration_ms: 54.295755
+  type: 'test'
+  ...
+# Subtest: daily publication rollover retains the old result and serves the new issuance without borrowed scores
+ok 193 - daily publication rollover retains the old result and serves the new issuance without borrowed scores
+  ---
+  duration_ms: 1.350796
+  type: 'test'
+  ...
+# Subtest: new price evidence preserves every old forecast and every retained close with reversible full-row changes
+ok 194 - new price evidence preserves every old forecast and every retained close with reversible full-row changes
+  ---
+  duration_ms: 3514.508693
+  type: 'test'
+  ...
+# Subtest: current 52 by36 plusFOMO evidence and all display calculations point to the same actual issuance
+ok 195 - current 52 by36 plusFOMO evidence and all display calculations point to the same actual issuance
+  ---
+  duration_ms: 157.571987
+  type: 'test'
+  ...
+# Subtest: completion report requires the exact current issue, original 52 codes, and 36 unique factors per stock
+ok 196 - completion report requires the exact current issue, original 52 codes, and 36 unique factors per stock
+  ---
+  duration_ms: 116.681525
+  type: 'test'
+  ...
+# Subtest: completion UI separates partial source evidence from model use and gives each of 52 stocks six-stage evidence
+ok 197 - completion UI separates partial source evidence from model use and gives each of 52 stocks six-stage evidence
+  ---
+  duration_ms: 640.7776
+  type: 'test'
+  ...
+# Subtest: missing FOMO remains uncomputed while a measured score of zero is displayed as zero
+ok 198 - missing FOMO remains uncomputed while a measured score of zero is displayed as zero
+  ---
+  duration_ms: 359.534416
+  type: 'test'
+  ...
+# Subtest: a stale or unavailable ledger never appears as evidence for the current forecast
+ok 199 - a stale or unavailable ledger never appears as evidence for the current forecast
+  ---
+  duration_ms: 86.315583
+  type: 'test'
+  ...
+# Subtest: unsafe source URLs are text only; genuine report download stays tied to the checked issue
+ok 200 - unsafe source URLs are text only; genuine report download stays tied to the checked issue
+  ---
+  duration_ms: 199.484481
+  type: 'test'
+  ...
+# Subtest: daily reports keep no-observation performance uncomputed and reject a different issuance
+ok 201 - daily reports keep no-observation performance uncomputed and reject a different issuance
+  ---
+  duration_ms: 21.305438
+  type: 'test'
+  ...
+# Subtest: daily report shows observed counts and scores independently; price-only heat is not relabeled FOMO
+ok 202 - daily report shows observed counts and scores independently; price-only heat is not relabeled FOMO
+  ---
+  duration_ms: 168.532549
+  type: 'test'
+  ...
+# Subtest: newspaper evidence filters each observation to its own stock or explicit market scope, never sibling-company rows
+ok 203 - newspaper evidence filters each observation to its own stock or explicit market scope, never sibling-company rows
+  ---
+  duration_ms: 18.901676
+  type: 'test'
+  ...
+# Subtest: immutable v8 installation preserves every earlier forecast, original, input, evaluation and failures
+ok 204 - immutable v8 installation preserves every earlier forecast, original, input, evaluation and failures
+  ---
+  duration_ms: 1882.29559
+  type: 'test'
+  ...
+# Subtest: selection is before 9/17; later observed prices update features, not chosen coefficients
+ok 205 - selection is before 9/17; later observed prices update features, not chosen coefficients
+  ---
+  duration_ms: 206.884079
+  type: 'test'
+  ...
+# Subtest: future quotes are excluded and missing continuity is null, not a zero-return estimate
+ok 206 - future quotes are excluded and missing continuity is null, not a zero-return estimate
+  ---
+  duration_ms: 126.338929
+  type: 'test'
+  ...
+# Subtest: conditional arithmetic agrees with an analytic deterministic shift, all 52 stocks
+ok 207 - conditional arithmetic agrees with an analytic deterministic shift, all 52 stocks
+  ---
+  duration_ms: 13910.465274
+  type: 'test'
+  ...
+# Subtest: conditioning cannot read other companies news or prices through its input
+ok 208 - conditioning cannot read other companies news or prices through its input
+  ---
+  duration_ms: 105.212443
+  type: 'test'
+  ...
+# Subtest: portable SHA-256 matches node crypto, including Korean and long inputs
+ok 209 - portable SHA-256 matches node crypto, including Korean and long inputs
+  ---
+  duration_ms: 15.209432
+  type: 'test'
+  ...
+# Subtest: ridge solves known coefficients with a stable residual and rejects nonfinite inputs
+ok 210 - ridge solves known coefficients with a stable residual and rejects nonfinite inputs
+  ---
+  duration_ms: 6.941633
+  type: 'test'
+  ...
+# Subtest: state membership sums to one, preserves signs and is not a probability field
+ok 211 - state membership sums to one, preserves signs and is not a probability field
+  ---
+  duration_ms: 0.465049
+  type: 'test'
+  ...
+# Subtest: new evidence is immutable, idempotent and cannot silently replace an index observation
+ok 212 - new evidence is immutable, idempotent and cannot silently replace an index observation
+  ---
+  duration_ms: 17.850186
+  type: 'test'
+  ...
+# Subtest: recorded index corrections undo at the historical cutoff; future duplicate mapping does not block the past
+ok 213 - recorded index corrections undo at the historical cutoff; future duplicate mapping does not block the past
+  ---
+  duration_ms: 10.361615
+  type: 'test'
+  ...
+# Subtest: index launch backcasts cannot become contemporaneous verified history
+ok 214 - index launch backcasts cannot become contemporaneous verified history
+  ---
+  duration_ms: 0.924552
+  type: 'test'
+  ...
+# Subtest: missing trading day breaks a return window and large signed losses are retained
+ok 215 - missing trading day breaks a return window and large signed losses are retained
+  ---
+  duration_ms: 0.465458
+  type: 'test'
+  ...
+# Subtest: causal features do not change when later prices are altered; series are not silently spliced across gaps
+ok 216 - causal features do not change when later prices are altered; series are not silently spliced across gaps
+  ---
+  duration_ms: 52.324938
+  type: 'test'
+  ...
+# Subtest: residual calibration uses only the same company and purges targets from train/test overlap
+ok 217 - residual calibration uses only the same company and purges targets from train/test overlap
+  ---
+  duration_ms: 55.958047
+  type: 'test'
+  ...
+# Subtest: holdout outcomes cannot change learned coefficients or selected ridge
+ok 218 - holdout outcomes cannot change learned coefficients or selected ridge
+  ---
+  duration_ms: 33.74262
+  type: 'test'
+  ...
+# Subtest: duplicate horizon records abstain rather than arbitrarily selecting a training outcome
+ok 219 - duplicate horizon records abstain rather than arbitrarily selecting a training outcome
+  ---
+  duration_ms: 6.502394
+  type: 'test'
+  ...
+# Subtest: daily contributions reconcile with cumulative shift, leaving baseline paths untouched
+ok 220 - daily contributions reconcile with cumulative shift, leaving baseline paths untouched
+  ---
+  duration_ms: 24.927638
+  type: 'test'
+  ...
+# Subtest: date-cluster audit never equates resampling with independent validation or certifies live use
+ok 221 - date-cluster audit never equates resampling with independent validation or certifies live use
+  ---
+  duration_ms: 1.739087
+  type: 'test'
+  ...
+# Subtest: collector requires credentials and configuration without inventing requests or history
+ok 222 - collector requires credentials and configuration without inventing requests or history
+  ---
+  duration_ms: 0.490648
+  type: 'test'
+  ...
+# Subtest: official daily response matches exact index name/date and rejects wrong company-like data
+ok 223 - official daily response matches exact index name/date and rejects wrong company-like data
+  ---
+  duration_ms: 0.264674
+  type: 'test'
+  ...
+# Subtest: 403 stops retries and retains last good data; API key never enters the failure report
+ok 224 - 403 stops retries and retains last good data; API key never enters the failure report
+  ---
+  duration_ms: 47.806532
+  type: 'test'
+  ...
+# Subtest: 52 real stocks are all represented; original forecasts, inputs and price engine remain unchanged
+ok 225 - 52 real stocks are all represented; original forecasts, inputs and price engine remain unchanged
+  ---
+  duration_ms: 8713.514975
+  type: 'test'
+  ...
+# Subtest: collector resumes missing dates, shares requests, stores last good rows and does not refetch identical coverage
+ok 226 - collector resumes missing dates, shares requests, stores last good rows and does not refetch identical coverage
+  ---
+  duration_ms: 6.213487
+  type: 'test'
+  ...
+# Subtest: stock market and sector classification cannot be relabeled across a history under the same series ID
+ok 227 - stock market and sector classification cannot be relabeled across a history under the same series ID
+  ---
+  duration_ms: 1.982983
+  type: 'test'
+  ...
+# Subtest: post-target knowledge and post-origin features are excluded from strict calibration
+ok 228 - post-target knowledge and post-origin features are excluded from strict calibration
+  ---
+  duration_ms: 6.861976
+  type: 'test'
+  ...
+# Subtest: cycle import persists separately and cannot change original input, price forecasts or operating storage identity
+ok 229 - cycle import persists separately and cannot change original input, price forecasts or operating storage identity
+  ---
+  duration_ms: 36.199669
+  type: 'test'
+  ...
+# Subtest: concurrent refresh retains user-edited cycle evidence and keeps the unapplied collector copy
+ok 230 - concurrent refresh retains user-edited cycle evidence and keeps the unapplied collector copy
+  ---
+  duration_ms: 18.060435
+  type: 'test'
+  ...
+# Subtest: rolling sector residual equals the full ridge reference on the same strictly prior window
+ok 231 - rolling sector residual equals the full ridge reference on the same strictly prior window
+  ---
+  duration_ms: 3.593945
+  type: 'test'
+  ...
+# Subtest: archived baseline extraction uses exact mean-log values and refuses late or missing original provenance
+ok 232 - archived baseline extraction uses exact mean-log values and refuses late or missing original provenance
+  ---
+  duration_ms: 181.924671
+  type: 'test'
+  ...
+# Subtest: walk-forward outer folds use distinct dates with every trained target before the test origin
+ok 233 - walk-forward outer folds use distinct dates with every trained target before the test origin
+  ---
+  duration_ms: 18.758716
+  type: 'test'
+  ...
+# Subtest: runtime configuration errors do not prevent server startup and invalid request budgets cannot claim success
+ok 234 - runtime configuration errors do not prevent server startup and invalid request budgets cannot claim success
+  ---
+  duration_ms: 6.030715
+  type: 'test'
+  ...
+# Subtest: short calibration histories cannot satisfy the fixed three-year initial training requirement
+ok 235 - short calibration histories cannot satisfy the fixed three-year initial training requirement
+  ---
+  duration_ms: 39.364372
+  type: 'test'
+  ...
+# Subtest: calendar covers all 44 fixed dates in order and rejects invalid dates
+ok 236 - calendar covers all 44 fixed dates in order and rejects invalid dates
+  ---
+  duration_ms: 5.166978
+  type: 'test'
+  ...
+# Subtest: all original 52 × 44 dates are explained without changing prices, source events or forecasts
+ok 237 - all original 52 × 44 dates are explained without changing prices, source events or forecasts
+  ---
+  duration_ms: 2706.07993
+  type: 'test'
+  ...
+# Subtest: actual closes win display while frozen forecast is retained and changes match exact stored numbers
+ok 238 - actual closes win display while frozen forecast is retained and changes match exact stored numbers
+  ---
+  duration_ms: 2.720972
+  type: 'test'
+  ...
+# Subtest: holiday references prior session without minting an actual price or repeating prior news
+ok 239 - holiday references prior session without minting an actual price or repeating prior news
+  ---
+  duration_ms: 0.439522
+  type: 'test'
+  ...
+# Subtest: company news cannot leak and common news explains each own stock sample and coefficients
+ok 240 - company news cannot leak and common news explains each own stock sample and coefficients
+  ---
+  duration_ms: 2.210317
+  type: 'test'
+  ...
+# Subtest: projection preserves source links and summary numbers without inventing code contamination or business causation
+ok 241 - projection preserves source links and summary numbers without inventing code contamination or business causation
+  ---
+  duration_ms: 2.98095
+  type: 'test'
+  ...
+# Subtest: zero samples, missing quotes, missing forecast and unknown business narrative remain explicit
+ok 242 - zero samples, missing quotes, missing forecast and unknown business narrative remain explicit
+  ---
+  duration_ms: 1.406272
+  type: 'test'
+  ...
+# Subtest: distribution comparison uses one previous mean and consistent ordinary gross moments, never a causal news share
+ok 243 - distribution comparison uses one previous mean and consistent ordinary gross moments, never a causal news share
+  ---
+  duration_ms: 2.791051
+  type: 'test'
+  ...
+# Subtest: daily movement is a separate saved research version for original 52 codes
+ok 244 - daily movement is a separate saved research version for original 52 codes
+  ---
+  duration_ms: 561.840994
+  type: 'test'
+  ...
+# Subtest: daily direction and ranges agree with exact weighted increment means
+ok 245 - daily direction and ranges agree with exact weighted increment means
+  ---
+  duration_ms: 15.163366
+  type: 'test'
+  ...
+# Subtest: short lags are included without future outcomes choosing coefficients
+ok 246 - short lags are included without future outcomes choosing coefficients
+  ---
+  duration_ms: 173.922273
+  type: 'test'
+  ...
+# Subtest: missing adjacent prices is withheld instead of generating an invented turn
+ok 247 - missing adjacent prices is withheld instead of generating an invented turn
+  ---
+  duration_ms: 26.26439
+  type: 'test'
+  ...
+# Subtest: same stock input yields deterministic daily movement, not a freshly chosen decorative wave
+ok 248 - same stock input yields deterministic daily movement, not a freshly chosen decorative wave
+  ---
+  duration_ms: 75.556798
+  type: 'test'
+  ...
+# Subtest: daily refresh preserves pinned original, all prior forecasts, journals, 52 codes, dates and numerical code
+ok 249 - daily refresh preserves pinned original, all prior forecasts, journals, 52 codes, dates and numerical code
+  ---
+  duration_ms: 566.92327
+  type: 'test'
+  ...
+# Subtest: daily refresh verification rejects corrupted original and earlier forecast
+ok 250 - daily refresh verification rejects corrupted original and earlier forecast
+  ---
+  duration_ms: 622.824181
+  type: 'test'
+  ...
+# Subtest: daily refresh verification rejects journal removal and rewrite
+ok 251 - daily refresh verification rejects journal removal and rewrite
+  ---
+  duration_ms: 1795.913157
+  type: 'test'
+  ...
+# Subtest: daily refresh verification rejects missing codes, changed period and changed engine
+ok 252 - daily refresh verification rejects missing codes, changed period and changed engine
+  ---
+  duration_ms: 600.453295
+  type: 'test'
+  ...
+# Subtest: deployment rejects unsupported Node versions before installation
+ok 253 - deployment rejects unsupported Node versions before installation
+  ---
+  duration_ms: 0.837401
+  type: 'test'
+  ...
+# Subtest: release checker really validates CRC, rejects damaged ZIPs, and never starts deployment
+not ok 254 - release checker really validates CRC, rejects damaged ZIPs, and never starts deployment
+  ---
+  duration_ms: 5.794515
+  type: 'test'
+  location: '/home/claude/atlas/ATLAS/tests/deploy.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, copyfile '/home/claude/atlas/ATLAS/publish/downloads/ATLAS_Program_Source.zip' -> '/tmp/atlas-deploy-test-5bB7a3/downloads/ATLAS_Program_Source.zip'"
+  code: 'ENOENT'
+  stack: |-
+    async Object.copyFile (node:internal/fs/promises:621:10)
+    async fixture (file:///home/claude/atlas/ATLAS/tests/deploy.test.mjs:14:3)
+    async TestContext.<anonymous> (file:///home/claude/atlas/ATLAS/tests/deploy.test.mjs:25:16)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: deployment retry preserves updated prices, administrator key and existing original work
+not ok 255 - deployment retry preserves updated prices, administrator key and existing original work
+  ---
+  duration_ms: 4.792817
+  type: 'test'
+  location: '/home/claude/atlas/ATLAS/tests/deploy.test.mjs:44:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, copyfile '/home/claude/atlas/ATLAS/publish/downloads/ATLAS_Program_Source.zip' -> '/tmp/atlas-deploy-test-8PXdSl/downloads/ATLAS_Program_Source.zip'"
+  code: 'ENOENT'
+  stack: |-
+    async Object.copyFile (node:internal/fs/promises:621:10)
+    async fixture (file:///home/claude/atlas/ATLAS/tests/deploy.test.mjs:14:3)
+    async TestContext.<anonymous> (file:///home/claude/atlas/ATLAS/tests/deploy.test.mjs:45:16)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed installation keeps a stage record without secrets, returns failure, then allows retry
+ok 256 - failed installation keeps a stage record without secrets, returns failure, then allows retry
+  ---
+  duration_ms: 96.669772
+  type: 'test'
+  ...
+# Subtest: evolution release preserves historical bundle fields and unchanged model files
+ok 257 - evolution release preserves historical bundle fields and unchanged model files
+  ---
+  duration_ms: 2577.686793
+  type: 'test'
+  ...
+# Subtest: 365 design checkpoints have unique IDs and explicit implementation status
+ok 258 - 365 design checkpoints have unique IDs and explicit implementation status
+  ---
+  duration_ms: 3.775971
+  type: 'test'
+  ...
+# Subtest: historical six themes remain packaged but the current workspace has workspace and current factor36 theme
+ok 259 - historical six themes remain packaged but the current workspace has workspace and current factor36 theme
+  ---
+  duration_ms: 31.352571
+  type: 'test'
+  ...
+# Subtest: principal text tokens and finance colors meet 4.5:1 on ivory
+ok 260 - principal text tokens and finance colors meet 4.5:1 on ivory
+  ---
+  duration_ms: 0.294244
+  type: 'test'
+  ...
+# Subtest: brand mark remains visible and desktop three columns begin at 1500px
+ok 261 - brand mark remains visible and desktop three columns begin at 1500px
+  ---
+  duration_ms: 0.669828
+  type: 'test'
+  ...
+# Subtest: build includes revised styles, brand assets, full horizon and keyboard controls
+ok 262 - build includes revised styles, brand assets, full horizon and keyboard controls
+  ---
+  duration_ms: 254.816784
+  type: 'test'
+  ...
+# Subtest: real display transport preserves 52 complete paths, all 17 IDs and untouched engine input
+ok 263 - real display transport preserves 52 complete paths, all 17 IDs and untouched engine input
+  ---
+  duration_ms: 8097.155563
+  type: 'test'
+  ...
+# Subtest: chunk startup requests display only; full archive is separate, verified and cached on demand
+ok 264 - chunk startup requests display only; full archive is separate, verified and cached on demand
+  ---
+  duration_ms: 250.997999
+  type: 'test'
+  ...
+# Subtest: new static visitor does not download full archive or persist a projected state
+ok 265 - new static visitor does not download full archive or persist a projected state
+  ---
+  duration_ms: 18.242949
+  type: 'test'
+  ...
+# Subtest: full hydration checks exact original hash and preserves subsequent full-state edits across display loads
+ok 266 - full hydration checks exact original hash and preserves subsequent full-state edits across display loads
+  ---
+  duration_ms: 30.485792
+  type: 'test'
+  ...
+# Subtest: a corrupt or changed full archive cannot overwrite existing local edits; failures remain retryable
+ok 267 - a corrupt or changed full archive cannot overwrite existing local edits; failures remain retryable
+  ---
+  duration_ms: 28.183891
+  type: 'test'
+  ...
+# Subtest: projection accidentally stored as full state rejects without a global event-handler throw
+ok 268 - projection accidentally stored as full state rejects without a global event-handler throw
+  ---
+  duration_ms: 10.235897
+  type: 'test'
+  ...
+# Subtest: version static fallback preserves full evidence; legitimate JSON API failures never fall back
+ok 269 - version static fallback preserves full evidence; legitimate JSON API failures never fall back
+  ---
+  duration_ms: 12.919329
+  type: 'test'
+  ...
+# Subtest: 52 stocks, full 9/17–10/30 horizon, six live news links per stock, valid distributions
+ok 270 - 52 stocks, full 9/17–10/30 horizon, six live news links per stock, valid distributions
+  ---
+  duration_ms: 2.212071
+  type: 'test'
+  ...
+# Subtest: seed reproduces results; actual prices AFTER the origin cannot alter the frozen forecast
+ok 271 - seed reproduces results; actual prices AFTER the origin cannot alter the frozen forecast
+  ---
+  duration_ms: 13849.879826
+  type: 'test'
+  ...
+# Subtest: removing future news changes paths; no-news counterfactual uses exactly the same ordinary draws
+ok 272 - removing future news changes paths; no-news counterfactual uses exactly the same ordinary draws
+  ---
+  duration_ms: 3266.298298
+  type: 'test'
+  ...
+# Subtest: moving a news date moves the distribution change, without moving earlier unchanged prices
+ok 273 - moving a news date moves the distribution change, without moving earlier unchanged prices
+  ---
+  duration_ms: 6490.596443
+  type: 'test'
+  ...
+# Subtest: future disclosure, duplicates and unsupported news evidence are visibly eliminated
+ok 274 - future disclosure, duplicates and unsupported news evidence are visibly eliminated
+  ---
+  duration_ms: 27.47943
+  type: 'test'
+  ...
+# Subtest: negative evidence survives; influence selection only trains on earlier outcomes
+ok 275 - negative evidence survives; influence selection only trains on earlier outcomes
+  ---
+  duration_ms: 7476.351309
+  type: 'test'
+  ...
+# Subtest: official calendar parsing converts US after-hours releases and Korean holidays correctly
+ok 276 - official calendar parsing converts US after-hours releases and Korean holidays correctly
+  ---
+  duration_ms: 8.443751
+  type: 'test'
+  ...
+# Subtest: schedule corrections are new revisions and cannot be backdated into an old forecast
+ok 277 - schedule corrections are new revisions and cannot be backdated into an old forecast
+  ---
+  duration_ms: 32.418269
+  type: 'test'
+  ...
+# Subtest: actual evaluation excludes anchor; previous published version is immutable
+ok 278 - actual evaluation excludes anchor; previous published version is immutable
+  ---
+  duration_ms: 1960.936625
+  type: 'test'
+  ...
+# Subtest: daily collection recalculates and activates all 52 automatically while preserving prior versions
+ok 279 - daily collection recalculates and activates all 52 automatically while preserving prior versions
+  ---
+  duration_ms: 24312.316017
+  type: 'test'
+  ...
+# Subtest: failed collections preserve data; partial price coverage cannot silently advance the 52-stock anchor
+ok 280 - failed collections preserve data; partial price coverage cannot silently advance the 52-stock anchor
+  ---
+  duration_ms: 775.304517
+  type: 'test'
+  ...
+# Subtest: closed-market days reuse already observed prices, without pretending to fetch 52 fresh quotes
+ok 281 - closed-market days reuse already observed prices, without pretending to fetch 52 fresh quotes
+  ---
+  duration_ms: 40.408721
+  type: 'test'
+  ...
+# Subtest: an unchanged daily news check does not manufacture duplicate forecast versions
+ok 282 - an unchanged daily news check does not manufacture duplicate forecast versions
+  ---
+  duration_ms: 575.755364
+  type: 'test'
+  ...
+# Subtest: many archived versions remain bounded in API responses; stored full evidence is preserved
+ok 283 - many archived versions remain bounded in API responses; stored full evidence is preserved
+  ---
+  duration_ms: 331.054159
+  type: 'test'
+  ...
+# Subtest: 52 stocks share exact 10000 start across 44 calendar days
+ok 284 - 52 stocks share exact 10000 start across 44 calendar days
+  ---
+  duration_ms: 8.010981
+  type: 'test'
+  ...
+# Subtest: actual and forecast normalized without changing absolute price inputs
+ok 285 - actual and forecast normalized without changing absolute price inputs
+  ---
+  duration_ms: 11.252252
+  type: 'test'
+  ...
+# Subtest: holiday carries prior session and is not a new forecast or close
+ok 286 - holiday carries prior session and is not a new forecast or close
+  ---
+  duration_ms: 0.385158
+  type: 'test'
+  ...
+# Subtest: daily ranks sorted by comparable value, missing baseline excluded
+ok 287 - daily ranks sorted by comparable value, missing baseline excluded
+  ---
+  duration_ms: 2.330387
+  type: 'test'
+  ...
+# Subtest: news energy is per-company max, not sum, only measured included
+ok 288 - news energy is per-company max, not sum, only measured included
+  ---
+  duration_ms: 0.483327
+  type: 'test'
+  ...
+# Subtest: one tick is one day, terminal index cannot overflow
+ok 289 - one tick is one day, terminal index cannot overflow
+  ---
+  duration_ms: 0.106408
+  type: 'test'
+  ...
+# Subtest: frozen score keeps amount, percentage denominators, direction and probabilistic scoring distinct
+ok 290 - frozen score keeps amount, percentage denominators, direction and probabilistic scoring distinct
+  ---
+  duration_ms: 1.608397
+  type: 'test'
+  ...
+# Subtest: later publication and reconstructed forecasts never become prospective scores
+ok 291 - later publication and reconstructed forecasts never become prospective scores
+  ---
+  duration_ms: 1.538613
+  type: 'test'
+  ...
+# Subtest: retries are idempotent and corrected actuals append without rewriting scores
+ok 292 - retries are idempotent and corrected actuals append without rewriting scores
+  ---
+  duration_ms: 1.54716
+  type: 'test'
+  ...
+# Subtest: missing, conflicting or origin prices cannot be counted as successful predictions
+ok 293 - missing, conflicting or origin prices cannot be counted as successful predictions
+  ---
+  duration_ms: 0.25875
+  type: 'test'
+  ...
+# Subtest: matching price does not certify equation correctness or tune parameters
+ok 294 - matching price does not certify equation correctness or tune parameters
+  ---
+  duration_ms: 0.327551
+  type: 'test'
+  ...
+# Subtest: economic candidate is not probability validation or an approved price shift
+ok 295 - economic candidate is not probability validation or an approved price shift
+  ---
+  duration_ms: 2.171138
+  type: 'test'
+  ...
+# Subtest: 52 calendar slots are not a quota of price-affecting events
+ok 296 - 52 calendar slots are not a quota of price-affecting events
+  ---
+  duration_ms: 0.796196
+  type: 'test'
+  ...
+# Subtest: explicit economic evidence may promote context to research candidate, never price certainty
+ok 297 - explicit economic evidence may promote context to research candidate, never price certainty
+  ---
+  duration_ms: 0.628444
+  type: 'test'
+  ...
+# Subtest: unknown general calendar does not become market news
+ok 298 - unknown general calendar does not become market news
+  ---
+  duration_ms: 0.313811
+  type: 'test'
+  ...
+# Subtest: HTTPS homepage without explicit primary-body verification is insufficient
+ok 299 - HTTPS homepage without explicit primary-body verification is insufficient
+  ---
+  duration_ms: 0.256858
+  type: 'test'
+  ...
+# Subtest: retained source-body review preserves documented legacy schedule without claiming current refetch
+ok 300 - retained source-body review preserves documented legacy schedule without claiming current refetch
+  ---
+  duration_ms: 0.33076
+  type: 'test'
+  ...
+# Subtest: future availability and withdrawn event never count as verified
+ok 301 - future availability and withdrawn event never count as verified
+  ---
+  duration_ms: 0.252707
+  type: 'test'
+  ...
+# Subtest: duplicate articles and reordered scope do not multiply economic event count
+ok 302 - duplicate articles and reordered scope do not multiply economic event count
+  ---
+  duration_ms: 0.170412
+  type: 'test'
+  ...
+# Subtest: another issuer cannot contaminate target history even for same-day same-kind news
+ok 303 - another issuer cannot contaminate target history even for same-day same-kind news
+  ---
+  duration_ms: 0.702864
+  type: 'test'
+  ...
+# Subtest: same date is one cluster; duplicate rows do not tighten precision
+ok 304 - same date is one cluster; duplicate rows do not tighten precision
+  ---
+  duration_ms: 5.646431
+  type: 'test'
+  ...
+# Subtest: conflicting same-date returns and return windows are excluded, independent of row order
+ok 305 - conflicting same-date returns and return windows are excluded, independent of row order
+  ---
+  duration_ms: 0.349481
+  type: 'test'
+  ...
+# Subtest: large signed returns are retained; vintage and discontinuity are explicit exclusions
+ok 306 - large signed returns are retained; vintage and discontinuity are explicit exclusions
+  ---
+  duration_ms: 8.929803
+  type: 'test'
+  ...
+# Subtest: overlapping response windows do not inflate independent event count
+ok 307 - overlapping response windows do not inflate independent event count
+  ---
+  duration_ms: 0.291439
+  type: 'test'
+  ...
+# Subtest: five observations are not evidence of validated precision; gate must be declared beforehand
+ok 308 - five observations are not evidence of validated precision; gate must be declared beforehand
+  ---
+  duration_ms: 0.942714
+  type: 'test'
+  ...
+# Subtest: Wilson interval stays bounded at all-positive and all-negative edges
+ok 309 - Wilson interval stays bounded at all-positive and all-negative edges
+  ---
+  duration_ms: 0.472632
+  type: 'test'
+  ...
+# Subtest: context-only KT&G window does not veto JOBS but remains a confounding warning
+ok 310 - context-only KT&G window does not veto JOBS but remains a confounding warning
+  ---
+  duration_ms: 0.601251
+  type: 'test'
+  ...
+# Subtest: future overlapping events cannot change past overlap decisions
+ok 311 - future overlapping events cannot change past overlap decisions
+  ---
+  duration_ms: 0.133988
+  type: 'test'
+  ...
+# Subtest: subsidiary mapping is explicitly non-independent and requires ownership source
+ok 312 - subsidiary mapping is explicitly non-independent and requires ownership source
+  ---
+  duration_ms: 0.276815
+  type: 'test'
+  ...
+# Subtest: coverage validates all 52, deduplicates articles and excludes unknown future conflicts
+ok 313 - coverage validates all 52, deduplicates articles and excludes unknown future conflicts
+  ---
+  duration_ms: 2.401436
+  type: 'test'
+  ...
+# Subtest: retained registry is explicit and cannot verify a completely unreferenced event
+ok 314 - retained registry is explicit and cannot verify a completely unreferenced event
+  ---
+  duration_ms: 0.21957
+  type: 'test'
+  ...
+# Subtest: record date remains context rather than an invented ex-dividend price shock
+ok 315 - record date remains context rather than an invented ex-dividend price shock
+  ---
+  duration_ms: 0.100789
+  type: 'test'
+  ...
+# Subtest: event fingerprint reacts to materiality/proof changes and ignores mere fetch metadata
+ok 316 - event fingerprint reacts to materiality/proof changes and ignores mere fetch metadata
+  ---
+  duration_ms: 0.68771
+  type: 'test'
+  ...
+# Subtest: duplicate source order cannot hide an available verified primary body
+ok 317 - duplicate source order cannot hide an available verified primary body
+  ---
+  duration_ms: 0.760736
+  type: 'test'
+  ...
+# Subtest: one economic occurrence relabeled on two dates is not two independent observations
+ok 318 - one economic occurrence relabeled on two dates is not two independent observations
+  ---
+  duration_ms: 0.497288
+  type: 'test'
+  ...
+# Subtest: explicit economic event stays one occurrence across legitimate dated phases
+ok 319 - explicit economic event stays one occurrence across legitimate dated phases
+  ---
+  duration_ms: 1.281552
+  type: 'test'
+  ...
+# Subtest: notes append once, remain unapproved and preserve prior records
+ok 320 - notes append once, remain unapproved and preserve prior records
+  ---
+  duration_ms: 1.607889
+  type: 'test'
+  ...
+# Subtest: reject unrelated code, invalid URLs, out-of-period input and end-period writes
+ok 321 - reject unrelated code, invalid URLs, out-of-period input and end-period writes
+  ---
+  duration_ms: 0.524795
+  type: 'test'
+  ...
+# Subtest: independent review: residual correction uses five distinct next-session dates without mutating baseline
+ok 322 - independent review: residual correction uses five distinct next-session dates without mutating baseline
+  ---
+  duration_ms: 17.056546
+  type: 'test'
+  ...
+# Subtest: independent review: same-day issue and future correction cannot enter training
+ok 323 - independent review: same-day issue and future correction cannot enter training
+  ---
+  duration_ms: 1.434609
+  type: 'test'
+  ...
+# Subtest: independent review: unrelated company price changes do not change A correction or path
+ok 324 - independent review: unrelated company price changes do not change A correction or path
+  ---
+  duration_ms: 2.479866
+  type: 'test'
+  ...
+# Subtest: independent review: shadow outcome appends once, cannot feed its own training, and stops after fixed end
+ok 325 - independent review: shadow outcome appends once, cannot feed its own training, and stops after fixed end
+  ---
+  duration_ms: 2.27634
+  type: 'test'
+  ...
+# Subtest: independent review: original string ID is never a training candidate and baseline times must be known
+ok 326 - independent review: original string ID is never a training candidate and baseline times must be known
+  ---
+  duration_ms: 0.541311
+  type: 'test'
+  ...
+# Subtest: independent review: contradictory latest revision cannot fall back to an old observation stamp
+ok 327 - independent review: contradictory latest revision cannot fall back to an old observation stamp
+  ---
+  duration_ms: 0.978922
+  type: 'test'
+  ...
+# Subtest: service hydration and compact API preserve evolution without mutating frozen forecasts
+ok 328 - service hydration and compact API preserve evolution without mutating frozen forecasts
+  ---
+  duration_ms: 34.483851
+  type: 'test'
+  ...
+# Subtest: partial price refresh updates learning from observed issuer while retaining all forecasts
+ok 329 - partial price refresh updates learning from observed issuer while retaining all forecasts
+  ---
+  duration_ms: 90.798465
+  type: 'test'
+  ...
+# Subtest: failed source collection retains evolution and does not fabricate a fresh outcome
+ok 330 - failed source collection retains evolution and does not fabricate a fresh outcome
+  ---
+  duration_ms: 2.577521
+  type: 'test'
+  ...
+# Subtest: state merge preserves both incoming and current append-only evolution records
+ok 331 - state merge preserves both incoming and current append-only evolution records
+  ---
+  duration_ms: 4.354599
+  type: 'test'
+  ...
+# Subtest: manual evolution notes are append-only hypotheses and cannot alter baseline coefficients
+ok 332 - manual evolution notes are append-only hypotheses and cannot alter baseline coefficients
+  ---
+  duration_ms: 2.770398
+  type: 'test'
+  ...
+# Subtest: evolution validation failure keeps prior object and marks partial even when repeated
+ok 333 - evolution validation failure keeps prior object and marks partial even when repeated
+  ---
+  duration_ms: 2.918362
+  type: 'test'
+  ...
+# Subtest: unchanged released evolution upgrade returns the same state reference
+ok 334 - unchanged released evolution upgrade returns the same state reference
+  ---
+  duration_ms: 7.44875
+  type: 'test'
+  ...
+# Subtest: release hydration merges earlier immutable shadow notes and archives conflicting branches once
+ok 335 - release hydration merges earlier immutable shadow notes and archives conflicting branches once
+  ---
+  duration_ms: 3.977335
+  type: 'test'
+  ...
+# Subtest: strict prospective own-stock next-session residuals train with fixed ridge; null probabilities never inherited
+ok 336 - strict prospective own-stock next-session residuals train with fixed ridge; null probabilities never inherited
+  ---
+  duration_ms: 14.071977
+  type: 'test'
+  ...
+# Subtest: retrospective, same-target-day, future-issued and future-observed rows cannot train
+ok 337 - retrospective, same-target-day, future-issued and future-observed rows cannot train
+  ---
+  duration_ms: 4.140759
+  type: 'test'
+  ...
+# Subtest: same stock/date multiple vintages and horizons are not independent training samples
+ok 338 - same stock/date multiple vintages and horizons are not independent training samples
+  ---
+  duration_ms: 1.173933
+  type: 'test'
+  ...
+# Subtest: unknown and null prices stay unavailable; other stock does not contaminate training; extreme loss retained
+ok 339 - unknown and null prices stay unavailable; other stock does not contaminate training; extreme loss retained
+  ---
+  duration_ms: 1.547168
+  type: 'test'
+  ...
+# Subtest: matching collector insertion journal timestamps permit training beyond common date; future revisions defer
+ok 340 - matching collector insertion journal timestamps permit training beyond common date; future revisions defer
+  ---
+  duration_ms: 1.988356
+  type: 'test'
+  ...
+# Subtest: same meaningful data is idempotent, observation time alone is not new input, arguments are immutable
+ok 341 - same meaningful data is idempotent, observation time alone is not new input, arguments are immutable
+  ---
+  duration_ms: 8.11603
+  type: 'test'
+  ...
+# Subtest: frozen shadow evaluation is paired to its baseline, append-only, and cannot train on its own output
+ok 342 - frozen shadow evaluation is paired to its baseline, append-only, and cannot train on its own output
+  ---
+  duration_ms: 3.06218
+  type: 'test'
+  ...
+# Subtest: after period end no new work, and merge preserves immutable histories and manual notes
+ok 343 - after period end no new work, and merge preserves immutable histories and manual notes
+  ---
+  duration_ms: 2.619539
+  type: 'test'
+  ...
+# Subtest: original ID strings are excluded and unknown baseline time is rejected
+ok 344 - original ID strings are excluded and unknown baseline time is rejected
+  ---
+  duration_ms: 1.163517
+  type: 'test'
+  ...
+# Subtest: numeric range failures retain the extreme training path and return flagged nulls
+ok 345 - numeric range failures retain the extreme training path and return flagged nulls
+  ---
+  duration_ms: 1.142163
+  type: 'test'
+  ...
+# Subtest: price versus latest correction journal conflict is deferred, never observedAt fallback
+ok 346 - price versus latest correction journal conflict is deferred, never observedAt fallback
+  ---
+  duration_ms: 1.723725
+  type: 'test'
+  ...
+# Subtest: an archived branch cannot displace active shadow matching accepted inputs
+ok 347 - an archived branch cannot displace active shadow matching accepted inputs
+  ---
+  duration_ms: 4.809402
+  type: 'test'
+  ...
+# Subtest: factor source, time, target and conflicting eligibility fail closed
+ok 348 - factor source, time, target and conflicting eligibility fail closed
+  ---
+  duration_ms: 4.259358
+  type: 'test'
+  ...
+# Subtest: company A observations never become B features and future observations do not leak
+ok 349 - company A observations never become B features and future observations do not leak
+  ---
+  duration_ms: 0.435561
+  type: 'test'
+  ...
+# Subtest: append-only input revisions require source revision and preserve deep before/after
+ok 350 - append-only input revisions require source revision and preserve deep before/after
+  ---
+  duration_ms: 0.291751
+  type: 'test'
+  ...
+# Subtest: returns never bridge a gap or remove a large loss
+ok 351 - returns never bridge a gap or remove a large loss
+  ---
+  duration_ms: 0.271972
+  type: 'test'
+  ...
+# Subtest: empirical CRPS equals complete pairwise enumeration; interval penalty punishes narrow misses
+ok 352 - empirical CRPS equals complete pairwise enumeration; interval penalty punishes narrow misses
+  ---
+  duration_ms: 0.356489
+  type: 'test'
+  ...
+# Subtest: future labels and untouched holdout do not select coefficients or candidate type
+ok 353 - future labels and untouched holdout do not select coefficients or candidate type
+  ---
+  duration_ms: 202.237926
+  type: 'test'
+  ...
+# Subtest: standardization and decomposition use actual fitted inputs
+ok 354 - standardization and decomposition use actual fitted inputs
+  ---
+  duration_ms: 1.332098
+  type: 'test'
+  ...
+# Subtest: GARCH is positive and stationary; probabilities are model counts only
+ok 355 - GARCH is positive and stationary; probabilities are model counts only
+  ---
+  duration_ms: 0.651012
+  type: 'test'
+  ...
+# Subtest: joint draws preserve identical assets, losses, determinism and expose overflow
+ok 356 - joint draws preserve identical assets, losses, determinism and expose overflow
+  ---
+  duration_ms: 58.858343
+  type: 'test'
+  ...
+# Subtest: current 52-stock release replaces stale numeric summaries and preserves every probability
+ok 357 - current 52-stock release replaces stale numeric summaries and preserves every probability
+  ---
+  duration_ms: 177.515437
+  type: 'test'
+  ...
+# Subtest: focus comparison uses exact date, saved model, correct sign; never calls the gap accuracy
+ok 358 - focus comparison uses exact date, saved model, correct sign; never calls the gap accuracy
+  ---
+  duration_ms: 1.199282
+  type: 'test'
+  ...
+# Subtest: origin is a baseline, not a successful forecast
+ok 359 - origin is a baseline, not a successful forecast
+  ---
+  duration_ms: 0.205976
+  type: 'test'
+  ...
+# Subtest: future actuals, weekends, missing model and conflicting closes cannot get a comparison
+ok 360 - future actuals, weekends, missing model and conflicting closes cannot get a comparison
+  ---
+  duration_ms: 0.21517
+  type: 'test'
+  ...
+# Subtest: joint model fits correlated price and bounded-state residuals but is not approved
+ok 361 - joint model fits correlated price and bounded-state residuals but is not approved
+  ---
+  duration_ms: 13.226648
+  type: 'test'
+  ...
+# Subtest: same frozen model/seed reproduces path without editing original
+ok 362 - same frozen model/seed reproduces path without editing original
+  ---
+  duration_ms: 9.110385
+  type: 'test'
+  ...
+# Subtest: no data produces insufficient evidence and cannot simulate
+ok 363 - no data produces insufficient evidence and cannot simulate
+  ---
+  duration_ms: 0.270346
+  type: 'test'
+  ...
+# Subtest: large losses retained rather than discarded
+ok 364 - large losses retained rather than discarded
+  ---
+  duration_ms: 3.452456
+  type: 'test'
+  ...
+# Subtest: out-of-range price signals error, never deletes a loss/path to fix quantiles
+ok 365 - out-of-range price signals error, never deletes a loss/path to fix quantiles
+  ---
+  duration_ms: 2.948471
+  type: 'test'
+  ...
+# Subtest: core geometric mean has exact neutral value; score is not probability
+ok 366 - core geometric mean has exact neutral value; score is not probability
+  ---
+  duration_ms: 1.056869
+  type: 'test'
+  ...
+# Subtest: one missing required axis is null, not zero or reweighted
+ok 367 - one missing required axis is null, not zero or reweighted
+  ---
+  duration_ms: 1.368389
+  type: 'test'
+  ...
+# Subtest: zero is valid data and limits geometric score
+ok 368 - zero is valid data and limits geometric score
+  ---
+  duration_ms: 0.131905
+  type: 'test'
+  ...
+# Subtest: optional author/news/margin never blocks core
+ok 369 - optional author/news/margin never blocks core
+  ---
+  duration_ms: 0.115994
+  type: 'test'
+  ...
+# Subtest: multi-source per-field provenance remains separate and original input immutable
+ok 370 - multi-source per-field provenance remains separate and original input immutable
+  ---
+  duration_ms: 1.038116
+  type: 'test'
+  ...
+# Subtest: same observation is idempotent and changed value rejects atomically
+ok 371 - same observation is idempotent and changed value rejects atomically
+  ---
+  duration_ms: 0.759906
+  type: 'test'
+  ...
+# Subtest: import rejects future
+ok 372 - import rejects future
+  ---
+  duration_ms: 0.27573
+  type: 'test'
+  ...
+# Subtest: import rejects unit
+ok 373 - import rejects unit
+  ---
+  duration_ms: 0.162587
+  type: 'test'
+  ...
+# Subtest: import rejects code
+ok 374 - import rejects code
+  ---
+  duration_ms: 0.273258
+  type: 'test'
+  ...
+# Subtest: import rejects hash
+ok 375 - import rejects hash
+  ---
+  duration_ms: 0.451465
+  type: 'test'
+  ...
+# Subtest: import rejects negative
+ok 376 - import rejects negative
+  ---
+  duration_ms: 0.192546
+  type: 'test'
+  ...
+# Subtest: import rejects bad date
+ok 377 - import rejects bad date
+  ---
+  duration_ms: 0.095898
+  type: 'test'
+  ...
+# Subtest: import rejects query
+ok 378 - import rejects query
+  ---
+  duration_ms: 0.096409
+  type: 'test'
+  ...
+# Subtest: ridge solves constant residual with shrinkage and sign preserved
+ok 379 - ridge solves constant residual with shrinkage and sign preserved
+  ---
+  duration_ms: 0.8419
+  type: 'test'
+  ...
+# Subtest: walk-forward purges targets, tests unseen dates, remains research only
+ok 380 - walk-forward purges targets, tests unseen dates, remains research only
+  ---
+  duration_ms: 15.512833
+  type: 'test'
+  ...
+# Subtest: training excludes future observed data and different company
+ok 381 - training excludes future observed data and different company
+  ---
+  duration_ms: 0.472567
+  type: 'test'
+  ...
+# Subtest: duplicate training date is rejected instead of becoming another sample
+ok 382 - duplicate training date is rejected instead of becoming another sample
+  ---
+  duration_ms: 0.320604
+  type: 'test'
+  ...
+# Subtest: minimum evidence gate is not bypassed by smaller requested counts
+ok 383 - minimum evidence gate is not bypassed by smaller requested counts
+  ---
+  duration_ms: 0.215953
+  type: 'test'
+  ...
+# Subtest: bad prediction and singular/invalid training rejected
+ok 384 - bad prediction and singular/invalid training rejected
+  ---
+  duration_ms: 0.228277
+  type: 'test'
+  ...
+# Subtest: collection registry links one stock to one immutable public URL
+ok 385 - collection registry links one stock to one immutable public URL
+  ---
+  duration_ms: 6.191403
+  type: 'test'
+  ...
+# Subtest: collector missing credentials and failed provider are partial, no fabricated rows
+ok 386 - collector missing credentials and failed provider are partial, no fabricated rows
+  ---
+  duration_ms: 27.46043
+  type: 'test'
+  ...
+# Subtest: new search request keeps separate scale rather than merging request-relative values
+ok 387 - new search request keeps separate scale rather than merging request-relative values
+  ---
+  duration_ms: 0.470906
+  type: 'test'
+  ...
+# Subtest: active UI routes to v2 panel without touching archived graph geometry
+ok 388 - active UI routes to v2 panel without touching archived graph geometry
+  ---
+  duration_ms: 20.534039
+  type: 'test'
+  ...
+# Subtest: atomic flow import rejects inconsistent net buy and excessive participation
+ok 389 - atomic flow import rejects inconsistent net buy and excessive participation
+  ---
+  duration_ms: 0.42203
+  type: 'test'
+  ...
+# Subtest: observed availability does not fabricate a publisher timestamp
+ok 390 - observed availability does not fabricate a publisher timestamp
+  ---
+  duration_ms: 0.173051
+  type: 'test'
+  ...
+# Subtest: 18 features form six equal groups; complete observed fixture yields bounded deterministic scores
+ok 391 - 18 features form six equal groups; complete observed fixture yields bounded deterministic scores
+  ---
+  duration_ms: 83.961371
+  type: 'test'
+  ...
+# Subtest: close-only observations expose six-feature price heat, never a completed FOMO score
+ok 392 - close-only observations expose six-feature price heat, never a completed FOMO score
+  ---
+  duration_ms: 29.021406
+  type: 'test'
+  ...
+# Subtest: flat ties are neutral; empirical rank endpoints and ties match direct counting
+ok 393 - flat ties are neutral; empirical rank endpoints and ties match direct counting
+  ---
+  duration_ms: 42.450708
+  type: 'test'
+  ...
+# Subtest: missing latest session cannot be filled with an older day; reference gaps reduce usable windows
+ok 394 - missing latest session cannot be filled with an older day; reference gaps reduce usable windows
+  ---
+  duration_ms: 13.579514
+  type: 'test'
+  ...
+# Subtest: future observations and other-company inputs cannot affect selected-date score
+ok 395 - future observations and other-company inputs cannot affect selected-date score
+  ---
+  duration_ms: 95.811366
+  type: 'test'
+  ...
+# Subtest: supplement timestamps, company identity and reference-series method are mandatory
+ok 396 - supplement timestamps, company identity and reference-series method are mandatory
+  ---
+  duration_ms: 72.676335
+  type: 'test'
+  ...
+# Subtest: raw ten-session return and acceleration match independent price ratios
+ok 397 - raw ten-session return and acceleration match independent price ratios
+  ---
+  duration_ms: 65.191361
+  type: 'test'
+  ...
+# Subtest: feature import is atomic, scoped, conflict-aware and reversible by recorded timestamp
+ok 398 - feature import is atomic, scoped, conflict-aware and reversible by recorded timestamp
+  ---
+  duration_ms: 29.475114
+  type: 'test'
+  ...
+# Subtest: late optional inputs can be viewed now without changing historical-date scores
+ok 399 - late optional inputs can be viewed now without changing historical-date scores
+  ---
+  duration_ms: 56.878375
+  type: 'test'
+  ...
+# Subtest: NAVER collection retains OHLC/volume and journals enrichments before the forecast origin
+ok 400 - NAVER collection retains OHLC/volume and journals enrichments before the forecast origin
+  ---
+  duration_ms: 82.358198
+  type: 'test'
+  ...
+# Subtest: validation refuses incomplete scores and future/other-company performance as calibration
+ok 401 - validation refuses incomplete scores and future/other-company performance as calibration
+  ---
+  duration_ms: 0.530985
+  type: 'test'
+  ...
+# Subtest: fixed ridge candidate respects nonoverlap and reports retrospective gains without enabling live price drift
+ok 402 - fixed ridge candidate respects nonoverlap and reports retrospective gains without enabling live price drift
+  ---
+  duration_ms: 0.472488
+  type: 'test'
+  ...
+# Subtest: 52 preserved forecasts and actual inputs remain intact; summaries distinguish direction and context
+ok 403 - 52 preserved forecasts and actual inputs remain intact; summaries distinguish direction and context
+  ---
+  duration_ms: 2838.754268
+  type: 'test'
+  ...
+# Subtest: all 52 daily changes exactly equal saved adjacent-session price ratios
+ok 404 - all 52 daily changes exactly equal saved adjacent-session price ratios
+  ---
+  duration_ms: 1278.241994
+  type: 'test'
+  ...
+# Subtest: positive negative and zero rates, neutral not an invented wave
+ok 405 - positive negative and zero rates, neutral not an invented wave
+  ---
+  duration_ms: 1.382159
+  type: 'test'
+  ...
+# Subtest: missing trading day not presented as a daily move
+ok 406 - missing trading day not presented as a daily move
+  ---
+  duration_ms: 0.139235
+  type: 'test'
+  ...
+# Subtest: duplicate dates rejected
+ok 407 - duplicate dates rejected
+  ---
+  duration_ms: 0.356353
+  type: 'test'
+  ...
+# Subtest: holiday rows never create a trading-day column
+ok 408 - holiday rows never create a trading-day column
+  ---
+  duration_ms: 0.175533
+  type: 'test'
+  ...
+# Subtest: learned main ink has at least 7:1 contrast on both reading surfaces
+ok 409 - learned main ink has at least 7:1 contrast on both reading surfaces
+  ---
+  duration_ms: 0.872216
+  type: 'test'
+  ...
+# Subtest: learned secondary text clears 4.5:1 without threshold rounding
+ok 410 - learned secondary text clears 4.5:1 without threshold rounding
+  ---
+  duration_ms: 0.136619
+  type: 'test'
+  ...
+# Subtest: learned warm action text clears 4.5:1 on paper and content surfaces
+ok 411 - learned warm action text clears 4.5:1 on paper and content surfaces
+  ---
+  duration_ms: 0.912366
+  type: 'test'
+  ...
+# Subtest: learned brass text uses a readable ink rather than the decorative gold
+ok 412 - learned brass text uses a readable ink rather than the decorative gold
+  ---
+  duration_ms: 0.158235
+  type: 'test'
+  ...
+# Subtest: current UI: 52 exact stored previews, keyboard selection and independent company date
+ok 413 - current UI: 52 exact stored previews, keyboard selection and independent company date
+  ---
+  duration_ms: 7428.857435
+  type: 'test'
+  ...
+# Subtest: current UI: full 52 gallery keeps trading day vertices and one active forecast
+ok 414 - current UI: full 52 gallery keeps trading day vertices and one active forecast
+  ---
+  duration_ms: 10340.054404
+  type: 'test'
+  ...
+# Subtest: current UI: news opens its own company/date and returning retains chosen evidence
+ok 415 - current UI: news opens its own company/date and returning retains chosen evidence
+  ---
+  duration_ms: 7588.173527
+  type: 'test'
+  ...
+# Subtest: current UI: daily score counts 52 pending and does not score retired forecasts
+ok 416 - current UI: daily score counts 52 pending and does not score retired forecasts
+  ---
+  duration_ms: 6196.831216
+  type: 'test'
+  ...
+# Subtest: current UI: projected transport keeps new atomic forecast without downloading archives
+ok 417 - current UI: projected transport keeps new atomic forecast without downloading archives
+  ---
+  duration_ms: 6303.188198
+  type: 'test'
+  ...
+# Subtest: current UI: stored server state mismatch cannot substitute the forecast or source snapshot
+ok 418 - current UI: stored server state mismatch cannot substitute the forecast or source snapshot
+  ---
+  duration_ms: 10978.591273
+  type: 'test'
+  ...
+# Subtest: future macro observation cannot change earlier candidate
+ok 419 - future macro observation cannot change earlier candidate
+  ---
+  duration_ms: 1.977587
+  type: 'test'
+  ...
+# Subtest: missing or stale never becomes zero
+ok 420 - missing or stale never becomes zero
+  ---
+  duration_ms: 0.335027
+  type: 'test'
+  ...
+# Subtest: conflicting same date rejected and zero remains observed
+ok 421 - conflicting same date rejected and zero remains observed
+  ---
+  duration_ms: 7.71788
+  type: 'test'
+  ...
+# Subtest: Netlify SDK adapter: auth, persistence and conditional-write HTTP contract
+ok 422 - Netlify SDK adapter: auth, persistence and conditional-write HTTP contract
+  ---
+  duration_ms: 97002.513609
+  type: 'test'
+  ...
+# Subtest: registry preserves exact 52, cumulative references and user configuration without treating routes as event proof
+ok 423 - registry preserves exact 52, cumulative references and user configuration without treating routes as event proof
+  ---
+  duration_ms: 20.080781
+  type: 'test'
+  ...
+# Subtest: URL and socket address policy rejects credential, localhost, private, mapped and documentation addresses
+ok 424 - URL and socket address policy rejects credential, localhost, private, mapped and documentation addresses
+  ---
+  duration_ms: 0.491025
+  type: 'test'
+  ...
+# Subtest: conditional request retains first observation and never substitutes Last-Modified for publication
+ok 425 - conditional request retains first observation and never substitutes Last-Modified for publication
+  ---
+  duration_ms: 14.91096
+  type: 'test'
+  ...
+# Subtest: changed bodies preserve prior metadata and access challenges preserve last good data
+ok 426 - changed bodies preserve prior metadata and access challenges preserve last good data
+  ---
+  duration_ms: 7.845402
+  type: 'test'
+  ...
+# Subtest: redirects and DNS cannot reach private or cross-origin locations and are not retried
+ok 427 - redirects and DNS cannot reach private or cross-origin locations and are not retried
+  ---
+  duration_ms: 7.461407
+  type: 'test'
+  ...
+# Subtest: publisher Retry-After is honored within cap and excessive wait defers instead of early retry
+ok 428 - publisher Retry-After is honored within cap and excessive wait defers instead of early retry
+  ---
+  duration_ms: 12.710508
+  type: 'test'
+  ...
+# Subtest: declared or streamed oversize bodies cannot replace cached evidence
+ok 429 - declared or streamed oversize bodies cannot replace cached evidence
+  ---
+  duration_ms: 4.367833
+  type: 'test'
+  ...
+# Subtest: bounded concurrency, per-host limits and circuit breaker leave every target visible
+ok 430 - bounded concurrency, per-host limits and circuit breaker leave every target visible
+  ---
+  duration_ms: 32.590701
+  type: 'test'
+  ...
+# Subtest: request timeout and run deadline finish even if injected fetch ignores abort
+ok 431 - request timeout and run deadline finish even if injected fetch ignores abort
+  ---
+  duration_ms: 31.951196
+  type: 'test'
+  ...
+# Subtest: 304 without cache and disabled or budget-skipped sources cannot count as successful observations
+ok 432 - 304 without cache and disabled or budget-skipped sources cannot count as successful observations
+  ---
+  duration_ms: 2.799622
+  type: 'test'
+  ...
+# Subtest: candidate link discovery retains uncertain date roles and cannot create dated events
+ok 433 - candidate link discovery retains uncertain date roles and cannot create dated events
+  ---
+  duration_ms: 0.245888
+  type: 'test'
+  ...
+# Subtest: empty registry is missing coverage, never a successful all-52 collection
+ok 434 - empty registry is missing coverage, never a successful all-52 collection
+  ---
+  duration_ms: 0.253169
+  type: 'test'
+  ...
+# Subtest: hanging snapshot and checkpoint hooks cannot defeat the run deadline
+ok 435 - hanging snapshot and checkpoint hooks cannot defeat the run deadline
+  ---
+  duration_ms: 58.609789
+  type: 'test'
+  ...
+# Subtest: compensated sums and shifted log-sum-exp retain representable quantities
+ok 436 - compensated sums and shifted log-sum-exp retain representable quantities
+  ---
+  duration_ms: 1.222972
+  type: 'test'
+  ...
+# Subtest: exact two-day moments match exhaustive model states and separate sampling error from skill
+ok 437 - exact two-day moments match exhaustive model states and separate sampling error from skill
+  ---
+  duration_ms: 2.822379
+  type: 'test'
+  ...
+# Subtest: near-constant distributions retain a small positive variance without subtracting large moments
+ok 438 - near-constant distributions retain a small positive variance without subtracting large moments
+  ---
+  duration_ms: 0.258747
+  type: 'test'
+  ...
+# Subtest: all signed tails remain in model moments and numeric overflow is exposed
+ok 439 - all signed tails remain in model moments and numeric overflow is exposed
+  ---
+  duration_ms: 0.56243
+  type: 'test'
+  ...
+# Subtest: weighted supports handle zero mass, reject invalid values, and do not assume dependence away
+ok 440 - weighted supports handle zero mass, reject invalid values, and do not assume dependence away
+  ---
+  duration_ms: 0.470845
+  type: 'test'
+  ...
+# Subtest: changing path count changes only Monte Carlo comparison precision
+ok 441 - changing path count changes only Monte Carlo comparison precision
+  ---
+  duration_ms: 0.248036
+  type: 'test'
+  ...
+# Subtest: event marginal weights reproduce exact shared-date and missing-date fallback choices
+ok 442 - event marginal weights reproduce exact shared-date and missing-date fallback choices
+  ---
+  duration_ms: 1.691547
+  type: 'test'
+  ...
+# Subtest: 10,000 deterministic synthetic cases match exhaustive enumeration and invariants; not cross-validation
+ok 443 - 10,000 deterministic synthetic cases match exhaustive enumeration and invariants; not cross-validation
+  ---
+  duration_ms: 483.649516
+  type: 'test'
+  ...
+# {"syntheticCases":10000,"passedCases":10000,"failedCases":0,"independentMarketCrossValidations":0,"oracle":"exhaustive_finite_support_path_enumeration","maximumRelativeMeanError":2.079089314393498e-15,"maximumRelativeVarianceError":1.423356266647625e-13,"predictiveAccuracyCertified":false}
+# Subtest: probability mass and deterministic tie rule
+ok 444 - probability mass and deterministic tie rule
+  ---
+  duration_ms: 8.625692
+  type: 'test'
+  ...
+# Subtest: own returns never bridge missing sessions, nor future prices
+ok 445 - own returns never bridge missing sessions, nor future prices
+  ---
+  duration_ms: 0.381076
+  type: 'test'
+  ...
+# Subtest: simulation preserves blocks and large losses; probabilities match enumerated first step
+ok 446 - simulation preserves blocks and large losses; probabilities match enumerated first step
+  ---
+  duration_ms: 17.562835
+  type: 'test'
+  ...
+# Subtest: entire event template is sampled coherently and replaces ordinary shock
+ok 447 - entire event template is sampled coherently and replaces ordinary shock
+  ---
+  duration_ms: 19.278675
+  type: 'test'
+  ...
+# Subtest: same seed/input gives identical results; overflow is blocked not filtered
+ok 448 - same seed/input gives identical results; overflow is blocked not filtered
+  ---
+  duration_ms: 92.547933
+  type: 'test'
+  ...
+# Subtest: unrelated company does not acquire another company event
+ok 449 - unrelated company does not acquire another company event
+  ---
+  duration_ms: 24.464617
+  type: 'test'
+  ...
+# Subtest: future publication/observation blocks event; context never changes price
+ok 450 - future publication/observation blocks event; context never changes price
+  ---
+  duration_ms: 29.796674
+  type: 'test'
+  ...
+# Subtest: cross-company samples and response windows beyond freeze are excluded
+ok 451 - cross-company samples and response windows beyond freeze are excluded
+  ---
+  duration_ms: 22.326662
+  type: 'test'
+  ...
+# Subtest: archived 9.3 release: all 52 assets have normalized daily choices, ordered quantiles and no loss filtering
+ok 452 - archived 9.3 release: all 52 assets have normalized daily choices, ordered quantiles and no loss filtering
+  ---
+  duration_ms: 130.860492
+  type: 'test'
+  ...
+# Subtest: overlapping future wave windows are withheld together
+ok 453 - overlapping future wave windows are withheld together
+  ---
+  duration_ms: 21.8436
+  type: 'test'
+  ...
+# Subtest: conflicting price observations cannot become training returns
+ok 454 - conflicting price observations cannot become training returns
+  ---
+  duration_ms: 0.238817
+  type: 'test'
+  ...
+# Subtest: new score excludes all outcomes at or before actual issuance
+ok 455 - new score excludes all outcomes at or before actual issuance
+  ---
+  duration_ms: 0.502205
+  type: 'test'
+  ...
+# Subtest: fixed period end refuses collection before invoking any remote collector
+ok 456 - fixed period end refuses collection before invoking any remote collector
+  ---
+  duration_ms: 4973.541483
+  type: 'test'
+  ...
+# Subtest: 2026-09-27 holiday reports cached 52 closes and no new provider fetch
+ok 457 - 2026-09-27 holiday reports cached 52 closes and no new provider fetch
+  ---
+  duration_ms: 72.119059
+  type: 'test'
+  ...
+# Subtest: one-step weighted marginal preserves atoms, zero mass, tails and strict up threshold
+ok 458 - one-step weighted marginal preserves atoms, zero mass, tails and strict up threshold
+  ---
+  duration_ms: 2.649477
+  type: 'test'
+  ...
+# Subtest: DKW bounds retain uncertainty at zero/all positives and expose unbounded tails
+ok 459 - DKW bounds retain uncertainty at zero/all positives and expose unbounded tails
+  ---
+  duration_ms: 2.402558
+  type: 'test'
+  ...
+# Subtest: fixed-size 95% DKW coverage checked by exact binomial enumeration, including discrete quantiles
+ok 460 - fixed-size 95% DKW coverage checked by exact binomial enumeration, including discrete quantiles
+  ---
+  duration_ms: 7.304614
+  type: 'test'
+  ...
+# Subtest: doubling fixed paths reduces the CDF error budget by sqrt(2)
+ok 461 - doubling fixed paths reduces the CDF error budget by sqrt(2)
+  ---
+  duration_ms: 2.745773
+  type: 'test'
+  ...
+# Subtest: article collection time gates historical availability; future duplicate information cannot poison the past
+ok 462 - article collection time gates historical availability; future duplicate information cannot poison the past
+  ---
+  duration_ms: 19.926024
+  type: 'test'
+  ...
+# Subtest: future publication and observation-level availability are gated independently
+ok 463 - future publication and observation-level availability are gated independently
+  ---
+  duration_ms: 0.91445
+  type: 'test'
+  ...
+# Subtest: adding a future corroborating source cannot remove an observation available from the original source
+ok 464 - adding a future corroborating source cannot remove an observation available from the original source
+  ---
+  duration_ms: 1.830629
+  type: 'test'
+  ...
+# Subtest: reprinted identical facts are counted once, while conflicting facts and IDs are excluded
+ok 465 - reprinted identical facts are counted once, while conflicting facts and IDs are excluded
+  ---
+  duration_ms: 4.704496
+  type: 'test'
+  ...
+# Subtest: company name variants cannot multiply an observation, and visible rejections change the report identity
+ok 466 - company name variants cannot multiply an observation, and visible rejections change the report identity
+  ---
+  duration_ms: 55.758735
+  type: 'test'
+  ...
+# Subtest: invalid units, unknown company codes, nonfinite values and a false training flag cannot become model inputs
+ok 467 - invalid units, unknown company codes, nonfinite values and a false training flag cannot become model inputs
+  ---
+  duration_ms: 0.65643
+  type: 'test'
+  ...
+# Subtest: exact company ownership and percentage-point units are enforced in numerical comparisons
+ok 468 - exact company ownership and percentage-point units are enforced in numerical comparisons
+  ---
+  duration_ms: 1.143884
+  type: 'test'
+  ...
+# Subtest: scientific-notation returns retain their precision instead of receiving a half-percentage-point tolerance
+ok 469 - scientific-notation returns retain their precision instead of receiving a half-percentage-point tolerance
+  ---
+  duration_ms: 0.653784
+  type: 'test'
+  ...
+# Subtest: half-year comparison uses the previous year final session and does not manufacture a missing anchor
+ok 470 - half-year comparison uses the previous year final session and does not manufacture a missing anchor
+  ---
+  duration_ms: 1.207366
+  type: 'test'
+  ...
+# Subtest: company A changes neither company B evidence rows nor any saved prices and forecasts
+ok 471 - company A changes neither company B evidence rows nor any saved prices and forecasts
+  ---
+  duration_ms: 7.56752
+  type: 'test'
+  ...
+# Subtest: report identity follows meaningful evidence, not the wall clock; recorded price revisions replay by cutoff
+ok 472 - report identity follows meaningful evidence, not the wall clock; recorded price revisions replay by cutoff
+  ---
+  duration_ms: 13.621839
+  type: 'test'
+  ...
+# Subtest: market, sector and annual context stay separate from every company return distribution
+ok 473 - market, sector and annual context stay separate from every company return distribution
+  ---
+  duration_ms: 3.066026
+  type: 'test'
+  ...
+# Subtest: fixed dates and the exact 52-company universe cannot be silently changed
+ok 474 - fixed dates and the exact 52-company universe cannot be silently changed
+  ---
+  duration_ms: 0.381961
+  type: 'test'
+  ...
+# Subtest: real articles connect all 52 stocks with 4 agreeing, 8 conflicting and 3 unavailable company comparisons
+ok 475 - real articles connect all 52 stocks with 4 agreeing, 8 conflicting and 3 unavailable company comparisons
+  ---
+  duration_ms: 908.94788
+  type: 'test'
+  ...
+# Subtest: report history is idempotent and later-collected articles cannot enter a historical cutoff
+ok 476 - report history is idempotent and later-collected articles cannot enter a historical cutoff
+  ---
+  duration_ms: 260.420135
+  type: 'test'
+  ...
+# Subtest: article replacements are conditional and preserve every previous release and report
+ok 477 - article replacements are conditional and preserve every previous release and report
+  ---
+  duration_ms: 344.473049
+  type: 'test'
+  ...
+# Subtest: state installation, upgrade and conditional import preserve the original prices and forecast records
+ok 478 - state installation, upgrade and conditional import preserve the original prices and forecast records
+  ---
+  duration_ms: 1930.385324
+  type: 'test'
+  ...
+# Subtest: a bundled article update keeps a local edit and retains the offered release for review
+ok 479 - a bundled article update keeps a local edit and retains the offered release for review
+  ---
+  duration_ms: 2159.239377
+  type: 'test'
+  ...
+# Subtest: offline refresh and concurrent merge preserve article evidence, user edits and all forecast prices
+ok 480 - offline refresh and concurrent merge preserve article evidence, user edits and all forecast prices
+  ---
+  duration_ms: 3868.218829
+  type: 'test'
+  ...
+# Subtest: probability selection is chronological with target embargo; audit outcomes cannot change alpha
+ok 481 - probability selection is chronological with target embargo; audit outcomes cannot change alpha
+  ---
+  duration_ms: 10.667645
+  type: 'test'
+  ...
+# Subtest: CRPS has exact empirical values and retains adverse outcomes
+ok 482 - CRPS has exact empirical values and retains adverse outcomes
+  ---
+  duration_ms: 0.204046
+  type: 'test'
+  ...
+# Subtest: calibration changes probabilities only and invalidates after historical evidence changes
+ok 483 - calibration changes probabilities only and invalidates after historical evidence changes
+  ---
+  duration_ms: 18271.140144
+  type: 'test'
+  ...
+# Subtest: story playback reaches all dates, stops on every important news date and ends without looping
+ok 484 - story playback reaches all dates, stops on every important news date and ends without looping
+  ---
+  duration_ms: 4605.530182
+  type: 'test'
+  ...
+# Subtest: upgrade keeps frozen original, old versions and actions, then is idempotent
+ok 485 - upgrade keeps frozen original, old versions and actions, then is idempotent
+  ---
+  duration_ms: 46808.05247
+  type: 'test'
+  ...
+# Subtest: 52 equal origins and exact latest-model endpoints
+ok 486 - 52 equal origins and exact latest-model endpoints
+  ---
+  duration_ms: 1.151484
+  type: 'test'
+  ...
+# Subtest: playback dates are trading sessions including holiday gap
+ok 487 - playback dates are trading sessions including holiday gap
+  ---
+  duration_ms: 0.318939
+  type: 'test'
+  ...
+# Subtest: own/opponent Shapley movement reconciles every complete daily rank
+ok 488 - own/opponent Shapley movement reconciles every complete daily rank
+  ---
+  duration_ms: 350.704352
+  type: 'test'
+  ...
+# Subtest: all same-start stocks share rank 1 and no invented unique winner
+ok 489 - all same-start stocks share rank 1 and no invented unique winner
+  ---
+  duration_ms: 1.595827
+  type: 'test'
+  ...
+# Subtest: close-race rule is a value gap, never probability
+ok 490 - close-race rule is a value gap, never probability
+  ---
+  duration_ms: 0.33446
+  type: 'test'
+  ...
+# Subtest: atomic bundle does not require saved device active ID
+ok 491 - atomic bundle does not require saved device active ID
+  ---
+  duration_ms: 181.911242
+  type: 'test'
+  ...
+# Subtest: mixed data/forecast, missing context and wrong company are rejected
+ok 492 - mixed data/forecast, missing context and wrong company are rejected
+  ---
+  duration_ms: 396.880375
+  type: 'test'
+  ...
+# Subtest: an unrelated later revision cannot collapse same-ID conflicts at an earlier cutoff
+ok 493 - an unrelated later revision cannot collapse same-ID conflicts at an earlier cutoff
+  ---
+  duration_ms: 14.691838
+  type: 'test'
+  ...
+# Subtest: a replay changes the journaled duplicate member and preserves the conflicting member
+ok 494 - a replay changes the journaled duplicate member and preserves the conflicting member
+  ---
+  duration_ms: 0.760454
+  type: 'test'
+  ...
+# Subtest: equal-time revisions unwind in reverse journal order, including inserted events
+ok 495 - equal-time revisions unwind in reverse journal order, including inserted events
+  ---
+  duration_ms: 0.658029
+  type: 'test'
+  ...
+# Subtest: price replay replaces complete rows and reverses only explicitly journaled insertions
+ok 496 - price replay replaces complete rows and reverses only explicitly journaled insertions
+  ---
+  duration_ms: 0.324486
+  type: 'test'
+  ...
+# Subtest: collection revisions preserve the actual assigned after state and do not backdate new events
+ok 497 - collection revisions preserve the actual assigned after state and do not backdate new events
+  ---
+  duration_ms: 0.756636
+  type: 'test'
+  ...
+# Subtest: changed eligibility evidence is a revision while observation-only checks are idempotent
+ok 498 - changed eligibility evidence is a revision while observation-only checks are idempotent
+  ---
+  duration_ms: 0.312906
+  type: 'test'
+  ...
+# Subtest: NAVER validates symbol, OHLC bounds, numeric fields, calendar dates and whole response
+ok 499 - NAVER validates symbol, OHLC bounds, numeric fields, calendar dates and whole response
+  ---
+  duration_ms: 1.845326
+  type: 'test'
+  ...
+# Subtest: NAVER duplicate conflicts fail atomically and identical rows do not double count
+ok 500 - NAVER duplicate conflicts fail atomically and identical rows do not double count
+  ---
+  duration_ms: 0.525758
+  type: 'test'
+  ...
+# Subtest: v7 exact conditional means are seed independent across all 52 stocks; sampled distribution remains auditable
+ok 501 - v7 exact conditional means are seed independent across all 52 stocks; sampled distribution remains auditable
+  ---
+  duration_ms: 11901.481853
+  type: 'test'
+  ...
+# Subtest: origin close cannot be used with a cutoff before the Korean market close
+ok 502 - origin close cannot be used with a cutoff before the Korean market close
+  ---
+  duration_ms: 226.983913
+  type: 'test'
+  ...
+# Subtest: confirmed context on a macro day adds explanation without forcing a price move or blocking that macro
+ok 503 - confirmed context on a macro day adds explanation without forcing a price move or blocking that macro
+  ---
+  duration_ms: 5029.870293
+  type: 'test'
+  ...
+# Subtest: unresolved potentially material same-day company evidence blocks only that company macro attribution
+ok 504 - unresolved potentially material same-day company evidence blocks only that company macro attribution
+  ---
+  duration_ms: 5532.549037
+  type: 'test'
+  ...
+# Subtest: primary-body evidence changes invalidate the information digest; a fetch timestamp alone does not
+ok 505 - primary-body evidence changes invalidate the information digest; a fetch timestamp alone does not
+  ---
+  duration_ms: 253.984746
+  type: 'test'
+  ...
+# Subtest: historical confirmed context preserves all 52 price rows and honest reaction metadata
+ok 506 - historical confirmed context preserves all 52 price rows and honest reaction metadata
+  ---
+  duration_ms: 5903.091042
+  type: 'test'
+  ...
+# Subtest: nonmatching historical event phase cannot enter a same-company same-kind reaction distribution
+ok 507 - nonmatching historical event phase cannot enter a same-company same-kind reaction distribution
+  ---
+  duration_ms: 0.994765
+  type: 'test'
+  ...
+# Subtest: NAVER insertion and correction have reversible full-row journals and input is immutable
+ok 508 - NAVER insertion and correction have reversible full-row journals and input is immutable
+  ---
+  duration_ms: 182.44313
+  type: 'test'
+  ...
+# Subtest: concurrent merge retains price journal despite an older macro-news timestamp
+ok 509 - concurrent merge retains price journal despite an older macro-news timestamp
+  ---
+  duration_ms: 12387.042478
+  type: 'test'
+  ...
+# Subtest: conflicting user edits and duplicate news survive three-way merge without activating an incompatible forecast
+ok 510 - conflicting user edits and duplicate news survive three-way merge without activating an incompatible forecast
+  ---
+  duration_ms: 13158.673715
+  type: 'test'
+  ...
+# Subtest: company-source partial results persist independently while injected legacy fetch never starts company requests
+ok 511 - company-source partial results persist independently while injected legacy fetch never starts company requests
+  ---
+  duration_ms: 8958.074274
+  type: 'test'
+  ...
+# Subtest: research tracker rejects forged row completion and changes outside the journal
+ok 512 - research tracker rejects forged row completion and changes outside the journal
+  ---
+  duration_ms: 14.990089
+  type: 'test'
+  ...
+# Subtest: revoked evidence stays in history and blocked work remains due for a later attempt
+ok 513 - revoked evidence stays in history and blocked work remains due for a later attempt
+  ---
+  duration_ms: 8.103456
+  type: 'test'
+  ...
+# Subtest: a calendar date is not accepted as a Korean trading session merely because the date exists
+ok 514 - a calendar date is not accepted as a Korean trading session merely because the date exists
+  ---
+  duration_ms: 30.968345
+  type: 'test'
+  ...
+# Subtest: completion requires the original unique 52 companies and fixed input window, allowing a later forecast origin
+ok 515 - completion requires the original unique 52 companies and fixed input window, allowing a later forecast origin
+  ---
+  duration_ms: 146.406446
+  type: 'test'
+  ...
+# Subtest: reviewed events must match the installed company, source and dates
+ok 516 - reviewed events must match the installed company, source and dates
+  ---
+  duration_ms: 138.906207
+  type: 'test'
+  ...
+# Subtest: elapsed verified schedules require a retained accepted version and unchanged latest input
+ok 517 - elapsed verified schedules require a retained accepted version and unchanged latest input
+  ---
+  duration_ms: 146.135
+  type: 'test'
+  ...
+# Subtest: twelve verified schedules cannot pass the final release gate or be reported as complete
+ok 518 - twelve verified schedules cannot pass the final release gate or be reported as complete
+  ---
+  duration_ms: 8.866147
+  type: 'test'
+  ...
+# Subtest: 52 research records route all real reviewed news only to the eligible businesses
+ok 519 - 52 research records route all real reviewed news only to the eligible businesses
+  ---
+  duration_ms: 27.454408
+  type: 'test'
+  ...
+# Subtest: cumulative release migration includes older tagged events and preserves local edits without duplicates
+ok 520 - cumulative release migration includes older tagged events and preserves local edits without duplicates
+  ---
+  duration_ms: 231.165317
+  type: 'test'
+  ...
+# Subtest: removing actual airline news changes Korean Air only; all other 51 price distributions are preserved
+ok 521 - removing actual airline news changes Korean Air only; all other 51 price distributions are preserved
+  ---
+  duration_ms: 14932.250914
+  type: 'test'
+  ...
+# Subtest: official corporate IR schedules stay company-specific and unverified candidates cannot inflate the counts
+ok 522 - official corporate IR schedules stay company-specific and unverified candidates cannot inflate the counts
+  ---
+  duration_ms: 1.844441
+  type: 'test'
+  ...
+# Subtest: new filing deadlines and business seminar are isolated and do not invent price effects
+ok 523 - new filing deadlines and business seminar are isolated and do not invent price effects
+  ---
+  duration_ms: 28.850607
+  type: 'test'
+  ...
+# Subtest: parallel review preserves all 18 outcomes, company boundaries and after-close calendar dates
+ok 524 - parallel review preserves all 18 outcomes, company boundaries and after-close calendar dates
+  ---
+  duration_ms: 4.262546
+  type: 'test'
+  ...
+# Subtest: tracked 13-stock research installs six verified schedules without fabricating price changes
+ok 525 - tracked 13-stock research installs six verified schedules without fabricating price changes
+  ---
+  duration_ms: 38.207412
+  type: 'test'
+  ...
+# Subtest: reviewed release remains intact in the current model and covers all 52 and keeps phases, observed facts, and missing evidence distinct
+ok 526 - reviewed release remains intact in the current model and covers all 52 and keeps phases, observed facts, and missing evidence distinct
+  ---
+  duration_ms: 30.929181
+  type: 'test'
+  ...
+# Subtest: observed publication dates use their declared timezone and reject impossible dates
+ok 527 - observed publication dates use their declared timezone and reject impossible dates
+  ---
+  duration_ms: 1.401841
+  type: 'test'
+  ...
+# Subtest: reviewed regular prices preserve before/after and discard incompatible old OHLCV
+ok 528 - reviewed regular prices preserve before/after and discard incompatible old OHLCV
+  ---
+  duration_ms: 9.022182
+  type: 'test'
+  ...
+# Subtest: duplicate codes/dates, future observations and missing raw evidence fail
+ok 529 - duplicate codes/dates, future observations and missing raw evidence fail
+  ---
+  duration_ms: 0.618612
+  type: 'test'
+  ...
+# Subtest: no partial current universe or source conflict can be published
+ok 530 - no partial current universe or source conflict can be published
+  ---
+  duration_ms: 0.441101
+  type: 'test'
+  ...
+# Subtest: extreme valid losses survive; invalid OHLC fails
+ok 531 - extreme valid losses survive; invalid OHLC fails
+  ---
+  duration_ms: 0.472457
+  type: 'test'
+  ...
+# Subtest: same reviewed input does not create duplicate revisions
+ok 532 - same reviewed input does not create duplicate revisions
+  ---
+  duration_ms: 0.735991
+  type: 'test'
+  ...
+# Subtest: daily collector cannot overwrite reviewed regular close with unlabelled aftermarket price
+ok 533 - daily collector cannot overwrite reviewed regular close with unlabelled aftermarket price
+  ---
+  duration_ms: 14.565188
+  type: 'test'
+  ...
+# Subtest: AB adoption requires both strict error improvement and nonworse rank
+ok 534 - AB adoption requires both strict error improvement and nonworse rank
+  ---
+  duration_ms: 0.708007
+  type: 'test'
+  ...
+# Subtest: ranking is exact top5 overlap with declared deterministic ties and same universe
+ok 535 - ranking is exact top5 overlap with declared deterministic ties and same universe
+  ---
+  duration_ms: 10.860407
+  type: 'test'
+  ...
+# Subtest: historical panel physically excludes all future prices and cross-sectional features
+ok 536 - historical panel physically excludes all future prices and cross-sectional features
+  ---
+  duration_ms: 0.245407
+  type: 'test'
+  ...
+# Subtest: paired forecast rejects future-trained models before simulation
+ok 537 - paired forecast rejects future-trained models before simulation
+  ---
+  duration_ms: 0.169649
+  type: 'test'
+  ...
+# Subtest: paired simulation preserves own-price anchors, cross-stock separation, and extreme losses
+ok 538 - paired simulation preserves own-price anchors, cross-stock separation, and extreme losses
+  ---
+  duration_ms: 16.363805
+  type: 'test'
+  ...
+# Subtest: saved 120-day evidence preserves original numbers and explicitly corrects unmeasured anchor metadata
+ok 539 - saved 120-day evidence preserves original numbers and explicitly corrects unmeasured anchor metadata
+  ---
+  duration_ms: 505.416739
+  type: 'test'
+  ...
+# Subtest: rolling download restores exact JSON, caches once, and rejects corrupt bytes before display
+ok 540 - rolling download restores exact JSON, caches once, and rejects corrupt bytes before display
+  ---
+  duration_ms: 83.568394
+  type: 'test'
+  ...
+# Subtest: 52개 각자의 실제 종가와 첫점 일치, CSV는 미래20점만 포함한다
+ok 541 - 52개 각자의 실제 종가와 첫점 일치, CSV는 미래20점만 포함한다
+  ---
+  duration_ms: 16.654369
+  type: 'test'
+  ...
+# Subtest: 종목 수·거래일·휴장일·실제 가격 결측·미래 관측을 엄격히 거부한다
+ok 542 - 종목 수·거래일·휴장일·실제 가격 결측·미래 관측을 엄격히 거부한다
+  ---
+  duration_ms: 54.034759
+  type: 'test'
+  ...
+# Subtest: 동일 입력 재발행은 원래 시간·파일을 재사용하고 조건 없는 덮어쓰기를 거부한다
+ok 543 - 동일 입력 재발행은 원래 시간·파일을 재사용하고 조건 없는 덮어쓰기를 거부한다
+  ---
+  duration_ms: 236.329837
+  type: 'test'
+  ...
+# Subtest: 새 발행본은 기존 발행본을 보관하고 가짜 전일 전망을 거부한다
+ok 544 - 새 발행본은 기존 발행본을 보관하고 가짜 전일 전망을 거부한다
+  ---
+  duration_ms: 176.830271
+  type: 'test'
+  ...
+# Subtest: rolling integration preserves original, all pre-change vintages, and the original 52 identities
+ok 545 - rolling integration preserves original, all pre-change vintages, and the original 52 identities
+  ---
+  duration_ms: 2479.0123
+  type: 'test'
+  ...
+# Subtest: real rolling issuance has 52 own observed anchors and 20 bounded trading-session targets
+ok 546 - real rolling issuance has 52 own observed anchors and 20 bounded trading-session targets
+  ---
+  duration_ms: 1259.506359
+  type: 'test'
+  ...
+# Subtest: saved CSVs are 52 actual per-stock forecast files with exact cells and immutable archive hashes
+ok 547 - saved CSVs are 52 actual per-stock forecast files with exact cells and immutable archive hashes
+  ---
+  duration_ms: 393.825988
+  type: 'test'
+  ...
+# Subtest: issuance date is not backdated and stored closes are not reported as current-day prices
+ok 548 - issuance date is not backdated and stored closes are not reported as current-day prices
+  ---
+  duration_ms: 85.70248
+  type: 'test'
+  ...
+# Subtest: the previous line can only reference a genuinely earlier publication from the preceding issuance session
+ok 549 - the previous line can only reference a genuinely earlier publication from the preceding issuance session
+  ---
+  duration_ms: 76.458554
+  type: 'test'
+  ...
+# Subtest: daily error ledger has four real lookback cells per each of the original 52 stocks
+ok 550 - daily error ledger has four real lookback cells per each of the original 52 stocks
+  ---
+  duration_ms: 1807.095764
+  type: 'test'
+  ...
+# Subtest: calendar rolling targets omit confirmed holidays and fail beyond reviewed coverage
+ok 551 - calendar rolling targets omit confirmed holidays and fail beyond reviewed coverage
+  ---
+  duration_ms: 11.178667
+  type: 'test'
+  ...
+# Subtest: completed A/B report keeps the declared 120 origins, six blocks, and adoption rule
+ok 552 - completed A/B report keeps the declared 120 origins, six blocks, and adoption rule
+  ---
+  duration_ms: 71.110724
+  type: 'test'
+  ...
+# Subtest: rolling starts after close at15:40, keeps run deadline distinct from20day horizon
+ok 553 - rolling starts after close at15:40, keeps run deadline distinct from20day horizon
+  ---
+  duration_ms: 22.68725
+  type: 'test'
+  ...
+# Subtest: early session close cannot pass without explicit finality; extreme loss survives exact before/after journal
+ok 554 - early session close cannot pass without explicit finality; extreme loss survives exact before/after journal
+  ---
+  duration_ms: 4.468032
+  type: 'test'
+  ...
+# Subtest: future, invalid, conflicting and wrong-company rows fail without mutation
+ok 555 - future, invalid, conflicting and wrong-company rows fail without mutation
+  ---
+  duration_ms: 2.121272
+  type: 'test'
+  ...
+# Subtest: four error cells use exact sessions, actual denominator and first immutable daily publication
+ok 556 - four error cells use exact sessions, actual denominator and first immutable daily publication
+  ---
+  duration_ms: 3.005565
+  type: 'test'
+  ...
+# Subtest: newly reconstructed forecast never borrows stale anchor date as historical issuance
+ok 557 - newly reconstructed forecast never borrows stale anchor date as historical issuance
+  ---
+  duration_ms: 4.170688
+  type: 'test'
+  ...
+# Subtest: missing price is null not zero; zero, NaN and contradictory actual are unscored
+ok 558 - missing price is null not zero; zero, NaN and contradictory actual are unscored
+  ---
+  duration_ms: 1.792278
+  type: 'test'
+  ...
+# Subtest: actual correction creates distinct score archive and links exact revision without replacing prior score
+ok 559 - actual correction creates distinct score archive and links exact revision without replacing prior score
+  ---
+  duration_ms: 33.399237
+  type: 'test'
+  ...
+# Subtest: 52 companies each retain exactlyfour cells without sharing another company forecast
+ok 560 - 52 companies each retain exactlyfour cells without sharing another company forecast
+  ---
+  duration_ms: 4.625229
+  type: 'test'
+  ...
+# Subtest: scorer independently rejects an early observed quote lacking finality and weekend backdating
+ok 561 - scorer independently rejects an early observed quote lacking finality and weekend backdating
+  ---
+  duration_ms: 1.553674
+  type: 'test'
+  ...
+# Subtest: raw source bytes use standard SHA256 for Buffer and Uint8Array including a sliced byte view
+ok 562 - raw source bytes use standard SHA256 for Buffer and Uint8Array including a sliced byte view
+  ---
+  duration_ms: 0.476127
+  type: 'test'
+  ...
+# Subtest: a finalClose label cannot authorize a wrong date, early finalizedAt or closed-session price
+ok 563 - a finalClose label cannot authorize a wrong date, early finalizedAt or closed-session price
+  ---
+  duration_ms: 7.411924
+  type: 'test'
+  ...
+# Subtest: real rolling edition renders five metrics, 52 clickable stocks, exact anchor and all20 forecast points
+ok 564 - real rolling edition renders five metrics, 52 clickable stocks, exact anchor and all20 forecast points
+  ---
+  duration_ms: 557.7869
+  type: 'test'
+  ...
+# Subtest: actual publication news pauses playback; each same-day event needs acknowledgement and next importantday stops again
+ok 565 - actual publication news pauses playback; each same-day event needs acknowledgement and next importantday stops again
+  ---
+  duration_ms: 2309.773511
+  type: 'test'
+  ...
+# Subtest: a real prior record can render third line; missing data stays absent; malformed anchor is blocked
+ok 566 - a real prior record can render third line; missing data stays absent; malformed anchor is blocked
+  ---
+  duration_ms: 455.839829
+  type: 'test'
+  ...
+# Subtest: stock selection preserves each playback date and tab leave pauses a running session
+ok 567 - stock selection preserves each playback date and tab leave pauses a running session
+  ---
+  duration_ms: 338.316357
+  type: 'test'
+  ...
+# Subtest: built root starts with the current rolling edition without loading giant archived state
+ok 568 - built root starts with the current rolling edition without loading giant archived state
+  ---
+  duration_ms: 206.155945
+  type: 'test'
+  ...
+# Subtest: market, index, sector and company route only to explicit eligible targets; unknown all fails closed
+ok 569 - market, index, sector and company route only to explicit eligible targets; unknown all fails closed
+  ---
+  duration_ms: 11.106306
+  type: 'test'
+  ...
+# Subtest: company future event changes only its own price distribution and story
+ok 570 - company future event changes only its own price distribution and story
+  ---
+  duration_ms: 12843.665562
+  type: 'test'
+  ...
+# Subtest: company historical evidence cannot change the other 51 stocks, including their macro samples
+ok 571 - company historical evidence cannot change the other 51 stocks, including their macro samples
+  ---
+  duration_ms: 10351.025183
+  type: 'test'
+  ...
+# Subtest: sector event computes only matching sector; overlapping events are visibly held
+ok 572 - sector event computes only matching sector; overlapping events are visibly held
+  ---
+  duration_ms: 11362.895735
+  type: 'test'
+  ...
+# Subtest: target changes invalidate source digest and are retained as a news revision
+ok 573 - target changes invalidate source digest and are retained as a news revision
+  ---
+  duration_ms: 83.933747
+  type: 'test'
+  ...
+# Subtest: index event estimates only documented members using same-index historical reactions
+ok 574 - index event estimates only documented members using same-index historical reactions
+  ---
+  duration_ms: 12087.160014
+  type: 'test'
+  ...
+# Subtest: stock clock is independent; news stays paused and end does not loop
+ok 575 - stock clock is independent; news stays paused and end does not loop
+  ---
+  duration_ms: 0.384626
+  type: 'test'
+  ...
+# Subtest: calibration invalidation is per stock; new company evidence does not reset other stocks probabilities
+ok 576 - calibration invalidation is per stock; new company evidence does not reset other stocks probabilities
+  ---
+  duration_ms: 10847.15749
+  type: 'test'
+  ...
+# Subtest: audit: accepted sample weights change the news-only center by weighted mean
+ok 577 - audit: accepted sample weights change the news-only center by weighted mean
+  ---
+  duration_ms: 134.60394
+  type: 'test'
+  ...
+# Subtest: audit: rejected other-issuer sample never poisons the accepted issuer path
+ok 578 - audit: rejected other-issuer sample never poisons the accepted issuer path
+  ---
+  duration_ms: 57.973841
+  type: 'test'
+  ...
+# Subtest: audit: source order does not manufacture another semantically identical study
+ok 579 - audit: source order does not manufacture another semantically identical study
+  ---
+  duration_ms: 46.362302
+  type: 'test'
+  ...
+# Subtest: audit: conflicting same-ID source attestations fail closed independent of record order
+ok 580 - audit: conflicting same-ID source attestations fail closed independent of record order
+  ---
+  duration_ms: 55.696964
+  type: 'test'
+  ...
+# Subtest: audit: explicit suspect/missing/conflicted prices cannot be scored as actual closes
+ok 581 - audit: explicit suspect/missing/conflicted prices cannot be scored as actual closes
+  ---
+  duration_ms: 59.486654
+  type: 'test'
+  ...
+# Subtest: audit: report cannot display one forecast price while grading a different return
+ok 582 - audit: report cannot display one forecast price while grading a different return
+  ---
+  duration_ms: 31.957214
+  type: 'test'
+  ...
+# Subtest: seal uses strict canonical UTF-8 SHA256 checked against Node and does not mutate source
+ok 583 - seal uses strict canonical UTF-8 SHA256 checked against Node and does not mutate source
+  ---
+  duration_ms: 4.887919
+  type: 'test'
+  ...
+# Subtest: key order is canonical but path order, identity, policy, provenance and all prices are protected
+ok 584 - key order is canonical but path order, identity, policy, provenance and all prices are protected
+  ---
+  duration_ms: 7.119514
+  type: 'test'
+  ...
+# Subtest: external status or seal time changes cannot masquerade as verified local content
+ok 585 - external status or seal time changes cannot masquerade as verified local content
+  ---
+  duration_ms: 5.176768
+  type: 'test'
+  ...
+# Subtest: explicit null is unavailable while NaN, infinity and undefined are rejected rather than erased
+ok 586 - explicit null is unavailable while NaN, infinity and undefined are rejected rather than erased
+  ---
+  duration_ms: 0.963794
+  type: 'test'
+  ...
+# Subtest: cycles, sparse arrays, accessors, hidden keys, symbols and implicit toJSON are rejected
+ok 587 - cycles, sparse arrays, accessors, hidden keys, symbols and implicit toJSON are rejected
+  ---
+  duration_ms: 0.356502
+  type: 'test'
+  ...
+# Subtest: portable canonical SHA256 matches Unicode and reordered nested object reference cases
+ok 588 - portable canonical SHA256 matches Unicode and reordered nested object reference cases
+  ---
+  duration_ms: 164.952681
+  type: 'test'
+  ...
+# Subtest: fixed 52 real universe creates 104 records, 44 days, origin A and honest B missing
+ok 589 - fixed 52 real universe creates 104 records, 44 days, origin A and honest B missing
+  ---
+  duration_ms: 2261.484196
+  type: 'test'
+  ...
+# Subtest: additional sample paths compute B on event sessions and preserve effect afterwards
+ok 590 - additional sample paths compute B on event sessions and preserve effect afterwards
+  ---
+  duration_ms: 42.81517
+  type: 'test'
+  ...
+# Subtest: post-cutoff news, prices, observations and future duplicate samples cannot alter as-of id or paths
+ok 591 - post-cutoff news, prices, observations and future duplicate samples cannot alter as-of id or paths
+  ---
+  duration_ms: 83.079562
+  type: 'test'
+  ...
+# Subtest: journal replay restores news edits and price edits made after cutoff without mutating input
+ok 592 - journal replay restores news edits and price edits made after cutoff without mutating input
+  ---
+  duration_ms: 82.951095
+  type: 'test'
+  ...
+# Subtest: other-issuer event and sample cannot enter this issuer center
+ok 593 - other-issuer event and sample cannot enter this issuer center
+  ---
+  duration_ms: 73.215046
+  type: 'test'
+  ...
+# Subtest: date-only publication and unverified vintage cannot become a numerical B
+ok 594 - date-only publication and unverified vintage cannot become a numerical B
+  ---
+  duration_ms: 105.799032
+  type: 'test'
+  ...
+# Subtest: economic duplicate IDs count once, conflicts and multiple material events with no joint evidence abstain
+ok 595 - economic duplicate IDs count once, conflicts and multiple material events with no joint evidence abstain
+  ---
+  duration_ms: 111.077971
+  type: 'test'
+  ...
+# Subtest: missing 20-session history, overlapping and conflicting sample paths abstain
+ok 596 - missing 20-session history, overlapping and conflicting sample paths abstain
+  ---
+  duration_ms: 64.886917
+  type: 'test'
+  ...
+# Subtest: holidays carry prior session only; no fake daily price changes or extra trading sessions
+ok 597 - holidays carry prior session only; no fake daily price changes or extra trading sessions
+  ---
+  duration_ms: 51.675563
+  type: 'test'
+  ...
+# Subtest: invalid dates, duplicate codes and altered fixed universe/calendar are rejected
+ok 598 - invalid dates, duplicate codes and altered fixed universe/calendar are rejected
+  ---
+  duration_ms: 12.232562
+  type: 'test'
+  ...
+# Subtest: missing origin or duplicate price date never coerces to zero; large losses are retained
+ok 599 - missing origin or duplicate price date never coerces to zero; large losses are retained
+  ---
+  duration_ms: 64.730776
+  type: 'test'
+  ...
+# Subtest: symmetric invalid negative support is not silently clipped
+ok 600 - symmetric invalid negative support is not silently clipped
+  ---
+  duration_ms: 27.715457
+  type: 'test'
+  ...
+# Subtest: unverified latest source refresh timestamps do not create a new old-information experiment
+ok 601 - unverified latest source refresh timestamps do not create a new old-information experiment
+  ---
+  duration_ms: 43.52599
+  type: 'test'
+  ...
+# Subtest: finite extreme prices cannot silently remove overflowing return windows
+ok 602 - finite extreme prices cannot silently remove overflowing return windows
+  ---
+  duration_ms: 32.219633
+  type: 'test'
+  ...
+# Subtest: additional signed losses below minus one are preserved as evidence, not censored samples
+ok 603 - additional signed losses below minus one are preserved as evidence, not censored samples
+  ---
+  duration_ms: 20.554549
+  type: 'test'
+  ...
+# Subtest: an explanatory IR calendar cannot create a shock or automatically veto a valid material reaction
+ok 604 - an explanatory IR calendar cannot create a shock or automatically veto a valid material reaction
+  ---
+  duration_ms: 24.200587
+  type: 'test'
+  ...
+# Subtest: interval score agrees with exact integer-distance oracle across tiny and huge binary units
+ok 605 - interval score agrees with exact integer-distance oracle across tiny and huge binary units
+  ---
+  duration_ms: 3.237937
+  type: 'test'
+  ...
+# Subtest: common benchmark shift preserves errors and inclusion without creating an ex-ante benchmark prediction
+ok 606 - common benchmark shift preserves errors and inclusion without creating an ex-ante benchmark prediction
+  ---
+  duration_ms: 4.53288
+  type: 'test'
+  ...
+# Subtest: both equally wide intervals can contain actual and tie while center errors differ
+ok 607 - both equally wide intervals can contain actual and tie while center errors differ
+  ---
+  duration_ms: 0.641781
+  type: 'test'
+  ...
+# Subtest: unestimable B is not converted into a zero-effect success or common paired denominator
+ok 608 - unestimable B is not converted into a zero-effect success or common paired denominator
+  ---
+  duration_ms: 0.222058
+  type: 'test'
+  ...
+# Subtest: invalid numerical input is never coerced to an observed zero or infinite score
+ok 609 - invalid numerical input is never coerced to an observed zero or infinite score
+  ---
+  duration_ms: 0.325967
+  type: 'test'
+  ...
+# Subtest: direction thresholds use raw values and preserve both boundary points as flat
+ok 610 - direction thresholds use raw values and preserve both boundary points as flat
+  ---
+  duration_ms: 0.137442
+  type: 'test'
+  ...
+# Subtest: finite interval penalty survives tiny alpha when only reciprocal alpha would overflow
+ok 611 - finite interval penalty survives tiny alpha when only reciprocal alpha would overflow
+  ---
+  duration_ms: 0.30631
+  type: 'test'
+  ...
+# Subtest: seeded property sweep exercises every category using production functions
+ok 612 - seeded property sweep exercises every category using production functions
+  ---
+  duration_ms: 40.458222
+  type: 'test'
+  ...
+# Subtest: stress checkpoints count only completed cases and reject mismatched resumes
+ok 613 - stress checkpoints count only completed cases and reject mismatched resumes
+  ---
+  duration_ms: 239.03869
+  type: 'test'
+  ...
+# Subtest: interval scoring punishes width and tail misses with strict inputs and finite extremes
+ok 614 - interval scoring punishes width and tail misses with strict inputs and finite extremes
+  ---
+  duration_ms: 1.007776
+  type: 'test'
+  ...
+# Subtest: common realized KOSPI shift leaves errors inclusion and IS unchanged
+ok 615 - common realized KOSPI shift leaves errors inclusion and IS unchanged
+  ---
+  duration_ms: 0.197361
+  type: 'test'
+  ...
+# Subtest: equal-width bands can tie while centers differ; magnitude is unestimated until policy set
+ok 616 - equal-width bands can tie while centers differ; magnitude is unestimated until policy set
+  ---
+  duration_ms: 0.45043
+  type: 'test'
+  ...
+# Subtest: direction threshold and daily vs cumulative anchors are separate
+ok 617 - direction threshold and daily vs cumulative anchors are separate
+  ---
+  duration_ms: 0.134494
+  type: 'test'
+  ...
+# Subtest: unestimable B is never changed to zero or included in paired denominator
+ok 618 - unestimable B is never changed to zero or included in paired denominator
+  ---
+  duration_ms: 17.818557
+  type: 'test'
+  ...
+# Subtest: both interval summaries use common eligibility rather than asymmetric band denominators
+ok 619 - both interval summaries use common eligibility rather than asymmetric band denominators
+  ---
+  duration_ms: 0.354931
+  type: 'test'
+  ...
+# Subtest: full daily report preserves 52 stocks including missing actuals and one date group
+ok 620 - full daily report preserves 52 stocks including missing actuals and one date group
+  ---
+  duration_ms: 62.407311
+  type: 'test'
+  ...
+# Subtest: co-movement uses daily movements and describes concentration, not correlation
+ok 621 - co-movement uses daily movements and describes concentration, not correlation
+  ---
+  duration_ms: 9.45052
+  type: 'test'
+  ...
+# Subtest: missing immediately previous session never falls back to another older close
+ok 622 - missing immediately previous session never falls back to another older close
+  ---
+  duration_ms: 2.034698
+  type: 'test'
+  ...
+# Subtest: unverified origin/current basis blocks formal scores but keeps labeled observed diagnostics
+ok 623 - unverified origin/current basis blocks formal scores but keeps labeled observed diagnostics
+  ---
+  duration_ms: 2.630478
+  type: 'test'
+  ...
+# Subtest: uncalibrated and below-zero-price bands are not formal interval scores
+ok 624 - uncalibrated and below-zero-price bands are not formal interval scores
+  ---
+  duration_ms: 3.095775
+  type: 'test'
+  ...
+# Subtest: seal tampering blocks scores while preserving error history
+ok 625 - seal tampering blocks scores while preserving error history
+  ---
+  duration_ms: 7.596236
+  type: 'test'
+  ...
+# Subtest: reports do not count origin, holidays, open or future sessions
+ok 626 - reports do not count origin, holidays, open or future sessions
+  ---
+  duration_ms: 2.264694
+  type: 'test'
+  ...
+# Subtest: same material input is idempotent, with no mutation or timestamp-only revisions
+ok 627 - same material input is idempotent, with no mutation or timestamp-only revisions
+  ---
+  duration_ms: 25.422566
+  type: 'test'
+  ...
+# Subtest: actual corrections add revisions and preserve frozen reports, including correction reversal
+ok 628 - actual corrections add revisions and preserve frozen reports, including correction reversal
+  ---
+  duration_ms: 28.259057
+  type: 'test'
+  ...
+# Subtest: recorded future revisions are reversed before scoring and input is preserved
+ok 629 - recorded future revisions are reversed before scoring and input is preserved
+  ---
+  duration_ms: 2.126265
+  type: 'test'
+  ...
+# Subtest: future observed prices, duplicates, and malformed OHLC are withheld
+ok 630 - future observed prices, duplicates, and malformed OHLC are withheld
+  ---
+  duration_ms: 1.524866
+  type: 'test'
+  ...
+# Subtest: partial observations beyond common date create reports without claiming all52 complete
+ok 631 - partial observations beyond common date create reports without claiming all52 complete
+  ---
+  duration_ms: 2.276449
+  type: 'test'
+  ...
+# Subtest: no actuals beyond common date are not promoted into evaluation days
+ok 632 - no actuals beyond common date are not promoted into evaluation days
+  ---
+  duration_ms: 6.729549
+  type: 'test'
+  ...
+# Subtest: actual KOSPI comparison is a separately labeled diagnostic, never an inferred forecast
+ok 633 - actual KOSPI comparison is a separately labeled diagnostic, never an inferred forecast
+  ---
+  duration_ms: 1.90874
+  type: 'test'
+  ...
+# Subtest: service hydration scores Date-clock inputs, preserves frozen study and client projection seal
+ok 634 - service hydration scores Date-clock inputs, preserves frozen study and client projection seal
+  ---
+  duration_ms: 57.996953
+  type: 'test'
+  ...
+# Subtest: unchanged release upgrade and repeated reporting preserve state identity and report IDs
+ok 635 - unchanged release upgrade and repeated reporting preserve state identity and report IDs
+  ---
+  duration_ms: 56.569839
+  type: 'test'
+  ...
+# Subtest: conflicting study/report imports retain originals and quarantine incoming evidence once
+ok 636 - conflicting study/report imports retain originals and quarantine incoming evidence once
+  ---
+  duration_ms: 30.077624
+  type: 'test'
+  ...
+# Subtest: invalid imported study cannot replace source or receive a scored report
+ok 637 - invalid imported study cannot replace source or receive a scored report
+  ---
+  duration_ms: 8.53745
+  type: 'test'
+  ...
+# Subtest: malformed release branches fail closed without losing original history or breaking hydration
+ok 638 - malformed release branches fail closed without losing original history or breaking hydration
+  ---
+  duration_ms: 15.294531
+  type: 'test'
+  ...
+# Subtest: malformed saved records are quarantined while valid local study and reports survive
+ok 639 - malformed saved records are quarantined while valid local study and reports survive
+  ---
+  duration_ms: 17.243552
+  type: 'test'
+  ...
+# Subtest: partial refresh preserves sealed paths/history, records benchmark failure and adds only observed outcomes
+ok 640 - partial refresh preserves sealed paths/history, records benchmark failure and adds only observed outcomes
+  ---
+  duration_ms: 137.150103
+  type: 'test'
+  ...
+# Subtest: explicit benchmark failure with no replacement cannot erase last normal data
+ok 641 - explicit benchmark failure with no replacement cannot erase last normal data
+  ---
+  duration_ms: 13.724432
+  type: 'test'
+  ...
+# Subtest: refresh merge preserves both report branches and benchmark conflicts without rewriting studies
+ok 642 - refresh merge preserves both report branches and benchmark conflicts without rewriting studies
+  ---
+  duration_ms: 16.244957
+  type: 'test'
+  ...
+# Subtest: caller-supplied proof flags cannot turn daily reports into external temporal proof
+ok 643 - caller-supplied proof flags cannot turn daily reports into external temporal proof
+  ---
+  duration_ms: 6.2603
+  type: 'test'
+  ...
+# Subtest: benchmark merge does not silently replace local corrections or discard previous failure logs
+ok 644 - benchmark merge does not silently replace local corrections or discard previous failure logs
+  ---
+  duration_ms: 1.076991
+  type: 'test'
+  ...
+# Subtest: archived sealed UI: one research forecast, null B stays missing, 52 choices, reports, immutable downloads and seal alarm
+ok 645 - archived sealed UI: one research forecast, null B stays missing, 52 choices, reports, immutable downloads and seal alarm
+  ---
+  duration_ms: 1284.643239
+  type: 'test'
+  ...
+# Subtest: retired sealed study stays out of active score while its component and records are preserved
+ok 646 - retired sealed study stays out of active score while its component and records are preserved
+  ---
+  duration_ms: 1.550395
+  type: 'test'
+  ...
+# Subtest: HTTP auth, concurrent approval, durable restart and unchanged original
+ok 647 - HTTP auth, concurrent approval, durable restart and unchanged original
+  ---
+  duration_ms: 34559.213404
+  type: 'test'
+  ...
+# Subtest: explicit archived view: rolling entry plus preserved legacy navigation and 52-line state
+ok 648 - explicit archived view: rolling entry plus preserved legacy navigation and 52-line state
+  ---
+  duration_ms: 9044.684895
+  type: 'test'
+  ...
+# Subtest: smart dates exclude actual and closed days, preserve inputs and resolve ties by earliest date
+ok 649 - smart dates exclude actual and closed days, preserve inputs and resolve ties by earliest date
+  ---
+  duration_ms: 8.394129
+  type: 'test'
+  ...
+# Subtest: flat, invalid and missing forecasts never create an invented significant date
+ok 650 - flat, invalid and missing forecasts never create an invented significant date
+  ---
+  duration_ms: 0.228936
+  type: 'test'
+  ...
+# Subtest: filters preserve stock order, combine normalized search and company scope without cross-company leakage
+ok 651 - filters preserve stock order, combine normalized search and company scope without cross-company leakage
+  ---
+  duration_ms: 1.720071
+  type: 'test'
+  ...
+# Subtest: watchlist survives storage failures, removes unknown values and keeps a separate storage key
+ok 652 - watchlist survives storage failures, removes unknown values and keeps a separate storage key
+  ---
+  duration_ms: 0.33905
+  type: 'test'
+  ...
+# Subtest: wine theme normal text and links retain at least 4.5:1 across every panel state
+ok 653 - wine theme normal text and links retain at least 4.5:1 across every panel state
+  ---
+  duration_ms: 2.422782
+  type: 'test'
+  ...
+# Subtest: interactive boundaries, focus accents and essential graph strokes retain 3:1
+ok 654 - interactive boundaries, focus accents and essential graph strokes retain 3:1
+  ---
+  duration_ms: 0.389379
+  type: 'test'
+  ...
+# Subtest: request is SHA256-bound, nonce-bearing, pending and cannot overwrite previous request
+ok 655 - request is SHA256-bound, nonce-bearing, pending and cannot overwrite previous request
+  ---
+  duration_ms: 427.502853
+  type: 'test'
+  ...
+# Subtest: LOCAL fixture proves verification implementation, never external authority or historical publication
+ok 656 - LOCAL fixture proves verification implementation, never external authority or historical publication
+  ---
+  duration_ms: 51.658087
+  type: 'test'
+  ...
+# Subtest: invalid or independently resealed data cannot borrow another timestamp
+ok 657 - invalid or independently resealed data cannot borrow another timestamp
+  ---
+  duration_ms: 241.519884
+  type: 'test'
+  ...
+# Subtest: saved receipt status is not trusted: reverify bytes and explicitly supplied trust anchor
+ok 658 - saved receipt status is not trusted: reverify bytes and explicitly supplied trust anchor
+  ---
+  duration_ms: 23.242631
+  type: 'test'
+  ...
+# Subtest: timestamp cannot be backdated onto a study created after it
+ok 659 - timestamp cannot be backdated onto a study created after it
+  ---
+  duration_ms: 14.007494
+  type: 'test'
+  ...
+# Subtest: network request requires configured allowlisted public HTTPS origin and no credentials
+ok 660 - network request requires configured allowlisted public HTTPS origin and no credentials
+  ---
+  duration_ms: 5.749243
+  type: 'test'
+  ...
+# Subtest: CLI help is offline and local fixtures cannot be attached to operating bundle
+ok 661 - CLI help is offline and local fixtures cannot be attached to operating bundle
+  ---
+  duration_ms: 254.559115
+  type: 'test'
+  ...
+# Subtest: explicit archived route preserves all 52 fixed-period graphs, original source and news/score tabs
+ok 662 - explicit archived route preserves all 52 fixed-period graphs, original source and news/score tabs
+  ---
+  duration_ms: 14007.844693
+  type: 'test'
+  ...
+# Subtest: packaged archived worker handles invalid input and returns a typed error without installing a forecast
+ok 663 - packaged archived worker handles invalid input and returns a typed error without installing a forecast
+  ---
+  duration_ms: 72.241145
+  type: 'test'
+  ...
+# Subtest: date result filters preserve full denominator and exact forecast/code/date navigation without editing data
+ok 664 - date result filters preserve full denominator and exact forecast/code/date navigation without editing data
+  ---
+  duration_ms: 481.738533
+  type: 'test'
+  ...
+# Subtest: future actualAsOf metadata cannot create future date evaluation choices
+ok 665 - future actualAsOf metadata cannot create future date evaluation choices
+  ---
+  duration_ms: 120.714854
+  type: 'test'
+  ...
+# Subtest: newly observed date with no ledger remains 52 pending rows and selected forecast change resets outcome filter
+ok 666 - newly observed date with no ledger remains 52 pending rows and selected forecast change resets outcome filter
+  ---
+  duration_ms: 140.950734
+  type: 'test'
+  ...
+# Subtest: news graph action passes the displayed stock event date and immutable forecast ID including null impact
+ok 667 - news graph action passes the displayed stock event date and immutable forecast ID including null impact
+  ---
+  duration_ms: 31.205445
+  type: 'test'
+  ...
+1..667
+# tests 667
+# suites 0
+# pass 665
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 366173.697382

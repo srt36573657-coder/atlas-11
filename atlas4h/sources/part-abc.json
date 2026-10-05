@@ -1,0 +1,908 @@
+{
+ "schema": "atlas4h-sources-1",
+ "part": "A·B·C",
+ "readAtKST": "2026-10-01 17:13~17:38 KST",
+ "rule": [
+  {
+   "file": "04-learning.txt",
+   "line": 8,
+   "text": "출처는 10점짜리만, 원문을 직접 읽은 것만 쓴다."
+  },
+  {
+   "file": "13-command.txt",
+   "line": 43,
+   "text": "3. <원문>을 읽고 쓸지 정해 파일에 적어라."
+  }
+ ],
+ "counts": {
+  "items": 14,
+  "read": 9,
+  "notRead": 5,
+  "쓴다": 5,
+  "조건부": 4,
+  "안 쓴다": 0,
+  "보류": 5
+ },
+ "items": [
+  {
+   "id": "A-munger",
+   "group": "A",
+   "commandLabel": "멍거",
+   "usedBy": [
+    "A3"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 3,
+     "text": "A: 멍거·잡스(1997)·아이작슨(2012)"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 5,
+     "text": "A3 뒤집기: 성공법보다 실패 조건부터"
+    }
+   ],
+   "original": {
+    "title": "Poor Charlie's Almanack: The Essential Wit and Wisdom of Charles T. Munger (Stripe Press 온라인판)",
+    "authors": "Charles T. Munger",
+    "year": null,
+    "venue": "Stripe Press",
+    "url": "https://www.stripe.press/poor-charlies-almanack"
+   },
+   "readFrom": "없음 (공식 온라인판 두 쪽을 열었으나 책 이름만 보이고 본문 글은 안 보였다)",
+   "readDirectly": false,
+   "verified": [],
+   "decision": "보류",
+   "condition": "공식판(종이책, 또는 글이 보이는 공식 온라인판)에서 「뒤집기」 대목을 직접 읽은 뒤 다시 정한다.",
+   "reason": "공식판 본문을 못 읽었다. 남이 옮겨 적은 연설문(블로그·뉴스 사이트)은 규칙상 쓰지 않았다.",
+   "reliability": null,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "A3 문장이 멍거 원문과 맞는지는 판정하지 않았다(못 읽음). 「1986년 하버드 스쿨 졸업 연설」이 그 책의 몇 번째 글인지도 원문에서 확인하지 못했다."
+  },
+  {
+   "id": "A-jobs-1997",
+   "group": "A",
+   "commandLabel": "잡스(1997)",
+   "usedBy": [
+    "A4"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 3,
+     "text": "A: 멍거·잡스(1997)·아이작슨(2012)"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 6,
+     "text": "A4 경험에서 거꾸로: 받는 사람의 3초부터"
+    }
+   ],
+   "original": {
+    "title": "WWDC 1997 마무리 대화 (영상)",
+    "authors": "Steve Jobs",
+    "year": 1997,
+    "venue": "Apple Worldwide Developers Conference 1997",
+    "url": "없음 (공식 영상·녹취록 주소를 못 찾음)"
+   },
+   "readFrom": "없음 (스티브 잡스 아카이브의 공식 책 「Make Something Wonderful」 온라인판 https://book.stevejobsarchive.com/ 도 열었으나 1997년 WWDC 대목을 못 찾음)",
+   "readDirectly": false,
+   "verified": [],
+   "decision": "보류",
+   "condition": "애플이나 스티브 잡스 아카이브가 낸 공식 영상·녹취록에서 그 말을 직접 확인한 뒤 다시 정한다.",
+   "reason": "원문이 영상이고 공식 녹취록을 못 찾았다. 팬 사이트·블로그에 옮겨 적은 글은 규칙상 쓰지 않았다.",
+   "reliability": null,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "A4의 「3초」가 들어간 원문 문장은 어디에서도 찾지 못했다. 원문이 확인되더라도 「3초」는 따로 근거를 찾아야 하는 숫자다."
+  },
+  {
+   "id": "A-isaacson-2012",
+   "group": "A",
+   "commandLabel": "아이작슨(2012)",
+   "usedBy": [
+    "A5"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 3,
+     "text": "A: 멍거·잡스(1997)·아이작슨(2012)"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 7,
+     "text": "A5 열을 셋으로: 이길 것 셋만 남긴다"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 6,
+     "text": "A4 경험에서 거꾸로: 받는 사람의 3초부터"
+    }
+   ],
+   "original": {
+    "title": "The Real Leadership Lessons of Steve Jobs",
+    "authors": "Walter Isaacson",
+    "year": 2012,
+    "venue": "Harvard Business Review (2012년 4월호)",
+    "url": "https://hbr.org/2012/04/the-real-leadership-lessons-of-steve-jobs"
+   },
+   "readFrom": "https://sites.nicholas.duke.edu/delmeminfo/files/2012/07/The-Real-Leadership-Lessons-of-Steve-Jobs-HBR-l-Apr-2012.pdf (hbr.org 글을 2012-04-14에 인쇄한 PDF, 머리에 hbr.org 주소와 날짜가 찍혀 있음. hbr.org 자체는 유료라 본문이 안 열림)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "A5 열을 셋으로: 이길 것 셋만 남긴다",
+     "quote": "\"What are the 10 things we should be doing next?\" … \"We can only do three.\"",
+     "location": "인쇄본 1/7쪽, 「Focus」 칸",
+     "verdict": "맞음",
+     "note": "잡스가 열 가지를 적게 한 뒤 셋만 남겼다는 이야기가 원문에 있다. 다만 아이작슨이 전한 말(간접)이고, 원문은 「이길 것」이 아니라 「다음에 할 것」이다."
+    },
+    {
+     "claim": "A5의 까닭: 안 할 것을 고르는 것이 초점이다",
+     "quote": "\"Deciding what not to do is as important as deciding what to do,\" he told me.",
+     "location": "인쇄본 1/7쪽, 「Focus」 칸",
+     "verdict": "맞음",
+     "note": "「안 할 것을 정하는 일이 할 것을 정하는 일만큼 중요하다」 — 열을 셋으로 줄이는 까닭이다."
+    },
+    {
+     "claim": "A4 경험에서 거꾸로: 받는 사람의 3초부터 (이 글로 받칠 수 있나)",
+     "quote": "every aspect of the customer experience was tightly linked together.",
+     "location": "인쇄본 3/7쪽",
+     "verdict": "일부 맞음",
+     "note": "손님 경험을 처음부터 끝까지 묶었다는 말뿐이다. 「거꾸로」와 「3초」는 이 글에서 못 찾았다. A4의 근거로는 쓰지 않는다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "A5의 출처로만 쓴다. 잡스의 말은 아이작슨이 전한 말이라고 함께 적는다.",
+   "reason": "저자가 직접 낸 글이고, A5 문장(열을 셋으로)과 원문 이야기가 맞는다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "학술지가 아니라 경영 잡지 글이다. 「저자 본인이 낸 글」이라 10점 기준 안에 든다. 방법(생각 순서)의 출처일 뿐, 숫자 근거는 아니다."
+  },
+  {
+   "id": "A6-no-source",
+   "group": "A",
+   "commandLabel": "(목록에 없음)",
+   "usedBy": [
+    "A6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 3,
+     "text": "A: 멍거·잡스(1997)·아이작슨(2012)"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 8,
+     "text": "A6 빛의 속도: 이론상 최고값을 먼저 적는다"
+    }
+   ],
+   "original": null,
+   "readFrom": "없음",
+   "readDirectly": false,
+   "verified": [],
+   "decision": "보류",
+   "condition": "A6에 맞는 10점짜리 원문을 찾아 <원문> 목록에 올린 뒤 다시 정한다.",
+   "reason": "<원문> 목록의 A줄(멍거·잡스·아이작슨)에 「빛의 속도: 이론상 최고값을 먼저 적는다」에 맞는 출처가 없다. 이번에 읽은 원문에서도 이 생각을 찾지 못했다.",
+   "reliability": null,
+   "structuresUsed": [
+    "C4"
+   ],
+   "notes": "A1(목적 먼저)·A2(판정 가능하게)도 A줄 출처와 바로 맞는 곳이 없다. 맨 아래 uncovered 목록을 본다."
+  },
+  {
+   "id": "B-kahneman-lovallo-1993",
+   "group": "B",
+   "commandLabel": "카너먼 바깥 시각",
+   "usedBy": [
+    "B1",
+    "B3"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 9,
+     "text": "B 바깥 시각 — 기저율부터"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 10,
+     "text": "B1 기저율 먼저: 비슷한 일이 몇 번 중 몇 번이었나"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 12,
+     "text": "B3 닮은 날: 지금과 비슷한 지난날의 결말을 본다"
+    }
+   ],
+   "original": {
+    "title": "Timid Choices and Bold Forecasts: A Cognitive Perspective on Risk Taking",
+    "authors": "Daniel Kahneman, Dan Lovallo",
+    "year": 1993,
+    "venue": "Management Science 39(1): 17–31 (1993년 1월)",
+    "url": "https://pubsonline.informs.org/doi/10.1287/mnsc.39.1.17"
+   },
+   "readFrom": "https://bear.warrington.ufl.edu/brenner/mar7588/Papers/kahneman-lovallo-mansci1993.pdf (학술지 머리가 그대로 찍힌 같은 논문 PDF, 플로리다 대학 강의 자료실. 출판사 누리집은 기계 읽기를 막아 둠)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B 바깥 시각 · B3 닮은 날: 지금과 비슷한 지난날의 결말을 본다",
+     "quote": "Instead, it focuses on the statistics of a class of cases chosen to be similar in relevant respects to the present one.",
+     "location": "p. 25",
+     "verdict": "맞음",
+     "note": "바깥 시각은 지금 일의 속사정을 접고, 지금과 닮은 일들의 통계를 본다."
+    },
+    {
+     "claim": "B1 기저율 먼저: 비슷한 일이 몇 번 중 몇 번이었나",
+     "quote": "About 40% of them eventually gave up. Of the remaining, I cannot think of any that was completed in less than seven years, nor of any that took more than ten",
+     "location": "p. 25",
+     "verdict": "맞음",
+     "note": "교과서 만들기 예: 비슷한 팀 가운데 약 4할이 그만뒀고 나머지는 7~10년 걸렸다 — 「몇 번 중 몇 번」의 본보기다. 「먼저」라는 순서는 카너먼·트버스키(1977) 쪽이 받친다."
+    },
+    {
+     "claim": "바깥 시각을 쓰면 낙관이 줄어든다 (B 묶음 전체의 까닭)",
+     "quote": "Our analysis implies that the adoption of an outside view, in which the problem at hand is treated as an instance of a broader category, will generally reduce the optimistic bias and may facilitate the application of a consistent risk policy.",
+     "location": "p. 29",
+     "verdict": "맞음",
+     "note": "지금 일을 더 큰 무리의 한 예로 보면 지나친 낙관이 대체로 줄어든다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "",
+   "reason": "최상위 학술지(동료 심사) 논문을 직접 읽었고, B1·B3 문장이 원문 뜻과 같다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C6",
+    "C4"
+   ],
+   "notes": "카너먼·트버스키(1977)와 저자가 겹쳐 같은 자루(C6)다. B1을 「두 출처로 확인」했다고 셀 때는 하나로 센다."
+  },
+  {
+   "id": "B-kahneman-tversky-1977",
+   "group": "B",
+   "commandLabel": "카너먼 바깥 시각",
+   "usedBy": [
+    "B1",
+    "B3",
+    "B4"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 10,
+     "text": "B1 기저율 먼저: 비슷한 일이 몇 번 중 몇 번이었나"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 12,
+     "text": "B3 닮은 날: 지금과 비슷한 지난날의 결말을 본다"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 13,
+     "text": "B4 평균 회귀: 극단 다음은 대개 덜 극단이다"
+    }
+   ],
+   "original": {
+    "title": "Intuitive Prediction: Biases and Corrective Procedures",
+    "authors": "Daniel Kahneman, Amos Tversky",
+    "year": 1977,
+    "venue": "기술 보고서, 1977년 6월 (미국 국방기술정보센터 DTIC 보관 번호 ADA047747)",
+    "url": "https://apps.dtic.mil/sti/pdfs/ADA047747.pdf"
+   },
+   "readFrom": "https://apps.dtic.mil/sti/pdfs/ADA047747.pdf (정부 보관소 원본 PDF)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B1 기저율 먼저: 비슷한 일이 몇 번 중 몇 번이었나",
+     "quote": "Distributional information, or base-rate data, consists of knowledge about the distribution of outcomes in similar situations.",
+     "location": "p. 2-1",
+     "verdict": "맞음",
+     "note": "기저율 = 비슷한 상황들에서 결과가 어떻게 나뉘었는지에 대한 앎이다."
+    },
+    {
+     "claim": "B1·B3의 순서: 닮은 무리를 먼저 고르고, 그 분포를 본 뒤에 짐작한다",
+     "quote": "Step 1: Selection of a Reference Class … Step 2: Assessment of the Distribution For the Reference Class … Step 3: Intuitive Estimation",
+     "location": "pp. 3-4 ~ 3-6 (다섯 걸음의 제목)",
+     "verdict": "맞음",
+     "note": "고치는 다섯 걸음 가운데 1·2걸음(닮은 무리, 그 분포)이 3걸음(짐작)보다 앞선다 — 「먼저」를 받친다."
+    },
+    {
+     "claim": "B4 평균 회귀: 극단 다음은 대개 덜 극단이다",
+     "quote": "To correct for non-regressiveness, the intuitive estimate should be adjusted toward the average of the reference class.",
+     "location": "p. 3-8",
+     "verdict": "맞음",
+     "note": "짐작한 값을 닮은 무리의 평균 쪽으로 당기라는 말이다(첫 읽기에서 이 문장 전체, 둘째 읽기에서 「…toward the average」까지 같은 글로 나옴)."
+    },
+    {
+     "claim": "B4에 빠진 것: 얼마나 당기나",
+     "quote": "the distance between the intuitive estimate and the average of the class should be reduced by a factor of p, where p is the correlation coefficient",
+     "location": "p. 3-8 (5걸음 「Correction of the Intuitive Estimate」)",
+     "verdict": "일부 맞음",
+     "note": "당기는 정도는 예측력(상관계수)으로 정한다. 예측이 잘 될수록 덜 당기고, 안 될수록 평균에 더 가깝게 둔다. B4 문장에는 이 「얼마나」가 없다. 원문 글자 p는 읽기 도구가 옮긴 그대로다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "인용은 이 1977년 보고서의 쪽 번호로 한다. 동료 심사를 거친 뒤 판은 이번에 읽지 않았다.",
+   "reason": "정부 보관소에 있는 저자 본인의 보고서를 직접 읽었고, B1·B3·B4 문장과 뜻이 같다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C6",
+    "C4"
+   ],
+   "notes": "카너먼·러발로(1993)와 저자가 겹친다(C6). 학술지 논문이 아니라 정부 연구 보고서다(「정부 문서·저자 본인 글」로 10점 기준 안)."
+  },
+  {
+   "id": "B-148-anomaly-study",
+   "group": "B",
+   "commandLabel": "148개 이상현상 연구",
+   "usedBy": [
+    "B6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 15,
+     "text": "B6 살아남은 것 함정: 실린 결과도 6할은 사라진다"
+    }
+   ],
+   "original": null,
+   "readFrom": "없음 (148이 적힌 논문을 특정하지 못함)",
+   "readDirectly": false,
+   "verified": [],
+   "decision": "보류",
+   "condition": "「148」이 실제로 적힌 동료 심사 논문을 찾아 원문으로 확인한 뒤 다시 정한다.",
+   "reason": "「148」이라는 수를 원문에서 찾지 못했다. 후보 논문을 열어 보니 수가 McLean·Pontiff(2016) 97개, Hou·Xue·Zhang(2020) 452개, Jensen·Kelly·Pedersen(2023) 153개, Chen·Zimmermann(2020) 156개였다(아래 항목들).",
+   "reliability": null,
+   "structuresUsed": [
+    "C5",
+    "E6",
+    "C4"
+   ],
+   "notes": "긴 PDF는 읽기 도구가 뒤쪽을 잘랐을 수 있다. 그래서 「148이 없다」가 아니라 「148을 못 찾았다」로 적는다. McLean·Pontiff 2012년 작업본(82개)에서도 148은 못 찾았다."
+  },
+  {
+   "id": "B-mclean-pontiff-2016",
+   "group": "B",
+   "commandLabel": "148개 이상현상 연구 (후보)",
+   "usedBy": [
+    "B6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 15,
+     "text": "B6 살아남은 것 함정: 실린 결과도 6할은 사라진다"
+    }
+   ],
+   "original": {
+    "title": "Does Academic Research Destroy Stock Return Predictability?",
+    "authors": "R. David McLean, Jeffrey Pontiff",
+    "year": 2016,
+    "venue": "The Journal of Finance 71(1): 5–32",
+    "url": "https://doi.org/10.1111/jofi.12365"
+   },
+   "readFrom": "https://afajof.org/issue/volume-71-issue-1/ (미국재무학회 공식 누리집의 초록. 출판사 본문은 막혀서 못 읽음)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B6 실린 결과도 6할은 사라진다",
+     "quote": "Portfolio returns are 26% lower out‐of‐sample and 58% lower post‐publication.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "「6할」은 이 58%와 가깝다. 그러나 원문은 97개 신호의 평균 수익이 실린 뒤 58% 「줄었다」는 말이지, 실린 결과의 6할이 「사라졌다」는 말이 아니다."
+    },
+    {
+     "claim": "B6 「살아남은 것 함정」이 줄어든 까닭인가",
+     "quote": "The out‐of‐sample decline is an upper bound estimate of data mining effects. We estimate a 32% (58%–26%) lower return from publication‐informed trading.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "줄어든 58% 가운데 통계 거품(데이터 캐기) 몫은 많아야 26%다. 나머지 32%는 논문을 읽은 사람들이 사고판 탓으로 본다. 「살아남은 것 함정」 하나로는 다 설명되지 않는다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "「실린 뒤 평균 수익이 58% 줄었다(미국, 97개 신호)」로 적고, 그중 통계 거품 몫은 많아야 26%라는 것을 함께 적을 때만 쓴다. 본문의 다른 숫자는 출판본을 읽은 뒤에 쓴다.",
+   "reason": "최상위 학술지이고 초록은 학회 공식 누리집에서 직접 읽었다. 그러나 명령문의 「6할은 사라진다」는 원문 뜻(평균 크기가 줆)과 다르다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C6",
+    "E6",
+    "C4"
+   ],
+   "notes": "2012년 작업본(https://www.hec.ca/finance/Fichier/McLean.pdf)도 읽었는데 수가 다르다: 82개, 표본 밖 약 10%, 실린 뒤 약 35%. 작업본 수는 쓰지 않는다. Jensen·Kelly·Pedersen(2023) 7쪽도 이 26%·58%를 옮겨 적었다 — 같은 자루라 둘째 확인으로 세지 않는다(C6)."
+  },
+  {
+   "id": "B-hou-xue-zhang-2020",
+   "group": "B",
+   "commandLabel": "148개 이상현상 연구 (후보)",
+   "usedBy": [
+    "B6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 15,
+     "text": "B6 살아남은 것 함정: 실린 결과도 6할은 사라진다"
+    }
+   ],
+   "original": {
+    "title": "Replicating Anomalies",
+    "authors": "Kewei Hou, Chen Xue, Lu Zhang",
+    "year": 2020,
+    "venue": "The Review of Financial Studies 33(5): 2019–2133",
+    "url": "https://academic.oup.com/rfs/article/33/5/2019/5236964"
+   },
+   "readFrom": "https://theinvestmentcapm.com/uploads/1/2/2/6/122679606/houxuezhang2019rfs.pdf (저자 누리집의 출판사 선공개판 PDF, 머리에 academic.oup.com 내려받기 기록 2018-12-12. 출판사 쪽은 초록 첫 문장만 보임)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B6 실린 결과도 6할은 사라진다",
+     "quote": "With microcaps mitigated via NYSE breakpoints and value-weighted returns, 65% of the 452 anomalies in our extensive data library, including 96% of the trading frictions category, cannot clear the single test hurdle of the absolute t-value of 1.96.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "452개 가운데 65%가 더 엄한 방법(아주 작은 주식의 힘 줄이기, 시가 가중)으로 다시 재면 기준(t 1.96)을 못 넘는다. 「6할 넘게 다시 서지 않는다」는 받치지만, 다른 방법으로 다시 잰 것이지 「실린 뒤 사라졌다」는 말은 아니다."
+    },
+    {
+     "claim": "시도 수를 셈하면 더 많이 걸러진다 (B6·E6)",
+     "quote": "Imposing the higher multiple test hurdle of 2.78 at the 5% significance level raises the failure rate to 82%.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "여러 번 시도한 것을 셈해 기준을 2.78로 올리면 82%가 못 넘는다 — E6(겉맞춤 경계)와 같은 생각이다."
+    },
+    {
+     "claim": "살아남은 것도 크기가 준다 (B6)",
+     "quote": "Even for replicated anomalies, their economic magnitudes are much smaller than originally reported.",
+     "location": "PDF 안 (정확한 쪽은 못 밝힘)",
+     "verdict": "맞음",
+     "note": "다시 선 것도 처음 보고보다 크기가 훨씬 작다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "「452개 중 65%가 엄한 방법(t 1.96)에서 안 선다」처럼 수와 방법 조건을 함께 적을 때만 쓴다. 「사라진다」로 바꿔 쓰지 않는다.",
+   "reason": "최상위 학술지(출판사 선공개판)를 직접 읽었고 6할 넘는 실패율이 있으나, 뜻이 명령문과 다르다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E6",
+    "F4",
+    "C4"
+   ],
+   "notes": "이 PDF에서 「148」은 못 찾았다(도구가 긴 PDF를 잘랐을 수 있음)."
+  },
+  {
+   "id": "B-jensen-kelly-pedersen-2023",
+   "group": "B",
+   "commandLabel": "148개 이상현상 연구 (후보, 반대 근거)",
+   "usedBy": [
+    "B6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 15,
+     "text": "B6 살아남은 것 함정: 실린 결과도 6할은 사라진다"
+    }
+   ],
+   "original": {
+    "title": "Is There a Replication Crisis in Finance?",
+    "authors": "Theis Ingerslev Jensen, Bryan Kelly, Lasse Heje Pedersen",
+    "year": 2023,
+    "venue": "The Journal of Finance 78(5): 2465–2518",
+    "url": "https://doi.org/10.1111/jofi.13249"
+   },
+   "readFrom": "https://research-api.cbs.dk/ws/portalfiles/portal/95651880/theis_ingerslev_jensen_et_al_is_there_a_replication_crisis_in_finance_publishersversion.pdf (출판사판 PDF, 코펜하겐 경영대 연구 보관소. 출판사 누리집은 막힘)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B6 실린 결과도 6할은 사라진다 (개수로 읽을 때)",
+     "quote": "The majority of asset pricing factors (i) can be replicated; (ii) can be clustered into 13 themes, the majority of which are significant parts of the tangency portfolio; (iii) work out-of-sample in a new large data set covering 93 countries; and (iv) have evidence that is strengthened (not weakened) by the large number of observed factors.",
+     "location": "초록 (2465쪽)",
+     "verdict": "틀림",
+     "note": "요인 대부분이 다시 선다. 「6할이 사라진다」를 개수로 읽으면 이 논문과 부딪힌다."
+    },
+    {
+     "claim": "B6 (개수로 읽을 때) — 다시 서는 비율",
+     "quote": "The last bar in Figure 1 shows that based on the global sample, the final replication rate is 82.4%.",
+     "location": "PDF 5쪽",
+     "verdict": "틀림",
+     "note": "세계 표본에서 다시 서는 비율이 82.4%다. 사라지는 쪽은 2할 안팎이다. 요인 수는 「We study a global data set with 153 factors in 93 countries.」(PDF 22쪽)."
+    },
+    {
+     "claim": "B6 실린 결과도 6할은 사라진다 (크기로 읽을 때)",
+     "quote": "In our data, the average in-sample alpha is 0.49% per month and the average out-of-sample alpha is 0.26% when looking postoriginal sample, implying a decline of 47%.",
+     "location": "PDF 30쪽",
+     "verdict": "일부 맞음",
+     "note": "표본 밖에서 크기가 약 47% 준다(달마다 0.49% → 0.26%). 「절반쯤 준다」는 받치지만 「6할」은 아니다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "B6의 반대 근거로 함께 적는다(E4 반론은 의례 아님).",
+   "reason": "최상위 학술지 출판사판을 직접 읽었다. 「사라진다」를 개수로 읽으면 반대되는 결과다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C6",
+    "E4",
+    "E6",
+    "C4"
+   ],
+   "notes": "7쪽에서 McLean·Pontiff(2016)의 26%·58%를 옮겨 적었다 — 같은 자루(C6)라 따로 세지 않는다. 47%는 이 논문이 자기 자료로 잰 값이다. 「148」은 못 찾았다."
+  },
+  {
+   "id": "B-chen-zimmermann-2020",
+   "group": "B",
+   "commandLabel": "148개 이상현상 연구 (후보, 반대 근거)",
+   "usedBy": [
+    "B6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 4,
+     "text": "B: 카너먼 바깥 시각·148개 이상현상 연구"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 15,
+     "text": "B6 살아남은 것 함정: 실린 결과도 6할은 사라진다"
+    }
+   ],
+   "original": {
+    "title": "Publication Bias and the Cross-Section of Stock Returns",
+    "authors": "Andrew Y. Chen, Tom Zimmermann",
+    "year": 2020,
+    "venue": "The Review of Asset Pricing Studies 10(2): 249–289 (2020년 6월)",
+    "url": "https://academic.oup.com/raps/article-abstract/10/2/249/5640503"
+   },
+   "readFrom": "https://academic.oup.com/raps/article-abstract/10/2/249/5640503 (옥스퍼드 출판사 공식 쪽의 초록. 본문은 못 읽음)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "B6 「살아남은 것 함정」(실린 결과의 거품)으로 6할이 사라진다고 풀 수 있나",
+     "quote": "Bias-adjusted returns are only 12.3% smaller than in-sample returns with a standard error of 1.7 percentage points.",
+     "location": "초록",
+     "verdict": "틀림",
+     "note": "156개 실린 신호에서 실린 결과의 거품(출판 편향)을 걷어내도 크기가 12.3%만 작아진다. 6할을 거품 탓으로 풀면 이 초록과 부딪힌다."
+    },
+    {
+     "claim": "B6 줄어드는 몫의 큰 까닭",
+     "quote": "The bias is much smaller than post-publication decay (p-value <.0001), suggesting mispricing is important.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "실린 뒤 줄어드는 것은 맞지만, 그 큰 몫은 거품이 아니라 실린 뒤의 변화(값이 잘못 매겨졌던 것이 고쳐짐)로 본다. McLean·Pontiff(2016)의 「32%는 실린 뒤 매매 탓」과 같은 쪽이다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "초록의 수(156개, 12.3%)와 「실린 뒤 줄어드는 몫보다 훨씬 작다」만 쓰고, B6의 반대 근거로 함께 적는다. 본문 숫자는 본문을 읽은 뒤에 쓴다.",
+   "reason": "출판사 공식 쪽에서 초록을 직접 읽었다. B6의 이름(살아남은 것 함정)이 6할의 까닭이 아님을 보여 준다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E4",
+    "C4"
+   ],
+   "notes": "논문 색인(RePEc)에는 저자가 셋으로 보였으나, 출판사 쪽에서 Jeffrey Pontiff는 저자가 아니라 편집자(Editor)로 확인했다. 이 초록의 수는 156개이고 148은 없었다."
+  },
+  {
+   "id": "C-polya",
+   "group": "C",
+   "commandLabel": "폴리아",
+   "usedBy": [
+    "C3",
+    "C1",
+    "A2"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 5,
+     "text": "C: 폴리아·페르미·애드미럴티 출처 등급"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 19,
+     "text": "C3 길 쪼개기: 원인이 결과까지 오는 단계를 나눈다"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 17,
+     "text": "C1 제1원리: 부술 수 없는 사실까지 내려간다"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 4,
+     "text": "A2 판정 가능하게: 언제·무엇으로 맞고 틀림을 가르나"
+    }
+   ],
+   "original": {
+    "title": "How to Solve It: A New Aspect of Mathematical Method (2nd ed.)",
+    "authors": "George Pólya",
+    "year": 1957,
+    "venue": "Princeton University Press (첫판 1945)",
+    "url": "없음 (출판사 공식 본문 주소 없음)"
+   },
+   "readFrom": "https://ia801406.us.archive.org/3/items/polya-how-to-solve-it/Polya%20-%20How%20to%20solve%20it_text.pdf (인터넷 아카이브 이용자가 올린 책 사본. 글자 인식이 거칠고 쪽 번호를 못 봄)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "C3 길 쪼개기: 원인이 결과까지 오는 단계를 나눈다",
+     "quote": "Could you solve a part of the problem?",
+     "location": "「How to Solve It」 목록 (쪽 번호 못 봄)",
+     "verdict": "일부 맞음",
+     "note": "문제를 쪼개 일부부터 풀라는 물음이다. 「원인에서 결과까지의 길」을 나누라는 말은 아니다."
+    },
+    {
+     "claim": "A2 판정 가능하게: 언제·무엇으로 맞고 틀림을 가르나",
+     "quote": "What is the unknown? What are the data? What is the condition?",
+     "location": "목록 첫 단계 「Understanding the problem」 (쪽 번호 못 봄)",
+     "verdict": "일부 맞음",
+     "note": "모르는 것·주어진 것·조건을 먼저 밝히라는 물음이다. A2와 비슷하지만 「맞고 틀림을 가르는 기준」을 정하라는 말은 아니다."
+    },
+    {
+     "claim": "C1 제1원리: 부술 수 없는 사실까지 내려간다",
+     "quote": "Go back to definitions",
+     "location": "목록 (쪽 번호 못 봄)",
+     "verdict": "일부 맞음",
+     "note": "가장 가까운 말은 「뜻매김으로 돌아가라」다. 「부술 수 없는 사실」과 같은 말은 아니다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "생각 순서의 이름으로만 쓰고(숫자 근거 아님), 공식 판본에서 글자와 쪽 번호를 맞춘 뒤 인용한다.",
+   "reason": "저자 본인의 책이지만, 읽은 것이 비공식 사본이라 공식판으로 다시 맞춰야 한다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "책 뒤쪽 낱말 풀이의 「Working backwards」「Decomposing and recombining」 항목은 사본 글자가 흐려 못 읽었다."
+  },
+  {
+   "id": "C-fermi",
+   "group": "C",
+   "commandLabel": "페르미",
+   "usedBy": [
+    "C2"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 5,
+     "text": "C: 폴리아·페르미·애드미럴티 출처 등급"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 18,
+     "text": "C2 페르미: 큰 모름을 작은 앎의 곱으로 푼다"
+    }
+   ],
+   "original": {
+    "title": "My Observations During the Explosion at Trinity on July 16, 1945",
+    "authors": "Enrico Fermi",
+    "year": 1945,
+    "venue": "미국 국립문서보관소 RG 227, OSRD-S1 Committee, Box 82 folder 6 \"Trinity\" (옮김글 쪽에 적힌 소장 위치)",
+    "url": "없음 (보관소 원본을 못 찾음)"
+   },
+   "readFrom": "https://www.dannen.com/decision/fermi.html (역사 연구자 누리집에 다시 타자해 옮긴 글)",
+   "readDirectly": false,
+   "verified": [
+    {
+     "claim": "C2 페르미: 큰 모름을 작은 앎의 곱으로 푼다",
+     "quote": "I tried to estimate its strength by dropping from about six feet small pieces of paper before, during, and after the passage of the blast wave.",
+     "location": "옮김글 (쪽 번호 없음)",
+     "verdict": "일부 맞음",
+     "note": "종잇조각이 2.5m쯤 밀린 것을 보고 「TNT 1만 톤쯤」으로 어림했다는 글이다. 간단한 관찰로 큰 값을 어림한 것은 맞지만, 「작은 앎을 곱한다」는 방법은 이 글에 없다(옮김글 기준)."
+    }
+   ],
+   "decision": "보류",
+   "condition": "보관소 원본(또는 정부가 낸 사본)과, 「곱으로 나눠 어림하기」를 다룬 10점짜리 원문을 찾은 뒤 다시 정한다.",
+   "reason": "원본을 못 봤고, 명령문의 「곱으로 푼다」를 받치는 페르미 본인 글도 못 찾았다.",
+   "reliability": null,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "미국 국방핵기구 보고서 「PROJECT TRINITY 1945-1946」(1982, govinfo.gov)도 열었으나 페르미 글은 실려 있지 않았다. 미국 에너지부 과학기술정보국(OSTI)에 있는 「Fermi at Trinity」(Jonathan I. Katz, LA-UR-20-30024)도 찾았으나 기계 읽기가 막혀 못 열었다."
+  },
+  {
+   "id": "C-admiralty-nato-ajp2",
+   "group": "C",
+   "commandLabel": "애드미럴티 출처 등급",
+   "usedBy": [
+    "C5",
+    "C6"
+   ],
+   "commandLines": [
+    {
+     "file": "12-sources.txt",
+     "line": 5,
+     "text": "C: 폴리아·페르미·애드미럴티 출처 등급"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 21,
+     "text": "C5 출처 맞대기: 신빙성 먼저, 두 출처로 확인"
+    },
+    {
+     "file": "01-structures36.txt",
+     "line": 22,
+     "text": "C6 겹침 빼기: 같은 자루에서 나온 반복은 하나로"
+    }
+   ],
+   "original": {
+    "title": "AJP-2 Allied Joint Doctrine for Intelligence, Counter-Intelligence and Security (Edition A, Version 2)",
+    "authors": "NATO",
+    "year": 2016,
+    "venue": "NATO 공식 교리 문서 (2016년 2월)",
+    "url": "https://jadl.act.nato.int/ILIAS/data/testclient/lm_data/lm_152845/Linear/JISR04222102/sharedFiles/AJP2.pdf"
+   },
+   "readFrom": "https://jadl.act.nato.int/ILIAS/data/testclient/lm_data/lm_152845/Linear/JISR04222102/sharedFiles/AJP2.pdf (NATO 교육 누리집의 원문 PDF)",
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "애드미럴티 출처 등급 = 출처 믿음 A~F × 내용 믿음 1~6",
+     "quote": "A Completely reliable … F Reliability cannot be judged; 1 Confirmed by other sources … 6 Truth cannot be judged",
+     "location": "4장 4.4.2, 4-5쪽 (Figure 3 표)",
+     "verdict": "맞음",
+     "note": "출처는 A(완전히 믿을 만함)~F(판단 못 함), 내용은 1(다른 출처로 확인됨)~6(판단 못 함)으로 매긴다."
+    },
+    {
+     "claim": "C5 출처 맞대기: 신빙성 먼저, 두 출처로 확인 — 「두 출처」",
+     "quote": "Confirmed by other sources",
+     "location": "4-5쪽 (표, 내용 믿음 1등급)",
+     "verdict": "일부 맞음",
+     "note": "가장 높은 내용 등급(1)은 「다른 출처로 확인됨」이다. 「두」라는 수는 원문에 없다 — 둘은 우리가 정한 최소 수다."
+    },
+    {
+     "claim": "C5 「신빙성 먼저」",
+     "quote": "Reliability and credibility should be considered independently of each other to ensure that the rating allocated to the reliability of the source does not influence the rating given to the credibility of the information, or vice versa.",
+     "location": "4.4.2, 4-5쪽",
+     "verdict": "일부 맞음",
+     "note": "원문은 「무엇을 먼저」가 아니라 「출처 믿음(A~F)과 내용 믿음(1~6)을 서로 따로」 매기라고 한다. 한쪽 점수가 다른 쪽을 끌면 안 된다."
+    },
+    {
+     "claim": "C6 겹침 빼기: 같은 자루에서 나온 반복은 하나로",
+     "quote": "For example, single-source reporting may be re-transmitted by many intermediate collection agencies, resulting in circular reporting.",
+     "location": "4.5 Dissemination 첫 문단, 4-7쪽 (첫 읽기에서는 4-8쪽으로 나옴 — 쓰기 전 PDF를 눈으로 확인)",
+     "verdict": "맞음",
+     "note": "한 출처의 보고가 여러 곳을 돌아 여러 출처처럼 보이는 「돌림 보고」를 경계한다 — C6와 같은 뜻이다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "C5 문장을 원문에 맞게 고쳐 쓴다(part-abc.md 「명령문에서 고칠 곳」 4·5번).",
+   "reason": "NATO 공식 교리 문서를 직접 읽었고, 등급표와 돌림 보고 경고가 C5·C6을 받친다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C6",
+    "C4"
+   ],
+   "notes": "미 육군 FM 2-22.3(2006) 부록 B도 열었으나 문서가 길어 읽기 도구가 부록까지 닿지 못했다(못 읽음). 「애드미럴티(Admiralty)」라는 이름은 이 NATO 문서에서 못 찾았다 — 이름 없이 같은 A~F·1~6 등급표만 있다. 명령문의 이름표는 「NATO 출처·내용 등급(AJP-2)」으로 적는 편이 원문과 맞다. 등급표 낱말과 두 문장의 글은 두 번 읽어 같게 나왔다. 다만 「circular reporting」 문장의 쪽은 4-8쪽(첫 읽기)과 4-7쪽(둘째 읽기)으로 달리 나왔다."
+  }
+ ],
+ "uncovered": [
+  {
+   "structure": "A1",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 3,
+    "text": "A1 목적 먼저: 무엇을 위한 답인지 한 줄"
+   },
+   "note": "A줄 출처(멍거·잡스·아이작슨)에 바로 맞는 원문을 못 찾았다."
+  },
+  {
+   "structure": "A2",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 4,
+    "text": "A2 판정 가능하게: 언제·무엇으로 맞고 틀림을 가르나"
+   },
+   "note": "A줄 출처에 없다. C줄 폴리아의 「모르는 것·주어진 것·조건」이 가장 가깝다(일부 맞음)."
+  },
+  {
+   "structure": "A6",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 8,
+    "text": "A6 빛의 속도: 이론상 최고값을 먼저 적는다"
+   },
+   "note": "출처가 목록에 없다."
+  },
+  {
+   "structure": "B2",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 11,
+    "text": "B2 무판 곁에: '안 움직인다'를 늘 기준으로 둔다"
+   },
+   "note": "B줄 출처에 「안 움직인다(무판) 기준」을 다룬 원문이 없다."
+  },
+  {
+   "structure": "B5",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 14,
+    "text": "B5 국면 먼저: 잔잔·보통·사나움 어디인가"
+   },
+   "note": "B줄 출처에 「국면(잔잔·보통·사나움)」을 다룬 원문이 없다."
+  },
+  {
+   "structure": "C1",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 17,
+    "text": "C1 제1원리: 부술 수 없는 사실까지 내려간다"
+   },
+   "note": "C줄에 「제1원리」 원문이 없다. 폴리아의 「뜻매김으로 돌아가라」가 가장 가깝다(일부 맞음)."
+  },
+  {
+   "structure": "C4",
+   "line": {
+    "file": "01-structures36.txt",
+    "line": 20,
+    "text": "C4 딱지: 문장마다 [사실]·[짐작]·[판단]"
+   },
+   "note": "C줄 출처에 없다. D줄의 ICD 203이 다룰 수 있으나 이번 몫이 아니다."
+  }
+ ],
+ "unverified": [
+  {
+   "structure": "A3",
+   "source": "멍거",
+   "note": "출처는 있으나 원문을 못 읽어 문장을 확인하지 못했다."
+  },
+  {
+   "structure": "A4",
+   "source": "잡스(1997)",
+   "note": "원문(영상)을 못 읽었고 「3초」가 든 원문 문장을 못 찾았다."
+  },
+  {
+   "structure": "C2",
+   "source": "페르미",
+   "note": "옮김글만 읽었고, 「곱으로 푼다」는 그 글에 없다."
+  }
+ ],
+ "howRead": "모든 원문은 웹 읽기 도구(WebFetch)로 열었다. 이 일꾼의 명령줄(curl)은 회사 바깥 연결 규칙에 막혀 쓰지 않았다. 따옴표 안 영어는 원문 그대로이고, 풀이는 note 칸에 쉬운 말로 적었다."
+}

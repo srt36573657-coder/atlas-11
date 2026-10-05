@@ -1,0 +1,40 @@
+{
+ "schema": "atlas11-universe-rehearsal-1",
+ "at": "2026-10-04T02:10:00+09:00",
+ "commit": "bf7f3b8 (+27e818a 화면 고침)",
+ "what": "2026-10-06(화) 16:05 KST 매일 실행 예행연습 — 시험 사본에서 runDaily 를 실제 전망 계산·화면 묶음까지 처음부터 끝까지",
+ "closes": "합성 종가(마지막 종가 ±0.4~0.8%) · 실제 시세 아님 · 수집기는 collect_naver(일봉) — 실제 실행은 collect_krx_close(15:30 분봉)",
+ "result": {
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+   "1_calendar:ok",
+   "2_collect:ok",
+   "3_validate_store:ok",
+   "4_score:ok",
+   "5_analyze:ok",
+   "5b_universe:ok",
+   "6_publish:ok",
+   "7_evolve:ok",
+   "8_report_view:ok"
+  ],
+  "universe": {
+   "switched": true,
+   "from": "u1-sector52",
+   "to": "u2-q52-v2-2026-10-04",
+   "kept": 24,
+   "added": 28,
+   "confirmedToday": 52
+  },
+  "forecastId": "2026-10-06-atlas11-5573b680472f0203",
+  "futureDate": "2026-10-07",
+  "confirmed": 52,
+  "scoringNewRecords": 1,
+  "ms": 13554
+ },
+ "browserCheck": {
+  "passed": 281,
+  "failed": 0,
+  "note": "고치기 전 279/2(연습 판 없는 날 빈 탭) → game.css 고친 뒤 281/0"
+ }
+}

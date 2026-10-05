@@ -1,0 +1,1146 @@
+{
+  "schema": "atlas.rebuild52.research.batch.v1",
+  "batch": "A",
+  "requestedCodesCount": 26,
+  "checkedCodesCount": 26,
+  "period": {
+    "from": "2026-09-17",
+    "to": "2026-10-30"
+  },
+  "asOfKoreanDate": "2026-09-26",
+  "generatedAt": "2026-09-26T13:10:28.552500+00:00",
+  "productionInputsEdited": false,
+  "newCalendarCandidates": [
+    {
+      "code": "207940",
+      "legalIssuer": "삼성바이오로직스 주식회사",
+      "scope": {
+        "type": "company",
+        "codes": [
+          "207940"
+        ]
+      },
+      "economicEventCluster": "207940:RIGHTS_ISSUE:20260828",
+      "publicationDate": "2026-08-28",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T13:10:28.552500+00:00",
+      "availableAt": "2026-09-26T13:10:28.552500+00:00",
+      "issuerOfficialBodyVerified": true,
+      "rootIndependentReviewRequired": true,
+      "sourceUrl": "https://samsungbiologics.com/kr/ir/resource/notice-view?boardseq=3721",
+      "imageSourceUrl": "https://samsungbiologics.com/upload/editor/froala/image/20260828/84fecc5ad91590131270fa0eb719a74dce7fa17c/Official%20Statement.webp",
+      "sourceSnapshot": "reports/rebuild52-evidence-a/biologics-rights-1.webp",
+      "sourceSnapshotSha256": "a081046acc9a1b0135eec4c56a45509bf847e5680d48179e9505a94874a6d34a",
+      "timezone": "Asia/Seoul",
+      "eventTime": null,
+      "priceImpact": "abstain",
+      "trustProbability": null,
+      "materiality": "capital_structure_calendar",
+      "correctionCheck": {
+        "officialCurrentAnnouncementList": "https://samsungbiologics.com/kr/ir/resource/notice?tab=6",
+        "lastVisibleRelevantNotice": "2026-08-28",
+        "dartBodyAccessible": false,
+        "completeCorrectionCoverage": false
+      },
+      "limitations": [
+        "Official schedule remains changeable.",
+        "Corporate-action price-adjustment factor and announced-exrights-date not verified.",
+        "The certificate is not the ordinary share: do not replace the 52-stock universe or chart its price as207940.",
+        "Two milestones belong to one economic event and cannot create two independent return samples.",
+        "Unverified raw NAVER prices cannot be interpreted as pure economic loss across corporate actions."
+      ],
+      "eventId": "REBUILD:207940:RIGHTS_RECORD:20261006",
+      "kind": "COMPANY_RIGHTS_RECORD",
+      "name": "삼성바이오로직스 유상증자 신주배정기준일",
+      "eventDate": "2026-10-06",
+      "targetDate": "2026-10-06",
+      "sourceBodyLocation": "Official statement image item 5",
+      "targetDateBasis": "Calendar date shown in issuer notice; no event clock invented; existing Korean sessions include date."
+    },
+    {
+      "code": "207940",
+      "legalIssuer": "삼성바이오로직스 주식회사",
+      "scope": {
+        "type": "company",
+        "codes": [
+          "207940"
+        ]
+      },
+      "economicEventCluster": "207940:RIGHTS_ISSUE:20260828",
+      "publicationDate": "2026-08-28",
+      "publishedAt": null,
+      "firstObservedAt": "2026-09-26T13:10:28.552500+00:00",
+      "availableAt": "2026-09-26T13:10:28.552500+00:00",
+      "issuerOfficialBodyVerified": true,
+      "rootIndependentReviewRequired": true,
+      "sourceUrl": "https://samsungbiologics.com/kr/ir/resource/notice-view?boardseq=3721",
+      "imageSourceUrl": "https://samsungbiologics.com/upload/editor/froala/image/20260828/84fecc5ad91590131270fa0eb719a74dce7fa17c/Official%20Statement.webp",
+      "sourceSnapshot": "reports/rebuild52-evidence-a/biologics-rights-1.webp",
+      "sourceSnapshotSha256": "a081046acc9a1b0135eec4c56a45509bf847e5680d48179e9505a94874a6d34a",
+      "timezone": "Asia/Seoul",
+      "eventTime": null,
+      "priceImpact": "abstain",
+      "trustProbability": null,
+      "materiality": "capital_structure_calendar",
+      "correctionCheck": {
+        "officialCurrentAnnouncementList": "https://samsungbiologics.com/kr/ir/resource/notice?tab=6",
+        "lastVisibleRelevantNotice": "2026-08-28",
+        "dartBodyAccessible": false,
+        "completeCorrectionCoverage": false
+      },
+      "limitations": [
+        "Official schedule remains changeable.",
+        "Corporate-action price-adjustment factor and announced-exrights-date not verified.",
+        "The certificate is not the ordinary share: do not replace the 52-stock universe or chart its price as207940.",
+        "Two milestones belong to one economic event and cannot create two independent return samples.",
+        "Unverified raw NAVER prices cannot be interpreted as pure economic loss across corporate actions."
+      ],
+      "eventId": "REBUILD:207940:RIGHTS_RIGHTS_LISTING_START:20261028",
+      "kind": "COMPANY_RIGHTS_RIGHTS_LISTING_START",
+      "name": "삼성바이오로직스 신주인수권증서 상장 예정 시작",
+      "eventDate": "2026-10-28",
+      "targetDate": "2026-10-28",
+      "sourceBodyLocation": "Official statement image item 10",
+      "targetDateBasis": "Calendar date shown in issuer notice; no event clock invented; existing Korean sessions include date."
+    }
+  ],
+  "newIndependentEconomicEventClusters": 1,
+  "assets": [
+    {
+      "code": "005930",
+      "name": "삼성전자",
+      "sector": "반도체와반도체장비",
+      "status": "confirmed_existing_material_calendar",
+      "note": "9/30 분기배당 기준일 및 9/29 IR 재확인. 배당금·발표결과·수익률은 미확정.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.samsung.com/global/ir/reports-disclosures/notices/",
+          "webRef": "turn560view0",
+          "accessStatus": "body_read",
+          "summary": "Published September 21, 2026; September 30 record date. Dividend details await board meeting.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 58-64"
+        },
+        {
+          "url": "https://koreaweeks.com/session-2.php",
+          "webRef": "turn560view4",
+          "accessStatus": "body_read",
+          "summary": "9/29 official organizer lists Samsung Electronics 09:00, Doosan Enerbility 10:00, Hanwha Aerospace 14:00 and Samsung Biologics 16:00. Schedule confirmation does not establish outcomes.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 727-796"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "REVIEW:KPW-IR-005930-20260929",
+        "BLS:JOLTS:August-2026",
+        "REVIEW:SAMSUNG-RECORD",
+        "BLS:JOBS:September-2026",
+        "REVIEW:SEDEX-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "009150",
+      "name": "삼성전기",
+      "sector": "전자장비와기기",
+      "status": "future_material_date_not_published_in_read_list",
+      "note": "공식 실적 자료는 2026-07-30 2분기까지. 민간 10/29 예상일을 확정하지 않았다.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://samsungsem.com/kr/about-us/investor-relations/earnings-release.do",
+          "webRef": "turn562view0",
+          "accessStatus": "body_read",
+          "summary": "2026 Q2 July30 and Q1 April30 shown; 2025 October29 is prior-year date.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 158-198"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:KES-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "373220",
+      "name": "LG에너지솔루션",
+      "sector": "전기제품",
+      "status": "dynamic_current_list_incomplete",
+      "note": "공식 IR에 2026 머리글과 2025 목록이 함께 노출된다. 10/27·10/28 민간 예상 상충, 확정일 미확보.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.lgensol.com/kr/investors/investors-activity",
+          "webRef": "turn562view1",
+          "accessStatus": "body_read",
+          "summary": "2026 header with visible 2025 events; cannot infer current-year October event.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 347-376"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:ENERGY-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "005380",
+      "name": "현대차",
+      "sector": "자동차",
+      "status": "confirmed_existing_business_calendar",
+      "note": "10/12 파리 신차발표 15:05 현지시간 재확인. IR 목록의 최신 일정은 이미 지난 9/21~22.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.hyundai.news/eu/articles/press-releases/hyundai-attends-paris-motor-show-2026.html",
+          "webRef": "turn576view0",
+          "accessStatus": "body_read",
+          "summary": "Press conference October12 15:05 Paris; product outcome and sales unobserved.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 113-141"
+        },
+        {
+          "url": "https://www.hyundai.com/worldwide/en/company/ir",
+          "webRef": "turn586view5",
+          "accessStatus": "body_read",
+          "summary": "IR latest CLSA Sept21-22 and Q2 results July23, not October earnings schedule.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 73-105"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:COMPANY_PRODUCT_PRESENTATION-005380-20261012",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "207940",
+      "name": "삼성바이오로직스",
+      "sector": "제약",
+      "status": "new_primary_material_calendar_candidate",
+      "note": "8/28 발행사 공고 이미지에서 10/6 신주배정기준일·10/28 신주인수권증서 상장 시작을 확인. 동일 증자의 단계이며 독립 충격 둘로 계산하면 안 된다.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://samsungbiologics.com/kr/ir/resource/notice-view?boardseq=3721",
+          "webRef": "turn570view0",
+          "accessStatus": "body_image_read",
+          "summary": "Issuer statement published August28; visually inspected linked statement items5 and10.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "linked image items 5 and 10"
+        },
+        {
+          "url": "https://samsungbiologics.com/kr/ir/resource/notice?tab=6",
+          "webRef": "turn578view0",
+          "accessStatus": "body_read",
+          "summary": "Current announcement list retains August28 rights notice; no later correction visible in this list. DART correction coverage incomplete.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 143-149"
+        },
+        {
+          "url": "https://koreaweeks.com/session-2.php",
+          "webRef": "turn560view4",
+          "accessStatus": "body_read",
+          "summary": "9/29 official organizer lists Samsung Electronics 09:00, Doosan Enerbility 10:00, Hanwha Aerospace 14:00 and Samsung Biologics 16:00. Schedule confirmation does not establish outcomes.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 727-796"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "REVIEW:KPW-IR-207940-20260929",
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:ESMO-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "sector": "은행",
+      "status": "confirmed_existing_material_calendar",
+      "note": "10/2 회추위·이사회 추천 절차 예정 재확인. 9/11 후속 후보 보도자료도 읽음. 임시주총·취임·주가 결과 확정 아님.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.hankyung.com/article/202606023070P",
+          "webRef": "turn570view1",
+          "accessStatus": "body_read",
+          "summary": "KB-authored issuer distributed release specifies October2 recommendation after qualification checks.",
+          "publisherRole": "issuer_distributed",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 85-90"
+        },
+        {
+          "url": "https://www.newswire.co.kr/newsRead.php?no=1042442",
+          "webRef": "turn570view2",
+          "accessStatus": "body_read",
+          "summary": "September11 follow-up release identifies selected candidate; the page does not independently repeat October2.",
+          "publisherRole": "issuer_distributed",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "REVIEW:COMPANY_GOVERNANCE_RECOMMENDATION-105560-20261002",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "sector": "복합기업",
+      "status": "confirmed_existing_informational_calendar",
+      "note": "앙개 9/29~10/14 팝업은 사업 일정이며 주가 촉매 입증 아님. 자회사 삼성바이오 증자는 별도 법인 사건으로 중복 충격 금지.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://news.samsungcnt.com/en/features/fashion/2026-09-anggae-opens-first-department-store-pop-up-at-the-hyundai-seoul/",
+          "webRef": "turn576view1",
+          "accessStatus": "body_read",
+          "summary": "Issuer newsroom confirms Seongsu pop-up Sept29-Oct14; no earnings outcome.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260828800769",
+          "webRef": "turn563view0",
+          "accessStatus": "blocked",
+          "summary": "Subsidiary capital-raise filing inaccessible in web tool.",
+          "publisherRole": "regulator",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "REVIEW:COMPANY_POPUP_ANGGAE_SEONGSU-028260-20260929",
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "032830",
+      "name": "삼성생명보험",
+      "sector": "생명보험",
+      "status": "prior_verified_primary_recheck_blocked",
+      "note": "기존 10/2 재공시 예정 근거 보존. 이번 DART 재접속 실패이므로 정정 부재·이번 본문 재확인 완료 주장 금지.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260903800096",
+          "webRef": "turn563view1",
+          "accessStatus": "blocked",
+          "summary": "Previously verified September3 redisclosure notice retained; new fetch inaccessible.",
+          "publisherRole": "regulator",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "REVIEW:COMPANY_REDISCLOSURE-032830-20261002",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "012450",
+      "name": "한화에어로스페이스",
+      "sector": "우주항공과국방",
+      "status": "confirmed_existing_material_calendar",
+      "note": "9/29 14시 IR 공식 주최자 재확인. 후속 수주·방산 전시 참여를 IR 결과로 가정하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://koreaweeks.com/session-2.php",
+          "webRef": "turn560view4",
+          "accessStatus": "body_read",
+          "summary": "9/29 official organizer lists Samsung Electronics 09:00, Doosan Enerbility 10:00, Hanwha Aerospace 14:00 and Samsung Biologics 16:00. Schedule confirmation does not establish outcomes.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 727-796"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "REVIEW:KPW-IR-012450-20260929",
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:AUSA-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "034020",
+      "name": "두산에너빌리티",
+      "sector": "기계",
+      "status": "confirmed_existing_material_calendar",
+      "note": "9/29 10시 IR 주최자 명단·시간 재확인. 공급업체 계약 종료일은 두산 자체 예정 발표일 아님.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://koreaweeks.com/session-2.php",
+          "webRef": "turn560view4",
+          "accessStatus": "body_read",
+          "summary": "9/29 official organizer lists Samsung Electronics 09:00, Doosan Enerbility 10:00, Hanwha Aerospace 14:00 and Samsung Biologics 16:00. Schedule confirmation does not establish outcomes.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 727-796"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "REVIEW:KPW-IR-034020-20260929",
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "329180",
+      "name": "HD현대중공업",
+      "sector": "조선",
+      "status": "future_material_date_not_published_in_read_list",
+      "note": "새 공식 도메인 hd-hhi.com 발견. 실적 최신 Q2, 월간자료 9월까지. SMR 투자 시작은 10월 단위여서 특정 날짜로 배치하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.hhi.co.kr/Invest/ir",
+          "webRef": "turn570view4",
+          "accessStatus": "blocked",
+          "summary": "Old route failed; replacement official domain located.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        },
+        {
+          "url": "https://hd-hhi.com/kr/investors/ir-data/earnings-release",
+          "webRef": "turn583view1",
+          "accessStatus": "body_read",
+          "summary": "Current official earnings list latest 2026 Q2.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 98-110"
+        },
+        {
+          "url": "https://hd-hhi.com/kr/investors/ir-data/monthly",
+          "webRef": "turn583view2",
+          "accessStatus": "body_read",
+          "summary": "Current monthly IR list latest September2026.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 98-110"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:MARITIME-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "sector": "석유와가스",
+      "status": "primary_material_candidate_blocked",
+      "note": "9/22 채무증권신고서 원문 재접속 실패. 9/29 수요예측·10/7 발행 보도는 확정 일정에 채택하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://sk-inc.com/kr/ir/irArchive.aspx",
+          "webRef": "turn572view0",
+          "accessStatus": "body_read",
+          "summary": "Official IR archive read; no newly confirmed exact future corporate schedule.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        },
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000501",
+          "webRef": "turn572view1",
+          "accessStatus": "blocked",
+          "summary": "Debt prospectus inaccessible; no date inferred from press.",
+          "publisherRole": "regulator",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "012330",
+      "name": "현대모비스",
+      "sector": "자동차부품",
+      "status": "confirmed_existing_material_calendar",
+      "note": "KIND 원문 10/23 재공시 예정일 재확인. 램프사업 매각·본계약 체결 확정일 아님.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://kind.krx.co.kr/external/2026/04/24/000001/20260417000982/99583.htm",
+          "webRef": "turn563view3",
+          "accessStatus": "body_read",
+          "summary": "Item3 October23 redisclosure; item2 nonbinding MOU and terms under negotiation.",
+          "publisherRole": "regulator",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 1-12"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:COMPANY_REDISCLOSURE-012330-20261023",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "066570",
+      "name": "LG전자",
+      "sector": "전자제품",
+      "status": "future_material_date_not_published_in_read_list",
+      "note": "공식 실적 최신 7/30 16시 Q2. 2025년10/31·민간2026년10/30을 올해 확정 일정에 복사하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.lge.co.kr/company/investor/presentation",
+          "webRef": "turn586view4",
+          "accessStatus": "body_read",
+          "summary": "Current-year Q2 and Q1 listed; October entry belongs to2025.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 115-136"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:KES-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "035420",
+      "name": "NAVER",
+      "sector": "양방향미디어와서비스",
+      "status": "dynamic_calendar_incomplete",
+      "note": "공식 실적 최신 8/7 Q2 확인. IR행사 표 본문은 빈 동적 목록이므로 일정 없다고 단정하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.navercorp.com/investment/irUpdates",
+          "webRef": "turn565view0",
+          "accessStatus": "body_read",
+          "summary": "Quarterly result notices latest August7 Q2.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 207-215"
+        },
+        {
+          "url": "https://www.navercorp.com/investment/irEvents",
+          "webRef": "turn570view6",
+          "accessStatus": "dynamic_list_empty",
+          "summary": "IR event table header retrieved without dated event rows.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 188-203"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:SLW-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "010120",
+      "name": "LS ELECTRIC",
+      "sector": "전기장비",
+      "status": "future_material_date_not_published_in_read_list",
+      "note": "공식 IR 계획표 최신은 1월 Q4 NDR. 민간 실적 10/22·10/28 상충, 미확정. 미국법인 행사 페이지 오류.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.ls-electric.com/ko/company/invest/ir/",
+          "webRef": "turn572view6",
+          "accessStatus": "body_read",
+          "summary": "Latest plan displayed Jan28-29 2026 Q4 NDR; historical Oct23-24 belongs to2025.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 163-177"
+        },
+        {
+          "url": "https://www.lselectricamerica.com/events/",
+          "webRef": "turn583view3",
+          "accessStatus": "blocked",
+          "summary": "Subsidiary events route failed; no event adopted.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:ENERGY-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "000810",
+      "name": "삼성화재",
+      "sector": "손해보험",
+      "status": "prior_verified_primary_recheck_blocked",
+      "note": "기존 10/2 재공시 예정 근거 보존. 이번 원문 재접속 실패, 인수 결정·수익률 미확정.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260903800106",
+          "webRef": "turn563view2",
+          "accessStatus": "blocked",
+          "summary": "Previously verified September3 notice retained; fresh fetch inaccessible.",
+          "publisherRole": "regulator",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "REVIEW:COMPANY_REDISCLOSURE-000810-20261002",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "sector": "철강",
+      "status": "dynamic_disclosure_list_incomplete",
+      "note": "공식 공시 페이지 접근 성공하나 공시목록 동적 본문 미노출. 10/27 자회사 공장 방문은 지주 자체 IR로 세지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.posco-inc.com/hs91a1-front/app/ir/disclosure-information.html",
+          "webRef": "turn572view7",
+          "accessStatus": "dynamic_list_empty",
+          "summary": "Official disclosure navigation and management policy shown, no dated filings body.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 27-40"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "sector": "비철금속",
+      "status": "dynamic_calendar_incomplete",
+      "note": "공식 IR 달력 동적 목록 미노출. 회사채 보도 후보의 상충 날짜는 이전 기록과 함께 유보.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://investors.koreazinc.co.kr/ko/investors/ir-events/ir-calendar/",
+          "webRef": "turn565view3",
+          "accessStatus": "dynamic_list_empty",
+          "summary": "Calendar shell retrieved without actionable dated event rows.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "sector": "증권",
+      "status": "dynamic_calendar_incomplete",
+      "note": "이번 공식 IR 셸 재접속 성공. 이전 조사에서 실제 읽은 공개 POST 목록 7/24 공지·8/12 실적 기록 보존, 새 동적 목록을 이번에 다시 읽었다고 주장하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.meritzgroup.com/web/ko/ir/ir1.do",
+          "webRef": "turn567view0",
+          "accessStatus": "dynamic_list_empty",
+          "summary": "Official shell contains IR sections but event rows absent; prior public POST evidence kept.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 85-94"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "015760",
+      "name": "한국전력",
+      "sector": "전기유틸리티",
+      "status": "material_policy_primary_unavailable",
+      "note": "9/21 발표된 4분기 연료비조정단가 동결 보도 후보 발견. 적용월 10/1과 발표일9/21을 구분. 공식 한전 페이지 타임아웃, 원문 미확보로 수치 입력 유보.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://home.kepco.co.kr/",
+          "webRef": "turn567view1",
+          "accessStatus": "blocked",
+          "summary": "Official portal fetch timed out.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        },
+        {
+          "url": "https://www.etnews.com/20260921000014",
+          "webRef": "turn580search30",
+          "accessStatus": "search_only",
+          "summary": "Press references KEPCO Q4 calculation sheet; original body not secured.",
+          "publisherRole": "secondary",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:ENERGY-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "011200",
+      "name": "HMM",
+      "sector": "해운사",
+      "status": "future_material_date_not_published_in_read_list",
+      "note": "공식 IR 자료 목록 최신 9/4 해운 월간자료 확인. 최근 장기계약 시작2030년으로 본 기간 미래 일정 아님.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.hmm21.com/",
+          "webRef": "turn567view2",
+          "accessStatus": "empty_response",
+          "summary": "Homepage produced no parsed content; follow-up officialIR route used.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        },
+        {
+          "url": "https://www.hmm21.com/ir.do",
+          "webRef": "turn583view0",
+          "accessStatus": "body_read",
+          "summary": "Official IR latest entries September4 monthly shipping data and August14 H1 reports.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 55-57"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:MARITIME-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "051910",
+      "name": "LG화학",
+      "sector": "화학",
+      "status": "confirmed_existing_business_calendar",
+      "note": "IR 최신9/7~11 NDR, 3분기 날짜 미확정. FAKUMA 공식 참가명단 재확인. 전시회 참가와 매출 증가 구분.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.lgchem.com/company/investment-information/ir-events?lang=ko_KR",
+          "webRef": "turn567view3",
+          "accessStatus": "body_read",
+          "summary": "Latest datedIRSept7-11; lastresultsJuly31. October31historical2025.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 9-41"
+        },
+        {
+          "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/99946-lg-chem-ltd/",
+          "webRef": "turn576view3",
+          "accessStatus": "body_read",
+          "summary": "Organizer exhibitor entry names LG Chem; retained event calendar, price effect unproved.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": null
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:COMPANY_EXHIBITION_FAKUMA-051910-20261012",
+        "REVIEW:COMPANY_EXHIBITION_TOKYOPACK-051910-20261014",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10",
+        "REVIEW:COMPANY_EXHIBITION_APLAR-051910-20261029"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "017670",
+      "name": "SK텔레콤",
+      "sector": "무선통신서비스",
+      "status": "future_material_date_not_confirmed",
+      "note": "공식 DART 연동 최신 공시목록 확인. 종속회사 분할결정은 법인·분할기일 추가 확인 전 임의 10월 뉴스로 만들지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://ir.gsifn.io/sktelecom/ir_disclosure.html",
+          "webRef": "turn569view0",
+          "accessStatus": "body_read",
+          "summary": "As-ofSept23 list latestSept1 andAug27subsidiarydemerger; listreadnotfullfilingread.",
+          "publisherRole": "issuer_disclosure_provider",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 0-14"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:SLW-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "sector": "담배",
+      "status": "confirmed_existing_informational_calendar",
+      "note": "공식 분양사업10/5~8 계약 기간 재확인. IR 최신8월. 9/22 자사주매입 보도는 직접 공시 미확인, 계약 일정과 분리.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.prugio.com/hb/2026/granpeak/",
+          "webRef": "turn576view2",
+          "accessStatus": "body_read",
+          "summary": "Project official contractwindowOct5-8; existing developeridentityproof retained.",
+          "publisherRole": "organizer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "contract schedule"
+        },
+        {
+          "url": "https://www.ktng.com/ir/ir-archives/events",
+          "webRef": "turn569view1",
+          "accessStatus": "body_read",
+          "summary": "LatestIRAug24-25;2025Sept29-Oct3cannotbecopied.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 48-64"
+        },
+        {
+          "url": "https://www.ktng.com/media/news/press-release",
+          "webRef": "turn584view0",
+          "accessStatus": "body_read",
+          "summary": "Latest visible official releasesSept22startupfestival,Sept21IRaward,notbuybacknotice.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 58-71"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "REVIEW:033780:GRANPEAK-CONTRACT-OPEN:20261005",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    },
+    {
+      "code": "196170",
+      "name": "알테오젠",
+      "sector": "생물공학",
+      "status": "historical_material_news_rechecked",
+      "note": "발행사9/18 일본 판매승인·9/23 유럽특허 뉴스 실제 본문 재확인. 이미 공개된 사건으로 미래 결과를 새로 예측하지 않음.",
+      "checkedAt": "2026-09-26T13:10:28.552500+00:00",
+      "attempts": [
+        {
+          "url": "https://www.alteogen.com/kr/sub/ir/notice.php",
+          "webRef": "turn583view5",
+          "accessStatus": "body_read",
+          "summary": "LatestformalnoticeJuly27bonusissueschedule; nofutureapprovaldate.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 68-76"
+        },
+        {
+          "url": "https://www.alteogen.com/kr/sub/ir/news.php?bid=1&idx=373&mode=view&page=1",
+          "webRef": "turn586view0",
+          "accessStatus": "body_read",
+          "summary": "IssuerSeptember23release reportsEPOregistrationofSCformulationpatent.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 67-86"
+        },
+        {
+          "url": "https://www.alteogen.com/kr/sub/ir/news.php?bid=1&idx=369&mode=view&page=1",
+          "webRef": "turn586view1",
+          "accessStatus": "body_read",
+          "summary": "IssuerSeptember18release reportsJapanmarketingapproval; doesnotpreannouncefutureoutcome.",
+          "publisherRole": "issuer",
+          "observedAt": "2026-09-26T13:10:28.552500+00:00",
+          "bodyLocation": "lines 67-89"
+        }
+      ],
+      "previousEventIdsPreserved": [
+        "BLS:JOLTS:August-2026",
+        "BLS:JOBS:September-2026",
+        "BLS:CPI:September-2026",
+        "BLS:PPI:September-2026",
+        "BOK:RATE:2026-10",
+        "REVIEW:ESMO-2026",
+        "FED:FOMC:2026-10"
+      ],
+      "sourceAttemptComplete": true,
+      "allPublicSourcesExhausted": false,
+      "priceImpact": "abstain",
+      "trustProbability": null
+    }
+  ],
+  "policy": [
+    "No fixed news quota. Materiality, novelty, issuer exposure and comparable historical reactions govern calculation.",
+    "A completed source attempt is not verified schedule coverage. Dynamic empty list is notproof of noevents.",
+    "Informational marketing/exhibitioncalendars must not be presentedasprovenpricecatalysts.",
+    "Noannouncementdatesfrompreviousyearscopiedforward. Noexpectedearningsdates promotedtoofficialdates.",
+    "Preservepriorevidenceevenwhenfreshfetchblocked; noaccesscontrolbypass."
+  ],
+  "searchPass": {
+    "method": "batched public-web exactcompany searches plus primaryURL open/find; fallback search engine when first engine returned irrelevant results",
+    "batches": [
+      "turn554",
+      "turn555",
+      "turn558",
+      "turn562",
+      "turn563",
+      "turn565",
+      "turn567",
+      "turn569",
+      "turn578",
+      "turn580"
+    ],
+    "boundedPass": true,
+    "notExhaustive": true
+  },
+  "historicalContext": [
+    {
+      "code": "196170",
+      "publicationDate": "2026-09-18",
+      "topic": "Japan approval issuer release",
+      "source": "https://www.alteogen.com/kr/sub/ir/news.php?bid=1&idx=369&mode=view&page=1",
+      "futureScheduledEvent": false
+    },
+    {
+      "code": "196170",
+      "publicationDate": "2026-09-23",
+      "topic": "EPO patent registration issuer release",
+      "source": "https://www.alteogen.com/kr/sub/ir/news.php?bid=1&idx=373&mode=view&page=1",
+      "futureScheduledEvent": false
+    }
+  ]
+}

@@ -1,0 +1,6132 @@
+{
+  "schema": 1,
+  "method": "atlas-news-6.0.0",
+  "createdAt": "2026-09-24T20:51:55.148Z",
+  "runs": 10,
+  "uniqueOrigins": 1,
+  "note": "시드·경로 수에 따른 수치 민감도 검사. 독립 미래 검증이나 적중 확률이 아님. 유리한 시드를 고르지 않음",
+  "seedSelection": "20260917 retained before evaluation",
+  "inputSHA256": "d782ff2847accbd5314e1282019867a932736ffba7ebb1c4e22df3da46b1bf0c",
+  "assets": [
+    {
+      "code": "005930",
+      "name": "삼성전자",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0058873647469458446,
+          "medianReturnMax": 0.0067470157068063585,
+          "probMin": 0.485,
+          "probMax": 0.52,
+          "rankMin": 7,
+          "rankMax": 35
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.003795881326352557,
+          "medianReturnMax": 0.004170994764397973,
+          "probMin": 0.4933,
+          "probMax": 0.5095,
+          "rankMin": 12,
+          "rankMax": 39
+        }
+      ]
+    },
+    {
+      "code": "009150",
+      "name": "삼성전기",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.005318934043970658,
+          "medianReturnMax": 0.009724610259826738,
+          "probMin": 0.4895,
+          "probMax": 0.5185,
+          "rankMin": 3,
+          "rankMax": 33
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0010602731512324715,
+          "medianReturnMax": 0.0027914257161891776,
+          "probMin": 0.4975,
+          "probMax": 0.5048,
+          "rankMin": 17,
+          "rankMax": 29
+        }
+      ]
+    },
+    {
+      "code": "373220",
+      "name": "LG에너지솔루션",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.014089687500000059,
+          "medianReturnMax": -0.002243551136363542,
+          "probMin": 0.466,
+          "probMax": 0.4955,
+          "rankMin": 29,
+          "rankMax": 49
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.006959602272727405,
+          "medianReturnMax": -0.003927613636363736,
+          "probMin": 0.4836,
+          "probMax": 0.4903,
+          "rankMin": 40,
+          "rankMax": 48
+        }
+      ]
+    },
+    {
+      "code": "005380",
+      "name": "현대차",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.008600504201680681,
+          "medianReturnMax": 0.00955694677871155,
+          "probMin": 0.487,
+          "probMax": 0.519,
+          "rankMin": 8,
+          "rankMax": 39
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.003874313725490186,
+          "medianReturnMax": 0.0005064425770306968,
+          "probMin": 0.4914,
+          "probMax": 0.501,
+          "rankMin": 24,
+          "rankMax": 34
+        }
+      ]
+    },
+    {
+      "code": "207940",
+      "name": "삼성바이오로직스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.004400451565914065,
+          "medianReturnMax": 0.0015086307356155793,
+          "probMin": 0.485,
+          "probMax": 0.506,
+          "rankMin": 22,
+          "rankMax": 29
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0016685142024763788,
+          "medianReturnMax": 0.0034723743627094183,
+          "probMin": 0.4939,
+          "probMax": 0.5119,
+          "rankMin": 14,
+          "rankMax": 29
+        }
+      ]
+    },
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.0007245835726592542,
+          "medianReturnMax": 0.007611659965537143,
+          "probMin": 0.506,
+          "probMax": 0.524,
+          "rankMin": 6,
+          "rankMax": 14
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.003803905801263774,
+          "medianReturnMax": 0.006120907524411301,
+          "probMin": 0.5128,
+          "probMax": 0.5199,
+          "rankMin": 7,
+          "rankMax": 10
+        }
+      ]
+    },
+    {
+      "code": "028260",
+      "name": "삼성물산",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.012766214382632257,
+          "medianReturnMax": 0.002625915875169582,
+          "probMin": 0.4715,
+          "probMax": 0.5055,
+          "rankMin": 19,
+          "rankMax": 45
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0031712075983718613,
+          "medianReturnMax": 0.001723880597015004,
+          "probMin": 0.4933,
+          "probMax": 0.5032,
+          "rankMin": 17,
+          "rankMax": 34
+        }
+      ]
+    },
+    {
+      "code": "032830",
+      "name": "삼성생명보험",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0051423389830508315,
+          "medianReturnMax": 0.006258915254237385,
+          "probMin": 0.4865,
+          "probMax": 0.5145,
+          "rankMin": 8,
+          "rankMax": 31
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.003132813559322045,
+          "medianReturnMax": 0.0035936271186440827,
+          "probMin": 0.4931,
+          "probMax": 0.5069,
+          "rankMin": 13,
+          "rankMax": 34
+        }
+      ]
+    },
+    {
+      "code": "012450",
+      "name": "한화에어로스페이스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.0019792919495635886,
+          "medianReturnMax": 0.016562201745877747,
+          "probMin": 0.502,
+          "probMax": 0.537,
+          "rankMin": 1,
+          "rankMax": 20
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.00916714839961208,
+          "medianReturnMax": 0.014525121241513173,
+          "probMin": 0.5227,
+          "probMax": 0.5325,
+          "rankMin": 1,
+          "rankMax": 5
+        }
+      ]
+    },
+    {
+      "code": "034020",
+      "name": "두산에너빌리티",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.005461064087061707,
+          "medianReturnMax": 0.0019703748488513195,
+          "probMin": 0.4885,
+          "probMax": 0.504,
+          "rankMin": 22,
+          "rankMax": 42
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.004809189842805317,
+          "medianReturnMax": -0.0018704957678356005,
+          "probMin": 0.4908,
+          "probMax": 0.4971,
+          "rankMin": 30,
+          "rankMax": 42
+        }
+      ]
+    },
+    {
+      "code": "329180",
+      "name": "HD현대중공업",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.010360720720720695,
+          "medianReturnMax": -0.0016501351351351223,
+          "probMin": 0.4825,
+          "probMax": 0.4985,
+          "rankMin": 30,
+          "rankMax": 44
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.004525135135135083,
+          "medianReturnMax": -0.0006777027027027316,
+          "probMin": 0.4906,
+          "probMax": 0.4988,
+          "rankMin": 26,
+          "rankMax": 38
+        }
+      ]
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.013607347611202636,
+          "medianReturnMax": 0.006780939044481071,
+          "probMin": 0.472,
+          "probMax": 0.512,
+          "rankMin": 8,
+          "rankMax": 46
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.006799851729818784,
+          "medianReturnMax": -0.002239390444810585,
+          "probMin": 0.4875,
+          "probMax": 0.4948,
+          "rankMin": 30,
+          "rankMax": 46
+        }
+      ]
+    },
+    {
+      "code": "012330",
+      "name": "현대모비스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007817208672086684,
+          "medianReturnMax": 0.005903875338753473,
+          "probMin": 0.4825,
+          "probMax": 0.517,
+          "rankMin": 12,
+          "rankMax": 38
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0032489972899729658,
+          "medianReturnMax": 0.000015853658536624238,
+          "probMin": 0.4929,
+          "probMax": 0.5,
+          "rankMin": 27,
+          "rankMax": 37
+        }
+      ]
+    },
+    {
+      "code": "066570",
+      "name": "LG전자",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.01936736342042744,
+          "medianReturnMax": -0.0036100237529691492,
+          "probMin": 0.463,
+          "probMax": 0.4915,
+          "rankMin": 35,
+          "rankMax": 51
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.010321092636579543,
+          "medianReturnMax": -0.005458147268408542,
+          "probMin": 0.4795,
+          "probMax": 0.4895,
+          "rankMin": 42,
+          "rankMax": 51
+        }
+      ]
+    },
+    {
+      "code": "035420",
+      "name": "NAVER",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007795714285714239,
+          "medianReturnMax": 0.002233826530612104,
+          "probMin": 0.4785,
+          "probMax": 0.5045,
+          "rankMin": 18,
+          "rankMax": 41
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.00606729591836741,
+          "medianReturnMax": -0.0009210204081632201,
+          "probMin": 0.4831,
+          "probMax": 0.4973,
+          "rankMin": 23,
+          "rankMax": 46
+        }
+      ]
+    },
+    {
+      "code": "010120",
+      "name": "LS ELECTRIC",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.021512270531401034,
+          "medianReturnMax": 0.007708309178743988,
+          "probMin": 0.4625,
+          "probMax": 0.5165,
+          "rankMin": 6,
+          "rankMax": 51
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.01097173913043481,
+          "medianReturnMax": -0.0036499033816425053,
+          "probMin": 0.4818,
+          "probMax": 0.4928,
+          "rankMin": 36,
+          "rankMax": 51
+        }
+      ]
+    },
+    {
+      "code": "000810",
+      "name": "삼성화재",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.009466959876543113,
+          "medianReturnMax": 0.019567129629629587,
+          "probMin": 0.5295,
+          "probMax": 0.5505,
+          "rankMin": 1,
+          "rankMax": 4
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.009361682098765423,
+          "medianReturnMax": 0.014926342592592512,
+          "probMin": 0.5268,
+          "probMax": 0.5393,
+          "rankMin": 2,
+          "rankMax": 4
+        }
+      ]
+    },
+    {
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.003203852327447798,
+          "medianReturnMax": 0.0001742857142856824,
+          "probMin": 0.4865,
+          "probMax": 0.501,
+          "rankMin": 25,
+          "rankMax": 34
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.003231653290529657,
+          "medianReturnMax": 0.00005961476725513393,
+          "probMin": 0.4918,
+          "probMax": 0.5006,
+          "rankMin": 26,
+          "rankMax": 34
+        }
+      ]
+    },
+    {
+      "code": "010130",
+      "name": "고려아연",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.014900537634408573,
+          "medianReturnMax": -0.0017060125448027375,
+          "probMin": 0.474,
+          "probMax": 0.4965,
+          "rankMin": 30,
+          "rankMax": 51
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.009578073476702365,
+          "medianReturnMax": -0.003369910394265263,
+          "probMin": 0.4823,
+          "probMax": 0.493,
+          "rankMin": 39,
+          "rankMax": 48
+        }
+      ]
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.004914661354581629,
+          "medianReturnMax": -0.001374342629481995,
+          "probMin": 0.4775,
+          "probMax": 0.4945,
+          "rankMin": 18,
+          "rankMax": 42
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.005067250996015904,
+          "medianReturnMax": -0.0013125896414342142,
+          "probMin": 0.4793,
+          "probMax": 0.4953,
+          "rankMin": 24,
+          "rankMax": 44
+        }
+      ]
+    },
+    {
+      "code": "015760",
+      "name": "한국전력",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.009939573070607555,
+          "medianReturnMax": -0.00326633825944167,
+          "probMin": 0.4705,
+          "probMax": 0.4895,
+          "rankMin": 35,
+          "rankMax": 50
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.009850246305418642,
+          "medianReturnMax": -0.0058801313628900065,
+          "probMin": 0.4741,
+          "probMax": 0.4856,
+          "rankMin": 44,
+          "rankMax": 50
+        }
+      ]
+    },
+    {
+      "code": "011200",
+      "name": "HMM",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.010344364508393378,
+          "medianReturnMax": 0.016670983213429302,
+          "probMin": 0.5385,
+          "probMax": 0.5565,
+          "rankMin": 2,
+          "rankMax": 3
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.012280575539568295,
+          "medianReturnMax": 0.015429736211031164,
+          "probMin": 0.5434,
+          "probMax": 0.5533,
+          "rankMin": 1,
+          "rankMax": 3
+        }
+      ]
+    },
+    {
+      "code": "051910",
+      "name": "LG화학",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007821620553359665,
+          "medianReturnMax": 0.006319723320158177,
+          "probMin": 0.481,
+          "probMax": 0.512,
+          "rankMin": 11,
+          "rankMax": 42
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0029659288537549067,
+          "medianReturnMax": 0.0017684980237153702,
+          "probMin": 0.4951,
+          "probMax": 0.5035,
+          "rankMin": 16,
+          "rankMax": 30
+        }
+      ]
+    },
+    {
+      "code": "017670",
+      "name": "SK텔레콤",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.009581494252873468,
+          "medianReturnMax": 0.0008373563218391222,
+          "probMin": 0.471,
+          "probMax": 0.5035,
+          "rankMin": 23,
+          "rankMax": 46
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.005002988505747097,
+          "medianReturnMax": -0.0014625287356322403,
+          "probMin": 0.4857,
+          "probMax": 0.4952,
+          "rankMin": 29,
+          "rankMax": 44
+        }
+      ]
+    },
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.0034269914040114813,
+          "medianReturnMax": 0.0069778223495702285,
+          "probMin": 0.51,
+          "probMax": 0.5275,
+          "rankMin": 8,
+          "rankMax": 19
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.004800286532951281,
+          "medianReturnMax": 0.0073881948424068256,
+          "probMin": 0.5211,
+          "probMax": 0.5328,
+          "rankMin": 6,
+          "rankMax": 8
+        }
+      ]
+    },
+    {
+      "code": "196170",
+      "name": "알테오젠",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.011195308151093375,
+          "medianReturnMax": 0.001308986083498942,
+          "probMin": 0.478,
+          "probMax": 0.505,
+          "rankMin": 23,
+          "rankMax": 49
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.008522743538767363,
+          "medianReturnMax": -0.0020748310139164783,
+          "probMin": 0.4818,
+          "probMax": 0.4966,
+          "rankMin": 29,
+          "rankMax": 50
+        }
+      ]
+    },
+    {
+      "code": "018260",
+      "name": "삼성에스디에스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.02090533936651573,
+          "medianReturnMax": -0.001407330316742006,
+          "probMin": 0.4585,
+          "probMax": 0.4955,
+          "rankMin": 36,
+          "rankMax": 52
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.010976153846153913,
+          "medianReturnMax": -0.004766108597285101,
+          "probMin": 0.4774,
+          "probMax": 0.4891,
+          "rankMin": 43,
+          "rankMax": 51
+        }
+      ]
+    },
+    {
+      "code": "086280",
+      "name": "현대글로비스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0019639898989898263,
+          "medianReturnMax": 0.0024874242424242077,
+          "probMin": 0.4955,
+          "probMax": 0.5085,
+          "rankMin": 17,
+          "rankMax": 25
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.00023146464646461862,
+          "medianReturnMax": 0.0027110101010101584,
+          "probMin": 0.4993,
+          "probMax": 0.5068,
+          "rankMin": 16,
+          "rankMax": 24
+        }
+      ]
+    },
+    {
+      "code": "000720",
+      "name": "현대건설",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.009338430089942729,
+          "medianReturnMax": -0.0009217497955845699,
+          "probMin": 0.48,
+          "probMax": 0.499,
+          "rankMin": 33,
+          "rankMax": 44
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.006834341782501974,
+          "medianReturnMax": -0.003323957481602635,
+          "probMin": 0.4881,
+          "probMax": 0.4936,
+          "rankMin": 38,
+          "rankMax": 47
+        }
+      ]
+    },
+    {
+      "code": "278470",
+      "name": "에이피알",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.008151084010840082,
+          "medianReturnMax": -0.0002042276422763445,
+          "probMin": 0.48,
+          "probMax": 0.499,
+          "rankMin": 23,
+          "rankMax": 45
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.005672005420054083,
+          "medianReturnMax": -0.0009175067750677446,
+          "probMin": 0.4868,
+          "probMax": 0.4982,
+          "rankMin": 27,
+          "rankMax": 45
+        }
+      ]
+    },
+    {
+      "code": "030200",
+      "name": "KT",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.00015708884688092617,
+          "medianReturnMax": 0.004479206049149198,
+          "probMin": 0.501,
+          "probMax": 0.5175,
+          "rankMin": 11,
+          "rankMax": 32
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0032415879017013705,
+          "medianReturnMax": 0.004531001890359265,
+          "probMin": 0.5139,
+          "probMax": 0.5205,
+          "rankMin": 9,
+          "rankMax": 12
+        }
+      ]
+    },
+    {
+      "code": "003490",
+      "name": "대한항공",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007299999999999973,
+          "medianReturnMax": 0.005261587301587323,
+          "probMin": 0.4705,
+          "probMax": 0.5185,
+          "rankMin": 6,
+          "rankMax": 48
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.003820317460317413,
+          "medianReturnMax": -0.0006822222222222507,
+          "probMin": 0.4866,
+          "probMax": 0.4977,
+          "rankMin": 27,
+          "rankMax": 41
+        }
+      ]
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.011857297297297342,
+          "medianReturnMax": 0.0009659459459459008,
+          "probMin": 0.4665,
+          "probMax": 0.502,
+          "rankMin": 27,
+          "rankMax": 47
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.004083783783783823,
+          "medianReturnMax": -0.001744144144144144,
+          "probMin": 0.489,
+          "probMax": 0.4963,
+          "rankMin": 30,
+          "rankMax": 41
+        }
+      ]
+    },
+    {
+      "code": "003230",
+      "name": "삼양식품",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.018262873563218318,
+          "medianReturnMax": -0.010878661740558293,
+          "probMin": 0.453,
+          "probMax": 0.4745,
+          "rankMin": 43,
+          "rankMax": 52
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.014857528735632175,
+          "medianReturnMax": -0.01036838259441708,
+          "probMin": 0.4599,
+          "probMax": 0.4723,
+          "rankMin": 52,
+          "rankMax": 52
+        }
+      ]
+    },
+    {
+      "code": "259960",
+      "name": "크래프톤",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007726297229219248,
+          "medianReturnMax": -0.0010258438287154004,
+          "probMin": 0.4765,
+          "probMax": 0.4985,
+          "rankMin": 34,
+          "rankMax": 48
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.005303375314861469,
+          "medianReturnMax": -0.0015228211586901796,
+          "probMin": 0.4827,
+          "probMax": 0.4949,
+          "rankMin": 27,
+          "rankMax": 44
+        }
+      ]
+    },
+    {
+      "code": "021240",
+      "name": "코웨이",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.005542828485456286,
+          "medianReturnMax": -0.0017808425275828155,
+          "probMin": 0.4765,
+          "probMax": 0.492,
+          "rankMin": 19,
+          "rankMax": 44
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.005003711133400146,
+          "medianReturnMax": -0.002220661985957828,
+          "probMin": 0.4819,
+          "probMax": 0.4923,
+          "rankMin": 26,
+          "rankMax": 43
+        }
+      ]
+    },
+    {
+      "code": "352820",
+      "name": "하이브",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.002082244768547792,
+          "medianReturnMax": 0.0102436271401396,
+          "probMin": 0.507,
+          "probMax": 0.5275,
+          "rankMin": 4,
+          "rankMax": 19
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0054489537095749885,
+          "medianReturnMax": 0.008825237793278262,
+          "probMin": 0.5146,
+          "probMax": 0.522,
+          "rankMin": 6,
+          "rankMax": 8
+        }
+      ]
+    },
+    {
+      "code": "009830",
+      "name": "한화솔루션",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0034360544217687528,
+          "medianReturnMax": 0.0071370748299319775,
+          "probMin": 0.4955,
+          "probMax": 0.512,
+          "rankMin": 6,
+          "rankMax": 34
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.00009761904761895757,
+          "medianReturnMax": 0.003548639455782432,
+          "probMin": 0.4999,
+          "probMax": 0.5065,
+          "rankMin": 11,
+          "rankMax": 22
+        }
+      ]
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0014149707602338912,
+          "medianReturnMax": 0.004787836257309941,
+          "probMin": 0.496,
+          "probMax": 0.5215,
+          "rankMin": 11,
+          "rankMax": 32
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0009167251461987824,
+          "medianReturnMax": 0.0027927485380117023,
+          "probMin": 0.5037,
+          "probMax": 0.5115,
+          "rankMin": 15,
+          "rankMax": 23
+        }
+      ]
+    },
+    {
+      "code": "028300",
+      "name": "HLB",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.0006927536231884357,
+          "medianReturnMax": 0.021520128824476625,
+          "probMin": 0.503,
+          "probMax": 0.5355,
+          "rankMin": 1,
+          "rankMax": 30
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.009916908212560305,
+          "medianReturnMax": 0.018478904991948486,
+          "probMin": 0.5203,
+          "probMax": 0.5378,
+          "rankMin": 1,
+          "rankMax": 4
+        }
+      ]
+    },
+    {
+      "code": "034220",
+      "name": "LG디스플레이",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.002894117647058825,
+          "medianReturnMax": 0.007189411764706,
+          "probMin": 0.4915,
+          "probMax": 0.5225,
+          "rankMin": 9,
+          "rankMax": 24
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0021129411764704287,
+          "medianReturnMax": 0.006910588235294002,
+          "probMin": 0.5048,
+          "probMax": 0.5158,
+          "rankMin": 8,
+          "rankMax": 17
+        }
+      ]
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.007141196222455459,
+          "medianReturnMax": 0.011101238195173169,
+          "probMin": 0.482,
+          "probMax": 0.529,
+          "rankMin": 7,
+          "rankMax": 37
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0005029380902413783,
+          "medianReturnMax": 0.003190556138509937,
+          "probMin": 0.4983,
+          "probMax": 0.506,
+          "rankMin": 12,
+          "rankMax": 23
+        }
+      ]
+    },
+    {
+      "code": "036460",
+      "name": "한국가스공사",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0005311706629055335,
+          "medianReturnMax": 0.0019368124118477326,
+          "probMin": 0.498,
+          "probMax": 0.504,
+          "rankMin": 16,
+          "rankMax": 31
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0007373765867417781,
+          "medianReturnMax": 0.0031300423131170874,
+          "probMin": 0.5019,
+          "probMax": 0.5098,
+          "rankMin": 12,
+          "rankMax": 22
+        }
+      ]
+    },
+    {
+      "code": "004170",
+      "name": "신세계",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0022116045845271826,
+          "medianReturnMax": 0.0013100859598853543,
+          "probMin": 0.4915,
+          "probMax": 0.5035,
+          "rankMin": 21,
+          "rankMax": 39
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.004740687679083089,
+          "medianReturnMax": -0.0004816618911174242,
+          "probMin": 0.4887,
+          "probMax": 0.4988,
+          "rankMin": 22,
+          "rankMax": 42
+        }
+      ]
+    },
+    {
+      "code": "012750",
+      "name": "에스원",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.0002501213592233098,
+          "medianReturnMax": 0.0058075242718445,
+          "probMin": 0.499,
+          "probMax": 0.526,
+          "rankMin": 10,
+          "rankMax": 29
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.002726334951456133,
+          "medianReturnMax": 0.004705461165048552,
+          "probMin": 0.5108,
+          "probMax": 0.5184,
+          "rankMin": 8,
+          "rankMax": 14
+        }
+      ]
+    },
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.000984791965566667,
+          "medianReturnMax": 0.005357101865136382,
+          "probMin": 0.497,
+          "probMax": 0.516,
+          "rankMin": 5,
+          "rankMax": 34
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0010437589670013736,
+          "medianReturnMax": 0.0035984218077473873,
+          "probMin": 0.5037,
+          "probMax": 0.5105,
+          "rankMin": 11,
+          "rankMax": 21
+        }
+      ]
+    },
+    {
+      "code": "035250",
+      "name": "강원랜드",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.001235048678720485,
+          "medianReturnMax": 0.000018776077886029086,
+          "probMin": 0.4905,
+          "probMax": 0.5,
+          "rankMin": 15,
+          "rankMax": 35
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.0006230876216967163,
+          "medianReturnMax": 0.0004742698191932959,
+          "probMin": 0.4955,
+          "probMax": 0.5028,
+          "rankMin": 17,
+          "rankMax": 26
+        }
+      ]
+    },
+    {
+      "code": "257720",
+      "name": "실리콘투",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.018595629820051474,
+          "medianReturnMax": -0.009168894601542354,
+          "probMin": 0.464,
+          "probMax": 0.48,
+          "rankMin": 48,
+          "rankMax": 52
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.010329305912596287,
+          "medianReturnMax": -0.006909511568123361,
+          "probMin": 0.4783,
+          "probMax": 0.4853,
+          "rankMin": 47,
+          "rankMax": 50
+        }
+      ]
+    },
+    {
+      "code": "226950",
+      "name": "올릭스",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.017894134897360803,
+          "medianReturnMax": 0.0025451612903224508,
+          "probMin": 0.4735,
+          "probMax": 0.503,
+          "rankMin": 16,
+          "rankMax": 51
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.01016021505376341,
+          "medianReturnMax": 0.0013434995112415749,
+          "probMin": 0.4865,
+          "probMax": 0.502,
+          "rankMin": 19,
+          "rankMax": 51
+        }
+      ]
+    },
+    {
+      "code": "010170",
+      "name": "대한광통신",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": -0.025813205417607232,
+          "medianReturnMax": 0.029145598194130873,
+          "probMin": 0.477,
+          "probMax": 0.525,
+          "rankMin": 1,
+          "rankMax": 52
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": -0.007400112866817188,
+          "medianReturnMax": 0.005770880361173791,
+          "probMin": 0.4922,
+          "probMax": 0.5048,
+          "rankMin": 7,
+          "rankMax": 48
+        }
+      ]
+    },
+    {
+      "code": "214370",
+      "name": "케어젠",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.004908114856429391,
+          "medianReturnMax": 0.013027215980024875,
+          "probMin": 0.508,
+          "probMax": 0.5215,
+          "rankMin": 4,
+          "rankMax": 14
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.008142821473158701,
+          "medianReturnMax": 0.014321847690387024,
+          "probMin": 0.5127,
+          "probMax": 0.523,
+          "rankMin": 2,
+          "rankMax": 5
+        }
+      ]
+    },
+    {
+      "code": "030000",
+      "name": "제일기획",
+      "byPaths": [
+        {
+          "paths": 2000,
+          "seeds": 5,
+          "medianReturnMin": 0.0011071025930100564,
+          "medianReturnMax": 0.0035197294250282063,
+          "probMin": 0.505,
+          "probMax": 0.519,
+          "rankMin": 12,
+          "rankMax": 21
+        },
+        {
+          "paths": 10000,
+          "seeds": 5,
+          "medianReturnMin": 0.0011933483652761812,
+          "medianReturnMax": 0.0028641488162346462,
+          "probMin": 0.5061,
+          "probMax": 0.5142,
+          "rankMin": 13,
+          "rankMax": 20
+        }
+      ]
+    }
+  ],
+  "raw": [
+    {
+      "paths": 2000,
+      "seed": 20260917,
+      "id": "2026-09-23-db686747",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.0035144851657942233,
+          "p10": -0.2116644328097731,
+          "p90": 0.2805693542757417,
+          "prob": 0.509,
+          "rank": 14
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": 0.0007383744170552653,
+          "p10": -0.24436065956029318,
+          "p90": 0.3462328714190539,
+          "prob": 0.501,
+          "rank": 22
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.0031186363636364067,
+          "p10": -0.19550011363636355,
+          "p90": 0.24801116477272722,
+          "prob": 0.4925,
+          "rank": 42
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": 0.00955694677871155,
+          "p10": -0.20489812324929968,
+          "p90": 0.2686256582633053,
+          "prob": 0.519,
+          "rank": 8
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.000459745083758234,
+          "p10": -0.1308047705753823,
+          "p90": 0.15280454479242533,
+          "prob": 0.501,
+          "rank": 24
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.007611659965537143,
+          "p10": -0.13423905801263636,
+          "p90": 0.16460666283744962,
+          "prob": 0.5205,
+          "rank": 10
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": 0.0007101492537313625,
+          "p10": -0.22420105834464055,
+          "p90": 0.2898781275440978,
+          "prob": 0.501,
+          "rank": 23
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.0011016610169491958,
+          "p10": -0.21272637288135587,
+          "p90": 0.28198677966101693,
+          "prob": 0.503,
+          "rank": 20
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.016562201745877747,
+          "p10": -0.19076129970902034,
+          "p90": 0.28682347235693495,
+          "prob": 0.537,
+          "rank": 3
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": 0.00032212817412324846,
+          "p10": -0.23388609431680774,
+          "p90": 0.2938831922611851,
+          "prob": 0.5,
+          "rank": 25
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.004052590090090069,
+          "p10": -0.19379876126126128,
+          "p90": 0.24789885135135137,
+          "prob": 0.487,
+          "rank": 44
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.00388428336079083,
+          "p10": -0.2282080724876442,
+          "p90": 0.2882042009884678,
+          "prob": 0.4945,
+          "rank": 43
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": 0.005903875338753473,
+          "p10": -0.19639666666666666,
+          "p90": 0.264850216802168,
+          "prob": 0.517,
+          "rank": 12
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.0067295961995248454,
+          "p10": -0.23256228028503556,
+          "p90": 0.33248147268408546,
+          "prob": 0.4895,
+          "rank": 47
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": 0.00013505102040811678,
+          "p10": -0.1846805102040816,
+          "p90": 0.22550000000000003,
+          "prob": 0.5005,
+          "rank": 27
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.016249951690821218,
+          "p10": -0.25452101449275366,
+          "p90": 0.3408172946859902,
+          "prob": 0.4665,
+          "rank": 51
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.019567129629629587,
+          "p10": -0.17175416666666654,
+          "p90": 0.2410236882716048,
+          "prob": 0.5505,
+          "rank": 1
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": 0.0001742857142856824,
+          "p10": -0.1631571749598716,
+          "p90": 0.20044022471910106,
+          "prob": 0.501,
+          "rank": 26
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.0017060125448027375,
+          "p10": -0.24564702508960568,
+          "p90": 0.3355367562724014,
+          "prob": 0.4965,
+          "rank": 38
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.001374342629481995,
+          "p10": -0.13424844621513943,
+          "p90": 0.15824557768924308,
+          "prob": 0.4945,
+          "rank": 37
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.009612479474548463,
+          "p10": -0.1952834154351396,
+          "p90": 0.23382364532019695,
+          "prob": 0.473,
+          "rank": 50
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.016670983213429302,
+          "p10": -0.12740095923261396,
+          "p90": 0.16710599520383695,
+          "prob": 0.5565,
+          "rank": 2
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.0010284584980237987,
+          "p10": -0.20504818181818185,
+          "p90": 0.268583043478261,
+          "prob": 0.497,
+          "rank": 36
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.002052183908045957,
+          "p10": -0.15967666666666658,
+          "p90": 0.19495356321839097,
+          "prob": 0.4925,
+          "rank": 40
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.0058969627507161615,
+          "p10": -0.10109919770773634,
+          "p90": 0.12792727793696268,
+          "prob": 0.522,
+          "rank": 13
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.006018926441351935,
+          "p10": -0.24453570576540762,
+          "p90": 0.281800198807157,
+          "prob": 0.4895,
+          "rank": 46
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.004766108597285101,
+          "p10": -0.21076656108597291,
+          "p90": 0.2840504977375564,
+          "prob": 0.4905,
+          "rank": 45
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.0024874242424242077,
+          "p10": -0.16930186868686858,
+          "p90": 0.21929373737373736,
+          "prob": 0.5085,
+          "rank": 17
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.0009217497955845699,
+          "p10": -0.2520091578086672,
+          "p90": 0.3599831561733442,
+          "prob": 0.499,
+          "rank": 33
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.0002042276422763445,
+          "p10": -0.21272189701897015,
+          "p90": 0.26544571815718143,
+          "prob": 0.499,
+          "rank": 28
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.000870510396975499,
+          "p10": -0.10752759924385635,
+          "p90": 0.12025973534971635,
+          "prob": 0.503,
+          "rank": 21
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.007299999999999973,
+          "p10": -0.14089936507936518,
+          "p90": 0.17677301587301586,
+          "prob": 0.4705,
+          "rank": 48
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.0005538738738738447,
+          "p10": -0.18792342342342339,
+          "p90": 0.24840126126126139,
+          "prob": 0.499,
+          "rank": 31
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.017574844006568058,
+          "p10": -0.18133784893267657,
+          "p90": 0.1971966502463054,
+          "prob": 0.4585,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.0010258438287154004,
+          "p10": -0.15215345088161203,
+          "p90": 0.16614730478589412,
+          "prob": 0.4985,
+          "rank": 35
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.0021678034102307064,
+          "p10": -0.140161183550652,
+          "p90": 0.1622801404212637,
+          "prob": 0.487,
+          "rank": 41
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.008171718452758325,
+          "p10": -0.172296829422955,
+          "p90": 0.2027545339251744,
+          "prob": 0.521,
+          "rank": 9
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.002554761904761893,
+          "p10": -0.2627870748299319,
+          "p90": 0.3777741496598639,
+          "prob": 0.5065,
+          "rank": 15
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": -0.0007010526315789356,
+          "p10": -0.11198970760233917,
+          "p90": 0.12855087719298242,
+          "prob": 0.4965,
+          "rank": 32
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.011951046698872814,
+          "p10": -0.2516186795491143,
+          "p90": 0.32268083735909814,
+          "prob": 0.5255,
+          "rank": 6
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.007189411764706,
+          "p10": -0.19226588235294118,
+          "p90": 0.24033294117647053,
+          "prob": 0.5225,
+          "rank": 11
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.011101238195173169,
+          "p10": -0.20483261280167886,
+          "p90": 0.258817313746065,
+          "prob": 0.529,
+          "rank": 7
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": -0.00033709449929475443,
+          "p10": -0.12526911142454167,
+          "p90": 0.15308039492242598,
+          "prob": 0.4985,
+          "rank": 30
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.002010143266475639,
+          "p10": -0.19758914040114606,
+          "p90": 0.25974833810888254,
+          "prob": 0.4955,
+          "rank": 39
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": -0.0002501213592233098,
+          "p10": -0.14424975728155331,
+          "p90": 0.17164368932038832,
+          "prob": 0.499,
+          "rank": 29
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0022443328550931785,
+          "p10": -0.15710430416068866,
+          "p90": 0.18896527977044486,
+          "prob": 0.5055,
+          "rank": 18
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.0009944367176634161,
+          "p10": -0.08487760778859532,
+          "p90": 0.08566968011126574,
+          "prob": 0.4945,
+          "rank": 34
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.009168894601542354,
+          "p10": -0.2327730077120822,
+          "p90": 0.2716071979434447,
+          "prob": 0.48,
+          "rank": 49
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": 0.0025451612903224508,
+          "p10": -0.31198817204301077,
+          "p90": 0.47322238514173987,
+          "prob": 0.503,
+          "rank": 16
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.013698645598194226,
+          "p10": -0.39040180586907447,
+          "p90": 0.6581901805869075,
+          "prob": 0.5175,
+          "rank": 4
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.013027215980024875,
+          "p10": -0.2502519350811485,
+          "p90": 0.4068769038701623,
+          "prob": 0.5215,
+          "rank": 5
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0015851183765500654,
+          "p10": -0.09866629086809475,
+          "p90": 0.09754509582863591,
+          "prob": 0.5095,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "paths": 2000,
+      "seed": 1701,
+      "id": "2026-09-23-739d8aa1",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.006140488656195542,
+          "p10": -0.21917099476439783,
+          "p90": 0.2698208376963349,
+          "prob": 0.52,
+          "rank": 7
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": 0.004501059293804177,
+          "p10": -0.24890501665556286,
+          "p90": 0.3462959493670885,
+          "prob": 0.5055,
+          "rank": 12
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.014089687500000059,
+          "p10": -0.19862238636363638,
+          "p90": 0.23945096590909087,
+          "prob": 0.469,
+          "rank": 49
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": 0.0006157983193277872,
+          "p10": -0.18891893557422967,
+          "p90": 0.26032456582633046,
+          "prob": 0.505,
+          "rank": 24
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.0015086307356155793,
+          "p10": -0.13038787327021129,
+          "p90": 0.1568040568099054,
+          "prob": 0.506,
+          "rank": 22
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.007603676048248076,
+          "p10": -0.13429460080413558,
+          "p90": 0.16634549109707075,
+          "prob": 0.524,
+          "rank": 6
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": 0.0021407055630935368,
+          "p10": -0.21512282225237456,
+          "p90": 0.2788931071913161,
+          "prob": 0.5055,
+          "rank": 19
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.005822338983050956,
+          "p10": -0.2116804406779661,
+          "p90": 0.3004075593220339,
+          "prob": 0.5135,
+          "rank": 8
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.0019792919495635886,
+          "p10": -0.20185588748787586,
+          "p90": 0.2736123860329778,
+          "prob": 0.502,
+          "rank": 20
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0037802902055623644,
+          "p10": -0.22621390568319222,
+          "p90": 0.2884344619105199,
+          "prob": 0.4895,
+          "rank": 36
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.001670225225225308,
+          "p10": -0.20423731981981985,
+          "p90": 0.24105626126126123,
+          "prob": 0.4965,
+          "rank": 30
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": 0.00047373970345976346,
+          "p10": -0.23737775947281714,
+          "p90": 0.2917768039538715,
+          "prob": 0.5015,
+          "rank": 26
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.0012774254742546898,
+          "p10": -0.19152200542005415,
+          "p90": 0.26139560975609744,
+          "prob": 0.4985,
+          "rank": 29
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.0036100237529691492,
+          "p10": -0.23618508313539188,
+          "p90": 0.34112494061757714,
+          "prob": 0.4915,
+          "rank": 35
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.007795714285714239,
+          "p10": -0.18293270408163265,
+          "p90": 0.2249381122448979,
+          "prob": 0.4785,
+          "rank": 41
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.010768067632850209,
+          "p10": -0.26031043478260874,
+          "p90": 0.36293782608695646,
+          "prob": 0.4785,
+          "rank": 47
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.016116604938271717,
+          "p10": -0.1861132870370371,
+          "p90": 0.2492334104938272,
+          "prob": 0.5375,
+          "rank": 2
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.0023757303370786076,
+          "p10": -0.16689768860353127,
+          "p90": 0.20097659711075444,
+          "prob": 0.494,
+          "rank": 32
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.01051339605734758,
+          "p10": -0.2585704032258064,
+          "p90": 0.31941241039426527,
+          "prob": 0.4815,
+          "rank": 46
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0017270916334661823,
+          "p10": -0.13590653386454188,
+          "p90": 0.1525773705179283,
+          "prob": 0.493,
+          "rank": 31
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.009939573070607555,
+          "p10": -0.19439310344827587,
+          "p90": 0.23248735632183903,
+          "prob": 0.4705,
+          "rank": 45
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.015261870503597175,
+          "p10": -0.1250527577937649,
+          "p90": 0.15713141486810556,
+          "prob": 0.554,
+          "rank": 3
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.007821620553359665,
+          "p10": -0.20738956521739127,
+          "p90": 0.24098308300395255,
+          "prob": 0.481,
+          "rank": 42
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": 0.0008373563218391222,
+          "p10": -0.16580597701149424,
+          "p90": 0.1941347126436781,
+          "prob": 0.5035,
+          "rank": 23
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.004262578796561556,
+          "p10": -0.10457702005730662,
+          "p90": 0.13323277936962752,
+          "prob": 0.519,
+          "rank": 13
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.004526163021868701,
+          "p10": -0.23156827037773364,
+          "p90": 0.29779789264413514,
+          "prob": 0.4915,
+          "rank": 38
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.01558031674208149,
+          "p10": -0.21916669683257917,
+          "p90": 0.2828280090497737,
+          "prob": 0.4665,
+          "rank": 50
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.001813131313131322,
+          "p10": -0.17276792929292928,
+          "p90": 0.22206252525252523,
+          "prob": 0.5065,
+          "rank": 21
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.008585036794766965,
+          "p10": -0.24782224039247758,
+          "p90": 0.3316052330335242,
+          "prob": 0.4885,
+          "rank": 44
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.008151084010840082,
+          "p10": -0.2204625203252032,
+          "p90": 0.24629897018970182,
+          "prob": 0.48,
+          "rank": 43
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.0034145557655953507,
+          "p10": -0.11127372400756141,
+          "p90": 0.12613175803402643,
+          "prob": 0.5155,
+          "rank": 15
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.0027822222222222415,
+          "p10": -0.15502349206349209,
+          "p90": 0.17374349206349193,
+          "prob": 0.492,
+          "rank": 33
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.005325765765765822,
+          "p10": -0.18029945945945947,
+          "p90": 0.20992720720720737,
+          "prob": 0.484,
+          "rank": 39
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.018262873563218318,
+          "p10": -0.18110788177339898,
+          "p90": 0.1878639326765188,
+          "prob": 0.453,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.0040393450881611725,
+          "p10": -0.15529209068010086,
+          "p90": 0.15046463476070526,
+          "prob": 0.485,
+          "rank": 37
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.005542828485456286,
+          "p10": -0.13809438314944833,
+          "p90": 0.15505526579739204,
+          "prob": 0.4765,
+          "rank": 40
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.0102436271401396,
+          "p10": -0.17370190234622696,
+          "p90": 0.20168592263792018,
+          "prob": 0.5275,
+          "rank": 4
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": -0.0034360544217687528,
+          "p10": -0.261734693877551,
+          "p90": 0.36015918367346944,
+          "prob": 0.4955,
+          "rank": 34
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.004588771929824542,
+          "p10": -0.10931836257309946,
+          "p90": 0.1221312280701754,
+          "prob": 0.5175,
+          "rank": 11
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.00955136876006435,
+          "p10": -0.2692399355877617,
+          "p90": 0.30286280193236714,
+          "prob": 0.5155,
+          "rank": 5
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.0041200000000001236,
+          "p10": -0.1921435294117647,
+          "p90": 0.2450682352941176,
+          "prob": 0.5095,
+          "rank": 14
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.004989884575026249,
+          "p10": -0.20737670514165796,
+          "p90": 0.25815796432318994,
+          "prob": 0.512,
+          "rank": 10
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.000013258110014069402,
+          "p10": -0.12489421720733429,
+          "p90": 0.15065811001410445,
+          "prob": 0.5,
+          "rank": 27
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": 0.0006068194842407948,
+          "p10": -0.20510535816618913,
+          "p90": 0.23793126074498572,
+          "prob": 0.5015,
+          "rank": 25
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.002282766990291396,
+          "p10": -0.13689842233009697,
+          "p90": 0.16761905339805816,
+          "prob": 0.51,
+          "rank": 18
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0028470588235294247,
+          "p10": -0.1594704447632711,
+          "p90": 0.19718780487804888,
+          "prob": 0.512,
+          "rank": 16
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.0011585535465924446,
+          "p10": -0.0796689847009735,
+          "p90": 0.08747983310152985,
+          "prob": 0.4905,
+          "rank": 28
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.013568894601542425,
+          "p10": -0.23578431876606676,
+          "p90": 0.2760370179948586,
+          "prob": 0.47,
+          "rank": 48
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.017894134897360803,
+          "p10": -0.31641114369501466,
+          "p90": 0.45551739980449657,
+          "prob": 0.4735,
+          "rank": 51
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.029145598194130873,
+          "p10": -0.36024999999999996,
+          "p90": 0.661706546275395,
+          "prob": 0.525,
+          "rank": 1
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.005060174781523097,
+          "p10": -0.26476054931335835,
+          "p90": 0.368665418227216,
+          "prob": 0.508,
+          "rank": 9
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0028213077790304464,
+          "p10": -0.09356087936865842,
+          "p90": 0.0963562570462233,
+          "prob": 0.5155,
+          "rank": 17
+        }
+      ]
+    },
+    {
+      "paths": 2000,
+      "seed": 917,
+      "id": "2026-09-23-8f016c9b",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.0067470157068063585,
+          "p10": -0.20511193717277487,
+          "p90": 0.28545821989528797,
+          "prob": 0.5145,
+          "rank": 9
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": 0.009724610259826738,
+          "p10": -0.2522120852764824,
+          "p90": 0.38221708860759507,
+          "prob": 0.5185,
+          "rank": 3
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.0032363352272727353,
+          "p10": -0.20106056818181817,
+          "p90": 0.2674793465909091,
+          "prob": 0.4915,
+          "rank": 40
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": 0.0020966106442577015,
+          "p10": -0.20507044817927178,
+          "p90": 0.2601953781512605,
+          "prob": 0.505,
+          "rank": 23
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.00109872541879108,
+          "p10": -0.12677782957028405,
+          "p90": 0.14774058994901673,
+          "prob": 0.504,
+          "rank": 27
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.006904192992532865,
+          "p10": -0.12887673750717976,
+          "p90": 0.16277421022400906,
+          "prob": 0.5205,
+          "rank": 7
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": 0.002625915875169582,
+          "p10": -0.21846599728629568,
+          "p90": 0.29915706919945717,
+          "prob": 0.5035,
+          "rank": 20
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.006258915254237385,
+          "p10": -0.20482376271186442,
+          "p90": 0.27541752542372877,
+          "prob": 0.5145,
+          "rank": 12
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.014785111542191975,
+          "p10": -0.19214963142580022,
+          "p90": 0.271862667313288,
+          "prob": 0.5325,
+          "rank": 1
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": 0.0019703748488513195,
+          "p10": -0.23926759371221284,
+          "p90": 0.32895501813784755,
+          "prob": 0.504,
+          "rank": 24
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.0016501351351351223,
+          "p10": -0.20027835585585596,
+          "p90": 0.2447613963963966,
+          "prob": 0.4985,
+          "rank": 37
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": 0.006780939044481071,
+          "p10": -0.2210808896210873,
+          "p90": 0.30317940691927525,
+          "prob": 0.512,
+          "rank": 8
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.0027735772357724287,
+          "p10": -0.19853287262872632,
+          "p90": 0.2616157723577235,
+          "prob": 0.4905,
+          "rank": 38
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.005886270783847958,
+          "p10": -0.2392614251781473,
+          "p90": 0.3804457482185275,
+          "prob": 0.4915,
+          "rank": 47
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.0032009693877551593,
+          "p10": -0.18210025510204075,
+          "p90": 0.2310393367346939,
+          "prob": 0.49,
+          "rank": 39
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": 0.007708309178743988,
+          "p10": -0.2437055555555555,
+          "p90": 0.35040990338164235,
+          "prob": 0.5165,
+          "rank": 6
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.009466959876543113,
+          "p10": -0.18418631172839506,
+          "p90": 0.24597061728395064,
+          "prob": 0.5295,
+          "rank": 4
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.00007996789727116038,
+          "p10": -0.16701303370786513,
+          "p90": 0.21825483146067426,
+          "prob": 0.4995,
+          "rank": 33
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.014900537634408573,
+          "p10": -0.23986238351254485,
+          "p90": 0.32545568996415786,
+          "prob": 0.474,
+          "rank": 51
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0033219123505975334,
+          "p10": -0.1285019123505976,
+          "p90": 0.15350231075697218,
+          "prob": 0.4885,
+          "rank": 42
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.00326633825944167,
+          "p10": -0.1894443349753695,
+          "p90": 0.2355162561576356,
+          "prob": 0.4895,
+          "rank": 41
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.013015347721822446,
+          "p10": -0.1314191846522782,
+          "p90": 0.16575395683453253,
+          "prob": 0.5475,
+          "rank": 2
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": 0.006319723320158177,
+          "p10": -0.1980281027667984,
+          "p90": 0.26410007905138344,
+          "prob": 0.512,
+          "rank": 11
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.005673218390804702,
+          "p10": -0.16616758620689653,
+          "p90": 0.18236643678160935,
+          "prob": 0.484,
+          "rank": 46
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.003493065902578918,
+          "p10": -0.10650435530085967,
+          "p90": 0.13454114613180512,
+          "prob": 0.51,
+          "rank": 19
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.008470775347912518,
+          "p10": -0.2232387673956262,
+          "p90": 0.2875250099403577,
+          "prob": 0.4885,
+          "rank": 49
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.001407330316742006,
+          "p10": -0.21187067873303178,
+          "p90": 0.2953561990950224,
+          "prob": 0.4955,
+          "rank": 36
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.0015606565656565152,
+          "p10": -0.17544393939393932,
+          "p90": 0.23272404040404027,
+          "prob": 0.5035,
+          "rank": 25
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.003954619787407965,
+          "p10": -0.245830825838103,
+          "p90": 0.36434971381847925,
+          "prob": 0.492,
+          "rank": 43
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.005668726287262893,
+          "p10": -0.20701474254742547,
+          "p90": 0.27554135501355015,
+          "prob": 0.4905,
+          "rank": 45
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.00015708884688092617,
+          "p10": -0.11430775047258979,
+          "p90": 0.11371304347826094,
+          "prob": 0.501,
+          "rank": 32
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": 0.002227936507936512,
+          "p10": -0.14703460317460315,
+          "p90": 0.17574476190476185,
+          "prob": 0.5085,
+          "rank": 22
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": 0.0009659459459459008,
+          "p10": -0.17977891891891895,
+          "p90": 0.21993333333333331,
+          "prob": 0.502,
+          "rank": 28
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.010878661740558293,
+          "p10": -0.17836546798029562,
+          "p90": 0.20276685550082107,
+          "prob": 0.4645,
+          "rank": 50
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.00681662468513855,
+          "p10": -0.1494175818639799,
+          "p90": 0.1753737531486146,
+          "prob": 0.4765,
+          "rank": 48
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.005295085255767273,
+          "p10": -0.1413552657973921,
+          "p90": 0.1494282848545636,
+          "prob": 0.4835,
+          "rank": 44
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.00662301838934698,
+          "p10": -0.16280107799619536,
+          "p90": 0.19976677235256823,
+          "prob": 0.5175,
+          "rank": 10
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.004118027210884279,
+          "p10": -0.2655251700680271,
+          "p90": 0.35260986394557836,
+          "prob": 0.506,
+          "rank": 18
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.004787836257309941,
+          "p10": -0.11281520467836259,
+          "p90": 0.12217918128654981,
+          "prob": 0.5215,
+          "rank": 15
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.0006927536231884357,
+          "p10": -0.26061900161030604,
+          "p90": 0.29246054750402584,
+          "prob": 0.503,
+          "rank": 30
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.004764705882353004,
+          "p10": -0.19002588235294116,
+          "p90": 0.270764705882353,
+          "prob": 0.512,
+          "rank": 16
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.004224365162644128,
+          "p10": -0.1973771878279118,
+          "p90": 0.2584227911857293,
+          "prob": 0.5095,
+          "rank": 17
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0002445698166431143,
+          "p10": -0.12142736248236952,
+          "p90": 0.15453145275035252,
+          "prob": 0.5005,
+          "rank": 31
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": 0.0013100859598853543,
+          "p10": -0.2044010888252148,
+          "p90": 0.23532985673352425,
+          "prob": 0.5035,
+          "rank": 26
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.0058075242718445,
+          "p10": -0.14774890776699023,
+          "p90": 0.16619466019417484,
+          "prob": 0.526,
+          "rank": 13
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": -0.000984791965566667,
+          "p10": -0.15907790530846488,
+          "p90": 0.193232281205165,
+          "prob": 0.497,
+          "rank": 34
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.001235048678720485,
+          "p10": -0.08266272600834501,
+          "p90": 0.08879763560500686,
+          "prob": 0.4905,
+          "rank": 35
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.01769742930591256,
+          "p10": -0.23300308483290488,
+          "p90": 0.2669688946015423,
+          "prob": 0.464,
+          "rank": 52
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": 0.0007157380254154688,
+          "p10": -0.3047556207233627,
+          "p90": 0.44566539589442833,
+          "prob": 0.5005,
+          "rank": 29
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.009392776523701851,
+          "p10": -0.3688927765237021,
+          "p90": 0.6731715575620767,
+          "prob": 0.512,
+          "rank": 5
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.004908114856429391,
+          "p10": -0.27266741573033715,
+          "p90": 0.4144621722846442,
+          "prob": 0.5115,
+          "rank": 14
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0024098083427281924,
+          "p10": -0.09628635851183776,
+          "p90": 0.09741657271702353,
+          "prob": 0.5125,
+          "rank": 21
+        }
+      ]
+    },
+    {
+      "paths": 2000,
+      "seed": 42,
+      "id": "2026-09-23-ab441f5a",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": -0.0032628272251308266,
+          "p10": -0.2149697382198953,
+          "p90": 0.27553595113438045,
+          "prob": 0.4965,
+          "rank": 35
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": -0.0031897468354430414,
+          "p10": -0.25374690872751504,
+          "p90": 0.35884988007994667,
+          "prob": 0.49,
+          "rank": 33
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.002243551136363542,
+          "p10": -0.1993098295454545,
+          "p90": 0.24973497159090918,
+          "prob": 0.4955,
+          "rank": 29
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": 0.0039178431372548506,
+          "p10": -0.20760843137254903,
+          "p90": 0.252866106442577,
+          "prob": 0.5075,
+          "rank": 11
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.0011295630007281954,
+          "p10": -0.13212747268754554,
+          "p90": 0.155705134741442,
+          "prob": 0.505,
+          "rank": 24
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.004355887421022331,
+          "p10": -0.1428230901780586,
+          "p90": 0.16403159103963239,
+          "prob": 0.518,
+          "rank": 10
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": -0.0023139484396200727,
+          "p10": -0.23022141112618733,
+          "p90": 0.28579405698778837,
+          "prob": 0.4965,
+          "rank": 30
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.0025304406779660393,
+          "p10": -0.22148498305084752,
+          "p90": 0.26830718644067786,
+          "prob": 0.504,
+          "rank": 16
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.004940193986420871,
+          "p10": -0.20161379243452948,
+          "p90": 0.27771821532492713,
+          "prob": 0.5105,
+          "rank": 7
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.005461064087061707,
+          "p10": -0.23832599758162032,
+          "p90": 0.3036414752116081,
+          "prob": 0.4885,
+          "rank": 42
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.00271198198198197,
+          "p10": -0.20171369369369374,
+          "p90": 0.2527266216216215,
+          "prob": 0.497,
+          "rank": 31
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.004299802306425016,
+          "p10": -0.2392775617792422,
+          "p90": 0.2879501812191103,
+          "prob": 0.4905,
+          "rank": 38
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": 0.0028750677506774736,
+          "p10": -0.20151132791327908,
+          "p90": 0.2589174796747966,
+          "prob": 0.508,
+          "rank": 14
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.0049609026128265565,
+          "p10": -0.23833577197149636,
+          "p90": 0.33432313539192404,
+          "prob": 0.491,
+          "rank": 40
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": 0.002233826530612104,
+          "p10": -0.18238632653061226,
+          "p90": 0.2246322959183673,
+          "prob": 0.5045,
+          "rank": 18
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.021512270531401034,
+          "p10": -0.27523062801932363,
+          "p90": 0.3325356521739131,
+          "prob": 0.4625,
+          "rank": 51
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.011784182098765417,
+          "p10": -0.17598725308641971,
+          "p90": 0.2367415277777778,
+          "prob": 0.532,
+          "rank": 2
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.003203852327447798,
+          "p10": -0.17355354735152484,
+          "p90": 0.19998131621187798,
+          "prob": 0.4865,
+          "rank": 34
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.00825607526881722,
+          "p10": -0.24897243727598561,
+          "p90": 0.3215541666666666,
+          "prob": 0.4825,
+          "rank": 45
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.004914661354581629,
+          "p10": -0.13543107569721125,
+          "p90": 0.148280876494024,
+          "prob": 0.4775,
+          "rank": 39
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.008537931034482749,
+          "p10": -0.1904706075533662,
+          "p90": 0.23250476190476177,
+          "prob": 0.4815,
+          "rank": 46
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.010344364508393378,
+          "p10": -0.1289136690647481,
+          "p90": 0.16935971223021595,
+          "prob": 0.5385,
+          "rank": 3
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": 0.0008974703557311781,
+          "p10": -0.20601221343873521,
+          "p90": 0.23823114624505926,
+          "prob": 0.5015,
+          "rank": 25
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.006893563218390852,
+          "p10": -0.16292643678160923,
+          "p90": 0.17689528735632187,
+          "prob": 0.4775,
+          "rank": 43
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.0034269914040114813,
+          "p10": -0.10348412607449864,
+          "p90": 0.13161753581661895,
+          "prob": 0.516,
+          "rank": 13
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": 0.001308986083498942,
+          "p10": -0.23177534791252485,
+          "p90": 0.3049255666003978,
+          "prob": 0.505,
+          "rank": 23
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.0033184615384616034,
+          "p10": -0.20788859728506792,
+          "p90": 0.29071683257918535,
+          "prob": 0.4945,
+          "rank": 37
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.002407171717171641,
+          "p10": -0.18215510101010102,
+          "p90": 0.22174131313131307,
+          "prob": 0.5065,
+          "rank": 17
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.005437203597710605,
+          "p10": -0.2574958299264105,
+          "p90": 0.33434243663123464,
+          "prob": 0.49,
+          "rank": 41
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.003187831978319733,
+          "p10": -0.2120117073170732,
+          "p90": 0.27360905149051495,
+          "prob": 0.4895,
+          "rank": 32
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.0017918714555764659,
+          "p10": -0.11582249527410216,
+          "p90": 0.12328166351606806,
+          "prob": 0.5095,
+          "rank": 22
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": 0.005261587301587323,
+          "p10": -0.15050825396825396,
+          "p90": 0.18231015873015854,
+          "prob": 0.5185,
+          "rank": 6
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.011857297297297342,
+          "p10": -0.1868906306306306,
+          "p90": 0.2229133333333333,
+          "prob": 0.4665,
+          "rank": 47
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.0137471346469622,
+          "p10": -0.1792295566502463,
+          "p90": 0.21297477011494248,
+          "prob": 0.457,
+          "rank": 48
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.007726297229219248,
+          "p10": -0.15199123425692695,
+          "p90": 0.16207843828715363,
+          "prob": 0.478,
+          "rank": 44
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.0033113340020060056,
+          "p10": -0.13759759277833494,
+          "p90": 0.1564972918756269,
+          "prob": 0.4835,
+          "rank": 36
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.002082244768547792,
+          "p10": -0.1682067850348763,
+          "p90": 0.21258839568801524,
+          "prob": 0.507,
+          "rank": 19
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.004680612244897908,
+          "p10": -0.25531564625850334,
+          "p90": 0.36447244897959186,
+          "prob": 0.507,
+          "rank": 8
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.002719532163742766,
+          "p10": -0.11024538011695906,
+          "p90": 0.12847134502923985,
+          "prob": 0.5125,
+          "rank": 15
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.015475362318840613,
+          "p10": -0.24663059581320457,
+          "p90": 0.32284702093397755,
+          "prob": 0.5355,
+          "rank": 1
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.004564705882352804,
+          "p10": -0.19507176470588228,
+          "p90": 0.2528176470588237,
+          "prob": 0.507,
+          "rank": 9
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.00196415529905547,
+          "p10": -0.20773859391395588,
+          "p90": 0.2542160545645329,
+          "prob": 0.504,
+          "rank": 20
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0019368124118477326,
+          "p10": -0.12757912552891393,
+          "p90": 0.14796050775740466,
+          "prob": 0.504,
+          "rank": 21
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.0006900859598855114,
+          "p10": -0.20072839541547283,
+          "p90": 0.25019693409742105,
+          "prob": 0.498,
+          "rank": 27
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.0005144417475728691,
+          "p10": -0.14477427184466007,
+          "p90": 0.162410072815534,
+          "prob": 0.5025,
+          "rank": 26
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.005357101865136382,
+          "p10": -0.15303701578192253,
+          "p90": 0.2080024390243902,
+          "prob": 0.516,
+          "rank": 5
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.0007997218358831715,
+          "p10": -0.0793004172461752,
+          "p90": 0.08726495132127954,
+          "prob": 0.495,
+          "rank": 28
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.018595629820051474,
+          "p10": -0.236782262210797,
+          "p90": 0.26515321336760933,
+          "prob": 0.465,
+          "rank": 50
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.016105571847507383,
+          "p10": -0.3100354838709678,
+          "p90": 0.4917884652981426,
+          "prob": 0.4785,
+          "rank": 49
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": -0.025813205417607232,
+          "p10": -0.36264108352144464,
+          "p90": 0.576520316027088,
+          "prob": 0.477,
+          "rank": 52
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.009888139825218412,
+          "p10": -0.26949762796504373,
+          "p90": 0.3960034956304619,
+          "prob": 0.5185,
+          "rank": 4
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0035197294250282063,
+          "p10": -0.09444870349492673,
+          "p90": 0.10057666290868084,
+          "prob": 0.519,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "paths": 2000,
+      "seed": 314159,
+      "id": "2026-09-23-acc95b33",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": -0.0058873647469458446,
+          "p10": -0.215986387434555,
+          "p90": 0.26343636998254816,
+          "prob": 0.485,
+          "rank": 33
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": -0.005318934043970658,
+          "p10": -0.2765335376415723,
+          "p90": 0.35160588274483673,
+          "prob": 0.4895,
+          "rank": 32
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.013672556818181802,
+          "p10": -0.19641048295454544,
+          "p90": 0.22549258522727267,
+          "prob": 0.466,
+          "rank": 47
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": -0.008600504201680681,
+          "p10": -0.21286736694677877,
+          "p90": 0.23951263305322135,
+          "prob": 0.487,
+          "rank": 39
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": -0.004400451565914065,
+          "p10": -0.13669345229424623,
+          "p90": 0.1561706627822288,
+          "prob": 0.485,
+          "rank": 29
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.0007245835726592542,
+          "p10": -0.14429695577254453,
+          "p90": 0.1648983342906376,
+          "prob": 0.506,
+          "rank": 14
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": -0.012766214382632257,
+          "p10": -0.22465508819538682,
+          "p90": 0.27434094979647217,
+          "prob": 0.4715,
+          "rank": 45
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": -0.0051423389830508315,
+          "p10": -0.2229050508474576,
+          "p90": 0.27383820338983056,
+          "prob": 0.4865,
+          "rank": 31
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.009754723569350032,
+          "p10": -0.18771166828322017,
+          "p90": 0.264124306498545,
+          "prob": 0.521,
+          "rank": 4
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0024692865779928352,
+          "p10": -0.2419083434099154,
+          "p90": 0.2971753325272066,
+          "prob": 0.495,
+          "rank": 22
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.010360720720720695,
+          "p10": -0.20830243243243252,
+          "p90": 0.2350049999999999,
+          "prob": 0.4825,
+          "rank": 42
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.013607347611202636,
+          "p10": -0.23173990115321252,
+          "p90": 0.2893877759472818,
+          "prob": 0.472,
+          "rank": 46
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.007817208672086684,
+          "p10": -0.20494311653116537,
+          "p90": 0.2583078048780487,
+          "prob": 0.4825,
+          "rank": 38
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.01936736342042744,
+          "p10": -0.2512980997624703,
+          "p90": 0.3111390023752969,
+          "prob": 0.463,
+          "rank": 51
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.006998673469387762,
+          "p10": -0.18647867346938785,
+          "p90": 0.22094627551020407,
+          "prob": 0.4805,
+          "rank": 36
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.014254057971014422,
+          "p10": -0.25214352657004824,
+          "p90": 0.34623024154589355,
+          "prob": 0.477,
+          "rank": 48
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.017625771604938167,
+          "p10": -0.18744912037037043,
+          "p90": 0.23836163580246916,
+          "prob": 0.5435,
+          "rank": 2
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.0029173675762440565,
+          "p10": -0.17094288924558587,
+          "p90": 0.18729499197431787,
+          "prob": 0.49,
+          "rank": 25
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.0044472759856629684,
+          "p10": -0.24493691756272395,
+          "p90": 0.3094863440860216,
+          "prob": 0.493,
+          "rank": 30
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0014325099601593116,
+          "p10": -0.13569195219123498,
+          "p90": 0.15155856573705173,
+          "prob": 0.492,
+          "rank": 18
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.0065559934318555335,
+          "p10": -0.19720919540229886,
+          "p90": 0.23136091954022997,
+          "prob": 0.482,
+          "rank": 35
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.016014868105515667,
+          "p10": -0.12432757793764981,
+          "p90": 0.17274292565947236,
+          "prob": 0.5565,
+          "rank": 3
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.004283043478260806,
+          "p10": -0.2010655731225296,
+          "p90": 0.23981110671936756,
+          "prob": 0.489,
+          "rank": 28
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.009581494252873468,
+          "p10": -0.16196252873563222,
+          "p90": 0.17765356321839088,
+          "prob": 0.471,
+          "rank": 41
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.0069778223495702285,
+          "p10": -0.10014143266475639,
+          "p90": 0.12767873925501427,
+          "prob": 0.5275,
+          "rank": 8
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.011195308151093375,
+          "p10": -0.23954266401590463,
+          "p90": 0.29435940357852886,
+          "prob": 0.478,
+          "rank": 44
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.02090533936651573,
+          "p10": -0.22537081447963803,
+          "p90": 0.2706652941176473,
+          "prob": 0.4585,
+          "rank": 52
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": -0.0019639898989898263,
+          "p10": -0.1786017676767676,
+          "p90": 0.22993439393939408,
+          "prob": 0.4955,
+          "rank": 20
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.009338430089942729,
+          "p10": -0.24985290269828286,
+          "p90": 0.32351300081766166,
+          "prob": 0.48,
+          "rank": 40
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.0026307859078591456,
+          "p10": -0.21541238482384817,
+          "p90": 0.25727772357723566,
+          "prob": 0.4965,
+          "rank": 23
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.004479206049149198,
+          "p10": -0.11460264650283558,
+          "p90": 0.12422589792060501,
+          "prob": 0.5175,
+          "rank": 11
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.003287936507936462,
+          "p10": -0.15669460317460315,
+          "p90": 0.1712314285714287,
+          "prob": 0.4925,
+          "rank": 26
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.004252252252252231,
+          "p10": -0.18200846846846852,
+          "p90": 0.2232279279279279,
+          "prob": 0.4845,
+          "rank": 27
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.011173472906404025,
+          "p10": -0.17596131362889988,
+          "p90": 0.19153043513957302,
+          "prob": 0.4745,
+          "rank": 43
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.006443828715365307,
+          "p10": -0.14947375314861466,
+          "p90": 0.15947435768261964,
+          "prob": 0.4795,
+          "rank": 34
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.0017808425275828155,
+          "p10": -0.136601003009027,
+          "p90": 0.15715797392176523,
+          "prob": 0.492,
+          "rank": 19
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.00811509194673432,
+          "p10": -0.16736886493341796,
+          "p90": 0.20778953709575143,
+          "prob": 0.518,
+          "rank": 5
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.0071370748299319775,
+          "p10": -0.2791840136054421,
+          "p90": 0.35063639455782303,
+          "prob": 0.512,
+          "rank": 6
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": -0.0014149707602338912,
+          "p10": -0.10845309941520476,
+          "p90": 0.1251714619883042,
+          "prob": 0.496,
+          "rank": 17
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.021520128824476625,
+          "p10": -0.2623668276972625,
+          "p90": 0.31863317230273736,
+          "prob": 0.5355,
+          "rank": 1
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": -0.002894117647058825,
+          "p10": -0.20289647058823523,
+          "p90": 0.24713176470588238,
+          "prob": 0.4915,
+          "rank": 24
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": -0.007141196222455459,
+          "p10": -0.2104085834207765,
+          "p90": 0.24863422875131147,
+          "prob": 0.482,
+          "rank": 37
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": -0.0005311706629055335,
+          "p10": -0.12569788434414675,
+          "p90": 0.1479060648801127,
+          "prob": 0.498,
+          "rank": 16
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.0022116045845271826,
+          "p10": -0.2035132951289399,
+          "p90": 0.2340238108882522,
+          "prob": 0.4915,
+          "rank": 21
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.004488713592232907,
+          "p10": -0.14439696601941743,
+          "p90": 0.17813361650485438,
+          "prob": 0.517,
+          "rank": 10
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0016879483500715775,
+          "p10": -0.15966628407460537,
+          "p90": 0.18848637015781922,
+          "prob": 0.504,
+          "rank": 12
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": 0.000018776077886029086,
+          "p10": -0.07959109874826154,
+          "p90": 0.08405354659248965,
+          "prob": 0.5,
+          "rank": 15
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.014532390745501278,
+          "p10": -0.23075244215938306,
+          "p90": 0.2627843187660668,
+          "prob": 0.471,
+          "rank": 49
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.016696969696969766,
+          "p10": -0.335958651026393,
+          "p90": 0.48205718475073334,
+          "prob": 0.474,
+          "rank": 50
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.0069830699774267035,
+          "p10": -0.36293397291196394,
+          "p90": 0.629214446952596,
+          "prob": 0.5075,
+          "rank": 7
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.006373533083645411,
+          "p10": -0.2767510611735331,
+          "p90": 0.4056159800249688,
+          "prob": 0.5125,
+          "rank": 9
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0011071025930100564,
+          "p10": -0.09372153325817367,
+          "p90": 0.10387091319052977,
+          "prob": 0.505,
+          "rank": 13
+        }
+      ]
+    },
+    {
+      "paths": 10000,
+      "seed": 20260917,
+      "id": "2026-09-23-97defa18",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.0020344153577660506,
+          "p10": -0.2170086910994764,
+          "p90": 0.27610118673647466,
+          "prob": 0.5046,
+          "rank": 15
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": -0.0007576748834110525,
+          "p10": -0.25116949367088603,
+          "p90": 0.3645058027981345,
+          "prob": 0.4984,
+          "rank": 28
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.0051623295454545914,
+          "p10": -0.19756786931818182,
+          "p90": 0.24929423295454556,
+          "prob": 0.4876,
+          "rank": 46
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": 0.0005064425770306968,
+          "p10": -0.2057919887955182,
+          "p90": 0.2651336134453781,
+          "prob": 0.501,
+          "rank": 24
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": -0.0016685142024763788,
+          "p10": -0.12936820101966495,
+          "p90": 0.15509733430444284,
+          "prob": 0.4939,
+          "rank": 29
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.006120907524411301,
+          "p10": -0.1339040206777714,
+          "p90": 0.16806255025847205,
+          "prob": 0.518,
+          "rank": 7
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": 0.001723880597015004,
+          "p10": -0.22727818181818182,
+          "p90": 0.2799490366350068,
+          "prob": 0.5032,
+          "rank": 17
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": -0.003132813559322045,
+          "p10": -0.21459776271186437,
+          "p90": 0.27220918644067793,
+          "prob": 0.4931,
+          "rank": 34
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.013397672162948515,
+          "p10": -0.19079771096023268,
+          "p90": 0.278775354025218,
+          "prob": 0.5309,
+          "rank": 5
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0042799274486093886,
+          "p10": -0.2314926239419589,
+          "p90": 0.29367496977025387,
+          "prob": 0.4926,
+          "rank": 42
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.0024534009009008484,
+          "p10": -0.19775245495495497,
+          "p90": 0.24843963963963955,
+          "prob": 0.4935,
+          "rank": 31
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.0037399835255355063,
+          "p10": -0.23157074135090605,
+          "p90": 0.2903953377265238,
+          "prob": 0.4937,
+          "rank": 39
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": 0.000015853658536624238,
+          "p10": -0.2023839295392954,
+          "p90": 0.2651933333333334,
+          "prob": 0.5,
+          "rank": 27
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.010160380047505968,
+          "p10": -0.23877501187648464,
+          "p90": 0.34011097387173383,
+          "prob": 0.4815,
+          "rank": 49
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.0024676530612245395,
+          "p10": -0.1844028571428571,
+          "p90": 0.225467193877551,
+          "prob": 0.4947,
+          "rank": 32
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.01097173913043481,
+          "p10": -0.26214961352657007,
+          "p90": 0.3457495652173912,
+          "prob": 0.4818,
+          "rank": 51
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.014237299382716007,
+          "p10": -0.17693441358024686,
+          "p90": 0.24182666666666686,
+          "prob": 0.5363,
+          "rank": 4
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": 0.00005961476725513393,
+          "p10": -0.16593605136436596,
+          "p90": 0.2054539967897271,
+          "prob": 0.5006,
+          "rank": 26
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.009267741935483964,
+          "p10": -0.23963714157706095,
+          "p90": 0.32421222222222235,
+          "prob": 0.4823,
+          "rank": 47
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0033082071713146366,
+          "p10": -0.13310940239043823,
+          "p90": 0.15046007968127473,
+          "prob": 0.4894,
+          "rank": 37
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.009850246305418642,
+          "p10": -0.19419770114942525,
+          "p90": 0.22837832512315281,
+          "prob": 0.4741,
+          "rank": 48
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.015429736211031164,
+          "p10": -0.1218613908872902,
+          "p90": 0.16661438848920862,
+          "prob": 0.5533,
+          "rank": 2
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": 0.0017684980237153702,
+          "p10": -0.20199098814229255,
+          "p90": 0.25370359683794463,
+          "prob": 0.5035,
+          "rank": 16
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.0030293103448276737,
+          "p10": -0.16600229885057471,
+          "p90": 0.18766287356321842,
+          "prob": 0.4921,
+          "rank": 33
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.004800286532951281,
+          "p10": -0.10522722063037249,
+          "p90": 0.13180647564469927,
+          "prob": 0.5219,
+          "rank": 8
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.0035724453280318036,
+          "p10": -0.23002870775347917,
+          "p90": 0.2921894234592446,
+          "prob": 0.493,
+          "rank": 38
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.004766108597285101,
+          "p10": -0.21416004524886878,
+          "p90": 0.2887710407239821,
+          "prob": 0.4891,
+          "rank": 44
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.0015797474747474283,
+          "p10": -0.1826158585858586,
+          "p90": 0.2203233333333332,
+          "prob": 0.5045,
+          "rank": 18
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.0037704824202779985,
+          "p10": -0.24893704006541295,
+          "p90": 0.3425733442354866,
+          "prob": 0.4927,
+          "rank": 40
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.004810189701897061,
+          "p10": -0.21401639566395658,
+          "p90": 0.2681034959349593,
+          "prob": 0.4868,
+          "rank": 45
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.0032415879017013705,
+          "p10": -0.1067453686200378,
+          "p90": 0.12292778827977302,
+          "prob": 0.5139,
+          "rank": 12
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.003820317460317413,
+          "p10": -0.14860158730158735,
+          "p90": 0.1772447619047619,
+          "prob": 0.4866,
+          "rank": 41
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.001744144144144144,
+          "p10": -0.18716738738738736,
+          "p90": 0.24154036036036053,
+          "prob": 0.4963,
+          "rank": 30
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.014857528735632175,
+          "p10": -0.17665926108374386,
+          "p90": 0.1996601231527093,
+          "prob": 0.4599,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.004628110831234267,
+          "p10": -0.147016322418136,
+          "p90": 0.1648853400503778,
+          "prob": 0.4852,
+          "rank": 43
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.003202708124373066,
+          "p10": -0.14067532597793386,
+          "p90": 0.15735476429287876,
+          "prob": 0.4885,
+          "rank": 35
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.006860938490805379,
+          "p10": -0.16834495878249844,
+          "p90": 0.206423525681674,
+          "prob": 0.5205,
+          "rank": 6
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.003548639455782432,
+          "p10": -0.26244455782312925,
+          "p90": 0.36297959183673467,
+          "prob": 0.5065,
+          "rank": 11
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.0009167251461987824,
+          "p10": -0.11037380116959072,
+          "p90": 0.12780514619883032,
+          "prob": 0.5037,
+          "rank": 23
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.018478904991948486,
+          "p10": -0.2531262479871176,
+          "p90": 0.311498228663446,
+          "prob": 0.5378,
+          "rank": 1
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.004055294117647046,
+          "p10": -0.1930129411764705,
+          "p90": 0.24782588235294112,
+          "prob": 0.5085,
+          "rank": 9
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.0025139349422875767,
+          "p10": -0.20632509968520452,
+          "p90": 0.25232503672612805,
+          "prob": 0.5052,
+          "rank": 13
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0009788434414668146,
+          "p10": -0.12786741889985898,
+          "p90": 0.14754612129760236,
+          "prob": 0.5039,
+          "rank": 22
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.003261604584527178,
+          "p10": -0.1988173925501433,
+          "p90": 0.25072853868194844,
+          "prob": 0.4925,
+          "rank": 36
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.0036354368932038916,
+          "p10": -0.14084866504854365,
+          "p90": 0.16651359223300966,
+          "prob": 0.5133,
+          "rank": 10
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0010437589670013736,
+          "p10": -0.1569559540889527,
+          "p90": 0.1932427546628408,
+          "prob": 0.5037,
+          "rank": 21
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": 0.0004742698191932959,
+          "p10": -0.08237413073713495,
+          "p90": 0.08755563282336576,
+          "prob": 0.5028,
+          "rank": 25
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.010329305912596287,
+          "p10": -0.2316437017994858,
+          "p90": 0.2782758354755783,
+          "prob": 0.4783,
+          "rank": 50
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": 0.0013434995112415749,
+          "p10": -0.3121102639296188,
+          "p90": 0.4777319648093843,
+          "prob": 0.502,
+          "rank": 19
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.002474040632054253,
+          "p10": -0.37679063205417607,
+          "p90": 0.6510203160270882,
+          "prob": 0.5027,
+          "rank": 14
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.014321847690387024,
+          "p10": -0.262498127340824,
+          "p90": 0.39779225967540577,
+          "prob": 0.523,
+          "rank": 3
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0011933483652761812,
+          "p10": -0.09577057497181507,
+          "p90": 0.10172266065388968,
+          "prob": 0.5061,
+          "rank": 20
+        }
+      ]
+    },
+    {
+      "paths": 10000,
+      "seed": 1701,
+      "id": "2026-09-23-7dd975de",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.004170994764397973,
+          "p10": -0.21804460732984288,
+          "p90": 0.2708049563699826,
+          "prob": 0.5095,
+          "rank": 12
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": 0.0027914257161891776,
+          "p10": -0.25867834776815457,
+          "p90": 0.3541106129247169,
+          "prob": 0.5048,
+          "rank": 17
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.006959602272727405,
+          "p10": -0.19926278409090914,
+          "p90": 0.25224278409090917,
+          "prob": 0.4852,
+          "rank": 48
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": -0.0027075910364144917,
+          "p10": -0.20509521008403364,
+          "p90": 0.2535886554621849,
+          "prob": 0.4937,
+          "rank": 32
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.0034723743627094183,
+          "p10": -0.12933075746540412,
+          "p90": 0.15599764020393292,
+          "prob": 0.5119,
+          "rank": 15
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.005586444572085014,
+          "p10": -0.13414847788627227,
+          "p90": 0.16762211372774272,
+          "prob": 0.5199,
+          "rank": 9
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": -0.0027832021709632837,
+          "p10": -0.22295739484396193,
+          "p90": 0.2905428222523745,
+          "prob": 0.4934,
+          "rank": 34
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.0035936271186440827,
+          "p10": -0.2133014576271186,
+          "p90": 0.28707240677966106,
+          "prob": 0.5069,
+          "rank": 13
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.011490252182347227,
+          "p10": -0.19135192046556737,
+          "p90": 0.27652427740058205,
+          "prob": 0.5245,
+          "rank": 4
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0027145102781137576,
+          "p10": -0.23462237001209185,
+          "p90": 0.29397448609431676,
+          "prob": 0.4943,
+          "rank": 33
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.002563063063063087,
+          "p10": -0.19925905405405409,
+          "p90": 0.24382470720720728,
+          "prob": 0.4945,
+          "rank": 31
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.002239390444810585,
+          "p10": -0.23587456342668855,
+          "p90": 0.29384846787479413,
+          "prob": 0.4947,
+          "rank": 30
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.0032489972899729658,
+          "p10": -0.19825856368563677,
+          "p90": 0.2611081029810298,
+          "prob": 0.493,
+          "rank": 37
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.009900950118764795,
+          "p10": -0.2415141567695962,
+          "p90": 0.3318377672209025,
+          "prob": 0.4806,
+          "rank": 51
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.00606729591836741,
+          "p10": -0.1819813775510204,
+          "p90": 0.226723418367347,
+          "prob": 0.4831,
+          "rank": 46
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.004533768115941972,
+          "p10": -0.257728309178744,
+          "p90": 0.3437689855072463,
+          "prob": 0.4914,
+          "rank": 43
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.011871620370370373,
+          "p10": -0.18101391975308645,
+          "p90": 0.24378004629629624,
+          "prob": 0.5305,
+          "rank": 3
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.0017471589085071848,
+          "p10": -0.16716109149277691,
+          "p90": 0.20316869983948638,
+          "prob": 0.4958,
+          "rank": 28
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.003369910394265263,
+          "p10": -0.24483339605734766,
+          "p90": 0.31644081541218627,
+          "prob": 0.493,
+          "rank": 39
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0013125896414342142,
+          "p10": -0.1328549003984063,
+          "p90": 0.15204350597609562,
+          "prob": 0.4953,
+          "rank": 26
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.006805582922824294,
+          "p10": -0.1951267651888342,
+          "p90": 0.23592380952380942,
+          "prob": 0.484,
+          "rank": 47
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.013690167865707314,
+          "p10": -0.12529208633093525,
+          "p90": 0.16422158273381293,
+          "prob": 0.5508,
+          "rank": 2
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.0010010671936758753,
+          "p10": -0.2042853359683795,
+          "p90": 0.25716758893280645,
+          "prob": 0.4977,
+          "rank": 25
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.005002988505747097,
+          "p10": -0.1647658620689656,
+          "p90": 0.18700977011494269,
+          "prob": 0.4857,
+          "rank": 44
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.0065978796561603215,
+          "p10": -0.10504154727793691,
+          "p90": 0.13288160458452714,
+          "prob": 0.5278,
+          "rank": 6
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.0020748310139164783,
+          "p10": -0.23214735586481117,
+          "p90": 0.2966355864811132,
+          "prob": 0.4966,
+          "rank": 29
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.008796561085972932,
+          "p10": -0.21596371040723983,
+          "p90": 0.2853638914027148,
+          "prob": 0.4817,
+          "rank": 49
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": -0.00023146464646461862,
+          "p10": -0.17451787878787883,
+          "p90": 0.21800611111111112,
+          "prob": 0.4993,
+          "rank": 24
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.003323957481602635,
+          "p10": -0.2512460343417825,
+          "p90": 0.34408560915780884,
+          "prob": 0.4936,
+          "rank": 38
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.005672005420054083,
+          "p10": -0.21239918699186988,
+          "p90": 0.2647239566395665,
+          "prob": 0.488,
+          "rank": 45
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.004291493383742795,
+          "p10": -0.11058846880907369,
+          "p90": 0.12198052930056713,
+          "prob": 0.5195,
+          "rank": 11
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.0031396825396825534,
+          "p10": -0.15287555555555565,
+          "p90": 0.1811853968253967,
+          "prob": 0.4897,
+          "rank": 36
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.0040600000000000636,
+          "p10": -0.18452882882882882,
+          "p90": 0.22327171171171178,
+          "prob": 0.4894,
+          "rank": 41
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.01036838259441708,
+          "p10": -0.17564508210180618,
+          "p90": 0.2021479885057471,
+          "prob": 0.4723,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.0015228211586901796,
+          "p10": -0.15135602015113359,
+          "p90": 0.16492428211586896,
+          "prob": 0.4949,
+          "rank": 27
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.0029771313941826527,
+          "p10": -0.13832326980942833,
+          "p90": 0.1587282848545637,
+          "prob": 0.4902,
+          "rank": 35
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.005679644895370872,
+          "p10": -0.16844540266328467,
+          "p90": 0.21280957514267596,
+          "prob": 0.5177,
+          "rank": 8
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.003325850340136105,
+          "p10": -0.25879931972789116,
+          "p90": 0.37833707482993195,
+          "prob": 0.5058,
+          "rank": 16
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.0020659649122807267,
+          "p10": -0.11164093567251465,
+          "p90": 0.1270699415204677,
+          "prob": 0.5091,
+          "rank": 18
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.018259259259259197,
+          "p10": -0.2549900161030595,
+          "p90": 0.3165610305958133,
+          "prob": 0.5344,
+          "rank": 1
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.005344705882353029,
+          "p10": -0.19169176470588234,
+          "p90": 0.24902823529411755,
+          "prob": 0.5136,
+          "rank": 10
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.0005840293809022956,
+          "p10": -0.20663011542497378,
+          "p90": 0.2571921930745016,
+          "prob": 0.5014,
+          "rank": 22
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0007373765867417781,
+          "p10": -0.12731029619181955,
+          "p90": 0.14888293370944994,
+          "prob": 0.5019,
+          "rank": 21
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.004315530085959862,
+          "p10": -0.20034060171919765,
+          "p90": 0.24406074498567332,
+          "prob": 0.4903,
+          "rank": 42
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.003475485436893244,
+          "p10": -0.14216735436893202,
+          "p90": 0.1701683252427184,
+          "prob": 0.5118,
+          "rank": 14
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.001501004304160558,
+          "p10": -0.15810416068866573,
+          "p90": 0.19607632711621248,
+          "prob": 0.5052,
+          "rank": 20
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.000051460361613298033,
+          "p10": -0.08179763560500697,
+          "p90": 0.08519541029207245,
+          "prob": 0.4997,
+          "rank": 23
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.009478406169665776,
+          "p10": -0.23532030848329044,
+          "p90": 0.27600411311053974,
+          "prob": 0.4783,
+          "rank": 50
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.003741544477028347,
+          "p10": -0.3207955034213099,
+          "p90": 0.4729550342130986,
+          "prob": 0.4949,
+          "rank": 40
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.005770880361173791,
+          "p10": -0.3760976297968398,
+          "p90": 0.6505953724604965,
+          "prob": 0.5048,
+          "rank": 7
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.010528339575530676,
+          "p10": -0.2664367041198502,
+          "p90": 0.38663520599250933,
+          "prob": 0.5194,
+          "rank": 5
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0016668545659526135,
+          "p10": -0.09506031567080053,
+          "p90": 0.10047519729425036,
+          "prob": 0.5091,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "paths": 10000,
+      "seed": 917,
+      "id": "2026-09-23-9ce2c726",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": 0.001190191972076704,
+          "p10": -0.21769221640488656,
+          "p90": 0.2755769982547993,
+          "prob": 0.5024,
+          "rank": 21
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": -0.0010602731512324715,
+          "p10": -0.26161946702198535,
+          "p90": 0.3640387808127914,
+          "prob": 0.4981,
+          "rank": 29
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.0050088636363636585,
+          "p10": -0.2013068750000001,
+          "p90": 0.25272571022727286,
+          "prob": 0.4894,
+          "rank": 42
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": -0.00015873949579825464,
+          "p10": -0.20722627450980402,
+          "p90": 0.2595761904761904,
+          "prob": 0.4997,
+          "rank": 25
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.002339075018208403,
+          "p10": -0.1321617479970867,
+          "p90": 0.15509201747997103,
+          "prob": 0.5073,
+          "rank": 14
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.003803905801263774,
+          "p10": -0.1359774842044802,
+          "p90": 0.16543572659391148,
+          "prob": 0.5128,
+          "rank": 10
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": 0.0015286838534600555,
+          "p10": -0.22100681139755773,
+          "p90": 0.2954470556309361,
+          "prob": 0.5026,
+          "rank": 18
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.0017305084745762311,
+          "p10": -0.21320633898305086,
+          "p90": 0.2824295254237288,
+          "prob": 0.5041,
+          "rank": 17
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.014525121241513173,
+          "p10": -0.19167859359844808,
+          "p90": 0.2769918331716781,
+          "prob": 0.5325,
+          "rank": 1
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0022085852478838097,
+          "p10": -0.235654292623942,
+          "p90": 0.3119002418379684,
+          "prob": 0.4953,
+          "rank": 32
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.0035578828828829456,
+          "p10": -0.1969803828828829,
+          "p90": 0.23971878378378375,
+          "prob": 0.4917,
+          "rank": 37
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.0034794233937397445,
+          "p10": -0.22686332784184515,
+          "p90": 0.295818896210873,
+          "prob": 0.4948,
+          "rank": 36
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.0008177777777778061,
+          "p10": -0.2008620325203253,
+          "p90": 0.27207295392953923,
+          "prob": 0.4983,
+          "rank": 28
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.010321092636579543,
+          "p10": -0.243049786223278,
+          "p90": 0.34194893111638947,
+          "prob": 0.4795,
+          "rank": 50
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.004614846938775563,
+          "p10": -0.1837603571428571,
+          "p90": 0.22573464285714273,
+          "prob": 0.4866,
+          "rank": 40
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.0051288888888888495,
+          "p10": -0.2538610628019323,
+          "p90": 0.34330178743961337,
+          "prob": 0.4905,
+          "rank": 43
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.013928672839506273,
+          "p10": -0.18205535493827163,
+          "p90": 0.24130695987654316,
+          "prob": 0.5351,
+          "rank": 2
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.0020838202247190907,
+          "p10": -0.17145313001605134,
+          "p90": 0.20768526484751204,
+          "prob": 0.4948,
+          "rank": 31
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.009578073476702365,
+          "p10": -0.2436194982078853,
+          "p90": 0.32006014336917565,
+          "prob": 0.483,
+          "rank": 48
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.0028438247011951523,
+          "p10": -0.13212820717131468,
+          "p90": 0.1508568924302789,
+          "prob": 0.4895,
+          "rank": 34
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.0058801313628900065,
+          "p10": -0.1932486042692939,
+          "p90": 0.22617602627257782,
+          "prob": 0.4856,
+          "rank": 45
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.012280575539568295,
+          "p10": -0.12737170263788977,
+          "p90": 0.16777170263788976,
+          "prob": 0.5475,
+          "rank": 3
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": 0.00004264822134381063,
+          "p10": -0.20686470355731224,
+          "p90": 0.25168023715415,
+          "prob": 0.5001,
+          "rank": 23
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.004334942528735675,
+          "p10": -0.16669701149425287,
+          "p90": 0.1890352873563219,
+          "prob": 0.4869,
+          "rank": 39
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.00535541547277929,
+          "p10": -0.10408584527220632,
+          "p90": 0.13426068767908306,
+          "prob": 0.5238,
+          "rank": 7
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.003740954274353947,
+          "p10": -0.2316399602385686,
+          "p90": 0.2815493041749504,
+          "prob": 0.4928,
+          "rank": 38
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.010976153846153913,
+          "p10": -0.21541040723981908,
+          "p90": 0.29045425339366515,
+          "prob": 0.4774,
+          "rank": 51
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": -0.00001919191919186325,
+          "p10": -0.17548414141414137,
+          "p90": 0.22132530303030307,
+          "prob": 0.5,
+          "rank": 24
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.006533524121013934,
+          "p10": -0.24676958299264107,
+          "p90": 0.34797816843826657,
+          "prob": 0.4881,
+          "rank": 46
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.001846341463414558,
+          "p10": -0.2108964227642277,
+          "p90": 0.27438872628726285,
+          "prob": 0.4971,
+          "rank": 30
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.003693005671077554,
+          "p10": -0.11082268431001885,
+          "p90": 0.11917372400756143,
+          "prob": 0.5169,
+          "rank": 11
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.0006822222222222507,
+          "p10": -0.14645047619047613,
+          "p90": 0.17561238095238108,
+          "prob": 0.4977,
+          "rank": 27
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.003076576576576562,
+          "p10": -0.18617855855855858,
+          "p90": 0.22405621621621608,
+          "prob": 0.4921,
+          "rank": 35
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.011587701149425311,
+          "p10": -0.17765723316912974,
+          "p90": 0.20086958949096867,
+          "prob": 0.468,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.005303375314861469,
+          "p10": -0.14985365239294712,
+          "p90": 0.17119642317380346,
+          "prob": 0.4827,
+          "rank": 44
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.0026491474423269157,
+          "p10": -0.1383241725175527,
+          "p90": 0.15496349047141433,
+          "prob": 0.492,
+          "rank": 33
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.005600000000000049,
+          "p10": -0.17306759670259986,
+          "p90": 0.2031738110336081,
+          "prob": 0.5159,
+          "rank": 6
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.0001612244897959414,
+          "p10": -0.26647142857142847,
+          "p90": 0.36680034013605445,
+          "prob": 0.5004,
+          "rank": 22
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.0019808187134502386,
+          "p10": -0.1122659649122808,
+          "p90": 0.12855321637426909,
+          "prob": 0.5094,
+          "rank": 15
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.01070370370370366,
+          "p10": -0.25797262479871175,
+          "p90": 0.31100515297906606,
+          "prob": 0.5212,
+          "rank": 4
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.0030529411764705916,
+          "p10": -0.1929823529411765,
+          "p90": 0.25370941176470585,
+          "prob": 0.5074,
+          "rank": 13
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.003190556138509937,
+          "p10": -0.2016260020986358,
+          "p90": 0.2565229800629589,
+          "prob": 0.506,
+          "rank": 12
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0019565585331453583,
+          "p10": -0.12549478138222847,
+          "p90": 0.1458524682651623,
+          "prob": 0.5079,
+          "rank": 16
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.004740687679083089,
+          "p10": -0.20291739255014318,
+          "p90": 0.23746163323782232,
+          "prob": 0.4889,
+          "rank": 41
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.004705461165048552,
+          "p10": -0.14269684466019417,
+          "p90": 0.1675968446601941,
+          "prob": 0.5184,
+          "rank": 8
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0013659971305597374,
+          "p10": -0.1591437589670014,
+          "p90": 0.1894506456241034,
+          "prob": 0.5042,
+          "rank": 20
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.0006230876216967163,
+          "p10": -0.08198678720445063,
+          "p90": 0.08345897079276776,
+          "prob": 0.4955,
+          "rank": 26
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.008640359897172267,
+          "p10": -0.22935989717223648,
+          "p90": 0.27611388174807194,
+          "prob": 0.4831,
+          "rank": 47
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.01016021505376341,
+          "p10": -0.3153687194525905,
+          "p90": 0.4560700879765396,
+          "prob": 0.4865,
+          "rank": 49
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": 0.003827313769751761,
+          "p10": -0.3808786681715576,
+          "p90": 0.6520886004514672,
+          "prob": 0.5044,
+          "rank": 9
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.008142821473158701,
+          "p10": -0.2647365792759051,
+          "p90": 0.3918429463171036,
+          "prob": 0.5127,
+          "rank": 5
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0014819616685457504,
+          "p10": -0.09607046223224358,
+          "p90": 0.10047237880496063,
+          "prob": 0.5079,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "paths": 10000,
+      "seed": 42,
+      "id": "2026-09-23-c7b606a5",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": -0.003795881326352557,
+          "p10": -0.2198867364746946,
+          "p90": 0.2785584642233856,
+          "prob": 0.4933,
+          "rank": 39
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": 0.000089267155229944,
+          "p10": -0.25274776149233835,
+          "p90": 0.35810323784143905,
+          "prob": 0.5001,
+          "rank": 20
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.003927613636363736,
+          "p10": -0.20136900568181826,
+          "p90": 0.25993863636363645,
+          "prob": 0.4903,
+          "rank": 40
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": -0.0006052380952381586,
+          "p10": -0.20553845938375348,
+          "p90": 0.25767420168067234,
+          "prob": 0.4981,
+          "rank": 25
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": 0.00076492352512747,
+          "p10": -0.13252203204661328,
+          "p90": 0.15883326292789524,
+          "prob": 0.5039,
+          "rank": 19
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.004098736358414623,
+          "p10": -0.1387783457782883,
+          "p90": 0.1669891441700173,
+          "prob": 0.5138,
+          "rank": 9
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": -0.0031712075983718613,
+          "p10": -0.226978670284939,
+          "p90": 0.28622740841248295,
+          "prob": 0.4933,
+          "rank": 33
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.0007837966101693628,
+          "p10": -0.21805501694915252,
+          "p90": 0.274603220338983,
+          "prob": 0.5015,
+          "rank": 18
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.00916714839961208,
+          "p10": -0.1977288942774006,
+          "p90": 0.2802688845780794,
+          "prob": 0.5227,
+          "rank": 5
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.0018704957678356005,
+          "p10": -0.23316626360338566,
+          "p90": 0.296993107617896,
+          "prob": 0.4971,
+          "rank": 30
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.0006777027027027316,
+          "p10": -0.20230716216216216,
+          "p90": 0.24693954954954966,
+          "prob": 0.4988,
+          "rank": 26
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.0036777100494234105,
+          "p10": -0.2335600988467874,
+          "p90": 0.29551545304777593,
+          "prob": 0.491,
+          "rank": 37
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.002080000000000082,
+          "p10": -0.20101769647696488,
+          "p90": 0.2639624390243902,
+          "prob": 0.496,
+          "rank": 31
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.009277577197149611,
+          "p10": -0.24254874109263658,
+          "p90": 0.33660147268408536,
+          "prob": 0.482,
+          "rank": 51
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.0028164285714284976,
+          "p10": -0.18478204081632654,
+          "p90": 0.23333637755102044,
+          "prob": 0.4941,
+          "rank": 32
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.0036499033816425053,
+          "p10": -0.26262062801932373,
+          "p90": 0.3490557487922705,
+          "prob": 0.4928,
+          "rank": 36
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.009361682098765423,
+          "p10": -0.17782098765432097,
+          "p90": 0.2351172222222222,
+          "prob": 0.5268,
+          "rank": 4
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.003231653290529657,
+          "p10": -0.1703060995184591,
+          "p90": 0.20374661316211884,
+          "prob": 0.4918,
+          "rank": 34
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.004115197132616544,
+          "p10": -0.24124814516129034,
+          "p90": 0.33011855734767037,
+          "prob": 0.4923,
+          "rank": 41
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.005067250996015904,
+          "p10": -0.13533745019920318,
+          "p90": 0.15022884462151387,
+          "prob": 0.4793,
+          "rank": 44
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.008487027914614087,
+          "p10": -0.19320492610837436,
+          "p90": 0.2309116584564861,
+          "prob": 0.4789,
+          "rank": 50
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.013162589928057411,
+          "p10": -0.1270796163069544,
+          "p90": 0.16737649880095917,
+          "prob": 0.5434,
+          "rank": 1
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.0005704347826087641,
+          "p10": -0.2097114624505929,
+          "p90": 0.25679581027667986,
+          "prob": 0.4988,
+          "rank": 24
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.0014625287356322403,
+          "p10": -0.16448241379310347,
+          "p90": 0.1875813793103449,
+          "prob": 0.4952,
+          "rank": 29
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.005000229226361119,
+          "p10": -0.10557220630372499,
+          "p90": 0.13239638968481393,
+          "prob": 0.5211,
+          "rank": 7
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.005552723658051706,
+          "p10": -0.23414970178926442,
+          "p90": 0.2954065208747514,
+          "prob": 0.4889,
+          "rank": 46
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.00806737556561088,
+          "p10": -0.21152904977375575,
+          "p90": 0.2848135746606335,
+          "prob": 0.4844,
+          "rank": 49
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": 0.0027110101010101584,
+          "p10": -0.17980782828282837,
+          "p90": 0.22330590909090908,
+          "prob": 0.5068,
+          "rank": 16
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.005432788225674501,
+          "p10": -0.24619975470155353,
+          "p90": 0.3464403107113654,
+          "prob": 0.4899,
+          "rank": 45
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.0009175067750677446,
+          "p10": -0.2061311653116532,
+          "p90": 0.273610189701897,
+          "prob": 0.4982,
+          "rank": 27
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.003707372400756137,
+          "p10": -0.1110185255198487,
+          "p90": 0.12060434782608698,
+          "prob": 0.5175,
+          "rank": 10
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.001376507936508009,
+          "p10": -0.14979079365079362,
+          "p90": 0.18015396825396812,
+          "prob": 0.4957,
+          "rank": 28
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.003787207207207266,
+          "p10": -0.18887531531531532,
+          "p90": 0.23079585585585582,
+          "prob": 0.4896,
+          "rank": 38
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.011039384236453231,
+          "p10": -0.18193989326765192,
+          "p90": 0.20272177339901476,
+          "prob": 0.4699,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.004321612090680049,
+          "p10": -0.1529297732997481,
+          "p90": 0.16921607052896737,
+          "prob": 0.4869,
+          "rank": 42
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.005003711133400146,
+          "p10": -0.13953430290872626,
+          "p90": 0.15645506519558694,
+          "prob": 0.4819,
+          "rank": 43
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.0054489537095749885,
+          "p10": -0.17010830691185796,
+          "p90": 0.2101194039315155,
+          "prob": 0.5146,
+          "rank": 6
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": 0.0028353741496598417,
+          "p10": -0.261193537414966,
+          "p90": 0.3730666666666669,
+          "prob": 0.5054,
+          "rank": 14
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.0027927485380117023,
+          "p10": -0.10803321637426899,
+          "p90": 0.12893730994152053,
+          "prob": 0.5115,
+          "rank": 15
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.009916908212560305,
+          "p10": -0.24786570048309176,
+          "p90": 0.31533172302737533,
+          "prob": 0.5203,
+          "rank": 3
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.0021129411764704287,
+          "p10": -0.19493176470588236,
+          "p90": 0.2567400000000002,
+          "prob": 0.5048,
+          "rank": 17
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": -0.0005029380902413783,
+          "p10": -0.20593464847848897,
+          "p90": 0.25337236096537263,
+          "prob": 0.4983,
+          "rank": 23
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.0031300423131170874,
+          "p10": -0.12950888575458397,
+          "p90": 0.15023328631875876,
+          "prob": 0.5098,
+          "rank": 12
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.0004816618911174242,
+          "p10": -0.19746194842406872,
+          "p90": 0.24722928366762176,
+          "prob": 0.4988,
+          "rank": 22
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.004645509708737894,
+          "p10": -0.14011844660194173,
+          "p90": 0.16842330097087377,
+          "prob": 0.5154,
+          "rank": 8
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.0035984218077473873,
+          "p10": -0.15525193687230987,
+          "p90": 0.19540272596843633,
+          "prob": 0.5105,
+          "rank": 11
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": -0.00035326842837268835,
+          "p10": -0.08165785813630044,
+          "p90": 0.08690681502086228,
+          "prob": 0.4969,
+          "rank": 21
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.006909511568123361,
+          "p10": -0.23420796915167097,
+          "p90": 0.27056632390745494,
+          "prob": 0.4853,
+          "rank": 47
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.007117693059628505,
+          "p10": -0.3088509286412512,
+          "p90": 0.4739828934506356,
+          "prob": 0.4899,
+          "rank": 48
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": -0.003509593679458134,
+          "p10": -0.37939390519187366,
+          "p90": 0.6288538374717834,
+          "prob": 0.4959,
+          "rank": 35
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.012606242197253259,
+          "p10": -0.26552334581772785,
+          "p90": 0.39023670411985023,
+          "prob": 0.5205,
+          "rank": 2
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0028641488162346462,
+          "p10": -0.09376662908680944,
+          "p90": 0.10264036076662908,
+          "prob": 0.5142,
+          "rank": 13
+        }
+      ]
+    },
+    {
+      "paths": 10000,
+      "seed": 314159,
+      "id": "2026-09-23-81efe438",
+      "assets": [
+        {
+          "code": "005930",
+          "name": "삼성전자",
+          "p50Return": -0.0022416404886561603,
+          "p10": -0.2179019197207679,
+          "p90": 0.2753749040139615,
+          "prob": 0.4956,
+          "rank": 27
+        },
+        {
+          "code": "009150",
+          "name": "삼성전기",
+          "p50Return": -0.0009089673550967126,
+          "p10": -0.26100800133244506,
+          "p90": 0.35561575616255836,
+          "prob": 0.4975,
+          "rank": 22
+        },
+        {
+          "code": "373220",
+          "name": "LG에너지솔루션",
+          "p50Return": -0.006605852272727253,
+          "p10": -0.19946213068181817,
+          "p90": 0.24210840909090892,
+          "prob": 0.4836,
+          "rank": 45
+        },
+        {
+          "code": "005380",
+          "name": "현대차",
+          "p50Return": -0.003874313725490186,
+          "p10": -0.20547983193277308,
+          "p90": 0.2601377310924369,
+          "prob": 0.4914,
+          "rank": 34
+        },
+        {
+          "code": "207940",
+          "name": "삼성바이오로직스",
+          "p50Return": -0.00039022578295699883,
+          "p10": -0.13322748725418798,
+          "p90": 0.15675893663510565,
+          "prob": 0.4991,
+          "rank": 21
+        },
+        {
+          "code": "105560",
+          "name": "KB금융",
+          "p50Return": 0.004157840321654227,
+          "p10": -0.13856243538196444,
+          "p90": 0.1673685812751291,
+          "prob": 0.5148,
+          "rank": 10
+        },
+        {
+          "code": "028260",
+          "name": "삼성물산",
+          "p50Return": -0.002109850746268571,
+          "p10": -0.22531400271370428,
+          "p90": 0.2920898507462686,
+          "prob": 0.4955,
+          "rank": 25
+        },
+        {
+          "code": "032830",
+          "name": "삼성생명보험",
+          "p50Return": 0.001016915254237194,
+          "p10": -0.2154709491525424,
+          "p90": 0.27680349152542383,
+          "prob": 0.5017,
+          "rank": 16
+        },
+        {
+          "code": "012450",
+          "name": "한화에어로스페이스",
+          "p50Return": 0.011598690591658523,
+          "p10": -0.19458062075654703,
+          "p90": 0.27488248302618823,
+          "prob": 0.5253,
+          "rank": 5
+        },
+        {
+          "code": "034020",
+          "name": "두산에너빌리티",
+          "p50Return": -0.004809189842805317,
+          "p10": -0.238344377267231,
+          "p90": 0.2969847642079806,
+          "prob": 0.4908,
+          "rank": 40
+        },
+        {
+          "code": "329180",
+          "name": "HD현대중공업",
+          "p50Return": -0.004525135135135083,
+          "p10": -0.19859247747747744,
+          "p90": 0.2417976351351352,
+          "prob": 0.4906,
+          "rank": 38
+        },
+        {
+          "code": "034730",
+          "name": "SK",
+          "p50Return": -0.006799851729818784,
+          "p10": -0.22638406919275122,
+          "p90": 0.2936005601317957,
+          "prob": 0.4875,
+          "rank": 46
+        },
+        {
+          "code": "012330",
+          "name": "현대모비스",
+          "p50Return": -0.0030603794037941112,
+          "p10": -0.2012982113821138,
+          "p90": 0.26648894308943083,
+          "prob": 0.4929,
+          "rank": 31
+        },
+        {
+          "code": "066570",
+          "name": "LG전자",
+          "p50Return": -0.005458147268408542,
+          "p10": -0.24444361045130647,
+          "p90": 0.3394564370546318,
+          "prob": 0.4895,
+          "rank": 42
+        },
+        {
+          "code": "035420",
+          "name": "NAVER",
+          "p50Return": -0.0009210204081632201,
+          "p10": -0.18069331632653063,
+          "p90": 0.2301998469387756,
+          "prob": 0.4973,
+          "rank": 23
+        },
+        {
+          "code": "010120",
+          "name": "LS ELECTRIC",
+          "p50Return": -0.004400434782608764,
+          "p10": -0.25869816425120773,
+          "p90": 0.3509382125603866,
+          "prob": 0.4912,
+          "rank": 37
+        },
+        {
+          "code": "000810",
+          "name": "삼성화재",
+          "p50Return": 0.014926342592592512,
+          "p10": -0.1771810956790123,
+          "p90": 0.24394330246913576,
+          "prob": 0.5393,
+          "rank": 2
+        },
+        {
+          "code": "005490",
+          "name": "POSCO홀딩스",
+          "p50Return": -0.002353290529695018,
+          "p10": -0.17115473515248802,
+          "p90": 0.19732481540930968,
+          "prob": 0.4919,
+          "rank": 28
+        },
+        {
+          "code": "010130",
+          "name": "고려아연",
+          "p50Return": -0.00541239247311831,
+          "p10": -0.2454774462365591,
+          "p90": 0.3119155376344085,
+          "prob": 0.4911,
+          "rank": 41
+        },
+        {
+          "code": "138040",
+          "name": "메리츠금융지주",
+          "p50Return": -0.001354661354581621,
+          "p10": -0.13506382470119516,
+          "p90": 0.1566207968127491,
+          "prob": 0.4948,
+          "rank": 24
+        },
+        {
+          "code": "015760",
+          "name": "한국전력",
+          "p50Return": -0.006407553366174046,
+          "p10": -0.19251001642036125,
+          "p90": 0.2313720853858785,
+          "prob": 0.4828,
+          "rank": 44
+        },
+        {
+          "code": "011200",
+          "name": "HMM",
+          "p50Return": 0.013155875299760256,
+          "p10": -0.12984076738609118,
+          "p90": 0.16621438848920866,
+          "prob": 0.5448,
+          "rank": 3
+        },
+        {
+          "code": "051910",
+          "name": "LG화학",
+          "p50Return": -0.0029659288537549067,
+          "p10": -0.20405533596837944,
+          "p90": 0.25244474308300413,
+          "prob": 0.4951,
+          "rank": 30
+        },
+        {
+          "code": "017670",
+          "name": "SK텔레콤",
+          "p50Return": -0.003545862068965566,
+          "p10": -0.16332666666666662,
+          "p90": 0.18713563218390816,
+          "prob": 0.4879,
+          "rank": 32
+        },
+        {
+          "code": "033780",
+          "name": "KT&G",
+          "p50Return": 0.0073881948424068256,
+          "p10": -0.10375822349570196,
+          "p90": 0.1318784527220631,
+          "prob": 0.5328,
+          "rank": 7
+        },
+        {
+          "code": "196170",
+          "name": "알테오젠",
+          "p50Return": -0.008522743538767363,
+          "p10": -0.23732775347912527,
+          "p90": 0.28810552683896606,
+          "prob": 0.4818,
+          "rank": 50
+        },
+        {
+          "code": "018260",
+          "name": "삼성에스디에스",
+          "p50Return": -0.005878325791855099,
+          "p10": -0.21437425339366512,
+          "p90": 0.2907787782805429,
+          "prob": 0.4885,
+          "rank": 43
+        },
+        {
+          "code": "086280",
+          "name": "현대글로비스",
+          "p50Return": -0.00009924242424241836,
+          "p10": -0.1750148484848485,
+          "p90": 0.2299071212121211,
+          "prob": 0.4996,
+          "rank": 20
+        },
+        {
+          "code": "000720",
+          "name": "현대건설",
+          "p50Return": -0.006834341782501974,
+          "p10": -0.24981300081766156,
+          "p90": 0.3483983646770237,
+          "prob": 0.4884,
+          "rank": 47
+        },
+        {
+          "code": "278470",
+          "name": "에이피알",
+          "p50Return": -0.0029071273712736323,
+          "p10": -0.21232330623306228,
+          "p90": 0.27263406504065024,
+          "prob": 0.4938,
+          "rank": 29
+        },
+        {
+          "code": "030200",
+          "name": "KT",
+          "p50Return": 0.004531001890359265,
+          "p10": -0.11073856332703214,
+          "p90": 0.12149640831758046,
+          "prob": 0.5205,
+          "rank": 9
+        },
+        {
+          "code": "003490",
+          "name": "대한항공",
+          "p50Return": -0.0038101587301587747,
+          "p10": -0.15115777777777784,
+          "p90": 0.17855968253968246,
+          "prob": 0.4885,
+          "rank": 33
+        },
+        {
+          "code": "047050",
+          "name": "포스코인터내셔널",
+          "p50Return": -0.004083783783783823,
+          "p10": -0.18708288288288288,
+          "p90": 0.22782288288288277,
+          "prob": 0.489,
+          "rank": 35
+        },
+        {
+          "code": "003230",
+          "name": "삼양식품",
+          "p50Return": -0.01336978653530374,
+          "p10": -0.1766456403940887,
+          "p90": 0.19648299671592784,
+          "prob": 0.4665,
+          "rank": 52
+        },
+        {
+          "code": "259960",
+          "name": "크래프톤",
+          "p50Return": -0.00463662468513848,
+          "p10": -0.14786790931989924,
+          "p90": 0.16443959697733002,
+          "prob": 0.4863,
+          "rank": 39
+        },
+        {
+          "code": "021240",
+          "name": "코웨이",
+          "p50Return": -0.002220661985957828,
+          "p10": -0.1406180541624874,
+          "p90": 0.15829699097291883,
+          "prob": 0.4923,
+          "rank": 26
+        },
+        {
+          "code": "352820",
+          "name": "하이브",
+          "p50Return": 0.008825237793278262,
+          "p10": -0.1682175649968295,
+          "p90": 0.20752314521242865,
+          "prob": 0.522,
+          "rank": 6
+        },
+        {
+          "code": "009830",
+          "name": "한화솔루션",
+          "p50Return": -0.00009761904761895757,
+          "p10": -0.2651585034013605,
+          "p90": 0.36647789115646257,
+          "prob": 0.4999,
+          "rank": 19
+        },
+        {
+          "code": "029780",
+          "name": "삼성카드",
+          "p50Return": 0.0012989473684210662,
+          "p10": -0.10919415204678373,
+          "p90": 0.1271108771929823,
+          "prob": 0.5051,
+          "rank": 15
+        },
+        {
+          "code": "028300",
+          "name": "HLB",
+          "p50Return": 0.01601320450885657,
+          "p10": -0.255418035426731,
+          "p90": 0.317866344605475,
+          "prob": 0.529,
+          "rank": 1
+        },
+        {
+          "code": "034220",
+          "name": "LG디스플레이",
+          "p50Return": 0.006910588235294002,
+          "p10": -0.19780588235294116,
+          "p90": 0.25624,
+          "prob": 0.5158,
+          "rank": 8
+        },
+        {
+          "code": "002380",
+          "name": "KCC",
+          "p50Return": 0.00005626442812167731,
+          "p10": -0.20361210912906602,
+          "p90": 0.2551705141657923,
+          "prob": 0.5003,
+          "rank": 18
+        },
+        {
+          "code": "036460",
+          "name": "한국가스공사",
+          "p50Return": 0.002272778561354105,
+          "p10": -0.1258490832157969,
+          "p90": 0.1468321579689702,
+          "prob": 0.5097,
+          "rank": 13
+        },
+        {
+          "code": "004170",
+          "name": "신세계",
+          "p50Return": -0.004084928366762219,
+          "p10": -0.20801137535816616,
+          "p90": 0.2429792836676219,
+          "prob": 0.4887,
+          "rank": 36
+        },
+        {
+          "code": "012750",
+          "name": "에스원",
+          "p50Return": 0.002726334951456133,
+          "p10": -0.14157742718446598,
+          "p90": 0.17017123786407762,
+          "prob": 0.5108,
+          "rank": 11
+        },
+        {
+          "code": "111770",
+          "name": "영원무역",
+          "p50Return": 0.002312195121951355,
+          "p10": -0.15774892395982776,
+          "p90": 0.19081692969870878,
+          "prob": 0.5069,
+          "rank": 12
+        },
+        {
+          "code": "035250",
+          "name": "강원랜드",
+          "p50Return": 0.00021835883171061887,
+          "p10": -0.08273087621696806,
+          "p90": 0.08456467315716276,
+          "prob": 0.5008,
+          "rank": 17
+        },
+        {
+          "code": "257720",
+          "name": "실리콘투",
+          "p50Return": -0.007592802056555326,
+          "p10": -0.22673881748071978,
+          "p90": 0.2663907455012853,
+          "prob": 0.4851,
+          "rank": 49
+        },
+        {
+          "code": "226950",
+          "name": "올릭스",
+          "p50Return": -0.00852658846529819,
+          "p10": -0.3175886608015641,
+          "p90": 0.465268035190616,
+          "prob": 0.4879,
+          "rank": 51
+        },
+        {
+          "code": "010170",
+          "name": "대한광통신",
+          "p50Return": -0.007400112866817188,
+          "p10": -0.37526975169300225,
+          "p90": 0.6196038374717834,
+          "prob": 0.4922,
+          "rank": 48
+        },
+        {
+          "code": "214370",
+          "name": "케어젠",
+          "p50Return": 0.011806491885143489,
+          "p10": -0.2660064918851436,
+          "p90": 0.4006439450686643,
+          "prob": 0.5185,
+          "rank": 4
+        },
+        {
+          "code": "030000",
+          "name": "제일기획",
+          "p50Return": 0.0020580608793685506,
+          "p10": -0.09581059751972942,
+          "p90": 0.10222660653889526,
+          "prob": 0.5104,
+          "rank": 14
+        }
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "paths": 2000,
+      "meanMedianSpread": 0.01111342235554427,
+      "maxMedianSpread": 0.054958803611738105,
+      "meanProbabilitySpread": 0.025201923076923087,
+      "assetsChangingRanks": 52
+    },
+    {
+      "paths": 10000,
+      "meanMedianSpread": 0.0043899252974577245,
+      "maxMedianSpread": 0.01317099322799098,
+      "meanProbabilitySpread": 0.010069230769230763,
+      "assetsChangingRanks": 51
+    }
+  ]
+}

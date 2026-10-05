@@ -1,0 +1,62 @@
+/* ATLAS Atelier 365. Original identity, public system fonts, no remote assets. */
+:root{
+ --atelier-paper:#f5f1e8;--atelier-porcelain:#fffcf6;--atelier-ink:#2d241f;
+ --atelier-muted:#65584b;--atelier-orange:#b94e20;--atelier-orange-hover:#963e17;
+ --atelier-brass:#8a704b;--atelier-rule:#cabba8;
+ --brand-ivory:var(--atelier-paper);--brand-wine:var(--atelier-ink);--brand-gold:#8a704b;--brand-gold-ink:#765328;
+ --background:var(--atelier-paper);--surface:var(--atelier-porcelain);--surface-raised:#fffefb;
+ --surface-hover:#ede5d9;--surface-inset:#eee7dc;--surface-note:#e9dfd0;
+ --text:var(--atelier-ink);--muted:var(--atelier-muted);--subtle:#716050;
+ --gold:var(--atelier-orange);--gold-hover:var(--atelier-orange-hover);--on-gold:#fffdf9;
+ --border:#cabba8;--control-border:#8e7863;--positive:#9e3344;--negative:#2b5b78;--success:#286348;
+ --chart-actual:#2d241f;--chart-forecast:#80603e;--chart-event:#926238;--chart-band:#c6b596;
+ --chart-grid:#e4dbce;--chart-muted:#65584b;--chart-cursor:#b94e20;--chart-hover:#eee4d7;
+ --atlas-font:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic','Segoe UI',sans-serif;
+ --atlas-serif:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+ --atelier-space-1:4px;--atelier-space-2:8px;--atelier-space-3:12px;--atelier-space-4:16px;--atelier-space-6:24px;--atelier-space-8:32px;
+ --atelier-radius:8px;--atelier-shadow:0 18px 55px #2d241f18;--atelier-focus:#2b5b78;
+}
+body{background:var(--atelier-paper);color:var(--atelier-ink);font-family:var(--atlas-font);font-size:16px;line-height:1.65;text-rendering:optimizeLegibility}
+main[data-atelier]{color:var(--atelier-ink);accent-color:var(--atelier-orange);font-synthesis:none}
+main[data-atelier] :where(h1,h2,h3,h4,p){text-wrap:pretty}
+main[data-atelier] :where(h1,h2,h3,h4){color:var(--atelier-ink)}
+main[data-atelier] :where(button,input,select,textarea){font:inherit;font-size:14px}
+main[data-atelier] :where(button,input,select,textarea){border-radius:6px}
+main[data-atelier] :where(input,select,textarea){background:#fffcf6;color:#2d241f;border:1px solid #8e7863}
+main[data-atelier] :where(input,select,textarea)::placeholder{color:#756454;opacity:1}
+main[data-atelier] :where(button,a,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--atelier-focus);outline-offset:3px;box-shadow:none}
+main[data-atelier] :where(button){transition:background-color .15s ease,border-color .15s ease,color .15s ease;box-shadow:none}
+main[data-atelier] button.primary{background:#b94e20;border-color:#b94e20;color:#fffdf9;box-shadow:none}
+main[data-atelier] button.primary:hover{background:#963e17;border-color:#963e17}
+main[data-atelier] button:disabled{cursor:not-allowed}
+main[data-atelier] :where(a){color:#97401b;text-decoration-thickness:1px;text-underline-offset:4px}
+main[data-atelier] :where(a:hover){color:#753213}
+main[data-atelier] .brand{gap:14px;align-items:center;min-width:0}
+main[data-atelier] .brand-mark{width:52px;height:52px;padding:0;display:grid;place-items:center;background:transparent;border:0;border-radius:0;box-shadow:none}
+main[data-atelier] .brand-mark img{display:block;width:52px;height:52px}
+main[data-atelier] .brand h1{font-family:var(--atlas-serif);font-size:30px;font-weight:500;line-height:1.1;letter-spacing:.17em;margin:0;color:#2d241f}
+main[data-atelier] .brand p{font-size:12px;letter-spacing:.015em;margin:6px 0 0;color:#65584b}
+main[data-atelier] .brand .atelier-wordmark-line{display:flex;align-items:baseline;gap:14px}
+main[data-atelier] .atelier-edition{font-size:10px;line-height:1.2;letter-spacing:.15em;font-weight:650;color:#97401b;border-left:1px solid #cabba8;padding-left:13px}
+main[data-atelier] .section-kicker{display:block;color:#97401b;font-size:11px;letter-spacing:.14em;font-weight:650;margin-bottom:8px}
+main[data-atelier] .section-heading h2{font-size:clamp(24px,2.15vw,32px);font-weight:550;letter-spacing:-.035em;line-height:1.25;margin:0 0 10px}
+main[data-atelier] .section-heading p{font-size:14px;line-height:1.65;color:#65584b;max-width:760px;margin:0}
+main[data-atelier] .section-heading .stock-search input{font-size:14px}
+main[data-atelier] .quote-value strong,main[data-atelier] .end-forecast b{font-weight:550;letter-spacing:-.035em;font-variant-numeric:tabular-nums lining-nums}
+main[data-atelier] .mini-title h3{font-size:19px;letter-spacing:-.035em;line-height:1.4;font-weight:650}
+main[data-atelier] .nav-symbol{width:20px;height:20px;stroke-width:1.5}
+main[data-atelier] :where(time,.numeric,table,.date-cell,.score-metrics,.daily-values){font-variant-numeric:tabular-nums lining-nums}
+main[data-atelier] :where(small,.stock-identity,.forecast-status,.forecast-origin,.scope-summary){font-size:max(12px,.75rem);line-height:1.55}
+main[data-atelier] .atelier-release{display:flex;align-items:center;gap:10px;color:#65584b;font-size:12px;letter-spacing:.025em}
+main[data-atelier] .atelier-release::before{content:'';display:block;width:24px;height:1px;background:#b94e20}
+.atlas-loading{background:#f5f1e8;color:#2d241f;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.atlas-loading .loading-edition{color:#97401b;letter-spacing:.15em;font-size:11px;margin-top:24px}
+.atlas-loading h1{font-size:24px;font-weight:550;letter-spacing:-.03em;margin:18px 0 8px}
+.atlas-loading p{color:#65584b;font-size:14px}.atlas-loading .loading-rule{background:#b94e20;height:2px;width:68px;margin-top:25px}
+@media(max-width:600px){main[data-atelier] .brand-mark,main[data-atelier] .brand-mark img{width:42px;height:42px}main[data-atelier] .brand{gap:10px}main[data-atelier] .brand h1{font-size:25px}main[data-atelier] .brand p{font-size:12px}main[data-atelier] .atelier-edition{display:none}main[data-atelier] .section-heading h2{font-size:25px}main[data-atelier] :where(input,select,textarea){font-size:16px}}
+@media(prefers-reduced-motion:reduce){main[data-atelier] *,main[data-atelier] *::before,main[data-atelier] *::after,.atlas-loading *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){main[data-atelier] :where(button,input,select,textarea){border:1px solid ButtonText}main[data-atelier] :where(button[aria-pressed=true],nav button.active){outline:2px solid Highlight}main[data-atelier] .brand-mark{forced-color-adjust:auto}}
+
+@media(max-width:820px){main[data-atelier] .section-heading .stock-search input{font-size:16px}}
+
+.atlas-failure{max-width:none!important;margin:0!important;gap:12px}.atlas-failure p,.atlas-failure details{max-width:65ch;overflow-wrap:anywhere}.atlas-failure button{min-height:48px;min-width:140px;padding:12px 24px}.atlas-failure details{text-align:left;padding:16px;border:1px solid #8e7863;border-radius:6px}

@@ -1,0 +1,258 @@
+{
+  "schema": 1,
+  "batch": "parallel-20260926-smallcap",
+  "checkedAt": "2026-09-26T11:39:20.703276Z",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "226950",
+    "010170",
+    "030000"
+  ],
+  "reviewedCount": 3,
+  "confirmedCompanyCount": 0,
+  "confirmedEvents": [],
+  "method": "세 종목을 묶어 두 검색엔진에서 회사 IR·공시·주최자 자료를 검색하고 후보를 원문 대조했다. 검색 누락·접근 실패는 일정이 없다는 증명이 아니다. 과거 조사 기록은 유지하며 신규 확정 사건은 별도 원문 조건을 충족할 때만 채택한다.",
+  "assets": [
+    {
+      "code": "226950",
+      "name": "올릭스",
+      "status": "date_not_confirmed",
+      "note": "2026-10-07 코스닥 IR 데이 날짜는 주최자 공식 페이지에서 재확인했고, 9/22 연합뉴스·뉴스핌은 올릭스 참가를 보도했다. 기업별 참가 명단 1차 원문이 아직 열리지 않아 확정 집계와 수치 계산은 유보한다. 검색으로 발견한 t2.kirs.or.kr 대체 공개 페이지도 웹 열기 오류. 부모의 브라우저 대조도 502 connection refused였으므로 참가 원문 미검증을 유지한다.",
+      "candidates": [
+        {
+          "title": "Korea Premium Weeks 2026 코스닥 IR 데이 올릭스 참가",
+          "eventDate": "2026-10-07",
+          "publishedDate": null,
+          "availableAt": "2026-09-26T11:39:20.703276Z",
+          "dateVerified": true,
+          "companyParticipationVerifiedInPrimary": false,
+          "decision": "hold_primary_participant_list_unavailable",
+          "evidence": "주최자 Korea Premium Weeks 본문은 10/7·한국거래소 코스닥시장부·컨퍼런스홀/홍보관을 명시한다. 올릭스 이름은 이번에 열람한 주최자 날짜 페이지에는 없고 언론 기사에는 있다. 임상 결과나 가격 방향은 미공개."
+        }
+      ],
+      "sources": [
+        {
+          "name": "한국거래소 Korea Premium Weeks 코스닥 IR 데이",
+          "url": "https://koreaweeks.com/sub-weeks.php?company=kosdaq-ir-day&date=10-07",
+          "sourceType": "primary",
+          "access": "body_verified",
+          "publishedDate": null,
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "2026-10-07 행사 날짜와 주최·장소 확인. 기업별 명단은 KIRS 참가 신청 링크로 이동.",
+          "webRef": "turn360view0"
+        },
+        {
+          "name": "한국IR협의회 참가 신청 원문",
+          "url": "https://www.kirs.or.kr/support/coir2_view.html?no=1761",
+          "sourceType": "primary",
+          "access": "timeout",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "주최자 페이지의 링크를 직접 열었지만 timeout. 기존 9/25 실패 기록을 삭제하지 않음.",
+          "webRef": "turn364view0"
+        },
+        {
+          "name": "한국IR협의회 검색 발견 대체 공개 페이지",
+          "url": "https://t2.kirs.or.kr/support/coir2_view.html?no=1761",
+          "sourceType": "primary",
+          "access": "search_index_only_body_error",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "검색 제목과 요약에는 2026/10/07 행사만 확인. 본문 열기는 Internal Error. 올릭스 참가 원문으로 사용하지 않음.",
+          "webRef": "turn368search7",
+          "browserCheck": {
+            "checkedBy": "parent",
+            "result": "502 connection refused",
+            "note": "검색·웹 열기 실패와 별도 기록. 동일 경로 반복 중단, 참가 원문 미검증 유지."
+          }
+        },
+        {
+          "name": "연합뉴스 거래소 발표 인용",
+          "url": "https://www.yna.co.kr/view/AKR20260922131400008",
+          "sourceType": "secondary",
+          "access": "search_summary_verified",
+          "publishedDate": "2026-09-22",
+          "publishedTimeReported": "14:53 Asia/Seoul",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "둘째 날 코스닥33개사 기관 IR, 올릭스·제주반도체 등7개사 IR센터 기업설명회 보도.",
+          "webRef": "turn397search4"
+        },
+        {
+          "name": "뉴스핌 거래소 발표 인용",
+          "url": "https://www.newspim.com/news/view/20260922000895",
+          "sourceType": "secondary",
+          "access": "body_verified",
+          "publishedDate": "2026-09-22",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "10/6~7 개최 및 올릭스 참가 보도. 같은 거래소 발표를 인용하므로 독립된 회사 참가 확정 공시로 세지 않음.",
+          "webRef": "turn383search4"
+        },
+        {
+          "name": "올릭스 공식 홈페이지",
+          "url": "https://www.olixpharma.com/",
+          "sourceType": "primary",
+          "access": "502",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "webRef": "turn368view0"
+        },
+        {
+          "name": "K5 올릭스 공시 색인",
+          "url": "https://www.k5.co.kr/stock/226950/official_notice",
+          "sourceType": "secondary_index",
+          "access": "body_verified",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "목록 최신 항목은 9/16 임상시험계획 승인신청. 미래 승인·결과 발표일을 추정하지 않음.",
+          "webRef": "turn378view0"
+        }
+      ],
+      "remainingGap": "주최자 참가기업 원문 또는 회사의 10/7 IR 공시. 공개 시각·비교 가능한 과거 반응 별도 확보 필요."
+    },
+    {
+      "code": "010170",
+      "name": "대한광통신",
+      "status": "date_not_confirmed",
+      "note": "미래 회사 확정일 미확보. 제9회 CB는 2024년 7월까지 잔여106억원을 전액 상환한 것으로 KIND 원문 확인하여 2026-10-28 만기 사건에서 제외한다. 제10회 CB도 2025년 2~3분기 전액 전환 완료로 기재됐다. 회사 IR 403과 공시 색인 확인 수준을 구분해 기록한다.",
+      "candidates": [
+        {
+          "title": "제9회 CB 2026-10-28 만기",
+          "eventDate": "2026-10-28",
+          "decision": "rejected_already_repaid",
+          "evidence": "2026-01-07 투자설명서 본문: 19억원 전환, 잔여106억원 2024-07까지 전액 상환. 같은 문서 표의 옛 만기일만 사용하면 오류."
+        },
+        {
+          "title": "Smart Sensor Korea 참가",
+          "eventDate": null,
+          "decision": "rejected_no_in_period_schedule",
+          "evidence": "참가업체 검색요약의 2026년도 표시는 있지만 주최자 현재 개요는 2027-07-07~09. 이를 2026년 10월 행사로 바꾸지 않는다."
+        },
+        {
+          "title": "민간 AI 요약의 2026-10-15 정기주총",
+          "eventDate": "2026-10-15",
+          "decision": "rejected_no_primary_confirmation",
+          "evidence": "미래AI 자동 요약 검색 결과에서만 관찰. 공시 색인과 KIND의 2026-03-27 정기주총 원문이 별도로 존재하며, 10/15 소집공시 원문 미확보. 자동 요약만 채택하지 않는다."
+        }
+      ],
+      "sources": [
+        {
+          "name": "KIND 대한광통신 투자설명서",
+          "url": "https://kind.krx.co.kr/external/2026/01/07/000402/20260107001332/10601.htm",
+          "sourceType": "primary",
+          "access": "body_verified",
+          "publishedDate": "2026-01-07",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "본문 2297~2298 CB9 잔여106억원 전액 상환; 2317~2318 CB10 230억원 전액 전환 완료. 표의 과거 만기일은 현존 의무 아님.",
+          "webRef": "turn374view4"
+        },
+        {
+          "name": "대한광통신 공식 IR",
+          "url": "https://www.taihanfiber.com/about/investor.html",
+          "sourceType": "primary",
+          "access": "403",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "접근 제한. IR 일정 부재로 단정하지 않음.",
+          "webRef": "turn360view2"
+        },
+        {
+          "name": "K5 대한광통신 공시 색인",
+          "url": "https://www.k5.co.kr/stock/010170/official_notice",
+          "sourceType": "secondary_index",
+          "access": "body_verified",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "목록 최신 8/14 반기보고서. 새 기간 내 확정일 미발견; 색인 완전성 보증 아님.",
+          "webRef": "turn378view1"
+        },
+        {
+          "name": "Smart Sensor Korea 주최자 행사 개요",
+          "url": "https://www.smartsensorkorea.or.kr/introduce/summary.php",
+          "sourceType": "primary",
+          "access": "body_verified",
+          "publishedDate": null,
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "현재 개요의 행사일은 2027-07-07~09로 범위 밖.",
+          "webRef": "turn393view1"
+        },
+        {
+          "name": "Smart Sensor Korea 참가업체 후보 페이지",
+          "url": "https://www.smartsensorkorea.or.kr/visit/cp_pop.php?num=3695",
+          "sourceType": "primary",
+          "access": "search_summary_only_body_incomplete",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "검색요약은 2026년도 대한광통신 업체 소개, 열람 본문에는 메뉴만 표시. 기간 내 미래 일정 근거 아님.",
+          "webRef": "turn383search2"
+        },
+        {
+          "name": "미래AI 반기보고서 자동 요약 후보",
+          "url": "https://meerae.ai/insights/20260814002121/",
+          "sourceType": "secondary_ai_summary",
+          "access": "search_summary_only",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "10/15 정기주총을 주장하지만 직접 소집공시가 없어 제외.",
+          "webRef": "turn360search5"
+        }
+      ],
+      "remainingGap": "기간 내 기업 IR·거래·행사 날짜가 명시된 신규 공시 또는 회사 공식 발표."
+    },
+    {
+      "code": "030000",
+      "name": "제일기획",
+      "status": "date_not_confirmed",
+      "note": "공식 한국 IR Upcoming은 진행 예정인 이벤트가 없다고 표시하고 최신 과거 행사는 8/27 시티증권 컨퍼런스다. 민간 10/30 실적 예상일을 확정일로 쓰지 않는다. LIA 심사 참여는 이전 참고 기록을 유지하지만 가격 촉매 사건으로 채택하지 않는다.",
+      "candidates": [
+        {
+          "title": "3분기 실적 발표 예상일",
+          "eventDate": "2026-10-30",
+          "decision": "hold_no_official_earnings_date",
+          "evidence": "민간 실적 달력에만 날짜. 회사 IR Upcoming 및 공시 색인에서 공식 예고 확인 못함."
+        },
+        {
+          "title": "LIA 심사 참여",
+          "eventDate": "2026-09-25",
+          "endDate": "2026-10-03",
+          "decision": "reference_only_no_price_catalyst_basis",
+          "evidence": "이전 9/25 조사 기록 유지. 이번 조사에서 새 실적·수주 확정 일정으로 승격하지 않음."
+        }
+      ],
+      "sources": [
+        {
+          "name": "제일기획 공식 한국 IR Events",
+          "url": "https://www.cheil.com/kr/ir/",
+          "sourceType": "primary",
+          "access": "body_verified",
+          "publishedDate": null,
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "Upcoming 일정 없음. Past 최신8/27, 2분기 실적발표7/24. 회사 전체 뉴스가 없다는 뜻은 아님.",
+          "webRef": "turn360view1"
+        },
+        {
+          "name": "제일기획 공식 IR News",
+          "url": "https://www.cheil.com/kr/ir/news",
+          "sourceType": "primary",
+          "access": "body_verified",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "현재 제공된 목록 최신 게시일2025/11/27의 2026년 임원인사. 제목의 2026을 미래 발표연도로 잘못 사용하지 않음.",
+          "webRef": "turn364view1"
+        },
+        {
+          "name": "K5 제일기획 공시 색인",
+          "url": "https://www.k5.co.kr/stock/030000/official_notice",
+          "sourceType": "secondary_index",
+          "access": "body_verified",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "최신8/31 현황공시·8/21 IR 안내, 결산실적 예고는7/15. 미래3분기 발표 예고 미확인.",
+          "webRef": "turn378view2"
+        },
+        {
+          "name": "Investing 실적 달력",
+          "url": "https://kr.investing.com/equities/cheil-worldwide-earnings",
+          "sourceType": "secondary_calendar",
+          "access": "search_summary_only",
+          "observedAt": "2026-09-26T11:39:20.703276Z",
+          "finding": "10/30 예상 날짜를 보여주나 회사 확정 공시가 없어 채택 안 함.",
+          "webRef": "turn360search0"
+        }
+      ],
+      "remainingGap": "2026년3분기 결산실적 공시 예고 또는 공식 IR 개최 안내의 정확한 날짜."
+    }
+  ]
+}

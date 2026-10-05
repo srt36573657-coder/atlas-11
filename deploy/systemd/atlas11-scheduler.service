@@ -1,0 +1,33 @@
+# ATLAS 11 예약 실행기(데몬) — 거래일마다 16:00 KST 에 하루치(run_daily)를 돌리고, 52 종목 미확정이면 10분마다 18:00 까지 다시 시도한다.
+# 설치:  sudo cp deploy/systemd/atlas11-scheduler.service /etc/systemd/system/
+#        sudo cp deploy/atlas11.env.example /etc/atlas11.env   (값은 비워 두어도 된다)
+#        sudo systemctl daemon-reload && sudo systemctl enable --now atlas11-scheduler
+# 확인:  systemctl status atlas11-scheduler · tail -f /var/log/atlas11/scheduler.log · cat reports/atlas11/operations/scheduler-heartbeat.json
+# 주의:  아래 User= 는 서버에 있는 계정으로 바꾼다(없으면 sudo useradd -r -d /opt/atlas11 atlas11). /opt/atlas11 은 그 계정이 쓸 수 있어야 한다.
+[Unit]
+Description=ATLAS 11 scheduler (KRX trading days 16:00 KST -> run_daily with retries)
+Documentation=file:/opt/atlas11/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=atlas11
+WorkingDirectory=/opt/atlas11
+EnvironmentFile=/etc/atlas11.env
+Environment=NODE_ENV=production
+Environment=TZ=Asia/Seoul
+ExecStart=/usr/bin/node scripts/atlas11/scheduler.mjs
+Restart=always
+RestartSec=30
+# SIGTERM 을 받으면 실행 중인 하루치가 끝나기를 기다린 뒤 heartbeat 에 stoppedAt 을 적고 멈춘다 → 넉넉히 기다린다
+TimeoutStopSec=900
+KillSignal=SIGTERM
+KillMode=mixed
+LogsDirectory=atlas11
+StandardOutput=append:/var/log/atlas11/scheduler.log
+StandardError=append:/var/log/atlas11/scheduler.log
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

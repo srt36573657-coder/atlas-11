@@ -1,0 +1,78 @@
+{
+  "review_date": "2026-09-28",
+  "review_scope": "핵심 원문 부분 확인; 전 논문 재현 완료 아님",
+  "papers": [
+    {
+      "id": "R01",
+      "citation": "Gu, Kelly & Xiu (2020), Empirical Asset Pricing via Machine Learning, Review of Financial Studies 33(5), 2223–2274",
+      "url": "https://dachxiu.chicagobooth.edu/download/ML.pdf",
+      "access": "저자 공개 게재본: 초록·표본 분할·주요 결과·Table 1 대조",
+      "finding": "미국 주식의 월별 수익률에서 비선형 상호작용 모형의 표본 밖 개선을 보고. 전체 종목 수준 R²는 트리·신경망에서 약 0.33~0.40%. 적중률이 아니다.",
+      "scope": "1957~2016 미국 주식; 초기 학습 1957~1974, 선택 1975~1986, 표본 밖 평가 1987~2016.",
+      "apply": "선형 축소 모형과 얕은 비선형 후보를 비교. 한국 일별 자료에서 별도 시간순 검증.",
+      "limit": "미국 월별 결과를 한국 52종목 일별 정확도로 이전할 수 없다. 더 깊은 모형이 항상 좋지 않았다."
+    },
+    {
+      "id": "R02",
+      "citation": "Goyal, Welch & Zafirov (2024), A Comprehensive 2022 Look at the Empirical Performance of Equity Premium Prediction, Review of Financial Studies 37(11), 3490–3557",
+      "url": "https://academic.oup.com/rfs/article/37/11/3490/7749383",
+      "access": "학술지 본문: 초록·재현 결과·후속 기간 결과 대조",
+      "finding": "새 29개 변수 중 3분의 1 이상이 연장 표본에서 표본 내 유의성도 잃었고, 남은 변수의 절반은 표본 밖 성능이 나빴다고 보고. 일부 변수는 유효했다.",
+      "scope": "원래 17개 변수와 이후 26개 논문의 29개 변수; 2021년까지 확장한 미국 주식시장 위험 프리미엄.",
+      "apply": "좋아 보인 논문도 재현과 후속 검증 대상. 장기 평균·가격 유지 등 간단한 기준과 비교.",
+      "limit": "모든 예측이 불가능하다는 결론도, 특정 일별 모형의 반증도 아니다."
+    },
+    {
+      "id": "R03",
+      "citation": "Bernanke & Kuttner (2005), What Explains the Stock Market’s Reaction to Federal Reserve Policy?, Journal of Finance 60(3), 1221–1257",
+      "url": "https://www.federalreserve.gov/pubs/feds/2004/200416/200416pap.pdf",
+      "access": "연준 공개 2004년 작업본: 기대/비기대 분해와 표본·결과 대조; 2005년 게재 서지 확인",
+      "finding": "기대된 금리 조정과 기대하지 못한 조정을 구분하고 미국 주식 반응을 분석했다.",
+      "scope": "주요 사건 분석 1989~2002 미국 연준 정책과 주식시장.",
+      "apply": "발표 날짜, 사전 기대, 실제 발표 차이, 선반영을 구분. 일정 자체에 임의 가격 충격을 부여하지 않는다.",
+      "limit": "과거 미국의 평균 반응 계수를 현재 한국 개별 종목에 복사하지 않는다. 이벤트 반응 연구는 미래 일별 적중 증명이 아니다."
+    },
+    {
+      "id": "R04",
+      "citation": "Barber & Odean (2008), All That Glitters, Review of Financial Studies 21(2), 785–818",
+      "url": "https://faculty.haas.berkeley.edu/odean/papers/Attention/All%20that%20Glitters.pdf",
+      "access": "저자 공개 원고: 초록·거래행태 결과·주의점 대조; 게재 서지는 저자 목록 확인",
+      "finding": "뉴스·비정상 거래량·극단 수익률 등 관심을 끄는 종목에서 개인의 순매수 성향을 관찰했다.",
+      "scope": "개인 및 전문 투자자 거래 자료; 관심과 매수 행동 연구.",
+      "apply": "FOMO를 관심·거래행태의 측정 가설로 정의하고, 지속·소진·과열 뒤 반전은 별도 검증.",
+      "limit": "FOMO의 직접 심리 측정도, 관심 증가가 이후 상승을 보장한다는 증명도 아니다."
+    },
+    {
+      "id": "R05",
+      "citation": "Bollerslev (1986), Generalized Autoregressive Conditional Heteroskedasticity, Journal of Econometrics 31, 307–327",
+      "url": "https://econ.duke.edu/~boller/Published_Papers/joe_86.pdf",
+      "access": "저자 공개 게재본: 정의·GARCH(1,1)·정상성 조건·실증 예제 범위 확인",
+      "finding": "과거 오차와 과거 조건부 분산을 이용하는 변동성 모형과 조건을 제시했다.",
+      "scope": "통계 모형 논문; 원 논문의 실증 예제는 물가 불확실성.",
+      "apply": "ATLAS에서는 시간에 따라 달라지는 변동폭의 기준 후보로 비교한다.",
+      "limit": "주가 방향 또는 반전 날짜를 맞히는 공식이 아니다. 한국 종목별 적합·검증이 필요하다."
+    },
+    {
+      "id": "R06",
+      "citation": "Gneiting & Raftery (2007), Strictly Proper Scoring Rules, Prediction, and Estimation, JASA 102(477), 359–378",
+      "url": "https://sites.stat.washington.edu/people/raftery/Research/PDF/Gneiting2007jasa.pdf",
+      "access": "저자 공개 게재본: proper score·CRPS·interval score 부분 확인",
+      "finding": "확률분포를 정직하게 평가하는 점수 체계와 폭·담김을 함께 평가하는 구간 점수를 정리했다.",
+      "scope": "확률 예측 평가 이론; 제시 실증 사례는 기상 예측.",
+      "apply": "CRPS·방향 Brier·구간 점수로 평가. 좁은 띠와 높은 확률 숫자 자체에 보상하지 않는다.",
+      "limit": "주가 예측 성능을 보여 준 논문이 아니다. 여기서는 평가 원칙만 채택한다."
+    },
+    {
+      "id": "R07",
+      "citation": "Harvey, Liu & Zhu (2016), … and the Cross-Section of Expected Returns, Review of Financial Studies 29(1), 5–68",
+      "url": "https://people.duke.edu/~charvey/Research/Published_Papers/P118_and_the_cross.PDF",
+      "access": "저자 공개 게재본: 다중검정 문제와 결론·임계값 해석 확인",
+      "finding": "많은 요인을 시험할 때 통상적 유의성 기준으로 우연한 발견을 거르기 어렵다고 분석했다.",
+      "scope": "자산가격 요인 연구와 다중검정.",
+      "apply": "36개 요인·모형·시드·기간의 실험 이력 보관; 내부 선택과 최종 평가 분리.",
+      "limit": "논문의 특정 t 임계값을 ATLAS 모든 실험에 기계적으로 적용하지 않는다."
+    }
+  ],
+  "korean_daily_replication_completed": false,
+  "guaranteed_formula_found": false
+}

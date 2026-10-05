@@ -1,0 +1,2 @@
+﻿id,type,dateKST,at,supersedes,correctionReason,links,kind,date,title,heard,sources,recordedLater,status
+operation-1bc6d2bbb007af52,operation,2026-09-28,2026-09-30T14:13:35.219Z,,,{},construction,2026-09-28,ATLAS 11로 다시 짓기: 고정 판(9/17)을 매일 실제 종가에서 20거래일을 다시 계산하는 구조로,매일 시장의 실제 종가에서 새로 출발합니다(고정 판은 지우지 않고 보존),"{""commits"":[],""docs"":[""docs/ATLAS11_REPORT.md §1(2026-09-28 23:05 KST)"",""발행본 2026-09-28-atlas11-27e1f65cfc167be9""]}",true,공사 기록

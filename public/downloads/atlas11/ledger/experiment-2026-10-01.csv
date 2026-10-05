@@ -1,0 +1,2 @@
+﻿id,type,dateKST,at,supersedes,correctionReason,links,kind,day,candidatesTotal,openCandidates,rejectedCandidates,observingCandidates,reason,validationWindow,status
+experiment-d1ab825ce91b7024,experiment,2026-10-01,2026-10-01T09:53:49Z,,,{},no_test,2026-10-01,11,0,11,0,새로 시험할 후보 없음 — 후보 11개가 모두 판정됨(기각 11 · 실전 관찰 0) · 검증 기간은 2026-09-17 이전으로 고정,"{""trainingBefore"":""2026-09-17"",""originDays"":120}",변경 없음

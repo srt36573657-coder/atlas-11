@@ -1,0 +1,66 @@
+{
+  "finalEqualBrowser": {
+    "checks": 10,
+    "passed": true
+  },
+  "equalStart": {
+    "assets": 52,
+    "initialWon": 10000,
+    "calendarDays": 44,
+    "tickMs": 1000,
+    "newsEnergy": "max_existing_per_event_distribution_change_pp",
+    "fomoPriceImpactEnabled": false
+  },
+  "finalTargeted": {
+    "tests": 42,
+    "pass": 42,
+    "fail": 0
+  },
+  "dailyMovement": {
+    "id": "2026-09-23-1d787077",
+    "assets": 52,
+    "stocksWithTurns": 33,
+    "accuracyValidated": false
+  },
+  "fullSuiteScope": "FOMO implementation before separate daily-movement addition; final targeted tests cover new changes",
+  "targetedFomo": {
+    "tests": 30,
+    "pass": 30,
+    "fail": 0,
+    "overlapsFullSuite": true
+  },
+  "browser": {
+    "checks": 52,
+    "passed": true,
+    "physicalDevice": false
+  },
+  "collectionReused": true,
+  "version": "9.1.0",
+  "at": "2026-09-27T23:06:12.898Z",
+  "assets": 52,
+  "actualAsOf": "2026-09-23",
+  "coreFomoAvailable": 0,
+  "collection": {
+    "priceSuccess": 0,
+    "priceFailed": 3,
+    "priceDeferred": 49,
+    "searchObserved": 0,
+    "searchNotConfigured": 52,
+    "flowAvailable": 0
+  },
+  "tests": 488,
+  "pass": 488,
+  "fail": 0,
+  "originalAndAllForecastsUnchanged": true,
+  "sourceSHA256": "235925fafa9010c7f036a4028fd7614bd855f5e54402f88b31f7d377402c455c",
+  "priceImpactEnabled": false,
+  "accuracyValidated": false,
+  "liveDeployed": false,
+  "pending": [
+    "검색 API 인증",
+    "공식 개인 수급 원자료",
+    "연결 가능한 가격 원문",
+    "당시 원본·기업행위 검증",
+    "독립 향후 검증과 일별 상태 전이 계수 근거"
+  ]
+}

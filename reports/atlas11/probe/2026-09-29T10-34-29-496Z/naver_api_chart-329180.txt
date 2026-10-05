@@ -1,0 +1,1 @@
+[{"localDate":"20260928","closePrice":439000.0,"openPrice":445000.0,"highPrice":447000.0,"lowPrice":439000.0,"accumulatedTradingVolume":102051,"foreignRetentionRate":13.72},{"localDate":"20260929","closePrice":429000.0,"openPrice":437000.0,"highPrice":438500.0,"lowPrice":424500.0,"accumulatedTradingVolume":193907,"foreignRetentionRate":13.72}]

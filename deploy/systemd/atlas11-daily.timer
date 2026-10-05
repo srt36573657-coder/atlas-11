@@ -1,0 +1,14 @@
+# ATLAS 11 타이머 — 평일(월~금) 16:00 Asia/Seoul 에 atlas11-daily.service 를 깨운다.
+# Persistent=true: 서버가 꺼져 있어 16:00 을 놓쳤으면 켜지자마자 한 번 돌린다(그날 18:00 이 지났으면 재시도 없이 한 번만).
+# 공휴일은 서비스 쪽(scheduler.mjs --today)이 달력을 보고 스스로 건너뛴다.
+[Unit]
+Description=ATLAS 11 daily timer (Mon-Fri 16:00 Asia/Seoul)
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 16:00:00 Asia/Seoul
+Persistent=true
+AccuracySec=30s
+Unit=atlas11-daily.service
+
+[Install]
+WantedBy=timers.target

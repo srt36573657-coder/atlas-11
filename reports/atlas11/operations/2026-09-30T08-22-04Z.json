@@ -1,0 +1,333 @@
+{
+  "schema": "atlas11-operation-2",
+  "at": "2026-09-30T08:22:04Z",
+  "dayKST": "2026-09-30",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-09-30T08:22:04.854Z",
+      "status": "ok",
+      "durationMs": 39,
+      "session": true,
+      "afterClose": true,
+      "day": "2026-09-30",
+      "cutoff": "2026-09-30"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-09-30T08:22:04.895Z",
+      "status": "ok",
+      "durationMs": 37265,
+      "attempted": true,
+      "observations": 52,
+      "errors": 0,
+      "recordId": "collection-fd0e9b5e0961d8b1"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-09-30T08:22:42.160Z",
+      "status": "ok",
+      "durationMs": 893,
+      "changed": true,
+      "confirmedToday": 52,
+      "actualAsOf": "2026-09-30",
+      "inputSnapshotSHA256": "de3c5b1e138a6dd629fe995931e95d1ebfde4edd2c126f5fa7457a8336832a24"
+    },
+    {
+      "step": "4_score",
+      "startedAt": "2026-09-30T08:22:43.255Z",
+      "status": "ok",
+      "durationMs": 665,
+      "evaluated": 468,
+      "newRecords": 260,
+      "duplicates": 208,
+      "pending": 4732
+    },
+    {
+      "step": "5_analyze",
+      "startedAt": "2026-09-30T08:22:43.921Z",
+      "status": "ok",
+      "durationMs": 1270,
+      "cells": 208,
+      "newRecords": 208,
+      "aggregateDate": "2026-09-30"
+    },
+    {
+      "step": "6_publish",
+      "startedAt": "2026-09-30T08:22:45.193Z",
+      "status": "ok",
+      "durationMs": 66347,
+      "forecastId": "2026-09-30-atlas11-d63a7866e135fbc2",
+      "reused": false,
+      "newForecast": true,
+      "shadows": 0
+    },
+    {
+      "step": "7_evolve",
+      "startedAt": "2026-09-30T08:23:51.540Z",
+      "status": "ok",
+      "durationMs": 92,
+      "backtested": 0,
+      "adopted": 0,
+      "rejected": 0,
+      "observing": 0,
+      "rolledBack": 0,
+      "operatingModel": "atlas11-A-1"
+    },
+    {
+      "step": "8_report_view",
+      "startedAt": "2026-09-30T08:23:51.633Z",
+      "view": {
+        "forecastId": "2026-09-30-atlas11-d63a7866e135fbc2",
+        "files": 60,
+        "dir": "public/data/atlas11/view",
+        "scoreTargetDate": "2026-09-30",
+        "firstScorableDate": "2026-09-29",
+        "scoredDates": 2,
+        "bytes": 7312143
+      },
+      "status": "ok",
+      "durationMs": 1312,
+      "dailyReport": "2026-09-30",
+      "ledgerTotals": {
+        "collection": 270,
+        "forecast": 4,
+        "score": 1044,
+        "analysis": 967,
+        "factor": 108,
+        "experiment": 11,
+        "model": 0,
+        "operation": 15
+      }
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu24",
+    "event": "workflow_dispatch",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "36689202483",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/36689202483",
+    "commit": "9a66a530375fca6bf0078d718f81c54343c2b2e3",
+    "serverInstalled": true,
+    "scheduledRun": false
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": false,
+  "warnings": [],
+  "configVersion": "v1",
+  "configSHA256": "0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340",
+  "scoringPolicyVersion": "v1",
+  "scoringPolicySHA256": "395c9821305b8226a6958855ef8efb9257a46bcaf938fc0ba85c80126311e746",
+  "previousForecastId": "2026-09-29-atlas11-128de9174cfdfa1f",
+  "operatingModel": "atlas11-A-1",
+  "day": "2026-09-30",
+  "session": true,
+  "afterClose": true,
+  "calendarGate": {
+    "day": "2026-09-30",
+    "status": "await_final_provider_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": true,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": false
+  },
+  "cutoff": "2026-09-30",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-09-29",
+  "publishEnd": "2026-10-30",
+  "afterPublishEnd": false,
+  "collection": {
+    "attempted": true,
+    "provider": "naver_minute_1530_closing_auction",
+    "observations": 52,
+    "errors": [],
+    "delayed": false,
+    "stats": {
+      "stocks": 52,
+      "succeeded": 52,
+      "failed": 0,
+      "finalizedToday": 52,
+      "crossChecked": 52,
+      "requests": 104,
+      "durationMs": 37245
+    },
+    "durationMs": 37245
+  },
+  "collectionRecordId": "collection-fd0e9b5e0961d8b1",
+  "inputChanged": true,
+  "actualAsOf": "2026-09-30",
+  "freshStocks": 52,
+  "confirmedTodayStocks": 52,
+  "confirmedTodayCodes": [
+    "000720",
+    "000810",
+    "002380",
+    "003230",
+    "003490",
+    "004170",
+    "005380",
+    "005490",
+    "005930",
+    "009150",
+    "009830",
+    "010120",
+    "010130",
+    "010170",
+    "011200",
+    "012330",
+    "012450",
+    "012750",
+    "015760",
+    "017670",
+    "018260",
+    "021240",
+    "028260",
+    "028300",
+    "029780",
+    "030000",
+    "030200",
+    "032830",
+    "033780",
+    "034020",
+    "034220",
+    "034730",
+    "035250",
+    "035420",
+    "036460",
+    "047050",
+    "051910",
+    "066570",
+    "086280",
+    "105560",
+    "111770",
+    "138040",
+    "196170",
+    "207940",
+    "214370",
+    "226950",
+    "257720",
+    "259960",
+    "278470",
+    "329180",
+    "352820",
+    "373220"
+  ],
+  "retainedStoredClose": false,
+  "inputSnapshotSHA256": "de3c5b1e138a6dd629fe995931e95d1ebfde4edd2c126f5fa7457a8336832a24",
+  "unconfirmedCodes": [],
+  "scoreId": "f9b186a4f65f057982d519b0ebf1aa75e48022fc10c800029504b173b9cc2de5",
+  "scoredDates": 2,
+  "scoring": {
+    "evaluated": 468,
+    "evaluatedLive": 364,
+    "pending": 4732,
+    "uniqueTargetDates": 2,
+    "byClass": {
+      "방향·크기 모두 틀림": 53,
+      "방향·크기 모두 맞음": 183,
+      "크기 허용·방향 틀림": 106,
+      "방향 맞고 크기 틀림": 126
+    },
+    "exclusionReasons": {
+      "발행 뒤 목표만 채점(목표일 마감 후 발행)": 52,
+      "목표일 전": 4680
+    },
+    "newRecords": 260,
+    "duplicates": 208,
+    "corrected": 0,
+    "cutoff": "2026-09-30",
+    "summary": {
+      "live": {
+        "n": 364,
+        "byHorizon": {
+          "1": {
+            "n": 208,
+            "uniqueDates": 2,
+            "meanAPE": 1.5703018928311658,
+            "directionAccuracy": 0.6346153846153846,
+            "priceHitRate": 0.6057692307692307,
+            "coverage80": 0.8605769230769231,
+            "meanIntervalScoreRel": 0.08103059114408837,
+            "meanBrier": 0.5345296948076925,
+            "meanBandWidthPct": 6.907220659297048,
+            "byClass": {
+              "방향·크기 모두 맞음": 77,
+              "방향 맞고 크기 틀림": 55,
+              "크기 허용·방향 틀림": 49,
+              "방향·크기 모두 틀림": 27,
+              "평가 보류": 0
+            }
+          }
+        }
+      },
+      "reference": {
+        "n": 104,
+        "byHorizon": {}
+      }
+    }
+  },
+  "observationsSnapshots": 2,
+  "reanalyzed": 156,
+  "analysis": {
+    "cellAnalyses": 208,
+    "newRecords": 208,
+    "aggregateDate": "2026-09-30"
+  },
+  "forecastId": "2026-09-30-atlas11-d63a7866e135fbc2",
+  "newForecast": true,
+  "reusedSameInput": false,
+  "liveForecastStocks": 52,
+  "shadows": [],
+  "contextDay": "2026-09-30",
+  "evolution": {
+    "backtested": 0,
+    "adopted": 0,
+    "rejected": 0,
+    "observing": 0,
+    "rolledBack": 0,
+    "promoted": [],
+    "notes": [],
+    "operatingModel": "atlas11-A-1",
+    "candidatesTotal": 11,
+    "states": {
+      "cand-cada92bb6a02": "기각",
+      "cand-94bdc0454e5e": "기각",
+      "cand-e8a6bf641e5a": "기각",
+      "cand-61932e5bacf4": "기각",
+      "cand-99b1f5f4a26c": "기각",
+      "cand-52f5c4516030": "기각",
+      "cand-006aefb23808": "기각",
+      "cand-d935b67d4ce5": "기각",
+      "cand-f5472cad05be": "기각",
+      "cand-93d57983854e": "기각",
+      "cand-563996496016": "기각"
+    }
+  },
+  "operatingModelAfter": "atlas11-A-1",
+  "viewPending": false,
+  "finishedAt": "2026-09-30T08:23:52.945Z",
+  "dailyReport": {
+    "date": "2026-09-30",
+    "version": 1,
+    "md": "reports/atlas11/daily/2026-09-30.md"
+  },
+  "ledger": {
+    "totals": {
+      "collection": 270,
+      "forecast": 4,
+      "score": 1044,
+      "analysis": 967,
+      "factor": 108,
+      "experiment": 11,
+      "model": 0,
+      "operation": 15
+    },
+    "dates": 2
+  }
+}

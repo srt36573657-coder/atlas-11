@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "assets": 52,
+  "forecastRows": 1248,
+  "paths": 20000,
+  "originalSHA256": "1af446f745c88cfb308de348f238f2fa8d31265b5322e2f035f5aafb6d5833ca",
+  "priorForecastsPreserved": 15,
+  "candidateId": "2026-09-23-e46f1171",
+  "actualAsOf": "2026-09-23",
+  "evaluationRecords": 208,
+  "prospectiveRecords": 0,
+  "sourceInputUnchanged": true,
+  "predictiveAccuracyCertified": false,
+  "trustProbability": null,
+  "tests": {
+    "passed": 218,
+    "failed": 0,
+    "sha256": "30b78fdb58412268a288cf05684f7a3db951a6a5e0ab2d915763fa1cf7336415"
+  },
+  "at": "2026-09-27T03:07:44.060Z",
+  "scopeCounts": {
+    "market": 6,
+    "index": 0,
+    "sector": 11,
+    "company": 38
+  },
+  "companySchedulesRemaining": 7,
+  "newNewsVerified": 0,
+  "liveCollectionPerformed": false,
+  "googleConfigurationVerified": false,
+  "deployed": false,
+  "visualBrowserVerified": false,
+  "uiVerified": "built JavaScript DOM interaction tests; browser preview blocked by environment policy",
+  "openEvidence": [
+    "공식 지수·업종 10년 일별 원자료",
+    "FOMO 18항목 중 12항목",
+    "발표 직전 예상과 실제 결과",
+    "기업행위 조정 및 당시 가격 빈티지",
+    "독립 실전 예측력",
+    "7종목 확정 기업 일정"
+  ]
+}

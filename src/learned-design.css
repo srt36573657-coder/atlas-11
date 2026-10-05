@@ -1,0 +1,327 @@
+/* ATLAS learned design: presentation only. Load after existing styles.
+   No path geometry, forecast values, evidence state or playback timing changes.
+   48px primary / 44px secondary targets are ATLAS web design goals. */
+:root {
+  --learned-paper:#f5f1e8;
+  --learned-surface:#fffcf6;
+  --learned-ink:#2d241f;
+  --learned-muted:#65584b;
+  --learned-accent:#9b4d2f;
+  --learned-brass-ink:#765328;
+  --atelier-orange:var(--learned-accent);
+  --atelier-panel-accent:var(--learned-accent);
+  --gold:var(--learned-accent);
+  --gold-hover:#803c24;
+  --brand-gold-ink:var(--learned-brass-ink);
+}
+
+main[data-atelier][data-ux] {
+  --atelier-accent:var(--learned-accent);
+  --atelier-orange:var(--learned-accent);
+  --atelier-panel-accent:var(--learned-accent);
+  --atelier-muted:var(--learned-muted);
+  --muted:var(--learned-muted);
+  --subtle:var(--learned-muted);
+  --gold:var(--learned-accent);
+  --brand-gold:var(--learned-brass-ink);
+  color:var(--learned-ink);
+  font-family:var(--atlas-font);
+  font-size:1rem;
+  line-height:1.65;
+}
+
+/* Typography: one reading family; the existing ATLAS wordmark keeps its serif. */
+main[data-atelier][data-ux] :is(h2,h3,h4,button,input,select,textarea,summary) {
+  font-family:var(--atlas-font);
+}
+main[data-atelier][data-ux] :is(h2,h3,h4) {
+  font-weight:600;
+  letter-spacing:-.02em;
+  overflow-wrap:anywhere;
+}
+main[data-atelier][data-ux] .section-heading h2 {font-size:1.625rem;line-height:1.35;}
+main[data-atelier][data-ux] .section-heading p {font-size:.9375rem;line-height:1.7;}
+main[data-atelier][data-ux] .section-kicker {font-size:.8125rem;letter-spacing:.04em;color:var(--learned-brass-ink);}
+main[data-atelier][data-ux] :is(.workspace-context,.storage-indicator,.visible-count,.lens-help,.scope-summary,.scope-gap,.calendar-caption,.playback-state,.focus-period,.chart-range-note) {
+  font-size:.875rem;
+  line-height:1.6;
+  color:var(--learned-muted);
+  overflow-wrap:anywhere;
+}
+main[data-atelier][data-ux] :is(.price-story,.daily-explanation,.daily-reason,.daily-event,.news-reading-detail,.focus-news-content,.evo-day-panel,.breaking-detail) p {
+  font-size:1rem;
+  line-height:1.75;
+}
+main[data-atelier][data-ux] :is(.quote-value,.end-forecast,.daily-values,.score-metrics,.score-workbench table,.sealed-table) {
+  font-variant-numeric:tabular-nums lining-nums;
+}
+main[data-atelier][data-ux] :is(.quote-value strong,.end-forecast b,.score-metrics b) {font-weight:600;}
+main[data-atelier][data-ux] :is(.source-card,.daily-explanation,.record-details,.score-context) a {
+  color:var(--learned-accent);
+  text-underline-offset:.2em;
+  overflow-wrap:anywhere;
+}
+main[data-atelier][data-ux] :is(.record-details,.intro-details,.gallery-tools,.daily-detail,.card-details) > summary {
+  font-size:.875rem;
+  line-height:1.6;
+  white-space:normal;
+}
+main[data-atelier][data-ux] :is(.stock-identity,.stock-code,.forecast-status,.end-comparison,.forecast-origin,.quote-caption,.selected-quote>small) {
+  font-size:.8125rem;
+  line-height:1.6;
+}
+
+/* Reusable controls: size the target, never pad a price-chart point. */
+main[data-atelier][data-ux] :is(button,select,summary) {
+  min-height:44px;
+  line-height:1.5;
+  touch-action:manipulation;
+}
+main[data-atelier][data-ux] button {
+  min-width:44px;
+  font-size:.875rem;
+  font-weight:500;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  transition:background-color 150ms ease,border-color 150ms ease,color 150ms ease;
+}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .stock-controls > button {
+  min-width:44px;
+  min-height:44px;
+  font-size:.9375rem;
+  padding:10px 12px;
+  line-height:1.5;
+  white-space:normal;
+}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .stock-controls > button.primary,
+main[data-atelier][data-ux] :is(.gallery-picker,.stock-picker-trigger,.dialog-title button,.dialog-title select,.focus-navigation button) {
+  min-width:48px;
+  min-height:48px;
+}
+main[data-atelier][data-ux] :is(.stock-controls,.focus-navigation,.header-actions,.picker-filters,.account-actions) {gap:8px;}
+main[data-atelier][data-ux] .focus-return {min-height:48px;min-width:48px;white-space:normal;line-height:1.5;}
+main[data-atelier][data-ux] .focus-context {flex:1 1 12rem;min-width:0;max-width:100%;font-size:.875rem;line-height:1.6;color:var(--learned-muted);overflow-wrap:anywhere;}
+main[data-atelier][data-ux] .workspace-data-status {display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 0;font-size:.875rem;line-height:1.65;color:var(--learned-muted);overflow-wrap:anywhere;}
+main[data-atelier][data-ux] .workspace-data-status > * {min-width:0;max-width:100%;}
+main[data-atelier][data-ux] :is(.stock-controls,.stock-options,.workbench-heading,.score-filters,.section-switch) {flex-wrap:wrap;}
+main[data-atelier][data-ux] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea) {
+  font-size:1rem;
+  min-width:0;
+  max-width:100%;
+}
+main[data-atelier][data-ux] :is(.stock-options,.picker-filters,.score-filters,.workbench-heading) label {
+  min-width:0;
+  min-height:44px;
+  font-size:.875rem;
+  line-height:1.6;
+  flex-wrap:wrap;
+}
+main[data-atelier][data-ux] :is(.stock-options,.picker-filters,.score-filters,.workbench-heading) select {min-height:44px;}
+main[data-atelier][data-ux] .stock-options .text-button {display:inline-flex;align-items:center;}
+main[data-atelier][data-ux] :is(.day-step,.watch-button) {flex-shrink:0;}
+main[data-atelier][data-ux] .nav-symbol {width:20px;height:20px;flex-shrink:0;stroke-width:1.75;}
+
+/* Stable cards: quiet surfaces, no glass, no hover lift, no text clamping. */
+main[data-atelier][data-ux] :is(.mini-card,.focus-card,.daily-explanation,.news-reading-detail,.score-metrics>div) {
+  background:var(--learned-surface);
+  border-radius:8px;
+  box-shadow:none;
+  min-width:0;
+}
+main[data-atelier][data-ux] .mini-card:hover {transform:none;box-shadow:none;}
+main[data-atelier][data-ux] .mini-card {padding:20px 20px 0;}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .mini-title {
+  min-height:0;
+  gap:12px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .mini-title h3 {font-size:1.25rem;line-height:1.4;font-weight:600;}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .mini-title :is(small,.forecast-status) {font-size:.8125rem;line-height:1.6;}
+main[data-atelier][data-ux] :is(.mini-card,.focus-card) .end-forecast b {font-size:1.375rem;line-height:1.4;}
+main[data-atelier][data-ux] .small-multiples {align-items:start;}
+main[data-atelier][data-ux] :is(.stock-current,.quote-value,.timeline-meta) {flex-wrap:wrap;}
+main[data-atelier][data-ux] :is(.forecast-origin,.end-comparison,.quote-value,.selected-quote) {min-width:0;overflow-wrap:anywhere;}
+main[data-atelier][data-ux] .chart-wrap {background:var(--learned-surface);border-radius:8px;}
+main[data-atelier][data-ux] :is(.chart-legend,.evo-legend,.breaking-chart-legend) {font-size:.8125rem;line-height:1.6;flex-wrap:wrap;gap:8px 16px;}
+/* Deliberately leave SVG d, clip paths, line dashes, axes and values unchanged. */
+
+/* Focus desktop: graph left, independent explanation right, controls below graph.
+   A minimum graph row and scrollable dialog preserve content at text zoom. */
+main[data-atelier][data-ux] .watch-dialog {
+  overflow:auto;
+  overscroll-behavior:contain;
+  grid-template-rows:auto minmax(min-content,1fr);
+  scrollbar-gutter:stable;
+  scroll-padding-block:12px;
+}
+main[data-atelier][data-ux] .watch-dialog .dialog-title {
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px 12px;
+  min-width:0;
+}
+main[data-atelier][data-ux] .watch-dialog .dialog-title h2 {font-size:1rem;line-height:1.5;white-space:normal;}
+main[data-atelier][data-ux] .watch-dialog .dialog-title select {min-width:0;max-width:100%;font-size:1rem;flex:1 1 12rem;}
+main[data-atelier][data-ux] .watch-dialog .dialog-title > button[aria-label="닫기"] {margin-left:auto;}
+main[data-atelier][data-ux] .focus-card {
+  min-height:min-content;
+  grid-template-columns:minmax(0,1.6fr) minmax(19rem,1fr);
+  grid-template-rows:auto auto minmax(14rem,1fr) auto auto auto auto;
+  grid-template-areas:'title news' 'current news' 'chart news' 'controls news' 'slider news' 'options news' 'scope news';
+  overflow:visible;
+}
+main[data-atelier][data-ux] .focus-card .chart-wrap {min-height:14rem;height:100%;}
+main[data-atelier][data-ux] .focus-card .stock-controls {flex-wrap:wrap;padding:8px 12px;}
+main[data-atelier][data-ux] .focus-card .stock-controls .day-step {flex:0 0 44px;}
+main[data-atelier][data-ux] .focus-card .stock-controls .primary {min-width:0;flex:1 1 10rem;}
+main[data-atelier][data-ux] .focus-card .stock-options {font-size:.875rem;padding:8px 12px;gap:8px 12px;}
+main[data-atelier][data-ux] .focus-card .stock-options select {max-width:100%;font-size:1rem;}
+main[data-atelier][data-ux] .focus-card .stock-timeline {margin:8px 12px;}
+main[data-atelier][data-ux] .focus-card .stock-date-slider {min-height:44px;}
+main[data-atelier][data-ux] .focus-card .scope-info {display:block;padding:4px 12px 12px;}
+main[data-atelier][data-ux] .focus-news {grid-template-rows:auto minmax(0,1fr);background:var(--learned-paper);}
+main[data-atelier][data-ux] .focus-news-heading {padding:12px 16px;display:block;}
+main[data-atelier][data-ux] .focus-news-heading h3 {font-family:var(--atlas-font);font-size:1rem;font-weight:600;line-height:1.5;}
+main[data-atelier][data-ux] .focus-news-heading span {font-size:.875rem;line-height:1.6;color:var(--learned-brass-ink);}
+main[data-atelier][data-ux] .focus-news-content {padding:16px;min-height:0;overflow:auto;scroll-padding-block:16px;}
+main[data-atelier][data-ux] .focus-news-content :is(h3,h4) {font-family:var(--atlas-font);font-weight:600;}
+main[data-atelier][data-ux] .focus-card.chart-readable :is(.stock-identity,.forecast-status,.end-comparison,.forecast-origin small,.quote-caption,.quote-kind,.selected-quote>small,.stock-options,.scope-summary,.scope-gap,.scope-chips,.timeline-meta,.focus-news-heading span) {font-size:1rem;line-height:1.65;}
+
+/* Evidence stays readable; genuinely wide tables retain local horizontal scroll. */
+main[data-atelier][data-ux] :is(.news-reading-layout,.news-reading-list,.news-reading-detail,.score-filters,.picker-filters,.picker-grid) {min-width:0;}
+main[data-atelier][data-ux] .news-reading-list button b {font-size:1rem;}
+main[data-atelier][data-ux] .news-reading-list button :is(span,small) {font-size:.875rem;}
+main[data-atelier][data-ux] .news-reading-detail h3 {font-size:1.375rem;line-height:1.4;}
+main[data-atelier][data-ux] :is(.source-card small,.score-metrics small,.score-metrics span,.score-context,.score-workbench td small) {font-size:.875rem;line-height:1.65;}
+main[data-atelier][data-ux] :is(.table-scroll,.chart-data-scroll,.sealed-table-scroll) {max-width:100%;min-width:0;overflow:auto;}
+main[data-atelier][data-ux] .score-workbench td button {font-size:.875rem;min-height:44px;}
+main[data-atelier][data-ux] .score-outcome-filters {gap:8px;margin-block:16px 8px;}
+main[data-atelier][data-ux] .score-outcome-filters button {min-height:44px;font-size:.9375rem;padding:10px 16px;}
+main[data-atelier][data-ux] .score-outcome-filters button[aria-pressed=true] {background:var(--learned-ink);border-color:var(--learned-ink);color:var(--learned-surface);font-weight:600;}
+main[data-atelier][data-ux] .score-list-status {font-size:.875rem;line-height:1.65;margin:8px 0 16px;color:var(--learned-muted);}
+main[data-atelier][data-ux] :is(.picker-grid button,.evo-stock-grid button,.breaking-stock-grid button) {min-width:0;overflow-wrap:anywhere;}
+main[data-atelier][data-ux] .picker-grid button b {font-size:1rem;line-height:1.5;}
+
+@media (max-width:64rem) {
+  main[data-atelier][data-ux] .focus-card {grid-template-columns:minmax(0,1.25fr) minmax(17rem,1fr);}
+}
+
+@media (max-width:51.25rem) {
+  main[data-design-edition="8.0"][data-atelier][data-ux="8.5"] {padding-inline:16px;padding-bottom:calc(7rem + env(safe-area-inset-bottom,0px));}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > nav {gap:0;}
+  main[data-design-edition="8.0"][data-atelier][data-ux] > nav button {min-height:60px;font-size:.8125rem;line-height:1.5;white-space:normal;overflow-wrap:anywhere;}
+  main[data-atelier][data-ux] .header-actions {max-width:100%;min-width:0;}
+  main[data-atelier][data-ux] .header-actions button {font-size:.875rem;}
+  main[data-atelier][data-ux] .section-heading h2 {font-size:1.5rem;}
+  main[data-atelier][data-ux] .gallery-picker {min-height:48px;font-size:1rem;}
+  main[data-atelier][data-ux] .mini-card {padding:16px 16px 0;}
+  main[data-atelier][data-ux] .small-multiples,
+  main[data-atelier][data-ux] .small-multiples[data-density=reading] {grid-template-columns:minmax(0,1fr);gap:16px;}
+  main[data-atelier][data-ux] :is(.score-filters,.workbench-heading,.picker-filters) label {max-width:100%;flex:1 1 12rem;}
+  main[data-atelier][data-ux] .score-filters select {max-width:100%;}
+  main[data-atelier][data-ux] .news-reading-layout {max-height:none;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(10rem,28dvh) minmax(18rem,50dvh);}
+  main[data-atelier][data-ux] .news-reading-detail {padding:16px;}
+  main[data-atelier][data-ux] .score-metrics {grid-template-columns:repeat(2,minmax(0,1fr));}
+  /* Stacked focus: graph, controls, date/options, explanation. The dialog scrolls. */
+  main[data-atelier][data-ux] .watch-backdrop {padding:0;}
+  main[data-atelier][data-ux] .watch-dialog {
+    display:block;
+    height:100vh;
+    height:100dvh;
+    max-height:100dvh;
+    border-radius:0;
+    padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+  }
+  main[data-atelier][data-ux] .watch-dialog .dialog-title {position:sticky;top:0;z-index:6;background:var(--learned-surface);padding-block:4px 8px;}
+  main[data-atelier][data-ux] .watch-dialog .dialog-title select {flex-basis:8rem;margin-left:0;}
+  main[data-atelier][data-ux] .watch-dialog .focus-context {flex-basis:100%;}
+  main[data-atelier][data-ux] .watch-dialog .focus-period {display:none;}
+  main[data-atelier][data-ux] .focus-card,
+  main[data-atelier][data-ux] .focus-card.chart-readable {
+    height:auto;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:auto auto clamp(14rem,35dvh,20rem) auto auto auto auto auto;
+    grid-template-areas:'title' 'current' 'chart' 'controls' 'slider' 'options' 'scope' 'news';
+    gap:0;
+    overflow:visible;
+  }
+  main[data-atelier][data-ux] .focus-card .chart-wrap {height:100%;min-height:0;}
+  main[data-atelier][data-ux] .focus-card .stock-controls {padding:8px;gap:8px;}
+  main[data-atelier][data-ux] .focus-card .stock-controls > button {flex:1 1 5rem;}
+  main[data-atelier][data-ux] .focus-card .stock-controls > .day-step {flex:0 0 44px;}
+  main[data-atelier][data-ux] .focus-card .stock-controls > .primary {flex:1 1 8rem;}
+  main[data-atelier][data-ux] .focus-card .stock-current small {font-size:.8125rem;line-height:1.6;}
+  main[data-atelier][data-ux] .focus-card .quote-value strong {font-size:1.375rem;}
+  main[data-atelier][data-ux] .focus-news {border-left:0;border-top:1px solid var(--border);grid-template-rows:auto minmax(12rem,auto);}
+  main[data-atelier][data-ux] .focus-news-content,
+  main[data-atelier][data-ux] .focus-card.chart-readable .focus-news-content {min-height:12rem;max-height:50dvh;padding:16px;}
+  main[data-atelier][data-ux] .focus-card .scope-info {font-size:.875rem;}
+  main[data-atelier][data-ux] .focus-card .scope-summary {font-size:.8125rem;}
+  main[data-atelier][data-ux] .daily-values {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+
+@media (max-width:30rem) {
+  main[data-design-edition="8.0"][data-atelier][data-ux="8.5"] {padding-inline:12px;}
+  main[data-atelier][data-ux] :is(.mini-card,.focus-card) .mini-title {display:grid;grid-template-columns:minmax(0,1fr);gap:8px;}
+  main[data-atelier][data-ux] :is(.mini-card,.focus-card) .end-forecast {max-width:none;align-items:flex-start;text-align:left;}
+  main[data-atelier][data-ux] :is(.mini-card,.focus-card) .end-comparison {max-width:none;}
+  main[data-atelier][data-ux] .focus-card .forecast-origin {border-left:0;border-top:1px solid var(--border);padding:8px 0 0;width:100%;}
+  main[data-atelier][data-ux] .research-lenses {gap:8px;}
+  main[data-atelier][data-ux] .research-lenses button {font-size:.875rem;}
+  main[data-atelier][data-ux] .picker-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  main[data-atelier][data-ux] .picker-grid button {padding:10px;}
+  main[data-atelier][data-ux] .picker-grid button strong {font-size:.875rem;white-space:normal;}
+  main[data-atelier][data-ux] :is(.daily-values,.tools-grid) {grid-template-columns:minmax(0,1fr);}
+  main[data-atelier][data-ux] .stock-controls > .watch-button {min-width:44px;}
+  main[data-atelier][data-ux] .focus-news-heading {padding:12px;}
+  main[data-atelier][data-ux] .focus-news-content {padding:12px;}
+}
+
+/* Short viewports / browser zoom: prefer accessible document flow to clipping.
+   The explicit large-reading mode also opts out of tiny nested scrollers. */
+@media (max-height:42rem) {
+  main[data-atelier][data-ux] .watch-dialog {display:block;overflow:auto;}
+  main[data-atelier][data-ux] .watch-dialog .dialog-title {position:static;}
+  main[data-atelier][data-ux] .focus-card {height:auto;min-height:0;}
+  main[data-atelier][data-ux] .focus-news {overflow:visible;}
+  main[data-atelier][data-ux] .focus-news-content {max-height:none;overflow:visible;}
+  main[data-atelier][data-ux] .news-reading-layout {max-height:none;grid-template-rows:auto;}
+  main[data-atelier][data-ux] .news-reading-list {max-height:16rem;}
+  main[data-atelier][data-ux] .news-reading-detail {max-height:none;overflow:visible;}
+}
+@media (max-width:51.25rem) and (max-height:42rem) {
+  main[data-atelier][data-ux] .focus-card,
+  main[data-atelier][data-ux] .focus-card.chart-readable {grid-template-rows:auto auto 16rem auto auto auto auto auto;}
+  main[data-atelier][data-ux] .focus-card .focus-news,
+  main[data-atelier][data-ux] .focus-card.chart-readable .focus-news {display:block;}
+  main[data-atelier][data-ux] .focus-card .focus-news-content,
+  main[data-atelier][data-ux] .focus-card.chart-readable .focus-news-content {max-height:none;min-height:0;overflow:visible;}
+}
+main[data-atelier][data-ux] .focus-card.chart-readable .focus-news-content {max-height:none;overflow:visible;}
+main[data-atelier][data-ux] .watch-dialog:has(.chart-readable) {display:block;}
+main[data-atelier][data-ux] .focus-card.chart-readable {
+  height:auto;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto auto clamp(16rem,35dvh,24rem) auto auto auto auto auto;
+  grid-template-areas:'title' 'current' 'chart' 'controls' 'slider' 'options' 'scope' 'news';
+}
+main[data-atelier][data-ux] .focus-card.chart-readable .focus-news {display:block;overflow:visible;border-left:0;border-top:1px solid var(--border);}
+
+@media (pointer:coarse) {
+  /* Existing accessibility CSS sets logical minimums with !important.
+     Match only that boundary so 48px primary targets remain 48px on touch. */
+  main[data-atelier][data-ux] :is(.mini-card,.focus-card) .stock-controls > button.primary,
+  main[data-atelier][data-ux] :is(.gallery-picker,.stock-picker-trigger,.dialog-title button,.dialog-title select,.focus-navigation button,.focus-return) {min-block-size:48px!important;min-inline-size:48px!important;}
+}
+
+@media (prefers-reduced-motion:reduce) {
+  main[data-atelier][data-ux] *,
+  main[data-atelier][data-ux] *::before,
+  main[data-atelier][data-ux] *::after {animation:none;transition:none;scroll-behavior:auto;}
+}
+@media (forced-colors:active) {
+  main[data-atelier][data-ux] :is(.mini-card,.focus-card,.focus-news,.focus-news-heading,.watch-dialog,.watch-dialog .dialog-title,.daily-explanation,.news-reading-detail) {background:Canvas;color:CanvasText;border-color:CanvasText;}
+  main[data-atelier][data-ux] :is(.source-card,.daily-explanation,.record-details,.score-context) a {color:LinkText;}
+  main[data-atelier][data-ux] :is(.scope-summary,.scope-gap,.focus-news-heading span,.calendar-caption,.playback-state) {color:CanvasText;}
+}

@@ -1,0 +1,7361 @@
+{
+ "schema": "atlas4h-history-1",
+ "id": "vix",
+ "fetchedAt": "2026-10-01T14:59:23.929Z",
+ "from": "2023-09-25",
+ "to": "2026-09-30",
+ "observedAtRule": "날짜만 있는 값은 그 시장 마감 16:15:00 America/New_York 로 본다(약속 10)",
+ "compare": {
+  "rule": "relative",
+  "tolerance": 0.002
+ },
+ "sources": [
+  {
+   "name": "naver",
+   "url": "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=10",
+   "fetchedAt": "2026-10-01T14:59:47.280Z",
+   "rawSha256": "3cc30f0ea396873ccdf3188dccd70e389e082d8f08148ff485c1b335d3cdd852",
+   "rows": 774,
+   "pages": [
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=10",
+     "rawSha256": "2dddb0a70ec226127fcf8cfc35468b62d4e6a43e3eb7c7e079bce292e328602f"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=2&pageSize=10",
+     "rawSha256": "d85be00735d609b4dd11d9644f4f1edc0395e604860683f8e2bc5c0d5d18d909"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=3&pageSize=10",
+     "rawSha256": "11eecd79f9410f19068ec13666950fc099045d86b0d85220bc958cfb2ad45e67"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=4&pageSize=10",
+     "rawSha256": "f91fa88f513374bcec847e79e56cece94d240293bc119e6ab9a644e3228e623d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=5&pageSize=10",
+     "rawSha256": "e636395f25bc8c7e9bc4fa0ff76c437a502447553d252f468d1b1ef3deebdc6c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=6&pageSize=10",
+     "rawSha256": "c2cf088f31826f59706c17a5980d5c4f3c134c042693b11eb5dc10171a7c3523"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=7&pageSize=10",
+     "rawSha256": "741b751a145a8798410008ca5144f76661fee56302850b0f058ea7fe651d5c99"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=8&pageSize=10",
+     "rawSha256": "f725f77acff722c29c8bb5ac61454a2a4c4ad4ef526a237d4793795aca46159d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=9&pageSize=10",
+     "rawSha256": "7f740f312f7e895e71ed00fa9dfc61ecab182c2816ab897dc7df30ba346ed292"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=10&pageSize=10",
+     "rawSha256": "6bec7c7d718d176e72c94c6369666491b9dd137153a7c8cf373a4ccea2ad78dd"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=11&pageSize=10",
+     "rawSha256": "71a5850ad7993dd3bd39403206f94308688e6fdc61c037c8b5b21c8efb4f813d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=12&pageSize=10",
+     "rawSha256": "46ed03ac3fd80a5f85086379f69bdcfe3824da41b241b4d92efd038d54cf6c81"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=13&pageSize=10",
+     "rawSha256": "554ffa422f29f074e9df1f3a1d92e6b913d7f78ea3e948301d28ec5584d69425"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=14&pageSize=10",
+     "rawSha256": "d284deb0ff15b162e98877875b7b9fac0d1341e51568e2af247d1f7b3f50b545"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=15&pageSize=10",
+     "rawSha256": "ac26ec7d08cac4481705a85013371919139485eb3e4567b53554941370778595"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=16&pageSize=10",
+     "rawSha256": "9fdaa867ca60f4f6a2e96f17038e77f3c7d19502882382fe935dbbf893023cac"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=17&pageSize=10",
+     "rawSha256": "bc82d1fac36c72c45ba842747aa93caf0069cc86429e3bfab8adc2c0c2306ceb"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=18&pageSize=10",
+     "rawSha256": "0ddb001072dc4de8bf94a335a8021ed11f413c37923b224e031eb5c51e61afa1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=19&pageSize=10",
+     "rawSha256": "aa09845f2f140585ebea6b472296518927a85338b8b486e17a4c5d8e49e2e972"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=20&pageSize=10",
+     "rawSha256": "c5655c3944e117dab7e0d48007e5d46030d54b3f11035a5399ec12c86966fcc1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=21&pageSize=10",
+     "rawSha256": "ef54a842c55fe99da272c2527398337058f40cdce2e02f3d0b0d47991921d019"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=22&pageSize=10",
+     "rawSha256": "47eff50ecd0616f5dd2b7a4492d5b023734037b1a1b4c5dc20d198acb5004eaf"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=23&pageSize=10",
+     "rawSha256": "dcbcfde5989d7ff84b525c9e50e83b13b3d47714e4f3c2fccc8ba4bbc3e50da2"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=24&pageSize=10",
+     "rawSha256": "8560c14bc567f2733e94ce7f1e5c4324f76455d31b20a7ab2859b92936546fd8"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=25&pageSize=10",
+     "rawSha256": "ed6d8bff133dc96cf6e283828186c5d0942d2bc9d28def562f54792434bbf86c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=26&pageSize=10",
+     "rawSha256": "c8f2fca097922c8841afc1369627a92237f05425db8ceff4868d26ad0f356e0d"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=27&pageSize=10",
+     "rawSha256": "b9063c91223d0f4734a9eac7d4d217088f74d7b7d17211988fd5aec6c19069c4"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=28&pageSize=10",
+     "rawSha256": "11dcbc6bed84fd2f0c2dc8721967f789803dc04c0f15912ac70b49c1ca0e9d34"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=29&pageSize=10",
+     "rawSha256": "77527b99ca1d09054be570ea5cf7dd5261cfc4e65196118c3cbfc2224395711b"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=30&pageSize=10",
+     "rawSha256": "05e266ee0c1e331b54b6fad0a8a44355f2e92158e97fb69329ca725fa72a80c2"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=31&pageSize=10",
+     "rawSha256": "976a408b2330445a25872602c1f1533816f6dfc598252bc98921952098ff7740"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=32&pageSize=10",
+     "rawSha256": "0d327d62b11ff89d6b3645c40eb810034d8833a1d5b586f368b8083c968413d4"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=33&pageSize=10",
+     "rawSha256": "4172bcdd5fac00f3a6f0f44abed8529ff184d714383452e2a720c0e4c615e321"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=34&pageSize=10",
+     "rawSha256": "4ee92c24316689dc08f19123df666d322618293ea1eb8f002f4f92fa971ca684"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=35&pageSize=10",
+     "rawSha256": "2984c2d7689e8a3bc778c0e2aba5c65799f98f4e44b986623d47bd39c0504a43"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=36&pageSize=10",
+     "rawSha256": "dfb30a22a111834d4f3a5b11626a1bcfad7120d6abfe14e892c47eebceee7849"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=37&pageSize=10",
+     "rawSha256": "bae231aa5ff3ec40b6161b166b24f2b13c2a5117ca4b2599dfeef2e182479c12"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=38&pageSize=10",
+     "rawSha256": "649c04a42446315f4a62a8e245dc21f243ad353a17b9251f891ffeb1c0e88234"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=39&pageSize=10",
+     "rawSha256": "c0dcbfd53e03eff4dafe656fe138eff280f3d262d36c5602af988c2c169a8e49"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=40&pageSize=10",
+     "rawSha256": "d5344b592eb66dbb69c8373995a8acdb27241f3ba05af166d4055f2123797002"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=41&pageSize=10",
+     "rawSha256": "af7208f2def5161a99d0fb6e1d6b1bbd3c41cf8901acf6eeea295ba3cb415f39"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=42&pageSize=10",
+     "rawSha256": "b716cec047e915d59524e2769181756f5f4404d3277665b9196ee30aeee7963a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=43&pageSize=10",
+     "rawSha256": "766079be72b5150c2bba602878f18d4e0d5890b8afd5c85353af71d159cf92c1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=44&pageSize=10",
+     "rawSha256": "2a52e8a41039be32cfdf72559a3bd640c3b7c02672f29f18c3760b2c6914ae4a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=45&pageSize=10",
+     "rawSha256": "cbe9ce1766c56e534ed0c44dc4790f6de3024beaa96636beff57bdcfe6b1f37a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=46&pageSize=10",
+     "rawSha256": "6242b778e80c584fec34c3a4ddd1210e475e276feac0edd9a2ba35ac895b6ec6"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=47&pageSize=10",
+     "rawSha256": "538f054d89f9a8c7b9ac562ba944968b58cead5ed75efad2817bbb197c1817dc"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=48&pageSize=10",
+     "rawSha256": "83e16b5d57854e00644202717293e39dfd40522670d80a4b7f27947a5ee9ade8"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=49&pageSize=10",
+     "rawSha256": "d336e3b5763786814e5c6f6e0b65cc75213b09c344b82e5e8d980efa7b32ff81"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=50&pageSize=10",
+     "rawSha256": "9a4baba27e0e672155f0627a82d555d9504689e1a8b1c6aa3df86a5e9c438ba2"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=51&pageSize=10",
+     "rawSha256": "bfa853331ecfb353d60d8597e1e4bb0402f2cc2887301800930d81152cdbf7ea"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=52&pageSize=10",
+     "rawSha256": "09468c2322d6abc52f7a370eb84c6db8e1c85da55fe9258d34664583a693be90"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=53&pageSize=10",
+     "rawSha256": "74cb0034969ff9186810abb0213bf7e2caa765959ecf884dde434012273f9bed"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=54&pageSize=10",
+     "rawSha256": "efcbdf963125b823b283a478a3178e0941ecc14a54dd9561f9d90befa7e3e735"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=55&pageSize=10",
+     "rawSha256": "ea517671b24fb535fe53ab4d61e16ec1366d347df8b7a84fc638ed2c2d878833"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=56&pageSize=10",
+     "rawSha256": "b4e2db89034ebed910c310a7f4a09e5d3d6b461e86de94119dcf51e8f90bedb3"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=57&pageSize=10",
+     "rawSha256": "6c64b1d9873dabfd181870abcc4773d9172ea31a2395ca78b6a08eab52e9180b"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=58&pageSize=10",
+     "rawSha256": "7f9f08d59a9b3f4616d540cf9f7803e729e57854751d78073ee4078cae4b2e67"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=59&pageSize=10",
+     "rawSha256": "bc2cdb35a040ff736d27421a13f56cb6415fa353e030a0999118b798945d6312"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=60&pageSize=10",
+     "rawSha256": "b89776a886c1b1694b8a14dea04f46b736a48cc925af9ef79eb76a2e67b47d0a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=61&pageSize=10",
+     "rawSha256": "63d659d9886cd409a16cad78248d1d1f174208031c2f98a693a2780209d8af4f"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=62&pageSize=10",
+     "rawSha256": "73344b27965f044abf693cb2fbed8a737c806af22da18dd4d34c8861d72fcd05"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=63&pageSize=10",
+     "rawSha256": "06af55be1863674bdb023dc50decff81532407affa57def210501bf4d6cdd5f1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=64&pageSize=10",
+     "rawSha256": "4df3b428cd63d032c9b50cf967c1855ad13c7868df9e1d54657f3e8bfb5d5419"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=65&pageSize=10",
+     "rawSha256": "598dacb0d441b344fae0ccd6e8a54aa7ea9bc88b2ca88a6b66f990f48d308ec1"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=66&pageSize=10",
+     "rawSha256": "63bda1dd5182ed666f00176f71f5f96fb935c556458b52818454afa27d362fc4"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=67&pageSize=10",
+     "rawSha256": "4469bc1c39f69ee328582997b06c5b9127882ed5c897b354ba772756d95edd4c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=68&pageSize=10",
+     "rawSha256": "f7651d3784c3e430e3f0bfe897f7675f4d21263144179c399be713950ede73fe"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=69&pageSize=10",
+     "rawSha256": "69f70f5ef0d9675f7a16e6c1f380dd7071110fe36145db74830ba89fd476621f"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=70&pageSize=10",
+     "rawSha256": "1b873f9474b98487003f5f0d5e0c8de5093131e4fc77cdcb7ebab5ffbf25afc5"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=71&pageSize=10",
+     "rawSha256": "ec1870e66b89a7a9a87742da57227c0e58d7d6fc1d7486b27eecfefa901746b9"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=72&pageSize=10",
+     "rawSha256": "a873f682ad6d7ccd7ded83b4e23a6d6f9a7fa9497324f71dcd882591ad06ab9c"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=73&pageSize=10",
+     "rawSha256": "229ff331f8af70ea75873efef00d23116caabebcff882393486d6f82f44c1986"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=74&pageSize=10",
+     "rawSha256": "1c2322d06d5885ae8221e23c4b5bd8d2d06351ecf46e1443d8a2f411dc3bce7a"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=75&pageSize=10",
+     "rawSha256": "cbe8444aa4f88e2964662f38d00e2bded188e1edec13acdc522abda68544c5f5"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=76&pageSize=10",
+     "rawSha256": "104178a17b929e5f6726504aa5f71c630f6c00f7a6da56ec5e2d0aa2cbd5445b"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=77&pageSize=10",
+     "rawSha256": "8941d2d0090e4e9e489ff49e5697c3504266a024b99902f286d6f80500a6d9ea"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=78&pageSize=10",
+     "rawSha256": "c543147318f50994e6d0a5933caece1b753127ca98307c2a4bc6ea328c007547"
+    },
+    {
+     "url": "https://api.stock.naver.com/index/.VIX/price?page=79&pageSize=10",
+     "rawSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+   ]
+  },
+  {
+   "name": "fred",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2023-09-25",
+   "fetchedAt": "2026-10-01T14:59:47.629Z",
+   "rawSha256": "50a1a8f75929db3bbed7bbd06d52d7447a101bff7a92c5a1cc5e0494e6f413bd",
+   "rows": 779
+  }
+ ],
+ "counts": {
+  "ok": 774,
+  "한 출처": 5,
+  "확인 중": 0,
+  "옛값": 0,
+  "없음": 0
+ },
+ "series": [
+  {
+   "date": "2023-09-25",
+   "value": 16.9,
+   "sources": {
+    "fred": 16.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-26",
+   "value": 18.94,
+   "sources": {
+    "fred": 18.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-27",
+   "value": 18.22,
+   "sources": {
+    "fred": 18.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-28",
+   "value": 17.34,
+   "sources": {
+    "fred": 17.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-29",
+   "value": 17.52,
+   "sources": {
+    "fred": 17.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-02",
+   "value": 17.61,
+   "sources": {
+    "naver": 17.61,
+    "fred": 17.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-03",
+   "value": 19.78,
+   "sources": {
+    "naver": 19.78,
+    "fred": 19.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-04",
+   "value": 18.58,
+   "sources": {
+    "naver": 18.58,
+    "fred": 18.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-05",
+   "value": 18.49,
+   "sources": {
+    "naver": 18.49,
+    "fred": 18.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-06",
+   "value": 17.45,
+   "sources": {
+    "naver": 17.45,
+    "fred": 17.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-09",
+   "value": 17.7,
+   "sources": {
+    "naver": 17.7,
+    "fred": 17.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-10",
+   "value": 17.03,
+   "sources": {
+    "naver": 17.03,
+    "fred": 17.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-11",
+   "value": 16.09,
+   "sources": {
+    "naver": 16.09,
+    "fred": 16.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-12",
+   "value": 16.69,
+   "sources": {
+    "naver": 16.69,
+    "fred": 16.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-13",
+   "value": 19.32,
+   "sources": {
+    "naver": 19.32,
+    "fred": 19.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-16",
+   "value": 17.21,
+   "sources": {
+    "naver": 17.21,
+    "fred": 17.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-17",
+   "value": 17.88,
+   "sources": {
+    "naver": 17.88,
+    "fred": 17.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-18",
+   "value": 19.22,
+   "sources": {
+    "naver": 19.22,
+    "fred": 19.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-19",
+   "value": 21.4,
+   "sources": {
+    "naver": 21.4,
+    "fred": 21.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-20",
+   "value": 21.71,
+   "sources": {
+    "naver": 21.71,
+    "fred": 21.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-23",
+   "value": 20.37,
+   "sources": {
+    "naver": 20.37,
+    "fred": 20.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-24",
+   "value": 18.97,
+   "sources": {
+    "naver": 18.97,
+    "fred": 18.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-25",
+   "value": 20.19,
+   "sources": {
+    "naver": 20.19,
+    "fred": 20.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-26",
+   "value": 20.68,
+   "sources": {
+    "naver": 20.68,
+    "fred": 20.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-27",
+   "value": 21.27,
+   "sources": {
+    "naver": 21.27,
+    "fred": 21.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-30",
+   "value": 19.75,
+   "sources": {
+    "naver": 19.75,
+    "fred": 19.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-31",
+   "value": 18.14,
+   "sources": {
+    "naver": 18.14,
+    "fred": 18.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-01",
+   "value": 16.87,
+   "sources": {
+    "naver": 16.87,
+    "fred": 16.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-02",
+   "value": 15.66,
+   "sources": {
+    "naver": 15.66,
+    "fred": 15.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-03",
+   "value": 14.91,
+   "sources": {
+    "naver": 14.91,
+    "fred": 14.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-06",
+   "value": 14.89,
+   "sources": {
+    "naver": 14.89,
+    "fred": 14.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-07",
+   "value": 14.81,
+   "sources": {
+    "naver": 14.81,
+    "fred": 14.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-08",
+   "value": 14.45,
+   "sources": {
+    "naver": 14.45,
+    "fred": 14.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-09",
+   "value": 15.29,
+   "sources": {
+    "naver": 15.29,
+    "fred": 15.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-10",
+   "value": 14.17,
+   "sources": {
+    "naver": 14.17,
+    "fred": 14.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-13",
+   "value": 14.76,
+   "sources": {
+    "naver": 14.76,
+    "fred": 14.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-14",
+   "value": 14.16,
+   "sources": {
+    "naver": 14.16,
+    "fred": 14.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-15",
+   "value": 14.18,
+   "sources": {
+    "naver": 14.18,
+    "fred": 14.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-16",
+   "value": 14.32,
+   "sources": {
+    "naver": 14.32,
+    "fred": 14.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-17",
+   "value": 13.8,
+   "sources": {
+    "naver": 13.8,
+    "fred": 13.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-20",
+   "value": 13.41,
+   "sources": {
+    "naver": 13.41,
+    "fred": 13.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-21",
+   "value": 13.35,
+   "sources": {
+    "naver": 13.35,
+    "fred": 13.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-22",
+   "value": 12.85,
+   "sources": {
+    "naver": 12.85,
+    "fred": 12.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-23",
+   "value": 12.8,
+   "sources": {
+    "naver": 12.8,
+    "fred": 12.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-24",
+   "value": 12.46,
+   "sources": {
+    "naver": 12.46,
+    "fred": 12.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-27",
+   "value": 12.69,
+   "sources": {
+    "naver": 12.69,
+    "fred": 12.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-28",
+   "value": 12.69,
+   "sources": {
+    "naver": 12.69,
+    "fred": 12.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-29",
+   "value": 12.98,
+   "sources": {
+    "naver": 12.98,
+    "fred": 12.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-30",
+   "value": 12.92,
+   "sources": {
+    "naver": 12.92,
+    "fred": 12.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-01",
+   "value": 12.63,
+   "sources": {
+    "naver": 12.63,
+    "fred": 12.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-04",
+   "value": 13.08,
+   "sources": {
+    "naver": 13.08,
+    "fred": 13.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-05",
+   "value": 12.85,
+   "sources": {
+    "naver": 12.85,
+    "fred": 12.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-06",
+   "value": 12.97,
+   "sources": {
+    "naver": 12.97,
+    "fred": 12.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-07",
+   "value": 13.06,
+   "sources": {
+    "naver": 13.06,
+    "fred": 13.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-08",
+   "value": 12.35,
+   "sources": {
+    "naver": 12.35,
+    "fred": 12.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-11",
+   "value": 12.63,
+   "sources": {
+    "naver": 12.63,
+    "fred": 12.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-12",
+   "value": 12.07,
+   "sources": {
+    "naver": 12.07,
+    "fred": 12.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-13",
+   "value": 12.19,
+   "sources": {
+    "naver": 12.19,
+    "fred": 12.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-14",
+   "value": 12.48,
+   "sources": {
+    "naver": 12.48,
+    "fred": 12.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-15",
+   "value": 12.28,
+   "sources": {
+    "naver": 12.28,
+    "fred": 12.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-18",
+   "value": 12.56,
+   "sources": {
+    "naver": 12.56,
+    "fred": 12.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-19",
+   "value": 12.53,
+   "sources": {
+    "naver": 12.53,
+    "fred": 12.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-20",
+   "value": 13.67,
+   "sources": {
+    "naver": 13.67,
+    "fred": 13.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-21",
+   "value": 13.65,
+   "sources": {
+    "naver": 13.65,
+    "fred": 13.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-22",
+   "value": 13.03,
+   "sources": {
+    "naver": 13.03,
+    "fred": 13.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-26",
+   "value": 12.99,
+   "sources": {
+    "naver": 12.99,
+    "fred": 12.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-27",
+   "value": 12.43,
+   "sources": {
+    "naver": 12.43,
+    "fred": 12.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-28",
+   "value": 12.47,
+   "sources": {
+    "naver": 12.47,
+    "fred": 12.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-29",
+   "value": 12.45,
+   "sources": {
+    "naver": 12.45,
+    "fred": 12.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-02",
+   "value": 13.2,
+   "sources": {
+    "naver": 13.2,
+    "fred": 13.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-03",
+   "value": 14.04,
+   "sources": {
+    "naver": 14.04,
+    "fred": 14.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-04",
+   "value": 14.13,
+   "sources": {
+    "naver": 14.13,
+    "fred": 14.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-05",
+   "value": 13.35,
+   "sources": {
+    "naver": 13.35,
+    "fred": 13.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-08",
+   "value": 13.08,
+   "sources": {
+    "naver": 13.08,
+    "fred": 13.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-09",
+   "value": 12.76,
+   "sources": {
+    "naver": 12.76,
+    "fred": 12.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-10",
+   "value": 12.69,
+   "sources": {
+    "naver": 12.69,
+    "fred": 12.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-11",
+   "value": 12.44,
+   "sources": {
+    "naver": 12.44,
+    "fred": 12.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-12",
+   "value": 12.7,
+   "sources": {
+    "naver": 12.7,
+    "fred": 12.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-15",
+   "value": 13.25,
+   "sources": {
+    "naver": 13.25,
+    "fred": 13.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-16",
+   "value": 13.84,
+   "sources": {
+    "naver": 13.84,
+    "fred": 13.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-17",
+   "value": 14.79,
+   "sources": {
+    "naver": 14.79,
+    "fred": 14.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-18",
+   "value": 14.13,
+   "sources": {
+    "naver": 14.13,
+    "fred": 14.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-19",
+   "value": 13.3,
+   "sources": {
+    "naver": 13.3,
+    "fred": 13.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-22",
+   "value": 13.19,
+   "sources": {
+    "naver": 13.19,
+    "fred": 13.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-23",
+   "value": 12.55,
+   "sources": {
+    "naver": 12.55,
+    "fred": 12.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-24",
+   "value": 13.14,
+   "sources": {
+    "naver": 13.14,
+    "fred": 13.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-25",
+   "value": 13.45,
+   "sources": {
+    "naver": 13.45,
+    "fred": 13.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-26",
+   "value": 13.26,
+   "sources": {
+    "naver": 13.26,
+    "fred": 13.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-29",
+   "value": 13.6,
+   "sources": {
+    "naver": 13.6,
+    "fred": 13.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-30",
+   "value": 13.31,
+   "sources": {
+    "naver": 13.31,
+    "fred": 13.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-31",
+   "value": 14.35,
+   "sources": {
+    "naver": 14.35,
+    "fred": 14.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-01",
+   "value": 13.88,
+   "sources": {
+    "naver": 13.88,
+    "fred": 13.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-02",
+   "value": 13.85,
+   "sources": {
+    "naver": 13.85,
+    "fred": 13.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-05",
+   "value": 13.67,
+   "sources": {
+    "naver": 13.67,
+    "fred": 13.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-06",
+   "value": 13.06,
+   "sources": {
+    "naver": 13.06,
+    "fred": 13.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-07",
+   "value": 12.83,
+   "sources": {
+    "naver": 12.83,
+    "fred": 12.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-08",
+   "value": 12.79,
+   "sources": {
+    "naver": 12.79,
+    "fred": 12.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-09",
+   "value": 12.93,
+   "sources": {
+    "naver": 12.93,
+    "fred": 12.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-12",
+   "value": 13.93,
+   "sources": {
+    "naver": 13.93,
+    "fred": 13.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-13",
+   "value": 15.85,
+   "sources": {
+    "naver": 15.85,
+    "fred": 15.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-14",
+   "value": 14.38,
+   "sources": {
+    "naver": 14.38,
+    "fred": 14.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-15",
+   "value": 14.01,
+   "sources": {
+    "naver": 14.01,
+    "fred": 14.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-16",
+   "value": 14.24,
+   "sources": {
+    "naver": 14.24,
+    "fred": 14.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-19",
+   "value": 14.71,
+   "sources": {
+    "naver": 14.71,
+    "fred": 14.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-20",
+   "value": 15.42,
+   "sources": {
+    "naver": 15.42,
+    "fred": 15.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-21",
+   "value": 15.34,
+   "sources": {
+    "naver": 15.34,
+    "fred": 15.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-22",
+   "value": 14.54,
+   "sources": {
+    "naver": 14.54,
+    "fred": 14.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-23",
+   "value": 13.75,
+   "sources": {
+    "naver": 13.75,
+    "fred": 13.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-26",
+   "value": 13.74,
+   "sources": {
+    "naver": 13.74,
+    "fred": 13.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-27",
+   "value": 13.43,
+   "sources": {
+    "naver": 13.43,
+    "fred": 13.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-28",
+   "value": 13.84,
+   "sources": {
+    "naver": 13.84,
+    "fred": 13.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-29",
+   "value": 13.4,
+   "sources": {
+    "naver": 13.4,
+    "fred": 13.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-01",
+   "value": 13.11,
+   "sources": {
+    "naver": 13.11,
+    "fred": 13.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-04",
+   "value": 13.49,
+   "sources": {
+    "naver": 13.49,
+    "fred": 13.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-05",
+   "value": 14.46,
+   "sources": {
+    "naver": 14.46,
+    "fred": 14.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-06",
+   "value": 14.5,
+   "sources": {
+    "naver": 14.5,
+    "fred": 14.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-07",
+   "value": 14.44,
+   "sources": {
+    "naver": 14.44,
+    "fred": 14.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-08",
+   "value": 14.74,
+   "sources": {
+    "naver": 14.74,
+    "fred": 14.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-11",
+   "value": 15.22,
+   "sources": {
+    "naver": 15.22,
+    "fred": 15.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-12",
+   "value": 13.84,
+   "sources": {
+    "naver": 13.84,
+    "fred": 13.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-13",
+   "value": 13.75,
+   "sources": {
+    "naver": 13.75,
+    "fred": 13.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-14",
+   "value": 14.4,
+   "sources": {
+    "naver": 14.4,
+    "fred": 14.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-15",
+   "value": 14.41,
+   "sources": {
+    "naver": 14.41,
+    "fred": 14.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-18",
+   "value": 14.33,
+   "sources": {
+    "naver": 14.33,
+    "fred": 14.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-19",
+   "value": 13.82,
+   "sources": {
+    "naver": 13.82,
+    "fred": 13.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-20",
+   "value": 13.04,
+   "sources": {
+    "naver": 13.04,
+    "fred": 13.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-21",
+   "value": 12.92,
+   "sources": {
+    "naver": 12.92,
+    "fred": 12.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-22",
+   "value": 13.06,
+   "sources": {
+    "naver": 13.06,
+    "fred": 13.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-25",
+   "value": 13.19,
+   "sources": {
+    "naver": 13.19,
+    "fred": 13.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-26",
+   "value": 13.24,
+   "sources": {
+    "naver": 13.24,
+    "fred": 13.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-27",
+   "value": 12.78,
+   "sources": {
+    "naver": 12.78,
+    "fred": 12.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-28",
+   "value": 13.01,
+   "sources": {
+    "naver": 13.01,
+    "fred": 13.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-01",
+   "value": 13.65,
+   "sources": {
+    "naver": 13.65,
+    "fred": 13.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-02",
+   "value": 14.61,
+   "sources": {
+    "naver": 14.61,
+    "fred": 14.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-03",
+   "value": 14.33,
+   "sources": {
+    "naver": 14.33,
+    "fred": 14.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-04",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-05",
+   "value": 16.03,
+   "sources": {
+    "naver": 16.03,
+    "fred": 16.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-08",
+   "value": 15.19,
+   "sources": {
+    "naver": 15.19,
+    "fred": 15.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-09",
+   "value": 14.98,
+   "sources": {
+    "naver": 14.98,
+    "fred": 14.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-10",
+   "value": 15.8,
+   "sources": {
+    "naver": 15.8,
+    "fred": 15.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-11",
+   "value": 14.91,
+   "sources": {
+    "naver": 14.91,
+    "fred": 14.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-12",
+   "value": 17.31,
+   "sources": {
+    "naver": 17.31,
+    "fred": 17.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-15",
+   "value": 19.23,
+   "sources": {
+    "naver": 19.23,
+    "fred": 19.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-16",
+   "value": 18.4,
+   "sources": {
+    "naver": 18.4,
+    "fred": 18.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-17",
+   "value": 18.21,
+   "sources": {
+    "naver": 18.21,
+    "fred": 18.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-18",
+   "value": 18,
+   "sources": {
+    "naver": 18,
+    "fred": 18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-19",
+   "value": 18.71,
+   "sources": {
+    "naver": 18.71,
+    "fred": 18.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-22",
+   "value": 16.94,
+   "sources": {
+    "naver": 16.94,
+    "fred": 16.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-23",
+   "value": 15.69,
+   "sources": {
+    "naver": 15.69,
+    "fred": 15.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-24",
+   "value": 15.97,
+   "sources": {
+    "naver": 15.97,
+    "fred": 15.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-25",
+   "value": 15.37,
+   "sources": {
+    "naver": 15.37,
+    "fred": 15.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-26",
+   "value": 15.03,
+   "sources": {
+    "naver": 15.03,
+    "fred": 15.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-29",
+   "value": 14.67,
+   "sources": {
+    "naver": 14.67,
+    "fred": 14.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-30",
+   "value": 15.65,
+   "sources": {
+    "naver": 15.65,
+    "fred": 15.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-01",
+   "value": 15.39,
+   "sources": {
+    "naver": 15.39,
+    "fred": 15.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-02",
+   "value": 14.68,
+   "sources": {
+    "naver": 14.68,
+    "fred": 14.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-03",
+   "value": 13.49,
+   "sources": {
+    "naver": 13.49,
+    "fred": 13.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-06",
+   "value": 13.49,
+   "sources": {
+    "naver": 13.49,
+    "fred": 13.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-07",
+   "value": 13.23,
+   "sources": {
+    "naver": 13.23,
+    "fred": 13.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-08",
+   "value": 13,
+   "sources": {
+    "naver": 13,
+    "fred": 13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-09",
+   "value": 12.69,
+   "sources": {
+    "naver": 12.69,
+    "fred": 12.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-10",
+   "value": 12.55,
+   "sources": {
+    "naver": 12.55,
+    "fred": 12.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-13",
+   "value": 13.6,
+   "sources": {
+    "naver": 13.6,
+    "fred": 13.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-14",
+   "value": 13.42,
+   "sources": {
+    "naver": 13.42,
+    "fred": 13.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-15",
+   "value": 12.45,
+   "sources": {
+    "naver": 12.45,
+    "fred": 12.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-16",
+   "value": 12.42,
+   "sources": {
+    "naver": 12.42,
+    "fred": 12.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-17",
+   "value": 11.99,
+   "sources": {
+    "naver": 11.99,
+    "fred": 11.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-20",
+   "value": 12.15,
+   "sources": {
+    "naver": 12.15,
+    "fred": 12.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-21",
+   "value": 11.86,
+   "sources": {
+    "naver": 11.86,
+    "fred": 11.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-22",
+   "value": 12.29,
+   "sources": {
+    "naver": 12.29,
+    "fred": 12.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-23",
+   "value": 12.77,
+   "sources": {
+    "naver": 12.77,
+    "fred": 12.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-24",
+   "value": 11.93,
+   "sources": {
+    "naver": 11.93,
+    "fred": 11.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-27",
+   "value": 12.36,
+   "sources": {
+    "naver": 12.36,
+    "fred": 12.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-28",
+   "value": 12.92,
+   "sources": {
+    "naver": 12.92,
+    "fred": 12.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-29",
+   "value": 14.28,
+   "sources": {
+    "naver": 14.28,
+    "fred": 14.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-30",
+   "value": 14.47,
+   "sources": {
+    "naver": 14.47,
+    "fred": 14.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-31",
+   "value": 12.92,
+   "sources": {
+    "naver": 12.92,
+    "fred": 12.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-03",
+   "value": 13.11,
+   "sources": {
+    "naver": 13.11,
+    "fred": 13.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-04",
+   "value": 13.16,
+   "sources": {
+    "naver": 13.16,
+    "fred": 13.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-05",
+   "value": 12.63,
+   "sources": {
+    "naver": 12.63,
+    "fred": 12.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-06",
+   "value": 12.58,
+   "sources": {
+    "naver": 12.58,
+    "fred": 12.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-07",
+   "value": 12.22,
+   "sources": {
+    "naver": 12.22,
+    "fred": 12.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-10",
+   "value": 12.74,
+   "sources": {
+    "naver": 12.74,
+    "fred": 12.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-11",
+   "value": 12.85,
+   "sources": {
+    "naver": 12.85,
+    "fred": 12.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-12",
+   "value": 12.04,
+   "sources": {
+    "naver": 12.04,
+    "fred": 12.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-13",
+   "value": 11.94,
+   "sources": {
+    "naver": 11.94,
+    "fred": 11.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-14",
+   "value": 12.66,
+   "sources": {
+    "naver": 12.66,
+    "fred": 12.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-17",
+   "value": 12.75,
+   "sources": {
+    "naver": 12.75,
+    "fred": 12.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-18",
+   "value": 12.3,
+   "sources": {
+    "naver": 12.3,
+    "fred": 12.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-19",
+   "value": 12.48,
+   "sources": {
+    "naver": 12.48,
+    "fred": 12.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-20",
+   "value": 13.28,
+   "sources": {
+    "naver": 13.28,
+    "fred": 13.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-21",
+   "value": 13.2,
+   "sources": {
+    "naver": 13.2,
+    "fred": 13.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-24",
+   "value": 13.33,
+   "sources": {
+    "naver": 13.33,
+    "fred": 13.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-25",
+   "value": 12.84,
+   "sources": {
+    "naver": 12.84,
+    "fred": 12.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-26",
+   "value": 12.55,
+   "sources": {
+    "naver": 12.55,
+    "fred": 12.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-27",
+   "value": 12.24,
+   "sources": {
+    "naver": 12.24,
+    "fred": 12.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-28",
+   "value": 12.44,
+   "sources": {
+    "naver": 12.44,
+    "fred": 12.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-01",
+   "value": 12.22,
+   "sources": {
+    "naver": 12.22,
+    "fred": 12.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-02",
+   "value": 12.03,
+   "sources": {
+    "naver": 12.03,
+    "fred": 12.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-03",
+   "value": 12.09,
+   "sources": {
+    "naver": 12.09,
+    "fred": 12.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-04",
+   "value": 12.26,
+   "sources": {
+    "naver": 12.26,
+    "fred": 12.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-05",
+   "value": 12.48,
+   "sources": {
+    "naver": 12.48,
+    "fred": 12.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-08",
+   "value": 12.37,
+   "sources": {
+    "naver": 12.37,
+    "fred": 12.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-09",
+   "value": 12.51,
+   "sources": {
+    "naver": 12.51,
+    "fred": 12.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-10",
+   "value": 12.85,
+   "sources": {
+    "naver": 12.85,
+    "fred": 12.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-11",
+   "value": 12.92,
+   "sources": {
+    "naver": 12.92,
+    "fred": 12.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-12",
+   "value": 12.46,
+   "sources": {
+    "naver": 12.46,
+    "fred": 12.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-15",
+   "value": 13.12,
+   "sources": {
+    "naver": 13.12,
+    "fred": 13.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-16",
+   "value": 13.19,
+   "sources": {
+    "naver": 13.19,
+    "fred": 13.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-17",
+   "value": 14.48,
+   "sources": {
+    "naver": 14.48,
+    "fred": 14.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-18",
+   "value": 15.93,
+   "sources": {
+    "naver": 15.93,
+    "fred": 15.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-19",
+   "value": 16.52,
+   "sources": {
+    "naver": 16.52,
+    "fred": 16.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-22",
+   "value": 14.91,
+   "sources": {
+    "naver": 14.91,
+    "fred": 14.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-23",
+   "value": 14.72,
+   "sources": {
+    "naver": 14.72,
+    "fred": 14.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-24",
+   "value": 18.04,
+   "sources": {
+    "naver": 18.04,
+    "fred": 18.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-25",
+   "value": 18.46,
+   "sources": {
+    "naver": 18.46,
+    "fred": 18.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-26",
+   "value": 16.39,
+   "sources": {
+    "naver": 16.39,
+    "fred": 16.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-29",
+   "value": 16.6,
+   "sources": {
+    "naver": 16.6,
+    "fred": 16.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-30",
+   "value": 17.69,
+   "sources": {
+    "naver": 17.69,
+    "fred": 17.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-31",
+   "value": 16.36,
+   "sources": {
+    "naver": 16.36,
+    "fred": 16.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-01",
+   "value": 18.59,
+   "sources": {
+    "naver": 18.59,
+    "fred": 18.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-02",
+   "value": 23.39,
+   "sources": {
+    "naver": 23.39,
+    "fred": 23.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-05",
+   "value": 38.57,
+   "sources": {
+    "naver": 38.57,
+    "fred": 38.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-06",
+   "value": 27.71,
+   "sources": {
+    "naver": 27.71,
+    "fred": 27.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-07",
+   "value": 27.85,
+   "sources": {
+    "naver": 27.85,
+    "fred": 27.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-08",
+   "value": 23.79,
+   "sources": {
+    "naver": 23.79,
+    "fred": 23.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-09",
+   "value": 20.37,
+   "sources": {
+    "naver": 20.37,
+    "fred": 20.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-12",
+   "value": 20.71,
+   "sources": {
+    "naver": 20.71,
+    "fred": 20.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-13",
+   "value": 18.12,
+   "sources": {
+    "naver": 18.12,
+    "fred": 18.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-14",
+   "value": 16.19,
+   "sources": {
+    "naver": 16.19,
+    "fred": 16.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-15",
+   "value": 15.23,
+   "sources": {
+    "naver": 15.23,
+    "fred": 15.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-16",
+   "value": 14.8,
+   "sources": {
+    "naver": 14.8,
+    "fred": 14.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-19",
+   "value": 14.65,
+   "sources": {
+    "naver": 14.65,
+    "fred": 14.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-20",
+   "value": 15.88,
+   "sources": {
+    "naver": 15.88,
+    "fred": 15.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-21",
+   "value": 16.27,
+   "sources": {
+    "naver": 16.27,
+    "fred": 16.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-22",
+   "value": 17.55,
+   "sources": {
+    "naver": 17.55,
+    "fred": 17.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-23",
+   "value": 15.86,
+   "sources": {
+    "naver": 15.86,
+    "fred": 15.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-26",
+   "value": 16.15,
+   "sources": {
+    "naver": 16.15,
+    "fred": 16.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-27",
+   "value": 15.43,
+   "sources": {
+    "naver": 15.43,
+    "fred": 15.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-28",
+   "value": 17.11,
+   "sources": {
+    "naver": 17.11,
+    "fred": 17.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-29",
+   "value": 15.65,
+   "sources": {
+    "naver": 15.65,
+    "fred": 15.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-30",
+   "value": 15,
+   "sources": {
+    "naver": 15,
+    "fred": 15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-02",
+   "value": 15.55,
+   "sources": {
+    "naver": 15.55,
+    "fred": 15.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-03",
+   "value": 20.72,
+   "sources": {
+    "naver": 20.72,
+    "fred": 20.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-04",
+   "value": 21.32,
+   "sources": {
+    "naver": 21.32,
+    "fred": 21.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-05",
+   "value": 19.9,
+   "sources": {
+    "naver": 19.9,
+    "fred": 19.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-06",
+   "value": 22.38,
+   "sources": {
+    "naver": 22.38,
+    "fred": 22.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-09",
+   "value": 19.45,
+   "sources": {
+    "naver": 19.45,
+    "fred": 19.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-10",
+   "value": 19.08,
+   "sources": {
+    "naver": 19.08,
+    "fred": 19.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-11",
+   "value": 17.69,
+   "sources": {
+    "naver": 17.69,
+    "fred": 17.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-12",
+   "value": 17.07,
+   "sources": {
+    "naver": 17.07,
+    "fred": 17.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-13",
+   "value": 16.56,
+   "sources": {
+    "naver": 16.56,
+    "fred": 16.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-16",
+   "value": 17.14,
+   "sources": {
+    "naver": 17.14,
+    "fred": 17.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-17",
+   "value": 17.61,
+   "sources": {
+    "naver": 17.61,
+    "fred": 17.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-18",
+   "value": 18.23,
+   "sources": {
+    "naver": 18.23,
+    "fred": 18.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-19",
+   "value": 16.33,
+   "sources": {
+    "naver": 16.33,
+    "fred": 16.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-20",
+   "value": 16.15,
+   "sources": {
+    "naver": 16.15,
+    "fred": 16.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-23",
+   "value": 15.89,
+   "sources": {
+    "naver": 15.89,
+    "fred": 15.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-24",
+   "value": 15.39,
+   "sources": {
+    "naver": 15.39,
+    "fred": 15.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-25",
+   "value": 15.41,
+   "sources": {
+    "naver": 15.41,
+    "fred": 15.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-26",
+   "value": 15.37,
+   "sources": {
+    "naver": 15.37,
+    "fred": 15.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-27",
+   "value": 16.96,
+   "sources": {
+    "naver": 16.96,
+    "fred": 16.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-30",
+   "value": 16.73,
+   "sources": {
+    "naver": 16.73,
+    "fred": 16.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-01",
+   "value": 19.26,
+   "sources": {
+    "naver": 19.26,
+    "fred": 19.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-02",
+   "value": 18.9,
+   "sources": {
+    "naver": 18.9,
+    "fred": 18.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-03",
+   "value": 20.49,
+   "sources": {
+    "naver": 20.49,
+    "fred": 20.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-04",
+   "value": 19.21,
+   "sources": {
+    "naver": 19.21,
+    "fred": 19.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-07",
+   "value": 22.64,
+   "sources": {
+    "naver": 22.64,
+    "fred": 22.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-08",
+   "value": 21.42,
+   "sources": {
+    "naver": 21.42,
+    "fred": 21.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-09",
+   "value": 20.86,
+   "sources": {
+    "naver": 20.86,
+    "fred": 20.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-10",
+   "value": 20.93,
+   "sources": {
+    "naver": 20.93,
+    "fred": 20.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-11",
+   "value": 20.46,
+   "sources": {
+    "naver": 20.46,
+    "fred": 20.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-14",
+   "value": 19.7,
+   "sources": {
+    "naver": 19.7,
+    "fred": 19.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-15",
+   "value": 20.64,
+   "sources": {
+    "naver": 20.64,
+    "fred": 20.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-16",
+   "value": 19.58,
+   "sources": {
+    "naver": 19.58,
+    "fred": 19.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-17",
+   "value": 19.11,
+   "sources": {
+    "naver": 19.11,
+    "fred": 19.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-18",
+   "value": 18.03,
+   "sources": {
+    "naver": 18.03,
+    "fred": 18.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-21",
+   "value": 18.37,
+   "sources": {
+    "naver": 18.37,
+    "fred": 18.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-22",
+   "value": 18.2,
+   "sources": {
+    "naver": 18.2,
+    "fred": 18.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-23",
+   "value": 19.24,
+   "sources": {
+    "naver": 19.24,
+    "fred": 19.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-24",
+   "value": 19.08,
+   "sources": {
+    "naver": 19.08,
+    "fred": 19.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-25",
+   "value": 20.33,
+   "sources": {
+    "naver": 20.33,
+    "fred": 20.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-28",
+   "value": 19.8,
+   "sources": {
+    "naver": 19.8,
+    "fred": 19.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-29",
+   "value": 19.34,
+   "sources": {
+    "naver": 19.34,
+    "fred": 19.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-30",
+   "value": 20.35,
+   "sources": {
+    "naver": 20.35,
+    "fred": 20.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-31",
+   "value": 23.16,
+   "sources": {
+    "naver": 23.16,
+    "fred": 23.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-01",
+   "value": 21.88,
+   "sources": {
+    "naver": 21.88,
+    "fred": 21.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-04",
+   "value": 21.98,
+   "sources": {
+    "naver": 21.98,
+    "fred": 21.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-05",
+   "value": 20.49,
+   "sources": {
+    "naver": 20.49,
+    "fred": 20.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-06",
+   "value": 16.27,
+   "sources": {
+    "naver": 16.27,
+    "fred": 16.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-07",
+   "value": 15.2,
+   "sources": {
+    "naver": 15.2,
+    "fred": 15.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-08",
+   "value": 14.94,
+   "sources": {
+    "naver": 14.94,
+    "fred": 14.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-11",
+   "value": 14.97,
+   "sources": {
+    "naver": 14.97,
+    "fred": 14.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-12",
+   "value": 14.71,
+   "sources": {
+    "naver": 14.71,
+    "fred": 14.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-13",
+   "value": 14.02,
+   "sources": {
+    "naver": 14.02,
+    "fred": 14.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-14",
+   "value": 14.31,
+   "sources": {
+    "naver": 14.31,
+    "fred": 14.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-15",
+   "value": 16.14,
+   "sources": {
+    "naver": 16.14,
+    "fred": 16.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-18",
+   "value": 15.58,
+   "sources": {
+    "naver": 15.58,
+    "fred": 15.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-19",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-20",
+   "value": 17.16,
+   "sources": {
+    "naver": 17.16,
+    "fred": 17.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-21",
+   "value": 16.87,
+   "sources": {
+    "naver": 16.87,
+    "fred": 16.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-22",
+   "value": 15.24,
+   "sources": {
+    "naver": 15.24,
+    "fred": 15.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-25",
+   "value": 14.6,
+   "sources": {
+    "naver": 14.6,
+    "fred": 14.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-26",
+   "value": 14.1,
+   "sources": {
+    "naver": 14.1,
+    "fred": 14.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-27",
+   "value": 14.1,
+   "sources": {
+    "naver": 14.1,
+    "fred": 14.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-28",
+   "value": 13.9,
+   "sources": {
+    "naver": 13.9,
+    "fred": 13.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-29",
+   "value": 13.51,
+   "sources": {
+    "naver": 13.51,
+    "fred": 13.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-02",
+   "value": 13.34,
+   "sources": {
+    "naver": 13.34,
+    "fred": 13.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-03",
+   "value": 13.3,
+   "sources": {
+    "naver": 13.3,
+    "fred": 13.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-04",
+   "value": 13.45,
+   "sources": {
+    "naver": 13.45,
+    "fred": 13.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-05",
+   "value": 13.54,
+   "sources": {
+    "naver": 13.54,
+    "fred": 13.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-06",
+   "value": 12.77,
+   "sources": {
+    "naver": 12.77,
+    "fred": 12.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-09",
+   "value": 14.19,
+   "sources": {
+    "naver": 14.19,
+    "fred": 14.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-10",
+   "value": 14.18,
+   "sources": {
+    "naver": 14.18,
+    "fred": 14.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-11",
+   "value": 13.58,
+   "sources": {
+    "naver": 13.58,
+    "fred": 13.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-12",
+   "value": 13.92,
+   "sources": {
+    "naver": 13.92,
+    "fred": 13.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-13",
+   "value": 13.81,
+   "sources": {
+    "naver": 13.81,
+    "fred": 13.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-16",
+   "value": 14.69,
+   "sources": {
+    "naver": 14.69,
+    "fred": 14.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-17",
+   "value": 15.87,
+   "sources": {
+    "naver": 15.87,
+    "fred": 15.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-18",
+   "value": 27.62,
+   "sources": {
+    "naver": 27.62,
+    "fred": 27.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-19",
+   "value": 24.09,
+   "sources": {
+    "naver": 24.09,
+    "fred": 24.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-20",
+   "value": 18.36,
+   "sources": {
+    "naver": 18.36,
+    "fred": 18.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-23",
+   "value": 16.78,
+   "sources": {
+    "naver": 16.78,
+    "fred": 16.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-24",
+   "value": 14.27,
+   "sources": {
+    "naver": 14.27,
+    "fred": 14.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-26",
+   "value": 14.73,
+   "sources": {
+    "naver": 14.73,
+    "fred": 14.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-27",
+   "value": 15.95,
+   "sources": {
+    "naver": 15.95,
+    "fred": 15.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-30",
+   "value": 17.4,
+   "sources": {
+    "naver": 17.4,
+    "fred": 17.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-31",
+   "value": 17.35,
+   "sources": {
+    "naver": 17.35,
+    "fred": 17.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-02",
+   "value": 17.93,
+   "sources": {
+    "naver": 17.93,
+    "fred": 17.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-03",
+   "value": 16.13,
+   "sources": {
+    "naver": 16.13,
+    "fred": 16.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-06",
+   "value": 16.04,
+   "sources": {
+    "naver": 16.04,
+    "fred": 16.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-07",
+   "value": 17.82,
+   "sources": {
+    "naver": 17.82,
+    "fred": 17.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-08",
+   "value": 17.7,
+   "sources": {
+    "naver": 17.7,
+    "fred": 17.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-09",
+   "value": 18.07,
+   "sources": {
+    "naver": 18.07,
+    "fred": 18.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-10",
+   "value": 19.54,
+   "sources": {
+    "naver": 19.54,
+    "fred": 19.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-13",
+   "value": 19.19,
+   "sources": {
+    "naver": 19.19,
+    "fred": 19.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-14",
+   "value": 18.71,
+   "sources": {
+    "naver": 18.71,
+    "fred": 18.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-15",
+   "value": 16.12,
+   "sources": {
+    "naver": 16.12,
+    "fred": 16.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-16",
+   "value": 16.6,
+   "sources": {
+    "naver": 16.6,
+    "fred": 16.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-17",
+   "value": 15.97,
+   "sources": {
+    "naver": 15.97,
+    "fred": 15.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-20",
+   "value": 15.81,
+   "sources": {
+    "naver": 15.81,
+    "fred": 15.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-21",
+   "value": 15.06,
+   "sources": {
+    "naver": 15.06,
+    "fred": 15.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-22",
+   "value": 15.1,
+   "sources": {
+    "naver": 15.1,
+    "fred": 15.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-23",
+   "value": 15.02,
+   "sources": {
+    "naver": 15.02,
+    "fred": 15.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-24",
+   "value": 14.85,
+   "sources": {
+    "naver": 14.85,
+    "fred": 14.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-27",
+   "value": 17.9,
+   "sources": {
+    "naver": 17.9,
+    "fred": 17.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-28",
+   "value": 16.41,
+   "sources": {
+    "naver": 16.41,
+    "fred": 16.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-29",
+   "value": 16.56,
+   "sources": {
+    "naver": 16.56,
+    "fred": 16.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-30",
+   "value": 15.84,
+   "sources": {
+    "naver": 15.84,
+    "fred": 15.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-31",
+   "value": 16.43,
+   "sources": {
+    "naver": 16.43,
+    "fred": 16.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-03",
+   "value": 18.62,
+   "sources": {
+    "naver": 18.62,
+    "fred": 18.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-04",
+   "value": 17.21,
+   "sources": {
+    "naver": 17.21,
+    "fred": 17.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-05",
+   "value": 15.77,
+   "sources": {
+    "naver": 15.77,
+    "fred": 15.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-06",
+   "value": 15.5,
+   "sources": {
+    "naver": 15.5,
+    "fred": 15.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-07",
+   "value": 16.54,
+   "sources": {
+    "naver": 16.54,
+    "fred": 16.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-10",
+   "value": 15.81,
+   "sources": {
+    "naver": 15.81,
+    "fred": 15.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-11",
+   "value": 16.02,
+   "sources": {
+    "naver": 16.02,
+    "fred": 16.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-12",
+   "value": 15.89,
+   "sources": {
+    "naver": 15.89,
+    "fred": 15.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-13",
+   "value": 15.1,
+   "sources": {
+    "naver": 15.1,
+    "fred": 15.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-14",
+   "value": 14.77,
+   "sources": {
+    "naver": 14.77,
+    "fred": 14.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-17",
+   "value": 15.37,
+   "sources": {
+    "naver": 15.37,
+    "fred": 15.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-18",
+   "value": 15.35,
+   "sources": {
+    "naver": 15.35,
+    "fred": 15.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-19",
+   "value": 15.27,
+   "sources": {
+    "naver": 15.27,
+    "fred": 15.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-20",
+   "value": 15.66,
+   "sources": {
+    "naver": 15.66,
+    "fred": 15.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-21",
+   "value": 18.21,
+   "sources": {
+    "naver": 18.21,
+    "fred": 18.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-24",
+   "value": 18.98,
+   "sources": {
+    "naver": 18.98,
+    "fred": 18.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-25",
+   "value": 19.43,
+   "sources": {
+    "naver": 19.43,
+    "fred": 19.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-26",
+   "value": 19.1,
+   "sources": {
+    "naver": 19.1,
+    "fred": 19.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-27",
+   "value": 21.13,
+   "sources": {
+    "naver": 21.13,
+    "fred": 21.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-28",
+   "value": 19.63,
+   "sources": {
+    "naver": 19.63,
+    "fred": 19.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-03",
+   "value": 22.78,
+   "sources": {
+    "naver": 22.78,
+    "fred": 22.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-04",
+   "value": 23.51,
+   "sources": {
+    "naver": 23.51,
+    "fred": 23.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-05",
+   "value": 21.93,
+   "sources": {
+    "naver": 21.93,
+    "fred": 21.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-06",
+   "value": 24.87,
+   "sources": {
+    "naver": 24.87,
+    "fred": 24.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-07",
+   "value": 23.37,
+   "sources": {
+    "naver": 23.37,
+    "fred": 23.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-10",
+   "value": 27.86,
+   "sources": {
+    "naver": 27.86,
+    "fred": 27.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-11",
+   "value": 26.92,
+   "sources": {
+    "naver": 26.92,
+    "fred": 26.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-12",
+   "value": 24.23,
+   "sources": {
+    "naver": 24.23,
+    "fred": 24.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-13",
+   "value": 24.66,
+   "sources": {
+    "naver": 24.66,
+    "fred": 24.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-14",
+   "value": 21.77,
+   "sources": {
+    "naver": 21.77,
+    "fred": 21.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-17",
+   "value": 20.51,
+   "sources": {
+    "naver": 20.51,
+    "fred": 20.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-18",
+   "value": 21.7,
+   "sources": {
+    "naver": 21.7,
+    "fred": 21.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-19",
+   "value": 19.9,
+   "sources": {
+    "naver": 19.9,
+    "fred": 19.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-20",
+   "value": 19.8,
+   "sources": {
+    "naver": 19.8,
+    "fred": 19.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-21",
+   "value": 19.28,
+   "sources": {
+    "naver": 19.28,
+    "fred": 19.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-24",
+   "value": 17.48,
+   "sources": {
+    "naver": 17.48,
+    "fred": 17.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-25",
+   "value": 17.15,
+   "sources": {
+    "naver": 17.15,
+    "fred": 17.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-26",
+   "value": 18.33,
+   "sources": {
+    "naver": 18.33,
+    "fred": 18.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-27",
+   "value": 18.69,
+   "sources": {
+    "naver": 18.69,
+    "fred": 18.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-28",
+   "value": 21.65,
+   "sources": {
+    "naver": 21.65,
+    "fred": 21.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-31",
+   "value": 22.28,
+   "sources": {
+    "naver": 22.28,
+    "fred": 22.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-01",
+   "value": 21.77,
+   "sources": {
+    "naver": 21.77,
+    "fred": 21.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-02",
+   "value": 21.51,
+   "sources": {
+    "naver": 21.51,
+    "fred": 21.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-03",
+   "value": 30.02,
+   "sources": {
+    "naver": 30.02,
+    "fred": 30.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-04",
+   "value": 45.31,
+   "sources": {
+    "naver": 45.31,
+    "fred": 45.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-07",
+   "value": 46.98,
+   "sources": {
+    "naver": 46.98,
+    "fred": 46.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-08",
+   "value": 52.33,
+   "sources": {
+    "naver": 52.33,
+    "fred": 52.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-09",
+   "value": 33.62,
+   "sources": {
+    "naver": 33.62,
+    "fred": 33.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-10",
+   "value": 40.72,
+   "sources": {
+    "naver": 40.72,
+    "fred": 40.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-11",
+   "value": 37.56,
+   "sources": {
+    "naver": 37.56,
+    "fred": 37.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-14",
+   "value": 30.89,
+   "sources": {
+    "naver": 30.89,
+    "fred": 30.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-15",
+   "value": 30.12,
+   "sources": {
+    "naver": 30.12,
+    "fred": 30.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-16",
+   "value": 32.64,
+   "sources": {
+    "naver": 32.64,
+    "fred": 32.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-17",
+   "value": 29.65,
+   "sources": {
+    "naver": 29.65,
+    "fred": 29.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-21",
+   "value": 33.82,
+   "sources": {
+    "naver": 33.82,
+    "fred": 33.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-22",
+   "value": 30.57,
+   "sources": {
+    "naver": 30.57,
+    "fred": 30.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-23",
+   "value": 28.45,
+   "sources": {
+    "naver": 28.45,
+    "fred": 28.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-24",
+   "value": 26.47,
+   "sources": {
+    "naver": 26.47,
+    "fred": 26.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-25",
+   "value": 24.84,
+   "sources": {
+    "naver": 24.84,
+    "fred": 24.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-28",
+   "value": 25.15,
+   "sources": {
+    "naver": 25.15,
+    "fred": 25.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-29",
+   "value": 24.17,
+   "sources": {
+    "naver": 24.17,
+    "fred": 24.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-30",
+   "value": 24.7,
+   "sources": {
+    "naver": 24.7,
+    "fred": 24.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-01",
+   "value": 24.6,
+   "sources": {
+    "naver": 24.6,
+    "fred": 24.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-02",
+   "value": 22.68,
+   "sources": {
+    "naver": 22.68,
+    "fred": 22.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-05",
+   "value": 23.64,
+   "sources": {
+    "naver": 23.64,
+    "fred": 23.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-06",
+   "value": 24.76,
+   "sources": {
+    "naver": 24.76,
+    "fred": 24.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-07",
+   "value": 23.55,
+   "sources": {
+    "naver": 23.55,
+    "fred": 23.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-08",
+   "value": 22.48,
+   "sources": {
+    "naver": 22.48,
+    "fred": 22.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-09",
+   "value": 21.9,
+   "sources": {
+    "naver": 21.9,
+    "fred": 21.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-12",
+   "value": 18.39,
+   "sources": {
+    "naver": 18.39,
+    "fred": 18.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-13",
+   "value": 18.22,
+   "sources": {
+    "naver": 18.22,
+    "fred": 18.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-14",
+   "value": 18.62,
+   "sources": {
+    "naver": 18.62,
+    "fred": 18.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-15",
+   "value": 17.83,
+   "sources": {
+    "naver": 17.83,
+    "fred": 17.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-16",
+   "value": 17.24,
+   "sources": {
+    "naver": 17.24,
+    "fred": 17.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-19",
+   "value": 18.14,
+   "sources": {
+    "naver": 18.14,
+    "fred": 18.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-20",
+   "value": 18.09,
+   "sources": {
+    "naver": 18.09,
+    "fred": 18.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-21",
+   "value": 20.87,
+   "sources": {
+    "naver": 20.87,
+    "fred": 20.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-22",
+   "value": 20.28,
+   "sources": {
+    "naver": 20.28,
+    "fred": 20.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-23",
+   "value": 22.29,
+   "sources": {
+    "naver": 22.29,
+    "fred": 22.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-26",
+   "value": 20.57,
+   "sources": {
+    "naver": 20.57,
+    "fred": 20.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-27",
+   "value": 18.96,
+   "sources": {
+    "naver": 18.96,
+    "fred": 18.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-28",
+   "value": 19.31,
+   "sources": {
+    "naver": 19.31,
+    "fred": 19.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-29",
+   "value": 19.18,
+   "sources": {
+    "naver": 19.18,
+    "fred": 19.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-30",
+   "value": 18.57,
+   "sources": {
+    "naver": 18.57,
+    "fred": 18.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-02",
+   "value": 18.36,
+   "sources": {
+    "naver": 18.36,
+    "fred": 18.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-03",
+   "value": 17.69,
+   "sources": {
+    "naver": 17.69,
+    "fred": 17.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-04",
+   "value": 17.61,
+   "sources": {
+    "naver": 17.61,
+    "fred": 17.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-05",
+   "value": 18.48,
+   "sources": {
+    "naver": 18.48,
+    "fred": 18.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-06",
+   "value": 16.77,
+   "sources": {
+    "naver": 16.77,
+    "fred": 16.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-09",
+   "value": 17.16,
+   "sources": {
+    "naver": 17.16,
+    "fred": 17.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-10",
+   "value": 16.95,
+   "sources": {
+    "naver": 16.95,
+    "fred": 16.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-11",
+   "value": 17.26,
+   "sources": {
+    "naver": 17.26,
+    "fred": 17.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-12",
+   "value": 18.02,
+   "sources": {
+    "naver": 18.02,
+    "fred": 18.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-13",
+   "value": 20.82,
+   "sources": {
+    "naver": 20.82,
+    "fred": 20.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-16",
+   "value": 19.11,
+   "sources": {
+    "naver": 19.11,
+    "fred": 19.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-17",
+   "value": 21.6,
+   "sources": {
+    "naver": 21.6,
+    "fred": 21.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-18",
+   "value": 20.14,
+   "sources": {
+    "naver": 20.14,
+    "fred": 20.14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-19",
+   "value": 22.17,
+   "sources": {
+    "naver": 22.17,
+    "fred": 22.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-20",
+   "value": 20.62,
+   "sources": {
+    "naver": 20.62,
+    "fred": 20.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-23",
+   "value": 19.83,
+   "sources": {
+    "naver": 19.83,
+    "fred": 19.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-24",
+   "value": 17.48,
+   "sources": {
+    "naver": 17.48,
+    "fred": 17.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-25",
+   "value": 16.76,
+   "sources": {
+    "naver": 16.76,
+    "fred": 16.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-26",
+   "value": 16.59,
+   "sources": {
+    "naver": 16.59,
+    "fred": 16.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-27",
+   "value": 16.32,
+   "sources": {
+    "naver": 16.32,
+    "fred": 16.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-30",
+   "value": 16.73,
+   "sources": {
+    "naver": 16.73,
+    "fred": 16.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-01",
+   "value": 16.83,
+   "sources": {
+    "naver": 16.83,
+    "fred": 16.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-02",
+   "value": 16.64,
+   "sources": {
+    "naver": 16.64,
+    "fred": 16.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-03",
+   "value": 16.38,
+   "sources": {
+    "naver": 16.38,
+    "fred": 16.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-04",
+   "value": 17.48,
+   "sources": {
+    "naver": 17.48,
+    "fred": 17.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-07",
+   "value": 17.79,
+   "sources": {
+    "naver": 17.79,
+    "fred": 17.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-08",
+   "value": 16.81,
+   "sources": {
+    "naver": 16.81,
+    "fred": 16.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-09",
+   "value": 15.94,
+   "sources": {
+    "naver": 15.94,
+    "fred": 15.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-10",
+   "value": 15.78,
+   "sources": {
+    "naver": 15.78,
+    "fred": 15.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-11",
+   "value": 16.4,
+   "sources": {
+    "naver": 16.4,
+    "fred": 16.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-14",
+   "value": 17.2,
+   "sources": {
+    "naver": 17.2,
+    "fred": 17.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-15",
+   "value": 17.38,
+   "sources": {
+    "naver": 17.38,
+    "fred": 17.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-16",
+   "value": 17.16,
+   "sources": {
+    "naver": 17.16,
+    "fred": 17.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-17",
+   "value": 16.52,
+   "sources": {
+    "naver": 16.52,
+    "fred": 16.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-18",
+   "value": 16.41,
+   "sources": {
+    "naver": 16.41,
+    "fred": 16.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-21",
+   "value": 16.65,
+   "sources": {
+    "naver": 16.65,
+    "fred": 16.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-22",
+   "value": 16.5,
+   "sources": {
+    "naver": 16.5,
+    "fred": 16.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-23",
+   "value": 15.37,
+   "sources": {
+    "naver": 15.37,
+    "fred": 15.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-24",
+   "value": 15.39,
+   "sources": {
+    "naver": 15.39,
+    "fred": 15.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-25",
+   "value": 14.93,
+   "sources": {
+    "naver": 14.93,
+    "fred": 14.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-28",
+   "value": 15.03,
+   "sources": {
+    "naver": 15.03,
+    "fred": 15.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-29",
+   "value": 15.98,
+   "sources": {
+    "naver": 15.98,
+    "fred": 15.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-30",
+   "value": 15.48,
+   "sources": {
+    "naver": 15.48,
+    "fred": 15.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-31",
+   "value": 16.72,
+   "sources": {
+    "naver": 16.72,
+    "fred": 16.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-01",
+   "value": 20.38,
+   "sources": {
+    "naver": 20.38,
+    "fred": 20.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-04",
+   "value": 17.52,
+   "sources": {
+    "naver": 17.52,
+    "fred": 17.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-05",
+   "value": 17.85,
+   "sources": {
+    "naver": 17.85,
+    "fred": 17.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-06",
+   "value": 16.77,
+   "sources": {
+    "naver": 16.77,
+    "fred": 16.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-07",
+   "value": 16.57,
+   "sources": {
+    "naver": 16.57,
+    "fred": 16.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-08",
+   "value": 15.15,
+   "sources": {
+    "naver": 15.15,
+    "fred": 15.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-11",
+   "value": 16.25,
+   "sources": {
+    "naver": 16.25,
+    "fred": 16.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-12",
+   "value": 14.73,
+   "sources": {
+    "naver": 14.73,
+    "fred": 14.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-13",
+   "value": 14.49,
+   "sources": {
+    "naver": 14.49,
+    "fred": 14.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-14",
+   "value": 14.83,
+   "sources": {
+    "naver": 14.83,
+    "fred": 14.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-15",
+   "value": 15.09,
+   "sources": {
+    "naver": 15.09,
+    "fred": 15.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-18",
+   "value": 14.99,
+   "sources": {
+    "naver": 14.99,
+    "fred": 14.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-19",
+   "value": 15.57,
+   "sources": {
+    "naver": 15.57,
+    "fred": 15.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-20",
+   "value": 15.69,
+   "sources": {
+    "naver": 15.69,
+    "fred": 15.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-21",
+   "value": 16.6,
+   "sources": {
+    "naver": 16.6,
+    "fred": 16.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-22",
+   "value": 14.22,
+   "sources": {
+    "naver": 14.22,
+    "fred": 14.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-25",
+   "value": 14.79,
+   "sources": {
+    "naver": 14.79,
+    "fred": 14.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-26",
+   "value": 14.62,
+   "sources": {
+    "naver": 14.62,
+    "fred": 14.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-27",
+   "value": 14.85,
+   "sources": {
+    "naver": 14.85,
+    "fred": 14.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-28",
+   "value": 14.43,
+   "sources": {
+    "naver": 14.43,
+    "fred": 14.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-29",
+   "value": 15.36,
+   "sources": {
+    "naver": 15.36,
+    "fred": 15.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-01",
+   "value": 16.12,
+   "sources": {
+    "naver": 16.12,
+    "fred": 16.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-02",
+   "value": 17.17,
+   "sources": {
+    "naver": 17.17,
+    "fred": 17.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-03",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-04",
+   "value": 15.3,
+   "sources": {
+    "naver": 15.3,
+    "fred": 15.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-05",
+   "value": 15.18,
+   "sources": {
+    "naver": 15.18,
+    "fred": 15.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-08",
+   "value": 15.11,
+   "sources": {
+    "naver": 15.11,
+    "fred": 15.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-09",
+   "value": 15.04,
+   "sources": {
+    "naver": 15.04,
+    "fred": 15.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-10",
+   "value": 15.35,
+   "sources": {
+    "naver": 15.35,
+    "fred": 15.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-11",
+   "value": 14.71,
+   "sources": {
+    "naver": 14.71,
+    "fred": 14.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-12",
+   "value": 14.76,
+   "sources": {
+    "naver": 14.76,
+    "fred": 14.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-15",
+   "value": 15.69,
+   "sources": {
+    "naver": 15.69,
+    "fred": 15.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-16",
+   "value": 16.36,
+   "sources": {
+    "naver": 16.36,
+    "fred": 16.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-17",
+   "value": 15.72,
+   "sources": {
+    "naver": 15.72,
+    "fred": 15.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-18",
+   "value": 15.7,
+   "sources": {
+    "naver": 15.7,
+    "fred": 15.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-19",
+   "value": 15.45,
+   "sources": {
+    "naver": 15.45,
+    "fred": 15.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-22",
+   "value": 16.1,
+   "sources": {
+    "naver": 16.1,
+    "fred": 16.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-23",
+   "value": 16.64,
+   "sources": {
+    "naver": 16.64,
+    "fred": 16.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-24",
+   "value": 16.18,
+   "sources": {
+    "naver": 16.18,
+    "fred": 16.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-25",
+   "value": 16.74,
+   "sources": {
+    "naver": 16.74,
+    "fred": 16.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-26",
+   "value": 15.29,
+   "sources": {
+    "naver": 15.29,
+    "fred": 15.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-29",
+   "value": 16.12,
+   "sources": {
+    "naver": 16.12,
+    "fred": 16.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-30",
+   "value": 16.28,
+   "sources": {
+    "naver": 16.28,
+    "fred": 16.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-01",
+   "value": 16.29,
+   "sources": {
+    "naver": 16.29,
+    "fred": 16.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-02",
+   "value": 16.63,
+   "sources": {
+    "naver": 16.63,
+    "fred": 16.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-03",
+   "value": 16.65,
+   "sources": {
+    "naver": 16.65,
+    "fred": 16.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-06",
+   "value": 16.37,
+   "sources": {
+    "naver": 16.37,
+    "fred": 16.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-07",
+   "value": 17.24,
+   "sources": {
+    "naver": 17.24,
+    "fred": 17.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-08",
+   "value": 16.3,
+   "sources": {
+    "naver": 16.3,
+    "fred": 16.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-09",
+   "value": 16.43,
+   "sources": {
+    "naver": 16.43,
+    "fred": 16.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-10",
+   "value": 21.66,
+   "sources": {
+    "naver": 21.66,
+    "fred": 21.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-13",
+   "value": 19.03,
+   "sources": {
+    "naver": 19.03,
+    "fred": 19.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-14",
+   "value": 20.81,
+   "sources": {
+    "naver": 20.81,
+    "fred": 20.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-15",
+   "value": 20.64,
+   "sources": {
+    "naver": 20.64,
+    "fred": 20.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-16",
+   "value": 25.31,
+   "sources": {
+    "naver": 25.31,
+    "fred": 25.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-17",
+   "value": 20.78,
+   "sources": {
+    "naver": 20.78,
+    "fred": 20.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-20",
+   "value": 18.23,
+   "sources": {
+    "naver": 18.23,
+    "fred": 18.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-21",
+   "value": 17.87,
+   "sources": {
+    "naver": 17.87,
+    "fred": 17.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-22",
+   "value": 18.6,
+   "sources": {
+    "naver": 18.6,
+    "fred": 18.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-23",
+   "value": 17.3,
+   "sources": {
+    "naver": 17.3,
+    "fred": 17.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-24",
+   "value": 16.37,
+   "sources": {
+    "naver": 16.37,
+    "fred": 16.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-27",
+   "value": 15.79,
+   "sources": {
+    "naver": 15.79,
+    "fred": 15.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-28",
+   "value": 16.42,
+   "sources": {
+    "naver": 16.42,
+    "fred": 16.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-29",
+   "value": 16.92,
+   "sources": {
+    "naver": 16.92,
+    "fred": 16.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-30",
+   "value": 16.91,
+   "sources": {
+    "naver": 16.91,
+    "fred": 16.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-31",
+   "value": 17.44,
+   "sources": {
+    "naver": 17.44,
+    "fred": 17.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-03",
+   "value": 17.17,
+   "sources": {
+    "naver": 17.17,
+    "fred": 17.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-04",
+   "value": 19,
+   "sources": {
+    "naver": 19,
+    "fred": 19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-05",
+   "value": 18.01,
+   "sources": {
+    "naver": 18.01,
+    "fred": 18.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-06",
+   "value": 19.5,
+   "sources": {
+    "naver": 19.5,
+    "fred": 19.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-07",
+   "value": 19.08,
+   "sources": {
+    "naver": 19.08,
+    "fred": 19.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-10",
+   "value": 17.6,
+   "sources": {
+    "naver": 17.6,
+    "fred": 17.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-11",
+   "value": 17.28,
+   "sources": {
+    "naver": 17.28,
+    "fred": 17.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-12",
+   "value": 17.51,
+   "sources": {
+    "naver": 17.51,
+    "fred": 17.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-13",
+   "value": 20,
+   "sources": {
+    "naver": 20,
+    "fred": 20
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-14",
+   "value": 19.83,
+   "sources": {
+    "naver": 19.83,
+    "fred": 19.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-17",
+   "value": 22.38,
+   "sources": {
+    "naver": 22.38,
+    "fred": 22.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-18",
+   "value": 24.69,
+   "sources": {
+    "naver": 24.69,
+    "fred": 24.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-19",
+   "value": 23.66,
+   "sources": {
+    "naver": 23.66,
+    "fred": 23.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-20",
+   "value": 26.42,
+   "sources": {
+    "naver": 26.42,
+    "fred": 26.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-21",
+   "value": 23.43,
+   "sources": {
+    "naver": 23.43,
+    "fred": 23.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-24",
+   "value": 20.52,
+   "sources": {
+    "naver": 20.52,
+    "fred": 20.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-25",
+   "value": 18.56,
+   "sources": {
+    "naver": 18.56,
+    "fred": 18.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-26",
+   "value": 17.19,
+   "sources": {
+    "naver": 17.19,
+    "fred": 17.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-27",
+   "value": 17.21,
+   "sources": {
+    "naver": 17.21,
+    "fred": 17.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-28",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-01",
+   "value": 17.24,
+   "sources": {
+    "naver": 17.24,
+    "fred": 17.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-02",
+   "value": 16.59,
+   "sources": {
+    "naver": 16.59,
+    "fred": 16.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-03",
+   "value": 16.08,
+   "sources": {
+    "naver": 16.08,
+    "fred": 16.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-04",
+   "value": 15.78,
+   "sources": {
+    "naver": 15.78,
+    "fred": 15.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-05",
+   "value": 15.41,
+   "sources": {
+    "naver": 15.41,
+    "fred": 15.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-08",
+   "value": 16.66,
+   "sources": {
+    "naver": 16.66,
+    "fred": 16.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-09",
+   "value": 16.93,
+   "sources": {
+    "naver": 16.93,
+    "fred": 16.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-10",
+   "value": 15.77,
+   "sources": {
+    "naver": 15.77,
+    "fred": 15.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-11",
+   "value": 14.85,
+   "sources": {
+    "naver": 14.85,
+    "fred": 14.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-12",
+   "value": 15.74,
+   "sources": {
+    "naver": 15.74,
+    "fred": 15.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-15",
+   "value": 16.5,
+   "sources": {
+    "naver": 16.5,
+    "fred": 16.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-16",
+   "value": 16.48,
+   "sources": {
+    "naver": 16.48,
+    "fred": 16.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-17",
+   "value": 17.62,
+   "sources": {
+    "naver": 17.62,
+    "fred": 17.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-18",
+   "value": 16.87,
+   "sources": {
+    "naver": 16.87,
+    "fred": 16.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-19",
+   "value": 14.91,
+   "sources": {
+    "naver": 14.91,
+    "fred": 14.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-22",
+   "value": 14.08,
+   "sources": {
+    "naver": 14.08,
+    "fred": 14.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-23",
+   "value": 14,
+   "sources": {
+    "naver": 14,
+    "fred": 14
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-24",
+   "value": 13.47,
+   "sources": {
+    "naver": 13.47,
+    "fred": 13.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-26",
+   "value": 13.6,
+   "sources": {
+    "naver": 13.6,
+    "fred": 13.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-29",
+   "value": 14.2,
+   "sources": {
+    "naver": 14.2,
+    "fred": 14.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-30",
+   "value": 14.33,
+   "sources": {
+    "naver": 14.33,
+    "fred": 14.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-31",
+   "value": 14.95,
+   "sources": {
+    "naver": 14.95,
+    "fred": 14.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-02",
+   "value": 14.51,
+   "sources": {
+    "naver": 14.51,
+    "fred": 14.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-05",
+   "value": 14.9,
+   "sources": {
+    "naver": 14.9,
+    "fred": 14.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-06",
+   "value": 14.75,
+   "sources": {
+    "naver": 14.75,
+    "fred": 14.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-07",
+   "value": 15.38,
+   "sources": {
+    "naver": 15.38,
+    "fred": 15.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-08",
+   "value": 15.45,
+   "sources": {
+    "naver": 15.45,
+    "fred": 15.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-09",
+   "value": 14.49,
+   "sources": {
+    "naver": 14.49,
+    "fred": 14.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-12",
+   "value": 15.12,
+   "sources": {
+    "naver": 15.12,
+    "fred": 15.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-13",
+   "value": 15.98,
+   "sources": {
+    "naver": 15.98,
+    "fred": 15.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-14",
+   "value": 16.75,
+   "sources": {
+    "naver": 16.75,
+    "fred": 16.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-15",
+   "value": 15.84,
+   "sources": {
+    "naver": 15.84,
+    "fred": 15.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-16",
+   "value": 15.86,
+   "sources": {
+    "naver": 15.86,
+    "fred": 15.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-19",
+   "value": 18.84,
+   "sources": {
+    "naver": 18.84,
+    "fred": 18.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-20",
+   "value": 20.09,
+   "sources": {
+    "naver": 20.09,
+    "fred": 20.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-21",
+   "value": 16.9,
+   "sources": {
+    "naver": 16.9,
+    "fred": 16.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-22",
+   "value": 15.64,
+   "sources": {
+    "naver": 15.64,
+    "fred": 15.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-23",
+   "value": 16.09,
+   "sources": {
+    "naver": 16.09,
+    "fred": 16.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-26",
+   "value": 16.15,
+   "sources": {
+    "naver": 16.15,
+    "fred": 16.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-27",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-28",
+   "value": 16.35,
+   "sources": {
+    "naver": 16.35,
+    "fred": 16.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-29",
+   "value": 16.88,
+   "sources": {
+    "naver": 16.88,
+    "fred": 16.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-30",
+   "value": 17.44,
+   "sources": {
+    "naver": 17.44,
+    "fred": 17.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-02",
+   "value": 16.34,
+   "sources": {
+    "naver": 16.34,
+    "fred": 16.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-03",
+   "value": 18,
+   "sources": {
+    "naver": 18,
+    "fred": 18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-04",
+   "value": 18.64,
+   "sources": {
+    "naver": 18.64,
+    "fred": 18.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-05",
+   "value": 21.77,
+   "sources": {
+    "naver": 21.77,
+    "fred": 21.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-06",
+   "value": 17.76,
+   "sources": {
+    "naver": 17.76,
+    "fred": 17.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-09",
+   "value": 17.36,
+   "sources": {
+    "naver": 17.36,
+    "fred": 17.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-10",
+   "value": 17.79,
+   "sources": {
+    "naver": 17.79,
+    "fred": 17.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-11",
+   "value": 17.65,
+   "sources": {
+    "naver": 17.65,
+    "fred": 17.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-12",
+   "value": 20.82,
+   "sources": {
+    "naver": 20.82,
+    "fred": 20.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-13",
+   "value": 20.6,
+   "sources": {
+    "naver": 20.6,
+    "fred": 20.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-16",
+   "value": 21.2,
+   "sources": {
+    "naver": 21.2,
+    "fred": 21.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-17",
+   "value": 20.29,
+   "sources": {
+    "naver": 20.29,
+    "fred": 20.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-18",
+   "value": 19.62,
+   "sources": {
+    "naver": 19.62,
+    "fred": 19.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-19",
+   "value": 20.23,
+   "sources": {
+    "naver": 20.23,
+    "fred": 20.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-20",
+   "value": 19.09,
+   "sources": {
+    "naver": 19.09,
+    "fred": 19.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-23",
+   "value": 21.01,
+   "sources": {
+    "naver": 21.01,
+    "fred": 21.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-24",
+   "value": 19.55,
+   "sources": {
+    "naver": 19.55,
+    "fred": 19.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-25",
+   "value": 17.93,
+   "sources": {
+    "naver": 17.93,
+    "fred": 17.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-26",
+   "value": 18.63,
+   "sources": {
+    "naver": 18.63,
+    "fred": 18.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-27",
+   "value": 19.86,
+   "sources": {
+    "naver": 19.86,
+    "fred": 19.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-02",
+   "value": 21.44,
+   "sources": {
+    "naver": 21.44,
+    "fred": 21.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-03",
+   "value": 23.57,
+   "sources": {
+    "naver": 23.57,
+    "fred": 23.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-04",
+   "value": 21.15,
+   "sources": {
+    "naver": 21.15,
+    "fred": 21.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-05",
+   "value": 23.75,
+   "sources": {
+    "naver": 23.75,
+    "fred": 23.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-06",
+   "value": 29.49,
+   "sources": {
+    "naver": 29.49,
+    "fred": 29.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-09",
+   "value": 25.5,
+   "sources": {
+    "naver": 25.5,
+    "fred": 25.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-10",
+   "value": 24.93,
+   "sources": {
+    "naver": 24.93,
+    "fred": 24.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-11",
+   "value": 24.23,
+   "sources": {
+    "naver": 24.23,
+    "fred": 24.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-12",
+   "value": 27.29,
+   "sources": {
+    "naver": 27.29,
+    "fred": 27.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-13",
+   "value": 27.19,
+   "sources": {
+    "naver": 27.19,
+    "fred": 27.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-16",
+   "value": 23.51,
+   "sources": {
+    "naver": 23.51,
+    "fred": 23.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-17",
+   "value": 22.37,
+   "sources": {
+    "naver": 22.37,
+    "fred": 22.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-18",
+   "value": 25.09,
+   "sources": {
+    "naver": 25.09,
+    "fred": 25.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-19",
+   "value": 24.06,
+   "sources": {
+    "naver": 24.06,
+    "fred": 24.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-20",
+   "value": 26.78,
+   "sources": {
+    "naver": 26.78,
+    "fred": 26.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-23",
+   "value": 26.15,
+   "sources": {
+    "naver": 26.15,
+    "fred": 26.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-24",
+   "value": 26.95,
+   "sources": {
+    "naver": 26.95,
+    "fred": 26.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-25",
+   "value": 25.33,
+   "sources": {
+    "naver": 25.33,
+    "fred": 25.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-26",
+   "value": 27.44,
+   "sources": {
+    "naver": 27.44,
+    "fred": 27.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-27",
+   "value": 31.05,
+   "sources": {
+    "naver": 31.05,
+    "fred": 31.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-30",
+   "value": 30.61,
+   "sources": {
+    "naver": 30.61,
+    "fred": 30.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-31",
+   "value": 25.25,
+   "sources": {
+    "naver": 25.25,
+    "fred": 25.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-01",
+   "value": 24.54,
+   "sources": {
+    "naver": 24.54,
+    "fred": 24.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-02",
+   "value": 23.87,
+   "sources": {
+    "naver": 23.87,
+    "fred": 23.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-06",
+   "value": 24.17,
+   "sources": {
+    "naver": 24.17,
+    "fred": 24.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-07",
+   "value": 25.78,
+   "sources": {
+    "naver": 25.78,
+    "fred": 25.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-08",
+   "value": 21.04,
+   "sources": {
+    "naver": 21.04,
+    "fred": 21.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-09",
+   "value": 19.49,
+   "sources": {
+    "naver": 19.49,
+    "fred": 19.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-10",
+   "value": 19.23,
+   "sources": {
+    "naver": 19.23,
+    "fred": 19.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-13",
+   "value": 19.12,
+   "sources": {
+    "naver": 19.12,
+    "fred": 19.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-14",
+   "value": 18.36,
+   "sources": {
+    "naver": 18.36,
+    "fred": 18.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-15",
+   "value": 18.17,
+   "sources": {
+    "naver": 18.17,
+    "fred": 18.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-16",
+   "value": 17.94,
+   "sources": {
+    "naver": 17.94,
+    "fred": 17.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-17",
+   "value": 17.48,
+   "sources": {
+    "naver": 17.48,
+    "fred": 17.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-20",
+   "value": 18.87,
+   "sources": {
+    "naver": 18.87,
+    "fred": 18.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-21",
+   "value": 19.5,
+   "sources": {
+    "naver": 19.5,
+    "fred": 19.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-22",
+   "value": 18.92,
+   "sources": {
+    "naver": 18.92,
+    "fred": 18.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-23",
+   "value": 19.31,
+   "sources": {
+    "naver": 19.31,
+    "fred": 19.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-24",
+   "value": 18.71,
+   "sources": {
+    "naver": 18.71,
+    "fred": 18.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-27",
+   "value": 18.02,
+   "sources": {
+    "naver": 18.02,
+    "fred": 18.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-28",
+   "value": 17.83,
+   "sources": {
+    "naver": 17.83,
+    "fred": 17.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-29",
+   "value": 18.81,
+   "sources": {
+    "naver": 18.81,
+    "fred": 18.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-30",
+   "value": 16.89,
+   "sources": {
+    "naver": 16.89,
+    "fred": 16.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-01",
+   "value": 16.99,
+   "sources": {
+    "naver": 16.99,
+    "fred": 16.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-04",
+   "value": 18.29,
+   "sources": {
+    "naver": 18.29,
+    "fred": 18.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-05",
+   "value": 17.38,
+   "sources": {
+    "naver": 17.38,
+    "fred": 17.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-06",
+   "value": 17.39,
+   "sources": {
+    "naver": 17.39,
+    "fred": 17.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-07",
+   "value": 17.08,
+   "sources": {
+    "naver": 17.08,
+    "fred": 17.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-08",
+   "value": 17.19,
+   "sources": {
+    "naver": 17.19,
+    "fred": 17.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-11",
+   "value": 18.38,
+   "sources": {
+    "naver": 18.38,
+    "fred": 18.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-12",
+   "value": 17.99,
+   "sources": {
+    "naver": 17.99,
+    "fred": 17.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-13",
+   "value": 17.87,
+   "sources": {
+    "naver": 17.87,
+    "fred": 17.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-14",
+   "value": 17.26,
+   "sources": {
+    "naver": 17.26,
+    "fred": 17.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-15",
+   "value": 18.43,
+   "sources": {
+    "naver": 18.43,
+    "fred": 18.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-18",
+   "value": 17.82,
+   "sources": {
+    "naver": 17.82,
+    "fred": 17.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-19",
+   "value": 18.06,
+   "sources": {
+    "naver": 18.06,
+    "fred": 18.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-20",
+   "value": 17.44,
+   "sources": {
+    "naver": 17.44,
+    "fred": 17.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-21",
+   "value": 16.76,
+   "sources": {
+    "naver": 16.76,
+    "fred": 16.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-22",
+   "value": 16.7,
+   "sources": {
+    "naver": 16.7,
+    "fred": 16.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-25",
+   "value": 16.59,
+   "sources": {
+    "naver": 16.59,
+    "fred": 16.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-26",
+   "value": 17.01,
+   "sources": {
+    "naver": 17.01,
+    "fred": 17.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-27",
+   "value": 16.29,
+   "sources": {
+    "naver": 16.29,
+    "fred": 16.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-28",
+   "value": 15.74,
+   "sources": {
+    "naver": 15.74,
+    "fred": 15.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-05-29",
+   "value": 15.32,
+   "sources": {
+    "naver": 15.32,
+    "fred": 15.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-01",
+   "value": 16.05,
+   "sources": {
+    "naver": 16.05,
+    "fred": 16.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-02",
+   "value": 15.77,
+   "sources": {
+    "naver": 15.77,
+    "fred": 15.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-03",
+   "value": 16.06,
+   "sources": {
+    "naver": 16.06,
+    "fred": 16.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-04",
+   "value": 15.4,
+   "sources": {
+    "naver": 15.4,
+    "fred": 15.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-05",
+   "value": 21.51,
+   "sources": {
+    "naver": 21.51,
+    "fred": 21.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-08",
+   "value": 18.92,
+   "sources": {
+    "naver": 18.92,
+    "fred": 18.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-09",
+   "value": 19.87,
+   "sources": {
+    "naver": 19.87,
+    "fred": 19.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-10",
+   "value": 22.22,
+   "sources": {
+    "naver": 22.22,
+    "fred": 22.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-11",
+   "value": 19.44,
+   "sources": {
+    "naver": 19.44,
+    "fred": 19.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-12",
+   "value": 17.68,
+   "sources": {
+    "naver": 17.68,
+    "fred": 17.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-15",
+   "value": 16.2,
+   "sources": {
+    "naver": 16.2,
+    "fred": 16.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-16",
+   "value": 16.41,
+   "sources": {
+    "naver": 16.41,
+    "fred": 16.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-17",
+   "value": 18.44,
+   "sources": {
+    "naver": 18.44,
+    "fred": 18.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-18",
+   "value": 16.4,
+   "sources": {
+    "naver": 16.4,
+    "fred": 16.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-19",
+   "value": 16.78,
+   "sources": {
+    "naver": 16.78,
+    "fred": 16.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-22",
+   "value": 17.28,
+   "sources": {
+    "naver": 17.28,
+    "fred": 17.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-23",
+   "value": 19.49,
+   "sources": {
+    "naver": 19.49,
+    "fred": 19.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-24",
+   "value": 18.63,
+   "sources": {
+    "naver": 18.63,
+    "fred": 18.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-25",
+   "value": 18.89,
+   "sources": {
+    "naver": 18.89,
+    "fred": 18.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-26",
+   "value": 18.41,
+   "sources": {
+    "naver": 18.41,
+    "fred": 18.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-29",
+   "value": 17.65,
+   "sources": {
+    "naver": 17.65,
+    "fred": 17.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-30",
+   "value": 16.45,
+   "sources": {
+    "naver": 16.45,
+    "fred": 16.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-01",
+   "value": 16.59,
+   "sources": {
+    "naver": 16.59,
+    "fred": 16.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-02",
+   "value": 16.15,
+   "sources": {
+    "naver": 16.15,
+    "fred": 16.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-03",
+   "value": 15.81,
+   "sources": {
+    "naver": 15.81,
+    "fred": 15.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-06",
+   "value": 15.57,
+   "sources": {
+    "naver": 15.57,
+    "fred": 15.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-07",
+   "value": 16.13,
+   "sources": {
+    "naver": 16.13,
+    "fred": 16.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-08",
+   "value": 16.9,
+   "sources": {
+    "naver": 16.9,
+    "fred": 16.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-09",
+   "value": 15.84,
+   "sources": {
+    "naver": 15.84,
+    "fred": 15.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-10",
+   "value": 15.03,
+   "sources": {
+    "naver": 15.03,
+    "fred": 15.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-13",
+   "value": 17.16,
+   "sources": {
+    "naver": 17.16,
+    "fred": 17.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-14",
+   "value": 16.5,
+   "sources": {
+    "naver": 16.5,
+    "fred": 16.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-15",
+   "value": 15.67,
+   "sources": {
+    "naver": 15.67,
+    "fred": 15.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-16",
+   "value": 16.73,
+   "sources": {
+    "naver": 16.73,
+    "fred": 16.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-17",
+   "value": 18.77,
+   "sources": {
+    "naver": 18.77,
+    "fred": 18.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-20",
+   "value": 18.65,
+   "sources": {
+    "naver": 18.65,
+    "fred": 18.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-21",
+   "value": 17.05,
+   "sources": {
+    "naver": 17.05,
+    "fred": 17.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-22",
+   "value": 16.64,
+   "sources": {
+    "naver": 16.64,
+    "fred": 16.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-23",
+   "value": 18.7,
+   "sources": {
+    "naver": 18.7,
+    "fred": 18.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-24",
+   "value": 18.58,
+   "sources": {
+    "naver": 18.58,
+    "fred": 18.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-27",
+   "value": 18.67,
+   "sources": {
+    "naver": 18.67,
+    "fred": 18.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-28",
+   "value": 18.21,
+   "sources": {
+    "naver": 18.21,
+    "fred": 18.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-29",
+   "value": 20.66,
+   "sources": {
+    "naver": 20.66,
+    "fred": 20.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-30",
+   "value": 17.09,
+   "sources": {
+    "naver": 17.09,
+    "fred": 17.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-31",
+   "value": 15.99,
+   "sources": {
+    "naver": 15.99,
+    "fred": 15.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-03",
+   "value": 15.86,
+   "sources": {
+    "naver": 15.86,
+    "fred": 15.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-04",
+   "value": 16.5,
+   "sources": {
+    "naver": 16.5,
+    "fred": 16.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-05",
+   "value": 15.81,
+   "sources": {
+    "naver": 15.81,
+    "fred": 15.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-06",
+   "value": 15.15,
+   "sources": {
+    "naver": 15.15,
+    "fred": 15.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-07",
+   "value": 14.9,
+   "sources": {
+    "naver": 14.9,
+    "fred": 14.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-10",
+   "value": 15.46,
+   "sources": {
+    "naver": 15.46,
+    "fred": 15.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-11",
+   "value": 15.28,
+   "sources": {
+    "naver": 15.28,
+    "fred": 15.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-12",
+   "value": 14.55,
+   "sources": {
+    "naver": 14.55,
+    "fred": 14.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-13",
+   "value": 14.63,
+   "sources": {
+    "naver": 14.63,
+    "fred": 14.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-14",
+   "value": 14.25,
+   "sources": {
+    "naver": 14.25,
+    "fred": 14.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-17",
+   "value": 15.19,
+   "sources": {
+    "naver": 15.19,
+    "fred": 15.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-18",
+   "value": 15.84,
+   "sources": {
+    "naver": 15.84,
+    "fred": 15.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-19",
+   "value": 14.89,
+   "sources": {
+    "naver": 14.89,
+    "fred": 14.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-20",
+   "value": 16.01,
+   "sources": {
+    "naver": 16.01,
+    "fred": 16.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-21",
+   "value": 15.13,
+   "sources": {
+    "naver": 15.13,
+    "fred": 15.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-24",
+   "value": 15.85,
+   "sources": {
+    "naver": 15.85,
+    "fred": 15.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-25",
+   "value": 15.45,
+   "sources": {
+    "naver": 15.45,
+    "fred": 15.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-26",
+   "value": 15.21,
+   "sources": {
+    "naver": 15.21,
+    "fred": 15.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-27",
+   "value": 14.51,
+   "sources": {
+    "naver": 14.51,
+    "fred": 14.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-28",
+   "value": 14.43,
+   "sources": {
+    "naver": 14.43,
+    "fred": 14.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-31",
+   "value": 14.92,
+   "sources": {
+    "naver": 14.92,
+    "fred": 14.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-01",
+   "value": 16.34,
+   "sources": {
+    "naver": 16.34,
+    "fred": 16.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-02",
+   "value": 15.2,
+   "sources": {
+    "naver": 15.2,
+    "fred": 15.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-03",
+   "value": 14.32,
+   "sources": {
+    "naver": 14.32,
+    "fred": 14.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-04",
+   "value": 14.53,
+   "sources": {
+    "naver": 14.53,
+    "fred": 14.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-07",
+   "value": 15.3,
+   "sources": {
+    "naver": 15.3,
+    "fred": 15.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-08",
+   "value": 15.72,
+   "sources": {
+    "naver": 15.72,
+    "fred": 15.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-09",
+   "value": 16.46,
+   "sources": {
+    "naver": 16.46,
+    "fred": 16.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-10",
+   "value": 17.84,
+   "sources": {
+    "naver": 17.84,
+    "fred": 17.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-11",
+   "value": 15.84,
+   "sources": {
+    "naver": 15.84,
+    "fred": 15.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-14",
+   "value": 17.1,
+   "sources": {
+    "naver": 17.1,
+    "fred": 17.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-15",
+   "value": 17.2,
+   "sources": {
+    "naver": 17.2,
+    "fred": 17.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-16",
+   "value": 17.71,
+   "sources": {
+    "naver": 17.71,
+    "fred": 17.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-17",
+   "value": 15.44,
+   "sources": {
+    "naver": 15.44,
+    "fred": 15.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-18",
+   "value": 14.81,
+   "sources": {
+    "naver": 14.81,
+    "fred": 14.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-21",
+   "value": 14.87,
+   "sources": {
+    "naver": 14.87,
+    "fred": 14.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-22",
+   "value": 14.21,
+   "sources": {
+    "naver": 14.21,
+    "fred": 14.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-23",
+   "value": 15.18,
+   "sources": {
+    "naver": 15.18,
+    "fred": 15.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-24",
+   "value": 15.67,
+   "sources": {
+    "naver": 15.67,
+    "fred": 15.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-25",
+   "value": 14.87,
+   "sources": {
+    "naver": 14.87,
+    "fred": 14.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-28",
+   "value": 16.07,
+   "sources": {
+    "naver": 16.07,
+    "fred": 16.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-29",
+   "value": 16.04,
+   "sources": {
+    "naver": 16.04,
+    "fred": 16.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-30",
+   "value": 16.34,
+   "sources": {
+    "naver": 16.34,
+    "fred": 16.34
+   },
+   "status": "ok"
+  }
+ ]
+}

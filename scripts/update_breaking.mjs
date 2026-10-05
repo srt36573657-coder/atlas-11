@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {createBreakingState,evaluateBreaking} from '../lib/breaking-news.mjs';
+import {syncBreakingCandidates} from '../lib/breaking-candidates.mjs';
+const file='public/data/atlas.json',b=JSON.parse(fs.readFileSync(file,'utf8'));
+const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
+const previous=Object.fromEntries(Object.entries(b).filter(([k])=>k!=='breaking').map(([k,v])=>[k,hash(v)]));
+const now=new Date();let breaking=syncBreakingCandidates(b.breaking??createBreakingState(),b.companyNewsCollection,{now,codes:b.input.assets.map(a=>a.code),start:b.input.origin,end:b.input.end});
+breaking=evaluateBreaking(breaking,{input:b.input,now});b.breaking=breaking;
+for(const [k,h]of Object.entries(previous))if(hash(b[k])!==h)throw Error('Prior data altered: '+k);
+fs.writeFileSync(file+'.next',JSON.stringify(b));fs.renameSync(file+'.next',file);
+console.log(JSON.stringify({events:breaking.events.length,candidates:breaking.candidates?.length??0,decisions:breaking.decisions.length,forecasts:breaking.forecasts.length,evaluations:breaking.evaluations.length,preserved:true,newCollection:false}));

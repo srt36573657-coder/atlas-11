@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "parallel-20260926-confirmations",
+  "checkedAt": "2026-09-26T11:37:56Z",
+  "window": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "005380",
+    "004170",
+    "035250"
+  ],
+  "completedResearchCodes": [
+    "005380",
+    "004170",
+    "035250"
+  ],
+  "currentlyReverifiedPrimaryCodes": [
+    "005380",
+    "004170"
+  ],
+  "priorPrimaryVerifiedCurrentAccessFailedCodes": [
+    "035250"
+  ],
+  "eventCandidates": [
+    {
+      "scope": "company",
+      "priceImpactStatus": "abstain",
+      "trustProbability": null,
+      "numericPriceImpactEligible": false,
+      "numericPriceImpactReason": "비교 가능한 기업별 과거 사건 표본, 발표 결과 및 예상 대비 차이가 확보되지 않음. 확정 일정 확인은 가격 촉매 입증이 아님.",
+      "id": "REVIEW:COMPANY_PRODUCT_PRESENTATION-005380-20261012",
+      "code": "005380",
+      "name": "현대차",
+      "kind": "COMPANY_PRODUCT_PRESENTATION",
+      "title": "현대차 파리 모터쇼 신차 발표 기자회견",
+      "eventDate": "2026-10-12",
+      "targetDate": "2026-10-13",
+      "sourceUrl": "https://www.hyundai.news/eu/articles/press-releases/hyundai-attends-paris-motor-show-2026.html",
+      "eventLocalTime": "2026-10-12T15:05:00+02:00",
+      "eventTimezone": "Europe/Paris",
+      "eventKoreaTime": "2026-10-12T22:05:00+09:00",
+      "targetDateBasis": "파리 15:05는 서울 22:05. 한국 정규장 종료 후이므로 다음 거래일 10/13에 연결.",
+      "sourceUrls": [
+        "https://www.hyundai.news/eu/articles/press-releases/hyundai-attends-paris-motor-show-2026.html",
+        "https://www.hyundai.com/eu/en/about-hyundai/events-sponsoring/paris-motor-show-2026.html"
+      ],
+      "publishedDate": null,
+      "publishedAt": null,
+      "primaryAccess": "verified_current",
+      "evidenceLocation": "뉴스룸 113~141행, 회사 행사 페이지 95~105·135~140행",
+      "evidenceSummary": "2026 파리 모터쇼 참가와 10월 12일 월요일 15:05 Hall 5.2 기자회견을 회사 공식 두 페이지에서 확인. B-SUV 세계 최초 및 C-SUV 유럽 최초 공개 계획이며 판매 성과를 의미하지 않음."
+    },
+    {
+      "scope": "company",
+      "priceImpactStatus": "abstain",
+      "trustProbability": null,
+      "numericPriceImpactEligible": false,
+      "numericPriceImpactReason": "비교 가능한 기업별 과거 사건 표본, 발표 결과 및 예상 대비 차이가 확보되지 않음. 확정 일정 확인은 가격 촉매 입증이 아님.",
+      "id": "REVIEW:COMPANY_RETAIL_CAMPAIGN-004170-20261001",
+      "code": "004170",
+      "name": "신세계",
+      "kind": "COMPANY_RETAIL_CAMPAIGN",
+      "title": "신세계디에프 신면세일 2차 행사 시작",
+      "eventDate": "2026-10-01",
+      "targetDate": "2026-10-01",
+      "sourceUrl": "https://www.shinsegaegroupnewsroom.com/shinsegae-duty-free-sinmyeon-sale-mega-event-launch/",
+      "eventEndDate": "2026-10-11",
+      "sourceUrls": [
+        "https://www.shinsegaegroupnewsroom.com/shinsegae-duty-free-sinmyeon-sale-mega-event-launch/",
+        "https://kind.krx.co.kr/external/2026/05/15/002099/20260515004649/11013.htm"
+      ],
+      "publishedDate": "2026-09-17",
+      "publishedAt": null,
+      "primaryAccess": "verified_current",
+      "evidenceLocation": "그룹 뉴스룸 29~30·72행; 신세계 2026 1분기 보고서 1616·4056행",
+      "evidenceSummary": "2차 행사는 10/1~11로 명시. 신세계디에프는 신세계의 100% 직접 보유 종속기업(2026년 1분기말 보고서 기준). 해당 판매 행사만 004170에 연결하며 이마트나 다른 그룹주로 확장하지 않음.",
+      "entityMapping": {
+        "listedCode": "004170",
+        "operatingEntity": "신세계디에프",
+        "relation": "직접 보유 종속기업",
+        "ownershipPct": 100,
+        "ownershipAsOf": "2026-03-31",
+        "sourceUrl": "https://kind.krx.co.kr/external/2026/05/15/002099/20260515004649/11013.htm"
+      }
+    },
+    {
+      "scope": "company",
+      "priceImpactStatus": "abstain",
+      "trustProbability": null,
+      "numericPriceImpactEligible": false,
+      "numericPriceImpactReason": "비교 가능한 기업별 과거 사건 표본, 발표 결과 및 예상 대비 차이가 확보되지 않음. 확정 일정 확인은 가격 촉매 입증이 아님.",
+      "id": "REVIEW:COMPANY_FACILITY_OPENING-035250-20261001",
+      "code": "035250",
+      "name": "강원랜드",
+      "kind": "COMPANY_FACILITY_OPENING",
+      "title": "강원랜드 탄광유산 문화복합공간 M650 개관",
+      "eventDate": "2026-10-01",
+      "targetDate": "2026-10-01",
+      "sourceUrl": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+      "publishedDate": "2026-09-22",
+      "publishedAt": null,
+      "primaryAccess": "verified_prior_current_reaccess_failed",
+      "priorPrimaryVerificationDate": "2026-09-25",
+      "priorPrimaryVerificationTimestamp": null,
+      "priorVerificationBasis": "부모 에이전트의 9/25 공식 본문 브라우저 확인 기록. 정확한 확인 시각은 복원하지 않음.",
+      "evidenceSummary": "이전 공식 본문 확인 기록에 10/1 개관 명시. 9/26 웹 원문 재접속 두 차례 내부 오류. 현재 언론 보도 원문은 동일 날짜를 재확인했지만 공식 재검증 성공으로 세지 않음.",
+      "secondaryCrossCheckUrl": "https://v.daum.net/v/20260915123842911"
+    },
+    {
+      "scope": "company",
+      "priceImpactStatus": "abstain",
+      "trustProbability": null,
+      "numericPriceImpactEligible": false,
+      "numericPriceImpactReason": "비교 가능한 기업별 과거 사건 표본, 발표 결과 및 예상 대비 차이가 확보되지 않음. 확정 일정 확인은 가격 촉매 입증이 아님.",
+      "id": "REVIEW:COMPANY_OPENING_CEREMONY-035250-20261007",
+      "code": "035250",
+      "name": "강원랜드",
+      "kind": "COMPANY_OPENING_CEREMONY",
+      "title": "강원랜드 M650 개관식·탄광문화축제 시작",
+      "eventDate": "2026-10-07",
+      "targetDate": "2026-10-07",
+      "sourceUrl": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+      "eventEndDate": "2026-10-10",
+      "publishedDate": "2026-09-22",
+      "publishedAt": null,
+      "primaryAccess": "verified_prior_current_reaccess_failed",
+      "priorPrimaryVerificationDate": "2026-09-25",
+      "priorPrimaryVerificationTimestamp": null,
+      "priorVerificationBasis": "부모 에이전트의 9/25 공식 본문 브라우저 확인 기록. 정확한 확인 시각은 복원하지 않음.",
+      "evidenceSummary": "기존 공식 확인 기록에 개관식 10/7 및 축제 10/7~10 명시. 같은 날 개관식과 축제를 별도 독립 가격 사건으로 중복 계상하지 않음.",
+      "secondaryCrossCheckUrl": "https://v.daum.net/v/20260915123842911"
+    }
+  ],
+  "additionalChecks": [
+    {
+      "code": "005380",
+      "sourceUrl": "https://www.hyundai.com/worldwide/ko/company/ir",
+      "status": "read_success",
+      "evidenceLocation": "81~107행",
+      "finding": "최신 표시 IR은 CLSA 9/21~22, 해외 NDR 8/31~9/22. 향후 10월 실적발표의 확정 날짜는 이 페이지에서 확보되지 않음."
+    },
+    {
+      "code": "004170",
+      "sourceUrl": "https://deptmapp.shinsegae.com/company/ir-ko/ir.do",
+      "status": "read_success",
+      "evidenceLocation": "309~318·380~404행",
+      "finding": "2026년 IR에 10월 신규 확정일 미확보. 아래 10월 표시는 2025년 섹션이므로 올해 일정으로 사용하지 않음."
+    }
+  ],
+  "accessAttempts": [
+    {
+      "code": "035250",
+      "at": "2026-09-26T11:37:56Z",
+      "sourceUrl": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+      "method": "web.open",
+      "result": "Internal Error; body unavailable"
+    },
+    {
+      "code": "035250",
+      "at": "2026-09-26T11:37:56Z",
+      "sourceUrl": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334",
+      "method": "web.open",
+      "result": "Internal Error; body unavailable"
+    }
+  ],
+  "constraints": [
+    "신규 관측 자료를 9/17 또는 9/23에 이미 알았던 것으로 소급하지 않는다.",
+    "공개일만 확인된 자료의 공개 시각은 null을 유지한다.",
+    "3개 종목의 기업 사업 일정이며, 실적 결과·가격 방향·신뢰 확률을 확보한 것으로 표현하지 않는다.",
+    "이 파일은 조사 결과만 포함하며 앱 데이터·엔진·방정식을 수정하지 않았다."
+  ]
+}

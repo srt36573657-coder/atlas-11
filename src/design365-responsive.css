@@ -1,0 +1,193 @@
+/* D245–D305: responsive layout only. Playback state, equations and data are unchanged. */
+:root { --responsive-gutter:clamp(12px,2vw,28px); --responsive-safe-bottom:env(safe-area-inset-bottom,0px); }
+html { scroll-padding-block:100px 110px; }
+main[data-design-edition] { width:100%; min-width:0; }
+.atlas-content,.small-multiples,.mini-card,.news-workbench,.score-workbench { min-width:0; }
+.mini-title>div,.quote-value,.end-forecast,.section-heading>div { min-width:0; }
+.mini-title h3,.daily-explanation h3,.news-reading-detail h3 { overflow-wrap:anywhere; }
+.stock-controls button,.watch-button,.smart-dates button,.dialog-title button { min-width:44px; min-height:44px; touch-action:manipulation; }
+.stock-options label { min-height:44px; display:inline-flex; align-items:center; gap:6px; }
+.stock-options input[type=checkbox] { flex-shrink:0; }
+.stock-options select,.picker-filters select,.score-filters select,.workbench-heading select { min-height:44px; min-width:0; max-width:100%; }
+.stock-options,.stock-controls,.gallery-tools,.section-heading { flex-wrap:wrap; }
+.stock-date-slider { min-height:30px; touch-action:pan-y; }
+.focus-card .stock-controls { flex-wrap:wrap; }
+.focus-card .stock-controls button { min-height:44px; }
+.focus-card .stock-controls .day-step { flex:0 0 44px; }
+.focus-card .stock-controls .primary { min-width:0; flex:1 1 150px; }
+.focus-card .stock-options { column-gap:12px; row-gap:2px; }
+.focus-card .stock-options label { min-height:36px; }
+.focus-card .trend-chart { min-width:0; }
+.focus-news-content,.news-reading-detail,.news-reading-list,.stock-picker { overscroll-behavior:contain; scrollbar-gutter:stable; -webkit-overflow-scrolling:touch; }
+.focus-news-content,.news-reading-detail { overflow-wrap:anywhere; }
+.focus-news-content { scroll-padding-block:12px; }
+.focus-news-heading { flex-wrap:wrap; }
+.dialog:not(.watch-dialog) { max-width:calc(100vw - 24px); max-height:calc(100dvh - 32px); overflow:auto; }
+.watch-dialog { width:100%; max-width:1600px; padding-bottom:max(10px,env(safe-area-inset-bottom)); }
+.watch-dialog .dialog-title { flex-wrap:wrap; }
+.watch-dialog .dialog-title select { min-width:0; min-height:44px; }
+.watch-dialog .dialog-title button { flex-shrink:0; }
+.watch-backdrop { padding-inline:max(10px,env(safe-area-inset-left)) max(10px,env(safe-area-inset-right)); }
+.picker-grid button { min-width:0; }
+.picker-grid button>span { min-width:0; overflow-wrap:anywhere; }
+.picker-filters label { min-width:0; }
+.picker-filters input { min-width:0; max-width:100%; }
+.source-card { overflow-wrap:anywhere; }
+.score-filters label { min-width:0; }
+.score-metrics>div { min-width:0; overflow-wrap:anywhere; }
+.table-scroll { max-width:100%; overscroll-behavior-inline:contain; }
+.diagnosis-sheet { max-width:calc(100vw - 24px); padding-bottom:max(20px,env(safe-area-inset-bottom)); overscroll-behavior:contain; }
+.account-panel { overflow-wrap:anywhere; }
+.account-actions { display:flex; flex-wrap:wrap; gap:10px; }
+.account-actions button { min-height:44px; }
+@media(min-width:821px) and (max-width:1100px) {
+ main[data-design-edition] { padding-inline:18px; }
+ main[data-design-edition]>nav { width:144px; left:12px; }
+ main[data-design-edition]>.atlas-content,main[data-design-edition]>.evidence-banner,main[data-design-edition]>.record-details,main[data-design-edition]>.intro-details,main[data-design-edition]>footer { margin-left:150px; }
+ .small-multiples,.small-multiples[data-density=reading] { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+ .header-actions { max-width:70%; flex-wrap:wrap; }
+}
+@media(min-width:761px) {
+ .focus-card { grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr); }
+ .focus-news { border-left:1px solid var(--border); }
+ .news-reading-layout { grid-template-columns:minmax(220px,.8fr) minmax(0,1.5fr); }
+}
+@media(min-width:1500px) and (max-width:1659px) {
+ .small-multiples { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ .small-multiples[data-density=reading] { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:820px) {
+ main[data-design-edition] { padding-inline:var(--responsive-gutter); padding-bottom:calc(110px + var(--responsive-safe-bottom)); }
+ main[data-design-edition]>header { position:relative; top:auto; }
+ main[data-design-edition]>nav { overflow-x:auto; overflow-y:hidden; justify-content:flex-start; gap:5px; padding-bottom:max(8px,env(safe-area-inset-bottom)); }
+ main[data-design-edition]>nav button,main[data-design-edition]>nav button:nth-child(n+5) { display:block; flex:0 0 auto; min-width:76px; min-height:48px; font-size:12px; padding-inline:12px; }
+ .header-actions button { min-height:44px; font-size:12px; }
+ .header-actions { gap:6px; }
+ .gallery-picker { min-height:48px; }
+ .research-lenses { padding-bottom:6px; scroll-padding-inline:8px; }
+ .research-lenses button { min-height:44px; }
+ .density-switch button { min-height:44px; }
+ .mini-card .stock-controls button,.mini-card .stock-options button { min-height:44px; font-size:12px; }
+ .mini-card .stock-options { font-size:12px; }
+ .mini-card .smart-dates button { min-height:70px; }
+ .picker-filters input,.picker-filters select,.stock-options select,.score-filters select,.workbench-heading select { font-size:16px; }
+ .picker-grid button { min-height:72px; }
+ .workbench-heading label { flex:1 1 100%; justify-content:space-between; }
+ .workbench-heading select { max-width:75%; }
+ .news-reading-layout { min-height:0; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(140px,26dvh) minmax(260px,50dvh); }
+ .news-reading-detail { scroll-padding-block:16px; }
+ .score-filters select { max-width:70%; }
+ .score-workbench td button { min-height:44px; }
+ .diagnosis-sheet { top:max(12px,env(safe-area-inset-top)); bottom:calc(90px + var(--responsive-safe-bottom)); right:12px; }
+ .diagnosis-sheet>div { flex-wrap:wrap; }
+ .diagnosis-sheet>div button { min-height:44px; }
+}
+@media(max-width:760px) {
+ .watch-backdrop { padding:0; }
+ .watch-dialog { padding-inline:max(6px,env(safe-area-inset-left)) max(6px,env(safe-area-inset-right)); padding-top:max(6px,env(safe-area-inset-top)); padding-bottom:max(6px,env(safe-area-inset-bottom)); }
+ .watch-dialog .dialog-title select { flex:1 1 120px; max-width:100%; font-size:16px; }
+ .watch-dialog .dialog-title button { min-height:44px; }
+ .focus-card { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(140px,1fr) auto auto auto minmax(160px,.8fr); overflow:auto; }
+ .focus-card .stock-controls { gap:6px; }
+ .focus-card .stock-controls .primary { flex:1 1 calc(100% - 100px); }
+ .focus-card .stock-options { font-size:12px; }
+ .focus-card .stock-options label { min-height:36px; }
+ .focus-card .stock-options .text-button { display:inline-flex; min-height:44px; }
+ .focus-card .stock-timeline { margin-inline:10px; }
+ .focus-news { border-left:0; }
+ .focus-news-heading { gap:4px 8px; }
+ .focus-news-heading span { font-size:11px; line-height:1.5; }
+ .focus-news-content { padding-inline:10px; }
+ .date-grid { gap:4px; }
+ .date-cell { min-width:0; min-height:44px; }
+ .daily-values b { font-size:clamp(16px,4.5vw,21px); }
+ .daily-reason p,.daily-event p { font-size:14px; }
+}
+@media(max-width:390px) {
+ main[data-design-edition] { padding-inline:10px; }
+ .brand h1 { font-size:20px; letter-spacing:2px; }
+ .header-actions { max-width:70%; }
+ .header-actions button { padding-inline:8px; }
+ .mini-card,.small-multiples[data-density=reading] .mini-card { padding-inline:10px; }
+ .mini-title h3,.small-multiples[data-density=reading] .mini-title h3 { font-size:20px; }
+ .end-forecast b { font-size:19px; }
+ .mini-card .trend-chart { height:240px; }
+ .picker-grid button { gap:8px; padding-inline:10px; }
+ .daily-values>div { padding:9px; }
+ .date-grid { grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; }
+ .date-cell { padding-inline:1px; font-size:11px; }
+ .score-metrics { grid-template-columns:1fr; }
+ .score-filters label { flex-wrap:wrap; gap:6px; }
+ .score-filters select { width:100%; max-width:100%; }
+}
+@media(max-height:620px) and (max-width:760px) {
+ .watch-dialog { overflow:auto; grid-template-rows:auto auto; }
+ .focus-card { height:auto; overflow:visible; grid-template-rows:auto auto 220px auto auto auto minmax(220px,45dvh); }
+ .focus-news-content { max-height:40dvh; }
+}
+@media(pointer:coarse) {
+ .stock-controls button,.watch-button,.smart-dates button,.source-card { touch-action:manipulation; }
+ .table-scroll { -webkit-overflow-scrolling:touch; }
+}
+
+/* Polish: scoped reading controls and low-height fallback. No SVG coordinate,
+   chart path, data attribute or replay timer changes. */
+.focus-card .stock-controls button { white-space:normal; overflow-wrap:anywhere; line-height:1.4; }
+.focus-card .stock-controls .day-step { white-space:nowrap; }
+.focus-card .stock-options label { max-width:100%; overflow-wrap:anywhere; line-height:1.5; }
+.focus-card .stock-options select { flex-shrink:0; }
+.focus-card .scope-summary,.focus-card .scope-gap { overflow-wrap:anywhere; }
+.focus-card .timeline-meta { gap:6px; flex-wrap:wrap; }
+.focus-card .timeline-meta>span { min-width:0; }
+.focus-card .timeline-meta .playback-state { white-space:normal; overflow-wrap:anywhere; }
+.focus-news-heading h3,.focus-news-heading span { min-width:0; overflow-wrap:anywhere; }
+.focus-news-content .date-grid { min-width:0; }
+.focus-news-content .daily-values { min-width:0; }
+.focus-news-content .daily-values strong { overflow-wrap:anywhere; }
+.focus-card.chart-readable :is(.stock-identity,.forecast-status,.end-comparison,.forecast-origin small,.quote-caption,.quote-kind,.selected-quote>small,.stock-options,.scope-summary,.scope-gap,.scope-chips,.timeline-meta) { font-size:14px; line-height:1.6; }
+.focus-card.chart-readable .stock-controls button:not(.day-step) { font-size:15px; min-height:46px; }
+.focus-card.chart-readable .stock-options select { font-size:16px; min-height:44px; }
+.focus-card.chart-readable .stock-options label { min-height:44px; }
+.focus-card.chart-readable :is(.daily-reason p,.daily-event p,.daily-explanation>p,.stock-explanation p,.news-upcoming p) { font-size:16px; line-height:1.8; }
+.focus-card.chart-readable :is(.daily-values small,.news-upcoming small,.calendar-caption,.focus-news-heading span) { font-size:14px; line-height:1.6; }
+.focus-card.chart-readable :is(.daily-values strong,.daily-event h4,.focus-news-heading h3) { font-size:17px; line-height:1.5; }
+.focus-card.chart-readable .date-cell { font-size:13px; min-height:50px; }
+.focus-card.chart-readable .date-kind { font-size:11px; }
+@media(max-width:820px) {
+ main[data-design-edition]>nav button,main[data-design-edition]>nav button:nth-child(n+5) { font-size:13px; line-height:1.5; }
+ .mini-card .stock-options { font-size:13px; }
+ .mini-card .stock-controls button { font-size:13px; }
+ .workbench-heading label { gap:10px; flex-wrap:wrap; }
+ .workbench-heading select { flex:1 1 160px; }
+ .focus-card .stock-options { font-size:13px; }
+ .focus-card .stock-options label { min-height:40px; }
+ .focus-news-heading span { font-size:12px; }
+}
+@media(max-width:390px) {
+ .focus-card.chart-readable .daily-values { grid-template-columns:minmax(0,1fr); }
+ .focus-card.chart-readable .date-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }
+ .focus-card .stock-controls { padding-inline:6px; }
+ .focus-card .stock-controls .primary { flex-basis:calc(100% - 104px); }
+}
+@media(min-width:761px) and (max-height:620px) {
+ /* Keep graph left / independently scrolling news right on short desktops.
+    Outer scroll is a fallback; no fixed-height clipping of controls. */
+ .focus-card { min-height:0; height:100%; overflow:auto; grid-template-rows:auto auto minmax(180px,1fr) auto auto auto auto; }
+ .focus-card .focus-news { max-height:calc(100dvh - 100px); }
+}
+@media(max-width:760px) and (max-height:620px) {
+ .focus-card.chart-readable { grid-template-rows:auto auto 220px auto auto auto minmax(260px,50dvh); }
+ .focus-card.chart-readable .focus-news-content { max-height:45dvh; }
+}
+/* Explicit specificity beats legacy 9px focus metadata. */
+.focus-card .end-forecast small,
+.focus-card .quote-caption,
+.focus-card .forecast-origin>span,
+.focus-card .stock-current small { font-size:12px; line-height:1.6; }
+.focus-card.chart-readable .end-forecast small,
+.focus-card.chart-readable .quote-caption,
+.focus-card.chart-readable .forecast-origin>span,
+.focus-card.chart-readable .stock-current small { font-size:14px; line-height:1.65; }
+/* Reading mode can grow beyond automatic row space at any desktop height. */
+.focus-card.chart-readable { overflow:auto; }
+.focus-card.chart-readable :is(.date-cell small,.daily-event>small,.evidence-source small,.date-kind) { font-size:14px; line-height:1.6; }

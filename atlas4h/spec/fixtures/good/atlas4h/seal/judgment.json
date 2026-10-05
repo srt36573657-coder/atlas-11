@@ -1,0 +1,15 @@
+{
+ "schema": "atlas4h-judgment-1",
+ "sealedAt": "2026-10-01T18:20:00+09:00",
+ "rule": "실력 > 0 이고 DM 한쪽 p < 0.05 이면 「실력」, 아니면 「아직 모름」, 실력 ≤ 0 이면 앞 판으로",
+ "alpha": 0.2,
+ "baselines": [
+  "무판",
+  "단순 전이식",
+  "ATLAS 11"
+ ],
+ "dm": {
+  "lag": "같은 날 종가를 겨누는 판 수 − 1",
+  "variance": "Newey–West"
+ }
+}

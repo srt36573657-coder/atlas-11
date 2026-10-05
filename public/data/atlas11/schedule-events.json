@@ -1,0 +1,1305 @@
+{
+ "schema": "atlas11-schedule-events-1",
+ "note": "확인된 일정표 — 시장 공통(미국 금리·물가·고용, 한국은행) · 업종(전시회·학회) · 회사 고유(배당 기준일·유상증자·설명회 …) · 일정마다 공식 출처 주소 · 이름·날짜·종류·출처만",
+ "source": {
+  "file": "public/data/atlas.json",
+  "path": "candidate.assets[].news",
+  "sha256": "2145e5c30f1c848a9a2febca5f570d3df626814c133df45e8daaffd3fdd07fcc",
+  "candidateId": "2026-09-23-18cf97de",
+  "retrievedAt": "2026-09-26T13:22:50.603Z"
+ },
+ "extractedAt": "2026-10-04T06:44:18.713Z",
+ "events": [
+  {
+   "id": "REVIEW:028300:FDA-APPROVED:20260923",
+   "name": "HLB 자회사 Elevar · Lyrfigtu FDA 승인 사실",
+   "kind": "DRUG_APPROVAL",
+   "date": "2026-09-28",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "028300"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "announced",
+   "sources": [
+    {
+     "name": "미국 FDA 승인 원문",
+     "url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-lirafugratinib-previously-treated-unresectable-locally-advanced-or-metastatic",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    },
+    {
+     "name": "Elevar 공식 발표·HLB 지분 관계",
+     "url": "https://elevartx.com/2026/09/23/elevar-fda-approval-lyrfigtu-2/",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:278470:MERGER-RECORD:20260928",
+   "name": "에이피알 · 합병 반대의사 표시 권리 주주확정 기준일",
+   "kind": "COMPANY_GOVERNANCE_RECOMMENDATION",
+   "date": "2026-09-28",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "278470"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "에이피알 공식 공고",
+     "url": "https://www.apr-in.com/public-notice-view.php?page=1&wr_id=85",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_POPUP_ANGGAE_SEONGSU-028260-20260929",
+   "name": "삼성물산 패션 브랜드 앙개 성수 팝업 개점",
+   "kind": "COMPANY_POPUP_ANGGAE_SEONGSU",
+   "date": "2026-09-29",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "028260"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://news.samsungcnt.com/ko/%EC%A0%84%EC%B2%B4%EA%B8%B0%EC%82%AC/%ED%8C%A8%EC%85%98%EB%B6%80%EB%AC%B8/2026-09-%EC%8B%A0%EC%98%88-%EC%97%AC%EC%84%B1%EB%B3%B5-%EC%95%99%EA%B0%9C-%EB%8D%94%ED%98%84%EB%8C%80-%EC%84%9C%EC%9A%B8%EC%84%9C-%ED%8C%9D%EC%97%85-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%98%A4/",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://news.samsungcnt.com/en/features/fashion/2026-09-anggae-opens-first-department-store-pop-up-at-the-hyundai-seoul/",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://samsungcnt.com/ir/event-earnings/ir-event.do",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KPW-IR-005930-20260929",
+   "name": "삼성전자 기업설명회 · 코리아 프리미엄 위크",
+   "kind": "COMPANY_KPW_IR",
+   "date": "2026-09-29",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "005930"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "금융위원회·한국거래소 행사 공식 일정",
+     "url": "https://koreaweeks.com/session-2.php",
+     "retrievedAt": "2026-09-25T04:38:04Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KPW-IR-012450-20260929",
+   "name": "한화에어로스페이스 기업설명회 · 코리아 프리미엄 위크",
+   "kind": "COMPANY_KPW_IR",
+   "date": "2026-09-29",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "012450"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "금융위원회·한국거래소 행사 공식 일정",
+     "url": "https://koreaweeks.com/session-2.php",
+     "retrievedAt": "2026-09-25T04:38:04Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KPW-IR-034020-20260929",
+   "name": "두산에너빌리티 기업설명회 · 코리아 프리미엄 위크",
+   "kind": "COMPANY_KPW_IR",
+   "date": "2026-09-29",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "034020"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "금융위원회·한국거래소 행사 공식 일정",
+     "url": "https://koreaweeks.com/session-2.php",
+     "retrievedAt": "2026-09-25T04:38:04Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KPW-IR-207940-20260929",
+   "name": "삼성바이오로직스 기업설명회 · 코리아 프리미엄 위크",
+   "kind": "COMPANY_KPW_IR",
+   "date": "2026-09-29",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "207940"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "금융위원회·한국거래소 행사 공식 일정",
+     "url": "https://koreaweeks.com/session-2.php",
+     "retrievedAt": "2026-09-25T04:38:04Z"
+    }
+   ]
+  },
+  {
+   "id": "BLS:JOLTS:August-2026",
+   "name": "미국 구인·이직 발표",
+   "kind": "JOLTS",
+   "date": "2026-09-30",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "미국 노동통계국",
+     "url": "https://www.bls.gov/schedule/2026/09_sched.htm",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_IR-000720-20260930",
+   "name": "현대건설 미래에셋증권 Corporate Day 2026 기업설명회",
+   "kind": "COMPANY_IR",
+   "date": "2026-09-30",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "000720"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "DART 현대건설 2026.09.23 기업설명회 개최 공시",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923800045",
+     "retrievedAt": "2026-09-25T10:41:03.919Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_IR-086280-20260930",
+   "name": "현대글로비스 미래에셋 Korea Corporate Day 2026 기업설명회",
+   "kind": "COMPANY_IR",
+   "date": "2026-09-30",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "086280"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "DART 현대글로비스 2026.09.23 기업설명회 개최 공시",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923800318",
+     "retrievedAt": "2026-09-25T07:05:02.639Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:SAMSUNG-RECORD",
+   "name": "삼성전자 분기배당 기준일",
+   "kind": "DIVIDEND_RECORD",
+   "date": "2026-09-30",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "005930"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.samsung.com/global/ir/",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_FACILITY_OPENING-035250-20261001",
+   "name": "강원랜드 탄광유산 문화복합공간 M650 개관",
+   "kind": "COMPANY_FACILITY_OPENING",
+   "date": "2026-10-01",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "035250"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_RETAIL_CAMPAIGN-004170-20261001",
+   "name": "신세계디에프 신면세일 2차 행사 시작",
+   "kind": "COMPANY_RETAIL_CAMPAIGN",
+   "date": "2026-10-01",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "004170"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://www.shinsegaegroupnewsroom.com/shinsegae-duty-free-sinmyeon-sale-mega-event-launch/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://kind.krx.co.kr/external/2026/05/15/002099/20260515004649/11013.htm",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:HYBE-CINE-GLOBAL-TICKETS",
+   "name": "하이브 영화제 글로벌 예매 시작",
+   "kind": "HYBE_CINE_TICKETS",
+   "date": "2026-10-01",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "352820"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://weverse.io/bts/notice/39450",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KE-FUEL-20261001",
+   "name": "대한항공 10월 국제선 유류할증료 적용",
+   "kind": "AIRLINE_FUEL_POLICY",
+   "date": "2026-10-01",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "003490"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.koreanair.com/contents/footer/customer-support/notice/2026/2610-infuel",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KOGAS-INSTALLMENT",
+   "name": "한국가스공사 소상공인 분할납부 적용월 시작",
+   "kind": "GAS_PAYMENT_POLICY",
+   "date": "2026-10-01",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "036460"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.kogas.or.kr/site/koGas/1020408070000",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:214370:EURETINA-EXHIBIT:20261001",
+   "name": "케어젠 · EURETINA 전시 참가",
+   "kind": "COMPANY_EXHIBITION_EURETINA",
+   "date": "2026-10-02",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "214370"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "EURETINA 주최자 참가사 목록",
+     "url": "https://euretina.org/vienna-2026/exhibitors/",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    },
+    {
+     "name": "EURETINA 주최자 행사 기간",
+     "url": "https://euretina.org/vienna-2026/",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_GOVERNANCE_RECOMMENDATION-105560-20261002",
+   "name": "KB금융 회장 후보 회추위·이사회 추천 절차 예정",
+   "kind": "COMPANY_GOVERNANCE_RECOMMENDATION",
+   "date": "2026-10-02",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "105560"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "KB금융 작성·배포 보도자료(한국경제 게재)",
+     "url": "https://www.hankyung.com/article/202606023070P",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "KB금융 9/11 후속 후보 선정 보도자료",
+     "url": "https://www.newswire.co.kr/newsRead.php?no=1042442",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_REDISCLOSURE-000810-20261002",
+   "name": "삼성화재 해외 보험사 인수 검토 재공시 예정",
+   "kind": "COMPANY_REDISCLOSURE",
+   "date": "2026-10-02",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "000810"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "DART 삼성화재해상보험 2026.09.03 공시 본문",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260903800106",
+     "retrievedAt": "2026-09-25T05:04:03.096Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_REDISCLOSURE-032830-20261002",
+   "name": "삼성생명 해외 보험사 투자 검토 재공시 예정",
+   "kind": "COMPANY_REDISCLOSURE",
+   "date": "2026-10-02",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "032830"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "DART 삼성생명 2026.09.03 공시 본문",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260903800096",
+     "retrievedAt": "2026-09-25T05:04:03.096Z"
+    }
+   ]
+  },
+  {
+   "id": "BLS:JOBS:September-2026",
+   "name": "미국 고용 발표",
+   "kind": "JOBS",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "미국 노동통계국",
+     "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:033780:GRANPEAK-CONTRACT-OPEN:20261005",
+   "name": "KT&G 시행 두정역 푸르지오 그랑피크 정당계약 개시",
+   "kind": "COMPANY_PROPERTY_CONTRACT_WINDOW",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "033780"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.prugio.com/hb/2026/granpeak/",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%B6%95%EC%95%BD.pdf",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%A0%84%EB%AC%B8.pdf",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:036460:VOTING-RECORD:20261006",
+   "name": "한국가스공사 · 의결권 주주확정 기준일",
+   "kind": "COMPANY_GOVERNANCE_RECOMMENDATION",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "036460"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "한국가스공사 공식 공고",
+     "url": "https://www.kogas.or.kr/site/koGas/bbs/View.do?Key=1050705000000&boardIdx=47771&cbIdx=58&pageIndex=1&pageOffset=0&searchKey=&searchValue=",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:207940:RIGHTS_RECORD:20261006",
+   "name": "삼성바이오로직스 유상증자 신주배정기준일",
+   "kind": "CAPITAL_INCREASE",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "207940"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "발행사 신주발행 공고",
+     "url": "https://samsungbiologics.com/kr/ir/resource/notice-view?boardseq=3721",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:259960:ASCENT-PREORDER:20261006",
+   "name": "크래프톤 · The Ascent Switch 2 예약 판매 시작",
+   "kind": "COMPANY_PRODUCT_PRESENTATION",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "259960"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "KRAFTON JAPAN 발행 보도자료",
+     "url": "https://prtimes.jp/main/html/rd/p/000000424.000082433.html",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:SLW-2026",
+   "name": "스마트라이프위크",
+   "kind": "INDUSTRY_SLW-2026",
+   "date": "2026-10-06",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "양방향미디어와서비스",
+     "무선통신서비스",
+     "다각화된통신서비스",
+     "IT서비스"
+    ]
+   },
+   "route": "업종 · 양방향미디어와서비스, 무선통신서비스, 다각화된통신서비스, IT서비스",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://smartlifeweek.seoul.kr/eng/contents/945.do?mid=1029",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_IR-226950-20261007",
+   "name": "올릭스 코스닥 IR 데이 참가",
+   "kind": "COMPANY_IR",
+   "date": "2026-10-07",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "226950"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "금융위원회·한국거래소 공동주관 행사 9/15 공식 보도자료",
+     "url": "https://www.fsc.go.kr/po010104/87714?curPage=2&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "한국거래소 현행 코스닥 IR 데이 상세 일정",
+     "url": "https://koreaweeks.com/sub-weeks.php?company=kosdaq-ir-day&date=10-07",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "9/22 한국거래소 후속 발표를 인용한 연합뉴스",
+     "url": "https://www.yna.co.kr/amp/view/AKR20260922131400008",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_OPENING_CEREMONY-035250-20261007",
+   "name": "강원랜드 M650 개관식·탄광문화축제 시작",
+   "kind": "COMPANY_OPENING_CEREMONY",
+   "date": "2026-10-07",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "035250"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://www.high1.com/kangwonland/selectBbsNttView.do?key=142&bbsNo=17&nttNo=162334&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex=1&integrDeptCode=",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_BUSINESS_SEMINAR-012750-20261012",
+   "name": "에스원·웅진 클라우드 보안·재해복구 공동 세미나",
+   "kind": "COMPANY_BUSINESS_SEMINAR",
+   "date": "2026-10-12",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "012750"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공동 주최사 WOONGJIN IT 행사 공지",
+     "url": "https://kr.linkedin.com/posts/woongjin-it_%EC%9B%85%EC%A7%84-%EC%97%90%EC%8A%A4%EC%9B%90-aws-activity-7502615166002483200-__Uv",
+     "retrievedAt": "2026-09-25T05:04:03.096Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:HYBE-JAPAN-CONCERT",
+   "name": "BOYNEXTDOOR 일본 공연·온라인 생중계",
+   "kind": "HYBE_CONCERT",
+   "date": "2026-10-12",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "352820"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://concerts.weverse.io/events/knockon_vol_2_in_japan",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+   "name": "KCC 간접완전자회사 모멘티브 FAKUMA2026 참가",
+   "kind": "COMPANY_SUBSIDIARY_EXHIBITION_FAKUMA",
+   "date": "2026-10-13",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "002380"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.fakuma-messe.de/dl/Besucherinformation_Fakuma_EN.pdf",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.momentive.com/en-us/company/company-overview",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.linkedin.com/company/momentive",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "모멘티브 공식 자회사 명단",
+     "url": "https://www.momentive.com/en-us/subsidiaries",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:AUSA-2026",
+   "name": "AUSA 방산 전시회",
+   "kind": "INDUSTRY_AUSA-2026",
+   "date": "2026-10-13",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "우주항공과국방"
+    ]
+   },
+   "route": "업종 · 우주항공과국방",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://meetings.ausa.org/annual/2026/",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_EXHIBITION_FAKUMA-051910-20261012",
+   "name": "LG화학 FAKUMA 2026 소재·기술 전시 참가",
+   "kind": "COMPANY_EXHIBITION_FAKUMA",
+   "date": "2026-10-13",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "051910"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "FAKUMA 공식 참가기업 LG Chem Ltd., Engineering Plastics",
+     "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/99946-lg-chem-ltd/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "FAKUMA 공식 개최일과 운영 시간",
+     "url": "https://www.fakuma-messe.de/en/for-visitors/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "FAKUMA 공식 홈페이지",
+     "url": "https://www.fakuma-messe.de/en/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_PRODUCT_PRESENTATION-005380-20261012",
+   "name": "현대차 파리 모터쇼 신차 발표 기자회견",
+   "kind": "COMPANY_PRODUCT_PRESENTATION",
+   "date": "2026-10-13",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "005380"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://www.hyundai.news/eu/articles/press-releases/hyundai-attends-paris-motor-show-2026.html",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "기업·주최기관 공식 원문",
+     "url": "https://www.hyundai.com/eu/en/about-hyundai/events-sponsoring/paris-motor-show-2026.html",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KES-2026",
+   "name": "한국전자전",
+   "kind": "INDUSTRY_KES-2026",
+   "date": "2026-10-13",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "전자장비와기기",
+     "전자제품",
+     "가정용기기와용품",
+     "디스플레이 패널"
+    ]
+   },
+   "route": "업종 · 전자장비와기기, 전자제품, 가정용기기와용품, 디스플레이 패널",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.coex.co.kr/exhibitions/kes-2026한국전자전/",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:111770:PERFORMANCE-DAYS:20261013",
+   "name": "영원무역 PERFORMANCE DAYS2026 참가",
+   "kind": "COMPANY_EXHIBITION_PERFORMANCEDAYS",
+   "date": "2026-10-14",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "111770"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.performancedays.com/press-releases.html?cid=45703&file=files/performancedays/content/press/press-releases/Englisch/PRESS+RELEASE+3RD+HALL+1+(1).pdf",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.performancedays.com/supplier/youngone-corporation.html",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.performancedays.com/the-fair/visit/location-opening-hours.html",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.youngone.co.kr/invest/youngone/stock",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "기업·주최기관 공식 자료",
+     "url": "https://www.youngone.co.kr/invest/youngone/ir-yo/",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_EXHIBITION_TOKYOPACK-051910-20261014",
+   "name": "LG화학 TOKYO PACK 2026 포장 소재 전시 참가",
+   "kind": "COMPANY_EXHIBITION_TOKYOPACK",
+   "date": "2026-10-14",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "051910"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "LG화학 공식 LinkedIn 기업 발표",
+     "url": "https://www.linkedin.com/company/lgchem",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "LG화학 공식 홈페이지의 SNS 연결",
+     "url": "https://www.lgchem.com/main/index?lang=en_US",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_EXHIBITION-010170-20261014",
+   "name": "대한광통신 SEDEX 2026 전시 참가",
+   "kind": "COMPANY_EXHIBITION",
+   "date": "2026-10-14",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "010170"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "SEDEX 2026 주최자 공식 대한광통신 참가기업 디렉토리",
+     "url": "https://sedex.org/public_html/information/information_directory_view.asp?board_seq=3939&page=1&search_category=&search_field=+&search_keyword=",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "SEDEX 2026 공식 행사 개요·운영시간",
+     "url": "https://sedex.org/public_html/summary/summary_info.asp",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    },
+    {
+     "name": "SEDEX 공식 공지사항",
+     "url": "https://sedex.org/public_html/notice/notice/board_list.asp",
+     "retrievedAt": "2026-09-26T12:35:47.989Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:SEDEX-2026",
+   "name": "반도체대전 SEDEX",
+   "kind": "INDUSTRY_SEDEX-2026",
+   "date": "2026-10-14",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "반도체와반도체장비"
+    ]
+   },
+   "route": "업종 · 반도체와반도체장비",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://sedex.org/public_html_eng/summary/summary_info.asp",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "BLS:CPI:September-2026",
+   "name": "미국 소비자물가 발표",
+   "kind": "CPI",
+   "date": "2026-10-15",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "미국 노동통계국",
+     "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:HYBE-CINE-KOREA-TICKETS",
+   "name": "하이브 영화제 한국 예매 시작",
+   "kind": "HYBE_CINE_TICKETS",
+   "date": "2026-10-15",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "352820"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://weverse.io/bts/notice/39450",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KBEAUTY-2026",
+   "name": "K-BEAUTY EXPO KOREA",
+   "kind": "INDUSTRY_KBEAUTY-2026",
+   "date": "2026-10-15",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "화장품",
+     "인터넷과카탈로그소매"
+    ]
+   },
+   "route": "업종 · 화장품, 인터넷과카탈로그소매",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://kioca.org/k-beauty-expo-korea-2026/",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "BLS:PPI:September-2026",
+   "name": "미국 생산자물가 발표",
+   "kind": "PPI",
+   "date": "2026-10-16",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "미국 노동통계국",
+     "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:SIAL-2026",
+   "name": "SIAL 파리 식품 전시회",
+   "kind": "INDUSTRY_SIAL-2026",
+   "date": "2026-10-19",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "식품"
+    ]
+   },
+   "route": "업종 · 식품",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.sialparis.com/the-show/why-visit-SIAL-Paris",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:STEAM-2026",
+   "name": "Steam Next Fest",
+   "kind": "INDUSTRY_STEAM-2026",
+   "date": "2026-10-20",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "게임엔터테인먼트"
+    ]
+   },
+   "route": "업종 · 게임엔터테인먼트",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest/2026october?l=koreana",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "BOK:RATE:2026-10",
+   "name": "한국은행 금리 결정",
+   "kind": "BOK",
+   "date": "2026-10-22",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "한국은행 결정회의 일정",
+     "url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A&pYear=2026",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    },
+    {
+     "name": "연간 일정 발표",
+     "url": "https://www.bok.or.kr/portal/bbs/B0000502/view.do?menuNo=201265&nttId=10094300",
+     "retrievedAt": null
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_REDISCLOSURE-012330-20261023",
+   "name": "현대모비스 램프사업 거래 검토 재공시 예정",
+   "kind": "COMPANY_REDISCLOSURE",
+   "date": "2026-10-23",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "012330"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "한국거래소 KIND 현대모비스 2026.04.24 조회공시 답변",
+     "url": "https://kind.krx.co.kr/external/2026/04/24/000001/20260417000982/99583.htm",
+     "retrievedAt": "2026-09-25T10:41:03.919Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:ESMO-2026",
+   "name": "ESMO 종양학 학회",
+   "kind": "INDUSTRY_ESMO-2026",
+   "date": "2026-10-26",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "제약",
+     "생물공학",
+     "건강관리장비와용품"
+    ]
+   },
+   "route": "업종 · 제약, 생물공학, 건강관리장비와용품",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.ifema.es/en/esmo-congress",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:HYBE-CINE-FEST",
+   "name": "하이브 영화제 시작",
+   "kind": "HYBE_CINE_FEST",
+   "date": "2026-10-26",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "352820"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://weverse.io/bts/notice/39450",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:MARITIME-2026",
+   "name": "대한민국 해양모빌리티·안전 엑스포",
+   "kind": "INDUSTRY_MARITIME-2026",
+   "date": "2026-10-26",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "해운사",
+     "조선"
+    ]
+   },
+   "route": "업종 · 해운사, 조선",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.mof.go.kr/doc/ko/selectDoc.do?bbsSeq=10&docSeq=67544&listUpdtDt=2026-07-22++10%3A00&menuSeq=971",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:207940:RIGHTS_RIGHTS_LISTING_START:20261028",
+   "name": "삼성바이오로직스 신주인수권증서 상장 예정 시작",
+   "kind": "CAPITAL_INCREASE",
+   "date": "2026-10-28",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "207940"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "발행사 신주발행 공고",
+     "url": "https://samsungbiologics.com/kr/ir/resource/notice-view?boardseq=3721",
+     "retrievedAt": "2026-09-26T13:22:50.603Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:ENERGY-2026",
+   "name": "스마트에너지플러스",
+   "kind": "INDUSTRY_ENERGY-2026",
+   "date": "2026-10-28",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "전기제품",
+     "전기장비",
+     "전기유틸리티",
+     "에너지장비및서비스",
+     "IT서비스"
+    ]
+   },
+   "route": "업종 · 전기제품, 전기장비, 전기유틸리티, 에너지장비및서비스, IT서비스",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.coex.co.kr/exhibitions/스마트에너지플러스-2026-2/",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  },
+  {
+   "id": "FED:FOMC:2026-10",
+   "name": "미국 연준 금리 결정",
+   "kind": "FOMC",
+   "date": "2026-10-29",
+   "scope": {
+    "type": "market"
+   },
+   "route": "시장 공통",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "미국 연준 회의 일정",
+     "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+     "retrievedAt": "2026-09-24T15:54:57.222Z"
+    },
+    {
+     "name": "일정 발표 원문",
+     "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240809a.htm",
+     "retrievedAt": null
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:COMPANY_EXHIBITION_APLAR-051910-20261029",
+   "name": "LG화학 APLAR 2026 전시 참가·전시장 개장",
+   "kind": "COMPANY_EXHIBITION_APLAR",
+   "date": "2026-10-30",
+   "scope": {
+    "type": "company",
+    "codes": [
+     "051910"
+    ]
+   },
+   "route": "기업 고유",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "APLAR 공식 LG Chem 참가기업 페이지",
+     "url": "https://aplarcongress.com/01/lg-chem/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "APLAR 공식 프로그램",
+     "url": "https://aplarcongress.com/program/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    },
+    {
+     "name": "APLAR 공식 행사 일시",
+     "url": "https://aplarcongress.com/social-functions/",
+     "retrievedAt": "2026-09-26T11:41:41.477Z"
+    }
+   ]
+  },
+  {
+   "id": "REVIEW:KOS-2026",
+   "name": "대한안과학회 추계학술대회",
+   "kind": "INDUSTRY_KOS-2026",
+   "date": "2026-10-30",
+   "scope": {
+    "type": "sector",
+    "sectors": [
+     "건강관리업체및서비스"
+    ]
+   },
+   "route": "업종 · 건강관리업체및서비스",
+   "status": "scheduled",
+   "sources": [
+    {
+     "name": "공식 원문",
+     "url": "https://www.kosmeeting.org/abstract/2026_136/booth/sub02.html",
+     "retrievedAt": "2026-09-25T00:11:42.918Z"
+    }
+   ]
+  }
+ ]
+}

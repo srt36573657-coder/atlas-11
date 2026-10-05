@@ -1,0 +1,260 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K2",
+ "text": "자료 끊김·한 출처만 있는 날",
+ "seed": 20261008,
+ "steps": [
+  {
+   "name": "일부만 끊긴 12시",
+   "inputs": {
+    "now": "2026-10-08T12:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 지수 분봉",
+        "value": 2640.5,
+        "observedAt": "2026-10-08T12:00:00+09:00",
+        "fetchedAt": "2026-10-08T12:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": null,
+        "observedAt": null,
+        "fetchedAt": "2026-10-08T12:00:21+09:00"
+       }
+      ]
+     },
+     {
+      "id": "usdkrw",
+      "market": "FX",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.005
+      },
+      "sources": [
+       {
+        "name": "네이버 환율",
+        "value": null,
+        "error": "끊김 (15초 두 번)",
+        "observedAt": null,
+        "fetchedAt": "2026-10-08T12:00:35+09:00"
+       },
+       {
+        "name": "한국은행 ECOS",
+        "value": 1388.2,
+        "observedAt": "2026-10-08T11:00:00+09:00",
+        "fetchedAt": "2026-10-08T12:00:36+09:00"
+       }
+      ]
+     },
+     {
+      "id": "wti",
+      "market": "OIL",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.02
+      },
+      "previous": {
+       "value": 70.1,
+       "observedAt": "2026-10-08T06:00:00+09:00"
+      },
+      "sources": [
+       {
+        "name": "네이버 에너지 CLcv1",
+        "value": null,
+        "error": "끊김",
+        "observedAt": null,
+        "fetchedAt": "2026-10-08T12:00:40+09:00"
+       },
+       {
+        "name": "FRED DCOILWTICO",
+        "value": null,
+        "error": "끊김",
+        "observedAt": null,
+        "fetchedAt": "2026-10-08T12:00:41+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "sources": []
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "모든 출처가 끊긴 16시",
+   "inputs": {
+    "now": "2026-10-08T16:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "previous": {
+       "value": 2640.5,
+       "observedAt": "2026-10-08T12:00:00+09:00"
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": null,
+        "error": "끊김"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": null,
+        "error": "끊김"
+       }
+      ]
+     },
+     {
+      "id": "usdkrw",
+      "market": "FX",
+      "previous": {
+       "value": 1388.2,
+       "observedAt": "2026-10-08T11:00:00+09:00"
+      },
+      "sources": [
+       {
+        "name": "네이버 환율",
+        "value": null,
+        "error": "끊김"
+       },
+       {
+        "name": "한국은행 ECOS",
+        "value": null,
+        "error": "끊김"
+       }
+      ]
+     },
+     {
+      "id": "wti",
+      "market": "OIL",
+      "previous": {
+       "value": 70.1,
+       "observedAt": "2026-10-08T06:00:00+09:00"
+      },
+      "sources": [
+       {
+        "name": "네이버 에너지 CLcv1",
+        "value": null,
+        "error": "끊김"
+       },
+       {
+        "name": "FRED DCOILWTICO",
+        "value": null,
+        "error": "끊김"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "sources": [
+       {
+        "name": "KRX Open API VKOSPI",
+        "value": null,
+        "error": "끊김"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "kospi",
+   "includes": [
+    "한 출처"
+   ],
+   "say": "둘째 출처가 아직 없으면 코스피는 「한 출처」"
+  },
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "usdkrw",
+   "includes": [
+    "한 출처"
+   ],
+   "say": "첫째가 끊기고 둘째만 있으면 「한 출처」"
+  },
+  {
+   "type": "variableValue",
+   "step": 0,
+   "id": "usdkrw",
+   "equals": 1388.2,
+   "say": "첫째가 끊기면 둘째 값을 쓴다"
+  },
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "wti",
+   "includes": [
+    "옛값",
+    "끊김"
+   ],
+   "say": "두 출처가 다 끊긴 유가는 앞 값을 「옛값 · 끊김」으로"
+  },
+  {
+   "type": "variableValue",
+   "step": 0,
+   "id": "wti",
+   "equals": 70.1,
+   "say": "두 출처가 다 끊겨도 0 이 아니라 앞 값"
+  },
+  {
+   "type": "variableStatus",
+   "step": 0,
+   "id": "vkospi",
+   "includes": [
+    "없음"
+   ],
+   "say": "출처가 없는 VKOSPI 는 「없음」"
+  },
+  {
+   "type": "variableValue",
+   "step": 0,
+   "id": "vkospi",
+   "isNull": true,
+   "say": "「없음」 값은 0 이 아니라 비워 둔다"
+  },
+  {
+   "type": "boardStatus",
+   "step": 1,
+   "equals": "변수 그대로 → 앞 판 다시 봉인",
+   "say": "모두 끊기면 새로 셈하지 않고 앞 판을 다시 봉인"
+  },
+  {
+   "type": "variableStatus",
+   "step": 1,
+   "id": "kospi",
+   "includes": [
+    "옛값",
+    "끊김"
+   ],
+   "say": "모두 끊긴 때 코스피는 「옛값 · 끊김」"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

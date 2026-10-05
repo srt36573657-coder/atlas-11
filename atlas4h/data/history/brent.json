@@ -1,0 +1,6134 @@
+{
+ "schema": "atlas4h-history-1",
+ "id": "brent",
+ "fetchedAt": "2026-10-01T14:59:23.929Z",
+ "from": "2023-09-25",
+ "to": "2026-09-29",
+ "observedAtRule": "날짜만 있는 값은 그 시장 마감 19:30:00 Europe/London 로 본다(약속 10)",
+ "compare": {
+  "rule": "relative",
+  "tolerance": 0.02
+ },
+ "sources": [
+  {
+   "name": "fred",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU&cosd=2023-09-25",
+   "fetchedAt": "2026-10-01T14:59:47.057Z",
+   "rawSha256": "8d0ab3fa45cf700a06c61ecaf30020bd7ff2ec5d5f2f2c54371b1099cbae81d9",
+   "rows": 763
+  }
+ ],
+ "counts": {
+  "ok": 0,
+  "한 출처": 763,
+  "확인 중": 0,
+  "옛값": 0,
+  "없음": 0
+ },
+ "series": [
+  {
+   "date": "2023-09-25",
+   "value": 94.01,
+   "sources": {
+    "fred": 94.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-26",
+   "value": 94.46,
+   "sources": {
+    "fred": 94.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-27",
+   "value": 97.1,
+   "sources": {
+    "fred": 97.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-28",
+   "value": 96.64,
+   "sources": {
+    "fred": 96.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-29",
+   "value": 95.86,
+   "sources": {
+    "fred": 95.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-02",
+   "value": 91.21,
+   "sources": {
+    "fred": 91.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-03",
+   "value": 94.46,
+   "sources": {
+    "fred": 94.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-04",
+   "value": 89.83,
+   "sources": {
+    "fred": 89.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-05",
+   "value": 88.28,
+   "sources": {
+    "fred": 88.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-06",
+   "value": 87.86,
+   "sources": {
+    "fred": 87.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-09",
+   "value": 91.37,
+   "sources": {
+    "fred": 91.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-10",
+   "value": 90.7,
+   "sources": {
+    "fred": 90.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-11",
+   "value": 87.58,
+   "sources": {
+    "fred": 87.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-12",
+   "value": 88.4,
+   "sources": {
+    "fred": 88.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-13",
+   "value": 94.33,
+   "sources": {
+    "fred": 94.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-16",
+   "value": 90.99,
+   "sources": {
+    "fred": 90.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-17",
+   "value": 92.52,
+   "sources": {
+    "fred": 92.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-18",
+   "value": 91.99,
+   "sources": {
+    "fred": 91.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-19",
+   "value": 93.12,
+   "sources": {
+    "fred": 93.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-20",
+   "value": 93.72,
+   "sources": {
+    "fred": 93.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-23",
+   "value": 91.88,
+   "sources": {
+    "fred": 91.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-24",
+   "value": 88,
+   "sources": {
+    "fred": 88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-25",
+   "value": 90.14,
+   "sources": {
+    "fred": 90.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-26",
+   "value": 88.45,
+   "sources": {
+    "fred": 88.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-27",
+   "value": 90.73,
+   "sources": {
+    "fred": 90.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-30",
+   "value": 90.73,
+   "sources": {
+    "fred": 90.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-31",
+   "value": 86.82,
+   "sources": {
+    "fred": 86.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-01",
+   "value": 86.92,
+   "sources": {
+    "fred": 86.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-02",
+   "value": 89.02,
+   "sources": {
+    "fred": 89.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-03",
+   "value": 87.55,
+   "sources": {
+    "fred": 87.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-06",
+   "value": 87.31,
+   "sources": {
+    "fred": 87.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-07",
+   "value": 83.43,
+   "sources": {
+    "fred": 83.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-08",
+   "value": 81.46,
+   "sources": {
+    "fred": 81.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-09",
+   "value": 81.74,
+   "sources": {
+    "fred": 81.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-10",
+   "value": 83.66,
+   "sources": {
+    "fred": 83.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-13",
+   "value": 84.09,
+   "sources": {
+    "fred": 84.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-14",
+   "value": 84.2,
+   "sources": {
+    "fred": 84.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-15",
+   "value": 82.4,
+   "sources": {
+    "fred": 82.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-16",
+   "value": 77.73,
+   "sources": {
+    "fred": 77.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-17",
+   "value": 81.22,
+   "sources": {
+    "fred": 81.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-20",
+   "value": 83.25,
+   "sources": {
+    "fred": 83.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-21",
+   "value": 82.42,
+   "sources": {
+    "fred": 82.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-22",
+   "value": 81.76,
+   "sources": {
+    "fred": 81.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-23",
+   "value": 80.85,
+   "sources": {
+    "fred": 80.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-24",
+   "value": 79.82,
+   "sources": {
+    "fred": 79.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-27",
+   "value": 79.49,
+   "sources": {
+    "fred": 79.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-28",
+   "value": 81.66,
+   "sources": {
+    "fred": 81.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-29",
+   "value": 82.98,
+   "sources": {
+    "fred": 82.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-30",
+   "value": 81.72,
+   "sources": {
+    "fred": 81.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-01",
+   "value": 78.72,
+   "sources": {
+    "fred": 78.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-04",
+   "value": 78.16,
+   "sources": {
+    "fred": 78.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-05",
+   "value": 77.27,
+   "sources": {
+    "fred": 77.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-06",
+   "value": 74.33,
+   "sources": {
+    "fred": 74.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-07",
+   "value": 74.21,
+   "sources": {
+    "fred": 74.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-08",
+   "value": 75.94,
+   "sources": {
+    "fred": 75.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-11",
+   "value": 75.75,
+   "sources": {
+    "fred": 75.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-12",
+   "value": 74.11,
+   "sources": {
+    "fred": 74.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-13",
+   "value": 74.14,
+   "sources": {
+    "fred": 74.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-14",
+   "value": 77.05,
+   "sources": {
+    "fred": 77.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-15",
+   "value": 76.84,
+   "sources": {
+    "fred": 76.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-18",
+   "value": 78.89,
+   "sources": {
+    "fred": 78.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-19",
+   "value": 79.82,
+   "sources": {
+    "fred": 79.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-20",
+   "value": 81.1,
+   "sources": {
+    "fred": 81.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-21",
+   "value": 80.73,
+   "sources": {
+    "fred": 80.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-22",
+   "value": 80.23,
+   "sources": {
+    "fred": 80.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-27",
+   "value": 80.97,
+   "sources": {
+    "fred": 80.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-28",
+   "value": 79.04,
+   "sources": {
+    "fred": 79.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-12-29",
+   "value": 77.69,
+   "sources": {
+    "fred": 77.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-02",
+   "value": 76.24,
+   "sources": {
+    "fred": 76.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-03",
+   "value": 77.18,
+   "sources": {
+    "fred": 77.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-04",
+   "value": 75.79,
+   "sources": {
+    "fred": 75.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-05",
+   "value": 78.31,
+   "sources": {
+    "fred": 78.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-08",
+   "value": 75.47,
+   "sources": {
+    "fred": 75.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-09",
+   "value": 77.97,
+   "sources": {
+    "fred": 77.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-10",
+   "value": 78.46,
+   "sources": {
+    "fred": 78.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-11",
+   "value": 80.21,
+   "sources": {
+    "fred": 80.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-12",
+   "value": 79.89,
+   "sources": {
+    "fred": 79.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-15",
+   "value": 79.76,
+   "sources": {
+    "fred": 79.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-16",
+   "value": 80.15,
+   "sources": {
+    "fred": 80.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-17",
+   "value": 78.88,
+   "sources": {
+    "fred": 78.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-18",
+   "value": 81.04,
+   "sources": {
+    "fred": 81.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-19",
+   "value": 80.71,
+   "sources": {
+    "fred": 80.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-22",
+   "value": 81.7,
+   "sources": {
+    "fred": 81.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-23",
+   "value": 82.04,
+   "sources": {
+    "fred": 82.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-24",
+   "value": 82.15,
+   "sources": {
+    "fred": 82.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-25",
+   "value": 82.33,
+   "sources": {
+    "fred": 82.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-26",
+   "value": 83.34,
+   "sources": {
+    "fred": 83.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-29",
+   "value": 83.99,
+   "sources": {
+    "fred": 83.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-30",
+   "value": 84.14,
+   "sources": {
+    "fred": 84.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-01-31",
+   "value": 82.98,
+   "sources": {
+    "fred": 82.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-01",
+   "value": 82.2,
+   "sources": {
+    "fred": 82.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-02",
+   "value": 79.54,
+   "sources": {
+    "fred": 79.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-05",
+   "value": 79.3,
+   "sources": {
+    "fred": 79.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-06",
+   "value": 80.46,
+   "sources": {
+    "fred": 80.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-07",
+   "value": 81.18,
+   "sources": {
+    "fred": 81.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-08",
+   "value": 83.01,
+   "sources": {
+    "fred": 83.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-09",
+   "value": 83.58,
+   "sources": {
+    "fred": 83.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-12",
+   "value": 83.88,
+   "sources": {
+    "fred": 83.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-13",
+   "value": 84.72,
+   "sources": {
+    "fred": 84.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-14",
+   "value": 84.41,
+   "sources": {
+    "fred": 84.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-15",
+   "value": 84.33,
+   "sources": {
+    "fred": 84.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-16",
+   "value": 84.88,
+   "sources": {
+    "fred": 84.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-19",
+   "value": 85.52,
+   "sources": {
+    "fred": 85.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-20",
+   "value": 84.78,
+   "sources": {
+    "fred": 84.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-21",
+   "value": 84.77,
+   "sources": {
+    "fred": 84.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-22",
+   "value": 85.84,
+   "sources": {
+    "fred": 85.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-23",
+   "value": 84.18,
+   "sources": {
+    "fred": 84.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-26",
+   "value": 84.01,
+   "sources": {
+    "fred": 84.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-27",
+   "value": 83.8,
+   "sources": {
+    "fred": 83.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-28",
+   "value": 84.08,
+   "sources": {
+    "fred": 84.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-02-29",
+   "value": 84.57,
+   "sources": {
+    "fred": 84.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-01",
+   "value": 84.82,
+   "sources": {
+    "fred": 84.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-04",
+   "value": 86.58,
+   "sources": {
+    "fred": 86.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-05",
+   "value": 85.82,
+   "sources": {
+    "fred": 85.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-06",
+   "value": 86.59,
+   "sources": {
+    "fred": 86.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-07",
+   "value": 84.88,
+   "sources": {
+    "fred": 84.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-08",
+   "value": 84.29,
+   "sources": {
+    "fred": 84.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-11",
+   "value": 83.44,
+   "sources": {
+    "fred": 83.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-12",
+   "value": 83.66,
+   "sources": {
+    "fred": 83.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-13",
+   "value": 83.95,
+   "sources": {
+    "fred": 83.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-14",
+   "value": 86.16,
+   "sources": {
+    "fred": 86.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-15",
+   "value": 85.39,
+   "sources": {
+    "fred": 85.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-18",
+   "value": 86.47,
+   "sources": {
+    "fred": 86.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-19",
+   "value": 87.36,
+   "sources": {
+    "fred": 87.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-20",
+   "value": 85.77,
+   "sources": {
+    "fred": 85.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-21",
+   "value": 84.92,
+   "sources": {
+    "fred": 84.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-22",
+   "value": 84.87,
+   "sources": {
+    "fred": 84.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-25",
+   "value": 86.18,
+   "sources": {
+    "fred": 86.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-26",
+   "value": 85.91,
+   "sources": {
+    "fred": 85.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-27",
+   "value": 84.94,
+   "sources": {
+    "fred": 84.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-03-28",
+   "value": 86.17,
+   "sources": {
+    "fred": 86.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-02",
+   "value": 87.63,
+   "sources": {
+    "fred": 87.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-03",
+   "value": 90.6,
+   "sources": {
+    "fred": 90.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-04",
+   "value": 90.32,
+   "sources": {
+    "fred": 90.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-05",
+   "value": 92.81,
+   "sources": {
+    "fred": 92.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-08",
+   "value": 91.73,
+   "sources": {
+    "fred": 91.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-09",
+   "value": 92.13,
+   "sources": {
+    "fred": 92.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-10",
+   "value": 91.57,
+   "sources": {
+    "fred": 91.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-11",
+   "value": 91.49,
+   "sources": {
+    "fred": 91.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-12",
+   "value": 93.12,
+   "sources": {
+    "fred": 93.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-15",
+   "value": 90.84,
+   "sources": {
+    "fred": 90.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-16",
+   "value": 91.29,
+   "sources": {
+    "fred": 91.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-17",
+   "value": 89.54,
+   "sources": {
+    "fred": 89.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-18",
+   "value": 88.34,
+   "sources": {
+    "fred": 88.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-19",
+   "value": 87.96,
+   "sources": {
+    "fred": 87.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-22",
+   "value": 87.3,
+   "sources": {
+    "fred": 87.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-23",
+   "value": 88.29,
+   "sources": {
+    "fred": 88.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-24",
+   "value": 89.02,
+   "sources": {
+    "fred": 89.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-25",
+   "value": 88.1,
+   "sources": {
+    "fred": 88.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-26",
+   "value": 89.95,
+   "sources": {
+    "fred": 89.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-29",
+   "value": 88.44,
+   "sources": {
+    "fred": 88.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-04-30",
+   "value": 88.23,
+   "sources": {
+    "fred": 88.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-01",
+   "value": 83.55,
+   "sources": {
+    "fred": 83.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-02",
+   "value": 84.81,
+   "sources": {
+    "fred": 84.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-03",
+   "value": 83.6,
+   "sources": {
+    "fred": 83.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-07",
+   "value": 82.69,
+   "sources": {
+    "fred": 82.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-08",
+   "value": 82.44,
+   "sources": {
+    "fred": 82.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-09",
+   "value": 83.27,
+   "sources": {
+    "fred": 83.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-10",
+   "value": 83.39,
+   "sources": {
+    "fred": 83.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-13",
+   "value": 83.18,
+   "sources": {
+    "fred": 83.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-14",
+   "value": 81,
+   "sources": {
+    "fred": 81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-15",
+   "value": 79.98,
+   "sources": {
+    "fred": 79.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-16",
+   "value": 81.65,
+   "sources": {
+    "fred": 81.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-17",
+   "value": 82.24,
+   "sources": {
+    "fred": 82.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-20",
+   "value": 81.91,
+   "sources": {
+    "fred": 81.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-21",
+   "value": 81.22,
+   "sources": {
+    "fred": 81.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-22",
+   "value": 79.9,
+   "sources": {
+    "fred": 79.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-23",
+   "value": 79.25,
+   "sources": {
+    "fred": 79.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-24",
+   "value": 78.92,
+   "sources": {
+    "fred": 78.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-28",
+   "value": 81.34,
+   "sources": {
+    "fred": 81.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-29",
+   "value": 81.5,
+   "sources": {
+    "fred": 81.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-30",
+   "value": 81.42,
+   "sources": {
+    "fred": 81.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-05-31",
+   "value": 79.41,
+   "sources": {
+    "fred": 79.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-03",
+   "value": 76.45,
+   "sources": {
+    "fred": 76.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-04",
+   "value": 75.33,
+   "sources": {
+    "fred": 75.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-05",
+   "value": 75.41,
+   "sources": {
+    "fred": 75.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-06",
+   "value": 77.62,
+   "sources": {
+    "fred": 77.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-07",
+   "value": 78.12,
+   "sources": {
+    "fred": 78.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-10",
+   "value": 79.59,
+   "sources": {
+    "fred": 79.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-11",
+   "value": 80.15,
+   "sources": {
+    "fred": 80.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-12",
+   "value": 80.52,
+   "sources": {
+    "fred": 80.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-13",
+   "value": 81.44,
+   "sources": {
+    "fred": 81.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-14",
+   "value": 81.49,
+   "sources": {
+    "fred": 81.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-17",
+   "value": 82.45,
+   "sources": {
+    "fred": 82.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-18",
+   "value": 84.79,
+   "sources": {
+    "fred": 84.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-19",
+   "value": 85.64,
+   "sources": {
+    "fred": 85.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-20",
+   "value": 85.92,
+   "sources": {
+    "fred": 85.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-21",
+   "value": 86.42,
+   "sources": {
+    "fred": 86.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-24",
+   "value": 86.75,
+   "sources": {
+    "fred": 86.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-25",
+   "value": 86.81,
+   "sources": {
+    "fred": 86.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-26",
+   "value": 85.76,
+   "sources": {
+    "fred": 85.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-27",
+   "value": 87,
+   "sources": {
+    "fred": 87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-06-28",
+   "value": 87.26,
+   "sources": {
+    "fred": 87.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-01",
+   "value": 86.57,
+   "sources": {
+    "fred": 86.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-02",
+   "value": 88.28,
+   "sources": {
+    "fred": 88.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-03",
+   "value": 88.25,
+   "sources": {
+    "fred": 88.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-04",
+   "value": 88.34,
+   "sources": {
+    "fred": 88.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-05",
+   "value": 88.66,
+   "sources": {
+    "fred": 88.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-08",
+   "value": 87.15,
+   "sources": {
+    "fred": 87.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-09",
+   "value": 86.48,
+   "sources": {
+    "fred": 86.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-10",
+   "value": 86.55,
+   "sources": {
+    "fred": 86.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-11",
+   "value": 86.49,
+   "sources": {
+    "fred": 86.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-12",
+   "value": 87.35,
+   "sources": {
+    "fred": 87.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-15",
+   "value": 86.42,
+   "sources": {
+    "fred": 86.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-16",
+   "value": 86.6,
+   "sources": {
+    "fred": 86.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-17",
+   "value": 85.76,
+   "sources": {
+    "fred": 85.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-18",
+   "value": 86.26,
+   "sources": {
+    "fred": 86.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-19",
+   "value": 85.19,
+   "sources": {
+    "fred": 85.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-22",
+   "value": 83.44,
+   "sources": {
+    "fred": 83.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-23",
+   "value": 82.2,
+   "sources": {
+    "fred": 82.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-24",
+   "value": 83.01,
+   "sources": {
+    "fred": 83.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-25",
+   "value": 82.58,
+   "sources": {
+    "fred": 82.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-26",
+   "value": 81.35,
+   "sources": {
+    "fred": 81.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-29",
+   "value": 80.94,
+   "sources": {
+    "fred": 80.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-30",
+   "value": 79.26,
+   "sources": {
+    "fred": 79.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-07-31",
+   "value": 81.39,
+   "sources": {
+    "fred": 81.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-01",
+   "value": 81.37,
+   "sources": {
+    "fred": 81.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-02",
+   "value": 78.35,
+   "sources": {
+    "fred": 78.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-05",
+   "value": 77.51,
+   "sources": {
+    "fred": 77.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-06",
+   "value": 76.62,
+   "sources": {
+    "fred": 76.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-07",
+   "value": 78.26,
+   "sources": {
+    "fred": 78.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-08",
+   "value": 80.76,
+   "sources": {
+    "fred": 80.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-09",
+   "value": 81.07,
+   "sources": {
+    "fred": 81.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-12",
+   "value": 83.06,
+   "sources": {
+    "fred": 83.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-13",
+   "value": 82.51,
+   "sources": {
+    "fred": 82.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-14",
+   "value": 82.15,
+   "sources": {
+    "fred": 82.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-15",
+   "value": 83.09,
+   "sources": {
+    "fred": 83.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-16",
+   "value": 81.56,
+   "sources": {
+    "fred": 81.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-19",
+   "value": 81.09,
+   "sources": {
+    "fred": 81.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-20",
+   "value": 78.85,
+   "sources": {
+    "fred": 78.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-21",
+   "value": 78.77,
+   "sources": {
+    "fred": 78.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-22",
+   "value": 78.8,
+   "sources": {
+    "fred": 78.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-23",
+   "value": 80.34,
+   "sources": {
+    "fred": 80.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-27",
+   "value": 81.51,
+   "sources": {
+    "fred": 81.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-28",
+   "value": 80.04,
+   "sources": {
+    "fred": 80.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-29",
+   "value": 81.55,
+   "sources": {
+    "fred": 81.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-08-30",
+   "value": 80.2,
+   "sources": {
+    "fred": 80.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-02",
+   "value": 77.82,
+   "sources": {
+    "fred": 77.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-03",
+   "value": 76.46,
+   "sources": {
+    "fred": 76.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-04",
+   "value": 74.67,
+   "sources": {
+    "fred": 74.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-05",
+   "value": 74.47,
+   "sources": {
+    "fred": 74.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-06",
+   "value": 72.82,
+   "sources": {
+    "fred": 72.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-09",
+   "value": 72.37,
+   "sources": {
+    "fred": 72.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-10",
+   "value": 70.34,
+   "sources": {
+    "fred": 70.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-11",
+   "value": 70.31,
+   "sources": {
+    "fred": 70.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-12",
+   "value": 73.81,
+   "sources": {
+    "fred": 73.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-13",
+   "value": 73.68,
+   "sources": {
+    "fred": 73.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-16",
+   "value": 73.96,
+   "sources": {
+    "fred": 73.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-17",
+   "value": 74.55,
+   "sources": {
+    "fred": 74.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-18",
+   "value": 74.52,
+   "sources": {
+    "fred": 74.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-19",
+   "value": 75.93,
+   "sources": {
+    "fred": 75.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-20",
+   "value": 75.96,
+   "sources": {
+    "fred": 75.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-23",
+   "value": 74.95,
+   "sources": {
+    "fred": 74.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-24",
+   "value": 75.29,
+   "sources": {
+    "fred": 75.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-25",
+   "value": 75.4,
+   "sources": {
+    "fred": 75.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-26",
+   "value": 73.06,
+   "sources": {
+    "fred": 73.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-27",
+   "value": 71.63,
+   "sources": {
+    "fred": 71.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-09-30",
+   "value": 72.35,
+   "sources": {
+    "fred": 72.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-01",
+   "value": 75.3,
+   "sources": {
+    "fred": 75.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-02",
+   "value": 74.86,
+   "sources": {
+    "fred": 74.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-03",
+   "value": 77.57,
+   "sources": {
+    "fred": 77.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-04",
+   "value": 79.32,
+   "sources": {
+    "fred": 79.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-07",
+   "value": 81.74,
+   "sources": {
+    "fred": 81.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-08",
+   "value": 78.19,
+   "sources": {
+    "fred": 78.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-09",
+   "value": 77.06,
+   "sources": {
+    "fred": 77.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-10",
+   "value": 79.45,
+   "sources": {
+    "fred": 79.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-11",
+   "value": 80.27,
+   "sources": {
+    "fred": 80.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-14",
+   "value": 78.47,
+   "sources": {
+    "fred": 78.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-15",
+   "value": 73.68,
+   "sources": {
+    "fred": 73.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-16",
+   "value": 73.65,
+   "sources": {
+    "fred": 73.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-17",
+   "value": 74.37,
+   "sources": {
+    "fred": 74.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-18",
+   "value": 72.75,
+   "sources": {
+    "fred": 72.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-21",
+   "value": 73.29,
+   "sources": {
+    "fred": 73.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-22",
+   "value": 75.59,
+   "sources": {
+    "fred": 75.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-23",
+   "value": 74.68,
+   "sources": {
+    "fred": 74.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-24",
+   "value": 74.27,
+   "sources": {
+    "fred": 74.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-25",
+   "value": 75.62,
+   "sources": {
+    "fred": 75.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-28",
+   "value": 71.87,
+   "sources": {
+    "fred": 71.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-29",
+   "value": 71.09,
+   "sources": {
+    "fred": 71.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-30",
+   "value": 73.21,
+   "sources": {
+    "fred": 73.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-31",
+   "value": 73.25,
+   "sources": {
+    "fred": 73.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-01",
+   "value": 73.63,
+   "sources": {
+    "fred": 73.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-04",
+   "value": 74.89,
+   "sources": {
+    "fred": 74.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-05",
+   "value": 76.98,
+   "sources": {
+    "fred": 76.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-06",
+   "value": 76.52,
+   "sources": {
+    "fred": 76.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-07",
+   "value": 75.73,
+   "sources": {
+    "fred": 75.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-08",
+   "value": 74.04,
+   "sources": {
+    "fred": 74.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-11",
+   "value": 72.19,
+   "sources": {
+    "fred": 72.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-12",
+   "value": 72.56,
+   "sources": {
+    "fred": 72.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-13",
+   "value": 72.86,
+   "sources": {
+    "fred": 72.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-14",
+   "value": 73.39,
+   "sources": {
+    "fred": 73.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-15",
+   "value": 73.45,
+   "sources": {
+    "fred": 73.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-18",
+   "value": 74.35,
+   "sources": {
+    "fred": 74.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-19",
+   "value": 74.32,
+   "sources": {
+    "fred": 74.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-20",
+   "value": 74.33,
+   "sources": {
+    "fred": 74.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-21",
+   "value": 75.09,
+   "sources": {
+    "fred": 75.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-22",
+   "value": 76.1,
+   "sources": {
+    "fred": 76.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-25",
+   "value": 74.27,
+   "sources": {
+    "fred": 74.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-26",
+   "value": 74.56,
+   "sources": {
+    "fred": 74.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-27",
+   "value": 73.91,
+   "sources": {
+    "fred": 73.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-28",
+   "value": 73.92,
+   "sources": {
+    "fred": 73.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-29",
+   "value": 74.16,
+   "sources": {
+    "fred": 74.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-02",
+   "value": 72.81,
+   "sources": {
+    "fred": 72.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-03",
+   "value": 74.8,
+   "sources": {
+    "fred": 74.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-04",
+   "value": 74.68,
+   "sources": {
+    "fred": 74.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-05",
+   "value": 73.78,
+   "sources": {
+    "fred": 73.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-06",
+   "value": 73.78,
+   "sources": {
+    "fred": 73.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-09",
+   "value": 73.73,
+   "sources": {
+    "fred": 73.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-10",
+   "value": 73.64,
+   "sources": {
+    "fred": 73.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-11",
+   "value": 74.38,
+   "sources": {
+    "fred": 74.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-12",
+   "value": 73.52,
+   "sources": {
+    "fred": 73.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-13",
+   "value": 74.89,
+   "sources": {
+    "fred": 74.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-16",
+   "value": 74.3,
+   "sources": {
+    "fred": 74.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-17",
+   "value": 73.16,
+   "sources": {
+    "fred": 73.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-18",
+   "value": 74.57,
+   "sources": {
+    "fred": 74.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-19",
+   "value": 73.75,
+   "sources": {
+    "fred": 73.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-20",
+   "value": 73.19,
+   "sources": {
+    "fred": 73.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-23",
+   "value": 72.12,
+   "sources": {
+    "fred": 72.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-24",
+   "value": 73.5,
+   "sources": {
+    "fred": 73.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-27",
+   "value": 73.77,
+   "sources": {
+    "fred": 73.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-30",
+   "value": 74.24,
+   "sources": {
+    "fred": 74.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-12-31",
+   "value": 74.58,
+   "sources": {
+    "fred": 74.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-02",
+   "value": 76.14,
+   "sources": {
+    "fred": 76.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-03",
+   "value": 76.72,
+   "sources": {
+    "fred": 76.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-06",
+   "value": 77.27,
+   "sources": {
+    "fred": 77.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-07",
+   "value": 77.84,
+   "sources": {
+    "fred": 77.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-08",
+   "value": 77.37,
+   "sources": {
+    "fred": 77.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-09",
+   "value": 78.44,
+   "sources": {
+    "fred": 78.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-10",
+   "value": 79.76,
+   "sources": {
+    "fred": 79.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-13",
+   "value": 82.69,
+   "sources": {
+    "fred": 82.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-14",
+   "value": 82.39,
+   "sources": {
+    "fred": 82.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-15",
+   "value": 83.48,
+   "sources": {
+    "fred": 83.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-16",
+   "value": 82.39,
+   "sources": {
+    "fred": 82.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-17",
+   "value": 83.02,
+   "sources": {
+    "fred": 83.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-20",
+   "value": 81.68,
+   "sources": {
+    "fred": 81.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-21",
+   "value": 80.57,
+   "sources": {
+    "fred": 80.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-22",
+   "value": 80,
+   "sources": {
+    "fred": 80
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-23",
+   "value": 78.62,
+   "sources": {
+    "fred": 78.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-24",
+   "value": 78.71,
+   "sources": {
+    "fred": 78.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-27",
+   "value": 77.3,
+   "sources": {
+    "fred": 77.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-28",
+   "value": 78.01,
+   "sources": {
+    "fred": 78.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-29",
+   "value": 77.02,
+   "sources": {
+    "fred": 77.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-30",
+   "value": 77.42,
+   "sources": {
+    "fred": 77.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-31",
+   "value": 77.11,
+   "sources": {
+    "fred": 77.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-03",
+   "value": 76.49,
+   "sources": {
+    "fred": 76.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-04",
+   "value": 76.58,
+   "sources": {
+    "fred": 76.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-05",
+   "value": 74.71,
+   "sources": {
+    "fred": 74.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-06",
+   "value": 74.54,
+   "sources": {
+    "fred": 74.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-07",
+   "value": 74.68,
+   "sources": {
+    "fred": 74.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-10",
+   "value": 76.23,
+   "sources": {
+    "fred": 76.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-11",
+   "value": 77.65,
+   "sources": {
+    "fred": 77.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-12",
+   "value": 75.38,
+   "sources": {
+    "fred": 75.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-13",
+   "value": 75.61,
+   "sources": {
+    "fred": 75.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-14",
+   "value": 75.19,
+   "sources": {
+    "fred": 75.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-17",
+   "value": 75.81,
+   "sources": {
+    "fred": 75.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-18",
+   "value": 76.46,
+   "sources": {
+    "fred": 76.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-19",
+   "value": 76.34,
+   "sources": {
+    "fred": 76.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-20",
+   "value": 76.95,
+   "sources": {
+    "fred": 76.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-21",
+   "value": 74.88,
+   "sources": {
+    "fred": 74.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-24",
+   "value": 74.89,
+   "sources": {
+    "fred": 74.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-25",
+   "value": 73.11,
+   "sources": {
+    "fred": 73.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-26",
+   "value": 73.49,
+   "sources": {
+    "fred": 73.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-27",
+   "value": 75.01,
+   "sources": {
+    "fred": 75.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-02-28",
+   "value": 74.76,
+   "sources": {
+    "fred": 74.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-03",
+   "value": 72.85,
+   "sources": {
+    "fred": 72.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-04",
+   "value": 72.31,
+   "sources": {
+    "fred": 72.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-05",
+   "value": 70.92,
+   "sources": {
+    "fred": 70.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-06",
+   "value": 71.08,
+   "sources": {
+    "fred": 71.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-07",
+   "value": 72.49,
+   "sources": {
+    "fred": 72.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-10",
+   "value": 71.08,
+   "sources": {
+    "fred": 71.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-11",
+   "value": 71.51,
+   "sources": {
+    "fred": 71.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-12",
+   "value": 72.36,
+   "sources": {
+    "fred": 72.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-13",
+   "value": 70.82,
+   "sources": {
+    "fred": 70.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-14",
+   "value": 71.94,
+   "sources": {
+    "fred": 71.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-17",
+   "value": 71.93,
+   "sources": {
+    "fred": 71.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-18",
+   "value": 71.93,
+   "sources": {
+    "fred": 71.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-19",
+   "value": 71.94,
+   "sources": {
+    "fred": 71.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-20",
+   "value": 72.61,
+   "sources": {
+    "fred": 72.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-21",
+   "value": 72.64,
+   "sources": {
+    "fred": 72.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-24",
+   "value": 73.96,
+   "sources": {
+    "fred": 73.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-25",
+   "value": 73.78,
+   "sources": {
+    "fred": 73.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-26",
+   "value": 74.6,
+   "sources": {
+    "fred": 74.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-27",
+   "value": 74.72,
+   "sources": {
+    "fred": 74.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-28",
+   "value": 74.69,
+   "sources": {
+    "fred": 74.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-03-31",
+   "value": 77.23,
+   "sources": {
+    "fred": 77.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-01",
+   "value": 77.78,
+   "sources": {
+    "fred": 77.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-02",
+   "value": 77.27,
+   "sources": {
+    "fred": 77.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-03",
+   "value": 72.54,
+   "sources": {
+    "fred": 72.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-04",
+   "value": 68.36,
+   "sources": {
+    "fred": 68.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-07",
+   "value": 66.13,
+   "sources": {
+    "fred": 66.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-08",
+   "value": 64.86,
+   "sources": {
+    "fred": 64.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-09",
+   "value": 67.3,
+   "sources": {
+    "fred": 67.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-10",
+   "value": 65.37,
+   "sources": {
+    "fred": 65.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-11",
+   "value": 66.83,
+   "sources": {
+    "fred": 66.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-14",
+   "value": 67.18,
+   "sources": {
+    "fred": 67.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-15",
+   "value": 66.58,
+   "sources": {
+    "fred": 66.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-16",
+   "value": 67.94,
+   "sources": {
+    "fred": 67.94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-17",
+   "value": 69.33,
+   "sources": {
+    "fred": 69.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-22",
+   "value": 68.93,
+   "sources": {
+    "fred": 68.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-23",
+   "value": 68.26,
+   "sources": {
+    "fred": 68.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-24",
+   "value": 67.5,
+   "sources": {
+    "fred": 67.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-25",
+   "value": 66.99,
+   "sources": {
+    "fred": 66.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-28",
+   "value": 66.13,
+   "sources": {
+    "fred": 66.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-29",
+   "value": 64.04,
+   "sources": {
+    "fred": 64.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-04-30",
+   "value": 63.37,
+   "sources": {
+    "fred": 63.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-01",
+   "value": 62.37,
+   "sources": {
+    "fred": 62.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-02",
+   "value": 61.57,
+   "sources": {
+    "fred": 61.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-06",
+   "value": 62.37,
+   "sources": {
+    "fred": 62.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-07",
+   "value": 60.31,
+   "sources": {
+    "fred": 60.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-08",
+   "value": 62.22,
+   "sources": {
+    "fred": 62.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-09",
+   "value": 64.26,
+   "sources": {
+    "fred": 64.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-12",
+   "value": 65.28,
+   "sources": {
+    "fred": 65.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-13",
+   "value": 66.93,
+   "sources": {
+    "fred": 66.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-14",
+   "value": 65.91,
+   "sources": {
+    "fred": 65.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-15",
+   "value": 64.36,
+   "sources": {
+    "fred": 64.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-16",
+   "value": 65.2,
+   "sources": {
+    "fred": 65.2
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-19",
+   "value": 66.25,
+   "sources": {
+    "fred": 66.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-20",
+   "value": 66.93,
+   "sources": {
+    "fred": 66.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-21",
+   "value": 65.86,
+   "sources": {
+    "fred": 65.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-22",
+   "value": 64.87,
+   "sources": {
+    "fred": 64.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-23",
+   "value": 65.41,
+   "sources": {
+    "fred": 65.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-27",
+   "value": 64.32,
+   "sources": {
+    "fred": 64.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-28",
+   "value": 65.72,
+   "sources": {
+    "fred": 65.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-29",
+   "value": 64.6,
+   "sources": {
+    "fred": 64.6
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-05-30",
+   "value": 64.32,
+   "sources": {
+    "fred": 64.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-02",
+   "value": 66.55,
+   "sources": {
+    "fred": 66.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-03",
+   "value": 67.48,
+   "sources": {
+    "fred": 67.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-04",
+   "value": 66.69,
+   "sources": {
+    "fred": 66.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-05",
+   "value": 67.14,
+   "sources": {
+    "fred": 67.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-06",
+   "value": 68.02,
+   "sources": {
+    "fred": 68.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-09",
+   "value": 68.73,
+   "sources": {
+    "fred": 68.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-10",
+   "value": 68.41,
+   "sources": {
+    "fred": 68.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-11",
+   "value": 71.29,
+   "sources": {
+    "fred": 71.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-12",
+   "value": 70.84,
+   "sources": {
+    "fred": 70.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-13",
+   "value": 76,
+   "sources": {
+    "fred": 76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-16",
+   "value": 75.05,
+   "sources": {
+    "fred": 75.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-17",
+   "value": 78.7,
+   "sources": {
+    "fred": 78.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-18",
+   "value": 78.38,
+   "sources": {
+    "fred": 78.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-19",
+   "value": 80.37,
+   "sources": {
+    "fred": 80.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-20",
+   "value": 78.73,
+   "sources": {
+    "fred": 78.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-23",
+   "value": 74.34,
+   "sources": {
+    "fred": 74.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-24",
+   "value": 69.13,
+   "sources": {
+    "fred": 69.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-25",
+   "value": 68.4,
+   "sources": {
+    "fred": 68.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-26",
+   "value": 68.57,
+   "sources": {
+    "fred": 68.57
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-27",
+   "value": 69.37,
+   "sources": {
+    "fred": 69.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-06-30",
+   "value": 68.15,
+   "sources": {
+    "fred": 68.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-01",
+   "value": 67.63,
+   "sources": {
+    "fred": 67.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-02",
+   "value": 70.8,
+   "sources": {
+    "fred": 70.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-03",
+   "value": 70.42,
+   "sources": {
+    "fred": 70.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-04",
+   "value": 71.03,
+   "sources": {
+    "fred": 71.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-07",
+   "value": 71.95,
+   "sources": {
+    "fred": 71.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-08",
+   "value": 72.5,
+   "sources": {
+    "fred": 72.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-09",
+   "value": 71.98,
+   "sources": {
+    "fred": 71.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-10",
+   "value": 70.38,
+   "sources": {
+    "fred": 70.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-11",
+   "value": 72.06,
+   "sources": {
+    "fred": 72.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-14",
+   "value": 70.96,
+   "sources": {
+    "fred": 70.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-15",
+   "value": 70.27,
+   "sources": {
+    "fred": 70.27
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-16",
+   "value": 69.67,
+   "sources": {
+    "fred": 69.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-17",
+   "value": 71.32,
+   "sources": {
+    "fred": 71.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-18",
+   "value": 71.06,
+   "sources": {
+    "fred": 71.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-21",
+   "value": 71.92,
+   "sources": {
+    "fred": 71.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-22",
+   "value": 69.69,
+   "sources": {
+    "fred": 69.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-23",
+   "value": 69.17,
+   "sources": {
+    "fred": 69.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-24",
+   "value": 70.42,
+   "sources": {
+    "fred": 70.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-25",
+   "value": 69.23,
+   "sources": {
+    "fred": 69.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-28",
+   "value": 70.87,
+   "sources": {
+    "fred": 70.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-29",
+   "value": 73.21,
+   "sources": {
+    "fred": 73.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-30",
+   "value": 73.98,
+   "sources": {
+    "fred": 73.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-07-31",
+   "value": 73.43,
+   "sources": {
+    "fred": 73.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-01",
+   "value": 70.55,
+   "sources": {
+    "fred": 70.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-04",
+   "value": 69.56,
+   "sources": {
+    "fred": 69.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-05",
+   "value": 69.14,
+   "sources": {
+    "fred": 69.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-06",
+   "value": 67.97,
+   "sources": {
+    "fred": 67.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-07",
+   "value": 66.99,
+   "sources": {
+    "fred": 66.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-08",
+   "value": 67.17,
+   "sources": {
+    "fred": 67.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-11",
+   "value": 67.36,
+   "sources": {
+    "fred": 67.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-12",
+   "value": 66.8,
+   "sources": {
+    "fred": 66.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-13",
+   "value": 66.25,
+   "sources": {
+    "fred": 66.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-14",
+   "value": 68.12,
+   "sources": {
+    "fred": 68.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-15",
+   "value": 67.3,
+   "sources": {
+    "fred": 67.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-18",
+   "value": 68.18,
+   "sources": {
+    "fred": 68.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-19",
+   "value": 66.62,
+   "sources": {
+    "fred": 66.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-20",
+   "value": 67.61,
+   "sources": {
+    "fred": 67.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-21",
+   "value": 68.41,
+   "sources": {
+    "fred": 68.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-22",
+   "value": 68.29,
+   "sources": {
+    "fred": 68.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-26",
+   "value": 66.89,
+   "sources": {
+    "fred": 66.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-27",
+   "value": 67.75,
+   "sources": {
+    "fred": 67.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-28",
+   "value": 68.61,
+   "sources": {
+    "fred": 68.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-08-29",
+   "value": 67.83,
+   "sources": {
+    "fred": 67.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-01",
+   "value": 67.09,
+   "sources": {
+    "fred": 67.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-02",
+   "value": 68.09,
+   "sources": {
+    "fred": 68.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-03",
+   "value": 67.76,
+   "sources": {
+    "fred": 67.76
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-04",
+   "value": 66.41,
+   "sources": {
+    "fred": 66.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-05",
+   "value": 64.92,
+   "sources": {
+    "fred": 64.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-08",
+   "value": 65.44,
+   "sources": {
+    "fred": 65.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-09",
+   "value": 67.97,
+   "sources": {
+    "fred": 67.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-10",
+   "value": 67.62,
+   "sources": {
+    "fred": 67.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-11",
+   "value": 67.25,
+   "sources": {
+    "fred": 67.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-12",
+   "value": 67.87,
+   "sources": {
+    "fred": 67.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-15",
+   "value": 67.88,
+   "sources": {
+    "fred": 67.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-16",
+   "value": 69.69,
+   "sources": {
+    "fred": 69.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-17",
+   "value": 69.19,
+   "sources": {
+    "fred": 69.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-18",
+   "value": 67.83,
+   "sources": {
+    "fred": 67.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-19",
+   "value": 67.05,
+   "sources": {
+    "fred": 67.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-22",
+   "value": 66.87,
+   "sources": {
+    "fred": 66.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-23",
+   "value": 67.96,
+   "sources": {
+    "fred": 67.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-24",
+   "value": 69.64,
+   "sources": {
+    "fred": 69.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-25",
+   "value": 70.48,
+   "sources": {
+    "fred": 70.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-26",
+   "value": 71.15,
+   "sources": {
+    "fred": 71.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-29",
+   "value": 69,
+   "sources": {
+    "fred": 69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-09-30",
+   "value": 68.52,
+   "sources": {
+    "fred": 68.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-01",
+   "value": 66.67,
+   "sources": {
+    "fred": 66.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-02",
+   "value": 65.44,
+   "sources": {
+    "fred": 65.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-03",
+   "value": 66.13,
+   "sources": {
+    "fred": 66.13
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-06",
+   "value": 67.09,
+   "sources": {
+    "fred": 67.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-07",
+   "value": 67.1,
+   "sources": {
+    "fred": 67.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-08",
+   "value": 67.42,
+   "sources": {
+    "fred": 67.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-09",
+   "value": 67.23,
+   "sources": {
+    "fred": 67.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-10",
+   "value": 64.41,
+   "sources": {
+    "fred": 64.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-13",
+   "value": 64.15,
+   "sources": {
+    "fred": 64.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-14",
+   "value": 63,
+   "sources": {
+    "fred": 63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-15",
+   "value": 62.33,
+   "sources": {
+    "fred": 62.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-16",
+   "value": 61.08,
+   "sources": {
+    "fred": 61.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-17",
+   "value": 61.23,
+   "sources": {
+    "fred": 61.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-20",
+   "value": 60.71,
+   "sources": {
+    "fred": 60.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-21",
+   "value": 61,
+   "sources": {
+    "fred": 61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-22",
+   "value": 62.28,
+   "sources": {
+    "fred": 62.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-23",
+   "value": 66.32,
+   "sources": {
+    "fred": 66.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-24",
+   "value": 65.8,
+   "sources": {
+    "fred": 65.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-27",
+   "value": 65.52,
+   "sources": {
+    "fred": 65.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-28",
+   "value": 64.03,
+   "sources": {
+    "fred": 64.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-29",
+   "value": 65.01,
+   "sources": {
+    "fred": 65.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-30",
+   "value": 65.11,
+   "sources": {
+    "fred": 65.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-31",
+   "value": 65.44,
+   "sources": {
+    "fred": 65.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-03",
+   "value": 65.79,
+   "sources": {
+    "fred": 65.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-04",
+   "value": 65.04,
+   "sources": {
+    "fred": 65.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-05",
+   "value": 63.54,
+   "sources": {
+    "fred": 63.54
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-06",
+   "value": 63.41,
+   "sources": {
+    "fred": 63.41
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-07",
+   "value": 63.72,
+   "sources": {
+    "fred": 63.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-10",
+   "value": 63.01,
+   "sources": {
+    "fred": 63.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-11",
+   "value": 63.86,
+   "sources": {
+    "fred": 63.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-12",
+   "value": 61.88,
+   "sources": {
+    "fred": 61.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-13",
+   "value": 62.14,
+   "sources": {
+    "fred": 62.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-14",
+   "value": 63.45,
+   "sources": {
+    "fred": 63.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-17",
+   "value": 63.16,
+   "sources": {
+    "fred": 63.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-18",
+   "value": 64.86,
+   "sources": {
+    "fred": 64.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-19",
+   "value": 63.78,
+   "sources": {
+    "fred": 63.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-20",
+   "value": 63.64,
+   "sources": {
+    "fred": 63.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-21",
+   "value": 62.78,
+   "sources": {
+    "fred": 62.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-24",
+   "value": 64.83,
+   "sources": {
+    "fred": 64.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-25",
+   "value": 63.99,
+   "sources": {
+    "fred": 63.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-26",
+   "value": 64.81,
+   "sources": {
+    "fred": 64.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-27",
+   "value": 64.18,
+   "sources": {
+    "fred": 64.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-28",
+   "value": 64.07,
+   "sources": {
+    "fred": 64.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-01",
+   "value": 64.22,
+   "sources": {
+    "fred": 64.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-02",
+   "value": 63.37,
+   "sources": {
+    "fred": 63.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-03",
+   "value": 63.75,
+   "sources": {
+    "fred": 63.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-04",
+   "value": 64.15,
+   "sources": {
+    "fred": 64.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-05",
+   "value": 64.42,
+   "sources": {
+    "fred": 64.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-08",
+   "value": 63.3,
+   "sources": {
+    "fred": 63.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-09",
+   "value": 62.62,
+   "sources": {
+    "fred": 62.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-10",
+   "value": 63.12,
+   "sources": {
+    "fred": 63.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-11",
+   "value": 61.87,
+   "sources": {
+    "fred": 61.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-12",
+   "value": 62.11,
+   "sources": {
+    "fred": 62.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-15",
+   "value": 61.55,
+   "sources": {
+    "fred": 61.55
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-16",
+   "value": 59.93,
+   "sources": {
+    "fred": 59.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-17",
+   "value": 60.61,
+   "sources": {
+    "fred": 60.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-18",
+   "value": 60.69,
+   "sources": {
+    "fred": 60.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-19",
+   "value": 61.35,
+   "sources": {
+    "fred": 61.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-22",
+   "value": 62.22,
+   "sources": {
+    "fred": 62.22
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-23",
+   "value": 63.7,
+   "sources": {
+    "fred": 63.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-24",
+   "value": 63.7,
+   "sources": {
+    "fred": 63.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-29",
+   "value": 63.1,
+   "sources": {
+    "fred": 63.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-30",
+   "value": 62.3,
+   "sources": {
+    "fred": 62.3
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-12-31",
+   "value": 61.35,
+   "sources": {
+    "fred": 61.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-02",
+   "value": 61.98,
+   "sources": {
+    "fred": 61.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-05",
+   "value": 63,
+   "sources": {
+    "fred": 63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-06",
+   "value": 62.1,
+   "sources": {
+    "fred": 62.1
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-07",
+   "value": 61.08,
+   "sources": {
+    "fred": 61.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-08",
+   "value": 63.34,
+   "sources": {
+    "fred": 63.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-09",
+   "value": 65.11,
+   "sources": {
+    "fred": 65.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-12",
+   "value": 65.4,
+   "sources": {
+    "fred": 65.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-13",
+   "value": 67.58,
+   "sources": {
+    "fred": 67.58
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-14",
+   "value": 68.87,
+   "sources": {
+    "fred": 68.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-15",
+   "value": 66.16,
+   "sources": {
+    "fred": 66.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-16",
+   "value": 66.97,
+   "sources": {
+    "fred": 66.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-19",
+   "value": 66.91,
+   "sources": {
+    "fred": 66.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-20",
+   "value": 67.68,
+   "sources": {
+    "fred": 67.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-21",
+   "value": 66.72,
+   "sources": {
+    "fred": 66.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-22",
+   "value": 65.46,
+   "sources": {
+    "fred": 65.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-23",
+   "value": 68.16,
+   "sources": {
+    "fred": 68.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-26",
+   "value": 67.7,
+   "sources": {
+    "fred": 67.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-27",
+   "value": 70.28,
+   "sources": {
+    "fred": 70.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-28",
+   "value": 70.9,
+   "sources": {
+    "fred": 70.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-29",
+   "value": 71,
+   "sources": {
+    "fred": 71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-01-30",
+   "value": 72.25,
+   "sources": {
+    "fred": 72.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-02",
+   "value": 67.72,
+   "sources": {
+    "fred": 67.72
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-03",
+   "value": 70.01,
+   "sources": {
+    "fred": 70.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-04",
+   "value": 71.15,
+   "sources": {
+    "fred": 71.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-05",
+   "value": 69.87,
+   "sources": {
+    "fred": 69.87
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-06",
+   "value": 70.45,
+   "sources": {
+    "fred": 70.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-09",
+   "value": 71.19,
+   "sources": {
+    "fred": 71.19
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-10",
+   "value": 71.01,
+   "sources": {
+    "fred": 71.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-11",
+   "value": 71.52,
+   "sources": {
+    "fred": 71.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-12",
+   "value": 69.8,
+   "sources": {
+    "fred": 69.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-13",
+   "value": 69.96,
+   "sources": {
+    "fred": 69.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-16",
+   "value": 70.81,
+   "sources": {
+    "fred": 70.81
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-17",
+   "value": 69.77,
+   "sources": {
+    "fred": 69.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-18",
+   "value": 71.78,
+   "sources": {
+    "fred": 71.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-19",
+   "value": 73.17,
+   "sources": {
+    "fred": 73.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-20",
+   "value": 72.75,
+   "sources": {
+    "fred": 72.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-23",
+   "value": 71.9,
+   "sources": {
+    "fred": 71.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-24",
+   "value": 71.21,
+   "sources": {
+    "fred": 71.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-25",
+   "value": 70.69,
+   "sources": {
+    "fred": 70.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-26",
+   "value": 71.66,
+   "sources": {
+    "fred": 71.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-02-27",
+   "value": 71.32,
+   "sources": {
+    "fred": 71.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-02",
+   "value": 77.24,
+   "sources": {
+    "fred": 77.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-03",
+   "value": 83.28,
+   "sources": {
+    "fred": 83.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-04",
+   "value": 81.56,
+   "sources": {
+    "fred": 81.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-05",
+   "value": 88.59,
+   "sources": {
+    "fred": 88.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-06",
+   "value": 95.74,
+   "sources": {
+    "fred": 95.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-09",
+   "value": 94.35,
+   "sources": {
+    "fred": 94.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-10",
+   "value": 89.84,
+   "sources": {
+    "fred": 89.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-11",
+   "value": 90.98,
+   "sources": {
+    "fred": 90.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-12",
+   "value": 102.38,
+   "sources": {
+    "fred": 102.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-13",
+   "value": 103.23,
+   "sources": {
+    "fred": 103.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-16",
+   "value": 101.04,
+   "sources": {
+    "fred": 101.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-17",
+   "value": 108.39,
+   "sources": {
+    "fred": 108.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-18",
+   "value": 118.09,
+   "sources": {
+    "fred": 118.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-19",
+   "value": 111.05,
+   "sources": {
+    "fred": 111.05
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-20",
+   "value": 118.42,
+   "sources": {
+    "fred": 118.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-23",
+   "value": 103.79,
+   "sources": {
+    "fred": 103.79
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-24",
+   "value": 108.42,
+   "sources": {
+    "fred": 108.42
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-25",
+   "value": 109.14,
+   "sources": {
+    "fred": 109.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-26",
+   "value": 113.39,
+   "sources": {
+    "fred": 113.39
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-27",
+   "value": 121.47,
+   "sources": {
+    "fred": 121.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-30",
+   "value": 121.88,
+   "sources": {
+    "fred": 121.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-03-31",
+   "value": 126.69,
+   "sources": {
+    "fred": 126.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-01",
+   "value": 119.56,
+   "sources": {
+    "fred": 119.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-02",
+   "value": 127.61,
+   "sources": {
+    "fred": 127.61
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-07",
+   "value": 138.21,
+   "sources": {
+    "fred": 138.21
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-08",
+   "value": 122.11,
+   "sources": {
+    "fred": 122.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-09",
+   "value": 119.03,
+   "sources": {
+    "fred": 119.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-10",
+   "value": 119.07,
+   "sources": {
+    "fred": 119.07
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-13",
+   "value": 123.28,
+   "sources": {
+    "fred": 123.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-14",
+   "value": 118.69,
+   "sources": {
+    "fred": 118.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-15",
+   "value": 114.93,
+   "sources": {
+    "fred": 114.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-16",
+   "value": 116.63,
+   "sources": {
+    "fred": 116.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-17",
+   "value": 98.63,
+   "sources": {
+    "fred": 98.63
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-20",
+   "value": 103.4,
+   "sources": {
+    "fred": 103.4
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-21",
+   "value": 106.14,
+   "sources": {
+    "fred": 106.14
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-22",
+   "value": 113.44,
+   "sources": {
+    "fred": 113.44
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-23",
+   "value": 113.25,
+   "sources": {
+    "fred": 113.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-24",
+   "value": 111.86,
+   "sources": {
+    "fred": 111.86
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-27",
+   "value": 113.89,
+   "sources": {
+    "fred": 113.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-28",
+   "value": 117.62,
+   "sources": {
+    "fred": 117.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-29",
+   "value": 124.16,
+   "sources": {
+    "fred": 124.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-04-30",
+   "value": 124.24,
+   "sources": {
+    "fred": 124.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-01",
+   "value": 118.26,
+   "sources": {
+    "fred": 118.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-05",
+   "value": 114.51,
+   "sources": {
+    "fred": 114.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-06",
+   "value": 103.7,
+   "sources": {
+    "fred": 103.7
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-07",
+   "value": 101.82,
+   "sources": {
+    "fred": 101.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-08",
+   "value": 103.48,
+   "sources": {
+    "fred": 103.48
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-11",
+   "value": 106.11,
+   "sources": {
+    "fred": 106.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-12",
+   "value": 111.37,
+   "sources": {
+    "fred": 111.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-13",
+   "value": 110.28,
+   "sources": {
+    "fred": 110.28
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-14",
+   "value": 110.91,
+   "sources": {
+    "fred": 110.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-15",
+   "value": 113.96,
+   "sources": {
+    "fred": 113.96
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-18",
+   "value": 116.73,
+   "sources": {
+    "fred": 116.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-19",
+   "value": 114.64,
+   "sources": {
+    "fred": 114.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-20",
+   "value": 108.93,
+   "sources": {
+    "fred": 108.93
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-21",
+   "value": 105.84,
+   "sources": {
+    "fred": 105.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-22",
+   "value": 106.9,
+   "sources": {
+    "fred": 106.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-26",
+   "value": 102.75,
+   "sources": {
+    "fred": 102.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-27",
+   "value": 97.11,
+   "sources": {
+    "fred": 97.11
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-28",
+   "value": 95.47,
+   "sources": {
+    "fred": 95.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-05-29",
+   "value": 92.88,
+   "sources": {
+    "fred": 92.88
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-01",
+   "value": 98.29,
+   "sources": {
+    "fred": 98.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-02",
+   "value": 98.49,
+   "sources": {
+    "fred": 98.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-03",
+   "value": 101.69,
+   "sources": {
+    "fred": 101.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-04",
+   "value": 98.98,
+   "sources": {
+    "fred": 98.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-05",
+   "value": 97.29,
+   "sources": {
+    "fred": 97.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-08",
+   "value": 97.46,
+   "sources": {
+    "fred": 97.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-09",
+   "value": 94.15,
+   "sources": {
+    "fred": 94.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-10",
+   "value": 95.73,
+   "sources": {
+    "fred": 95.73
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-11",
+   "value": 92.84,
+   "sources": {
+    "fred": 92.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-12",
+   "value": 88.64,
+   "sources": {
+    "fred": 88.64
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-15",
+   "value": 84.36,
+   "sources": {
+    "fred": 84.36
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-16",
+   "value": 80.5,
+   "sources": {
+    "fred": 80.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-17",
+   "value": 80.33,
+   "sources": {
+    "fred": 80.33
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-18",
+   "value": 79.35,
+   "sources": {
+    "fred": 79.35
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-19",
+   "value": 80.46,
+   "sources": {
+    "fred": 80.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-22",
+   "value": 76.49,
+   "sources": {
+    "fred": 76.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-23",
+   "value": 75.69,
+   "sources": {
+    "fred": 75.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-24",
+   "value": 72.09,
+   "sources": {
+    "fred": 72.09
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-25",
+   "value": 73.74,
+   "sources": {
+    "fred": 73.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-26",
+   "value": 70.16,
+   "sources": {
+    "fred": 70.16
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-29",
+   "value": 71.59,
+   "sources": {
+    "fred": 71.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-06-30",
+   "value": 70.46,
+   "sources": {
+    "fred": 70.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-01",
+   "value": 69.24,
+   "sources": {
+    "fred": 69.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-02",
+   "value": 68.53,
+   "sources": {
+    "fred": 68.53
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-03",
+   "value": 68.68,
+   "sources": {
+    "fred": 68.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-06",
+   "value": 69.56,
+   "sources": {
+    "fred": 69.56
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-07",
+   "value": 71.78,
+   "sources": {
+    "fred": 71.78
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-08",
+   "value": 76.5,
+   "sources": {
+    "fred": 76.5
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-09",
+   "value": 74.46,
+   "sources": {
+    "fred": 74.46
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-10",
+   "value": 74.34,
+   "sources": {
+    "fred": 74.34
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-13",
+   "value": 81.62,
+   "sources": {
+    "fred": 81.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-14",
+   "value": 83.69,
+   "sources": {
+    "fred": 83.69
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-15",
+   "value": 83.08,
+   "sources": {
+    "fred": 83.08
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-16",
+   "value": 81.23,
+   "sources": {
+    "fred": 81.23
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-17",
+   "value": 85.01,
+   "sources": {
+    "fred": 85.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-20",
+   "value": 86.99,
+   "sources": {
+    "fred": 86.99
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-21",
+   "value": 93.85,
+   "sources": {
+    "fred": 93.85
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-22",
+   "value": 94.12,
+   "sources": {
+    "fred": 94.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-23",
+   "value": 105.32,
+   "sources": {
+    "fred": 105.32
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-24",
+   "value": 100.31,
+   "sources": {
+    "fred": 100.31
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-27",
+   "value": 91.82,
+   "sources": {
+    "fred": 91.82
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-28",
+   "value": 85.51,
+   "sources": {
+    "fred": 85.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-29",
+   "value": 91.95,
+   "sources": {
+    "fred": 91.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-30",
+   "value": 91.91,
+   "sources": {
+    "fred": 91.91
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-07-31",
+   "value": 96.95,
+   "sources": {
+    "fred": 96.95
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-03",
+   "value": 88.9,
+   "sources": {
+    "fred": 88.9
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-04",
+   "value": 86.47,
+   "sources": {
+    "fred": 86.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-05",
+   "value": 86.65,
+   "sources": {
+    "fred": 86.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-06",
+   "value": 89.65,
+   "sources": {
+    "fred": 89.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-07",
+   "value": 87.62,
+   "sources": {
+    "fred": 87.62
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-10",
+   "value": 92.74,
+   "sources": {
+    "fred": 92.74
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-11",
+   "value": 93.26,
+   "sources": {
+    "fred": 93.26
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-12",
+   "value": 92.52,
+   "sources": {
+    "fred": 92.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-13",
+   "value": 92.03,
+   "sources": {
+    "fred": 92.03
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-14",
+   "value": 92.02,
+   "sources": {
+    "fred": 92.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-17",
+   "value": 92.43,
+   "sources": {
+    "fred": 92.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-18",
+   "value": 95.29,
+   "sources": {
+    "fred": 95.29
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-19",
+   "value": 92.37,
+   "sources": {
+    "fred": 92.37
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-20",
+   "value": 94,
+   "sources": {
+    "fred": 94
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-21",
+   "value": 96.92,
+   "sources": {
+    "fred": 96.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-24",
+   "value": 92.71,
+   "sources": {
+    "fred": 92.71
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-25",
+   "value": 88.24,
+   "sources": {
+    "fred": 88.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-26",
+   "value": 87.77,
+   "sources": {
+    "fred": 87.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-27",
+   "value": 90.18,
+   "sources": {
+    "fred": 90.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-08-28",
+   "value": 89.75,
+   "sources": {
+    "fred": 89.75
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-01",
+   "value": 96.02,
+   "sources": {
+    "fred": 96.02
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-02",
+   "value": 97.59,
+   "sources": {
+    "fred": 97.59
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-03",
+   "value": 100.52,
+   "sources": {
+    "fred": 100.52
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-04",
+   "value": 102.24,
+   "sources": {
+    "fred": 102.24
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-07",
+   "value": 104.47,
+   "sources": {
+    "fred": 104.47
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-08",
+   "value": 106.12,
+   "sources": {
+    "fred": 106.12
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-09",
+   "value": 109.51,
+   "sources": {
+    "fred": 109.51
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-10",
+   "value": 120.98,
+   "sources": {
+    "fred": 120.98
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-11",
+   "value": 118.06,
+   "sources": {
+    "fred": 118.06
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-14",
+   "value": 121.25,
+   "sources": {
+    "fred": 121.25
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-15",
+   "value": 130.8,
+   "sources": {
+    "fred": 130.8
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-16",
+   "value": 127.84,
+   "sources": {
+    "fred": 127.84
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-17",
+   "value": 121.18,
+   "sources": {
+    "fred": 121.18
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-18",
+   "value": 119.66,
+   "sources": {
+    "fred": 119.66
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-21",
+   "value": 116.15,
+   "sources": {
+    "fred": 116.15
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-22",
+   "value": 114.89,
+   "sources": {
+    "fred": 114.89
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-23",
+   "value": 117.45,
+   "sources": {
+    "fred": 117.45
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-24",
+   "value": 120.92,
+   "sources": {
+    "fred": 120.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-25",
+   "value": 116.01,
+   "sources": {
+    "fred": 116.01
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-28",
+   "value": 119.97,
+   "sources": {
+    "fred": 119.97
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2026-09-29",
+   "value": 113.96,
+   "sources": {
+    "fred": 113.96
+   },
+   "status": "한 출처"
+  }
+ ]
+}

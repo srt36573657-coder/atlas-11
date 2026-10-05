@@ -1,0 +1,240 @@
+{
+ "schema": "atlas4h-extreme-1",
+ "id": "K7",
+ "text": "국면이 바뀌는 날 (잔잔 → 사나움)",
+ "seed": 20261020,
+ "steps": [
+  {
+   "name": "08시 잔잔",
+   "inputs": {
+    "now": "2026-10-20T08:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2650,
+        "observedAt": "2026-10-20T07:59:00+09:00",
+        "fetchedAt": "2026-10-20T08:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2650,
+        "observedAt": "2026-10-20T07:59:00+09:00",
+        "fetchedAt": "2026-10-20T08:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vkospi 첫째 출처",
+        "value": 14,
+        "observedAt": "2026-10-20T07:59:00+09:00",
+        "fetchedAt": "2026-10-20T08:00:21+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vix",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vix 첫째 출처",
+        "value": 13,
+        "observedAt": "2026-10-20T06:15:00+09:00",
+        "fetchedAt": "2026-10-20T08:00:22+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "12시 보통",
+   "inputs": {
+    "now": "2026-10-20T12:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2612,
+        "observedAt": "2026-10-20T11:59:00+09:00",
+        "fetchedAt": "2026-10-20T12:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2612,
+        "observedAt": "2026-10-20T11:59:00+09:00",
+        "fetchedAt": "2026-10-20T12:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vkospi 첫째 출처",
+        "value": 22,
+        "observedAt": "2026-10-20T11:59:00+09:00",
+        "fetchedAt": "2026-10-20T12:00:21+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vix",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vix 첫째 출처",
+        "value": 24,
+        "observedAt": "2026-10-20T11:00:00+09:00",
+        "fetchedAt": "2026-10-20T12:00:22+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  },
+  {
+   "name": "16시 사나움",
+   "inputs": {
+    "now": "2026-10-20T16:00:00+09:00",
+    "variables": [
+     {
+      "id": "kospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.0005
+      },
+      "sources": [
+       {
+        "name": "네이버 증권 지수",
+        "value": 2540,
+        "observedAt": "2026-10-20T15:30:00+09:00",
+        "fetchedAt": "2026-10-20T16:00:20+09:00"
+       },
+       {
+        "name": "KRX Open API 코스피 일별",
+        "value": 2540,
+        "observedAt": "2026-10-20T15:30:00+09:00",
+        "fetchedAt": "2026-10-20T16:00:20+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vkospi",
+      "market": "KR",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vkospi 첫째 출처",
+        "value": 34,
+        "observedAt": "2026-10-20T15:30:00+09:00",
+        "fetchedAt": "2026-10-20T16:00:21+09:00"
+       }
+      ]
+     },
+     {
+      "id": "vix",
+      "market": "US",
+      "compare": {
+       "rule": "relative",
+       "tolerance": 0.002
+      },
+      "sources": [
+       {
+        "name": "vix 첫째 출처",
+        "value": 38,
+        "observedAt": "2026-10-20T15:00:00+09:00",
+        "fetchedAt": "2026-10-20T16:00:22+09:00"
+       }
+      ]
+     }
+    ],
+    "constants": {
+     "version": "c-예시",
+     "measuredAt": "2026-09-30T16:40:00+09:00",
+     "dailyVolPct": 1
+    }
+   }
+  }
+ ],
+ "expect": [
+  {
+   "type": "regime",
+   "step": 0,
+   "say": "잔잔한 때도 국면 확률(잔잔·보통·사나움, 합 1)을 적는다"
+  },
+  {
+   "type": "regime",
+   "step": 1,
+   "say": "보통일 때 국면 확률을 적는다"
+  },
+  {
+   "type": "regime",
+   "step": 2,
+   "say": "사나울 때 국면 확률을 적는다"
+  },
+  {
+   "type": "regimeRises",
+   "fromStep": 0,
+   "toStep": 2,
+   "state": "사나움",
+   "say": "「사나움」 확률이 08시보다 16시에 높다"
+  },
+  {
+   "type": "widerThan",
+   "step": 2,
+   "thanStep": 0,
+   "say": "사나울 때 80% 범위가 잔잔할 때보다 넓다"
+  }
+ ],
+ "about": "엔진 함수 engine(inputs, seed) 를 걸음마다 돌리고, 결과가 깨지지 않는지(멈춤·NaN·범위 뒤집힘 0)와 아래 약속을 지키는지 잰다. 날짜와 값은 [예시]."
+}

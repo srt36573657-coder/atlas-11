@@ -1,0 +1,1451 @@
+{
+ "schema": "atlas4h-sources-1",
+ "part": "D·E·F·짜임",
+ "readAtKST": "2026-10-01 17:14–17:31 KST",
+ "items": [
+  {
+   "id": "D-heuer-1999",
+   "group": "D",
+   "commandLabel": "호이어",
+   "usedBy": [
+    "D1",
+    "D2"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 6,
+     "text": "D: 호이어·ICD 203·만델·카르베츠키(2018)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 24,
+     "text": "D1 가설 여럿: 첫 그럴듯한 것에서 멈추지 않는다"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 25,
+     "text": "D2 진단성: 모든 가설에 맞는 증거는 0점"
+    }
+   ],
+   "original": {
+    "title": "Psychology of Intelligence Analysis",
+    "authors": "Richards J. Heuer, Jr.",
+    "year": 1999,
+    "venue": "CIA Center for the Study of Intelligence (미국 중앙정보국 공식 출판물)",
+    "url": "https://www.cia.gov/resources/csi/static/Pyschology-of-Intelligence-Analysis.pdf"
+   },
+   "readDirectly": false,
+   "verified": [
+    {
+     "claim": "D2: 모든 가설에 맞는 증거는 진단 가치 0점",
+     "quote": "",
+     "location": "8장 Analysis of Competing Hypotheses — 못 읽음",
+     "verdict": "못 읽음",
+     "note": "공식 PDF(214쪽)는 열렸지만 읽기 도구가 1~3장까지만 보여 줬다. 2차 자료(Pope·Jøsang 2005, 연구소 보고서 — 10점 아님)가 옮긴 호이어 문장은 \"little diagnostic value\"(진단 가치가 '적다')로 되어 있어 명령문의 '0점'과 다를 수 있다. 2차 자료라서 판단에 쓰지 않았다."
+    },
+    {
+     "claim": "D1: 첫 그럴듯한 가설에서 멈추지 않는다(만족화 경계)",
+     "quote": "",
+     "location": "4장 Strategies for Analytical Judgment — 못 읽음",
+     "verdict": "못 읽음",
+     "note": "같은 까닭으로 못 읽음."
+    }
+   ],
+   "decision": "보류",
+   "condition": "공식 PDF 4장·8장을 쪽 단위로 읽은 뒤 다시 정한다.",
+   "reason": "해당 장(4·8장)을 직접 못 읽었다 — 읽은 것만 쓴다는 규칙(04-learning 8줄).",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E3",
+    "F4"
+   ],
+   "notes": "진단성 생각 자체는 10점 논문(Mandel·Karvetski·Dhami 2018, 608쪽·611~612쪽)이 ACH 단계로 옮겨 적었다 — D2 판단은 그 항목에서 했다. 2차 자료 위에 판단을 세우지 않았다(E3)."
+  },
+  {
+   "id": "D-icd203",
+   "group": "D",
+   "commandLabel": "ICD 203",
+   "usedBy": [
+    "D4",
+    "D1",
+    "C4"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 6,
+     "text": "D: 호이어·ICD 203·만델·카르베츠키(2018)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 27,
+     "text": "D4 확률과 확신도는 따로 적는다(ICD 203)"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 53,
+     "text": "가능성은 말과 숫자를 함께, 확신도는 따로(D4)."
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 24,
+     "text": "D1 가설 여럿: 첫 그럴듯한 것에서 멈추지 않는다"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 20,
+     "text": "C4 딱지: 문장마다 [사실]·[짐작]·[판단]"
+    }
+   ],
+   "original": {
+    "title": "Intelligence Community Directive 203: Analytic Standards",
+    "authors": "Office of the Director of National Intelligence (ODNI)",
+    "year": 2015,
+    "venue": "미국 국가정보장실 공식 지침 (2015-01-02 서명, 2022-01-21 기술 개정 — 읽기 도구가 읽어 준 값)",
+    "url": "https://archive.dni.gov/files/documents/ICD/ICD-203.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "D4: 확률(가능성)과 확신도는 따로 적는다",
+     "quote": "products that express an analyst's confidence in an assessment or judgment using a \"confidence level\" (e.g., \"high confidence\") must not combine a confidence level and a degree of likelihood, which refers to an event or development, in the same sentence.",
+     "location": "D.6.e.(2)(b)",
+     "verdict": "맞음",
+     "note": "확신도와 가능성을 한 문장에 섞지 말라 — 명령문 D4와 같은 뜻."
+    },
+    {
+     "claim": "엔진 53줄: 가능성은 말과 숫자를 함께",
+     "quote": "For expressions of likelihood or probability, an analytic product must use one of the following sets of terms:",
+     "location": "D.6.e.(2)(a) 와 그 아래 표",
+     "verdict": "일부 맞음",
+     "note": "지침은 정해진 말(7칸)을 쓰라고 한다. 표에는 칸마다 범위가 붙어 있다: almost no chance/remote 01-05% · very unlikely/highly improbable 05-20% · unlikely/improbable 20-45% · roughly even chance/roughly even odds 45-55% · likely/probable 55-80% · very likely/highly probable 80-95% · almost certain(ly)/nearly certain 95-99% (PDF에서 뽑힌 줄을 칸별로 다시 맞춘 것). '숫자를 함께 적어라'는 지침이 시킨 말은 아니다 — 명령문이 더한 것(범위와 맞으면 해롭지 않음)."
+    },
+    {
+     "claim": "D1: 가설 여럿을 본다",
+     "quote": "Analytic products should identify and assess plausible alternative hypotheses.",
+     "location": "D.6.e.(4)",
+     "verdict": "맞음",
+     "note": "'첫 그럴듯한 것에서 멈추지 않는다'의 '다른 가설을 찾아 따진다' 쪽을 받친다."
+    },
+    {
+     "claim": "C4: 문장마다 [사실]·[짐작]·[판단] 딱지",
+     "quote": "Analytic products should clearly distinguish statements that convey underlying intelligence information used in analysis from statements that convey assumptions or judgments.",
+     "location": "D.6.e.(3)",
+     "verdict": "맞음",
+     "note": "바탕 정보와 가정·판단을 가르라는 뜻. 다만 12-sources에서 C칸 원문 목록에는 ICD 203이 없다(이 항목이 덤으로 받침)."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "가능성은 표의 7칸 말과 범위 그대로 쓰고, 확신도는 다른 문장에 적는다.",
+   "reason": "미국 정보기관 공식 지침 원문에 D4가 거의 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4",
+    "D4"
+   ],
+   "notes": "dni.gov 주소가 archive.dni.gov 로 넘어가 있었다(2026-10-01). 지금도 효력이 있는지는 확인 못 함 [모름]. 80%는 표에서 'likely(55-80%)'와 'very likely(80-95%)'의 경계 — 감시 S6의 80%와 같은 자리다."
+  },
+  {
+   "id": "D-mandel-barnes-2014",
+   "group": "D",
+   "commandLabel": "만델",
+   "usedBy": [
+    "D5"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 6,
+     "text": "D: 호이어·ICD 203·만델·카르베츠키(2018)"
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 7,
+     "text": "6 LLM 확률은 반반 쪽으로 움츠린다. 보정해 편다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 18,
+     "text": "합치기는 가운데 값. 반반 쪽 움츠림은 보정해 편다."
+    },
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "line": 7,
+     "text": "S6 넘치는 확신: 확인 없이 80% 넘긴 곳 = 0"
+    }
+   ],
+   "original": {
+    "title": "Accuracy of forecasts in strategic intelligence",
+    "authors": "David R. Mandel; Alan Barnes",
+    "year": 2014,
+    "venue": "PNAS 111(30) (읽은 사본에는 1–6쪽으로 찍힘)",
+    "url": "https://www.umass.edu/preferen/You%20Must%20Read%20This/MandelBarnesPNAS2014.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "반반 쪽으로 움츠린다(확신이 모자라다)",
+     "quote": "Miscalibration was mainly due to underconfidence such that analysts assigned more uncertainty than needed given their high level of discrimination.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "사람(전략정보 분석가)의 예측 1,514개에서 본 것."
+    },
+    {
+     "claim": "보정해 편다",
+     "quote": "This value is 12.7% for the original forecasts and 4.2% for the transformed forecasts, a 66.9% decrease in mean absolute deviation.",
+     "location": "결과(보정 부분)",
+     "verdict": "맞음",
+     "note": "보정하자 '완전 보정에서 벗어난 정도'가 12.7%에서 4.2%로 줄었다(66.9% 감소). 사람 분석가 자료."
+    },
+    {
+     "claim": "배운것 6줄: LLM 확률은 반반 쪽으로 움츠린다",
+     "quote": "Recalibrating the forecasts substantially reduced underconfidence.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "움츠림과 보정의 효과는 원문에 있다. 그러나 대상이 사람이다 — LLM에 대해서는 이 논문이 말하지 않는다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "사람 분석가의 결과로만 인용한다. LLM 판의 움츠림은 우리 봉인 판으로 따로 재서 보정하고, 보정에 쓴 자료로 채점하지 않는다(S8).",
+   "reason": "'보정하면 낫다'는 원문에 있으나 대상이 LLM이 아니라 사람이다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E2",
+    "F4"
+   ],
+   "notes": "명령문은 만델의 어느 글인지 적지 않았다 — 이 논문으로 짐작 [짐작]. pnas.org 와 PMC 는 막혀(403·로봇 검사) 출판본 PDF 사본(UMass 누리집)으로 읽었다. 주의: 이 논문의 분석가들은 '지나친 확신'이 아니라 '모자란 확신'이 문제였다 — 감시 S6(확인 없이 80% 넘긴 곳 0)을 세게 걸면 움츠림을 키울 수 있다 [판단]. '확인된' 80% 넘는 값은 막지 않아야 한다."
+  },
+  {
+   "id": "D-mandel-karvetski-dhami-2018",
+   "group": "D",
+   "commandLabel": "카르베츠키(2018)",
+   "usedBy": [
+    "D5",
+    "D3",
+    "D2",
+    "D1"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 6,
+     "text": "D: 호이어·ICD 203·만델·카르베츠키(2018)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 28,
+     "text": "D5 격리 합치기: 따로 계산, 가운데 값, 합 100%"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 18,
+     "text": "합치기는 가운데 값. 반반 쪽 움츠림은 보정해 편다."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 29,
+     "text": "확률은 그 분포에서 나온다(합 100%)."
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 35,
+     "text": "D5대로 합치고, 갈리면 폭을 넓힌다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 7,
+     "text": "T5 세 시나리오 확률 합 100% (계산)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 26,
+     "text": "D3 베이즈: 우도비로 곱하되 독립부터, 의심되면 절반"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 25,
+     "text": "D2 진단성: 모든 가설에 맞는 증거는 0점"
+    }
+   ],
+   "original": {
+    "title": "Boosting intelligence analysts' judgment accuracy: What works, what fails?",
+    "authors": "Mandel; Karvetski; Dhami",
+    "year": 2018,
+    "venue": "Judgment and Decision Making 13(6), 607–621",
+    "url": "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/1530E9DAE8F42B2E8FC2B5FE374DB50F/S1930297500006628a.pdf/boosting_intelligence_analysts_judgment_accuracy_what_works_what_fails.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "D5·T5: 합 100%로 맞추고 합친다",
+     "quote": "Specifically, mean absolute error (MAE) in analysts' probability judgments decreased by 61% after first coherentizing their judgments (a process that ensures judgments respect the unitarity axiom) and then aggregating their judgments.",
+     "location": "초록(607쪽)",
+     "verdict": "맞음",
+     "note": "합이 1(100%)이 되게 맞추기만 해도 평균 오차가 0.23→0.15로 35% 줄었다. 그냥 합으로 나누는 방법은 조금 더 좋았다(0.13). 합 100% + 50명 평균이면 0.09(61% 감소)."
+    },
+    {
+     "claim": "D5·엔진 18줄: 가운데 값(중앙값)으로 합친다",
+     "quote": "We aggregated probability judgments in two ways: using an unweighted arithmetic average of coherentized probability judgments and using a coherence-weighted average of such estimates.",
+     "location": "614쪽",
+     "verdict": "일부 맞음",
+     "note": "원문은 '산술 평균'(과 정합성 가중 평균)을 시험했다. 가운데 값(중앙값)은 시험하지 않았다. 가중 평균이 단순 평균보다 낫지 않았다."
+    },
+    {
+     "claim": "몇 명을 합치면 되나(엔진 16줄 에이전트 5~10 참고)",
+     "quote": "However, no additional stepwise increase in group size yielded significant improvements.",
+     "location": "616쪽(그림 2 설명)",
+     "verdict": "맞음",
+     "note": "1명→2명, 2명→3명은 나아짐이 뚜렷했고 그 뒤로는 뚜렷한 나아짐이 없었다. 명령문과 부딪히지는 않는다(참고)."
+    },
+    {
+     "claim": "D3: 베이즈는 독립부터, 의심되면 절반",
+     "quote": "We acknowledge that this simplifying assumption is not necessitated by the task.",
+     "location": "본문(정답을 만든 naive Bayes 모형 설명)",
+     "verdict": "일부 맞음",
+     "note": "독립을 '단순화 가정'이라고 밝히고 썼다. '의심되면 절반'은 원문에 없다 — 명령문이 더한 것."
+    },
+    {
+     "claim": "D2·D1: 진단성 / 가설표(ACH)",
+     "quote": "The present research conducted such a test and found that ACH failed to improve intelligence analysts' probabilistic judgments about alternative hypotheses. It even had a small detrimental effect on some measures of coherence and accuracy.",
+     "location": "토론(616~621쪽)",
+     "verdict": "일부 맞음",
+     "note": "ACH 단계에 '진단성 없는 증거를 빼고 표를 고친다'가 있다고 적었다(611~612쪽). 그러나 ACH를 쓴 무리가 정확도를 높이지 못했고 조금 나빠졌다. 진단성으로 증거를 고르는 것만으로는 확률이 정확해지지 않는다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "합 100% 맞추기와 따로 낸 판단 합치기는 쓴다. 가운데 값만 믿지 말고 평균도 함께 재어 시장 점수로 고른다. 가설표(ACH)만으로 정확해진다고 기대하지 않는다.",
+   "reason": "전문가 심사 학술지 원문에서 '합 100% + 합치기'가 오차를 61% 줄였다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "D5",
+    "E2",
+    "F4"
+   ],
+   "notes": "명령문의 '카르베츠키(2018)'는 이 논문(첫 저자 Mandel, 둘째 저자 Karvetski)으로 짐작 [짐작]. 출판사(Cambridge) 공식 PDF로 읽었다."
+  },
+  {
+   "id": "E-klein-2007",
+   "group": "E",
+   "commandLabel": "클라인",
+   "usedBy": [
+    "E1"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 7,
+     "text": "E: 클라인·SSCI·화이트(2000)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 31,
+     "text": "E1 미리 장례식: '이미 틀렸다면 왜?'"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 39,
+     "text": "반론은 E1·E2·E4로, 자리는 고리마다 바꾼다."
+    }
+   ],
+   "original": {
+    "title": "Performing a Project Premortem",
+    "authors": "Gary Klein",
+    "year": 2007,
+    "venue": "Harvard Business Review (September 2007)",
+    "url": "https://hbr.org/2007/09/performing-a-project-premortem"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "E1: 미리 장례식 — 이미 틀렸다면 왜?",
+     "quote": "In a premortem, team members assume that the project they are planning has just failed—as so many do—and then generate plausible reasons for its demise.",
+     "location": "HBR 누리집 첫머리(유료벽 앞)",
+     "verdict": "맞음",
+     "note": "'이미 실패했다고 치고 까닭을 찾는다' — E1과 같은 뜻."
+    },
+    {
+     "claim": "엔진 39줄: 반론 자리는 고리마다 바꾼다",
+     "quote": "",
+     "location": "읽은 범위(첫머리)에 없음",
+     "verdict": "일부 맞음",
+     "note": "E1 부분은 맞다. '자리를 돌린다'는 읽은 범위에 없다."
+    },
+    {
+     "claim": "효과 숫자",
+     "quote": "",
+     "location": "본문 — 유료벽",
+     "verdict": "못 읽음",
+     "note": "본문의 효과 숫자는 못 읽어서 쓰지 않는다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "방법(이미 틀렸다고 치고 까닭 찾기)의 출처로만 쓴다. 효과 숫자는 원문을 못 읽어 쓰지 않는다.",
+   "reason": "공식 누리집 첫머리에 방법이 그대로 있다. 그러나 본문은 못 읽었고, HBR은 전문가 심사 학술지가 아니다.",
+   "reliability": 8,
+   "structuresUsed": [
+    "C5",
+    "F4"
+   ],
+   "notes": "명령문은 클라인의 어느 글인지 적지 않았다 — 이 글로 짐작 [짐작]. 신뢰도 8은 '경영 잡지, 전문가 심사 아님'이라는 [판단]."
+  },
+  {
+   "id": "E-ssci-2004",
+   "group": "E",
+   "commandLabel": "SSCI",
+   "usedBy": [
+    "E3"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 7,
+     "text": "E: 클라인·SSCI·화이트(2000)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 33,
+     "text": "E3 층 쌓기 금지: 짐작 위에 판단을 세우지 않는다"
+    },
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "line": 4,
+     "text": "S3 층 쌓기: [짐작] 위에 세운 [판단] 수 = 0"
+    }
+   ],
+   "original": {
+    "title": "Report of the Select Committee on Intelligence on the U.S. Intelligence Community's Prewar Intelligence Assessments on Iraq (S. Rept. 108-301)",
+    "authors": "U.S. Senate Select Committee on Intelligence",
+    "year": 2004,
+    "venue": "미국 상원 정보위원회 보고서 (2004-07-09)",
+    "url": "https://www.govinfo.gov/app/details/CRPT-108srpt301"
+   },
+   "readDirectly": false,
+   "verified": [
+    {
+     "claim": "E3: 층 쌓기 금지 — 보고서의 'layering' 결론",
+     "quote": "",
+     "location": "못 찾음",
+     "verdict": "못 읽음",
+     "note": "상원 누리집 PDF와 govinfo PDF는 글자 없는 스캔본이었고, govinfo 글자판은 표지 뒤가 '[TEXT NOT AVAILABLE]'였다. 뉴스 사본(NBC 등)은 10점이 아니라 쓰지 않았다."
+    }
+   ],
+   "decision": "보류",
+   "condition": "글자를 읽을 수 있는 공식본(글자 인식본 포함)을 찾으면 다시 정한다.",
+   "reason": "원문을 못 읽었다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "F4"
+   ],
+   "notes": "SSCI를 이 보고서로 짐작 [짐작]. E3의 뜻 가운데 '바탕 정보와 가정·판단을 가른다'는 ICD 203 D.6.e.(3)이 받친다(D-icd203 항목). '층 쌓기'라는 말의 출처는 확인 못 함."
+  },
+  {
+   "id": "E-white-2000",
+   "group": "E",
+   "commandLabel": "화이트(2000)",
+   "usedBy": [
+    "E6"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 7,
+     "text": "E: 클라인·SSCI·화이트(2000)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 36,
+     "text": "E6 겉맞춤 경계: 시도 수를 세고 우연을 거른다"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 11,
+     "text": "[진화 — E6·F6]"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 12,
+     "text": "시도는 다 적고, SPA 검정으로 우연을 거른다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 24,
+     "text": "T20 시도가 장부에 다 있고 SPA를 거침 (목록)"
+    },
+    {
+     "file": "atlas4h/command/02-watch.txt",
+     "line": 9,
+     "text": "S8 겉맞춤: 같은 자료로 고치고 채점한 곳 = 0"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 19,
+     "text": "채점에 쓸 자료로 엔진을 맞추지 않는다."
+    }
+   ],
+   "original": {
+    "title": "A Reality Check for Data Snooping",
+    "authors": "Halbert White",
+    "year": 2000,
+    "venue": "Econometrica 68(5), 1097–1126",
+    "url": "https://users.ssc.wisc.edu/~bhansen/718/White2000.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "S8·명령 19줄: 같은 자료로 고치고 채점하지 않는다",
+     "quote": "Data snooping occurs when a given set of data is used more than once for purposes of inference or model selection.",
+     "location": "초록(1097쪽)",
+     "verdict": "맞음",
+     "note": "같은 자료를 두 번 이상 쓰면 '우연'을 '실력'으로 볼 수 있다는 뜻."
+    },
+    {
+     "claim": "E6: 시도 수를 세고 우연을 거른다",
+     "quote": "...testing the null hypothesis that the best model encountered in a specification search has no predictive superiority over a given benchmark model.",
+     "location": "초록(1097쪽)",
+     "verdict": "맞음",
+     "note": "찾아본 모형 전부를 넣고 '그중 제일 좋은 것도 기준보다 낫지 않다'를 검정한다 — 시도 장부가 다 있어야 한다."
+    },
+    {
+     "claim": "E6 경고",
+     "quote": "Conducting inference without properly accounting for the specification search can be extremely misleading.",
+     "location": "본문(쪽 번호는 못 봄)",
+     "verdict": "맞음",
+     "note": "찾아본 과정을 빼고 판정하면 크게 속는다."
+    },
+    {
+     "claim": "채점 12줄·T20: SPA 검정으로",
+     "quote": "",
+     "location": "해당 없음",
+     "verdict": "일부 맞음",
+     "note": "화이트는 Reality Check(RC)다. SPA는 뒤에 나온 다른 논문(Hansen)이라 이번에 읽지 않았다(엔진 쪽 몫)."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "시도 장부에 모든 시도를 남기고, 그 전부를 넣어 검정한다.",
+   "reason": "전문가 심사 학술지 원문에 E6의 뜻이 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E6",
+    "F4"
+   ],
+   "notes": "읽은 사본: 위스콘신대 강의 누리집에 올라간 Econometrica 인쇄본."
+  },
+  {
+   "id": "F-nosek-2018",
+   "group": "F",
+   "commandLabel": "노섹(2018)",
+   "usedBy": [
+    "F1"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 8,
+     "text": "F: 노섹(2018)·그나이팅(2007)·베이조스·아지리스"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 38,
+     "text": "F1 봉인: 결과 보기 전에 적고, 고치지 않는다"
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 23,
+     "text": "T19 판정 기준이 첫 채점 전에 봉인됨 (시각)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 16,
+     "text": "봉인한 판은 고치지 않는다. 봉인 뒤 자료는 안 쓴다."
+    }
+   ],
+   "original": {
+    "title": "The preregistration revolution",
+    "authors": "Brian A. Nosek; Charles R. Ebersole; Alexander C. DeHaven; David T. Mellor",
+    "year": 2018,
+    "venue": "PNAS 115(11), 2600–2606",
+    "url": "https://doi.org/10.1073/pnas.1708274114"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "F1·T19: 결과 보기 전에 적는다",
+     "quote": "An effective solution is to define the research questions and analysis plan before observing the research outcomes—a process called preregistration.",
+     "location": "초록",
+     "verdict": "맞음",
+     "note": "물음과 분석 계획을 결과를 보기 전에 정한다 — F1 앞부분, T19와 같은 뜻."
+    },
+    {
+     "claim": "F1·명령 16줄: 고치지 않는다",
+     "quote": "",
+     "location": "본문 — 못 읽음",
+     "verdict": "못 읽음",
+     "note": "계획을 바꿀 때 어떻게 하라는지(본문)는 pnas.org·PMC가 막혀 못 읽었다. '절대 안 고친다'를 이 논문이 말하는지 확인 못 함."
+    },
+    {
+     "claim": "지난 자료로 재현할 때(명령 49줄 T12 재현)",
+     "quote": "A variety of practical strategies are available to make the best possible use of preregistration in circumstances that fall short of the ideal application, such as when the data are preexisting.",
+     "location": "초록",
+     "verdict": "일부 맞음",
+     "note": "이미 있는 자료로 하는 재현은 '이상적이지 않은 경우'라고 초록이 짚는다. 실용 방법은 본문에 있다(못 읽음)."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "'채점 전에 적는다'의 근거로만 쓴다. '봉인한 판은 고치지 않는다'는 사장님의 넘지 않는 선으로 두고, 이 논문을 근거로 대지 않는다.",
+   "reason": "출판사가 등록한 공식 초록만 읽었고 본문은 막혔다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "F1",
+    "F4"
+   ],
+   "notes": "pnas.org(403), PMC·PubMed(로봇 검사)가 막혀, 출판사가 Crossref에 등록한 초록(https://api.crossref.org/works/10.1073/pnas.1708274114)을 읽었다. Europe PMC 검색은 읽기 도구의 횟수 제한(429)에 걸려 못 읽었다."
+  },
+  {
+   "id": "F-gneiting-raftery-2007",
+   "group": "F",
+   "commandLabel": "그나이팅(2007)",
+   "usedBy": [
+    "F2"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 8,
+     "text": "F: 노섹(2018)·그나이팅(2007)·베이조스·아지리스"
+    },
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 10,
+     "text": "점수: CRPS·구간·브라이어(JASA 2007)"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 39,
+     "text": "F2 바른 점수: 확률·범위에 맞는 점수만 쓴다"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 2,
+     "text": "[채점 — F2·F3·F4]"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 4,
+     "text": "분포 CRPS·범위 구간 점수·확률 브라이어"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 6,
+     "text": "실력 = 1 − 내 오차 ÷ 기준 오차"
+    }
+   ],
+   "original": {
+    "title": "Strictly Proper Scoring Rules, Prediction, and Estimation",
+    "authors": "Tilmann Gneiting; Adrian E. Raftery",
+    "year": 2007,
+    "venue": "Journal of the American Statistical Association 102(477), 359–378",
+    "url": "https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "F2: 바른 점수만 쓴다",
+     "quote": "A scoring rule is proper if the forecaster maximizes the expected score for an observation drawn from the distribution F if he or she issues the probabilistic forecast F, rather than G ≠ F. It is strictly proper if the maximum is unique.",
+     "location": "초록(359쪽)",
+     "verdict": "맞음",
+     "note": "'바른 점수' = 속마음 그대로 낼 때 점수가 가장 좋은 점수."
+    },
+    {
+     "claim": "채점 4줄: 분포 CRPS·범위 구간 점수·확률 브라이어",
+     "quote": "The forecaster is rewarded for narrow prediction intervals, and he or she incurs a penalty, the size of which depends on α, if the observation misses the interval.",
+     "location": "6.2절(370쪽) — 브라이어 362쪽, CRPS 367쪽",
+     "verdict": "맞음",
+     "note": "세 점수가 모두 원문에 있다: 브라이어(362쪽), CRPS(367쪽), 구간 점수(370쪽)."
+    },
+    {
+     "claim": "채점 6줄: 실력 = 1 − 내 오차 ÷ 기준 오차",
+     "quote": "Unfortunately, skill scores of the form (8) are generally improper, even if the underlying scoring rule S is proper.",
+     "location": "2.3절(362쪽)",
+     "verdict": "일부 맞음",
+     "note": "명령문의 실력 식은 이 꼴(8)과 같다 [판단: 오차는 작을수록 좋고 완벽하면 0일 때]. 원문은 이 꼴이 대개 '바르지 않은 점수'가 된다고 경고한다 → 보여 주기에는 쓰되, 판정과 고치기는 CRPS·구간·브라이어 원점수의 차이(DM 검정)로 한다."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "판정과 고치기는 원점수(CRPS·구간·브라이어)로, 실력 점수는 화면 설명용으로만.",
+   "reason": "전문가 심사 학술지 원문이 세 점수와 '바른 점수'의 뜻을 그대로 준다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "F2",
+    "C6"
+   ],
+   "notes": "저자(Raftery) 누리집의 출판본 PDF로 읽었다. 그나이팅 두 편은 저자가 겹친다 — '두 출처로 확인'(C5)할 때 한 자루로 센다(C6)."
+  },
+  {
+   "id": "F-gneiting-balabdaoui-raftery-2007",
+   "group": "F",
+   "commandLabel": "그나이팅(2007)",
+   "usedBy": [
+    "F2"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 8,
+     "text": "F: 노섹(2018)·그나이팅(2007)·베이조스·아지리스"
+    },
+    {
+     "file": "atlas4h/command/08-engine.txt",
+     "line": 22,
+     "text": "목표: 80% 범위는 실제로 80% 안팎을 덮는다."
+    },
+    {
+     "file": "atlas4h/command/10-spec.txt",
+     "line": 16,
+     "text": "T13 80% 덮음 70~90%(30판↑)·위기 따로"
+    }
+   ],
+   "original": {
+    "title": "Probabilistic forecasts, calibration and sharpness",
+    "authors": "Tilmann Gneiting; F. Balabdaoui; Adrian E. Raftery",
+    "year": 2007,
+    "venue": "Journal of the Royal Statistical Society Series B 69(2), 243–268",
+    "url": "https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jrssb.pdf"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "엔진 22줄: 80% 범위는 실제로 80% 안팎을 덮는다",
+     "quote": "We propose a diagnostic approach to the evaluation of predictive performance that is based on the paradigm of maximizing the sharpness of the predictive distributions subject to calibration.",
+     "location": "요약(243쪽)",
+     "verdict": "맞음",
+     "note": "'덮음(보정)을 먼저 지키고, 그 안에서 되도록 좁게'."
+    },
+    {
+     "claim": "보정과 날카로움을 한 번에 재는 점수",
+     "quote": "Scoring rules assign numerical scores to probabilistic forecasts and form attractive summary measures of predictive performance, in that they address calibration and sharpness simultaneously.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": "CRPS 같은 점수가 둘을 함께 잰다."
+    },
+    {
+     "claim": "T13: 80% 덮음 70~90%(30판 넘게)",
+     "quote": "",
+     "location": "해당 없음",
+     "verdict": "일부 맞음",
+     "note": "보정을 재라는 뜻은 맞다. 70~90%와 30판이라는 숫자는 원문에 없다 — 명령문이 정한 값."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "덮음 검사와 CRPS를 함께 본다.",
+   "reason": "'보정 안에서 날카롭게' — F2와 범위 목표가 원문과 같은 말이다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "F2",
+    "C6"
+   ],
+   "notes": "저자 누리집 출판본 PDF. 위 그나이팅·래프터리(2007)와 저자가 겹친다(C6)."
+  },
+  {
+   "id": "F-bezos-2015",
+   "group": "F",
+   "commandLabel": "베이조스",
+   "usedBy": [
+    "F5"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 8,
+     "text": "F: 노섹(2018)·그나이팅(2007)·베이조스·아지리스"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 42,
+     "text": "F5 두 방향 문: 되돌릴 수 있나로 속도를 정한다"
+    }
+   ],
+   "original": {
+    "title": "2015 Letter to Shareholders",
+    "authors": "Jeffrey P. Bezos (Amazon.com, Inc.)",
+    "year": 2015,
+    "venue": "Amazon 공식 주주 편지(투자자 누리집) — 편지에 찍힌 날짜는 못 봄",
+    "url": "https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "F5: 되돌릴 수 있나로 속도를 정한다",
+     "quote": "Some decisions are consequential and irreversible or nearly irreversible – one-way doors – and these decisions must be made methodically, carefully, slowly, with great deliberation and consultation. … Type 2 decisions can and should be made quickly by high judgment individuals or small groups.",
+     "location": "Type 1·Type 2 결정 단락",
+     "verdict": "맞음",
+     "note": "되돌릴 수 없는 결정(한 방향 문)은 천천히, 되돌릴 수 있는 결정(두 방향 문)은 빨리."
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "생각의 틀(되돌릴 수 있나 → 빠르기)로만 쓴다. 효과를 잰 증거는 아니다.",
+   "reason": "회사 공식 편지 원문에 F5가 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "신뢰도 10은 '무엇을 말했나'의 출처로서다. 효과를 잰 실험은 아니다 [판단]. ir.aboutamazon.com 주소가 q4cdn 파일로 넘어갔다."
+  },
+  {
+   "id": "F-argyris-1977",
+   "group": "F",
+   "commandLabel": "아지리스",
+   "usedBy": [
+    "F6"
+   ],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 8,
+     "text": "F: 노섹(2018)·그나이팅(2007)·베이조스·아지리스"
+    },
+    {
+     "file": "atlas4h/command/01-structures36.txt",
+     "line": 43,
+     "text": "F6 이중 고리: 답과 답을 낸 방법을 함께 고친다"
+    },
+    {
+     "file": "atlas4h/command/09-scoring-evolution.txt",
+     "line": 11,
+     "text": "[진화 — E6·F6]"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 32,
+     "text": "비틀림: 채점이 새 물음이 된다(왜 맞고 왜 틀렸나)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 33,
+     "text": "둘째 바퀴(16시): 답을 낸 방법을 다시 판다."
+    }
+   ],
+   "original": {
+    "title": "Double Loop Learning in Organizations",
+    "authors": "Chris Argyris",
+    "year": 1977,
+    "venue": "Harvard Business Review (September 1977)",
+    "url": "https://store.hbr.org/product/double-loop-learning-in-organizations/77502"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "F6: 답과 답을 낸 방법을 함께 고친다",
+     "quote": "In double loop learning, problems are examined and corrected even though correction requires challenge to underlying policies and objectives.",
+     "location": "HBR 공식 상품 쪽 요약",
+     "verdict": "일부 맞음",
+     "note": "원문은 '방법'보다 더 깊은 '밑에 깔린 방침과 목표'까지 묻는 것이다. 명령문의 '답을 낸 방법을 고친다'는 그 일부다."
+    },
+    {
+     "claim": "한 고리(단일 고리) 배움",
+     "quote": "Single loop learning is a process in which organizations are able to correct matters in order to achieve stated objectives.",
+     "location": "HBR 공식 상품 쪽 요약",
+     "verdict": "맞음",
+     "note": "정해진 목표 안에서 잘못을 고치는 것 — 명령문의 첫 바퀴에 해당."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "둘째 바퀴는 '방법'뿐 아니라 '목표·판정 기준이 맞나'도 묻게 할 때 원문 뜻과 맞는다. 봉인된 판정 기준은 다음 봉인 때만 바꾼다.",
+   "reason": "본문은 유료벽이라 공식 요약만 읽었다. HBR은 전문가 심사 학술지가 아니다.",
+   "reliability": 8,
+   "structuresUsed": [
+    "C5",
+    "E2",
+    "F4"
+   ],
+   "notes": "hbr.org 본문은 첫 사례(Product X)에서 끊겼다. 같은 저자의 1991년 HBR 글도 정의 앞에서 끊겼다. 아지리스를 이 글로 짐작 [짐작]."
+  },
+  {
+   "id": "Z-anthropic-long-context",
+   "group": "짜임",
+   "commandLabel": "긴 자료는 위, 명령은 맨 아래(앤트로픽 공식 안내)",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 19,
+     "text": "긴 자료는 위, 명령은 맨 아래(앤트로픽 공식 안내)"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 1,
+     "text": "<명령 — 지킬 것은 이 아래가 전부다>"
+    }
+   ],
+   "original": {
+    "title": "Prompting best practices — Long context prompting",
+    "authors": "Anthropic",
+    "year": "없음(쪽에 날짜 없음)",
+    "venue": "Claude Platform Docs (앤트로픽 공식 문서)",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "긴 자료는 위, 명령은 아래",
+     "quote": "Place your long documents and inputs near the top of your prompt, above your query, instructions, and examples. This improves performance across all models.",
+     "location": "Long context prompting",
+     "verdict": "맞음",
+     "note": "이 단락은 '큰 자료(20k+ tokens)'일 때의 안내다."
+    },
+    {
+     "claim": "최대 30%",
+     "quote": "Queries at the end can improve response quality by up to 30 percent in tests, especially with complex, multidocument inputs.",
+     "location": "Long context prompting",
+     "verdict": "맞음",
+     "note": "'최대', '시험에서', '복잡한 여러 문서일 때' — 늘 30%라는 말이 아니다."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "자료가 길 때(2만 글자 덩이 넘게) 쓴다. 30%는 '최대 30%'로만 말한다.",
+   "reason": "공식 문서에 그대로 있으나 '긴 자료일 때'라는 조건이 붙어 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "A2"
+   ],
+   "notes": "옛 주소(docs.claude.com …/long-context-tips)는 지금 이 쪽으로 넘어간다. 명령문 원본은 17,439바이트라 2만 글자 덩이가 넘는지는 재지 않았다 [모름]."
+  },
+  {
+   "id": "Z-harness-effective-2025",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26)",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 20,
+     "text": "하네스: 앤트로픽 공식 글 셋(2025~26)"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 3,
+     "text": "바탕 일꾼: 첫 실행에서 판만 깔고 끝낸다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 4,
+     "text": "고리 일꾼: 한 번에 한 바퀴, 한 가지만 한다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 5,
+     "text": "평가 일꾼: 통과 표시는 이 일꾼만 바꾼다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 9,
+     "text": "진행 장부: 한 일·다음 일·막힌 일"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 10,
+     "text": "통과 목록: T·K 전부, '안 통과'에서 시작"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 11,
+     "text": "깃 기록: 바꿀 때마다 무엇·왜를 적어 커밋"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 12,
+     "text": "넘겨주기 쪽지: 다음 고리가 이것만 보고 시작하게"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 13,
+     "text": "시작 스크립트: 환경을 켜고 기본 시험을 돌린다"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 15,
+     "text": "1 쪽지·장부·통과 목록·깃 기록을 먼저 읽는다"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 16,
+     "text": "2 기본 시험부터. 깨져 있으면 그것부터 고친다"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 17,
+     "text": "3 한 번에 한 가지: 고칠 거리 하나나 고리 한 바퀴"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 20,
+     "text": "6 장부·쪽지를 쓰고 깨끗한 상태로 끝낸다"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 22,
+     "text": "시험은 고치지 않는다. 통과 표시만 바뀐다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 23,
+     "text": "통과 목록이 다 차기 전엔 '끝났다'고 하지 않는다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 24,
+     "text": "대화 기억에 기대지 않는다. 쪽지와 장부만 믿는다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 9,
+     "text": "8 오래 도는 일꾼은 빈 기억으로 깬다 — 파일이 기억이다."
+    }
+   ],
+   "original": {
+    "title": "Effective harnesses for long-running agents",
+    "authors": "Justin Young (Anthropic)",
+    "year": 2025,
+    "venue": "Anthropic Engineering (2025-11-26)",
+    "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "바탕 일꾼: 첫 실행에서 판만 깐다",
+     "quote": "The very first agent session uses a specialized prompt that asks the model to set up the initial environment: an init.sh script, a claude-progress.txt file that keeps a log of what agents have done, and an initial git commit that shows what files were added.",
+     "location": "The long-running agent problem",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "고리 일꾼: 한 번에 한 가지",
+     "quote": "the next iteration of the coding agent was then asked to work on only one feature at a time.",
+     "location": "Incremental progress",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "평가 일꾼만 통과 표시를 바꾼다",
+     "quote": "We prompt coding agents to edit this file only by changing the status of a passes field, and we use strongly-worded instructions like 'It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality.'",
+     "location": "Feature list",
+     "verdict": "틀림",
+     "note": "이 글에서는 짓는 일꾼(코딩 에이전트)이 passes를 바꾼다. '평가 일꾼만'은 2026년 글(평가 일꾼 분리)과 합쳐 명령문이 더한 것."
+    },
+    {
+     "claim": "진행 장부: 한 일·다음 일·막힌 일",
+     "quote": "ask the model to commit its progress to git with descriptive commit messages and to write summaries of its progress in a progress file",
+     "location": "Incremental progress",
+     "verdict": "일부 맞음",
+     "note": "진행 파일은 있다. '다음 일·막힌 일' 칸은 명령문이 더한 것."
+    },
+    {
+     "claim": "통과 목록: 안 통과에서 시작",
+     "quote": "These features were all initially marked as 'failing'",
+     "location": "Feature list",
+     "verdict": "맞음",
+     "note": "JSON 파일, \"passes\": false 로 시작."
+    },
+    {
+     "claim": "깃 기록: 바꿀 때마다 커밋",
+     "quote": "ask the model to commit its progress to git with descriptive commit messages",
+     "location": "Incremental progress",
+     "verdict": "맞음",
+     "note": "'무엇·왜'를 적으라는 칸 나눔은 명령문이 정한 것."
+    },
+    {
+     "claim": "넘겨주기 쪽지: 이것만 보고 시작",
+     "quote": "Read the git logs and progress files to get up to speed on what was recently worked on.",
+     "location": "Getting up to speed",
+     "verdict": "일부 맞음",
+     "note": "글은 진행 파일·깃 기록·기능 목록을 함께 읽게 한다. '쪽지 이것만'은 명령문이 더한 것(같은 칸 15줄과도 살짝 부딪힘)."
+    },
+    {
+     "claim": "시작 스크립트: 환경을 켜고 기본 시험",
+     "quote": "ask the initializer agent to write an init.sh script that can run the development server, and then run through a basic end-to-end test",
+     "location": "Getting up to speed",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "여섯 걸음 2: 깨져 있으면 그것부터",
+     "quote": "This ensured that Claude could quickly identify if the app had been left in a broken state, and immediately fix any existing bugs.",
+     "location": "Getting up to speed",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "여섯 걸음 6: 깨끗한 상태로 끝낸다",
+     "quote": "leave the environment in a clean state after making a code change",
+     "location": "Incremental progress",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "시험은 고치지 않는다",
+     "quote": "It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality.",
+     "location": "Feature list",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "다 차기 전엔 끝났다고 안 한다",
+     "quote": "To address the problem of the agent one-shotting an app or prematurely considering the project complete, we prompted the initializer agent to write a comprehensive file of feature requirements",
+     "location": "Environment management",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "대화 기억에 기대지 않는다(배운것 8줄)",
+     "quote": "The core challenge of long-running agents is that they must work in discrete sessions, and each new session begins with no memory of what came before.",
+     "location": "The long-running agent problem",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "'평가 일꾼만 통과 표시'·'쪽지만 보고 시작'은 이 글이 아니라 명령문의 선택임을 하네스 문서에 적는다.",
+   "reason": "앤트로픽 공식 글에 하네스 줄 대부분이 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4",
+    "A2"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다."
+  },
+  {
+   "id": "Z-harness-design-2026",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26)",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 20,
+     "text": "하네스: 앤트로픽 공식 글 셋(2025~26)"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 4,
+     "text": "고리 일꾼: 한 번에 한 바퀴, 한 가지만 한다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 5,
+     "text": "평가 일꾼: 통과 표시는 이 일꾼만 바꾼다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 6,
+     "text": "감시자: <감시>를 돈다. 짓는 일꾼과 다른 에이전트."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 12,
+     "text": "넘겨주기 쪽지: 다음 고리가 이것만 보고 시작하게"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 18,
+     "text": "4 '다 됐다' 기준을 평가 일꾼과 먼저 적는다(계약)"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 19,
+     "text": "5 평가 일꾼이 통과를 정하면 커밋한다"
+    }
+   ],
+   "original": {
+    "title": "Harness design for long-running application development",
+    "authors": "Prithvi Rajasekaran (Anthropic Labs)",
+    "year": 2026,
+    "venue": "Anthropic Engineering (2026-03-24)",
+    "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "여섯 걸음 4: 다 됐다 기준을 평가 일꾼과 먼저 적는다(계약)",
+     "quote": "Before each sprint, the generator and evaluator negotiated a sprint contract: agreeing on what 'done' looked like for that chunk of work before any code was written.",
+     "location": "본문(sprint contract)",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "감시자: 짓는 일꾼과 다른 에이전트",
+     "quote": "Separating the agent doing the work from the agent judging it proves to be a strong lever to address this issue.",
+     "location": "본문(평가 일꾼을 따로 둔 까닭)",
+     "verdict": "일부 맞음",
+     "note": "짓는 이와 판정하는 이를 가르라는 것은 맞다. 평가 일꾼과 별도로 '감시자'를 하나 더 두는 것은 명령문이 더한 것."
+    },
+    {
+     "claim": "평가 일꾼: 통과 표시는 이 일꾼만 바꾼다",
+     "quote": "Each criterion had a hard threshold, and if any one fell below it, the sprint failed and the generator got detailed feedback on what went wrong.",
+     "location": "본문",
+     "verdict": "일부 맞음",
+     "note": "판정은 평가 쪽이 한다. '이 일꾼만 표시를 바꾼다'는 글에 없는 말."
+    },
+    {
+     "claim": "여섯 걸음 5: 평가 일꾼이 통과를 정하면 커밋",
+     "quote": "It also had git for version control.",
+     "location": "본문",
+     "verdict": "일부 맞음",
+     "note": "깃을 썼다는 것만 있다. '통과 뒤에만 커밋'은 명령문이 더한 것."
+    },
+    {
+     "claim": "넘겨주기 쪽지",
+     "quote": "context resets—clearing the context window entirely and starting a fresh agent, combined with a structured handoff that carries the previous agent's state.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "한 번에 한 가지",
+     "quote": "work in sprints, picking up one feature at a time from the spec",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "평가 일꾼 분리와 계약은 쓴다. 비용이 크다는 점(글: 혼자 돌릴 때보다 'over 20x more expensive')을 함께 적는다.",
+   "reason": "앤트로픽 공식 글에 계약·평가 일꾼 분리가 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4",
+    "A2"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다. 같은 글은 자기 일을 스스로 채점하면 후하게 준다고 적었다: \"When asked to evaluate work they've produced, agents tend to respond by confidently praising the work—even when, to a human observer, the quality is obviously mediocre.\""
+  },
+  {
+   "id": "Z-context-engineering-2025",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26)",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/12-sources.txt",
+     "line": 20,
+     "text": "하네스: 앤트로픽 공식 글 셋(2025~26)"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 7,
+     "text": "아래 일꾼은 결과를 한 장 요약으로만 올린다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 24,
+     "text": "대화 기억에 기대지 않는다. 쪽지와 장부만 믿는다."
+    },
+    {
+     "file": "atlas4h/command/05-learned.txt",
+     "line": 9,
+     "text": "8 오래 도는 일꾼은 빈 기억으로 깬다 — 파일이 기억이다."
+    }
+   ],
+   "original": {
+    "title": "Effective context engineering for AI agents",
+    "authors": "Prithvi Rajasekaran; Ethan Dixon; Carly Ryan; Jeremy Hadfield (Anthropic Applied AI team)",
+    "year": 2025,
+    "venue": "Anthropic Engineering (2025-09-29)",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "아래 일꾼은 결과를 한 장 요약으로만 올린다",
+     "quote": "Each subagent might explore extensively, using tens of thousands of tokens or more, but returns only a condensed, distilled summary of its work (often 1,000-2,000 tokens).",
+     "location": "Sub-agent architectures",
+     "verdict": "맞음",
+     "note": "'한 장'은 명령문의 말, 글은 '흔히 1,000~2,000 글자 덩이'."
+    },
+    {
+     "claim": "쪽지와 장부만 믿는다",
+     "quote": "Structured note-taking, or agentic memory, is a technique where the agent regularly writes notes persisted to memory outside of the context window.",
+     "location": "Structured note-taking",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "decision": "쓴다",
+   "condition": "",
+   "reason": "앤트로픽 공식 글에 '짧은 요약만 올린다'와 '바깥 쪽지'가 그대로 있다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "C4"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다."
+  },
+  {
+   "id": "Z-c-compiler-2026",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26) — 참고",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 7,
+     "text": "아래 일꾼은 결과를 한 장 요약으로만 올린다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 9,
+     "text": "진행 장부: 한 일·다음 일·막힌 일"
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 10,
+     "text": "통과 목록: T·K 전부, '안 통과'에서 시작"
+    }
+   ],
+   "original": {
+    "title": "Building a C compiler with a team of parallel Claudes",
+    "authors": "Nicholas Carlini (Anthropic)",
+    "year": 2026,
+    "venue": "Anthropic Engineering (2026-02-05)",
+    "url": "https://www.anthropic.com/engineering/building-c-compiler"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "통과 목록(시험)이 정확해야 한다",
+     "quote": "So it's important that the task verifier is nearly perfect, otherwise Claude will solve the wrong problem.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": "시험 코드가 틀리면 일꾼이 엉뚱한 문제를 푼다."
+    },
+    {
+     "claim": "결과는 짧게",
+     "quote": "At most, it should print a few lines of output and log all important information to a file so Claude can find it when needed.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "진행 장부",
+     "quote": "I included instructions to maintain extensive READMEs and progress files that should be updated frequently with the current status.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "decision": "조건부",
+   "condition": "참고로만 — 명령문의 '글 셋'에 드는지 모른다.",
+   "reason": "공식 글이고 하네스 줄을 받치지만, 셋 가운데 하나인지 확인할 길이 없다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다."
+  },
+  {
+   "id": "Z-managed-agents-2026",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26) — 참고",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 1,
+     "text": "<하네스 — 오래 도는 일꾼의 판(앤트로픽 방식)>"
+    },
+    {
+     "file": "atlas4h/command/13-command.txt",
+     "line": 10,
+     "text": "기본: <사양>·<감시>·<하네스>. 올리기만 한다."
+    }
+   ],
+   "original": {
+    "title": "Scaling Managed Agents: Decoupling the brain from the hands",
+    "authors": "Lance Martin; Gabe Cemaj; Michael Cohen",
+    "year": 2026,
+    "venue": "Anthropic Engineering (2026-04-08)",
+    "url": "https://www.anthropic.com/engineering/managed-agents"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "하네스 규칙은 '기본'(올리기만 한다)",
+     "quote": "Harnesses encode assumptions that go stale as models improve.",
+     "location": "본문",
+     "verdict": "일부 맞음",
+     "note": "원문은 모델이 좋아지면 하네스의 가정이 낡는다고 경고한다(같은 글: \"The resets had become dead weight.\"). 명령문은 하네스를 '올리기만 하는 기본'에 두었다 — 낡은 규칙을 내릴 길이 없다는 점과 부딪힐 수 있다 [판단]."
+    }
+   ],
+   "decision": "조건부",
+   "condition": "참고로만. 하네스 규칙도 <학습>처럼 쓴 횟수·도운 횟수를 재어 장부에 남긴다(규칙을 지우지는 않는다).",
+   "reason": "공식 글이지만 명령문의 '글 셋'에 드는지 모르고, 경고로만 쓴다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5",
+    "E2"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다."
+  },
+  {
+   "id": "Z-multi-agent-research-2025",
+   "group": "짜임",
+   "commandLabel": "하네스: 앤트로픽 공식 글 셋(2025~26) — 참고",
+   "usedBy": [],
+   "commandLines": [
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 7,
+     "text": "아래 일꾼은 결과를 한 장 요약으로만 올린다."
+    },
+    {
+     "file": "atlas4h/command/03-harness.txt",
+     "line": 24,
+     "text": "대화 기억에 기대지 않는다. 쪽지와 장부만 믿는다."
+    }
+   ],
+   "original": {
+    "title": "How we built our multi-agent research system",
+    "authors": "Jeremy Hadfield; Barry Zhang; Kenneth Lien; Florian Scholz; Jeremy Fox; Daniel Ford",
+    "year": 2025,
+    "venue": "Anthropic Engineering (2025-06-13)",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system"
+   },
+   "readDirectly": true,
+   "verified": [
+    {
+     "claim": "아래 일꾼은 줄여서 올린다",
+     "quote": "Subagents facilitate compression by operating in parallel with their own context windows, exploring different aspects of the question simultaneously before condensing the most important tokens for the lead research agent.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    },
+    {
+     "claim": "바깥 기억에 계획을 둔다",
+     "quote": "The LeadResearcher begins by thinking through the approach and saving its plan to Memory to persist the context, since if the context window exceeds 200,000 tokens it will be truncated and it is important to retain the plan.",
+     "location": "본문",
+     "verdict": "맞음",
+     "note": ""
+    }
+   ],
+   "decision": "조건부",
+   "condition": "참고로만 — 명령문의 '글 셋'에 드는지 모른다.",
+   "reason": "공식 글이고 하네스 7·24줄을 받치지만, 셋 가운데 하나인지 확인할 길이 없다.",
+   "reliability": 10,
+   "structuresUsed": [
+    "C5"
+   ],
+   "notes": "명령문은 '글 셋'의 이름을 적지 않았다. 하네스 줄과 가장 잘 맞는 셋을 골랐다 [짐작]: Effective harnesses(2025-11-26) · Harness design(2026-03-24) · Effective context engineering(2025-09-29). 나머지 셋은 참고로 읽었다."
+  }
+ ]
+}

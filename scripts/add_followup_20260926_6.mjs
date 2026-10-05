@@ -1,0 +1,57 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const path='public/data/researched-news.json', s=JSON.parse(fs.readFileSync(path));
+const releaseId='official-news-20260926-6';
+if(s.releaseId===releaseId) process.exit(0);
+assert.equal(s.releaseId,'official-news-20260925-5','기존 릴리스와 충돌: 병합 필요');
+const at=new Date().toISOString();
+const files=['confirmations','finance','industrial','consumer','smallcap'].map(v=>`reports/parallel-20260926-${v}.json`);
+const reports=files.map(p=>JSON.parse(fs.readFileSync(p)));
+const requested=[...s.research.followup25.unresolvedCodes];
+assert.equal(requested.length,18);
+const researched=reports.flatMap(r=>r.requestedCodes);
+assert.equal(new Set(researched).size,18);
+assert.deepEqual([...researched].sort(),[...requested].sort());
+const [confirmed,finance,industrial]=reports;
+const kb={id:'REVIEW:COMPANY_GOVERNANCE_RECOMMENDATION-105560-20261002',code:'105560',title:'KB금융 회장 후보 회추위·이사회 추천 절차 예정',eventDate:'2026-10-02',targetDate:'2026-10-02',publishedDate:'2026-06-02',publishedAt:null,sources:[{name:'KB금융 작성·배포 보도자료(한국경제 게재)',url:'https://www.hankyung.com/article/202606023070P'},{name:'KB금융 9/11 후속 후보 선정 보도자료',url:'https://www.newswire.co.kr/newsRead.php?no=1042442'}],channel:'후보자의 법정 자격 검증 통과를 전제로 한 10/2 회추위·이사회 추천 예정 절차. 9/11 후속 발표는 최종 후보 선정과 11/20 주총 계획을 안내한다. 회장 취임 확정일이나 주가 상승 확정이 아니다.',condition:'법령상 자격 검증 통과 조건. 실제 추천 결정과 정정 여부 후속 확인 필요.',evidenceSummary:'6/2 회사 제공 원문에서 10/2 추천 절차를 명시. 9/11 후속 회사 자료와 대조했으나 미래 결정 결과는 미공개.'};
+const additions=[...confirmed.eventCandidates,kb,...industrial.confirmedEvents];
+assert.equal(additions.length,8);
+const newCodes=[...new Set(additions.map(e=>e.code))];
+assert.equal(newCodes.length,5);
+const previous=structuredClone(s.research.assets);
+for(const e of additions){
+ assert.ok(!s.events.some(old=>old.id===e.id),'중복 사건 ID');
+ const kind=e.kind??e.id.slice('REVIEW:'.length).split('-')[0];
+ const urls=e.sources??(e.sourceUrls??[e.sourceUrl]).map(url=>({name:'기업·주최기관 공식 원문',url}));
+ const evidence=[e.evidenceSummary,e.channel,e.priceEffect,e.correctionCheck,e.targetDateBasis].filter(Boolean).join(' ');
+ s.events.push({id:e.id,name:e.title,kind,eventDate:e.eventDate,announcementDate:e.eventDate,targetDate:e.targetDate,scope:{type:'company',codes:[e.code]},availableAt:at,firstObservedAt:at,publishedAt:null,publishedDate:e.publishedDate??null,status:'scheduled',sources:urls.map(src=>({...src,retrievedAt:at,...(e.primaryAccess==='verified_prior_current_reaccess_failed'?{verification:'9/25 공식 본문 확인 기록 보존. 9/26 원문 재접속 실패, 이번 재확인 성공 아님.'}:{})})),channel:evidence+' 비교 가능한 과거 사건 표본 부족으로 수치 영향 유보.',reference:'공식 예정 일정 · 실제 결과 미공개 · 가격 효과 미검증',dateBasis:e.targetDateBasis??e.channel??'공식 달력 날짜. 시각 미확보는 정확 시각으로 만들지 않음.',importance:'review',reviewReleaseId:releaseId,reviewEvidence:structuredClone(e)});
+}
+for(const code of requested){
+ const r=s.research.assets.find(v=>v.code===code), old=previous.find(v=>v.code===code);
+ const report=reports.find(v=>v.requestedCodes.includes(code));
+ const record=report.assets?.find(v=>v.code===code);
+ const own=additions.filter(v=>v.code===code);
+ r.researchHistory=[...(r.researchHistory??[]),{checkedAt:old.checkedAt,status:old.status,note:old.note,researchBasis:old.researchBasis,sources:structuredClone(old.sources)}];
+ r.checkedAt=at;
+ r.status=own.length?'company_schedule_confirmed':'date_not_confirmed';
+ r.note=own.length?own.map(v=>`${v.title} ${v.eventDate}${v.targetDate!==v.eventDate?' (한국 거래일 '+v.targetDate+')':''}.`).join(' ')+' 발표·매출·가격 결과는 미확정이며 수치 영향 유보.':record?.conclusion??record?.note;
+ assert.ok(r.note,`${code} 조사 결론 누락`);
+ if(code==='035250')r.note+=' 9/25 공식 본문 확인 기록을 보존했고 이번 원문 재접속은 실패했습니다.';
+ if(code==='105560')r.note+=' 자격 검증 통과를 전제로 한 추천 예정 절차이며 취임 확정일이 아닙니다.';
+ r.researchBasis=own.length?own.map(v=>v.evidenceSummary??v.channel??v.correctionCheck).filter(Boolean).join(' '):record?.correctionReview??record?.correctionCheck??record?.remainingGap??r.note;
+ const addedSources=[...own.flatMap(v=>v.sources??(v.sourceUrls??[v.sourceUrl]).map(url=>({url,name:'기업·주최기관 공식 원문'}))),...(record?.sources??[])].filter(v=>v.url).map(v=>({...v,name:v.name??v.title??'9/26 조사 경로'}));
+ r.sources=[...new Map([...addedSources,...r.sources].map(v=>[v.url,v])).values()];
+ r.latestResearchReport=files[reports.indexOf(report)];
+}
+const f=s.research.followup25;
+f.fullyConfirmedCompanyScheduleCodes=[...new Set([...f.fullyConfirmedCompanyScheduleCodes,...newCodes])];
+f.unresolvedCodes=f.requestedCodes.filter(v=>!f.fullyConfirmedCompanyScheduleCodes.includes(v));
+f.complete=f.unresolvedCodes.length===0;
+assert.equal(f.unresolvedCodes.length,13);
+f.note=`25종목 중 ${f.fullyConfirmedCompanyScheduleCodes.length}종목 일정 원문 확인, ${f.unresolvedCodes.length}종목 미확보. 미확보는 일정 부재 확정이 아님. 9/26 잔여18종목 모두 병렬 조사 완료; 조건부 절차·사업 행사와 가격 촉매 입증을 구분.`;
+s.research.batchReviewHistory=[...(s.research.batchReviewHistory??[]),structuredClone(s.research.batchReview)];
+s.research.batchReview={checkedAt:at,requestedCodes:requested,searchedCount:18,agentCount:5,allRequestedReviewed:true,allSchedulesConfirmed:false,newlyConfirmedCodes:newCodes,addedEventIds:additions.map(v=>v.id),unresolvedCodes:f.unresolvedCodes,primaryOriginalVerified:['005380','004170','105560','051910'],priorPrimaryVerifiedCurrentReaccessFailed:['035250'],pendingParticipantList:['226950'],reports:files,policy:'5개 에이전트 병렬 조사와 부모 원문 대조. 조건부 일정·확정 참가와 실제 결과·가격효과 구분. 시각 미확보는 관측 시각부터 사용. 과거 원문 성공과 이번 재접속 실패 모두 보존.'};
+s.releaseId=releaseId;s.checkedAt=at;
+Object.assign(s.research,{releaseId,checkedAt:at,eventIds:s.events.map(v=>v.id)});
+fs.writeFileSync(path,JSON.stringify(s));
+console.log({releaseId,added:additions.length,newlyCovered:newCodes,unresolved:f.unresolvedCodes.length});

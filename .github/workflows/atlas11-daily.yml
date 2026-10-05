@@ -1,0 +1,150 @@
+# ATLAS 11 · 매 거래일 자동 실행 (GitHub Actions)
+#   평일 16:00 KST(예비 16:07 · 16:37) 에 관측 수집(collect_context · 실패해도 계속) 뒤 하루치(run_daily + 정규장 종가 수집기 collect_krx_close)를 돌리고, 52 종목이 확정될 때까지 10분마다 최대 6번 더 시도한 뒤
+#   화면 묶음을 만들고 기록(reports/ · public/data/ · public/downloads/)을 커밋·푸시하고, Drop ZIP 을 산출물로 올린다.
+#   NETLIFY_AUTH_TOKEN 비밀이 있을 때만 Netlify 에 배포한다(없으면 건너뜀). NETLIFY_SITE_ID 가 없으면 새 사이트를 만들어 deploy/netlify-site.json 에 적는다.
+#   이 파일이 저장소의 기본 가지에 올라가 있고 Actions 가 켜져 있어야 돈다 — 그 전에는 아무것도 돌지 않는다. 공휴일에는 run_daily 가 '거래일 아님'으로 끝난다.
+name: atlas11-daily
+
+on:
+  schedule:
+    # 명령서의 수집 시작 시각은 16:00 KST 다. 그런데 GitHub 예약은 매시 정각 부근에 몰리면 늦거나 빠질 수 있다
+    # (공식 문서 · 2026-09-30 16:00 예약이 실제로 오지 않았다). 그래서 16:00 을 기본으로 두고 16:07 · 16:37 에 예비를 건다.
+    # 예비 실행은 gate 가 「오늘 이미 끝남」을 보면 아무것도 하지 않는다(중복 발행·중복 기록 없음).
+    # 주의: GitHub 예약은 cron 줄을 마지막으로 고친 계정의 이름으로 돈다. 이 비공개 저장소에 권한이 없는 계정(Claude·봇 커밋)이 cron 줄을 고치면
+    #       워크플로가 「active」로 보여도 예약이 조용히 오지 않는다(2026-09-29·30 실제로 0회). cron 줄은 저장소 주인이 GitHub 화면에서 직접 고친다.
+    - cron: '1 7 * * 1-5'    # 16:00 KST (기본)
+    - cron: '7 7 * * 1-5'    # 16:07 KST (예비)
+    - cron: '37 7 * * 1-5'   # 16:37 KST (예비)
+  workflow_dispatch:
+
+concurrency:
+  group: atlas11-daily
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      skip: ${{ steps.g.outputs.skip }}
+      reason: ${{ steps.g.outputs.reason }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: g
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then node scripts/atlas11/already_done.mjs >> "$GITHUB_OUTPUT"; else echo "skip=false" >> "$GITHUB_OUTPUT"; echo "reason=손으로 시작한 실행" >> "$GITHUB_OUTPUT"; fi
+          cat "$GITHUB_OUTPUT"
+
+  daily:
+    needs: gate
+    if: needs.gate.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Seoul
+      # secrets 는 if: 조건에서 바로 쓸 수 없으므로 env 로 옮겨 검사한다
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - name: Checkout (full history for immutable records)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Context collection (market · investor flows · news · disclosures · macro — record only, never blocks the daily run)
+        continue-on-error: true
+        timeout-minutes: 8
+        run: node scripts/atlas11/collect_context.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Daily run (retry up to 6 times every 10 minutes while confirmedTodayStocks < 52)
+        id: daily
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p reports/atlas11/operations
+          attempt=0; code=0; confirmed=0; status=unknown
+          while :; do
+            attempt=$((attempt + 1))
+            now="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "::group::attempt ${attempt} · --now ${now}"
+            out="$(node scripts/atlas11/run_daily.mjs --collector scripts/atlas11/collect_krx_close.mjs --now "$now")" && code=0 || code=$?
+            json="$(printf '%s\n' "$out" | tail -n 1)"
+            echo "$json"
+            confirmed="$(node -e 'try{const j=JSON.parse(process.argv[1]);console.log(Number.isFinite(j.confirmedTodayStocks)?j.confirmedTodayStocks:0)}catch{console.log(0)}' "$json")"
+            status="$(node -e 'try{console.log(String(JSON.parse(process.argv[1]).status||"unknown"))}catch{console.log("no_json")}' "$json")"
+            echo "::endgroup::"
+            echo "attempt=${attempt} exit=${code} status=${status} confirmedTodayStocks=${confirmed}"
+            if [ "$code" = "0" ] || [ "$confirmed" -ge 52 ]; then break; fi
+            case "$status" in closed_session|before_regular_close|failed_validation|failed) echo "not retryable: ${status}"; break;; esac
+            if [ "$attempt" -ge 7 ]; then echo "given up after ${attempt} attempts (confirmedTodayStocks=${confirmed})"; break; fi
+            echo "confirmedTodayStocks=${confirmed} < 52 · waiting 10 minutes before attempt $((attempt + 1))"
+            sleep 600
+          done
+          {
+            echo "exit_code=${code}"
+            echo "status=${status}"
+            echo "confirmed=${confirmed}"
+            echo "attempts=${attempt}"
+          } >> "$GITHUB_OUTPUT"
+          echo "### atlas11 daily $(date +%Y-%m-%d)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- exit ${code} · status ${status} · confirmedTodayStocks ${confirmed} · attempts ${attempt}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build view bundle
+        run: node scripts/atlas11/build_view.mjs
+
+      - name: Commit and push records
+        shell: bash
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -A reports/ public/data/ public/downloads/
+          if git diff --cached --quiet; then
+            echo "no record changes to commit"
+          else
+            git commit -m "atlas11 daily $(date +%Y-%m-%d) [skip ci]"
+            git pull --rebase -q || { echo "::error::rebase failed"; exit 1; }
+            git push
+          fi
+
+      - name: Package Drop zip (dist/ + out/ATLAS11_Drop_*.zip)
+        run: node scripts/atlas11/package.mjs --no-full --out out
+
+      - name: Upload Drop zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas11-drop-${{ github.run_number }}
+          path: out/ATLAS11_Drop_*.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Netlify deploy (only when NETLIFY_AUTH_TOKEN secret is set · creates its own site when NETLIFY_SITE_ID is not set)
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        continue-on-error: true
+        run: node scripts/atlas11/deploy_netlify.mjs --dir dist
+
+      - name: Commit deploy record
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        shell: bash
+        run: |
+          git add -A reports/
+          [ -f deploy/netlify-site.json ] && git add deploy/netlify-site.json
+          if git diff --cached --quiet; then echo "no deploy record"; else git commit -m "atlas11 deploy record $(date +%Y-%m-%d) [skip ci]" && git pull --rebase -q && git push; fi
+
+      - name: Result
+        shell: bash
+        run: |
+          echo "daily exit=${{ steps.daily.outputs.exit_code }} status=${{ steps.daily.outputs.status }} confirmed=${{ steps.daily.outputs.confirmed }} attempts=${{ steps.daily.outputs.attempts }}"
+          if [ "${{ steps.daily.outputs.exit_code }}" != "0" ]; then echo "::warning::daily run ended with exit ${{ steps.daily.outputs.exit_code }} (${{ steps.daily.outputs.status }}) — records were still committed; see reports/atlas11/operations/latest.json"; fi

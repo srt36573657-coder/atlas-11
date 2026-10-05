@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = "publish"
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+[build.environment]
+  NODE_VERSION = "24"
+[[redirects]]
+  from = "/api/atlas"
+  to = "/.netlify/functions/atlas"
+  status = 200
+
+[[redirects]]
+  from = "/api/account"
+  to = "/.netlify/functions/account"
+  status = 200

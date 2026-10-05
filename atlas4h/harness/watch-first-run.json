@@ -1,0 +1,101 @@
+{
+ "schema": "atlas4h-watch-1",
+ "at": "2026-10-01T18:28:00+09:00",
+ "by": "감시자",
+ "head": "81f99ba",
+ "structures": ["A2", "C4", "C5", "E3", "E6", "F1", "F4"],
+ "emptyGroups": "B D — 이 감시 답도 「미완」",
+ "watched": {
+  "commits": "git log a9187c6..81f99ba -- atlas4h (커밋 14개)",
+  "answers": [
+   "atlas4h/harness/first-run-report.md",
+   "atlas4h/harness/conflicts.md",
+   "atlas4h/seal/judgment.json + judgment.md (한 답으로 셈)",
+   "atlas4h/harness/progress.json",
+   "atlas4h/data/contract.md",
+   "atlas4h/sources/part-abc.md",
+   "atlas4h/sources/part-def.md",
+   "atlas4h/sources/part-engine.md"
+  ]
+ },
+ "S": {
+  "S1": 22,
+  "S2": 2,
+  "S3": 2,
+  "S4": 5,
+  "S5": 0,
+  "S6": 1,
+  "S7": 0,
+  "S8": 1
+ },
+ "S1Detail": {
+  "first-run-report.md": {"used": "A B C D E F", "empty": 0},
+  "conflicts.md": {"used": "C E F (5줄)", "empty": 3, "emptyGroups": "A B D"},
+  "judgment.json·judgment.md": {"used": "E F (json 101줄 · md 35줄)", "empty": 4, "emptyGroups": "A B C D"},
+  "progress.json": {"used": "C E F (done 칸 합)", "empty": 3, "emptyGroups": "A B D"},
+  "contract.md": {"used": "없음", "empty": 6, "emptyGroups": "A B C D E F"},
+  "part-abc.md": {"used": "C E F (74줄)", "empty": 3, "emptyGroups": "A B D"},
+  "part-def.md": {"used": "A C E F (115줄)", "empty": 2, "emptyGroups": "B D"},
+  "part-engine.md": {"used": "B C D E F (220줄)", "empty": 1, "emptyGroups": "A"}
+ },
+ "S9": "채점 없음 → 잴 수 없음 (atlas4h/ledger 없음 · 채점 기록 0)",
+ "S10": {
+  "kept": 4,
+  "partly": 2,
+  "of": 6,
+  "notYet": 7,
+  "items": {
+   "1": "일부 — 14칸 저장·이어 붙이면 원문과 같음(check_command ok, sha256 ffe9b40d…0b58c). 「끝날 시각을 알려라」는 파일·커밋 어디에도 기록 없음",
+   "2": "지킴 — 하네스 파일 다섯(progress·passlist·commit-rule·handoff·start.sh)과 일꾼 넷(base·loop·eval·watch). check_harness H1~H6 통과",
+   "3": "일부 — 원문 56건 중 46건 직접 읽음. 쓸지 정한 것 45건(쓴다 21·조건부 24·안 쓴다 0), 보류 11건",
+   "4": "지킴 — contract.md 규칙 36줄 · variables.json 변수 15(출처 둘 10 · 상수 6 · 빈자리 10)",
+   "5": "지킴 — T1~T23·K1~K7 서른 개 시험 코드 · 통과 목록 30줄 · 시험 160개 모두 통과 · run_spec 통과 1(T11)·안 통과 29",
+   "6": "지킴 — judgment.json sealedAt 18:18:39, 커밋 1e4c2bf 18:19:01. 그 뒤 seal 폴더를 고친 커밋 0. atlas4h/ledger 없음",
+   "7-13": "아직 차례 아님. 미리 한 것 0 — a9187c6 뒤 atlas4h 밖 파일 변경 0(화면·워크플로 그대로)"
+  }
+ },
+ "lines": {
+  "금지 말": "일부 — 새 파일(명령문 사본·검사기 목록 빼고)에 금지 말 목록 다섯째·여섯째 말이 낱말 그대로 17번: part-engine.md 24·29·152줄, part-engine.json 14번(다섯째 말 7 · 여섯째 말 7). 모두 논문 설명 뜻이고 판·화면에는 없음. 다른 낱말 속에 글자만 겹친 것(뜻이 다른 낱말)은 안 셈",
+  "옛 엔진": "지킴 — a9187c6..81f99ba 에서 atlas4h 밖 변경 파일 0",
+  "봉인 뒤 수정": "지킴 — atlas4h/seal 을 건드린 커밋은 1e4c2bf 하나",
+  "숫자가 없으면 없음": "일부 — judgment.md 37줄 12시 판 [가정](남은 장 시간 ÷ 390분)을 정해 봉인함"
+ },
+ "findings": [
+  {"S": "S1", "file": "atlas4h/data/contract.md", "line": 1, "what": "A~F 여섯 칸이 다 비었다(구조 번호 0개)", "fix": "쓴 구조 번호를 적고 빈 칸을 채우거나 「미완」으로 적기"},
+  {"S": "S1", "file": "atlas4h/seal/judgment.md", "line": 35, "what": "쓴 구조가 E·F 뿐 — A·B·C·D 네 칸이 빔(judgment.json 101줄도 같음)", "fix": "봉인은 고치지 않음. 새 판정 기준 파일을 낼 때 여섯 칸을 채우기"},
+  {"S": "S1", "file": "atlas4h/harness/conflicts.md", "line": 5, "what": "쓴 구조 C·E·F — A·B·D 세 칸이 빔", "fix": "빈 칸 채우기 또는 「미완」 표시"},
+  {"S": "S1", "file": "atlas4h/harness/progress.json", "line": 10, "what": "done 칸의 구조를 다 합쳐도 C·E·F — A·B·D 세 칸이 빔", "fix": "빈 칸 채우기 또는 「미완」 표시"},
+  {"S": "S1", "file": "atlas4h/sources/part-abc.md", "line": 74, "what": "판단에 쓴 구조 C·E·F — A·B·D 세 칸이 빔", "fix": "빈 칸 채우기 또는 「미완」 표시"},
+  {"S": "S1", "file": "atlas4h/sources/part-def.md", "line": 115, "what": "쓴 구조 A·C·E·F — B·D 두 칸이 빔", "fix": "빈 칸 채우기 또는 「미완」 표시"},
+  {"S": "S1", "file": "atlas4h/sources/part-engine.md", "line": 220, "what": "쓴 구조 B·C·D·E·F — A 한 칸이 빔", "fix": "빈 칸 채우기 또는 「미완」 표시"},
+  {"S": "S2", "file": "atlas4h/data/contract.md", "line": 1, "what": "답 전체에 쓴 구조 번호가 하나도 없다", "fix": "맨 끝에 「쓴 구조: …」 한 줄"},
+  {"S": "S2", "file": "atlas4h/harness/progress.json", "line": 156, "what": "next 4칸(156줄~)과 blocked 5칸(174줄~)에 구조 번호가 없다. 같은 파일 9줄 규칙은 「줄마다 쓴 구조 번호」", "fix": "칸마다 structures 덧붙이기(덧붙이기만)"},
+  {"S": "S3", "file": "atlas4h/harness/first-run-report.md", "line": 18, "what": "B6 [판단] 「재현에서 이긴 폭은 실전에서 줄어든다고 보고 판정한다」 — 받치는 McLean·Pontiff 는 part-abc.json 에서 「조건부」(조건: 「미국, 97개 신호」와 「통계 거품 몫은 많아야 26%」를 함께 적을 때만). 이 줄은 조건을 안 지켰고, 이 판정 방식은 봉인한 judgment.json 에 없다", "fix": "[판단]을 [짐작]으로 낮추거나 조건을 채우기. 판정에 쓰려면 새 판정 기준 파일(judgment-2)로만"},
+  {"S": "S3", "file": "atlas4h/seal/judgment.md", "line": 37, "what": "봉인한 기준(12시 판 단순 전이식)이 [가정](남은 장 시간 ÷ 390분) 위에 섰다. 명령문에 12시 규칙이 없고, 명령문은 「숫자가 없으면 짐작하지 말고 '없음'」", "fix": "봉인은 고치지 않음. 다음 판정 기준 파일에서 12시 단순 전이식은 「없음」으로 두거나 근거를 붙이기"},
+  {"S": "S4", "file": "atlas4h/harness/first-run-report.md", "line": 1, "what": "머리 시각 「18:25 KST」 — 이 파일을 넣은 커밋 81f99ba 는 18:20:32 KST. 커밋보다 뒤 시각", "fix": "커밋 시각(18:20)으로 적기"},
+  {"S": "S4", "file": "atlas4h/harness/first-run-report.md", "line": 15, "what": "「9/29·9/30·10/1 사흘 … 0번」 — 든 출처 atlas11-daily.yml 주석(11·14줄)은 9/29·9/30 만 적음. 10/1 은 저장소 안에 근거 파일 없음(GitHub 실행 기록은 저장 안 됨)", "fix": "10/1 을 빼거나 실행 기록을 파일로 남기고 그 파일을 적기"},
+  {"S": "S4", "file": "atlas4h/harness/conflicts.md", "line": 21, "what": "같은 「9/29·9/30·10/1 예약 0회」 — 10/1 근거 없음", "fix": "위와 같음"},
+  {"S": "S4", "file": "atlas4h/harness/progress.json", "line": 198, "what": "같은 「9/29·9/30·10/1 예약 0회(atlas11-daily 주석)」 — 주석은 9/29·30 만", "fix": "위와 같음(덧붙이기로 정정)"},
+  {"S": "S4", "file": "atlas4h/harness/progress.json", "line": 81, "what": "첫 실행 5(70ff430) 시각 「17:58 KST」 — 커밋 70ff430 은 17:44:10 KST. 14분 늦게 적힘", "fix": "덧붙이기로 「17:44」 정정 줄 남기기"},
+  {"S": "S4", "counted": false, "file": "atlas4h/harness/progress.json", "line": 96, "what": "참고(셈 밖·1분 차): 96줄 「18:10」 대 eb0d399 18:11:42, 117줄 「18:18」 대 7301029 18:17:22", "fix": "같은 규칙(커밋 분)으로 맞추기"},
+  {"S": "S4", "counted": false, "file": "atlas4h/harness/first-run-report.md", "line": 31, "what": "참고(숫자 아님·셈 밖): E1 이 든 `spec/checks.mjs` 머리말 「정밀한 시험으로 옮기지 못한 줄」 문구가 그 파일에 없다. 뜻(엔진이 스스로 적은 칸을 믿음)은 checks.mjs 720~736줄 T17 이 판의 leakCheck.postSealHits 를 그대로 읽는 것으로 확인됨", "fix": "든 곳을 checks.mjs 720~736줄로 바꾸기"},
+  {"S": "S6", "file": "atlas4h/harness/first-run-report.md", "line": 42, "what": "「첫 실행 1~6번은 깔렸다」를 단정 — 자기 잣대(8줄 A2)가 1번의 「끝날 시각 알리기」(기록 없음)와 3번의 보류 11건을 재지 않았다", "fix": "「1·3번은 일부」로 적거나 빠진 두 가지를 채운 뒤 단정"},
+  {"S": "S7", "counted": false, "file": "atlas4h/spec/checks.mjs", "line": 720, "what": "참고(지금은 판 0개라 셈 밖): T17 누수 검사가 판이 스스로 적은 leakCheck.postSealHits 를 믿는다. 판이 생기면 봉인 뒤 정보를 이 시험이 못 볼 수 있다", "fix": "감시가 판 입력의 시각을 봉인 시각과 따로 맞대어 세기"},
+  {"S": "S8", "file": "atlas4h/harness/progress.json", "line": 104, "what": "「심은 흠 92 · 잡은 흠 92」(104~105줄, 커밋 eb0d399) — 검사 코드와 심은 흠을 같은 커밋에서 같은 일꾼이 만들고 그 흠으로 잼. 따로 떼어 둔 흠 묶음 없음", "fix": "짓는 이가 못 본 흠 묶음(감시나 평가 일꾼이 만든 것)으로 다시 재기"},
+  {"S": "S8", "counted": false, "file": "atlas4h/seal/judgment.json", "line": 1, "what": "참고(셈 밖): 단순 전이식 상수는 「9월 2일 실측, 폭락기 표본」. 7번 재현 기간이 그 표본과 겹치면 기준 쪽이 같은 자료로 맞춘 셈이 된다", "fix": "7번 재현 때 겹친 기간을 빼고 재기"}
+ ],
+ "rechecked": {
+  "note": "다시 세어 맞은 숫자(찾은 것 없음)",
+  "sources": "56건 · 직접 읽음 46 · 쓴다 21 · 조건부 24 · 보류 11 · 안 쓴다 0 (part-*.json decision·readDirectly)",
+  "variables": "변수 15 · 출처 둘 10 · 열쇠 없이 둘 다 닿는 것 3 · 상수 6 · 빈자리 10 (variables.json)",
+  "contract": "규칙 36줄 (contract.md 95~96줄이 35·36)",
+  "tests": "node --test 160개 통과 · 0 실패",
+  "harness": "check_harness H1~H6 통과",
+  "spec": "run_spec 통과 1(T11) · 안 통과 29 · 통과 목록 30줄 모두 「안 통과」 (spec-latest.json 은 돌린 뒤 되돌림)",
+  "lock": "tests.lock.json 26파일",
+  "seal": "judgment.json sha256 c5243792…652fe3d · trials.jsonl 595a839f…8781615 (progress.json 과 같음)",
+  "command": "check_command ok · 14칸 · sha256 ffe9b40d…0b58c",
+  "kupiec": "30판 80% 범위 · 5% 수준에서 20/30(66.7%)~27/30(90.0%) 「틀렸다고 못 함」 (conflicts.md 3번과 같음)",
+  "others": "50.53%·49.41%(reports/atlas11/overhaul/diagnosis.md 18줄) · 58%(part-abc.json 422줄) · 0.20·0.31·0.27(command/06 11·13줄) · 막힌 일 5 · 부딪힌 곳 13"
+ }
+}

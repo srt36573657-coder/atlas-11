@@ -1,0 +1,17 @@
+{"id":"D1","pass":true,"file":"config/atlas11/scoring-policy.v1.json","sha256":"395c9821305b8226a6958855ef8efb9257a46bcaf938fc0ba85c80126311e746"}
+{"id":"D2","pass":true,"file":"config/atlas11/evolution.v1.json","sha256":"0fdb0105174880ae9f7eda06c4f70410507085553e51aba5ae437ceb95ddd340"}
+{"id":"D3","pass":true,"file":".github/workflows/atlas11-daily.yml","cronLinesSha256":"4f1bad5ce85973fd794a826bb062de5e6bbc94d7f64040e41295dee93a4a5f0c"}
+{"id":"D4","pass":true,"base":"45dbca0","ledgerDeletedLines":0,"ledgerAddedLines":0}
+{"id":"D5","pass":true,"scannedFiles":12,"hits":[]}
+{"id":"D6","pass":true,"publishEnd":"2026-10-30"}
+{"id":"D7","pass":true,"scannedCodeFiles":1,"dispatchCalls":[]}
+{"id":"D8","pass":true,"prompt":"reports/atlas11/overhaul/prompt-v6.md","sha256":"47b17f0df07523bac142be1dc7d2a638e5223127868b81991d7f1d83be0640ae","progress":"47b17f0df07523bac142be1dc7d2a638e5223127868b81991d7f1d83be0640ae"}
+{"summary":true,"checks":8,"failed":[]}
+{"id":"T0","pass":true,"expectedSha256Ok":true,"recount":"reports/atlas11/overhaul/recount-2.json","same":"33/33","diff":[]}
+{"summary":true,"checks":1,"failed":[]}
+{"id":"inject:T0","pass":true,"planted":"정답표 사본의 칸 104→105","caught":true}
+{"id":"inject:D1","pass":true,"planted":"채점 규칙 사본의 한 글자 바꿈","caught":true}
+{"id":"inject:D5","pass":true,"planted":"사본에 가짜 ghp_ 무늬","caught":true}
+{"id":"inject:원본그대로","pass":true,"file":"config/atlas11/scoring-policy.v1.json"}
+{"id":"inject:원본그대로","pass":true,"file":"reports/atlas11/overhaul/expected.json"}
+{"summary":true,"checks":5,"failed":[]}

@@ -1,0 +1,386 @@
+{
+  "schema": 1,
+  "assignment": "/root/consumer_13",
+  "observedAt": "2026-09-26T12:20:15.117400+00:00",
+  "period": {
+    "start": "2026-09-17",
+    "end": "2026-10-30"
+  },
+  "requestedCodes": [
+    "033780",
+    "047050",
+    "002380",
+    "111770"
+  ],
+  "allAssignedReviewed": true,
+  "allConfirmed": false,
+  "integrated": false,
+  "assets": [
+    {
+      "code": "111770",
+      "name": "영원무역",
+      "status": "primary_verified_pending_review",
+      "newEvents": [
+        {
+          "code": "111770",
+          "name": "영원무역 PERFORMANCE DAYS2026 참가",
+          "eventId": "REVIEW:111770:PERFORMANCE-DAYS:20261013",
+          "eventDate": "2026-10-13",
+          "targetDate": "2026-10-14",
+          "eventLocalTime": "2026-10-13T09:00:00",
+          "eventTimezone": "Europe/Berlin",
+          "eventKoreaTime": "2026-10-13T16:00:00+09:00",
+          "publisherRole": "organizer",
+          "sourceUrl": "https://www.performancedays.com/press-releases.html?cid=45703&file=files/performancedays/content/press/press-releases/Englisch/PRESS+RELEASE+3RD+HALL+1+(1).pdf",
+          "observedAt": "2026-09-26T12:20:15.117400+00:00",
+          "publishedAt": null,
+          "publishedTimeKnown": false,
+          "publicationBasis": "First current observation; no backdating to undated page or secondary press date.",
+          "scope": "company",
+          "assetCodes": [
+            "111770"
+          ],
+          "priceImpact": "ABSTAIN",
+          "trustProbability": null,
+          "historicalComparableSamples": null,
+          "researcher": "/root/consumer_13",
+          "reviewStatus": "AWAITING_ROOT_REVIEW",
+          "sources": [
+            {
+              "url": "https://www.performancedays.com/press-releases.html?cid=45703&file=files/performancedays/content/press/press-releases/Englisch/PRESS+RELEASE+3RD+HALL+1+(1).pdf",
+              "reference": "turn482view0",
+              "location": "PDF p1, lines12-14 and24-30",
+              "summary": "Official organiser press release identifies October13-14 2026 Munich and first-time exhibitor Youngone Corporation.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.performancedays.com/supplier/youngone-corporation.html",
+              "reference": "turn485view0",
+              "location": "lines123-177,205-209",
+              "summary": "YOUNGONE CORPORATION, Munich boothB30/B31, 159Mallijae-roSeoul; links to youngonecorporation.com.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.performancedays.com/the-fair/visit/location-opening-hours.html",
+              "reference": "turn467view3",
+              "location": "lines125-151",
+              "summary": "October13-14 2026; day1 opens09:00 at MesseMuenchenGermany.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.youngone.co.kr/invest/youngone/stock",
+              "reference": "turn489view0",
+              "location": "lines167,279-281",
+              "summary": "Issuer names Youngone111770 with matching Seoul address. Stale zero stock-price widget is not used for pricing.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.youngone.co.kr/invest/youngone/ir-yo/",
+              "reference": "turn487view0",
+              "location": "lines67-71,164-169",
+              "summary": "Issuer links to same English company website; latest IR2Q26August21.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            }
+          ],
+          "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+          "latestCorrectionsChecked": "Current organiser list and opening hours checked; issuer/organiser correction searches found no matching cancellation. Absence is not guaranteed.",
+          "throughSubsidiary": null,
+          "independentParentIR": false,
+          "directIssuerParticipation": true,
+          "evidenceDigest": "535b284478c832fbb9cbf8509f811d1fc2dc25f8118ea1f434287d8e955caa7a"
+        }
+      ],
+      "reason": "Legal corporation, address, stock-code, organiser participation and dated opening all crosschecked. No earnings effect inferred.",
+      "nextAction": "Root independent review, bind accepted eventID and retain ABSTAIN."
+    },
+    {
+      "code": "002380",
+      "name": "KCC",
+      "status": "subsidiary_primary_verified_pending_review",
+      "newEvents": [
+        {
+          "code": "002380",
+          "name": "KCC 간접완전자회사 모멘티브 FAKUMA2026 참가",
+          "eventId": "REVIEW:002380:MOMENTIVE-FAKUMA:20261012",
+          "eventDate": "2026-10-12",
+          "targetDate": "2026-10-13",
+          "eventLocalTime": "2026-10-12T09:00:00",
+          "eventTimezone": "Europe/Berlin",
+          "eventKoreaTime": "2026-10-12T16:00:00+09:00",
+          "publisherRole": "organizer",
+          "sourceUrl": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+          "observedAt": "2026-09-26T12:20:15.117400+00:00",
+          "publishedAt": null,
+          "publishedTimeKnown": false,
+          "publicationBasis": "First current observation; no backdating to undated page or secondary press date.",
+          "scope": "company",
+          "assetCodes": [
+            "002380"
+          ],
+          "priceImpact": "ABSTAIN",
+          "trustProbability": null,
+          "historicalComparableSamples": null,
+          "researcher": "/root/consumer_13",
+          "reviewStatus": "AWAITING_ROOT_REVIEW",
+          "sources": [
+            {
+              "url": "https://www.fakuma-messe.de/en/Exhibitor-Index/52224-momentive-performance/",
+              "reference": "turn452view1",
+              "location": "lines0-1,34-43,55",
+              "summary": "Organiser lists Momentive Performance Materials GmbH at Fakuma2026 hallA4 standA4-4307.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.fakuma-messe.de/dl/Besucherinformation_Fakuma_EN.pdf",
+              "reference": "turn482view1",
+              "location": "PDF p2 lines43-46",
+              "summary": "Fakuma2026 October12-16 Monday-Friday, opens09:00Germany; corrects weekday typo in website text.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.momentive.com/en-us/company/company-overview",
+              "reference": "turn467view4",
+              "location": "lines795,800-801,838",
+              "summary": "Momentive Performance Materials Inc is an indirect wholly-owned subsidiary of KCC Corporation; Germany exhibitor is part of Momentive group. Through-subsidiary mapping; not independent parentIR.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.linkedin.com/company/momentive",
+              "reference": "turn444search0",
+              "location": "company post",
+              "summary": "Momentive-authored post announces October12-16Fakuma and same booth with material demonstrations. Primary author, supplemental only.",
+              "level": "primary_issuer_social",
+              "accessStatus": "search_body_read",
+              "observedAt": "2026-09-26T12:20:15.117400+00:00"
+            },
+            {
+              "url": "https://www.momentive.com/en-us/subsidiaries",
+              "reference": "turn535view0 / turn537view0",
+              "location": "lines 792, 931-933",
+              "summary": "Official Momentive list of subsidiaries explicitly names the exhibiting legal entity Momentive Performance Materials GmbH and its matching Leverkusen address.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:30:01.612095+00:00"
+            }
+          ],
+          "dateBasis": "09:00 Europe/Berlin =16:00 Asia/Seoul, after KRX15:30close; next trading day.",
+          "latestCorrectionsChecked": "Current organiser list and opening hours checked; issuer/organiser correction searches found no matching cancellation. Absence is not guaranteed.",
+          "throughSubsidiary": {
+            "company": "Momentive Performance Materials",
+            "ownership": "indirect_wholly_owned",
+            "ownershipSource": "https://www.momentive.com/en-us/company/company-overview",
+            "exhibitingEntity": "Momentive Performance Materials GmbH",
+            "exhibitingEntityMembershipSource": "https://www.momentive.com/en-us/subsidiaries"
+          },
+          "independentParentIR": false,
+          "evidenceDigest": "dd952a36e6fccc316b41925d45947e16e9b37006f1e0c2e4933626dd31838f1a"
+        }
+      ],
+      "reason": "Confirmed subsidiary trade-show participation, not an independent KCC IR event or duplicate LG Chem participation. KCC-direct fixed financial calendar remains unconfirmed.",
+      "nextAction": "Root review subsidiary mapping policy; only label throughSubsidiary and ABSTAIN if accepted."
+    },
+    {
+      "code": "033780",
+      "name": "KT&G",
+      "status": "primary_verified_pending_review",
+      "newEvents": [
+        {
+          "code": "033780",
+          "name": "KT&G 시행 두정역 푸르지오 그랑피크 정당계약 개시",
+          "eventId": "REVIEW:033780:GRANPEAK-CONTRACT-OPEN:20261005",
+          "eventDate": "2026-10-05",
+          "eventEndDate": "2026-10-08",
+          "targetDate": "2026-10-06",
+          "targetDateCandidate": "2026-10-06",
+          "targetDateReview": "Root independently checked existing Korean exchange calendar: October 5 excluded; next trading date October 6.",
+          "eventLocalTime": "2026-10-05T10:00:00",
+          "eventTimezone": "Asia/Seoul",
+          "eventKoreaTime": "2026-10-05T10:00:00+09:00",
+          "publisherRole": "issuer_project_organizer",
+          "sourceUrl": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%B6%95%EC%95%BD.pdf",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00",
+          "publishedAt": null,
+          "publishedDate": "2026-09-04",
+          "publishedTimeKnown": false,
+          "publicationBasis": "Official document identifies 2026-09-04 notice date. First current observation is 2026-09-26; no archived publication time or original vintage claimed.",
+          "scope": "company",
+          "assetCodes": [
+            "033780"
+          ],
+          "priceImpact": "ABSTAIN",
+          "trustProbability": null,
+          "historicalComparableSamples": null,
+          "researcher": "/root/consumer_13",
+          "reviewStatus": "AWAITING_ROOT_REVIEW",
+          "throughSubsidiary": null,
+          "directIssuerParticipation": true,
+          "independentParentIR": false,
+          "eventType": "scheduled_property_sales_contract_window",
+          "sources": [
+            {
+              "url": "https://www.prugio.com/hb/2026/granpeak/",
+              "reference": "turn542view0",
+              "location": "lines 85-97, 354-363",
+              "summary": "Official contractor project site displays the October 5-8 2026 contract period.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:30:01.612095+00:00"
+            },
+            {
+              "url": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%B6%95%EC%95%BD.pdf",
+              "reference": "turn545view1",
+              "location": "PDF p1, lines 118-134",
+              "summary": "Official approved notice names the developer KT&G Corporation, company registration 160111-0067804, and the same October 5-8 2026 contract period.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:30:01.612095+00:00"
+            },
+            {
+              "url": "https://www.prugio.com/hb/2026/granpeak/assets/pdf/%EC%9E%85%EC%A3%BC%EC%9E%90%EB%AA%A8%EC%A7%91%EA%B3%B5%EA%B3%A0%20%EC%A0%84%EB%AC%B8.pdf",
+              "reference": "local normal HTTP 200 snapshot; web large-PDF timeout",
+              "location": "PDF p43 contract schedule; p83 developer identity and timetable",
+              "summary": "Official full notice specifies contract hours 10:00-16:30 and identifies KT&G as developer. Current project page agrees with dates.",
+              "level": "primary",
+              "accessStatus": "body_read",
+              "observedAt": "2026-09-26T12:30:01.612095+00:00"
+            }
+          ],
+          "latestCorrectionsChecked": "Current official project homepage and linked full/brief notices agree. Search found no specific later change notice; no absolute absence of corrections claimed.",
+          "interpretation": "Only opening of the announced sales-contract window. Not confirmed completed contracts, sell-out, revenue recognition, future cash receipt, return direction, earnings catalyst, or completion of the development.",
+          "evidenceDigest": "5de152eccd05c43b589a95f85fe55224062ad162bb4e7b1afc76d12cff4eb869",
+          "dateBasis": "Official full notice: 2026-10-05 10:00 Asia/Seoul. Existing validated application calendar maps the non-trading day to 2026-10-06."
+        }
+      ],
+      "checkedUrls": [
+        "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026",
+        "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=3",
+        "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=4",
+        "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=5"
+      ],
+      "reason": "Official project schedule and approved developer notice jointly verify a direct KT&G real-estate business calendar. TFWA remains independently unresolved.",
+      "nextAction": "Parent independently review business-event relevance and trading-day mapping, then retain ABSTAIN if accepted.",
+      "previousUnresolvedStatus": {
+        "status": "BLOCKED",
+        "checkedUrls": [
+          "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026",
+          "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=3",
+          "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=4",
+          "https://www.tfwa.com/exhibitors/tfwa-world-exhibition-and-conference/2026?page=5"
+        ],
+        "reason": "TFWA2026Cannes organiser list available but relevantK-page4/5 failed502. Secondary exhibitor list includesKT&G; insufficient to confirm. AsiaPacific2026KT&Glist is a different spring event. Prior2025NDR and2024Cannes excluded.",
+        "nextAction": "Revisit public2026TFWA participant detail when available; currentcandidatepending."
+      }
+    },
+    {
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "status": "BLOCKED_PRIMARY_ROLE_BODY_UNVERIFIED",
+      "newEvents": [],
+      "sources": [
+        {
+          "url": "https://www.all-energy.com.au/en-gb/exhibitor-directory.html?page=2",
+          "reference": "turn492search0",
+          "location": "KEIA exhibitor description",
+          "summary": "Organiser directory says KEIA KoreaPavilion supported byPOSCOInternational at AllEnergyAustralia2026; October28-29Melbourne. BodyopencurrentlyJSshell.",
+          "level": "primary",
+          "accessStatus": "search_body_only",
+          "observedAt": "2026-09-26T12:20:15.117400+00:00"
+        },
+        {
+          "url": "https://www.poscointl.com/irActivity",
+          "reference": "turn487view1",
+          "location": "current2026IRlist",
+          "summary": "Latest eventSeptember16acquisitionbriefing, no futureexactIRdate.",
+          "level": "primary",
+          "accessStatus": "body_read",
+          "observedAt": "2026-09-26T12:20:15.117400+00:00"
+        },
+        {
+          "url": "https://www.keia.kr/",
+          "reference": "turn497view0",
+          "location": "homepage",
+          "summary": "403Forbidden; no bypass used.",
+          "level": "primary",
+          "accessStatus": "403_forbidden",
+          "observedAt": "2026-09-26T12:20:15.117400+00:00"
+        },
+        {
+          "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123511",
+          "reference": "turn511view1",
+          "location": "government notice dated 2026-06-23",
+          "summary": "Government notice confirms KEIA Australia green-energy delegation recruitment; the visible short summary does not verify POSCO company role.",
+          "level": "primary",
+          "accessStatus": "body_read",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00"
+        },
+        {
+          "url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000761137&fileSn=0",
+          "reference": "turn524view0 / ordinary URL fetch",
+          "location": "attachment download",
+          "summary": "Web parser unsupported octet-stream; normal public urllib fetch HTTP 502. Original PDF body not obtained.",
+          "level": "primary",
+          "accessStatus": "502_unread",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00"
+        },
+        {
+          "url": "https://www.all-energy.com.au/en-gb/exhibitor-directory.html?page=2",
+          "reference": "turn492view0 / ordinary URL fetch",
+          "location": "organiser directory",
+          "summary": "Web open returned JavaScript shell; ordinary URL fetch HTTP 403. Search text says Korea Pavilion supported by POSCO International, but direct participation cannot be confirmed.",
+          "level": "primary",
+          "accessStatus": "js_shell_or_403",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00"
+        },
+        {
+          "url": "https://www.export119.go.kr/?menucode=20301&page=107&tmenu=bbs",
+          "reference": "turn529search5 / turn531view1",
+          "location": "possible later recruitment notice",
+          "summary": "Search index exposed July 21-28 additional recruitment, but live pagination moved and did not preserve matching notice. Follow-up body not read.",
+          "level": "government_secondary",
+          "accessStatus": "search_only",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00"
+        },
+        {
+          "url": "https://browncg.co.kr/ko/bbs/download.php?bo_table=notice&no=0&wr_id=1311",
+          "reference": "turn532view0",
+          "location": "independent mirror attachment",
+          "summary": "Publicly linked mirror download reports invalid access. No bypass used.",
+          "level": "secondary",
+          "accessStatus": "invalid_access",
+          "observedAt": "2026-09-26T12:30:01.612095+00:00"
+        }
+      ],
+      "reason": "The October 28-29 organiser calendar is verified, but a support-role search snippet and secondary summaries do not establish a distinct POSCO International company event. Primary KEIA page is forbidden; government attachment fetch failed. No event installed.",
+      "nextAction": "Revisit official KEIA original 2026-43 and July additional recruitment or accessible organiser KEIA profile; verify actual POSCO delegation role, exact program date/hours, and changes. Do not replace missing proof with generic sponsorship or forecast earnings dates."
+    }
+  ],
+  "notes": [
+    "No shared app/engine mutation. Parent must independently review and integrate.",
+    "Searchengine1 returned irrelevant unfilteredresults for several queries; usedsystem2 officialdirectURLs plus ordinaryproxyfetch.",
+    "Historical dividend/source access failures from previous report retained; not retroactivelyfixed.",
+    "KT&G TFWA source remains blocked even though a different direct business calendar was verified. KCC is explicitly a subsidiary participation calendar. None establishes a reliable price-impact probability."
+  ],
+  "lastUpdatedAt": "2026-09-26T12:30:01.612095+00:00",
+  "primaryVerifiedCandidates": 3,
+  "directIssuerBusinessCandidates": 2,
+  "throughSubsidiaryCandidates": 1,
+  "stillUnresolvedCodes": [
+    "047050"
+  ]
+}

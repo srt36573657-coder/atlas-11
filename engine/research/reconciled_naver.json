@@ -1,0 +1,475 @@
+[
+  {
+    "code": "005380",
+    "date": "2026-09-23",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005380&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:29.189Z",
+    "naverClose": 357000,
+    "prior": [
+      {
+        "code": "005380",
+        "date": "2026-09-23",
+        "provider": "INV",
+        "close": "353000",
+        "url": "https://in.investing.com/equities/hyundai-motor-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn65view3",
+        "artifact": "research/inv_open_44.json"
+      },
+      {
+        "code": "005380",
+        "date": "2026-09-23",
+        "provider": "SA",
+        "close": "353500.00",
+        "url": "https://stockanalysis.com/quote/krx/005380/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn33view3",
+        "artifact": "research/sa_new_0.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "010130",
+    "date": "2026-09-22",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=010130&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:29.449Z",
+    "naverClose": 1116000,
+    "prior": [
+      {
+        "code": "010130",
+        "date": "2026-09-22",
+        "provider": "INV",
+        "close": "1122000",
+        "url": "https://www.investing.com/equities/korea-zinc-inc-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn59view2",
+        "artifact": "research/inv_open_20.json"
+      },
+      {
+        "code": "010130",
+        "date": "2026-09-22",
+        "provider": "SA",
+        "close": "1110000.00",
+        "url": "https://stockanalysis.com/quote/krx/010130/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn31view2",
+        "artifact": "research/sa_new_16.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "051910",
+    "date": "2026-09-21",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=051910&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:29.492Z",
+    "naverClose": 261500,
+    "prior": [
+      {
+        "code": "051910",
+        "date": "2026-09-21",
+        "provider": "INV",
+        "close": "260000",
+        "url": "https://www.investing.com/equities/lg-chemicals-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn66view1",
+        "artifact": "research/inv_open_24.json"
+      },
+      {
+        "code": "051910",
+        "date": "2026-09-21",
+        "provider": "SA",
+        "close": "258500.00",
+        "url": "https://stockanalysis.com/quote/krx/051910/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn36view2",
+        "artifact": "research/sa_new_20.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "196170",
+    "date": "2026-09-21",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=196170&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:29.717Z",
+    "naverClose": 256000,
+    "prior": [
+      {
+        "code": "196170",
+        "date": "2026-09-21",
+        "provider": "INV",
+        "close": null,
+        "url": "https://www.investing.com/equities/alteogen-inc-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn60view3",
+        "artifact": "research/inv_open_0.json",
+        "unresolvedProvider": true,
+        "conflictingCloses": [
+          "257250",
+          "255000"
+        ]
+      },
+      {
+        "code": "196170",
+        "date": "2026-09-21",
+        "provider": "SA",
+        "close": "255000.00",
+        "url": "https://stockanalysis.com/quote/kosdaq/196170/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn32view1",
+        "artifact": "research/sa_new_24.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "018260",
+    "date": "2026-09-14",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=018260&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:29.749Z",
+    "naverClose": 215500,
+    "prior": [
+      {
+        "code": "018260",
+        "date": "2026-09-14",
+        "provider": "INV",
+        "close": "216500",
+        "url": "https://in.investing.com/equities/samsung-sds-co-ltd-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn64view0",
+        "artifact": "research/inv_open_28.json"
+      },
+      {
+        "code": "018260",
+        "date": "2026-09-14",
+        "provider": "SA",
+        "close": "218500.00",
+        "url": "https://stockanalysis.com/quote/krx/018260/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn32view2",
+        "artifact": "research/sa_new_24.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "086280",
+    "date": "2026-09-11",
+    "close": 208500,
+    "status": "reconciled",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=086280&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:36.508Z",
+    "naverClose": 208500,
+    "prior": [
+      {
+        "code": "086280",
+        "date": "2026-09-11",
+        "provider": "INV",
+        "close": null,
+        "url": "https://www.investing.com/equities/hyundai-glovis-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn64view1",
+        "artifact": "research/inv_open_28.json",
+        "unresolvedProvider": true,
+        "conflictingCloses": [
+          "208500",
+          "205500"
+        ]
+      },
+      {
+        "code": "086280",
+        "date": "2026-09-11",
+        "provider": "SA",
+        "close": "208500.00",
+        "url": "https://stockanalysis.com/quote/krx/086280/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn32view3",
+        "artifact": "research/sa_new_24.json"
+      }
+    ],
+    "reason": "NAVER 재조회 종가가 기존 제공사 중 한 곳의 종가와 일치. 상충 원값은 기록 보존."
+  },
+  {
+    "code": "021240",
+    "date": "2026-09-21",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=021240&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:44.195Z",
+    "naverClose": 101100,
+    "prior": [
+      {
+        "code": "021240",
+        "date": "2026-09-21",
+        "provider": "INV",
+        "close": "99400",
+        "url": "https://www.investing.com/equities/coway-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn70view3",
+        "artifact": "research/inv_open_32.json"
+      },
+      {
+        "code": "021240",
+        "date": "2026-09-21",
+        "provider": "SA",
+        "close": "99500.00",
+        "url": "https://stockanalysis.com/quote/krx/021240/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn41view3",
+        "artifact": "research/sa_new_32.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "009830",
+    "date": "2026-09-23",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=009830&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:44.276Z",
+    "naverClose": 29400,
+    "prior": [
+      {
+        "code": "009830",
+        "date": "2026-09-23",
+        "provider": "INV",
+        "close": null,
+        "url": "https://www.investing.com/equities/hanwhachem-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn68view0",
+        "artifact": "research/inv_open_36.json",
+        "unresolvedProvider": true,
+        "conflictingCloses": [
+          "29250",
+          "29200"
+        ]
+      },
+      {
+        "code": "009830",
+        "date": "2026-09-23",
+        "provider": "SA",
+        "close": "29200.00",
+        "url": "https://stockanalysis.com/quote/krx/009830/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn43view1",
+        "artifact": "research/sa_new_36.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "029780",
+    "date": "2026-09-22",
+    "close": 42850,
+    "status": "reconciled",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=029780&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:44.518Z",
+    "naverClose": 42850,
+    "prior": [
+      {
+        "code": "029780",
+        "date": "2026-09-22",
+        "provider": "INV",
+        "close": "42700",
+        "url": "https://www.investing.com/equities/samsung-card-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn68view1",
+        "artifact": "research/inv_open_36.json"
+      },
+      {
+        "code": "029780",
+        "date": "2026-09-22",
+        "provider": "SA",
+        "close": "42850.00",
+        "url": "https://stockanalysis.com/quote/krx/029780/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn43view2",
+        "artifact": "research/sa_new_36.json"
+      }
+    ],
+    "reason": "NAVER 재조회 종가가 기존 제공사 중 한 곳의 종가와 일치. 상충 원값은 기록 보존."
+  },
+  {
+    "code": "004170",
+    "date": "2026-09-09",
+    "close": 391500,
+    "status": "reconciled",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=004170&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:52.817Z",
+    "naverClose": 391500,
+    "prior": [
+      {
+        "code": "004170",
+        "date": "2026-09-09",
+        "provider": "INV",
+        "close": "392500",
+        "url": "https://www.investing.com/equities/shinsegae-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn69view2",
+        "artifact": "research/inv_open_40.json"
+      },
+      {
+        "code": "004170",
+        "date": "2026-09-09",
+        "provider": "SA",
+        "close": "391500.00",
+        "url": "https://stockanalysis.com/quote/krx/004170/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn38view3",
+        "artifact": "research/sa_new_40.json"
+      }
+    ],
+    "reason": "NAVER 재조회 종가가 기존 제공사 중 한 곳의 종가와 일치. 상충 원값은 기록 보존."
+  },
+  {
+    "code": "012750",
+    "date": "2026-09-04",
+    "close": 79200,
+    "status": "reconciled",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=012750&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:53.141Z",
+    "naverClose": 79200,
+    "prior": [
+      {
+        "code": "012750",
+        "date": "2026-09-04",
+        "provider": "INV",
+        "close": null,
+        "url": "https://www.investing.com/equities/s-1-corp-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn69view3",
+        "artifact": "research/inv_open_40.json",
+        "unresolvedProvider": true,
+        "conflictingCloses": [
+          "79200",
+          "78900"
+        ]
+      },
+      {
+        "code": "012750",
+        "date": "2026-09-04",
+        "provider": "SA",
+        "close": "79200.00",
+        "url": "https://stockanalysis.com/quote/krx/012750/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn39view0",
+        "artifact": "research/sa_new_44.json"
+      }
+    ],
+    "reason": "NAVER 재조회 종가가 기존 제공사 중 한 곳의 종가와 일치. 상충 원값은 기록 보존."
+  },
+  {
+    "code": "012750",
+    "date": "2026-09-22",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=012750&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:53.141Z",
+    "naverClose": 83700,
+    "prior": [
+      {
+        "code": "012750",
+        "date": "2026-09-22",
+        "provider": "INV",
+        "close": "83800",
+        "url": "https://www.investing.com/equities/s-1-corp-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn69view3",
+        "artifact": "research/inv_open_40.json"
+      },
+      {
+        "code": "012750",
+        "date": "2026-09-22",
+        "provider": "SA",
+        "close": "83400.00",
+        "url": "https://stockanalysis.com/quote/krx/012750/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn39view0",
+        "artifact": "research/sa_new_44.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "111770",
+    "date": "2026-09-23",
+    "close": null,
+    "status": "unresolved",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=111770&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:16:53.162Z",
+    "naverClose": 69700,
+    "prior": [
+      {
+        "code": "111770",
+        "date": "2026-09-23",
+        "provider": "INV",
+        "close": null,
+        "url": "https://www.investing.com/equities/youngone-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn60view1",
+        "artifact": "research/inv_open_0.json",
+        "unresolvedProvider": true,
+        "conflictingCloses": [
+          "69200",
+          "69300"
+        ]
+      },
+      {
+        "code": "111770",
+        "date": "2026-09-23",
+        "provider": "SA",
+        "close": "69300.00",
+        "url": "https://stockanalysis.com/quote/krx/111770/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn39view1",
+        "artifact": "research/sa_new_44.json"
+      }
+    ],
+    "reason": "제3 제공사 대조 불충분 — 결측 유지"
+  },
+  {
+    "code": "035250",
+    "date": "2026-09-08",
+    "close": 14850,
+    "status": "reconciled",
+    "url": "https://fchart.stock.naver.com/sise.nhn?symbol=035250&timeframe=day&count=60&requestType=0",
+    "retrievedAt": "2026-09-24T15:17:01.735Z",
+    "naverClose": 14850,
+    "prior": [
+      {
+        "code": "035250",
+        "date": "2026-09-08",
+        "provider": "INV",
+        "close": "14970",
+        "url": "https://www.investing.com/equities/kangwon-land-historical-data",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn65view0",
+        "artifact": "research/inv_open_44.json"
+      },
+      {
+        "code": "035250",
+        "date": "2026-09-08",
+        "provider": "SA",
+        "close": "14850.00",
+        "url": "https://stockanalysis.com/quote/krx/035250/history/",
+        "retrievedAt": "2026-09-24",
+        "ref": "turn39view2",
+        "artifact": "research/sa_new_44.json"
+      }
+    ],
+    "reason": "NAVER 재조회 종가가 기존 제공사 중 한 곳의 종가와 일치. 상충 원값은 기록 보존."
+  }
+]

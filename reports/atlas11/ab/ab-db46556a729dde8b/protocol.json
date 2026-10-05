@@ -1,0 +1,42 @@
+{
+  "id": "atlas11-ab-macro-1",
+  "createdAt": "2026-09-28T13:03:11.749Z",
+  "inputSHA256": "4b0d7b61d8d36256f481a0db2872b3f145ced764d1afb86da9c48c4c5e554a8e",
+  "actualAsOf": "2026-09-28",
+  "series": [
+    {
+      "id": "DFII10",
+      "factorId": "F04",
+      "sha256": "04a876ec89edf62c9b57321b43a72f595a3219686128e28df4bbbdf49d6e3b17",
+      "historyEnd": "2026-09-24",
+      "pointInTimeVerified": false
+    },
+    {
+      "id": "DEXKOUS",
+      "factorId": "F06",
+      "sha256": "2349d06fdd692dd596ae646c7d3dfdd411d1ca20ab35cdb108475b4b84be853c",
+      "historyEnd": "2026-09-18",
+      "pointInTimeVerified": false
+    }
+  ],
+  "originDays": 120,
+  "blocks": 6,
+  "blockDays": 20,
+  "horizon": 20,
+  "paths": 512,
+  "seed": 20260917,
+  "topK": 5,
+  "lagDays": 7,
+  "futureMacro": "constant last observed lagged level (carry)",
+  "A": "operating price-factor model (F35 own returns, F11 ATLAS52 proxy, F36 residual GARCH)",
+  "B": "same architecture plus DFII10 and DEXKOUS levels; coefficients and factor acceptance chosen only on inner training dates before each block",
+  "training": "refit and reselect before each 20-origin block; coefficients frozen within block",
+  "primaryError": "mean over origin dates of mean over 52 stocks x 20 horizons of |p50 - actual| / actual x 100",
+  "rankHits": "sum over origin dates of |top5 predicted 20-session return ∩ top5 actual|, max 600",
+  "rankTies": "return descending then stock code ascending",
+  "adoption": "B error < A error AND B rank hits >= A rank hits; and data-quality gate (point-in-time vintage, corporate actions) must also pass",
+  "independentStockTrials": false,
+  "overlappingHorizons": true,
+  "liveAdvantageProven": false,
+  "trustProbability": null
+}

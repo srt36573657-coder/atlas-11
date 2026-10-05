@@ -1,0 +1,7156 @@
+{
+ "schema": "atlas4h-history-1",
+ "id": "wti",
+ "fetchedAt": "2026-10-01T14:59:23.929Z",
+ "from": "2023-09-25",
+ "to": "2026-09-30",
+ "observedAtRule": "날짜만 있는 값은 그 시장 마감 16:00:00 America/Chicago 로 본다(약속 10)",
+ "compare": {
+  "rule": "relative",
+  "tolerance": 0.02
+ },
+ "sources": [
+  {
+   "name": "naver",
+   "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=1&pageSize=10",
+   "fetchedAt": "2026-10-01T14:59:47.791Z",
+   "rawSha256": "de983d8f9d8c9387d0eb4b413c3f66927ea35f1b2a821317cb2560674fee1096",
+   "rows": 753,
+   "pages": [
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=1&pageSize=10",
+     "rawSha256": "268b3c42f89ff3fcd4236af322f18144ca001aec814b40221b829508da43a586"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=2&pageSize=10",
+     "rawSha256": "281e838a91bae30c470efb79cf115f9cfcdbbaf55598881d9a1cd5ecb4d4a0cd"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=3&pageSize=10",
+     "rawSha256": "e7dd69fad5e361fcd0991d706945e0af46dc3d89218633d1bc3d2f8613d84fa3"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=4&pageSize=10",
+     "rawSha256": "5c956f8bbf9001a89e07098859a123cbdbdcb017cfc78b1cc469c18f143a2d49"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=5&pageSize=10",
+     "rawSha256": "3dc47393fc59d748975e3fab16551f8628456339e995ae63db83c4194916b09c"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=6&pageSize=10",
+     "rawSha256": "a3161977097f634f2021e3159ea7fd72219b99ca6ef3e1675c6135f69a12d767"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=7&pageSize=10",
+     "rawSha256": "b2574b13d88d070a6aa5f93e6cf2253762300a7dc67bae5a0ae8e15d772d6cdf"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=8&pageSize=10",
+     "rawSha256": "5e8ca5b398a6d5c091d1a4037cae1c01120be7ff3121103841d14017f60c5975"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=9&pageSize=10",
+     "rawSha256": "f55a8e1eb456a0b619d8e599e155acdda789388c520006f4ab5a954d5cd31531"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=10&pageSize=10",
+     "rawSha256": "879fb534941a1054a94045b9be827ac328266cfeae079772f2136dcebb70fb78"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=11&pageSize=10",
+     "rawSha256": "34faf7b920b6a2de60b03c922457f730d41c821d534b718832a48a9cbb5923e0"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=12&pageSize=10",
+     "rawSha256": "3140d4be89bc5150cf7a8bb0ae54c559d9d30a92cef4b00fd6bca6b635d4405d"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=13&pageSize=10",
+     "rawSha256": "153002480d9dd02696ef9a759f3386872686a737701111c5796abf3940f35b62"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=14&pageSize=10",
+     "rawSha256": "033792111f171a7ed3f54c48150440f4296e1503cb9168ef340119bd173a699b"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=15&pageSize=10",
+     "rawSha256": "a7bf3104f0f58a464582bc0f80be437f49a8f413de2460237bca7d045001cb77"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=16&pageSize=10",
+     "rawSha256": "335fbf515d50e96126ed78ca634001a260674f41cd850c541b95f779727f76eb"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=17&pageSize=10",
+     "rawSha256": "ed20c8a371e3272a15f65d6c278684e080f0b19d317bd8b2af7f388c523f3953"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=18&pageSize=10",
+     "rawSha256": "e74c0b28136ace2a368303933b56106324a1a984cfd4b931770bc672927c7de5"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=19&pageSize=10",
+     "rawSha256": "fb32b96e2e896d73184605024752b9f8c9ab140a9646c6dbd1391a25ec0143e2"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=20&pageSize=10",
+     "rawSha256": "2d23cdcf48dca2b294183aa4f9dab6ea4133a4ca9f0e6e3d3473d7dada6f9da9"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=21&pageSize=10",
+     "rawSha256": "c03fad25d12da3e6d0a8f73bb04943000f1b3f9dfe8e9ebc30baa483583fa692"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=22&pageSize=10",
+     "rawSha256": "0d0f486639fef001c6abd58c7b08054de3e2e376a491b6b23665118d91c8b371"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=23&pageSize=10",
+     "rawSha256": "f30f1c105d3df9751ada5a200d2327fbbebd8e64e02580a650e45115790c2ddb"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=24&pageSize=10",
+     "rawSha256": "3653a3eaeabd4134dbfac4b4c35956fe5d5e06fb745f9ea1d53352dfaf7917b4"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=25&pageSize=10",
+     "rawSha256": "d36776d68c1a3b32848b6c076fd78534fa17c9f99ea80b33a218bb5f2bb95b2c"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=26&pageSize=10",
+     "rawSha256": "a797f63b041337c636464a00232cdfda89614a23af13dd69af391851e18e41dd"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=27&pageSize=10",
+     "rawSha256": "db7e5f30a2b81d9bdf13d5f341a2c49de9e5b773a46296a6b6562656d56b44ab"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=28&pageSize=10",
+     "rawSha256": "76165a3907bb58b22e0c3ca52d0cf78599836324e0465aa2ddbecb36ff226a9c"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=29&pageSize=10",
+     "rawSha256": "6f751dc92fe987d69e472c3a31044d2ee4796e23dfcb37287ed38c82c9b00b1e"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=30&pageSize=10",
+     "rawSha256": "dd9d2a5c119d29cef780c3bd4ca76ef8434d3dc22e2ff38f5b17118f309e72c6"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=31&pageSize=10",
+     "rawSha256": "cd34737ed1e3bac357109286ea6fcebe07a729887bebec6c9739f75ced67c49f"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=32&pageSize=10",
+     "rawSha256": "7990d628f11580ca6fc09e3137ba1edfccad35506d3359f50ef2dedbef081d57"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=33&pageSize=10",
+     "rawSha256": "09248d7ea94e6604e056e22aa6e82a1d67436c86be9fc817303164fd0e0a5e65"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=34&pageSize=10",
+     "rawSha256": "9d989532e5e66172fd4a4307b5af7dd8caa5856539ffee1fbe3e83e7fc975c3d"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=35&pageSize=10",
+     "rawSha256": "7850f96c9af0214deb6b1b0757b1f240f5975c8905df803861e699362266d74e"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=36&pageSize=10",
+     "rawSha256": "6364c698a771e0e72811e7c105ee34d7771da1d425c1824617db9bdb2301a96b"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=37&pageSize=10",
+     "rawSha256": "f91f92377f6504c80f68170466dc26de80b7e0c345a3990c6e5edba0442a6b06"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=38&pageSize=10",
+     "rawSha256": "fa9ba3e0cd3a7092f7b32978b440bb369e347f204832753e9a706a0c103a4905"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=39&pageSize=10",
+     "rawSha256": "3d86bf2b673872987ee6d0a3fd50dc2932ea253d48f1159cad53a00c67100d98"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=40&pageSize=10",
+     "rawSha256": "96ac506c3a53276fda4a73b5086d1c2265d9407f1ed4007b0751cf3ee58d4371"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=41&pageSize=10",
+     "rawSha256": "8685ceb263bac6acabfab142304e6b6e755fb8c2e7d38932ab10172b68d9680d"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=42&pageSize=10",
+     "rawSha256": "988b9a7e272fe87fe31668098524966159b7031aa40c07bff6103d894f7cb064"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=43&pageSize=10",
+     "rawSha256": "9dc4181f911ccb91af1a01b7d81b4fc1879edfea5ca55833617c233c7ca856c8"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=44&pageSize=10",
+     "rawSha256": "9d1d351faa31bda44c0d73f5cedfa9ccbd4705d8fa4d104096ea9b130c81e175"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=45&pageSize=10",
+     "rawSha256": "a39cebf7407f6dc4684c4ebcd585366269edea163caba71bb5719a6b46b3dcb8"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=46&pageSize=10",
+     "rawSha256": "61060d3e776d854c70fd08587dc003593f1297b17f13bf80998a3639bc624cc9"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=47&pageSize=10",
+     "rawSha256": "efa857177b3253a4bfab9f0bbc46f4df81277986e77fe462eb2be4a4bc733414"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=48&pageSize=10",
+     "rawSha256": "1c5d095a182fa0c79a4ccd229efd75c5af0d6ae45827f01c4582937b24e4ada9"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=49&pageSize=10",
+     "rawSha256": "fb7eb2bacbb70d9b5cbbf34c67379095711de3b61885ada72c9846a72b64252f"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=50&pageSize=10",
+     "rawSha256": "67e084f0ba5b56603e66b37e33293e953966c183385ce57c3c1fa211e0e18e3a"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=51&pageSize=10",
+     "rawSha256": "fab3ec7e5e4fa9d6a7fc275ae0416e982d5a7d7be291bb5903a906dabdcf491f"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=52&pageSize=10",
+     "rawSha256": "f0860aff25a2b659599f43139f0d62a3ecb19d0e2cbb0f42a87e021adfcbaaf0"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=53&pageSize=10",
+     "rawSha256": "404bdf67bdf1c0640a677f6663e30d53e732871e946978d215a598ede55e3740"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=54&pageSize=10",
+     "rawSha256": "f7eee415264590f6c6e46476861149f9c72ac390b544971f7ee874b05c1d9492"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=55&pageSize=10",
+     "rawSha256": "1118373e67dab8ba8fd772fbf1ef76a69ba39f64b13c3c7d8aa9691f1771c931"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=56&pageSize=10",
+     "rawSha256": "b4dec83a5870015d8524e5a2d007e724bc27f07d465dd7406579f1669cc76481"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=57&pageSize=10",
+     "rawSha256": "e715bebed745b26299af7e1373e8c9c1c7f511058c61ec21bac3012f6a4f8392"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=58&pageSize=10",
+     "rawSha256": "c30f8ab13a7fcfed8c23562c418eb272e38002d80771079fb6302496c48c23c6"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=59&pageSize=10",
+     "rawSha256": "a2ea774ba914979ef1ed4c7a2dd4e7d3353dc57db0bb62c072caea470c9cb596"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=60&pageSize=10",
+     "rawSha256": "693f2c7b3cadff8ddbfa94472696a87675f74a7e131f447b7987350df777a1b0"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=61&pageSize=10",
+     "rawSha256": "ccf057d35937710b00762531022405b479df04d1223b21c777d9ef9d2e1f3de1"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=62&pageSize=10",
+     "rawSha256": "4397a38295c3316eb6ef40db5733da9603930327161e6e79b50e428fb51c32da"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=63&pageSize=10",
+     "rawSha256": "8e9e27f60a753d501cd9ff3b3c8c39250d1986a8102b3dfcf49ae556bd1930a7"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=64&pageSize=10",
+     "rawSha256": "8ed33c113bfcb4a17f494ddf9d4a71c6886131ba35ac69ace8476b3e25465501"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=65&pageSize=10",
+     "rawSha256": "b62c917e07d6399ec83eeb24041d72df1d394d6e5466163a09b899eea303bedd"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=66&pageSize=10",
+     "rawSha256": "7b9f72948c69b898f56c1a97c5a3953fc7d1158a965fe22c39c80ce4a7f0b6c9"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=67&pageSize=10",
+     "rawSha256": "ce35e75180a5f6d1cb1df39e0f5d1d92d4de369dd020cfb786d5d31192558edf"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=68&pageSize=10",
+     "rawSha256": "0f4baa206eb08a64c26d91a39f62f06a8539eefcd48cd54f4505d76ecb56cdf0"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=69&pageSize=10",
+     "rawSha256": "1a94a52a539b56ee6d5cd60d8257c1dcd577b2dfbd6d08ba1003f8456afd3db0"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=70&pageSize=10",
+     "rawSha256": "dd86bd54aacfe07123b2c76efb43184a7fe904792b696a696d0c5b9c930bfd17"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=71&pageSize=10",
+     "rawSha256": "6925ec7bf1e8cee753debc2335502e800e08a60c1f26a822e11b13264059010a"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=72&pageSize=10",
+     "rawSha256": "9fae67a93d3dc4420c80c69fcc9e784ded2621e424b2747696142f092105a764"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=73&pageSize=10",
+     "rawSha256": "4f5d147808817406e4d27f14332eafd4582a8d67e9b140f5a2ff472ceb425dd1"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=74&pageSize=10",
+     "rawSha256": "43866f6428088989017b20a6a5de1f76f46dbddcb883eec0ec90e1464665a569"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=75&pageSize=10",
+     "rawSha256": "af7810c69b64c1542ce7b0dbbc3e06e551a4adb7a241d3abc0fd332d52c07252"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=76&pageSize=10",
+     "rawSha256": "55bad34965d5d630f7a90e303e7d7ef47f335969441a8a5e181ee69498f2022b"
+    },
+    {
+     "url": "https://api.stock.naver.com/marketindex/energy/CLcv1/prices?page=77&pageSize=10",
+     "rawSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+   ]
+  },
+  {
+   "name": "fred",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2023-09-25",
+   "fetchedAt": "2026-10-01T14:59:48.245Z",
+   "rawSha256": "445074a66208d8e3e02a27508583b0ec447eedbabf6cbb86609ef70bd82228bc",
+   "rows": 750
+  }
+ ],
+ "counts": {
+  "ok": 635,
+  "한 출처": 13,
+  "확인 중": 110,
+  "옛값": 0,
+  "없음": 0
+ },
+ "series": [
+  {
+   "date": "2023-09-25",
+   "value": 89.68,
+   "sources": {
+    "fred": 89.68
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-26",
+   "value": 91.43,
+   "sources": {
+    "fred": 91.43
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-27",
+   "value": 93.67,
+   "sources": {
+    "fred": 93.67
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-28",
+   "value": 91.65,
+   "sources": {
+    "fred": 91.65
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-09-29",
+   "value": 90.77,
+   "sources": {
+    "fred": 90.77
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-02",
+   "value": 88.82,
+   "sources": {
+    "naver": 88.82,
+    "fred": 88.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-03",
+   "value": 89.23,
+   "sources": {
+    "naver": 89.23,
+    "fred": 89.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-04",
+   "value": 84.22,
+   "sources": {
+    "naver": 84.22,
+    "fred": 84.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-05",
+   "value": 82.31,
+   "sources": {
+    "naver": 82.31,
+    "fred": 82.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-06",
+   "value": 82.79,
+   "sources": {
+    "naver": 82.79,
+    "fred": 82.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-09",
+   "value": 86.38,
+   "sources": {
+    "naver": 86.38
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-10-10",
+   "value": 85.97,
+   "sources": {
+    "naver": 85.97,
+    "fred": 85.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-11",
+   "value": 83.49,
+   "sources": {
+    "naver": 83.49,
+    "fred": 83.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-12",
+   "value": 82.91,
+   "sources": {
+    "naver": 82.91,
+    "fred": 82.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-13",
+   "value": 87.69,
+   "sources": {
+    "naver": 87.69,
+    "fred": 87.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-16",
+   "value": 86.66,
+   "sources": {
+    "naver": 86.66,
+    "fred": 86.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-17",
+   "value": 86.66,
+   "sources": {
+    "naver": 86.66,
+    "fred": 86.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-18",
+   "value": 88.32,
+   "sources": {
+    "naver": 88.32,
+    "fred": 88.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-19",
+   "value": 88.37,
+   "sources": {
+    "naver": 88.37,
+    "fred": 89.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-20",
+   "value": 88.08,
+   "sources": {
+    "naver": 88.08,
+    "fred": 89.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-23",
+   "value": 85.49,
+   "sources": {
+    "naver": 85.49,
+    "fred": 85.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-24",
+   "value": 83.74,
+   "sources": {
+    "naver": 83.74,
+    "fred": 84.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-25",
+   "value": 85.39,
+   "sources": {
+    "naver": 85.39,
+    "fred": 86.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-26",
+   "value": 83.21,
+   "sources": {
+    "naver": 83.21,
+    "fred": 83.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-27",
+   "value": 85.54,
+   "sources": {
+    "naver": 85.54,
+    "fred": 86.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-30",
+   "value": 82.31,
+   "sources": {
+    "naver": 82.31,
+    "fred": 83.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-10-31",
+   "value": 81.02,
+   "sources": {
+    "naver": 81.02,
+    "fred": 81.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-01",
+   "value": 80.44,
+   "sources": {
+    "naver": 80.44,
+    "fred": 81.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-02",
+   "value": 82.46,
+   "sources": {
+    "naver": 82.46,
+    "fred": 83.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-03",
+   "value": 80.51,
+   "sources": {
+    "naver": 80.51,
+    "fred": 81.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-06",
+   "value": 80.82,
+   "sources": {
+    "naver": 80.82,
+    "fred": 81.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-07",
+   "value": 77.37,
+   "sources": {
+    "naver": 77.37,
+    "fred": 77.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-08",
+   "value": 75.33,
+   "sources": {
+    "naver": 75.33,
+    "fred": 75.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-09",
+   "value": 75.74,
+   "sources": {
+    "naver": 75.74,
+    "fred": 76.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-10",
+   "value": 77.17,
+   "sources": {
+    "naver": 77.17
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2023-11-13",
+   "value": 78.26,
+   "sources": {
+    "naver": 78.26,
+    "fred": 78.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-14",
+   "value": 78.26,
+   "sources": {
+    "naver": 78.26,
+    "fred": 78.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-15",
+   "value": 76.66,
+   "sources": {
+    "naver": 76.66,
+    "fred": 77.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-16",
+   "value": 72.9,
+   "sources": {
+    "naver": 72.9,
+    "fred": 73.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-17",
+   "value": 75.89,
+   "sources": {
+    "naver": 75.89,
+    "fred": 76.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-20",
+   "value": 77.83,
+   "sources": {
+    "naver": 77.83,
+    "fred": 78.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-21",
+   "value": 77.77,
+   "sources": {
+    "naver": 77.77,
+    "fred": 78.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-22",
+   "value": 77.1,
+   "sources": {
+    "naver": 77.1,
+    "fred": 76.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-24",
+   "value": 75.54,
+   "sources": {
+    "naver": 75.54,
+    "fred": 74.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-27",
+   "value": 74.86,
+   "sources": {
+    "naver": 74.86,
+    "fred": 74.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-28",
+   "value": 76.41,
+   "sources": {
+    "naver": 76.41,
+    "fred": 76.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-29",
+   "value": 77.86,
+   "sources": {
+    "naver": 77.86,
+    "fred": 77.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-11-30",
+   "value": 75.96,
+   "sources": {
+    "naver": 75.96,
+    "fred": 75.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-01",
+   "value": 74.07,
+   "sources": {
+    "naver": 74.07,
+    "fred": 73.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-04",
+   "value": 73.04,
+   "sources": {
+    "naver": 73.04,
+    "fred": 72.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-05",
+   "value": 72.32,
+   "sources": {
+    "naver": 72.32,
+    "fred": 71.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-06",
+   "value": 69.38,
+   "sources": {
+    "naver": 69.38,
+    "fred": 68.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-07",
+   "value": 69.34,
+   "sources": {
+    "naver": 69.34,
+    "fred": 69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-08",
+   "value": 71.23,
+   "sources": {
+    "naver": 71.23,
+    "fred": 70.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-11",
+   "value": 71.32,
+   "sources": {
+    "naver": 71.32,
+    "fred": 70.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-12",
+   "value": 68.61,
+   "sources": {
+    "naver": 68.61,
+    "fred": 68.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-13",
+   "value": 69.47,
+   "sources": {
+    "naver": 69.47,
+    "fred": 69.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-14",
+   "value": 71.58,
+   "sources": {
+    "naver": 71.58,
+    "fred": 71.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-15",
+   "value": 71.43,
+   "sources": {
+    "naver": 71.43,
+    "fred": 71.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-18",
+   "value": 72.47,
+   "sources": {
+    "naver": 72.47,
+    "fred": 72.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-19",
+   "value": 73.94,
+   "sources": {
+    "naver": 73.94,
+    "fred": 73.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-20",
+   "value": 74.22,
+   "sources": {
+    "naver": 74.22,
+    "fred": 73.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-21",
+   "value": 73.89,
+   "sources": {
+    "naver": 73.89,
+    "fred": 73.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-22",
+   "value": 73.56,
+   "sources": {
+    "naver": 73.56,
+    "fred": 73.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-26",
+   "value": 75.57,
+   "sources": {
+    "naver": 75.57,
+    "fred": 75.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-27",
+   "value": 74.11,
+   "sources": {
+    "naver": 74.11,
+    "fred": 74.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-28",
+   "value": 71.77,
+   "sources": {
+    "naver": 71.77,
+    "fred": 72.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2023-12-29",
+   "value": 71.65,
+   "sources": {
+    "naver": 71.65,
+    "fred": 71.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-02",
+   "value": 70.38,
+   "sources": {
+    "naver": 70.38,
+    "fred": 70.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-03",
+   "value": 72.7,
+   "sources": {
+    "naver": 72.7,
+    "fred": 72.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-04",
+   "value": 72.19,
+   "sources": {
+    "naver": 72.19,
+    "fred": 72.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-05",
+   "value": 73.81,
+   "sources": {
+    "naver": 73.81,
+    "fred": 74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-08",
+   "value": 70.77,
+   "sources": {
+    "naver": 70.77,
+    "fred": 71.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-09",
+   "value": 72.24,
+   "sources": {
+    "naver": 72.24,
+    "fred": 72.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-10",
+   "value": 71.37,
+   "sources": {
+    "naver": 71.37,
+    "fred": 71.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-11",
+   "value": 72.02,
+   "sources": {
+    "naver": 72.02,
+    "fred": 72.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-12",
+   "value": 72.68,
+   "sources": {
+    "naver": 72.68,
+    "fred": 72.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-16",
+   "value": 72.4,
+   "sources": {
+    "naver": 72.4,
+    "fred": 72.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-17",
+   "value": 72.56,
+   "sources": {
+    "naver": 72.56,
+    "fred": 72.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-18",
+   "value": 74.08,
+   "sources": {
+    "naver": 74.08,
+    "fred": 74.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-19",
+   "value": 73.25,
+   "sources": {
+    "naver": 73.25,
+    "fred": 73.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-22",
+   "value": 74.76,
+   "sources": {
+    "naver": 74.76,
+    "fred": 75.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-23",
+   "value": 74.37,
+   "sources": {
+    "naver": 74.37,
+    "fred": 74.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-24",
+   "value": 75.09,
+   "sources": {
+    "naver": 75.09,
+    "fred": 75.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-25",
+   "value": 77.36,
+   "sources": {
+    "naver": 77.36,
+    "fred": 77.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-26",
+   "value": 78.01,
+   "sources": {
+    "naver": 78.01,
+    "fred": 78.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-29",
+   "value": 76.78,
+   "sources": {
+    "naver": 76.78,
+    "fred": 77.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-30",
+   "value": 77.82,
+   "sources": {
+    "naver": 77.82,
+    "fred": 78.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-01-31",
+   "value": 75.85,
+   "sources": {
+    "naver": 75.85,
+    "fred": 76.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-01",
+   "value": 73.82,
+   "sources": {
+    "naver": 73.82,
+    "fred": 74.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-02",
+   "value": 72.28,
+   "sources": {
+    "naver": 72.28,
+    "fred": 72.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-05",
+   "value": 72.78,
+   "sources": {
+    "naver": 72.78,
+    "fred": 73.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-06",
+   "value": 73.31,
+   "sources": {
+    "naver": 73.31,
+    "fred": 73.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-07",
+   "value": 73.86,
+   "sources": {
+    "naver": 73.86,
+    "fred": 74.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-08",
+   "value": 76.22,
+   "sources": {
+    "naver": 76.22,
+    "fred": 76.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-09",
+   "value": 76.84,
+   "sources": {
+    "naver": 76.84,
+    "fred": 77.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-12",
+   "value": 76.92,
+   "sources": {
+    "naver": 76.92,
+    "fred": 77.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-13",
+   "value": 77.87,
+   "sources": {
+    "naver": 77.87,
+    "fred": 78.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-14",
+   "value": 76.64,
+   "sources": {
+    "naver": 76.64,
+    "fred": 77.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-15",
+   "value": 78.03,
+   "sources": {
+    "naver": 78.03,
+    "fred": 78.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-16",
+   "value": 79.19,
+   "sources": {
+    "naver": 79.19,
+    "fred": 79.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-20",
+   "value": null,
+   "sources": {
+    "naver": 77.04,
+    "fred": 78.72
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-02-21",
+   "value": 77.91,
+   "sources": {
+    "naver": 77.91,
+    "fred": 78.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-22",
+   "value": 78.61,
+   "sources": {
+    "naver": 78.61,
+    "fred": 79.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-23",
+   "value": 76.49,
+   "sources": {
+    "naver": 76.49,
+    "fred": 77.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-26",
+   "value": 77.58,
+   "sources": {
+    "naver": 77.58,
+    "fred": 78.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-27",
+   "value": 78.87,
+   "sources": {
+    "naver": 78.87,
+    "fred": 79.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-28",
+   "value": 78.54,
+   "sources": {
+    "naver": 78.54,
+    "fred": 79.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-02-29",
+   "value": 78.26,
+   "sources": {
+    "naver": 78.26,
+    "fred": 79.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-01",
+   "value": 79.97,
+   "sources": {
+    "naver": 79.97,
+    "fred": 80.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-04",
+   "value": 78.74,
+   "sources": {
+    "naver": 78.74,
+    "fred": 79.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-05",
+   "value": 78.15,
+   "sources": {
+    "naver": 78.15,
+    "fred": 79.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-06",
+   "value": 79.13,
+   "sources": {
+    "naver": 79.13,
+    "fred": 80.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-07",
+   "value": 78.93,
+   "sources": {
+    "naver": 78.93,
+    "fred": 79.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-08",
+   "value": 78.01,
+   "sources": {
+    "naver": 78.01,
+    "fred": 78.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-11",
+   "value": 77.93,
+   "sources": {
+    "naver": 77.93,
+    "fred": 78.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-12",
+   "value": 77.56,
+   "sources": {
+    "naver": 77.56,
+    "fred": 78.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-13",
+   "value": 79.72,
+   "sources": {
+    "naver": 79.72,
+    "fred": 80.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-14",
+   "value": 81.26,
+   "sources": {
+    "naver": 81.26,
+    "fred": 82.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-15",
+   "value": 81.04,
+   "sources": {
+    "naver": 81.04,
+    "fred": 81.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-18",
+   "value": 82.72,
+   "sources": {
+    "naver": 82.72,
+    "fred": 83.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-19",
+   "value": null,
+   "sources": {
+    "naver": 82.73,
+    "fred": 84.39
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-03-20",
+   "value": 81.27,
+   "sources": {
+    "naver": 81.27,
+    "fred": 82.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-21",
+   "value": 81.07,
+   "sources": {
+    "naver": 81.07,
+    "fred": 81.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-22",
+   "value": 80.63,
+   "sources": {
+    "naver": 80.63,
+    "fred": 81.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-25",
+   "value": 81.95,
+   "sources": {
+    "naver": 81.95,
+    "fred": 82.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-26",
+   "value": 81.62,
+   "sources": {
+    "naver": 81.62,
+    "fred": 82.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-27",
+   "value": 81.35,
+   "sources": {
+    "naver": 81.35,
+    "fred": 82.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-03-28",
+   "value": 83.17,
+   "sources": {
+    "naver": 83.17,
+    "fred": 83.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-01",
+   "value": 83.71,
+   "sources": {
+    "naver": 83.71,
+    "fred": 84.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-02",
+   "value": 85.15,
+   "sources": {
+    "naver": 85.15,
+    "fred": 85.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-03",
+   "value": 85.43,
+   "sources": {
+    "naver": 85.43,
+    "fred": 86.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-04",
+   "value": 86.59,
+   "sources": {
+    "naver": 86.59,
+    "fred": 87.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-05",
+   "value": 86.91,
+   "sources": {
+    "naver": 86.91,
+    "fred": 87.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-08",
+   "value": 86.43,
+   "sources": {
+    "naver": 86.43,
+    "fred": 87.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-09",
+   "value": 85.23,
+   "sources": {
+    "naver": 85.23,
+    "fred": 86.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-10",
+   "value": 86.21,
+   "sources": {
+    "naver": 86.21,
+    "fred": 86.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-11",
+   "value": 85.02,
+   "sources": {
+    "naver": 85.02,
+    "fred": 85.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-12",
+   "value": 85.66,
+   "sources": {
+    "naver": 85.66,
+    "fred": 86.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-15",
+   "value": 85.41,
+   "sources": {
+    "naver": 85.41,
+    "fred": 86.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-16",
+   "value": 85.36,
+   "sources": {
+    "naver": 85.36,
+    "fred": 86.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-17",
+   "value": 82.69,
+   "sources": {
+    "naver": 82.69,
+    "fred": 83.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-18",
+   "value": 82.73,
+   "sources": {
+    "naver": 82.73,
+    "fred": 83.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-19",
+   "value": 82.22,
+   "sources": {
+    "naver": 82.22,
+    "fred": 83.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-22",
+   "value": null,
+   "sources": {
+    "naver": 81.9,
+    "fred": 83.82
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-04-23",
+   "value": 83.36,
+   "sources": {
+    "naver": 83.36,
+    "fred": 84.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-24",
+   "value": 82.81,
+   "sources": {
+    "naver": 82.81,
+    "fred": 84.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-25",
+   "value": 83.57,
+   "sources": {
+    "naver": 83.57,
+    "fred": 84.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-26",
+   "value": 83.85,
+   "sources": {
+    "naver": 83.85,
+    "fred": 85.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-29",
+   "value": 82.63,
+   "sources": {
+    "naver": 82.63,
+    "fred": 84.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-04-30",
+   "value": 81.93,
+   "sources": {
+    "naver": 81.93,
+    "fred": 83.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-01",
+   "value": null,
+   "sources": {
+    "naver": 79,
+    "fred": 80.7
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-02",
+   "value": null,
+   "sources": {
+    "naver": 78.95,
+    "fred": 80.59
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-03",
+   "value": 78.11,
+   "sources": {
+    "naver": 78.11,
+    "fred": 79.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-06",
+   "value": null,
+   "sources": {
+    "naver": 78.48,
+    "fred": 80.1
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-07",
+   "value": null,
+   "sources": {
+    "naver": 78.38,
+    "fred": 79.97
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-08",
+   "value": null,
+   "sources": {
+    "naver": 78.99,
+    "fred": 80.57
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-09",
+   "value": null,
+   "sources": {
+    "naver": 79.26,
+    "fred": 80.86
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-10",
+   "value": 78.26,
+   "sources": {
+    "naver": 78.26,
+    "fred": 79.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-13",
+   "value": null,
+   "sources": {
+    "naver": 79.12,
+    "fred": 80.71
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-14",
+   "value": null,
+   "sources": {
+    "naver": 78.02,
+    "fred": 79.62
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-15",
+   "value": null,
+   "sources": {
+    "naver": 78.63,
+    "fred": 80.23
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-16",
+   "value": null,
+   "sources": {
+    "naver": 79.23,
+    "fred": 80.85
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-17",
+   "value": 80.06,
+   "sources": {
+    "naver": 80.06,
+    "fred": 81.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-20",
+   "value": 79.8,
+   "sources": {
+    "naver": 79.8,
+    "fred": 81.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-21",
+   "value": 79.26,
+   "sources": {
+    "naver": 79.26,
+    "fred": 80.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-22",
+   "value": null,
+   "sources": {
+    "naver": 77.57,
+    "fred": 79.15
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-05-23",
+   "value": 76.87,
+   "sources": {
+    "naver": 76.87,
+    "fred": 77.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-24",
+   "value": 77.72,
+   "sources": {
+    "naver": 77.72,
+    "fred": 78.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-28",
+   "value": 79.83,
+   "sources": {
+    "naver": 79.83,
+    "fred": 80.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-29",
+   "value": 79.23,
+   "sources": {
+    "naver": 79.23,
+    "fred": 80.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-30",
+   "value": 77.91,
+   "sources": {
+    "naver": 77.91,
+    "fred": 78.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-05-31",
+   "value": 76.99,
+   "sources": {
+    "naver": 76.99,
+    "fred": 77.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-03",
+   "value": 74.22,
+   "sources": {
+    "naver": 74.22,
+    "fred": 75.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-04",
+   "value": 73.25,
+   "sources": {
+    "naver": 73.25,
+    "fred": 74.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-05",
+   "value": 74.07,
+   "sources": {
+    "naver": 74.07,
+    "fred": 75.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-06",
+   "value": 75.55,
+   "sources": {
+    "naver": 75.55,
+    "fred": 76.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-07",
+   "value": 75.53,
+   "sources": {
+    "naver": 75.53,
+    "fred": 76.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-10",
+   "value": 77.74,
+   "sources": {
+    "naver": 77.74,
+    "fred": 78.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-11",
+   "value": 77.9,
+   "sources": {
+    "naver": 77.9,
+    "fred": 78.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-12",
+   "value": 78.5,
+   "sources": {
+    "naver": 78.5,
+    "fred": 79.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-13",
+   "value": 78.62,
+   "sources": {
+    "naver": 78.62,
+    "fred": 79.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-14",
+   "value": 78.45,
+   "sources": {
+    "naver": 78.45,
+    "fred": 79.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-17",
+   "value": 80.33,
+   "sources": {
+    "naver": 80.33,
+    "fred": 81.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-18",
+   "value": null,
+   "sources": {
+    "naver": 80.71,
+    "fred": 82.67
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-06-20",
+   "value": null,
+   "sources": {
+    "naver": 81.29,
+    "fred": 83.34
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-06-21",
+   "value": 80.73,
+   "sources": {
+    "naver": 80.73,
+    "fred": 81.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-24",
+   "value": 81.63,
+   "sources": {
+    "naver": 81.63,
+    "fred": 82.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-25",
+   "value": 80.83,
+   "sources": {
+    "naver": 80.83,
+    "fred": 81.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-26",
+   "value": 80.9,
+   "sources": {
+    "naver": 80.9,
+    "fred": 82.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-27",
+   "value": 81.74,
+   "sources": {
+    "naver": 81.74,
+    "fred": 83.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-06-28",
+   "value": 81.54,
+   "sources": {
+    "naver": 81.54,
+    "fred": 82.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-01",
+   "value": 83.38,
+   "sources": {
+    "naver": 83.38,
+    "fred": 84.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-02",
+   "value": 82.81,
+   "sources": {
+    "naver": 82.81,
+    "fred": 84.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-03",
+   "value": 83.88,
+   "sources": {
+    "naver": 83.88,
+    "fred": 85.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-05",
+   "value": 83.16,
+   "sources": {
+    "naver": 83.16,
+    "fred": 84.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-08",
+   "value": 82.33,
+   "sources": {
+    "naver": 82.33,
+    "fred": 83.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-09",
+   "value": 81.41,
+   "sources": {
+    "naver": 81.41,
+    "fred": 82.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-10",
+   "value": 82.1,
+   "sources": {
+    "naver": 82.1,
+    "fred": 83.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-11",
+   "value": 82.62,
+   "sources": {
+    "naver": 82.62,
+    "fred": 83.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-12",
+   "value": 82.21,
+   "sources": {
+    "naver": 82.21,
+    "fred": 83.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-15",
+   "value": 81.91,
+   "sources": {
+    "naver": 81.91,
+    "fred": 83.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-16",
+   "value": 80.76,
+   "sources": {
+    "naver": 80.76,
+    "fred": 81.92
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-17",
+   "value": 82.85,
+   "sources": {
+    "naver": 82.85,
+    "fred": 84.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-18",
+   "value": 82.82,
+   "sources": {
+    "naver": 82.82,
+    "fred": 84.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-19",
+   "value": null,
+   "sources": {
+    "naver": 78.64,
+    "fred": 81.43
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-07-22",
+   "value": null,
+   "sources": {
+    "naver": 78.4,
+    "fred": 81.25
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-07-23",
+   "value": 76.96,
+   "sources": {
+    "naver": 76.96,
+    "fred": 78.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-24",
+   "value": 77.59,
+   "sources": {
+    "naver": 77.59,
+    "fred": 78.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-25",
+   "value": 78.28,
+   "sources": {
+    "naver": 78.28,
+    "fred": 79.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-26",
+   "value": 77.16,
+   "sources": {
+    "naver": 77.16,
+    "fred": 78.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-29",
+   "value": 75.81,
+   "sources": {
+    "naver": 75.81,
+    "fred": 77.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-30",
+   "value": 74.73,
+   "sources": {
+    "naver": 74.73,
+    "fred": 76.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-07-31",
+   "value": 77.91,
+   "sources": {
+    "naver": 77.91,
+    "fred": 79.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-01",
+   "value": 76.31,
+   "sources": {
+    "naver": 76.31,
+    "fred": 77.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-02",
+   "value": 73.52,
+   "sources": {
+    "naver": 73.52,
+    "fred": 74.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-05",
+   "value": null,
+   "sources": {
+    "naver": 72.94,
+    "fred": 74.46
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-08-06",
+   "value": 73.2,
+   "sources": {
+    "naver": 73.2,
+    "fred": 74.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-07",
+   "value": 75.23,
+   "sources": {
+    "naver": 75.23,
+    "fred": 76.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-08",
+   "value": 76.19,
+   "sources": {
+    "naver": 76.19,
+    "fred": 77.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-09",
+   "value": 76.84,
+   "sources": {
+    "naver": 76.84,
+    "fred": 78.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-12",
+   "value": 80.06,
+   "sources": {
+    "naver": 80.06,
+    "fred": 81.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-13",
+   "value": 78.35,
+   "sources": {
+    "naver": 78.35,
+    "fred": 79.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-14",
+   "value": 76.98,
+   "sources": {
+    "naver": 76.98,
+    "fred": 78.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-15",
+   "value": 78.16,
+   "sources": {
+    "naver": 78.16,
+    "fred": 79.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-16",
+   "value": 76.65,
+   "sources": {
+    "naver": 76.65,
+    "fred": 78.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-19",
+   "value": null,
+   "sources": {
+    "naver": 73.66,
+    "fred": 75.82
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-08-20",
+   "value": null,
+   "sources": {
+    "naver": 73.17,
+    "fred": 75.27
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-08-21",
+   "value": 71.93,
+   "sources": {
+    "naver": 71.93,
+    "fred": 72.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-22",
+   "value": 73.01,
+   "sources": {
+    "naver": 73.01,
+    "fred": 73.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-23",
+   "value": 74.83,
+   "sources": {
+    "naver": 74.83,
+    "fred": 75.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-26",
+   "value": 77.42,
+   "sources": {
+    "naver": 77.42,
+    "fred": 78.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-27",
+   "value": 75.53,
+   "sources": {
+    "naver": 75.53,
+    "fred": 76.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-28",
+   "value": 74.52,
+   "sources": {
+    "naver": 74.52,
+    "fred": 75.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-29",
+   "value": 75.91,
+   "sources": {
+    "naver": 75.91,
+    "fred": 76.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-08-30",
+   "value": 73.55,
+   "sources": {
+    "naver": 73.55,
+    "fred": 74.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-03",
+   "value": 70.34,
+   "sources": {
+    "naver": 70.34,
+    "fred": 71.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-04",
+   "value": 69.2,
+   "sources": {
+    "naver": 69.2,
+    "fred": 70.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-05",
+   "value": 69.15,
+   "sources": {
+    "naver": 69.15,
+    "fred": 70.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-06",
+   "value": 67.67,
+   "sources": {
+    "naver": 67.67,
+    "fred": 68.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-09",
+   "value": 68.71,
+   "sources": {
+    "naver": 68.71,
+    "fred": 69.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-10",
+   "value": 65.75,
+   "sources": {
+    "naver": 65.75,
+    "fred": 66.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-11",
+   "value": 67.31,
+   "sources": {
+    "naver": 67.31,
+    "fred": 68.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-12",
+   "value": 68.97,
+   "sources": {
+    "naver": 68.97,
+    "fred": 69.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-13",
+   "value": 68.65,
+   "sources": {
+    "naver": 68.65,
+    "fred": 69.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-16",
+   "value": 70.09,
+   "sources": {
+    "naver": 70.09,
+    "fred": 71.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-17",
+   "value": 71.19,
+   "sources": {
+    "naver": 71.19,
+    "fred": 72.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-18",
+   "value": 70.91,
+   "sources": {
+    "naver": 70.91,
+    "fred": 71.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-19",
+   "value": null,
+   "sources": {
+    "naver": 71.16,
+    "fred": 72.86
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-09-20",
+   "value": null,
+   "sources": {
+    "naver": 71,
+    "fred": 72.72
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-09-23",
+   "value": 70.37,
+   "sources": {
+    "naver": 70.37,
+    "fred": 71.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-24",
+   "value": 71.56,
+   "sources": {
+    "naver": 71.56,
+    "fred": 72.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-25",
+   "value": 69.69,
+   "sources": {
+    "naver": 69.69,
+    "fred": 70.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-26",
+   "value": 67.67,
+   "sources": {
+    "naver": 67.67,
+    "fred": 68.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-27",
+   "value": 68.18,
+   "sources": {
+    "naver": 68.18,
+    "fred": 68.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-09-30",
+   "value": 68.17,
+   "sources": {
+    "naver": 68.17,
+    "fred": 68.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-01",
+   "value": 69.83,
+   "sources": {
+    "naver": 69.83,
+    "fred": 70.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-02",
+   "value": 70.1,
+   "sources": {
+    "naver": 70.1,
+    "fred": 70.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-03",
+   "value": 73.71,
+   "sources": {
+    "naver": 73.71,
+    "fred": 74.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-04",
+   "value": 74.38,
+   "sources": {
+    "naver": 74.38,
+    "fred": 74.93
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-07",
+   "value": 77.14,
+   "sources": {
+    "naver": 77.14,
+    "fred": 77.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-08",
+   "value": 73.57,
+   "sources": {
+    "naver": 73.57,
+    "fred": 74.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-09",
+   "value": 73.24,
+   "sources": {
+    "naver": 73.24,
+    "fred": 73.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-10",
+   "value": 75.85,
+   "sources": {
+    "naver": 75.85,
+    "fred": 76.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-11",
+   "value": 75.56,
+   "sources": {
+    "naver": 75.56,
+    "fred": 76.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-14",
+   "value": 73.83,
+   "sources": {
+    "naver": 73.83
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-10-15",
+   "value": 70.58,
+   "sources": {
+    "naver": 70.58,
+    "fred": 71.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-16",
+   "value": 70.39,
+   "sources": {
+    "naver": 70.39,
+    "fred": 70.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-17",
+   "value": 70.67,
+   "sources": {
+    "naver": 70.67,
+    "fred": 71.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-18",
+   "value": 69.22,
+   "sources": {
+    "naver": 69.22,
+    "fred": 69.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-21",
+   "value": 70.04,
+   "sources": {
+    "naver": 70.04,
+    "fred": 71.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-22",
+   "value": 71.74,
+   "sources": {
+    "naver": 71.74,
+    "fred": 72.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-23",
+   "value": 70.77,
+   "sources": {
+    "naver": 70.77,
+    "fred": 71.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-24",
+   "value": 70.19,
+   "sources": {
+    "naver": 70.19,
+    "fred": 70.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-25",
+   "value": 71.78,
+   "sources": {
+    "naver": 71.78,
+    "fred": 72.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-28",
+   "value": 67.38,
+   "sources": {
+    "naver": 67.38,
+    "fred": 67.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-29",
+   "value": 67.21,
+   "sources": {
+    "naver": 67.21,
+    "fred": 67.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-30",
+   "value": 68.61,
+   "sources": {
+    "naver": 68.61,
+    "fred": 68.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-10-31",
+   "value": 69.26,
+   "sources": {
+    "naver": 69.26,
+    "fred": 69.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-01",
+   "value": 69.49,
+   "sources": {
+    "naver": 69.49,
+    "fred": 69.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-04",
+   "value": 71.47,
+   "sources": {
+    "naver": 71.47,
+    "fred": 71.83
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-05",
+   "value": 71.99,
+   "sources": {
+    "naver": 71.99,
+    "fred": 72.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-06",
+   "value": 71.69,
+   "sources": {
+    "naver": 71.69,
+    "fred": 71.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-07",
+   "value": 72.36,
+   "sources": {
+    "naver": 72.36,
+    "fred": 72.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-08",
+   "value": 70.38,
+   "sources": {
+    "naver": 70.38,
+    "fred": 70.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-11",
+   "value": 68.04,
+   "sources": {
+    "naver": 68.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2024-11-12",
+   "value": 68.12,
+   "sources": {
+    "naver": 68.12,
+    "fred": 68.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-13",
+   "value": 68.43,
+   "sources": {
+    "naver": 68.43,
+    "fred": 68.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-14",
+   "value": 68.7,
+   "sources": {
+    "naver": 68.7,
+    "fred": 68.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-15",
+   "value": 67.02,
+   "sources": {
+    "naver": 67.02,
+    "fred": 67.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-18",
+   "value": 69.16,
+   "sources": {
+    "naver": 69.16,
+    "fred": 69.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-19",
+   "value": 69.39,
+   "sources": {
+    "naver": 69.39,
+    "fred": 69.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-20",
+   "value": 68.75,
+   "sources": {
+    "naver": 68.75,
+    "fred": 69.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-21",
+   "value": 70.1,
+   "sources": {
+    "naver": 70.1,
+    "fred": 70.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-22",
+   "value": 71.24,
+   "sources": {
+    "naver": 71.24,
+    "fred": 71.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-25",
+   "value": 68.94,
+   "sources": {
+    "naver": 68.94,
+    "fred": 69.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-26",
+   "value": 68.77,
+   "sources": {
+    "naver": 68.77,
+    "fred": 69.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-27",
+   "value": 68.72,
+   "sources": {
+    "naver": 68.72,
+    "fred": 69.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-11-29",
+   "value": 68,
+   "sources": {
+    "naver": 68,
+    "fred": 68.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-02",
+   "value": 68.1,
+   "sources": {
+    "naver": 68.1,
+    "fred": 68.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-03",
+   "value": 69.94,
+   "sources": {
+    "naver": 69.94,
+    "fred": 70.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-04",
+   "value": 68.54,
+   "sources": {
+    "naver": 68.54,
+    "fred": 68.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-05",
+   "value": 68.3,
+   "sources": {
+    "naver": 68.3,
+    "fred": 68.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-06",
+   "value": null,
+   "sources": {
+    "naver": 67.2,
+    "fred": 68.58
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2024-12-09",
+   "value": 68.37,
+   "sources": {
+    "naver": 68.37,
+    "fred": 68.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-10",
+   "value": 68.59,
+   "sources": {
+    "naver": 68.59,
+    "fred": 68.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-11",
+   "value": 70.29,
+   "sources": {
+    "naver": 70.29,
+    "fred": 70.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-12",
+   "value": 70.02,
+   "sources": {
+    "naver": 70.02,
+    "fred": 70.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-13",
+   "value": 71.29,
+   "sources": {
+    "naver": 71.29,
+    "fred": 71.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-16",
+   "value": 70.71,
+   "sources": {
+    "naver": 70.71,
+    "fred": 71.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-17",
+   "value": 70.08,
+   "sources": {
+    "naver": 70.08,
+    "fred": 70.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-18",
+   "value": 70.02,
+   "sources": {
+    "naver": 70.02,
+    "fred": 70.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-19",
+   "value": 69.38,
+   "sources": {
+    "naver": 69.38,
+    "fred": 70.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-20",
+   "value": 69.46,
+   "sources": {
+    "naver": 69.46,
+    "fred": 69.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-23",
+   "value": 69.24,
+   "sources": {
+    "naver": 69.24,
+    "fred": 69.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-24",
+   "value": 70.1,
+   "sources": {
+    "naver": 70.1,
+    "fred": 70.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-26",
+   "value": 69.62,
+   "sources": {
+    "naver": 69.62,
+    "fred": 70.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-27",
+   "value": 70.6,
+   "sources": {
+    "naver": 70.6,
+    "fred": 71.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-30",
+   "value": 70.99,
+   "sources": {
+    "naver": 70.99,
+    "fred": 71.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2024-12-31",
+   "value": 71.72,
+   "sources": {
+    "naver": 71.72,
+    "fred": 72.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-02",
+   "value": 73.13,
+   "sources": {
+    "naver": 73.13,
+    "fred": 73.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-03",
+   "value": 73.96,
+   "sources": {
+    "naver": 73.96,
+    "fred": 74.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-06",
+   "value": 73.56,
+   "sources": {
+    "naver": 73.56,
+    "fred": 74.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-07",
+   "value": 74.25,
+   "sources": {
+    "naver": 74.25,
+    "fred": 74.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-08",
+   "value": 73.32,
+   "sources": {
+    "naver": 73.32,
+    "fred": 73.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-09",
+   "value": 73.92,
+   "sources": {
+    "naver": 73.92
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-01-10",
+   "value": 76.57,
+   "sources": {
+    "naver": 76.57,
+    "fred": 77.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-13",
+   "value": 78.82,
+   "sources": {
+    "naver": 78.82,
+    "fred": 79.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-14",
+   "value": 77.5,
+   "sources": {
+    "naver": 77.5,
+    "fred": 78.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-15",
+   "value": null,
+   "sources": {
+    "naver": 78.71,
+    "fred": 80.73
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-01-16",
+   "value": 77.85,
+   "sources": {
+    "naver": 77.85,
+    "fred": 79.35
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-17",
+   "value": 77.39,
+   "sources": {
+    "naver": 77.39,
+    "fred": 78.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-21",
+   "value": 75.83,
+   "sources": {
+    "naver": 75.83,
+    "fred": 76.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-22",
+   "value": 75.44,
+   "sources": {
+    "naver": 75.44,
+    "fred": 76.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-23",
+   "value": 74.62,
+   "sources": {
+    "naver": 74.62,
+    "fred": 75.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-24",
+   "value": 74.66,
+   "sources": {
+    "naver": 74.66,
+    "fred": 74.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-27",
+   "value": 73.17,
+   "sources": {
+    "naver": 73.17,
+    "fred": 73.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-28",
+   "value": 73.77,
+   "sources": {
+    "naver": 73.77,
+    "fred": 74.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-29",
+   "value": 72.62,
+   "sources": {
+    "naver": 72.62,
+    "fred": 72.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-30",
+   "value": 72.73,
+   "sources": {
+    "naver": 72.73,
+    "fred": 73.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-01-31",
+   "value": 72.53,
+   "sources": {
+    "naver": 72.53,
+    "fred": 72.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-03",
+   "value": 73.16,
+   "sources": {
+    "naver": 73.16,
+    "fred": 73.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-04",
+   "value": 72.7,
+   "sources": {
+    "naver": 72.7,
+    "fred": 73.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-05",
+   "value": 71.03,
+   "sources": {
+    "naver": 71.03,
+    "fred": 71.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-06",
+   "value": 70.61,
+   "sources": {
+    "naver": 70.61,
+    "fred": 70.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-07",
+   "value": 71,
+   "sources": {
+    "naver": 71,
+    "fred": 71.32
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-10",
+   "value": 72.32,
+   "sources": {
+    "naver": 72.32,
+    "fred": 72.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-11",
+   "value": 73.32,
+   "sources": {
+    "naver": 73.32,
+    "fred": 73.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-12",
+   "value": 71.37,
+   "sources": {
+    "naver": 71.37,
+    "fred": 71.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-13",
+   "value": 71.29,
+   "sources": {
+    "naver": 71.29,
+    "fred": 71.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-14",
+   "value": 70.74,
+   "sources": {
+    "naver": 70.74,
+    "fred": 71.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-18",
+   "value": 71.83,
+   "sources": {
+    "naver": 71.83,
+    "fred": 72.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-19",
+   "value": 72.1,
+   "sources": {
+    "naver": 72.1,
+    "fred": 72.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-20",
+   "value": 72.48,
+   "sources": {
+    "naver": 72.48,
+    "fred": 72.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-21",
+   "value": 70.4,
+   "sources": {
+    "naver": 70.4,
+    "fred": 70.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-24",
+   "value": 70.7,
+   "sources": {
+    "naver": 70.7,
+    "fred": 71.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-25",
+   "value": 68.93,
+   "sources": {
+    "naver": 68.93,
+    "fred": 69.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-26",
+   "value": 68.62,
+   "sources": {
+    "naver": 68.62,
+    "fred": 68.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-27",
+   "value": 70.35,
+   "sources": {
+    "naver": 70.35,
+    "fred": 70.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-02-28",
+   "value": 69.76,
+   "sources": {
+    "naver": 69.76,
+    "fred": 69.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-03",
+   "value": 68.37,
+   "sources": {
+    "naver": 68.37,
+    "fred": 68.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-04",
+   "value": 68.26,
+   "sources": {
+    "naver": 68.26,
+    "fred": 68.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-05",
+   "value": 66.31,
+   "sources": {
+    "naver": 66.31,
+    "fred": 66.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-06",
+   "value": 66.36,
+   "sources": {
+    "naver": 66.36,
+    "fred": 66.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-07",
+   "value": 67.04,
+   "sources": {
+    "naver": 67.04,
+    "fred": 67.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-10",
+   "value": 66.03,
+   "sources": {
+    "naver": 66.03,
+    "fred": 66.31
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-11",
+   "value": 66.25,
+   "sources": {
+    "naver": 66.25,
+    "fred": 66.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-12",
+   "value": 67.68,
+   "sources": {
+    "naver": 67.68,
+    "fred": 67.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-13",
+   "value": 66.55,
+   "sources": {
+    "naver": 66.55,
+    "fred": 66.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-14",
+   "value": 67.18,
+   "sources": {
+    "naver": 67.18,
+    "fred": 67.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-17",
+   "value": 67.58,
+   "sources": {
+    "naver": 67.58,
+    "fred": 67.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-18",
+   "value": 66.9,
+   "sources": {
+    "naver": 66.9,
+    "fred": 67.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-19",
+   "value": 66.91,
+   "sources": {
+    "naver": 66.91,
+    "fred": 67.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-20",
+   "value": 68.07,
+   "sources": {
+    "naver": 68.07,
+    "fred": 68.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-21",
+   "value": 68.28,
+   "sources": {
+    "naver": 68.28,
+    "fred": 68.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-24",
+   "value": 69.11,
+   "sources": {
+    "naver": 69.11,
+    "fred": 69.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-25",
+   "value": 69,
+   "sources": {
+    "naver": 69,
+    "fred": 69.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-26",
+   "value": 69.65,
+   "sources": {
+    "naver": 69.65,
+    "fred": 70.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-27",
+   "value": 69.92,
+   "sources": {
+    "naver": 69.92,
+    "fred": 70.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-28",
+   "value": 69.36,
+   "sources": {
+    "naver": 69.36,
+    "fred": 69.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-03-31",
+   "value": 71.48,
+   "sources": {
+    "naver": 71.48,
+    "fred": 71.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-01",
+   "value": 71.2,
+   "sources": {
+    "naver": 71.2,
+    "fred": 71.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-02",
+   "value": 71.71,
+   "sources": {
+    "naver": 71.71,
+    "fred": 72.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-03",
+   "value": 66.95,
+   "sources": {
+    "naver": 66.95,
+    "fred": 67.43
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-04",
+   "value": 61.99,
+   "sources": {
+    "naver": 61.99,
+    "fred": 62.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-07",
+   "value": 60.7,
+   "sources": {
+    "naver": 60.7,
+    "fred": 61.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-08",
+   "value": 59.58,
+   "sources": {
+    "naver": 59.58,
+    "fred": 60.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-09",
+   "value": 62.35,
+   "sources": {
+    "naver": 62.35,
+    "fred": 62.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-10",
+   "value": 60.07,
+   "sources": {
+    "naver": 60.07,
+    "fred": 60.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-11",
+   "value": 61.5,
+   "sources": {
+    "naver": 61.5,
+    "fred": 61.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-14",
+   "value": 61.53,
+   "sources": {
+    "naver": 61.53,
+    "fred": 61.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-15",
+   "value": 61.33,
+   "sources": {
+    "naver": 61.33,
+    "fred": 61.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-16",
+   "value": 62.47,
+   "sources": {
+    "naver": 62.47,
+    "fred": 62.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-17",
+   "value": 64.01,
+   "sources": {
+    "naver": 64.01,
+    "fred": 65.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-21",
+   "value": 62.41,
+   "sources": {
+    "naver": 62.41,
+    "fred": 63.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-22",
+   "value": 63.67,
+   "sources": {
+    "naver": 63.67,
+    "fred": 64.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-23",
+   "value": 62.27,
+   "sources": {
+    "naver": 62.27,
+    "fred": 62.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-24",
+   "value": 62.79,
+   "sources": {
+    "naver": 62.79,
+    "fred": 63.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-25",
+   "value": 63.02,
+   "sources": {
+    "naver": 63.02,
+    "fred": 63.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-04-28",
+   "value": null,
+   "sources": {
+    "naver": 62.05,
+    "fred": 63.3
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-04-29",
+   "value": null,
+   "sources": {
+    "naver": 60.42,
+    "fred": 61.84
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-04-30",
+   "value": null,
+   "sources": {
+    "naver": 58.21,
+    "fred": 59.55
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-01",
+   "value": null,
+   "sources": {
+    "naver": 59.24,
+    "fred": 60.59
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-02",
+   "value": null,
+   "sources": {
+    "naver": 58.29,
+    "fred": 59.67
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-05",
+   "value": null,
+   "sources": {
+    "naver": 57.13,
+    "fred": 58.5
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-06",
+   "value": null,
+   "sources": {
+    "naver": 59.09,
+    "fred": 60.42
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-07",
+   "value": null,
+   "sources": {
+    "naver": 58.07,
+    "fred": 59.42
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-08",
+   "value": null,
+   "sources": {
+    "naver": 59.91,
+    "fred": 61.25
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-09",
+   "value": null,
+   "sources": {
+    "naver": 61.02,
+    "fred": 62.37
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-12",
+   "value": null,
+   "sources": {
+    "naver": 61.95,
+    "fred": 63.32
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-13",
+   "value": null,
+   "sources": {
+    "naver": 63.67,
+    "fred": 65.04
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-14",
+   "value": null,
+   "sources": {
+    "naver": 63.15,
+    "fred": 64.48
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-15",
+   "value": null,
+   "sources": {
+    "naver": 61.62,
+    "fred": 63.03
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-16",
+   "value": null,
+   "sources": {
+    "naver": 62.49,
+    "fred": 63.84
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-19",
+   "value": null,
+   "sources": {
+    "naver": 62.14,
+    "fred": 63.98
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-20",
+   "value": null,
+   "sources": {
+    "naver": 62.03,
+    "fred": 63.97
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-21",
+   "value": null,
+   "sources": {
+    "naver": 61.57,
+    "fred": 62.93
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-22",
+   "value": null,
+   "sources": {
+    "naver": 61.2,
+    "fred": 62.55
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-23",
+   "value": null,
+   "sources": {
+    "naver": 61.53,
+    "fred": 62.89
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-05-27",
+   "value": 60.89,
+   "sources": {
+    "naver": 60.89,
+    "fred": 61.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-28",
+   "value": 61.84,
+   "sources": {
+    "naver": 61.84,
+    "fred": 62.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-29",
+   "value": 60.94,
+   "sources": {
+    "naver": 60.94,
+    "fred": 61.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-05-30",
+   "value": 60.79,
+   "sources": {
+    "naver": 60.79,
+    "fred": 61.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-02",
+   "value": 62.52,
+   "sources": {
+    "naver": 62.52,
+    "fred": 63.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-03",
+   "value": 63.41,
+   "sources": {
+    "naver": 63.41,
+    "fred": 64.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-04",
+   "value": 62.85,
+   "sources": {
+    "naver": 62.85,
+    "fred": 63.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-05",
+   "value": 63.37,
+   "sources": {
+    "naver": 63.37,
+    "fred": 64.06
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-06",
+   "value": 64.58,
+   "sources": {
+    "naver": 64.58,
+    "fred": 65.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-09",
+   "value": 65.29,
+   "sources": {
+    "naver": 65.29,
+    "fred": 65.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-10",
+   "value": 64.98,
+   "sources": {
+    "naver": 64.98,
+    "fred": 65.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-11",
+   "value": 68.15,
+   "sources": {
+    "naver": 68.15,
+    "fred": 68.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-12",
+   "value": 68.04,
+   "sources": {
+    "naver": 68.04,
+    "fred": 68.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-13",
+   "value": 72.98,
+   "sources": {
+    "naver": 72.98,
+    "fred": 73.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-16",
+   "value": 71.77,
+   "sources": {
+    "naver": 71.77,
+    "fred": 72.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-17",
+   "value": null,
+   "sources": {
+    "naver": 73.27,
+    "fred": 75.62
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-06-18",
+   "value": null,
+   "sources": {
+    "naver": 73.5,
+    "fred": 75.89
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-06-20",
+   "value": null,
+   "sources": {
+    "naver": 73.84,
+    "fred": 75.72
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-06-23",
+   "value": 68.51,
+   "sources": {
+    "naver": 68.51,
+    "fred": 69.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-24",
+   "value": 64.37,
+   "sources": {
+    "naver": 64.37,
+    "fred": 65.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-25",
+   "value": 64.92,
+   "sources": {
+    "naver": 64.92,
+    "fred": 65.98
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-26",
+   "value": 65.24,
+   "sources": {
+    "naver": 65.24,
+    "fred": 66.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-27",
+   "value": 65.52,
+   "sources": {
+    "naver": 65.52,
+    "fred": 66.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-06-30",
+   "value": 65.11,
+   "sources": {
+    "naver": 65.11,
+    "fred": 66.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-01",
+   "value": 65.45,
+   "sources": {
+    "naver": 65.45,
+    "fred": 66.64
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-02",
+   "value": 67.45,
+   "sources": {
+    "naver": 67.45,
+    "fred": 68.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-03",
+   "value": 67,
+   "sources": {
+    "naver": 67,
+    "fred": 68.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-07",
+   "value": 67.93,
+   "sources": {
+    "naver": 67.93,
+    "fred": 69.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-08",
+   "value": 68.33,
+   "sources": {
+    "naver": 68.33,
+    "fred": 69.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-09",
+   "value": 68.38,
+   "sources": {
+    "naver": 68.38,
+    "fred": 69.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-10",
+   "value": 66.57,
+   "sources": {
+    "naver": 66.57,
+    "fred": 67.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-11",
+   "value": 68.45,
+   "sources": {
+    "naver": 68.45,
+    "fred": 69.63
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-14",
+   "value": 66.98,
+   "sources": {
+    "naver": 66.98,
+    "fred": 68.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-15",
+   "value": 66.52,
+   "sources": {
+    "naver": 66.52,
+    "fred": 67.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-16",
+   "value": 66.38,
+   "sources": {
+    "naver": 66.38,
+    "fred": 67.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-17",
+   "value": 67.54,
+   "sources": {
+    "naver": 67.54,
+    "fred": 68.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-18",
+   "value": 67.34,
+   "sources": {
+    "naver": 67.34,
+    "fred": 68.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-21",
+   "value": 67.2,
+   "sources": {
+    "naver": 67.2,
+    "fred": 68.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-22",
+   "value": null,
+   "sources": {
+    "naver": 66.21,
+    "fred": 67.56
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2025-07-23",
+   "value": 65.25,
+   "sources": {
+    "naver": 65.25,
+    "fred": 66.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-24",
+   "value": 66.03,
+   "sources": {
+    "naver": 66.03,
+    "fred": 67.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-25",
+   "value": 65.16,
+   "sources": {
+    "naver": 65.16,
+    "fred": 66.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-28",
+   "value": 66.71,
+   "sources": {
+    "naver": 66.71,
+    "fred": 67.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-29",
+   "value": 69.21,
+   "sources": {
+    "naver": 69.21,
+    "fred": 70.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-30",
+   "value": 70,
+   "sources": {
+    "naver": 70,
+    "fred": 71.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-07-31",
+   "value": 69.26,
+   "sources": {
+    "naver": 69.26,
+    "fred": 70.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-01",
+   "value": 67.33,
+   "sources": {
+    "naver": 67.33,
+    "fred": 68.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-04",
+   "value": 66.29,
+   "sources": {
+    "naver": 66.29,
+    "fred": 67.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-05",
+   "value": 65.16,
+   "sources": {
+    "naver": 65.16,
+    "fred": 66.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-06",
+   "value": 64.35,
+   "sources": {
+    "naver": 64.35,
+    "fred": 65.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-07",
+   "value": 63.88,
+   "sources": {
+    "naver": 63.88,
+    "fred": 64.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-08",
+   "value": 63.88,
+   "sources": {
+    "naver": 63.88,
+    "fred": 64.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-11",
+   "value": 63.96,
+   "sources": {
+    "naver": 63.96,
+    "fred": 65.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-12",
+   "value": 63.17,
+   "sources": {
+    "naver": 63.17,
+    "fred": 64.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-13",
+   "value": 62.65,
+   "sources": {
+    "naver": 62.65,
+    "fred": 63.68
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-14",
+   "value": 63.96,
+   "sources": {
+    "naver": 63.96,
+    "fred": 64.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-15",
+   "value": 62.8,
+   "sources": {
+    "naver": 62.8,
+    "fred": 63.78
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-18",
+   "value": 63.42,
+   "sources": {
+    "naver": 63.42,
+    "fred": 64.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-19",
+   "value": 62.35,
+   "sources": {
+    "naver": 62.35,
+    "fred": 63.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-20",
+   "value": 63.21,
+   "sources": {
+    "naver": 63.21,
+    "fred": 64.19
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-21",
+   "value": 63.52,
+   "sources": {
+    "naver": 63.52,
+    "fred": 64.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-22",
+   "value": 63.66,
+   "sources": {
+    "naver": 63.66,
+    "fred": 64.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-25",
+   "value": 64.8,
+   "sources": {
+    "naver": 64.8,
+    "fred": 65.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-26",
+   "value": 63.25,
+   "sources": {
+    "naver": 63.25,
+    "fred": 63.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-27",
+   "value": 64.15,
+   "sources": {
+    "naver": 64.15,
+    "fred": 64.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-28",
+   "value": 64.6,
+   "sources": {
+    "naver": 64.6,
+    "fred": 64.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-08-29",
+   "value": 64.01,
+   "sources": {
+    "naver": 64.01,
+    "fred": 64.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-02",
+   "value": 65.59,
+   "sources": {
+    "naver": 65.59,
+    "fred": 65.95
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-03",
+   "value": 63.97,
+   "sources": {
+    "naver": 63.97,
+    "fred": 64.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-04",
+   "value": 63.48,
+   "sources": {
+    "naver": 63.48,
+    "fred": 63.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-05",
+   "value": 61.87,
+   "sources": {
+    "naver": 61.87,
+    "fred": 62.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-08",
+   "value": 62.26,
+   "sources": {
+    "naver": 62.26,
+    "fred": 62.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-09",
+   "value": 62.63,
+   "sources": {
+    "naver": 62.63,
+    "fred": 62.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-10",
+   "value": 63.67,
+   "sources": {
+    "naver": 63.67,
+    "fred": 64.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-11",
+   "value": 62.37,
+   "sources": {
+    "naver": 62.37,
+    "fred": 62.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-12",
+   "value": 62.69,
+   "sources": {
+    "naver": 62.69,
+    "fred": 63.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-15",
+   "value": 63.3,
+   "sources": {
+    "naver": 63.3,
+    "fred": 63.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-16",
+   "value": 64.52,
+   "sources": {
+    "naver": 64.52,
+    "fred": 64.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-17",
+   "value": 64.05,
+   "sources": {
+    "naver": 64.05,
+    "fred": 64.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-18",
+   "value": 63.57,
+   "sources": {
+    "naver": 63.57,
+    "fred": 63.91
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-19",
+   "value": 62.68,
+   "sources": {
+    "naver": 62.68,
+    "fred": 63.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-22",
+   "value": 62.64,
+   "sources": {
+    "naver": 62.64,
+    "fred": 62.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-23",
+   "value": 63.41,
+   "sources": {
+    "naver": 63.41,
+    "fred": 63.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-24",
+   "value": 64.99,
+   "sources": {
+    "naver": 64.99,
+    "fred": 65.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-25",
+   "value": 64.98,
+   "sources": {
+    "naver": 64.98,
+    "fred": 65.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-26",
+   "value": 65.72,
+   "sources": {
+    "naver": 65.72,
+    "fred": 66.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-29",
+   "value": 63.45,
+   "sources": {
+    "naver": 63.45,
+    "fred": 64.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-09-30",
+   "value": 62.37,
+   "sources": {
+    "naver": 62.37,
+    "fred": 63.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-01",
+   "value": 61.78,
+   "sources": {
+    "naver": 61.78,
+    "fred": 62.59
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-02",
+   "value": 60.48,
+   "sources": {
+    "naver": 60.48,
+    "fred": 61.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-03",
+   "value": 60.88,
+   "sources": {
+    "naver": 60.88,
+    "fred": 61.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-06",
+   "value": 61.69,
+   "sources": {
+    "naver": 61.69,
+    "fred": 62.49
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-07",
+   "value": 61.73,
+   "sources": {
+    "naver": 61.73,
+    "fred": 62.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-08",
+   "value": 62.55,
+   "sources": {
+    "naver": 62.55,
+    "fred": 63.37
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-09",
+   "value": 61.51,
+   "sources": {
+    "naver": 61.51,
+    "fred": 62.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-10",
+   "value": 58.9,
+   "sources": {
+    "naver": 58.9,
+    "fred": 59.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-13",
+   "value": 59.49,
+   "sources": {
+    "naver": 59.49
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-10-14",
+   "value": 58.7,
+   "sources": {
+    "naver": 58.7,
+    "fred": 59.52
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-15",
+   "value": 58.27,
+   "sources": {
+    "naver": 58.27,
+    "fred": 59.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-16",
+   "value": 57.46,
+   "sources": {
+    "naver": 57.46,
+    "fred": 58.29
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-17",
+   "value": 57.54,
+   "sources": {
+    "naver": 57.54,
+    "fred": 58.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-20",
+   "value": 57.52,
+   "sources": {
+    "naver": 57.52,
+    "fred": 58.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-21",
+   "value": 57.82,
+   "sources": {
+    "naver": 57.82,
+    "fred": 58.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-22",
+   "value": 58.5,
+   "sources": {
+    "naver": 58.5,
+    "fred": 59.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-23",
+   "value": 61.79,
+   "sources": {
+    "naver": 61.79,
+    "fred": 62.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-24",
+   "value": 61.5,
+   "sources": {
+    "naver": 61.5,
+    "fred": 62.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-27",
+   "value": 61.31,
+   "sources": {
+    "naver": 61.31,
+    "fred": 62.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-28",
+   "value": 60.15,
+   "sources": {
+    "naver": 60.15,
+    "fred": 60.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-29",
+   "value": 60.48,
+   "sources": {
+    "naver": 60.48,
+    "fred": 61.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-30",
+   "value": 60.57,
+   "sources": {
+    "naver": 60.57,
+    "fred": 61.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-10-31",
+   "value": 60.98,
+   "sources": {
+    "naver": 60.98,
+    "fred": 61.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-03",
+   "value": 61.05,
+   "sources": {
+    "naver": 61.05,
+    "fred": 61.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-04",
+   "value": 60.56,
+   "sources": {
+    "naver": 60.56,
+    "fred": 61.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-05",
+   "value": 59.6,
+   "sources": {
+    "naver": 59.6,
+    "fred": 60.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-06",
+   "value": 59.43,
+   "sources": {
+    "naver": 59.43,
+    "fred": 60.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-07",
+   "value": 59.75,
+   "sources": {
+    "naver": 59.75,
+    "fred": 60.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-10",
+   "value": 60.13,
+   "sources": {
+    "naver": 60.13,
+    "fred": 60.94
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-11",
+   "value": 61.04,
+   "sources": {
+    "naver": 61.04
+   },
+   "status": "한 출처"
+  },
+  {
+   "date": "2025-11-12",
+   "value": 58.49,
+   "sources": {
+    "naver": 58.49,
+    "fred": 59.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-13",
+   "value": 58.69,
+   "sources": {
+    "naver": 58.69,
+    "fred": 59.54
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-14",
+   "value": 60.09,
+   "sources": {
+    "naver": 60.09,
+    "fred": 60.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-17",
+   "value": 59.91,
+   "sources": {
+    "naver": 59.91,
+    "fred": 60.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-18",
+   "value": 60.74,
+   "sources": {
+    "naver": 60.74,
+    "fred": 61.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-19",
+   "value": 59.44,
+   "sources": {
+    "naver": 59.44,
+    "fred": 60.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-20",
+   "value": 59.14,
+   "sources": {
+    "naver": 59.14,
+    "fred": 60.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-21",
+   "value": 58.06,
+   "sources": {
+    "naver": 58.06,
+    "fred": 58.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-24",
+   "value": 58.84,
+   "sources": {
+    "naver": 58.84,
+    "fred": 59.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-25",
+   "value": 57.95,
+   "sources": {
+    "naver": 57.95,
+    "fred": 58.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-26",
+   "value": 58.65,
+   "sources": {
+    "naver": 58.65,
+    "fred": 58.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-11-28",
+   "value": 58.55,
+   "sources": {
+    "naver": 58.55,
+    "fred": 58.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-01",
+   "value": 59.32,
+   "sources": {
+    "naver": 59.32,
+    "fred": 59.47
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-02",
+   "value": 58.64,
+   "sources": {
+    "naver": 58.64,
+    "fred": 58.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-03",
+   "value": 58.95,
+   "sources": {
+    "naver": 58.95,
+    "fred": 59.09
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-04",
+   "value": 59.67,
+   "sources": {
+    "naver": 59.67,
+    "fred": 59.82
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-05",
+   "value": 60.08,
+   "sources": {
+    "naver": 60.08,
+    "fred": 60.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-08",
+   "value": 58.88,
+   "sources": {
+    "naver": 58.88,
+    "fred": 59.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-09",
+   "value": 58.25,
+   "sources": {
+    "naver": 58.25,
+    "fred": 58.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-10",
+   "value": 58.46,
+   "sources": {
+    "naver": 58.46,
+    "fred": 58.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-11",
+   "value": 57.6,
+   "sources": {
+    "naver": 57.6,
+    "fred": 57.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-12",
+   "value": 57.44,
+   "sources": {
+    "naver": 57.44,
+    "fred": 57.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-15",
+   "value": 56.82,
+   "sources": {
+    "naver": 56.82,
+    "fred": 56.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-16",
+   "value": 55.27,
+   "sources": {
+    "naver": 55.27,
+    "fred": 55.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-17",
+   "value": 55.94,
+   "sources": {
+    "naver": 55.94,
+    "fred": 56.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-18",
+   "value": 56.15,
+   "sources": {
+    "naver": 56.15,
+    "fred": 56.22
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-19",
+   "value": 56.52,
+   "sources": {
+    "naver": 56.52,
+    "fred": 56.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-22",
+   "value": 58.01,
+   "sources": {
+    "naver": 58.01,
+    "fred": 58.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-23",
+   "value": 58.38,
+   "sources": {
+    "naver": 58.38,
+    "fred": 58.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-24",
+   "value": 58.35,
+   "sources": {
+    "naver": 58.35,
+    "fred": 58.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-26",
+   "value": 56.74,
+   "sources": {
+    "naver": 56.74,
+    "fred": 56.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-29",
+   "value": 58.08,
+   "sources": {
+    "naver": 58.08,
+    "fred": 57.89
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-30",
+   "value": 57.95,
+   "sources": {
+    "naver": 57.95,
+    "fred": 57.79
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2025-12-31",
+   "value": 57.42,
+   "sources": {
+    "naver": 57.42,
+    "fred": 57.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-02",
+   "value": 57.32,
+   "sources": {
+    "naver": 57.32,
+    "fred": 57.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-05",
+   "value": 58.32,
+   "sources": {
+    "naver": 58.32,
+    "fred": 58.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-06",
+   "value": 57.13,
+   "sources": {
+    "naver": 57.13,
+    "fred": 56.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-07",
+   "value": 55.99,
+   "sources": {
+    "naver": 55.99,
+    "fred": 56.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-08",
+   "value": 57.76,
+   "sources": {
+    "naver": 57.76,
+    "fred": 57.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-09",
+   "value": 59.12,
+   "sources": {
+    "naver": 59.12,
+    "fred": 58.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-12",
+   "value": 59.5,
+   "sources": {
+    "naver": 59.5,
+    "fred": 59.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-13",
+   "value": 61.15,
+   "sources": {
+    "naver": 61.15,
+    "fred": 60.85
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-14",
+   "value": 62.02,
+   "sources": {
+    "naver": 62.02,
+    "fred": 61.84
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-15",
+   "value": 59.08,
+   "sources": {
+    "naver": 59.08,
+    "fred": 59.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-16",
+   "value": 59.34,
+   "sources": {
+    "naver": 59.34,
+    "fred": 59.4
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-20",
+   "value": 60.36,
+   "sources": {
+    "naver": 60.36,
+    "fred": 60.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-21",
+   "value": 60.62,
+   "sources": {
+    "naver": 60.62,
+    "fred": 60.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-22",
+   "value": 59.36,
+   "sources": {
+    "naver": 59.36,
+    "fred": 59.24
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-23",
+   "value": 61.07,
+   "sources": {
+    "naver": 61.07,
+    "fred": 60.7
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-26",
+   "value": 60.63,
+   "sources": {
+    "naver": 60.63,
+    "fred": 60.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-27",
+   "value": 62.39,
+   "sources": {
+    "naver": 62.39,
+    "fred": 62.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-28",
+   "value": 63.21,
+   "sources": {
+    "naver": 63.21,
+    "fred": 62.75
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-29",
+   "value": 65.42,
+   "sources": {
+    "naver": 65.42,
+    "fred": 64.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-01-30",
+   "value": 65.21,
+   "sources": {
+    "naver": 65.21,
+    "fred": 64.5
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-02",
+   "value": 62.14,
+   "sources": {
+    "naver": 62.14,
+    "fred": 61.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-03",
+   "value": 63.21,
+   "sources": {
+    "naver": 63.21,
+    "fred": 62.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-04",
+   "value": 65.14,
+   "sources": {
+    "naver": 65.14,
+    "fred": 64.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-05",
+   "value": 63.29,
+   "sources": {
+    "naver": 63.29,
+    "fred": 62.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-06",
+   "value": 63.55,
+   "sources": {
+    "naver": 63.55,
+    "fred": 63.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-09",
+   "value": 64.36,
+   "sources": {
+    "naver": 64.36,
+    "fred": 64.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-10",
+   "value": 63.96,
+   "sources": {
+    "naver": 63.96,
+    "fred": 64.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-11",
+   "value": 64.63,
+   "sources": {
+    "naver": 64.63,
+    "fred": 64.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-12",
+   "value": 62.84,
+   "sources": {
+    "naver": 62.84,
+    "fred": 63.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-13",
+   "value": 62.89,
+   "sources": {
+    "naver": 62.89,
+    "fred": 63.05
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-17",
+   "value": 62.33,
+   "sources": {
+    "naver": 62.33,
+    "fred": 62.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-18",
+   "value": 65.19,
+   "sources": {
+    "naver": 65.19,
+    "fred": 65.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-19",
+   "value": 66.4,
+   "sources": {
+    "naver": 66.4,
+    "fred": 66.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-20",
+   "value": 66.48,
+   "sources": {
+    "naver": 66.48,
+    "fred": 66.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-23",
+   "value": 66.31,
+   "sources": {
+    "naver": 66.31,
+    "fred": 66.36
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-24",
+   "value": 65.63,
+   "sources": {
+    "naver": 65.63,
+    "fred": 65.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-25",
+   "value": 65.42,
+   "sources": {
+    "naver": 65.42,
+    "fred": 65.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-26",
+   "value": 65.21,
+   "sources": {
+    "naver": 65.21,
+    "fred": 65.1
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-02-27",
+   "value": 67.02,
+   "sources": {
+    "naver": 67.02,
+    "fred": 66.96
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-02",
+   "value": 71.23,
+   "sources": {
+    "naver": 71.23,
+    "fred": 71.13
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-03",
+   "value": 74.56,
+   "sources": {
+    "naver": 74.56,
+    "fred": 74.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-04",
+   "value": 74.66,
+   "sources": {
+    "naver": 74.66,
+    "fred": 74.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-05",
+   "value": 81.01,
+   "sources": {
+    "naver": 81.01,
+    "fred": 80.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-06",
+   "value": 90.9,
+   "sources": {
+    "naver": 90.9,
+    "fred": 90.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-09",
+   "value": 94.77,
+   "sources": {
+    "naver": 94.77,
+    "fred": 94.65
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-10",
+   "value": 83.45,
+   "sources": {
+    "naver": 83.45,
+    "fred": 83.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-11",
+   "value": 87.25,
+   "sources": {
+    "naver": 87.25,
+    "fred": 86.8
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-12",
+   "value": 95.73,
+   "sources": {
+    "naver": 95.73,
+    "fred": 95.61
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-13",
+   "value": 98.71,
+   "sources": {
+    "naver": 98.71,
+    "fred": 98.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-16",
+   "value": 93.5,
+   "sources": {
+    "naver": 93.5,
+    "fred": 93.39
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-17",
+   "value": 95.53,
+   "sources": {
+    "naver": 95.53,
+    "fred": 96.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-18",
+   "value": 95.46,
+   "sources": {
+    "naver": 95.46,
+    "fred": 96.12
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-19",
+   "value": 95.55,
+   "sources": {
+    "naver": 95.55,
+    "fred": 96.11
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-20",
+   "value": 98.23,
+   "sources": {
+    "naver": 98.23,
+    "fred": 98.71
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-23",
+   "value": 88.13,
+   "sources": {
+    "naver": 88.13,
+    "fred": 89.33
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-24",
+   "value": 92.35,
+   "sources": {
+    "naver": 92.35,
+    "fred": 93.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-25",
+   "value": 90.32,
+   "sources": {
+    "naver": 90.32,
+    "fred": 91.51
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-26",
+   "value": 94.48,
+   "sources": {
+    "naver": 94.48,
+    "fred": 96.18
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-27",
+   "value": 99.64,
+   "sources": {
+    "naver": 99.64,
+    "fred": 101.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-30",
+   "value": 102.88,
+   "sources": {
+    "naver": 102.88,
+    "fred": 104.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-03-31",
+   "value": 101.38,
+   "sources": {
+    "naver": 101.38,
+    "fred": 102.86
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-01",
+   "value": 100.12,
+   "sources": {
+    "naver": 100.12,
+    "fred": 101.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-02",
+   "value": 111.54,
+   "sources": {
+    "naver": 111.54,
+    "fred": 113.23
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-06",
+   "value": 112.41,
+   "sources": {
+    "naver": 112.41,
+    "fred": 114.01
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-07",
+   "value": 112.95,
+   "sources": {
+    "naver": 112.95,
+    "fred": 114.58
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-08",
+   "value": 94.41,
+   "sources": {
+    "naver": 94.41,
+    "fred": 96.17
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-09",
+   "value": 97.87,
+   "sources": {
+    "naver": 97.87,
+    "fred": 99.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-10",
+   "value": 96.57,
+   "sources": {
+    "naver": 96.57,
+    "fred": 98.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-13",
+   "value": 99.08,
+   "sources": {
+    "naver": 99.08,
+    "fred": 100.72
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-14",
+   "value": 91.28,
+   "sources": {
+    "naver": 91.28,
+    "fred": 93.07
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-15",
+   "value": 91.29,
+   "sources": {
+    "naver": 91.29,
+    "fred": 93.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-16",
+   "value": null,
+   "sources": {
+    "naver": 91.17,
+    "fred": 96.46
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-17",
+   "value": null,
+   "sources": {
+    "naver": 82.59,
+    "fred": 85.91
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-20",
+   "value": null,
+   "sources": {
+    "naver": 87.42,
+    "fred": 91.06
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-21",
+   "value": null,
+   "sources": {
+    "naver": 89.67,
+    "fred": 93.64
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-22",
+   "value": 92.96,
+   "sources": {
+    "naver": 92.96,
+    "fred": 94.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-04-23",
+   "value": null,
+   "sources": {
+    "naver": 95.85,
+    "fred": 99.27
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-24",
+   "value": null,
+   "sources": {
+    "naver": 94.4,
+    "fred": 98.42
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-27",
+   "value": null,
+   "sources": {
+    "naver": 96.37,
+    "fred": 99.89
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-28",
+   "value": null,
+   "sources": {
+    "naver": 99.93,
+    "fred": 103.45
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-29",
+   "value": null,
+   "sources": {
+    "naver": 106.88,
+    "fred": 110.47
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-04-30",
+   "value": null,
+   "sources": {
+    "naver": 105.07,
+    "fred": 108.64
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-01",
+   "value": null,
+   "sources": {
+    "naver": 101.94,
+    "fred": 105.38
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-04",
+   "value": null,
+   "sources": {
+    "naver": 106.42,
+    "fred": 109.76
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-05",
+   "value": null,
+   "sources": {
+    "naver": 102.27,
+    "fred": 105.66
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-06",
+   "value": null,
+   "sources": {
+    "naver": 95.08,
+    "fred": 98.75
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-07",
+   "value": null,
+   "sources": {
+    "naver": 94.81,
+    "fred": 98.38
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-08",
+   "value": null,
+   "sources": {
+    "naver": 95.42,
+    "fred": 98.87
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-11",
+   "value": null,
+   "sources": {
+    "naver": 98.07,
+    "fred": 101.56
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-12",
+   "value": null,
+   "sources": {
+    "naver": 102.18,
+    "fred": 105.78
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-13",
+   "value": null,
+   "sources": {
+    "naver": 101.02,
+    "fred": 104.52
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-14",
+   "value": null,
+   "sources": {
+    "naver": 101.17,
+    "fred": 104.66
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-15",
+   "value": null,
+   "sources": {
+    "naver": 101.02,
+    "fred": 108.99
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-18",
+   "value": null,
+   "sources": {
+    "naver": 104.38,
+    "fred": 112.25
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-19",
+   "value": null,
+   "sources": {
+    "naver": 104.15,
+    "fred": 112.09
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-20",
+   "value": null,
+   "sources": {
+    "naver": 98.26,
+    "fred": 101.69
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-21",
+   "value": null,
+   "sources": {
+    "naver": 96.35,
+    "fred": 100.2
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-22",
+   "value": null,
+   "sources": {
+    "naver": 96.6,
+    "fred": 100.35
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-26",
+   "value": null,
+   "sources": {
+    "naver": 93.89,
+    "fred": 97.63
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-27",
+   "value": null,
+   "sources": {
+    "naver": 88.68,
+    "fred": 92.35
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-28",
+   "value": null,
+   "sources": {
+    "naver": 88.9,
+    "fred": 92.65
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-05-29",
+   "value": null,
+   "sources": {
+    "naver": 87.36,
+    "fred": 91.16
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-01",
+   "value": null,
+   "sources": {
+    "naver": 92.16,
+    "fred": 95.96
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-02",
+   "value": null,
+   "sources": {
+    "naver": 93.76,
+    "fred": 97.47
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-03",
+   "value": null,
+   "sources": {
+    "naver": 96.02,
+    "fred": 99.76
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-04",
+   "value": null,
+   "sources": {
+    "naver": 93.04,
+    "fred": 96.83
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-05",
+   "value": null,
+   "sources": {
+    "naver": 90.54,
+    "fred": 94.32
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-08",
+   "value": null,
+   "sources": {
+    "naver": 91.3,
+    "fred": 95
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-09",
+   "value": null,
+   "sources": {
+    "naver": 88.2,
+    "fred": 91.9
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-10",
+   "value": null,
+   "sources": {
+    "naver": 90.03,
+    "fred": 93.68
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-11",
+   "value": null,
+   "sources": {
+    "naver": 87.71,
+    "fred": 91.58
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-12",
+   "value": null,
+   "sources": {
+    "naver": 84.88,
+    "fred": 88.62
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-15",
+   "value": null,
+   "sources": {
+    "naver": 80.75,
+    "fred": 84.65
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-16",
+   "value": null,
+   "sources": {
+    "naver": 75.27,
+    "fred": 79.8
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-17",
+   "value": null,
+   "sources": {
+    "naver": 76.01,
+    "fred": 80.65
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-18",
+   "value": null,
+   "sources": {
+    "naver": 75.85,
+    "fred": 80.35
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-22",
+   "value": null,
+   "sources": {
+    "naver": 73.86,
+    "fred": 78.94
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-06-23",
+   "value": 73.21,
+   "sources": {
+    "naver": 73.21,
+    "fred": 74.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-24",
+   "value": 70.34,
+   "sources": {
+    "naver": 70.34,
+    "fred": 71.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-25",
+   "value": 71.92,
+   "sources": {
+    "naver": 71.92,
+    "fred": 72.67
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-26",
+   "value": 69.23,
+   "sources": {
+    "naver": 69.23,
+    "fred": 70.3
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-29",
+   "value": 70.75,
+   "sources": {
+    "naver": 70.75,
+    "fred": 71.87
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-06-30",
+   "value": 69.5,
+   "sources": {
+    "naver": 69.5,
+    "fred": 70.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-01",
+   "value": 68.58,
+   "sources": {
+    "naver": 68.58,
+    "fred": 69.74
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-02",
+   "value": 68.69,
+   "sources": {
+    "naver": 68.69,
+    "fred": 69.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-06",
+   "value": 68.55,
+   "sources": {
+    "naver": 68.55,
+    "fred": 69.6
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-07",
+   "value": 70.44,
+   "sources": {
+    "naver": 70.44,
+    "fred": 71.53
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-08",
+   "value": 73.52,
+   "sources": {
+    "naver": 73.52,
+    "fred": 74.56
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-09",
+   "value": 72.08,
+   "sources": {
+    "naver": 72.08,
+    "fred": 73.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-10",
+   "value": 71.41,
+   "sources": {
+    "naver": 71.41,
+    "fred": 72.45
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-13",
+   "value": 78.14,
+   "sources": {
+    "naver": 78.14,
+    "fred": 79.2
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-14",
+   "value": 79.34,
+   "sources": {
+    "naver": 79.34,
+    "fred": 80.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-15",
+   "value": 79.6,
+   "sources": {
+    "naver": 79.6,
+    "fred": 80.73
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-16",
+   "value": null,
+   "sources": {
+    "naver": 78.28,
+    "fred": 80.03
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-17",
+   "value": null,
+   "sources": {
+    "naver": 81.78,
+    "fred": 83.43
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-20",
+   "value": null,
+   "sources": {
+    "naver": 82.48,
+    "fred": 84.38
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-21",
+   "value": null,
+   "sources": {
+    "naver": 84.34,
+    "fred": 86.04
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-22",
+   "value": 86.83,
+   "sources": {
+    "naver": 86.83,
+    "fred": 87.66
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-23",
+   "value": 92.19,
+   "sources": {
+    "naver": 92.19,
+    "fred": 93.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-24",
+   "value": null,
+   "sources": {
+    "naver": 89.31,
+    "fred": 91.74
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-27",
+   "value": 82.61,
+   "sources": {
+    "naver": 82.61,
+    "fred": 84.25
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-28",
+   "value": null,
+   "sources": {
+    "naver": 79.26,
+    "fred": 80.91
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-07-29",
+   "value": 84.46,
+   "sources": {
+    "naver": 84.46,
+    "fred": 86.08
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-30",
+   "value": 83.59,
+   "sources": {
+    "naver": 83.59,
+    "fred": 85.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-07-31",
+   "value": 84.67,
+   "sources": {
+    "naver": 84.67,
+    "fred": 86.16
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-03",
+   "value": null,
+   "sources": {
+    "naver": 80.34,
+    "fred": 81.96
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-04",
+   "value": null,
+   "sources": {
+    "naver": 75.77,
+    "fred": 77.33
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-05",
+   "value": null,
+   "sources": {
+    "naver": 75.22,
+    "fred": 76.78
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-06",
+   "value": null,
+   "sources": {
+    "naver": 77.29,
+    "fred": 78.88
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-07",
+   "value": null,
+   "sources": {
+    "naver": 78.18,
+    "fred": 79.77
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-10",
+   "value": 82.13,
+   "sources": {
+    "naver": 82.13,
+    "fred": 83.76
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-11",
+   "value": 83.2,
+   "sources": {
+    "naver": 83.2,
+    "fred": 84.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-12",
+   "value": null,
+   "sources": {
+    "naver": 83.27,
+    "fred": 84.97
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-13",
+   "value": 81.25,
+   "sources": {
+    "naver": 81.25,
+    "fred": 82.77
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-14",
+   "value": 82.4,
+   "sources": {
+    "naver": 82.4,
+    "fred": 83.99
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-17",
+   "value": 84.5,
+   "sources": {
+    "naver": 84.5,
+    "fred": 86.04
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-18",
+   "value": 84.94,
+   "sources": {
+    "naver": 84.94,
+    "fred": 86.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-19",
+   "value": 85.83,
+   "sources": {
+    "naver": 85.83,
+    "fred": 87.28
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-20",
+   "value": null,
+   "sources": {
+    "naver": 87.83,
+    "fred": 89.75
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-08-21",
+   "value": 87.06,
+   "sources": {
+    "naver": 87.06,
+    "fred": 87.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-24",
+   "value": 85.01,
+   "sources": {
+    "naver": 85.01,
+    "fred": 86.34
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-25",
+   "value": 82.36,
+   "sources": {
+    "naver": 82.36,
+    "fred": 83.9
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-26",
+   "value": 82.23,
+   "sources": {
+    "naver": 82.23,
+    "fred": 83.46
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-27",
+   "value": 83.53,
+   "sources": {
+    "naver": 83.53,
+    "fred": 84.81
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-28",
+   "value": 83.4,
+   "sources": {
+    "naver": 83.4,
+    "fred": 84.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-08-31",
+   "value": 85.76,
+   "sources": {
+    "naver": 85.76,
+    "fred": 87.03
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-01",
+   "value": 90.22,
+   "sources": {
+    "naver": 90.22,
+    "fred": 91.48
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-02",
+   "value": 91.01,
+   "sources": {
+    "naver": 91.01,
+    "fred": 92.15
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-03",
+   "value": 91.3,
+   "sources": {
+    "naver": 91.3,
+    "fred": 92.55
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-04",
+   "value": 91.48,
+   "sources": {
+    "naver": 91.48,
+    "fred": 92.69
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-08",
+   "value": 93.03,
+   "sources": {
+    "naver": 93.03,
+    "fred": 94.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-09",
+   "value": 96.05,
+   "sources": {
+    "naver": 96.05,
+    "fred": 97.26
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-10",
+   "value": 102.48,
+   "sources": {
+    "naver": 102.48,
+    "fred": 103.57
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-11",
+   "value": 100.05,
+   "sources": {
+    "naver": 100.05,
+    "fred": 101.27
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-14",
+   "value": 101.39,
+   "sources": {
+    "naver": 101.39,
+    "fred": 102.42
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-15",
+   "value": 105.83,
+   "sources": {
+    "naver": 105.83,
+    "fred": 107.02
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-16",
+   "value": 102.43,
+   "sources": {
+    "naver": 102.43,
+    "fred": 103.62
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-17",
+   "value": 101.91,
+   "sources": {
+    "naver": 101.91,
+    "fred": 103.21
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-18",
+   "value": 100.3,
+   "sources": {
+    "naver": 100.3,
+    "fred": 101.44
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-21",
+   "value": 95.78,
+   "sources": {
+    "naver": 95.78,
+    "fred": 96.97
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-22",
+   "value": 94.59,
+   "sources": {
+    "naver": 94.59,
+    "fred": 96.41
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-23",
+   "value": 92.16,
+   "sources": {
+    "naver": 92.16,
+    "fred": 93.38
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-24",
+   "value": 94.61,
+   "sources": {
+    "naver": 94.61,
+    "fred": 95.88
+   },
+   "status": "ok"
+  },
+  {
+   "date": "2026-09-25",
+   "value": null,
+   "sources": {
+    "naver": 92.41,
+    "fred": 85.23
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-09-28",
+   "value": null,
+   "sources": {
+    "naver": 92.6,
+    "fred": 99.37
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-09-29",
+   "value": null,
+   "sources": {
+    "naver": 89.38,
+    "fred": 96.16
+   },
+   "status": "확인 중"
+  },
+  {
+   "date": "2026-09-30",
+   "value": 90.42,
+   "sources": {
+    "naver": 90.42
+   },
+   "status": "한 출처"
+  }
+ ]
+}
