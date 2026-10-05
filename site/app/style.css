@@ -609,23 +609,6 @@ html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-
 /* 2026-10-05 15:24 「잡스가 … 36가지」 3묶음 — 찾아가기 · 이어 보기
    E1 출목표 회사 이름 찾기(제목 줄 오른쪽 단추 · 누르면 열림) */
 .f-titlerow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.f-find-b { flex: none; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; }
-.f-find-b[aria-expanded="true"] { background: var(--ink); color: var(--card); }
-.f-find-b:focus-visible, .f-find-in:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
-.f-find-ic { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
-.f-find { margin: 10px 0 0; }
-.f-find[hidden] { display: none; }
-.f-find-in { width: 100%; min-height: 48px; padding: 8px 14px; border: 1.5px solid var(--sep); border-radius: 12px; background: var(--card); color: var(--ink); font: inherit; font-size: 1.0625rem; }
-.f-find-in::placeholder { color: var(--sub); opacity: 1; }
-.f-find-msg { margin: 6px 2px 0; color: var(--ink2); }
-.f-find-msg:empty { display: none; }
-.f-find-list { list-style: none; margin: 4px 0 0; padding: 0; border-radius: 12px; background: var(--card); overflow: hidden; }
-.f-find-list:empty { display: none; }
-.f-find-hit { display: flex; flex-direction: column; gap: 1px; min-height: 52px; padding: 8px 14px; border-top: 1px solid var(--sep); color: var(--ink); text-decoration: none; }
-.f-find-list li:first-child .f-find-hit { border-top: 0; }
-.f-find-hit:active { background: var(--fill); }
-.f-find-n { font-size: 1.0625rem; font-weight: 700; overflow-wrap: anywhere; }
-.f-find-s { font-size: .8125rem; color: var(--sub); }
 /* E3 · E5 다른 화면에서 온 그 칸 · 그 업종 묶음 — 잠깐 금빛 테 */
 .f-hit { outline: 3px solid var(--geum); outline-offset: 3px; transition: outline-color .6s; }
 /* E2 · E4 회사 화면 오른 순 자리 · 앞뒤 회사 */
@@ -682,3 +665,31 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
   html[data-font-step="1"] .top .has-mkt .wordmark, html[data-font-step="2"] .top .has-mkt .wordmark, html[data-font-step="3"] .top .has-mkt .wordmark, html[data-font-step="4"] .top .has-mkt .wordmark { font-size: 0; letter-spacing: 0; min-width: 44px; }
   html[data-font-step="1"] .top .has-mkt .wordmark::before, html[data-font-step="2"] .top .has-mkt .wordmark::before, html[data-font-step="3"] .top .has-mkt .wordmark::before, html[data-font-step="4"] .top .has-mkt .wordmark::before { margin-right: 0; width: 20px; height: 20px; }
 }
+/* 2026-10-05 20:24 사장님 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 아래 탭 「찾기」(#/find · view-find.js)
+   글 칸은 크게(휴대폰 엄지 · 큰 글씨) · 줄마다 이름과 20거래일 변화가 한 줄 · 그 아래 시장 · 기호 · 업종 · 오른 순 자리 · 옛 출목표 「찾기」(.f-find*)는 지움 */
+.fd-form { position: relative; margin: 14px 0 0; }
+.fd-label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; color: var(--sub); pointer-events: none; }
+.fd-ic { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.fd-in { width: 100%; min-height: 56px; padding: 10px 16px 10px 50px; border: 1.5px solid var(--sep); border-radius: 16px; background: var(--card); color: var(--ink); font: inherit; font-size: 1.1875rem; -webkit-appearance: none; appearance: none; }
+.fd-in::placeholder { color: var(--sub); opacity: 1; }
+.fd-in:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+.fd-msg { margin: 8px 2px 0; color: var(--ink2); font-size: .9375rem; }
+.fd-msg:empty { display: none; }
+.fd-list { list-style: none; margin: 8px 0 0; padding: 0; border-radius: 16px; background: var(--card); overflow: hidden; }
+.fd-list:empty { display: none; }
+.fd-hit { display: flex; flex-direction: column; gap: 2px; min-height: 60px; padding: 10px 16px; border-top: 1px solid var(--sep); color: var(--ink); text-decoration: none; }
+.fd-list li:first-child .fd-hit { border-top: 0; }
+.fd-hit:active { background: var(--fill); }
+.fd-hit:focus-visible { outline: 3px solid var(--geum); outline-offset: -3px; }
+.fd-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.fd-name { font-size: 1.125rem; font-weight: 700; overflow-wrap: anywhere; min-width: 0; }
+.fd-chg { flex: none; font-size: 1.0625rem; }
+.fd-sub { font-size: .875rem; color: var(--sub); overflow-wrap: anywhere; }
+.fd-mkt { display: inline-block; padding: 0 7px; border-radius: 999px; background: var(--fill); color: var(--ink); font-weight: 700; font-size: .8125rem; }
+.fd-mkt[data-place="us"] { background: var(--ink); color: var(--card); }
+.fd-recent { margin: 18px 0 0; }
+.fd-recent[hidden] { display: none; }
+.fd-try-h { margin: 16px 2px 6px; }
+.fd-try { display: flex; flex-wrap: wrap; gap: 8px; }
+.fd-try-b { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--sep); border-radius: 999px; background: var(--card); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; cursor: pointer; } /* 바탕과 같은 색이면 누르는 단추로 안 보여 흰 칸 + 테 */
+.fd-try-b:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
