@@ -1,15 +1,18 @@
 # ATLAS 미국 주식 판 — 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」
-#   지금(1단계)은 「어느 자료 출처가 깃허브 실행기에서 열리나」만 시험한다(mode=probe · 처음 값).
-#   결과는 reports/atlas11/us/ 에만 적는다 — 한국 판 파일(public/data/atlas11/view · reports/atlas11/operations …)은 건드리지 않는다.
-#   예약(cron)은 두지 않는다 — 사장님이 「Run workflow」를 누를 때만 돈다(예약 줄은 저장소 주인만 살릴 수 있음 · docs/ATLAS_원칙.md 규칙 7).
+#   「Run workflow」만 누르면 된다(mode 는 그대로 두면 auto):
+#     auto(처음 값) = 미국 판 입력이 없으면 자료 출처 시험 + 365곳 고르기 · 있으면 같은 365곳의 새 종가 → 판 만들기
+#     probe = 자료 출처 시험만 · select = 365곳 다시 고르기 · update = 같은 365곳 새 종가 · build = 받지 않고 판만 다시
+#   결과는 reports/atlas11/us/ · public/data/atlas11/us/ 에만 적는다 — 한국 판 파일(public/data/input.json · public/data/atlas11/view · reports/atlas11/operations …)은 건드리지 않는다.
+#   사이트에 올리지는 않는다(올리기는 「aaa7377.com 올리기」 단추 · 사장님만 누름).
+#   예약(cron)은 두지 않는다 — 예약 줄은 저장소 주인만 살릴 수 있음(docs/ATLAS_원칙.md 규칙 7).
 name: 미국 주식 자료 받기
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = 자료 출처 시험(처음)'
+        description: 'auto = 알아서(그대로 두세요) · probe = 출처 시험만 · select = 365곳 다시 고르기 · update = 새 종가만 · build = 판만 다시'
         required: false
-        default: 'probe'
+        default: 'auto'
 permissions:
   contents: write
 concurrency:
@@ -18,21 +21,31 @@ concurrency:
 jobs:
   us:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
+    env:
+      MODE: ${{ inputs.mode || 'auto' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: 미국 자료 출처 시험
-        if: inputs.mode == 'probe' || inputs.mode == ''
+      - name: 자료 출처 시험(처음 한 번 · 또는 probe)
+        if: env.MODE == 'probe' || (env.MODE == 'auto' && hashFiles('public/data/atlas11/us/input.json') == '')
         run: timeout 900 node scripts/atlas11/us/probe.mjs || true
-      - name: 기록 올리기(reports/atlas11/us 만)
+      - name: 미국 365곳 자료 받기
+        id: collect
+        if: env.MODE == 'auto' || env.MODE == 'select' || env.MODE == 'update'
+        run: timeout 2100 node scripts/atlas11/us/collect.mjs --mode "$MODE"
+      - name: 미국 판 만들기
+        if: (env.MODE == 'build' || steps.collect.outcome == 'success') && hashFiles('public/data/atlas11/us/input.json') != ''
+        run: node scripts/atlas11/us/build.mjs
+      - name: 기록 올리기(reports/atlas11/us · public/data/atlas11/us 만)
         if: always()
         run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
           git add -f reports/atlas11/us
-          git commit -q -m "atlas11 us ${{ inputs.mode || 'probe' }} [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          if [ -d public/data/atlas11/us ]; then git add -f public/data/atlas11/us; fi
+          git commit -q -m "atlas11 us $MODE [skip ci]" || { echo "올릴 것 없음"; exit 0; }
           for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
           exit 1
