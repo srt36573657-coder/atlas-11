@@ -1,0 +1,19 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ATLAS 로고 샘플</title><link rel="icon" href="data:,"><link rel="stylesheet" href="logo.css"></head>
+<body><main class="sheet" id="s"></main><script src="marks.js"></script><script>
+const {MARKS, svg} = window.LOGO, n = Number(new URLSearchParams(location.search).get('n')), m = MARKS[n - 1];
+document.getElementById('s').innerHTML = `
+<header class="hd"><div class="num">${n}</div><div><h1>${m.name}</h1><p class="sub">${m.line}</p></div>
+<p class="tag"><span>ATLAS 로고 샘플 ${n} / 11</span><span>2026년 10월 5일(월) 만듦</span></p></header>
+<p class="lab">크게 · 밝은 바탕과 어두운 바탕</p>
+<div class="hero"><div class="tile l">${svg(m, 'light', 150)}</div><div class="tile d">${svg(m, 'dark', 150)}</div></div>
+<p class="lab">사이트 위 막대에 올리면 · 밝은 화면 / 어두운 화면</p>
+<div class="band l">${svg(m, 'icon', 28)}<span class="wm">ATLAS</span><span class="rb">가</span><span class="rb">♪</span></div>
+<div class="band d">${svg(m, 'dark', 28)}<span class="wm">ATLAS</span><span class="rb">가</span><span class="rb">♪</span></div>
+<p class="lab">휴대폰 앱 아이콘 · 브라우저 탭(작은 크기)</p>
+<div class="icons"><div class="app"><div class="ic">${svg(m, 'icon', 54)}</div>ATLAS</div>
+<div class="tabs"><div class="tabbar">${svg(m, 'dark', 16)} ATLAS · 불장</div><div class="tabbar l">${svg(m, 'light', 16)} ATLAS · 업종</div>
+<div class="tiny">${svg(m, 'dark', 32)}${svg(m, 'dark', 20)}${svg(m, 'dark', 16)}<span>32 · 20 · 16 크기</span></div></div></div>
+<div class="mean"><div><b>지도 뜻</b><span>${m.map}</span></div><div><b>주식 뜻</b><span>${m.stock}</span></div><div class="r"><b>빨강</b><span>${m.red}</span></div></div>
+<p class="foot">샘플 — 사이트에 아직 없음 · 색 = 지금 사이트 청자 색(짙은 청자 · 옥빛 · 백토빛) · 빨강은 ATLAS 약속대로 「오름」 한 자리에만 · 글씨 = 고운바탕</p>`;
+document.fonts.ready.then(() => { window.READY = true; });
+</script></body></html>
