@@ -19,7 +19,10 @@
    색 이름은 우리말: 한지빛(바탕) · 비단빛(판) · 먹빛(글자 · 위 막대) · 은빛(가르는 선) · 놋쇠빛(금빛 하나) — 마이바흐 이름·표지·무늬·글꼴·색 이름은 쓰지 않음
    2026-10-05 02:44 「잡스였다면」 개혁(보고서 「잡스였다면 ATLAS 개혁 공부」): 36칸 판 칸 바탕의 세기 색·색 보기표를 덜어 냄(칸 위 선 하나만 오름 빨강 · 내림 파랑)
      · 출목표 동그라미: 오른 날 빈 동그라미 · 내린 날 찬 동그라미(모양으로도 읽힘) · 수급은 막대 대신 한 줄 · 묶음 이름이 화면 위에 붙어 따라옴 · 불러오는 동안 회색 자리
-   2026-10-05 16:29 사장님 「청자가 낫다」 — 바탕 · 글씨 · 여백을 2번 청자로(docs/design/celadon) */
+   2026-10-05 16:29 사장님 「청자가 낫다」 — 바탕 · 글씨 · 여백을 2번 청자로(docs/design/celadon)
+   2026-10-06 00:01 사장님 「이거 맞아 알아서 해」 — 위 막대의 이름 옆 작은 인장을 로고 5번 「땅 나누기」로(docs/design/logos)
+     · 넓이 = 회사 크기인 땅 지도 · 빨간 칸 = 가장 붉게 오른 땅 · 그림 파일 ../logo-band.svg · 탭 아이콘 favicon.svg · 홈 화면 아이콘 apple-touch-icon.png
+     · 그래서 ②의 「금빛 세 자리」 가운데 「이름 옆 작은 인장」 자리는 이제 옥빛 한 색이 아니라 로고 그림이다(나머지 두 자리 — 고른 탭 선 · 고른 단추 선 — 는 그대로) */
 :root {
   --font: 'Gowun Batang', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
   /* 비색 바탕 · 백토빛 판 · 숲먹 글자 */
@@ -65,10 +68,10 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
   --bg: var(--band); --ink: var(--band-ink); --sub: var(--band-sub); --fill: var(--band-fill); --link: var(--band-ink); color: var(--ink); }
 .top-inner { max-width: 560px; margin: 0 auto; min-height: 56px; padding: 6px 16px; display: flex; align-items: center; gap: 10px; }
 .wordmark { margin-right: auto; font-weight: 600; letter-spacing: .32em; font-size: 1.0625rem; color: var(--ink); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-/* 금빛 자리 3 — 작은 인장(화면마다 한 번): 아틀라스가 떠받친 하늘(둥근 하늘 + 기울어진 띠 하나 · 혼천의 모양) · 색은 --geum 그대로(모양만 그림으로 오려 냄) */
-.top .wordmark::before { content: ''; flex: none; width: 16px; height: 16px; margin-right: 12px; background: var(--geum);
-  --seal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.35'%3E%3Ccircle cx='8' cy='8' r='6.6'/%3E%3Cellipse cx='8' cy='8' rx='6.6' ry='2.5' transform='rotate(-24 8 8)'/%3E%3C/svg%3E");
-  -webkit-mask: var(--seal) center / contain no-repeat; mask: var(--seal) center / contain no-repeat; }
+/* (옛 · 2026-10-06 00:01 까지) 금빛 자리 3 — 작은 인장(화면마다 한 번): 아틀라스가 떠받친 하늘(둥근 하늘 + 기울어진 띠 하나 · 혼천의 모양) · 색은 --geum 그대로(모양만 그림으로 오려 냄)
+   지금 — 로고 5번 「땅 나누기」(사장님 「이거 맞아 알아서 해」): 칸 여섯 · 넓이 = 회사 크기 · 빨간 칸 = 가장 붉게 오른 땅
+   위 막대는 밝은 · 어두운 화면 모두 짙은 청자 바탕이라 그림 한 벌(../logo-band.svg) · 크기 16 → 20px(칸 여섯이 작으면 뭉침) */
+.top .wordmark::before { content: ''; flex: none; width: 20px; height: 20px; margin-right: 12px; background: url('../logo-band.svg') center / contain no-repeat; }
 .round { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--fill); color: var(--ink); display: grid; place-items: center; font: 700 1.125rem/1 var(--font); cursor: pointer; padding: 0; flex: none; transition: background-color .2s ease-out, color .2s ease-out; }
 .round.on { background: var(--ink); color: var(--bg); }
 
@@ -658,7 +661,7 @@ body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xml
 .mkt-b[aria-current="page"] { background: var(--ink); color: var(--band); }
 .mkt-b:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
 html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7px; font-size: .8125rem; }
-/* 시장 단추가 있으면 좁은 휴대폰 · 큰 글씨에서 위 막대가 한 줄을 넘는다(360px · 글씨 200% 에서 459px) — 「ATLAS」 글자는 숨기고 인장(하늘 그림)만 둔다
+/* 시장 단추가 있으면 좁은 휴대폰 · 큰 글씨에서 위 막대가 한 줄을 넘는다(360px · 글씨 200% 에서 459px) — 「ATLAS」 글자는 숨기고 인장(하늘 그림 · 10/6 부터 로고 5번 그림)만 둔다
    막대가 두 줄이 되면 아래 묶음 이름(.f-h · 위에서 56px 에 붙음)을 가리므로 줄 바꿈 대신 · 처음 화면으로 가는 길과 이름(aria-label 「ATLAS 처음 화면」)은 그대로 */
 @media (max-width: 380px) { .top .has-mkt .wordmark { font-size: 0; letter-spacing: 0; min-width: 44px; } .top .has-mkt .wordmark::before { margin-right: 0; width: 20px; height: 20px; } }
 @media (max-width: 599px) {
