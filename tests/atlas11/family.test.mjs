@@ -3,7 +3,7 @@
 // 지금 판(public/data/atlas11/view/board.json)의 업종이 모두 갈래를 찾는지 본다 — 새 업종 이름이 생기면 여기서 먼저 걸린다.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {FAMILIES, OTHER, familyOf, groupByFamily} from '../../site/app/family.js';
+import {FAMILIES, OTHER, familyOf, groupByFamily, riseDesc, meanOf, familiesByRise} from '../../site/app/family.js';
 import {readJSON} from './helpers.mjs';
 
 const board = await readJSON('public/data/atlas11/view/board.json');
@@ -34,4 +34,25 @@ test('큰 갈래: 지금 판 불장 업종의 큰 흐름 — 갈래마다 업종
   const hot = board.groups.filter(g => g.hot), flows = groupByFamily(hot);
   assert.equal(flows.reduce((s, f) => s + f.groups.length, 0), hot.length);
   assert.ok(flows.length >= 1 && flows.length <= hot.length);
+});
+
+// 2026-10-05 11:36 사장님 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」 → 「모든 배치가 가장 많이 상승한순으로 배치해줘」
+test('오른 순: 지난 20거래일 변화가 큰 차례 · 값이 없으면 맨 뒤 · 같으면 code 차례', () => {
+  const xs = [{code: 'B', change20: 0.1}, {code: 'C', change20: null}, {code: 'A', change20: 0.1}, {code: 'D', change20: 0.35}, {code: 'E', change20: -0.2}, {code: 'F', change20: NaN}];
+  assert.deepEqual([...xs].sort(riseDesc).map(x => x.code), ['D', 'A', 'B', 'E', 'C', 'F']);
+  const cs = [...board.companies].sort(riseDesc);
+  for (let i = 1; i < cs.length; i++) assert.ok(cs[i - 1].change20 >= cs[i].change20, `${cs[i - 1].name} → ${cs[i].name}`);
+  assert.equal(meanOf([0.1, null, 0.3, NaN]), 0.2); assert.equal(meanOf([]), null);
+});
+
+test('오른 순: 큰 갈래는 갈래 평균이 큰 순 · 갈래 안 업종도 오른 순 · 빠뜨리지 않음', () => {
+  const fams = familiesByRise(board.groups);
+  assert.equal(fams.reduce((s, f) => s + f.groups.length, 0), board.groups.length);
+  for (let i = 1; i < fams.length; i++) assert.ok(fams[i - 1].avg >= fams[i].avg, `${fams[i - 1].fam.label} ${fams[i - 1].avg} → ${fams[i].fam.label} ${fams[i].avg}`);
+  for (const f of fams) {
+    assert.ok(Math.abs(f.avg - f.groups.reduce((s, g) => s + g.change20, 0) / f.groups.length) < 1e-12);
+    for (let i = 1; i < f.groups.length; i++) assert.ok(f.groups[i - 1].change20 >= f.groups[i].change20);
+  }
+  const hot = familiesByRise(board.groups.filter(g => g.hot));
+  assert.equal(hot.reduce((s, f) => s + f.groups.length, 0), board.groups.filter(g => g.hot).length);
 });

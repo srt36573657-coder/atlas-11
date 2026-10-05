@@ -8,6 +8,7 @@ import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from '
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
 import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine} from './parts.js';
+import {riseDesc} from './family.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -51,14 +52,14 @@ function contextBox(c) {
   return box;
 }
 
-/** 같은 업종의 다른 회사(판의 업종 차례 그대로) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(같은 눈금) · ▲변화 */
+/** 같은 업종의 다른 회사(지난 20거래일 많이 오른 순 · 2026-10-05 11:36) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(같은 눈금) · ▲변화 */
 function nearBox(board, s) {
   const g = (board?.groups ?? []).find(x => x.id === s.group?.id); if (!g) return null;
-  const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean);
+  const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean).sort(riseDesc);
   if (!cs.length) return null;
   const sc = sparkScale(cs);
   return h('section', {class: 'b-box c-near', 'aria-label': `같은 업종 ${cs.length}곳`},
-    h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
+    h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 많이 오른 순 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
     h('ol', {class: 'nc-list'}, ...cs.map(c => h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + c.code},
       h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name), h('small', {class: 'nc-ind'}, c.sector ?? '')),
       sparkSvg(c, sc),

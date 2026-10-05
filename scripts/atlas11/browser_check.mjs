@@ -24,13 +24,15 @@
  *   2026-10-05 10:24 「잡스라면 … 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 1차: 아래 탭 넷(불장 · 업종 · 출목표 · 일정)
  *     탭 「불장」(#/): 제목 「불장 업종 N개」 · 큰 흐름 한 줄 · 큰 흐름 장 = 판의 불장을 큰 갈래(site/app/family.js)로 묶은 것 · 맨 위 스위치 셋 [불장 | 예비 | 오름 상위]
  *     탭 「업종」(#/map): 옛 처음 화면의 73칸 판 그대로 + 큰 갈래 단추 · 업종 화면 「‹ 업종」 · 예비 · 오름 상위은 스위치로 가고 탭 「불장」이 눌린 채로
+ *   2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로 배치해줘」: 큰 흐름 장 · 갈래 단추 = 갈래 평균이 큰 순 · 예비 줄 · 업종 화면 다섯 곳 · 같은 업종 넷 = 지난 20거래일 많이 오른 순
+ *     출목표: 처음 = 「오른 순」(365곳 · 20곳씩 「1위~20위」) · 업종별 안도 오른 순 · 흐름별 묶음은 묶음 평균이 큰 순
  * 결과: reports/atlas11/browser/<시각>/report.json + 화면 사진
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {measureClarity} from './clarity/measure.mjs';
-import {groupByFamily} from '../../site/app/family.js';
+import {familiesByRise, familyOf, riseDesc} from '../../site/app/family.js';
 import {SCREENS, VIEWS, renderAll, screenHash} from './clarity_check.mjs';
 import {roadOf, STORY} from '../../site/app/road.js';
 import {PREDICTION_WORDS} from '../../lib/atlas11/board.mjs';
@@ -111,15 +113,15 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     await shot('01-hot');
     const hr = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), sum: document.querySelector('.hf-sum')?.innerText.trim() ?? null,
       segs: [...document.querySelectorAll('.hs-seg .hs-b')].map(a => ({seg: a.dataset.seg, href: a.getAttribute('href'), cur: a.getAttribute('aria-current'), label: a.querySelector('.hs-l')?.textContent.trim(), n: a.querySelector('.hs-n')?.textContent.trim()})),
-      cards: [...document.querySelectorAll('.hf-card')].map(c => ({fam: c.dataset.family, name: c.querySelector('.hf-name')?.textContent.trim(), n: c.querySelector('.hf-n')?.textContent.trim(), rows: [...c.querySelectorAll('.hf-row')].map(a => ({id: a.dataset.group, href: a.getAttribute('href'), rank: a.querySelector('.hf-rank')?.textContent.trim(), name: a.querySelector('.hf-gname')?.textContent.trim(), chg: a.querySelector('.hf-chg')?.textContent.trim(), up: a.querySelector('.hf-up')?.textContent.trim()}))})),
+      cards: [...document.querySelectorAll('.hf-card')].map(c => ({fam: c.dataset.family, name: c.querySelector('.hf-name')?.textContent.trim(), n: c.querySelector('.hf-n')?.textContent.trim(), avg: c.querySelector('.hf-avg b')?.textContent.trim(), avgLab: c.querySelector('.hf-avg')?.textContent.replace(/\s+/g, ' ').trim(), rows: [...c.querySelectorAll('.hf-row')].map(a => ({id: a.dataset.group, href: a.getAttribute('href'), rank: a.querySelector('.hf-rank')?.textContent.trim(), name: a.querySelector('.hf-gname')?.textContent.trim(), chg: a.querySelector('.hf-chg')?.textContent.trim(), up: a.querySelector('.hf-up')?.textContent.trim()}))})),
       tiles: document.querySelectorAll('.t-tile').length, active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.innerText.replace(/\s+/g, '').trim()),
       promise: document.querySelector('.b-promise-box summary')?.innerText.trim(), footPromise: document.querySelector('.b-foot .b-promise')?.innerText.trim(), mvx: document.querySelector('.hs-seg + .mvx')?.dataset.state ?? null, sw: document.documentElement.scrollWidth, iw: innerWidth}));
     check(`${label} 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(${hr.mvx}) = 판`, hr.mvx === (!board.moves ? 'none' : board.moves.first ? 'first' : 'moves'), {mvx: hr.mvx});
-    const flowsW = groupByFamily(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
+    const flowsW = familiesByRise(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
     check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 넷 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,업종,출목표,일정' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
-    const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
-    check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 가장 앞 업종 차례 · 장 안은 판 차례) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
+    const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `${f.groups.length}개 평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
+    check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「n개 평균」 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
     check(`${label} 탭 「불장」: 「${hr.promise}」 접힌 칸 · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === 'ATLAS가 하지 않는 일 7가지' && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: hr.promise, footPromise: hr.footPromise});
     await wordsCheck(page, `${label} 탭 「불장」`);
     if (HOT.length) {
@@ -153,12 +155,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {footPromise: top.footPromise});
   // 큰 갈래 단추(2026-10-05 「잡스라면」 19번) — 「모두」 + 판의 갈래 · 누르면 그 갈래 칸만(판 차례 그대로) · 「모두」로 되돌림
   {
-    const famW = groupByFamily(board.groups), upsOf = gs => gs.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
+    const famW = familiesByRise(board.groups);
     const fm = await page.evaluate(() => [...document.querySelectorAll('.fm-b')].map(b => ({id: b.dataset.family, pressed: b.getAttribute('aria-pressed'), label: b.querySelector('.fm-l')?.textContent.trim(), n: b.querySelector('.fm-n')?.textContent.trim()})));
-    check(`${label} ${H}: 큰 갈래 단추 ${fm.length}개 = 「모두」 + 판의 갈래 ${famW.length}개 · 단추마다 「오른 업종/업종 수」 · 처음엔 「모두」`, fm.map(b => `${b.id}|${b.label}|${b.n}|${b.pressed}`).join() === [`all|모두|${upsOf(board.groups)}/${G}|true`, ...famW.map(f => `${f.fam.id}|${f.fam.label}|${upsOf(f.groups)}/${f.groups.length}|false`)].join(), fm);
+    check(`${label} ${H}: 큰 갈래 단추 ${fm.length}개 = 「모두」 + 판의 갈래 ${famW.length}개 · 갈래 평균이 큰 순 · 단추마다 갈래 평균 · 처음엔 「모두」`, fm.map(b => `${b.id}|${b.label}|${b.n}|${b.pressed}`).join() === [`all|모두|${G}개|true`, ...famW.map(f => `${f.fam.id}|${f.fam.label}|${Number.isFinite(f.avg) ? p1(f.avg) : '없음'}|false`)].join(), fm);
     const f1 = famW[0], fb = page.locator(`.fm-b[data-family="${f1.fam.id}"]`); if (mobile) await fb.tap(); else await fb.click(); await page.waitForTimeout(150);
     const vis = await page.evaluate(() => [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).map(t => t.dataset.group));
-    check(`${label} ${H}: 「${f1.fam.label}」 단추 ${mobile ? '터치' : '누름'} → 보이는 칸 ${vis.length}개 = 그 갈래 업종 ${f1.groups.length}개(판 차례 그대로)`, vis.join() === f1.groups.map(g => g.id).join(), {vis});
+    check(`${label} ${H}: 「${f1.fam.label}」 단추 ${mobile ? '터치' : '누름'} → 보이는 칸 ${vis.length}개 = 그 갈래 업종 ${f1.groups.length}개(판 차례 그대로)`, vis.join() === board.groups.filter(g => familyOf(g.label).id === f1.fam.id).map(g => g.id).join(), {vis});
     const fa = page.locator('.fm-b[data-family="all"]'); if (mobile) await fa.tap(); else await fa.click(); await page.waitForTimeout(150);
     const allN = await page.evaluate(() => [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).length);
     check(`${label} ${H}: 「모두」 → 보이는 칸 ${allN}개 = ${G}개`, allN === G, {allN});
@@ -187,13 +189,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         bars: [...art.querySelectorAll('.mv-row')].map(li => { const bar = li.querySelector('.mv-bar'); return {code: li.dataset.code, name: li.querySelector('.mv-name')?.textContent.trim(), href: li.querySelector('.mv-name')?.getAttribute('href'), val: li.querySelector('.mv-val')?.textContent.trim(), w: parseFloat(bar.style.width), left: bar.style.left, right: bar.style.right}; }),
         /* 화면 밖 카드는 그리기를 미루므로(content-visibility) innerText 대신 textContent */
         cards: [...art.querySelectorAll('.b-card')].map(c => ({code: c.dataset.code, name: c.querySelector('.b-name')?.textContent.trim(), c20: c.querySelector('.b-c20')?.textContent.trim(), moved: c.querySelectorAll('.road, .ag-box, .b-price, .b-kind').length, kids: c.children.length, href: c.querySelector('.b-name-row')?.getAttribute('href'), sp: (() => { const sp = c.querySelector('.spark'); return sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi, side: ['up', 'down', 'flat'].find(k => sp.classList.contains(k)) ?? null, pts: sp.querySelector('.sp-line')?.getAttribute('points')?.trim().split(/\s+/).length ?? 0} : null; })(), fl: [...c.querySelectorAll('.fl .fl-val')].map(e => e.textContent.trim()), flMiss: c.querySelector('.fl-miss')?.textContent.trim() ?? null, nwT: c.querySelector('.nw-t')?.textContent.trim() ?? null, nwH: c.querySelector('.nw-h')?.textContent.trim() ?? null, nwMiss: c.querySelector('.nw-miss')?.textContent.trim() ?? null})),
-        scaleNote: [...art.querySelectorAll('.t-sub')].map(p => p.textContent.trim()).find(t => t.startsWith('선 그래프 눈금')) ?? null, how: art.querySelectorAll('.b-how').length,
+        scaleNote: [...art.querySelectorAll('.t-sub')].map(p => p.textContent.trim()).find(t => t.startsWith('선 그래프 눈금')) ?? null, orderNote: [...art.querySelectorAll('.t-h2 small')].map(x => x.textContent.trim()).find(t => t.includes("순 ·")) ?? null, how: art.querySelectorAll('.b-how').length,
         sw: document.documentElement.scrollWidth, iw: innerWidth};
     });
-    if (!(r.title === g.label && r.rank === `${G}칸 가운데 ${k + 1}위` && (r.fire === '불장') === Boolean(g.hot) && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.when.endsWith(` · ${upWant(g)}`) && r.back[0] === '#/map' && r.back[1] === '‹ 업종')) headMis.push({g: g.label, r: {...r, bars: undefined, cards: undefined}});
-    const cs = g.codes.map(code => byCodeB.get(code)), max = Math.max(0.01, ...cs.map(c => Math.abs(c.change20)).filter(Number.isFinite));
-    if (r.bars.map(b => b.code).join() !== g.codes.join() || cs.some((c, i) => { const b = r.bars[i], v = c.change20; return b.name !== c.name || b.href !== '#/stock/' + c.code || b.val !== p1(v) || Math.abs(b.w - Math.max(1.5, Math.abs(v) / max * 50)) > 0.01 || (v < 0 ? b.right !== '50%' : b.left !== '50%'); })) barMis.push({g: g.label, bars: r.bars});
-    if (r.cards.map(c => c.code).join() !== g.codes.join()) cardMis.push({g: g.label, order: r.cards.map(c => c.code)});
+    if (!(r.title === g.label && r.rank === `${G}칸 가운데 ${k + 1}위` && (r.fire === '불장') === Boolean(g.hot) && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.when.endsWith(` · ${upWant(g)}`) && r.back[0] === '#/map' && r.back[1] === '‹ 업종' && r.orderNote?.startsWith('· 지난 20거래일 많이 오른 순 ·'))) headMis.push({g: g.label, r: {...r, bars: undefined, cards: undefined}});
+    const cs = g.codes.map(code => byCodeB.get(code)).sort(riseDesc), csCodes = cs.map(c => c.code).join(), max = Math.max(0.01, ...cs.map(c => Math.abs(c.change20)).filter(Number.isFinite)); // 오른 순(2026-10-05 11:36)
+    if (r.bars.map(b => b.code).join() !== csCodes || cs.some((c, i) => { const b = r.bars[i], v = c.change20; return b.name !== c.name || b.href !== '#/stock/' + c.code || b.val !== p1(v) || Math.abs(b.w - Math.max(1.5, Math.abs(v) / max * 50)) > 0.01 || (v < 0 ? b.right !== '50%' : b.left !== '50%'); })) barMis.push({g: g.label, bars: r.bars});
+    if (r.cards.map(c => c.code).join() !== csCodes) cardMis.push({g: g.label, order: r.cards.map(c => c.code)});
     for (const hc of r.cards) {
       cardsTotal++; seen.set(hc.code, (seen.get(hc.code) ?? 0) + 1);
       const c = byCodeB.get(hc.code);
@@ -207,7 +209,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const t = await textsOf(page), bad = (t.ours.match(new RegExp(PREDICTION_WORDS.source, 'g')) ?? []).concat(t.ours.match(new RegExp(OUR_FORBIDDEN.source, 'g')) ?? [], t.idents.filter(x => PREDICTION_WORDS.test(x)));
     if (bad.length || t.marks) wordsBad.push({g: g.label, bad: bad.slice(0, 3), marks: t.marks});
   }
-  check(`${label} 업종 화면 ${G}장 모두: 제목·「${G}칸 가운데 n위」·「불장」 표시·지난 20거래일 평균·몇 곳 올랐나·「‹ 업종」(들어온 탭) = 판`, !headMis.length, {headMis: headMis.slice(0, 2)});
+  check(`${label} 업종 화면 ${G}장 모두: 제목·「${G}칸 가운데 n위」·「불장」 표시·지난 20거래일 평균·몇 곳 올랐나·「‹ 업종」(들어온 탭) = 판 · 카드 머리 「지난 20거래일 많이 오른 순」`, !headMis.length, {headMis: headMis.slice(0, 2)});
   check(`${label} 업종 화면 ${G}장 모두: 「누가 끌었나」 막대 = 그 업종 회사 · 차례·이름·값·회사 화면 링크 · 방향(오름은 0 오른쪽 · 내림은 0 왼쪽) · 길이(가장 큰 값이 반 폭)`, !barMis.length, {barMis: barMis.slice(0, 2)});
   check(`${label} 업종 화면 ${G}장 모두: 카드 합 ${cardsTotal}장 · 서로 다른 회사 ${seen.size}곳 = 판 ${N}곳(겹침 없음) · 업종마다 판의 차례 · 카드 하나에 넷(이름·20거래일 변화 · 선 그래프 · 수급 · 기사 — 값 줄·출목표·일정은 회사 화면) · 회사 화면 링크가 판과 같음`, cardsTotal === N && seen.size === N && [...seen.values()].every(v => v === 1) && !cardMis.length, {cardMis: cardMis.slice(0, 5)});
   check(`${label} 업종 화면 ${G}장 모두: 읽는 법 접힌 칸 없음(카드에 출목표·별이 없으므로)`, !agMis.length, {agMis: agMis.slice(0, 5)});
@@ -279,9 +281,10 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const commonT = SIM.common.map(id => SIM.traits.find(t => t.id === id));
     check(`${label} 스위치 「예비」 ${mobile ? '터치' : '누름'} → #/similar · 제목 「${sr.title}」 · 「${sr.when}」 · 탭 「불장」 눌림 · 스위치 「예비」 고름`, sr.hash === '#/similar' && sr.title === `예비 ${SIM.items.length}곳` && sr.when === `불장 닮은 ${SIM.items.length}곳 — 불장 ${HOT.length}개 업종 ${SIM.hotCompanies}곳의 공통점 ${SIM.common.length}가지를 많이 가진, 불장 밖 회사 · ${kd(toM)} 종가` && sr.active === 'home' && sr.seg === 'similar', {...sr, rows: undefined, bars: undefined, mvx: undefined});
     const scS = scaleW(SIM.items.map(x => byCodeB0.get(x.code)));
-    const rowMis = SIM.items.map((x, i) => { const r = sr.rows[i]; const chipsWant = commonT.map(t => `${t.id}:${x.has.includes(t.id) ? 'on:✓' : x.unknown.includes(t.id) ? 'unk:?' : 'off:·'}`);
+    const SIMS = [...SIM.items].sort(riseDesc); // 보이는 차례 = 지난 20거래일 많이 오른 순(2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」) · 고르는 셈은 위에서 판 차례로 따로 맞댐
+    const rowMis = SIMS.map((x, i) => { const r = sr.rows[i]; const chipsWant = commonT.map(t => `${t.id}:${x.has.includes(t.id) ? 'on:✓' : x.unknown.includes(t.id) ? 'unk:?' : 'off:·'}`);
       return r && r.href === '#/stock/' + x.code && r.name === x.name && r.ind === x.groupLabel && r.chg === p1(x.change20) && r.cnt === `공통점 ${commonT.length}가지 중 ${x.matched}가지` && r.chips.join() === chipsWant.join() && r.sp?.n === byCodeB0.get(x.code).c.length && r.sp?.lo === scS.lo.toFixed(4) && r.sp?.hi === scS.hi.toFixed(4) ? null : {i, x: x.name, r}; }).filter(Boolean);
-    check(`${label} 「예비」: 줄 ${sr.rows.length}개 = 판 · 줄마다 차례 · 이름 · 업종 · 20거래일 변화 · 「공통점 n가지 중 m가지」 · 공통점 표시(✓ 가짐 · 「·」 안 가짐 · 「?」 모름 — 색만이 아님) · 선 그래프(${SIM.items.length}곳 같은 눈금) · 옆으로 넘치지 않음`, sr.rows.length === SIM.items.length && !rowMis.length && sr.sw <= sr.iw, {rowMis: rowMis.slice(0, 2), sw: sr.sw});
+    check(`${label} 「예비」: 줄 ${sr.rows.length}개 = 판 · 지난 20거래일 많이 오른 차례 · 줄마다 이름 · 업종 · 20거래일 변화 · 「공통점 n가지 중 m가지」 · 공통점 표시(✓ 가짐 · 「·」 안 가짐 · 「?」 모름 — 색만이 아님) · 선 그래프(${SIM.items.length}곳 같은 눈금) · 옆으로 넘치지 않음`, sr.rows.length === SIM.items.length && !rowMis.length && sr.sw <= sr.iw, {rowMis: rowMis.slice(0, 2), sw: sr.sw});
     const pc = x => `${Math.round((x.known ? x.yes / x.known : 0) * 100)}%`;
     const barMisS = commonT.map((t, i) => { const b = sr.bars[i], w = x => Math.max(1, (x.known ? x.yes / x.known : 0) * 100); return b && b.id === t.id && Math.abs(b.w[0] - w(t.hot)) < 0.01 && Math.abs(b.w[1] - w(t.rest)) < 0.01 && b.vals.join() === `${pc(t.hot)},${pc(t.rest)}` && b.ns.join() === `${t.hot.yes}/${t.hot.known}곳,${t.rest.yes}/${t.rest.known}곳` ? null : {t: t.id, b}; }).filter(Boolean);
     check(`${label} 「예비」: 공통점 막대 ${sr.bars.length}줄 = 판의 공통점 ${commonT.length}가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)`, sr.bars.length === commonT.length && !barMisS.length, {barMisS: barMisS.slice(0, 2)});
@@ -320,7 +323,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 회사 ${c.name}: 이름 · 종가 ${r.price} · 「${r.date}」 · 지난 ${s.closes60.length}거래일 선(점 ${r.path}) · 마지막 눈금 ${wantTick} · 1년 최고·최저 · 출목표 ${r.beads}개 · 일정 ${r.ev}·공시 ${r.ds}줄 = 일정표`,
       r.title === c.name && r.price === won(c.close) && r.date === `${kd(c.date)} 15:30 종가` && r.path === s.closes60.length && r.ticks.includes(wantTick) && r.info[0] === won(c.info.high52) && r.info[1] === won(c.info.low52) && r.beads === roadOf(c.c).cells.length && r.ev === e.upcoming.length && r.ds === e.disclosures.length, r);
     // 앞 화면과 이어 보이기(2026-10-05 잡스 개혁): 20거래일 변화 = 판 · 60거래일 그래프 안 20거래일 띠의 첫날 = 판의 첫날 · 같은 업종 4곳 = 판의 업종 차례
-    const gq = board.groups.find(g => g.id === c.group?.id), nearWant = gq ? gq.codes.filter(x => x !== c.code) : [];
+    const gq = board.groups.find(g => g.id === c.group?.id), nearWant = gq ? gq.codes.filter(x => x !== c.code).map(x => byCodeB.get(x)).sort(riseDesc).map(x => x.code) : [];
     check(`${label} 회사 ${c.name}: 「${r.c20}」 = 판의 20거래일 변화 · 그래프 띠 첫날 ${r.band} = ${c.cFrom} · 같은 업종 ${r.near.length}곳 = 판`, r.c20 === `지난 20거래일 ${Number.isFinite(c.change20) ? p1(c.change20) : '없음'} · ${kd(c.cFrom)}부터 ${kd(c.date)}까지` && r.band === c.cFrom && r.near.join() === nearWant.join(), {c20: r.c20, band: r.band, near: r.near, nearWant});
     await page.locator('.c-ctx summary').click(); await page.waitForTimeout(150);
     const ctx = await page.evaluate(() => ({news: document.querySelectorAll('.c-ctx .c-news')[0]?.querySelectorAll('li').length ?? 0, flows: document.querySelectorAll('.c-ctx tbody tr').length}));
@@ -346,16 +349,34 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     rows: [...document.querySelectorAll('.f-row')].map(b => { const m = b.querySelector('.spark.mini'); return {flow: b.dataset.flow, lab: b.querySelector('.f-lab')?.textContent.trim(), n: b.querySelector('.f-n')?.textContent.trim(), mini: m ? {n: +m.dataset.points, lo: m.dataset.lo, hi: m.dataset.hi, side: ['up', 'down', 'flat'].find(k => m.classList.contains(k)) ?? null} : null}; }),
     tiles: [...document.querySelectorAll('.f-tile')].map(t => ({code: t.dataset.code, href: t.getAttribute('href'), name: t.querySelector('.f-name')?.textContent.trim(), chg: t.querySelector('.f-chg')?.textContent.trim(), ind: t.querySelector('.f-ind')?.textContent.trim() ?? null, beads: t.querySelectorAll('.road .bead').length, up: t.querySelectorAll('.road .bead.up').length, st: t.querySelector('.f-st')?.textContent.trim(), unit: t.querySelector('.f-unit')?.textContent.trim() ?? null, sec: t.closest('.f-sec')?.id ?? null, sp: (() => { const sp = t.querySelector('.spark'); return sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi, side: ['up', 'down', 'flat'].find(k => sp.classList.contains(k)) ?? null, pts: sp.querySelector('.sp-line')?.getAttribute('points')?.trim().split(/\s+/).length ?? 0} : null; })(), fl: [...t.querySelectorAll('.fl .fl-val')].map(e => e.textContent.trim()), flMiss: t.querySelector('.fl-miss')?.textContent.trim() ?? null, nwT: t.querySelector('.nw-t')?.textContent.trim() ?? null, nwH: t.querySelector('.nw-h')?.textContent.trim() ?? null, nwMiss: t.querySelector('.nw-miss')?.textContent.trim() ?? null})),
     notes: [...document.querySelectorAll('.f-body > .f-sec')].map(sct => ({id: sct.id, note: [...sct.querySelectorAll(':scope > .t-sub')].map(p => p.textContent.trim()).join(' ')})), ctx: document.querySelector('.f-ctx')?.textContent.trim() ?? null,
-    sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    famHidden: document.querySelector('.f-fam')?.hidden ?? null, sw: document.documentElement.scrollWidth, iw: innerWidth}));
   const secScale = r => new Map(r.secs.map(x => [x.domId, scaleW(x.codes.map(code => byCodeB.get(code)))]));
   const briefTileMis = r => { const sc = secScale(r); return r.tiles.map(t => ({code: t.code, bad: briefMisW(t, byCodeB.get(t.code), sc.get(t.sec))})).filter(x => x.bad.length).concat(r.notes.filter(n => !n.note.includes(scaleTextW(sc.get(n.id)))).map(n => ({sec: n.id, note: n.note.slice(-60)}))); };
   const ctxGot = board.companies.filter(c => c.brief && !c.brief.missing.includes('수급') && !c.brief.missing.includes('기사')).length, ctxDay = board.companies.map(c => c.brief?.day).filter(Boolean).sort().at(-1);
   const ctxWant = ctxGot === N ? `수급·기사: ${N}곳 모두${ctxDay ? ` · ${kd(ctxDay)} 기준` : ''}` : `수급·기사: ${N}곳 가운데 ${ctxGot}곳만 모았음${ctxDay ? `(${kd(ctxDay)} 기준)` : ''} · 나머지 ${N - ctxGot}곳은 다음 관측 수집 때 채움`;
   const tileMisOf = (tiles, withInd) => tiles.filter(t => { const c = byCodeB.get(t.code), road = c && roadOf(c.c); return !c || t.href !== '#/stock/' + c.code || t.name !== c.name || t.chg !== (Number.isFinite(c.change20) ? p1(c.change20) : '없음') || t.beads !== road.cells.length || t.up !== road.all.up || t.st !== upDaysW(c) || t.unit !== (road.unit > 0.01 ? `동그라미 하나 = ${Math.round(road.unit * 100)}%` : null) || (withInd ? t.ind !== board.groups.find(g => g.id === c.group?.id)?.label : t.ind !== null); }).map(t => t.code);
+  // ⓪ 처음 = 「오른 순」(2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」 → 「모든 배치가 가장 많이 상승한순으로」)
+  //   365곳을 이 검사기가 따로 줄 세운 지난 20거래일 많이 오른 차례와 맞댐 · 20곳씩 끊은 머리 「1위~20위」 · 묶음마다 첫·끝 값
+  const rankedW = [...board.companies].sort(riseDesc), flowCountW = new Set(board.companies.map(c => flowWant(roadOf(c.c)))).size;
+  const segsWant = on => [`rise:${on === 'rise'}:오른 순 ${N}곳`, `ind:${on === 'ind'}:업종별 ${G}개`, `flow:${on === 'flow'}:흐름별 ${flowCountW}가지`].join('|');
+  const r0 = await roadRead();
+  check(`${label} 출목표 한 판: 제목 「${r0.title}」 = 판 ${N}곳 · 「${r0.when}」 · 아래 탭 「출목표」 눌림 · 처음 보이는 묶음 = 오른 순(단추 ${r0.segs.join(' | ')})`, r0.title === `출목표 ${N}곳` && r0.when === `지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지 · 한 화면에 모두` && r0.active === 'road' && r0.mode === 'rise' && r0.segs.join('|') === segsWant('rise'), {...r0, secs: undefined, tiles: undefined, notes: undefined});
+  const CH = 20, chunksW = Array.from({length: Math.ceil(N / CH)}, (_, i) => rankedW.slice(i * CH, i * CH + CH));
+  const riseMis = chunksW.map((xs, k) => { const s = r0.secs[k], a = k * CH + 1, b = k * CH + xs.length, note = r0.notes[k]?.note ?? '';
+    return s && s.domId === `f-r${a}` && s.name === `${a}위~${b}위` && s.codes.join() === xs.map(c => c.code).join() && note.startsWith(`지난 20거래일 많이 오른 차례 · ${a}위 ${p1(xs[0].change20)} ~ ${b}위 ${p1(xs.at(-1).change20)} · `) ? null : {k, s: s && {...s, codes: s.codes.slice(0, 3)}, note}; }).filter(Boolean);
+  check(`${label} 출목표 한 판(오른 순): 묶음 ${r0.secs.length}개(20곳씩) · 칸 차례 = 이 검사기가 따로 줄 세운 지난 20거래일 많이 오른 순(1위 ${rankedW[0].name} ${p1(rankedW[0].change20)} … ${N}위 ${rankedW.at(-1).name} ${p1(rankedW.at(-1).change20)}) · 머리 「a위~b위」 · 묶음마다 첫·끝 값`, r0.secs.length === chunksW.length && !riseMis.length, {riseMis: riseMis.slice(0, 2)});
+  const tm0 = tileMisOf(r0.tiles, true);
+  check(`${label} 출목표 한 판(오른 순): 칸 ${r0.tiles.length}개 = 판 ${N}곳(겹침 없음) · 칸마다 이름·업종 이름·20거래일 변화·출목표 동그라미·「오른 날 n일」·회사 화면 링크 = 판`, r0.tiles.length === N && new Set(r0.tiles.map(t => t.code)).size === N && !tm0.length, {tm0: tm0.slice(0, 5)});
+  const bt0 = briefTileMis(r0);
+  check(`${label} 출목표 한 판(오른 순): 칸마다 선 그래프(20곳 묶음마다 같은 눈금 · 눈금 글) · 수급 · 기사 = 판 · 「${r0.ctx}」`, !bt0.length && r0.ctx === ctxWant, {bt0: bt0.slice(0, 4), ctx: r0.ctx, ctxWant});
+  check(`${label} 출목표 한 판(오른 순): 화면이 옆으로 넘치지 않음(${r0.sw}px ≤ ${r0.iw}px) · 큰 갈래 단추는 업종별에서만`, r0.sw <= r0.iw && r0.famHidden === true, {sw: r0.sw, iw: r0.iw, famHidden: r0.famHidden});
+  await wordsCheck(page, `${label} 출목표 한 판(오른 순)`);
+  // 업종별로 바꾸기
+  { const sI = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await sI.tap(); else await sI.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(300); }
   const r1 = await roadRead();
-  check(`${label} 출목표 한 판: 제목 「${r1.title}」 = 판 ${N}곳 · 「${r1.when}」 · 아래 탭 「출목표」 눌림 · 처음 보이는 묶음 = 업종별(단추 ${r1.segs.join(' | ')})`, r1.title === `출목표 ${N}곳` && r1.when === `지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지 · 한 화면에 모두` && r1.active === 'road' && r1.mode === 'ind' && r1.segs.join('|') === `ind:true:업종별 ${G}개|flow:false:흐름별 ${new Set(board.companies.map(c => flowWant(roadOf(c.c)))).size}가지`, {...r1, secs: undefined, tiles: undefined});
-  const secMis = board.groups.map((g, k) => { const s = r1.secs[k]; return s && s.id === g.id && s.rank === `${k + 1}위` && s.name === g.label && s.fire === Boolean(g.hot) && s.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && s.codes.join() === g.codes.join() ? null : {k, g: g.label, s}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(업종별): 묶음 ${r1.secs.length}개 = 판의 업종 ${G}개 · 36칸 판 차례 · n위·이름·「불장」·평균 · 업종 안 회사 차례가 판과 같음`, r1.secs.length === G && !secMis.length, {secMis: secMis.slice(0, 2)});
+  check(`${label} 출목표 한 판: 「업종별」 ${mobile ? '터치' : '누름'} → 묶는 법 업종별(단추 ${r1.segs.join(' | ')}) · 큰 갈래 단추 보임`, r1.mode === 'ind' && r1.segs.join('|') === segsWant('ind') && r1.famHidden === false, {mode: r1.mode, segs: r1.segs, famHidden: r1.famHidden});
+  const secMis = board.groups.map((g, k) => { const s = r1.secs[k], want = g.codes.map(code => byCodeB.get(code)).sort(riseDesc).map(c => c.code); return s && s.id === g.id && s.rank === `${k + 1}위` && s.name === g.label && s.fire === Boolean(g.hot) && s.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && s.codes.join() === want.join() ? null : {k, g: g.label, s}; }).filter(Boolean);
+  check(`${label} 출목표 한 판(업종별): 묶음 ${r1.secs.length}개 = 판의 업종 ${G}개 · 업종 차례(지난 20거래일 평균이 큰 순) · n위·이름·「불장」·평균 · 업종 안 회사도 많이 오른 순`, r1.secs.length === G && !secMis.length, {secMis: secMis.slice(0, 2)});
   const tm1 = tileMisOf(r1.tiles, false);
   check(`${label} 출목표 한 판(업종별): 칸 ${r1.tiles.length}개 = 판 ${N}곳(겹침 없음) · 이름·20거래일 변화·출목표 동그라미 수(오른 날 포함)·「20거래일 중 오른 날 n일」(연속 글 없음)·「동그라미 하나 = n%」·회사 화면 링크를 따로 센 값과 맞댐`, r1.tiles.length === N && new Set(r1.tiles.map(t => t.code)).size === N && !tm1.length, {tm1: tm1.slice(0, 5)});
   const bt1 = briefTileMis(r1);
@@ -365,9 +386,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 흐름별로 바꾸기
   const seg = page.locator('.f-seg-b[data-mode="flow"]'); if (mobile) await seg.tap(); else await seg.click(); await page.waitForSelector('.f-body[data-mode="flow"][data-ready] .f-tile'); await page.waitForTimeout(300);
   const r2 = await roadRead();
-  const flowsWant = FLOW_ORDER_W.map(k => ({k, items: board.companies.filter(c => flowWant(roadOf(c.c)) === k).sort((a, b) => b.change20 - a.change20 || a.code.localeCompare(b.code))})).filter(f => f.items.length);
+  // 흐름 묶음 차례 = 묶음 평균(그 묶음 회사들의 지난 20거래일 변화 평균)이 큰 순 · 같으면 아홉 칸 표 차례(2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」)
+  const avgW = xs => { const v = xs.map(c => c.change20).filter(Number.isFinite); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : -Infinity; };
+  const flowsWant = FLOW_ORDER_W.map(k => ({k, items: board.companies.filter(c => flowWant(roadOf(c.c)) === k).sort(riseDesc)})).filter(f => f.items.length)
+    .map(f => ({...f, avg: avgW(f.items)})).sort((a, b) => b.avg - a.avg);
   const flowMis = flowsWant.map((f, i) => { const s = r2.secs[i], row = r2.rows[i]; return s && s.id === f.k && s.name === flowTextW(f.k) && s.codes.join() === f.items.map(c => c.code).join() && row?.flow === f.k && row?.lab === flowTextW(f.k) && row?.n === `${f.items.length}곳` ? null : {k: f.k, s: s && {...s, codes: s.codes.length}, row}; }).filter(Boolean);
-  check(`${label} 출목표 한 판(흐름별 ${mobile ? '터치' : '누름'}): 흐름 ${r2.secs.length}가지 = 따로 나눈 ${flowsWant.length}가지 · 차례(최근 5거래일 오름 쪽부터) · 이름 · 곳 수(합 ${r2.secs.reduce((s, x) => s + x.codes.length, 0)} = ${N}) · 묶음 안은 20거래일 많이 오른 순 · 흐름 목록 줄도 같음`, r2.mode === 'flow' && r2.secs.length === flowsWant.length && !flowMis.length && r2.segs[1] === `flow:true:흐름별 ${flowsWant.length}가지`, {flowMis: flowMis.slice(0, 2)});
+  check(`${label} 출목표 한 판(흐름별 ${mobile ? '터치' : '누름'}): 흐름 ${r2.secs.length}가지 = 따로 나눈 ${flowsWant.length}가지 · 차례(묶음 평균 지난 20거래일 변화가 큰 순: ${flowsWant.map(f => p1(f.avg)).join(' · ')}) · 이름 · 곳 수(합 ${r2.secs.reduce((s, x) => s + x.codes.length, 0)} = ${N}) · 묶음 안은 20거래일 많이 오른 순 · 흐름 목록 줄도 같음`, r2.mode === 'flow' && r2.secs.length === flowsWant.length && !flowMis.length && r2.segs.join('|') === segsWant('flow'), {flowMis: flowMis.slice(0, 2), segs: r2.segs});
   // 흐름 목록 줄마다 묶음 평균 선(2026-10-05 00:26 「출목표 처음 보이는 곳에 … 바로 그래프도」) — 같은 날 종가까지 있는 회사만 날마다 평균 · 모든 줄 같은 눈금
   const meanW = cs => { const ok = cs.filter(c => c.date === toM); const n = Math.min(...ok.map(c => c.c.length)); return ok.length ? Array.from({length: n}, (_, i) => ok.reduce((t, c) => t + c.c[i] / c.c[0] - 1, 0) / ok.length) : []; };
   const meansW = new Map(flowsWant.map(f => [f.k, meanW(f.items)])), allM = [...meansW.values()].flat(), mlo = Math.min(-0.03, ...allM), mhi = Math.max(0.03, ...allM);
@@ -404,13 +428,22 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 큰 갈래 단추(2026-10-05 「잡스라면」 — 업종별에서만 보임) — 누르면 그 갈래 업종 묶음만 · 「모두」로 되돌림
   {
     const segI = page.locator('.f-seg-b[data-mode="ind"]'); if (mobile) await segI.tap(); else await segI.click(); await page.waitForSelector('.f-body[data-mode="ind"][data-ready] .f-tile'); await page.waitForTimeout(150);
-    const famW = groupByFamily(board.groups), f1 = famW[1] ?? famW[0];
-    const fr0 = await page.evaluate(() => ({shown: !document.querySelector('.f-fam')?.hidden, btns: [...document.querySelectorAll('.f-fam .fm-b')].map(b => `${b.dataset.family}|${b.getAttribute('aria-pressed')}`)}));
+    const famW = familiesByRise(board.groups), f1 = famW[1] ?? famW[0];
+    const fr0 = await page.evaluate(() => ({shown: !document.querySelector('.f-fam')?.hidden, btns: [...document.querySelectorAll('.f-fam .fm-b')].map(b => `${b.dataset.family}|${b.getAttribute('aria-pressed')}|${b.querySelector('.fm-n')?.textContent.trim()}`)}));
     const fb = page.locator(`.f-fam .fm-b[data-family="${f1.fam.id}"]`); if (mobile) await fb.tap(); else await fb.click(); await page.waitForTimeout(200);
     const fr1 = await page.evaluate(() => [...document.querySelectorAll('.f-body > .f-sec')].filter(x => !x.hidden).map(x => x.dataset.group));
     const fa = page.locator('.f-fam .fm-b[data-family="all"]'); if (mobile) await fa.tap(); else await fa.click(); await page.waitForTimeout(150);
     const fr2 = await page.evaluate(() => [...document.querySelectorAll('.f-body > .f-sec')].filter(x => !x.hidden).length);
-    check(`${label} 출목표 업종별: 큰 갈래 단추 ${fr0.btns.length}개(「모두」 + ${famW.length}) · 「${f1.fam.label}」 → 묶음 ${fr1.length}개 = 그 갈래 업종 ${f1.groups.length}개 · 「모두」 → ${fr2}개 = ${G}개`, fr0.shown && fr0.btns.length === famW.length + 1 && fr0.btns[0] === 'all|true' && fr1.join() === f1.groups.map(g => g.id).join() && fr2 === G, {fr0, fr1, fr2});
+    const btnsWant = [`all|true|${N}곳`, ...famW.map(f => `${f.fam.id}|false|${Number.isFinite(f.avg) ? p1(f.avg) : '없음'}`)];
+    check(`${label} 출목표 업종별: 큰 갈래 단추 ${fr0.btns.length}개(「모두」 + ${famW.length}) · 갈래 평균이 큰 순 · 단추마다 갈래 평균 · 「${f1.fam.label}」 → 묶음 ${fr1.length}개 = 그 갈래 업종 ${f1.groups.length}개 · 「모두」 → ${fr2}개 = ${G}개`, fr0.shown && fr0.btns.join() === btnsWant.join() && fr1.join() === board.groups.filter(g => familyOf(g.label).id === f1.fam.id).map(g => g.id).join() && fr2 === G, {fr0, btnsWant, fr1, fr2});
+  }
+  // 다른 탭에서 출목표 탭을 누르면 늘 「오른 순」 맨 위(2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」) — 업종별을 보다 떠났어도
+  {
+    const ta = page.locator('.bottom-link[data-route="agenda"]'); if (mobile) await ta.tap(); else await ta.click();
+    await page.waitForFunction(() => location.hash === '#/agenda' && !document.querySelector('.f-body') && document.querySelector('.bottom-link.active')?.dataset.route === 'agenda'); await page.waitForTimeout(200);
+    const tr = page.locator('.bottom-link[data-route="road"]'); if (mobile) await tr.tap(); else await tr.click(); await page.waitForSelector('.f-body[data-ready] .f-tile'); await page.waitForTimeout(300);
+    const rr = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), mode: document.querySelector('.f-body')?.dataset.mode, pressed: document.querySelector('.f-seg-b[aria-pressed="true"]')?.dataset.mode, first: [...document.querySelectorAll('.f-tile')].slice(0, 3).map(t => t.dataset.code)}));
+    check(`${label} 업종별을 보다 일정 탭 → 출목표 탭 ${mobile ? '터치' : '누름'} → 「오른 순」 맨 위(${rr.y}px) · 첫 칸 ${rankedW.slice(0, 3).map(c => c.name).join(' · ')}`, rr.hash === '#/road' && rr.mode === 'rise' && rr.pressed === 'rise' && rr.y === 0 && rr.first.join() === rankedW.slice(0, 3).map(c => c.code).join(), rr);
   }
 
   // ④ 지운 화면의 옛 주소 → 처음 화면
