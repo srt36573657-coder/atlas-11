@@ -2,7 +2,15 @@
    글 날짜 「10월 2일(금)」 · 그래프 눈금 「10/02」 · 시각 「16:01 KST」
    숫자: 값은 단위(원·%·포인트) · 변화는 부호(+/−) · 소수 자리 고정(가격 0 · 등락 2 · 지수 2) */
 export const finite = v => typeof v === 'number' && Number.isFinite(v);
-export const won = v => finite(v) ? Math.round(v).toLocaleString('ko-KR') + '원' : '없음';
+/** 시장 — 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」
+   같은 화면 코드를 한국 판(/)과 미국 판(/us/)이 함께 쓴다 · 판 목록(manifest.place)을 따르고 없으면 한국 값(app.js 가 처음에 setPlace)
+   close = 값 줄 「n월 n일(요일) 15:30 종가」 · closeAt = 시장 띠 「… 15:30 KST 종가」 · exchange = 「마지막 종가: 한국거래소 정규장 15:30 종가」 */
+export const place = {id: 'kr', label: '한국', unit: '원', digits: 0, close: '15:30', closeAt: '15:30 KST', exchange: '한국거래소 정규장',
+  flows: true, foot: '종가: 한국거래소 정규장 15:30 종가(네이버 증권) · 수급·기사·공시: 네이버 증권 · 일정: 공식 발표처 · 거래일 16:00에 새로 올림',
+  notDo: '지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', contextSource: '출처: 네이버 증권(종목 투자자 동향 · 뉴스 · 공시) · 기사는 제목만 저장(본문 없음)'};
+export function setPlace(p) { if (p && typeof p === 'object') Object.assign(place, p); }
+/** 값(한국 = 원 · 정수 / 미국 = 달러 · 소수 둘째 자리) — 이름은 옛 그대로 won */
+export const won = v => finite(v) ? (place.digits ? v.toLocaleString('ko-KR', {minimumFractionDigits: place.digits, maximumFractionDigits: place.digits}) : Math.round(v).toLocaleString('ko-KR')) + place.unit : '없음';
 export const num = (v, d = 0) => finite(v) ? v.toLocaleString('ko-KR', {minimumFractionDigits: d, maximumFractionDigits: d}) : '없음';
 export const pct = (v, d = 2) => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) * 100).toFixed(d) + '%' : '없음';
 /** 이미 % 단위인 값(예: 지수 등락 0.46) → 「+0.46%」 */

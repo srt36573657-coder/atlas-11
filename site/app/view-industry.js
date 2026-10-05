@@ -5,7 +5,7 @@
    22:51 「출목표만 있으면 않돼 그래프로 있어야 해 그리고 그 회사들 뉴스와 수급도」
    2026-10-05 02:44 「잡스였다면」 개혁 — 회사 카드 한 장에 넷만: 이름·20거래일 변화 · 선 그래프(5곳 같은 눈금) · 수급 한 줄 · 기사 한 줄
      (값 줄 · 출목표 · 일정·공시는 회사 화면에 그대로 — 지우지 않고 한 번 더 누른 곳으로 옮김 · 애플 WWDC20 「작은 칸엔 넷까지」 · 2008 HIG 「큰 그림 → 자세히」) */
-import {h, korDate, pct, finite, signCls} from './util.js';
+import {h, korDate, pct, finite, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, sunTag, sunNum} from './parts.js';
 import {sunOf, sunCount} from './shapes.js';
@@ -41,9 +41,9 @@ export async function renderIndustry(main, {hash, manifest}) {
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
       //   2026-10-05 15:24 「잡스가 … 36가지」 A4: 출처 이름 두세 줄은 접어 두고 기간 한 줄만 — 「누가 끌었나」가 첫 화면에
-      g.from && g.to ? h('p', {class: 'i-src muted small'}, `${korDate(g.from)}부터 ${korDate(g.to)} 15:30 종가까지`) : null,
+      g.from && g.to ? h('p', {class: 'i-src muted small'}, `${korDate(g.from)}부터 ${korDate(g.to)} ${place.close} 종가까지`) : null,
       h('details', {class: 'i-names'}, h('summary', null, '업종 이름 출처'),
-        h('p', {class: 'muted small'}, `${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`))),
+        h('p', {class: 'muted small'}, place.industrySource ? `${place.industrySource}: ${industries.join(' · ')}` : `${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`))),
     h('section', {class: 't-sec', 'aria-label': '누가 끌었나'},
       h('h2', {class: 't-h2'}, '누가 끌었나'),
       h('p', {class: 't-sub'}, `${cs.length}곳의 지난 20거래일 변화 · 가운데 줄이 0% · 오른쪽 빨강은 오름, 왼쪽 파랑은 내림`),

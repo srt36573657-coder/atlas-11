@@ -30,8 +30,11 @@ export const loadBoard = () => loadJSON('board.json');
 export const loadAgenda = () => loadJSON('agenda.json');
 export const loadStock = code => loadJSON('stocks/' + code + '.json');
 
-/* 기기 저장(이 기기에만) — 글씨 크기 */
+/* 기기 저장(이 기기에만) — 글씨 크기 · 탭 자리
+   미국 판(/us/)은 같은 주소 안이라 저장 칸을 따로 둔다(「atlas11:us:」 — 한국 판의 출목표 탭 자리와 섞이지 않게) · 글씨 크기는 두 판이 함께(2026-10-05 18:02 「미국 주식도」) */
+const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARED = new Set(['font']);
+const keyOf = key => 'atlas11:' + (SHARED.has(key) ? '' : scope) + key;
 export const prefs = {
-  get(key, fallback) { try { const v = localStorage.getItem('atlas11:' + key); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },
-  set(key, value) { try { localStorage.setItem('atlas11:' + key, JSON.stringify(value)); } catch {} },
+  get(key, fallback) { try { const v = localStorage.getItem(keyOf(key)); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },
+  set(key, value) { try { localStorage.setItem(keyOf(key), JSON.stringify(value)); } catch {} },
 };

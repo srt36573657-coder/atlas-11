@@ -11,7 +11,7 @@
      · 28번 이름에서 숫자를 뺐다 — 제목은 「불장」 · 「업종」, 개수는 제목 곁 작은 글
    2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로 배치해줘」 — 큰 흐름 장은 갈래 평균(그 갈래 업종들의 지난 20거래일 평균)이 큰 순 · 장 안 업종도 오른 순
      · 업종 탭 갈래 단추도 같은 순 · 단추에 갈래 평균 · 73칸은 처음부터 지난 20거래일 평균이 큰 차례 */
-import {h, korDate, pct, finite, signCls} from './util.js';
+import {h, korDate, pct, finite, signCls, place} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {marketStrip} from './frame.js';
 import {foot, promiseBox, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
@@ -61,7 +61,7 @@ export async function renderHome(main, {manifest}) {
       ...lateLines(late, board)),
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
     h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp))),
-    h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「업종」 · ${korDate(board.asOf)} 15:30 종가`),
+    h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「업종」 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     promiseBox(),
     foot(manifest)));
@@ -84,7 +84,8 @@ function setBox(set, board, groups) {
   return h('details', {class: 'b-how'}, h('summary', null, '어떤 회사들인가 · 어떻게 셌나'),
     h('ul', null, board.kinds ? h('li', {class: 'b-kinds'}, kindsLine(board.kinds, groups.length)) : null,
       ...how.map(x => h('li', null, x)), set?.selectedOn ? h('li', null, `${korDate(set.selectedOn)}에 고름`) : null,
-      board.companies.some(c => c.ksic)
+      place.industryNote ? h('li', null, `업종 ${groups.length}개: ${place.industryNote}`) // 미국 판(util.js place)
+      : board.companies.some(c => c.ksic)
         ? h('li', null, `업종 ${groups.length}개: 한국거래소 업종(한국표준산업분류 · 「제조업」 같은 끝말은 줄인 이름 · 업종 화면에 원래 이름) · 한국거래소 업종을 모르는 회사는 네이버 증권 업종으로 묶음`)
         : h('li', null, `업종 ${groups.length}개: 네이버 증권 업종 이름(화면에는 짧게 줄인 이름 · 업종 화면에 원래 이름) · 작은 업종 몇 개는 합침`),
       h('li', null, `큰 갈래 ${FAMILIES.length}개: ATLAS가 업종 이름을 보고 묶은 것(판 자료의 업종은 그대로) · 맞는 갈래가 없는 업종은 「${OTHER.label}」`),
@@ -138,7 +139,7 @@ export async function renderMap(main, {manifest}) {
     familyFilter(groups, grid, note),
     note,
     grid,
-    h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} 15:30 종가`),
+    h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     setBox(set, board, groups),
     foot(manifest)));

@@ -35,7 +35,7 @@
      · 묶는 법 넷째 「☀ 태양 n곳」 — 태양이 붙은 칸만 한 화면에 모두(오른 순 · 「더 보기」 없이) · 오른 순 자리 20칸마다 묶음 머리(「오른 순 1위~20위 · 태양 17곳」)
      · 맨 위 태양 상자에 「☀ 태양 n곳 한곳에 모아 보기 ›」 단추 · 탭이 하나뿐이라 탭 줄과 넘김 단추는 숨김
      · 지난 20거래일 모양을 견준 것일 뿐 앞날을 맞히지 않는다(2026-10-04 15:37) */
-import {h, korDate, pct, finite, signCls} from './util.js';
+import {h, korDate, pct, finite, signCls, place} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
 import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon, sunTag} from './parts.js';
@@ -302,7 +302,7 @@ export async function renderRoad(main, {manifest} = {}) {
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), find.btn), // 개수는 제목 곁 작은 글(규칙 2) · 오른쪽 「찾기」(E1)
-      h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
+      h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),
       spkBox ? null : h('p', {class: 'f-key muted small'}, KEY_TEXT), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
       ctxNote(board.companies), find.form),
     spkBox,
