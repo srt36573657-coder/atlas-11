@@ -10,7 +10,7 @@ import {state, loadBoard} from './store.js';
 import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, sunTag, sunNum} from './parts.js';
 import {sunOf, sunCount} from './shapes.js';
 import {upLine} from './view-home.js';
-import {riseDesc, familyOf} from './family.js';
+import {riseDesc, familyOf, FAMILIES, OTHER} from './family.js';
 
 /** 회사 카드 — sun = 태양 회사면 이름 곁 작은 해(2026-10-05 15:24 「잡스가 … 36가지」 B3 · 카드는 그대로 넷) */
 function card(c, scale, sun = false) {
@@ -26,7 +26,9 @@ export async function renderIndustry(main, {hash, manifest}) {
   const board = await loadBoard();
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
   // 들어온 탭으로(2026-10-05 「잡스라면」 17번) · 출목표 탭에서 회사 화면을 거쳐 왔으면 「‹ 출목표」(「잡스가 … 36가지」 E6 — 아래 탭과 되돌아가기가 같은 곳)
-  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 지도') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
+  // 지도의 갈래 화면(#/map/f/…)에서 왔으면 그 갈래로(2026-10-06 07:03 「3단 클릭」 — 땅 → 업종 → 회사를 거꾸로 되짚음)
+  const land = state.tab === 'map' && state.land ? [...FAMILIES, OTHER].find(f => f.id === state.land) : null;
+  const back = land ? h('a', {class: 'c-back', href: '#/map/f/' + land.id}, '‹ ' + land.label) : state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 지도') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));
