@@ -18,7 +18,14 @@
    2026-10-05 11:36 사장님 「출목표 탭을 클릭하면 가장 상승한순으로 배치해줘」 → 「모든 배치가 가장 많이 상승한순으로 배치해줘」:
      · 묶는 법 셋 — 「오른 순」(처음 · 365곳을 지난 20거래일 많이 오른 차례로 · 20곳씩 끊어 「1위~20위」) · 업종별 · 흐름별
      · 아래 탭 「출목표」를 다른 탭에서 누르면 늘 「오른 순」 맨 위로(app.js) · 회사 화면에서 되돌아오면 보던 묶는 법 · 자리 그대로
-     · 업종별: 업종 안 회사도 오른 순(옛: 시가총액 순) · 흐름별: 흐름 묶음을 묶음 평균이 큰 순(옛: 오름 쪽부터 정한 차례) · 큰 갈래 단추도 갈래 평균이 큰 순 */
+     · 업종별: 업종 안 회사도 오른 순(옛: 시가총액 순) · 흐름별: 흐름 묶음을 묶음 평균이 큰 순(옛: 오름 쪽부터 정한 차례) · 큰 갈래 단추도 갈래 평균이 큰 순
+   2026-10-05 12:28 사장님 「출목표를 클릭하면 지금 365개 다 나오잖아 불편해 어떻게든 그 안에 탭을 더 만들어서 편하면서도 직관적으로 만들어봐」:
+     · 묶는 법 셋 아래에 탭 한 줄 — 한 번에 한 탭만 그린다(옛: 365장을 한 화면에 모두)
+       오른 순 = 20곳씩 「1위~20위」 「21위~40위」 … · 업종별 = 큰 갈래 12개(갈래 평균이 큰 순 · 옛 「큰 갈래 단추」와 「모두」를 탭이 대신)
+       흐름별 = 흐름 10가지(묶음 평균이 큰 순 · 옛 흐름 목록을 탭이 대신 · 묶음 평균 선은 그 탭 머리에)
+     · 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(오름 → 오름 90곳 같은 큰 흐름) · 맨 아래 넘김 단추(「2번째 탭 · 21위~40위 보기 ›」)
+     · 휴대폰에서는 탭 줄을 옆으로 밀어 봄(고른 탭이 가운데로) · 넓은 화면에서는 여러 줄 · 화살표 글쇠로도 넘김
+     · 고른 탭은 이 기기에 기억(회사 화면에서 되돌아오면 보던 탭 · 자리 그대로) · 다른 아래 탭에서 들어오면 늘 「오른 순」 1위~20위 맨 위(app.js → resetRoad) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
@@ -61,108 +68,139 @@ function tile(c, road, g, scale) {
     newsLine(c.brief));
 }
 
-/** 한 번 쉬기(브라우저가 그때까지 붙인 것을 그리도록) */
-const frame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+/** 출목표 안의 탭 — 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(2026-10-05 12:28) */
+export const MORE_STEP = 20, PAGE_MAX = 45;
+const tabKey = m => 'roadTab:' + m;
+/** 「더 보기」로 펼친 칸 수 — 회사 화면에 갔다 돌아와도 같은 자리(창을 닫으면 사라짐) */
+const shownMemo = new Map();
+/** 다른 아래 탭에서 「출목표」로 들어올 때(app.js) — 늘 「오른 순」 첫 탭(1위~20위) 맨 위 */
+export function resetRoad() { prefs.set(ROAD_VIEW_KEY, 'rise'); for (const m of ROAD_MODES) prefs.set(tabKey(m.id), null); shownMemo.clear(); }
+/** 탭 줄에 쓰는 흐름 이름(「20거래일 내내 거의 안 움직임」은 탭에서 짧게) */
+const flowChip = key => key === 'still' ? '거의 안 움직임' : flowText(key);
 
-export async function renderRoad(main, {manifest, restoring = false} = {}) {
+export async function renderRoad(main, {manifest} = {}) {
   const board = await loadBoard();
   const groups = board.groups ?? [], groupOf = new Map(groups.map(g => [g.id, g]));
   const items = board.companies.map(c => { const road = roadOf(c.c); return {c, road, key: flowKey(road), g: groupOf.get(c.group?.id) ?? c.group ?? null}; });
-  const itemOf = new Map(items.map(x => [x.c.code, x]));
+  const itemOf = new Map(items.map(x => [x.c.code, x])), byRise = (a, b) => riseDesc(a.c, b.c);
+  const ranked = [...items].sort(byRise); // 365곳 오른 순
   const by = new Map(FLOW_ORDER.map(k => [k, []]));
-  for (const x of items) by.get(x.key).push(x);
-  for (const xs of by.values()) xs.sort((a, b) => (finite(b.c.change20) ? b.c.change20 : -Infinity) - (finite(a.c.change20) ? a.c.change20 : -Infinity) || a.c.code.localeCompare(b.c.code));
+  for (const x of ranked) by.get(x.key).push(x); // 흐름마다 오른 순 그대로
   const days = items[0]?.road.days ?? 20, before = items[0]?.road.beforeDays ?? 15, recent = items[0]?.road.recentDays ?? 5;
   const flows = FLOW_ORDER.map(k => ({key: k, text: flowText(k, days), items: by.get(k)})).filter(f => f.items.length)
     .map(f => ({...f, avg: meanOf(f.items.map(x => x.c.change20))})).sort((a, b) => (Number.isFinite(b.avg) ? b.avg : -Infinity) - (Number.isFinite(a.avg) ? a.avg : -Infinity)); // 묶음 평균이 큰 순
-  const max = Math.max(1, ...flows.map(f => f.items.length)), n = items.length;
+  const fams = familiesByRise(groups), n = items.length;
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
-  let view = prefs.get(ROAD_VIEW_KEY, 'rise'); if (!ROAD_MODES.some(m => m.id === view)) view = 'rise';
-  const ranked = [...items].sort((a, b) => riseDesc(a.c, b.c)); // 365곳 오른 순
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-  let ready = Promise.resolve();
-  const jump = async key => { await ready; document.getElementById('f-' + key)?.scrollIntoView({behavior: reduce(), block: 'start'}); };
-
-  // 2026-10-05 365곳: 칸이 두 배가 되어 한꺼번에 그리면 첫 화면이 늦게 뜸 — 묶음 머리를 먼저 붙이고 칸은 조금씩(한 번에 24ms 쯤) 붙인다
-  //   다 붙이면 data-ready · 회사 화면에서 되돌아올 때(보던 자리로 돌아가야 할 때)는 한꺼번에 그린 뒤 자리를 맞춘다
-  //   묶음 하나 = {sec: 머리만 있는 묶음(빈 칸 판) · tiles: 칸을 만드는 함수들}
-  // ① 업종별 — 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안도 지난 20거래일 많이 오른 순(2026-10-05 11:36 · 옛: 시가총액 큰 순)
-  // ⓪ 오른 순 — 365곳을 지난 20거래일 많이 오른 차례로 · 20곳씩 끊어 「1위~20위」 머리 · 칸마다 업종 이름 · 묶음마다 선 그래프 같은 눈금
-  const riseView = () => { const out = []; for (let i = 0; i < ranked.length; i += RISE_CHUNK) { const xs = ranked.slice(i, i + RISE_CHUNK), sc = sparkScale(xs.map(x => x.c)), a = i + 1, b = i + xs.length;
-    out.push({sec: () => h('section', {class: 'f-sec', id: 'f-r' + a, 'data-rank': String(a), 'aria-label': `오른 순 ${a}위~${b}위`},
-      h('h2', {class: 't-h2'}, `${a}위~${b}위`, h('small', null, ` · ${xs.length}곳`)),
-      h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 차례 · ${a}위 ${pct(xs[0].c.change20, 1)} ~ ${b}위 ${pct(xs.at(-1).c.change20, 1)} · ${scaleText(sc)}`),
-      h('div', {class: 'f-grid'})), tiles: xs.map(x => () => tile(x.c, x.road, x.g, sc))}); } return out; };
-  const indView = () => groups.map((g, k) => { const xs = g.codes.map(code => itemOf.get(code)).filter(Boolean).sort((a, b) => riseDesc(a.c, b.c)), sc = sparkScale(xs.map(x => x.c)); // 업종 안도 오른 순
-    return {sec: () => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
-      h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
-        h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
-      h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
-      h('div', {class: 'f-grid'})), tiles: xs.map(x => () => tile(x.c, x.road, null, sc))}; });
-  // ② 흐름별 — 흐름 목록(몇 곳인지 막대로 · 누르면 그 묶음으로) → 묶음마다 회사 칸(지난 20거래일 많이 오른 순)
-  // 흐름 목록 줄마다 묶음 평균 선 — 「흐름별」을 열면 첫 화면부터 그래프가 보이게(2026-10-05 00:26 「출목표 처음 보이는 곳에 그곳에 바로 그래프도 보여야 한다는거야 클릭해서 들어가는게 아니라 그래야 직관이잖아」)
-  //   같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 줄이 같은 눈금
+  // 흐름마다 묶음 평균 선 — 같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 흐름이 같은 눈금(탭을 넘겨도 견줄 수 있게)
+  //   2026-10-05 00:26 「출목표 처음 보이는 곳에 그곳에 바로 그래프도 보여야 한다는거야 클릭해서 들어가는게 아니라 그래야 직관이잖아」 — 탭 머리에 바로
   const means = new Map(flows.map(f => [f.key, meanRets(f.items.map(x => x.c).filter(c => c.date === to))])), msc = sparkScale([]);
   for (const r of means.values()) for (const v of r) { msc.lo = Math.min(msc.lo, v); msc.hi = Math.max(msc.hi, v); }
-  const flowRow = f => {
-    const bar = h('span', {class: 'f-bar ' + nowSide(f.key)}); bar.style.width = `${Math.max(2, f.items.length / max * 100)}%`;
-    const r = means.get(f.key);
-    return h('li', null, h('button', {class: 'f-row', type: 'button', 'data-flow': f.key, onclick: () => jump(f.key)},
-      h('span', {class: 'f-lab'}, f.text), meanSpark(r, msc, `${f.text} ${f.items.length}곳 평균 선 · 지난 ${Math.max(0, r.length - 1)}거래일 · 첫날 대비 ${r.length ? pct(r.at(-1), 1) : '없음'}`), h('b', {class: 'f-n'}, `${f.items.length}곳`), h('span', {class: 'f-track', 'aria-hidden': 'true'}, bar)));
-  };
-  const flowView = () => [
-    {sec: () => h('section', {class: 't-sec f-index', 'aria-label': '흐름 목록'},
-      h('h2', {class: 't-h2'}, `흐름 ${flows.length}가지`),
-      h('p', {class: 't-sub'}, `앞 ${before}거래일 → 끝 ${recent}거래일의 오른 날·내린 날 동그라미 수로 나눔 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 줄마다 묶음 평균 선(모든 줄 같은 눈금 ${pct(msc.lo, 0)} ~ ${pct(msc.hi, 0)}) · 누르면 그 묶음으로`),
-      h('ol', {class: 'f-list'}, ...flows.map(flowRow))), tiles: []},
-    ...flows.map(f => { const sc = sparkScale(f.items.map(x => x.c));
-      return {sec: () => h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
-        h('h2', {class: 't-h2'}, f.text, h('small', null, ` · ${f.items.length}곳`)),
-        h('p', {class: 't-sub'}, `${f.key === 'still' ? `${days}거래일 동안 동그라미가 거의 없음` : `앞 ${before}거래일: ${SIDE_WORD[f.key.split('-')[0]]} → 끝 ${recent}거래일: ${SIDE_WORD[f.key.split('-')[1]]} · 지난 20거래일 많이 오른 순`} · ${scaleText(sc)}`),
-        h('div', {class: 'f-grid'})), tiles: f.items.map(x => () => tile(x.c, x.road, x.g, sc))}; })];
 
-  const body = h('div', {class: 'f-body'});
-  // 큰 갈래 단추 — 업종별에서만 보임 · 누르면 그 갈래 업종 묶음만(칸은 그대로) · 「모두」로 되돌림
-  const fams = familiesByRise(groups), famIds = new Set(fams.map(f => f.fam.id)); // 갈래 평균이 큰 순
-  let fpick = prefs.get('roadFamily', 'all'); if (fpick !== 'all' && !famIds.has(fpick)) fpick = 'all';
-  const fcount = gs => gs.reduce((t, g) => t + g.codes.length, 0);
-  const fbtns = [{id: 'all', label: '모두', n: n, avg: null}, ...fams.map(f => ({id: f.fam.id, label: f.fam.label, n: fcount(f.groups), avg: f.avg}))]
-    .map(x => h('button', {class: 'fm-b', type: 'button', 'data-family': x.id, 'aria-pressed': String(x.id === fpick), onclick: () => { fpick = x.id; prefs.set('roadFamily', fpick); applyFam(); }},
-      h('span', {class: 'fm-l'}, x.label), h('small', {class: 'fm-n' + (x.avg == null ? '' : ' ' + (signCls(x.avg) || 'flat'))}, x.avg == null ? `${x.n}곳` : (finite(x.avg) ? pct(x.avg, 1) : '없음'))));
-  const famBox = h('div', {class: 'fm-box f-fam'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래로 좁혀 보기 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것'), h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기'}, ...fbtns));
-  const famOn = sec => view !== 'ind' || fpick === 'all' || sec.dataset.family === fpick;
-  function applyFam() { for (const b of fbtns) b.setAttribute('aria-pressed', String(b.dataset.family === fpick)); for (const sec of body.querySelectorAll(':scope > .f-sec')) sec.hidden = !famOn(sec); }
-  const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set(ROAD_VIEW_KEY, view); draw(); } }},
+  // 탭 = {id, label(탭 줄 글), small(작은 글), cls, lead(탭 맨 위 한 줄), parts: [{sec: 머리만 있는 묶음, items, withInd, sc}], say}
+  // ⓪ 오른 순 — 20곳씩 · 칸마다 업종 이름 · 탭마다 선 그래프 같은 눈금
+  const riseTabs = () => { const out = []; for (let i = 0; i < ranked.length; i += RISE_CHUNK) { const xs = ranked.slice(i, i + RISE_CHUNK), a = i + 1, b = i + xs.length, sc = sparkScale(xs.map(x => x.c));
+    out.push({id: 'r' + a, label: `${a}위~${b}위`, say: xs.slice(0, 3).map((x, k) => `${a + k}위 ${x.c.name} ${pct(x.c.change20, 1)}`).join(', '),
+      parts: [{items: xs, withInd: true, sc, sec: () => h('section', {class: 'f-sec', id: 'f-r' + a, 'data-rank': String(a), 'aria-label': `오른 순 ${a}위~${b}위`},
+        h('h2', {class: 't-h2'}, `${a}위~${b}위`, h('small', null, ` · ${xs.length}곳`)),
+        h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 차례 · ${a}위 ${pct(xs[0].c.change20, 1)} ~ ${b}위 ${pct(xs.at(-1).c.change20, 1)} · ${scaleText(sc)}`),
+        h('div', {class: 'f-grid'}))}]}); } return out; };
+  // ① 업종별 — 큰 갈래 하나가 탭 하나(갈래 평균이 큰 순) · 그 안 업종은 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안 회사도 오른 순
+  const indTabs = () => fams.map(f => ({id: f.fam.id, label: f.fam.label, small: finite(f.avg) ? pct(f.avg, 1) : '없음', cls: signCls(f.avg) || 'flat',
+    lead: `${f.fam.label} · 업종 ${f.groups.length}개 · ${f.groups.reduce((t, g) => t + g.codes.length, 0)}곳 · 갈래 평균 ${finite(f.avg) ? pct(f.avg, 1) : '없음'}`,
+    say: f.groups.slice(0, 3).map(g => `${groups.indexOf(g) + 1}위 ${g.label} ${pct(g.change20, 1)}`).join(', '),
+    parts: f.groups.map(g => { const k = groups.indexOf(g), xs = g.codes.map(code => itemOf.get(code)).filter(Boolean).sort(byRise), sc = sparkScale(xs.map(x => x.c));
+      return {items: xs, withInd: false, sc, sec: () => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
+        h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
+          h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
+        h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
+        h('div', {class: 'f-grid'}))}; })}));
+  // ② 흐름별 — 흐름 하나가 탭 하나(묶음 평균이 큰 순) · 탭 머리에 묶음 평균 선 · 칸은 오른 순
+  const flowTabs = () => flows.map(f => { const sc = sparkScale(f.items.map(x => x.c)), r = means.get(f.key), last = r.length ? pct(r.at(-1), 1) : '없음';
+    return {id: f.key, label: flowChip(f.key), small: `${f.items.length}곳`, say: `${f.text}, ${f.items.length}곳, 묶음 평균 ${pct(f.avg, 1)}`,
+      parts: [{items: f.items, withInd: true, sc, sec: () => h('section', {class: 'f-sec', id: 'f-' + f.key, 'data-flow': f.key, 'aria-label': `${f.text} ${f.items.length}곳`},
+        h('h2', {class: 't-h2'}, f.text, h('small', null, ` · ${f.items.length}곳`)),
+        h('p', {class: 't-sub'}, `${f.key === 'still' ? `${days}거래일 동안 동그라미가 거의 없음` : `앞 ${before}거래일: ${SIDE_WORD[f.key.split('-')[0]]} → 끝 ${recent}거래일: ${SIDE_WORD[f.key.split('-')[1]]}`} · 지난 20거래일 많이 오른 순 · ${scaleText(sc)}`),
+        h('p', {class: 'f-mean'}, meanSpark(r, msc, `${f.text} ${f.items.length}곳 평균 선 · 지난 ${Math.max(0, r.length - 1)}거래일 · 첫날 대비 ${last}`),
+          h('span', {class: 'f-mean-t small'}, `묶음 평균 선 · 첫날 대비 ${last} · 흐름 ${flows.length}가지 같은 눈금(${pct(msc.lo, 0)} ~ ${pct(msc.hi, 0)})`)),
+        h('div', {class: 'f-grid'}))}]}; });
+  const TABS = {rise: riseTabs(), ind: indTabs(), flow: flowTabs()};
+  const HINT = {rise: ts => `탭 ${ts.length}개 · 20곳씩 · 지난 20거래일 많이 오른 차례`,
+    ind: ts => `큰 갈래 탭 ${ts.length}개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것`,
+    flow: ts => `흐름 탭 ${ts.length}가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 ${before}거래일 → 끝 ${recent}거래일의 오른 날·내린 날 동그라미 수로 나눔`};
+
+  let view = prefs.get(ROAD_VIEW_KEY, 'rise'); if (!TABS[view]) view = 'rise';
+  const tabOf = m => { const id = prefs.get(tabKey(m), null), ts = TABS[m]; return ts.find(t => t.id === id) ?? ts[0]; };
+  let cur = tabOf(view), shown = 0;
+
+  const body = h('div', {class: 'f-body', id: 'f-body', role: 'tabpanel'});
+  const hint = h('p', {class: 't-sub f-tabs-h'});
+  const strip = h('div', {class: 'f-tabs', role: 'tablist', 'data-scroll': 'x'}); // 일부러 옆으로 밀어 보는 줄(또렷함 검사가 「가려진 글」로 세지 않음)
+  const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set(ROAD_VIEW_KEY, view); cur = tabOf(view); draw(); } }},
     m.text, h('small', null, m.id === 'rise' ? ` ${n}곳` : m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
-  const say = () => { state.summary = `${korDate(to)} 종가 기준. ` + (view === 'rise' ? `출목표 ${n}곳, 지난 20거래일 많이 오른 순. ${ranked.slice(0, 3).map((x, i) => `${i + 1}위 ${x.c.name} ${pct(x.c.change20, 1)}`).join(', ')}.` : view === 'ind' ? `출목표 ${n}곳, 업종별. ${groups.slice(0, 3).map((g, i) => `${i + 1}위 ${g.label} ${pct(g.change20, 1)}`).join(', ')}.` : `출목표 ${n}곳, 흐름별. ${flows.slice(0, 3).map(f => `${f.text.replace(' → ', ' 다음 ')} ${f.items.length}곳`).join(', ')}.`); };
-  let gen = 0;
-  /** 묶음을 붙인다 — progressive 면 24ms 마다 한 번 쉬며(첫 화면이 먼저 뜸) · 다른 묶는 법을 누르면 하던 것은 그만둠 */
-  async function fill(parts, progressive) {
-    const my = ++gen; let t0 = performance.now();
-    for (const p of parts) {
-      const sec = p.sec(), grid = sec.querySelector('.f-grid'); sec.hidden = !famOn(sec); body.append(sec);
-      for (const make of p.tiles) {
-        grid.append(make());
-        if (progressive && performance.now() - t0 > 24) { await frame(); if (my !== gen) return; t0 = performance.now(); }
-      }
-    }
-    body.dataset.ready = '';
+  const segBox = h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs);
+  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.`; };
+  /** 고른 탭을 탭 줄 가운데로(화면은 위아래로 움직이지 않게 줄만 옆으로) */
+  const centerTab = () => { const b = strip.querySelector('[aria-selected="true"]'); if (b && strip.scrollWidth > strip.clientWidth + 1) strip.scrollLeft = Math.max(0, b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2); };
+  const markTabs = () => { for (const b of strip.children) { const on = b.dataset.tab === cur.id; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; } };
+  function drawTabs() {
+    strip.setAttribute('aria-label', HINT[view](TABS[view]));
+    strip.replaceChildren(...TABS[view].map(t => h('button', {class: 'f-tab', type: 'button', role: 'tab', id: 'ft-' + t.id, 'data-tab': t.id, 'aria-controls': 'f-body', 'aria-selected': 'false', tabindex: '-1', onclick: () => pick(t, false)},
+      h('span', {class: 'f-tab-l'}, t.label), t.small ? h('small', {class: 'f-tab-n' + (t.cls ? ' ' + t.cls : '')}, t.small) : null)));
+    markTabs();
   }
-  function draw(progressive = true) {
+  /** 맨 아래 넘김 단추 — 「2번째 탭 · 21위~40위 보기 ›」 · 「‹ 1번째 탭 · 1위~20위」 */
+  function pager() {
+    const ts = TABS[view], i = ts.indexOf(cur), prev = ts[i - 1], next = ts[i + 1];
+    return h('nav', {class: 'f-pager', 'aria-label': '탭 넘기기'},
+      next ? h('button', {class: 'f-pg f-pg-next', type: 'button', 'data-to': next.id, onclick: () => pick(next, true)}, `${i + 2}번째 탭 · `, h('span', {class: 'f-nw'}, next.label), ' 보기 ›') : null,
+      prev ? h('button', {class: 'f-pg f-pg-prev', type: 'button', 'data-to': prev.id, onclick: () => pick(prev, true)}, `‹ ${i}번째 탭 · `, h('span', {class: 'f-nw'}, prev.label)) : null,
+      h('p', {class: 'f-pg-pos small'}, `탭 ${ts.length}개 가운데 ${i + 1}번째`));
+  }
+  /** 고른 탭 하나만 그린다 — 45곳이 넘으면 20곳씩(「더 보기」로 펼친 수는 기억) */
+  function drawPage() {
+    const total = cur.parts.reduce((t, p) => t + p.items.length, 0);
+    shown = total <= PAGE_MAX ? total : Math.min(total, Math.max(MORE_STEP, shownMemo.get(view + ':' + cur.id) ?? MORE_STEP));
+    body.dataset.mode = view; body.dataset.tab = cur.id; delete body.dataset.ready;
+    const kids = cur.lead ? [h('p', {class: 't-sub f-lead'}, cur.lead)] : [];
+    let k = 0;
+    for (const p of cur.parts) {
+      if (k >= shown) break;
+      const sec = p.sec(), grid = sec.querySelector('.f-grid');
+      for (const x of p.items) { if (k >= shown) break; grid.append(tile(x.c, x.road, p.withInd ? x.g : null, p.sc)); k++; }
+      kids.push(sec);
+    }
+    if (shown < total) kids.push(h('button', {class: 'f-more', type: 'button', onclick: () => more(total)}, '이 탭 ', h('span', {class: 'f-nw'}, `${shown + 1}위~${Math.min(total, shown + MORE_STEP)}위`), ' 더 보기', h('small', {class: 'f-nw'}, ` · 남은 ${total - shown}곳`)));
+    kids.push(pager());
+    body.replaceChildren(...kids);
+    body.dataset.ready = '';
+    say();
+  }
+  function more(total) {
+    const was = shown; shownMemo.set(view + ':' + cur.id, Math.min(total, shown + MORE_STEP)); drawPage();
+    body.querySelectorAll('.f-tile')[was]?.focus({preventScroll: true}); // 새로 붙은 첫 칸으로 초점(화면은 그대로)
+  }
+  function pick(t, fromBottom) {
+    if (t !== cur) { cur = t; prefs.set(tabKey(view), t.id); markTabs(); drawPage(); }
+    centerTab();
+    if (fromBottom) { segBox.scrollIntoView({block: 'start', behavior: reduce()}); strip.querySelector('[aria-selected="true"]')?.focus({preventScroll: true}); }
+  }
+  // 화살표 글쇠로 탭 넘기기(왼쪽 · 오른쪽 · 처음 · 끝)
+  strip.addEventListener('keydown', e => {
+    const ts = TABS[view], i = ts.indexOf(cur), j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? ts.length - 1 : null;
+    if (j == null || !ts[j]) return; e.preventDefault(); pick(ts[j], false); strip.querySelector('[aria-selected="true"]')?.focus();
+  });
+  function draw() {
     for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
-    body.dataset.mode = view; delete body.dataset.ready; body.replaceChildren(); say(); famBox.hidden = view !== 'ind';
-    ready = fill(view === 'rise' ? riseView() : view === 'ind' ? indView() : flowView(), progressive);
-    return ready;
+    hint.textContent = HINT[view](TABS[view]); drawTabs(); drawPage(); centerTab();
   }
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, `출목표 ${n}곳`),
-      h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지 · 한 화면에 모두`),
+      h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
       h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사'),
       ctxNote(board.companies)),
-    h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs),
-    famBox,
-    body,
+    segBox, hint, strip, body,
     foot(manifest ?? state.manifest)));
-  await draw(!restoring); // 처음 열 때는 조금씩 · 되돌아올 때는 한꺼번에(그 뒤 보던 자리로)
+  draw(); // 한 탭은 많아야 45곳이라 한꺼번에 그린다 — 되돌아올 때는 app.js 가 보던 자리로
 }
