@@ -22,6 +22,8 @@ function fakeFetch(url) {
     return ok({stocks: list.slice((page - 1) * size, page * size).map(c => ({stockEndType: c.sym === 'S7' ? 'etf' : 'stock', reutersCode: c.sym + (c.ex === 'NASDAQ' ? '.O' : ''), symbolCode: c.sym, stockName: '회사' + c.sym.slice(1), stockNameEng: 'Company ' + c.sym,
       industryCodeType: {code: '5710', industryGroupKor: c.ind, name: 'Ind'}, marketValue: c.cap.toLocaleString('en-US'), closePrice: '10.00', stockExchangeType: {name: c.ex}})), totalCount: list.length});
   }
+  // 결산은 첫 길(api.stock.naver.com)이 막히고(409) 둘째 길(m.stock.naver.com/api)만 열린다고 해 본다 — 길 바꾸기 시험
+  if (u.host === 'api.stock.naver.com' && /\/finance\/annual$/.test(u.pathname)) return {ok: false, status: 409, text: async () => 'conflict', headers: new Map()};
   if ((m = u.pathname.match(/\/stock\/([^/]+)\/finance\/annual$/))) {
     const i = Number(decodeURIComponent(m[1]).replace(/\D/g, '')), loss = i % 4 === 1;
     return ok({financeInfo: {trTitleList: [{isConsensus: 'N', title: '2023.12.', key: '202312'}, {isConsensus: 'N', title: '2024.12.', key: '202412'}, {isConsensus: 'N', title: '2025.12.', key: '202512'}, {isConsensus: 'Y', title: '2026.12.(E)', key: '202612'}],
@@ -56,6 +58,9 @@ test('자료 받기 흐름(가짜 응답): 1,500곳 → 365곳 · 추정 칸 버
     assert.ok(input.calendar.sessions.length >= 253);
     assert.equal(ctx.index.length, 3); assert.ok(ctx.news.length >= 300);
     const runs = await fs.readdir('reports/atlas11/us/runs'), run = path.join('reports/atlas11/us/runs', runs[0]);
+    const lg = JSON.parse(await fs.readFile(path.join(run, 'log.json'), 'utf8'));
+    assert.ok(lg.steps.some(x => x.name === '길' && x.kind === 'finance' && x.way === 1), '결산 첫 길이 막히면 둘째 길로 바꿔 끝까지 받음');
+    assert.ok((lg.failures.finance ?? 0) <= 6, '길을 바꾼 뒤로는 첫 길을 다시 두드리지 않음(처음 함께 나간 6개만 막힘 · 그것도 둘째 길이 받아 냄)');
     const files = (await fs.readdir(run)).sort();
     assert.deepEqual(files, ['candidates.json.gz', 'context.json.gz', 'history.json.gz', 'input.json.gz', 'log.json', 'proposal.json', 'samples']);
     const hist = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(run, 'history.json.gz'))).toString());
