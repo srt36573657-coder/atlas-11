@@ -188,9 +188,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const bgs = new Set(top.tiles.map(t => t.bg));
   check(`${label} ${H}: 칸 바탕 ${bgs.size}색(한 색) · 색 보기표 없음 · 오름 칸 ${top.tiles.filter(t => t.sign === 'up').length}개 · 내림 칸 ${top.tiles.filter(t => t.sign === 'down').length}개`, bgs.size === 1 && top.legend === 0, {bgs: [...bgs], legend: top.legend});
   check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {footPromise: top.footPromise});
-  // (옛 · 2026-10-06 00:21 까지) 큰 갈래 단추 12개(.fm-b) — 지금은 지도 한 장이 갈래 고르기를 한다
+  // (옛 · 2026-10-06 00:21 까지) 큰 갈래 단추 12개(.fm-b) — 지금은 지도 한 장 · 땅을 누르면 그 갈래 화면
   // 지도 한 장(2026-10-06 00:21 「잡스라면 … 개선하라」 · site/app/landmap.js) — 땅 = 큰 갈래(family.js 차례 · 넓이 = 업종 수) · 칸 = 업종(땅 안은 오른 순 · 오름/내림 색)
-  //   · 땅을 누르면 그 갈래 칸만 · 「모두 보기」 또는 같은 땅을 한 번 더 누르면 모두 · 이름이 잘리지 않음 · 땅끼리 겹치지 않음 · 누르는 자리 44px 넘음
+  //   · 이름이 잘리지 않음 · 땅끼리 겹치지 않음 · 누르는 자리 44px 넘음
+  //   · 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 땅 = 그 갈래 화면 링크(#/map/f/<갈래>) · 세 번이면 회사(땅 → 업종 → 회사) · 되돌아가기는 거꾸로(회사 → 업종 → 갈래 → 지도)
+  //     (옛 00:21 판: 땅을 누르면 73칸 거르기 · 「모두 보기」 — 뺌)
   {
     const ORDERW = [...FAMILIES, OTHER].map(f => f.id), byF = new Map();
     for (const g of board.groups) { const f = familyOf(g.label); if (!byF.has(f.id)) byF.set(f.id, {fam: f, groups: []}); byF.get(f.id).groups.push(g); }
@@ -198,24 +200,41 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const avgT = a => Number.isFinite(a) ? (a > 0 ? '+' : a < 0 ? '−' : '') + (Math.abs(a) * 100).toFixed(Math.abs(a) < 0.0005 ? 2 : 1) + '%' : '없음';
     const lm = await page.evaluate(() => { window.scrollTo(0, 0); const el = document.querySelector('.lm'), r0 = el.getBoundingClientRect();
       return {w: Math.round(r0.width), h: Math.round(r0.height), sw: document.documentElement.scrollWidth, iw: innerWidth, lands: [...el.querySelectorAll('.lm-n')].map(b => { const l = b.querySelector('.lm-lab'), r = b.getBoundingClientRect();
-        return {id: b.dataset.family, n: +b.dataset.n, pressed: b.getAttribute('aria-pressed'), name: b.querySelector('.lm-name')?.textContent.replace(/\u200b/g, ''), avg: b.querySelector('.lm-avg')?.textContent.trim(),
+        return {id: b.dataset.family, n: +b.dataset.n, tag: b.tagName, href: b.getAttribute('href'), name: b.querySelector('.lm-name')?.textContent.replace(/​/g, ''), avg: b.querySelector('.lm-avg')?.textContent.trim(),
           cells: [...b.querySelectorAll('.lm-c')].map(c => c.dataset.group + '|' + ([...c.classList].find(k => k.startsWith('s-'))?.slice(2) ?? '')), x: r.left - r0.left, y: r.top - r0.top, w: r.width, h: r.height,
           clip: l.scrollWidth > l.clientWidth + 1 || [...l.children].some(c => c.offsetWidth > l.clientWidth), cellsH: b.querySelector('.lm-cells').getBoundingClientRect().height}; })}; });
-    const landMis = landsW.map((L, k) => { const x = lm.lands[k]; return x && x.id === L.id && x.n === L.gs.length && x.name === L.label && x.avg === avgT(L.avg) && x.cells.join() === L.gs.map(g => g.id + '|' + signW(g.change20)).join() && x.pressed === 'false' && !x.clip && x.cellsH >= 16 ? null : {k, L: L.label, x: {...x, cells: x?.cells.slice(0, 3)}}; }).filter(Boolean);
+    const landMis = landsW.map((L, k) => { const x = lm.lands[k]; return x && x.id === L.id && x.n === L.gs.length && x.name === L.label && x.avg === avgT(L.avg) && x.cells.join() === L.gs.map(g => g.id + '|' + signW(g.change20)).join() && x.tag === 'A' && x.href === '#/map/f/' + L.id && !x.clip && x.cellsH >= 16 ? null : {k, L: L.label, x: {...x, cells: x?.cells.slice(0, 3)}}; }).filter(Boolean);
     const nCells = lm.lands.reduce((t, x) => t + x.cells.length, 0);
-    check(`${label} ${H}: 지도 한 장 — 땅 ${lm.lands.length}개 = 판의 큰 갈래 ${landsW.length}개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 ${nCells}개 = 업종 ${G}개 · 이름 잘림 없음 · 처음엔 고른 땅 없음`, lm.lands.length === landsW.length && !landMis.length && nCells === G, {landMis: landMis.slice(0, 3)});
+    check(`${label} ${H}: 지도 한 장 — 땅 ${lm.lands.length}개 = 판의 큰 갈래 ${landsW.length}개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 ${nCells}개 = 업종 ${G}개 · 이름 잘림 없음 · 땅마다 그 갈래 화면 링크`, lm.lands.length === landsW.length && !landMis.length && nCells === G, {landMis: landMis.slice(0, 3)});
     const area = lm.lands.reduce((t, x) => t + x.w * x.h, 0), ratioMis = lm.lands.filter(x => Math.abs((x.w * x.h) / area - x.n / G) > 0.05).map(x => `${x.id} ${((x.w * x.h) / area * 100).toFixed(1)}% · 업종 ${(x.n / G * 100).toFixed(1)}%`);
     const overlap = lm.lands.some((a, i) => lm.lands.some((b, j) => j > i && a.x < b.x + b.w - 1 && b.x < a.x + a.w - 1 && a.y < b.y + b.h - 1 && b.y < a.y + a.h - 1));
     check(`${label} ${H}: 지도 ${lm.w}×${lm.h}px · 땅 넓이 = 업종 수 비율(어긋남 ${ratioMis.length}개) · 땅끼리 겹침 없음 · 가장 좁은 땅 ${Math.round(Math.min(...lm.lands.map(x => Math.min(x.w, x.h))))}px(누르는 자리 44px 넘음) · 옆으로 넘치지 않음`, !ratioMis.length && !overlap && lm.lands.every(x => x.w >= 44 && x.h >= 44) && lm.sw <= lm.iw && lm.w > 0 && lm.h > 0, {ratioMis, overlap});
-    const L1 = landsW[0], lb = page.locator(`.lm-n[data-family="${L1.id}"]`); if (mobile) await lb.tap(); else await lb.click(); await page.waitForTimeout(150);
-    const vis = await page.evaluate(() => ({tiles: [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).map(t => t.dataset.group), pressed: [...document.querySelectorAll('.lm-n[aria-pressed="true"]')].map(b => b.dataset.family), all: !!document.querySelector('.fm-note .lm-all'), note: document.querySelector('.fm-note')?.textContent.trim()}));
-    check(`${label} ${H}: 땅 「${L1.label}」 ${mobile ? '터치' : '누름'} → 보이는 칸 ${vis.tiles.length}개 = 그 갈래 업종 ${L1.gs.length}개(판 차례 그대로) · 그 땅만 눌림 · 「모두 보기」 단추 · 「${vis.note}」`, vis.tiles.join() === board.groups.filter(g => familyOf(g.label).id === L1.id).map(g => g.id).join() && vis.pressed.join() === L1.id && vis.all, vis);
-    const ab = page.locator('.fm-note .lm-all'); if (mobile) await ab.tap(); else await ab.click(); await page.waitForTimeout(150);
-    const allN = await page.evaluate(() => ({n: [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).length, pressed: document.querySelectorAll('.lm-n[aria-pressed="true"]').length}));
-    check(`${label} ${H}: 「모두 보기」 → 보이는 칸 ${allN.n}개 = ${G}개 · 눌린 땅 없음`, allN.n === G && allN.pressed === 0, allN);
-    if (mobile) await lb.tap(); else await lb.click(); await page.waitForTimeout(120); if (mobile) await lb.tap(); else await lb.click(); await page.waitForTimeout(150);
-    const twice = await page.evaluate(() => ({n: [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).length, pressed: document.querySelectorAll('.lm-n[aria-pressed="true"]').length}));
-    check(`${label} ${H}: 같은 땅을 두 번 누르면 다시 모두 ${twice.n}개 · 눌린 땅 없음`, twice.n === G && twice.pressed === 0, twice);
+    // 세 번이면 회사: ① 땅 → 그 갈래 화면 ② 업종 칸 → 업종 화면 ③ 회사 → 회사 화면 · 되돌아가기 셋으로 다시 지도
+    const press1 = async loc => { if (mobile) await loc.tap(); else await loc.click(); };
+    const L1 = landsW[0];
+    await press1(page.locator(`.lm-n[data-family="${L1.id}"]`)); await page.waitForSelector('.l-page .l-grid .t-tile'); await page.waitForTimeout(300);
+    await shot('01b-land');
+    const lp = await page.evaluate(() => { const tiles = [...document.querySelectorAll('.l-grid > .t-tile')];
+      return {hash: location.hash, y: Math.round(scrollY), title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), when: document.querySelector('.b-when')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route,
+        tiles: tiles.map(t => ({id: t.dataset.group, href: t.getAttribute('href'), name: t.querySelector('.t-name')?.textContent.trim(), band: !!t.querySelector('.t-band'), over: [...t.querySelectorAll('.t-top > *')].some(k => k.getBoundingClientRect().right > t.getBoundingClientRect().right - 1)})), sw: document.documentElement.scrollWidth, iw: innerWidth}; });
+    const upN = L1.gs.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
+    check(`${label} 지도 땅 「${L1.label}」 ${mobile ? '터치' : '누름'}(한 번) → 갈래 화면 #/map/f/${L1.id} · 맨 위부터 · 제목 「${lp.title}」 · 「${lp.back[1]}」 · 탭 「지도」 눌린 채로 · 칸 ${lp.tiles.length}개 = 그 갈래 업종(오른 순 · 칸마다 지도 색 띠 · 누르면 그 업종) · 옆으로 넘치지 않음`,
+      lp.hash === '#/map/f/' + L1.id && lp.y === 0 && lp.title === `${L1.label} 업종 ${L1.gs.length}개` && lp.when?.startsWith(`업종 ${L1.gs.length}개 가운데 ${upN}개 오름 · 갈래 평균 ${avgT(L1.avg)} · 지난 20거래일`) && lp.back[0] === '#/map' && lp.back[1] === '‹ 지도' && lp.active === 'map'
+      && lp.tiles.map(t => t.id).join() === L1.gs.map(g => g.id).join() && lp.tiles.every((t, k) => t.href === '#/i/' + L1.gs[k].id && t.name === L1.gs[k].label && t.band && !t.over) && lp.sw <= lp.iw, {...lp, tiles: lp.tiles.slice(0, 3)});
+    await wordsCheck(page, `${label} 갈래 화면 「${L1.label}」`);
+    const g1 = L1.gs[0];
+    await press1(page.locator(`.l-grid .t-tile[data-group="${g1.id}"]`)); await page.waitForSelector(`article.i-page[data-group="${g1.id}"] .b-card`); await page.waitForTimeout(300);
+    const ip = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route, co: document.querySelector('article.i-page a[href^="#/stock/"]')?.getAttribute('href')}));
+    check(`${label} 갈래 화면 칸 「${g1.label}」 ${mobile ? '터치' : '누름'}(두 번) → 업종 화면 #/i/${g1.id} · 되돌아가기 「${ip.back[1]}」 = 그 갈래 · 탭 「지도」 눌린 채로`, ip.hash === '#/i/' + g1.id && ip.title === g1.label && ip.back[0] === '#/map/f/' + L1.id && ip.back[1] === '‹ ' + L1.label && ip.active === 'map' && !!ip.co, ip);
+    await press1(page.locator(`article.i-page a[href="${ip.co}"]`).first()); await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
+    const cp = await page.evaluate(() => ({hash: location.hash, back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
+    check(`${label} 업종 화면 회사 ${mobile ? '터치' : '누름'}(세 번) → 회사 화면 ${cp.hash} · 되돌아가기 「${cp.back[1]}」 · 탭 「지도」 눌린 채로 — 지도에서 세 번이면 회사`, cp.hash === ip.co && cp.back[0] === '#/i/' + g1.id && cp.back[1] === '‹ ' + g1.label && cp.active === 'map', cp);
+    const hashes = [];
+    for (const want of [`article.i-page[data-group="${g1.id}"] .b-card`, '.l-page .l-grid .t-tile', '.lm-n']) { await press1(page.locator('.c-back').first()); await page.waitForSelector(want); await page.waitForTimeout(250); hashes.push(await page.evaluate(() => location.hash)); }
+    check(`${label} 되돌아가기 세 번 → ${hashes.join(' → ')}(업종 → 갈래 → 지도)`, hashes.join() === ['#/i/' + g1.id, '#/map/f/' + L1.id, '#/map'].join(), hashes);
+    const unk = await page.evaluate(async () => { location.hash = '#/map/f/zzz'; await new Promise(r => setTimeout(r, 400)); return {note: document.querySelector('.l-page .b-note')?.textContent.trim(), back: document.querySelector('.c-back')?.getAttribute('href')}; });
+    check(`${label} 없는 갈래 주소 #/map/f/zzz → 「${unk.note}」 · 지도로 가는 길`, unk.note === '이 갈래는 지금 판에 없습니다' && unk.back === '#/map', unk);
+    await page.evaluate(() => { location.hash = '#/map'; }); await page.waitForSelector('.lm-n'); await page.waitForTimeout(300);
   }
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
   check(`${label} ${H}: 시장 띠(코스피·코스닥 · 기준 날짜)`, manifest.market ? manifest.market.items.every(i => top.strip.includes(i.name)) && top.strip.includes(kd(manifest.market.items[0].date) + ' 15:30 KST 종가') : /시장 지수 없음/.test(top.strip), {strip: top.strip});
