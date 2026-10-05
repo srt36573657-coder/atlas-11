@@ -78,10 +78,10 @@ const writeGz = async (file, value) => { const gz = zlib.gzipSync(Buffer.from(JS
 
 /** ① 시가총액 순 목록 — 거래소마다 쪽을 넘기며 · 보통주만(ETF 따로) · 합쳐서 큰 순 */
 async function universeList(limit = US365.poolTop) {
-  const perEx = {NYSE: 1100, NASDAQ: 1100, AMEX: 150}, all = new Map(), seen = {};
+  const perEx = {NYSE: 1800, NASDAQ: 1800, AMEX: 250}, all = new Map(), seen = {};
   for (const ex of NAVER_US.exchanges) {
     seen[ex] = 0;
-    for (let page = 1; page <= 15 && seen[ex] < perEx[ex]; page++) {
+    for (let page = 1; page <= 20 && seen[ex] < perEx[ex]; page++) {
       const r = await getAny(NAVER_US.ways.list(ex, page, 100), 'list', j => parseList(j, ex).items.length > 0);
       if (!r.ok) break;
       const {items} = parseList(r.json, ex);

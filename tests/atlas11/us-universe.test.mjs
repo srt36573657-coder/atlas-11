@@ -111,5 +111,5 @@ test('미국 회사만 · 같은 회사 다른 주식은 큰 쪽 하나 · 한�
 test('화면 「어떻게 골랐나」 세 줄 — 실제 규칙 숫자 그대로', () => {
   const lines = usHowLines(US365, '네이버 증권 해외주식');
   assert.equal(lines.length, 3);
-  assert.match(lines[0], /1,500곳/); assert.match(lines[1], /2년 연속 흑자 · ROE 5% 이상 · 부채비율 150% 이하/); assert.match(lines[2], /73개 업종 · 모두 365곳 · .* 자료: 네이버 증권 해외주식/);
+  assert.match(lines[0], /2,500곳/); assert.match(lines[1], /2년 연속 흑자 · ROE 5% 이상 · 부채비율 150% 이하/); assert.match(lines[2], /73개 업종 · 모두 365곳 · .* 자료: 네이버 증권 해외주식/);
 });
