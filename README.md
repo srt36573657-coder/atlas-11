@@ -1,3 +1,11 @@
+## 2026-10-05 · 지금 ATLAS 를 읽는 법
+
+- 한 문장: **365곳 중 지금 어디가 뜨겁고, 그 밖에서 누가 움직였나를 지난 종가로 보여 준다**(예측 없음).
+- 아래 탭 넷: 불장(`#/` · 스위치 불장·예비·오름 상위) · 업종(`#/map`) · 출목표(`#/road`) · 일정(`#/agenda`). 화면 코드는 `site/`.
+- 올리기: 깃허브 작업 「aaa7377.com 올리기」(`.github/workflows/atlas11-site.yml`)의 Run workflow — 끝나면 요약 칸에 결과 한 줄.
+- 원칙·지키는 규칙·잡스식 36가지 처리 상황: [`docs/ATLAS_원칙.md`](docs/ATLAS_원칙.md). 옛 것은 보관 갈래 `archive/2026-10-05`.
+- 명령: 지금 쓰는 것은 `atlas11:*` · 옛 52종목·예측 시절 것은 `legacy:*`(파일은 그대로).
+
 ## 2026-09-28 · ATLAS 11 (재구축)
 
 명령서 `ATLAS_Claude_Handoff.md` 대로 화면·계산 구조를 다시 세웠다. 새 화면은 `site/`(정적, 빌드 없음), 새 계산·운영은 `lib/atlas11/`·`scripts/atlas11/`, 설명은 `docs/ATLAS11_README.md`, 최종 보고는 `docs/ATLAS11_REPORT.md`. 기존 기록과 아래 10.0·9.5 문서는 그대로 보존한다. 배포 묶음은 `npm run atlas11:package` 로 만든 `dist/`(index.html 최상위)이다.

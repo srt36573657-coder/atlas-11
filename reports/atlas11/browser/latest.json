@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T01:55:53.610Z",
-  "base": "http://localhost:8876",
+  "at": "2026-10-05T02:01:46.472Z",
+  "base": "http://localhost:8877",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
   "asOf": "2026-10-02",
@@ -4131,5 +4131,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T01-54-05-195Z"
+  "dir": "reports/atlas11/browser/2026-10-05T01-59-55-819Z"
 }
