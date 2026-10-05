@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T07:02:44.874Z",
+  "at": "2026-10-05T08:43:28.059Z",
   "base": "http://localhost:8881",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -81,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -91,7 +91,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -101,7 +101,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -111,7 +111,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       }
@@ -133,7 +133,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -143,7 +143,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -153,7 +153,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -163,7 +163,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +173,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -183,7 +183,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -193,7 +193,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -203,7 +203,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -213,7 +213,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -223,7 +223,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -233,7 +233,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       }
@@ -357,7 +357,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -367,7 +367,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -377,7 +377,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -387,7 +387,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -397,7 +397,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -407,7 +407,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -417,7 +417,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -427,7 +427,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -437,7 +437,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -447,7 +447,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -457,7 +457,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 4,
         "truncated": 0,
         "formatDates": 0
       }
@@ -584,12 +584,12 @@
       }
     },
     {
-      "name": "pc 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음」 한 줄(21px)",
+      "name": "pc 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음」 한 줄(22px)",
       "ok": true,
       "detail": {
         "t": "저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음",
-        "h": 21,
-        "lh": 21
+        "h": 21.6875,
+        "lh": 21.7
       }
     },
     {
@@ -749,7 +749,7 @@
       "ok": true,
       "detail": {
         "bgs": [
-          "rgb(255, 254, 252)"
+          "rgb(248, 251, 247)"
         ],
         "legend": 0
       }
@@ -866,13 +866,13 @@
       }
     },
     {
-      "name": "pc 탭 「업종」(업종 73칸): 갈래 단추 여러 줄 · 첫 업종 칸 570px(첫 화면 800px 안) · 옆으로 넘치지 않음",
+      "name": "pc 탭 「업종」(업종 73칸): 갈래 단추 여러 줄 · 첫 업종 칸 605px(첫 화면 800px 안) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "scroll": "x",
         "tops": 5,
         "over": false,
-        "tile": 570,
+        "tile": 605,
         "ih": 800,
         "sw": 1280,
         "iw": 1280
@@ -1170,13 +1170,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(518px → 518px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(578px → 578px)",
       "ok": true,
       "detail": {
-        "y0": 518,
+        "y0": 578,
         "sb": {
           "hash": "#/similar",
-          "y": 518
+          "y": 578
         }
       }
     },
@@ -1820,7 +1820,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 795,
+        "first": 809,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -1924,13 +1924,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 795px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 809px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 795,
+        "first": 809,
         "ih": 800
       }
     },
@@ -2213,13 +2213,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1039px → 1039px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1053px → 1053px)",
       "ok": true,
       "detail": {
-        "yBefore": 1039,
+        "yBefore": 1053,
         "back": {
           "hash": "#/road",
-          "y": 1039,
+          "y": 1053,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -2425,12 +2425,12 @@
       }
     },
     {
-      "name": "mobile 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음」 한 줄(21px)",
+      "name": "mobile 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음」 한 줄(22px)",
       "ok": true,
       "detail": {
         "t": "저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음",
-        "h": 21,
-        "lh": 21
+        "h": 21.6875,
+        "lh": 21.7
       }
     },
     {
@@ -2590,7 +2590,7 @@
       "ok": true,
       "detail": {
         "bgs": [
-          "rgb(255, 254, 252)"
+          "rgb(248, 251, 247)"
         ],
         "legend": 0
       }
@@ -2707,13 +2707,13 @@
       }
     },
     {
-      "name": "mobile 탭 「업종」(업종 73칸): 갈래 단추 한 줄(옆으로 밀어 봄) · 첫 업종 칸 401px(첫 화면 844px 안) · 옆으로 넘치지 않음",
+      "name": "mobile 탭 「업종」(업종 73칸): 갈래 단추 한 줄(옆으로 밀어 봄) · 첫 업종 칸 429px(첫 화면 844px 안) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "scroll": "x",
         "tops": 1,
         "over": true,
-        "tile": 401,
+        "tile": 429,
         "ih": 844,
         "sw": 390,
         "iw": 390
@@ -3011,13 +3011,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(569px → 569px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(604px → 604px)",
       "ok": true,
       "detail": {
-        "y0": 569,
+        "y0": 604,
         "sb": {
           "hash": "#/similar",
-          "y": 569
+          "y": 604
         }
       }
     },
@@ -3661,7 +3661,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 780,
+        "first": 794,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -3765,13 +3765,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 780px(휴대폰 첫 화면 844px 안)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 794px(휴대폰 첫 화면 844px 안)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 780,
+        "first": 794,
         "ih": 844
       }
     },
@@ -4046,13 +4046,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1413px → 1413px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1473px → 1473px)",
       "ok": true,
       "detail": {
-        "yBefore": 1413,
+        "yBefore": 1473,
         "back": {
           "hash": "#/road",
-          "y": 1413,
+          "y": 1473,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -4251,59 +4251,67 @@
       }
     },
     {
-      "name": "어두운 화면 home: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 home: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 map: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 map: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 industry: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 industry: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 similar: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 similar: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 rise: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 rise: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 road: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 road: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 company: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 company: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
-      "name": "어두운 화면 agenda: 바탕이 검정(rgb(0, 0, 0))",
+      "name": "어두운 화면 agenda: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
-        "bg": "rgb(0, 0, 0)"
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
       }
     },
     {
@@ -5379,5 +5387,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T06-59-40-123Z"
+  "dir": "reports/atlas11/browser/2026-10-05T08-40-23-873Z"
 }
