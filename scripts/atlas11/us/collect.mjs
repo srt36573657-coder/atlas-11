@@ -113,6 +113,9 @@ async function selectMode() {
   const sel = selectUs365(candidates);
   step('고르기', {ok: sel.ok, picked: sel.picked.length, industries: sel.counts.industries, kinds: sel.counts.kinds, pool: sel.counts.pool, filled: sel.counts.industriesFilled, failTop: Object.entries(sel.counts.failReasons).slice(0, 6)});
   const rows = new Map(list.map((c, i) => [c.code, hist[i].rows]));
+  // 1,500곳 일봉도 남긴다(날짜 · 종가만) — 고르는 규칙을 고칠 때 다시 받지 않고 이 기록으로 다시 고를 수 있게(기록은 덮어쓰지 않음)
+  await writeGz(path.join(RUN, 'history.json.gz'), {schema: 'atlas11-us-history-1', at: now.toISOString(), from, to, basis: 'NAVER_WORLD_DAY · 뉴욕 17:00 지나 굳은 종가만',
+    rows: Object.fromEntries(list.map((c, i) => [c.code, hist[i].rows.map(r => [r.date, r.close])])), urls: Object.fromEntries(list.map((c, i) => [c.code, hist[i].url]))});
   await writeGz(path.join(RUN, 'candidates.json.gz'), {schema: 'atlas11-us-candidates-1', at: now.toISOString(), rules: {...US365, trendGroups: US365.trendGroups.map(g => ({id: g.id, label: g.label, words: String(g.words)}))},
     candidates: sel.checked.map(c => ({code: c.code, reuters: c.reuters, name: c.name, nameEn: c.nameEn, exchange: c.exchange, industry: c.industry, industryCode: c.industryCode, capUsd: c.capUsd, capRank: c.capRank, financial: c.financial, metrics: c.metrics, history: c.history, fails: c.fails, trend: c.trend ? c.trend.id : null}))});
   await writeJSON(path.join(RUN, 'proposal.json'), {schema: 'atlas11-us-proposal-1', at: now.toISOString(), ok: sel.ok, rules: US365.version, counts: sel.counts,
