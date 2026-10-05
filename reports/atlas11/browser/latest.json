@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T03:47:49.993Z",
-  "base": "http://localhost:8879",
+  "at": "2026-10-05T05:12:18.117Z",
+  "base": "http://localhost:8881",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
   "asOf": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 351,
+  "passed": 359,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -153,7 +153,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -163,7 +163,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +173,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -255,7 +255,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -265,7 +265,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -275,7 +275,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -357,7 +357,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -367,7 +367,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -377,7 +377,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -459,7 +459,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -469,7 +469,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -479,7 +479,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1337,26 +1337,79 @@
           "scroll": "x"
         },
         "tabs": [
-          "r1|true|1위~20위|",
-          "r21|false|21위~40위|",
-          "r41|false|41위~60위|",
-          "r61|false|61위~80위|",
-          "r81|false|81위~100위|",
-          "r101|false|101위~120위|",
-          "r121|false|121위~140위|",
-          "r141|false|141위~160위|",
-          "r161|false|161위~180위|",
-          "r181|false|181위~200위|",
-          "r201|false|201위~220위|",
-          "r221|false|221위~240위|",
-          "r241|false|241위~260위|",
-          "r261|false|261위~280위|",
-          "r281|false|281위~300위|",
-          "r301|false|301위~320위|",
-          "r321|false|321위~340위|",
-          "r341|false|341위~360위|",
-          "r361|false|361위~365위|"
+          "r1|true|1위~20위||✦17곳",
+          "r21|false|21위~40위||✦13곳",
+          "r41|false|41위~60위||✦12곳",
+          "r61|false|61위~80위||✦4곳",
+          "r81|false|81위~100위||✦3곳",
+          "r101|false|101위~120위||✦2곳",
+          "r121|false|121위~140위||✦1곳",
+          "r141|false|141위~160위||✦1곳",
+          "r161|false|161위~180위||",
+          "r181|false|181위~200위||",
+          "r201|false|201위~220위||",
+          "r221|false|221위~240위||",
+          "r241|false|241위~260위||",
+          "r261|false|261위~280위||",
+          "r281|false|281위~300위||",
+          "r301|false|301위~320위||",
+          "r321|false|321위~340위||",
+          "r341|false|341위~360위||",
+          "r361|false|361위~365위||"
         ],
+        "spkBox": {
+          "h": "✦ 반짝이는 칸 53곳",
+          "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
+          "list": [
+            "longRed|긴 빨강 줄|10",
+            "redTwice|빨강 2배|10",
+            "bigRedDay|하루 빨강 5개|8",
+            "recentRed|끝 5일 빨강|12",
+            "lastRed|끝 줄 빨강|9"
+          ],
+          "all": [
+            {
+              "id": "longRed",
+              "common": "true",
+              "text": "✓ 긴 빨강 줄 — 빨강 동그라미 6개 이상이 끊김 없이 이어짐(한 줄을 꽉 채움) · 오른 73곳 가운데 73곳(100%) · 나머지 292곳 가운데 168곳(58%)"
+            },
+            {
+              "id": "redTwice",
+              "common": "true",
+              "text": "✓ 빨강이 파랑의 2배 — 빨강 동그라미가 파랑의 2배 이상 · 오른 73곳 가운데 59곳(81%) · 나머지 292곳 가운데 23곳(8%)"
+            },
+            {
+              "id": "bigRedDay",
+              "common": "true",
+              "text": "✓ 하루 빨강 5개 — 하루에 빨강 동그라미 5개 이상인 날이 있음 · 오른 73곳 가운데 70곳(96%) · 나머지 292곳 가운데 142곳(49%)"
+            },
+            {
+              "id": "recentRed",
+              "common": "true",
+              "text": "✓ 끝 5일 빨강 — 최근 5거래일 빨강이 파랑보다 2개 이상 많음 · 오른 73곳 가운데 63곳(86%) · 나머지 292곳 가운데 116곳(40%)"
+            },
+            {
+              "id": "lastRed",
+              "common": "true",
+              "text": "✓ 끝 줄 빨강 — 맨 오른쪽 끝 줄(가장 최근 줄)이 빨강 · 오른 73곳 가운데 55곳(75%) · 나머지 292곳 가운데 159곳(54%)"
+            },
+            {
+              "id": "shortBlue",
+              "common": "false",
+              "text": "· 짧은 파랑 줄 — 파랑 줄이 모두 2개 이하 · 오른 73곳 가운데 5곳(7%) · 나머지 292곳 가운데 11곳(4%)"
+            },
+            {
+              "id": "noBigBlue",
+              "common": "false",
+              "text": "· 큰 파랑 날 없음 — 하루에 파랑 동그라미 3개 이상인 날이 없음 · 오른 73곳 가운데 20곳(27%) · 나머지 292곳 가운데 67곳(23%)"
+            },
+            {
+              "id": "redCols",
+              "common": "false",
+              "text": "· 빨강 줄이 더 많음 — 빨강 줄 수가 파랑 줄 수보다 많음 · 오른 73곳 가운데 17곳(23%) · 나머지 292곳 가운데 94곳(32%)"
+            }
+          ]
+        },
         "lead": null,
         "more": null,
         "pager": {
@@ -1375,9 +1428,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "r1|true|1위~20위|",
-          "r21|false|21위~40위|",
-          "r41|false|41위~60위|"
+          "r1|true|1위~20위||✦17곳",
+          "r21|false|21위~40위||✦13곳",
+          "r41|false|41위~60위||✦12곳"
         ],
         "strip": {
           "role": "tablist",
@@ -1385,6 +1438,75 @@
         },
         "hint": "탭 19개 · 20곳씩 · 지난 20거래일 많이 오른 차례",
         "tiles": 20
+      }
+    },
+    {
+      "name": "pc 출목표 맨 위 반짝 상자: 「✦ 반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
+      "ok": true,
+      "detail": {
+        "spkBox": {
+          "h": "✦ 반짝이는 칸 53곳",
+          "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
+          "list": [
+            "longRed|긴 빨강 줄|10",
+            "redTwice|빨강 2배|10",
+            "bigRedDay|하루 빨강 5개|8",
+            "recentRed|끝 5일 빨강|12",
+            "lastRed|끝 줄 빨강|9"
+          ],
+          "all": [
+            {
+              "id": "longRed",
+              "common": "true",
+              "text": "✓ 긴 빨강 줄 — 빨강 동그라미 6개 이상이 끊김 없이 이어짐(한 줄을 꽉 채움) · 오른 73곳 가운데 73곳(100%) · 나머지 292곳 가운데 168곳(58%)"
+            },
+            {
+              "id": "redTwice",
+              "common": "true",
+              "text": "✓ 빨강이 파랑의 2배 — 빨강 동그라미가 파랑의 2배 이상 · 오른 73곳 가운데 59곳(81%) · 나머지 292곳 가운데 23곳(8%)"
+            },
+            {
+              "id": "bigRedDay",
+              "common": "true",
+              "text": "✓ 하루 빨강 5개 — 하루에 빨강 동그라미 5개 이상인 날이 있음 · 오른 73곳 가운데 70곳(96%) · 나머지 292곳 가운데 142곳(49%)"
+            },
+            {
+              "id": "recentRed",
+              "common": "true",
+              "text": "✓ 끝 5일 빨강 — 최근 5거래일 빨강이 파랑보다 2개 이상 많음 · 오른 73곳 가운데 63곳(86%) · 나머지 292곳 가운데 116곳(40%)"
+            },
+            {
+              "id": "lastRed",
+              "common": "true",
+              "text": "✓ 끝 줄 빨강 — 맨 오른쪽 끝 줄(가장 최근 줄)이 빨강 · 오른 73곳 가운데 55곳(75%) · 나머지 292곳 가운데 159곳(54%)"
+            },
+            {
+              "id": "shortBlue",
+              "common": "false",
+              "text": "· 짧은 파랑 줄 — 파랑 줄이 모두 2개 이하 · 오른 73곳 가운데 5곳(7%) · 나머지 292곳 가운데 11곳(4%)"
+            },
+            {
+              "id": "noBigBlue",
+              "common": "false",
+              "text": "· 큰 파랑 날 없음 — 하루에 파랑 동그라미 3개 이상인 날이 없음 · 오른 73곳 가운데 20곳(27%) · 나머지 292곳 가운데 67곳(23%)"
+            },
+            {
+              "id": "redCols",
+              "common": "false",
+              "text": "· 빨강 줄이 더 많음 — 빨강 줄 수가 파랑 줄 수보다 많음 · 오른 73곳 가운데 17곳(23%) · 나머지 292곳 가운데 94곳(32%)"
+            }
+          ]
+        },
+        "want": {
+          "n": 53,
+          "common": [
+            "longRed 73/73 168/292",
+            "redTwice 59/73 23/292",
+            "bigRedDay 70/73 142/292",
+            "recentRed 63/73 116/292",
+            "lastRed 55/73 159/292"
+          ]
+        }
       }
     },
     {
@@ -1425,6 +1547,14 @@
       }
     },
     {
+      "name": "pc 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수 「✦n곳」(탭 줄 맞댐)",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "pc 출목표 오른 순(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -1452,9 +1582,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "semi|true|반도체|+30.7%",
-          "elec|false|전기·전자|+24.7%",
-          "energy|false|2차전지·에너지|+8.4%"
+          "semi|true|반도체|+30.7%|✦11곳",
+          "elec|false|전기·전자|+24.7%|✦22곳",
+          "energy|false|2차전지·에너지|+8.4%|✦5곳"
         ],
         "hint": "큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것",
         "tab": "semi"
@@ -1484,6 +1614,14 @@
       }
     },
     {
+      "name": "pc 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "pc 출목표 업종별(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -1493,9 +1631,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "up-up|true|오름 → 오름|90곳",
-          "up-flat|false|오름 → 비슷|28곳",
-          "flat-up|false|비슷 → 오름|39곳"
+          "up-up|true|오름 → 오름|90곳|✦46곳",
+          "up-flat|false|오름 → 비슷|28곳|",
+          "flat-up|false|비슷 → 오름|39곳|✦6곳"
         ],
         "hint": "흐름 탭 10가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 15거래일 → 끝 5거래일의 오른 날·내린 날 동그라미 수로 나눔"
       }
@@ -1566,6 +1704,14 @@
       }
     },
     {
+      "name": "pc 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "pc 출목표 흐름별(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -1583,13 +1729,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(758px → 758px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1001px → 1001px)",
       "ok": true,
       "detail": {
-        "yBefore": 758,
+        "yBefore": 1001,
         "back": {
           "hash": "#/road",
-          "y": 758,
+          "y": 1001,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -2548,26 +2694,79 @@
           "scroll": "x"
         },
         "tabs": [
-          "r1|true|1위~20위|",
-          "r21|false|21위~40위|",
-          "r41|false|41위~60위|",
-          "r61|false|61위~80위|",
-          "r81|false|81위~100위|",
-          "r101|false|101위~120위|",
-          "r121|false|121위~140위|",
-          "r141|false|141위~160위|",
-          "r161|false|161위~180위|",
-          "r181|false|181위~200위|",
-          "r201|false|201위~220위|",
-          "r221|false|221위~240위|",
-          "r241|false|241위~260위|",
-          "r261|false|261위~280위|",
-          "r281|false|281위~300위|",
-          "r301|false|301위~320위|",
-          "r321|false|321위~340위|",
-          "r341|false|341위~360위|",
-          "r361|false|361위~365위|"
+          "r1|true|1위~20위||✦17곳",
+          "r21|false|21위~40위||✦13곳",
+          "r41|false|41위~60위||✦12곳",
+          "r61|false|61위~80위||✦4곳",
+          "r81|false|81위~100위||✦3곳",
+          "r101|false|101위~120위||✦2곳",
+          "r121|false|121위~140위||✦1곳",
+          "r141|false|141위~160위||✦1곳",
+          "r161|false|161위~180위||",
+          "r181|false|181위~200위||",
+          "r201|false|201위~220위||",
+          "r221|false|221위~240위||",
+          "r241|false|241위~260위||",
+          "r261|false|261위~280위||",
+          "r281|false|281위~300위||",
+          "r301|false|301위~320위||",
+          "r321|false|321위~340위||",
+          "r341|false|341위~360위||",
+          "r361|false|361위~365위||"
         ],
+        "spkBox": {
+          "h": "✦ 반짝이는 칸 53곳",
+          "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
+          "list": [
+            "longRed|긴 빨강 줄|10",
+            "redTwice|빨강 2배|10",
+            "bigRedDay|하루 빨강 5개|8",
+            "recentRed|끝 5일 빨강|12",
+            "lastRed|끝 줄 빨강|9"
+          ],
+          "all": [
+            {
+              "id": "longRed",
+              "common": "true",
+              "text": "✓ 긴 빨강 줄 — 빨강 동그라미 6개 이상이 끊김 없이 이어짐(한 줄을 꽉 채움) · 오른 73곳 가운데 73곳(100%) · 나머지 292곳 가운데 168곳(58%)"
+            },
+            {
+              "id": "redTwice",
+              "common": "true",
+              "text": "✓ 빨강이 파랑의 2배 — 빨강 동그라미가 파랑의 2배 이상 · 오른 73곳 가운데 59곳(81%) · 나머지 292곳 가운데 23곳(8%)"
+            },
+            {
+              "id": "bigRedDay",
+              "common": "true",
+              "text": "✓ 하루 빨강 5개 — 하루에 빨강 동그라미 5개 이상인 날이 있음 · 오른 73곳 가운데 70곳(96%) · 나머지 292곳 가운데 142곳(49%)"
+            },
+            {
+              "id": "recentRed",
+              "common": "true",
+              "text": "✓ 끝 5일 빨강 — 최근 5거래일 빨강이 파랑보다 2개 이상 많음 · 오른 73곳 가운데 63곳(86%) · 나머지 292곳 가운데 116곳(40%)"
+            },
+            {
+              "id": "lastRed",
+              "common": "true",
+              "text": "✓ 끝 줄 빨강 — 맨 오른쪽 끝 줄(가장 최근 줄)이 빨강 · 오른 73곳 가운데 55곳(75%) · 나머지 292곳 가운데 159곳(54%)"
+            },
+            {
+              "id": "shortBlue",
+              "common": "false",
+              "text": "· 짧은 파랑 줄 — 파랑 줄이 모두 2개 이하 · 오른 73곳 가운데 5곳(7%) · 나머지 292곳 가운데 11곳(4%)"
+            },
+            {
+              "id": "noBigBlue",
+              "common": "false",
+              "text": "· 큰 파랑 날 없음 — 하루에 파랑 동그라미 3개 이상인 날이 없음 · 오른 73곳 가운데 20곳(27%) · 나머지 292곳 가운데 67곳(23%)"
+            },
+            {
+              "id": "redCols",
+              "common": "false",
+              "text": "· 빨강 줄이 더 많음 — 빨강 줄 수가 파랑 줄 수보다 많음 · 오른 73곳 가운데 17곳(23%) · 나머지 292곳 가운데 94곳(32%)"
+            }
+          ]
+        },
         "lead": null,
         "more": null,
         "pager": {
@@ -2586,9 +2785,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "r1|true|1위~20위|",
-          "r21|false|21위~40위|",
-          "r41|false|41위~60위|"
+          "r1|true|1위~20위||✦17곳",
+          "r21|false|21위~40위||✦13곳",
+          "r41|false|41위~60위||✦12곳"
         ],
         "strip": {
           "role": "tablist",
@@ -2596,6 +2795,75 @@
         },
         "hint": "탭 19개 · 20곳씩 · 지난 20거래일 많이 오른 차례",
         "tiles": 20
+      }
+    },
+    {
+      "name": "mobile 출목표 맨 위 반짝 상자: 「✦ 반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
+      "ok": true,
+      "detail": {
+        "spkBox": {
+          "h": "✦ 반짝이는 칸 53곳",
+          "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
+          "list": [
+            "longRed|긴 빨강 줄|10",
+            "redTwice|빨강 2배|10",
+            "bigRedDay|하루 빨강 5개|8",
+            "recentRed|끝 5일 빨강|12",
+            "lastRed|끝 줄 빨강|9"
+          ],
+          "all": [
+            {
+              "id": "longRed",
+              "common": "true",
+              "text": "✓ 긴 빨강 줄 — 빨강 동그라미 6개 이상이 끊김 없이 이어짐(한 줄을 꽉 채움) · 오른 73곳 가운데 73곳(100%) · 나머지 292곳 가운데 168곳(58%)"
+            },
+            {
+              "id": "redTwice",
+              "common": "true",
+              "text": "✓ 빨강이 파랑의 2배 — 빨강 동그라미가 파랑의 2배 이상 · 오른 73곳 가운데 59곳(81%) · 나머지 292곳 가운데 23곳(8%)"
+            },
+            {
+              "id": "bigRedDay",
+              "common": "true",
+              "text": "✓ 하루 빨강 5개 — 하루에 빨강 동그라미 5개 이상인 날이 있음 · 오른 73곳 가운데 70곳(96%) · 나머지 292곳 가운데 142곳(49%)"
+            },
+            {
+              "id": "recentRed",
+              "common": "true",
+              "text": "✓ 끝 5일 빨강 — 최근 5거래일 빨강이 파랑보다 2개 이상 많음 · 오른 73곳 가운데 63곳(86%) · 나머지 292곳 가운데 116곳(40%)"
+            },
+            {
+              "id": "lastRed",
+              "common": "true",
+              "text": "✓ 끝 줄 빨강 — 맨 오른쪽 끝 줄(가장 최근 줄)이 빨강 · 오른 73곳 가운데 55곳(75%) · 나머지 292곳 가운데 159곳(54%)"
+            },
+            {
+              "id": "shortBlue",
+              "common": "false",
+              "text": "· 짧은 파랑 줄 — 파랑 줄이 모두 2개 이하 · 오른 73곳 가운데 5곳(7%) · 나머지 292곳 가운데 11곳(4%)"
+            },
+            {
+              "id": "noBigBlue",
+              "common": "false",
+              "text": "· 큰 파랑 날 없음 — 하루에 파랑 동그라미 3개 이상인 날이 없음 · 오른 73곳 가운데 20곳(27%) · 나머지 292곳 가운데 67곳(23%)"
+            },
+            {
+              "id": "redCols",
+              "common": "false",
+              "text": "· 빨강 줄이 더 많음 — 빨강 줄 수가 파랑 줄 수보다 많음 · 오른 73곳 가운데 17곳(23%) · 나머지 292곳 가운데 94곳(32%)"
+            }
+          ]
+        },
+        "want": {
+          "n": 53,
+          "common": [
+            "longRed 73/73 168/292",
+            "redTwice 59/73 23/292",
+            "bigRedDay 70/73 142/292",
+            "recentRed 63/73 116/292",
+            "lastRed 55/73 159/292"
+          ]
+        }
       }
     },
     {
@@ -2636,6 +2904,14 @@
       }
     },
     {
+      "name": "mobile 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수 「✦n곳」(탭 줄 맞댐)",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "mobile 출목표 오른 순(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -2655,9 +2931,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "semi|true|반도체|+30.7%",
-          "elec|false|전기·전자|+24.7%",
-          "energy|false|2차전지·에너지|+8.4%"
+          "semi|true|반도체|+30.7%|✦11곳",
+          "elec|false|전기·전자|+24.7%|✦22곳",
+          "energy|false|2차전지·에너지|+8.4%|✦5곳"
         ],
         "hint": "큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것",
         "tab": "semi"
@@ -2687,6 +2963,14 @@
       }
     },
     {
+      "name": "mobile 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "mobile 출목표 업종별(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -2696,9 +2980,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "up-up|true|오름 → 오름|90곳",
-          "up-flat|false|오름 → 비슷|28곳",
-          "flat-up|false|비슷 → 오름|39곳"
+          "up-up|true|오름 → 오름|90곳|✦46곳",
+          "up-flat|false|오름 → 비슷|28곳|",
+          "flat-up|false|비슷 → 오름|39곳|✦6곳"
         ],
         "hint": "흐름 탭 10가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 15거래일 → 끝 5거래일의 오른 날·내린 날 동그라미 수로 나눔"
       }
@@ -2769,6 +3053,14 @@
       }
     },
     {
+      "name": "mobile 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "ok": true,
+      "detail": {
+        "spkMis": [],
+        "spkSeen": 53
+      }
+    },
+    {
       "name": "mobile 출목표 흐름별(마지막 탭): 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
@@ -2786,13 +3078,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1102px → 1102px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1484px → 1484px)",
       "ok": true,
       "detail": {
-        "yBefore": 1102,
+        "yBefore": 1484,
         "back": {
           "hash": "#/road",
-          "y": 1102,
+          "y": 1484,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -3974,5 +4266,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T03-45-14-084Z"
+  "dir": "reports/atlas11/browser/2026-10-05T05-09-40-128Z"
 }
