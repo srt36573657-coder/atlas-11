@@ -1,7 +1,7 @@
 /* ATLAS 11 · 판 공용 부품 — 일정·공시 줄(★) · 출목표 칸 · 시장 일정 · 읽는 법 · 바뀔 묶음 미리 보기 · 값 줄 · 맨 아래 출처 줄
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」 — 앞날 값은 어디에도 없다
    일정 이름·공시 제목은 공식 이름 그대로라(「SEDEX 2026」 · 「2단계 가격제한폭」) 또렷함 검사에서 식별자(data-ident)로 센다 — 우리 숫자가 아님. */
-import {h, won, pct, korDate, stamp, signCls, signMark, finite} from './util.js';
+import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst} from './util.js';
 import {roadOf, roadSvg, roadKey, unitText} from './road.js';
 import {integrityText} from './frame.js';
 
@@ -182,6 +182,30 @@ export function newsLine(brief) {
 /** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */
 export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '어느 회사를 고르라고 하지 않습니다', '알림을 보내지 않습니다',
   '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익을 셈하지 않습니다', '값이 늦거나 빠지면 그렇다고 적습니다(0 으로 채우지 않음)'];
+/* 저녁 7시 들고 남 칸 — 2026-10-05 05:03 사장님 「매일 저녁 7시에 … 여러 주건들에 이동이 반영되게 하라」 · 10:24 「잡스라면」 24번: 탭 「불장」 세 화면의 스위치 바로 아래 같은 자리 하나로
+   (옛 자리: 예비 화면 맨 위 칸 + 22곳 화면 한 줄 — 둘로 나뉘어 있었음) · 견준 기록이 있으면 한 줄 요약만 보이고 이름은 눌러서 */
+/** 들고 남 한 줄 — 표시(글자) · 무엇 · 이름들(없으면 「없음」) */
+const moveRow = (mark, what, list, kind) => h('li', {class: 'mvx-row', 'data-kind': kind, 'data-n': list.length},
+  h('span', {class: 'mvx-mark', 'aria-hidden': 'true'}, mark), h('span', {class: 'mvx-what'}, what), h('span', {class: 'mvx-who'}, list.length ? list.map(x => x.label ?? (x.groupLabel ? `${x.name}(${x.groupLabel})` : x.name)).join(' · ') : '없음'));
+/** 기록한 때 「10월 5일(월) 19:03」 — GitHub 예약이 늦게 오는 날이 있어 실제로 기록한 시각을 그대로 적는다 */
+const at = iso => iso && Number.isFinite(Date.parse(iso)) ? `${korDate(kst(iso).date)} ${kst(iso).time}` : '';
+/** 저녁 7시 들고 남 — 기록 둘을 맞대어 본 값(판에 적힌 그대로) */
+export function movesBox(mv) {
+  const head = sub => h('p', {class: 'mvx-h'}, h('b', null, '저녁 7시 들고 남'), sub ? h('span', {class: 'mvx-when'}, sub) : null);
+  if (!mv) return h('section', {class: 'mvx mvx-quiet', 'aria-label': '저녁 7시 들고 남', 'data-state': 'none'}, head('아직 기록 없음 · 거래일 19:00마다 적고 앞 기록과 견줌'));
+  if (mv.first) return h('section', {class: 'mvx mvx-quiet', 'aria-label': '저녁 7시 들고 남', 'data-state': 'first'}, head(`${korDate(mv.to)} 종가 · 처음 기록(${at(mv.at)})`),
+    h('p', {class: 'mvx-note'}, '처음 기록이라 견줄 앞 기록이 없습니다 · 다음 거래일 19:00 기록부터 들고 난 업종·회사를 적습니다'));
+  return h('section', {class: 'mvx', 'aria-label': '저녁 7시 들고 남', 'data-state': 'moves'}, head(`${korDate(mv.from)} 종가 → ${korDate(mv.to)} 종가 · ${at(mv.at)} 기록`),
+    h('details', {class: 'mvx-more'}, h('summary', {class: 'mvx-sum'}, `불장 든 업종 ${mv.hotIn.length}개 · 빠진 업종 ${mv.hotOut.length}개 · 예비 든 회사 ${mv.similarIn.length}곳 · 빠진 회사 ${mv.similarOut.length}곳 · 오름 상위 든 곳 ${mv.nextIn.length}곳 · 빠진 곳 ${mv.nextOut.length}곳`),
+    h('ul', {class: 'mvx-list'},
+      moveRow('▲', '불장에 든 업종', mv.hotIn, 'hot-in'),
+      moveRow('▼', '불장에서 빠진 업종', mv.hotOut, 'hot-out'),
+      moveRow('★', '예비에서 불장이 된 회사', mv.becameHot, 'became'),
+      moveRow('＋', '예비에 새로 든 회사', mv.similarIn, 'sim-in'),
+      moveRow('－', '예비에서 빠진 회사', mv.similarOut, 'sim-out')),
+    h('p', {class: 'mvx-22'}, `오름 상위: 새로 든 곳 ${mv.nextIn.length}곳 · 빠진 곳 ${mv.nextOut.length}곳`)));
+}
+
 /** 불장 탭 맨 위 스위치 셋 — [불장 | 예비 | 오름 상위] (2026-10-05 10:24 「잡스라면 36가지」 14번)
    세 명단이 모두 「어디가 뜨겁나」에 답하므로 아래 탭 셋이 아니라 한 탭 안의 스위치로 · 내리지 않고 한 번 눌러 바뀐다(05:03 「밑으로 내려야 하잖아」 그대로 지킴)
    이름에는 숫자를 넣지 않고(28번) 개수는 작은 글로 곁에 — 개수가 바뀌어도 이름은 그대로

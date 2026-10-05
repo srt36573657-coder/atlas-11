@@ -11,12 +11,16 @@
      · 칸 두 층 — 큰 층: 이름 · 20거래일 변화 · 선 그래프(누르지 않아도 보임) / 작은 층: 출목표 · 「20거래일 중 오른 날 n일」 · 수급 한 줄 · 기사 한 줄
      · 「오름 2일째」 같은 연속 글은 뺐다 — 한국 카지노 1,797만 판 자료에서 같은 결과를 세로로 쌓은 점수판은 연속을 따라 더 크게 걸게 했다(Muto 외 2025)
      · 오른 날 = 빈 동그라미 · 내린 날 = 찬 동그라미(색을 못 가려도 읽힘) · 흐름 이름은 지난 두 구간 그대로(「내림 → 오름」 — 앞 15거래일 → 끝 5거래일)
-     · 묶음 이름이 화면 위에 붙어 따라온다(여기가 어디인가 — 애플 WWDC17 길 찾기) */
+     · 묶음 이름이 화면 위에 붙어 따라온다(여기가 어디인가 — 애플 WWDC17 길 찾기)
+   2026-10-05 10:24 「잡스라면 … 36가지」 → 「만들어 줘」: 업종별에 큰 갈래 단추(누르면 그 갈래 업종 묶음만 · 「모두」로 되돌림 · 이 기기에 기억)
+     21번(작은 칸 모아 보기)은 하지 않았다 — 10/4 22:51 「그래프로 있어야 해 그리고 그 회사들 뉴스와 수급도」 · 10/5 00:26 「처음 보이는 곳에 바로 그래프도」와 부딪혀서.
+     칸은 그대로 두고, 365장을 큰 갈래로 좁혀 보는 길을 더했다 */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
 import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark} from './parts.js';
 import {upLine} from './view-home.js';
+import {familyOf, groupByFamily} from './family.js';
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
 export const FLOW_ORDER = ['up-up', 'flat-up', 'down-up', 'up-flat', 'flat-flat', 'still', 'down-flat', 'up-down', 'flat-down', 'down-down'];
@@ -74,7 +78,7 @@ export async function renderRoad(main, {manifest, restoring = false} = {}) {
   //   묶음 하나 = {sec: 머리만 있는 묶음(빈 칸 판) · tiles: 칸을 만드는 함수들}
   // ① 업종별 — 36칸 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안은 시가총액 큰 순
   const indView = () => groups.map((g, k) => { const xs = g.codes.map(code => itemOf.get(code)).filter(Boolean), sc = sparkScale(xs.map(x => x.c));
-    return {sec: () => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
+    return {sec: () => h('section', {class: 'f-sec', id: 'f-' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'aria-label': `${k + 1}위 ${g.label} ${g.codes.length}곳`},
       h('h2', {class: 'f-h'}, h('span', {class: 'f-h-rank'}, `${k + 1}위`), h('span', {class: 'f-h-name'}, g.label), g.hot ? h('span', {class: 't-fire'}, '불장') : null,
         h('b', {class: 'chg20 f-h-chg ' + (signCls(g.change20) || 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음')),
       h('p', {class: 't-sub'}, `${xs.length}곳 지난 20거래일 평균 · ${upLine(g)} · ${scaleText(sc)}`),
@@ -102,6 +106,16 @@ export async function renderRoad(main, {manifest, restoring = false} = {}) {
         h('div', {class: 'f-grid'})), tiles: f.items.map(x => () => tile(x.c, x.road, x.g, sc))}; })];
 
   const body = h('div', {class: 'f-body'});
+  // 큰 갈래 단추 — 업종별에서만 보임 · 누르면 그 갈래 업종 묶음만(칸은 그대로) · 「모두」로 되돌림
+  const fams = groupByFamily(groups), famIds = new Set(fams.map(f => f.fam.id));
+  let fpick = prefs.get('roadFamily', 'all'); if (fpick !== 'all' && !famIds.has(fpick)) fpick = 'all';
+  const fcount = gs => gs.reduce((t, g) => t + g.codes.length, 0);
+  const fbtns = [{id: 'all', label: '모두', n: n}, ...fams.map(f => ({id: f.fam.id, label: f.fam.label, n: fcount(f.groups)}))]
+    .map(x => h('button', {class: 'fm-b', type: 'button', 'data-family': x.id, 'aria-pressed': String(x.id === fpick), onclick: () => { fpick = x.id; prefs.set('roadFamily', fpick); applyFam(); }},
+      h('span', {class: 'fm-l'}, x.label), h('small', {class: 'fm-n'}, `${x.n}곳`)));
+  const famBox = h('div', {class: 'fm-box f-fam'}, h('p', {class: 't-sub fm-sub'}, '큰 갈래로 좁혀 보기 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것'), h('div', {class: 'fm-row', role: 'group', 'aria-label': '큰 갈래 고르기'}, ...fbtns));
+  const famOn = sec => view !== 'ind' || fpick === 'all' || sec.dataset.family === fpick;
+  function applyFam() { for (const b of fbtns) b.setAttribute('aria-pressed', String(b.dataset.family === fpick)); for (const sec of body.querySelectorAll(':scope > .f-sec')) sec.hidden = !famOn(sec); }
   const segs = ROAD_MODES.map(m => h('button', {class: 'f-seg-b', type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => { if (view !== m.id) { view = m.id; prefs.set('roadView', view); draw(); } }},
     m.text, h('small', null, m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
   const say = () => { state.summary = `${korDate(to)} 종가 기준. ` + (view === 'ind' ? `출목표 ${n}곳, 업종별. ${groups.slice(0, 3).map((g, i) => `${i + 1}위 ${g.label} ${pct(g.change20, 1)}`).join(', ')}.` : `출목표 ${n}곳, 흐름별. ${flows.slice(0, 3).map(f => `${f.text.replace(' → ', ' 다음 ')} ${f.items.length}곳`).join(', ')}.`); };
@@ -110,7 +124,7 @@ export async function renderRoad(main, {manifest, restoring = false} = {}) {
   async function fill(parts, progressive) {
     const my = ++gen; let t0 = performance.now();
     for (const p of parts) {
-      const sec = p.sec(), grid = sec.querySelector('.f-grid'); body.append(sec);
+      const sec = p.sec(), grid = sec.querySelector('.f-grid'); sec.hidden = !famOn(sec); body.append(sec);
       for (const make of p.tiles) {
         grid.append(make());
         if (progressive && performance.now() - t0 > 24) { await frame(); if (my !== gen) return; t0 = performance.now(); }
@@ -120,7 +134,7 @@ export async function renderRoad(main, {manifest, restoring = false} = {}) {
   }
   function draw(progressive = true) {
     for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
-    body.dataset.mode = view; delete body.dataset.ready; body.replaceChildren(); say();
+    body.dataset.mode = view; delete body.dataset.ready; body.replaceChildren(); say(); famBox.hidden = view !== 'ind';
     ready = fill(view === 'ind' ? indView() : flowView(), progressive);
     return ready;
   }
@@ -131,6 +145,7 @@ export async function renderRoad(main, {manifest, restoring = false} = {}) {
       h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사'),
       ctxNote(board.companies)),
     h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs),
+    famBox,
     body,
     foot(manifest ?? state.manifest)));
   await draw(!restoring); // 처음 열 때는 조금씩 · 되돌아올 때는 한꺼번에(그 뒤 보던 자리로)

@@ -1,7 +1,7 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T01:46:19.106Z",
-  "base": "http://localhost:8874",
+  "at": "2026-10-05T01:55:53.610Z",
+  "base": "http://localhost:8876",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
   "asOf": "2026-10-02",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 315,
+  "passed": 319,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -477,6 +477,13 @@
   },
   "checks": [
     {
+      "name": "pc 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(none) = 판",
+      "ok": true,
+      "detail": {
+        "mvx": "none"
+      }
+    },
+    {
       "name": "pc 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 넷 불장·업종·출목표·일정(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
@@ -492,6 +499,7 @@
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
+        "mvx": "none",
         "sw": 1280,
         "iw": 1280
       }
@@ -833,12 +841,13 @@
         "active": "home",
         "seg": "rise",
         "moves": null,
+        "mvx": "none",
         "sw": 1280,
         "iw": 1280
       }
     },
     {
-      "name": "pc 「22곳」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
+      "name": "pc 「오름 상위」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "next": [
@@ -880,15 +889,15 @@
       }
     },
     {
-      "name": "pc 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(기록이 둘보다 적어 없음)",
+      "name": "pc 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(none) = 판(none) · 옛 한 줄 없음",
       "ok": true,
       "detail": {
-        "moves": null,
-        "movesWant": null
+        "mvx": "none",
+        "moves": null
       }
     },
     {
-      "name": "pc 「22곳」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "name": "pc 「오름 상위」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
@@ -987,7 +996,7 @@
       "ok": true,
       "detail": {
         "state": "none",
-        "head": "저녁 7시 들고 남",
+        "head": "저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적고 앞 기록과 견줌",
         "rows": [],
         "n22": null
       }
@@ -1011,13 +1020,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(718px → 718px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(663px → 663px)",
       "ok": true,
       "detail": {
-        "y0": 718,
+        "y0": 663,
         "sb": {
           "hash": "#/similar",
-          "y": 718
+          "y": 663
         }
       }
     },
@@ -1688,6 +1697,38 @@
       "detail": null
     },
     {
+      "name": "pc 출목표 업종별: 큰 갈래 단추 13개(「모두」 + 12) · 「반도체」 → 묶음 5개 = 그 갈래 업종 5개 · 「모두」 → 73개 = 73개",
+      "ok": true,
+      "detail": {
+        "fr0": {
+          "shown": true,
+          "btns": [
+            "all|true",
+            "elec|false",
+            "semi|false",
+            "soft|false",
+            "energy|false",
+            "mach|false",
+            "mat|false",
+            "bio|false",
+            "auto|false",
+            "media|false",
+            "fin|false",
+            "build|false",
+            "cons|false"
+          ]
+        },
+        "fr1": [
+          "i2f453d90",
+          "i3b897314",
+          "iafb9068f",
+          "id3ad7bf2",
+          "i1225d511"
+        ],
+        "fr2": 73
+      }
+    },
+    {
       "name": "pc 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
       "ok": true,
       "detail": {
@@ -1794,6 +1835,13 @@
       }
     },
     {
+      "name": "mobile 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(none) = 판",
+      "ok": true,
+      "detail": {
+        "mvx": "none"
+      }
+    },
+    {
       "name": "mobile 탭 「불장」: 제목 「불장 업종 11개」 · 큰 흐름 한 줄 「큰 흐름 3개 — 전기·전자 · 반도체 · 인터넷·소프트웨어」 · 아래 탭 넷 불장·업종·출목표·일정(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
@@ -1809,6 +1857,7 @@
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
+        "mvx": "none",
         "sw": 390,
         "iw": 390
       }
@@ -2150,12 +2199,13 @@
         "active": "home",
         "seg": "rise",
         "moves": null,
+        "mvx": "none",
         "sw": 390,
         "iw": 390
       }
     },
     {
-      "name": "mobile 「22곳」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
+      "name": "mobile 「오름 상위」: 줄 22개 = 판(22곳) · 줄마다 이름·업종·작은 선 그래프(종가 21개 · 22곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 2곳까지 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "next": [
@@ -2197,15 +2247,15 @@
       }
     },
     {
-      "name": "mobile 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(기록이 둘보다 적어 없음)",
+      "name": "mobile 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(none) = 판(none) · 옛 한 줄 없음",
       "ok": true,
       "detail": {
-        "moves": null,
-        "movesWant": null
+        "mvx": "none",
+        "moves": null
       }
     },
     {
-      "name": "mobile 「22곳」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "name": "mobile 「오름 상위」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
@@ -2304,7 +2354,7 @@
       "ok": true,
       "detail": {
         "state": "none",
-        "head": "저녁 7시 들고 남",
+        "head": "저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적고 앞 기록과 견줌",
         "rows": [],
         "n22": null
       }
@@ -2328,13 +2378,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(932px → 932px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(877px → 877px)",
       "ok": true,
       "detail": {
-        "y0": 932,
+        "y0": 877,
         "sb": {
           "hash": "#/similar",
-          "y": 932
+          "y": 877
         }
       }
     },
@@ -3003,6 +3053,38 @@
       "name": "mobile 출목표 한 판: 업종별로 되돌림",
       "ok": true,
       "detail": null
+    },
+    {
+      "name": "mobile 출목표 업종별: 큰 갈래 단추 13개(「모두」 + 12) · 「반도체」 → 묶음 5개 = 그 갈래 업종 5개 · 「모두」 → 73개 = 73개",
+      "ok": true,
+      "detail": {
+        "fr0": {
+          "shown": true,
+          "btns": [
+            "all|true",
+            "elec|false",
+            "semi|false",
+            "soft|false",
+            "energy|false",
+            "mach|false",
+            "mat|false",
+            "bio|false",
+            "auto|false",
+            "media|false",
+            "fin|false",
+            "build|false",
+            "cons|false"
+          ]
+        },
+        "fr1": [
+          "i2f453d90",
+          "i3b897314",
+          "iafb9068f",
+          "id3ad7bf2",
+          "i1225d511"
+        ],
+        "fr2": 73
+      }
     },
     {
       "name": "mobile 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
@@ -4049,5 +4131,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T01-44-33-806Z"
+  "dir": "reports/atlas11/browser/2026-10-05T01-54-05-195Z"
 }

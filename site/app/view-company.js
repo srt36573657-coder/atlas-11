@@ -7,7 +7,7 @@
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from './util.js';
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
-import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale} from './parts.js';
+import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine} from './parts.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -23,6 +23,12 @@ function infoGrid(s) {
       cell('21거래일 전보다', chg(i.ret21), signCls(i.ret21)),
       cell('252거래일 전보다', chg(i.ret252), signCls(i.ret252))),
     h('p', {class: 'muted xs'}, '자리: 1년 최저를 0%, 최고를 100% 로 본 지금 종가의 자리 · 모두 지난 종가로 센 값'));
+}
+/** 수급·기사 한 줄씩 — 업종 화면 카드와 같은 두 줄(판의 회사 요약 · 외국인·기관 5거래일 합 · 이름이 든 최근 기사 1건) */
+function briefBox(board, s) {
+  const bc = board?.companies?.find(c => c.code === s.code);
+  if (!bc?.brief) return null;
+  return h('section', {class: 'b-box c-brief', 'aria-label': '수급·기사'}, h('h2', {class: 'b-box-h'}, '수급·기사', h('small', null, ' · 한 줄씩 · 자세한 기록은 아래 「수급·기사·공시 기록」')), h('div', {class: 'bf-box'}, flowLine(bc.brief), newsLine(bc.brief)));
 }
 function contextBox(c) {
   const box = h('details', {class: 'b-how c-ctx'});
@@ -82,9 +88,10 @@ export async function renderCompany(main, {hash, manifest}) {
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false})),
-    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '지난 1년 숫자'), infoGrid(s)),
+    briefBox(board, s), // 2026-10-05 「잡스라면」 22번 — 회사 화면 차례: 20거래일 변화 → 그래프 → 출목표 → 수급·기사 → 일정 → (접힘) 1년 숫자
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),
     contextBox(s.context),
+    h('details', {class: 'b-how c-year'}, h('summary', null, '지난 1년 숫자 · 1년 최고·최저 · 252거래일 변화'), infoGrid(s)), // 기간이 20거래일과 달라 접어 둠(25번 「기간 잣대 하나」)
     nearBox(board, s),
     foot(manifest)));
   closeChart(chartBox, rows, {band: band > 0 ? band : null, ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}${band > 0 ? ` · ${korDate(rows[band].date)}부터 끝까지 옅은 띠(지난 20거래일)` : ''}`});
