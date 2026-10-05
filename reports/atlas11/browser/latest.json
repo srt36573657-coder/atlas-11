@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T05:12:18.117Z",
+  "at": "2026-10-05T05:36:36.178Z",
   "base": "http://localhost:8881",
   "prediction": "off",
   "boardId": "board-2026-10-02-d79a5b50",
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -153,7 +153,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -163,7 +163,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +173,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -255,7 +255,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -265,7 +265,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -275,7 +275,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -357,7 +357,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -367,7 +367,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -377,7 +377,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -459,7 +459,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -469,7 +469,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -479,7 +479,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1337,14 +1337,14 @@
           "scroll": "x"
         },
         "tabs": [
-          "r1|true|1위~20위||✦17곳",
-          "r21|false|21위~40위||✦13곳",
-          "r41|false|41위~60위||✦12곳",
-          "r61|false|61위~80위||✦4곳",
-          "r81|false|81위~100위||✦3곳",
-          "r101|false|101위~120위||✦2곳",
-          "r121|false|121위~140위||✦1곳",
-          "r141|false|141위~160위||✦1곳",
+          "r1|true|1위~20위||☀17곳",
+          "r21|false|21위~40위||☀13곳",
+          "r41|false|41위~60위||☀12곳",
+          "r61|false|61위~80위||☀4곳",
+          "r81|false|81위~100위||☀3곳",
+          "r101|false|101위~120위||☀2곳",
+          "r121|false|121위~140위||☀1곳",
+          "r141|false|141위~160위||☀1곳",
           "r161|false|161위~180위||",
           "r181|false|181위~200위||",
           "r201|false|201위~220위||",
@@ -1358,7 +1358,7 @@
           "r361|false|361위~365위||"
         ],
         "spkBox": {
-          "h": "✦ 반짝이는 칸 53곳",
+          "h": "☀반짝이는 칸 53곳",
           "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
           "list": [
             "longRed|긴 빨강 줄|10",
@@ -1428,9 +1428,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "r1|true|1위~20위||✦17곳",
-          "r21|false|21위~40위||✦13곳",
-          "r41|false|41위~60위||✦12곳"
+          "r1|true|1위~20위||☀17곳",
+          "r21|false|21위~40위||☀13곳",
+          "r41|false|41위~60위||☀12곳"
         ],
         "strip": {
           "role": "tablist",
@@ -1441,11 +1441,11 @@
       }
     },
     {
-      "name": "pc 출목표 맨 위 반짝 상자: 「✦ 반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
+      "name": "pc 출목표 맨 위 반짝 상자(태양 그림): 「☀반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
       "ok": true,
       "detail": {
         "spkBox": {
-          "h": "✦ 반짝이는 칸 53곳",
+          "h": "☀반짝이는 칸 53곳",
           "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
           "list": [
             "longRed|긴 빨강 줄|10",
@@ -1547,7 +1547,7 @@
       }
     },
     {
-      "name": "pc 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수 「✦n곳」(탭 줄 맞댐)",
+      "name": "pc 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 태양 + 반짝 수 「n곳」(탭 줄 맞댐)",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -1582,9 +1582,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "semi|true|반도체|+30.7%|✦11곳",
-          "elec|false|전기·전자|+24.7%|✦22곳",
-          "energy|false|2차전지·에너지|+8.4%|✦5곳"
+          "semi|true|반도체|+30.7%|☀11곳",
+          "elec|false|전기·전자|+24.7%|☀22곳",
+          "energy|false|2차전지·에너지|+8.4%|☀5곳"
         ],
         "hint": "큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것",
         "tab": "semi"
@@ -1614,7 +1614,7 @@
       }
     },
     {
-      "name": "pc 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "name": "pc 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 반짝 수",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -1631,9 +1631,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "up-up|true|오름 → 오름|90곳|✦46곳",
+          "up-up|true|오름 → 오름|90곳|☀46곳",
           "up-flat|false|오름 → 비슷|28곳|",
-          "flat-up|false|비슷 → 오름|39곳|✦6곳"
+          "flat-up|false|비슷 → 오름|39곳|☀6곳"
         ],
         "hint": "흐름 탭 10가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 15거래일 → 끝 5거래일의 오른 날·내린 날 동그라미 수로 나눔"
       }
@@ -1704,7 +1704,7 @@
       }
     },
     {
-      "name": "pc 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "name": "pc 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 반짝 수",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -1729,13 +1729,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1001px → 1001px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1009px → 1009px)",
       "ok": true,
       "detail": {
-        "yBefore": 1001,
+        "yBefore": 1009,
         "back": {
           "hash": "#/road",
-          "y": 1001,
+          "y": 1009,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -2694,14 +2694,14 @@
           "scroll": "x"
         },
         "tabs": [
-          "r1|true|1위~20위||✦17곳",
-          "r21|false|21위~40위||✦13곳",
-          "r41|false|41위~60위||✦12곳",
-          "r61|false|61위~80위||✦4곳",
-          "r81|false|81위~100위||✦3곳",
-          "r101|false|101위~120위||✦2곳",
-          "r121|false|121위~140위||✦1곳",
-          "r141|false|141위~160위||✦1곳",
+          "r1|true|1위~20위||☀17곳",
+          "r21|false|21위~40위||☀13곳",
+          "r41|false|41위~60위||☀12곳",
+          "r61|false|61위~80위||☀4곳",
+          "r81|false|81위~100위||☀3곳",
+          "r101|false|101위~120위||☀2곳",
+          "r121|false|121위~140위||☀1곳",
+          "r141|false|141위~160위||☀1곳",
           "r161|false|161위~180위||",
           "r181|false|181위~200위||",
           "r201|false|201위~220위||",
@@ -2715,7 +2715,7 @@
           "r361|false|361위~365위||"
         ],
         "spkBox": {
-          "h": "✦ 반짝이는 칸 53곳",
+          "h": "☀반짝이는 칸 53곳",
           "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
           "list": [
             "longRed|긴 빨강 줄|10",
@@ -2785,9 +2785,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "r1|true|1위~20위||✦17곳",
-          "r21|false|21위~40위||✦13곳",
-          "r41|false|41위~60위||✦12곳"
+          "r1|true|1위~20위||☀17곳",
+          "r21|false|21위~40위||☀13곳",
+          "r41|false|41위~60위||☀12곳"
         ],
         "strip": {
           "role": "tablist",
@@ -2798,11 +2798,11 @@
       }
     },
     {
-      "name": "mobile 출목표 맨 위 반짝 상자: 「✦ 반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
+      "name": "mobile 출목표 맨 위 반짝 상자(태양 그림): 「☀반짝이는 칸 53곳」 = 따로 센 53곳 · 공통 모양 5가지(긴 빨강 줄 · 빨강 2배 · 하루 빨강 5개 · 끝 5일 빨강 · 끝 줄 빨강) · 모양마다 작은 출목표 그림 · 펼치면 후보 8가지(오른 73곳 · 나머지 292곳에서 몇 곳)",
       "ok": true,
       "detail": {
         "spkBox": {
-          "h": "✦ 반짝이는 칸 53곳",
+          "h": "☀반짝이는 칸 53곳",
           "t": "지난 20거래일 많이 오른 73곳(오른 순 1위~73위)의 출목표에 많이 보이는 모양 5가지를 모두 가진 곳",
           "list": [
             "longRed|긴 빨강 줄|10",
@@ -2904,7 +2904,7 @@
       }
     },
     {
-      "name": "mobile 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수 「✦n곳」(탭 줄 맞댐)",
+      "name": "mobile 출목표 오른 순: 반짝 칸 53곳 = 따로 센 53곳(공통 모양 5가지를 모두 가진 곳) · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 태양 + 반짝 수 「n곳」(탭 줄 맞댐)",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -2931,9 +2931,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "semi|true|반도체|+30.7%|✦11곳",
-          "elec|false|전기·전자|+24.7%|✦22곳",
-          "energy|false|2차전지·에너지|+8.4%|✦5곳"
+          "semi|true|반도체|+30.7%|☀11곳",
+          "elec|false|전기·전자|+24.7%|☀22곳",
+          "energy|false|2차전지·에너지|+8.4%|☀5곳"
         ],
         "hint": "큰 갈래 탭 12개 · 갈래 평균이 큰 순 · 갈래 이름은 ATLAS가 업종 이름을 보고 묶은 것",
         "tab": "semi"
@@ -2963,7 +2963,7 @@
       }
     },
     {
-      "name": "mobile 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "name": "mobile 출목표 업종별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 반짝 수",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -2980,9 +2980,9 @@
       "ok": true,
       "detail": {
         "tabs": [
-          "up-up|true|오름 → 오름|90곳|✦46곳",
+          "up-up|true|오름 → 오름|90곳|☀46곳",
           "up-flat|false|오름 → 비슷|28곳|",
-          "flat-up|false|비슷 → 오름|39곳|✦6곳"
+          "flat-up|false|비슷 → 오름|39곳|☀6곳"
         ],
         "hint": "흐름 탭 10가지 · 묶음 평균(지난 20거래일 변화)이 큰 순 · 앞 15거래일 → 끝 5거래일의 오른 날·내린 날 동그라미 수로 나눔"
       }
@@ -3053,7 +3053,7 @@
       }
     },
     {
-      "name": "mobile 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 「✦ 오른 모양 5가지」 · 탭마다 반짝 수",
+      "name": "mobile 출목표 흐름별: 반짝 칸 53곳 = 따로 센 53곳 · 칸마다 뜨거운 태양 + 「오른 모양 5가지」 · 탭마다 반짝 수",
       "ok": true,
       "detail": {
         "spkMis": [],
@@ -3078,13 +3078,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1484px → 1484px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1496px → 1496px)",
       "ok": true,
       "detail": {
-        "yBefore": 1484,
+        "yBefore": 1496,
         "back": {
           "hash": "#/road",
-          "y": 1484,
+          "y": 1496,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -4266,5 +4266,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T05-09-40-128Z"
+  "dir": "reports/atlas11/browser/2026-10-05T05-33-55-714Z"
 }
