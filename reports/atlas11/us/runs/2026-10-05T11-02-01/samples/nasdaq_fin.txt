@@ -1,0 +1,1 @@
+{"data":null,"message":"Our data provider is not providing us with Annual data for BRKA","status":{"rCode":400,"bCodeMessage":[{"code":1011,"errorMessage":"Bad or No parameter"}],"developerMessage":null}}

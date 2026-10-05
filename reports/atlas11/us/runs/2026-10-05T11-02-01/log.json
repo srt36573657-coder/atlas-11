@@ -1,0 +1,223 @@
+{
+ "startedAt": "2026-10-05T11:02:01.659Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-05T11:02:01.752Z",
+   "mode": "select",
+   "run": "reports/atlas11/us/runs/2026-10-05T11-02-01",
+   "newYork": {
+    "date": "2026-10-05",
+    "hm": "07:02",
+    "weekday": 1
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T11:02:03.424Z",
+   "kind": "list",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/exchange/NYSE/marketValue"
+  },
+  {
+   "name": "목록",
+   "at": "2026-10-05T11:02:22.350Z",
+   "seen": {
+    "NYSE": 1800,
+    "NASDAQ": 1800,
+    "AMEX": 300
+   },
+   "merged": 3900,
+   "stocks": 2500,
+   "top5": [
+    "엔비디아(NVDA) 반도체",
+    "애플(AAPL) 전화 및 소형 장치",
+    "마이크로소프트(MSFT) 소프트웨어",
+    "아마존닷컴(AMZN) 백화점",
+    "TSMC ADR(TSM) 반도체"
+   ]
+  },
+  {
+   "name": "나라",
+   "at": "2026-10-05T11:02:22.779Z",
+   "screener": 7001,
+   "matched": 2450,
+   "notUS": 474
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T11:02:22.990Z",
+   "kind": "finance",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/NVDA.O/finance/annual"
+  },
+  {
+   "name": "결산",
+   "at": "2026-10-05T11:04:57.956Z",
+   "asked": 2500,
+   "got": 2494,
+   "source": {
+    "nasdaq": 1640,
+    "naver": 833,
+    "yahoo": 21
+   },
+   "cached": 1400,
+   "askedDebt": 272,
+   "nasdaq": 240,
+   "yahoo": 21,
+   "nasdaqOff": false,
+   "withDebt": 1584,
+   "withRoe": 2065
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T11:04:58.743Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/AAPL.O/day"
+  },
+  {
+   "name": "일봉",
+   "at": "2026-10-05T11:07:03.822Z",
+   "asked": 2500,
+   "got": 2500,
+   "latest": "2026-10-02",
+   "rows": 295
+  },
+  {
+   "name": "고르기",
+   "at": "2026-10-05T11:07:03.848Z",
+   "ok": true,
+   "picked": 365,
+   "industries": 73,
+   "kinds": {
+    "quality": 212,
+    "trend": 63,
+    "profit": 81,
+    "size": 9
+   },
+   "pool": 1793,
+   "filled": 86,
+   "failTop": [
+    [
+     "2년 연속 흑자 아님",
+     791
+    ],
+    [
+     "부채비율 모름",
+     635
+    ],
+    [
+     "부채비율 150% 초과",
+     575
+    ],
+    [
+     "미국 회사 아님",
+     474
+    ],
+    [
+     "ROE 5% 미만",
+     429
+    ],
+    [
+     "ROE 모름",
+     364
+    ]
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T11:07:04.952Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/MU.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-05T11:07:20.783Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-05T11:07:21.155Z",
+   "news": 365,
+   "newsItems": 5859,
+   "index": [
+    "S&P 500 2026-10-02",
+    "나스닥 종합 2026-10-02",
+    "다우존스 2026-10-02"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-05T11:07:21.429Z",
+   "assets": 365,
+   "asOf": "2026-10-02",
+   "late": 0,
+   "sessions": 295,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-05T11-02-01/input.json.gz",
+    "sha256": "9cd0c9c586ea13e9ce17d5ecae02423538ecf60511c72702fff7472e15166c15",
+    "bytes": 655787
+   }
+  }
+ ],
+ "samples": {
+  "list": {
+   "url": "https://api.stock.naver.com/stock/exchange/NYSE/marketValue?page=1&pageSize=100",
+   "status": 200,
+   "ms": 1665
+  },
+  "screener": {
+   "url": "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true",
+   "status": 200,
+   "ms": 414
+  },
+  "finance": {
+   "url": "https://api.stock.naver.com/stock/NVDA.O/finance/annual",
+   "status": 200,
+   "ms": 210
+  },
+  "finance_way1_fail": {
+   "url": "https://m.stock.naver.com/api/stock/ABVX.O/finance/annual",
+   "status": 400,
+   "head": ""
+  },
+  "finance_way1": {
+   "url": "https://m.stock.naver.com/api/stock/C_pn/finance/annual",
+   "status": 200,
+   "ms": 743
+  },
+  "nasdaq_fin": {
+   "url": "https://api.nasdaq.com/api/company/BRKA/financials?frequency=1",
+   "status": 200,
+   "ms": 178
+  },
+  "yahoo_ts": {
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/BRKA?symbol=BRKA&type=annualOperatingIncome,annualNetIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1609459200&period2=1791284651",
+   "status": 200,
+   "ms": 73
+  },
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day?startDateTime=202508010000&endDateTime=202610052359",
+   "status": 200,
+   "ms": 786
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/NVDA.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 200
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609150000&endDateTime=202610052359",
+   "status": 200,
+   "ms": 182
+  }
+ },
+ "failures": {
+  "finance_way1": 6
+ },
+ "endedAt": "2026-10-05T11:07:21.429Z"
+}
