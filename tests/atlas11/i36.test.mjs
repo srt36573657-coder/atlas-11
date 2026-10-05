@@ -83,7 +83,8 @@ test('바로 바꾸기(switch_now --proposal-dir): 새 제안을 next 로 올리
   assert.equal(again.switched, false);
 });
 
-test('실제 묶음: 21:31 원자료로 i36-v1 을 다시 고르면 저장된 제안과 같다 · 설정·입력이 그 제안을 가리킨다 · 업종 36개 × 5곳 · 옛 52종목은 보관', async () => {
+test('실제 묶음(보관): 21:31 원자료로 i36-v1 을 다시 고르면 저장된 제안과 같다 · 그 180곳 입력은 보관본으로 남음 · 업종 36개 × 5곳 · 옛 52종목도 보관', async () => {
+  // 2026-10-05 09:3x 사장님 「180개를 365개로」 → 180곳 묶음(u2-i36-v1-2026-10-04)은 바꾸기 전 입력을 retired 에 보관(지금 입력은 365곳 · tests/atlas11/n365.test.mjs)
   const {proposeFromBundle} = await import('../../scripts/atlas11/collect_universe.mjs');
   const zlib = await import('node:zlib');
   const dir = 'reports/atlas11/universe/2026-10-04-i36', proposal = await readJSON(dir + '/proposal.json');
@@ -92,14 +93,15 @@ test('실제 묶음: 21:31 원자료로 i36-v1 을 다시 고르면 저장된 �
   const again = proposeFromBundle(bundle, {input: u1, now: proposal.createdAt, rules: I36});
   assert.equal(again.proposal.ok, true);
   assert.deepEqual(again.proposal.picked.map(p => p.code), proposal.picked.map(p => p.code));
-  const cfg = await readJSON(UNIVERSE_CONFIG), text = await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'), input = JSON.parse(text);
-  assert.equal(cfg.current.id, 'u2-i36-v1-2026-10-04'); assert.equal(cfg.next, null); assert.ok(['i36-v1', 's365-v1'].includes(cfg.selectRules), '2026-10-05 05:07 「365개로」 뒤 다음 고르기는 s365-v1');
-  assert.equal(input.universe.id, cfg.current.id); assert.equal(createHash('sha256').update(text).digest('hex'), cfg.current.inputSHA256);
-  assert.equal(input.assets.length, 180); assert.equal(new Set(input.assets.map(a => a.code)).size, 180);
-  const by = {}; for (const a of input.assets) by[a.industry ?? a.sector] = (by[a.industry ?? a.sector] ?? 0) + 1;
+  const cfg = await readJSON(UNIVERSE_CONFIG), old = await readJSON(RETIRED_DIR + '/u2-i36-v1-2026-10-04.json');
+  assert.equal(old.universe.id, 'u2-i36-v1-2026-10-04'); assert.equal(old.retiredOn, '2026-10-05');
+  assert.equal(old.assets.length, 180); assert.equal(new Set(old.assets.map(a => a.code)).size, 180);
+  assert.deepEqual(old.assets.map(a => a.code), proposal.picked.map(p => p.code), '보관본 = 그 제안의 180곳(고른 차례)');
+  const by = {}; for (const a of old.assets) by[a.industry ?? a.sector] = (by[a.industry ?? a.sector] ?? 0) + 1;
   assert.equal(Object.keys(by).length, 36); assert.ok(Object.values(by).every(v => v === 5));
-  const kinds = input.assets.reduce((m, a) => (m[a.quality.kind] = (m[a.quality.kind] ?? 0) + 1, m), {});
+  const kinds = old.assets.reduce((m, a) => (m[a.quality.kind] = (m[a.quality.kind] ?? 0) + 1, m), {});
   assert.deepEqual(kinds, proposal.counts.kinds); assert.ok((kinds.quality ?? 0) + (kinds.trend ?? 0) >= 150, '우량·트렌드가 대부분');
   assert.equal(u1.assets.length, 52); assert.equal(u1.retiredOn, '2026-10-04');
   assert.ok(cfg.history.some(h => h.next?.id === 'u2-qt180-v1-2026-10-04' && /대신함/.test(h.status)));
+  assert.ok(cfg.history.some(h => h.current?.id === 'u2-i36-v1-2026-10-04'), '180곳 묶음은 history 에 남음(지우지 않음)');
 });

@@ -1,1068 +1,1394 @@
 {
- "id": "u2-s365-v1-2026-10-05",
- "dir": "reports/atlas11/universe/2026-10-05-0911",
- "ok": false,
- "picked": 330,
- "createdAt": "2026-10-05T00:11:34Z",
+ "id": "u2-n365-v1-2026-10-05",
+ "dir": "reports/atlas11/universe/2026-10-05-0930",
+ "ok": true,
+ "picked": 365,
+ "createdAt": "2026-10-05T00:30:21Z",
  "counts": {
   "candidates": 1375,
   "pool": 1196,
   "withKsic": 1196,
   "unknownIndustry": 0,
-  "groupsKsic": 129,
-  "groupsKsicFilled": 56,
-  "groupsNaverFilled": 10,
-  "industries": 66,
-  "picked": 330,
+  "industriesInPool": 76,
+  "industriesFilled": 75,
+  "industriesStrict": 63,
+  "industries": 73,
+  "picked": 365,
   "kinds": {
-   "quality": 188,
-   "trend": 99,
-   "size": 11,
-   "profit": 32
+   "quality": 204,
+   "trend": 132,
+   "profit": 24,
+   "size": 5
   },
-  "pickedQuality": 188,
-  "pickedTrend": 99,
+  "pickedQuality": 204,
+  "pickedTrend": 132,
+  "split": 121,
   "chosen": [
    {
     "rank": 1,
-    "industry": "통신·방송 장비",
-    "by": "ksic",
-    "names": [
-     "통신 및 방송 장비 제조업"
+    "industry": "반도체",
+    "size": 45,
+    "sectors": [
+     "반도체와반도체장비"
     ],
-    "size": 30,
-    "strict": 30,
+    "strict": 45,
     "filled": 0,
-    "capEok": 16520038
+    "capEok": 31221457,
+    "names": [
+     "삼성전자",
+     "SK하이닉스",
+     "SK스퀘어",
+     "DB하이텍",
+     "파두"
+    ]
    },
    {
     "rank": 2,
-    "industry": "반도체",
-    "by": "ksic",
-    "names": [
-     "반도체 제조업"
+    "industry": "은행·카드",
+    "size": 11,
+    "sectors": [
+     "은행",
+     "카드"
     ],
-    "size": 42,
-    "strict": 42,
+    "strict": 10,
     "filled": 0,
-    "capEok": 13627358
+    "capEok": 1856161,
+    "names": [
+     "KB금융",
+     "신한지주",
+     "하나금융지주",
+     "우리금융지주",
+     "기업은행"
+    ]
    },
    {
     "rank": 3,
-    "industry": "기타 금융",
-    "by": "ksic",
-    "names": [
-     "기타 금융업"
+    "industry": "2차전지",
+    "size": 16,
+    "sectors": [
+     "전기제품",
+     "화학"
     ],
-    "size": 68,
-    "strict": 49,
+    "strict": 16,
     "filled": 0,
-    "capEok": 3389726
+    "capEok": 1615424,
+    "names": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "포스코퓨처엠",
+     "에코프로비엠",
+     "엘앤에프"
+    ]
    },
    {
     "rank": 4,
     "industry": "전자부품",
-    "by": "ksic",
-    "names": [
-     "전자부품 제조업"
+    "size": 18,
+    "sectors": [
+     "전자장비와기기"
     ],
-    "size": 73,
-    "strict": 73,
+    "strict": 18,
     "filled": 0,
-    "capEok": 1774916
+    "capEok": 1479759,
+    "names": [
+     "삼성전기",
+     "LG이노텍",
+     "대덕전자",
+     "심텍",
+     "롯데에너지머티리얼즈"
+    ]
    },
    {
     "rank": 5,
-    "industry": "일차전지·이차전지",
-    "by": "ksic",
-    "names": [
-     "일차전지 및 이차전지 제조업"
+    "industry": "조선",
+    "size": 11,
+    "sectors": [
+     "조선"
     ],
-    "size": 17,
-    "strict": 17,
+    "strict": 11,
     "filled": 0,
-    "capEok": 1615424
+    "capEok": 1253033,
+    "names": [
+     "HD현대중공업",
+     "한화오션",
+     "HD한국조선해양",
+     "삼성중공업",
+     "HD현대"
+    ]
    },
    {
     "rank": 6,
-    "industry": "자동차·부품",
-    "by": "naver",
-    "names": [
-     "자동차",
-     "자동차부품"
+    "industry": "자동차",
+    "size": 7,
+    "sectors": [
+     "자동차"
     ],
-    "size": 12,
-    "strict": 9,
+    "strict": 5,
     "filled": 0,
-    "capEok": 1247759
+    "capEok": 1158759,
+    "names": [
+     "현대차",
+     "기아",
+     "KG모빌리티",
+     "KG모빌리티플랫폼",
+     "KG에코솔루션"
+    ]
    },
    {
     "rank": 7,
-    "industry": "기초 의약물질",
-    "by": "ksic",
-    "names": [
-     "기초 의약물질 제조업"
+    "industry": "바이오 의약품",
+    "size": 25,
+    "sectors": [
+     "제약",
+     "생물공학"
     ],
-    "size": 26,
-    "strict": 26,
+    "strict": 25,
     "filled": 0,
-    "capEok": 1145184
+    "capEok": 1145184,
+    "names": [
+     "삼성바이오로직스",
+     "셀트리온",
+     "펩트론",
+     "에이비엘바이오",
+     "SK바이오사이언스"
+    ]
    },
    {
     "rank": 8,
-    "industry": "선박·보트 건조",
-    "by": "ksic",
-    "names": [
-     "선박 및 보트 건조업"
+    "industry": "정유·가스",
+    "size": 8,
+    "sectors": [
+     "석유와가스"
     ],
-    "size": 10,
-    "strict": 10,
-    "filled": 0,
-    "capEok": 873917
+    "strict": 2,
+    "filled": 3,
+    "capEok": 969897,
+    "names": [
+     "SK",
+     "GS",
+     "S-Oil",
+     "SK디스커버리",
+     "SK이노베이션"
+    ]
    },
    {
     "rank": 9,
-    "industry": "전동기, 발전기·전기 변환 · 공급 · 제어 장치",
-    "by": "ksic",
-    "names": [
-     "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업"
+    "industry": "전력기기",
+    "size": 8,
+    "sectors": [
+     "전기장비"
     ],
-    "size": 18,
-    "strict": 18,
+    "strict": 8,
     "filled": 0,
-    "capEok": 871080
+    "capEok": 834822,
+    "names": [
+     "LS ELECTRIC",
+     "효성중공업",
+     "HD현대일렉트릭",
+     "지엔씨에너지",
+     "제룡전기"
+    ]
    },
    {
     "rank": 10,
-    "industry": "항공기,우주선·부품",
-    "by": "ksic",
-    "names": [
-     "항공기,우주선 및 부품 제조업"
+    "industry": "복합기업",
+    "size": 11,
+    "sectors": [
+     "복합기업"
     ],
-    "size": 5,
     "strict": 5,
     "filled": 0,
-    "capEok": 694422
+    "capEok": 830255,
+    "names": [
+     "삼성물산",
+     "두산",
+     "효성",
+     "현대지에프홀딩스",
+     "KX"
+    ]
    },
    {
     "rank": 11,
-    "industry": "일반 목적용 기계",
-    "by": "ksic",
-    "names": [
-     "일반 목적용 기계 제조업"
+    "industry": "항공·우주",
+    "size": 5,
+    "sectors": [
+     "우주항공과국방"
     ],
-    "size": 22,
-    "strict": 22,
+    "strict": 5,
     "filled": 0,
-    "capEok": 653235
+    "capEok": 694422,
+    "names": [
+     "한화에어로스페이스",
+     "한국항공우주",
+     "쎄트렉아이",
+     "아스트",
+     "켄코아에어로스페이스"
+    ]
    },
    {
     "rank": 12,
-    "industry": "특수 목적용 기계",
-    "by": "ksic",
-    "names": [
-     "특수 목적용 기계 제조업"
+    "industry": "증권",
+    "size": 23,
+    "sectors": [
+     "증권"
     ],
-    "size": 93,
-    "strict": 93,
+    "strict": 18,
     "filled": 0,
-    "capEok": 592158
+    "capEok": 667438,
+    "names": [
+     "메리츠금융지주",
+     "미래에셋증권",
+     "한국금융지주",
+     "NH투자증권",
+     "삼성증권"
+    ]
    },
    {
     "rank": 13,
-    "industry": "기타 전문 도매",
-    "by": "ksic",
-    "names": [
-     "기타 전문 도매업"
+    "industry": "일반 기계",
+    "size": 11,
+    "sectors": [
+     "기계"
     ],
-    "size": 13,
-    "strict": 7,
+    "strict": 11,
     "filled": 0,
-    "capEok": 575050
+    "capEok": 580527,
+    "names": [
+     "두산에너빌리티",
+     "현대엘리베이터",
+     "현대무벡스",
+     "아스플로",
+     "에스비비테크"
+    ]
    },
    {
     "rank": 14,
-    "industry": "보험",
-    "by": "ksic",
-    "names": [
-     "보험업"
+    "industry": "반도체 장비",
+    "size": 42,
+    "sectors": [
+     "반도체와반도체장비"
     ],
-    "size": 9,
-    "strict": 8,
+    "strict": 42,
     "filled": 0,
-    "capEok": 513531
+    "capEok": 559633,
+    "names": [
+     "한미반도체",
+     "주성엔지니어링",
+     "원익IPS",
+     "이오테크닉스",
+     "HPSP"
+    ]
    },
    {
     "rank": 15,
-    "industry": "금융 지원 서비스",
-    "by": "ksic",
-    "names": [
-     "금융 지원 서비스업"
+    "industry": "자동차부품",
+    "size": 47,
+    "sectors": [
+     "자동차부품"
     ],
-    "size": 21,
-    "strict": 17,
+    "strict": 27,
     "filled": 0,
-    "capEok": 473619
+    "capEok": 513924,
+    "names": [
+     "현대모비스",
+     "한국타이어앤테크놀로지",
+     "한온시스템",
+     "DN오토모티브",
+     "에스엘"
+    ]
    },
    {
     "rank": 16,
-    "industry": "자료처리, 호스팅, 포털·기타 인터넷 정보매개 서비스",
-    "by": "ksic",
-    "names": [
-     "자료처리, 호스팅, 포털 및 기타 인터넷 정보매개 서비스업"
+    "industry": "보험",
+    "size": 12,
+    "sectors": [
+     "생명보험",
+     "손해보험"
     ],
-    "size": 10,
-    "strict": 10,
+    "strict": 11,
     "filled": 0,
-    "capEok": 467821
+    "capEok": 513531,
+    "names": [
+     "삼성화재",
+     "DB손해보험",
+     "한화생명",
+     "현대해상",
+     "미래에셋생명"
+    ]
    },
    {
     "rank": 17,
-    "industry": "자동차 신품 부품",
-    "by": "ksic",
-    "names": [
-     "자동차 신품 부품 제조업"
+    "industry": "방산",
+    "size": 11,
+    "sectors": [
+     "우주항공과국방"
     ],
-    "size": 34,
-    "strict": 18,
+    "strict": 11,
     "filled": 0,
-    "capEok": 405240
+    "capEok": 483130,
+    "names": [
+     "LIG디펜스앤에어로스페이스",
+     "한화시스템",
+     "현대로템",
+     "우리기술",
+     "스피어"
+    ]
    },
    {
     "rank": 18,
-    "industry": "기타 화학제품",
-    "by": "ksic",
-    "names": [
-     "기타 화학제품 제조업"
+    "industry": "인터넷 플랫폼",
+    "size": 8,
+    "sectors": [
+     "양방향미디어와서비스"
     ],
-    "size": 48,
-    "strict": 36,
+    "strict": 8,
     "filled": 0,
-    "capEok": 329294
+    "capEok": 451858,
+    "names": [
+     "NAVER",
+     "카카오",
+     "디어유",
+     "SOOP",
+     "키다리스튜디오"
+    ]
    },
    {
     "rank": 19,
-    "industry": "자연과학·공학 연구개발",
-    "by": "ksic",
-    "names": [
-     "자연과학 및 공학 연구개발업"
+    "industry": "가전·생활용품",
+    "size": 16,
+    "sectors": [
+     "전자제품",
+     "가정용기기와용품",
+     "가구",
+     "레저용장비와제품",
+     "부동산"
     ],
-    "size": 30,
-    "strict": 30,
+    "strict": 11,
     "filled": 0,
-    "capEok": 324860
+    "capEok": 451305,
+    "names": [
+     "LG전자",
+     "코웨이",
+     "쿠쿠홀딩스",
+     "한샘",
+     "경동나비엔"
+    ]
    },
    {
     "rank": 20,
-    "industry": "소프트웨어 개발·공급",
-    "by": "ksic",
-    "names": [
-     "소프트웨어 개발 및 공급업"
+    "industry": "전선·전기장비",
+    "size": 13,
+    "sectors": [
+     "전기장비"
     ],
-    "size": 67,
-    "strict": 67,
+    "strict": 13,
     "filled": 0,
-    "capEok": 299783
+    "capEok": 320225,
+    "names": [
+     "가온전선",
+     "LS",
+     "대한전선",
+     "일진전기",
+     "서진시스템"
+    ]
    },
    {
     "rank": 21,
-    "industry": "1차 비철금속",
-    "by": "ksic",
-    "names": [
-     "1차 비철금속 제조업"
+    "industry": "신약 개발",
+    "size": 25,
+    "sectors": [
+     "생물공학",
+     "제약",
+     "식품"
     ],
-    "size": 6,
-    "strict": 3,
-    "filled": 2,
-    "capEok": 268013
+    "strict": 25,
+    "filled": 0,
+    "capEok": 319110,
+    "names": [
+     "알테오젠",
+     "SK바이오팜",
+     "리가켐바이오",
+     "보로노이",
+     "메지온"
+    ]
    },
    {
     "rank": 22,
-    "industry": "해상 운송",
-    "by": "ksic",
-    "names": [
-     "해상 운송업"
+    "industry": "화장품",
+    "size": 26,
+    "sectors": [
+     "화장품"
     ],
-    "size": 5,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 249384
+    "strict": 26,
+    "filled": 0,
+    "capEok": 318680,
+    "names": [
+     "에이피알",
+     "아모레퍼시픽",
+     "LG생활건강",
+     "한국콜마",
+     "코스맥스"
+    ]
    },
    {
     "rank": 23,
-    "industry": "전력·가스",
-    "by": "naver",
+    "industry": "철강",
+    "size": 19,
+    "sectors": [
+     "철강"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 313189,
     "names": [
+     "KG스틸",
+     "넥스틸",
+     "POSCO홀딩스",
+     "현대제철",
+     "세아베스틸지주"
+    ]
+   },
+   {
+    "rank": 24,
+    "industry": "로봇·건설기계",
+    "size": 22,
+    "sectors": [
+     "기계"
+    ],
+    "strict": 22,
+    "filled": 0,
+    "capEok": 289399,
+    "names": [
+     "레인보우로보틱스",
+     "HD건설기계",
+     "두산밥캣",
+     "두산로보틱스",
+     "로보티즈"
+    ]
+   },
+   {
+    "rank": 25,
+    "industry": "전력·가스",
+    "size": 12,
+    "sectors": [
      "전기유틸리티",
      "가스유틸리티",
      "복합유틸리티"
     ],
-    "size": 6,
-    "strict": 3,
-    "filled": 2,
-    "capEok": 242100
-   },
-   {
-    "rank": 24,
-    "industry": "절연선·케이블",
-    "by": "ksic",
-    "names": [
-     "절연선 및 케이블 제조업"
-    ],
-    "size": 5,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 238570
-   },
-   {
-    "rank": 25,
-    "industry": "식품·담배",
-    "by": "naver",
-    "names": [
-     "담배",
-     "식품"
-    ],
-    "size": 14,
-    "strict": 14,
+    "strict": 7,
     "filled": 0,
-    "capEok": 223828
+    "capEok": 270592,
+    "names": [
+     "한국전력",
+     "한전기술",
+     "한전KPS",
+     "삼천리",
+     "한전산업"
+    ]
    },
    {
     "rank": 26,
-    "industry": "의약품",
-    "by": "ksic",
-    "names": [
-     "의약품 제조업"
+    "industry": "비철금속",
+    "size": 8,
+    "sectors": [
+     "비철금속"
     ],
-    "size": 58,
-    "strict": 58,
-    "filled": 0,
-    "capEok": 212169
+    "strict": 3,
+    "filled": 2,
+    "capEok": 259531,
+    "names": [
+     "고려아연",
+     "풍산",
+     "풍산홀딩스",
+     "SIMPAC",
+     "포스코스틸리온"
+    ]
    },
    {
     "rank": 27,
-    "industry": "전기 통신",
-    "by": "ksic",
-    "names": [
-     "전기 통신업"
+    "industry": "식품",
+    "size": 18,
+    "sectors": [
+     "담배",
+     "식품"
     ],
-    "size": 8,
-    "strict": 6,
+    "strict": 18,
     "filled": 0,
-    "capEok": 201138
+    "capEok": 253216,
+    "names": [
+     "KT&G",
+     "동서",
+     "동원산업",
+     "오리온홀딩스",
+     "하림지주"
+    ]
    },
    {
     "rank": 28,
-    "industry": "기타 식품",
-    "by": "ksic",
-    "names": [
-     "기타 식품 제조업"
+    "industry": "해운",
+    "size": 5,
+    "sectors": [
+     "해운사"
     ],
-    "size": 15,
-    "strict": 15,
-    "filled": 0,
-    "capEok": 197542
+    "strict": 4,
+    "filled": 1,
+    "capEok": 249384,
+    "names": [
+     "HMM",
+     "팬오션",
+     "대한해운",
+     "흥아해운",
+     "KSS해운"
+    ]
    },
    {
     "rank": 29,
-    "industry": "컴퓨터 프로그래밍, 시스템 통합·관리",
-    "by": "ksic",
-    "names": [
-     "컴퓨터 프로그래밍, 시스템 통합 및 관리업"
+    "industry": "제약",
+    "size": 62,
+    "sectors": [
+     "제약",
+     "비철금속"
     ],
-    "size": 15,
-    "strict": 15,
+    "strict": 62,
     "filled": 0,
-    "capEok": 185161
+    "capEok": 230306,
+    "names": [
+     "한미약품",
+     "유한양행",
+     "삼천당제약",
+     "한미사이언스",
+     "한올바이오파마"
+    ]
    },
    {
     "rank": 30,
-    "industry": "건축기술, 엔지니어링·관련 기술 서비스",
-    "by": "ksic",
-    "names": [
-     "건축기술, 엔지니어링 및 관련 기술 서비스업"
+    "industry": "항공",
+    "size": 7,
+    "sectors": [
+     "항공사"
     ],
-    "size": 8,
-    "strict": 7,
-    "filled": 0,
-    "capEok": 184207
+    "strict": 0,
+    "filled": 5,
+    "capEok": 225918,
+    "names": [
+     "대한항공",
+     "한진칼",
+     "아시아나항공",
+     "제주항공",
+     "진에어"
+    ]
    },
    {
     "rank": 31,
-    "industry": "토목 건설",
-    "by": "ksic",
-    "names": [
-     "토목 건설업"
+    "industry": "반도체 부품",
+    "size": 20,
+    "sectors": [
+     "반도체와반도체장비"
     ],
-    "size": 8,
-    "strict": 1,
-    "filled": 4,
-    "capEok": 178015
+    "strict": 20,
+    "filled": 0,
+    "capEok": 222467,
+    "names": [
+     "이수페타시스",
+     "리노공업",
+     "ISC",
+     "샘씨엔에스",
+     "티엘비"
+    ]
    },
    {
     "rank": 32,
-    "industry": "운송",
-    "by": "naver",
-    "names": [
-     "항공화물운송과물류",
-     "도로와철도운송",
-     "해운사"
+    "industry": "IT서비스",
+    "size": 26,
+    "sectors": [
+     "IT서비스"
     ],
-    "size": 12,
-    "strict": 6,
+    "strict": 26,
     "filled": 0,
-    "capEok": 173165
+    "capEok": 216018,
+    "names": [
+     "현대오토에버",
+     "카카오페이",
+     "포스코DX",
+     "NHN",
+     "케이아이엔엑스"
+    ]
    },
    {
     "rank": 33,
-    "industry": "기초 화학물질",
-    "by": "ksic",
-    "names": [
-     "기초 화학물질 제조업"
+    "industry": "게임",
+    "size": 19,
+    "sectors": [
+     "게임엔터테인먼트"
     ],
-    "size": 36,
-    "strict": 20,
+    "strict": 19,
     "filled": 0,
-    "capEok": 167022
+    "capEok": 206850,
+    "names": [
+     "크래프톤",
+     "NC",
+     "넷마블",
+     "펄어비스",
+     "더블유게임즈"
+    ]
    },
    {
     "rank": 34,
-    "industry": "항공 여객 운송",
-    "by": "ksic",
-    "names": [
-     "항공 여객 운송업"
+    "industry": "통신",
+    "size": 8,
+    "sectors": [
+     "무선통신서비스",
+     "다각화된통신서비스",
+     "상업서비스와공급품",
+     "IT서비스"
     ],
-    "size": 6,
-    "strict": 0,
-    "filled": 5,
-    "capEok": 139928
+    "strict": 5,
+    "filled": 0,
+    "capEok": 198867,
+    "names": [
+     "KT",
+     "LG유플러스",
+     "한국정보통신",
+     "버킷스튜디오",
+     "인포바인"
+    ]
    },
    {
     "rank": 35,
-    "industry": "상품 중개",
-    "by": "ksic",
-    "names": [
-     "상품 중개업"
+    "industry": "가공식품",
+    "size": 12,
+    "sectors": [
+     "식품"
     ],
-    "size": 6,
-    "strict": 2,
-    "filled": 3,
-    "capEok": 127474
+    "strict": 12,
+    "filled": 0,
+    "capEok": 197542,
+    "names": [
+     "삼양식품",
+     "오리온",
+     "CJ제일제당",
+     "농심",
+     "오뚜기"
+    ]
    },
    {
     "rank": 36,
-    "industry": "의료용품·기타 의약 관련제품",
-    "by": "ksic",
-    "names": [
-     "의료용품 및 기타 의약 관련제품 제조업"
+    "industry": "IT 시스템 통합",
+    "size": 11,
+    "sectors": [
+     "IT서비스"
     ],
-    "size": 17,
-    "strict": 17,
+    "strict": 11,
     "filled": 0,
-    "capEok": 113636
+    "capEok": 185161,
+    "names": [
+     "삼성에스디에스",
+     "아이티센글로벌",
+     "DB",
+     "롯데이노베이트",
+     "신세계 I&C"
+    ]
    },
    {
     "rank": 37,
-    "industry": "오디오물 출판·원판 녹음",
-    "by": "ksic",
-    "names": [
-     "오디오물 출판 및 원판 녹음업"
+    "industry": "물류·운송",
+    "size": 16,
+    "sectors": [
+     "항공화물운송과물류",
+     "운송인프라",
+     "도로와철도운송"
     ],
-    "size": 5,
-    "strict": 5,
+    "strict": 8,
     "filled": 0,
-    "capEok": 106957
+    "capEok": 174776,
+    "names": [
+     "현대글로비스",
+     "CJ대한통운",
+     "한국공항",
+     "세방",
+     "서호전기"
+    ]
    },
    {
     "rank": 38,
-    "industry": "가정용기기와용품",
-    "by": "naver",
-    "names": [
-     "가정용기기와용품"
+    "industry": "에너지 장비",
+    "size": 17,
+    "sectors": [
+     "에너지장비및서비스"
     ],
-    "size": 6,
-    "strict": 3,
-    "filled": 2,
-    "capEok": 97330
+    "strict": 17,
+    "filled": 0,
+    "capEok": 169978,
+    "names": [
+     "한화솔루션",
+     "두산퓨얼셀",
+     "씨에스윈드",
+     "비에이치아이",
+     "SK이터닉스"
+    ]
    },
    {
     "rank": 39,
-    "industry": "측정, 시험, 항해, 제어·기타 정밀기기 제조업; 광학기기 제외",
-    "by": "ksic",
-    "names": [
-     "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외"
+    "industry": "상사",
+    "size": 8,
+    "sectors": [
+     "무역회사와판매업체",
+     "판매업체"
     ],
-    "size": 14,
-    "strict": 14,
-    "filled": 0,
-    "capEok": 88415
+    "strict": 3,
+    "filled": 2,
+    "capEok": 139910,
+    "names": [
+     "포스코인터내셔널",
+     "LX홀딩스",
+     "에스티큐브",
+     "LX인터내셔널",
+     "효성티앤씨"
+    ]
    },
    {
     "rank": 40,
-    "industry": "종합 소매",
-    "by": "ksic",
-    "names": [
-     "종합 소매업"
+    "industry": "연예 기획사",
+    "size": 5,
+    "sectors": [
+     "방송과엔터테인먼트"
     ],
-    "size": 12,
-    "strict": 3,
-    "filled": 2,
-    "capEok": 71064
+    "strict": 5,
+    "filled": 0,
+    "capEok": 106957,
+    "names": [
+     "하이브",
+     "에스엠",
+     "JYP Ent.",
+     "와이지엔터테인먼트",
+     "큐브엔터"
+    ]
    },
    {
     "rank": 41,
-    "industry": "기계장비·관련 물품 도매",
-    "by": "ksic",
-    "names": [
-     "기계장비 및 관련 물품 도매업"
+    "industry": "의류·패션",
+    "size": 25,
+    "sectors": [
+     "섬유,의류,신발,호화품"
     ],
-    "size": 8,
-    "strict": 8,
+    "strict": 14,
     "filled": 0,
-    "capEok": 69458
+    "capEok": 105460,
+    "names": [
+     "영원무역",
+     "F&F",
+     "영원무역홀딩스",
+     "미스토홀딩스",
+     "LF"
+    ]
    },
    {
     "rank": 42,
-    "industry": "건물 건설",
-    "by": "ksic",
-    "names": [
-     "건물 건설업"
+    "industry": "건설 엔지니어링",
+    "size": 12,
+    "sectors": [
+     "건설"
     ],
-    "size": 9,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 67086
+    "strict": 8,
+    "filled": 0,
+    "capEok": 102874,
+    "names": [
+     "삼성E&A",
+     "세보엠이씨",
+     "한미글로벌",
+     "동아지질",
+     "금화피에스시"
+    ]
    },
    {
     "rank": 43,
-    "industry": "상품 종합 도매",
-    "by": "ksic",
-    "names": [
-     "상품 종합 도매업"
+    "industry": "의료용품",
+    "size": 11,
+    "sectors": [
+     "건강관리장비와용품"
     ],
-    "size": 6,
-    "strict": 2,
-    "filled": 3,
-    "capEok": 62719
+    "strict": 11,
+    "filled": 0,
+    "capEok": 99619,
+    "names": [
+     "HLB",
+     "파마리서치",
+     "바이오노트",
+     "티앤엘",
+     "HLB생명과학"
+    ]
    },
    {
     "rank": 44,
-    "industry": "호텔,레스토랑,레저",
-    "by": "naver",
-    "names": [
-     "호텔,레스토랑,레저"
+    "industry": "반도체 소재",
+    "size": 11,
+    "sectors": [
+     "반도체와반도체장비"
     ],
-    "size": 8,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 60677
+    "strict": 11,
+    "filled": 0,
+    "capEok": 94159,
+    "names": [
+     "솔브레인",
+     "동진쎄미켐",
+     "원익홀딩스",
+     "이엔에프테크놀로지",
+     "엘티씨"
+    ]
    },
    {
     "rank": 45,
-    "industry": "신탁업·집합투자",
-    "by": "ksic",
-    "names": [
-     "신탁업 및 집합투자업"
+    "industry": "반도체 검사·측정",
+    "size": 11,
+    "sectors": [
+     "반도체와반도체장비"
     ],
-    "size": 7,
-    "strict": 3,
-    "filled": 2,
-    "capEok": 56339
+    "strict": 11,
+    "filled": 0,
+    "capEok": 88545,
+    "names": [
+     "티에스이",
+     "두산테스나",
+     "케이씨텍",
+     "디아이",
+     "케이씨"
+    ]
    },
    {
     "rank": 46,
-    "industry": "의료용 기기",
-    "by": "ksic",
-    "names": [
-     "의료용 기기 제조업"
+    "industry": "전기 부품",
+    "size": 14,
+    "sectors": [
+     "전기제품"
     ],
-    "size": 20,
-    "strict": 20,
+    "strict": 14,
     "filled": 0,
-    "capEok": 49534
+    "capEok": 83414,
+    "names": [
+     "성호전자",
+     "에스피지",
+     "삼화콘덴서",
+     "LS머트리얼즈",
+     "솔브레인홀딩스"
+    ]
    },
    {
     "rank": 47,
-    "industry": "화학섬유",
-    "by": "ksic",
-    "names": [
-     "화학섬유 제조업"
+    "industry": "전자장비",
+    "size": 26,
+    "sectors": [
+     "전자장비와기기",
+     "사무용전자제품",
+     "컴퓨터와주변기기"
     ],
-    "size": 5,
-    "strict": 0,
-    "filled": 5,
-    "capEok": 47663
+    "strict": 24,
+    "filled": 0,
+    "capEok": 81331,
+    "names": [
+     "고영",
+     "파크시스템스",
+     "태성",
+     "필옵틱스",
+     "에스에이엠티"
+    ]
    },
    {
     "rank": 48,
-    "industry": "봉제의복",
-    "by": "ksic",
-    "names": [
-     "봉제의복 제조업"
+    "industry": "조선 기자재",
+    "size": 7,
+    "sectors": [
+     "조선"
     ],
-    "size": 8,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 43234
+    "strict": 7,
+    "filled": 0,
+    "capEok": 79090,
+    "names": [
+     "한화엔진",
+     "HD현대마린엔진",
+     "한국카본",
+     "STX엔진",
+     "오리엔탈정공"
+    ]
    },
    {
     "rank": 49,
-    "industry": "구조용 금속제품, 탱크·증기발생기",
-    "by": "ksic",
-    "names": [
-     "구조용 금속제품, 탱크 및 증기발생기 제조업"
+    "industry": "사업 서비스·광고",
+    "size": 21,
+    "sectors": [
+     "상업서비스와공급품",
+     "광고",
+     "해운사"
     ],
-    "size": 8,
-    "strict": 6,
+    "strict": 11,
     "filled": 0,
-    "capEok": 40055
+    "capEok": 70773,
+    "names": [
+     "에스원",
+     "제일기획",
+     "NICE평가정보",
+     "한국기업평가",
+     "드림시큐리티"
+    ]
    },
    {
     "rank": 50,
-    "industry": "1차 철강",
-    "by": "ksic",
-    "names": [
-     "1차 철강 제조업"
+    "industry": "디스플레이",
+    "size": 16,
+    "sectors": [
+     "디스플레이패널",
+     "디스플레이장비및부품"
     ],
-    "size": 24,
-    "strict": 6,
+    "strict": 13,
     "filled": 0,
-    "capEok": 32924
+    "capEok": 67367,
+    "names": [
+     "LG디스플레이",
+     "덕산네오룩스",
+     "서울반도체",
+     "LX세미콘",
+     "이녹스첨단소재"
+    ]
    },
    {
     "rank": 51,
-    "industry": "섬유,의류,신발,호화품",
-    "by": "naver",
-    "names": [
-     "섬유,의류,신발,호화품"
+    "industry": "바이오 도구·서비스",
+    "size": 11,
+    "sectors": [
+     "생명과학도구및서비스"
     ],
-    "size": 10,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 30544
+    "strict": 11,
+    "filled": 0,
+    "capEok": 67211,
+    "names": [
+     "올릭스",
+     "씨젠",
+     "제이에스링크",
+     "큐리옥스바이오시스템즈",
+     "엔케이젠바이오텍코리아"
+    ]
    },
    {
     "rank": 52,
-    "industry": "그외 기타 전문, 과학·기술 서비스",
-    "by": "ksic",
-    "names": [
-     "그외 기타 전문, 과학 및 기술 서비스업"
+    "industry": "건설",
+    "size": 18,
+    "sectors": [
+     "건설"
     ],
-    "size": 7,
-    "strict": 6,
+    "strict": 5,
     "filled": 0,
-    "capEok": 30217
+    "capEok": 66563,
+    "names": [
+     "DL이앤씨",
+     "IPARK현대산업개발",
+     "HDC",
+     "서희건설",
+     "자이에스앤디"
+    ]
    },
    {
     "rank": 53,
-    "industry": "전기·통신 공사",
-    "by": "ksic",
-    "names": [
-     "전기 및 통신 공사업"
+    "industry": "유통",
+    "size": 15,
+    "sectors": [
+     "백화점과일반상점",
+     "인터넷과카탈로그소매",
+     "식품과기본식료품소매",
+     "전문소매"
     ],
-    "size": 8,
-    "strict": 5,
-    "filled": 0,
-    "capEok": 28218
+    "strict": 4,
+    "filled": 1,
+    "capEok": 63368,
+    "names": [
+     "실리콘투",
+     "광주신세계",
+     "CJ프레시웨이",
+     "케이티알파",
+     "신세계"
+    ]
    },
    {
     "rank": 54,
-    "industry": "회사 본부·경영 컨설팅 서비스",
-    "by": "ksic",
-    "names": [
-     "회사 본부 및 경영 컨설팅 서비스업"
+    "industry": "의료기기",
+    "size": 25,
+    "sectors": [
+     "건강관리장비와용품"
     ],
-    "size": 8,
-    "strict": 6,
+    "strict": 25,
     "filled": 0,
-    "capEok": 25472
+    "capEok": 54366,
+    "names": [
+     "클래시스",
+     "엘앤씨바이오",
+     "에스디바이오센서",
+     "인바디",
+     "아이센스"
+    ]
    },
    {
     "rank": 55,
-    "industry": "플라스틱제품",
-    "by": "ksic",
-    "names": [
-     "플라스틱제품 제조업"
+    "industry": "호텔·레저",
+    "size": 10,
+    "sectors": [
+     "호텔,레스토랑,레저"
     ],
-    "size": 14,
-    "strict": 10,
+    "strict": 5,
     "filled": 0,
-    "capEok": 24497
+    "capEok": 54226,
+    "names": [
+     "강원랜드",
+     "파라다이스",
+     "서부T&D",
+     "GKL",
+     "골프존"
+    ]
    },
    {
     "rank": 56,
-    "industry": "시멘트, 석회, 플라스터·그 제품",
-    "by": "ksic",
-    "names": [
-     "시멘트, 석회, 플라스터 및 그 제품 제조업"
+    "industry": "건축자재",
+    "size": 9,
+    "sectors": [
+     "건축자재",
+     "건축제품"
     ],
-    "size": 8,
-    "strict": 0,
-    "filled": 5,
-    "capEok": 23940
+    "strict": 2,
+    "filled": 3,
+    "capEok": 50934,
+    "names": [
+     "KCC",
+     "노루홀딩스",
+     "아세아",
+     "삼목에스폼",
+     "SP삼화"
+    ]
    },
    {
     "rank": 57,
-    "industry": "기타 금속 가공제품",
-    "by": "ksic",
-    "names": [
-     "기타 금속 가공제품 제조업"
+    "industry": "석유화학",
+    "size": 27,
+    "sectors": [
+     "화학",
+     "자동차"
     ],
-    "size": 7,
-    "strict": 7,
+    "strict": 11,
     "filled": 0,
-    "capEok": 19561
+    "capEok": 50706,
+    "names": [
+     "한솔케미칼",
+     "미원에스씨",
+     "원익머트리얼즈",
+     "동성화인텍",
+     "유니드"
+    ]
    },
    {
     "rank": 58,
-    "industry": "영화, 비디오물, 방송프로그램 제작·배급",
-    "by": "ksic",
-    "names": [
-     "영화, 비디오물, 방송프로그램 제작 및 배급업"
+    "industry": "통신장비",
+    "size": 28,
+    "sectors": [
+     "통신장비"
     ],
-    "size": 6,
-    "strict": 6,
+    "strict": 25,
     "filled": 0,
-    "capEok": 18553
+    "capEok": 45902,
+    "names": [
+     "RFHIC",
+     "케이엠더블유",
+     "인텔리안테크",
+     "쏠리드",
+     "자화전자"
+    ]
    },
    {
     "rank": 59,
-    "industry": "기타 정보 서비스",
-    "by": "ksic",
-    "names": [
-     "기타 정보 서비스업"
+    "industry": "병원·헬스 서비스",
+    "size": 12,
+    "sectors": [
+     "건강관리업체및서비스"
     ],
-    "size": 6,
-    "strict": 5,
+    "strict": 8,
     "filled": 0,
-    "capEok": 18312
+    "capEok": 37197,
+    "names": [
+     "케어젠",
+     "차바이오텍",
+     "콜마비앤에이치",
+     "압타바이오",
+     "노바렉스"
+    ]
    },
    {
     "rank": 60,
-    "industry": "화학",
-    "by": "naver",
-    "names": [
-     "화학"
+    "industry": "휴대폰 부품",
+    "size": 28,
+    "sectors": [
+     "핸드셋"
     ],
-    "size": 8,
-    "strict": 6,
+    "strict": 26,
     "filled": 0,
-    "capEok": 15532
+    "capEok": 31822,
+    "names": [
+     "제이앤티씨",
+     "드림텍",
+     "디케이티",
+     "PS일렉트로닉스",
+     "파인엠텍"
+    ]
    },
    {
     "rank": 61,
-    "industry": "텔레비전 방송",
-    "by": "ksic",
-    "names": [
-     "텔레비전 방송업"
+    "industry": "시멘트",
+    "size": 9,
+    "sectors": [
+     "건축자재"
     ],
-    "size": 6,
-    "strict": 6,
-    "filled": 0,
-    "capEok": 13952
+    "strict": 1,
+    "filled": 4,
+    "capEok": 30391,
+    "names": [
+     "삼표시멘트",
+     "한일시멘트",
+     "한일홀딩스",
+     "아세아시멘트",
+     "성신양회"
+    ]
    },
    {
     "rank": 62,
-    "industry": "건설",
-    "by": "naver",
-    "names": [
-     "건설"
+    "industry": "기계 부품",
+    "size": 14,
+    "sectors": [
+     "기계"
     ],
-    "size": 5,
-    "strict": 4,
-    "filled": 1,
-    "capEok": 11595
+    "strict": 14,
+    "filled": 0,
+    "capEok": 27243,
+    "names": [
+     "성광벤드",
+     "태광",
+     "와이지-원",
+     "하이록코리아",
+     "우진"
+    ]
    },
    {
     "rank": 63,
-    "industry": "교육서비스",
-    "by": "naver",
-    "names": [
-     "교육서비스"
+    "industry": "화학",
+    "size": 22,
+    "sectors": [
+     "화학"
     ],
-    "size": 6,
-    "strict": 6,
+    "strict": 12,
     "filled": 0,
-    "capEok": 10712
+    "capEok": 27203,
+    "names": [
+     "파미셀",
+     "한국쉘석유",
+     "PI첨단소재",
+     "삼영무역",
+     "GRT"
+    ]
    },
    {
     "rank": 64,
-    "industry": "동물용 사료·조제식품",
-    "by": "ksic",
-    "names": [
-     "동물용 사료 및 조제식품 제조업"
+    "industry": "정밀화학",
+    "size": 13,
+    "sectors": [
+     "화학"
     ],
-    "size": 6,
-    "strict": 6,
-    "filled": 0,
-    "capEok": 10472
+    "strict": 4,
+    "filled": 1,
+    "capEok": 26437,
+    "names": [
+     "TKG휴켐스",
+     "미원상사",
+     "한국알콜",
+     "미원화학",
+     "레이크머티리얼즈"
+    ]
    },
    {
     "rank": 65,
-    "industry": "기타 사업지원 서비스",
-    "by": "ksic",
-    "names": [
-     "기타 사업지원 서비스업"
-    ],
+    "industry": "음료",
     "size": 5,
+    "sectors": [
+     "음료"
+    ],
     "strict": 4,
     "filled": 1,
-    "capEok": 9517
+    "capEok": 24281,
+    "names": [
+     "하이트진로",
+     "롯데칠성",
+     "무학",
+     "진로발효",
+     "하이트진로홀딩스"
+    ]
    },
    {
     "rank": 66,
-    "industry": "영상·음향기기",
-    "by": "ksic",
-    "names": [
-     "영상 및 음향기기 제조업"
+    "industry": "종이·포장재",
+    "size": 10,
+    "sectors": [
+     "포장재",
+     "종이와목재"
     ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 24241,
+    "names": [
+     "펌텍코리아",
+     "동원시스템즈",
+     "신대양제지",
+     "율촌화학",
+     "아세아제지"
+    ]
+   },
+   {
+    "rank": 67,
+    "industry": "창투·캐피탈",
+    "size": 14,
+    "sectors": [
+     "창업투자",
+     "기타금융"
+    ],
+    "strict": 12,
+    "filled": 0,
+    "capEok": 24026,
+    "names": [
+     "미래에셋벤처투자",
+     "우리기술투자",
+     "글로벌텍스프리",
+     "스틱인베스트먼트",
+     "DSC인베스트먼트"
+    ]
+   },
+   {
+    "rank": 68,
+    "industry": "소프트웨어",
+    "size": 19,
+    "sectors": [
+     "소프트웨어",
+     "판매업체",
+     "비철금속"
+    ],
+    "strict": 19,
+    "filled": 0,
+    "capEok": 22830,
+    "names": [
+     "안랩",
+     "엑스게이트",
+     "한컴",
+     "슈어소프트테크",
+     "엠로"
+    ]
+   },
+   {
+    "rank": 69,
+    "industry": "2차전지 장비",
+    "size": 9,
+    "sectors": [
+     "전기제품"
+    ],
+    "strict": 9,
+    "filled": 0,
+    "capEok": 20512,
+    "names": [
+     "피엔티",
+     "SFA넥셀",
+     "필에너지",
+     "아바코",
+     "나인테크"
+    ]
+   },
+   {
+    "rank": 70,
+    "industry": "콘텐츠 제작",
+    "size": 8,
+    "sectors": [
+     "방송과엔터테인먼트"
+    ],
+    "strict": 8,
+    "filled": 0,
+    "capEok": 19437,
+    "names": [
+     "CJ CGV",
+     "스튜디오드래곤",
+     "YG PLUS",
+     "SAMG엔터",
+     "애니플러스"
+    ]
+   },
+   {
+    "rank": 71,
+    "industry": "디스플레이 장비",
+    "size": 12,
+    "sectors": [
+     "디스플레이장비및부품"
+    ],
+    "strict": 12,
+    "filled": 0,
+    "capEok": 16637,
+    "names": [
+     "선익시스템",
+     "AP시스템",
+     "HB테크놀러지",
+     "디바이스",
+     "DMS"
+    ]
+   },
+   {
+    "rank": 72,
+    "industry": "헬스케어 기술",
+    "size": 7,
+    "sectors": [
+     "건강관리기술"
+    ],
+    "strict": 7,
+    "filled": 0,
+    "capEok": 15065,
+    "names": [
+     "루닛",
+     "인피니트헬스케어",
+     "GC메디아이",
+     "솔본",
+     "제이엘케이"
+    ]
+   },
+   {
+    "rank": 73,
+    "industry": "방송",
     "size": 5,
+    "sectors": [
+     "방송과엔터테인먼트"
+    ],
     "strict": 5,
     "filled": 0,
-    "capEok": 8764
+    "capEok": 13790,
+    "names": [
+     "CJ ENM",
+     "SBS",
+     "스카이라이프",
+     "한국경제TV",
+     "씨씨에스"
+    ]
    }
   ],
-  "notChosenFilled": [],
+  "notChosenFilled": [
+   {
+    "industry": "사료·축산",
+    "size": 8,
+    "capEok": 12051
+   },
+   {
+    "industry": "교육",
+    "size": 6,
+    "capEok": 10712
+   }
+  ],
   "short": [
    {
-    "industry": "석유 정제품",
+    "industry": "부동산",
     "have": 4
-   },
-   {
-    "industry": "은행·저축기관",
-    "have": 4
-   },
-   {
-    "industry": "고무제품",
-    "have": 4
-   },
-   {
-    "industry": "연료용 가스 제조·배관공급",
-    "have": 4
-   },
-   {
-    "industry": "광고",
-    "have": 4
-   },
-   {
-    "industry": "알코올음료",
-    "have": 4
-   },
-   {
-    "industry": "가정용 기기",
-    "have": 4
-   },
-   {
-    "industry": "여행사·기타 여행보조 서비스",
-    "have": 4
-   },
-   {
-    "industry": "동·식물성 유지·낙농제품",
-    "have": 4
-   },
-   {
-    "industry": "일반 교습 학원",
-    "have": 4
-   },
-   {
-    "industry": "자동차용 엔진·자동차",
-    "have": 3
-   },
-   {
-    "industry": "기타 운송관련 서비스",
-    "have": 3
-   },
-   {
-    "industry": "기타 비금속 광물제품",
-    "have": 3
-   },
-   {
-    "industry": "유원지·기타 오락관련 서비스",
-    "have": 3
-   },
-   {
-    "industry": "음·식료품·담배 도매",
-    "have": 3
-   },
-   {
-    "industry": "기타 전기장비",
-    "have": 3
-   },
-   {
-    "industry": "생활용품 도매",
-    "have": 3
-   },
-   {
-    "industry": "도로 화물 운송",
-    "have": 3
-   },
-   {
-    "industry": "합성고무·플라스틱 물질",
-    "have": 3
-   },
-   {
-    "industry": "섬유, 의복, 신발·가죽제품 소매",
-    "have": 3
-   },
-   {
-    "industry": "자동차 판매",
-    "have": 3
-   },
-   {
-    "industry": "전기",
-    "have": 2
-   },
-   {
-    "industry": "무기·총포탄",
-    "have": 2
-   },
-   {
-    "industry": "그외 기타 운송장비",
-    "have": 2
-   },
-   {
-    "industry": "운송장비 임대",
-    "have": 2
-   },
-   {
-    "industry": "기타 상품 전문 소매",
-    "have": 2
-   },
-   {
-    "industry": "유리·유리제품",
-    "have": 2
-   },
-   {
-    "industry": "일반·생활 숙박시설 운영",
-    "have": 2
-   },
-   {
-    "industry": "보험·연금관련 서비스",
-    "have": 2
-   },
-   {
-    "industry": "가죽, 가방·유사제품",
-    "have": 2
-   },
-   {
-    "industry": "기타 종이·판지 제품",
-    "have": 2
-   },
-   {
-    "industry": "부동산 임대·공급",
-    "have": 2
-   },
-   {
-    "industry": "컴퓨터·주변장치",
-    "have": 2
-   },
-   {
-    "industry": "골판지, 종이 상자·종이용기",
-    "have": 2
-   },
-   {
-    "industry": "가구",
-    "have": 2
-   },
-   {
-    "industry": "비료, 농약·살균, 살충제",
-    "have": 2
-   },
-   {
-    "industry": "도축, 육류 가공·저장 처리",
-    "have": 2
-   },
-   {
-    "industry": "기타 전문 서비스",
-    "have": 2
-   },
-   {
-    "industry": "수산물 가공·저장 처리",
-    "have": 2
-   },
-   {
-    "industry": "곡물가공품, 전분·전분제품",
-    "have": 2
-   },
-   {
-    "industry": "기타 과학기술 서비스",
-    "have": 2
-   },
-   {
-    "industry": "전구·조명장치",
-    "have": 2
-   },
-   {
-    "industry": "육상 여객 운송",
-    "have": 2
-   },
-   {
-    "industry": "연료 소매",
-    "have": 2
-   },
-   {
-    "industry": "실내건축·건축마무리 공사",
-    "have": 2
-   },
-   {
-    "industry": "그외 기타 제품",
-    "have": 2
-   },
-   {
-    "industry": "사진장비·광학기기",
-    "have": 2
-   },
-   {
-    "industry": "펄프, 종이·판지",
-    "have": 2
-   },
-   {
-    "industry": "폐기물 처리",
-    "have": 2
-   },
-   {
-    "industry": "무점포 소매",
-    "have": 2
-   },
-   {
-    "industry": "의복 액세서리",
-    "have": 2
-   },
-   {
-    "industry": "담배",
-    "have": 1
-   },
-   {
-    "industry": "그외 기타 개인 서비스",
-    "have": 1
-   },
-   {
-    "industry": "경비, 경호·탐정",
-    "have": 1
-   },
-   {
-    "industry": "재 보험",
-    "have": 1
-   },
-   {
-    "industry": "증기, 냉·온수·공기조절 공급",
-    "have": 1
-   },
-   {
-    "industry": "비알코올음료·얼음",
-    "have": 1
-   },
-   {
-    "industry": "개인·가정용품 임대",
-    "have": 1
-   },
-   {
-    "industry": "나무제품",
-    "have": 1
-   },
-   {
-    "industry": "자동차 차체나 트레일러",
-    "have": 1
    }
   ],
   "failReasons": {

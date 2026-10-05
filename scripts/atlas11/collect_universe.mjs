@@ -18,7 +18,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {fetchWithRetry, parseFchartXml} from './collect_naver.mjs';
-import {QUALITY52, QT180, I36, S365, selectQualityTrend, selectIndustry36, selectSub365, parseKindCorpList, industryNameFrom, parseIndustryList, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
+import {QUALITY52, QT180, I36, S365, N365, selectQualityTrend, selectIndustry36, selectSub365, selectSplit365, parseKindCorpList, industryNameFrom, parseIndustryList, BUNDLE_SCHEMA, UNIVERSE_SCHEMA, parseMarketValueJson, parseMarketSumHtml, parseUpjongList, parseIntegration, parseFinanceJson, notCommon, parseCopAnalysisHtml, financeMetrics, historyCheck, selectQuality52, buildNextInput, whyLine} from '../../lib/atlas11/universe.mjs';
 import {groupIdOfSector} from '../../lib/atlas11/groups.mjs';
 
 const sha = s => createHash('sha256').update(s).digest('hex');
@@ -179,14 +179,15 @@ export function lastCompletedSession(sessions, now) {
 
 /** bundle → proposal + 새 입력 (쓰지는 않음) */
 /** 규칙 판 이름 → 규칙(기본은 config/atlas11/universe.json 의 selectRules · 없으면 q52-v2) */
-export const RULE_SETS = Object.freeze({'q52-v2': QUALITY52, 'qt180-v1': QT180, 'i36-v1': I36, 's365-v1': S365});
+export const RULE_SETS = Object.freeze({'q52-v2': QUALITY52, 'qt180-v1': QT180, 'i36-v1': I36, 's365-v1': S365, 'n365-v1': N365});
 export function proposeFromBundle(bundle, {input, now, rules = QUALITY52}) {
   const sessions = input.calendar.sessions, asOf = lastCompletedSession(sessions, bundle.now ?? now), day = kst(bundle.now ?? now).slice(0, 10);
   const candidates = candidatesFromBundle(bundle, {sessions, asOf, input});
   // 2026-10-04 18:10 「180개 회사 · 우량주 그리고 시대 트랜드 주식만」 → qt180-v1 은 우량 전부 + 트렌드 업종으로 채움
   // 2026-10-04 21:04 「업종 36개에서 180개 회사를 찾아…」 → i36-v1 은 업종마다 5곳 · 36개 업종
   // 2026-10-05 05:07 「180개를 365개로 · 업종도 늘리고 더 세분화」 → s365-v1 은 KRX 업종(한국표준산업분류)마다 5곳 · 73개 업종
-  const sel = rules.mix === 'sub-industry' ? selectSub365(candidates, rules) : rules.mix === 'industry' ? selectIndustry36(candidates, rules) : rules.mix === 'quality-first' ? selectQualityTrend(candidates, rules) : selectQuality52(candidates, rules);
+  // 2026-10-05 09:22 「눌러서 했는데 180야 종목 365개 아니야 문제 찾이내서 해결해」 → n365-v1 은 네이버 업종 바탕 + 큰 업종만 한국거래소 업종으로 더 잘게 · 73개 업종
+  const sel = rules.mix === 'naver-split' ? selectSplit365(candidates, rules) : rules.mix === 'sub-industry' ? selectSub365(candidates, rules) : rules.mix === 'industry' ? selectIndustry36(candidates, rules) : rules.mix === 'quality-first' ? selectQualityTrend(candidates, rules) : selectQuality52(candidates, rules);
   const id = `u2-${rules.version}-${day}`;
   const strip = c => { const {_rows, ...rest} = c; return rest; };
   const picked = sel.picked.map(c => ({rank: c.rank, code: c.code, name: c.name, market: c.market, sector: c.sector, ...(c.industry ? {industry: c.industry, industryRank: c.industryRank} : {}), ...(c.ksic ? {ksic: c.ksic, groupBy: c.groupBy ?? null} : {}), group: groupIdOfSector(c.sector), capRank: c.capRank, marketCapEok: c.marketCapEok, score: Number.isFinite(c.score) ? Number(c.score.toFixed(4)) : null, parts: c.parts ? Object.fromEntries(Object.entries(c.parts).map(([k, v]) => [k, Number(v.toFixed(4))])) : null, debtExempt: c.debtExempt, metrics: c.metrics, financeSource: c.financeSource, carried: input.assets.some(a => a.code === c.code), why: whyLine(c),
@@ -198,7 +199,8 @@ export function proposeFromBundle(bundle, {input, now, rules = QUALITY52}) {
     overlap: {kept: picked.filter(p => p.carried).map(p => p.code), added: picked.filter(p => !p.carried).map(p => p.code), dropped: input.assets.filter(a => !picked.some(p => p.code === a.code)).map(a => a.code)}};
   let next = null;
   if (sel.ok) {
-    const histories = Object.fromEntries(sel.picked.map(c => [c.code, {rows: c._rows, url: c.fchart.url, fetchedAt: c.fchart.fetchedAt}]));
+    // 고른 거래일(asOf) 뒤 일봉은 넣지 않는다 — 장중에 모으면 그날 끝나지 않은 일봉이 섞일 수 있음(2026-10-05 월요일 아침 09:11 모음)
+    const histories = Object.fromEntries(sel.picked.map(c => [c.code, {rows: c._rows.filter(r => r.date <= asOf), url: c.fchart.url, fetchedAt: c.fchart.fetchedAt}]));
     next = buildNextInput(input, sel.picked, {histories, now, proposalId: id, rules: sel.rules});
   }
   return {proposal, next, candidates: candidates.map(strip)};

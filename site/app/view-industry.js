@@ -33,7 +33,7 @@ export async function renderIndustry(main, {hash, manifest}) {
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
-      h('p', {class: 'i-src muted small'}, `${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지 · ` : ''}${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`)),
+      h('p', {class: 'i-src muted small'}, `${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)} 15:30 종가까지 · ` : ''}${ksics.length ? `한국거래소 업종: ${ksics.join(' · ')} · ` : ''}네이버 증권 업종: ${industries.join(' · ')}`)),
     h('section', {class: 't-sec', 'aria-label': '누가 끌었나'},
       h('h2', {class: 't-h2'}, '누가 끌었나'),
       h('p', {class: 't-sub'}, `${cs.length}곳의 지난 20거래일 변화 · 가운데 줄이 0% · 오른쪽 빨강은 오름, 왼쪽 파랑은 내림`),
