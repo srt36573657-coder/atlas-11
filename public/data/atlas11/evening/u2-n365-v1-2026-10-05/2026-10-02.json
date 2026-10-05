@@ -1,0 +1,258 @@
+{
+ "schema": "atlas11-evening-1",
+ "universe": "u2-n365-v1-2026-10-05",
+ "asOf": "2026-10-02",
+ "recordedAt": "2026-10-05T15:41:08.171Z",
+ "run": "evening",
+ "boardId": "board-2026-10-02-779bd68b",
+ "hot": [
+  {
+   "id": "ib8333ad0",
+   "label": "전기 부품",
+   "change20": 0.417647
+  },
+  {
+   "id": "i2f453d90",
+   "label": "반도체 소재",
+   "change20": 0.346669
+  },
+  {
+   "id": "i3b897314",
+   "label": "반도체 검사·측정",
+   "change20": 0.325328
+  },
+  {
+   "id": "ia84fa0e7",
+   "label": "휴대폰 부품",
+   "change20": 0.317605
+  },
+  {
+   "id": "iafb9068f",
+   "label": "반도체 장비",
+   "change20": 0.314574
+  },
+  {
+   "id": "i9a0618b8",
+   "label": "전자장비",
+   "change20": 0.289447
+  },
+  {
+   "id": "id3ad7bf2",
+   "label": "반도체",
+   "change20": 0.277759
+  },
+  {
+   "id": "i1225d511",
+   "label": "반도체 부품",
+   "change20": 0.268894
+  },
+  {
+   "id": "if5c9be18",
+   "label": "전선·전기장비",
+   "change20": 0.261646
+  },
+  {
+   "id": "ied098178",
+   "label": "전자부품",
+   "change20": 0.258959
+  },
+  {
+   "id": "ibaad6b46",
+   "label": "소프트웨어",
+   "change20": 0.236373
+  }
+ ],
+ "similar": [
+  {
+   "code": "347700",
+   "name": "스피어",
+   "groupId": "i5b506493",
+   "groupLabel": "방산",
+   "matched": 6
+  },
+  {
+   "code": "389500",
+   "name": "에스비비테크",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계",
+   "matched": 6
+  },
+  {
+   "code": "050890",
+   "name": "쏠리드",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비",
+   "matched": 6
+  },
+  {
+   "code": "006120",
+   "name": "SK디스커버리",
+   "groupId": "icc0a28fe",
+   "groupLabel": "정유·가스",
+   "matched": 6
+  },
+  {
+   "code": "272210",
+   "name": "한화시스템",
+   "groupId": "i5b506493",
+   "groupLabel": "방산",
+   "matched": 6
+  },
+  {
+   "code": "100790",
+   "name": "미래에셋벤처투자",
+   "groupId": "ia87024ab",
+   "groupLabel": "창투·캐피탈",
+   "matched": 6
+  },
+  {
+   "code": "005430",
+   "name": "한국공항",
+   "groupId": "i47aca19f",
+   "groupLabel": "물류·운송",
+   "matched": 6
+  }
+ ],
+ "common": [
+  "ups",
+  "r5",
+  "r20",
+  "ins",
+  "hold",
+  "y1"
+ ],
+ "next": [
+  {
+   "code": "032500",
+   "name": "케이엠더블유",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "014680",
+   "name": "한솔케미칼",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학"
+  },
+  {
+   "code": "203650",
+   "name": "드림시큐리티",
+   "groupId": "i9eca8833",
+   "groupLabel": "사업 서비스·광고"
+  },
+  {
+   "code": "274090",
+   "name": "켄코아에어로스페이스",
+   "groupId": "i8e72bf92",
+   "groupLabel": "항공·우주"
+  },
+  {
+   "code": "012030",
+   "name": "DB",
+   "groupId": "ifd7313ac",
+   "groupLabel": "IT 시스템 통합"
+  },
+  {
+   "code": "067630",
+   "name": "HLB생명과학",
+   "groupId": "i8407a2da",
+   "groupLabel": "의료용품"
+  },
+  {
+   "code": "159010",
+   "name": "아스플로",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "000250",
+   "name": "삼천당제약",
+   "groupId": "i1f7e7302",
+   "groupLabel": "제약"
+  },
+  {
+   "code": "104830",
+   "name": "원익머트리얼즈",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학"
+  },
+  {
+   "code": "218410",
+   "name": "RFHIC",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "267320",
+   "name": "나인테크",
+   "groupId": "i6847d9c2",
+   "groupLabel": "2차전지 장비"
+  },
+  {
+   "code": "347700",
+   "name": "스피어",
+   "groupId": "i5b506493",
+   "groupLabel": "방산"
+  },
+  {
+   "code": "119850",
+   "name": "지엔씨에너지",
+   "groupId": "i3a2c861e",
+   "groupLabel": "전력기기"
+  },
+  {
+   "code": "389500",
+   "name": "에스비비테크",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "108490",
+   "name": "로보티즈",
+   "groupId": "ibaf1f1d7",
+   "groupLabel": "로봇·건설기계"
+  },
+  {
+   "code": "071200",
+   "name": "인피니트헬스케어",
+   "groupId": "i729f38fe",
+   "groupLabel": "헬스케어 기술"
+  },
+  {
+   "code": "293780",
+   "name": "압타바이오",
+   "groupId": "i0faf8524",
+   "groupLabel": "병원·헬스 서비스"
+  },
+  {
+   "code": "187870",
+   "name": "디바이스",
+   "groupId": "i548c4f0c",
+   "groupLabel": "디스플레이 장비"
+  },
+  {
+   "code": "078150",
+   "name": "HB테크놀러지",
+   "groupId": "i548c4f0c",
+   "groupLabel": "디스플레이 장비"
+  },
+  {
+   "code": "006120",
+   "name": "SK디스커버리",
+   "groupId": "icc0a28fe",
+   "groupLabel": "정유·가스"
+  },
+  {
+   "code": "272210",
+   "name": "한화시스템",
+   "groupId": "i5b506493",
+   "groupLabel": "방산"
+  },
+  {
+   "code": "100790",
+   "name": "미래에셋벤처투자",
+   "groupId": "ia87024ab",
+   "groupLabel": "창투·캐피탈"
+  }
+ ]
+}
