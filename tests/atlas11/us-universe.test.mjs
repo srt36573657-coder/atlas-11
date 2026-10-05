@@ -3,7 +3,7 @@
 // 여기 후보는 시험용으로 만든 가짜 회사다(화면 · 자료 묶음에는 쓰지 않음) — 고르는 규칙이 적힌 대로 도는지만 본다.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {US365, selectUs365, usFailsOf, usTrendOf, usNotCommon, usIsFinancial, usHowLines} from '../../lib/atlas11/us/universe.mjs';
+import {US365, selectUs365, usFailsOf, usTrendOf, usNotCommon, usIsFinancial, usHowLines, usForeign} from '../../lib/atlas11/us/universe.mjs';
 
 const good = {fiscalYear: '2025', op: 10, opPrev: 9, net: 8, netPrev: 7, roe: 15, debt: 60};
 let seq = 0;
@@ -89,6 +89,23 @@ test('고를 수 없는 후보 — ETF · 가격 이력 부족 · 시가총액 �
   assert.equal(r.ok, false); assert.equal(r.picked.length, 5);
   assert.ok(r.picked.every(p => p.capUsd <= 100), 'ETF · 이력 부족 회사는 크더라도 빠짐');
   assert.equal(r.counts.failReasons['보통주 아님'], 1); assert.equal(r.counts.failReasons['가격 이력 부족'], 1); assert.equal(r.counts.failReasons['업종 모름'], 1);
+});
+
+test('미국 회사만 · 같은 회사 다른 주식은 큰 쪽 하나 · 한글 이름의 ADR · 자기자본 마이너스', () => {
+  seq = 0;
+  const base = [];
+  for (let i = 0; i < 73; i++) for (let j = 0; j < 5; j++) base.push(co(`바탕${String(i).padStart(2, '0')}`, 10 + j));
+  const r = selectUs365(rank([...base,
+    co('식품', 900, {name: '캐나다은행', country: 'Canada'}), co('식품', 800, {name: '알파벳 Class A'}), co('식품', 790, {name: '알파벳 Class C'}),
+    co('식품', 700, {name: '어센디스 파마 ADR'}), co('식품', 600, {metrics: {...good, equityNeg: true, roe: null, debt: null}}), co('식품', 500), co('식품', 400), co('식품', 300), co('식품', 200)]));
+  const food = r.picked.filter(p => p.industry === '식품').map(p => p.name);
+  assert.ok(!food.includes('캐나다은행'), '나라가 미국이 아니면 빠짐');
+  assert.ok(food.includes('알파벳 Class A') && !food.includes('알파벳 Class C'), '같은 회사는 시가총액 큰 쪽 하나만');
+  assert.ok(!food.includes('어센디스 파마 ADR'), '한글 이름에 ADR 이 있어도 빠짐');
+  const neg = r.checked.find(c => c.capUsd === 600);
+  assert.ok(neg.fails.includes('자기자본 0 이하(빚이 자산보다 많음)') && !neg.fails.includes('ROE 모름'), '자기자본 마이너스는 그렇다고 적음');
+  assert.equal(r.checked.find(c => c.name === '알파벳 Class C').sameCompanyOf, r.checked.find(c => c.name === '알파벳 Class A').code);
+  assert.equal(usForeign({country: ''}), false, '나라를 모르면 빼지 않음');
 });
 
 test('화면 「어떻게 골랐나」 세 줄 — 실제 규칙 숫자 그대로', () => {
