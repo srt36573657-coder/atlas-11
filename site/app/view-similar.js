@@ -4,7 +4,7 @@
    05:05 그림 카드대로 — 「곧 될 가능성」은 앞날 말이라 숫자·말로 쓰지 않고, 같은 고르는 법을 지난 사실의 이름(「불장 닮은 7곳」)으로 보인다
    맨 위: 저녁 7시 들고 남(바로 앞 기록과 견줌) → 7곳(줄마다 공통점 ✓) → 불장 회사들의 공통점(불장 · 나머지 몇 %인지 막대) → 어떻게 셌나(접어 둠)
    셈은 lib/atlas11/similar.mjs(판을 만들 때) — 화면은 판에 적힌 값만 그린다 */
-import {h, korDate, pct, signCls, finite} from './util.js';
+import {h, korDate, pct, signCls, finite, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
 import {sunOf} from './shapes.js';
@@ -46,15 +46,17 @@ function traitRow(t, sim) {
     bar(`불장 ${sim.hotCompanies}곳`, t.hot, 'hot'), bar(`나머지 ${sim.restCompanies}곳`, t.rest, 'rest'));
 }
 function howBox(sim, board) {
-  const r = sim.rules ?? {};
-  return h('details', {class: 'b-how'}, h('summary', null, `어떻게 셌나 · 공통점 후보 ${sim.traits.length}가지 모두`),
+  const r = sim.rules ?? {}, noFlows = place.flows === false;
+  // 미국 판: 수급 공개 자료가 없어 수급 공통점(외국인·기관·보유)은 한 곳도 셀 수 없다 — 0/0곳 줄을 늘어놓지 않고 뺐다고 적는다(2026-10-05 18:02 「미국 주식도」)
+  const traits = noFlows ? sim.traits.filter(t => t.hot.known || t.rest.known) : sim.traits, cut = sim.traits.length - traits.length;
+  return h('details', {class: 'b-how'}, h('summary', null, `어떻게 셌나 · 공통점 후보 ${traits.length}가지 모두`),
     h('ul', null,
       h('li', null, `불장 = 지난 20거래일 동안 업종 회사들의 종가가 평균 많이 오른 업종 ${board.hot?.items?.length ?? 0}개(첫 화면 「불장」) · 그 업종 회사 ${sim.hotCompanies}곳과 나머지 ${sim.restCompanies}곳을 견줌`),
       h('li', null, `공통점 = 아래 후보 가운데 불장 회사의 ${pc(r.minShare ?? .5)} 넘게 가졌고, 나머지 회사보다 ${Math.round((r.minGap ?? .1) * 100)}%p 넘게 많이 가진 것${sim.filled ? ` · 그런 것이 ${r.minCommon ?? 3}가지보다 적어 차이가 큰 차례로 채움` : ''}`),
       h('li', null, `닮은 7곳 = 불장 업종 밖 회사 가운데 공통점을 많이 가진 차례(${sim.need}가지 이상만) · 같으면 지난 20거래일 많이 오른 차례 · 한 업종 ${sim.perIndustry}곳까지`),
-      h('li', null, '판을 새로 만들 때마다(거래일 16:00 · 저녁 7시) 다시 셉니다 · 들고 남은 저녁 7시 기록끼리 견줍니다(기록은 지우지 않음)'),
-      h('li', null, '지난 종가 · 수급 · 기사로 센 것입니다 · 앞날을 맞히지 않습니다')),
-    h('ol', {class: 'tr-all'}, ...sim.traits.map(t => h('li', {'data-common': String(t.common)}, h('b', null, `${t.common ? '✓ 공통점' : '· 아님'} — ${t.chip}`), `: ${t.rule} · 불장 ${pc(share(t.hot))}(${t.hot.yes}/${t.hot.known}곳) · 나머지 ${pc(share(t.rest))}(${t.rest.yes}/${t.rest.known}곳)`))));
+      h('li', null, noFlows ? '판을 새로 만들 때마다(「미국 주식 자료 받기」를 누를 때) 다시 셉니다' : '판을 새로 만들 때마다(거래일 16:00 · 저녁 7시) 다시 셉니다 · 들고 남은 저녁 7시 기록끼리 견줍니다(기록은 지우지 않음)'),
+      h('li', null, noFlows ? `지난 종가 · 기사로 센 것입니다(미국은 수급 자료가 없어 수급 공통점 ${cut}가지는 뺌) · 앞날을 맞히지 않습니다` : '지난 종가 · 수급 · 기사로 센 것입니다 · 앞날을 맞히지 않습니다')),
+    h('ol', {class: 'tr-all'}, ...traits.map(t => h('li', {'data-common': String(t.common)}, h('b', null, `${t.common ? '✓ 공통점' : '· 아님'} — ${t.chip}`), `: ${t.rule} · 불장 ${pc(share(t.hot))}(${t.hot.yes}/${t.hot.known}곳) · 나머지 ${pc(share(t.rest))}(${t.rest.yes}/${t.rest.known}곳)`))));
 }
 
 export async function renderSimilar(main, {manifest}) {

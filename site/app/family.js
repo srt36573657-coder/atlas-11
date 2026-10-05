@@ -5,6 +5,8 @@
    갈래 이름과 나눔은 ATLAS 가 업종 이름을 보고 정한 것이다([가정] — 판에 큰 갈래 칸이 없다).
    모르는 업종 이름은 「그 밖」으로 간다 · tests/atlas11/family.test.mjs 가 지금 판의 업종이 모두 갈래를 찾는지 본다 */
 
+import {place} from './util.js';
+
 export const FAMILIES = [
   {id: 'semi', label: '반도체', prefix: '반도체', names: []},
   {id: 'elec', label: '전기·전자', names: ['전기 부품', '휴대폰 부품', '전자장비', '전선·전기장비', '전자부품', '통신장비', '디스플레이 장비', '디스플레이']},
@@ -21,12 +23,34 @@ export const FAMILIES = [
 ];
 export const OTHER = {id: 'etc', label: '그 밖', names: []};
 
+/** 미국 판 — 업종 이름(네이버 증권 해외주식 업종 · 한국말)이 한국 판 이름표와 달라 낱말로 가른다(2026-10-05 18:02 「미국 주식도 같은 개념으로」)
+   앞 줄이 먼저(항공사 → 자동차·운송 · 항공우주 → 기계·조선·방산) · 한 글자 낱말(「금」)은 「금융」과 섞여 쓰지 않음 [판단] */
+export const US_WORDS = [
+  ['semi', /반도체/],
+  ['bio', /제약|바이오|생명\s?공학|생명\s?과학|의료|헬스|건강\s?관리|병원|진단|의약|약국/],
+  ['fin', /은행|보험|증권|금융|투자|자산\s?(운용|관리)|리츠|부동산|카드|대출|신용|거래소|저축|지주/],
+  ['auto', /자동차|항공사|항공\s?(운송|화물)|운송|물류|철도|트럭|해운|택배|배송/],
+  ['energy', /석유|천연\s?가스|가스|에너지|전력|유틸리티|원자력|우라늄|석탄|재생|태양광|풍력|배터리|2차\s?전지|수도/],
+  ['mach', /기계|항공\s?우주|우주|방산|국방|조선|중장비|로봇|자동화|산업\s?(재|장비|기계)|복합\s?기업/],
+  ['elec', /전자|전기|통신\s?장비|컴퓨터|하드웨어|휴대폰|디스플레이|광학|계측|측정|부품/],
+  ['soft', /소프트웨어|IT|인터넷|온라인|데이터|클라우드|정보\s?기술|전산|플랫폼/],
+  ['media', /통신|무선|미디어|방송|엔터|게임|광고|출판|영화|음악|콘텐츠/],
+  ['mat', /화학|금속|광업|광산|철강|알루미늄|구리|귀금속|종이|포장|목재|비료|소재|시멘트|유리/],
+  ['build', /건설|건축|주택|엔지니어링|토목/],
+  ['cons', /식품|음료|담배|주류|의류|신발|섬유|화장품|생활|가정|개인\s?용품|소매|유통|백화점|할인점|외식|레스토랑|호텔|여행|레저|카지노|교육|가구|가전|소비|전문점|쇼핑/],
+].map(([id, re]) => [FAMILIES.find(f => f.id === id), re]);
+
 const norm = s => String(s ?? '').replace(/\s+/g, ' ').trim();
 const byName = new Map(FAMILIES.flatMap(f => f.names.map(n => [norm(n), f])));
 
-/** 업종 이름 → 큰 갈래(이름이 꼭 맞는 것 먼저 · 「반도체」로 시작하면 반도체 · 그 밖) */
+/** 미국 판 갈래 이름 — 한국 판 이름이 미국 업종과 맞지 않는 셋만(미국 「에너지」 갈래는 석유·가스·전력이 대부분 · 조선은 거의 없음) */
+const US_LABEL = {energy: '에너지·전력', mach: '기계·항공우주·방산', fin: '금융·부동산'};
+const usFam = new Map(FAMILIES.map(f => [f.id, Object.freeze({...f, label: US_LABEL[f.id] ?? f.label})]));
+
+/** 업종 이름 → 큰 갈래(이름이 꼭 맞는 것 먼저 · 「반도체」로 시작하면 반도체 · 미국 판이면 낱말로 · 그 밖) */
 export function familyOf(label) {
   const n = norm(label);
+  if (place.id === 'us') { const f = US_WORDS.find(([, re]) => re.test(n))?.[0]; return f ? usFam.get(f.id) : OTHER; }
   return byName.get(n) ?? FAMILIES.find(f => f.prefix && n.startsWith(f.prefix)) ?? OTHER;
 }
 

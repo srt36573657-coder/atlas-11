@@ -2,7 +2,7 @@
    2026-10-04 08:18 사장님 「그 회사들 예정된 뉴스나 공시 나타나게 해주고 얼마나 중요한지 표기해줘」 · 15:37 「이제 예측을 하지 않는다」
    ⓪ 바뀔 회사 묶음 미리 보기(있을 때만 · 10/5 첫 화면에서 옮김) ① 시장 전체 일정(모든 회사) ② 회사·업종 일정 — 날짜마다 묶고, 같은 일정이 여러 회사에 걸리면 한 줄에 회사 이름 여럿
    ③ 앞으로 있을 일을 알리는 공시(예고·알림) ④ 아주 중요(★★★) 공시 — 지난 30일. 중요도는 종류로 매긴 ATLAS 규칙(주가에 미친 크기가 아님). */
-import {h, korDate} from './util.js';
+import {h, korDate, place} from './util.js';
 import {state, loadAgenda} from './store.js';
 import {marketStrip} from './frame.js';
 import {eventLine, disclosureLine, marketBox, howBox, foot, nextBox} from './parts.js';
@@ -41,11 +41,13 @@ export async function renderAgenda(main, {manifest}) {
       h('h2', {class: 'b-box-h'}, `회사·업종 일정 ${list.length}건`, h('small', null, ' · 날짜 차례')),
       list.length ? h('div', {class: 'a-days'}, ...days.map(d => h('section', {class: 'a-day'}, h('h3', {class: 'a-day-h'}, korDate(d)), h('ul', {class: 'ag-list'}, ...list.filter(e => e.date === d).map(e => eventLine(e, {who: e.who, withRoute: true, date: false})))))) : h('p', {class: 'muted small'}, '확인된 회사·업종 일정 없음'),
       agenda.eventsHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 일정 이름 ${agenda.eventsHidden}건은 싣지 않음`) : null),
-    h('section', {class: 'b-box', 'aria-label': '예고 공시'},
+    // 미국 판: 공시를 아직 싣지 않는다 — 「공시 0건 · 없음」 두 칸 대신 그렇다고 한 칸(util.js place.disclosures === false · 2026-10-05 18:02 「미국 주식도」)
+    place.disclosures === false ? h('section', {class: 'b-box', 'aria-label': '공시'}, h('h2', {class: 'b-box-h'}, '공시'), h('p', {class: 'muted small'}, place.disclosuresNone ?? '공시 자료 없음')) : null,
+    place.disclosures === false ? null : h('section', {class: 'b-box', 'aria-label': '예고 공시'},
       h('h2', {class: 'b-box-h'}, `예고·알림 공시 ${notices.length}건`, h('small', null, ` · 지난 ${dd?.windowDays ?? 30}일에 낸 것`)),
       h('p', {class: 'muted xs'}, '실적 발표 · 설명회 · 주주총회 · 기준일처럼 앞으로 있을 회사 일을 알린 공시입니다 · 그 날짜는 공시 원문에 있습니다'),
       notices.length ? foldList(notices, d => disclosureLine(d, {who: d.who}), '예고·알림 공시') : h('p', {class: 'muted small'}, '예고·알림 공시 없음')),
-    h('section', {class: 'b-box', 'aria-label': '아주 중요한 공시'},
+    place.disclosures === false ? null : h('section', {class: 'b-box', 'aria-label': '아주 중요한 공시'},
       h('h2', {class: 'b-box-h'}, `아주 중요(★★★) 공시 ${big.length}건`, h('small', null, ` · 지난 ${dd?.windowDays ?? 30}일`)),
       big.length ? foldList(big, d => disclosureLine(d, {who: d.who}), '아주 중요 공시') : h('p', {class: 'muted small'}, '아주 중요(★★★) 공시 없음'),
       dd?.day ? h('p', {class: 'muted xs'}, `공시는 ${korDate(dd.day)}까지 받은 것 · 출처 ${dd.provider}`) : null),

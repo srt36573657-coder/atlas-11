@@ -68,9 +68,9 @@ export function howBox(agenda) {
       h('li', null, '출목표: 지난 20거래일 하루 등락을 1% 에 동그라미 하나로 쌓은 표입니다 · 빨강 = 오른 날 · 파랑 = 내린 날 · 같은 쪽이 이어지면 아래로, 바뀌면 옆 줄'),
       h('li', null, '힘 저울: 처음 15일과 최근 5일의 빨간 동그라미 수 대 파란 동그라미 수 · 흐름 한 마디는 둘을 이어 읽은 말입니다(지난 거래일만 봄)'),
       ...(agenda?.rules?.events ?? []).map(x => h('li', null, '일정 ' + x)),
-      ...(agenda?.rules?.disclosures ?? []).map(x => h('li', null, '공시 ' + x)),
+      ...(place.disclosures === false ? [] : (agenda?.rules?.disclosures ?? []).map(x => h('li', null, '공시 ' + x))), // 미국 판은 공시를 싣지 않아 공시 별 규칙도 뺌
       h('li', null, agenda?.rules?.note ?? '중요도는 일정·공시의 종류로 매긴 ATLAS 규칙입니다')),
-    h('p', {class: 'muted xs'}, `일정 출처: ${agenda?.sources?.events ?? '확인된 일정표'} · 공시 출처: ${agenda?.sources?.disclosures?.provider ?? '네이버 증권 공시 목록'}`));
+    h('p', {class: 'muted xs'}, `일정 출처: ${agenda?.sources?.events ?? '확인된 일정표'} · ${place.disclosures === false ? (place.disclosuresNone ?? '공시 없음') : `공시 출처: ${agenda?.sources?.disclosures?.provider ?? '네이버 증권 공시 목록'}`}`));
 }
 /** 값 줄: 「276,000원 · 전날과 같음 · 10월 2일(금) 15:30 종가」 / 「… ▲ +1.23% …」 */
 export function priceLine(c, {big = false} = {}) {
