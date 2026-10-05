@@ -1,0 +1,14 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ATLAS 로고 샘플 한눈에</title><link rel="icon" href="data:,"><link rel="stylesheet" href="logo.css">
+<style>.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}.g{background:#13261F;border:1px solid var(--hair);border-radius:14px;padding:10px 6px 9px;display:grid;justify-items:center;gap:6px;text-align:center}.g.now{background:transparent;border-style:dashed}.g .nm{font-size:14px;line-height:1.25;font-weight:700}.g .nn{font-size:13px;color:var(--geum)}.strip{margin-top:16px;background:#1B3B32;border-radius:14px;padding:12px 12px 10px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 6px}.strip div{display:grid;justify-items:center;gap:3px;font-size:12px;color:#BFD6CB}.q{margin:16px 0 0;padding:12px 14px;border-radius:14px;background:var(--fill);font-size:17px}</style></head>
+<body><main class="sheet"><header class="hd"><div class="num">11</div><div><h1>로고 샘플 한눈에</h1><p class="sub">아틀라스 = 지도책 · 지도 뜻을 담은 로고 11개</p></div>
+<p class="tag"><span>ATLAS 로고 샘플 0 / 11</span><span>2026년 10월 5일(월) 만듦</span></p></header>
+<div class="grid" id="g"></div>
+<p class="lab">위 막대 크기(28)로 견주기</p><div class="strip" id="st"></div>
+<p class="q">빨강은 모두 「오름」 한 자리에만 썼습니다. 어느 로고가 가장 지도답게 읽히나요?</p>
+<p class="foot">샘플 — 사이트에 아직 없음 · 점선 칸 = 지금 위 막대의 작은 인장(혼천의) · 장마다 크게 · 위 막대 · 앱 아이콘 모습은 이어지는 사진에</p></main>
+<script src="marks.js"></script><script>
+const {MARKS, NOW, svg} = window.LOGO;
+document.getElementById('g').innerHTML = MARKS.map((m, i) => `<div class="g">${svg(m, 'dark', 96)}<span class="nn">${i + 1}</span><span class="nm">${m.name}</span></div>`).join('') + `<div class="g now">${svg(NOW, 'dark', 96)}<span class="nn">지금</span><span class="nm">혼천의(지금 사이트)</span></div>`;
+document.getElementById('st').innerHTML = MARKS.map((m, i) => `<div>${svg(m, 'icon', 28)}<span>${i + 1}</span></div>`).join('') + `<div>${svg(NOW, 'icon', 28)}<span>지금</span></div>`;
+document.fonts.ready.then(() => { window.READY = true; });
+</script></body></html>
