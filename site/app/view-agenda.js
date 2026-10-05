@@ -7,6 +7,15 @@ import {state, loadAgenda} from './store.js';
 import {marketStrip} from './frame.js';
 import {eventLine, disclosureLine, marketBox, howBox, foot, nextBox} from './parts.js';
 
+/** 긴 공시 목록은 앞 10건만 펼치고 나머지는 접는다(2026-10-05 15:24 「잡스가 … 36가지」 D1 · D2 — 일정 화면이 휴대폰 화면 열여덟 장 길이라)
+   접힌 줄도 같은 목록 안에 그대로 있다(지우지 않음 · 화면 읽기 프로그램과 검사기는 모두 셈) · 12건 이하면 접지 않는다 */
+const FOLD = 10;
+function foldList(items, line, what) {
+  if (items.length <= FOLD + 2) return h('ul', {class: 'ag-list'}, ...items.map(line));
+  return h('div', {class: 'ag-folded'}, h('ul', {class: 'ag-list'}, ...items.slice(0, FOLD).map(line)),
+    h('details', {class: 'ag-fold'}, h('summary', null, `${what} ${items.length - FOLD}건 더 보기`, h('small', null, ` · 모두 ${items.length}건`)), h('ul', {class: 'ag-list'}, ...items.slice(FOLD).map(line))));
+}
+
 export async function renderAgenda(main, {manifest}) {
   const agenda = await loadAgenda();
   const evs = new Map(), notices = [], big = [];
@@ -35,10 +44,10 @@ export async function renderAgenda(main, {manifest}) {
     h('section', {class: 'b-box', 'aria-label': '예고 공시'},
       h('h2', {class: 'b-box-h'}, `예고·알림 공시 ${notices.length}건`, h('small', null, ` · 지난 ${dd?.windowDays ?? 30}일에 낸 것`)),
       h('p', {class: 'muted xs'}, '실적 발표 · 설명회 · 주주총회 · 기준일처럼 앞으로 있을 회사 일을 알린 공시입니다 · 그 날짜는 공시 원문에 있습니다'),
-      notices.length ? h('ul', {class: 'ag-list'}, ...notices.map(d => disclosureLine(d, {who: d.who}))) : h('p', {class: 'muted small'}, '예고·알림 공시 없음')),
+      notices.length ? foldList(notices, d => disclosureLine(d, {who: d.who}), '예고·알림 공시') : h('p', {class: 'muted small'}, '예고·알림 공시 없음')),
     h('section', {class: 'b-box', 'aria-label': '아주 중요한 공시'},
       h('h2', {class: 'b-box-h'}, `아주 중요(★★★) 공시 ${big.length}건`, h('small', null, ` · 지난 ${dd?.windowDays ?? 30}일`)),
-      big.length ? h('ul', {class: 'ag-list'}, ...big.map(d => disclosureLine(d, {who: d.who}))) : h('p', {class: 'muted small'}, '아주 중요(★★★) 공시 없음'),
+      big.length ? foldList(big, d => disclosureLine(d, {who: d.who}), '아주 중요 공시') : h('p', {class: 'muted small'}, '아주 중요(★★★) 공시 없음'),
       dd?.day ? h('p', {class: 'muted xs'}, `공시는 ${korDate(dd.day)}까지 받은 것 · 출처 ${dd.provider}`) : null),
     howBox(agenda),
     foot(manifest)));

@@ -259,7 +259,7 @@ export async function renderRoad(main, {manifest} = {}) {
   }
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, `출목표 ${n}곳`),
+      h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), // 개수는 제목 곁 작은 글(규칙 2 · 불장 · 업종 탭과 같은 모양)
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
       h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사'),
       ctxNote(board.companies)),
