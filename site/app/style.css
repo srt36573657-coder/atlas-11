@@ -433,3 +433,38 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
   body[data-view="similar"] .main, body[data-view="similar"] .top-inner, body[data-view="rise"] .main, body[data-view="rise"] .top-inner { max-width: 720px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* 2026-10-05 10:24 「잡스라면 … 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 1차 올림
+   ① 불장 탭 맨 위 스위치 셋(예비 · 오름 상위) — 출목표 묶음 단추(.f-seg)와 같은 옷 · 고른 것은 aria-current
+   ② 탭 「불장」 큰 흐름 장(.hf-*) — 같은 큰 갈래의 불장 업종을 한 장에
+   ③ 탭 「업종」 큰 갈래 단추(.fm-*) — 누르면 그 갈래 칸만(칸 차례는 그대로) · 고른 단추는 먹색(강조색 하나) */
+.hs-seg { max-width: 30rem; margin: 6px 0 4px; }
+.hs-b { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; text-decoration: none; color: var(--ink); }
+.hs-l { line-height: 1.2; }
+.hs-n { font-size: .8125rem; font-weight: 500; color: var(--sub); line-height: 1.2; }
+.f-seg-b[aria-current="page"] { background: var(--seg-on); box-shadow: 0 0 0 1px var(--hair), 0 1px 3px rgba(40, 30, 15, .14); }
+.f-seg-b[aria-current="page"]::after { content: ''; position: absolute; left: 50%; bottom: 3px; width: 24px; height: 2px; margin-left: -12px; border-radius: 1px; background: var(--geum); }
+.b-title .b-count { font-size: .5em; font-weight: 500; color: var(--sub); letter-spacing: 0; white-space: nowrap; vertical-align: .2em; }
+.hf-flows { display: grid; gap: 12px; margin: 16px 0 0; }
+.hf-card { padding: 12px 14px 4px; background: var(--card); border-radius: 16px; box-shadow: 0 0 0 1px var(--hair), var(--lift); }
+.hf-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 0 4px; }
+.hf-name { font-size: 1.375rem; font-weight: 700; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.hf-n { flex: none; font-size: .9375rem; color: var(--sub); }
+.hf-list { list-style: none; margin: 0; padding: 0; }
+.hf-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "r c" "g c"; align-items: center; gap: 3px 10px; min-height: 58px; padding: 8px 2px; border-top: 1px solid var(--sep); color: var(--ink); text-decoration: none; }
+.hf-list li:first-child .hf-row { border-top: 0; }
+.hf-row:active { background: var(--fill); }
+.hf-g { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.hf-gname { font-size: 1.125rem; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
+.hf-up { font-size: .875rem; color: var(--sub); }
+.hf-chg { margin-top: 0; font-size: 1.25rem; text-align: right; }
+.hf-rank { grid-area: r; justify-self: start; } .hf-g { grid-area: g; } .hf-chg { grid-area: c; } /* 순위 표시는 위 · 이름은 아래 · 변화는 오른쪽 — 고정 폭 칸이 없어 글씨 200% · 좁은 휴대폰에서도 넘치지 않음 */
+.fm-box { margin: 14px 0 0; }
+.fm-sub { margin-bottom: 4px; }
+.fm-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.fm-b { display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font-size: 1rem; font-weight: 700; line-height: 1.2; cursor: pointer; }
+.fm-n { font-size: .875rem; font-weight: 500; }
+.fm-b[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.fm-b:active { transform: scale(.98); }
+.fm-note { margin: 8px 2px 0; }
+.t-tile[hidden] { display: none; }

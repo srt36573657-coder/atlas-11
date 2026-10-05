@@ -182,6 +182,17 @@ export function newsLine(brief) {
 /** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */
 export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '어느 회사를 고르라고 하지 않습니다', '알림을 보내지 않습니다',
   '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익을 셈하지 않습니다', '값이 늦거나 빠지면 그렇다고 적습니다(0 으로 채우지 않음)'];
+/** 불장 탭 맨 위 스위치 셋 — [불장 | 예비 | 오름 상위] (2026-10-05 10:24 「잡스라면 36가지」 14번)
+   세 명단이 모두 「어디가 뜨겁나」에 답하므로 아래 탭 셋이 아니라 한 탭 안의 스위치로 · 내리지 않고 한 번 눌러 바뀐다(05:03 「밑으로 내려야 하잖아」 그대로 지킴)
+   이름에는 숫자를 넣지 않고(28번) 개수는 작은 글로 곁에 — 개수가 바뀌어도 이름은 그대로
+   셋째 이름은 처음에 「많이 오른 곳」이었으나 또렷함 검사 2번(숫자 없는 「많이」 = 흐릿한 말)에 걸려 「오름 상위」로 — 뜻은 같고(불장 밖에서 20거래일 많이 오른 차례) 흐릿한 말이 없다 */
+export const HOT_SEGS = [{id: 'home', href: '#/', label: '불장', unit: '개'}, {id: 'similar', href: '#/similar', label: '예비', unit: '곳'}, {id: 'rise', href: '#/rise', label: '오름 상위', unit: '곳'}];
+export const hotCounts = board => ({home: board?.hot?.items?.length ?? 0, similar: board?.similar?.items?.length ?? 0, rise: board?.next?.items?.length ?? 0});
+export function hotSwitch(active, counts = {}) {
+  return h('nav', {class: 'f-seg hs-seg', 'aria-label': '불장 · 예비 · 오름 상위 바꾸기'},
+    ...HOT_SEGS.map(s => h('a', {class: 'f-seg-b hs-b', href: s.href, 'data-seg': s.id, 'aria-current': s.id === active ? 'page' : null},
+      h('span', {class: 'hs-l'}, s.label), Number.isInteger(counts[s.id]) ? h('small', {class: 'hs-n'}, `${counts[s.id]}${s.unit}`) : null)));
+}
 export function promiseBox() {
   return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${NOT_DO.length}가지`), h('ul', null, ...NOT_DO.map(x => h('li', null, x))));
 }

@@ -21,12 +21,16 @@
  *   앞날 말 없음: 화면 글(공식 이름 data-ident 는 따로)에 전망·예측·확률·오를 쪽·내릴 쪽·목표가·추천 … 이 없어야 · 예측 표시(data-forecast-date) 0
  *   콘솔 오류 0 · 요청 실패 0 · 무결성(판 목록 SHA-256) · 어두운 화면
  *   또렷함(화면 6 × 보기 5): 1 내일·오늘·어제 · 2 흐릿한 말 · 3 단위·기준 빠진 숫자 · 5 대비 · 7 잘린 글자 — 0 이 아니면 실패 · 검사기 자체 시험
+ *   2026-10-05 10:24 「잡스라면 … 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 1차: 아래 탭 넷(불장 · 업종 · 출목표 · 일정)
+ *     탭 「불장」(#/): 제목 「불장 업종 N개」 · 큰 흐름 한 줄 · 큰 흐름 장 = 판의 불장을 큰 갈래(site/app/family.js)로 묶은 것 · 맨 위 스위치 셋 [불장 | 예비 | 오름 상위]
+ *     탭 「업종」(#/map): 옛 처음 화면의 73칸 판 그대로 + 큰 갈래 단추 · 업종 화면 「‹ 업종」 · 예비 · 오름 상위은 스위치로 가고 탭 「불장」이 눌린 채로
  * 결과: reports/atlas11/browser/<시각>/report.json + 화면 사진
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {measureClarity} from './clarity/measure.mjs';
+import {groupByFamily} from '../../site/app/family.js';
 import {SCREENS, VIEWS, renderAll, screenHash} from './clarity_check.mjs';
 import {roadOf, STORY} from '../../site/app/road.js';
 import {PREDICTION_WORDS} from '../../lib/atlas11/board.mjs';
@@ -100,9 +104,34 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const shot = name => page.screenshot({path: path.join(dir, `${label}-${name}.png`), fullPage: false});
 
   // ① 처음 화면 = 36칸 판(2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」) — 업종 칸 · 「불장」 · 색 보기표 · 다음 불장 후보 · 칸을 누르면 업종 화면
-  const N = board.companies.length, G = board.groups.length, HOT = board.hot?.items ?? [], NEXT = board.next?.items ?? [], H = `처음 화면(업종 ${G}칸)`, byCodeB0 = new Map(board.companies.map(c => [c.code, c]));
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(400);
-  await shot('01-home');
+  const N = board.companies.length, G = board.groups.length, HOT = board.hot?.items ?? [], NEXT = board.next?.items ?? [], H = `탭 「업종」(업종 ${G}칸)`, byCodeB0 = new Map(board.companies.map(c => [c.code, c]));
+  // ①-0 탭 「불장」(#/ · 2026-10-05 10:24 「잡스라면 36가지」 13~15 · 20번) — 불장 업종만 · 같은 큰 갈래끼리 한 장 · 맨 위 스위치 셋
+  {
+    await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.hf-row, .h-page .b-note'); await page.waitForTimeout(300);
+    await shot('01-hot');
+    const hr = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), sum: document.querySelector('.hf-sum')?.innerText.trim() ?? null,
+      segs: [...document.querySelectorAll('.hs-seg .hs-b')].map(a => ({seg: a.dataset.seg, href: a.getAttribute('href'), cur: a.getAttribute('aria-current'), label: a.querySelector('.hs-l')?.textContent.trim(), n: a.querySelector('.hs-n')?.textContent.trim()})),
+      cards: [...document.querySelectorAll('.hf-card')].map(c => ({fam: c.dataset.family, name: c.querySelector('.hf-name')?.textContent.trim(), n: c.querySelector('.hf-n')?.textContent.trim(), rows: [...c.querySelectorAll('.hf-row')].map(a => ({id: a.dataset.group, href: a.getAttribute('href'), rank: a.querySelector('.hf-rank')?.textContent.trim(), name: a.querySelector('.hf-gname')?.textContent.trim(), chg: a.querySelector('.hf-chg')?.textContent.trim(), up: a.querySelector('.hf-up')?.textContent.trim()}))})),
+      tiles: document.querySelectorAll('.t-tile').length, active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.innerText.replace(/\s+/g, '').trim()),
+      promise: document.querySelector('.b-promise-box summary')?.innerText.trim(), footPromise: document.querySelector('.b-foot .b-promise')?.innerText.trim(), sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    const flowsW = groupByFamily(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
+    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 넷 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,업종,출목표,일정' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
+    check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
+    const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
+    check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 가장 앞 업종 차례 · 장 안은 판 차례) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
+    check(`${label} 탭 「불장」: 「${hr.promise}」 접힌 칸 · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === 'ATLAS가 하지 않는 일 7가지' && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: hr.promise, footPromise: hr.footPromise});
+    await wordsCheck(page, `${label} 탭 「불장」`);
+    if (HOT.length) {
+      const g0 = flowsW[0].groups[0], rl = page.locator(`.hf-row[data-group="${g0.id}"]`); await rl.scrollIntoViewIfNeeded();
+      if (mobile) await rl.tap(); else await rl.click();
+      await page.waitForSelector(`article.i-page[data-group="${g0.id}"] .b-card`); await page.waitForTimeout(200);
+      const ib = await page.evaluate(() => ({hash: location.hash, back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
+      check(`${label} 탭 「불장」 줄 「${g0.label}」 ${mobile ? '터치' : '누름'} → 업종 화면 · 되돌아가기 「${ib.back[1]}」 · 탭 「불장」 눌린 채로`, ib.hash === '#/i/' + g0.id && ib.back[0] === '#/' && ib.back[1] === '‹ 불장' && ib.active === 'home', ib);
+    }
+  }
+  // ① 탭 「업종」(#/map) = 옛 처음 화면의 73칸 판 — 업종 칸 · 「불장」 · 큰 갈래 단추 · 칸을 누르면 업종 화면
+  await page.goto(base + '/#/map', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(400);
+  await shot('01-map');
   const top = await page.evaluate(() => ({title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), kinds: document.querySelector('.b-kinds')?.textContent.trim() ?? null, ncRows: document.querySelectorAll('.nc-row').length, promise: document.querySelector('.b-promise-box summary')?.innerText.trim(), footPromise: document.querySelector('.b-foot .b-promise')?.innerText.trim(), late: [...document.querySelectorAll('.b-late')].map(e => e.innerText.trim()), strip: document.querySelector('.mstrip')?.innerText.replace(/\s+/g, ' ').trim(),
     active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.innerText.replace(/\s+/g, '').trim()),
     tiles: [...document.querySelectorAll('.t-grid > .t-tile')].map(a => ({id: a.dataset.group, href: a.getAttribute('href'), sign: [...a.classList].find(c => c.startsWith('s-'))?.slice(2) ?? null, bg: getComputedStyle(a).backgroundColor, rank: a.querySelector('.t-rank')?.textContent.trim() ?? null, fire: a.querySelector('.t-fire')?.textContent.trim() ?? null, name: a.querySelector('.t-name')?.textContent.trim(), chg: a.querySelector('.t-chg')?.textContent.trim(), dsign: a.querySelector('.t-chg')?.dataset.sign ?? 'flat', up: a.querySelector('.t-up')?.textContent.trim(), kids: a.children.length})),
@@ -111,8 +140,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const kindsWant = board.kinds ? [`업종 ${G}개`, `우량주 ${board.kinds.quality ?? 0}곳`, `시대 트렌드 ${board.kinds.trend ?? 0}곳`, board.kinds.profit ? `흑자 ${board.kinds.profit}곳` : null, board.kinds.size ? `채움 ${board.kinds.size}곳` : null].filter(Boolean).join(' · ') : null;
   const fromM = mode(board.companies.map(c => c.cFrom)), toM = mode(board.companies.map(c => c.date));
   const upsG = board.groups.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
-  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 ${top.tabs.join('·')}(「불장」 눌림) · 처음 화면엔 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
-    top.title === `불장 ${HOT.length}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === `불장,예비,${NEXT.length}곳,출목표,일정` && top.active === 'home' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
+  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 넷 ${top.tabs.join('·')}(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
+    top.title === `업종 ${G}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === '불장,업종,출목표,일정' && top.active === 'map' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
   const tileMis = board.groups.map((g, i) => { const t = top.tiles[i]; return t && t.id === g.id && t.href === '#/i/' + g.id && t.name === g.label && (g.hot ? t.fire === `불장 ${i + 1}위` && t.rank === null : t.rank === `${i + 1}위` && t.fire === null) && t.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && t.up === upWant(g) && t.sign === signW(g.change20) && t.dsign === signW(g.change20) && t.kids === 4 ? null : {i, g: g.label, t}; }).filter(Boolean);
   check(`${label} ${H}: 업종 칸 ${top.tiles.length}개 = 판의 업종 ${G}개 · 칸마다 넷(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 ▲▼ · 몇 곳 올랐나) · 차례 · 오름/내림 선 · 누르면 갈 주소가 판과 같음`, top.tiles.length === G && !tileMis.length, {tileMis: tileMis.slice(0, 3)});
   const fires = top.tiles.map((t, i) => t.fire ? i : -1).filter(i => i >= 0);
@@ -120,7 +149,19 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 칸 바탕은 한 색(세기 색 없음) · 색 보기표 없음(2026-10-05 잡스 개혁 — 설명표가 따로 필요하면 그림이 스스로 말하지 못한다는 신호 · 애플 WWDC17)
   const bgs = new Set(top.tiles.map(t => t.bg));
   check(`${label} ${H}: 칸 바탕 ${bgs.size}색(한 색) · 색 보기표 없음 · 오름 칸 ${top.tiles.filter(t => t.sign === 'up').length}개 · 내림 칸 ${top.tiles.filter(t => t.sign === 'down').length}개`, bgs.size === 1 && top.legend === 0, {bgs: [...bgs], legend: top.legend});
-  check(`${label} ${H}: 「${top.promise}」 접힌 칸 · 맨 아래 약속 한 줄 「${top.footPromise}」`, top.promise === 'ATLAS가 하지 않는 일 7가지' && top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: top.promise, footPromise: top.footPromise});
+  check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {footPromise: top.footPromise});
+  // 큰 갈래 단추(2026-10-05 「잡스라면」 19번) — 「모두」 + 판의 갈래 · 누르면 그 갈래 칸만(판 차례 그대로) · 「모두」로 되돌림
+  {
+    const famW = groupByFamily(board.groups), upsOf = gs => gs.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
+    const fm = await page.evaluate(() => [...document.querySelectorAll('.fm-b')].map(b => ({id: b.dataset.family, pressed: b.getAttribute('aria-pressed'), label: b.querySelector('.fm-l')?.textContent.trim(), n: b.querySelector('.fm-n')?.textContent.trim()})));
+    check(`${label} ${H}: 큰 갈래 단추 ${fm.length}개 = 「모두」 + 판의 갈래 ${famW.length}개 · 단추마다 「오른 업종/업종 수」 · 처음엔 「모두」`, fm.map(b => `${b.id}|${b.label}|${b.n}|${b.pressed}`).join() === [`all|모두|${upsOf(board.groups)}/${G}|true`, ...famW.map(f => `${f.fam.id}|${f.fam.label}|${upsOf(f.groups)}/${f.groups.length}|false`)].join(), fm);
+    const f1 = famW[0], fb = page.locator(`.fm-b[data-family="${f1.fam.id}"]`); if (mobile) await fb.tap(); else await fb.click(); await page.waitForTimeout(150);
+    const vis = await page.evaluate(() => [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).map(t => t.dataset.group));
+    check(`${label} ${H}: 「${f1.fam.label}」 단추 ${mobile ? '터치' : '누름'} → 보이는 칸 ${vis.length}개 = 그 갈래 업종 ${f1.groups.length}개(판 차례 그대로)`, vis.join() === f1.groups.map(g => g.id).join(), {vis});
+    const fa = page.locator('.fm-b[data-family="all"]'); if (mobile) await fa.tap(); else await fa.click(); await page.waitForTimeout(150);
+    const allN = await page.evaluate(() => [...document.querySelectorAll('.t-grid > .t-tile')].filter(t => !t.hidden && t.offsetParent !== null).length);
+    check(`${label} ${H}: 「모두」 → 보이는 칸 ${allN}개 = ${G}개`, allN === G, {allN});
+  }
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
   check(`${label} ${H}: 시장 띠(코스피·코스닥 · 기준 날짜)`, manifest.market ? manifest.market.items.every(i => top.strip.includes(i.name)) && top.strip.includes(kd(manifest.market.items[0].date) + ' 15:30 KST 종가') : /시장 지수 없음/.test(top.strip), {strip: top.strip});
   await wordsCheck(page, `${label} ${H}`);
@@ -148,7 +189,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         scaleNote: [...art.querySelectorAll('.t-sub')].map(p => p.textContent.trim()).find(t => t.startsWith('선 그래프 눈금')) ?? null, how: art.querySelectorAll('.b-how').length,
         sw: document.documentElement.scrollWidth, iw: innerWidth};
     });
-    if (!(r.title === g.label && r.rank === `${G}칸 가운데 ${k + 1}위` && (r.fire === '불장') === Boolean(g.hot) && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.when.endsWith(` · ${upWant(g)}`) && r.back[0] === '#/' && r.back[1] === `‹ 불장 ${HOT.length}개`)) headMis.push({g: g.label, r: {...r, bars: undefined, cards: undefined}});
+    if (!(r.title === g.label && r.rank === `${G}칸 가운데 ${k + 1}위` && (r.fire === '불장') === Boolean(g.hot) && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.when.endsWith(` · ${upWant(g)}`) && r.back[0] === '#/map' && r.back[1] === '‹ 업종')) headMis.push({g: g.label, r: {...r, bars: undefined, cards: undefined}});
     const cs = g.codes.map(code => byCodeB.get(code)), max = Math.max(0.01, ...cs.map(c => Math.abs(c.change20)).filter(Number.isFinite));
     if (r.bars.map(b => b.code).join() !== g.codes.join() || cs.some((c, i) => { const b = r.bars[i], v = c.change20; return b.name !== c.name || b.href !== '#/stock/' + c.code || b.val !== p1(v) || Math.abs(b.w - Math.max(1.5, Math.abs(v) / max * 50)) > 0.01 || (v < 0 ? b.right !== '50%' : b.left !== '50%'); })) barMis.push({g: g.label, bars: r.bars});
     if (r.cards.map(c => c.code).join() !== g.codes.join()) cardMis.push({g: g.label, order: r.cards.map(c => c.code)});
@@ -165,7 +206,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const t = await textsOf(page), bad = (t.ours.match(new RegExp(PREDICTION_WORDS.source, 'g')) ?? []).concat(t.ours.match(new RegExp(OUR_FORBIDDEN.source, 'g')) ?? [], t.idents.filter(x => PREDICTION_WORDS.test(x)));
     if (bad.length || t.marks) wordsBad.push({g: g.label, bad: bad.slice(0, 3), marks: t.marks});
   }
-  check(`${label} 업종 화면 ${G}장 모두: 제목·「${G}칸 가운데 n위」·「불장」 표시·지난 20거래일 평균·몇 곳 올랐나·「‹ 불장 ${HOT.length}개」 = 판`, !headMis.length, {headMis: headMis.slice(0, 2)});
+  check(`${label} 업종 화면 ${G}장 모두: 제목·「${G}칸 가운데 n위」·「불장」 표시·지난 20거래일 평균·몇 곳 올랐나·「‹ 업종」(들어온 탭) = 판`, !headMis.length, {headMis: headMis.slice(0, 2)});
   check(`${label} 업종 화면 ${G}장 모두: 「누가 끌었나」 막대 = 그 업종 회사 · 차례·이름·값·회사 화면 링크 · 방향(오름은 0 오른쪽 · 내림은 0 왼쪽) · 길이(가장 큰 값이 반 폭)`, !barMis.length, {barMis: barMis.slice(0, 2)});
   check(`${label} 업종 화면 ${G}장 모두: 카드 합 ${cardsTotal}장 · 서로 다른 회사 ${seen.size}곳 = 판 ${N}곳(겹침 없음) · 업종마다 판의 차례 · 카드 하나에 넷(이름·20거래일 변화 · 선 그래프 · 수급 · 기사 — 값 줄·출목표·일정은 회사 화면) · 회사 화면 링크가 판과 같음`, cardsTotal === N && seen.size === N && [...seen.values()].every(v => v === 1) && !cardMis.length, {cardMis: cardMis.slice(0, 5)});
   check(`${label} 업종 화면 ${G}장 모두: 읽는 법 접힌 칸 없음(카드에 출목표·별이 없으므로)`, !agMis.length, {agMis: agMis.slice(0, 5)});
@@ -185,14 +226,15 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   check(`${label} 회사 화면 「‹ ${hg.label}」 ${mobile ? '터치' : '누름'} → 그 업종 화면으로 돌아옴`, (await page.evaluate(() => location.hash)) === '#/i/' + hg.id);
   // ①-3 탭 「22곳」(#/rise · 2026-10-05 05:07 「해」 — 처음 화면 아래에 있던 목록을 자기 탭으로) — 판과 같은 22곳 · 줄 → 회사 → 「‹ 불장 밖에서 많이 오른 N곳」 → 보던 자리
   {
-    const t22 = page.locator('.bottom-link[data-route="rise"]'); if (mobile) await t22.tap(); else await t22.click();
+    const tH = page.locator('.bottom-link[data-route="home"]'); if (mobile) await tH.tap(); else await tH.click(); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(150);
+    const t22 = page.locator('.hs-b[data-seg="rise"]'); if (mobile) await t22.tap(); else await t22.click();
     await page.waitForSelector('.r-page'); await page.waitForTimeout(300);
     await shot('02b-rise');
-    const rr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, moves: document.querySelector('.r-moves')?.innerText.trim() ?? null,
+    const rr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, seg: document.querySelector('.hs-b[aria-current="page"]')?.dataset.seg ?? null, moves: document.querySelector('.r-moves')?.innerText.trim() ?? null,
       next: [...document.querySelectorAll('.nc-list .nc-row')].map(a => { const sp = a.querySelector('.spark'); return {href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim(), sp: sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi} : null}; }),
       sw: document.documentElement.scrollWidth, iw: innerWidth}));
     const scN = scaleW(NEXT.map(x => byCodeB0.get(x.code)));
-    check(`${label} 탭 「22곳」 ${mobile ? '터치' : '누름'} → #/rise · 제목 「${rr.title}」 · 「${rr.when}」 · 탭 「22곳」 눌림`, rr.hash === '#/rise' && rr.title === `불장 밖에서 많이 오른 ${NEXT.length}곳` && rr.when === `불장 ${HOT.length}개 업종 밖 회사 가운데 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지` && rr.active === 'rise', {...rr, next: undefined});
+    check(`${label} 스위치 「오름 상위」 ${mobile ? '터치' : '누름'} → #/rise · 제목 「${rr.title}」 · 「${rr.when}」 · 탭 「불장」 눌림 · 스위치 「오름 상위」 고름`, rr.hash === '#/rise' && rr.title === `오름 상위 ${NEXT.length}곳` && rr.when === `불장 ${HOT.length}개 업종 밖 회사 ${NEXT.length}곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${kd(fromM)}부터 ${kd(toM)} 15:30 종가까지` && rr.active === 'home' && rr.seg === 'rise', {...rr, next: undefined});
     check(`${label} 「22곳」: 줄 ${rr.next.length}개 = 판(${NEXT.length}곳) · 줄마다 이름·업종·작은 선 그래프(종가 ${board.companies[0].c.length}개 · ${NEXT.length}곳 같은 눈금)·20거래일 변화·회사 화면 링크 · 불장 업종 회사 없음 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · 옆으로 넘치지 않음`, board.next && rr.next.length === NEXT.length && NEXT.every((x, i) => rr.next[i]?.href === '#/stock/' + x.code && rr.next[i]?.name === x.name && rr.next[i]?.ind === x.groupLabel && rr.next[i]?.chg === p1(x.change20) && rr.next[i]?.sp?.n === byCodeB0.get(x.code).c.length && rr.next[i]?.sp?.lo === scN.lo.toFixed(4) && rr.next[i]?.sp?.hi === scN.hi.toFixed(4)) && !NEXT.some(x => HOT.some(hh => hh.id === x.groupId)) && Object.values(NEXT.reduce((m, x) => (m[x.groupId] = (m[x.groupId] ?? 0) + 1, m), {})).every(v => v <= (board.next.perIndustry ?? 2)) && rr.sw <= rr.iw, {next: rr.next.slice(0, 3), sw: rr.sw});
     const mv = board.moves, movesWant = mv && !mv.first ? `저녁 7시 기록 ${kd(mv.from)} → ${kd(mv.to)} · 새로 든 곳 ${mv.nextIn.length}곳(${mv.nextIn.map(x => x.name).join(' · ') || '없음'}) · 빠진 곳 ${mv.nextOut.length}곳(${mv.nextOut.map(x => x.name).join(' · ') || '없음'})` : null;
     check(`${label} 「22곳」: 저녁 7시 기록끼리 견준 들고 남 한 줄 = 판(${movesWant ? '있음' : '기록이 둘보다 적어 없음'})`, rr.moves === movesWant, {moves: rr.moves, movesWant});
@@ -203,16 +245,16 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       if (mobile) await row.tap(); else await row.click();
       await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
       const nr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
-      check(`${label} 「22곳」 줄 「${n0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${nr.back[1]}」 · 탭 「22곳」 눌린 채로`, nr.hash === '#/stock/' + n0.code && nr.title === n0.name && nr.back[0] === '#/rise' && nr.back[1] === `‹ 불장 밖에서 많이 오른 ${NEXT.length}곳` && nr.active === 'rise', nr);
+      check(`${label} 「오름 상위」 줄 「${n0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${nr.back[1]}」 · 탭 「불장」 눌린 채로`, nr.hash === '#/stock/' + n0.code && nr.title === n0.name && nr.back[0] === '#/rise' && nr.back[1] === '‹ 오름 상위' && nr.active === 'home', nr);
       const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
       await page.waitForSelector('.r-page .nc-row'); await page.waitForTimeout(400);
       const rb = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)}));
-      check(`${label} 회사 화면 「‹ 불장 밖에서 많이 오른 ${NEXT.length}곳」 → 22곳 · 보던 자리(${y0}px → ${rb.y}px)`, rb.hash === '#/rise' && Math.abs(rb.y - y0) <= 2, {y0, rb});
+      check(`${label} 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(${y0}px → ${rb.y}px)`, rb.hash === '#/rise' && Math.abs(rb.y - y0) <= 2, {y0, rb});
     }
   }
   // ①-4 탭 「예비」(#/similar · 2026-10-05 05:03 「불장에 공통된점을 찾아 아직 불징이 아닌 종목 7개를」 · 05:07 「해」) — 이 검사기가 판의 셈을 따로 다시 센다
   {
-    const SIM = board.similar, ts = page.locator('.bottom-link[data-route="similar"]'); if (mobile) await ts.tap(); else await ts.click();
+    const SIM = board.similar, ts = page.locator('.hs-b[data-seg="similar"]'); if (mobile) await ts.tap(); else await ts.click();
     await page.waitForSelector('.s-page'); await page.waitForTimeout(300);
     await shot('02c-similar');
     // 따로 센 공통점 후보 아홉(화면·판 코드와 따로 적음) — true / false / null(모름)
@@ -228,13 +270,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const scored = restCs.map(c => ({c, has: cIds.filter(id => TW[id](c) === true)})).filter(x => cIds.length && x.has.length >= needW).sort((a, b) => b.has.length - a.has.length || (fin(b.c.change20) ? b.c.change20 : -Infinity) - (fin(a.c.change20) ? a.c.change20 : -Infinity) || a.c.code.localeCompare(b.c.code));
     const per = new Map(), simW = []; for (const x of scored) { const g = x.c.group?.id ?? 'none'; if ((per.get(g) ?? 0) >= 2) continue; per.set(g, (per.get(g) ?? 0) + 1); simW.push(x); if (simW.length === 7) break; }
     check(`${label} 「예비」: 판의 닮은 ${SIM.items.length}곳 = 이 검사기가 따로 센 ${simW.length}곳(공통점 ${cIds.join('·')} · ${needW}가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)`, SIM.common.join() === cIds.join() && SIM.items.map(x => x.code).join() === simW.map(x => x.c.code).join() && SIM.items.every((x, i) => x.has.join() === simW[i].has.join()), {board: SIM.items.map(x => x.name), mine: simW.map(x => x.c.name), common: SIM.common, cIds});
-    const sr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+    const sr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), when: document.querySelector('.b-when')?.innerText.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route, seg: document.querySelector('.hs-b[aria-current="page"]')?.dataset.seg ?? null,
       mvx: (() => { const b = document.querySelector('.mvx'); return b ? {state: b.dataset.state, head: b.querySelector('.mvx-h')?.innerText.replace(/\s+/g, ' ').trim(), rows: [...b.querySelectorAll('.mvx-row')].map(r => ({kind: r.dataset.kind, n: +r.dataset.n, who: r.querySelector('.mvx-who')?.textContent.trim()})), n22: b.querySelector('.mvx-22')?.textContent.trim() ?? null} : null; })(),
       rows: [...document.querySelectorAll('.sm-row')].map(a => { const sp = a.querySelector('.spark'); return {href: a.getAttribute('href'), name: a.querySelector('.nc-name')?.textContent.trim(), ind: a.querySelector('.nc-ind')?.textContent.trim(), chg: a.querySelector('.chg20')?.textContent.trim(), cnt: a.querySelector('.sm-cnt > b')?.textContent.trim(), chips: [...a.querySelectorAll('.sm-chip')].map(c => `${c.dataset.trait}:${c.classList.contains('on') ? 'on' : c.classList.contains('unk') ? 'unk' : 'off'}:${c.querySelector('.sm-ck')?.textContent}`), sp: sp ? {n: +sp.dataset.points, lo: sp.dataset.lo, hi: sp.dataset.hi} : null}; }),
       bars: [...document.querySelectorAll('.tr-row')].map(r => ({id: r.dataset.trait, w: [...r.querySelectorAll('.tr-fill')].map(f => parseFloat(f.style.width)), vals: [...r.querySelectorAll('.tr-val')].map(v => v.textContent.trim()), ns: [...r.querySelectorAll('.tr-n')].map(v => v.textContent.trim())})),
       sw: document.documentElement.scrollWidth, iw: innerWidth}));
     const commonT = SIM.common.map(id => SIM.traits.find(t => t.id === id));
-    check(`${label} 탭 「예비」 ${mobile ? '터치' : '누름'} → #/similar · 제목 「${sr.title}」 · 「${sr.when}」 · 탭 「예비」 눌림`, sr.hash === '#/similar' && sr.title === `불장 닮은 ${SIM.items.length}곳` && sr.when === `불장 ${HOT.length}개 업종 ${SIM.hotCompanies}곳의 공통점 ${SIM.common.length}가지를 많이 가진, 불장 밖 회사 · ${kd(toM)} 종가` && sr.active === 'similar', {...sr, rows: undefined, bars: undefined, mvx: undefined});
+    check(`${label} 스위치 「예비」 ${mobile ? '터치' : '누름'} → #/similar · 제목 「${sr.title}」 · 「${sr.when}」 · 탭 「불장」 눌림 · 스위치 「예비」 고름`, sr.hash === '#/similar' && sr.title === `예비 ${SIM.items.length}곳` && sr.when === `불장 닮은 ${SIM.items.length}곳 — 불장 ${HOT.length}개 업종 ${SIM.hotCompanies}곳의 공통점 ${SIM.common.length}가지를 많이 가진, 불장 밖 회사 · ${kd(toM)} 종가` && sr.active === 'home' && sr.seg === 'similar', {...sr, rows: undefined, bars: undefined, mvx: undefined});
     const scS = scaleW(SIM.items.map(x => byCodeB0.get(x.code)));
     const rowMis = SIM.items.map((x, i) => { const r = sr.rows[i]; const chipsWant = commonT.map(t => `${t.id}:${x.has.includes(t.id) ? 'on:✓' : x.unknown.includes(t.id) ? 'unk:?' : 'off:·'}`);
       return r && r.href === '#/stock/' + x.code && r.name === x.name && r.ind === x.groupLabel && r.chg === p1(x.change20) && r.cnt === `공통점 ${commonT.length}가지 중 ${x.matched}가지` && r.chips.join() === chipsWant.join() && r.sp?.n === byCodeB0.get(x.code).c.length && r.sp?.lo === scS.lo.toFixed(4) && r.sp?.hi === scS.hi.toFixed(4) ? null : {i, x: x.name, r}; }).filter(Boolean);
@@ -253,17 +295,17 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       if (mobile) await row.tap(); else await row.click();
       await page.waitForSelector('.c-chart svg.lc'); await page.waitForTimeout(300);
       const cr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.trim(), back: [document.querySelector('.c-back')?.getAttribute('href'), document.querySelector('.c-back')?.textContent.trim()], active: document.querySelector('.bottom-link.active')?.dataset.route}));
-      check(`${label} 「예비」 줄 「${s0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${cr.back[1]}」 · 탭 「예비」 눌린 채로`, cr.hash === '#/stock/' + s0.code && cr.title === s0.name && cr.back[0] === '#/similar' && cr.back[1] === `‹ 불장 닮은 ${SIM.items.length}곳` && cr.active === 'similar', cr);
+      check(`${label} 「예비」 줄 「${s0.name}」 ${mobile ? '터치' : '누름'} → 회사 화면 · 되돌아가기 「${cr.back[1]}」 · 탭 「불장」 눌린 채로`, cr.hash === '#/stock/' + s0.code && cr.title === s0.name && cr.back[0] === '#/similar' && cr.back[1] === '‹ 예비' && cr.active === 'home', cr);
       const bk = page.locator('.c-back'); if (mobile) await bk.tap(); else await bk.click();
       await page.waitForSelector('.s-page .sm-row'); await page.waitForTimeout(400);
       const sb = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)}));
-      check(`${label} 회사 화면 「‹ 불장 닮은 ${SIM.items.length}곳」 → 예비 · 보던 자리(${y0}px → ${sb.y}px)`, sb.hash === '#/similar' && Math.abs(sb.y - y0) <= 2, {y0, sb});
+      check(`${label} 회사 화면 「‹ 예비」 → 예비 · 보던 자리(${y0}px → ${sb.y}px)`, sb.hash === '#/similar' && Math.abs(sb.y - y0) <= 2, {y0, sb});
     }
   }
   // 없는 업종 주소 → 알림 + 처음 화면으로 가는 길
   await page.evaluate(() => { location.hash = '#/i/zzzzzzzz'; }); await page.waitForSelector('.b-page .b-note'); await page.waitForTimeout(100);
   const unk = await page.evaluate(() => ({note: document.querySelector('.b-page .b-note')?.textContent.trim(), back: document.querySelector('.c-back')?.getAttribute('href')}));
-  check(`${label} 없는 업종 주소 #/i/zzzzzzzz → 「${unk.note}」 · 처음 화면으로 가는 길`, unk.note === '이 업종은 지금 판에 없습니다' && unk.back === '#/', unk);
+  check(`${label} 없는 업종 주소 #/i/zzzzzzzz → 「${unk.note}」 · 들어온 탭으로 가는 길(${unk.back})`, unk.note === '이 업종은 지금 판에 없습니다' && ['#/', '#/map'].includes(unk.back), unk);
 
   // ② 회사 화면 세 곳(처음 · 늦은 종가 회사가 있으면 그 회사 · 마지막)
   const picks = [board.companies[0], ...board.late.map(l => board.companies.find(c => c.code === l.code)), board.companies.at(-1)].filter(Boolean);
@@ -361,12 +403,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 
   // ④ 지운 화면의 옛 주소 → 처음 화면
   for (const old of ['#/forecast', '#/up', '#/down', '#/scores', '#/race', '#/evolution', '#/status', '#/records', '#/game']) {
-    await page.goto(base + '/' + old, {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(150);
-    const r = await page.evaluate(() => ({hash: location.hash, tiles: document.querySelectorAll('.t-grid > .t-tile').length, title: document.querySelector('.b-title')?.innerText.trim()}));
-    check(`${label} 옛 주소 ${old} → 처음 화면(#/ · 「${r.title}」 · 업종 칸 ${r.tiles}개)`, r.hash === '#/' && r.title === `불장 ${HOT.length}개` && r.tiles === G, r);
+    await page.goto(base + '/' + old, {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(150);
+    const r = await page.evaluate(() => ({hash: location.hash, rows: document.querySelectorAll('.hf-row').length, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim()}));
+    check(`${label} 옛 주소 ${old} → 탭 「불장」(#/ · 「${r.title}」 · 불장 줄 ${r.rows}개)`, r.hash === '#/' && r.title === `불장 업종 ${HOT.length}개` && r.rows === HOT.length, r);
   }
   // ⑤ 무결성 · 글씨 단추
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(300);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(300);
   const integ = await page.evaluate(() => document.querySelector('.b-foot .integrity-text')?.textContent); // 「기술 정보」 접힌 칸 안(잡스 개혁 — 기술 말은 접어 둠)
   check(`${label} 무결성: 「${integ}」`, /모두 판 목록의 SHA-256 과 같음/.test(integ ?? ''), {integ});
   await page.locator('#font-btn').click(); await page.waitForTimeout(200);
@@ -379,7 +421,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
 async function darkCheck() {
   const context = await browser.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, colorScheme: 'dark', locale: 'ko-KR'});
   const page = await context.newPage();
-  for (const [hash, wait, name] of [['#/', '.t-tile', 'home'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-body[data-ready] .f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
+  for (const [hash, wait, name] of [['#/', '.h-page .hs-seg', 'home'], ['#/map', '.t-tile', 'map'], ['#/i/' + (board.hot?.items?.[0]?.id ?? board.groups[0].id), '.b-card .spark', 'industry'], ['#/similar', '.s-page', 'similar'], ['#/rise', '.r-page', 'rise'], ['#/road', '.f-body[data-ready] .f-tile', 'road'], ['#/stock/' + board.companies[0].code, '.c-chart svg.lc', 'company'], ['#/agenda', '.b-box', 'agenda']]) {
     await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector(wait); await page.waitForTimeout(300);
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await page.screenshot({path: path.join(dir, `mobile-dark-${name}.png`)});
@@ -408,7 +450,7 @@ async function clarityCheck() {
   }
   // 검사기 자체 시험: 흐릿한 말 하나 · 단위 없는 숫자 하나 · 잘린 이름 하나 · 앞날 말 하나를 일부러 넣으면 늘어야 한다
   const ctx = await browser.newContext({viewport: {width: 1280, height: 800}, locale: 'ko-KR'}); const page = await ctx.newPage();
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(500); await renderAll(page);
+  await page.goto(base + '/#/map', {waitUntil: 'networkidle'}); await page.waitForSelector('.t-tile'); await page.waitForTimeout(500); await renderAll(page);
   const before = await page.evaluate(measureClarity);
   await page.evaluate(() => { const box = document.createElement('section'); box.className = 'b-box'; box.innerHTML = '<p>내일 42 정도.</p><p>곧 많이 오릅니다.</p>'; document.getElementById('main').prepend(box); });
   const plant = await page.evaluate(measureClarity);
