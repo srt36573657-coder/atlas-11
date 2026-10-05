@@ -14,7 +14,8 @@
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {marketStrip} from './frame.js';
-import {foot, promiseBox, hotSwitch, hotCounts, movesBox} from './parts.js';
+import {foot, promiseBox, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
+import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise} from './family.js';
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -26,18 +27,19 @@ export const upLine = g => g.measured ? (g.up === g.measured ? `${g.measured}곳
 /** 결론 한 문장 — 업종 몇 개가 올랐나(지난 20거래일 평균이 0 보다 큰 업종) */
 export const headLine = (groups, n, from, to) => `업종 ${groups.length}개 가운데 ${groups.filter(g => finite(g.change20) && g.change20 > 0).length}개 오름 · ${n}곳 · 지난 20거래일 · ${span(from, to)}`;
 /** 늦은 종가 한 줄 — 2026-10-05 15:24 「잡스가 … 36가지」 A5: 굵은 주황 두 줄 → 작고 조용한 한 줄(알리되 소리치지 않게 · 글은 그대로 정직하게) */
-const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late'}, `${c.name}: ${c.date ? korDate(c.date) + ' 종가' : '종가 없음'} · ${korDate(board.asOf)} 종가 아직 못 받음`));
+const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late', title: `${korDate(board.asOf)} 종가는 아직 받지 못함`}, c.date ? `${c.name}: ${korDate(c.date)} 종가까지만 있음` : `${c.name}: 종가 없음`));
 
 /* ───────── 탭 「불장」(#/) — 불장 업종만 · 같은 큰 갈래끼리 한 장 ───────── */
 
-/** 큰 흐름 한 장 — 갈래 이름 · 불장 업종 몇 개 · 업종 줄(「불장 n위」 · 이름 · ▲변화 · 몇 곳 오름 · 누르면 그 업종) */
-function flowCard(f, groups) {
+/** 큰 흐름 한 장 — 갈래 이름 · 불장 업종 몇 개 · 업종 줄(「불장 n위」 · 이름 · ▲변화 · 몇 곳 오름 · 태양 몇 곳 · 누르면 그 업종)
+   2026-10-05 15:24 「잡스가 … 36가지」 C3: 장 머리에 개수가 두 번(「5개 평균」 · 「불장 업종 5개」) → 한 번(「평균」 · 「불장 업종 5개」) · B4: 줄마다 그 업종의 태양 수 */
+function flowCard(f, groups, shp) {
   return h('section', {class: 'hf-card', 'data-family': f.fam.id, 'aria-label': `${f.fam.label} · 불장 업종 ${f.groups.length}개`},
-    h('p', {class: 'hf-h'}, h('span', {class: 'hf-l'}, h('b', {class: 'hf-name'}, f.fam.label), h('span', {class: 'hf-avg'}, `${f.groups.length}개 평균 `, h('b', {class: 'chg20 ' + (signCls(f.avg) || 'flat')}, finite(f.avg) ? pct(f.avg, 1) : '없음'))), h('span', {class: 'hf-n'}, `불장 업종 ${f.groups.length}개`)),
-    h('ul', {class: 'hf-list'}, ...f.groups.map(g => { const i = groups.indexOf(g);
-      return h('li', null, h('a', {class: 'hf-row', href: '#/i/' + g.id, 'data-group': g.id, 'aria-label': `불장 ${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}`},
+    h('p', {class: 'hf-h'}, h('span', {class: 'hf-l'}, h('b', {class: 'hf-name'}, f.fam.label), h('span', {class: 'hf-avg'}, '평균 ', h('b', {class: 'chg20 ' + (signCls(f.avg) || 'flat')}, finite(f.avg) ? pct(f.avg, 1) : '없음'))), h('span', {class: 'hf-n'}, `불장 업종 ${f.groups.length}개`)),
+    h('ul', {class: 'hf-list'}, ...f.groups.map(g => { const i = groups.indexOf(g), k = sunCount(shp, g.codes);
+      return h('li', null, h('a', {class: 'hf-row', href: '#/i/' + g.id, 'data-group': g.id, 'data-sun': String(k), 'aria-label': `불장 ${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${k ? ` · 태양 ${k}곳` : ''}`},
         h('span', {class: 't-fire hf-rank'}, `불장 ${i + 1}위`),
-        h('span', {class: 'hf-g'}, h('span', {class: 'hf-gname'}, g.label), h('small', {class: 'hf-up'}, upLine(g))),
+        h('span', {class: 'hf-g'}, h('span', {class: 'hf-gname'}, g.label), h('span', {class: 'hf-sub'}, h('small', {class: 'hf-up'}, upLine(g)), sunNum(k, 'sun-n hf-sun'))),
         h('span', {class: 't-chg hf-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'))); })));
 }
 
@@ -46,7 +48,8 @@ export async function renderHome(main, {manifest}) {
   const groups = board.groups ?? [], hot = groups.filter(g => g.hot), late = board.late ?? [];
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const flows = familiesByRise(hot); // 가장 많이 오른 큰 흐름부터(갈래 평균이 큰 순)
-  state.summary = `${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.`;
+  const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes));
+  state.summary = `${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
   main.replaceChildren(h('div', {class: 'b-page h-page'},
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
@@ -57,19 +60,21 @@ export async function renderHome(main, {manifest}) {
       h('p', {class: 'b-when'}, `업종 ${groups.length}개 가운데 지난 20거래일 평균이 많이 오른 ${hot.length}개 · ${span(from, to)}`),
       ...lateLines(late, board)),
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
-    h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups))),
+    h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp))),
     h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「업종」 · ${korDate(board.asOf)} 15:30 종가`),
+    sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     promiseBox(),
     foot(manifest)));
 }
 
 /* ───────── 탭 「업종」(#/map) — 73칸 판 · 맨 위 큰 갈래 단추 ───────── */
 
-/** 칸 하나 — 넷: 「불장 n위」(또는 n위) · 이름 · ▲변화 · 몇 곳 오름 · 누르면 그 업종 화면 */
-function tile(g, i) {
-  const sg = signCls(g.change20) || 'flat';
-  return h('a', {class: `t-tile s-${sg}${g.hot ? ' t-hot' : ''}`, href: '#/i/' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'aria-label': `${g.hot ? '불장 ' : ''}${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}`},
-    h('span', {class: 't-top'}, g.hot ? h('span', {class: 't-fire'}, `불장 ${i + 1}위`) : h('span', {class: 't-rank'}, `${i + 1}위`)),
+/** 칸 하나 — 넷: 「불장 n위」(또는 n위) · 이름 · ▲변화 · 몇 곳 오름 · 누르면 그 업종 화면
+   2026-10-05 15:24 「잡스가 … 36가지」 B4: 첫 줄 오른쪽에 그 업종의 태양 수(「☀2곳」 · 없으면 비움 — 칸은 그대로 넷) */
+function tile(g, i, shp) {
+  const sg = signCls(g.change20) || 'flat', k = shp ? sunCount(shp, g.codes) : 0;
+  return h('a', {class: `t-tile s-${sg}${g.hot ? ' t-hot' : ''}`, href: '#/i/' + g.id, 'data-group': g.id, 'data-family': familyOf(g.label).id, 'data-sun': String(k), 'aria-label': `${g.hot ? '불장 ' : ''}${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${k ? ` · 태양 ${k}곳` : ''}`},
+    h('span', {class: 't-top'}, g.hot ? h('span', {class: 't-fire'}, `불장 ${i + 1}위`) : h('span', {class: 't-rank'}, `${i + 1}위`), sunNum(k, 'sun-n t-sun')),
     h('span', {class: 't-name'}, g.label),
     h('span', {class: 't-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'), // 세모(▲▼)는 style.css 가 붙임 — 글자는 그대로
     h('span', {class: 't-up'}, upLine(g)));
@@ -120,8 +125,9 @@ export async function renderMap(main, {manifest}) {
   const groups = board.groups?.length ? board.groups : [];
   const sizes = new Set(groups.map(g => g.codes.length)), per = sizes.size === 1 ? [...sizes][0] : null;
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
-  state.summary = `${korDate(to)} 종가 기준. 업종 ${groups.length}개. ${headLine(groups, n, from, to)}.`;
-  const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map(tile));
+  state.summary = `${korDate(to)} 종가 기준. 업종 ${groups.length}개. ${headLine(groups, n, from, to)}.`; // 태양 수는 아래 grid 를 만든 뒤 덧붙임
+  const shp = sunOf(board); if (shp.sparkle.size) state.summary += ` 태양 ${shp.sparkle.size}곳.`;
+  const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map((g, i) => tile(g, i, shp)));
   const note = h('p', {class: 'fm-note muted small', role: 'status', 'aria-live': 'polite'});
   main.replaceChildren(h('div', {class: 'b-page t-page'},
     marketStrip(manifest),
@@ -133,6 +139,7 @@ export async function renderMap(main, {manifest}) {
     note,
     grid,
     h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} 15:30 종가`),
+    sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     setBox(set, board, groups),
     foot(manifest)));
 }

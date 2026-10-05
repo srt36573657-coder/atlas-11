@@ -7,13 +7,15 @@
      (값 줄 · 출목표 · 일정·공시는 회사 화면에 그대로 — 지우지 않고 한 번 더 누른 곳으로 옮김 · 애플 WWDC20 「작은 칸엔 넷까지」 · 2008 HIG 「큰 그림 → 자세히」) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard} from './store.js';
-import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine} from './parts.js';
+import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, sunTag, sunNum} from './parts.js';
+import {sunOf, sunCount} from './shapes.js';
 import {upLine} from './view-home.js';
 import {riseDesc} from './family.js';
 
-function card(c, scale) {
-  return h('section', {class: 'b-card', 'data-code': c.code, 'aria-label': c.name},
-    h('a', {class: 'b-name-row', href: '#/stock/' + c.code}, h('span', {class: 'b-name'}, c.name),
+/** 회사 카드 — sun = 태양 회사면 이름 곁 작은 해(2026-10-05 15:24 「잡스가 … 36가지」 B3 · 카드는 그대로 넷) */
+function card(c, scale, sun = false) {
+  return h('section', {class: 'b-card', 'data-code': c.code, 'aria-label': c.name + (sun ? ' · 태양' : '')},
+    h('a', {class: 'b-name-row', href: '#/stock/' + c.code}, h('span', {class: 'b-name'}, c.name), sunTag(sun),
       h('b', {class: 'chg20 b-c20 ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음'), h('span', {class: 'b-go', 'aria-hidden': 'true'}, '›')),
     sparkSvg(c, scale),
     h('div', {class: 'bf-box'}, flowLine(c.brief), newsLine(c.brief)));
@@ -26,13 +28,14 @@ export async function renderIndustry(main, {hash, manifest}) {
   const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장'); // 들어온 탭으로(2026-10-05 「잡스라면」 17번)
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
+  const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));
   const industries = [...new Set(cs.map(c => c.sector).filter(Boolean))], ksics = [...new Set(cs.map(c => c.ksic).filter(Boolean))], sc = sparkScale(cs), fday = cs.map(c => c.brief?.flows?.to).filter(Boolean).sort().at(-1) ?? null;
   // 「73칸 가운데」 → 「업종 73개 가운데」(2026-10-05 15:24 「잡스가 … 36가지」 C2 — 탭 「업종」 제목 「업종 73개」와 같은 말)
-  state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.`;
+  state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.${nSun ? ` 태양 ${nSun}곳.` : ''}`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
     back,
     h('header', {class: 'b-head'},
-      h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null),
+      h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null, sunNum(nSun, 'sun-n i-sun')),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
@@ -47,6 +50,6 @@ export async function renderIndustry(main, {hash, manifest}) {
     h('section', {class: 't-sec', 'aria-label': `${g.label} ${cs.length}곳`},
       h('h2', {class: 't-h2'}, `${cs.length}곳`, h('small', null, ' · 지난 20거래일 많이 오른 순 · 누르면 회사 화면(출목표 · 일정 · 공시)')),
       h('p', {class: 't-sub'}, `${scaleText(sc)}${fday ? ` · 수급: ${korDate(fday)}까지 5거래일 합(외국인·기관 순매수)` : ''}`),
-      h('div', {class: 'b-list'}, ...cs.map(c => card(c, sc)))),
+      h('div', {class: 'b-list'}, ...cs.map(c => card(c, sc, shp.sparkle.has(c.code))))),
     foot(manifest)));
 }

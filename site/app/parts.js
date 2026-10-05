@@ -127,6 +127,26 @@ export function moverBars(companies) {
    · 기사: 가장 최근 기사 가운데 회사 이름이 든 1건(언론사 · 시각) — 제목은 원문 그대로(식별자) · 없으면 없다고 적는다 */
 const SVGNS = 'http://www.w3.org/2000/svg';
 export const sv = (tag, attrs = {}, ...kids) => { const el = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) el.setAttribute(k, String(v)); for (const c of kids) if (c) el.append(c); return el; };
+/** 뜨거운 태양(2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」) — 노란 해 + 주황 불꽃 테 + 빛살 12개(길고 짧게 번갈아)
+   빛살은 천천히 돌고 불꽃 테는 숨 쉬듯(움직임 줄이기면 멈춤 · style.css) · label 이 없으면 그림일 뿐이라 글로 읽히지 않음(aria-hidden)
+   2026-10-05 15:24 「잡스가 … 36가지」 B: 출목표에만 있던 해를 모든 화면이 함께 쓰도록 여기로 옮김(한 개념 · 한 그림) */
+export function sunIcon(cls = '', label = null) {
+  const rays = [];
+  for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6, r2 = k % 2 ? 9.4 : 11.3, c = Math.cos(a), s = Math.sin(a);
+    rays.push(sv('line', {x1: (12 + 7.3 * c).toFixed(2), y1: (12 + 7.3 * s).toFixed(2), x2: (12 + r2 * c).toFixed(2), y2: (12 + r2 * s).toFixed(2)})); }
+  return sv('svg', {class: 'sun' + (cls ? ' ' + cls : ''), viewBox: '0 0 24 24', ...(label ? {role: 'img', 'aria-label': label} : {'aria-hidden': 'true'}), focusable: 'false'},
+    sv('g', {class: 'sun-rays'}, ...rays), sv('circle', {class: 'sun-glow', cx: 12, cy: 12, r: 6.6}), sv('circle', {class: 'sun-core', cx: 12, cy: 12, r: 4.9}));
+}
+/** 회사 이름 곁 작은 해 — 태양 회사(오른 회사 출목표의 공통 모양을 모두 가진 곳)이면 · 그림 안에 글자가 없어 이름 글은 그대로(화면 읽기는 「태양」) */
+export const sunTag = on => on ? sunIcon('sun-tag', '태양') : null;
+/** 업종 칸 · 불장 줄의 태양 수 「☀2곳」(0 이면 없음) */
+export const sunNum = (n, cls = 'sun-n') => n ? h('span', {class: cls, title: `태양 ${n}곳`}, sunIcon(), h('span', {class: 'sun-n-t'}, `${n}곳`)) : null;
+/** 태양 보기표 한 줄 — 「☀ = 태양 … · 출목표에서 태양 n곳 모아 보기 ›」(불장 · 업종 탭 맨 아래 · 같은 업종 칸 표시의 뜻) */
+export function sunKey(shp) {
+  if (!shp?.sparkle?.size) return null;
+  return h('p', {class: 't-key sun-key xs'}, sunIcon(), ` = 태양(지난 20거래일 오른 회사 출목표의 공통 모양 ${shp.common.length}가지를 모두 가진 회사) 수 · `,
+    h('a', {class: 'sun-go', href: '#/road/sun'}, `출목표에서 태양 ${shp.sparkle.size}곳 모아 보기 ›`));
+}
 /** 첫날 대비 변화(0 = 첫날 종가) — 지난 20거래일 21개 종가 */
 const retsOf = c => { const cs = (c?.c ?? []).filter(v => finite(v) && v > 0); return cs.length < 2 ? [] : cs.map(v => v / cs[0] - 1); };
 /** 한 묶음(업종 5곳 · 흐름 한 가지)이 함께 쓰는 눈금 — 같은 눈금이라야 칸끼리 크기를 견줄 수 있다 · 위아래로 적어도 3% */

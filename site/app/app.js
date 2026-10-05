@@ -13,14 +13,15 @@
      업종·회사 화면은 들어온 탭에 속한다(예비 탭에서 회사를 누르면 예비 탭이 눌린 채로)
    2026-10-05 10:24 「잡스라면 … 큰틀에서 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 — 1차 올림(13~15번):
      아래 탭 넷: 불장(#/ · 불장 업종만, 큰 흐름) · 업종(#/map · 73칸 판) · 출목표(#/road) · 일정(#/agenda)
-     예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로 */
+     예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로
+   2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기) */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome, renderMap} from './view-home.js';
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
-import {renderRoad, resetRoad} from './view-road.js';
+import {renderRoad, resetRoad, openSun} from './view-road.js';
 import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
 
@@ -89,11 +90,15 @@ function markActive(id) { for (const el of document.querySelectorAll('[data-rout
 async function route() {
   let hash = location.hash;
   if (hash === '#main') { document.getElementById('main')?.focus(); return; } // 「본문으로 건너뛰기」는 화면을 바꾸지 않는다
+  // 「태양 모아 보기 ›」(#/road/sun · 2026-10-05 15:24 「잡스가 … 36가지」 B5 · E) — 어느 화면에서든 출목표 묶는 법 「태양」 맨 위로 · 주소 줄은 #/road 로
+  const toSun = hash === '#/road/sun';
+  if (toSun) { openSun(); hash = '#/road'; history.replaceState(null, '', location.pathname + location.search + '#/road'); }
   let r = routes.find(x => x.match.test(hash));
   // 지운 화면의 옛 주소 → 처음 화면(주소 줄도 「#/」로 바꿔 둔다)
   if (!r) { r = routes[0]; hash = '#/'; history.replaceState(null, '', location.pathname + location.search + '#/'); }
   stopSpeak(); voice.on = false; document.getElementById('voice-btn')?.classList.remove('on'); document.getElementById('voice-btn')?.setAttribute('aria-pressed', 'false');
   if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
+  if (toSun) scrollMemo.delete('road'); // 태양 보기는 늘 맨 위부터
   if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
   // 업종·회사 화면은 들어온 탭이 눌린 채로(탭 막대에 없는 화면) · 탭 화면이면 그 탭을 기억
   if (r.tab !== 'from') app.tab = r.tab;

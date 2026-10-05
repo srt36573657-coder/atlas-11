@@ -41,6 +41,17 @@ export const SHAPE_PICS = {
 };
 export const SHAPE_TOP = 0.2, SHAPE_MIN = 0.5, SHAPE_GAP = 0.10;
 
+/** 판 하나의 태양 셈 — 화면마다 다시 세지 않게 판마다 한 번(2026-10-05 15:24 「잡스가 … 36가지」 B — 태양을 모든 화면에 잇기)
+   불장 · 업종 · 업종 화면 · 회사 · 예비 · 오름 상위 · 출목표가 모두 같은 셈을 쓴다(한 개념 · 한 셈) */
+const sunMemo = new WeakMap();
+export function sunOf(board) {
+  if (!board) return shapeBoard([]);
+  let r = sunMemo.get(board); if (!r) { r = shapeBoard(board.companies ?? []); sunMemo.set(board, r); }
+  return r;
+}
+/** 업종(또는 회사 묶음) 안 태양 수 */
+export const sunCount = (shp, codes) => codes.filter(code => shp.sparkle.has(code)).length;
+
 /** 판의 회사들 → {topN, restN, traits, common(후보 차례 그대로), hits(code → 가진 공통 모양), sparkle(공통 모양을 모두 가진 code)} */
 export function shapeBoard(companies) {
   const ranked = [...(companies ?? [])].sort(riseDesc), topN = Math.round(ranked.length * SHAPE_TOP);

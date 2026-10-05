@@ -4,16 +4,17 @@
    한 줄에 넷: 이름 · 업종 · 작은 선 그래프(22곳 같은 눈금) · ▲변화 · 누르면 회사 화면 */
 import {h, korDate, pct, signCls} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox} from './parts.js';
+import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
+import {sunOf} from './shapes.js';
 import {mode} from './view-home.js';
 
 /** 22곳 목록 — 다른 화면도 같은 줄 모양을 쓴다 */
-export function nextList(items, byCode) {
+export function nextList(items, byCode, shp = null) {
   if (!items.length) return h('p', {class: 'muted small'}, '불장 업종 밖에서 지난 20거래일 동안 오른 회사가 없습니다');
   const sc = sparkScale(items.map(x => byCode.get(x.code)).filter(Boolean));
   return h('ol', {class: 'nc-list'}, ...items.map(x => { const c = byCode.get(x.code);
     return h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + x.code},
-      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, x.name), h('small', {class: 'nc-ind'}, x.groupLabel ?? '')),
+      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, x.name, sunTag(shp?.sparkle.has(x.code))), h('small', {class: 'nc-ind'}, x.groupLabel ?? '')), // 태양 회사면 이름 곁 작은 해(「잡스가 … 36가지」 B3)
       c ? sparkSvg(c, sc) : h('span', {class: 'sp-none'}, '선 그래프 없음'),
       h('b', {class: 'chg20 nc-chg ' + (signCls(x.change20) || 'flat')}, pct(x.change20, 1)))); }));
 }
@@ -29,6 +30,6 @@ export async function renderRise(main, {manifest}) {
       h('h1', {class: 'b-title', 'data-speak': ''}, '오름 상위 ', h('span', {class: 'b-count'}, `${n}곳`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `불장 ${board.hot?.items?.length ?? 0}개 업종 밖 회사 ${n}곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`)),
     h('p', {class: 't-sub r-sub'}, `선 그래프는 ${n}곳이 같은 눈금(점선 = 첫날 종가) · 누르면 회사 화면`),
-    nextList(items, byCode),
+    nextList(items, byCode, sunOf(board)),
     foot(manifest)));
 }
