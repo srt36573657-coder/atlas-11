@@ -2,7 +2,7 @@
 // 후보 모양 여덟을 만든 종가로 하나씩 시험하고, 지금 판에서 공통 모양 · 반짝 칸이 규칙대로 나오는지 본다(앞날 말 없음).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {SHAPES, SHAPE_PICS, shapeBoard, SHAPE_TOP} from '../../site/app/shapes.js';
+import {SHAPES, SHAPE_PICS, shapeBoard, SHAPE_TOP, sunOf, sunCount} from '../../site/app/shapes.js';
 import {roadOf} from '../../site/app/road.js';
 import {PREDICTION_WORDS} from '../../lib/atlas11/board.mjs';
 import {readJSON} from './helpers.mjs';
@@ -53,4 +53,14 @@ test('반짝: 지금 판 — 위 20% · 공통 모양 규칙 · 반짝 칸은 �
     assert.equal(r.sparkle.has(c.code), all, c.name);
   }
   assert.ok(r.sparkle.size > 0 && r.sparkle.size < N);
+});
+
+// 2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」 B — 모든 화면이 같은 태양 셈을 판마다 한 번
+test('태양: 판마다 한 번 센다(sunOf) · 업종마다 태양 수(sunCount)의 합 = 태양 수', () => {
+  const a = sunOf(board), r = shapeBoard(board.companies);
+  assert.equal(sunOf(board), a);
+  assert.deepEqual([...a.sparkle].sort(), [...r.sparkle].sort());
+  for (const g of board.groups) assert.equal(sunCount(a, g.codes), g.codes.filter(c => r.sparkle.has(c)).length, g.label);
+  assert.equal(board.groups.reduce((t, g) => t + sunCount(a, g.codes), 0), a.sparkle.size);
+  assert.equal(sunOf(null).sparkle.size, 0);
 });

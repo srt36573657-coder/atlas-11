@@ -6,7 +6,8 @@
    셈은 lib/atlas11/similar.mjs(판을 만들 때) — 화면은 판에 적힌 값만 그린다 */
 import {h, korDate, pct, signCls, finite} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox} from './parts.js';
+import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
+import {sunOf} from './shapes.js';
 export {movesBox};
 import {mode} from './view-home.js';
 import {riseDesc} from './family.js';
@@ -23,17 +24,18 @@ function chips(x, common) {
     return h('span', {class: 'sm-chip' + (has ? ' on' : unknown ? ' unk' : ''), 'data-trait': t.id}, h('span', {class: 'sm-ck', 'aria-hidden': 'true'}, has ? '✓' : unknown ? '?' : '·'), has ? t.chip : unknown ? `${t.chip} 모름` : t.chip);
   }));
 }
-function similarList(sim, byCode, items = sim.items ?? []) {
+function similarList(sim, byCode, items = sim.items ?? [], shp = null) {
   const common = (sim.common ?? []).map(id => sim.traits.find(t => t.id === id)).filter(Boolean);
   if (!items.length) return h('p', {class: 'b-note'}, sim.hotCompanies ? `불장 밖에서 공통점을 ${sim.need}가지 넘게 가진 회사가 없습니다` : '불장 업종이 없어 공통점을 셀 수 없습니다');
   const sc = sparkScale(items.map(x => byCode.get(x.code)).filter(Boolean));
   return h('ol', {class: 'sm-list'}, ...items.map((x, i) => { const c = byCode.get(x.code);
     return h('li', {class: 'sm-li', 'data-code': x.code}, h('a', {class: 'sm-row', href: '#/stock/' + x.code, 'aria-label': `${i + 1}. ${x.name} · ${x.groupLabel ?? ''} · 공통점 ${common.length}가지 중 ${x.matched}가지 · 지난 20거래일 ${pct(x.change20, 1)}`},
       h('span', {class: 'sm-no', 'aria-hidden': 'true'}), // 차례 숫자는 CSS 셈(counter)으로 그림 — 글로 세지 않는 표시
-      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, x.name), h('small', {class: 'nc-ind'}, x.groupLabel ?? '')),
+      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, x.name, sunTag(shp?.sparkle.has(x.code))), h('small', {class: 'nc-ind'}, x.groupLabel ?? '')),
       c ? sparkSvg(c, sc) : h('span', {class: 'sp-none'}, '선 그래프 없음'),
       h('b', {class: 'chg20 nc-chg ' + (signCls(x.change20) || 'flat')}, finite(x.change20) ? pct(x.change20, 1) : '없음'),
-      h('span', {class: 'sm-cnt'}, h('b', null, `공통점 ${common.length}가지 중 ${x.matched}가지`), chips(x, common)))); }));
+      // 공통점을 모두 가진 줄은 「✓ 모두」 한마디(2026-10-05 15:24 「잡스가 … 36가지」 D3 — 같은 칩 다섯이 줄마다 되풀이되지 않게 · 무엇인지는 아래 「불장 회사들의 공통점」)
+      h('span', {class: 'sm-cnt'}, h('b', null, `공통점 ${common.length}가지 중 ${x.matched}가지`), x.matched === common.length && common.length ? h('span', {class: 'sm-all'}, '✓ 모두') : chips(x, common)))); }));
 }
 /** 공통점 막대 한 줄 — 불장 회사 · 나머지 회사 가운데 몇 %가 가졌나(폭은 CSSOM 으로만) */
 function traitRow(t, sim) {
@@ -58,7 +60,7 @@ function howBox(sim, board) {
 export async function renderSimilar(main, {manifest}) {
   const board = await loadBoard();
   const sim = board.similar ?? {items: [], traits: [], common: [], hotCompanies: 0, restCompanies: 0};
-  const byCode = new Map(board.companies.map(c => [c.code, c])), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
+  const byCode = new Map(board.companies.map(c => [c.code, c])), to = mode(board.companies.map(c => c.date)) ?? board.asOf, shp = sunOf(board);
   const common = (sim.common ?? []).map(id => sim.traits.find(t => t.id === id)).filter(Boolean), n = sim.items?.length ?? 0, hotN = board.hot?.items?.length ?? 0;
   // 고르는 법(공통점 많은 차례)은 그대로 · 보이는 차례는 지난 20거래일 많이 오른 순(2026-10-05 11:36 「모든 배치가 가장 많이 상승한순으로」)
   const shown = [...(sim.items ?? [])].sort(riseDesc);
@@ -70,8 +72,8 @@ export async function renderSimilar(main, {manifest}) {
       h('h1', {class: 'b-title', 'data-speak': ''}, '예비 ', h('span', {class: 'b-count'}, `${n}곳`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `불장 닮은 ${n}곳 — 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`)),
     h('section', {class: 't-sec sm-sec', 'aria-label': `닮은 ${n}곳`},
-      h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 순 · 줄마다 공통점 ✓ · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`),
-      similarList(sim, byCode, shown)),
+      h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 순 · 줄마다 공통점 ✓(모두 가지면 「✓ 모두」) · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`),
+      similarList(sim, byCode, shown, shp)),
     h('section', {class: 't-sec', 'aria-label': '불장 회사들의 공통점'},
       h('h2', {class: 't-h2', 'data-speak': ''}, `불장 회사들의 공통점 ${common.length}가지`),
       h('p', {class: 't-sub'}, `막대 = 그 점을 가진 회사가 몇 %인가 · 위 불장 ${sim.hotCompanies}곳 · 아래 나머지 ${sim.restCompanies}곳`),

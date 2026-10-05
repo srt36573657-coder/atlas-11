@@ -38,10 +38,10 @@
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon} from './parts.js';
 import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
-import {SHAPES, SHAPE_PICS, shapeBoard} from './shapes.js';
+import {SHAPES, SHAPE_PICS, sunOf} from './shapes.js';
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
 export const FLOW_ORDER = ['up-up', 'flat-up', 'down-up', 'up-flat', 'flat-flat', 'still', 'down-flat', 'up-down', 'flat-down', 'down-down'];
@@ -66,29 +66,24 @@ export const ROAD_MODES = [{id: 'rise', text: '오른 순'}, {id: 'sun', text: '
 export const RISE_CHUNK = 20;
 /** 이 기기에 기억하는 묶는 법 — 옛 열쇠(roadView)는 「업종별」이 처음이던 때 것이라 새 열쇠로(옛 값을 따르지 않게) */
 export const ROAD_VIEW_KEY = 'roadView2';
+/** 칸 읽는 법 한 줄 */
+const KEY_TEXT = '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사';
 
-/** 칸 하나 — spk = 반짝(오른 회사 출목표의 공통 모양 n가지를 모두 가짐)이면 그 n · 아니면 0 */
-function tile(c, road, g, scale, spk = 0) {
+/** 칸 하나 — spk = 태양(오른 회사 출목표의 공통 모양 n가지를 모두 가짐)이면 그 n · 아니면 0 · to = 판의 종가 날(그보다 늦은 회사는 「n월 n일 종가까지」 — 「잡스가 … 36가지」 F1) */
+function tile(c, road, g, scale, spk = 0, to = null) {
   return h('a', {class: 'f-tile' + (spk ? ' sparkle' : ''), href: '#/stock/' + c.code, 'data-code': c.code, 'data-sparkle': spk ? String(spk) : null},
     h('span', {class: 'f-top'}, h('span', {class: 'f-name'}, c.name), h('b', {class: 'chg20 f-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음')),
     g ? h('span', {class: 'f-ind'}, g.label) : null,
     sparkSvg(c, scale),
     roadSvg(road, {minCols: 20}),
-    h('span', {class: 'f-cap'}, spk ? h('span', {class: 'f-spk-row'}, h('span', {class: 'f-spk'}, sunIcon(), ` 오른 모양 ${spk}가지`)) : null,
-      h('span', {class: 'f-st'}, upDaysText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null),
+    h('span', {class: 'f-cap'}, spk ? h('span', {class: 'f-spk-row'}, h('span', {class: 'f-spk'}, sunIcon(), ` 태양 · 오른 모양 ${spk}가지`)) : null,
+      h('span', {class: 'f-st'}, upDaysText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null,
+      to && c.date && c.date < to ? h('span', {class: 'f-late'}, `${korDate(c.date)} 종가까지`) : null),
     flowLine(c.brief),
     newsLine(c.brief));
 }
 
-/** 뜨거운 태양(2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」) — 반짝 칸 표 · 탭 반짝 수 · 맨 위 상자의 표시(옛 별 모양 대신)
-   노란 해 + 주황 불꽃 테 + 빛살 12개(길고 짧게 번갈아) · 빛살은 천천히 돌고 불꽃 테는 숨 쉬듯(움직임 줄이기면 멈춤 · style.css) · 그림이라 글로 읽히지 않음(aria-hidden) */
-function sunIcon(cls = '') {
-  const rays = [];
-  for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6, r2 = k % 2 ? 9.4 : 11.3, c = Math.cos(a), sn = Math.sin(a);
-    rays.push(sv('line', {x1: (12 + 7.3 * c).toFixed(2), y1: (12 + 7.3 * sn).toFixed(2), x2: (12 + r2 * c).toFixed(2), y2: (12 + r2 * sn).toFixed(2)})); }
-  return sv('svg', {class: 'sun' + (cls ? ' ' + cls : ''), viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'},
-    sv('g', {class: 'sun-rays'}, ...rays), sv('circle', {class: 'sun-glow', cx: 12, cy: 12, r: 6.6}), sv('circle', {class: 'sun-core', cx: 12, cy: 12, r: 4.9}));
-}
+/* 뜨거운 태양 그림(sunIcon)은 parts.js 로 옮김 — 2026-10-05 15:24 「잡스가 … 36가지」 B: 모든 화면이 같은 해를 쓴다 */
 /** 모양 그림 — 작은 출목표(8칸 × 6줄) · 눈여겨볼 줄은 옅은 해 빛깔 바탕(SHAPE_PICS) */
 function shapePic(id) {
   const P = SHAPE_PICS[id]; if (!P) return null;
@@ -100,19 +95,24 @@ function shapePic(id) {
     ...P.cells.map(([c, r, side]) => sv('circle', {class: 'bead ' + side, cx: c * cs + cs / 2, cy: r * cs + cs / 2, r: 2.8})));
 }
 const pcOf = x => `${x.n ? Math.round(x.yes / x.n * 100) : 0}%`;
-/** 맨 위 「☀ 반짝이는 칸」 상자 — 무엇이 반짝이나(모양 그림) · 펼치면 후보 8가지와 고른 법 */
-function sparkleBox(shp, gather) {
+/** 맨 위 「☀ 태양」 상자 — 무엇이 태양인가(모양 그림 한 줄) · 모아 보기 단추 · 펼치면 칸 읽는 법 · 후보 8가지와 고른 법
+   2026-10-05 15:24 「잡스가 … 36가지」 A1 · A2 · B1: 이름은 「태양」 하나(옛 「반짝이는 칸」) · 긴 글과 칸 읽는 법은 접힘 안으로 → 첫 칸이 휴대폰 첫 화면에
+   모양 그림은 그대로 보인다(13:53 「바보도 알 수 있게끔」 — 무엇을 보고 태양이라 하는지 그림으로) */
+function sparkleBox(shp, gather, {to, keyText}) {
   const commonT = shp.common.map(id => shp.traits.find(t => t.id === id));
   if (!commonT.length) return null;
-  return h('section', {class: 'f-spk-box', 'aria-label': `반짝이는 칸 ${shp.sparkle.size}곳`},
-    h('p', {class: 'f-spk-h'}, sunIcon('sun-big'), ` 반짝이는 칸 ${shp.sparkle.size}곳`),
-    h('p', {class: 'f-spk-t'}, `지난 20거래일 많이 오른 ${shp.topN}곳(오른 순 1위~${shp.topN}위)의 출목표에 많이 보이는 모양 ${commonT.length}가지를 모두 가진 곳`),
+  const n = shp.sparkle.size;
+  return h('section', {class: 'f-spk-box', 'aria-label': `태양 ${n}곳`},
+    h('p', {class: 'f-spk-h'}, sunIcon('sun-big'), ` 태양 ${n}곳`),
+    h('p', {class: 'f-spk-s'}, `오른 회사들의 공통 모양 ${commonT.length}가지를 모두 가진 곳`),
     h('ul', {class: 'f-spk-list'}, ...commonT.map(t => h('li', {class: 'f-spk-li', 'data-shape': t.id}, shapePic(t.id), h('span', {class: 'f-spk-n'}, t.short)))),
-    shp.sparkle.size ? h('button', {class: 'f-spk-go', type: 'button', onclick: gather}, sunIcon(), h('span', null, ` 태양 ${shp.sparkle.size}곳 한곳에 모아 보기 ›`)) : null,
-    h('details', {class: 'f-spk-how'}, h('summary', null, `모양마다 몇 %인가 · 후보 ${SHAPES.length}가지`),
+    n ? h('button', {class: 'f-spk-go', type: 'button', onclick: gather}, sunIcon(), h('span', null, ` 태양 ${n}곳 한곳에 모아 보기 ›`)) : null,
+    h('details', {class: 'f-spk-how'}, h('summary', null, `읽는 법 · 칸과 태양 · 후보 모양 ${SHAPES.length}가지`),
+      h('p', {class: 'f-key'}, keyText),
+      h('p', {class: 'f-spk-t'}, `지난 20거래일 많이 오른 ${shp.topN}곳(오른 순 1위~${shp.topN}위)의 출목표에 많이 보이는 모양 ${commonT.length}가지를 모두 가진 곳`),
       h('ul', {class: 'f-spk-all'}, ...shp.traits.map(t => h('li', {'data-shape': t.id, 'data-common': String(t.common)}, h('b', null, `${t.common ? '✓' : '·'} ${t.name}`), ` — ${t.text} · 오른 ${t.top.n}곳 가운데 ${t.top.yes}곳(${pcOf(t.top)}) · 나머지 ${t.rest.n}곳 가운데 ${t.rest.yes}곳(${pcOf(t.rest)})`))),
-      h('p', null, `✓ 공통 모양 = 오른 ${shp.topN}곳의 50% 넘게 가졌고 나머지보다 10%p 넘게 많이 가진 모양 · 반짝 = 그 ${commonT.length}가지를 모두 가진 곳`),
-      h('p', null, '지난 20거래일 출목표 모양을 견준 것일 뿐 앞날을 맞히지 않습니다')));
+      h('p', null, `✓ 공통 모양 = 오른 ${shp.topN}곳의 50% 넘게 가졌고 나머지보다 10%p 넘게 많이 가진 모양 · 태양 = 그 ${commonT.length}가지를 모두 가진 곳`),
+      h('p', null, `${korDate(to)} 종가까지 지난 20거래일 출목표 모양을 견준 것일 뿐 앞날을 맞히지 않습니다`)));
 }
 
 /** 출목표 안의 탭 — 한 탭이 45곳을 넘으면 20곳씩 「더 보기」(2026-10-05 12:28) */
@@ -122,6 +122,8 @@ const tabKey = m => 'roadTab:' + m;
 const shownMemo = new Map();
 /** 다른 아래 탭에서 「출목표」로 들어올 때(app.js) — 늘 「오른 순」 첫 탭(1위~20위) 맨 위 */
 export function resetRoad() { prefs.set(ROAD_VIEW_KEY, 'rise'); for (const m of ROAD_MODES) prefs.set(tabKey(m.id), null); shownMemo.clear(); }
+/** 다른 화면의 「태양 모아 보기 ›」(#/road/sun → app.js) — 묶는 법 「태양」 맨 위로(2026-10-05 15:24 「잡스가 … 36가지」 B5 · E) */
+export function openSun() { prefs.set(ROAD_VIEW_KEY, 'sun'); prefs.set(tabKey('sun'), null); shownMemo.clear(); }
 /** 탭 줄에 쓰는 흐름 이름(「20거래일 내내 거의 안 움직임」은 탭에서 짧게) */
 const flowChip = key => key === 'still' ? '거의 안 움직임' : flowText(key);
 
@@ -137,7 +139,7 @@ export async function renderRoad(main, {manifest} = {}) {
   const flows = FLOW_ORDER.map(k => ({key: k, text: flowText(k, days), items: by.get(k)})).filter(f => f.items.length)
     .map(f => ({...f, avg: meanOf(f.items.map(x => x.c.change20))})).sort((a, b) => (Number.isFinite(b.avg) ? b.avg : -Infinity) - (Number.isFinite(a.avg) ? a.avg : -Infinity)); // 묶음 평균이 큰 순
   const fams = familiesByRise(groups), n = items.length;
-  const shp = shapeBoard(board.companies), nCommon = shp.common.length, spkOf = c => shp.sparkle.has(c.code) ? nCommon : 0; // 반짝(13:53)
+  const shp = sunOf(board), nCommon = shp.common.length, spkOf = c => shp.sparkle.has(c.code) ? nCommon : 0; // 반짝(13:53)
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   // 흐름마다 묶음 평균 선 — 같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 흐름이 같은 눈금(탭을 넘겨도 견줄 수 있게)
@@ -151,7 +153,7 @@ export async function renderRoad(main, {manifest} = {}) {
     out.push({id: 'r' + a, label: `${a}위~${b}위`, say: xs.slice(0, 3).map((x, k) => `${a + k}위 ${x.c.name} ${pct(x.c.change20, 1)}`).join(', '),
       parts: [{items: xs, withInd: true, sc, sec: () => h('section', {class: 'f-sec', id: 'f-r' + a, 'data-rank': String(a), 'aria-label': `오른 순 ${a}위~${b}위`},
         h('h2', {class: 't-h2'}, `${a}위~${b}위`, h('small', null, ` · ${xs.length}곳`)),
-        h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 차례 · ${a}위 ${pct(xs[0].c.change20, 1)} ~ ${b}위 ${pct(xs.at(-1).c.change20, 1)} · ${scaleText(sc)}`),
+        h('p', {class: 't-sub'}, `${a}위 ${pct(xs[0].c.change20, 1)} ~ ${b}위 ${pct(xs.at(-1).c.change20, 1)} · ${scaleText(sc)}`), // 「지난 20거래일 많이 오른 차례」는 탭 줄 위 한 줄에 한 번만(「잡스가 … 36가지」 A1)
         h('div', {class: 'f-grid'}))}]}); } return out; };
   // ① 업종별 — 큰 갈래 하나가 탭 하나(갈래 평균이 큰 순) · 그 안 업종은 판 차례(지난 20거래일 평균이 큰 업종부터) · 업종 안 회사도 오른 순
   const indTabs = () => fams.map(f => ({id: f.fam.id, label: f.fam.label, small: finite(f.avg) ? pct(f.avg, 1) : '없음', cls: signCls(f.avg) || 'flat',
@@ -201,7 +203,7 @@ export async function renderRoad(main, {manifest} = {}) {
   const segs = ROAD_MODES.filter(m => TABS[m.id]).map(m => h('button', {class: 'f-seg-b' + (m.id === 'sun' ? ' f-seg-sun' : ''), type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => go(m.id)},
     m.id === 'sun' ? sunIcon() : null, m.text, h('small', null, m.id === 'rise' ? ` ${n}곳` : m.id === 'sun' ? ` ${shp.sparkle.size}곳` : m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
   const segBox = h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs);
-  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.${cur.spk ? ` 반짝이는 칸 ${cur.spk}곳.` : ''}`; };
+  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.${cur.spk ? ` 태양 ${cur.spk}곳.` : ''}`; };
   /** 고른 탭을 탭 줄 가운데로(화면은 위아래로 움직이지 않게 줄만 옆으로) */
   const centerTab = () => { const b = strip.querySelector('[aria-selected="true"]'); if (b && strip.scrollWidth > strip.clientWidth + 1) strip.scrollLeft = Math.max(0, b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2); };
   const markTabs = () => { for (const b of strip.children) { const on = b.dataset.tab === cur.id; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; } };
@@ -209,7 +211,7 @@ export async function renderRoad(main, {manifest} = {}) {
     strip.setAttribute('aria-label', HINT[view](TABS[view]));
     strip.replaceChildren(...TABS[view].map(t => h('button', {class: 'f-tab', type: 'button', role: 'tab', id: 'ft-' + t.id, 'data-tab': t.id, 'aria-controls': 'f-body', 'aria-selected': 'false', tabindex: '-1', onclick: () => pick(t, false)},
       h('span', {class: 'f-tab-l'}, t.label), t.small ? h('small', {class: 'f-tab-n' + (t.cls ? ' ' + t.cls : '')}, t.small) : null,
-      t.spk ? h('small', {class: 'f-tab-s', 'aria-label': `반짝 ${t.spk}곳`}, sunIcon(), `${t.spk}곳`) : null)));
+      t.spk ? h('small', {class: 'f-tab-s', 'aria-label': `태양 ${t.spk}곳`}, sunIcon(), `${t.spk}곳`) : null)));
     markTabs();
   }
   /** 맨 아래 넘김 단추 — 「2번째 탭 · 21위~40위 보기 ›」 · 「‹ 1번째 탭 · 1위~20위」 */
@@ -230,7 +232,7 @@ export async function renderRoad(main, {manifest} = {}) {
     for (const p of cur.parts) {
       if (k >= shown) break;
       const sec = p.sec(), grid = sec.querySelector('.f-grid');
-      for (const x of p.items) { if (k >= shown) break; grid.append(tile(x.c, x.road, p.withInd ? x.g : null, p.sc, spkOf(x.c))); k++; }
+      for (const x of p.items) { if (k >= shown) break; grid.append(tile(x.c, x.road, p.withInd ? x.g : null, p.sc, spkOf(x.c), to)); k++; }
       kids.push(sec);
     }
     if (shown < total) kids.push(h('button', {class: 'f-more', type: 'button', onclick: () => more(total)}, '이 탭 ', h('span', {class: 'f-nw'}, `${shown + 1}위~${Math.min(total, shown + MORE_STEP)}위`), ' 더 보기', h('small', {class: 'f-nw'}, ` · 남은 ${total - shown}곳`)));
@@ -257,13 +259,14 @@ export async function renderRoad(main, {manifest} = {}) {
     for (const b of segs) b.setAttribute('aria-pressed', String(b.dataset.mode === view));
     hint.textContent = HINT[view](TABS[view]); drawTabs(); strip.hidden = TABS[view].length < 2; drawPage(); centerTab();
   }
+  const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: KEY_TEXT});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`)), // 개수는 제목 곁 작은 글(규칙 2 · 불장 · 업종 탭과 같은 모양)
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`),
-      h('p', {class: 'f-key muted small'}, '칸마다 선 그래프 · 출목표(동그라미 하나 = 하루 1% · 빈 빨강 = 오른 날 · 찬 파랑 = 내린 날) · 수급 · 기사'),
+      spkBox ? null : h('p', {class: 'f-key muted small'}, KEY_TEXT), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
       ctxNote(board.companies)),
-    sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }),
+    spkBox,
     segBox, hint, strip, body,
     foot(manifest ?? state.manifest)));
   draw(); // 한 탭은 많아야 45곳이라 한꺼번에 그린다 — 되돌아올 때는 app.js 가 보던 자리로

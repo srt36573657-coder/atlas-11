@@ -7,7 +7,8 @@
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from './util.js';
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
-import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine} from './parts.js';
+import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine, sunIcon, sunTag} from './parts.js';
+import {sunOf} from './shapes.js';
 import {riseDesc} from './family.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
@@ -52,8 +53,21 @@ function contextBox(c) {
   return box;
 }
 
+/** 태양 점검 — 오른 회사들(지난 20거래일 오른 순 위 20%) 출목표의 공통 모양 n가지를 이 회사가 몇 가지 가졌나
+   2026-10-05 15:24 「잡스가 … 36가지」 B2: 출목표에서만 보이던 태양을 회사 화면에도 — 모양마다 ✓(가짐) · 「·」(안 가짐) · 앞날 말 없음 */
+function sunCheck(shp, code, asOf) {
+  if (!shp?.common?.length || !shp.hits.has(code)) return null;
+  const has = new Set(shp.hits.get(code)), on = shp.sparkle.has(code), k = shp.common.length;
+  return h('div', {class: 'c-sun' + (on ? ' on' : ''), 'data-sun': String(on), 'data-has': String(has.size)},
+    h('p', {class: 'c-sun-h'}, on ? sunIcon('sun-mid') : null, on ? ` 태양 — 오른 회사들의 공통 모양 ${k}가지를 모두 가짐` : `태양 아님 — 오른 회사들의 공통 모양 ${k}가지 가운데 ${has.size}가지`),
+    h('ul', {class: 'c-sun-list'}, ...shp.common.map(id => { const t = shp.traits.find(x => x.id === id), y = has.has(id);
+      return h('li', {class: y ? 'on' : 'off', 'data-shape': id, 'data-has': String(y)}, h('span', {class: 'c-sun-ck', 'aria-hidden': 'true'}, y ? '✓' : '·'), h('span', null, t.name), h('span', {class: 'sr-only'}, y ? ' 가짐' : ' 안 가짐')); })),
+    h('p', {class: 'muted xs c-sun-n'}, `오른 회사 = 지난 20거래일 오른 순 1위~${shp.topN}위 · ${korDate(asOf)} 종가까지 모양을 견준 것일 뿐 앞날을 맞히지 않습니다 · `,
+      h('a', {class: 'sun-go', href: '#/road/sun'}, `출목표에서 태양 ${shp.sparkle.size}곳 모아 보기 ›`)));
+}
+
 /** 같은 업종의 다른 회사(지난 20거래일 많이 오른 순 · 2026-10-05 11:36) — 한 줄에 넷: 이름 · 업종 · 작은 선 그래프(같은 눈금) · ▲변화 */
-function nearBox(board, s) {
+function nearBox(board, s, shp = null) {
   const g = (board?.groups ?? []).find(x => x.id === s.group?.id); if (!g) return null;
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean).sort(riseDesc);
   if (!cs.length) return null;
@@ -61,7 +75,7 @@ function nearBox(board, s) {
   return h('section', {class: 'b-box c-near', 'aria-label': `같은 업종 ${cs.length}곳`},
     h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 많이 오른 순 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
     h('ol', {class: 'nc-list'}, ...cs.map(c => h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + c.code},
-      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name), h('small', {class: 'nc-ind'}, c.sector ?? '')),
+      h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name, sunTag(shp?.sparkle.has(c.code))), h('small', {class: 'nc-ind'}, c.sector ?? '')),
       sparkSvg(c, sc),
       h('b', {class: 'chg20 nc-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음'))))));
 }
@@ -70,7 +84,8 @@ export async function renderCompany(main, {hash, manifest}) {
   const code = hash.match(/\d{6}/)[0];
   const [s, agenda, board] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null)]);
   const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date, band = s.cFrom ? rows.findIndex(r => r.date === s.cFrom) : -1;
-  state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}`;
+  const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0;
+  state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
   const chartBox = h('div', {class: 'c-chart'});
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
@@ -81,19 +96,19 @@ export async function renderCompany(main, {hash, manifest}) {
       : h('a', {class: 'c-back', href: s.group?.id ? '#/i/' + s.group.id : '#/'}, `‹ ${s.group?.label ?? manifest.universeSet?.label ?? '처음 화면'}`),
     marketStrip(manifest),
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, s.name),
+      h('h1', {class: 'b-title', 'data-speak': ''}, s.name, sunTag(sunOn)), // 태양 회사면 이름 곁 작은 해(B3)
       // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
       h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true}),
       h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : '')),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
-    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false})),
+    h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false}), sunCheck(shp, s.code, board?.asOf ?? s.date)),
     briefBox(board, s), // 2026-10-05 「잡스라면」 22번 — 회사 화면 차례: 20거래일 변화 → 그래프 → 출목표 → 수급·기사 → 일정 → (접힘) 1년 숫자
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),
     contextBox(s.context),
     h('details', {class: 'b-how c-year'}, h('summary', null, '지난 1년 숫자 · 1년 최고·최저 · 252거래일 변화'), infoGrid(s)), // 기간이 20거래일과 달라 접어 둠(25번 「기간 잣대 하나」)
-    nearBox(board, s),
+    nearBox(board, s, shp),
     foot(manifest)));
   closeChart(chartBox, rows, {band: band > 0 ? band : null, ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}${band > 0 ? ` · ${korDate(rows[band].date)}부터 끝까지 옅은 띠(지난 20거래일)` : ''}`});
 }
