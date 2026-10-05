@@ -1,9 +1,9 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-05T16:04:49.285Z",
-  "base": "http://localhost:8763",
+  "at": "2026-10-05T22:18:12.885Z",
+  "base": "http://localhost:8765",
   "prediction": "off",
-  "boardId": "board-2026-10-02-f472457b",
+  "boardId": "board-2026-10-02-ff32780d",
   "asOf": "2026-10-02",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 481,
+  "passed": 502,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -26,6 +26,16 @@
         "formatDates": 0
       },
       "map": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "land": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
@@ -157,6 +167,16 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "land": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "industry": {
         "relDays": 0,
         "vague": 0,
@@ -270,6 +290,16 @@
         "formatDates": 0
       },
       "map": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 7,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "land": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
@@ -401,6 +431,16 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "land": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 11,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "industry": {
         "relDays": 0,
         "vague": 0,
@@ -514,6 +554,16 @@
         "formatDates": 0
       },
       "map": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 7,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "land": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
@@ -805,7 +855,7 @@
       }
     },
     {
-      "name": "pc 탭 「지도」(업종 73칸): 지도 한 장 — 땅 12개 = 판의 큰 갈래 12개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 73개 = 업종 73개 · 이름 잘림 없음 · 처음엔 고른 땅 없음",
+      "name": "pc 탭 「지도」(업종 73칸): 지도 한 장 — 땅 12개 = 판의 큰 갈래 12개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 73개 = 업종 73개 · 이름 잘림 없음 · 땅마다 그 갈래 화면 링크",
       "ok": true,
       "detail": {
         "landMis": []
@@ -820,37 +870,91 @@
       }
     },
     {
-      "name": "pc 탭 「지도」(업종 73칸): 땅 「반도체」 누름 → 보이는 칸 5개 = 그 갈래 업종 5개(판 차례 그대로) · 그 땅만 눌림 · 「모두 보기」 단추 · 「반도체 · 업종 5개만 보는 중 · 모두 보기」",
+      "name": "pc 지도 땅 「반도체」 누름(한 번) → 갈래 화면 #/map/f/semi · 맨 위부터 · 제목 「반도체 업종 5개」 · 「‹ 지도」 · 탭 「지도」 눌린 채로 · 칸 5개 = 그 갈래 업종(오른 순 · 칸마다 지도 색 띠 · 누르면 그 업종) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
+        "hash": "#/map/f/semi",
+        "y": 0,
+        "title": "반도체 업종 5개",
+        "when": "업종 5개 가운데 5개 오름 · 갈래 평균 +30.7% · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지",
+        "back": [
+          "#/map",
+          "‹ 지도"
+        ],
+        "active": "map",
         "tiles": [
-          "i2f453d90",
-          "i3b897314",
-          "iafb9068f",
-          "id3ad7bf2",
-          "i1225d511"
+          {
+            "id": "i2f453d90",
+            "href": "#/i/i2f453d90",
+            "name": "반도체 소재",
+            "band": true,
+            "over": false
+          },
+          {
+            "id": "i3b897314",
+            "href": "#/i/i3b897314",
+            "name": "반도체 검사·측정",
+            "band": true,
+            "over": false
+          },
+          {
+            "id": "iafb9068f",
+            "href": "#/i/iafb9068f",
+            "name": "반도체 장비",
+            "band": true,
+            "over": false
+          }
         ],
-        "pressed": [
-          "semi"
-        ],
-        "all": true,
-        "note": "반도체 · 업종 5개만 보는 중 · 모두 보기"
+        "sw": 1280,
+        "iw": 1280
       }
     },
     {
-      "name": "pc 탭 「지도」(업종 73칸): 「모두 보기」 → 보이는 칸 73개 = 73개 · 눌린 땅 없음",
+      "name": "pc 갈래 화면 「반도체」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 갈래 화면 칸 「반도체 소재」 누름(두 번) → 업종 화면 #/i/i2f453d90 · 되돌아가기 「‹ 반도체」 = 그 갈래 · 탭 「지도」 눌린 채로",
       "ok": true,
       "detail": {
-        "n": 73,
-        "pressed": 0
+        "hash": "#/i/i2f453d90",
+        "title": "반도체 소재",
+        "back": [
+          "#/map/f/semi",
+          "‹ 반도체"
+        ],
+        "active": "map",
+        "co": "#/stock/030530"
       }
     },
     {
-      "name": "pc 탭 「지도」(업종 73칸): 같은 땅을 두 번 누르면 다시 모두 73개 · 눌린 땅 없음",
+      "name": "pc 업종 화면 회사 누름(세 번) → 회사 화면 #/stock/030530 · 되돌아가기 「‹ 반도체 소재」 · 탭 「지도」 눌린 채로 — 지도에서 세 번이면 회사",
       "ok": true,
       "detail": {
-        "n": 73,
-        "pressed": 0
+        "hash": "#/stock/030530",
+        "back": [
+          "#/i/i2f453d90",
+          "‹ 반도체 소재"
+        ],
+        "active": "map"
+      }
+    },
+    {
+      "name": "pc 되돌아가기 세 번 → #/i/i2f453d90 → #/map/f/semi → #/map(업종 → 갈래 → 지도)",
+      "ok": true,
+      "detail": [
+        "#/i/i2f453d90",
+        "#/map/f/semi",
+        "#/map"
+      ]
+    },
+    {
+      "name": "pc 없는 갈래 주소 #/map/f/zzz → 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
+      "ok": true,
+      "detail": {
+        "note": "이 갈래는 지금 판에 없습니다",
+        "back": "#/map"
       }
     },
     {
@@ -2715,7 +2819,7 @@
       }
     },
     {
-      "name": "mobile 탭 「지도」(업종 73칸): 지도 한 장 — 땅 12개 = 판의 큰 갈래 12개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 73개 = 업종 73개 · 이름 잘림 없음 · 처음엔 고른 땅 없음",
+      "name": "mobile 탭 「지도」(업종 73칸): 지도 한 장 — 땅 12개 = 판의 큰 갈래 12개(family.js 차례) · 땅마다 이름 · 갈래 평균 · 칸 = 그 갈래 업종(오른 순 · 오름/내림 색) · 칸 73개 = 업종 73개 · 이름 잘림 없음 · 땅마다 그 갈래 화면 링크",
       "ok": true,
       "detail": {
         "landMis": []
@@ -2730,37 +2834,91 @@
       }
     },
     {
-      "name": "mobile 탭 「지도」(업종 73칸): 땅 「반도체」 터치 → 보이는 칸 5개 = 그 갈래 업종 5개(판 차례 그대로) · 그 땅만 눌림 · 「모두 보기」 단추 · 「반도체 · 업종 5개만 보는 중 · 모두 보기」",
+      "name": "mobile 지도 땅 「반도체」 터치(한 번) → 갈래 화면 #/map/f/semi · 맨 위부터 · 제목 「반도체 업종 5개」 · 「‹ 지도」 · 탭 「지도」 눌린 채로 · 칸 5개 = 그 갈래 업종(오른 순 · 칸마다 지도 색 띠 · 누르면 그 업종) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
+        "hash": "#/map/f/semi",
+        "y": 0,
+        "title": "반도체 업종 5개",
+        "when": "업종 5개 가운데 5개 오름 · 갈래 평균 +30.7% · 지난 20거래일 · 9월 2일(수)부터 10월 2일(금)까지",
+        "back": [
+          "#/map",
+          "‹ 지도"
+        ],
+        "active": "map",
         "tiles": [
-          "i2f453d90",
-          "i3b897314",
-          "iafb9068f",
-          "id3ad7bf2",
-          "i1225d511"
+          {
+            "id": "i2f453d90",
+            "href": "#/i/i2f453d90",
+            "name": "반도체 소재",
+            "band": true,
+            "over": false
+          },
+          {
+            "id": "i3b897314",
+            "href": "#/i/i3b897314",
+            "name": "반도체 검사·측정",
+            "band": true,
+            "over": false
+          },
+          {
+            "id": "iafb9068f",
+            "href": "#/i/iafb9068f",
+            "name": "반도체 장비",
+            "band": true,
+            "over": false
+          }
         ],
-        "pressed": [
-          "semi"
-        ],
-        "all": true,
-        "note": "반도체 · 업종 5개만 보는 중 · 모두 보기"
+        "sw": 390,
+        "iw": 390
       }
     },
     {
-      "name": "mobile 탭 「지도」(업종 73칸): 「모두 보기」 → 보이는 칸 73개 = 73개 · 눌린 땅 없음",
+      "name": "mobile 갈래 화면 「반도체」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 갈래 화면 칸 「반도체 소재」 터치(두 번) → 업종 화면 #/i/i2f453d90 · 되돌아가기 「‹ 반도체」 = 그 갈래 · 탭 「지도」 눌린 채로",
       "ok": true,
       "detail": {
-        "n": 73,
-        "pressed": 0
+        "hash": "#/i/i2f453d90",
+        "title": "반도체 소재",
+        "back": [
+          "#/map/f/semi",
+          "‹ 반도체"
+        ],
+        "active": "map",
+        "co": "#/stock/030530"
       }
     },
     {
-      "name": "mobile 탭 「지도」(업종 73칸): 같은 땅을 두 번 누르면 다시 모두 73개 · 눌린 땅 없음",
+      "name": "mobile 업종 화면 회사 터치(세 번) → 회사 화면 #/stock/030530 · 되돌아가기 「‹ 반도체 소재」 · 탭 「지도」 눌린 채로 — 지도에서 세 번이면 회사",
       "ok": true,
       "detail": {
-        "n": 73,
-        "pressed": 0
+        "hash": "#/stock/030530",
+        "back": [
+          "#/i/i2f453d90",
+          "‹ 반도체 소재"
+        ],
+        "active": "map"
+      }
+    },
+    {
+      "name": "mobile 되돌아가기 세 번 → #/i/i2f453d90 → #/map/f/semi → #/map(업종 → 갈래 → 지도)",
+      "ok": true,
+      "detail": [
+        "#/i/i2f453d90",
+        "#/map/f/semi",
+        "#/map"
+      ]
+    },
+    {
+      "name": "mobile 없는 갈래 주소 #/map/f/zzz → 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
+      "ok": true,
+      "detail": {
+        "note": "이 갈래는 지금 판에 없습니다",
+        "back": "#/map"
       }
     },
     {
@@ -4657,6 +4815,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc land: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc land: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc land: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc industry: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -4881,6 +5058,25 @@
     },
     {
       "name": "또렷함 mobile map: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile land: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile land: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile land: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -5113,6 +5309,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark land: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark land: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark land: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark industry: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -5337,6 +5552,25 @@
     },
     {
       "name": "또렷함 pc-200 map: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 land: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 land: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 land: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -5569,6 +5803,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark-200 land: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 land: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 land: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark-200 industry: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -5786,5 +6039,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-05T16-01-30-522Z"
+  "dir": "reports/atlas11/browser/2026-10-05T22-14-21-258Z"
 }
