@@ -3,7 +3,7 @@
  *   node scripts/atlas11/run_daily.mjs [--now ISO] [--collector <module.mjs>]
  * --collector 모듈은 `export async function collect(input, window)` 를 내보내고
  *   {attempted:true, provider, observations:[{code, sourceUrl, rawHash, observedAt, finalClose, sessionDate, finalizedAt, finalitySourceUrl, finalityBasis, rows:[{date, close, …}]}], errors:[]} 를 돌려준다.
- * 수집기가 없으면 시도하지 않고 실패로 기록한다(저장 자료만 사용). 하는 일: 실제 종가 모으기 · 종목 바꾸기 · 52곳 판 화면 묶음.
+ * 수집기가 없으면 시도하지 않고 실패로 기록한다(저장 자료만 사용). 하는 일: 실제 종가 모으기 · 종목 바꾸기 · 지금 판(2026-10-05 365곳) 화면 묶음.
  */
 import path from 'node:path';
 import fs from 'node:fs/promises';
