@@ -19,6 +19,8 @@ import {NAVER_US, parseList, parseDay, parseFinance, metricsOf, parseUsNews, par
 import {US365, selectUs365, usHowLines, usIsFinancial} from '../../../lib/atlas11/us/universe.mjs';
 import {US_INDEX, usCloseFinal, newYork} from '../../../lib/atlas11/us/place.mjs';
 import {NASDAQ, parseNasdaqFin, nasdaqMetrics, parseScreener} from '../../../lib/atlas11/us/nasdaq.mjs';
+import {YAHOO_TS, parseYahooTs, yahooMetrics} from '../../../lib/atlas11/us/yahoo.mjs';
+import {usNotCommon, usForeign} from '../../../lib/atlas11/us/universe.mjs';
 
 const root = process.cwd();
 const arg = (name, d = null) => { const i = process.argv.indexOf(name); return i < 0 ? d : process.argv[i + 1]; };
@@ -107,6 +109,19 @@ async function history(c, from, to) {
 /** 가격 이력 검사 — 253개 이상 · 마지막 날이 모두의 마지막 날에서 7일 안(거래 멈춘 회사 빼기) */
 const historyCheck = (rows, latest) => ({rows: rows.length, last: rows.at(-1)?.date ?? null, ok: rows.length >= US365.minHistoryRows && !!latest && !!rows.at(-1) && (Date.parse(latest) - Date.parse(rows.at(-1).date)) <= 7 * 864e5});
 
+/** 앞 실행 기록의 나스닥 · 야후 결산(30일 안 · 가장 최근 것) — 같은 날 여러 번 돌려도 나스닥을 다시 두드리지 않게 */
+async function cachedMetrics(days = 30) {
+  const dir = path.join(root, 'reports/atlas11/us/runs'), out = new Map();
+  let names = []; try { names = (await fs.readdir(dir)).filter(n => n !== path.basename(RUN)).sort().reverse(); } catch { return out; }
+  for (const n of names.slice(0, 12)) {
+    const t = Date.parse(n.replace(/T(\d{2})-(\d{2})-(\d{2}).*$/, 'T$1:$2:$3Z'));
+    if (!Number.isFinite(t) || now.getTime() - t > days * 864e5) continue;
+    let cands = null; try { cands = JSON.parse(zlib.gunzipSync(await fs.readFile(path.join(dir, n, 'candidates.json.gz'))).toString('utf8')).candidates; } catch { continue; }
+    for (const c of cands ?? []) if (!out.has(c.code) && ['nasdaq', 'yahoo'].includes(c.metrics?.source)) out.set(c.code, {...c.metrics, cachedFrom: n});
+  }
+  return out;
+}
+
 async function selectMode() {
   const list = await universeList();
   if (list.length < 500) throw Error(`US_LIST_SHORT ${list.length} — 시가총액 목록을 충분히 받지 못함(reports 의 samples 확인)`);
@@ -114,15 +129,30 @@ async function selectMode() {
   const sc = await get(NASDAQ.screener, 'screener', {headers: NASDAQ.headers});
   const screen = sc.ok ? parseScreener(sc.json) : new Map();
   step('나라', {screener: screen.size, matched: list.filter(c => screen.has(c.code)).length, notUS: list.filter(c => (screen.get(c.code)?.country ?? '') && screen.get(c.code).country !== 'United States').length});
-  // ② 결산 — 나스닥 결산표(영업이익 · 순이익 · 부채 · 자기자본)를 먼저 · 안 되면 네이버 결산(EBIT · PBR÷PER · 부채비율 없음)
-  const fins = await pool(list, 5, async c => {
-    const r = await get(NASDAQ.fin(c.code), 'nasdaq_fin', {headers: NASDAQ.headers});
-    if (r.ok) { try { const m = nasdaqMetrics(parseNasdaqFin(r.json)); if (m && (m.net != null || m.op != null)) return {...m, source: 'nasdaq'}; } catch {} }
-    const n = await getAny(NAVER_US.ways.finance(c.reuters), 'finance', j => parseFinance(j).cols.length > 0); if (!n.ok) return null;
-    try { const m = metricsOf(parseFinance(n.json)); return m ? {...m, source: 'naver'} : null; } catch { return null; }
+  // ② 결산 — 세 걸음(나스닥이 한 실행기에서 많이 받으면 막는다 · 19:51 실행 353곳 뒤 「Access Denied」)
+  //   ㉠ 네이버 결산(모두 · EBIT · 순이익 · PBR÷PER — 부채비율 없음)
+  //   ㉡ 앞 실행 기록(reports/atlas11/us/runs/*/candidates.json.gz)에 나스닥 · 야후 결산이 있으면 그대로(30일 안 · 결산은 석 달에 한 번 바뀜)
+  //   ㉢ 남은 회사 가운데 부채비율이 판가름하는 회사만(금융회사 · 적자 · ROE 미달 · 보통주 아님 · 외국 회사는 묻지 않음) 나스닥(천천히) → 막히면 야후
+  const naverFin = await pool(list, 6, async c => { const n = await getAny(NAVER_US.ways.finance(c.reuters), 'finance', j => parseFinance(j).cols.length > 0); if (!n.ok) return null; try { const m = metricsOf(parseFinance(n.json)); return m ? {...m, source: 'naver'} : null; } catch { return null; } });
+  const cache = await cachedMetrics();
+  const needs = (c, m) => !usNotCommon(c) && !usForeign({country: screen.get(c.code)?.country}) && !usIsFinancial(c) && (!m || (m.net > 0 && m.netPrev > 0 && (m.op ?? 1) > 0 && (m.opPrev ?? 1) > 0 && !(m.roe != null && m.roe < US365.roeMinPct)));
+  const fins = list.map((c, i) => cache.get(c.code) ?? naverFin[i]);
+  const ask = list.map((c, i) => i).filter(i => !cache.has(list[i].code) && needs(list[i], naverFin[i]));
+  let nasdaqOff = false, denied = 0, nOk = 0, yOk = 0;
+  await pool(ask, 2, async i => {
+    const c = list[i];
+    if (!nasdaqOff) {
+      const r = await get(NASDAQ.fin(c.code), 'nasdaq_fin', {headers: NASDAQ.headers, tries: 1});
+      if (r.ok) { denied = 0; try { const m = nasdaqMetrics(parseNasdaqFin(r.json)); if (m && m.net != null) { fins[i] = {...m, source: 'nasdaq'}; nOk++; return; } } catch {} }
+      else if (r.status === 403 && ++denied >= 5) { nasdaqOff = true; step('나스닥 막힘', {after: nOk, then: '야후'}); }
+      if (PAUSE) await sleep(250);
+    }
+    const y = await get(YAHOO_TS.url(c.code.replace(/\./g, '-')), 'yahoo_ts', {headers: YAHOO_TS.headers, tries: 2});
+    if (y.ok) { try { const m = yahooMetrics(parseYahooTs(y.json)); if (m) { fins[i] = {...m, source: 'yahoo'}; yOk++; } } catch {} }
+    if (PAUSE) await sleep(150);
   });
   const withM = fins.filter(Boolean).length, bySrc = fins.reduce((t, m) => (m && (t[m.source] = (t[m.source] ?? 0) + 1), t), {});
-  step('결산', {asked: list.length, got: withM, source: bySrc, withDebt: fins.filter(m => m?.debt != null).length, withRoe: fins.filter(m => m?.roe != null).length});
+  step('결산', {asked: list.length, got: withM, source: bySrc, cached: [...list].filter(c => cache.has(c.code)).length, askedDebt: ask.length, nasdaq: nOk, yahoo: yOk, nasdaqOff, withDebt: fins.filter(m => m?.debt != null).length, withRoe: fins.filter(m => m?.roe != null).length});
   // ③ 일봉
   const to = ymd(now), from = ymd(new Date(now.getTime() - 430 * 864e5));
   const hist = await pool(list, 6, c => history(c, from, to));
