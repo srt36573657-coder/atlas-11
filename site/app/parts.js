@@ -1,7 +1,7 @@
 /* ATLAS 11 · 판 공용 부품 — 일정·공시 줄(★) · 출목표 칸 · 시장 일정 · 읽는 법 · 바뀔 묶음 미리 보기 · 값 줄 · 맨 아래 출처 줄
    2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」 — 앞날 값은 어디에도 없다
    일정 이름·공시 제목은 공식 이름 그대로라(「SEDEX 2026」 · 「2단계 가격제한폭」) 또렷함 검사에서 식별자(data-ident)로 센다 — 우리 숫자가 아님. */
-import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst} from './util.js';
+import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst, place} from './util.js';
 import {roadOf, roadSvg, roadKey, unitText} from './road.js';
 import {integrityText} from './frame.js';
 
@@ -40,7 +40,7 @@ export function agendaBox(entry, {max = 3, builtDay = null, code = null} = {}) {
     up.length ? h('ul', {class: 'ag-list ag-ev'}, ...cut(up).map(e => eventLine(e, {withRoute: true}))) : h('p', {class: 'muted small ag-none'}, '확인된 회사·업종 일정 없음'),
     more(up.length - max, '일정'),
     h('h3', {class: 'ag-h'}, `공시 ${disc.length}건`, h('small', null, ` · 지난 ${days}일${builtDay ? ` · ${korDate(builtDay)}까지 받은 것` : ''}`)),
-    entry.missing?.includes('공시') ? h('p', {class: 'muted small'}, '공시 자료 없음 · 거래일 16:00 실행 때 모읍니다')
+    entry.missing?.includes('공시') ? h('p', {class: 'muted small'}, place.disclosuresNone ?? '공시 자료 없음 · 거래일 16:00 실행 때 모읍니다') // 미국 판은 공시를 아직 싣지 않음(util.js place)
       : disc.length ? h('ul', {class: 'ag-list ag-ds'}, ...cut(disc).map(d => disclosureLine(d))) : h('p', {class: 'muted small ag-none'}, `지난 ${days}일 공시 없음`),
     more(disc.length - max, '공시'),
     entry.disclosuresHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 공시 제목 ${entry.disclosuresHidden}건은 싣지 않음`) : null);
@@ -78,7 +78,7 @@ export function priceLine(c, {big = false} = {}) {
   return h('p', {class: 'b-price' + (big ? ' big' : '')},
     h('span', {class: 'b-close'}, won(c.close)),
     h('span', {class: 'b-chg ' + cls}, finite(chg) ? (c.prevGap ? `${chg === 0 ? '같음' : `${signMark(chg)} ${pct(chg)}`} · ${korDate(c.prevDate)} 종가보다` : chg === 0 ? '전날과 같음' : `${signMark(chg)} ${pct(chg)}`) : '전날 종가 없음'),
-    h('span', {class: 'b-date'}, `${korDate(c.date)} 15:30 종가`));
+    h('span', {class: 'b-date'}, `${korDate(c.date)} ${place.close} 종가`)); // 한국 「15:30」 · 미국 「16:00(뉴욕)」
 }
 /** 바뀔 묶음 미리 보기 — 바꾸기 전까지만 · 이름만(누를 곳 없음) · 「새」 = 이번에 새로 들어오는 회사 */
 export function nextBox(n) {
@@ -186,6 +186,8 @@ const notYet = '아직 모으지 않음';
    2026-10-05 「잡스였다면」 개혁: 칸 하나에 넷까지(애플 WWDC20) — 막대 두 줄 대신 부호 달린 숫자 한 줄(색만이 아니라 + · − 로) */
 export function flowLine(brief) {
   const f = brief?.flows;
+  // 미국 판: 투자자별(외국인·기관) 매매는 공개 자료가 없다 — 「아직 모으지 않음」이 아니라 그렇다고 적는다(2026-10-05 18:02 「미국 주식도」)
+  if (!f && place.flows === false) return h('span', {class: 'fl fl-none'}, h('span', {class: 'fl-h'}, '수급 · '), h('span', {class: 'fl-miss'}, place.flowsNone ?? '미국은 투자자별 매매 공개 자료 없음'));
   if (!f) return h('span', {class: 'fl fl-none'}, h('span', {class: 'fl-h'}, '수급 · '), h('span', {class: 'fl-miss'}, !brief || brief.missing?.includes('수급') ? notYet : '수급 자료 없음'));
   const side = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat', pv = f.provisional.length ? ` · ${f.provisional.length === 1 && f.provisional[0] === f.to ? '마지막 날' : f.provisional.map(korDate).join('·')} 잠정` : '';
   const val = (label, v) => h('span', {class: 'fl-it', 'data-who': label}, `${label} `, h('b', {class: 'fl-val ' + side(v)}, sharesText(v)));
@@ -212,6 +214,7 @@ const moveRow = (mark, what, list, kind) => h('li', {class: 'mvx-row', 'data-kin
 const at = iso => iso && Number.isFinite(Date.parse(iso)) ? `${korDate(kst(iso).date)} ${kst(iso).time}` : '';
 /** 저녁 7시 들고 남 — 기록 둘을 맞대어 본 값(판에 적힌 그대로) */
 export function movesBox(mv) {
+  if (place.moves === false) return null; // 미국 판: 저녁 7시 기록이 없다(한국 판 atlas11-evening 만 적음) — 빈 칸을 두지 않는다
   const head = sub => h('p', {class: 'mvx-h'}, h('b', null, '저녁 7시 들고 남'), sub ? h('span', {class: 'mvx-when'}, sub) : null);
   // 기록이 없을 때는 한 줄만(2026-10-05 15:24 「잡스가 … 36가지」 A6 — 빈 칸이 세 화면 맨 위 두 줄을 차지하지 않게)
   if (!mv) return h('section', {class: 'mvx mvx-quiet mvx-none', 'aria-label': '저녁 7시 들고 남', 'data-state': 'none'}, head('아직 기록 없음 · 거래일 19:00마다 적음'));
@@ -240,13 +243,14 @@ export function hotSwitch(active, counts = {}) {
       h('span', {class: 'hs-l'}, s.label), Number.isInteger(counts[s.id]) ? h('small', {class: 'hs-n'}, `${counts[s.id]}${s.unit}`) : null)));
 }
 export function promiseBox() {
-  return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${NOT_DO.length}가지`), h('ul', null, ...NOT_DO.map(x => h('li', null, x))));
+  const list = [place.notDo, ...NOT_DO.slice(1)]; // 첫 줄은 시장마다(한국 15:30 · 미국 뉴욕 16:00)
+  return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${list.length}가지`), h('ul', null, ...list.map(x => h('li', null, x))));
 }
 /** 맨 아래: 약속 한 줄 · 출처 · 기술 정보(만든 시각 · 판 이름 · 무결성 — 접어 둠) */
 export function foot(m) {
   return h('footer', {class: 'b-foot'},
     h('p', {class: 'b-promise'}, '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다'),
-    h('p', null, '종가: 한국거래소 정규장 15:30 종가(네이버 증권) · 수급·기사·공시: 네이버 증권 · 일정: 공식 발표처 · 거래일 16:00에 새로 올림'),
+    h('p', null, place.foot), // 시장마다(util.js place)
     h('details', {class: 'b-tech'}, h('summary', null, '기술 정보'),
       h('p', null, `자료를 만든 시각 ${stamp(m?.generatedAt)} · 판 `, h('code', null, m?.boardId ?? '없음')),
       h('p', null, '무결성: ', h('span', {class: 'integrity-text'}, integrityText()))));

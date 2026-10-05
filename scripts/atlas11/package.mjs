@@ -26,9 +26,16 @@ export async function buildDist() {
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
-  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n");
+  // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
+  //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다
+  //   places.json = 위 막대 「한국 · 미국」 단추가 읽는 판 목록(미국 판이 없으면 한국 하나 → 단추 없음) — 늘 써서 화면이 없는 파일을 부르지 않게
+  const usDir = path.join(root, 'public/data/atlas11/us/view');
+  const usOk = await fs.readFile(path.join(usDir, 'manifest.json'), 'utf8').then(t => { const m = JSON.parse(t); return m.prediction === 'off' && !!m.boardId && m.place?.id === 'us'; }).catch(() => false);
+  if (usOk) { await copyDir(path.join(root, 'site'), path.join(dist, 'us')); await copyDir(usDir, path.join(dist, 'us/data/atlas11/view')); }
+  await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places: [{id: 'kr', label: '한국', href: '/'}, ...(usOk ? [{id: 'us', label: '미국', href: '/us/'}] : [])]}) + '\n');
+  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/us/index.html\n  Cache-Control: no-cache\n/us/data/*\n  Cache-Control: no-cache\n/us/app/*\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
-  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n');
+  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + (usOk ? '/us  /us/  301\n' : '')); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사

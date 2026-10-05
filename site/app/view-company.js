@@ -4,7 +4,7 @@
    기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs).
    2026-10-05 02:44 「잡스였다면」 개혁 — 앞 화면과 이어 보이기: 머리에 「지난 20거래일 ▲변화」(판·출목표 칸과 같은 숫자) · 60거래일 그래프 안에 그 20거래일을 옅은 띠로
      · 끝에 「같은 업종 4곳」(근처에 무엇이 있나 — 애플 WWDC17 길 찾기) */
-import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite} from './util.js';
+import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite, place} from './util.js';
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
 import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine, sunIcon, sunTag} from './parts.js';
@@ -34,22 +34,24 @@ function briefBox(board, s) {
 }
 function contextBox(c) {
   const box = h('details', {class: 'b-how c-ctx'});
-  if (!c) { box.append(h('summary', null, '수급·기사·공시 기록 · 아직 없음'), h('p', {class: 'muted small'}, '아직 이 회사의 기록이 없습니다 · 거래일 16:00 실행 때 모읍니다')); return box; }
+  if (!c) { box.append(h('summary', null, '수급·기사·공시 기록 · 아직 없음'), h('p', {class: 'muted small'}, place.contextNone ?? '아직 이 회사의 기록이 없습니다 · 거래일 16:00 실행 때 모읍니다')); return box; }
   const flows = (c.flows ?? []).slice().reverse(), news = c.news ?? [], disc = c.disclosures ?? [];
   const flowTable = flows.length ? h('div', {class: 'c-scroll', 'data-scroll': 'x'}, h('table', {class: 'c-table'},
     h('thead', null, h('tr', null, ...['날짜', '외국인', '기관', '개인', '상태'].map(x => h('th', {scope: 'col'}, x)))),
     h('tbody', null, ...flows.map(r => h('tr', null, h('th', {scope: 'row'}, korDate(r.date)), h('td', {class: signCls(r.foreignNet)}, signed(r.foreignNet)), h('td', {class: signCls(r.institutionNet)}, signed(r.institutionNet)), h('td', {class: signCls(r.individualNet)}, signed(r.individualNet)), h('td', null, r.status === 'provisional_same_day' ? '잠정' : '보고')))))) : h('p', {class: 'muted small'}, '수급 자료를 받지 못했습니다(0 으로 채우지 않음).');
   box.append(
     h('summary', null, `수급·기사·공시 기록 열기 · 기사 ${news.length}건 · 공시 ${disc.length}건`),
-    h('p', {class: 'muted xs'}, `외국인·기관·개인 순매매 수량(주) · 기관은 연기금 포함 합계 · 16:00 무렵 값은 잠정일 수 있음 · 받은 시각 ${stamp(c.fetchedAt)}`),
-    h('h3', {class: 'ag-h'}, `수급 · 지난 ${flows.length}거래일`), flowTable,
+    // 미국 판: 투자자별 매매 공개 자료가 없다 — 빈 표 대신 그렇다고 한 줄(util.js place.flows === false)
+    ...(place.flows === false ? [h('p', {class: 'muted xs'}, `받은 시각 ${stamp(c.fetchedAt)}`), h('h3', {class: 'ag-h'}, '수급'), h('p', {class: 'muted small'}, place.flowsNone ?? '투자자별 매매 자료 없음')]
+      : [h('p', {class: 'muted xs'}, `외국인·기관·개인 순매매 수량(주) · 기관은 연기금 포함 합계 · 16:00 무렵 값은 잠정일 수 있음 · 받은 시각 ${stamp(c.fetchedAt)}`),
+        h('h3', {class: 'ag-h'}, `수급 · 지난 ${flows.length}거래일`), flowTable]),
     h('h3', {class: 'ag-h'}, `받은 기사 ${news.length}건`, c.newsRepublished ? h('small', null, ` · 같은 제목 다시 실린 기사 ${c.newsRepublished}건 가림`) : null),
     news.length ? h('ul', {class: 'c-news'}, ...news.map(n => h('li', null, h('span', {class: 'muted xs'}, `${hm(n.publishedAt)} · ${n.office ?? ''} `), n.url ? h('a', {href: n.url, target: '_blank', rel: 'noopener noreferrer', 'data-ident': ''}, n.title) : h('span', {'data-ident': ''}, n.title)))) : h('p', {class: 'muted small'}, '받은 기사 없음'),
     c.newsHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 기사 제목 ${c.newsHidden}건은 싣지 않음(10월 4일(일) 사장님 말씀)`) : null,
     h('h3', {class: 'ag-h'}, `받은 공시 ${disc.length}건`),
-    disc.length ? h('ul', {class: 'c-news'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'ag-notice'}, '기업행위 · ' + (d.actionWord ?? '')) : null, ' ', h('span', {'data-ident': ''}, d.title)))) : h('p', {class: 'muted small'}, '받은 공시 없음'),
+    disc.length ? h('ul', {class: 'c-news'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'ag-notice'}, '기업행위 · ' + (d.actionWord ?? '')) : null, ' ', h('span', {'data-ident': ''}, d.title)))) : h('p', {class: 'muted small'}, place.disclosuresNone && c.missing?.includes('공시') ? place.disclosuresNone : '받은 공시 없음'),
     c.disclosuresHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 공시 제목 ${c.disclosuresHidden}건은 싣지 않음`) : null,
-    h('p', {class: 'muted xs'}, '출처: 네이버 증권(종목 투자자 동향 · 뉴스 · 공시) · 기사는 제목만 저장(본문 없음)'));
+    h('p', {class: 'muted xs'}, place.contextSource)); // 시장마다(util.js place)
   return box;
 }
 
@@ -94,7 +96,7 @@ function nearBox(board, s, shp = null) {
 }
 
 export async function renderCompany(main, {hash, manifest}) {
-  const code = hash.match(/\d{6}/)[0];
+  const code = decodeURIComponent(hash.replace(/^#\/stock\//, '')); // 한국 6자리 · 미국 영문 기호(AAPL · BRK.B)
   const [s, agenda, board] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null)]);
   const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date, band = s.cFrom ? rows.findIndex(r => r.date === s.cFrom) : -1;
   const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0;
@@ -115,7 +117,7 @@ export async function renderCompany(main, {hash, manifest}) {
       priceLine(s, {big: true}),
       h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : ''), rankNav(board, s)),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
-      s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: 한국거래소 정규장 15:30 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
+      s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: ${place.exchange} ${place.close} 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false}), sunCheck(shp, s.code, board?.asOf ?? s.date)),
     briefBox(board, s), // 2026-10-05 「잡스라면」 22번 — 회사 화면 차례: 20거래일 변화 → 그래프 → 출목표 → 수급·기사 → 일정 → (접힘) 1년 숫자
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),

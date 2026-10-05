@@ -2,7 +2,7 @@
    2026-10-04 21:04 사장님 「… 다음 불장이 예상되는 22개 회사도 찾아내 180개 회사내에서」 → 10/5 02:44 「잡스였다면」 개혁에서 이름만 지난 일을 말하는 이름으로(셈법·22곳 그대로)
    2026-10-05 05:03 「불장 그리고 뭐뭐가 있잖아 그걸 탭 처리로 하지 지금은 밑으로 내려애ㅣㅑ 하잖아」 · 05:07 「해」 — 처음 화면 아래에 있던 목록을 자기 탭으로 옮김(내리지 않아도 보임)
    한 줄에 넷: 이름 · 업종 · 작은 선 그래프(22곳 같은 눈금) · ▲변화 · 누르면 회사 화면 */
-import {h, korDate, pct, signCls} from './util.js';
+import {h, korDate, pct, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
 import {sunOf} from './shapes.js';
@@ -28,7 +28,7 @@ export async function renderRise(main, {manifest}) {
     movesBox(board.moves), // 저녁 7시 들고 남 — 세 화면 같은 자리(옛 한 줄은 지움)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '오름 상위 ', h('span', {class: 'b-count'}, `${n}곳`)),
-      h('p', {class: 'b-when', 'data-speak': ''}, `불장 ${board.hot?.items?.length ?? 0}개 업종 밖 회사 ${n}곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} 15:30 종가까지`)),
+      h('p', {class: 'b-when', 'data-speak': ''}, `불장 ${board.hot?.items?.length ?? 0}개 업종 밖 회사 ${n}곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 ${board.next?.perIndustry ?? 2}곳까지 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`)),
     h('p', {class: 't-sub r-sub'}, `선 그래프는 ${n}곳이 같은 눈금(점선 = 첫날 종가) · 누르면 회사 화면`),
     nextList(items, byCode, sunOf(board)),
     foot(manifest)));

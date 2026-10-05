@@ -15,7 +15,7 @@
      아래 탭 넷: 불장(#/ · 불장 업종만, 큰 흐름) · 업종(#/map · 73칸 판) · 출목표(#/road) · 일정(#/agenda)
      예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로
    2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기) */
-import {h, speakScreen, stopSpeak} from './util.js';
+import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome, renderMap} from './view-home.js';
 import {renderCompany} from './view-company.js';
@@ -25,7 +25,7 @@ import {renderRoad, resetRoad, openSun, openAt, openGroup} from './view-road.js'
 import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
 
-const app = {view: null, manifest: null, tab: 'home'};
+const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
   // 불장: 불꽃 하나 · 업종: 네 칸(73칸 판)
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c.7 3.1-1.8 4.7-3.2 6.7C7.7 11 7 12.6 7 14.2a5 5 0 0 0 10 0c0-2.4-1.2-4.1-2.3-5.4-.2 1.5-.9 2.4-1.9 2.9.4-3-.2-6.2-.8-8.9z"/></svg>',
@@ -41,7 +41,7 @@ const routes = [
   {id: 'home', tab: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
   {id: 'map', tab: 'map', label: '업종', match: /^#\/map$/, render: renderMap},
   {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
-  {id: 'stock', tab: 'from', match: /^#\/stock\/\d{6}$/, render: renderCompany},
+  {id: 'stock', tab: 'from', match: /^#\/stock\/[A-Za-z0-9][A-Za-z0-9.\-]{0,11}$/, render: renderCompany}, // 한국 6자리 · 미국 영문 기호(2026-10-05 18:02 「미국 주식도」)
   {id: 'similar', tab: 'home', label: '예비', match: /^#\/similar$/, render: renderSimilar},
   {id: 'rise', tab: 'home', label: '오름 상위', match: /^#\/rise$/, render: renderRise},
   {id: 'road', tab: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
@@ -69,8 +69,12 @@ function header() {
     voice.on = !voice.on; speakBtn.classList.toggle('on', voice.on); speakBtn.setAttribute('aria-pressed', String(voice.on));
     if (voice.on) speakScreen(state.summary || '읽을 내용이 없습니다'); else stopSpeak();
   }}, speakerIcon());
+  // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
+  //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
+  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => h('a', {class: 'mkt-b', href: p.href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null}, p.label))) : null;
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner'},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
+    mkt,
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
     speakBtn));
   fontLabel();
@@ -92,7 +96,7 @@ async function route() {
   if (hash === '#main') { document.getElementById('main')?.focus(); return; } // 「본문으로 건너뛰기」는 화면을 바꾸지 않는다
   // 「태양 모아 보기 ›」(#/road/sun · 2026-10-05 15:24 「잡스가 … 36가지」 B5 · E) — 어느 화면에서든 출목표 묶는 법 「태양」 맨 위로 · 주소 줄은 #/road 로
   //   #/road/at/CODE = 회사 화면 「오른 순 n위 · 출목표 자리 ›」 · #/road/g/GROUP = 업종 화면 「출목표에서 … 보기 ›」(그 칸 · 그 업종 묶음으로)
-  const at = hash.match(/^#\/road\/at\/(\d{6})$/)?.[1], grp = hash.match(/^#\/road\/g\/([a-z0-9]+)$/)?.[1], toSun = hash === '#/road/sun' || !!at || !!grp;
+  const at = hash.match(/^#\/road\/at\/([A-Za-z0-9][A-Za-z0-9.\-]{0,11})$/)?.[1], grp = hash.match(/^#\/road\/g\/([a-z0-9]+)$/)?.[1], toSun = hash === '#/road/sun' || !!at || !!grp;
   if (toSun) { if (at) openAt(at); else if (grp) openGroup(grp); else openSun(); hash = '#/road'; history.replaceState(null, '', location.pathname + location.search + '#/road'); }
   let r = routes.find(x => x.match.test(hash));
   // 지운 화면의 옛 주소 → 처음 화면(주소 줄도 「#/」로 바꿔 둔다)
@@ -138,6 +142,8 @@ async function start() {
     h('div', {class: 'sk', 'aria-hidden': 'true'}, h('span', {class: 'sk-t'}), h('span', {class: 'sk-l'}), h('span', {class: 'sk-g'}))));
   try { app.manifest = await loadManifest(); }
   catch (e) { main.replaceChildren(failure('자료 목록을 읽지 못했습니다', e)); return; }
+  setPlace(app.manifest.place); // 미국 판이면 달러 · 뉴욕 16:00 종가 · 수급 없음(util.js place) — 한국 판 manifest 에는 place 가 없어 한국 값 그대로
+  try { const r = await fetch('/places.json', {cache: 'no-cache'}); if (r.ok) { const p = await r.json(); if (Array.isArray(p?.places)) app.places = p.places.filter(x => x && x.id && x.href && x.label); } } catch {}
   header();
   window.addEventListener('hashchange', route);
   setInterval(watchManifest, 5 * 60 * 1000);
