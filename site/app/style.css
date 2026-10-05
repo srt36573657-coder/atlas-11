@@ -10,7 +10,8 @@
    글자와 바탕 대비는 모두 4.5:1 이상(검사기로 잼) · 보안 규칙(CSP): 글 속 style 속성 없음 — 모양은 이 파일과 CSSOM 으로만
    2026-10-05 02:14 사장님 「난 지금 너가 공부한 마흐 바흐가 7377에 전혀 녹여 있지 않다는 판단이야」 — 깊은 공부(10/5 01:16~02:10 보고서 「마이바흐 디자인 깊이 공부」 · 인용 102곳)의 [판단]을 마감에 넣음 · 구도는 그대로:
    ① 두 바탕 + 선 하나 — 위 막대는 먹빛, 본문은 한지빛 · 둘 사이에 은빛 1px 선(모든 화면 같은 자리 · 샴페인색 선은 지움 · 아래 탭 위는 옅은 구분선)
-   ② 금빛은 놋쇠빛 하나(--geum) · 네 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 · 출목표 반짝 칸(2026-10-05 13:53 사장님 「반짝반짝」 — 테·표 바탕·상자 테) — 숫자·글자에는 쓰지 않음(금빛 위 글자는 먹색) · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
+   ② 금빛은 놋쇠빛 하나(--geum) · 세 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 — 숫자·글자에는 쓰지 않음 · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
+     출목표 반짝 칸은 금빛이 아니라 뜨거운 태양 빛(--sun 주황 · --sun-core 노랑 · --sun-hot 불꽃) — 2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」
    ③ 글씨 3단 — 큰 제목만 가볍게(10/5 03:5x 「잡스였다면」 개혁에서 300 → 400 · 애플 HIG 「아주 가는 글씨는 피하기」) · 부제는 보통 · 숫자·이름은 단단하게(700) · 숫자는 칸 맞춤
    ④ 오름·내림 = 색 + 부호(±) + 세모(▲▼) · 두 바탕 모두 4.5:1 이상
    ⑤ 움직임 0.1~0.3초 · 값(그래프 선)만 왼쪽에서 오른쪽으로 부드럽게 · 눈금·점선·글자는 그대로 · 움직임 줄이기를 켜면 움직이지 않음
@@ -506,31 +507,40 @@ html[data-font-step="3"] .tr-track, html[data-font-step="4"] .tr-track { grid-co
 .f-nw { white-space: nowrap; } /* 「21위~40위」 · 「오름 → 비슷」은 줄을 바꿔도 한 덩어리로 */
 @media (min-width: 760px) { .f-pager { flex-direction: row; align-items: center; } .f-pg-prev { order: 1; } .f-pg-pos { order: 2; flex: 1 1 auto; } .f-pg-next { order: 3; } .f-pg { min-width: 16rem; } }
 /* 2026-10-05 13:53 「출목표를 보면 상승할 때에 묘한 공통점 … 반짝반짝 해가지고 바보도 알 수 있게끔」 — 오른 회사 출목표의 공통 모양을 모두 가진 칸(shapes.js)
-   금빛 넷째 자리: 반짝 칸의 테 · 반짝 표(「✦ 오른 회사 모양 n가지 모두」) · 맨 위 반짝 상자 테 — 글자는 금빛 위 먹색(대비 5.4) · 움직임 줄이기면 빛이 지나가지 않음 */
-.f-tile.sparkle { box-shadow: 0 0 0 2px var(--geum), 0 0 16px rgba(168, 133, 58, .5), var(--lift);
-  background-image: linear-gradient(110deg, transparent 38%, rgba(255, 231, 150, .5) 47%, rgba(255, 250, 225, .75) 50%, rgba(255, 231, 150, .5) 53%, transparent 62%);
+   2026-10-05 14:30 「모양을 뜨거운 태양으로 하셔」 — 표시는 별 대신 뜨거운 태양(view-road.js sunIcon) · 테·빛·상자도 해 빛깔(주황)
+   표 바탕은 옅은 해 빛깔 위 짙은 밤색 글자(대비 9 넘게) · 움직임 줄이기면 빛줄기·빛살·불꽃이 멈춤 */
+:root { --sun: #ff9b1f; --sun-core: #ffd23f; --sun-hot: #f0510f; --sun-bg: #fff0d2; --sun-ink: #5a2600; --sun-glow: rgba(255, 140, 26, .55); }
+@media (prefers-color-scheme: dark) { :root { --sun-bg: #3b2608; --sun-ink: #ffd99a; --sun-glow: rgba(255, 140, 26, .45); } }
+.sun { display: inline-block; flex: none; width: 1.3em; height: 1.3em; vertical-align: -.28em; overflow: visible; }
+.sun-big { width: 1.55em; height: 1.55em; vertical-align: -.36em; }
+.f-spk .sun { width: 1.75em; height: 1.75em; margin: -4px 0 -4px -2px; } /* 칸 표의 해는 크게 — 뜨거운 태양이 먼저 보이게 */
+.sun-rays { stroke: var(--sun-hot); stroke-width: 2.1; stroke-linecap: round; transform-box: fill-box; transform-origin: center; animation: sun-spin 14s linear infinite; }
+.sun-glow { fill: var(--sun); transform-box: fill-box; transform-origin: center; animation: sun-breathe 1.9s ease-in-out infinite; }
+.sun-core { fill: var(--sun-core); stroke: var(--sun-hot); stroke-width: 1.3; }
+@keyframes sun-spin { to { transform: rotate(360deg); } }
+@keyframes sun-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+.f-tile.sparkle { box-shadow: 0 0 0 2px var(--sun), 0 0 18px var(--sun-glow), var(--lift);
+  background-image: linear-gradient(110deg, transparent 38%, rgba(255, 214, 140, .5) 47%, rgba(255, 246, 220, .75) 50%, rgba(255, 214, 140, .5) 53%, transparent 62%);
   background-size: 260% 100%; background-repeat: no-repeat; background-position: 130% 0; animation: f-shine 3.6s ease-in-out infinite; }
 @keyframes f-shine { 0%, 45% { background-position: 130% 0; } 80%, 100% { background-position: -30% 0; } }
 .f-spk-row { flex: 0 0 100%; }
-.f-spk { display: inline-flex; align-items: center; gap: 3px; margin: 1px 0 3px; padding: 2px 9px 2px 7px; border-radius: 999px; background: var(--geum); color: #121110; font-size: .8125rem; font-weight: 700; line-height: 1.35; }
-.f-spk-i { display: inline-block; animation: f-twinkle 1.8s ease-in-out infinite; }
-@keyframes f-twinkle { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.3) rotate(25deg); } } /* 흐려지지 않게(글자 대비 그대로) — 크기·기울기만 */
-.f-tab-s { font-size: .8125rem; font-weight: 700; color: var(--ink2); }
+.f-spk { display: inline-flex; align-items: center; gap: 4px; margin: 1px 0 3px; padding: 2px 10px 2px 5px; border-radius: 999px; background: var(--sun-bg); box-shadow: 0 0 0 1px var(--sun); color: var(--sun-ink); font-size: .8125rem; font-weight: 700; line-height: 1.35; }
+.f-tab-s { display: inline-flex; align-items: center; gap: 2px; font-size: .8125rem; font-weight: 700; color: var(--ink2); }
 .f-tab[aria-selected="true"] .f-tab-s { color: inherit; }
-.f-spk-box { margin: 16px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1.5px var(--geum), var(--lift); }
+.f-spk-box { margin: 16px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1.5px var(--sun), 0 0 14px var(--sun-glow), var(--lift); }
 .f-spk-h { margin: 0; font-size: 1.1875rem; font-weight: 700; line-height: 1.35; }
 .f-spk-t { margin: 2px 0 10px; font-size: .9375rem; line-height: 1.45; color: var(--ink2); }
 .f-spk-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(4.75rem, 1fr)); gap: 10px 8px; }
 .f-spk-li { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
 .spk-pic { width: 68px; height: 51px; }
 .spk-pic .bead { stroke-width: 1.3; }
-.spk-mark { fill: rgba(168, 133, 58, .3); }
+.spk-mark { fill: rgba(255, 155, 31, .28); }
 .f-spk-n { font-size: .875rem; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
 .f-spk-how { margin-top: 10px; font-size: .875rem; line-height: 1.5; color: var(--ink2); }
 .f-spk-how summary { cursor: pointer; min-height: 32px; font-weight: 700; color: var(--ink); }
 .f-spk-all { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; }
 .f-spk-all li[data-common="false"] { color: var(--sub); }
 @media (prefers-color-scheme: dark) {
-  .f-tile.sparkle { background-image: linear-gradient(110deg, transparent 38%, rgba(255, 214, 120, .06) 47%, rgba(255, 236, 190, .09) 50%, rgba(255, 214, 120, .06) 53%, transparent 62%); } /* 어두운 화면: 빛줄기가 지나갈 때도 흐린 글자 대비 4.5 넘게 */
+  .f-tile.sparkle { background-image: linear-gradient(110deg, transparent 38%, rgba(255, 190, 110, .06) 47%, rgba(255, 226, 180, .09) 50%, rgba(255, 190, 110, .06) 53%, transparent 62%); } /* 어두운 화면: 빛줄기가 지나갈 때도 흐린 글자 대비 4.5 넘게 */
 }
-@media (prefers-reduced-motion: reduce) { .f-tile.sparkle, .f-spk-i { animation: none; } .f-tile.sparkle { background-image: none; } }
+@media (prefers-reduced-motion: reduce) { .f-tile.sparkle, .sun-rays, .sun-glow { animation: none; } .f-tile.sparkle { background-image: none; } }

@@ -27,9 +27,10 @@
      · 휴대폰에서는 탭 줄을 옆으로 밀어 봄(고른 탭이 가운데로) · 넓은 화면에서는 여러 줄 · 화살표 글쇠로도 넘김
      · 고른 탭은 이 기기에 기억(회사 화면에서 되돌아오면 보던 탭 · 자리 그대로) · 다른 아래 탭에서 들어오면 늘 「오른 순」 1위~20위 맨 위(app.js → resetRoad)
    2026-10-05 13:53 사장님 「이렇게 출목표를 보면 상승할 때에 묘한 공통점들이 있을 거 아냐 … 반짝반짝 반짝 해가지고 바보도 알 수 있게끔 … 기획 좀 해 봐 그리고 만들어 봐」:
-     · 오른 순 위 20%의 출목표에 많이 보이는 모양(shapes.js — 후보 8가지 · 예비 탭과 같은 잣대)을 모두 가진 칸이 반짝인다(금빛 테 · 빛이 한 번씩 지나감 · 「✦ 오른 회사 모양 n가지 모두」)
-     · 맨 위 「✦ 반짝이는 칸 n곳」 상자 — 모양마다 작은 출목표 그림 · 펼치면 후보 8가지가 오른 곳 · 나머지에서 몇 %인지
-     · 탭마다 반짝 수(「✦17곳」) — 어느 탭에 반짝이는 칸이 있는지 · 움직임 줄이기 설정이면 빛은 지나가지 않고 금빛 테만
+     · 오른 순 위 20%의 출목표에 많이 보이는 모양(shapes.js — 후보 8가지 · 예비 탭과 같은 잣대)을 모두 가진 칸이 반짝인다(해 빛깔 테 · 빛이 한 번씩 지나감 · 「☀ 오른 모양 n가지」)
+     · 맨 위 「☀ 반짝이는 칸 n곳」 상자 — 모양마다 작은 출목표 그림 · 펼치면 후보 8가지가 오른 곳 · 나머지에서 몇 %인지
+     · 탭마다 반짝 수(「☀17곳」) — 어느 탭에 반짝이는 칸이 있는지 · 움직임 줄이기 설정이면 빛은 지나가지 않고 해도 멈춤
+   2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」: 반짝 표시의 별을 뜨거운 태양(sunIcon — 빛살 12개가 천천히 돌고 불꽃 테가 숨 쉬듯)으로 · 테와 빛도 해 빛깔(주황)
      · 지난 20거래일 모양을 견준 것일 뿐 앞날을 맞히지 않는다(2026-10-04 15:37) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
@@ -70,13 +71,22 @@ function tile(c, road, g, scale, spk = 0) {
     g ? h('span', {class: 'f-ind'}, g.label) : null,
     sparkSvg(c, scale),
     roadSvg(road, {minCols: 20}),
-    h('span', {class: 'f-cap'}, spk ? h('span', {class: 'f-spk-row'}, h('span', {class: 'f-spk'}, h('span', {class: 'f-spk-i', 'aria-hidden': 'true'}, '✦'), ` 오른 모양 ${spk}가지`)) : null,
+    h('span', {class: 'f-cap'}, spk ? h('span', {class: 'f-spk-row'}, h('span', {class: 'f-spk'}, sunIcon(), ` 오른 모양 ${spk}가지`)) : null,
       h('span', {class: 'f-st'}, upDaysText(road)), road.unit > 0.01 ? h('span', {class: 'f-unit'}, `동그라미 하나 = ${Math.round(road.unit * 100)}%`) : null),
     flowLine(c.brief),
     newsLine(c.brief));
 }
 
-/** 모양 그림 — 작은 출목표(8칸 × 6줄) · 눈여겨볼 줄은 옅은 금빛 바탕(SHAPE_PICS) */
+/** 뜨거운 태양(2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」) — 반짝 칸 표 · 탭 반짝 수 · 맨 위 상자의 표시(옛 별 모양 대신)
+   노란 해 + 주황 불꽃 테 + 빛살 12개(길고 짧게 번갈아) · 빛살은 천천히 돌고 불꽃 테는 숨 쉬듯(움직임 줄이기면 멈춤 · style.css) · 그림이라 글로 읽히지 않음(aria-hidden) */
+function sunIcon(cls = '') {
+  const rays = [];
+  for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6, r2 = k % 2 ? 9.4 : 11.3, c = Math.cos(a), sn = Math.sin(a);
+    rays.push(sv('line', {x1: (12 + 7.3 * c).toFixed(2), y1: (12 + 7.3 * sn).toFixed(2), x2: (12 + r2 * c).toFixed(2), y2: (12 + r2 * sn).toFixed(2)})); }
+  return sv('svg', {class: 'sun' + (cls ? ' ' + cls : ''), viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'},
+    sv('g', {class: 'sun-rays'}, ...rays), sv('circle', {class: 'sun-glow', cx: 12, cy: 12, r: 6.6}), sv('circle', {class: 'sun-core', cx: 12, cy: 12, r: 4.9}));
+}
+/** 모양 그림 — 작은 출목표(8칸 × 6줄) · 눈여겨볼 줄은 옅은 해 빛깔 바탕(SHAPE_PICS) */
 function shapePic(id) {
   const P = SHAPE_PICS[id]; if (!P) return null;
   const cs = 8, cols = 8, rows = 6, W = cols * cs, H = rows * cs;
@@ -87,12 +97,12 @@ function shapePic(id) {
     ...P.cells.map(([c, r, side]) => sv('circle', {class: 'bead ' + side, cx: c * cs + cs / 2, cy: r * cs + cs / 2, r: 2.8})));
 }
 const pcOf = x => `${x.n ? Math.round(x.yes / x.n * 100) : 0}%`;
-/** 맨 위 「✦ 반짝이는 칸」 상자 — 무엇이 반짝이나(모양 그림) · 펼치면 후보 8가지와 고른 법 */
+/** 맨 위 「☀ 반짝이는 칸」 상자 — 무엇이 반짝이나(모양 그림) · 펼치면 후보 8가지와 고른 법 */
 function sparkleBox(shp) {
   const commonT = shp.common.map(id => shp.traits.find(t => t.id === id));
   if (!commonT.length) return null;
   return h('section', {class: 'f-spk-box', 'aria-label': `반짝이는 칸 ${shp.sparkle.size}곳`},
-    h('p', {class: 'f-spk-h'}, h('span', {class: 'f-spk-i', 'aria-hidden': 'true'}, '✦'), ` 반짝이는 칸 ${shp.sparkle.size}곳`),
+    h('p', {class: 'f-spk-h'}, sunIcon('sun-big'), ` 반짝이는 칸 ${shp.sparkle.size}곳`),
     h('p', {class: 'f-spk-t'}, `지난 20거래일 많이 오른 ${shp.topN}곳(오른 순 1위~${shp.topN}위)의 출목표에 많이 보이는 모양 ${commonT.length}가지를 모두 가진 곳`),
     h('ul', {class: 'f-spk-list'}, ...commonT.map(t => h('li', {class: 'f-spk-li', 'data-shape': t.id}, shapePic(t.id), h('span', {class: 'f-spk-n'}, t.short)))),
     h('details', {class: 'f-spk-how'}, h('summary', null, `모양마다 몇 %인가 · 후보 ${SHAPES.length}가지`),
@@ -182,7 +192,7 @@ export async function renderRoad(main, {manifest} = {}) {
     strip.setAttribute('aria-label', HINT[view](TABS[view]));
     strip.replaceChildren(...TABS[view].map(t => h('button', {class: 'f-tab', type: 'button', role: 'tab', id: 'ft-' + t.id, 'data-tab': t.id, 'aria-controls': 'f-body', 'aria-selected': 'false', tabindex: '-1', onclick: () => pick(t, false)},
       h('span', {class: 'f-tab-l'}, t.label), t.small ? h('small', {class: 'f-tab-n' + (t.cls ? ' ' + t.cls : '')}, t.small) : null,
-      t.spk ? h('small', {class: 'f-tab-s', 'aria-label': `반짝 ${t.spk}곳`}, `✦${t.spk}곳`) : null)));
+      t.spk ? h('small', {class: 'f-tab-s', 'aria-label': `반짝 ${t.spk}곳`}, sunIcon(), `${t.spk}곳`) : null)));
     markTabs();
   }
   /** 맨 아래 넘김 단추 — 「2번째 탭 · 21위~40위 보기 ›」 · 「‹ 1번째 탭 · 1위~20위」 */
