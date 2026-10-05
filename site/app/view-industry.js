@@ -22,12 +22,13 @@ export async function renderIndustry(main, {hash, manifest}) {
   const id = hash.replace(/^#\/i\//, '');
   const board = await loadBoard();
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
-  if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, h('a', {class: 'c-back', href: '#/'}, '‹ 처음 화면'), h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
+  const back = state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 업종') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장'); // 들어온 탭으로(2026-10-05 「잡스라면」 17번)
+  if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, h('p', {class: 'b-note'}, '이 업종은 지금 판에 없습니다'))); return; }
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean);
   const industries = [...new Set(cs.map(c => c.sector).filter(Boolean))], ksics = [...new Set(cs.map(c => c.ksic).filter(Boolean))], sc = sparkScale(cs), fday = cs.map(c => c.brief?.flows?.to).filter(Boolean).sort().at(-1) ?? null;
   state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}${board.groups.length}칸 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
-    h('a', {class: 'c-back', href: '#/'}, `‹ 불장 ${board.hot?.items?.length ?? 0}개`),
+    back,
     h('header', {class: 'b-head'},
       h('p', {class: 'i-rank'}, `${board.groups.length}칸 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),

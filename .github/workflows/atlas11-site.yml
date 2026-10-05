@@ -1,5 +1,10 @@
-name: atlas11-site
-# 화면만 지금 다시 올린다(종가 수집은 하지 않음 · 52곳 판 화면 묶음을 다시 만들어 올림) — 16시를 기다리지 않고 화면을 바로 바꾸려는 용도
+name: aaa7377.com 올리기
+run-name: aaa7377.com 올리기 · ${{ github.actor }}
+# 2026-10-05 10:24 사장님 「나 여기서 클릭하면 업로드되게 만들어 줘」 — 이 작업이 그 단추다(파일 이름 atlas11-site.yml 은 그대로라 주소도 그대로)
+# 누르는 곳: 이 작업 화면 오른쪽 「Run workflow」 → 펼쳐진 칸의 초록 「Run workflow」 — 2~3분 뒤 aaa7377.com 에 올라감
+# 하는 일: 지금 저장소의 판(종가 · 수급 · 기사 · 일정)으로 화면 묶음을 다시 만들어 aaa7377.com 에 올린다
+#   종가 수집은 하지 않는다 — 그건 평일 16:00(atlas11-daily) · 19:00(atlas11-evening) 자동 실행이 한다
+# 결과: 실행 화면 맨 위 요약 칸에 「올라갔습니다」(주소 · 올린 때 · 파일 수) 또는 「못 올렸습니다 · 까닭」(scripts/atlas11/site_summary.mjs)
 on:
   workflow_dispatch:
 permissions:
@@ -9,6 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   site:
+    name: aaa7377.com 에 올리기
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -16,27 +22,38 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: 시작 시각 적기
+        id: start
+        run: echo "at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+      - name: 저장소 받기
+        uses: actions/checkout@v4
+      - name: 노드 준비
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - name: Build view bundle and package dist/
+      - name: 준비물 설치
+        run: npm ci
+      - name: 화면 묶음 만들기
         run: |
           node scripts/atlas11/build_view.mjs
           node scripts/atlas11/package.mjs --no-full --out out
-      - name: Netlify deploy
+      - name: aaa7377.com 에 올리기
+        id: deploy
         if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
         run: node scripts/atlas11/deploy_netlify.mjs --dir dist
-      - name: Site status (does the page open? protection settings)
+      - name: 열렸는지 확인
         if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
         continue-on-error: true
         run: node scripts/atlas11/netlify_status.mjs
-      - name: No token
+      - name: 열쇠 없음
         if: ${{ env.NETLIFY_AUTH_TOKEN == '' }}
-        run: echo "::warning::NETLIFY_AUTH_TOKEN secret is not set — nothing deployed"
-      - name: Commit deploy record
+        run: echo "::warning::NETLIFY_AUTH_TOKEN 이 없어 올리지 못했습니다"
+      - name: 결과 한 줄(요약 칸)
+        if: always()
+        continue-on-error: true
+        run: node scripts/atlas11/site_summary.mjs --since "${{ steps.start.outputs.at }}" --deploy "${{ steps.deploy.outcome }}" --token "${{ env.NETLIFY_AUTH_TOKEN != '' && 'yes' || 'no' }}"
+      - name: 기록 남기기
         if: always()
         shell: bash
         run: |

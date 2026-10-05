@@ -1,11 +1,11 @@
 /* ATLAS 11 · 「일정」(#/agenda) — 지금 묶음(180곳)에 걸린 다가오는 일정과 공시를 한곳에 · 예측 없음
    2026-10-04 08:18 사장님 「그 회사들 예정된 뉴스나 공시 나타나게 해주고 얼마나 중요한지 표기해줘」 · 15:37 「이제 예측을 하지 않는다」
-   ① 시장 전체 일정(모든 회사) ② 회사·업종 일정 — 날짜마다 묶고, 같은 일정이 여러 회사에 걸리면 한 줄에 회사 이름 여럿
+   ⓪ 바뀔 회사 묶음 미리 보기(있을 때만 · 10/5 첫 화면에서 옮김) ① 시장 전체 일정(모든 회사) ② 회사·업종 일정 — 날짜마다 묶고, 같은 일정이 여러 회사에 걸리면 한 줄에 회사 이름 여럿
    ③ 앞으로 있을 일을 알리는 공시(예고·알림) ④ 아주 중요(★★★) 공시 — 지난 30일. 중요도는 종류로 매긴 ATLAS 규칙(주가에 미친 크기가 아님). */
 import {h, korDate} from './util.js';
 import {state, loadAgenda} from './store.js';
 import {marketStrip} from './frame.js';
-import {eventLine, disclosureLine, marketBox, howBox, foot} from './parts.js';
+import {eventLine, disclosureLine, marketBox, howBox, foot, nextBox} from './parts.js';
 
 export async function renderAgenda(main, {manifest}) {
   const agenda = await loadAgenda();
@@ -26,6 +26,7 @@ export async function renderAgenda(main, {manifest}) {
       h('h1', {class: 'b-title', 'data-speak': ''}, '일정'),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(agenda.builtDay)}부터 · ${manifest.universeSet?.label ?? n + '곳'}에 걸린 일정`),
       h('p', {class: 'b-lead'}, '확인된 일정만 모았습니다(일정마다 공식 출처) · 별(★)은 일정·공시의 종류로 매긴 중요도입니다')),
+    nextBox(manifest.universeNext), // 바뀔 회사 묶음 미리 보기 — 「무엇이 다가오나」라 일정 탭으로(2026-10-05 「잡스라면」 9번 · 오늘 판과 섞이지 않게)
     marketBox(agenda, {max: 0}),
     h('section', {class: 'b-box', 'aria-label': '회사·업종 일정'},
       h('h2', {class: 'b-box-h'}, `회사·업종 일정 ${list.length}건`, h('small', null, ' · 날짜 차례')),

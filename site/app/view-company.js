@@ -69,8 +69,8 @@ export async function renderCompany(main, {hash, manifest}) {
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
     // 2026-10-05 탭 다섯: 「예비」(닮은 7곳) · 「22곳」에서 왔으면 그 목록으로(보던 자리 그대로)
     state.from === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표')
-      : state.from === 'similar' ? h('a', {class: 'c-back', href: '#/similar'}, `‹ 불장 닮은 ${board?.similar?.items?.length ?? 7}곳`)
-      : state.from === 'rise' ? h('a', {class: 'c-back', href: '#/rise'}, `‹ 불장 밖에서 많이 오른 ${board?.next?.items?.length ?? 22}곳`)
+      : state.from === 'similar' ? h('a', {class: 'c-back', href: '#/similar'}, '‹ 예비')
+      : state.from === 'rise' ? h('a', {class: 'c-back', href: '#/rise'}, '‹ 오름 상위')
       : h('a', {class: 'c-back', href: s.group?.id ? '#/i/' + s.group.id : '#/'}, `‹ ${s.group?.label ?? manifest.universeSet?.label ?? '처음 화면'}`),
     marketStrip(manifest),
     h('header', {class: 'b-head'},

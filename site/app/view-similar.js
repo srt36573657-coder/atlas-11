@@ -6,7 +6,7 @@
    셈은 lib/atlas11/similar.mjs(판을 만들 때) — 화면은 판에 적힌 값만 그린다 */
 import {h, korDate, pct, signCls, finite, kst} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot, sparkSvg, sparkScale} from './parts.js';
+import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts} from './parts.js';
 import {mode} from './view-home.js';
 
 const share = x => x.known ? x.yes / x.known : 0;
@@ -78,11 +78,12 @@ export async function renderSimilar(main, {manifest}) {
   const sim = board.similar ?? {items: [], traits: [], common: [], hotCompanies: 0, restCompanies: 0};
   const byCode = new Map(board.companies.map(c => [c.code, c])), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const common = (sim.common ?? []).map(id => sim.traits.find(t => t.id === id)).filter(Boolean), n = sim.items?.length ?? 0, hotN = board.hot?.items?.length ?? 0;
-  state.summary = `${korDate(to)} 종가 기준. 불장 닮은 ${n}곳. 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지: ${common.map(t => t.chip).join(', ')}. ${(sim.items ?? []).map((x, i) => `${i + 1}. ${x.name}, ${common.length}가지 중 ${x.matched}가지`).join('. ')}.`;
+  state.summary = `${korDate(to)} 종가 기준. 예비, 불장 닮은 ${n}곳. 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지: ${common.map(t => t.chip).join(', ')}. ${(sim.items ?? []).map((x, i) => `${i + 1}. ${x.name}, ${common.length}가지 중 ${x.matched}가지`).join('. ')}.`;
   main.replaceChildren(h('div', {class: 'b-page s-page'},
+    hotSwitch('similar', hotCounts(board)),
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, `불장 닮은 ${n}곳`),
-      h('p', {class: 'b-when', 'data-speak': ''}, `불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`)),
+      h('h1', {class: 'b-title', 'data-speak': ''}, '예비 ', h('span', {class: 'b-count'}, `${n}곳`)),
+      h('p', {class: 'b-when', 'data-speak': ''}, `불장 닮은 ${n}곳 — 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`)),
     movesBox(board.moves),
     h('section', {class: 't-sec sm-sec', 'aria-label': `닮은 ${n}곳`},
       h('p', {class: 't-sub'}, `줄마다 공통점 ✓ · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`),

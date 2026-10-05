@@ -9,11 +9,14 @@
    2026-10-05 02:44 「잡스였다면」 개혁: 불러오는 동안 파일 이름 같은 기술 말 대신 회색 자리 표시(애플 HIG 「바로 열리고, 빈칸 대신 자리 표시」)
      · 그래프 선 그리기(0.3초)는 화면마다 처음 한 번만 — 같은 화면을 다시 그릴 때(묶음 바꾸기 · 글씨 단추)는 움직이지 않는다(애플 HIG 움직임: 목적이 있을 때만)
    2026-10-05 05:03 사장님 「탬을 두개 더 만든다 … 불장 그리고 뭐뭐가 있잖아 그걸 탭 처리로 하지 지금은 밑으로 내려애ㅣㅑ 하잖아」 · 05:07 「해」
-     아래 탭 다섯: 불장(#/ · 36칸 판) · 예비(#/similar · 불장 닮은 7곳 · 저녁 7시 들고 남) · 22곳(#/rise · 불장 밖에서 많이 오른 곳) · 출목표(#/road) · 일정(#/agenda)
-     업종·회사 화면은 들어온 탭에 속한다(예비 탭에서 회사를 누르면 예비 탭이 눌린 채로) */
+     아래 탭 다섯: 불장(#/ · 36칸 판) · 예비(#/similar · 불장 닮은 7곳 · 저녁 7시 들고 남) · 22곳(#/rise · 불장 밖에서 오름 상위) · 출목표(#/road) · 일정(#/agenda)
+     업종·회사 화면은 들어온 탭에 속한다(예비 탭에서 회사를 누르면 예비 탭이 눌린 채로)
+   2026-10-05 10:24 「잡스라면 … 큰틀에서 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 — 1차 올림(13~15번):
+     아래 탭 넷: 불장(#/ · 불장 업종만, 큰 흐름) · 업종(#/map · 73칸 판) · 출목표(#/road) · 일정(#/agenda)
+     예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로 */
 import {h, speakScreen, stopSpeak} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
-import {renderHome} from './view-home.js';
+import {renderHome, renderMap} from './view-home.js';
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
@@ -23,7 +26,9 @@ import {renderRise} from './view-rise.js';
 
 const app = {view: null, manifest: null, tab: 'home'};
 const ICON = {
-  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
+  // 불장: 불꽃 하나 · 업종: 네 칸(73칸 판)
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c.7 3.1-1.8 4.7-3.2 6.7C7.7 11 7 12.6 7 14.2a5 5 0 0 0 10 0c0-2.4-1.2-4.1-2.3-5.4-.2 1.5-.9 2.4-1.9 2.9.4-3-.2-6.2-.8-8.9z"/></svg>',
+  map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>',
   road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="5" r="2.6"/><circle cx="5" cy="12" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="12" cy="5" r="2.6"/><circle cx="19" cy="5" r="2.6"/><circle cx="19" cy="12" r="2.6"/></svg>',
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
   // 예비: 반짝임 하나(큰 별 + 작은 별) — 「눈여겨볼 것」
@@ -32,17 +37,18 @@ const ICON = {
   rise: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11.5M9 12h11.5M9 18h11.5"/><circle cx="4.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg>',
 };
 const routes = [
-  {id: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'home', tab: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'map', tab: 'map', label: '업종', match: /^#\/map$/, render: renderMap},
   {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
   {id: 'stock', tab: 'from', match: /^#\/stock\/\d{6}$/, render: renderCompany},
-  {id: 'similar', label: '예비', match: /^#\/similar$/, render: renderSimilar},
-  {id: 'rise', label: '22곳', match: /^#\/rise$/, render: renderRise},
-  {id: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
-  {id: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
+  {id: 'similar', tab: 'home', label: '예비', match: /^#\/similar$/, render: renderSimilar},
+  {id: 'rise', tab: 'home', label: '오름 상위', match: /^#\/rise$/, render: renderRise},
+  {id: 'road', tab: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
+  {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
 ];
-const TABS = ['home', 'similar', 'rise', 'road', 'agenda'];
+const TABS = ['home', 'map', 'road', 'agenda'];
 /** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
-const KEEP_SCROLL = new Set(['road', 'similar', 'rise']), scrollMemo = new Map();
+const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
 const drawn = new Set();
 const FONT_STEPS = [100, 125, 150, 175, 200];
@@ -67,8 +73,8 @@ function header() {
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
     speakBtn));
   fontLabel();
-  // 「22곳」 탭 이름 = 판에 실린 곳 수(판 목록에 없으면 22곳)
-  const label = r => r.id === 'rise' && Number.isInteger(app.manifest?.counts?.next) ? `${app.manifest.counts.next}곳` : r.label;
+  // 탭 이름에는 숫자를 넣지 않는다(2026-10-05 「잡스라면」 28번) — 개수는 화면 안에
+  const label = r => r.label;
   // 지금 보고 있는 탭을 다시 누르면 맨 위로(주소가 그대로라 화면은 다시 그리지 않음)
   const toTop = (e, r) => { if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
   const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
@@ -87,8 +93,9 @@ async function route() {
   if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
   if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
   // 업종·회사 화면은 들어온 탭이 눌린 채로(탭 막대에 없는 화면) · 탭 화면이면 그 탭을 기억
-  if (TABS.includes(r.id)) app.tab = r.id;
-  markActive(r.tab === 'from' ? app.tab : r.tab ?? r.id); app.view = r.id; state.summary = '';
+  if (r.tab !== 'from') app.tab = r.tab;
+  state.tab = app.tab; // 업종 화면 「‹ 되돌아가기」가 들어온 탭(불장 · 업종)을 알도록
+  markActive(app.tab); app.view = r.id; state.summary = '';
   document.documentElement.toggleAttribute('data-drawn', drawn.has(r.id)); drawn.add(r.id); // 이 화면을 이미 한 번 그렸으면 선 그리기 움직임 없이
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;
