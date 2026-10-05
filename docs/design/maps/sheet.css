@@ -1,0 +1,51 @@
+@import url('../app/fonts.css');
+/* ATLAS 지도 샘플 한 장의 옷 — 지금 사이트(2번 청자 · 고운바탕)와 같은 색 · 글씨
+   한 장 = 휴대폰 폭(430px) · 위: 번호 · 이름 · 물음 / 가운데: 지도 / 아래: 범례 · 읽은 것 셋 · 근거 */
+:root {
+  --font: 'Gowun Batang', 'Pretendard Variable', Pretendard, -apple-system, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", sans-serif;
+  --bg: #E2EBE5; --card: #F8FBF7; --ink: #17302A; --ink2: #2C4840; --sub: #4A6258; --sep: #D0DED5; --fill: #E3ECE6;
+  --up: #B4232F; --down: #1F4FB5; --up-ink: #A41F2A; --down-ink: #1C47A3; --warn: #7D4C00;
+  --band: #1B3B32; --band-ink: #F2F8F4; --band-sub: #BFD6CB; --geum: #4F8F77;
+  --hair: rgba(46, 91, 78, .10);
+  /* 지도 칠: 오름 · 내림 · 그대로(0 근처) — 지도 안 넓은 칠에만 */
+  --map-up: #C8323E; --map-down: #2A5FC8; --map-flat: #DCE6DF; --map-line: #F8FBF7; --map-ink-dark: #10221D; --map-ink-light: #FFFFFF;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0D1714; --card: #15231E; --ink: #E8F1EB; --ink2: #CADBD1; --sub: #9BB3A7; --sep: #283B34; --fill: #1C2D27;
+    --up: #FF5A66; --down: #5C97FF; --up-ink: #FF8088; --down-ink: #86B2FF; --warn: #FFB547;
+    --band: #13261F; --band-ink: #E8F1EB; --band-sub: #9BB3A7; --geum: #4F8F77;
+    --hair: rgba(232, 241, 235, .10);
+    --map-up: #E8414F; --map-down: #3F7DF0; --map-flat: #22352E; --map-line: #0D1714; --map-ink-dark: #0D1714; --map-ink-light: #F4FAF6; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body { font-family: var(--font); font-size: 18px; line-height: 1.5; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; }
+.sheet { width: 430px; margin: 0 auto; padding: 22px 18px 26px; }
+.sh-head { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; align-items: end; }
+.sh-num { font-size: 68px; line-height: .9; font-weight: 400; color: var(--geum); }
+.sh-title { margin: 0; font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
+.sh-sub { margin: 4px 0 0; font-size: 16px; color: var(--sub); }
+.sh-tag { grid-column: 1 / -1; margin: 10px 0 0; font-size: 13px; color: var(--sub); display: flex; justify-content: space-between; gap: 8px; }
+.sh-q { margin: 16px 0 14px; padding: 12px 14px; border-radius: 14px; background: var(--fill); font-size: 18px; line-height: 1.45; }
+.sh-q b { font-weight: 700; }
+.sh-map { position: relative; border-radius: 18px; background: var(--card); border: 1px solid var(--hair); overflow: hidden; padding: 10px; }
+.sh-map svg { display: block; width: 100%; height: auto; }
+.sh-maphead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 2px 4px 8px; font-size: 14px; color: var(--sub); }
+.sh-maphead b { color: var(--ink); font-size: 16px; }
+.sh-box { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--hair); }
+.sh-box h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; }
+.sh-box h2 small { font-weight: 400; color: var(--sub); font-size: 14px; margin-left: 6px; }
+.sh-legend { display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; }
+.sh-legend .lg { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 16px; line-height: 1.35; }
+.sh-legend .lg b { font-weight: 700; }
+.sh-legend .sw { width: 54px; height: 26px; border-radius: 6px; display: block; }
+.sh-legend svg.sw { border-radius: 0; }
+.sh-read { margin: 0; padding: 0; list-style: none; counter-reset: r; display: grid; gap: 9px; }
+.sh-read li { counter-increment: r; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; font-size: 17px; line-height: 1.45; }
+.sh-read li::before { content: counter(r); width: 24px; height: 24px; border-radius: 12px; background: var(--fill); color: var(--ink); display: grid; place-items: center; font-size: 14px; font-weight: 700; margin-top: 1px; }
+.sh-read b { font-weight: 700; }
+.up { color: var(--up-ink); } .down { color: var(--down-ink); }
+.sh-foot { margin: 14px 2px 0; font-size: 13px; line-height: 1.5; color: var(--sub); }
+.sh-foot p { margin: 2px 0; }
+.sh-why { margin: 14px 0 0; padding: 12px 14px; border-left: 4px solid var(--geum); background: var(--card); border-radius: 0 14px 14px 0; font-size: 16px; }
+.sh-why b { font-weight: 700; }

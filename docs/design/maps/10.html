@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 10 · 세계 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 10 세계 지도 — 위: 북태평양 지도(한국 · 미국 칠) / 아래: 같은 갈래 12개 견줌(왼쪽 한국 · 오른쪽 미국) */
+.w10-world { display: block; width: calc(100% + 20px) !important; max-width: none; margin: 0 -10px; }
+.w10-rule { height: 1px; background: var(--sep); margin: 4px 2px 10px; }
+.w10-chart { display: block; }
+.w10-note { margin: 8px 4px 2px; font-size: 12px; line-height: 1.5; color: var(--sub); }
+.w10-note b { color: var(--ink2); font-weight: 700; }
+.w10-dot { color: var(--geum); font-size: .75em; vertical-align: .08em; }
+.w10-nw { white-space: nowrap; }
+/* 외톨이 낱말 줄 막기 — 줄바꿈 방식(style)만 바꿈(nowrap 덩이는 그대로 둠) */
+.sh-foot p, .sh-read li > span, .w10-note, .sh-why, .sh-legend .lg > span { text-wrap-style: pretty; }
+.sh-legend .lg .up, .sh-read .up { color: var(--up-ink); }
+.sh-legend .lg .down, .sh-read .down { color: var(--down-ink); }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr'), U = L.side('us');
+  const world = await (await fetch('10-world.json')).json(); // w10/project.mjs 가 미리 그린 나라 모양(Natural Earth 110m)
+  // 글자 폭을 재기 전에 글꼴(굵게)을 먼저 받아 둠 — 이름표에 쓰는 글자만
+  const glyphs = [...K.families, ...U.families].map(f => f.label).join('') + '한국미국큰갈래▲▼+−.%0123456789';
+  await Promise.all([700, 400].map(w => document.fonts.load(`${w} 15px 'Gowun Batang'`, glyphs).catch(() => null)));
+
+  // ── 셈 ──────────────────────────────────────────────
+  /** 퍼센트 글 — 소수 한 자리에서 0.0 이 되는 작은 값은 두 자리로(−0.0% 대신 −0.02%) */
+  const pc = v => (L.finite(v) && v !== 0 && Math.abs(v) < 0.0005) ? L.pct(v, 2) : L.pct(v);
+  const tp = v => `${L.tri(v)} ${pc(v)}`;          // ▲ 와 숫자가 줄바꿈으로 떨어지지 않게(붙는 빈칸)
+  /** 받침에 맞는 토씨 — 지주 → 는 · 소재 → 는 · 반도체 → 는 · 건설 → 은 */
+  const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? a : b; };
+  const krAll = L.mean(K.groups.map(g => g.change20)), usAll = L.mean(U.groups.map(g => g.change20));
+  const usFam = new Map(U.families.map(f => [f.id, f]));
+  const famMean = (S, fid) => L.mean(S.groupsOf(fid).map(g => g.change20));
+  const rows = K.families.filter(f => usFam.has(f.id)).map(f => ({
+    id: f.id, label: f.label, usLabel: usFam.get(f.id).label,
+    kr: famMean(K, f.id), us: famMean(U, f.id),
+  })).sort((a, b) => b.kr - a.kr);
+  rows.forEach(r => { r.same = Math.sign(r.kr) === Math.sign(r.us) && r.kr !== 0; r.gap = Math.abs(r.kr - r.us); });
+  const extraFams = U.families.filter(f => !K.families.some(k => k.id === f.id));           // 미국 「그 밖」
+  const extraGroups = extraFams.flatMap(f => U.groupsOf(f.id));
+  const extraCos = L.sum(extraGroups.map(g => g.count));
+  const renamed = rows.filter(r => r.label !== r.usLabel);
+  const days = K.dates20.length - 1, daysU = U.dates20.length - 1;
+
+  // ── 색 ──────────────────────────────────────────────
+  const T = n => L.tok(n);
+  const card = T('--card'), sub = T('--sub'), ink = T('--ink');
+  const landFill = L.mix(card, sub, 0.16), coast = L.mix(card, sub, 0.40);
+  const krFill = L.heat(krAll), usFill = L.heat(usAll);
+  const signCol = v => L.heat(v >= 0 ? 0.3 : -0.3);   // 막대: 오름 빨강 · 내림 파랑(지도 칠의 가장 진한 빨강 · 파랑)
+  const inkCls = v => v > 0 ? T('--up-ink') : v < 0 ? T('--down-ink') : ink;
+  const FONT = T('--font');
+
+  // ── ① 지도 칸 머리 ─────────────────────────────────
+  const map = document.getElementById('map');
+  const sameEnd = K.place.asOf === U.place.asOf && days === daysU;
+  map.append(L.el('div', {class: 'sh-maphead'},
+    L.el('span', {html: `<b>${K.place.label} ${K.companies.length} · ${U.place.label} ${U.companies.length}</b>`}),
+    L.el('span', null, sameEnd ? `${days}거래일 · ${L.korDate(K.place.asOf)}까지` : `${days}·${daysU}거래일 · ${L.korDate(K.place.asOf)} · ${L.korDate(U.place.asOf)}까지`)));
+
+  // ── ② 세계 지도(북태평양) ───────────────────────────
+  const W = world.w, H = world.h;
+  const sw = L.sv('svg', {class: 'w10-world', viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img',
+    'aria-label': `북태평양 지도 — ${K.place.label} ${tp(krAll)} · ${U.place.label} ${tp(usAll)}`});
+  const txt = (x, y, s, size, attrs = {}) => L.sv('text', {x, y, 'font-size': size, 'font-family': FONT, fill: ink, ...attrs}, s);
+  sw.append(
+    L.sv('path', {d: world.land, fill: landFill, stroke: coast, 'stroke-width': 0.6, 'stroke-linejoin': 'round'}),
+    L.sv('path', {d: world.us, fill: usFill, stroke: L.mix(usFill, ink, 0.25), 'stroke-width': 0.6, 'stroke-linejoin': 'round'}),
+    L.sv('path', {d: world.kr, fill: krFill, stroke: L.mix(krFill, ink, 0.25), 'stroke-width': 0.6, 'stroke-linejoin': 'round'}),
+  );
+  // 한국은 작아서 둥근 테로 자리를 알림
+  const [kx, ky] = world.krC, RING = 12;
+  // 서울 ↔ 샌프란시스코 큰원 길(지구 위 가장 짧은 길) — 옅은 점선 · 테 밖에서 시작해 미국 바닷가 앞에서 멈춤
+  const [sx, sy] = world.sf;
+  const arc = world.arcPts.filter(([x, y]) => Math.hypot(x - kx, y - ky) > RING + 4 && Math.hypot(x - sx, y - sy) > 5);
+  sw.append(L.sv('path', {d: 'M' + arc.map(p => p.join(',')).join('L'), fill: 'none', stroke: sub, 'stroke-width': 1.2, 'stroke-dasharray': '0.1 4.6', 'stroke-linecap': 'round', opacity: 0.9}));
+  sw.append(L.sv('circle', {cx: kx, cy: ky, r: RING, fill: 'none', stroke: ink, 'stroke-width': 1.1, opacity: 0.6}));
+  // 이름표: 한국(테 아래 바다 · 짧은 선으로 이음) · 미국(본토 안)
+  const krLab = {x: kx - 4, y: ky + RING + 30};
+  sw.append(L.sv('path', {d: `M${kx},${ky + RING}V${krLab.y - 16}`, stroke: ink, 'stroke-width': 1, opacity: 0.5}));
+  sw.append(txt(krLab.x, krLab.y, K.place.label, 17, {'font-weight': 700}));
+  sw.append(txt(krLab.x, krLab.y + 19, tp(krAll), 16, {'font-weight': 700, fill: inkCls(krAll)}));
+  const [ux, uy] = world.usC;
+  sw.append(txt(ux, uy - 1, U.place.label, 17, {'font-weight': 700, 'text-anchor': 'middle', fill: L.inkOn(usFill)}));
+  sw.append(txt(ux, uy + 18, tp(usAll), 16, {'font-weight': 700, 'text-anchor': 'middle', fill: L.inkOn(usFill)}));
+  map.append(sw);
+
+  // ── ③ 같은 갈래 견줌(나비 막대) ─────────────────────
+  map.append(L.el('div', {class: 'w10-rule'}));
+  const CW = 372, ROW = 26, TOP = 30, NAME = 14.5, VAL = 13;
+  const nameW = Math.max(...rows.map(r => L.textW(r.label, NAME))) + 26;           // 이름 칸(● 자리 포함)
+  const cx = CW / 2, nL = cx - nameW / 2, nR = cx + nameW / 2;
+  const labW = Math.max(...rows.flatMap(r => [L.textW(tp(r.kr), VAL), L.textW(tp(r.us), VAL)])) + 6;
+  const barMax = Math.min(nL - labW - 2, 96);
+  const vMax = Math.max(...rows.flatMap(r => [Math.abs(r.kr), Math.abs(r.us)]));
+  const len = v => Math.max(1.5, Math.abs(v) / vMax * barMax);
+  const CH = TOP + rows.length * ROW + 4;
+  const sc = L.sv('svg', {class: 'w10-chart', viewBox: `0 0 ${CW} ${CH}`, width: CW, height: CH, role: 'img',
+    'aria-label': `같은 갈래 ${rows.length}개 — 왼쪽 ${K.place.label} · 오른쪽 ${U.place.label}`});
+  sc.append(
+    txt(nL / 2 + 8, 16, K.place.label, 16, {'font-weight': 700, 'text-anchor': 'middle'}),
+    txt(cx, 16, '큰 갈래', 13, {'text-anchor': 'middle', fill: sub}),
+    txt(nR + (CW - nR) / 2 - 8, 16, U.place.label, 16, {'font-weight': 700, 'text-anchor': 'middle'}),
+  );
+  // 0 줄(막대가 시작하는 곳)
+  sc.append(L.sv('path', {d: `M${nL},${TOP - 4}V${CH - 2}M${nR},${TOP - 4}V${CH - 2}`, stroke: T('--sep'), 'stroke-width': 1}));
+  rows.forEach((r, i) => {
+    const y = TOP + i * ROW, mid = y + ROW / 2;
+    const lk = len(r.kr), lu = len(r.us);
+    sc.append(
+      L.sv('rect', {x: nL - lk, y: mid - 6, width: lk, height: 12, rx: 2, fill: signCol(r.kr)}),
+      L.sv('rect', {x: nR, y: mid - 6, width: lu, height: 12, rx: 2, fill: signCol(r.us)}),
+      txt(nL - lk - 5, mid + 4.5, tp(r.kr), VAL, {'font-weight': 700, 'text-anchor': 'end', fill: inkCls(r.kr)}),
+      txt(nR + lu + 5, mid + 4.5, tp(r.us), VAL, {'font-weight': 700, fill: inkCls(r.us)}),
+    );
+    const w = L.textW(r.label, NAME), dot = r.same ? 11 : 0, x0 = cx - (w + dot) / 2;
+    if (r.same) sc.append(L.sv('circle', {cx: x0 + 3.5, cy: mid, r: 3.5, fill: T('--geum')}));
+    sc.append(txt(x0 + dot, mid + 5, r.label, NAME, {'font-weight': 700}));
+  });
+  map.append(sc);
+  map.append(L.el('p', {class: 'w10-note', html:
+    `미국 판에서 이름이 다른 갈래: ${renamed.map(r => `<span class="w10-nw">${r.label} → <b>${r.usLabel}</b></span>`).join(' · ')}<br>` +
+    `미국 「${extraFams.map(f => f.label).join(' · ')}」 갈래(업종 ${extraGroups.length}개 · ${extraCos}곳)는 한국에 짝이 없어 뺐습니다`}));
+
+  // ── ④ 범례 · 읽은 것 · 근거 ─────────────────────────
+  const bars = (() => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    s.append(L.sv('rect', {x: 4, y: 8, width: 19, height: 10, rx: 2, fill: signCol(1)}), L.sv('rect', {x: 31, y: 8, width: 13, height: 10, rx: 2, fill: signCol(-1)}),
+      L.sv('path', {d: 'M27,3V23', stroke: sub, 'stroke-width': 1})); return s; })();
+  const dotSw = (() => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    s.append(L.sv('circle', {cx: 9, cy: 13, r: 3.5, fill: T('--geum')}), L.sv('text', {x: 16, y: 18, 'font-size': 13, 'font-weight': 700, 'font-family': FONT, fill: ink}, '갈래')); return s; })();
+  const dash = (() => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    s.append(L.sv('path', {d: 'M4,19Q27,3 50,19', fill: 'none', stroke: sub, 'stroke-width': 1.6, 'stroke-dasharray': '0.1 4.6', 'stroke-linecap': 'round'})); return s; })();
+  const pair = (() => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    s.append(L.sv('rect', {x: 0, y: 0, width: 27, height: 26, fill: signCol(1)}), L.sv('rect', {x: 27, y: 0, width: 27, height: 26, fill: signCol(-1)})); return s; })();
+
+  const upup = rows.filter(r => r.kr > 0 && r.us > 0), dndn = rows.filter(r => r.kr < 0 && r.us < 0);
+  const krOnly = rows.filter(r => r.kr > 0 && r.us < 0), usOnly = rows.filter(r => r.kr < 0 && r.us > 0);
+  const split = krOnly.length + usOnly.length;
+  const splitTxt = !split ? '' : usOnly.length === 0 ? ` · 나머지 <b>${split}개</b>는 한국만 올랐습니다`
+    : krOnly.length === 0 ? ` · 나머지 <b>${split}개</b>는 미국만 올랐습니다` : ` · 한국만 오른 갈래 <b>${krOnly.length}개</b> · 미국만 오른 갈래 <b>${usOnly.length}개</b>`;
+  const big = [...rows].sort((a, b) => b.gap - a.gap)[0];
+  // 0 에 아주 가까운 값(±0.1% 안) — 셈은 부호대로 하되 근거에 밝힘
+  const nearFlat = rows.flatMap(r => [[K.place.label, r, r.kr], [U.place.label, r, r.us]]).filter(([, , v]) => Math.abs(v) < 0.001);
+  const lateCo = K.company('207940');   // 안내서: 이 회사만 10월 2일 종가를 못 받음(마지막 종가 = 그 앞 거래일)
+  const flatTxt = nearFlat.map(([c, r, v]) => `${c} ${r.label}${josa(r.label, '은', '는')} ${tp(v)}로 거의 그대로지만 ${v < 0 ? '내림' : '오름'}으로 셈`).join(' · ');
+  const b = v => `<b class="${L.cls(v)}">${tp(v)}</b>`;
+  const nb = (label, v) => `<span class="w10-nw">${label} ${b(v)}</span>`;   // 「한국 ▲ +7.0%」 한 덩이로
+
+  L.fill({
+    // 붙는 빈칸( )으로 「한 장에」 「같은 갈래끼리 견줌」이 한 덩이로 줄바꿈되게
+    num: '10', title: '세계 지도', sub: '한국 판 · 미국 판을 한 장에 · 같은 갈래끼리 견줌',
+    question: `이 지도가 답하는 물음: <b>같은 지난 ${days}거래일, ${K.place.label}${josa(K.place.label, '과', '와')} ${U.place.label}에서 같은 갈래는 같이 올랐나?</b>`,
+    legend: [
+      [L.ramp(0.3), `<b>나라 색</b> = 그 나라 업종 ${K.groups.length}개 평균(지난 ${days}거래일) · 진할수록 크게`],
+      [dash, `<b>점선</b> = 두 판을 잇는 표시(서울 ↔ 샌프란시스코 가장 짧은 길)`],
+      [dotSw, `<b>가운데 이름</b> = 큰 갈래 · <b class="w10-dot">●</b> = 두 나라가 같은 쪽으로 움직인 갈래`],
+      [bars, `<b>왼쪽 막대</b> = ${K.place.label} · <b>오른쪽 막대</b> = ${U.place.label} · 길수록 크게`],
+      [pair, `<b class="up">빨강 ▲</b> 오름 · <b class="down">파랑 ▼</b> 내림`],
+    ],
+    // 한 줄을 <span> 하나로 감쌈 — .sh-read li 는 칸(grid)이라 <b> 가 따로 떨어지지 않게
+    reads: [
+      `두 나라에서 모두 오른 갈래 <b>${upup.length}개 / ${rows.length}</b>${upup.length ? `(${upup.map(r => r.label).join(' · ')})` : ''} · 모두 내린 갈래 <b>${dndn.length}개</b>${splitTxt}`,
+      `차이가 가장 큰 갈래: <b>${big.label}</b> — ${nb(K.place.label, big.kr)} · ${nb(U.place.label, big.us)}`,
+      `나라 전체 평균(업종 ${K.groups.length}개): ${nb(K.place.label, krAll)} · ${nb(U.place.label, usAll)}`,
+    ].map(t => `<span>${t}</span>`),
+    why: '<b>잘 보이는 것:</b> 같은 갈래가 두 나라에서 같은 쪽으로 움직였는지 · <b>잘 안 보이는 것:</b> 나라 땅 크기는 주식과 상관없음 · 갈래 이름 나눔은 ATLAS 가 정한 것',
+    foot: [
+      `${K.place.label}: ${L.korDate(K.place.from)} → ${L.korDate(K.place.asOf)} ${K.place.close} 종가 · ${U.place.label}: ${L.korDate(U.place.from)} → ${L.korDate(U.place.asOf)} ${U.place.close} 종가`,
+      `갈래 값 = 그 갈래 업종들의 지난 ${days}거래일 변화 평균(사이트와 같은 셈) · 나라 값 = 업종 ${K.groups.length}개 평균(미국은 「${extraFams.map(f => f.label).join(' · ')}」 업종 ${extraGroups.length}개도 넣음)`,
+      flatTxt || null,
+      `미국 「${extraFams.map(f => f.label).join(' · ')}」 갈래(업종 ${extraGroups.length}개 · ${extraCos}곳)는 한국에 짝이 없어 위 견줌에서 뺌`,
+      lateCo ? `${K.place.label} ${lateCo.name}${josa(lateCo.name, '은', '는')} 마지막 종가가 ${L.korDate(K.dates20[K.dates20.length - 2])} — 판과 같은 사정` : null,
+      `나라 모양: Natural Earth(공공 자료) · world-atlas — 태평양을 가운데 둔 세계 지도(땅 넓이는 그대로 · 북쪽이 위)`,
+      `샘플 — 아직 사이트에 없음`,
+    ].filter(Boolean),
+  });
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

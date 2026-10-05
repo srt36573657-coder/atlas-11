@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 7 · 별자리 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 별자리 지도 — 지도 칸 전체가 밤하늘(두 화면 모두 어둡게 · 어두운 화면에서는 카드보다 더 어둡게) */
+:root { --sky1: #10263A; --sky2: #1A3B44; --sky-ink: #EFF6F2; --sky-sub: #BDD0CA; --sky-line: #DCEAF2; --sky-dot: #DDE9F1; }
+@media (prefers-color-scheme: dark) {
+  :root { --sky1: #050A0F; --sky2: #0B181B; --sky-ink: #E9F2ED; --sky-sub: #A9BEB6; --sky-line: #CFE0EA; --sky-dot: #D5E3EC; }
+}
+.sh-map.night { padding: 0; background: var(--sky1); }
+.sh-map.night .sh-maphead { margin: 0; padding: 11px 14px 2px; color: var(--sky-sub); }
+.sh-map.night .sh-maphead b { color: var(--sky-ink); }
+.sky text { font-family: var(--font); }
+.sh-legend .lg small { color: var(--sub); font-size: 14px; }
+.sh-read b, .nw { white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map night" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const D = K.dates60;                       // 날짜 60개(종가 60개)
+  const TOPN = 60;                           // 시가총액 큰 60곳
+  const T = 0.70;                            // 선을 긋는 문턱(같이 움직인 정도)
+  const mapEl = document.getElementById('map');
+  const josa = (w, a, b) => { const ch = String(w).trim().slice(-1), code = ch.charCodeAt(0) - 0xAC00; return code >= 0 && code < 11172 ? (code % 28 ? a : b) : a; };
+
+  /* ───────── ① 자료: 시가총액 큰 60곳 · 종가를 같은 날짜 줄에 맞춤 ───────── */
+  const top = K.companies.filter(c => L.finite(c.cap)).sort((a, b) => b.cap - a.cap).slice(0, TOPN);
+  const N = top.length;
+  // c60 의 마지막 날짜(c60last)를 dates60 에서 찾아 줄을 맞춘다 — 삼성바이오로직스는 10월 1일에서 끝나 마지막 칸이 빔
+  const aligned = c => { const off = D.indexOf(c.c60last) - (c.c60.length - 1); return D.map((_, k) => { const v = c.c60[k - off]; return L.finite(v) ? v : null; }); };
+  const ret = top.map(c => { const a = aligned(c); return a.slice(1).map((v, i) => v != null && a[i] != null && a[i] !== 0 ? v / a[i] - 1 : null); });
+  const nDays = D.length - 1;
+  const shortCos = top.map((c, i) => ({c, miss: ret[i].filter(v => v == null).length})).filter(x => x.miss > 0);
+
+  /* ───────── ② 같이 움직인 정도(두 회사의 하루 변화가 얼마나 같은 꼴로 오르내렸나 · −1~1) ───────── */
+  function together(x, y) {
+    const xs = [], ys = []; let same = 0;
+    x.forEach((v, i) => { const w = y[i]; if (v == null || w == null) return; xs.push(v); ys.push(w); if (v !== 0 && w !== 0 && Math.sign(v) === Math.sign(w)) same++; });
+    const n = xs.length, mx = L.mean(xs), my = L.mean(ys);
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) { const a = xs[i] - mx, b = ys[i] - my; sxy += a * b; sxx += a * a; syy += b * b; }
+    return {r: sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0, n, same};
+  }
+  const C = Array.from({length: N}, () => Array(N).fill(null));
+  for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) C[i][j] = C[j][i] = together(ret[i], ret[j]);
+
+  /* ───────── ③ 선: 별마다 가장 같이 움직인 짝 하나와 잇기(그 값이 T 이상일 때만) ───────── */
+  const best = top.map((_, i) => { let bj = -1, br = -Infinity; for (let j = 0; j < N; j++) if (j !== i && C[i][j].r > br) { br = C[i][j].r; bj = j; } return {j: bj, r: br}; });
+  const eMap = new Map();
+  best.forEach((b, i) => { if (b.r >= T) { const a = Math.min(i, b.j), z = Math.max(i, b.j); eMap.set(a + '-' + z, {a, b: z, r: C[a][z].r}); } });
+  const edges = [...eMap.values()];
+
+  /* ───────── ④ 별자리 = 선으로 이어진 무리(별 둘 이상) · 이름 = 가장 많은 업종 + 「자리」 ───────── */
+  const par = [...Array(N).keys()]; const find = x => par[x] === x ? x : (par[x] = find(par[x]));
+  edges.forEach(e => { par[find(e.a)] = find(e.b); });
+  const compMap = new Map(); for (let i = 0; i < N; i++) { const r = find(i); if (!compMap.has(r)) compMap.set(r, []); compMap.get(r).push(i); }
+  const capSum = ms => L.sum(ms.map(i => top[i].cap));
+  const comps = [...compMap.values()].map(ms => ms.sort((a, b) => top[b].cap - top[a].cap));
+  const nameOf = ms => {   // 같은 수면 더 큰 회사의 업종
+    const cnt = new Map(); ms.forEach(i => cnt.set(top[i].groupLabel, (cnt.get(top[i].groupLabel) || 0) + 1));
+    const mx = Math.max(...cnt.values());
+    return ms.map(i => top[i].groupLabel).find(l => cnt.get(l) === mx) + '자리';
+  };
+  const cons = comps.filter(ms => ms.length >= 2).sort((a, b) => b.length - a.length || capSum(b) - capSum(a)).map(ms => ({members: ms, name: nameOf(ms)}));
+  const seen = new Map(); cons.forEach(c => { const k = seen.get(c.name) || 0; seen.set(c.name, k + 1); if (k) c.name += ' ' + (k + 1); });
+  const lonely = comps.filter(ms => ms.length === 1).map(ms => ms[0]).sort((a, b) => top[b].cap - top[a].cap);
+  const consOf = new Map(); cons.forEach((c, k) => c.members.forEach(i => consOf.set(i, k)));
+
+  /* ───────── ⑤ 이름표를 달 별: 별자리 별 전부 + 큰 별 8개 + 읽은 것 ③의 혼자 별 ───────── */
+  const loneliest = lonely.slice().sort((a, b) => best[a].r - best[b].r)[0];
+  const lonelyEx = [...new Set([lonely[0], loneliest])].filter(i => i != null);
+  const labeled = new Set([...consOf.keys(), ...top.slice(0, 8).map((_, i) => i), ...lonelyEx]);
+
+  /* ───────── ⑥ 글씨 재기(고운바탕을 먼저 받아 둔다) ───────── */
+  const FONT = getComputedStyle(document.body).fontFamily;
+  const LBL = 13, NAMEPX = 15, NAMESP = 0.6;
+  await Promise.all([document.fonts.load(`400 ${LBL}px ${FONT}`, top.map(c => c.name).join('')), document.fonts.load(`700 ${NAMEPX}px ${FONT}`, cons.map(c => c.name).join(''))]);
+  await document.fonts.ready;
+  const cv = document.createElement('canvas').getContext('2d');
+  const tw = (s, px, wt = 400, sp = 0) => { cv.font = `${wt} ${px}px ${FONT}`; return cv.measureText(String(s)).width + sp * [...String(s)].length; };
+  const lw = top.map(c => tw(c.name, LBL));
+
+  /* ───────── ⑦ 별 크기 · 별 빛 ───────── */
+  const capMax = top[0].cap;
+  const rad = top.map(c => 2.5 + 7.5 * Math.sqrt(c.cap / capMax));       // 2.5~10px · 시가총액의 제곱근을 따라 커짐
+  const UP = L.tok('--map-up'), DN = L.tok('--map-down');
+  const starColor = v => { if (!L.finite(v) || Math.abs(v) < 0.0005) return '#F4F6F5'; const t = Math.min(1, Math.abs(v) / 0.2); return v > 0 ? L.mix('#FFF3E8', UP, 0.2 + 0.55 * t) : L.mix('#EDF3FF', DN, 0.2 + 0.55 * t); };
+  const NAMECOL = L.mix(L.tok('--geum'), '#FFFFFF', 0.3);
+
+  /* ───────── ⑧ 상자 도구 ───────── */
+  const LH = 8.5;                                                          // 이름표 높이의 반(13px 글씨)
+  const labelBox = (x, y, r, w, s) => s === 'R' ? [x + r + 3, y - LH, x + r + 5 + w, y + LH]
+    : s === 'L' ? [x - r - 5 - w, y - LH, x - r - 3, y + LH]
+    : s === 'B' ? [x - w / 2 - 1, y + r + 1, x + w / 2 + 1, y + r + 1 + 2 * LH]
+    : [x - w / 2 - 1, y - r - 1 - 2 * LH, x + w / 2 + 1, y - r - 1];
+  const starBox = (x, y, r) => [x - r - 2, y - r - 2, x + r + 2, y + r + 2];
+  const over = (a, b, m = 0) => a[0] < b[2] + m && a[2] + m > b[0] && a[1] < b[3] + m && a[3] + m > b[1];
+  const segHits = (b, x1, y1, x2, y2) => { for (let t = .06; t <= .94; t += .04) { const x = x1 + (x2 - x1) * t, y = y1 + (y2 - y1) * t; if (x > b[0] && x < b[2] && y > b[1] && y < b[3]) return true; } return false; };
+  const ptRect = (x, y, b) => Math.hypot(Math.max(b[0] - x, 0, x - b[2]), Math.max(b[1] - y, 0, y - b[3]));
+  const sideOf = (p, nb, cx, longDown) => {   // 선이 지나가지 않는 쪽 · 무리 바깥쪽을 먼저(긴 이름은 아래·위를 먼저 해 보기도 함)
+    const dirs = nb.map(q => { const dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1; return [dx / d, dy / d]; });
+    const blocked = s => dirs.some(([ux, uy]) => s === 'R' ? ux > .45 : s === 'L' ? ux < -.45 : s === 'B' ? uy > .2 : uy < -.2);
+    const order = longDown && p.w > 100 ? ['B', 'T', ...(p.x >= cx ? ['R', 'L'] : ['L', 'R'])] : p.x >= cx ? ['R', 'L', 'B', 'T'] : ['L', 'R', 'B', 'T'];
+    return order.find(s => !blocked(s)) || order[0];
+  };
+  const pushApart = (A, B, a, b, m, rnd) => {   // 두 상자가 겹치면 두 별을 떼어 놓음(주로 위아래로)
+    const ox = Math.min(a[2], b[2]) - Math.max(a[0], b[0]) + m, oy = Math.min(a[3], b[3]) - Math.max(a[1], b[1]) + m;
+    if (ox <= 0 || oy <= 0) return false;
+    if (oy <= ox * 1.4) { const sg = B.y > A.y ? 1 : B.y < A.y ? -1 : (rnd() < .5 ? -1 : 1); A.y -= sg * oy / 2; B.y += sg * oy / 2; }
+    else { const sg = B.x > A.x ? 1 : B.x < A.x ? -1 : (rnd() < .5 ? -1 : 1); A.x -= sg * ox / 2; B.x += sg * ox / 2; }
+    return true;
+  };
+
+  /* ───────── ⑨ 별자리 하나씩 작은 힘 놀이(이어진 별은 당기고 · 가까운 별은 밀고 · 이름표 · 선이 안 겹치게) ───────── */
+  const rest = (r, p, q) => p.r + q.r + 15 + (0.96 - r) * 40;   // 더 같이 움직인 짝일수록 조금 짧은 선(큰 별은 그만큼 띄움)
+  const COLW = 178;                               // 두 무리가 나란히 들어가는 폭
+  const segX = (a, b, c, d) => { const o = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x); return o(a, b, c) * o(a, b, d) < 0 && o(c, d, a) * o(c, d, b) < 0; };
+  function layoutOnce(cn, seed, longDown) {
+    const rnd = L.rand(seed);
+    const n = cn.members.length;
+    const P = cn.members.map((i, q) => { const a = 2 * Math.PI * q / n + rnd() * 1.2; return {i, x: Math.cos(a) * 24 + (rnd() - .5) * 6, y: Math.sin(a) * 24 + (rnd() - .5) * 6, r: rad[i], w: lw[i], side: 'R'}; });
+    const at = new Map(P.map(p => [p.i, p]));
+    const E = edges.filter(e => at.has(e.a)).map(e => ({p: at.get(e.a), q: at.get(e.b), r: e.r}));
+    const nb = new Map(P.map(p => [p, []])); E.forEach(e => { nb.get(e.p).push(e.q); nb.get(e.q).push(e.p); });
+    if (seed % 2 === 0) {   // 반은 엇갈림 없는 방사형 나무 모양에서 시작(가지마다 잎 수만큼 각도를 나눔)
+      const root = P.slice().sort((a, b) => nb.get(b).length - nb.get(a).length || b.r - a.r)[0];
+      const parent = new Map([[root, null]]), seq = [root];
+      for (let k = 0; k < seq.length; k++) for (const q of nb.get(seq[k])) if (!parent.has(q)) { parent.set(q, seq[k]); seq.push(q); }
+      const kids = new Map(P.map(p => [p, []])); seq.slice(1).forEach(q => kids.get(parent.get(q)).push(q));
+      const leaves = new Map(); seq.slice().reverse().forEach(p => leaves.set(p, kids.get(p).length ? L.sum(kids.get(p).map(c => leaves.get(c))) : 1));
+      const place = (p, from, to, depth) => { const mid = (from + to) / 2; p.x = depth ? Math.cos(mid) * depth * 30 : 0; p.y = depth ? Math.sin(mid) * depth * 30 : 0; let cur = from; for (const c of kids.get(p)) { const span = (to - from) * leaves.get(c) / leaves.get(p); place(c, cur, cur + span, depth + 1); cur += span; } };
+      const a0 = rnd() * 2 * Math.PI; place(root, a0, a0 + 2 * Math.PI, 0);
+    }
+    const ITER = 900;
+    for (let it = 0; it < ITER; it++) {
+      for (const e of E) { const dx = e.q.x - e.p.x, dy = e.q.y - e.p.y, d = Math.hypot(dx, dy) || .01, f = .12 * (d - rest(e.r, e.p, e.q)) / d; e.p.x += dx * f; e.p.y += dy * f; e.q.x -= dx * f; e.q.y -= dy * f; }
+      for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+        const A = P[a], B = P[b]; let dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy);
+        if (d < .1) { dx = rnd() - .5; dy = rnd() - .5; d = Math.hypot(dx, dy); }
+        if (d < 24) { const f = (24 - d) * .12; A.x -= dx / d * f; A.y -= dy / d * f; B.x += dx / d * f; B.y += dy / d * f; }
+      }
+      const cx = L.mean(P.map(p => p.x)), cy = L.mean(P.map(p => p.y));
+      P.forEach(p => { p.x += (cx - p.x) * .03; p.y += (cy - p.y) * .012; });          // 옆으로 더 당겨 폭을 좁게
+      if (it % 20 === 0 && it < ITER * .85) P.forEach(p => { p.side = sideOf(p, nb.get(p), cx, longDown); });
+      if (it > ITER * .15) {
+        P.forEach(p => { p.lb = labelBox(p.x, p.y, p.r, p.w, p.side); p.sb = starBox(p.x, p.y, p.r); });
+        for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+          const A = P[a], B = P[b];
+          for (const [ba, bb] of [[A.lb, B.lb], [A.lb, B.sb], [A.sb, B.lb], [A.sb, B.sb]]) if (pushApart(A, B, ba, bb, 2, rnd)) { A.lb = labelBox(A.x, A.y, A.r, A.w, A.side); A.sb = starBox(A.x, A.y, A.r); B.lb = labelBox(B.x, B.y, B.r, B.w, B.side); B.sb = starBox(B.x, B.y, B.r); }
+        }
+        for (const e of E) for (const p of P) {      // 선이 남의 이름표 · 별을 지나가면 비켜 줌
+          if (p === e.p || p === e.q) continue;
+          if (!segHits(p.lb, e.p.x, e.p.y, e.q.x, e.q.y) && !segHits(p.sb, e.p.x, e.p.y, e.q.x, e.q.y)) continue;
+          const dx = e.q.x - e.p.x, dy = e.q.y - e.p.y, d = Math.hypot(dx, dy) || 1; let nx = -dy / d, ny = dx / d;
+          const bx = (p.lb[0] + p.lb[2]) / 2 - e.p.x, by = (p.lb[1] + p.lb[3]) / 2 - e.p.y; if (bx * nx + by * ny < 0) { nx = -nx; ny = -ny; }
+          p.x += nx * 1.6; p.y += ny * 1.6; e.p.x -= nx * .8; e.p.y -= ny * .8; e.q.x -= nx * .8; e.q.y -= ny * .8;
+        }
+      }
+    }
+    P.forEach(p => { p.lb = labelBox(p.x, p.y, p.r, p.w, p.side); p.sb = starBox(p.x, p.y, p.r); });
+    let x0 = Math.min(...P.map(p => Math.min(p.lb[0], p.sb[0]))), x1 = Math.max(...P.map(p => Math.max(p.lb[2], p.sb[2])));
+    let y0 = Math.min(...P.map(p => Math.min(p.lb[1], p.sb[1]))), y1 = Math.max(...P.map(p => Math.max(p.lb[3], p.sb[3])));
+    const nw = tw(cn.name, NAMEPX, 700, NAMESP);
+    const scx = (Math.min(...P.map(p => p.x)) + Math.max(...P.map(p => p.x))) / 2;
+    const nb0 = [scx - nw / 2 - 1, y0 - 21, scx + nw / 2 + 1, y0 - 3];
+    x0 = Math.min(x0, nb0[0]); x1 = Math.max(x1, nb0[2]); y0 = nb0[1];
+    // 점수: 선끼리 엇갈림 · 선이 이름표를 지남 · 상자끼리 겹침(가장 나쁨) → 폭이 넘침 → 넓이
+    let bad = 0;
+    for (let a = 0; a < E.length; a++) for (let b = a + 1; b < E.length; b++) { const e = E[a], f = E[b]; if (e.p === f.p || e.p === f.q || e.q === f.p || e.q === f.q) continue; if (segX(e.p, e.q, f.p, f.q)) bad++; }
+    for (const e of E) for (const p of P) { if (segHits(p.lb, e.p.x, e.p.y, e.q.x, e.q.y)) bad++; if (p !== e.p && p !== e.q && segHits(p.sb, e.p.x, e.p.y, e.q.x, e.q.y)) bad++; }
+    for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) { const A = P[a], B = P[b]; if (over(A.lb, B.lb) || over(A.lb, B.sb) || over(A.sb, B.lb)) bad++; }
+    const w = x1 - x0, h = y1 - y0;
+    return {P, E, nw, nameLocal: [scx, nb0[3] - 3], lx0: x0, ly0: y0, w, h, score: bad * 1e6 + Math.max(0, w - COLW) * 600 + w * h};
+  }
+  cons.forEach((cn, k) => {
+    let bestL = null;
+    for (let t = 0; t < 24; t++) { const lay = layoutOnce(cn, 700 + k * 38 + t * 1009, t % 4 >= 2); if (!bestL || lay.score < bestL.score) bestL = lay; }
+    Object.assign(cn, {P: bestL.P, E: bestL.E, nameW: bestL.nw, nameLocal: bestL.nameLocal, lx0: bestL.lx0, ly0: bestL.ly0, w: bestL.w, h: bestL.h, score: bestL.score});
+  });
+
+  /* ───────── ⑩ 하늘에 별자리 놓기: 위·왼쪽부터 빈자리에 담은 뒤, 서로 밀어 하늘 전체에 고르게 ───────── */
+  const W = Math.floor(mapEl.clientWidth);
+  const M = 10, GAP = 12;
+  const placed = [];
+  cons.slice().sort((a, b) => b.members.length - a.members.length || b.w * b.h - a.w * a.h).forEach(cn => {
+    const xs = [M, ...placed.map(p => p.rect[2] + GAP)].sort((a, b) => a - b), ys = [M, ...placed.map(p => p.rect[3] + GAP)].sort((a, b) => a - b);
+    let pos = null;
+    for (const y of ys) { for (const x of xs) { if (x + cn.w > W - M) continue; const r = [x, y, x + cn.w, y + cn.h]; if (placed.some(p => over(r, p.rect, GAP - .01))) continue; pos = [x, y]; break; } if (pos) break; }
+    cn.rect = [pos[0], pos[1], pos[0] + cn.w, pos[1] + cn.h]; placed.push(cn);
+  });
+  const usedH = Math.max(...cons.map(c => c.rect[3])) + M;
+  const H = Math.round(Math.max(480, Math.min(620, usedH + 40)));
+  {
+    const rr = L.rand(97);
+    cons.forEach(c => { const dx = (rr() - .5) * 8, dy = (rr() - .5) * 8; c.rect = [c.rect[0] + dx, c.rect[1] + dy, c.rect[2] + dx, c.rect[3] + dy]; });
+    const mv = (c, dx, dy) => { c.rect[0] += dx; c.rect[2] += dx; c.rect[1] += dy; c.rect[3] += dy; };
+    for (let it = 0; it < 500; it++) {
+      for (let a = 0; a < cons.length; a++) for (let b = a + 1; b < cons.length; b++) {
+        const A = cons[a], B = cons[b];
+        const ax = (A.rect[0] + A.rect[2]) / 2, ay = (A.rect[1] + A.rect[3]) / 2, bx = (B.rect[0] + B.rect[2]) / 2, by = (B.rect[1] + B.rect[3]) / 2;
+        const dx = bx - ax, dy = by - ay, d2 = dx * dx + dy * dy + 1, d = Math.sqrt(d2);
+        const f = Math.min(1.2, 900 / d2) * (1 - it / 500);                      // 멀리서 살짝 밀어 고르게 퍼지게
+        mv(A, -dx / d * f, -dy / d * f); mv(B, dx / d * f, dy / d * f);
+        const ox = Math.min(A.rect[2], B.rect[2]) - Math.max(A.rect[0], B.rect[0]) + GAP, oy = Math.min(A.rect[3], B.rect[3]) - Math.max(A.rect[1], B.rect[1]) + GAP;
+        if (ox > 0 && oy > 0) { if (oy < ox) { const s = (by >= ay ? 1 : -1) * oy / 2; mv(A, 0, -s); mv(B, 0, s); } else { const s = (bx >= ax ? 1 : -1) * ox / 2; mv(A, -s, 0); mv(B, s, 0); } }
+      }
+      cons.forEach(c => { mv(c, Math.max(0, M - c.rect[0]) - Math.max(0, c.rect[2] - (W - M)), Math.max(0, M - c.rect[1]) - Math.max(0, c.rect[3] - (H - M))); });
+    }
+  }
+  const S = top.map((c, i) => ({i, c, r: rad[i], x: 0, y: 0, side: null}));
+  cons.forEach(cn => { const ox = cn.rect[0] - cn.lx0, oy = cn.rect[1] - cn.ly0; cn.P.forEach(p => Object.assign(S[p.i], {x: p.x + ox, y: p.y + oy, side: p.side})); cn.nameXY = [cn.nameLocal[0] + ox, cn.nameLocal[1] + oy]; });
+
+  /* ───────── ⑪ 혼자 별: 빈 하늘에 고르게(가장 넓은 빈자리 고르기) ───────── */
+  const obst = cons.map(cn => cn.rect);
+  const lr = L.rand(4242);
+  const lonePlaced = [];
+  lonely.forEach(i => {
+    const s = S[i], wantLabel = labeled.has(i);
+    let bestP = null, bestScore = -Infinity;
+    for (let t = 0; t < 1200; t++) {
+      const x = M + 6 + lr() * (W - 2 * M - 12), y = M + 6 + lr() * (H - 2 * M - 12);
+      const lb = wantLabel ? labelBox(x, y, s.r, lw[i], 'B') : null;
+      if (lb && (lb[0] < M || lb[2] > W - M || lb[3] > H - M)) continue;
+      let dmin = Math.min(...obst.map(b => ptRect(x, y, b)));
+      if (lb) dmin = Math.min(dmin, ...obst.map(b => over(lb, b) ? 0 : Math.max(b[0] - lb[2], lb[0] - b[2], b[1] - lb[3], lb[1] - b[3])));
+      for (const q of lonePlaced) { dmin = Math.min(dmin, Math.hypot(q.x - x, q.y - y) * .7); if (q.lb) dmin = Math.min(dmin, ptRect(x, y, q.lb)); if (lb) dmin = Math.min(dmin, ptRect(q.x, q.y, lb)); }
+      if (dmin > bestScore) { bestScore = dmin; bestP = {x, y, lb}; }
+    }
+    Object.assign(s, {x: bestP.x, y: bestP.y, side: wantLabel ? 'B' : null}); lonePlaced.push({x: s.x, y: s.y, lb: bestP.lb});
+  });
+
+  /* ───────── ⑫ 이름표 자리 확정(안 겹치게 · 칸 밖으로 안 나가게 · 못 놓으면 뺌) ───────── */
+  const segs = edges.map(e => [S[e.a], S[e.b]]);
+  const boxes = cons.map(cn => [cn.nameXY[0] - cn.nameW / 2 - 2, cn.nameXY[1] - 14, cn.nameXY[0] + cn.nameW / 2 + 2, cn.nameXY[1] + 4]);
+  const order = [...labeled].sort((a, b) => (consOf.has(b) - consOf.has(a)) || top[b].cap - top[a].cap);
+  const labels = [], dropped = [];
+  order.forEach(i => {
+    const s = S[i], w = lw[i];
+    let pick = null, pickScore = Infinity;
+    ['R', 'L', 'B', 'T'].forEach(sd => {
+      const b = labelBox(s.x, s.y, s.r, w, sd);
+      if (b[0] < 6 || b[2] > W - 6 || b[1] < 4 || b[3] > H - 4) return;
+      if (boxes.some(o => over(b, o))) return;
+      if (S.some(o => o !== s && ptRect(o.x, o.y, b) < o.r + 1)) return;
+      const score = (sd === s.side ? 0 : 2) + 4 * segs.filter(([p, q]) => segHits(b, p.x, p.y, q.x, q.y)).length;
+      if (score < pickScore) { pickScore = score; pick = {i, b, sd}; }
+    });
+    if (pick) { labels.push(pick); boxes.push(pick.b); } else dropped.push(top[i].name);
+  });
+
+  /* ───────── ⑬ 그리기 ───────── */
+  const svg = L.sv('svg', {class: 'sky', viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `한국 큰 회사 ${N}곳 별자리 지도`});
+  svg.append(L.sv('defs', null,
+    L.sv('linearGradient', {id: 'skyg', x1: 0, y1: 0, x2: 0, y2: 1}, L.sv('stop', {offset: 0, 'stop-color': L.tok('--sky1')}), L.sv('stop', {offset: 1, 'stop-color': L.tok('--sky2')})),
+    L.sv('filter', {id: 'glow', x: '-150%', y: '-150%', width: '400%', height: '400%'}, L.sv('feGaussianBlur', {stdDeviation: 3.2}))));
+  svg.append(L.sv('rect', {x: 0, y: 0, width: W, height: H, fill: 'url(#skyg)'}));
+  // 배경의 희미한 별(뜻 없음 · 씨앗 고정) — 이름표 · 별 가까이에는 안 찍음
+  const bg = L.sv('g', {fill: L.tok('--sky-dot')}); const br = L.rand(7007);
+  for (let t = 0; t < 190; t++) {
+    const x = 3 + br() * (W - 6), y = 3 + br() * (H - 6), rr = .35 + br() * br() * .9, op = .1 + br() * .36;
+    if (boxes.some(b => x > b[0] - 3 && x < b[2] + 3 && y > b[1] - 3 && y < b[3] + 3)) continue;
+    if (S.some(s => Math.hypot(s.x - x, s.y - y) < s.r + 7)) continue;
+    bg.append(L.sv('circle', {cx: x.toFixed(1), cy: y.toFixed(1), r: rr.toFixed(2), opacity: op.toFixed(2)}));
+  }
+  svg.append(bg);
+  // 선(센 짝일수록 조금 더 밝고 굵게)
+  const lineCol = L.tok('--sky-line');
+  const gl = L.sv('g', {stroke: lineCol, 'stroke-linecap': 'round', fill: 'none'});
+  edges.slice().sort((a, b) => a.r - b.r).forEach(e => {
+    const p = S[e.a], q = S[e.b], dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) || 1, ux = dx / d, uy = dy / d, t = (e.r - T) / (1 - T);
+    gl.append(L.sv('line', {x1: (p.x + ux * (p.r + 2.5)).toFixed(1), y1: (p.y + uy * (p.r + 2.5)).toFixed(1), x2: (q.x - ux * (q.r + 2.5)).toFixed(1), y2: (q.y - uy * (q.r + 2.5)).toFixed(1),
+      'stroke-width': (1 + .7 * t).toFixed(2), 'stroke-opacity': (.3 + .5 * t).toFixed(2)}));
+  });
+  svg.append(gl);
+  // 별(빛무리 + 알맹이) — 혼자 별은 흐리게
+  const glow = L.sv('g', {filter: 'url(#glow)'}), core = L.sv('g');
+  S.forEach(s => {
+    const col = starColor(s.c.change20), alone = !consOf.has(s.i);
+    glow.append(L.sv('circle', {cx: s.x.toFixed(1), cy: s.y.toFixed(1), r: (s.r * (alone ? 1.1 : 1.45) + 1.5).toFixed(2), fill: col, opacity: alone ? .28 : .55}));
+    core.append(L.sv('circle', {cx: s.x.toFixed(1), cy: s.y.toFixed(1), r: s.r.toFixed(2), fill: col, opacity: alone ? .58 : 1}));
+    if (!alone || s.r > 4) core.append(L.sv('circle', {cx: s.x.toFixed(1), cy: s.y.toFixed(1), r: (s.r * .42).toFixed(2), fill: '#FFFFFF', opacity: alone ? .45 : .85}));
+  });
+  svg.append(glow, core);
+  // 이름표
+  const halo = L.mix(L.tok('--sky1'), L.tok('--sky2'), .5);
+  const gt = L.sv('g', {'font-size': LBL, stroke: halo, 'stroke-width': 3.2, 'stroke-linejoin': 'round', 'paint-order': 'stroke'});
+  labels.forEach(lb => {
+    const s = S[lb.i], x = lb.sd === 'R' ? lb.b[0] + 1 : lb.sd === 'L' ? lb.b[2] - 1 : (lb.b[0] + lb.b[2]) / 2, y = (lb.b[1] + lb.b[3]) / 2 + 4.6;
+    gt.append(L.sv('text', {x: x.toFixed(1), y: y.toFixed(1), 'text-anchor': lb.sd === 'R' ? 'start' : lb.sd === 'L' ? 'end' : 'middle', fill: consOf.has(lb.i) ? L.tok('--sky-ink') : L.tok('--sky-sub')}, top[lb.i].name));
+  });
+  svg.append(gt);
+  // 별자리 이름(옥빛)
+  const gn = L.sv('g', {'font-size': NAMEPX, 'font-weight': 700, fill: NAMECOL, 'letter-spacing': NAMESP, 'text-anchor': 'middle', stroke: halo, 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'paint-order': 'stroke'});
+  cons.forEach(cn => gn.append(L.sv('text', {x: cn.nameXY[0].toFixed(1), y: cn.nameXY[1].toFixed(1)}, cn.name)));
+  svg.append(gn);
+
+  const head = L.el('div', {class: 'sh-maphead'}, L.el('span', {html: `<b>한국 큰 회사 ${N}곳</b>`}), L.el('span', null, `${D.length}거래일 · ${L.md(D[0])} → ${L.md(D[D.length - 1])}`));
+  mapEl.replaceChildren(head, svg);
+
+  /* ───────── ⑭ 범례 칸(작은 하늘 그림) ───────── */
+  const mini = (...kids) => L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26},
+    L.sv('rect', {x: 0, y: 0, width: 54, height: 26, rx: 6, fill: L.tok('--sky2')}), ...kids);
+  const dot = (x, y, r, col, op = 1) => [L.sv('circle', {cx: x, cy: y, r: r + 1.6, fill: col, opacity: .3 * op}), L.sv('circle', {cx: x, cy: y, r, fill: col, opacity: op})];
+  const swLine = mini(L.sv('line', {x1: 15, y1: 17, x2: 39, y2: 9, stroke: lineCol, 'stroke-width': 1.5, 'stroke-opacity': .75, 'stroke-linecap': 'round'}), ...dot(11, 18.5, 3, '#F4F6F5'), ...dot(43, 8, 3, '#F4F6F5'));
+  const swSize = mini(...dot(14, 13, 2.5, '#F4F6F5'), ...dot(37, 13, 9, '#F4F6F5'));
+  const swCol = mini(...dot(16, 13, 5, starColor(0.12)), ...dot(38, 13, 5, starColor(-0.12)));
+  const swName = mini(L.sv('text', {x: 27, y: 18, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: NAMECOL, 'font-family': FONT}, '자리'));
+  const swAlone = mini(...dot(27, 13, 3.2, '#F4F6F5', .58));
+  const Tt = T.toFixed(2);
+
+  /* ───────── ⑮ 읽은 것 셋(모두 셈한 값) ───────── */
+  const big = cons[0];
+  const tight = edges.slice().sort((a, b) => b.r - a.r)[0], tc = C[tight.a][tight.b];
+  const exTxt = lonelyEx.map((i, k) => { const pn = top[best[i].j].name; return `<b>${top[i].name}</b>(가장 가까운 짝${k ? '' : ` <span class="nw">${pn}</span>`}${k ? '과' : josa(pn, '과', '와')}도&nbsp;${best[i].r.toFixed(2)})`; });
+  const D20 = K.dates20.length - 1;
+  const capDay = (L.A.sources.krCap.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+  const span = t => `<span>${t}</span>`;
+
+  L.fill({
+    num: 7, title: '별자리 지도', sub: '선 = 날마다 같이 움직인 회사 · 별 크기 = 회사 크기',
+    question: `이 지도가 답하는 물음: <b>지난 ${D.length}거래일, 어느 회사들이 한 무리처럼 같이 오르내렸나?</b>`,
+    legend: [
+      [swLine, `<b>선</b> = 날마다 같이 움직인 정도가 <b>${Tt} 이상</b>인 짝 가운데, 별마다 가장 센 짝 하나와 이음 <small>(1이면 날마다 똑같이, 0이면 서로 상관없이)</small>`],
+      [swSize, `<b>별 크기</b> = 시가총액(회사 크기)`],
+      [swCol, `<b>별 빛</b> = 붉으면 지난 ${D20}거래일 <b class="up">▲ 오름</b>, 푸르면 <b class="down">▼ 내림</b>`],
+      [swName, `<b>별자리 이름</b> = 그 무리에 가장 많은 업종 + 「자리」`],
+      [swAlone, `<b>흐린 별</b> = ${Tt} 이상인 짝이 없어 혼자 떨어진 회사`],
+    ],
+    reads: [
+      `가장 큰 별자리는 <b>${big.name}</b> — 별 <b>${big.members.length}개</b>: ${big.members.slice(0, 3).map(i => top[i].name).join(' · ')}${big.members.length > 3 ? ' 등' : ''}`,
+      `가장 단단히 이어진 두 별은 <b>${top[tight.a].name}–${top[tight.b].name}</b>, 같이 움직인 정도 <b>${tight.r.toFixed(2)}</b>(1이면 날마다 똑같이) — ${tc.n}일 가운데 <b>${tc.same}일</b>을 같은 쪽으로 움직임`,
+      `${Tt} 이상인 짝이 없어 혼자 떨어진 별은 <b>${lonely.length}개</b> — 예: ${exTxt.join(' · ')}`,
+    ].map(span),
+    why: `<b>잘 보이는 것</b>: 누가 누구와 한 무리로 같이 오르내렸는지 · <b>잘 안 보이는 것</b>: 큰 회사 ${N}곳만 봄 · 오르내린 크기는 별 빛으로만 어렴풋이 · 지난 ${nDays}일의 일일 뿐, 앞으로도 같이 움직인다는 뜻은 아님`,
+    foot: [
+      `자료: 한국 시가총액 큰 ${N}곳(${capDay ? L.korDate(capDay) + ' 아침 값' : '고를 때 받은 값'}) · ${L.korDate(D[0])}~${L.korDate(D[D.length - 1])} ${K.place.close} 종가 ${D.length}개 → 하루 변화 ${nDays}개`,
+      `같이 움직인 정도: 두 회사의 하루 변화 ${nDays}개를 나란히 놓고, 같은 날 같은 쪽으로 얼마나 함께 크게·작게 움직였는지 잰 값(−1~1)`,
+      `선 긋기: 별마다 이 값이 가장 큰 짝 하나와 이음(${Tt} 이상일 때만) · 선으로 이어진 별들 = 한 별자리 · 별 빛 = 지난 ${D20}거래일(${L.korDate(K.dates20[0])}~${L.korDate(K.dates20[K.dates20.length - 1])}) 변화`,
+      ...shortCos.map(x => `${x.c.name}${josa(x.c.name, '은', '는')} ${L.korDate(D[D.length - 1])} 종가가 없어(판과 같은 사정) 그 회사가 낀 짝은 ${nDays - x.miss}일로 셈`),
+      `별의 위·아래·왼쪽·오른쪽 자리에는 뜻이 없음 — 이어진 별끼리 가깝게, 무리끼리 떨어지게 놓은 그림`,
+      `샘플 — 아직 사이트에 없음`,
+    ],
+  });
+  if (dropped.length) console.info('이름표를 못 놓은 별:', dropped.join(', '));
+  window.STARMAP = {T, edges: edges.length, cons: cons.map(c => `${c.name} ${c.members.length} w${Math.round(c.w)} h${Math.round(c.h)} bad${Math.floor(c.score / 1e6)}`), lonely: lonely.length, dropped, H, W, usedH: Math.round(usedH)};
+
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

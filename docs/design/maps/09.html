@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 9 · 도시 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 09 도시 지도 — 비스듬히 내려다본 도시(2.5D). 땅판 = 동네(큰 갈래) · 건물 = 회사 · 높이 = 시가총액 · 지붕 색 = 지난 20거래일
+   지도를 카드 폭 끝까지(392px) 펴서 1:1 로 그린다(글자가 줄지 않게) */
+#map { padding: 10px 0 0; }
+#map .sh-maphead { margin: 2px 14px 6px; }
+#map svg text { font-family: var(--font); }
+:root {
+  --pl-top: #E5EDE7; --pl-l: #D2DDD6; --pl-r: #C3D0C8;      /* 땅판(윗면 · 왼옆 · 오른옆) */
+  --w-l: #C7D2CB; --w-r: #A9B8AF;                            /* 건물 벽(밝은 쪽 · 그늘 쪽) — 뜻 없는 돌색 */
+  --roof-edge: rgba(23, 48, 42, .22); --gap-roof: #A3B3AA;   /* 지붕 테두리 · 묶은 건물 지붕 바탕(빈 칸이 「그대로」 색과 헷갈리지 않게 다른 톤) */
+  --pill: #F8FBF7; --pill-line: #CBDAD0; --lead: #6B8278;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pl-top: #22372F; --pl-l: #1A2A24; --pl-r: #14201C;
+    --w-l: #34483F; --w-r: #26362F;
+    --roof-edge: rgba(232, 241, 235, .16); --gap-roof: #4A6056;
+    --pill: #0F1A16; --pill-line: #2E443B; --lead: #8AA398;
+  }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const PL = K.place;
+  const W = 392;            // 지도 폭(카드 안쪽 그대로 · 1:1)
+  const HMAX = 612;         // 지도 높이 상한
+  const MAX = 0.3;          // 지붕 색이 가장 진해지는 변화(±30%) — L.heat · L.ramp 와 같은 값
+  const NBIG = 9;           // 동네마다 건물 하나씩 세우는 큰 회사 수
+  const PER_BLOCK = 9;      // 낮은 건물 한 채에 묶는 작은 회사 수(많아야)
+  const CX = 1, CY = 0.55;  // 비스듬히 보는 각(가로 1 · 세로 0.55)
+  const FS = 13;            // 지도 안 글자 크기
+
+  // ⓪ 글자 폭을 재기 전에 지도에 쓸 글자의 글꼴 조각을 먼저 받는다
+  const glyphs = [...new Set(K.companies.map(c => c.name).join('') + K.families.map(f => f.label).join('') + '0123456789.,+−%▲▼ ')].join('');
+  await Promise.all([
+    document.fonts.load(`700 ${FS}px "Gowun Batang"`, glyphs),
+    document.fonts.load(`400 ${FS}px "Gowun Batang"`, glyphs),
+    document.fonts.load(`700 ${FS}px "Pretendard Variable"`, '▲▼−+%'),
+  ]).catch(() => {});
+  const wc = new Map();
+  const tw = (s, px = FS) => { const k = px + '|' + s; if (!wc.has(k)) wc.set(k, L.textW(s, px)); return wc.get(k); };
+
+  // ① 자료 — 동네(큰 갈래)마다 회사를 시가총액 큰 순으로
+  const all = K.companies.filter(c => L.finite(c.cap) && c.cap > 0);
+  const total = L.sum(all.map(c => c.cap));
+  const fams = K.families.map(f => {
+    const cos = all.filter(c => c.fam === f.id).sort((a, b) => b.cap - a.cap);
+    const withCh = cos.filter(c => L.finite(c.change20));
+    return {f, cos, cap: L.sum(cos.map(c => c.cap)),
+      wmean: L.sum(withCh.map(c => c.cap * c.change20)) / L.sum(withCh.map(c => c.cap)),
+      top: cos[0]};
+  }).filter(x => x.cos.length);
+  // 자리: 가장 높은 건물이 높은 동네일수록 뒤쪽 줄(앞 건물이 뒤 건물을 가리지 않게) · 한 줄 안에서는 가장 높은 동네가 가운데
+  const order = [...fams].sort((a, b) => b.top.cap - a.top.cap);
+  const COLS = 3, ROWS = Math.ceil(order.length / COLS);
+
+  // ② 땅판과 건물 터
+  const SIDE = 4, GX = 12, T = 5;                                   // 좌우 여백 · 땅판 사이 · 땅판 두께
+  const P = (W - 2 * SIDE - (COLS - 1) * GX) / (2 * COLS * CX);      // 땅판 한 변(세계 단위)
+  const PH = 2 * P * CY;                                             // 땅판 높이(화면)
+  const colX = c => SIDE + P * CX + c * (2 * P * CX + GX);           // 땅판 뒤 꼭짓점의 x
+  const M = 3.5, NL = 4, PITCH = (P - 2 * M) / NL, F = PITCH - 2.25; // 터 4×4 · 건물 바닥 한 변
+  const BIG_LOTS = [[0, 0], [1, 0], [0, 1], [1, 1], [2, 0], [0, 2], [2, 1], [1, 2], [2, 2]]; // 뒤에서 앞으로(높은 건물이 뒤 → 지붕이 다 보임)
+  const SMALL_LOTS = [[3, 0], [0, 3], [3, 1], [1, 3]];                                      // 앞쪽 양옆(앞 꼭짓점 세 칸은 이름 자리)
+  const plates = order.map((x, k) => {
+    const row = Math.floor(k / COLS), slot = k % COLS;
+    const col = slot === 0 ? 1 : slot === 1 ? 0 : 2;                 // 가운데 · 왼쪽 · 오른쪽
+    const pl = {...x, row, col, x: colX(col), y: 0, blds: []};
+    pl.cos.slice(0, NBIG).forEach((c, i) => pl.blds.push({kind: 'big', c, members: [c], lot: BIG_LOTS[i], cap: c.cap}));
+    const rest = pl.cos.slice(NBIG);
+    const nb = rest.length ? Math.min(SMALL_LOTS.length, Math.ceil(rest.length / PER_BLOCK)) : 0;
+    let at = 0;
+    for (let i = 0; i < nb; i++) {
+      const size = Math.floor(rest.length / nb) + (i < rest.length % nb ? 1 : 0);
+      const members = rest.slice(at, at + size); at += size;
+      pl.blds.push({kind: 'small', members, lot: SMALL_LOTS[i], cap: members[0].cap});
+    }
+    pl.blds.forEach(b => { b.a0 = M + b.lot[0] * PITCH; b.b0 = M + b.lot[1] * PITCH; b.pl = pl; });
+    pl.label = pl.f.label; pl.lw = tw(pl.label) + 18; pl.lh = 22;
+    return pl;
+  });
+  const nSmall = L.sum(plates.map(pl => L.sum(pl.blds.filter(b => b.kind === 'small').map(b => b.members.length))));
+  const nBlocks = L.sum(plates.map(pl => pl.blds.filter(b => b.kind === 'small').length));
+
+  // 화면 자리
+  const pt = (pl, a, b, z = 0) => [pl.x + (a - b) * CX, pl.y + (a + b) * CY - z];
+  const bbox = b => ({x0: b.pl.x + (b.a0 - b.b0 - F) * CX, x1: b.pl.x + (b.a0 - b.b0 + F) * CX,
+    y0: b.pl.y + (b.a0 + b.b0) * CY - b.h, y1: b.pl.y + (b.a0 + b.b0 + 2 * F) * CY});
+  const roofBox = b => { const r = bbox(b); return {...r, y1: r.y0 + 2 * F * CY}; };
+  // 동네 이름표: 땅판 앞 꼭짓점 위(아랫변 = 앞 꼭짓점) — 앞쪽 세 칸은 비워 둠
+  const labelBox = pl => { const fx = pl.x, fy = pl.y + PH; return {x0: fx - pl.lw / 2, x1: fx + pl.lw / 2, y0: fy - pl.lh, y1: fy}; };
+  const hit = (a, b, pad = 0) => a.x0 < b.x1 + pad && b.x0 < a.x1 + pad && a.y0 < b.y1 + pad && b.y0 < a.y1 + pad;
+
+  // ③ 높이 잣대 s(제곱근 1 = s px) 와 줄 사이를 함께 정한다 — 앞줄 건물이 뒷줄 동네 이름을 덮지 않게 줄 사이를 벌리고,
+  //    전체가 HMAX 안에 들게 s 를 고른다(가장 높은 건물도 자르지 않고 다 그림)
+  const TOP = 12, GMIN = 10, GMAX = 64, BOTTOM = 6;
+  function layout(s) {
+    plates.forEach(pl => pl.blds.forEach(b => { b.h = Math.max(1.4, s * Math.sqrt(b.cap)); }));
+    const rowsOf = r => plates.filter(pl => pl.row === r);
+    let y = TOP;
+    for (const pl of rowsOf(0)) for (const b of pl.blds) y = Math.max(y, TOP - ((b.a0 + b.b0) * CY - b.h));
+    rowsOf(0).forEach(pl => { pl.y = y; });
+    const gaps = [];
+    for (let r = 1; r < ROWS; r++) {
+      const above = plates.filter(pl => pl.row < r).map(labelBox);
+      let g = GMIN;
+      for (; g <= GMAX; g++) {
+        const yy = rowsOf(r - 1)[0].y + PH + g;
+        rowsOf(r).forEach(pl => { pl.y = yy; });
+        if (!rowsOf(r).some(pl => pl.blds.some(b => above.some(lb => hit(bbox(b), lb, 2))))) break;
+      }
+      gaps.push(Math.min(g, GMAX));
+    }
+    // 줄 사이는 모두 같게(가장 넓게 필요한 값) — 고른 간격이 차분하다 · 더 벌리는 것은 늘 안전
+    const G = Math.max(...gaps);
+    for (let r = 1; r < ROWS; r++) rowsOf(r).forEach(pl => { pl.y = y + r * (PH + G); });
+    const last = rowsOf(ROWS - 1)[0];
+    return {H: Math.ceil(last.y + PH + T + BOTTOM), gaps, G};
+  }
+  let lo = 0.02, hi = 0.12;
+  for (let k = 0; k < 40; k++) { const mid = (lo + hi) / 2; if (layout(mid).H <= HMAX) lo = mid; else hi = mid; }
+  const S = lo; const LAY = layout(S); const H = LAY.H;
+
+  // ④ 그리기
+  const svg = L.sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img',
+    'aria-label': `한국 ${all.length}곳을 건물로 세운 도시 지도 — 동네 ${plates.length}개`});
+  const P2 = p => p.map(q => q[0].toFixed(2) + ',' + q[1].toFixed(2)).join(' ');
+  const poly = (pts, attrs) => L.sv('polygon', {points: P2(pts), ...attrs});
+  const gPlates = L.sv('g'), gBld = L.sv('g'), gLab = L.sv('g');
+  svg.append(gPlates, gBld, gLab);
+
+  for (const pl of plates) {
+    const B = pt(pl, 0, 0), R = pt(pl, P, 0), Fr = pt(pl, P, P), Lf = pt(pl, 0, P);
+    const dn = p => [p[0], p[1] + T];
+    gPlates.append(
+      poly([Lf, Fr, dn(Fr), dn(Lf)], {fill: 'var(--pl-l)'}),
+      poly([Fr, R, dn(R), dn(Fr)], {fill: 'var(--pl-r)'}),
+      poly([B, R, Fr, Lf], {fill: 'var(--pl-top)'}));
+  }
+
+  const blds = plates.flatMap(pl => pl.blds).sort((a, b) => a.pl.row - b.pl.row || (a.lot[0] + a.lot[1]) - (b.lot[0] + b.lot[1]) || a.pl.col - b.pl.col);
+  for (const b of blds) {
+    const {pl, a0, b0, h} = b;
+    const Bk = pt(pl, a0, b0), R = pt(pl, a0 + F, b0), Fr = pt(pl, a0 + F, b0 + F), Lf = pt(pl, a0, b0 + F);
+    const up = p => [p[0], p[1] - h];
+    const g = L.sv('g');
+    g.append(
+      poly([Lf, Fr, up(Fr), up(Lf)], {fill: 'var(--w-l)'}),
+      poly([Fr, R, up(R), up(Fr)], {fill: 'var(--w-r)'}));
+    if (b.kind === 'big') {
+      g.append(poly([up(Bk), up(R), up(Fr), up(Lf)], {fill: L.heat(b.c.change20, MAX), stroke: 'var(--roof-edge)', 'stroke-width': 0.6, 'stroke-linejoin': 'round'}));
+      g.append(L.sv('title', null, `${b.c.name} · ${pl.label} · 시가총액 ${L.won(b.c.cap)} · 지난 20거래일 ${L.pct(b.c.change20)}`));
+    } else {
+      // 낮은 건물: 지붕 칸 하나 = 작은 회사 하나
+      g.append(poly([up(Bk), up(R), up(Fr), up(Lf)], {fill: 'var(--gap-roof)'}));
+      const n = b.members.length, nc = Math.ceil(Math.sqrt(n)), nr = Math.ceil(n / nc), gp = 0.8;
+      const cw = (F - gp * (nc + 1)) / nc, ch = (F - gp * (nr + 1)) / nr;
+      b.members.forEach((c, k) => {
+        const ci = k % nc, cj = Math.floor(k / nc);
+        const ua = a0 + gp + ci * (cw + gp), vb = b0 + gp + cj * (ch + gp);
+        g.append(poly([pt(pl, ua, vb, h), pt(pl, ua + cw, vb, h), pt(pl, ua + cw, vb + ch, h), pt(pl, ua, vb + ch, h)], {fill: L.heat(c.change20, MAX)}));
+      });
+      g.append(L.sv('title', null, `${pl.label} 작은 회사 ${n}곳(낮은 건물 한 채): ` + b.members.map(c => `${c.name} ${L.pct(c.change20)}`).join(' · ')));
+    }
+    gBld.append(g);
+  }
+
+  // ⑤ 동네 이름 — 땅판 앞 꼭짓점에 걸친 이름표
+  const placed = [];
+  for (const pl of plates) {
+    const r = labelBox(pl); placed.push(r);
+    gLab.append(
+      L.sv('rect', {x: r.x0, y: r.y0, width: r.x1 - r.x0, height: r.y1 - r.y0, rx: (r.y1 - r.y0) / 2, fill: 'var(--pill)', stroke: 'var(--pill-line)', 'stroke-width': 1}),
+      L.sv('text', {x: (r.x0 + r.x1) / 2, y: (r.y0 + r.y1) / 2 + FS * 0.36, 'text-anchor': 'middle', 'font-size': FS, 'font-weight': 700, fill: 'var(--ink)'}, pl.label));
+  }
+
+  // ⑥ 가장 높은 건물 다섯에 이름(이끔선)
+  const bigs = blds.filter(b => b.kind === 'big').sort((a, b) => b.cap - a.cap).slice(0, 5);
+  const allBoxes = blds.map(b => ({b, r: bbox(b)}));
+  const inside = r => r.x0 >= 3 && r.x1 <= W - 3 && r.y0 >= 2 && r.y1 <= H - 2;
+  const LH = 16, FS2 = 12, LH2 = 14;               // 이름 한 줄 높이 · 시가총액 줄(작은 글자)
+  const segHit = (p, q, r) => {                    // 이끔선이 다른 이름표를 지나가나(잘게 나눠 봄)
+    for (let k = 0; k <= 12; k++) { const x = p[0] + (q[0] - p[0]) * k / 12, y = p[1] + (q[1] - p[1]) * k / 12; if (x > r.x0 - 1 && x < r.x1 + 1 && y > r.y0 - 1 && y < r.y1 + 1) return true; }
+    return false;
+  };
+  // 후보 자리를 모두 만든 뒤(지붕 옆 · 지붕 위 · 한 줄 · 두 줄) 다섯 이름이 서로 안 겹치는 가장 좋은 조합을 고른다
+  const items = bigs.map(b => {
+    const rf = roofBox(b), rcx = (rf.x0 + rf.x1) / 2, rcy = (rf.y0 + rf.y1) / 2;
+    const name = b.c.name, chg = `${L.tri(b.c.change20)} ${L.pct(b.c.change20)}`, capT = L.won(b.c.cap);
+    const wN = tw(name), wC = tw(chg), wK = tw(capT, FS2) * 0.94;
+    const forms = [{lines: 1, w: Math.max(wN + 6 + wC, wK), h: LH + LH2}, {lines: 2, w: Math.max(wN, wC, wK), h: 2 * LH + LH2}];
+    const raw = [];
+    for (const fm of forms) {
+      const extra = fm.lines === 2 ? 8 : 0;
+      for (const vy of [0, -8, 8]) {     // 지붕 옆(왼 · 오른) — 지붕 가운데 점에서 가로선
+        raw.push({...fm, side: 'L', x0: rf.x0 - 9 - fm.w, y0: rcy - LH / 2 + vy, cost: extra + Math.abs(vy) / 4});
+        raw.push({...fm, side: 'R', x0: rf.x1 + 9, y0: rcy - LH / 2 + vy, cost: extra + Math.abs(vy) / 4});
+      }
+      for (const dy of [12, 22, 32, 44, 56, 70, 84]) for (const dx of [0, -0.6, 0.6, -1.1, 1.1, -1.6, 1.6])   // 지붕 위
+        raw.push({...fm, side: 'U', x0: rcx - fm.w / 2 + dx * fm.w / 2, y0: rf.y0 - dy - fm.h, cost: extra + 2 + dy / 12 + Math.abs(dx) * 1.5});
+    }
+    const cands = raw.map(c => {
+      const r = {x0: c.x0, x1: c.x0 + c.w, y0: c.y0, y1: c.y0 + c.h};
+      const end = c.side === 'L' ? [r.x1 + 3, Math.min(Math.max(rcy, r.y0 + 4), r.y0 + LH - 4)] : c.side === 'R' ? [r.x0 - 3, Math.min(Math.max(rcy, r.y0 + 4), r.y0 + LH - 4)] : [Math.min(Math.max(rcx, r.x0 + 6), r.x1 - 6), r.y1 + 2];
+      return {...c, r, end};
+    }).filter(c => inside(c.r) && !placed.some(p => hit(c.r, p, 3) || segHit([rcx, rcy], c.end, p)) && !allBoxes.some(o => o.b !== b && hit(c.r, o.r, 2)))
+      .sort((a, b2) => a.cost - b2.cost);
+    return {b, rf, rcx, rcy, name, chg, cands};
+  });
+  const ord = [...items].sort((a, b) => a.cands.length - b.cands.length);
+  const clash = (c, it, d, jt) => hit(c.r, d.r, 3) || segHit([it.rcx, it.rcy], c.end, d.r) || segHit([jt.rcx, jt.rcy], d.end, c.r);
+  let bestSol = null, bestCost = Infinity, nodes = 0;
+  (function dfs(k, chosen, cost) {
+    if (++nodes > 60000 || cost >= bestCost) return;
+    if (k === ord.length) { bestCost = cost; bestSol = chosen.slice(); return; }
+    const it = ord[k];
+    for (const c of it.cands) {
+      if (cost + c.cost >= bestCost) break;
+      if (chosen.some((d, j) => d && clash(c, it, d, ord[j]))) continue;
+      chosen.push(c); dfs(k + 1, chosen, cost + c.cost); chosen.pop();
+    }
+    chosen.push(null); dfs(k + 1, chosen, cost + 1000); chosen.pop();   // 정말 자리가 없으면 이름을 뺀다
+  })(0, [], 0);
+  ord.forEach((it, k) => {
+    const best = bestSol && bestSol[k];
+    if (!best) { console.warn('이름 자리 없음', it.name); return; }
+    placed.push(best.r);
+    const {rcx, rcy, b, name, chg} = it, capT = L.won(b.c.cap);
+    gLab.append(
+      L.sv('line', {x1: rcx, y1: rcy, x2: best.end[0], y2: best.end[1], stroke: 'var(--lead)', 'stroke-width': 1}),
+      L.sv('circle', {cx: rcx, cy: rcy, r: 2, fill: 'var(--ink)', stroke: 'var(--card)', 'stroke-width': 1}));
+    const anchor = best.side === 'L' ? 'end' : best.side === 'R' ? 'start' : 'middle';
+    const tx = anchor === 'end' ? best.r.x1 : anchor === 'start' ? best.r.x0 : (best.r.x0 + best.r.x1) / 2;
+    const base = y => y + LH / 2 + FS * 0.36;
+    const col = b.c.change20 >= 0 ? 'var(--up-ink)' : 'var(--down-ink)';
+    const tAttrs = {'text-anchor': anchor, 'font-size': FS, 'font-weight': 700, 'paint-order': 'stroke', stroke: 'var(--card)', 'stroke-width': 3, 'stroke-linejoin': 'round'};
+    if (best.lines === 1) {
+      gLab.append(L.sv('text', {...tAttrs, x: tx, y: base(best.r.y0), fill: 'var(--ink)'}, name, L.sv('tspan', {dx: 6, fill: col}, chg)));
+    } else {
+      gLab.append(L.sv('text', {...tAttrs, x: tx, y: base(best.r.y0), fill: 'var(--ink)'}, name),
+        L.sv('text', {...tAttrs, x: tx, y: base(best.r.y0 + LH), fill: col}, chg));
+    }
+    // 셋째 줄(작게): 시가총액 = 이 건물 높이의 뜻
+    gLab.append(L.sv('text', {...tAttrs, x: tx, y: best.r.y0 + best.lines * LH + LH2 / 2 + FS2 * 0.36, 'font-size': FS2, 'font-weight': 400, fill: 'var(--sub)'}, capT));
+  });
+
+  const map = document.getElementById('map');
+  const fromD = K.dates20[0], toD = K.dates20[K.dates20.length - 1];
+  map.append(
+    L.el('div', {class: 'sh-maphead'}, L.el('span', {html: `<b>${PL.label} ${all.length}곳 · 동네 ${plates.length}</b>`}), L.el('span', null, `지붕: ${L.korDate(fromD)} → ${L.korDate(toD)}`)),
+    svg);
+
+  // ⑦ 글자 — 모두 셈한 값
+  const tallest = [...all].sort((a, b) => b.cap - a.cap)[0];
+  const tallFam = K.famOf(tallest.fam);
+  const bigFam = [...fams].sort((a, b) => b.cap - a.cap)[0];
+  const redFam = [...fams].sort((a, b) => b.wmean - a.wmean)[0];
+  const capDay = (String(L.A.sources && L.A.sources.krCap || '').match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+  const lateCos = all.filter(c => c.c60last && c.c60last !== PL.asOf);
+  const sp = v => `<b class="${L.cls(v)}">${L.tri(v)} ${L.pct(v)}</b>`;
+  const icon = (draw) => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}); draw(s); return s; };
+  // 범례 그림: 작은 비스듬한 상자
+  const box = (s, x, yb, f, h, roof, cells) => {
+    const q = (a, b, z = 0) => [x + (a - b), yb + (a + b) * CY - z];
+    const Bk = q(0, 0), R = q(f, 0), Fr = q(f, f), Lf = q(0, f), up = p => [p[0], p[1] - h];
+    s.append(poly([Lf, Fr, up(Fr), up(Lf)], {fill: 'var(--w-l)'}), poly([Fr, R, up(R), up(Fr)], {fill: 'var(--w-r)'}));
+    if (!cells) s.append(poly([up(Bk), up(R), up(Fr), up(Lf)], {fill: roof, stroke: 'var(--roof-edge)', 'stroke-width': 0.6}));
+    else {
+      s.append(poly([up(Bk), up(R), up(Fr), up(Lf)], {fill: 'var(--gap-roof)'}));
+      const n = 2, gp = 0.7, cw = (f - gp * 3) / 2;
+      cells.forEach((col, k) => { const ci = k % n, cj = Math.floor(k / n); const ua = gp + ci * (cw + gp), vb = gp + cj * (cw + gp);
+        s.append(poly([q(ua, vb, h), q(ua + cw, vb, h), q(ua + cw, vb + cw, h), q(ua, vb + cw, h)], {fill: col})); });
+    }
+  };
+  const plateIcon = (s, x, yb, p) => {
+    const q = (a, b) => [x + (a - b), yb + (a + b) * CY];
+    const dn = v => [v[0], v[1] + 3];
+    s.append(poly([q(0, p), q(p, p), dn(q(p, p)), dn(q(0, p))], {fill: 'var(--pl-l)'}), poly([q(p, p), q(p, 0), dn(q(p, 0)), dn(q(p, p))], {fill: 'var(--pl-r)'}), poly([q(0, 0), q(p, 0), q(p, p), q(0, p)], {fill: 'var(--pl-top)'}));
+  };
+  // (box 의 yb = 바닥 뒤 꼭짓점 y — 지붕은 yb − h, 바닥 앞 꼭짓점은 yb + 2f·CY)
+  const lgBuild = icon(s => { box(s, 14, 14, 9, 12, L.heat(0.15, MAX)); box(s, 39, 14, 9, 3, null, [L.heat(0.25, MAX), L.heat(-0.1, MAX), L.heat(0.06, MAX), L.heat(0.3, MAX)]); });
+  const lgHeight = icon(s => { box(s, 15, 16.5, 7, 7, L.heat(0, MAX)); box(s, 39, 16.5, 7, 14, L.heat(0, MAX)); });
+  const lgPlate = icon(s => { plateIcon(s, 27, 5, 17); box(s, 27, 7.5, 5, 5, L.heat(0.1, MAX)); box(s, 33, 11, 5, 3, L.heat(-0.1, MAX)); box(s, 21, 11, 5, 3, L.heat(0.04, MAX)); });
+
+  L.fill({
+    num: 9,
+    title: '도시 지도',
+    sub: ['건물 = 회사', '높이 = 회사 크기', '지붕 색 = 지난 20거래일'].map(s => s.replace(/ /g, ' ')).join(' · '), // 묶음 안에서는 줄을 안 바꿈
+    question: '이 지도가 답하는 물음: <b>주식 도시에서 가장 높은 건물들은 어느 동네에 서 있고, 그 지붕은 붉은가(올랐나)?</b>',
+    legend: [
+      [lgBuild, `<b>건물 하나 = 회사 하나</b> — 동네마다 큰 회사 ${NBIG}곳 · 나머지 ${nSmall}곳은 낮은 건물로 묶음(지붕 칸 하나 = 회사 하나)`],
+      [lgHeight, `<b>높이 = 시가총액</b>(회사 크기) — 4배 큰 회사는 2배 높게`],
+      [L.ramp(MAX), `<b>지붕 색 = 지난 20거래일</b> — 빨강 ▲ 오름 · 파랑 ▼ 내림 · ±${Math.round(MAX * 100)}%에서 가장 진함`],
+      [lgPlate, `<b>동네 = 큰 갈래</b> ${plates.length}개 — 가장 높은 건물이 높은 동네일수록 뒤(위)쪽`],
+    ],
+    reads: [
+      `가장 높은 건물은 <b>${tallest.name}</b>(${tallFam.label} 동네) — 시가총액 <b>${L.won(tallest.cap)}</b> · 지붕 ${sp(tallest.change20)}`,
+      `가장 큰 동네는 <b>${bigFam.f.label}</b>(${bigFam.cos.length}곳) — 시가총액 합 <b>${L.won(bigFam.cap)}</b>, 도시 전체의 <b>${Math.round(bigFam.cap / total * 100)}%</b>`,
+      `지붕이 가장 붉은 동네는 <b>${redFam.f.label}</b> — 지난 20거래일 평균 ${sp(redFam.wmean)} (큰 회사에 무게를 더 둔 평균)`,
+    ].map(s => `<span>${s}</span>`),   // 읽은 것 한 줄 = 칸 하나(줄 칸이 격자라서 한 덩이로 묶음)
+    why: '<b>잘 보이는 것:</b> 큰 회사가 몰린 동네와 그 회사들 지붕 색 · <b>잘 안 보이는 것:</b> 작은 회사, 정확한 비교 — 비스듬히 그려서 높이를 견주기 어려움',
+    foot: [
+      `${PL.label} ${all.length}곳 · ${L.korDate(PL.asOf)} ${PL.close} 종가 · 지난 20거래일 = ${L.korDate(fromD)}~${L.korDate(toD)}`,
+      `높이 = 고를 때(${capDay ? L.md(capDay) : '—'} 아침) 받은 시가총액의 제곱근에 비례(모든 건물 한 잣대 · 가장 높은 건물도 자르지 않음)`,
+      `동네마다 큰 회사 ${NBIG}곳은 건물 한 채씩 · 나머지 ${nSmall}곳은 낮은 건물 ${nBlocks}채로 묶음(높이 = 그 안 가장 큰 회사 · 지붕 칸 하나 = 회사 하나)`,
+      `붉은 동네 = 동네 회사들의 20거래일 변화를 시가총액만큼 무게를 두어 낸 평균`,
+      ...lateCos.map(c => `${c.name}는 ${L.korDate(c.c60last)} 종가까지(${L.md(PL.asOf)} 종가 못 받음)`),
+      '샘플 — 아직 사이트에 없음',
+    ],
+  });
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 11 · 번지는 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 11 번지는 지도 — 같은 땅 지도 여섯 장(2열 × 3줄) + 이름 지도 한 장
+   칸 하나 = 업종 하나(모두 같은 넓이) · 굵은 선 = 큰 갈래 · 색 = 9월 2일 종가에서 그날 종가까지 */
+.m11-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; row-gap: 16px; }
+.m11-f { margin: 0; min-width: 0; }
+.m11-date { margin: 0 1px 6px; font-size: 15px; line-height: 1.2; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.m11-date span { font-weight: 400; color: var(--sub); }
+.m11-cap { margin: 6px 1px 0; font-size: 13px; line-height: 1.2; color: var(--sub); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.m11-cap b { color: var(--ink); font-weight: 700; font-size: 14px; }
+.m11-cap i { flex: none; width: 10px; height: 10px; border-radius: 3px; background: var(--map-up); }
+.m11-rule { height: 1px; background: var(--sep); margin: 16px 2px 12px; }
+.m11-key text { font-family: var(--font); font-weight: 700; }
+/* 갈래 이름: 칸 색을 덮지 않게 얇은 테두리 + 부드러운 번짐(밝은 화면 = 밝은 번짐 · 어두운 화면 = 어두운 번짐) */
+:root { --m11-glow: rgba(248, 251, 247, .92); }
+@media (prefers-color-scheme: dark) { :root { --m11-glow: rgba(9, 18, 15, .88); } }
+.m11-key .fam { paint-order: stroke; stroke: var(--m11-glow); stroke-width: 2.2px; stroke-linejoin: round; filter: drop-shadow(0 0 2px var(--m11-glow)); }
+.m11-key .pin { font-family: var(--font); font-size: 12px; font-weight: 700; }
+/* 옥빛 점 번호 풀이(이름 지도 아래) */
+.m11-pins { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 2px 2px; font-size: 14px; line-height: 1.35; color: var(--ink); }
+.m11-pins .grp { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+.m11-pins .pair { display: inline-flex; align-items: center; gap: 4px; }
+.m11-pins small { font-size: 13px; color: var(--sub); }
+.m11-pin { flex: none; width: 18px; height: 18px; border-radius: 9px; background: var(--geum); color: var(--map-ink-light); display: inline-grid; place-items: center; font-size: 12px; font-style: normal; font-weight: 700; line-height: 1; box-shadow: 0 0 0 1.5px var(--map-ink-light); }
+.sh-read b { white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const D = K.dates20, LAST = D.length - 1;              // 0 = 첫날(9월 2일) · LAST = 끝날(10월 2일)
+  const FR = [2, 5, 9, 13, 17, 20].filter(i => i <= LAST); // 여섯 장의 날짜(거래일째)
+  const MAX = 0.3, TEN = 0.10;                            // 색이 가장 진한 값 · 옥빛 점 문턱(+10%)
+  const N = K.groups.length;
+
+  // ── ① 업종마다 날짜별 값 = 그 업종 회사들 (그날 종가 ÷ 첫날 종가 − 1)의 평균 ──
+  const ret = (c, i) => (L.finite(c.c?.[i]) && L.finite(c.c?.[0]) && c.c[0] > 0) ? c.c[i] / c.c[0] - 1 : null;
+  const G = K.groups.map(g => { const cs = K.companiesOf(g.id); return {g, cs, day: D.map((_, i) => L.mean(cs.map(c => ret(c, i))))}; });
+  const diff20 = Math.max(...G.map(x => Math.abs(x.day[LAST] - x.g.change20)));   // 끝날 값 = 판의 change20 확인
+  const perGroup = [...new Set(G.map(x => x.cs.length))];
+
+  // +10% 를 처음 넘은 날(같은 날이면 그날 값이 큰 쪽 먼저)
+  const cross = G.map(x => { const i = x.day.findIndex((v, k) => k > 0 && v > TEN); return {x, i, v: i > 0 ? x.day[i] : null}; })
+    .filter(o => o.i > 0).sort((a, b) => a.i - b.i || b.v - a.v);
+  const first5 = cross.slice(0, 5), firstSet = new Set(first5.map(o => o.x));
+  const cutDay = first5.length ? first5.at(-1).i : null;
+  const tieAll = cross.filter(o => o.i === cutDay).length, tieIn = first5.filter(o => o.i === cutDay).length;
+
+  // ── ② 땅 나누기(한 번만 셈 · 여섯 장과 이름 지도가 같은 자리) ──
+  const mapEl = document.getElementById('map'), ms = getComputedStyle(mapEl);
+  const KW = Math.floor(mapEl.clientWidth - parseFloat(ms.paddingLeft) - parseFloat(ms.paddingRight));
+  const ASPECT = 1.3, KH = Math.round(KW / ASPECT);
+  // L.squarify 와 같은 셈(가장 네모에 가깝게) — 다만 크기 순으로 다시 늘어놓지 않고 ATLAS 갈래 차례를 그대로 둠
+  function squarifyInOrder(items, x, y, w, h) {
+    const list = items.filter(it => it.value > 0), total = L.sum(list.map(it => it.value)), scale = (w * h) / total;
+    let rest = list.map(it => ({it, a: it.value * scale})), rx = x, ry = y, rw = w, rh = h;
+    const worst = (row, side) => { const s = L.sum(row.map(r => r.a)), mx = Math.max(...row.map(r => r.a)), mn = Math.min(...row.map(r => r.a)); return Math.max(side * side * mx / (s * s), (s * s) / (side * side * mn)); };
+    while (rest.length) {
+      const side = Math.min(rw, rh); let row = [rest[0]], i = 1;
+      while (i < rest.length && worst([...row, rest[i]], side) <= worst(row, side)) { row.push(rest[i]); i++; }
+      const s = L.sum(row.map(r => r.a));
+      if (rw >= rh) { const cw = s / rh; let cy = ry; for (const r of row) { const ch = r.a / cw; Object.assign(r.it, {x: rx, y: cy, w: cw, h: ch}); cy += ch; } rx += cw; rw -= cw; }
+      else { const ch = s / rw; let cx = rx; for (const r of row) { const cw = r.a / ch; Object.assign(r.it, {x: cx, y: ry, w: cw, h: ch}); cx += cw; } ry += ch; rh -= ch; }
+      rest = rest.slice(i);
+    }
+    return list;
+  }
+  // 갈래 안: n 칸을 같은 넓이로 — 줄(가로 띠) 또는 단(세로 띠)으로 나눠 가장 네모에 가까운 것을 고름 · 왼쪽 위부터 차례로
+  function evenCells(n, w, h) {
+    let best = null;
+    for (const dir of ['rows', 'cols']) for (let r = 1; r <= n; r++) {
+      const base = Math.floor(n / r), extra = n % r, counts = Array.from({length: r}, (_, i) => base + (i < extra ? 1 : 0));
+      const worst = Math.max(...counts.map(k => { const thick = (dir === 'rows' ? h : w) * k / n, len = (dir === 'rows' ? w : h) / k; return Math.max(thick / len, len / thick); }));
+      if (!best || worst < best.worst - 1e-9) best = {dir, counts, worst};
+    }
+    const out = []; let off = 0;
+    for (const k of best.counts) {
+      const t = k / L.sum(best.counts);
+      for (let j = 0; j < k; j++) out.push(best.dir === 'rows' ? {x: j / k, y: off, w: 1 / k, h: t} : {x: off, y: j / k, w: t, h: 1 / k});
+      off += t;
+    }
+    return out;
+  }
+  const FAMS = squarifyInOrder(K.families.map(f => ({f, value: G.filter(x => x.g.fam === f.id).length})), 0, 0, KW, KH);
+  for (const F of FAMS) {
+    const xs = G.filter(x => x.g.fam === F.f.id).sort((a, b) => b.day[LAST] - a.day[LAST]);   // 갈래 안: 끝날까지 많이 오른 순
+    const rel = evenCells(xs.length, F.w, F.h);
+    F.cells = xs.map((x, k) => ({x, r: rel[k]}));
+  }
+  const firstFam = FAMS[0], lastFam = FAMS.at(-1);
+  const lastAtCorner = Math.abs(lastFam.x + lastFam.w - KW) < 0.5 && Math.abs(lastFam.y + lastFam.h - KH) < 0.5;
+
+  // 그리기 — W 폭에 같은 땅(축척만 다름) · 굵은 틈 = 큰 갈래 · 가는 틈 = 업종
+  const r2 = v => Math.round(v * 100) / 100;
+  function drawMap(W, valueOf, o) {
+    const s = W / KW, H = KH * s;
+    const svg = L.sv('svg', {viewBox: `0 0 ${r2(W)} ${r2(H)}`, width: r2(W), height: r2(H), role: 'img', 'aria-label': o.aria, class: o.cls});
+    svg.append(L.sv('rect', {x: 0, y: 0, width: r2(W), height: r2(H), rx: o.r + 1.5, fill: L.tok('--map-line')}));
+    const placed = [];
+    for (const F of FAMS) {
+      const bx = F.x * s + o.fg / 2, by = F.y * s + o.fg / 2, bw = F.w * s - o.fg, bh = F.h * s - o.fg;
+      const fam = {F, x: bx, y: by, w: bw, h: bh, cells: []};
+      for (const {x, r} of F.cells) {
+        const c = {x: bx + r.x * bw + o.cg / 2, y: by + r.y * bh + o.cg / 2, w: r.w * bw - o.cg, h: r.h * bh - o.cg, G: x};
+        c.fill = L.heat(valueOf(x), MAX);
+        svg.append(L.sv('rect', {x: r2(c.x), y: r2(c.y), width: r2(c.w), height: r2(c.h), rx: o.r, fill: c.fill}));
+        fam.cells.push(c);
+      }
+      placed.push(fam);
+    }
+    return {svg, placed, H};
+  }
+
+  // ── ③ 여섯 장 ──
+  const red = i => G.filter(x => x.day[i] > 0).length;
+  const head = L.el('div', {class: 'sh-maphead'}, L.el('b', null, `한국 업종 ${N}개`), L.el('span', null, `${L.korDate(D[0])} → ${L.korDate(D[LAST])}`));
+  const grid = L.el('div', {class: 'm11-grid'});
+  const figs = FR.map(i => {
+    const fig = L.el('figure', {class: 'm11-f'},
+      L.el('figcaption', {class: 'm11-date', html: L.korDate(D[i]) + (i === LAST ? ' <span>· 끝</span>' : '')}));
+    grid.append(fig); return {fig, i};
+  });
+  mapEl.replaceChildren(head, grid);
+  const FW = figs[0].fig.getBoundingClientRect().width;
+  for (const {fig, i} of figs) {
+    const {svg} = drawMap(FW, x => x.day[i], {fg: 2.6, cg: 1, r: 1.5, aria: `${L.korDate(D[i])} 업종 지도`});
+    fig.append(svg, L.el('p', {class: 'm11-cap', html: `<i></i><span>붉은 칸 <b>${red(i)}</b> / ${N}</span>`}));
+  }
+
+  // ── ④ 이름 지도(끝날 색 · 갈래 이름 · 들어가는 칸만 업종 이름 · 옥빛 점) ──
+  const keyHead = L.el('div', {class: 'sh-maphead'}, L.el('b', null, '이름 지도'), L.el('span', null, `위와 같은 자리 · 색 = ${L.md(D[LAST])}`));
+  mapEl.append(L.el('div', {class: 'm11-rule'}), keyHead);
+  const allText = K.families.map(f => f.label).join('') + K.groups.map(g => g.label).join('');
+  try { await document.fonts.load(`700 14px ${L.tok('--font')}`, allText); } catch (e) { /* 글꼴을 못 받아도 그림은 그림 */ }
+  const key = drawMap(KW, x => x.day[LAST], {fg: 4, cg: 1.5, r: 2.5, aria: `${L.korDate(D[LAST])} 이름 지도`, cls: 'm11-key'});
+  const svgK = key.svg, ink = L.tok('--ink');
+  const boxes = [];
+  const hit = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  // 줄 나누기: 「·」 또는 빈칸 뒤에서만 끊고, 한 줄에 들어가는 만큼 채움
+  const wrap = (t, px, room) => {
+    const parts = t.match(/[^·\s]+[·\s]?/g) || [t], lines = [];
+    for (const p of parts) { const cur = lines.at(-1); if (cur != null && L.textW((cur + p).trim(), px) <= room) lines[lines.length - 1] = cur + p; else lines.push(p); }
+    return lines.map(s => s.trim());
+  };
+  // 갈래 이름(14px · 넘치면 「·」에서 줄 바꿈 · 그래도 넘치면 13px)과 옥빛 점(번호 = 넘은 차례)을 서로 겹치지 않게 놓음
+  //   갈래 이름 자리: 왼쪽 위 → 왼쪽 아래 → 왼쪽 가운데 · 점 자리: 칸의 오른쪽 아래 → 오른쪽 위 → 왼쪽 아래 → 왼쪽 위
+  const geum = L.tok('--geum'), ring = L.tok('--map-ink-light'), PR = 7.5;
+  const corners = c => [[c.x + c.w - PR - 3, c.y + c.h - PR - 3], [c.x + c.w - PR - 3, c.y + PR + 3], [c.x + PR + 3, c.y + c.h - PR - 3], [c.x + PR + 3, c.y + PR + 3]];
+  const pinBox = ([cx, cy]) => ({x: cx - PR - 1, y: cy - PR - 1, w: PR * 2 + 2, h: PR * 2 + 2});
+  const pins = [], famLabels = [];
+  for (const fam of key.placed) {
+    const pad = 5, room = fam.w - pad * 2, pinCells = fam.cells.filter(c => firstSet.has(c.G));
+    let lb = null;
+    for (const px of [14, 13]) { const lines = wrap(fam.F.f.label, px, room), w = Math.max(...lines.map(s => L.textW(s, px))), lh = px + 3; if (w <= room && lines.length * lh + pad <= fam.h) { lb = {lines, px, w, lh}; break; } }
+    const hgt = lb ? lb.lines.length * lb.lh + 5 : 0, lbox = p => ({x: p.x - 3, y: p.y - 2, w: lb.w + 6, h: hgt});
+    const spots = lb ? [{x: fam.x + 5, y: fam.y + 4}, {x: fam.x + 5, y: fam.y + fam.h - hgt + 1}, {x: fam.x + 5, y: fam.y + (fam.h - hgt) / 2 + 2}] : [null];
+    let pick = null;
+    for (const sp of spots) {
+      const at = pinCells.map(c => corners(c).find(p => !sp || !hit(lbox(sp), pinBox(p))));
+      if (at.every(Boolean)) { pick = {sp, at}; break; }
+    }
+    pick ||= {sp: spots[0], at: pinCells.map(c => corners(c)[0])};
+    if (pick.sp) { famLabels.push({lb, x: pick.sp.x, y: pick.sp.y}); boxes.push(lbox(pick.sp)); }
+    pinCells.forEach((c, k) => { const [cx, cy] = pick.at[k]; pins.push({n: first5.findIndex(o => o.x === c.G) + 1, cx, cy}); boxes.push(pinBox([cx, cy])); });
+  }
+  // 업종 이름(12px · 칸 안에 들어갈 때만 · 갈래 이름 · 점과 겹치면 칸 위쪽으로, 그래도 겹치면 뺌)
+  const named = [];
+  for (const fam of key.placed) for (const c of fam.cells) {
+    const t = c.G.g.label, px = 12, lh = 14, pad = 3;
+    let ok = null;
+    for (const lines of [[t], wrap(t, px, c.w - pad * 2)]) { const w = Math.max(...lines.map(s => L.textW(s, px))); if (lines.length <= 2 && w <= c.w - pad * 2 && lines.length * lh + pad * 2 <= c.h) { ok = {lines, w}; break; } }
+    if (!ok) continue;
+    const th = ok.lines.length * lh;
+    const spots = [c.y + (c.h - th) / 2, c.y + pad];                 // 가운데 → 위쪽
+    const top = spots.find(ty => !boxes.some(b => hit(b, {x: c.x + (c.w - ok.w) / 2 - 1, y: ty - 1, w: ok.w + 2, h: th + 2})));
+    if (top == null) continue;
+    const txt = L.sv('text', {'text-anchor': 'middle', 'font-size': px, fill: L.inkOn(c.fill)});
+    ok.lines.forEach((s, k) => txt.append(L.sv('tspan', {x: r2(c.x + c.w / 2), y: r2(top + lh * k + 10.5)}, s)));
+    svgK.append(txt); named.push(c.G);
+  }
+  for (const p of pins) {
+    svgK.append(L.sv('circle', {cx: r2(p.cx), cy: r2(p.cy), r: PR, fill: geum, stroke: ring, 'stroke-width': 1.5}));
+    svgK.append(L.sv('text', {class: 'pin', x: r2(p.cx), y: r2(p.cy + 4.2), 'text-anchor': 'middle', fill: ring}, String(p.n)));
+  }
+  // 갈래 이름은 맨 위에
+  for (const {lb, x, y} of famLabels) {
+    const txt = L.sv('text', {class: 'fam', 'font-size': lb.px, fill: ink});
+    lb.lines.forEach((s, k) => txt.append(L.sv('tspan', {x: r2(x), y: r2(y + lb.px - 1 + lb.lh * k)}, s)));
+    svgK.append(txt);
+  }
+  mapEl.append(svgK);
+  // 옥빛 점 번호 풀이 — 같은 날끼리 묶음
+  const pinRow = L.el('div', {class: 'm11-pins'});
+  for (const day of [...new Set(first5.map(o => o.i))]) {
+    pinRow.append(L.el('span', {class: 'grp'}, L.el('small', null, L.md(D[day])),
+      ...first5.flatMap((o, k) => o.i === day ? [L.el('span', {class: 'pair'}, L.el('i', {class: 'm11-pin'}, String(k + 1)), o.x.g.label)] : [])));
+  }
+  mapEl.append(pinRow);
+
+  // ── ⑤ 범례 ──
+  const icon = (draw) => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}); s.append(L.sv('rect', {x: 0, y: 0, width: 54, height: 26, rx: 4, fill: L.tok('--map-line')})); draw(s); return s; };
+  const cellIcon = icon(s => [0.06, 0.015, -0.04].forEach((v, k) => s.append(L.sv('rect', {x: 1.5 + k * 17.2, y: 4.5, width: 16, height: 17, rx: 1.5, fill: L.heat(v, MAX)}))));
+  const famIcon = icon(s => [[1.5, 0.08], [12, 0.03], [29, -0.03], [39.5, -0.07]].forEach(([x, v]) => s.append(L.sv('rect', {x, y: 4.5, width: 9.5 + (x > 20 ? 3 : 0), height: 17, rx: 1.5, fill: L.heat(v, MAX)}))));
+  const dotIcon = icon(s => { s.append(L.sv('rect', {x: 11, y: 1.5, width: 32, height: 23, rx: 2.5, fill: L.heat(0.22, MAX)})); s.append(L.sv('circle', {cx: 27, cy: 13, r: PR, fill: geum, stroke: ring, 'stroke-width': 1.5})); s.append(L.sv('text', {x: 27, y: 17.2, 'text-anchor': 'middle', fill: ring, style: 'font: 700 12px var(--font)'}, '1')); });
+
+  // ── ⑥ 읽은 것 셋(모두 셈한 값) ──
+  const SEP = '&nbsp;· ', nb = s => String(s).replace(/ /g, ' '), dayTxt = i => nb(L.md(D[i]));
+  const bnames = arr => arr.map(o => `<b>${o.x.g.label}</b>`).join(SEP);
+  let read1 = '+10%를 넘은 업종이 없음';
+  if (cross.length) {
+    const steps = []; for (const o of cross) { const s = steps.at(-1); if (s && s.i === o.i) s.list.push(o); else steps.push({i: o.i, list: [o]}); }
+    read1 = '가장 먼저 +10%를 넘은 업종: ' + steps.slice(0, 3).map((s, k) => (k === 0 ? `<b>${nb(L.korDate(D[s.i]))}</b> ` : `${dayTxt(s.i)} `)
+      + (k === 0 || s.list.length <= 2 ? bnames(s.list) : `<b>${s.list.length}곳</b> 더`)).join(' → ');
+  }
+  const f0 = FR[0], fN = FR.at(-1), deep = i => G.filter(x => x.day[i] > TEN);
+  const deepFam = [...deep(fN).reduce((m, x) => m.set(x.g.fam, (m.get(x.g.fam) || 0) + 1), new Map())].sort((a, b) => b[1] - a[1]).slice(0, 2);
+  const read2 = `붉은 칸: ${dayTxt(f0)} <b>${red(f0)} / ${N}</b> → ${dayTxt(fN)} <b>${red(fN)} / ${N}</b>${SEP}+10% 넘은 칸: <b>${deep(f0).length} → ${deep(fN).length}</b>`
+    + (deepFam.length ? `, 그중 ${deepFam.map(([fid, n]) => `<b>${K.famOf(fid).label} ${n}</b>`).join(SEP)}` : '');
+  const low = [...G].sort((a, b) => a.day[LAST] - b.day[LAST])[0], lv = low.day[LAST];
+  let read3 = `가장 푸른 칸(${dayTxt(LAST)}): <b>${low.g.label}</b> <b class="${L.cls(lv)}">${L.tri(lv)} ${L.pct(lv)}</b>`;
+  const turned = G.filter(x => x.day[LAST] < 0).map(x => { let pi = 1; for (let i = 1; i <= LAST; i++) if (x.day[i] > x.day[pi]) pi = i; return {x, pi, peak: x.day[pi]}; })
+    .filter(o => o.peak > 0).sort((a, b) => (b.peak - b.x.day[LAST]) - (a.peak - a.x.day[LAST]));
+  if (turned.length) { const t = turned[0], e = t.x.day[LAST]; read3 += `${SEP}붉다가 가장 크게 식은 칸: <b>${t.x.g.label}</b> ${dayTxt(t.pi)} <b class="up">▲ ${L.pct(t.peak)}</b> → ${dayTxt(LAST)} <b class="${L.cls(e)}">${L.tri(e)} ${L.pct(e)}</b>`; }
+
+  // ── ⑦ 근거 ──
+  const shifted = K.companies.filter(c => c.c60last && c.c60last !== K.place.asOf).map(c => {
+    const j = K.dates60.indexOf(c.c60last), st = j >= LAST ? K.dates60[j - LAST] : null;
+    return `${c.name}(${c.groupLabel})는 ${L.md(K.place.asOf)} 종가가 없어 판과 같이 ${st ? L.md(st) : '—'}~${L.md(c.c60last)} 종가로 셈`;
+  });
+  const sameNote = diff20 < 5e-5 ? `${L.md(D[LAST])} 값은 판의 업종 ${LAST}거래일 변화와 같음(${N}개 모두 확인)` : `${L.md(D[LAST])} 값과 판의 업종 변화 차이 가장 큰 것 ${(diff20 * 100).toFixed(3)}%p`;
+
+  L.fill({
+    num: '11',
+    title: '번지는 지도',
+    sub: `같은 땅 지도를 날짜마다 · 색 = ${L.md(D[0])}부터 그날까지 변화`,
+    question: `이 지도가 답하는 물음: <b>지난 ${LAST}거래일 동안 붉은 땅(오른 곳)은 어디서 시작해서 어디로 번졌나?</b>`,
+    legend: [
+      [cellIcon, `<b>칸 하나 = 업종 하나</b>${SEP}모두 같은 넓이(업종마다 ${perGroup.join('·')}곳)`],
+      [famIcon, `<b>굵은 선 = 큰 갈래</b>(${FAMS.length}개)${SEP}여섯 장 모두 같은 자리`],
+      [L.ramp(MAX), `<b>색 = ${nb(L.md(D[0]))} 종가 → 그날 종가</b> 변화${SEP}빨강 오름${SEP}파랑 내림`],
+      [dotIcon, `<b>옥빛 점</b> = 가장 먼저 +10%를 넘은 업종 ${first5.length}개${SEP}번호 = 넘은 차례`],
+    ],
+    reads: [read1, read2, read3].map(t => `<span>${t}</span>`),
+    why: `<b>잘 보이는 것</b>: 오름이 어디서 먼저 붙고 어디로 퍼졌는지${SEP}<b>잘 안 보이는 것</b>: 회사 크기 — 모든 칸이 같은 넓이`,
+    foot: [
+      `자료: 한국 ${K.companies.length}곳${SEP}업종 ${N}개${SEP}${nb(L.korDate(K.place.asOf))} ${K.place.close} 종가${SEP}지난 ${LAST}거래일 = ${nb(L.korDate(D[0]))}~${nb(L.korDate(D[LAST]))}${SEP}여섯 장 = ${FR.join('·')}거래일째`,
+      `셈: 그날 업종 값 = 그 업종 회사들의 (그날 종가 ÷ ${nb(L.md(D[0]))} 종가 − 1) 평균${SEP}${sameNote}`,
+      `땅 나누기: 큰 갈래 넓이 = 업종 수${SEP}갈래 차례 = ATLAS 차례(${firstFam.f.label} 왼쪽 위${lastAtCorner ? ` → ${lastFam.f.label} 오른쪽 아래` : ''})${SEP}갈래 안 = ${nb(L.md(D[LAST]))}까지 많이 오른 업종부터(왼쪽 위)`,
+      `옥빛 점: +10%를 처음 넘은 날이 이른 순${SEP}같은 날이면 그날 값이 큰 쪽${tieAll > tieIn && cutDay ? `(${nb(L.md(D[cutDay]))}에 넘은 ${tieAll}곳 중 ${tieIn}곳)` : ''}${SEP}칸이 작아 업종 이름은 들어가는 칸에만`,
+      ...shifted,
+      '샘플 — 아직 사이트에 없음',
+    ],
+  });
+  window.M11 = {diff20, named: named.map(x => x.g.label), first5: first5.map(o => [o.x.g.label, D[o.i], o.v]), KW, KH, FW};
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

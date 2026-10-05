@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 5 · 나침반 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 나침반 지도만의 모양 */
+#map svg text { font-family: var(--font); }
+.cp-quads { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0 0; }
+.cp-q { background: var(--fill); border-radius: 12px; padding: 8px 12px 9px; }
+.cp-qh { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+.cp-qn { font-size: 16px; font-weight: 700; color: var(--ink); }
+.cp-qc { font-size: 15px; color: var(--sub); }
+.cp-qc b { font-size: 22px; font-weight: 700; color: var(--ink); margin-right: 1px; }
+.cp-qd { font-size: 13px; line-height: 1.35; color: var(--sub); margin-top: 1px; }
+.nw { white-space: nowrap; }
+.sh-legend .lg small { display: block; font-size: 14px; color: var(--sub); margin-top: 1px; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr');
+  const P = K.place;
+  const hotIds = new Set(K.hot);
+  const mapEl = document.getElementById('map');
+
+  /* ── 마을 = 업종 하나 · 가로 = 회사들 1년 변화의 가운데값 · 세로 = 업종 20거래일 변화(회사 평균) */
+  const towns = K.groups.map(g => {
+    const cs = K.companiesOf(g.id);
+    const r252 = cs.map(c => c.ret252).filter(L.finite);
+    return {id: g.id, label: g.label, n: cs.length, nRet: r252.length, x: L.median(r252), y: g.change20,
+      cap: L.sum(cs.map(c => c.cap)), hot: hotIds.has(g.id)};
+  });
+  const T = towns.filter(t => L.finite(t.x) && L.finite(t.y) && t.x > -1);
+  const dropped = towns.filter(t => !T.includes(t));
+  const sg = v => (v > 0 ? 1 : v < 0 ? -1 : 0);
+  const QN = {'1,1': '북동', '-1,1': '북서', '1,-1': '남동', '-1,-1': '남서'};
+  for (const t of T) { t.lx = Math.log1p(t.x); t.q = QN[`${sg(t.x)},${sg(t.y)}`] ?? '선 위'; }
+  // 「가장 북동쪽」 = 가로(배수 눈금)와 세로를 저마다 가장 멀리 간 값으로 나눠 맞춘 뒤 가운데에서 잰 거리
+  const mxX = Math.max(...T.map(t => Math.abs(t.lx))), mxY = Math.max(...T.map(t => Math.abs(t.y)));
+  for (const t of T) { t.nx = t.lx / mxX; t.ny = t.y / mxY; t.nd = Math.hypot(t.nx, t.ny); }
+  const byQ = q => T.filter(t => t.q === q);
+  const maxBy = (xs, f) => xs.reduce((b, t) => (b == null || f(t) > f(b) ? t : b), null);
+  const QS4 = ['북동', '북서', '남동', '남서'];
+  const cnt = Object.fromEntries([...QS4, '선 위'].map(q => [q, byQ(q).length]));
+  const capMax = Math.max(...T.map(t => t.cap));
+  for (const t of T) { t.r = 3 + 8 * Math.sqrt(Math.max(0, t.cap) / capMax); t.rr = t.r + (t.hot ? 3.2 : 0); }
+  const biggest = maxBy(T, t => t.cap);
+
+  /* 읽은 것에 쓸 마을 */
+  const ne = maxBy(byQ('북동'), t => t.nd);
+  const nwTop = maxBy(byQ('북서'), t => t.y);
+  const third = nwTop ?? maxBy(byQ('남동'), t => t.nd);
+
+  /* 이름을 붙일 마을: 읽은 것 → 쪽마다 끝(가장 먼 · 가로 끝 · 세로 끝 · 가장 큰) → 전체에서 가장 큰 곳 · 14개까지
+     (지도에 놓은 뒤, 먼저 고른 점과 14px 안으로 붙어 있는 점은 이름을 빼서 한 덩이에 이름이 몰리지 않게 한다) */
+  const pick = [];
+  const add = t => { if (t && !pick.includes(t) && pick.length < 14) pick.push(t); };
+  add(ne); add(third);
+  for (const q of QS4) {
+    const Q = byQ(q); if (!Q.length) continue;
+    add(maxBy(Q, t => t.nd)); add(maxBy(Q, t => Math.abs(t.nx))); add(maxBy(Q, t => Math.abs(t.ny))); add(maxBy(Q, t => t.cap));
+  }
+  add(biggest);
+
+  /* ── 지도 칸 */
+  mapEl.append(L.el('div', {class: 'sh-maphead'},
+    L.el('span', {html: `<b>한국 업종 ${T.length}개</b>`}),
+    L.el('span', null, `1년 · 20거래일 · ${L.korDate(P.asOf)}까지`)));
+  const mcs = getComputedStyle(mapEl);
+  const W = Math.floor(mapEl.clientWidth - parseFloat(mcs.paddingLeft) - parseFloat(mcs.paddingRight));
+  const H = 500;
+  const svg = L.sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': '나침반 지도 — 업종 73개의 1년 변화와 20거래일 변화'});
+  mapEl.append(svg);
+
+  // 글자 폭을 재기 전에 글씨를 받아 둔다
+  const QL = {'북서': ['1년은 내림', '요즘은 오름'], '북동': ['1년도 오름', '요즘도 오름'],
+    '남서': ['1년도 내림', '요즘도 내림'], '남동': ['1년은 오름', '요즘은 내림']};
+  const allText = T.map(t => t.label).join('') + Object.values(QL).flat().join('') + '북동남서그대로반토막분의배+−%0123456789·';
+  await Promise.all(['400 13px', '700 13px', '400 15px', '700 15px'].map(s => document.fonts.load(`${s} "Gowun Batang"`, allText).catch(() => null)));
+  await document.fonts.ready;
+  const meas = (s, size, weight) => { const e = L.sv('text', {x: 0, y: 0, 'font-size': size, 'font-weight': weight}, s); svg.append(e); const b = e.getBBox(); e.remove(); return {w: b.width, h: b.height}; };
+
+  const GL = 40, GR = 4, GT = 4, GB = 42;              // 눈금 글자 자리
+  const PL = GL, PR = W - GR, PT = GT, PB = H - GB;     // 지도 안쪽
+  const BR = 11;                                       // 북·동·남·서 동그라미 반지름
+  const QF = 15, QLH = 19;                             // 쪽 이름 글자 크기 · 줄 높이
+
+  const qBox = {};
+  for (const q of QS4) {
+    const lines = QL[q], w = Math.max(...lines.map(s => meas(s, QF, 700).w)), h = QLH * lines.length;
+    const east = q.endsWith('동'), north = q.startsWith('북');
+    qBox[q] = {q, lines, w, h, east, north, x: east ? PR - 8 - w : PL + 8, y: north ? PT + 8 : PB - 8 - h};
+  }
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const circRect = (t, R, m = 0) => { const nx = clamp(t.px, R.x, R.x + R.w), ny = clamp(t.py, R.y, R.y + R.h); return Math.hypot(t.px - nx, t.py - ny) < t.rr + m; };
+  const rectHit = (a, b, m = 0) => a.x < b.x + b.w + m && a.x + a.w + m > b.x && a.y < b.y + b.h + m && a.y + a.h + m > b.y;
+  const segDist = (x1, y1, x2, y2, px, py) => { const dx = x2 - x1, dy = y2 - y1, l2 = dx * dx + dy * dy; const u = l2 ? clamp(((px - x1) * dx + (py - y1) * dy) / l2, 0, 1) : 0; return Math.hypot(x1 + u * dx - px, y1 + u * dy - py); };
+  const segRect = ([x1, y1, x2, y2], R, m = 0) => { const n = Math.max(2, Math.ceil(Math.hypot(x2 - x1, y2 - y1) / 1.5)); for (let i = 0; i <= n; i++) { const x = x1 + (x2 - x1) * i / n, y = y1 + (y2 - y1) * i / n; if (x > R.x - m && x < R.x + R.w + m && y > R.y - m && y < R.y + R.h + m) return true; } return false; };
+  const segCross = ([a, b, c, d], [e, f, g, h]) => { const o = (px, py, qx, qy, rx, ry) => Math.sign((qx - px) * (ry - py) - (qy - py) * (rx - px)); return o(a, b, c, d, e, f) !== o(a, b, c, d, g, h) && o(e, f, g, h, a, b) !== o(e, f, g, h, c, d); };
+
+  /* 자리 셈 — 배수 눈금(log(1+x)) · 네 모서리 쪽 이름과 북·동·남·서 동그라미가 점과 겹치지 않을 때까지 가장자리를 넓힌다 */
+  const dx0 = Math.min(0, ...T.map(t => t.lx)), dx1 = Math.max(0, ...T.map(t => t.lx));
+  const dy0 = Math.min(0, ...T.map(t => t.y)), dy1 = Math.max(0, ...T.map(t => t.y));
+  const qh = QLH * 2, pad = {l: 44, r: 16, t: qh + 18, b: qh + 18};   // 위·아래 모서리 쪽 이름은 점보다 바깥 띠에
+  let X, Y, kx, ky, badges = [];
+  for (let it = 0; it < 90; it++) {
+    kx = (PR - PL - pad.l - pad.r) / (dx1 - dx0); ky = (PB - PT - pad.t - pad.b) / (dy1 - dy0);
+    X = lv => PL + pad.l + (lv - dx0) * kx;
+    Y = v => PB - pad.b - (v - dy0) * ky;
+    for (const t of T) { t.px = X(t.lx); t.py = Y(t.y); }
+    badges = [{s: '북', x: X(0), y: PT + BR + 2, grow: 't'}, {s: '남', x: X(0), y: PB - BR - 2, grow: 'b'},
+      {s: '서', x: PL + BR + 2, y: Y(0), grow: 'l'}, {s: '동', x: PR - BR - 2, y: Y(0), grow: 'r'}];
+    let bad = null;
+    for (const b of badges) if (T.some(t => Math.hypot(t.px - b.x, t.py - b.y) < t.rr + BR + 5)) { bad = b.grow; break; }
+    if (!bad) for (const q of QS4) if (T.some(t => circRect(t, qBox[q], 5))) { bad = qBox[q].north ? 't' : 'b'; break; }
+    if (!bad) break;
+    pad[bad] += 3;
+  }
+  const X0 = X(0), Y0 = Y(0);
+  const badgeRects = badges.map(b => ({x: b.x - BR, y: b.y - BR, w: 2 * BR, h: 2 * BR}));
+
+  /* 나침반 꽃(장식) — 비어 있는 모서리에. 먼저 북서 쪽 이름 밑을 본다 */
+  const RR = 16;
+  const roseBoxAt = (cx, cy) => ({x: cx - RR - 2, y: cy - RR - 19, w: 2 * RR + 4, h: 2 * RR + 21});
+  let rosePos = null;
+  for (const q of ['북서', '북동', '남서', '남동']) {
+    const qb = qBox[q];
+    const ys = [], xs = [];
+    for (let k = 0; k < 14; k++) ys.push(qb.north ? qb.y + qb.h + 30 + k * 6 : qb.y - RR - 14 - k * 6);
+    for (let k = 0; k < 10; k++) xs.push(qb.east ? qb.x + qb.w - RR - 2 - k * 6 : qb.x + RR + 2 + k * 6);
+    for (const cy of ys) { for (const cx of xs) {
+      const R = roseBoxAt(cx, cy);
+      if (R.x < PL + 4 || R.x + R.w > PR - 4 || R.y < PT + 4 || R.y + R.h > PB - 4) continue;
+      if (R.x < X0 + 6 && R.x + R.w > X0 - 6) continue;
+      if (R.y < Y0 + 6 && R.y + R.h > Y0 - 6) continue;
+      if (T.some(t => circRect(t, R, 12))) continue;
+      if (QS4.some(p => rectHit(qBox[p], R, 6)) || badgeRects.some(b => rectHit(b, R, 6))) continue;
+      rosePos = {cx, cy, R}; break; }
+      if (rosePos) break; }
+    if (rosePos) break;
+  }
+
+  /* 이름표 자리 잡기 — 점 · 다른 이름 · 쪽 이름 · 동그라미 · 꽃과 겹치면 버리고, 가까울수록 · 가운데 선을 안 넘을수록 좋다
+     못 붙인 이름이 있으면 그 이름을 앞으로 당겨 다시 해 보고, 가장 많이 붙인 판을 쓴다 */
+  const LF = 13, LH = 16;
+  const fixed = [...QS4.map(q => qBox[q]), ...badgeRects, ...(rosePos ? [rosePos.R] : [])];
+  const near = [];
+  for (const t of pick.splice(0)) if (near.some(k => Math.hypot(k.px - t.px, k.py - t.py) < 14)) continue; else near.push(t);
+  pick.push(...near);
+  for (const t of pick) t.lw = meas(t.label, LF, 700).w + 2;
+  // 다른 이름표의 「제자리」(점 바로 오른쪽 · 왼쪽)를 빼앗으면 벌점 — 줄줄이 밀려나는 것을 막는다
+  for (const t of pick) t.home = [{x: t.px + t.rr + 3, y: t.py - LH / 2, w: t.lw, h: LH, pen: 7}, {x: t.px - t.rr - 3 - t.lw, y: t.py - LH / 2, w: t.lw, h: LH, pen: 3}];
+  const bestFor = (t, placed) => {
+    const w = t.lw, h = LH, rr = t.rr, g = 3, d7 = (rr + g) * 0.71;
+    const cands = [   // 점 바로 옆 여덟 자리(이끄는 줄 없음) — 오른쪽 · 왼쪽 · 위 · 아래 · 네 대각
+      {x: t.px + rr + g, y: t.py - h / 2, s: 0}, {x: t.px - rr - g - w, y: t.py - h / 2, s: 1.5},
+      {x: t.px - w / 2, y: t.py - rr - g - h + 1, s: 3}, {x: t.px - w / 2, y: t.py + rr + g - 1, s: 4},
+      {x: t.px + d7, y: t.py - d7 - h + 1, s: 5}, {x: t.px - d7 - w, y: t.py - d7 - h + 1, s: 5.5},
+      {x: t.px + d7, y: t.py + d7 - 1, s: 6}, {x: t.px - d7 - w, y: t.py + d7 - 1, s: 6.5}];
+    for (const d of [12, 17, 23, 30, 38, 46]) for (let k = 0; k < 24; k++) {
+      const a = k * Math.PI / 12, ca = Math.cos(a), sa = Math.sin(a);
+      const ax = t.px + (rr + d) * ca, ay = t.py + (rr + d) * sa;
+      cands.push({x: ca > 0.38 ? ax + 1 : ca < -0.38 ? ax - w - 1 : ax - w / 2, y: sa > 0.38 ? ay : sa < -0.38 ? ay - h : ay - h / 2,
+        s: 10 + d * 1.2, lead: [t.px + (t.r + 1.5) * ca, t.py + (t.r + 1.5) * sa, ax, ay]});
+    }
+    let best = null;
+    for (const c of cands) {
+      const R = {x: c.x, y: c.y, w, h};
+      if (R.x < PL + 2 || R.x + w > PR - 2 || R.y < PT + 2 || R.y + h > PB - 2) continue;
+      if (T.some(o => circRect(o, R, 1.5))) continue;
+      if (placed.some(p => rectHit(p.R, R, 3) || (p.lead && segRect(p.lead, R, 2)))) continue;
+      if (fixed.some(f => rectHit(f, R, 3))) continue;
+      let s = c.s;
+      for (const o of pick) if (o !== t && !placed.some(p => p.t === o)) for (const hm of o.home) if (rectHit(hm, R, 1)) s += hm.pen;
+      if (R.x < X0 + 2 && R.x + w > X0 - 2) s += 40;   // 이름이 가운데 선을 타면 선 이름처럼 보인다
+      if (R.y < Y0 + 2 && R.y + h > Y0 - 2) s += 40;
+      if (c.lead) {
+        const [x1, y1, x2, y2] = c.lead;
+        if (T.some(o => o !== t && segDist(x1, y1, x2, y2, o.px, o.py) < o.rr + 1.5)) continue;
+        if (placed.some(p => segRect(c.lead, p.R, 2) || (p.lead && segCross(c.lead, p.lead)))) continue;
+        if (fixed.some(f => segRect(c.lead, f, 2))) continue;
+        if ((x1 - X0) * (x2 - X0) < 0) s += 25;
+        if ((y1 - Y0) * (y2 - Y0) < 0) s += 25;
+      }
+      if (!best || s < best.s) best = {...c, R, s};
+    }
+    return best;
+  };
+  let order = [...pick], lay = null;
+  const rnd = L.rand(505);
+  for (let k = 0; k < 60; k++) {
+    if (k >= 8) { order = [...pick]; for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } }
+    const placed = [], missing = []; let total = 0;
+    for (const t of order) { const b = bestFor(t, placed); if (b) { placed.push({t, R: b.R, lead: b.lead ?? null}); total += b.s; } else missing.push(t); }
+    if (!lay || missing.length < lay.missing.length || (missing.length === lay.missing.length && total < lay.total)) lay = {placed, missing, total, tries: k + 1};
+    if (!missing.length) break;
+    order = [...missing, ...order.filter(t => !missing.includes(t))];
+  }
+  const {placed, missing} = lay;
+
+  /* ── 그리기 */
+  const S = (tag, a, ...k) => { const e = L.sv(tag, a, ...k); svg.append(e); return e; };
+  // 엷은 눈금 줄
+  const yt = []; for (let v = Math.ceil(dy0 * 10 - 1e-9) / 10; v <= dy1 + 1e-9; v = Math.round((v + 0.1) * 10) / 10) yt.push(v);
+  const mults = [1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32].filter(m => Math.log(m) >= dx0 - 1e-9 && Math.log(m) <= dx1 + 1e-9);
+  for (const v of yt) if (v !== 0) S('line', {x1: PL, x2: PR, y1: Y(v), y2: Y(v), stroke: 'var(--hair)', 'stroke-width': 1});
+  for (const m of mults) if (m !== 1) S('line', {x1: X(Math.log(m)), x2: X(Math.log(m)), y1: PT, y2: PB, stroke: 'var(--hair)', 'stroke-width': 1});
+  // 세로 눈금 글자(왼쪽) · 가로 눈금 글자(아래 두 줄)
+  const yLab = v => (v === 0 ? '0' : (v > 0 ? '+' : '−') + Math.round(Math.abs(v) * 100) + '%');
+  for (const v of yt) S('text', {x: PL - 7, y: Y(v) + 4.5, 'text-anchor': 'end', 'font-size': 13, fill: 'var(--sub)'}, yLab(v));
+  const xPct = m => (m === 1 ? '0' : (m > 1 ? '+' : '−') + Math.round(Math.abs(m - 1) * 100) + '%');
+  const xWord = m => (m === 1 ? '그대로' : m === 0.5 ? '반토막' : m > 1 ? `${m}배` : `${Math.round(1 / m)}분의 1`);
+  for (const m of mults) {
+    const x = X(Math.log(m));
+    S('text', {x, y: PB + 17, 'text-anchor': 'middle', 'font-size': 13, fill: 'var(--sub)'}, xPct(m));
+    S('text', {x, y: PB + 34, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: 'var(--ink2)'}, xWord(m));
+  }
+  // 가운데 십자(0 선) — 북·동·남·서 동그라미까지
+  const cg = BR * 2 + 6;
+  S('line', {x1: X0, x2: X0, y1: PT + cg, y2: PB - cg, stroke: 'var(--sub)', 'stroke-width': 1, opacity: 0.6});
+  S('line', {x1: PL + cg, x2: PR - cg, y1: Y0, y2: Y0, stroke: 'var(--sub)', 'stroke-width': 1, opacity: 0.6});
+  for (const b of badges) {
+    S('circle', {cx: b.x, cy: b.y, r: BR, fill: 'var(--fill)', stroke: 'var(--sep)', 'stroke-width': 1});
+    S('text', {x: b.x, y: b.y + 4.6, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: 'var(--ink2)'}, b.s);
+  }
+  // 네 쪽 이름(모서리)
+  for (const q of QS4) {
+    const b = qBox[q];
+    b.lines.forEach((s, i) => S('text', {x: b.east ? b.x + b.w : b.x, y: b.y + 14.5 + i * QLH, 'text-anchor': b.east ? 'end' : 'start',
+      'font-size': QF, 'font-weight': 700, fill: 'var(--sub)', 'fill-opacity': 0.9, stroke: 'var(--card)', 'stroke-width': 4, 'stroke-linejoin': 'round', 'paint-order': 'stroke'}, s));
+  }
+  // 나침반 꽃
+  if (rosePos) {
+    const {cx, cy} = rosePos, g = S('g', {'aria-hidden': 'true'});
+    const kite = (deg, len, wid) => { const a = deg * Math.PI / 180, ux = Math.sin(a), uy = -Math.cos(a), vx = -uy, vy = ux;
+      const p = (s, q) => `${(cx + ux * s + vx * q).toFixed(2)},${(cy + uy * s + vy * q).toFixed(2)}`;
+      return `M${p(len, 0)}L${p(wid, wid)}L${p(0, 0)}L${p(wid, -wid)}Z`; };
+    g.append(L.sv('circle', {cx, cy, r: RR + 3, fill: 'var(--card)'}));
+    g.append(L.sv('circle', {cx, cy, r: RR * 0.6, fill: 'none', stroke: 'var(--sub)', 'stroke-width': 0.8, opacity: 0.55}));
+    for (const deg of [45, 135, 225, 315]) g.append(L.sv('path', {d: kite(deg, RR * 0.55, 2.4), fill: 'var(--sub)', opacity: 0.35}));
+    for (const deg of [90, 180, 270]) g.append(L.sv('path', {d: kite(deg, RR, 3.4), fill: 'var(--sub)', opacity: 0.6}));
+    g.append(L.sv('path', {d: kite(0, RR, 3.4), fill: 'var(--ink)'}));
+    g.append(L.sv('text', {x: cx, y: cy - RR - 5, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, fill: 'var(--ink2)', stroke: 'var(--card)', 'stroke-width': 4, 'stroke-linejoin': 'round', 'paint-order': 'stroke'}, '북'));
+  }
+  // 이끄는 줄 → 점(큰 것 먼저 · 작은 것이 위) → 이름
+  for (const p of placed) if (p.lead) { const [x1, y1, x2, y2] = p.lead; S('line', {x1, y1, x2, y2, stroke: 'var(--sub)', 'stroke-width': 1, opacity: 0.75}); }
+  for (const t of [...T].sort((a, b) => b.r - a.r)) {
+    S('circle', {cx: t.px.toFixed(2), cy: t.py.toFixed(2), r: t.r.toFixed(2), fill: 'var(--ink2)', 'fill-opacity': 0.35, stroke: 'var(--ink2)', 'stroke-opacity': 0.7, 'stroke-width': 0.9},
+      L.sv('title', null, `${t.label} · 1년 ${L.pct(t.x)} · 20거래일 ${L.pct(t.y)}`));
+    if (t.hot) S('circle', {cx: t.px.toFixed(2), cy: t.py.toFixed(2), r: (t.r + 2.2).toFixed(2), fill: 'none', stroke: 'var(--geum)', 'stroke-width': 2});
+  }
+  for (const p of placed) S('text', {x: p.R.x + 1, y: p.R.y + 12.6, 'font-size': LF, 'font-weight': 700, fill: 'var(--ink)',
+    stroke: 'var(--card)', 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'paint-order': 'stroke', 'data-town': p.t.id}, p.t.label);
+
+  // 지도 밑 네 쪽 셈(지도와 같은 자리로)
+  mapEl.append(L.el('div', {class: 'cp-quads', 'aria-label': '쪽마다 업종 수'}, ...['북서', '북동', '남서', '남동'].map(q =>
+    L.el('div', {class: 'cp-q'},
+      L.el('div', {class: 'cp-qh'}, L.el('span', {class: 'cp-qn'}, q), L.el('span', {class: 'cp-qc', html: `<b>${cnt[q]}</b>개`})),
+      L.el('div', {class: 'cp-qd'}, QL[q].join(' · '))))));
+
+  /* ── 범례 칸 */
+  const swDir = dir => {
+    const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}), cx = 13, cy = 13, a = 10;
+    s.append(L.sv('path', {d: `M${cx - a} ${cy}H${cx + a}M${cx} ${cy - a}V${cy + a}`, stroke: 'var(--sub)', 'stroke-width': 1, opacity: 0.55}));
+    const [ex, ey, hp] = dir === '동' ? [cx + a + 1, cy, `M${cx + a + 2} ${cy}l-5 -3.6v7.2z`] : [cx, cy - a - 1, `M${cx} ${cy - a - 2}l-3.6 5h7.2z`];
+    s.append(L.sv('path', {d: `M${cx} ${cy}L${ex} ${ey}`, stroke: 'var(--ink)', 'stroke-width': 2.2, 'stroke-linecap': 'round'}));
+    s.append(L.sv('path', {d: hp, fill: 'var(--ink)'}));
+    s.append(L.sv('text', {x: 41, y: 18, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 700, fill: 'var(--ink)', 'font-family': 'inherit'}, dir));
+    return s;
+  };
+  const swSize = () => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    [[6, 3], [19, 6], [40, 11]].forEach(([x, r]) => s.append(L.sv('circle', {cx: x, cy: 13, r, fill: 'var(--ink2)', 'fill-opacity': 0.35, stroke: 'var(--ink2)', 'stroke-opacity': 0.7, 'stroke-width': 0.9}))); return s; };
+  const swRing = () => { const s = L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26});
+    s.append(L.sv('circle', {cx: 27, cy: 13, r: 5, fill: 'var(--ink2)', 'fill-opacity': 0.35, stroke: 'var(--ink2)', 'stroke-opacity': 0.7, 'stroke-width': 0.9}));
+    s.append(L.sv('circle', {cx: 27, cy: 13, r: 7.2, fill: 'none', stroke: 'var(--geum)', 'stroke-width': 2})); return s; };
+
+  /* ── 글자(모두 위에서 셈한 값) */
+  const both = t => `<span class="nw">1년 <b class="${L.cls(t.x)}">${L.tri(t.x)} ${L.pct(t.x)}</b></span>&nbsp;· <span class="nw">20거래일 <b class="${L.cls(t.y)}">${L.tri(t.y)} ${L.pct(t.y)}</b></span>`;
+  const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? a : b; };
+  const nOf = [...new Set(T.map(t => t.n))];
+  const nTxt = nOf.length === 1 ? `회사 ${nOf[0]}곳` : '회사들';
+  const capWhen = (L.A.sources?.krCap ?? '').match(/(\d{4}-\d{2}-\d{2}) (\d{2}):(\d{2})/);
+  const late = K.companies.filter(c => c.c60last && c.c60last !== P.asOf);
+  const hotN = T.filter(t => t.hot).length;
+  const reads = [
+    `쪽마다 업종 수 — ${[...QS4, ...(cnt['선 위'] ? ['선 위'] : [])].map(q => `<span class="nw">${q} <b>${cnt[q]}</b></span>`).join('&nbsp;· ')} <span class="nw">(모두 ${T.length}개)</span>`,
+    ne ? `가장 북동쪽은 <b>${ne.label}</b> — ${both(ne)}` : '북동쪽(1년도 요즘도 오름)에 놓인 업종 없음',
+    nwTop ? `1년은 내렸는데 요즘 오른 곳(북서) 가운데 가장 북쪽은 <b>${nwTop.label}</b> — ${both(nwTop)}${nwTop.hot ? '&nbsp;· 불장 업종' : ''}`
+      : third ? `북서쪽은 비어 있음 · 1년은 올랐는데 요즘 내린 곳(남동)에서 가장 먼 곳은 <b>${third.label}</b> — ${both(third)}` : '북서 · 남동 모두 비어 있음'];
+  L.fill({
+    reads: reads.map(r => `<span>${r}</span>`),
+    num: 5, title: '나침반 지도', sub: '동쪽 = 1년 변화 · 북쪽 = 지난 20거래일 변화',
+    question: '이 지도가 답하는 물음: <b>1년 동안 걸어온 길과 요즘 20거래일의 길을 함께 보면, 업종들은 어느 쪽에 모여 있나?</b>',
+    legend: [
+      [swDir('동'), `<b>동쪽(오른쪽)</b>일수록 1년 동안 많이 오름 (업종 회사들 가운데값)<small>눈금은 배수: 반토막과 2배가 0에서 같은 거리</small>`],
+      [swDir('북'), `<b>북쪽(위)</b>일수록 지난 20거래일 많이 오름 (업종 평균)`],
+      [swSize(), `<b>점 크기</b> = 업종 시가총액 합<small>점 하나 = 업종 하나 · 가장 큰 점: ${biggest.label}</small>`],
+      [swRing(), `<b>옥빛 테</b> = 불장 업종 ${hotN}개`]],
+    why: '<b>잘 보이는 것</b>: 오래 오른 곳 · 요즘 돌아선 곳이 나뉨<br><b>잘 안 보이는 것</b>: 회사 하나하나 — 1년 값은 가운데값이라 튀는 회사가 묻힘',
+    foot: [
+      `한국 업종 ${T.length}개(회사 ${K.companies.length}곳) · ${L.korDate(P.asOf)} ${P.close} 종가 · 지난 20거래일 = ${L.korDate(P.from)}~${L.korDate(P.asOf)}`,
+      `1년 변화 = 252거래일 전 종가 → ${L.korDate(P.asOf)} 종가 · 업종 값은 ${nTxt}의 가운데값 · 20거래일 값은 ${nTxt}의 평균`,
+      `점 크기 = ${nTxt} 시가총액 합${capWhen ? `(${L.korDate(capWhen[1])} ${Number(capWhen[2])}시 ${Number(capWhen[3])}분 무렵 받은 값)` : ''} · 작은 업종도 보이게 점에 바닥 크기를 둠`,
+      '「가장 북동쪽」 = 가로(1년 배수)와 세로(20거래일)를 저마다 가장 크게 움직인 값으로 나눠 맞춘 뒤, 가운데(0)에서 가장 먼 곳',
+      ...late.map(c => `${c.name}${josa(c.name, '은', '는')} ${L.korDate(c.c60last)} 종가까지(${L.md(P.asOf)} 종가 못 받음)`),
+      ...(dropped.length ? [`1년 값이 없어 뺀 업종 ${dropped.length}개`] : []),
+      '샘플 — 아직 사이트에 없음']});
+
+  window.DBG = {W, H, pad, kx, ky, X0, Y0, towns: T.map(t => [t.label, +t.px.toFixed(1), +t.py.toFixed(1), +t.rr.toFixed(1)]), placed: placed.map(p => ({label: p.t.label, R: p.R, lead: !!p.lead})), missing: missing.map(t => t.label), rose: rosePos, tries: lay.tries, cnt, pick: pick.map(t => t.label)};
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>

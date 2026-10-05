@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATLAS 지도 샘플 3 — 산맥 지도</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="sheet.css">
+<style>
+/* 이 샘플만의 모양 — 산맥 지도(줄마다 큰 갈래 하나 · 봉우리마다 업종 하나) */
+.sh-map { padding: 10px 6px 8px; }
+#ridge text { font-family: var(--font); font-weight: 700; }
+#ridge .t-fam { font-size: 15px; fill: var(--ink); }
+#ridge .t-mean { font-size: 14px; }
+#ridge .t-lab { font-size: 13px; fill: var(--ink); }
+#ridge .t-tick { font-size: 11px; font-weight: 400; fill: var(--sub); }
+#ridge .t-up { fill: var(--up-ink); }
+#ridge .t-down { fill: var(--down-ink); }
+#ridge .halo { paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="sh-head">
+    <div class="sh-num" id="num"></div>
+    <div><h1 class="sh-title" id="title"></h1><p class="sh-sub" id="sub"></p></div>
+    <p class="sh-tag" id="tag"></p>
+  </header>
+  <p class="sh-q" id="question"></p>
+  <section class="sh-map" id="map" aria-label="지도"></section>
+  <section class="sh-box"><h2>범례 <small>지도 읽는 법</small></h2><div class="sh-legend" id="legend"></div></section>
+  <section class="sh-box"><h2>이 지도로 읽은 것 <small>실제 숫자</small></h2><ol class="sh-read" id="reads"></ol></section>
+  <p class="sh-why" id="why" hidden></p>
+  <footer class="sh-foot" id="foot"></footer>
+</main>
+<script src="data.js"></script>
+<script src="lib.js"></script>
+<script>
+(async function () {
+  const K = L.side('kr'), P = K.place;
+  const $ = id => document.getElementById(id);
+  // 0 에 아주 가까운 평균(예: −0.02%)이 「−0.0%」로 보이지 않게 소수 둘째 자리까지
+  const pf = v => L.pct(v, L.finite(v) && v !== 0 && Math.abs(v) < 0.0005 ? 2 : 1);
+  const tcls = v => (L.cls(v) === 'up' ? 't-up' : L.cls(v) === 'down' ? 't-down' : '');
+  const f2 = v => Math.round(v * 100) / 100;
+
+  // ── 자료: 산맥(큰 갈래)마다 봉우리(업종) — 모두 data.js 에서 셈
+  const fams = K.families.map(f => {
+    const gs = K.groupsOf(f.id).filter(g => L.finite(g.change20)).sort((a, b) => b.change20 - a.change20);
+    return {...f, gs, mean: L.mean(gs.map(g => g.change20))};
+  }).filter(f => f.gs.length).sort((a, b) => b.mean - a.mean);
+  const allG = fams.flatMap(f => f.gs);
+  const famOf = g => fams.find(f => f.gs.includes(g));
+  const hi = allG.reduce((a, b) => (b.change20 > a.change20 ? b : a));
+  const lo = allG.reduce((a, b) => (b.change20 < a.change20 ? b : a));
+  const sunk = allG.filter(g => g.change20 < 0);
+  const fromD = K.dates20?.[0] || P.from, toD = K.dates20?.at(-1) || P.asOf;
+  const ms = [...new Set(allG.map(g => g.measured ?? g.count))];
+  const nCo = ms.length === 1 ? `${ms[0]}곳` : '여러 곳';
+
+  // ── 지도 머리줄
+  const map = $('map');
+  map.append(L.el('div', {class: 'sh-maphead'},
+    L.el('span', {html: `<b>한국 업종 ${allG.length}개 · 산맥 ${fams.length}줄</b>`}),
+    L.el('span', null, `${L.korDate(fromD)} → ${L.korDate(toD)}`)));
+
+  // 글자 폭을 재기 전에 쓸 글자의 글꼴 조각을 먼저 받는다
+  const allText = fams.map(f => f.label + pf(f.mean)).join('') + allG.map(g => g.label + pf(g.change20)).join('') + '▲▼+−%.0123456789 ·()';
+  await Promise.all(['700 15px', '700 14px', '700 13px', '400 11px'].map(w => document.fonts.load(`${w} 'Gowun Batang'`, allText).catch(() => null)));
+  await document.fonts.ready;
+
+  // ── 그림 판(폭 = 지도 칸 안쪽 실제 폭 → 글자 크기가 그대로 보임)
+  const cs = getComputedStyle(map);
+  const W = Math.floor(map.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  const svg = L.sv('svg', {id: 'ridge', role: 'img', 'aria-label': `산맥 지도 — 큰 갈래 ${fams.length}줄, 업종 ${allG.length}개 봉우리, 높이 = 지난 20거래일 변화`});
+  map.append(svg);
+  const scratch = L.sv('g', {opacity: 0});
+  svg.append(scratch);
+  const measure = node => { scratch.append(node); const b = node.getBBox(); node.remove(); return b; };
+
+  // 왼쪽 이름 칸(갈래 이름 + 평균)
+  const famLab = fams.map(f => {
+    const n1 = L.sv('text', {class: 't-fam'}, f.label);
+    const n2 = L.sv('text', {class: `t-mean ${tcls(f.mean)}`}, `${L.tri(f.mean)} ${pf(f.mean)}`);
+    return {n1, n2, w: Math.max(measure(n1).width, measure(n2).width)};
+  });
+  const colW = Math.ceil(Math.max(...famLab.map(x => x.w))) + 12;
+  const xa = colW + 2, xb = W - 2;
+
+  // ── 모양 값(모든 줄이 같은 높이 자)
+  const S = 165;      // 변화 1.0(=100%) 를 165px 로 → 10% = 16.5px
+  const GAP = 46;     // 줄 사이
+  // 곡선 손잡이 길이(이웃 점까지 거리에 대한 몫) — 끝 · 골짜기 · 꼭대기 · 물속 바닥
+  const HAND = {e: 0.5, s: 0.6, p: 0.18, n: 0.38};
+  const TOPV = 0.3;   // 이 높이(+30%)에서 꼭대기 빨강이 가장 진함(L.heat 기본값)
+  const FH = 19;      // 깃대 길이
+  const vmax = fams.map(f => Math.max(0, f.gs[0].change20));
+  const vmin = fams.map(f => Math.min(0, f.gs.at(-1).change20));
+  let top = 36;
+  fams.forEach((f, i) => { top = Math.max(top, vmax[i] * S + 26 + (f.gs.includes(hi) ? FH : 0) - i * GAP); });
+  top = Math.ceil(top);
+  const ys = fams.map((_, i) => top + i * GAP);
+  const H = Math.ceil(ys.at(-1) + Math.max(-vmin.at(-1) * S, 0) + 10);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+
+  // 가장 높은 봉우리를 가운데, 나머지는 높은 순으로 오른쪽 · 왼쪽 번갈아
+  const slotOrder = n => {
+    const c = Math.floor((n - 1) / 2), s = [c];
+    for (let k = 1; s.length < n; k++) { if (c + k < n) s.push(c + k); if (s.length < n && c - k >= 0) s.push(c - k); }
+    return s;
+  };
+
+  const rows = fams.map((f, i) => {
+    const n = f.gs.length, sp = (xb - xa) / n, y0 = ys[i];
+    const rnd = L.rand(11 + i * 37); // 모양만 조금 자연스럽게(늘 같은 그림)
+    const bySlot = Array(n);
+    slotOrder(n).forEach((s, j) => { bySlot[s] = f.gs[j]; });
+    const px = bySlot.map((_, s) => xa + (s + 0.5) * sp + (rnd() - 0.5) * 0.22 * sp);
+    const pts = [{x: xa, v: 0, k: 'e'}];
+    bySlot.forEach((g, s) => {
+      const x = px[s], v = g.change20, sad = 0.22 + 0.16 * rnd(); // 골짜기 = 낮은 쪽 봉우리의 22~38%(모양만)
+      if (s > 0) {
+        const a = bySlot[s - 1].change20, mx = (px[s - 1] + x) / 2;
+        if (a > 0 && v > 0) pts.push({x: mx, v: sad * Math.min(a, v), k: 's'});
+        else if (a < 0 && v < 0) pts.push({x: mx, v: sad * Math.max(a, v), k: 's'});
+      }
+      pts.push({x, v, k: 'p', g});
+    });
+    pts.push({x: xb, v: 0, k: 'e'});
+    const Y = v => y0 - v * S;
+    const hf = p => (p.k === 'p' ? (p.v < 0 ? HAND.n : HAND.p) : HAND[p.k]);
+    let d = `M${f2(xa)},${f2(y0)}`;
+    const samples = [];
+    for (let j = 1; j < pts.length; j++) {
+      const p = pts[j - 1], q = pts[j], dx = q.x - p.x;
+      const c1 = [p.x + hf(p) * dx, Y(p.v)], c2 = [q.x - hf(q) * dx, Y(q.v)];
+      d += ` C${f2(c1[0])},${f2(c1[1])} ${f2(c2[0])},${f2(c2[1])} ${f2(q.x)},${f2(Y(q.v))}`;
+      for (let t = 0.05; t < 0.99; t += 0.05) {
+        const u = 1 - t;
+        samples.push([u * u * u * p.x + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t * t * t * q.x,
+          u * u * u * Y(p.v) + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t * t * t * Y(q.v)]);
+      }
+    }
+    const peaks = pts.filter(p => p.k === 'p').map(p => ({x: p.x, y: Y(p.v), v: p.v, g: p.g}));
+    return {f, i, y0, n, sp, d, samples, peaks};
+  });
+
+  // ── 색
+  const C = {down: L.tok('--map-down'), card: L.tok('--card'), ink: L.tok('--ink'), sub: L.tok('--sub'), geum: L.tok('--geum')};
+  // 땅 색 = 높이에 맞춘 L.heat(높을수록 진한 빨강)를 판 색 쪽으로 10% 눅여 차분하게
+  const landStops = () => [0, 0.2, 0.4, 0.6, 0.8, 1].map(t => L.sv('stop', {offset: t, 'stop-color': L.mix(L.heat(t * TOPV), C.card, 0.1)}));
+
+  // ── 그리기: 뒤 줄(위)부터 앞 줄(아래)로 — 앞 산이 뒤 산을 가린다
+  const defs = L.sv('defs');
+  const layerRows = L.sv('g'), layerTop = L.sv('g'), layerLab = L.sv('g');
+  svg.append(defs, layerRows, layerTop, layerLab);
+  rows.forEach(r => {
+    const {i, y0} = r;
+    defs.append(
+      L.sv('clipPath', {id: `ca${i}`}, L.sv('rect', {x: -2, y: -20, width: W + 4, height: y0 + 20})),
+      L.sv('clipPath', {id: `cb${i}`}, L.sv('rect', {x: -2, y: y0, width: W + 4, height: H - y0 + 20})),
+      L.sv('linearGradient', {id: `gl${i}`, gradientUnits: 'userSpaceOnUse', x1: 0, y1: y0, x2: 0, y2: y0 - TOPV * S}, ...landStops()),
+      L.sv('linearGradient', {id: `gw${i}`, gradientUnits: 'userSpaceOnUse', x1: 0, y1: y0, x2: 0, y2: y0 + 0.12 * S},
+        L.sv('stop', {offset: 0, 'stop-color': C.down, 'stop-opacity': 0.16}),
+        L.sv('stop', {offset: 1, 'stop-color': C.down, 'stop-opacity': 0.5})));
+    const closed = `${r.d} L${f2(xa)},${f2(y0)} Z`;
+    layerRows.append(L.sv('g', null,
+      L.sv('path', {d: closed, fill: `url(#gw${i})`, 'clip-path': `url(#cb${i})`}),
+      L.sv('path', {d: closed, fill: `url(#gl${i})`, 'clip-path': `url(#ca${i})`}),
+      L.sv('path', {d: r.d, fill: 'none', stroke: C.card, 'stroke-width': 2.4, 'clip-path': `url(#ca${i})`}),
+      L.sv('path', {d: r.d, fill: 'none', stroke: C.ink, 'stroke-opacity': 0.42, 'stroke-width': 1, 'clip-path': `url(#ca${i})`}),
+      L.sv('path', {d: r.d, fill: 'none', stroke: C.down, 'stroke-opacity': 0.85, 'stroke-width': 1.1, 'clip-path': `url(#cb${i})`}),
+      L.sv('line', {x1: 0, x2: W, y1: y0, y2: y0, stroke: C.sub, 'stroke-opacity': 0.55, 'stroke-width': 1})));
+  });
+
+  const placed = []; // 글자 · 깃발 · 자가 차지한 네모(겹치지 않게)
+
+  // 높이 자(왼쪽 위 · 첫 줄 바다 선에 맞춤 · 10%마다 눈금)
+  {
+    const y0 = ys[0], rx = colW - 4;
+    const maxTick = Math.floor((y0 - 8) / S / 0.1) * 0.1;
+    const ticks = [];
+    for (let v = 0.1; v <= maxTick + 1e-9; v += 0.1) ticks.push(Math.round(v * 10) / 10);
+    if (ticks.length) {
+      layerTop.append(L.sv('line', {x1: rx, x2: rx, y1: y0, y2: y0 - ticks.at(-1) * S, stroke: C.sub, 'stroke-opacity': 0.7, 'stroke-width': 1}));
+      ticks.forEach(v => {
+        const y = y0 - v * S;
+        layerTop.append(L.sv('line', {x1: rx - 4, x2: rx, y1: y, y2: y, stroke: C.sub, 'stroke-opacity': 0.7, 'stroke-width': 1}));
+        layerTop.append(L.sv('text', {class: 't-tick', x: rx - 7, y: y + 4, 'text-anchor': 'end'}, `+${Math.round(v * 100)}%`));
+      });
+      placed.push({x: rx - 40, y: y0 - ticks.at(-1) * S - 8, w: 42, h: ticks.at(-1) * S + 8});
+    }
+  }
+
+  // ── 글자 자리 정하기(겹치지 않게)
+  const famBoxes = rows.map(r => ({x: 0, y: r.y0 - 36, w: famLab[r.i].w + 4, h: 35}));
+  // 꼭대기(바닥) 끝 둘레 — 글자가 덮으면 높이가 안 보이므로 벌점
+  // (바다 선에 붙은 아주 낮은 봉우리는 그 높이만큼만 지킨다 — 0.4px 짜리 혹이 글자 자리를 다 막지 않게)
+  const peakBoxes = rows.flatMap(r => r.peaks.map(p => {
+    const hgt = Math.abs(p.v) * S, up = Math.min(3, hgt), dn = Math.min(2, hgt);
+    return p.v >= 0 ? {x: p.x - 4, y: p.y - up, w: 8, h: up + Math.min(2, hgt), g: p.g} : {x: p.x - 4, y: p.y - dn, w: 8, h: dn + 3, g: p.g};
+  }));
+  // 산등성이 · 물속 바닥 선 위의 점(바다 선 위 평평한 곳은 빼고) — 글자가 덮으면 벌점
+  const ridgePts = rows.flatMap(r => r.samples.filter(([, y]) => Math.abs(y - r.y0) > 0.5));
+  // 겹친 넓이(가장자리 0.5px 닿는 것은 겹침으로 안 침 — 네모에 이미 테두리 몫이 들어 있음)
+  const ov = (a, b) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) - 0.5) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y) - 0.5);
+  // 글자 네모 = 실제 글자 잉크 높이(위 0.92em · 아래 0.12em — 한글 · 숫자는 아래로 거의 안 내려감) + 테두리(halo) — 글꼴 줄 높이보다 작게 잡아 빈자리를 더 쓴다
+  const FS = 13, ASC = Math.ceil(FS * 0.92 + 1.5), DESC = Math.ceil(FS * 0.12 + 1.5);
+  // 한 글자 덩이를 자리 후보마다 벌점 매겨 가장 낮은 자리를 고른다
+  const choose = (job, pl) => {
+    let best = null;
+    job.cands(job.w, job.h).forEach(([x, y], ci) => {
+      const {w, h} = job, b = {x: Math.min(Math.max(x, 2), W - 2 - w), y, w, h};
+      let pen = ci * 4 + Math.abs(b.x - x) * 0.3;
+      if (b.y < 1 || b.y + h > H - 1) pen += 1e7;
+      for (const p of pl) pen += ov(b, p) * 1e4;
+      for (const fb of famBoxes) pen += ov(b, fb) * 1e4;
+      for (const pb of peakBoxes) pen += ov(b, pb) * (pb.g === job.own ? 400 : 200);
+      for (const [px, py] of ridgePts) if (px > b.x - 1 && px < b.x + w + 1 && py > b.y - 1 && py < b.y + h + 1) pen += 3;
+      // 다른 줄의 바다 선을 글자가 가로지르면(어느 줄 이름인지 헷갈림) 벌점
+      rows.forEach(r => { if (r.i !== job.ownRow && r.y0 > b.y + 1 && r.y0 < b.y + h - 1) pen += 30; });
+      if (!best || pen < best.pen) best = {pen, b, ci};
+    });
+    return best;
+  };
+  const lab = (name, v) => {
+    const t = L.sv('text', {class: 't-lab halo'});
+    t.append(L.sv('tspan', null, name + ' '), L.sv('tspan', {class: tcls(v)}, pf(v)));
+    return t;
+  };
+  const job = (node, cands, own, ownRow) => ({node, cands, own, ownRow, w: measure(node).width + 6, h: ASC + DESC});
+  // 앞 번호일수록 먼저 고름(위 가운데 → 오른쪽 → 왼쪽 → …) — 벌점이 낮은 자리로
+  // bandTop = 바로 위 줄의 바다 선(글자를 그 아래에 붙여 보는 자리도 넣음)
+  const around = (p, lift, side, bandTop) => (w, h) => {
+    const yr = [p.y - h + 3, p.y - h / 2 - 4, p.y - h / 2 - 2, p.y - h / 2, p.y - h / 2 + 2];
+    if (bandTop != null) yr.push(bandTop + 1.5, bandTop + 4);
+    return [
+      [p.x - w / 2, p.y - lift - h],            // 위 가운데
+      [p.x - w / 2, p.y - lift - h + 3],        // 위 가운데(조금 낮게)
+      ...yr.map(y => [p.x + side, y]),          // 오른쪽(여러 높이)
+      ...yr.map(y => [p.x - side - w, y]),      // 왼쪽(여러 높이)
+      [p.x + side - 2, p.y - lift - h + 4],     // 위 오른쪽
+      [p.x - side + 2 - w, p.y - lift - h + 4], // 위 왼쪽
+      [p.x - w / 2, p.y - lift - h - 12],       // 더 위
+      [p.x + side + 2, p.y - h / 2 + 10],       // 오른쪽 아래
+      [p.x - side - 2 - w, p.y - h / 2 + 10],   // 왼쪽 아래
+    ];
+  };
+
+  // 갈래 이름 칸
+  rows.forEach(r => {
+    const {n1, n2} = famLab[r.i];
+    n1.setAttribute('x', 2); n1.setAttribute('y', r.y0 - 21);
+    n2.setAttribute('x', 2); n2.setAttribute('y', r.y0 - 5);
+    layerLab.append(n1, n2);
+  });
+
+  // 깃발: 업종 전체에서 가장 높은 봉우리 하나
+  const hiRow = rows.find(r => r.f.gs.includes(hi)), hp = hiRow.peaks.find(p => p.g === hi);
+  layerTop.append(L.sv('g', null,
+    L.sv('line', {x1: hp.x, x2: hp.x, y1: hp.y - 1, y2: hp.y - FH, stroke: C.ink, 'stroke-width': 1.4, 'stroke-linecap': 'round'}),
+    L.sv('path', {d: `M${f2(hp.x + 0.7)},${f2(hp.y - FH)} L${f2(hp.x + 12)},${f2(hp.y - FH + 3.6)} L${f2(hp.x + 0.7)},${f2(hp.y - FH + 7.2)} Z`, fill: C.geum})));
+  placed.push({x: hp.x - 2, y: hp.y - FH - 1, w: 15, h: FH});
+
+  // 이름 붙일 것: 줄마다 가장 높은 봉우리 + 가장 깊이 잠긴 곳 하나
+  const dot = (p, fill) => layerTop.append(L.sv('circle', {cx: f2(p.x), cy: f2(p.y), r: 2.4, fill, stroke: C.card, 'stroke-width': 1}));
+  const rowJobs = rows.map(r => {
+    const g = r.f.gs[0], p = r.peaks.find(q => q.g === g), isHi = g === hi;
+    if (!isHi) dot(p, C.ink);
+    return job(lab(g.label, g.change20), around(p, isHi ? FH + 2 : 5, isHi ? 14 : 5, r.i > 0 ? rows[r.i - 1].y0 : null), g, r.i);
+  });
+  let deepJob = null, loRow = null;
+  if (lo.change20 < 0) {
+    loRow = rows.find(r => r.f.gs.includes(lo));
+    const lp = loRow.peaks.find(p => p.g === lo);
+    dot(lp, L.tok('--down-ink'));
+    // 바닥 옆 — 자기 줄 바다 선 바로 아래를 먼저(아래 줄 글자 자리를 남김)
+    deepJob = job(lab(lo.label, lo.change20), (w, h) => [
+      [lp.x - 8 - w, loRow.y0 + 4],   // 왼쪽(바다 선 바로 아래)
+      [lp.x - 8 - w, lp.y - h / 2 - 4],
+      [lp.x - 8 - w, lp.y - h / 2 - 2],
+      [lp.x - 8 - w, lp.y - h / 2],   // 왼쪽(바닥 높이)
+      [lp.x + 8, loRow.y0 + 4],       // 오른쪽
+      [lp.x + 8, lp.y - h / 2],
+      [lp.x - w / 2, lp.y + 5],       // 아래
+      [lp.x - w + 8, lp.y + 4],       // 아래 왼쪽
+      [lp.x - 8, lp.y + 4],           // 아래 오른쪽
+    ], lo, loRow.i);
+  }
+  // 놓는 차례를 몇 가지로 해 보고 벌점 합이 가장 작은 차례를 쓴다(앞 글자가 뒤 글자 자리를 막지 않게)
+  const hiJob = rowJobs[hiRow.i], others = rowJobs.filter(j => j !== hiJob);
+  const orders = [[hiJob, ...others]];
+  if (deepJob) {
+    orders.length = 0;
+    orders.push([hiJob, deepJob, ...others], [hiJob, ...others, deepJob]);
+    const k = others.findIndex(j => j.ownRow > loRow.i);
+    if (k >= 0) orders.push([hiJob, ...others.slice(0, k + 1), deepJob, ...others.slice(k + 1)], [hiJob, ...others.slice(0, k), deepJob, ...others.slice(k)]);
+  }
+  let plan = null;
+  for (const ord of orders) {
+    const pl = [...placed], at = new Map();
+    let total = 0;
+    for (const j of ord) { const c = choose(j, pl); pl.push(c.b); at.set(j, c); total += c.pen; }
+    if (!plan || total < plan.total) plan = {total, at};
+  }
+  for (const [j, c] of plan.at) {
+    placed.push(c.b);
+    j.node.setAttribute('x', f2(c.b.x + 3));
+    j.node.setAttribute('y', f2(c.b.y + ASC));
+    layerLab.append(j.node);
+  }
+  scratch.remove();
+
+  // ── 범례 칸(작은 그림)
+  let sid = 0;
+  const swatch = (...kids) => L.sv('svg', {class: 'sw', viewBox: '0 0 54 26', width: 54, height: 26}, ...kids);
+  const grad = (v0, v1) => { const id = `sw${++sid}`; return [id, L.sv('defs', null, L.sv('linearGradient', {id, x1: 0, y1: 1, x2: 0, y2: 0}, ...[0, 0.5, 1].map(t => L.sv('stop', {offset: t, 'stop-color': L.mix(L.heat(v0 + (v1 - v0) * t), C.card, 0.1)}))))]; };
+  const sea = y => L.sv('line', {x1: 0, x2: 54, y1: y, y2: y, stroke: C.sub, 'stroke-opacity': 0.75, 'stroke-width': 1});
+  const ridgeLine = d => L.sv('path', {d, fill: 'none', stroke: C.ink, 'stroke-opacity': 0.45, 'stroke-width': 1});
+  const sw1 = (() => { const [id, df] = grad(0, TOPV); const d = 'M4,23 C14,23 21,3 27,3 C33,3 40,23 50,23'; return swatch(df, L.sv('path', {d: d + ' Z', fill: `url(#${id})`}), ridgeLine(d), sea(23)); })();
+  const sw2 = (() => { const [id, df] = grad(0, TOPV * 0.7); const d = 'M1,23 C4,23 6,15 9,15 C12,15 13,20 16,20 C19,20 22,7 26,7 C30,7 31,18 34,18 C37,18 39,12 42,12 C45,12 48,23 53,23'; return swatch(df, L.sv('path', {d: d + ' Z', fill: `url(#${id})`}), ridgeLine(d), sea(23)); })();
+  const sw3 = (() => {
+    const [id, df] = grad(0, TOPV * 0.4);
+    const land = 'M2,12 C7,12 9,5 14,5 C19,5 20,12 25,12 Z';
+    const water = 'M25,12 C30,12 32,23 38,23 C44,23 46,12 52,12 Z';
+    return swatch(df, L.sv('path', {d: land, fill: `url(#${id})`}), L.sv('path', {d: water, fill: C.down, 'fill-opacity': 0.4}),
+      L.sv('path', {d: 'M25,12 C30,12 32,23 38,23 C44,23 46,12 52,12', fill: 'none', stroke: C.down, 'stroke-opacity': 0.85, 'stroke-width': 1}), sea(12));
+  })();
+  const sw4 = swatch(
+    ...[[7, 6], [15, 3.5], [23, 1.2]].map(([y, h]) => L.sv('g', null,
+      L.sv('path', {d: `M4,${y} C14,${y} 20,${y - h} 27,${y - h} C34,${y - h} 40,${y} 50,${y}`, fill: 'none', stroke: C.ink, 'stroke-opacity': 0.6, 'stroke-width': 1.2}),
+      L.sv('line', {x1: 0, x2: 54, y1: y, y2: y, stroke: C.sub, 'stroke-opacity': 0.5, 'stroke-width': 1}))));
+  const sw5 = (() => { const [id, df] = grad(0, TOPV); const d = 'M8,24 C17,24 22,11 27,11 C32,11 37,24 46,24'; return swatch(df, L.sv('path', {d: d + ' Z', fill: `url(#${id})`}), ridgeLine(d), sea(24),
+    L.sv('line', {x1: 27, x2: 27, y1: 10, y2: 1.5, stroke: C.ink, 'stroke-width': 1.3, 'stroke-linecap': 'round'}),
+    L.sv('path', {d: 'M27.6,1.5 L36,4.2 L27.6,7 Z', fill: C.geum})); })();
+
+  const famHi = fams[0], famHiLow = famHi.gs.at(-1).change20, famHiUp = famHi.gs.filter(g => g.change20 > 0).length;
+  L.fill({
+    num: 3,
+    title: '산맥 지도',
+    sub: '높이 = 지난 20거래일 변화 · 바다 = 내림',
+    question: '이 지도가 답하는 물음: <b>지난 20거래일, 어느 산(업종)이 가장 높이 솟았고 어디가 바다 아래로 잠겼나?</b>',
+    legend: [
+      [sw1, `<b>높이</b> = 지난 20거래일 변화(업종 회사 ${nCo} 평균) · 높을수록 꼭대기가 진한 빨강`],
+      [sw2, `<b>산맥 한 줄</b> = 큰 갈래 하나 · <b>봉우리 하나</b> = 업종 하나`],
+      [sw3, `<b>바다 선</b> = 0%(그대로) — 선 아래로 <b class="down">잠긴 곳</b> = 내린 업종`],
+      [sw4, `<b>위 줄일수록</b> 높은 산맥(갈래 평균이 큰 순)`],
+      [sw5, `<b>깃발</b> = 업종 ${allG.length}개 가운데 가장 높은 봉우리`],
+    ],
+    // li 가 두 칸 격자라서 글 전체를 span 하나로 감싼다
+    reads: [
+      `가장 높은 봉우리: <b>${hi.label}</b>(${famOf(hi).label} 산맥) <b class="${L.cls(hi.change20)}">${L.tri(hi.change20)} ${pf(hi.change20)}</b>`,
+      `가장 높은 산맥: <b>${famHi.label}</b> 평균 <b class="${L.cls(famHi.mean)}">${L.tri(famHi.mean)} ${pf(famHi.mean)}</b> — ` +
+        (famHiLow > 0 ? `봉우리 ${famHi.gs.length}개 모두 솟음, 가장 낮은 것도 <b class="up">${pf(famHiLow)}</b>` : `봉우리 ${famHi.gs.length}개 가운데 ${famHiUp}개가 솟음`),
+      sunk.length
+        ? `바다 아래로 잠긴(내린) 업종: <b>${sunk.length}개</b> / ${allG.length} — 가장 깊은 곳은 <b>${lo.label}</b>(${famOf(lo).label}) <b class="down">▼ ${pf(lo.change20)}</b>`
+        : `바다 아래로 잠긴(내린) 업종: <b>없음</b> / ${allG.length} — 모든 봉우리가 바다 선 위`,
+    ].map(t => `<span>${t}</span>`),
+    why: `<b>잘 보이는 것:</b> 어느 산맥(갈래)이 높이 솟고 어디가 바다 아래로 잠겼는지 한눈에 · <b>잘 안 보이는 것:</b> 회사 크기, 회사 하나하나(봉우리 하나 = 회사 ${nCo} 평균)`,
+    foot: [
+      `한국 ${K.companies.length}곳 · ${L.korDate(toD)} ${P.close} 종가 · 지난 20거래일 = ${L.korDate(fromD)}~${L.korDate(toD)}`,
+      `업종 높이 = 그 업종 회사 ${nCo}의 지난 20거래일 변화 평균(판과 같은 값) · 산맥 높이(줄 순서) = 그 갈래 업종 높이들의 평균`,
+      `모든 줄이 같은 높이 자(지도 왼쪽 위 눈금 · 10%마다 한 칸) · 봉우리 폭, 봉우리 사이 골짜기, 줄 안 자리(가장 높은 봉우리를 가운데, 나머지는 높은 순으로 양옆에 번갈아)는 모양을 위한 것 — 숫자는 꼭대기 높이에만 있음`,
+      ...K.companies.filter(c => c.c60last && c.c60last !== toD).map(c => `${c.name}(${c.groupLabel})는 마지막 종가가 ${L.korDate(c.c60last)} — 판과 같은 사정`),
+      '샘플 — 아직 사이트에 없음',
+    ],
+  });
+
+  await document.fonts.ready;
+  window.READY = true;
+})().catch(e => { document.body.prepend(L.el('pre', null, String(e && e.stack || e))); window.READY = true; });
+</script>
+</body>
+</html>
