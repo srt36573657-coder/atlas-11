@@ -52,6 +52,19 @@ async function get(url, kind, {tries = 3} = {}) {
   if (!log.samples[kind + '_fail']) { log.samples[kind + '_fail'] = {url, ...last}; }
   return {ok: false, ...last};
 }
+/** 여러 길 가운데 열리는 길 — 종류마다 한 번 열린 길을 먼저 · good(json) 이 참인 응답만(빈 목록이면 다음 길) */
+const way = {};
+async function getAny(urls, kind, good = () => true) {
+  const order = [...new Set([...(way[kind] != null ? [way[kind]] : []), ...urls.keys()])];
+  let last = null;
+  for (const i of order) {
+    const r = await get(urls[i], i ? `${kind}_way${i}` : kind);
+    let ok = false; if (r.ok) try { ok = !!good(r.json); } catch {}
+    if (ok) { if (way[kind] !== i) { way[kind] = i; step('길', {kind, way: i, url: urls[i].replace(/\?.*$/, '')}); } return {...r, url: urls[i]}; }
+    last = r.ok ? {status: r.status, err: 'EMPTY'} : r;
+  }
+  return {ok: false, ...last};
+}
 /** 동시에 n 개씩 */
 async function pool(items, n, fn) {
   const out = new Array(items.length); let i = 0;
@@ -68,7 +81,7 @@ async function universeList(limit = US365.poolTop) {
   for (const ex of NAVER_US.exchanges) {
     seen[ex] = 0;
     for (let page = 1; page <= 15 && seen[ex] < perEx[ex]; page++) {
-      const r = await get(NAVER_US.list(ex, page, 100), 'list_' + ex);
+      const r = await getAny(NAVER_US.ways.list(ex, page, 100), 'list', j => parseList(j, ex).items.length > 0);
       if (!r.ok) break;
       const {items} = parseList(r.json, ex);
       for (const x of items) { seen[ex]++; const had = all.get(x.code); if (!had || (x.capUsd ?? 0) > (had.capUsd ?? 0)) all.set(x.code, x); }
@@ -84,7 +97,7 @@ async function universeList(limit = US365.poolTop) {
 
 /** 일봉 — 지난 430일(약 296거래일) · 장중 값은 버림 · 받은 시각·주소는 마지막 날에만 */
 async function history(c, from, to) {
-  const url = NAVER_US.day(c.reuters, from, to), r = await get(url, 'day');
+  const r = await getAny(NAVER_US.ways.day(c.reuters, from, to), 'day', j => parseDay(j).length > 0), url = r.url ?? NAVER_US.day(c.reuters, from, to);
   if (!r.ok) return {rows: [], url, ok: false, status: r.status};
   const rows = parseDay(r.json).filter(x => usCloseFinal(x.date, now));
   if (rows.length) Object.assign(rows.at(-1), {closeBasis: 'NAVER_WORLD_DAY', sourceUrl: url, observedAt: new Date().toISOString()});
@@ -97,7 +110,7 @@ async function selectMode() {
   const list = await universeList();
   if (list.length < 500) throw Error(`US_LIST_SHORT ${list.length} — 시가총액 목록을 충분히 받지 못함(reports 의 samples 확인)`);
   // ② 결산
-  const fins = await pool(list, 6, async c => { const r = await get(NAVER_US.finance(c.reuters), 'finance'); if (!r.ok) return null; try { return metricsOf(parseFinance(r.json)); } catch { return null; } });
+  const fins = await pool(list, 6, async c => { const r = await getAny(NAVER_US.ways.finance(c.reuters), 'finance', j => parseFinance(j).cols.length > 0); if (!r.ok) return null; try { return metricsOf(parseFinance(r.json)); } catch { return null; } });
   const withM = fins.filter(Boolean).length;
   step('결산', {asked: list.length, got: withM, sampleRows: fins.find(Boolean)?.rowsSeen ?? null});
   // ③ 일봉
@@ -140,19 +153,19 @@ async function updateMode(prev) {
 
 /** ⑤ 기사 · 지수 */
 async function context(picked) {
-  let alt = false;
   const news = await pool(picked, 6, async p => {
-    let r = alt ? {ok: false} : await get(NAVER_US.news(p.reuters), 'news');
-    if (!r.ok) { const r2 = await get(NAVER_US.newsAlt(p.reuters), 'news_alt'); if (r2.ok) { r = r2; alt = true; } }
+    const r = await getAny(NAVER_US.ways.news(p.reuters), 'news', j => Array.isArray(j) || (j && typeof j === 'object' && Object.keys(j).length > 0));
     if (!r.ok) return null;
     try { return parseUsNews(r.json, p.code); } catch { return null; }
   });
   const to = ymd(now), from = ymd(new Date(now.getTime() - 20 * 864e5));
   const index = [];
+  // 지수 행 — 일봉(종가만 · 등락%는 앞 날 종가로 셈)이든 가격 목록(등락% 있음)이든 같은 모양으로
+  const indexRows = j => { const d = parseDay(j); return d.length >= 2 ? d.map((x, i, a) => ({date: x.date, close: x.close, changePct: i ? Number(((x.close / a[i - 1].close - 1) * 100).toFixed(2)) : null})).filter(x => x.changePct != null) : parseIndex(j); };
   for (const ix of US_INDEX) {
-    let url = NAVER_US.indexDay(ix.symbol, from, to), r = await get(url, 'index_day'), rows = r.ok ? parseDay(r.json).filter(x => usCloseFinal(x.date, now)).map((x, i, a) => ({date: x.date, close: x.close, changePct: i ? Number(((x.close / a[i - 1].close - 1) * 100).toFixed(2)) : null})).filter(x => x.changePct != null) : [];
-    if (!rows.length) { url = NAVER_US.indexPrice(ix.symbol); r = await get(url, 'index_price'); rows = r.ok ? parseIndex(r.json).filter(x => usCloseFinal(x.date, now)) : []; }
-    if (rows.length) index.push({symbol: ix.symbol, name: ix.name, sourceName: '네이버 증권 해외 지수', sourceUrl: url, rows: rows.slice(-10)});
+    const r = await getAny(NAVER_US.ways.index(ix.symbol, from, to), 'index', j => indexRows(j).length > 0);
+    const rows = r.ok ? indexRows(r.json).filter(x => usCloseFinal(x.date, now)) : [];
+    if (rows.length) index.push({symbol: ix.symbol, name: ix.name, sourceName: '네이버 증권 해외 지수', sourceUrl: r.url, rows: rows.slice(-10)});
   }
   step('기사 · 지수', {news: news.filter(Boolean).length, newsItems: news.reduce((t, n) => t + (n?.items?.length ?? 0), 0), index: index.map(i => `${i.name} ${i.rows.at(-1)?.date}`)});
   return {schema: 'atlas11-us-context-1', day: new Date(now.getTime() + 9 * 3600000).toISOString().slice(0, 10), fetchedAt: now.toISOString(),
