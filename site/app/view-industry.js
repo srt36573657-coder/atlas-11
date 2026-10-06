@@ -11,6 +11,7 @@ import {moverBars, foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, su
 import {sunOf, sunCount} from './shapes.js';
 import {upLine} from './view-home.js';
 import {riseDesc, familyOf, FAMILIES, OTHER} from './family.js';
+import {industryComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 /** 회사 카드 — sun = 태양 회사면 이름 곁 작은 해(2026-10-05 15:24 「잡스가 … 36가지」 B3 · 카드는 그대로 넷) */
 function card(c, scale, sun = false) {
@@ -34,12 +35,14 @@ export async function renderIndustry(main, {hash, manifest}) {
   const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));
   const industries = [...new Set(cs.map(c => c.sector).filter(Boolean))], ksics = [...new Set(cs.map(c => c.ksic).filter(Boolean))], sc = sparkScale(cs), fday = cs.map(c => c.brief?.flows?.to).filter(Boolean).sort().at(-1) ?? null;
   // 「73칸 가운데」 → 「업종 73개 가운데」(2026-10-05 15:24 「잡스가 … 36가지」 C2 — 탭 「업종」 제목 「업종 73개」와 같은 말)
-  state.summary = `${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.${nSun ? ` 태양 ${nSun}곳.` : ''}`;
+  const cm = industryComment(board, g);
+  state.summary = `${commentSay(cm)}${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.${nSun ? ` 태양 ${nSun}곳.` : ''}`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
     back,
     h('header', {class: 'b-head'},
       h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null, sunNum(nSun, 'sun-n i-sun')),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
+      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
       //   2026-10-05 15:24 「잡스가 … 36가지」 A4: 출처 이름 두세 줄은 접어 두고 기간 한 줄만 — 「누가 끌었나」가 첫 화면에

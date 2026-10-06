@@ -10,7 +10,7 @@
    글자와 바탕 대비는 모두 4.5:1 이상(검사기로 잼) · 보안 규칙(CSP): 글 속 style 속성 없음 — 모양은 이 파일과 CSSOM 으로만
    2026-10-05 02:14 사장님 「난 지금 너가 공부한 마흐 바흐가 7377에 전혀 녹여 있지 않다는 판단이야」 — 깊은 공부(10/5 01:16~02:10 보고서 「마이바흐 디자인 깊이 공부」 · 인용 102곳)의 [판단]을 마감에 넣음 · 구도는 그대로:
    ① 두 바탕 + 선 하나 — 위 막대는 먹빛, 본문은 한지빛 · 둘 사이에 은빛 1px 선(모든 화면 같은 자리 · 샴페인색 선은 지움 · 아래 탭 위는 옅은 구분선)
-   ② 금빛은 놋쇠빛 하나(--geum) · 세 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 — 숫자·글자에는 쓰지 않음 · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
+   ② 금빛은 놋쇠빛 하나(--geum) · 네 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 · 논평 왼쪽 줄(2026-10-07) — 숫자·글자에는 쓰지 않음 · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
      출목표 반짝 칸은 금빛이 아니라 뜨거운 태양 빛(--sun 주황 · --sun-core 노랑 · --sun-hot 불꽃) — 2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」
    ③ 글씨 3단 — 큰 제목만 가볍게(10/5 03:5x 「잡스였다면」 개혁에서 300 → 400 · 애플 HIG 「아주 가는 글씨는 피하기」) · 부제는 보통 · 숫자·이름은 단단하게(700) · 숫자는 칸 맞춤
    ④ 오름·내림 = 색 + 부호(±) + 세모(▲▼) · 두 바탕 모두 4.5:1 이상
@@ -815,3 +815,14 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 .st-more ul { margin: 6px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
 .st-mn { font-weight: 700; color: var(--ink2); margin-right: 6px; }
 .st-page .b-promise-box { margin-top: 14px; }
+
+/* 논평(2026-10-07 03:17 사장님 「아틀람스를 섹시하게 논평이 있는 구조로 만든다 섹시란 무엇인가」 · site/app/comment.js)
+   섹시 = 봐야 할 것 하나만 빛나고 나머지는 물러나는 것(사장님 교본 2026-08-31) — 화면마다 빛나는 것은 논평 머리 한 줄 하나
+   · 머리: 큰 글 · 굵게 · 왼쪽 놋쇠빛 줄(--geum 네째 자리 — 줄에만, 글자에는 쓰지 않음) · 한 번만 천천히 밝혀짐(833ms = 사장님 박자 ♩=72 한 박 · 움직이는 것 하나)
+   · 이름표 「논평」과 근거 한 줄은 속삭이듯 작게(나머지는 물러남) · 움직임 줄이기 설정이면 움직이지 않음(위 공통 규칙) */
+.cm { margin: 12px 0 2px; padding: 0 0 2px 14px; box-shadow: inset 3px 0 0 var(--geum); }
+.cm-tag { display: inline; margin: 0 8px 0 0; font-size: .8125rem; font-weight: 700; letter-spacing: .12em; color: var(--sub); vertical-align: .35em; } /* 이름표는 머리 글 앞 같은 줄(한 줄 아낌 — 출목표 첫 칸이 휴대폰 첫 화면에) */
+.cm-h { display: inline; margin: 0; font-size: 1.625rem; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; color: var(--ink); overflow-wrap: anywhere; word-break: keep-all; animation: cm-in .833s cubic-bezier(.16, 1, .3, 1) both; }
+.cm-s { margin: 3px 0 0; font-size: .9375rem; line-height: 1.5; color: var(--sub); overflow-wrap: anywhere; word-break: keep-all; }
+@keyframes cm-in { from { opacity: 0; filter: blur(6px); } to { opacity: 1; filter: none; } } /* 줄 안 글이라 옮기기(transform)는 없음 — 흐림에서 또렷하게만 */
+.c-page .cm { margin-top: 16px; }
