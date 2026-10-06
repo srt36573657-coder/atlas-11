@@ -190,7 +190,7 @@ export async function renderLand(main, {hash, manifest}) {
   main.replaceChildren(h('div', {class: 'b-page t-page l-page', 'data-family': id},
     marketStrip(manifest),
     back,
-    commentBox(cm), // 논평 무대(되돌아가기 바로 아래)
+    commentBox(cm, {size: 'half'}), // 논평 무대(되돌아가기 바로 아래 · 표지 대신 글만큼 높이 — 지도에서 눌러 들어온 화면이라 바로 업종 칸이 보이게)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, fam.label + ' ', h('span', {class: 'b-count'}, `업종 ${gs.length}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `업종 ${gs.length}개 가운데 ${up}개 오름 · 갈래 평균 ${avgT} · 지난 20거래일 · ${span(from, to)}`)),

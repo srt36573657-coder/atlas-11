@@ -76,3 +76,36 @@ test('저장소의 판 — 화면마다 무대가 나오고(문장 · 거대 숫
     }
   }
 });
+
+// 2026-10-07 04:27 「야 야 더 과감하게 그리고 혁신작으로 섹시하게 해」 — 표지 · 숫자 그림(점 하나 = 하나 · 막대 = 길이로 견줌) · 그림의 수는 문장 · 근거 줄의 수와 같다
+const cnt = (c, f) => c.pic.dots.filter(f).length;
+test('숫자 그림 — 점 수 · 켜진 점 · 붉은/푸른 점 · 테 · 막대가 문장의 숫자와 같다', () => {
+  const lead = homeComment({groups: [G('a', '반도체 장비', .4, {hot: true}), G('b', '반도체 소재', .3, {hot: true}), G('c', '은행', .2, {hot: true}), G('d', '조선', .1, {hot: true}), G('e', '음식료', -.1)]});
+  assert.equal(lead.pic.dots.length, 4, '불장 4개 = 점 4개'); assert.equal(cnt(lead, d => d.s > 0 && !d.off), 2, '이끄는 갈래 2개만 켬'); assert.equal(cnt(lead, d => d.off), 2);
+  const solo = homeComment({groups: [G('a', '반도체 장비', .5, {hot: true}), G('c', '은행', .2, {hot: true}), G('d', '조선', .1, {hot: true})]});
+  assert.deepEqual(solo.pic.bars.map(b => [b.v, !!b.dim]), [[.5, false], [.2, true]], '1위 · 2위 막대');
+  const spread = homeComment({groups: [G('a', '반도체 장비', .3, {hot: true}), G('c', '은행', .25, {hot: true}), G('d', '조선', .2, {hot: true}), G('e', '은행·카드', -.1)]});
+  assert.equal(cnt(spread, d => !d.off), 3, '불이 번진 갈래 3개 켬'); assert.equal(spread.pic.dots.length, 4, '갈래 4개 = 점 4개');
+  const map = mapComment({groups: [G('a', '반도체 장비', .4), G('b', '은행·카드', -.05), G('c', '보험', -.01), G('d', '조선', .1)]});
+  assert.equal(map.pic.dots.length, 3); assert.equal(cnt(map, d => d.s > 0), 2, '붉은 땅 2개'); assert.equal(cnt(map, d => d.s < 0), 1); assert.equal(map.pic.dots.findIndex(d => d.me), 0, '테 = 가장 붉은 땅');
+  const g = G('g', '반도체 장비', .1, {codes: ['1', '2', '3']}), mix = {groups: [g], companies: [C('1', '가', .3, 'g'), C('2', '나', -.05, 'g'), C('3', '다', .01, 'g')]};
+  assert.deepEqual(industryComment(mix, g).pic.dots.map(d => [d.s, d.me]), [[1, true], [1, false], [-1, false]], '업종: 오른 순 · 맨 앞 테');
+  assert.equal(companyComment(mix, mix.companies[2]).pic.dots.findIndex(d => d.me), 1, '회사: 업종 안 2위 자리에 테');
+  const road = roadComment({companies: [C('1', '가', .3), C('2', '나', -.1), C('3', '다', .2), C('4', '라', null), C('5', '마', 0)]});
+  assert.equal(road.pic.dots.length, 5, '판 5곳 = 점 5개'); assert.equal(cnt(road, d => d.s > 0 && !d.off), 2, '붉은 점 = 「2곳」'); assert.equal(cnt(road, d => d.s < 0), 1); assert.equal(cnt(road, d => d.off), 1, '값 없는 곳 = 빈 점');
+  const ev = [{date: '2026-10-22', name: '한국은행 금리 결정', level: 3, scope: 'market'}];
+  const ag = agendaComment(ev, '2026-10-07');
+  assert.equal(ag.pic.dots.length, 16, '15일 뒤 = 날 16개(모은 날 · 그날 포함)'); assert.equal(ag.pic.dots[0].mark, 'now'); assert.equal(ag.pic.dots[15].mark, 'day');
+  assert.equal(agendaComment(ev, '2026-10-22').pic.dots.length, 1, '그날 = 별 하나'); assert.equal(agendaComment(ev, '2026-05-01').pic, null, '120일 넘게 남으면 그림 없음');
+  const st = startComment({start: {ready: true, picks: [-.2, -.25, -.1, -.15, -.2].map(m => ({mdd: m})), typical: {mdd: -.5}}});
+  assert.equal(st.pic.bars.length, 6, '다섯 곳 + 보통 회사'); assert.ok(st.pic.bars.at(-1).dim && st.pic.bars.at(-1).v === -.5);
+  const wait = startComment({start: {ready: false, readyMonth: '2028-08', have: {days: 294}, rule: {days: 756}}});
+  assert.ok(wait.pic.frac && Math.abs(wait.pic.bars[0].v - 294 / 756) < 1e-9, '쌓인 정도 = 294 ÷ 756');
+});
+
+test('거대 숫자 너비 — 글자 너비 합(ems)이 클수록 작게 · 한 줄에 들어가는 크기', async () => {
+  const {ems} = await import('../../site/app/comment.js');
+  assert.ok(Math.abs(ems('+37.7%') - 3.15) < 0.15, '+37.7% ' + ems('+37.7%'));
+  assert.ok(ems('2028년 8월') > ems('205곳') && ems('205곳') > ems('1위'));
+  assert.ok(ems('205 companies') > ems('205곳'), '영어로 바뀌면 다시 재어 더 작게');
+});

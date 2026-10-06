@@ -571,7 +571,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     {spkBox: r0.spkBox, want: {n: spkW.size, common: commonW.map(t => `${t.id} ${t.a}/${topNW} ${t.b}/${restW.length}`)}});
   check(`${label} 출목표 맨 위 태양 상자: 단추 「${r0.go?.t}」(태양 그림) — 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」`, !spkW.size ? r0.go === null : r0.go?.t === `태양 ${spkW.size}곳 한곳에 모아 보기 ›` && r0.go.sun, r0.go);
   // 2026-10-05 15:24 「잡스가 … 36가지」 A1 · A2 — 태양 상자는 제목 · 뜻 한 줄 · 모양 그림 · 단추 · 읽는 법(접힘) · 칸 읽는 법도 그 접힘 안 · 휴대폰 첫 화면에 첫 칸
-  check(`${label} 출목표 첫 화면: 태양 상자 뜻 한 줄 「${r0.spkS}」 · 칸 읽는 법은 접힘 안 · 첫 칸 ${r0.first}px(${mobile ? `휴대폰 두 화면 ${r0.ih * 2}px 안 — 2026-10-07 04:01 「과감하게」 논평 무대가 첫 화면을 차지` : 'PC'})`, (!spkW.size || (r0.spkS === `오른 회사들의 공통 모양 ${kW}가지를 모두 가진 곳` && r0.keyIn && r0.keyHead === 0)) && (!mobile || r0.first < r0.ih * 2), {spkS: r0.spkS, keyIn: r0.keyIn, keyHead: r0.keyHead, first: r0.first, ih: r0.ih});
+  check(`${label} 출목표 첫 화면: 태양 상자 뜻 한 줄 「${r0.spkS}」 · 칸 읽는 법은 접힘 안 · 첫 칸 ${r0.first}px(${mobile ? `휴대폰 두 화면 ${r0.ih * 2}px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지` : 'PC'})`, (!spkW.size || (r0.spkS === `오른 회사들의 공통 모양 ${kW}가지를 모두 가진 곳` && r0.keyIn && r0.keyHead === 0)) && (!mobile || r0.first < r0.ih * 2), {spkS: r0.spkS, keyIn: r0.keyIn, keyHead: r0.keyHead, first: r0.first, ih: r0.ih});
   await wordsCheck(page, `${label} 출목표 오른 순(첫 탭)`);
   // (옛 E1 출목표 제목 줄 「찾기」는 2026-10-05 20:24 아래 탭 「찾기」로 옮김 — 아래 ⑥에서 본다)
   {
@@ -816,7 +816,14 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       return page.evaluate(() => { const t = document.querySelector('.b-title'), c = document.querySelector('.cm');
         return {n: document.querySelectorAll('.cm').length, id: c?.dataset.comment ?? null, tag: c?.querySelector('.cm-tag')?.textContent.trim() ?? null, head: c?.querySelector('.cm-h')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
           big: c?.querySelector('.cm-big')?.textContent.trim() ?? null, sub: c?.querySelector('.cm-s')?.textContent.replace(/\s+/g, ' ').trim() ?? null, after: !!(t && c && (t.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)),
-          top: c ? Math.round(c.getBoundingClientRect().top + scrollY) : null, ih: innerHeight, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; }); };
+          top: c ? Math.round(c.getBoundingClientRect().top + scrollY) : null, ih: innerHeight, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
+          // 2026-10-07 04:27 「더 과감하게 … 혁신작으로」 — 표지 높이 · 거대 숫자 한 줄 · 숫자 그림(점 · 막대)
+          size: c ? (['hero', 'half', 'mid'].find(k => c.classList.contains('cm-' + k)) ?? null) : null, hgt: c ? Math.round(c.getBoundingClientRect().height) : 0,
+          bigLines: (() => { const b = c?.querySelector('.cm-big'); if (!b) return 0; const fs = parseFloat(getComputedStyle(b).fontSize); return Math.round(b.getBoundingClientRect().height / (fs * 1.02)); })(),
+          bigFit: (() => { const b = c?.querySelector('.cm-big'); if (!b) return false; const r = document.createRange(); r.selectNodeContents(b); const tw = r.getBoundingClientRect().width, cr = c.getBoundingClientRect(); return tw <= cr.width - 30; })(),
+          pic: (() => { const q = c?.querySelector('.cm-pic'); if (!q) return null; const ds = [...q.querySelectorAll('.cm-d')];
+            return {dots: ds.length, u: ds.filter(d => d.classList.contains('cm-u')).length, dn: ds.filter(d => d.classList.contains('cm-dn')).length, off: ds.filter(d => d.classList.contains('cm-off')).length,
+              me: ds.findIndex(d => d.classList.contains('cm-me')), bars: q.querySelectorAll('.cm-bar').length, hidden: q.getAttribute('aria-hidden'), text: q.textContent.trim().length}; })()}; }); };
     const hotG = board.groups.filter(g => g.hot), fl = familiesByRise(hotG), gH = [...hotG].sort(riseDesc);
     const wantHome = !hotG.length ? `업종 ${board.groups.length}개가 쉬어 간 판` : fl[0].groups.length >= 2 && fl[0].groups.length / hotG.length >= 0.4 ? `판을 이끄는 건 ${fl[0].fam.label}` : gH.length > 1 && gH[0].change20 - gH[1].change20 >= 0.15 ? `맨 앞은 ${gH[0].label}` : `불은 ${fl.length}갈래로 번졌다`;
     const famAll = familiesByRise(board.groups).filter(f => Number.isFinite(f.avg)), wantMap = famAll[0].avg > 0 ? `가장 붉은 땅, ${famAll[0].fam.label}` : `땅 ${famAll.length}개 모두 푸르다`;
@@ -825,9 +832,21 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const SS = board.start, five = SS?.ready ? `${['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉'][SS.picks.length]} 곳` : null;
     const wantStart = SS?.ready ? (Math.abs(Math.min(...SS.picks.map(p => p.mdd))) <= Math.abs(SS.typical.mdd) * 0.55 ? `${five}, 보통의 절반만 떨어졌다` : `${five} 모두 보통보다 덜 떨어졌다`) : null;
     const g0 = board.groups[0], fam0 = famAll[0].fam.id;
-    const rows = [['불장', '#/', wantHome], ['지도', '#/map', wantMap], ['지도 갈래', '#/map/f/' + fam0, null], ['업종', '#/i/' + g0.id, null], ['회사', '#/stock/005930', null], ['출목표', '#/road', wantRoad], ['일정', '#/agenda', null], ['처음', '#/start', wantStart]];
+    // 숫자 그림 — 검사기가 판에서 따로 센 점 수 · 붉은/푸른 점 · 빈 점 · 테 · 막대 수
+    const litFam = new Set(fl.map(f => f.fam.id)), famEvery = familiesByRise(board.groups);
+    const picHome = !hotG.length ? {dots: board.groups.length, off: board.groups.length} : fl[0].groups.length >= 2 && fl[0].groups.length / hotG.length >= 0.4 ? {dots: hotG.length, u: fl[0].groups.length, off: hotG.length - fl[0].groups.length}
+      : gH.length > 1 && gH[0].change20 - gH[1].change20 >= 0.15 ? {bars: 2} : {dots: famEvery.length, u: famEvery.filter(f => litFam.has(f.fam.id)).length, off: famEvery.filter(f => !litFam.has(f.fam.id)).length};
+    const picMap = {dots: famAll.length, u: famAll.filter(f => f.avg > 0).length, dn: famAll.filter(f => f.avg < 0).length, me: 0};
+    const picRoad = {dots: board.companies.length, u: upN, dn: dnN, off: board.companies.length - csF.length};
+    const picStart = SS?.ready ? {bars: SS.picks.length + 1} : {bars: 1};
+    const picOk = (r, w) => !!r.pic && r.pic.hidden === 'true' && r.pic.text === 0 && Object.entries(w).every(([k, v]) => r.pic[k] === v);
+    const rows = [['불장', '#/', wantHome, picHome], ['지도', '#/map', wantMap, picMap], ['지도 갈래', '#/map/f/' + fam0, null, null], ['업종', '#/i/' + g0.id, null, null], ['회사', '#/stock/005930', null, null], ['출목표', '#/road', wantRoad, picRoad], ['일정', '#/agenda', null, null], ['처음', '#/start', wantStart, picStart]];
     const got = [];
-    for (const [nm, hs, want] of rows) { const r = await cmRead(hs); got.push({nm, ...r, want}); }
+    for (const [nm, hs, want, wantPic] of rows) { const r = await cmRead(hs); got.push({nm, ...r, want, wantPic}); }
+    const TAB = ['불장', '지도', '출목표', '일정', '처음'], sizeW = nm => (TAB.includes(nm) ? 'hero' : nm === '회사' ? 'mid' : 'half');
+    const badPic = got.filter(r => r.size !== sizeW(r.nm) || r.bigLines !== 1 || !r.bigFit || (r.size === 'hero' && mobile && r.hgt < r.ih - 56 - 60 - 52 - 6) || (r.wantPic ? !picOk(r, r.wantPic) : (r.nm !== '일정' && !r.pic)));
+    check(`${label} 논평 표지(2026-10-07 04:27 「더 과감하게 … 혁신작으로 섹시하게」): 아래 탭 화면 5곳은 ${mobile ? '휴대폰 첫 화면을 가득 채운 표지' : '표지'} · 갈래 · 업종은 가장자리까지 · 회사는 둥근 칸 · 거대 숫자 한 줄 · 숫자 그림 — ${got.filter(r => r.wantPic).map(r => `${r.nm} ${r.pic ? (r.pic.bars ? `막대 ${r.pic.bars}` : `점 ${r.pic.dots}(붉은 ${r.pic.u} · 푸른 ${r.pic.dn} · 빈 ${r.pic.off})`) : '없음'}`).join(' · ')} = 검사기가 판에서 따로 센 수 · 그림엔 글자 없음(화면 읽기 프로그램은 근거 줄)`,
+      badPic.length === 0, badPic.length ? badPic.map(r => ({nm: r.nm, size: r.size, hgt: r.hgt, ih: r.ih, bigLines: r.bigLines, bigFit: r.bigFit, pic: r.pic, wantPic: r.wantPic})) : undefined);
     const bad = got.filter(r => r.n !== 1 || !/^논평( · .+)?$/.test(r.tag ?? '') || !r.head || !r.big || !r.sub || (r.nm === '회사' ? !r.after : r.after || r.top > r.ih * 0.5) || r.sw > r.cw || (r.want && r.head !== r.want));
     check(`${label} 논평 무대: 화면 ${got.length}곳 — ${got.map(r => `${r.nm} 「${r.head}」 ${r.big}`).join(' · ')} · 제목 위 첫 화면 위쪽(회사는 값 다음) · 문장 · 거대 숫자 · 근거 줄 · 불장 · 지도 · 출목표 · 처음 문장은 검사기가 판에서 따로 센 글과 같음 · 옆으로 넘치지 않음`, bad.length === 0, bad.length ? bad : undefined);
     const none = [];

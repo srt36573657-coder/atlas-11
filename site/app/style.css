@@ -10,7 +10,7 @@
    글자와 바탕 대비는 모두 4.5:1 이상(검사기로 잼) · 보안 규칙(CSP): 글 속 style 속성 없음 — 모양은 이 파일과 CSSOM 으로만
    2026-10-05 02:14 사장님 「난 지금 너가 공부한 마흐 바흐가 7377에 전혀 녹여 있지 않다는 판단이야」 — 깊은 공부(10/5 01:16~02:10 보고서 「마이바흐 디자인 깊이 공부」 · 인용 102곳)의 [판단]을 마감에 넣음 · 구도는 그대로:
    ① 두 바탕 + 선 하나 — 위 막대는 먹빛, 본문은 한지빛 · 둘 사이에 은빛 1px 선(모든 화면 같은 자리 · 샴페인색 선은 지움 · 아래 탭 위는 옅은 구분선)
-   ② 금빛은 놋쇠빛 하나(--geum) · 네 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 · 논평 왼쪽 줄(2026-10-07) — 숫자·글자에는 쓰지 않음 · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
+   ② 금빛은 놋쇠빛 하나(--geum) · 네 자리에만: 고른 탭 표시 선 · 고른 단추 표시 선 · 이름 옆 작은 인장 · 논평 무대 줄(2026-10-07 · 표지는 위 가장자리 짧은 줄 · 회사 화면은 왼쪽 줄) — 숫자·글자에는 쓰지 않음 · 장밋빛 금 없음(「오름」 빨강으로 읽힘)
      출목표 반짝 칸은 금빛이 아니라 뜨거운 태양 빛(--sun 주황 · --sun-core 노랑 · --sun-hot 불꽃) — 2026-10-05 14:30 사장님 「모양을 뜨거운 태양으로 하셔」
    ③ 글씨 3단 — 큰 제목만 가볍게(10/5 03:5x 「잡스였다면」 개혁에서 300 → 400 · 애플 HIG 「아주 가는 글씨는 피하기」) · 부제는 보통 · 숫자·이름은 단단하게(700) · 숫자는 칸 맞춤
    ④ 오름·내림 = 색 + 부호(±) + 세모(▲▼) · 두 바탕 모두 4.5:1 이상
@@ -816,26 +816,70 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 .st-mn { font-weight: 700; color: var(--ink2); margin-right: 6px; }
 .st-page .b-promise-box { margin-top: 14px; }
 
-/* 논평 무대(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로」 → 03:59 「과감하게 … 좆만하게 하지 말고」 · site/app/comment.js)
+/* 논평 무대 → 표지(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로」 → 03:59 「과감하게 … 좆만하게 하지 말고」 → 04:27 「야 야 더 과감하게 그리고 혁신작으로 섹시하게 해」 · site/app/comment.js)
    섹시 = 봐야 할 것 하나만 빛나고 나머지는 물러나는 것(사장님 교본 2026-08-31 「하나만 비추고 나머지는 어둠」 · 「거대 숫자는 밝혀지듯 등장」)
-   · 무대: 밝은 화면에서도 어둠(빛 하나가 왼쪽 위에서) · 왼쪽 놋쇠빛 줄(--geum 네째 자리 — 줄에만, 글자에는 쓰지 않음)
-   · 거대 숫자 하나만 움직임: 흐림 12px → 또렷 1.25초(사장님 박자 ♩=72 한 박 반) · 등장 뒤 멈춤 · 움직임 줄이기 설정이면 움직이지 않음(위 공통 규칙)
-   · 나머지(이름표 · 근거 줄)는 속삭이듯 · 오름 빨강 · 내림 파랑(밝게 — 어두운 무대 위 대비)
-   · 거대 숫자 크기는 화면 폭에만 따름(글씨 단추 200%에서도 휴대폰 폭 안) · 한글이 든 숫자(15일 뒤 · 2028년 8월)는 조금 작게 */
+   · 표지(cm-hero · 아래 탭 화면): 휴대폰 첫 화면을 가득(위 막대 56px · 아래 탭 60px · 아래 화면 52px 만 남김) · 화면 가장자리까지 · 밝은 화면에서도 어둠
+     · 숫자 빛깔의 빛 하나가 숫자 뒤에서(오름 붉은 빛 · 내림 푸른 빛) · 위 가장자리에 놋쇠빛 짧은 줄(--geum 네째 자리 — 줄에만, 글자에는 쓰지 않음)
+     · 문장 · 숫자 · 그림 · 근거 줄은 이름표와 꺾쇠 사이 가운데
+   · 갈래 · 업종 화면(cm-half)은 가장자리까지 · 높이는 글만큼(눌러 들어온 화면이라 바로 칸이 보이게) · 회사 화면(cm-mid)은 둥근 칸
+   · 거대 숫자: 무대 폭 × .9 ÷ 글자 너비 합(--w · comment.js 가 잼 · 영어 · 중국어로 바뀐 뒤 다시 잼) — 글자가 적을수록 크게(상한 10rem) · 한 줄 · 크기는 화면 폭에만 따름
+   · 등장 한 번: 숫자가 아래 선에서 솟아오름(.15~1.25초) → 그림이 왼쪽부터 켜짐(.55~1.45초) → 멈춤 · 움직임 줄이기 설정이면 움직이지 않음(위 공통 규칙)
+   · 숫자 그림: 점 하나 = 하나(붉은 점 오름 · 푸른 점 내림 · 빈 점 값 없음 · 흰 테 = 이 화면이 말하는 그 하나 · 일정은 첫 점 = 일정을 모은 날 · 별 = 그날) · 막대 = 길이로 견줌 · 글자 없음
+   · 넣으면서 뺀 것(규칙 1): 무대의 둥근 테두리 · 흐림 등장(솟아오름으로 바꿈) · 한글 숫자 따로 작게(cm-han — 글자 너비 합이 대신) */
 .cm { position: relative; margin: 10px 0 16px; padding: 18px 20px 20px 22px; border-radius: 24px; overflow: hidden; color: #F4F1EA;
   background-color: #0C1512; background-image: radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%);
   box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 22px 44px -28px rgba(0, 0, 0, .75); }
+.cm.cm-t-up { background-image: radial-gradient(80% 48% at 32% 58%, rgba(255, 90, 102, .17), rgba(255, 90, 102, 0) 72%), radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%); }
+.cm.cm-t-down { background-image: radial-gradient(80% 48% at 32% 58%, rgba(92, 151, 255, .17), rgba(92, 151, 255, 0) 72%), radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%); }
 .cm::before { content: ''; position: absolute; left: 0; top: 20px; bottom: 20px; width: 3px; border-radius: 0 3px 3px 0; background: var(--geum); }
 .cm-tag { margin: 0; font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: rgba(244, 241, 234, .66); }
 .cm-h { margin: 10px 0 0; font-size: 1.5rem; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere; }
-.cm-big { margin: 4px 0 0; font-size: min(19vw, 6rem); font-weight: 700; line-height: 1.04; letter-spacing: -.045em; color: #F4F1EA; font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere; word-break: keep-all; animation: cm-reveal 1.25s cubic-bezier(.16, 1, .3, 1) .15s both; }
-.cm-big.up { color: #FF7272; }
-.cm-big.down { color: #82B6FF; }
-.cm-big.cm-han { font-size: min(13vw, 4rem); letter-spacing: -.03em; }
+.cm-big { --w: 3; margin: 6px 0 0; font-weight: 700; line-height: 1.02; letter-spacing: -.045em; white-space: nowrap; color: #F4F1EA; font-variant-numeric: tabular-nums;
+  font-size: min(calc((min(100vw, 560px) - 48px) * .9 / var(--w)), 10rem); /* 컨테이너 단위(cqi)는 쓰지 않음 — 출목표 「더 보기」를 누를 때 화면이 위로 튀었음(크롬 · 2026-10-07 검사) */
+  animation: cm-rise 1.1s cubic-bezier(.16, 1, .3, 1) .15s both; }
+.cm-big.cm-up { color: #FF7272; text-shadow: 0 0 .32em rgba(255, 90, 102, .38); }
+.cm-big.cm-down { color: #82B6FF; text-shadow: 0 0 .32em rgba(92, 151, 255, .38); }
 .cm-s { margin: 8px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .74); word-break: keep-all; overflow-wrap: anywhere; }
-@keyframes cm-reveal { from { opacity: 0; filter: blur(12px); } to { opacity: 1; filter: none; } }
+/* 숫자 그림 */
+.cm-pic { margin: 16px 0 0; animation: cm-wipe .9s cubic-bezier(.16, 1, .3, 1) .55s both; }
+.cm-dots { display: flex; flex-wrap: wrap; gap: 8px; }
+.cm-d { display: block; flex: none; width: 16px; height: 16px; border-radius: 50%; }
+.cm-sm { gap: 5px; } .cm-sm .cm-d { width: 10px; height: 10px; }
+.cm-xs { gap: 3px; } .cm-xs .cm-d { width: 8px; height: 8px; }
+.cm-d.cm-u { background: #FF7272; box-shadow: 0 0 10px rgba(255, 90, 102, .45); }
+.cm-d.cm-dn { background: #82B6FF; box-shadow: 0 0 10px rgba(92, 151, 255, .40); }
+.cm-d.cm-0 { background: rgba(244, 241, 234, .55); }
+.cm-d.cm-off { box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .30); }
+.cm-d.cm-me { outline: 2px solid #F4F1EA; outline-offset: 3px; }
+.cm-d.cm-now { box-shadow: inset 0 0 0 2px rgba(244, 241, 234, .80); }
+.cm-d.cm-day { background: #F4F1EA; transform: scale(1.5); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.cm-bars { display: grid; gap: 7px; }
+.cm-bar { display: block; height: 10px; border-radius: 5px; background: rgba(244, 241, 234, .10); overflow: hidden; }
+.cm-f { display: block; height: 100%; border-radius: 5px; }
+.cm-f.cm-u { background: #FF7272; } .cm-f.cm-dn { background: #82B6FF; } .cm-f.cm-0 { background: rgba(244, 241, 234, .72); } .cm-f.cm-off { background: rgba(244, 241, 234, .38); }
+.cm-go { display: block; flex: none; width: 12px; height: 12px; margin: 16px auto 6px; border-right: 2px solid rgba(244, 241, 234, .5); border-bottom: 2px solid rgba(244, 241, 234, .5); transform: rotate(45deg); }
+@keyframes cm-rise { 0% { transform: translateY(100%); clip-path: inset(-1em -1em 100% -1em); } 99% { transform: none; clip-path: inset(-1em -1em 0 -1em); } 100% { transform: none; clip-path: none; } }
+@keyframes cm-wipe { 0% { clip-path: inset(-8px 100% -8px 0); } 99% { clip-path: inset(-8px -8px -8px -8px); } 100% { clip-path: none; } }
+/* 표지 — 첫 화면 가득 · 가장자리까지 */
+.cm.cm-hero { display: flex; flex-direction: column; margin: 0 -20px 18px; padding: 26px 24px 14px; border-radius: 0; box-shadow: none;
+  min-height: calc(100vh - 168px); min-height: calc(100svh - 168px - env(safe-area-inset-bottom, 0px)); }
+.cm-hero::before, .cm-half::before { top: 0; bottom: auto; left: 24px; width: 44px; height: 3px; border-radius: 0 0 3px 3px; }
+.cm-hero .cm-h { margin-top: auto; padding-top: 20px; font-size: clamp(1.75rem, 8vw, 2.5rem); line-height: 1.22; letter-spacing: -.03em; }
+.cm-hero .cm-big { margin-top: 10px; }
+.cm-hero .cm-pic { margin-top: 20px; }
+.cm-hero .cm-s { margin: 16px 0 auto; font-size: 1rem; }
+/* 갈래 · 업종 화면 — 가장자리까지 · 높이는 글만큼 */
+.cm.cm-half { margin: 6px -20px 18px; padding: 24px 24px 22px; border-radius: 0; box-shadow: none; }
+.cm-half .cm-h { font-size: clamp(1.375rem, 6vw, 1.875rem); line-height: 1.25; }
+.cm-half .cm-big { font-size: min(calc((min(100vw, 560px) - 48px) * .62 / var(--w)), 6rem); }
+/* 회사 화면 — 값 다음 둥근 칸 */
 .cm.cm-mid { margin: 16px 0 6px; padding: 14px 18px 16px 20px; border-radius: 20px; }
 .cm-mid .cm-h { font-size: 1.25rem; margin-top: 8px; }
-.cm-mid .cm-big { font-size: min(13vw, 3.5rem); }
-.cm-mid .cm-big.cm-han { font-size: min(10vw, 2.75rem); }
+.cm-mid .cm-big { font-size: min(calc((min(100vw, 560px) - 80px) * .5 / var(--w)), 4rem); }
+.cm-mid .cm-pic { margin-top: 12px; }
+.cm-mid .cm-d { width: 12px; height: 12px; }
+/* 넓은 화면 — 가장자리에 닿지 않으니 둥근 표지 */
+@media (min-width: 600px) {
+  .cm.cm-hero, .cm.cm-half { margin-left: 0; margin-right: 0; border-radius: 28px; box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 30px 60px -36px rgba(0, 0, 0, .8); }
+  .cm.cm-hero { margin-top: 12px; }
+}
