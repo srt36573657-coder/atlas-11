@@ -12,6 +12,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
+import {readSiteLog} from '../../lib/atlas11/changelog.mjs';
 const run = promisify(execFile);
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -33,6 +34,12 @@ export async function buildDist() {
   const usOk = await fs.readFile(path.join(usDir, 'manifest.json'), 'utf8').then(t => { const m = JSON.parse(t); return m.prediction === 'off' && !!m.boardId && m.place?.id === 'us'; }).catch(() => false);
   if (usOk) { await copyDir(path.join(root, 'site'), path.join(dist, 'us')); await copyDir(usDir, path.join(dist, 'us/data/atlas11/view')); }
   await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places: [{id: 'kr', label: '한국', href: '/'}, ...(usOk ? [{id: 'us', label: '미국', href: '/us/'}] : [])]}) + '\n');
+  // 아래 탭 「기록」(2026-10-06 16:10 사장님 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭」) — /changelog.json 한 파일(한국 · 미국 판이 함께 읽음)
+  //   업데이트 · 자료 변경 기록(reports/atlas11/changelog · reports/atlas11/us/changelog)을 모음 · 올라간 때 = 올리기 기록에서 만든 때 뒤 첫 올림 · 아직이면 이 묶음을 만든 때
+  //   검사에 걸린 줄은 빼고 알림만 — 기록 때문에 올리기가 멈추지 않게(빠진 줄은 problems 에 남아 화면 검사가 0 인지 본다)
+  let log; try { log = await readSiteLog(root, {now: new Date().toISOString()}); } catch (e) { log = {schema: 'atlas11-changelog-1', generatedAt: new Date().toISOString(), from: null, count: {all: 0, update: 0, data: 0}, entries: [], problems: [{id: null, bad: ['읽지 못함: ' + e.message]}]}; }
+  if (log.problems.length) console.warn('changelog problems (left out): ' + JSON.stringify(log.problems.slice(0, 5)));
+  await fs.writeFile(path.join(dist, 'changelog.json'), JSON.stringify(log) + '\n');
   await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/us/index.html\n  Cache-Control: no-cache\n/us/data/*\n  Cache-Control: no-cache\n/us/app/*\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
   await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + (usOk ? '/us  /us/  301\n' : '')); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
