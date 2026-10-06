@@ -238,6 +238,21 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   }
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
   check(`${label} ${H}: 시장 띠(코스피·코스닥 · 기준 날짜)`, manifest.market ? manifest.market.items.every(i => top.strip.includes(i.name)) && top.strip.includes(kd(manifest.market.items[0].date) + ' 15:30 KST 종가') : /시장 지수 없음/.test(top.strip), {strip: top.strip});
+  // 맨 아래 접힌 상자 「지난 6개월 앞서 달린 곳」(2026-10-06 14:55 「해」 · lib/atlas11/lead6.mjs) — 처음엔 접힘 · 펼치면 판의 120거래일 위 20% 표시와 같음(검사기가 판에서 따로 고르고 줄 세움) · 지수 자리 한 줄 · 73칸 설명 줄(t-key)은 뺌(규칙 1)
+  {
+    const L = board.lead6, byC = new Map(board.companies.map(c => [c.code, c])), d120 = (a, b) => b.change120 - a.change120;
+    const rowsW = board.groups.filter(g => g.lead6).sort(d120).map(g => ({g, cs: g.codes.map(c => byC.get(c)).filter(c => c?.lead6).sort(d120)})).filter(r => r.cs.length), nW = rowsW.reduce((t, r) => t + r.cs.length, 0);
+    const before = await page.evaluate(() => ({open: document.querySelector('details.m6')?.open ?? null, tkey: [...document.querySelectorAll('.t-page > .t-key')].filter(p => !p.classList.contains('sun-key')).length}));
+    const sumLoc = page.locator('details.m6 > summary'); await sumLoc.scrollIntoViewIfNeeded(); if (mobile) await sumLoc.tap(); else await sumLoc.click(); await page.waitForTimeout(250);
+    const m6 = await page.evaluate(() => { const d = document.querySelector('details.m6'); return d ? {open: d.open, n: d.querySelector('.m6-n')?.textContent.trim(), ix: d.querySelector('.m6-ix')?.textContent.trim(), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
+      rows: [...d.querySelectorAll('.m6-list > li')].map(li => ({href: li.querySelector('.m6-g')?.getAttribute('href'), g: li.querySelector('.m6-g span')?.textContent.trim(), gchg: li.querySelector('.m6-g b')?.textContent.trim(), cs: [...li.querySelectorAll('.m6-cs a')].map(a => ({href: a.getAttribute('href'), t: a.textContent.trim()}))}))} : null; });
+    const n2 = v => v.toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}), ix = L?.index;
+    const ixW = ix ? `${ix.name}: ${kd(ix.date)} 종가 ${n2(ix.close)} — 지난 ${ix.days}거래일 가운데 가장 높던 ${kd(ix.highDate)} ${n2(ix.high)}${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}` : null;
+    const mis = rowsW.map((r, i) => { const x = m6?.rows[i]; return x && x.href === '#/i/' + r.g.id && x.g === r.g.label && x.gchg === p1(r.g.change120) && x.cs.length === r.cs.length && r.cs.every((c, k) => x.cs[k].href === '#/stock/' + c.code && x.cs[k].t === `${c.name} ${p1(c.change120)}`) ? null : {i, g: r.g.label, x}; }).filter(Boolean);
+    check(`${label} ${H}: 맨 아래 접힌 상자 「지난 6개월 앞서 달린 곳」 — 처음엔 접힘 · 펼치면 업종 ${rowsW.length}개 · 회사 ${nW}곳(판의 120거래일 위 20% 표시에서 따로 고른 값 · 120거래일 변화 순 · 누르면 그 업종 · 그 회사) · 지수 자리 「${m6?.ix}」 · 옆으로 넘치지 않음 · 73칸 설명 줄 뺌`,
+      Boolean(L) && before.open === false && before.tkey === 0 && m6?.open === true && m6.n === `업종 ${rowsW.length}개 · 회사 ${nW}곳` && m6.rows.length === rowsW.length && !mis.length && (ixW ? m6.ix === ixW : Boolean(m6.ix?.startsWith('지수 자리:'))) && m6.sw <= m6.cw, {before, n: m6?.n, ixW, mis: mis.slice(0, 2)});
+    if (mobile) await sumLoc.tap(); else await sumLoc.click(); await page.waitForTimeout(150); // 접어 둔 채로 다음 검사(처음 들어온 사람과 같게)
+  }
   await wordsCheck(page, `${label} ${H}`);
   // 칸 누르기(휴대폰은 터치) — 셋째 불장 칸 → 그 업종 화면
   const hg = HOT[2] ?? board.groups[0];
