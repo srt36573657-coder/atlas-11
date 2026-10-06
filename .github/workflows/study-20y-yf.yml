@@ -1,6 +1,6 @@
 # ATLAS 11 공부 · 미국 20년 기록 — 야후(yfinance) 길 시험 + 받기 · 사장님 2026-10-06 13:01 「20년 기록을 봐봐 그리고 미국 도 보고」
 #   study-20y 가지에 이 파일이나 받는 코드를 올릴 때만 돈다(main 에는 없음 · 예약 없음 · 손으로 누를 것도 없음)
-#   결과는 reports/atlas11/study/20y/r3us/ 에만 적는다 — 사이트 · main · 매일 작업(atlas11-daily · atlas11-evening) · 한국 판 파일은 건드리지 않는다
+#   결과는 reports/atlas11/study/20y/r3us/(미국 · 13:54) · r3kr/(한국 · 14:00) 에만 적는다 — 사이트 · main · 매일 작업(atlas11-daily · atlas11-evening) · 한국 판 파일은 건드리지 않는다
 #   사이트에 올리지 않는다(올리기는 「aaa7377.com 올리기」 단추 · 사장님만 누름)
 name: 공부 · 미국 20년 기록 받기(야후 길)
 on:
@@ -25,14 +25,14 @@ jobs:
           python-version: '3.12'
       - name: 받을 도구
         run: pip install -q yfinance curl_cffi pandas
-      - name: 미국 20년 기록 받기(야후)
-        run: timeout 1500 python scripts/atlas11/study/collect_20y_us_yf.py --out reports/atlas11/study/20y/r3us
-      - name: 기록 올리기(reports/atlas11/study/20y/r3us 만)
+      - name: 한국 20년 기록 받기(야후 · 14:00 · 미국 판 r3us 는 덮지 않음)
+        run: timeout 1500 python scripts/atlas11/study/collect_20y_us_yf.py --market kr --out reports/atlas11/study/20y/r3kr
+      - name: 기록 올리기(reports/atlas11/study/20y/r3kr 만)
         if: always()
         run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
-          git add -f reports/atlas11/study/20y/r3us
-          git commit -q -m "atlas11 study 20y us yahoo data [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          git add -f reports/atlas11/study/20y/r3kr
+          git commit -q -m "atlas11 study 20y kr yahoo data [skip ci]" || { echo "올릴 것 없음"; exit 0; }
           for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
           exit 1

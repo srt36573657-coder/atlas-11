@@ -5,7 +5,9 @@
      종가는 「Close」(액면 분할만 고친 값 · 배당은 안 고침 — 네이버와 같은 꼴)
      FRED 나스닥 종합도 curl_cffi 로 한 번 더 시험(되는지만 probe 에 적고, 야후 지수가 안 될 때만 씀)
   결과: <out>/us.json.gz(collect_20y.mjs 와 같은 꼴) · <out>/probe.json — 사이트 · main · 매일 작업은 건드리지 않는다
-  쓰는 법: python scripts/atlas11/study/collect_20y_us_yf.py --out reports/atlas11/study/20y/r3us
+  (14:00) 한국 둘째 판(네이버 siseJson)이 40분 넘게 걸려, 같은 야후 길로 한국(코스피 ^KS11 · 코스닥 ^KQ11 · 판 365곳 .KS/.KQ)도 나란히 받아 둠(--market kr)
+           네이버 판이 오면 그것을 본 자료로 쓰고, 야후 한국은 두 길 맞대기에 씀
+  쓰는 법: python scripts/atlas11/study/collect_20y_us_yf.py --out reports/atlas11/study/20y/r3us [--market us|kr]
 """
 import datetime as dt, gzip, json, os, sys, time
 import pandas as pd
@@ -39,15 +41,25 @@ def field(df, name, ticker=None):
     return df[name] if name in df.columns else None
 
 import yfinance as yf
-probe['yfinance'] = getattr(yf, '__version__', '?')
-inp = json.load(open('public/data/atlas11/us/input.json', encoding='utf-8'))
-board = json.load(open('public/data/atlas11/us/view/board.json', encoding='utf-8'))
-meta = {a['code']: a for a in inp['assets']}
+MKT = sys.argv[sys.argv.index('--market') + 1] if '--market' in sys.argv else 'us'
+probe['yfinance'] = getattr(yf, '__version__', '?'); probe['market'] = MKT
+if MKT == 'us':
+    inp = json.load(open('public/data/atlas11/us/input.json', encoding='utf-8'))
+    board = json.load(open('public/data/atlas11/us/view/board.json', encoding='utf-8'))
+    meta = {a['code']: a for a in inp['assets']}
+    ytk = {c['code']: {'BRKB': 'BRK-B'}.get(c['code'], c['code']) for c in board['companies']}
+    IDX = (('.INX', '^GSPC'), ('.IXIC', '^IXIC'), ('.DJI', '^DJI'))
+else:
+    board = json.load(open('public/data/atlas11/view/board.json', encoding='utf-8'))
+    BND = json.loads(gzip.open('reports/atlas11/universe/2026-10-05-0940/bundle.json.gz').read())
+    meta = {c['code']: {'name': BND['stocks'].get(c['code'], {}).get('list', {}).get('name', c['code'])} for c in board['companies']}
+    ytk = {c['code']: c['code'] + ('.KQ' if BND['stocks'].get(c['code'], {}).get('list', {}).get('market') == 'KOSDAQ' else '.KS') for c in board['companies']}
+    IDX = (('KOSPI', '^KS11'), ('KOSDAQ', '^KQ11'))
 codes = [c['code'] for c in board['companies']]
-out = {'market': 'us', 'fetchedAt': dt.datetime.now(dt.timezone.utc).isoformat(), 'indices': {}, 'stocks': {}, 'board': codes,
+out = {'market': MKT, 'source': 'yahoo', 'fetchedAt': dt.datetime.now(dt.timezone.utc).isoformat(), 'indices': {}, 'stocks': {}, 'board': codes,
        'groups': [{'id': g['id'], 'label': g.get('label'), 'codes': g['codes']} for g in board['groups']]}
 START = '2004-01-01'
-for key, y in (('.INX', '^GSPC'), ('.IXIC', '^IXIC'), ('.DJI', '^DJI')):
+for key, y in IDX:
     try:
         df = yf.download(y, start=START, auto_adjust=False, progress=False, threads=False)
         p = pack(field(df, 'Close', y), field(df, 'Volume', y))
@@ -56,6 +68,7 @@ for key, y in (('.INX', '^GSPC'), ('.IXIC', '^IXIC'), ('.DJI', '^DJI')):
         probe['index'][key] = {'how': 'yahoo-' + y, 'error': str(e)[:300]}
     print('index', key, probe['index'][key], flush=True); save_probe(); time.sleep(1.5)
 try:  # FRED 나스닥 종합(되는지만 적음 · 야후 나스닥이 안 됐을 때만 씀)
+    if MKT != 'us': raise RuntimeError('한국 판은 FRED 시험 안 함')
     from curl_cffi import requests as cr
     r = cr.get('https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM', impersonate='chrome', timeout=60)
     rows = [ln.split(',') for ln in r.text.strip().splitlines()[1:]]
@@ -72,11 +85,11 @@ got, miss = 0, []
 for i in range(0, len(codes), 40):
     batch = codes[i:i + 40]
     try:
-        df = yf.download(batch, start=START, auto_adjust=False, progress=False, threads=True, group_by='column')
+        df = yf.download([ytk[c] for c in batch], start=START, auto_adjust=False, progress=False, threads=True, group_by='column')
     except Exception as e:
         probe['errors'].append({'batch': i, 'error': str(e)[:300]}); df = None
     for c in batch:
-        p = pack(field(df, 'Close', c), field(df, 'Volume', c)) if df is not None else None
+        p = pack(field(df, 'Close', ytk[c]), field(df, 'Volume', ytk[c])) if df is not None else None
         if p and p['n'] >= 250:
             a = meta.get(c, {}); out['stocks'][c] = {'name': a.get('name', c), 'reuters': a.get('reuters'), 'industryCode': a.get('industryCode'), 'src': 'yahoo', **p}; got += 1
         else: miss.append(c)
@@ -86,5 +99,5 @@ for i in range(0, len(codes), 40):
 probe['stocks']['startedBefore2005'] = sum(1 for s in out['stocks'].values() if s['d0'] < '20050101')
 probe['finishedAt'] = dt.datetime.now(dt.timezone.utc).isoformat()
 if got or any(out['indices'].values()):
-    with gzip.open(os.path.join(OUT, 'us.json.gz'), 'wt', encoding='utf-8') as f: json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+    with gzip.open(os.path.join(OUT, f'{MKT}.json.gz'), 'wt', encoding='utf-8') as f: json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
 save_probe(); print(json.dumps(probe, ensure_ascii=False)[:2000])
