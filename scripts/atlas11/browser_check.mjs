@@ -571,7 +571,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     {spkBox: r0.spkBox, want: {n: spkW.size, common: commonW.map(t => `${t.id} ${t.a}/${topNW} ${t.b}/${restW.length}`)}});
   check(`${label} 출목표 맨 위 태양 상자: 단추 「${r0.go?.t}」(태양 그림) — 2026-10-05 14:40 「태양이 있는 곳을 한 곳으로 모아줘」`, !spkW.size ? r0.go === null : r0.go?.t === `태양 ${spkW.size}곳 한곳에 모아 보기 ›` && r0.go.sun, r0.go);
   // 2026-10-05 15:24 「잡스가 … 36가지」 A1 · A2 — 태양 상자는 제목 · 뜻 한 줄 · 모양 그림 · 단추 · 읽는 법(접힘) · 칸 읽는 법도 그 접힘 안 · 휴대폰 첫 화면에 첫 칸
-  check(`${label} 출목표 첫 화면: 태양 상자 뜻 한 줄 「${r0.spkS}」 · 칸 읽는 법은 접힘 안 · 첫 칸 ${r0.first}px(${mobile ? `휴대폰 첫 화면 ${r0.ih}px 안` : 'PC'})`, (!spkW.size || (r0.spkS === `오른 회사들의 공통 모양 ${kW}가지를 모두 가진 곳` && r0.keyIn && r0.keyHead === 0)) && (!mobile || r0.first < r0.ih), {spkS: r0.spkS, keyIn: r0.keyIn, keyHead: r0.keyHead, first: r0.first, ih: r0.ih});
+  check(`${label} 출목표 첫 화면: 태양 상자 뜻 한 줄 「${r0.spkS}」 · 칸 읽는 법은 접힘 안 · 첫 칸 ${r0.first}px(${mobile ? `휴대폰 두 화면 ${r0.ih * 2}px 안 — 2026-10-07 04:01 「과감하게」 논평 무대가 첫 화면을 차지` : 'PC'})`, (!spkW.size || (r0.spkS === `오른 회사들의 공통 모양 ${kW}가지를 모두 가진 곳` && r0.keyIn && r0.keyHead === 0)) && (!mobile || r0.first < r0.ih * 2), {spkS: r0.spkS, keyIn: r0.keyIn, keyHead: r0.keyHead, first: r0.first, ih: r0.ih});
   await wordsCheck(page, `${label} 출목표 오른 순(첫 탭)`);
   // (옛 E1 출목표 제목 줄 「찾기」는 2026-10-05 20:24 아래 탭 「찾기」로 옮김 — 아래 ⑥에서 본다)
   {
@@ -810,12 +810,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         && r.rows.every((x, i) => !i || x.w >= r.rows[i - 1].w - 0.5) && r.base === pct0(S.typical.mdd) && r.why >= 1 && r.promise === 'ATLAS가 하지 않는 일 7가지' && /^「처음」 탭의 \d곳 말고는 회사를 고르지 않습니다/.test(r.third ?? '') && r.sw <= r.cw, {r: {...r, rows: r.rows.map(x => x.name + ' ' + x.v)}, codesW});
     await wordsCheck(page, `${label} 아래 탭 「처음」`);
   }
-  // ⑤-3 논평(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로 만든다」) — 내용 화면마다 제목 아래(회사 화면은 숫자 다음) 한 줄 · 검사기가 판에서 따로 센 머리 글과 맞댐 · 찾기 · 기록에는 없음
+  // ⑤-3 논평 무대(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로 만든다」 → 04:01 「과감하게 섹시하게」) — 내용 화면마다 맨 위 무대(회사 화면은 값 다음 가운데 크기) · 검사기가 판에서 따로 센 머리 글과 맞댐 · 찾기 · 기록에는 없음
   {
     const cmRead = async hash => { await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector('.b-title', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(300);
       return page.evaluate(() => { const t = document.querySelector('.b-title'), c = document.querySelector('.cm');
         return {n: document.querySelectorAll('.cm').length, id: c?.dataset.comment ?? null, tag: c?.querySelector('.cm-tag')?.textContent.trim() ?? null, head: c?.querySelector('.cm-h')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
-          sub: c?.querySelector('.cm-s')?.textContent.replace(/\s+/g, ' ').trim() ?? null, after: !!(t && c && (t.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; }); };
+          big: c?.querySelector('.cm-big')?.textContent.trim() ?? null, sub: c?.querySelector('.cm-s')?.textContent.replace(/\s+/g, ' ').trim() ?? null, after: !!(t && c && (t.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)),
+          top: c ? Math.round(c.getBoundingClientRect().top + scrollY) : null, ih: innerHeight, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; }); };
     const hotG = board.groups.filter(g => g.hot), fl = familiesByRise(hotG), gH = [...hotG].sort(riseDesc);
     const wantHome = !hotG.length ? `업종 ${board.groups.length}개가 쉬어 간 판` : fl[0].groups.length >= 2 && fl[0].groups.length / hotG.length >= 0.4 ? `판을 이끄는 건 ${fl[0].fam.label}` : gH.length > 1 && gH[0].change20 - gH[1].change20 >= 0.15 ? `맨 앞은 ${gH[0].label}` : `불은 ${fl.length}갈래로 번졌다`;
     const famAll = familiesByRise(board.groups).filter(f => Number.isFinite(f.avg)), wantMap = famAll[0].avg > 0 ? `가장 붉은 땅, ${famAll[0].fam.label}` : `땅 ${famAll.length}개 모두 푸르다`;
@@ -827,8 +828,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const rows = [['불장', '#/', wantHome], ['지도', '#/map', wantMap], ['지도 갈래', '#/map/f/' + fam0, null], ['업종', '#/i/' + g0.id, null], ['회사', '#/stock/005930', null], ['출목표', '#/road', wantRoad], ['일정', '#/agenda', null], ['처음', '#/start', wantStart]];
     const got = [];
     for (const [nm, hs, want] of rows) { const r = await cmRead(hs); got.push({nm, ...r, want}); }
-    const bad = got.filter(r => r.n !== 1 || r.tag !== '논평' || !r.head || (!r.sub && r.nm !== '출목표') || !r.after || r.sw > r.cw || (r.want && r.head !== r.want));
-    check(`${label} 논평: 화면 ${got.length}곳마다 제목 아래 한 줄 — ${got.map(r => `${r.nm} 「${r.head}」`).join(' · ')} · 불장 · 지도 · 출목표 · 처음은 검사기가 판에서 따로 센 글과 같음 · 옆으로 넘치지 않음`, bad.length === 0, bad.length ? bad : undefined);
+    const bad = got.filter(r => r.n !== 1 || !/^논평( · .+)?$/.test(r.tag ?? '') || !r.head || !r.big || !r.sub || (r.nm === '회사' ? !r.after : r.after || r.top > r.ih * 0.5) || r.sw > r.cw || (r.want && r.head !== r.want));
+    check(`${label} 논평 무대: 화면 ${got.length}곳 — ${got.map(r => `${r.nm} 「${r.head}」 ${r.big}`).join(' · ')} · 제목 위 첫 화면 위쪽(회사는 값 다음) · 문장 · 거대 숫자 · 근거 줄 · 불장 · 지도 · 출목표 · 처음 문장은 검사기가 판에서 따로 센 글과 같음 · 옆으로 넘치지 않음`, bad.length === 0, bad.length ? bad : undefined);
     const none = [];
     for (const hs of ['#/find', '#/log']) { const r = await cmRead(hs); none.push({hs, n: r.n}); }
     check(`${label} 논평: 찾기 · 기록 화면에는 없음(도구 · 기록 화면)`, none.every(x => x.n === 0), none);

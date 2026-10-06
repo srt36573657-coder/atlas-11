@@ -816,13 +816,26 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 .st-mn { font-weight: 700; color: var(--ink2); margin-right: 6px; }
 .st-page .b-promise-box { margin-top: 14px; }
 
-/* 논평(2026-10-07 03:17 사장님 「아틀람스를 섹시하게 논평이 있는 구조로 만든다 섹시란 무엇인가」 · site/app/comment.js)
-   섹시 = 봐야 할 것 하나만 빛나고 나머지는 물러나는 것(사장님 교본 2026-08-31) — 화면마다 빛나는 것은 논평 머리 한 줄 하나
-   · 머리: 큰 글 · 굵게 · 왼쪽 놋쇠빛 줄(--geum 네째 자리 — 줄에만, 글자에는 쓰지 않음) · 한 번만 천천히 밝혀짐(833ms = 사장님 박자 ♩=72 한 박 · 움직이는 것 하나)
-   · 이름표 「논평」과 근거 한 줄은 속삭이듯 작게(나머지는 물러남) · 움직임 줄이기 설정이면 움직이지 않음(위 공통 규칙) */
-.cm { margin: 12px 0 2px; padding: 0 0 2px 14px; box-shadow: inset 3px 0 0 var(--geum); }
-.cm-tag { display: inline; margin: 0 8px 0 0; font-size: .8125rem; font-weight: 700; letter-spacing: .12em; color: var(--sub); vertical-align: .35em; } /* 이름표는 머리 글 앞 같은 줄(한 줄 아낌 — 출목표 첫 칸이 휴대폰 첫 화면에) */
-.cm-h { display: inline; margin: 0; font-size: 1.625rem; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; color: var(--ink); overflow-wrap: anywhere; word-break: keep-all; animation: cm-in .833s cubic-bezier(.16, 1, .3, 1) both; }
-.cm-s { margin: 3px 0 0; font-size: .9375rem; line-height: 1.5; color: var(--sub); overflow-wrap: anywhere; word-break: keep-all; }
-@keyframes cm-in { from { opacity: 0; filter: blur(6px); } to { opacity: 1; filter: none; } } /* 줄 안 글이라 옮기기(transform)는 없음 — 흐림에서 또렷하게만 */
-.c-page .cm { margin-top: 16px; }
+/* 논평 무대(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로」 → 03:59 「과감하게 … 좆만하게 하지 말고」 · site/app/comment.js)
+   섹시 = 봐야 할 것 하나만 빛나고 나머지는 물러나는 것(사장님 교본 2026-08-31 「하나만 비추고 나머지는 어둠」 · 「거대 숫자는 밝혀지듯 등장」)
+   · 무대: 밝은 화면에서도 어둠(빛 하나가 왼쪽 위에서) · 왼쪽 놋쇠빛 줄(--geum 네째 자리 — 줄에만, 글자에는 쓰지 않음)
+   · 거대 숫자 하나만 움직임: 흐림 12px → 또렷 1.25초(사장님 박자 ♩=72 한 박 반) · 등장 뒤 멈춤 · 움직임 줄이기 설정이면 움직이지 않음(위 공통 규칙)
+   · 나머지(이름표 · 근거 줄)는 속삭이듯 · 오름 빨강 · 내림 파랑(밝게 — 어두운 무대 위 대비)
+   · 거대 숫자 크기는 화면 폭에만 따름(글씨 단추 200%에서도 휴대폰 폭 안) · 한글이 든 숫자(15일 뒤 · 2028년 8월)는 조금 작게 */
+.cm { position: relative; margin: 10px 0 16px; padding: 18px 20px 20px 22px; border-radius: 24px; overflow: hidden; color: #F4F1EA;
+  background-color: #0C1512; background-image: radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%);
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 22px 44px -28px rgba(0, 0, 0, .75); }
+.cm::before { content: ''; position: absolute; left: 0; top: 20px; bottom: 20px; width: 3px; border-radius: 0 3px 3px 0; background: var(--geum); }
+.cm-tag { margin: 0; font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: rgba(244, 241, 234, .66); }
+.cm-h { margin: 10px 0 0; font-size: 1.5rem; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere; }
+.cm-big { margin: 4px 0 0; font-size: min(19vw, 6rem); font-weight: 700; line-height: 1.04; letter-spacing: -.045em; color: #F4F1EA; font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere; word-break: keep-all; animation: cm-reveal 1.25s cubic-bezier(.16, 1, .3, 1) .15s both; }
+.cm-big.up { color: #FF7272; }
+.cm-big.down { color: #82B6FF; }
+.cm-big.cm-han { font-size: min(13vw, 4rem); letter-spacing: -.03em; }
+.cm-s { margin: 8px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .74); word-break: keep-all; overflow-wrap: anywhere; }
+@keyframes cm-reveal { from { opacity: 0; filter: blur(12px); } to { opacity: 1; filter: none; } }
+.cm.cm-mid { margin: 16px 0 6px; padding: 14px 18px 16px 20px; border-radius: 20px; }
+.cm-mid .cm-h { font-size: 1.25rem; margin-top: 8px; }
+.cm-mid .cm-big { font-size: min(13vw, 3.5rem); }
+.cm-mid .cm-big.cm-han { font-size: min(10vw, 2.75rem); }

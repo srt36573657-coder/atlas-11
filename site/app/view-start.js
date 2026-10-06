@@ -22,9 +22,9 @@ export async function renderStart(main, {manifest}) {
     const have = s?.have, ready = s?.readyMonth;
     state.summary = `${commentSay(cm)}처음. 이 판은 종가 기록이 3년이 안 되어 다섯 곳을 찍지 않습니다.${ready ? ` ${month(ready)}부터 찍습니다.` : ''}`;
     main.replaceChildren(h('div', {class: 'b-page st-page'},
+      commentBox(cm), // 논평 무대(화면 맨 위)
       h('header', {class: 'b-head'},
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
-        commentBox(cm),
         h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${manifest?.place?.id === 'us' ? '뉴욕 종가' : '종가'} · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
       ready ? h('p', {class: 'st-wait', 'data-speak': ''}, `3년 기록이 쌓이는 ${month(ready)}부터 ${s?.rule?.want ?? 5}곳을 찍습니다`) : null,
       promiseBox(board),
@@ -46,9 +46,9 @@ export async function renderStart(main, {manifest}) {
     bar(p.mdd, worst, 'st-ok'),
     p.atLow ? h('span', {class: 'st-low'}, `${korDate(p.to)} 종가가 3년 중 가장 낮은 자리`) : null));
   main.replaceChildren(h('div', {class: 'b-page st-page'},
+      commentBox(cm), // 논평 무대(화면 맨 위)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '처음 ', h('span', {class: 'b-count'}, `${n}곳`)),
-      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(to)} 종가까지 지난 3년 기록`)),
     h('p', {class: 'st-rule-t', 'data-speak': ''}, `우량 큰 회사 ${s.candidates}곳 중 지난 3년 가장 덜 떨어진 ${n}곳`),
     h('p', {class: 'st-key'}, '막대 = 3년 안에서 가장 깊게 떨어진 정도'),
