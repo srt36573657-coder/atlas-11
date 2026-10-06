@@ -1,0 +1,87 @@
+{
+ "startedAt": "2026-10-06T21:48:36.074Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-06T21:48:36.130Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-06T21-48-36",
+   "newYork": {
+    "date": "2026-10-06",
+    "hm": "17:48",
+    "weekday": 2
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-06T21:48:37.163Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-06T21:48:53.106Z",
+   "asked": 365,
+   "got": 365,
+   "latest": "2026-10-06"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-06T21:48:53.283Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/AVGO.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-06T21:49:07.497Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-06T21:49:07.831Z",
+   "news": 365,
+   "newsItems": 5859,
+   "index": [
+    "S&P 500 2026-10-06",
+    "나스닥 종합 2026-10-06",
+    "다우존스 2026-10-06"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-06T21:49:07.995Z",
+   "assets": 365,
+   "asOf": "2026-10-06",
+   "late": 1,
+   "sessions": 296,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-06T21-48-36/input.json.gz",
+    "sha256": "6ed9f9e76bb066f2c94fa9f0e360306b9390c7f5cccd1a4664be54836b64b8a6",
+    "bytes": 656971
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day?startDateTime=202508020000&endDateTime=202610062359",
+   "status": 200,
+   "ms": 998
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/AVGO.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 176
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609160000&endDateTime=202610062359",
+   "status": 200,
+   "ms": 167
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-06T21:49:07.995Z"
+}
