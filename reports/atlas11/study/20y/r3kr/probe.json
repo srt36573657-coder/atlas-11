@@ -1,0 +1,32 @@
+{
+ "startedAt": "2026-10-06T05:00:47.827709+00:00",
+ "index": {
+  "KOSPI": {
+   "how": "yahoo-^KS11",
+   "rows": 5610,
+   "first": "20040102"
+  },
+  "KOSDAQ": {
+   "how": "yahoo-^KQ11",
+   "rows": 5611,
+   "first": "20040102"
+  }
+ },
+ "errors": [],
+ "yfinance": "1.7.0",
+ "market": "kr",
+ "fred": {
+  "error": "한국 판은 FRED 시험 안 함"
+ },
+ "stocks": {
+  "asked": 365,
+  "done": 365,
+  "got": 364,
+  "miss": [
+   "066410"
+  ],
+  "missCount": 1,
+  "startedBefore2005": 172
+ },
+ "finishedAt": "2026-10-06T05:01:48.982307+00:00"
+}
