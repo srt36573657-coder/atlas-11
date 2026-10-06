@@ -1207,6 +1207,9 @@
 "흑자": "Profitable",
 "개인 {n}주": "Individuals {n} shares",
 "칸 위 가는 선: 빨강 = {n}거래일 평균이 오름 · 파랑 = 내림 · 숫자 앞 ▲▼ 와 + · − 가 같은 뜻": "thin line on top of a cell: red = {n}-day average up · blue = down · ▲▼ before a number mean the same as + and −",
-"축하 그림 · 점수 · 배지를 쓰지 않습니다": "no celebration graphics, scores or badges"
+"축하 그림 · 점수 · 배지를 쓰지 않습니다": "no celebration graphics, scores or badges",
+"본문으로 건너뛰기": "Skip to content",
+"주요 화면": "Main screens",
+"지난 주가와 일정": "Past prices and calendar"
 }
 }

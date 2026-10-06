@@ -760,3 +760,28 @@ html:not([lang="ko"]) .f-tile { grid-template-columns: minmax(0, 1fr); }
 /* ③ 중국어판 글꼴 — 한국어 글꼴(프리텐다드)에 든 한자 1,305자는 한국식 모양이라 중국어 글과 섞이면 모양이 둘 → 중국어판은 기기 중국어 글꼴(아이폰 PingFang SC)로 · 원문(lang="ko")은 한국어 글꼴 그대로 */
 html[lang="zh-CN"] { --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", system-ui, sans-serif; }
 html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif; }
+
+/* 말 단추(위 막대 · 2026-10-06 22:00 사장님 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 지구 그림 둥근 단추 · 누르면 아래로 세 말(한국어 · English · 中文)
+   고르면 같은 주소 · 같은 화면을 그 말로 다시 연다(app.js · i18n.js) · 말 이름은 그 말 글자로
+   넣으면서 뺀 것(규칙 1): 휴대폰 폭(430px 이하)에서 위 막대 글자 「ATLAS」 — 로고 그림은 남음(큰 글씨 · 좁은 화면은 전부터 그렇게 보였음) */
+.lang { position: relative; flex: none; }
+.lang > summary { list-style: none; }
+.lang > summary::-webkit-details-marker { display: none; }
+.lang[open] > .lang-b { background: var(--ink); color: var(--bg); }
+.lang-b:focus-visible, .lang-i:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+.lang-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; min-width: 9.5rem; padding: 6px; border-radius: 16px; background: var(--bg); box-shadow: 0 0 0 1px var(--fill), 0 10px 28px rgba(0, 0, 0, .28); display: grid; gap: 2px; }
+.lang-i { display: flex; align-items: center; min-height: 48px; padding: 0 14px; border-radius: 12px; color: var(--ink); text-decoration: none; font-size: 1.0625rem; font-weight: 700; white-space: nowrap; }
+.lang-i[aria-current="true"] { background: var(--fill); }
+.lang-i[aria-current="true"]::after { content: '✓'; content: '✓' / ''; margin-left: auto; padding-left: 14px; }
+@media (max-width: 430px) { .top .has-mkt .wordmark { font-size: 0; letter-spacing: 0; min-width: 44px; } .top .has-mkt .wordmark::before { margin-right: 0; } }
+/* 좁은 휴대폰(380px 이하 · 320px까지) — 단추가 하나 늘어 위 막대가 넘치지 않게 틈 · 옆 여백 · 시장 단추 안 여백만 줄임(단추 크기 44px 그대로) */
+@media (max-width: 380px) {
+  .top .has-mkt { gap: 6px; padding-left: 12px; padding-right: 10px; }
+  .top .has-mkt .mkt-b { padding: 0 7px; }
+  html[data-font-step="2"] .top .has-mkt .mkt-b { font-size: .8125rem; }
+}
+@media (max-width: 340px) {
+  .top .has-mkt { gap: 4px; padding-left: 6px; padding-right: 6px; }
+  .top .has-mkt .mkt-b { padding: 0 5px; min-width: 40px; }
+  html[data-font-step="3"] .top .has-mkt .mkt-b, html[data-font-step="4"] .top .has-mkt .mkt-b { font-size: .75rem; }
+}

@@ -1,12 +1,20 @@
-/* ATLAS 11 · 언어팩 — 영어판(/en/) · 중국어판(간체 · /zh/)
-   사장님 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」
+/* ATLAS 11 · 언어팩 — 한 주소(aaa7377.com · /us/)에서 한국어 · 영어 · 중국어(간체)
+   사장님 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」
+   · 말 고르기: 위 막대 말 단추(app.js) → 주소 ?lang=en|zh|ko 로 다시 열고 이 기기에 기억(atlas11:lang) · 주소에 없으면 기억한 말 · 그것도 없으면 한국어
    · 한국어 화면 코드는 그대로 둔다 — 그려진 글자(글 · aria-label · title · placeholder · alt · data-speak · 창 제목)를 사전으로 바꾼다
-     한국어판(/ · /us/)에서는 아무것도 하지 않는다 → 한국어 화면 · 화면 검사 그대로
+     한국어로 볼 때는 아무것도 하지 않는다 → 한국어 화면 · 화면 검사 그대로
    · 사전 열쇠 = 「틀」: 날짜 「10월 6일(화)」 → {d} · 시각 「15:30」 → {t} · 회사 · 업종 · 갈래 · 지수 이름 → {e} · 숫자 → {n} · 원문 「…」 → {q}
      번역 틀에서 {n} {e} … 는 나온 차례대로 채움({n2} 처럼 번호를 달면 그 번째) · {pl:한|여럿} = 바로 앞 숫자가 1이면 앞 말
    · 원문(기사 · 공시 제목 · 사장님 말씀 · 업데이트 기록 글)은 lang="ko" 로 표시돼 바꾸지 않는다
    · 사전에 없는 틀은 「 · 」(괄호 밖)로 나눠 조각마다 다시 찾는다 — 그래도 없으면 한국어 그대로(scripts/atlas11/i18n_check.mjs 가 남은 한국어를 센다) */
-export const LANG = (() => { try { return /^\/(en|zh)(?=\/|$)/.exec(location.pathname)?.[1] ?? 'ko'; } catch { return 'ko'; } })();
+export const LANGS = ['ko', 'en', 'zh'];
+const STORE = 'atlas11:lang';
+export const LANG = (() => {
+  let q = null; try { q = new URLSearchParams(location.search).get('lang'); } catch {}
+  if (LANGS.includes(q)) { try { localStorage.setItem(STORE, JSON.stringify(q)); } catch {} return q; } // 주소로 고른 말은 이 기기에 기억(판 바꾸기 · 다음에 열 때)
+  try { const v = JSON.parse(localStorage.getItem(STORE) ?? 'null'); if (LANGS.includes(v)) return v; } catch {}
+  return 'ko';
+})();
 export const LOCALE = {ko: 'ko-KR', en: 'en-US', zh: 'zh-CN'}[LANG];
 export const ON = LANG !== 'ko';
 const HAN = /[가-힣]/, WORD = /[A-Za-z0-9가-힣]/, PARTICLE = /^[은는이가의을를도와과에로만]/;
