@@ -40,7 +40,7 @@ export const SCREENS = [
   {id: 'find', name: '찾기', hash: '#/find', wait: '.fd-page #fd-in', settle: async page => { await page.locator('#fd-in').fill('반도'); await page.waitForTimeout(250); }},
   {id: 'log', name: '기록', hash: '#/log', wait: '.lg-page .lg-item'}, // 2026-10-06 16:10 「… 기록 하는 탭」 — 아래 탭 여섯째(업데이트 · 자료 변경 날짜)
   // 2026-10-07 00:49 「이대로 사이트에 올려줘」: 아래 탭 일곱째 「처음」(찍은 다섯 · 미국 판은 「언제부터」만) — 맨 아래 접힌 「ATLAS가 하지 않는 일」도 펼쳐서 잰다
-  {id: 'start', name: '처음', hash: '#/start', wait: '.st-page .st-row, .st-page .st-wait', settle: async page => { await page.evaluate(() => { const d = document.querySelector('.st-page .b-promise-box'); if (d) d.open = true; }); }},
+  {id: 'start', name: '처음', hash: '#/start', wait: '.st-page .st-row, .st-page .st-wait', settle: async page => { await page.evaluate(() => document.querySelectorAll('.st-page details').forEach(d => { d.open = true; })); }}, // 접힌 「기준 · 숫자 자세히」(02:39 「아주 효율적으로 해」)도 펼쳐서 잰다
 ];
 /** 화면 주소 — 업종 화면은 판(board.json)에 따라 정해진다 */
 export const screenHash = (s, board) => typeof s.hash === 'function' ? s.hash(board) : s.hash;

@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-06T16:40:01.533Z",
+  "at": "2026-10-06T17:57:21.970Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-06-5d238067",
@@ -159,7 +159,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -311,7 +311,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -463,7 +463,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -615,7 +615,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -767,7 +767,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -5598,13 +5598,13 @@
       }
     },
     {
-      "name": "미국 판 「처음」 탭: 3년 종가가 모자라 찍지 않음(다섯 줄 0개) · 「3년 기록이 쌓이는 2028년 8월부터 한국 판과 같은 기준으로 5곳을 찍습니다」 · 약속 셋째 줄 「어느 회사를 고르라고 하지 않습니다」",
+      "name": "미국 판 「처음」 탭: 3년 종가가 모자라 찍지 않음(다섯 줄 0개) · 「3년 기록이 쌓이는 2028년 8월부터 5곳을 찍습니다」 · 약속 셋째 줄 「어느 회사를 고르라고 하지 않습니다」",
       "ok": true,
       "detail": {
         "us5": {
           "rows": 0,
-          "wait": "3년 기록이 쌓이는 2028년 8월부터 한국 판과 같은 기준으로 5곳을 찍습니다",
-          "when": "10월 5일(월) 뉴욕 종가 · 이 판은 종가 기록이 294거래일(2025년 8월 4일(월)부터)뿐이라 3년(756거래일) 기준으로 찍지 않습니다",
+          "wait": "3년 기록이 쌓이는 2028년 8월부터 5곳을 찍습니다",
+          "when": "10월 5일(월) 뉴욕 종가 · 종가 기록 294거래일(2025년 8월 4일(월)부터)",
           "promise": "ATLAS가 하지 않는 일 7가지",
           "third": "어느 회사를 고르라고 하지 않습니다",
           "active": "start"
@@ -7275,5 +7275,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-06T16-35-58-131Z"
+  "dir": "reports/atlas11/browser/2026-10-06T17-53-16-796Z"
 }
