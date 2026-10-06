@@ -14,7 +14,9 @@
    2026-10-05 10:24 「잡스라면 … 큰틀에서 36가지」 → 「나 여기서 클릭하면 업로드되게 만들어 줘」 — 1차 올림(13~15번):
      아래 탭 넷: 불장(#/ · 불장 업종만, 큰 흐름) · 업종(#/map · 73칸 판) · 출목표(#/road) · 일정(#/agenda)
      예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로
-   2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기) */
+   2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기)
+   2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭을 만들어 줘」: 아래 탭 여섯째 「기록」(#/log · view-log.js)
+     넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김 */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
 import {state, loadManifest, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
@@ -25,6 +27,7 @@ import {renderRoad, resetRoad, openSun, openAt, openGroup} from './view-road.js'
 import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
 import {renderFind} from './view-find.js';
+import {renderLog} from './view-log.js';
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
@@ -35,6 +38,8 @@ const ICON = {
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
   // 찾기: 돋보기(2026-10-05 20:24 「종목을 찾는 기능」)
   find: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 20.5 20.5"/></svg>',
+  // 기록: 거꾸로 도는 화살 + 시계 바늘(지난 일을 적은 곳 · 2026-10-06 16:10 「기록 하는 탭」)
+  log: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 12a7.8 7.8 0 1 0 2.3-5.5"/><path d="M4.2 3.8v4.6h4.6"/><path d="M12 7.8V12l3 2"/></svg>',
   // 예비: 반짝임 하나(큰 별 + 작은 별) — 「눈여겨볼 것」
   similar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 11.9 9.1 17.5 11 11.9 12.9 10 18.5 8.1 12.9 2.5 11 8.1 9.1z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>',
   // 22곳: 차례 목록(점 셋 + 줄 셋)
@@ -51,8 +56,9 @@ const routes = [
   {id: 'road', tab: 'road', label: '출목표', match: /^#\/road$/, render: renderRoad},
   {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
   {id: 'find', tab: 'find', label: '찾기', match: /^#\/find$/, render: renderFind}, // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 한국 · 미국 판을 함께
+  {id: 'log', tab: 'log', label: '기록', match: /^#\/log$/, render: renderLog}, // 2026-10-06 16:10 「… 뭘 어떻게 변화 시켰는지에 대해서 기록 하는 탭」 — 업데이트 · 자료 변경 날짜
 ];
-const TABS = ['home', 'map', 'road', 'agenda', 'find'];
+const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log'];
 /** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
 const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map', 'find']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
@@ -77,7 +83,7 @@ function header() {
   // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
-  const tabHash = () => /^#\/(map|road|agenda|similar|rise)?$/.test(location.hash) ? location.hash : '';
+  const tabHash = () => /^#\/(map|road|agenda|similar|rise|log)?$/.test(location.hash) ? location.hash : '';
   const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => h('a', {class: 'mkt-b', href: p.href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null,
     onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', p.href + tabHash()); }}, p.label))) : null;
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},

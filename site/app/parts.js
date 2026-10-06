@@ -3,7 +3,6 @@
    일정 이름·공시 제목은 공식 이름 그대로라(「SEDEX 2026」 · 「2단계 가격제한폭」) 또렷함 검사에서 식별자(data-ident)로 센다 — 우리 숫자가 아님. */
 import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst, place} from './util.js';
 import {roadOf, roadSvg, roadKey, unitText} from './road.js';
-import {integrityText} from './frame.js';
 
 export const LV = {3: '★★★', 2: '★★', 1: '★'};
 export const LV_WORD = {3: '아주 중요', 2: '중요', 1: '참고'};
@@ -246,12 +245,10 @@ export function promiseBox() {
   const list = [place.notDo, ...NOT_DO.slice(1)]; // 첫 줄은 시장마다(한국 15:30 · 미국 뉴욕 16:00)
   return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${list.length}가지`), h('ul', null, ...list.map(x => h('li', null, x))));
 }
-/** 맨 아래: 약속 한 줄 · 출처 · 기술 정보(만든 시각 · 판 이름 · 무결성 — 접어 둠) */
+/** 맨 아래: 약속 한 줄 · 출처
+   옛 「기술 정보」 접힘(만든 시각 · 판 이름 · 무결성)은 아래 탭 「기록」 맨 아래로 옮겼다(2026-10-06 16:10 「기록 하는 탭」 — 규칙 1 하나 넣으면 하나 뺀다) */
 export function foot(m) {
   return h('footer', {class: 'b-foot'},
     h('p', {class: 'b-promise'}, '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다'),
-    h('p', null, place.foot), // 시장마다(util.js place)
-    h('details', {class: 'b-tech'}, h('summary', null, '기술 정보'),
-      h('p', null, `자료를 만든 시각 ${stamp(m?.generatedAt)} · 판 `, h('code', null, m?.boardId ?? '없음')),
-      h('p', null, '무결성: ', h('span', {class: 'integrity-text'}, integrityText()))));
+    h('p', null, place.foot)); // 시장마다(util.js place)
 }

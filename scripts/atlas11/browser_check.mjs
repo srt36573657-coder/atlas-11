@@ -142,7 +142,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     if (!board.moves) { const mq = await page.evaluate(() => { const p = document.querySelector('.hs-seg + .mvx .mvx-h'); const lh = parseFloat(getComputedStyle(p).lineHeight) || parseFloat(getComputedStyle(p).fontSize) * 1.5; return {t: p?.innerText.replace(/\s+/g, ' ').trim(), h: p.getBoundingClientRect().height, lh}; });
       check(`${label} 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「${mq.t}」 한 줄(${Math.round(mq.h)}px)`, mq.t === '저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음' && (viewport.width < 600 ? mq.h < mq.lh * 1.9 : true), mq); }
     const flowsW = familiesByRise(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
-    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 다섯 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,지도,출목표,일정,찾기' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
+    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 여섯 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,지도,출목표,일정,찾기,기록' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
     const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g) && r.sun === sunNT(g.codes); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
     check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「평균」 한 번 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 태양 몇 곳(따로 센 값) · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
@@ -178,8 +178,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const kindsWant = board.kinds ? [`업종 ${G}개`, `우량주 ${board.kinds.quality ?? 0}곳`, `시대 트렌드 ${board.kinds.trend ?? 0}곳`, board.kinds.profit ? `흑자 ${board.kinds.profit}곳` : null, board.kinds.size ? `채움 ${board.kinds.size}곳` : null].filter(Boolean).join(' · ') : null;
   const fromM = mode(board.companies.map(c => c.cFrom)), toM = mode(board.companies.map(c => c.date));
   const upsG = board.groups.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
-  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 다섯 ${top.tabs.join('·')}(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
-    top.title === `지도 업종 ${G}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === '불장,지도,출목표,일정,찾기' && top.active === 'map' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
+  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 여섯 ${top.tabs.join('·')}(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
+    top.title === `지도 업종 ${G}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === '불장,지도,출목표,일정,찾기,기록' && top.active === 'map' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
   const tileMis = board.groups.map((g, i) => { const t = top.tiles[i]; return t && t.id === g.id && t.href === '#/i/' + g.id && t.name === g.label && (g.hot ? t.fire === `불장 ${i + 1}위` && t.rank === null : t.rank === `${i + 1}위` && t.fire === null) && t.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && t.up === upWant(g) && t.sign === signW(g.change20) && t.dsign === signW(g.change20) && t.kids === 4 && t.sun === sunNT(g.codes) ? null : {i, g: g.label, t}; }).filter(Boolean);
   check(`${label} ${H}: 업종 칸 ${top.tiles.length}개 = 판의 업종 ${G}개 · 칸마다 넷(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 ▲▼ · 몇 곳 올랐나) · 첫 줄 태양 수(따로 센 값 · 없으면 비움) · 차례 · 오름/내림 선 · 누르면 갈 주소가 판과 같음`, top.tiles.length === G && !tileMis.length, {tileMis: tileMis.slice(0, 3)});
   const fires = top.tiles.map((t, i) => t.fire ? i : -1).filter(i => i >= 0);
@@ -751,10 +751,33 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const r = await page.evaluate(() => ({hash: location.hash, rows: document.querySelectorAll('.hf-row').length, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim()}));
     check(`${label} 옛 주소 ${old} → 탭 「불장」(#/ · 「${r.title}」 · 불장 줄 ${r.rows}개)`, r.hash === '#/' && r.title === `불장 업종 ${HOT.length}개` && r.rows === HOT.length, r);
   }
-  // ⑤ 무결성 · 글씨 단추
+  // ⑤ 아래 탭 「기록」(#/log · 2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 기록 하는 탭」) — 검사기가 /changelog.json 을 따로 읽어 화면과 줄마다 맞댐
+  //   무결성은 이 탭 맨 아래 「기술 정보」(옛 모든 화면 맨 아래 접힘을 옮김 — 규칙 1)
+  {
+    const log = await (await fetch(base + '/changelog.json')).json(), want = log.entries, byKind = k => want.filter(e => k === 'all' || e.kind === k);
+    await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(200);
+    const footTech = await page.evaluate(() => document.querySelectorAll('.b-foot .b-tech, .b-foot .integrity-text').length);
+    const tLog = page.locator('.bottom-link[data-route="log"]'); if (mobile) await tLog.tap(); else await tLog.click(); await page.waitForSelector('.lg-page .lg-item'); await page.waitForTimeout(250);
+    const read = () => page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      items: [...document.querySelectorAll('.lg-item')].map(li => ({id: li.dataset.id, kind: li.dataset.kind, chip: li.querySelector('.lg-kind')?.textContent.trim(), time: li.querySelector('.lg-time')?.textContent.trim(), dt: li.querySelector('.lg-time')?.getAttribute('datetime'),
+        title: li.querySelector('.lg-title')?.textContent.trim(), what: [...li.querySelectorAll('.lg-what li')].map(x => x.textContent.trim()), removed: li.querySelector('.lg-removed')?.textContent.trim() ?? null, day: li.closest('.lg-day')?.dataset.date})),
+      days: [...document.querySelectorAll('.lg-day')].map(d => d.dataset.date), pressed: document.querySelector('.lg-seg [aria-pressed="true"]')?.dataset.show,
+      integ: document.querySelector('.lg-tech .integrity-text')?.textContent ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    const r0 = await read();
+    const mis = want.map((e, i) => { const x = r0.items[i]; return x && x.id === e.id && x.kind === e.kind && x.chip === (e.kind === 'update' ? '업데이트' : '자료 변경') && x.dt === e.live && x.time === e.live.slice(11, 16) && x.title === e.title && x.what.join('|') === e.what.join('|') && x.day === e.live.slice(0, 10)
+      && (e.removed?.length ? x.removed === '뺀 것 ' + e.removed.join(' · ') : x.removed === null) ? null : {i, id: e.id, x}; }).filter(Boolean);
+    const daysW = [...new Set(want.map(e => e.live.slice(0, 10)))], newestFirst = want.every((e, i) => !i || want[i - 1].live >= e.live);
+    check(`${label} 아래 탭 「기록」(#/log): 줄 ${r0.items.length}개 = 기록 파일 ${want.length}개(업데이트 ${log.count.update} · 자료 변경 ${log.count.data} · 검사에 걸려 빠진 줄 ${log.problems.length}) · 같은 차례(새것이 위) · 날짜 묶음 ${r0.days.length}개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 「기록」 눌림 · 옆으로 넘치지 않음`,
+      r0.hash === '#/log' && r0.title === `기록 ${want.length}개` && r0.active === 'log' && want.length > 0 && r0.items.length === want.length && !mis.length && r0.days.join() === daysW.join() && newestFirst && log.problems.length === 0 && r0.sw <= r0.cw && r0.pressed === 'all', {mis: mis.slice(0, 2), days: r0.days, problems: log.problems.slice(0, 3)});
+    for (const k of ['update', 'data', 'all']) {
+      const b = page.locator(`.lg-seg [data-show="${k}"]`); if (mobile) await b.tap(); else await b.click(); await page.waitForTimeout(150);
+      const r = await read(), w = byKind(k);
+      check(`${label} 기록 「${k === 'all' ? '모두' : k === 'update' ? '업데이트' : '자료 변경'}」 누름 → ${r.items.length}줄 = 기록 파일 ${w.length}줄(같은 차례)`, r.pressed === k && r.items.length === w.length && r.items.every((x, i) => x.id === w[i].id), {pressed: r.pressed, n: r.items.length});
+    }
+    check(`${label} 무결성(기록 탭 맨 아래 「기술 정보」): 「${r0.integ}」 · 다른 화면 맨 아래 「기술 정보」 ${footTech}개(옮김 · 규칙 1)`, /모두 판 목록의 SHA-256 과 같음/.test(r0.integ ?? '') && footTech === 0, {integ: r0.integ, footTech});
+  }
+  // ⑥ 글씨 단추
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(300);
-  const integ = await page.evaluate(() => document.querySelector('.b-foot .integrity-text')?.textContent); // 「기술 정보」 접힌 칸 안(잡스 개혁 — 기술 말은 접어 둠)
-  check(`${label} 무결성: 「${integ}」`, /모두 판 목록의 SHA-256 과 같음/.test(integ ?? ''), {integ});
   await page.locator('#font-btn').click(); await page.waitForTimeout(200);
   const fs1 = await page.evaluate(() => [document.documentElement.style.fontSize, document.documentElement.dataset.fontStep]);
   check(`${label} 글씨 단추: 125% 로 커짐`, fs1[0] === '125%' && fs1[1] === '1', {fs1});
@@ -814,12 +837,16 @@ async function usCheck() {
   check(`미국 회사 화면: 수급 줄 「${cp.flow}」 — 미국은 투자자별 매매 공개 자료가 없다고 적음(0 으로 채우지 않음)`, cp.flow === `수급 · ${um.place.flowsNone}`, {flow: cp.flow});
   await page.screenshot({path: path.join(dir, 'us-company.png')});
   await page.goto(ub + '/#/agenda', {waitUntil: 'networkidle'}); await page.waitForSelector('.a-page'); await page.waitForTimeout(300);
-  const ag = await page.evaluate(() => ({disc: document.querySelector('[aria-label="공시"] p')?.textContent.trim() ?? null, krDisc: document.querySelectorAll('[aria-label="예고 공시"], [aria-label="아주 중요한 공시"]').length, integ: document.querySelector('.integrity-text')?.textContent.trim() ?? null}));
+  const ag = await page.evaluate(() => ({disc: document.querySelector('[aria-label="공시"] p')?.textContent.trim() ?? null, krDisc: document.querySelectorAll('[aria-label="예고 공시"], [aria-label="아주 중요한 공시"]').length}));
   check(`미국 판 일정: 공시 칸 「${ag.disc}」 한 칸 · 한국 공시 칸 둘(예고 · ★★★) 없음`, ag.disc === um.place.disclosuresNone && ag.krDisc === 0, ag);
-  check(`미국 판 무결성: 「${ag.integ}」`, /모두 판 목록의 SHA-256 과 같음/.test(ag.integ ?? ''), {integ: ag.integ});
   await page.click('.mkt-b[data-place="kr"]'); await page.waitForURL(u => /\/#\/agenda$/.test(String(u)) && !/\/us\//.test(String(u)), {timeout: 15000}).catch(() => {}); await page.waitForSelector('.a-page', {timeout: 15000}).catch(() => {});
   const back = await page.evaluate(() => ({url: location.pathname + location.hash, strip: document.querySelector('.mstrip .m-time')?.textContent.trim() ?? null}));
   check(`「한국」 누름 → 한국 판 일정 그대로(${back.url}) · 시장 띠 「${back.strip}」`, back.url === '/#/agenda' && /15:30 KST/.test(back.strip ?? ''), back);
+  // 미국 판 「기록」 탭 — 한국 판과 같은 /changelog.json · 무결성(미국 판 묶음)은 이 탭 맨 아래(옛 맨 아래 「기술 정보」를 옮김)
+  const usLog = await (await fetch(base + '/changelog.json')).json();
+  await page.goto(ub + '/#/log', {waitUntil: 'networkidle'}); await page.waitForSelector('.lg-page .lg-item'); await page.waitForTimeout(300);
+  const ul = await page.evaluate(() => ({n: document.querySelectorAll('.lg-item').length, first: document.querySelector('.lg-item')?.dataset.id, tabs: document.querySelectorAll('.bottom-link').length, here: document.querySelector('.mkt-b[aria-current="page"]')?.dataset.place, integ: document.querySelector('.lg-tech .integrity-text')?.textContent.trim() ?? null}));
+  check(`미국 판 「기록」 탭: 줄 ${ul.n}개 = /changelog.json ${usLog.entries.length}개 · 아래 탭 ${ul.tabs}개 · 미국 눌림 · 무결성 「${ul.integ}」`, ul.n === usLog.entries.length && ul.first === usLog.entries[0]?.id && ul.tabs === 6 && ul.here === 'us' && /모두 판 목록의 SHA-256 과 같음/.test(ul.integ ?? ''), ul);
   check(`미국 판 화면들: 콘솔 오류 0 · 요청 실패 0`, errs.length === 0 && failed.length === 0, {errs: errs.slice(0, 3), failed: failed.slice(0, 3)});
   await context.close();
 }
