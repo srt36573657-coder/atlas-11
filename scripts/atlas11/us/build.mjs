@@ -10,10 +10,13 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {buildBoard} from '../../../lib/atlas11/board.mjs';
+import {buildBoard, boardAsOf} from '../../../lib/atlas11/board.mjs';
+import {mergeIndexRows} from '../../../lib/atlas11/lead6.mjs';
 import {usPlace, usMarketOf, US_EVENT_KINDS} from '../../../lib/atlas11/us/place.mjs';
 
 export const US_DATA = 'public/data/atlas11/us';
+/** S&P 500 종가 쌓아 두기 — 지도 탭 「지난 6개월 앞서 달린 곳」 상자의 지수 자리(2026-10-06 14:55 「해」 · 한국 판 build_view.mjs MARKET_FILE 과 같은 방법) */
+export const US_MARKET_FILE = US_DATA + '/market/INX.json';
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
 
 /** 영어 기사 제목이 섞여 오면 앞날 말을 영어로도 거른다(한국말 거르기는 buildBoard 가 함) */
@@ -26,7 +29,12 @@ export async function buildUsFiles({root = process.cwd(), now = new Date().toISO
   const news = (ctx?.news ?? []).map(n => ({...n, items: (n.items ?? []).filter(i => !EN_PREDICTION.test(i.title ?? ''))}));
   const snap = ctx ? {day: ctx.day, fetchedAt: ctx.fetchedAt, news, index: ctx.index ?? []} : null;
   const events = (schedule?.events ?? []).filter(e => e.scope?.type === 'market' && US_EVENT_KINDS.includes(e.kind));
-  const files = buildBoard({input, snap, contextFile: ctx ? US_DATA + '/context.json' : null, events, eventsSource: '확인된 일정표(미국 연준 금리 · 물가 · 고용 발표 · 일정마다 공식 출처 주소)', now});
+  let stored = null; try { stored = await read(US_MARKET_FILE, null); } catch (e) { console.warn('us market history: ' + e.message); }
+  const live = (snap?.index ?? []).find(i => i.symbol === stored?.symbol)?.rows ?? [];
+  const mh = Array.isArray(stored?.rows) && stored.rows.length ? mergeIndexRows(stored.rows, live, {upTo: boardAsOf(input, now)}) : null;
+  const indexHistory = mh ? {symbol: stored.symbol, name: stored.name, rows: mh.rows, source: {file: US_MARKET_FILE, seed: stored.seed?.source ?? null, live: (snap?.index ?? []).find(i => i.symbol === stored.symbol)?.sourceUrl ?? null}} : null;
+  const files = buildBoard({input, snap, contextFile: ctx ? US_DATA + '/context.json' : null, events, eventsSource: '확인된 일정표(미국 연준 금리 · 물가 · 고용 발표 · 일정마다 공식 출처 주소)', indexHistory, now});
+  if (mh) Object.defineProperty(files, 'market', {value: {stored, ...mh}, enumerable: false}); // 판 파일(Map)에는 들어가지 않음 — writeUsMarket 이 씀
   const m = files.get('manifest.json');
   m.place = usPlace(input.sources ?? {});
   m.market = usMarketOf(snap, ctx ? US_DATA + '/context.json' : null);
@@ -45,7 +53,15 @@ export async function writeUsView(files, {root = process.cwd()} = {}) {
   return {boardId: m.boardId, asOf: m.asOf, companies: m.companies, groups: b.groups.length, hot: b.hot.items.map(x => x.label), next: b.next.items.length, similar: b.similar?.items?.length ?? 0, late: m.late.length, market: m.market?.items?.map(i => `${i.name} ${i.close}`) ?? null, dir: path.relative(root, dir)};
 }
 
+/** 이어 붙인 S&P 500 줄을 쌓아 두는 파일에 다시 쓴다 — 새로 붙은 날이 있을 때만(미국 자료 받기 작업이 public/data/atlas11/us 를 기록에 남김) */
+export async function writeUsMarket(files, {root = process.cwd(), now = new Date().toISOString()} = {}) {
+  const mh = files.market; if (!mh?.added?.length) return {file: US_MARKET_FILE, added: [], mismatch: mh?.mismatch ?? []};
+  await fs.writeFile(path.join(root, US_MARKET_FILE), JSON.stringify({...mh.stored, rows: mh.rows, appended: [...(mh.stored.appended ?? []), {at: now, dates: mh.added}]}, null, 0));
+  return {file: US_MARKET_FILE, added: mh.added, mismatch: mh.mismatch};
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
-  const files = await buildUsFiles({now: arg('--now') ?? new Date().toISOString()});
-  console.log(JSON.stringify(await writeUsView(files)));
+  const now = arg('--now') ?? new Date().toISOString(), files = await buildUsFiles({now});
+  const out = await writeUsView(files); let market = null; try { market = await writeUsMarket(files, {now}); } catch (e) { console.warn('us market history write: ' + e.message); }
+  console.log(JSON.stringify({...out, market}));
 }

@@ -16,8 +16,12 @@
      · 땅을 누르면 아래 73칸이 그 갈래만 — 옛 큰 갈래 단추 12개(familyFilter)를 지도가 대신(규칙 1) · 73칸 · 칸 넷 · 오른 순은 그대로
    2026-10-06 07:03 사장님(휴대폰 사진과 함께) 「왜 3단 클릭 구조가 아니지?」 — 지도는 세 번이면 회사: 땅 → 그 갈래 화면(#/map/f/<갈래> · renderLand) → 업종 → 회사
      · 옛 판은 땅을 누르면 지도 아래 73칸만 걸러졌다 — 휴대폰에서는 그 칸들이 화면 밖이라 눌러도 아무 일이 없는 것처럼 보였다
-     · 넣으면서 뺀 것(규칙 1): 땅 거르기 · 「모두 보기」 단추 · 거르기 안내 줄 · 기억해 두던 고른 갈래(prefs mapFamily) */
-import {h, korDate, pct, finite, signCls, place} from './util.js';
+     · 넣으면서 뺀 것(규칙 1): 땅 거르기 · 「모두 보기」 단추 · 거르기 안내 줄 · 기억해 두던 고른 갈래(prefs mapFamily)
+   2026-10-06 14:55 「해」(14:48 카드 「1 해」 — ATLAS 지도에 지수가 1년 가운데 가장 높던 값보다 몇 % 아래인지 · 지난 6달 앞서 달린 업종 안의 앞서 달린 회사를 지난 기록으로만):
+     · 지도 탭 맨 아래 접힌 상자 하나 「지난 6개월 앞서 달린 곳」(lead6Box · 셈은 lib/atlas11/lead6.mjs 한 곳 · 지도 그림(땅 · 칸)은 그대로 — 규칙 16 · 10/4 「구도 … 건들리지 않는다」)
+     · 규칙 3(기간 잣대는 20거래일 하나)의 예외는 이 접힌 상자 하나뿐 — 상자 안 차례도 120거래일 변화 순
+     · 넣으면서 뺀 것(규칙 1): 73칸 아래 설명 한 줄(t-key — 머리 줄 · 지도 설명 줄과 겹치던 「칸 하나 = 업종 하나 · 차례 · 누르면 그 업종 · 종가 시각」) */
+import {h, korDate, pct, num, finite, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
 import {foot, promiseBox, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
@@ -113,11 +117,34 @@ function mapBox(groups) {
     h('p', {class: 'lm-key muted xs'}, '땅 = 큰 갈래(넓이 = 업종 수 · 자리는 날마다 같음) · 칸 = 업종(땅 안 위 왼쪽부터 오른 순) · 색 = 지난 20거래일 평균 — 빨강 오름 · 파랑 내림 · 진할수록 변화가 큼 · 땅을 누르면 그 갈래 업종'))};
 }
 
+/** 지도 탭 맨 아래 접힌 상자 「지난 6개월 앞서 달린 곳」 — 판 board.lead6 · groups[].change120/lead6 · companies[].change120/lead6 를 그대로 보여 준다(화면에서 다시 셈하지 않음 · 규칙 12)
+   ① 지수 자리: 지난 250거래일 가운데 가장 높던 종가보다 몇 % 아래 ② 업종 위 20%(120거래일 업종 지수) 안에서 회사도 위 20%(120거래일 종가 변화)인 곳 — 차례는 120거래일 변화 순
+   앞날 값은 없다 — 공부(reports/atlas11/study/대세 상승 초입 — 20년 기록 · 한국과 미국.md)의 「그 뒤 6달」 숫자는 싣지 않는다 */
+export function lead6Box(board, groups) {
+  const L = board.lead6; if (!L) return null;
+  const byCode = new Map(board.companies.map(c => [c.code, c])), desc = (a, b) => (b.change120 ?? -Infinity) - (a.change120 ?? -Infinity);
+  const rows = groups.filter(g => g.lead6).sort(desc).map(g => ({g, cs: g.codes.map(c => byCode.get(c)).filter(c => c?.lead6).sort(desc)}));
+  const withCo = rows.filter(r => r.cs.length), without = rows.filter(r => !r.cs.length), n = withCo.reduce((t, r) => t + r.cs.length, 0);
+  const sizes = new Set(groups.map(g => g.codes.length)), per = sizes.size === 1 ? [...sizes][0] : null, ix = L.index;
+  const p1 = v => pct(v, 1), chg = v => h('b', {class: 'chg20 ' + (signCls(v) || 'flat')}, finite(v) ? p1(v) : '없음');
+  const ixLine = ix ? h('p', {class: 'm6-ix'}, `${ix.name}: ${korDate(ix.date)} 종가 ${num(ix.close, 2)} — 지난 ${ix.days}거래일 가운데 가장 높던 ${korDate(ix.highDate)} ${num(ix.high, 2)}${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}`)
+    : h('p', {class: 'm6-ix muted'}, `지수 자리: ${L.indexMissing ?? '지수 종가 기록 없음'}`);
+  return h('details', {class: 'b-how m6'},
+    h('summary', null, '지난 6개월 앞서 달린 곳 · 지난 기록', h('small', {class: 'm6-n'}, `업종 ${withCo.length}개 · 회사 ${n}곳`)),
+    ixLine,
+    h('ul', {class: 'm6-list', 'aria-label': `지난 120거래일 업종 위 20% 안에서 회사도 위 20%인 곳 · 업종 ${withCo.length}개 · 회사 ${n}곳`},
+      ...withCo.map(({g, cs}) => h('li', null,
+        h('a', {class: 'm6-g', href: '#/i/' + g.id, 'data-group': g.id}, h('span', null, g.label), chg(g.change120)),
+        h('span', {class: 'm6-cs'}, ...cs.map(c => h('a', {href: '#/stock/' + c.code, 'data-code': c.code}, c.name, ' ', chg(c.change120))))))),
+    without.length ? h('p', {class: 'm6-rest muted xs'}, `업종은 위 20%지만 회사는 위 20%가 아닌 업종 ${without.length}개: ${without.map(r => r.g.label).join(' · ')}`) : null,
+    h('p', {class: 'm6-how muted xs'}, `업종 = 지난 120거래일(약 6개월) 업종 지수(회사${per ? ` ${per}곳` : ''} 하루 오르내림을 같은 무게로 이어 붙임) · 업종 ${L.measured.groups}개 가운데 위 20%(${L.lead.groups}개) · 회사 = 지난 120거래일 종가 변화 · ${L.measured.companies}곳 가운데 위 20%(${L.lead.companies}곳) · 두 가지 모두 맞는 회사만 · ${korDate(L.from)}부터 ${korDate(L.to)}까지 ${place.close} 종가 · 차례 = 120거래일 변화 순`),
+    h('p', {class: 'm6-note muted xs'}, '지난 종가로 센 것입니다 · 앞날 값은 셈하지 않습니다'));
+}
+
 export async function renderMap(main, {manifest}) {
   const board = await loadBoard();
   const set = manifest.universeSet ?? {}, late = board.late ?? [], n = board.companies.length;
   const groups = board.groups?.length ? board.groups : [];
-  const sizes = new Set(groups.map(g => g.codes.length)), per = sizes.size === 1 ? [...sizes][0] : null;
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   state.summary = `지도. ${korDate(to)} 종가 기준. 업종 ${groups.length}개. ${headLine(groups, n, from, to)}.`; // 태양 수는 아래 grid 를 만든 뒤 덧붙임
   const shp = sunOf(board); if (shp.sparkle.size) state.summary += ` 태양 ${shp.sparkle.size}곳.`;
@@ -131,7 +158,7 @@ export async function renderMap(main, {manifest}) {
       ...lateLines(late, board)),
     mb.box,
     grid,
-    h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나${per ? `(${per}곳)` : ''} · 지난 20거래일 평균 변화가 큰 차례 · 누르면 그 업종 · ${korDate(board.asOf)} ${place.close} 종가`),
+    lead6Box(board, groups), // 2026-10-06 14:55 「해」 — 접힌 상자 하나(넣은 것) · 뺀 것: 이 자리에 있던 73칸 설명 한 줄(t-key)
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     setBox(set, board, groups),
     foot(manifest)));

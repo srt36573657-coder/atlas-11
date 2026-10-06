@@ -124,6 +124,16 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .b-how summary::before, .nx-how summary::before { content: '▸'; flex: none; color: var(--sub); }
 .b-how[open] > summary::before, .nx-how[open] > summary::before { content: '▾'; }
 .b-how ul { margin: 8px 0 0; padding-left: 1.2em; font-size: .9375rem; line-height: 1.6; color: var(--ink2); }
+/* 지도 탭 맨 아래 접힌 상자 「지난 6개월 앞서 달린 곳」 — 2026-10-06 14:55 「해」(view-home.js lead6Box · 셈은 lib/atlas11/lead6.mjs) */
+.m6 summary small { font-weight: 400; color: var(--sub); }
+.m6-ix { margin: 8px 0 2px; font-size: .9375rem; line-height: 1.6; color: var(--ink); }
+.b-how ul.m6-list { list-style: none; padding: 0; margin: 6px 0 0; }
+.m6-list > li { padding: 8px 0; border-top: 1px solid var(--hair); }
+.m6-list > li:first-child { border-top: 0; }
+.m6-g { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-weight: 700; color: var(--ink); text-decoration: none; min-height: 32px; }
+.m6-cs { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 2px; }
+.m6-cs a { color: var(--ink2); text-decoration: none; white-space: nowrap; min-height: 32px; display: inline-flex; align-items: center; gap: 4px; }
+.m6-rest, .m6-how, .m6-note { margin: 8px 0 0; line-height: 1.6; }
 .b-foot { margin: 22px 4px 0; font-size: .8125rem; color: var(--sub); line-height: 1.6; }
 .b-foot p { margin: 2px 0; }
 .b-foot .b-promise { font-size: .9375rem; font-weight: 700; color: var(--ink2); margin-bottom: 4px; } /* 약속 한 줄 — 「지난 기록만 · 앞날을 맞히지 않음」 */
