@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-06",
- "fetchedAt": "2026-10-06T10:49:21Z",
- "file": "reports/atlas11/context/2026-10-06/2026-10-06T10-49-21Z.json",
+ "fetchedAt": "2026-10-06T13:57:38Z",
+ "file": "reports/atlas11/context/2026-10-06/2026-10-06T13-57-38Z.json",
  "summary": {
   "day": "2026-10-06",
-  "fetchedAt": "2026-10-06T10:49:21Z",
+  "fetchedAt": "2026-10-06T13:57:38Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-06",
@@ -22,11 +22,11 @@
   },
   "flows": {
    "stocks": 365,
-   "stocksWithToday": 0,
+   "stocksWithToday": 365,
    "provisional": true,
-   "foreignNetSharesSum": null,
-   "institutionNetSharesSum": null,
-   "individualNetSharesSum": null,
+   "foreignNetSharesSum": -7090209,
+   "institutionNetSharesSum": 3284693,
+   "individualNetSharesSum": 1932309,
    "note": "수량(주) 합계 · 종목마다 주가가 달라 금액 합계가 아님 · 당일 값은 잠정일 수 있음"
   },
   "news": {
@@ -35,8 +35,8 @@
    "distinct": 7169,
    "republished": 47,
    "sameArticle": 0,
-   "stocksWithTodayNews": 195,
-   "todayDistinct": 1421
+   "stocksWithTodayNews": 196,
+   "todayDistinct": 1434
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-06",
-     "value": 1339.9,
-     "changePct": -0.19
+     "value": 1340.1,
+     "changePct": -0.18
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-02",
-     "value": 15.31
+     "date": "2026-10-05",
+     "value": 15.52
     },
     "rows": 60
    },
@@ -198,9 +198,9 @@
    "factorId": "F14",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-02",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-06",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "외국인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 값은 16:00 에 잠정일 수 있어 다음 날 다시 받아 바뀌면 정정 기록",
@@ -211,9 +211,9 @@
    "factorId": "F16",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-02",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-06",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "기관 합계 순매매 수량(종목별)",
    "componentOnly": true,
    "note": "정의는 연기금 제외 기관 · 받은 값은 연기금이 포함된 기관 합계 → 일부 성분",
@@ -224,9 +224,9 @@
    "factorId": "F19",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-02",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-06",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "개인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 잠정 가능",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-06",
-     "value": 1339.9,
+     "value": 1340.1,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -392,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-02",
-   "calendarLagDays": 4,
+   "latestObservation": "2026-10-05",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-02",
-     "value": 15.31,
+     "latestObservation": "2026-10-05",
+     "value": 15.52,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-06-08"
     }
