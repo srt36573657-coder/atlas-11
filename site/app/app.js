@@ -18,7 +18,7 @@
    2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭을 만들어 줘」: 아래 탭 여섯째 「기록」(#/log · view-log.js)
      넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김 */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
-import {ON as I18N, LANG, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」) — /en/ · /zh/
+import {ON as I18N, LANG, LANGS, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
 import {renderCompany} from './view-company.js';
@@ -74,8 +74,29 @@ function speakerIcon() {
   for (const d of ['M11 5 6 9H3v6h3l5 4z', 'M15.5 8.5a5 5 0 0 1 0 7', 'M18.5 5.5a9 9 0 0 1 0 13']) { const path = document.createElementNS(ns, 'path'); path.setAttribute('d', d); svg.append(path); }
   return svg;
 }
+/** 말 단추 그림 — 선으로 그린 지구(글자색을 따른다 · 어느 나라 사람이든 「말 고르기」로 읽는 그림) */
+function globeIcon() {
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  for (const [k, v] of Object.entries({width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', focusable: 'false'})) svg.setAttribute(k, v);
+  const circle = document.createElementNS(ns, 'circle'); circle.setAttribute('cx', 12); circle.setAttribute('cy', 12); circle.setAttribute('r', 9); svg.append(circle);
+  for (const d of ['M3 12h18', 'M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9', 'M12 3c-2.5 2.7-3.8 5.7-3.8 9s1.3 6.3 3.8 9']) { const path = document.createElementNS(ns, 'path'); path.setAttribute('d', d); svg.append(path); }
+  return svg;
+}
+/** 말 고르기(2026-10-06 22:00 사장님 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 같은 주소 · 같은 화면을 그 말로 다시 연다(?lang= · 이 기기에 기억 · i18n.js)
+ *   말 이름은 그 말 글자로(한국어 · English · 中文) — 어느 말로 보고 있든 자기 말을 찾게 · 지금 말은 눌린 채로 */
+const LANG_NAME = {ko: '한국어', en: 'English', zh: '中文'}, LANG_TAG = {ko: 'ko', en: 'en', zh: 'zh-CN'};
+const langHref = code => location.pathname + '?lang=' + code + location.hash;
+function langPicker() {
+  const box = h('details', {class: 'lang'},
+    h('summary', {class: 'round lang-b', 'aria-label': 'Language · 语言 · 언어', title: 'Language · 语言 · 언어', 'data-orig-attr': 'aria-label title'}, globeIcon()),
+    h('div', {class: 'lang-menu'}, ...LANGS.map(c => h('a', {class: 'lang-i', href: langHref(c), lang: LANG_TAG[c], hreflang: LANG_TAG[c], 'aria-current': c === LANG ? 'true' : null,
+      onclick: e => { e.currentTarget.setAttribute('href', langHref(c)); }}, LANG_NAME[c]))));
+  document.addEventListener('click', e => { if (box.open && !box.contains(e.target)) box.open = false; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && box.open) { box.open = false; box.querySelector('summary')?.focus(); } });
+  return box;
+}
 const voice = {on: false};
-/** 맨 위: 둥근 단추 둘 — 「가」(글씨 100→125→150→175→200→100%) · 소리 */
+/** 맨 위: 둥근 단추 셋 — 말(지구 · 2026-10-06 22:00) · 「가」(글씨 100→125→150→175→200→100%) · 소리 */
 function header() {
   const speakBtn = h('button', {class: 'round speak', id: 'voice-btn', type: 'button', 'aria-label': '소리로 듣기', 'aria-pressed': 'false', onclick: () => {
     voice.on = !voice.on; speakBtn.classList.toggle('on', voice.on); speakBtn.setAttribute('aria-pressed', String(voice.on));
@@ -85,11 +106,12 @@ function header() {
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
   const tabHash = () => /^#\/(map|road|agenda|similar|rise|log)?$/.test(location.hash) ? location.hash : '';
-  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => { const href = I18N ? '/' + LANG + p.href : p.href; return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 언어판은 언어판끼리(/en/ ↔ /en/us/)
+  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
     onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); })) : null;
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
     mkt,
+    langPicker(),
     h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
     speakBtn));
   fontLabel();
