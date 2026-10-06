@@ -1,0 +1,36 @@
+# ATLAS 11 공부 · 20년 기록 받기(한국 · 미국) — 사장님 2026-10-06 13:01 「20년 기록을 봐봐 그리고 미국 도 보고」
+#   study-20y 가지에 이 파일이나 받는 코드를 올릴 때만 돈다(main 에는 없음 · 예약 없음 · 손으로 누를 것도 없음)
+#   결과는 reports/atlas11/study/20y/ 에만 적는다 — 사이트 · main · 매일 작업(atlas11-daily · atlas11-evening) · 한국 판 파일은 건드리지 않는다
+#   사이트에 올리지 않는다(올리기는 「aaa7377.com 올리기」 단추 · 사장님만 누름)
+name: 공부 · 20년 기록 받기
+on:
+  push:
+    branches: [study-20y]
+    paths:
+      - scripts/atlas11/study/collect_20y.mjs
+      - .github/workflows/study-20y.yml
+permissions:
+  contents: write
+concurrency:
+  group: study-20y
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 20년 기록 받기
+        run: timeout 3900 node scripts/atlas11/study/collect_20y.mjs --out reports/atlas11/study/20y
+      - name: 기록 올리기(reports/atlas11/study/20y 만)
+        if: always()
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -f reports/atlas11/study/20y
+          git commit -q -m "atlas11 study 20y data [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
