@@ -14,7 +14,11 @@ const OUT = 'public/data/atlas11/names-kr.json';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 const KEYS = ['stockNameEng', 'stockNameEn', 'engStockName', 'stockEngName', 'englishName', 'nameEng', 'itemNameEng'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const pick = o => { if (!o || typeof o !== 'object') return null; for (const k of KEYS) if (typeof o[k] === 'string' && o[k].trim()) return o[k].trim(); for (const v of Object.values(o)) if (v && typeof v === 'object' && !Array.isArray(v)) { const x = pick(v); if (x) return x; } return null; };
+// 맨 위 칸만 본다(안쪽 칸의 nameEng 은 「KOSPI」 같은 시장 이름이었음 — 2026-10-06 21:16 첫 실행에서 365곳 모두 시장 이름이 들어옴)
+const MARKETS = /^(KOSPI|KOSDAQ|KONEX|KRX)$/i;
+const pick = o => { if (!o || typeof o !== 'object' || Array.isArray(o)) return null; for (const k of KEYS) if (typeof o[k] === 'string' && o[k].trim() && !MARKETS.test(o[k].trim())) return o[k].trim(); for (const [k, v] of Object.entries(o)) if (/eng/i.test(k) && typeof v === 'string' && v.trim() && !MARKETS.test(v.trim()) && /[A-Za-z]/.test(v)) return v.trim(); return null; };
+const ENDPOINTS = code => [`https://m.stock.naver.com/api/stock/${code}/basic`, `https://api.stock.naver.com/stock/${code}/basic`, `https://m.stock.naver.com/api/stock/${code}/integration`, `https://polling.finance.naver.com/api/realtime/domestic/stock/${code}`];
+const shape = j => j && typeof j === 'object' ? Object.fromEntries(Object.entries(Array.isArray(j?.datas) ? j.datas[0] ?? {} : j).slice(0, 40).map(([k, v]) => [k, typeof v === 'string' ? v.slice(0, 40) : Array.isArray(v) ? `[${v.length}]` : v && typeof v === 'object' ? '{…}' : v])) : null;
 
 async function getJson(url) {
   for (let i = 0; i < 3; i++) {
@@ -29,19 +33,19 @@ async function getJson(url) {
 }
 
 const input = JSON.parse(await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'));
-const names = {}, keysSeen = new Set(); let got = 0;
+const names = {}, samples = {}; let got = 0;
 for (const a of input.assets) {
-  let en = null;
-  for (const u of [`https://m.stock.naver.com/api/stock/${a.code}/basic`, `https://m.stock.naver.com/api/stock/${a.code}/integration`]) {
-    const j = await getJson(u);
-    if (j && typeof j === 'object') for (const k of Object.keys(j)) keysSeen.add(k);
-    en = pick(j); if (en) break;
+  let en = null, from = null;
+  for (const u of ENDPOINTS(a.code)) {
+    const j = await getJson(u), top = Array.isArray(j?.datas) ? j.datas[0] : j;
+    if (Object.keys(samples).length < 8 && j) samples[u] = shape(j);
+    en = pick(top); if (en) { from = new URL(u).host + new URL(u).pathname.replace(a.code, '<code>'); break; }
   }
-  names[a.code] = {name: a.name, nameEn: en};
+  names[a.code] = {name: a.name, nameEn: en, from};
   if (en) got++;
   await sleep(150);
 }
-const out = {schema: 'atlas11-names-kr-1', fetchedAt: new Date().toISOString(), source: '네이버 증권 종목 기본 정보(m.stock.naver.com/api/stock/<code>/basic · integration) — 영어 종목명', count: input.assets.length, withEnglish: got, names};
+const out = {schema: 'atlas11-names-kr-1', fetchedAt: new Date().toISOString(), source: '네이버 증권 종목 정보(맨 위 칸의 영어 종목명 · 시장 이름은 뺌)', count: input.assets.length, withEnglish: got, samples, names};
 await fs.writeFile(path.join(root, OUT), JSON.stringify(out, null, 1) + '\n');
-console.log(JSON.stringify({file: OUT, count: out.count, withEnglish: got, keysSeen: [...keysSeen].slice(0, 60), sample: Object.entries(names).slice(0, 5)}));
-if (!got) process.exitCode = 1;
+console.log(JSON.stringify({file: OUT, count: out.count, withEnglish: got, sample: Object.entries(names).slice(0, 5)}));
+// 하나도 못 받아도 파일은 남김(samples 로 어느 칸이 있는지 보려고) — 화면은 이름이 없으면 한국 이름 그대로
