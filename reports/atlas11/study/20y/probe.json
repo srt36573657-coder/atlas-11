@@ -1,0 +1,74 @@
+{
+ "startedAt": "2026-10-06T04:05:25.076Z",
+ "kr": {
+  "KOSPI": {
+   "how": "fchart",
+   "rows": 3000,
+   "first": "20140714",
+   "fchartStatus": 200
+  },
+  "KOSDAQ": {
+   "how": "fchart",
+   "rows": 3000,
+   "first": "20140714",
+   "fchartStatus": 200
+  },
+  "stocks": {
+   "asked": 1648,
+   "got": 1648,
+   "fails": 0,
+   "hows": {
+    "fchart": 1642,
+    "api-domestic-years": 6
+   },
+   "boardGot": 365,
+   "startedBefore2007": 0
+  }
+ },
+ "us": {
+  ".INX": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  ".IXIC": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  ".DJI": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  "stocks": {
+   "asked": 365,
+   "got": 365,
+   "fails": 0,
+   "startedBefore2007": 0
+  }
+ },
+ "errors": [],
+ "finishedAt": "2026-10-06T04:11:42.467Z"
+}
