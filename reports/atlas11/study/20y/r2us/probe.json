@@ -1,0 +1,204 @@
+{
+ "startedAt": "2026-10-06T04:38:06.794Z",
+ "kr": {},
+ "us": {
+  ".IXIC": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "fred-NASDAQCOM",
+     "status": null,
+     "total": 0
+    },
+    {
+     "way": "stooq-^ndq@stooq.com",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "stooq-^ndq@stooq.pl",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "wsj-COMP",
+     "status": 401,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  ".INX": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "stooq-^spx@stooq.com",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "stooq-^spx@stooq.pl",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "wsj-SPX",
+     "status": 401,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  ".DJI": {
+   "how": "chart-foreign-index-years",
+   "rows": 4085,
+   "first": "20100709",
+   "tries": [
+    {
+     "way": "stooq-^dji@stooq.com",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "stooq-^dji@stooq.pl",
+     "status": 403,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "wsj-DJIA",
+     "status": 401,
+     "total": 0,
+     "head": null
+    },
+    {
+     "way": "chart-foreign-index-years",
+     "status": 200,
+     "rows": 0
+    }
+   ]
+  },
+  "progress": {
+   "done": 350,
+   "fails": 0,
+   "hows": {
+    "naver-years": 350
+   },
+   "stooqFail": [
+    {
+     "code": "NVDA",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "AVGO",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "MU",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "AMD",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "INTC",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "MSFT",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "PLTR",
+     "status": "skipped",
+     "head": null
+    },
+    {
+     "code": "ORCL",
+     "status": "skipped",
+     "head": null
+    }
+   ]
+  },
+  "stocks": {
+   "asked": 365,
+   "got": 365,
+   "fails": 0,
+   "hows": {
+    "naver-years": 365
+   },
+   "stooqFail": [
+    {
+     "code": "NVDA",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "AVGO",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "MU",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "AMD",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "INTC",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "MSFT",
+     "status": 403,
+     "head": null
+    },
+    {
+     "code": "PLTR",
+     "status": "skipped",
+     "head": null
+    },
+    {
+     "code": "ORCL",
+     "status": "skipped",
+     "head": null
+    }
+   ],
+   "startedBefore2007": 0
+  },
+  "overlap": []
+ },
+ "errors": [],
+ "finishedAt": "2026-10-06T04:50:36.301Z"
+}
