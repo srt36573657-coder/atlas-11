@@ -24,7 +24,7 @@
 import {h, korDate, pct, num, finite, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
-import {foot, promiseBox, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
+import {foot, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js'; // 「ATLAS가 하지 않는 일」 상자는 아래 탭 「처음」으로 옮김(2026-10-07 00:49 · 규칙 1)
 import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
@@ -74,7 +74,6 @@ export async function renderHome(main, {manifest}) {
     h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp))),
     h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「지도」 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
-    promiseBox(),
     foot(manifest)));
 }
 

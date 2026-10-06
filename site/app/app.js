@@ -16,7 +16,9 @@
      예비(#/similar) · 오름 상위(#/rise)은 탭 「불장」 안 맨 위 스위치로(parts.js hotSwitch) — 내리지 않고 한 번 눌러 바뀜 · 셋 다 탭 「불장」이 눌린 채로
    2026-10-05 15:24 「잡스가 이 아틀란스를 혁신 한다면 큰틀에서 36가지를 찾아 개선하라」: #/road/sun = 어느 화면에서든 출목표 「태양」으로(태양 하나로 잇기)
    2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭을 만들어 줘」: 아래 탭 여섯째 「기록」(#/log · view-log.js)
-     넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김 */
+     넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김
+   2026-10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」: 아래 탭 일곱째 「처음」(#/start · view-start.js · 셈 lib/atlas11/start.mjs · 규칙 21)
+     넣으면서 뺀 것(규칙 1): 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」 — 「처음」 탭 맨 아래로 옮김 */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
 import {ON as I18N, LANG, LANGS, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
@@ -29,6 +31,7 @@ import {renderSimilar} from './view-similar.js';
 import {renderRise} from './view-rise.js';
 import {renderFind} from './view-find.js';
 import {renderLog} from './view-log.js';
+import {renderStart} from './view-start.js';
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
@@ -41,6 +44,8 @@ const ICON = {
   find: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 20.5 20.5"/></svg>',
   // 기록: 거꾸로 도는 화살 + 시계 바늘(지난 일을 적은 곳 · 2026-10-06 16:10 「기록 하는 탭」)
   log: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 12a7.8 7.8 0 1 0 2.3-5.5"/><path d="M4.2 3.8v4.6h4.6"/><path d="M12 7.8V12l3 2"/></svg>',
+  // 처음: 새싹 하나(처음 사는 사람 · 2026-10-07 00:49 「이대로 사이트에 올려줘」)
+  start: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4.2 2.9-6.8 7.5-6.8 0 4.4-3 6.8-7.5 6.8z"/><path d="M12 14.5c0-3.3-2.3-5.4-6-5.4 0 3.5 2.4 5.4 6 5.4z"/><path d="M7.5 21h9"/></svg>',
   // 예비: 반짝임 하나(큰 별 + 작은 별) — 「눈여겨볼 것」
   similar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 11.9 9.1 17.5 11 11.9 12.9 10 18.5 8.1 12.9 2.5 11 8.1 9.1z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>',
   // 22곳: 차례 목록(점 셋 + 줄 셋)
@@ -58,8 +63,9 @@ const routes = [
   {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
   {id: 'find', tab: 'find', label: '찾기', match: /^#\/find$/, render: renderFind}, // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 한국 · 미국 판을 함께
   {id: 'log', tab: 'log', label: '기록', match: /^#\/log$/, render: renderLog}, // 2026-10-06 16:10 「… 뭘 어떻게 변화 시켰는지에 대해서 기록 하는 탭」 — 업데이트 · 자료 변경 날짜
+  {id: 'start', tab: 'start', label: '처음', match: /^#\/start$/, render: renderStart}, // 2026-10-06 23:19 「초보들이 뭘사야 안전한지 … 잡스였다면」 · 10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」 — 지난 3년 가장 덜 떨어진 우량 큰 회사 다섯
 ];
-const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log'];
+const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log', 'start']; // 일곱째 「처음」(2026-10-07 00:49) — 넣으면서 뺀 것: 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」(「처음」 안으로)
 /** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
 const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map', 'find']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
@@ -105,7 +111,7 @@ function header() {
   // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
-  const tabHash = () => /^#\/(map|road|agenda|similar|rise|log)?$/.test(location.hash) ? location.hash : '';
+  const tabHash = () => /^#\/(map|road|agenda|similar|rise|log|start)?$/.test(location.hash) ? location.hash : '';
   const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
     onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); })) : null;
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
