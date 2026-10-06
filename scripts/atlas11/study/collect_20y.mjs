@@ -6,6 +6,11 @@
  *   미국: S&P 500(.INX) · 나스닥 종합(.IXIC) · 다우(.DJI) + 미국 판 365곳 — api.stock.naver.com 해외 일봉을 해마다 나눠 받음(한 번에 받는 줄 수 상한 대비)
  *         지수는 길 셋을 차례로 시험: 해외 지수 일봉 → 지수 시세 쪽 넘기기 → nasdaq.com 지수 기록
  *   남기는 것: 날짜 · 종가 · 거래량만(날짜는 첫날 + 달력 날 차이로 줄여 적음) · 어느 길이 됐는지(probe)
+ *   (13:12 첫 판에서 알게 된 것) fchart 는 count 6000 을 줘도 3,000줄(2014-07 부터)에서 끊김 · 네이버 해외 일봉은 2010-07 부터
+ *     → 한국은 네이버 siseJson(기간을 날짜로 줌)을 먼저, 미국 지수는 미 연준(FRED) 나스닥 종합(1971~) · stooq(^spx · ^dji)를 먼저,
+ *       미국 회사는 stooq 를 먼저 쓰고, 안 되면 앞 판의 길(네이버)로. 두 길이 겹치는 날의 종가를 회사 몇 곳에서 맞대어 probe 에 남김
+ *       S&P 500 · 다우는 stooq 가 안 되면 월스트리트저널(WSJ) 기록 내려받기를 한 번 더 시험
+ *     → 둘째 판 결과는 첫 판을 덮지 않도록 다른 칸(--out reports/atlas11/study/20y/r2)에 적는다
  *   결과: <out>/kr.json.gz · <out>/us.json.gz · <out>/probe.json — 사이트 · main · 매일 작업 파일은 건드리지 않는다
  *   쓰는 법: node scripts/atlas11/study/collect_20y.mjs --out reports/atlas11/study/20y [--only kr|us] [--limit N]
  */
@@ -20,6 +25,7 @@ const START_YEAR = 2004, END = new Date(), END_YEAR = END.getUTCFullYear();
 const ymd = d => d.toISOString().slice(0, 10).replace(/-/g, '');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const num = v => (typeof v === 'number' ? v : Number(String(v ?? '').replace(/,/g, '').trim()));
+const BROWSER = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.9'};
 fs.mkdirSync(OUT, {recursive: true});
 const probe = {startedAt: new Date().toISOString(), kr: {}, us: {}, errors: []};
 
@@ -53,9 +59,18 @@ async function pool(items, n, fn) {
 const years = Array.from({length: END_YEAR - START_YEAR + 1}, (_, k) => START_YEAR + k);
 
 // ---------- 한국 ----------
+function parseSiseJson(text) {
+  const out = [];
+  for (const m of String(text).matchAll(/\[\s*["'](\d{8})["']\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/g)) out.push({d: m[1], c: num(m[5]), v: num(m[6])});
+  return out;
+}
+const TODAY = ymd(END);
 async function krSeries(symbol, isIndex) {
+  const sj = await get(`https://api.finance.naver.com/siseJson.naver?symbol=${encodeURIComponent(symbol)}&requestType=1&startTime=${START_YEAR}0101&endTime=${TODAY}&timeframe=day`);
+  let rows = sj.ok ? parseSiseJson(sj.text) : [];
+  if (rows.length >= 50) return {how: 'siseJson', rows, fchartStatus: sj.status ?? null};
   const f = await get(`https://fchart.stock.naver.com/sise.nhn?symbol=${encodeURIComponent(symbol)}&timeframe=day&count=6000&requestType=0`);
-  let rows = f.ok ? parseFchart(f.text) : [];
+  rows = f.ok ? parseFchart(f.text) : [];
   let how = 'fchart';
   if (rows.length < 50) {
     how = 'api-domestic-years'; rows = [];
@@ -85,6 +100,16 @@ async function runKr() {
     hows[s.how] = (hows[s.how] ?? 0) + 1;
     if (++done % 200 === 0) console.log('kr stocks', done, '/', codes.length, 'fails', fails, hows);
   });
+  probe.kr.overlap = [];
+  for (const code of ['005930', '000660', '035420', '005380', '051910']) {
+    const st = out.stocks[code]; if (!st) continue;
+    const f = await get(`https://fchart.stock.naver.com/sise.nhn?symbol=${code}&timeframe=day&count=3000&requestType=0`);
+    const fv = f.ok ? new Map(parseFchart(f.text).map(x => [x.d, x.c])) : new Map();
+    let t = Date.UTC(+st.d0.slice(0, 4), +st.d0.slice(4, 6) - 1, +st.d0.slice(6, 8)); const ratios = [];
+    for (let i = 0; i < st.c.length; i++) { if (i) t += st.dd[i - 1] * 86400000; const dd = new Date(t).toISOString().slice(0, 10).replace(/-/g, ''); if (fv.has(dd)) ratios.push(st.c[i] / fv.get(dd)); }
+    ratios.sort((a, b) => a - b);
+    probe.kr.overlap.push({code, n: ratios.length, min: ratios[0] ?? null, median: ratios[Math.floor(ratios.length / 2)] ?? null, max: ratios.at(-1) ?? null});
+  }
   probe.kr.stocks = {asked: codes.length, got: Object.keys(out.stocks).length, fails, hows,
     boardGot: [...inBoard].filter(c => out.stocks[c]).length, startedBefore2007: Object.values(out.stocks).filter(s => s.d0 < '20070101').length};
   fs.writeFileSync(path.join(OUT, 'kr.json.gz'), zlib.gzipSync(JSON.stringify(out)));
@@ -93,8 +118,41 @@ async function runKr() {
 
 // ---------- 미국 ----------
 const NAVER_PAGE = (code, page) => `https://api.stock.naver.com/index/${encodeURIComponent(code)}/price?page=${page}&pageSize=60`;
+function parseCsv(text, dateCol = 0, closeCol = 4, volCol = 5) {
+  const out = []; const lines = String(text).trim().split(/\r?\n/);
+  for (const ln of lines.slice(1)) { const f = ln.split(','); if (!/^\d{4}-\d{2}-\d{2}$/.test(f[dateCol] ?? '')) continue; const c = num(f[closeCol]); if (!(c > 0)) continue; out.push({d: f[dateCol].replace(/-/g, ''), c, v: volCol == null ? NaN : num(f[volCol])}); }
+  return out;
+}
+const STOOQ = (sym, host = 'stooq.com') => `https://${host}/q/d/l/?s=${encodeURIComponent(sym)}&d1=${START_YEAR}0101&d2=${TODAY}&i=d`;
+function parseWsj(text) {  // Date, Open, High, Low, Close · 날짜는 MM/DD/YY
+  const out = [];
+  for (const ln of String(text).trim().split(/\r?\n/).slice(1)) { const f = ln.split(',').map(x => x.trim()); const m = /^(\d{2})\/(\d{2})\/(\d{2})$/.exec(f[0] ?? ''); if (!m) continue; const c = num(f[4]); if (c > 0) out.push({d: `20${m[3]}${m[1]}${m[2]}`, c, v: NaN}); }
+  return out;
+}
 async function usIndex(code, nasdaqSym) {
   const tries = [];
+  const stq = {'.INX': '^spx', '.IXIC': '^ndq', '.DJI': '^dji'}[code];
+  if (code === '.IXIC') {  // 미 연준(FRED) 나스닥 종합 — 1971년부터 날마다
+    const r = await get('https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM', {...BROWSER, Accept: 'text/csv,*/*'});
+    const rows = r.ok ? parseCsv(r.text, 0, 1, null).filter(x => x.d >= `${START_YEAR}0101`) : [];
+    tries.push({way: 'fred-NASDAQCOM', status: r.status, total: rows.length});
+    if (rows.length >= 4000) return {how: 'fred-NASDAQCOM', rows, tries};
+  }
+  if (stq) {
+    for (const host of ['stooq.com', 'stooq.pl']) {
+      const r = await get(STOOQ(stq, host), {...BROWSER, Accept: 'text/csv,*/*'});
+      const rows = r.ok ? parseCsv(r.text) : [];
+      tries.push({way: `stooq-${stq}@${host}`, status: r.status, total: rows.length, head: r.ok ? r.text.slice(0, 80) : null});
+      if (rows.length >= 4000) return {how: 'stooq-' + stq, rows, tries};
+    }
+  }
+  const wsj = {'.INX': 'SPX', '.IXIC': 'COMP', '.DJI': 'DJIA'}[code];
+  if (wsj) {
+    const r = await get(`https://www.wsj.com/market-data/quotes/index/${wsj}/historical-prices/download?MOD_VIEW=page&num_rows=9000&range_days=9000&startDate=01/01/${START_YEAR}&endDate=${TODAY.slice(4, 6)}/${TODAY.slice(6, 8)}/${TODAY.slice(0, 4)}`, {...BROWSER, Accept: 'text/csv,*/*'});
+    const rows = r.ok ? parseWsj(r.text) : [];
+    tries.push({way: 'wsj-' + wsj, status: r.status, total: rows.length, head: r.ok ? r.text.slice(0, 80) : null});
+    if (rows.length >= 4000) return {how: 'wsj-' + wsj, rows, tries};
+  }
   // 1) 해외 지수 일봉(해마다)
   let rows = [];
   for (const y of years) {
@@ -123,14 +181,18 @@ async function usIndex(code, nasdaqSym) {
   tries.push({way: 'nasdaq-index', status: r.status, total: rows.length});
   return {how: rows.length ? 'nasdaq-index' : 'none', rows, tries};
 }
-async function usStock(reuters) {
+const stooqSym = code => code.toLowerCase().replace(/\./g, '-') + '.us';
+async function usStock(reuters, code) {
+  const st = await get(STOOQ(stooqSym(code)), {...BROWSER, Accept: 'text/csv,*/*'});
+  const sr = st.ok ? parseCsv(st.text) : [];
+  if (sr.length >= 250) return {rows: sr, okYears: null, firstStatus: st.status, how: 'stooq'};
   const rows = []; let okYears = 0, firstStatus = null;
   for (const y of years) {
     const r = await get(`https://api.stock.naver.com/chart/foreign/item/${encodeURIComponent(reuters)}/day?startDateTime=${y}01010000&endDateTime=${y}12312359`);
     if (firstStatus === null) firstStatus = r.status;
     if (r.ok) { const p = parseDayJson(r.text); if (p.length) okYears++; rows.push(...p); }
   }
-  return {rows, okYears, firstStatus};
+  return {rows, okYears, firstStatus, how: 'naver-years', stooqStatus: st.status, stooqHead: st.ok ? String(st.text).slice(0, 60) : null};
 }
 async function runUs() {
   const input = JSON.parse(fs.readFileSync('public/data/atlas11/us/input.json', 'utf8'));
@@ -144,14 +206,27 @@ async function runUs() {
     probe.us[code] = {how: s.how, rows: s.rows.length, first: out.indices[code]?.d0 ?? null, tries: s.tries};
     console.log('us index', code, probe.us[code].how, probe.us[code].rows, probe.us[code].first);
   }
-  let done = 0, fails = 0;
-  await pool(list, 6, async x => {
+  let done = 0, fails = 0; const hows = {}; const stooqFail = [];
+  await pool(list, 2, async x => {  // stooq 는 천천히(하루 받기 한도)
     if (!x.reuters) { fails++; return; }
-    const s = await usStock(x.reuters); const p = pack(s.rows);
-    if (p) out.stocks[x.code] = {name: x.name, reuters: x.reuters, industryCode: x.industry, ...p}; else { fails++; probe.errors.push({us: x.code, firstStatus: s.firstStatus}); }
-    if (++done % 50 === 0) console.log('us stocks', done, '/', list.length, 'fails', fails);
+    const s = await usStock(x.reuters, x.code); const p = pack(s.rows);
+    hows[s.how] = (hows[s.how] ?? 0) + 1; if (s.how !== 'stooq' && stooqFail.length < 8) stooqFail.push({code: x.code, status: s.stooqStatus, head: s.stooqHead});
+    if (p) out.stocks[x.code] = {name: x.name, reuters: x.reuters, industryCode: x.industry, src: s.how, ...p}; else { fails++; probe.errors.push({us: x.code, firstStatus: s.firstStatus}); }
+    if (++done % 50 === 0) console.log('us stocks', done, '/', list.length, 'fails', fails, hows);
+    await sleep(250);
   });
-  probe.us.stocks = {asked: list.length, got: Object.keys(out.stocks).length, fails, startedBefore2007: Object.values(out.stocks).filter(s => s.d0 < '20070101').length};
+  probe.us.stocks = {asked: list.length, got: Object.keys(out.stocks).length, fails, hows, stooqFail, startedBefore2007: Object.values(out.stocks).filter(s => s.d0 < '20070101').length};
+  // 두 길 맞대기(미국): stooq 로 받은 회사 다섯의 2024년 종가를 네이버 해외 일봉과 견줌(나눗셈 비율)
+  probe.us.overlap = [];
+  for (const code of ['AAPL', 'NVDA', 'MSFT', 'JPM', 'KO']) {
+    const st = out.stocks[code]; const ru = reutersOf.get(code); if (!st || st.src !== 'stooq' || !ru) continue;
+    const r = await get(`https://api.stock.naver.com/chart/foreign/item/${encodeURIComponent(ru)}/day?startDateTime=20240101 0000&endDateTime=20241231 2359`.replace(/ /g, ''));
+    const nv = r.ok ? new Map(parseDayJson(r.text).map(x => [x.d, x.c])) : new Map();
+    let t = Date.UTC(+st.d0.slice(0, 4), +st.d0.slice(4, 6) - 1, +st.d0.slice(6, 8)); const ratios = [];
+    for (let i = 0; i < st.c.length; i++) { if (i) t += st.dd[i - 1] * 86400000; const dd = new Date(t).toISOString().slice(0, 10).replace(/-/g, ''); if (nv.has(dd)) ratios.push(st.c[i] / nv.get(dd)); }
+    ratios.sort((a, b) => a - b);
+    probe.us.overlap.push({code, n: ratios.length, min: ratios[0] ?? null, median: ratios[Math.floor(ratios.length / 2)] ?? null, max: ratios.at(-1) ?? null});
+  }
   fs.writeFileSync(path.join(OUT, 'us.json.gz'), zlib.gzipSync(JSON.stringify(out)));
   console.log('us done', probe.us.stocks);
 }
