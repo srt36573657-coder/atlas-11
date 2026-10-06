@@ -1,1351 +1,1267 @@
 {
  "schema": "atlas11-names-kr-1",
- "fetchedAt": "2026-10-06T11:52:03.850Z",
- "source": "한국거래소 전 종목 기본 정보(영문 종목명) · 네이버 증권 시가총액 목록 — 못 받은 회사는 화면에서 로마자",
+ "fetchedAt": "2026-10-06T12:20:53.848Z",
+ "source": "야후 파이낸스 종목 정보의 영문 정식 이름(코드.KS · 코드.KQ) — 못 받은 회사는 화면에서 손으로 고른 영어 이름, 그것도 없으면 로마자",
  "count": 365,
- "withEnglish": 0,
- "tried": [
-  {
-   "source": "KRX MDCSTAT01901",
-   "status": 400,
-   "rows": 0,
-   "sample": "LOGOUT"
+ "withEnglish": 364,
+ "tried": {
+  "count": {
+   "chart query1 200": 364,
+   "chart query1 404": 87,
+   "search 200": 2
   },
-  {
-   "source": "naver marketValue KOSPI",
-   "status": 200,
-   "n": 100,
-   "sample": {
-    "stockType": "domestic",
-    "stockEndType": "stock",
-    "itemCode": "005930",
-    "reutersCode": "005930",
-    "stockName": "삼성전자",
-    "sosok": "0",
-    "closePrice": "273,000",
-    "compareToPreviousClosePrice": "-3,000",
-    "compareToPreviousPrice": "{…}",
-    "fluctuationsRatio": "-1.09",
-    "accumulatedTradingVolume": "12,895,120",
-    "accumulatedTradingValue": "3,530,029",
-    "accumulatedTradingValueKrwHangeul": "3조 5,300억원",
-    "localTradedAt": "2026-10-06T20:20:22+09:00",
-    "marketValue": "15,960,341",
-    "marketValueHangeul": "1,596조 341억원",
-    "nav": "N/A",
-    "threeMonthEarningRate": "N/A",
-    "marketStatus": "CLOSE",
-    "tradeStopType": "{…}",
-    "tradableStatus": "tradable",
-    "tradableStatusCode": "ok",
-    "tradableStatusUpdatedAt": "2026-10-06T08:01:47.337+09:00",
-    "stockExchangeType": "{…}",
-    "endUrl": "https://m.stock.naver.com/domestic/stock/005930",
-    "newPcUrl": "https://stock.naver.com/domestic/stock/005930",
-    "overMarketPriceInfo": "{…}",
-    "stockMiniImageChart": "https://financial-vn.pstatic.net/chart/mobile/mini",
-    "itemLogoUrl": "https://ssl.pstatic.net/imgstock/fn/real/logo/stoc",
-    "itemLogoPngUrl": "https://ssl.pstatic.net/imgstock/fn/real/logo/png/",
-    "closePriceRaw": "273000",
-    "compareToPreviousClosePriceRaw": "-3000",
-    "accumulatedTradingVolumeRaw": "12895120",
-    "accumulatedTradingValueRaw": "3530029000000",
-    "marketValueRaw": "1596034059984000"
-   }
-  },
-  {
-   "source": "naver marketValue KOSDAQ",
-   "status": 200,
-   "n": 100,
-   "sample": {
-    "stockType": "domestic",
-    "stockEndType": "stock",
-    "itemCode": "196170",
-    "reutersCode": "196170",
-    "stockName": "알테오젠",
-    "sosok": "1",
-    "closePrice": "264,000",
-    "compareToPreviousClosePrice": "4,500",
-    "compareToPreviousPrice": "{…}",
-    "fluctuationsRatio": "1.73",
-    "accumulatedTradingVolume": "281,458",
-    "accumulatedTradingValue": "73,407",
-    "accumulatedTradingValueKrwHangeul": "734억원",
-    "localTradedAt": "2026-10-06T20:20:18+09:00",
-    "marketValue": "183,890",
-    "marketValueHangeul": "18조 3,890억원",
-    "nav": "N/A",
-    "threeMonthEarningRate": "N/A",
-    "marketStatus": "CLOSE",
-    "tradeStopType": "{…}",
-    "tradableStatus": "tradable",
-    "tradableStatusCode": "ok",
-    "tradableStatusUpdatedAt": "2026-10-06T08:02:34.516+09:00",
-    "stockExchangeType": "{…}",
-    "endUrl": "https://m.stock.naver.com/domestic/stock/196170",
-    "newPcUrl": "https://stock.naver.com/domestic/stock/196170",
-    "overMarketPriceInfo": "{…}",
-    "stockMiniImageChart": "https://financial-vn.pstatic.net/chart/mobile/mini",
-    "itemLogoUrl": "https://ssl.pstatic.net/imgstock/fn/real/logo/stoc",
-    "itemLogoPngUrl": "https://ssl.pstatic.net/imgstock/fn/real/logo/png/",
-    "closePriceRaw": "264000",
-    "compareToPreviousClosePriceRaw": "4500",
-    "accumulatedTradingVolumeRaw": "281458",
-    "accumulatedTradingValueRaw": "73407000000",
-    "marketValueRaw": "18388955112000"
-   }
-  }
- ],
+  "firstFails": []
+ },
  "names": {
   "100790": {
    "name": "미래에셋벤처투자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Mirae Asset Venture Investment Co Ltd",
+   "from": "yahoo chart 100790.KS"
   },
   "102710": {
    "name": "이엔에프테크놀로지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ENF Technology Co., Ltd.",
+   "from": "yahoo chart 102710.KQ"
   },
   "103140": {
    "name": "풍산",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Poongsan Corporation",
+   "from": "yahoo chart 103140.KS"
   },
   "103590": {
    "name": "일진전기",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Iljin Electric Co.,Ltd",
+   "from": "yahoo chart 103590.KS"
   },
   "104830": {
    "name": "원익머트리얼즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "WONIK Materials Co.,Ltd.",
+   "from": "yahoo chart 104830.KQ"
   },
   "105560": {
    "name": "KB금융",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KB Financial Group Inc.",
+   "from": "yahoo chart 105560.KS"
   },
   "105840": {
    "name": "우진",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Woojin Inc.",
+   "from": "yahoo chart 105840.KS"
   },
   "108320": {
    "name": "LX세미콘",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LX Semicon Co., Ltd.",
+   "from": "yahoo chart 108320.KS"
   },
   "108490": {
    "name": "로보티즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Robotis Co Ltd",
+   "from": "yahoo chart 108490.KS"
   },
   "111770": {
    "name": "영원무역",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Youngone Corporation",
+   "from": "yahoo chart 111770.KS"
   },
   "112610": {
    "name": "씨에스윈드",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CS Wind Corporation",
+   "from": "yahoo chart 112610.KS"
   },
   "114090": {
    "name": "GKL",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Grand Korea Leisure Co., Ltd.",
+   "from": "yahoo chart 114090.KS"
   },
   "115310": {
    "name": "인포바인",
-   "nameEn": null,
-   "from": null
+   "nameEn": "INFOvine.co.,Ltd.",
+   "from": "yahoo chart 115310.KQ"
   },
   "119850": {
    "name": "지엔씨에너지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "GnCenergy Co., Ltd",
+   "from": "yahoo chart 119850.KQ"
   },
   "122450": {
    "name": "KX",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KX Innovation Co., Ltd.",
+   "from": "yahoo chart 122450.KQ"
   },
   "122870": {
    "name": "와이지엔터테인먼트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "YG Entertainment Inc.",
+   "from": "yahoo chart 122870.KQ"
   },
   "124500": {
    "name": "아이티센글로벌",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ITCENGLOBAL CO., Ltd.",
+   "from": "yahoo chart 124500.KQ"
   },
   "127120": {
    "name": "제이에스링크",
-   "nameEn": null,
-   "from": null
+   "nameEn": "JS Link, Inc.",
+   "from": "yahoo chart 127120.KQ"
   },
   "128940": {
    "name": "한미약품",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanmi Pharm. Co., Ltd.",
+   "from": "yahoo chart 128940.KS"
   },
   "130660": {
    "name": "한전산업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Electric Power Industrial Development Co., Ltd",
+   "from": "yahoo chart 130660.KS"
   },
   "131290": {
    "name": "티에스이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "TSE Co., Ltd",
+   "from": "yahoo chart 131290.KQ"
   },
   "131970": {
    "name": "두산테스나",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DOOSAN TESNA Inc.",
+   "from": "yahoo chart 131970.KQ"
   },
   "134380": {
    "name": "미원화학",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Miwon Chemicals Co., Ltd.",
+   "from": "yahoo chart 134380.KS"
   },
   "137310": {
    "name": "에스디바이오센서",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SD Biosensor, Inc.",
+   "from": "yahoo chart 137310.KS"
   },
   "137400": {
    "name": "피엔티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "People & Technology Inc.",
+   "from": "yahoo chart 137400.KQ"
   },
   "138040": {
    "name": "메리츠금융지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Meritz Financial Group Inc.",
+   "from": "yahoo chart 138040.KS"
   },
   "140410": {
    "name": "메지온",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Mezzion Pharma Co.,Ltd.",
+   "from": "yahoo chart 140410.KQ"
   },
   "140860": {
    "name": "파크시스템스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Park Systems Corp",
+   "from": "yahoo chart 140860.KS"
   },
   "141080": {
    "name": "리가켐바이오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LigaChem Biosciences Inc.",
+   "from": "yahoo chart 141080.KQ"
   },
   "151860": {
    "name": "KG에코솔루션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KG Eco Solution Co.,Ltd.",
+   "from": "yahoo chart 151860.KQ"
   },
   "159010": {
    "name": "아스플로",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Asflow Co Ltd",
+   "from": "yahoo chart 159010.KS"
   },
   "161390": {
    "name": "한국타이어앤테크놀로지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hankook Tire & Technology Co., Ltd.",
+   "from": "yahoo chart 161390.KS"
   },
   "161580": {
    "name": "필옵틱스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Philoptics Co Ltd",
+   "from": "yahoo chart 161580.KS"
   },
   "161890": {
    "name": "한국콜마",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kolmar Korea Co., Ltd.",
+   "from": "yahoo chart 161890.KS"
   },
   "170920": {
    "name": "엘티씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LTC Co.,Ltd",
+   "from": "yahoo chart 170920.KQ"
   },
   "171090": {
    "name": "선익시스템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sunic System Ltd",
+   "from": "yahoo chart 171090.KS"
   },
   "178320": {
    "name": "서진시스템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seojin System Co Ltd",
+   "from": "yahoo chart 178320.KS"
   },
   "178920": {
    "name": "PI첨단소재",
-   "nameEn": null,
-   "from": null
+   "nameEn": "PI Advanced Materials Co., Ltd.",
+   "from": "yahoo chart 178920.KS"
   },
   "180640": {
    "name": "한진칼",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanjin Kal",
+   "from": "yahoo chart 180640.KS"
   },
   "181710": {
    "name": "NHN",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NHN Corporation",
+   "from": "yahoo chart 181710.KS"
   },
   "182360": {
    "name": "큐브엔터",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Cube Entertainment, Inc.",
+   "from": "yahoo chart 182360.KQ"
   },
   "182400": {
    "name": "엔케이젠바이오텍코리아",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NKGen Biotech Korea Co., Ltd.",
+   "from": "yahoo chart 182400.KQ"
   },
   "183190": {
    "name": "아세아시멘트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Asia Cement Co.,Ltd.",
+   "from": "yahoo chart 183190.KS"
   },
   "187870": {
    "name": "디바이스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DeviceENG Co Ltd",
+   "from": "yahoo chart 187870.KS"
   },
   "189300": {
    "name": "인텔리안테크",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Intellian Technologies Inc",
+   "from": "yahoo chart 189300.KS"
   },
   "192080": {
    "name": "더블유게임즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DoubleUGames Co., Ltd.",
+   "from": "yahoo chart 192080.KS"
   },
   "192400": {
    "name": "쿠쿠홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Cuckoo Holdings Co., Ltd.",
+   "from": "yahoo chart 192400.KS"
   },
   "192650": {
    "name": "드림텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DREAMTECH Co., Ltd.",
+   "from": "yahoo chart 192650.KS"
   },
   "192820": {
    "name": "코스맥스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Cosmax, Inc.",
+   "from": "yahoo chart 192820.KS"
   },
   "194700": {
    "name": "노바렉스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Novarex Co Ltd",
+   "from": "yahoo chart 194700.KS"
   },
   "196170": {
    "name": "알테오젠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ALTEOGEN Inc.",
+   "from": "yahoo chart 196170.KQ"
   },
   "200130": {
    "name": "콜마비앤에이치",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kolmar BNH Co Ltd",
+   "from": "yahoo chart 200130.KS"
   },
   "203650": {
    "name": "드림시큐리티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dream Security Co Ltd",
+   "from": "yahoo chart 203650.KS"
   },
   "204270": {
    "name": "제이앤티씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "JNTC Co Ltd",
+   "from": "yahoo chart 204270.KS"
   },
   "204620": {
    "name": "글로벌텍스프리",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Global Tax Free Co Ltd",
+   "from": "yahoo chart 204620.KS"
   },
   "207940": {
    "name": "삼성바이오로직스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Biologics Co.,Ltd.",
+   "from": "yahoo chart 207940.KS"
   },
   "213420": {
    "name": "덕산네오룩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Duk San Neolux Co Ltd",
+   "from": "yahoo chart 213420.KS"
   },
   "214150": {
    "name": "클래시스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Classys Inc",
+   "from": "yahoo chart 214150.KS"
   },
   "214370": {
    "name": "케어젠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Caregen Co Ltd",
+   "from": "yahoo chart 214370.KS"
   },
   "214450": {
    "name": "파마리서치",
-   "nameEn": null,
-   "from": null
+   "nameEn": "PharmaResearch Co., Ltd.",
+   "from": "yahoo chart 214450.KQ"
   },
   "215000": {
    "name": "골프존",
-   "nameEn": null,
-   "from": null
+   "nameEn": "GOLFZON Co Ltd",
+   "from": "yahoo chart 215000.KS"
   },
   "218410": {
    "name": "RFHIC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "RFHIC Corp",
+   "from": "yahoo chart 218410.KS"
   },
   "222080": {
    "name": "SFA넥셀",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Creative & Innovative System Corp",
+   "from": "yahoo chart 222080.KS"
   },
   "222800": {
    "name": "심텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SIMMTECH Co., Ltd.",
+   "from": "yahoo chart 222800.KQ"
   },
   "226950": {
    "name": "올릭스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "OliX Pharmaceuticals Inc",
+   "from": "yahoo chart 226950.KS"
   },
   "240810": {
    "name": "원익IPS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Wonik Ips Co Ltd",
+   "from": "yahoo chart 240810.KS"
   },
   "241520": {
    "name": "DSC인베스트먼트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DSC Investment Inc",
+   "from": "yahoo chart 241520.KS"
   },
   "241560": {
    "name": "두산밥캣",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Doosan Bobcat Inc.",
+   "from": "yahoo chart 241560.KS"
   },
   "247540": {
    "name": "에코프로비엠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Ecopro BM Co Ltd",
+   "from": "yahoo chart 247540.KS"
   },
   "251270": {
    "name": "넷마블",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Netmarble Corporation",
+   "from": "yahoo chart 251270.KS"
   },
   "251970": {
    "name": "펌텍코리아",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Pum-Tech Korea Co Ltd",
+   "from": "yahoo chart 251970.KS"
   },
   "252990": {
    "name": "샘씨엔에스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Semcns Co Ltd",
+   "from": "yahoo chart 252990.KS"
   },
   "253450": {
    "name": "스튜디오드래곤",
-   "nameEn": null,
-   "from": null
+   "nameEn": "StudioDragon Corp",
+   "from": "yahoo chart 253450.KS"
   },
   "257720": {
    "name": "실리콘투",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Silicon2 Co Ltd",
+   "from": "yahoo chart 257720.KS"
   },
   "259960": {
    "name": "크래프톤",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KRAFTON, Inc.",
+   "from": "yahoo chart 259960.KS"
   },
   "263750": {
    "name": "펄어비스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "PearlAbyss Corp",
+   "from": "yahoo chart 263750.KS"
   },
   "265520": {
    "name": "AP시스템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Advanced Process Systems Corp",
+   "from": "yahoo chart 265520.KS"
   },
   "267250": {
    "name": "HD현대",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD Hyundai Co., Ltd.",
+   "from": "yahoo chart 267250.KS"
   },
   "267260": {
    "name": "HD현대일렉트릭",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD Hyundai Electric Co., Ltd.",
+   "from": "yahoo chart 267260.KS"
   },
   "267270": {
    "name": "HD건설기계",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD Construction Equipment Co., Ltd.",
+   "from": "yahoo chart 267270.KS"
   },
   "267320": {
    "name": "나인테크",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Naintech Co Ltd",
+   "from": "yahoo chart 267320.KS"
   },
   "268280": {
    "name": "미원에스씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Miwon Specialty Chemical Co., Ltd.",
+   "from": "yahoo chart 268280.KS"
   },
   "271560": {
    "name": "오리온",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ORION Corp.",
+   "from": "yahoo chart 271560.KS"
   },
   "272210": {
    "name": "한화시스템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Systems Co., Ltd.",
+   "from": "yahoo chart 272210.KS"
   },
   "272290": {
    "name": "이녹스첨단소재",
-   "nameEn": null,
-   "from": null
+   "nameEn": "INNOX Advanced Materials Co.,Ltd.",
+   "from": "yahoo chart 272290.KQ"
   },
   "272450": {
    "name": "진에어",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Jin Air Co., Ltd.",
+   "from": "yahoo chart 272450.KS"
   },
   "274090": {
    "name": "켄코아에어로스페이스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kencoa Aerospace Corp",
+   "from": "yahoo chart 274090.KS"
   },
   "277810": {
    "name": "레인보우로보틱스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Rainbow Robotics",
+   "from": "yahoo chart 277810.KS"
   },
   "278470": {
    "name": "에이피알",
-   "nameEn": null,
-   "from": null
+   "nameEn": "APR Co., Ltd.",
+   "from": "yahoo chart 278470.KS"
   },
   "281740": {
    "name": "레이크머티리얼즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Lake Materials Co., Ltd.",
+   "from": "yahoo chart 281740.KQ"
   },
   "281820": {
    "name": "케이씨텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KCTech Co., Ltd.",
+   "from": "yahoo chart 281820.KS"
   },
   "286940": {
    "name": "롯데이노베이트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LOTTE INNOVATE Co.,Ltd",
+   "from": "yahoo chart 286940.KS"
   },
   "290550": {
    "name": "디케이티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DK Tech Co Ltd",
+   "from": "yahoo chart 290550.KS"
   },
   "290650": {
    "name": "엘앤씨바이오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "L&C BIO Co.,LTD",
+   "from": "yahoo chart 290650.KQ"
   },
   "293780": {
    "name": "압타바이오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Aptabio Therapeutics Inc",
+   "from": "yahoo chart 293780.KS"
   },
   "294870": {
    "name": "IPARK현대산업개발",
-   "nameEn": null,
-   "from": null
+   "nameEn": "IPARK Hyundai Development Company",
+   "from": "yahoo chart 294870.KS"
   },
   "298020": {
    "name": "효성티앤씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyosung TNC Corporation",
+   "from": "yahoo chart 298020.KS"
   },
   "298040": {
    "name": "효성중공업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyosung Heavy Industries Corporation",
+   "from": "yahoo chart 298040.KS"
   },
   "298380": {
    "name": "에이비엘바이오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ABL Bio Inc",
+   "from": "yahoo chart 298380.KS"
   },
   "298830": {
    "name": "슈어소프트테크",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Suresofttech Inc",
+   "from": "yahoo chart 298830.KS"
   },
   "300720": {
    "name": "한일시멘트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanil Cement Co., Ltd.",
+   "from": "yahoo chart 300720.KS"
   },
   "302440": {
    "name": "SK바이오사이언스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK bioscience Co.,Ltd.",
+   "from": "yahoo chart 302440.KS"
   },
   "307950": {
    "name": "현대오토에버",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Autoever Corporation",
+   "from": "yahoo chart 307950.KS"
   },
   "310200": {
    "name": "애니플러스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Aniplus Inc",
+   "from": "yahoo chart 310200.KS"
   },
   "310210": {
    "name": "보로노이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Voronoi Inc",
+   "from": "yahoo chart 310210.KS"
   },
   "316140": {
    "name": "우리금융지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Woori Financial Group Inc.",
+   "from": "yahoo chart 316140.KS"
   },
   "317400": {
    "name": "자이에스앤디",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Xi S&D Inc.",
+   "from": "yahoo chart 317400.KS"
   },
   "319400": {
    "name": "현대무벡스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Nh Special Purpose Acquisition 14 Co., Ltd.",
+   "from": "yahoo chart 319400.KS"
   },
   "322510": {
    "name": "제이엘케이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "JLK Inc",
+   "from": "yahoo chart 322510.KS"
   },
   "323280": {
    "name": "태성",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Shinyoung HappyTomorrow No.5 Special Purpose Acquisition Company",
+   "from": "yahoo chart 323280.KS"
   },
   "326030": {
    "name": "SK바이오팜",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK Biopharmaceuticals Co., Ltd.",
+   "from": "yahoo chart 326030.KS"
   },
   "328130": {
    "name": "루닛",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Lunit Inc",
+   "from": "yahoo chart 328130.KS"
   },
   "329180": {
    "name": "HD현대중공업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD Hyundai Heavy Industries Co., Ltd.",
+   "from": "yahoo chart 329180.KS"
   },
   "332570": {
    "name": "PS일렉트로닉스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Wireless Power Amplifier Module Inc",
+   "from": "yahoo chart 332570.KS"
   },
   "336260": {
    "name": "두산퓨얼셀",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Doosan Fuel Cell Co., Ltd.",
+   "from": "yahoo chart 336260.KS"
   },
   "340570": {
    "name": "티앤엘",
-   "nameEn": null,
-   "from": null
+   "nameEn": "T&L Co Ltd",
+   "from": "yahoo chart 340570.KS"
   },
   "347700": {
    "name": "스피어",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Life Semantics Corp",
+   "from": "yahoo chart 347700.KS"
   },
   "352820": {
    "name": "하이브",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HYBE Co., Ltd.",
+   "from": "yahoo chart 352820.KS"
   },
   "353200": {
    "name": "대덕전자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DAEDUCK ELECTRONICS Co., Ltd.",
+   "from": "yahoo chart 353200.KS"
   },
   "356680": {
    "name": "엑스게이트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Axgate Co Ltd",
+   "from": "yahoo chart 356680.KS"
   },
   "356860": {
    "name": "티엘비",
-   "nameEn": null,
-   "from": null
+   "nameEn": "TLB Co Ltd",
+   "from": "yahoo chart 356860.KS"
   },
   "357780": {
    "name": "솔브레인",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Soulbrain Co Ltd",
+   "from": "yahoo chart 357780.KS"
   },
   "373220": {
    "name": "LG에너지솔루션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG Energy Solution, Ltd.",
+   "from": "yahoo chart 373220.KS"
   },
   "375500": {
    "name": "DL이앤씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DL E&C Co.,Ltd.",
+   "from": "yahoo chart 375500.KS"
   },
   "376300": {
    "name": "디어유",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dear U Co Ltd",
+   "from": "yahoo chart 376300.KS"
   },
   "377300": {
    "name": "카카오페이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kakao Pay Corp.",
+   "from": "yahoo chart 377300.KS"
   },
   "377740": {
    "name": "바이오노트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "BioNote, Inc.",
+   "from": "yahoo chart 377740.KS"
   },
   "378340": {
    "name": "필에너지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Phil Energy Co Ltd",
+   "from": "yahoo chart 378340.KS"
   },
   "381970": {
    "name": "KG모빌리티플랫폼",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KG Mobility Platform Co., Ltd.",
+   "from": "yahoo chart 381970.KS"
   },
   "383220": {
    "name": "F&F",
-   "nameEn": null,
-   "from": null
+   "nameEn": "F&F Co., Ltd",
+   "from": "yahoo chart 383220.KS"
   },
   "383800": {
    "name": "LX홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LX Holdings Corp.",
+   "from": "yahoo chart 383800.KS"
   },
   "389500": {
    "name": "에스비비테크",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sbb Tech Co.,Ltd",
+   "from": "yahoo chart 389500.KS"
   },
   "402340": {
    "name": "SK스퀘어",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK Square Co., Ltd.",
+   "from": "yahoo chart 402340.KS"
   },
   "403870": {
    "name": "HPSP",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HPSP Co Ltd",
+   "from": "yahoo chart 403870.KS"
   },
   "417200": {
    "name": "LS머트리얼즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LS Materials Co Ltd",
+   "from": "yahoo chart 417200.KS"
   },
   "419530": {
    "name": "SAMG엔터",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samg Entertainment Co Ltd",
+   "from": "yahoo chart 419530.KS"
   },
   "440110": {
    "name": "파두",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Fadu Inc",
+   "from": "yahoo chart 440110.KS"
   },
   "441270": {
    "name": "파인엠텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Fine M-Tec Co Ltd",
+   "from": "yahoo chart 441270.KS"
   },
   "445680": {
    "name": "큐리옥스바이오시스템즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Curiox Biosystems Co Ltd",
+   "from": "yahoo chart 445680.KS"
   },
   "454910": {
    "name": "두산로보틱스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Doosan Robotics Inc.",
+   "from": "yahoo chart 454910.KS"
   },
   "475150": {
    "name": "SK이터닉스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK eternix Co., Ltd.",
+   "from": "yahoo chart 475150.KS"
   },
   "900290": {
    "name": "GRT",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Great Rich Technologies Ltd",
+   "from": "yahoo chart 900290.KS"
   },
   "005930": {
    "name": "삼성전자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Electronics Co., Ltd.",
+   "from": "yahoo chart 005930.KS"
   },
   "000660": {
    "name": "SK하이닉스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK hynix Inc.",
+   "from": "yahoo chart 000660.KS"
   },
   "000990": {
    "name": "DB하이텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DB HiTek CO., LTD.",
+   "from": "yahoo chart 000990.KS"
   },
   "055550": {
    "name": "신한지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Shinhan Financial Group Co., Ltd.",
+   "from": "yahoo chart 055550.KS"
   },
   "086790": {
    "name": "하나금융지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hana Financial Group Inc.",
+   "from": "yahoo chart 086790.KS"
   },
   "024110": {
    "name": "기업은행",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Industrial Bank of Korea",
+   "from": "yahoo chart 024110.KS"
   },
   "006400": {
    "name": "삼성SDI",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung SDI Co., Ltd.",
+   "from": "yahoo chart 006400.KS"
   },
   "003670": {
    "name": "포스코퓨처엠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Posco Future M Co., Ltd.",
+   "from": "yahoo chart 003670.KS"
   },
   "066970": {
    "name": "엘앤에프",
-   "nameEn": null,
-   "from": null
+   "nameEn": "L&F Co., Ltd.",
+   "from": "yahoo chart 066970.KS"
   },
   "009150": {
    "name": "삼성전기",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Electro-Mechanics Co., Ltd.",
+   "from": "yahoo chart 009150.KS"
   },
   "011070": {
    "name": "LG이노텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG Innotek Co., Ltd.",
+   "from": "yahoo chart 011070.KS"
   },
   "020150": {
    "name": "롯데에너지머티리얼즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Lotte Energy Materials Corporation",
+   "from": "yahoo chart 020150.KS"
   },
   "042660": {
    "name": "한화오션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Ocean Co., Ltd.",
+   "from": "yahoo chart 042660.KS"
   },
   "009540": {
    "name": "HD한국조선해양",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD Korea Shipbuilding & Offshore Engineering Co., Ltd.",
+   "from": "yahoo chart 009540.KS"
   },
   "010140": {
    "name": "삼성중공업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Heavy Industries Co., Ltd.",
+   "from": "yahoo chart 010140.KS"
   },
   "005380": {
    "name": "현대차",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Motor Company",
+   "from": "yahoo chart 005380.KS"
   },
   "000270": {
    "name": "기아",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kia Corporation",
+   "from": "yahoo chart 000270.KS"
   },
   "003620": {
    "name": "KG모빌리티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KG Mobility Corp.",
+   "from": "yahoo chart 003620.KS"
   },
   "068270": {
    "name": "셀트리온",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Celltrion, Inc.",
+   "from": "yahoo chart 068270.KS"
   },
   "087010": {
    "name": "펩트론",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Peptron, Inc.",
+   "from": "yahoo chart 087010.KQ"
   },
   "034730": {
    "name": "SK",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK Inc.",
+   "from": "yahoo chart 034730.KS"
   },
   "078930": {
    "name": "GS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "GS Holdings Corp.",
+   "from": "yahoo chart 078930.KS"
   },
   "010950": {
    "name": "S-Oil",
-   "nameEn": null,
-   "from": null
+   "nameEn": "S-Oil Corporation",
+   "from": "yahoo chart 010950.KS"
   },
   "006120": {
    "name": "SK디스커버리",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK Discovery Co., Ltd.",
+   "from": "yahoo chart 006120.KS"
   },
   "096770": {
    "name": "SK이노베이션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SK Innovation Co., Ltd.",
+   "from": "yahoo chart 096770.KS"
   },
   "010120": {
    "name": "LS ELECTRIC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LS ELECTRIC Co., Ltd.",
+   "from": "yahoo chart 010120.KS"
   },
   "033100": {
    "name": "제룡전기",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Cheryong Electric Co.,Ltd.",
+   "from": "yahoo chart 033100.KQ"
   },
   "028260": {
    "name": "삼성물산",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung C&T Corporation",
+   "from": "yahoo chart 028260.KS"
   },
   "000150": {
    "name": "두산",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Doosan Corporation",
+   "from": "yahoo chart 000150.KS"
   },
   "004800": {
    "name": "효성",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyosung Corporation",
+   "from": "yahoo chart 004800.KS"
   },
   "005440": {
    "name": "현대지에프홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai G.F. Holdings Co., Ltd.",
+   "from": "yahoo chart 005440.KS"
   },
   "012450": {
    "name": "한화에어로스페이스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Aerospace Co., Ltd.",
+   "from": "yahoo chart 012450.KS"
   },
   "047810": {
    "name": "한국항공우주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Aerospace Industries, Ltd.",
+   "from": "yahoo chart 047810.KS"
   },
   "099320": {
    "name": "쎄트렉아이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Satrec Initiative Co., Ltd.",
+   "from": "yahoo chart 099320.KQ"
   },
   "067390": {
    "name": "아스트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "AeroSpace Technology of Korea Inc",
+   "from": "yahoo chart 067390.KS"
   },
   "006800": {
    "name": "미래에셋증권",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Mirae Asset Securities Co., Ltd.",
+   "from": "yahoo chart 006800.KS"
   },
   "071050": {
    "name": "한국금융지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Investment Holdings Co., Ltd.",
+   "from": "yahoo chart 071050.KS"
   },
   "005940": {
    "name": "NH투자증권",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NH Investment & Securities Co., Ltd.",
+   "from": "yahoo chart 005940.KS"
   },
   "016360": {
    "name": "삼성증권",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Securities Co.,Ltd.",
+   "from": "yahoo chart 016360.KS"
   },
   "034020": {
    "name": "두산에너빌리티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Doosan Enerbility Co., Ltd.",
+   "from": "yahoo chart 034020.KS"
   },
   "017800": {
    "name": "현대엘리베이터",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Elevator Co., Ltd",
+   "from": "yahoo chart 017800.KS"
   },
   "042700": {
    "name": "한미반도체",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HANMI Semiconductor Co., Ltd.",
+   "from": "yahoo chart 042700.KS"
   },
   "036930": {
    "name": "주성엔지니어링",
-   "nameEn": null,
-   "from": null
+   "nameEn": "JUSUNG ENGINEERING Co.,Ltd.",
+   "from": "yahoo chart 036930.KQ"
   },
   "039030": {
    "name": "이오테크닉스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "EO Technics Co., Ltd.",
+   "from": "yahoo chart 039030.KQ"
   },
   "012330": {
    "name": "현대모비스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Mobis Co.,Ltd",
+   "from": "yahoo chart 012330.KS"
   },
   "018880": {
    "name": "한온시스템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanon Systems",
+   "from": "yahoo chart 018880.KS"
   },
   "007340": {
    "name": "DN오토모티브",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DN Automotive Corporation",
+   "from": "yahoo chart 007340.KS"
   },
   "005850": {
    "name": "에스엘",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SL Corporation",
+   "from": "yahoo chart 005850.KS"
   },
   "000810": {
    "name": "삼성화재",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung Fire & Marine Insurance Co., Ltd.",
+   "from": "yahoo chart 000810.KS"
   },
   "005830": {
    "name": "DB손해보험",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DB Insurance Co., Ltd.",
+   "from": "yahoo chart 005830.KS"
   },
   "088350": {
    "name": "한화생명",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Life Insurance Co., Ltd.",
+   "from": "yahoo chart 088350.KS"
   },
   "001450": {
    "name": "현대해상",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Marine & Fire Insurance Co., Ltd.",
+   "from": "yahoo chart 001450.KS"
   },
   "085620": {
    "name": "미래에셋생명",
-   "nameEn": null,
-   "from": null
+   "nameEn": "MIRAE ASSET Life Insurance Co., Ltd.",
+   "from": "yahoo chart 085620.KS"
   },
   "079550": {
    "name": "LIG디펜스앤에어로스페이스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LIG Defense&Aerospace Co., Ltd.",
+   "from": "yahoo chart 079550.KS"
   },
   "064350": {
    "name": "현대로템",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Rotem Company",
+   "from": "yahoo chart 064350.KS"
   },
   "032820": {
    "name": "우리기술",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Woori Technology, Inc.",
+   "from": "yahoo chart 032820.KQ"
   },
   "035420": {
    "name": "NAVER",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NAVER Corporation",
+   "from": "yahoo chart 035420.KS"
   },
   "035720": {
    "name": "카카오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kakao Corp.",
+   "from": "yahoo chart 035720.KS"
   },
   "067160": {
    "name": "SOOP",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Soop Co., Ltd.",
+   "from": "yahoo chart 067160.KQ"
   },
   "020120": {
    "name": "키다리스튜디오",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KidariStudio, Inc.",
+   "from": "yahoo chart 020120.KS"
   },
   "066570": {
    "name": "LG전자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG Electronics Inc.",
+   "from": "yahoo chart 066570.KS"
   },
   "021240": {
    "name": "코웨이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "COWAY Co., Ltd.",
+   "from": "yahoo chart 021240.KS"
   },
   "009240": {
    "name": "한샘",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanssem Co., Ltd.",
+   "from": "yahoo chart 009240.KS"
   },
   "009450": {
    "name": "경동나비엔",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kyung Dong Navien Co., Ltd.",
+   "from": "yahoo chart 009450.KS"
   },
   "000500": {
    "name": "가온전선",
-   "nameEn": null,
-   "from": null
+   "nameEn": "GAON CABLE Co., Ltd.",
+   "from": "yahoo chart 000500.KS"
   },
   "006260": {
    "name": "LS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LS Corp.",
+   "from": "yahoo chart 006260.KS"
   },
   "001440": {
    "name": "대한전선",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Taihan Cable & Solution Co., Ltd.",
+   "from": "yahoo chart 001440.KS"
   },
   "090430": {
    "name": "아모레퍼시픽",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Amorepacific Corporation",
+   "from": "yahoo chart 090430.KS"
   },
   "051900": {
    "name": "LG생활건강",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG H&H Co., Ltd.",
+   "from": "yahoo chart 051900.KS"
   },
   "016380": {
    "name": "KG스틸",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KG Dongbu Steel Co.,Ltd.",
+   "from": "yahoo chart 016380.KS"
   },
   "092790": {
    "name": "넥스틸",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NEXTEEL Co., Ltd.",
+   "from": "yahoo chart 092790.KS"
   },
   "005490": {
    "name": "POSCO홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "POSCO Holdings Inc.",
+   "from": "yahoo chart 005490.KS"
   },
   "004020": {
    "name": "현대제철",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Steel Company",
+   "from": "yahoo chart 004020.KS"
   },
   "001430": {
    "name": "세아베스틸지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SeAH Besteel Holdings Corporation",
+   "from": "yahoo chart 001430.KS"
   },
   "015760": {
    "name": "한국전력",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Electric Power Corporation",
+   "from": "yahoo chart 015760.KS"
   },
   "052690": {
    "name": "한전기술",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KEPCO Engineering & Construction Company, Inc.",
+   "from": "yahoo chart 052690.KS"
   },
   "051600": {
    "name": "한전KPS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KEPCO Plant Service & Engineering Co.,Ltd.",
+   "from": "yahoo chart 051600.KS"
   },
   "004690": {
    "name": "삼천리",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samchully Co.,Ltd",
+   "from": "yahoo chart 004690.KS"
   },
   "010130": {
    "name": "고려아연",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Zinc Company, Ltd.",
+   "from": "yahoo chart 010130.KS"
   },
   "005810": {
    "name": "풍산홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Poongsan Holdings Corporation",
+   "from": "yahoo chart 005810.KS"
   },
   "009160": {
    "name": "SIMPAC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SIMPAC Co., Ltd.",
+   "from": "yahoo chart 009160.KS"
   },
   "058430": {
    "name": "포스코스틸리온",
-   "nameEn": null,
-   "from": null
+   "nameEn": "POSCO STEELEON Co., Ltd.",
+   "from": "yahoo chart 058430.KS"
   },
   "033780": {
    "name": "KT&G",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KT&G Corporation",
+   "from": "yahoo chart 033780.KS"
   },
   "026960": {
    "name": "동서",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dong Suh Companies Inc.",
+   "from": "yahoo chart 026960.KS"
   },
   "006040": {
    "name": "동원산업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dongwon Industries Co., Ltd.",
+   "from": "yahoo chart 006040.KS"
   },
   "001800": {
    "name": "오리온홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ORION Holdings Corp.",
+   "from": "yahoo chart 001800.KS"
   },
   "003380": {
    "name": "하림지주",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Harim Holdings Co Ltd",
+   "from": "yahoo chart 003380.KS"
   },
   "011200": {
    "name": "HMM",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HMM Co.,Ltd",
+   "from": "yahoo chart 011200.KS"
   },
   "028670": {
    "name": "팬오션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Pan Ocean Co., Ltd.",
+   "from": "yahoo chart 028670.KS"
   },
   "005880": {
    "name": "대한해운",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Line Corporation",
+   "from": "yahoo chart 005880.KS"
   },
   "003280": {
    "name": "흥아해운",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Heung-A Shipping Co.,Ltd.",
+   "from": "yahoo chart 003280.KS"
   },
   "044450": {
    "name": "KSS해운",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KSS Line Ltd.",
+   "from": "yahoo chart 044450.KS"
   },
   "000100": {
    "name": "유한양행",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Yuhan Corporation",
+   "from": "yahoo chart 000100.KS"
   },
   "000250": {
    "name": "삼천당제약",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sam Chun Dang Pharm. Co., Ltd",
+   "from": "yahoo chart 000250.KQ"
   },
   "008930": {
    "name": "한미사이언스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanmi Science Co., Ltd.",
+   "from": "yahoo chart 008930.KS"
   },
   "009420": {
    "name": "한올바이오파마",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanall Biopharma Co., Ltd.",
+   "from": "yahoo chart 009420.KS"
   },
   "003490": {
    "name": "대한항공",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korean Airlines Co.,Ltd.",
+   "from": "yahoo chart 003490.KS"
   },
   "020560": {
    "name": "아시아나항공",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Asiana Airlines, Inc.",
+   "from": "yahoo chart 020560.KS"
   },
   "089590": {
    "name": "제주항공",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Jeju Air Co., Ltd.",
+   "from": "yahoo chart 089590.KS"
   },
   "007660": {
    "name": "이수페타시스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ISU Petasys Co., Ltd.",
+   "from": "yahoo chart 007660.KS"
   },
   "058470": {
    "name": "리노공업",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LEENO Industrial Inc.",
+   "from": "yahoo chart 058470.KQ"
   },
   "095340": {
    "name": "ISC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ISC Co., Ltd.",
+   "from": "yahoo chart 095340.KQ"
   },
   "022100": {
    "name": "포스코DX",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Posco Dx Company Ltd.",
+   "from": "yahoo chart 022100.KS"
   },
   "093320": {
    "name": "케이아이엔엑스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KINX, Inc.",
+   "from": "yahoo chart 093320.KQ"
   },
   "036570": {
    "name": "NC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NC Corporation",
+   "from": "yahoo chart 036570.KS"
   },
   "030200": {
    "name": "KT",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KT Corporation",
+   "from": "yahoo chart 030200.KS"
   },
   "032640": {
    "name": "LG유플러스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG Uplus Corp.",
+   "from": "yahoo chart 032640.KS"
   },
   "025770": {
    "name": "한국정보통신",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Information & Communications Co., Ltd.",
+   "from": "yahoo chart 025770.KQ"
   },
   "066410": {
    "name": "버킷스튜디오",
@@ -1354,573 +1270,573 @@
   },
   "003230": {
    "name": "삼양식품",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samyang Foods Co., Ltd.",
+   "from": "yahoo chart 003230.KS"
   },
   "097950": {
    "name": "CJ제일제당",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CJ Cheiljedang Corporation",
+   "from": "yahoo chart 097950.KS"
   },
   "004370": {
    "name": "농심",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Nongshim Co., Ltd.",
+   "from": "yahoo chart 004370.KS"
   },
   "007310": {
    "name": "오뚜기",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Otoki Corporation",
+   "from": "yahoo chart 007310.KS"
   },
   "018260": {
    "name": "삼성에스디에스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung SDS Co., Ltd.",
+   "from": "yahoo chart 018260.KS"
   },
   "012030": {
    "name": "DB",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DB Inc.",
+   "from": "yahoo chart 012030.KS"
   },
   "035510": {
    "name": "신세계 I&C",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SHINSEGAE Information & Communication Inc.",
+   "from": "yahoo chart 035510.KS"
   },
   "086280": {
    "name": "현대글로비스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hyundai Glovis Co., Ltd.",
+   "from": "yahoo chart 086280.KS"
   },
   "000120": {
    "name": "CJ대한통운",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CJ Logistics Corporation",
+   "from": "yahoo chart 000120.KS"
   },
   "005430": {
    "name": "한국공항",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Airport Service Co.,Ltd.",
+   "from": "yahoo chart 005430.KS"
   },
   "004360": {
    "name": "세방",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sebang Co., Ltd",
+   "from": "yahoo chart 004360.KS"
   },
   "065710": {
    "name": "서호전기",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seoho Electric Co.,Ltd",
+   "from": "yahoo chart 065710.KQ"
   },
   "009830": {
    "name": "한화솔루션",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Solutions Corporation",
+   "from": "yahoo chart 009830.KS"
   },
   "083650": {
    "name": "비에이치아이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "BHI Co., Ltd.",
+   "from": "yahoo chart 083650.KQ"
   },
   "047050": {
    "name": "포스코인터내셔널",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Posco International Corporation",
+   "from": "yahoo chart 047050.KS"
   },
   "052020": {
    "name": "에스티큐브",
-   "nameEn": null,
-   "from": null
+   "nameEn": "STCube, Inc.",
+   "from": "yahoo chart 052020.KQ"
   },
   "001120": {
    "name": "LX인터내셔널",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LX International Corp.",
+   "from": "yahoo chart 001120.KS"
   },
   "041510": {
    "name": "에스엠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SM Entertainment Co., Ltd.",
+   "from": "yahoo chart 041510.KQ"
   },
   "035900": {
    "name": "JYP Ent.",
-   "nameEn": null,
-   "from": null
+   "nameEn": "JYP Entertainment Corporation",
+   "from": "yahoo chart 035900.KQ"
   },
   "009970": {
    "name": "영원무역홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Youngone Holdings Co., Ltd.",
+   "from": "yahoo chart 009970.KS"
   },
   "081660": {
    "name": "미스토홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Misto Holdings Corp.",
+   "from": "yahoo chart 081660.KS"
   },
   "093050": {
    "name": "LF",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LF Corp.",
+   "from": "yahoo chart 093050.KS"
   },
   "028050": {
    "name": "삼성E&A",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samsung E&A Co., Ltd.",
+   "from": "yahoo chart 028050.KS"
   },
   "011560": {
    "name": "세보엠이씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sebo Manufacturing, Engineering & Construction Corp.",
+   "from": "yahoo chart 011560.KQ"
   },
   "053690": {
    "name": "한미글로벌",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HanmiGlobal Co., Ltd.",
+   "from": "yahoo chart 053690.KS"
   },
   "028100": {
    "name": "동아지질",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dong-Ah Geological Engineering Company Ltd.",
+   "from": "yahoo chart 028100.KS"
   },
   "036190": {
    "name": "금화피에스시",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Geumhwa Plant Service & Construction Co., Ltd.",
+   "from": "yahoo chart 036190.KQ"
   },
   "028300": {
    "name": "HLB",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HLB Co., Ltd.",
+   "from": "yahoo chart 028300.KQ"
   },
   "067630": {
    "name": "HLB생명과학",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HLB Life Science Co., Ltd.",
+   "from": "yahoo chart 067630.KQ"
   },
   "005290": {
    "name": "동진쎄미켐",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dongjin Semichem Co., Ltd.",
+   "from": "yahoo chart 005290.KQ"
   },
   "030530": {
    "name": "원익홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Wonik Holdings Co.,Ltd.",
+   "from": "yahoo chart 030530.KQ"
   },
   "003160": {
    "name": "디아이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "D.I Corporation",
+   "from": "yahoo chart 003160.KS"
   },
   "029460": {
    "name": "케이씨",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KC Co., Ltd.",
+   "from": "yahoo chart 029460.KS"
   },
   "043260": {
    "name": "성호전자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sungho Electronics Corp.",
+   "from": "yahoo chart 043260.KQ"
   },
   "058610": {
    "name": "에스피지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SPG Co., Ltd.",
+   "from": "yahoo chart 058610.KQ"
   },
   "001820": {
    "name": "삼화콘덴서",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SAMWHA CAPACITOR Co.,LTD",
+   "from": "yahoo chart 001820.KS"
   },
   "036830": {
    "name": "솔브레인홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Soulbrain Holdings Co., Ltd.",
+   "from": "yahoo chart 036830.KQ"
   },
   "098460": {
    "name": "고영",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Koh Young Technology Inc.",
+   "from": "yahoo chart 098460.KQ"
   },
   "031330": {
    "name": "에스에이엠티",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SAMT Co., Ltd.",
+   "from": "yahoo chart 031330.KQ"
   },
   "082740": {
    "name": "한화엔진",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanwha Engine Co., Ltd.",
+   "from": "yahoo chart 082740.KS"
   },
   "071970": {
    "name": "HD현대마린엔진",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HD-Hyundai Marine Engine Co., Ltd.",
+   "from": "yahoo chart 071970.KS"
   },
   "017960": {
    "name": "한국카본",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hankuk Carbon Co., Ltd.",
+   "from": "yahoo chart 017960.KS"
   },
   "077970": {
    "name": "STX엔진",
-   "nameEn": null,
-   "from": null
+   "nameEn": "STX Engine Co.,Ltd.",
+   "from": "yahoo chart 077970.KS"
   },
   "014940": {
    "name": "오리엔탈정공",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Oriental Precision & Engineering Co.,Ltd.",
+   "from": "yahoo chart 014940.KQ"
   },
   "012750": {
    "name": "에스원",
-   "nameEn": null,
-   "from": null
+   "nameEn": "S-1 Corporation",
+   "from": "yahoo chart 012750.KS"
   },
   "030000": {
    "name": "제일기획",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Cheil Worldwide Inc.",
+   "from": "yahoo chart 030000.KS"
   },
   "030190": {
    "name": "NICE평가정보",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NICE Information Service Co., Ltd.",
+   "from": "yahoo chart 030190.KS"
   },
   "034950": {
    "name": "한국기업평가",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Ratings Corporation",
+   "from": "yahoo chart 034950.KQ"
   },
   "034220": {
    "name": "LG디스플레이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "LG Display Co., Ltd.",
+   "from": "yahoo chart 034220.KS"
   },
   "046890": {
    "name": "서울반도체",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seoul Semiconductor Co., Ltd.",
+   "from": "yahoo chart 046890.KQ"
   },
   "096530": {
    "name": "씨젠",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seegene, Inc.",
+   "from": "yahoo chart 096530.KQ"
   },
   "012630": {
    "name": "HDC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HDC HOLDINGS CO.,Ltd",
+   "from": "yahoo chart 012630.KS"
   },
   "035890": {
    "name": "서희건설",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seohee Construction Co., Ltd.",
+   "from": "yahoo chart 035890.KQ"
   },
   "037710": {
    "name": "광주신세계",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Gwangju Shinsegae. Co. ,Ltd.",
+   "from": "yahoo chart 037710.KS"
   },
   "051500": {
    "name": "CJ프레시웨이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CJ Freshway Corporation",
+   "from": "yahoo chart 051500.KQ"
   },
   "036030": {
    "name": "케이티알파",
-   "nameEn": null,
-   "from": null
+   "nameEn": "kt alpha Co., Ltd.",
+   "from": "yahoo chart 036030.KQ"
   },
   "004170": {
    "name": "신세계",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SHINSEGAE Inc.",
+   "from": "yahoo chart 004170.KS"
   },
   "041830": {
    "name": "인바디",
-   "nameEn": null,
-   "from": null
+   "nameEn": "InBody Co.,Ltd",
+   "from": "yahoo chart 041830.KQ"
   },
   "099190": {
    "name": "아이센스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "i-SENS, Inc.",
+   "from": "yahoo chart 099190.KQ"
   },
   "035250": {
    "name": "강원랜드",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kangwon Land, Inc.",
+   "from": "yahoo chart 035250.KS"
   },
   "034230": {
    "name": "파라다이스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Paradise Co., Ltd.",
+   "from": "yahoo chart 034230.KS"
   },
   "006730": {
    "name": "서부T&D",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seobu T&D Co., Ltd.",
+   "from": "yahoo chart 006730.KQ"
   },
   "002380": {
    "name": "KCC",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KCC Corporation",
+   "from": "yahoo chart 002380.KS"
   },
   "000320": {
    "name": "노루홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "NOROO Holdings Co., Ltd.",
+   "from": "yahoo chart 000320.KS"
   },
   "002030": {
    "name": "아세아",
-   "nameEn": null,
-   "from": null
+   "nameEn": "ASIA Holdings CO., Ltd.",
+   "from": "yahoo chart 002030.KS"
   },
   "018310": {
    "name": "삼목에스폼",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sammok S-Form Co.,Ltd",
+   "from": "yahoo chart 018310.KQ"
   },
   "000390": {
    "name": "SP삼화",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SP Samhwa Co., Ltd.",
+   "from": "yahoo chart 000390.KS"
   },
   "014680": {
    "name": "한솔케미칼",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hansol Chemical Co., Ltd.",
+   "from": "yahoo chart 014680.KS"
   },
   "033500": {
    "name": "동성화인텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dongsung FineTec Co., Ltd.",
+   "from": "yahoo chart 033500.KQ"
   },
   "014830": {
    "name": "유니드",
-   "nameEn": null,
-   "from": null
+   "nameEn": "UNID Company Ltd.",
+   "from": "yahoo chart 014830.KS"
   },
   "032500": {
    "name": "케이엠더블유",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Kmw Inc.",
+   "from": "yahoo chart 032500.KQ"
   },
   "050890": {
    "name": "쏠리드",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SOLiD, Inc.",
+   "from": "yahoo chart 050890.KQ"
   },
   "033240": {
    "name": "자화전자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Jahwa Electronics. Co., Ltd",
+   "from": "yahoo chart 033240.KS"
   },
   "085660": {
    "name": "차바이오텍",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Chabiotech Co.,Ltd.",
+   "from": "yahoo chart 085660.KQ"
   },
   "038500": {
    "name": "삼표시멘트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "SAMPYO Cement Co., Ltd.",
+   "from": "yahoo chart 038500.KQ"
   },
   "003300": {
    "name": "한일홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hanil Holdings Co., Ltd.",
+   "from": "yahoo chart 003300.KS"
   },
   "004980": {
    "name": "성신양회",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sungshin Cement Co., Ltd",
+   "from": "yahoo chart 004980.KS"
   },
   "014620": {
    "name": "성광벤드",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Sung Kwang Bend Co.,Ltd.",
+   "from": "yahoo chart 014620.KQ"
   },
   "023160": {
    "name": "태광",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Tae Kwang Corporation",
+   "from": "yahoo chart 023160.KQ"
   },
   "019210": {
    "name": "와이지-원",
-   "nameEn": null,
-   "from": null
+   "nameEn": "YG-1 Co., Ltd.",
+   "from": "yahoo chart 019210.KQ"
   },
   "013030": {
    "name": "하이록코리아",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hy-Lok Corporation",
+   "from": "yahoo chart 013030.KQ"
   },
   "005690": {
    "name": "파미셀",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Pharmicell Co., Ltd.",
+   "from": "yahoo chart 005690.KS"
   },
   "002960": {
    "name": "한국쉘석유",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hankook Shell Oil Co.,Ltd.",
+   "from": "yahoo chart 002960.KS"
   },
   "002810": {
    "name": "삼영무역",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Samyung Trading Co., Ltd.",
+   "from": "yahoo chart 002810.KS"
   },
   "069260": {
    "name": "TKG휴켐스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "TKG Huchems Co., Ltd.",
+   "from": "yahoo chart 069260.KS"
   },
   "002840": {
    "name": "미원상사",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Miwon Commercial Co., Ltd.",
+   "from": "yahoo chart 002840.KS"
   },
   "017890": {
    "name": "한국알콜",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Alcohol Industrial Co., Ltd.",
+   "from": "yahoo chart 017890.KQ"
   },
   "000080": {
    "name": "하이트진로",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HITEJINRO Co., Ltd.",
+   "from": "yahoo chart 000080.KS"
   },
   "005300": {
    "name": "롯데칠성",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Lotte Chilsung Beverage Co., Ltd.",
+   "from": "yahoo chart 005300.KS"
   },
   "033920": {
    "name": "무학",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Muhak Co., Ltd.",
+   "from": "yahoo chart 033920.KS"
   },
   "018120": {
    "name": "진로발효",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Jinro Distillers Co., Ltd.",
+   "from": "yahoo chart 018120.KQ"
   },
   "000140": {
    "name": "하이트진로홀딩스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hitejinro Holdings Co., Ltd.",
+   "from": "yahoo chart 000140.KS"
   },
   "014820": {
    "name": "동원시스템즈",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Dongwon Systems Corporation",
+   "from": "yahoo chart 014820.KS"
   },
   "016590": {
    "name": "신대양제지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Shindaeyang Paper Co., Ltd.",
+   "from": "yahoo chart 016590.KS"
   },
   "008730": {
    "name": "율촌화학",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Youlchon Chemical Co.,Ltd.",
+   "from": "yahoo chart 008730.KS"
   },
   "002310": {
    "name": "아세아제지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Asia Paper Manufacturing. Co., Ltd",
+   "from": "yahoo chart 002310.KS"
   },
   "041190": {
    "name": "우리기술투자",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Woori Technology Investment Co., Ltd",
+   "from": "yahoo chart 041190.KQ"
   },
   "026890": {
    "name": "스틱인베스트먼트",
-   "nameEn": null,
-   "from": null
+   "nameEn": "STIC Investments, Inc.",
+   "from": "yahoo chart 026890.KS"
   },
   "053800": {
    "name": "안랩",
-   "nameEn": null,
-   "from": null
+   "nameEn": "AhnLab, Inc.",
+   "from": "yahoo chart 053800.KQ"
   },
   "030520": {
    "name": "한컴",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Hancom Inc.",
+   "from": "yahoo chart 030520.KQ"
   },
   "058970": {
    "name": "엠로",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Emro Inc",
+   "from": "yahoo chart 058970.KS"
   },
   "083930": {
    "name": "아바코",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Avaco Co., Ltd.",
+   "from": "yahoo chart 083930.KQ"
   },
   "079160": {
    "name": "CJ CGV",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CJ CGV Co., Ltd.",
+   "from": "yahoo chart 079160.KS"
   },
   "037270": {
    "name": "YG PLUS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "YG Plus, Inc.",
+   "from": "yahoo chart 037270.KS"
   },
   "078150": {
    "name": "HB테크놀러지",
-   "nameEn": null,
-   "from": null
+   "nameEn": "HB Technology CO.,LTD.",
+   "from": "yahoo chart 078150.KQ"
   },
   "068790": {
    "name": "DMS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "DMS Co.,Ltd.",
+   "from": "yahoo chart 068790.KQ"
   },
   "071200": {
    "name": "인피니트헬스케어",
-   "nameEn": null,
-   "from": null
+   "nameEn": "INFINITT Healthcare Co., Ltd.",
+   "from": "yahoo chart 071200.KQ"
   },
   "032620": {
    "name": "GC메디아이",
-   "nameEn": null,
-   "from": null
+   "nameEn": "GC MediAI Corporation",
+   "from": "yahoo chart 032620.KQ"
   },
   "035610": {
    "name": "솔본",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Solborn, Inc.",
+   "from": "yahoo chart 035610.KQ"
   },
   "035760": {
    "name": "CJ ENM",
-   "nameEn": null,
-   "from": null
+   "nameEn": "CJ ENM CO., Ltd.",
+   "from": "yahoo chart 035760.KQ"
   },
   "034120": {
    "name": "SBS",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Seoul Broadcasting System",
+   "from": "yahoo chart 034120.KS"
   },
   "053210": {
    "name": "스카이라이프",
-   "nameEn": null,
-   "from": null
+   "nameEn": "KT Skylife Co., Ltd.",
+   "from": "yahoo chart 053210.KS"
   },
   "039340": {
    "name": "한국경제TV",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Business News Co., Ltd.",
+   "from": "yahoo chart 039340.KQ"
   },
   "066790": {
    "name": "씨씨에스",
-   "nameEn": null,
-   "from": null
+   "nameEn": "Korea Cable T.V Chung-Buk System Co., Ltd.",
+   "from": "yahoo chart 066790.KQ"
   }
  }
 }
