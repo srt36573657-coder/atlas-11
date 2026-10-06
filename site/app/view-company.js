@@ -46,10 +46,10 @@ function contextBox(c) {
       : [h('p', {class: 'muted xs'}, `외국인·기관·개인 순매매 수량(주) · 기관은 연기금 포함 합계 · 16:00 무렵 값은 잠정일 수 있음 · 받은 시각 ${stamp(c.fetchedAt)}`),
         h('h3', {class: 'ag-h'}, `수급 · 지난 ${flows.length}거래일`), flowTable]),
     h('h3', {class: 'ag-h'}, `받은 기사 ${news.length}건`, c.newsRepublished ? h('small', null, ` · 같은 제목 다시 실린 기사 ${c.newsRepublished}건 가림`) : null),
-    news.length ? h('ul', {class: 'c-news'}, ...news.map(n => h('li', null, h('span', {class: 'muted xs'}, `${hm(n.publishedAt)} · ${n.office ?? ''} `), n.url ? h('a', {href: n.url, target: '_blank', rel: 'noopener noreferrer', 'data-ident': ''}, n.title) : h('span', {'data-ident': ''}, n.title)))) : h('p', {class: 'muted small'}, '받은 기사 없음'),
+    news.length ? h('ul', {class: 'c-news'}, ...news.map(n => h('li', null, h('span', {class: 'muted xs'}, `${hm(n.publishedAt)} · ${n.office ?? ''} `), n.url ? h('a', {href: n.url, target: '_blank', rel: 'noopener noreferrer', 'data-ident': '', lang: 'ko'}, n.title) : h('span', {'data-ident': '', lang: 'ko'}, n.title)))) : h('p', {class: 'muted small'}, '받은 기사 없음'),
     c.newsHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 기사 제목 ${c.newsHidden}건은 싣지 않음(10월 4일(일) 사장님 말씀)`) : null,
     h('h3', {class: 'ag-h'}, `받은 공시 ${disc.length}건`),
-    disc.length ? h('ul', {class: 'c-news'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'ag-notice'}, '기업행위 · ' + (d.actionWord ?? '')) : null, ' ', h('span', {'data-ident': ''}, d.title)))) : h('p', {class: 'muted small'}, place.disclosuresNone && c.missing?.includes('공시') ? place.disclosuresNone : '받은 공시 없음'),
+    disc.length ? h('ul', {class: 'c-news'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'ag-notice'}, '기업행위 · ' + (d.actionWord ?? '')) : null, ' ', h('span', {'data-ident': '', lang: 'ko'}, d.title)))) : h('p', {class: 'muted small'}, place.disclosuresNone && c.missing?.includes('공시') ? place.disclosuresNone : '받은 공시 없음'),
     c.disclosuresHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 공시 제목 ${c.disclosuresHidden}건은 싣지 않음`) : null,
     h('p', {class: 'muted xs'}, place.contextSource)); // 시장마다(util.js place)
   return box;

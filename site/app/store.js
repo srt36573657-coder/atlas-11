@@ -1,6 +1,6 @@
 /* ATLAS 11 · 자료 읽기 — 모든 화면은 같은 판(manifest.boardId)에 연결된다. 가짜 진행률 없음.
    무결성: manifest 에 적힌 파일별 SHA-256 을 화면이 스스로 다시 계산해 대조한다(보안 연결·localhost 에서만 가능). */
-const base = location.pathname.replace(/[^/]*$/, '');
+const base = location.pathname.replace(/^\/(en|zh)(?=\/)/, '').replace(/[^/]*$/, ''); // 언어판(/en/ · /zh/ · /en/us/ …)은 자료를 한국어판 자리(/ · /us/)에서 읽는다 — 자료는 한 벌
 const cache = new Map();
 export const state = {manifest: null, summary: '', integrity: {available: typeof crypto !== 'undefined' && !!crypto.subtle, verified: 0, failed: [], checked: []}};
 export const url = p => base + p.replace(/^\//, '');

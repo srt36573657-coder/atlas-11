@@ -1,9 +1,9 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-06T10:10:35.954Z",
+  "at": "2026-10-06T12:42:42.837Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
-  "boardId": "board-2026-10-06-7062f4d5",
+  "boardId": "board-2026-10-06-ed352f00",
   "asOf": "2026-10-06",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -19,7 +19,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -99,7 +99,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -109,7 +109,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -161,7 +161,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -241,7 +241,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -251,7 +251,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -303,9 +303,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -383,9 +383,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -393,9 +393,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -445,7 +445,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -525,7 +525,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -535,7 +535,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -587,9 +587,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -667,9 +667,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -677,9 +677,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -727,10 +727,10 @@
   },
   "checks": [
     {
-      "name": "pc 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(first) = 판",
+      "name": "pc 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(moves) = 판",
       "ok": true,
       "detail": {
-        "mvx": "first"
+        "mvx": "moves"
       }
     },
     {
@@ -751,7 +751,7 @@
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
-        "mvx": "first",
+        "mvx": "moves",
         "sw": 1280,
         "iw": 1280
       }
@@ -1138,7 +1138,7 @@
         "active": "home",
         "seg": "rise",
         "moves": null,
-        "mvx": "first",
+        "mvx": "moves",
         "sw": 1280,
         "iw": 1280
       }
@@ -1189,10 +1189,10 @@
       }
     },
     {
-      "name": "pc 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(first) = 판(first) · 옛 한 줄 없음",
+      "name": "pc 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(moves) = 판(moves) · 옛 한 줄 없음",
       "ok": true,
       "detail": {
-        "mvx": "first",
+        "mvx": "moves",
         "moves": null
       }
     },
@@ -1215,13 +1215,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(317px → 317px)",
+      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(370px → 370px)",
       "ok": true,
       "detail": {
-        "y0": 317,
+        "y0": 370,
         "rb": {
           "hash": "#/rise",
-          "y": 317
+          "y": 370
         }
       }
     },
@@ -1292,13 +1292,39 @@
       }
     },
     {
-      "name": "pc 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(처음 기록)",
+      "name": "pc 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(2026-10-02 → 2026-10-06)",
       "ok": true,
       "detail": {
-        "state": "first",
-        "head": "저녁 7시 들고 남 10월 2일(금) 종가 · 처음 기록(10월 6일(화) 00:41)",
-        "rows": [],
-        "n22": null
+        "state": "moves",
+        "head": "저녁 7시 들고 남 10월 2일(금) 종가 → 10월 6일(화) 종가 · 10월 6일(화) 19:50 기록",
+        "rows": [
+          {
+            "kind": "hot-in",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "hot-out",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "became",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "sim-in",
+            "n": 6,
+            "who": "삼천당제약(제약) · 케이엠더블유(통신장비) · 한솔케미칼(석유화학) · RFHIC(통신장비) · 원익머트리얼즈(석유화학) · 올릭스(바이오 도구·서비스)"
+          },
+          {
+            "kind": "sim-out",
+            "n": 6,
+            "who": "에스비비테크(일반 기계) · 쏠리드(통신장비) · SK디스커버리(정유·가스) · 한화시스템(방산) · 미래에셋벤처투자(창투·캐피탈) · 한국공항(물류·운송)"
+          }
+        ],
+        "n22": "오름 상위: 새로 든 곳 6곳 · 빠진 곳 6곳"
       }
     },
     {
@@ -1320,13 +1346,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(603px → 603px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(655px → 655px)",
       "ok": true,
       "detail": {
-        "y0": 603,
+        "y0": 655,
         "sb": {
           "hash": "#/similar",
-          "y": 603
+          "y": 655
         }
       }
     },
@@ -1437,11 +1463,11 @@
       "detail": null
     },
     {
-      "name": "pc 회사 삼성전자: 수급·기사 칸 기사 줄 「기사 있음」 — 회사 화면이 저를 가리키지 않음",
+      "name": "pc 회사 삼성전자: 수급·기사 칸 기사 줄 「회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에」 — 회사 화면이 저를 가리키지 않음",
       "ok": true,
       "detail": {
-        "nm": null,
-        "want": null
+        "nm": "회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에",
+        "want": "회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에"
       }
     },
     {
@@ -2910,7 +2936,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 26개 = 기록 파일 26개(이슈 2 · 업데이트 17 · 자료 변경 7 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 2개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 28개 = 기록 파일 28개(이슈 2 · 업데이트 18 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 2개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -2933,31 +2959,31 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 17줄 = 기록 파일 17줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 18줄 = 기록 파일 18줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 17,
+        "n": 18,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 기록 「자료 변경」 누름 → 7줄 = 기록 파일 7줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「자료 변경」 누름 → 8줄 = 기록 파일 8줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "data",
-        "n": 7,
+        "n": 8,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 26줄 = 기록 파일 26줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 28줄 = 기록 파일 28줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 26,
+        "n": 28,
         "sw": 1280,
         "cw": 1280
       }
@@ -2989,10 +3015,10 @@
       }
     },
     {
-      "name": "mobile 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(first) = 판",
+      "name": "mobile 탭 「불장」: 저녁 7시 들고 남 칸이 스위치 바로 아래(moves) = 판",
       "ok": true,
       "detail": {
-        "mvx": "first"
+        "mvx": "moves"
       }
     },
     {
@@ -3013,7 +3039,7 @@
         ],
         "promise": "ATLAS가 하지 않는 일 7가지",
         "footPromise": "지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다",
-        "mvx": "first",
+        "mvx": "moves",
         "sw": 390,
         "iw": 390
       }
@@ -3400,7 +3426,7 @@
         "active": "home",
         "seg": "rise",
         "moves": null,
-        "mvx": "first",
+        "mvx": "moves",
         "sw": 390,
         "iw": 390
       }
@@ -3451,10 +3477,10 @@
       }
     },
     {
-      "name": "mobile 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(first) = 판(first) · 옛 한 줄 없음",
+      "name": "mobile 「오름 상위」: 저녁 7시 들고 남 칸이 스위치 바로 아래(moves) = 판(moves) · 옛 한 줄 없음",
       "ok": true,
       "detail": {
-        "mvx": "first",
+        "mvx": "moves",
         "moves": null
       }
     },
@@ -3477,13 +3503,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(416px → 416px)",
+      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(492px → 492px)",
       "ok": true,
       "detail": {
-        "y0": 416,
+        "y0": 492,
         "rb": {
           "hash": "#/rise",
-          "y": 416
+          "y": 492
         }
       }
     },
@@ -3554,13 +3580,39 @@
       }
     },
     {
-      "name": "mobile 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(처음 기록)",
+      "name": "mobile 「예비」: 맨 위 「저녁 7시 들고 남」 칸 = 판(2026-10-02 → 2026-10-06)",
       "ok": true,
       "detail": {
-        "state": "first",
-        "head": "저녁 7시 들고 남 10월 2일(금) 종가 · 처음 기록(10월 6일(화) 00:41)",
-        "rows": [],
-        "n22": null
+        "state": "moves",
+        "head": "저녁 7시 들고 남 10월 2일(금) 종가 → 10월 6일(화) 종가 · 10월 6일(화) 19:50 기록",
+        "rows": [
+          {
+            "kind": "hot-in",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "hot-out",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "became",
+            "n": 0,
+            "who": "없음"
+          },
+          {
+            "kind": "sim-in",
+            "n": 6,
+            "who": "삼천당제약(제약) · 케이엠더블유(통신장비) · 한솔케미칼(석유화학) · RFHIC(통신장비) · 원익머트리얼즈(석유화학) · 올릭스(바이오 도구·서비스)"
+          },
+          {
+            "kind": "sim-out",
+            "n": 6,
+            "who": "에스비비테크(일반 기계) · 쏠리드(통신장비) · SK디스커버리(정유·가스) · 한화시스템(방산) · 미래에셋벤처투자(창투·캐피탈) · 한국공항(물류·운송)"
+          }
+        ],
+        "n22": "오름 상위: 새로 든 곳 6곳 · 빠진 곳 6곳"
       }
     },
     {
@@ -3582,13 +3634,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(702px → 702px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(778px → 778px)",
       "ok": true,
       "detail": {
-        "y0": 702,
+        "y0": 778,
         "sb": {
           "hash": "#/similar",
-          "y": 702
+          "y": 778
         }
       }
     },
@@ -3699,11 +3751,11 @@
       "detail": null
     },
     {
-      "name": "mobile 회사 삼성전자: 수급·기사 칸 기사 줄 「기사 있음」 — 회사 화면이 저를 가리키지 않음",
+      "name": "mobile 회사 삼성전자: 수급·기사 칸 기사 줄 「회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에」 — 회사 화면이 저를 가리키지 않음",
       "ok": true,
       "detail": {
-        "nm": null,
-        "want": null
+        "nm": "회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에",
+        "want": "회사 이름이 든 기사 없음 · 모은 기사 6건은 아래 「수급·기사·공시 기록」에"
       }
     },
     {
@@ -5164,7 +5216,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 26개 = 기록 파일 26개(이슈 2 · 업데이트 17 · 자료 변경 7 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 2개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 28개 = 기록 파일 28개(이슈 2 · 업데이트 18 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 2개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -5187,31 +5239,31 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 17줄 = 기록 파일 17줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 18줄 = 기록 파일 18줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 17,
+        "n": 18,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 기록 「자료 변경」 누름 → 7줄 = 기록 파일 7줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「자료 변경」 누름 → 8줄 = 기록 파일 8줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "data",
-        "n": 7,
+        "n": 8,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 26줄 = 기록 파일 26줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 28줄 = 기록 파일 28줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 26,
+        "n": 28,
         "sw": 390,
         "cw": 390
       }
@@ -5407,11 +5459,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 26개 = /changelog.json 26개 · 아래 탭 6개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 28개 = /changelog.json 28개 · 아래 탭 6개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 26,
-        "first": "u-20261006T185911-issue",
+        "n": 28,
+        "first": "kr-20261006T195025",
         "tabs": 6,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -6938,10 +6990,10 @@
       "detail": null
     },
     {
-      "name": "배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (5줄)",
+      "name": "배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (9줄)",
       "ok": true,
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-06T10-06-36-965Z"
+  "dir": "reports/atlas11/browser/2026-10-06T12-38-32-986Z"
 }

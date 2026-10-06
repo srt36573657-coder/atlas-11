@@ -748,3 +748,15 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
 .lg-src { margin: 7px 0 0; line-height: 1.5; }
 .lg-from { margin-top: 6px; }
 @media (max-width: 32rem) { .lg-seg { flex-wrap: wrap; } .lg-seg .f-seg-b { flex: 1 1 calc(50% - 2px); } }
+
+/* 언어판(영어 /en · 중국어 /zh)만 — 한국어 판(html lang="ko")에는 닿지 않음 (사장님 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」)
+   ① 중국어 글은 글자 사이에서 줄을 바꿈(한국어 판의 keep-all 은 중국어 한 문장을 한 덩어리로 묶어 큰 글씨 휴대폰에서 화면을 넓혔음) — 원문(lang="ko" 기사 · 공시 제목)은 그대로 keep-all
+   ② 영어 수급 줄 「Foreign investors −130,000 shares」가 출목표 칸보다 길어 칸을 밀어냄 — 이름은 줄을 바꾸고 숫자만 한 덩어리 · 칸 안 줄은 칸 너비를 넘지 않음 */
+html:not([lang="ko"]) body { word-break: normal; }
+html:not([lang="ko"]) [lang="ko"] { word-break: keep-all; }
+html:not([lang="ko"]) .fl-it { white-space: normal; }
+html:not([lang="ko"]) .fl-val { white-space: nowrap; }
+html:not([lang="ko"]) .f-tile { grid-template-columns: minmax(0, 1fr); }
+/* ③ 중국어판 글꼴 — 한국어 글꼴(프리텐다드)에 든 한자 1,305자는 한국식 모양이라 중국어 글과 섞이면 모양이 둘 → 중국어판은 기기 중국어 글꼴(아이폰 PingFang SC)로 · 원문(lang="ko")은 한국어 글꼴 그대로 */
+html[lang="zh-CN"] { --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", system-ui, sans-serif; }
+html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif; }
