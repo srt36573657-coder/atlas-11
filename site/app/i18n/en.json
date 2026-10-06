@@ -1246,6 +1246,19 @@
 "{d} 값은 잠정": "{d} values are preliminary",
 "✓ 외국인 순매수": "✓ Foreign net buying",
 "값이 늦거나 빠지면 그렇다고 적습니다(빈 칸에 숫자를 지어 넣지 않음)": "Late or missing values are marked as such (blanks are never filled with made-up numbers)",
-"{d} {t} 업데이트가 이 기록의 글 한 줄을 고침 — 옛 글은 기록 파일에 그대로": "An update on {d} at {t} corrected one line of this record — the original text stays in the record file"
+"{d} {t} 업데이트가 이 기록의 글 한 줄을 고침 — 옛 글은 기록 파일에 그대로": "An update on {d} at {t} corrected one line of this record — the original text stays in the record file",
+"{d} 종가까지 지난 {n}년 기록": "{n}-year record through the {d} close",
+"우량 큰 회사 {n}곳 중 지난 {n}년 가장 덜 떨어진 {n}곳": "The {n3} of {n} large quality companies that fell least over the past {n2} years",
+"막대 = {n}년 안에서 가장 깊게 떨어진 정도": "Bar = deepest fall within {n} years",
+"{d} 종가가 {n}년 중 가장 낮은 자리": "The {d} close is the lowest point in {n} years",
+"보통 회사({n}곳 가운데 값)": "Typical company (median of {n})",
+"지난 {n}년 기록일 뿐 — 다음 {n}년은 다를 수 있음": "Only the past {n} years — the next {n2} years may differ",
+"덜 떨어진 곳은 덜 오르기도 함 — {n}년 {e} {n}% · {e} {n}%": "Those that fell less also rose less — {n}-year {e} {n2}% · {e2} {n3}%",
+"{n}곳 중 {n}곳이 {e} · {e}에 몰림": "{n2} of the {n} are in {e} and {e2}",
+"{n}곳 중 {n}곳이 {e}에 몰림": "{n2} of the {n} are in {e}",
+"기준 · 숫자 자세히": "Rule and numbers in detail",
+"지난 {n}년 = {d} ~ {d}({n}거래일)": "Past {n} years = {d} – {d2} ({n2} trading days)",
+"종가 기록 {n}거래일({d}부터)": "{n} trading days of closes (since {d})",
+"{n}년 기록이 쌓이는 {n}년 {n}월부터 {n}곳을 찍습니다": "{n4} picks start in {n3}/{n2}, once {n} years of records have built up"
 }
 }

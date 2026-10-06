@@ -788,9 +788,8 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 
 /* 아래 탭 「처음」(#/start · 2026-10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」) — 기준 하나 · 다섯 · 가장 깊게 떨어진 때 막대 · 견줄 값 · 틀릴 수 있는 까닭
    막대는 떨어진 정도라 내림 색(파랑) 하나 — 길이로만 견줌 · 다섯 칸을 누르면 회사 화면 */
-.st-rule { margin-top: 14px; }
-.st-rule-h { margin: 0; font-size: .9375rem; font-weight: 700; color: var(--sub); }
-.st-rule-t { margin: 2px 0 4px; font-size: 1.0625rem; font-weight: 700; color: var(--ink); line-height: 1.45; }
+.st-rule-t { margin: 10px 2px 2px; font-size: 1.0625rem; font-weight: 700; color: var(--ink); line-height: 1.45; } /* 기준 한 줄(2026-10-07 02:39 「아주 효율적으로 해」 — 상자 없이) */
+.st-key { margin: 0 2px; font-size: .875rem; color: var(--sub); line-height: 1.45; }
 .st-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; }
 .st-row { display: grid; gap: 5px; padding: 12px 14px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--hair), var(--lift); color: var(--ink); text-decoration: none; transition: transform .12s ease-out; }
 .st-row:active { transform: scale(.99); }
@@ -799,15 +798,20 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 .st-rk { flex: none; font-size: .875rem; font-weight: 700; color: var(--sub); }
 .st-name { font-size: 1.1875rem; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
 .st-ind { font-size: .875rem; color: var(--sub); }
-.st-bl { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: .9375rem; color: var(--ink2); }
 .st-v { font-weight: 700; white-space: nowrap; color: var(--down-ink); }
+.st-top .st-v { margin-left: auto; font-size: 1.0625rem; } /* 회사마다 한 줄: 순위 · 이름 · 업종 · 값 */
+.st-bn { font-size: .9375rem; color: var(--ink2); }
 .st-track { display: block; height: 10px; border-radius: 999px; background: var(--fill); overflow: hidden; }
 .st-fill { display: block; height: 100%; border-radius: 999px; background: var(--down); }
-.st-sub { font-size: .875rem; color: var(--sub); line-height: 1.45; }
 .st-low { font-size: .875rem; font-weight: 700; color: var(--ink); line-height: 1.45; padding-left: 10px; box-shadow: inset 3px 0 0 var(--warn); }
 .st-base { margin: 12px 0 0; padding: 10px 14px; border-radius: 16px; border: 1.5px dashed var(--sep); display: grid; gap: 6px; }
 .st-warn { margin-top: 14px; }
 .st-warn-h { margin: 0 0 4px; font-size: 1.0625rem; }
 .st-warn ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; line-height: 1.5; }
 .st-wait { margin: 14px 4px 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+.st-more { margin-top: 14px; } /* 접힌 「기준 · 숫자 자세히」 */
+.st-more p, .st-more li { font-size: .875rem; color: var(--sub); line-height: 1.5; }
+.st-more p { margin: 6px 0 0; }
+.st-more ul { margin: 6px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.st-mn { font-weight: 700; color: var(--ink2); margin-right: 6px; }
 .st-page .b-promise-box { margin-top: 14px; }
