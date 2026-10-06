@@ -25,7 +25,7 @@ let cached = null;
 const withIdent = (t, re = IDENT) => String(t).split(re).map(p => (re.test(p) ? h('span', {'data-ident': ''}, p) : p));
 /** 까닭 줄의 사장님 말씀 · 이슈 줄의 기사 제목 · 공시 제목 「…」은 원문 그대로라 식별자(「왜 3단 클릭 구조가 아니지?」의 숫자를 우리 글로 세지 않음) */
 const QUOTE = /(「[^」]*」)/;
-const withQuote = (t, re = IDENT) => String(t).split(QUOTE).flatMap(p => (QUOTE.test(p) ? [h('span', {'data-ident': ''}, p)] : withIdent(p, re)));
+const withQuote = (t, re = IDENT) => String(t).split(QUOTE).flatMap(p => (QUOTE.test(p) ? [h('span', {'data-ident': '', lang: 'ko'}, p)] : withIdent(p, re))); // 「…」 원문은 언어판에서도 그대로
 async function loadLog() {
   if (cached) return cached;
   const r = await fetch('/changelog.json', {cache: 'no-cache'});
@@ -37,15 +37,16 @@ async function loadLog() {
 
 function item(e) {
   const re = e.idents?.length ? identRe(e.idents) : IDENT;
+  const orig = e.kind === 'update' ? 'ko' : null; // 업데이트 글은 손으로 쓴 원문(언어판에서도 한국어 그대로) · 자료 변경 · 이슈 줄은 틀로 만든 글이라 바뀜
   return h('li', {class: 'lg-item', 'data-kind': e.kind, 'data-id': e.id},
     h('p', {class: 'lg-top'},
       h('span', {class: 'lg-kind lg-' + e.kind}, KIND[e.kind]),
       PLACE[e.place] ? h('span', {class: 'lg-place'}, PLACE[e.place]) : null,
       h('time', {class: 'lg-time', datetime: e.live}, e.live.slice(11, 16))),
-    h('h3', {class: 'lg-title'}, ...withIdent(e.title, re)),
-    h('ul', {class: 'lg-what'}, ...e.what.map(w => h('li', null, ...withQuote(w, re)))),
-    e.removed?.length ? h('p', {class: 'lg-removed'}, h('b', null, '뺀 것 '), e.removed.join(' · ')) : null,
-    e.why ? h('p', {class: 'lg-why muted small'}, '까닭 · ', ...withQuote(e.why)) : null,
+    h('h3', {class: 'lg-title', lang: orig}, ...withIdent(e.title, re)),
+    h('ul', {class: 'lg-what', lang: orig}, ...e.what.map(w => h('li', null, ...withQuote(w, re)))),
+    e.removed?.length ? h('p', {class: 'lg-removed'}, h('b', null, '뺀 것 '), h('span', {lang: orig}, e.removed.join(' · '))) : null,
+    e.why ? h('p', {class: 'lg-why muted small'}, '까닭 · ', h('span', {lang: 'ko'}, ...withQuote(e.why))) : null,
     e.commits?.length ? h('p', {class: 'lg-commits muted xs'}, '커밋 ', ...e.commits.flatMap((c, i) => [i ? ' · ' : null, h('code', null, c)])) : null,
     e.source ? h('p', {class: 'lg-src muted xs'}, '출처 · ', ...withIdent(e.source, re)) : null);
 }

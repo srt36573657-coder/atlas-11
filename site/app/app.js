@@ -18,7 +18,8 @@
    2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭을 만들어 줘」: 아래 탭 여섯째 「기록」(#/log · view-log.js)
      넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김 */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
-import {state, loadManifest, prefs, url} from './store.js';
+import {ON as I18N, LANG, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」) — /en/ · /zh/
+import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
@@ -84,8 +85,8 @@ function header() {
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
   const tabHash = () => /^#\/(map|road|agenda|similar|rise|log)?$/.test(location.hash) ? location.hash : '';
-  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => h('a', {class: 'mkt-b', href: p.href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null,
-    onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', p.href + tabHash()); }}, p.label))) : null;
+  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => { const href = I18N ? '/' + LANG + p.href : p.href; return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 언어판은 언어판끼리(/en/ ↔ /en/us/)
+    onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); })) : null;
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
     mkt,
@@ -150,6 +151,7 @@ async function watchManifest() {
 }
 
 async function start() {
+  if (I18N) await startI18n(); // 언어판: 사전을 읽고 이후 그려지는 글자를 모두 그 말로
   applyFont();
   const main = document.getElementById('main');
   main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료를 불러오는 중입니다'),
@@ -159,6 +161,11 @@ async function start() {
   setPlace(app.manifest.place); // 미국 판이면 달러 · 뉴욕 16:00 종가 · 수급 없음(util.js place) — 한국 판 manifest 에는 place 가 없어 한국 값 그대로
   try { const r = await fetch('/places.json', {cache: 'no-cache'}); if (r.ok) { const p = await r.json(); if (Array.isArray(p?.places)) app.places = p.places.filter(x => x && x.id && x.href && x.label); } } catch {}
   state.places = app.places; // 「찾기」가 다른 시장 판도 함께 찾도록
+  if (I18N) { // 회사 이름: 한국 판 = 영어 이름 사전(/data/atlas11/names-kr.json · 없으면 로마자) · 미국 판 = 판의 nameEn — 두 판 모두(찾기 · 기록 이슈 줄에 섞여 나옴) · 첫 화면 전에
+    const nk = await fetch('/data/atlas11/names-kr.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
+    try { addBoardNames(await loadBoard(), nk?.names); } catch {}
+    for (const p of app.places) if (p.id !== place.id) { try { addBoardNames((await loadPlaceBoard(p.href)).board, nk?.names); } catch {} }
+  }
   header();
   window.addEventListener('hashchange', route);
   setInterval(watchManifest, 5 * 60 * 1000);

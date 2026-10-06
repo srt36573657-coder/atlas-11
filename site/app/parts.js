@@ -17,16 +17,16 @@ export function eventLine(e, {who = null, withRoute = false, date = true} = {}) 
   return h('li', {class: 'ag-li', 'data-level': e.level},
     star(e.level),
     date ? h('span', {class: 'ag-date'}, korDate(e.date)) : null,
-    h('span', {class: 'ag-name'}, h('span', {'data-ident': ''}, e.name), withRoute && e.scope === 'sector' ? h('span', {class: 'ag-route'}, ' · 업종 행사') : null,
+    h('span', {class: 'ag-name'}, h('span', {'data-ident': '', lang: e.scope === 'market' ? null : 'ko'}, e.name), withRoute && e.scope === 'sector' ? h('span', {class: 'ag-route'}, ' · 업종 행사') : null,
       who ? h('span', {class: 'ag-whos'}, ' — ', ...whoLinks(who)) : null,
-      e.source?.url ? h('span', {class: 'ag-srcw'}, ' · ', h('a', {class: 'ag-src', href: e.source.url, target: '_blank', rel: 'noopener noreferrer', title: e.source.name ?? '공식 출처'}, '출처')) : null));
+      e.source?.url ? h('span', {class: 'ag-srcw'}, ' · ', h('a', {class: 'ag-src', href: e.source.url, target: '_blank', rel: 'noopener noreferrer', title: e.source.name ?? '공식 출처', 'data-orig-attr': e.source.name ? 'title' : null}, '출처')) : null));
 }
 /** 공시 한 줄: ★ · 공시한 날 · 제목 · (예고·알림) */
 export function disclosureLine(d, {who = null} = {}) {
   return h('li', {class: 'ag-li', 'data-level': d.level},
     star(d.level),
     h('span', {class: 'ag-date'}, korDate(d.publishedAt.slice(0, 10))),
-    h('span', {class: 'ag-name'}, who ? h('span', {class: 'ag-whos'}, ...whoLinks(who), ' — ') : null, h('span', {'data-ident': ''}, d.title)),
+    h('span', {class: 'ag-name'}, who ? h('span', {class: 'ag-whos'}, ...whoLinks(who), ' — ') : null, h('span', {'data-ident': '', lang: 'ko'}, d.title)),
     d.times > 1 ? h('span', {class: 'ag-times'}, `${d.times}건`) : null, d.notice ? h('span', {class: 'ag-notice'}, d.notice) : null);
 }
 /** 회사 한 곳의 일정·공시 칸 — max: 일정·공시 각각 몇 줄까지(0 이면 모두) · code 가 있으면 「더 보기」가 회사 화면으로 */
@@ -198,7 +198,7 @@ export function newsLine(brief, {here = false} = {}) {
   const n = brief?.news;
   if (!n) return h('span', {class: 'nw nw-none'}, h('span', {class: 'nw-h'}, '기사'), h('span', {class: 'nw-miss'}, !brief || brief.missing?.includes('기사') ? notYet : brief.newsCount ? `회사 이름이 든 기사 없음 · 모은 기사 ${brief.newsCount}건은 ${here ? '아래 「수급·기사·공시 기록」에' : '회사 화면에'}` : '모은 기사 없음'));
   // 언론사 이름(「아이뉴스24」 같은)도 원문 이름이라 식별자로 둔다 — 이름 속 숫자를 단위 없는 숫자로 세지 않게
-  return h('span', {class: 'nw'}, h('span', {class: 'nw-h'}, `기사 · ${stamp(n.publishedAt)} · `, n.office ? h('span', {'data-ident': ''}, n.office) : '언론사 이름 없음'), h('span', {class: 'nw-t', 'data-ident': ''}, n.title));
+  return h('span', {class: 'nw'}, h('span', {class: 'nw-h'}, `기사 · ${stamp(n.publishedAt)} · `, n.office ? h('span', {'data-ident': '', lang: 'ko'}, n.office) : '언론사 이름 없음'), h('span', {class: 'nw-t', 'data-ident': '', lang: 'ko'}, n.title)); // 언론사 · 기사 제목은 원문(lang="ko" — 언어판에서도 바꾸지 않음)
 }
 
 /** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */

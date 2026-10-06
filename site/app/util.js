@@ -1,6 +1,7 @@
 /* ATLAS 11 · 공용 도우미 (형식·날짜·문장) — 예측 없음(2026-10-04 15:37 사장님 「이제 예측을 하지 않는다」)
    글 날짜 「10월 2일(금)」 · 그래프 눈금 「10/02」 · 시각 「16:01 KST」
    숫자: 값은 단위(원·%·포인트) · 변화는 부호(+/−) · 소수 자리 고정(가격 0 · 등락 2 · 지수 2) */
+import {t, LANG, LOCALE} from './i18n.js';
 export const finite = v => typeof v === 'number' && Number.isFinite(v);
 /** 시장 — 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」
    같은 화면 코드를 한국 판(/)과 미국 판(/us/)이 함께 쓴다 · 판 목록(manifest.place)을 따르고 없으면 한국 값(app.js 가 처음에 setPlace)
@@ -42,8 +43,8 @@ export function speak(text) {
   try {
     if (!('speechSynthesis' in window)) return false;
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text); u.lang = 'ko-KR'; u.rate = 0.9; u.pitch = 1.0; u.volume = 0.96;
-    const voice = window.speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('ko')); if (voice) u.voice = voice;
+    const u = new SpeechSynthesisUtterance(t(text)); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1.0; u.volume = 0.96; // 언어판이면 그 말로(i18n.js)
+    const voice = window.speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith(LANG)); if (voice) u.voice = voice;
     window.speechSynthesis.speak(u); return true;
   } catch { return false; }
 }
