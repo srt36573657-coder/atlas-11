@@ -20,7 +20,9 @@ import {SHAPES} from '../../../site/app/shapes.js';
 const arg = (k, d = null) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const SET = arg('--set', '365'), OUT = arg('--out');
 const BUNDLE = 'reports/atlas11/universe/2026-10-05-0940/bundle.json.gz', BOARD = 'public/data/atlas11/view/board.json';
-const WIN = 20, AHEAD = 120, UP = 1.5, DOWN = 1 / 1.5, JUMP = 0.31;
+// 2026-10-06 10:06 사장님 「그러면 6개월에 30%도 찾아봐 5개월 4개월 3개월 1개월도」 — 기간(--ahead 거래일)과 오름 폭(--up 배)을 바꿔 셀 수 있게(기본은 첫 판 그대로 120 · 1.5)
+//   --range: 날짜 범위를 가장 긴 기간(120)에 맞춰 기간끼리 같은 날들을 견주게(짧은 기간도 2026-04-07 까지만)
+const WIN = 20, AHEAD = Number(arg('--ahead', '120')), UP = Number(arg('--up', '1.5')), DOWN = 1 / UP, RANGE = Math.max(AHEAD, Number(arg('--range', '0'))), JUMP = 0.31;
 
 /* 사이트 shapes.js 안의 도우미와 같은 셈(내보내지 않아서 같은 뜻으로 다시 적음) */
 const runsOf = road => { const out = []; for (const c of road.cells) { const l = out.at(-1); if (l && l.side === c.side) l.n++; else out.push({side: c.side, n: 1}); } return out; };
@@ -53,8 +55,8 @@ function main() {
     const bad = [0]; for (let i = 1; i < cs.length; i++) bad.push(bad[i - 1] + (jump[i] ? 1 : 0)); // 누적 — 구간 안 이상한 날 수
     const badIn = (a, b) => bad[b] - bad[a]; // (a, b] 사이 날의 등락 중 이상한 것
     stocks++;
-    for (let t = WIN; t + AHEAD < cs.length; t++) {
-      if (badIn(t - WIN, t + AHEAD) > 0) { cut++; continue; }
+    for (let t = WIN; t + RANGE < cs.length; t++) {
+      if (badIn(t - WIN, t + RANGE) > 0) { cut++; continue; }
       const road = roadOf(cs.slice(t - WIN, t + 1));
       let fmax = -Infinity, fmin = Infinity; for (let k = t + 1; k <= t + AHEAD; k++) { if (cs[k] > fmax) fmax = cs[k]; if (cs[k] < fmin) fmin = cs[k]; }
       const up50 = fmax >= cs[t] * UP ? 1 : 0, down33 = fmin <= cs[t] * DOWN ? 1 : 0;
@@ -64,7 +66,7 @@ function main() {
     }
   }
   fs.writeFileSync(OUT, zlib.gzipSync(lines.join('\n')));
-  const meta = {set: SET, stocks, windows, cut, shapes: ALL.map(s => ({id: s.id, name: s.name, text: s.text, site: s.site})), win: WIN, ahead: AHEAD, up: UP, down: DOWN, jump: JUMP, bundle: BUNDLE, at: new Date().toISOString()};
+  const meta = {set: SET, ahead: AHEAD, upX: UP, range: RANGE, stocks, windows, cut, shapes: ALL.map(s => ({id: s.id, name: s.name, text: s.text, site: s.site})), win: WIN, ahead: AHEAD, up: UP, down: DOWN, jump: JUMP, bundle: BUNDLE, at: new Date().toISOString()};
   fs.writeFileSync(OUT.replace(/\.csv\.gz$/, '') + '.meta.json', JSON.stringify(meta, null, 1));
   console.log(JSON.stringify({set: SET, stocks, windows, cut}));
 }
