@@ -1,0 +1,5 @@
+# 2026-10-06 19:45 — 매일 실행 · 올리기 · 미국 받기 · 저녁 작업이 겹쳐 돌면, 같은 날 같은 기록 파일 끝에 저마다 한 줄씩 더한 것이
+#   git 에서 부딪혀 「rebase failed」로 멈췄다(매일 실행 37451898051 — 기록 넣기 단계).
+# 덧붙이기만 하는 기록(.jsonl · 한 줄 = 기록 하나 · id 로 겹침을 가림)은 두 쪽 줄을 모두 남기는 union 으로 합친다 — 줄을 지우거나 고치지 않는다(원칙 규칙 8).
+reports/atlas11/ledger/**/*.jsonl merge=union
+reports/atlas11/operations/deploy-log.jsonl merge=union
