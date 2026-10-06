@@ -1,0 +1,33 @@
+# ATLAS 한국 회사 영어 이름 받기 — 2026-10-06 20:33 사장님 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」
+#   영어판(/en) · 중국어판(/zh)에서 한국 회사 이름을 영어로 보이려고 네이버 증권 종목 기본 정보의 영어 종목명을 한 번 받아 둔다.
+#   결과는 public/data/atlas11/names-kr.json 한 파일만 적는다 — 판 · 기록 파일은 건드리지 않는다. 사이트에 올리지는 않는다.
+#   예약(cron)은 두지 않는다 — 회사 목록이 바뀌었을 때만 「Run workflow」(docs/ATLAS_원칙.md 규칙 7).
+name: 한국 회사 영어 이름 받기
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-names
+  cancel-in-progress: false
+jobs:
+  names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 영어 이름 받기(365곳)
+        run: timeout 1500 node scripts/atlas11/collect_names.mjs
+      - name: 기록 올리기(public/data/atlas11/names-kr.json 만)
+        if: always()
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          [ -f public/data/atlas11/names-kr.json ] || { echo "받은 것 없음"; exit 1; }
+          git add -f public/data/atlas11/names-kr.json
+          git commit -q -m "atlas11 names kr [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
