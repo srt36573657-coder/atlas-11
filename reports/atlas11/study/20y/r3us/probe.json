@@ -1,0 +1,38 @@
+{
+ "startedAt": "2026-10-06T04:54:22.078340+00:00",
+ "index": {
+  ".INX": {
+   "how": "yahoo-^GSPC",
+   "rows": 5725,
+   "first": "20040102"
+  },
+  ".IXIC": {
+   "how": "yahoo-^IXIC",
+   "rows": 5725,
+   "first": "20040102"
+  },
+  ".DJI": {
+   "how": "yahoo-^DJI",
+   "rows": 5725,
+   "first": "20040102"
+  }
+ },
+ "errors": [],
+ "yfinance": "1.7.0",
+ "fred": {
+  "status": 200,
+  "rows": 5726,
+  "first": "2004-01-02"
+ },
+ "stocks": {
+  "asked": 365,
+  "done": 365,
+  "got": 364,
+  "miss": [
+   "BRKB"
+  ],
+  "missCount": 1,
+  "startedBefore2005": 244
+ },
+ "finishedAt": "2026-10-06T04:55:28.477841+00:00"
+}
