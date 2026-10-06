@@ -1,0 +1,257 @@
+{
+ "schema": "atlas11-evening-1",
+ "universe": "u2-n365-v1-2026-10-05",
+ "asOf": "2026-10-06",
+ "recordedAt": "2026-10-06T10:50:25.667Z",
+ "run": "evening",
+ "boardId": "board-2026-10-06-ed352f00",
+ "hot": [
+  {
+   "id": "ib8333ad0",
+   "label": "전기 부품",
+   "change20": 0.507656
+  },
+  {
+   "id": "i3b897314",
+   "label": "반도체 검사·측정",
+   "change20": 0.470397
+  },
+  {
+   "id": "iafb9068f",
+   "label": "반도체 장비",
+   "change20": 0.399214
+  },
+  {
+   "id": "i2f453d90",
+   "label": "반도체 소재",
+   "change20": 0.396856
+  },
+  {
+   "id": "ied098178",
+   "label": "전자부품",
+   "change20": 0.392938
+  },
+  {
+   "id": "ia84fa0e7",
+   "label": "휴대폰 부품",
+   "change20": 0.362067
+  },
+  {
+   "id": "i9a0618b8",
+   "label": "전자장비",
+   "change20": 0.349606
+  },
+  {
+   "id": "ibaad6b46",
+   "label": "소프트웨어",
+   "change20": 0.345128
+  },
+  {
+   "id": "i1225d511",
+   "label": "반도체 부품",
+   "change20": 0.328257
+  },
+  {
+   "id": "id3ad7bf2",
+   "label": "반도체",
+   "change20": 0.273617
+  },
+  {
+   "id": "if5c9be18",
+   "label": "전선·전기장비",
+   "change20": 0.273222
+  }
+ ],
+ "similar": [
+  {
+   "code": "000250",
+   "name": "삼천당제약",
+   "groupId": "i1f7e7302",
+   "groupLabel": "제약",
+   "matched": 5
+  },
+  {
+   "code": "032500",
+   "name": "케이엠더블유",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비",
+   "matched": 5
+  },
+  {
+   "code": "347700",
+   "name": "스피어",
+   "groupId": "i5b506493",
+   "groupLabel": "방산",
+   "matched": 5
+  },
+  {
+   "code": "014680",
+   "name": "한솔케미칼",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학",
+   "matched": 5
+  },
+  {
+   "code": "218410",
+   "name": "RFHIC",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비",
+   "matched": 5
+  },
+  {
+   "code": "104830",
+   "name": "원익머트리얼즈",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학",
+   "matched": 5
+  },
+  {
+   "code": "226950",
+   "name": "올릭스",
+   "groupId": "ie37e5a9a",
+   "groupLabel": "바이오 도구·서비스",
+   "matched": 5
+  }
+ ],
+ "common": [
+  "ups",
+  "r5",
+  "r20",
+  "ins",
+  "y1"
+ ],
+ "next": [
+  {
+   "code": "067630",
+   "name": "HLB생명과학",
+   "groupId": "i8407a2da",
+   "groupLabel": "의료용품"
+  },
+  {
+   "code": "203650",
+   "name": "드림시큐리티",
+   "groupId": "i9eca8833",
+   "groupLabel": "사업 서비스·광고"
+  },
+  {
+   "code": "000250",
+   "name": "삼천당제약",
+   "groupId": "i1f7e7302",
+   "groupLabel": "제약"
+  },
+  {
+   "code": "274090",
+   "name": "켄코아에어로스페이스",
+   "groupId": "i8e72bf92",
+   "groupLabel": "항공·우주"
+  },
+  {
+   "code": "032500",
+   "name": "케이엠더블유",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "028300",
+   "name": "HLB",
+   "groupId": "i8407a2da",
+   "groupLabel": "의료용품"
+  },
+  {
+   "code": "347700",
+   "name": "스피어",
+   "groupId": "i5b506493",
+   "groupLabel": "방산"
+  },
+  {
+   "code": "014680",
+   "name": "한솔케미칼",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학"
+  },
+  {
+   "code": "012030",
+   "name": "DB",
+   "groupId": "ifd7313ac",
+   "groupLabel": "IT 시스템 통합"
+  },
+  {
+   "code": "218410",
+   "name": "RFHIC",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "104830",
+   "name": "원익머트리얼즈",
+   "groupId": "i706f570e",
+   "groupLabel": "석유화학"
+  },
+  {
+   "code": "226950",
+   "name": "올릭스",
+   "groupId": "ie37e5a9a",
+   "groupLabel": "바이오 도구·서비스"
+  },
+  {
+   "code": "078150",
+   "name": "HB테크놀러지",
+   "groupId": "i548c4f0c",
+   "groupLabel": "디스플레이 장비"
+  },
+  {
+   "code": "267320",
+   "name": "나인테크",
+   "groupId": "i6847d9c2",
+   "groupLabel": "2차전지 장비"
+  },
+  {
+   "code": "100790",
+   "name": "미래에셋벤처투자",
+   "groupId": "ia87024ab",
+   "groupLabel": "창투·캐피탈"
+  },
+  {
+   "code": "389500",
+   "name": "에스비비테크",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "000150",
+   "name": "두산",
+   "groupId": "if111b73f",
+   "groupLabel": "복합기업"
+  },
+  {
+   "code": "328130",
+   "name": "루닛",
+   "groupId": "i729f38fe",
+   "groupLabel": "헬스케어 기술"
+  },
+  {
+   "code": "159010",
+   "name": "아스플로",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "119850",
+   "name": "지엔씨에너지",
+   "groupId": "i3a2c861e",
+   "groupLabel": "전력기기"
+  },
+  {
+   "code": "445680",
+   "name": "큐리옥스바이오시스템즈",
+   "groupId": "ie37e5a9a",
+   "groupLabel": "바이오 도구·서비스"
+  },
+  {
+   "code": "005690",
+   "name": "파미셀",
+   "groupId": "i03648ac1",
+   "groupLabel": "화학"
+  }
+ ]
+}
