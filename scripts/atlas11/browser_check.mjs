@@ -157,7 +157,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     if (!board.moves) { const mq = await page.evaluate(() => { const p = document.querySelector('.hs-seg + .mvx .mvx-h'); const lh = parseFloat(getComputedStyle(p).lineHeight) || parseFloat(getComputedStyle(p).fontSize) * 1.5; return {t: p?.innerText.replace(/\s+/g, ' ').trim(), h: p.getBoundingClientRect().height, lh}; });
       check(`${label} 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「${mq.t}」 한 줄(${Math.round(mq.h)}px)`, mq.t === '저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음' && (viewport.width < 600 ? mq.h < mq.lh * 1.9 : true), mq); }
     const flowsW = familiesByRise(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
-    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 일곱 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,지도,출목표,일정,찾기,기록,처음' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
+    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 옛 큰 흐름 한 줄 없음(논평이 대신 · 2026-10-07) · 아래 탭 일곱 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && hr.sum === null && hr.tabs.join() === '불장,지도,출목표,일정,찾기,기록,처음' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
     const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g) && r.sun === sunNT(g.codes); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
     check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「평균」 한 번 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 태양 몇 곳(따로 센 값) · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
@@ -809,6 +809,29 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       S?.ready && r.hash === '#/start' && r.title === `처음 ${codesW.length}곳` && r.active === 'start' && r.rows.map(x => x.code).join() === codesW.join() && r.rows.every((x, i) => x.rk === `${i + 1}위` && x.href === '#/stock/' + x.code && x.v === pct0(want5[i].mdd))
         && r.rows.every((x, i) => !i || x.w >= r.rows[i - 1].w - 0.5) && r.base === pct0(S.typical.mdd) && r.why >= 1 && r.promise === 'ATLAS가 하지 않는 일 7가지' && /^「처음」 탭의 \d곳 말고는 회사를 고르지 않습니다/.test(r.third ?? '') && r.sw <= r.cw, {r: {...r, rows: r.rows.map(x => x.name + ' ' + x.v)}, codesW});
     await wordsCheck(page, `${label} 아래 탭 「처음」`);
+  }
+  // ⑤-3 논평(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로 만든다」) — 내용 화면마다 제목 아래(회사 화면은 숫자 다음) 한 줄 · 검사기가 판에서 따로 센 머리 글과 맞댐 · 찾기 · 기록에는 없음
+  {
+    const cmRead = async hash => { await page.goto(base + '/' + hash, {waitUntil: 'networkidle'}); await page.waitForSelector('.b-title', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(300);
+      return page.evaluate(() => { const t = document.querySelector('.b-title'), c = document.querySelector('.cm');
+        return {n: document.querySelectorAll('.cm').length, id: c?.dataset.comment ?? null, tag: c?.querySelector('.cm-tag')?.textContent.trim() ?? null, head: c?.querySelector('.cm-h')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
+          sub: c?.querySelector('.cm-s')?.textContent.replace(/\s+/g, ' ').trim() ?? null, after: !!(t && c && (t.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; }); };
+    const hotG = board.groups.filter(g => g.hot), fl = familiesByRise(hotG), gH = [...hotG].sort(riseDesc);
+    const wantHome = !hotG.length ? `업종 ${board.groups.length}개가 쉬어 간 판` : fl[0].groups.length >= 2 && fl[0].groups.length / hotG.length >= 0.4 ? `판을 이끄는 건 ${fl[0].fam.label}` : gH.length > 1 && gH[0].change20 - gH[1].change20 >= 0.15 ? `맨 앞은 ${gH[0].label}` : `불은 ${fl.length}갈래로 번졌다`;
+    const famAll = familiesByRise(board.groups).filter(f => Number.isFinite(f.avg)), wantMap = famAll[0].avg > 0 ? `가장 붉은 땅, ${famAll[0].fam.label}` : `땅 ${famAll.length}개 모두 푸르다`;
+    const csF = board.companies.filter(c => Number.isFinite(c.change20)), upN = csF.filter(c => c.change20 > 0).length, dnN = csF.filter(c => c.change20 < 0).length;
+    const wantRoad = upN >= dnN ? `${board.companies.length}곳 중 ${upN}곳이 올랐다` : `${board.companies.length}곳 중 ${dnN}곳이 내렸다`;
+    const SS = board.start, five = SS?.ready ? `${['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉'][SS.picks.length]} 곳` : null;
+    const wantStart = SS?.ready ? (Math.abs(Math.min(...SS.picks.map(p => p.mdd))) <= Math.abs(SS.typical.mdd) * 0.55 ? `${five}, 보통의 절반만 떨어졌다` : `${five} 모두 보통보다 덜 떨어졌다`) : null;
+    const g0 = board.groups[0], fam0 = famAll[0].fam.id;
+    const rows = [['불장', '#/', wantHome], ['지도', '#/map', wantMap], ['지도 갈래', '#/map/f/' + fam0, null], ['업종', '#/i/' + g0.id, null], ['회사', '#/stock/005930', null], ['출목표', '#/road', wantRoad], ['일정', '#/agenda', null], ['처음', '#/start', wantStart]];
+    const got = [];
+    for (const [nm, hs, want] of rows) { const r = await cmRead(hs); got.push({nm, ...r, want}); }
+    const bad = got.filter(r => r.n !== 1 || r.tag !== '논평' || !r.head || (!r.sub && r.nm !== '출목표') || !r.after || r.sw > r.cw || (r.want && r.head !== r.want));
+    check(`${label} 논평: 화면 ${got.length}곳마다 제목 아래 한 줄 — ${got.map(r => `${r.nm} 「${r.head}」`).join(' · ')} · 불장 · 지도 · 출목표 · 처음은 검사기가 판에서 따로 센 글과 같음 · 옆으로 넘치지 않음`, bad.length === 0, bad.length ? bad : undefined);
+    const none = [];
+    for (const hs of ['#/find', '#/log']) { const r = await cmRead(hs); none.push({hs, n: r.n}); }
+    check(`${label} 논평: 찾기 · 기록 화면에는 없음(도구 · 기록 화면)`, none.every(x => x.n === 0), none);
   }
   // ⑥ 글씨 단추
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(300);

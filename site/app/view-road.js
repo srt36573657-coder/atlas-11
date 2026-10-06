@@ -42,6 +42,7 @@ import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, mea
 import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {SHAPES, SHAPE_PICS, sunOf} from './shapes.js';
+import {roadComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
 export const FLOW_ORDER = ['up-up', 'flat-up', 'down-up', 'up-flat', 'flat-flat', 'still', 'down-flat', 'up-down', 'flat-down', 'down-down'];
@@ -151,6 +152,7 @@ export async function renderRoad(main, {manifest} = {}) {
     .map(f => ({...f, avg: meanOf(f.items.map(x => x.c.change20))})).sort((a, b) => (Number.isFinite(b.avg) ? b.avg : -Infinity) - (Number.isFinite(a.avg) ? a.avg : -Infinity)); // 묶음 평균이 큰 순
   const fams = familiesByRise(groups), n = items.length;
   const shp = sunOf(board), nCommon = shp.common.length, spkOf = c => shp.sparkle.has(c.code) ? nCommon : 0; // 반짝(13:53)
+  const roadCm = roadComment(board); // 논평 — 몇 곳이 올랐나 · 1위와 맨 끝(묶는 법 · 탭을 바꿔도 그대로)
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   // 흐름마다 묶음 평균 선 — 같은 날 종가까지 있는 회사만 평균(늦은 종가 회사는 빼고 셈) · 모든 흐름이 같은 눈금(탭을 넘겨도 견줄 수 있게)
@@ -219,7 +221,7 @@ export async function renderRoad(main, {manifest} = {}) {
   const segs = ROAD_MODES.filter(m => TABS[m.id]).map(m => h('button', {class: 'f-seg-b' + (m.id === 'sun' ? ' f-seg-sun' : ''), type: 'button', 'data-mode': m.id, 'aria-pressed': 'false', onclick: () => go(m.id)},
     m.id === 'sun' ? sunIcon() : null, m.text, h('small', null, m.id === 'rise' ? ` ${n}곳` : m.id === 'sun' ? ` ${shp.sparkle.size}곳` : m.id === 'ind' ? ` ${groups.length}개` : ` ${flows.length}가지`)));
   const segBox = h('div', {class: 'f-seg', role: 'group', 'aria-label': '묶는 법'}, ...segs);
-  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.${cur.spk ? ` 태양 ${cur.spk}곳.` : ''}`; };
+  const say = () => { const ts = TABS[view], i = ts.indexOf(cur); state.summary = `${commentSay(roadCm)}${korDate(to)} 종가 기준. 출목표 ${n}곳, ${ROAD_MODES.find(m => m.id === view).text}, 탭 ${ts.length}개 가운데 ${i + 1}번째 ${cur.label}. ${cur.say}.${cur.spk ? ` 태양 ${cur.spk}곳.` : ''}`; };
   /** 고른 탭을 탭 줄 가운데로(화면은 위아래로 움직이지 않게 줄만 옆으로) */
   const centerTab = () => { const b = strip.querySelector('[aria-selected="true"]'); if (b && strip.scrollWidth > strip.clientWidth + 1) strip.scrollLeft = Math.max(0, b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2); };
   const markTabs = () => { for (const b of strip.children) { const on = b.dataset.tab === cur.id; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; } };
@@ -279,6 +281,7 @@ export async function renderRoad(main, {manifest} = {}) {
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`))), // 개수는 제목 곁 작은 글(규칙 2) · 찾기는 아래 탭 「찾기」로
+      commentBox(roadCm),
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),
       spkBox ? null : h('p', {class: 'f-key muted small'}, keyText()), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
       ctxNote(board.companies)),

@@ -9,6 +9,7 @@
 import {h, korDate, pct, finite} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot, promiseBox} from './parts.js';
+import {startComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 export async function renderStart(main, {manifest}) {
   const board = await loadBoard(), s = board.start;
@@ -16,13 +17,14 @@ export async function renderStart(main, {manifest}) {
   const ymd = d => (d && d.slice(0, 4) !== year ? `${Number(d.slice(0, 4))}년 ` : '') + korDate(d); // 판 날짜와 해가 다르면 해를 붙임
   const pc = v => pct(v, finite(v) && Math.abs(v) < 0.01 ? 1 : 0); // 1% 안쪽은 소수 한 자리(「+0%」로 보이지 않게)
   const bar = (v, worst, cls) => { const f = h('span', {class: 'st-fill ' + cls}); f.style.width = `${Math.max(2, Math.min(100, Math.abs(v) / worst * 100))}%`; return h('span', {class: 'st-track', 'aria-hidden': 'true'}, f); };
-  const month = m => `${Number(m.slice(0, 4))}년 ${Number(m.slice(5, 7))}월`;
+  const month = m => `${Number(m.slice(0, 4))}년 ${Number(m.slice(5, 7))}월`, cm = startComment(board);
   if (!s?.ready) {
     const have = s?.have, ready = s?.readyMonth;
-    state.summary = `처음. 이 판은 종가 기록이 3년이 안 되어 다섯 곳을 찍지 않습니다.${ready ? ` ${month(ready)}부터 찍습니다.` : ''}`;
+    state.summary = `${commentSay(cm)}처음. 이 판은 종가 기록이 3년이 안 되어 다섯 곳을 찍지 않습니다.${ready ? ` ${month(ready)}부터 찍습니다.` : ''}`;
     main.replaceChildren(h('div', {class: 'b-page st-page'},
       h('header', {class: 'b-head'},
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
+        commentBox(cm),
         h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${manifest?.place?.id === 'us' ? '뉴욕 종가' : '종가'} · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
       ready ? h('p', {class: 'st-wait', 'data-speak': ''}, `3년 기록이 쌓이는 ${month(ready)}부터 ${s?.rule?.want ?? 5}곳을 찍습니다`) : null,
       promiseBox(board),
@@ -31,7 +33,7 @@ export async function renderStart(main, {manifest}) {
   }
   const picks = s.picks ?? [], n = picks.length, worst = Math.max(...picks.map(p => Math.abs(p.mdd)), Math.abs(s.typical?.mdd ?? 0), 0.01);
   const from = picks.map(p => p.from).sort()[0] ?? s.from, to = picks.map(p => p.to).sort().at(-1) ?? s.to;
-  state.summary = `처음. ${korDate(to)} 종가까지 지난 3년 기록으로 찍은 ${n}곳. ${picks.map(p => `${p.rank}위 ${p.name} ${pct(p.mdd, 0)}`).join('. ')}. 보통 회사는 ${pct(s.typical?.mdd, 0)}. 지난 기록일 뿐이라 틀릴 수 있습니다.`;
+  state.summary = `${commentSay(cm)}처음. ${korDate(to)} 종가까지 지난 3년 기록으로 찍은 ${n}곳. ${picks.map(p => `${p.rank}위 ${p.name} ${pct(p.mdd, 0)}`).join('. ')}. 보통 회사는 ${pct(s.typical?.mdd, 0)}. 지난 기록일 뿐이라 틀릴 수 있습니다.`;
   const lowest = [...picks].filter(p => finite(p.change1y)).sort((a, b) => a.change1y - b.change1y)[0];
   const crowd = (s.sameGroup ?? []).reduce((t, g) => t + g.n, 0);
   const why = [
@@ -46,6 +48,7 @@ export async function renderStart(main, {manifest}) {
   main.replaceChildren(h('div', {class: 'b-page st-page'},
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '처음 ', h('span', {class: 'b-count'}, `${n}곳`)),
+      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(to)} 종가까지 지난 3년 기록`)),
     h('p', {class: 'st-rule-t', 'data-speak': ''}, `우량 큰 회사 ${s.candidates}곳 중 지난 3년 가장 덜 떨어진 ${n}곳`),
     h('p', {class: 'st-key'}, '막대 = 3년 안에서 가장 깊게 떨어진 정도'),

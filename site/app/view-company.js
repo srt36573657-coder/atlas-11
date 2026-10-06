@@ -10,6 +10,7 @@ import {marketStrip, closeChart} from './frame.js';
 import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine, sunIcon, sunTag} from './parts.js';
 import {sunOf} from './shapes.js';
 import {riseDesc} from './family.js';
+import {companyComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17) — 회사 화면은 숫자(값 · 20거래일) 바로 다음에 그 숫자를 읽는 한 줄
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -99,8 +100,8 @@ export async function renderCompany(main, {hash, manifest}) {
   const code = decodeURIComponent(hash.replace(/^#\/stock\//, '')); // 한국 6자리 · 미국 영문 기호(AAPL · BRK.B)
   const [s, agenda, board] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null)]);
   const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date, band = s.cFrom ? rows.findIndex(r => r.date === s.cFrom) : -1;
-  const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0;
-  state.summary = `${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
+  const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0, cm = board ? companyComment(board, s) : null;
+  state.summary = `${commentSay(cm)}${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
   const chartBox = h('div', {class: 'c-chart'});
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
@@ -116,7 +117,7 @@ export async function renderCompany(main, {hash, manifest}) {
       // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
       h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind)),
       priceLine(s, {big: true}),
-      h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : ''), rankNav(board, s)),
+      h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : ''), rankNav(board, s), commentBox(cm)),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: ${place.exchange} ${place.close} 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false}), sunCheck(shp, s.code, board?.asOf ?? s.date)),
