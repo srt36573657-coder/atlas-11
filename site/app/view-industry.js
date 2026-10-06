@@ -39,10 +39,10 @@ export async function renderIndustry(main, {hash, manifest}) {
   state.summary = `${commentSay(cm)}${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.${nSun ? ` 태양 ${nSun}곳.` : ''}`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
     back,
+    commentBox(cm), // 논평 무대(되돌아가기 바로 아래)
     h('header', {class: 'b-head'},
       h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null, sunNum(nSun, 'sun-n i-sun')),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
-      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 20거래일 평균 ', h('b', {class: 'chg20 ' + (g.change20 > 0 ? 'up' : g.change20 < 0 ? 'down' : 'flat')}, finite(g.change20) ? pct(g.change20, 1) : '없음'), ` · ${upLine(g)}`),
       // 업종 이름 출처: 한국거래소 업종(한국표준산업분류 · 365곳 묶음부터) — 같은 칸 회사들의 네이버 증권 업종도 함께
       //   2026-10-05 15:24 「잡스가 … 36가지」 A4: 출처 이름 두세 줄은 접어 두고 기간 한 줄만 — 「누가 끌었나」가 첫 화면에

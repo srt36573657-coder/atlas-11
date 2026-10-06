@@ -279,9 +279,9 @@ export async function renderRoad(main, {manifest} = {}) {
   }
   const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: keyText()});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
+    commentBox(roadCm), // 논평 무대(화면 맨 위)
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`))), // 개수는 제목 곁 작은 글(규칙 2) · 찾기는 아래 탭 「찾기」로
-      commentBox(roadCm),
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),
       spkBox ? null : h('p', {class: 'f-key muted small'}, keyText()), // 태양 상자가 있으면 칸 읽는 법은 그 상자의 「읽는 법」 접힘 안(A2)
       ctxNote(board.companies)),

@@ -29,13 +29,13 @@ export async function renderAgenda(main, {manifest}) {
   const byNew = (a, b) => b.publishedAt.localeCompare(a.publishedAt) || a.who.name.localeCompare(b.who.name, 'ko');
   notices.sort(byNew); big.sort(byNew);
   const n = agenda.byCode ? Object.keys(agenda.byCode).length : 0, dd = agenda.sources?.disclosures;
-  const cm = agendaComment([...(agenda.market ?? []), ...list]);
+  const cm = agendaComment([...(agenda.market ?? []), ...list], agenda.builtDay ?? null);
   state.summary = `${commentSay(cm)}일정. 다가오는 회사·업종 일정 ${list.length}건, 시장 전체 일정 ${(agenda.market ?? []).length}건.`;
   main.replaceChildren(h('div', {class: 'b-page a-page'},
+    commentBox(cm), // 논평 무대(화면 맨 위)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '일정'),
-      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(agenda.builtDay)}부터 · ${manifest.universeSet?.label ?? n + '곳'}에 걸린 일정`),
       h('p', {class: 'b-lead'}, '확인된 일정만 모았습니다(일정마다 공식 출처) · 별(★)은 일정·공시의 종류로 매긴 중요도입니다')),
     nextBox(manifest.universeNext), // 바뀔 회사 묶음 미리 보기 — 「무엇이 다가오나」라 일정 탭으로(2026-10-05 「잡스라면」 9번 · 오늘 판과 섞이지 않게)

@@ -63,12 +63,12 @@ export async function renderHome(main, {manifest}) {
   const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board);
   state.summary = `${commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
   main.replaceChildren(h('div', {class: 'b-page h-page'},
+    commentBox(cm), // 논평 무대(화면 맨 위) — 넣으면서 뺀 것(규칙 1): 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '불장 ', h('span', {class: 'b-count'}, `업종 ${hot.length}개`)),
-      commentBox(cm), // 논평 한 줄 — 넣으면서 뺀 것(규칙 1): 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
       h('p', {class: 'b-when'}, `업종 ${groups.length}개 가운데 지난 20거래일 평균이 많이 오른 ${hot.length}개 · ${span(from, to)}`),
       ...lateLines(late, board)),
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
@@ -156,10 +156,10 @@ export async function renderMap(main, {manifest}) {
   const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map((g, i) => tile(g, i, shp)));
   const mb = mapBox(groups); state.land = null; // 지도 첫 장 — 업종 화면 「‹ 되돌아가기」는 지도로
   main.replaceChildren(h('div', {class: 'b-page t-page'},
+    commentBox(cm), // 논평 무대(화면 맨 위)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '지도 ', h('span', {class: 'b-count'}, `업종 ${groups.length}개`)),
-      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, headLine(groups, n, from, to)),
       ...lateLines(late, board)),
     mb.box,
@@ -190,9 +190,9 @@ export async function renderLand(main, {hash, manifest}) {
   main.replaceChildren(h('div', {class: 'b-page t-page l-page', 'data-family': id},
     marketStrip(manifest),
     back,
+    commentBox(cm), // 논평 무대(되돌아가기 바로 아래)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, fam.label + ' ', h('span', {class: 'b-count'}, `업종 ${gs.length}개`)),
-      commentBox(cm),
       h('p', {class: 'b-when', 'data-speak': ''}, `업종 ${gs.length}개 가운데 ${up}개 오름 · 갈래 평균 ${avgT} · 지난 20거래일 · ${span(from, to)}`)),
     h('nav', {class: 't-grid l-grid', 'aria-label': `${fam.label} 업종 ${gs.length}개 · 지난 20거래일 변화가 큰 차례`}, ...gs.map(g => tile(g, groups.indexOf(g), shp, {band: true}))),
     h('p', {class: 't-key muted xs'}, `칸 하나 = 업종 하나 · 위 왼쪽부터 지난 20거래일 평균 변화가 큰 차례(지도 땅 안과 같음) · 순위는 업종 ${groups.length}개 가운데 · 누르면 그 업종`),

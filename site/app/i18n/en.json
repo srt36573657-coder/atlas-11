@@ -1064,7 +1064,7 @@
 "증자·감자·합병·분할": "Capital increase · reduction · merger · split",
 "지난 {n}개월 앞서 달린 곳": "Leaders of the past {n} months",
 "지난 {n}거래일": "past {n} trading days",
-"지난 {n}거래일 {n}%": "past {n} trading days {n}%",
+"지난 {n}거래일 {n}%": "past {n} trading days {n2}%",
 "지난 {n}거래일 가운데 가장 높던 {d} {n}포인트보다 {n}% 아래": "{n3}% below the {n1}-day high of {n2} pts on {d}",
 "지난 {n}거래일 가운데 오른 날({n}% 넘게)이 {n}일 이상": "{n3}+ up days (over {n2}%) in the past {n1} trading days",
 "지난 {n}거래일 동안 많이 오른 차례": "by gain over the past {n} trading days",
@@ -1301,6 +1301,17 @@
 "{n}년 {n}월에 문을 연다": "Opens in {n2}/{n}",
 "{n}년 종가가 쌓이는 때 · 지금은 {n}거래일": "when {n} years of closes have built up · {n2} trading days so far",
 "{n}년 종가가 쌓이는 때": "when {n} years of closes have built up",
-"지금은 {n}거래일": "{n} trading days so far"
+"지금은 {n}거래일": "{n} trading days so far",
+"논평 · {d} 종가": "Commentary · {d} close",
+"논평 · {d} 기준": "Commentary · as of {d}",
+"갈래 평균": "group average",
+"갈래 평균 · 불장 {n}개 중 {n}개": "group average · {n2} of {n} hot industries",
+"{n}갈래": "{n} groups",
+"지난 {n}거래일 평균이 오른 업종": "industries whose {n}-day average rose",
+"한 업종뿐 —": "Only one industry —",
+"{n}일 뒤": "in {n} {pl:day|days}",
+"그날": "that day",
+"{n}년 종가가 쌓이면 문을 연다": "Opens once {n} years of closes build up",
+"{n}년 {n}월": "{n2}/{n}"
 }
 }
