@@ -1,0 +1,250 @@
+{
+ "startedAt": "2026-10-06T05:06:56.164Z",
+ "kr": {
+  "KOSPI": {
+   "how": "siseJson",
+   "rows": 5616,
+   "first": "20040102",
+   "fchartStatus": 200
+  },
+  "KOSDAQ": {
+   "how": "siseJson",
+   "rows": 5616,
+   "first": "20040102",
+   "fchartStatus": 200
+  },
+  "progress": {
+   "done": 350,
+   "fails": 0,
+   "hows": {
+    "siseJson": 350
+   },
+   "at": "2026-10-06T05:07:26.057Z",
+   "times": [
+    {
+     "symbol": "KOSPI",
+     "ms": 1688,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "KOSDAQ",
+     "ms": 1235,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000080",
+     "ms": 331,
+     "status": 200,
+     "rows": 4176
+    },
+    {
+     "symbol": "000150",
+     "ms": 323,
+     "status": 200,
+     "rows": 5614
+    },
+    {
+     "symbol": "000250",
+     "ms": 213,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000270",
+     "ms": 213,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000120",
+     "ms": 1416,
+     "status": 200,
+     "rows": 5614
+    },
+    {
+     "symbol": "000100",
+     "ms": 1424,
+     "status": 200,
+     "rows": 5612
+    },
+    {
+     "symbol": "000140",
+     "ms": 1527,
+     "status": 200,
+     "rows": 5614
+    },
+    {
+     "symbol": "000320",
+     "ms": 212,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000390",
+     "ms": 350,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000500",
+     "ms": 368,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000810",
+     "ms": 213,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000660",
+     "ms": 362,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "000990",
+     "ms": 207,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001120",
+     "ms": 233,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001430",
+     "ms": 237,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001440",
+     "ms": 239,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001450",
+     "ms": 210,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001800",
+     "ms": 219,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "001820",
+     "ms": 228,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002030",
+     "ms": 221,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002310",
+     "ms": 205,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002380",
+     "ms": 217,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002810",
+     "ms": 222,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002840",
+     "ms": 218,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "002960",
+     "ms": 221,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "003160",
+     "ms": 232,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "003230",
+     "ms": 223,
+     "status": 200,
+     "rows": 5616
+    },
+    {
+     "symbol": "003280",
+     "ms": 218,
+     "status": 200,
+     "rows": 5616
+    }
+   ]
+  },
+  "overlap": [
+   {
+    "code": "005930",
+    "n": 3000,
+    "min": 1,
+    "median": 1,
+    "max": 1.0009208103130756
+   },
+   {
+    "code": "000660",
+    "n": 3000,
+    "min": 1,
+    "median": 1,
+    "max": 1.0016825574873809
+   },
+   {
+    "code": "035420",
+    "n": 3000,
+    "min": 1,
+    "median": 1,
+    "max": 1
+   },
+   {
+    "code": "005380",
+    "n": 3000,
+    "min": 1,
+    "median": 1,
+    "max": 1.0021613832853027
+   }
+  ],
+  "stocks": {
+   "asked": 365,
+   "got": 365,
+   "fails": 0,
+   "hows": {
+    "siseJson": 365
+   },
+   "boardGot": 365,
+   "startedBefore2007": 186
+  }
+ },
+ "us": {},
+ "errors": [],
+ "finishedAt": "2026-10-06T05:07:31.520Z"
+}
