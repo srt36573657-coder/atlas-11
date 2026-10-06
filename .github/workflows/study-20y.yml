@@ -12,7 +12,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: study-20y
+  group: study-20y-us  # 13:3x 미국만 따로 — 앞 판(study-20y 무리)과 나란히 돌게 무리 이름을 바꿈
   cancel-in-progress: false
 jobs:
   collect:
@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 22
       - name: 20년 기록 받기
-        run: timeout 3900 node scripts/atlas11/study/collect_20y.mjs --out reports/atlas11/study/20y/r2  # 둘째 판(13:20) — 첫 판(20y/ 바로 아래)은 덮지 않음
+        run: timeout 3900 node scripts/atlas11/study/collect_20y.mjs --out reports/atlas11/study/20y/r2us --only us  # 셋째 판(13:3x · 미국만) — 첫 판 · 둘째 판은 덮지 않음
       - name: 기록 올리기(reports/atlas11/study/20y 만)
         if: always()
         run: |
