@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-06",
- "fetchedAt": "2026-10-06T13:57:38Z",
- "file": "reports/atlas11/context/2026-10-06/2026-10-06T13-57-38Z.json",
+ "fetchedAt": "2026-10-06T14:08:27Z",
+ "file": "reports/atlas11/context/2026-10-06/2026-10-06T14-08-27Z.json",
  "summary": {
   "day": "2026-10-06",
-  "fetchedAt": "2026-10-06T13:57:38Z",
+  "fetchedAt": "2026-10-06T14:08:27Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-06",
@@ -36,7 +36,7 @@
    "republished": 47,
    "sameArticle": 0,
    "stocksWithTodayNews": 196,
-   "todayDistinct": 1434
+   "todayDistinct": 1433
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-06",
-     "value": 1340.1,
-     "changePct": -0.18
+     "value": 1339.8,
+     "changePct": -0.2
     },
     "rows": 10
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-06",
-     "value": 1340.1,
+     "value": 1339.8,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
