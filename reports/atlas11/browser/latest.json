@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-06T19:14:22.607Z",
+  "at": "2026-10-06T19:55:33.068Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-06-5d238067",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 592,
+  "passed": 594,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 16,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 0
       },
@@ -81,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -91,7 +91,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -173,7 +173,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -183,7 +183,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -193,7 +193,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -203,7 +203,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -213,7 +213,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -223,7 +223,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 16,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 0
       },
@@ -233,7 +233,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -243,7 +243,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -273,7 +273,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -335,7 +335,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -365,7 +365,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -375,7 +375,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -385,7 +385,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -395,7 +395,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -425,7 +425,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -477,7 +477,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -487,7 +487,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 15,
         "truncated": 0,
         "formatDates": 0
       },
@@ -497,7 +497,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -507,7 +507,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -517,7 +517,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -527,7 +527,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 16,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 0
       },
@@ -537,7 +537,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -547,7 +547,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -577,7 +577,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -639,7 +639,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -669,7 +669,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -679,7 +679,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -689,7 +689,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -699,7 +699,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -729,7 +729,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 3,
         "truncated": 0,
         "formatDates": 0
       },
@@ -2266,7 +2266,7 @@
           "t": "태양 68곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1019,
+        "first": 1452,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -2372,13 +2372,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 6가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1019px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 6가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1452px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 6가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1019,
+        "first": 1452,
         "ih": 800
       }
     },
@@ -2609,13 +2609,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1310px → 1310px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1743px → 1743px)",
       "ok": true,
       "detail": {
-        "yBefore": 1310,
+        "yBefore": 1743,
         "back": {
           "hash": "#/road",
-          "y": 1310,
+          "y": 1743,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -2988,7 +2988,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 34개 = 기록 파일 34개(이슈 2 · 업데이트 24 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 3개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 35개 = 기록 파일 35개(이슈 2 · 업데이트 25 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 3개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -3012,11 +3012,11 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 24줄 = 기록 파일 24줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 25줄 = 기록 파일 25줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 24,
+        "n": 25,
         "sw": 1280,
         "cw": 1280
       }
@@ -3032,11 +3032,11 @@
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 34줄 = 기록 파일 34줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 35줄 = 기록 파일 35줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 34,
+        "n": 35,
         "sw": 1280,
         "cw": 1280
       }
@@ -3082,6 +3082,11 @@
     },
     {
       "name": "pc 아래 탭 「처음」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 논평 표지(2026-10-07 04:27 「더 과감하게 … 혁신작으로 섹시하게」): 아래 탭 화면 5곳은 표지 · 갈래 · 업종은 가장자리까지 · 회사는 둥근 칸 · 거대 숫자 한 줄 · 숫자 그림 — 불장 점 11(붉은 5 · 푸른 0 · 빈 6) · 지도 점 12(붉은 9 · 푸른 3 · 빈 0) · 출목표 점 365(붉은 205 · 푸른 157 · 빈 0) · 처음 막대 6 = 검사기가 판에서 따로 센 수 · 그림엔 글자 없음(화면 읽기 프로그램은 근거 줄)",
       "ok": true,
       "detail": null
     },
@@ -4612,7 +4617,7 @@
           "t": "태양 68곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 963,
+        "first": 1442,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -4718,13 +4723,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 6가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 963px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대가 첫 화면을 차지)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 6가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1442px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 6가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 963,
+        "first": 1442,
         "ih": 844
       }
     },
@@ -4947,13 +4952,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1822px → 1822px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2301px → 2301px)",
       "ok": true,
       "detail": {
-        "yBefore": 1822,
+        "yBefore": 2301,
         "back": {
           "hash": "#/road",
-          "y": 1822,
+          "y": 2301,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -5326,7 +5331,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 34개 = 기록 파일 34개(이슈 2 · 업데이트 24 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 3개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 35개 = 기록 파일 35개(이슈 2 · 업데이트 25 · 자료 변경 8 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 3개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -5350,11 +5355,11 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 24줄 = 기록 파일 24줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 25줄 = 기록 파일 25줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 24,
+        "n": 25,
         "sw": 390,
         "cw": 390
       }
@@ -5370,11 +5375,11 @@
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 34줄 = 기록 파일 34줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 35줄 = 기록 파일 35줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 34,
+        "n": 35,
         "sw": 390,
         "cw": 390
       }
@@ -5420,6 +5425,11 @@
     },
     {
       "name": "mobile 아래 탭 「처음」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 논평 표지(2026-10-07 04:27 「더 과감하게 … 혁신작으로 섹시하게」): 아래 탭 화면 5곳은 휴대폰 첫 화면을 가득 채운 표지 · 갈래 · 업종은 가장자리까지 · 회사는 둥근 칸 · 거대 숫자 한 줄 · 숫자 그림 — 불장 점 11(붉은 5 · 푸른 0 · 빈 6) · 지도 점 12(붉은 9 · 푸른 3 · 빈 0) · 출목표 점 365(붉은 205 · 푸른 157 · 빈 0) · 처음 막대 6 = 검사기가 판에서 따로 센 수 · 그림엔 글자 없음(화면 읽기 프로그램은 근거 줄)",
       "ok": true,
       "detail": null
     },
@@ -5625,11 +5635,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 34개 = /changelog.json 34개 · 아래 탭 7개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 35개 = /changelog.json 35개 · 아래 탭 7개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 34,
-        "first": "u-20261007T033541-comment",
+        "n": 35,
+        "first": "u-20261007T041516-comment-stage",
         "tabs": 7,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -7313,5 +7323,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-06T19-10-07-832Z"
+  "dir": "reports/atlas11/browser/2026-10-06T19-51-19-744Z"
 }
