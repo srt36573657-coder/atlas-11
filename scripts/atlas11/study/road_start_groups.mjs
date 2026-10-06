@@ -16,7 +16,8 @@ import {ALL} from './road_start.mjs';
 
 const arg = (k, d = null) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const UP = Number(arg('--up', '1.5')), DOWN = 1 / UP, OUT = arg('--out'), MKT = arg('--mkt');
-const WIN = 20, AHEAD = 120, JUMP = 0.31, MIN_MEMBERS = 3;
+// 2026-10-06 10:06 「그러면 6개월에 30%도 찾아봐 5개월 4개월 3개월 1개월도」 — 기간(--ahead)도 바꿔 셈 · --range 로 날짜 범위를 120거래일 판에 맞춤
+const WIN = 20, AHEAD = Number(arg('--ahead', '120')), RANGE = Math.max(AHEAD, Number(arg('--range', '0'))), JUMP = 0.31, MIN_MEMBERS = 3;
 const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync('reports/atlas11/universe/2026-10-05-0940/bundle.json.gz')));
 const board = JSON.parse(fs.readFileSync('public/data/atlas11/view/board.json', 'utf8'));
 
@@ -45,7 +46,7 @@ function prevDate(d) { const i = allDates.indexOf(d); return i > 0 ? allDates[i 
 /** 지수 하나 → 날마다 줄(회사 공부와 같은 칸) */
 function windowsOf(id, s) {
   const out = []; const cs = s.vals, ds = s.dates;
-  for (let t = WIN; t + AHEAD < cs.length; t++) {
+  for (let t = WIN; t + RANGE < cs.length; t++) {
     const road = roadOf(cs.slice(t - WIN, t + 1));
     let fmax = -Infinity, fmin = Infinity; for (let k = t + 1; k <= t + AHEAD; k++) { if (cs[k] > fmax) fmax = cs[k]; if (cs[k] < fmin) fmin = cs[k]; }
     out.push({id, date: ds[t], i: t, n: cs.length, unit: road.unit, up: road.all.up, down: road.all.down, ret20: cs[t] / cs[t - WIN] - 1, fmax: fmax / cs[t], fmin: fmin / cs[t],

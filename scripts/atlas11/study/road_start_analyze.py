@@ -52,7 +52,7 @@ res['first_n'] = int(first.sum())
 rng = np.random.default_rng(20261006)
 codes = df['code'].unique()
 by_code = {c: g for c, g in df.groupby('code')}
-B = 500
+B = int(sys.argv[3]) if len(sys.argv) > 3 else 500  # 회사 다시 뽑기 횟수(2026-10-06 10:06 기간 다섯 판 · 1,287곳은 100번으로 줄여 셈)
 boots = []
 for b in range(B):
     pick = rng.choice(codes, size=len(codes), replace=True)
