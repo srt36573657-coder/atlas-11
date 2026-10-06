@@ -11,6 +11,8 @@
  *       미국 회사는 stooq 를 먼저 쓰고, 안 되면 앞 판의 길(네이버)로. 두 길이 겹치는 날의 종가를 회사 몇 곳에서 맞대어 probe 에 남김
  *       S&P 500 · 다우는 stooq 가 안 되면 월스트리트저널(WSJ) 기록 내려받기를 한 번 더 시험
  *     → 둘째 판 결과는 첫 판을 덮지 않도록 다른 칸(--out reports/atlas11/study/20y/r2)에 적는다
+ *   (14:07) 둘째 판이 48분 넘게 끝나지 않아(한국 siseJson 이 느린 것으로 보임) 판 365곳만 한국 넷째 판(20y/r4kr · --only kr --limit 365)으로 나란히 받음
+ *     probe 에 한국도 중간중간 적고, siseJson 한 번에 걸린 시간(처음 30번)을 남김
  *   (13:3x) 둘째 판의 미국 쪽이 오래 걸려(stooq 가 늘어지는 것으로 보임) 미국만 따로 셋째 판(20y/r2us)으로 나란히 돌림:
  *     stooq 는 8초까지만 · 여섯 번 잇달아 안 되면 그만 · probe 를 중간중간 적어 끊겨도 남게
  *   결과: <out>/kr.json.gz · <out>/us.json.gz · <out>/probe.json — 사이트 · main · 매일 작업 파일은 건드리지 않는다
@@ -70,9 +72,12 @@ function parseSiseJson(text) {
   return out;
 }
 const TODAY = ymd(END);
+const krTimes = [];
 async function krSeries(symbol, isIndex) {
+  const t0 = Date.now();
   const sj = await get(`https://api.finance.naver.com/siseJson.naver?symbol=${encodeURIComponent(symbol)}&requestType=1&startTime=${START_YEAR}0101&endTime=${TODAY}&timeframe=day`);
   let rows = sj.ok ? parseSiseJson(sj.text) : [];
+  if (krTimes.length < 30) krTimes.push({symbol, ms: Date.now() - t0, status: sj.status ?? null, rows: rows.length});
   if (rows.length >= 50) return {how: 'siseJson', rows, fchartStatus: sj.status ?? null};
   const f = await get(`https://fchart.stock.naver.com/sise.nhn?symbol=${encodeURIComponent(symbol)}&timeframe=day&count=6000&requestType=0`);
   rows = f.ok ? parseFchart(f.text) : [];
@@ -96,14 +101,14 @@ async function runKr() {
   const out = {market: 'kr', fetchedAt: new Date().toISOString(), indices: {}, stocks: {}, board: [...inBoard], groups: board.groups.map(g => ({id: g.id, codes: g.codes}))};
   for (const sym of ['KOSPI', 'KOSDAQ']) {
     const s = await krSeries(sym, true); out.indices[sym] = pack(s.rows); probe.kr[sym] = {how: s.how, rows: s.rows.length, first: out.indices[sym]?.d0 ?? null, fchartStatus: s.fchartStatus};
-    console.log('kr index', sym, probe.kr[sym]);
+    console.log('kr index', sym, probe.kr[sym]); writeProbe();
   }
   let done = 0, fails = 0; const hows = {};
   await pool(codes, 4, async code => {
     const s = await krSeries(code, false); const p = pack(s.rows);
     if (p) { out.stocks[code] = {name: B.stocks[code]?.list?.name ?? code, industryCode: (() => { try { return JSON.parse(B.stocks[code].integration.text).industryCode ?? null; } catch { return null; } })(), ...p}; } else fails++;
     hows[s.how] = (hows[s.how] ?? 0) + 1;
-    if (++done % 200 === 0) console.log('kr stocks', done, '/', codes.length, 'fails', fails, hows);
+    if (++done % 50 === 0) { console.log('kr stocks', done, '/', codes.length, 'fails', fails, hows); probe.kr.progress = {done, fails, hows: {...hows}, at: new Date().toISOString(), times: krTimes.slice(0, 30)}; writeProbe(); }
   });
   probe.kr.overlap = [];
   for (const code of ['005930', '000660', '035420', '005380', '051910']) {
