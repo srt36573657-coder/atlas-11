@@ -132,7 +132,8 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .m6-list > li:first-child { border-top: 0; }
 .m6-g { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-weight: 700; color: var(--ink); text-decoration: none; min-height: 32px; }
 .m6-cs { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 2px; }
-.m6-cs a { color: var(--ink2); text-decoration: none; white-space: nowrap; min-height: 32px; display: inline-flex; align-items: center; gap: 4px; }
+.m6-g > span, .m6-cs a > span { min-width: 0; overflow-wrap: anywhere; }
+.m6-cs a { color: var(--ink2); text-decoration: none; min-height: 32px; display: inline-flex; flex-wrap: wrap; align-items: center; column-gap: .3em; max-width: 100%; overflow-wrap: anywhere; } /* 긴 이름(미국 판 「AMD(어드밴스드 마이크로 디바이시스)」)이 큰 글씨 휴대폰에서 화면을 넓히지 않게 줄을 바꿈 · 오르내림 숫자는 .chg20 이 한 덩어리로 */
 .m6-rest, .m6-how, .m6-note { margin: 8px 0 0; line-height: 1.6; }
 .b-foot { margin: 22px 4px 0; font-size: .8125rem; color: var(--sub); line-height: 1.6; }
 .b-foot p { margin: 2px 0; }

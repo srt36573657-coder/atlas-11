@@ -127,7 +127,8 @@ export function lead6Box(board, groups) {
   const withCo = rows.filter(r => r.cs.length), without = rows.filter(r => !r.cs.length), n = withCo.reduce((t, r) => t + r.cs.length, 0);
   const sizes = new Set(groups.map(g => g.codes.length)), per = sizes.size === 1 ? [...sizes][0] : null, ix = L.index;
   const p1 = v => pct(v, 1), chg = v => h('b', {class: 'chg20 ' + (signCls(v) || 'flat')}, finite(v) ? p1(v) : '없음');
-  const ixLine = ix ? h('p', {class: 'm6-ix'}, `${ix.name}: ${korDate(ix.date)} 종가 ${num(ix.close, 2)} — 지난 ${ix.days}거래일 가운데 가장 높던 ${korDate(ix.highDate)} ${num(ix.high, 2)}${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}`)
+  // 지수 이름(「S&P 500」)은 이름 그대로라 식별자(data-ident) · 지수 값에는 단위 「포인트」(또렷함 3번 — 펼친 상자를 따로 재어 찾음 · 10/6 15시)
+  const ixLine = ix ? h('p', {class: 'm6-ix'}, h('span', {'data-ident': ''}, ix.name), `: ${korDate(ix.date)} 종가 ${num(ix.close, 2)}포인트 — 지난 ${ix.days}거래일 가운데 가장 높던 ${korDate(ix.highDate)} ${num(ix.high, 2)}포인트${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}`)
     : h('p', {class: 'm6-ix muted'}, `지수 자리: ${L.indexMissing ?? '지수 종가 기록 없음'}`);
   return h('details', {class: 'b-how m6'},
     h('summary', null, '지난 6개월 앞서 달린 곳 · 지난 기록', h('small', {class: 'm6-n'}, `업종 ${withCo.length}개 · 회사 ${n}곳`)),
@@ -135,9 +136,12 @@ export function lead6Box(board, groups) {
     h('ul', {class: 'm6-list', 'aria-label': `지난 120거래일 업종 위 20% 안에서 회사도 위 20%인 곳 · 업종 ${withCo.length}개 · 회사 ${n}곳`},
       ...withCo.map(({g, cs}) => h('li', null,
         h('a', {class: 'm6-g', href: '#/i/' + g.id, 'data-group': g.id}, h('span', null, g.label), chg(g.change120)),
-        h('span', {class: 'm6-cs'}, ...cs.map(c => h('a', {href: '#/stock/' + c.code, 'data-code': c.code}, c.name, ' ', chg(c.change120))))))),
+        h('span', {class: 'm6-cs'}, ...cs.map(c => h('a', {href: '#/stock/' + c.code, 'data-code': c.code}, h('span', {'data-ident': ''}, c.name), ' ', chg(c.change120))))))), // 회사 이름은 이름 그대로(「필립스 66」 속 숫자는 단위 없는 숫자가 아님)
     without.length ? h('p', {class: 'm6-rest muted xs'}, `업종은 위 20%지만 회사는 위 20%가 아닌 업종 ${without.length}개: ${without.map(r => r.g.label).join(' · ')}`) : null,
-    h('p', {class: 'm6-how muted xs'}, `업종 = 지난 120거래일(약 6개월) 업종 지수(회사${per ? ` ${per}곳` : ''} 하루 오르내림을 같은 무게로 이어 붙임) · 업종 ${L.measured.groups}개 가운데 위 20%(${L.lead.groups}개) · 회사 = 지난 120거래일 종가 변화 · ${L.measured.companies}곳 가운데 위 20%(${L.lead.companies}곳) · 두 가지 모두 맞는 회사만 · ${korDate(L.from)}부터 ${korDate(L.to)}까지 ${place.close} 종가 · 차례 = 120거래일 변화 순`),
+    // 셈 방법은 세 줄로(한 줄에 숫자를 몰아 두지 않음 — 또렷함 4번)
+    h('p', {class: 'm6-how muted xs'}, `업종 = 지난 120거래일(약 6개월) 업종 지수(회사${per ? ` ${per}곳` : ''} 하루 오르내림을 같은 무게로 이어 붙임) · 업종 ${L.measured.groups}개 가운데 위 20%(${L.lead.groups}개)`, h('br'),
+      `회사 = 지난 120거래일 종가 변화 · ${L.measured.companies}곳 가운데 위 20%(${L.lead.companies}곳) · 두 가지 모두 맞는 회사만`, h('br'),
+      `${korDate(L.from)}부터 ${korDate(L.to)}까지 ${place.close} 종가 · 차례 = 120거래일 변화 순`),
     h('p', {class: 'm6-note muted xs'}, '지난 종가로 센 것입니다 · 앞날 값은 셈하지 않습니다'));
 }
 

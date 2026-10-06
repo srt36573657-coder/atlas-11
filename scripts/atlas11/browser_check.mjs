@@ -247,7 +247,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const m6 = await page.evaluate(() => { const d = document.querySelector('details.m6'); return d ? {open: d.open, n: d.querySelector('.m6-n')?.textContent.trim(), ix: d.querySelector('.m6-ix')?.textContent.trim(), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
       rows: [...d.querySelectorAll('.m6-list > li')].map(li => ({href: li.querySelector('.m6-g')?.getAttribute('href'), g: li.querySelector('.m6-g span')?.textContent.trim(), gchg: li.querySelector('.m6-g b')?.textContent.trim(), cs: [...li.querySelectorAll('.m6-cs a')].map(a => ({href: a.getAttribute('href'), t: a.textContent.trim()}))}))} : null; });
     const n2 = v => v.toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}), ix = L?.index;
-    const ixW = ix ? `${ix.name}: ${kd(ix.date)} 종가 ${n2(ix.close)} — 지난 ${ix.days}거래일 가운데 가장 높던 ${kd(ix.highDate)} ${n2(ix.high)}${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}` : null;
+    const ixW = ix ? `${ix.name}: ${kd(ix.date)} 종가 ${n2(ix.close)}포인트 — 지난 ${ix.days}거래일 가운데 가장 높던 ${kd(ix.highDate)} ${n2(ix.high)}포인트${ix.gap < 0 ? `보다 ${(Math.abs(ix.gap) * 100).toFixed(1)}% 아래` : '와 같음'}` : null;
     const mis = rowsW.map((r, i) => { const x = m6?.rows[i]; return x && x.href === '#/i/' + r.g.id && x.g === r.g.label && x.gchg === p1(r.g.change120) && x.cs.length === r.cs.length && r.cs.every((c, k) => x.cs[k].href === '#/stock/' + c.code && x.cs[k].t === `${c.name} ${p1(c.change120)}`) ? null : {i, g: r.g.label, x}; }).filter(Boolean);
     check(`${label} ${H}: 맨 아래 접힌 상자 「지난 6개월 앞서 달린 곳」 — 처음엔 접힘 · 펼치면 업종 ${rowsW.length}개 · 회사 ${nW}곳(판의 120거래일 위 20% 표시에서 따로 고른 값 · 120거래일 변화 순 · 누르면 그 업종 · 그 회사) · 지수 자리 「${m6?.ix}」 · 옆으로 넘치지 않음 · 73칸 설명 줄 뺌`,
       Boolean(L) && before.open === false && before.tkey === 0 && m6?.open === true && m6.n === `업종 ${rowsW.length}개 · 회사 ${nW}곳` && m6.rows.length === rowsW.length && !mis.length && (ixW ? m6.ix === ixW : Boolean(m6.ix?.startsWith('지수 자리:'))) && m6.sw <= m6.cw, {before, n: m6?.n, ixW, mis: mis.slice(0, 2)});
@@ -839,6 +839,17 @@ async function clarityCheck() {
       check(`화면 폭 ${v.id} ${s.id}: ${vw.inner}px = 기기 폭 ${v.viewport.width}px(넘친 칸이 화면을 넓히지 않음)`, vw.inner === v.viewport.width && vw.scroll <= v.viewport.width, vw);
       check(`잘린 글자 ${v.id} ${s.id}: ${m.truncated}`, m.truncated === 0, m.truncated ? {truncated: m.samples.truncated, pageOverflowX: m.pageOverflowX} : undefined);
       check(`또렷함 ${v.id} ${s.id}: 1 내일·오늘·어제 ${m.relDays} · 2 흐릿한 말 ${m.vague} · 3 단위·기준 빠진 숫자 ${m.bareNumbers} · 5 대비 모자람 ${m.lowContrast} · (참고) 날짜 모양 ${m.formatDates}`, m.relDays + m.vague + m.bareNumbers + m.lowContrast === 0, m.relDays + m.vague + m.bareNumbers + m.lowContrast ? {rel: m.samples.relDays, vague: m.samples.vague, bare: m.samples.bareNumbers, contrast: m.samples.lowContrast} : null);
+    }
+    // 지도 탭 맨 아래 「지난 6개월 앞서 달린 곳」은 닫힌 접힘이라 위 재기에서 빠진다 — 펼친 뒤 상자 안만 따로 잰다(한국 · 미국 판 · 보기 5가지)
+    //   2026-10-06 15시: 펼친 상자를 따로 재어 보니 좁은 휴대폰 어두운 화면 글씨 200%에서 긴 회사 이름이 화면을 넓힘(한국 +6px · 미국 +303px) · 지수 값에 단위 없음 → 고친 뒤 이 검사를 붙임
+    for (const where of ['/', '/us/']) {
+      await page.goto(base + where + '#/map', {waitUntil: 'networkidle'}); await page.waitForSelector('.lm-c', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(400);
+      const opened = await page.evaluate(() => { const d = document.querySelector('details.m6'); if (!d) return false; d.open = true; d.scrollIntoView(); return true; }); await page.waitForTimeout(300);
+      const m6 = await page.evaluate(measureClarity, {roots: ['details.m6'], refTime: false});
+      const vw6 = await page.evaluate(() => ({inner: innerWidth, scroll: document.documentElement.scrollWidth, rows: document.querySelectorAll('details.m6 .m6-list > li').length}));
+      check(`펼친 「지난 6개월」 상자 ${where === '/' ? '한국' : '미국'} 판 ${v.id}: 줄 ${vw6.rows}개 · 화면 폭 ${vw6.inner}px = 기기 폭 ${v.viewport.width}px · 잘린 글자 ${m6.truncated} · 또렷함 1 ${m6.relDays} · 2 ${m6.vague} · 3 ${m6.bareNumbers} · 5 ${m6.lowContrast}`,
+        opened && vw6.rows > 0 && vw6.inner === v.viewport.width && vw6.scroll <= v.viewport.width && m6.truncated === 0 && m6.relDays + m6.vague + m6.bareNumbers + m6.lowContrast === 0,
+        {opened, vw6, bare: m6.samples.bareNumbers, trunc: m6.samples.truncated, vague: m6.samples.vague, contrast: m6.samples.lowContrast});
     }
     await ctx.close();
   }
