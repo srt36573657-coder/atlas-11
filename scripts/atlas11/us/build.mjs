@@ -13,7 +13,7 @@ import path from 'node:path';
 import {buildBoard, boardAsOf} from '../../../lib/atlas11/board.mjs';
 import {mergeIndexRows} from '../../../lib/atlas11/lead6.mjs';
 import {usPlace, usMarketOf, US_EVENT_KINDS} from '../../../lib/atlas11/us/place.mjs';
-import {recordBoardChange} from '../../../lib/atlas11/changelog.mjs';
+import {recordBoardChange, recordIssue} from '../../../lib/atlas11/changelog.mjs';
 
 export const US_DATA = 'public/data/atlas11/us';
 /** S&P 500 종가 쌓아 두기 — 지도 탭 「지난 6개월 앞서 달린 곳」 상자의 지수 자리(2026-10-06 14:55 「해」 · 한국 판 build_view.mjs MARKET_FILE 과 같은 방법) */
@@ -36,6 +36,7 @@ export async function buildUsFiles({root = process.cwd(), now = new Date().toISO
   const indexHistory = mh ? {symbol: stored.symbol, name: stored.name, rows: mh.rows, source: {file: US_MARKET_FILE, seed: stored.seed?.source ?? null, live: (snap?.index ?? []).find(i => i.symbol === stored.symbol)?.sourceUrl ?? null}} : null;
   const files = buildBoard({input, snap, contextFile: ctx ? US_DATA + '/context.json' : null, events, eventsSource: '확인된 일정표(미국 연준 금리 · 물가 · 고용 발표 · 일정마다 공식 출처 주소)', indexHistory, now});
   if (mh) Object.defineProperty(files, 'market', {value: {stored, ...mh}, enumerable: false}); // 판 파일(Map)에는 들어가지 않음 — writeUsMarket 이 씀
+  Object.defineProperty(files, 'snap', {value: snap, enumerable: false}); // 이슈 한 줄이 씀(영어 앞날 말 거른 기사)
   const m = files.get('manifest.json');
   m.place = usPlace(input.sources ?? {});
   m.market = usMarketOf(snap, ctx ? US_DATA + '/context.json' : null);
@@ -66,5 +67,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const out = await writeUsView(files); let market = null; try { market = await writeUsMarket(files, {now}); } catch (e) { console.warn('us market history write: ' + e.message); }
   // 아래 탭 「기록」 — 미국 판 자료가 바뀌었으면 한 줄(reports/atlas11/us/changelog/ · 미국 단추가 기록에 남김 · 2026-10-06 16:10 「기록 하는 탭」)
   let changelog = null; try { changelog = await recordBoardChange(process.cwd(), files.get('board.json'), {place: 'us', made: files.get('manifest.json')?.generatedAt ?? now}); } catch (e) { console.warn('us changelog write: ' + e.message); changelog = {wrote: false, reason: e.message}; }
-  console.log(JSON.stringify({...out, market, changelog}));
+  // 그 뉴욕 종가 날짜의 이슈 한 줄(날짜마다 한 번 · 2026-10-06 18:37 「이슈칸」)
+  let issue = null; try { issue = await recordIssue(process.cwd(), files.get('board.json'), files.get('manifest.json'), files.snap, {place: 'us', made: files.get('manifest.json')?.generatedAt ?? now}); } catch (e) { console.warn('us issue write: ' + e.message); issue = {wrote: false, reason: e.message}; }
+  console.log(JSON.stringify({...out, market, changelog, issue}));
 }

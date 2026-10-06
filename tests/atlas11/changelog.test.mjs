@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {CHANGELOG, kd, toKst, stampOf, boardSnap, dataEntry, validateEntry, liveOf, siteLog, readEntries, writeEntry, recordBoardChange} from '../../lib/atlas11/changelog.mjs';
+import {CHANGELOG, ISSUE, kd, toKst, stampOf, boardSnap, dataEntry, issueEntry, mentions, validateEntry, liveOf, siteLog, readEntries, writeEntry, recordBoardChange, recordIssue} from '../../lib/atlas11/changelog.mjs';
 import {root} from './helpers.mjs';
 
 /** 가짜 판 — 회사 n곳(코드 · 이름) · 불장 업종 · 늦은 종가 · 모은 자료 · 들고 남 */
@@ -78,7 +78,7 @@ test('사이트 기록 — 올라간 때 = 만든 때 뒤 첫 성공 올림 · �
   assert.deepEqual(log.entries.map(e => e.live), ['2026-10-05T11:07:23+09:00', '2026-10-05T09:47:33+09:00']);
   assert.ok(log.entries.every(e => !('snap' in e) && !('auto' in e)));
   assert.deepEqual(log.problems.map(p => p.id), ['u-bad', 'u-20261005T110241-tabs4'], '앞날 말 · id 겹침은 빼고 적음');
-  assert.deepEqual(log.count, {all: 2, update: 1, data: 1}); assert.equal(log.generatedAt, '2026-10-06T18:00:00+09:00');
+  assert.deepEqual(log.count, {all: 2, update: 1, data: 1, issue: 0}); assert.equal(log.generatedAt, '2026-10-06T18:00:00+09:00');
 });
 
 test('파일 — 새로 만들기만(이미 있으면 그대로) · 판을 만들 때 앞 기록과 같으면 쓰지 않음', async () => {
@@ -119,4 +119,100 @@ test('저장소의 기록 — 모두 검사 통과 · id 겹침 없음 · 업데
 test('snap — 판에서 셈(모은 자료 · 기사 모은 날은 가장 많은 날)', () => {
   const s = boardSnap(boardOf({missing: ['공시'], day: '2026-10-06'}), {place: 'kr'});
   assert.deepEqual(s.collected, {news: 6, flows: 6, disclosures: 0}); assert.equal(s.briefDay, '2026-10-06'); assert.equal(s.n, 6); assert.equal(s.codes.length, 6);
+});
+
+/* ---- 이슈(2026-10-06 18:37 「이날 어떤 이슈들이 있었는지도 이슈칸을 만들어서 기록해 좋은방법으로」) ---- */
+/** 가짜 판 — 회사 10곳(그 날 종가 · 하루 변화) · 업종 셋 · 지수 · 관측 묶음(환율 · 기사 · 공시) */
+const D = '2026-10-06';
+const issueBoard = ({late = 0} = {}) => {
+  const ch = [0.12, 0.08, 0.05, 0.01, 0, 0, -0.01, -0.02, -0.04, -0.09];
+  const names = ['알파', 'LS', '필립스 66', '감마전자', '델타', '엡실론', '제타', '에타', '세타', '이오타'];
+  return {asOf: D, groups: [{label: '전기 부품', codes: ['c0', 'c1', 'c2']}, {label: '신약 개발', codes: ['c7', 'c8', 'c9']}, {label: '둘뿐', codes: ['c3', 'c4']}],
+    companies: ch.map((x, i) => ({code: 'c' + i, name: names[i], date: i < late ? '2026-10-02' : D, change1: x}))};
+};
+const issueManifest = {market: {items: [{name: '코스피', date: D, close: 7050.5, changePct: 0.67}, {name: '코스닥', date: '2026-10-02', close: 890, changePct: -0.3}]}};
+const at = (d, hm) => `${d}T${hm}:00+09:00`;
+const issueSnap = {fetchedAt: '2026-10-06T09:39:40Z',
+  macro: [{id: 'FX_USDKRW', rows: [{date: '2026-10-02', value: 1343.4, changePct: -1.18}, {date: D, value: 1350.1, changePct: 0.5}]}],
+  news: [
+    {code: 'c3', items: [{title: '감마전자, 새 공장 준공', office: '가신문', publishedAt: at(D, '09:10'), clusterSize: 3}, {title: '감마전자 실적 발표', office: '나신문', publishedAt: at(D, '15:40'), clusterSize: 1},
+      {title: '감마전자 주가 오를 것', office: '다신문', publishedAt: at(D, '16:00'), clusterSize: 9}, {title: '감마전자, 새 공장 준공', office: '라신문', publishedAt: at(D, '09:20'), duplicateOf: 'x'}]},
+    {code: 'c1', items: [{title: 'LS전선, 해저 케이블 수주', office: '가신문', publishedAt: at(D, '10:00')}, {title: 'LS, 자사주 소각', office: '나신문', publishedAt: at(D, '11:00')}]},
+    {code: 'c0', items: [{title: '알파 어제 기사', office: '가신문', publishedAt: at('2026-10-05', '20:00')}, {title: '시장 전체 기사', office: '가신문', publishedAt: at(D, '12:00')}]},
+  ],
+  disclosures: [{code: 'c5', items: [{title: '(주)엡실론 주식 소각 결정', publishedAt: at(D, '16:30'), corporateAction: true, actionWord: '소각'}, {title: '엡실론 정기 공시', publishedAt: at(D, '16:31'), corporateAction: false},
+    {title: '(주)엡실론 자기주식 취득 결정', publishedAt: at(D, '16:40'), corporateAction: true, actionWord: '자기주식'}, {title: '(주)엡실론 주식 소각 결정(정정)', publishedAt: at(D, '16:50'), corporateAction: true, actionWord: '소각'}]},
+    {code: 'c9', items: [{title: '이오타 유상증자 결정', publishedAt: at(D, '17:00'), corporateAction: true, actionWord: '유상증자'}]},
+    {code: 'c6', items: [{title: '제타 유상증자 결정', publishedAt: at('2026-10-02', '16:30'), corporateAction: true}]}]};
+
+test('이슈 — 그 날 지수 · 환율 · 오른/내린 곳 · 업종 평균 · 기사가 몰린 곳 · 대표 기사 · 회사 일 공시(지난 일만 · 앞날 말 뺌)', () => {
+  const e = issueEntry(issueBoard(), issueManifest, issueSnap, {place: 'kr', made: '2026-10-06T10:05:00Z'});
+  assert.equal(e.id, 'issue-kr-20261006T190500'); assert.equal(e.kind, 'issue'); assert.equal(e.asOf, D); assert.equal(e.made, '2026-10-06T19:05:00+09:00');
+  assert.equal(e.title, '10월 6일(화) 한국 장 이슈');
+  assert.deepEqual(e.what, [
+    '코스피 7,050.50포인트 +0.67% · 원/달러 1,350.1원 +0.50%',
+    '오른 회사 4곳 · 내린 회사 4곳 · 그대로 2곳(그 날 종가가 있는 10곳)',
+    '하루 가장 오른 회사: 알파 +12.0% · LS +8.0% · 필립스 66 +5.0%',
+    '하루 가장 내린 회사: 이오타 −9.0% · 세타 −4.0% · 에타 −2.0%',
+    '업종 하루 평균: 가장 오름 전기 부품 +8.3% · 가장 내림 신약 개발 −5.0%',
+    '기사가 가장 몰린 곳: 감마전자 3건 · LS 2건 · 알파 1건',
+    '감마전자 대표 기사: 「감마전자, 새 공장 준공」(가신문 · 09:10)',
+    '회사 일 공시 4건: 이오타 1건(유상증자) · 엡실론 3건(소각, 자기주식)',
+  ], '코스닥은 다른 날 값이라 뺌 · 둘뿐인 업종은 뺌 · 겹친 기사 · 다른 날 기사는 셈에서 뺌 · 대표 기사는 이름이 나온 것만(「LS전선」은 아님) · 앞날 말 제목은 대표에서 뺌 · 공시는 회사마다 늦은 차례');
+  assert.deepEqual(e.idents, ['필립스 66']);
+  assert.equal(e.source, '네이버 증권(종가 · 지수 · 환율 · 기사 · 공시) · 기사 · 공시는 10월 6일(화) 18:39까지 모은 것 · 기사는 회사마다 20건까지 봄 · 앞날 말이 든 기사 제목은 싣지 않음');
+  assert.deepEqual(validateEntry(e), []);
+  // 관측 묶음이 없으면 그 줄만 뺌
+  assert.deepEqual(issueEntry(issueBoard(), null, null, {place: 'kr', made: '2026-10-06T10:05:00Z'}).what.map(x => x.split(/[:(]/)[0]), ['오른 회사 4곳 · 내린 회사 4곳 · 그대로 2곳', '하루 가장 오른 회사', '하루 가장 내린 회사', '업종 하루 평균']);
+  // 한 쪽(20건)이 모두 그 날이면 「20건 넘음」 — 그런 곳끼리는 20건이 짧은 사이에 나온 곳이 앞
+  const feed = (code, from) => ({code, items: Array.from({length: 20}, (_, i) => ({title: `기사 ${i}`, office: '가신문', publishedAt: `${D}T${String(from + Math.floor(i / 6)).padStart(2, '0')}:${String((i % 6) * 10).padStart(2, '0')}:00+09:00`}))});
+  const busy = issueEntry(issueBoard(), issueManifest, {...issueSnap, news: [feed('c4', 9), feed('c5', 15), ...issueSnap.news]}, {place: 'kr', made: '2026-10-06T10:05:00Z'});
+  assert.ok(busy.what.includes('기사가 가장 몰린 곳: 엡실론 20건 넘음 · 델타 20건 넘음 · 감마전자 3건'), busy.what.join('\n'));
+  const busy3 = issueEntry(issueBoard(), issueManifest, {...issueSnap, news: [feed('c4', 9), feed('c5', 15), feed('c6', 12)]}, {place: 'kr', made: '2026-10-06T10:05:00Z'});
+  assert.ok(busy3.what.includes('기사가 가장 몰린 곳: 엡실론 · 제타 · 델타(세 곳 모두 그 날 20건 넘음)'), busy3.what.join('\n'));
+  // 그 날 종가가 90% 안 되면 쓰지 않음(한 번 쓰면 고치지 않으므로)
+  assert.equal(issueEntry(issueBoard({late: 2}), issueManifest, issueSnap, {place: 'kr', made: '2026-10-06T10:05:00Z'}), null);
+  assert.equal(ISSUE.minShare, 0.9);
+});
+
+test('이슈 · 미국 판 — 기사는 뉴욕 날짜로 셈 · 대표 기사 시각은 한국 시각과 날짜 · 공시 · 환율 줄 없음', () => {
+  const b = issueBoard(), N = '2026-10-05';
+  b.asOf = N; for (const c of b.companies) c.date = N;
+  const snap = {fetchedAt: '2026-10-06T09:39:20Z', news: [{code: 'c3', items: [
+    {title: '감마전자, 신제품 공개', office: '로이터', publishedAt: '2026-10-06T03:15:00+09:00'}, // 뉴욕 10월 5일 14:15
+    {title: '감마전자 지난 밤 기사', office: '로이터', publishedAt: '2026-10-05T12:00:00+09:00'}]}], // 뉴욕 10월 4일 23:00
+    macro: issueSnap.macro, disclosures: issueSnap.disclosures};
+  const e = issueEntry(b, {market: {items: [{name: 'S&P 500', date: N, close: 7773.95, changePct: 0.66}]}}, snap, {place: 'us', made: '2026-10-06T09:39:59Z'});
+  assert.equal(e.title, '10월 5일(월) 뉴욕 장 이슈'); assert.equal(e.place, 'us'); assert.equal(e.asOf, N);
+  assert.equal(e.what[0], 'S&P 500 7,773.95포인트 +0.66%');
+  assert.ok(e.what.includes('기사가 가장 몰린 곳: 감마전자 1건'), '뉴욕 10월 4일 기사는 셈에서 뺌');
+  assert.ok(e.what.includes('감마전자 대표 기사: 「감마전자, 신제품 공개」(로이터 · 한국 시각 10월 6일(화) 03:15)'));
+  assert.ok(!e.what.some(x => x.startsWith('회사 일 공시') || x.includes('원/달러')));
+  assert.deepEqual(e.idents.sort(), ['S&P 500', '필립스 66']);
+  assert.match(e.source, /기사는 10월 6일\(화\) 18:39까지 모은 것/);
+});
+
+test('이슈 · 이름 찾기 — 짧은 이름은 낱말 경계(LS전선 · SK하이닉스는 아님) · 조사는 맞음', () => {
+  for (const [t, n, want] of [['LS전선, 해저 케이블', 'LS', false], ['LS, 자사주 소각', 'LS', true], ['LS는 오늘', 'LS', true], ['SK하이닉스 신고가', 'SK', false], ['XLS 펀드', 'LS', false],
+    ['인텔리전스 강화', '인텔', false], ['인텔, 새 칩', '인텔', true], ['효성중공업 수주', '효성', false], ['효성이 발표', '효성', true], ['삼성전자가 발표', '삼성전자', true], ['베이커 휴즈, 계약', '베이커 휴즈', true]])
+    assert.equal(mentions(t, n), want, `${n} · ${t}`);
+});
+
+test('이슈 · 파일 — 종가 날짜마다 한 번(같은 날 두 번째는 쓰지 않음) · 사이트에는 같은 날 먼저 것만', async () => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'atlas-issue-'));
+  const r1 = await recordIssue(dir, issueBoard(), issueManifest, issueSnap, {place: 'kr', made: '2026-10-06T10:05:00Z'});
+  assert.equal(r1.wrote, true); assert.equal(r1.file, path.join(CHANGELOG.dirs.kr, 'issue-kr-20261006T190500.json')); assert.equal(r1.title, '10월 6일(화) 한국 장 이슈');
+  const r2 = await recordIssue(dir, issueBoard(), issueManifest, null, {place: 'kr', made: '2026-10-06T11:00:00Z'});
+  assert.equal(r2.wrote, false); assert.match(r2.reason, /이미 있음/);
+  const r3 = await recordIssue(dir, issueBoard({late: 3}), issueManifest, issueSnap, {place: 'us', made: '2026-10-06T11:00:00Z'});
+  assert.equal(r3.wrote, false); assert.match(r3.reason, /90%/);
+  // 두 실행이 함께 돌아 같은 날 이슈가 둘 생기면(파일 이름이 달라 git 이 부딪히지 않음) 사이트에는 먼저 것만
+  const a = issueEntry(issueBoard(), issueManifest, issueSnap, {place: 'kr', made: '2026-10-06T10:05:00Z'}), b = issueEntry(issueBoard(), issueManifest, null, {place: 'kr', made: '2026-10-06T10:06:00Z'});
+  const log = siteLog([b, a], {now: '2026-10-06T12:00:00Z'});
+  assert.deepEqual(log.entries.map(e => e.id), [a.id]); assert.deepEqual(log.problems, [{id: b.id, bad: ['같은 날 이슈가 먼저 있음(먼저 것만 실음)']}]);
+  assert.deepEqual(log.count, {all: 1, update: 0, data: 0, issue: 1}); assert.ok(!('auto' in log.entries[0]) && log.entries[0].source && log.entries[0].idents);
+  // 이슈는 판 자리(kr · us)와 종가 날짜가 있어야
+  assert.ok(validateEntry({...a, place: 'all'}).includes('issue 는 place kr · us')); assert.ok(validateEntry({...a, asOf: undefined}).includes('asOf'));
+  assert.ok(validateEntry({...a, idents: [1]}).includes('idents')); assert.ok(validateEntry({...a, source: '내일 오를 것'}).some(x => x.includes('오를 것')));
+  await fs.rm(dir, {recursive: true, force: true});
 });

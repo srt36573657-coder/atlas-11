@@ -753,26 +753,28 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   }
   // ⑤ 아래 탭 「기록」(#/log · 2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 기록 하는 탭」) — 검사기가 /changelog.json 을 따로 읽어 화면과 줄마다 맞댐
   //   무결성은 이 탭 맨 아래 「기술 정보」(옛 모든 화면 맨 아래 접힘을 옮김 — 규칙 1)
+  //   이슈(2026-10-06 18:37 「이슈칸을 만들어서 기록해」) — 칩 「이슈」 · 출처 줄 · 거르기 넷 · 이슈가 한 줄은 있어야(판을 만들 때 저절로 쌓임)
   {
+    const CHIP = {update: '업데이트', data: '자료 변경', issue: '이슈'};
     const log = await (await fetch(base + '/changelog.json')).json(), want = log.entries, byKind = k => want.filter(e => k === 'all' || e.kind === k);
     await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(200);
     const footTech = await page.evaluate(() => document.querySelectorAll('.b-foot .b-tech, .b-foot .integrity-text').length);
     const tLog = page.locator('.bottom-link[data-route="log"]'); if (mobile) await tLog.tap(); else await tLog.click(); await page.waitForSelector('.lg-page .lg-item'); await page.waitForTimeout(250);
     const read = () => page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
       items: [...document.querySelectorAll('.lg-item')].map(li => ({id: li.dataset.id, kind: li.dataset.kind, chip: li.querySelector('.lg-kind')?.textContent.trim(), time: li.querySelector('.lg-time')?.textContent.trim(), dt: li.querySelector('.lg-time')?.getAttribute('datetime'),
-        title: li.querySelector('.lg-title')?.textContent.trim(), what: [...li.querySelectorAll('.lg-what li')].map(x => x.textContent.trim()), removed: li.querySelector('.lg-removed')?.textContent.trim() ?? null, day: li.closest('.lg-day')?.dataset.date})),
+        title: li.querySelector('.lg-title')?.textContent.trim(), what: [...li.querySelectorAll('.lg-what li')].map(x => x.textContent.trim()), removed: li.querySelector('.lg-removed')?.textContent.trim() ?? null, src: li.querySelector('.lg-src')?.textContent.trim() ?? null, day: li.closest('.lg-day')?.dataset.date})),
       days: [...document.querySelectorAll('.lg-day')].map(d => d.dataset.date), pressed: document.querySelector('.lg-seg [aria-pressed="true"]')?.dataset.show,
       integ: document.querySelector('.lg-tech .integrity-text')?.textContent ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
     const r0 = await read();
-    const mis = want.map((e, i) => { const x = r0.items[i]; return x && x.id === e.id && x.kind === e.kind && x.chip === (e.kind === 'update' ? '업데이트' : '자료 변경') && x.dt === e.live && x.time === e.live.slice(11, 16) && x.title === e.title && x.what.join('|') === e.what.join('|') && x.day === e.live.slice(0, 10)
-      && (e.removed?.length ? x.removed === '뺀 것 ' + e.removed.join(' · ') : x.removed === null) ? null : {i, id: e.id, x}; }).filter(Boolean);
+    const mis = want.map((e, i) => { const x = r0.items[i]; return x && x.id === e.id && x.kind === e.kind && x.chip === CHIP[e.kind] && x.dt === e.live && x.time === e.live.slice(11, 16) && x.title === e.title && x.what.join('|') === e.what.join('|') && x.day === e.live.slice(0, 10)
+      && (e.removed?.length ? x.removed === '뺀 것 ' + e.removed.join(' · ') : x.removed === null) && (e.source ? x.src === '출처 · ' + e.source : x.src === null) ? null : {i, id: e.id, x}; }).filter(Boolean);
     const daysW = [...new Set(want.map(e => e.live.slice(0, 10)))], newestFirst = want.every((e, i) => !i || want[i - 1].live >= e.live);
-    check(`${label} 아래 탭 「기록」(#/log): 줄 ${r0.items.length}개 = 기록 파일 ${want.length}개(업데이트 ${log.count.update} · 자료 변경 ${log.count.data} · 검사에 걸려 빠진 줄 ${log.problems.length}) · 같은 차례(새것이 위) · 날짜 묶음 ${r0.days.length}개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 「기록」 눌림 · 옆으로 넘치지 않음`,
-      r0.hash === '#/log' && r0.title === `기록 ${want.length}개` && r0.active === 'log' && want.length > 0 && r0.items.length === want.length && !mis.length && r0.days.join() === daysW.join() && newestFirst && log.problems.length === 0 && r0.sw <= r0.cw && r0.pressed === 'all', {mis: mis.slice(0, 2), days: r0.days, problems: log.problems.slice(0, 3)});
-    for (const k of ['update', 'data', 'all']) {
+    check(`${label} 아래 탭 「기록」(#/log): 줄 ${r0.items.length}개 = 기록 파일 ${want.length}개(이슈 ${log.count.issue} · 업데이트 ${log.count.update} · 자료 변경 ${log.count.data} · 검사에 걸려 빠진 줄 ${log.problems.length}) · 같은 차례(새것이 위) · 날짜 묶음 ${r0.days.length}개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음`,
+      r0.hash === '#/log' && r0.title === `기록 ${want.length}개` && r0.active === 'log' && want.length > 0 && r0.items.length === want.length && !mis.length && r0.days.join() === daysW.join() && newestFirst && log.problems.length === 0 && log.count.issue >= 1 && r0.sw <= r0.cw && r0.pressed === 'all', {mis: mis.slice(0, 2), days: r0.days, problems: log.problems.slice(0, 3), issue: log.count.issue});
+    for (const k of ['issue', 'update', 'data', 'all']) {
       const b = page.locator(`.lg-seg [data-show="${k}"]`); if (mobile) await b.tap(); else await b.click(); await page.waitForTimeout(150);
       const r = await read(), w = byKind(k);
-      check(`${label} 기록 「${k === 'all' ? '모두' : k === 'update' ? '업데이트' : '자료 변경'}」 누름 → ${r.items.length}줄 = 기록 파일 ${w.length}줄(같은 차례)`, r.pressed === k && r.items.length === w.length && r.items.every((x, i) => x.id === w[i].id), {pressed: r.pressed, n: r.items.length});
+      check(`${label} 기록 「${k === 'all' ? '모두' : CHIP[k]}」 누름 → ${r.items.length}줄 = 기록 파일 ${w.length}줄(같은 차례) · 옆으로 넘치지 않음`, r.pressed === k && r.items.length === w.length && r.items.every((x, i) => x.id === w[i].id) && r.sw <= r.cw, {pressed: r.pressed, n: r.items.length, sw: r.sw, cw: r.cw});
     }
     check(`${label} 무결성(기록 탭 맨 아래 「기술 정보」): 「${r0.integ}」 · 다른 화면 맨 아래 「기술 정보」 ${footTech}개(옮김 · 규칙 1)`, /모두 판 목록의 SHA-256 과 같음/.test(r0.integ ?? '') && footTech === 0, {integ: r0.integ, footTech});
   }
