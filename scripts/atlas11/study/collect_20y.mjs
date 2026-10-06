@@ -11,6 +11,8 @@
  *       미국 회사는 stooq 를 먼저 쓰고, 안 되면 앞 판의 길(네이버)로. 두 길이 겹치는 날의 종가를 회사 몇 곳에서 맞대어 probe 에 남김
  *       S&P 500 · 다우는 stooq 가 안 되면 월스트리트저널(WSJ) 기록 내려받기를 한 번 더 시험
  *     → 둘째 판 결과는 첫 판을 덮지 않도록 다른 칸(--out reports/atlas11/study/20y/r2)에 적는다
+ *   (13:3x) 둘째 판의 미국 쪽이 오래 걸려(stooq 가 늘어지는 것으로 보임) 미국만 따로 셋째 판(20y/r2us)으로 나란히 돌림:
+ *     stooq 는 8초까지만 · 여섯 번 잇달아 안 되면 그만 · probe 를 중간중간 적어 끊겨도 남게
  *   결과: <out>/kr.json.gz · <out>/us.json.gz · <out>/probe.json — 사이트 · main · 매일 작업 파일은 건드리지 않는다
  *   쓰는 법: node scripts/atlas11/study/collect_20y.mjs --out reports/atlas11/study/20y [--only kr|us] [--limit N]
  */
@@ -47,10 +49,13 @@ function parseDayJson(text) {
   const arr = Array.isArray(j) ? j : (Array.isArray(j?.priceInfos) ? j.priceInfos : []);
   return arr.map(x => ({d: String(x.localDate ?? x.localTradedAt ?? '').replace(/-/g, '').slice(0, 8), c: num(x.closePrice), v: num(x.accumulatedTradingVolume)}));
 }
-async function get(url, headers = {}) {
-  try { const r = await fetchWithRetry(url, {retries: 2, backoffMs: [1000, 3000], timeoutMs: 20000, headers}); return {ok: true, status: r.status, text: r.text}; }
+async function get(url, headers = {}, {retries = 2, timeoutMs = 20000} = {}) {
+  try { const r = await fetchWithRetry(url, {retries, backoffMs: [1000, 3000], timeoutMs, headers}); return {ok: true, status: r.status, text: r.text}; }
   catch (e) { return {ok: false, status: e.attempts?.at(-1)?.status ?? null, error: String(e.message).slice(0, 160)}; }
 }
+const writeProbe = () => { try { fs.writeFileSync(path.join(OUT, 'probe.json'), JSON.stringify({...probe, partialAt: new Date().toISOString()}, null, 1)); } catch {} };
+// stooq 가 막히거나 늘어지면(14:3x 둘째 판이 오래 걸림) 여섯 번 잇달아 안 되면 그 뒤로는 시험하지 않음 · 한 번에 8초까지만 기다림
+let stooqMiss = 0; const STOOQ_OFF_AFTER = 6;
 async function pool(items, n, fn) {
   let i = 0; const out = new Array(items.length);
   await Promise.all(Array.from({length: n}, async () => { while (i < items.length) { const k = i++; out[k] = await fn(items[k], k); await sleep(80); } }));
@@ -140,7 +145,7 @@ async function usIndex(code, nasdaqSym) {
   }
   if (stq) {
     for (const host of ['stooq.com', 'stooq.pl']) {
-      const r = await get(STOOQ(stq, host), {...BROWSER, Accept: 'text/csv,*/*'});
+      const r = await get(STOOQ(stq, host), {...BROWSER, Accept: 'text/csv,*/*'}, {retries: 0, timeoutMs: 8000});
       const rows = r.ok ? parseCsv(r.text) : [];
       tries.push({way: `stooq-${stq}@${host}`, status: r.status, total: rows.length, head: r.ok ? r.text.slice(0, 80) : null});
       if (rows.length >= 4000) return {how: 'stooq-' + stq, rows, tries};
@@ -183,8 +188,12 @@ async function usIndex(code, nasdaqSym) {
 }
 const stooqSym = code => code.toLowerCase().replace(/\./g, '-') + '.us';
 async function usStock(reuters, code) {
-  const st = await get(STOOQ(stooqSym(code)), {...BROWSER, Accept: 'text/csv,*/*'});
-  const sr = st.ok ? parseCsv(st.text) : [];
+  let st = {ok: false, status: 'skipped'}, sr = [];
+  if (stooqMiss < STOOQ_OFF_AFTER) {
+    st = await get(STOOQ(stooqSym(code)), {...BROWSER, Accept: 'text/csv,*/*'}, {retries: 0, timeoutMs: 8000});
+    sr = st.ok ? parseCsv(st.text) : [];
+    stooqMiss = sr.length >= 250 ? 0 : stooqMiss + 1;
+  }
   if (sr.length >= 250) return {rows: sr, okYears: null, firstStatus: st.status, how: 'stooq'};
   const rows = []; let okYears = 0, firstStatus = null;
   for (const y of years) {
@@ -201,10 +210,10 @@ async function runUs() {
   let list = board.companies.map(c => ({code: c.code, name: c.name, reuters: reutersOf.get(c.code), industry: input.assets.find(a => a.code === c.code)?.industryCode ?? null}));
   if (LIMIT) list = list.slice(0, LIMIT);
   const out = {market: 'us', fetchedAt: new Date().toISOString(), indices: {}, stocks: {}, board: list.map(x => x.code), groups: board.groups.map(g => ({id: g.id, label: g.label, codes: g.codes}))};
-  for (const [code, nas] of [['.INX', 'SPX'], ['.IXIC', 'COMP'], ['.DJI', 'INDU']]) {
+  for (const [code, nas] of [['.IXIC', 'COMP'], ['.INX', 'SPX'], ['.DJI', 'INDU']]) {
     const s = await usIndex(code, nas); out.indices[code] = pack(s.rows);
     probe.us[code] = {how: s.how, rows: s.rows.length, first: out.indices[code]?.d0 ?? null, tries: s.tries};
-    console.log('us index', code, probe.us[code].how, probe.us[code].rows, probe.us[code].first);
+    console.log('us index', code, probe.us[code].how, probe.us[code].rows, probe.us[code].first); writeProbe();
   }
   let done = 0, fails = 0; const hows = {}; const stooqFail = [];
   await pool(list, 2, async x => {  // stooq 는 천천히(하루 받기 한도)
@@ -212,7 +221,7 @@ async function runUs() {
     const s = await usStock(x.reuters, x.code); const p = pack(s.rows);
     hows[s.how] = (hows[s.how] ?? 0) + 1; if (s.how !== 'stooq' && stooqFail.length < 8) stooqFail.push({code: x.code, status: s.stooqStatus, head: s.stooqHead});
     if (p) out.stocks[x.code] = {name: x.name, reuters: x.reuters, industryCode: x.industry, src: s.how, ...p}; else { fails++; probe.errors.push({us: x.code, firstStatus: s.firstStatus}); }
-    if (++done % 50 === 0) console.log('us stocks', done, '/', list.length, 'fails', fails, hows);
+    if (++done % 50 === 0) { console.log('us stocks', done, '/', list.length, 'fails', fails, hows); probe.us.progress = {done, fails, hows: {...hows}, stooqFail: stooqFail.slice(0, 8)}; writeProbe(); }
     await sleep(250);
   });
   probe.us.stocks = {asked: list.length, got: Object.keys(out.stocks).length, fails, hows, stooqFail, startedBefore2007: Object.values(out.stocks).filter(s => s.d0 < '20070101').length};
