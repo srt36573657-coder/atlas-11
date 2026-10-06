@@ -20,11 +20,8 @@ const out = path.resolve(arg('--out') ?? path.join(root, '..', 'out'));
 const sha = async file => createHash('sha256').update(await fs.readFile(file)).digest('hex');
 const copyDir = async (from, to) => { await fs.mkdir(to, {recursive: true}); for (const e of await fs.readdir(from, {withFileTypes: true})) { const a = path.join(from, e.name), b = path.join(to, e.name); if (e.isDirectory()) await copyDir(a, b); else await fs.copyFile(a, b); } };
 
-/** 언어판 들어오는 쪽(index.html)의 글 — 나머지 화면 글자는 app/i18n/<말>.json */
-export const LANG_PAGES = Object.freeze({
-  en: {html: 'en', title: 'ATLAS · Past prices and calendar', desc: 'ATLAS · Past closing prices, trends, upcoming events and filings of quality and trend-leading companies in Korea and the US, in one place.', skip: 'Skip to content', nav: 'Main screens', noscript: 'This page needs JavaScript turned on.'},
-  zh: {html: 'zh-CN', title: 'ATLAS · 历史股价与日程', desc: 'ATLAS · 汇集韩国与美国优质公司及时代趋势公司的历史收盘价、走势、即将到来的日程与公告。', skip: '跳到正文', nav: '主要页面', noscript: '此页面需要开启 JavaScript。'},
-});
+/** 화면 말(2026-10-06 22:00 사장님 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 한 주소(/ · /us/)에서 위 막대 말 단추로 고름(app/i18n.js) · 옛 따로 주소(/en · /zh)는 같은 화면으로 넘김 */
+export const LANGS = Object.freeze(['en', 'zh']);
 
 export async function buildDist() {
   const manifest = JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11/view/manifest.json'), 'utf8'));
@@ -40,29 +37,18 @@ export async function buildDist() {
   const usOk = await fs.readFile(path.join(usDir, 'manifest.json'), 'utf8').then(t => { const m = JSON.parse(t); return m.prediction === 'off' && !!m.boardId && m.place?.id === 'us'; }).catch(() => false);
   if (usOk) { await copyDir(path.join(root, 'site'), path.join(dist, 'us')); await copyDir(usDir, path.join(dist, 'us/data/atlas11/view')); }
   await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places: [{id: 'kr', label: '한국', href: '/'}, ...(usOk ? [{id: 'us', label: '미국', href: '/us/'}] : [])]}) + '\n');
-  // 언어판(2026-10-06 20:33 사장님 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」) — 영어 /en/ · 중국어(간체) /zh/ · 미국 판은 /en/us/ · /zh/us/
-  //   화면 코드와 자료는 한 벌(/app · /data · /us/…) — 들어오는 쪽(index.html)만 말마다 · 글자는 app/i18n.js 가 사전(app/i18n/<말>.json)으로 바꿈
-  //   한국 회사 영어 이름(public/data/atlas11/names-kr.json · 「한국 회사 영어 이름 받기」 작업)이 있으면 함께 싣는다
+  // 화면 말(영어 · 중국어 간체 — 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면」) — 화면 코드 · 자료 · 들어오는 쪽은 한 벌
+  //   글자는 app/i18n.js 가 사전(app/i18n/<말>.json)으로 바꿈 · 한국 회사 영어 이름(public/data/atlas11/names-kr.json · 「한국 회사 영어 이름 받기」 작업)이 있으면 함께 싣는다
   try { await fs.copyFile(path.join(root, 'public/data/atlas11/names-kr.json'), path.join(dist, 'data/atlas11/names-kr.json')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
-  const indexKo = await fs.readFile(path.join(root, 'site/index.html'), 'utf8');
-  for (const [lg, L] of Object.entries(LANG_PAGES)) for (const sub of usOk ? ['', 'us/'] : ['']) {
-    const at = '/' + sub; // 화면 코드 · 그림 자리(/ · /us/)
-    const html = indexKo.replace('<html lang="ko">', `<html lang="${L.html}">`)
-      .replace(/href="(favicon\.svg|apple-touch-icon\.png|app\/style\.css)"/g, (_, f) => `href="${at}${f}"`).replace('src="app/app.js"', `src="${at}app/app.js"`)
-      .replace(/<title>[^<]*<\/title>/, `<title>${L.title}</title>`).replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${L.desc}">`)
-      .replace('본문으로 건너뛰기', L.skip).replace('aria-label="주요 화면"', `aria-label="${L.nav}"`).replace(/<noscript>[\s\S]*?<\/noscript>/, `<noscript><div class="nojs">${L.noscript}</div></noscript>`);
-    if (/[가-힣]/.test(html.replace(/<meta http-equiv[^>]*>/, ''))) throw Error('LANG_PAGE_KOREAN_LEFT ' + lg + '/' + sub);
-    await fs.mkdir(path.join(dist, lg, sub), {recursive: true}); await fs.writeFile(path.join(dist, lg, sub, 'index.html'), html);
-  }
   // 아래 탭 「기록」(2026-10-06 16:10 사장님 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭」) — /changelog.json 한 파일(한국 · 미국 판이 함께 읽음)
   //   업데이트 · 자료 변경 기록(reports/atlas11/changelog · reports/atlas11/us/changelog)을 모음 · 올라간 때 = 올리기 기록에서 만든 때 뒤 첫 올림 · 아직이면 이 묶음을 만든 때
   //   검사에 걸린 줄은 빼고 알림만 — 기록 때문에 올리기가 멈추지 않게(빠진 줄은 problems 에 남아 화면 검사가 0 인지 본다)
   let log; try { log = await readSiteLog(root, {now: new Date().toISOString()}); } catch (e) { log = {schema: 'atlas11-changelog-1', generatedAt: new Date().toISOString(), from: null, count: {all: 0, update: 0, data: 0}, entries: [], problems: [{id: null, bad: ['읽지 못함: ' + e.message]}]}; }
   if (log.problems.length) console.warn('changelog problems (left out): ' + JSON.stringify(log.problems.slice(0, 5)));
   await fs.writeFile(path.join(dist, 'changelog.json'), JSON.stringify(log) + '\n');
-  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/us/index.html\n  Cache-Control: no-cache\n/us/data/*\n  Cache-Control: no-cache\n/us/app/*\n  Cache-Control: no-cache\n/en/*\n  Cache-Control: no-cache\n/zh/*\n  Cache-Control: no-cache\n/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
+  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/us/index.html\n  Cache-Control: no-cache\n/us/data/*\n  Cache-Control: no-cache\n/us/app/*\n  Cache-Control: no-cache\n/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
-  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + (usOk ? '/us  /us/  301\n' : '') + Object.keys(LANG_PAGES).map(lg => `/${lg}  /${lg}/  301\n` + (usOk ? `/${lg}/us  /${lg}/us/  301\n` : '')).join('')); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
+  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + (usOk ? '/us  /us/  301\n' : '') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사
