@@ -741,3 +741,9 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
 .lg-tech { margin: 18px 4px 0; font-size: .8125rem; color: var(--sub); line-height: 1.6; }
 .lg-tech p { margin: 2px 0; }
 .lg-tech code { overflow-wrap: anywhere; word-break: break-all; }
+/* 「기록」의 이슈(2026-10-06 18:37 「이슈칸을 만들어서 기록해」) — 칩은 먹빛 테두리만(있던 --ink2 · 옥빛은 「고른 것」 자리라 쓰지 않음) · 출처 줄은 까닭 줄과 같은 옷
+   거르기 단추 넷 — 좁은 화면은 두 줄 두 칸(큰 글씨는 위 data-font-step 규칙이 이미 두 칸) */
+.lg-issue { background: none; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink2); }
+.lg-src { margin: 7px 0 0; line-height: 1.5; }
+.lg-from { margin-top: 6px; }
+@media (max-width: 32rem) { .lg-seg { flex-wrap: wrap; } .lg-seg .f-seg-b { flex: 1 1 calc(50% - 2px); } }

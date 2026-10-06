@@ -6,6 +6,7 @@
  *           · public/data/atlas11/market/KOSPI.json(코스피 종가 쌓아 두기 — 지도 탭 「지난 6개월 앞서 달린 곳」 · 2026-10-06 14:55 「해」 · 새로 붙은 날이 있으면 다시 씀)
  *           · public/data/atlas11/schedule-events.json(확인된 일정) · config/atlas11/universe.json(바뀔 묶음 미리 보기)
  *   쓰는 것(판 밖): 아래 탭 「기록」의 자료 변경 한 줄 — reports/atlas11/changelog/data-kr/(앞 기록과 견줘 종가 · 회사 · 모은 자료 · 들고 남이 바뀌었을 때만 · 2026-10-06 16:10 「기록 하는 탭」)
+ *                  + 그 종가 날짜의 이슈 한 줄(같은 폴더 issue-kr-* · 날짜마다 한 번 · 그 날 종가가 90% 넘게 모였을 때 · 2026-10-06 18:37 「이슈칸」)
  *   지난 예측 묶음은 git 기록(1958247 까지)에 남아 있다 — 이 묶음은 그 파일들을 지우고 새로 쓴다(화면 묶음은 매일 다시 만드는 사본).
  */
 import fs from 'node:fs/promises';
@@ -14,7 +15,7 @@ import {buildBoard, universeNextOf, universeSetOf, boardAsOf} from '../../lib/at
 import {mergeIndexRows} from '../../lib/atlas11/lead6.mjs';
 import {eveningRecordOf} from '../../lib/atlas11/similar.mjs';
 import {loadUniverseConfig, loadNextInput, universeIdOf} from '../../lib/atlas11/universe-switch.mjs';
-import {recordBoardChange} from '../../lib/atlas11/changelog.mjs';
+import {recordBoardChange, recordIssue} from '../../lib/atlas11/changelog.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -106,9 +107,11 @@ export async function buildAndWriteView({now = new Date().toISOString(), record 
   const b = files.get('board.json');
   // 아래 탭 「기록」 — 자료가 바뀌었으면 한 줄(한 파일 · 고치지 않음) · 못 써도 판은 그대로(이유는 실행 기록에)
   let changelog = null; try { changelog = await recordBoardChange(root, b, {place: 'kr', made: manifest.generatedAt ?? now}); } catch (e) { console.warn('changelog write: ' + e.message); changelog = {wrote: false, reason: e.message}; }
+  // 아래 탭 「기록」의 이슈 — 그 종가 날짜에 처음 다 모인 판으로 한 줄(지수 · 오른/내린 곳 · 업종 · 기사 · 공시 · 2026-10-06 18:37 「이슈칸」) · 못 써도 판은 그대로
+  let issue = null; try { const cl = await read('reports/atlas11/context/latest.json', null); issue = await recordIssue(root, b, manifest, cl?.file ? await read(cl.file, null) : null, {place: 'kr', made: manifest.generatedAt ?? now}); } catch (e) { console.warn('issue write: ' + e.message); issue = {wrote: false, reason: e.message}; }
   return {boardId: manifest.boardId, asOf: manifest.asOf, companies: manifest.companies, files: files.size, dir: path.relative(root, dir), universeNext: manifest.universeNext?.id ?? null, bytes: [...files.values()].reduce((s, v) => s + Buffer.byteLength(JSON.stringify(v)), 0),
     similar: b.similar?.items?.map(x => x.name) ?? [], moves: b.moves ? (b.moves.first ? `처음 기록 ${b.moves.to}` : `${b.moves.from} → ${b.moves.to}`) : null, evening,
-    lead6: b.lead6 ? {groups: b.lead6.lead.groups, companies: b.lead6.lead.companies, both: b.lead6.lead.both, index: b.lead6.index ? `${b.lead6.index.name} ${b.lead6.index.date} ${(b.lead6.index.gap * 100).toFixed(1)}%` : b.lead6.indexMissing} : null, market, changelog};
+    lead6: b.lead6 ? {groups: b.lead6.lead.groups, companies: b.lead6.lead.companies, both: b.lead6.lead.both, index: b.lead6.index ? `${b.lead6.index.name} ${b.lead6.index.date} ${(b.lead6.index.gap * 100).toFixed(1)}%` : b.lead6.indexMissing} : null, market, changelog, issue};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
