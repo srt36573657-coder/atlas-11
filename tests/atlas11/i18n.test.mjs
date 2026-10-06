@@ -1,6 +1,7 @@
 // 언어팩(site/app/i18n.js · site/app/i18n/en.json · zh.json) — 2026-10-06 20:33 사장님 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」
 // ① 사전 틀의 자리표({n} {d} {t} {e} {q})가 한국어 틀과 같은 수만큼 쓰였나(값이 빠지거나 엉뚱한 값이 들어가지 않게)
-// ② 날짜 · 시각 · 만 단위 · 회사 이름 · 「…」 안 글이 그 말로 바뀌나 ③ 한국어 판(/ · /us/)에서는 아무것도 바꾸지 않나
+// ② 날짜 · 시각 · 만 단위 · 회사 이름 · 「…」 안 글이 그 말로 바뀌나 ③ 한국어로 볼 때는 아무것도 바꾸지 않나
+// 말 고르기: 같은 주소 ?lang=en|zh|ko(위 막대 말 단추 · 2026-10-06 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) · 기기에 기억
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -35,7 +36,7 @@ for (const lg of ['en', 'zh']) {
 }
 
 test('영어판 — 날짜 · 시각 · 만 단위 · 이름 · 「…」 · 단수/복수', async () => {
-  globalThis.location = {pathname: '/en/'};
+  globalThis.location = {pathname: '/', search: '?lang=en'};
   const m = await import('../../site/app/i18n.js?en');
   assert.equal(m.LANG, 'en'); assert.equal(m.ON, true); assert.equal(m.LOCALE, 'en-US');
   m.useDict(dict('en'));
@@ -51,7 +52,7 @@ test('영어판 — 날짜 · 시각 · 만 단위 · 이름 · 「…」 · 단
 });
 
 test('영어 이름 다듬기 — 법인 꼬리(Co., Ltd. · Inc · Corp)는 떼고 「& Co」 는 이름으로 둠 · 찾기용 nameEn', async () => {
-  globalThis.location = {pathname: '/en/'};
+  globalThis.location = {pathname: '/', search: '?lang=en'};
   const m = await import('../../site/app/i18n.js?en2');
   m.useDict({templates: {}, companies: {}, entities: {}});
   const board = {companies: [{code: '207940', name: '가회사'}, {code: '159010', name: '나회사'}, {code: 'MRK', name: '머크', nameEn: 'Merck & Co Inc'}, {code: 'JPM', name: '제이피모건', nameEn: 'JPMorgan Chase & Co.'}, {code: 'GM', name: '지엠', nameEn: 'General Motors Co'}]};
@@ -62,7 +63,7 @@ test('영어 이름 다듬기 — 법인 꼬리(Co., Ltd. · Inc · Corp)는 떼
 });
 
 test('중국어판 — 날짜 · 만 단위는 万 그대로', async () => {
-  globalThis.location = {pathname: '/zh/us/'};
+  globalThis.location = {pathname: '/us/', search: '?lang=zh'};
   const m = await import('../../site/app/i18n.js?zh');
   assert.equal(m.LANG, 'zh'); assert.equal(m.LOCALE, 'zh-CN');
   m.useDict(dict('zh'));
@@ -70,12 +71,21 @@ test('중국어판 — 날짜 · 만 단위는 万 그대로', async () => {
   assert.match(m.t('외국인 −13만주'), /13万股/);
 });
 
-test('한국어 판(/ · /us/)에서는 아무것도 바꾸지 않음', async () => {
-  globalThis.location = {pathname: '/us/'};
+test('한국어로 볼 때(말을 안 고름 · 엉뚱한 말 · 옛 /en 주소)는 아무것도 바꾸지 않음', async () => {
+  globalThis.location = {pathname: '/us/', search: ''};
   const m = await import('../../site/app/i18n.js?ko');
   assert.equal(m.LANG, 'ko'); assert.equal(m.ON, false);
   m.useDict(dict('en'));
   assert.equal(m.t('10월 6일(화) 15:30 종가'), '10월 6일(화) 15:30 종가');
   const board = {companies: [{code: '005930', name: '삼성전자'}]}; m.addBoardNames(board, null);
   assert.equal(board.companies[0].nameEn, undefined, '한국어 판 찾기는 그대로');
+});
+
+test('말 고르기 — ?lang= 만 보고(엉뚱한 값은 한국어) · 옛 /en/ 경로만으로는 바꾸지 않음(올림 묶음이 ?lang= 로 넘김)', async () => {
+  globalThis.location = {pathname: '/', search: '?lang=fr'};
+  assert.equal((await import('../../site/app/i18n.js?fr')).LANG, 'ko');
+  globalThis.location = {pathname: '/en/', search: ''};
+  assert.equal((await import('../../site/app/i18n.js?oldpath')).LANG, 'ko');
+  globalThis.location = {pathname: '/', search: '?x=1&lang=zh'};
+  const z = await import('../../site/app/i18n.js?zh2'); assert.equal(z.LANG, 'zh'); assert.deepEqual(z.LANGS, ['ko', 'en', 'zh']);
 });

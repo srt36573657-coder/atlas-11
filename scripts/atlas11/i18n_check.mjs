@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * 언어판 검사 · 사전 거두기 — 영어판(/en/) · 중국어판(/zh/) (사장님 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」)
+ * 말 검사 · 사전 거두기 — 영어 · 중국어(간체)로 본 화면(같은 주소 ?lang=en · ?lang=zh — 위 막대 말 단추) (사장님 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」)
  *   node scripts/atlas11/i18n_check.mjs --base http://127.0.0.1:8823 --pw /opt/node-tools [--lang en,zh] [--out file.json]
  *   화면을 두루 돌며(불장 · 예비 · 오름 상위 · 지도 · 갈래 · 업종 · 출목표 모든 탭 · 일정 · 찾기 · 기록 · 회사) 한국 판 · 미국 판 모두
  *   ① 사전에 없는 틀(i18n.js missing) ② 바뀌지 않고 남은 한국어 글(원문 lang="ko" 은 뺌) ③ 옆으로 넘침(390px · 360px 글씨 2배)을 센다
+ *   ④ 위 막대 말 단추: 한국어로 열어 영어 → 미국 판 → 다시 열어도 기억 → 중국어 → 한국어(말 · 아래 탭 이름 · 눌린 말 · 넘침)
  *   남은 한국어 0 · 넘침 0 이면 통과(나가는 값 0) — 사전을 채울 때는 --out 으로 빠진 틀을 받아 번역한다
  */
 import {createRequire} from 'node:module';
@@ -37,7 +38,7 @@ async function crawl(page, lg, at) {
     if (r.sw > r.cw + 1) over.push({step, sw: r.sw, cw: r.cw});
   };
   const go = async (hash, step = hash) => { await page.evaluate(h => { location.hash = h; }, hash); await page.waitForTimeout(450); await collect(step); };
-  await page.goto(`${base}/${lg}/${at === '/us/' ? 'us/' : ''}#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(900); await collect('#/');
+  await page.goto(`${base}${at}?lang=${lg}#/`, {waitUntil: 'networkidle'}); // 한 주소에서 말 단추로 고른 것과 같음(2026-10-06 22:00 「한도메인에서 탭을 누르면」) await page.waitForTimeout(900); await collect('#/');
   for (const hsh of ['#/similar', '#/rise', '#/map']) await go(hsh);
   const fams = await page.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="#/map/f/"]')].map(a => a.getAttribute('href')))]);
   for (const f of fams) await go(f);
@@ -62,14 +63,30 @@ async function crawl(page, lg, at) {
   return {left, over, missing};
 }
 
+// 말 단추(위 막대 · 2026-10-06 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 한국어로 열어 단추로 고르고 · 기억하고 · 시장을 바꿔도 그 말 · 되돌림
+{
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, colorScheme: 'dark'}); const page = await ctx.newPage();
+  const st = async () => page.evaluate(() => ({lang: document.documentElement.lang, tab: document.querySelector('.bottom-link.active .label')?.textContent ?? '', items: [...document.querySelectorAll('.lang-i')].map(a => a.textContent + (a.getAttribute('aria-current') ? '*' : '')).join(','), sw: document.documentElement.scrollWidth}));
+  const steps = [];
+  await page.goto(`${base}/#/road`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['open', await st()]);
+  for (const [tag, hl] of [['en', 'en'], ['zh', 'zh-CN'], ['ko', 'ko']]) {
+    await page.click('.lang-b'); await page.waitForTimeout(200);
+    await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click(`.lang-i[hreflang="${hl}"]`)]); await page.waitForTimeout(700); steps.push([tag, await st()]);
+    if (tag === 'en') { await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click('.mkt-b[data-place="us"]')]).catch(() => {}); await page.waitForTimeout(700); steps.push(['en us', await st()]); await page.goto(`${base}/#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['en remembered', await st()]); }
+  }
+  const want = {open: ['ko', '출목표'], en: ['en', 'Dots'], 'en us': ['en', 'Dots'], 'en remembered': ['en', 'Hot'], zh: ['zh-CN', '火热'], ko: ['ko', '불장']};
+  const bad = steps.filter(([k, v]) => want[k] && (v.lang !== want[k][0] || v.tab !== want[k][1] || v.sw > 390 || v.items !== ['한국어', 'English', '中文'].map(n => n + ({ko: '한국어', en: 'English', zh: '中文'}[v.lang.slice(0, 2)] === n ? '*' : '')).join(',')));
+  report.picker = {steps, bad: bad.length};
+  await ctx.close();
+}
 for (const lg of langs) {
   const R = report.langs[lg] = {places: {}};
   for (const at of ['/', '/us/']) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, colorScheme: 'dark'});
     const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e)));
     const r = await crawl(page, lg, at);
-    // 360px · 글씨 2배(휴대폰 큰 글씨)에서 넘침 — 첫 화면 · 출목표 · 기록
-    await page.setViewportSize({width: 360, height: 780}); await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    // 360px · 글씨 2배(휴대폰 큰 글씨 · 위 막대 말 단추까지)에서 넘침 — 첫 화면 · 출목표 · 기록 · 지도
+    await page.setViewportSize({width: 360, height: 780}); await page.evaluate(() => localStorage.setItem('atlas11:font', '4')); await page.reload({waitUntil: 'networkidle'}); await page.waitForTimeout(700); // 글씨 단추 가장 큰 글씨(200%) — 화면이 쓰는 그대로
     for (const h of ['#/', '#/road', '#/log', '#/map']) { await page.evaluate(x => { location.hash = x; }, h); await page.waitForTimeout(500); const m = await page.evaluate(() => ({sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth})); if (m.sw > m.cw + 1) r.over.push({step: '360px 200% ' + h, ...m}); }
     R.places[at] = {leftCount: r.left.size, left: [...r.left.entries()].sort((a, b) => b[1] - a[1]).slice(0, 400).map(([s, n]) => `${n}× ${s}`), over: r.over, missing: r.missing, errors: errs.slice(0, 5)};
     await ctx.close();
@@ -80,5 +97,5 @@ for (const lg of langs) {
 await browser.close();
 if (outFile) await fs.writeFile(outFile, JSON.stringify(report, null, 1));
 const sum = Object.fromEntries(Object.entries(report.langs).map(([k, v]) => [k, {missing: v.missing.length, left: v.leftTotal, over: v.overTotal, errors: Object.values(v.places).flatMap(p => p.errors).length}]));
-console.log(JSON.stringify(sum));
-process.exitCode = Object.values(sum).every(s => !s.left && !s.over && !s.errors) ? 0 : 1;
+console.log(JSON.stringify({...sum, picker: report.picker.bad ? report.picker.steps : 'ok'}));
+process.exitCode = Object.values(sum).every(s => !s.left && !s.over && !s.errors) && !report.picker.bad ? 0 : 1;
