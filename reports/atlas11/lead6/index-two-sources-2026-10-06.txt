@@ -1,0 +1,13 @@
+ATLAS 11 · 지수 종가 두 곳 견주기(코스피 · S&P 500) — 2026-10-06 (지도 탭 「지난 6개월 앞서 달린 곳」 상자의 지수 자리 근거)
+쌓아 둔 파일: public/data/atlas11/market/KOSPI.json · 426일 · 2025-01-02 ~ 2026-10-02 · 가져온 곳 https://api.finance.naver.com/siseJson.naver?symbol=KOSPI&requestType=1&startTime=20040101&endTime=20261006&timeframe=day
+견준 곳: 20년 공부 자료(study-20y 가지) reports/atlas11/study/20y/r3kr/kr.json.gz(야후 ^KS11) · r4kr/kr.json.gz(네이버 siseJson)
+
+r3kr(yahoo): 겹친 날 426 · 0.01% 넘게 다른 날 0 · 10/2 까지 250거래일 가장 높은 날 2026-06-22 9114.55 · 10/2 7003.74 · 자리 -23.16%
+r4kr(naver): 겹친 날 426 · 0.01% 넘게 다른 날 0 · 10/2 까지 250거래일 가장 높은 날 2026-06-22 9114.55 · 10/2 7003.74 · 자리 -23.16%
+
+두 곳 모두 쌓아 둔 파일과 같음
+
+— S&P 500 —
+public/data/atlas11/us/market/INX.json(네이버 .INX) ↔ study-20y 가지 reports/atlas11/study/20y/r3us/us.json.gz 의 .INX(probe.json: yahoo-^GSPC)
+S&P 500 · 쌓아 둔 파일 439일 · 야후 자료와 겹친 날 439 · 0.01% 넘게 다른 날 0 [] · 야후에 없는 날 0 []
+야후로 센 10/2 까지 250거래일 가장 높은 날 2026-08-13 7798.99 · 10/2 7722.72 · 자리 -0.98%
