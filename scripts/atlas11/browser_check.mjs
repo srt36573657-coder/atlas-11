@@ -51,6 +51,21 @@ const kd = d => `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일(${['�
 const p1 = v => (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) * 100).toFixed(1) + '%';
 /** 가장 많은 값(같으면 늦은 날) — 화면의 기간 글과 따로 셈 */
 const mode = xs => { const n = new Map(); for (const x of xs) if (x) n.set(x, (n.get(x) ?? 0) + 1); return [...n].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? 1 : -1))[0]?.[0] ?? null; };
+/** 아래 탭 「처음」 다섯 — 화면 · 판 셈(lib/atlas11/start.mjs)과 따로: 종가 원본(public/data/input.json)에서 우량 · 시가총액 100위 안 회사의
+ *  지난 756거래일 가장 깊은 하락(하루 31% 넘게 움직인 날이 있으면 뺌)이 작은 순 다섯(같으면 시가총액 순위) — 2026-10-07 00:49 「이대로 사이트에 올려줘」 */
+const startWant = async () => {
+  const inp = JSON.parse(await fs.readFile(path.join(process.cwd(), 'public/data/input.json'), 'utf8')), out = [];
+  for (const a of inp.assets ?? []) {
+    if (a.quality?.kind !== 'quality' || !(a.quality?.capRank <= 100)) continue;
+    const rows = (a.prices ?? []).filter(p => p.close > 0 && p.finalClose !== false && p.date <= board.asOf).sort((x, y) => x.date.localeCompare(y.date)).slice(-757);
+    if (rows.length < 757) continue;
+    let peak = rows[0].close, mdd = 0, bad = false;
+    for (let i = 1; i < rows.length && !bad; i++) { if (Math.abs(rows[i].close / rows[i - 1].close - 1) > 0.31) bad = true; peak = Math.max(peak, rows[i].close); mdd = Math.min(mdd, rows[i].close / peak - 1); }
+    if (!bad) out.push({code: a.code, cap: a.quality.capRank, mdd});
+  }
+  return out.sort((x, y) => y.mdd - x.mdd || x.cap - y.cap).slice(0, 5);
+};
+const pct0 = v => (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) * 100).toFixed(0) + '%';
 /** 칸 위 가는 선 = 오름(up) · 내림(down) · 같음(flat) — 화면 코드와 따로 적어 맞대 봄(2026-10-05 잡스 개혁: 칸 바탕 세기 색은 덜어 냄) */
 const signW = v => Number.isFinite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat') : 'flat';
 const upWant = g => g.measured ? (g.up === g.measured ? `${g.measured}곳 모두 오름` : g.up === 0 ? '오른 곳 없음' : `${g.measured}곳 중 ${g.up}곳 오름`) : '변화 없음';
@@ -142,11 +157,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     if (!board.moves) { const mq = await page.evaluate(() => { const p = document.querySelector('.hs-seg + .mvx .mvx-h'); const lh = parseFloat(getComputedStyle(p).lineHeight) || parseFloat(getComputedStyle(p).fontSize) * 1.5; return {t: p?.innerText.replace(/\s+/g, ' ').trim(), h: p.getBoundingClientRect().height, lh}; });
       check(`${label} 탭 「불장」: 저녁 7시 들고 남(기록 없음) 「${mq.t}」 한 줄(${Math.round(mq.h)}px)`, mq.t === '저녁 7시 들고 남 아직 기록 없음 · 거래일 19:00마다 적음' && (viewport.width < 600 ? mq.h < mq.lh * 1.9 : true), mq); }
     const flowsW = familiesByRise(board.groups.filter(g => g.hot)), SIMN = board.similar?.items?.length ?? 0;
-    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 여섯 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,지도,출목표,일정,찾기,기록' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
+    check(`${label} 탭 「불장」: 제목 「${hr.title}」 · 큰 흐름 한 줄 「${hr.sum}」 · 아래 탭 일곱 ${hr.tabs.join('·')}(「불장」 눌림) · 73칸 판은 여기 없음`, hr.title === `불장 업종 ${HOT.length}개` && (HOT.length ? hr.sum === `큰 흐름 ${flowsW.length}개 — ${flowsW.map(f => f.fam.label).join(' · ')}` : hr.sum === null) && hr.tabs.join() === '불장,지도,출목표,일정,찾기,기록,처음' && hr.active === 'home' && hr.tiles === 0, {...hr, cards: undefined, segs: undefined});
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
     const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g) && r.sun === sunNT(g.codes); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
     check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「평균」 한 번 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 태양 몇 곳(따로 센 값) · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
-    check(`${label} 탭 「불장」: 「${hr.promise}」 접힌 칸 · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === 'ATLAS가 하지 않는 일 7가지' && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: hr.promise, footPromise: hr.footPromise});
+    check(`${label} 탭 「불장」: 접힌 칸 「ATLAS가 하지 않는 일」은 아래 탭 「처음」으로 옮김(${hr.promise ?? '없음'}) · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === undefined && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: hr.promise, footPromise: hr.footPromise});
     await wordsCheck(page, `${label} 탭 「불장」`);
     if (HOT.length) {
       const g0 = flowsW[0].groups[0], rl = page.locator(`.hf-row[data-group="${g0.id}"]`); await rl.scrollIntoViewIfNeeded();
@@ -178,8 +193,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   const kindsWant = board.kinds ? [`업종 ${G}개`, `우량주 ${board.kinds.quality ?? 0}곳`, `시대 트렌드 ${board.kinds.trend ?? 0}곳`, board.kinds.profit ? `흑자 ${board.kinds.profit}곳` : null, board.kinds.size ? `채움 ${board.kinds.size}곳` : null].filter(Boolean).join(' · ') : null;
   const fromM = mode(board.companies.map(c => c.cFrom)), toM = mode(board.companies.map(c => c.date));
   const upsG = board.groups.filter(g => Number.isFinite(g.change20) && g.change20 > 0).length;
-  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 여섯 ${top.tabs.join('·')}(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
-    top.title === `지도 업종 ${G}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === '불장,지도,출목표,일정,찾기,기록' && top.active === 'map' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
+  check(`${label} ${H}: 제목 「${top.title}」 = 판의 불장 ${HOT.length}개 · 결론 한 줄 「${top.when}」(업종 ${upsG}개 오름 · 가장 많은 회사의 기간) · 아래 탭 일곱 ${top.tabs.join('·')}(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음${board.kinds ? ` · 접힌 칸 「${top.kinds}」` : ''}`,
+    top.title === `지도 업종 ${G}개` && top.when === `업종 ${G}개 가운데 ${upsG}개 오름 · ${N}곳 · 지난 20거래일 · ${kd(fromM)}부터 ${kd(toM)}까지` && top.tabs.join() === '불장,지도,출목표,일정,찾기,기록,처음' && top.active === 'map' && top.cards === 0 && top.ncRows === 0 && !top.text52 && (!board.kinds || top.kinds === kindsWant), {...top, tiles: undefined, legend: undefined});
   const tileMis = board.groups.map((g, i) => { const t = top.tiles[i]; return t && t.id === g.id && t.href === '#/i/' + g.id && t.name === g.label && (g.hot ? t.fire === `불장 ${i + 1}위` && t.rank === null : t.rank === `${i + 1}위` && t.fire === null) && t.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && t.up === upWant(g) && t.sign === signW(g.change20) && t.dsign === signW(g.change20) && t.kids === 4 && t.sun === sunNT(g.codes) ? null : {i, g: g.label, t}; }).filter(Boolean);
   check(`${label} ${H}: 업종 칸 ${top.tiles.length}개 = 판의 업종 ${G}개 · 칸마다 넷(「불장 n위」 또는 n위 · 이름 · 20거래일 평균 ▲▼ · 몇 곳 올랐나) · 첫 줄 태양 수(따로 센 값 · 없으면 비움) · 차례 · 오름/내림 선 · 누르면 갈 주소가 판과 같음`, top.tiles.length === G && !tileMis.length, {tileMis: tileMis.slice(0, 3)});
   const fires = top.tiles.map((t, i) => t.fire ? i : -1).filter(i => i >= 0);
@@ -764,12 +779,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const tLog = page.locator('.bottom-link[data-route="log"]'); if (mobile) await tLog.tap(); else await tLog.click(); await page.waitForSelector('.lg-page .lg-item'); await page.waitForTimeout(250);
     const read = () => page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
       items: [...document.querySelectorAll('.lg-item')].map(li => ({id: li.dataset.id, kind: li.dataset.kind, chip: li.querySelector('.lg-kind')?.textContent.trim(), time: li.querySelector('.lg-time')?.textContent.trim(), dt: li.querySelector('.lg-time')?.getAttribute('datetime'),
-        title: li.querySelector('.lg-title')?.textContent.trim(), what: [...li.querySelectorAll('.lg-what li')].map(x => x.textContent.trim()), removed: li.querySelector('.lg-removed')?.textContent.trim() ?? null, src: li.querySelector('.lg-src')?.textContent.trim() ?? null, day: li.closest('.lg-day')?.dataset.date})),
+        title: li.querySelector('.lg-title')?.textContent.trim(), what: [...li.querySelectorAll('.lg-what li')].map(x => x.textContent.trim()), removed: li.querySelector('.lg-removed')?.textContent.trim() ?? null, src: li.querySelector('.lg-src')?.textContent.trim() ?? null, day: li.closest('.lg-day')?.dataset.date, fixed: [...li.querySelectorAll('.lg-fixed')].map(x => x.textContent.trim())})),
       days: [...document.querySelectorAll('.lg-day')].map(d => d.dataset.date), pressed: document.querySelector('.lg-seg [aria-pressed="true"]')?.dataset.show,
       integ: document.querySelector('.lg-tech .integrity-text')?.textContent ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
     const r0 = await read();
     const mis = want.map((e, i) => { const x = r0.items[i]; return x && x.id === e.id && x.kind === e.kind && x.chip === CHIP[e.kind] && x.dt === e.live && x.time === e.live.slice(11, 16) && x.title === e.title && x.what.join('|') === e.what.join('|') && x.day === e.live.slice(0, 10)
-      && (e.removed?.length ? x.removed === '뺀 것 ' + e.removed.join(' · ') : x.removed === null) && (e.source ? x.src === '출처 · ' + e.source : x.src === null) ? null : {i, id: e.id, x}; }).filter(Boolean);
+      && (e.removed?.length ? x.removed === '뺀 것 ' + e.removed.join(' · ') : x.removed === null) && (e.source ? x.src === '출처 · ' + e.source : x.src === null)
+      && x.fixed.join('|') === (e.fixed ?? []).map(f => `${kd(f.made.slice(0, 10))} ${f.made.slice(11, 16)} 업데이트가 이 기록의 글 한 줄을 고침 — 옛 글은 기록 파일에 그대로`).join('|') ? null : {i, id: e.id, x}; }).filter(Boolean); // 고침(2026-10-07): 고친 줄 아래 「고침」 한 줄 · 화면 글 = /changelog.json(고친 글)
     const daysW = [...new Set(want.map(e => e.live.slice(0, 10)))], newestFirst = want.every((e, i) => !i || want[i - 1].live >= e.live);
     check(`${label} 아래 탭 「기록」(#/log): 줄 ${r0.items.length}개 = 기록 파일 ${want.length}개(이슈 ${log.count.issue} · 업데이트 ${log.count.update} · 자료 변경 ${log.count.data} · 검사에 걸려 빠진 줄 ${log.problems.length}) · 같은 차례(새것이 위) · 날짜 묶음 ${r0.days.length}개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음`,
       r0.hash === '#/log' && r0.title === `기록 ${want.length}개` && r0.active === 'log' && want.length > 0 && r0.items.length === want.length && !mis.length && r0.days.join() === daysW.join() && newestFirst && log.problems.length === 0 && log.count.issue >= 1 && r0.sw <= r0.cw && r0.pressed === 'all', {mis: mis.slice(0, 2), days: r0.days, problems: log.problems.slice(0, 3), issue: log.count.issue});
@@ -779,6 +795,20 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       check(`${label} 기록 「${k === 'all' ? '모두' : CHIP[k]}」 누름 → ${r.items.length}줄 = 기록 파일 ${w.length}줄(같은 차례) · 옆으로 넘치지 않음`, r.pressed === k && r.items.length === w.length && r.items.every((x, i) => x.id === w[i].id) && r.sw <= r.cw, {pressed: r.pressed, n: r.items.length, sw: r.sw, cw: r.cw});
     }
     check(`${label} 무결성(기록 탭 맨 아래 「기술 정보」): 「${r0.integ}」 · 다른 화면 맨 아래 「기술 정보」 ${footTech}개(옮김 · 규칙 1)`, /모두 판 목록의 SHA-256 과 같음/.test(r0.integ ?? '') && footTech === 0, {integ: r0.integ, footTech});
+  }
+  // ⑤-2 아래 탭 「처음」(#/start · 2026-10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」) — 검사기가 종가 원본에서 따로 센 다섯과 화면을 맞댐
+  {
+    const S = board.start, want5 = await startWant(), codesW = want5.map(x => x.code);
+    await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(150);
+    const tS = page.locator('.bottom-link[data-route="start"]'); if (mobile) await tS.tap(); else await tS.click(); await page.waitForSelector('.st-page .st-row'); await page.waitForTimeout(250);
+    const r = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      rows: [...document.querySelectorAll('.st-row')].map(a => ({code: a.dataset.code, rk: a.querySelector('.st-rk')?.textContent.trim(), name: a.querySelector('.st-name')?.textContent.trim(), v: a.querySelector('.st-v')?.textContent.trim(), w: a.querySelector('.st-fill')?.getBoundingClientRect().width ?? 0, href: a.getAttribute('href')})),
+      base: document.querySelector('.st-base .st-v')?.textContent.trim(), why: document.querySelectorAll('.st-warn li').length, promise: document.querySelector('.b-promise-box summary')?.innerText.trim(),
+      third: document.querySelectorAll('.b-promise-box li')[2]?.textContent.trim(), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    check(`${label} 아래 탭 「처음」(#/start): 다섯 ${r.rows.map(x => x.name).join(' · ')} = 검사기가 종가 원본에서 따로 센 다섯(우량 · 시가총액 100위 안 · 지난 3년 가장 덜 떨어진 순 · 막대 길이도 그 차례) · 견줄 값 ${r.base} · 까닭 ${r.why}가지 · 「ATLAS가 하지 않는 일 7가지」가 여기로(셋째 줄 「처음」) · 옆으로 넘치지 않음`,
+      S?.ready && r.hash === '#/start' && r.title === `처음 ${codesW.length}곳` && r.active === 'start' && r.rows.map(x => x.code).join() === codesW.join() && r.rows.every((x, i) => x.rk === `${i + 1}위` && x.href === '#/stock/' + x.code && x.v === pct0(want5[i].mdd))
+        && r.rows.every((x, i) => !i || x.w >= r.rows[i - 1].w - 0.5) && r.base === pct0(S.typical.mdd) && r.why >= 1 && r.promise === 'ATLAS가 하지 않는 일 7가지' && /^「처음」 탭의 \d곳 말고는 회사를 고르지 않습니다/.test(r.third ?? '') && r.sw <= r.cw, {r: {...r, rows: r.rows.map(x => x.name + ' ' + x.v)}, codesW});
+    await wordsCheck(page, `${label} 아래 탭 「처음」`);
   }
   // ⑥ 글씨 단추
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(300);
@@ -850,7 +880,14 @@ async function usCheck() {
   const usLog = await (await fetch(base + '/changelog.json')).json();
   await page.goto(ub + '/#/log', {waitUntil: 'networkidle'}); await page.waitForSelector('.lg-page .lg-item'); await page.waitForTimeout(300);
   const ul = await page.evaluate(() => ({n: document.querySelectorAll('.lg-item').length, first: document.querySelector('.lg-item')?.dataset.id, tabs: document.querySelectorAll('.bottom-link').length, here: document.querySelector('.mkt-b[aria-current="page"]')?.dataset.place, integ: document.querySelector('.lg-tech .integrity-text')?.textContent.trim() ?? null}));
-  check(`미국 판 「기록」 탭: 줄 ${ul.n}개 = /changelog.json ${usLog.entries.length}개 · 아래 탭 ${ul.tabs}개 · 미국 눌림 · 무결성 「${ul.integ}」`, ul.n === usLog.entries.length && ul.first === usLog.entries[0]?.id && ul.tabs === 6 && ul.here === 'us' && /모두 판 목록의 SHA-256 과 같음/.test(ul.integ ?? ''), ul);
+  check(`미국 판 「기록」 탭: 줄 ${ul.n}개 = /changelog.json ${usLog.entries.length}개 · 아래 탭 ${ul.tabs}개 · 미국 눌림 · 무결성 「${ul.integ}」`, ul.n === usLog.entries.length && ul.first === usLog.entries[0]?.id && ul.tabs === 7 && ul.here === 'us' && /모두 판 목록의 SHA-256 과 같음/.test(ul.integ ?? ''), ul);
+  // 미국 판 「처음」 탭(2026-10-07 00:49 「이대로 사이트에 올려줘」) — 3년 종가가 모자라 다섯을 찍지 않고 「언제부터」만 · 약속 셋째 줄은 옛 문장 그대로
+  await page.goto(ub + '/#/start', {waitUntil: 'networkidle'}); await page.waitForSelector('.st-page'); await page.waitForTimeout(300);
+  const us5 = await page.evaluate(() => ({rows: document.querySelectorAll('.st-row').length, wait: document.querySelector('.st-wait')?.textContent.trim() ?? null, when: document.querySelector('.st-page .b-when')?.textContent.trim() ?? null,
+    promise: document.querySelector('.st-page .b-promise-box summary')?.innerText.trim(), third: document.querySelectorAll('.st-page .b-promise-box li')[2]?.textContent.trim() ?? null, active: document.querySelector('.bottom-link.active')?.dataset.route ?? null}));
+  const usReady = ubd.start?.readyMonth ? `${Number(ubd.start.readyMonth.slice(0, 4))}년 ${Number(ubd.start.readyMonth.slice(5, 7))}월` : null;
+  check(`미국 판 「처음」 탭: 3년 종가가 모자라 찍지 않음(다섯 줄 ${us5.rows}개) · 「${us5.wait}」 · 약속 셋째 줄 「${us5.third}」`,
+    ubd.start?.ready === false && us5.rows === 0 && usReady && (us5.wait ?? '').includes(`${usReady}부터`) && /뉴욕 종가/.test(us5.when ?? '') && us5.promise === 'ATLAS가 하지 않는 일 7가지' && us5.third === '어느 회사를 고르라고 하지 않습니다' && us5.active === 'start', {us5, usReady, start: ubd.start});
   check(`미국 판 화면들: 콘솔 오류 0 · 요청 실패 0`, errs.length === 0 && failed.length === 0, {errs: errs.slice(0, 3), failed: failed.slice(0, 3)});
   await context.close();
 }
@@ -871,6 +908,9 @@ async function clarityCheck() {
       check(`잘린 글자 ${v.id} ${s.id}: ${m.truncated}`, m.truncated === 0, m.truncated ? {truncated: m.samples.truncated, pageOverflowX: m.pageOverflowX} : undefined);
       check(`또렷함 ${v.id} ${s.id}: 1 내일·오늘·어제 ${m.relDays} · 2 흐릿한 말 ${m.vague} · 3 단위·기준 빠진 숫자 ${m.bareNumbers} · 5 대비 모자람 ${m.lowContrast} · (참고) 날짜 모양 ${m.formatDates}`, m.relDays + m.vague + m.bareNumbers + m.lowContrast === 0, m.relDays + m.vague + m.bareNumbers + m.lowContrast ? {rel: m.samples.relDays, vague: m.samples.vague, bare: m.samples.bareNumbers, contrast: m.samples.lowContrast} : null);
     }
+    // 아래 탭 이름 일곱이 제 칸 안에 드는가(2026-10-07 「처음」 탭을 더하며) — 아래 막대는 화면에 붙어 있어 위 화면 폭 재기로는 잡히지 않는다
+    const tabFit = await page.evaluate(() => [...document.querySelectorAll('.bottom-link')].map(a => { const l = a.querySelector('.label').getBoundingClientRect(), b = a.getBoundingClientRect(); return {t: a.querySelector('.label').textContent, in: l.left >= b.left - 0.5 && l.right <= b.right + 0.5, gap: Math.round(b.width - l.width)}; }));
+    check(`아래 탭 이름 ${v.id}: ${tabFit.length}개 모두 제 칸 안(가장 좁은 남는 폭 ${Math.min(...tabFit.map(x => x.gap))}px)`, tabFit.length === 7 && tabFit.every(x => x.in), tabFit.filter(x => !x.in));
     // 지도 탭 맨 아래 「지난 6개월 앞서 달린 곳」은 닫힌 접힘이라 위 재기에서 빠진다 — 펼친 뒤 상자 안만 따로 잰다(한국 · 미국 판 · 보기 5가지)
     //   2026-10-06 15시: 펼친 상자를 따로 재어 보니 좁은 휴대폰 어두운 화면 글씨 200%에서 긴 회사 이름이 화면을 넓힘(한국 +6px · 미국 +303px) · 지수 값에 단위 없음 → 고친 뒤 이 검사를 붙임
     for (const where of ['/', '/us/']) {

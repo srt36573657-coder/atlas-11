@@ -45,6 +45,7 @@ function item(e) {
       h('time', {class: 'lg-time', datetime: e.live}, e.live.slice(11, 16))),
     h('h3', {class: 'lg-title', lang: orig}, ...withIdent(e.title, re)),
     h('ul', {class: 'lg-what', lang: orig}, ...e.what.map(w => h('li', null, ...withQuote(w, re)))),
+    ...(e.fixed ?? []).map(f => h('p', {class: 'lg-fixed muted xs'}, `${korDate(f.made.slice(0, 10))} ${f.made.slice(11, 16)} 업데이트가 이 기록의 글 한 줄을 고침 — 옛 글은 기록 파일에 그대로`)), // 고침(2026-10-07 · 규칙 8 — 파일은 고치지 않음)
     e.removed?.length ? h('p', {class: 'lg-removed'}, h('b', null, '뺀 것 '), h('span', {lang: orig}, e.removed.join(' · '))) : null,
     e.why ? h('p', {class: 'lg-why muted small'}, '까닭 · ', h('span', {lang: 'ko'}, ...withQuote(e.why))) : null,
     e.commits?.length ? h('p', {class: 'lg-commits muted xs'}, '커밋 ', ...e.commits.flatMap((c, i) => [i ? ' · ' : null, h('code', null, c)])) : null,

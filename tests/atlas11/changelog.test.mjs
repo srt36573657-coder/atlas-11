@@ -216,3 +216,39 @@ test('이슈 · 파일 — 종가 날짜마다 한 번(같은 날 두 번째는 
   assert.ok(validateEntry({...a, idents: [1]}).includes('idents')); assert.ok(validateEntry({...a, source: '내일 오를 것'}).some(x => x.includes('오를 것')));
   await fs.rm(dir, {recursive: true, force: true});
 });
+
+test('자료 변경 · 「처음」 다섯 — 바뀌면 한 줄(들어옴 · 나감 · 차례만) · 앞 기록에 다섯이 없으면 줄을 만들지 않음', () => {
+  const five = names => ({ready: true, picks: names.map((n, i) => ({rank: i + 1, code: 'C' + n, name: '회사' + n}))});
+  const b1 = {...boardOf(), start: five(['1', '2', '3', '4', '5'])};
+  const old = dataEntry(null, boardOf(), {place: 'kr', made: '2026-10-05T00:00:00Z'});
+  assert.equal(old.snap.start, null);
+  assert.equal(dataEntry(old.snap, b1, {place: 'kr', made: '2026-10-05T01:00:00Z'}), null, '앞 기록(다섯이 없던 때)과 견주면 줄 없음');
+  const e1 = dataEntry(null, b1, {place: 'kr', made: '2026-10-05T02:00:00Z'});
+  assert.deepEqual(e1.snap.start, ['1', '2', '3', '4', '5'].map(n => ({code: 'C' + n, name: '회사' + n})));
+  const e2 = dataEntry(e1.snap, {...boardOf(), start: five(['1', '2', '3', '4', '6'])}, {place: 'kr', made: '2026-10-05T03:00:00Z'});
+  assert.deepEqual(e2.reasons, ['start']); assert.equal(e2.title, '「처음」 다섯이 바뀜');
+  assert.equal(e2.what.at(-1), '「처음」 다섯 · 들어옴: 회사6 · 나감: 회사5'); assert.deepEqual(validateEntry(e2), []);
+  const e3 = dataEntry(e2.snap, {...boardOf(), start: five(['2', '1', '3', '4', '6'])}, {place: 'kr', made: '2026-10-05T04:00:00Z'});
+  assert.equal(e3.what.at(-1), '「처음」 다섯의 차례가 바뀜: 회사2 · 회사1 · 회사3 · 회사4 · 회사6');
+  assert.equal(dataEntry(e3.snap, {...boardOf(), start: five(['2', '1', '3', '4', '6'])}, {place: 'kr', made: '2026-10-05T05:00:00Z'}), null, '같은 다섯이면 줄 없음');
+  assert.equal(dataEntry(e3.snap, {...boardOf(), start: {ready: false, readyMonth: '2028-08'}}, {place: 'kr', made: '2026-10-05T06:00:00Z'}), null, '찍지 않는 판(미국 판)은 견주지 않음');
+});
+
+test('고침 — 지난 기록 파일은 그대로 · 뒤에 만든 업데이트 줄의 fixes 가 화면 글만 고침 · 옛 글이 맞지 않으면 problems', () => {
+  const old = {schema: CHANGELOG.entrySchema, id: 'u-20261006T223217-x', kind: 'update', place: 'all', made: '2026-10-06T22:32:17+09:00', title: '옛 줄', what: ['하나', '둘 · 넘침 0']};
+  const fix = {schema: CHANGELOG.entrySchema, id: 'u-20261007T014000-fix', kind: 'update', place: 'all', made: '2026-10-07T01:40:00+09:00', title: '고침', what: ['옛 줄 둘째 글에 단위'],
+    fixes: [{id: old.id, field: 'what', index: 1, from: '둘 · 넘침 0', to: '둘 · 넘침 0건'}]};
+  assert.deepEqual(validateEntry(fix), []);
+  const log = siteLog([old, fix], {now: '2026-10-07T01:50:00+09:00'});
+  assert.deepEqual(log.problems, []);
+  const o = log.entries.find(e => e.id === old.id);
+  assert.deepEqual(o.what, ['하나', '둘 · 넘침 0건']); assert.deepEqual(o.fixed, [{by: fix.id, made: fix.made, field: 'what', index: 1}]);
+  assert.deepEqual(old.what, ['하나', '둘 · 넘침 0'], '들어온 기록(파일)은 그대로');
+  // 옛 글이 다르면 고치지 않음 · 앞에 만든 줄은 뒤 줄을 고치지 못함 · 모양 검사
+  const bad = siteLog([old, {...fix, fixes: [{...fix.fixes[0], from: '다른 글'}]}], {now: '2026-10-07T01:50:00+09:00'});
+  assert.match(bad.problems[0].bad[0], /^고칠 줄을 찾지 못함 u-20261006T223217-x what 1$/); assert.deepEqual(bad.entries.find(e => e.id === old.id).what, old.what);
+  assert.equal(siteLog([{...old, made: '2026-10-07T02:00:00+09:00'}, fix], {now: '2026-10-07T02:10:00+09:00'}).problems.length, 1);
+  for (const f of [[], [{id: old.id, field: 'why', index: 0, from: 'a', to: 'b'}], [{id: old.id, field: 'what', from: 'a', to: 'b'}], [{id: old.id, field: 'what', index: 0, from: 'a', to: 'a'}]]) assert.deepEqual(validateEntry({...fix, fixes: f}), ['fixes'], JSON.stringify(f));
+  assert.deepEqual(validateEntry({...fix, kind: 'data', asOf: '2026-10-06', place: 'kr'}).includes('fixes'), true, '고침은 업데이트 줄만');
+  assert.match(validateEntry({...fix, fixes: [{...fix.fixes[0], to: '둘 · 절대 넘침 없음'}]}).join(), /금지 말 「절대」/);
+});

@@ -203,7 +203,9 @@ export function newsLine(brief, {here = false} = {}) {
 
 /** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */
 export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '어느 회사를 고르라고 하지 않습니다', '알림을 보내지 않습니다',
-  '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익을 셈하지 않습니다', '값이 늦거나 빠지면 그렇다고 적습니다(0 으로 채우지 않음)'];
+  '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익을 셈하지 않습니다', '값이 늦거나 빠지면 그렇다고 적습니다(빈 칸에 숫자를 지어 넣지 않음)'];
+/* 일곱째 줄 끝은 처음에 「(0 으로 채우지 않음)」이었다 — 이 상자가 첫 화면 접힘에 있을 때는 또렷함 검사가 못 봤고, 「처음」 탭으로 옮기며 펼쳐 재니
+   3번(단위 없는 숫자 「0」)에 걸려 숫자 없는 말로 고침(뜻 같음 · 2026-10-07 01:20) */
 /* 저녁 7시 들고 남 칸 — 2026-10-05 05:03 사장님 「매일 저녁 7시에 … 여러 주건들에 이동이 반영되게 하라」 · 10:24 「잡스라면」 24번: 탭 「불장」 세 화면의 스위치 바로 아래 같은 자리 하나로
    (옛 자리: 예비 화면 맨 위 칸 + 22곳 화면 한 줄 — 둘로 나뉘어 있었음) · 견준 기록이 있으면 한 줄 요약만 보이고 이름은 눌러서 */
 /** 들고 남 한 줄 — 표시(글자) · 무엇 · 이름들(없으면 「없음」) */
@@ -241,8 +243,10 @@ export function hotSwitch(active, counts = {}) {
     ...HOT_SEGS.map(s => h('a', {class: 'f-seg-b hs-b', href: s.href, 'data-seg': s.id, 'aria-current': s.id === active ? 'page' : null},
       h('span', {class: 'hs-l'}, s.label), Number.isInteger(counts[s.id]) ? h('small', {class: 'hs-n'}, `${counts[s.id]}${s.unit}`) : null)));
 }
-export function promiseBox() {
-  const list = [place.notDo, ...NOT_DO.slice(1)]; // 첫 줄은 시장마다(한국 15:30 · 미국 뉴욕 16:00)
+export function promiseBox(board = null) {
+  // 첫 줄은 시장마다(한국 15:30 · 미국 뉴욕 16:00) · 셋째 줄은 「처음」 탭에 찍은 곳이 있으면 그에 맞게(2026-10-07 00:49 「이대로 사이트에 올려줘」 — 아래 탭 「처음」 · 이 상자는 첫 화면에서 「처음」으로 옮김)
+  const n = board?.start?.ready ? (board.start.picks?.length ?? 0) : 0;
+  const list = [place.notDo, NOT_DO[1], n ? `「처음」 탭의 ${n}곳 말고는 회사를 고르지 않습니다 — ${n}곳도 지난 기록으로 찍은 것이라 틀릴 수 있습니다` : NOT_DO[2], ...NOT_DO.slice(3)];
   return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${list.length}가지`), h('ul', null, ...list.map(x => h('li', null, x))));
 }
 /** 맨 아래: 약속 한 줄 · 출처

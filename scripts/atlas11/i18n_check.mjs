@@ -38,7 +38,7 @@ async function crawl(page, lg, at) {
     if (r.sw > r.cw + 1) over.push({step, sw: r.sw, cw: r.cw});
   };
   const go = async (hash, step = hash) => { await page.evaluate(h => { location.hash = h; }, hash); await page.waitForTimeout(450); await collect(step); };
-  await page.goto(`${base}${at}?lang=${lg}#/`, {waitUntil: 'networkidle'}); // 한 주소에서 말 단추로 고른 것과 같음(2026-10-06 22:00 「한도메인에서 탭을 누르면」) await page.waitForTimeout(900); await collect('#/');
+  await page.goto(`${base}${at}?lang=${lg}#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(900); await collect('#/'); // 한 주소에서 말 단추로 고른 것과 같음(2026-10-06 22:00 「한도메인에서 탭을 누르면」) · 2026-10-07: 이 줄 끝 설명 글이 앞 두 걸음을 덮어 첫 화면을 세지 않던 것을 고침
   for (const hsh of ['#/similar', '#/rise', '#/map']) await go(hsh);
   const fams = await page.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="#/map/f/"]')].map(a => a.getAttribute('href')))]);
   for (const f of fams) await go(f);
@@ -53,6 +53,7 @@ async function crawl(page, lg, at) {
     await page.evaluate(() => document.querySelector('.f-body > .f-more button, .f-more')?.click()); await settle(300); await collect('#/road more');
   }
   await go('#/agenda');
+  await go('#/start'); // 아래 탭 「처음」(2026-10-07 00:49)
   await go('#/find');
   for (const q of ['전자', 'a', '반도체']) { await page.fill('input[type="search"], .fd-form input', q).catch(() => {}); await settle(500); await collect('#/find ' + q); }
   await go('#/log');
@@ -88,6 +89,12 @@ for (const lg of langs) {
     // 360px · 글씨 2배(휴대폰 큰 글씨 · 위 막대 말 단추까지)에서 넘침 — 첫 화면 · 출목표 · 기록 · 지도
     await page.setViewportSize({width: 360, height: 780}); await page.evaluate(() => localStorage.setItem('atlas11:font', '4')); await page.reload({waitUntil: 'networkidle'}); await page.waitForTimeout(700); // 글씨 단추 가장 큰 글씨(200%) — 화면이 쓰는 그대로
     for (const h of ['#/', '#/road', '#/log', '#/map']) { await page.evaluate(x => { location.hash = x; }, h); await page.waitForTimeout(500); const m = await page.evaluate(() => ({sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth})); if (m.sw > m.cw + 1) r.over.push({step: '360px 200% ' + h, ...m}); }
+    // 아래 탭 이름이 제 칸 안에 드는가(탭 일곱 · 2026-10-07 「처음」 — 영어 「Calendar」가 칸을 넘던 것) — 아래 막대는 화면에 붙어 있어 화면 폭 넘침으로는 잡히지 않는다
+    if (at === '/') for (const wd of [320, 360, 390]) for (const fs of ['0', '4']) {
+      await page.setViewportSize({width: wd, height: 780}); await page.evaluate(s => localStorage.setItem('atlas11:font', s), fs); await page.reload({waitUntil: 'networkidle'}); await page.waitForTimeout(450);
+      const bad = await page.evaluate(() => [...document.querySelectorAll('.bottom-link')].filter(a => { const l = a.querySelector('.label').getBoundingClientRect(), b = a.getBoundingClientRect(); return l.left < b.left - 0.5 || l.right > b.right + 0.5; }).map(a => a.querySelector('.label').textContent));
+      if (bad.length) r.over.push({step: `아래 탭 이름 ${wd}px 글씨 단계 ${fs}`, bad});
+    }
     R.places[at] = {leftCount: r.left.size, left: [...r.left.entries()].sort((a, b) => b[1] - a[1]).slice(0, 400).map(([s, n]) => `${n}× ${s}`), over: r.over, missing: r.missing, errors: errs.slice(0, 5)};
     await ctx.close();
   }
