@@ -29,6 +29,7 @@ import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
 import {homeComment, mapComment, landComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
+import {loadStory, storyBox, storySay} from './story.js'; // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
 /** 가장 많은 값(같으면 늦은 날) — 한 회사 종가가 늦어도 판 전체의 기간 글이 흔들리지 않게 */
@@ -60,10 +61,11 @@ export async function renderHome(main, {manifest}) {
   const groups = board.groups ?? [], hot = groups.filter(g => g.hot), late = board.late ?? [];
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const flows = familiesByRise(hot); // 가장 많이 오른 큰 흐름부터(갈래 평균이 큰 순)
-  const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board);
-  state.summary = `${commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
+  const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board), st = await loadStory();
+  state.summary = `${st ? storySay(st) : commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
   main.replaceChildren(h('div', {class: 'b-page h-page'},
-    commentBox(cm), // 논평 무대(화면 맨 위) — 넣으면서 뺀 것(규칙 1): 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
+    // 맨 위: 오늘의 돈 이야기(2026-10-07 16:34 — 세 장면 · 아래 두 줄) — 넣으면서 뺀 것(규칙 1): 이 탭의 표지(논평 무대) · /story.json 을 못 읽으면 옛 표지 그대로
+    st ? storyBox(st) : commentBox(cm), // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)

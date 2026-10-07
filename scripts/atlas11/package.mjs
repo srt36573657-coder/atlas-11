@@ -13,6 +13,7 @@ import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {readSiteLog} from '../../lib/atlas11/changelog.mjs';
+import {storyFrom} from './story/build.mjs';
 const run = promisify(execFile);
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -56,7 +57,12 @@ export async function buildDist() {
   let log; try { log = await readSiteLog(root, {now: new Date().toISOString()}); } catch (e) { log = {schema: 'atlas11-changelog-1', generatedAt: new Date().toISOString(), from: null, count: {all: 0, update: 0, data: 0}, entries: [], problems: [{id: null, bad: ['읽지 못함: ' + e.message]}]}; }
   if (log.problems.length) console.warn('changelog problems (left out): ' + JSON.stringify(log.problems.slice(0, 5)));
   await fs.writeFile(path.join(dist, 'changelog.json'), JSON.stringify(log) + '\n');
-  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n" + abroad.map(id => `/${id}/index.html\n  Cache-Control: no-cache\n/${id}/data/*\n  Cache-Control: no-cache\n/${id}/app/*\n  Cache-Control: no-cache\n`).join('') + "/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
+  // 오늘의 돈 이야기(2026-10-07 16:34 「한국·미국·일본·중국·베트남을 자동 분석해 가장 근거가 뚜렷한 돈 이야기 하나를 골라라」) — /story.json 한 파일(다섯 판이 함께 읽음)
+  //   쌀 때마다 저장소의 판 · 모은 기사로 다시 셈(lib/atlas11/story.mjs) · 셈이 멈추면 「없는 날」 파일 — 화면은 옛 표지로(올리기는 멈추지 않음)
+  let story; try { story = await storyFrom(root); } catch (e) { story = {schema: 'atlas11-story-1', made: new Date().toISOString(), none: true, stockOnly: [], others: [], problems: ['셈 멈춤: ' + e.message]}; }
+  if (story.problems?.length) console.warn('story problems: ' + JSON.stringify(story.problems));
+  await fs.writeFile(path.join(dist, 'story.json'), JSON.stringify(story) + '\n');
+  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/story.json\n  Cache-Control: no-cache\n" + abroad.map(id => `/${id}/index.html\n  Cache-Control: no-cache\n/${id}/data/*\n  Cache-Control: no-cache\n/${id}/app/*\n  Cache-Control: no-cache\n`).join('') + "/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
   await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + abroad.map(id => `/${id}  /${id}/  301\n`).join('') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');

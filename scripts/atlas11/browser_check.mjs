@@ -118,7 +118,7 @@ const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CH
 const textsOf = page => page.evaluate(() => {
   const main = document.getElementById('main'), clone = main.cloneNode(true);
   const idents = [...main.querySelectorAll('[data-ident]')].map(e => e.innerText);
-  for (const e of clone.querySelectorAll('[data-ident]')) e.remove();
+  for (const e of clone.querySelectorAll('[data-ident], [data-pred-ok]')) e.remove(); // data-pred-ok: 사장님이 정하신 낱말 셋(예상 · 기대감 · 수혜 기대 — 2026-10-07 16:34 오늘의 돈 이야기)만 · 아래 「오늘의 돈 이야기」 검사가 그 셋뿐인지 봄
   clone.removeAttribute('id'); document.body.append(clone); const ours = clone.innerText; clone.remove();
   return {ours: ours + '\n' + document.getElementById('top').innerText + '\n' + document.getElementById('bottom').innerText, idents, marks: document.querySelectorAll('[data-forecast-date]').length};
 });
@@ -161,7 +161,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
     const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g) && r.sun === sunNT(g.codes); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
     check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「평균」 한 번 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 태양 몇 곳(따로 센 값) · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
-    check(`${label} 탭 「불장」: 접힌 칸 「ATLAS가 하지 않는 일」은 아래 탭 「처음」으로 옮김(${hr.promise ?? '없음'}) · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === undefined && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다 · 광고 · 유료 결제 없음', {promise: hr.promise, footPromise: hr.footPromise});
+    check(`${label} 탭 「불장」: 접힌 칸 「ATLAS가 하지 않는 일」은 아래 탭 「처음」으로 옮김(${hr.promise ?? '없음'}) · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === undefined && hr.footPromise === '지난 기록과 근거만 씁니다 · 값의 앞날은 맞히지 않습니다 · 광고 · 유료 결제 없음', {promise: hr.promise, footPromise: hr.footPromise});
     await wordsCheck(page, `${label} 탭 「불장」`);
     if (HOT.length) {
       const g0 = flowsW[0].groups[0], rl = page.locator(`.hf-row[data-group="${g0.id}"]`); await rl.scrollIntoViewIfNeeded();
@@ -202,7 +202,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 칸 바탕은 한 색(세기 색 없음) · 색 보기표 없음(2026-10-05 잡스 개혁 — 설명표가 따로 필요하면 그림이 스스로 말하지 못한다는 신호 · 애플 WWDC17)
   const bgs = new Set(top.tiles.map(t => t.bg));
   check(`${label} ${H}: 칸 바탕 ${bgs.size}색(한 색) · 색 보기표 없음 · 오름 칸 ${top.tiles.filter(t => t.sign === 'up').length}개 · 내림 칸 ${top.tiles.filter(t => t.sign === 'down').length}개`, bgs.size === 1 && top.legend === 0, {bgs: [...bgs], legend: top.legend});
-  check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다 · 광고 · 유료 결제 없음', {footPromise: top.footPromise});
+  check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록과 근거만 씁니다 · 값의 앞날은 맞히지 않습니다 · 광고 · 유료 결제 없음', {footPromise: top.footPromise});
   // (옛 · 2026-10-06 00:21 까지) 큰 갈래 단추 12개(.fm-b) — 지금은 지도 한 장 · 땅을 누르면 그 갈래 화면
   // 지도 한 장(2026-10-06 00:21 「잡스라면 … 개선하라」 · site/app/landmap.js) — 땅 = 큰 갈래(family.js 차례 · 넓이 = 업종 수) · 칸 = 업종(땅 안은 오른 순 · 오름/내림 색)
   //   · 이름이 잘리지 않음 · 땅끼리 겹치지 않음 · 누르는 자리 44px 넘음
@@ -901,7 +901,9 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const picRoad = {dots: board.companies.length, u: upN, dn: dnN, off: board.companies.length - csF.length};
     const picStart = SS?.ready ? {bars: SS.picks.length + 1} : {bars: 1};
     const picOk = (r, w) => !!r.pic && r.pic.hidden === 'true' && r.pic.text === 0 && Object.entries(w).every(([k, v]) => r.pic[k] === v);
-    const rows = [['불장', '#/', wantHome, picHome], ['지도', '#/map', wantMap, picMap], ['지도 갈래', '#/map/f/' + fam0, null, null], ['업종', '#/i/' + g0.id, null, null], ['회사', '#/stock/005930', null, null], ['출목표', '#/road', wantRoad, picRoad], ['일정', '#/agenda', null, null], ['처음', '#/start', wantStart, picStart]];
+    // 탭 「불장」(#/)은 2026-10-07 16:34 부터 표지 대신 「오늘의 돈 이야기」(아래 ⑤-6) — 표지 검사에서 뺌(wantHome · picHome 셈은 남겨 둠: /story.json 을 못 읽는 날 옛 표지)
+    void wantHome; void picHome;
+    const rows = [['지도', '#/map', wantMap, picMap], ['지도 갈래', '#/map/f/' + fam0, null, null], ['업종', '#/i/' + g0.id, null, null], ['회사', '#/stock/005930', null, null], ['출목표', '#/road', wantRoad, picRoad], ['일정', '#/agenda', null, null], ['처음', '#/start', wantStart, picStart]];
     const got = [];
     for (const [nm, hs, want, wantPic] of rows) { const r = await cmRead(hs); got.push({nm, ...r, want, wantPic}); }
     const TAB = ['불장', '지도', '출목표', '일정', '처음'], sizeW = nm => (TAB.includes(nm) ? 'hero' : nm === '회사' ? 'mid' : 'half');
@@ -913,6 +915,32 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const none = [];
     for (const hs of ['#/find', '#/log']) { const r = await cmRead(hs); none.push({hs, n: r.n}); }
     check(`${label} 논평: 찾기 · 기록 화면에는 없음(도구 · 기록 화면)`, none.every(x => x.n === 0), none);
+  }
+  // ⑤-6 오늘의 돈 이야기(2026-10-07 16:34 사장님 「왕초보에게 시장을 해석시키지 마라 … [이 일이 생겼다] → [그래서 여기가 돈을 받는다] ⇢ [다음은 여기가 필요하다] … 아래에는 두 줄만」)
+  //   탭 「불장」 맨 위 무대 하나(옛 표지 없음) · 세 장면 차례 · 가운데 장면 글씨가 가장 큼 · 다음 장면과 그리로 가는 선은 점선 · 「예상」 · 무대 맨 끝은 두 줄 · 근거마다 날짜 · 기사 주소 · /story.json 과 같음
+  {
+    const st = await (await fetch(base + '/story.json')).json();
+    await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.sy', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(300);
+    const sy = await page.evaluate(() => { const s = document.querySelector('.sy'), first = document.querySelector('.h-page')?.firstElementChild, q = sel => s?.querySelector(sel);
+      return {n: document.querySelectorAll('.sy').length, first: !!s && first === s, cm: document.querySelectorAll('.h-page .cm').length,
+        scenes: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => x.classList[1]), titles: [...(s?.querySelectorAll('.sy-t') ?? [])].map(x => x.textContent.replace(/\s+/g, ' ').trim()),
+        role: q('.sy-role')?.textContent.trim() ?? null, role3: q('.sy-role3')?.textContent.trim() ?? null,
+        dashed: q('.sy-s3') ? getComputedStyle(q('.sy-s3')).borderTopStyle : null, lineDash: q('.sy-dash') ? getComputedStyle(q('.sy-dash')).borderInlineStartStyle : null,
+        ifs: [...(s?.querySelectorAll('.sy-if p') ?? [])].map(p => p.textContent.replace(/\s+/g, ' ').trim()), lastIsIf: !!s?.lastElementChild?.classList.contains('sy-if'),
+        roleFs: q('.sy-role') ? parseFloat(getComputedStyle(q('.sy-role')).fontSize) : 0, role3Fs: q('.sy-role3') ? parseFloat(getComputedStyle(q('.sy-role3')).fontSize) : 0, mainFs: q('.sy-main') ? parseFloat(getComputedStyle(q('.sy-main')).fontSize) : 0,
+        predOk: [...document.querySelectorAll('[data-pred-ok]')].map(x => x.textContent.trim()),
+        ev: [...document.querySelectorAll('.sy .sy-e, .sy-more .sy-e')].map(li => ({date: li.querySelector('.sy-ed')?.textContent.trim() ?? null, href: li.querySelector('a.sy-et')?.getAttribute('href') ?? null, kind: li.dataset.kind})),
+        sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
+    if (st.none) check(`${label} 오늘의 돈 이야기: 근거가 뚜렷한 이야기가 없는 날 — 그렇다고 적음(지어내지 않음)`, sy.n === 1 && sy.first && sy.role === '근거가 뚜렷한 돈 이야기가 없는 날입니다', sy);
+    else {
+      check(`${label} 오늘의 돈 이야기: 맨 위 무대 하나(옛 표지 없음) · ${sy.scenes.join(' → ')} · 「${sy.role}」 ⇢ 「${sy.role3}」 = /story.json(${st.chain}) · 가운데 장면 글씨가 가장 큼(${sy.roleFs}px) · 다음 장면 · 그리로 가는 선 점선 · 「예상」 · 무대 맨 끝 두 줄`,
+        sy.n === 1 && sy.first && sy.cm === 0 && sy.scenes.join() === 'sy-s1,sy-s2,sy-s3' && sy.titles[0] === '이 일이 생겼다' && sy.titles[1] === '그래서 여기가 돈을 받는다' && sy.titles[2] === '다음은 여기가 필요하다 예상'
+          && sy.role === st.now.role && sy.role3 === st.next.role && sy.roleFs > sy.role3Fs && sy.roleFs > sy.mainFs && sy.dashed === 'dashed' && sy.lineDash === 'dashed'
+          && sy.lastIsIf && sy.ifs.length === 2 && sy.ifs[0] === `이것이 확인되면 이어집니다: ${st.confirm}` && sy.ifs[1] === `이것이 나타나면 다시 판단합니다: ${st.rethink}` && sy.sw <= sy.cw, sy);
+      const evOk = sy.ev.length > 0 && sy.ev.every(e => /^\d{1,2}월 \d{1,2}일\(.\)$/.test(e.date ?? '') && e.href && /^https:\/\//.test(e.href) && ['real', 'capex', 'stock', 'hype', 'report'].includes(e.kind));
+      check(`${label} 오늘의 돈 이야기 근거 ${sy.ev.length}줄: 줄마다 날짜 · 갈래 · 기사 주소(https) · 앞날 말 검사에서 빼는 낱말은 「예상 · 기대감 · 수혜 기대」뿐(${[...new Set(sy.predOk)].join(' · ')})`,
+        evOk && sy.predOk.length > 0 && sy.predOk.every(x => ['예상', '기대감', '수혜 기대'].includes(x)), {ev: sy.ev.slice(0, 4), predOk: sy.predOk});
+    }
   }
   // ⑥ 글씨 단추
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.h-page .hs-seg'); await page.waitForTimeout(300);
