@@ -28,10 +28,10 @@ import {foot, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js';
 import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
-import {homeComment, mapComment, landComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
+import {homeComment, mapComment, landComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
 import {loadStory, storyBox, storySay, storyEnd} from './story.js';
 import {rotationBox, rotationEnd, rotationSay} from './rotation.js'; // 돈의 이동(2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 · 그 기간 · 포모값」)
-import {mapArt, landArt} from './scenes.js'; // 그림 한 장(2026-10-08 01:27 「이런식으로 모두 · 다 한다」 · 규칙 33)
+import {mapArt, landArt, quietArt} from './scenes.js'; // 그림 한 장(2026-10-08 01:27 「이런식으로 모두 · 다 한다」 · 규칙 33) · 값이 비는 날은 빈 하늘(05:05)
 import {playOnce, stagger} from './motion.js'; // 움직이는 도식(2026-10-07 18:31) — 그림은 보일 때 한 번 자람 // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -81,8 +81,9 @@ export async function renderHome(main, {manifest}) {
   main.replaceChildren(h('div', {class: 'b-page h-page'},
     // 맨 위: 오늘의 돈 이야기(2026-10-07 16:34 — 세 장면 · 아래 두 줄) — 넣으면서 뺀 것(규칙 1): 이 탭의 표지(논평 무대) · /story.json 을 못 읽으면 옛 표지 그대로
     // 2026-10-07 22:06 맨 위는 「돈의 이동」(빠지는 곳 → 들어가는 곳 · 기간 · 포모값 · 누가) — 넣으면서 뺀 것(규칙 1): 아래 기사 이야기의 짚어 주기(한눈 그림 · 네 줄) · 맨 아래 결 카드의 기사 이야기
-    rot ? rotationBox(rot) : null,
-    st ? storyBox(st, rot ? {withPlayer: false, title: '기사로 본 돈 이야기', fold: true} : {}) : commentBox(cm), // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
+    // 2026-10-08 05:05 빈 날 막기 — 돈의 이동이 없는 날(거래일이 모자람 · 기사 이야기를 못 읽음)에도 맨 위 그림 한 장(빈 하늘) · 기사 이야기는 늘 접힌 채 아래(옛 표지 논평 무대는 뺌 — 규칙 1)
+    rot ? rotationBox(rot) : quietArt({key: 'home', label: '돈의 이동', when: `${korDate(board.asOf)} 종가`}),
+    st ? storyBox(st, {withPlayer: false, title: '기사로 본 돈 이야기', fold: true}) : null, // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
@@ -177,7 +178,7 @@ export async function renderMap(main, {manifest}) {
   const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map((g, i) => tile(g, i, shp)));
   const mb = mapBox(groups); state.land = null; // 지도 첫 장 — 업종 화면 「‹ 되돌아가기」는 지도로
   main.replaceChildren(h('div', {class: 'b-page t-page'},
-    mapArt(board) ?? commentBox(cm), // 그림 한 장(산수화 봉우리 · 규칙 33) — 넣으면서 뺀 것: 논평 무대(같은 셈 · 문장 · 거대 숫자 · 점)
+    mapArt(board) ?? quietArt({key: 'map', label: '지도', tagText: '지난 20거래일', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(산수화 봉우리 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈 · 문장 · 거대 숫자 · 점)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '지도 ', h('span', {class: 'b-count'}, `업종 ${groups.length}개`)),
@@ -201,7 +202,7 @@ export async function renderLand(main, {hash, manifest}) {
   const id = hash.split('/').pop(), groups = board.groups ?? [];
   const fam = [...FAMILIES, OTHER].find(f => f.id === id), gs = [...groups.filter(g => familyOf(g.label).id === id)].sort(riseDesc);
   const back = h('a', {class: 'c-back', href: '#/map'}, '‹ 지도');
-  if (!fam || !gs.length) { state.land = null; state.summary = '이 갈래는 지금 판에 없습니다.'; main.replaceChildren(h('div', {class: 'b-page t-page l-page'}, back, h('p', {class: 'b-note'}, '이 갈래는 지금 판에 없습니다'), foot(manifest))); return; }
+  if (!fam || !gs.length) { state.land = null; state.summary = '이 갈래는 지금 판에 없습니다.'; main.replaceChildren(h('div', {class: 'b-page t-page l-page'}, back, quietArt({key: 'land', label: '지도', tagText: '이 갈래는 지금 판에 없습니다'}), foot(manifest))); return; } // 없는 갈래 주소도 그림 한 장(빈 하늘 · 알림 줄을 그림 이름표로 — 규칙 1)
   state.land = id; // 업종 화면 「‹ 되돌아가기」가 이 갈래 화면으로 오게
   const shp = sunOf(board), avg = meanOf(gs.map(g => g.change20)), up = gs.filter(g => finite(g.change20) && g.change20 > 0).length;
   const avgT = finite(avg) ? pct(avg, Math.abs(avg) < 0.0005 ? 2 : 1) : '없음';
@@ -210,7 +211,7 @@ export async function renderLand(main, {hash, manifest}) {
   state.summary = `${commentSay(cm)}${fam.label}. 업종 ${gs.length}개 가운데 ${up}개 오름. 갈래 평균 ${avgT}. ${gs.slice(0, 3).map((g, i) => `${i + 1}. ${g.label} ${pct(g.change20, 1)}`).join(', ')}.`;
   main.replaceChildren(h('div', {class: 'b-page t-page l-page', 'data-family': id},
     back,
-    landArt(board, id) ?? commentBox(cm, {size: 'half'}), // 그림 한 장(봉우리 · 규칙 33) — 넣으면서 뺀 것: 논평 무대 · 맨 위 지수 띠는 그림 아래로(한 화면에 그림 · 규칙 30)
+    landArt(board, id) ?? quietArt({key: 'land', label: fam.label, tagText: '지난 20거래일', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(봉우리 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대 · 맨 위 지수 띠는 그림 아래로(한 화면에 그림 · 규칙 30)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, fam.label + ' ', h('span', {class: 'b-count'}, `업종 ${gs.length}개`)),

@@ -1,7 +1,7 @@
 // 올리기 문 · 다섯 나라 돈의 이동(규칙 33 · 34) — 사장님 2026-10-08 01:27 「다해 전나라」 · 01:31 「너 시스템으로 그짓 못하게 해」
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {codePrint, dictParity} from '../../scripts/atlas11/art_gate.mjs';
+import {codePrint, dictParity, reportProblems} from '../../scripts/atlas11/art_gate.mjs';
 import {rotationOf, capEokOf, ROT_PLACES} from '../../scripts/atlas11/story/build.mjs';
 import {expectOf, compare} from '../../scripts/atlas11/art_expect.mjs';
 
@@ -42,4 +42,24 @@ test('그림 숫자 맞대기 — 기대값과 다르면 알리고 같으면 조
   const E = expectOf('kr', {companies: [{code: 'A', change20: 0.1, group: {id: 'g'}}, {code: 'B', change20: -0.2, group: {id: 'g'}}], groups: [{id: 'g', label: '반도체', codes: ['A', 'B'], change20: -0.05}]}, null, null, null, [{id: 'kr', n: 2}]);
   assert.deepEqual(E.road, {up: 1, down: 1, N: 2, lead: 'A', v0: 0.1});
   assert.equal(E.ind.g.lead, 'A'); assert.equal(E.map.top, 'semi');
+});
+
+test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 다섯 나라 · 실패 0 · 같은 지문이어야 지나감(2026-10-08 05:05)', () => {
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us', 'cn', 'jp', 'vn'], langs: ['en', 'ko'], edge: 60, failed: 0, ok: true};
+  assert.deepEqual(reportProblems(ok, 'c'), []);
+  assert.equal(reportProblems({...ok, langs: undefined}, 'c').length, 1); // 옛 결과(영어만) — 막힘
+  assert.equal(reportProblems({...ok, langs: ['en']}, 'c').length, 1);
+  assert.equal(reportProblems({...ok, edge: 0}, 'c').length, 1); // 빈 날 길 없음 — 막힘
+  assert.equal(reportProblems({...ok, failed: 1, ok: false}, 'c').length, 1);
+  assert.equal(reportProblems(ok, 'd').length, 1); // 화면 코드가 검사 뒤에 바뀜
+  assert.equal(reportProblems({...ok, boards: ['kr']}, 'c').length, 1);
+});
+
+test('빈 날 기대값 — 그릴 값이 없으면 빈 하늘(숫자를 지어내지 않음) · 못 읽은 일정은 오류 화면 · 20거래일 값이 없는 회사도 그림', () => {
+  const board = {companies: [{code: 'A', change20: null, group: {id: 'g'}}, {code: 'B', change20: null, group: {id: 'g'}}], groups: [{id: 'g', label: '반도체', codes: ['A', 'B'], change20: null}], similar: {items: []}, next: {items: []}, start: null};
+  const E = expectOf('kr', board, null, null, null, [{id: 'kr', n: 2}]);
+  assert.deepEqual([E.map, E.ind.g, E.similar, E.rise, E.road, E.start, E.log, E.home, E.agenda], [{quiet: 'map'}, {quiet: 'industry'}, {quiet: 'similar'}, {quiet: 'rise'}, {quiet: 'road'}, {quiet: 'start'}, {quiet: 'log'}, {quiet: 'home'}, {quiet: 'fail'}]);
+  assert.deepEqual(E.land.semi, {quiet: 'land'});
+  assert.deepEqual(E.co.A, {code: 'A', v: null, avg: null, peers: 1});
+  assert.equal(E.find.N, 2);
 });

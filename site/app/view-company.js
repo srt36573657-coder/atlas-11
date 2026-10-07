@@ -4,14 +4,14 @@
    기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs).
    2026-10-05 02:44 「잡스였다면」 개혁 — 앞 화면과 이어 보이기: 머리에 「지난 20거래일 ▲변화」(판·출목표 칸과 같은 숫자) · 60거래일 그래프 안에 그 20거래일을 옅은 띠로
      · 끝에 「같은 업종 4곳」(근처에 무엇이 있나 — 애플 WWDC17 길 찾기) */
-import {companyArt} from './scenes.js'; // 그림 한 장(먹 붓질 · 규칙 33)
+import {companyArt, quietArt} from './scenes.js'; // 그림 한 장(먹 붓질 · 규칙 33) · 판을 못 읽은 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite, place} from './util.js';
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
 import {marketStrip, closeChart} from './frame.js';
 import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, flowLine, newsLine, sunIcon, sunTag} from './parts.js';
 import {sunOf} from './shapes.js';
 import {riseDesc} from './family.js';
-import {companyComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17) — 회사 화면은 숫자(값 · 20거래일) 바로 다음에 그 숫자를 읽는 한 줄
+import {companyComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17) — 회사 화면은 숫자(값 · 20거래일) 바로 다음에 그 숫자를 읽는 한 줄
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -104,7 +104,8 @@ export async function renderCompany(main, {hash, manifest}) {
   const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0, cm = board ? companyComment(board, s) : null;
   state.summary = `${commentSay(cm)}${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
   const chartBox = h('div', {class: 'c-chart'});
-  const art = board ? companyArt(board, s, cm) : null; // 한 번만 만든다(저절로 한 번 · 그림마다 기억)
+  // 그림 한 장은 언제나(규칙 33) — 20거래일 값이 없는 회사도 먹 붓질(값 「없음」) · 판을 못 읽은 날은 빈 하늘 / 한 번만 만든다(저절로 한 번 · 그림마다 기억)
+  const art = (board ? companyArt(board, s, cm) : null) ?? quietArt({key: 'company', label: '지난 20거래일', when: s.date ? `${korDate(s.date)} 종가` : null});
   const codeLine = h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind));
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
@@ -115,16 +116,13 @@ export async function renderCompany(main, {hash, manifest}) {
       : state.from === 'rise' ? h('a', {class: 'c-back', href: '#/rise'}, '‹ 오름 상위')
       : h('a', {class: 'c-back', href: s.group?.id ? '#/i/' + s.group.id : '#/'}, '‹ ', s.group?.label ?? manifest.universeSet?.label ?? '처음 화면'), // 「‹ 」 와 이름을 나눠 이름만 사전에서 찾음
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, s.name, sunTag(sunOn)), // 태양 회사면 이름 곁 작은 해(B3)
+      h('h1', {class: 'b-title' + (String(s.name ?? '').length > 10 ? ' c-long' : ''), 'data-speak': ''}, s.name, sunTag(sunOn)), // 긴 이름은 작게 · 두 줄까지(한국어 360px 에서 이름이 세 줄이 되어 그림 이름표가 아래 탭 밑으로 가던 것 — 2026-10-08 06:27 두 말 검사가 찾음) // 태양 회사면 이름 곁 작은 해(B3)
       // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
-      art ? null : codeLine,
-      priceLine(s, {big: true}),
-      art ? null : h('p', {class: 'c-20'}, '지난 20거래일 ', h('b', {class: 'chg20 ' + (signCls(s.change20) || 'flat')}, finite(s.change20) ? pct(s.change20, 1) : '없음'), s.cFrom ? ` · ${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : ''),
-      art ? null : rankNav(board, s), art ? null : commentBox(cm, {size: 'mid'})), // 회사 화면은 값이 이미 커서 무대는 가운데 크기 · 숫자 다음 — 그림이 있으면 무대는 뺌(규칙 1)
-    // 2026-10-08 01:27 「이런식으로 모두」 — 값 바로 아래 그림 한 장(먹 붓질 · 규칙 33): 지난 20거래일 줄(기간은 그림 이름표 · 변화는 그림 숫자)을 그림이 대신 · 순위 단추 · 지수 띠는 그림 아래
+      priceLine(s, {big: true})),
+    // 2026-10-08 01:27 「이런식으로 모두」 — 값 바로 아래 그림 한 장(먹 붓질 · 규칙 33): 지난 20거래일 줄(기간은 그림 이름표 · 변화는 그림 숫자) · 논평 무대를 그림이 대신(규칙 1) · 순위 단추 · 지수 띠는 그림 아래
     art,
-    art ? codeLine : null, // 기호 · 업종 줄은 그림 아래(값 · 그림이 한 화면에 · 규칙 30)
-    art ? rankNav(board, s) : null,
+    codeLine, // 기호 · 업종 줄은 그림 아래(값 · 그림이 한 화면에 · 규칙 30)
+    rankNav(board, s),
     marketStrip(manifest),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: ${place.exchange} ${place.close} 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),

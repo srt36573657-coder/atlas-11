@@ -34,6 +34,7 @@ import {renderLog} from './view-log.js';
 import {renderStart} from './view-start.js';
 import {renderGuide} from './view-guide.js'; // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 특히 한국에 상주하는 외국인들도 한국 주식시장을 제대로 알수 있게」)
 import {renderLong} from './view-long.js'; // 500만 원을 오래 들고 있었다면(2026-10-07 05:27 「10년후 20년후 30년후 장기보유 했을시 500만원이 얼마가 될지를 … 매우 보수적인 입장으로 … 부동산과 상대 비교」)
+import {quietArt} from './scenes.js'; // 오류 화면도 그림 한 장(빈 하늘 · 2026-10-08 05:05 빈 날 막기)
 import {renderKorea} from './view-korea.js'; // 한국 주식시장은 몇 위인가(2026-10-07 05:29 「대한민국이 다른 나라에 비해 얼마나 투자처로 우위인지 … 등수와 논리와 자료로」)
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
@@ -211,12 +212,16 @@ async function route() {
   const restoring = KEEP_SCROLL.has(r.id) && scrollMemo.has(r.id);
   if (!restoring) window.scrollTo({top: 0});
   try { await r.render(main, {hash, manifest: app.manifest, restoring}); }
-  catch (e) { main.replaceChildren(failure('화면을 그리지 못했습니다', e)); }
+  catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
   setTimeout(() => { if (app.view === r.id) document.documentElement.setAttribute('data-drawn', ''); }, 450); // 다 그린 뒤에는 같은 화면 안에서 다시 그려도(묶음 바꾸기) 움직이지 않음
   if (restoring && app.view === r.id) window.scrollTo({top: scrollMemo.get(r.id) ?? 0});
 }
+/** 오류 화면 — 맨 위 그림 한 장(빈 하늘 · 제목은 그림 이름 · 규칙 1 넣으면서 뺀 것: 상자 제목) · 아래 까닭 한 줄 · 다시 불러오기 / 그림을 못 그려도 알림은 그대로 */
 function failure(title, e) {
-  return h('section', {class: 'b-box failure', role: 'alert'}, h('h1', {class: 'b-box-h'}, title), h('p', {class: 'muted'}, String(e?.message ?? e)), h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'));
+  let art = null; try { art = quietArt({key: 'fail', label: title}); } catch {}
+  const why = String(e?.message ?? e); // 까닭(기술 글 · 파일 이름 · HTTP 번호) — 한국어로 된 까닭은 그대로 둠(lang="ko" · 제목과 단추는 그 말로)
+  return [art, h('section', {class: 'b-box failure', role: 'alert'}, art ? null : h('h1', {class: 'b-box-h'}, title), h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'),
+    h('details', {class: 'b-tech'}, h('summary', null, '기술 정보'), h('p', {class: 'muted', lang: /[가-힣]/.test(why) ? 'ko' : null}, why)))].filter(Boolean); // 까닭은 접어 둠(글을 줄임 · 규칙 13)
 }
 
 /* 새 판 감시: 화면을 바꾸지 않고 알림만(다시 열면 새 판) */
@@ -237,7 +242,7 @@ async function start() {
   main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료를 불러오는 중입니다'),
     h('div', {class: 'sk', 'aria-hidden': 'true'}, h('span', {class: 'sk-t'}), h('span', {class: 'sk-l'}), h('span', {class: 'sk-g'}))));
   try { app.manifest = await loadManifest(); }
-  catch (e) { main.replaceChildren(failure('자료 목록을 읽지 못했습니다', e)); return; }
+  catch (e) { main.replaceChildren(...failure('자료 목록을 읽지 못했습니다', e)); return; }
   setPlace(app.manifest.place); // 미국 판이면 달러 · 뉴욕 16:00 종가 · 수급 없음(util.js place) — 한국 판 manifest 에는 place 가 없어 한국 값 그대로
   try { const r = await fetch('/places.json', {cache: 'no-cache'}); if (r.ok) { const p = await r.json(); if (Array.isArray(p?.places)) app.places = p.places.filter(x => x && x.id && x.href && x.label); } } catch {}
   state.places = app.places; // 「찾기」가 다른 시장 판도 함께 찾도록

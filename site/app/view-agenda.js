@@ -2,12 +2,12 @@
    2026-10-04 08:18 사장님 「그 회사들 예정된 뉴스나 공시 나타나게 해주고 얼마나 중요한지 표기해줘」 · 15:37 「이제 예측을 하지 않는다」
    ⓪ 바뀔 회사 묶음 미리 보기(있을 때만 · 10/5 첫 화면에서 옮김) ① 시장 전체 일정(모든 회사) ② 회사·업종 일정 — 날짜마다 묶고, 같은 일정이 여러 회사에 걸리면 한 줄에 회사 이름 여럿
    ③ 앞으로 있을 일을 알리는 공시(예고·알림) ④ 아주 중요(★★★) 공시 — 지난 30일. 중요도는 종류로 매긴 ATLAS 규칙(주가에 미친 크기가 아님). */
-import {agendaArt, agendaEmptyArt} from './scenes.js'; // 그림 한 장(달이 그날로 · 규칙 33)
+import {agendaArt, agendaEmptyArt} from './scenes.js'; // 그림 한 장(달이 그날로 · 규칙 33) · 일정 자료를 못 읽은 날은 화면 오류(app.js failure — 그 화면도 빈 하늘)
 import {h, korDate, place} from './util.js';
 import {state, loadAgenda} from './store.js';
 import {marketStrip} from './frame.js';
 import {eventLine, disclosureLine, marketBox, howBox, foot, nextBox} from './parts.js';
-import {agendaComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
+import {agendaComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 /** 긴 공시 목록은 앞 10건만 펼치고 나머지는 접는다(2026-10-05 15:24 「잡스가 … 36가지」 D1 · D2 — 일정 화면이 휴대폰 화면 열여덟 장 길이라)
    접힌 줄도 같은 목록 안에 그대로 있다(지우지 않음 · 화면 읽기 프로그램과 검사기는 모두 셈) · 12건 이하면 접지 않는다 */
@@ -33,7 +33,7 @@ export async function renderAgenda(main, {manifest}) {
   const cm = agendaComment([...(agenda.market ?? []), ...list], agenda.builtDay ?? null);
   state.summary = `${commentSay(cm)}일정. 다가오는 회사·업종 일정 ${list.length}건, 시장 전체 일정 ${(agenda.market ?? []).length}건.`;
   main.replaceChildren(h('div', {class: 'b-page a-page'},
-    agendaArt(cm) ?? agendaEmptyArt(agenda, list.length) ?? commentBox(cm), // 일정이 없는 판도 그림 한 장(빈 하늘 · 일정 0건) // 그림 한 장(달이 그날로 · 규칙 33) — 넣으면서 뺀 것: 논평 무대 · 머리 아래 설명 한 줄(「어떻게 셌나」로 접음)
+    agendaArt(cm) ?? agendaEmptyArt(agenda, list.length), // 일정이 없는 판도 그림 한 장(빈 하늘 · 일정 0건 · agenda 가 있으면 늘 그림 — 논평 무대를 뺌 · 규칙 1) // 그림 한 장(달이 그날로 · 규칙 33) — 넣으면서 뺀 것: 논평 무대 · 머리 아래 설명 한 줄(「어떻게 셌나」로 접음)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '일정'),

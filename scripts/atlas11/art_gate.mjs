@@ -5,6 +5,8 @@
      ② 그 결과의 화면 코드 지문 = 지금 화면 코드 지문(site/app 의 .js · .css · 말 사전 .json · site/index.html) — 화면을 고치고 검사를 안 돌리면 여기서 막힘
      ③ 그 결과가 다섯 나라 · 모든 화면(빠른 검사 아님)이고 실패 0
      ④ 말 사전 73개가 같은 열쇠를 다 가짐(만 · 억을 쓰는 말 셋은 그 셋끼리) — 영어로 다 돈 검사가 다른 말에서도 통하게
+     ⑤ 그 결과가 두 말(영어 · 한국어 — 사장님이 보는 말 · 가장 좁은 폭 360)로 모든 화면을 돈 것(2026-10-08 05:05 — 한국어는 종류마다 한 곳만 재던 구멍)
+     ⑥ 그 결과에 빈 날 길이 있음(자료를 바꿔치기해 값이 비는 날 · 없는 주소에도 그림 한 장인지 — 05:05 빈 날 막기)
    자료(종가 · 기사)가 날마다 바뀌는 것은 지문에 들지 않는다 — 자동 올리기는 화면 코드가 그대로면 지나간다
    쓰는 법: node scripts/atlas11/art_gate.mjs (지나가면 0 · 막히면 1과 까닭) */
 import fs from 'node:fs/promises';
@@ -38,23 +40,29 @@ export async function dictParity(root) {
   return bad;
 }
 
+/** 검사 결과 하나가 문을 지나는가(②③⑤⑥) — r = latest.json · now = 지금 화면 코드 지문 · 걸린 까닭 목록(비면 지나감) */
+export function reportProblems(r, now) {
+  const bad = [];
+  if (r.code !== now) bad.push(`화면 코드가 검사 뒤에 바뀜(검사 ${r.code} · 지금 ${now}) — 빠짐없이 도는 검사를 다시 돌려야 함`);
+  if (r.quick) bad.push('빠른 검사 결과임(모든 화면을 돌지 않음)');
+  if ((r.boards ?? []).length !== 5) bad.push(`다섯 나라가 아님(${(r.boards ?? []).join(' · ')})`);
+  const langs = r.langs ?? ['en'];
+  if (!['en', 'ko'].every(l => langs.includes(l))) bad.push(`두 말(영어 · 한국어)로 모든 화면을 돈 결과가 아님(${langs.join(' · ')})`);
+  if (!(r.edge > 0)) bad.push('빈 날 길(값이 비는 날 · 없는 주소)을 돌지 않은 결과임');
+  if (r.failed !== 0 || !r.ok) bad.push(`검사 실패 ${r.failed}개`);
+  return bad;
+}
 export async function artGate(root = process.cwd()) {
   const bad = [];
   let r = null;
   try { r = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/full-check/latest.json'), 'utf8')); } catch { bad.push('빠짐없이 도는 검사 결과가 없음(node scripts/atlas11/full_check.mjs)'); }
-  if (r) {
-    const now = await codePrint(root);
-    if (r.code !== now) bad.push(`화면 코드가 검사 뒤에 바뀜(검사 ${r.code} · 지금 ${now}) — 빠짐없이 도는 검사를 다시 돌려야 함`);
-    if (r.quick) bad.push('빠른 검사 결과임(모든 화면을 돌지 않음)');
-    if ((r.boards ?? []).length !== 5) bad.push(`다섯 나라가 아님(${(r.boards ?? []).join(' · ')})`);
-    if (r.failed !== 0 || !r.ok) bad.push(`검사 실패 ${r.failed}개`);
-  }
+  if (r) bad.push(...reportProblems(r, await codePrint(root)));
   bad.push(...await dictParity(root));
-  return {ok: !bad.length, bad, report: r ? {at: r.at, pages: r.pages, numbers: r.numbers, failed: r.failed, code: r.code} : null};
+  return {ok: !bad.length, bad, report: r ? {at: r.at, pages: r.pages, byLang: r.byLang ?? null, edge: r.edge ?? 0, numbers: r.numbers, failed: r.failed, code: r.code} : null};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
   const g = await artGate();
-  if (g.ok) console.log(`올리기 문 통과 — 화면 ${g.report.pages}개 · 맞댄 숫자 ${g.report.numbers}개 · 실패 0 · 검사 ${g.report.at}`);
+  if (g.ok) console.log(`올리기 문 통과 — 화면 ${g.report.pages}개(영어 ${g.report.byLang?.en ?? '?'} · 한국어 ${g.report.byLang?.ko ?? '?'} · 빈 날 ${g.report.edge}) · 맞댄 숫자 ${g.report.numbers}개 · 실패 0 · 검사 ${g.report.at}`);
   else { console.error('올리기 문 막힘:\n' + g.bad.map(x => ' · ' + x).join('\n')); process.exit(1); }
 }
