@@ -3,9 +3,11 @@
     어떻게 되는지 과거 자료를 기초로 해서 매우 보수적인 입장으로 나타내라 부동산과 상대 비교를 하라」
    · 앞날을 맞히지 않는다(10/4 15:37) — 지난 기록에서 가장 나빴던 10 · 20 · 30년 묶음을 다시 겪는다고 친 셈(끝난 해만 · 해마다 말 값 · 세금 · 수수료 뺌)
    · 셈 · 출처: reports/atlas11/study/500만 원을 오래 들고 있었다면 — 셈.md · 숫자마다 단위 · 화면마다 기준일 */
+import {longArt} from './scenes.js'; // 그림 한 장(항아리 여섯 · 규칙 33)
 import {h} from './util.js';
 import {foot} from './parts.js';
 import {state} from './store.js';
+import {playOnce} from './motion.js'; // 줄 막대는 맨 위 그림이 끝난 뒤 하나씩(규칙 28 · 빠짐없이 도는 검사가 겹침을 잡음)
 
 const START = 500, CAP = 2000; // 만 원 — 막대 끝 = 2,000만 원(처음 돈의 4배) · 넘으면 끝에 꺾쇠
 const HINDSIGHT = '살아남은 회사를 고른 것 — 사라진 회사가 빠져 실제보다 좋게 보임'; // 「오늘」은 날짜가 없는 말이라 쓰지 않음(또렷함 검사 1번)
@@ -125,14 +127,15 @@ export function renderLong(main, {manifest}) {
   state.summary = `500만 원을 오래 들고 있었다면. 지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈이고 앞날 값이 아닙니다. 2025년 12월 30일 종가까지 끝난 해만 셈했습니다. ${YEARS.map(v => `${v}년: 주식 ${man(stock[v][0])}, 서울 아파트 ${man(home[v][0])}`).join('. ')}.`;
   main.replaceChildren(h('article', {class: 'b-page lt-page'},
     h('a', {class: 'c-back', href: '#/start'}, '‹ ', '처음'),
+    longArt(LONG, man, START) ?? hero(), // 그림 한 장(항아리 여섯 · 규칙 33 · 제목 위 — 한 화면에) — 넣으면서 뺀 것: 막대 그림(같은 여섯 숫자) · 읽는 법 세 줄(「어떻게 셌나」로 접음)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '500만 원을 오래 들고 있었다면'),
       h('p', {class: 'b-when', 'data-speak': ''}, '지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만')),
-    hero(),
-    h('ul', {class: 'lt-read'},
-      h('li', {'data-speak': ''}, '가장 나빴던 때 = 그 기록의 10년 · 20년 · 30년 묶음 가운데 끝 돈이 가장 적은 묶음'),
-      h('li', {'data-speak': ''}, '회사 이름은 살아남은 곳을 고른 것 — 사라진 회사가 빠져 있어 실제보다 좋게 보임'),
-      h('li', {'data-speak': ''}, '아파트는 값만 — 월세 · 전세 돈과 세금 · 관리비는 뺌')),
+    h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'),
+      h('ul', {class: 'lt-read'},
+        h('li', {'data-speak': ''}, '가장 나빴던 때 = 그 기록의 10년 · 20년 · 30년 묶음 가운데 끝 돈이 가장 적은 묶음'),
+        h('li', {'data-speak': ''}, '회사 이름은 살아남은 곳을 고른 것 — 사라진 회사가 빠져 있어 실제보다 좋게 보임'),
+        h('li', {'data-speak': ''}, '아파트는 값만 — 월세 · 전세 돈과 세금 · 관리비는 뺌'))),
     pick, body,
     h('details', {class: 'b-how lt-more'}, h('summary', null, '기준 · 숫자 자세히'),
       h('p', null, '해마다 12월 말 값으로 셈 · 2026년은 넣지 않음(끝난 해만) · 세금 · 수수료 뺌 · 돈 값은 그해 돈 그대로(물가를 빼지 않음)'),
@@ -143,6 +146,8 @@ export function renderLong(main, {manifest}) {
       h('ul', {class: 'lt-src'}, ...SRC.map(([u, what]) => h('li', null, what, ' — ', h('a', {href: u, target: '_blank', rel: 'noopener noreferrer', 'data-ident': ''}, host(u)))))),
     foot(manifest)));
   draw();
-  const fig = main.querySelector('.lt-hero');
+  // 2026-10-08 빠짐없이 도는 검사(규칙 34)가 잡음: 줄 막대(3.6초 뒤 시작)가 맨 위 항아리 그림과 함께 움직였다 → 움직임 줄에 세움(그림이 끝나야 막대가 하나씩)
+  playOnce('long-rows', body, {dur: 400 + 14 * 370});
+  const fig = main.querySelector('.lt-hero'); // 그림 한 장이 있으면 없음(막대 그림을 대신함)
   if (fig) { requestAnimationFrame(() => requestAnimationFrame(() => fitLabels(fig))); if (typeof ResizeObserver === 'function') new ResizeObserver(() => fitLabels(fig)).observe(fig); }
 }

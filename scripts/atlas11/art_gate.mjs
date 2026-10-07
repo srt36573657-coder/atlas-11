@@ -1,0 +1,60 @@
+#!/usr/bin/env node
+/* ATLAS 11 · 올리기 문(규칙 34) — 사장님 2026-10-08 01:31 「너 대충하고 있어 너 시스템으로 그짓 못하게 해」
+   사이트에 올리기 직전(deploy_netlify.mjs 맨 앞 · 손으로 올리기 · 평일 16:00 · 19:00 자동 올리기 모두 같은 길)에 이 문을 지난다. 하나라도 걸리면 올리지 않는다:
+     ① 빠짐없이 도는 검사(full_check.mjs)의 결과 reports/atlas11/full-check/latest.json 이 있다
+     ② 그 결과의 화면 코드 지문 = 지금 화면 코드 지문(site/app 의 .js · .css · 말 사전 .json · site/index.html) — 화면을 고치고 검사를 안 돌리면 여기서 막힘
+     ③ 그 결과가 다섯 나라 · 모든 화면(빠른 검사 아님)이고 실패 0
+     ④ 말 사전 73개가 같은 열쇠를 다 가짐(만 · 억을 쓰는 말 셋은 그 셋끼리) — 영어로 다 돈 검사가 다른 말에서도 통하게
+   자료(종가 · 기사)가 날마다 바뀌는 것은 지문에 들지 않는다 — 자동 올리기는 화면 코드가 그대로면 지나간다
+   쓰는 법: node scripts/atlas11/art_gate.mjs (지나가면 0 · 막히면 1과 까닭) */
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+
+/** 화면 코드 지문 — site/app 아래 .js · .css · .json(말 사전) + site/index.html · 파일 이름 차례로 이어 sha256 앞 16자 */
+export async function codePrint(root) {
+  const files = [];
+  const walk = async d => { for (const e of (await fs.readdir(d, {withFileTypes: true})).sort((a, b) => a.name.localeCompare(b.name))) { const f = path.join(d, e.name); if (e.isDirectory()) await walk(f); else if (/\.(js|css|json)$/.test(e.name)) files.push(f); } };
+  await walk(path.join(root, 'site/app'));
+  files.push(path.join(root, 'site/index.html'));
+  const h = createHash('sha256');
+  for (const f of files) { h.update(path.relative(root, f).replace(/\\/g, '/') + '\n'); h.update((await fs.readFile(f, 'utf8')).replace(/\r\n/g, '\n')); h.update('\n'); }
+  return h.digest('hex').slice(0, 16);
+}
+
+/** 말 사전 열쇠 맞춤 — 만 · 억을 그대로 쓰는 말(i18n.js LANG_LIST 의 my) 셋은 중국어와, 나머지는 영어와 */
+export async function dictParity(root) {
+  const dir = path.join(root, 'site/app/i18n'), bad = [];
+  const read = async c => JSON.parse(await fs.readFile(path.join(dir, c + '.json'), 'utf8'));
+  const src = await fs.readFile(path.join(root, 'site/app/i18n.js'), 'utf8');
+  const my = new Set([...src.matchAll(/code:\s*'([\w-]+)'[^}]*\bmy:\s*true/g)].map(m => m[1]));
+  const en = Object.keys((await read('en')).templates), zh = Object.keys((await read('zh')).templates);
+  for (const f of await fs.readdir(dir)) {
+    if (!f.endsWith('.json')) continue;
+    const c = f.slice(0, -5), T = (await read(c)).templates ?? {}, ref = my.has(c) ? zh : en;
+    const miss = ref.filter(k => !(k in T) || !String(T[k]).trim());
+    if (miss.length) bad.push(`${c}: 사전에 없는 말 ${miss.length}개(${miss.slice(0, 3).join(' / ')})`);
+  }
+  return bad;
+}
+
+export async function artGate(root = process.cwd()) {
+  const bad = [];
+  let r = null;
+  try { r = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/full-check/latest.json'), 'utf8')); } catch { bad.push('빠짐없이 도는 검사 결과가 없음(node scripts/atlas11/full_check.mjs)'); }
+  if (r) {
+    const now = await codePrint(root);
+    if (r.code !== now) bad.push(`화면 코드가 검사 뒤에 바뀜(검사 ${r.code} · 지금 ${now}) — 빠짐없이 도는 검사를 다시 돌려야 함`);
+    if (r.quick) bad.push('빠른 검사 결과임(모든 화면을 돌지 않음)');
+    if ((r.boards ?? []).length !== 5) bad.push(`다섯 나라가 아님(${(r.boards ?? []).join(' · ')})`);
+    if (r.failed !== 0 || !r.ok) bad.push(`검사 실패 ${r.failed}개`);
+  }
+  bad.push(...await dictParity(root));
+  return {ok: !bad.length, bad, report: r ? {at: r.at, pages: r.pages, numbers: r.numbers, failed: r.failed, code: r.code} : null};
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  const g = await artGate();
+  if (g.ok) console.log(`올리기 문 통과 — 화면 ${g.report.pages}개 · 맞댄 숫자 ${g.report.numbers}개 · 실패 0 · 검사 ${g.report.at}`);
+  else { console.error('올리기 문 막힘:\n' + g.bad.map(x => ' · ' + x).join('\n')); process.exit(1); }
+}

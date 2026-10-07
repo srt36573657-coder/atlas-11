@@ -43,6 +43,7 @@ import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {SHAPES, SHAPE_PICS, sunOf} from './shapes.js';
 import {roadComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
+import {roadArt} from './scenes.js'; // 그림 한 장(구슬 두 그릇 · 규칙 33)
 
 /** 흐름 묶음 차례 — 최근 5거래일 오름 쪽부터 내림 쪽까지(처음 15거래일은 오름 → 비슷 → 내림) · 둘 다 잠잠하면 「거의 안 움직임」 */
 export const FLOW_ORDER = ['up-up', 'flat-up', 'down-up', 'up-flat', 'flat-flat', 'still', 'down-flat', 'up-down', 'flat-down', 'down-down'];
@@ -279,7 +280,7 @@ export async function renderRoad(main, {manifest} = {}) {
   }
   const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: keyText()});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
-    commentBox(roadCm), // 논평 무대(화면 맨 위)
+    roadArt(board) ?? commentBox(roadCm), // 그림 한 장(구슬 두 그릇 · 규칙 33) — 넣으면서 뺀 것: 논평 무대(같은 셈)
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`))), // 개수는 제목 곁 작은 글(규칙 2) · 찾기는 아래 탭 「찾기」로
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),

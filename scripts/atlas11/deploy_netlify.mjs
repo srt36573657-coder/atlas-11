@@ -86,6 +86,10 @@ export async function deploy({distDir = path.join(root, 'dist'), message = null,
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  // 올리기 문(규칙 34 · 2026-10-08 01:31 「너 시스템으로 그짓 못하게 해」) — 빠짐없이 도는 검사가 지금 화면 코드로 실패 0 이 아니면 올리지 않는다(손 · 자동 모두)
+  const {artGate} = await import('./art_gate.mjs'), gate = await artGate(root);
+  if (!gate.ok) { console.error('올리기 문 막힘 — 사이트에 올리지 않음:\n' + gate.bad.map(x => ' · ' + x).join('\n')); console.log(JSON.stringify({state: 'blocked', gate: gate.bad})); process.exit(3); }
+  console.log(`올리기 문 통과 — 빠짐없이 도는 검사 화면 ${gate.report.pages}개 · 맞댄 숫자 ${gate.report.numbers}개 · 실패 0`);
   const out = await deploy({distDir: path.resolve(arg('--dir') ?? 'dist'), message: arg('--message')});
   console.log(JSON.stringify({...out, error: out.error ? out.error.slice(0, 300) : null}));
   process.exitCode = out.state === 'failed' ? 2 : 0;

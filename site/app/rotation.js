@@ -5,16 +5,19 @@
    → 첫 화면 한 장(규칙 30): 기(결론) 빠지는 곳 → 들어가는 곳 / 승(기간) 언제부터 · 며칠째 / 전(포모값) 0점~100점 · 말 다섯 등급 / 결(누가) 판 쪽 · 산 쪽
    → 2026-10-08 00:12 「글이 너무 많아 · 더 과감하게 움직이는 도식화를 예술적으로」: 네 줄 글을 청자 그림 한 장으로(아래 artSvg · 규칙 32)
    셈은 lib/atlas11/rotation.mjs(/story.json 의 rotation · 판을 쌀 때 저절로) · 이 파일은 그리기만 · 움직임은 한 번에 하나(artPlayer)
-   「조 원」 = 업종 시가총액 몫(시장 전체가 같은 비율로 움직였을 때와 견준 차이 · 업종 73개를 더하면 0원) — 숫자와 단위는 따로 적음(다른 말에서 「조」를 큰 숫자로 펼치지 않게) */
+   「조 원」 = 업종 시가총액 몫(시장 전체가 같은 비율로 움직였을 때와 견준 차이 · 업종 73개를 더하면 0원) — 숫자와 단위는 따로 적음(다른 말에서 「조」를 큰 숫자로 펼치지 않게)
+   2026-10-08 01:27 「다해 전나라」: 다섯 나라 모두 — 단위는 나라 돈(조 원 · 조 달러 · 조 위안 · 조 엔 · 조 동) · 순매매 자료가 없는 판(미국 · 중국 · 일본 · 베트남)은 결 낙관이 「빠지는 곳 포모값」(지어내지 않음)
+   재생기는 art.js 한 틀(모든 화면 그림이 같이 씀 · 규칙 33) */
 import {h, korDate, finite} from './util.js';
 import {pic} from './story.js';
-import {t as tr, LOCALE, LANG} from './i18n.js'; // 소리로 듣기 — 그 말로 읽음
-import {hold, release, idleIn} from './motion.js'; // 한 번에 하나 — 그림이 도는 동안 다른 그림은 기다림
+import {artStage} from './art.js'; // 한 번에 하나 · 기승전결 · 다시 보기 · 소리로 듣기 — 모든 그림이 같이 쓰는 틀
 
 const ACTOR = {foreign: '외국인', institution: '기관', individual: '개인'};
 const sign = v => (v > 0 ? '+' : v < 0 ? '−' : '');
 /** 억 원 → 「−14.7」 + 「조 원」(숫자 · 단위 따로) · 1조 원보다 작으면 소수 둘째 자리 */
-const amt = v => [h('span', {class: 'rt-a'}, h('b', {class: 'rt-n' + (v > 0 ? ' up' : v < 0 ? ' down' : '')}, sign(v) + (Math.abs(v) / 1e4).toFixed(Math.abs(v) >= 1e4 ? 1 : 2)), h('span', {class: 'rt-u'}, '조 원'))]; // 한국어는 숫자와 「조 원」이 한 줄(「원」만 다음 줄로 떨어지지 않게)
+const UNIT = {kr: '조 원', us: '조 달러', cn: '조 위안', jp: '조 엔', vn: '조 동'};
+export const unitOf = r => UNIT[r?.place] ?? '조 원';
+const amt = (v, u = '조 원') => [h('span', {class: 'rt-a'}, h('b', {class: 'rt-n' + (v > 0 ? ' up' : v < 0 ? ' down' : '')}, sign(v) + (Math.abs(v) / 1e4).toFixed(Math.abs(v) >= 1e4 ? 1 : 2)), h('span', {class: 'rt-u'}, u))]; // 한국어는 숫자와 「조 원」이 한 줄(「원」만 다음 줄로 떨어지지 않게)
 const heatOf = s => (!finite(s) ? 'none' : s >= 80 ? '5' : s >= 60 ? '4' : s >= 40 ? '3' : s >= 20 ? '2' : '1');
 const score = s => (finite(s) ? `${Math.round(s)}점` : '없음');
 const sinceLine = p => `${korDate(p.start)}부터 · ${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`;
@@ -39,7 +42,7 @@ const ARC = {cx: 180, cy: 576.1, r: 564.1, a: 16.05}; // 달 길(위로 굽은 �
 function artSvg(r) {
   const p = r.pair, n = Math.max(2, Math.min(21, p.days + 1)), rad = d => d * Math.PI / 180;
   const marks = Array.from({length: n}, (_, i) => { const t = rad(-ARC.a + (2 * ARC.a) * i / (n - 1)); return `<circle cx="${(ARC.cx + ARC.r * Math.sin(t)).toFixed(1)}" cy="${(ARC.cy - ARC.r * Math.cos(t)).toFixed(1)}" r="${i === 0 || i === n - 1 ? 3 : 2}" fill="#F4F1EA" fill-opacity="${i === 0 || i === n - 1 ? '.8' : '.45'}"/>`; }).join('');
-  return `<svg class="ra-svg" viewBox="0 0 360 250" aria-hidden="true" focusable="false">
+  return `<svg class="ra-svg" viewBox="0 0 360 246" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="ra-glaze" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3F6E5E"/><stop offset=".3" stop-color="#9CCDB8"/><stop offset=".58" stop-color="#77AE98"/><stop offset="1" stop-color="#335C4E"/></linearGradient>
 <linearGradient id="ra-glaze2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4E8673"/><stop offset=".3" stop-color="#BFE6D4"/><stop offset=".6" stop-color="#8CC4AE"/><stop offset="1" stop-color="#3D6D5D"/></linearGradient>
@@ -67,86 +70,48 @@ ${marks}
 <g transform="translate(248.6,89.15) scale(1.15)"><path d="${VASE}" fill="url(#ra-glaze2)" stroke="#264A3F" stroke-width=".9"/><g clip-path="url(#ra-in)"><rect class="ra-fill" data-at="2" x="0" y="0" width="72" height="99" fill="url(#ra-gold)" fill-opacity=".88"/></g>${INLAY}<ellipse cx="36" cy="1.6" rx="6.5" ry="2" fill="#E2F4EB"/></g>
 </svg>`;
 }
+/** 긴 업종 이름(바깥 판 「다각적 산업용 제품 도매」 등)은 글씨를 줄여 한 화면에(규칙 30) */
+export const longCls = t => (String(t).length > 12 ? ' ra-long2' : String(t).length > 6 ? ' ra-long' : '');
 /** 이름 · 숫자 · 낙관 — 왼쪽(빠지는 곳) · 오른쪽(들어가는 곳 · 포모값) */
 function labelsOf(r) {
-  const p = r.pair, a = r.out[0], b = r.in[0], w = whoMoved(r);
+  const p = r.pair, a = r.out[0], b = r.in[0], w = whoMoved(r), u = unitOf(r);
   const seal = (tag, who, k) => h('p', {class: 'ra-seal', 'data-at': String(k)}, h('span', {class: 'ra-st'}, tag), ' ', h('span', {class: 'ra-sw'}, who ?? '없음'));
+  // 순매매 자료가 없는 판 — 결 낙관 하나: 빠지는 곳 포모값(식은 쪽) · 들어가는 곳 포모값(불)과 견줌
+  const cold = () => h('p', {class: 'ra-seal ra-seal-f', 'data-at': '5'}, h('span', {class: 'ra-st'}, '포모값'), ' ', h('span', {class: 'ra-sw'}, score(r.fomo.from)), ' ', h('span', {class: 'ra-sw'}, r.fomo.fromWord ?? '없음'));
   return h('div', {class: 'ra-lab'},
-    h('div', {class: 'ra-col ra-ca'}, h('p', {class: 'ra-n'}, p.from.label), h('p', {class: 'ra-m'}, ...amt(a.amount)), seal('판 쪽', w.sell?.actor, 5)),
-    h('div', {class: 'ra-col ra-cb'}, h('p', {class: 'ra-n'}, p.to.label), h('p', {class: 'ra-m'}, ...amt(b.amount)),
+    h('div', {class: 'ra-col ra-ca'}, h('p', {class: 'ra-n' + longCls(p.from.label)}, p.from.label), h('p', {class: 'ra-m'}, ...amt(a.amount, u)), r.flows ? seal('판 쪽', w.sell?.actor, 5) : cold()),
+    h('div', {class: 'ra-col ra-cb'}, h('p', {class: 'ra-n' + longCls(p.to.label)}, p.to.label), h('p', {class: 'ra-m'}, ...amt(b.amount, u)),
       h('p', {class: 'ra-fomo'}, h('span', {class: 'ra-fk'}, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(r.fomo.to)}, score(r.fomo.to)), ' ', h('span', {class: 'ra-fw'}, r.fomo.toWord ?? '없음')),
-      seal('산 쪽', w.buy?.actor, 6)));
+      r.flows ? seal('산 쪽', w.buy?.actor, 6) : null));
 }
 /** 걸음 일곱(한 번에 하나) — c = 기승전결 차례 · at = 움직이는 그림 · ms = 머무는 시간 */
 const ART_STEPS = [{c: 0, at: 0, ms: 1050}, {c: 0, at: 1, ms: 1500}, {c: 0, at: 2, ms: 1350}, {c: 1, at: 3, ms: 2000}, {c: 2, at: 4, ms: 1600}, {c: 3, at: 5, ms: 750}, {c: 3, at: 6, ms: 1400}];
+const ART_STEPS6 = [...ART_STEPS.slice(0, 5), {c: 3, at: 5, ms: 1400}]; // 순매매 자료가 없는 판 — 결 낙관 하나
 /** 소리 — 차례마다 한 덩이(그 말로 읽음) */
 function sayOf(r) {
   const p = r.pair, w = whoMoved(r);
   return [['빠지는 곳', p.from.label, '들어가는 곳', p.to.label], [`${korDate(p.start)}부터`, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`],
-    ['포모값', score(r.fomo.to), r.fomo.toWord ?? '없음'], ['판 쪽', w.sell?.actor ?? '없음', '산 쪽', w.buy?.actor ?? '없음']];
+    ['포모값', score(r.fomo.to), r.fomo.toWord ?? '없음'], r.flows ? ['판 쪽', w.sell?.actor ?? '없음', '산 쪽', w.buy?.actor ?? '없음'] : ['빠지는 곳', p.from.label, '포모값', score(r.fomo.from), r.fomo.fromWord ?? '없음']];
 }
-/** 그림 한 장 + 차례 점 넷 + 다시 보기 · 소리로 듣기 — 한 번에 하나(motion.js hold) · 화면 밖이면 멈춤 */
-function artPlayer(r, fresh) {
-  const art = h('div', {class: 'ra-art', html: artSvg(r)}), labs = labelsOf(r), says = sayOf(r);
-  art.querySelector('.ra-fire')?.style.setProperty('--f', String(finite(r.fomo.to) ? Math.max(0.08, r.fomo.to / 100).toFixed(3) : '0.08')); // 불 높이 = 포모값 ÷ 100(CSSOM · 글 속 style 속성 없음)
-  const beats = h('ol', {class: 'ra-beats', 'aria-hidden': 'true'}, ...['기', '승', '전', '결'].map(x => h('li', null, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, x))));
-  const box = h('div', {class: 'ra'}, art, labs,
-    h('div', {class: 'ra-ctl'}, beats,
-      h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
-      h('button', {type: 'button', class: 'sy-btn', onclick: () => run(true)}, pic('say', 'sy-bi'), h('span', null, '소리로 듣기'))));
-  const parts = [...box.querySelectorAll('[data-at]')], dots = [...beats.children];
-  let cur = -1, tick = 0, token = 0, voice = false, seen = true, waiting = null;
-  function paint(i, again = false) {
-    cur = i; const x = ART_STEPS[i]; box.dataset.step = String(i); box.dataset.c = String(x.c); box.classList.remove('ra-done');
-    for (const el of parts) { const k = Number(el.dataset.at); el.classList.toggle('on', k <= x.at); const now = k === x.at; if (now && again) { el.classList.remove('now'); void el.getBoundingClientRect(); } el.classList.toggle('now', now); }
-    dots.forEach((d, k) => { d.classList.toggle('now', k === x.c); d.classList.toggle('on', k < x.c); });
-  }
-  function stop() { token++; clearTimeout(tick); waiting = null; if (voice) { try { window.speechSynthesis?.cancel(); } catch {} } voice = false; release(box); }
-  function done() { stop(); if (cur !== ART_STEPS.length - 1) paint(ART_STEPS.length - 1); for (const el of parts) { el.classList.add('on'); el.classList.remove('now'); } dots.forEach(d => { d.classList.add('on'); d.classList.remove('now'); }); box.classList.add('ra-done'); }
-  function say(c, then) {
-    try { const ss = window.speechSynthesis; if (!ss || typeof SpeechSynthesisUtterance !== 'function') return false;
-      const u = new SpeechSynthesisUtterance(says[c].map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
-      const v = ss.getVoices().find(z => z.lang && z.lang.startsWith(LANG)); if (v) u.voice = v; let fin = false; u.onend = u.onerror = () => { if (!fin) { fin = true; then(); } }; ss.speak(u); return true; } catch { return false; }
-  }
-  function run(withVoice) {
-    stop(); const my = token; voice = withVoice; let i = 0, talking = false, after = null; hold(box);
-    if (withVoice) { try { window.speechSynthesis?.cancel(); } catch {} }
-    const next = () => {
-      if (my !== token) return;
-      if (!box.isConnected) { stop(); return; }
-      if (i >= ART_STEPS.length) { if (talking) { after = next; return; } done(); return; }
-      if (!seen && !voice) { waiting = next; release(box); return; }
-      const x = ART_STEPS[i];
-      if (voice && talking && (i === 0 || ART_STEPS[i - 1].c !== x.c)) { after = next; return; }
-      hold(box); paint(i++, true);
-      if (voice && (i === 1 || ART_STEPS[i - 2].c !== x.c)) talking = say(x.c, () => { talking = false; if (my === token && after) { const f = after; after = null; tick = setTimeout(f, 380); } });
-      tick = setTimeout(next, x.ms);
-    };
-    next();
-  }
-  if (typeof IntersectionObserver === 'function') new IntersectionObserver(es => { for (const e of es) { seen = e.isIntersecting; if (seen && waiting) { const w = waiting; waiting = null; tick = setTimeout(w, idleIn() + 60); } } }, {threshold: 0.35}).observe(art);
-  const calm = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (fresh && !calm) { paint(0); for (const el of parts) el.classList.remove('on', 'now'); dots.forEach(d => d.classList.remove('now', 'on')); setTimeout(() => { if (box.isConnected && cur <= 0) run(false); }, 350); }
-  else done();
-  return box;
-}
+/** 그림 한 장 — art.js 틀(한 번에 하나 · 차례 점 넷 · 다시 보기 · 소리로 듣기 · 화면 밖이면 멈춤 · 움직임 줄이기면 끝 모습) */
+const artPlayer = r => artStage({key: 'rot', svg: artSvg(r), labels: labelsOf(r), steps: r.flows ? ART_STEPS : ART_STEPS6, says: sayOf(r),
+  setup: art => art.querySelector('.ra-fire')?.style.setProperty('--f', String(finite(r.fomo.to) ? Math.max(0.08, r.fomo.to / 100).toFixed(3) : '0.08'))}); // 불 높이 = 포모값 ÷ 100(CSSOM · 글 속 style 속성 없음)
 
-let played = false; // 저절로 한 번은 이 창에서 처음 그릴 때만(story.js 와 같은 뜻)
 /** 맨 위 무대 — 제목 · 기간(달 위) · 그림 한 장 · 이름 · 숫자 · 낙관 · 차례 점 · 단추 둘 · 아래에 빠지는 곳 셋 · 들어가는 곳 셋 · 셈 방법(접힘) */
 export function rotationBox(r) {
   if (!r || r.none || !r.pair) return null;
-  const fresh = !played; played = true;
   const p = r.pair;
-  const li = x => h('li', {class: 'rt-li'}, h('span', {class: 'rt-l'}, x.label), h('span', {class: 'rt-v'}, ...amt(x.amount)), h('span', {class: 'rt-f'}, h('span', null, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(x.fomo)}, score(x.fomo))));
-  return h('section', {class: 'sy rt' + (fresh ? ' sy-in' : ''), 'aria-label': '돈의 이동', 'data-from': p.from.id, 'data-to': p.to.id},
+  const u = unitOf(r), li = x => h('li', {class: 'rt-li'}, h('span', {class: 'rt-l'}, x.label), h('span', {class: 'rt-v'}, ...amt(x.amount, u)), h('span', {class: 'rt-f'}, h('span', null, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(x.fomo)}, score(x.fomo))));
+  return h('section', {class: 'sy rt', 'aria-label': '돈의 이동', 'data-from': p.from.id, 'data-to': p.to.id, 'data-place': r.place ?? 'kr',
+    'data-check': JSON.stringify({from: p.from.id, to: p.to.id, start: p.start, days: p.days, outAmt: r.out[0].amount, inAmt: r.in[0].amount, fomo: r.fomo.to})}, // 빠짐없이 도는 검사기가 /story.json 과 맞댐(규칙 34)
     h('p', {class: 'sy-k'}, h('span', null, '돈의 이동'), h('span', {class: 'sy-kw'}, `지난 ${r.window.days}거래일 · ${korDate(r.asOf)} 종가까지`)),
     h('p', {class: 'ra-t'}, h('span', {class: 'ra-ts'}, `${korDate(p.start)}부터`), ' ', h('b', {class: 'ra-td'}, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`)),
-    artPlayer(r, fresh),
+    artPlayer(r),
     h('div', {class: 'rt-all'},
       h('div', {class: 'rt-col', 'data-side': 'out'}, h('p', {class: 'rt-h'}, '빠지는 곳'), h('ol', {class: 'rt-ol'}, ...r.out.map(li))),
       h('div', {class: 'rt-col', 'data-side': 'in'}, h('p', {class: 'rt-h'}, '들어가는 곳'), h('ol', {class: 'rt-ol'}, ...r.in.map(li)))),
     h('details', {class: 'rt-how'}, h('summary', null, '어떻게 셌나'),
-      h('p', null, `조 원 = 업종 시가총액 몫 — 시장 전체가 같은 비율로 움직였을 때와 견준 차이(${r.groups}개 업종 · 더하면 0원)`),
+      h('p', null, `「${u}」 = 업종 시가총액 몫 — 시장 전체가 같은 비율로 움직였을 때와 견준 차이(업종 ${r.groups}개 · 더하면 0)`),
       h('p', null, '기간 = 들어가는 곳이 빠지는 곳보다 앞서기 시작한 날(두 업종 지수 비의 마지막 바닥)부터'),
       h('p', null, `포모값 = 옛 ATLAS FOMO ${r.fomo.of}가지 가운데 종가로 셀 수 있는 ${r.fomo.items}가지(10일 상승률 · 상승 가속 · 상승일 비중 · 20일 평균 이격 · 60일 고점 돌파 · 상승 변동 집중)를 지난 ${r.fomo.refs}번과 견준 백분위 · 거래량 · 장중 · 개인 · 관심 ${r.fomo.of - r.fomo.items}가지는 자료가 없어 뺌`),
       r.flows ? h('p', null, `순매매 = 외국인 · 기관 · 개인이 사고판 주식 수 × 그날 종가(어림) · ${korDate(r.flows.from)}~${korDate(r.flows.to)}`) : null));

@@ -120,7 +120,7 @@ export function agendaComment(events, day = null) {
   const top = [...es].sort((a, b) => b.level - a.level || a.date.localeCompare(b.date) || a.name.localeCompare(b.name, 'ko'))[0];
   const dd = day ? Math.round((Date.parse(top.date + 'T00:00:00Z') - Date.parse(day + 'T00:00:00Z')) / 86400000) : null;
   const pic = dd != null && dd < 120 ? {dots: Array.from({length: dd + 1}, (_, i) => (i === dd ? {mark: 'day'} : i === 0 ? {mark: 'now'} : OFF))} : null; // 날 하나 = 점 하나 — 첫 점(테) = 일정을 모은 날 · 마지막 별 = 그날
-  return {id: 'agenda', kind: 'next', w: day ? `논평 · ${korDate(day)} 기준` : '논평', head: [`${korDate(top.date)} `, {n: top.name, ident: true, ko: top.scope !== 'market'}],
+  return {id: 'agenda', kind: 'next', ev: top, dd, day, w: day ? `논평 · ${korDate(day)} 기준` : '논평', head: [`${korDate(top.date)} `, {n: top.name, ident: true, ko: top.scope !== 'market'}], // ev · dd · day = 그림(scenes.js agendaArt)이 같은 일정 · 같은 날 수를 쓰게
     big: dd != null ? big(dd ? `${dd}일 뒤` : '그날') : big(korDate(top.date)), cap: [`별 ${top.level}개 — 일정 ${es.length}건 중 별이 가장 많고 가장 이른 날`], pic};
 }
 
