@@ -33,6 +33,8 @@ import {renderFind} from './view-find.js';
 import {renderLog} from './view-log.js';
 import {renderStart} from './view-start.js';
 import {renderGuide} from './view-guide.js'; // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 특히 한국에 상주하는 외국인들도 한국 주식시장을 제대로 알수 있게」)
+import {renderLong} from './view-long.js'; // 500만 원을 오래 들고 있었다면(2026-10-07 05:27 「10년후 20년후 30년후 장기보유 했을시 500만원이 얼마가 될지를 … 매우 보수적인 입장으로 … 부동산과 상대 비교」)
+import {renderKorea} from './view-korea.js'; // 한국 주식시장은 몇 위인가(2026-10-07 05:29 「대한민국이 다른 나라에 비해 얼마나 투자처로 우위인지 … 등수와 논리와 자료로」)
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
@@ -65,6 +67,8 @@ const routes = [
   {id: 'find', tab: 'find', label: '찾기', match: /^#\/find$/, render: renderFind}, // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 한국 · 미국 판을 함께
   {id: 'log', tab: 'log', label: '기록', match: /^#\/log$/, render: renderLog}, // 2026-10-06 16:10 「… 뭘 어떻게 변화 시켰는지에 대해서 기록 하는 탭」 — 업데이트 · 자료 변경 날짜
   {id: 'guide', tab: 'start', match: /^#\/guide$/, render: renderGuide}, // 아래 탭 「처음」 아래 한 화면(탭을 늘리지 않음 · 규칙 1)
+  {id: 'long', tab: 'start', match: /^#\/long$/, render: renderLong}, // 「처음」 아래 한 화면(탭을 늘리지 않음 · 규칙 1 · 24)
+  {id: 'korea', tab: 'start', match: /^#\/korea$/, render: renderKorea},
   {id: 'start', tab: 'start', label: '처음', match: /^#\/start$/, render: renderStart}, // 2026-10-06 23:19 「초보들이 뭘사야 안전한지 … 잡스였다면」 · 10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」 — 지난 3년 가장 덜 떨어진 우량 큰 회사 다섯
 ];
 const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log', 'start']; // 일곱째 「처음」(2026-10-07 00:49) — 넣으면서 뺀 것: 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」(「처음」 안으로)

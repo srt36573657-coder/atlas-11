@@ -56,6 +56,9 @@ async function crawl(page, lg, at) {
   await go('#/agenda');
   await go('#/start'); // 아래 탭 「처음」(2026-10-07 00:49)
   await go('#/guide'); // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 … 한국 주식시장을 제대로 알수 있게」)
+  await go('#/long'); // 500만 원을 오래 들고 있었다면(2026-10-07 05:27) — 10년 · 20년 · 30년 단추를 모두 눌러 셈
+  for (const y of ['20', '30', '10']) { await page.evaluate(v => document.querySelector(`.lt-seg button[data-y="${v}"]`)?.click(), y); await settle(250); await collect('#/long ' + y); }
+  await go('#/korea'); // 한국 주식시장은 몇 위인가(2026-10-07 05:29)
   await go('#/find');
   for (const q of ['전자', 'a', '반도체']) { await page.fill('input[type="search"], .fd-form input', q).catch(() => {}); await settle(500); await collect('#/find ' + q); }
   await go('#/log');

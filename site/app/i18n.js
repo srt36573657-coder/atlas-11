@@ -216,7 +216,7 @@ export function addBoardNames(board, namesKr) {
   if (!ON || !board?.companies) return;
   const m = {};
   for (const c of board.companies) { const en = okName(c.nameEn) ?? okName(CO[c.code]) ?? okName(namesKr?.[c.code]?.nameEn); m[c.name] = en ? tidy(en) : romanize(c.name); if (en && !c.nameEn) c.nameEn = tidy(en); } // 미국 판 영어 이름 → 손으로 고른 이름 → 야후 영문 정식 이름 → 로마자 · 한국 회사도 영어 이름으로 찾기(찾기 find.js 가 nameEn 을 봄 · 언어판에서만)
-  for (const c of board.companies) if (c.name && !HAN.test(c.name) && c.name.length >= 4) E.set(c.name, m[c.name] ?? c.name); // 영어 이름 회사(LS ELECTRIC …)도 이름 자리({e})로 — 「LS ELECTRIC 지난 20거래일 종가」를 틀로 찾게(2026-10-07)
+  for (const c of board.companies) if (c.name && !HAN.test(c.name) && c.name.length >= 3) E.set(c.name, m[c.name] ?? c.name); // 영어 이름 회사(LS ELECTRIC …)도 이름 자리({e})로 — 「LS ELECTRIC 지난 20거래일 종가」를 틀로 찾게(2026-10-07) · 세 글자(KLA · AES)도(2026-10-07 12:08 미국 판 「오른 순 59위 KLA」가 영어 화면에 한국어로 남던 것)
   addEntities(m);
   if (typeof document !== 'undefined') translateTree(document.body);
 }

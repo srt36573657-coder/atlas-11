@@ -1,0 +1,3791 @@
+{
+ "asOf": "2026-10-07",
+ "dataAsOf": "2026-09-30",
+ "metrics": [
+  {
+   "id": "ret_10y_usd_ann",
+   "name_ko": "10년 연평균 총수익률(달러)",
+   "name_en": "10-year annualised total return (USD)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 2,
+   "korea_rank_desc": 2,
+   "note": "Net for most markets; GROSS for Hong Kong, France, Switzerland, Canada, Australia, Singapore, Malaysia (gross is higher than net by the dividend withholding tax; e.g. MSCI World 10Y gross 13.37 vs net 12.81, USA 15.30 vs 14.75, Taiwan 24.00 vs 23.16, Germany 8.16 vs 7.41 on the same date).",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 15.74,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "Taiwan",
+     "value": 23.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "USA",
+     "value": 14.75,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Japan",
+     "value": 9.57,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "China",
+     "value": 3.36,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "Hong Kong",
+     "value": 4.02,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "India",
+     "value": 7.2,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "UK",
+     "value": 8.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Germany",
+     "value": 7.41,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "France",
+     "value": 9.33,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Switzerland",
+     "value": 10.03,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Canada",
+     "value": 11.72,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Australia",
+     "value": 8.18,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Brazil",
+     "value": 7.2,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Mexico",
+     "value": 7.17,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Indonesia",
+     "value": -4.93,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Vietnam",
+     "value": 6.62,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 9.57,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "South Africa",
+     "value": 6.67,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Singapore",
+     "value": 10.48,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Netherlands",
+     "value": 14.7,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Thailand",
+     "value": 3.7,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Malaysia",
+     "value": 2.93,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "Philippines",
+     "value": -2.38,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Greece",
+     "value": 15.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "MSCI World",
+     "value": 12.81,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 9.09,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 12.38,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ],
+   "period": "2016-09-30 to 2026-09-30"
+  },
+  {
+   "id": "ret_since_2000_usd_ann",
+   "name_ko": "2000.12.29 이후 연평균 총수익률(달러)",
+   "name_en": "Annualised total return since 29 Dec 2000 (USD, net)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 13,
+   "korea_rank_better_first": 1,
+   "korea_rank_desc": 1,
+   "note": "Only markets whose net factsheet prints 'Since Dec 29, 2000' (same 25.75-year window). Longest common window available; NOT a 20-year figure.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 13.7,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "Taiwan",
+     "value": 12.24,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "USA",
+     "value": 8.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "China",
+     "value": 7.11,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "India",
+     "value": 9.71,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Germany",
+     "value": 5.27,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Brazil",
+     "value": 8.33,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Mexico",
+     "value": 9.12,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Indonesia",
+     "value": 9.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "South Africa",
+     "value": 9.1,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Thailand",
+     "value": 11.03,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Philippines",
+     "value": 5.56,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Greece",
+     "value": -4.94,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "MSCI World",
+     "value": 7.46,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 9.11,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 7.41,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ],
+   "period": "2000-12-29 to 2026-09-30"
+  },
+  {
+   "id": "ret_20y_usd_ann",
+   "name_ko": "20년 연평균 총수익률(달러)",
+   "name_en": "20-year annualised total return (USD)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "as_of": "2026-09-30",
+   "status": "확인 못 함",
+   "note": "MSCI factsheets print 1M/3M/1Y/YTD/3Y/5Y/10Y and 'Since <base date>' only; no 20-year figure. No single source with 20-year returns for all markets could be opened (MSCI index-level API and web.archive.org were not reachable from this session). See ret_since_2000_usd_ann instead.",
+   "values": []
+  },
+  {
+   "id": "ret_since_base_usd_ann",
+   "name_ko": "기준일 이후 연평균 총수익률(달러, 기준일 제각각)",
+   "name_en": "Annualised total return since the factsheet base date (USD; base dates differ)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 0,
+   "korea_rank_better_first": null,
+   "korea_rank_desc": null,
+   "note": "NOT comparable across markets: base date differs (values[].base_date). Kept for completeness only.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 13.7,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Taiwan",
+     "value": 12.24,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "USA",
+     "value": 8.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Japan",
+     "value": 3.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "China",
+     "value": 7.11,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Hong Kong",
+     "value": 9.63,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "base_date": "1987-12-31"
+    },
+    {
+     "country": "India",
+     "value": 9.71,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "UK",
+     "value": 7.1,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "Germany",
+     "value": 5.27,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "France",
+     "value": 8.73,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "base_date": "1987-12-31"
+    },
+    {
+     "country": "Switzerland",
+     "value": 9.49,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "Canada",
+     "value": 9.39,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "base_date": "1987-12-31"
+    },
+    {
+     "country": "Australia",
+     "value": 9.37,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "base_date": "1987-12-31"
+    },
+    {
+     "country": "Brazil",
+     "value": 8.33,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Mexico",
+     "value": 9.12,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Indonesia",
+     "value": 9.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Vietnam",
+     "value": 2.48,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "base_date": "2006-11-30"
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 3.67,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "base_date": "2014-08-29"
+    },
+    {
+     "country": "South Africa",
+     "value": 9.1,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Singapore",
+     "value": 6.19,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "Netherlands",
+     "value": 9.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "Thailand",
+     "value": 11.03,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Malaysia",
+     "value": 2.81,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "base_date": "1994-05-31"
+    },
+    {
+     "country": "Philippines",
+     "value": 5.56,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "base_date": "2000-12-29"
+    },
+    {
+     "country": "Greece",
+     "value": -4.94,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "base_date": "2000-12-29"
+    }
+   ]
+  },
+  {
+   "id": "ret_1y_usd",
+   "name_ko": "1년 총수익률(달러)",
+   "name_en": "1-year total return (USD)",
+   "unit": "%",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 1,
+   "korea_rank_desc": 1,
+   "note": "Variant as in ret_10y_usd_ann.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 151.66,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "Taiwan",
+     "value": 87.92,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "USA",
+     "value": 14.96,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Japan",
+     "value": 26.64,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "China",
+     "value": -18.37,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Hong Kong",
+     "value": 7.99,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "India",
+     "value": -10.87,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "UK",
+     "value": 15.79,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "Germany",
+     "value": 2.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "France",
+     "value": 1.2,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "Switzerland",
+     "value": 12.36,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Canada",
+     "value": 18.03,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Australia",
+     "value": 9.29,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Brazil",
+     "value": 26.53,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Mexico",
+     "value": 10.95,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Indonesia",
+     "value": -37.05,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Vietnam",
+     "value": 14.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": -3.66,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "South Africa",
+     "value": 9.32,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "Singapore",
+     "value": 24.86,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Netherlands",
+     "value": 37.41,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Thailand",
+     "value": 24.65,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Malaysia",
+     "value": 11.09,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "Philippines",
+     "value": -0.84,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Greece",
+     "value": 32.34,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "MSCI World",
+     "value": 15.24,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 29.22,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 16.75,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ],
+   "period": "2025-09-30 to 2026-09-30"
+  },
+  {
+   "id": "ret_3y_usd_ann",
+   "name_ko": "3년 연평균 총수익률(달러)",
+   "name_en": "3-year annualised total return (USD)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 2,
+   "korea_rank_desc": 2,
+   "note": "Variant as in ret_10y_usd_ann.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 51.65,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "Taiwan",
+     "value": 55.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "USA",
+     "value": 22.45,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Japan",
+     "value": 21.44,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "China",
+     "value": 9.76,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Hong Kong",
+     "value": 13.8,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "India",
+     "value": 2.8,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "UK",
+     "value": 18.89,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Germany",
+     "value": 19.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "France",
+     "value": 10.07,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "Switzerland",
+     "value": 14.55,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Canada",
+     "value": 23.62,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Australia",
+     "value": 13.98,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Brazil",
+     "value": 13.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Mexico",
+     "value": 12.41,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Indonesia",
+     "value": -19.62,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Vietnam",
+     "value": 16.83,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 2.7,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "South Africa",
+     "value": 26.94,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Singapore",
+     "value": 31.27,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Netherlands",
+     "value": 30.19,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Thailand",
+     "value": 10.12,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "Malaysia",
+     "value": 14.39,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "Philippines",
+     "value": 0.34,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Greece",
+     "value": 43.03,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "MSCI World",
+     "value": 21.4,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 24.09,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 21.73,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ],
+   "period": "2023-09-30 to 2026-09-30"
+  },
+  {
+   "id": "ret_5y_usd_ann",
+   "name_ko": "5년 연평균 총수익률(달러)",
+   "name_en": "5-year annualised total return (USD)",
+   "unit": "% per year",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 3,
+   "korea_rank_desc": 3,
+   "note": "Variant as in ret_10y_usd_ann.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 21.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Taiwan",
+     "value": 25.87,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "USA",
+     "value": 12.86,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Japan",
+     "value": 9.78,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "China",
+     "value": -2.1,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "Hong Kong",
+     "value": 2.23,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "India",
+     "value": 1.5,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "UK",
+     "value": 12.51,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Germany",
+     "value": 7.57,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "France",
+     "value": 6.69,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "Switzerland",
+     "value": 8.2,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Canada",
+     "value": 13.23,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Australia",
+     "value": 7.42,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Brazil",
+     "value": 11.99,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Mexico",
+     "value": 11.93,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "Indonesia",
+     "value": -9.63,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Vietnam",
+     "value": 0.02,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 0.76,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "South Africa",
+     "value": 12.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Singapore",
+     "value": 14.43,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Netherlands",
+     "value": 11.62,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Thailand",
+     "value": 4.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Malaysia",
+     "value": 5.79,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Philippines",
+     "value": -2.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Greece",
+     "value": 30.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "MSCI World",
+     "value": 11.89,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 8.94,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 11.57,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ],
+   "period": "2021-09-30 to 2026-09-30"
+  },
+  {
+   "id": "pe_trailing",
+   "name_ko": "주가수익비율(PER, 지난 12개월 이익 기준)",
+   "name_en": "P/E (trailing)",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 3,
+   "korea_rank_desc": 23,
+   "note": "'worse' here only means 'higher = pricier per unit of earnings'; not a quality judgement.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 10.25,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 23
+    },
+    {
+     "country": "Taiwan",
+     "value": 29.51,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 24,
+     "rank_desc": 2
+    },
+    {
+     "country": "USA",
+     "value": 25.37,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 3
+    },
+    {
+     "country": "Japan",
+     "value": 19.42,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 18,
+     "rank_desc": 8
+    },
+    {
+     "country": "China",
+     "value": 13.03,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 19
+    },
+    {
+     "country": "Hong Kong",
+     "value": 14.07,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 11,
+     "rank_desc": 15
+    },
+    {
+     "country": "India",
+     "value": 22.0,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 22,
+     "rank_desc": 4
+    },
+    {
+     "country": "UK",
+     "value": 14.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 10,
+     "rank_desc": 16
+    },
+    {
+     "country": "Germany",
+     "value": 15.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "France",
+     "value": 16.96,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 14,
+     "rank_desc": 12
+    },
+    {
+     "country": "Switzerland",
+     "value": 20.27,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 21,
+     "rank_desc": 5
+    },
+    {
+     "country": "Canada",
+     "value": 19.55,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 7
+    },
+    {
+     "country": "Australia",
+     "value": 19.16,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 9
+    },
+    {
+     "country": "Brazil",
+     "value": 9.66,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 1,
+     "rank_desc": 25
+    },
+    {
+     "country": "Mexico",
+     "value": 13.96,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 17
+    },
+    {
+     "country": "Indonesia",
+     "value": 9.9,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 2,
+     "rank_desc": 24
+    },
+    {
+     "country": "Vietnam",
+     "value": 17.19,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 15,
+     "rank_desc": 11
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 14.24,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 12,
+     "rank_desc": 14
+    },
+    {
+     "country": "South Africa",
+     "value": 10.87,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 21
+    },
+    {
+     "country": "Singapore",
+     "value": 19.86,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 6
+    },
+    {
+     "country": "Netherlands",
+     "value": 31.81,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 25,
+     "rank_desc": 1
+    },
+    {
+     "country": "Thailand",
+     "value": 17.77,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 16,
+     "rank_desc": 10
+    },
+    {
+     "country": "Malaysia",
+     "value": 13.59,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 18
+    },
+    {
+     "country": "Philippines",
+     "value": 10.49,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 4,
+     "rank_desc": 22
+    },
+    {
+     "country": "Greece",
+     "value": 12.66,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 20
+    },
+    {
+     "country": "MSCI World",
+     "value": 22.69,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 14.9,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 21.35,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "pe_forward",
+   "name_ko": "예상 주가수익비율(앞으로 12개월 예상이익 기준)",
+   "name_en": "P/E (forward)",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 24,
+   "korea_rank_better_first": 1,
+   "korea_rank_desc": 24,
+   "note": "Forward = consensus 12-month-forward earnings as used by MSCI. Vietnam factsheet prints 'na'.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 4.95,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 24
+    },
+    {
+     "country": "Taiwan",
+     "value": 18.65,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 3
+    },
+    {
+     "country": "USA",
+     "value": 19.38,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 2
+    },
+    {
+     "country": "Japan",
+     "value": 15.63,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 15,
+     "rank_desc": 10
+    },
+    {
+     "country": "China",
+     "value": 10.15,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 19
+    },
+    {
+     "country": "Hong Kong",
+     "value": 13.77,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 13,
+     "rank_desc": 12
+    },
+    {
+     "country": "India",
+     "value": 18.61,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 21,
+     "rank_desc": 4
+    },
+    {
+     "country": "UK",
+     "value": 12.12,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 9,
+     "rank_desc": 16
+    },
+    {
+     "country": "Germany",
+     "value": 14.04,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 14,
+     "rank_desc": 11
+    },
+    {
+     "country": "France",
+     "value": 13.41,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 14
+    },
+    {
+     "country": "Switzerland",
+     "value": 17.02,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 7
+    },
+    {
+     "country": "Canada",
+     "value": 15.68,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 16,
+     "rank_desc": 9
+    },
+    {
+     "country": "Australia",
+     "value": 18.05,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 5
+    },
+    {
+     "country": "Brazil",
+     "value": 8.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 2,
+     "rank_desc": 22
+    },
+    {
+     "country": "Mexico",
+     "value": 11.86,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 17
+    },
+    {
+     "country": "Indonesia",
+     "value": 8.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 2,
+     "rank_desc": 22
+    },
+    {
+     "country": "Vietnam",
+     "value": null,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "status": "확인 못 함 (factsheet shows 'na')"
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 12.96,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 10,
+     "rank_desc": 15
+    },
+    {
+     "country": "South Africa",
+     "value": 8.66,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 21
+    },
+    {
+     "country": "Singapore",
+     "value": 17.34,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 6
+    },
+    {
+     "country": "Netherlands",
+     "value": 20.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 24,
+     "rank_desc": 1
+    },
+    {
+     "country": "Thailand",
+     "value": 16.41,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 17,
+     "rank_desc": 8
+    },
+    {
+     "country": "Malaysia",
+     "value": 13.42,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 12,
+     "rank_desc": 13
+    },
+    {
+     "country": "Philippines",
+     "value": 9.59,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 5,
+     "rank_desc": 20
+    },
+    {
+     "country": "Greece",
+     "value": 11.12,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 18
+    },
+    {
+     "country": "MSCI World",
+     "value": 17.92,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 9.72,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 16.28,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "pb",
+   "name_ko": "주가순자산비율(PBR)",
+   "name_en": "Price/Book (P/BV)",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 15,
+   "korea_rank_desc": 11,
+   "note": "'worse' only means 'higher = pricier per unit of book value'.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 2.29,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 11
+    },
+    {
+     "country": "Taiwan",
+     "value": 5.99,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 25,
+     "rank_desc": 1
+    },
+    {
+     "country": "USA",
+     "value": 5.65,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 24,
+     "rank_desc": 2
+    },
+    {
+     "country": "Japan",
+     "value": 2.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 9,
+     "rank_desc": 17
+    },
+    {
+     "country": "China",
+     "value": 1.38,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 24
+    },
+    {
+     "country": "Hong Kong",
+     "value": 1.22,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 1,
+     "rank_desc": 25
+    },
+    {
+     "country": "India",
+     "value": 3.1,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 21,
+     "rank_desc": 5
+    },
+    {
+     "country": "UK",
+     "value": 2.32,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 16,
+     "rank_desc": 9
+    },
+    {
+     "country": "Germany",
+     "value": 1.9,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 8,
+     "rank_desc": 18
+    },
+    {
+     "country": "France",
+     "value": 2.03,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 10,
+     "rank_desc": 16
+    },
+    {
+     "country": "Switzerland",
+     "value": 4.24,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 4
+    },
+    {
+     "country": "Canada",
+     "value": 2.73,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 6
+    },
+    {
+     "country": "Australia",
+     "value": 2.68,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 7
+    },
+    {
+     "country": "Brazil",
+     "value": 1.86,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 7,
+     "rank_desc": 19
+    },
+    {
+     "country": "Mexico",
+     "value": 2.32,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 16,
+     "rank_desc": 9
+    },
+    {
+     "country": "Indonesia",
+     "value": 1.57,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 4,
+     "rank_desc": 22
+    },
+    {
+     "country": "Vietnam",
+     "value": 2.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 13,
+     "rank_desc": 12
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 2.04,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 11,
+     "rank_desc": 15
+    },
+    {
+     "country": "South Africa",
+     "value": 2.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 12
+    },
+    {
+     "country": "Singapore",
+     "value": 2.33,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 8
+    },
+    {
+     "country": "Netherlands",
+     "value": 4.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 23,
+     "rank_desc": 3
+    },
+    {
+     "country": "Thailand",
+     "value": 2.09,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 12,
+     "rank_desc": 14
+    },
+    {
+     "country": "Malaysia",
+     "value": 1.53,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 23
+    },
+    {
+     "country": "Philippines",
+     "value": 1.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 5,
+     "rank_desc": 21
+    },
+    {
+     "country": "Greece",
+     "value": 1.75,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 20
+    },
+    {
+     "country": "MSCI World",
+     "value": 4.1,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 2.39,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 3.77,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "dividend_yield",
+   "name_ko": "배당수익률",
+   "name_en": "Dividend yield",
+   "unit": "%",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 25,
+   "korea_rank_desc": 25,
+   "note": "Index dividend yield printed on the factsheet.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 0.81,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Taiwan",
+     "value": 1.36,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "USA",
+     "value": 1.11,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Japan",
+     "value": 1.84,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "China",
+     "value": 2.43,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Hong Kong",
+     "value": 3.83,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "India",
+     "value": 1.34,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "UK",
+     "value": 3.17,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Germany",
+     "value": 2.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "France",
+     "value": 3.2,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Switzerland",
+     "value": 2.78,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Canada",
+     "value": 2.19,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Australia",
+     "value": 3.58,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Brazil",
+     "value": 5.31,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "Mexico",
+     "value": 4.2,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Indonesia",
+     "value": 8.29,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "Vietnam",
+     "value": 1.76,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 4.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "South Africa",
+     "value": 4.28,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Singapore",
+     "value": 3.0,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Netherlands",
+     "value": 1.44,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Thailand",
+     "value": 3.39,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "Malaysia",
+     "value": 4.07,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Philippines",
+     "value": 3.48,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Greece",
+     "value": 2.92,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "MSCI World",
+     "value": 1.52,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 2.02,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 1.58,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "msci_index_mcap",
+   "name_ko": "MSCI 지수 시가총액(유동주식 기준)",
+   "name_en": "MSCI index market cap (free-float adjusted)",
+   "unit": "USD millions",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 6,
+   "korea_rank_desc": 6,
+   "note": "Only index constituents, free-float adjusted (what foreign index investors can hold). MSCI China includes only part of China A-shares, so it understates China's total market.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 2627801.53,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Taiwan",
+     "value": 3554551.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "USA",
+     "value": 65944706.56,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "Japan",
+     "value": 5345043.59,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "China",
+     "value": 2432403.98,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Hong Kong",
+     "value": 390000.72,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "India",
+     "value": 1308247.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "UK",
+     "value": 3085002.33,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Germany",
+     "value": 1862962.76,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "France",
+     "value": 2024229.72,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Switzerland",
+     "value": 1937174.75,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Canada",
+     "value": 2977354.08,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Australia",
+     "value": 1383427.89,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Brazil",
+     "value": 501985.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "Mexico",
+     "value": 192097.69,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "Indonesia",
+     "value": 53355.81,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Vietnam",
+     "value": 63380.14,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 282726.38,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "South Africa",
+     "value": 359214.21,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Singapore",
+     "value": 401656.86,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Netherlands",
+     "value": 1292545.18,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Thailand",
+     "value": 112372.76,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "Malaysia",
+     "value": 108699.45,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Philippines",
+     "value": 30500.43,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Greece",
+     "value": 76597.74,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "MSCI World",
+     "value": 90414368.77,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 102696209.96,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "std_dev_10y",
+   "name_ko": "10년 변동성(연율 표준편차)",
+   "name_en": "10-year annualised standard deviation",
+   "unit": "% per year",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 25,
+   "korea_rank_desc": 1,
+   "note": "From 'Index risk and return characteristics'. Gross/net variant as factsheet.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 32.71,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 25,
+     "rank_desc": 1
+    },
+    {
+     "country": "Taiwan",
+     "value": 23.75,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 7
+    },
+    {
+     "country": "USA",
+     "value": 15.59,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 21
+    },
+    {
+     "country": "Japan",
+     "value": 14.27,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 1,
+     "rank_desc": 25
+    },
+    {
+     "country": "China",
+     "value": 23.94,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 20,
+     "rank_desc": 6
+    },
+    {
+     "country": "Hong Kong",
+     "value": 20.04,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "India",
+     "value": 19.27,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 10,
+     "rank_desc": 16
+    },
+    {
+     "country": "UK",
+     "value": 15.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 4,
+     "rank_desc": 22
+    },
+    {
+     "country": "Germany",
+     "value": 19.6,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 11,
+     "rank_desc": 15
+    },
+    {
+     "country": "France",
+     "value": 18.42,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 17
+    },
+    {
+     "country": "Switzerland",
+     "value": 14.77,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 23
+    },
+    {
+     "country": "Canada",
+     "value": 17.23,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 6,
+     "rank_desc": 20
+    },
+    {
+     "country": "Australia",
+     "value": 19.67,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 12,
+     "rank_desc": 14
+    },
+    {
+     "country": "Brazil",
+     "value": 30.77,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 24,
+     "rank_desc": 2
+    },
+    {
+     "country": "Mexico",
+     "value": 24.01,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 21,
+     "rank_desc": 5
+    },
+    {
+     "country": "Indonesia",
+     "value": 22.03,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 17,
+     "rank_desc": 9
+    },
+    {
+     "country": "Vietnam",
+     "value": 23.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 18,
+     "rank_desc": 8
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 17.62,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 7,
+     "rank_desc": 19
+    },
+    {
+     "country": "South Africa",
+     "value": 25.06,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 4
+    },
+    {
+     "country": "Singapore",
+     "value": 17.63,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 18
+    },
+    {
+     "country": "Netherlands",
+     "value": 21.28,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 15,
+     "rank_desc": 11
+    },
+    {
+     "country": "Thailand",
+     "value": 21.58,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 16,
+     "rank_desc": 10
+    },
+    {
+     "country": "Malaysia",
+     "value": 14.33,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 24
+    },
+    {
+     "country": "Philippines",
+     "value": 20.53,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 14,
+     "rank_desc": 12
+    },
+    {
+     "country": "Greece",
+     "value": 28.25,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 3
+    },
+    {
+     "country": "MSCI World",
+     "value": 14.88,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 17.46,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 14.73,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "sharpe_10y",
+   "name_ko": "10년 샤프지수(위험 대비 수익)",
+   "name_en": "10-year Sharpe ratio",
+   "unit": "ratio",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 8,
+   "korea_rank_desc": 8,
+   "note": "MSCI Emerging Markets 10Y Sharpe reads 0.43 on the EM and Taiwan factsheets but 0.45 on the World and Korea factsheets; 0.43 kept.",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 0.53,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Taiwan",
+     "value": 0.9,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "USA",
+     "value": 0.81,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "Japan",
+     "value": 0.54,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "China",
+     "value": 0.15,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "Hong Kong",
+     "value": 0.17,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "India",
+     "value": 0.33,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "UK",
+     "value": 0.45,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Germany",
+     "value": 0.34,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "France",
+     "value": 0.44,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "Switzerland",
+     "value": 0.56,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Canada",
+     "value": 0.59,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "Australia",
+     "value": 0.38,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Brazil",
+     "value": 0.31,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "Mexico",
+     "value": 0.31,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "Indonesia",
+     "value": -0.23,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 25,
+     "rank_desc": 25
+    },
+    {
+     "country": "Vietnam",
+     "value": 0.29,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 0.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "South Africa",
+     "value": 0.29,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Singapore",
+     "value": 0.52,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Netherlands",
+     "value": 0.64,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Thailand",
+     "value": 0.16,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Malaysia",
+     "value": 0.1,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 23,
+     "rank_desc": 23
+    },
+    {
+     "country": "Philippines",
+     "value": -0.13,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 24,
+     "rank_desc": 24
+    },
+    {
+     "country": "Greece",
+     "value": 0.56,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "MSCI World",
+     "value": 0.72,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-world-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI Emerging Markets",
+     "value": 0.43,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf"
+    },
+    {
+     "country": "MSCI ACWI",
+     "value": 0.7,
+     "variant": "net",
+     "benchmark": true,
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+    }
+   ]
+  },
+  {
+   "id": "top_constituent_weight",
+   "name_ko": "1위 종목 비중",
+   "name_en": "Largest constituent weight",
+   "unit": "% of index",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "source_note": "MSCI index factsheets, one PDF per market (see values[].source_url); USD; 'variant' = net or gross total return as printed on that factsheet",
+   "as_of": "2026-09-30",
+   "n_ranked": 25,
+   "korea_rank_better_first": 22,
+   "korea_rank_desc": 4,
+   "note": "Concentration. Korea: Samsung Electronics 35.31% + SK Hynix 27.58% (+ Samsung pref 4.40%) = top two names 62.89% of MSCI Korea; IT sector 71.30% (2026-09-30).",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 35.31,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+     "rank_better_first": 22,
+     "rank_desc": 4,
+     "constituent": "Samsung Electronics"
+    },
+    {
+     "country": "Taiwan",
+     "value": 54.0,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-taiwan-index-net.pdf",
+     "rank_better_first": 24,
+     "rank_desc": 2,
+     "constituent": "TSMC"
+    },
+    {
+     "country": "USA",
+     "value": 7.96,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-usa-index-net.pdf",
+     "rank_better_first": 3,
+     "rank_desc": 23,
+     "constituent": "NVIDIA"
+    },
+    {
+     "country": "Japan",
+     "value": 4.71,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/7c88aa58-4d51-492b-8802-e43962611fb1",
+     "rank_better_first": 1,
+     "rank_desc": 25,
+     "constituent": "Mitsubishi UFJ Financial Group"
+    },
+    {
+     "country": "China",
+     "value": 13.86,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-china-index-usd-net.pdf",
+     "rank_better_first": 10,
+     "rank_desc": 16,
+     "constituent": "Tencent Holdings"
+    },
+    {
+     "country": "Hong Kong",
+     "value": 24.88,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/e2bd22fb-45de-4611-a6e3-636613772c20",
+     "rank_better_first": 18,
+     "rank_desc": 8,
+     "constituent": "AIA Group"
+    },
+    {
+     "country": "India",
+     "value": 6.44,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/df722a4b-b46c-4e25-9cdd-2b555e2d3cb8",
+     "rank_better_first": 2,
+     "rank_desc": 24,
+     "constituent": "HDFC Bank"
+    },
+    {
+     "country": "UK",
+     "value": 11.08,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/e591511b-2cde-49d7-bbcd-d5e39f7e4101",
+     "rank_better_first": 7,
+     "rank_desc": 19,
+     "constituent": "HSBC Holdings"
+    },
+    {
+     "country": "Germany",
+     "value": 12.15,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/d76361cb-d5a5-4185-97ce-ec5e3dd5bf2e",
+     "rank_better_first": 8,
+     "rank_desc": 18,
+     "constituent": "Siemens"
+    },
+    {
+     "country": "France",
+     "value": 9.01,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-france-index.pdf",
+     "rank_better_first": 4,
+     "rank_desc": 22,
+     "constituent": "Schneider Electric"
+    },
+    {
+     "country": "Switzerland",
+     "value": 15.16,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-switzerland-index.pdf",
+     "rank_better_first": 11,
+     "rank_desc": 15,
+     "constituent": "Roche Holding"
+    },
+    {
+     "country": "Canada",
+     "value": 9.18,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-canada-index-gross-usd.pdf",
+     "rank_better_first": 5,
+     "rank_desc": 21,
+     "constituent": "Royal Bank of Canada"
+    },
+    {
+     "country": "Australia",
+     "value": 15.54,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-australia-index.pdf",
+     "rank_better_first": 13,
+     "rank_desc": 13,
+     "constituent": "BHP Group"
+    },
+    {
+     "country": "Brazil",
+     "value": 9.86,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/efef068e-d252-4e75-8142-2c8b8f441759",
+     "rank_better_first": 6,
+     "rank_desc": 20,
+     "constituent": "Vale"
+    },
+    {
+     "country": "Mexico",
+     "value": 19.22,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-mexico-index-usd-net.pdf",
+     "rank_better_first": 15,
+     "rank_desc": 11,
+     "constituent": "Grupo Mexico"
+    },
+    {
+     "country": "Indonesia",
+     "value": 31.41,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/fc7b1260-9c5d-4b80-b6aa-fadeb7c6acb0",
+     "rank_better_first": 20,
+     "rank_desc": 6,
+     "constituent": "Bank Central Asia"
+    },
+    {
+     "country": "Vietnam",
+     "value": 32.02,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/303f31aa-386a-4322-88d9-cf566e7de678",
+     "rank_better_first": 21,
+     "rank_desc": 5,
+     "constituent": "Vingroup"
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 17.53,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/2cac2742-11e3-4ecb-8884-149b0ac03481",
+     "rank_better_first": 14,
+     "rank_desc": 12,
+     "constituent": "Al Rajhi Banking & Inv"
+    },
+    {
+     "country": "South Africa",
+     "value": 13.19,
+     "variant": "net",
+     "source_url": "https://www.msci.com/resources/factsheets/index_fact_sheet/msci-south-africa-net-usd.pdf",
+     "rank_better_first": 9,
+     "rank_desc": 17,
+     "constituent": "AngloGold Ashanti"
+    },
+    {
+     "country": "Singapore",
+     "value": 31.15,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-singapore-index.pdf",
+     "rank_better_first": 19,
+     "rank_desc": 7,
+     "constituent": "DBS Group"
+    },
+    {
+     "country": "Netherlands",
+     "value": 54.47,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/483043cf-b626-4e82-b02d-57a947e728a3",
+     "rank_better_first": 25,
+     "rank_desc": 1,
+     "constituent": "ASML"
+    },
+    {
+     "country": "Thailand",
+     "value": 21.34,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/5cf69d06-765d-48ff-a220-0b467773fd38",
+     "rank_better_first": 16,
+     "rank_desc": 10,
+     "constituent": "Delta Electronics Thai"
+    },
+    {
+     "country": "Malaysia",
+     "value": 15.43,
+     "variant": "gross",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-malaysia-index.pdf",
+     "rank_better_first": 12,
+     "rank_desc": 14,
+     "constituent": "Public Bank"
+    },
+    {
+     "country": "Philippines",
+     "value": 44.73,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/c633e646-9b30-493e-9588-12c08a659acb",
+     "rank_better_first": 23,
+     "rank_desc": 3,
+     "constituent": "ICTSI"
+    },
+    {
+     "country": "Greece",
+     "value": 21.79,
+     "variant": "net",
+     "source_url": "https://www.msci.com/documents/10199/255599/msci-greece-index-usd-net.pdf",
+     "rank_better_first": 17,
+     "rank_desc": 9,
+     "constituent": "National Bank of Greece"
+    }
+   ]
+  },
+  {
+   "id": "msci_classification",
+   "name_ko": "MSCI 시장 분류",
+   "name_en": "MSCI market classification",
+   "unit": "category (DM/EM/FM)",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/downloads/web/msci-com/indexes/index-resources/market-classification/MSCI%202026%20GLOBAL%20MARKET%20ACCESSIBILITY%20REVIEW%20REPORT.pdf",
+   "source_note": "DM list printed on MSCI World factsheet (23 DM), EM list on MSCI EM factsheet (24 EM), Vietnam under 'Frontier Markets - Asia Pacific' in MSCI 2026 Global Market Accessibility Review (June 2026)",
+   "as_of": "2026-09-30",
+   "note": "Categorical (DM = Developed, EM = Emerging, FM = Frontier); 'higher_is' is not meaningful here.",
+   "korea_statement": {
+    "date": "2026-06-23",
+    "url": "https://ir.msci.com/news-releases/news-release-details/msci-announces-results-msci-2026-market-classification-review",
+    "summary_en": "No reclassification consultation for Korea; not on DM watch list. MSCI: 'The Korean won is not deliverable offshore. Even more concerning, onshore liquidity during the extended FX trading hours remains largely insufficient...'; omnibus accounts and in-kind transfers little used; heavy operational burden after short-selling ban was lifted; early pre-settlement funding burden. 'MSCI will continue to monitor implementation...'"
+   },
+   "values": [
+    {
+     "country": "Korea",
+     "value": "EM"
+    },
+    {
+     "country": "Taiwan",
+     "value": "EM"
+    },
+    {
+     "country": "USA",
+     "value": "DM"
+    },
+    {
+     "country": "Japan",
+     "value": "DM"
+    },
+    {
+     "country": "China",
+     "value": "EM"
+    },
+    {
+     "country": "Hong Kong",
+     "value": "DM"
+    },
+    {
+     "country": "India",
+     "value": "EM"
+    },
+    {
+     "country": "UK",
+     "value": "DM"
+    },
+    {
+     "country": "Germany",
+     "value": "DM"
+    },
+    {
+     "country": "France",
+     "value": "DM"
+    },
+    {
+     "country": "Switzerland",
+     "value": "DM"
+    },
+    {
+     "country": "Canada",
+     "value": "DM"
+    },
+    {
+     "country": "Australia",
+     "value": "DM"
+    },
+    {
+     "country": "Brazil",
+     "value": "EM"
+    },
+    {
+     "country": "Mexico",
+     "value": "EM"
+    },
+    {
+     "country": "Indonesia",
+     "value": "EM",
+     "note": "MSCI 2026 review flagged shareholder-transparency concerns; possible consultation if no credible progress by Nov 2026 review"
+    },
+    {
+     "country": "Vietnam",
+     "value": "FM"
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": "EM"
+    },
+    {
+     "country": "South Africa",
+     "value": "EM"
+    },
+    {
+     "country": "Singapore",
+     "value": "DM"
+    },
+    {
+     "country": "Netherlands",
+     "value": "DM"
+    },
+    {
+     "country": "Thailand",
+     "value": "EM"
+    },
+    {
+     "country": "Malaysia",
+     "value": "EM"
+    },
+    {
+     "country": "Philippines",
+     "value": "EM"
+    },
+    {
+     "country": "Greece",
+     "value": "EM",
+     "note": "EM now; MSCI 2026 review (2026-06-23) reclassifies Greece to DM effective May 2027 Index Review"
+    }
+   ]
+  },
+  {
+   "id": "mktcap_domestic_wfe",
+   "name_ko": "상장 국내기업 시가총액(거래소 합계)",
+   "name_en": "Domestic market capitalisation of listed companies (WFE, by exchange mapped to country)",
+   "unit": "USD millions",
+   "higher_is": "better",
+   "source_url": "https://focus.world-exchanges.org/issue/september-2026/market-statistics",
+   "as_of": "2026-07-31",
+   "n_ranked": 22,
+   "korea_rank_better_first": 8,
+   "korea_rank_desc": 8,
+   "note": "WFE Focus market statistics table 'Equity - Domestic market capitalisation (USD millions)', column Jul'26. Korea Exchange was 4,986,040.36 in May'26 and 3,111,037.77 in Mar'26, so the rank moves month to month. Korea Exchange change Jul'26/Jul'25: +83.6% in USD.",
+   "values": [
+    {
+     "country": "USA",
+     "value": 76031416.94,
+     "exchanges": "NYSE 33,550,090.49 + Nasdaq-US 42,481,326.45",
+     "rank_better_first": 1,
+     "rank_desc": 1
+    },
+    {
+     "country": "China",
+     "value": 16257721.66,
+     "exchanges": "Shanghai 9,966,589.93 + Shenzhen 6,291,131.73 (Beijing SE not in table)",
+     "rank_better_first": 2,
+     "rank_desc": 2
+    },
+    {
+     "country": "Japan",
+     "value": 8560330.74,
+     "exchanges": "Japan Exchange Group",
+     "rank_better_first": 3,
+     "rank_desc": 3
+    },
+    {
+     "country": "Hong Kong",
+     "value": 5972829.68,
+     "exchanges": "HKEX (includes mainland firms listed in HK)",
+     "rank_better_first": 4,
+     "rank_desc": 4
+    },
+    {
+     "country": "India",
+     "value": 5087730.32,
+     "exchanges": "BSE 5,087,730.32 (NSE 4,822,027.26; same companies largely, not summed)",
+     "rank_better_first": 5,
+     "rank_desc": 5
+    },
+    {
+     "country": "Canada",
+     "value": 5021712.05,
+     "exchanges": "TMX Group",
+     "rank_better_first": 6,
+     "rank_desc": 6
+    },
+    {
+     "country": "Taiwan",
+     "value": 4649919.42,
+     "exchanges": "TWSE 4,360,219.77 + TPEx 289,699.65",
+     "rank_better_first": 7,
+     "rank_desc": 7
+    },
+    {
+     "country": "Korea",
+     "value": 4042004.88,
+     "exchanges": "Korea Exchange (KOSPI+KOSDAQ)",
+     "rank_better_first": 8,
+     "rank_desc": 8
+    },
+    {
+     "country": "Germany",
+     "value": 2856210.23,
+     "exchanges": "Deutsche Boerse",
+     "rank_better_first": 9,
+     "rank_desc": 9
+    },
+    {
+     "country": "Switzerland",
+     "value": 2746092.03,
+     "exchanges": "SIX Swiss Exchange",
+     "rank_better_first": 10,
+     "rank_desc": 10
+    },
+    {
+     "country": "Saudi Arabia",
+     "value": 2521780.38,
+     "exchanges": "Saudi Exchange (Tadawul)",
+     "rank_better_first": 11,
+     "rank_desc": 11
+    },
+    {
+     "country": "Australia",
+     "value": 2227036.31,
+     "exchanges": "ASX",
+     "rank_better_first": 12,
+     "rank_desc": 12
+    },
+    {
+     "country": "South Africa",
+     "value": 1485471.64,
+     "exchanges": "JSE",
+     "rank_better_first": 13,
+     "rank_desc": 13
+    },
+    {
+     "country": "Brazil",
+     "value": 1000773.52,
+     "exchanges": "B3",
+     "rank_better_first": 14,
+     "rank_desc": 14
+    },
+    {
+     "country": "Singapore",
+     "value": 937071.17,
+     "exchanges": "SGX",
+     "rank_better_first": 15,
+     "rank_desc": 15
+    },
+    {
+     "country": "Thailand",
+     "value": 620504.69,
+     "exchanges": "SET",
+     "rank_better_first": 16,
+     "rank_desc": 16
+    },
+    {
+     "country": "Indonesia",
+     "value": 605962.03,
+     "exchanges": "IDX",
+     "rank_better_first": 17,
+     "rank_desc": 17
+    },
+    {
+     "country": "Mexico",
+     "value": 601124.05,
+     "exchanges": "BMV",
+     "rank_better_first": 18,
+     "rank_desc": 18
+    },
+    {
+     "country": "Malaysia",
+     "value": 510528.79,
+     "exchanges": "Bursa Malaysia",
+     "rank_better_first": 19,
+     "rank_desc": 19
+    },
+    {
+     "country": "Vietnam",
+     "value": 312722.02,
+     "exchanges": "Hochiminh SE only (Hanoi SE not in table)",
+     "rank_better_first": 20,
+     "rank_desc": 20
+    },
+    {
+     "country": "Philippines",
+     "value": 217634.47,
+     "exchanges": "PSE",
+     "rank_better_first": 21,
+     "rank_desc": 21
+    },
+    {
+     "country": "Greece",
+     "value": 162543.96,
+     "exchanges": "Athens Stock Exchange",
+     "rank_better_first": 22,
+     "rank_desc": 22
+    },
+    {
+     "country": "UK",
+     "value": null,
+     "status": "확인 못 함 (no London Stock Exchange row in WFE table)"
+    },
+    {
+     "country": "France",
+     "value": null,
+     "status": "확인 못 함 (Euronext 8,392,713.71 covers several countries; not split)"
+    },
+    {
+     "country": "Netherlands",
+     "value": null,
+     "status": "확인 못 함 (part of Euronext)"
+    }
+   ]
+  },
+  {
+   "id": "msci_em_country_weight",
+   "name_ko": "MSCI 신흥국 지수 안 나라별 비중",
+   "name_en": "Country weight in MSCI Emerging Markets Index",
+   "unit": "% of index",
+   "higher_is": "better",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-emerging-markets-index-usd-net.pdf",
+   "as_of": "2026-09-30",
+   "korea_rank_desc": 2,
+   "n_ranked": 5,
+   "note": "Size only (larger share), not a quality judgement. Only the top five are printed; the rest is 'Other'.",
+   "values": [
+    {
+     "country": "Taiwan",
+     "value": 28.94
+    },
+    {
+     "country": "Korea",
+     "value": 21.4
+    },
+    {
+     "country": "China",
+     "value": 19.8
+    },
+    {
+     "country": "India",
+     "value": 10.65
+    },
+    {
+     "country": "Brazil",
+     "value": 4.09
+    },
+    {
+     "country": "Other",
+     "value": 15.12
+    }
+   ]
+  },
+  {
+   "id": "acga_cg_watch_2023",
+   "name_ko": "아시아 기업지배구조 평가 점수(ACGA CG Watch 2023)",
+   "name_en": "ACGA CG Watch 2023 market score",
+   "unit": "% (total score)",
+   "higher_is": "better",
+   "source_url": "https://www.clsa.com/wp-content/uploads/2024/03/CG-Watch-2023-Overview-A-new-order_-Biggest-ranking-reshuffle-in-20-years-20231213.pdf",
+   "as_of": "2023-12-13",
+   "n_ranked": 12,
+   "korea_rank_better_first": 8,
+   "korea_rank_desc": 8,
+   "note": "Latest edition found (ACGA/CLSA, published 13 Dec 2023; Korea chapter 10 Jun 2024). Covers 12 Asia-Pacific markets only. Korea 8th (2020: 9th), +4.2 ppt. Ties are ACGA's own (=3, =6).",
+   "values": [
+    {
+     "country": "Australia",
+     "value": 75.2,
+     "official_rank": "1",
+     "score_2020": 74.7
+    },
+    {
+     "country": "Japan",
+     "value": 64.6,
+     "official_rank": "2",
+     "score_2020": 59.3
+    },
+    {
+     "country": "Singapore",
+     "value": 62.9,
+     "official_rank": "=3",
+     "score_2020": 63.2
+    },
+    {
+     "country": "Taiwan",
+     "value": 62.8,
+     "official_rank": "=3",
+     "score_2020": 62.2
+    },
+    {
+     "country": "Malaysia",
+     "value": 61.5,
+     "official_rank": "5",
+     "score_2020": 59.5
+    },
+    {
+     "country": "Hong Kong",
+     "value": 59.3,
+     "official_rank": "=6",
+     "score_2020": 63.5
+    },
+    {
+     "country": "India",
+     "value": 59.4,
+     "official_rank": "=6",
+     "score_2020": 58.2
+    },
+    {
+     "country": "Korea",
+     "value": 57.1,
+     "official_rank": "8",
+     "score_2020": 52.9
+    },
+    {
+     "country": "Thailand",
+     "value": 53.9,
+     "official_rank": "9",
+     "score_2020": 56.6
+    },
+    {
+     "country": "China",
+     "value": 43.7,
+     "official_rank": "10",
+     "score_2020": 43.0
+    },
+    {
+     "country": "Philippines",
+     "value": 37.6,
+     "official_rank": "11",
+     "score_2020": 39.0
+    },
+    {
+     "country": "Indonesia",
+     "value": 35.7,
+     "official_rank": "12",
+     "score_2020": 33.6
+    }
+   ]
+  },
+  {
+   "id": "kd_fsc_pbr_2023",
+   "name_ko": "PBR 비교(금융위원회, 2024.2.26 발표)",
+   "name_en": "P/B comparison cited by Korea's FSC at Value-up launch",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://www.kedglobal.com/korean-stock-market/newsView/ked202402260017",
+   "as_of": "2023-12-31",
+   "note": "Figures provided by the Financial Services Commission, as reported by KED Global on 2024-02-26. EM/DM figures are 10-year averages; Korea 1.05 is end-2023 (10-year average 1.04).",
+   "values": [
+    {
+     "country": "Korea (end-2023)",
+     "value": 1.05
+    },
+    {
+     "country": "Korea (10-yr avg)",
+     "value": 1.04
+    },
+    {
+     "country": "Emerging markets (10-yr avg)",
+     "value": 1.58
+    },
+    {
+     "country": "Developed markets (10-yr avg)",
+     "value": 2.5
+    }
+   ]
+  },
+  {
+   "id": "kd_fsc_payout_10y",
+   "name_ko": "배당성향 10년 평균(금융위원회)",
+   "name_en": "Dividend payout ratio, 10-year average (FSC)",
+   "unit": "%",
+   "higher_is": "better",
+   "source_url": "https://www.kedglobal.com/korean-stock-market/newsView/ked202402260017",
+   "as_of": "2023-12-31",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 26
+    },
+    {
+     "country": "Emerging markets",
+     "value": 39.6
+    },
+    {
+     "country": "Developed markets",
+     "value": 49.5
+    }
+   ]
+  },
+  {
+   "id": "kd_fsc_roe_2023",
+   "name_ko": "자기자본이익률(ROE, 2023년말, 금융위원회)",
+   "name_en": "Return on equity at end-2023 (FSC)",
+   "unit": "%",
+   "higher_is": "better",
+   "source_url": "https://www.kedglobal.com/korean-stock-market/newsView/ked202402260017",
+   "as_of": "2023-12-31",
+   "values": [
+    {
+     "country": "Korea",
+     "value": 5.2
+    },
+    {
+     "country": "Emerging markets",
+     "value": 10.8
+    },
+    {
+     "country": "Developed markets",
+     "value": 14.3
+    }
+   ]
+  },
+  {
+   "id": "kd_pb_avg_2014_2024",
+   "name_ko": "PBR 2014~2024 평균",
+   "name_en": "Average P/B 2014-2024",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://keia.org/analysis/explaining-south-koreas-stock-market-boom/",
+   "as_of": "2024-12-31",
+   "note": "KEIA (Randall S. Jones, 2026-07-22), citing AMRO (2026-03-30): KOSPI firms averaged 0.99 vs 1.8 Japan and 3.7 US.",
+   "values": [
+    {
+     "country": "Korea (KOSPI)",
+     "value": 0.99
+    },
+    {
+     "country": "Japan",
+     "value": 1.8
+    },
+    {
+     "country": "USA",
+     "value": 3.7
+    }
+   ]
+  },
+  {
+   "id": "kd_kospi_pbr_2024",
+   "name_ko": "코스피 PBR(2024년)",
+   "name_en": "KOSPI P/B in 2024",
+   "unit": "x",
+   "higher_is": "worse",
+   "source_url": "https://www.koreatimes.co.kr/business/banking-finance/20250114/kospi-remains-undervalued-despite-value-up-program",
+   "as_of": "2024-12-31",
+   "note": "Korea Times 2025-01-14: 0.84 in 2024, same as 2022, lowest since data compilation began in 2002; 0.94 during the GFC.",
+   "values": [
+    {
+     "country": "Korea (KOSPI, 2024)",
+     "value": 0.84
+    },
+    {
+     "country": "Korea (KOSPI, GFC)",
+     "value": 0.94
+    }
+   ]
+  },
+  {
+   "id": "kd_msci_relative_2026",
+   "name_ko": "MSCI 한국 값 ÷ 신흥국·선진국 값(2026.9.30, 계산)",
+   "name_en": "MSCI Korea valuation divided by MSCI EM / MSCI World (computed from factsheet values)",
+   "unit": "ratio",
+   "higher_is": "worse",
+   "source_url": "https://www.msci.com/documents/10199/255599/msci-korea-index-net.pdf",
+   "as_of": "2026-09-30",
+   "note": "Computed here by dividing printed values: P/BV 2.29/2.39 and 2.29/4.10; P/E 10.25/14.90 and 10.25/22.69; fwd P/E 4.95/9.72 and 4.95/17.92.",
+   "values": [
+    {
+     "country": "P/BV Korea/EM",
+     "value": 0.958
+    },
+    {
+     "country": "P/BV Korea/World",
+     "value": 0.559
+    },
+    {
+     "country": "P/E Korea/EM",
+     "value": 0.688
+    },
+    {
+     "country": "P/E Korea/World",
+     "value": 0.452
+    },
+    {
+     "country": "Fwd P/E Korea/EM",
+     "value": 0.509
+    },
+    {
+     "country": "Fwd P/E Korea/World",
+     "value": 0.276
+    }
+   ]
+  }
+ ],
+ "notes": [
+  "Compiled 2026-10-07. Main market data = MSCI factsheets as of 2026-09-30 (USD). Each factsheet was read twice (full extract + verification extract); returns and fundamentals matched in both reads.",
+  "Return variant differs by factsheet: net for 18 markets, gross for Hong Kong, France, Switzerland, Canada, Australia, Singapore, Malaysia (MSCI did not surface a current net factsheet for these). Korea's 10Y rank (2nd) does not depend on this: the nearest gross market (Canada 11.72) is far below Korea (15.74).",
+  "20-year return: 확인 못 함. MSCI factsheets do not print it; the longest common window is 'Since Dec 29, 2000' (net), available for 13 of 25 markets.",
+  "Philippines factsheet at the plain URL (msci-philippines-index.pdf) was dated 2026-08-31; the GUID factsheet dated 2026-09-30 is used. Saudi Arabia plain URL was dated 2024-12-31; the GUID factsheet dated 2026-09-30 is used. Malaysia net factsheet was dated 2026-08-31; the gross 2026-09-30 factsheet is used.",
+  "MSCI 2026 Market Classification Review (2026-06-23): Korea stays EM, no consultation; Greece EM->DM effective May 2027; Bulgaria standalone->FM; Indonesia and Turkey flagged.",
+  "MSCI 2026 Global Market Accessibility Review (June 2026): Korea listed under 'Emerging Markets - Asia Pacific'; one improvement: 'Availability of Investment Instruments' '-' to '+'. Remaining issues named: no deliverable offshore won (24-hour onshore FX planned July 2026, offshore KRW settlement targeted 2027), LEI/IRC coexistence friction, settlement mostly per investor ID, in-kind transfers not common, short-selling operational friction, English disclosure phased through 2027.",
+  "Value-up timeline: FSC announced the Corporate Value-up Program 2024-02-26; KRX announced the Korea Value-up Index 2024-09-24 (100 stocks), real-time publication from 2024-09-30.",
+  "Commercial Act: 1st amendment passed 2025-07-03 (directors' duty to shareholders; independent directors >= 1/3; e-meetings from 2027-01-01); 2nd passed 2025-08-25 (cumulative voting for listed firms with assets > KRW 2 trillion; >= 2 audit-committee members elected separately); 3rd passed 2026-02-25, promulgated/effective 2026-03-06 (treasury shares cancelled within 1 year of acquisition).",
+  "KEIA 2026-07-22: KOSPI nearly doubled in H1 2026 and fell roughly 27% from its 2026-06-19 high by the article date; Samsung Electronics + SK Hynix = 55.5% of KOSPI market cap (22% at end-2023); foreign investors net sold a record KRW 148.3 trillion (USD 96.7 billion) in H1 2026; in May 2026 earnings projections were revised up 48% excluding the two chipmakers and 261% including them.",
+  "Rank fields: rank_better_first follows higher_is (1 = best by that direction); rank_desc = 1 for the largest number. Competition ranking for ties. Benchmarks are not ranked.",
+  "Neutral data only: no advice, recommendation or forecast."
+ ]
+}

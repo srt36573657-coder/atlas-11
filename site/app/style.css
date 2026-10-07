@@ -945,3 +945,62 @@ html:not([lang="ko"]) :is(.hf-n, .ag-notice, .t-fire) { flex: 0 1 auto; min-widt
 html:not([lang="ko"]) .b-title .b-count { white-space: normal; } /* 2026-10-07 10:19 아르메니아어 「365곳」이 360px · 가장 큰 글씨에서 제목 줄을 4px 넘던 것 */
 html:not([lang="ko"]) :is(.hf-avg, .sun-n, .sun-n-t) { white-space: normal; }
 html:not([lang="ko"]) .sun-n { flex-wrap: wrap; }
+
+/* ---- 500만 원을 오래 들고 있었다면(#/long · 2026-10-07 05:27) · 한국 주식시장은 몇 등인가(#/korea · 05:29) ---- */
+.st-cards { display: grid; gap: 8px; margin: 10px 0 12px; }
+.st-cards .gd-card { margin: 0; }
+.lt-hero { margin: 12px -20px 14px; padding: 16px 20px 12px; background: var(--band); color: var(--band-ink); }
+@media (min-width: 600px) { .lt-hero { margin-inline: 0; border-radius: 20px; } }
+.lt-grp { display: grid; gap: 6px; margin: 0 0 12px; }
+.lt-yr { font-size: .9375rem; font-weight: 700; }
+.lt-hb { position: relative; display: block; height: 28px; border-radius: 0 8px 8px 0; background: var(--band-fill); }
+.lt-hb::after { content: ''; position: absolute; inset-block: -4px; inset-inline-start: 25%; border-inline-start: 2px dashed rgba(232, 241, 235, .75); z-index: 1; } /* 25% = 처음 500만 원(막대 끝 2,000만 원) */
+.lt-hfill { position: absolute; inset-block: 0; inset-inline-start: 0; border-start-end-radius: 8px; border-end-end-radius: 8px; transform-origin: left center; animation: lt-grow 1s cubic-bezier(.16, 1, .3, 1) .15s both; }
+[dir="rtl"] .lt-hfill { transform-origin: right center; }
+.lt-hfill.lt-stock, .lt-dot.lt-stock { background: #8FD3B6; } /* 주식 = 박하색(빨강은 「오름」 뜻이라 쓰지 않음) */
+.lt-hfill.lt-home, .lt-dot.lt-home { background: #D8C08F; }
+.lt-dot.lt-mark { width: 0; height: 12px; border-radius: 0; border-inline-start: 2px dashed var(--band-ink); }
+.lt-bv { position: absolute; top: 50%; transform: translateY(-50%); padding-inline: 6px; font-size: .875rem; font-weight: 700; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 2; }
+.lt-bv.lt-in { color: #0D1714; }
+.lt-bv:not(.lt-in) { margin-inline-start: 4px; border-radius: 6px; background: var(--band); } /* 점선(500만 원) 위에 글이 겹쳐도 읽히게 */
+.lt-bv.lt-end { margin-inline-start: 0; } /* 막대 밖에도 안에도 안 들어가면 칸 맨 끝(글 바탕이 막대를 덮음) */
+.lt-warn { margin: -2px 0 8px; color: var(--warn); font-size: .875rem; }
+.lt-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 2px 0 0; color: var(--band-sub); font-size: .8125rem; }
+.lt-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-inline-end: 5px; vertical-align: -1px; }
+@keyframes lt-grow { from { transform: scaleX(0); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .lt-hfill { animation: none; } }
+.lt-read { margin: 0 0 12px; padding-inline-start: 1.1em; color: var(--sub); font-size: .9375rem; }
+.lt-read li { margin: 3px 0; }
+.lt-seg { display: flex; gap: 6px; margin: 4px 0 10px; }
+.lt-seg button { flex: 1 1 0; min-height: 44px; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: inherit; font-size: 1rem; font-weight: 700; }
+.lt-seg button[aria-pressed="true"] { background: var(--band); color: var(--band-ink); }
+.lt-price { margin: 0 0 12px; color: var(--sub); font-size: .9375rem; }
+.lt-sec { margin: 0 0 14px; }
+.lt-h, .kr-h { margin: 0 0 6px; font-size: 1.0625rem; }
+.lt-list, .kr-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.lt-row, .kr-row { display: grid; gap: 5px; padding: 11px 13px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+.lt-top, .kr-top, .kr-rank { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 8px; }
+.lt-name, .kr-w { min-width: 0; font-weight: 700; }
+.lt-v, .kr-v { font-size: 1.125rem; font-variant-numeric: tabular-nums; }
+.lt-v.lt-up { color: var(--up-ink); }
+.lt-v.lt-down { color: var(--down-ink); }
+.lt-v.lt-none { color: var(--sub); font-size: .875rem; font-weight: 500; }
+.lt-track { position: relative; display: block; height: 10px; border-radius: 999px; background: var(--fill); overflow: hidden; }
+.lt-start { position: absolute; inset-block: 0; inset-inline-start: 25%; width: 2px; background: var(--ink); opacity: .6; z-index: 1; }
+.lt-fill { display: block; height: 100%; border-radius: 999px; }
+.lt-fill.lt-up { background: var(--up); }
+.lt-fill.lt-down { background: var(--down); }
+.lt-fill.lt-over { border-start-end-radius: 0; border-end-end-radius: 0; }
+.lt-when, .lt-note, .kr-rank small { color: var(--sub); font-size: .8125rem; }
+.lt-src, .kr-src { padding-inline-start: 1.1em; }
+.kr-list { margin: 8px 0 14px; }
+.kr-rank { justify-content: flex-start; }
+.kr-rank b { font-size: 1.25rem; }
+.kr-strip { display: flex; gap: 2px; height: 14px; align-items: center; }
+.kr-c { flex: 1 1 0; height: 8px; border-radius: 3px; background: var(--fill); }
+.kr-c.kr-me { height: 14px; background: var(--ink); }
+.kr-logic { margin: 0 0 14px; padding: 14px 16px; border-radius: 16px; background: var(--band); color: var(--band-ink); }
+.kr-logic ul { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.kr-logic li { display: grid; gap: 2px; }
+.kr-logic li b { font-size: .9375rem; }
+.kr-logic li span { color: var(--band-sub); font-size: .875rem; }
