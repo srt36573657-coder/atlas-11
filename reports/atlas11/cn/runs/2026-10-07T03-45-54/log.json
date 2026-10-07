@@ -1,0 +1,145 @@
+{
+ "market": "cn",
+ "startedAt": "2026-10-07T03:45:54.871Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T03:45:54.907Z",
+   "mode": "select",
+   "run": "reports/atlas11/cn/runs/2026-10-07T03-45-54",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "11:45",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:45:56.487Z",
+   "kind": "list",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/exchange/SHANGHAI/marketValue"
+  },
+  {
+   "name": "목록",
+   "at": "2026-10-07T03:46:07.817Z",
+   "seen": {
+    "SHANGHAI": 1200,
+    "SHENZHEN": 1200
+   },
+   "merged": 2400,
+   "stocks": 2000,
+   "top5": [
+    "ICBC(중국공상은행)(601398) 은행",
+    "농업은행(601288) 은행",
+    "페트로차이나(601857) 통합 오일 및 가스",
+    "중국은행(601988) 은행",
+    "귀주모태주(600519) 증류주 및 포도주"
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:46:08.033Z",
+   "kind": "finance",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/601398.SS/finance/annual"
+  },
+  {
+   "name": "결산",
+   "at": "2026-10-07T03:48:43.270Z",
+   "asked": 2000,
+   "naver": 2000,
+   "askedDebt": 1086,
+   "yahoo": 1086,
+   "yahooOff": false,
+   "withDebt": 1082,
+   "withRoe": 1743
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:48:44.483Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/601398.SS/day"
+  },
+  {
+   "name": "일봉",
+   "at": "2026-10-07T03:50:24.041Z",
+   "asked": 2000,
+   "got": 2000,
+   "latest": "2026-09-30",
+   "rows": 283
+  },
+  {
+   "name": "고르기",
+   "at": "2026-10-07T03:50:24.057Z",
+   "ok": false,
+   "picked": 350,
+   "industries": 70,
+   "filled": 70,
+   "kinds": {
+    "quality": 249,
+    "trend": 55,
+    "profit": 43,
+    "size": 3
+   },
+   "pool": 1887,
+   "failTop": [
+    [
+     "부채비율 모름",
+     816
+    ],
+    [
+     "ROE 5% 미만",
+     527
+    ],
+    [
+     "2년 연속 흑자 아님",
+     495
+    ],
+    [
+     "ROE 모름",
+     257
+    ],
+    [
+     "부채비율 150% 초과",
+     213
+    ],
+    [
+     "가격 이력 부족",
+     111
+    ]
+   ]
+  },
+  {
+   "name": "멈춤",
+   "at": "2026-10-07T03:50:24.682Z",
+   "error": "CN_SELECT_SHORT 350곳 · 업종 70개 — reports/atlas11/cn/runs/2026-10-07T03-45-54/proposal.json 의 counts.short 확인"
+  }
+ ],
+ "samples": {
+  "list": {
+   "url": "https://api.stock.naver.com/stock/exchange/SHANGHAI/marketValue?page=1&pageSize=100",
+   "status": 200,
+   "ms": 1576
+  },
+  "finance": {
+   "url": "https://api.stock.naver.com/stock/601398.SS/finance/annual",
+   "status": 200,
+   "ms": 215
+  },
+  "yahoo_ts": {
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/601857.SS?symbol=601857.SS&type=annualOperatingIncome,annualNetIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1609459200&period2=1791431255",
+   "status": 200,
+   "ms": 66
+  },
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/601398.SS/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 1211
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-07T03:50:24.682Z",
+ "error": "CN_SELECT_SHORT 350곳 · 업종 70개 — reports/atlas11/cn/runs/2026-10-07T03-45-54/proposal.json 의 counts.short 확인"
+}

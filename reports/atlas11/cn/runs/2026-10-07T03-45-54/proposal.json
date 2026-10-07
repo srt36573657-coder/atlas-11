@@ -1,0 +1,4689 @@
+{
+ "schema": "atlas11-world-proposal-1",
+ "market": "cn",
+ "at": "2026-10-07T03:45:54.871Z",
+ "ok": false,
+ "rules": "cn-n365-v1",
+ "counts": {
+  "candidates": 2000,
+  "pool": 1887,
+  "industriesInPool": 113,
+  "industriesFilled": 70,
+  "industries": 70,
+  "picked": 350,
+  "kinds": {
+   "quality": 249,
+   "trend": 55,
+   "profit": 43,
+   "size": 3
+  },
+  "chosen": [
+   {
+    "rank": 1,
+    "industry": "은행",
+    "size": 43,
+    "strict": 39,
+    "capUsd": 7461687447,
+    "names": [
+     "ICBC(중국공상은행)",
+     "농업은행",
+     "중국은행",
+     "초상은행",
+     "중국우정저축은행"
+    ]
+   },
+   {
+    "rank": 2,
+    "industry": "통신 및 네트워킹",
+    "size": 35,
+    "strict": 35,
+    "capUsd": 2656394535,
+    "names": [
+     "부사강산업인터넷",
+     "중제욱창",
+     "하이크비전",
+     "장비광섬유광케이블",
+     "강소형통광전"
+    ]
+   },
+   {
+    "rank": 3,
+    "industry": "증류주 및 포도주",
+    "size": 17,
+    "strict": 13,
+    "capUsd": 2130964594,
+    "names": [
+     "귀주모태주",
+     "오량액",
+     "산서행화촌분주",
+     "노주노교",
+     "고정공주"
+    ]
+   },
+   {
+    "rank": 4,
+    "industry": "반도체",
+    "size": 126,
+    "strict": 126,
+    "capUsd": 2007698347,
+    "names": [
+     "한무기",
+     "해광신식",
+     "동산정밀",
+     "중신 국제집성전로제조",
+     "심남전로"
+    ]
+   },
+   {
+    "rank": 5,
+    "industry": "전기 부품 및 장비",
+    "size": 89,
+    "strict": 89,
+    "capUsd": 1780987569,
+    "names": [
+     "닝더스다이",
+     "중국항공공업 성도",
+     "회천기술",
+     "이브에너지",
+     "사원전기"
+    ]
+   },
+   {
+    "rank": 6,
+    "industry": "전자 장비 및 부품",
+    "size": 107,
+    "strict": 107,
+    "capUsd": 1730451456,
+    "names": [
+     "신역성통신기술",
+     "입신정밀",
+     "생익과기",
+     "천부광통신",
+     "삼배그룹"
+    ]
+   },
+   {
+    "rank": 7,
+    "industry": "생명 및 건강 보험",
+    "size": 5,
+    "strict": 5,
+    "capUsd": 1683479439,
+    "names": [
+     "중국생명보험",
+     "중국평안보험",
+     "태평양보험",
+     "신화생명보험",
+     "중량집단"
+    ]
+   },
+   {
+    "rank": 8,
+    "industry": "석탄",
+    "size": 24,
+    "strict": 4,
+    "capUsd": 1398662836,
+    "names": [
+     "신화에너지",
+     "섬서석탄",
+     "중국석탄에너지",
+     "진능강고 산서매업",
+     "연광그룹 Class A"
+    ]
+   },
+   {
+    "rank": 9,
+    "industry": "반도체 장비 및 테스트",
+    "size": 26,
+    "strict": 26,
+    "capUsd": 1236722675,
+    "names": [
+     "북방화창",
+     "AMEC(중미반도체)",
+     "척형과기",
+     "장천과기",
+     "ACM 리서치"
+    ]
+   },
+   {
+    "rank": 10,
+    "industry": "투자 은행 및 중개 서비스",
+    "size": 43,
+    "strict": 34,
+    "capUsd": 1114105835,
+    "names": [
+     "중신증권",
+     "동방재부정보",
+     "국태해통증권",
+     "중신건투증권",
+     "화태증권"
+    ]
+   },
+   {
+    "rank": 11,
+    "industry": "전력 유틸리티",
+    "size": 26,
+    "strict": 26,
+    "capUsd": 1050384872,
+    "names": [
+     "장강전력",
+     "중국장강삼협",
+     "국전전력개발",
+     "천투에너지",
+     "중국 룽위안 전력 Class A"
+    ]
+   },
+   {
+    "rank": 12,
+    "industry": "금",
+    "size": 9,
+    "strict": 5,
+    "capUsd": 840819408,
+    "names": [
+     "자금광업 Class A",
+     "중금황금",
+     "적봉황금",
+     "호남황금",
+     "사천황금"
+    ]
+   },
+   {
+    "rank": 13,
+    "industry": "통합 통신 서비스",
+    "size": 7,
+    "strict": 4,
+    "capUsd": 836857713,
+    "names": [
+     "차이나 텔레콤",
+     "예첩망락",
+     "차이나 모바일",
+     "국망신통",
+     "차이나 유니콤"
+    ]
+   },
+   {
+    "rank": 14,
+    "industry": "자동차 및 트럭 제조",
+    "size": 17,
+    "strict": 2,
+    "capUsd": 717682648,
+    "names": [
+     "융흠통용",
+     "도도차업",
+     "비야디",
+     "상하자동차",
+     "장성자동차"
+    ]
+   },
+   {
+    "rank": 15,
+    "industry": "제약",
+    "size": 112,
+    "strict": 112,
+    "capUsd": 633134702,
+    "names": [
+     "항서의약",
+     "사천 백리천항약업",
+     "운남백약",
+     "장주편자황제약",
+     "해사과제약"
+    ]
+   },
+   {
+    "rank": 16,
+    "industry": "생명 공학 및 의학 연구",
+    "size": 18,
+    "strict": 18,
+    "capUsd": 615378453,
+    "names": [
+     "우시앱텍",
+     "강룡화성 Class A",
+     "예력사",
+     "태격제약",
+     "영창생물"
+    ]
+   },
+   {
+    "rank": 17,
+    "industry": "특수 채굴 및 금속",
+    "size": 61,
+    "strict": 26,
+    "capUsd": 610850175,
+    "names": [
+     "낙양몰리브덴",
+     "중오첨단신소재",
+     "동릉비철금속",
+     "금두몰리브덴",
+     "흥업은석"
+    ]
+   },
+   {
+    "rank": 18,
+    "industry": "산업용 기계 및 장비",
+    "size": 96,
+    "strict": 96,
+    "capUsd": 606949062,
+    "names": [
+     "정태고과",
+     "삼화",
+     "중과비측기",
+     "항립유항",
+     "라박특과"
+    ]
+   },
+   {
+    "rank": 19,
+    "industry": "상품 화학",
+    "size": 96,
+    "strict": 44,
+    "capUsd": 555249815,
+    "names": [
+     "닝샤바오펑에너지",
+     "장격광업",
+     "중선특기",
+     "절강거화",
+     "위성화학"
+    ]
+   },
+   {
+    "rank": 20,
+    "industry": "컴퓨터 하드웨어",
+    "size": 10,
+    "strict": 10,
+    "capUsd": 513915184,
+    "names": [
+     "협창수거",
+     "중과서광",
+     "화근기술",
+     "랑조전자신식산업",
+     "집화고분"
+    ]
+   },
+   {
+    "rank": 21,
+    "industry": "재생 가능 에너지 장비 및 서비스",
+    "size": 31,
+    "strict": 31,
+    "capUsd": 485156311,
+    "names": [
+     "양광전력",
+     "영파 덕업과기",
+     "융기실리콘자재",
+     "동방전기",
+     "금풍과기"
+    ]
+   },
+   {
+    "rank": 22,
+    "industry": "중장비 및 차량",
+    "size": 20,
+    "strict": 20,
+    "capUsd": 484646608,
+    "names": [
+     "CRRC(중국중차)",
+     "삼일중공업",
+     "서공중공업",
+     "YTCO(정주우통버스)",
+     "중리엔중공업"
+    ]
+   },
+   {
+    "rank": 23,
+    "industry": "어업 및 농업",
+    "size": 17,
+    "strict": 7,
+    "capUsd": 442160936,
+    "names": [
+     "목원식품",
+     "온씨식품",
+     "하이드그룹",
+     "흑룡강북대황농업",
+     "강소 립화식품집단"
+    ]
+   },
+   {
+    "rank": 24,
+    "industry": "식품 가공",
+    "size": 35,
+    "strict": 24,
+    "capUsd": 433651391,
+    "names": [
+     "해천미업",
+     "쌍회개발",
+     "신화성",
+     "양위엔쯔후이음료",
+     "안기효모"
+    ]
+   },
+   {
+    "rank": 25,
+    "industry": "해양 화물 및 물류",
+    "size": 7,
+    "strict": 6,
+    "capUsd": 426894222,
+    "names": [
+     "코스코해운",
+     "초상기선",
+     "중곡물류",
+     "복건 해통발전",
+     "상해 금강항운집단"
+    ]
+   },
+   {
+    "rank": 26,
+    "industry": "알루미늄",
+    "size": 15,
+    "strict": 10,
+    "capUsd": 411408491,
+    "names": [
+     "중국려업",
+     "운남알루미늄",
+     "전투능원",
+     "신화석탄발전",
+     "신계펌프"
+    ]
+   },
+   {
+    "rank": 27,
+    "industry": "항공우주 및 방위",
+    "size": 35,
+    "strict": 35,
+    "capUsd": 411070633,
+    "names": [
+     "중항침비",
+     "중항엔진",
+     "중국위성",
+     "중항서안 항공공업",
+     "중항전자"
+    ]
+   },
+   {
+    "rank": 28,
+    "industry": "소프트웨어",
+    "size": 43,
+    "strict": 43,
+    "capUsd": 398334881,
+    "names": [
+     "세기화통",
+     "베이징 킹소프트 오피스 소프트웨어",
+     "신비정보",
+     "심신복테크놀로지",
+     "화태규천"
+    ]
+   },
+   {
+    "rank": 29,
+    "industry": "고속도로 및 철도",
+    "size": 12,
+    "strict": 8,
+    "capUsd": 391426442,
+    "names": [
+     "경호고속철로",
+     "쟈오샹고속도로",
+     "강소녕호고속도로",
+     "광동고속도로",
+     "안휘환통고속도로"
+    ]
+   },
+   {
+    "rank": 30,
+    "industry": "첨단 의료 장비 및 기술",
+    "size": 8,
+    "strict": 8,
+    "capUsd": 352934962,
+    "names": [
+     "매서의료",
+     "련영의료",
+     "화대지조",
+     "혁서과기",
+     "미호의료"
+    ]
+   },
+   {
+    "rank": 31,
+    "industry": "중전기장비",
+    "size": 24,
+    "strict": 24,
+    "capUsd": 343032791,
+    "names": [
+     "특변전공",
+     "상해전기",
+     "중국동력",
+     "XD전기",
+     "시대전기"
+    ]
+   },
+   {
+    "rank": 32,
+    "industry": "항만 운영 및 서비스",
+    "size": 13,
+    "strict": 9,
+    "capUsd": 332840315,
+    "names": [
+     "상해항만그룹",
+     "닝보저우샨항",
+     "초상국항구",
+     "청도항국제",
+     "당산항"
+    ]
+   },
+   {
+    "rank": 33,
+    "industry": "배달, 우편, 항공 화물 및 육상 물류",
+    "size": 13,
+    "strict": 8,
+    "capUsd": 313387322,
+    "names": [
+     "순풍홀딩스",
+     "원통택배",
+     "국화항",
+     "중국외운",
+     "동영국제물류"
+    ]
+   },
+   {
+    "rank": 34,
+    "industry": "철 및 강철",
+    "size": 39,
+    "strict": 17,
+    "capUsd": 309177563,
+    "names": [
+     "보산철강",
+     "대야특수강",
+     "중신금속",
+     "내몽고대중광업",
+     "남경철강"
+    ]
+   },
+   {
+    "rank": 35,
+    "industry": "자동차, 트럭 및 오토바이 부품",
+    "size": 50,
+    "strict": 33,
+    "capUsd": 301464224,
+    "names": [
+     "복요유리",
+     "탁보그룹",
+     "덕새서위",
+     "사릉고분",
+     "쌍환전동기계"
+    ]
+   },
+   {
+    "rank": 36,
+    "industry": "IT 서비스 및 컨설팅",
+    "size": 29,
+    "strict": 29,
+    "capUsd": 298954028,
+    "names": [
+     "국전남서과기",
+     "망숙과기",
+     "연통동력",
+     "제오비스 테크놀로지",
+     "동화소프트웨어"
+    ]
+   },
+   {
+    "rank": 37,
+    "industry": "건설 자재",
+    "size": 11,
+    "strict": 4,
+    "capUsd": 282621973,
+    "names": [
+     "중국거석",
+     "화신시멘트",
+     "상봉시멘트",
+     "북경내화재료",
+     "안휘해라시멘트"
+    ]
+   },
+   {
+    "rank": 38,
+    "industry": "가전제품, 도구 및 가정 용품",
+    "size": 17,
+    "strict": 11,
+    "capUsd": 249794257,
+    "names": [
+     "해이지가",
+     "거성과기",
+     "수보얼",
+     "베이징 로보락 테크놀로지",
+     "과옥사예기인"
+    ]
+   },
+   {
+    "rank": 39,
+    "industry": "농화학제",
+    "size": 19,
+    "strict": 13,
+    "capUsd": 249654202,
+    "names": [
+     "청해염화공업",
+     "운남운천화",
+     "동릉국제투자",
+     "강소양농화학",
+     "산동 유방윤봉화공"
+    ]
+   },
+   {
+    "rank": 40,
+    "industry": "투자 관리 및 펀드 운영",
+    "size": 8,
+    "strict": 3,
+    "capUsd": 243047794,
+    "names": [
+     "광발증권",
+     "수창증권",
+     "섬서국제신탁",
+     "흥업증권",
+     "ST안신"
+    ]
+   },
+   {
+    "rank": 41,
+    "industry": "핀테크",
+    "size": 7,
+    "strict": 5,
+    "capUsd": 242180315,
+    "names": [
+     "동화순네트워크",
+     "항생전자",
+     "선전 포춘 트렌드 테크놀로지",
+     "신대륙컴퓨터",
+     "북방 정보기술"
+    ]
+   },
+   {
+    "rank": 42,
+    "industry": "특수 화학제",
+    "size": 41,
+    "strict": 13,
+    "capUsd": 234926528,
+    "names": [
+     "정룡",
+     "캡켐기술",
+     "화봉화학",
+     "동정신소재",
+     "남효신소재"
+    ]
+   },
+   {
+    "rank": 43,
+    "industry": "공항 운영 및 서비스",
+    "size": 5,
+    "strict": 2,
+    "capUsd": 221760117,
+    "names": [
+     "CTG면세점",
+     "백운국제공항",
+     "상해국제공항",
+     "해남기장",
+     "심천공항"
+    ]
+   },
+   {
+    "rank": 44,
+    "industry": "부동산 임대, 개발 및 운영",
+    "size": 29,
+    "strict": 2,
+    "capUsd": 214119678,
+    "names": [
+     "중국국제무역센터",
+     "중국-싱가파소주 공업원구",
+     "보리부동산",
+     "초상사구",
+     "장강하이테크"
+    ]
+   },
+   {
+    "rank": 45,
+    "industry": "금 제외 귀금속 및 광물",
+    "size": 5,
+    "strict": 2,
+    "capUsd": 209930165,
+    "names": [
+     "북방희토",
+     "성화자원",
+     "운남성귀금속신재료",
+     "금석자원",
+     "하남황하선풍"
+    ]
+   },
+   {
+    "rank": 46,
+    "industry": "온라인 서비스",
+    "size": 17,
+    "strict": 17,
+    "capUsd": 207456652,
+    "names": [
+     "360 보안테크놀로지",
+     "곤륜만유과기",
+     "삼칠호오망락과기",
+     "유괘수과기",
+     "길비특"
+    ]
+   },
+   {
+    "rank": 47,
+    "industry": "항공사",
+    "size": 7,
+    "strict": 1,
+    "capUsd": 189888225,
+    "names": [
+     "중신헬리콥터",
+     "중국남방항공",
+     "해남항공",
+     "춘추항공",
+     "길상항공"
+    ]
+   },
+   {
+    "rank": 48,
+    "industry": "광고 및 마케팅",
+    "size": 11,
+    "strict": 3,
+    "capUsd": 169966246,
+    "names": [
+     "포커스미디어",
+     "인민망",
+     "삼인행",
+     "남색광표",
+     "리오그룹"
+    ]
+   },
+   {
+    "rank": 49,
+    "industry": "의료 장비, 물품 및 유통",
+    "size": 23,
+    "strict": 23,
+    "capUsd": 164967931,
+    "names": [
+     "심천시 신산업생물의학공정",
+     "혜태의료",
+     "영과의료과기",
+     "이미익 기술 개발",
+     "구안의료기"
+    ]
+   },
+   {
+    "rank": 50,
+    "industry": "통합 하드웨어 및 소프트웨어",
+    "size": 6,
+    "strict": 6,
+    "capUsd": 161931343,
+    "names": [
+     "즈광",
+     "청화동방",
+     "심천 운천려비기술",
+     "한삭과기",
+     "성시과기"
+    ]
+   },
+   {
+    "rank": 51,
+    "industry": "민자 발전 사업",
+    "size": 29,
+    "strict": 5,
+    "capUsd": 161920193,
+    "names": [
+     "절능전력",
+     "복건복능",
+     "강소국신",
+     "서북영신화학",
+     "중민능원"
+    ]
+   },
+   {
+    "rank": 52,
+    "industry": "의료 시설 및 서비스",
+    "size": 8,
+    "strict": 3,
+    "capUsd": 132682832,
+    "names": [
+     "애이안과",
+     "통책의료",
+     "화하안과",
+     "미년건강",
+     "적안진단"
+    ]
+   },
+   {
+    "rank": 53,
+    "industry": "천연가스 유틸리티",
+    "size": 6,
+    "strict": 6,
+    "capUsd": 130732249,
+    "names": [
+     "신오천연기",
+     "강서 구봉능원",
+     "심천가스",
+     "신천 녹색능원",
+     "포산에너지"
+    ]
+   },
+   {
+    "rank": 54,
+    "industry": "가정용 전자 제품",
+    "size": 11,
+    "strict": 9,
+    "capUsd": 125842193,
+    "names": [
+     "조치",
+     "해신시상과기",
+     "항주형석망락",
+     "영취과기",
+     "오보특"
+    ]
+   },
+   {
+    "rank": 55,
+    "industry": "엔터테인먼트 제작",
+    "size": 6,
+    "strict": 3,
+    "capUsd": 114549305,
+    "names": [
+     "해피고홈쇼핑",
+     "광선미디어",
+     "송성엔터",
+     "화체미디어",
+     "첩성세기과기"
+    ]
+   },
+   {
+    "rank": 56,
+    "industry": "채굴 지원 서비스 및 장비",
+    "size": 6,
+    "strict": 4,
+    "capUsd": 114492167,
+    "names": [
+     "금성신광업",
+     "정주채탄장비",
+     "고쟁민폭",
+     "역보력",
+     "광동홍대지주"
+    ]
+   },
+   {
+    "rank": 57,
+    "industry": "타이어 및 고무 제품",
+    "size": 6,
+    "strict": 4,
+    "capUsd": 109431000,
+    "names": [
+     "새륜",
+     "령롱륜태",
+     "칭다오 센추리 타이어",
+     "삼각륜태",
+     "해남천연고무"
+    ]
+   },
+   {
+    "rank": 58,
+    "industry": "경영 지원 서비스",
+    "size": 17,
+    "strict": 8,
+    "capUsd": 106714228,
+    "names": [
+     "부락덕",
+     "화측검측",
+     "과화데이터",
+     "중국자동차연구소",
+     "광전계량"
+    ]
+   },
+   {
+    "rank": 59,
+    "industry": "건설 및 엔지니어링",
+    "size": 42,
+    "strict": 6,
+    "capUsd": 92868380,
+    "names": [
+     "아상집성",
+     "해양석유공정",
+     "중교설계자순집단",
+     "북방국제",
+     "항천공정"
+    ]
+   },
+   {
+    "rank": 60,
+    "industry": "소비자 출판",
+    "size": 15,
+    "strict": 11,
+    "capUsd": 90253386,
+    "names": [
+     "풍황미디어",
+     "중남미디어",
+     "중국과기출판전매고빈",
+     "절판전매",
+     "신화문헌출판"
+    ]
+   },
+   {
+    "rank": 61,
+    "industry": "다각적 화학 산업",
+    "size": 6,
+    "strict": 0,
+    "capUsd": 90053517,
+    "names": [
+     "다불다",
+     "연홍신소재과학기술",
+     "의화화학",
+     "중량생화",
+     "화방생명건강"
+    ]
+   },
+   {
+    "rank": 62,
+    "industry": "수자원 유틸리티",
+    "size": 6,
+    "strict": 6,
+    "capUsd": 88847611,
+    "names": [
+     "흥용환경",
+     "수창환경보호그룹",
+     "중경수도그룹",
+     "중산유틸리티",
+     "련미량자"
+    ]
+   },
+   {
+    "rank": 63,
+    "industry": "건설 자재 및 비품",
+    "size": 9,
+    "strict": 6,
+    "capUsd": 87238531,
+    "names": [
+     "북신건재",
+     "오파인가구",
+     "민폭광전",
+     "위성신소재",
+     "구보조명"
+    ]
+   },
+   {
+    "rank": 64,
+    "industry": "환경 서비스 및 장비",
+    "size": 14,
+    "strict": 4,
+    "capUsd": 86293856,
+    "names": [
+     "절보그룹",
+     "절능환경",
+     "군신고분",
+     "상해 환경집단",
+     "영봉환경기술"
+    ]
+   },
+   {
+    "rank": 65,
+    "industry": "의류 및 액세서리",
+    "size": 13,
+    "strict": 7,
+    "capUsd": 81069925,
+    "names": [
+     "해란지가",
+     "비음늑분의류",
+     "삼마의류",
+     "위성실업개발",
+     "주대생주얼리"
+    ]
+   },
+   {
+    "rank": 66,
+    "industry": "방송",
+    "size": 8,
+    "strict": 2,
+    "capUsd": 75002177,
+    "names": [
+     "하북 광전무선전매",
+     "해간고분",
+     "동방명주",
+     "화수미디어",
+     "강소유선방송"
+    ]
+   },
+   {
+    "rank": 67,
+    "industry": "직물 및 가죽제품",
+    "size": 6,
+    "strict": 3,
+    "capUsd": 70999406,
+    "names": [
+     "국태국제그룹",
+     "백륭동방",
+     "선빔그룹",
+     "신봉명그룹",
+     "신향화학섬유"
+    ]
+   },
+   {
+    "rank": 68,
+    "industry": "개인 생활 필수 용품",
+    "size": 8,
+    "strict": 7,
+    "capUsd": 68643294,
+    "names": [
+     "프로야화장품",
+     "베텔니 그룹",
+     "광동 환미생물",
+     "부이가",
+     "충칭 바이야 새니터리 프로덕츠"
+    ]
+   },
+   {
+    "rank": 69,
+    "industry": "용기(종이 제외) 및 포장재",
+    "size": 5,
+    "strict": 2,
+    "capUsd": 68154898,
+    "names": [
+     "산동약용유리",
+     "상해자강기업그룹",
+     "COSCO개발",
+     "가미포장",
+     "오서금과기"
+    ]
+   },
+   {
+    "rank": 70,
+    "industry": "오일, 가스 탐사 및 생산",
+    "size": 5,
+    "strict": 2,
+    "capUsd": 66291124,
+    "names": [
+     "신조에너지",
+     "신천연기",
+     "잠능에너지",
+     "쫑만석유",
+     "주제석유가스"
+    ]
+   }
+  ],
+  "notChosenFilled": [],
+  "short": [
+   {
+    "industry": "조선",
+    "have": 4
+   },
+   {
+    "industry": "복합 유틸리티",
+    "have": 4
+   },
+   {
+    "industry": "전화 및 소형 장치",
+    "have": 4
+   },
+   {
+    "industry": "양조업",
+    "have": 4
+   },
+   {
+    "industry": "식품 소매 및 유통",
+    "have": 4
+   },
+   {
+    "industry": "다각적 산업용 제품 도매",
+    "have": 4
+   },
+   {
+    "industry": "사무기기",
+    "have": 4
+   },
+   {
+    "industry": "가정용 가구",
+    "have": 4
+   },
+   {
+    "industry": "여가 및 오락시설",
+    "have": 4
+   },
+   {
+    "industry": "통합 오일 및 가스",
+    "have": 3
+   },
+   {
+    "industry": "무선 통신 서비스",
+    "have": 3
+   },
+   {
+    "industry": "지상 화물 및 물류",
+    "have": 3
+   },
+   {
+    "industry": "백화점",
+    "have": 3
+   },
+   {
+    "industry": "다각적 투자 서비스",
+    "have": 3
+   },
+   {
+    "industry": "의약품 소매",
+    "have": 3
+   },
+   {
+    "industry": "지상 및 해상 여객 운송",
+    "have": 3
+   },
+   {
+    "industry": "오일, 가스 정제 및 마케팅",
+    "have": 2
+   },
+   {
+    "industry": "오일 관련 서비스 및 장비",
+    "have": 2
+   },
+   {
+    "industry": "오일 및 가스 수송 서비스",
+    "have": 2
+   },
+   {
+    "industry": "무알콜 음료",
+    "have": 2
+   },
+   {
+    "industry": "종이 제품",
+    "have": 2
+   },
+   {
+    "industry": "오일 및 가스 시추",
+    "have": 2
+   },
+   {
+    "industry": "종이 포장재",
+    "have": 2
+   },
+   {
+    "industry": "전문 정보 서비스",
+    "have": 2
+   },
+   {
+    "industry": "임업 및 목재 제품",
+    "have": 2
+   },
+   {
+    "industry": "호텔, 모텔 및 크루즈 라인",
+    "have": 2
+   },
+   {
+    "industry": "장난감 및 어린이 제품",
+    "have": 2
+   },
+   {
+    "industry": "컴퓨터 및 전자 제품 소매",
+    "have": 2
+   },
+   {
+    "industry": "부동산 서비스",
+    "have": 2
+   },
+   {
+    "industry": "손해보험",
+    "have": 1
+   },
+   {
+    "industry": "다각적 채굴",
+    "have": 1
+   },
+   {
+    "industry": "소비자 대출",
+    "have": 1
+   },
+   {
+    "industry": "제화",
+    "have": 1
+   },
+   {
+    "industry": "기업 금융 서비스",
+    "have": 1
+   },
+   {
+    "industry": "비즈니스 지원 용품",
+    "have": 1
+   },
+   {
+    "industry": "오락용 제품",
+    "have": 1
+   },
+   {
+    "industry": "의류 및 액세서리 소매",
+    "have": 1
+   },
+   {
+    "industry": "주택 개조 제품 및 서비스 소매",
+    "have": 1
+   },
+   {
+    "industry": "기타 핀테크 인프라",
+    "have": 1
+   },
+   {
+    "industry": "전문 및 비즈니스 교육",
+    "have": 1
+   },
+   {
+    "industry": "고용 서비스",
+    "have": 1
+   },
+   {
+    "industry": "기타 전문 소매",
+    "have": 1
+   },
+   {
+    "industry": "가정용 가구 소매",
+    "have": 1
+   }
+  ],
+  "failReasons": {
+   "부채비율 모름": 816,
+   "ROE 5% 미만": 527,
+   "2년 연속 흑자 아님": 495,
+   "ROE 모름": 257,
+   "부채비율 150% 초과": 213,
+   "가격 이력 부족": 111,
+   "같은 회사 다른 주식": 2
+  }
+ },
+ "picked": [
+  {
+   "rank": 1,
+   "code": "601398",
+   "name": "ICBC(중국공상은행)",
+   "nameEn": "Industrial and Commercial Bank of China Ltd Class A",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 1,
+   "industryRank": 1
+  },
+  {
+   "rank": 2,
+   "code": "601288",
+   "name": "농업은행",
+   "nameEn": "Agricultural Bank of China Ltd Class A",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 2,
+   "industryRank": 1
+  },
+  {
+   "rank": 3,
+   "code": "601988",
+   "name": "중국은행",
+   "nameEn": "Bank of China Ltd Class A",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 4,
+   "industryRank": 1
+  },
+  {
+   "rank": 4,
+   "code": "600036",
+   "name": "초상은행",
+   "nameEn": "China Merchants Bank Co.  Ltd. Class A",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 10,
+   "industryRank": 1
+  },
+  {
+   "rank": 5,
+   "code": "601658",
+   "name": "중국우정저축은행",
+   "nameEn": "Postal Savings Bank of China Co Ltd Class A",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 17,
+   "industryRank": 1
+  },
+  {
+   "rank": 6,
+   "code": "601138",
+   "name": "부사강산업인터넷",
+   "nameEn": "Foxconn Industrial Internet Co Ltd Class A",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 7,
+   "industryRank": 2
+  },
+  {
+   "rank": 7,
+   "code": "300308",
+   "name": "중제욱창",
+   "nameEn": "Zhongji Innolight Co.  Ltd. Class A",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 8,
+   "industryRank": 2
+  },
+  {
+   "rank": 8,
+   "code": "002415",
+   "name": "하이크비전",
+   "nameEn": "Hangzhou Hikvision Digital Technology Co Ltd Class A",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 35,
+   "industryRank": 2
+  },
+  {
+   "rank": 9,
+   "code": "601869",
+   "name": "장비광섬유광케이블",
+   "nameEn": "Yangtze Optical Fibre and Cable Joint Stock Ltd Co Class A",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 76,
+   "industryRank": 2
+  },
+  {
+   "rank": 10,
+   "code": "600487",
+   "name": "강소형통광전",
+   "nameEn": "Hengtong Optic-Electric Co Ltd Class A",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 100,
+   "industryRank": 2
+  },
+  {
+   "rank": 11,
+   "code": "600519",
+   "name": "귀주모태주",
+   "nameEn": "Kweichow Moutai Co.  Ltd. Class A",
+   "industry": "증류주 및 포도주",
+   "kind": "quality",
+   "capRank": 5,
+   "industryRank": 3
+  },
+  {
+   "rank": 12,
+   "code": "000858",
+   "name": "오량액",
+   "nameEn": "Wuliangye Yibin Co Ltd Class A",
+   "industry": "증류주 및 포도주",
+   "kind": "quality",
+   "capRank": 42,
+   "industryRank": 3
+  },
+  {
+   "rank": 13,
+   "code": "600809",
+   "name": "산서행화촌분주",
+   "nameEn": "Shanxi Xinghuacun Fen Wine Factory Co Ltd Class A",
+   "industry": "증류주 및 포도주",
+   "kind": "quality",
+   "capRank": 95,
+   "industryRank": 3
+  },
+  {
+   "rank": 14,
+   "code": "000568",
+   "name": "노주노교",
+   "nameEn": "Luzhou Laojiao Co Ltd Class A",
+   "industry": "증류주 및 포도주",
+   "kind": "quality",
+   "capRank": 143,
+   "industryRank": 3
+  },
+  {
+   "rank": 15,
+   "code": "000596",
+   "name": "고정공주",
+   "nameEn": "Anhui Gujing Distillery Co Ltd Class A",
+   "industry": "증류주 및 포도주",
+   "kind": "quality",
+   "capRank": 464,
+   "industryRank": 3
+  },
+  {
+   "rank": 16,
+   "code": "688256",
+   "name": "한무기",
+   "nameEn": "Cambricon Technologies Corp Ltd Class A",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 13,
+   "industryRank": 4
+  },
+  {
+   "rank": 17,
+   "code": "688041",
+   "name": "해광신식",
+   "nameEn": "Hygon Information Technology Co Ltd Class A",
+   "industry": "반도체",
+   "kind": "quality",
+   "capRank": 19,
+   "industryRank": 4
+  },
+  {
+   "rank": 18,
+   "code": "002384",
+   "name": "동산정밀",
+   "nameEn": "Suzhou Dongshan Precision Manufacturing Co Ltd Class A",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 32,
+   "industryRank": 4
+  },
+  {
+   "rank": 19,
+   "code": "688981",
+   "name": "중신 국제집성전로제조",
+   "nameEn": "Semiconductor Manufacturing International Corp Class A",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 38,
+   "industryRank": 4
+  },
+  {
+   "rank": 20,
+   "code": "002916",
+   "name": "심남전로",
+   "nameEn": "Shennan Circuits Co Ltd Class A",
+   "industry": "반도체",
+   "kind": "quality",
+   "capRank": 43,
+   "industryRank": 4
+  },
+  {
+   "rank": 21,
+   "code": "300750",
+   "name": "닝더스다이",
+   "nameEn": "Contemporary Amperex Technology Co.  Limited Class A",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 6,
+   "industryRank": 5
+  },
+  {
+   "rank": 22,
+   "code": "302132",
+   "name": "중국항공공업 성도",
+   "nameEn": "AVIC Chengdu Aircraft Co Ltd Class A",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 85,
+   "industryRank": 5
+  },
+  {
+   "rank": 23,
+   "code": "300124",
+   "name": "회천기술",
+   "nameEn": "Shenzhen Inovance Technology Co.  Ltd. Class A",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 96,
+   "industryRank": 5
+  },
+  {
+   "rank": 24,
+   "code": "300014",
+   "name": "이브에너지",
+   "nameEn": "EVE Energy Co.  Ltd. Class A",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 141,
+   "industryRank": 5
+  },
+  {
+   "rank": 25,
+   "code": "002028",
+   "name": "사원전기",
+   "nameEn": "Sieyuan Electric Co Ltd Class A",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 172,
+   "industryRank": 5
+  },
+  {
+   "rank": 26,
+   "code": "300502",
+   "name": "신역성통신기술",
+   "nameEn": "Eoptolink Technology Inc.  Ltd. Class A",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 18,
+   "industryRank": 6
+  },
+  {
+   "rank": 27,
+   "code": "002475",
+   "name": "입신정밀",
+   "nameEn": "Luxshare Precision Industry Co Ltd Class A",
+   "industry": "전자 장비 및 부품",
+   "kind": "trend",
+   "capRank": 28,
+   "industryRank": 6
+  },
+  {
+   "rank": 28,
+   "code": "600183",
+   "name": "생익과기",
+   "nameEn": "Shengyi Technology Co Ltd Class A",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 30,
+   "industryRank": 6
+  },
+  {
+   "rank": 29,
+   "code": "300394",
+   "name": "천부광통신",
+   "nameEn": "Suzhou TFC Optical Communication Co.  Ltd. Class A",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 39,
+   "industryRank": 6
+  },
+  {
+   "rank": 30,
+   "code": "300408",
+   "name": "삼배그룹",
+   "nameEn": "Chaozhou Three-circle (Group) Co Ltd Class A",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 53,
+   "industryRank": 6
+  },
+  {
+   "rank": 31,
+   "code": "601628",
+   "name": "중국생명보험",
+   "nameEn": "China Life Insurance Co Ltd Class A",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 11,
+   "industryRank": 7
+  },
+  {
+   "rank": 32,
+   "code": "601318",
+   "name": "중국평안보험",
+   "nameEn": "Ping An Insurance (Group) Company of China  Ltd. Class A",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 15,
+   "industryRank": 7
+  },
+  {
+   "rank": 33,
+   "code": "601601",
+   "name": "태평양보험",
+   "nameEn": "China Pacific Insurance (Group) Co.  Ltd. Class A",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 59,
+   "industryRank": 7
+  },
+  {
+   "rank": 34,
+   "code": "601336",
+   "name": "신화생명보험",
+   "nameEn": "New China Life Insurance Co Ltd Class A",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 129,
+   "industryRank": 7
+  },
+  {
+   "rank": 35,
+   "code": "002423",
+   "name": "중량집단",
+   "nameEn": "COFCO Capital Holdings Co Ltd Class A",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 864,
+   "industryRank": 7
+  },
+  {
+   "rank": 36,
+   "code": "601088",
+   "name": "신화에너지",
+   "nameEn": "China Shenhua Energy Co Ltd Class A",
+   "industry": "석탄",
+   "kind": "quality",
+   "capRank": 9,
+   "industryRank": 8
+  },
+  {
+   "rank": 37,
+   "code": "601225",
+   "name": "섬서석탄",
+   "nameEn": "Shaanxi Coal Industry Co Ltd Class A",
+   "industry": "석탄",
+   "kind": "quality",
+   "capRank": 44,
+   "industryRank": 8
+  },
+  {
+   "rank": 38,
+   "code": "601898",
+   "name": "중국석탄에너지",
+   "nameEn": "China Coal Energy Co Ltd Class A",
+   "industry": "석탄",
+   "kind": "quality",
+   "capRank": 111,
+   "industryRank": 8
+  },
+  {
+   "rank": 39,
+   "code": "601001",
+   "name": "진능강고 산서매업",
+   "nameEn": "Jinneng Holding Shanxi Coal Industry Co Ltd Class A",
+   "industry": "석탄",
+   "kind": "quality",
+   "capRank": 633,
+   "industryRank": 8
+  },
+  {
+   "rank": 40,
+   "code": "600188",
+   "name": "연광그룹 Class A",
+   "nameEn": "Yankuang Energy Group Company Limited Class A",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 133,
+   "industryRank": 8
+  },
+  {
+   "rank": 41,
+   "code": "002371",
+   "name": "북방화창",
+   "nameEn": "Naura Technology Group Co Ltd Class A",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 23,
+   "industryRank": 9
+  },
+  {
+   "rank": 42,
+   "code": "688012",
+   "name": "AMEC(중미반도체)",
+   "nameEn": "Advanced Micro-Fabrication Equipment Inc China Class A",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 33,
+   "industryRank": 9
+  },
+  {
+   "rank": 43,
+   "code": "688072",
+   "name": "척형과기",
+   "nameEn": "Piotech Inc Class A",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "trend",
+   "capRank": 65,
+   "industryRank": 9
+  },
+  {
+   "rank": 44,
+   "code": "300604",
+   "name": "장천과기",
+   "nameEn": "Hangzhou Changchuan Technology Co Ltd Class A",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 84,
+   "industryRank": 9
+  },
+  {
+   "rank": 45,
+   "code": "688082",
+   "name": "ACM 리서치",
+   "nameEn": "ACM Research (Shanghai) Inc Class A",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 92,
+   "industryRank": 9
+  },
+  {
+   "rank": 46,
+   "code": "600030",
+   "name": "중신증권",
+   "nameEn": "CITIC Securities Company Limited Class A",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 31,
+   "industryRank": 10
+  },
+  {
+   "rank": 47,
+   "code": "300059",
+   "name": "동방재부정보",
+   "nameEn": "East Money Information Co Ltd Class A",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 41,
+   "industryRank": 10
+  },
+  {
+   "rank": 48,
+   "code": "601211",
+   "name": "국태해통증권",
+   "nameEn": "Guotai Haitong Securities Co Ltd Class A",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 45,
+   "industryRank": 10
+  },
+  {
+   "rank": 49,
+   "code": "601066",
+   "name": "중신건투증권",
+   "nameEn": "China Securities Co Ltd Class A",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 88,
+   "industryRank": 10
+  },
+  {
+   "rank": 50,
+   "code": "601688",
+   "name": "화태증권",
+   "nameEn": "Huatai Securities Co.  Ltd. Class A",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 105,
+   "industryRank": 10
+  },
+  {
+   "rank": 51,
+   "code": "600900",
+   "name": "장강전력",
+   "nameEn": "China Yangtze Power Co Ltd Class A",
+   "industry": "전력 유틸리티",
+   "kind": "quality",
+   "capRank": 12,
+   "industryRank": 11
+  },
+  {
+   "rank": 52,
+   "code": "600905",
+   "name": "중국장강삼협",
+   "nameEn": "China Three Gorges Renewables Group Co Ltd Class A",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 156,
+   "industryRank": 11
+  },
+  {
+   "rank": 53,
+   "code": "600795",
+   "name": "국전전력개발",
+   "nameEn": "Gd Power Development Co Ltd Class A",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 170,
+   "industryRank": 11
+  },
+  {
+   "rank": 54,
+   "code": "600674",
+   "name": "천투에너지",
+   "nameEn": "Sichuan Chuantou Energy Co Ltd Class A",
+   "industry": "전력 유틸리티",
+   "kind": "quality",
+   "capRank": 214,
+   "industryRank": 11
+  },
+  {
+   "rank": 55,
+   "code": "001289",
+   "name": "중국 룽위안 전력 Class A",
+   "nameEn": "China Longyuan Power Group Corporation Limited Class A",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 229,
+   "industryRank": 11
+  },
+  {
+   "rank": 56,
+   "code": "601899",
+   "name": "자금광업 Class A",
+   "nameEn": "Zijin Mining Group Co Ltd Class A",
+   "industry": "금",
+   "kind": "quality",
+   "capRank": 14,
+   "industryRank": 12
+  },
+  {
+   "rank": 57,
+   "code": "600489",
+   "name": "중금황금",
+   "nameEn": "Zhongjin Gold Corp Ltd Class A",
+   "industry": "금",
+   "kind": "quality",
+   "capRank": 145,
+   "industryRank": 12
+  },
+  {
+   "rank": 58,
+   "code": "600988",
+   "name": "적봉황금",
+   "nameEn": "Chifeng Jilong Gold Mining Group Limited Class A",
+   "industry": "금",
+   "kind": "quality",
+   "capRank": 267,
+   "industryRank": 12
+  },
+  {
+   "rank": 59,
+   "code": "002155",
+   "name": "호남황금",
+   "nameEn": "Hunan Gold Corp Ltd Class A",
+   "industry": "금",
+   "kind": "quality",
+   "capRank": 492,
+   "industryRank": 12
+  },
+  {
+   "rank": 60,
+   "code": "001337",
+   "name": "사천황금",
+   "nameEn": "Sichuan Gold Co Ltd Class A",
+   "industry": "금",
+   "kind": "quality",
+   "capRank": 965,
+   "industryRank": 12
+  },
+  {
+   "rank": 61,
+   "code": "601728",
+   "name": "차이나 텔레콤",
+   "nameEn": "China Telecom Corp Ltd Class A",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 21,
+   "industryRank": 13
+  },
+  {
+   "rank": 62,
+   "code": "301165",
+   "name": "예첩망락",
+   "nameEn": "Ruijie Networks Co Ltd Class A",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 139,
+   "industryRank": 13
+  },
+  {
+   "rank": 63,
+   "code": "600941",
+   "name": "차이나 모바일",
+   "nameEn": "China Mobile Ltd Class A",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 198,
+   "industryRank": 13
+  },
+  {
+   "rank": 64,
+   "code": "600131",
+   "name": "국망신통",
+   "nameEn": "State Grid Information & Communication Co Ltd Class A",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 983,
+   "industryRank": 13
+  },
+  {
+   "rank": 65,
+   "code": "600050",
+   "name": "차이나 유니콤",
+   "nameEn": "China United Network Communications Ltd Class A",
+   "industry": "통합 통신 서비스",
+   "kind": "profit",
+   "capRank": 103,
+   "industryRank": 13
+  },
+  {
+   "rank": 66,
+   "code": "603766",
+   "name": "융흠통용",
+   "nameEn": "Loncin Motor Co Ltd Class A",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "quality",
+   "capRank": 625,
+   "industryRank": 14
+  },
+  {
+   "rank": 67,
+   "code": "301345",
+   "name": "도도차업",
+   "nameEn": "Zhejiang Taotao Vehicles Co Ltd Class A",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "quality",
+   "capRank": 727,
+   "industryRank": 14
+  },
+  {
+   "rank": 68,
+   "code": "002594",
+   "name": "비야디",
+   "nameEn": "BYD Company Limited Class A",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 22,
+   "industryRank": 14
+  },
+  {
+   "rank": 69,
+   "code": "600104",
+   "name": "상하자동차",
+   "nameEn": "SAIC Motor Corp Ltd Class A",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 114,
+   "industryRank": 14
+  },
+  {
+   "rank": 70,
+   "code": "601633",
+   "name": "장성자동차",
+   "nameEn": "Great Wall Motor Co Ltd Class A",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 199,
+   "industryRank": 14
+  },
+  {
+   "rank": 71,
+   "code": "600276",
+   "name": "항서의약",
+   "nameEn": "Jiangsu Hengrui Pharmaceuticals Co Ltd Class A",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 34,
+   "industryRank": 15
+  },
+  {
+   "rank": 72,
+   "code": "688506",
+   "name": "사천 백리천항약업",
+   "nameEn": "Sichuan Biokin Pharmaceutical Co.  Ltd. Class A",
+   "industry": "제약",
+   "kind": "trend",
+   "capRank": 161,
+   "industryRank": 15
+  },
+  {
+   "rank": 73,
+   "code": "000538",
+   "name": "운남백약",
+   "nameEn": "Yunnan Baiyao Group Co Ltd Class A",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 185,
+   "industryRank": 15
+  },
+  {
+   "rank": 74,
+   "code": "600436",
+   "name": "장주편자황제약",
+   "nameEn": "Zhangzhou Pientzehuang Pharmaceutical Co Ltd Class A",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 236,
+   "industryRank": 15
+  },
+  {
+   "rank": 75,
+   "code": "002653",
+   "name": "해사과제약",
+   "nameEn": "Haisco Pharmaceutical Group Co.  Ltd. Class A",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 237,
+   "industryRank": 15
+  },
+  {
+   "rank": 76,
+   "code": "603259",
+   "name": "우시앱텍",
+   "nameEn": "WuXi AppTec Co.  Ltd. Class A",
+   "industry": "생명 공학 및 의학 연구",
+   "kind": "quality",
+   "capRank": 24,
+   "industryRank": 16
+  },
+  {
+   "rank": 77,
+   "code": "300759",
+   "name": "강룡화성 Class A",
+   "nameEn": "Pharmaron Beijing Co Ltd Class A",
+   "industry": "생명 공학 및 의학 연구",
+   "kind": "quality",
+   "capRank": 260,
+   "industryRank": 16
+  },
+  {
+   "rank": 78,
+   "code": "688578",
+   "name": "예력사",
+   "nameEn": "Shanghai Allist Pharmaceuticals Co Ltd Class A",
+   "industry": "생명 공학 및 의학 연구",
+   "kind": "quality",
+   "capRank": 353,
+   "industryRank": 16
+  },
+  {
+   "rank": 79,
+   "code": "300347",
+   "name": "태격제약",
+   "nameEn": "Hangzhou Tigermed Consulting Co Ltd Class A",
+   "industry": "생명 공학 및 의학 연구",
+   "kind": "trend",
+   "capRank": 409,
+   "industryRank": 16
+  },
+  {
+   "rank": 80,
+   "code": "688331",
+   "name": "영창생물",
+   "nameEn": "RemeGen Co.  Ltd. Class A",
+   "industry": "생명 공학 및 의학 연구",
+   "kind": "trend",
+   "capRank": 420,
+   "industryRank": 16
+  },
+  {
+   "rank": 81,
+   "code": "603993",
+   "name": "낙양몰리브덴",
+   "nameEn": "CMOC Group Limited Class A",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 36,
+   "industryRank": 17
+  },
+  {
+   "rank": 82,
+   "code": "000657",
+   "name": "중오첨단신소재",
+   "nameEn": "China Tungsten and Hightech Materials Co Ltd Class A",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 125,
+   "industryRank": 17
+  },
+  {
+   "rank": 83,
+   "code": "000630",
+   "name": "동릉비철금속",
+   "nameEn": "Tongling Nonferrous Metals Group Co Ltd Class A",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 220,
+   "industryRank": 17
+  },
+  {
+   "rank": 84,
+   "code": "601958",
+   "name": "금두몰리브덴",
+   "nameEn": "Jinduicheng Molybdenum Co Ltd Class A",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 285,
+   "industryRank": 17
+  },
+  {
+   "rank": 85,
+   "code": "000426",
+   "name": "흥업은석",
+   "nameEn": "Inner Mongolia Xingye Silver&Tin Mining Co Ltd Class A",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 318,
+   "industryRank": 17
+  },
+  {
+   "rank": 86,
+   "code": "301377",
+   "name": "정태고과",
+   "nameEn": "Guangdong Dtech Technology Co Ltd Class A",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 97,
+   "industryRank": 18
+  },
+  {
+   "rank": 87,
+   "code": "002050",
+   "name": "삼화",
+   "nameEn": "Zhejiang Sanhua Intelligent Controls Co Ltd Class A",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 101,
+   "industryRank": 18
+  },
+  {
+   "rank": 88,
+   "code": "688361",
+   "name": "중과비측기",
+   "nameEn": "Skyverse Technology Co Ltd Class A",
+   "industry": "산업용 기계 및 장비",
+   "kind": "trend",
+   "capRank": 122,
+   "industryRank": 18
+  },
+  {
+   "rank": 89,
+   "code": "601100",
+   "name": "항립유항",
+   "nameEn": "Jiangsu Hengli Hydraulic Co.  Ltd. Class A",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 124,
+   "industryRank": 18
+  },
+  {
+   "rank": 90,
+   "code": "300757",
+   "name": "라박특과",
+   "nameEn": "RoboTechnik Intelligent Technology Co.  LTD. Class A",
+   "industry": "산업용 기계 및 장비",
+   "kind": "trend",
+   "capRank": 188,
+   "industryRank": 18
+  },
+  {
+   "rank": 91,
+   "code": "600989",
+   "name": "닝샤바오펑에너지",
+   "nameEn": "Ningxia Baofeng Energy Group Co Ltd Class A",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 78,
+   "industryRank": 19
+  },
+  {
+   "rank": 92,
+   "code": "000408",
+   "name": "장격광업",
+   "nameEn": "Zangge Mining Co Ltd Class A",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 140,
+   "industryRank": 19
+  },
+  {
+   "rank": 93,
+   "code": "688146",
+   "name": "중선특기",
+   "nameEn": "Peric Special Gases Co Ltd Class A",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 155,
+   "industryRank": 19
+  },
+  {
+   "rank": 94,
+   "code": "600160",
+   "name": "절강거화",
+   "nameEn": "Zhejiang Juhua Co Ltd Class A",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 187,
+   "industryRank": 19
+  },
+  {
+   "rank": 95,
+   "code": "002648",
+   "name": "위성화학",
+   "nameEn": "Satellite Chemical Co Ltd Class A",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 190,
+   "industryRank": 19
+  },
+  {
+   "rank": 96,
+   "code": "300857",
+   "name": "협창수거",
+   "nameEn": "Sharetronic Data Technology Co Ltd Class A",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 121,
+   "industryRank": 20
+  },
+  {
+   "rank": 97,
+   "code": "603019",
+   "name": "중과서광",
+   "nameEn": "Dawning Information Industry Co Ltd Class A",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "quality",
+   "capRank": 132,
+   "industryRank": 20
+  },
+  {
+   "rank": 98,
+   "code": "603296",
+   "name": "화근기술",
+   "nameEn": "Huaqin Co. Ltd. Class A",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 146,
+   "industryRank": 20
+  },
+  {
+   "rank": 99,
+   "code": "000977",
+   "name": "랑조전자신식산업",
+   "nameEn": "IEIT SYSTEMS Co Ltd Class A",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 168,
+   "industryRank": 20
+  },
+  {
+   "rank": 100,
+   "code": "300475",
+   "name": "집화고분",
+   "nameEn": "Shannon Semiconductor Technology Co Ltd Class A",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 235,
+   "industryRank": 20
+  },
+  {
+   "rank": 101,
+   "code": "300274",
+   "name": "양광전력",
+   "nameEn": "Sungrow Power Supply Co Ltd Class A",
+   "industry": "재생 가능 에너지 장비 및 서비스",
+   "kind": "quality",
+   "capRank": 74,
+   "industryRank": 21
+  },
+  {
+   "rank": 102,
+   "code": "605117",
+   "name": "영파 덕업과기",
+   "nameEn": "Ningbo Deye Technology Corp Class A",
+   "industry": "재생 가능 에너지 장비 및 서비스",
+   "kind": "quality",
+   "capRank": 163,
+   "industryRank": 21
+  },
+  {
+   "rank": 103,
+   "code": "601012",
+   "name": "융기실리콘자재",
+   "nameEn": "LONGi Green Energy Technology Co.  Ltd. Class A",
+   "industry": "재생 가능 에너지 장비 및 서비스",
+   "kind": "trend",
+   "capRank": 202,
+   "industryRank": 21
+  },
+  {
+   "rank": 104,
+   "code": "600875",
+   "name": "동방전기",
+   "nameEn": "Dongfang Electric Corp Ltd Class A",
+   "industry": "재생 가능 에너지 장비 및 서비스",
+   "kind": "trend",
+   "capRank": 238,
+   "industryRank": 21
+  },
+  {
+   "rank": 105,
+   "code": "002202",
+   "name": "금풍과기",
+   "nameEn": "Goldwind Science & Technology Co Ltd Class A",
+   "industry": "재생 가능 에너지 장비 및 서비스",
+   "kind": "trend",
+   "capRank": 298,
+   "industryRank": 21
+  },
+  {
+   "rank": 106,
+   "code": "601766",
+   "name": "CRRC(중국중차)",
+   "nameEn": "Crrc Corp Ltd Class A",
+   "industry": "중장비 및 차량",
+   "kind": "trend",
+   "capRank": 87,
+   "industryRank": 22
+  },
+  {
+   "rank": 107,
+   "code": "600031",
+   "name": "삼일중공업",
+   "nameEn": "Sany Heavy Industry Co Ltd Class A",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 90,
+   "industryRank": 22
+  },
+  {
+   "rank": 108,
+   "code": "000425",
+   "name": "서공중공업",
+   "nameEn": "XCMG Construction Machinery Co.  Ltd. Class A",
+   "industry": "중장비 및 차량",
+   "kind": "trend",
+   "capRank": 203,
+   "industryRank": 22
+  },
+  {
+   "rank": 109,
+   "code": "600066",
+   "name": "YTCO(정주우통버스)",
+   "nameEn": "Yutong Bus Co Ltd Class A",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 301,
+   "industryRank": 22
+  },
+  {
+   "rank": 110,
+   "code": "000157",
+   "name": "중리엔중공업",
+   "nameEn": "Zoomlion Heavy Industry Science and Technology Co Ltd Class A",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 418,
+   "industryRank": 22
+  },
+  {
+   "rank": 111,
+   "code": "002714",
+   "name": "목원식품",
+   "nameEn": "Muyuan Foods Group Co Ltd Class A",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 50,
+   "industryRank": 23
+  },
+  {
+   "rank": 112,
+   "code": "300498",
+   "name": "온씨식품",
+   "nameEn": "Wens Foodstuff Group Co.  Ltd. Class A",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 157,
+   "industryRank": 23
+  },
+  {
+   "rank": 113,
+   "code": "002311",
+   "name": "하이드그룹",
+   "nameEn": "Guangdong Haid Group Co Ltd Class A",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 247,
+   "industryRank": 23
+  },
+  {
+   "rank": 114,
+   "code": "600598",
+   "name": "흑룡강북대황농업",
+   "nameEn": "Heilongjiang Agriculture Co Ltd Class A",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 800,
+   "industryRank": 23
+  },
+  {
+   "rank": 115,
+   "code": "300761",
+   "name": "강소 립화식품집단",
+   "nameEn": "Jiangsu Lihua Foods Group Co Ltd Class A",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 1024,
+   "industryRank": 23
+  },
+  {
+   "rank": 116,
+   "code": "603288",
+   "name": "해천미업",
+   "nameEn": "Foshan Haitian Flavouring and Food Co Ltd Class A",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 67,
+   "industryRank": 24
+  },
+  {
+   "rank": 117,
+   "code": "000895",
+   "name": "쌍회개발",
+   "nameEn": "Henan Shuanghui Investment & Development Co Ltd Class A",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 211,
+   "industryRank": 24
+  },
+  {
+   "rank": 118,
+   "code": "002001",
+   "name": "신화성",
+   "nameEn": "Zhejiang NHU Co.  Ltd. Class A",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 218,
+   "industryRank": 24
+  },
+  {
+   "rank": 119,
+   "code": "603156",
+   "name": "양위엔쯔후이음료",
+   "nameEn": "Hebei Yangyuan ZhiHui Beverage Co Ltd Class A",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 321,
+   "industryRank": 24
+  },
+  {
+   "rank": 120,
+   "code": "600298",
+   "name": "안기효모",
+   "nameEn": "Angel Yeast Co Ltd Class A",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 554,
+   "industryRank": 24
+  },
+  {
+   "rank": 121,
+   "code": "601919",
+   "name": "코스코해운",
+   "nameEn": "COSCO Shipping Holdings Co Ltd Class A",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 62,
+   "industryRank": 25
+  },
+  {
+   "rank": 122,
+   "code": "601872",
+   "name": "초상기선",
+   "nameEn": "China Merchants Energy Shipping Co Ltd Class A",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 79,
+   "industryRank": 25
+  },
+  {
+   "rank": 123,
+   "code": "603565",
+   "name": "중곡물류",
+   "nameEn": "Shanghai Zhonggu Logistics Co Ltd Class A",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 751,
+   "industryRank": 25
+  },
+  {
+   "rank": 124,
+   "code": "603162",
+   "name": "복건 해통발전",
+   "nameEn": "Fujian Highton Development Co Ltd Class A",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 1008,
+   "industryRank": 25
+  },
+  {
+   "rank": 125,
+   "code": "601083",
+   "name": "상해 금강항운집단",
+   "nameEn": "Shanghai Jinjiang Shipping Group Co Ltd Class A",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 1095,
+   "industryRank": 25
+  },
+  {
+   "rank": 126,
+   "code": "601600",
+   "name": "중국려업",
+   "nameEn": "Aluminum Corporation of China Ltd Class A",
+   "industry": "알루미늄",
+   "kind": "quality",
+   "capRank": 127,
+   "industryRank": 26
+  },
+  {
+   "rank": 127,
+   "code": "000807",
+   "name": "운남알루미늄",
+   "nameEn": "Yunnan Aluminium Co Ltd Class A",
+   "industry": "알루미늄",
+   "kind": "quality",
+   "capRank": 181,
+   "industryRank": 26
+  },
+  {
+   "rank": 128,
+   "code": "002128",
+   "name": "전투능원",
+   "nameEn": "Inner Mongolia Dian Tou Energy Corp Ltd Class A",
+   "industry": "알루미늄",
+   "kind": "quality",
+   "capRank": 195,
+   "industryRank": 26
+  },
+  {
+   "rank": 129,
+   "code": "000933",
+   "name": "신화석탄발전",
+   "nameEn": "Henan Shenhuo Coal & Power Co Ltd Class A",
+   "industry": "알루미늄",
+   "kind": "quality",
+   "capRank": 302,
+   "industryRank": 26
+  },
+  {
+   "rank": 130,
+   "code": "002532",
+   "name": "신계펌프",
+   "nameEn": "Tianshan Aluminum Group Co Ltd Class A",
+   "industry": "알루미늄",
+   "kind": "quality",
+   "capRank": 314,
+   "industryRank": 26
+  },
+  {
+   "rank": 131,
+   "code": "600760",
+   "name": "중항침비",
+   "nameEn": "Avic Shenyang Aircraft Co Ltd Class A",
+   "industry": "항공우주 및 방위",
+   "kind": "trend",
+   "capRank": 119,
+   "industryRank": 27
+  },
+  {
+   "rank": 132,
+   "code": "600893",
+   "name": "중항엔진",
+   "nameEn": "AECC Aviation Power Co Ltd Class A",
+   "industry": "항공우주 및 방위",
+   "kind": "trend",
+   "capRank": 149,
+   "industryRank": 27
+  },
+  {
+   "rank": 133,
+   "code": "600118",
+   "name": "중국위성",
+   "nameEn": "China Spacesat Co Ltd Class A",
+   "industry": "항공우주 및 방위",
+   "kind": "trend",
+   "capRank": 270,
+   "industryRank": 27
+  },
+  {
+   "rank": 134,
+   "code": "000768",
+   "name": "중항서안 항공공업",
+   "nameEn": "Avic XiAn Aircraft Industry Group Co Ltd Class A",
+   "industry": "항공우주 및 방위",
+   "kind": "trend",
+   "capRank": 276,
+   "industryRank": 27
+  },
+  {
+   "rank": 135,
+   "code": "600372",
+   "name": "중항전자",
+   "nameEn": "AVIC Airborne Systems Co Ltd Class A",
+   "industry": "항공우주 및 방위",
+   "kind": "trend",
+   "capRank": 324,
+   "industryRank": 27
+  },
+  {
+   "rank": 136,
+   "code": "002602",
+   "name": "세기화통",
+   "nameEn": "Zhejiang Century Huatong Group Co Ltd Class A",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 151,
+   "industryRank": 28
+  },
+  {
+   "rank": 137,
+   "code": "688111",
+   "name": "베이징 킹소프트 오피스 소프트웨어",
+   "nameEn": "Beijing Kingsoft Office Software  Inc. Class A",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 153,
+   "industryRank": 28
+  },
+  {
+   "rank": 138,
+   "code": "002230",
+   "name": "신비정보",
+   "nameEn": "iFLYTEK Co Ltd Class A",
+   "industry": "소프트웨어",
+   "kind": "trend",
+   "capRank": 189,
+   "industryRank": 28
+  },
+  {
+   "rank": 139,
+   "code": "300454",
+   "name": "심신복테크놀로지",
+   "nameEn": "Sangfor Technologies Inc Class A",
+   "industry": "소프트웨어",
+   "kind": "trend",
+   "capRank": 300,
+   "industryRank": 28
+  },
+  {
+   "rank": 140,
+   "code": "301269",
+   "name": "화태규천",
+   "nameEn": "Empyrean Technology Co Ltd Class A",
+   "industry": "소프트웨어",
+   "kind": "trend",
+   "capRank": 381,
+   "industryRank": 28
+  },
+  {
+   "rank": 141,
+   "code": "601816",
+   "name": "경호고속철로",
+   "nameEn": "Beijing-Shanghai High Speed Railway Co Ltd Class A",
+   "industry": "고속도로 및 철도",
+   "kind": "quality",
+   "capRank": 49,
+   "industryRank": 29
+  },
+  {
+   "rank": 142,
+   "code": "001965",
+   "name": "쟈오샹고속도로",
+   "nameEn": "China Merchants Expressway Network Technology Holdings Co Ltd Class A",
+   "industry": "고속도로 및 철도",
+   "kind": "quality",
+   "capRank": 256,
+   "industryRank": 29
+  },
+  {
+   "rank": 143,
+   "code": "600377",
+   "name": "강소녕호고속도로",
+   "nameEn": "Jiangsu Expressway Co Ltd Class A",
+   "industry": "고속도로 및 철도",
+   "kind": "quality",
+   "capRank": 360,
+   "industryRank": 29
+  },
+  {
+   "rank": 144,
+   "code": "000429",
+   "name": "광동고속도로",
+   "nameEn": "Guangdong Provincial Expressway Development Co Ltd Class A",
+   "industry": "고속도로 및 철도",
+   "kind": "quality",
+   "capRank": 828,
+   "industryRank": 29
+  },
+  {
+   "rank": 145,
+   "code": "600012",
+   "name": "안휘환통고속도로",
+   "nameEn": "Anhui Expressway Co Ltd Class A",
+   "industry": "고속도로 및 철도",
+   "kind": "quality",
+   "capRank": 962,
+   "industryRank": 29
+  },
+  {
+   "rank": 146,
+   "code": "300760",
+   "name": "매서의료",
+   "nameEn": "Shenzhen Mindray Bio-Medical Electronics Co.  Ltd. Class A",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 64,
+   "industryRank": 30
+  },
+  {
+   "rank": 147,
+   "code": "688271",
+   "name": "련영의료",
+   "nameEn": "Shanghai United Imaging Healthcare Co.  Ltd. Class A",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 192,
+   "industryRank": 30
+  },
+  {
+   "rank": 148,
+   "code": "688114",
+   "name": "화대지조",
+   "nameEn": "MGI Tech Co Ltd Class A",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "trend",
+   "capRank": 607,
+   "industryRank": 30
+  },
+  {
+   "rank": 149,
+   "code": "688301",
+   "name": "혁서과기",
+   "nameEn": "iRay Group Class A",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 696,
+   "industryRank": 30
+  },
+  {
+   "rank": 150,
+   "code": "301363",
+   "name": "미호의료",
+   "nameEn": "Mehow Innovative Ltd. Class A",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 1366,
+   "industryRank": 30
+  },
+  {
+   "rank": 151,
+   "code": "600089",
+   "name": "특변전공",
+   "nameEn": "Tbea Co Ltd Class A",
+   "industry": "중전기장비",
+   "kind": "trend",
+   "capRank": 194,
+   "industryRank": 31
+  },
+  {
+   "rank": 152,
+   "code": "601727",
+   "name": "상해전기",
+   "nameEn": "Shanghai Electric Group Co Ltd Class A",
+   "industry": "중전기장비",
+   "kind": "trend",
+   "capRank": 213,
+   "industryRank": 31
+  },
+  {
+   "rank": 153,
+   "code": "600482",
+   "name": "중국동력",
+   "nameEn": "China Shipbuilding Industry Group Power Co Ltd Class A",
+   "industry": "중전기장비",
+   "kind": "trend",
+   "capRank": 224,
+   "industryRank": 31
+  },
+  {
+   "rank": 154,
+   "code": "601179",
+   "name": "XD전기",
+   "nameEn": "China XD Electric Co Ltd Class A",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 295,
+   "industryRank": 31
+  },
+  {
+   "rank": 155,
+   "code": "688187",
+   "name": "시대전기",
+   "nameEn": "Zhuzhou CRRC Times Electric Co Ltd Class A",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 458,
+   "industryRank": 31
+  },
+  {
+   "rank": 156,
+   "code": "600018",
+   "name": "상해항만그룹",
+   "nameEn": "Shanghai International Port (Group) Co.  Ltd. Class A",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 109,
+   "industryRank": 32
+  },
+  {
+   "rank": 157,
+   "code": "601018",
+   "name": "닝보저우샨항",
+   "nameEn": "Ningbo Zhoushan Port Co Ltd Class A",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 253,
+   "industryRank": 32
+  },
+  {
+   "rank": 158,
+   "code": "001872",
+   "name": "초상국항구",
+   "nameEn": "China Merchants Port Group Co Ltd Class A",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 319,
+   "industryRank": 32
+  },
+  {
+   "rank": 159,
+   "code": "601298",
+   "name": "청도항국제",
+   "nameEn": "Qingdao Port International Co Ltd Class A",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 326,
+   "industryRank": 32
+  },
+  {
+   "rank": 160,
+   "code": "601000",
+   "name": "당산항",
+   "nameEn": "Tangshan Port Group Co Ltd Class A",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 667,
+   "industryRank": 32
+  },
+  {
+   "rank": 161,
+   "code": "002352",
+   "name": "순풍홀딩스",
+   "nameEn": "S.F. Holding Co Ltd Class A",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 93,
+   "industryRank": 33
+  },
+  {
+   "rank": 162,
+   "code": "600233",
+   "name": "원통택배",
+   "nameEn": "YTO Express Group Co Ltd Class A",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 291,
+   "industryRank": 33
+  },
+  {
+   "rank": 163,
+   "code": "001391",
+   "name": "국화항",
+   "nameEn": "Air China Cargo Co Ltd Class A",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 380,
+   "industryRank": 33
+  },
+  {
+   "rank": 164,
+   "code": "601598",
+   "name": "중국외운",
+   "nameEn": "Sinotrans Ltd Class A",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 530,
+   "industryRank": 33
+  },
+  {
+   "rank": 165,
+   "code": "601156",
+   "name": "동영국제물류",
+   "nameEn": "Eastern Air Logistics Co Ltd Class A",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 624,
+   "industryRank": 33
+  },
+  {
+   "rank": 166,
+   "code": "600019",
+   "name": "보산철강",
+   "nameEn": "Baoshan Iron & Steel Co Ltd Class A",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 107,
+   "industryRank": 34
+  },
+  {
+   "rank": 167,
+   "code": "000708",
+   "name": "대야특수강",
+   "nameEn": "CITIC Pacific Special Steel Group Co Ltd Class A",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 264,
+   "industryRank": 34
+  },
+  {
+   "rank": 168,
+   "code": "601061",
+   "name": "중신금속",
+   "nameEn": "CITIC Metal Co Ltd Class A",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 342,
+   "industryRank": 34
+  },
+  {
+   "rank": 169,
+   "code": "001203",
+   "name": "내몽고대중광업",
+   "nameEn": "Dazhong Mining Co Ltd Class A",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 526,
+   "industryRank": 34
+  },
+  {
+   "rank": 170,
+   "code": "600282",
+   "name": "남경철강",
+   "nameEn": "NanJing Iron & Steel Co Ltd Class A",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 657,
+   "industryRank": 34
+  },
+  {
+   "rank": 171,
+   "code": "600660",
+   "name": "복요유리",
+   "nameEn": "Fuyao Glass Industry Group Co Ltd Class A",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 142,
+   "industryRank": 35
+  },
+  {
+   "rank": 172,
+   "code": "601689",
+   "name": "탁보그룹",
+   "nameEn": "Ningbo Tuopu Group Co Ltd Class A",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 216,
+   "industryRank": 35
+  },
+  {
+   "rank": 173,
+   "code": "002920",
+   "name": "덕새서위",
+   "nameEn": "Huizhou Desay SV Automotive Co Ltd Class A",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 377,
+   "industryRank": 35
+  },
+  {
+   "rank": 174,
+   "code": "301550",
+   "name": "사릉고분",
+   "nameEn": "Zhejiang Sling Intelligent Drive Group Co Ltd Class A",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 537,
+   "industryRank": 35
+  },
+  {
+   "rank": 175,
+   "code": "002472",
+   "name": "쌍환전동기계",
+   "nameEn": "Zhejiang Shuanghuan Driveline Co Ltd Class A",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 556,
+   "industryRank": 35
+  },
+  {
+   "rank": 176,
+   "code": "600406",
+   "name": "국전남서과기",
+   "nameEn": "NARI Technology Co Ltd Class A",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 71,
+   "industryRank": 36
+  },
+  {
+   "rank": 177,
+   "code": "300017",
+   "name": "망숙과기",
+   "nameEn": "Wangsu Science & Technology Co Ltd Class A",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 477,
+   "industryRank": 36
+  },
+  {
+   "rank": 178,
+   "code": "301236",
+   "name": "연통동력",
+   "nameEn": "iSoftStone Information Technology Group Co Ltd Class A",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "trend",
+   "capRank": 489,
+   "industryRank": 36
+  },
+  {
+   "rank": 179,
+   "code": "688568",
+   "name": "제오비스 테크놀로지",
+   "nameEn": "Geovis Technology Co Ltd Class A",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "trend",
+   "capRank": 770,
+   "industryRank": 36
+  },
+  {
+   "rank": 180,
+   "code": "002065",
+   "name": "동화소프트웨어",
+   "nameEn": "DHC Software Co Ltd Class A",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "trend",
+   "capRank": 874,
+   "industryRank": 36
+  },
+  {
+   "rank": 181,
+   "code": "600176",
+   "name": "중국거석",
+   "nameEn": "China Jushi Co Ltd Class A",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 82,
+   "industryRank": 37
+  },
+  {
+   "rank": 182,
+   "code": "600801",
+   "name": "화신시멘트",
+   "nameEn": "Huaxin Building Materials Group Co Ltd Class A",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 566,
+   "industryRank": 37
+  },
+  {
+   "rank": 183,
+   "code": "000672",
+   "name": "상봉시멘트",
+   "nameEn": "Gansu Shangfeng Materials Co Ltd Class A",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 1236,
+   "industryRank": 37
+  },
+  {
+   "rank": 184,
+   "code": "002392",
+   "name": "북경내화재료",
+   "nameEn": "Beijing Lirr High-temperature Materials Co Ltd Class A",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 1928,
+   "industryRank": 37
+  },
+  {
+   "rank": 185,
+   "code": "600585",
+   "name": "안휘해라시멘트",
+   "nameEn": "Anhui Conch Cement Company Limited Class A",
+   "industry": "건설 자재",
+   "kind": "profit",
+   "capRank": 246,
+   "industryRank": 37
+  },
+  {
+   "rank": 186,
+   "code": "600690",
+   "name": "해이지가",
+   "nameEn": "Haier Smart Home Co Ltd Class A",
+   "industry": "가전제품, 도구 및 가정 용품",
+   "kind": "quality",
+   "capRank": 112,
+   "industryRank": 38
+  },
+  {
+   "rank": 187,
+   "code": "002444",
+   "name": "거성과기",
+   "nameEn": "Hangzhou GreatStar Industrial Co Ltd Class A",
+   "industry": "가전제품, 도구 및 가정 용품",
+   "kind": "quality",
+   "capRank": 561,
+   "industryRank": 38
+  },
+  {
+   "rank": 188,
+   "code": "002032",
+   "name": "수보얼",
+   "nameEn": "Zhejiang Supor Co Ltd Class A",
+   "industry": "가전제품, 도구 및 가정 용품",
+   "kind": "quality",
+   "capRank": 569,
+   "industryRank": 38
+  },
+  {
+   "rank": 189,
+   "code": "688169",
+   "name": "베이징 로보락 테크놀로지",
+   "nameEn": "Beijing Roborock Technology Co Ltd Class A",
+   "industry": "가전제품, 도구 및 가정 용품",
+   "kind": "quality",
+   "capRank": 589,
+   "industryRank": 38
+  },
+  {
+   "rank": 190,
+   "code": "603486",
+   "name": "과옥사예기인",
+   "nameEn": "Ecovacs Robotics Co Ltd Class A",
+   "industry": "가전제품, 도구 및 가정 용품",
+   "kind": "quality",
+   "capRank": 632,
+   "industryRank": 38
+  },
+  {
+   "rank": 191,
+   "code": "000792",
+   "name": "청해염화공업",
+   "nameEn": "Qinghai Yanhu Industry Co Ltd Class A",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 113,
+   "industryRank": 39
+  },
+  {
+   "rank": 192,
+   "code": "600096",
+   "name": "운남운천화",
+   "nameEn": "Yunnan Yuntianhua Co Ltd Class A",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 351,
+   "industryRank": 39
+  },
+  {
+   "rank": 193,
+   "code": "000893",
+   "name": "동릉국제투자",
+   "nameEn": "Asia Potash International Investment Guangzhou Co Ltd Class A",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 531,
+   "industryRank": 39
+  },
+  {
+   "rank": 194,
+   "code": "600486",
+   "name": "강소양농화학",
+   "nameEn": "Jiangsu Yangnong Chemical Co Ltd Class A",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 880,
+   "industryRank": 39
+  },
+  {
+   "rank": 195,
+   "code": "301035",
+   "name": "산동 유방윤봉화공",
+   "nameEn": "Shandong Weifang Rainbow Chemical Co Ltd Class A",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 1004,
+   "industryRank": 39
+  },
+  {
+   "rank": 196,
+   "code": "000776",
+   "name": "광발증권",
+   "nameEn": "GF Securities Co.  Ltd. Class A",
+   "industry": "투자 관리 및 펀드 운영",
+   "kind": "quality",
+   "capRank": 130,
+   "industryRank": 40
+  },
+  {
+   "rank": 197,
+   "code": "601136",
+   "name": "수창증권",
+   "nameEn": "Capital Securities Corporation Limited Class A",
+   "industry": "투자 관리 및 펀드 운영",
+   "kind": "quality",
+   "capRank": 467,
+   "industryRank": 40
+  },
+  {
+   "rank": 198,
+   "code": "000563",
+   "name": "섬서국제신탁",
+   "nameEn": "Shaanxi International Trust Co Ltd Class A",
+   "industry": "투자 관리 및 펀드 운영",
+   "kind": "quality",
+   "capRank": 1197,
+   "industryRank": 40
+  },
+  {
+   "rank": 199,
+   "code": "601377",
+   "name": "흥업증권",
+   "nameEn": "Industrial Securities Co Ltd Class A",
+   "industry": "투자 관리 및 펀드 운영",
+   "kind": "profit",
+   "capRank": 362,
+   "industryRank": 40
+  },
+  {
+   "rank": 200,
+   "code": "600816",
+   "name": "ST안신",
+   "nameEn": "J-Yuan Trust Co Ltd Class A",
+   "industry": "투자 관리 및 펀드 운영",
+   "kind": "profit",
+   "capRank": 776,
+   "industryRank": 40
+  },
+  {
+   "rank": 201,
+   "code": "300033",
+   "name": "동화순네트워크",
+   "nameEn": "Hithink RoyalFlush Information Network Co.  Ltd. Class A",
+   "industry": "핀테크",
+   "kind": "quality",
+   "capRank": 89,
+   "industryRank": 41
+  },
+  {
+   "rank": 202,
+   "code": "600570",
+   "name": "항생전자",
+   "nameEn": "Hundsun Technologies Inc. Class A",
+   "industry": "핀테크",
+   "kind": "quality",
+   "capRank": 486,
+   "industryRank": 41
+  },
+  {
+   "rank": 203,
+   "code": "688318",
+   "name": "선전 포춘 트렌드 테크놀로지",
+   "nameEn": "Shenzhen Fortune Trend Technology Co Ltd Class A",
+   "industry": "핀테크",
+   "kind": "quality",
+   "capRank": 686,
+   "industryRank": 41
+  },
+  {
+   "rank": 204,
+   "code": "000997",
+   "name": "신대륙컴퓨터",
+   "nameEn": "Newland Digital Technology Co Ltd Class A",
+   "industry": "핀테크",
+   "kind": "quality",
+   "capRank": 934,
+   "industryRank": 41
+  },
+  {
+   "rank": 205,
+   "code": "002987",
+   "name": "북방 정보기술",
+   "nameEn": "Northking Information Technology Co Ltd Class A",
+   "industry": "핀테크",
+   "kind": "quality",
+   "capRank": 1619,
+   "industryRank": 41
+  },
+  {
+   "rank": 206,
+   "code": "300054",
+   "name": "정룡",
+   "nameEn": "Hubei Dinglong Co Ltd Class A",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 275,
+   "industryRank": 42
+  },
+  {
+   "rank": 207,
+   "code": "300037",
+   "name": "캡켐기술",
+   "nameEn": "Shenzhen Capchem Technology Co Ltd Class A",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 355,
+   "industryRank": 42
+  },
+  {
+   "rank": 208,
+   "code": "002064",
+   "name": "화봉화학",
+   "nameEn": "Huafon Chemical Co Ltd Class A",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 373,
+   "industryRank": 42
+  },
+  {
+   "rank": 209,
+   "code": "603650",
+   "name": "동정신소재",
+   "nameEn": "Red Avenue New Materials Group Co.  Ltd. Class A",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 462,
+   "industryRank": 42
+  },
+  {
+   "rank": 210,
+   "code": "300487",
+   "name": "남효신소재",
+   "nameEn": "Sunresin New Materials Co Ltd Class A",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 527,
+   "industryRank": 42
+  },
+  {
+   "rank": 211,
+   "code": "601888",
+   "name": "CTG면세점",
+   "nameEn": "China Tourism Group Duty Free Corp Ltd Class A",
+   "industry": "공항 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 158,
+   "industryRank": 43
+  },
+  {
+   "rank": 212,
+   "code": "600004",
+   "name": "백운국제공항",
+   "nameEn": "Guangzhou Baiyun International Airport Co Ltd Class A",
+   "industry": "공항 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 919,
+   "industryRank": 43
+  },
+  {
+   "rank": 213,
+   "code": "600009",
+   "name": "상해국제공항",
+   "nameEn": "Shanghai International Airport Co Ltd Class A",
+   "industry": "공항 운영 및 서비스",
+   "kind": "profit",
+   "capRank": 315,
+   "industryRank": 43
+  },
+  {
+   "rank": 214,
+   "code": "600515",
+   "name": "해남기장",
+   "nameEn": "Hainan Airport Infrastructure Co Ltd Class A",
+   "industry": "공항 운영 및 서비스",
+   "kind": "profit",
+   "capRank": 577,
+   "industryRank": 43
+  },
+  {
+   "rank": 215,
+   "code": "000089",
+   "name": "심천공항",
+   "nameEn": "Shenzhen Airport Co Ltd Class A",
+   "industry": "공항 운영 및 서비스",
+   "kind": "profit",
+   "capRank": 1294,
+   "industryRank": 43
+  },
+  {
+   "rank": 216,
+   "code": "600007",
+   "name": "중국국제무역센터",
+   "nameEn": "China World Trade Center Co Ltd Class A",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 881,
+   "industryRank": 44
+  },
+  {
+   "rank": 217,
+   "code": "601512",
+   "name": "중국-싱가파소주 공업원구",
+   "nameEn": "China-Singapore Suzhou Industrial Park Development Group Co Ltd Class A",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 1398,
+   "industryRank": 44
+  },
+  {
+   "rank": 218,
+   "code": "600048",
+   "name": "보리부동산",
+   "nameEn": "Poly Developments and Holdings Group Co Ltd Class A",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "profit",
+   "capRank": 250,
+   "industryRank": 44
+  },
+  {
+   "rank": 219,
+   "code": "001979",
+   "name": "초상사구",
+   "nameEn": "China Merchants Shekou Industrial Zone Holdings Co Ltd Class A",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "profit",
+   "capRank": 254,
+   "industryRank": 44
+  },
+  {
+   "rank": 220,
+   "code": "600895",
+   "name": "장강하이테크",
+   "nameEn": "Shanghai Zhangjiang Hi-tech Park Development Co.  Ltd. Class A",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "profit",
+   "capRank": 406,
+   "industryRank": 44
+  },
+  {
+   "rank": 221,
+   "code": "600111",
+   "name": "북방희토",
+   "nameEn": "China Northern Rare Earth (Group) High-Tech Co Ltd Class A",
+   "industry": "금 제외 귀금속 및 광물",
+   "kind": "quality",
+   "capRank": 108,
+   "industryRank": 45
+  },
+  {
+   "rank": 222,
+   "code": "600392",
+   "name": "성화자원",
+   "nameEn": "Shenghe Resources Holding Co Ltd Class A",
+   "industry": "금 제외 귀금속 및 광물",
+   "kind": "quality",
+   "capRank": 506,
+   "industryRank": 45
+  },
+  {
+   "rank": 223,
+   "code": "600459",
+   "name": "운남성귀금속신재료",
+   "nameEn": "Sino Platinum Metals Co Ltd Class A",
+   "industry": "금 제외 귀금속 및 광물",
+   "kind": "profit",
+   "capRank": 1203,
+   "industryRank": 45
+  },
+  {
+   "rank": 224,
+   "code": "603505",
+   "name": "금석자원",
+   "nameEn": "China Kings Resources Group Co Ltd Class A",
+   "industry": "금 제외 귀금속 및 광물",
+   "kind": "profit",
+   "capRank": 1490,
+   "industryRank": 45
+  },
+  {
+   "rank": 225,
+   "code": "600172",
+   "name": "하남황하선풍",
+   "nameEn": "Henan Huanghe Whirlwind Co Ltd Class A",
+   "industry": "금 제외 귀금속 및 광물",
+   "kind": "size",
+   "capRank": 894,
+   "industryRank": 45
+  },
+  {
+   "rank": 226,
+   "code": "601360",
+   "name": "360 보안테크놀로지",
+   "nameEn": "360 Security Technology Inc Class A",
+   "industry": "온라인 서비스",
+   "kind": "trend",
+   "capRank": 284,
+   "industryRank": 46
+  },
+  {
+   "rank": 227,
+   "code": "300418",
+   "name": "곤륜만유과기",
+   "nameEn": "Kunlun Tech Co.  Ltd. Class A",
+   "industry": "온라인 서비스",
+   "kind": "trend",
+   "capRank": 344,
+   "industryRank": 46
+  },
+  {
+   "rank": 228,
+   "code": "002555",
+   "name": "삼칠호오망락과기",
+   "nameEn": "37 Interactive Entertainment Network Technology Group Co Ltd Class A",
+   "industry": "온라인 서비스",
+   "kind": "quality",
+   "capRank": 466,
+   "industryRank": 46
+  },
+  {
+   "rank": 229,
+   "code": "300209",
+   "name": "유괘수과기",
+   "nameEn": "Xingyun Technology Co Ltd Class A",
+   "industry": "온라인 서비스",
+   "kind": "trend",
+   "capRank": 590,
+   "industryRank": 46
+  },
+  {
+   "rank": 230,
+   "code": "603444",
+   "name": "길비특",
+   "nameEn": "G-bits Network Technology (Xiamen) Co.  Ltd. Class A",
+   "industry": "온라인 서비스",
+   "kind": "quality",
+   "capRank": 747,
+   "industryRank": 46
+  },
+  {
+   "rank": 231,
+   "code": "000099",
+   "name": "중신헬리콥터",
+   "nameEn": "Citic Offshore Helicopter Co Ltd Class A",
+   "industry": "항공사",
+   "kind": "quality",
+   "capRank": 1764,
+   "industryRank": 47
+  },
+  {
+   "rank": 232,
+   "code": "600029",
+   "name": "중국남방항공",
+   "nameEn": "China Southern Airlines Co Ltd Class A",
+   "industry": "항공사",
+   "kind": "profit",
+   "capRank": 261,
+   "industryRank": 47
+  },
+  {
+   "rank": 233,
+   "code": "600221",
+   "name": "해남항공",
+   "nameEn": "Hainan Airlines Holding Co Ltd Class A",
+   "industry": "항공사",
+   "kind": "profit",
+   "capRank": 337,
+   "industryRank": 47
+  },
+  {
+   "rank": 234,
+   "code": "601021",
+   "name": "춘추항공",
+   "nameEn": "Spring Airlines Co.  Ltd. Class A",
+   "industry": "항공사",
+   "kind": "profit",
+   "capRank": 436,
+   "industryRank": 47
+  },
+  {
+   "rank": 235,
+   "code": "603885",
+   "name": "길상항공",
+   "nameEn": "JUNEYAO AIRLINES Co Ltd Class A",
+   "industry": "항공사",
+   "kind": "profit",
+   "capRank": 835,
+   "industryRank": 47
+  },
+  {
+   "rank": 236,
+   "code": "002027",
+   "name": "포커스미디어",
+   "nameEn": "Focus Media Information Technology Co Ltd Class A",
+   "industry": "광고 및 마케팅",
+   "kind": "quality",
+   "capRank": 255,
+   "industryRank": 48
+  },
+  {
+   "rank": 237,
+   "code": "603000",
+   "name": "인민망",
+   "nameEn": "People.cn Co Ltd Class A",
+   "industry": "광고 및 마케팅",
+   "kind": "quality",
+   "capRank": 991,
+   "industryRank": 48
+  },
+  {
+   "rank": 238,
+   "code": "605168",
+   "name": "삼인행",
+   "nameEn": "Three's Company Future Technology Group Co Ltd Class A",
+   "industry": "광고 및 마케팅",
+   "kind": "quality",
+   "capRank": 1663,
+   "industryRank": 48
+  },
+  {
+   "rank": 239,
+   "code": "300058",
+   "name": "남색광표",
+   "nameEn": "BlueFocus Intelligent Communications Group Co Ltd Class A",
+   "industry": "광고 및 마케팅",
+   "kind": "profit",
+   "capRank": 399,
+   "industryRank": 48
+  },
+  {
+   "rank": 240,
+   "code": "002131",
+   "name": "리오그룹",
+   "nameEn": "Leo Group Co Ltd Class A",
+   "industry": "광고 및 마케팅",
+   "kind": "profit",
+   "capRank": 646,
+   "industryRank": 48
+  },
+  {
+   "rank": 241,
+   "code": "300832",
+   "name": "심천시 신산업생물의학공정",
+   "nameEn": "Shenzhen New Industries Biomedical Engineering Co Ltd Class A",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 443,
+   "industryRank": 49
+  },
+  {
+   "rank": 242,
+   "code": "688617",
+   "name": "혜태의료",
+   "nameEn": "APT Medical Inc Class A",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 509,
+   "industryRank": 49
+  },
+  {
+   "rank": 243,
+   "code": "300677",
+   "name": "영과의료과기",
+   "nameEn": "Intco Medical Technology Co.  Ltd. Class A",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 542,
+   "industryRank": 49
+  },
+  {
+   "rank": 244,
+   "code": "300896",
+   "name": "이미익 기술 개발",
+   "nameEn": "Imeik Technology Development Co Ltd Class A",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 637,
+   "industryRank": 49
+  },
+  {
+   "rank": 245,
+   "code": "002432",
+   "name": "구안의료기",
+   "nameEn": "Andon Health Co Ltd Class A",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "trend",
+   "capRank": 654,
+   "industryRank": 49
+  },
+  {
+   "rank": 246,
+   "code": "000938",
+   "name": "즈광",
+   "nameEn": "Unisplendour Corp Ltd Class A",
+   "industry": "통합 하드웨어 및 소프트웨어",
+   "kind": "trend",
+   "capRank": 191,
+   "industryRank": 50
+  },
+  {
+   "rank": 247,
+   "code": "600100",
+   "name": "청화동방",
+   "nameEn": "Tsinghua Tongfang Co.  Ltd. Class A",
+   "industry": "통합 하드웨어 및 소프트웨어",
+   "kind": "trend",
+   "capRank": 823,
+   "industryRank": 50
+  },
+  {
+   "rank": 248,
+   "code": "688343",
+   "name": "심천 운천려비기술",
+   "nameEn": "Shenzhen Intellifusion Technologies Co Ltd Class A",
+   "industry": "통합 하드웨어 및 소프트웨어",
+   "kind": "trend",
+   "capRank": 837,
+   "industryRank": 50
+  },
+  {
+   "rank": 249,
+   "code": "301275",
+   "name": "한삭과기",
+   "nameEn": "Hanshow Technology Co.  Ltd. Class A",
+   "industry": "통합 하드웨어 및 소프트웨어",
+   "kind": "quality",
+   "capRank": 1106,
+   "industryRank": 50
+  },
+  {
+   "rank": 250,
+   "code": "002990",
+   "name": "성시과기",
+   "nameEn": "Maxvision Technology Corp Class A",
+   "industry": "통합 하드웨어 및 소프트웨어",
+   "kind": "trend",
+   "capRank": 1304,
+   "industryRank": 50
+  },
+  {
+   "rank": 251,
+   "code": "600023",
+   "name": "절능전력",
+   "nameEn": "Zhejiang Zheneng Electric Power Co Ltd Class A",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 243,
+   "industryRank": 51
+  },
+  {
+   "rank": 252,
+   "code": "600483",
+   "name": "복건복능",
+   "nameEn": "Fujian Funeng Co Ltd Class A",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 592,
+   "industryRank": 51
+  },
+  {
+   "rank": 253,
+   "code": "002608",
+   "name": "강소국신",
+   "nameEn": "Jiangsu Guoxin Corp Ltd Class A",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 660,
+   "industryRank": 51
+  },
+  {
+   "rank": 254,
+   "code": "000791",
+   "name": "서북영신화학",
+   "nameEn": "GEPIC Energy Development Co Ltd Class A",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 785,
+   "industryRank": 51
+  },
+  {
+   "rank": 255,
+   "code": "600163",
+   "name": "중민능원",
+   "nameEn": "Zhongmin Energy Co Ltd Class A",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 1649,
+   "industryRank": 51
+  },
+  {
+   "rank": 256,
+   "code": "300015",
+   "name": "애이안과",
+   "nameEn": "Aier Eye Hospital Group Co Ltd Class A",
+   "industry": "의료 시설 및 서비스",
+   "kind": "quality",
+   "capRank": 232,
+   "industryRank": 52
+  },
+  {
+   "rank": 257,
+   "code": "600763",
+   "name": "통책의료",
+   "nameEn": "Topchoice Medical Co Inc Class A",
+   "industry": "의료 시설 및 서비스",
+   "kind": "quality",
+   "capRank": 1184,
+   "industryRank": 52
+  },
+  {
+   "rank": 258,
+   "code": "301267",
+   "name": "화하안과",
+   "nameEn": "Huaxia Eye Hospital Group Co Ltd Class A",
+   "industry": "의료 시설 및 서비스",
+   "kind": "quality",
+   "capRank": 1390,
+   "industryRank": 52
+  },
+  {
+   "rank": 259,
+   "code": "002044",
+   "name": "미년건강",
+   "nameEn": "Meinian Onehealth Healthcare Holdings Co.  Ltd. Class A",
+   "industry": "의료 시설 및 서비스",
+   "kind": "profit",
+   "capRank": 1018,
+   "industryRank": 52
+  },
+  {
+   "rank": 260,
+   "code": "300244",
+   "name": "적안진단",
+   "nameEn": "Dian Diagnostics Group Co Ltd Class A",
+   "industry": "의료 시설 및 서비스",
+   "kind": "profit",
+   "capRank": 1377,
+   "industryRank": 52
+  },
+  {
+   "rank": 261,
+   "code": "600803",
+   "name": "신오천연기",
+   "nameEn": "ENN Natural Gas Co Ltd Class A",
+   "industry": "천연가스 유틸리티",
+   "kind": "trend",
+   "capRank": 297,
+   "industryRank": 53
+  },
+  {
+   "rank": 262,
+   "code": "605090",
+   "name": "강서 구봉능원",
+   "nameEn": "Jiangxi Jovo Energy Co Ltd Class A",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 818,
+   "industryRank": 53
+  },
+  {
+   "rank": 263,
+   "code": "601139",
+   "name": "심천가스",
+   "nameEn": "Shenzhen Gas Corp Ltd Class A",
+   "industry": "천연가스 유틸리티",
+   "kind": "trend",
+   "capRank": 1006,
+   "industryRank": 53
+  },
+  {
+   "rank": 264,
+   "code": "600956",
+   "name": "신천 녹색능원",
+   "nameEn": "China Suntien Green Energy Corp Ltd Class A",
+   "industry": "천연가스 유틸리티",
+   "kind": "trend",
+   "capRank": 1081,
+   "industryRank": 53
+  },
+  {
+   "rank": 265,
+   "code": "002911",
+   "name": "포산에너지",
+   "nameEn": "Foran Energy Group Co Ltd Class A",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 1224,
+   "industryRank": 53
+  },
+  {
+   "rank": 266,
+   "code": "002429",
+   "name": "조치",
+   "nameEn": "Shenzhen MTC Co.  Ltd. Class A",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 502,
+   "industryRank": 54
+  },
+  {
+   "rank": 267,
+   "code": "600060",
+   "name": "해신시상과기",
+   "nameEn": "Hisense Visual Technology Co.  Ltd. Class A",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 503,
+   "industryRank": 54
+  },
+  {
+   "rank": 268,
+   "code": "688475",
+   "name": "항주형석망락",
+   "nameEn": "Hangzhou EZVIZ Network Co Ltd Class A",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 845,
+   "industryRank": 54
+  },
+  {
+   "rank": 269,
+   "code": "002925",
+   "name": "영취과기",
+   "nameEn": "Xiamen Intretech Inc Class A",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 1053,
+   "industryRank": 54
+  },
+  {
+   "rank": 270,
+   "code": "688686",
+   "name": "오보특",
+   "nameEn": "OPT Machine Vision Tech Co Ltd Class A",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 1139,
+   "industryRank": 54
+  },
+  {
+   "rank": 271,
+   "code": "300413",
+   "name": "해피고홈쇼핑",
+   "nameEn": "Mango Excellent Media Co.  Ltd. Class A",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 447,
+   "industryRank": 55
+  },
+  {
+   "rank": 272,
+   "code": "300251",
+   "name": "광선미디어",
+   "nameEn": "Beijing Enlight Media Co Ltd Class A",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 558,
+   "industryRank": 55
+  },
+  {
+   "rank": 273,
+   "code": "300144",
+   "name": "송성엔터",
+   "nameEn": "Songcheng Performance Development Co Ltd Class A",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 1216,
+   "industryRank": 55
+  },
+  {
+   "rank": 274,
+   "code": "300133",
+   "name": "화체미디어",
+   "nameEn": "Zhejiang Huace Film & TV Co Ltd Class A",
+   "industry": "엔터테인먼트 제작",
+   "kind": "profit",
+   "capRank": 1233,
+   "industryRank": 55
+  },
+  {
+   "rank": 275,
+   "code": "300182",
+   "name": "첩성세기과기",
+   "nameEn": "Beijing Jetsen Technology Co Ltd Class A",
+   "industry": "엔터테인먼트 제작",
+   "kind": "profit",
+   "capRank": 1271,
+   "industryRank": 55
+  },
+  {
+   "rank": 276,
+   "code": "603979",
+   "name": "금성신광업",
+   "nameEn": "JCHX Mining Management Co Ltd Class A",
+   "industry": "채굴 지원 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 392,
+   "industryRank": 56
+  },
+  {
+   "rank": 277,
+   "code": "601717",
+   "name": "정주채탄장비",
+   "nameEn": "ZCZL Industrial Technology Group Co Ltd Class A",
+   "industry": "채굴 지원 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 883,
+   "industryRank": 56
+  },
+  {
+   "rank": 278,
+   "code": "002827",
+   "name": "고쟁민폭",
+   "nameEn": "Xizang GaoZheng Explosive Co.  Ltd. Class A",
+   "industry": "채굴 지원 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 1096,
+   "industryRank": 56
+  },
+  {
+   "rank": 279,
+   "code": "002096",
+   "name": "역보력",
+   "nameEn": "Explosive Co Ltd Class A",
+   "industry": "채굴 지원 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 1546,
+   "industryRank": 56
+  },
+  {
+   "rank": 280,
+   "code": "002683",
+   "name": "광동홍대지주",
+   "nameEn": "Guangdong Hongda Holdings Group Co Ltd Class A",
+   "industry": "채굴 지원 서비스 및 장비",
+   "kind": "profit",
+   "capRank": 854,
+   "industryRank": 56
+  },
+  {
+   "rank": 281,
+   "code": "601058",
+   "name": "새륜",
+   "nameEn": "Sailun Group Co.  Ltd. Class A",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 405,
+   "industryRank": 57
+  },
+  {
+   "rank": 282,
+   "code": "601966",
+   "name": "령롱륜태",
+   "nameEn": "Shandong Linglong Tyre Co Ltd Class A",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 1166,
+   "industryRank": 57
+  },
+  {
+   "rank": 283,
+   "code": "002984",
+   "name": "칭다오 센추리 타이어",
+   "nameEn": "Qingdao Sentury Tire Co Ltd Class A",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 1316,
+   "industryRank": 57
+  },
+  {
+   "rank": 284,
+   "code": "601163",
+   "name": "삼각륜태",
+   "nameEn": "Triangle Tyre Co Ltd Class A",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 1774,
+   "industryRank": 57
+  },
+  {
+   "rank": 285,
+   "code": "601118",
+   "name": "해남천연고무",
+   "nameEn": "China Hainan Rubber Industry Group Co Ltd Class A",
+   "industry": "타이어 및 고무 제품",
+   "kind": "size",
+   "capRank": 669,
+   "industryRank": 57
+  },
+  {
+   "rank": 286,
+   "code": "301297",
+   "name": "부락덕",
+   "nameEn": "Ferrotec An Hui Technology Development Co Ltd Class A",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 500,
+   "industryRank": 58
+  },
+  {
+   "rank": 287,
+   "code": "300012",
+   "name": "화측검측",
+   "nameEn": "Centre Testing International Group Co Ltd Class A",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 779,
+   "industryRank": 58
+  },
+  {
+   "rank": 288,
+   "code": "002335",
+   "name": "과화데이터",
+   "nameEn": "Kehua Data Co.  Ltd. Class A",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 795,
+   "industryRank": 58
+  },
+  {
+   "rank": 289,
+   "code": "601965",
+   "name": "중국자동차연구소",
+   "nameEn": "China Automotive Engineering Research Institute Co Ltd Class A",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 1303,
+   "industryRank": 58
+  },
+  {
+   "rank": 290,
+   "code": "002967",
+   "name": "광전계량",
+   "nameEn": "GRG Metrology & Test Group Co Ltd Class A",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 1558,
+   "industryRank": 58
+  },
+  {
+   "rank": 291,
+   "code": "603929",
+   "name": "아상집성",
+   "nameEn": "L and K Engineering (Suzhou) Co.  Ltd. Class A",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 613,
+   "industryRank": 59
+  },
+  {
+   "rank": 292,
+   "code": "600583",
+   "name": "해양석유공정",
+   "nameEn": "Offshore Oil Engineering Co Ltd Class A",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 621,
+   "industryRank": 59
+  },
+  {
+   "rank": 293,
+   "code": "600720",
+   "name": "중교설계자순집단",
+   "nameEn": "CCCC Design & Consulting Group Co Ltd Class A",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 1475,
+   "industryRank": 59
+  },
+  {
+   "rank": 294,
+   "code": "000065",
+   "name": "북방국제",
+   "nameEn": "NORINCO International Cooperation Ltd Class A",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 1545,
+   "industryRank": 59
+  },
+  {
+   "rank": 295,
+   "code": "603698",
+   "name": "항천공정",
+   "nameEn": "Changzheng Engineering Technology Co Ltd Class A",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 1653,
+   "industryRank": 59
+  },
+  {
+   "rank": 296,
+   "code": "601928",
+   "name": "풍황미디어",
+   "nameEn": "Jiangsu Phoenix Publishing & Media Corp Ltd Class A",
+   "industry": "소비자 출판",
+   "kind": "quality",
+   "capRank": 850,
+   "industryRank": 60
+  },
+  {
+   "rank": 297,
+   "code": "601098",
+   "name": "중남미디어",
+   "nameEn": "China South Publishing & Media Group Co Ltd Class A",
+   "industry": "소비자 출판",
+   "kind": "quality",
+   "capRank": 981,
+   "industryRank": 60
+  },
+  {
+   "rank": 298,
+   "code": "601858",
+   "name": "중국과기출판전매고빈",
+   "nameEn": "China Science Publishing & Media Ltd Class A",
+   "industry": "소비자 출판",
+   "kind": "quality",
+   "capRank": 1056,
+   "industryRank": 60
+  },
+  {
+   "rank": 299,
+   "code": "601921",
+   "name": "절판전매",
+   "nameEn": "Zhejiang Publishing & Media Co Ltd Class A",
+   "industry": "소비자 출판",
+   "kind": "quality",
+   "capRank": 1074,
+   "industryRank": 60
+  },
+  {
+   "rank": 300,
+   "code": "601811",
+   "name": "신화문헌출판",
+   "nameEn": "Xinhua Winshare Publishing and Media Co Ltd Class A",
+   "industry": "소비자 출판",
+   "kind": "quality",
+   "capRank": 1079,
+   "industryRank": 60
+  },
+  {
+   "rank": 301,
+   "code": "002407",
+   "name": "다불다",
+   "nameEn": "Do-Fluoride New Materials Co Ltd Class A",
+   "industry": "다각적 화학 산업",
+   "kind": "profit",
+   "capRank": 510,
+   "industryRank": 61
+  },
+  {
+   "rank": 302,
+   "code": "003022",
+   "name": "연홍신소재과학기술",
+   "nameEn": "Levima Advanced Materials Corp Class A",
+   "industry": "다각적 화학 산업",
+   "kind": "profit",
+   "capRank": 753,
+   "industryRank": 61
+  },
+  {
+   "rank": 303,
+   "code": "000422",
+   "name": "의화화학",
+   "nameEn": "Hubei Yihua Chemical Industry Co Ltd Class A",
+   "industry": "다각적 화학 산업",
+   "kind": "profit",
+   "capRank": 1416,
+   "industryRank": 61
+  },
+  {
+   "rank": 304,
+   "code": "000930",
+   "name": "중량생화",
+   "nameEn": "COFCO Biotechnology Co Ltd Class A",
+   "industry": "다각적 화학 산업",
+   "kind": "profit",
+   "capRank": 1807,
+   "industryRank": 61
+  },
+  {
+   "rank": 305,
+   "code": "002004",
+   "name": "화방생명건강",
+   "nameEn": "Huapont Life Sciences Co Ltd Class A",
+   "industry": "다각적 화학 산업",
+   "kind": "profit",
+   "capRank": 1970,
+   "industryRank": 61
+  },
+  {
+   "rank": 306,
+   "code": "000598",
+   "name": "흥용환경",
+   "nameEn": "Chengdu Xingrong Environment Co Ltd Class A",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 863,
+   "industryRank": 62
+  },
+  {
+   "rank": 307,
+   "code": "600008",
+   "name": "수창환경보호그룹",
+   "nameEn": "Beijing Capital Eco-Environment Protection Group Co Ltd Class A",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 918,
+   "industryRank": 62
+  },
+  {
+   "rank": 308,
+   "code": "601158",
+   "name": "중경수도그룹",
+   "nameEn": "Chongqing Water Group Co Ltd Class A",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 949,
+   "industryRank": 62
+  },
+  {
+   "rank": 309,
+   "code": "000685",
+   "name": "중산유틸리티",
+   "nameEn": "Zhongshan Public Utilities Group Co Ltd Class A",
+   "industry": "수자원 유틸리티",
+   "kind": "quality",
+   "capRank": 1142,
+   "industryRank": 62
+  },
+  {
+   "rank": 310,
+   "code": "600167",
+   "name": "련미량자",
+   "nameEn": "Luen Mei Quantum Co Ltd Class A",
+   "industry": "수자원 유틸리티",
+   "kind": "quality",
+   "capRank": 1382,
+   "industryRank": 62
+  },
+  {
+   "rank": 311,
+   "code": "000786",
+   "name": "북신건재",
+   "nameEn": "Beijing New Building Materials Public Limited Company Class A",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 651,
+   "industryRank": 63
+  },
+  {
+   "rank": 312,
+   "code": "603833",
+   "name": "오파인가구",
+   "nameEn": "Oppein Home Group Inc Class A",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 955,
+   "industryRank": 63
+  },
+  {
+   "rank": 313,
+   "code": "301362",
+   "name": "민폭광전",
+   "nameEn": "Up-shine Lighting Co Ltd Class A",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 1193,
+   "industryRank": 63
+  },
+  {
+   "rank": 314,
+   "code": "002372",
+   "name": "위성신소재",
+   "nameEn": "Zhejiang Weixing New Building Materials Co Ltd Class A",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 1278,
+   "industryRank": 63
+  },
+  {
+   "rank": 315,
+   "code": "603515",
+   "name": "구보조명",
+   "nameEn": "Opple Lighting Co Ltd Class A",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 1589,
+   "industryRank": 63
+  },
+  {
+   "rank": 316,
+   "code": "002266",
+   "name": "절보그룹",
+   "nameEn": "Zhefu Holding Group Co Ltd Class A",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 756,
+   "industryRank": 64
+  },
+  {
+   "rank": 317,
+   "code": "300140",
+   "name": "절능환경",
+   "nameEn": "Cecep Environmental Protection Co Ltd Class A",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 1086,
+   "industryRank": 64
+  },
+  {
+   "rank": 318,
+   "code": "301109",
+   "name": "군신고분",
+   "nameEn": "Hunan Junxin Environmental Protection Co Ltd Class A",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 1710,
+   "industryRank": 64
+  },
+  {
+   "rank": 319,
+   "code": "601200",
+   "name": "상해 환경집단",
+   "nameEn": "Shanghai Environment Group Co Ltd Class A",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 1874,
+   "industryRank": 64
+  },
+  {
+   "rank": 320,
+   "code": "000967",
+   "name": "영봉환경기술",
+   "nameEn": "Infore Environment Technology Group Co Ltd Class A",
+   "industry": "환경 서비스 및 장비",
+   "kind": "profit",
+   "capRank": 693,
+   "industryRank": 64
+  },
+  {
+   "rank": 321,
+   "code": "600398",
+   "name": "해란지가",
+   "nameEn": "HLA Group Corp Ltd Class A",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 672,
+   "industryRank": 65
+  },
+  {
+   "rank": 322,
+   "code": "002832",
+   "name": "비음늑분의류",
+   "nameEn": "BIEM.L.FDLKK Garment Co Ltd Class A",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1208,
+   "industryRank": 65
+  },
+  {
+   "rank": 323,
+   "code": "002563",
+   "name": "삼마의류",
+   "nameEn": "Zhejiang Semir Garment Co Ltd Class A",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1214,
+   "industryRank": 65
+  },
+  {
+   "rank": 324,
+   "code": "002003",
+   "name": "위성실업개발",
+   "nameEn": "Zhejiang Weixing Industrial Development Co Ltd Class A",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1322,
+   "industryRank": 65
+  },
+  {
+   "rank": 325,
+   "code": "002867",
+   "name": "주대생주얼리",
+   "nameEn": "Chow Tai Seng Jewellery Co Ltd Class A",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1593,
+   "industryRank": 65
+  },
+  {
+   "rank": 326,
+   "code": "301551",
+   "name": "하북 광전무선전매",
+   "nameEn": "Hebei Broadcasting Wireless Media Co Ltd Class A",
+   "industry": "방송",
+   "kind": "quality",
+   "capRank": 1946,
+   "industryRank": 66
+  },
+  {
+   "rank": 327,
+   "code": "301262",
+   "name": "해간고분",
+   "nameEn": "Hicon Network Technology (Shandong) Co Ltd Class A",
+   "industry": "방송",
+   "kind": "quality",
+   "capRank": 1975,
+   "industryRank": 66
+  },
+  {
+   "rank": 328,
+   "code": "600637",
+   "name": "동방명주",
+   "nameEn": "Oriental Pearl Group Co Ltd Class A",
+   "industry": "방송",
+   "kind": "profit",
+   "capRank": 623,
+   "industryRank": 66
+  },
+  {
+   "rank": 329,
+   "code": "000156",
+   "name": "화수미디어",
+   "nameEn": "Wasu Media Holding Co Ltd Class A",
+   "industry": "방송",
+   "kind": "profit",
+   "capRank": 1367,
+   "industryRank": 66
+  },
+  {
+   "rank": 330,
+   "code": "600959",
+   "name": "강소유선방송",
+   "nameEn": "Jiangsu Broadcasting Cable Information Network Corp Ltd Class A",
+   "industry": "방송",
+   "kind": "size",
+   "capRank": 1150,
+   "industryRank": 66
+  },
+  {
+   "rank": 331,
+   "code": "002091",
+   "name": "국태국제그룹",
+   "nameEn": "Jiangsu Guotai International Group Co Ltd Class A",
+   "industry": "직물 및 가죽제품",
+   "kind": "quality",
+   "capRank": 1432,
+   "industryRank": 67
+  },
+  {
+   "rank": 332,
+   "code": "601339",
+   "name": "백륭동방",
+   "nameEn": "Bros Eastern Ltd Class A",
+   "industry": "직물 및 가죽제품",
+   "kind": "quality",
+   "capRank": 1611,
+   "industryRank": 67
+  },
+  {
+   "rank": 333,
+   "code": "002083",
+   "name": "선빔그룹",
+   "nameEn": "Sunvim Group Co Ltd Class A",
+   "industry": "직물 및 가죽제품",
+   "kind": "quality",
+   "capRank": 1881,
+   "industryRank": 67
+  },
+  {
+   "rank": 334,
+   "code": "603225",
+   "name": "신봉명그룹",
+   "nameEn": "Xinfengming Group Co Ltd Class A",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 656,
+   "industryRank": 67
+  },
+  {
+   "rank": 335,
+   "code": "000949",
+   "name": "신향화학섬유",
+   "nameEn": "Xinxiang Chemical Fiber Co Ltd Class A",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 1643,
+   "industryRank": 67
+  },
+  {
+   "rank": 336,
+   "code": "603605",
+   "name": "프로야화장품",
+   "nameEn": "Proya Cosmetics Co Ltd Class A",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 832,
+   "industryRank": 68
+  },
+  {
+   "rank": 337,
+   "code": "300957",
+   "name": "베텔니 그룹",
+   "nameEn": "Yunnan Botanee Bio-Technology Group Co Ltd Class A",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 1285,
+   "industryRank": 68
+  },
+  {
+   "rank": 338,
+   "code": "603983",
+   "name": "광동 환미생물",
+   "nameEn": "Guangdong Marubi Biotechnology Co.  Ltd. Class A",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 1427,
+   "industryRank": 68
+  },
+  {
+   "rank": 339,
+   "code": "301371",
+   "name": "부이가",
+   "nameEn": "Harbin Fuerjia Technology Co Ltd Class A",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 1616,
+   "industryRank": 68
+  },
+  {
+   "rank": 340,
+   "code": "003006",
+   "name": "충칭 바이야 새니터리 프로덕츠",
+   "nameEn": "Chongqing Baiya Sanitary Products Co Ltd Class A",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 1751,
+   "industryRank": 68
+  },
+  {
+   "rank": 341,
+   "code": "600529",
+   "name": "산동약용유리",
+   "nameEn": "Shandong Pharmaceutical Glass Co Ltd Class A",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 1462,
+   "industryRank": 69
+  },
+  {
+   "rank": 342,
+   "code": "600210",
+   "name": "상해자강기업그룹",
+   "nameEn": "Shanghai Zijiang Enterprise Group Co Ltd Class A",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 1795,
+   "industryRank": 69
+  },
+  {
+   "rank": 343,
+   "code": "601866",
+   "name": "COSCO개발",
+   "nameEn": "COSCO SHIPPING Development Co Ltd Class A",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 764,
+   "industryRank": 69
+  },
+  {
+   "rank": 344,
+   "code": "002969",
+   "name": "가미포장",
+   "nameEn": "Jiamei Food Packaging (Chuzhou) Co Ltd Class A",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 1502,
+   "industryRank": 69
+  },
+  {
+   "rank": 345,
+   "code": "002701",
+   "name": "오서금과기",
+   "nameEn": "ORG Technology Co Ltd Class A",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 1585,
+   "industryRank": 69
+  },
+  {
+   "rank": 346,
+   "code": "600777",
+   "name": "신조에너지",
+   "nameEn": "Shandong Xinchao Energy Corp Ltd Class A",
+   "industry": "오일, 가스 탐사 및 생산",
+   "kind": "quality",
+   "capRank": 671,
+   "industryRank": 70
+  },
+  {
+   "rank": 347,
+   "code": "603393",
+   "name": "신천연기",
+   "nameEn": "Xinjiang Xintai Natural Gas Co Ltd Class A",
+   "industry": "오일, 가스 탐사 및 생산",
+   "kind": "quality",
+   "capRank": 1687,
+   "industryRank": 70
+  },
+  {
+   "rank": 348,
+   "code": "300191",
+   "name": "잠능에너지",
+   "nameEn": "Sino Geophysical Co Ltd Class A",
+   "industry": "오일, 가스 탐사 및 생산",
+   "kind": "profit",
+   "capRank": 1773,
+   "industryRank": 70
+  },
+  {
+   "rank": 349,
+   "code": "603619",
+   "name": "쫑만석유",
+   "nameEn": "Zhongman Petroleum and Natural Gas Group Corp Ltd Class A",
+   "industry": "오일, 가스 탐사 및 생산",
+   "kind": "profit",
+   "capRank": 1805,
+   "industryRank": 70
+  },
+  {
+   "rank": 350,
+   "code": "600759",
+   "name": "주제석유가스",
+   "nameEn": "Geo-Jade Petroleum Corp Class A",
+   "industry": "오일, 가스 탐사 및 생산",
+   "kind": "profit",
+   "capRank": 1849,
+   "industryRank": 70
+  }
+ ]
+}
