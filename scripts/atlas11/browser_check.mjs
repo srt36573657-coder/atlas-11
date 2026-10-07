@@ -161,7 +161,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     check(`${label} 탭 「불장」 맨 위 스위치 셋: 불장 ${HOT.length}개 · 예비 ${SIMN}곳 · 오름 상위 ${NEXT.length}곳 · 「불장」 고름`, hr.segs.map(x => `${x.seg}|${x.href}|${x.label}|${x.n}|${x.cur ?? ''}`).join() === [`home|#/|불장|${HOT.length}개|page`, `similar|#/similar|예비|${SIMN}곳|`, `rise|#/rise|오름 상위|${NEXT.length}곳|`].join(), hr.segs);
     const cardMisH = flowsW.map((f, k) => { const c = hr.cards[k]; return c && c.fam === f.fam.id && c.name === f.fam.label && c.n === `불장 업종 ${f.groups.length}개` && c.avg === (Number.isFinite(f.avg) ? p1(f.avg) : '없음') && c.avgLab === `평균 ${c.avg}` && c.rows.length === f.groups.length && f.groups.every((g, j) => { const r = c.rows[j], i = board.groups.indexOf(g); return r && r.id === g.id && r.href === '#/i/' + g.id && r.rank === `불장 ${i + 1}위` && r.name === g.label && r.chg === (Number.isFinite(g.change20) ? p1(g.change20) : '없음') && r.up === upWant(g) && r.sun === sunNT(g.codes); }) ? null : {k, f: f.fam.label, c}; }).filter(Boolean);
     check(`${label} 탭 「불장」: 큰 흐름 ${hr.cards.length}장 = 판의 불장 ${HOT.length}개를 큰 갈래로 묶은 것(갈래 차례 = 갈래 평균이 큰 순 · 장 머리에 「평균」 한 번 · 장 안은 오른 순) · 줄마다 「불장 n위」 · 이름 · 20거래일 평균 · 몇 곳 올랐나 · 태양 몇 곳(따로 센 값) · 누르면 그 업종 · 옆으로 넘치지 않음`, hr.cards.length === flowsW.length && hr.cards.reduce((t, c) => t + c.rows.length, 0) === HOT.length && !cardMisH.length && hr.sw <= hr.iw, {cardMisH: cardMisH.slice(0, 2), sw: hr.sw});
-    check(`${label} 탭 「불장」: 접힌 칸 「ATLAS가 하지 않는 일」은 아래 탭 「처음」으로 옮김(${hr.promise ?? '없음'}) · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === undefined && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {promise: hr.promise, footPromise: hr.footPromise});
+    check(`${label} 탭 「불장」: 접힌 칸 「ATLAS가 하지 않는 일」은 아래 탭 「처음」으로 옮김(${hr.promise ?? '없음'}) · 맨 아래 약속 한 줄 「${hr.footPromise}」`, hr.promise === undefined && hr.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다 · 광고 · 유료 결제 없음', {promise: hr.promise, footPromise: hr.footPromise});
     await wordsCheck(page, `${label} 탭 「불장」`);
     if (HOT.length) {
       const g0 = flowsW[0].groups[0], rl = page.locator(`.hf-row[data-group="${g0.id}"]`); await rl.scrollIntoViewIfNeeded();
@@ -202,7 +202,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   // 칸 바탕은 한 색(세기 색 없음) · 색 보기표 없음(2026-10-05 잡스 개혁 — 설명표가 따로 필요하면 그림이 스스로 말하지 못한다는 신호 · 애플 WWDC17)
   const bgs = new Set(top.tiles.map(t => t.bg));
   check(`${label} ${H}: 칸 바탕 ${bgs.size}색(한 색) · 색 보기표 없음 · 오름 칸 ${top.tiles.filter(t => t.sign === 'up').length}개 · 내림 칸 ${top.tiles.filter(t => t.sign === 'down').length}개`, bgs.size === 1 && top.legend === 0, {bgs: [...bgs], legend: top.legend});
-  check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다', {footPromise: top.footPromise});
+  check(`${label} ${H}: 맨 아래 약속 한 줄 「${top.footPromise}」`, top.footPromise === '지난 기록만 보여 줍니다 · 앞날을 맞히지 않습니다 · 광고 · 유료 결제 없음', {footPromise: top.footPromise});
   // (옛 · 2026-10-06 00:21 까지) 큰 갈래 단추 12개(.fm-b) — 지금은 지도 한 장 · 땅을 누르면 그 갈래 화면
   // 지도 한 장(2026-10-06 00:21 「잡스라면 … 개선하라」 · site/app/landmap.js) — 땅 = 큰 갈래(family.js 차례 · 넓이 = 업종 수) · 칸 = 업종(땅 안은 오른 순 · 오름/내림 색)
   //   · 이름이 잘리지 않음 · 땅끼리 겹치지 않음 · 누르는 자리 44px 넘음
@@ -805,10 +805,30 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       rows: [...document.querySelectorAll('.st-row')].map(a => ({code: a.dataset.code, rk: a.querySelector('.st-rk')?.textContent.trim(), name: a.querySelector('.st-name')?.textContent.trim(), v: a.querySelector('.st-v')?.textContent.trim(), w: a.querySelector('.st-fill')?.getBoundingClientRect().width ?? 0, href: a.getAttribute('href')})),
       base: document.querySelector('.st-base .st-v')?.textContent.trim(), why: document.querySelectorAll('.st-warn li').length, promise: document.querySelector('.b-promise-box summary')?.innerText.trim(),
       third: document.querySelectorAll('.b-promise-box li')[2]?.textContent.trim(), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
-    check(`${label} 아래 탭 「처음」(#/start): 다섯 ${r.rows.map(x => x.name).join(' · ')} = 검사기가 종가 원본에서 따로 센 다섯(우량 · 시가총액 100위 안 · 지난 3년 가장 덜 떨어진 순 · 막대 길이도 그 차례) · 견줄 값 ${r.base} · 까닭 ${r.why}가지 · 「ATLAS가 하지 않는 일 7가지」가 여기로(셋째 줄 「처음」) · 옆으로 넘치지 않음`,
+    check(`${label} 아래 탭 「처음」(#/start): 다섯 ${r.rows.map(x => x.name).join(' · ')} = 검사기가 종가 원본에서 따로 센 다섯(우량 · 시가총액 100위 안 · 지난 3년 가장 덜 떨어진 순 · 막대 길이도 그 차례) · 견줄 값 ${r.base} · 까닭 ${r.why}가지 · 「ATLAS가 하지 않는 일 8가지」가 여기로(셋째 줄 「처음」 · 여덟째 줄 광고 · 유료 결제 없음 — 2026-10-07 05:30) · 옆으로 넘치지 않음`,
       S?.ready && r.hash === '#/start' && r.title === `처음 ${codesW.length}곳` && r.active === 'start' && r.rows.map(x => x.code).join() === codesW.join() && r.rows.every((x, i) => x.rk === `${i + 1}위` && x.href === '#/stock/' + x.code && x.v === pct0(want5[i].mdd))
-        && r.rows.every((x, i) => !i || x.w >= r.rows[i - 1].w - 0.5) && r.base === pct0(S.typical.mdd) && r.why >= 1 && r.promise === 'ATLAS가 하지 않는 일 7가지' && /^「처음」 탭의 \d곳 말고는 회사를 고르지 않습니다/.test(r.third ?? '') && r.sw <= r.cw, {r: {...r, rows: r.rows.map(x => x.name + ' ' + x.v)}, codesW});
+        && r.rows.every((x, i) => !i || x.w >= r.rows[i - 1].w - 0.5) && r.base === pct0(S.typical.mdd) && r.why >= 1 && r.promise === 'ATLAS가 하지 않는 일 8가지' && /^「처음」 탭의 \d곳 말고는 회사를 고르지 않습니다/.test(r.third ?? '') && r.sw <= r.cw, {r: {...r, rows: r.rows.map(x => x.name + ' ' + x.v)}, codesW});
     await wordsCheck(page, `${label} 아래 탭 「처음」`);
+  }
+  // ⑤-4 한국 주식시장 안내 · ATLAS가 되고 싶은 것 · 하규 응원 · 광고 없음(2026-10-07 05:30 · 05:31 · 05:38 · 05:39 — 규칙 23)
+  {
+    await page.goto(base + '/#/start', {waitUntil: 'networkidle'}); await page.waitForSelector('.st-page'); await page.waitForTimeout(200);
+    const st = await page.evaluate(() => ({card: document.querySelector('.st-page a.gd-card')?.getAttribute('href') ?? null, ms: document.querySelector('.ms-box .ms-h')?.textContent.trim() ?? null, msLi: document.querySelectorAll('.ms-box .ms-list > li').length,
+      msSrc: document.querySelector('.ms-box a.ms-src')?.getAttribute('href') ?? null, msCheer: document.querySelector('.ms-box .ms-cheer')?.textContent.trim() ?? null,
+      promise8: [...document.querySelectorAll('.b-promise-box li')].at(-1)?.textContent.trim() ?? null}));
+    check(`${label} 「처음」 탭: 「한국 주식시장 안내 ›」 카드 · 「${st.ms}」 ${st.msLi}줄(두 축 · 뇌동매매 연구 출처 · 광고 없음 · 만든 사람의 태도) · 「${st.msCheer}」 · 하지 않는 일 여덟째 「${st.promise8}」`,
+      st.card === '#/guide' && st.ms === 'ATLAS가 되고 싶은 것' && st.msLi === 4 && st.msSrc === 'https://doi.org/10.1111/0022-1082.00226' && st.msCheer === '하규야, 힘내라 — 늘 응원한다' && st.promise8 === '광고를 싣지 않고 유료 결제를 받지 않습니다 — 영원히, 상업적 이익을 좇지 않습니다', st);
+    const tG = page.locator('.st-page a.gd-card'); if (mobile) await tG.tap(); else await tG.click(); await page.waitForSelector('.gd-page .gd-row'); await page.waitForTimeout(200);
+    const gd = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.gd-page .b-title')?.textContent.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      secs: [...document.querySelectorAll('.gd-sec')].map(x => x.querySelector('.gd-h')?.textContent.replace(/^\d+/, '').trim()), rows: document.querySelectorAll('.gd-row').length,
+      noSrc: [...document.querySelectorAll('.gd-row')].filter(r => ![...r.querySelectorAll('.gd-src a')].some(a => /^https:\/\//.test(a.getAttribute('href') ?? ''))).length,
+      back: document.querySelector('.gd-page .c-back')?.getAttribute('href'), units: [...document.querySelectorAll('.gd-t b[lang="ko"]')].map(b => b.textContent).join(''),
+      foot: {guide: document.querySelector('.b-foot .b-guide a')?.getAttribute('href') ?? null, cheer: document.querySelector('.b-foot .b-cheer')?.textContent.trim() ?? null, promise: document.querySelector('.b-foot .b-promise')?.textContent.trim() ?? null},
+      sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    check(`${label} 「한국 주식시장 안내」(#/guide): 갈래 ${gd.secs.length}개(${gd.secs.join(' · ')}) · 줄 ${gd.rows}개 · 줄마다 출처 주소(없는 줄 ${gd.noSrc}) · 단위 글자 「${gd.units}」 · 아래 탭 「처음」 눌림 · 「‹ 처음」 · 맨 아래 안내 고리 · 하규 응원 · 「광고 · 유료 결제 없음」 · 옆으로 넘치지 않음`,
+      gd.hash === '#/guide' && gd.title === '한국 주식시장 안내' && gd.active === 'start' && gd.secs.join() === '시장,시간(한국 시각),규칙,계좌,세금(2026년),읽는 법' && gd.rows === 22 && gd.noSrc === 0 && gd.back === '#/start' && gd.units === '만억조'
+        && gd.foot.guide === '#/guide' && gd.foot.cheer === '하규야, 힘내라 — 늘 응원한다' && /광고 · 유료 결제 없음$/.test(gd.foot.promise ?? '') && gd.sw <= gd.cw, gd);
+    await wordsCheck(page, `${label} 「한국 주식시장 안내」`);
   }
   // ⑤-3 논평 무대(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로 만든다」 → 04:01 「과감하게 섹시하게」) — 내용 화면마다 맨 위 무대(회사 화면은 값 다음 가운데 크기) · 검사기가 판에서 따로 센 머리 글과 맞댐 · 찾기 · 기록에는 없음
   {
@@ -930,7 +950,7 @@ async function usCheck() {
     promise: document.querySelector('.st-page .b-promise-box summary')?.innerText.trim(), third: document.querySelectorAll('.st-page .b-promise-box li')[2]?.textContent.trim() ?? null, active: document.querySelector('.bottom-link.active')?.dataset.route ?? null}));
   const usReady = ubd.start?.readyMonth ? `${Number(ubd.start.readyMonth.slice(0, 4))}년 ${Number(ubd.start.readyMonth.slice(5, 7))}월` : null;
   check(`미국 판 「처음」 탭: 3년 종가가 모자라 찍지 않음(다섯 줄 ${us5.rows}개) · 「${us5.wait}」 · 약속 셋째 줄 「${us5.third}」`,
-    ubd.start?.ready === false && us5.rows === 0 && usReady && (us5.wait ?? '').includes(`${usReady}부터`) && /뉴욕 종가/.test(us5.when ?? '') && us5.promise === 'ATLAS가 하지 않는 일 7가지' && us5.third === '어느 회사를 고르라고 하지 않습니다' && us5.active === 'start', {us5, usReady, start: ubd.start});
+    ubd.start?.ready === false && us5.rows === 0 && usReady && (us5.wait ?? '').includes(`${usReady}부터`) && /뉴욕 종가/.test(us5.when ?? '') && us5.promise === 'ATLAS가 하지 않는 일 8가지' && us5.third === '어느 회사를 고르라고 하지 않습니다' && us5.active === 'start', {us5, usReady, start: ubd.start});
   check(`미국 판 화면들: 콘솔 오류 0 · 요청 실패 0`, errs.length === 0 && failed.length === 0, {errs: errs.slice(0, 3), failed: failed.slice(0, 3)});
   await context.close();
 }

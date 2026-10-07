@@ -8,7 +8,7 @@
    3년 종가가 모자란 판(미국 판)은 찍지 않고 「언제부터」만 */
 import {h, korDate, pct, finite} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot, promiseBox} from './parts.js';
+import {foot, promiseBox, missionBox} from './parts.js';
 import {startComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 export async function renderStart(main, {manifest}) {
@@ -27,6 +27,8 @@ export async function renderStart(main, {manifest}) {
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
         h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${manifest?.place?.id === 'us' ? '뉴욕 종가' : '종가'} · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
       ready ? h('p', {class: 'st-wait', 'data-speak': ''}, `3년 기록이 쌓이는 ${month(ready)}부터 ${s?.rule?.want ?? 5}곳을 찍습니다`) : null,
+      h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')),
+      missionBox(),
       promiseBox(board),
       foot(manifest)));
     return;
@@ -50,6 +52,7 @@ export async function renderStart(main, {manifest}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '처음 ', h('span', {class: 'b-count'}, `${n}곳`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(to)} 종가까지 지난 3년 기록`)),
+    h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')), // 2026-10-07 05:31
     h('p', {class: 'st-rule-t', 'data-speak': ''}, `우량 큰 회사 ${s.candidates}곳 중 지난 3년 가장 덜 떨어진 ${n}곳`),
     h('p', {class: 'st-key'}, '막대 = 3년 안에서 가장 깊게 떨어진 정도'),
     h('ol', {class: 'st-list'}, ...picks.map(row)),
@@ -63,6 +66,7 @@ export async function renderStart(main, {manifest}) {
       h('p', null, `지난 3년 = ${from ? ymd(from) : ''} ~ ${korDate(to)}(${s.rule.days}거래일)`),
       h('p', null, `우량 = 고를 때 우량 표시(연속 흑자 · ROE · 부채비율 기준 통과) · 큰 회사 = 시가총액 ${s.rule.capTop}위 안 · 종가만 셈(배당 뺌) · 하루에 ${Math.round(s.rule.jump * 100)}% 넘게 움직인 날이 있는 회사(분할 · 합병 같은 바뀜)는 재지 않음`),
       h('ul', null, ...picks.map(p => h('li', null, h('span', {class: 'st-mn', 'data-ident': ''}, p.name), h('span', null, `3년 ${pc(p.change)} · 1년 ${pc(p.change1y)} · 꼭대기 ${ymd(p.peak.date)} → 가장 낮은 때 ${ymd(p.trough.date)}`))))),
+    missionBox(),
     promiseBox(board),
     foot(manifest)));
 }

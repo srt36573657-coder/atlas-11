@@ -20,7 +20,7 @@
    2026-10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」: 아래 탭 일곱째 「처음」(#/start · view-start.js · 셈 lib/atlas11/start.mjs · 규칙 21)
      넣으면서 뺀 것(규칙 1): 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」 — 「처음」 탭 맨 아래로 옮김 */
 import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
-import {ON as I18N, LANG, LANGS, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
+import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
 import {renderCompany} from './view-company.js';
@@ -32,6 +32,7 @@ import {renderRise} from './view-rise.js';
 import {renderFind} from './view-find.js';
 import {renderLog} from './view-log.js';
 import {renderStart} from './view-start.js';
+import {renderGuide} from './view-guide.js'; // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 특히 한국에 상주하는 외국인들도 한국 주식시장을 제대로 알수 있게」)
 
 const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
@@ -63,6 +64,7 @@ const routes = [
   {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
   {id: 'find', tab: 'find', label: '찾기', match: /^#\/find$/, render: renderFind}, // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」 — 한국 · 미국 판을 함께
   {id: 'log', tab: 'log', label: '기록', match: /^#\/log$/, render: renderLog}, // 2026-10-06 16:10 「… 뭘 어떻게 변화 시켰는지에 대해서 기록 하는 탭」 — 업데이트 · 자료 변경 날짜
+  {id: 'guide', tab: 'start', match: /^#\/guide$/, render: renderGuide}, // 아래 탭 「처음」 아래 한 화면(탭을 늘리지 않음 · 규칙 1)
   {id: 'start', tab: 'start', label: '처음', match: /^#\/start$/, render: renderStart}, // 2026-10-06 23:19 「초보들이 뭘사야 안전한지 … 잡스였다면」 · 10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」 — 지난 3년 가장 덜 떨어진 우량 큰 회사 다섯
 ];
 const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log', 'start']; // 일곱째 「처음」(2026-10-07 00:49) — 넣으면서 뺀 것: 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」(「처음」 안으로)
@@ -90,13 +92,28 @@ function globeIcon() {
 }
 /** 말 고르기(2026-10-06 22:00 사장님 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 같은 주소 · 같은 화면을 그 말로 다시 연다(?lang= · 이 기기에 기억 · i18n.js)
  *   말 이름은 그 말 글자로(한국어 · English · 中文) — 어느 말로 보고 있든 자기 말을 찾게 · 지금 말은 눌린 채로 */
-const LANG_NAME = {ko: '한국어', en: 'English', zh: '中文'}, LANG_TAG = {ko: 'ko', en: 'en', zh: 'zh-CN'};
+/*   2026-10-07 05:13 「언어팩을 주식시장이 있는 전세게 나라가 있잖아 다 만들어」 — 말 74개(i18n.js LANG_LIST): 위 세 말(한국어 · English · 简体中文)은 그대로 맨 위,
+ *   나머지는 지금 보고 있는 말의 이름 차례(가나다 · ABC …) · 줄마다 그 말 글자 이름 + 지금 말로 쓴 이름(Intl.DisplayNames · 한국어로 보면 「독일어」) · 맨 위 찾기 칸(이름 · 코드로 거름) */
 const langHref = code => location.pathname + '?lang=' + code + location.hash;
+const PINNED = ['ko', 'en', 'zh'];
+function langItems() {
+  let dn = null, col = null; try { dn = new Intl.DisplayNames([LANG_INFO.tag], {type: 'language'}); col = new Intl.Collator(LANG_INFO.tag); } catch {}
+  const local = x => { try { const v = dn?.of(x.tag); return v && v.toLowerCase() !== x.tag.toLowerCase() && v !== x.name ? v : ''; } catch { return ''; } };
+  const rows = LANG_LIST.map(x => ({...x, local: local(x)}));
+  const head = PINNED.map(c => rows.find(x => x.code === c)), rest = rows.filter(x => !PINNED.includes(x.code));
+  rest.sort((a, b) => (col ? col.compare(a.local || a.name, b.local || b.name) : (a.local || a.name).localeCompare(b.local || b.name)));
+  return [...head, ...rest];
+}
 function langPicker() {
+  const items = langItems();
+  const list = h('div', {class: 'lang-list'}, ...items.map(x => h('a', {class: 'lang-i', href: langHref(x.code), lang: x.tag, hreflang: x.tag, dir: x.rtl ? 'rtl' : 'ltr', 'data-code': x.code, 'data-find': `${x.code} ${x.tag} ${x.name} ${x.local}`.toLowerCase(), 'aria-current': x.code === LANG ? 'true' : null,
+    onclick: e => { e.currentTarget.setAttribute('href', langHref(x.code)); }}, h('span', {class: 'lang-n'}, x.name), x.local ? h('small', {class: 'lang-s', 'data-ident': ''}, x.local) : null)));
+  const find = h('input', {class: 'lang-find', type: 'search', inputmode: 'search', autocomplete: 'off', spellcheck: 'false', placeholder: 'Language · 언어 · 语言', 'aria-label': 'Language · 언어 · 语言', 'data-orig-attr': 'aria-label placeholder',
+    oninput: () => { const q = find.value.trim().toLowerCase(); for (const a of list.children) a.hidden = !!q && !a.dataset.find.includes(q); }});
   const box = h('details', {class: 'lang'},
     h('summary', {class: 'round lang-b', 'aria-label': 'Language · 语言 · 언어', title: 'Language · 语言 · 언어', 'data-orig-attr': 'aria-label title'}, globeIcon()),
-    h('div', {class: 'lang-menu'}, ...LANGS.map(c => h('a', {class: 'lang-i', href: langHref(c), lang: LANG_TAG[c], hreflang: LANG_TAG[c], 'aria-current': c === LANG ? 'true' : null,
-      onclick: e => { e.currentTarget.setAttribute('href', langHref(c)); }}, LANG_NAME[c]))));
+    h('div', {class: 'lang-menu'}, find, list));
+  box.addEventListener('toggle', () => { if (box.open) { list.querySelector('[aria-current="true"]')?.scrollIntoView({block: 'nearest'}); } else { find.value = ''; for (const a of list.children) a.hidden = false; } });
   document.addEventListener('click', e => { if (box.open && !box.contains(e.target)) box.open = false; });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && box.open) { box.open = false; box.querySelector('summary')?.focus(); } });
   return box;
@@ -118,7 +135,7 @@ function header() {
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
     mkt,
     langPicker(),
-    h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); }}, '가'),
+    h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); fitTabs(); }}, '가'),
     speakBtn));
   fontLabel();
   // 탭 이름에는 숫자를 넣지 않는다(2026-10-05 「잡스라면」 28번) — 개수는 화면 안에
@@ -130,7 +147,24 @@ function header() {
     if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
   const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id]}), h('span', {class: 'label'}, label(r)));
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));
+  fitTabs();
 }
+/** 아래 탭 이름 맞추기(2026-10-07 말 74개 — 독일어 「Termine」「Chronik」 처럼 긴 이름이 일곱 칸 중 제 칸을 넘지 않게)
+ *  가장 넘치는 이름에 맞춰 일곱 이름을 같은 비율로 줄인다(--tab-k · 원래 크기의 55% 아래로는 안 줄임) · 말을 바꾼 뒤 · 글씨 단추 · 화면 폭이 바뀔 때 다시 잼 */
+function fitTabs() {
+  const bar = document.getElementById('bottom'); if (!bar) return;
+  bar.style.removeProperty('--tab-k');
+  requestAnimationFrame(() => {
+    let k = 1;
+    for (const a of bar.querySelectorAll('.bottom-link')) { const l = a.querySelector('.label'); if (!l) continue; const room = a.clientWidth - 6, need = l.getBoundingClientRect().width; if (need > room && need > 0) k = Math.min(k, room / need); }
+    if (k < 1) bar.style.setProperty('--tab-k', Math.max(0.55, k - 0.01).toFixed(3));
+    // 위 막대: 넘치면 시장 단추(한국 · 미국)만 줄임 — 둥근 단추(말 · 글씨 · 소리)는 44px 그대로
+    const top = document.querySelector('.top-inner'), mkt = top?.querySelector('.mkt');
+    if (top && mkt) { mkt.style.removeProperty('--mkt-k'); const over = top.scrollWidth - top.clientWidth, w = mkt.getBoundingClientRect().width;
+      if (over > 0 && w > 0) mkt.style.setProperty('--mkt-k', Math.max(0.45, (w - over - 2) / w).toFixed(3)); }
+  });
+}
+window.addEventListener('resize', () => fitTabs());
 function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.setAttribute('aria-label', `글씨 크기 ${FONT_STEPS[Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0)))]}% (누를 때마다 커지고 200% 다음은 100%)`); }
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) { const on = el.dataset.route === id; el.classList.toggle('active', on); if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); } }
 
