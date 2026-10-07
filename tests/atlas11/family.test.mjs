@@ -56,3 +56,21 @@ test('오른 순: 큰 갈래는 갈래 평균이 큰 순 · 갈래 안 업종도
   const hot = familiesByRise(board.groups.filter(g => g.hot));
   assert.equal(hot.reduce((s, f) => s + f.groups.length, 0), board.groups.filter(g => g.hot).length);
 });
+
+// 바깥 판(미국 · 중국 · 일본 · 베트남 — 2026-10-07 05:25 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」) — 네이버 해외 업종 이름을 낱말로 가름(family.js US_WORDS)
+//   「그 밖」은 사업 지원 · 고용 · 환경 같은 업종만 남는다(판마다 5개 이하) · 이름이 꼭 「항공」 · 「금」뿐인 업종도 제 갈래로
+test('큰 갈래(바깥 판): 미국 · 중국 · 일본 · 베트남 판 업종이 거의 모두 갈래를 찾는다', async () => {
+  const {setPlace} = await import('../../site/app/util.js');
+  try {
+    for (const id of ['us', 'cn', 'jp', 'vn']) {
+      setPlace({id});
+      const b = await readJSON(`public/data/atlas11/${id}/view/board.json`).catch(() => null); if (!b) continue;
+      const miss = b.groups.filter(g => familyOf(g.label).id === OTHER.id).map(g => g.label);
+      assert.ok(miss.length <= 5, `${id} 「그 밖」 ${miss.length}개: ${miss.join(' · ')}`);
+      assert.ok(miss.every(n => /서비스|용품|도매/.test(n)), `${id} 「그 밖」에 남으면 안 되는 이름: ${miss.join(' · ')}`);
+    }
+    setPlace({id: 'cn'});
+    assert.equal(familyOf('항공').id, 'auto'); assert.equal(familyOf('항공우주 및 방위').id, 'mach'); assert.equal(familyOf('금').id, 'mat'); assert.equal(familyOf('금융, 상품 시장 운영 및 서비스 제공').id, 'fin');
+    assert.equal(familyOf('철 및 강철').id, 'mat'); assert.equal(familyOf('민자 발전 사업').id, 'energy'); assert.equal(familyOf('항만 운영 및 서비스').id, 'auto'); assert.equal(familyOf('증류주 및 포도주').id, 'cons');
+  } finally { setPlace({id: 'kr'}); }
+});

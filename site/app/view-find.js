@@ -26,12 +26,14 @@ export async function renderFind(main, {manifest, restoring} = {}) {
   const board = await loadBoard();
   const here = {id: place.id, label: place.label, href: ''};
   const boards = [{place: here, companies: board.companies, here: true, sun: sunOf(board), asOf: board.asOf, close: place.close}], notes = [];
-  for (const p of (state.places ?? []).filter(p => p.id !== place.id)) {
-    try { const {board: b, manifest: m} = await loadPlaceBoard(p.href); boards.push({place: {id: p.id, label: p.label, href: p.href}, companies: b.companies, here: false, sun: sunOf(b), asOf: b.asOf, close: m.place?.close ?? '15:30'}); }
-    catch (e) { notes.push(`${p.label} 판을 읽지 못해 ${here.label} 판만 찾습니다`); }
-  }
-  // 한국 판이 앞(사장님이 먼저 보시는 판) · 미국 판이 뒤 — 어느 판에서 열어도 같은 차례
-  boards.sort((a, b) => (a.place.id === 'kr' ? 0 : 1) - (b.place.id === 'kr' ? 0 : 1));
+  // 다른 판은 함께 받는다(시장이 다섯 — 2026-10-07 05:25 중국 · 일본 · 베트남) · 못 읽은 판은 그렇다고 적고 나머지로 찾음
+  const others = (state.places ?? []).filter(p => p.id !== place.id), got = await Promise.allSettled(others.map(p => loadPlaceBoard(p.href)));
+  got.forEach((r, i) => { const p = others[i];
+    if (r.status === 'fulfilled') { const {board: b, manifest: m} = r.value; boards.push({place: {id: p.id, label: p.label, href: p.href}, companies: b.companies, here: false, sun: sunOf(b), asOf: b.asOf, close: m.place?.close ?? '15:30'}); }
+    else notes.push(`${p.label} 판을 읽지 못해 그 판은 빼고 찾습니다`); });
+  // 차례 = 위 막대 시장 단추 차례(한국 · 미국 · 중국 · 일본 · 베트남 — places.json) — 어느 판에서 열어도 같은 차례
+  const at = id => { const i = (state.places ?? []).findIndex(p => p.id === id); return i < 0 ? 99 : i; };
+  boards.sort((a, b) => at(a.place.id) - at(b.place.id));
   const N = boards.reduce((t, b) => t + b.companies.length, 0), scope = boards.map(b => `${b.place.label} ${b.companies.length}곳`).join(' · ');
   const sunOn = hit => !!boards.find(b => b.place.id === hit.place.id)?.sun.sparkle.has(hit.c.code);
 

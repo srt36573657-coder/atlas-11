@@ -714,11 +714,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     await press(page.locator('.f-seg-b[data-mode="rise"]')); await page.waitForSelector('.f-body[data-mode="rise"][data-ready] .f-tile'); await page.waitForTimeout(100);
   }
 
-  // ⑥ 아래 탭 「찾기」(2026-10-05 20:24 사장님 「아틀란스에서 종목을 찾는 기능을 넣어라」) — 한국 · 미국 판을 함께 · 셈은 site/app/find.js 그대로(단위 시험 tests/atlas11/find.test.mjs)
+  // ⑥ 아래 탭 「찾기」(2026-10-05 20:24 사장님 「아틀란스에서 종목을 찾는 기능을 넣어라」) — 판 목록의 모든 판을 함께(한국 · 미국 · 2026-10-07 중국 · 일본 · 베트남) · 셈은 site/app/find.js 그대로(단위 시험 tests/atlas11/find.test.mjs)
   {
     let places = null; try { places = await (await fetch(base + '/places.json')).json(); } catch {}
     const us = places?.places?.find(p => p.id === 'us'), usBoard = us ? await (await fetch(base + us.href.replace(/\/$/, '') + '/data/atlas11/view/board.json')).json() : null;
-    const boardsW = [{place: {id: 'kr', label: '한국', href: '/'}, here: true, companies: board.companies}, ...(usBoard ? [{place: {id: 'us', label: '미국', href: us.href}, here: false, companies: usBoard.companies}] : [])];
+    // 판 목록의 모든 판(2026-10-07 중국 · 일본 · 베트남 — 한국 · 미국 · 중국 · 일본 · 베트남 차례 = 화면 차례)
+    const boardsW = [{place: {id: 'kr', label: '한국', href: '/'}, here: true, companies: board.companies}];
+    for (const p of (places?.places ?? []).filter(p => p.id !== 'kr')) boardsW.push({place: {id: p.id, label: p.label, href: p.href}, here: false, companies: p.id === 'us' && usBoard ? usBoard.companies : (await (await fetch(base + p.href.replace(/\/$/, '') + '/data/atlas11/view/board.json')).json()).companies});
     const NW = boardsW.reduce((t, b) => t + b.companies.length, 0), scopeW = boardsW.map(b => `${b.place.label} ${b.companies.length}곳`).join(' · ');
     await press(page.locator('.bottom-link[data-route="find"]')); await page.waitForSelector('.fd-page #fd-in'); await page.waitForTimeout(200);
     const f0 = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.b-title')?.innerText.replace(/\s+/g, ' ').trim(), focus: document.activeElement?.id ?? null, active: document.querySelector('.bottom-link.active')?.dataset.route, tries: [...document.querySelectorAll('.fd-try-b')].map(b => b.textContent.trim()), sw: document.documentElement.scrollWidth, iw: innerWidth}));
@@ -940,6 +942,11 @@ async function darkCheck() {
 
 /* 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트 판 목록(places.json)에 미국이 있을 때만
    같은 화면 코드가 /us/ 에서 미국 판 묶음을 읽는다: 위 막대 「한국 · 미국」 · 보던 탭 그대로 건너감 · 달러(소수 둘째 자리) · 뉴욕 16:00 종가 · 수급 · 공시 없음을 그렇다고 적음 · 무결성 */
+/** 시장 고르기 — 시장이 둘이면 단추가 막대에 바로 · 셋 이상(2026-10-07 중국 · 일본 · 베트남)이면 지금 시장 단추(.mkt-cur)를 눌러 목록을 펼친 뒤 누름 */
+async function pickMarket(page, id) {
+  if (await page.$('.mkt-cur')) { await page.click('.mkt-cur'); await page.waitForSelector(`.mkt-menu .mkt-b[data-place="${id}"]`, {state: 'visible', timeout: 5000}); }
+  await page.click(`.mkt-b[data-place="${id}"]`);
+}
 async function usCheck() {
   let places = null; try { places = await (await fetch(base + '/places.json')).json(); } catch {}
   const us = places?.places?.find(p => p.id === 'us');
@@ -953,9 +960,9 @@ async function usCheck() {
   page.on('requestfailed', r => failed.push(r.url())); page.on('response', r => { if (r.status() >= 400) failed.push(r.status() + ' ' + r.url()); });
   const mkt = () => page.evaluate(() => [...document.querySelectorAll('.mkt-b')].map(a => ({id: a.dataset.place, t: a.textContent.trim(), cur: a.getAttribute('aria-current')})));
   await page.goto(base + '/#/road', {waitUntil: 'networkidle'}); await page.waitForSelector('.f-titlerow');
-  const k1 = await mkt();
-  check(`미국 판 단추: 한국 판 위 막대 「${k1.map(x => x.t).join(' · ')}」 · 한국이 눌린 채`, k1.length === 2 && k1[0].id === 'kr' && k1[0].cur === 'page' && k1[1].id === 'us' && !k1[1].cur, k1);
-  await page.click('.mkt-b[data-place="us"]'); await page.waitForURL(/\/us\/#\/road$/, {timeout: 15000}).catch(() => {}); await page.waitForSelector('.f-titlerow', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(400);
+  const k1 = await mkt(), np = places.places.length;
+  check(`시장 단추: 한국 판 위 막대 「${k1.map(x => x.t).join(' · ')}」 = 판 목록 ${np}개 차례 · 한국이 눌린 채`, k1.length === np && k1.map(x => x.id).join() === places.places.map(p => p.id).join() && k1[0].id === 'kr' && k1[0].cur === 'page' && k1.slice(1).every(x => !x.cur), k1);
+  await pickMarket(page, 'us'); await page.waitForURL(/\/us\/#\/road$/, {timeout: 15000}).catch(() => {}); await page.waitForSelector('.f-titlerow', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(400);
   const r1 = await page.evaluate(() => ({url: location.pathname + location.hash, n: document.querySelector('.f-titlerow .b-count')?.textContent.trim() ?? null}));
   const k2 = await mkt();
   check(`「미국」 누름 → 미국 판 출목표 그대로(${r1.url}) · 「${r1.n}」 = 미국 판 ${ubd.companies.length}곳 · 미국이 눌린 채`, r1.url === '/us/#/road' && r1.n === `${ubd.companies.length}곳` && k2.find(x => x.id === 'us')?.cur === 'page', {r1, k2});
@@ -975,7 +982,7 @@ async function usCheck() {
   await page.goto(ub + '/#/agenda', {waitUntil: 'networkidle'}); await page.waitForSelector('.a-page'); await page.waitForTimeout(300);
   const ag = await page.evaluate(() => ({disc: document.querySelector('[aria-label="공시"] p')?.textContent.trim() ?? null, krDisc: document.querySelectorAll('[aria-label="예고 공시"], [aria-label="아주 중요한 공시"]').length}));
   check(`미국 판 일정: 공시 칸 「${ag.disc}」 한 칸 · 한국 공시 칸 둘(예고 · ★★★) 없음`, ag.disc === um.place.disclosuresNone && ag.krDisc === 0, ag);
-  await page.click('.mkt-b[data-place="kr"]'); await page.waitForURL(u => /\/#\/agenda$/.test(String(u)) && !/\/us\//.test(String(u)), {timeout: 15000}).catch(() => {}); await page.waitForSelector('.a-page', {timeout: 15000}).catch(() => {});
+  await pickMarket(page, 'kr'); await page.waitForURL(u => /\/#\/agenda$/.test(String(u)) && !/\/us\//.test(String(u)), {timeout: 15000}).catch(() => {}); await page.waitForSelector('.a-page', {timeout: 15000}).catch(() => {});
   const back = await page.evaluate(() => ({url: location.pathname + location.hash, strip: document.querySelector('.mstrip .m-time')?.textContent.trim() ?? null}));
   check(`「한국」 누름 → 한국 판 일정 그대로(${back.url}) · 시장 띠 「${back.strip}」`, back.url === '/#/agenda' && /15:30 KST/.test(back.strip ?? ''), back);
   // 미국 판 「기록」 탭 — 한국 판과 같은 /changelog.json · 무결성(미국 판 묶음)은 이 탭 맨 아래(옛 맨 아래 「기술 정보」를 옮김)
@@ -994,8 +1001,59 @@ async function usCheck() {
   await context.close();
 }
 
+/* 중국 · 일본 · 베트남 판(2026-10-07 05:25 사장님 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」) — 사이트 판 목록(places.json)에 있는 것만
+   같은 화면 코드가 /cn/ · /jp/ · /vn/ 에서 그 판 묶음을 읽는다: 위 막대 지금 시장 · 시장 띠(그 나라 지수 · 마감 시각) · 회사 값(그 나라 돈 · 소수 자리) · 「처음」 도시 종가 · 약속 첫 줄 · 공시 없음을 그렇다고 적음
+   시장 고르기 목록(다섯 — 320px · 글씨 200% 에서도 화면 안 · 보던 탭 그대로 건너감) · 콘솔 오류 0 */
+async function worldCheck() {
+  let places = null; try { places = await (await fetch(base + '/places.json')).json(); } catch {}
+  const world = (places?.places ?? []).filter(p => ['cn', 'jp', 'vn'].includes(p.id));
+  check(`중국 · 일본 · 베트남 판: 판 목록에 「${world.map(p => p.label).join(' · ') || '없음'}」`, world.length === 3, {places: places?.places ?? null});
+  if (!world.length) return;
+  const context = await browser.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+  const page = await context.newPage(), errs = [], failed = [];
+  page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); }); page.on('pageerror', e => errs.push('pageerror: ' + e.message));
+  page.on('requestfailed', r => failed.push(r.url())); page.on('response', r => { if (r.status() >= 400) failed.push(r.status() + ' ' + r.url()); });
+  for (const w of world) {
+    const wb = base + w.href.replace(/\/$/, ''), wg = async p => (await fetch(wb + '/' + p)).json();
+    const wm = await wg('data/atlas11/view/manifest.json'), wbd = await wg('data/atlas11/view/board.json'), pl = wm.place, city = /\(([^)]+)\)/.exec(pl?.close ?? '')?.[1];
+    check(`${w.label} 판 묶음: 예측 끔 · 시장 ${pl?.id} · ${wbd.companies.length}곳 = 업종 ${wbd.groups.length}개 × 5곳 · 돈 ${pl?.unit}`, wm.prediction === 'off' && pl?.id === w.id && wbd.companies.length === wm.companies && wbd.companies.length === wbd.groups.length * 5, {companies: wbd.companies.length, groups: wbd.groups.length});
+    await page.goto(wb + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.mstrip'); await page.waitForTimeout(300);
+    const st = await page.evaluate(() => ({time: document.querySelector('.mstrip .m-time')?.textContent.trim() ?? null, names: [...document.querySelectorAll('.mstrip .m-name')].map(x => x.textContent.trim()), cur: document.querySelector('.mkt-cur')?.textContent.trim() ?? null}));
+    const wantStrip = wm.market?.items?.length ? `${kd(wm.market.items[0].date)} ${pl.closeAt} 종가` : null;
+    check(`${w.label} 판 불장: 위 막대 지금 시장 「${st.cur}」 · 시장 띠 「${st.time}」 · ${st.names.join(' · ')} = 판 지수`, st.cur === w.label && (wm.market ? st.time === wantStrip && JSON.stringify(st.names) === JSON.stringify(wm.market.items.map(i => i.name)) : /^시장 지수 없음/.test(st.time ?? '')), {st, wantStrip});
+    await page.screenshot({path: path.join(dir, `${w.id}-home.png`)});
+    const c0 = [...wbd.companies].sort((a, b) => (b.change20 ?? -9) - (a.change20 ?? -9))[0];
+    await page.goto(wb + '/#/stock/' + encodeURIComponent(c0.code), {waitUntil: 'networkidle'}); await page.waitForSelector('.b-price'); await page.waitForTimeout(300);
+    const cp = await page.evaluate(() => ({name: document.querySelector('h1')?.textContent.trim(), close: document.querySelector('.b-price .b-close')?.textContent.trim(), date: document.querySelector('.b-price .b-date')?.textContent.trim(), flow: document.querySelector('.c-brief .fl')?.textContent.replace(/\s+/g, ' ').trim() ?? null}));
+    const wantClose = (pl.digits ? c0.close.toLocaleString('ko-KR', {minimumFractionDigits: pl.digits, maximumFractionDigits: pl.digits}) : Math.round(c0.close).toLocaleString('ko-KR')) + pl.unit;
+    check(`${w.label} 회사 화면 ${c0.code}: 「${cp.name}」 · 값 「${cp.close}」 = 판 종가(${pl.unit}) · 「${cp.date}」 · 수급 줄 「${cp.flow}」(0 으로 채우지 않음)`, cp.name === c0.name && cp.close === wantClose && cp.date === `${kd(c0.date)} ${pl.close} 종가` && cp.flow === `수급 · ${pl.flowsNone}`, {cp, wantClose});
+    await page.screenshot({path: path.join(dir, `${w.id}-company.png`)});
+    await page.goto(wb + '/#/start', {waitUntil: 'networkidle'}); await page.waitForSelector('.st-page'); await page.waitForTimeout(300);
+    const s5 = await page.evaluate(() => ({when: document.querySelector('.st-page .b-when')?.textContent.trim() ?? null, first: document.querySelectorAll('.st-page .b-promise-box li')[0]?.textContent.trim() ?? null}));
+    check(`${w.label} 판 「처음」: 「${s5.when}」 · 약속 첫 줄 「${s5.first}」`, !!city && (s5.when ?? '').includes(`${city} 종가`) && s5.first === pl.notDo, {s5, city});
+    await page.goto(wb + '/#/agenda', {waitUntil: 'networkidle'}); await page.waitForSelector('.a-page'); await page.waitForTimeout(300);
+    const ag = await page.evaluate(() => document.querySelector('[aria-label="공시"] p')?.textContent.trim() ?? null);
+    check(`${w.label} 판 일정: 공시 칸 「${ag}」`, ag === pl.disclosuresNone, {ag});
+  }
+  // 시장 고르기 목록 — 좁은 휴대폰(320px) · 가장 큰 글씨(200%)에서 다섯 줄이 모두 화면 안 · 줄 높이 48px · 지금 시장에 ✓ · 누르면 보던 탭 그대로
+  await page.setViewportSize({width: 320, height: 700}); await page.evaluate(() => localStorage.setItem('atlas11:font', '4'));
+  await page.goto(base + '/vn/#/map', {waitUntil: 'networkidle'}); await page.waitForTimeout(400);
+  await page.click('.mkt-cur'); await page.waitForTimeout(300);
+  const mm = await page.evaluate(() => ({items: [...document.querySelectorAll('.mkt-menu .mkt-b')].map(a => { const r = a.getBoundingClientRect(); return {id: a.dataset.place, cur: a.getAttribute('aria-current'), l: Math.round(r.left), r: Math.round(r.right), h: Math.round(r.height)}; }), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+  check(`시장 고르기 목록(320px · 글씨 200%): ${mm.items.length}줄 · 모두 화면 안 · 줄 높이 48px · 베트남 ✓`, mm.items.length === places.places.length && mm.items.every(x => x.l >= 0 && x.r <= mm.cw && x.h >= 47) && mm.items.find(x => x.id === 'vn')?.cur === 'page' && mm.sw <= mm.cw, mm);
+  await page.screenshot({path: path.join(dir, 'market-picker-320.png')});
+  await page.click('.mkt-menu .mkt-b[data-place="jp"]'); await page.waitForURL(/\/jp\/#\/map$/, {timeout: 15000}).catch(() => {}); await page.waitForTimeout(600);
+  const after = await page.evaluate(() => ({url: location.pathname + location.hash, cur: document.querySelector('.mkt-cur')?.textContent.trim() ?? null}));
+  check(`목록에서 「일본」 → 일본 판 지도 그대로(${after.url}) · 지금 시장 「${after.cur}」`, after.url === '/jp/#/map' && after.cur === '일본', after);
+  await page.evaluate(() => localStorage.removeItem('atlas11:font'));
+  check(`중국 · 일본 · 베트남 판 화면들: 콘솔 오류 0 · 요청 실패 0`, errs.length === 0 && failed.length === 0, {errs: errs.slice(0, 3), failed: failed.slice(0, 3)});
+  await context.close();
+}
+
 async function clarityCheck() {
   const table = {};
+  const plist = (await fetch(base + '/places.json').then(r => r.json()).catch(() => null))?.places ?? [{id: 'kr', label: '한국', href: '/'}, {id: 'us', label: '미국', href: '/us/'}];
+  const placeHrefs = plist.map(p => p.href), placeLabel = Object.fromEntries(plist.map(p => [p.href, p.label]));
   for (const v of VIEWS) {
     const ctx = await browser.newContext({viewport: v.viewport, isMobile: !!v.mobile, hasTouch: !!v.mobile, colorScheme: v.dark ? 'dark' : 'light', locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);
@@ -1015,12 +1073,12 @@ async function clarityCheck() {
     check(`아래 탭 이름 ${v.id}: ${tabFit.length}개 모두 제 칸 안(가장 좁은 남는 폭 ${Math.min(...tabFit.map(x => x.gap))}px)`, tabFit.length === 7 && tabFit.every(x => x.in), tabFit.filter(x => !x.in));
     // 지도 탭 맨 아래 「지난 6개월 앞서 달린 곳」은 닫힌 접힘이라 위 재기에서 빠진다 — 펼친 뒤 상자 안만 따로 잰다(한국 · 미국 판 · 보기 5가지)
     //   2026-10-06 15시: 펼친 상자를 따로 재어 보니 좁은 휴대폰 어두운 화면 글씨 200%에서 긴 회사 이름이 화면을 넓힘(한국 +6px · 미국 +303px) · 지수 값에 단위 없음 → 고친 뒤 이 검사를 붙임
-    for (const where of ['/', '/us/']) {
+    for (const where of placeHrefs) { // 판 목록의 모든 판(2026-10-07 중국 · 일본 · 베트남)
       await page.goto(base + where + '#/map', {waitUntil: 'networkidle'}); await page.waitForSelector('.lm-c', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(400);
       const opened = await page.evaluate(() => { const d = document.querySelector('details.m6'); if (!d) return false; d.open = true; d.scrollIntoView(); return true; }); await page.waitForTimeout(300);
       const m6 = await page.evaluate(measureClarity, {roots: ['details.m6'], refTime: false});
       const vw6 = await page.evaluate(() => ({inner: innerWidth, scroll: document.documentElement.scrollWidth, rows: document.querySelectorAll('details.m6 .m6-list > li').length}));
-      check(`펼친 「지난 6개월」 상자 ${where === '/' ? '한국' : '미국'} 판 ${v.id}: 줄 ${vw6.rows}개 · 화면 폭 ${vw6.inner}px = 기기 폭 ${v.viewport.width}px · 잘린 글자 ${m6.truncated} · 또렷함 1 ${m6.relDays} · 2 ${m6.vague} · 3 ${m6.bareNumbers} · 5 ${m6.lowContrast}`,
+      check(`펼친 「지난 6개월」 상자 ${placeLabel[where] ?? where} 판 ${v.id}: 줄 ${vw6.rows}개 · 화면 폭 ${vw6.inner}px = 기기 폭 ${v.viewport.width}px · 잘린 글자 ${m6.truncated} · 또렷함 1 ${m6.relDays} · 2 ${m6.vague} · 3 ${m6.bareNumbers} · 5 ${m6.lowContrast}`,
         opened && vw6.rows > 0 && vw6.inner === v.viewport.width && vw6.scroll <= v.viewport.width && m6.truncated === 0 && m6.relDays + m6.vague + m6.bareNumbers + m6.lowContrast === 0,
         {opened, vw6, bare: m6.samples.bareNumbers, trunc: m6.samples.truncated, vague: m6.samples.vague, contrast: m6.samples.lowContrast});
     }
@@ -1050,6 +1108,7 @@ try {
   await scenario('mobile', {width: 390, height: 844}, {mobile: true});
   await darkCheck();
   await usCheck();
+  await worldCheck();
   clarity = await clarityCheck();
 } finally { await browser.close(); }
 // 배포 묶음: 게임 쪽은 없고 옛 주소는 처음 화면으로 돌린다(넷리파이 _redirects)

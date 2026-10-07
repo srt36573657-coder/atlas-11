@@ -23,6 +23,8 @@ export async function renderStart(main, {manifest}) {
   const pc = v => pct(v, finite(v) && Math.abs(v) < 0.01 ? 1 : 0); // 1% 안쪽은 소수 한 자리(「+0%」로 보이지 않게)
   const bar = (v, worst, cls) => { const f = h('span', {class: 'st-fill ' + cls}); f.style.width = `${Math.max(2, Math.min(100, Math.abs(v) / worst * 100))}%`; return h('span', {class: 'st-track', 'aria-hidden': 'true'}, f); };
   const month = m => `${Number(m.slice(0, 4))}년 ${Number(m.slice(5, 7))}월`, cm = startComment(board);
+  // 바깥 판은 그 나라 도시 종가(미국 「뉴욕 종가」 · 중국 「상하이 종가」 · 일본 「도쿄 종가」 · 베트남 「호찌민 종가」 — 판 place.close 「15:00(상하이)」의 괄호 안) · 한국 판은 「종가」
+  const closeCity = m => { const c = m?.place?.id && m.place.id !== 'kr' ? /\(([^)]+)\)/.exec(m.place.close ?? '')?.[1] : null; return c ? c + ' ' : ''; };
   if (!s?.ready) {
     const have = s?.have, ready = s?.readyMonth;
     state.summary = `${commentSay(cm)}처음. 이 판은 종가 기록이 3년이 안 되어 다섯 곳을 찍지 않습니다.${ready ? ` ${month(ready)}부터 찍습니다.` : ''}`;
@@ -30,7 +32,7 @@ export async function renderStart(main, {manifest}) {
       commentBox(cm), // 논평 무대(화면 맨 위)
       h('header', {class: 'b-head'},
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
-        h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${manifest?.place?.id === 'us' ? '뉴욕 종가' : '종가'} · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
+        h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${closeCity(manifest)}종가 · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
       ready ? h('p', {class: 'st-wait', 'data-speak': ''}, `3년 기록이 쌓이는 ${month(ready)}부터 ${s?.rule?.want ?? 5}곳을 찍습니다`) : null,
       cards(),
       missionBox(),

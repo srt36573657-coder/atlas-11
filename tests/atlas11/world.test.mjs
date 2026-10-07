@@ -28,6 +28,8 @@ test('화면 값 — 그 나라 돈 · 마감 시각 · 수급 없음 · 지수 
   const p = worldPlace(WORLD.vn, {news: '네이버 증권 해외주식 뉴스'});
   assert.equal(p.id, 'vn'); assert.equal(p.unit, '동'); assert.equal(p.digits, 0); assert.equal(p.flows, false);
   assert.equal(p.close, '15:00(호찌민)'); assert.equal(p.closeAt, '15:00 호찌민 시각'); assert.match(p.foot, /네이버 증권 해외주식 뉴스/);
+  // 새로 올리는 때 — 한국 판 저녁 실행이 끝날 때마다 저절로(.github/workflows/atlas11-world.yml · 2026-10-07 사이트에 붙이며) · 「누를 때 올림」이 아님
+  assert.match(p.foot, /평일 밤\(한국 시각\)에 새로 올림$/); assert.equal(p.notDo, '지난 기록만 보여 줍니다(호찌민 15:00 종가 · 평일 밤에 올림)');
   const mk = worldMarketOf(WORLD.jp, {day: '2026-10-07', index: [{symbol: '.N225', rows: [{date: '2026-10-06', close: 1, changePct: 0.5}]}, {symbol: '.TOPX', rows: []}]});
   assert.equal(mk.items.length, 1); assert.equal(mk.items[0].name, '닛케이 225'); assert.equal(mk.closeTime, '15:30 도쿄 시각');
 });

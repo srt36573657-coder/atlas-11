@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 
 const arg = (n, d = null) => { const i = process.argv.indexOf(n); return i < 0 ? d : process.argv[i + 1]; };
 const base = arg('--base', 'http://127.0.0.1:8823'), pw = arg('--pw', '/opt/node-tools'), langs = arg('--lang', 'en,zh').split(','), outFile = arg('--out');
+const AT = arg('--at') ? arg('--at').split(',') : null; // --at /cn/,/jp/ : 그 판만(처음 값 = 사이트 판 목록 places.json 의 모든 판 — 2026-10-07 05:25 중국 · 일본 · 베트남)
 const QUICK = process.argv.includes('--quick'), NOPICK = process.argv.includes('--no-picker'); // --quick: 새 말(2026-10-07 말 73개) — 틀은 영어 · 중국어와 같은 열쇠라 화면 수를 줄여 넘침 · 남은 한국어 · 탭 이름 칸만 잼
 const require = createRequire(pw.replace(/\/?$/, '/'));
 const {chromium} = require('playwright');
@@ -78,7 +79,8 @@ if (NOPICK) report.picker = {steps: [], bad: 0, skipped: true}; else {
   for (const [tag, hl] of [['en', 'en'], ['zh', 'zh-CN'], ['ko', 'ko']]) {
     await page.click('.lang-b'); await page.waitForTimeout(200);
     await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click(`.lang-i[hreflang="${hl}"]`)]); await page.waitForTimeout(700); steps.push([tag, await st()]);
-    if (tag === 'en') { await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click('.mkt-b[data-place="us"]')]).catch(() => {}); await page.waitForTimeout(700); steps.push(['en us', await st()]); await page.goto(`${base}/#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['en remembered', await st()]); }
+    if (tag === 'en') { if (await page.$('.mkt-cur')) { await page.click('.mkt-cur'); await page.waitForTimeout(200); } // 시장이 셋 이상이면 지금 시장 단추를 눌러 목록을 펼침(2026-10-07)
+      await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click('.mkt-b[data-place="us"]')]).catch(() => {}); await page.waitForTimeout(700); steps.push(['en us', await st()]); await page.goto(`${base}/#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['en remembered', await st()]); }
   }
   const want = {open: ['ko', '출목표'], en: ['en', 'Dots'], 'en us': ['en', 'Dots'], 'en remembered': ['en', 'Hot'], zh: ['zh-CN', '火热'], ko: ['ko', '불장']};
   // 2026-10-07 말 74개 — 맨 위 세 말(한국어 · English · 简体中文)은 그대로 · 모두 74개 · 지금 말 하나만 눌림(✓)
@@ -87,9 +89,10 @@ if (NOPICK) report.picker = {steps: [], bad: 0, skipped: true}; else {
   report.picker = {steps, bad: bad.length};
   await ctx.close();
 }
+const PLACES = AT ?? await fetch(base + '/places.json').then(r => r.json()).then(j => j.places.map(p => p.href)).catch(() => ['/', '/us/']);
 for (const lg of langs) {
   const R = report.langs[lg] = {places: {}};
-  for (const at of ['/', '/us/']) {
+  for (const at of PLACES) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, colorScheme: 'dark'});
     const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e)));
     const r = await crawl(page, lg, at);

@@ -3,10 +3,16 @@
 #     auto(처음 값) = 그 시장 입력이 없으면 고르기(select) · 있으면 같은 회사의 새 종가(update) → 판 만들기
 #     probe = 자료 출처 시험만 · select = 다시 고르기 · update = 새 종가만 · build = 받지 않고 판만 다시
 #   시장 셋은 따로 돈다(한 시장이 멈춰도 다른 시장은 끝까지) · 결과는 reports/atlas11/<시장> · public/data/atlas11/<시장> 에만 적는다
-#   한국 · 미국 판 파일은 건드리지 않는다 · 사이트에 올리지 않는다(올리기는 「aaa7377.com 올리기」 단추)
+#   한국 · 미국 판 파일은 건드리지 않는다
 #   예약(cron)은 두지 않는다 — 예약 줄은 저장소 주인만 살릴 수 있음(docs/ATLAS_원칙.md 규칙 7)
+#   날마다(2026-10-07 사이트에 붙이며 · 「미국 장 처럼」): 한국 판 저녁 실행(atlas11-evening)이 끝날 때마다 저절로 돈다(workflow_run — 저녁 실행도 이 길로 매일 실행 뒤에 돎)
+#     그 나라 종가는 마감 1시간 뒤부터만 굳은 값으로 씀(lib/atlas11/world/markets.mjs closeFinal) — 일찍 돌면 새 종가 없이 끝남
+#   새 종가가 들어온 시장이 있으면 끝에 「aaa7377.com 올리기」(atlas11-site.yml)를 부른다 — 판 날짜(manifest asOf)가 그대로면 부르지 않음
 name: 중국 · 일본 · 베트남 주식 자료 받기
 on:
+  workflow_run:
+    workflows: [atlas11-evening]
+    types: [completed]
   workflow_dispatch:
     inputs:
       mode:
@@ -78,3 +84,31 @@ jobs:
           git commit -q -m "atlas11 $MK $MODE [skip ci]" || { echo "올릴 것 없음"; exit 0; }
           for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((7 * i)); done
           exit 1
+  site:
+    needs: world
+    if: always() && (inputs.mode || 'auto') != 'probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 새 종가가 들어온 시장이 있으면 「aaa7377.com 올리기」를 부름
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.sha }}
+        run: |
+          git fetch -q origin main
+          fresh=""
+          for m in cn jp vn; do
+            f="public/data/atlas11/$m/view/manifest.json"
+            a=$(git show "$BEFORE:$f" 2>/dev/null | jq -r '.asOf // empty' 2>/dev/null || true)
+            b=$(git show "origin/main:$f" 2>/dev/null | jq -r '.asOf // empty' 2>/dev/null || true)
+            if [ -n "$b" ] && [ "$a" != "$b" ]; then fresh="$fresh $m:${a:-없음}→$b"; fi
+          done
+          if [ -z "$fresh" ]; then echo "새 종가 없음 — 올리지 않음"; exit 0; fi
+          echo "새 종가:$fresh → aaa7377.com 올리기"
+          gh workflow run atlas11-site.yml --ref main

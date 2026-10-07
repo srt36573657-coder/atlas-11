@@ -1004,3 +1004,19 @@ html:not([lang="ko"]) .sun-n { flex-wrap: wrap; }
 .kr-logic li { display: grid; gap: 2px; }
 .kr-logic li b { font-size: .9375rem; }
 .kr-logic li span { color: var(--band-sub); font-size: .875rem; }
+
+/* 시장 다섯(2026-10-07 05:25 사장님 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」) — 위 막대 한 줄에 다섯 단추는 휴대폰에서 넘침
+   → 지금 시장 이름 단추 하나(뒤집은 색 · 아래 꺾쇠) + 누르면 펼쳐지는 목록(말 고르기 .lang-menu 와 같은 모양 · 지금 시장에 ✓) · 단추 · 줄 높이 44~48px 그대로
+   목록은 단추 끝(inline-end)에 붙여 글 쓰는 쪽 반대로 펼침 — 넘쳐도 가로 스크롤이 생기지 않는 쪽 · 화면 밖이면 app.js 가 안으로 옮김 */
+.mkt-pick { position: relative; padding: 0; background: none; }
+.mkt-pick > summary { list-style: none; cursor: pointer; }
+.mkt-pick > summary::-webkit-details-marker { display: none; }
+.mkt-cur { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; min-width: 44px; padding: 0 13px 0 15px; border-radius: 999px; background: var(--ink); color: var(--band); font-size: .9375rem; font-weight: 700; white-space: nowrap; }
+.mkt-cur::after { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.mkt-pick[open] > .mkt-cur::after { transform: translateY(2px) rotate(-135deg); }
+.mkt-cur:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
+.mkt-menu { position: absolute; top: calc(100% + 8px); inset-inline-end: 0; z-index: 30; min-width: 9.5rem; padding: 6px; border-radius: 16px; background: var(--bg); box-shadow: 0 0 0 1px var(--fill), 0 10px 28px rgba(0, 0, 0, .28); display: grid; gap: 2px; }
+.top .mkt-menu .mkt-b, .top .has-mkt .mkt-menu .mkt-b { justify-content: flex-start; min-height: 48px; padding: 0 14px; border-radius: 12px; color: var(--ink); font-size: 1.0625rem; }
+.top .mkt-menu .mkt-b[aria-current="page"] { background: var(--fill); color: var(--ink); }
+.top .mkt-menu .mkt-b[aria-current="page"]::after { content: '✓'; content: '✓' / ''; margin-inline-start: auto; padding-inline-start: 14px; }
+html[data-font-step="3"] .mkt-cur, html[data-font-step="4"] .mkt-cur { padding: 0 9px 0 11px; font-size: .8125rem; gap: 6px; }
