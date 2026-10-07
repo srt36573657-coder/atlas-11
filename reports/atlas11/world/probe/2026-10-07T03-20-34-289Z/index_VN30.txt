@@ -1,0 +1,1 @@
+{"code":"StockConflict","message":"지원하지 않는 지수입니다. symbol=.VN30"}

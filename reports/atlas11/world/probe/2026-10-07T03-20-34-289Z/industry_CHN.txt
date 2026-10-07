@@ -1,0 +1,1 @@
+{"timestamp":"2026-10-07T03:20:41.293+0000","status":404,"error":"Not Found","message":"No message available","path":"/stock/industry/list"}

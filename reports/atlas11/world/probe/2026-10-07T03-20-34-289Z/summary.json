@@ -1,0 +1,1647 @@
+{
+ "at": "2026-10-07T03:20:58.603Z",
+ "runner": "GitHub Actions 1000000164",
+ "summary": [
+  {
+   "name": "list_SHH",
+   "url": "https://api.stock.naver.com/stock/exchange/SHH/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 954,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_SHZ",
+   "url": "https://api.stock.naver.com/stock/exchange/SHZ/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 136,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_SSE",
+   "url": "https://api.stock.naver.com/stock/exchange/SSE/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 135,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_SZSE",
+   "url": "https://api.stock.naver.com/stock/exchange/SZSE/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 135,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_SHANGHAI",
+   "url": "https://api.stock.naver.com/stock/exchange/SHANGHAI/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 47834,
+   "type": "application/json;charset=UTF-8",
+   "ms": 172,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":1832,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"2\",\"text\":\"상승\",\"name\":\"RISING\"},\"nationType\":\"CHN\",\"stockExchangeType\":{\"code\":\"SHH\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"상해(후강퉁) 증권거래소\",\"nameEng\":\"Shanghai Stock Exchange\",\"name\":\"SHANGHAI\",\"nationName\":\"중국\",\"stockType\":\"worldstock\",\"nationCode\":\"CHN\"},\"itemCode\":nul"
+   }
+  },
+  {
+   "name": "list_SHENZHEN",
+   "url": "https://api.stock.naver.com/stock/exchange/SHENZHEN/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 47952,
+   "type": "application/json;charset=UTF-8",
+   "ms": 182,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":2163,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"2\",\"text\":\"상승\",\"name\":\"RISING\"},\"nationType\":\"CHN\",\"stockExchangeType\":{\"code\":\"SHZ\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"심천(선강퉁) 증권거래소\",\"nameEng\":\"Shenzhen Stock Exchange\",\"stockType\":\"worldstock\",\"nationName\":\"중국\",\"nationCode\":\"CHN\",\"name\":\"SHENZHEN\"},\"itemCode\":nul"
+   }
+  },
+  {
+   "name": "list_TYO",
+   "url": "https://api.stock.naver.com/stock/exchange/TYO/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 136,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_TSE",
+   "url": "https://api.stock.naver.com/stock/exchange/TSE/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 133,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_TOKYO",
+   "url": "https://api.stock.naver.com/stock/exchange/TOKYO/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 46825,
+   "type": "application/json;charset=UTF-8",
+   "ms": 185,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":3974,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"5\",\"text\":\"하락\",\"name\":\"FALLING\"},\"nationType\":\"JPN\",\"stockExchangeType\":{\"code\":\"TYO\",\"zoneId\":\"Asia/Tokyo\",\"nationType\":\"JPN\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1530\",\"closePriceSendTime\":\"1901\",\"nameKor\":\"도쿄 거래소\",\"nameEng\":\"Tokyo Stock Exchange\",\"stockType\":\"worldstock\",\"nationName\":\"일본\",\"nationCode\":\"JPN\",\"name\":\"TOKYO\"},\"itemCode\":null,\"reutersCode\""
+   }
+  },
+  {
+   "name": "list_JPX",
+   "url": "https://api.stock.naver.com/stock/exchange/JPX/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 135,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_HSX",
+   "url": "https://api.stock.naver.com/stock/exchange/HSX/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 132,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_HOSE",
+   "url": "https://api.stock.naver.com/stock/exchange/HOSE/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 134,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_HOCHIMINH",
+   "url": "https://api.stock.naver.com/stock/exchange/HOCHIMINH/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 47060,
+   "type": "application/json;charset=UTF-8",
+   "ms": 167,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":410,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"5\",\"text\":\"하락\",\"name\":\"FALLING\"},\"nationType\":\"VNM\",\"stockExchangeType\":{\"code\":\"HSX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0915\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1731\",\"nameKor\":\"호치민 거래소\",\"nameEng\":\"Ho Chi Minh Stock Exchange\",\"name\":\"HOCHIMINH\",\"nationName\":\"베트남\",\"stockType\":\"worldstock\",\"nationCode\":\"VNM\"},\"itemCode\":n"
+   }
+  },
+  {
+   "name": "list_HNX",
+   "url": "https://api.stock.naver.com/stock/exchange/HNX/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 132,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_HANOI",
+   "url": "https://api.stock.naver.com/stock/exchange/HANOI/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 46148,
+   "type": "application/json;charset=UTF-8",
+   "ms": 163,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":299,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"2\",\"text\":\"상승\",\"name\":\"RISING\"},\"nationType\":\"VNM\",\"stockExchangeType\":{\"code\":\"HNX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1731\",\"nameKor\":\"하노이 거래소\",\"nameEng\":\"Hanoi Stock Exchange\",\"name\":\"HANOI\",\"nationCode\":\"VNM\",\"nationName\":\"베트남\",\"stockType\":\"worldstock\"},\"itemCode\":null,\"reuter"
+   }
+  },
+  {
+   "name": "list_HKG",
+   "url": "https://api.stock.naver.com/stock/exchange/HKG/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 133,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "list_HKEX",
+   "url": "https://api.stock.naver.com/stock/exchange/HKEX/marketValue?page=1&pageSize=20",
+   "status": 400,
+   "bytes": 65,
+   "type": "application/json;charset=UTF-8",
+   "ms": 133,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"MethodArgumentTypeMismatch\",\"message\":\"BAD REQUEST !!!\"}"
+   }
+  },
+  {
+   "name": "nation_CHN",
+   "url": "https://api.stock.naver.com/stock/nation/CHN/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 47941,
+   "type": "application/json;charset=UTF-8",
+   "ms": 193,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":3995,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"2\",\"text\":\"상승\",\"name\":\"RISING\"},\"nationType\":\"CHN\",\"stockExchangeType\":{\"code\":\"SHH\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"상해(후강퉁) 증권거래소\",\"nameEng\":\"Shanghai Stock Exchange\",\"nationCode\":\"CHN\",\"nationName\":\"중국\",\"stockType\":\"worldstock\",\"name\":\"SHANGHAI\"},\"itemCode\":nul"
+   }
+  },
+  {
+   "name": "mlist_CHN",
+   "url": "https://m.stock.naver.com/api/stocks/marketValue/CHN?page=1&pageSize=20",
+   "status": 404,
+   "bytes": 0,
+   "type": null,
+   "ms": 508,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "industry_CHN",
+   "url": "https://api.stock.naver.com/stock/industry/list?nationType=CHN",
+   "status": 404,
+   "bytes": 140,
+   "type": "application/json;charset=UTF-8",
+   "ms": 211,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timestamp",
+     "status",
+     "error",
+     "message",
+     "path"
+    ],
+    "head": "{\"timestamp\":\"2026-10-07T03:20:41.293+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/stock/industry/list\"}"
+   }
+  },
+  {
+   "name": "nation_JPN",
+   "url": "https://api.stock.naver.com/stock/nation/JPN/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 46825,
+   "type": "application/json;charset=UTF-8",
+   "ms": 194,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":3974,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"5\",\"text\":\"하락\",\"name\":\"FALLING\"},\"nationType\":\"JPN\",\"stockExchangeType\":{\"code\":\"TYO\",\"zoneId\":\"Asia/Tokyo\",\"nationType\":\"JPN\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1530\",\"closePriceSendTime\":\"1901\",\"nameKor\":\"도쿄 거래소\",\"nameEng\":\"Tokyo Stock Exchange\",\"name\":\"TOKYO\",\"nationCode\":\"JPN\",\"stockType\":\"worldstock\",\"nationName\":\"일본\"},\"itemCode\":null,\"reutersCode\""
+   }
+  },
+  {
+   "name": "mlist_JPN",
+   "url": "https://m.stock.naver.com/api/stocks/marketValue/JPN?page=1&pageSize=20",
+   "status": 404,
+   "bytes": 0,
+   "type": null,
+   "ms": 126,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "industry_JPN",
+   "url": "https://api.stock.naver.com/stock/industry/list?nationType=JPN",
+   "status": 404,
+   "bytes": 140,
+   "type": "application/json;charset=UTF-8",
+   "ms": 217,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timestamp",
+     "status",
+     "error",
+     "message",
+     "path"
+    ],
+    "head": "{\"timestamp\":\"2026-10-07T03:20:42.280+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/stock/industry/list\"}"
+   }
+  },
+  {
+   "name": "nation_VNM",
+   "url": "https://api.stock.naver.com/stock/nation/VNM/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 47099,
+   "type": "application/json;charset=UTF-8",
+   "ms": 174,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":709,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"5\",\"text\":\"하락\",\"name\":\"FALLING\"},\"nationType\":\"VNM\",\"stockExchangeType\":{\"code\":\"HSX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0915\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1731\",\"nameKor\":\"호치민 거래소\",\"nameEng\":\"Ho Chi Minh Stock Exchange\",\"name\":\"HOCHIMINH\",\"nationName\":\"베트남\",\"nationCode\":\"VNM\",\"stockType\":\"worldstock\"},\"itemCode\":n"
+   }
+  },
+  {
+   "name": "mlist_VNM",
+   "url": "https://m.stock.naver.com/api/stocks/marketValue/VNM?page=1&pageSize=20",
+   "status": 404,
+   "bytes": 0,
+   "type": null,
+   "ms": 126,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "industry_VNM",
+   "url": "https://api.stock.naver.com/stock/industry/list?nationType=VNM",
+   "status": 404,
+   "bytes": 140,
+   "type": "application/json;charset=UTF-8",
+   "ms": 217,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timestamp",
+     "status",
+     "error",
+     "message",
+     "path"
+    ],
+    "head": "{\"timestamp\":\"2026-10-07T03:20:43.248+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/stock/industry/list\"}"
+   }
+  },
+  {
+   "name": "nation_HKG",
+   "url": "https://api.stock.naver.com/stock/nation/HKG/marketValue?page=1&pageSize=20",
+   "status": 200,
+   "bytes": 46620,
+   "type": "application/json;charset=UTF-8",
+   "ms": 178,
+   "err": null,
+   "shape": {
+    "keys": [
+     "page",
+     "pageSize",
+     "totalCount",
+     "stocks",
+     "marketStatus",
+     "localOpenTimeDesc",
+     "localOpenTime"
+    ],
+    "head": "{\"page\":1,\"pageSize\":20,\"totalCount\":2855,\"stocks\":[{\"stockType\":\"worldstock\",\"stockEndType\":\"stock\",\"compareToPreviousPrice\":{\"code\":\"3\",\"text\":\"보합\",\"name\":\"UNCHANGED\"},\"nationType\":\"HKG\",\"stockExchangeType\":{\"code\":\"HKG\",\"zoneId\":\"Asia/Hong_Kong\",\"nationType\":\"HKG\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1600\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"홍콩 거래소\",\"nameEng\":\"Hong Kong Stock Exchange\",\"nationName\":\"홍콩\",\"stockType\":\"worldstock\",\"nationCode\":\"HKG\",\"name\":\"HONG_KONG\"},\"itemCode\":null"
+   }
+  },
+  {
+   "name": "mlist_HKG",
+   "url": "https://m.stock.naver.com/api/stocks/marketValue/HKG?page=1&pageSize=20",
+   "status": 404,
+   "bytes": 0,
+   "type": null,
+   "ms": 126,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "industry_HKG",
+   "url": "https://api.stock.naver.com/stock/industry/list?nationType=HKG",
+   "status": 404,
+   "bytes": 140,
+   "type": "application/json;charset=UTF-8",
+   "ms": 214,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timestamp",
+     "status",
+     "error",
+     "message",
+     "path"
+    ],
+    "head": "{\"timestamp\":\"2026-10-07T03:20:44.217+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/stock/industry/list\"}"
+   }
+  },
+  {
+   "name": "basic_cn_sh",
+   "url": "https://api.stock.naver.com/stock/600519.SS/basic",
+   "status": 200,
+   "bytes": 6333,
+   "type": "application/json;charset=UTF-8",
+   "ms": 172,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"600519.SS\",\"stockName\":\"귀주모태주\",\"stockNameEng\":\"Kweichow Moutai Co.  Ltd. Class A\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/Stock600519.SS.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/Stock600519.SS.png\",\"symbolCode\":\"600519\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"SHH\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930"
+   }
+  },
+  {
+   "name": "day_cn_sh",
+   "url": "https://api.stock.naver.com/chart/foreign/item/600519.SS/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3181,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 23,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":1297.4,\"openPrice\":1289,\"highPrice\":1297.89,\"lowPrice\":1288,\"accumulatedTradingVolume\":1612611}"
+   }
+  },
+  {
+   "name": "fin_cn_sh",
+   "url": "https://api.stock.naver.com/stock/600519.SS/finance/annual",
+   "status": 200,
+   "bytes": 2373,
+   "type": "application/json;charset=UTF-8",
+   "ms": 149,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"CNY(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2023.12.31\",\"key\":\"2023.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2024.12.31\",\"key\":\"2024.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.12.31\",\"key\":\"2025.12.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2023.12.31\":{\"value\":\"150,560.30\",\"krw\":\"300,668.92\",\"cx\":null},\"2025.12.31\":{\"value\":\"172,054.20\",\"krw\":\"343,592.24\",\"cx\":null},\"2024.12.31\":{\"value\":\"174,144.10\",\"krw\":\"347,765.77\",\"cx\":null}}},{\"title"
+   }
+  },
+  {
+   "name": "news_cn_sh",
+   "url": "https://api.stock.naver.com/news/worldStock/600519.SS?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1776,
+   "type": "application/json;charset=UTF-8",
+   "ms": 142,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":0,\"subcontent\":\"상하이, 9월 4일 (로이터) - 금요일 중국 증시는 인공지능(AI) 관련주 상승세가 주춤하고 미국 금리 상승에 대한 우려가 글로벌 주식 시장에 부담으로 작용하면서 소폭 하락했으며, 주간 기준으로도 하락 마감했다. ** 중국의 우량주 지수인 CSI300 지수는 0.1% 하락한 채 마감했고, 상하이 종합지수는 0.3% 소폭 하락했다. 홍콩의 대표 지수인...\",\"thumbUrl\":null,\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2731333\",\"tit\":\"AI 관련 주가 상승세가 주춤해지면서 중국 증시는 주간 하락세로 마감했다\",\"dt\":\"20260904173715\"}"
+   }
+  },
+  {
+   "name": "basic_cn_sz",
+   "url": "https://api.stock.naver.com/stock/000001.SZ/basic",
+   "status": 200,
+   "bytes": 6278,
+   "type": "application/json;charset=UTF-8",
+   "ms": 168,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"000001.SZ\",\"stockName\":\"평안은행\",\"stockNameEng\":\"Ping An Bank Co Ltd Class A\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/Stock000001.SZ.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/Stock000001.SZ.png\",\"symbolCode\":\"000001\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"SHZ\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endT"
+   }
+  },
+  {
+   "name": "day_cn_sz",
+   "url": "https://api.stock.naver.com/chart/foreign/item/000001.SZ/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3051,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "array": 23,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":11.65,\"openPrice\":11.54,\"highPrice\":11.68,\"lowPrice\":11.48,\"accumulatedTradingVolume\":83812624}"
+   }
+  },
+  {
+   "name": "fin_cn_sz",
+   "url": "https://api.stock.naver.com/stock/000001.SZ/finance/annual",
+   "status": 200,
+   "bytes": 2346,
+   "type": "application/json;charset=UTF-8",
+   "ms": 147,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"CNY(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2023.12.31\",\"key\":\"2023.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2024.12.31\",\"key\":\"2024.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.12.31\",\"key\":\"2025.12.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2023.12.31\":{\"value\":\"227,617.00\",\"krw\":\"454,596.67\",\"cx\":null},\"2025.12.31\":{\"value\":\"169,863.00\",\"krw\":\"339,250.38\",\"cx\":null},\"2024.12.31\":{\"value\":\"198,381.00\",\"krw\":\"396,206.53\",\"cx\":null}}},{\"title"
+   }
+  },
+  {
+   "name": "news_cn_sz",
+   "url": "https://api.stock.naver.com/news/worldStock/000001.SZ?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1750,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":0,\"subcontent\":\"8월 14일 (로이터) - 핑안은행(Ping An Bank Co Ltd) : 1분기 순이익, 전년 동기 대비 3.3% 증가 원문 Further company coverage: 원문 바로가기 DISCLAIMER 레피니티브의 사전, 서면 승인 없는 톰슨로이터 콘텐츠의 재생산이나 재배포는 금지되어 있습니다. 이 기사의 한국어 번역은 에프앤가이드가 사용하는 ...\",\"thumbUrl\":null,\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2708466\",\"tit\":\"[속보] 핑안은행, 상반기 순이익 전년 동기 대비 3.3% 증가\",\"dt\":\"20260814202230\"}"
+   }
+  },
+  {
+   "name": "basic_jp",
+   "url": "https://api.stock.naver.com/stock/7203.T/basic",
+   "status": 200,
+   "bytes": 6215,
+   "type": "application/json;charset=UTF-8",
+   "ms": 162,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"7203.T\",\"stockName\":\"토요타자동차\",\"stockNameEng\":\"TOYOTA MOTOR CORPORATION\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/Stock7203.T.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/Stock7203.T.png\",\"symbolCode\":\"7203\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"TYO\",\"zoneId\":\"Asia/Tokyo\",\"nationType\":\"JPN\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1530\",\"cl"
+   }
+  },
+  {
+   "name": "day_jp",
+   "url": "https://api.stock.naver.com/chart/foreign/item/7203.T/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3562,
+   "type": "application/json;charset=UTF-8",
+   "ms": 141,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":3116,\"openPrice\":3090,\"highPrice\":3145,\"lowPrice\":3081,\"accumulatedTradingVolume\":24831800}"
+   }
+  },
+  {
+   "name": "fin_jp",
+   "url": "https://api.stock.naver.com/stock/7203.T/finance/annual",
+   "status": 200,
+   "bytes": 2412,
+   "type": "application/json;charset=UTF-8",
+   "ms": 145,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"JPY(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2024.03.31\",\"key\":\"2024.03.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.03.31\",\"key\":\"2025.03.31\"},{\"isConsensus\":\"N\",\"title\":\"2026.03.31\",\"key\":\"2026.03.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2025.03.31\":{\"value\":\"48,036,700.00\",\"krw\":\"4,060,013.85\",\"cx\":null},\"2024.03.31\":{\"value\":\"45,095,320.00\",\"krw\":\"3,811,411.35\",\"cx\":null},\"2026.03.31\":{\"value\":\"50,684,950.00\",\"krw\":\"4,283,841.29\",\"cx\":"
+   }
+  },
+  {
+   "name": "news_jp",
+   "url": "https://api.stock.naver.com/news/worldStock/7203.T?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1955,
+   "type": "application/json;charset=UTF-8",
+   "ms": 145,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":1,\"subcontent\":\"홍콩, 10월 7일 (로이터 브레이킹뷰) - “Build Your Dreams”의 약자인 BYD는 창립자의 꿈을 이루지 못할 수도 있다. 왕촨푸 회장은 지난 6월 열린 투자자 회의에서 주주들에게 이 심천 소재 기업이 2030년까지 세계 최대 자동차 제조업체가 되는 것을 목표로 한다고 밝혔다. 이는 지난해 약 1,100만 대의 차량을 판매한 도요타를 추...\",\"thumbUrl\":\"https://stock-phinf.pstatic.net/MjAyNjEwMDdfMjY0/MDAxNzkxMzI0NTQzMjcw.tRTpDrJZ8SndxW0HfjeM6mB82YFR-itC-FtSfpQJzA0g.622ORxiO-gCvaQsACsKdx_BNx7e3KzmzHCQUOFS5P6Ag.PNG/fnGuide_20261007_360_0.png?type=nf220_150\",\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2765149\",\"tit\":\"BYD"
+   }
+  },
+  {
+   "name": "basic_vn_hm",
+   "url": "https://api.stock.naver.com/stock/VNM.HM/basic",
+   "status": 200,
+   "bytes": 6217,
+   "type": "application/json;charset=UTF-8",
+   "ms": 165,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"VNM.HM\",\"stockName\":\"비나밀크\",\"stockNameEng\":\"Vietnam Dairy Products Joint Stock Company\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/StockVNM.HM.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/StockVNM.HM.png\",\"symbolCode\":\"VNM\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"HSX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0915\""
+   }
+  },
+  {
+   "name": "day_vn_hm",
+   "url": "https://api.stock.naver.com/chart/foreign/item/VNM.HM/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3640,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":62300,\"openPrice\":62900,\"highPrice\":63000,\"lowPrice\":62300,\"accumulatedTradingVolume\":2385900}"
+   }
+  },
+  {
+   "name": "fin_vn_hm",
+   "url": "https://api.stock.naver.com/stock/VNM.HM/finance/annual",
+   "status": 200,
+   "bytes": 2395,
+   "type": "application/json;charset=UTF-8",
+   "ms": 161,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"VND(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2023.12.31\",\"key\":\"2023.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2024.12.31\",\"key\":\"2024.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.12.31\",\"key\":\"2025.12.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2023.12.31\":{\"value\":\"60,368,920.00\",\"krw\":\"31,089.99\",\"cx\":null},\"2025.12.31\":{\"value\":\"63,645,890.00\",\"krw\":\"32,777.63\",\"cx\":null},\"2024.12.31\":{\"value\":\"61,782,610.00\",\"krw\":\"31,818.04\",\"cx\":null}}},{"
+   }
+  },
+  {
+   "name": "news_vn_hm",
+   "url": "https://api.stock.naver.com/news/worldStock/VNM.HM?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1850,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":0,\"subcontent\":\"7월 31일 (로이터) - 베트남 유제품 JSC : 베트남 유제품 회사 비나밀크, 투입 비용 상승으로 상반기 순이익이 4조 8천억 동(1억 5천 570만 달러)으로 16.87% 감소했다고 밝혔다. Further company coverage: 원문 바로가기 DISCLAIMER 레피니티브의 사전, 서면 승인 없는 톰슨로이터 콘텐츠의 재생산이나 재배포는 ...\",\"thumbUrl\":null,\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2237742\",\"tit\":\"비나밀크 상반기 순이익, 투입 원가 상승으로 전년 동기 대비 16.87% 감소\",\"dt\":\"20250731160904\"}"
+   }
+  },
+  {
+   "name": "basic_vn_plain",
+   "url": "https://api.stock.naver.com/stock/VNM/basic",
+   "status": 200,
+   "bytes": 6083,
+   "type": "application/json;charset=UTF-8",
+   "ms": 144,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"etf\",\"reutersCode\":\"VNM\",\"stockName\":\"VanEck Vietnam ETF\",\"stockNameEng\":\"VanEck Vietnam ETF\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/brand/foreign/StockBRANDVanEck.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/brand/foreign/StockBRANDVanEck.png\",\"symbolCode\":\"VNM\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"AMX\",\"zoneId\":\"EST5EDT\",\"nationType\":\"USA\",\"delayTime\":0,\"startTime\":\"0930"
+   }
+  },
+  {
+   "name": "day_vn_plain",
+   "url": "https://api.stock.naver.com/chart/foreign/item/VNM/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3545,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "array": 27,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":18.18,\"openPrice\":18.2,\"highPrice\":18.24,\"lowPrice\":18.1,\"accumulatedTradingVolume\":710034}"
+   }
+  },
+  {
+   "name": "fin_vn_plain",
+   "url": "https://api.stock.naver.com/stock/VNM/finance/annual",
+   "status": 200,
+   "bytes": 392,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"USD(백만). %, 배 생략\",\"trTitleList\":[],\"rowList\":[{\"title\":\"매출액\",\"columns\":{}},{\"title\":\"PER\",\"columns\":{}},{\"title\":\"PBR\",\"columns\":{}},{\"title\":\"EBITDA\",\"columns\":{}},{\"title\":\"EBIT\",\"columns\":{}},{\"title\":\"세전손익\",\"columns\":{}},{\"title\":\"세후손익\",\"columns\":{}},{\"title\":\"당기순이익\",\"columns\":{}},{\"title\":\"배당수익률\",\"columns\":{}},{\"title\":\"ROA\",\"columns\":{}}]}"
+   }
+  },
+  {
+   "name": "news_vn_plain",
+   "url": "https://api.stock.naver.com/news/worldStock/VNM?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 2,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "basic_vn_hn",
+   "url": "https://api.stock.naver.com/stock/SHS.HN/basic",
+   "status": 200,
+   "bytes": 6213,
+   "type": "application/json;charset=UTF-8",
+   "ms": 196,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"SHS.HN\",\"stockName\":\"사이공하노이증권\",\"stockNameEng\":\"Saigon - Hanoi Securities Joint Stock Company\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/StockSHS.HN.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/StockSHS.HN.png\",\"symbolCode\":\"SHS\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"HNX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\""
+   }
+  },
+  {
+   "name": "day_vn_hn",
+   "url": "https://api.stock.naver.com/chart/foreign/item/SHS.HN/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3648,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":15800,\"openPrice\":15700,\"highPrice\":16200,\"lowPrice\":15400,\"accumulatedTradingVolume\":14380101}"
+   }
+  },
+  {
+   "name": "fin_vn_hn",
+   "url": "https://api.stock.naver.com/stock/SHS.HN/finance/annual",
+   "status": 200,
+   "bytes": 2337,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"VND(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2023.12.31\",\"key\":\"2023.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2024.12.31\",\"key\":\"2024.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.12.31\",\"key\":\"2025.12.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2023.12.31\":{\"value\":\"1,460,070.00\",\"krw\":\"753.40\",\"cx\":null},\"2025.12.31\":{\"value\":\"3,668,535.00\",\"krw\":\"1,892.96\",\"cx\":null},\"2024.12.31\":{\"value\":\"1,991,306.00\",\"krw\":\"1,027.51\",\"cx\":null}}},{\"title\":"
+   }
+  },
+  {
+   "name": "news_vn_hn",
+   "url": "https://api.stock.naver.com/news/worldStock/SHS.HN?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 2,
+   "type": "application/json;charset=UTF-8",
+   "ms": 135,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "basic_vn_vcb",
+   "url": "https://api.stock.naver.com/stock/VCB.HM/basic",
+   "status": 200,
+   "bytes": 6218,
+   "type": "application/json;charset=UTF-8",
+   "ms": 158,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "reutersCode",
+     "stockName",
+     "stockNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "symbolCode",
+     "tradeStopType",
+     "stockExchangeType",
+     "stockExchangeName",
+     "industryCodeType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "marketStatus",
+     "overMarketPriceInfo",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "currencyType",
+     "countOfListedStock",
+     "marketValueKrwRaw",
+     "accumulatedTradingValueKrwRaw",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl"
+    ],
+    "head": "{\"stockEndType\":\"stock\",\"reutersCode\":\"VCB.HM\",\"stockName\":\"뱅크 포 포린 트레이드 오브 비엣남\",\"stockNameEng\":\"JSC Bank for Foreign Trade of Viet Nam\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/stock/StockVCB.HM.svg\",\"itemLogoPngUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/StockVCB.HM.png\",\"symbolCode\":\"VCB\",\"tradeStopType\":{\"code\":\"1\",\"text\":\"운영.Trading\",\"name\":\"TRADING\"},\"stockExchangeType\":{\"code\":\"HSX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startT"
+   }
+  },
+  {
+   "name": "day_vn_vcb",
+   "url": "https://api.stock.naver.com/chart/foreign/item/VCB.HM/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3641,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":60100,\"openPrice\":60200,\"highPrice\":60500,\"lowPrice\":59800,\"accumulatedTradingVolume\":3386900}"
+   }
+  },
+  {
+   "name": "fin_vn_vcb",
+   "url": "https://api.stock.naver.com/stock/VCB.HM/finance/annual",
+   "status": 200,
+   "bytes": 2411,
+   "type": "application/json;charset=UTF-8",
+   "ms": 165,
+   "err": null,
+   "shape": {
+    "keys": [
+     "isExchangeable",
+     "isKrw",
+     "unit",
+     "trTitleList",
+     "rowList"
+    ],
+    "head": "{\"isExchangeable\":true,\"isKrw\":false,\"unit\":\"VND(백만). %, 배 생략\",\"trTitleList\":[{\"isConsensus\":\"N\",\"title\":\"2023.12.31\",\"key\":\"2023.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2024.12.31\",\"key\":\"2024.12.31\"},{\"isConsensus\":\"N\",\"title\":\"2025.12.31\",\"key\":\"2025.12.31\"}],\"rowList\":[{\"title\":\"매출액\",\"columns\":{\"2023.12.31\":{\"value\":\"108,122,300.00\",\"krw\":\"55,682.98\",\"cx\":null},\"2025.12.31\":{\"value\":\"105,216,500.00\",\"krw\":\"54,186.50\",\"cx\":null},\"2024.12.31\":{\"value\":\"93,654,840.00\",\"krw\":\"48,232.24\",\"cx\":null}}}"
+   }
+  },
+  {
+   "name": "news_vn_vcb",
+   "url": "https://api.stock.naver.com/news/worldStock/VCB.HM?pageSize=5&page=1",
+   "status": 200,
+   "bytes": 1832,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "array": 5,
+    "first": "{\"type\":0,\"subcontent\":\"하노이, 10월 7일 (로이터) - 베트남의 급속한 경제 성장이 자본 수요를 부추기면서, 베트남 은행들이 약 70억 달러 규모의 주식 매각을 계획하고 있어, 엄격한 규제가 적용되는 이 분야에서 외국 투자자들이 사업 영역을 확장할 기회가 열리고 있다. 공산당이 통치하는 베트남은 지난 분기 아시아에서 가장 빠르게 성장하는 은행업 분야 중 하나를 보유하고 ...\",\"thumbUrl\":null,\"oid\":\"fnGuide\",\"ohnm\":\"로이터\",\"aid\":\"2765217\",\"tit\":\"분석-경제 과열 속에 베트남 은행들, 투자자들로부터 70억 달러 유치\",\"dt\":\"20261007100000\"}"
+   }
+  },
+  {
+   "name": "index_SSEC",
+   "url": "https://api.stock.naver.com/index/.SSEC/basic",
+   "status": 200,
+   "bytes": 5342,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "exchangeCurrentTime"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"SHH\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"상해(후강퉁) 증권거래소\",\"nameEng\":\"Shanghai Stock Exchange\",\"stockType\":\"worldstock\",\"nationName\":\"중국\",\"nationCode\":\"CHN\",\"name\":\"SHANGHAI\"},\"reutersCode\":\".SSEC\",\"worldIndexSymbol\":null,\"indexName\":\"상해종합\",\"indexNameEng\":\"SHANGHAI SE COMPOSITE INDEX\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index"
+   }
+  },
+  {
+   "name": "indexday_SSEC",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SSEC/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3422,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "array": 23,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":3952.179,\"openPrice\":3950.2368,\"highPrice\":3970.3095,\"lowPrice\":3947.7981,\"accumulatedTradingVolume\":51058164}"
+   }
+  },
+  {
+   "name": "index_SZSC",
+   "url": "https://api.stock.naver.com/index/.SZSC/basic",
+   "status": 200,
+   "bytes": 5324,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "compareToPreviousClosePriceRaw"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"SHZ\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"심천(선강퉁) 증권거래소\",\"nameEng\":\"Shenzhen Stock Exchange\",\"stockType\":\"worldstock\",\"nationCode\":\"CHN\",\"nationName\":\"중국\",\"name\":\"SHENZHEN\"},\"reutersCode\":\".SZSC\",\"worldIndexSymbol\":null,\"indexName\":\"심천종합\",\"indexNameEng\":\"SHENZHEN SE COMPOSITE INDEX\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index"
+   }
+  },
+  {
+   "name": "indexday_SZSC",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SZSC/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3421,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 23,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":2550.1692,\"openPrice\":2558.1315,\"highPrice\":2578.2862,\"lowPrice\":2549.9102,\"accumulatedTradingVolume\":63034608}"
+   }
+  },
+  {
+   "name": "index_CSI300",
+   "url": "https://api.stock.naver.com/index/.CSI300/basic",
+   "status": 200,
+   "bytes": 5428,
+   "type": "application/json;charset=UTF-8",
+   "ms": 136,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "exchangeCurrentTime"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"SHH\",\"zoneId\":\"Asia/Shanghai\",\"nationType\":\"CHN\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"상해(후강퉁) 증권거래소\",\"nameEng\":\"Shanghai Stock Exchange\",\"name\":\"SHANGHAI\",\"stockType\":\"worldstock\",\"nationName\":\"중국\",\"nationCode\":\"CHN\"},\"reutersCode\":\".CSI300\",\"worldIndexSymbol\":null,\"indexName\":\"CSI300\",\"indexNameEng\":\"CSI300 INDEX\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index.CSI3"
+   }
+  },
+  {
+   "name": "indexday_CSI300",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.CSI300/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3421,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 23,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":4609.1764,\"openPrice\":4615.8393,\"highPrice\":4643.3351,\"lowPrice\":4608.4617,\"accumulatedTradingVolume\":18098950}"
+   }
+  },
+  {
+   "name": "index_N225",
+   "url": "https://api.stock.naver.com/index/.N225/basic",
+   "status": 200,
+   "bytes": 5326,
+   "type": "application/json;charset=UTF-8",
+   "ms": 136,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "compareToPreviousClosePriceRaw"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"TYO\",\"zoneId\":\"Asia/Tokyo\",\"nationType\":\"JPN\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1530\",\"closePriceSendTime\":\"1901\",\"nameKor\":\"도쿄 거래소\",\"nameEng\":\"Tokyo Stock Exchange\",\"name\":\"TOKYO\",\"nationName\":\"일본\",\"stockType\":\"worldstock\",\"nationCode\":\"JPN\"},\"reutersCode\":\".N225\",\"worldIndexSymbol\":null,\"indexName\":\"니케이 225\",\"indexNameEng\":\"N225 Index\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index.N225.svg\",\"itemLogoPngU"
+   }
+  },
+  {
+   "name": "indexday_N225",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.N225/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3734,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":66405.56,\"openPrice\":66104.49,\"highPrice\":66842.82,\"lowPrice\":66012.2,\"accumulatedTradingVolume\":1469853}"
+   }
+  },
+  {
+   "name": "index_TOPX",
+   "url": "https://api.stock.naver.com/index/.TOPX/basic",
+   "status": 200,
+   "bytes": 5217,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "openPriceRaw"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"TYO\",\"zoneId\":\"Asia/Tokyo\",\"nationType\":\"JPN\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1530\",\"closePriceSendTime\":\"1901\",\"nameKor\":\"도쿄 거래소\",\"nameEng\":\"Tokyo Stock Exchange\",\"name\":\"TOKYO\",\"stockType\":\"worldstock\",\"nationName\":\"일본\",\"nationCode\":\"JPN\"},\"reutersCode\":\".TOPX\",\"worldIndexSymbol\":null,\"indexName\":\"토픽스\",\"indexNameEng\":\"TOPIX PRICE INDEX\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index.TOPX.svg\",\"itemLogoP"
+   }
+  },
+  {
+   "name": "indexday_TOPX",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.TOPX/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3631,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":4146.71,\"openPrice\":4116.82,\"highPrice\":4162.36,\"lowPrice\":4114.38,\"accumulatedTradingVolume\":2558009}"
+   }
+  },
+  {
+   "name": "index_VNI",
+   "url": "https://api.stock.naver.com/index/.VNI/basic",
+   "status": 200,
+   "bytes": 5273,
+   "type": "application/json;charset=UTF-8",
+   "ms": 136,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "exchangeCurrentTime"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"HSX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0915\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1731\",\"nameKor\":\"호치민 거래소\",\"nameEng\":\"Ho Chi Minh Stock Exchange\",\"nationName\":\"베트남\",\"stockType\":\"worldstock\",\"nationCode\":\"VNM\",\"name\":\"HOCHIMINH\"},\"reutersCode\":\".VNI\",\"worldIndexSymbol\":null,\"indexName\":\"호치민 VN\",\"indexNameEng\":\"Vietnam Index\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index.VNI."
+   }
+  },
+  {
+   "name": "indexday_VNI",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.VNI/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3603,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":1832.12,\"openPrice\":1831.56,\"highPrice\":1838.2,\"lowPrice\":1815.1,\"accumulatedTradingVolume\":562184}"
+   }
+  },
+  {
+   "name": "index_HNXI",
+   "url": "https://api.stock.naver.com/index/.HNXI/basic",
+   "status": 200,
+   "bytes": 5280,
+   "type": "application/json;charset=UTF-8",
+   "ms": 137,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "compareToPreviousClosePriceRaw"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"HNX\",\"zoneId\":\"Asia/Ho_Chi_Minh\",\"nationType\":\"VNM\",\"delayTime\":15,\"startTime\":\"0900\",\"endTime\":\"1500\",\"closePriceSendTime\":\"1731\",\"nameKor\":\"하노이 거래소\",\"nameEng\":\"Hanoi Stock Exchange\",\"nationCode\":\"VNM\",\"nationName\":\"베트남\",\"stockType\":\"worldstock\",\"name\":\"HANOI\"},\"reutersCode\":\".HNXI\",\"worldIndexSymbol\":null,\"indexName\":\"하노이 HNX\",\"indexNameEng\":\"Hanoi Stock Exchange Index\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index"
+   }
+  },
+  {
+   "name": "indexday_HNXI",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.HNXI/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 3475,
+   "type": "application/json;charset=UTF-8",
+   "ms": 138,
+   "err": null,
+   "shape": {
+    "array": 26,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":284.77,\"openPrice\":282.64,\"highPrice\":285.24,\"lowPrice\":282.25,\"accumulatedTradingVolume\":54284}"
+   }
+  },
+  {
+   "name": "index_VN30",
+   "url": "https://api.stock.naver.com/index/.VN30/basic",
+   "status": 409,
+   "bytes": 64,
+   "type": "application/json;charset=UTF-8",
+   "ms": 134,
+   "err": null,
+   "shape": {
+    "keys": [
+     "code",
+     "message"
+    ],
+    "head": "{\"code\":\"StockConflict\",\"message\":\"지원하지 않는 지수입니다. symbol=.VN30\"}"
+   }
+  },
+  {
+   "name": "indexday_VN30",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.VN30/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 2,
+   "type": "application/json;charset=UTF-8",
+   "ms": 139,
+   "err": null,
+   "shape": null
+  },
+  {
+   "name": "index_HSI",
+   "url": "https://api.stock.naver.com/index/.HSI/basic",
+   "status": 200,
+   "bytes": 5307,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "keys": [
+     "stockEndType",
+     "stockExchangeType",
+     "reutersCode",
+     "worldIndexSymbol",
+     "indexName",
+     "indexNameEng",
+     "itemLogoUrl",
+     "itemLogoPngUrl",
+     "tradeStopType",
+     "delayTime",
+     "delayTimeName",
+     "compareToPreviousPrice",
+     "closePrice",
+     "compareToPreviousClosePrice",
+     "fluctuationsRatio",
+     "localTradedAt",
+     "imageCharts",
+     "imageChartUrlInfo",
+     "scriptChartTypes",
+     "indexType",
+     "marketStatus",
+     "indexOrEtfToolTip",
+     "endUrl",
+     "newPcUrl",
+     "chartIqEndUrl",
+     "stockItemTotalInfos",
+     "nationType",
+     "nationName",
+     "indexEndUrl",
+     "exchangeCurrentTime"
+    ],
+    "head": "{\"stockEndType\":\"index\",\"stockExchangeType\":{\"code\":\"HKG\",\"zoneId\":\"Asia/Hong_Kong\",\"nationType\":\"HKG\",\"delayTime\":15,\"startTime\":\"0930\",\"endTime\":\"1600\",\"closePriceSendTime\":\"1831\",\"nameKor\":\"홍콩 거래소\",\"nameEng\":\"Hong Kong Stock Exchange\",\"name\":\"HONG_KONG\",\"stockType\":\"worldstock\",\"nationName\":\"홍콩\",\"nationCode\":\"HKG\"},\"reutersCode\":\".HSI\",\"worldIndexSymbol\":null,\"indexName\":\"항셍\",\"indexNameEng\":\"HANG SENG INDEX\",\"itemLogoUrl\":\"https://ssl.pstatic.net/imgstock/fn/real/logo/index/Index.HSI.svg\",\"it"
+   }
+  },
+  {
+   "name": "indexday_HSI",
+   "url": "https://api.stock.naver.com/chart/foreign/index/.HSI/day?startDateTime=202608280000&endDateTime=202610072359",
+   "status": 200,
+   "bytes": 4026,
+   "type": "application/json;charset=UTF-8",
+   "ms": 140,
+   "err": null,
+   "shape": {
+    "array": 28,
+    "first": "{\"localDate\":\"20260828\",\"closePrice\":25584.79,\"openPrice\":25410.46,\"highPrice\":25699.09,\"lowPrice\":25410.46,\"accumulatedTradingVolume\":2533546}"
+   }
+  },
+  {
+   "name": "yahoo_ts_600519_SS",
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/600519.SS?symbol=600519.SS&type=annualNetIncome,annualOperatingIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1514764800&period2=1791343234",
+   "status": 200,
+   "bytes": 2898,
+   "type": "application/json;charset=utf-8",
+   "ms": 57,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timeseries"
+    ],
+    "head": "{\"timeseries\":{\"result\":[{\"meta\":{\"symbol\":[\"600519.SS\"],\"type\":[\"annualOperatingIncome\"]},\"timestamp\":[1672444800,1703980800,1735603200,1767139200],\"annualOperatingIncome\":[{\"dataId\":20109,\"asOfDate\":\"2022-12-31\",\"periodType\":\"12M\",\"currencyCode\":\"CNY\",\"reportedValue\":{\"raw\":86544076613.98,\"fmt\":\"86.54B\"}},{\"dataId\":20109,\"asOfDate\":\"2023-12-31\",\"periodType\":\"12M\",\"currencyCode\":\"CNY\",\"reportedValue\":{\"raw\":101958150728.79,\"fmt\":\"101.96B\"}},{\"dataId\":20109,\"asOfDate\":\"2024-12-31\",\"periodType\":\""
+   }
+  },
+  {
+   "name": "yahoo_ts_7203_T",
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/7203.T?symbol=7203.T&type=annualNetIncome,annualOperatingIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1514764800&period2=1791343234",
+   "status": 200,
+   "bytes": 4605,
+   "type": "application/json;charset=utf-8",
+   "ms": 33,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timeseries"
+    ],
+    "head": "{\"timeseries\":{\"result\":[{\"meta\":{\"symbol\":[\"7203.T\"],\"type\":[\"annualStockholdersEquity\"]},\"timestamp\":[1680220800,1711843200,1743379200,1774915200],\"annualStockholdersEquity\":[{\"dataId\":23215,\"asOfDate\":\"2023-03-31\",\"periodType\":\"12M\",\"currencyCode\":\"JPY\",\"reportedValue\":{\"raw\":28338706000000,\"fmt\":\"28.34T\"}},{\"dataId\":23215,\"asOfDate\":\"2024-03-31\",\"periodType\":\"12M\",\"currencyCode\":\"JPY\",\"reportedValue\":{\"raw\":34220991000000,\"fmt\":\"34.22T\"}},{\"dataId\":23215,\"asOfDate\":\"2025-03-31\",\"periodType\":"
+   }
+  },
+  {
+   "name": "yahoo_ts_VNM_VN",
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/VNM.VN?symbol=VNM.VN&type=annualNetIncome,annualOperatingIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1514764800&period2=1791343234",
+   "status": 200,
+   "bytes": 2879,
+   "type": "application/json;charset=utf-8",
+   "ms": 84,
+   "err": null,
+   "shape": {
+    "keys": [
+     "timeseries"
+    ],
+    "head": "{\"timeseries\":{\"result\":[{\"meta\":{\"symbol\":[\"VNM.VN\"],\"type\":[\"annualStockholdersEquity\"]},\"timestamp\":[1672444800,1703980800,1735603200,1767139200],\"annualStockholdersEquity\":[{\"dataId\":23215,\"asOfDate\":\"2022-12-31\",\"periodType\":\"12M\",\"currencyCode\":\"VND\",\"reportedValue\":{\"raw\":29849051303781,\"fmt\":\"29.85T\"}},{\"dataId\":23215,\"asOfDate\":\"2023-12-31\",\"periodType\":\"12M\",\"currencyCode\":\"VND\",\"reportedValue\":{\"raw\":31696814706151,\"fmt\":\"31.70T\"}},{\"dataId\":23215,\"asOfDate\":\"2024-12-31\",\"periodType\":"
+   }
+  }
+ ]
+}
