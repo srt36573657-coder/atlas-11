@@ -1,6 +1,8 @@
 # ATLAS 중국 · 일본 · 베트남 주식 판 — 2026-10-07 05:25 사장님 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」
-#   「Run workflow」만 누르면 된다(mode 는 그대로 두면 probe):
-#     probe = 자료 출처 시험만(어느 길이 열리는지) — 결과는 reports/atlas11/world/probe/ 에만 적는다
+#   「Run workflow」만 누르면 된다(mode 는 그대로 두면 auto · market 은 all):
+#     auto(처음 값) = 그 시장 입력이 없으면 고르기(select) · 있으면 같은 회사의 새 종가(update) → 판 만들기
+#     probe = 자료 출처 시험만 · select = 다시 고르기 · update = 새 종가만 · build = 받지 않고 판만 다시
+#   시장 셋은 따로 돈다(한 시장이 멈춰도 다른 시장은 끝까지) · 결과는 reports/atlas11/<시장> · public/data/atlas11/<시장> 에만 적는다
 #   한국 · 미국 판 파일은 건드리지 않는다 · 사이트에 올리지 않는다(올리기는 「aaa7377.com 올리기」 단추)
 #   예약(cron)은 두지 않는다 — 예약 줄은 저장소 주인만 살릴 수 있음(docs/ATLAS_원칙.md 규칙 7)
 name: 중국 · 일본 · 베트남 주식 자료 받기
@@ -8,9 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = 출처 시험만'
+        description: 'auto = 알아서(그대로 두세요) · probe = 출처 시험만 · select = 다시 고르기 · update = 새 종가만 · build = 판만 다시'
         required: false
-        default: 'probe'
+        default: 'auto'
       market:
         description: 'all · cn · jp · vn'
         required: false
@@ -21,27 +23,58 @@ concurrency:
   group: atlas11-world
   cancel-in-progress: false
 jobs:
-  world:
+  probe:
+    if: (inputs.mode || 'auto') == 'probe'
     runs-on: ubuntu-latest
-    timeout-minutes: 50
-    env:
-      MODE: ${{ inputs.mode || 'probe' }}
-      MARKET: ${{ inputs.market || 'all' }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: 자료 출처 시험
-        if: env.MODE == 'probe'
         run: timeout 900 node scripts/atlas11/world/probe.mjs || true
-      - name: 기록 올리기(reports/atlas11/world · public/data/atlas11/world 만)
+      - name: 기록 올리기(reports/atlas11/world 만)
         if: always()
         run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
           git add -f reports/atlas11/world
-          if [ -d public/data/atlas11/world ]; then git add -f public/data/atlas11/world; fi
-          git commit -q -m "atlas11 world $MODE $MARKET [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          git commit -q -m "atlas11 world probe [skip ci]" || { echo "올릴 것 없음"; exit 0; }
           for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
+  world:
+    if: (inputs.mode || 'auto') != 'probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        market: [cn, jp, vn]
+    env:
+      MODE: ${{ inputs.mode || 'auto' }}
+      WANT: ${{ inputs.market || 'all' }}
+      MK: ${{ matrix.market }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 자료 받기
+        id: collect
+        if: (env.WANT == 'all' || env.WANT == env.MK) && (env.MODE == 'auto' || env.MODE == 'select' || env.MODE == 'update')
+        run: timeout 3000 node scripts/atlas11/world/collect.mjs --market "$MK" --mode "$MODE"
+      - name: 판 만들기
+        if: (env.WANT == 'all' || env.WANT == env.MK) && (env.MODE == 'build' || steps.collect.outcome == 'success') && hashFiles(format('public/data/atlas11/{0}/input.json', matrix.market)) != ''
+        run: node scripts/atlas11/world/build.mjs --market "$MK"
+      - name: 기록 올리기(reports/atlas11/<시장> · public/data/atlas11/<시장> 만)
+        if: always() && (env.WANT == 'all' || env.WANT == env.MK)
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          if [ -d "reports/atlas11/$MK" ]; then git add -f "reports/atlas11/$MK"; fi
+          if [ -d "public/data/atlas11/$MK" ]; then git add -f "public/data/atlas11/$MK"; fi
+          git commit -q -m "atlas11 $MK $MODE [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((7 * i)); done
           exit 1
