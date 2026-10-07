@@ -4,6 +4,7 @@
    05:05 그림 카드대로 — 「곧 될 가능성」은 앞날 말이라 숫자·말로 쓰지 않고, 같은 고르는 법을 지난 사실의 이름(「불장 닮은 7곳」)으로 보인다
    맨 위: 저녁 7시 들고 남(바로 앞 기록과 견줌) → 7곳(줄마다 공통점 ✓) → 불장 회사들의 공통점(불장 · 나머지 몇 %인지 막대) → 어떻게 셌나(접어 둠)
    셈은 lib/atlas11/similar.mjs(판을 만들 때) — 화면은 판에 적힌 값만 그린다 */
+import {similarArt} from './scenes.js'; // 그림 한 장(매화 가지 · 규칙 33)
 import {h, korDate, pct, signCls, finite, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
@@ -69,12 +70,13 @@ export async function renderSimilar(main, {manifest}) {
   state.summary = `${korDate(to)} 종가 기준. 예비, 불장 닮은 ${n}곳. 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지: ${common.map(t => t.chip).join(', ')}. ${shown.map((x, i) => `${i + 1}. ${x.name}, ${common.length}가지 중 ${x.matched}가지`).join('. ')}.`;
   main.replaceChildren(h('div', {class: 'b-page s-page'},
     hotSwitch('similar', hotCounts(board)),
+    similarArt(board), // 그림 한 장(매화 가지 · 규칙 33) — 넣으면서 뺀 것: 아래 긴 설명 두 줄(「어떻게 셌나」로 접음)
     movesBox(board.moves),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '예비 ', h('span', {class: 'b-count'}, `${n}곳`)),
-      h('p', {class: 'b-when', 'data-speak': ''}, `불장 닮은 ${n}곳 — 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`)),
+      h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'), h('p', {class: 'b-when', 'data-speak': ''}, `불장 닮은 ${n}곳 — 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`),
+        h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 순 · 줄마다 공통점 ✓(모두 가지면 「✓ 모두」) · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`))),
     h('section', {class: 't-sec sm-sec', 'aria-label': `닮은 ${n}곳`},
-      h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 순 · 줄마다 공통점 ✓(모두 가지면 「✓ 모두」) · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`),
       similarList(sim, byCode, shown, shp)),
     h('section', {class: 't-sec', 'aria-label': '불장 회사들의 공통점'},
       h('h2', {class: 't-h2', 'data-speak': ''}, `불장 회사들의 공통점 ${common.length}가지`),

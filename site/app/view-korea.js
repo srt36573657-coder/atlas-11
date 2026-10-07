@@ -2,9 +2,11 @@
    「대한민국이 다른 나라에 비해 얼마나 투자처로 우위인지 아니면 그러한지 등수와 논리와 자료로 제시하라」
    · 순위와 사실만(사라 · 팔라 · 앞날 말 없음) · MSCI 나라별 지수 안내서(2026-09-30 · 미국 달러 · 25개 시장) · 세계거래소연맹 · MSCI 시장 분류 · ACGA · 금융위원회
    · 조사 기록 reports/atlas11/study/한국 주식시장 몇 등 — 출처.md · 숫자마다 단위 · 화면마다 기준일 */
+import {koreaArt} from './scenes.js'; // 그림 한 장(돌계단 · 규칙 33)
 import {h} from './util.js';
 import {foot} from './parts.js';
 import {state} from './store.js';
+import {playOnce} from './motion.js'; // 순위 띠의 한국 칸은 맨 위 그림이 끝난 뒤 하나씩(규칙 28)
 
 /** [무엇, 한국 값, 순위, 견준 수, 1위(쪽 · 값), 출처 번호] — 순위는 글에 적은 쪽부터 셈(같은 값은 같은 순위) */
 export const RANKS = [
@@ -45,19 +47,22 @@ function strip(rank, n, k = 0) {
   return h('span', {class: 'kr-strip', 'aria-hidden': 'true'}, ...cells);
 }
 
+/** 2026-10-08 빠짐없이 도는 검사(규칙 34)가 잡음: 순위 띠의 한국 칸이 맨 위 돌계단 그림과 함께 솟았다 → 움직임 줄에 세움 */
+const queued = el => { playOnce('korea-strips', el, {dur: 300 + RANKS.length * 450}); return el; };
 export function renderKorea(main, {manifest}) {
   state.summary = `한국 주식시장은 몇 위인가. MSCI 나라별 지수, 미국 달러, 2026년 9월 30일 종가 기준. ${RANKS.map(([w, v, r, n]) => `${w} ${v}, ${n}곳 중 ${r}위`).join('. ')}.`;
   main.replaceChildren(h('article', {class: 'b-page kr-page'},
     h('a', {class: 'c-back', href: '#/start'}, '‹ ', '처음'),
+    koreaArt(RANKS), // 그림 한 장(돌계단 25 · 규칙 33) — 넣으면서 뺀 것: 「숫자를 함께 보면」 여섯 줄을 펼친 채 둔 것(접음 · 규칙 13)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '한국 주식시장은 몇 위인가'),
       h('p', {class: 'b-when', 'data-speak': ''}, 'MSCI 나라별 지수 25개 시장 · 미국 달러 · 2026년 9월 30일(수) 종가 기준 · 순위와 사실만')),
-    h('ol', {class: 'kr-list'}, ...RANKS.map(([what, v, r, n, how], k) => h('li', {class: 'kr-row'},
+    queued(h('ol', {class: 'kr-list'}, ...RANKS.map(([what, v, r, n, how], k) => h('li', {class: 'kr-row'},
       h('span', {class: 'kr-top'}, h('span', {class: 'kr-w'}, what), h('b', {class: 'kr-v'}, v)),
       h('span', {class: 'kr-rank'}, h('b', null, `${n}곳 중 ${r}위`), h('small', null, how)),
-      strip(r, n, k)))),
-    h('section', {class: 'kr-logic', 'aria-label': '논리'},
-      h('h2', {class: 'kr-h'}, '숫자를 함께 보면'),
+      strip(r, n, k))))),
+    h('details', {class: 'kr-logic', 'aria-label': '논리'},
+      h('summary', {class: 'kr-h'}, '숫자를 함께 보면'),
       h('ul', null, ...LOGIC.map(([k, t]) => h('li', {'data-speak': ''}, h('b', null, k), h('span', null, t))))),
     h('details', {class: 'b-how kr-more'}, h('summary', null, '기준 · 출처 자세히'),
       h('p', null, '25개 시장: 미국 · 일본 · 중국 · 홍콩 · 대만 · 인도 · 한국 · 영국 · 독일 · 프랑스 · 스위스 · 캐나다 · 호주 · 브라질 · 멕시코 · 인도네시아 · 베트남 · 사우디 · 남아공 · 싱가포르 · 네덜란드 · 태국 · 말레이시아 · 필리핀 · 그리스'),

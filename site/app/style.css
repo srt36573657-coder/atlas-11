@@ -343,11 +343,8 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 .spark.up .sp-line { stroke: var(--up); } .spark.down .sp-line { stroke: var(--down); } .spark.flat .sp-line { stroke: var(--sub); }
 .sp-end { stroke: var(--card); stroke-width: 2; vector-effect: non-scaling-stroke; }
 /* 값은 비단처럼 — 그래프 선만 0.3초에 왼쪽에서 오른쪽으로 그려지고 마지막 날 점이 끝에 놓인다(첫날 점선·눈금·글자는 처음부터 그 자리) */
-.spark .sp-line, .lc-line { animation: silk .3s cubic-bezier(.2, .7, .2, 1) both; }
-.spark .sp-end { animation: silk-end .3s ease-out both; }
-@keyframes silk { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes silk-end { 0%, 70% { opacity: 0; } to { opacity: 1; } }
-html[data-drawn] .spark .sp-line, html[data-drawn] .lc-line, html[data-drawn] .spark .sp-end { animation: none; } /* 화면마다 처음 한 번만(app.js) */
+/* 2026-10-08 빠짐없이 도는 검사가 잡음(규칙 28 · 34): 목록 선 그래프 「닦아 그리기」(0.3초)가 화면에 든 줄 수만큼 한꺼번에(예비 14줄) 움직였다
+   → 뺌(규칙 1) — 움직이는 것은 맨 위 그림 한 장(규칙 33)이 한 번에 하나씩 · 목록 선은 처음부터 그려진 채 */
 .spark.up .sp-end { fill: var(--up); } .spark.down .sp-end { fill: var(--down); } .spark.flat .sp-end { fill: var(--sub); }
 .sp-none { font-size: .8125rem; color: var(--sub); }
 .bf-box { display: grid; gap: 10px; margin: 12px 0 0; }
@@ -1209,7 +1206,7 @@ html[lang="ko"] .rt-a { white-space: nowrap; } /* 다른 말은 단위 낱말이
 .rt-how p { margin: 4px 0 0; }
 /* 그림 한 장 — 청자 매병 둘 · 금빛 물줄기 · 달 · 가마 불 · 낙관(2026-10-08 00:12 「글이 너무 많아 · 더 과감하게 움직이는 도식화를 예술적으로」)
    글은 이름 · 숫자뿐 · 움직임은 한 번에 하나(기울기 → 물줄기 → 차오름 → 달 → 불 → 낙관 둘) · 끝나면 불만 일렁임 */
-.ra-t { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 2px 8px; margin: 10px 0 0; text-align: center; }
+.ra-t { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 2px 8px; margin: 4px 0 0; text-align: center; }
 .ra-ts { font-size: .9375rem; font-weight: 700; color: rgba(244, 241, 234, .86); }
 .ra-td { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; color: #F4F1EA; }
 .ra { margin: 0; }
@@ -1247,6 +1244,8 @@ html[dir="rtl"] .ra-svg { transform: scaleX(-1); } /* 오른쪽부터 쓰는 말
 .ra-cb { align-items: flex-end; text-align: end; }
 .ra-n { margin: 0; font-size: clamp(1.375rem, 6.4vw, 1.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; color: #F4F1EA; }
 .ra-ca .ra-n { color: #CFE2F7; }
+.ra-n.ra-long { font-size: clamp(1.125rem, 5.2vw, 1.375rem); line-height: 1.2; } .ra-n.ra-long2 { font-size: clamp(1rem, 4.4vw, 1.1875rem); line-height: 1.22; } /* 바깥 판 긴 업종 이름 — 한 화면에(규칙 30) */
+.ra-seal-f .ra-sw + .ra-sw { margin-inline-start: 0; }
 .ra-cb .ra-n { color: #FFE3A3; text-shadow: 0 0 .5em rgba(242, 196, 107, .35); }
 .ra-m { margin: 0; font-size: 1.0625rem; font-weight: 700; }
 .ra-fomo { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 0 6px; margin: 2px 0 0; }
@@ -1355,3 +1354,106 @@ html[dir="rtl"] .lt-fill { transform-origin: right center; }
 html[dir="rtl"] :is(.gd-tw, .gd-tks) { direction: ltr; }
 [data-motion] .gd-tb { animation: lt-grow .45s cubic-bezier(.3, .7, .3, 1) calc(.05s + var(--i, 0) * .5s) both; } /* 막대 다섯이 하나씩(2026-10-07 19:40 「하나하나」) */
 [data-motion]:not(.go) .gd-tb { animation-play-state: paused; }
+
+/* ── 그림 한 장 공통(규칙 33 · art.js · scenes.js) — 2026-10-08 01:27 「이런식으로 모두 첫페이지부터 마지막까지 다해 전나라」
+   움직임: data-at 차례 · .on = 끝 모습 · .now = 지금 움직이는 하나(--dur = 그 걸음 머무는 시간 − 0.15초 · 다음 걸음과 겹치지 않음) · 움직임 줄이기면 맨 위 공통 규칙이 모두 끔(끝 모습) ── */
+.ak-draw { stroke-dasharray: 100; stroke-dashoffset: 100; }
+.ak-draw.on { stroke-dashoffset: 0; }
+.ak-draw.now { animation: ak-draw var(--dur, 1.1s) cubic-bezier(.35, 0, .25, 1) both; }
+@keyframes ak-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+.ak-up, .ak-dn, .ak-x, .ak-pop { transform-box: fill-box; }
+.ak-up { transform-origin: 50% 100%; transform: scaleY(0); }
+.ak-dn { transform-origin: 50% 0%; transform: scaleY(0); }
+.ak-up.on, .ak-dn.on { transform: scaleY(var(--k, 1)); }
+.ak-up.now, .ak-dn.now { animation: ak-sy var(--dur, 1.1s) cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ak-sy { from { transform: scaleY(0); } to { transform: scaleY(var(--k, 1)); } }
+.ak-x { transform-origin: 0% 50%; transform: scaleX(0); }
+.ak-x.on { transform: scaleX(1); }
+.ak-x.now { animation: ak-sx var(--dur, 1s) cubic-bezier(.35, 0, .25, 1) both; }
+@keyframes ak-sx { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.ak-pop { transform-origin: 50% 50%; transform: scale(0); }
+.ak-pop.on { transform: scale(1); }
+.ak-pop.now { animation: ak-pop var(--dur, .8s) cubic-bezier(.3, 1.45, .5, 1) both; }
+@keyframes ak-pop { from { transform: scale(0); } to { transform: scale(1); } }
+.ak-mv { transform: translate(var(--x0, 0px), var(--y0, 0px)); }
+.ak-mv.on { transform: translate(0px, 0px); }
+.ak-mv.now { animation: ak-mv var(--dur, 1.2s) cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ak-mv { from { transform: translate(var(--x0, 0px), var(--y0, 0px)); } to { transform: translate(0px, 0px); } }
+.ak-turn { transform-box: view-box; transform-origin: var(--ox, 180px) var(--oy, 500px); transform: rotate(var(--a0, 0deg)); }
+.ak-turn.on { transform: rotate(var(--a1, 0deg)); }
+.ak-turn.now { animation: ak-turn var(--dur, 1.6s) cubic-bezier(.45, 0, .25, 1) both; }
+@keyframes ak-turn { from { transform: rotate(var(--a0, 0deg)); } to { transform: rotate(var(--a1, 0deg)); } }
+/* 이름 · 숫자(그림 밖 HTML · 늘 또렷함) */
+.ak .ra-ca .ra-n, .ak .ra-cb .ra-n { color: #F4F1EA; text-shadow: none; }
+.ak .ra-n.ra-up-n { color: #FFC9C2; } .ak .ra-n.ra-dn-n { color: #CFE2F7; }
+.ra-tag { margin: 0; font-size: .875rem; font-weight: 700; letter-spacing: .04em; color: rgba(244, 241, 234, .80); }
+.ak .ra-m { font-size: 1.375rem; line-height: 1.2; }
+.ak .ra-m .rt-n.up { color: #FF8A80; } .ak .ra-m .rt-n.down { color: #8DB8FF; }
+.ra-big { margin: 0; font-size: clamp(1.75rem, 9vw, 2.375rem); font-weight: 700; line-height: 1.08; letter-spacing: -.03em; color: #F4F1EA; font-variant-numeric: tabular-nums; }
+.ra-big.up { color: #FF8A80; text-shadow: 0 0 .3em rgba(255, 90, 102, .35); } .ra-big.down { color: #8DB8FF; text-shadow: 0 0 .3em rgba(92, 151, 255, .35); }
+.ra-lab.ra-one { grid-template-columns: minmax(0, 1fr); }
+.ra-lab.ra-one .ra-col { align-items: center; text-align: center; }
+.ak .ra-art { margin-top: 6px; }
+.ra-sub { margin: 0; font-size: .9375rem; font-weight: 700; color: rgba(244, 241, 234, .82); }
+.ra-ev { margin: 2px 0 0; font-size: 1rem; font-weight: 700; line-height: 1.3; color: #FFE3A3; }
+.ra-mt { font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.ak .ra-mb { font-size: 1.625rem; }
+.ra-fwrap { display: grid; gap: 4px; }
+.ra-lab.ra-five { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 4px; }
+.ra-lab.ra-three { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 8px; }
+.ra-c5, .ra-c3 { align-items: center; text-align: center; }
+.ra-c5 .ra-tag, .ra-c3 .ra-tag { font-size: .875rem; }
+.ra-m5 { margin: 0; font-size: 1.0625rem; font-weight: 700; font-variant-numeric: tabular-nums; color: #F4F1EA; }
+.ra-c5.ra-here .ra-tag, .ra-c5.ra-here .ra-m5 { color: #FFE3A3; }
+.ra-m3 { margin: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.ra-ga { color: #FFE3A3; } .ra-gb { color: #E9E4D8; }
+.ra-key { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px 8px; margin: 2px 0 0; font-size: .875rem; color: rgba(244, 241, 234, .82); }
+.ra-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-inline-end: 4px; }
+.ra-dot.ra-ga { background: #F2C46B; } .ra-dot.ra-gb { background: #E9E4D8; }
+.ra-fwrap .ra-one .ra-seal { margin-top: 4px; }
+/* 접은 설명(어떻게 셌나) — 그림 아래 글은 접어 둠(규칙 13 · 33) */
+.ak-more { margin: 4px 0 12px; }
+/* 기록 — 날마다 접음 */
+.lg-dd > summary { display: flex; align-items: baseline; gap: 6px; min-height: 44px; cursor: pointer; list-style: none; }
+.lg-dd > summary::-webkit-details-marker { display: none; }
+.lg-dd > summary::after { content: ''; width: 8px; height: 8px; margin-inline-start: auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); opacity: .6; }
+.lg-dd[open] > summary::after { transform: rotate(225deg); }
+/* 안내 · 한국 순위 — 갈래마다 접음 */
+details.gd-sec > summary, details.kr-logic > summary { cursor: pointer; list-style: none; min-height: 44px; }
+details.gd-sec > summary::-webkit-details-marker, details.kr-logic > summary::-webkit-details-marker { display: none; }
+details.gd-sec > summary::after, details.kr-logic > summary::after { content: ''; display: inline-block; width: 8px; height: 8px; margin-inline-start: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-3px) rotate(45deg); opacity: .6; }
+details.gd-sec[open] > summary::after, details.kr-logic[open] > summary::after { transform: translateY(2px) rotate(225deg); }
+.ra-srow { grid-column: 1 / -1; display: flex; justify-content: flex-start; }
+.ra-sv { font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; }
+/* 다른 말(영어 등) — 이름이 길어 한 화면을 넘던 것(2026-10-08 빠짐없이 도는 검사가 잡음): 낱말 가운데서 끊지 않음 · 두 줄까지 · 글씨 한 단계 작게 */
+html:not([lang="ko"]) .rt .ra-n { font-size: clamp(1.0625rem, 5vw, 1.3125rem); line-height: 1.18; overflow-wrap: break-word; word-break: normal; hyphens: auto; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html:not([lang="ko"]) .rt .ra-seal { font-size: .875rem; }
+html:not([lang="ko"]) .rt .ra-seal .ra-sw { font-size: .9375rem; }
+html:not([lang="ko"]) .ak .ra-m { font-size: 1.25rem; }
+html:not([lang="ko"]) .ra-t { font-size: .9375rem; }
+html:not([lang="ko"]) .ra-td { font-size: 1.125rem; }
+/* 회사 화면 — 다른 말에서 긴 회사 이름(영어 「Industrial and Commercial Bank of China」 등)이 서너 줄이 되어 그림 이름 · 숫자를 첫 화면 밖으로 밀던 것(빠짐없이 도는 검사가 잡음) → 두 줄까지 · 한 단계 작게 */
+html:not([lang="ko"]) .c-page .b-title { font-size: clamp(1.5rem, 7vw, 1.875rem); line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (min-width: 600px) { .rt .ra-art { max-width: 440px; margin-inline: auto; } } /* 넓은 화면 — 그림이 폭을 따라 끝없이 커져 이름 · 숫자를 밀어내지 않게 */
+/* 2026-10-08 빠짐없이 도는 검사(규칙 34)가 잡음 — 긴 눈 줄 막대 · 몇 위 한국 칸이 맨 위 그림과 함께 움직였다 → 움직임 줄(motion.js)에서 차례가 오면(.go) 하나씩 */
+.lt-body[data-motion]:not(.go) .lt-fill, .kr-list[data-motion]:not(.go) .kr-c.kr-me { animation-play-state: paused; }
+.lt-body[data-motion] .lt-fill { animation-delay: calc(.05s + var(--i, 0) * .37s); }
+.kr-list[data-motion] .kr-strip .kr-c.kr-me { animation-delay: calc(.05s + var(--k, 0) * .45s); }
+.sy-k > span { min-width: 0; } /* 이름표 줄 — 다른 말의 긴 날짜 글이 줄을 바꾸게(오른쪽부터 쓰는 말 · 글씨 다섯째 단에서 넘치던 것 · 말 73개 검사) */
+/* 회사 순위 단추 줄 — 다른 말(독일어 「Platz 139 ›」 등) · 360px · 글씨 다섯째 단에서 오른쪽 단추가 화면 밖으로 나가던 것(말 73개 검사가 잡음) → 단추가 줄어들고 줄을 바꿈 */
+.c-rk { flex-wrap: wrap; row-gap: 6px; }
+html:not([lang="ko"]) .c-rk-b { flex: 0 1 auto; min-width: 0; white-space: normal; }
+/* 2026-10-08 말 73개 × 그림 화면 15곳(360px · 글씨 다섯째 단) 검사가 잡은 넘침 — 「괜찮다」며 넘기지 않고 고침(규칙 34)
+   · 그림 이름표: 띄어쓰기 없는 긴 낱말(아르메니아어 · 크메르어)도 칸 안에서 끊김 · 큰 값(회사 화면): 글씨가 커도 화면 폭의 10.5% 를 넘지 않음(일본어 「268,500ウォン」)
+   · 아래 탭 · 위 막대: 긴 이름이 화면을 넓히지 않음(넘는 글자는 … · 위 막대 글자표 간격을 좁힘) */
+html:not([lang="ko"]) .rt .ra-n { overflow-wrap: anywhere; }
+.b-price.big .b-close { font-size: min(2rem, 10.5vw); }
+#bottom { overflow-x: clip; }
+.bottom-link .label { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.top-inner { overflow-x: clip; }
+@media (max-width: 380px) { html:not([lang="ko"]) .top .wordmark { letter-spacing: .1em; } }
+/* 예비 공통점 막대 줄 — 아르메니아어 · 줄루어 등 긴 말이 글씨 다섯째 단에서 칸 밖으로 나가던 것(말 73개 검사가 잡음) → 다른 말은 줄을 바꿈 */
+html:not([lang="ko"]) .tr-who { white-space: normal; overflow-wrap: anywhere; min-width: 0; }
+/* 일정 줄 — 글씨 넷째 · 다섯째 단에서 이름 칸 기본 폭(12em)이 화면보다 넓어 줄이 넘치던 것(조지아어 · 말 73개 검사가 잡음) → 그 단에서는 이름이 줄 하나를 다 씀 */
+html[data-font-step="3"] .ag-name, html[data-font-step="4"] .ag-name { flex-basis: 100%; }
+html:not([lang="ko"]) .ag-li .lv { white-space: normal; flex: 0 1 auto; min-width: 0; overflow-wrap: anywhere; } /* 별 · 중요도 말(조지아어 「ძალიან მნიშვნელოვანი」)이 한 줄로 버텨 줄을 넓히던 것 */

@@ -1,0 +1,4 @@
+#!/bin/sh
+# 밀어 넣기 문(규칙 34 · 2026-10-08 01:31 「너 시스템으로 그짓 못하게 해」) — 화면 코드를 고치고 빠짐없이 도는 검사(full_check.mjs)를 안 돌렸으면 막는다
+# 켜는 법(저장소마다 한 번): git config core.hooksPath scripts/atlas11/hooks
+node scripts/atlas11/art_gate.mjs || { echo "밀어 넣기 막힘 — node scripts/atlas11/full_check.mjs 를 돌려 실패 0 결과를 함께 커밋하세요(규칙 34)"; exit 1; }

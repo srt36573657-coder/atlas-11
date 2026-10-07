@@ -4,6 +4,7 @@
      · 줄마다: 이름 · 태양 · 지난 20거래일 변화 · 시장(한국/미국) · 기호 · 업종 · 그 판의 오른 순 자리 → 누르면 그 회사 화면(다른 시장이면 그 판으로)
    넣으면서 뺀 것(규칙 1): 출목표 제목 줄의 작은 「찾기」 단추(출목표 365곳만 찾던 것) — 찾는 곳은 이 탭 하나
    ATLAS 는 고른 회사(한국 365 · 미국 365)만 본다 — 그 밖의 회사는 「없습니다」라고 적는다(지어내지 않음) */
+import {findArt} from './scenes.js'; // 그림 한 장(다섯 나라 등불 · 규칙 33)
 import {h, pct, finite, signCls, place, korDate} from './util.js';
 import {state, loadBoard, loadPlaceBoard, prefs} from './store.js';
 import {foot, sunTag} from './parts.js';
@@ -72,12 +73,14 @@ export async function renderFind(main, {manifest, restoring} = {}) {
     h('span', {class: 'fd-label', 'aria-hidden': 'true'}, findIcon()), input); // 이름은 글 칸의 aria-label(숨긴 글자를 따로 두지 않음 — 큰 글씨에서 화면 밖 글자로 잡힘)
 
   main.replaceChildren(h('div', {class: 'b-page fd-page'},
+    findArt(boards.map(b => ({id: b.place.id, label: b.place.label, n: b.companies.length})), place.id, `${korDate(board.asOf)} ${place.close} 종가`), // 그림 한 장(다섯 나라 등불 · 규칙 33) — 넣으면서 뺀 것: 머리 아래 설명 두 줄(「어떻게 셌나」로 접음)
     h('header', {class: 'b-head'},
-      h('h1', {class: 'b-title', 'data-speak': ''}, '찾기 ', h('span', {class: 'b-count'}, `${N}곳`)),
+      h('h1', {class: 'b-title', 'data-speak': ''}, '찾기 ', h('span', {class: 'b-count'}, `${N}곳`))),
+    form, msg, list, recentBox,
+    h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'),
       h('p', {class: 'b-when', 'data-speak': ''}, `${scope} · 이름 일부 · 종목 기호 · 초성(ㅅㅅㅈㅈ)`),
       // 줄마다 붙는 변화(%)의 기준 — 시장마다 마지막 종가 날짜 · 시각(또렷함 3번: 숫자에는 기준을)
       h('p', {class: 'i-src muted small'}, `지난 20거래일 변화 · ${boards.map(b => `${b.place.label} ${korDate(b.asOf)} ${b.close} 종가까지`).join(' · ')}`)),
-    form, msg, list, recentBox,
     ...notes.map(t => h('p', {class: 'b-note'}, t)),
     h('p', {class: 't-key muted xs'}, '차례: 꼭 맞는 이름 · 기호가 먼저 · 같으면 지난 20거래일 많이 오른 순 · 누르면 그 회사 화면(다른 시장이면 그 판으로) · 「오른 순 n위」는 그 시장 365곳 가운데 자리'),
     foot(manifest)));

@@ -2,6 +2,7 @@
    · 말 74개 언어판(2026-10-07 05:13)과 함께 — 어느 말로 보든 같은 줄을 그 말로(사전 i18n/<말>.json)
    · 줄마다 출처(공식 쪽 먼저: 한국거래소 · 금융감독원 DART · 넥스트레이드 · 정부 · 연구원 · 세금은 법무 · 회계법인 요약) · 기준 2026-10-07
    · 사실만 — 사라 · 팔라 · 앞날 말 없음 · 숫자마다 단위 · 조사 기록 reports/atlas11/study/한국 주식시장 안내 — 출처.md */
+import {guideArt} from './scenes.js'; // 그림 한 장(해시계 · 규칙 33)
 import {h} from './util.js';
 import {foot} from './parts.js';
 import {state} from './store.js';
@@ -70,11 +71,12 @@ export function renderGuide(main, {manifest}) {
   state.summary = `한국 주식시장 안내. 기준 ${AS_OF.slice(0, 4)}년 ${Number(AS_OF.slice(5, 7))}월 ${Number(AS_OF.slice(8, 10))}일. ${GUIDE.map(([t, xs]) => `${t}: ${xs.map(x => x[0]).join(', ')}`).join('. ')}.`;
   main.replaceChildren(h('article', {class: 'b-page gd-page'},
     h('a', {class: 'c-back', href: '#/start'}, '‹ ', '처음'),
+    guideArt(DAY_BARS, hm), // 그림 한 장(해시계 · 규칙 33) — 넣으면서 뺀 것: 갈래 여섯의 펼친 글(제목만 · 누르면 펼침 · 규칙 13)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '한국 주식시장 안내'),
       h('p', {class: 'b-when', 'data-speak': ''}, `한국에 사는 외국인도 바로 알 수 있게 · 기준 ${AS_OF.slice(0, 4)}년 ${Number(AS_OF.slice(5, 7))}월 ${Number(AS_OF.slice(8, 10))}일(수) ${AS_AT} KST · 줄마다 출처`)),
-    ...GUIDE.map(([title, rows], i) => h('section', {class: 'gd-sec', 'aria-label': title},
-      h('h2', {class: 'gd-h'}, h('span', {class: 'gd-n', 'aria-hidden': 'true'}), title), // 번호는 CSS 셈(counter) — 글로 넣으면 또렷함 검사가 단위 없는 숫자로 셈(2026-10-07 10:41)
+    ...GUIDE.map(([title, rows], i) => h('details', {class: 'gd-sec', 'aria-label': title},
+      h('summary', {class: 'gd-h'}, h('span', {class: 'gd-n', 'aria-hidden': 'true'}), title), // 번호는 CSS 셈(counter) — 글로 넣으면 또렷함 검사가 단위 없는 숫자로 셈(2026-10-07 10:41) · 2026-10-08 갈래마다 접음(제목만 · 누르면 펼침)
       i === 1 ? dayLine() : null, // 갈래 「시간」 — 하루 시간 띠
       h('ul', {class: 'gd-list'}, ...rows.map(([t, src, units]) => h('li', {class: 'gd-row'},
         h('p', {class: 'gd-t', 'data-speak': ''}, t, units ? [': ', ...units.flatMap(([u, v], k) => [k ? ' · ' : '', h('b', {lang: 'ko', 'data-ident': ''}, u), ' = ', h('span', {'data-ident': ''}, v)])] : null),

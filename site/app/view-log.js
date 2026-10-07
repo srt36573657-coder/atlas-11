@@ -8,6 +8,7 @@
    · 기록 파일은 사이트 맨 위 /changelog.json 하나(한국 · 미국 판이 함께 · scripts/atlas11/package.mjs 가 reports/atlas11/changelog 에서 모음)
    넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘(만든 시각 · 판 이름 · 무결성) — 이 탭 맨 아래로 옮김
    이슈를 넣으면서 뺀 것(규칙 1): 목록 아래 「기록은 …부터」 한 줄 — 「기술 정보」 접힘 안으로 옮김 */
+import {logArt} from './scenes.js'; // 그림 한 장(매듭 끈 · 규칙 33)
 import {h, korDate, stamp, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot} from './parts.js';
@@ -56,9 +57,11 @@ function item(e) {
 function days(entries) {
   const by = new Map();
   for (const e of entries) { const d = e.live.slice(0, 10); if (!by.has(d)) by.set(d, []); by.get(d).push(e); }
-  return [...by].map(([d, es]) => h('li', {class: 'lg-day', 'data-date': d},
-    h('h2', {class: 'lg-date'}, korDate(d), h('small', {class: 'lg-n'}, ` ${es.length}개`)),
-    h('ol', {class: 'lg-items'}, ...es.map(item))));
+  // 2026-10-08 01:27 「글이 너무 많아 · 이런식으로 모두」 — 날마다 접음(가장 새 날만 펼침 · 접어도 지우지 않음 · 규칙 13)
+  return [...by].map(([d, es], k) => h('li', {class: 'lg-day', 'data-date': d},
+    h('details', {class: 'lg-dd', open: k === 0 ? '' : null},
+      h('summary', {class: 'lg-date'}, korDate(d), h('small', {class: 'lg-n'}, ` ${es.length}개`)),
+      h('ol', {class: 'lg-items'}, ...es.map(item)))));
 }
 
 export async function renderLog(main, {manifest} = {}) {
@@ -85,6 +88,7 @@ export async function renderLog(main, {manifest} = {}) {
     h('p', {class: 'lg-from'}, `기록은 ${log?.from ? korDate(log.from.slice(0, 10)) : '10월 5일(월)'}부터 — 저장소가 그때 새로 시작해 그 전 기록은 없음 · 한 줄 한 파일로 쌓기만 하고 고치지 않음 · 이슈는 종가 날짜마다 한 번`));
 
   main.replaceChildren(h('div', {class: 'b-page lg-page'},
+    logArt(all), // 그림 한 장(매듭 끈 · 규칙 33) — 넣으면서 뺀 것: 날마다 펼쳐 둔 긴 목록(가장 새 날만 펼침)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '기록 ', h('span', {class: 'b-count'}, `${n.all}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, '그 날 장 이슈 · 화면을 바꾼 날(업데이트) · 자료가 바뀐 날(자료 변경) · 새것이 위'),

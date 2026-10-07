@@ -12,6 +12,7 @@ import {sunOf, sunCount} from './shapes.js';
 import {upLine} from './view-home.js';
 import {riseDesc, familyOf, FAMILIES, OTHER} from './family.js';
 import {industryComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
+import {industryArt} from './scenes.js'; // 그림 한 장(방패연 · 규칙 33)
 
 /** 회사 카드 — sun = 태양 회사면 이름 곁 작은 해(2026-10-05 15:24 「잡스가 … 36가지」 B3 · 카드는 그대로 넷) */
 function card(c, scale, sun = false) {
@@ -39,7 +40,7 @@ export async function renderIndustry(main, {hash, manifest}) {
   state.summary = `${commentSay(cm)}${g.label}. ${g.from && g.to ? `${korDate(g.from)}부터 ${korDate(g.to)}까지. ` : ''}업종 ${board.groups.length}개 가운데 ${k + 1}위${g.hot ? ', 불장' : ''}. 지난 20거래일 평균 ${finite(g.change20) ? pct(g.change20, 1) : '없음'}. ${upLine(g)}.${nSun ? ` 태양 ${nSun}곳.` : ''}`;
   main.replaceChildren(h('article', {class: 'b-page i-page', 'data-group': g.id},
     back,
-    commentBox(cm, {size: 'half'}), // 논평 무대(되돌아가기 바로 아래 · 표지 대신 글만큼 높이 — 눌러 들어온 화면이라 바로 회사가 보이게)
+    industryArt(board, g, upLine(g)) ?? commentBox(cm, {size: 'half'}), // 그림 한 장(방패연 다섯 · 규칙 33) — 넣으면서 뺀 것: 논평 무대
     h('header', {class: 'b-head'},
       h('p', {class: 'i-rank'}, `업종 ${board.groups.length}개 가운데 ${k + 1}위`, g.hot ? h('span', {class: 't-fire'}, '불장') : null, sunNum(nSun, 'sun-n i-sun')),
       h('h1', {class: 'b-title', 'data-speak': ''}, g.label),
