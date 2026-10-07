@@ -1020,3 +1020,72 @@ html:not([lang="ko"]) .sun-n { flex-wrap: wrap; }
 .top .mkt-menu .mkt-b[aria-current="page"] { background: var(--fill); color: var(--ink); }
 .top .mkt-menu .mkt-b[aria-current="page"]::after { content: '✓'; content: '✓' / ''; margin-inline-start: auto; padding-inline-start: 14px; }
 html[data-font-step="3"] .mkt-cur, html[data-font-step="4"] .mkt-cur { padding: 0 9px 0 11px; font-size: .8125rem; gap: 6px; }
+
+/* 「오늘의 돈 이야기」(2026-10-07 16:34 사장님 「왕초보에게 시장을 해석시키지 마라 … [이 일이 생겼다] → [그래서 여기가 돈을 받는다] ⇢ [다음은 여기가 필요하다] … 현재만 크고 선명하게 · 다음은 점선과 '예상' ·
+   큰 글씨, 넓은 여백, 절제된 빛 · 멋은 장식이 아니라 시선이 헤매지 않는 데서」 · site/app/story.js)
+   표지(.cm)와 같은 어둠 무대(밝은 화면에서도) · 빛나는 것은 가운데 장면 하나(옥빛 테 · 옅은 빛) · 첫 장면은 물러난 회색 · 다음 장면은 점선 테 · 장면 사이 선 위에 까닭(선은 아래로 흐름 · 다음으로 가는 선만 점선)
+   넣으면서 뺀 것(규칙 1): 탭 「불장」 맨 위 표지(논평 무대) — 이 무대가 그 자리(다른 탭의 표지는 그대로) */
+.sy { position: relative; margin: 10px 0 18px; padding: 20px 18px 18px; border-radius: 24px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
+  background-color: #0C1512; background-image: radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%);
+  box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 22px 44px -28px rgba(0, 0, 0, .75); }
+.sy a { color: inherit; }
+.sy-k { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 16px; }
+.sy-k > span:first-child { font-size: .9375rem; font-weight: 700; letter-spacing: .12em; color: #F4F1EA; }
+.sy-kw { font-size: .8125rem; color: rgba(244, 241, 234, .62); }
+.sy-s { margin: 0; padding: 14px 16px 15px; border-radius: 18px; }
+.sy-t { margin: 0 0 6px; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: rgba(244, 241, 234, .62); }
+.sy-s1 { background: rgba(244, 241, 234, .045); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .10); }
+.sy-main { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .88); }
+.sy-money { margin: 8px 0 0; }
+.sy-chip { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; color: #0C1512; background: #D8C08F; }
+.sy-s2 { background: rgba(79, 143, 119, .17); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .55), 0 20px 44px -26px rgba(143, 211, 182, .50); }
+.sy-s2 .sy-t { color: #8FD3B6; }
+.sy-role { margin: 0; font-size: clamp(1.75rem, 7.4vw, 2.5rem); font-weight: 700; line-height: 1.16; letter-spacing: -.02em; color: #F4F1EA; }
+.sy-does { margin: 6px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .72); }
+.sy-changed { margin: 12px 0 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: #F4F1EA; }
+.sy-m { display: grid; gap: 12px; margin: 14px 0 0; }
+.sy-mr { display: block; padding-top: 12px; border-top: 1px solid rgba(244, 241, 234, .10); } /* 갈래 이름표 위 · 글은 그 아래 전체 폭(큰 글씨에서도 근거 줄이 좁아지지 않게) */
+.sy-mr dt { display: inline-block; margin: 0 0 6px; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; }
+.sy-mr[data-kind="real"] dt { color: #0C1512; background: #8FD3B6; }
+.sy-mr[data-kind="stock"] dt { color: #0C1512; background: #D8C08F; }
+.sy-mr[data-kind="hype"] dt { color: rgba(244, 241, 234, .82); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .40); }
+.sy-mr dd { margin: 0; min-width: 0; }
+.sy-st { display: block; font-size: 1rem; line-height: 1.45; color: #F4F1EA; }
+.sy-w { margin: 2px 0 0; font-size: .8125rem; color: rgba(244, 241, 234, .78); }
+.sy-mk { list-style: none; margin: 4px 0 0; padding: 0; font-size: .875rem; line-height: 1.55; color: rgba(244, 241, 234, .86); }
+.sy-mkt { margin: 0; } .sy-mp { font-weight: 700; }
+.sy .sy-mk .chg20.up { color: #FFA8A8; } .sy .sy-mk .chg20.down { color: #B5D2FF; }
+.sy-ev { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.sy-e { font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .70); }
+.sy-ed, .sy-ek, .sy-eo { margin-inline-end: 6px; }
+.sy-ek { font-weight: 700; color: rgba(244, 241, 234, .86); }
+.sy-ek[data-kind="real"] { color: #8FD3B6; } .sy-ek[data-kind="stock"], .sy-ek[data-kind="capex"] { color: #D8C08F; }
+.sy-et { color: rgba(244, 241, 234, .86); text-decoration: underline; text-decoration-color: rgba(244, 241, 234, .30); text-underline-offset: 3px; }
+/* 선 — 장면 사이 · 선 옆(위)에 까닭 · 아래로 흐름(꺾쇠) · 다음으로 가는 선만 점선 */
+.sy-line { position: relative; margin: 0 0 0 30px; margin-inline-start: 30px; margin-inline-end: 0; padding: 12px 0 16px; padding-inline-start: 18px; border-inline-start: 2px solid rgba(244, 241, 234, .45); }
+.sy-line::after { content: ''; position: absolute; bottom: -1px; inset-inline-start: -7px; width: 10px; height: 10px; border-right: 2px solid rgba(244, 241, 234, .55); border-bottom: 2px solid rgba(244, 241, 234, .55); transform: rotate(45deg); }
+.sy-dash { border-inline-start-style: dashed; border-inline-start-color: rgba(244, 241, 234, .32); }
+.sy-why { display: block; font-size: .9375rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .82); }
+.sy-dash .sy-why { color: rgba(244, 241, 234, .70); font-weight: 400; }
+.sy-s3 { box-shadow: none; border: 1.5px dashed rgba(244, 241, 234, .34); }
+.sy-s3 .sy-t { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.sy-badge { display: inline-block; padding: 0 9px; border-radius: 999px; border: 1px dashed rgba(244, 241, 234, .55); font-size: .75rem; letter-spacing: .04em; color: rgba(244, 241, 234, .80); }
+.sy-role3 { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.35; color: rgba(244, 241, 234, .86); }
+.sy-check { margin: 8px 0 0; font-size: 1rem; line-height: 1.5; color: rgba(244, 241, 234, .82); }
+.sy-state { margin: 6px 0 0; font-size: .875rem; font-weight: 700; color: rgba(244, 241, 234, .72); }
+/* 아래 두 줄 — 확인되면 이어짐 · 나타나면 다시 판단 */
+.sy-if { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid rgba(244, 241, 234, .14); display: grid; gap: 8px; }
+.sy-if p { margin: 0; font-size: 1rem; line-height: 1.55; color: rgba(244, 241, 234, .86); }
+.sy-if b { color: #F4F1EA; }
+.sy-oth { margin: 16px 0 0; }
+.sy-oh { margin: 0; font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .55); }
+.sy-none .sy-role { font-size: 1.5rem; }
+html[data-font-step="3"] .sy-role, html[data-font-step="4"] .sy-role { font-size: clamp(1.5rem, 8vw, 2.25rem); }
+/* 무대 밑 — 나머지 시장 · 근거 모음(무대 안은 세 장면과 두 줄만) */
+.sy-more { margin: -6px 0 18px; padding: 0 4px; }
+.sy-more .sy-oh { margin: 12px 0 0; font-size: .8125rem; line-height: 1.5; color: var(--sub); }
+.sy-more .sy-mk { color: var(--ink); }
+.sy-more .sy-mk .chg20.up { color: var(--up-ink); } .sy-more .sy-mk .chg20.down { color: var(--down-ink); } .sy-more .sy-mk { color: var(--ink); }
+.sy-more .sy-e { color: var(--sub); }
+.sy-more .sy-ek, .sy-more .sy-ek[data-kind] { color: var(--ink); } /* 밝은 바탕에서 옥빛 · 주황 글씨는 대비 4.5:1 이 안 됨 — 갈래 이름은 먹빛 굵은 글씨 */
+.sy-more .sy-et { color: var(--ink); text-decoration-color: var(--sep); }
