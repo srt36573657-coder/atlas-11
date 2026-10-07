@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-07",
- "fetchedAt": "2026-10-07T14:18:19Z",
- "file": "reports/atlas11/context/2026-10-07/2026-10-07T14-18-19Z.json",
+ "fetchedAt": "2026-10-07T14:27:15Z",
+ "file": "reports/atlas11/context/2026-10-07/2026-10-07T14-27-15Z.json",
  "summary": {
   "day": "2026-10-07",
-  "fetchedAt": "2026-10-07T14:18:19Z",
+  "fetchedAt": "2026-10-07T14:27:15Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-07",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7217,
-   "distinct": 7167,
-   "republished": 50,
+   "distinct": 7168,
+   "republished": 49,
    "sameArticle": 0,
    "stocksWithTodayNews": 203,
-   "todayDistinct": 1596
+   "todayDistinct": 1551
   },
   "disclosures": {
    "stocks": 365,
