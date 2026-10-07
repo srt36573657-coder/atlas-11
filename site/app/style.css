@@ -1179,6 +1179,34 @@ html:not([lang="ko"]) .sy-rb::before { content: counter(syr); font-size: 1rem; f
 .sy-btn:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
 .sy-bi { display: grid; place-items: center; }
 .sy-bi svg { width: 18px; height: 18px; }
+/* 돈의 이동 — 탭 「불장」 맨 위 · 한국 판(2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 돈에 이동이 되고 있냐 그리고 그 기간과 포모값은 어찌 되냐」)
+   같은 어둠 무대(.sy) · 네 줄 · 한 번에 하나 — 빠지는 곳(상자에서 나감) → 동전 → 들어가는 곳(옥빛 큰 동그라미) ┄ 온도계(포모값 다섯 등급 색) */
+.rt .sy-mn1 { color: #B5D2FF; box-shadow: inset 0 0 0 1.5px rgba(181, 210, 255, .55); }
+html[dir="rtl"] .rt-map .sy-mn1 svg, html[dir="rtl"] .rt-map .sy-mn2 svg { transform: scaleX(-1); }
+.rt-th { border-style: solid; }
+.rt-th[data-heat="5"] { color: #FF9E80; border-color: rgba(255, 158, 128, .85); } .rt-th[data-heat="4"] { color: #FFC27A; border-color: rgba(255, 194, 122, .8); }
+.rt-th[data-heat="3"] { color: #F4F1EA; border-color: rgba(244, 241, 234, .6); } .rt-th[data-heat="2"], .rt-th[data-heat="1"] { color: #B5D2FF; border-color: rgba(181, 210, 255, .7); }
+.rt-heat { font-variant-numeric: tabular-nums; }
+.rt-heat[data-heat="5"] { color: #FF9E80; } .rt-heat[data-heat="4"] { color: #FFC27A; } .rt-heat[data-heat="3"] { color: #F4F1EA; } .rt-heat[data-heat="2"], .rt-heat[data-heat="1"] { color: #B5D2FF; }
+.rt .rt-n { font-variant-numeric: tabular-nums; } .rt .rt-n.up { color: #FFA8A8; } .rt .rt-n.down { color: #B5D2FF; }
+.rt .chg20.up { color: #FFA8A8; } .rt .chg20.down { color: #B5D2FF; }
+html:not([lang="ko"]) .rt-u { margin-inline-start: .25em; }
+html[lang="ko"] .rt-a { white-space: nowrap; } /* 다른 말은 단위 낱말이 길어 줄을 바꿀 수 있게 둠 */
+.sy-pop1.now { animation: sy-pop .5s cubic-bezier(.2, .9, .3, 1.2) both; } /* 달력 하나가 켜짐 */
+.rt-all { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px 14px; margin: 0 0 14px; }
+.rt-col { padding: 10px 12px 8px; border-radius: 14px; background: rgba(244, 241, 234, .05); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .12); }
+.rt-col[data-side="in"] { box-shadow: inset 0 0 0 1px rgba(143, 211, 182, .45); }
+.rt-h { margin: 0 0 6px; font-size: .875rem; font-weight: 700; letter-spacing: .04em; color: rgba(244, 241, 234, .80); }
+.rt-col[data-side="in"] .rt-h { color: var(--mint); }
+.rt-ol { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.rt-li { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 10px; font-size: .9375rem; line-height: 1.35; } /* 긴 단위 말(이탈리아어 · 조지아어 · 루마니아어 · 줄루어)은 줄을 바꿈 — 화면 밖으로 나가지 않게 */
+.rt-l { min-width: 0; font-weight: 700; color: #F4F1EA; }
+.rt-v { margin-inline-start: auto; text-align: end; }
+.rt-v .rt-n { white-space: nowrap; }
+.rt-f { flex-basis: 100%; font-size: .8125rem; color: rgba(244, 241, 234, .80); }
+.rt-how { margin: 0; font-size: .8125rem; line-height: 1.55; color: rgba(244, 241, 234, .80); }
+.rt-how summary { display: inline-flex; align-items: center; min-height: 40px; font-size: .875rem; font-weight: 700; color: #F4F1EA; cursor: pointer; }
+.rt-how p { margin: 4px 0 0; }
 /* 결 — 탭 「불장」 맨 아래(2026-10-07 20:04 「기승전결」) · 맨 위 무대와 같은 어둠 · 옥빛 테 — 처음(결론)과 끝(볼 것)이 맞물림 */
 .sy-end { --mint: #8FD3B6; position: relative; margin: 22px 0 8px; padding: 18px 18px 16px; border-radius: 22px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
   background-color: #0B1411; background-image: radial-gradient(120% 90% at 12% 0%, #22382E 0%, #0E1915 50%, #070C0A 100%); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .55); }

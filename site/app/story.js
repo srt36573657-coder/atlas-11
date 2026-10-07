@@ -56,10 +56,16 @@ const ICON = {
   on: '<path d="M12 4.5v13"/><path d="M6.8 12.6 12 17.8l5.2-5.2"/>', // 이어짐(아래로)
   re: '<path d="M4.6 12.2a7.4 7.4 0 1 0 2.2-5.3"/><path d="M4.6 4.4v4h4"/>', // 다시 판단(되돌아 봄) · 다시 보기
   say: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>', // 소리로 듣기(위 막대 소리 단추와 같은 그림)
+  // 돈의 이동(2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 · 그 기간 · 포모값」) — 빠지는 곳 · 들어가는 곳 · 포모값 · 기간 · 누가
+  'm:out': '<rect x="3.5" y="5.5" width="10" height="13" rx="2"/><path d="M10 12h10.5M17.2 8.7 20.5 12l-3.3 3.3"/>', // 상자에서 나가는 화살
+  'm:in': '<rect x="10.5" y="5.5" width="10" height="13" rx="2"/><path d="M3.5 12H14M10.7 8.7 14 12l-3.3 3.3"/>', // 상자로 들어오는 화살
+  'm:heat': '<path d="M10 13.6V5a2 2 0 0 1 4 0v8.6a4 4 0 1 1-4 0z"/><path d="M12 9.5v6.3"/>', // 온도계(포모값)
+  'm:cal': '<rect x="4" y="5.5" width="16" height="14.5" rx="2.2"/><path d="M4 10.2h16M8.5 3.6v3.8M15.5 3.6v3.8"/>', // 달력(기간)
+  'm:who': '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M15.8 14.6c2.3.2 4.1 1.9 4.7 4.9"/>', // 사람 둘(누가)
 };
 const CHAIN_IDS = {'aidc-chip-power': ['aidc', 'chip', 'power'], 'aidc-power-gen': ['aidc', 'power', 'gen'], 'ships-ship-parts': ['ships', 'ship', 'shipParts'], 'arms-arms-care': ['arms', 'arms', 'armsCare'], 'oil-refine-tanker': ['oil', 'refine', 'tanker']}; // 옛 /story.json(id 없음)
 const svg = key => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICON[key] ?? ICON.dot}</svg>`;
-const pic = (key, cls) => h('span', {class: cls, 'aria-hidden': 'true', html: svg(key)});
+export const pic = (key, cls) => h('span', {class: cls, 'aria-hidden': 'true', html: svg(key)});
 /** 동전 n개 — 선을 따라 흐름(장식 · 글자 없음) */
 /** 한눈 그림 — 그림 셋 · 줄 둘(앞 줄 = 실선 · 뒤 줄 = 점선) · 줄마다 동전 하나(그 걸음에서 한 번 지나감)
    data-at = 그 그림이 움직이는 걸음 번호(아래 STEPS) — 짚어 주기가 그 걸음에서 「지금」으로 밝힘 · 앞 걸음은 켜진 채 · 뒤 걸음은 흐리게 */
@@ -67,7 +73,7 @@ const glance = ids => h('div', {class: 'sy-map', 'aria-hidden': 'true'},
   at(pic('e:' + ids[0], 'sy-mn sy-mn1'), 1), at(h('span', {class: 'sy-tr'}, h('i', {class: 'sy-coin'})), 2),
   at(pic('r:' + ids[1], 'sy-mn sy-mn2'), 0), at(h('span', {class: 'sy-tr sy-tr-d'}, h('i', {class: 'sy-coin'})), 4), // 가운데(돈 받는 곳)가 걸음 0 — 기: 결론 먼저(2026-10-07 20:04)
   at(pic('r:' + ids[2], 'sy-mn sy-mn3'), 5));
-function at(el, k) { el.dataset.at = String(k); return el; }
+export function at(el, k) { el.dataset.at = String(k); return el; }
 /** 돈길 왼쪽 칸 — 장면이면 그림 동그라미 + 아래로 이어지는 줄 · 장면 사이면 줄만(동전이 흐름) */
 const rail = (key, end = false) => h('span', {class: 'sy-rail', 'aria-hidden': 'true'}, key ? pic(key, 'sy-node') : null, end ? null : h('span', {class: 'sy-rl'})); // 돈길은 멈춘 그림(움직이는 것은 맨 위 짚어 주기 하나 — 2026-10-07 19:40 「동시에 움직이게 하지 말고」)
 /** 주식 투자금 — 시장마다 막대(길이 = 지난 20거래일 변화 ÷ 가장 큰 변화) · 시장 이름 · 업종 · 변화 글은 그대로 */
@@ -101,36 +107,40 @@ function noneBox(st) {
    · 글은 늘 보임(흐려졌다 나타나지 않음) · 처음 열면 저절로 한 번 → 결 줄에 멈춤(가운데 그림의 테만 숨 쉼) · 「다시 보기」 · 「소리로 듣기」(줄마다 말이 끝나야 다음 줄)
    · 무대가 화면 밖이면 멈추고 돌아오면 이어서 · 움직임 줄이기 설정이면 처음부터 끝 모습 · 도는 동안 아래 그림은 기다림(motion.js hold)
    · 뺀 것(규칙 1): 글상자 하나 · 이름표 단추 넷(줄 넷이 그 일을 함) · 걸음 「주식 투자금 막대」 · 「다시 판단」은 아래 돈길(세 장면 · 두 줄)에 그대로 */
-const CH = [['기', '결론'], ['승', '까닭'], ['전', '더 넓게'], ['결', '볼 것']]; // 줄 이름 — 한국어 글자(기승전결)는 한국어 화면에만 · 다른 말은 차례 숫자(CSS)
+export const CH = [['기', '결론'], ['승', '까닭'], ['전', '더 넓게'], ['결', '볼 것']]; // 줄 이름 — 한국어 글자(기승전결)는 한국어 화면에만 · 다른 말은 차례 숫자(CSS)
 /** 네 줄 — 줄마다 이름(작게) · 큰 말 한 줄 · 덧붙임 */
 function rowsOf(st) {
   const n = st.now, nx = st.next, r = n.real?.evidence?.[0];
   return [
     {lab: ['돈이 가는 곳'], main: n.role, big: true},
     {lab: [], main: st.event.short ?? st.event.text, ok: r ? korDate(r.date) : ''},
-    {lab: ['다음은 여기가 필요하다'], badge: true, main: nx.role},
+    {lab: ['다음은 여기가 필요하다'], labIdent: true, badge: true, main: nx.role},
     {lab: ['이것만 보면 됩니다'], main: st.confirm, icon: 'on'},
   ];
 }
+/** 줄 하나를 읽는 말(소리 · 머무는 시간) — 줄 이름 · 이름표 · 큰 말 · 덧붙임 */
+const textOf = (x, c, ch) => (x.say ? [ch[c][1], ...x.say] : [ch[c][1], ...x.lab, typeof x.main === 'string' ? x.main : '']).filter(Boolean); // say 가 있으면 이름표 대신 그 말(화살표 「→」를 소리로 읽지 않게)
 /** 걸음 일곱 — 줄(c) · 움직이는 그림(at) · 머무는 시간(ms): 줄이 바뀌는 걸음은 그 줄을 읽을 시간까지 */
-const read = x => Math.max(2200, Math.min(5200, 1100 + [CH[x.c][1], ...x.lab, x.main].join('').length * 70));
+export const readMs = (x, c, ch) => Math.max(2200, Math.min(5200, 1100 + textOf(x, c, ch).join('').length * 70));
 function stepsOf(rows) {
-  const R = rows.map((x, c) => ({...x, c}));
-  return [{c: 0, at: 0, ms: read(R[0])}, {c: 1, at: 1, ms: 900}, {c: 1, at: 2, ms: 1750}, {c: 1, at: 3, ms: Math.max(900, read(R[1]) - 2650)},
-    {c: 2, at: 4, ms: 2250}, {c: 2, at: 5, ms: Math.max(900, read(R[2]) - 2250)}, {c: 3, at: 6, ms: read(R[3])}];
+  const r = c => readMs(rows[c], c, CH);
+  return [{c: 0, at: 0, ms: r(0)}, {c: 1, at: 1, ms: 900}, {c: 1, at: 2, ms: 1750}, {c: 1, at: 3, ms: Math.max(900, r(1) - 2650)},
+    {c: 2, at: 4, ms: 2250}, {c: 2, at: 5, ms: Math.max(900, r(2) - 2250)}, {c: 3, at: 6, ms: r(3)}];
 }
-function rowEl(x, c) {
-  const lab = [h('span', {class: 'sy-rmn'}, CH[c][1]), ...x.lab.flatMap(t => [' · ', c === 2 ? h('span', {'data-ident': ''}, t) : h('span', null, t)]), x.badge ? [' ', h('span', {class: 'sy-badge'}, ok('예상'))] : null];
+function rowEl(x, c, ch) {
+  const lab = [h('span', {class: 'sy-rmn'}, ch[c][1]), ...x.lab.flatMap(t => [' · ', typeof t !== 'string' ? t : x.labIdent ? h('span', {'data-ident': ''}, t) : h('span', null, t)]), x.badge ? [' ', h('span', {class: 'sy-badge'}, ok('예상'))] : null];
   return h('div', {class: 'sy-row', 'data-c': String(c)},
-    h('span', {class: 'sy-rb', 'aria-hidden': 'true'}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, CH[c][0])),
+    h('span', {class: 'sy-rb', 'aria-hidden': 'true'}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, ch[c][0])),
     h('div', {class: 'sy-rc'},
       h('p', {class: 'sy-rl2'}, ...lab.flat().filter(Boolean)),
-      h('p', {class: 'sy-rm' + (x.big ? ' sy-rm-big' : '')}, x.icon ? at(pic(x.icon, 'sy-ifi sy-ri'), 6) : null, h('span', {'data-speak': ''}, x.main)),
-      x.ok ? h('p', {class: 'sy-rs'}, at(pic('ok', 'sy-ok sy-ri'), 3), h('span', null, '실제 돈'), ' ', h('span', null, '확인됨'), ' · ', h('span', null, x.ok)) : null));
+      h('p', {class: 'sy-rm' + (x.big ? ' sy-rm-big' : '')}, x.icon ? at(pic(x.icon, 'sy-ifi sy-ri'), x.iconAt ?? 6) : null, h('span', {'data-speak': ''}, ...[].concat(x.main))),
+      x.ok ? h('p', {class: 'sy-rs'}, at(pic('ok', 'sy-ok sy-ri'), 3), h('span', null, '실제 돈'), ' ', h('span', null, '확인됨'), ' · ', h('span', null, x.ok)) : null,
+      x.sub ? h('p', {class: 'sy-rs'}, x.sub.icon ? at(pic(x.sub.icon, 'sy-ok sy-ri sy-pop1'), x.sub.at) : null, h('span', {class: 'sy-rsx'}, ...x.sub.parts)) : null)); // 덧붙임 글은 한 덩이(숫자와 단위 사이가 벌어지지 않게)
 }
-function player(st, ids, fresh) {
-  const rows = rowsOf(st), steps = stepsOf(rows), map = glance(ids);
-  const rowEls = rows.map(rowEl);
+/** 한 걸음씩 짚어 주기 — spec: {rows(네 줄), steps(걸음 일곱), map(한눈 그림), ch(줄 이름)} · fresh: 이 창에서 처음 그림(저절로 한 번) */
+export function player(spec, fresh) {
+  const {rows, steps, map, ch = CH} = spec;
+  const rowEls = rows.map((x, c) => rowEl(x, c, ch));
   const box = h('div', {class: 'sy-play'}, map, h('div', {class: 'sy-rows'}, ...rowEls),
     h('div', {class: 'sy-ctl'},
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
@@ -147,7 +157,7 @@ function player(st, ids, fresh) {
   function stop() { token++; clearTimeout(tick); waiting = null; if (voice) { try { window.speechSynthesis?.cancel(); } catch {} } voice = false; release(box); }
   function say(x, c, then) {
     try { const ss = window.speechSynthesis; if (!ss || typeof SpeechSynthesisUtterance !== 'function') return false;
-      const u = new SpeechSynthesisUtterance([CH[c][1], ...x.lab, x.main].filter(Boolean).map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
+      const u = new SpeechSynthesisUtterance(textOf(x, c, ch).map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
       const v = ss.getVoices().find(z => z.lang && z.lang.startsWith(LANG)); if (v) u.voice = v; let fin = false; u.onend = u.onerror = () => { if (!fin) { fin = true; then(); } }; ss.speak(u); return true; } catch { return false; }
   }
   /** 처음부터 — 걸음마다 그림 하나가 움직이고 머무는 시간이 지나면 다음 걸음 · 소리와 함께면 줄을 읽는 말이 끝나야 다음 줄 */
@@ -175,16 +185,18 @@ function player(st, ids, fresh) {
 }
 
 let played = false; // 등장 움직임은 이 창에서 처음 그릴 때 한 번(글씨 단추 · 탭을 오가며 다시 그리면 멈춘 그림 — app.js 「화면마다 처음 한 번만」과 같은 뜻)
-export function storyBox(st) {
+export function storyBox(st, {withPlayer = true, title = 'ATLAS가 고른 돈 이야기'} = {}) {
   if (!st) return null;
   if (st.none) return noneBox(st);
   const n = st.now, nx = st.next, ms = n.stock?.markets ?? [];
   const started = nx.state === 'started', one = xs => evList((xs ?? []).slice(0, 1));
   const ids = [st.event.id, n.id, nx.id].every(Boolean) ? [st.event.id, n.id, nx.id] : CHAIN_IDS[st.chain] ?? ['dot', 'dot', 'dot'];
-  const fresh = !played; played = true;
-  const stage = h('section', {class: 'sy' + (fresh ? ' sy-in' : ''), 'aria-label': 'ATLAS가 고른 돈 이야기', 'data-chain': st.chain, 'data-next': nx.state},
-    h('p', {class: 'sy-k'}, h('span', null, 'ATLAS가 고른 돈 이야기'), h('span', {class: 'sy-kw'}, `${korDate(st.refDate)} 종가까지 · 다섯 시장 자료로`)),
-    player(st, ids, fresh), // 한눈 그림 + 글상자 — 한 걸음씩 짚어 주기(2026-10-07 19:40)
+  const fresh = withPlayer && !played; if (withPlayer) played = true;
+  const rows = withPlayer ? rowsOf(st) : null;
+  const stage = h('section', {class: 'sy' + (fresh ? ' sy-in' : '') + (withPlayer ? '' : ' sy-news'), 'aria-label': title, 'data-chain': st.chain, 'data-next': nx.state},
+    h('p', {class: 'sy-k'}, h('span', null, title), h('span', {class: 'sy-kw'}, `${korDate(st.refDate)} 종가까지 · 다섯 시장 자료로`)),
+    // 한눈 그림 + 네 줄 — 한 걸음씩 짚어 주기(2026-10-07 19:40) · 한국 판은 맨 위 「돈의 이동」이 그 자리를 맡음(2026-10-07 22:06 · 규칙 1: 이 이야기의 짚어 주기를 뺌 — 한 화면에 움직이는 것은 하나)
+    withPlayer ? player({rows, steps: stepsOf(rows), map: glance(ids), ch: CH}, fresh) : null,
     // ① 이 일이 생겼다
     h('div', {class: 'sy-s sy-s1'}, rail('e:' + ids[0]),
       h('div', {class: 'sy-c'},
