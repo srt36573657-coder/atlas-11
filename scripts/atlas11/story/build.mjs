@@ -7,9 +7,23 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {buildStory, checkStory} from '../../../lib/atlas11/story.mjs';
+import {buildRotation, checkRotation, ROT} from '../../../lib/atlas11/rotation.mjs';
 
 const readJson = async f => JSON.parse(await fs.readFile(f, 'utf8'));
 const PLACES = [['kr', '한국', 'public/data/atlas11/view'], ['us', '미국', 'public/data/atlas11/us/view'], ['cn', '중국', 'public/data/atlas11/cn/view'], ['jp', '일본', 'public/data/atlas11/jp/view'], ['vn', '베트남', 'public/data/atlas11/vn/view']];
+
+/** 돈의 이동(2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 돈에 이동이 되고 있냐 그리고 그 기간과 포모값은 어찌 되냐」) — 한국 판 365곳 · 업종 73개
+   읽는 곳: public/data/input.json(종가 · 선정 때 시가총액) · 한국 판 board.json(업종) · reports/atlas11/context/latest.json 이 가리키는 관측 묶음(외국인 · 기관 · 개인 순매매) */
+export async function rotationFrom(root) {
+  try {
+    const input = await readJson(path.join(root, 'public/data/input.json')), board = await readJson(path.join(root, 'public/data/atlas11/view/board.json'));
+    let flows = [];
+    try { const latest = await readJson(path.join(root, 'reports/atlas11/context/latest.json')); if (/^reports\/atlas11\/context\/[\w./-]+\.json$/.test(latest?.file ?? '')) flows = (await readJson(path.join(root, latest.file))).flows ?? []; } catch {}
+    const r = buildRotation({assets: input.assets ?? [], groups: board.groups ?? [], sessions: input.calendar?.sessions ?? [], asOf: board.asOf, capDay: String(input.universe?.selectedAt ?? board.asOf).slice(0, 10), flows});
+    const bad = checkRotation(r);
+    return bad.length ? {schema: ROT.schema, none: true, reason: bad.join(', ')} : r;
+  } catch (e) { return {schema: ROT.schema, none: true, reason: '셈 멈춤: ' + e.message}; }
+}
 
 export async function storyFrom(root, {made = new Date().toISOString()} = {}) {
   const boards = [], items = [];
@@ -23,8 +37,8 @@ export async function storyFrom(root, {made = new Date().toISOString()} = {}) {
       try { const c = await readJson(path.join(root, path.dirname(dir), 'context.json')); for (const x of c.news ?? []) for (const n of x.items ?? []) if (!n.duplicateOf) items.push({...n, place}); } catch {}
     }
   }
-  const story = buildStory({boards, items, made}), bad = checkStory(story);
-  return bad.length ? {schema: story.schema, made, none: true, stockOnly: [], others: [], problems: bad} : story;
+  const story = buildStory({boards, items, made}), bad = checkStory(story), rotation = await rotationFrom(root);
+  return bad.length ? {schema: story.schema, made, none: true, stockOnly: [], others: [], problems: bad, rotation} : {...story, rotation};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {

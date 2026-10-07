@@ -921,8 +921,14 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   {
     const st = await (await fetch(base + '/story.json')).json();
     await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.sy', {timeout: 15000}).catch(() => {}); await page.waitForTimeout(300);
-    const sy = await page.evaluate(() => { const s = document.querySelector('.sy'), first = document.querySelector('.h-page')?.firstElementChild, q = sel => s?.querySelector(sel);
-      return {n: document.querySelectorAll('.sy').length, first: !!s && first === s, cm: document.querySelectorAll('.h-page .cm').length,
+    // 2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 돈에 이동이 되고 있냐 그리고 그 기간과 포모값은 어찌 되냐」 — 한국 판 맨 위는 「돈의 이동」(.sy.rt) · 기사 이야기(.sy-news)는 그 아래 · 짚어 주기(한눈 그림 · 네 줄)는 돈의 이동에만
+    const rot = st.rotation && !st.rotation.none && st.rotation.pair ? st.rotation : null;
+    const sy = await page.evaluate(hasRot => { const s = document.querySelector(hasRot ? '.sy.sy-news' : '.sy'), first = document.querySelector('.h-page')?.firstElementChild, q = sel => s?.querySelector(sel);
+      const ps = hasRot ? document.querySelector('.sy.rt') : s, pq = sel => ps?.querySelector(sel); // 짚어 주기가 있는 무대
+      return {n: document.querySelectorAll('.sy').length, first: hasRot ? first === ps && ps?.nextElementSibling === s : !!s && first === s, cm: document.querySelectorAll('.h-page .cm').length,
+        newsPlay: hasRot ? (s?.querySelectorAll('.sy-play').length ?? -1) : 0,
+        rt: hasRot && ps ? {from: ps.dataset.from, to: ps.dataset.to, k: ps.querySelector('.sy-k > span')?.textContent.trim(), kw: ps.querySelector('.sy-kw')?.textContent.trim(),
+          cols: [...ps.querySelectorAll('.rt-col')].map(c => [c.dataset.side, c.querySelectorAll('.rt-li').length].join(':')).join(), how: !!ps.querySelector('details.rt-how:not([open])')} : null,
         scenes: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => x.classList[1]), titles: [...(s?.querySelectorAll('.sy-t') ?? [])].map(x => x.textContent.replace(/\s+/g, ' ').trim()),
         role: q('.sy-role')?.textContent.trim() ?? null, role3: q('.sy-role3')?.textContent.trim() ?? null,
         // 2026-10-07 18:31 「움직이는 도식화로 · 전면 혁신」 — 점선은 다음 장면의 칸 · 동그라미와 그리로 가는 줄(.sy-rl)에
@@ -930,15 +936,15 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         lineDash: q('.sy-dash .sy-rl') ? getComputedStyle(q('.sy-dash .sy-rl')).borderInlineStartStyle : null,
         // 움직이는 도식(2026-10-07 18:31) → 한 걸음씩 짚어 주기(19:40 「하나 움직이고 그런 다음 다음 … 동시에 움직이게 하지 말고 · 핵심 기능을 넣어서 바보도 알 수 있게」)
         //   한눈 그림(그림 셋 · 줄 둘 — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 걸음 번호) · 글상자 · 걸음 점 아홉 · 단추 둘 · 돈길은 멈춘 그림(동전 없음)
-        map: (() => { const m = q('.sy-map'); if (!m) return null; const ns = [...m.querySelectorAll('.sy-mn')], tr = [...m.querySelectorAll('.sy-tr')];
+        map: (() => { const m = pq('.sy-map'); if (!m) return null; const ns = [...m.querySelectorAll('.sy-mn')], tr = [...m.querySelectorAll('.sy-tr')];
           return {hidden: m.getAttribute('aria-hidden'), text: m.textContent.trim().length, nodes: ns.length, svg: ns.filter(n => n.querySelector('svg')).length, biggest: ns.map(n => n.offsetWidth).indexOf(Math.max(...ns.map(n => n.offsetWidth))), // 크기는 자리 폭(offsetWidth) — 움직임(크기 키움) 중에도 같은 값
             tracks: tr.length, dash: tr.map(t => getComputedStyle(t).borderTopStyle).join(), coins: tr.map(t => t.querySelectorAll('.sy-coin').length).join(), at: [...m.querySelectorAll('[data-at]')].map(x => x.dataset.at).join()}; })(),
         // 2026-10-07 20:52 「한 화면에 메인 정보가 나와야 한다」 — 기승전결 네 줄(글자 · 이름 · 큰 말 · ✓ 실제 돈 줄)이 늘 보임
-        play: (() => { const pl = q('.sy-play'); if (!pl) return null; const rs = [...pl.querySelectorAll('.sy-row')];
+        play: (() => { const pl = pq('.sy-play'); if (!pl) return null; const rs = [...pl.querySelectorAll('.sy-row')];
           return {rows: rs.length, letters: rs.map(r => r.querySelector('.sy-rb .sy-chl')?.textContent.trim()).join(''), names: rs.map(r => r.querySelector('.sy-rmn')?.textContent.trim()).join(),
             mains: rs.map(r => r.querySelector('.sy-rm')?.textContent.replace(/\s+/g, ' ').trim()), okLine: rs[1]?.querySelector('.sy-rs')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
             at: [...pl.querySelectorAll('[data-at]')].map(x => x.dataset.at).join(), btns: [...pl.querySelectorAll('.sy-btn')].map(b => b.textContent.trim())}; })(),
-        end: (() => { const e = document.querySelector('.h-page > .sy-end'); return e ? {last: e.nextElementSibling?.matches('.b-foot, footer, [class*="foot"]') ?? false, t: e.querySelector('.sy-end-t')?.textContent.trim(), m: e.querySelector('.sy-end-m')?.textContent.trim(),
+        end: (() => { const e = document.querySelector('.h-page > .sy-end'); return e ? {last: e.nextElementSibling?.matches('.b-foot, footer, [class*="foot"]') ?? false, rt: e.classList.contains('rt-end'), t: e.querySelector('.sy-end-t')?.textContent.trim(), m: e.querySelector('.sy-end-m')?.textContent.trim(),
           s: [...e.querySelectorAll('.sy-end-s')].map(x => x.textContent.replace(/\s+/g, ' ').trim())} : null; })(),
         rail: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => { const n = x.querySelector(':scope > .sy-rail .sy-node'); return n ? {svg: !!n.querySelector('svg'), hidden: n.closest('[aria-hidden="true"]') ? 'true' : null, w: n.offsetWidth} : null; }),
         railCoins: s?.querySelectorAll('.sy-s .sy-coin, .sy-line .sy-coin').length ?? -1,
@@ -948,27 +954,38 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         roleFs: q('.sy-role') ? parseFloat(getComputedStyle(q('.sy-role')).fontSize) : 0, role3Fs: q('.sy-role3') ? parseFloat(getComputedStyle(q('.sy-role3')).fontSize) : 0, mainFs: q('.sy-main') ? parseFloat(getComputedStyle(q('.sy-main')).fontSize) : 0,
         predOk: [...document.querySelectorAll('[data-pred-ok]')].map(x => x.textContent.trim()),
         ev: [...document.querySelectorAll('.sy .sy-e, .sy-more .sy-e')].map(li => ({date: li.querySelector('.sy-ed')?.textContent.trim() ?? null, href: li.querySelector('a.sy-et')?.getAttribute('href') ?? null, kind: li.dataset.kind})),
-        sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
+        sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; }, !!rot);
     if (st.none) check(`${label} 오늘의 돈 이야기: 근거가 뚜렷한 이야기가 없는 날 — 그렇다고 적음(지어내지 않음)`, sy.n === 1 && sy.first && sy.role === '근거가 뚜렷한 돈 이야기가 없는 날입니다', sy);
     else {
       check(`${label} 오늘의 돈 이야기: 맨 위 무대 하나(옛 표지 없음) · ${sy.scenes.join(' → ')} · 「${sy.role}」 ⇢ 「${sy.role3}」 = /story.json(${st.chain}) · 가운데 장면 글씨가 가장 큼(${sy.roleFs}px) · 다음 장면 · 그리로 가는 선 점선 · 「예상」 · 무대 맨 끝 두 줄`,
-        sy.n === 1 && sy.first && sy.cm === 0 && sy.scenes.join() === 'sy-s1,sy-s2,sy-s3' && sy.titles[0] === '이 일이 생겼다' && sy.titles[1] === '그래서 여기가 돈을 받는다' && sy.titles[2] === '다음은 여기가 필요하다 예상'
+        sy.n === (rot ? 2 : 1) && sy.first && sy.cm === 0 && sy.newsPlay === 0 && sy.scenes.join() === 'sy-s1,sy-s2,sy-s3' && sy.titles[0] === '이 일이 생겼다' && sy.titles[1] === '그래서 여기가 돈을 받는다' && sy.titles[2] === '다음은 여기가 필요하다 예상'
           && sy.role === st.now.role && sy.role3 === st.next.role && sy.roleFs > sy.role3Fs && sy.roleFs > sy.mainFs && sy.dashed === 'dashed,dashed' && sy.lineDash === 'dashed'
           && sy.lastIsIf && sy.ifs.length === 2 && sy.ifs[0] === `이것이 확인되면 이어집니다: ${st.confirm}` && sy.ifs[1] === `이것이 나타나면 다시 판단합니다: ${st.rethink}` && sy.sw <= sy.cw, sy);
       // 2026-10-07 18:31 「움직이는 도식화로 · 전면 혁신」 → 19:40 「하나 움직이고 그런 다음 다음 움직이고 … 동시에 움직이게 하지 말고 · 중요한 부분은 핵심 기능을 넣어서 바보도 알 수 있게 해」
       const ms = st.now.stock?.markets ?? [], kTop = Math.max(...ms.map(m => Math.abs(m.change20))), mp = sy.map, pl = sy.play;
-      const shapeOk = !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins === '1,1' && mp.at === '1,2,0,4,5'
-        && !!pl && pl.rows === 4 && pl.letters === '기승전결' && pl.names === '결론,까닭,더 넓게,볼 것' && pl.at === '1,2,0,4,5,3,6' && pl.btns.join() === '다시 보기,소리로 듣기'
-        && pl.mains[0] === st.now.role && pl.mains[1] === (st.event.short ?? st.event.text) && pl.mains[2] === st.next.role && pl.mains[3] === st.confirm
-        && (!st.now.real?.evidence?.[0] || /^실제 돈 확인됨 · \d{1,2}월 \d{1,2}일\(.\)$/.test(pl.okLine ?? ''))
-        && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0 && sy.railCoins === 0
-        && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002);
-      check(`${label} 돈 이야기 — 첫 화면 기승전결 네 줄: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 가운데가 걸음 0) · 줄 「${pl?.letters ?? ''}」(${pl?.names ?? ''}) = /story.json(돈이 가는 곳 · 일 · 다음 · 볼 것) · ✓ 「${pl?.okLine ?? ''}」 · 단추 「${pl?.btns.join(' · ') ?? ''}」 · 돈길은 멈춘 그림(동전 ${sy.railCoins}) · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
-        shapeOk, shapeOk ? undefined : {map: mp, play: pl, rail: sy.rail, railCoins: sy.railCoins, bars: sy.bars, picText: sy.picText});
+      const korD = d => { const x = new Date(d + 'T00:00:00Z'); return `${x.getUTCMonth() + 1}월 ${x.getUTCDate()}일(${'일월화수목금토'[x.getUTCDay()]})`; };
+      const rpr = rot?.pair, since = rpr ? `${korD(rpr.start)}부터 · ${rpr.days}거래일${rpr.atLeast ? ' 넘게' : '째'}` : '', fomoTxt = rot ? (Number.isFinite(rot.fomo.to) ? `${Math.round(rot.fomo.to)}점` : '없음') : '';
+      const shapeOk = rot
+        ? !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins === '1,0' && mp.at === '0,1,2,4,5'
+          && !!pl && pl.rows === 4 && pl.letters === '기승전결' && pl.names === '결론,기간,포모값,누가 옮겼나' && pl.at === '0,1,2,4,5,3,6' && pl.btns.join() === '다시 보기,소리로 듣기'
+          && pl.mains[0] === `${rpr.from.label} → ${rpr.to.label}` && pl.mains[1] === since && pl.mains[2] === `${rpr.to.label} ${fomoTxt} · ${rot.fomo.toWord ?? '없음'}` && /^판 쪽: /.test(pl.mains[3] ?? '')
+          && sy.rt?.from === rpr.from.id && sy.rt?.to === rpr.to.id && sy.rt?.k === '돈의 이동' && sy.rt?.kw === `지난 ${rot.window.days}거래일 · ${korD(rot.asOf)} 종가까지`
+          && sy.rt?.cols === `out:${rot.out.length},in:${rot.in.length}` && sy.rt?.how === true
+        : !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins === '1,1' && mp.at === '1,2,0,4,5'
+          && !!pl && pl.rows === 4 && pl.letters === '기승전결' && pl.names === '결론,까닭,더 넓게,볼 것' && pl.at === '1,2,0,4,5,3,6' && pl.btns.join() === '다시 보기,소리로 듣기'
+          && pl.mains[0] === st.now.role && pl.mains[1] === (st.event.short ?? st.event.text) && pl.mains[2] === st.next.role && pl.mains[3] === st.confirm
+          && (!st.now.real?.evidence?.[0] || /^실제 돈 확인됨 · \d{1,2}월 \d{1,2}일\(.\)$/.test(pl.okLine ?? ''));
+      const railOk = true;
+      check(rot ? `${label} 돈의 이동 — 첫 화면 기승전결 네 줄: 한눈 그림(빠지는 곳 → 동전 → 들어가는 곳(가장 큼) ┄ 온도계 · 걸음 ${mp?.at ?? ''}) · 줄 「${pl?.letters ?? ''}」(${pl?.names ?? ''}) · 「${pl?.mains?.[0] ?? ''}」 · 「${pl?.mains?.[1] ?? ''}」 · 「${pl?.mains?.[2] ?? ''}」 · 「${pl?.mains?.[3] ?? ''}」 = /story.json rotation · 빠지는 곳 ${rot.out.length} · 들어가는 곳 ${rot.in.length} · 셈 방법 접힘 · 기사 이야기는 아래(짚어 주기 없음) · 돈길 동전 ${sy.railCoins} · 시장 막대 ${sy.bars.length}`
+          : `${label} 돈 이야기 — 첫 화면 기승전결 네 줄: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 가운데가 걸음 0) · 줄 「${pl?.letters ?? ''}」(${pl?.names ?? ''}) = /story.json(돈이 가는 곳 · 일 · 다음 · 볼 것) · ✓ 「${pl?.okLine ?? ''}」 · 단추 「${pl?.btns.join(' · ') ?? ''}」 · 돈길은 멈춘 그림(동전 ${sy.railCoins}) · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
+        shapeOk && railOk && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0 && sy.railCoins === 0
+          && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002),
+        shapeOk ? undefined : {map: mp, play: pl, rt: sy.rt, rail: sy.rail, railCoins: sy.railCoins, bars: sy.bars, picText: sy.picText});
       // 결 — 탭 「불장」 맨 아래(맨 끝 줄 바로 위) · 「이것만 보면 됩니다」 · 볼 것 = /story.json confirm · 돈이 가는 곳 = now.role · 실제 돈 확인 날짜(2026-10-07 20:04 「기승전결」)
       const en = sy.end, realD = st.now.real?.evidence?.[0]?.date;
-      check(`${label} 기승전결 — 맨 아래 결: 「${en?.t ?? '없음'}」 「${en?.m ?? ''}」 · ${en?.s?.join(' · ') ?? ''}`,
-        !!en && en.last && en.t === '이것만 보면 됩니다' && en.m === st.confirm && en.s[0] === `돈이 가는 곳: ${st.now.role}` && (!realD || en.s[1]?.startsWith('실제 돈 확인됨 · ')), en);
+      check(`${label} 기승전결 — 맨 아래 결: 「${en?.t ?? en?.k ?? '없음'}」 「${en?.m ?? ''}」 · ${en?.s?.join(' · ') ?? ''}`,
+        rot ? !!en && en.last && en.rt && en.m === `${rpr.from.label} → ${rpr.to.label}` && en.s[0] === since && en.s[1] === `포모값 ${fomoTxt} · ${rot.fomo.toWord ?? '없음'}`
+          : !!en && en.last && en.t === '이것만 보면 됩니다' && en.m === st.confirm && en.s[0] === `돈이 가는 곳: ${st.now.role}` && (!realD || en.s[1]?.startsWith('실제 돈 확인됨 · ')), en);
       // 한 번에 하나 — 처음 연 뒤 9초 동안 0.06초마다 「지금 움직이는 것」(지연 · 끝난 뒤가 아닌 실제로 움직이는 움직임)을 셈 → 가장 많을 때 1개 · 걸음이 0 → 1 로 넘어감 · 글상자 = 그 걸음 말
       await page.goto(base + '/?r=' + Date.now() + '#/', {waitUntil: 'domcontentloaded'}); await page.waitForSelector('.sy-play', {timeout: 15000}).catch(() => {}); // 새 문서(같은 주소 #/ 는 다시 읽지 않아 「처음 한 번」이 이미 지남)
       const one = await page.evaluate(async () => {
@@ -976,10 +993,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           .map(a => `${(a.effect.target?.className?.baseVal ?? a.effect.target?.className ?? '?').toString().split(' ')[0]}${a.effect.pseudoElement ?? ''}:${a.animationName}`);
         let max = 0, worst = []; const steps = new Set(), caps = new Map(); const t0 = performance.now();
         while (performance.now() - t0 < 9000) { const xs = live(); if (xs.length > max) { max = xs.length; worst = xs; } const pl = document.querySelector('.sy-play'); if (pl?.dataset.step) { steps.add(pl.dataset.step); caps.set(pl.dataset.step, [...pl.querySelectorAll('.sy-row')].findIndex(r => r.classList.contains('now'))); } await new Promise(r => setTimeout(r, 60)); }
-        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null};
+        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null, cap3: caps.get('3') ?? null};
       });
+      if (rot) one.cap1 = one.cap3; // 돈의 이동은 걸음 0 · 1 · 2 가 기(빠지는 곳 → 동전 → 들어가는 곳) · 걸음 3 이 승(기간)
       check(`${label} 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 ${one.max}개${one.worst.length ? ' · ' + one.worst.join(' · ') : ''}) · 걸음 ${one.steps.join(' → ')} · 옥빛 줄 ${one.cap0 + 1}번(기) → ${one.cap1 + 1}번(승)`,
-        one.max <= 1 && one.steps.includes('0') && one.steps.includes('1') && one.cap0 === 0 && one.cap1 === 1, one);
+        one.max <= 1 && one.steps.includes('0') && one.steps.includes(rot ? '3' : '1') && one.cap0 === 0 && one.cap1 === 1, one);
       // 「다시 보기」 — 처음 걸음(기 · 결론)부터 다시 · 옥빛 줄 = 1번
       await page.locator('.sy-btn').first().click(); await page.waitForTimeout(250);
       const rep = await page.evaluate(() => ({step: document.querySelector('.sy-play')?.dataset.step, now: [...document.querySelectorAll('.sy-row')].findIndex(r => r.classList.contains('now'))}));
@@ -1008,7 +1026,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length}; });
       await rctx.close();
       check(`${label} 돈 이야기 — 움직임 줄이기 설정: 처음부터 끝 걸음(결 · 옥빛 줄 ${(rm?.now ?? -2) + 1}번) · 그림 ${rm?.on ?? 0}/7 켜짐 · 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'}`,
-        !!rm && rm.done && rm.step === '6' && rm.now === 3 && rm.on === 7 && rm.nodes === 6 && rm.running === 0 && rm.coinsShown === 0, rm);
+        !!rm && rm.done && rm.step === '6' && rm.now === 3 && rm.on === 7 && rm.nodes === (rot ? 3 : 6) && rm.running === 0 && rm.coinsShown === 0, rm);
     }
   }
   // ⑥ 글씨 단추
