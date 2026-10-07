@@ -1,0 +1,88 @@
+{
+ "market": "cn",
+ "startedAt": "2026-10-07T14:48:25.894Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T14:48:26.424Z",
+   "mode": "update",
+   "run": "reports/atlas11/cn/runs/2026-10-07T14-48-25",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "22:48",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:27.567Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/601988.SS/day"
+  },
+  {
+   "name": "일봉(지금 고른 회사)",
+   "at": "2026-10-07T14:48:41.869Z",
+   "asked": 365,
+   "got": 365,
+   "latest": "2026-09-30"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:42.012Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/600036.SS"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:54.545Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SSEC/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-07T14:48:54.833Z",
+   "news": 365,
+   "newsItems": 5970,
+   "index": [
+    "상하이 종합 2026-09-30",
+    "선전 성분 2026-09-30",
+    "CSI 300 2026-09-30"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-07T14:48:55.255Z",
+   "assets": 365,
+   "asOf": "2026-09-30",
+   "late": 0,
+   "sessions": 283,
+   "inputCopy": {
+    "file": "reports/atlas11/cn/runs/2026-10-07T14-48-25/input.json.gz",
+    "sha256": "70d9bc127f6edd1fd1992208ccf1e2063ebf637bb0b88787e83f9158779fe087",
+    "bytes": 583309
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/601398.SS/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 1053
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/600036.SS?pageSize=20&page=1",
+   "status": 200,
+   "ms": 141
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SSEC/day?startDateTime=202609170000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 138
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-07T14:48:55.255Z"
+}
