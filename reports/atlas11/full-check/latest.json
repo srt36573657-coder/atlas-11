@@ -1,8 +1,8 @@
 {
- "schema": "atlas11-full-check-1",
- "at": "2026-10-07T19:47:33.416Z",
- "seconds": 1218,
- "code": "76603257bdbc5142",
+ "schema": "atlas11-full-check-2",
+ "at": "2026-10-07T21:50:00.446Z",
+ "seconds": 1291,
+ "code": "856771f907655a9b",
  "boards": [
   "kr",
   "us",
@@ -11,11 +11,20 @@
   "vn"
  ],
  "quick": false,
- "pages": 2113,
- "numbers": 8519,
- "links": 18690,
- "texts": 4070,
- "motion": 75,
+ "langs": [
+  "en",
+  "ko"
+ ],
+ "pages": 4286,
+ "numbers": 17166,
+ "links": 38176,
+ "texts": 8148,
+ "motion": 77,
+ "edge": 60,
+ "byLang": {
+  "ko": 2143,
+  "en": 2143
+ },
  "failed": 0,
  "ok": true,
  "fails": []

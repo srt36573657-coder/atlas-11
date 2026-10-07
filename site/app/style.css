@@ -1434,6 +1434,7 @@ html:not([lang="ko"]) .ra-t { font-size: .9375rem; }
 html:not([lang="ko"]) .ra-td { font-size: 1.125rem; }
 /* 회사 화면 — 다른 말에서 긴 회사 이름(영어 「Industrial and Commercial Bank of China」 등)이 서너 줄이 되어 그림 이름 · 숫자를 첫 화면 밖으로 밀던 것(빠짐없이 도는 검사가 잡음) → 두 줄까지 · 한 단계 작게 */
 html:not([lang="ko"]) .c-page .b-title { font-size: clamp(1.5rem, 7vw, 1.875rem); line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html[lang="ko"] .c-page .b-title.c-long { font-size: clamp(1.5rem, 7vw, 1.875rem); line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } /* 2026-10-08 06:27 한국어도 긴 회사 이름(11자 넘게)은 작게 · 두 줄까지 — 360×640 에서 이름이 세 줄이 되어 그림 이름표가 아래 탭 밑으로 가던 회사 5곳(AMD · CRWD · ODC · 300063 · VCB)을 두 말 검사가 찾음 */
 @media (min-width: 600px) { .rt .ra-art { max-width: 440px; margin-inline: auto; } } /* 넓은 화면 — 그림이 폭을 따라 끝없이 커져 이름 · 숫자를 밀어내지 않게 */
 /* 2026-10-08 빠짐없이 도는 검사(규칙 34)가 잡음 — 긴 눈 줄 막대 · 몇 위 한국 칸이 맨 위 그림과 함께 움직였다 → 움직임 줄(motion.js)에서 차례가 오면(.go) 하나씩 */
 .lt-body[data-motion]:not(.go) .lt-fill, .kr-list[data-motion]:not(.go) .kr-c.kr-me { animation-play-state: paused; }

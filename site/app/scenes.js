@@ -2,7 +2,7 @@
    · 01:31 「대충했던 모든 곳을 점검해서 더 정확히 · 시스템으로 그짓 못하게 해」 — 그림 속 숫자는 판 자료에서 그대로(그림마다 data-* 에 실은 값을 검사기가 판 자료로 다시 셈해 맞댐)
    · 「돈의 이동」(rotation.js · 규칙 32)과 같은 말씨: 청자 · 금 · 먹 · 달 · 붉은 낙관 / 글자는 그림 밖 HTML(이름 · 숫자만) / 한 번에 하나 · 기승전결 넷 · 다시 보기 · 소리로 듣기(art.js)
    · 옛 논평 무대(comment.js commentBox — 문장 · 거대 숫자 · 점)를 이 그림이 대신한다(규칙 1 · 넣으면서 뺀 것) — 셈(무엇을 말할지)은 comment.js 그대로(시험 tests/atlas11/comment.test.mjs)
-   그림 열셋:
+   그림 열넷(열셋 + 자료가 비는 날의 빈 하늘):
      지도 · 갈래  — 산수화 봉우리(물 위 = 오른 땅 · 물에 비친 푸른 그림자 = 내린 땅 · 가장 높은 봉우리 위에 붉은 해) · 가운데가 1위(가운데부터 좌우로)
      업종        — 방패연 다섯(높이 = 지난 20거래일 변화 · 실이 한 손으로 모임 · 점선 = 업종 평균 · 1위 연에 금빛)
      회사        — 먹 붓질(업종 회사들의 지난 20거래일 선 · 이 회사는 금빛 한 획 · 끝에 달)
@@ -15,7 +15,8 @@
      처음        — 물결 깊이(보통 회사 골 · 다섯 곳 골 = 가장 깊게 떨어진 때)
      안내        — 해시계(앙부일구 · 하루 시간 띠: 정규장 금빛 · NXT 옥빛 · 15:30 종가에 해)
      긴 눈       — 항아리 여섯(10 · 20 · 30년 · 주식 청자 · 아파트 백자 · 점선 = 처음 500만 원)
-     한국 순위   — 돌계단 25(한 칸 = 한 시장 · 한국 등불이 오른 자리) */
+     한국 순위   — 돌계단 25(한 칸 = 한 시장 · 한국 등불이 오른 자리)
+     빈 하늘     — 그 화면 그림이 그릴 값이 없는 날(어느 화면이든 · 「없음」 · 「0곳」 · 숫자를 지어내지 않음) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {artStage, artSection, defs, hills, chgEl, sealEl, coName, grName, p1, JAR, star} from './art.js';
 import {familiesByRise, familyOf, riseDesc, meanOf} from './family.js';
@@ -155,20 +156,21 @@ ${mine ? `<path class="ak-draw" data-at="0" pathLength="100" d="${path(mine)}" f
 <g class="ak-pop" data-at="2"><circle cx="${F(ex)}" cy="${F(ey)}" r="15" fill="url(#${p}-halo)"/><circle cx="${F(ex)}" cy="${F(ey)}" r="6.5" fill="#F4F1EA"/></g>
 </svg>`;
 }
-/** 회사(#/stock/CODE) — 지난 20거래일 · 업종 평균 · 업종 안 자리(comment.js companyComment 의 머리 문장) */
+/** 회사(#/stock/CODE) — 지난 20거래일 · 업종 평균 · 업종 안 자리(comment.js companyComment 의 머리 문장)
+   2026-10-08 05:05 빈 날 막기 — 20거래일 값이 아직 없는 회사(새로 들어온 회사 등) · 업종을 모르는 회사도 그림 한 장(값은 「없음」 · 있는 선만 그림) */
 export function companyArt(board, s, cm) {
-  if (!s || !finite(s.change20) || !board) return null;
-  const g = (board.groups ?? []).find(x => x.id === s.group?.id); if (!g) return null;
+  if (!s || !board) return null;
+  const g = (board.groups ?? []).find(x => x.id === s.group?.id) ?? null;
   const byCode = new Map((board.companies ?? []).map(c => [c.code, c])), me = byCode.get(s.code) ?? s;
-  const peers = (g.codes ?? []).filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean);
-  const head = cm ? plain(cm.head) : null;
+  const peers = (g?.codes ?? []).filter(c => c !== s.code).map(c => byCode.get(c)).filter(Boolean);
+  const head = cm ? plain(cm.head) : null, say = v => (finite(v) ? p1(v) : '없음');
   const labels = lab(
     col('a', tag('지난 20거래일'), h('p', {class: 'ra-m ra-mb'}, chgEl(s.change20))),
-    col('b', tag('업종 평균'), h('p', {class: 'ra-m ra-mb'}, chgEl(g.change20))),
+    col('b', tag('업종 평균'), h('p', {class: 'ra-m ra-mb'}, chgEl(g?.change20))),
     head ? srow(sealEl(null, head, 3)) : null);
-  const stage = artStage({key: 'co-' + s.code, svg: strokesSvg('akc', me, peers), labels: check(labels, {code: s.code, v: +s.change20.toFixed(6), avg: finite(g.change20) ? +g.change20.toFixed(6) : null, peers: peers.length}),
+  const stage = artStage({key: 'co-' + s.code, svg: strokesSvg('akc', me, peers), labels: check(labels, {code: s.code, v: finite(s.change20) ? +s.change20.toFixed(6) : null, avg: finite(g?.change20) ? +g.change20.toFixed(6) : null, peers: peers.length}),
     steps: [{c: 0, at: 0, ms: 1500}, {c: 1, at: 1, ms: 1250}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 900}],
-    says: [['지난 20거래일', p1(s.change20)], ['업종 평균', p1(g.change20)], [], head ? [head] : []]});
+    says: [['지난 20거래일', say(s.change20)], ['업종 평균', say(g?.change20)], [], head ? [head] : []]});
   return artSection({key: 'company', label: '지난 20거래일', kicker: '지난 20거래일', when: s.cFrom ? `${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : when(s.date), stage, cls: 'ak-mid'});
 }
 
@@ -493,4 +495,28 @@ export function koreaArt(RANKS) {
     steps: [{c: 0, at: 0, ms: 1100}, {c: 1, at: 1, ms: 1500}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 900}],
     says: [[what, v], [`${n}곳 중 ${rank}위`], how ? [how] : [], []]});
   return artSection({key: 'korea', label: '한국 주식시장은 몇 위인가', kicker: '한국 주식시장은 몇 위인가', stage});
+}
+
+/* ═════════ 14. 빈 하늘 — 자료가 비는 날(2026-10-08 05:05 빈 날 막기) ═════════
+   그 화면의 그림이 그릴 값을 못 찾은 날(예비 0곳 · 새 회사뿐인 업종 · 기사 · 일정 자료를 못 읽은 날 등)에도 화면마다 그림 한 장(규칙 33)
+   — 달이 빈 하늘을 건넘 · 이름표는 그 화면 이름과 「없음」(또는 「0곳」) 하나 · 숫자를 지어내지 않음 · 한 번에 하나 · 기승전결 넷 */
+function quietSvg(p) {
+  const H = 150, cx = 180, cy = 520, r = 500, a = 15, rad = d => d * Math.PI / 180;
+  const sx = cx - r * Math.sin(rad(a)), ex = cx + r * Math.sin(rad(a)), ey = cy - r * Math.cos(rad(a));
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}
+${hills(p, H, 0.55)}
+<path class="ak-draw" data-at="0" pathLength="100" d="M${F(sx)},${F(ey)} A${r},${r} 0 0 1 ${F(ex)},${F(ey)}" fill="none" stroke="#F4F1EA" stroke-opacity=".3" stroke-width="1.2"/>
+<g class="ak-turn" data-at="1" data-v="ox:${cx}px;oy:${cy}px;a0:${-a}deg;a1:${a}deg"><circle cx="${cx}" cy="${cy - r}" r="18" fill="url(#${p}-halo)"/><circle cx="${cx}" cy="${cy - r}" r="8" fill="#F4F1EA"/><circle cx="${cx + 3.5}" cy="${cy - r - 2}" r="6.4" fill="#DCD8CC" fill-opacity=".55"/></g>
+<circle class="ak-pop" data-at="2" cx="${F(ex - 26)}" cy="${F(ey + 28)}" r="3" fill="#F4F1EA" fill-opacity=".6"/>
+<path class="ak-x" data-at="3" d="M24,${H - 42} H336" stroke="#CFE7DC" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="4 6"/>
+</svg>`;
+}
+/** 빈 하늘 — key = 화면(data-art · 검사기가 판 자료로 「이 날은 빈 하늘이어야 함」을 따로 셈) · label = 화면 이름 · tagText = 이름표 · word = 없음 / 0곳 */
+export function quietArt({key, label, tagText = null, word = '없음', when: w = null}) {
+  const t = tagText ?? label;
+  const labels = lab(col('a', tag(t), big(word)));
+  const stage = artStage({key: 'quiet-' + key, svg: quietSvg('akq'), labels: check(labels, {quiet: key}),
+    steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1600}, {c: 2, at: 2, ms: 800}, {c: 3, at: 3, ms: 900}],
+    says: [[t, word], [], [], []]});
+  return artSection({key, label, kicker: label, when: w, stage});
 }

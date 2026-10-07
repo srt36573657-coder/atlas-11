@@ -4,7 +4,7 @@
      · 줄마다: 이름 · 태양 · 지난 20거래일 변화 · 시장(한국/미국) · 기호 · 업종 · 그 판의 오른 순 자리 → 누르면 그 회사 화면(다른 시장이면 그 판으로)
    넣으면서 뺀 것(규칙 1): 출목표 제목 줄의 작은 「찾기」 단추(출목표 365곳만 찾던 것) — 찾는 곳은 이 탭 하나
    ATLAS 는 고른 회사(한국 365 · 미국 365)만 본다 — 그 밖의 회사는 「없습니다」라고 적는다(지어내지 않음) */
-import {findArt} from './scenes.js'; // 그림 한 장(다섯 나라 등불 · 규칙 33)
+import {findArt, quietArt} from './scenes.js'; // 그림 한 장(다섯 나라 등불 · 규칙 33) · 판을 못 읽은 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, pct, finite, signCls, place, korDate} from './util.js';
 import {state, loadBoard, loadPlaceBoard, prefs} from './store.js';
 import {foot, sunTag} from './parts.js';
@@ -73,7 +73,7 @@ export async function renderFind(main, {manifest, restoring} = {}) {
     h('span', {class: 'fd-label', 'aria-hidden': 'true'}, findIcon()), input); // 이름은 글 칸의 aria-label(숨긴 글자를 따로 두지 않음 — 큰 글씨에서 화면 밖 글자로 잡힘)
 
   main.replaceChildren(h('div', {class: 'b-page fd-page'},
-    findArt(boards.map(b => ({id: b.place.id, label: b.place.label, n: b.companies.length})), place.id, `${korDate(board.asOf)} ${place.close} 종가`), // 그림 한 장(다섯 나라 등불 · 규칙 33) — 넣으면서 뺀 것: 머리 아래 설명 두 줄(「어떻게 셌나」로 접음)
+    findArt(boards.map(b => ({id: b.place.id, label: b.place.label, n: b.companies.length})), place.id, `${korDate(board.asOf)} ${place.close} 종가`) ?? quietArt({key: 'find', label: '찾기'}), // 그림 한 장(다섯 나라 등불 · 규칙 33) — 넣으면서 뺀 것: 머리 아래 설명 두 줄(「어떻게 셌나」로 접음)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '찾기 ', h('span', {class: 'b-count'}, `${N}곳`))),
     form, msg, list, recentBox,

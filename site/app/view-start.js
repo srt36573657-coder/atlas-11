@@ -6,11 +6,11 @@
    넣으면서 뺀 것(규칙 1): 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」 → 이 화면 맨 아래로 옮김(셋째 줄은 「처음」 다섯에 맞게 고침)
    차례: 기준 한 줄 → 다섯(한 줄씩 · 막대) → 보통 회사 → 틀릴 수 있는 까닭(판 값으로 만든 글) → 접힌 「기준 · 숫자 자세히」(3년 날짜 · 기준 작은 글 · 회사마다 3년 · 1년 · 꼭대기)
    3년 종가가 모자란 판(미국 판)은 찍지 않고 「언제부터」만 */
-import {startArt} from './scenes.js'; // 그림 한 장(물결 깊이 · 3년이 모자란 판은 쌓인 날 항아리 · 규칙 33)
+import {startArt, quietArt} from './scenes.js'; // 그림 한 장(물결 깊이 · 3년이 모자란 판은 쌓인 날 항아리 · 규칙 33) · 값이 비는 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, korDate, pct, finite} from './util.js';
 import {state, loadBoard} from './store.js';
 import {foot, promiseBox, missionBox} from './parts.js';
-import {startComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
+import {startComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
 /** 「처음」 탭 아래 세 화면으로 가는 카드 — 한국 주식시장 안내(05:31) · 500만 원을 오래 들고 있었다면(05:27) · 한국 주식시장은 몇 위인가(05:29) */
 const cards = () => h('nav', {class: 'st-cards', 'aria-label': '더 보기'},
@@ -30,7 +30,7 @@ export async function renderStart(main, {manifest}) {
     const have = s?.have, ready = s?.readyMonth;
     state.summary = `${commentSay(cm)}처음. 이 판은 종가 기록이 3년이 안 되어 다섯 곳을 찍지 않습니다.${ready ? ` ${month(ready)}부터 찍습니다.` : ''}`;
     main.replaceChildren(h('div', {class: 'b-page st-page'},
-      startArt(board, cm) ?? commentBox(cm), // 그림 한 장(물결 깊이 · 규칙 33) — 넣으면서 뺀 것: 논평 무대(같은 셈)
+      startArt(board, cm) ?? quietArt({key: 'start', label: '처음', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(물결 깊이 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈)
       h('header', {class: 'b-head'},
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
         h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${closeCity(manifest)}종가 · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
@@ -56,7 +56,7 @@ export async function renderStart(main, {manifest}) {
     bar(p.mdd, worst, 'st-ok'),
     p.atLow ? h('span', {class: 'st-low'}, `${korDate(p.to)} 종가가 3년 중 가장 낮은 자리`) : null));
   main.replaceChildren(h('div', {class: 'b-page st-page'},
-      startArt(board, cm) ?? commentBox(cm), // 그림 한 장(물결 깊이 · 규칙 33) — 넣으면서 뺀 것: 논평 무대(같은 셈)
+      startArt(board, cm) ?? quietArt({key: 'start', label: '처음', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(물결 깊이 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '처음 ', h('span', {class: 'b-count'}, `${n}곳`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(to)} 종가까지 지난 3년 기록`)),
