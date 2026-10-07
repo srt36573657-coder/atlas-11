@@ -248,7 +248,11 @@ test('고침 — 지난 기록 파일은 그대로 · 뒤에 만든 업데이트
   const bad = siteLog([old, {...fix, fixes: [{...fix.fixes[0], from: '다른 글'}]}], {now: '2026-10-07T01:50:00+09:00'});
   assert.match(bad.problems[0].bad[0], /^고칠 줄을 찾지 못함 u-20261006T223217-x what 1$/); assert.deepEqual(bad.entries.find(e => e.id === old.id).what, old.what);
   assert.equal(siteLog([{...old, made: '2026-10-07T02:00:00+09:00'}, fix], {now: '2026-10-07T02:10:00+09:00'}).problems.length, 1);
-  for (const f of [[], [{id: old.id, field: 'why', index: 0, from: 'a', to: 'b'}], [{id: old.id, field: 'what', from: 'a', to: 'b'}], [{id: old.id, field: 'what', index: 0, from: 'a', to: 'a'}]]) assert.deepEqual(validateEntry({...fix, fixes: f}), ['fixes'], JSON.stringify(f));
+  for (const f of [[], [{id: old.id, field: 'source', index: 0, from: 'a', to: 'b'}], [{id: old.id, field: 'what', from: 'a', to: 'b'}], [{id: old.id, field: 'what', index: 0, from: 'a', to: 'a'}]]) assert.deepEqual(validateEntry({...fix, fixes: f}), ['fixes'], JSON.stringify(f));
+  assert.deepEqual(validateEntry({...fix, fixes: [{id: old.id, field: 'why', from: 'a', to: 'b'}]}), [], '까닭(why)도 고칠 수 있음(2026-10-07 15시 — 글 하나라 차례 번호 없음)');
+  const old2 = {...old, why: '미국 판 오늘 자료로 나온 글'}, fx2 = {...fix, id: 'u-20261007T014100-fix2', made: '2026-10-07T01:41:00+09:00', fixes: [{id: old.id, field: 'why', from: '미국 판 오늘 자료로 나온 글', to: '미국 판 10월 7일(수) 자료로 나온 글'}]};
+  const l2 = siteLog([old2, fx2], {now: '2026-10-07T01:50:00+09:00'}), o2 = l2.entries.find(e => e.id === old.id);
+  assert.deepEqual(l2.problems, []); assert.equal(o2.why, '미국 판 10월 7일(수) 자료로 나온 글'); assert.deepEqual(o2.fixed, [{by: fx2.id, made: fx2.made, field: 'why'}]); assert.equal(old2.why, '미국 판 오늘 자료로 나온 글');
   assert.deepEqual(validateEntry({...fix, kind: 'data', asOf: '2026-10-06', place: 'kr'}).includes('fixes'), true, '고침은 업데이트 줄만');
   assert.match(validateEntry({...fix, fixes: [{...fix.fixes[0], to: '둘 · 절대 넘침 없음'}]}).join(), /금지 말 「절대」/);
 });

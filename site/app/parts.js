@@ -4,6 +4,9 @@
 import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst, place} from './util.js';
 import {roadOf, roadSvg, roadKey, unitText} from './road.js';
 
+/** 「…원으로 · …달러로」 — 돈 단위 끝 글자에 받침이 있으면(ㄹ 빼고) 「으로」(원 · 위안 · 엔 · 동 — 2026-10-07 중국 · 일본 · 베트남 판을 붙이며 「원로」로 쓰던 것도 바로잡음) */
+const roOf = u => { const c = String(u ?? '').slice(-1).charCodeAt(0) - 0xAC00, j = c >= 0 && c < 11172 ? c % 28 : 0; return j && j !== 8 ? '으로' : '로'; };
+
 export const LV = {3: '★★★', 2: '★★', 1: '★'};
 export const LV_WORD = {3: '아주 중요', 2: '중요', 1: '참고'};
 
@@ -161,7 +164,7 @@ export function sparkSvg(c, scale = null) {
   const x = i => P + i * (W - 2 * P) / (cs.length - 1), y = r => P + (sc.hi - r) / span * (H - 2 * P);
   const side = cs.at(-1) > cs[0] ? 'up' : cs.at(-1) < cs[0] ? 'down' : 'flat';
   return sv('svg', {class: 'spark ' + side, viewBox: `0 0 ${W} ${H}`, role: 'img', 'data-points': cs.length, 'data-lo': sc.lo.toFixed(4), 'data-hi': sc.hi.toFixed(4),
-    'aria-label': `선 그래프 · 지난 ${cs.length - 1}거래일 종가 · ${korDate(c.cFrom)} ${won(cs[0])}에서 ${korDate(c.date)} ${won(cs.at(-1))}로(${pct(rs.at(-1), 1)}) · 가장 높은 종가 ${won(Math.max(...cs))} · 가장 낮은 종가 ${won(Math.min(...cs))}`},
+    'aria-label': `선 그래프 · 지난 ${cs.length - 1}거래일 종가 · ${korDate(c.cFrom)} ${won(cs[0])}에서 ${korDate(c.date)} ${won(cs.at(-1))}${roOf(place.unit)}(${pct(rs.at(-1), 1)}) · 가장 높은 종가 ${won(Math.max(...cs))} · 가장 낮은 종가 ${won(Math.min(...cs))}`},
     sv('line', {class: 'sp-base', x1: P, x2: W - P, y1: y(0).toFixed(1), y2: y(0).toFixed(1)}),
     sv('polyline', {class: 'sp-line', points: rs.map((r, i) => `${x(i).toFixed(1)},${y(r).toFixed(1)}`).join(' ')}),
     sv('circle', {class: 'sp-end', cx: x(cs.length - 1).toFixed(1), cy: y(rs.at(-1)).toFixed(1), r: 3.4}));

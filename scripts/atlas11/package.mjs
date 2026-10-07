@@ -22,6 +22,9 @@ const copyDir = async (from, to) => { await fs.mkdir(to, {recursive: true}); for
 
 /** 화면 말(2026-10-06 22:00 사장님 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 한 주소(/ · /us/)에서 위 막대 말 단추로 고름(app/i18n.js) · 옛 따로 주소(/en · /zh)는 같은 화면으로 넘김 */
 export const LANGS = Object.freeze(['en', 'zh']);
+/** 바깥 판 — 미국(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) · 중국 · 일본 · 베트남(2026-10-07 05:25 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」)
+   판 묶음(public/data/atlas11/<id>/view · 예측 없음 · 판 이름 · place.id 가 맞음)이 있는 것만 /<id>/ 에 같은 화면 코드와 함께 싣는다 · 차례 = 위 막대 시장 단추 차례 */
+export const ABROAD = Object.freeze([['us', '미국'], ['cn', '중국'], ['jp', '일본'], ['vn', '베트남']]);
 
 export async function buildDist() {
   const manifest = JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11/view/manifest.json'), 'utf8'));
@@ -32,11 +35,18 @@ export async function buildDist() {
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다
-  //   places.json = 위 막대 「한국 · 미국」 단추가 읽는 판 목록(미국 판이 없으면 한국 하나 → 단추 없음) — 늘 써서 화면이 없는 파일을 부르지 않게
-  const usDir = path.join(root, 'public/data/atlas11/us/view');
-  const usOk = await fs.readFile(path.join(usDir, 'manifest.json'), 'utf8').then(t => { const m = JSON.parse(t); return m.prediction === 'off' && !!m.boardId && m.place?.id === 'us'; }).catch(() => false);
-  if (usOk) { await copyDir(path.join(root, 'site'), path.join(dist, 'us')); await copyDir(usDir, path.join(dist, 'us/data/atlas11/view')); }
-  await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places: [{id: 'kr', label: '한국', href: '/'}, ...(usOk ? [{id: 'us', label: '미국', href: '/us/'}] : [])]}) + '\n');
+  //   places.json = 위 막대 「한국 · 미국 · 중국 · 일본 · 베트남」 단추가 읽는 판 목록(바깥 판이 없으면 한국 하나 → 단추 없음) — 늘 써서 화면이 없는 파일을 부르지 않게
+  //   중국 · 일본 · 베트남(2026-10-07 05:25)도 미국과 같은 길: 판 묶음이 있으면 /cn/ · /jp/ · /vn/
+  const places = [{id: 'kr', label: '한국', href: '/'}];
+  for (const [id, label] of ABROAD) {
+    const dir = path.join(root, `public/data/atlas11/${id}/view`);
+    const ok = await fs.readFile(path.join(dir, 'manifest.json'), 'utf8').then(t => { const m = JSON.parse(t); return m.prediction === 'off' && !!m.boardId && m.place?.id === id; }).catch(() => false);
+    if (!ok) continue;
+    await copyDir(path.join(root, 'site'), path.join(dist, id)); await copyDir(dir, path.join(dist, `${id}/data/atlas11/view`));
+    places.push({id, label, href: `/${id}/`});
+  }
+  const usOk = places.some(p => p.id === 'us'), abroad = places.slice(1).map(p => p.id);
+  await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places}) + '\n');
   // 화면 말(영어 · 중국어 간체 — 2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면」) — 화면 코드 · 자료 · 들어오는 쪽은 한 벌
   //   글자는 app/i18n.js 가 사전(app/i18n/<말>.json)으로 바꿈 · 한국 회사 영어 이름(public/data/atlas11/names-kr.json · 「한국 회사 영어 이름 받기」 작업)이 있으면 함께 싣는다
   try { await fs.copyFile(path.join(root, 'public/data/atlas11/names-kr.json'), path.join(dist, 'data/atlas11/names-kr.json')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
@@ -46,9 +56,9 @@ export async function buildDist() {
   let log; try { log = await readSiteLog(root, {now: new Date().toISOString()}); } catch (e) { log = {schema: 'atlas11-changelog-1', generatedAt: new Date().toISOString(), from: null, count: {all: 0, update: 0, data: 0}, entries: [], problems: [{id: null, bad: ['읽지 못함: ' + e.message]}]}; }
   if (log.problems.length) console.warn('changelog problems (left out): ' + JSON.stringify(log.problems.slice(0, 5)));
   await fs.writeFile(path.join(dist, 'changelog.json'), JSON.stringify(log) + '\n');
-  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/us/index.html\n  Cache-Control: no-cache\n/us/data/*\n  Cache-Control: no-cache\n/us/app/*\n  Cache-Control: no-cache\n/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
+  await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n" + abroad.map(id => `/${id}/index.html\n  Cache-Control: no-cache\n/${id}/data/*\n  Cache-Control: no-cache\n/${id}/app/*\n  Cache-Control: no-cache\n`).join('') + "/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
-  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + (usOk ? '/us  /us/  301\n' : '') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
+  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + abroad.map(id => `/${id}  /${id}/  301\n`).join('') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사

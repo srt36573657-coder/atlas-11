@@ -133,8 +133,22 @@ function header() {
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
   const tabHash = () => /^#\/(map|road|agenda|similar|rise|log|start)?$/.test(location.hash) ? location.hash : '';
-  const mkt = app.places.length > 1 ? h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
-    onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); })) : null;
+  const mktLinks = () => app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
+    onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); });
+  // 시장이 셋 이상(2026-10-07 05:25 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」 — 한국 · 미국 · 중국 · 일본 · 베트남)이면
+  //   다섯 단추가 휴대폰 위 막대 한 줄을 넘으므로(390px 에서 단추만 260px) 지금 시장 이름 단추 하나 → 누르면 다섯이 펼쳐짐(말 고르기와 같은 모양 · 바깥을 누르면 닫힘)
+  let mkt = null;
+  if (app.places.length === 2) mkt = h('nav', {class: 'mkt', 'aria-label': '시장 고르기'}, ...mktLinks());
+  else if (app.places.length > 2) {
+    const here = app.places.find(p => p.id === place.id) ?? {label: place.label};
+    mkt = h('details', {class: 'mkt mkt-pick'}, h('summary', {class: 'mkt-cur', 'aria-label': '시장 고르기', 'data-place': place.id}, here.label), h('nav', {class: 'mkt-menu', 'aria-label': '시장 고르기'}, ...mktLinks()));
+    document.addEventListener('click', e => { if (mkt.open && !mkt.contains(e.target)) mkt.open = false; });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && mkt.open) { mkt.open = false; mkt.querySelector('summary')?.focus(); } });
+    // 펼친 목록이 화면 밖으로 나가면(좁은 휴대폰 · 큰 글씨 · 오른쪽에서 왼쪽으로 쓰는 말) 화면 안으로 옮김 — 320px · 글씨 200% 에서 오른쪽으로 62px 넘던 것
+    mkt.addEventListener('toggle', () => { const m = mkt.querySelector('.mkt-menu'); m.style.removeProperty('transform'); if (!mkt.open) return;
+      const r = m.getBoundingClientRect(), vw = document.documentElement.clientWidth, k = parseFloat(getComputedStyle(mkt).zoom) || 1; let dx = 0;
+      if (r.right > vw - 8) dx = vw - 8 - r.right; if (r.left + dx < 8) dx = 8 - r.left; if (dx) m.style.transform = `translateX(${Math.round(dx / k)}px)`; });
+  }
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, 'ATLAS'),
     mkt,
@@ -230,7 +244,9 @@ async function start() {
   if (I18N) { // 회사 이름: 한국 판 = 영어 이름 사전(/data/atlas11/names-kr.json · 없으면 로마자) · 미국 판 = 판의 nameEn — 두 판 모두(찾기 · 기록 이슈 줄에 섞여 나옴) · 첫 화면 전에
     const nk = await fetch('/data/atlas11/names-kr.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
     try { addBoardNames(await loadBoard(), nk?.names); } catch {}
-    for (const p of app.places) if (p.id !== place.id) { try { addBoardNames((await loadPlaceBoard(p.href)).board, nk?.names); } catch {} }
+    // 다른 판(미국 · 중국 · 일본 · 베트남 — 2026-10-07 05:25 「미국 장 처럼」)은 함께 받아(하나씩 기다리지 않음) 이름만 더함 · 못 읽은 판은 건너뜀
+    const others = await Promise.allSettled(app.places.filter(p => p.id !== place.id).map(p => loadPlaceBoard(p.href)));
+    for (const r of others) if (r.status === 'fulfilled') { try { addBoardNames(r.value.board, nk?.names); } catch {} }
   }
   header();
   window.addEventListener('hashchange', route);
