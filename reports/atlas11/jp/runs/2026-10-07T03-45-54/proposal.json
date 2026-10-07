@@ -1,0 +1,4913 @@
+{
+ "schema": "atlas11-world-proposal-1",
+ "market": "jp",
+ "at": "2026-10-07T03:45:54.958Z",
+ "ok": true,
+ "rules": "jp-n365-v1",
+ "counts": {
+  "candidates": 2000,
+  "pool": 1949,
+  "industriesInPool": 119,
+  "industriesFilled": 91,
+  "industries": 73,
+  "picked": 365,
+  "kinds": {
+   "quality": 315,
+   "profit": 27,
+   "trend": 23
+  },
+  "chosen": [
+   {
+    "rank": 1,
+    "industry": "은행",
+    "size": 73,
+    "strict": 50,
+    "capUsd": 108482041138,
+    "names": [
+     "미쓰비시 UFJ 파이낸셜 그룹",
+     "스미토모 미쓰이 파이낸셜그룹",
+     "미즈호 파이낸셜그룹",
+     "유초은행",
+     "리소나홀딩스"
+    ]
+   },
+   {
+    "rank": 2,
+    "industry": "반도체 장비 및 테스트",
+    "size": 24,
+    "strict": 24,
+    "capUsd": 73489624973,
+    "names": [
+     "어드반테스트",
+     "도쿄일렉트론",
+     "디스코",
+     "레이져테크",
+     "스크린 홀딩스"
+    ]
+   },
+   {
+    "rank": 3,
+    "industry": "다각적 산업용 제품 도매",
+    "size": 10,
+    "strict": 6,
+    "capUsd": 56811295776,
+    "names": [
+     "미쓰비시상사",
+     "이토추상사",
+     "미쓰이물산",
+     "마루베니",
+     "산요 무역"
+    ]
+   },
+   {
+    "rank": 4,
+    "industry": "소비재 대기업",
+    "size": 6,
+    "strict": 3,
+    "capUsd": 52238823689,
+    "names": [
+     "히타치",
+     "미쓰비시전기",
+     "미쓰이 마쓰시마 홀딩스",
+     "미쓰비시중공업",
+     "가와사키중공업"
+    ]
+   },
+   {
+    "rank": 5,
+    "industry": "자동차 및 트럭 제조",
+    "size": 10,
+    "strict": 1,
+    "capUsd": 51680667332,
+    "names": [
+     "이스즈자동차",
+     "토요타자동차",
+     "스즈키자동차",
+     "야마하 모터",
+     "후지중공업"
+    ]
+   },
+   {
+    "rank": 6,
+    "industry": "전자 장비 및 부품",
+    "size": 54,
+    "strict": 54,
+    "capUsd": 50864645825,
+    "names": [
+     "키엔스",
+     "무라타제작소",
+     "TDK",
+     "교세라",
+     "미네베아"
+    ]
+   },
+   {
+    "rank": 7,
+    "industry": "반도체",
+    "size": 28,
+    "strict": 28,
+    "capUsd": 47418159502,
+    "names": [
+     "키옥시아 홀딩스",
+     "르네사스 일렉트로닉스",
+     "이비덴",
+     "롬",
+     "섬코"
+    ]
+   },
+   {
+    "rank": 8,
+    "industry": "제약",
+    "size": 36,
+    "strict": 36,
+    "capUsd": 34818187068,
+    "names": [
+     "주가이제약",
+     "다케다 제약",
+     "오츠카 홀딩스",
+     "다이이찌산쿄",
+     "아스텔라스제약"
+    ]
+   },
+   {
+    "rank": 9,
+    "industry": "의류 및 액세서리 소매",
+    "size": 17,
+    "strict": 11,
+    "capUsd": 26459524954,
+    "names": [
+     "패스트리테일링",
+     "스타트 투데이",
+     "ABC-마트",
+     "워크맨",
+     "팔 그룹 홀딩스"
+    ]
+   },
+   {
+    "rank": 10,
+    "industry": "고용 서비스",
+    "size": 28,
+    "strict": 18,
+    "capUsd": 25933636241,
+    "names": [
+     "리쿠르트 홀딩스",
+     "비져널",
+     "메이텍 그룹 홀딩스",
+     "오픈 업 그룹",
+     "제이에이씨리쿠르트먼트"
+    ]
+   },
+   {
+    "rank": 11,
+    "industry": "전기 부품 및 장비",
+    "size": 52,
+    "strict": 52,
+    "capUsd": 24304178969,
+    "names": [
+     "후지쿠라",
+     "다이킨공업",
+     "후루카와 전기공업",
+     "니덱",
+     "후지전기"
+    ]
+   },
+   {
+    "rank": 12,
+    "industry": "무선 통신 서비스",
+    "size": 6,
+    "strict": 2,
+    "capUsd": 24053269361,
+    "names": [
+     "스카이 퍼펙트 JSAT",
+     "오키나와셀룰러전화",
+     "소프트뱅크",
+     "KDDI",
+     "에어-유"
+    ]
+   },
+   {
+    "rank": 13,
+    "industry": "IT 서비스 및 컨설팅",
+    "size": 88,
+    "strict": 88,
+    "capUsd": 20895127015,
+    "names": [
+     "후지쯔",
+     "NEC",
+     "노무라종합연구소",
+     "오빅크",
+     "오쓰카"
+    ]
+   },
+   {
+    "rank": 14,
+    "industry": "산업용 기계 및 장비",
+    "size": 124,
+    "strict": 124,
+    "capUsd": 17611104416,
+    "names": [
+     "화낙",
+     "에스엠씨",
+     "IHI",
+     "에바라",
+     "NGK"
+    ]
+   },
+   {
+    "rank": 15,
+    "industry": "자동차, 트럭 및 오토바이 부품",
+    "size": 62,
+    "strict": 41,
+    "capUsd": 17385620287,
+    "names": [
+     "스미토모전기공업",
+     "덴소",
+     "아이신",
+     "니테라",
+     "NHK 스프링"
+    ]
+   },
+   {
+    "rank": 16,
+    "industry": "다각적 화학 산업",
+    "size": 14,
+    "strict": 11,
+    "capUsd": 17141350678,
+    "names": [
+     "신에츠화학",
+     "아사히카세이",
+     "닛산화학공업",
+     "토소",
+     "가네카"
+    ]
+   },
+   {
+    "rank": 17,
+    "industry": "생명 및 건강 보험",
+    "size": 6,
+    "strict": 4,
+    "capUsd": 17097586478,
+    "names": [
+     "다이이치 라이프 그룹",
+     "T&D 홀딩스",
+     "소니 파이낸셜 그룹",
+     "라이프넷 보험",
+     "일본우정"
+    ]
+   },
+   {
+    "rank": 18,
+    "industry": "통합 통신 서비스",
+    "size": 6,
+    "strict": 2,
+    "capUsd": 16515321680,
+    "names": [
+     "비젼",
+     "IPS",
+     "NTT",
+     "인터넷 이니셔티브 재팬",
+     "U-넥스트 홀딩스"
+    ]
+   },
+   {
+    "rank": 19,
+    "industry": "의료 장비, 물품 및 유통",
+    "size": 28,
+    "strict": 28,
+    "capUsd": 14335894578,
+    "names": [
+     "호야",
+     "테루모",
+     "시스멕스",
+     "아사히 인텍",
+     "알프레사 홀딩스"
+    ]
+   },
+   {
+    "rank": 20,
+    "industry": "장난감 및 어린이 제품",
+    "size": 5,
+    "strict": 5,
+    "capUsd": 14330378965,
+    "names": [
+     "닌텐도",
+     "반다이남코 홀딩스",
+     "타카라토미",
+     "해피넷",
+     "후류"
+    ]
+   },
+   {
+    "rank": 21,
+    "industry": "가정용 전자 제품",
+    "size": 9,
+    "strict": 3,
+    "capUsd": 12905913461,
+    "names": [
+     "카시오 컴퓨터",
+     "탐론",
+     "포스터 전기",
+     "파나소닉 홀딩스",
+     "샤프"
+    ]
+   },
+   {
+    "rank": 22,
+    "industry": "중장비 및 차량",
+    "size": 15,
+    "strict": 15,
+    "capUsd": 12324076474,
+    "names": [
+     "코마츠",
+     "구보다",
+     "히타치건설기계",
+     "다케우치제작소",
+     "야마비코"
+    ]
+   },
+   {
+    "rank": 23,
+    "industry": "사무기기",
+    "size": 16,
+    "strict": 12,
+    "capUsd": 9816328561,
+    "names": [
+     "캐논",
+     "시마츠",
+     "브라더 인더스트리",
+     "캐논 마케팅 재팬",
+     "지올"
+    ]
+   },
+   {
+    "rank": 24,
+    "industry": "식품 가공",
+    "size": 76,
+    "strict": 46,
+    "capUsd": 9710324481,
+    "names": [
+     "아지노모토",
+     "깃코만",
+     "도요 수산",
+     "닛신식품 홀딩스",
+     "야쿠르트혼샤"
+    ]
+   },
+   {
+    "rank": 25,
+    "industry": "온라인 서비스",
+    "size": 45,
+    "strict": 45,
+    "capUsd": 9111026202,
+    "names": [
+     "LY 주식회사",
+     "넥슨 재팬",
+     "라쿠텐 그룹",
+     "엠쓰리",
+     "스퀘어 에닉스 홀딩스"
+    ]
+   },
+   {
+    "rank": 26,
+    "industry": "특수 화학제",
+    "size": 26,
+    "strict": 20,
+    "capUsd": 8865950093,
+    "names": [
+     "후지필름 홀딩스",
+     "니토덴코",
+     "도쿄오카공업",
+     "다이요 홀딩스",
+     "린텍"
+    ]
+   },
+   {
+    "rank": 27,
+    "industry": "소프트웨어",
+    "size": 43,
+    "strict": 43,
+    "capUsd": 8404889362,
+    "names": [
+     "코나미 그룹",
+     "캡콤",
+     "오라클 재팬",
+     "트렌드마이크로",
+     "오빅비즈니스"
+    ]
+   },
+   {
+    "rank": 28,
+    "industry": "투자 은행 및 중개 서비스",
+    "size": 19,
+    "strict": 17,
+    "capUsd": 8306869445,
+    "names": [
+     "노무라 홀딩스",
+     "다이와증권그룹",
+     "마쓰이 증권",
+     "오카산 증권 그룹",
+     "도카이 도쿄 파이낸셜 홀딩스"
+    ]
+   },
+   {
+    "rank": 29,
+    "industry": "해양 화물 및 물류",
+    "size": 8,
+    "strict": 6,
+    "capUsd": 7774769428,
+    "names": [
+     "NYK 라인",
+     "미쓰이상선",
+     "가와사키기선",
+     "신와 해운회사",
+     "이노 해운"
+    ]
+   },
+   {
+    "rank": 30,
+    "industry": "타이어 및 고무 제품",
+    "size": 5,
+    "strict": 4,
+    "capUsd": 7313287314,
+    "names": [
+     "브리지스톤",
+     "요코하마고무",
+     "스미토모고무공업",
+     "후지쿠라 컴포지트",
+     "도요 고무공업"
+    ]
+   },
+   {
+    "rank": 31,
+    "industry": "상품 화학",
+    "size": 70,
+    "strict": 45,
+    "capUsd": 7258729510,
+    "names": [
+     "니폰 페인트 홀딩스",
+     "다이요닛폰산소",
+     "스미토모 베이크라이트",
+     "니치유",
+     "나가세 산업"
+    ]
+   },
+   {
+    "rank": 32,
+    "industry": "전력 유틸리티",
+    "size": 15,
+    "strict": 15,
+    "capUsd": 7152558712,
+    "names": [
+     "간사이전력",
+     "주부전력",
+     "도쿄 전력 홀딩스",
+     "전원개발주식회사",
+     "도호쿠전력"
+    ]
+   },
+   {
+    "rank": 33,
+    "industry": "특수 채굴 및 금속",
+    "size": 10,
+    "strict": 7,
+    "capUsd": 6160889743,
+    "names": [
+     "JX 어드밴스드 메탈스",
+     "미쓰이금속",
+     "도와홀딩스",
+     "니테츠광업",
+     "후루카와기계금속"
+    ]
+   },
+   {
+    "rank": 34,
+    "industry": "개인 생활 필수 용품",
+    "size": 16,
+    "strict": 11,
+    "capUsd": 5927255372,
+    "names": [
+     "가오",
+     "유니참",
+     "MTG",
+     "코세 홀딩스",
+     "폴라 오르비스 홀딩스"
+    ]
+   },
+   {
+    "rank": 35,
+    "industry": "건설 및 엔지니어링",
+    "size": 95,
+    "strict": 76,
+    "capUsd": 5704529131,
+    "names": [
+     "오바야시",
+     "긴덴",
+     "간덴코",
+     "니치아스",
+     "콤시스홀딩스"
+    ]
+   },
+   {
+    "rank": 36,
+    "industry": "여가 및 오락시설",
+    "size": 18,
+    "strict": 9,
+    "capUsd": 5535823668,
+    "names": [
+     "오리엔탈랜드",
+     "후지 급행",
+     "고시다카 홀딩스",
+     "커브스 홀딩스",
+     "킨키 니폰 투어리스트"
+    ]
+   },
+   {
+    "rank": 37,
+    "industry": "경영 지원 서비스",
+    "size": 39,
+    "strict": 36,
+    "capUsd": 5238831308,
+    "names": [
+     "세콤",
+     "베이커런트",
+     "ALSOK",
+     "재팬 엘리베이터 서비스 홀딩스",
+     "JMDC"
+    ]
+   },
+   {
+    "rank": 38,
+    "industry": "백화점",
+    "size": 15,
+    "strict": 8,
+    "capUsd": 5111265982,
+    "names": [
+     "양품계획",
+     "이세탄 미쓰코시 홀딩스",
+     "모노타로",
+     "이즈미",
+     "벨루나"
+    ]
+   },
+   {
+    "rank": 39,
+    "industry": "천연가스 유틸리티",
+    "size": 10,
+    "strict": 10,
+    "capUsd": 5081538151,
+    "names": [
+     "오사카가스",
+     "도쿄가스",
+     "토호 가스",
+     "니폰 가스",
+     "케이앤오 에너지그룹"
+    ]
+   },
+   {
+    "rank": 40,
+    "industry": "지상 및 해상 여객 운송",
+    "size": 21,
+    "strict": 5,
+    "capUsd": 4834462461,
+    "names": [
+     "도카이여객철도",
+     "게이세이전철",
+     "큐슈레일웨이",
+     "산요전기철도",
+     "신키 버스"
+    ]
+   },
+   {
+    "rank": 41,
+    "industry": "주택 건설",
+    "size": 9,
+    "strict": 6,
+    "capUsd": 4179436033,
+    "names": [
+     "세키스이하우스",
+     "세키스이화학공업",
+     "스미토모임업",
+     "도켄 코퍼레이션",
+     "나가와"
+    ]
+   },
+   {
+    "rank": 42,
+    "industry": "기업 금융 서비스",
+    "size": 12,
+    "strict": 11,
+    "capUsd": 3960365289,
+    "names": [
+     "미쓰비시 HC 캐피탈",
+     "센츄리리싱시스템",
+     "미즈호 리싱 컴퍼니",
+     "리코 리싱 컴퍼니",
+     "일본 증권 금융"
+    ]
+   },
+   {
+    "rank": 43,
+    "industry": "중전기장비",
+    "size": 9,
+    "strict": 9,
+    "capUsd": 3711355961,
+    "names": [
+     "다이후쿠",
+     "메이덴샤",
+     "신포니아 테크놀로지",
+     "다이헨",
+     "미쓰보시 벨팅"
+    ]
+   },
+   {
+    "rank": 44,
+    "industry": "첨단 의료 장비 및 기술",
+    "size": 6,
+    "strict": 6,
+    "capUsd": 3012382623,
+    "names": [
+     "올림푸스",
+     "후쿠다전자",
+     "니혼 고덴",
+     "사이버다인",
+     "쿠수리노마도구치"
+    ]
+   },
+   {
+    "rank": 45,
+    "industry": "상업용 REITs",
+    "size": 21,
+    "strict": 18,
+    "capUsd": 2918722418,
+    "names": [
+     "재팬리얼에스테이트투자법인",
+     "닛폰 프롤로지스 리츠",
+     "GLP J-리츠",
+     "오릭스 제이리츠",
+     "재팬 프라임 리얼티 투자법인"
+    ]
+   },
+   {
+    "rank": 46,
+    "industry": "배달, 우편, 항공 화물 및 육상 물류",
+    "size": 13,
+    "strict": 9,
+    "capUsd": 2856813540,
+    "names": [
+     "SG 홀딩스",
+     "미쓰비시물류",
+     "가미구미",
+     "세이노 홀딩스",
+     "산큐"
+    ]
+   },
+   {
+    "rank": 47,
+    "industry": "철 및 강철",
+    "size": 32,
+    "strict": 14,
+    "capUsd": 2780366930,
+    "names": [
+     "고베제강",
+     "야마토 공업",
+     "다이도 특수강",
+     "마루이치 강관",
+     "요도코"
+    ]
+   },
+   {
+    "rank": 48,
+    "industry": "소비자 대출",
+    "size": 14,
+    "strict": 13,
+    "capUsd": 2666287539,
+    "names": [
+     "아콤",
+     "크레디트 세종",
+     "마루이그룹",
+     "젠코쿠 호쇼",
+     "이온크레디트서비스"
+    ]
+   },
+   {
+    "rank": 49,
+    "industry": "의약품 소매",
+    "size": 12,
+    "strict": 7,
+    "capUsd": 2621247645,
+    "names": [
+     "마츠키요코코카라 & 코",
+     "코스모스 약품",
+     "수기 홀딩스",
+     "선드럭",
+     "크리에이트SD홀딩스"
+    ]
+   },
+   {
+    "rank": 50,
+    "industry": "엔터테인먼트 제작",
+    "size": 12,
+    "strict": 8,
+    "capUsd": 2614672685,
+    "names": [
+     "토호",
+     "도에이애니메이션",
+     "토에이",
+     "다이이치코쇼",
+     "커버"
+    ]
+   },
+   {
+    "rank": 51,
+    "industry": "복합부동산 REITs",
+    "size": 19,
+    "strict": 16,
+    "capUsd": 2284172257,
+    "names": [
+     "KDX 리얼티 인베스트먼트",
+     "다이와 하우스 리츠 투자",
+     "유나이티드 어반 투자법인",
+     "인빈서블 투자법인",
+     "세키스이 하우스 리츠"
+    ]
+   },
+   {
+    "rank": 52,
+    "industry": "건설 자재 및 비품",
+    "size": 24,
+    "strict": 16,
+    "capUsd": 2221351498,
+    "names": [
+     "토토",
+     "산와홀딩스",
+     "다카라스탠더드",
+     "분카 셔터",
+     "테크노플렉스"
+    ]
+   },
+   {
+    "rank": 53,
+    "industry": "방송",
+    "size": 7,
+    "strict": 3,
+    "capUsd": 2134470028,
+    "names": [
+     "닛폰 테레비 홀딩스",
+     "TV 아사히 홀딩스",
+     "티브이 도쿄 홀딩스",
+     "도쿄 방송 홀딩스",
+     "아사히 방송"
+    ]
+   },
+   {
+    "rank": 54,
+    "industry": "통신 및 네트워킹",
+    "size": 12,
+    "strict": 12,
+    "capUsd": 2117996414,
+    "names": [
+     "히카리 통신",
+     "후루노 전기",
+     "니폰 시그널",
+     "교산 제작소",
+     "토아 (효고)"
+    ]
+   },
+   {
+    "rank": 55,
+    "industry": "컴퓨터 하드웨어",
+    "size": 7,
+    "strict": 7,
+    "capUsd": 2014546225,
+    "names": [
+     "세이코 엡손",
+     "다이와보 홀딩스",
+     "엘레콤",
+     "에이조",
+     "와콤"
+    ]
+   },
+   {
+    "rank": 56,
+    "industry": "레스토랑 및 바",
+    "size": 47,
+    "strict": 29,
+    "capUsd": 2004464665,
+    "names": [
+     "일본 맥도날드 홀딩스",
+     "사이제리야",
+     "요시노야 홀딩스",
+     "모노가타리",
+     "오쇼 식품 서비스"
+    ]
+   },
+   {
+    "rank": 57,
+    "industry": "의류 및 액세서리",
+    "size": 20,
+    "strict": 9,
+    "capUsd": 1977400964,
+    "names": [
+     "세이코 그룹",
+     "시티즌 시계",
+     "골드윈",
+     "온워드",
+     "모리토"
+    ]
+   },
+   {
+    "rank": 58,
+    "industry": "무알콜 음료",
+    "size": 8,
+    "strict": 1,
+    "capUsd": 1875409874,
+    "names": [
+     "산토리 식품 인터내셔널",
+     "이토엔",
+     "프리미엄워터 홀딩스",
+     "라이프트링크 컴퍼니",
+     "이토엔우"
+    ]
+   },
+   {
+    "rank": 59,
+    "industry": "기타 전문 소매",
+    "size": 16,
+    "strict": 7,
+    "capUsd": 1812777178,
+    "names": [
+     "산리오",
+     "진",
+     "인터메스틱",
+     "트레져팩토리",
+     "하드오프코퍼레이션"
+    ]
+   },
+   {
+    "rank": 60,
+    "industry": "식품 소매 및 유통",
+    "size": 36,
+    "strict": 19,
+    "capUsd": 1796181295,
+    "names": [
+     "고베 물산",
+     "에이치투오리테일링",
+     "라이프코퍼레이션",
+     "아크스",
+     "산에이"
+    ]
+   },
+   {
+    "rank": 61,
+    "industry": "환경 서비스 및 장비",
+    "size": 13,
+    "strict": 11,
+    "capUsd": 1578646070,
+    "names": [
+     "오르가노",
+     "다이에이 칸쿄",
+     "다쿠마",
+     "마쓰다 산업",
+     "다이세키"
+    ]
+   },
+   {
+    "rank": 62,
+    "industry": "종이 제품",
+    "size": 9,
+    "strict": 1,
+    "capUsd": 1294492563,
+    "names": [
+     "도쿠슈토카이홀딩스",
+     "오지홀딩스",
+     "다이오 제지",
+     "닛폰제지",
+     "재팬 펄프 앤 페이퍼"
+    ]
+   },
+   {
+    "rank": 63,
+    "industry": "용기(종이 제외) 및 포장재",
+    "size": 7,
+    "strict": 7,
+    "capUsd": 1250475169,
+    "names": [
+     "도요제관그룹홀딩스",
+     "FP",
+     "후지 실 인터내셔널",
+     "자크로스",
+     "홋칸홀딩스"
+    ]
+   },
+   {
+    "rank": 64,
+    "industry": "비즈니스 지원 용품",
+    "size": 11,
+    "strict": 7,
+    "capUsd": 1233090799,
+    "names": [
+     "고쿠요",
+     "노미 방재",
+     "파일럿",
+     "오카무라제작소",
+     "호치키"
+    ]
+   },
+   {
+    "rank": 65,
+    "industry": "오일, 가스 정제 및 마케팅",
+    "size": 13,
+    "strict": 10,
+    "capUsd": 1216870229,
+    "names": [
+     "이와타니산업",
+     "이토추 에넥스",
+     "토카이 홀딩스",
+     "가메이",
+     "산아이 오블리"
+    ]
+   },
+   {
+    "rank": 66,
+    "industry": "부동산 임대, 개발 및 운영",
+    "size": 50,
+    "strict": 10,
+    "capUsd": 1160006430,
+    "names": [
+     "이다 그룹 홀딩스",
+     "카티타스",
+     "선프론티어 부동산",
+     "케이한신 부동산",
+     "FJ 넥스트 홀딩스"
+    ]
+   },
+   {
+    "rank": 67,
+    "industry": "지상 화물 및 물류",
+    "size": 16,
+    "strict": 11,
+    "capUsd": 1123514964,
+    "names": [
+     "닛콘 홀딩스",
+     "코노이케 운송",
+     "시부사와 로지스틱스",
+     "사카이 이사 서비스",
+     "AZ-컴 마루와 홀딩스"
+    ]
+   },
+   {
+    "rank": 68,
+    "industry": "컴퓨터 및 전자 제품 소매",
+    "size": 9,
+    "strict": 6,
+    "capUsd": 1083865812,
+    "names": [
+     "노지마",
+     "케이스 홀딩스",
+     "에디온",
+     "코지마",
+     "벨파크"
+    ]
+   },
+   {
+    "rank": 69,
+    "industry": "조선",
+    "size": 5,
+    "strict": 5,
+    "capUsd": 970686337,
+    "names": [
+     "미쓰이 E&S",
+     "나무라 조선소",
+     "재팬엔진",
+     "다이하츠 인피너스",
+     "나이카이조선"
+    ]
+   },
+   {
+    "rank": 70,
+    "industry": "오락용 제품",
+    "size": 8,
+    "strict": 5,
+    "capUsd": 930163060,
+    "names": [
+     "미즈노",
+     "요넥스",
+     "노리쓰강기",
+     "롤랜드",
+     "그로브랜드"
+    ]
+   },
+   {
+    "rank": 71,
+    "industry": "주거용 REITs",
+    "size": 5,
+    "strict": 4,
+    "capUsd": 927245446,
+    "names": [
+     "어드밴스 레지던스 투자법인",
+     "일본임대주택투자",
+     "삼티 레지덴셜 인베스트먼트",
+     "스타츠 그로시드 인베스트먼트",
+     "콤포리아 레지덴셜 리츠"
+    ]
+   },
+   {
+    "rank": 72,
+    "industry": "건설 자재",
+    "size": 15,
+    "strict": 12,
+    "capUsd": 894279456,
+    "names": [
+     "미타니상사",
+     "스미토모오사카시멘트",
+     "미타니 세키산",
+     "마에다공섬",
+     "시나가와 리프라"
+    ]
+   },
+   {
+    "rank": 73,
+    "industry": "카지노 및 도박",
+    "size": 7,
+    "strict": 6,
+    "capUsd": 868438071,
+    "names": [
+     "산쿄",
+     "츠부라야 필즈 홀딩스",
+     "도쿄도 경마",
+     "마스 엔지니어링",
+     "게임카드 홀딩스"
+    ]
+   }
+  ],
+  "notChosenFilled": [
+   {
+    "industry": "호텔, 모텔 및 크루즈 라인",
+    "size": 9,
+    "capUsd": 865770778
+   },
+   {
+    "industry": "가전제품, 도구 및 가정 용품",
+    "size": 9,
+    "capUsd": 789434791
+   },
+   {
+    "industry": "주택 개조 제품 및 서비스 소매",
+    "size": 7,
+    "capUsd": 747473496
+   },
+   {
+    "industry": "가정용 제품",
+    "size": 5,
+    "capUsd": 733912645
+   },
+   {
+    "industry": "특수 REITs",
+    "size": 6,
+    "capUsd": 711969928
+   },
+   {
+    "industry": "종이 포장재",
+    "size": 5,
+    "capUsd": 697647510
+   },
+   {
+    "industry": "투자 관리 및 펀드 운영",
+    "size": 6,
+    "capUsd": 678371947
+   },
+   {
+    "industry": "항공우주 및 방위",
+    "size": 7,
+    "capUsd": 635076986
+   },
+   {
+    "industry": "직물 및 가죽제품",
+    "size": 8,
+    "capUsd": 602726217
+   },
+   {
+    "industry": "자동차 차량, 부품 및 서비스 소매",
+    "size": 7,
+    "capUsd": 572201392
+   },
+   {
+    "industry": "생명 공학 및 의학 연구",
+    "size": 7,
+    "capUsd": 557207657
+   },
+   {
+    "industry": "부동산 서비스",
+    "size": 10,
+    "capUsd": 452132418
+   },
+   {
+    "industry": "어업 및 농업",
+    "size": 8,
+    "capUsd": 402812593
+   },
+   {
+    "industry": "광고 및 마케팅",
+    "size": 13,
+    "capUsd": 367082617
+   },
+   {
+    "industry": "농화학제",
+    "size": 5,
+    "capUsd": 316869422
+   },
+   {
+    "industry": "개인 서비스",
+    "size": 12,
+    "capUsd": 301548708
+   },
+   {
+    "industry": "의료 시설 및 서비스",
+    "size": 10,
+    "capUsd": 278852549
+   },
+   {
+    "industry": "기타 교육 서비스 제공",
+    "size": 5,
+    "capUsd": 189127428
+   }
+  ],
+  "short": [
+   {
+    "industry": "손해보험",
+    "have": 4
+   },
+   {
+    "industry": "양조업",
+    "have": 4
+   },
+   {
+    "industry": "할인점",
+    "have": 4
+   },
+   {
+    "industry": "상업 인쇄 서비스",
+    "have": 4
+   },
+   {
+    "industry": "알루미늄",
+    "have": 4
+   },
+   {
+    "industry": "항공사",
+    "have": 3
+   },
+   {
+    "industry": "소비자 출판",
+    "have": 3
+   },
+   {
+    "industry": "고속도로 및 철도",
+    "have": 3
+   },
+   {
+    "industry": "다각적 투자 서비스",
+    "have": 2
+   },
+   {
+    "industry": "오일, 가스 탐사 및 생산",
+    "have": 2
+   },
+   {
+    "industry": "제화",
+    "have": 2
+   },
+   {
+    "industry": "증류주 및 포도주",
+    "have": 2
+   },
+   {
+    "industry": "가정용 가구",
+    "have": 2
+   },
+   {
+    "industry": "전문 및 비즈니스 교육",
+    "have": 2
+   },
+   {
+    "industry": "전문 정보 서비스",
+    "have": 2
+   },
+   {
+    "industry": "복합보험 및 중개인",
+    "have": 2
+   },
+   {
+    "industry": "석탄",
+    "have": 2
+   },
+   {
+    "industry": "담배",
+    "have": 1
+   },
+   {
+    "industry": "금융, 상품 시장 운영 및 서비스 제공",
+    "have": 1
+   },
+   {
+    "industry": "가정용 가구 소매",
+    "have": 1
+   },
+   {
+    "industry": "복합 유틸리티",
+    "have": 1
+   },
+   {
+    "industry": "다각적 채굴",
+    "have": 1
+   },
+   {
+    "industry": "오일 관련 서비스 및 장비",
+    "have": 1
+   },
+   {
+    "industry": "공항 운영 및 서비스",
+    "have": 1
+   },
+   {
+    "industry": "블록 체인 및 암호화폐",
+    "have": 1
+   },
+   {
+    "industry": "금 제외 귀금속 및 광물",
+    "have": 1
+   },
+   {
+    "industry": "재생 가능 에너지 장비 및 서비스",
+    "have": 1
+   },
+   {
+    "industry": "채굴 지원 서비스 및 장비",
+    "have": 1
+   }
+  ],
+  "failReasons": {
+   "부채비율 모름": 356,
+   "ROE 5% 미만": 311,
+   "부채비율 150% 초과": 272,
+   "2년 연속 흑자 아님": 185,
+   "ROE 모름": 70,
+   "가격 이력 부족": 36,
+   "보통주 아님": 14,
+   "결산 자료 없음": 5,
+   "같은 회사 다른 주식": 2
+  }
+ },
+ "picked": [
+  {
+   "rank": 1,
+   "code": "8306",
+   "name": "미쓰비시 UFJ 파이낸셜 그룹",
+   "nameEn": "Mitsubishi UFJ Financial Group  Inc.",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 1,
+   "industryRank": 1
+  },
+  {
+   "rank": 2,
+   "code": "8316",
+   "name": "스미토모 미쓰이 파이낸셜그룹",
+   "nameEn": "Sumitomo Mitsui Financial Group  Inc.",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 7,
+   "industryRank": 1
+  },
+  {
+   "rank": 3,
+   "code": "8411",
+   "name": "미즈호 파이낸셜그룹",
+   "nameEn": "Mizuho Financial Group  Inc.",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 12,
+   "industryRank": 1
+  },
+  {
+   "rank": 4,
+   "code": "7182",
+   "name": "유초은행",
+   "nameEn": "Japan Post Bank Co Ltd",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 23,
+   "industryRank": 1
+  },
+  {
+   "rank": 5,
+   "code": "8308",
+   "name": "리소나홀딩스",
+   "nameEn": "Resona Holdings  Inc.",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 54,
+   "industryRank": 1
+  },
+  {
+   "rank": 6,
+   "code": "6857",
+   "name": "어드반테스트",
+   "nameEn": "ADVANTEST CORPORATION",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 4,
+   "industryRank": 2
+  },
+  {
+   "rank": 7,
+   "code": "8035",
+   "name": "도쿄일렉트론",
+   "nameEn": "Tokyo Electron Limited",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 6,
+   "industryRank": 2
+  },
+  {
+   "rank": 8,
+   "code": "6146",
+   "name": "디스코",
+   "nameEn": "Disco Corp",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 48,
+   "industryRank": 2
+  },
+  {
+   "rank": 9,
+   "code": "6920",
+   "name": "레이져테크",
+   "nameEn": "Lasertec Corporation",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 66,
+   "industryRank": 2
+  },
+  {
+   "rank": 10,
+   "code": "7735",
+   "name": "스크린 홀딩스",
+   "nameEn": "Screen Holdings Co Ltd",
+   "industry": "반도체 장비 및 테스트",
+   "kind": "quality",
+   "capRank": 87,
+   "industryRank": 2
+  },
+  {
+   "rank": 11,
+   "code": "8058",
+   "name": "미쓰비시상사",
+   "nameEn": "Mitsubishi Corporation",
+   "industry": "다각적 산업용 제품 도매",
+   "kind": "quality",
+   "capRank": 14,
+   "industryRank": 3
+  },
+  {
+   "rank": 12,
+   "code": "8001",
+   "name": "이토추상사",
+   "nameEn": "ITOCHU Corporation",
+   "industry": "다각적 산업용 제품 도매",
+   "kind": "quality",
+   "capRank": 15,
+   "industryRank": 3
+  },
+  {
+   "rank": 13,
+   "code": "8031",
+   "name": "미쓰이물산",
+   "nameEn": "MITSUI & CO.  LTD.",
+   "industry": "다각적 산업용 제품 도매",
+   "kind": "quality",
+   "capRank": 19,
+   "industryRank": 3
+  },
+  {
+   "rank": 14,
+   "code": "8002",
+   "name": "마루베니",
+   "nameEn": "Marubeni Corporation",
+   "industry": "다각적 산업용 제품 도매",
+   "kind": "quality",
+   "capRank": 34,
+   "industryRank": 3
+  },
+  {
+   "rank": 15,
+   "code": "3176",
+   "name": "산요 무역",
+   "nameEn": "Sanyo Trading Co Ltd",
+   "industry": "다각적 산업용 제품 도매",
+   "kind": "quality",
+   "capRank": 1214,
+   "industryRank": 3
+  },
+  {
+   "rank": 16,
+   "code": "6501",
+   "name": "히타치",
+   "nameEn": "Hitachi  Ltd.",
+   "industry": "소비재 대기업",
+   "kind": "quality",
+   "capRank": 8,
+   "industryRank": 4
+  },
+  {
+   "rank": 17,
+   "code": "6503",
+   "name": "미쓰비시전기",
+   "nameEn": "Mitsubishi Electric Corporation",
+   "industry": "소비재 대기업",
+   "kind": "quality",
+   "capRank": 27,
+   "industryRank": 4
+  },
+  {
+   "rank": 18,
+   "code": "1518",
+   "name": "미쓰이 마쓰시마 홀딩스",
+   "nameEn": "Mitsui Matsushima Holdings Co Ltd",
+   "industry": "소비재 대기업",
+   "kind": "quality",
+   "capRank": 825,
+   "industryRank": 4
+  },
+  {
+   "rank": 19,
+   "code": "7011",
+   "name": "미쓰비시중공업",
+   "nameEn": "Mitsubishi Heavy Industries  Ltd.",
+   "industry": "소비재 대기업",
+   "kind": "profit",
+   "capRank": 21,
+   "industryRank": 4
+  },
+  {
+   "rank": 20,
+   "code": "7012",
+   "name": "가와사키중공업",
+   "nameEn": "Kawasaki Heavy Industries  Ltd.",
+   "industry": "소비재 대기업",
+   "kind": "profit",
+   "capRank": 123,
+   "industryRank": 4
+  },
+  {
+   "rank": 21,
+   "code": "7202",
+   "name": "이스즈자동차",
+   "nameEn": "ISUZU MOTORS LIMITED",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "quality",
+   "capRank": 157,
+   "industryRank": 5
+  },
+  {
+   "rank": 22,
+   "code": "7203",
+   "name": "토요타자동차",
+   "nameEn": "TOYOTA MOTOR CORPORATION",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 2,
+   "industryRank": 5
+  },
+  {
+   "rank": 23,
+   "code": "7269",
+   "name": "스즈키자동차",
+   "nameEn": "SUZUKI MOTOR CORPORATION",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 70,
+   "industryRank": 5
+  },
+  {
+   "rank": 24,
+   "code": "7272",
+   "name": "야마하 모터",
+   "nameEn": "Yamaha Motor Co.  Ltd.",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 135,
+   "industryRank": 5
+  },
+  {
+   "rank": 25,
+   "code": "7270",
+   "name": "후지중공업",
+   "nameEn": "SUBARU CORPORATION",
+   "industry": "자동차 및 트럭 제조",
+   "kind": "profit",
+   "capRank": 138,
+   "industryRank": 5
+  },
+  {
+   "rank": 26,
+   "code": "6861",
+   "name": "키엔스",
+   "nameEn": "KEYENCE CORPORATION",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 13,
+   "industryRank": 6
+  },
+  {
+   "rank": 27,
+   "code": "6981",
+   "name": "무라타제작소",
+   "nameEn": "Murata Manufacturing Co.  Ltd.",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 16,
+   "industryRank": 6
+  },
+  {
+   "rank": 28,
+   "code": "6762",
+   "name": "TDK",
+   "nameEn": "TDK CORPORATION",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 43,
+   "industryRank": 6
+  },
+  {
+   "rank": 29,
+   "code": "6971",
+   "name": "교세라",
+   "nameEn": "KYOCERA CORPORATION",
+   "industry": "전자 장비 및 부품",
+   "kind": "trend",
+   "capRank": 55,
+   "industryRank": 6
+  },
+  {
+   "rank": 30,
+   "code": "6479",
+   "name": "미네베아",
+   "nameEn": "Minebea Mitsumi Inc",
+   "industry": "전자 장비 및 부품",
+   "kind": "quality",
+   "capRank": 144,
+   "industryRank": 6
+  },
+  {
+   "rank": 31,
+   "code": "285A",
+   "name": "키옥시아 홀딩스",
+   "nameEn": "Kioxia Holdings Corporation",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 5,
+   "industryRank": 7
+  },
+  {
+   "rank": 32,
+   "code": "6723",
+   "name": "르네사스 일렉트로닉스",
+   "nameEn": "Renesas Electronics Corp",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 39,
+   "industryRank": 7
+  },
+  {
+   "rank": 33,
+   "code": "4062",
+   "name": "이비덴",
+   "nameEn": "Ibiden Co Ltd",
+   "industry": "반도체",
+   "kind": "quality",
+   "capRank": 42,
+   "industryRank": 7
+  },
+  {
+   "rank": 34,
+   "code": "6963",
+   "name": "롬",
+   "nameEn": "ROHM COMPANY LIMITED",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 122,
+   "industryRank": 7
+  },
+  {
+   "rank": 35,
+   "code": "3436",
+   "name": "섬코",
+   "nameEn": "SUMCO CORPORATION",
+   "industry": "반도체",
+   "kind": "trend",
+   "capRank": 177,
+   "industryRank": 7
+  },
+  {
+   "rank": 36,
+   "code": "4519",
+   "name": "주가이제약",
+   "nameEn": "Chugai Pharmaceutical Co Ltd",
+   "industry": "제약",
+   "kind": "trend",
+   "capRank": 29,
+   "industryRank": 8
+  },
+  {
+   "rank": 37,
+   "code": "4502",
+   "name": "다케다 제약",
+   "nameEn": "Takeda Pharmaceutical Company Limited",
+   "industry": "제약",
+   "kind": "trend",
+   "capRank": 31,
+   "industryRank": 8
+  },
+  {
+   "rank": 38,
+   "code": "4578",
+   "name": "오츠카 홀딩스",
+   "nameEn": "Otsuka Holdings Co.  Ltd.",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 49,
+   "industryRank": 8
+  },
+  {
+   "rank": 39,
+   "code": "4568",
+   "name": "다이이찌산쿄",
+   "nameEn": "Daiichi Sankyo Co Ltd",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 59,
+   "industryRank": 8
+  },
+  {
+   "rank": 40,
+   "code": "4503",
+   "name": "아스텔라스제약",
+   "nameEn": "Astellas Pharma Inc.",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 69,
+   "industryRank": 8
+  },
+  {
+   "rank": 41,
+   "code": "9983",
+   "name": "패스트리테일링",
+   "nameEn": "FAST RETAILING CO.  LTD.",
+   "industry": "의류 및 액세서리 소매",
+   "kind": "quality",
+   "capRank": 10,
+   "industryRank": 9
+  },
+  {
+   "rank": 42,
+   "code": "3092",
+   "name": "스타트 투데이",
+   "nameEn": "ZOZO Inc",
+   "industry": "의류 및 액세서리 소매",
+   "kind": "quality",
+   "capRank": 220,
+   "industryRank": 9
+  },
+  {
+   "rank": 43,
+   "code": "2670",
+   "name": "ABC-마트",
+   "nameEn": "ABC-Mart Inc",
+   "industry": "의류 및 액세서리 소매",
+   "kind": "quality",
+   "capRank": 293,
+   "industryRank": 9
+  },
+  {
+   "rank": 44,
+   "code": "7564",
+   "name": "워크맨",
+   "nameEn": "Workman Co Ltd",
+   "industry": "의류 및 액세서리 소매",
+   "kind": "quality",
+   "capRank": 425,
+   "industryRank": 9
+  },
+  {
+   "rank": 45,
+   "code": "2726",
+   "name": "팔 그룹 홀딩스",
+   "nameEn": "PAL Group Holdings Co Ltd",
+   "industry": "의류 및 액세서리 소매",
+   "kind": "quality",
+   "capRank": 573,
+   "industryRank": 9
+  },
+  {
+   "rank": 46,
+   "code": "6098",
+   "name": "리쿠르트 홀딩스",
+   "nameEn": "Recruit Holdings Co Ltd",
+   "industry": "고용 서비스",
+   "kind": "quality",
+   "capRank": 9,
+   "industryRank": 10
+  },
+  {
+   "rank": 47,
+   "code": "4194",
+   "name": "비져널",
+   "nameEn": "Visional  Inc.",
+   "industry": "고용 서비스",
+   "kind": "quality",
+   "capRank": 485,
+   "industryRank": 10
+  },
+  {
+   "rank": 48,
+   "code": "9744",
+   "name": "메이텍 그룹 홀딩스",
+   "nameEn": "MEITEC Group Holdings Inc",
+   "industry": "고용 서비스",
+   "kind": "quality",
+   "capRank": 591,
+   "industryRank": 10
+  },
+  {
+   "rank": 49,
+   "code": "2154",
+   "name": "오픈 업 그룹",
+   "nameEn": "Open Up Group Inc",
+   "industry": "고용 서비스",
+   "kind": "quality",
+   "capRank": 747,
+   "industryRank": 10
+  },
+  {
+   "rank": 50,
+   "code": "2124",
+   "name": "제이에이씨리쿠르트먼트",
+   "nameEn": "JAC Recruitment Co Ltd",
+   "industry": "고용 서비스",
+   "kind": "quality",
+   "capRank": 753,
+   "industryRank": 10
+  },
+  {
+   "rank": 51,
+   "code": "5803",
+   "name": "후지쿠라",
+   "nameEn": "Fujikura Ltd.",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 28,
+   "industryRank": 11
+  },
+  {
+   "rank": 52,
+   "code": "6367",
+   "name": "다이킨공업",
+   "nameEn": "Daikin Industries Ltd",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 52,
+   "industryRank": 11
+  },
+  {
+   "rank": 53,
+   "code": "5801",
+   "name": "후루카와 전기공업",
+   "nameEn": "Furukawa Electric Co Ltd",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 86,
+   "industryRank": 11
+  },
+  {
+   "rank": 54,
+   "code": "6594",
+   "name": "니덱",
+   "nameEn": "NIDEC CORPORATION",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 102,
+   "industryRank": 11
+  },
+  {
+   "rank": 55,
+   "code": "6504",
+   "name": "후지전기",
+   "nameEn": "FUJI ELECTRIC CO.  LTD.",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 111,
+   "industryRank": 11
+  },
+  {
+   "rank": 56,
+   "code": "9412",
+   "name": "스카이 퍼펙트 JSAT",
+   "nameEn": "SKY Perfect JSAT Corporation",
+   "industry": "무선 통신 서비스",
+   "kind": "quality",
+   "capRank": 342,
+   "industryRank": 12
+  },
+  {
+   "rank": 57,
+   "code": "9436",
+   "name": "오키나와셀룰러전화",
+   "nameEn": "Okinawa Cellular Telephone Co",
+   "industry": "무선 통신 서비스",
+   "kind": "quality",
+   "capRank": 469,
+   "industryRank": 12
+  },
+  {
+   "rank": 58,
+   "code": "9434",
+   "name": "소프트뱅크",
+   "nameEn": "SoftBank Corp.",
+   "industry": "무선 통신 서비스",
+   "kind": "profit",
+   "capRank": 25,
+   "industryRank": 12
+  },
+  {
+   "rank": 59,
+   "code": "9433",
+   "name": "KDDI",
+   "nameEn": "KDDI CORPORATION",
+   "industry": "무선 통신 서비스",
+   "kind": "profit",
+   "capRank": 26,
+   "industryRank": 12
+  },
+  {
+   "rank": 60,
+   "code": "5135",
+   "name": "에어-유",
+   "nameEn": "AIR-U LTD.",
+   "industry": "무선 통신 서비스",
+   "kind": "profit",
+   "capRank": 1956,
+   "industryRank": 12
+  },
+  {
+   "rank": 61,
+   "code": "6702",
+   "name": "후지쯔",
+   "nameEn": "Fujitsu Limited",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 40,
+   "industryRank": 13
+  },
+  {
+   "rank": 62,
+   "code": "6701",
+   "name": "NEC",
+   "nameEn": "NEC Corporation",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 45,
+   "industryRank": 13
+  },
+  {
+   "rank": 63,
+   "code": "4307",
+   "name": "노무라종합연구소",
+   "nameEn": "Nomura Research Institute  Ltd.",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "trend",
+   "capRank": 92,
+   "industryRank": 13
+  },
+  {
+   "rank": 64,
+   "code": "4684",
+   "name": "오빅크",
+   "nameEn": "Obic Co Ltd",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 99,
+   "industryRank": 13
+  },
+  {
+   "rank": 65,
+   "code": "4768",
+   "name": "오쓰카",
+   "nameEn": "Otsuka Corp",
+   "industry": "IT 서비스 및 컨설팅",
+   "kind": "quality",
+   "capRank": 159,
+   "industryRank": 13
+  },
+  {
+   "rank": 66,
+   "code": "6954",
+   "name": "화낙",
+   "nameEn": "Fanuc Corp",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 53,
+   "industryRank": 14
+  },
+  {
+   "rank": 67,
+   "code": "6273",
+   "name": "에스엠씨",
+   "nameEn": "SMC Corp",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 63,
+   "industryRank": 14
+  },
+  {
+   "rank": 68,
+   "code": "7013",
+   "name": "IHI",
+   "nameEn": "IHI Corporation",
+   "industry": "산업용 기계 및 장비",
+   "kind": "trend",
+   "capRank": 89,
+   "industryRank": 14
+  },
+  {
+   "rank": 69,
+   "code": "6361",
+   "name": "에바라",
+   "nameEn": "EBARA CORPORATION",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 116,
+   "industryRank": 14
+  },
+  {
+   "rank": 70,
+   "code": "5333",
+   "name": "NGK",
+   "nameEn": "NGK Corporation",
+   "industry": "산업용 기계 및 장비",
+   "kind": "quality",
+   "capRank": 142,
+   "industryRank": 14
+  },
+  {
+   "rank": 71,
+   "code": "5802",
+   "name": "스미토모전기공업",
+   "nameEn": "Sumitomo Electric Industries  Ltd.",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 35,
+   "industryRank": 15
+  },
+  {
+   "rank": 72,
+   "code": "6902",
+   "name": "덴소",
+   "nameEn": "DENSO CORPORATION",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 56,
+   "industryRank": 15
+  },
+  {
+   "rank": 73,
+   "code": "7259",
+   "name": "아이신",
+   "nameEn": "AISIN CORPORATION",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 146,
+   "industryRank": 15
+  },
+  {
+   "rank": 74,
+   "code": "5334",
+   "name": "니테라",
+   "nameEn": "Niterra Co.  Ltd.",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 150,
+   "industryRank": 15
+  },
+  {
+   "rank": 75,
+   "code": "5991",
+   "name": "NHK 스프링",
+   "nameEn": "NHK SPRING CO.  LTD.",
+   "industry": "자동차, 트럭 및 오토바이 부품",
+   "kind": "quality",
+   "capRank": 233,
+   "industryRank": 15
+  },
+  {
+   "rank": 76,
+   "code": "4063",
+   "name": "신에츠화학",
+   "nameEn": "Shin-Etsu Chemical Co.  Ltd.",
+   "industry": "다각적 화학 산업",
+   "kind": "quality",
+   "capRank": 22,
+   "industryRank": 16
+  },
+  {
+   "rank": 77,
+   "code": "3407",
+   "name": "아사히카세이",
+   "nameEn": "ASAHI KASEI CORPORATION",
+   "industry": "다각적 화학 산업",
+   "kind": "quality",
+   "capRank": 112,
+   "industryRank": 16
+  },
+  {
+   "rank": 78,
+   "code": "4021",
+   "name": "닛산화학공업",
+   "nameEn": "Nissan Chemical Corp",
+   "industry": "다각적 화학 산업",
+   "kind": "quality",
+   "capRank": 188,
+   "industryRank": 16
+  },
+  {
+   "rank": 79,
+   "code": "4042",
+   "name": "토소",
+   "nameEn": "Tosoh Corp",
+   "industry": "다각적 화학 산업",
+   "kind": "quality",
+   "capRank": 239,
+   "industryRank": 16
+  },
+  {
+   "rank": 80,
+   "code": "4118",
+   "name": "가네카",
+   "nameEn": "Kaneka Corp",
+   "industry": "다각적 화학 산업",
+   "kind": "quality",
+   "capRank": 463,
+   "industryRank": 16
+  },
+  {
+   "rank": 81,
+   "code": "8750",
+   "name": "다이이치 라이프 그룹",
+   "nameEn": "Daiichi Life Group  Inc.",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 46,
+   "industryRank": 17
+  },
+  {
+   "rank": 82,
+   "code": "8795",
+   "name": "T&D 홀딩스",
+   "nameEn": "T&D Holdings  Inc.",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 106,
+   "industryRank": 17
+  },
+  {
+   "rank": 83,
+   "code": "8729",
+   "name": "소니 파이낸셜 그룹",
+   "nameEn": "Sony Financial Group Inc",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 216,
+   "industryRank": 17
+  },
+  {
+   "rank": 84,
+   "code": "7157",
+   "name": "라이프넷 보험",
+   "nameEn": "LIFENET INSURANCE COMPANY",
+   "industry": "생명 및 건강 보험",
+   "kind": "quality",
+   "capRank": 932,
+   "industryRank": 17
+  },
+  {
+   "rank": 85,
+   "code": "6178",
+   "name": "일본우정",
+   "nameEn": "Japan Post Holdings Co Ltd",
+   "industry": "생명 및 건강 보험",
+   "kind": "profit",
+   "capRank": 44,
+   "industryRank": 17
+  },
+  {
+   "rank": 86,
+   "code": "9416",
+   "name": "비젼",
+   "nameEn": "Vision Inc",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 1390,
+   "industryRank": 18
+  },
+  {
+   "rank": 87,
+   "code": "4390",
+   "name": "IPS",
+   "nameEn": "IPS Inc",
+   "industry": "통합 통신 서비스",
+   "kind": "quality",
+   "capRank": 1474,
+   "industryRank": 18
+  },
+  {
+   "rank": 88,
+   "code": "9432",
+   "name": "NTT",
+   "nameEn": "NTT  Inc.",
+   "industry": "통합 통신 서비스",
+   "kind": "profit",
+   "capRank": 17,
+   "industryRank": 18
+  },
+  {
+   "rank": 89,
+   "code": "3774",
+   "name": "인터넷 이니셔티브 재팬",
+   "nameEn": "Internet Initiative Japan Inc",
+   "industry": "통합 통신 서비스",
+   "kind": "profit",
+   "capRank": 315,
+   "industryRank": 18
+  },
+  {
+   "rank": 90,
+   "code": "9418",
+   "name": "U-넥스트 홀딩스",
+   "nameEn": "U-Next Holdings Co Ltd",
+   "industry": "통합 통신 서비스",
+   "kind": "profit",
+   "capRank": 519,
+   "industryRank": 18
+  },
+  {
+   "rank": 91,
+   "code": "7741",
+   "name": "호야",
+   "nameEn": "HOYA CORPORATION",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 32,
+   "industryRank": 19
+  },
+  {
+   "rank": 92,
+   "code": "4543",
+   "name": "테루모",
+   "nameEn": "TERUMO CORPORATION",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 78,
+   "industryRank": 19
+  },
+  {
+   "rank": 93,
+   "code": "6869",
+   "name": "시스멕스",
+   "nameEn": "SYSMEX CORPORATION",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 198,
+   "industryRank": 19
+  },
+  {
+   "rank": 94,
+   "code": "7747",
+   "name": "아사히 인텍",
+   "nameEn": "ASAHI INTECC CO.  LTD.",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "quality",
+   "capRank": 232,
+   "industryRank": 19
+  },
+  {
+   "rank": 95,
+   "code": "2784",
+   "name": "알프레사 홀딩스",
+   "nameEn": "Alfresa Holdings Corp",
+   "industry": "의료 장비, 물품 및 유통",
+   "kind": "trend",
+   "capRank": 424,
+   "industryRank": 19
+  },
+  {
+   "rank": 96,
+   "code": "7974",
+   "name": "닌텐도",
+   "nameEn": "Nintendo Co.  Ltd.",
+   "industry": "장난감 및 어린이 제품",
+   "kind": "quality",
+   "capRank": 30,
+   "industryRank": 20
+  },
+  {
+   "rank": 97,
+   "code": "7832",
+   "name": "반다이남코 홀딩스",
+   "nameEn": "Bandai Namco Holdings Inc",
+   "industry": "장난감 및 어린이 제품",
+   "kind": "quality",
+   "capRank": 74,
+   "industryRank": 20
+  },
+  {
+   "rank": 98,
+   "code": "7867",
+   "name": "타카라토미",
+   "nameEn": "Tomy Co Ltd",
+   "industry": "장난감 및 어린이 제품",
+   "kind": "quality",
+   "capRank": 457,
+   "industryRank": 20
+  },
+  {
+   "rank": 99,
+   "code": "7552",
+   "name": "해피넷",
+   "nameEn": "Happinet Corp",
+   "industry": "장난감 및 어린이 제품",
+   "kind": "quality",
+   "capRank": 597,
+   "industryRank": 20
+  },
+  {
+   "rank": 100,
+   "code": "6238",
+   "name": "후류",
+   "nameEn": "FuRyu Corp",
+   "industry": "장난감 및 어린이 제품",
+   "kind": "quality",
+   "capRank": 1540,
+   "industryRank": 20
+  },
+  {
+   "rank": 101,
+   "code": "6952",
+   "name": "카시오 컴퓨터",
+   "nameEn": "Casio Computer Co Ltd",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 369,
+   "industryRank": 21
+  },
+  {
+   "rank": 102,
+   "code": "7740",
+   "name": "탐론",
+   "nameEn": "Tamron Co Ltd",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 578,
+   "industryRank": 21
+  },
+  {
+   "rank": 103,
+   "code": "6794",
+   "name": "포스터 전기",
+   "nameEn": "Foster Electric Co Ltd",
+   "industry": "가정용 전자 제품",
+   "kind": "quality",
+   "capRank": 1080,
+   "industryRank": 21
+  },
+  {
+   "rank": 104,
+   "code": "6752",
+   "name": "파나소닉 홀딩스",
+   "nameEn": "Panasonic Holdings Corporation",
+   "industry": "가정용 전자 제품",
+   "kind": "profit",
+   "capRank": 24,
+   "industryRank": 21
+  },
+  {
+   "rank": 105,
+   "code": "6753",
+   "name": "샤프",
+   "nameEn": "Sharp Corp",
+   "industry": "가정용 전자 제품",
+   "kind": "profit",
+   "capRank": 438,
+   "industryRank": 21
+  },
+  {
+   "rank": 106,
+   "code": "6301",
+   "name": "코마츠",
+   "nameEn": "KOMATSU LTD.",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 37,
+   "industryRank": 22
+  },
+  {
+   "rank": 107,
+   "code": "6326",
+   "name": "구보다",
+   "nameEn": "KUBOTA CORPORATION",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 85,
+   "industryRank": 22
+  },
+  {
+   "rank": 108,
+   "code": "6305",
+   "name": "히타치건설기계",
+   "nameEn": "Hitachi Construction Machinery Co Ltd",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 182,
+   "industryRank": 22
+  },
+  {
+   "rank": 109,
+   "code": "6432",
+   "name": "다케우치제작소",
+   "nameEn": "Takeuchi Mfg. Co.  Ltd.",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 476,
+   "industryRank": 22
+  },
+  {
+   "rank": 110,
+   "code": "6250",
+   "name": "야마비코",
+   "nameEn": "Yamabiko Corp",
+   "industry": "중장비 및 차량",
+   "kind": "quality",
+   "capRank": 696,
+   "industryRank": 22
+  },
+  {
+   "rank": 111,
+   "code": "7751",
+   "name": "캐논",
+   "nameEn": "CANON INC.",
+   "industry": "사무기기",
+   "kind": "quality",
+   "capRank": 51,
+   "industryRank": 23
+  },
+  {
+   "rank": 112,
+   "code": "7701",
+   "name": "시마츠",
+   "nameEn": "Shimadzu Corporation",
+   "industry": "사무기기",
+   "kind": "quality",
+   "capRank": 185,
+   "industryRank": 23
+  },
+  {
+   "rank": 113,
+   "code": "6448",
+   "name": "브라더 인더스트리",
+   "nameEn": "BROTHER INDUSTRIES  LTD.",
+   "industry": "사무기기",
+   "kind": "quality",
+   "capRank": 194,
+   "industryRank": 23
+  },
+  {
+   "rank": 114,
+   "code": "8060",
+   "name": "캐논 마케팅 재팬",
+   "nameEn": "Canon Marketing Japan Inc",
+   "industry": "사무기기",
+   "kind": "quality",
+   "capRank": 247,
+   "industryRank": 23
+  },
+  {
+   "rank": 115,
+   "code": "6951",
+   "name": "지올",
+   "nameEn": "JEOL Ltd.",
+   "industry": "사무기기",
+   "kind": "quality",
+   "capRank": 433,
+   "industryRank": 23
+  },
+  {
+   "rank": 116,
+   "code": "2802",
+   "name": "아지노모토",
+   "nameEn": "Ajinomoto Co.  Inc.",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 57,
+   "industryRank": 24
+  },
+  {
+   "rank": 117,
+   "code": "2801",
+   "name": "깃코만",
+   "nameEn": "Kikkoman Corp",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 143,
+   "industryRank": 24
+  },
+  {
+   "rank": 118,
+   "code": "2875",
+   "name": "도요 수산",
+   "nameEn": "Toyo Suisan Kaisha Ltd",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 203,
+   "industryRank": 24
+  },
+  {
+   "rank": 119,
+   "code": "2897",
+   "name": "닛신식품 홀딩스",
+   "nameEn": "Nissin Foods Holdings Co Ltd",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 242,
+   "industryRank": 24
+  },
+  {
+   "rank": 120,
+   "code": "2267",
+   "name": "야쿠르트혼샤",
+   "nameEn": "Yakult Honsha Co Ltd",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 250,
+   "industryRank": 24
+  },
+  {
+   "rank": 121,
+   "code": "4689",
+   "name": "LY 주식회사",
+   "nameEn": "LY Corp",
+   "industry": "온라인 서비스",
+   "kind": "trend",
+   "capRank": 81,
+   "industryRank": 25
+  },
+  {
+   "rank": 122,
+   "code": "3659",
+   "name": "넥슨 재팬",
+   "nameEn": "NEXON Co.  Ltd.",
+   "industry": "온라인 서비스",
+   "kind": "quality",
+   "capRank": 125,
+   "industryRank": 25
+  },
+  {
+   "rank": 123,
+   "code": "4755",
+   "name": "라쿠텐 그룹",
+   "nameEn": "Rakuten Group  Inc.",
+   "industry": "온라인 서비스",
+   "kind": "trend",
+   "capRank": 163,
+   "industryRank": 25
+  },
+  {
+   "rank": 124,
+   "code": "2413",
+   "name": "엠쓰리",
+   "nameEn": "M3 Inc",
+   "industry": "온라인 서비스",
+   "kind": "quality",
+   "capRank": 183,
+   "industryRank": 25
+  },
+  {
+   "rank": 125,
+   "code": "9684",
+   "name": "스퀘어 에닉스 홀딩스",
+   "nameEn": "SQUARE ENIX HOLDINGS CO.  LTD.",
+   "industry": "온라인 서비스",
+   "kind": "quality",
+   "capRank": 213,
+   "industryRank": 25
+  },
+  {
+   "rank": 126,
+   "code": "4901",
+   "name": "후지필름 홀딩스",
+   "nameEn": "FUJIFILM Holdings Corporation",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 67,
+   "industryRank": 26
+  },
+  {
+   "rank": 127,
+   "code": "6988",
+   "name": "니토덴코",
+   "nameEn": "NITTO DENKO CORPORATION",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 104,
+   "industryRank": 26
+  },
+  {
+   "rank": 128,
+   "code": "4186",
+   "name": "도쿄오카공업",
+   "nameEn": "TOKYO OHKA KOGYO CO.  LTD.",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 192,
+   "industryRank": 26
+  },
+  {
+   "rank": 129,
+   "code": "4626",
+   "name": "다이요 홀딩스",
+   "nameEn": "Taiyo Holdings Co Ltd",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 348,
+   "industryRank": 26
+  },
+  {
+   "rank": 130,
+   "code": "7966",
+   "name": "린텍",
+   "nameEn": "LINTEC Corporation",
+   "industry": "특수 화학제",
+   "kind": "quality",
+   "capRank": 421,
+   "industryRank": 26
+  },
+  {
+   "rank": 131,
+   "code": "9766",
+   "name": "코나미 그룹",
+   "nameEn": "KONAMI GROUP CORPORATION",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 83,
+   "industryRank": 27
+  },
+  {
+   "rank": 132,
+   "code": "9697",
+   "name": "캡콤",
+   "nameEn": "Capcom Co Ltd",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 109,
+   "industryRank": 27
+  },
+  {
+   "rank": 133,
+   "code": "4716",
+   "name": "오라클 재팬",
+   "nameEn": "Oracle Corp Japan",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 181,
+   "industryRank": 27
+  },
+  {
+   "rank": 134,
+   "code": "4704",
+   "name": "트렌드마이크로",
+   "nameEn": "Trend Micro Incorporated",
+   "industry": "소프트웨어",
+   "kind": "trend",
+   "capRank": 222,
+   "industryRank": 27
+  },
+  {
+   "rank": 135,
+   "code": "4733",
+   "name": "오빅비즈니스",
+   "nameEn": "Obic Business Consultants Co Ltd",
+   "industry": "소프트웨어",
+   "kind": "quality",
+   "capRank": 321,
+   "industryRank": 27
+  },
+  {
+   "rank": 136,
+   "code": "8604",
+   "name": "노무라 홀딩스",
+   "nameEn": "Nomura Holdings  Inc.",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 62,
+   "industryRank": 28
+  },
+  {
+   "rank": 137,
+   "code": "8601",
+   "name": "다이와증권그룹",
+   "nameEn": "Daiwa Securities Group Inc",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 97,
+   "industryRank": 28
+  },
+  {
+   "rank": 138,
+   "code": "8628",
+   "name": "마쓰이 증권",
+   "nameEn": "MATSUI SECURITIES CO.  LTD.",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 546,
+   "industryRank": 28
+  },
+  {
+   "rank": 139,
+   "code": "8609",
+   "name": "오카산 증권 그룹",
+   "nameEn": "OKASAN SECURITIES GROUP INC.",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 557,
+   "industryRank": 28
+  },
+  {
+   "rank": 140,
+   "code": "8616",
+   "name": "도카이 도쿄 파이낸셜 홀딩스",
+   "nameEn": "Tokai Tokyo Financial Holdings  Inc.",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 629,
+   "industryRank": 28
+  },
+  {
+   "rank": 141,
+   "code": "9101",
+   "name": "NYK 라인",
+   "nameEn": "Nippon Yusen Kabushiki Kaisha",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 95,
+   "industryRank": 29
+  },
+  {
+   "rank": 142,
+   "code": "9104",
+   "name": "미쓰이상선",
+   "nameEn": "Mitsui O.s.k. Lines  Ltd",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 98,
+   "industryRank": 29
+  },
+  {
+   "rank": 143,
+   "code": "9107",
+   "name": "가와사키기선",
+   "nameEn": "Kawasaki Kisen Kaisha Ltd",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 131,
+   "industryRank": 29
+  },
+  {
+   "rank": 144,
+   "code": "9110",
+   "name": "신와 해운회사",
+   "nameEn": "NS United Kaiun Kaisha Ltd",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 592,
+   "industryRank": 29
+  },
+  {
+   "rank": 145,
+   "code": "9119",
+   "name": "이노 해운",
+   "nameEn": "Iino Kaiun Kaisha Ltd",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 746,
+   "industryRank": 29
+  },
+  {
+   "rank": 146,
+   "code": "5108",
+   "name": "브리지스톤",
+   "nameEn": "BRIDGESTONE CORPORATION",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 60,
+   "industryRank": 30
+  },
+  {
+   "rank": 147,
+   "code": "5101",
+   "name": "요코하마고무",
+   "nameEn": "The Yokohama Rubber Company  Limited",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 186,
+   "industryRank": 30
+  },
+  {
+   "rank": 148,
+   "code": "5110",
+   "name": "스미토모고무공업",
+   "nameEn": "Sumitomo Rubber Industries  Ltd.",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 365,
+   "industryRank": 30
+  },
+  {
+   "rank": 149,
+   "code": "5121",
+   "name": "후지쿠라 컴포지트",
+   "nameEn": "Fujikura Composites Inc",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 1268,
+   "industryRank": 30
+  },
+  {
+   "rank": 150,
+   "code": "5105",
+   "name": "도요 고무공업",
+   "nameEn": "Toyo Tire Corporation",
+   "industry": "타이어 및 고무 제품",
+   "kind": "profit",
+   "capRank": 384,
+   "industryRank": 30
+  },
+  {
+   "rank": 151,
+   "code": "4612",
+   "name": "니폰 페인트 홀딩스",
+   "nameEn": "NIPPON PAINT HOLDINGS CO.  LTD.",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 93,
+   "industryRank": 31
+  },
+  {
+   "rank": 152,
+   "code": "4091",
+   "name": "다이요닛폰산소",
+   "nameEn": "NIPPON SANSO HOLDINGS CORPORATION",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 103,
+   "industryRank": 31
+  },
+  {
+   "rank": 153,
+   "code": "4203",
+   "name": "스미토모 베이크라이트",
+   "nameEn": "Sumitomo Bakelite Co Ltd",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 252,
+   "industryRank": 31
+  },
+  {
+   "rank": 154,
+   "code": "4403",
+   "name": "니치유",
+   "nameEn": "NOF Corp",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 341,
+   "industryRank": 31
+  },
+  {
+   "rank": 155,
+   "code": "8012",
+   "name": "나가세 산업",
+   "nameEn": "Nagase & Co Ltd",
+   "industry": "상품 화학",
+   "kind": "quality",
+   "capRank": 370,
+   "industryRank": 31
+  },
+  {
+   "rank": 156,
+   "code": "9503",
+   "name": "간사이전력",
+   "nameEn": "The Kansai Electric Power Company  Incorporated",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 88,
+   "industryRank": 32
+  },
+  {
+   "rank": 157,
+   "code": "9502",
+   "name": "주부전력",
+   "nameEn": "Chubu Electric Power Co Inc",
+   "industry": "전력 유틸리티",
+   "kind": "quality",
+   "capRank": 129,
+   "industryRank": 32
+  },
+  {
+   "rank": 158,
+   "code": "9501",
+   "name": "도쿄 전력 홀딩스",
+   "nameEn": "Tokyo Electric Power Company Holdings Inc",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 244,
+   "industryRank": 32
+  },
+  {
+   "rank": 159,
+   "code": "9513",
+   "name": "전원개발주식회사",
+   "nameEn": "Electric Power Development Co Ltd",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 289,
+   "industryRank": 32
+  },
+  {
+   "rank": 160,
+   "code": "9506",
+   "name": "도호쿠전력",
+   "nameEn": "Tohoku Electric Power Company  Incorporated",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 322,
+   "industryRank": 32
+  },
+  {
+   "rank": 161,
+   "code": "5016",
+   "name": "JX 어드밴스드 메탈스",
+   "nameEn": "JX Advanced Metals Corp",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 75,
+   "industryRank": 33
+  },
+  {
+   "rank": 162,
+   "code": "5706",
+   "name": "미쓰이금속",
+   "nameEn": "Mitsui Kinzoku Co Ltd",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 148,
+   "industryRank": 33
+  },
+  {
+   "rank": 163,
+   "code": "5714",
+   "name": "도와홀딩스",
+   "nameEn": "DOWA Holdings Co Ltd",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 363,
+   "industryRank": 33
+  },
+  {
+   "rank": 164,
+   "code": "1515",
+   "name": "니테츠광업",
+   "nameEn": "Nittetsu Mining Co Ltd",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 584,
+   "industryRank": 33
+  },
+  {
+   "rank": 165,
+   "code": "5715",
+   "name": "후루카와기계금속",
+   "nameEn": "Furukawa Co Ltd",
+   "industry": "특수 채굴 및 금속",
+   "kind": "quality",
+   "capRank": 885,
+   "industryRank": 33
+  },
+  {
+   "rank": 166,
+   "code": "4452",
+   "name": "가오",
+   "nameEn": "Kao Corporation",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 82,
+   "industryRank": 34
+  },
+  {
+   "rank": 167,
+   "code": "8113",
+   "name": "유니참",
+   "nameEn": "UNICHARM CORPORATION",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 140,
+   "industryRank": 34
+  },
+  {
+   "rank": 168,
+   "code": "7806",
+   "name": "MTG",
+   "nameEn": "MTG Co Ltd",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 498,
+   "industryRank": 34
+  },
+  {
+   "rank": 169,
+   "code": "4922",
+   "name": "코세 홀딩스",
+   "nameEn": "KOSE Holdings Corporation",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 513,
+   "industryRank": 34
+  },
+  {
+   "rank": 170,
+   "code": "4927",
+   "name": "폴라 오르비스 홀딩스",
+   "nameEn": "POLA ORBIS HOLDINGS INC.",
+   "industry": "개인 생활 필수 용품",
+   "kind": "quality",
+   "capRank": 529,
+   "industryRank": 34
+  },
+  {
+   "rank": 171,
+   "code": "1802",
+   "name": "오바야시",
+   "nameEn": "OBAYASHI CORPORATION",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 127,
+   "industryRank": 35
+  },
+  {
+   "rank": 172,
+   "code": "1944",
+   "name": "긴덴",
+   "nameEn": "KINDEN CORPORATION",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 199,
+   "industryRank": 35
+  },
+  {
+   "rank": 173,
+   "code": "1942",
+   "name": "간덴코",
+   "nameEn": "Kandenko Co Ltd",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 200,
+   "industryRank": 35
+  },
+  {
+   "rank": 174,
+   "code": "5393",
+   "name": "니치아스",
+   "nameEn": "Nichias Corp",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 287,
+   "industryRank": 35
+  },
+  {
+   "rank": 175,
+   "code": "1721",
+   "name": "콤시스홀딩스",
+   "nameEn": "Comsys Holdings Corp",
+   "industry": "건설 및 엔지니어링",
+   "kind": "quality",
+   "capRank": 304,
+   "industryRank": 35
+  },
+  {
+   "rank": 176,
+   "code": "4661",
+   "name": "오리엔탈랜드",
+   "nameEn": "ORIENTAL LAND CO.  LTD.",
+   "industry": "여가 및 오락시설",
+   "kind": "quality",
+   "capRank": 58,
+   "industryRank": 36
+  },
+  {
+   "rank": 177,
+   "code": "9010",
+   "name": "후지 급행",
+   "nameEn": "FUJI KYUKO CO.  LTD.",
+   "industry": "여가 및 오락시설",
+   "kind": "quality",
+   "capRank": 843,
+   "industryRank": 36
+  },
+  {
+   "rank": 178,
+   "code": "2157",
+   "name": "고시다카 홀딩스",
+   "nameEn": "Koshidaka Holdings Co Ltd",
+   "industry": "여가 및 오락시설",
+   "kind": "quality",
+   "capRank": 1088,
+   "industryRank": 36
+  },
+  {
+   "rank": 179,
+   "code": "7085",
+   "name": "커브스 홀딩스",
+   "nameEn": "Curves Holdings Co Ltd",
+   "industry": "여가 및 오락시설",
+   "kind": "quality",
+   "capRank": 1098,
+   "industryRank": 36
+  },
+  {
+   "rank": 180,
+   "code": "9726",
+   "name": "킨키 니폰 투어리스트",
+   "nameEn": "KNT-CT Holdings Co Ltd",
+   "industry": "여가 및 오락시설",
+   "kind": "quality",
+   "capRank": 1349,
+   "industryRank": 36
+  },
+  {
+   "rank": 181,
+   "code": "9735",
+   "name": "세콤",
+   "nameEn": "SECOM CO.  LTD.",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 90,
+   "industryRank": 37
+  },
+  {
+   "rank": 182,
+   "code": "6532",
+   "name": "베이커런트",
+   "nameEn": "BayCurrent Inc",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 187,
+   "industryRank": 37
+  },
+  {
+   "rank": 183,
+   "code": "2331",
+   "name": "ALSOK",
+   "nameEn": "ALSOK Co Ltd",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 339,
+   "industryRank": 37
+  },
+  {
+   "rank": 184,
+   "code": "6544",
+   "name": "재팬 엘리베이터 서비스 홀딩스",
+   "nameEn": "Japan Elevator Service Holdings Co Ltd",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 576,
+   "industryRank": 37
+  },
+  {
+   "rank": 185,
+   "code": "4483",
+   "name": "JMDC",
+   "nameEn": "JMDC Inc.",
+   "industry": "경영 지원 서비스",
+   "kind": "quality",
+   "capRank": 600,
+   "industryRank": 37
+  },
+  {
+   "rank": 186,
+   "code": "7453",
+   "name": "양품계획",
+   "nameEn": "RYOHIN KEIKAKU CO.  LTD.",
+   "industry": "백화점",
+   "kind": "quality",
+   "capRank": 100,
+   "industryRank": 38
+  },
+  {
+   "rank": 187,
+   "code": "3099",
+   "name": "이세탄 미쓰코시 홀딩스",
+   "nameEn": "Isetan Mitsukoshi Holdings Ltd.",
+   "industry": "백화점",
+   "kind": "quality",
+   "capRank": 180,
+   "industryRank": 38
+  },
+  {
+   "rank": 188,
+   "code": "3064",
+   "name": "모노타로",
+   "nameEn": "MonotaRO Co Ltd",
+   "industry": "백화점",
+   "kind": "quality",
+   "capRank": 210,
+   "industryRank": 38
+  },
+  {
+   "rank": 189,
+   "code": "8273",
+   "name": "이즈미",
+   "nameEn": "Izumi Co Ltd",
+   "industry": "백화점",
+   "kind": "quality",
+   "capRank": 679,
+   "industryRank": 38
+  },
+  {
+   "rank": 190,
+   "code": "9997",
+   "name": "벨루나",
+   "nameEn": "Belluna Co.  Ltd.",
+   "industry": "백화점",
+   "kind": "quality",
+   "capRank": 1017,
+   "industryRank": 38
+  },
+  {
+   "rank": 191,
+   "code": "9532",
+   "name": "오사카가스",
+   "nameEn": "OSAKA GAS CO.  LTD.",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 118,
+   "industryRank": 39
+  },
+  {
+   "rank": 192,
+   "code": "9531",
+   "name": "도쿄가스",
+   "nameEn": "Tokyo Gas Co Ltd",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 128,
+   "industryRank": 39
+  },
+  {
+   "rank": 193,
+   "code": "9533",
+   "name": "토호 가스",
+   "nameEn": "TOHO GAS CO.  LTD.",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 412,
+   "industryRank": 39
+  },
+  {
+   "rank": 194,
+   "code": "8174",
+   "name": "니폰 가스",
+   "nameEn": "Nippon Gas Co Ltd",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 535,
+   "industryRank": 39
+  },
+  {
+   "rank": 195,
+   "code": "1663",
+   "name": "케이앤오 에너지그룹",
+   "nameEn": "K&O Energy Group Inc",
+   "industry": "천연가스 유틸리티",
+   "kind": "quality",
+   "capRank": 981,
+   "industryRank": 39
+  },
+  {
+   "rank": 196,
+   "code": "9022",
+   "name": "도카이여객철도",
+   "nameEn": "Central Japan Railway Co",
+   "industry": "지상 및 해상 여객 운송",
+   "kind": "quality",
+   "capRank": 76,
+   "industryRank": 40
+  },
+  {
+   "rank": 197,
+   "code": "9009",
+   "name": "게이세이전철",
+   "nameEn": "Keisei Electric Railway Co.  Ltd.",
+   "industry": "지상 및 해상 여객 운송",
+   "kind": "quality",
+   "capRank": 305,
+   "industryRank": 40
+  },
+  {
+   "rank": 198,
+   "code": "9142",
+   "name": "큐슈레일웨이",
+   "nameEn": "Kyushu Railway Co",
+   "industry": "지상 및 해상 여객 운송",
+   "kind": "quality",
+   "capRank": 371,
+   "industryRank": 40
+  },
+  {
+   "rank": 199,
+   "code": "9052",
+   "name": "산요전기철도",
+   "nameEn": "Sanyo Electric Railway Co Ltd",
+   "industry": "지상 및 해상 여객 운송",
+   "kind": "quality",
+   "capRank": 1510,
+   "industryRank": 40
+  },
+  {
+   "rank": 200,
+   "code": "9083",
+   "name": "신키 버스",
+   "nameEn": "Shinki Bus Co Ltd",
+   "industry": "지상 및 해상 여객 운송",
+   "kind": "quality",
+   "capRank": 1891,
+   "industryRank": 40
+  },
+  {
+   "rank": 201,
+   "code": "1928",
+   "name": "세키스이하우스",
+   "nameEn": "Sekisui House  Ltd.",
+   "industry": "주택 건설",
+   "kind": "quality",
+   "capRank": 120,
+   "industryRank": 41
+  },
+  {
+   "rank": 202,
+   "code": "4204",
+   "name": "세키스이화학공업",
+   "nameEn": "Sekisui Chemical Co.  Ltd.",
+   "industry": "주택 건설",
+   "kind": "quality",
+   "capRank": 214,
+   "industryRank": 41
+  },
+  {
+   "rank": 203,
+   "code": "1911",
+   "name": "스미토모임업",
+   "nameEn": "Sumitomo Forestry Co.  Ltd.",
+   "industry": "주택 건설",
+   "kind": "quality",
+   "capRank": 278,
+   "industryRank": 41
+  },
+  {
+   "rank": 204,
+   "code": "1766",
+   "name": "도켄 코퍼레이션",
+   "nameEn": "Token Corp",
+   "industry": "주택 건설",
+   "kind": "quality",
+   "capRank": 758,
+   "industryRank": 41
+  },
+  {
+   "rank": 205,
+   "code": "9663",
+   "name": "나가와",
+   "nameEn": "Nagawa Co Ltd",
+   "industry": "주택 건설",
+   "kind": "quality",
+   "capRank": 1147,
+   "industryRank": 41
+  },
+  {
+   "rank": 206,
+   "code": "8593",
+   "name": "미쓰비시 HC 캐피탈",
+   "nameEn": "Mitsubishi HC Capital Inc",
+   "industry": "기업 금융 서비스",
+   "kind": "quality",
+   "capRank": 132,
+   "industryRank": 42
+  },
+  {
+   "rank": 207,
+   "code": "8439",
+   "name": "센츄리리싱시스템",
+   "nameEn": "Tokyo Century Corporation",
+   "industry": "기업 금융 서비스",
+   "kind": "quality",
+   "capRank": 175,
+   "industryRank": 42
+  },
+  {
+   "rank": 208,
+   "code": "8425",
+   "name": "미즈호 리싱 컴퍼니",
+   "nameEn": "Mizuho Leasing Company  Ltd",
+   "industry": "기업 금융 서비스",
+   "kind": "quality",
+   "capRank": 490,
+   "industryRank": 42
+  },
+  {
+   "rank": 209,
+   "code": "8566",
+   "name": "리코 리싱 컴퍼니",
+   "nameEn": "RICOH LEASING COMPANY LTD.",
+   "industry": "기업 금융 서비스",
+   "kind": "quality",
+   "capRank": 691,
+   "industryRank": 42
+  },
+  {
+   "rank": 210,
+   "code": "8511",
+   "name": "일본 증권 금융",
+   "nameEn": "JAPAN SECURITIES FINANCE CO.  LTD.",
+   "industry": "기업 금융 서비스",
+   "kind": "quality",
+   "capRank": 715,
+   "industryRank": 42
+  },
+  {
+   "rank": 211,
+   "code": "6383",
+   "name": "다이후쿠",
+   "nameEn": "DAIFUKU CO.  LTD.",
+   "industry": "중전기장비",
+   "kind": "trend",
+   "capRank": 115,
+   "industryRank": 43
+  },
+  {
+   "rank": 212,
+   "code": "6508",
+   "name": "메이덴샤",
+   "nameEn": "Meidensha Corp",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 352,
+   "industryRank": 43
+  },
+  {
+   "rank": 213,
+   "code": "6507",
+   "name": "신포니아 테크놀로지",
+   "nameEn": "Sinfonia Technology Co Ltd",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 422,
+   "industryRank": 43
+  },
+  {
+   "rank": 214,
+   "code": "6622",
+   "name": "다이헨",
+   "nameEn": "DAIHEN Corporation",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 482,
+   "industryRank": 43
+  },
+  {
+   "rank": 215,
+   "code": "5192",
+   "name": "미쓰보시 벨팅",
+   "nameEn": "Mitsuboshi Belting Ltd",
+   "industry": "중전기장비",
+   "kind": "quality",
+   "capRank": 900,
+   "industryRank": 43
+  },
+  {
+   "rank": 216,
+   "code": "7733",
+   "name": "올림푸스",
+   "nameEn": "OLYMPUS CORPORATION",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 114,
+   "industryRank": 44
+  },
+  {
+   "rank": 217,
+   "code": "6960",
+   "name": "후쿠다전자",
+   "nameEn": "FUKUDA DENSHI CO.  LTD.",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 416,
+   "industryRank": 44
+  },
+  {
+   "rank": 218,
+   "code": "6849",
+   "name": "니혼 고덴",
+   "nameEn": "NIHON KOHDEN CORPORATION",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 567,
+   "industryRank": 44
+  },
+  {
+   "rank": 219,
+   "code": "7779",
+   "name": "사이버다인",
+   "nameEn": "Cyberdyne Inc",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "trend",
+   "capRank": 1731,
+   "industryRank": 44
+  },
+  {
+   "rank": 220,
+   "code": "5592",
+   "name": "쿠수리노마도구치",
+   "nameEn": "Kusurinomadoguchi Inc",
+   "industry": "첨단 의료 장비 및 기술",
+   "kind": "quality",
+   "capRank": 1759,
+   "industryRank": 44
+  },
+  {
+   "rank": 221,
+   "code": "8952",
+   "name": "재팬리얼에스테이트투자법인",
+   "nameEn": "Japan Real Estate Investment Corporation",
+   "industry": "상업용 REITs",
+   "kind": "quality",
+   "capRank": 264,
+   "industryRank": 45
+  },
+  {
+   "rank": 222,
+   "code": "3283",
+   "name": "닛폰 프롤로지스 리츠",
+   "nameEn": "Nippon Prologis REIT  Inc.",
+   "industry": "상업용 REITs",
+   "kind": "quality",
+   "capRank": 302,
+   "industryRank": 45
+  },
+  {
+   "rank": 223,
+   "code": "3281",
+   "name": "GLP J-리츠",
+   "nameEn": "GLP J-REIT",
+   "industry": "상업용 REITs",
+   "kind": "quality",
+   "capRank": 332,
+   "industryRank": 45
+  },
+  {
+   "rank": 224,
+   "code": "8954",
+   "name": "오릭스 제이리츠",
+   "nameEn": "Orix JREIT Inc",
+   "industry": "상업용 REITs",
+   "kind": "quality",
+   "capRank": 385,
+   "industryRank": 45
+  },
+  {
+   "rank": 225,
+   "code": "8955",
+   "name": "재팬 프라임 리얼티 투자법인",
+   "nameEn": "Japan Prime Realty Investment Corporation",
+   "industry": "상업용 REITs",
+   "kind": "quality",
+   "capRank": 491,
+   "industryRank": 45
+  },
+  {
+   "rank": 226,
+   "code": "9143",
+   "name": "SG 홀딩스",
+   "nameEn": "SG Holdings Co Ltd",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 231,
+   "industryRank": 46
+  },
+  {
+   "rank": 227,
+   "code": "9301",
+   "name": "미쓰비시물류",
+   "nameEn": "Mitsubishi Logistics Corporation",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 368,
+   "industryRank": 46
+  },
+  {
+   "rank": 228,
+   "code": "9364",
+   "name": "가미구미",
+   "nameEn": "Kamigumi Co.  Ltd.",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 381,
+   "industryRank": 46
+  },
+  {
+   "rank": 229,
+   "code": "9076",
+   "name": "세이노 홀딩스",
+   "nameEn": "Seino Holdings Co Ltd",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 391,
+   "industryRank": 46
+  },
+  {
+   "rank": 230,
+   "code": "9065",
+   "name": "산큐",
+   "nameEn": "SANKYU INC.",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "quality",
+   "capRank": 431,
+   "industryRank": 46
+  },
+  {
+   "rank": 231,
+   "code": "5406",
+   "name": "고베제강",
+   "nameEn": "Kobe Steel  Ltd.",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 254,
+   "industryRank": 47
+  },
+  {
+   "rank": 232,
+   "code": "5444",
+   "name": "야마토 공업",
+   "nameEn": "YAMATO KOGYO CO.  LTD.",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 263,
+   "industryRank": 47
+  },
+  {
+   "rank": 233,
+   "code": "5471",
+   "name": "다이도 특수강",
+   "nameEn": "Daido Steel Co.  Ltd.",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 350,
+   "industryRank": 47
+  },
+  {
+   "rank": 234,
+   "code": "5463",
+   "name": "마루이치 강관",
+   "nameEn": "Maruichi Steel Tube Ltd",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 427,
+   "industryRank": 47
+  },
+  {
+   "rank": 235,
+   "code": "5451",
+   "name": "요도코",
+   "nameEn": "Yodoko Ltd",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 649,
+   "industryRank": 47
+  },
+  {
+   "rank": 236,
+   "code": "8572",
+   "name": "아콤",
+   "nameEn": "Acom Co Ltd",
+   "industry": "소비자 대출",
+   "kind": "quality",
+   "capRank": 286,
+   "industryRank": 48
+  },
+  {
+   "rank": 237,
+   "code": "8253",
+   "name": "크레디트 세종",
+   "nameEn": "Credit Saison Co.  Ltd.",
+   "industry": "소비자 대출",
+   "kind": "quality",
+   "capRank": 292,
+   "industryRank": 48
+  },
+  {
+   "rank": 238,
+   "code": "8252",
+   "name": "마루이그룹",
+   "nameEn": "MARUI GROUP CO.  LTD.",
+   "industry": "소비자 대출",
+   "kind": "quality",
+   "capRank": 377,
+   "industryRank": 48
+  },
+  {
+   "rank": 239,
+   "code": "7164",
+   "name": "젠코쿠 호쇼",
+   "nameEn": "Zenkoku Hosho Co Ltd",
+   "industry": "소비자 대출",
+   "kind": "quality",
+   "capRank": 435,
+   "industryRank": 48
+  },
+  {
+   "rank": 240,
+   "code": "8570",
+   "name": "이온크레디트서비스",
+   "nameEn": "Aeon Financial Service Co Ltd",
+   "industry": "소비자 대출",
+   "kind": "quality",
+   "capRank": 514,
+   "industryRank": 48
+  },
+  {
+   "rank": 241,
+   "code": "3088",
+   "name": "마츠키요코코카라 & 코",
+   "nameEn": "MatsukiyoCocokara & Co.",
+   "industry": "의약품 소매",
+   "kind": "quality",
+   "capRank": 217,
+   "industryRank": 49
+  },
+  {
+   "rank": 242,
+   "code": "3349",
+   "name": "코스모스 약품",
+   "nameEn": "Cosmos Pharmaceutical Corp",
+   "industry": "의약품 소매",
+   "kind": "quality",
+   "capRank": 375,
+   "industryRank": 49
+  },
+  {
+   "rank": 243,
+   "code": "7649",
+   "name": "수기 홀딩스",
+   "nameEn": "Sugi Holdings Co Ltd",
+   "industry": "의약품 소매",
+   "kind": "quality",
+   "capRank": 394,
+   "industryRank": 49
+  },
+  {
+   "rank": 244,
+   "code": "9989",
+   "name": "선드럭",
+   "nameEn": "Sundrug Co Ltd",
+   "industry": "의약품 소매",
+   "kind": "quality",
+   "capRank": 426,
+   "industryRank": 49
+  },
+  {
+   "rank": 245,
+   "code": "3148",
+   "name": "크리에이트SD홀딩스",
+   "nameEn": "Create SD Holdings Co Ltd",
+   "industry": "의약품 소매",
+   "kind": "quality",
+   "capRank": 658,
+   "industryRank": 49
+  },
+  {
+   "rank": 246,
+   "code": "9602",
+   "name": "토호",
+   "nameEn": "TOHO CO.  LTD.",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 174,
+   "industryRank": 50
+  },
+  {
+   "rank": 247,
+   "code": "4816",
+   "name": "도에이애니메이션",
+   "nameEn": "Toei Animation Co Ltd",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 335,
+   "industryRank": 50
+  },
+  {
+   "rank": 248,
+   "code": "9605",
+   "name": "토에이",
+   "nameEn": "TOEI COMPANY  LTD.",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 423,
+   "industryRank": 50
+  },
+  {
+   "rank": 249,
+   "code": "7458",
+   "name": "다이이치코쇼",
+   "nameEn": "Daiichikosho Co Ltd",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 739,
+   "industryRank": 50
+  },
+  {
+   "rank": 250,
+   "code": "5253",
+   "name": "커버",
+   "nameEn": "Cover Corp",
+   "industry": "엔터테인먼트 제작",
+   "kind": "quality",
+   "capRank": 1011,
+   "industryRank": 50
+  },
+  {
+   "rank": 251,
+   "code": "8972",
+   "name": "KDX 리얼티 인베스트먼트",
+   "nameEn": "KDX Realty Investment Corp",
+   "industry": "복합부동산 REITs",
+   "kind": "quality",
+   "capRank": 343,
+   "industryRank": 51
+  },
+  {
+   "rank": 252,
+   "code": "8984",
+   "name": "다이와 하우스 리츠 투자",
+   "nameEn": "Daiwa House REIT Investment Corp",
+   "industry": "복합부동산 REITs",
+   "kind": "quality",
+   "capRank": 389,
+   "industryRank": 51
+  },
+  {
+   "rank": 253,
+   "code": "8960",
+   "name": "유나이티드 어반 투자법인",
+   "nameEn": "United Urban Investment Corporation",
+   "industry": "복합부동산 REITs",
+   "kind": "quality",
+   "capRank": 395,
+   "industryRank": 51
+  },
+  {
+   "rank": 254,
+   "code": "8963",
+   "name": "인빈서블 투자법인",
+   "nameEn": "Invincible Investment Corporation",
+   "industry": "복합부동산 REITs",
+   "kind": "quality",
+   "capRank": 415,
+   "industryRank": 51
+  },
+  {
+   "rank": 255,
+   "code": "3309",
+   "name": "세키스이 하우스 리츠",
+   "nameEn": "Sekisui House Reit  Inc.",
+   "industry": "복합부동산 REITs",
+   "kind": "quality",
+   "capRank": 552,
+   "industryRank": 51
+  },
+  {
+   "rank": 256,
+   "code": "5332",
+   "name": "토토",
+   "nameEn": "TOTO Ltd",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 211,
+   "industryRank": 52
+  },
+  {
+   "rank": 257,
+   "code": "5929",
+   "name": "산와홀딩스",
+   "nameEn": "Sanwa Holdings Corporation",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 268,
+   "industryRank": 52
+  },
+  {
+   "rank": 258,
+   "code": "7981",
+   "name": "다카라스탠더드",
+   "nameEn": "Takara Standard Co Ltd",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 704,
+   "industryRank": 52
+  },
+  {
+   "rank": 259,
+   "code": "5930",
+   "name": "분카 셔터",
+   "nameEn": "Bunka Shutter Co Ltd",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 889,
+   "industryRank": 52
+  },
+  {
+   "rank": 260,
+   "code": "3449",
+   "name": "테크노플렉스",
+   "nameEn": "Technoflex Corp",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 1014,
+   "industryRank": 52
+  },
+  {
+   "rank": 261,
+   "code": "9404",
+   "name": "닛폰 테레비 홀딩스",
+   "nameEn": "Nippon Television Holdings Inc",
+   "industry": "방송",
+   "kind": "quality",
+   "capRank": 283,
+   "industryRank": 53
+  },
+  {
+   "rank": 262,
+   "code": "9409",
+   "name": "TV 아사히 홀딩스",
+   "nameEn": "TV Asahi Holdings Corp",
+   "industry": "방송",
+   "kind": "quality",
+   "capRank": 517,
+   "industryRank": 53
+  },
+  {
+   "rank": 263,
+   "code": "9413",
+   "name": "티브이 도쿄 홀딩스",
+   "nameEn": "TV Tokyo Holdings Corp",
+   "industry": "방송",
+   "kind": "quality",
+   "capRank": 1073,
+   "industryRank": 53
+  },
+  {
+   "rank": 264,
+   "code": "9401",
+   "name": "도쿄 방송 홀딩스",
+   "nameEn": "TBS Holdings Inc",
+   "industry": "방송",
+   "kind": "profit",
+   "capRank": 224,
+   "industryRank": 53
+  },
+  {
+   "rank": 265,
+   "code": "9405",
+   "name": "아사히 방송",
+   "nameEn": "Asahi Broadcasting Group Holdings Corp",
+   "industry": "방송",
+   "kind": "profit",
+   "capRank": 1658,
+   "industryRank": 53
+  },
+  {
+   "rank": 266,
+   "code": "9435",
+   "name": "히카리 통신",
+   "nameEn": "Hikari Tsushin Inc",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 149,
+   "industryRank": 54
+  },
+  {
+   "rank": 267,
+   "code": "6814",
+   "name": "후루노 전기",
+   "nameEn": "Furuno Electric Co Ltd",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 575,
+   "industryRank": 54
+  },
+  {
+   "rank": 268,
+   "code": "6741",
+   "name": "니폰 시그널",
+   "nameEn": "Nippon Signal Co Ltd",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 914,
+   "industryRank": 54
+  },
+  {
+   "rank": 269,
+   "code": "6742",
+   "name": "교산 제작소",
+   "nameEn": "Kyosan Electric Manufacturing Co Ltd",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 1178,
+   "industryRank": 54
+  },
+  {
+   "rank": 270,
+   "code": "6809",
+   "name": "토아 (효고)",
+   "nameEn": "TOA Corp (Hyogo)",
+   "industry": "통신 및 네트워킹",
+   "kind": "quality",
+   "capRank": 1285,
+   "industryRank": 54
+  },
+  {
+   "rank": 271,
+   "code": "6724",
+   "name": "세이코 엡손",
+   "nameEn": "SEIKO EPSON CORPORATION",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 184,
+   "industryRank": 55
+  },
+  {
+   "rank": 272,
+   "code": "3107",
+   "name": "다이와보 홀딩스",
+   "nameEn": "Daiwabo Holdings Co Ltd",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "trend",
+   "capRank": 518,
+   "industryRank": 55
+  },
+  {
+   "rank": 273,
+   "code": "6750",
+   "name": "엘레콤",
+   "nameEn": "ELECOM CO.  LTD.",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "quality",
+   "capRank": 722,
+   "industryRank": 55
+  },
+  {
+   "rank": 274,
+   "code": "6737",
+   "name": "에이조",
+   "nameEn": "Eizo Corp",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "quality",
+   "capRank": 875,
+   "industryRank": 55
+  },
+  {
+   "rank": 275,
+   "code": "6727",
+   "name": "와콤",
+   "nameEn": "Wacom Co Ltd",
+   "industry": "컴퓨터 하드웨어",
+   "kind": "quality",
+   "capRank": 952,
+   "industryRank": 55
+  },
+  {
+   "rank": 276,
+   "code": "2702",
+   "name": "일본 맥도날드 홀딩스",
+   "nameEn": "McDonald's Holdings Company Japan Ltd",
+   "industry": "레스토랑 및 바",
+   "kind": "quality",
+   "capRank": 215,
+   "industryRank": 56
+  },
+  {
+   "rank": 277,
+   "code": "7581",
+   "name": "사이제리야",
+   "nameEn": "Saizeriya Co Ltd",
+   "industry": "레스토랑 및 바",
+   "kind": "quality",
+   "capRank": 497,
+   "industryRank": 56
+  },
+  {
+   "rank": 278,
+   "code": "9861",
+   "name": "요시노야 홀딩스",
+   "nameEn": "Yoshinoya Holdings Co Ltd",
+   "industry": "레스토랑 및 바",
+   "kind": "quality",
+   "capRank": 603,
+   "industryRank": 56
+  },
+  {
+   "rank": 279,
+   "code": "3097",
+   "name": "모노가타리",
+   "nameEn": "The Monogatari Corporation",
+   "industry": "레스토랑 및 바",
+   "kind": "quality",
+   "capRank": 655,
+   "industryRank": 56
+  },
+  {
+   "rank": 280,
+   "code": "9936",
+   "name": "오쇼 식품 서비스",
+   "nameEn": "Ohsho Food Service Corp",
+   "industry": "레스토랑 및 바",
+   "kind": "quality",
+   "capRank": 724,
+   "industryRank": 56
+  },
+  {
+   "rank": 281,
+   "code": "8050",
+   "name": "세이코 그룹",
+   "nameEn": "Seiko Group Corp",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 230,
+   "industryRank": 57
+  },
+  {
+   "rank": 282,
+   "code": "7762",
+   "name": "시티즌 시계",
+   "nameEn": "Citizen Watch Co Ltd",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 336,
+   "industryRank": 57
+  },
+  {
+   "rank": 283,
+   "code": "8111",
+   "name": "골드윈",
+   "nameEn": "Goldwin Inc",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 537,
+   "industryRank": 57
+  },
+  {
+   "rank": 284,
+   "code": "8016",
+   "name": "온워드",
+   "nameEn": "Onward Holdings Co Ltd",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1016,
+   "industryRank": 57
+  },
+  {
+   "rank": 285,
+   "code": "9837",
+   "name": "모리토",
+   "nameEn": "Morito Co Ltd",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 1424,
+   "industryRank": 57
+  },
+  {
+   "rank": 286,
+   "code": "2587",
+   "name": "산토리 식품 인터내셔널",
+   "nameEn": "Suntory Beverage & Food Ltd",
+   "industry": "무알콜 음료",
+   "kind": "quality",
+   "capRank": 162,
+   "industryRank": 58
+  },
+  {
+   "rank": 287,
+   "code": "2593",
+   "name": "이토엔",
+   "nameEn": "Ito En Ltd",
+   "industry": "무알콜 음료",
+   "kind": "profit",
+   "capRank": 581,
+   "industryRank": 58
+  },
+  {
+   "rank": 288,
+   "code": "2588",
+   "name": "프리미엄워터 홀딩스",
+   "nameEn": "Premium Water Holdings Inc",
+   "industry": "무알콜 음료",
+   "kind": "profit",
+   "capRank": 1139,
+   "industryRank": 58
+  },
+  {
+   "rank": 289,
+   "code": "2585",
+   "name": "라이프트링크 컴퍼니",
+   "nameEn": "LIFEDRINK COMPANY  INC.",
+   "industry": "무알콜 음료",
+   "kind": "profit",
+   "capRank": 1223,
+   "industryRank": 58
+  },
+  {
+   "rank": 290,
+   "code": "25935",
+   "name": "이토엔우",
+   "nameEn": "Ito En Prf Shs",
+   "industry": "무알콜 음료",
+   "kind": "profit",
+   "capRank": 1287,
+   "industryRank": 58
+  },
+  {
+   "rank": 291,
+   "code": "8136",
+   "name": "산리오",
+   "nameEn": "Sanrio Company  Ltd.",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 151,
+   "industryRank": 59
+  },
+  {
+   "rank": 292,
+   "code": "3046",
+   "name": "진",
+   "nameEn": "Jins Holdings Inc",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 867,
+   "industryRank": 59
+  },
+  {
+   "rank": 293,
+   "code": "262A",
+   "name": "인터메스틱",
+   "nameEn": "Intermestic Inc",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 1387,
+   "industryRank": 59
+  },
+  {
+   "rank": 294,
+   "code": "3093",
+   "name": "트레져팩토리",
+   "nameEn": "Treasure Factory Co Ltd",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 1435,
+   "industryRank": 59
+  },
+  {
+   "rank": 295,
+   "code": "2674",
+   "name": "하드오프코퍼레이션",
+   "nameEn": "Hard Off Corporation Co Ltd",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 1617,
+   "industryRank": 59
+  },
+  {
+   "rank": 296,
+   "code": "3038",
+   "name": "고베 물산",
+   "nameEn": "KOBE BUSSAN CO.  LTD.",
+   "industry": "식품 소매 및 유통",
+   "kind": "quality",
+   "capRank": 253,
+   "industryRank": 60
+  },
+  {
+   "rank": 297,
+   "code": "8242",
+   "name": "에이치투오리테일링",
+   "nameEn": "H2O Retailing Corp",
+   "industry": "식품 소매 및 유통",
+   "kind": "quality",
+   "capRank": 501,
+   "industryRank": 60
+  },
+  {
+   "rank": 298,
+   "code": "8194",
+   "name": "라이프코퍼레이션",
+   "nameEn": "LIFE CORPORATION",
+   "industry": "식품 소매 및 유통",
+   "kind": "quality",
+   "capRank": 621,
+   "industryRank": 60
+  },
+  {
+   "rank": 299,
+   "code": "9948",
+   "name": "아크스",
+   "nameEn": "Arcs Co Ltd",
+   "industry": "식품 소매 및 유통",
+   "kind": "quality",
+   "capRank": 677,
+   "industryRank": 60
+  },
+  {
+   "rank": 300,
+   "code": "2659",
+   "name": "산에이",
+   "nameEn": "San-A Co Ltd",
+   "industry": "식품 소매 및 유통",
+   "kind": "quality",
+   "capRank": 685,
+   "industryRank": 60
+  },
+  {
+   "rank": 301,
+   "code": "6368",
+   "name": "오르가노",
+   "nameEn": "Organo Corp",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 327,
+   "industryRank": 61
+  },
+  {
+   "rank": 302,
+   "code": "9336",
+   "name": "다이에이 칸쿄",
+   "nameEn": "Daiei Kankyo Co Ltd",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 479,
+   "industryRank": 61
+  },
+  {
+   "rank": 303,
+   "code": "6013",
+   "name": "다쿠마",
+   "nameEn": "Takuma Co Ltd",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 631,
+   "industryRank": 61
+  },
+  {
+   "rank": 304,
+   "code": "7456",
+   "name": "마쓰다 산업",
+   "nameEn": "Matsuda Sangyo Co Ltd",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 738,
+   "industryRank": 61
+  },
+  {
+   "rank": 305,
+   "code": "9793",
+   "name": "다이세키",
+   "nameEn": "Daiseki Co Ltd",
+   "industry": "환경 서비스 및 장비",
+   "kind": "quality",
+   "capRank": 774,
+   "industryRank": 61
+  },
+  {
+   "rank": 306,
+   "code": "3708",
+   "name": "도쿠슈토카이홀딩스",
+   "nameEn": "Tokushu Tokai Paper Co Ltd",
+   "industry": "종이 제품",
+   "kind": "quality",
+   "capRank": 1144,
+   "industryRank": 62
+  },
+  {
+   "rank": 307,
+   "code": "3861",
+   "name": "오지홀딩스",
+   "nameEn": "Oji Holdings Corporation",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 267,
+   "industryRank": 62
+  },
+  {
+   "rank": 308,
+   "code": "3880",
+   "name": "다이오 제지",
+   "nameEn": "Daio Paper Corporation",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 795,
+   "industryRank": 62
+  },
+  {
+   "rank": 309,
+   "code": "3863",
+   "name": "닛폰제지",
+   "nameEn": "Nippon Paper Industries Co.  Ltd.",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 821,
+   "industryRank": 62
+  },
+  {
+   "rank": 310,
+   "code": "8032",
+   "name": "재팬 펄프 앤 페이퍼",
+   "nameEn": "Japan Pulp and Paper Co.  Ltd",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 823,
+   "industryRank": 62
+  },
+  {
+   "rank": 311,
+   "code": "5901",
+   "name": "도요제관그룹홀딩스",
+   "nameEn": "Toyo Seikan Group Holdings  Ltd.",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 299,
+   "industryRank": 63
+  },
+  {
+   "rank": 312,
+   "code": "7947",
+   "name": "FP",
+   "nameEn": "Fp Corp",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 620,
+   "industryRank": 63
+  },
+  {
+   "rank": 313,
+   "code": "7864",
+   "name": "후지 실 인터내셔널",
+   "nameEn": "Fuji Seal International Inc",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 662,
+   "industryRank": 63
+  },
+  {
+   "rank": 314,
+   "code": "7917",
+   "name": "자크로스",
+   "nameEn": "Zacros Corp",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 1050,
+   "industryRank": 63
+  },
+  {
+   "rank": 315,
+   "code": "5902",
+   "name": "홋칸홀딩스",
+   "nameEn": "HOKKAN LIMITED",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 1627,
+   "industryRank": 63
+  },
+  {
+   "rank": 316,
+   "code": "7984",
+   "name": "고쿠요",
+   "nameEn": "Kokuyo Co Ltd",
+   "industry": "비즈니스 지원 용품",
+   "kind": "quality",
+   "capRank": 468,
+   "industryRank": 64
+  },
+  {
+   "rank": 317,
+   "code": "6744",
+   "name": "노미 방재",
+   "nameEn": "Nohmi Bosai Ltd",
+   "industry": "비즈니스 지원 용품",
+   "kind": "quality",
+   "capRank": 604,
+   "industryRank": 64
+  },
+  {
+   "rank": 318,
+   "code": "7846",
+   "name": "파일럿",
+   "nameEn": "PILOT CORPORATION",
+   "industry": "비즈니스 지원 용품",
+   "kind": "quality",
+   "capRank": 610,
+   "industryRank": 64
+  },
+  {
+   "rank": 319,
+   "code": "7994",
+   "name": "오카무라제작소",
+   "nameEn": "Okamura Corp",
+   "industry": "비즈니스 지원 용품",
+   "kind": "quality",
+   "capRank": 644,
+   "industryRank": 64
+  },
+  {
+   "rank": 320,
+   "code": "6745",
+   "name": "호치키",
+   "nameEn": "HOCHIKI CORPORATION",
+   "industry": "비즈니스 지원 용품",
+   "kind": "quality",
+   "capRank": 805,
+   "industryRank": 64
+  },
+  {
+   "rank": 321,
+   "code": "8088",
+   "name": "이와타니산업",
+   "nameEn": "IWATANI CORPORATION",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "quality",
+   "capRank": 406,
+   "industryRank": 65
+  },
+  {
+   "rank": 322,
+   "code": "8133",
+   "name": "이토추 에넥스",
+   "nameEn": "Itochu Enex Co Ltd",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "quality",
+   "capRank": 579,
+   "industryRank": 65
+  },
+  {
+   "rank": 323,
+   "code": "3167",
+   "name": "토카이 홀딩스",
+   "nameEn": "Tokai Holdings Corp",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "quality",
+   "capRank": 728,
+   "industryRank": 65
+  },
+  {
+   "rank": 324,
+   "code": "8037",
+   "name": "가메이",
+   "nameEn": "Kamei Corp",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "quality",
+   "capRank": 803,
+   "industryRank": 65
+  },
+  {
+   "rank": 325,
+   "code": "8097",
+   "name": "산아이 오블리",
+   "nameEn": "San-Ai Obbli Co Ltd",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "quality",
+   "capRank": 826,
+   "industryRank": 65
+  },
+  {
+   "rank": 326,
+   "code": "3291",
+   "name": "이다 그룹 홀딩스",
+   "nameEn": "Iida Group Holdings Co.  Ltd.",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 334,
+   "industryRank": 66
+  },
+  {
+   "rank": 327,
+   "code": "8919",
+   "name": "카티타스",
+   "nameEn": "KATITAS Co.  Ltd.",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 568,
+   "industryRank": 66
+  },
+  {
+   "rank": 328,
+   "code": "8934",
+   "name": "선프론티어 부동산",
+   "nameEn": "Sun Frontier Fudousan Co.  Ltd.",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 907,
+   "industryRank": 66
+  },
+  {
+   "rank": 329,
+   "code": "8818",
+   "name": "케이한신 부동산",
+   "nameEn": "Keihanshin Building Co Ltd",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 1046,
+   "industryRank": 66
+  },
+  {
+   "rank": 330,
+   "code": "8935",
+   "name": "FJ 넥스트 홀딩스",
+   "nameEn": "FJ Next Holdings Co Ltd",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 1235,
+   "industryRank": 66
+  },
+  {
+   "rank": 331,
+   "code": "9072",
+   "name": "닛콘 홀딩스",
+   "nameEn": "Nikkon Holdings Co Ltd",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 337,
+   "industryRank": 67
+  },
+  {
+   "rank": 332,
+   "code": "9025",
+   "name": "코노이케 운송",
+   "nameEn": "Konoike Transport Co Ltd",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 801,
+   "industryRank": 67
+  },
+  {
+   "rank": 333,
+   "code": "9304",
+   "name": "시부사와 로지스틱스",
+   "nameEn": "Shibusawa Logistics Corp",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 897,
+   "industryRank": 67
+  },
+  {
+   "rank": 334,
+   "code": "9039",
+   "name": "사카이 이사 서비스",
+   "nameEn": "Sakai Moving Service Co Ltd",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 911,
+   "industryRank": 67
+  },
+  {
+   "rank": 335,
+   "code": "9090",
+   "name": "AZ-컴 마루와 홀딩스",
+   "nameEn": "AZ-COM MARUWA Holdings Inc.",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 961,
+   "industryRank": 67
+  },
+  {
+   "rank": 336,
+   "code": "7419",
+   "name": "노지마",
+   "nameEn": "Nojima Corporation",
+   "industry": "컴퓨터 및 전자 제품 소매",
+   "kind": "quality",
+   "capRank": 466,
+   "industryRank": 68
+  },
+  {
+   "rank": 337,
+   "code": "8282",
+   "name": "케이스 홀딩스",
+   "nameEn": "K'S HOLDINGS CORPORATION",
+   "industry": "컴퓨터 및 전자 제품 소매",
+   "kind": "quality",
+   "capRank": 558,
+   "industryRank": 68
+  },
+  {
+   "rank": 338,
+   "code": "2730",
+   "name": "에디온",
+   "nameEn": "EDION Corporation",
+   "industry": "컴퓨터 및 전자 제품 소매",
+   "kind": "quality",
+   "capRank": 569,
+   "industryRank": 68
+  },
+  {
+   "rank": 339,
+   "code": "7513",
+   "name": "코지마",
+   "nameEn": "Kojima Co Ltd",
+   "industry": "컴퓨터 및 전자 제품 소매",
+   "kind": "quality",
+   "capRank": 966,
+   "industryRank": 68
+  },
+  {
+   "rank": 340,
+   "code": "9441",
+   "name": "벨파크",
+   "nameEn": "Bell-Park Co Ltd",
+   "industry": "컴퓨터 및 전자 제품 소매",
+   "kind": "quality",
+   "capRank": 1587,
+   "industryRank": 68
+  },
+  {
+   "rank": 341,
+   "code": "7003",
+   "name": "미쓰이 E&S",
+   "nameEn": "Mitsui E&S Co Ltd",
+   "industry": "조선",
+   "kind": "quality",
+   "capRank": 428,
+   "industryRank": 69
+  },
+  {
+   "rank": 342,
+   "code": "7014",
+   "name": "나무라 조선소",
+   "nameEn": "Namura Shipbuilding Co.  Ltd.",
+   "industry": "조선",
+   "kind": "quality",
+   "capRank": 522,
+   "industryRank": 69
+  },
+  {
+   "rank": 343,
+   "code": "6016",
+   "name": "재팬엔진",
+   "nameEn": "Japan Engine Corp",
+   "industry": "조선",
+   "kind": "quality",
+   "capRank": 988,
+   "industryRank": 69
+  },
+  {
+   "rank": 344,
+   "code": "6023",
+   "name": "다이하츠 인피너스",
+   "nameEn": "DAIHATSU INFINEARTH MFG.CO. LTD.",
+   "industry": "조선",
+   "kind": "quality",
+   "capRank": 1049,
+   "industryRank": 69
+  },
+  {
+   "rank": 345,
+   "code": "7018",
+   "name": "나이카이조선",
+   "nameEn": "Naikai Zosen Corp",
+   "industry": "조선",
+   "kind": "trend",
+   "capRank": 1778,
+   "industryRank": 69
+  },
+  {
+   "rank": 346,
+   "code": "8022",
+   "name": "미즈노",
+   "nameEn": "Mizuno Corp",
+   "industry": "오락용 제품",
+   "kind": "quality",
+   "capRank": 502,
+   "industryRank": 70
+  },
+  {
+   "rank": 347,
+   "code": "7906",
+   "name": "요넥스",
+   "nameEn": "Yonex Co Ltd",
+   "industry": "오락용 제품",
+   "kind": "quality",
+   "capRank": 645,
+   "industryRank": 70
+  },
+  {
+   "rank": 348,
+   "code": "7744",
+   "name": "노리쓰강기",
+   "nameEn": "Noritsu Koki Co Ltd",
+   "industry": "오락용 제품",
+   "kind": "quality",
+   "capRank": 650,
+   "industryRank": 70
+  },
+  {
+   "rank": 349,
+   "code": "7944",
+   "name": "롤랜드",
+   "nameEn": "Roland Corp",
+   "industry": "오락용 제품",
+   "kind": "quality",
+   "capRank": 1025,
+   "industryRank": 70
+  },
+  {
+   "rank": 350,
+   "code": "7990",
+   "name": "그로브랜드",
+   "nameEn": "Globeride Inc",
+   "industry": "오락용 제품",
+   "kind": "quality",
+   "capRank": 1382,
+   "industryRank": 70
+  },
+  {
+   "rank": 351,
+   "code": "3269",
+   "name": "어드밴스 레지던스 투자법인",
+   "nameEn": "Advance Residence Investment Corporation",
+   "industry": "주거용 REITs",
+   "kind": "quality",
+   "capRank": 464,
+   "industryRank": 71
+  },
+  {
+   "rank": 352,
+   "code": "8986",
+   "name": "일본임대주택투자",
+   "nameEn": "Daiwa Securities Living Investment Corp",
+   "industry": "주거용 REITs",
+   "kind": "quality",
+   "capRank": 673,
+   "industryRank": 71
+  },
+  {
+   "rank": 353,
+   "code": "3459",
+   "name": "삼티 레지덴셜 인베스트먼트",
+   "nameEn": "Samty Residential Investment Corp",
+   "industry": "주거용 REITs",
+   "kind": "quality",
+   "capRank": 1216,
+   "industryRank": 71
+  },
+  {
+   "rank": 354,
+   "code": "8979",
+   "name": "스타츠 그로시드 인베스트먼트",
+   "nameEn": "Starts Proceed Investment Corp",
+   "industry": "주거용 REITs",
+   "kind": "quality",
+   "capRank": 1432,
+   "industryRank": 71
+  },
+  {
+   "rank": 355,
+   "code": "3282",
+   "name": "콤포리아 레지덴셜 리츠",
+   "nameEn": "Comforia Residential Reit Inc",
+   "industry": "주거용 REITs",
+   "kind": "profit",
+   "capRank": 639,
+   "industryRank": 71
+  },
+  {
+   "rank": 356,
+   "code": "8066",
+   "name": "미타니상사",
+   "nameEn": "MITANI CORPORATION",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 524,
+   "industryRank": 72
+  },
+  {
+   "rank": 357,
+   "code": "5232",
+   "name": "스미토모오사카시멘트",
+   "nameEn": "Sumitomo Osaka Cement Co Ltd",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 737,
+   "industryRank": 72
+  },
+  {
+   "rank": 358,
+   "code": "5273",
+   "name": "미타니 세키산",
+   "nameEn": "Mitani Sekisan Co Ltd",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 767,
+   "industryRank": 72
+  },
+  {
+   "rank": 359,
+   "code": "7821",
+   "name": "마에다공섬",
+   "nameEn": "Maeda Kosen Co Ltd",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 879,
+   "industryRank": 72
+  },
+  {
+   "rank": 360,
+   "code": "5351",
+   "name": "시나가와 리프라",
+   "nameEn": "Shinagawa Refra Co Ltd",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 1061,
+   "industryRank": 72
+  },
+  {
+   "rank": 361,
+   "code": "6417",
+   "name": "산쿄",
+   "nameEn": "Sankyo Co Ltd",
+   "industry": "카지노 및 도박",
+   "kind": "quality",
+   "capRank": 405,
+   "industryRank": 73
+  },
+  {
+   "rank": 362,
+   "code": "2767",
+   "name": "츠부라야 필즈 홀딩스",
+   "nameEn": "Tsuburaya Fields Holdings Inc",
+   "industry": "카지노 및 도박",
+   "kind": "quality",
+   "capRank": 793,
+   "industryRank": 73
+  },
+  {
+   "rank": 363,
+   "code": "9672",
+   "name": "도쿄도 경마",
+   "nameEn": "Tokyotokeiba Co Ltd",
+   "industry": "카지노 및 도박",
+   "kind": "quality",
+   "capRank": 883,
+   "industryRank": 73
+  },
+  {
+   "rank": 364,
+   "code": "6419",
+   "name": "마스 엔지니어링",
+   "nameEn": "Mars Group Holdings Corp",
+   "industry": "카지노 및 도박",
+   "kind": "quality",
+   "capRank": 1222,
+   "industryRank": 73
+  },
+  {
+   "rank": 365,
+   "code": "6249",
+   "name": "게임카드 홀딩스",
+   "nameEn": "Gamecard Holdings Inc",
+   "industry": "카지노 및 도박",
+   "kind": "quality",
+   "capRank": 1557,
+   "industryRank": 73
+  }
+ ]
+}

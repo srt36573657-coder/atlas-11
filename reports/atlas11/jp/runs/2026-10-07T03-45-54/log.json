@@ -1,0 +1,252 @@
+{
+ "market": "jp",
+ "startedAt": "2026-10-07T03:45:54.958Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T03:45:55.228Z",
+   "mode": "select",
+   "run": "reports/atlas11/jp/runs/2026-10-07T03-45-54",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "12:45",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:45:56.715Z",
+   "kind": "list",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/exchange/TOKYO/marketValue"
+  },
+  {
+   "name": "목록",
+   "at": "2026-10-07T03:46:05.306Z",
+   "seen": {
+    "TOKYO": 2000
+   },
+   "merged": 2000,
+   "stocks": 2000,
+   "top5": [
+    "미쓰비시 UFJ 파이낸셜 그룹(8306) 은행",
+    "토요타자동차(7203) 자동차 및 트럭 제조",
+    "소프트뱅크 그룹(9984) 무선 통신 서비스",
+    "어드반테스트(6857) 반도체 장비 및 테스트",
+    "키옥시아 홀딩스(285A) 반도체"
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:46:05.512Z",
+   "kind": "finance",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/8306.T/finance/annual"
+  },
+  {
+   "name": "결산",
+   "at": "2026-10-07T03:49:12.015Z",
+   "asked": 2000,
+   "naver": 1994,
+   "askedDebt": 1517,
+   "yahoo": 1505,
+   "yahooOff": false,
+   "withDebt": 1497,
+   "withRoe": 1925
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:49:12.905Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/7203.T/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:49:51.523Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/8890.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:49:51.539Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/5273.T/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:49:54.390Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/3738.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:49:54.398Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/1518.T/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:50:01.014Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/7342.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:50:01.023Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/8237.T/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:50:33.600Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/3857.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:50:33.644Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/523A.T/day"
+  },
+  {
+   "name": "일봉",
+   "at": "2026-10-07T03:50:53.099Z",
+   "asked": 2000,
+   "got": 2000,
+   "latest": "2026-10-06",
+   "rows": 285
+  },
+  {
+   "name": "고르기",
+   "at": "2026-10-07T03:50:53.121Z",
+   "ok": true,
+   "picked": 365,
+   "industries": 73,
+   "filled": 91,
+   "kinds": {
+    "quality": 315,
+    "profit": 27,
+    "trend": 23
+   },
+   "pool": 1949,
+   "failTop": [
+    [
+     "부채비율 모름",
+     356
+    ],
+    [
+     "ROE 5% 미만",
+     311
+    ],
+    [
+     "부채비율 150% 초과",
+     272
+    ],
+    [
+     "2년 연속 흑자 아님",
+     185
+    ],
+    [
+     "ROE 모름",
+     70
+    ],
+    [
+     "가격 이력 부족",
+     36
+    ]
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:50:53.974Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/8308.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T03:51:10.046Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.N225/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-07T03:51:10.247Z",
+   "news": 365,
+   "newsItems": 4543,
+   "index": [
+    "닛케이 225 2026-10-06",
+    "토픽스 2026-10-06"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-07T03:51:10.569Z",
+   "assets": 365,
+   "asOf": "2026-10-06",
+   "late": 0,
+   "sessions": 285,
+   "inputCopy": {
+    "file": "reports/atlas11/jp/runs/2026-10-07T03-45-54/input.json.gz",
+    "sha256": "ba843101eca4157fc9cecccfb460977692baed6e6c70fb40fed3e7145014bacc",
+    "bytes": 583998
+   }
+  }
+ ],
+ "samples": {
+  "list": {
+   "url": "https://api.stock.naver.com/stock/exchange/TOKYO/marketValue?page=1&pageSize=100",
+   "status": 200,
+   "ms": 1482
+  },
+  "finance": {
+   "url": "https://api.stock.naver.com/stock/8306.T/finance/annual",
+   "status": 200,
+   "ms": 204
+  },
+  "finance_way1_fail": {
+   "url": "https://m.stock.naver.com/api/stock/641A.T/finance/annual",
+   "status": 400,
+   "head": ""
+  },
+  "yahoo_ts": {
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/6857.T?symbol=6857.T&type=annualOperatingIncome,annualNetIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1609459200&period2=1791431254",
+   "status": 200,
+   "ms": 86
+  },
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/7203.T/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 888
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/8890.T?periodType=dayCandle",
+   "status": 200,
+   "ms": 205
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/8308.T?pageSize=20&page=1",
+   "status": 200,
+   "ms": 200
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.N225/day?startDateTime=202609170000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 199
+  }
+ },
+ "failures": {
+  "finance_way1": 6
+ },
+ "endedAt": "2026-10-07T03:51:10.569Z"
+}
