@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-07T04:00:58.048Z",
+  "at": "2026-10-07T06:39:22.513Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-07T04:00:57.286Z",
+    "publishedAt": "2026-10-07T06:39:21.786Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-06-ad59a991\",\"generatedAt\":\"2026-10-07T03:59:54.391Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-06\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-06-996413ed\",\"generatedAt\":\"2026-10-07T06:37:48.650Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-06\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     }
   ]
 }
