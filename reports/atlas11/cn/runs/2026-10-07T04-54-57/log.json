@@ -1,0 +1,220 @@
+{
+ "market": "cn",
+ "startedAt": "2026-10-07T04:54:57.289Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T04:54:57.479Z",
+   "mode": "select",
+   "run": "reports/atlas11/cn/runs/2026-10-07T04-54-57",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "12:54",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:54:58.804Z",
+   "kind": "list",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/exchange/SHANGHAI/marketValue"
+  },
+  {
+   "name": "목록",
+   "at": "2026-10-07T04:55:15.742Z",
+   "seen": {
+    "SHANGHAI": 1832,
+    "SHENZHEN": 2163
+   },
+   "merged": 3995,
+   "stocks": 3000,
+   "top5": [
+    "ICBC(중국공상은행)(601398) 은행",
+    "농업은행(601288) 은행",
+    "페트로차이나(601857) 통합 오일 및 가스",
+    "중국은행(601988) 은행",
+    "귀주모태주(600519) 증류주 및 포도주"
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:55:15.941Z",
+   "kind": "finance",
+   "way": 0,
+   "url": "https://api.stock.naver.com/stock/601398.SS/finance/annual"
+  },
+  {
+   "name": "결산",
+   "at": "2026-10-07T04:58:51.097Z",
+   "asked": 3000,
+   "naver": 3000,
+   "askedDebt": 1434,
+   "yahoo": 1434,
+   "yahooOff": false,
+   "withDebt": 1429,
+   "withRoe": 2475
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:58:52.215Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/601398.SS/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:59:00.649Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/600837.SS"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:59:00.671Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/600015.SS/day"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:59:00.863Z",
+   "kind": "day",
+   "way": 1,
+   "url": "https://api.stock.naver.com/chart/foreign/item/600547.SS"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T04:59:00.871Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/000166.SZ/day"
+  },
+  {
+   "name": "일봉",
+   "at": "2026-10-07T05:01:26.331Z",
+   "asked": 3000,
+   "got": 3000,
+   "latest": "2026-09-30",
+   "rows": 283
+  },
+  {
+   "name": "고르기",
+   "at": "2026-10-07T05:01:26.364Z",
+   "ok": true,
+   "picked": 365,
+   "industries": 73,
+   "filled": 85,
+   "kinds": {
+    "quality": 254,
+    "trend": 61,
+    "profit": 44,
+    "size": 6
+   },
+   "pool": 2733,
+   "failTop": [
+    [
+     "부채비율 모름",
+     1464
+    ],
+    [
+     "2년 연속 흑자 아님",
+     933
+    ],
+    [
+     "ROE 5% 미만",
+     858
+    ],
+    [
+     "ROE 모름",
+     525
+    ],
+    [
+     "부채비율 150% 초과",
+     269
+    ],
+    [
+     "가격 이력 부족",
+     262
+    ]
+   ]
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T05:01:27.612Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/600036.SS"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T05:01:43.796Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SSEC/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-07T05:01:44.195Z",
+   "news": 365,
+   "newsItems": 5970,
+   "index": [
+    "상하이 종합 2026-09-30",
+    "선전 성분 2026-09-30",
+    "CSI 300 2026-09-30"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-07T05:01:44.391Z",
+   "assets": 365,
+   "asOf": "2026-09-30",
+   "late": 0,
+   "sessions": 283,
+   "inputCopy": {
+    "file": "reports/atlas11/cn/runs/2026-10-07T04-54-57/input.json.gz",
+    "sha256": "a6e81ea13c0d90b503af3a8b6912d11ea9f736d6b78fe758bdd97301c0c184a1",
+    "bytes": 584369
+   }
+  }
+ ],
+ "samples": {
+  "list": {
+   "url": "https://api.stock.naver.com/stock/exchange/SHANGHAI/marketValue?page=1&pageSize=100",
+   "status": 200,
+   "ms": 1318
+  },
+  "finance": {
+   "url": "https://api.stock.naver.com/stock/601398.SS/finance/annual",
+   "status": 200,
+   "ms": 197
+  },
+  "yahoo_ts": {
+   "url": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/600519.SS?symbol=600519.SS&type=annualOperatingIncome,annualNetIncome,annualStockholdersEquity,annualTotalLiabilitiesNetMinorityInterest&period1=1609459200&period2=1791435447",
+   "status": 200,
+   "ms": 59
+  },
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/601398.SS/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 1117
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/600837.SS?periodType=dayCandle",
+   "status": 200,
+   "ms": 201
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/600036.SS?pageSize=20&page=1",
+   "status": 200,
+   "ms": 199
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.SSEC/day?startDateTime=202609170000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 199
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-07T05:01:44.391Z"
+}
