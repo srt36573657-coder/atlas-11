@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-07",
- "fetchedAt": "2026-10-07T07:48:58Z",
- "file": "reports/atlas11/context/2026-10-07/2026-10-07T07-48-58Z.json",
+ "fetchedAt": "2026-10-07T14:15:05Z",
+ "file": "reports/atlas11/context/2026-10-07/2026-10-07T14-15-05Z.json",
  "summary": {
   "day": "2026-10-07",
-  "fetchedAt": "2026-10-07T07:48:58Z",
+  "fetchedAt": "2026-10-07T14:15:05Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-07",
@@ -22,26 +22,26 @@
   },
   "flows": {
    "stocks": 365,
-   "stocksWithToday": 0,
+   "stocksWithToday": 365,
    "provisional": true,
-   "foreignNetSharesSum": null,
-   "institutionNetSharesSum": null,
-   "individualNetSharesSum": null,
+   "foreignNetSharesSum": -11465995,
+   "institutionNetSharesSum": -1811549,
+   "individualNetSharesSum": 12392833,
    "note": "수량(주) 합계 · 종목마다 주가가 달라 금액 합계가 아님 · 당일 값은 잠정일 수 있음"
   },
   "news": {
    "stocks": 365,
    "raw": 7217,
-   "distinct": 7173,
-   "republished": 44,
+   "distinct": 7172,
+   "republished": 45,
    "sameArticle": 0,
-   "stocksWithTodayNews": 196,
-   "todayDistinct": 1371
+   "stocksWithTodayNews": 203,
+   "todayDistinct": 1514
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 793
+   "corporateActions": 792
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-07",
-     "value": 1338.5,
-     "changePct": -0.11
+     "value": 1340.1,
+     "changePct": 0.01
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-05",
-     "value": 15.52
+     "date": "2026-10-06",
+     "value": 15.01
     },
     "rows": 60
    },
@@ -151,9 +151,9 @@
     "label": "국고채 3년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-10-06",
-     "value": 3.935,
-     "changePct": 0.13
+     "date": "2026-10-07",
+     "value": 3.945,
+     "changePct": 0.25
     },
     "rows": 10
    },
@@ -162,9 +162,9 @@
     "label": "국고채 10년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-10-06",
-     "value": 4.373,
-     "changePct": -0.3
+     "date": "2026-10-07",
+     "value": 4.391,
+     "changePct": 0.41
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 249,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -198,9 +198,9 @@
    "factorId": "F14",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-06",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-07",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "외국인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 값은 16:00 에 잠정일 수 있어 다음 날 다시 받아 바뀌면 정정 기록",
@@ -211,9 +211,9 @@
    "factorId": "F16",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-06",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-07",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "기관 합계 순매매 수량(종목별)",
    "componentOnly": true,
    "note": "정의는 연기금 제외 기관 · 받은 값은 연기금이 포함된 기관 합계 → 일부 성분",
@@ -224,9 +224,9 @@
    "factorId": "F19",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-06",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-07",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "개인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 잠정 가능",
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-07",
-   "corporateActions": 793,
+   "corporateActions": 792,
    "recentActions": [
+    {
+     "code": "023160",
+     "title": "(주)태광 변경상장(주식소각)",
+     "publishedAt": "2026-10-07T17:23:48+09:00",
+     "word": "소각"
+    },
     {
      "code": "071200",
      "title": "(주)인피니트헬스케어 중간(분기)배당락",
@@ -305,12 +311,6 @@
      "title": "(주)영원무역홀딩스 주식 소각 결정",
      "publishedAt": "2026-10-02T16:52:08+09:00",
      "word": "소각"
-    },
-    {
-     "code": "328130",
-     "title": "주식회사 루닛 전환사채(해외전환사채포함)발행후만기전사채취득",
-     "publishedAt": "2026-10-02T16:26:37+09:00",
-     "word": "전환사채"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-07",
-     "value": 1338.5,
+     "value": 1340.1,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -392,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-05",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-06",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-05",
-     "value": 15.52,
+     "latestObservation": "2026-10-06",
+     "value": 15.01,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-06-09"
     }
@@ -488,22 +488,22 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-06",
-   "calendarLagDays": 1,
+   "latestObservation": "2026-10-07",
+   "calendarLagDays": 0,
    "series": [
     {
      "series": "KR3YT=RR",
      "label": "국고채 3년",
-     "latestObservation": "2026-10-06",
-     "value": 3.935,
+     "latestObservation": "2026-10-07",
+     "value": 3.945,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR3YT=RR/prices?page=1&pageSize=10"
     },
     {
      "series": "KR10YT=RR",
      "label": "국고채 10년",
-     "latestObservation": "2026-10-06",
-     "value": 4.373,
+     "latestObservation": "2026-10-07",
+     "value": 4.391,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR10YT=RR/prices?page=1&pageSize=10"
     }
