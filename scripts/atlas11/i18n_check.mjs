@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 
 const arg = (n, d = null) => { const i = process.argv.indexOf(n); return i < 0 ? d : process.argv[i + 1]; };
 const base = arg('--base', 'http://127.0.0.1:8823'), pw = arg('--pw', '/opt/node-tools'), langs = arg('--lang', 'en,zh').split(','), outFile = arg('--out');
+const QUICK = process.argv.includes('--quick'), NOPICK = process.argv.includes('--no-picker'); // --quick: 새 말(2026-10-07 말 73개) — 틀은 영어 · 중국어와 같은 열쇠라 화면 수를 줄여 넘침 · 남은 한국어 · 탭 이름 칸만 잼
 const require = createRequire(pw.replace(/\/?$/, '/'));
 const {chromium} = require('playwright');
 const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined});
@@ -41,33 +42,34 @@ async function crawl(page, lg, at) {
   await page.goto(`${base}${at}?lang=${lg}#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(900); await collect('#/'); // 한 주소에서 말 단추로 고른 것과 같음(2026-10-06 22:00 「한도메인에서 탭을 누르면」) · 2026-10-07: 이 줄 끝 설명 글이 앞 두 걸음을 덮어 첫 화면을 세지 않던 것을 고침
   for (const hsh of ['#/similar', '#/rise', '#/map']) await go(hsh);
   const fams = await page.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="#/map/f/"]')].map(a => a.getAttribute('href')))]);
-  for (const f of fams) await go(f);
+  for (const f of QUICK ? fams.slice(0, 2) : fams) await go(f);
   const inds = await page.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="#/i/"]')].map(a => a.getAttribute('href')))]);
-  for (const i of inds.slice(0, 8)) await go(i);
+  for (const i of inds.slice(0, QUICK ? 2 : 8)) await go(i);
   await go('#/road');
   const modes = await page.evaluate(() => [...document.querySelectorAll('.f-seg button, .f-seg a')].map((b, i) => i));
-  for (const mi of modes) {
+  for (const mi of QUICK ? modes.slice(0, 1) : modes) {
     await page.evaluate(i => [...document.querySelectorAll('.f-seg button, .f-seg a')][i]?.click(), mi); await settle(400); await collect('#/road mode ' + mi);
     const tabs = await page.evaluate(() => document.querySelectorAll('.f-tabs .f-tab').length);
-    for (let t = 0; t < tabs; t++) { await page.evaluate(i => document.querySelectorAll('.f-tabs .f-tab')[i]?.click(), t); await settle(300); await collect(`#/road mode ${mi} tab ${t}`); }
+    for (let t = 0; t < (QUICK ? Math.min(tabs, 2) : tabs); t++) { await page.evaluate(i => document.querySelectorAll('.f-tabs .f-tab')[i]?.click(), t); await settle(300); await collect(`#/road mode ${mi} tab ${t}`); }
     await page.evaluate(() => document.querySelector('.f-body > .f-more button, .f-more')?.click()); await settle(300); await collect('#/road more');
   }
   await go('#/agenda');
   await go('#/start'); // 아래 탭 「처음」(2026-10-07 00:49)
+  await go('#/guide'); // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 … 한국 주식시장을 제대로 알수 있게」)
   await go('#/find');
   for (const q of ['전자', 'a', '반도체']) { await page.fill('input[type="search"], .fd-form input', q).catch(() => {}); await settle(500); await collect('#/find ' + q); }
   await go('#/log');
   for (const k of ['issue', 'update', 'data', 'all']) { await page.evaluate(k => document.querySelector(`.lg-seg [data-show="${k}"]`)?.click(), k); await settle(250); await collect('#/log ' + k); }
   const codes = await page.evaluate(async at => { const r = await fetch(at + 'data/atlas11/view/board.json'); const b = await r.json(); const late = new Set((b.late ?? []).map(x => x.code)); const cs = b.companies; return [...cs.slice(0, 3), ...cs.filter(c => late.has(c.code)).slice(0, 1), ...cs.slice(-2)].map(c => c.code); }, at);
-  for (const c of codes) await go('#/stock/' + c);
+  for (const c of QUICK ? codes.slice(0, 2) : codes) await go('#/stock/' + c);
   const missing = await page.evaluate(async at => (await import(at + 'app/i18n.js')).missing(), at);
   return {left, over, missing};
 }
 
 // 말 단추(위 막대 · 2026-10-06 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게 해야 돼」) — 한국어로 열어 단추로 고르고 · 기억하고 · 시장을 바꿔도 그 말 · 되돌림
-{
+if (NOPICK) report.picker = {steps: [], bad: 0, skipped: true}; else {
   const ctx = await browser.newContext({viewport: {width: 390, height: 844}, colorScheme: 'dark'}); const page = await ctx.newPage();
-  const st = async () => page.evaluate(() => ({lang: document.documentElement.lang, tab: document.querySelector('.bottom-link.active .label')?.textContent ?? '', items: [...document.querySelectorAll('.lang-i')].map(a => a.textContent + (a.getAttribute('aria-current') ? '*' : '')).join(','), sw: document.documentElement.scrollWidth}));
+  const st = async () => page.evaluate(() => ({lang: document.documentElement.lang, tab: document.querySelector('.bottom-link.active .label')?.textContent ?? '', items: [...document.querySelectorAll('.lang-i')].map(a => a.getAttribute('hreflang') + (a.getAttribute('aria-current') ? '*' : '')).join(','), sw: document.documentElement.scrollWidth}));
   const steps = [];
   await page.goto(`${base}/#/road`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['open', await st()]);
   for (const [tag, hl] of [['en', 'en'], ['zh', 'zh-CN'], ['ko', 'ko']]) {
@@ -76,7 +78,9 @@ async function crawl(page, lg, at) {
     if (tag === 'en') { await Promise.all([page.waitForNavigation({waitUntil: 'networkidle'}), page.click('.mkt-b[data-place="us"]')]).catch(() => {}); await page.waitForTimeout(700); steps.push(['en us', await st()]); await page.goto(`${base}/#/`, {waitUntil: 'networkidle'}); await page.waitForTimeout(700); steps.push(['en remembered', await st()]); }
   }
   const want = {open: ['ko', '출목표'], en: ['en', 'Dots'], 'en us': ['en', 'Dots'], 'en remembered': ['en', 'Hot'], zh: ['zh-CN', '火热'], ko: ['ko', '불장']};
-  const bad = steps.filter(([k, v]) => want[k] && (v.lang !== want[k][0] || v.tab !== want[k][1] || v.sw > 390 || v.items !== ['한국어', 'English', '中文'].map(n => n + ({ko: '한국어', en: 'English', zh: '中文'}[v.lang.slice(0, 2)] === n ? '*' : '')).join(',')));
+  // 2026-10-07 말 74개 — 맨 위 세 말(한국어 · English · 简体中文)은 그대로 · 모두 74개 · 지금 말 하나만 눌림(✓)
+  const itemsOk = v => { const xs = v.items.split(','); return xs.length === 74 && xs.slice(0, 3).map(x => x.replace('*', '')).join() === 'ko,en,zh-CN' && xs.filter(x => x.endsWith('*')).length === 1 && xs.find(x => x.endsWith('*')) === v.lang + '*'; };
+  const bad = steps.filter(([k, v]) => want[k] && (v.lang !== want[k][0] || v.tab !== want[k][1] || v.sw > 390 || !itemsOk(v)));
   report.picker = {steps, bad: bad.length};
   await ctx.close();
 }
@@ -100,6 +104,9 @@ for (const lg of langs) {
   }
   R.missing = [...new Set(Object.values(R.places).flatMap(p => p.missing))].sort();
   R.leftTotal = Object.values(R.places).reduce((t, p) => t + p.leftCount, 0); R.overTotal = Object.values(R.places).reduce((t, p) => t + p.over.length, 0);
+  // 말마다 바로 적어 둠(2026-10-07 09:27 — 검사 도중 작업 컴퓨터가 다시 켜져 36개 말 결과가 통째로 사라진 일)
+  if (outFile) await fs.writeFile(outFile, JSON.stringify(report, null, 1));
+  console.log(`${lg} missing ${R.missing.length} left ${R.leftTotal} over ${R.overTotal} errors ${Object.values(R.places).flatMap(p => p.errors).length}`);
 }
 await browser.close();
 if (outFile) await fs.writeFile(outFile, JSON.stringify(report, null, 1));

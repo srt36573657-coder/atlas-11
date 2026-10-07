@@ -16,7 +16,10 @@ function used(tr, k) {
   return out;
 }
 
-for (const lg of ['en', 'zh']) {
+// 2026-10-07 05:13 「언어팩을 주식시장이 있는 전세게 나라가 있잖아 다 만들어」 — 사전 파일 하나하나(말 73개 · 한국어 빼고)
+const LG_FILES = fs.readdirSync(new URL('../../site/app/i18n/', import.meta.url)).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort();
+const PL = /\{pl:([^}]*)\}/g, CATS = new Set(['zero', 'one', 'two', 'few', 'many', 'other']);
+for (const lg of LG_FILES) {
   test(`${lg} 사전 — 틀마다 자리표가 한국어 틀과 같은 수(빠짐 · 남음 없음)`, () => {
     const j = dict(lg); assert.equal(j.schema, 'atlas11-i18n-1'); assert.equal(j.lang, lg);
     const bad = [];
@@ -28,7 +31,10 @@ for (const lg of ['en', 'zh']) {
         if (!ok) bad.push(`${k}: ${ko} → ${tr}`);
       }
       if (/[가-힣]/.test(tr)) bad.push(`한국어가 남음: ${ko} → ${tr}`);
+      for (const m of tr.matchAll(PL)) { const body = m[1]; if (/^(zero|one|two|few|many|other)=/.test(body)) { const cats = body.split('|').map(x => x.split('=')[0]); if (!cats.every(c => CATS.has(c)) || !cats.includes('other')) bad.push(`{pl:…} 셈 이름: ${tr}`); } else if (!body.includes('|')) bad.push(`{pl:한|여럿} 모양: ${tr}`); }
+      if (/[{}]/.test(tr.replace(/\{(d|t|e|n|q)\d*\}|\{pl:[^}]*\}/g, ''))) bad.push(`모르는 {…}: ${tr}`);
     }
+    if (j.quotes != null) assert.ok(Array.isArray(j.quotes) && j.quotes.length === 2 && j.quotes.every(q => typeof q === 'string' && q), lg + ' quotes');
     assert.deepEqual(bad, []);
     for (const [ko, x] of Object.entries(j.entities)) { assert.ok(/[가-힣]/.test(ko), ko); assert.ok(x && !/[가-힣]/.test(x), `${ko} → ${x}`); }
     for (const [code, x] of Object.entries(j.companies)) { assert.match(code, /^\d{6}$/); assert.ok(x && !/[가-힣]/.test(x), `${code} → ${x}`); }
@@ -82,10 +88,43 @@ test('한국어로 볼 때(말을 안 고름 · 엉뚱한 말 · 옛 /en 주소)
 });
 
 test('말 고르기 — ?lang= 만 보고(엉뚱한 값은 한국어) · 옛 /en/ 경로만으로는 바꾸지 않음(올림 묶음이 ?lang= 로 넘김)', async () => {
-  globalThis.location = {pathname: '/', search: '?lang=fr'};
-  assert.equal((await import('../../site/app/i18n.js?fr')).LANG, 'ko');
+  globalThis.location = {pathname: '/', search: '?lang=xx'};
+  assert.equal((await import('../../site/app/i18n.js?xx')).LANG, 'ko');
   globalThis.location = {pathname: '/en/', search: ''};
   assert.equal((await import('../../site/app/i18n.js?oldpath')).LANG, 'ko');
   globalThis.location = {pathname: '/', search: '?x=1&lang=zh'};
-  const z = await import('../../site/app/i18n.js?zh2'); assert.equal(z.LANG, 'zh'); assert.deepEqual(z.LANGS, ['ko', 'en', 'zh']);
+  const z = await import('../../site/app/i18n.js?zh2'); assert.equal(z.LANG, 'zh'); assert.deepEqual(z.LANGS.slice(0, 3), ['ko', 'en', 'zh']);
+  assert.equal(z.LANGS.length, 74, '말 74개(한국어 + 73)'); assert.deepEqual([...z.LANGS].filter(c => c !== 'ko').sort(), LG_FILES, '말 목록 = 사전 파일');
+  assert.equal(new Set(z.LANGS).size, z.LANGS.length, '겹친 말 없음');
+  assert.ok(z.LANG_LIST.every(x => x.name && x.tag && !/[가-힣]/.test(x.code === 'ko' ? '' : x.name)), '말 이름은 그 말 글자로');
+  globalThis.location = {pathname: '/', search: '?lang=zh-tw'};
+  assert.equal((await import('../../site/app/i18n.js?zhtw')).LANG, 'zh-TW', '대소문자 상관없이');
+});
+
+
+// 새 말의 날짜 · 숫자 모양 · 여럿 말(2026-10-07) — 독일어는 1.234,5 · 러시아어 여럿 말(1 · 3 · 5) · 일본어는 万 그대로 · 아랍어는 숫자를 왼쪽부터 한 덩어리
+test('독일어 — 날짜(양력 · 원문 요일) · 숫자 모양 1.234,5 · 만 단위 풀어 씀', async () => {
+  globalThis.location = {pathname: '/', search: '?lang=de'};
+  const m = await import('../../site/app/i18n.js?de');
+  assert.equal(m.LANG, 'de'); m.useDict(dict('de'));
+  const d = m.t('10월 6일(화) 15:30 종가'); assert.match(d, /6\. Okt/); assert.match(d, /Di/); assert.match(d, /15:30/);
+  assert.equal(m.t('외국인 −13만주'), 'Ausländische Anleger −130.000 Aktien', '만 단위를 풀고 독일어 숫자 모양 · 부호는 원문 그대로');
+  assert.equal(m.t('업종 1개'), '1 Branche'); assert.equal(m.t('업종 3개'), '3 Branchen');
+});
+test('러시아어 — 여럿 말은 그 말 셈 규칙(1 · 3 · 5 · 21)', async () => {
+  globalThis.location = {pathname: '/', search: '?lang=ru'};
+  const m = await import('../../site/app/i18n.js?ru'); m.useDict(dict('ru'));
+  assert.equal(m.t('업종 1개'), '1 отрасль'); assert.equal(m.t('업종 3개'), '3 отрасли'); assert.equal(m.t('업종 5개'), '5 отраслей'); assert.equal(m.t('업종 21개'), '21 отрасль');
+});
+test('일본어 — 万 그대로 · 날짜 10月6日(火)', async () => {
+  globalThis.location = {pathname: '/', search: '?lang=ja'};
+  const m = await import('../../site/app/i18n.js?ja'); m.useDict(dict('ja'));
+  assert.match(m.t('외국인 −13만주'), /13万株/); assert.match(m.t('10월 6일(화) 15:30 종가'), /10月6日/); assert.match(m.t('10월 6일(화) 15:30 종가'), /火/);
+});
+test('아랍어 — 오른쪽부터 쓰는 말 · 숫자는 LRI…PDI 로 감싸 부호가 뒤로 가지 않음 · 양력 날짜', async () => {
+  globalThis.location = {pathname: '/', search: '?lang=ar'};
+  const m = await import('../../site/app/i18n.js?ar'); m.useDict(dict('ar'));
+  assert.equal(m.LANG_INFO.rtl, true);
+  assert.match(m.t('업종 3개'), /\u2066+3|\u20663\u2069/); assert.ok(!/[가-힣]/.test(m.t('10월 6일(화) 15:30 종가')));
+  assert.match(m.t('10월 6일(화) 15:30 종가'), /6/, '아라비아 숫자(라틴) 그대로 — 기기 달력이 이슬람력 · 아랍 숫자로 바꾸지 않음');
 });
