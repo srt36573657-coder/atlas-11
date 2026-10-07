@@ -1188,7 +1188,7 @@ html[dir="rtl"] .rt-map .sy-mn1 svg, html[dir="rtl"] .rt-map .sy-mn2 svg { trans
 .rt-th[data-heat="3"] { color: #F4F1EA; border-color: rgba(244, 241, 234, .6); } .rt-th[data-heat="2"], .rt-th[data-heat="1"] { color: #B5D2FF; border-color: rgba(181, 210, 255, .7); }
 .rt-heat { font-variant-numeric: tabular-nums; }
 .rt-heat[data-heat="5"] { color: #FF9E80; } .rt-heat[data-heat="4"] { color: #FFC27A; } .rt-heat[data-heat="3"] { color: #F4F1EA; } .rt-heat[data-heat="2"], .rt-heat[data-heat="1"] { color: #B5D2FF; }
-.rt .rt-n { font-variant-numeric: tabular-nums; } .rt .rt-n.up { color: #FFA8A8; } .rt .rt-n.down { color: #B5D2FF; }
+.rt .rt-n { font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; } /* 오른쪽부터 쓰는 말에서도 「+23.2」 부호가 숫자 앞 */ .rt .rt-n.up { color: #FFA8A8; } .rt .rt-n.down { color: #B5D2FF; }
 .rt .chg20.up { color: #FFA8A8; } .rt .chg20.down { color: #B5D2FF; }
 html:not([lang="ko"]) .rt-u { margin-inline-start: .25em; }
 html[lang="ko"] .rt-a { white-space: nowrap; } /* 다른 말은 단위 낱말이 길어 줄을 바꿀 수 있게 둠 */
@@ -1207,6 +1207,73 @@ html[lang="ko"] .rt-a { white-space: nowrap; } /* 다른 말은 단위 낱말이
 .rt-how { margin: 0; font-size: .8125rem; line-height: 1.55; color: rgba(244, 241, 234, .80); }
 .rt-how summary { display: inline-flex; align-items: center; min-height: 40px; font-size: .875rem; font-weight: 700; color: #F4F1EA; cursor: pointer; }
 .rt-how p { margin: 4px 0 0; }
+/* 그림 한 장 — 청자 매병 둘 · 금빛 물줄기 · 달 · 가마 불 · 낙관(2026-10-08 00:12 「글이 너무 많아 · 더 과감하게 움직이는 도식화를 예술적으로」)
+   글은 이름 · 숫자뿐 · 움직임은 한 번에 하나(기울기 → 물줄기 → 차오름 → 달 → 불 → 낙관 둘) · 끝나면 불만 일렁임 */
+.ra-t { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 2px 8px; margin: 10px 0 0; text-align: center; }
+.ra-ts { font-size: .9375rem; font-weight: 700; color: rgba(244, 241, 234, .86); }
+.ra-td { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; color: #F4F1EA; }
+.ra { margin: 0; }
+.ra-art { position: relative; margin: 2px 0 0; }
+.ra-svg { display: block; width: 100%; height: auto; overflow: visible; }
+html[dir="rtl"] .ra-svg { transform: scaleX(-1); } /* 오른쪽부터 쓰는 말: 그림도 뒤집어 이름 칸(빠지는 곳 = 오른쪽)과 맞춤 · 달도 오른쪽에서 왼쪽으로 */
+/* 기 — 기울기 · 물줄기 · 차오름 */
+.ra-tilt { transform-box: fill-box; transform-origin: 78.75% 100%; transform: rotate(0deg); } /* 받침 위 오른쪽 밑 모서리를 축으로 기울어짐(병이 받침에 닿은 채) */
+.ra-tilt.on { transform: rotate(38deg); }
+.ra-tilt.now { animation: ra-tilt .95s cubic-bezier(.5, 0, .2, 1) both; }
+@keyframes ra-tilt { from { transform: rotate(0deg); } to { transform: rotate(38deg); } }
+.ra-pour { stroke-dasharray: 100; stroke-dashoffset: 100; }
+.ra-pour.on { stroke-dashoffset: 0; }
+.ra-pour.now { animation: ra-pour 1.25s cubic-bezier(.35, 0, .25, 1) both; }
+@keyframes ra-pour { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+.ra-fill { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); }
+.ra-fill.on { transform: scaleY(.6); }
+.ra-fill.now { animation: ra-rise 1.15s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes ra-rise { from { transform: scaleY(0); } to { transform: scaleY(.6); } }
+/* 승 — 달이 시작 날에서 마지막 종가 날로 */
+.ra-moon { transform-box: view-box; transform-origin: 180px 576.1px; transform: rotate(-16.05deg); }
+.ra-moon.on { transform: rotate(16.05deg); }
+.ra-moon.now { animation: ra-moon 1.7s cubic-bezier(.45, 0, .25, 1) both; }
+@keyframes ra-moon { from { transform: rotate(-16.05deg); } to { transform: rotate(16.05deg); } }
+/* 전 — 가마 불(높이 = 포모값) · 다 끝나면 이것 하나만 일렁임 */
+.ra-fire { --f: .08; transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(.001); }
+.ra-fire.on { transform: scaleY(var(--f)); }
+.ra-fire.now { animation: ra-fire 1.2s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes ra-fire { from { transform: scaleY(.001); } to { transform: scaleY(var(--f)); } }
+.ra-done .ra-fire.on { animation: ra-flick 2.6s ease-in-out infinite; }
+@keyframes ra-flick { 0%, 100% { transform: scaleY(var(--f)); } 50% { transform: scaleY(calc(var(--f) * .9)); } }
+/* 이름 · 숫자 · 낙관 */
+.ra-lab { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 14px; margin: 2px 0 0; }
+.ra-col { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.ra-cb { align-items: flex-end; text-align: end; }
+.ra-n { margin: 0; font-size: clamp(1.375rem, 6.4vw, 1.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; color: #F4F1EA; }
+.ra-ca .ra-n { color: #CFE2F7; }
+.ra-cb .ra-n { color: #FFE3A3; text-shadow: 0 0 .5em rgba(242, 196, 107, .35); }
+.ra-m { margin: 0; font-size: 1.0625rem; font-weight: 700; }
+.ra-fomo { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 0 6px; margin: 2px 0 0; }
+.ra-fk { font-size: .875rem; font-weight: 700; color: rgba(244, 241, 234, .82); }
+.ra-fomo .rt-heat { font-size: 1.375rem; font-weight: 700; }
+.ra-fw { font-size: 1rem; font-weight: 700; color: #F4F1EA; }
+.ra-seal { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; margin: 6px 0 0; padding: 3px 10px 4px; border-radius: 6px; background: #A8352A; box-shadow: inset 0 0 0 1.5px rgba(255, 245, 238, .25); color: #FFF5EE; transform-origin: 50% 50%; }
+.ra-st { font-size: .8125rem; font-weight: 700; }
+.ra-sw { font-size: 1rem; font-weight: 700; }
+.ra-seal.now { animation: ra-stamp .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes ra-stamp { 0% { transform: scale(1.5) rotate(-7deg); } 100% { transform: none; } }
+/* 차례 점 넷(기승전결) · 단추 둘 */
+.ra-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 12px 0 20px; }
+.ra-beats { display: flex; gap: 6px; margin: 0 4px 0 0; padding: 0; list-style: none; counter-reset: rab; }
+.ra-beats li { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(244, 241, 234, .10); color: rgba(244, 241, 234, .86); font-size: .875rem; font-weight: 700; counter-increment: rab; }
+.ra-beats li.on { background: rgba(143, 211, 182, .28); color: #F4F1EA; }
+.ra-beats li.now { background: var(--mint); color: #0B1411; }
+html:not([lang="ko"]) .ra-beats .sy-chl { display: none; }
+html:not([lang="ko"]) .ra-beats li::before { content: counter(rab); }
+/* 접힌 기사 이야기 · 근거 모음(2026-10-08 00:12 「글이 너무 많아」) — 제목 줄만 · 누르면 펼침(오른쪽 끝 꺾쇠) */
+.sy-fd > summary { list-style: none; cursor: pointer; min-height: 44px; align-items: center; }
+.sy-fd > summary::-webkit-details-marker { display: none; }
+.sy-fd > summary::after { content: ''; flex: none; width: 9px; height: 9px; margin-inline: auto 4px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .2s; }
+.sy-fd[open] > summary::after { transform: rotate(-135deg); }
+.sy-news .sy-fd > summary { display: flex; flex-wrap: wrap; }
+.sy-news:not(:has(.sy-fd[open])) { padding-bottom: 12px; }
+.sy-mfd > summary { display: flex; gap: 8px; }
 /* 결 — 탭 「불장」 맨 아래(2026-10-07 20:04 「기승전결」) · 맨 위 무대와 같은 어둠 · 옥빛 테 — 처음(결론)과 끝(볼 것)이 맞물림 */
 .sy-end { --mint: #8FD3B6; position: relative; margin: 22px 0 8px; padding: 18px 18px 16px; border-radius: 22px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
   background-color: #0B1411; background-image: radial-gradient(120% 90% at 12% 0%, #22382E 0%, #0E1915 50%, #070C0A 100%); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .55); }

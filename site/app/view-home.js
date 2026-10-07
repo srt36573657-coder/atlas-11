@@ -81,7 +81,7 @@ export async function renderHome(main, {manifest}) {
     // 맨 위: 오늘의 돈 이야기(2026-10-07 16:34 — 세 장면 · 아래 두 줄) — 넣으면서 뺀 것(규칙 1): 이 탭의 표지(논평 무대) · /story.json 을 못 읽으면 옛 표지 그대로
     // 2026-10-07 22:06 맨 위는 「돈의 이동」(빠지는 곳 → 들어가는 곳 · 기간 · 포모값 · 누가) — 넣으면서 뺀 것(규칙 1): 아래 기사 이야기의 짚어 주기(한눈 그림 · 네 줄) · 맨 아래 결 카드의 기사 이야기
     rot ? rotationBox(rot) : null,
-    st ? storyBox(st, rot ? {withPlayer: false, title: '기사로 본 돈 이야기'} : {}) : commentBox(cm), // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
+    st ? storyBox(st, rot ? {withPlayer: false, title: '기사로 본 돈 이야기', fold: true} : {}) : commentBox(cm), // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
