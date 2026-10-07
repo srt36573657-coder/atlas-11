@@ -185,7 +185,7 @@ export function player(spec, fresh) {
 }
 
 let played = false; // 등장 움직임은 이 창에서 처음 그릴 때 한 번(글씨 단추 · 탭을 오가며 다시 그리면 멈춘 그림 — app.js 「화면마다 처음 한 번만」과 같은 뜻)
-export function storyBox(st, {withPlayer = true, title = 'ATLAS가 고른 돈 이야기'} = {}) {
+export function storyBox(st, {withPlayer = true, title = 'ATLAS가 고른 돈 이야기', fold = false} = {}) {
   if (!st) return null;
   if (st.none) return noneBox(st);
   const n = st.now, nx = st.next, ms = n.stock?.markets ?? [];
@@ -240,6 +240,12 @@ export function storyBox(st, {withPlayer = true, title = 'ATLAS가 고른 돈 �
     nx.markets?.length ? marketsLine(nx.markets) : null,
     h('p', {class: 'sy-oh'}, `근거 모음 ${all.length}건 — 기사 제목은 원문 그대로 · 누르면 기사`),
     evList(all));
+  if (fold) { // 2026-10-08 00:12 「글이 너무 많아」 — 한국 판은 맨 위 그림 한 장이 말하고, 기사 이야기와 근거 모음은 접어 둠(제목 줄만 보임 · 누르면 펼침)
+    const head = stage.firstElementChild, rest = [...stage.childNodes].slice(1);
+    stage.replaceChildren(h('details', {class: 'sy-fd'}, h('summary', {class: 'sy-k sy-fs'}, ...head.childNodes), ...rest));
+    const mh = more.querySelector('.sy-oh:last-of-type'), mrest = [...more.childNodes].filter(x => x !== mh);
+    more.replaceChildren(h('details', {class: 'sy-fd sy-mfd'}, h('summary', {class: 'sy-oh sy-fs'}, ...mh.childNodes), ...mrest));
+  }
   return [stage, more];
 }
 

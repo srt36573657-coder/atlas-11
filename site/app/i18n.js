@@ -153,7 +153,7 @@ function tr(core, depth = 0) {
     const parts = splitTop(core, sep);
     if (parts.length > 1 && depth < 6) return parts.map(p => { const lead = p.match(/^\s*/)[0], tail = p.match(/\s*$/)[0]; return lead + tr(p.trim(), depth + 1) + tail; }).join(sep);
   }
-  const pre = /^(‹ |· |— |→ )/.exec(core); if (pre && depth < 6) return pre[0] + tr(core.slice(pre[0].length), depth + 1); // 앞에 붙은 「‹ 」「· 」(되돌아가기 · 이어 쓴 조각)는 떼고 나머지를 찾음(2026-10-07 · 「 · 」로 나눌 데가 없을 때만)
+  const pre = /^(‹ |· |— |→ |✓ )/.exec(core); if (pre && depth < 6) return pre[0] + tr(core.slice(pre[0].length), depth + 1); // 앞에 붙은 「‹ 」「· 」(되돌아가기 · 이어 쓴 조각) · 「✓ 」(2026-10-08 공통점 표시 — 「✓ 외국인 보유 늘어남」처럼 낱말은 있는데 ✓ 붙은 틀이 없던 것)는 떼고 나머지를 찾음(「 · 」로 나눌 데가 없을 때만)
   misses.add(key); return core;
 }
 /** 글 하나를 그 말로(앞뒤 빈칸은 그대로 · 같은 글은 한 번만 셈) */
