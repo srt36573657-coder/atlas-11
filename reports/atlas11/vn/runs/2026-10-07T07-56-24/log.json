@@ -1,0 +1,87 @@
+{
+ "market": "vn",
+ "startedAt": "2026-10-07T07:56:24.036Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T07:56:24.110Z",
+   "mode": "update",
+   "run": "reports/atlas11/vn/runs/2026-10-07T07-56-24",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "14:56",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T07:56:25.679Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/VCB.HM/day"
+  },
+  {
+   "name": "일봉(지금 고른 회사)",
+   "at": "2026-10-07T07:56:36.324Z",
+   "asked": 200,
+   "got": 200,
+   "latest": "2026-10-06"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T07:56:36.537Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/TCB.HM"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T07:56:45.526Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.VNI/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-07T07:56:45.727Z",
+   "news": 200,
+   "newsItems": 210,
+   "index": [
+    "VN 지수 2026-10-06",
+    "HNX 지수 2026-10-06"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-07T07:56:45.878Z",
+   "assets": 200,
+   "asOf": "2026-10-06",
+   "late": 0,
+   "sessions": 292,
+   "inputCopy": {
+    "file": "reports/atlas11/vn/runs/2026-10-07T07-56-24/input.json.gz",
+    "sha256": "356d600cc7a541003066ac2596d50e2a558de8b5a449c677fc5504a45e568565",
+    "bytes": 283329
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/BID.HM/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 1513
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/TCB.HM?pageSize=20&page=1",
+   "status": 200,
+   "ms": 211
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.VNI/day?startDateTime=202609170000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 199
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-07T07:56:45.878Z"
+}
