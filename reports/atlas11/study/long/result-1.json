@@ -1,0 +1,1845 @@
+{
+ "title": "Past-based assumption calculation (not a prediction): KRW 5,000,000 held 10/20/30 years",
+ "as_of": "2026-10-07",
+ "principal_krw": 5000000,
+ "method": {
+  "windows": "calendar year-end to year-end; every window the data allow",
+  "very_conservative": "principal x (1 + worst historical rolling CAGR)^N",
+  "percentile": "numpy linear interpolation; shown but not meaningful when n<5",
+  "real": "deflated by CPI (World Bank annual-average inflation; year-end CPI = geometric mean of adjacent annual averages; 2025 year-end assumes 2026 inflation = 2025 inflation)",
+  "dividends": "stocks are price-only; KOSPI+div adds 1.189%/yr (KCMI 1990-2019 TR 345 vs PR 242) [ASSUMPTION]",
+  "taxes_fees": "ignored (no taxes, fees, transaction costs, holding costs for property)"
+ },
+ "series": {
+  "kospi_price": {
+   "label": "KOSPI (price only, official)",
+   "group": "stocks-index",
+   "note": "year-ends 1981-2025 + 1980-01-04 base (=1979*); 1980 year-end not found",
+   "first_year_end": "1979*",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 36,
+    "worst_cagr": -0.046679658049120776,
+    "worst_window": "1988-1998",
+    "p10_cagr": -0.010682144366209845,
+    "median_cagr": 0.0503205112065096,
+    "best_cagr": 0.24706983481445488,
+    "best_window": "1979*-1989",
+    "latest_cagr": 0.07948492264542839,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 3099978,
+    "p10_value_krw": 4490849,
+    "median_value_krw": 8169368
+   },
+   "10y_real": {
+    "n_windows": 36,
+    "worst_cagr": -0.10030726121920785,
+    "worst_window": "1988-1998",
+    "p10_cagr": -0.04822389919457154,
+    "median_cagr": 0.02411262007381554,
+    "best_cagr": 0.16365826985433918,
+    "best_window": "1979*-1989",
+    "latest_cagr": 0.0568354614270723,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 1737449,
+    "p10_value_krw": 3050127,
+    "median_value_krw": 6345227
+   },
+   "20y_nominal": {
+    "n_windows": 26,
+    "worst_cagr": 0.010793037073001388,
+    "worst_window": "1988-2008",
+    "p10_cagr": 0.03517892728615879,
+    "median_cagr": 0.06335827593396615,
+    "best_cagr": 0.12357258596269638,
+    "best_window": "1979*-1999",
+    "latest_cagr": 0.05742984483352642,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 6197476,
+    "p10_value_krw": 9983400,
+    "median_value_krw": 17082928
+   },
+   "20y_real": {
+    "n_windows": 26,
+    "worst_cagr": -0.03252136500017677,
+    "worst_window": "1988-2008",
+    "p10_cagr": 0.004612933438730815,
+    "median_cagr": 0.03414702949420112,
+    "best_cagr": 0.07094067537154425,
+    "best_window": "1997-2017",
+    "latest_cagr": 0.03397656256054882,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 2581057,
+    "p10_value_krw": 5482079,
+    "median_value_krw": 9786238
+   },
+   "30y_nominal": {
+    "n_windows": 16,
+    "worst_cagr": 0.027396974528905993,
+    "worst_window": "1988-2018",
+    "p10_cagr": 0.02925783609283128,
+    "median_cagr": 0.05384772566640261,
+    "best_cagr": 0.09867057194892781,
+    "best_window": "1979*-2009",
+    "latest_cagr": 0.05347935368402812,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 11249118,
+    "p10_value_krw": 11876691,
+    "median_value_krw": 24116034
+   },
+   "30y_real": {
+    "n_windows": 16,
+    "worst_cagr": -0.00819573935583462,
+    "worst_window": "1988-2018",
+    "p10_cagr": -0.0013675620707148672,
+    "median_cagr": 0.0247621116279384,
+    "best_cagr": 0.055509540381927236,
+    "best_window": "1983-2013",
+    "latest_cagr": 0.025958911672396612,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 3906152,
+    "p10_value_krw": 4798882,
+    "median_value_krw": 10415061
+   }
+  },
+  "kospi_with_div": {
+   "label": "KOSPI + dividends [ASSUMPTION: +1.19%/yr, KCMI 1990-2019 average]",
+   "group": "stocks-index",
+   "note": "price windows compounded with a constant 1.189%/yr dividend add-on",
+   "first_year_end": "1979*",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 36,
+    "worst_cagr": -0.03534433796166436,
+    "worst_window": "1988-1998",
+    "p10_cagr": 0.0010811990435155017,
+    "median_cagr": 0.06280919802565654,
+    "best_cagr": 0.2618979415137259,
+    "best_window": "1979*-1989",
+    "latest_cagr": 0.09232038475539284,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 3488937,
+    "p10_value_krw": 5054324,
+    "median_value_krw": 9194393
+   },
+   "10y_real": {
+    "n_windows": 36,
+    "worst_cagr": -0.08960959252835554,
+    "worst_window": "1988-1998",
+    "p10_cagr": -0.03690694068706435,
+    "median_cagr": 0.036289685686812234,
+    "best_cagr": 0.1774945831907584,
+    "best_window": "1979*-1989",
+    "latest_cagr": 0.06940161333623585,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 1955450,
+    "p10_value_krw": 3432832,
+    "median_value_krw": 7141374
+   },
+   "20y_nominal": {
+    "n_windows": 26,
+    "worst_cagr": 0.022811728076644222,
+    "worst_window": "1988-2008",
+    "p10_cagr": 0.04748757525287017,
+    "median_cagr": 0.0760019864423257,
+    "best_cagr": 0.13693226616978715,
+    "best_window": "1979*-1999",
+    "latest_cagr": 0.07000306417414004,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 7850259,
+    "p10_value_krw": 12645838,
+    "median_value_krw": 21638715
+   },
+   "20y_real": {
+    "n_windows": 26,
+    "worst_cagr": -0.02101769774069484,
+    "worst_window": "1988-2008",
+    "p10_cagr": 0.01655814079811946,
+    "median_cagr": 0.04644340782681944,
+    "best_cagr": 0.08367454332318247,
+    "best_window": "1997-2017",
+    "latest_cagr": 0.0462709139803108,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 3269391,
+    "p10_value_krw": 6944076,
+    "median_value_krw": 12396096
+   },
+   "30y_nominal": {
+    "n_windows": 16,
+    "worst_cagr": 0.039613092291941765,
+    "worst_window": "1988-2018",
+    "p10_cagr": 0.04149608016591966,
+    "median_cagr": 0.06637835232797262,
+    "best_cagr": 0.1117341582962248,
+    "best_window": "1979*-2009",
+    "latest_cagr": 0.06600560027087643,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 16036966,
+    "p10_value_krw": 16931647,
+    "median_value_krw": 34380296
+   },
+   "30y_real": {
+    "n_windows": 16,
+    "worst_cagr": 0.0035971682994222487,
+    "worst_window": "1988-2018",
+    "p10_cagr": 0.01050653505646948,
+    "median_cagr": 0.03694689992798594,
+    "best_cagr": 0.06805992661527749,
+    "best_window": "1983-2013",
+    "latest_cagr": 0.03815793035334303,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 5568687,
+    "p10_value_krw": 6841381,
+    "median_value_krw": 14847917
+   }
+  },
+  "kosdaq_price": {
+   "label": "KOSDAQ (price only; growth-company proxy)",
+   "group": "stocks-index",
+   "note": "1999, 2000, 2025 official; 2001-2024 estimated from KRX stock data",
+   "first_year_end": "1999",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 17,
+    "worst_cagr": -0.14783816509658465,
+    "worst_window": "1999-2009",
+    "p10_cagr": -0.01425834360596034,
+    "median_cagr": 0.020441518600664788,
+    "best_cagr": 0.074360816507278,
+    "best_window": "2008-2018",
+    "latest_cagr": 0.029969714082412224,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 1009696,
+    "p10_value_krw": 4331129,
+    "median_value_krw": 6121406
+   },
+   "10y_real": {
+    "n_windows": 17,
+    "worst_cagr": -0.17383571660900132,
+    "worst_window": "1999-2009",
+    "p10_cagr": -0.04451678286607694,
+    "median_cagr": 0.0002959125164236909,
+    "best_cagr": 0.05679858349669509,
+    "best_window": "2011-2021",
+    "latest_cagr": 0.008359167602502326,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 740686,
+    "p10_value_krw": 3171032,
+    "median_value_krw": 5014815
+   },
+   "20y_nominal": {
+    "n_windows": 7,
+    "worst_cagr": -0.06541435384174221,
+    "worst_window": "1999-2019",
+    "p10_cagr": -0.017296237702108815,
+    "median_cagr": 0.02135097846683709,
+    "best_cagr": 0.03405934356536289,
+    "best_window": "2003-2023",
+    "latest_cagr": 0.01478250639098011,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 1292267,
+    "p10_value_krw": 3527137,
+    "median_value_krw": 7629045
+   },
+   "20y_real": {
+    "n_windows": 7,
+    "worst_cagr": -0.08703581402735061,
+    "worst_window": "1999-2019",
+    "p10_cagr": -0.03944925274225567,
+    "median_cagr": -0.0022337735276690696,
+    "best_cagr": 0.010472298263160651,
+    "best_window": "2003-2023",
+    "latest_cagr": -0.0077248785521923935,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 809179,
+    "p10_value_krw": 2235508,
+    "median_value_krw": 4781300
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   },
+   "30y_real": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  },
+  "samsung": {
+   "label": "Samsung Electronics 005930 (price, adj.)",
+   "group": "single-stock",
+   "note": "KRX daily data from 1995-05-02",
+   "first_year_end": "1995",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 21,
+    "worst_cagr": 0.06151967550127946,
+    "worst_window": "2012-2022",
+    "p10_cagr": 0.07201551634292924,
+    "median_cagr": 0.14258402170934392,
+    "best_cagr": 0.32118142582896314,
+    "best_window": "1997-2007",
+    "latest_cagr": 0.16880447101598484,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 9083443,
+    "p10_value_krw": 10022607,
+    "median_value_krw": 18960573
+   },
+   "10y_real": {
+    "n_windows": 21,
+    "worst_cagr": 0.04201981671546928,
+    "worst_window": "2005-2015",
+    "p10_cagr": 0.05085173388721942,
+    "median_cagr": 0.12330208788043895,
+    "best_cagr": 0.2820317696271868,
+    "best_window": "1997-2007",
+    "latest_cagr": 0.14428093114731988,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 7546226,
+    "p10_value_krw": 8210781,
+    "median_value_krw": 15993211
+   },
+   "20y_nominal": {
+    "n_windows": 11,
+    "worst_cagr": 0.0928469437643431,
+    "worst_window": "2004-2024",
+    "p10_cagr": 0.11425131670015687,
+    "median_cagr": 0.14014395291612258,
+    "best_cagr": 0.240330608774163,
+    "best_window": "1997-2017",
+    "latest_cagr": 0.11672229980411264,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 29522752,
+    "p10_value_krw": 43514412,
+    "median_value_krw": 68891203
+   },
+   "20y_real": {
+    "n_windows": 11,
+    "worst_cagr": 0.06841248711207193,
+    "worst_window": "2004-2024",
+    "p10_cagr": 0.08883508072821811,
+    "median_cagr": 0.10743998317978587,
+    "best_cagr": 0.2091143988240547,
+    "best_window": "1997-2017",
+    "latest_cagr": 0.09195393957123343,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 18782315,
+    "p10_value_krw": 27429134,
+    "median_value_krw": 38492311
+   },
+   "30y_nominal": {
+    "n_windows": 1,
+    "worst_cagr": 0.14961850765446205,
+    "worst_window": "1995-2025",
+    "p10_cagr": 0.14961850765446205,
+    "median_cagr": 0.14961850765446205,
+    "best_cagr": 0.14961850765446205,
+    "best_window": "1995-2025",
+    "latest_cagr": 0.14961850765446205,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 327779969,
+    "p10_value_krw": 327779969,
+    "median_value_krw": 327779969,
+    "caution": "only 1 window(s): percentiles are not meaningful"
+   },
+   "30y_real": {
+    "n_windows": 1,
+    "worst_cagr": 0.11958658594212412,
+    "worst_window": "1995-2025",
+    "p10_cagr": 0.11958658594212412,
+    "median_cagr": 0.11958658594212412,
+    "best_cagr": 0.11958658594212412,
+    "best_window": "1995-2025",
+    "latest_cagr": 0.11958658594212412,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 148149639,
+    "p10_value_krw": 148149639,
+    "median_value_krw": 148149639,
+    "caution": "only 1 window(s): percentiles are not meaningful"
+   }
+  },
+  "skhynix": {
+   "label": "SK hynix 000660 (price, adj.)",
+   "group": "single-stock",
+   "note": "first trade 1997-01-03 (Hyundai Electronics)",
+   "first_year_end": "1997",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 19,
+    "worst_cagr": -0.3431976970443621,
+    "worst_window": "1998-2008",
+    "p10_cagr": -0.21962471279017676,
+    "median_cagr": 0.1379747363836521,
+    "best_cagr": 0.35698043755148445,
+    "best_window": "2015-2025",
+    "latest_cagr": 0.35698043755148445,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 74699,
+    "p10_value_krw": 418798,
+    "median_value_krw": 18209424
+   },
+   "10y_real": {
+    "n_windows": 19,
+    "worst_cagr": -0.3624157287226446,
+    "worst_window": "1998-2008",
+    "p10_cagr": -0.24287765038729464,
+    "median_cagr": 0.1155087837983042,
+    "best_cagr": 0.3285086403548456,
+    "best_window": "2015-2025",
+    "latest_cagr": 0.3285086403548456,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 55507,
+    "p10_value_krw": 309479,
+    "median_value_krw": 14917634
+   },
+   "20y_nominal": {
+    "n_windows": 9,
+    "worst_cagr": -0.09530672495303105,
+    "worst_window": "1998-2018",
+    "p10_cagr": -0.08360372618841079,
+    "median_cagr": 0.04848405862822891,
+    "best_cagr": 0.1752450228796829,
+    "best_window": "2003-2023",
+    "latest_cagr": 0.15688533043991915,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 674524,
+    "p10_value_krw": 872241,
+    "median_value_krw": 12888627
+   },
+   "20y_real": {
+    "n_windows": 9,
+    "worst_cagr": -0.11670613278946207,
+    "worst_window": "1998-2018",
+    "p10_cagr": -0.10489827911139345,
+    "median_cagr": 0.02486679678534176,
+    "best_cagr": 0.14843751152325302,
+    "best_window": "2003-2023",
+    "latest_cagr": 0.13122617362224331,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 417902,
+    "p10_value_krw": 545027,
+    "median_value_krw": 8171814
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   },
+   "30y_real": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  },
+  "naver": {
+   "label": "NAVER 035420 (price, adj.)",
+   "group": "single-stock",
+   "note": "listed 2002-10-29 (as NHN, KOSDAQ)",
+   "first_year_end": "2002",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 14,
+    "worst_cagr": 0.033980811828476565,
+    "worst_window": "2014-2024",
+    "p10_cagr": 0.050125552155254716,
+    "median_cagr": 0.15713539497830253,
+    "best_cagr": 0.40730560612847855,
+    "best_window": "2002-2012",
+    "latest_cagr": 0.0630301575132961,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 6983848,
+    "p10_value_krw": 8154217,
+    "median_value_krw": 21518490
+   },
+   "10y_real": {
+    "n_windows": 14,
+    "worst_cagr": 0.013567912358916967,
+    "worst_window": "2014-2024",
+    "p10_cagr": 0.02986838180729856,
+    "median_cagr": 0.1380236739889663,
+    "best_cagr": 0.3662145513120172,
+    "best_window": "2002-2012",
+    "latest_cagr": 0.040725945734648716,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 5721350,
+    "p10_value_krw": 6711000,
+    "median_value_krw": 18217256
+   },
+   "20y_nominal": {
+    "n_windows": 4,
+    "worst_cagr": 0.12376408628563462,
+    "worst_window": "2005-2025",
+    "p10_cagr": 0.14061298155716545,
+    "median_cagr": 0.1890663978796554,
+    "best_cagr": 0.2533902410725928,
+    "best_window": "2002-2022",
+    "latest_cagr": 0.12376408628563462,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 51579007,
+    "p10_value_krw": 69460228,
+    "median_value_krw": 159621774,
+    "caution": "only 4 window(s): percentiles are not meaningful"
+   },
+   "20y_real": {
+    "n_windows": 4,
+    "worst_cagr": 0.0988395426360833,
+    "worst_window": "2005-2025",
+    "p10_cagr": 0.11525136878795934,
+    "median_cagr": 0.1622100533496077,
+    "best_cagr": 0.22444730312935457,
+    "best_window": "2002-2022",
+    "latest_cagr": 0.0988395426360833,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 32934843,
+    "p10_value_krw": 44302201,
+    "median_value_krw": 101079378,
+    "caution": "only 4 window(s): percentiles are not meaningful"
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   },
+   "30y_real": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  },
+  "gst": {
+   "label": "GST 083450 (price, adj.)",
+   "group": "single-stock",
+   "note": "listed 2006-02-01 (KOSDAQ)",
+   "first_year_end": "2006",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 10,
+    "worst_cagr": 0.06168969777668254,
+    "worst_window": "2006-2016",
+    "p10_cagr": 0.1343922798216584,
+    "median_cagr": 0.18329483334141927,
+    "best_cagr": 0.2656384973711301,
+    "best_window": "2011-2021",
+    "latest_cagr": 0.25690314058046515,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 9098002,
+    "p10_value_krw": 17644227,
+    "median_value_krw": 26909132
+   },
+   "10y_real": {
+    "n_windows": 10,
+    "worst_cagr": 0.037819889036339926,
+    "worst_window": "2006-2016",
+    "p10_cagr": 0.11073911711168083,
+    "median_cagr": 0.16332822152565019,
+    "best_cagr": 0.24733076062001857,
+    "best_window": "2011-2021",
+    "latest_cagr": 0.23053113821100002,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 7247528,
+    "p10_value_krw": 14291923,
+    "median_value_krw": 22698264
+   },
+   "20y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 20-year window - not extrapolated"
+   },
+   "20y_real": {
+    "n_windows": 0,
+    "note": "series too short for a 20-year window - not extrapolated"
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   },
+   "30y_real": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  },
+  "kb_apt_nationwide": {
+   "label": "KB apartment price index - nationwide (price only)",
+   "group": "real-estate",
+   "note": "December values 1986-2025 + Jan-1986 (=1985*)",
+   "first_year_end": "1985*",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 31,
+    "worst_cagr": -0.005183719801409414,
+    "worst_window": "1990-2000",
+    "p10_cagr": 0.023786366111494317,
+    "median_cagr": 0.038790349691515846,
+    "best_cagr": 0.07814714539278622,
+    "best_window": "1998-2008",
+    "latest_cagr": 0.023786366111494317,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 4746777,
+    "p10_value_krw": 6325042,
+    "median_value_krw": 7315585
+   },
+   "10y_real": {
+    "n_windows": 31,
+    "worst_cagr": -0.050925660512898596,
+    "worst_window": "1990-2000",
+    "p10_cagr": -0.025936559044542618,
+    "median_cagr": 0.009626121922134079,
+    "best_cagr": 0.046600566002354515,
+    "best_window": "1998-2008",
+    "latest_cagr": 0.002305556969391498,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 2964642,
+    "p10_value_krw": 3844523,
+    "median_value_krw": 5502699
+   },
+   "20y_nominal": {
+    "n_windows": 21,
+    "worst_cagr": 0.0312610713405046,
+    "worst_window": "2005-2025",
+    "p10_cagr": 0.033559681206447145,
+    "median_cagr": 0.04472203458610169,
+    "best_cagr": 0.06698517691436634,
+    "best_window": "1986-2006",
+    "latest_cagr": 0.0312610713405046,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 9254277,
+    "p10_value_krw": 9675673,
+    "median_value_krw": 11994581
+   },
+   "20y_real": {
+    "n_windows": 21,
+    "worst_cagr": -0.0068832454734736315,
+    "worst_window": "1990-2010",
+    "p10_cagr": 0.0032611736507484057,
+    "median_cagr": 0.011697299011154128,
+    "best_cagr": 0.03057824147282573,
+    "best_window": "2001-2021",
+    "latest_cagr": 0.008388199800653418,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 4354880,
+    "p10_value_krw": 5336421,
+    "median_value_krw": 6309309
+   },
+   "30y_nominal": {
+    "n_windows": 11,
+    "worst_cagr": 0.03245308792291479,
+    "worst_window": "1990-2020",
+    "p10_cagr": 0.03819703265553742,
+    "median_cagr": 0.03944139436148264,
+    "best_cagr": 0.05349319899862093,
+    "best_window": "1986-2016",
+    "latest_cagr": 0.038372162691159506,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 13034063,
+    "p10_value_krw": 15394426,
+    "median_value_krw": 15957698
+   },
+   "30y_real": {
+    "n_windows": 11,
+    "worst_cagr": 0.0011796774122805331,
+    "worst_window": "1990-2020",
+    "p10_cagr": 0.005089149301270579,
+    "median_cagr": 0.010235516458290572,
+    "best_cagr": 0.01409969077760298,
+    "best_window": "1986-2016",
+    "latest_cagr": 0.011246371578213399,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 5180012,
+    "p10_value_krw": 5822474,
+    "median_value_krw": 6786549
+   }
+  },
+  "kb_apt_seoul": {
+   "label": "KB apartment price index - Seoul (price only)",
+   "group": "real-estate",
+   "note": "December values 1986-2025 + Jan-1986 (=1985*)",
+   "first_year_end": "1985*",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 31,
+    "worst_cagr": -0.0013571794492098777,
+    "worst_window": "1990-2000",
+    "p10_cagr": 0.021131125126107264,
+    "median_cagr": 0.05356420131816342,
+    "best_cagr": 0.11183986064963403,
+    "best_window": "1998-2008",
+    "latest_cagr": 0.0578859942576293,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 4932554,
+    "p10_value_krw": 6162900,
+    "median_value_krw": 8425197
+   },
+   "10y_real": {
+    "n_windows": 31,
+    "worst_cagr": -0.047275065594448384,
+    "worst_window": "1990-2000",
+    "p10_cagr": -0.021799053938456714,
+    "median_cagr": 0.011563058842105844,
+    "best_cagr": 0.079307432600908,
+    "best_window": "1998-2008",
+    "latest_cagr": 0.03568971592364245,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 3080671,
+    "p10_value_krw": 4010983,
+    "median_value_krw": 5609183
+   },
+   "20y_nominal": {
+    "n_windows": 21,
+    "worst_cagr": 0.0401270633583215,
+    "worst_window": "2003-2023",
+    "p10_cagr": 0.04315027136679883,
+    "median_cagr": 0.050937887788471414,
+    "best_cagr": 0.07943708709362873,
+    "best_window": "1986-2006",
+    "latest_cagr": 0.04315027136679883,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 10982417,
+    "p10_value_krw": 11638781,
+    "median_value_krw": 13505510
+   },
+   "20y_real": {
+    "n_windows": 21,
+    "worst_cagr": 0.0053870864919218775,
+    "worst_window": "1990-2010",
+    "p10_cagr": 0.0114649127791564,
+    "median_cagr": 0.020782541289720013,
+    "best_cagr": 0.04185311823126736,
+    "best_window": "2000-2020",
+    "latest_cagr": 0.02001370312349371,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 5567190,
+    "p10_value_krw": 6280388,
+    "median_value_krw": 7544573
+   },
+   "30y_nominal": {
+    "n_windows": 11,
+    "worst_cagr": 0.042841910379993076,
+    "worst_window": "1990-2020",
+    "p10_cagr": 0.048945176630081244,
+    "median_cagr": 0.05023831161836356,
+    "best_cagr": 0.05623672492564391,
+    "best_window": "1987-2017",
+    "latest_cagr": 0.053241842439262,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 17600471,
+    "p10_value_krw": 20967841,
+    "median_value_krw": 21757336
+   },
+   "30y_real": {
+    "n_windows": 11,
+    "worst_cagr": 0.011253818347047861,
+    "worst_window": "1990-2020",
+    "p10_cagr": 0.012947898600710328,
+    "median_cagr": 0.018207664625278897,
+    "best_cagr": 0.025727605024252087,
+    "best_window": "1995-2025",
+    "latest_cagr": 0.025727605024252087,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 6994799,
+    "p10_value_krw": 7355010,
+    "median_value_krw": 8591339
+   }
+  },
+  "bis_all_dwellings": {
+   "label": "BIS residential property prices - all dwellings, nationwide (price only)",
+   "group": "real-estate",
+   "note": "Q4 values 1975-2025; pre-1986 part from unverified national source",
+   "first_year_end": "1975",
+   "last_year_end": 2025,
+   "10y_nominal": {
+    "n_windows": 41,
+    "worst_cagr": -0.013572076137103206,
+    "worst_window": "1990-2000",
+    "p10_cagr": 0.014726958671196444,
+    "median_cagr": 0.03439435725858142,
+    "best_cagr": 0.17084601197708493,
+    "best_window": "1975-1985",
+    "latest_cagr": 0.022400115363907513,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 4361377,
+    "p10_value_krw": 5787113,
+    "median_value_krw": 7011831
+   },
+   "10y_real": {
+    "n_windows": 41,
+    "worst_cagr": -0.05892831779459473,
+    "worst_window": "1990-2000",
+    "p10_cagr": -0.025725907430481976,
+    "median_cagr": 0.005780478944908518,
+    "best_cagr": 0.05097994291049912,
+    "best_window": "1975-1985",
+    "latest_cagr": 0.0009483921607444934,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 2723937,
+    "p10_value_krw": 3852845,
+    "median_value_krw": 5296659
+   },
+   "20y_nominal": {
+    "n_windows": 31,
+    "worst_cagr": 0.019133854547800366,
+    "worst_window": "1990-2010",
+    "p10_cagr": 0.02674578947326145,
+    "median_cagr": 0.03685521055478658,
+    "best_cagr": 0.10749185981839471,
+    "best_window": "1975-1995",
+    "latest_cagr": 0.028319133878035307,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 7304569,
+    "p10_value_krw": 8476735,
+    "median_value_krw": 10311748
+   },
+   "20y_real": {
+    "n_windows": 31,
+    "worst_cagr": -0.020026492116439254,
+    "worst_window": "1990-2010",
+    "p10_cagr": -0.014078396020626549,
+    "median_cagr": -0.0007040751598317296,
+    "best_cagr": 0.019566682420292913,
+    "best_window": "2001-2021",
+    "latest_cagr": 0.0055115130875118545,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 3336236,
+    "p10_value_krw": 3765457,
+    "median_value_krw": 4930061
+   },
+   "30y_nominal": {
+    "n_windows": 21,
+    "worst_cagr": 0.02165431499242798,
+    "worst_window": "1990-2020",
+    "p10_cagr": 0.025991925452949483,
+    "median_cagr": 0.035993564385142784,
+    "best_cagr": 0.07972213141107898,
+    "best_window": "1975-2005",
+    "latest_cagr": 0.027630343136578528,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 9508001,
+    "p10_value_krw": 10796632,
+    "median_value_krw": 14443809
+   },
+   "30y_real": {
+    "n_windows": 21,
+    "worst_cagr": -0.009291996434657834,
+    "worst_window": "1990-2020",
+    "p10_cagr": -0.005495568914573146,
+    "median_cagr": -0.0014017127535069784,
+    "best_cagr": 0.010056227986025235,
+    "best_window": "1975-2005",
+    "latest_cagr": 0.0007851646631846787,
+    "latest_window": "1995-2025",
+    "worst_value_krw": 3778680,
+    "p10_value_krw": 4238105,
+    "median_value_krw": 4793961
+   }
+  }
+ },
+ "cpi_windows": {
+  "10y": {
+   "n_windows": 37,
+   "min_inflation": 0.014007389041311935,
+   "median_inflation": 0.031789571412876194,
+   "max_inflation": 0.0716804642058333,
+   "latest_window": "2015-2025",
+   "latest_inflation": 0.021431397833463928,
+   "krw_needed_to_keep_value_latest_window": 6181047
+  },
+  "20y": {
+   "n_windows": 27,
+   "min_inflation": 0.02268260531447397,
+   "median_inflation": 0.035782997583174714,
+   "max_inflation": 0.06277291915189909,
+   "latest_window": "2005-2025",
+   "latest_inflation": 0.02268260531447397,
+   "krw_needed_to_keep_value_latest_window": 7830462
+  },
+  "30y": {
+   "n_windows": 17,
+   "min_inflation": 0.026824117124506497,
+   "median_inflation": 0.037718277780402154,
+   "max_inflation": 0.05223370205035738,
+   "latest_window": "1995-2025",
+   "latest_inflation": 0.026824117124506497,
+   "krw_needed_to_keep_value_latest_window": 11062463
+  }
+ },
+ "monthly_rolling_sensitivity_worst": {
+  "kb_apt_nationwide": {
+   "10y": {
+    "worst_cagr": -0.010779812725854154,
+    "window": "1991-04..2001-04",
+    "worst_value_krw": 4486418
+   },
+   "20y": {
+    "worst_cagr": 0.029863566312214873,
+    "window": "2006-06..2026-06",
+    "worst_value_krw": 9006663
+   },
+   "30y": {
+    "worst_cagr": 0.031851895831997545,
+    "window": "1991-04..2021-04",
+    "worst_value_krw": 12808285
+   }
+  },
+  "kb_apt_seoul": {
+   "10y": {
+    "worst_cagr": -0.008341998431429465,
+    "window": "1991-04..2001-04",
+    "worst_value_krw": 4598214
+   },
+   "20y": {
+    "worst_cagr": 0.03883482762130508,
+    "window": "2004-05..2024-05",
+    "worst_value_krw": 10712727
+   },
+   "30y": {
+    "worst_cagr": 0.04117451052190124,
+    "window": "1991-04..2021-04",
+    "worst_value_krw": 16775514
+   }
+  },
+  "samsung": {
+   "10y": {
+    "worst_cagr": 0.04507296246061521,
+    "window": "2006-01..2016-01",
+    "worst_value_krw": 7770270
+   },
+   "20y": {
+    "worst_cagr": 0.08561989748174281,
+    "window": "2005-02..2025-02",
+    "worst_value_krw": 25853890
+   },
+   "30y": {
+    "worst_cagr": 0.1288442581108573,
+    "window": "1995-06..2025-06",
+    "worst_value_krw": 189666597
+   }
+  },
+  "skhynix": {
+   "10y": {
+    "worst_cagr": -0.3431976970443621,
+    "window": "1998-12..2008-12",
+    "worst_value_krw": 74699
+   },
+   "20y": {
+    "worst_cagr": -0.1087036699956414,
+    "window": "1997-03..2017-03",
+    "worst_value_krw": 500510
+   },
+   "30y": null
+  },
+  "naver": {
+   "10y": {
+    "worst_cagr": -5.9896381036761426e-05,
+    "window": "2014-06..2024-06",
+    "worst_value_krw": 4997006
+   },
+   "20y": {
+    "worst_cagr": 0.10160197661114045,
+    "window": "2006-06..2026-06",
+    "worst_value_krw": 34630928
+   },
+   "30y": null
+  },
+  "gst": {
+   "10y": {
+    "worst_cagr": 0.016315977767604073,
+    "window": "2007-07..2017-07",
+    "worst_value_krw": 5878378
+   },
+   "20y": {
+    "worst_cagr": 0.16643212538349927,
+    "window": "2006-03..2026-03",
+    "worst_value_krw": 108682458
+   },
+   "30y": null
+  }
+ },
+ "adjustment_method_sensitivity": {
+  "skhynix": {
+   "method": "KRX base price on every event (SK hynix 2003 factor 19.63; NAVER 2008 1.0163, 2013 1.5673, 2018 0.2003)",
+   "full_history_multiple": 7.906,
+   "full_history_cagr": 0.07198530859048713,
+   "10y_nominal": {
+    "n_windows": 19,
+    "worst_cagr": -0.33875045559790673,
+    "worst_window": "1998-2008",
+    "p10_cagr": -0.21434075244860742,
+    "median_cagr": 0.1379747363836521,
+    "best_cagr": 0.35698043755148445,
+    "best_window": "2015-2025",
+    "latest_cagr": 0.35698043755148445,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 79914,
+    "p10_value_krw": 448035,
+    "median_value_krw": 18209424
+   },
+   "20y_nominal": {
+    "n_windows": 9,
+    "worst_cagr": -0.09224903032524523,
+    "worst_window": "1998-2018",
+    "p10_cagr": -0.08050647760633067,
+    "median_cagr": 0.05202773930079729,
+    "best_cagr": 0.1752450228796829,
+    "best_window": "2003-2023",
+    "latest_cagr": 0.15688533043991915,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 721613,
+    "p10_value_krw": 933133,
+    "median_value_krw": 13788399
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  },
+  "naver": {
+   "method": "KRX base price on every event (SK hynix 2003 factor 19.63; NAVER 2008 1.0163, 2013 1.5673, 2018 0.2003)",
+   "full_history_multiple": 81.791,
+   "full_history_cagr": 0.2021044068961475,
+   "10y_nominal": {
+    "n_windows": 14,
+    "worst_cagr": 0.03383405418406671,
+    "worst_window": "2014-2024",
+    "p10_cagr": 0.04997650301371785,
+    "median_cagr": 0.13563196973804392,
+    "best_cagr": 0.40503271885015946,
+    "best_window": "2002-2012",
+    "latest_cagr": 0.062879276761866,
+    "latest_window": "2015-2025",
+    "worst_value_krw": 6973942,
+    "p10_value_krw": 8142651,
+    "median_value_krw": 17837998
+   },
+   "20y_nominal": {
+    "n_windows": 4,
+    "worst_cagr": 0.11237411578793055,
+    "worst_window": "2005-2025",
+    "p10_cagr": 0.12905223818782072,
+    "median_cagr": 0.1770145523393467,
+    "best_cagr": 0.24068643780805377,
+    "best_window": "2002-2022",
+    "latest_cagr": 0.11237411578793055,
+    "latest_window": "2005-2025",
+    "worst_value_krw": 42071451,
+    "p10_value_krw": 56656628,
+    "median_value_krw": 130198701,
+    "caution": "only 4 window(s): percentiles are not meaningful"
+   },
+   "30y_nominal": {
+    "n_windows": 0,
+    "note": "series too short for a 30-year window - not extrapolated"
+   }
+  }
+ },
+ "kosdaq_30y_single_official_observation": {
+  "from": "1996-07-01",
+  "to": "2026-10-02",
+  "start_level": 1000.0,
+  "end_level": 893.29,
+  "cagr": -0.0037230316360000737,
+  "value_krw": 4466450
+ },
+ "full_history_single_path": {
+  "samsung": {
+   "from": "1995-05-02",
+   "to": "2026-10-02",
+   "years": 31.42,
+   "multiple": 178.74,
+   "cagr": 0.17945692434568983,
+   "value_krw": 893697774,
+   "first_price_adjusted": 1544.15,
+   "first_price_raw": 119500.0,
+   "latest_price": 276000.0,
+   "warning": "SURVIVORSHIP / HINDSIGHT BIAS: picked today because it succeeded; price only, dividends excluded"
+  },
+  "skhynix": {
+   "from": "1997-01-03",
+   "to": "2026-10-02",
+   "years": 29.74,
+   "multiple": 7.39,
+   "cagr": 0.06955597813158909,
+   "value_krw": 36948755,
+   "first_price_adjusted": 249128.83,
+   "first_price_raw": 20000.0,
+   "latest_price": 1841000.0,
+   "warning": "SURVIVORSHIP / HINDSIGHT BIAS: picked today because it succeeded; price only, dividends excluded"
+  },
+  "naver": {
+   "from": "2002-10-29",
+   "to": "2026-10-02",
+   "years": 23.93,
+   "multiple": 100.274,
+   "cagr": 0.21238477901376784,
+   "value_krw": 501370231,
+   "first_price_adjusted": 1916.75,
+   "first_price_raw": 44000.0,
+   "latest_price": 192200.0,
+   "warning": "SURVIVORSHIP / HINDSIGHT BIAS: picked today because it succeeded; price only, dividends excluded"
+  },
+  "gst": {
+   "from": "2006-02-01",
+   "to": "2026-10-02",
+   "years": 20.67,
+   "multiple": 27.404,
+   "cagr": 0.1737524522016527,
+   "value_krw": 137021701,
+   "first_price_adjusted": 1955.89,
+   "first_price_raw": 7800.0,
+   "latest_price": 53600.0,
+   "warning": "SURVIVORSHIP / HINDSIGHT BIAS: picked today because it succeeded; price only, dividends excluded"
+  },
+  "kospi_price": {
+   "from": "1980-01-04",
+   "to": "2026-10-06",
+   "years": 46.75,
+   "multiple": 69.414,
+   "cagr": 0.09492815855577796,
+   "value_krw": 347069500
+  },
+  "kosdaq_price": {
+   "from": "1996-07-01",
+   "to": "2026-10-02",
+   "years": 30.25,
+   "multiple": 0.8933,
+   "cagr": -0.0037230316360000737,
+   "value_krw": 4466450,
+   "note": "both end points official; this is the only ~30-year KOSDAQ observation"
+  },
+  "kb_apt_nationwide": {
+   "from": "1986-01",
+   "to": "2026-08",
+   "years": 40.58,
+   "multiple": 5.861,
+   "cagr": 0.044538699915073865,
+   "value_krw": 29304591
+  },
+  "kb_apt_seoul": {
+   "from": "1986-01",
+   "to": "2026-08",
+   "years": 40.58,
+   "multiple": 8.962,
+   "cagr": 0.05552653410173525,
+   "value_krw": 44808281
+  }
+ },
+ "kospi_2026_ytd_to_2026_10_06": 0.6471547184854907,
+ "data_points": {
+  "kospi_latest": {
+   "2026-09-30": 6838.04,
+   "2026-10-01": 6971.35,
+   "2026-10-02": 7003.74,
+   "2026-10-06": 6941.39
+  },
+  "stocks_latest": {
+   "Samsung Electronics": {
+    "date": "2026-10-02",
+    "price_krw": 276000.0
+   },
+   "SK hynix": {
+    "date": "2026-10-02",
+    "price_krw": 1841000.0
+   },
+   "NAVER": {
+    "date": "2026-10-02",
+    "price_krw": 192200.0
+   },
+   "GST (Global Standard Technology)": {
+    "date": "2026-10-02",
+    "price_krw": 53600.0
+   }
+  },
+  "kosdaq_official_points": {
+   "1996-07-01": 1000.0,
+   "1999-12-28": 2561.4,
+   "2000-03-10": 2834.4,
+   "2000-12-26": 525.8,
+   "2025-12-30": 925.47,
+   "2026-08-28": 838.41,
+   "2026-09-11": 820.64,
+   "2026-09-30": 855.91,
+   "2026-10-01": 894.29,
+   "2026-10-02": 893.29,
+   "2026-10-06": 919.92
+  },
+  "kosdaq_yearend_used": {
+   "1999": {
+    "level": 2561.4,
+    "kind": "official"
+   },
+   "2000": {
+    "level": 525.8,
+    "kind": "official"
+   },
+   "2001": {
+    "level": 718.57,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2002": {
+    "level": 441.89,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2003": {
+    "level": 439.09,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2004": {
+    "level": 373.53,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2005": {
+    "level": 690.09,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2006": {
+    "level": 600.81,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2007": {
+    "level": 700.35,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2008": {
+    "level": 331.33,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2009": {
+    "level": 517.25,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2010": {
+    "level": 521.19,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2011": {
+    "level": 506.73,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2012": {
+    "level": 502.65,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2013": {
+    "level": 507.48,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2014": {
+    "level": 549.82,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2015": {
+    "level": 688.84,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2016": {
+    "level": 635.79,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2017": {
+    "level": 799.41,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2018": {
+    "level": 678.83,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2019": {
+    "level": 662.0,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2020": {
+    "level": 953.61,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2021": {
+    "level": 1018.53,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2022": {
+    "level": 674.24,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2023": {
+    "level": 857.94,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2024": {
+    "level": 673.14,
+    "kind": "estimate (KRX-data reconstruction, drift-corrected)"
+   },
+   "2025": {
+    "level": 925.47,
+    "kind": "official"
+   }
+  },
+  "kb_index_base": "2026-01 = 100",
+  "kb_last_month": "2026-08",
+  "bis_last_quarter": "2026Q1"
+ },
+ "validation": {
+  "kospi_reconstruction_vs_official": [
+   {
+    "year": 1995,
+    "official": 882.94,
+    "reconstructed": 882.94,
+    "ratio": 1.0
+   },
+   {
+    "year": 1996,
+    "official": 651.22,
+    "reconstructed": 674.74,
+    "ratio": 1.0361
+   },
+   {
+    "year": 1997,
+    "official": 376.31,
+    "reconstructed": 404.33,
+    "ratio": 1.0745
+   },
+   {
+    "year": 1998,
+    "official": 562.46,
+    "reconstructed": 627.19,
+    "ratio": 1.1151
+   },
+   {
+    "year": 1999,
+    "official": 1028.07,
+    "reconstructed": 1157.42,
+    "ratio": 1.1258
+   },
+   {
+    "year": 2000,
+    "official": 504.62,
+    "reconstructed": 567.53,
+    "ratio": 1.1247
+   },
+   {
+    "year": 2001,
+    "official": 693.7,
+    "reconstructed": 772.82,
+    "ratio": 1.1141
+   },
+   {
+    "year": 2002,
+    "official": 627.55,
+    "reconstructed": 697.45,
+    "ratio": 1.1114
+   },
+   {
+    "year": 2003,
+    "official": 810.71,
+    "reconstructed": 902.52,
+    "ratio": 1.1132
+   },
+   {
+    "year": 2004,
+    "official": 895.92,
+    "reconstructed": 1000.42,
+    "ratio": 1.1166
+   },
+   {
+    "year": 2005,
+    "official": 1379.37,
+    "reconstructed": 1537.95,
+    "ratio": 1.115
+   },
+   {
+    "year": 2006,
+    "official": 1434.46,
+    "reconstructed": 1599.47,
+    "ratio": 1.115
+   },
+   {
+    "year": 2007,
+    "official": 1897.13,
+    "reconstructed": 2120.46,
+    "ratio": 1.1177
+   },
+   {
+    "year": 2008,
+    "official": 1124.47,
+    "reconstructed": 1256.41,
+    "ratio": 1.1173
+   },
+   {
+    "year": 2009,
+    "official": 1682.77,
+    "reconstructed": 1882.01,
+    "ratio": 1.1184
+   },
+   {
+    "year": 2010,
+    "official": 2051.0,
+    "reconstructed": 2294.01,
+    "ratio": 1.1185
+   },
+   {
+    "year": 2011,
+    "official": 1825.74,
+    "reconstructed": 2045.88,
+    "ratio": 1.1206
+   },
+   {
+    "year": 2012,
+    "official": 1997.05,
+    "reconstructed": 2238.64,
+    "ratio": 1.121
+   },
+   {
+    "year": 2013,
+    "official": 2011.34,
+    "reconstructed": 2258.21,
+    "ratio": 1.1227
+   },
+   {
+    "year": 2014,
+    "official": 1915.59,
+    "reconstructed": 2158.91,
+    "ratio": 1.127
+   },
+   {
+    "year": 2015,
+    "official": 1961.31,
+    "reconstructed": 2213.35,
+    "ratio": 1.1285
+   },
+   {
+    "year": 2016,
+    "official": 2026.46,
+    "reconstructed": 2286.92,
+    "ratio": 1.1285
+   },
+   {
+    "year": 2017,
+    "official": 2467.49,
+    "reconstructed": 2780.94,
+    "ratio": 1.127
+   },
+   {
+    "year": 2018,
+    "official": 2041.04,
+    "reconstructed": 2292.87,
+    "ratio": 1.1234
+   },
+   {
+    "year": 2019,
+    "official": 2197.67,
+    "reconstructed": 2468.73,
+    "ratio": 1.1233
+   },
+   {
+    "year": 2020,
+    "official": 2873.47,
+    "reconstructed": 3228.85,
+    "ratio": 1.1237
+   },
+   {
+    "year": 2021,
+    "official": 2977.65,
+    "reconstructed": 3346.01,
+    "ratio": 1.1237
+   },
+   {
+    "year": 2022,
+    "official": 2236.4,
+    "reconstructed": 2512.36,
+    "ratio": 1.1234
+   },
+   {
+    "year": 2023,
+    "official": 2655.28,
+    "reconstructed": 2984.54,
+    "ratio": 1.124
+   },
+   {
+    "year": 2024,
+    "official": 2399.49,
+    "reconstructed": 2700.66,
+    "ratio": 1.1255
+   },
+   {
+    "year": 2025,
+    "official": 4214.17,
+    "reconstructed": 4742.99,
+    "ratio": 1.1255
+   }
+  ],
+  "kosdaq_reconstruction_vs_official": [
+   {
+    "date": "1996-07-01",
+    "official": 1000.0,
+    "reconstructed_anchored_2026_10_02": 507.62,
+    "ratio": 0.5076
+   },
+   {
+    "date": "1999-12-28",
+    "official": 2561.4,
+    "reconstructed_anchored_2026_10_02": 2355.34,
+    "ratio": 0.9196
+   },
+   {
+    "date": "2000-03-10",
+    "official": 2834.4,
+    "reconstructed_anchored_2026_10_02": 2213.77,
+    "ratio": 0.781
+   },
+   {
+    "date": "2000-12-26",
+    "official": 525.8,
+    "reconstructed_anchored_2026_10_02": 487.78,
+    "ratio": 0.9277
+   },
+   {
+    "date": "2025-12-30",
+    "official": 925.47,
+    "reconstructed_anchored_2026_10_02": 933.16,
+    "ratio": 1.0083
+   },
+   {
+    "date": "2026-08-28",
+    "official": 838.41,
+    "reconstructed_anchored_2026_10_02": 838.33,
+    "ratio": 0.9999
+   },
+   {
+    "date": "2026-09-11",
+    "official": 820.64,
+    "reconstructed_anchored_2026_10_02": 820.23,
+    "ratio": 0.9995
+   },
+   {
+    "date": "2026-09-30",
+    "official": 855.91,
+    "reconstructed_anchored_2026_10_02": 855.79,
+    "ratio": 0.9999
+   },
+   {
+    "date": "2026-10-01",
+    "official": 894.29,
+    "reconstructed_anchored_2026_10_02": 894.33,
+    "ratio": 1.0
+   },
+   {
+    "date": "2026-10-02",
+    "official": 893.29,
+    "reconstructed_anchored_2026_10_02": 893.29,
+    "ratio": 1.0
+   }
+  ],
+  "kosdaq_reconstruction_drift_2000_2025": 0.08690903110077564,
+  "kb_file_vs_news": [
+   {
+    "item": "Seoul apartments 1998 (Dec/Dec)",
+    "kb_file": -14.6,
+    "news": -14.6
+   },
+   {
+    "item": "Seoul apartments 2001 (Dec/Dec)",
+    "kb_file": 19.33,
+    "news": 19.3
+   },
+   {
+    "item": "Seoul apartments 2002 (Dec/Dec)",
+    "kb_file": 30.79,
+    "news": 30.7
+   },
+   {
+    "item": "Seoul apartments 2003 (Dec/Dec)",
+    "kb_file": 10.18,
+    "news": 10.1
+   },
+   {
+    "item": "Seoul apartments 2006 (Dec/Dec)",
+    "kb_file": 24.11,
+    "news": 24.1
+   },
+   {
+    "item": "Seoul apartments 2020 (Dec/Dec)",
+    "kb_file": 13.06,
+    "news": 13.0
+   },
+   {
+    "item": "Seoul apartments 2021 (Dec/Dec)",
+    "kb_file": 16.4,
+    "news": 16.4
+   },
+   {
+    "item": "Seoul apartments 2022 (Dec/Dec)",
+    "kb_file": -2.96,
+    "news": -2.9
+   },
+   {
+    "item": "Seoul apartments Oct-2023 / Jan-1986",
+    "kb_file": 7.186,
+    "news": "6.1배 (rise => x7.1 if read as +610%)"
+   },
+   {
+    "item": "Nationwide apartments Oct-2023 / Jan-1986",
+    "kb_file": 5.668,
+    "news": "4.6배 (rise => x5.6 if read as +460%)"
+   }
+  ],
+  "samsung_latest_price_check": {
+   "krx_2026_10_02": 276000.0,
+   "stockanalysis_2026_10_02": 276000.0
+  }
+ },
+ "adjustment_events_used": [
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1995-07-08",
+   "prev_close": 130500.0,
+   "close": 135000.0,
+   "krx_base": 130000.0,
+   "krx_base_factor": 0.9961685823754789,
+   "factor_used": 0.9961685823754789,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1996-01-03",
+   "prev_close": 141000.0,
+   "close": 142000.0,
+   "krx_base": 137000.0,
+   "krx_base_factor": 0.9716312056737588,
+   "factor_used": 0.9716312056737588,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1996-03-12",
+   "prev_close": 126500.0,
+   "close": 93000.0,
+   "krx_base": 97300.0,
+   "krx_base_factor": 0.7691699604743083,
+   "factor_used": 0.7691699604743083,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1997-01-03",
+   "prev_close": 45500.0,
+   "close": 44000.0,
+   "krx_base": 44400.0,
+   "krx_base_factor": 0.9758241758241758,
+   "factor_used": 0.9758241758241758,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1997-05-22",
+   "prev_close": 63500.0,
+   "close": 62500.0,
+   "krx_base": 63200.0,
+   "krx_base_factor": 0.9952755905511811,
+   "factor_used": 0.9952755905511811,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1998-01-03",
+   "prev_close": 38400.0,
+   "close": 40500.0,
+   "krx_base": 37800.0,
+   "krx_base_factor": 0.984375,
+   "factor_used": 0.984375,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1998-04-25",
+   "prev_close": 68300.0,
+   "close": 66600.0,
+   "krx_base": 66600.0,
+   "krx_base_factor": 0.9751098096632503,
+   "factor_used": 0.9751098096632503,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1998-08-14",
+   "prev_close": 41000.0,
+   "close": 39300.0,
+   "krx_base": 39850.0,
+   "krx_base_factor": 0.9719512195121951,
+   "factor_used": 0.9719512195121951,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1999-01-04",
+   "prev_close": 80700.0,
+   "close": 86500.0,
+   "krx_base": 79000.0,
+   "krx_base_factor": 0.9789343246592317,
+   "factor_used": 0.9789343246592317,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "1999-05-13",
+   "prev_close": 92500.0,
+   "close": 89900.0,
+   "krx_base": 90500.0,
+   "krx_base_factor": 0.9783783783783784,
+   "factor_used": 0.9783783783783784,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "005930",
+   "name": "Samsung Electronics",
+   "date": "2018-05-04",
+   "prev_close": 2650000.0,
+   "close": 51900.0,
+   "krx_base": 53000.0,
+   "krx_base_factor": 0.02,
+   "factor_used": 0.02,
+   "rule": "50:1 stock split (KRX base gives the same 0.02)"
+  },
+  {
+   "code": "000660",
+   "name": "SK hynix",
+   "date": "1998-05-09",
+   "prev_close": 17500.0,
+   "close": 16250.0,
+   "krx_base": 16450.0,
+   "krx_base_factor": 0.94,
+   "factor_used": 0.94,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "000660",
+   "name": "SK hynix",
+   "date": "1998-11-16",
+   "prev_close": 24300.0,
+   "close": 23200.0,
+   "krx_base": 21900.0,
+   "krx_base_factor": 0.9012345679012346,
+   "factor_used": 0.9012345679012346,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "000660",
+   "name": "SK hynix",
+   "date": "1999-05-06",
+   "prev_close": 24800.0,
+   "close": 19400.0,
+   "krx_base": 19200.0,
+   "krx_base_factor": 0.7741935483870968,
+   "factor_used": 0.7741935483870968,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "000660",
+   "name": "SK hynix",
+   "date": "1999-11-11",
+   "prev_close": 26150.0,
+   "close": 25450.0,
+   "krx_base": 23650.0,
+   "krx_base_factor": 0.904397705544933,
+   "factor_used": 0.904397705544933,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "000660",
+   "name": "SK hynix",
+   "date": "2003-04-14",
+   "prev_close": 135.0,
+   "close": 3045.0,
+   "krx_base": 2650.0,
+   "krx_base_factor": 19.62962962962963,
+   "factor_used": 21.0,
+   "rule": "1:21 reverse split (share count 5,239,972,289 -> 249,522,490); pure ratio used instead of KRX re-listing base (factor 19.63)"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "date": "2004-02-26",
+   "prev_close": 146100.0,
+   "close": 72000.0,
+   "krx_base": 73100.0,
+   "krx_base_factor": 0.5003422313483915,
+   "factor_used": 0.5003422313483915,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "date": "2006-07-14",
+   "prev_close": 318000.0,
+   "close": 104700.0,
+   "krx_base": 106400.0,
+   "krx_base_factor": 0.33459119496855344,
+   "factor_used": 0.33459119496855344,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "date": "2008-11-28",
+   "prev_close": 116600.0,
+   "close": 122500.0,
+   "krx_base": 118500.0,
+   "krx_base_factor": 1.016295025728988,
+   "factor_used": 1.0,
+   "rule": "move from KOSDAQ to KOSPI: no corporate action, holder value continuous (KRX listing base would give 1.0163)"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "date": "2013-08-29",
+   "prev_close": 293500.0,
+   "close": 480000.0,
+   "krx_base": 460000.0,
+   "krx_base_factor": 1.567291311754685,
+   "factor_used": 1.3010695198037012,
+   "rule": "split-off of NHN Entertainment: holder kept 0.6849 NAVER + 0.3151 NHN Ent per old share; NHN Ent valued at its first close and assumed reinvested in NAVER (KRX re-listing base would give 1.5673)"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "date": "2018-10-12",
+   "prev_close": 704000.0,
+   "close": 142000.0,
+   "krx_base": 141000.0,
+   "krx_base_factor": 0.2002840909090909,
+   "factor_used": 0.2,
+   "rule": "5:1 stock split (KRX base gives 0.200284 due to tick rounding)"
+  },
+  {
+   "code": "083450",
+   "name": "GST (Global Standard Technology)",
+   "date": "2007-07-19",
+   "prev_close": 14050.0,
+   "close": 8080.0,
+   "krx_base": 7030.0,
+   "krx_base_factor": 0.500355871886121,
+   "factor_used": 0.500355871886121,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  },
+  {
+   "code": "083450",
+   "name": "GST (Global Standard Technology)",
+   "date": "2024-06-26",
+   "prev_close": 43300.0,
+   "close": 21600.0,
+   "krx_base": 21700.0,
+   "krx_base_factor": 0.5011547344110855,
+   "factor_used": 0.5011547344110855,
+   "rule": "KRX base price (rights / bonus issue / stock dividend ex-date)"
+  }
+ ],
+ "data_gaps": [
+  "KOSPI dividend yield by year / KOSPI total-return index: not obtained; one 30-year average (KCMI 1990-2019) used as an assumption",
+  "KOSPI 1980 year-end close: not found; 1980-01-04 base (=100) used as the start-of-1980 point",
+  "KOSDAQ official year-end closes 2001-2024: not obtained; estimated from KRX stock-level data (validated method, drift-corrected)",
+  "KOSPI High Dividend 50 index history and base date: not obtained (only the 2026-10-06 level)",
+  "Apartment rental yield (전월세 수익률): no official series reachable -> price+rent results not computed",
+  "1-year time-deposit rate by year: ECOS unreachable; only KCMI period averages (1990-2019 4.6%, 2000s 4.8%, 2010s 2.4%)",
+  "KRX data portal, ECOS, KB data hub, R-ONE, KOSIS and e-나라지표 were blocked or unreachable from this environment; KRX and KB data were used through GitHub mirrors (see sources.csv)"
+ ],
+ "disclaimer": "Past-based assumption calculation using historical data only. Not a forecast, not investment advice, no recommendation."
+}

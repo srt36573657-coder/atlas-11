@@ -818,7 +818,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       promise8: [...document.querySelectorAll('.b-promise-box li')].at(-1)?.textContent.trim() ?? null}));
     check(`${label} 「처음」 탭: 「한국 주식시장 안내 ›」 카드 · 「${st.ms}」 ${st.msLi}줄(두 축 · 뇌동매매 연구 출처 · 광고 없음 · 만든 사람의 태도) · 「${st.msCheer}」 · 하지 않는 일 여덟째 「${st.promise8}」`,
       st.card === '#/guide' && st.ms === 'ATLAS가 되고 싶은 것' && st.msLi === 4 && st.msSrc === 'https://doi.org/10.1111/0022-1082.00226' && st.msCheer === '하규야, 힘내라 — 늘 응원한다' && st.promise8 === '광고를 싣지 않고 유료 결제를 받지 않습니다 — 영원히, 상업적 이익을 좇지 않습니다', st);
-    const tG = page.locator('.st-page a.gd-card'); if (mobile) await tG.tap(); else await tG.click(); await page.waitForSelector('.gd-page .gd-row'); await page.waitForTimeout(200);
+    const tG = page.locator('.st-page a.gd-card[href="#/guide"]'); if (mobile) await tG.tap(); else await tG.click(); await page.waitForSelector('.gd-page .gd-row'); await page.waitForTimeout(200); // 카드 셋(2026-10-07 안내 · 500만 원 · 몇 위) 가운데 안내
     const gd = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.gd-page .b-title')?.textContent.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
       secs: [...document.querySelectorAll('.gd-sec')].map(x => x.querySelector('.gd-h')?.textContent.replace(/^\d+/, '').trim()), rows: document.querySelectorAll('.gd-row').length,
       noSrc: [...document.querySelectorAll('.gd-row')].filter(r => ![...r.querySelectorAll('.gd-src a')].some(a => /^https:\/\//.test(a.getAttribute('href') ?? ''))).length,
@@ -829,6 +829,45 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       gd.hash === '#/guide' && gd.title === '한국 주식시장 안내' && gd.active === 'start' && gd.secs.join() === '시장,시간(한국 시각),규칙,계좌,세금(2026년),읽는 법' && gd.rows === 22 && gd.noSrc === 0 && gd.back === '#/start' && gd.units === '만억조'
         && gd.foot.guide === '#/guide' && gd.foot.cheer === '하규야, 힘내라 — 늘 응원한다' && /광고 · 유료 결제 없음$/.test(gd.foot.promise ?? '') && gd.sw <= gd.cw, gd);
     await wordsCheck(page, `${label} 「한국 주식시장 안내」`);
+  }
+  // ⑤-5 500만 원을 오래 들고 있었다면(#/long · 2026-10-07 05:27) · 한국 주식시장은 몇 위인가(#/korea · 05:29) — 규칙 24 · 숫자는 view-long.js LONG · view-korea.js RANKS 와 맞댐
+  {
+    await page.goto(base + '/#/start', {waitUntil: 'networkidle'}); await page.waitForSelector('.st-page'); await page.waitForTimeout(200);
+    const cards = await page.evaluate(() => [...document.querySelectorAll('.st-page a.gd-card')].map(a => a.getAttribute('href')));
+    const promise6 = await page.evaluate(() => [...document.querySelectorAll('.b-promise-box li')].map(x => x.textContent.trim()).find(x => x.includes('그때 샀다면 얼마')) ?? null);
+    check(`${label} 「처음」 탭 카드 ${cards.length}개(${cards.join(' · ')}) · 하지 않는 일 「${promise6}」`, cards.join() === '#/guide,#/long,#/korea'
+      && promise6 === '「그때 샀다면 얼마」 같은 가정 수익은 「500만 원을 오래 들고 있었다면」 한 화면에서만 셈합니다 — 지난 기록에서 가장 나빴던 때로', {cards, promise6});
+    const tL = page.locator('.st-page a.gd-card[href="#/long"]'); if (mobile) await tL.tap(); else await tL.click(); await page.waitForSelector('.lt-page .lt-row'); await page.waitForTimeout(1300);
+    const readL = () => page.evaluate(() => ({hash: location.hash, title: document.querySelector('.lt-page .b-title')?.textContent.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      when: document.querySelector('.lt-page .b-when')?.textContent.trim(), hero: [...document.querySelectorAll('.lt-hero .lt-grp')].map(g => [g.querySelector('.lt-yr')?.textContent.trim(), ...[...g.querySelectorAll('.lt-bv')].map(b => b.textContent.trim())]),
+      pressed: document.querySelector('.lt-seg button[aria-pressed="true"]')?.textContent.trim(), secs: [...document.querySelectorAll('.lt-sec .lt-h')].map(x => x.textContent.trim()), warn: document.querySelectorAll('.lt-sec .lt-warn').length,
+      rows: document.querySelectorAll('.lt-row').length, bars: document.querySelectorAll('.lt-row .lt-fill').length, none: document.querySelectorAll('.lt-row .lt-none').length,
+      price: document.querySelector('.lt-price')?.textContent.trim(), src: [...document.querySelectorAll('.lt-src a')].filter(a => /^https:\/\//.test(a.getAttribute('href') ?? '')).length,
+      sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    const l10 = await readL();
+    check(`${label} 「500만 원을 오래 들고 있었다면」(#/long): 맨 위 그림 ${l10.hero.map(x => x.join(' ')).join(' / ')} · 「${l10.pressed}」 눌림 · 갈래 ${l10.secs.length}개 · 줄 ${l10.rows}개(막대 ${l10.bars} · 셈하지 않음 ${l10.none}) · 경고 ${l10.warn}곳 · 출처 ${l10.src}곳 · 앞날 값 아님 · 기준 종가 · 넘침 없음`,
+      l10.hash === '#/long' && l10.title === '500만 원을 오래 들고 있었다면' && l10.active === 'start' && /앞날 값이 아닙니다/.test(l10.when ?? '') && /2025년 12월 30일\(화\) 종가까지/.test(l10.when ?? '')
+        && JSON.stringify(l10.hero) === JSON.stringify([['10년 뒤', '349만 원', '493만 원'], ['20년 뒤', '785만 원', '1,098만 원'], ['30년 뒤', '1,604만 원', '1,760만 원']])
+        && l10.pressed === '10년 뒤' && l10.secs.join() === '시장 전체,아파트,성장 기업,이름난 회사,독점 기업,고배당' && l10.warn === 2 && l10.rows === 14 && l10.bars === 14 && l10.none === 0 && l10.src >= 11 && l10.sw <= l10.cw, l10);
+    for (const [y, bars, none, price] of [['30', 6, 8, '물가: 처음 500만 원의 값을 지키려면 1,106만 원(1995년~2025년)'], ['20', 13, 1, '물가: 처음 500만 원의 값을 지키려면 783만 원(2005년~2025년)']]) {
+      const b = page.locator(`.lt-seg button[data-y="${y}"]`); if (mobile) await b.tap(); else await b.click(); await page.waitForTimeout(250);
+      const r = await readL();
+      check(`${label} 「${y}년 뒤」 누름: 막대 ${r.bars}개 · 「기록이 짧아 셈하지 않음」 ${r.none}줄 · 「${r.price}」`, r.pressed === `${y}년 뒤` && r.bars === bars && r.none === none && r.rows === 14 && r.price === price && r.sw <= r.cw, r);
+    }
+    await wordsCheck(page, `${label} 「500만 원을 오래 들고 있었다면」`);
+    await page.goto(base + '/#/start', {waitUntil: 'networkidle'}); await page.waitForSelector('.st-page'); await page.waitForTimeout(200);
+    const tK = page.locator('.st-page a.gd-card[href="#/korea"]'); if (mobile) await tK.tap(); else await tK.click(); await page.waitForSelector('.kr-page .kr-row'); await page.waitForTimeout(400);
+    const kr = await page.evaluate(() => ({hash: location.hash, title: document.querySelector('.kr-page .b-title')?.textContent.trim(), active: document.querySelector('.bottom-link.active')?.dataset.route,
+      when: document.querySelector('.kr-page .b-when')?.textContent.trim(),
+      rows: [...document.querySelectorAll('.kr-row')].map(r => ({w: r.querySelector('.kr-w')?.textContent.trim(), v: r.querySelector('.kr-v')?.textContent.trim(), rank: r.querySelector('.kr-rank b')?.textContent.trim(),
+        cells: r.querySelectorAll('.kr-strip .kr-c').length, me: [...r.querySelectorAll('.kr-strip .kr-c')].findIndex(c => c.classList.contains('kr-me')), meN: r.querySelectorAll('.kr-strip .kr-me').length})),
+      logic: document.querySelectorAll('.kr-logic li').length, src: [...document.querySelectorAll('.kr-src a')].filter(a => /^https:\/\//.test(a.getAttribute('href') ?? '')).length,
+      sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    const want = [['15.74%', 2, 25], ['151.66%', 1, 25], ['13.70%', 1, 13], ['10.25배', 3, 25], ['2.29배', 15, 25], ['0.81%', 25, 25], ['32.71%', 1, 25], ['0.53배', 8, 25], ['4.04조 달러', 8, 22], ['57.1%', 8, 12]];
+    const stripOk = kr.rows.length === want.length && kr.rows.every((r, i) => r.v === want[i][0] && r.rank === `${want[i][2]}곳 중 ${want[i][1]}위` && r.cells === want[i][2] && r.me === want[i][1] - 1 && r.meN === 1);
+    check(`${label} 「한국 주식시장은 몇 위인가」(#/korea): 순위 ${kr.rows.length}가지(${kr.rows.map(r => `${r.w} ${r.rank}`).join(' · ')}) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 ${kr.logic}줄 · 출처 ${kr.src}곳 · 기준 종가 · 넘침 없음`,
+      kr.hash === '#/korea' && kr.title === '한국 주식시장은 몇 위인가' && kr.active === 'start' && /2026년 9월 30일\(수\) 종가 기준/.test(kr.when ?? '') && stripOk && kr.logic === 6 && kr.src >= 6 && kr.sw <= kr.cw, kr);
+    await wordsCheck(page, `${label} 「한국 주식시장은 몇 위인가」`);
   }
   // ⑤-3 논평 무대(2026-10-07 03:17 「아틀람스를 섹시하게 논평이 있는 구조로 만든다」 → 04:01 「과감하게 섹시하게」) — 내용 화면마다 맨 위 무대(회사 화면은 값 다음 가운데 크기) · 검사기가 판에서 따로 센 머리 글과 맞댐 · 찾기 · 기록에는 없음
   {

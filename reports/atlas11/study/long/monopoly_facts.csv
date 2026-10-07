@@ -1,0 +1,7 @@
+code,id,name_ko,status,fact_ko,source_id,url,source_date,quote_ko
+015760,kepco,한국전력,current,"국내 전기는 발전소가 만들어도 한국전력이 모두 사서 소비자에게 파는 판매 독점 구조",SRC_MTN_20220428,https://news.mtn.co.kr/news-detail/2022042816184812584,2022-04-28,"현재 우리나라 전력 시장은 한국전력의 6개 발전자회사와 다수 민간 발전회사가 생산한 전기를 모두 한국전력이 매입해 소비자에게 판매하는 독점 구조다."
+035250,kangwonland,강원랜드,current,"특별법(폐광지역법)에 따라 세운 국내 유일의 내국인 출입 카지노",SRC_NEWSIS_20260715,https://mobile.newsis.com/view/NISX20260715_0003711054,2026-07-15,"'석탄산업전환지역 개발 지원에 관한 특별법'에 따라 폐광지역 경제 회생을 목적으로 설립된 국내 유일의 내국인 출입 카지노"
+036460,kogas,한국가스공사,current,"도시가스용 천연가스는 가스공사가 100% 수입·공급(도시가스사업법상 도매 독점)",SRC_NEWSTOMATO_20130827,https://newstomato.com/ReadNews.aspx?no=395455,2013-08-27,"현행법에서 민간사업자는 가스공사에서만 가스를 공급받았지만 (… 가스시장에서 독점지위를 누린 가스공사)"
+036460,kogas,한국가스공사,current,(recent confirmation),SRC_IMAEIL_20230301,https://www.imaeil.com/page/view/2023030120092795816,2023-03-01,"도시가스의 경우 가스공사가 100% 수입한다 … 사실상 가스공사의 시장 독점 상황"
+033780,ktng,KT&G,former (ended 2001),"담배 제조를 혼자 하던 회사였으나 2001년 담배사업법 개정으로 독점이 끝남",SRC_SATECONOMY_20071217,https://sateconomy.co.kr/news/view/179588021028947,2007-12-17,"담배사업법중 허가요건이 2001년도에 개정되면서 KT&G 외에 다른 기업이 국내에 담배제조시설을 건립할 수 있게 됐다."
+033780,ktng,KT&G,former (ended 2001),(monopoly before 2001),SRC_KDI_20000530,https://www.kdi.re.kr/share/pressView?bd_no=622,2000-05-30,"정부가 이미 2000년에 제조독점을 폐지하겠다고 선언했기 때문 (KDI 보도자료 '담배인삼공사의 바람직한 민영화 및 소유 지배구조 개선방안')"

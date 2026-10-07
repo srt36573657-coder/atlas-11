@@ -1,0 +1,2086 @@
+{
+ "asOf": "2026-10-07",
+ "principal": 5000000,
+ "method": {
+  "windows": "calendar year-end to year-end, completed years only (to 2025); every window the data allow; same engine as longterm/calc.py",
+  "worst": "principal x (1 + worst rolling CAGR)^N; p10 = numpy linear interpolation; median",
+  "stocks": "KRX daily closes back-adjusted with KRX base prices on ex-dates (overrides documented); price only, cash dividends excluded",
+  "dividendIndex": "MSCI Korea High Dividend Yield (KRW, gross total return) rebuilt from calendar-year returns",
+  "real": "windowsReal = deflated by CPI (World Bank annual-average inflation, year-end = geometric mean of adjacent annual averages; 2025 year-end assumes 2026 inflation = 2025 inflation)",
+  "taxesFees": "ignored"
+ },
+ "series": [
+  {
+   "id": "kepco",
+   "nameKo": "한국전력",
+   "nameEn": "KEPCO (Korea Electric Power)",
+   "code": "015760",
+   "kind": "monopoly",
+   "basis": "price-only",
+   "from": "1995-05-02",
+   "to": "2026-10-02",
+   "monopolyFact": {
+    "ko": "국내 전기는 발전소가 만들어도 한국전력이 모두 사서 소비자에게 파는 판매 독점 구조",
+    "url": "https://news.mtn.co.kr/news-detail/2022042816184812584"
+   },
+   "monopolyStatus": "current",
+   "hindsightPicked": true,
+   "windows": {
+    "10": {
+     "n": 21,
+     "worst": {
+      "cagr": -0.07281,
+      "won": 2347775,
+      "from": 2014,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.032865,
+      "won": 3579639
+     },
+     "median": {
+      "cagr": 0.003825,
+      "won": 5194575
+     },
+     "best": {
+      "cagr": 0.097771,
+      "won": 12708333,
+      "from": 1997,
+      "to": 2007
+     },
+     "latest": {
+      "cagr": -0.005746,
+      "won": 4720000,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 11,
+     "worst": {
+      "cagr": -0.014496,
+      "won": 3733706,
+      "from": 2004,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.011731,
+      "won": 3948864
+     },
+     "median": {
+      "cagr": 0.007493,
+      "won": 5805085
+     },
+     "best": {
+      "cagr": 0.045727,
+      "won": 12227564,
+      "from": 1997,
+      "to": 2017
+     },
+     "latest": {
+      "cagr": 0.011166,
+      "won": 6243386,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": {
+     "n": 1,
+     "worst": {
+      "cagr": 0.014933,
+      "won": 7799988,
+      "from": 1995,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": 0.014933,
+      "won": 7799988
+     },
+     "median": {
+      "cagr": 0.014933,
+      "won": 7799988
+     },
+     "best": {
+      "cagr": 0.014933,
+      "won": 7799988,
+      "from": 1995,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.014933,
+      "won": 7799988,
+      "from": 1995,
+      "to": 2025
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful"
+    }
+   },
+   "windowsReal": {
+    "10": {
+     "n": 21,
+     "worst": {
+      "cagr": -0.091115,
+      "won": 1923359,
+      "from": 2014,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.049255,
+      "won": 3017242
+     },
+     "median": {
+      "cagr": -0.018744,
+      "won": 4138033
+     },
+     "best": {
+      "cagr": 0.065242,
+      "won": 9407016,
+      "from": 1997,
+      "to": 2007
+     },
+     "latest": {
+      "cagr": -0.026607,
+      "won": 3818123,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 11,
+     "worst": {
+      "cagr": -0.03653,
+      "won": 2375376,
+      "from": 2004,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.034595,
+      "won": 2472662
+     },
+     "median": {
+      "cagr": -0.015024,
+      "won": 3693908
+     },
+     "best": {
+      "cagr": 0.019409,
+      "won": 7344100,
+      "from": 1997,
+      "to": 2017
+     },
+     "latest": {
+      "cagr": -0.011261,
+      "won": 3986601,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": {
+     "n": 1,
+     "worst": {
+      "cagr": -0.01158,
+      "won": 3525430,
+      "from": 1995,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -0.01158,
+      "won": 3525430
+     },
+     "median": {
+      "cagr": -0.01158,
+      "won": 3525430
+     },
+     "best": {
+      "cagr": -0.01158,
+      "won": 3525430,
+      "from": 1995,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": -0.01158,
+      "won": 3525430,
+      "from": 1995,
+      "to": 2025
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful"
+    }
+   },
+   "full": {
+    "from": "1995-05-02",
+    "to": "2026-10-02",
+    "years": 31.42,
+    "multiple": 1.1164,
+    "cagr": 0.003511,
+    "won": 5582087,
+    "firstPriceAdjusted": 26916.46,
+    "firstPriceRaw": 27400.0,
+    "latestPrice": 30050.0
+   },
+   "yearEnd": [
+    [
+     1995,
+     30256.45
+    ],
+    [
+     1996,
+     24244.59
+    ],
+    [
+     1997,
+     15600.0
+    ],
+    [
+     1998,
+     29800.0
+    ],
+    [
+     1999,
+     35200.0
+    ],
+    [
+     2000,
+     23600.0
+    ],
+    [
+     2001,
+     21700.0
+    ],
+    [
+     2002,
+     18250.0
+    ],
+    [
+     2003,
+     21400.0
+    ],
+    [
+     2004,
+     26850.0
+    ],
+    [
+     2005,
+     37800.0
+    ],
+    [
+     2006,
+     42400.0
+    ],
+    [
+     2007,
+     39650.0
+    ],
+    [
+     2008,
+     29600.0
+    ],
+    [
+     2009,
+     34100.0
+    ],
+    [
+     2010,
+     30200.0
+    ],
+    [
+     2011,
+     25550.0
+    ],
+    [
+     2012,
+     30450.0
+    ],
+    [
+     2013,
+     34750.0
+    ],
+    [
+     2014,
+     42700.0
+    ],
+    [
+     2015,
+     50000.0
+    ],
+    [
+     2016,
+     44050.0
+    ],
+    [
+     2017,
+     38150.0
+    ],
+    [
+     2018,
+     33100.0
+    ],
+    [
+     2019,
+     27800.0
+    ],
+    [
+     2020,
+     27400.0
+    ],
+    [
+     2021,
+     22100.0
+    ],
+    [
+     2022,
+     21800.0
+    ],
+    [
+     2023,
+     18900.0
+    ],
+    [
+     2024,
+     20050.0
+    ],
+    [
+     2025,
+     47200.0
+    ]
+   ],
+   "monthlyWorst": {
+    "10": {
+     "cagr": -0.081717,
+     "from": "2014-09",
+     "to": "2024-09",
+     "won": 2131743
+    },
+    "20": {
+     "cagr": -0.031137,
+     "from": "1999-06",
+     "to": "2019-06",
+     "won": 2655925
+    },
+    "30": {
+     "cagr": 0.002811,
+     "from": "1995-05",
+     "to": "2025-05",
+     "won": 5439300
+    }
+   },
+   "sources": [
+    {
+     "url": "https://github.com/FinanceData/marcap (raw files https://raw.githubusercontent.com/FinanceData/marcap/master/data/marcap-YYYY.parquet)",
+     "accessed": "2026-10-07",
+     "asOf": "2026-10-02",
+     "what": "KRX daily closes and base prices (Close - Changes), corporate actions; data to 2026-10-02"
+    },
+    {
+     "url": "https://news.mtn.co.kr/news-detail/2022042816184812584",
+     "accessed": "2026-10-07",
+     "asOf": "2022-04-28",
+     "what": "monopoly fact: 현재 우리나라 전력 시장은 한국전력의 6개 발전자회사와 다수 민간 발전회사가 생산한 전기를 모두 한국전력이 매입해 소비자에게 판매하는 독점 구조다."
+    },
+    {
+     "url": "https://fred.stlouisfed.org/data/FPCPITOTLZGKOR",
+     "accessed": "2026-10-07",
+     "asOf": "2025",
+     "what": "CPI for the windowsReal block only"
+    }
+   ],
+   "notes": "Data start 1995-05-02 is the start of the KRX dataset, not the listing date (KEPCO listed 1989); windows therefore start at year-end 1995. Hindsight pick (survivorship bias): chosen today because it is known now. Price only: cash dividends excluded (no reliable per-year dividend history could be reached), which understates the holder's result; these companies paid dividends in many years. Adjustment events: 1996-01-03 factor 0.996753 (KRX base price on the first trading day of the year); 1997-01-03 factor 0.991870 (KRX base price on the first trading day of the year); 1998-01-03 factor 0.993631 (KRX base price on the first trading day of the year). Windows use completed calendar years only (to 2025); the full-history line runs to 2026-10-02.",
+   "noteKo": "판매 독점(현재). 1995년 이후 자료, 배당 빼고 주가만."
+  },
+  {
+   "id": "kangwonland",
+   "nameKo": "강원랜드",
+   "nameEn": "Kangwon Land",
+   "code": "035250",
+   "kind": "monopoly",
+   "basis": "price-only",
+   "from": "2001-10-25",
+   "to": "2026-10-02",
+   "monopolyFact": {
+    "ko": "특별법(폐광지역법)에 따라 세운 국내 유일의 내국인 출입 카지노",
+    "url": "https://mobile.newsis.com/view/NISX20260715_0003711054"
+   },
+   "monopolyStatus": "current",
+   "hindsightPicked": true,
+   "windows": {
+    "10": {
+     "n": 15,
+     "worst": {
+      "cagr": -0.068189,
+      "won": 2467448,
+      "from": 2015,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -0.063247,
+      "won": 2601474
+     },
+     "median": {
+      "cagr": 0.058748,
+      "won": 8849010
+     },
+     "best": {
+      "cagr": 0.108082,
+      "won": 13953713,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": -0.068189,
+      "won": 2467448,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 5,
+     "worst": {
+      "cagr": -0.004045,
+      "won": 4610706,
+      "from": 2005,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -3.3e-05,
+      "won": 4996729
+     },
+     "median": {
+      "cagr": 0.008624,
+      "won": 5936803
+     },
+     "best": {
+      "cagr": 0.040529,
+      "won": 11067561,
+      "from": 2002,
+      "to": 2022
+     },
+     "latest": {
+      "cagr": -0.004045,
+      "won": 4610706,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "windowsReal": {
+    "10": {
+     "n": 15,
+     "worst": {
+      "cagr": -0.08774,
+      "won": 1995979,
+      "from": 2015,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -0.081073,
+      "won": 2146753
+     },
+     "median": {
+      "cagr": 0.034944,
+      "won": 7049179
+     },
+     "best": {
+      "cagr": 0.075728,
+      "won": 10375157,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": -0.08774,
+      "won": 1995979,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 5,
+     "worst": {
+      "cagr": -0.026134,
+      "won": 2944083,
+      "from": 2005,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -0.022465,
+      "won": 3174051
+     },
+     "median": {
+      "cagr": -0.013928,
+      "won": 3776982
+     },
+     "best": {
+      "cagr": 0.016501,
+      "won": 6936297,
+      "from": 2002,
+      "to": 2022
+     },
+     "latest": {
+      "cagr": -0.026134,
+      "won": 2944083,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "full": {
+    "from": "2001-10-25",
+    "to": "2026-10-02",
+    "years": 24.94,
+    "multiple": 1.1146,
+    "cagr": 0.004361,
+    "won": 5573059,
+    "firstPriceAdjusted": 12820.61,
+    "firstPriceRaw": 137000.0,
+    "latestPrice": 14290.0
+   },
+   "yearEnd": [
+    [
+     2001,
+     12399.49
+    ],
+    [
+     2002,
+     10481.08
+    ],
+    [
+     2003,
+     14200.0
+    ],
+    [
+     2004,
+     13450.0
+    ],
+    [
+     2005,
+     20550.0
+    ],
+    [
+     2006,
+     20200.0
+    ],
+    [
+     2007,
+     24600.0
+    ],
+    [
+     2008,
+     13650.0
+    ],
+    [
+     2009,
+     16500.0
+    ],
+    [
+     2010,
+     27950.0
+    ],
+    [
+     2011,
+     27200.0
+    ],
+    [
+     2012,
+     29250.0
+    ],
+    [
+     2013,
+     30950.0
+    ],
+    [
+     2014,
+     30400.0
+    ],
+    [
+     2015,
+     38400.0
+    ],
+    [
+     2016,
+     35750.0
+    ],
+    [
+     2017,
+     34800.0
+    ],
+    [
+     2018,
+     32000.0
+    ],
+    [
+     2019,
+     29600.0
+    ],
+    [
+     2020,
+     23500.0
+    ],
+    [
+     2021,
+     24050.0
+    ],
+    [
+     2022,
+     23200.0
+    ],
+    [
+     2023,
+     16000.0
+    ],
+    [
+     2024,
+     15970.0
+    ],
+    [
+     2025,
+     18950.0
+    ]
+   ],
+   "monthlyWorst": {
+    "10": {
+     "cagr": -0.101496,
+     "from": "2016-06",
+     "to": "2026-06",
+     "won": 1714628
+    },
+    "20": {
+     "cagr": -0.016771,
+     "from": "2006-09",
+     "to": "2026-09",
+     "won": 3565000
+    },
+    "30": null
+   },
+   "sources": [
+    {
+     "url": "https://github.com/FinanceData/marcap (raw files https://raw.githubusercontent.com/FinanceData/marcap/master/data/marcap-YYYY.parquet)",
+     "accessed": "2026-10-07",
+     "asOf": "2026-10-02",
+     "what": "KRX daily closes and base prices (Close - Changes), corporate actions; data to 2026-10-02"
+    },
+    {
+     "url": "https://mobile.newsis.com/view/NISX20260715_0003711054",
+     "accessed": "2026-10-07",
+     "asOf": "2026-07-15",
+     "what": "monopoly fact: '석탄산업전환지역 개발 지원에 관한 특별법'에 따라 폐광지역 경제 회생을 목적으로 설립된 국내 유일의 내국인 출입 카지노"
+    },
+    {
+     "url": "https://fred.stlouisfed.org/data/FPCPITOTLZGKOR",
+     "accessed": "2026-10-07",
+     "asOf": "2025",
+     "what": "CPI for the windowsReal block only"
+    }
+   ],
+   "notes": "Listed on KOSDAQ 2001-10-25 (first close 137,000, limit-up days followed), moved to KOSPI 2003-09-04. Hindsight pick (survivorship bias): chosen today because it is known now. Price only: cash dividends excluded (no reliable per-year dividend history could be reached), which understates the holder's result; these companies paid dividends in many years. Adjustment events: 2003-09-04 factor 1.000000 (move from KOSDAQ to KOSPI); 2003-11-04 factor 0.100000 (10); 2003-12-29 factor 0.935811 (KRX base price). Windows use completed calendar years only (to 2025); the full-history line runs to 2026-10-02.",
+   "noteKo": "내국인 카지노 독점(현재). 2001년 상장, 배당 빼고 주가만."
+  },
+  {
+   "id": "kogas",
+   "nameKo": "한국가스공사",
+   "nameEn": "KOGAS (Korea Gas Corp.)",
+   "code": "036460",
+   "kind": "monopoly",
+   "basis": "price-only",
+   "from": "1999-12-15",
+   "to": "2026-10-02",
+   "monopolyFact": {
+    "ko": "도시가스용 천연가스는 가스공사가 100% 수입·공급(도시가스사업법상 도매 독점)",
+    "url": "https://newstomato.com/ReadNews.aspx?no=395455"
+   },
+   "monopolyStatus": "current",
+   "hindsightPicked": true,
+   "windows": {
+    "10": {
+     "n": 17,
+     "worst": {
+      "cagr": -0.094429,
+      "won": 1854354,
+      "from": 2013,
+      "to": 2023
+     },
+     "p10": {
+      "cagr": -0.051388,
+      "won": 2950228
+     },
+     "median": {
+      "cagr": 0.006458,
+      "won": 5332429
+     },
+     "best": {
+      "cagr": 0.129865,
+      "won": 16952596,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": 0.006458,
+      "won": 5332429,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 7,
+     "worst": {
+      "cagr": 0.001595,
+      "won": 5161964,
+      "from": 2003,
+      "to": 2023
+     },
+     "p10": {
+      "cagr": 0.004001,
+      "won": 5415683
+     },
+     "median": {
+      "cagr": 0.013915,
+      "won": 6591780
+     },
+     "best": {
+      "cagr": 0.04323,
+      "won": 11656564,
+      "from": 2001,
+      "to": 2021
+     },
+     "latest": {
+      "cagr": 0.010256,
+      "won": 6132002,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "windowsReal": {
+    "10": {
+     "n": 17,
+     "worst": {
+      "cagr": -0.11123,
+      "won": 1537671,
+      "from": 2013,
+      "to": 2023
+     },
+     "p10": {
+      "cagr": -0.06791,
+      "won": 2474841
+     },
+     "median": {
+      "cagr": -0.01466,
+      "won": 4313532
+     },
+     "best": {
+      "cagr": 0.096875,
+      "won": 12604949,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": -0.01466,
+      "won": 4313532,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 7,
+     "worst": {
+      "cagr": -0.021251,
+      "won": 3253823,
+      "from": 2003,
+      "to": 2023
+     },
+     "p10": {
+      "cagr": -0.018628,
+      "won": 3432767
+     },
+     "median": {
+      "cagr": -0.009542,
+      "won": 4127579
+     },
+     "best": {
+      "cagr": 0.019731,
+      "won": 7390645,
+      "from": 2001,
+      "to": 2021
+     },
+     "latest": {
+      "cagr": -0.012151,
+      "won": 3915479,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "full": {
+    "from": "1999-12-15",
+    "to": "2026-10-02",
+    "years": 26.8,
+    "multiple": 1.1459,
+    "cagr": 0.005095,
+    "won": 5729443,
+    "firstPriceAdjusted": 31416.67,
+    "firstPriceRaw": 32500.0,
+    "latestPrice": 36000.0
+   },
+   "yearEnd": [
+    [
+     1999,
+     28710.0
+    ],
+    [
+     2000,
+     18753.33
+    ],
+    [
+     2001,
+     16771.67
+    ],
+    [
+     2002,
+     21411.67
+    ],
+    [
+     2003,
+     23925.0
+    ],
+    [
+     2004,
+     31030.0
+    ],
+    [
+     2005,
+     32045.0
+    ],
+    [
+     2006,
+     39826.67
+    ],
+    [
+     2007,
+     62640.0
+    ],
+    [
+     2008,
+     55583.33
+    ],
+    [
+     2009,
+     46980.0
+    ],
+    [
+     2010,
+     46883.33
+    ],
+    [
+     2011,
+     40310.0
+    ],
+    [
+     2012,
+     72596.67
+    ],
+    [
+     2013,
+     66600.0
+    ],
+    [
+     2014,
+     49550.0
+    ],
+    [
+     2015,
+     36850.0
+    ],
+    [
+     2016,
+     48450.0
+    ],
+    [
+     2017,
+     42550.0
+    ],
+    [
+     2018,
+     48200.0
+    ],
+    [
+     2019,
+     37850.0
+    ],
+    [
+     2020,
+     30900.0
+    ],
+    [
+     2021,
+     39100.0
+    ],
+    [
+     2022,
+     36200.0
+    ],
+    [
+     2023,
+     24700.0
+    ],
+    [
+     2024,
+     34700.0
+    ],
+    [
+     2025,
+     39300.0
+    ]
+   ],
+   "monthlyWorst": {
+    "10": {
+     "cagr": -0.097726,
+     "from": "2013-10",
+     "to": "2023-10",
+     "won": 1787950
+    },
+    "20": {
+     "cagr": -0.015503,
+     "from": "2000-03",
+     "to": "2020-03",
+     "won": 3658122
+    },
+    "30": null
+   },
+   "sources": [
+    {
+     "url": "https://github.com/FinanceData/marcap (raw files https://raw.githubusercontent.com/FinanceData/marcap/master/data/marcap-YYYY.parquet)",
+     "accessed": "2026-10-07",
+     "asOf": "2026-10-02",
+     "what": "KRX daily closes and base prices (Close - Changes), corporate actions; data to 2026-10-02"
+    },
+    {
+     "url": "https://newstomato.com/ReadNews.aspx?no=395455",
+     "accessed": "2026-10-07",
+     "asOf": "2013-08-27",
+     "what": "monopoly fact: 현행법에서 민간사업자는 가스공사에서만 가스를 공급받았지만 (… 가스시장에서 독점지위를 누린 가스공사)"
+    },
+    {
+     "url": "https://www.imaeil.com/page/view/2023030120092795816",
+     "accessed": "2026-10-07",
+     "asOf": "2023-03-01",
+     "what": "monopoly fact: 도시가스의 경우 가스공사가 100% 수입한다 … 사실상 가스공사의 시장 독점 상황"
+    },
+    {
+     "url": "https://fred.stlouisfed.org/data/FPCPITOTLZGKOR",
+     "accessed": "2026-10-07",
+     "asOf": "2025",
+     "what": "CPI for the windowsReal block only"
+    }
+   ],
+   "notes": "Listed on KOSPI 1999-12-15. Hindsight pick (survivorship bias): chosen today because it is known now. Price only: cash dividends excluded (no reliable per-year dividend history could be reached), which understates the holder's result; these companies paid dividends in many years. Adjustment events: 2013-09-05 factor 0.966667 (KRX base price). Windows use completed calendar years only (to 2025); the full-history line runs to 2026-10-02.",
+   "noteKo": "천연가스 도매 독점(현재). 1999년 상장, 배당 빼고 주가만."
+  },
+  {
+   "id": "ktng",
+   "nameKo": "KT&G",
+   "nameEn": "KT&G",
+   "code": "033780",
+   "kind": "monopoly",
+   "basis": "price-only",
+   "from": "1999-10-08",
+   "to": "2026-10-02",
+   "monopolyFact": {
+    "ko": "담배 제조를 혼자 하던 회사였으나 2001년 담배사업법 개정으로 독점이 끝남",
+    "url": "https://sateconomy.co.kr/news/view/179588021028947"
+   },
+   "monopolyStatus": "former (ended 2001)",
+   "hindsightPicked": true,
+   "windows": {
+    "10": {
+     "n": 17,
+     "worst": {
+      "cagr": -0.002988,
+      "won": 4852580,
+      "from": 2011,
+      "to": 2021
+     },
+     "p10": {
+      "cagr": 0.014315,
+      "won": 5763636
+     },
+     "median": {
+      "cagr": 0.038321,
+      "won": 7282609
+     },
+     "best": {
+      "cagr": 0.172889,
+      "won": 24634146,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": 0.031212,
+      "won": 6799043,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 7,
+     "worst": {
+      "cagr": 0.059119,
+      "won": 15771365,
+      "from": 2005,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": 0.06207,
+      "won": 16673599
+     },
+     "median": {
+      "cagr": 0.072732,
+      "won": 20360825
+     },
+     "best": {
+      "cagr": 0.089755,
+      "won": 27896341,
+      "from": 2002,
+      "to": 2022
+     },
+     "latest": {
+      "cagr": 0.059119,
+      "won": 15771365,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "windowsReal": {
+    "10": {
+     "n": 17,
+     "worst": {
+      "cagr": -0.01741,
+      "won": 4194616,
+      "from": 2011,
+      "to": 2021
+     },
+     "p10": {
+      "cagr": -0.003853,
+      "won": 4810649
+     },
+     "median": {
+      "cagr": 0.022013,
+      "won": 6216362
+     },
+     "best": {
+      "cagr": 0.138642,
+      "won": 18316496,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": 0.009575,
+      "won": 5499912,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 7,
+     "worst": {
+      "cagr": 0.035629,
+      "won": 10070520,
+      "from": 2005,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": 0.038399,
+      "won": 10623217
+     },
+     "median": {
+      "cagr": 0.048569,
+      "won": 12909434
+     },
+     "best": {
+      "cagr": 0.064591,
+      "won": 17483286,
+      "from": 2002,
+      "to": 2022
+     },
+     "latest": {
+      "cagr": 0.035629,
+      "won": 10070520,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "full": {
+    "from": "1999-10-08",
+    "to": "2026-10-02",
+    "years": 26.98,
+    "multiple": 4.8071,
+    "cagr": 0.059911,
+    "won": 24035326,
+    "firstPriceAdjusted": 36800.0,
+    "firstPriceRaw": 36800.0,
+    "latestPrice": 176900.0
+   },
+   "yearEnd": [
+    [
+     1999,
+     25100.0
+    ],
+    [
+     2000,
+     19000.0
+    ],
+    [
+     2001,
+     19400.0
+    ],
+    [
+     2002,
+     16400.0
+    ],
+    [
+     2003,
+     20700.0
+    ],
+    [
+     2004,
+     30950.0
+    ],
+    [
+     2005,
+     45050.0
+    ],
+    [
+     2006,
+     56500.0
+    ],
+    [
+     2007,
+     79700.0
+    ],
+    [
+     2008,
+     79100.0
+    ],
+    [
+     2009,
+     64400.0
+    ],
+    [
+     2010,
+     64700.0
+    ],
+    [
+     2011,
+     81400.0
+    ],
+    [
+     2012,
+     80800.0
+    ],
+    [
+     2013,
+     74500.0
+    ],
+    [
+     2014,
+     76100.0
+    ],
+    [
+     2015,
+     104500.0
+    ],
+    [
+     2016,
+     101000.0
+    ],
+    [
+     2017,
+     115500.0
+    ],
+    [
+     2018,
+     101500.0
+    ],
+    [
+     2019,
+     93800.0
+    ],
+    [
+     2020,
+     83100.0
+    ],
+    [
+     2021,
+     79000.0
+    ],
+    [
+     2022,
+     91500.0
+    ],
+    [
+     2023,
+     86900.0
+    ],
+    [
+     2024,
+     107100.0
+    ],
+    [
+     2025,
+     142100.0
+    ]
+   ],
+   "monthlyWorst": {
+    "10": {
+     "cagr": -0.006513,
+     "from": "2014-07",
+     "to": "2024-07",
+     "won": 4683735
+    },
+    "20": {
+     "cagr": 0.053512,
+     "from": "2006-02",
+     "to": "2026-02",
+     "won": 14182609
+    },
+    "30": null
+   },
+   "sources": [
+    {
+     "url": "https://github.com/FinanceData/marcap (raw files https://raw.githubusercontent.com/FinanceData/marcap/master/data/marcap-YYYY.parquet)",
+     "accessed": "2026-10-07",
+     "asOf": "2026-10-02",
+     "what": "KRX daily closes and base prices (Close - Changes), corporate actions; data to 2026-10-02"
+    },
+    {
+     "url": "https://sateconomy.co.kr/news/view/179588021028947",
+     "accessed": "2026-10-07",
+     "asOf": "2007-12-17",
+     "what": "monopoly fact: 담배사업법중 허가요건이 2001년도에 개정되면서 KT&G 외에 다른 기업이 국내에 담배제조시설을 건립할 수 있게 됐다."
+    },
+    {
+     "url": "https://www.kdi.re.kr/share/pressView?bd_no=622",
+     "accessed": "2026-10-07",
+     "asOf": "2000-05-30",
+     "what": "monopoly fact: 정부가 이미 2000년에 제조독점을 폐지하겠다고 선언했기 때문 (KDI 보도자료 '담배인삼공사의 바람직한 민영화 및 소유 지배구조 개선방안')"
+    },
+    {
+     "url": "https://fred.stlouisfed.org/data/FPCPITOTLZGKOR",
+     "accessed": "2026-10-07",
+     "asOf": "2025",
+     "what": "CPI for the windowsReal block only"
+    }
+   ],
+   "notes": "Listed on KOSPI 1999-10-08 as 담배인삼공사 (renamed KT&G 2003). FORMER monopoly: the legal cigarette-manufacturing monopoly ended with the 2001 Tobacco Business Act amendment, so for most of the 1999-2026 data period this was a dominant company, not a legal monopoly. Hindsight pick (survivorship bias): chosen today because it is known now. Price only: cash dividends excluded (no reliable per-year dividend history could be reached), which understates the holder's result; these companies paid dividends in many years. Adjustment events: none. Windows use completed calendar years only (to 2025); the full-history line runs to 2026-10-02.",
+   "noteKo": "옛 독점(2001년 끝남). 1999년 상장, 배당 빼고 주가만."
+  },
+  {
+   "id": "msci_korea_hdy",
+   "nameKo": "MSCI 한국 고배당 지수",
+   "nameEn": "MSCI Korea High Dividend Yield Index (KRW, gross)",
+   "code": null,
+   "kind": "dividend",
+   "basis": "total-return",
+   "from": "1998-12-31",
+   "to": "2026-09-30",
+   "hindsightPicked": false,
+   "windows": {
+    "10": {
+     "n": 5,
+     "worst": {
+      "cagr": 0.037442,
+      "won": 7221199,
+      "from": 2012,
+      "to": 2022
+     },
+     "p10": {
+      "cagr": 0.043291,
+      "won": 7638775
+     },
+     "median": {
+      "cagr": 0.059872,
+      "won": 8943442
+     },
+     "best": {
+      "cagr": 0.107288,
+      "won": 13853978,
+      "from": 2015,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.107288,
+      "won": 13853978,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 1,
+     "worst": {
+      "cagr": 0.115424,
+      "won": 44439630,
+      "from": 1998,
+      "to": 2018
+     },
+     "p10": {
+      "cagr": 0.115424,
+      "won": 44439630
+     },
+     "median": {
+      "cagr": 0.115424,
+      "won": 44439630
+     },
+     "best": {
+      "cagr": 0.115424,
+      "won": 44439630,
+      "from": 1998,
+      "to": 2018
+     },
+     "latest": {
+      "cagr": 0.115424,
+      "won": 44439630,
+      "from": 1998,
+      "to": 2018
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful",
+     "note": "single window; the end-1998 level is derived from MSCI's \"since Dec 31, 1998\" annualised figure (13.88%) and 2026 YTD (45.23%), both rounded to 0.01%"
+    },
+    "30": null
+   },
+   "windowsReal": {
+    "10": {
+     "n": 5,
+     "worst": {
+      "cagr": 0.019861,
+      "won": 6086676,
+      "from": 2012,
+      "to": 2022
+     },
+     "p10": {
+      "cagr": 0.026655,
+      "won": 6504505
+     },
+     "median": {
+      "cagr": 0.040209,
+      "won": 7416096
+     },
+     "best": {
+      "cagr": 0.084055,
+      "won": 11206822,
+      "from": 2015,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.084055,
+      "won": 11206822,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 1,
+     "worst": {
+      "cagr": 0.08904,
+      "won": 27532617,
+      "from": 1998,
+      "to": 2018
+     },
+     "p10": {
+      "cagr": 0.08904,
+      "won": 27532617
+     },
+     "median": {
+      "cagr": 0.08904,
+      "won": 27532617
+     },
+     "best": {
+      "cagr": 0.08904,
+      "won": 27532617,
+      "from": 1998,
+      "to": 2018
+     },
+     "latest": {
+      "cagr": 0.08904,
+      "won": 27532617,
+      "from": 1998,
+      "to": 2018
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful",
+     "note": "single window; the end-1998 level is derived from MSCI's \"since Dec 31, 1998\" annualised figure (13.88%) and 2026 YTD (45.23%), both rounded to 0.01%"
+    },
+    "30": null
+   },
+   "full": {
+    "from": "1998-12-31",
+    "to": "2026-09-30",
+    "years": 27.75,
+    "multiple": 36.8483,
+    "cagr": 0.1388,
+    "won": 184241295
+   },
+   "yearEnd": [
+    [
+     1998,
+     13.0211
+    ],
+    [
+     2011,
+     100.0
+    ],
+    [
+     2012,
+     104.9
+    ],
+    [
+     2013,
+     107.8477
+    ],
+    [
+     2014,
+     100.816
+    ],
+    [
+     2015,
+     119.2351
+    ],
+    [
+     2016,
+     123.5633
+    ],
+    [
+     2017,
+     141.48
+    ],
+    [
+     2018,
+     115.7307
+    ],
+    [
+     2019,
+     129.9771
+    ],
+    [
+     2020,
+     158.0132
+    ],
+    [
+     2021,
+     166.1192
+    ],
+    [
+     2022,
+     151.5008
+    ],
+    [
+     2023,
+     192.9059
+    ],
+    [
+     2024,
+     209.6694
+    ],
+    [
+     2025,
+     330.3761
+    ]
+   ],
+   "yearEndNote": "levels rebuilt from calendar-year gross returns with end-2011 = 100; the 1998 value is DERIVED from MSCI's \"since Dec 31, 1998\" annualised 13.88% and the 2026 YTD 45.23% (both as of 2026-09-30)",
+   "sources": [
+    {
+     "url": "https://www.msci.com/documents/10199/0921932f-e387-424c-b6e3-3f5d8be4cfaf",
+     "accessed": "2026-10-07",
+     "asOf": "2026-09-30",
+     "what": "MSCI Korea High Dividend Yield Index (KRW) factsheet, GROSS returns (dividends reinvested), as of 2026-09-30: calendar-year returns 2012-2025, annualised since 1998-12-31 = 13.88%, YTD 45.23%, launched 2013-07-12 (earlier data back-tested)"
+    },
+    {
+     "url": "https://www.msci.com/documents/10199/5aafea38-a7ed-48b7-8450-e930a704fcb4",
+     "accessed": "2026-10-07",
+     "asOf": "2026-09-30",
+     "what": "MSCI Korea High Dividend Yield Index (USD) factsheet, gross, as of 2026-09-30 (cross-check: KRW/USD ratios of the HDY and MSCI Korea columns agree every year)"
+    },
+    {
+     "url": "https://www.msci.com/documents/10199/b160ac6c-1ad2-47b9-82d4-e19d5e081866",
+     "accessed": "2026-10-07",
+     "asOf": "2026-09-30",
+     "what": "MSCI Korea Index (KRW) factsheet, gross, as of 2026-09-30 (cross-check: its 2012-2025 calendar-year returns are identical to the MSCI Korea column of the HDY factsheet)"
+    },
+    {
+     "url": "https://www.msci.com/indexes/index/145813/msci-korea-high-dividend-yield-index",
+     "accessed": "2026-10-07",
+     "asOf": "2026-09-30",
+     "what": "MSCI index page 'MSCI Korea High Dividend Yield Index' (risk figures as of 2026-09-30; maximum drawdown 63.53% 1999-07-07..2000-12-04; dividend yield 2.42%)"
+    },
+    {
+     "url": "https://fred.stlouisfed.org/data/FPCPITOTLZGKOR",
+     "accessed": "2026-10-07",
+     "asOf": "2025",
+     "what": "CPI for the windowsReal block only"
+    }
+   ],
+   "notes": "Total return in KRW with dividends reinvested before tax (MSCI \"gross\"); no fees or taxes. Calendar-year returns exist for 2012-2025 only, so 10-year windows are 2011-2021 ... 2015-2025 (5 windows, all inside one 14-year stretch); the single 20-year window 1998-2018 uses the 1998 level derived from MSCI's since-base figure; no 30-year window. Index launched 2013-07-12: values before that date are back-tested by MSCI. The index page lists a maximum drawdown of 63.53% (1999-07-07 to 2000-12-04). The full-history line starts right after the 1997-98 crisis low and includes the 2025-2026 rally (2025 +57.57%, 2026 to Sep +45.23%), so it is not a conservative figure. Not comparable one-to-one with the price-only stock series (dividends add roughly the dividend yield per year; current yield 2.42%).",
+   "noteKo": "배당을 다시 넣은 총수익. 2012~2025년 연간 수익률만 있어 10년 구간 5개뿐."
+  }
+ ],
+ "context": {
+  "msci_korea_krw_gross": {
+   "what": "MSCI Korea Index (KRW, gross total return), same factsheet, same windows",
+   "windows": {
+    "10": {
+     "n": 5,
+     "worst": {
+      "cagr": 0.035778,
+      "won": 7106166,
+      "from": 2012,
+      "to": 2022
+     },
+     "p10": {
+      "cagr": 0.041918,
+      "won": 7538869
+     },
+     "median": {
+      "cagr": 0.057073,
+      "won": 8710069
+     },
+     "best": {
+      "cagr": 0.124601,
+      "won": 16179163,
+      "from": 2015,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.124601,
+      "won": 16179163,
+      "from": 2015,
+      "to": 2025
+     }
+    }
+   },
+   "sinceBase": {
+    "from": "1994-05-31",
+    "cagr": 0.1058
+   },
+   "source": {
+    "url": "https://www.msci.com/documents/10199/0921932f-e387-424c-b6e3-3f5d8be4cfaf",
+    "accessed": "2026-10-07",
+    "asOf": "2026-09-30",
+    "what": "MSCI Korea column of the HDY factsheet (identical to the MSCI Korea KRW factsheet)"
+   }
+  },
+  "kospi_price_same_windows": {
+   "what": "KOSPI price only (official year-ends from the earlier research), 10-year windows starting 2011-2015",
+   "windows": {
+    "10": {
+     "n": 5,
+     "worst": {
+      "cagr": 0.011384,
+      "won": 5599259,
+      "from": 2012,
+      "to": 2022
+     },
+     "p10": {
+      "cagr": 0.015942,
+      "won": 5856772
+     },
+     "median": {
+      "cagr": 0.028164,
+      "won": 6600774
+     },
+     "best": {
+      "cagr": 0.079485,
+      "won": 10743253,
+      "from": 2015,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.079485,
+      "won": 10743253,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 1,
+     "worst": {
+      "cagr": 0.066567,
+      "won": 18143868,
+      "from": 1998,
+      "to": 2018
+     },
+     "p10": {
+      "cagr": 0.066567,
+      "won": 18143868
+     },
+     "median": {
+      "cagr": 0.066567,
+      "won": 18143868
+     },
+     "best": {
+      "cagr": 0.066567,
+      "won": 18143868,
+      "from": 1998,
+      "to": 2018
+     },
+     "latest": {
+      "cagr": 0.066567,
+      "won": 18143868,
+      "from": 1998,
+      "to": 2018
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful"
+    }
+   },
+   "source": {
+    "url": "https://en.wikipedia.org/wiki/KOSPI",
+    "accessed": "2026-10-07",
+    "asOf": "2025-12-30",
+    "what": "see longterm/raw/sources.csv (SRC_KOSPI_WIKI_EN, SRC_DGMBC_2025)"
+   }
+  }
+ },
+ "sensitivity": {
+  "kepco_no_newyear_base": {
+   "what": "KEPCO without the three first-trading-day KRX base changes of 1996-1998 (pure raw closes)",
+   "windows": {
+    "10": {
+     "n": 21,
+     "worst": {
+      "cagr": -0.07281,
+      "won": 2347775,
+      "from": 2014,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.032865,
+      "won": 3579639
+     },
+     "median": {
+      "cagr": 0.003825,
+      "won": 5194575
+     },
+     "best": {
+      "cagr": 0.09707,
+      "won": 12627389,
+      "from": 1997,
+      "to": 2007
+     },
+     "latest": {
+      "cagr": -0.005746,
+      "won": 4720000,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 11,
+     "worst": {
+      "cagr": -0.014496,
+      "won": 3733706,
+      "from": 2004,
+      "to": 2024
+     },
+     "p10": {
+      "cagr": -0.011731,
+      "won": 3948864
+     },
+     "median": {
+      "cagr": 0.007493,
+      "won": 5805085
+     },
+     "best": {
+      "cagr": 0.045393,
+      "won": 12149682,
+      "from": 1997,
+      "to": 2017
+     },
+     "latest": {
+      "cagr": 0.011166,
+      "won": 6243386,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": {
+     "n": 1,
+     "worst": {
+      "cagr": 0.014331,
+      "won": 7662338,
+      "from": 1995,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": 0.014331,
+      "won": 7662338
+     },
+     "median": {
+      "cagr": 0.014331,
+      "won": 7662338
+     },
+     "best": {
+      "cagr": 0.014331,
+      "won": 7662338,
+      "from": 1995,
+      "to": 2025
+     },
+     "latest": {
+      "cagr": 0.014331,
+      "won": 7662338,
+      "from": 1995,
+      "to": 2025
+     },
+     "caution": "only 1 window(s): percentiles are not meaningful"
+    }
+   },
+   "full": {
+    "multiple": 1.0967,
+    "cagr": 0.002943,
+    "won": 5483577
+   }
+  },
+  "kangwonland_krx_listing_base": {
+   "what": "Kangwon Land using KRX listing base at the 2003-09-04 KOSDAQ->KOSPI move (factor 1.0577) instead of 1.0",
+   "windows": {
+    "10": {
+     "n": 15,
+     "worst": {
+      "cagr": -0.068189,
+      "won": 2467448,
+      "from": 2015,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -0.063247,
+      "won": 2601474
+     },
+     "median": {
+      "cagr": 0.058748,
+      "won": 8849010
+     },
+     "best": {
+      "cagr": 0.101884,
+      "won": 13192602,
+      "from": 2002,
+      "to": 2012
+     },
+     "latest": {
+      "cagr": -0.068189,
+      "won": 2467448,
+      "from": 2015,
+      "to": 2025
+     }
+    },
+    "20": {
+     "n": 5,
+     "worst": {
+      "cagr": -0.004045,
+      "won": 4610706,
+      "from": 2005,
+      "to": 2025
+     },
+     "p10": {
+      "cagr": -3.3e-05,
+      "won": 4996729
+     },
+     "median": {
+      "cagr": 0.008624,
+      "won": 5936803
+     },
+     "best": {
+      "cagr": 0.037615,
+      "won": 10463875,
+      "from": 2002,
+      "to": 2022
+     },
+     "latest": {
+      "cagr": -0.004045,
+      "won": 4610706,
+      "from": 2005,
+      "to": 2025
+     }
+    },
+    "30": null
+   },
+   "full": {
+    "multiple": 1.0538,
+    "cagr": 0.002104,
+    "won": 5269074
+   }
+  }
+ },
+ "validation": {
+  "msci_krw_vs_usd_columns": [
+   {
+    "year": 2012,
+    "hdy_krw_over_usd": 0.9293,
+    "msci_korea_krw_over_usd": 0.9293,
+    "diff": 0.0
+   },
+   {
+    "year": 2013,
+    "hdy_krw_over_usd": 0.9858,
+    "msci_korea_krw_over_usd": 0.9858,
+    "diff": 0.0
+   },
+   {
+    "year": 2014,
+    "hdy_krw_over_usd": 1.0416,
+    "msci_korea_krw_over_usd": 1.0415,
+    "diff": 0.0
+   },
+   {
+    "year": 2015,
+    "hdy_krw_over_usd": 1.0668,
+    "msci_korea_krw_over_usd": 1.0668,
+    "diff": 0.0
+   },
+   {
+    "year": 2016,
+    "hdy_krw_over_usd": 1.03,
+    "msci_korea_krw_over_usd": 1.03,
+    "diff": -0.0
+   },
+   {
+    "year": 2017,
+    "hdy_krw_over_usd": 0.8864,
+    "msci_korea_krw_over_usd": 0.8864,
+    "diff": -0.0
+   },
+   {
+    "year": 2018,
+    "hdy_krw_over_usd": 1.0422,
+    "msci_korea_krw_over_usd": 1.0422,
+    "diff": -0.0001
+   },
+   {
+    "year": 2019,
+    "hdy_krw_over_usd": 1.0365,
+    "msci_korea_krw_over_usd": 1.0364,
+    "diff": 0.0
+   },
+   {
+    "year": 2020,
+    "hdy_krw_over_usd": 0.9393,
+    "msci_korea_krw_over_usd": 0.9393,
+    "diff": 0.0
+   },
+   {
+    "year": 2021,
+    "hdy_krw_over_usd": 1.0943,
+    "msci_korea_krw_over_usd": 1.0944,
+    "diff": -0.0001
+   },
+   {
+    "year": 2022,
+    "hdy_krw_over_usd": 1.0637,
+    "msci_korea_krw_over_usd": 1.0637,
+    "diff": -0.0001
+   },
+   {
+    "year": 2023,
+    "hdy_krw_over_usd": 1.0185,
+    "msci_korea_krw_over_usd": 1.0185,
+    "diff": -0.0001
+   },
+   {
+    "year": 2024,
+    "hdy_krw_over_usd": 1.1431,
+    "msci_korea_krw_over_usd": 1.143,
+    "diff": 0.0001
+   },
+   {
+    "year": 2025,
+    "hdy_krw_over_usd": 0.9785,
+    "msci_korea_krw_over_usd": 0.9785,
+    "diff": -0.0
+   }
+  ]
+ },
+ "adjustmentEvents": [
+  {
+   "code": "015760",
+   "name": "KEPCO (Korea Electric Power)",
+   "date": "1996-01-03",
+   "prev_close": 30800.0,
+   "close": 31100.0,
+   "krx_base": 30700.0,
+   "krx_base_factor": 0.9967532467532467,
+   "factor_used": 0.9967532467532467,
+   "rule": "KRX base price on the first trading day of the year (year-end ex-date adjustment, cause not verified; same kind as Samsung 1996-1999 in the earlier research)"
+  },
+  {
+   "code": "015760",
+   "name": "KEPCO (Korea Electric Power)",
+   "date": "1997-01-03",
+   "prev_close": 24600.0,
+   "close": 25900.0,
+   "krx_base": 24400.0,
+   "krx_base_factor": 0.991869918699187,
+   "factor_used": 0.991869918699187,
+   "rule": "KRX base price on the first trading day of the year (year-end ex-date adjustment, cause not verified)"
+  },
+  {
+   "code": "015760",
+   "name": "KEPCO (Korea Electric Power)",
+   "date": "1998-01-03",
+   "prev_close": 15700.0,
+   "close": 16300.0,
+   "krx_base": 15600.0,
+   "krx_base_factor": 0.9936305732484076,
+   "factor_used": 0.9936305732484076,
+   "rule": "KRX base price on the first trading day of the year (year-end ex-date adjustment, cause not verified)"
+  },
+  {
+   "code": "035250",
+   "name": "Kangwon Land",
+   "date": "2003-09-04",
+   "prev_close": 130000.0,
+   "close": 131000.0,
+   "krx_base": 137500.0,
+   "krx_base_factor": 1.0576923076923077,
+   "factor_used": 1.0,
+   "rule": "move from KOSDAQ to KOSPI: no corporate action, holder value continuous (KRX listing base would give 1.0577)"
+  },
+  {
+   "code": "035250",
+   "name": "Kangwon Land",
+   "date": "2003-11-04",
+   "prev_close": 149500.0,
+   "close": 15750.0,
+   "krx_base": 14950.0,
+   "krx_base_factor": 0.1,
+   "factor_used": 0.1,
+   "rule": "10:1 stock split (par 5,000 -> 500; shares 20,000,000 -> 200,000,000); KRX base gives the same 0.1"
+  },
+  {
+   "code": "035250",
+   "name": "Kangwon Land",
+   "date": "2003-12-29",
+   "prev_close": 14800.0,
+   "close": 13850.0,
+   "krx_base": 13850.0,
+   "krx_base_factor": 0.9358108108108109,
+   "factor_used": 0.9358108108108109,
+   "rule": "KRX base price: stock-dividend ex-date (new shares listed 2004-04-07, 200,000,000 -> 213,940,500 = +6.97%; pure ratio 0.93484)"
+  },
+  {
+   "code": "036460",
+   "name": "KOGAS (Korea Gas Corp.)",
+   "date": "2013-09-05",
+   "prev_close": 60000.0,
+   "close": 58100.0,
+   "krx_base": 58000.0,
+   "krx_base_factor": 0.9666666666666667,
+   "factor_used": 0.9666666666666667,
+   "rule": "KRX base price: rights-issue ex-date (new shares listed 2013-11-08, 77,284,510 -> 92,313,000)"
+  }
+ ],
+ "highDividendAttempts": [
+  {
+   "step": 1,
+   "target": "KRX 코스피 고배당 50 / 코스피 배당성장 50 (KRX pages, news, ETF pages TIGER / KODEX)",
+   "returned": "no base date, no year-end history; only levels 2021-01-04 2254.53, 2021-05-12 3004.02 (newstomato) and 2026-10-06 4642.84 (investing.com); TIGER 코스피고배당 NAV +233.15% since 2014-12-05; KODEX 배당성장 inception 2014-12-16",
+   "usable": false
+  },
+  {
+   "step": 2,
+   "target": "MSCI Korea High Dividend Yield Index factsheet (KRW, gross)",
+   "returned": "calendar-year returns 2012-2025, annualised 13.88% since 1998-12-31, YTD 2026 45.23% (as of 2026-09-30); launch 2013-07-12, earlier data back-tested",
+   "usable": true
+  },
+  {
+   "step": 3,
+   "target": "FnGuide / KODI / other Korean high-dividend indexes (PLUS 고배당주 factsheet, KSE KODI notice)",
+   "returned": "base dates only (FnGuide 고배당주 2009-01-02 = 1000; KODI 2001-07-01 = 1000)",
+   "usable": false
+  }
+ ],
+ "notFound": [
+  {
+   "what": "KRX 코스피 고배당 50 (KOSPI High Dividend 50): base date and year-end history (only scattered price-index levels found: 2021-01-04 2254.53, 2021-05-12 3004.02, 2026-10-06 4642.84)",
+   "tried": [
+    "https://index.krx.co.kr/contents/MKD/03/0304/03040101/MKD03040101.jsp",
+    "https://news.bizwatch.co.kr/article/market/2014/10/21/0026",
+    "https://mofe.go.kr/sisa/dictionary/detail?idx=2566",
+    "https://newstomato.com/ReadNews.aspx?no=1043940",
+    "https://view.asiae.co.kr/article/2020111711594636273",
+    "https://www.investing.com/indices/kospi-high-dividend-yield-50-historical-data",
+    "https://www.funetf.co.kr/product/etf/view/KR7210780003",
+    "https://stock.pstatic.net/stock-research/invest/21/20241212_invest_631207000.pdf",
+    "https://api.github.com/search/code?q=%22%EC%BD%94%EC%8A%A4%ED%94%BC+%EA%B3%A0%EB%B0%B0%EB%8B%B9+50%22+extension%3Acsv"
+   ],
+   "outcome": [
+    "permission prompt not answered",
+    "rate-limited (HTTP 429), not read",
+    "robots.txt fetch timed out",
+    "two 2021 levels only",
+    "one level of a different index (KRX 고배당 50)",
+    "last month only (earlier research)",
+    "TIGER 코스피고배당 ETF: NAV return since 2014-12-05 listing only, no yearly table",
+    "broker PDF, text not readable",
+    "blocked: session limited to configured repositories"
+   ]
+  },
+  {
+   "what": "KRX 코스피 배당성장 50 (KOSPI Dividend Growth 50): base date and history",
+   "tried": [
+    "https://www.ajunews.com/view/20141215141242535",
+    "https://www.trackinsight.com/en/fund/211900/characteristics"
+   ],
+   "outcome": [
+    "ETF listing news (2014-12-15), no base date or history",
+    "KODEX 배당성장 ETF: inception 2014-12-16 and current NAV only"
+   ]
+  },
+  {
+   "what": "MSCI Korea High Dividend Yield calendar-year returns before 2012 (needed for more 10/20-year windows) and any 30-year window",
+   "tried": [
+    "https://app2.msci.com/products/service/index/indexmaster/getLevelDataForGraph?currency_symbol=KRW&index_variant=GRTR&start_date=19981231&end_date=20260930&data_frequency=END_OF_MONTH&index_codes=145813",
+    "https://web.archive.org/cdx/search/cdx?url=msci.com/resources/factsheets/index_fact_sheet/msci-korea-high*",
+    "https://www.msci.com/indexes/index/145813/msci-korea-high-dividend-yield-index",
+    "https://www.msci.com/eqb/hdy/indexperf/dailyperf.html"
+   ],
+   "outcome": [
+    "permission prompt not answered",
+    "permission prompt not answered",
+    "risk figures only (max drawdown 63.53%)",
+    "2013 page, no Korea row"
+   ]
+  },
+  {
+   "what": "FnGuide / KODI high-dividend indexes: year-end history",
+   "tried": [
+    "https://www.plusetf.co.kr/upload/fund/PLUS_고배당주_20260630.pdf",
+    "https://mondovisione.com/media-and-resources/news/korea-stock-exchange-introduction-of-korea-dividend-stock-price-index-kodi-2011124/"
+   ],
+   "outcome": [
+    "FnGuide 고배당주 base 2009-01-02 = 1000 only; no yearly table",
+    "KODI base 2001-07-01 = 1000, launch 2003-07-21 only"
+   ]
+  },
+  {
+   "what": "Dividend (DPS) history for the four monopoly stocks, needed for a total-return version",
+   "tried": [
+    "https://stockanalysis.com/quote/krx/033780/dividend/"
+   ],
+   "outcome": [
+    "permission prompt not answered"
+   ]
+  },
+  {
+   "what": "Law text for the monopolies; news and KDI sources used instead",
+   "tried": [
+    "https://ko.wikipedia.org/wiki/KT%26G",
+    "https://ko.wikisource.org/wiki/%EB%8B%B4%EB%B0%B0%EC%82%AC%EC%97%85%EB%B2%95",
+    "https://www.hankyung.com/amp/2002090424401"
+   ],
+   "outcome": [
+    "permission prompt not answered",
+    "cache-only domain, not fetched",
+    "HTTP 403"
+   ]
+  }
+ ],
+ "disclaimer": "Calculation on past data only. Not investment advice."
+}

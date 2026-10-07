@@ -11,6 +11,11 @@ import {state, loadBoard} from './store.js';
 import {foot, promiseBox, missionBox} from './parts.js';
 import {startComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
 
+/** 「처음」 탭 아래 세 화면으로 가는 카드 — 한국 주식시장 안내(05:31) · 500만 원을 오래 들고 있었다면(05:27) · 한국 주식시장은 몇 위인가(05:29) */
+const cards = () => h('nav', {class: 'st-cards', 'aria-label': '더 보기'},
+  h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')),
+  h('a', {class: 'gd-card', href: '#/long'}, h('b', null, '500만 원을 오래 들고 있었다면 ›'), h('small', null, '10년 · 20년 · 30년 — 지난 기록에서 가장 나빴던 때로 · 주식과 아파트')),
+  h('a', {class: 'gd-card', href: '#/korea'}, h('b', null, '한국 주식시장은 몇 위인가 ›'), h('small', null, '25개 시장과 견준 순위 10가지 · 수익 · 값 · 배당 · 오르내림')));
 export async function renderStart(main, {manifest}) {
   const board = await loadBoard(), s = board.start;
   const year = String(board.asOf ?? '').slice(0, 4);
@@ -27,7 +32,7 @@ export async function renderStart(main, {manifest}) {
         h('h1', {class: 'b-title', 'data-speak': ''}, '처음'),
         h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(board.asOf)} ${manifest?.place?.id === 'us' ? '뉴욕 종가' : '종가'} · 종가 기록 ${have?.days ?? 0}거래일${have?.from ? `(${ymd(have.from)}부터)` : ''}`)),
       ready ? h('p', {class: 'st-wait', 'data-speak': ''}, `3년 기록이 쌓이는 ${month(ready)}부터 ${s?.rule?.want ?? 5}곳을 찍습니다`) : null,
-      h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')),
+      cards(),
       missionBox(),
       promiseBox(board),
       foot(manifest)));
@@ -52,7 +57,7 @@ export async function renderStart(main, {manifest}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '처음 ', h('span', {class: 'b-count'}, `${n}곳`)),
       h('p', {class: 'b-when', 'data-speak': ''}, `${korDate(to)} 종가까지 지난 3년 기록`)),
-    h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')), // 2026-10-07 05:31
+    cards(), // 2026-10-07 05:31 안내 · 05:27 500만 원 · 05:29 몇 위
     h('p', {class: 'st-rule-t', 'data-speak': ''}, `우량 큰 회사 ${s.candidates}곳 중 지난 3년 가장 덜 떨어진 ${n}곳`),
     h('p', {class: 'st-key'}, '막대 = 3년 안에서 가장 깊게 떨어진 정도'),
     h('ol', {class: 'st-list'}, ...picks.map(row)),
