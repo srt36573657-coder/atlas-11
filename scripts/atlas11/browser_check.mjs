@@ -928,14 +928,18 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         // 2026-10-07 18:31 「움직이는 도식화로 · 전면 혁신」 — 점선은 다음 장면의 칸 · 동그라미와 그리로 가는 줄(.sy-rl)에
         dashed: q('.sy-s3 .sy-c') && q('.sy-s3 .sy-node') ? [getComputedStyle(q('.sy-s3 .sy-c')).borderTopStyle, getComputedStyle(q('.sy-s3 .sy-node')).borderTopStyle].join() : null,
         lineDash: q('.sy-dash .sy-rl') ? getComputedStyle(q('.sy-dash .sy-rl')).borderInlineStartStyle : null,
-        // 움직이는 도식: 한눈 그림(그림 셋 · 줄 둘 · 뒤 줄 점선 · 가운데가 가장 큼) · 돈길 동그라미 셋(장면마다 하나) · 동전(흐르는 중) · 시장 막대(가장 큰 변화 = 끝까지) · 그림엔 글자 없음
+        // 움직이는 도식(2026-10-07 18:31) → 한 걸음씩 짚어 주기(19:40 「하나 움직이고 그런 다음 다음 … 동시에 움직이게 하지 말고 · 핵심 기능을 넣어서 바보도 알 수 있게」)
+        //   한눈 그림(그림 셋 · 줄 둘 — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 걸음 번호) · 글상자 · 걸음 점 아홉 · 단추 둘 · 돈길은 멈춘 그림(동전 없음)
         map: (() => { const m = q('.sy-map'); if (!m) return null; const ns = [...m.querySelectorAll('.sy-mn')], tr = [...m.querySelectorAll('.sy-tr')];
-          return {hidden: m.getAttribute('aria-hidden'), text: m.textContent.trim().length, nodes: ns.length, svg: ns.filter(n => n.querySelector('svg')).length, biggest: ns.map(n => n.offsetWidth).indexOf(Math.max(...ns.map(n => n.offsetWidth))), // 크기는 자리 폭(offsetWidth) — 등장 움직임(크기 키움) 중에도 같은 값
-            tracks: tr.length, dash: tr.map(t => getComputedStyle(t).borderTopStyle).join(), coins: m.querySelectorAll('.sy-coin').length}; })(),
+          return {hidden: m.getAttribute('aria-hidden'), text: m.textContent.trim().length, nodes: ns.length, svg: ns.filter(n => n.querySelector('svg')).length, biggest: ns.map(n => n.offsetWidth).indexOf(Math.max(...ns.map(n => n.offsetWidth))), // 크기는 자리 폭(offsetWidth) — 움직임(크기 키움) 중에도 같은 값
+            tracks: tr.length, dash: tr.map(t => getComputedStyle(t).borderTopStyle).join(), coins: tr.map(t => t.querySelectorAll('.sy-coin').length).join(), at: [...m.querySelectorAll('[data-at]')].map(x => x.dataset.at).join()}; })(),
+        play: (() => { const pl = q('.sy-play'); if (!pl) return null; return {cap: pl.querySelector('.sy-cap')?.getAttribute('aria-hidden') ?? null, chips: [...pl.querySelectorAll('.sy-chip-c .sy-chm')].map(c => c.textContent.trim()).join(),
+          letters: [...pl.querySelectorAll('.sy-chip-c .sy-chl')].map(c => c.textContent.trim()).join(''), btns: [...pl.querySelectorAll('.sy-btn')].map(b => b.textContent.trim())}; })(),
+        end: (() => { const e = document.querySelector('.h-page > .sy-end'); return e ? {last: e.nextElementSibling?.matches('.b-foot, footer, [class*="foot"]') ?? false, t: e.querySelector('.sy-end-t')?.textContent.trim(), m: e.querySelector('.sy-end-m')?.textContent.trim(),
+          s: [...e.querySelectorAll('.sy-end-s')].map(x => x.textContent.replace(/\s+/g, ' ').trim())} : null; })(),
         rail: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => { const n = x.querySelector(':scope > .sy-rail .sy-node'); return n ? {svg: !!n.querySelector('svg'), hidden: n.closest('[aria-hidden="true"]') ? 'true' : null, w: n.offsetWidth} : null; }),
-        lineCoins: [...(s?.querySelectorAll('.sy-line') ?? [])].map(x => x.querySelectorAll('.sy-coin').length),
-        moving: (() => { const cs = [...(s?.querySelectorAll('.sy-coin') ?? [])]; return {coins: cs.length, running: cs.filter(c => c.getAnimations?.().some(a => a.playState === 'running')).length}; })(),
-        bars: [...(s?.querySelectorAll('.sy-mb .sy-mkt') ?? [])].map(li => ({place: li.dataset.place, k: Number(li.querySelector('.sy-bf')?.style.getPropertyValue('--k')), hidden: li.querySelector('.sy-bar')?.getAttribute('aria-hidden')})),
+        railCoins: s?.querySelectorAll('.sy-s .sy-coin, .sy-line .sy-coin').length ?? -1,
+        bars: [...(s?.querySelectorAll('.sy-s2 .sy-mb .sy-mkt') ?? [])].map(li => ({place: li.dataset.place, k: Number(li.querySelector('.sy-bf')?.style.getPropertyValue('--k')), hidden: li.querySelector('.sy-bar')?.getAttribute('aria-hidden')})),
         picText: [...(s?.querySelectorAll('.sy-rail, .sy-ifi, .sy-ok') ?? [])].reduce((t, x) => t + x.textContent.trim().length, 0),
         ifs: [...(s?.querySelectorAll('.sy-if p') ?? [])].map(p => p.textContent.replace(/\s+/g, ' ').trim()), lastIsIf: !!s?.lastElementChild?.classList.contains('sy-if'),
         roleFs: q('.sy-role') ? parseFloat(getComputedStyle(q('.sy-role')).fontSize) : 0, role3Fs: q('.sy-role3') ? parseFloat(getComputedStyle(q('.sy-role3')).fontSize) : 0, mainFs: q('.sy-main') ? parseFloat(getComputedStyle(q('.sy-main')).fontSize) : 0,
@@ -948,27 +952,52 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         sy.n === 1 && sy.first && sy.cm === 0 && sy.scenes.join() === 'sy-s1,sy-s2,sy-s3' && sy.titles[0] === '이 일이 생겼다' && sy.titles[1] === '그래서 여기가 돈을 받는다' && sy.titles[2] === '다음은 여기가 필요하다 예상'
           && sy.role === st.now.role && sy.role3 === st.next.role && sy.roleFs > sy.role3Fs && sy.roleFs > sy.mainFs && sy.dashed === 'dashed,dashed' && sy.lineDash === 'dashed'
           && sy.lastIsIf && sy.ifs.length === 2 && sy.ifs[0] === `이것이 확인되면 이어집니다: ${st.confirm}` && sy.ifs[1] === `이것이 나타나면 다시 판단합니다: ${st.rethink}` && sy.sw <= sy.cw, sy);
-      // 2026-10-07 18:31 「지금 글로 되어 있다 움직이는 도식화로 만들어라 · 과감하게 알틀란스를 전면 혁신하라 섹시하게 스마트 하게」
-      const ms = st.now.stock?.markets ?? [], kTop = Math.max(...ms.map(m => Math.abs(m.change20))), mp = sy.map;
-      const motionOk = !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins >= 4
-        && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0
-        && sy.lineCoins.length === 2 && sy.lineCoins.every(n => n >= 2) && sy.moving.coins >= 8 && sy.moving.running === sy.moving.coins
+      // 2026-10-07 18:31 「움직이는 도식화로 · 전면 혁신」 → 19:40 「하나 움직이고 그런 다음 다음 움직이고 … 동시에 움직이게 하지 말고 · 중요한 부분은 핵심 기능을 넣어서 바보도 알 수 있게 해」
+      const ms = st.now.stock?.markets ?? [], kTop = Math.max(...ms.map(m => Math.abs(m.change20))), mp = sy.map, pl = sy.play;
+      const shapeOk = !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins === '1,1' && mp.at === '1,2,0,5,6'
+        && !!pl && pl.cap === 'true' && pl.chips === '결론,까닭,더 넓게,볼 것' && pl.letters === '기승전결' && pl.btns.join() === '다시 보기,소리로 듣기'
+        && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0 && sy.railCoins === 0
         && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002);
-      check(`${label} 오늘의 돈 이야기 — 움직이는 도식: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼) · 돈길 동그라미 ${sy.rail.filter(Boolean).length}(가운데가 가장 큼) · 동전 ${sy.moving.coins}개 모두 흐르는 중 · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
-        motionOk, motionOk ? undefined : {map: mp, rail: sy.rail, lineCoins: sy.lineCoins, moving: sy.moving, bars: sy.bars, picText: sy.picText});
+      check(`${label} 돈 이야기 — 한 걸음씩 짚어 주기: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 가운데가 걸음 0) · 글상자 · 이름표 「${pl?.letters ?? ''}」(${pl?.chips ?? ''}) · 단추 「${pl?.btns.join(' · ') ?? ''}」 · 돈길은 멈춘 그림(동전 ${sy.railCoins}) · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
+        shapeOk, shapeOk ? undefined : {map: mp, play: pl, rail: sy.rail, railCoins: sy.railCoins, bars: sy.bars, picText: sy.picText});
+      // 결 — 탭 「불장」 맨 아래(맨 끝 줄 바로 위) · 「이것만 보면 됩니다」 · 볼 것 = /story.json confirm · 돈이 가는 곳 = now.role · 실제 돈 확인 날짜(2026-10-07 20:04 「기승전결」)
+      const en = sy.end, realD = st.now.real?.evidence?.[0]?.date;
+      check(`${label} 기승전결 — 맨 아래 결: 「${en?.t ?? '없음'}」 「${en?.m ?? ''}」 · ${en?.s?.join(' · ') ?? ''}`,
+        !!en && en.last && en.t === '이것만 보면 됩니다' && en.m === st.confirm && en.s[0] === `돈이 가는 곳: ${st.now.role}` && (!realD || en.s[1]?.startsWith('실제 돈 확인됨 · ')), en);
+      // 한 번에 하나 — 처음 연 뒤 9초 동안 0.06초마다 「지금 움직이는 것」(지연 · 끝난 뒤가 아닌 실제로 움직이는 움직임)을 셈 → 가장 많을 때 1개 · 걸음이 0 → 1 로 넘어감 · 글상자 = 그 걸음 말
+      await page.goto(base + '/?r=' + Date.now() + '#/', {waitUntil: 'domcontentloaded'}); await page.waitForSelector('.sy-play', {timeout: 15000}).catch(() => {}); // 새 문서(같은 주소 #/ 는 다시 읽지 않아 「처음 한 번」이 이미 지남)
+      const one = await page.evaluate(async () => {
+        const live = () => document.getAnimations().filter(a => { if (a.playState !== 'running') return false; const tm = a.effect?.getComputedTiming?.(); if (!tm) return false; const lt = tm.localTime ?? 0, d = a.effect.getTiming(), delay = d.delay ?? 0, dur = typeof tm.activeDuration === 'number' ? tm.activeDuration : Infinity; return lt >= delay && lt < delay + dur; })
+          .map(a => `${(a.effect.target?.className?.baseVal ?? a.effect.target?.className ?? '?').toString().split(' ')[0]}${a.effect.pseudoElement ?? ''}:${a.animationName}`);
+        let max = 0, worst = []; const steps = new Set(), caps = new Map(); const t0 = performance.now();
+        while (performance.now() - t0 < 9000) { const xs = live(); if (xs.length > max) { max = xs.length; worst = xs; } const pl = document.querySelector('.sy-play'); if (pl?.dataset.step) { steps.add(pl.dataset.step); caps.set(pl.dataset.step, pl.querySelector('.sy-ct')?.textContent.replace(/\s+/g, ' ').trim() ?? pl.querySelector('.sy-cs')?.textContent.trim()); } await new Promise(r => setTimeout(r, 60)); }
+        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null};
+      });
+      check(`${label} 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 ${one.max}개${one.worst.length ? ' · ' + one.worst.join(' · ') : ''}) · 걸음 ${one.steps.join(' → ')} · 기(결론) 글상자 「${one.cap0}」 → 승 「${one.cap1}」`,
+        one.max <= 1 && one.steps.includes('0') && one.steps.includes('1') && one.cap0 === '돈이 가는 곳' && one.cap1 === '이 일이 생겼다', one);
+      // 이름표 누르기 — 「승 · 까닭」 → 그 묶음 첫 걸음(이 일이 생겼다)부터 · 넷째 걸음(주식 투자금)에서 글상자에 시장 막대가 하나씩(막대 수 = 시장 수 · 길이 = 변화 ÷ 가장 큰 변화)
+      await page.locator('.sy-chip-c').nth(1).click(); await page.waitForTimeout(200);
+      const chip = await page.evaluate(() => ({step: document.querySelector('.sy-play')?.dataset.step, t: document.querySelector('.sy-cap .sy-ct')?.textContent.trim() ?? null, cur: document.querySelector('.sy-chip-c[aria-current="step"] .sy-chm')?.textContent.trim() ?? null}));
+      check(`${label} 기승전결 — 이름표 「${chip.cur}」 누르기 → 걸음 ${chip.step} 「${chip.t}」`, chip.step === '1' && chip.t === '이 일이 생겼다' && chip.cur === '까닭', chip);
+      await page.waitForSelector('.sy-play[data-step="4"]', {timeout: 25000}).catch(() => {}); await page.waitForTimeout(250);
+      const dot = await page.evaluate(() => { const c = document.querySelector('.sy-cap'); return {step: document.querySelector('.sy-play')?.dataset.step, t: c?.querySelector('.sy-ct')?.textContent.trim() ?? null,
+        bars: [...(c?.querySelectorAll('.sy-mkt') ?? [])].map(li => ({place: li.dataset.place, k: Number(li.querySelector('.sy-bf')?.style.getPropertyValue('--k'))}))}; });
+      check(`${label} 돈 이야기 — 승 넷째 걸음 → 글상자 「${dot.t}」 · 시장 막대 ${dot.bars.length}개`,
+        dot.step === '4' && dot.t === '주식 투자금' && dot.bars.length === ms.length && dot.bars.every((b, i) => b.place === ms[i].place && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002), dot);
       const evOk = sy.ev.length > 0 && sy.ev.every(e => /^\d{1,2}월 \d{1,2}일\(.\)$/.test(e.date ?? '') && e.href && /^https:\/\//.test(e.href) && ['real', 'capex', 'stock', 'hype', 'report'].includes(e.kind));
       check(`${label} 오늘의 돈 이야기 근거 ${sy.ev.length}줄: 줄마다 날짜 · 갈래 · 기사 주소(https) · 앞날 말 검사에서 빼는 낱말은 「예상 · 기대감 · 수혜 기대」뿐(${[...new Set(sy.predOk)].join(' · ')})`,
         evOk && sy.predOk.length > 0 && sy.predOk.every(x => ['예상', '기대감', '수혜 기대'].includes(x)), {ev: sy.ev.slice(0, 4), predOk: sy.predOk});
-      // 움직임 줄이기 설정(아이폰 「동작 줄이기」) — 동전 · 테는 멈추고 숨음 · 그림 · 막대는 끝 모습 그대로(움직이지 않아도 뜻이 같음)
+      // 움직임 줄이기 설정(아이폰 「동작 줄이기」) — 처음부터 끝 모습: 핵심 걸음(그래서 여기가 돈을 받는다 · 돈 받는 곳 이름) · 그림 모두 켜짐 · 움직이는 것 0 · 동전 안 보임
       const rctx = await browser.newContext({viewport, isMobile: mobile, hasTouch: mobile, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'}); const rp = await rctx.newPage();
       await rp.goto(base + '/#/', {waitUntil: 'networkidle'}); await rp.waitForSelector('.sy', {timeout: 15000}).catch(() => {}); await rp.waitForTimeout(200);
-      const rm = await rp.evaluate(() => { const s = document.querySelector('.sy'); if (!s) return null; const all = [...s.querySelectorAll('*')];
-        return {running: all.filter(e => e.getAnimations?.().some(a => a.playState === 'running')).length, coinsShown: [...s.querySelectorAll('.sy-coin')].filter(c => getComputedStyle(c).opacity !== '0').length,
-          nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length,
-          bars: [...s.querySelectorAll('.sy-bf')].filter(b => getComputedStyle(b).transform === 'none').length, barsAll: s.querySelectorAll('.sy-bf').length}; });
+      const rm = await rp.evaluate(() => { const s = document.querySelector('.sy'); if (!s) return null; const pl = s.querySelector('.sy-play');
+        return {running: document.getAnimations().filter(a => a.playState === 'running').length, coinsShown: [...s.querySelectorAll('.sy-coin')].filter(c => getComputedStyle(c).opacity !== '0').length,
+          done: !!pl?.classList.contains('sy-done'), step: pl?.dataset.step ?? null, t: pl?.querySelector('.sy-ct')?.textContent.trim() ?? null, cs: pl?.querySelector('.sy-cs')?.textContent.trim() ?? null,
+          on: [...(pl?.querySelectorAll('[data-at]') ?? [])].filter(x => x.classList.contains('on') && getComputedStyle(x).opacity === '1').length,
+          nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length}; });
       await rctx.close();
-      check(`${label} 오늘의 돈 이야기 — 움직임 줄이기 설정: 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'} · 그림 ${rm?.nodes ?? 0}개 · 막대 ${rm?.bars ?? 0}/${rm?.barsAll ?? 0} 끝 모습 그대로`,
-        !!rm && rm.running === 0 && rm.coinsShown === 0 && rm.nodes === 6 && rm.bars === rm.barsAll, rm);
+      check(`${label} 돈 이야기 — 움직임 줄이기 설정: 처음부터 끝 걸음(결) 「${rm?.t ?? ''}」 「${rm?.cs ?? ''}」 · 그림 ${rm?.on ?? 0}/5 켜짐 · 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'}`,
+        !!rm && rm.done && rm.step === '8' && rm.t === '이것만 보면 됩니다' && rm.cs === st.confirm && rm.on === 5 && rm.nodes === 6 && rm.running === 0 && rm.coinsShown === 0, rm);
     }
   }
   // ⑥ 글씨 단추

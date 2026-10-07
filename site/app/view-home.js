@@ -29,7 +29,7 @@ import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
 import {homeComment, mapComment, landComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
-import {loadStory, storyBox, storySay} from './story.js';
+import {loadStory, storyBox, storySay, storyEnd} from './story.js';
 import {playOnce, stagger} from './motion.js'; // 움직이는 도식(2026-10-07 18:31) — 그림은 보일 때 한 번 자람 // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -52,7 +52,7 @@ const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late', title:
 const barOf = (g, top) => { const f = h('i', {class: 'hf-bf s-' + (signCls(g.change20) || 'flat')}); f.style.setProperty('--k', (finite(g.change20) && top > 0 ? Math.max(0.03, Math.min(1, Math.abs(g.change20) / top)) : 0.03).toFixed(3)); return h('span', {class: 'hf-bar', 'aria-hidden': 'true'}, f); };
 function flowCard(f, groups, shp, top = 0) {
   const card = flowCardEl(f, groups, shp, top);
-  stagger(card.querySelectorAll('.hf-bf')); playOnce('home-bars-' + f.fam.id, card); // 장마다 보일 때 막대가 위에서부터 차례로(처음 한 번)
+  const bars = stagger(card.querySelectorAll('.hf-bf')); playOnce('home-bars-' + f.fam.id, card, {dur: 120 + bars.length * 450}); // 장마다 보일 때 막대가 위에서부터 하나씩(처음 한 번 · 앞 장이 끝나야 다음 장 — motion.js 줄)
   return card;
 }
 function flowCardEl(f, groups, shp, top) {
@@ -89,6 +89,7 @@ export async function renderHome(main, {manifest}) {
     flowsEl,
     h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「지도」 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
+    st ? storyEnd(st) : null, // 결 — 맨 아래 결론 한 번 더(2026-10-07 20:04 「기승전결」 · 맨 위 기(결론)와 맞물림)
     foot(manifest)));
 }
 

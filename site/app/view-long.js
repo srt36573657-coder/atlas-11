@@ -60,9 +60,10 @@ const sized = (el, prop, v) => { el.style[prop] = `${Math.max(1.5, Math.min(100,
 
 /** 맨 위 그림 — 10 · 20 · 30년마다 주식(코스피 · 배당 넣음) · 서울 아파트 가로 막대 둘 · 점선 = 처음 500만 원
     가로 막대: 말 74개에서 돈 글이 길어져도(17,600,000 ₩) 옆 막대 글과 겹치지 않게 — 긴 막대는 글을 막대 안에 */
+let hbN = 0; // 맨 위 막대 차례(--i) — 막대 여섯이 하나씩 자람(2026-10-07 19:40 「하나 움직이고 그런 다음 다음 움직이고」)
 function hbar(v, cls) {
   const w = Math.max(1.5, Math.min(100, v / CAP * 100));
-  const fill = h('span', {class: 'lt-hfill ' + cls}); fill.style.width = `${w}%`;
+  const fill = h('span', {class: 'lt-hfill ' + cls}); fill.style.width = `${w}%`; fill.style.setProperty('--i', String(hbN++));
   const hb = h('span', {class: 'lt-hb', 'data-w': String(w)}, fill, h('b', {class: 'lt-bv'}, man(v)));
   place(hb, 'out'); return hb;
 }
@@ -83,6 +84,7 @@ function fitLabels(root) {
   }
 }
 function hero() {
+  hbN = 0;
   const stock = LONG[0][2][0][1], home = LONG[1][2][0][1];
   return h('figure', {class: 'lt-hero', role: 'img', 'aria-label': `가장 나빴던 때를 다시 겪으면 — ${YEARS.map(y => `${y}년: 주식 ${man(stock[y][0])}, 서울 아파트 ${man(home[y][0])}`).join(' · ')}`},
     ...YEARS.map(y => h('div', {class: 'lt-grp'}, h('span', {class: 'lt-yr'}, `${y}년 뒤`), hbar(stock[y][0], 'lt-stock'), hbar(home[y][0], 'lt-home'))),
@@ -95,10 +97,11 @@ function hero() {
 /** 차례 번호(--i) — 막대가 위에서부터 차례로 자람(2026-10-07 18:31 「움직이는 도식화로」 · 10년 · 20년 · 30년을 바꾸면 다시 자람 · CSSOM) */
 const order = (el, i) => { el.style.setProperty('--i', String(i)); return el; };
 function rows(y) {
+  let k = 0; // 회사 막대 차례 — 갈래가 여럿이어도 위에서부터 하나씩(앞 막대가 다 자란 뒤 다음)
   return LONG.map(([title, warn, list]) => h('section', {class: 'lt-sec', 'aria-label': title},
     h('h2', {class: 'lt-h'}, title), warn ? h('p', {class: 'lt-warn'}, warn) : null,
-    h('ul', {class: 'lt-list'}, ...list.map(([name, w, note], i) => {
-      const r = w[y];
+    h('ul', {class: 'lt-list'}, ...list.map(([name, w, note]) => {
+      const r = w[y], i = r ? k++ : k;
       return h('li', {class: 'lt-row'},
         h('span', {class: 'lt-top'}, h('span', {class: 'lt-name'}, name), r ? h('b', {class: 'lt-v ' + (r[0] < START ? 'lt-down' : 'lt-up')}, man(r[0])) : h('b', {class: 'lt-v lt-none'}, '기록이 짧아 셈하지 않음')),
         r ? h('span', {class: 'lt-track', 'aria-hidden': 'true'}, h('span', {class: 'lt-start'}), order(sized(h('span', {class: 'lt-fill ' + (r[0] < START ? 'lt-down' : 'lt-up') + (r[0] > CAP ? ' lt-over' : '')}), 'width', r[0]), i)) : null,
@@ -117,7 +120,7 @@ export function renderLong(main, {manifest}) {
       h('p', {class: 'lt-price'}, `물가: 처음 500만 원의 값을 지키려면 ${man(PRICE[y][0])}(${PRICE[y][1]}년~${PRICE[y][2]}년)`),
       ...rows(y));
   };
-  for (const v of YEARS) { const b = h('button', {type: 'button', 'data-y': String(v)}, `${v}년 뒤`); b.addEventListener('click', () => { y = v; draw(); }); pick.append(b); }
+  for (const v of YEARS) { const b = h('button', {type: 'button', 'data-y': String(v)}, `${v}년 뒤`); b.addEventListener('click', () => { y = v; body.style.setProperty('--b', '.1s'); draw(); }); pick.append(b); } // 10 · 20 · 30년을 바꾸면 위 큰 막대를 기다리지 않고 바로 하나씩
   const stock = LONG[0][2][0][1], home = LONG[1][2][0][1];
   state.summary = `500만 원을 오래 들고 있었다면. 지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈이고 앞날 값이 아닙니다. 2025년 12월 30일 종가까지 끝난 해만 셈했습니다. ${YEARS.map(v => `${v}년: 주식 ${man(stock[v][0])}, 서울 아파트 ${man(home[v][0])}`).join('. ')}.`;
   main.replaceChildren(h('article', {class: 'b-page lt-page'},

@@ -39,9 +39,9 @@ const SRC = [
 const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
 
 /** 순위 띠 — 칸 n개 · 한국 칸만 칠함(1위가 왼쪽) */
-function strip(rank, n) {
+function strip(rank, n, k = 0) {
   const cells = [];
-  for (let i = 1; i <= n; i++) { const c = h('i', {class: 'kr-c' + (i === rank ? ' kr-me' : '')}); c.style.setProperty('--i', String(i - 1)); cells.push(c); } // 차례 번호 — 칸이 1위부터 차례로 켜지고 한국 칸이 솟음(2026-10-07 18:31 「움직이는 도식화로」 · CSSOM)
+  for (let i = 1; i <= n; i++) { const c = h('i', {class: 'kr-c' + (i === rank ? ' kr-me' : '')}); if (i === rank) c.style.setProperty('--k', String(k)); cells.push(c); } // 한국 칸만 솟음 — 위 칸(k 번째)이 끝난 뒤 다음 칸(2026-10-07 19:40 「하나하나」 · CSSOM)
   return h('span', {class: 'kr-strip', 'aria-hidden': 'true'}, ...cells);
 }
 
@@ -52,10 +52,10 @@ export function renderKorea(main, {manifest}) {
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '한국 주식시장은 몇 위인가'),
       h('p', {class: 'b-when', 'data-speak': ''}, 'MSCI 나라별 지수 25개 시장 · 미국 달러 · 2026년 9월 30일(수) 종가 기준 · 순위와 사실만')),
-    h('ol', {class: 'kr-list'}, ...RANKS.map(([what, v, r, n, how]) => h('li', {class: 'kr-row'},
+    h('ol', {class: 'kr-list'}, ...RANKS.map(([what, v, r, n, how], k) => h('li', {class: 'kr-row'},
       h('span', {class: 'kr-top'}, h('span', {class: 'kr-w'}, what), h('b', {class: 'kr-v'}, v)),
       h('span', {class: 'kr-rank'}, h('b', null, `${n}곳 중 ${r}위`), h('small', null, how)),
-      strip(r, n)))),
+      strip(r, n, k)))),
     h('section', {class: 'kr-logic', 'aria-label': '논리'},
       h('h2', {class: 'kr-h'}, '숫자를 함께 보면'),
       h('ul', null, ...LOGIC.map(([k, t]) => h('li', {'data-speak': ''}, h('b', null, k), h('span', null, t))))),

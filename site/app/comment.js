@@ -158,9 +158,13 @@ const dotCls = d => 'cm-d ' + (d.mark ? 'cm-' + d.mark : d.off ? 'cm-off' : d.s 
 function picEl(pic) {
   if (pic?.dots?.length) {
     const n = pic.dots.length;
-    const el = h('div', {class: `cm-pic cm-dots${n > 120 ? ' cm-xs' : n > 13 ? ' cm-sm' : ''}`, 'aria-hidden': 'true', 'data-n': n}, ...pic.dots.map(d => h('i', {class: dotCls(d)})));
-    el.style.setProperty('--st', `${Math.max(3, Math.min(45, Math.round(1000 / n)))}ms`);
-    [...el.children].forEach((d, i) => d.style.setProperty('--i', String(i)));
+    // 2026-10-07 19:40 「하나 움직이고 그런 다음 다음 움직이고 … 동시에 움직이게 하지 말고」 — 거대 숫자가 다 솟은 뒤(1.3초)에 점이 하나씩:
+    //   점 40개까지는 앞 점이 다 켜진 뒤 다음 점(간격 = 켜지는 시간 · 다 켜지는 데 2초 안팎) · 그보다 많으면(출목표 365곳) 왼쪽부터 한 번 닦아 켜짐(움직이는 것 하나)
+    //   테 두른 점 · 그날 별은 다 켜진 뒤에만 숨 쉼(--end) — 그때 움직이는 것은 그 하나
+    const one = n <= 40, st = one ? Math.max(70, Math.min(220, Math.round(2000 / n))) : 0;
+    const el = h('div', {class: `cm-pic cm-dots${n > 120 ? ' cm-xs' : n > 13 ? ' cm-sm' : ''}${one ? ' cm-one' : ' cm-wipe'}`, 'aria-hidden': 'true', 'data-n': n}, ...pic.dots.map(d => h('i', {class: dotCls(d)})));
+    el.style.setProperty('--st', `${st}ms`); el.style.setProperty('--end', `${one ? 1300 + n * st : 2600}ms`);
+    if (one) [...el.children].forEach((d, i) => d.style.setProperty('--i', String(i)));
     return el;
   }
   if (pic?.bars?.length) {
