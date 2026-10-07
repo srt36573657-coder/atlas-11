@@ -62,7 +62,7 @@ function dayLine() {
   const ticks = [8, 14, 20].map(x => { const t = h('span', {class: 'gd-tk'}, hm(x)); t.style.setProperty('--a', at(x)); return t; });
   // 눈금 셋(08:00 · 14:00 · 20:00) — 글씨 200% · 360px 에서도 겹치지 않게
   const el = h('div', {class: 'gd-day', 'aria-hidden': 'true'}, h('ul', {class: 'gd-trs'}, ...rows), h('span', {class: 'gd-tks'}, ...ticks));
-  playOnce('guide-day', el);
+  playOnce('guide-day', el, {dur: 120 + DAY_BARS.length * 500}); // 막대 다섯이 하나씩(2026-10-07 19:40 「하나하나」)
   return el;
 }
 
