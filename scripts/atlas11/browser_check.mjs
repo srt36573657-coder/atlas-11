@@ -925,7 +925,18 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       return {n: document.querySelectorAll('.sy').length, first: !!s && first === s, cm: document.querySelectorAll('.h-page .cm').length,
         scenes: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => x.classList[1]), titles: [...(s?.querySelectorAll('.sy-t') ?? [])].map(x => x.textContent.replace(/\s+/g, ' ').trim()),
         role: q('.sy-role')?.textContent.trim() ?? null, role3: q('.sy-role3')?.textContent.trim() ?? null,
-        dashed: q('.sy-s3') ? getComputedStyle(q('.sy-s3')).borderTopStyle : null, lineDash: q('.sy-dash') ? getComputedStyle(q('.sy-dash')).borderInlineStartStyle : null,
+        // 2026-10-07 18:31 「움직이는 도식화로 · 전면 혁신」 — 점선은 다음 장면의 칸 · 동그라미와 그리로 가는 줄(.sy-rl)에
+        dashed: q('.sy-s3 .sy-c') && q('.sy-s3 .sy-node') ? [getComputedStyle(q('.sy-s3 .sy-c')).borderTopStyle, getComputedStyle(q('.sy-s3 .sy-node')).borderTopStyle].join() : null,
+        lineDash: q('.sy-dash .sy-rl') ? getComputedStyle(q('.sy-dash .sy-rl')).borderInlineStartStyle : null,
+        // 움직이는 도식: 한눈 그림(그림 셋 · 줄 둘 · 뒤 줄 점선 · 가운데가 가장 큼) · 돈길 동그라미 셋(장면마다 하나) · 동전(흐르는 중) · 시장 막대(가장 큰 변화 = 끝까지) · 그림엔 글자 없음
+        map: (() => { const m = q('.sy-map'); if (!m) return null; const ns = [...m.querySelectorAll('.sy-mn')], tr = [...m.querySelectorAll('.sy-tr')];
+          return {hidden: m.getAttribute('aria-hidden'), text: m.textContent.trim().length, nodes: ns.length, svg: ns.filter(n => n.querySelector('svg')).length, biggest: ns.map(n => n.offsetWidth).indexOf(Math.max(...ns.map(n => n.offsetWidth))), // 크기는 자리 폭(offsetWidth) — 등장 움직임(크기 키움) 중에도 같은 값
+            tracks: tr.length, dash: tr.map(t => getComputedStyle(t).borderTopStyle).join(), coins: m.querySelectorAll('.sy-coin').length}; })(),
+        rail: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => { const n = x.querySelector(':scope > .sy-rail .sy-node'); return n ? {svg: !!n.querySelector('svg'), hidden: n.closest('[aria-hidden="true"]') ? 'true' : null, w: n.offsetWidth} : null; }),
+        lineCoins: [...(s?.querySelectorAll('.sy-line') ?? [])].map(x => x.querySelectorAll('.sy-coin').length),
+        moving: (() => { const cs = [...(s?.querySelectorAll('.sy-coin') ?? [])]; return {coins: cs.length, running: cs.filter(c => c.getAnimations?.().some(a => a.playState === 'running')).length}; })(),
+        bars: [...(s?.querySelectorAll('.sy-mb .sy-mkt') ?? [])].map(li => ({place: li.dataset.place, k: Number(li.querySelector('.sy-bf')?.style.getPropertyValue('--k')), hidden: li.querySelector('.sy-bar')?.getAttribute('aria-hidden')})),
+        picText: [...(s?.querySelectorAll('.sy-rail, .sy-ifi, .sy-ok') ?? [])].reduce((t, x) => t + x.textContent.trim().length, 0),
         ifs: [...(s?.querySelectorAll('.sy-if p') ?? [])].map(p => p.textContent.replace(/\s+/g, ' ').trim()), lastIsIf: !!s?.lastElementChild?.classList.contains('sy-if'),
         roleFs: q('.sy-role') ? parseFloat(getComputedStyle(q('.sy-role')).fontSize) : 0, role3Fs: q('.sy-role3') ? parseFloat(getComputedStyle(q('.sy-role3')).fontSize) : 0, mainFs: q('.sy-main') ? parseFloat(getComputedStyle(q('.sy-main')).fontSize) : 0,
         predOk: [...document.querySelectorAll('[data-pred-ok]')].map(x => x.textContent.trim()),
@@ -935,11 +946,29 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     else {
       check(`${label} 오늘의 돈 이야기: 맨 위 무대 하나(옛 표지 없음) · ${sy.scenes.join(' → ')} · 「${sy.role}」 ⇢ 「${sy.role3}」 = /story.json(${st.chain}) · 가운데 장면 글씨가 가장 큼(${sy.roleFs}px) · 다음 장면 · 그리로 가는 선 점선 · 「예상」 · 무대 맨 끝 두 줄`,
         sy.n === 1 && sy.first && sy.cm === 0 && sy.scenes.join() === 'sy-s1,sy-s2,sy-s3' && sy.titles[0] === '이 일이 생겼다' && sy.titles[1] === '그래서 여기가 돈을 받는다' && sy.titles[2] === '다음은 여기가 필요하다 예상'
-          && sy.role === st.now.role && sy.role3 === st.next.role && sy.roleFs > sy.role3Fs && sy.roleFs > sy.mainFs && sy.dashed === 'dashed' && sy.lineDash === 'dashed'
+          && sy.role === st.now.role && sy.role3 === st.next.role && sy.roleFs > sy.role3Fs && sy.roleFs > sy.mainFs && sy.dashed === 'dashed,dashed' && sy.lineDash === 'dashed'
           && sy.lastIsIf && sy.ifs.length === 2 && sy.ifs[0] === `이것이 확인되면 이어집니다: ${st.confirm}` && sy.ifs[1] === `이것이 나타나면 다시 판단합니다: ${st.rethink}` && sy.sw <= sy.cw, sy);
+      // 2026-10-07 18:31 「지금 글로 되어 있다 움직이는 도식화로 만들어라 · 과감하게 알틀란스를 전면 혁신하라 섹시하게 스마트 하게」
+      const ms = st.now.stock?.markets ?? [], kTop = Math.max(...ms.map(m => Math.abs(m.change20))), mp = sy.map;
+      const motionOk = !!mp && mp.hidden === 'true' && mp.text === 0 && mp.nodes === 3 && mp.svg === 3 && mp.biggest === 1 && mp.tracks === 2 && mp.dash.split(',')[1] === 'dashed' && mp.coins >= 4
+        && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0
+        && sy.lineCoins.length === 2 && sy.lineCoins.every(n => n >= 2) && sy.moving.coins >= 8 && sy.moving.running === sy.moving.coins
+        && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002);
+      check(`${label} 오늘의 돈 이야기 — 움직이는 도식: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼) · 돈길 동그라미 ${sy.rail.filter(Boolean).length}(가운데가 가장 큼) · 동전 ${sy.moving.coins}개 모두 흐르는 중 · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
+        motionOk, motionOk ? undefined : {map: mp, rail: sy.rail, lineCoins: sy.lineCoins, moving: sy.moving, bars: sy.bars, picText: sy.picText});
       const evOk = sy.ev.length > 0 && sy.ev.every(e => /^\d{1,2}월 \d{1,2}일\(.\)$/.test(e.date ?? '') && e.href && /^https:\/\//.test(e.href) && ['real', 'capex', 'stock', 'hype', 'report'].includes(e.kind));
       check(`${label} 오늘의 돈 이야기 근거 ${sy.ev.length}줄: 줄마다 날짜 · 갈래 · 기사 주소(https) · 앞날 말 검사에서 빼는 낱말은 「예상 · 기대감 · 수혜 기대」뿐(${[...new Set(sy.predOk)].join(' · ')})`,
         evOk && sy.predOk.length > 0 && sy.predOk.every(x => ['예상', '기대감', '수혜 기대'].includes(x)), {ev: sy.ev.slice(0, 4), predOk: sy.predOk});
+      // 움직임 줄이기 설정(아이폰 「동작 줄이기」) — 동전 · 테는 멈추고 숨음 · 그림 · 막대는 끝 모습 그대로(움직이지 않아도 뜻이 같음)
+      const rctx = await browser.newContext({viewport, isMobile: mobile, hasTouch: mobile, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'}); const rp = await rctx.newPage();
+      await rp.goto(base + '/#/', {waitUntil: 'networkidle'}); await rp.waitForSelector('.sy', {timeout: 15000}).catch(() => {}); await rp.waitForTimeout(200);
+      const rm = await rp.evaluate(() => { const s = document.querySelector('.sy'); if (!s) return null; const all = [...s.querySelectorAll('*')];
+        return {running: all.filter(e => e.getAnimations?.().some(a => a.playState === 'running')).length, coinsShown: [...s.querySelectorAll('.sy-coin')].filter(c => getComputedStyle(c).opacity !== '0').length,
+          nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length,
+          bars: [...s.querySelectorAll('.sy-bf')].filter(b => getComputedStyle(b).transform === 'none').length, barsAll: s.querySelectorAll('.sy-bf').length}; });
+      await rctx.close();
+      check(`${label} 오늘의 돈 이야기 — 움직임 줄이기 설정: 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'} · 그림 ${rm?.nodes ?? 0}개 · 막대 ${rm?.bars ?? 0}/${rm?.barsAll ?? 0} 끝 모습 그대로`,
+        !!rm && rm.running === 0 && rm.coinsShown === 0 && rm.nodes === 6 && rm.bars === rm.barsAll, rm);
     }
   }
   // ⑥ 글씨 단추

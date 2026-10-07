@@ -35,6 +35,7 @@ test('고르기 — 일 근거 + 실제 돈 근거가 있는 이야기 가운데
   const items = [N(2, '앤스로픽 AI 인프라에 5180억弗 투자'), N(3, '마이크론 매출 사상 최대…데이터센터 매출 11배'), N(4, '반도체 장비 수주 1000억'), N(5, '조선 3척 수주 2조원')];
   const st = buildStory({boards, items, made: '2026-10-07T00:00:00Z'});
   assert.equal(st.none, false); assert.equal(st.chain, 'aidc-chip-power'); assert.deepEqual(checkStory(st), []);
+  assert.deepEqual([st.event.id, st.now.id, st.next.id], ['aidc', 'chip', 'power'], '장면마다 그림 이름(2026-10-07 18:31 움직이는 도식 — 화면이 그림을 고름)');
   assert.equal(st.now.stock.markets.length, 3, '반도체가 세 시장에서 불장');
   assert.equal(st.now.real.evidence[0].title, '마이크론 매출 사상 최대…데이터센터 매출 11배', '굳은 근거(사상 최대 · 몇 배)가 먼저');
   assert.equal(st.next.label, '예상'); assert.equal(st.next.state, 'expected', '변압기 · 전선 실제 돈 기사가 없으면 수혜 기대');
@@ -49,9 +50,15 @@ test('근거가 모자라면 고르지 않는다 — 「없는 날」(지어내�
   assert.equal(st.none, true); assert.deepEqual(checkStory(st), []); assert.equal(st.stockOnly[0].label, '반도체 장비');
 });
 
-test('이어짐 표 — 모든 연결이 역할 · 일 표에 있음 · 우리 글에 앞날 말 없음 · 확인할 달 자리 하나', () => {
+test('이어짐 표 — 모든 연결이 역할 · 일 표에 있음 · 우리 글에 앞날 말 없음 · 확인할 달 자리 하나', async () => {
+  // 움직이는 도식(2026-10-07 18:31) — 화면(site/app/story.js)의 그림 이름표를 글로 읽어 견줌(브라우저 모듈이라 바로 불러오지 않음)
+  const src = await (await import('node:fs/promises')).readFile(new URL('../../site/app/story.js', import.meta.url), 'utf8');
+  const chainIds = JSON.parse(src.match(/const CHAIN_IDS = (\{[^;]+\});/)[1].replace(/'/g, '"'));
+  const iconKeys = new Set([...src.slice(src.indexOf('const ICON = {'), src.indexOf('const CHAIN_IDS')).matchAll(/^\s+'([er]:[A-Za-z]+)':/gm)].map(m => m[1]));
   for (const c of CHAINS) {
     assert.ok(EVENTS[c.event] && ROLES[c.now] && ROLES[c.next], c.id);
+    assert.deepEqual(chainIds[c.id], [c.event, c.now, c.next], `${c.id} — 화면 story.js CHAIN_IDS(옛 /story.json 의 그림 이름)가 이어짐 표와 같음`);
+    for (const k of ['e:' + c.event, 'r:' + c.now, 'r:' + c.next]) assert.ok(iconKeys.has(k), `${c.id} — 그림 ${k} 이 화면 story.js ICON 에 있음`);
     for (const k of ['why1', 'changed', 'why2', 'check', 'confirm', 'rethink']) assert.ok(String(c[k] ?? '').trim(), `${c.id} ${k}`);
     assert.ok(!/전망|예측|예상|확률|추천|목표\s?주?가|기대감/.test([c.why1, c.changed, c.why2, c.check, c.confirm, c.rethink].join(' ')), c.id);
   }

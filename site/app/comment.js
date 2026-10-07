@@ -152,16 +152,23 @@ export const ems = t => [...String(t ?? '')].reduce((a, ch) => a + GLYPH(ch), 0)
 const fit = el => el.style.setProperty('--w', Math.max(1.6, ems(el.textContent.trim())).toFixed(2));
 const partEl = p => (typeof p === 'string' ? p : h('span', {class: 'cm-n', 'data-ident': p.ident ? '' : null, lang: p.ko ? 'ko' : null}, p.n));
 const dotCls = d => 'cm-d ' + (d.mark ? 'cm-' + d.mark : d.off ? 'cm-off' : d.s > 0 ? 'cm-u' : d.s < 0 ? 'cm-dn' : 'cm-0') + (d.me ? ' cm-me' : '');
+/* 2026-10-07 18:31 「움직이는 도식화로 · 과감하게 전면 혁신 · 섹시하게 스마트 하게」 — 숫자 그림이 살아 움직임:
+   점은 물결처럼 하나씩 켜짐(차례 번호 --i × 간격 --st · 점이 많을수록 간격이 짧아 다 켜지는 데 1.1초 안팎) · 테 두른 점(이 화면이 말하는 그 하나)은 숨 쉬듯 테가 넓어졌다 좁아짐
+   막대는 차례로 자람 · 옛 「왼쪽부터 닦아 켜짐」(cm-wipe 한 번)은 뺌(규칙 1) · 차례 번호 · 간격은 CSSOM(글 속 style 속성 없음) */
 function picEl(pic) {
   if (pic?.dots?.length) {
     const n = pic.dots.length;
-    return h('div', {class: `cm-pic cm-dots${n > 120 ? ' cm-xs' : n > 13 ? ' cm-sm' : ''}`, 'aria-hidden': 'true', 'data-n': n}, ...pic.dots.map(d => h('i', {class: dotCls(d)})));
+    const el = h('div', {class: `cm-pic cm-dots${n > 120 ? ' cm-xs' : n > 13 ? ' cm-sm' : ''}`, 'aria-hidden': 'true', 'data-n': n}, ...pic.dots.map(d => h('i', {class: dotCls(d)})));
+    el.style.setProperty('--st', `${Math.max(3, Math.min(45, Math.round(1000 / n)))}ms`);
+    [...el.children].forEach((d, i) => d.style.setProperty('--i', String(i)));
+    return el;
   }
   if (pic?.bars?.length) {
     const m = pic.frac ? 1 : Math.max(...pic.bars.map(b => (finite(b.v) ? Math.abs(b.v) : 0)), 1e-9);
-    return h('div', {class: 'cm-pic cm-bars', 'aria-hidden': 'true', 'data-n': pic.bars.length}, ...pic.bars.map(b => {
+    return h('div', {class: 'cm-pic cm-bars', 'aria-hidden': 'true', 'data-n': pic.bars.length}, ...pic.bars.map((b, i) => {
       const f = h('b', {class: 'cm-f ' + (b.dim ? 'cm-off' : b.s > 0 ? 'cm-u' : b.s < 0 ? 'cm-dn' : 'cm-0')});
       f.style.width = `${Math.max(2, Math.min(100, (finite(b.v) ? Math.abs(b.v) : 0) / m * 100))}%`; // 길이만 CSSOM(글 속 style 속성 없음)
+      f.style.setProperty('--i', String(i));
       return h('i', {class: 'cm-bar'}, f);
     }));
   }
