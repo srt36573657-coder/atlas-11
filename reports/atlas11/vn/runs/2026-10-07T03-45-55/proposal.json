@@ -1,0 +1,2824 @@
+{
+ "schema": "atlas11-world-proposal-1",
+ "market": "vn",
+ "at": "2026-10-07T03:45:55.924Z",
+ "ok": true,
+ "rules": "vn-nflex-v1",
+ "counts": {
+  "candidates": 700,
+  "pool": 674,
+  "industriesInPool": 96,
+  "industriesFilled": 40,
+  "industries": 40,
+  "picked": 200,
+  "kinds": {
+   "quality": 70,
+   "profit": 107,
+   "trend": 18,
+   "size": 5
+  },
+  "chosen": [
+   {
+    "rank": 1,
+    "industry": "은행",
+    "size": 21,
+    "strict": 19,
+    "capUsd": 1430953613252,
+    "names": [
+     "뱅크 포 포린 트레이드 오브 비엣남",
+     "베트남개발은행",
+     "번영은행",
+     "베트남산업은행",
+     "베트남테콤은행"
+    ]
+   },
+   {
+    "rank": 2,
+    "industry": "오일, 가스 정제 및 마케팅",
+    "size": 21,
+    "strict": 0,
+    "capUsd": 209428875485,
+    "names": [
+     "페트로비엣남 리파이닝",
+     "페트롤리맥스",
+     "남부가스",
+     "페트롤리멕스석화",
+     "페트폴리멕스가스"
+    ]
+   },
+   {
+    "rank": 3,
+    "industry": "철 및 강철",
+    "size": 17,
+    "strict": 2,
+    "capUsd": 187698480031,
+    "names": [
+     "호아팟그룹",
+     "호아센 그룹",
+     "남킴철강",
+     "손하인터내셔널",
+     "베트남독일강철관"
+    ]
+   },
+   {
+    "rank": 4,
+    "industry": "투자 은행 및 중개 서비스",
+    "size": 28,
+    "strict": 17,
+    "capUsd": 164957460403,
+    "names": [
+     "사이공증권",
+     "호치민증권",
+     "빅스 시큐리티스 JSC",
+     "베트남 증권",
+     "VNDIRECT증권"
+    ]
+   },
+   {
+    "rank": 5,
+    "industry": "호텔, 모텔 및 크루즈 라인",
+    "size": 6,
+    "strict": 0,
+    "capUsd": 150875012525,
+    "names": [
+     "빈펄",
+     "CEO그룹",
+     "닌반버이",
+     "탄탄꽁여행",
+     "사이공호텔"
+    ]
+   },
+   {
+    "rank": 6,
+    "industry": "타이어 및 고무 제품",
+    "size": 10,
+    "strict": 4,
+    "capUsd": 150001418662,
+    "names": [
+     "베트남 고무 그룹 JSC",
+     "푸옥호아고무",
+     "동푸고무",
+     "다낭고무",
+     "따이닌고무"
+    ]
+   },
+   {
+    "rank": 7,
+    "industry": "식품 가공",
+    "size": 35,
+    "strict": 6,
+    "capUsd": 148782612241,
+    "names": [
+     "비나밀크",
+     "빈호안",
+     "비나까페비엔호아",
+     "팬퍼시픽그룹",
+     "남베트남수산"
+    ]
+   },
+   {
+    "rank": 8,
+    "industry": "부동산 임대, 개발 및 운영",
+    "size": 71,
+    "strict": 7,
+    "capUsd": 104074530739,
+    "names": [
+     "빈꼼리테일",
+     "캉디엔주택",
+     "삼준집단",
+     "남롱투자",
+     "DIC부동산"
+    ]
+   },
+   {
+    "rank": 9,
+    "industry": "전기 부품 및 장비",
+    "size": 13,
+    "strict": 13,
+    "capUsd": 78854519651,
+    "names": [
+     "겔렉스 엘렉트리시티",
+     "젤렉스 그룹",
+     "사콤개발투자",
+     "랑동진공플라스크",
+     "비나켐배터리"
+    ]
+   },
+   {
+    "rank": 10,
+    "industry": "양조업",
+    "size": 5,
+    "strict": 2,
+    "capUsd": 61874518847,
+    "names": [
+     "사이공 맥주",
+     "하노이 비어",
+     "사이공 중부 맥주",
+     "하이드엉맥주",
+     "탄호아맥주"
+    ]
+   },
+   {
+    "rank": 11,
+    "industry": "항만 운영 및 서비스",
+    "size": 16,
+    "strict": 5,
+    "capUsd": 58159399810,
+    "names": [
+     "게마뎁트 그룹",
+     "하이안운송하역",
+     "베트남컨테이너해운",
+     "동나이항",
+     "딘부항구개발투자"
+    ]
+   },
+   {
+    "rank": 12,
+    "industry": "민자 발전 사업",
+    "size": 24,
+    "strict": 10,
+    "capUsd": 53303687735,
+    "names": [
+     "냉동전기공학",
+     "빈손송힌수력",
+     "하도그룹",
+     "후아나 하이드로파워",
+     "센트럴 수력발전"
+    ]
+   },
+   {
+    "rank": 13,
+    "industry": "건설 자재 및 비품",
+    "size": 12,
+    "strict": 1,
+    "capUsd": 49875305389,
+    "names": [
+     "빈민플라스틱",
+     "비글라세라",
+     "티엔퐁플라스틱",
+     "비코스톤",
+     "DNP 홀딩"
+    ]
+   },
+   {
+    "rank": 14,
+    "industry": "어업 및 농업",
+    "size": 8,
+    "strict": 4,
+    "capUsd": 40046586850,
+    "names": [
+     "황안자라이",
+     "다바코 그룹",
+     "목쩌우 데어리 캐틀 브리딩",
+     "국립종묘",
+     "바프 베트남 농업"
+    ]
+   },
+   {
+    "rank": 15,
+    "industry": "건설 및 엔지니어링",
+    "size": 61,
+    "strict": 0,
+    "capUsd": 38751507880,
+    "names": [
+     "베트남 수출입 건설 JSC",
+     "비에텔 건설",
+     "PC원 그룹",
+     "코텍건설",
+     "SCG 콘스트럭션 그룹"
+    ]
+   },
+   {
+    "rank": 16,
+    "industry": "농화학제",
+    "size": 16,
+    "strict": 3,
+    "capUsd": 38742857916,
+    "names": [
+     "PV까마우비료",
+     "PV비료화학",
+     "베트남방역",
+     "빈디엔비료",
+     "람타오비료"
+    ]
+   },
+   {
+    "rank": 17,
+    "industry": "전력 유틸리티",
+    "size": 6,
+    "strict": 6,
+    "capUsd": 35229818489,
+    "names": [
+     "베트남 발전 3",
+     "비나코민 파워 홀딩",
+     "쯔엉틴에너지투자",
+     "칸호아전력",
+     "하이퐁"
+    ]
+   },
+   {
+    "rank": 18,
+    "industry": "제약",
+    "size": 21,
+    "strict": 21,
+    "capUsd": 30428736145,
+    "names": [
+     "DHG제약",
+     "아이멕스팜제약",
+     "하떠이제약",
+     "빈딘제약",
+     "꾸롱제약"
+    ]
+   },
+   {
+    "rank": 19,
+    "industry": "고속도로 및 철도",
+    "size": 6,
+    "strict": 0,
+    "capUsd": 28980410606,
+    "names": [
+     "CII인프라투자",
+     "호치민인프라투자",
+     "데오까 교통 인프라 투자",
+     "IDICO끄엉투언",
+     "서부버스터미널"
+    ]
+   },
+   {
+    "rank": 20,
+    "industry": "오일 및 가스 수송 서비스",
+    "size": 7,
+    "strict": 3,
+    "capUsd": 19323078012,
+    "names": [
+     "PV운송",
+     "PV저압가스",
+     "베트남송유",
+     "퍼시픽 페트롤리엄 트랜스포테이션",
+     "베트남탱커"
+    ]
+   },
+   {
+    "rank": 21,
+    "industry": "수자원 유틸리티",
+    "size": 7,
+    "strict": 7,
+    "capUsd": 18908348840,
+    "names": [
+     "빈즈엉상수도환경개발",
+     "투저우못워터",
+     "쪼론상수도",
+     "벤탄상수도",
+     "투득수도"
+    ]
+   },
+   {
+    "rank": 22,
+    "industry": "자동차 차량, 부품 및 서비스 소매",
+    "size": 5,
+    "strict": 0,
+    "capUsd": 17970458767,
+    "names": [
+     "타스코",
+     "사이공서비스",
+     "G-오토모빌",
+     "씨티포트자동차",
+     "항싼자동차서비스"
+    ]
+   },
+   {
+    "rank": 23,
+    "industry": "의류 및 액세서리",
+    "size": 8,
+    "strict": 2,
+    "capUsd": 16067358531,
+    "names": [
+     "퓨뉴언주얼리",
+     "탄꽁의류",
+     "TNG투자무역",
+     "호아토 텍스타일 가먼트",
+     "빈탄무역"
+    ]
+   },
+   {
+    "rank": 24,
+    "industry": "배달, 우편, 항공 화물 및 육상 물류",
+    "size": 5,
+    "strict": 0,
+    "capUsd": 12994607339,
+    "names": [
+     "베텔 포스트",
+     "ASG",
+     "국제항공해운",
+     "VNT물류",
+     "비날링크 로지스틱스"
+    ]
+   },
+   {
+    "rank": 25,
+    "industry": "건설 자재",
+    "size": 33,
+    "strict": 1,
+    "capUsd": 9637565580,
+    "names": [
+     "빅엠 하티엔 시멘트",
+     "빈드엉광물",
+     "람동광물건축재료",
+     "1369건설",
+     "티엔장투자건설"
+    ]
+   },
+   {
+    "rank": 26,
+    "industry": "부동산 서비스",
+    "size": 5,
+    "strict": 1,
+    "capUsd": 9303990575,
+    "names": [
+     "닷산 부동산 서비스",
+     "센트리 랜드",
+     "카이 호안 랜드 그룹",
+     "사이공 리얼 에스테이트 그룹",
+     "록스 키 홀딩스"
+    ]
+   },
+   {
+    "rank": 27,
+    "industry": "공항 운영 및 서비스",
+    "size": 5,
+    "strict": 3,
+    "capUsd": 8309214039,
+    "names": [
+     "사이공 화물",
+     "노이바이화물터미널",
+     "사이공 그라운드 서비스",
+     "깜란국제공항",
+     "다낭항공서비스"
+    ]
+   },
+   {
+    "rank": 28,
+    "industry": "해양 화물 및 물류",
+    "size": 10,
+    "strict": 1,
+    "capUsd": 7437286720,
+    "names": [
+     "남부물류",
+     "베트남해운",
+     "글로벌 퍼시픽 쉬핑",
+     "탄창롱빈",
+     "비나프레이트"
+    ]
+   },
+   {
+    "rank": 29,
+    "industry": "용기(종이 제외) 및 포장재",
+    "size": 12,
+    "strict": 1,
+    "capUsd": 7025367248,
+    "names": [
+     "안파플라스틱",
+     "투안 둑",
+     "떤푸 베트남",
+     "미짜우포장인쇄",
+     "페트폴리멕스기계"
+    ]
+   },
+   {
+    "rank": 30,
+    "industry": "지상 화물 및 물류",
+    "size": 6,
+    "strict": 1,
+    "capUsd": 6811725924,
+    "names": [
+     "트란시멕스",
+     "Vsc 그린 로지스틱스",
+     "하이민",
+     "트랜시멕스 로지스틱스",
+     "센트럴컨테이너"
+    ]
+   },
+   {
+    "rank": 31,
+    "industry": "직물 및 가죽제품",
+    "size": 7,
+    "strict": 1,
+    "capUsd": 5615538539,
+    "names": [
+     "송홍의류",
+     "센추리합성섬유",
+     "담산",
+     "비엣탕",
+     "부 당 인베스트먼트 & 트레이딩"
+    ]
+   },
+   {
+    "rank": 32,
+    "industry": "상품 화학",
+    "size": 11,
+    "strict": 0,
+    "capUsd": 5567094966,
+    "names": [
+     "안팟홀딩스",
+     "비엣 탄 플라스틱",
+     "하노이 플라스틱",
+     "팟엔바이광물플라스틱",
+     "트라이화학"
+    ]
+   },
+   {
+    "rank": 33,
+    "industry": "종이 포장재",
+    "size": 5,
+    "strict": 1,
+    "capUsd": 4430261850,
+    "names": [
+     "동하이",
+     "비셈붓손포장",
+     "하이퐁시멘트포장",
+     "송다무역",
+     "비셈빔손포장"
+    ]
+   },
+   {
+    "rank": 34,
+    "industry": "가정용 가구",
+    "size": 6,
+    "strict": 1,
+    "capUsd": 4249650431,
+    "names": [
+     "푸따이",
+     "에버피아",
+     "사비멕스",
+     "BKG 베트남 인베스트먼트",
+     "쯔엉탄가구"
+    ]
+   },
+   {
+    "rank": 35,
+    "industry": "기타 전문 소매",
+    "size": 7,
+    "strict": 1,
+    "capUsd": 3582182632,
+    "names": [
+     "타세코항공서비스",
+     "LVA 트레이딩 앤 서비스",
+     "다낭출판교육장비",
+     "꽝닌출판교육장비",
+     "남부출판교육장비"
+    ]
+   },
+   {
+    "rank": 36,
+    "industry": "석탄",
+    "size": 9,
+    "strict": 0,
+    "capUsd": 3076657487,
+    "names": [
+     "비나코민 비엣박 광업지주",
+     "비나코민 북부 석탄",
+     "까오 손 콜",
+     "비나코민방단",
+     "비나코민누이베오"
+    ]
+   },
+   {
+    "rank": 37,
+    "industry": "종이 제품",
+    "size": 5,
+    "strict": 0,
+    "capUsd": 3073685458,
+    "names": [
+     "HHP 글로벌",
+     "글로벌전력기술",
+     "비엔동투자개발",
+     "사이공비엔동테크",
+     "하파코그룹"
+    ]
+   },
+   {
+    "rank": 38,
+    "industry": "경영 지원 서비스",
+    "size": 9,
+    "strict": 0,
+    "capUsd": 1675918474,
+    "names": [
+     "비나콘트롤그룹",
+     "T코프 에셋 매니지먼트",
+     "베트남 브랜드 투자",
+     "전력건설컨설팅3",
+     "까사티"
+    ]
+   },
+   {
+    "rank": 39,
+    "industry": "통신 및 네트워킹",
+    "size": 5,
+    "strict": 5,
+    "capUsd": 892013811,
+    "names": [
+     "PT통신설비",
+     "사오 마이 비엣 투자개발",
+     "원테크놀로지스",
+     "삼끄엉전기통신소재",
+     "VTC텔레콤"
+    ]
+   },
+   {
+    "rank": 40,
+    "industry": "소비자 출판",
+    "size": 7,
+    "strict": 0,
+    "capUsd": 570908814,
+    "names": [
+     "하노이교육투자",
+     "푸옥남교육투자",
+     "하노이교과서",
+     "다낭교육투자",
+     "다낭 교육도서 주식회사"
+    ]
+   }
+  ],
+  "notChosenFilled": [],
+  "short": [
+   {
+    "industry": "IT 서비스 및 컨설팅",
+    "have": 4
+   },
+   {
+    "industry": "컴퓨터 및 전자 제품 소매",
+    "have": 4
+   },
+   {
+    "industry": "임업 및 목재 제품",
+    "have": 4
+   },
+   {
+    "industry": "손해보험",
+    "have": 4
+   },
+   {
+    "industry": "다각적 산업용 제품 도매",
+    "have": 4
+   },
+   {
+    "industry": "산업용 기계 및 장비",
+    "have": 4
+   },
+   {
+    "industry": "지상 및 해상 여객 운송",
+    "have": 4
+   },
+   {
+    "industry": "복합보험 및 중개인",
+    "have": 3
+   },
+   {
+    "industry": "소비재 대기업",
+    "have": 3
+   },
+   {
+    "industry": "자동차 및 트럭 제조",
+    "have": 3
+   },
+   {
+    "industry": "가정용 제품",
+    "have": 3
+   },
+   {
+    "industry": "특수 채굴 및 금속",
+    "have": 3
+   },
+   {
+    "industry": "재생 가능 에너지 장비 및 서비스",
+    "have": 3
+   },
+   {
+    "industry": "알루미늄",
+    "have": 3
+   },
+   {
+    "industry": "통합 오일 및 가스",
+    "have": 2
+   },
+   {
+    "industry": "항공사",
+    "have": 2
+   },
+   {
+    "industry": "오일 관련 서비스 및 장비",
+    "have": 2
+   },
+   {
+    "industry": "다각적 화학 산업",
+    "have": 2
+   },
+   {
+    "industry": "재보험",
+    "have": 2
+   },
+   {
+    "industry": "담배",
+    "have": 2
+   },
+   {
+    "industry": "중장비 및 차량",
+    "have": 2
+   },
+   {
+    "industry": "중전기장비",
+    "have": 2
+   },
+   {
+    "industry": "여가 및 오락시설",
+    "have": 2
+   },
+   {
+    "industry": "특수 화학제",
+    "have": 2
+   },
+   {
+    "industry": "고용 서비스",
+    "have": 2
+   },
+   {
+    "industry": "식품 소매 및 유통",
+    "have": 2
+   },
+   {
+    "industry": "다각적 채굴",
+    "have": 1
+   },
+   {
+    "industry": "오일 및 가스 시추",
+    "have": 1
+   },
+   {
+    "industry": "기업 금융 서비스",
+    "have": 1
+   },
+   {
+    "industry": "비즈니스 지원 용품",
+    "have": 1
+   },
+   {
+    "industry": "투자 지주 회사",
+    "have": 1
+   },
+   {
+    "industry": "무알콜 음료",
+    "have": 1
+   },
+   {
+    "industry": "엔터테인먼트 제작",
+    "have": 1
+   },
+   {
+    "industry": "통합 통신 서비스",
+    "have": 1
+   },
+   {
+    "industry": "상업 인쇄 서비스",
+    "have": 1
+   },
+   {
+    "industry": "전화 및 소형 장치",
+    "have": 1
+   },
+   {
+    "industry": "의료 시설 및 서비스",
+    "have": 1
+   },
+   {
+    "industry": "환경 서비스 및 장비",
+    "have": 1
+   },
+   {
+    "industry": "전자 장비 및 부품",
+    "have": 1
+   },
+   {
+    "industry": "반도체",
+    "have": 1
+   },
+   {
+    "industry": "백화점",
+    "have": 1
+   },
+   {
+    "industry": "가전제품, 도구 및 가정 용품",
+    "have": 1
+   },
+   {
+    "industry": "통합 하드웨어 및 소프트웨어",
+    "have": 1
+   },
+   {
+    "industry": "첨단 의료 장비 및 기술",
+    "have": 1
+   },
+   {
+    "industry": "장난감 및 어린이 제품",
+    "have": 1
+   },
+   {
+    "industry": "의약품 소매",
+    "have": 1
+   },
+   {
+    "industry": "광고 및 마케팅",
+    "have": 1
+   },
+   {
+    "industry": "투자 관리 및 펀드 운영",
+    "have": 1
+   },
+   {
+    "industry": "증류주 및 포도주",
+    "have": 1
+   },
+   {
+    "industry": "기타 교육 서비스 제공",
+    "have": 1
+   },
+   {
+    "industry": "항공우주 및 방위",
+    "have": 1
+   },
+   {
+    "industry": "가정용 전자 제품",
+    "have": 1
+   },
+   {
+    "industry": "채굴 지원 서비스 및 장비",
+    "have": 1
+   },
+   {
+    "industry": "사무기기",
+    "have": 1
+   },
+   {
+    "industry": "소비자 대출",
+    "have": 1
+   },
+   {
+    "industry": "자동차, 트럭 및 오토바이 부품",
+    "have": 1
+   }
+  ],
+  "failReasons": {
+   "부채비율 모름": 509,
+   "ROE 5% 미만": 194,
+   "2년 연속 흑자 아님": 136,
+   "부채비율 150% 초과": 39,
+   "ROE 모름": 27,
+   "가격 이력 부족": 22,
+   "결산 자료 없음": 4,
+   "보통주 아님": 2,
+   "업종 모름": 2,
+   "같은 회사 다른 주식": 1
+  }
+ },
+ "picked": [
+  {
+   "rank": 1,
+   "code": "VCB",
+   "name": "뱅크 포 포린 트레이드 오브 비엣남",
+   "nameEn": "JSC Bank for Foreign Trade of Viet Nam",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 3,
+   "industryRank": 1
+  },
+  {
+   "rank": 2,
+   "code": "BID",
+   "name": "베트남개발은행",
+   "nameEn": "JOINT STOCK COMMERCIAL BANK FOR INVESTMENT AND DEVELOPMENT OF VIETNAM",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 4,
+   "industryRank": 1
+  },
+  {
+   "rank": 3,
+   "code": "VPB",
+   "name": "번영은행",
+   "nameEn": "Vietnam Prosperity Joint - Stock Commercial Bank",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 5,
+   "industryRank": 1
+  },
+  {
+   "rank": 4,
+   "code": "CTG",
+   "name": "베트남산업은행",
+   "nameEn": "Vietnam Joint Stock Commercial Bank for Industry and Trade",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 6,
+   "industryRank": 1
+  },
+  {
+   "rank": 5,
+   "code": "TCB",
+   "name": "베트남테콤은행",
+   "nameEn": "Vietnam Technological And Commercial Joint Stock Bank",
+   "industry": "은행",
+   "kind": "quality",
+   "capRank": 7,
+   "industryRank": 1
+  },
+  {
+   "rank": 6,
+   "code": "BSR",
+   "name": "페트로비엣남 리파이닝",
+   "nameEn": "Petrovietnam Refining and Petrochemical Corp",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "profit",
+   "capRank": 12,
+   "industryRank": 2
+  },
+  {
+   "rank": 7,
+   "code": "PLX",
+   "name": "페트롤리맥스",
+   "nameEn": "Vietnam National Petroleum Group",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "profit",
+   "capRank": 38,
+   "industryRank": 2
+  },
+  {
+   "rank": 8,
+   "code": "PGS",
+   "name": "남부가스",
+   "nameEn": "Southern Gas Trading JSC",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "profit",
+   "capRank": 147,
+   "industryRank": 2
+  },
+  {
+   "rank": 9,
+   "code": "PLC",
+   "name": "페트롤리멕스석화",
+   "nameEn": "Petrolimex Petrochemical Corp JSC",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "profit",
+   "capRank": 237,
+   "industryRank": 2
+  },
+  {
+   "rank": 10,
+   "code": "PGC",
+   "name": "페트폴리멕스가스",
+   "nameEn": "Petrolimex Gas Corp JSC",
+   "industry": "오일, 가스 정제 및 마케팅",
+   "kind": "profit",
+   "capRank": 302,
+   "industryRank": 2
+  },
+  {
+   "rank": 11,
+   "code": "HPG",
+   "name": "호아팟그룹",
+   "nameEn": "Hoa Phat Group JSC",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 11,
+   "industryRank": 3
+  },
+  {
+   "rank": 12,
+   "code": "HSG",
+   "name": "호아센 그룹",
+   "nameEn": "Hoa Sen Group",
+   "industry": "철 및 강철",
+   "kind": "quality",
+   "capRank": 111,
+   "industryRank": 3
+  },
+  {
+   "rank": 13,
+   "code": "NKG",
+   "name": "남킴철강",
+   "nameEn": "Nam Kim Steel JSC",
+   "industry": "철 및 강철",
+   "kind": "profit",
+   "capRank": 143,
+   "industryRank": 3
+  },
+  {
+   "rank": 14,
+   "code": "SHI",
+   "name": "손하인터내셔널",
+   "nameEn": "SonHa International Corp",
+   "industry": "철 및 강철",
+   "kind": "profit",
+   "capRank": 193,
+   "industryRank": 3
+  },
+  {
+   "rank": 15,
+   "code": "VGS",
+   "name": "베트남독일강철관",
+   "nameEn": "Vietnam Germany Steel Pipe JSC",
+   "industry": "철 및 강철",
+   "kind": "profit",
+   "capRank": 306,
+   "industryRank": 3
+  },
+  {
+   "rank": 16,
+   "code": "SSI",
+   "name": "사이공증권",
+   "nameEn": "SSI Securities Corporation",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 30,
+   "industryRank": 4
+  },
+  {
+   "rank": 17,
+   "code": "HCM",
+   "name": "호치민증권",
+   "nameEn": "Ho Chi Minh City Securities Corp",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 48,
+   "industryRank": 4
+  },
+  {
+   "rank": 18,
+   "code": "VIX",
+   "name": "빅스 시큐리티스 JSC",
+   "nameEn": "VIX Securities JSC",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 49,
+   "industryRank": 4
+  },
+  {
+   "rank": 19,
+   "code": "VCI",
+   "name": "베트남 증권",
+   "nameEn": "Vietcap Securities Joint Stock Company",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 60,
+   "industryRank": 4
+  },
+  {
+   "rank": 20,
+   "code": "VND",
+   "name": "VNDIRECT증권",
+   "nameEn": "VNDIRECT Securities Corp",
+   "industry": "투자 은행 및 중개 서비스",
+   "kind": "quality",
+   "capRank": 62,
+   "industryRank": 4
+  },
+  {
+   "rank": 21,
+   "code": "VPL",
+   "name": "빈펄",
+   "nameEn": "Vinpearl JSC",
+   "industry": "호텔, 모텔 및 크루즈 라인",
+   "kind": "profit",
+   "capRank": 13,
+   "industryRank": 5
+  },
+  {
+   "rank": 22,
+   "code": "CEO",
+   "name": "CEO그룹",
+   "nameEn": "CEO Group JSC",
+   "industry": "호텔, 모텔 및 크루즈 라인",
+   "kind": "profit",
+   "capRank": 125,
+   "industryRank": 5
+  },
+  {
+   "rank": 23,
+   "code": "NVT",
+   "name": "닌반버이",
+   "nameEn": "Ninh Van Bay Travel Real Estate JSC",
+   "industry": "호텔, 모텔 및 크루즈 라인",
+   "kind": "profit",
+   "capRank": 356,
+   "industryRank": 5
+  },
+  {
+   "rank": 24,
+   "code": "VNG",
+   "name": "탄탄꽁여행",
+   "nameEn": "Thanh Thanh Cong Tourist JSC",
+   "industry": "호텔, 모텔 및 크루즈 라인",
+   "kind": "profit",
+   "capRank": 392,
+   "industryRank": 5
+  },
+  {
+   "rank": 25,
+   "code": "SGH",
+   "name": "사이공호텔",
+   "nameEn": "Saigon Hotel Corp",
+   "industry": "호텔, 모텔 및 크루즈 라인",
+   "kind": "profit",
+   "capRank": 505,
+   "industryRank": 5
+  },
+  {
+   "rank": 26,
+   "code": "GVR",
+   "name": "베트남 고무 그룹 JSC",
+   "nameEn": "Viet Nam Rubber Group JSC",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 15,
+   "industryRank": 6
+  },
+  {
+   "rank": 27,
+   "code": "PHR",
+   "name": "푸옥호아고무",
+   "nameEn": "Phuoc Hoa Rubber JSC",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 110,
+   "industryRank": 6
+  },
+  {
+   "rank": 28,
+   "code": "DPR",
+   "name": "동푸고무",
+   "nameEn": "Dong Phu Rubber JSC",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 165,
+   "industryRank": 6
+  },
+  {
+   "rank": 29,
+   "code": "DRC",
+   "name": "다낭고무",
+   "nameEn": "Danang Rubber JSC",
+   "industry": "타이어 및 고무 제품",
+   "kind": "quality",
+   "capRank": 232,
+   "industryRank": 6
+  },
+  {
+   "rank": 30,
+   "code": "TRC",
+   "name": "따이닌고무",
+   "nameEn": "Tay Ninh Rubber JSC",
+   "industry": "타이어 및 고무 제품",
+   "kind": "profit",
+   "capRank": 178,
+   "industryRank": 6
+  },
+  {
+   "rank": 31,
+   "code": "VNM",
+   "name": "비나밀크",
+   "nameEn": "Vietnam Dairy Products Joint Stock Company",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 18,
+   "industryRank": 7
+  },
+  {
+   "rank": 32,
+   "code": "VHC",
+   "name": "빈호안",
+   "nameEn": "Vinh Hoan Corp",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 96,
+   "industryRank": 7
+  },
+  {
+   "rank": 33,
+   "code": "VCF",
+   "name": "비나까페비엔호아",
+   "nameEn": "Vinacafe Bien Hoa JSC",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 115,
+   "industryRank": 7
+  },
+  {
+   "rank": 34,
+   "code": "PAN",
+   "name": "팬퍼시픽그룹",
+   "nameEn": "PAN Group JSC",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 142,
+   "industryRank": 7
+  },
+  {
+   "rank": 35,
+   "code": "ANV",
+   "name": "남베트남수산",
+   "nameEn": "Nam Viet Corp",
+   "industry": "식품 가공",
+   "kind": "quality",
+   "capRank": 144,
+   "industryRank": 7
+  },
+  {
+   "rank": 36,
+   "code": "VRE",
+   "name": "빈꼼리테일",
+   "nameEn": "Vincom Retail JSC",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 35,
+   "industryRank": 8
+  },
+  {
+   "rank": 37,
+   "code": "KDH",
+   "name": "캉디엔주택",
+   "nameEn": "Khang Dien House Trading and Investment JSC",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 69,
+   "industryRank": 8
+  },
+  {
+   "rank": 38,
+   "code": "SJS",
+   "name": "삼준집단",
+   "nameEn": "SJ Group JSC",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 73,
+   "industryRank": 8
+  },
+  {
+   "rank": 39,
+   "code": "NLG",
+   "name": "남롱투자",
+   "nameEn": "Nam Long Investment Corp",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 94,
+   "industryRank": 8
+  },
+  {
+   "rank": 40,
+   "code": "DIG",
+   "name": "DIC부동산",
+   "nameEn": "Development Investment Construction JSC",
+   "industry": "부동산 임대, 개발 및 운영",
+   "kind": "quality",
+   "capRank": 114,
+   "industryRank": 8
+  },
+  {
+   "rank": 41,
+   "code": "GEE",
+   "name": "겔렉스 엘렉트리시티",
+   "nameEn": "Gelex Electricity JSC",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 39,
+   "industryRank": 9
+  },
+  {
+   "rank": 42,
+   "code": "GEX",
+   "name": "젤렉스 그룹",
+   "nameEn": "Gelex Group JSC",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 52,
+   "industryRank": 9
+  },
+  {
+   "rank": 43,
+   "code": "SAM",
+   "name": "사콤개발투자",
+   "nameEn": "Sam Holdings Corp",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 192,
+   "industryRank": 9
+  },
+  {
+   "rank": 44,
+   "code": "RAL",
+   "name": "랑동진공플라스크",
+   "nameEn": "Rang Dong Light Source and Vacuum Flask JSC",
+   "industry": "전기 부품 및 장비",
+   "kind": "quality",
+   "capRank": 217,
+   "industryRank": 9
+  },
+  {
+   "rank": 45,
+   "code": "PAC",
+   "name": "비나켐배터리",
+   "nameEn": "Dry Cell and Storage Battery JSC",
+   "industry": "전기 부품 및 장비",
+   "kind": "trend",
+   "capRank": 278,
+   "industryRank": 9
+  },
+  {
+   "rank": 46,
+   "code": "SAB",
+   "name": "사이공 맥주",
+   "nameEn": "Saigon Beer Alcohol Beverage Corp",
+   "industry": "양조업",
+   "kind": "quality",
+   "capRank": 34,
+   "industryRank": 10
+  },
+  {
+   "rank": 47,
+   "code": "BHN",
+   "name": "하노이 비어",
+   "nameEn": "Hanoi Beer Alcohol And Beverage Joint Stock Corp",
+   "industry": "양조업",
+   "kind": "quality",
+   "capRank": 124,
+   "industryRank": 10
+  },
+  {
+   "rank": 48,
+   "code": "SMB",
+   "name": "사이공 중부 맥주",
+   "nameEn": "SAI GON-MIEN TRUNG BEER JOINT STOCK COMPANY",
+   "industry": "양조업",
+   "kind": "profit",
+   "capRank": 260,
+   "industryRank": 10
+  },
+  {
+   "rank": 49,
+   "code": "HAD",
+   "name": "하이드엉맥주",
+   "nameEn": "Hanoi Haiduong Beer JSC",
+   "industry": "양조업",
+   "kind": "profit",
+   "capRank": 670,
+   "industryRank": 10
+  },
+  {
+   "rank": 50,
+   "code": "THB",
+   "name": "탄호아맥주",
+   "nameEn": "HA NOI - THANH HOA BEER JOINT STOCK COMPANY",
+   "industry": "양조업",
+   "kind": "size",
+   "capRank": 618,
+   "industryRank": 10
+  },
+  {
+   "rank": 51,
+   "code": "GMD",
+   "name": "게마뎁트 그룹",
+   "nameEn": "Gemadept Group Corp",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 46,
+   "industryRank": 11
+  },
+  {
+   "rank": 52,
+   "code": "HAH",
+   "name": "하이안운송하역",
+   "nameEn": "Hai An Transport and Stevedoring JSC",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 100,
+   "industryRank": 11
+  },
+  {
+   "rank": 53,
+   "code": "VSC",
+   "name": "베트남컨테이너해운",
+   "nameEn": "Vietnam Container Shipping Joint Stock Corp",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 136,
+   "industryRank": 11
+  },
+  {
+   "rank": 54,
+   "code": "PDN",
+   "name": "동나이항",
+   "nameEn": "Dong Nai Port JSC",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 137,
+   "industryRank": 11
+  },
+  {
+   "rank": 55,
+   "code": "DVP",
+   "name": "딘부항구개발투자",
+   "nameEn": "DINHVU PORT INVESTMENT & DEVELOPMENT JOINT STOCK COMPANY",
+   "industry": "항만 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 172,
+   "industryRank": 11
+  },
+  {
+   "rank": 56,
+   "code": "REE",
+   "name": "냉동전기공학",
+   "nameEn": "REFRIGERATION ELECTRICAL ENGINEERING CORPORATION",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 53,
+   "industryRank": 12
+  },
+  {
+   "rank": 57,
+   "code": "VSH",
+   "name": "빈손송힌수력",
+   "nameEn": "Vinh Son Song Hinh Hydropower JSC",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 101,
+   "industryRank": 12
+  },
+  {
+   "rank": 58,
+   "code": "HDG",
+   "name": "하도그룹",
+   "nameEn": "Ha Do Group JSC",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 127,
+   "industryRank": 12
+  },
+  {
+   "rank": 59,
+   "code": "HNA",
+   "name": "후아나 하이드로파워",
+   "nameEn": "Hua Na Hydropower JSC",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 135,
+   "industryRank": 12
+  },
+  {
+   "rank": 60,
+   "code": "CHP",
+   "name": "센트럴 수력발전",
+   "nameEn": "Central Hydropower JSC",
+   "industry": "민자 발전 사업",
+   "kind": "quality",
+   "capRank": 149,
+   "industryRank": 12
+  },
+  {
+   "rank": 61,
+   "code": "BMP",
+   "name": "빈민플라스틱",
+   "nameEn": "Binh Minh Plastics JSC",
+   "industry": "건설 자재 및 비품",
+   "kind": "quality",
+   "capRank": 86,
+   "industryRank": 13
+  },
+  {
+   "rank": 62,
+   "code": "VGC",
+   "name": "비글라세라",
+   "nameEn": "Viglacera Corp JSC",
+   "industry": "건설 자재 및 비품",
+   "kind": "profit",
+   "capRank": 65,
+   "industryRank": 13
+  },
+  {
+   "rank": 63,
+   "code": "NTP",
+   "name": "티엔퐁플라스틱",
+   "nameEn": "Tien Phong Plastic JSC",
+   "industry": "건설 자재 및 비품",
+   "kind": "profit",
+   "capRank": 93,
+   "industryRank": 13
+  },
+  {
+   "rank": 64,
+   "code": "VCS",
+   "name": "비코스톤",
+   "nameEn": "Vicostone JSC",
+   "industry": "건설 자재 및 비품",
+   "kind": "profit",
+   "capRank": 139,
+   "industryRank": 13
+  },
+  {
+   "rank": 65,
+   "code": "DNP",
+   "name": "DNP 홀딩",
+   "nameEn": "DNP Holding JSC",
+   "industry": "건설 자재 및 비품",
+   "kind": "profit",
+   "capRank": 180,
+   "industryRank": 13
+  },
+  {
+   "rank": 66,
+   "code": "HAG",
+   "name": "황안자라이",
+   "nameEn": "Hoang Anh Gia Lai JSC",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 66,
+   "industryRank": 14
+  },
+  {
+   "rank": 67,
+   "code": "DBC",
+   "name": "다바코 그룹",
+   "nameEn": "Dabaco Group",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 122,
+   "industryRank": 14
+  },
+  {
+   "rank": 68,
+   "code": "MCM",
+   "name": "목쩌우 데어리 캐틀 브리딩",
+   "nameEn": "Mocchau Dairy Cattle Breeding JSC",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 175,
+   "industryRank": 14
+  },
+  {
+   "rank": 69,
+   "code": "NSC",
+   "name": "국립종묘",
+   "nameEn": "Vietnam National Seed Group JSC",
+   "industry": "어업 및 농업",
+   "kind": "quality",
+   "capRank": 277,
+   "industryRank": 14
+  },
+  {
+   "rank": 70,
+   "code": "BAF",
+   "name": "바프 베트남 농업",
+   "nameEn": "BAF Viet Nam Agriculture JSC",
+   "industry": "어업 및 농업",
+   "kind": "profit",
+   "capRank": 88,
+   "industryRank": 14
+  },
+  {
+   "rank": 71,
+   "code": "VCG",
+   "name": "베트남 수출입 건설 JSC",
+   "nameEn": "Viet Nam Construction and Import Export Joint Stock Corp",
+   "industry": "건설 및 엔지니어링",
+   "kind": "profit",
+   "capRank": 102,
+   "industryRank": 15
+  },
+  {
+   "rank": 72,
+   "code": "CTR",
+   "name": "비에텔 건설",
+   "nameEn": "Viettel Construction Joint Stock Corp",
+   "industry": "건설 및 엔지니어링",
+   "kind": "profit",
+   "capRank": 104,
+   "industryRank": 15
+  },
+  {
+   "rank": 73,
+   "code": "PC1",
+   "name": "PC원 그룹",
+   "nameEn": "PC1 Group JSC",
+   "industry": "건설 및 엔지니어링",
+   "kind": "profit",
+   "capRank": 112,
+   "industryRank": 15
+  },
+  {
+   "rank": 74,
+   "code": "CTD",
+   "name": "코텍건설",
+   "nameEn": "Coteccons Construction JSC",
+   "industry": "건설 및 엔지니어링",
+   "kind": "profit",
+   "capRank": 121,
+   "industryRank": 15
+  },
+  {
+   "rank": 75,
+   "code": "SCG",
+   "name": "SCG 콘스트럭션 그룹",
+   "nameEn": "SCG Construction Group JSC",
+   "industry": "건설 및 엔지니어링",
+   "kind": "profit",
+   "capRank": 128,
+   "industryRank": 15
+  },
+  {
+   "rank": 76,
+   "code": "DCM",
+   "name": "PV까마우비료",
+   "nameEn": "Petrovietnam Ca Mau Fertilizer Corp",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 67,
+   "industryRank": 16
+  },
+  {
+   "rank": 77,
+   "code": "DPM",
+   "name": "PV비료화학",
+   "nameEn": "PETROVIETNAM FERTILIZER AND CHEMICALS CORPORATION",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 75,
+   "industryRank": 16
+  },
+  {
+   "rank": 78,
+   "code": "VFG",
+   "name": "베트남방역",
+   "nameEn": "Viet Nam Fumigation JSC",
+   "industry": "농화학제",
+   "kind": "quality",
+   "capRank": 212,
+   "industryRank": 16
+  },
+  {
+   "rank": 79,
+   "code": "BFC",
+   "name": "빈디엔비료",
+   "nameEn": "Binh Dien Fertilizer JSC",
+   "industry": "농화학제",
+   "kind": "profit",
+   "capRank": 163,
+   "industryRank": 16
+  },
+  {
+   "rank": 80,
+   "code": "LAS",
+   "name": "람타오비료",
+   "nameEn": "Lam Thao Fertilizers and Chemicals JSC",
+   "industry": "농화학제",
+   "kind": "profit",
+   "capRank": 266,
+   "industryRank": 16
+  },
+  {
+   "rank": 81,
+   "code": "PGV",
+   "name": "베트남 발전 3",
+   "nameEn": "Power Generation Joint Stock Corp 3",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 56,
+   "industryRank": 17
+  },
+  {
+   "rank": 82,
+   "code": "DTK",
+   "name": "비나코민 파워 홀딩",
+   "nameEn": "Vinacomin Power Holding Corp",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 116,
+   "industryRank": 17
+  },
+  {
+   "rank": 83,
+   "code": "TTE",
+   "name": "쯔엉틴에너지투자",
+   "nameEn": "Truong Thinh Energy Investment JSC",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 291,
+   "industryRank": 17
+  },
+  {
+   "rank": 84,
+   "code": "KHP",
+   "name": "칸호아전력",
+   "nameEn": "Khanh Hoa Power JSC",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 360,
+   "industryRank": 17
+  },
+  {
+   "rank": 85,
+   "code": "DNC",
+   "name": "하이퐁",
+   "nameEn": "HAI PHONG ELECTRICITY WATER MACHINE ASSEMBLY JOINT STOCK COMPANY",
+   "industry": "전력 유틸리티",
+   "kind": "trend",
+   "capRank": 393,
+   "industryRank": 17
+  },
+  {
+   "rank": 86,
+   "code": "DHG",
+   "name": "DHG제약",
+   "nameEn": "Dhg Pharmaceutical Joint-Stock Co",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 84,
+   "industryRank": 18
+  },
+  {
+   "rank": 87,
+   "code": "IMP",
+   "name": "아이멕스팜제약",
+   "nameEn": "Imexpharm Corp",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 129,
+   "industryRank": 18
+  },
+  {
+   "rank": 88,
+   "code": "DHT",
+   "name": "하떠이제약",
+   "nameEn": "HaTay Pharmaceutical JSC",
+   "industry": "제약",
+   "kind": "trend",
+   "capRank": 131,
+   "industryRank": 18
+  },
+  {
+   "rank": 89,
+   "code": "DBD",
+   "name": "빈딘제약",
+   "nameEn": "Binh Dinh Pharmaceutical and Medical Equipment JSC",
+   "industry": "제약",
+   "kind": "quality",
+   "capRank": 146,
+   "industryRank": 18
+  },
+  {
+   "rank": 90,
+   "code": "DCL",
+   "name": "꾸롱제약",
+   "nameEn": "Cuu Long Pharmaceutical JSC",
+   "industry": "제약",
+   "kind": "trend",
+   "capRank": 159,
+   "industryRank": 18
+  },
+  {
+   "rank": 91,
+   "code": "LGC",
+   "name": "CII인프라투자",
+   "nameEn": "CII Bridges and Roads Investment JSC",
+   "industry": "고속도로 및 철도",
+   "kind": "profit",
+   "capRank": 78,
+   "industryRank": 19
+  },
+  {
+   "rank": 92,
+   "code": "CII",
+   "name": "호치민인프라투자",
+   "nameEn": "Ho Chi Minh City Infrastructure Investment JSC",
+   "industry": "고속도로 및 철도",
+   "kind": "profit",
+   "capRank": 108,
+   "industryRank": 19
+  },
+  {
+   "rank": 93,
+   "code": "HHV",
+   "name": "데오까 교통 인프라 투자",
+   "nameEn": "Deo Ca Traffic Infrastructure Investment JSC",
+   "industry": "고속도로 및 철도",
+   "kind": "profit",
+   "capRank": 134,
+   "industryRank": 19
+  },
+  {
+   "rank": 94,
+   "code": "CTI",
+   "name": "IDICO끄엉투언",
+   "nameEn": "CUONG THUAN IDICO DEVELOPMENT INVESTMENT CORPORATION",
+   "industry": "고속도로 및 철도",
+   "kind": "profit",
+   "capRank": 279,
+   "industryRank": 19
+  },
+  {
+   "rank": 95,
+   "code": "WCS",
+   "name": "서부버스터미널",
+   "nameEn": "West Coach Station JSC",
+   "industry": "고속도로 및 철도",
+   "kind": "profit",
+   "capRank": 308,
+   "industryRank": 19
+  },
+  {
+   "rank": 96,
+   "code": "PVT",
+   "name": "PV운송",
+   "nameEn": "Petrovietnam Transportation Corp",
+   "industry": "오일 및 가스 수송 서비스",
+   "kind": "quality",
+   "capRank": 79,
+   "industryRank": 20
+  },
+  {
+   "rank": 97,
+   "code": "PGD",
+   "name": "PV저압가스",
+   "nameEn": "Petrovietnam Low Pressure Gas Distribution JSC Class D",
+   "industry": "오일 및 가스 수송 서비스",
+   "kind": "quality",
+   "capRank": 199,
+   "industryRank": 20
+  },
+  {
+   "rank": 98,
+   "code": "VIP",
+   "name": "베트남송유",
+   "nameEn": "Viet Nam Petroleum Transport JSC",
+   "industry": "오일 및 가스 수송 서비스",
+   "kind": "quality",
+   "capRank": 334,
+   "industryRank": 20
+  },
+  {
+   "rank": 99,
+   "code": "PVP",
+   "name": "퍼시픽 페트롤리엄 트랜스포테이션",
+   "nameEn": "Pacific Petroleum Transportation JSC",
+   "industry": "오일 및 가스 수송 서비스",
+   "kind": "profit",
+   "capRank": 190,
+   "industryRank": 20
+  },
+  {
+   "rank": 100,
+   "code": "VTO",
+   "name": "베트남탱커",
+   "nameEn": "VIETNAM TANKER JOINT STOCK COMPANY",
+   "industry": "오일 및 가스 수송 서비스",
+   "kind": "profit",
+   "capRank": 294,
+   "industryRank": 20
+  },
+  {
+   "rank": 101,
+   "code": "BWE",
+   "name": "빈즈엉상수도환경개발",
+   "nameEn": "Binh Duong Water - Environment Corporation - Joint Stock Company",
+   "industry": "수자원 유틸리티",
+   "kind": "quality",
+   "capRank": 98,
+   "industryRank": 21
+  },
+  {
+   "rank": 102,
+   "code": "TDM",
+   "name": "투저우못워터",
+   "nameEn": "Thu Dau Mot Water JSC",
+   "industry": "수자원 유틸리티",
+   "kind": "quality",
+   "capRank": 118,
+   "industryRank": 21
+  },
+  {
+   "rank": 103,
+   "code": "CLW",
+   "name": "쪼론상수도",
+   "nameEn": "Cho Lon Water Supply JSC",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 353,
+   "industryRank": 21
+  },
+  {
+   "rank": 104,
+   "code": "BTW",
+   "name": "벤탄상수도",
+   "nameEn": "Ben Thanh Water Supply JSC",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 374,
+   "industryRank": 21
+  },
+  {
+   "rank": 105,
+   "code": "TDW",
+   "name": "투득수도",
+   "nameEn": "Thu Duc Water Supply JSC",
+   "industry": "수자원 유틸리티",
+   "kind": "trend",
+   "capRank": 429,
+   "industryRank": 21
+  },
+  {
+   "rank": 106,
+   "code": "HUT",
+   "name": "타스코",
+   "nameEn": "Tasco JSC",
+   "industry": "자동차 차량, 부품 및 서비스 소매",
+   "kind": "profit",
+   "capRank": 80,
+   "industryRank": 22
+  },
+  {
+   "rank": 107,
+   "code": "SVC",
+   "name": "사이공서비스",
+   "nameEn": "Saigon General Service Corp",
+   "industry": "자동차 차량, 부품 및 서비스 소매",
+   "kind": "profit",
+   "capRank": 221,
+   "industryRank": 22
+  },
+  {
+   "rank": 108,
+   "code": "GMA",
+   "name": "G-오토모빌",
+   "nameEn": "G-Automobile JSC",
+   "industry": "자동차 차량, 부품 및 서비스 소매",
+   "kind": "profit",
+   "capRank": 271,
+   "industryRank": 22
+  },
+  {
+   "rank": 109,
+   "code": "CTF",
+   "name": "씨티포트자동차",
+   "nameEn": "City Auto Corp",
+   "industry": "자동차 차량, 부품 및 서비스 소매",
+   "kind": "size",
+   "capRank": 214,
+   "industryRank": 22
+  },
+  {
+   "rank": 110,
+   "code": "HAX",
+   "name": "항싼자동차서비스",
+   "nameEn": "Hang Xanh Motors Service JSC",
+   "industry": "자동차 차량, 부품 및 서비스 소매",
+   "kind": "size",
+   "capRank": 298,
+   "industryRank": 22
+  },
+  {
+   "rank": 111,
+   "code": "PNJ",
+   "name": "퓨뉴언주얼리",
+   "nameEn": "Phu Nhuan Jewelry JSC",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 99,
+   "industryRank": 23
+  },
+  {
+   "rank": 112,
+   "code": "TCM",
+   "name": "탄꽁의류",
+   "nameEn": "Thanh Cong Textile Garment Investment Trading JSC",
+   "industry": "의류 및 액세서리",
+   "kind": "quality",
+   "capRank": 215,
+   "industryRank": 23
+  },
+  {
+   "rank": 113,
+   "code": "TNG",
+   "name": "TNG투자무역",
+   "nameEn": "TNG Investment and Trading JSC",
+   "industry": "의류 및 액세서리",
+   "kind": "profit",
+   "capRank": 203,
+   "industryRank": 23
+  },
+  {
+   "rank": 114,
+   "code": "HTG",
+   "name": "호아토 텍스타일 가먼트",
+   "nameEn": "Hoa Tho Textile Garment Joint Stock Corp",
+   "industry": "의류 및 액세서리",
+   "kind": "profit",
+   "capRank": 238,
+   "industryRank": 23
+  },
+  {
+   "rank": 115,
+   "code": "GIL",
+   "name": "빈탄무역",
+   "nameEn": "BinhThanh Import Export Production and Trade JSC",
+   "industry": "의류 및 액세서리",
+   "kind": "profit",
+   "capRank": 316,
+   "industryRank": 23
+  },
+  {
+   "rank": 116,
+   "code": "VTP",
+   "name": "베텔 포스트",
+   "nameEn": "Viettel Post Joint Stock Corp",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "profit",
+   "capRank": 97,
+   "industryRank": 24
+  },
+  {
+   "rank": 117,
+   "code": "ASG",
+   "name": "ASG",
+   "nameEn": "ASG Corp",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "profit",
+   "capRank": 235,
+   "industryRank": 24
+  },
+  {
+   "rank": 118,
+   "code": "SFI",
+   "name": "국제항공해운",
+   "nameEn": "Sea & Air Freight International",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "profit",
+   "capRank": 352,
+   "industryRank": 24
+  },
+  {
+   "rank": 119,
+   "code": "VNT",
+   "name": "VNT물류",
+   "nameEn": "Van Cargoes and Foreign Trade Logistics JSC",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "profit",
+   "capRank": 386,
+   "industryRank": 24
+  },
+  {
+   "rank": 120,
+   "code": "VNL",
+   "name": "비날링크 로지스틱스",
+   "nameEn": "VINALINK LOGISTICS JOINT STOCK COMPANY",
+   "industry": "배달, 우편, 항공 화물 및 육상 물류",
+   "kind": "profit",
+   "capRank": 472,
+   "industryRank": 24
+  },
+  {
+   "rank": 121,
+   "code": "HT1",
+   "name": "빅엠 하티엔 시멘트",
+   "nameEn": "Vicem Ha Tien Cement JSC",
+   "industry": "건설 자재",
+   "kind": "quality",
+   "capRank": 140,
+   "industryRank": 25
+  },
+  {
+   "rank": 122,
+   "code": "KSB",
+   "name": "빈드엉광물",
+   "nameEn": "Binh Duong Mineral and Construction JSC",
+   "industry": "건설 자재",
+   "kind": "profit",
+   "capRank": 239,
+   "industryRank": 25
+  },
+  {
+   "rank": 123,
+   "code": "LBM",
+   "name": "람동광물건축재료",
+   "nameEn": "Lamdong Minerals and Building Materials JSC",
+   "industry": "건설 자재",
+   "kind": "profit",
+   "capRank": 240,
+   "industryRank": 25
+  },
+  {
+   "rank": 124,
+   "code": "C69",
+   "name": "1369건설",
+   "nameEn": "1369 Construction JSC",
+   "industry": "건설 자재",
+   "kind": "profit",
+   "capRank": 275,
+   "industryRank": 25
+  },
+  {
+   "rank": 125,
+   "code": "THG",
+   "name": "티엔장투자건설",
+   "nameEn": "TIEN GIANG INVESTMENT AND CONSTRUCTION JOINT STOCK COMPANY",
+   "industry": "건설 자재",
+   "kind": "profit",
+   "capRank": 288,
+   "industryRank": 25
+  },
+  {
+   "rank": 126,
+   "code": "DXS",
+   "name": "닷산 부동산 서비스",
+   "nameEn": "Dat Xanh Real Estate Services JSC",
+   "industry": "부동산 서비스",
+   "kind": "quality",
+   "capRank": 179,
+   "industryRank": 26
+  },
+  {
+   "rank": 127,
+   "code": "CRE",
+   "name": "센트리 랜드",
+   "nameEn": "Century Land JSC",
+   "industry": "부동산 서비스",
+   "kind": "profit",
+   "capRank": 182,
+   "industryRank": 26
+  },
+  {
+   "rank": 128,
+   "code": "KHG",
+   "name": "카이 호안 랜드 그룹",
+   "nameEn": "Khai Hoan Land Group JSC",
+   "industry": "부동산 서비스",
+   "kind": "profit",
+   "capRank": 206,
+   "industryRank": 26
+  },
+  {
+   "rank": 129,
+   "code": "SGR",
+   "name": "사이공 리얼 에스테이트 그룹",
+   "nameEn": "Saigon Real Estate Group JSC",
+   "industry": "부동산 서비스",
+   "kind": "profit",
+   "capRank": 310,
+   "industryRank": 26
+  },
+  {
+   "rank": 130,
+   "code": "TN1",
+   "name": "록스 키 홀딩스",
+   "nameEn": "Rox Key Holdings JSC",
+   "industry": "부동산 서비스",
+   "kind": "profit",
+   "capRank": 322,
+   "industryRank": 26
+  },
+  {
+   "rank": 131,
+   "code": "SCS",
+   "name": "사이공 화물",
+   "nameEn": "Sai Gon Cargo Service Corp",
+   "industry": "공항 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 150,
+   "industryRank": 27
+  },
+  {
+   "rank": 132,
+   "code": "NCT",
+   "name": "노이바이화물터미널",
+   "nameEn": "Noibai Cargo Terminal Services JSC",
+   "industry": "공항 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 200,
+   "industryRank": 27
+  },
+  {
+   "rank": 133,
+   "code": "SGN",
+   "name": "사이공 그라운드 서비스",
+   "nameEn": "Sai Gon Ground Services JSC",
+   "industry": "공항 운영 및 서비스",
+   "kind": "quality",
+   "capRank": 220,
+   "industryRank": 27
+  },
+  {
+   "rank": 134,
+   "code": "CIA",
+   "name": "깜란국제공항",
+   "nameEn": "Cam Ranh International Airport Services JSC",
+   "industry": "공항 운영 및 서비스",
+   "kind": "profit",
+   "capRank": 541,
+   "industryRank": 27
+  },
+  {
+   "rank": 135,
+   "code": "MAS",
+   "name": "다낭항공서비스",
+   "nameEn": "Danang Airport Services JSC",
+   "industry": "공항 운영 및 서비스",
+   "kind": "profit",
+   "capRank": 553,
+   "industryRank": 27
+  },
+  {
+   "rank": 136,
+   "code": "STG",
+   "name": "남부물류",
+   "nameEn": "South Logistics JSC",
+   "industry": "해양 화물 및 물류",
+   "kind": "quality",
+   "capRank": 155,
+   "industryRank": 28
+  },
+  {
+   "rank": 137,
+   "code": "VOS",
+   "name": "베트남해운",
+   "nameEn": "Viet Nam Ocean Shipping JSC",
+   "industry": "해양 화물 및 물류",
+   "kind": "profit",
+   "capRank": 222,
+   "industryRank": 28
+  },
+  {
+   "rank": 138,
+   "code": "PCT",
+   "name": "글로벌 퍼시픽 쉬핑",
+   "nameEn": "Global Pacific Shipping JSC",
+   "industry": "해양 화물 및 물류",
+   "kind": "profit",
+   "capRank": 300,
+   "industryRank": 28
+  },
+  {
+   "rank": 139,
+   "code": "ILB",
+   "name": "탄창롱빈",
+   "nameEn": "ICD Tan Cang Long Binh JSC",
+   "industry": "해양 화물 및 물류",
+   "kind": "profit",
+   "capRank": 331,
+   "industryRank": 28
+  },
+  {
+   "rank": 140,
+   "code": "VNF",
+   "name": "비나프레이트",
+   "nameEn": "Vinafreight JSC",
+   "industry": "해양 화물 및 물류",
+   "kind": "profit",
+   "capRank": 420,
+   "industryRank": 28
+  },
+  {
+   "rank": 141,
+   "code": "AAA",
+   "name": "안파플라스틱",
+   "nameEn": "An Phat Bioplastics JSC",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "quality",
+   "capRank": 183,
+   "industryRank": 29
+  },
+  {
+   "rank": 142,
+   "code": "TDP",
+   "name": "투안 둑",
+   "nameEn": "Thuan Duc JSC",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 181,
+   "industryRank": 29
+  },
+  {
+   "rank": 143,
+   "code": "TPP",
+   "name": "떤푸 베트남",
+   "nameEn": "Tan Phu Viet Nam JSC",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 347,
+   "industryRank": 29
+  },
+  {
+   "rank": 144,
+   "code": "MCP",
+   "name": "미짜우포장인쇄",
+   "nameEn": "Mychau Printing and Packaging Corp",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 381,
+   "industryRank": 29
+  },
+  {
+   "rank": 145,
+   "code": "PMS",
+   "name": "페트폴리멕스기계",
+   "nameEn": "Petroleum Mechanical JSC",
+   "industry": "용기(종이 제외) 및 포장재",
+   "kind": "profit",
+   "capRank": 492,
+   "industryRank": 29
+  },
+  {
+   "rank": 146,
+   "code": "TMS",
+   "name": "트란시멕스",
+   "nameEn": "Transimex Corp",
+   "industry": "지상 화물 및 물류",
+   "kind": "quality",
+   "capRank": 126,
+   "industryRank": 30
+  },
+  {
+   "rank": 147,
+   "code": "GIC",
+   "name": "Vsc 그린 로지스틱스",
+   "nameEn": "Vsc Green Logistics JSC",
+   "industry": "지상 화물 및 물류",
+   "kind": "profit",
+   "capRank": 474,
+   "industryRank": 30
+  },
+  {
+   "rank": 148,
+   "code": "HMH",
+   "name": "하이민",
+   "nameEn": "Hai Minh Corp",
+   "industry": "지상 화물 및 물류",
+   "kind": "profit",
+   "capRank": 516,
+   "industryRank": 30
+  },
+  {
+   "rank": 149,
+   "code": "TOT",
+   "name": "트랜시멕스 로지스틱스",
+   "nameEn": "Transimex Logistics Corp",
+   "industry": "지상 화물 및 물류",
+   "kind": "profit",
+   "capRank": 558,
+   "industryRank": 30
+  },
+  {
+   "rank": 150,
+   "code": "VSM",
+   "name": "센트럴컨테이너",
+   "nameEn": "Central Container JSC",
+   "industry": "지상 화물 및 물류",
+   "kind": "profit",
+   "capRank": 628,
+   "industryRank": 30
+  },
+  {
+   "rank": 151,
+   "code": "MSH",
+   "name": "송홍의류",
+   "nameEn": "Song Hong Garment JSC",
+   "industry": "직물 및 가죽제품",
+   "kind": "quality",
+   "capRank": 160,
+   "industryRank": 31
+  },
+  {
+   "rank": 152,
+   "code": "STK",
+   "name": "센추리합성섬유",
+   "nameEn": "CENTURY SYNTHETIC FIBER CORPORATION",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 268,
+   "industryRank": 31
+  },
+  {
+   "rank": 153,
+   "code": "ADS",
+   "name": "담산",
+   "nameEn": "Damsan JSC",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 362,
+   "industryRank": 31
+  },
+  {
+   "rank": 154,
+   "code": "TVT",
+   "name": "비엣탕",
+   "nameEn": "Viet Thang Corp",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 448,
+   "industryRank": 31
+  },
+  {
+   "rank": 155,
+   "code": "SVD",
+   "name": "부 당 인베스트먼트 & 트레이딩",
+   "nameEn": "Vu Dang Investment & Trading JSC",
+   "industry": "직물 및 가죽제품",
+   "kind": "profit",
+   "capRank": 574,
+   "industryRank": 31
+  },
+  {
+   "rank": 156,
+   "code": "APH",
+   "name": "안팟홀딩스",
+   "nameEn": "An Phat Holdings JSC",
+   "industry": "상품 화학",
+   "kind": "profit",
+   "capRank": 218,
+   "industryRank": 32
+  },
+  {
+   "rank": 157,
+   "code": "VTZ",
+   "name": "비엣 탄 플라스틱",
+   "nameEn": "Viet Thanh Plastic Trading and Manufacturing JSC",
+   "industry": "상품 화학",
+   "kind": "profit",
+   "capRank": 228,
+   "industryRank": 32
+  },
+  {
+   "rank": 158,
+   "code": "NHH",
+   "name": "하노이 플라스틱",
+   "nameEn": "Hanoi Plastics JSC",
+   "industry": "상품 화학",
+   "kind": "profit",
+   "capRank": 280,
+   "industryRank": 32
+  },
+  {
+   "rank": 159,
+   "code": "HII",
+   "name": "팟엔바이광물플라스틱",
+   "nameEn": "An Tien Industries JSC",
+   "industry": "상품 화학",
+   "kind": "profit",
+   "capRank": 346,
+   "industryRank": 32
+  },
+  {
+   "rank": 160,
+   "code": "HVT",
+   "name": "트라이화학",
+   "nameEn": "Viet Tri Chemical JSC",
+   "industry": "상품 화학",
+   "kind": "profit",
+   "capRank": 349,
+   "industryRank": 32
+  },
+  {
+   "rank": 161,
+   "code": "DHC",
+   "name": "동하이",
+   "nameEn": "Donghai JSC of Bentre",
+   "industry": "종이 포장재",
+   "kind": "quality",
+   "capRank": 148,
+   "industryRank": 33
+  },
+  {
+   "rank": 162,
+   "code": "BBS",
+   "name": "비셈붓손포장",
+   "nameEn": "Vicem Packaging But Son JSC",
+   "industry": "종이 포장재",
+   "kind": "profit",
+   "capRank": 645,
+   "industryRank": 33
+  },
+  {
+   "rank": 163,
+   "code": "BXH",
+   "name": "하이퐁시멘트포장",
+   "nameEn": "Haiphong Packing VICEM JSC",
+   "industry": "종이 포장재",
+   "kind": "profit",
+   "capRank": 657,
+   "industryRank": 33
+  },
+  {
+   "rank": 164,
+   "code": "STP",
+   "name": "송다무역",
+   "nameEn": "Song Da Industry Trade JSC",
+   "industry": "종이 포장재",
+   "kind": "profit",
+   "capRank": 660,
+   "industryRank": 33
+  },
+  {
+   "rank": 165,
+   "code": "BPC",
+   "name": "비셈빔손포장",
+   "nameEn": "Vicem Packaging Bimson JSC",
+   "industry": "종이 포장재",
+   "kind": "profit",
+   "capRank": 684,
+   "industryRank": 33
+  },
+  {
+   "rank": 166,
+   "code": "PTB",
+   "name": "푸따이",
+   "nameEn": "Phu Tai JSC",
+   "industry": "가정용 가구",
+   "kind": "quality",
+   "capRank": 177,
+   "industryRank": 34
+  },
+  {
+   "rank": 167,
+   "code": "EVE",
+   "name": "에버피아",
+   "nameEn": "Everpia JSC",
+   "industry": "가정용 가구",
+   "kind": "profit",
+   "capRank": 435,
+   "industryRank": 34
+  },
+  {
+   "rank": 168,
+   "code": "SAV",
+   "name": "사비멕스",
+   "nameEn": "Savimex Corp",
+   "industry": "가정용 가구",
+   "kind": "profit",
+   "capRank": 454,
+   "industryRank": 34
+  },
+  {
+   "rank": 169,
+   "code": "BKG",
+   "name": "BKG 베트남 인베스트먼트",
+   "nameEn": "BKG Viet Nam Investment JSC",
+   "industry": "가정용 가구",
+   "kind": "profit",
+   "capRank": 589,
+   "industryRank": 34
+  },
+  {
+   "rank": 170,
+   "code": "TTF",
+   "name": "쯔엉탄가구",
+   "nameEn": "Truong Thanh Furniture Corp",
+   "industry": "가정용 가구",
+   "kind": "size",
+   "capRank": 384,
+   "industryRank": 34
+  },
+  {
+   "rank": 171,
+   "code": "AST",
+   "name": "타세코항공서비스",
+   "nameEn": "Taseco Air Services JSC",
+   "industry": "기타 전문 소매",
+   "kind": "quality",
+   "capRank": 161,
+   "industryRank": 35
+  },
+  {
+   "rank": 172,
+   "code": "LBE",
+   "name": "LVA 트레이딩 앤 서비스",
+   "nameEn": "LVA Trading and Services JSC",
+   "industry": "기타 전문 소매",
+   "kind": "profit",
+   "capRank": 634,
+   "industryRank": 35
+  },
+  {
+   "rank": 173,
+   "code": "BED",
+   "name": "다낭출판교육장비",
+   "nameEn": "Danang Books and School Equipment JSC",
+   "industry": "기타 전문 소매",
+   "kind": "profit",
+   "capRank": 643,
+   "industryRank": 35
+  },
+  {
+   "rank": 174,
+   "code": "QST",
+   "name": "꽝닌출판교육장비",
+   "nameEn": "Quang Ninh Book and Educational Equipment JSC",
+   "industry": "기타 전문 소매",
+   "kind": "profit",
+   "capRank": 652,
+   "industryRank": 35
+  },
+  {
+   "rank": 175,
+   "code": "SMN",
+   "name": "남부출판교육장비",
+   "nameEn": "South Books and Educational Equipment JSC",
+   "industry": "기타 전문 소매",
+   "kind": "profit",
+   "capRank": 698,
+   "industryRank": 35
+  },
+  {
+   "rank": 176,
+   "code": "MVB",
+   "name": "비나코민 비엣박 광업지주",
+   "nameEn": "Vinacomin Viet Bac Mining Industry Holding Corp",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 251,
+   "industryRank": 36
+  },
+  {
+   "rank": 177,
+   "code": "TMB",
+   "name": "비나코민 북부 석탄",
+   "nameEn": "Vinacomin Northern Coal Trading JSC",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 348,
+   "industryRank": 36
+  },
+  {
+   "rank": 178,
+   "code": "CST",
+   "name": "까오 손 콜",
+   "nameEn": "Cao Son Coal JSC",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 405,
+   "industryRank": 36
+  },
+  {
+   "rank": 179,
+   "code": "TVD",
+   "name": "비나코민방단",
+   "nameEn": "Vinacomin Vang Danh Coal JSC",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 424,
+   "industryRank": 36
+  },
+  {
+   "rank": 180,
+   "code": "NBC",
+   "name": "비나코민누이베오",
+   "nameEn": "Vinacomin NuiBeo Coal JSC",
+   "industry": "석탄",
+   "kind": "profit",
+   "capRank": 469,
+   "industryRank": 36
+  },
+  {
+   "rank": 181,
+   "code": "HHP",
+   "name": "HHP 글로벌",
+   "nameEn": "HHP Global JSC",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 223,
+   "industryRank": 37
+  },
+  {
+   "rank": 182,
+   "code": "GLT",
+   "name": "글로벌전력기술",
+   "nameEn": "GLOBAL ELECTRICAL TECHNOLOGY CORPORATION",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 455,
+   "industryRank": 37
+  },
+  {
+   "rank": 183,
+   "code": "VID",
+   "name": "비엔동투자개발",
+   "nameEn": "VIEN DONG INVESTMENT DEVELOPMENT TRADING CORPORATION",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 538,
+   "industryRank": 37
+  },
+  {
+   "rank": 184,
+   "code": "SVT",
+   "name": "사이공비엔동테크",
+   "nameEn": "Saigon Viendong Technology JSC",
+   "industry": "종이 제품",
+   "kind": "profit",
+   "capRank": 550,
+   "industryRank": 37
+  },
+  {
+   "rank": 185,
+   "code": "HAP",
+   "name": "하파코그룹",
+   "nameEn": "Hapaco Group JSC",
+   "industry": "종이 제품",
+   "kind": "size",
+   "capRank": 317,
+   "industryRank": 37
+  },
+  {
+   "rank": 186,
+   "code": "VNC",
+   "name": "비나콘트롤그룹",
+   "nameEn": "Vinacontrol Group Corp",
+   "industry": "경영 지원 서비스",
+   "kind": "profit",
+   "capRank": 328,
+   "industryRank": 38
+  },
+  {
+   "rank": 187,
+   "code": "TVC",
+   "name": "T코프 에셋 매니지먼트",
+   "nameEn": "T-Corp Asset Management Corporation JSC",
+   "industry": "경영 지원 서비스",
+   "kind": "profit",
+   "capRank": 387,
+   "industryRank": 38
+  },
+  {
+   "rank": 188,
+   "code": "ABR",
+   "name": "베트남 브랜드 투자",
+   "nameEn": "Viet Brand Invest JSC",
+   "industry": "경영 지원 서비스",
+   "kind": "profit",
+   "capRank": 520,
+   "industryRank": 38
+  },
+  {
+   "rank": 189,
+   "code": "TV3",
+   "name": "전력건설컨설팅3",
+   "nameEn": "Power Engineering Consulting JSC 3",
+   "industry": "경영 지원 서비스",
+   "kind": "profit",
+   "capRank": 560,
+   "industryRank": 38
+  },
+  {
+   "rank": 190,
+   "code": "KST",
+   "name": "까사티",
+   "nameEn": "Kasati JSC",
+   "industry": "경영 지원 서비스",
+   "kind": "profit",
+   "capRank": 630,
+   "industryRank": 38
+  },
+  {
+   "rank": 191,
+   "code": "POT",
+   "name": "PT통신설비",
+   "nameEn": "Post and Telecommunication Equipment JSC",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 426,
+   "industryRank": 39
+  },
+  {
+   "rank": 192,
+   "code": "UNI",
+   "name": "사오 마이 비엣 투자개발",
+   "nameEn": "Sao Mai Viet Investment and Development JSC",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 457,
+   "industryRank": 39
+  },
+  {
+   "rank": 193,
+   "code": "ONE",
+   "name": "원테크놀로지스",
+   "nameEn": "One Technologies Corp",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 625,
+   "industryRank": 39
+  },
+  {
+   "rank": 194,
+   "code": "SMT",
+   "name": "삼끄엉전기통신소재",
+   "nameEn": "Sametel Corp",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 659,
+   "industryRank": 39
+  },
+  {
+   "rank": 195,
+   "code": "VTC",
+   "name": "VTC텔레콤",
+   "nameEn": "VTC Telecommunications JSC",
+   "industry": "통신 및 네트워킹",
+   "kind": "trend",
+   "capRank": 682,
+   "industryRank": 39
+  },
+  {
+   "rank": 196,
+   "code": "EID",
+   "name": "하노이교육투자",
+   "nameEn": "Ha Noi Education Development And Investment JSC",
+   "industry": "소비자 출판",
+   "kind": "profit",
+   "capRank": 487,
+   "industryRank": 40
+  },
+  {
+   "rank": 197,
+   "code": "SED",
+   "name": "푸옥남교육투자",
+   "nameEn": "Phuong Nam Education Investment and Development JSC",
+   "industry": "소비자 출판",
+   "kind": "profit",
+   "capRank": 566,
+   "industryRank": 40
+  },
+  {
+   "rank": 198,
+   "code": "EBS",
+   "name": "하노이교과서",
+   "nameEn": "Educational Book JSC in Ha Noi City",
+   "industry": "소비자 출판",
+   "kind": "profit",
+   "capRank": 605,
+   "industryRank": 40
+  },
+  {
+   "rank": 199,
+   "code": "DAD",
+   "name": "다낭교육투자",
+   "nameEn": "Danang Education Investment And Development JSC",
+   "industry": "소비자 출판",
+   "kind": "profit",
+   "capRank": 656,
+   "industryRank": 40
+  },
+  {
+   "rank": 200,
+   "code": "DAE",
+   "name": "다낭 교육도서 주식회사",
+   "nameEn": "Educational Book JSC in Da Nang City",
+   "industry": "소비자 출판",
+   "kind": "profit",
+   "capRank": 700,
+   "industryRank": 40
+  }
+ ]
+}
