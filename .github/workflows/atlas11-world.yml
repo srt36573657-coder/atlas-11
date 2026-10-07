@@ -1,0 +1,47 @@
+# ATLAS 중국 · 일본 · 베트남 주식 판 — 2026-10-07 05:25 사장님 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」
+#   「Run workflow」만 누르면 된다(mode 는 그대로 두면 probe):
+#     probe = 자료 출처 시험만(어느 길이 열리는지) — 결과는 reports/atlas11/world/probe/ 에만 적는다
+#   한국 · 미국 판 파일은 건드리지 않는다 · 사이트에 올리지 않는다(올리기는 「aaa7377.com 올리기」 단추)
+#   예약(cron)은 두지 않는다 — 예약 줄은 저장소 주인만 살릴 수 있음(docs/ATLAS_원칙.md 규칙 7)
+name: 중국 · 일본 · 베트남 주식 자료 받기
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'probe = 출처 시험만'
+        required: false
+        default: 'probe'
+      market:
+        description: 'all · cn · jp · vn'
+        required: false
+        default: 'all'
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-world
+  cancel-in-progress: false
+jobs:
+  world:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      MODE: ${{ inputs.mode || 'probe' }}
+      MARKET: ${{ inputs.market || 'all' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 자료 출처 시험
+        if: env.MODE == 'probe'
+        run: timeout 900 node scripts/atlas11/world/probe.mjs || true
+      - name: 기록 올리기(reports/atlas11/world · public/data/atlas11/world 만)
+        if: always()
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -f reports/atlas11/world
+          if [ -d public/data/atlas11/world ]; then git add -f public/data/atlas11/world; fi
+          git commit -q -m "atlas11 world $MODE $MARKET [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
