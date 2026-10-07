@@ -65,8 +65,8 @@ const pic = (key, cls) => h('span', {class: cls, 'aria-hidden': 'true', html: sv
    data-at = 그 그림이 움직이는 걸음 번호(아래 STEPS) — 짚어 주기가 그 걸음에서 「지금」으로 밝힘 · 앞 걸음은 켜진 채 · 뒤 걸음은 흐리게 */
 const glance = ids => h('div', {class: 'sy-map', 'aria-hidden': 'true'},
   at(pic('e:' + ids[0], 'sy-mn sy-mn1'), 1), at(h('span', {class: 'sy-tr'}, h('i', {class: 'sy-coin'})), 2),
-  at(pic('r:' + ids[1], 'sy-mn sy-mn2'), 0), at(h('span', {class: 'sy-tr sy-tr-d'}, h('i', {class: 'sy-coin'})), 5), // 가운데(돈 받는 곳)가 걸음 0 — 기: 결론 먼저(2026-10-07 20:04)
-  at(pic('r:' + ids[2], 'sy-mn sy-mn3'), 6));
+  at(pic('r:' + ids[1], 'sy-mn sy-mn2'), 0), at(h('span', {class: 'sy-tr sy-tr-d'}, h('i', {class: 'sy-coin'})), 4), // 가운데(돈 받는 곳)가 걸음 0 — 기: 결론 먼저(2026-10-07 20:04)
+  at(pic('r:' + ids[2], 'sy-mn sy-mn3'), 5));
 function at(el, k) { el.dataset.at = String(k); return el; }
 /** 돈길 왼쪽 칸 — 장면이면 그림 동그라미 + 아래로 이어지는 줄 · 장면 사이면 줄만(동전이 흐름) */
 const rail = (key, end = false) => h('span', {class: 'sy-rail', 'aria-hidden': 'true'}, key ? pic(key, 'sy-node') : null, end ? null : h('span', {class: 'sy-rl'})); // 돈길은 멈춘 그림(움직이는 것은 맨 위 짚어 주기 하나 — 2026-10-07 19:40 「동시에 움직이게 하지 말고」)
@@ -93,88 +93,83 @@ function noneBox(st) {
 
 /** 세 장면 + 아래 두 줄(무대 안은 이것만) · 무대 밑에 나머지 시장 · 근거 모음(사장님 「아래에는 두 줄만 남겨라 · 나머지 시장과 상세 자료는 아래에 둬라」)
    장면마다 근거는 가장 굳은 한 줄만(실제 돈 > 기업 지출 > 보도 · 사상 최대 · 몇 배 · 급증이 먼저) — 나머지는 무대 밑 「근거 모음」 */
-/* ── 한 걸음씩 짚어 주기(2026-10-07 19:40 사장님 「하나 움직이고 그런 다음 다음 움직이고 그렇게 하나하나 움직이게 해 · 이렇게 동시에 움직이게 하지 말고
-      · 그리고 중요한 부분은 핵심 기능을 넣어서 바보도 알 수 있게 해」) ──
-   · 걸음 아홉 — 걸음마다 움직이는 것은 하나(그림 하나가 켜짐 · 동전 하나가 줄을 지나감 · ✓ 하나가 그려짐 · 막대가 하나씩 자람) · 앞 것이 끝나야 그 뒤 걸음
-   · 글상자(큰 글씨) — 그 걸음의 말 한 줄(아래 돈길 글과 같은 말) · 움직이는 그림만 밝고 아직 안 온 그림은 흐림
-   · 이 창에서 처음 그릴 때 저절로 한 번(누르지 않아도 됨) · 「다시 보기」 = 처음부터 · 「소리로 듣기」 = 처음부터 소리와 함께(말이 끝나야 그 뒤 걸음 — 말 · 글상자 · 그림이 같은 때)
+/* ── 첫 화면 한 장 — 기승전결 네 줄(2026-10-07 20:52 사장님 휴대폰 사진과 함께 「한 화면에 메인 정보가 나와야 한다 개선해」) ──
+   앞 판(19:40 「하나하나 움직이게 · 바보도 알 수 있게」 · 20:04 「기승전결」)은 글상자 하나에 걸음 하나만 보여 나머지가 숨었다 → 네 줄을 한 화면에 늘 보이게:
+   · 기(결론) 돈이 가는 곳 — 이름(크게) / 승(까닭) 일 한 줄 + ✓ 실제 돈 확인됨 · 날짜 / 전(더 넓게) 다음은 여기가 필요하다 · 예상 + 이름 / 결(볼 것) 이것만 보면 됩니다 + 볼 것
+   · 맨 위 한눈 그림(그림 셋 · 줄 둘)은 그대로 · 아이폰 사파리 첫 화면(위 막대와 아래 탭 사이 약 520px)에 한눈 그림과 네 줄이 다 들어가게(검사기가 390×640 에서 잼)
+   · 움직임은 한 번에 하나(19:40): 지금 줄만 옥빛 테 · 그 줄의 그림 하나씩(가운데 켜짐 → 일 켜짐 → 줄 · 동전 → ✓ → 점선 · 동전 → 다음 켜짐 → ↓) · 앞 것이 끝나야 다음
+   · 글은 늘 보임(흐려졌다 나타나지 않음) · 처음 열면 저절로 한 번 → 결 줄에 멈춤(가운데 그림의 테만 숨 쉼) · 「다시 보기」 · 「소리로 듣기」(줄마다 말이 끝나야 다음 줄)
    · 무대가 화면 밖이면 멈추고 돌아오면 이어서 · 움직임 줄이기 설정이면 처음부터 끝 모습 · 도는 동안 아래 그림은 기다림(motion.js hold)
-   2026-10-07 20:04 사장님 「아틀라스가 기승전결이 매우 부족해 개선한다」 — 걸음을 기 → 승 → 전 → 결 넷으로 묶음(사장님 기승전결: 기 = 상황과 가장 중요한 결론을 먼저 ·
-      승 = 왜 그렇게 됐나 · 전 = 더 넓게 · 비교 · 바뀌는 조건 · 결 = 바로 이해하고 행동할 결론과 핵심 실행)
-   · 기(결론): 돈이 가는 곳 — 가운데 그림이 맨 먼저 켜짐 · 승(까닭): 이 일이 생겼다 → 까닭 → 실제 돈 ✓ → 주식 투자금 막대
-   · 전(더 넓게): 까닭 → 다음은 여기가 필요하다(예상) → 이것이 나타나면 다시 판단 · 결(볼 것): 이것만 보면 됩니다 + 확인되면 이어짐 + 돈이 가는 곳(결론을 한 번 더 · 까닭과 함께)
-   · 끝나면 결에 멈춤(가운데 그림의 테만 숨 쉼 — 그때 움직이는 것은 그 하나) · 걸음 점 아홉 → 이름표 넷(기 · 승 · 전 · 결 — 누르면 그 묶음부터) */
-const CH = [['기', '결론'], ['승', '까닭'], ['전', '더 넓게'], ['결', '볼 것']]; // 묶음 이름표 — 한국어 글자(기승전결)는 한국어 화면에만 · 다른 말은 차례 숫자(CSS)
-function stepsOf(st) {
-  const n = st.now, nx = st.next, ms = n.stock?.markets ?? [];
+   · 뺀 것(규칙 1): 글상자 하나 · 이름표 단추 넷(줄 넷이 그 일을 함) · 걸음 「주식 투자금 막대」 · 「다시 판단」은 아래 돈길(세 장면 · 두 줄)에 그대로 */
+const CH = [['기', '결론'], ['승', '까닭'], ['전', '더 넓게'], ['결', '볼 것']]; // 줄 이름 — 한국어 글자(기승전결)는 한국어 화면에만 · 다른 말은 차례 숫자(CSS)
+/** 네 줄 — 줄마다 이름(작게) · 큰 말 한 줄 · 덧붙임 */
+function rowsOf(st) {
+  const n = st.now, nx = st.next, r = n.real?.evidence?.[0];
   return [
-    {c: 0, k: 'now', t: '돈이 가는 곳', s: n.role, big: true},
-    {c: 1, k: 'event', t: '이 일이 생겼다', s: st.event.text},
-    {c: 1, k: 'why1', s: st.why1},
-    {c: 1, k: 'real', t: '실제 돈', s: n.changed, ok: true},
-    {c: 1, k: 'stock', t: '주식 투자금', s: `${ms.length}개 시장에서 함께 들어옴`, bars: ms},
-    {c: 2, k: 'why2', s: st.why2},
-    {c: 2, k: 'next', t: '다음은 여기가 필요하다', s: nx.role, badge: true},
-    {c: 2, k: 're', t: '이것이 나타나면 다시 판단합니다', s: st.rethink, icon: 're'},
-    {c: 3, k: 'end', t: '이것만 보면 됩니다', s: st.confirm, icon: 'on', sub: ['돈이 가는 곳', n.role]},
+    {lab: ['돈이 가는 곳'], main: n.role, big: true},
+    {lab: [], main: st.event.short ?? st.event.text, ok: r ? korDate(r.date) : ''},
+    {lab: ['다음은 여기가 필요하다'], badge: true, main: nx.role},
+    {lab: ['이것만 보면 됩니다'], main: st.confirm, icon: 'on'},
   ];
 }
-/** 글상자 한 칸 — 이름표(작게) + 말 한 줄(크게) + 그 걸음의 그림(✓ · 막대 · ↓ · ↺) */
-function capOf(x) {
-  const label = x.t ? h('p', {class: 'sy-ct'}, x.k === 'next' ? h('span', {'data-ident': ''}, x.t) : x.t, x.badge ? [' ', h('span', {class: 'sy-badge'}, ok('예상'))] : null) : null;
-  return [
-    label,
-    h('p', {class: 'sy-cs' + (x.big ? ' sy-cs-big' : '')}, x.icon ? pic(x.icon, 'sy-ifi sy-ci') : null, x.ok ? pic('ok', 'sy-ok sy-ci') : null, h('span', null, x.s)),
-    x.bars?.length ? barsLine(x.bars) : null,
-    x.sub ? h('p', {class: 'sy-csub'}, h('span', null, x.sub[0]), ': ', h('b', null, x.sub[1])) : null, // 결 — 결론을 한 번 더(까닭 · 볼 것과 함께)
-  ];
+/** 걸음 일곱 — 줄(c) · 움직이는 그림(at) · 머무는 시간(ms): 줄이 바뀌는 걸음은 그 줄을 읽을 시간까지 */
+const read = x => Math.max(2200, Math.min(5200, 1100 + [CH[x.c][1], ...x.lab, x.main].join('').length * 70));
+function stepsOf(rows) {
+  const R = rows.map((x, c) => ({...x, c}));
+  return [{c: 0, at: 0, ms: read(R[0])}, {c: 1, at: 1, ms: 900}, {c: 1, at: 2, ms: 1750}, {c: 1, at: 3, ms: Math.max(900, read(R[1]) - 2650)},
+    {c: 2, at: 4, ms: 2250}, {c: 2, at: 5, ms: Math.max(900, read(R[2]) - 2250)}, {c: 3, at: 6, ms: read(R[3])}];
 }
-/** 걸음 하나에 머무는 시간(ms) — 움직임이 끝난 뒤 읽을 시간(글자 수 × 75ms · 2.4~5.6초) + 막대는 하나씩 자라는 시간 */
-const dwell = x => Math.max(2400, Math.min(5600, 1300 + [x.t ?? '', x.s ?? ''].join('').length * 75)) + (x.bars?.length ?? 0) * 480;
+function rowEl(x, c) {
+  const lab = [h('span', {class: 'sy-rmn'}, CH[c][1]), ...x.lab.flatMap(t => [' · ', c === 2 ? h('span', {'data-ident': ''}, t) : h('span', null, t)]), x.badge ? [' ', h('span', {class: 'sy-badge'}, ok('예상'))] : null];
+  return h('div', {class: 'sy-row', 'data-c': String(c)},
+    h('span', {class: 'sy-rb', 'aria-hidden': 'true'}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, CH[c][0])),
+    h('div', {class: 'sy-rc'},
+      h('p', {class: 'sy-rl2'}, ...lab.flat().filter(Boolean)),
+      h('p', {class: 'sy-rm' + (x.big ? ' sy-rm-big' : '')}, x.icon ? at(pic(x.icon, 'sy-ifi sy-ri'), 6) : null, h('span', {'data-speak': ''}, x.main)),
+      x.ok ? h('p', {class: 'sy-rs'}, at(pic('ok', 'sy-ok sy-ri'), 3), h('span', null, '실제 돈'), ' ', h('span', null, '확인됨'), ' · ', h('span', null, x.ok)) : null));
+}
 function player(st, ids, fresh) {
-  const steps = stepsOf(st), map = glance(ids);
-  const cap = h('div', {class: 'sy-cap', 'aria-hidden': 'true'}); // 같은 말을 아래 돈길이 읽음(화면 읽기 프로그램은 거기서)
-  // 이름표 넷(기 · 승 · 전 · 결) — 지금 묶음이 눌린 채 · 누르면 그 묶음 첫 걸음부터 끝까지
-  const chips = CH.map(([l, m], c) => h('button', {type: 'button', class: 'sy-chip-c', 'data-c': String(c), onclick: () => run(false, steps.findIndex(x => x.c === c))}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': '', 'aria-hidden': 'true'}, l), h('span', {class: 'sy-chm'}, m)));
-  const box = h('div', {class: 'sy-play'}, h('nav', {class: 'sy-chs', 'aria-label': 'ATLAS가 고른 돈 이야기'}, ...chips), map, cap,
+  const rows = rowsOf(st), steps = stepsOf(rows), map = glance(ids);
+  const rowEls = rows.map(rowEl);
+  const box = h('div', {class: 'sy-play'}, map, h('div', {class: 'sy-rows'}, ...rowEls),
     h('div', {class: 'sy-ctl'},
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(true)}, pic('say', 'sy-bi'), h('span', null, '소리로 듣기'))));
-  const parts = [...map.querySelectorAll('[data-at]')];
+  const parts = [...box.querySelectorAll('[data-at]')];
   let cur = -1, tick = 0, token = 0, voice = false, seen = true, waiting = null;
-  /** 걸음 i 를 그림 — 앞 걸음 그림은 켜짐(on) · i 걸음 그림만 지금(now · 움직임 한 번) · 뒤는 흐림 */
+  /** 걸음 i — 앞 걸음 그림은 켜짐(on) · i 걸음 그림만 한 번 움직임(now) · 지금 줄만 옥빛 테(now) · 앞 줄은 켜짐 */
   function paint(i, again = false) {
-    cur = i; box.dataset.step = String(i); box.classList.toggle('sy-done', false);
-    for (const el of parts) { const k = Number(el.dataset.at); el.classList.toggle('on', k <= i); const now = k === i; if (now && again) { el.classList.remove('now'); void el.offsetWidth; } el.classList.toggle('now', now); }
-    cap.dataset.k = steps[i].k; cap.replaceChildren(...capOf(steps[i]).filter(Boolean));
-    chips.forEach((d, c) => d.setAttribute('aria-current', c === steps[i].c ? 'step' : 'false'));
+    cur = i; const c = steps[i].c; box.dataset.step = String(i); box.dataset.c = String(c); box.classList.remove('sy-done');
+    for (const el of parts) { const k = Number(el.dataset.at); el.classList.toggle('on', k <= steps[i].at); const now = k === steps[i].at; if (now && again) { el.classList.remove('now'); void el.offsetWidth; } el.classList.toggle('now', now); }
+    rowEls.forEach((r, k) => { r.classList.toggle('now', k === c); r.classList.toggle('on', k < c); });
   }
   function done() { stop(); if (cur !== steps.length - 1) paint(steps.length - 1); for (const el of parts) { el.classList.add('on'); el.classList.remove('now'); } box.classList.add('sy-done'); }
   function stop() { token++; clearTimeout(tick); waiting = null; if (voice) { try { window.speechSynthesis?.cancel(); } catch {} } voice = false; release(box); }
-  function say(x, then) {
+  function say(x, c, then) {
     try { const ss = window.speechSynthesis; if (!ss || typeof SpeechSynthesisUtterance !== 'function') return false;
-      const lead = steps.find(z => z.c === x.c) === x ? CH[x.c][1] : null; // 묶음 첫 걸음이면 묶음 이름(결론 · 까닭 · 더 넓게 · 볼 것)부터
-      const u = new SpeechSynthesisUtterance([lead, x.t, x.s].filter(Boolean).map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
+      const u = new SpeechSynthesisUtterance([CH[c][1], ...x.lab, x.main].filter(Boolean).map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
       const v = ss.getVoices().find(z => z.lang && z.lang.startsWith(LANG)); if (v) u.voice = v; let fin = false; u.onend = u.onerror = () => { if (!fin) { fin = true; then(); } }; ss.speak(u); return true; } catch { return false; }
   }
-  /** 처음부터 한 걸음씩 — 걸음마다 그림 하나가 움직이고, 읽을 시간(또는 말이 끝날 때)이 지나면 다음 걸음 */
-  function run(withVoice, from = 0) {
-    stop(); const my = token; voice = withVoice; let i = Math.max(0, from); hold(box);
+  /** 처음부터 — 걸음마다 그림 하나가 움직이고 머무는 시간이 지나면 다음 걸음 · 소리와 함께면 줄을 읽는 말이 끝나야 다음 줄 */
+  function run(withVoice) {
+    stop(); const my = token; voice = withVoice; let i = 0, talking = false, after = null; hold(box);
     if (withVoice) { try { window.speechSynthesis?.cancel(); } catch {} }
     const next = () => {
       if (my !== token) return;
       if (!box.isConnected) { stop(); return; }
-      if (i >= steps.length) { done(); return; }
+      if (i >= steps.length) { if (talking) { after = next; return; } done(); return; }
       if (!seen && !voice) { waiting = next; release(box); return; } // 화면 밖이면 멈춤 — 돌아오면 이어서
-      hold(box); const x = steps[i]; paint(i++, true);
-      if (voice && say(x, () => { if (my === token) tick = setTimeout(next, 420); })) return;
-      tick = setTimeout(next, dwell(x));
+      const x = steps[i];
+      if (voice && talking && (i === 0 || steps[i - 1].c !== x.c)) { after = next; return; } // 앞 줄 말이 끝나야 다음 줄
+      hold(box); paint(i++, true);
+      if (voice && (i === 1 || steps[i - 2].c !== x.c)) { talking = say(rows[x.c], x.c, () => { talking = false; if (my === token && after) { const f = after; after = null; tick = setTimeout(f, 380); } }); }
+      tick = setTimeout(next, x.ms);
     };
     next();
   }
   if (typeof IntersectionObserver === 'function') new IntersectionObserver(es => { for (const e of es) { seen = e.isIntersecting; if (seen && waiting) { const w = waiting; waiting = null; tick = setTimeout(w, idleIn() + 60); } } }, {threshold: 0.35}).observe(map); // 돌아오면 다른 그림이 다 움직인 뒤 이어서
   const calm = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (fresh && !calm) { paint(0); for (const el of parts) el.classList.remove('on', 'now'); setTimeout(() => { if (box.isConnected && cur <= 0) run(false); }, 350); }
+  if (fresh && !calm) { paint(0); for (const el of parts) el.classList.remove('on', 'now'); rowEls.forEach(r => r.classList.remove('now', 'on')); setTimeout(() => { if (box.isConnected && cur <= 0) run(false); }, 350); }
   else done();
   return box;
 }
