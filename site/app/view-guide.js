@@ -5,6 +5,7 @@
 import {h} from './util.js';
 import {foot} from './parts.js';
 import {state} from './store.js';
+import {playOnce} from './motion.js';
 
 const AS_OF = '2026-10-07', AS_AT = '07:56'; // 조사를 마친 시각(reports/atlas11/study/한국 주식시장 안내 — 출처.md)
 /** [제목, [줄, [출처 주소…]]…] — 줄은 짧게(휴대폰 한 줄 반 안쪽) */
@@ -46,6 +47,25 @@ export const GUIDE = [
 ];
 const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
 
+/* 하루 시간 띠(2026-10-07 18:27 사장님 「지금 글로 되어 있다 움직이는 도식화로 만들어라」 · 18:31 「과감하게 알틀란스를 전면 혁신하라」) — 갈래 「시간」 맨 위
+   · 한국 시각 08:00 ~ 20:00 위에 막대 다섯 = 바로 아래 글 줄과 같은 사실(출처도 그 줄) — 넥스트레이드 · 시작 값 · 정규장 · 마감 값 · 애프터마켓
+   · 보일 때 위에서부터 차례로 자람(motion.js · 처음 한 번) · 그림은 화면 읽기 프로그램에서 건너뜀(같은 사실을 아래 글 줄이 읽음) */
+const DAY = [8, 20];
+export const DAY_BARS = [['NXT', 8, 20, 'nxt'], ['시작 값', 8.5, 9, 'auc'], ['정규장', 9, 15.5, 'reg'], ['마감 값', 15 + 20 / 60, 15.5, 'auc'], ['애프터마켓', 16, 20, 'aft']];
+const hm = x => `${String(Math.floor(x)).padStart(2, '0')}:${String(Math.round((x % 1) * 60)).padStart(2, '0')}`;
+const at = x => `${((x - DAY[0]) / (DAY[1] - DAY[0]) * 100).toFixed(3)}%`;
+function dayLine() {
+  const rows = DAY_BARS.map(([label, a, b, kind], i) => {
+    const bar = h('i', {class: 'gd-tb gd-' + kind}); bar.style.setProperty('--a', at(a)); bar.style.setProperty('--w', at(DAY[0] + b - a)); bar.style.setProperty('--i', String(i)); // 자리 · 길이 · 차례만 CSSOM
+    return h('li', {class: 'gd-tr', 'data-kind': kind}, h('span', {class: 'gd-tl'}, h('b', kind === 'nxt' ? {'data-ident': ''} : null, label), ' ', h('span', {class: 'gd-tt'}, `${hm(a)}~${hm(b)}`)), h('span', {class: 'gd-tw'}, bar));
+  });
+  const ticks = [8, 14, 20].map(x => { const t = h('span', {class: 'gd-tk'}, hm(x)); t.style.setProperty('--a', at(x)); return t; });
+  // 눈금 셋(08:00 · 14:00 · 20:00) — 글씨 200% · 360px 에서도 겹치지 않게
+  const el = h('div', {class: 'gd-day', 'aria-hidden': 'true'}, h('ul', {class: 'gd-trs'}, ...rows), h('span', {class: 'gd-tks'}, ...ticks));
+  playOnce('guide-day', el);
+  return el;
+}
+
 export function renderGuide(main, {manifest}) {
   state.summary = `한국 주식시장 안내. 기준 ${AS_OF.slice(0, 4)}년 ${Number(AS_OF.slice(5, 7))}월 ${Number(AS_OF.slice(8, 10))}일. ${GUIDE.map(([t, xs]) => `${t}: ${xs.map(x => x[0]).join(', ')}`).join('. ')}.`;
   main.replaceChildren(h('article', {class: 'b-page gd-page'},
@@ -55,6 +75,7 @@ export function renderGuide(main, {manifest}) {
       h('p', {class: 'b-when', 'data-speak': ''}, `한국에 사는 외국인도 바로 알 수 있게 · 기준 ${AS_OF.slice(0, 4)}년 ${Number(AS_OF.slice(5, 7))}월 ${Number(AS_OF.slice(8, 10))}일(수) ${AS_AT} KST · 줄마다 출처`)),
     ...GUIDE.map(([title, rows], i) => h('section', {class: 'gd-sec', 'aria-label': title},
       h('h2', {class: 'gd-h'}, h('span', {class: 'gd-n', 'aria-hidden': 'true'}), title), // 번호는 CSS 셈(counter) — 글로 넣으면 또렷함 검사가 단위 없는 숫자로 셈(2026-10-07 10:41)
+      i === 1 ? dayLine() : null, // 갈래 「시간」 — 하루 시간 띠
       h('ul', {class: 'gd-list'}, ...rows.map(([t, src, units]) => h('li', {class: 'gd-row'},
         h('p', {class: 'gd-t', 'data-speak': ''}, t, units ? [': ', ...units.flatMap(([u, v], k) => [k ? ' · ' : '', h('b', {lang: 'ko', 'data-ident': ''}, u), ' = ', h('span', {'data-ident': ''}, v)])] : null),
         h('p', {class: 'gd-src'}, ...src.flatMap((u, k) => [k ? ' · ' : '', h('a', {href: u, target: '_blank', rel: 'noopener noreferrer', 'data-ident': ''}, host(u))]))))))),

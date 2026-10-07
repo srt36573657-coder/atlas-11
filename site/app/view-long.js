@@ -92,14 +92,16 @@ function hero() {
       h('span', null, h('i', {class: 'lt-dot lt-mark', 'aria-hidden': 'true'}), '점선 = 처음 500만 원')));
 }
 
+/** 차례 번호(--i) — 막대가 위에서부터 차례로 자람(2026-10-07 18:31 「움직이는 도식화로」 · 10년 · 20년 · 30년을 바꾸면 다시 자람 · CSSOM) */
+const order = (el, i) => { el.style.setProperty('--i', String(i)); return el; };
 function rows(y) {
   return LONG.map(([title, warn, list]) => h('section', {class: 'lt-sec', 'aria-label': title},
     h('h2', {class: 'lt-h'}, title), warn ? h('p', {class: 'lt-warn'}, warn) : null,
-    h('ul', {class: 'lt-list'}, ...list.map(([name, w, note]) => {
+    h('ul', {class: 'lt-list'}, ...list.map(([name, w, note], i) => {
       const r = w[y];
       return h('li', {class: 'lt-row'},
         h('span', {class: 'lt-top'}, h('span', {class: 'lt-name'}, name), r ? h('b', {class: 'lt-v ' + (r[0] < START ? 'lt-down' : 'lt-up')}, man(r[0])) : h('b', {class: 'lt-v lt-none'}, '기록이 짧아 셈하지 않음')),
-        r ? h('span', {class: 'lt-track', 'aria-hidden': 'true'}, h('span', {class: 'lt-start'}), sized(h('span', {class: 'lt-fill ' + (r[0] < START ? 'lt-down' : 'lt-up') + (r[0] > CAP ? ' lt-over' : '')}), 'width', r[0])) : null,
+        r ? h('span', {class: 'lt-track', 'aria-hidden': 'true'}, h('span', {class: 'lt-start'}), order(sized(h('span', {class: 'lt-fill ' + (r[0] < START ? 'lt-down' : 'lt-up') + (r[0] > CAP ? ' lt-over' : '')}), 'width', r[0]), i)) : null,
         r ? h('small', {class: 'lt-when'}, `${r[1]}년~${r[2]}년` + (r[3] > 1 ? ` · ${r[3]}번 가운데 가장 나쁨` : ' · 한 번뿐')) : null,
         note ? h('small', {class: 'lt-note'}, note) : null);
     }))));

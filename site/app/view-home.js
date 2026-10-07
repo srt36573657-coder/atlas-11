@@ -29,7 +29,8 @@ import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
 import {homeComment, mapComment, landComment, commentBox, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
-import {loadStory, storyBox, storySay} from './story.js'; // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
+import {loadStory, storyBox, storySay} from './story.js';
+import {playOnce, stagger} from './motion.js'; // 움직이는 도식(2026-10-07 18:31) — 그림은 보일 때 한 번 자람 // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
 /** 가장 많은 값(같으면 늦은 날) — 한 회사 종가가 늦어도 판 전체의 기간 글이 흔들리지 않게 */
@@ -46,14 +47,23 @@ const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late', title:
 
 /** 큰 흐름 한 장 — 갈래 이름 · 불장 업종 몇 개 · 업종 줄(「불장 n위」 · 이름 · ▲변화 · 몇 곳 오름 · 태양 몇 곳 · 누르면 그 업종)
    2026-10-05 15:24 「잡스가 … 36가지」 C3: 장 머리에 개수가 두 번(「5개 평균」 · 「불장 업종 5개」) → 한 번(「평균」 · 「불장 업종 5개」) · B4: 줄마다 그 업종의 태양 수 */
-function flowCard(f, groups, shp) {
+/* 2026-10-07 18:31 「지금 글로 되어 있다 움직이는 도식화로 · 과감하게 알틀란스를 전면 혁신하라」 — 줄마다 막대 하나(길이 = 그 업종 지난 20거래일 변화 ÷ 불장 1위 변화 · 빨강 오름)
+   · 내려가서 장이 보일 때 위에서부터 차례로 자람(motion.js · 이 창에서 처음 한 번) · 막대엔 글자 없음(숫자는 줄 오른쪽 글 그대로) */
+const barOf = (g, top) => { const f = h('i', {class: 'hf-bf s-' + (signCls(g.change20) || 'flat')}); f.style.setProperty('--k', (finite(g.change20) && top > 0 ? Math.max(0.03, Math.min(1, Math.abs(g.change20) / top)) : 0.03).toFixed(3)); return h('span', {class: 'hf-bar', 'aria-hidden': 'true'}, f); };
+function flowCard(f, groups, shp, top = 0) {
+  const card = flowCardEl(f, groups, shp, top);
+  stagger(card.querySelectorAll('.hf-bf')); playOnce('home-bars-' + f.fam.id, card); // 장마다 보일 때 막대가 위에서부터 차례로(처음 한 번)
+  return card;
+}
+function flowCardEl(f, groups, shp, top) {
   return h('section', {class: 'hf-card', 'data-family': f.fam.id, 'aria-label': `${f.fam.label} · 불장 업종 ${f.groups.length}개`},
     h('p', {class: 'hf-h'}, h('span', {class: 'hf-l'}, h('b', {class: 'hf-name'}, f.fam.label), h('span', {class: 'hf-avg'}, '평균 ', h('b', {class: 'chg20 ' + (signCls(f.avg) || 'flat')}, finite(f.avg) ? pct(f.avg, 1) : '없음'))), h('span', {class: 'hf-n'}, `불장 업종 ${f.groups.length}개`)),
     h('ul', {class: 'hf-list'}, ...f.groups.map(g => { const i = groups.indexOf(g), k = sunCount(shp, g.codes);
       return h('li', null, h('a', {class: 'hf-row', href: '#/i/' + g.id, 'data-group': g.id, 'data-sun': String(k), 'aria-label': `불장 ${i + 1}위 ${g.label} · 지난 20거래일 ${finite(g.change20) ? pct(g.change20, 1) : '없음'} · ${upLine(g)}${k ? ` · 태양 ${k}곳` : ''}`},
         h('span', {class: 't-fire hf-rank'}, `불장 ${i + 1}위`),
         h('span', {class: 'hf-g'}, h('span', {class: 'hf-gname'}, g.label), h('span', {class: 'hf-sub'}, h('small', {class: 'hf-up'}, upLine(g)), sunNum(k, 'sun-n hf-sun'))),
-        h('span', {class: 't-chg hf-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'))); })));
+        h('span', {class: 't-chg hf-chg', 'data-sign': signCls(g.change20) || null}, finite(g.change20) ? pct(g.change20, 1) : '없음'),
+        barOf(g, top))); })));
 }
 
 export async function renderHome(main, {manifest}) {
@@ -63,6 +73,8 @@ export async function renderHome(main, {manifest}) {
   const flows = familiesByRise(hot); // 가장 많이 오른 큰 흐름부터(갈래 평균이 큰 순)
   const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board), st = await loadStory();
   state.summary = `${st ? storySay(st) : commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
+  const top = Math.max(0, ...hot.map(g => (finite(g.change20) ? Math.abs(g.change20) : 0)));
+  const flowsEl = h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp, top)));
   main.replaceChildren(h('div', {class: 'b-page h-page'},
     // 맨 위: 오늘의 돈 이야기(2026-10-07 16:34 — 세 장면 · 아래 두 줄) — 넣으면서 뺀 것(규칙 1): 이 탭의 표지(논평 무대) · /story.json 을 못 읽으면 옛 표지 그대로
     st ? storyBox(st) : commentBox(cm), // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
@@ -74,7 +86,7 @@ export async function renderHome(main, {manifest}) {
       h('p', {class: 'b-when'}, `업종 ${groups.length}개 가운데 지난 20거래일 평균이 많이 오른 ${hot.length}개 · ${span(from, to)}`),
       ...lateLines(late, board)),
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
-    h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp))),
+    flowsEl,
     h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「지도」 · ${korDate(board.asOf)} ${place.close} 종가`),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
     foot(manifest)));

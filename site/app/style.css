@@ -841,7 +841,7 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
 .cm-big.cm-down { color: #82B6FF; text-shadow: 0 0 .32em rgba(92, 151, 255, .38); }
 .cm-s { margin: 8px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .74); word-break: keep-all; overflow-wrap: anywhere; }
 /* 숫자 그림 */
-.cm-pic { margin: 16px 0 0; animation: cm-wipe .9s cubic-bezier(.16, 1, .3, 1) .55s both; }
+.cm-pic { margin: 16px 0 0; } /* 2026-10-07 18:31 옛 「왼쪽부터 닦아 켜짐」(cm-wipe) → 점 물결 · 막대 차례로 자람(맨 아래 「판 전체 움직임」) */
 .cm-dots { display: flex; flex-wrap: wrap; gap: 8px; }
 .cm-d { display: block; flex: none; width: 16px; height: 16px; border-radius: 50%; }
 .cm-sm { gap: 5px; } .cm-sm .cm-d { width: 10px; height: 10px; }
@@ -1021,66 +1021,152 @@ html:not([lang="ko"]) .sun-n { flex-wrap: wrap; }
 .top .mkt-menu .mkt-b[aria-current="page"]::after { content: '✓'; content: '✓' / ''; margin-inline-start: auto; padding-inline-start: 14px; }
 html[data-font-step="3"] .mkt-cur, html[data-font-step="4"] .mkt-cur { padding: 0 9px 0 11px; font-size: .8125rem; gap: 6px; }
 
-/* 「오늘의 돈 이야기」(2026-10-07 16:34 사장님 「왕초보에게 시장을 해석시키지 마라 … [이 일이 생겼다] → [그래서 여기가 돈을 받는다] ⇢ [다음은 여기가 필요하다] … 현재만 크고 선명하게 · 다음은 점선과 '예상' ·
+/* 「ATLAS가 고른 돈 이야기」(2026-10-07 16:34 사장님 「왕초보에게 시장을 해석시키지 마라 … [이 일이 생겼다] → [그래서 여기가 돈을 받는다] ⇢ [다음은 여기가 필요하다] … 현재만 크고 선명하게 · 다음은 점선과 '예상' ·
    큰 글씨, 넓은 여백, 절제된 빛 · 멋은 장식이 아니라 시선이 헤매지 않는 데서」 · site/app/story.js)
-   표지(.cm)와 같은 어둠 무대(밝은 화면에서도) · 빛나는 것은 가운데 장면 하나(옥빛 테 · 옅은 빛) · 첫 장면은 물러난 회색 · 다음 장면은 점선 테 · 장면 사이 선 위에 까닭(선은 아래로 흐름 · 다음으로 가는 선만 점선)
-   넣으면서 뺀 것(규칙 1): 탭 「불장」 맨 위 표지(논평 무대) — 이 무대가 그 자리(다른 탭의 표지는 그대로) */
-.sy { position: relative; margin: 10px 0 18px; padding: 20px 18px 18px; border-radius: 24px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
-  background-color: #0C1512; background-image: radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%);
-  box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 22px 44px -28px rgba(0, 0, 0, .75); }
+   2026-10-07 18:27 「지금 글로 되어 있다 움직이는 도식화로 만들어라」 · 18:31 「과감하게 알틀란스를 전면 혁신하라 섹시하게 스마트 하게」 — 글 상자 셋 → 움직이는 도식:
+   · 무대는 표지처럼 화면 가장자리까지(어둠 · 위쪽 가운데 옥빛 빛 하나) · 맨 위 「한눈 그림」(그림 셋 · 선 둘 · 금빛 동전이 흐름) · 그 아래 「돈길」(왼쪽 세로 줄 위 그림 동그라미 셋 · 글은 오른쪽)
+   · 빛나는 것은 가운데(돈 받는 곳) 하나 — 옥빛 동그라미 · 숨 쉬듯 퍼지는 테 둘 · 첫 장면은 물러난 테 · 다음은 점선 동그라미 · 점선 줄 · 점선 칸 · 흐린 동전이 느리게
+   · 처음 그릴 때 한 번 차례로 등장(일 → 줄 → 돈 받는 곳 → 점선 → 다음 · 약 2초) · 동전은 계속 흐름 · 움직임 줄이기 설정이면 멈춘 그림(위 공통 규칙 — 동전은 숨음)
+   · 글은 처음부터 보임(흐려졌다 나타나지 않음 — 대비 검사 · 바로 읽기) · 움직이는 것은 그림 · 큰 이름만 아래 선에서 솟아오름(표지 거대 숫자와 같은 움직임)
+   넣으면서 뺀 것(규칙 1): 장면 상자 셋의 바탕 · 테두리(첫 장면 회색 상자 · 가운데 옥빛 상자) — 동그라미와 줄이 그 일을 함 · 줄 옆 꺾쇠(동전이 방향을 보임) */
+.sy { --mint: #8FD3B6; --sand: #D8C08F; --rail: 48px;
+  position: relative; margin: 0 -20px 18px; padding: 26px 24px 22px; overflow: hidden; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
+  background-color: #0B1411; background-image: radial-gradient(64% 26% at 50% 9%, rgba(143, 211, 182, .17), rgba(143, 211, 182, 0) 72%), radial-gradient(120% 90% at 12% 0%, #22382E 0%, #0E1915 50%, #070C0A 100%); }
+.sy::before { content: ''; position: absolute; top: 0; inset-inline-start: 24px; width: 44px; height: 3px; border-radius: 0 0 3px 3px; background: var(--geum); }
+@media (min-width: 600px) { .sy { margin-inline: 0; margin-top: 12px; border-radius: 28px; box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 30px 60px -36px rgba(0, 0, 0, .8); } }
 .sy a { color: inherit; }
-.sy-k { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 16px; }
+.sy-k { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0; }
 .sy-k > span:first-child { font-size: .9375rem; font-weight: 700; letter-spacing: .12em; color: #F4F1EA; }
-.sy-kw { font-size: .8125rem; color: rgba(244, 241, 234, .62); }
-.sy-s { margin: 0; padding: 14px 16px 15px; border-radius: 18px; }
-.sy-t { margin: 0 0 6px; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: rgba(244, 241, 234, .62); }
-.sy-s1 { background: rgba(244, 241, 234, .045); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .10); }
-.sy-main { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .88); }
+.sy-kw { font-size: .8125rem; color: rgba(244, 241, 234, .66); }
+/* 한눈 그림 — 그림 셋 · 선 둘(크기는 화면 폭에만 따름 — 큰 글씨에서도 한 줄) */
+.sy-map { display: flex; align-items: center; margin: 22px 2px 28px; }
+.sy-mn { flex: none; display: grid; place-items: center; width: min(15vw, 64px); height: min(15vw, 64px); border-radius: 50%; color: #F4F1EA; background: rgba(244, 241, 234, .06); box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .34); }
+.sy-mn svg { width: 50%; height: 50%; }
+.sy-mn2 { position: relative; width: min(24vw, 100px); height: min(24vw, 100px); color: #0B1411;
+  background: radial-gradient(circle at 34% 30%, #E9FFF5 0%, #8FD3B6 46%, #4F8F77 100%); box-shadow: 0 0 0 6px rgba(143, 211, 182, .13), 0 0 40px 10px rgba(143, 211, 182, .40); }
+.sy-mn2 svg { stroke-width: 1.9; }
+.sy-mn3 { background: none; box-shadow: none; border: 2px dashed rgba(244, 241, 234, .48); color: rgba(244, 241, 234, .74); }
+.sy-tr { position: relative; flex: 1 1 0; min-width: 22px; height: 3px; margin: 0 9px; border-radius: 2px; background: linear-gradient(90deg, rgba(216, 192, 143, .60), rgba(143, 211, 182, .95)); }
+.sy-tr-d { height: 0; border-radius: 0; background: none; border-top: 2px dashed rgba(244, 241, 234, .40); }
+html[dir="rtl"] .sy-tr:not(.sy-tr-d) { background: linear-gradient(270deg, rgba(216, 192, 143, .60), rgba(143, 211, 182, .95)); }
+/* 숨 쉬는 테 둘 — 가운데 그림(한눈 그림 · 돈길) */
+.sy-mn2::before, .sy-mn2::after, .sy-s2 .sy-node::before, .sy-s2 .sy-node::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 2px rgba(143, 211, 182, .60); opacity: 0; pointer-events: none;
+  animation: sy-ring 3s cubic-bezier(.2, .6, .3, 1) 1.3s infinite; }
+.sy-mn2::after, .sy-s2 .sy-node::after { animation-delay: 2.8s; }
+@keyframes sy-ring { 0% { transform: scale(1); opacity: .75; } 100% { transform: scale(1.75); opacity: 0; } }
+/* 동전 — 선 길이만 한 투명 띠가 움직이고 그 끝에 금빛 동전 하나(띠가 선 하나만큼 미끄러짐 · 화면 폭 · 글씨 크기가 바뀌어도 선 끝까지) */
+.sy-coin { position: absolute; inset: 0; display: block; opacity: 0; pointer-events: none; }
+.sy-coin::after { content: ''; position: absolute; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #FFF8E1 0%, #FFD98A 50%, #C9962E 100%); box-shadow: 0 0 9px 2px rgba(255, 196, 84, .60); }
+.sy-tr .sy-coin::after { top: 50%; margin-top: -4.5px; inset-inline-end: 0; }
+.sy-tr-d .sy-coin { top: -2px; bottom: auto; height: 2px; }
+.sy-tr-d .sy-coin::after { width: 6px; height: 6px; margin-top: -3px; background: rgba(244, 241, 234, .78); box-shadow: 0 0 6px rgba(244, 241, 234, .35); }
+.sy-tr .sy-coin { animation: sy-run 2.2s linear infinite; }
+.sy-tr .sy-coin:nth-child(1) { animation-delay: 1.1s; } .sy-tr .sy-coin:nth-child(2) { animation-delay: 1.83s; } .sy-tr .sy-coin:nth-child(3) { animation-delay: 2.56s; }
+.sy-tr-d .sy-coin { animation-duration: 3.6s; } .sy-tr-d .sy-coin:nth-child(1) { animation-delay: 1.9s; } .sy-tr-d .sy-coin:nth-child(2) { animation-delay: 3.7s; }
+html[dir="rtl"] .sy-tr .sy-coin { animation-name: sy-run-r; }
+@keyframes sy-run { 0% { transform: translateX(-100%); opacity: 0; } 14%, 84% { opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes sy-run-r { 0% { transform: translateX(100%); opacity: 0; } 14%, 84% { opacity: 1; } 100% { transform: none; opacity: 0; } }
+/* 돈길 — 장면 · 줄은 같은 두 칸(왼쪽 줄 칸 · 오른쪽 글) · 줄 칸 폭은 글씨 크기와 상관없이 같음 */
+.sy-s, .sy-line { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); column-gap: 14px; margin: 0; }
+.sy-rail { display: flex; flex-direction: column; align-items: center; min-height: 100%; }
+.sy-node { position: relative; flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #F4F1EA; background: #14201C; box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .36); }
+.sy-node svg { width: 21px; height: 21px; }
+.sy-s2 .sy-node { width: 48px; height: 48px; color: #0B1411; background: radial-gradient(circle at 34% 30%, #E9FFF5 0%, #8FD3B6 48%, #4F8F77 100%); box-shadow: 0 0 0 4px rgba(143, 211, 182, .16), 0 0 26px 6px rgba(143, 211, 182, .40); }
+.sy-s2 .sy-node svg { width: 27px; height: 27px; }
+.sy-s3 .sy-node { background: none; box-shadow: none; border: 1.5px dashed rgba(244, 241, 234, .55); color: rgba(244, 241, 234, .78); }
+.sy-rl { position: relative; flex: 1 1 auto; width: 2px; min-height: 14px; margin-top: 6px; border-radius: 1px; background: linear-gradient(rgba(216, 192, 143, .55), rgba(216, 192, 143, .70)); }
+.sy-line .sy-rl { margin-top: 0; background: linear-gradient(rgba(216, 192, 143, .70), rgba(143, 211, 182, .95)); }
+.sy-s2 .sy-rl, .sy-dash .sy-rl { width: 0; border-radius: 0; background: none; border-inline-start: 2px dashed rgba(244, 241, 234, .42); } /* 가운데에서 다음으로 가는 줄은 처음부터 점선 */
+.sy-line .sy-coin::after { bottom: 0; inset-inline-start: 50%; margin-inline-start: -4.5px; }
+.sy-dash .sy-coin::after { width: 6px; height: 6px; margin-inline-start: -4px; background: rgba(244, 241, 234, .78); box-shadow: 0 0 6px rgba(244, 241, 234, .35); }
+.sy-line .sy-coin { animation: sy-fall 2.4s linear infinite; }
+.sy-line .sy-coin:nth-child(1) { animation-delay: 1.2s; } .sy-line .sy-coin:nth-child(2) { animation-delay: 2s; } .sy-line .sy-coin:nth-child(3) { animation-delay: 2.8s; }
+.sy-dash .sy-coin { animation-duration: 3.8s; } .sy-dash .sy-coin:nth-child(1) { animation-delay: 2.2s; } .sy-dash .sy-coin:nth-child(2) { animation-delay: 3.47s; } .sy-dash .sy-coin:nth-child(3) { animation-delay: 4.73s; }
+@keyframes sy-fall { 0% { transform: translateY(-100%); opacity: 0; } 14%, 84% { opacity: 1; } 100% { transform: none; opacity: 0; } }
+.sy-c { min-width: 0; padding: 0 0 10px; }
+.sy-t { margin: 9px 0 6px; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: rgba(244, 241, 234, .66); }
+.sy-s2 .sy-t { margin-top: 14px; color: var(--mint); }
+.sy-main { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .9); }
 .sy-money { margin: 8px 0 0; }
-.sy-chip { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; color: #0C1512; background: #D8C08F; }
-.sy-s2 { background: rgba(79, 143, 119, .17); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .55), 0 20px 44px -26px rgba(143, 211, 182, .50); }
-.sy-s2 .sy-t { color: #8FD3B6; }
-.sy-role { margin: 0; font-size: clamp(1.75rem, 7.4vw, 2.5rem); font-weight: 700; line-height: 1.16; letter-spacing: -.02em; color: #F4F1EA; }
-.sy-does { margin: 6px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .72); }
+.sy-chip { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; color: #0C1512; background: var(--sand); }
+.sy-line .sy-c { padding: 14px 0 20px; }
+.sy-why { display: block; font-size: .9375rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .84); }
+.sy-dash .sy-why { color: rgba(244, 241, 234, .72); font-weight: 400; }
+.sy-role { margin: 0; font-size: clamp(1.75rem, 7.6vw, 2.625rem); font-weight: 700; line-height: 1.14; letter-spacing: -.02em; color: #F4F1EA; text-shadow: 0 0 .55em rgba(143, 211, 182, .30); }
+.sy-does { margin: 8px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .74); }
 .sy-changed { margin: 12px 0 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: #F4F1EA; }
 .sy-m { display: grid; gap: 12px; margin: 14px 0 0; }
 .sy-mr { display: block; padding-top: 12px; border-top: 1px solid rgba(244, 241, 234, .10); } /* 갈래 이름표 위 · 글은 그 아래 전체 폭(큰 글씨에서도 근거 줄이 좁아지지 않게) */
 .sy-mr dt { display: inline-block; margin: 0 0 6px; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; }
-.sy-mr[data-kind="real"] dt { color: #0C1512; background: #8FD3B6; }
-.sy-mr[data-kind="stock"] dt { color: #0C1512; background: #D8C08F; }
+.sy-mr[data-kind="real"] dt { color: #0C1512; background: var(--mint); }
+.sy-mr[data-kind="stock"] dt { color: #0C1512; background: var(--sand); }
 .sy-mr[data-kind="hype"] dt { color: rgba(244, 241, 234, .82); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .40); }
 .sy-mr dd { margin: 0; min-width: 0; }
-.sy-st { display: block; font-size: 1rem; line-height: 1.45; color: #F4F1EA; }
-.sy-w { margin: 2px 0 0; font-size: .8125rem; color: rgba(244, 241, 234, .78); }
+.sy-st { display: flex; align-items: center; gap: 8px; font-size: 1rem; line-height: 1.45; color: #F4F1EA; }
+.sy-ok { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: #0B1411; background: var(--mint); box-shadow: 0 0 14px rgba(143, 211, 182, .45); }
+.sy-ok svg { width: 16px; height: 16px; stroke-width: 2.8; }
+.sy-w { margin: 6px 0 0; font-size: .8125rem; color: rgba(244, 241, 234, .78); }
+/* 주식 투자금 — 시장마다 막대(옅은 모래빛 · 길이 = 지난 20거래일 변화 ÷ 가장 큰 변화) */
 .sy-mk { list-style: none; margin: 4px 0 0; padding: 0; font-size: .875rem; line-height: 1.55; color: rgba(244, 241, 234, .86); }
 .sy-mkt { margin: 0; } .sy-mp { font-weight: 700; }
+.sy-mb { display: grid; gap: 10px; margin: 10px 0 0; }
+.sy-mb .sy-mkt { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 10px; }
+.sy-ml { min-width: 0; }
+.sy-mb .chg20 { font-size: 1.0625rem; font-variant-numeric: tabular-nums; }
+.sy-bar { grid-column: 1 / -1; display: block; height: 9px; border-radius: 5px; background: rgba(244, 241, 234, .08); overflow: hidden; }
+.sy-bf { display: block; height: 100%; width: calc(var(--k, .04) * 100%); border-radius: 5px; background: linear-gradient(90deg, rgba(216, 192, 143, .55), #EBD29B); box-shadow: 0 0 12px rgba(235, 210, 155, .35); transform-origin: left center; }
+html[dir="rtl"] .sy-bf { transform-origin: right center; background: linear-gradient(270deg, rgba(216, 192, 143, .55), #EBD29B); }
 .sy .sy-mk .chg20.up { color: #FFA8A8; } .sy .sy-mk .chg20.down { color: #B5D2FF; }
-.sy-ev { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
-.sy-e { font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .70); }
+.sy-ev { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.sy-e { font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .72); }
 .sy-ed, .sy-ek, .sy-eo { margin-inline-end: 6px; }
 .sy-ek { font-weight: 700; color: rgba(244, 241, 234, .86); }
-.sy-ek[data-kind="real"] { color: #8FD3B6; } .sy-ek[data-kind="stock"], .sy-ek[data-kind="capex"] { color: #D8C08F; }
+.sy-ek[data-kind="real"] { color: var(--mint); } .sy-ek[data-kind="stock"], .sy-ek[data-kind="capex"] { color: var(--sand); }
 .sy-et { color: rgba(244, 241, 234, .86); text-decoration: underline; text-decoration-color: rgba(244, 241, 234, .30); text-underline-offset: 3px; }
-/* 선 — 장면 사이 · 선 옆(위)에 까닭 · 아래로 흐름(꺾쇠) · 다음으로 가는 선만 점선 */
-.sy-line { position: relative; margin: 0 0 0 30px; margin-inline-start: 30px; margin-inline-end: 0; padding: 12px 0 16px; padding-inline-start: 18px; border-inline-start: 2px solid rgba(244, 241, 234, .45); }
-.sy-line::after { content: ''; position: absolute; bottom: -1px; inset-inline-start: -7px; width: 10px; height: 10px; border-right: 2px solid rgba(244, 241, 234, .55); border-bottom: 2px solid rgba(244, 241, 234, .55); transform: rotate(45deg); }
-.sy-dash { border-inline-start-style: dashed; border-inline-start-color: rgba(244, 241, 234, .32); }
-.sy-why { display: block; font-size: .9375rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .82); }
-.sy-dash .sy-why { color: rgba(244, 241, 234, .70); font-weight: 400; }
-.sy-s3 { box-shadow: none; border: 1.5px dashed rgba(244, 241, 234, .34); }
+/* 다음 장면 — 점선 동그라미 · 점선 칸 · 「예상」 */
+.sy-s3 .sy-c { padding: 2px 14px 12px; border: 1.5px dashed rgba(244, 241, 234, .36); border-radius: 16px; }
 .sy-s3 .sy-t { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.sy-badge { display: inline-block; padding: 0 9px; border-radius: 999px; border: 1px dashed rgba(244, 241, 234, .55); font-size: .75rem; letter-spacing: .04em; color: rgba(244, 241, 234, .80); }
-.sy-role3 { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.35; color: rgba(244, 241, 234, .86); }
-.sy-check { margin: 8px 0 0; font-size: 1rem; line-height: 1.5; color: rgba(244, 241, 234, .82); }
-.sy-state { margin: 6px 0 0; font-size: .875rem; font-weight: 700; color: rgba(244, 241, 234, .72); }
-/* 아래 두 줄 — 확인되면 이어짐 · 나타나면 다시 판단 */
-.sy-if { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid rgba(244, 241, 234, .14); display: grid; gap: 8px; }
-.sy-if p { margin: 0; font-size: 1rem; line-height: 1.55; color: rgba(244, 241, 234, .86); }
+.sy-badge { display: inline-block; padding: 0 9px; border-radius: 999px; border: 1px dashed rgba(244, 241, 234, .55); font-size: .75rem; letter-spacing: .04em; color: rgba(244, 241, 234, .82); }
+.sy-role3 { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.35; color: rgba(244, 241, 234, .88); }
+.sy-check { margin: 8px 0 0; font-size: 1rem; line-height: 1.5; color: rgba(244, 241, 234, .84); }
+.sy-state { margin: 6px 0 0; font-size: .875rem; font-weight: 700; color: rgba(244, 241, 234, .74); }
+/* 아래 두 줄 — 그림 하나씩(↓ 확인되면 이어짐 · ↺ 나타나면 다시 판단) · 그림은 돈길 줄 칸에 맞춤 */
+.sy-if { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid rgba(244, 241, 234, .14); display: grid; gap: 12px; }
+.sy-if p { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); column-gap: 14px; align-items: start; margin: 0; font-size: 1rem; line-height: 1.55; color: rgba(244, 241, 234, .88); }
 .sy-if b { color: #F4F1EA; }
+.sy-ifi { justify-self: center; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; }
+.sy-ifi svg { width: 18px; height: 18px; stroke-width: 2.2; }
+.sy-if [data-if="on"] .sy-ifi { color: #0B1411; background: var(--mint); }
+.sy-if [data-if="re"] .sy-ifi { color: #FFCB6B; box-shadow: inset 0 0 0 1.5px rgba(255, 203, 107, .75); }
 .sy-oth { margin: 16px 0 0; }
 .sy-oh { margin: 0; font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .55); }
-.sy-none .sy-role { font-size: 1.5rem; }
+.sy-none .sy-role { font-size: 1.5rem; margin-top: 16px; }
 html[data-font-step="3"] .sy-role, html[data-font-step="4"] .sy-role { font-size: clamp(1.5rem, 8vw, 2.25rem); }
+/* 등장 — 이 창에서 처음 그릴 때 한 번(story.js 가 무대에 .sy-in · 글씨 단추 · 탭을 오가며 다시 그리면 멈춘 그림) · 일 → 줄 → 돈 받는 곳 → 점선 → 다음(약 2.5초)
+   app.js 의 data-drawn(그린 뒤 0.45초에 켜짐)에 묶지 않음 — 그러면 0.45초에서 등장이 끊김 */
+@keyframes sy-pop { 0% { transform: scale(.35); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: none; opacity: 1; } }
+@keyframes sy-line-x { from { transform: scaleX(0); } }
+@keyframes sy-line-y { from { transform: scaleY(0); } }
+@keyframes sy-grow { from { transform: scaleX(0); } }
+@keyframes sy-draw { from { stroke-dashoffset: 24; } }
+.sy-in .sy-mn1 { animation: sy-pop .55s cubic-bezier(.2, .9, .3, 1.2) .1s both; }
+.sy-in .sy-tr { transform-origin: left center; animation: sy-line-x .45s cubic-bezier(.3, .7, .3, 1) .45s both; }
+.sy-in .sy-mn2 { animation: sy-pop .7s cubic-bezier(.2, .9, .3, 1.25) .75s both; }
+.sy-in .sy-tr-d { animation-delay: 1.2s; }
+.sy-in .sy-mn3 { animation: sy-pop .55s cubic-bezier(.2, .9, .3, 1.2) 1.5s both; }
+html[dir="rtl"] .sy-in .sy-tr { transform-origin: right center; }
+.sy-in .sy-node { animation: sy-pop .5s cubic-bezier(.2, .9, .3, 1.2) .25s both; }
+.sy-in .sy-s2 .sy-node { animation-delay: 1s; }
+.sy-in .sy-s3 .sy-node { animation-delay: 1.8s; }
+.sy-in .sy-rl { transform-origin: center top; animation: sy-line-y .55s ease-out .45s both; }
+.sy-in .sy-line .sy-rl { animation-delay: .6s; }
+.sy-in .sy-s2 .sy-rl { animation-delay: 1.3s; }
+.sy-in .sy-dash .sy-rl { animation-delay: 1.5s; }
+.sy-in .sy-role { animation: cm-rise 1.1s cubic-bezier(.16, 1, .3, 1) 1.05s both; }
+.sy-in .sy-okp { stroke-dasharray: 24; animation: sy-draw .5s ease-out 1.45s both; }
+.sy-in .sy-bf { animation: sy-grow 1.1s cubic-bezier(.16, 1, .3, 1) calc(1.5s + var(--i, 0) * .16s) both; }
+.sy-in .sy-ifi { animation: sy-pop .5s cubic-bezier(.2, .9, .3, 1.2) 2.1s both; }
+.sy-in .sy-if [data-if="re"] .sy-ifi { animation-delay: 2.3s; }
 /* 무대 밑 — 나머지 시장 · 근거 모음(무대 안은 세 장면과 두 줄만) */
 .sy-more { margin: -6px 0 18px; padding: 0 4px; }
 .sy-more .sy-oh { margin: 12px 0 0; font-size: .8125rem; line-height: 1.5; color: var(--sub); }
@@ -1089,3 +1175,62 @@ html[data-font-step="3"] .sy-role, html[data-font-step="4"] .sy-role { font-size
 .sy-more .sy-e { color: var(--sub); }
 .sy-more .sy-ek, .sy-more .sy-ek[data-kind] { color: var(--ink); } /* 밝은 바탕에서 옥빛 · 주황 글씨는 대비 4.5:1 이 안 됨 — 갈래 이름은 먹빛 굵은 글씨 */
 .sy-more .sy-et { color: var(--ink); text-decoration-color: var(--sep); }
+
+/* ───────── 판 전체 움직임(2026-10-07 18:27 사장님 「지금 글로 되어 있다 움직이는 도식화로 만들어라」 · 18:31 「과감하게 알틀란스를 전면 혁신하라 섹시하게 스마트 하게」) ─────────
+   원칙: 글은 처음부터 보이고 그림이 움직인다(점 · 막대 · 줄 · 동그라미) · 그림 하나는 한 번 등장하고 멈춤 — 계속 움직이는 것은 「이 화면이 말하는 그 하나」와 흐르는 돈뿐
+   · 움직임 줄이기 설정이면 위 공통 규칙(* animation: none)이 모두 끔 — 끝 모습 그대로 · 움직임 도우미 motion.js([data-motion] → 보이면 .go) */
+/* 표지 숫자 그림 — 점 물결(왼쪽 위부터 하나씩 켜짐) · 이 화면이 말하는 점은 테가 숨 쉼 · 그날 별은 반짝임 · 막대는 차례로 자람 · 아래 꺾쇠는 「내려 보세요」로 살짝 오르내림 */
+@keyframes cm-pop { from { scale: 0; opacity: 0; } }
+@keyframes cm-me { 50% { outline-offset: 7px; outline-color: rgba(244, 241, 234, .38); } }
+@keyframes cm-tw { 50% { opacity: .55; } }
+@keyframes cm-bob { 50% { translate: 0 6px; } }
+.cm-dots .cm-d { animation: cm-pop .5s cubic-bezier(.2, .9, .3, 1.4) calc(.5s + var(--i, 0) * var(--st, 30ms)) both; }
+.cm-dots .cm-d.cm-me { animation: cm-pop .5s cubic-bezier(.2, .9, .3, 1.4) calc(.5s + var(--i, 0) * var(--st, 30ms)) both, cm-me 2.4s ease-in-out 2s infinite; }
+.cm-dots .cm-d.cm-day { animation: cm-pop .5s cubic-bezier(.2, .9, .3, 1.4) calc(.5s + var(--i, 0) * var(--st, 30ms)) both, cm-tw 2.2s ease-in-out 2.2s infinite; }
+.cm-bars .cm-f { transform-origin: left center; animation: lt-grow 1s cubic-bezier(.16, 1, .3, 1) calc(.55s + var(--i, 0) * .12s) both; }
+html[dir="rtl"] .cm-bars .cm-f { transform-origin: right center; }
+.cm-go { animation: cm-bob 1.9s ease-in-out 1.8s infinite; }
+/* 탭 「불장」 큰 흐름 장 — 줄마다 막대(길이 = 지난 20거래일 변화 ÷ 불장 1위 · 빨강 오름) · 장이 보일 때 위에서부터 차례로 자람(view-home.js · 처음 한 번) */
+.hf-row { grid-template-areas: "r c" "g c" "b b"; }
+.hf-bar { grid-area: b; display: block; height: 6px; margin: 5px 0 1px; border-radius: 3px; background: var(--fill); overflow: hidden; }
+.hf-bf { display: block; height: 100%; width: calc(var(--k, .03) * 100%); border-radius: 3px; background: var(--up); transform-origin: left center; }
+.hf-bf.s-down { background: var(--down); } .hf-bf.s-flat { background: var(--sub); }
+html[dir="rtl"] .hf-bf { transform-origin: right center; }
+[data-motion] .hf-bf { animation: lt-grow .9s cubic-bezier(.16, 1, .3, 1) calc(.08s + var(--i, 0) * .1s) both; }
+[data-motion]:not(.go) .hf-bf { animation-play-state: paused; } /* 보이기 전에는 처음 모습(길이 0)에서 기다림 */
+/* 기록 탭 — 시간 줄: 날마다 왼쪽 세로 줄 위에 기록 하나 = 점 하나(화면 바꿈 = 놋쇠빛 점 · 자료 바뀜 = 빈 점 · 장 이슈 = 먹빛 점) — 글 칸이 줄을 따라 내려감 */
+.lg-items { position: relative; padding-inline-start: 22px; }
+.lg-items::before { content: ''; position: absolute; top: 14px; bottom: 14px; inset-inline-start: 6px; width: 2px; border-radius: 1px; background: var(--sep); }
+.lg-item { position: relative; }
+.lg-item::before { content: ''; position: absolute; top: 15px; inset-inline-start: -21px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 2px var(--sub), 0 0 0 3px var(--bg); }
+.lg-item[data-kind="update"]::before { background: var(--geum); box-shadow: 0 0 0 3px var(--bg); }
+.lg-item[data-kind="issue"]::before { background: var(--ink); box-shadow: 0 0 0 3px var(--bg); }
+/* 한국 주식시장 안내 — 갈래 여섯을 번호 동그라미가 점선으로 이음(1 → 6 차례로 읽는 길) */
+.gd-sec { position: relative; }
+.gd-sec + .gd-sec::before { content: ''; position: absolute; top: -15px; height: 14px; inset-inline-start: calc(16px + .85rem * .875 - 1px); border-inline-start: 2px dashed var(--sep); }
+/* 한국 주식시장은 몇 위인가 — 순위 띠: 칸이 1위부터 차례로 켜지고 한국 칸이 솟아 숨 쉼 */
+@keyframes kr-me { 50% { box-shadow: 0 0 0 4px var(--fill); } }
+.kr-strip .kr-c { animation: cm-pop .35s cubic-bezier(.2, .9, .3, 1.4) calc(.15s + var(--i, 0) * 22ms) both; }
+.kr-strip .kr-c.kr-me { animation: cm-pop .5s cubic-bezier(.2, .9, .3, 1.6) calc(.3s + var(--i, 0) * 22ms) both, kr-me 2.4s ease-in-out 1.6s infinite; }
+/* 500만 원을 오래 들고 있었다면 — 회사마다 막대가 위에서부터 차례로 자람(10년 · 20년 · 30년을 바꾸면 다시) */
+.lt-fill { transform-origin: left center; animation: lt-grow .9s cubic-bezier(.16, 1, .3, 1) calc(.1s + var(--i, 0) * .07s) both; }
+html[dir="rtl"] .lt-fill { transform-origin: right center; }
+/* 한국 주식시장 안내 — 하루 시간 띠(한국 시각 08:00~20:00 · 막대 다섯 = 아래 글 줄과 같은 사실) · 보일 때 위에서부터 차례로 자람 · 시간 축은 오른쪽부터 쓰는 말에서도 왼쪽 → 오른쪽 */
+.gd-day { margin: 4px 0 12px; padding: 12px 12px 8px; border-radius: 14px; background: var(--fill); }
+.gd-trs { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.gd-tr { display: grid; gap: 4px; }
+.gd-tl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: .9375rem; line-height: 1.35; color: var(--ink); }
+.gd-tl b { font-weight: 700; }
+.gd-tt { color: var(--sub); font-size: .8125rem; font-variant-numeric: tabular-nums; }
+.gd-tw { position: relative; display: block; height: 12px; border-radius: 6px; background-color: var(--card); background-image: linear-gradient(to right, var(--sep) 1px, transparent 1px); background-size: 50% 100%; } /* 세로 눈금 줄 = 08:00 · 14:00 · 20:00 */
+.gd-tb { position: absolute; top: 0; bottom: 0; left: var(--a); width: var(--w); min-width: 4px; border-radius: 6px; transform-origin: left center; }
+.gd-tb.gd-reg { background: var(--fire-bg); }
+.gd-tb.gd-auc { background: var(--geum); }
+.gd-tb.gd-aft { background: var(--sub); }
+.gd-tb.gd-nxt { top: 2px; bottom: 2px; border: 1.5px dashed var(--sub); background: none; }
+.gd-tks { position: relative; display: block; height: 1.4em; margin-top: 6px; font-size: .8125rem; color: var(--sub); font-variant-numeric: tabular-nums; }
+.gd-tk { position: absolute; top: 0; left: var(--a); transform: translateX(-50%); white-space: nowrap; }
+.gd-tk:first-child { transform: none; } .gd-tk:last-child { transform: translateX(-100%); }
+html[dir="rtl"] :is(.gd-tw, .gd-tks) { direction: ltr; }
+[data-motion] .gd-tb { animation: lt-grow .8s cubic-bezier(.16, 1, .3, 1) calc(.1s + var(--i, 0) * .14s) both; }
+[data-motion]:not(.go) .gd-tb { animation-play-state: paused; }
