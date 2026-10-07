@@ -1,0 +1,87 @@
+{
+ "market": "jp",
+ "startedAt": "2026-10-07T14:48:22.898Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-07T14:48:22.970Z",
+   "mode": "update",
+   "run": "reports/atlas11/jp/runs/2026-10-07T14-48-22",
+   "local": {
+    "date": "2026-10-07",
+    "hm": "23:48",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:23.873Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/8316.T/day"
+  },
+  {
+   "name": "일봉(지금 고른 회사)",
+   "at": "2026-10-07T14:48:39.528Z",
+   "asked": 365,
+   "got": 365,
+   "latest": "2026-10-07"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:39.696Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/8308.T"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-07T14:48:53.619Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.N225/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-07T14:48:53.778Z",
+   "news": 365,
+   "newsItems": 4544,
+   "index": [
+    "닛케이 225 2026-10-07",
+    "토픽스 2026-10-07"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-07T14:48:53.937Z",
+   "assets": 365,
+   "asOf": "2026-10-07",
+   "late": 0,
+   "sessions": 286,
+   "inputCopy": {
+    "file": "reports/atlas11/jp/runs/2026-10-07T14-48-22/input.json.gz",
+    "sha256": "d20ecf7f8ff1f95c2d809e5fc2105ce581385e732f850753936294acb1c04062",
+    "bytes": 585081
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/8306.T/day?startDateTime=202508030000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 861
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/8308.T?pageSize=20&page=1",
+   "status": 200,
+   "ms": 166
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.N225/day?startDateTime=202609170000&endDateTime=202610072359",
+   "status": 200,
+   "ms": 158
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-07T14:48:53.937Z"
+}
