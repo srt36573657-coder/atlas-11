@@ -39,7 +39,7 @@ export function expectOf(b, board, agenda, story, log, others) {
   E.start = !st ? Q('start') : st.ready ? (picks.length && fin(st.typical?.mdd) ? {worst: Math.min(...picks), typ: st.typical.mdd, n: picks.length} : Q('start')) : {have: st.have?.days ?? 0, need: st.rule?.days ?? 756};
   const rot = b === 'kr' ? story?.rotation : story?.rotations?.[b];
   E.rot = rot && !rot.none && rot.pair ? rot : null; // 없으면 첫 화면은 빈 하늘(E.home)
-  E.home = E.rot ? {from: rot.pair.from.id, to: rot.pair.to.id, start: rot.pair.start, days: rot.pair.days, outAmt: rot.out[0].amount, inAmt: rot.in[0].amount, fomo: rot.fomo.to, waves: (rot.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])} : Q('home'); // 파장 1~5차(06:46 · 셈은 waves_verify.py 가 따로)
+  E.home = E.rot ? {from: rot.pair.from.id, to: rot.pair.to.id, start: rot.pair.start, days: rot.pair.days, outAmt: rot.out[0].amount, inAmt: rot.in[0].amount, outs: (rot.out ?? []).slice(0, 3).map(x => [x.id, x.amount]), ins: (rot.in ?? []).slice(0, 3).map(x => [x.id, x.amount]), fomo: rot.fomo.to, waves: (rot.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])} : Q('home'); // 파장 1~5차(06:46 · 셈은 waves_verify.py 가 따로) · 빠지는 곳 · 들어가는 곳 1위~3위(10월 8일 12:43 · 12:59 「1등부터 3등까지 · 가장 많이 나간 순」)
   return E;
 }
 /** data-check(그림이 실은 값) ↔ 기대값 — 숫자는 소수 여섯째 자리까지 · bad(what) 로 알림 · 맞댄 숫자 수를 돌려줌 */
