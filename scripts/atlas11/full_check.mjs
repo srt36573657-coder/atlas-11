@@ -83,6 +83,10 @@ const CRAWL = async ({routes, collect}) => {
     m.weird = (document.getElementById('main')?.textContent.match(/\b(NaN|undefined|Infinity|null)\b|\[object /g) ?? []).slice(0, 3); // 접힌 칸 안 글까지(자리 셈 없이 빠르게)
     m.links = [...document.querySelectorAll('#main a[href^="#/"]')].map(a => a.getAttribute('href')).filter(h => /^#\/(i|stock|map\/f)\//.test(h));
     m.errs = window.__errs.slice(e0);
+    // 맨 위 하규 응원 · 건의 줄(2026-10-08 14:42 마카오 시각 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」) — 모든 화면: 위 막대 바로 다음 · 본문 바로 앞 · 응원 글 · 문자 고리 · 맨 아래 줄에는 다시 나오지 않음
+    { const t = document.getElementById('topnote'), tp = document.getElementById('top'), mn = document.getElementById('main');
+      m.note = !!t && tp?.nextElementSibling === t && t.nextElementSibling === mn && t.getBoundingClientRect().height > 0 && !!t.querySelector('.tn-cheer')?.textContent.trim() && !!t.querySelector('.tn-contact a[href="sms:+821090117377"]')?.textContent.includes('010-9011-7377');
+      m.footDup = !!document.querySelector('#main .b-foot a[href^="sms:"], #main .b-foot .b-cheer, #main .b-foot .b-contact'); }
     const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), left = new Set(), texts = new Set();
     for (let n = w.nextNode(); n; n = w.nextNode()) if (KO.test(n.nodeValue) && !skip(n.parentElement)) { if (collect) texts.add(n.nodeValue); else left.add(n.nodeValue.trim().slice(0, 60)); }
     if (collect) {
@@ -157,6 +161,8 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   if (m.errs?.length) no('화면 오류: ' + m.errs.slice(0, 2).join(' / '));
   if (m.sw > m.cw + 1) no(`옆으로 넘침 ${m.sw} > ${m.cw}`);
   if (m.over?.length) no('그림 칸 부품이 옆으로 넘침: ' + m.over.join(' '));
+  if (!m.note) no('맨 위 하규 응원 · 건의 줄이 없음(위 막대 바로 아래 · 문자 고리 010-9011-7377)');
+  if (m.footDup) no('맨 아래 줄에 하규 응원 · 건의 줄이 또 있음(맨 위로 옮김 · 규칙 1)');
   if (bigFont) return; // 가장 큰 글씨는 옆 넘침만(한 화면은 보통 글씨 규칙)
   if (m.arts !== 1) no(`그림 수 ${m.arts}(1이어야 함)`);
   if (!m.done) no('움직임 줄이기 설정에서 끝 모습이 아님');
