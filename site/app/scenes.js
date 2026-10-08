@@ -19,7 +19,7 @@
      빈 하늘     — 그 화면 그림이 그릴 값이 없는 날(어느 화면이든 · 「없음」 · 「0곳」 · 숫자를 지어내지 않음) */
 import {h, korDate, pct, finite, signCls} from './util.js';
 import {artStage, artSection, defs, hills, chgEl, sealEl, coName, grName, p1, JAR, star} from './art.js';
-import {actor, stage} from './cast.js'; // 배우 셋(돼지 로미오 = 돈 · 고양이 줄리엣 = 들어가는 곳 · 고슴도치 티볼트 = 포모) · 무대 — 2026-10-08 06:40 영화
+import {actor, stage} from './cast.js'; // 배우 둘(신사 · 숙녀 — 2026-10-08 10:34 마카오 시각 「신사 숙녀다운 애들로 · 사람으로」) · 무대(06:40 영화)
 import {familiesByRise, familyOf, riseDesc, meanOf} from './family.js';
 import {plain} from './comment.js';
 
@@ -68,15 +68,13 @@ ${hills(p, wy + 2, 0.55)}
 <g class="ak-up" data-at="1">${ups.join('')}${ridges.join('')}<rect x="0" y="${wy - 16}" width="360" height="16" fill="url(#${p}-mist)"/></g>
 ${dns.length ? `<g class="ak-dn" data-at="2">${dns.join('')}</g>` : `<path class="ak-draw" data-at="2" pathLength="100" d="M30,${wy + 10} C90,${wy + 4} 150,${wy + 16} 210,${wy + 9} C260,${wy + 4} 300,${wy + 14} 330,${wy + 9}" fill="none" stroke="#8FD3B6" stroke-opacity=".35" stroke-width="1.4"/>`}
 <path class="ak-draw" data-at="0" pathLength="100" d="M6,${wy} L354,${wy}" stroke="#CFE7DC" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round"/>
-${(() => { // 결 — 가장 붉은 땅 꼭대기에 줄리엣(만세) · 가장 푸른 골짜기(물 아래)에 로미오(울상 · 물에 빠짐) — 한 묶음으로 한 번에(규칙 28)
+${(() => { // 결 — 가장 붉은 땅 꼭대기에 숙녀(만세) · 가장 푸른 골짜기(물 아래)에 신사(울상 · 물에 빠짐) — 한 묶음으로 한 번에(규칙 28)
     const li = n - 1, lx = xs[li], ly = vals[li] < 0 ? Math.min(H - 6, wy + Math.max(3, -vals[li] * sc) * 0.55 + 20) : wy + 2;
-    const cat = vals[0] > 0 ? actor('cat', {x: sx, y: Math.max(38, wy - top + 3), s: 0.4, face: 'cheer', P: p}) : actor('cat', {x: sx, y: wy + 2, s: 0.4, face: 'shock', P: p});
-    const pig = n > 1 && vals[li] < 0 ? actor('pig', {x: Math.max(30, Math.min(330, lx)), y: ly, s: 0.36, face: 'sad', P: p}) : '';
-    return `<g class="ak-mv" data-at="3" data-v="y0:${vals[0] > 0 ? 44 : -30}px">${cat}${pig}</g>`; })()}
+    const lady = vals[0] > 0 ? actor('lady', {x: sx, y: Math.max(44, wy - top + 3), s: 0.44, face: 'cheer', P: p}) : actor('lady', {x: sx, y: wy + 2, s: 0.44, face: 'shock', P: p});
+    const gent = n > 1 && vals[li] < 0 ? actor('gent', {x: Math.max(30, Math.min(330, lx)), y: ly, s: 0.4, face: 'sad', P: p}) : '';
+    return `<g class="ak-mv" data-at="3" data-v="y0:${vals[0] > 0 ? 44 : -30}px">${lady}${gent}</g>`; })()}
 </svg>`;
 }
-/** 봉우리 자막 — 오른 곳 · 내린 곳이 다 있으면 물에 빠진 로미오(울상) · 모두 내리면 깜짝 줄리엣 · 모두 오르면 만세 줄리엣 */
-const peakCap = (up, dn) => (up && dn ? {t: '줄리엣은 가장 붉은 언덕 위, 로미오는 물속', who: 'pig', face: 'sad'} : !up ? {t: '모두 물속 — 줄리엣도 깜짝', who: 'cat', face: 'shock'} : {t: '모두 언덕 위 — 물에 빠진 이가 없다', who: 'cat', face: 'cheer'});
 /** 지도(#/map) — 땅 12개 · 가장 붉은 땅 · 가장 푸른 땅 · 붉은 땅 수 */
 export function mapArt(board) {
   const fams = familiesByRise(board?.groups ?? []).filter(f => finite(f.avg));
@@ -86,7 +84,7 @@ export function mapArt(board) {
   const labels = lab(
     col('a', tag(tagA), grName(top.fam.label, 'ra-n ra-up-n' + longCls(top.fam.label)), h('p', {class: 'ra-m'}, chgEl(top.avg)), sealEl(null, `땅 ${fams.length}개 중 ${up}개 붉음`, 4)),
     fams.length > 1 ? col('b', tag(tagB), grName(low.fam.label, 'ra-n ra-dn-n' + longCls(low.fam.label)), h('p', {class: 'ra-m'}, chgEl(low.avg))) : null);
-  const stage = artStage({key: 'map', cap: peakCap(up, fams.filter(f => f.avg < 0).length), svg: peaksSvg('akm', vals), labels: check(labels, {top: top.fam.id, topAvg: +top.avg.toFixed(6), low: low.fam.id, lowAvg: +low.avg.toFixed(6), up, n: fams.length}),
+  const stage = artStage({key: 'map', svg: peaksSvg('akm', vals), labels: check(labels, {top: top.fam.id, topAvg: +top.avg.toFixed(6), low: low.fam.id, lowAvg: +low.avg.toFixed(6), up, n: fams.length}),
     steps: [{c: 0, at: 0, ms: 900}, {c: 0, at: 1, ms: 1500}, {c: 1, at: 2, ms: 1250}, {c: 2, at: 3, ms: 1350}, {c: 3, at: 4, ms: 900}],
     says: [[tagA, top.fam.label, p1(top.avg)], [tagB, low.fam.label, p1(low.avg)], [`땅 ${fams.length}개 중 ${up}개 붉음`], ['갈래 평균', '지난 20거래일']]});
   return artSection({key: 'map', label: '지도', kicker: '지도', when: `지난 20거래일 · ${when(board.asOf)}`, stage});
@@ -100,7 +98,7 @@ export function landArt(board, famId) {
     col('a', tag('1위'), grName(g0.label, 'ra-n ra-up-n' + longCls(g0.label)), h('p', {class: 'ra-m'}, chgEl(g0.change20))),
     g1 ? col('b', tag('2위'), grName(g1.label, 'ra-n' + longCls(g1.label)), h('p', {class: 'ra-m'}, chgEl(g1.change20))) : null,
     srow(sealEl(null, `업종 ${gs.length}개 가운데 ${up}개 오름`, 4)));
-  const stage = artStage({key: 'land-' + famId, cap: peakCap(up, gs.filter(x => x.change20 < 0).length), svg: peaksSvg('akl', gs.map(g => g.change20)), labels: check(labels, {g0: g0.id, v0: +g0.change20.toFixed(6), g1: g1?.id ?? null, up, n: gs.length}),
+  const stage = artStage({key: 'land-' + famId, svg: peaksSvg('akl', gs.map(g => g.change20)), labels: check(labels, {g0: g0.id, v0: +g0.change20.toFixed(6), g1: g1?.id ?? null, up, n: gs.length}),
     steps: [{c: 0, at: 0, ms: 900}, {c: 0, at: 1, ms: 1500}, {c: 1, at: 2, ms: 1250}, {c: 2, at: 3, ms: 1350}, {c: 3, at: 4, ms: 900}],
     says: [['1위', g0.label, p1(g0.change20)], g1 ? ['2위', g1.label, p1(g1.change20)] : [], [`업종 ${gs.length}개 가운데 ${up}개 오름`], ['지난 20거래일']]});
   const fam = familyOf(g0.label);
@@ -126,8 +124,8 @@ ${hills(p, H, 0.85)}
 <g class="ak-mv" data-at="0" data-v="y0:${F(H - Math.min(...ys) + 10)}px">${cs.map((_, k) => kite(xs[k], ys[k], k)).join('')}</g>
 <g class="ak-draw" data-at="1" fill="none" stroke="#E8E2D2" stroke-opacity=".5" stroke-width=".9">${strings}</g>
 <path class="ak-x" data-at="2" d="M12,${F(ay)} H348" stroke="#F2C46B" stroke-width="1.6" stroke-dasharray="5 5" stroke-opacity=".85"/>
-<g class="ak-pop" data-at="3"><circle cx="${F(xs[0])}" cy="${F(ys[0])}" r="31" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".55" stroke-width="1.2"/>${actor('pig', {x: xs[0] + (xs[0] > 300 ? -32 : 32), y: ys[0] + 28, s: 0.3, face: 'cheer', P: p})}</g>
-${actor('cat', {x: 180, y: H - 1, s: 0.4, face: finite(avg) && avg < 0 ? 'shock' : 'happy', P: p})}
+<g class="ak-pop" data-at="3"><circle cx="${F(xs[0])}" cy="${F(ys[0])}" r="31" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".55" stroke-width="1.2"/>${actor('gent', {x: xs[0] + (xs[0] > 300 ? -32 : 32), y: ys[0] + 30, s: 0.34, face: 'cheer', P: p})}</g>
+${actor('lady', {x: 180, y: H - 1, s: 0.42, face: finite(avg) && avg < 0 ? 'shock' : 'happy', P: p})}
 </svg>`;
 }
 /** 업종(#/i/<업종>) — 1위 회사 · 업종 평균 · 몇 곳이 올랐나 */
@@ -140,7 +138,7 @@ export function industryArt(board, g, upLineText) {
   const labels = lab(
     col('a', tag('1위'), coName(c0.name, 'ra-n' + longCls(c0.name)), h('p', {class: 'ra-m'}, chgEl(c0.change20)), sealEl(null, upLineText, 4)),
     col('b', tag('업종 평균'), h('p', {class: 'ra-m ra-mb'}, chgEl(g.change20))));
-  const stage = artStage({key: 'ind-' + g.id, cap: !finite(g.change20) || g.change20 === 0 ? {t: '바람이 멎었다', who: 'cat', face: 'sleepy'} : g.change20 > 0 ? {t: '연이 높이 떴다 — 맨 위 연에 로미오', who: 'pig', face: 'cheer'} : {t: '바람이 약하다 — 줄리엣이 실을 꽉 쥐었다', who: 'cat', face: 'shock'}, svg: kitesSvg('aki', cs, g.change20), labels: check(labels, {lead: c0.code, v0: +c0.change20.toFixed(6), avg: finite(g.change20) ? +g.change20.toFixed(6) : null, n: cs.length}),
+  const stage = artStage({key: 'ind-' + g.id, svg: kitesSvg('aki', cs, g.change20), labels: check(labels, {lead: c0.code, v0: +c0.change20.toFixed(6), avg: finite(g.change20) ? +g.change20.toFixed(6) : null, n: cs.length}),
     steps: [{c: 0, at: 0, ms: 1400}, {c: 0, at: 1, ms: 1050}, {c: 1, at: 2, ms: 1100}, {c: 2, at: 3, ms: 950}, {c: 3, at: 4, ms: 900}],
     says: [['1위', c0.name, p1(c0.change20)], ['업종 평균', p1(g.change20)], [upLineText], ['지난 20거래일']]});
   return artSection({key: 'industry', label: g.label, kicker: g.label, when: `${cs.length}곳 · 지난 20거래일 · ${when(board.asOf)}`, stage});
@@ -159,7 +157,7 @@ ${hills(p, H, 0.5)}
 <path d="M10,${F(y(0))} H350" stroke="#F4F1EA" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 5"/>
 ${mine ? `<path class="ak-draw" data-at="0" pathLength="100" d="${path(mine)}" fill="none" stroke="#F2C46B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#${p}-glow)"/>` : ''}
 <g class="ak-draw" data-at="1" fill="none" stroke="#A9C7BA" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${pr.map(r => `<path pathLength="100" d="${path(r)}"/>`).join('')}</g>
-<g class="ak-pop" data-at="2"><circle cx="${F(ex)}" cy="${F(ey)}" r="15" fill="url(#${p}-halo)"/>${actor('pig', {x: ex - 8, y: Math.max(38, Math.min(H - 2, ey + 15)), s: 0.34, face: !mine ? 'sleepy' : mine.at(-1) > 0 ? 'cheer' : mine.at(-1) < 0 ? 'sad' : 'happy', P: p})}</g>
+<g class="ak-pop" data-at="2"><circle cx="${F(ex)}" cy="${F(ey)}" r="15" fill="url(#${p}-halo)"/>${actor('gent', {x: ex - 8, y: Math.max(40, Math.min(H - 2, ey + 16)), s: 0.36, face: !mine ? 'sleepy' : mine.at(-1) > 0 ? 'cheer' : mine.at(-1) < 0 ? 'sad' : 'happy', P: p})}</g>
 </svg>`;
 }
 /** 회사(#/stock/CODE) — 지난 20거래일 · 업종 평균 · 업종 안 자리(comment.js companyComment 의 머리 문장)
@@ -174,7 +172,7 @@ export function companyArt(board, s, cm) {
     col('a', tag('지난 20거래일'), h('p', {class: 'ra-m ra-mb'}, chgEl(s.change20))),
     col('b', tag('업종 평균'), h('p', {class: 'ra-m ra-mb'}, chgEl(g?.change20))),
     srow(sealEl(null, head ?? (g ? '없음' : '업종 모름'), 3))); // 결(낙관) — 논평 머리가 없는 날(값 · 업종이 없는 회사)도 넷째 걸음이 비지 않게(v3 걸음 계획 검사가 찾음)
-  const stage = artStage({key: 'co-' + s.code, cap: !finite(s.change20) ? {t: '로미오의 독백 — 셀 날이 아직 모자라다', who: 'pig', face: 'sleepy'} : s.change20 > 0 ? {t: '로미오의 독백 — 지난 20거래일 올랐다', who: 'pig', face: 'cheer'} : s.change20 < 0 ? {t: '로미오의 독백 — 지난 20거래일 내렸다', who: 'pig', face: 'sad'} : {t: '로미오의 독백 — 제자리', who: 'pig', face: 'smug'}, svg: strokesSvg('akc', me, peers), labels: check(labels, {code: s.code, v: finite(s.change20) ? +s.change20.toFixed(6) : null, avg: finite(g?.change20) ? +g.change20.toFixed(6) : null, peers: peers.length}),
+  const stage = artStage({key: 'co-' + s.code, svg: strokesSvg('akc', me, peers), labels: check(labels, {code: s.code, v: finite(s.change20) ? +s.change20.toFixed(6) : null, avg: finite(g?.change20) ? +g.change20.toFixed(6) : null, peers: peers.length}),
     steps: [{c: 0, at: 0, ms: 1500}, {c: 1, at: 1, ms: 1250}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 900}],
     says: [['지난 20거래일', say(s.change20)], ['업종 평균', say(g?.change20)], [], [head ?? (g ? '없음' : '업종 모름')]]});
   return artSection({key: 'company', label: '지난 20거래일', kicker: '지난 20거래일', when: s.cFrom ? `${korDate(s.cFrom)}부터 ${korDate(s.date)}까지` : when(s.date), stage, cls: 'ak-mid'});
@@ -194,7 +192,7 @@ ${hills(p, H, 0.6)}
 <path class="ak-draw" data-at="0" pathLength="100" d="M${P[0]} C${P[1]} ${P[2]} ${P[3]} ${twigs}" fill="none" stroke="#3A2A22" stroke-width="5" stroke-linecap="round"/>
 <path d="M${P[0]} C${P[1]} ${P[2]} ${P[3]}" fill="none" stroke="#8C6A55" stroke-opacity=".35" stroke-width="1.4" stroke-linecap="round"/>
 <g class="ak-pop" data-at="1">${fl.map((f, k) => flower(f.cx, f.cy, f.r, k === 0)).join('')}</g>
-<g class="ak-pop" data-at="2"><circle cx="${F(fl[0].cx)}" cy="${F(fl[0].cy)}" r="${F(fl[0].r * 2.6)}" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".5" stroke-width="1.2"/>${actor('cat', {x: Math.min(328, fl[0].cx + 2), y: Math.min(H - 2, fl[0].cy + 58), s: 0.42, face: 'wink', prop: ['mask'], P: p})}</g>
+<g class="ak-pop" data-at="2"><circle cx="${F(fl[0].cx)}" cy="${F(fl[0].cy)}" r="${F(fl[0].r * 2.6)}" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".5" stroke-width="1.2"/>${actor('lady', {x: Math.min(328, fl[0].cx + 2), y: Math.min(H - 2, fl[0].cy + 60), s: 0.44, face: 'wink', prop: ['mask', 'fan'], P: p})}</g>
 </svg>`;
 }
 /** 예비(#/similar) — 닮은 n곳 · 1위 · 불장 공통점 수 */
@@ -205,7 +203,7 @@ export function similarArt(board) {
   const labels = lab(
     col('a', tag('1위'), coName(x0.name, 'ra-n' + longCls(x0.name)), h('p', {class: 'ra-m'}, chgEl(x0.change20)), sealEl('예비', `${items.length}곳`, 3)),
     col('b', tag('불장 회사들의 공통점'), h('p', {class: 'ra-big'}, `${common}가지`)));
-  const stage = artStage({key: 'similar', cap: {t: `가면무도회 — 불장을 닮은 손님 ${items.length}곳`, who: 'cat', face: 'wink'}, svg: plumSvg('aks', items, common), labels: check(labels, {lead: x0.code, v0: +x0.change20.toFixed(6), n: items.length, common}),
+  const stage = artStage({key: 'similar', svg: plumSvg('aks', items, common), labels: check(labels, {lead: x0.code, v0: +x0.change20.toFixed(6), n: items.length, common}),
     steps: [{c: 0, at: 0, ms: 1350}, {c: 1, at: 1, ms: 1100}, {c: 2, at: 2, ms: 900}, {c: 3, at: 3, ms: 900}],
     says: [['예비', `${items.length}곳`], ['1위', x0.name, p1(x0.change20)], ['불장 회사들의 공통점', `${common}가지`], []]});
   return artSection({key: 'similar', label: '예비', kicker: '예비', when: when(board.asOf), stage});
@@ -223,7 +221,7 @@ function lanternsSvg(p, items) {
 ${hills(p, H, 0.7)}
 <circle cx="318" cy="26" r="9" fill="#F4F1EA" fill-opacity=".85"/><circle cx="321.5" cy="24" r="7" fill="#DCD8CC" fill-opacity=".45"/>
 <g class="ak-mv" data-at="0" data-v="y0:${F(H - 20)}px" filter="url(#${p}-glow)">${items.map((_, k) => lamp(xs[k], ys[k], k)).join('')}</g>
-<g class="ak-pop" data-at="1"><circle cx="${F(xs[0])}" cy="${F(ys[0])}" r="20" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".5" stroke-width="1.1"/>${actor('pig', {x: xs[0] + (xs[0] > 300 ? -22 : 22), y: ys[0] + 36, s: 0.3, face: 'cheer', P: p})}</g>
+<g class="ak-pop" data-at="1"><circle cx="${F(xs[0])}" cy="${F(ys[0])}" r="20" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".5" stroke-width="1.1"/>${actor('gent', {x: xs[0] + (xs[0] > 300 ? -22 : 22), y: ys[0] + 38, s: 0.32, face: 'cheer', P: p})}</g>
 <path class="ak-x" data-at="2" d="M10,${F(ly)} H350" stroke="#F4F1EA" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="4 5"/>
 </svg>`;
 }
@@ -235,7 +233,7 @@ export function riseArt(board) {
   const labels = lab(
     col('a', tag('1위'), coName(x0.name, 'ra-n' + longCls(x0.name)), h('p', {class: 'ra-m'}, chgEl(x0.change20)), sealEl('오름 상위', `${n}곳`, 3)),
     n > 1 ? col('b', tag(`${n}위`), coName(xl.name, 'ra-n' + longCls(xl.name)), h('p', {class: 'ra-m'}, chgEl(xl.change20))) : null);
-  const stage = artStage({key: 'rise', cap: {t: `풍등 축제 — 불장 밖에서 높이 난 ${n}곳`, who: 'pig', face: 'cheer'}, svg: lanternsSvg('akr', items), labels: check(labels, {lead: x0.code, v0: +x0.change20.toFixed(6), last: xl.code, vl: +xl.change20.toFixed(6), n}),
+  const stage = artStage({key: 'rise', svg: lanternsSvg('akr', items), labels: check(labels, {lead: x0.code, v0: +x0.change20.toFixed(6), last: xl.code, vl: +xl.change20.toFixed(6), n}),
     steps: [{c: 0, at: 0, ms: 1550}, {c: 1, at: 1, ms: 900}, {c: 2, at: 2, ms: 1000}, {c: 3, at: 3, ms: 900}],
     says: [['오름 상위', `${n}곳`], ['1위', x0.name, p1(x0.change20)], [`${n}위`, xl.name, p1(xl.change20)], ['지난 20거래일']]});
   return artSection({key: 'rise', label: '오름 상위', kicker: '오름 상위', when: `지난 20거래일 · ${when(board.asOf)}`, stage});
@@ -259,7 +257,7 @@ function beadsSvg(p, up, down) {
 ${hills(p, H, 0.55)}
 <g class="ak-mv" data-at="0" data-v="y0:-${F(Math.max(60, 180 - a.top + 20))}px" fill="#FF7272">${a.svg}</g>
 <g class="ak-mv" data-at="1" data-v="y0:-${F(Math.max(60, 180 - b.top + 20))}px" fill="#82B6FF">${b.svg}</g>
-${bowl(92, p)}${bowl(268, p)}${actor('cat', {x: 30, y: H - 2, s: 0.4, face: up >= down ? 'cheer' : 'sad', P: p})}${actor('hog', {x: 330, y: H - 2, s: 0.38, face: down > up ? 'angry' : 'sad', k: 1.1, P: p})}
+${bowl(92, p)}${bowl(268, p)}${actor('lady', {x: 30, y: H - 2, s: 0.44, face: up >= down ? 'cheer' : 'sad', P: p})}${actor('gent', {x: 330, y: H - 2, s: 0.44, face: down > up ? 'angry' : 'sad', P: p, flip: true})}
 <g class="ak-mv" data-at="2" data-v="y0:${F(Math.max(20, 150 - a.top + 10))}px"><circle cx="92" cy="${F(Math.max(14, a.top - 18))}" r="16" fill="url(#${p}-halo)"/><circle cx="92" cy="${F(Math.max(14, a.top - 18))}" r="6.5" fill="url(#${p}-gold)" stroke="#FFE7AE" stroke-width=".8"/></g>
 </svg>`;
 }
@@ -272,7 +270,7 @@ export function roadArt(board) {
     col('a', tag('오름'), big(`${up}곳`, 1)),
     col('b', tag('내림'), big(`${down}곳`, -1)),
     srow(h('p', {class: 'ra-seal ra-seal-co', 'data-at': '3'}, h('span', {class: 'ra-st'}, '1위'), ' ', h('span', {class: 'ra-sw', 'data-ident': ''}, c0.name), ' ', h('span', {class: 'ra-sw ra-sv'}, p1(c0.change20)))));
-  const stage = artStage({key: 'road', cap: {t: `광장의 싸움 — 붉은 편 ${up}곳 · 푸른 편 ${down}곳`, who: up >= down ? 'cat' : 'hog', face: up >= down ? 'cheer' : 'angry'}, svg: beadsSvg('akd', up, down), labels: check(labels, {up, down, N, lead: c0.code, v0: +c0.change20.toFixed(6)}),
+  const stage = artStage({key: 'road', svg: beadsSvg('akd', up, down), labels: check(labels, {up, down, N, lead: c0.code, v0: +c0.change20.toFixed(6)}),
     steps: [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1300}, {c: 2, at: 2, ms: 1000}, {c: 3, at: 3, ms: 900}],
     says: [[`${N}곳 중 ${up}곳이 올랐다`], [`${N}곳 중 ${down}곳이 내렸다`], ['1위', c0.name, p1(c0.change20)], ['지난 20거래일']]});
   return artSection({key: 'road', label: '출목표', kicker: '출목표', when: `${N}곳 · 지난 20거래일 · ${when(board.asOf)}`, stage});
@@ -290,7 +288,7 @@ function moonSvg(p, dd, level) {
 ${hills(p, H, 0.6)}
 <path class="ak-draw" data-at="0" pathLength="100" d="M${F(ARC.cx - ARC.r * Math.sin(rad(ARC.a)))},${F(ey)} A${ARC.r},${ARC.r} 0 0 1 ${F(ex)},${F(ey)}" fill="none" stroke="#F4F1EA" stroke-opacity=".3" stroke-width="1.2"/>
 ${mk}
-${actor('pig', {x: 36, y: H - 3, s: 0.4, face: 'happy', prop: ['coin'], P: p})}${actor('cat', {x: 326, y: H - 3, s: 0.4, face: 'love', P: p, flip: true})}
+${actor('gent', {x: 36, y: H - 3, s: 0.46, face: 'happy', prop: ['watch'], P: p})}${actor('lady', {x: 324, y: H - 3, s: 0.46, face: 'joy', prop: ['fan'], P: p, flip: true})}
 <g class="ak-turn" data-at="1" data-v="ox:${ARC.cx}px;oy:${ARC.cy}px;a0:${-ARC.a}deg;a1:${ARC.a}deg"><circle cx="${ARC.cx}" cy="${ARC.cy - ARC.r}" r="18" fill="url(#${p}-halo)"/><circle cx="${ARC.cx}" cy="${ARC.cy - ARC.r}" r="8" fill="#F4F1EA"/><circle cx="${ARC.cx + 3.5}" cy="${ARC.cy - ARC.r - 2}" r="6.4" fill="#DCD8CC" fill-opacity=".55"/></g>
 <g class="ak-pop" data-at="2" filter="url(#${p}-glow)">${stars}</g>
 </svg>`;
@@ -303,7 +301,7 @@ export function agendaArt(cm) {
   const labels = lab(
     col('a', tag('그날'), h('p', {class: 'ra-n ra-long'}, korDate(top.date)), nameEl),
     col('b', tag('남은 날'), big(dd ? `${dd}일 뒤` : '그날'), sealEl(null, `별 ${top.level}개`, 3)));
-  const stage = artStage({key: 'agenda', cap: dd ? {t: `약속한 날까지 ${dd}일 — 줄리엣이 기다린다`, who: 'cat', face: 'love'} : {t: '오늘이 약속한 날', who: 'cat', face: 'cheer'}, svg: moonSvg('aka', dd, top.level), labels: check(labels, {date: top.date, day: cm.day, dd, level: top.level}),
+  const stage = artStage({key: 'agenda', svg: moonSvg('aka', dd, top.level), labels: check(labels, {date: top.date, day: cm.day, dd, level: top.level}),
     steps: [{c: 0, at: 0, ms: 950}, {c: 1, at: 1, ms: 1800}, {c: 2, at: 2, ms: 950}, {c: 3, at: 3, ms: 900}],
     says: [[korDate(top.date), top.name], [dd ? `${dd}일 뒤` : '그날'], [`별 ${top.level}개`], [plain(cm.cap)]]});
   return artSection({key: 'agenda', label: '일정', kicker: '일정', when: cm.day ? `${korDate(cm.day)} 기준` : null, stage});
@@ -315,7 +313,7 @@ export function agendaEmptyArt(agenda, nCo) {
   const nm = (agenda.market ?? []).length;
   const labels = lab(col('a', tag('일정'), big(`${nm}건`)), col('b', h('p', {class: 'ra-sub'}, `시장 전체 일정 ${nm}건`), h('p', {class: 'ra-sub'}, `회사·업종 일정 ${nCo}건`)),
     srow(sealEl(null, '확인된 일정만 모았습니다(일정마다 공식 출처)', 3)));
-  const stage = artStage({key: 'agenda-none', cap: {t: '아직 잡힌 약속이 없다', who: 'cat', face: 'sleepy'}, svg: moonSvg('aka', 30, 0).replace(/<g class="ak-pop" data-at="2"[\s\S]*?<\/g>/, '<circle class="ak-pop" data-at="2" cx="330" cy="40" r="3" fill="#F4F1EA" fill-opacity=".6"/>'), labels: check(labels, {market: nm, company: nCo}),
+  const stage = artStage({key: 'agenda-none', svg: moonSvg('aka', 30, 0).replace(/<g class="ak-pop" data-at="2"[\s\S]*?<\/g>/, '<circle class="ak-pop" data-at="2" cx="330" cy="40" r="3" fill="#F4F1EA" fill-opacity=".6"/>'), labels: check(labels, {market: nm, company: nCo}),
     steps: [{c: 0, at: 0, ms: 950}, {c: 1, at: 1, ms: 1800}, {c: 2, at: 2, ms: 800}, {c: 3, at: 3, ms: 900}],
     says: [['일정', `${nm}건`], [`시장 전체 일정 ${nm}건`], [`회사·업종 일정 ${nCo}건`], ['확인된 일정만 모았습니다(일정마다 공식 출처)']]});
   return artSection({key: 'agenda', label: '일정', kicker: '일정', when: agenda.builtDay ? `${korDate(agenda.builtDay)} 기준` : null, stage});
@@ -330,7 +328,7 @@ function lampsSvg(p, boards, hereId) {
       + `<path d="M${F(x - w / 2 + 3)},${F(y + hh / 2)} H${F(x + w / 2 - 3)} M${F(x)},${F(y + 2)} V${F(y + hh - 2)}" stroke="#0B1411" stroke-opacity=".25" stroke-width=".8"/><rect x="${F(x - w / 4)}" y="${F(y - 2)}" width="${F(w / 2)}" height="4" rx="1.5" fill="#3A2A22"/><rect x="${F(x - w / 4)}" y="${F(y + hh - 2)}" width="${F(w / 2)}" height="4" rx="1.5" fill="#3A2A22"/></g>`; };
   const hk = boards.findIndex(b => b.id === hereId), hx = xs[Math.max(0, hk)];
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
-${actor('pig', {x: hx + (hx > 300 ? -34 : 34), y: H - 1, s: 0.3, face: 'wink', P: p})}
+${actor('gent', {x: hx + (hx > 300 ? -34 : 34), y: H - 1, s: 0.34, face: 'wink', prop: ['cane'], P: p})}
 <path class="ak-draw" data-at="0" pathLength="100" d="${rope}" fill="none" stroke="#A88A70" stroke-width="1.6"/>
 <g class="ak-mv" data-at="1" data-v="y0:-70px">${boards.map((b, k) => lamp(xs[k], b)).join('')}</g>
 <circle class="ak-pop" data-at="2" cx="${F(hx)}" cy="${F(ropeY(hx) + 36)}" r="34" fill="url(#${p}-halo)"/>
@@ -341,7 +339,7 @@ export function findArt(boards, hereId, when = null) {
   if (!boards?.length) return null;
   const N = boards.reduce((t, b) => t + b.n, 0);
   const labels = h('div', {class: 'ra-lab ra-five'}, ...boards.map(b => h('div', {class: 'ra-col ra-c5' + (b.id === hereId ? ' ra-here' : '')}, h('p', {class: 'ra-tag'}, b.label), h('p', {class: 'ra-m5'}, `${b.n}곳`))));
-  const stage = artStage({key: 'find', cap: {t: `${boards.length}개 도시 순회공연 — 배우 ${N}곳`, who: 'pig', face: 'wink'}, svg: lampsSvg('akf', boards, hereId), labels: check(h('div', {class: 'ra-fwrap'}, labels, h('div', {class: 'ra-lab ra-one'}, h('div', {class: 'ra-col'}, sealEl(null, `${N}곳`, 3)))), {N, boards: boards.map(b => [b.id, b.n])}),
+  const stage = artStage({key: 'find', svg: lampsSvg('akf', boards, hereId), labels: check(h('div', {class: 'ra-fwrap'}, labels, h('div', {class: 'ra-lab ra-one'}, h('div', {class: 'ra-col'}, sealEl(null, `${N}곳`, 3)))), {N, boards: boards.map(b => [b.id, b.n])}),
     steps: [{c: 0, at: 0, ms: 850}, {c: 1, at: 1, ms: 1150}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 850}],
     says: [['찾기'], boards.map(b => `${b.label} ${b.n}곳`), [], [`${N}곳`]], cls: 'ak-short'});
   return artSection({key: 'find', label: '찾기', kicker: '찾기', when, stage, cls: 'ak-find'}); // when = 기준 시각(또렷함 3번 — 숫자에는 기준)
@@ -358,7 +356,7 @@ function knotsSvg(p, days) {
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
 <path class="ak-draw" data-at="0" pathLength="100" d="${cord}" fill="none" stroke="#C9B49A" stroke-width="2.2" stroke-linecap="round"/>
 <g class="ak-pop" data-at="1">${knots}</g>
-<g class="ak-pop" data-at="2"><circle cx="${F(lx)}" cy="${F(ly)}" r="24" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".6" stroke-width="1.2"/>${actor('cat', {x: lx - 32, y: Math.min(H - 1, ly + 50), s: 0.32, face: 'cheer', P: p})}</g>
+<g class="ak-pop" data-at="2"><circle cx="${F(lx)}" cy="${F(ly)}" r="24" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".6" stroke-width="1.2"/>${actor('lady', {x: lx - 32, y: Math.min(H - 1, ly + 52), s: 0.36, face: 'cheer', P: p})}</g>
 </svg>`;
 }
 /** 기록(#/log) — 날마다 매듭 · 이슈 · 업데이트 · 자료 변경 수 · 가장 새 날 */
@@ -371,7 +369,7 @@ export function logArt(entries) {
   const labels = lab(
     col('a', tag('가장 새 날'), h('p', {class: 'ra-n ra-long'}, korDate(last.d)), h('p', {class: 'ra-sub'}, `${last.n}개`)),
     col('b', tag('모두'), big(`${entries.length}개`), sealEl(null, `${days.length}일`, 3)));
-  const stage = artStage({key: 'log', cap: {t: `촬영 일지 — ${days.length}일째 찍는 중`, who: 'cat', face: 'cheer'}, svg: knotsSvg('akg', days), labels: check(labels, {n: entries.length, days: days.length, last: last.d, lastN: last.n, ...k}),
+  const stage = artStage({key: 'log', svg: knotsSvg('akg', days), labels: check(labels, {n: entries.length, days: days.length, last: last.d, lastN: last.n, ...k}),
     steps: [{c: 0, at: 0, ms: 1150}, {c: 1, at: 1, ms: 1050}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 850}],
     says: [['기록', `${entries.length}개`], ['모두', `${entries.length}개`], ['가장 새 날', korDate(last.d), `${last.n}개`], [`${days.length}일`]], cls: 'ak-short'});
   return artSection({key: 'log', label: '기록', kicker: '기록', stage});
@@ -385,7 +383,7 @@ function wavesSvg(p, picks, typ) {
   const wi = picks.indexOf(Math.min(...picks)), wmid = 150 + (wi + 1 - (picks.length + 1) / 2) * 10, wdy = sea + Math.abs(picks[wi]) * sc;
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
 <rect x="0" y="${sea}" width="360" height="${H - sea}" fill="#1A1440" fill-opacity=".6"/>
-${actor('pig', {x: wmid + 40, y: Math.min(H - 2, wdy + 32), s: 0.34, face: 'shock', P: p})}${actor('cat', {x: 316, y: sea + 1, s: 0.3, face: 'happy', P: p})}
+${actor('gent', {x: wmid + 40, y: Math.min(H - 2, wdy + 36), s: 0.38, face: 'shock', P: p})}${actor('lady', {x: 314, y: sea + 1, s: 0.32, face: 'happy', P: p})}
 <path class="ak-draw" data-at="0" pathLength="100" d="M6,${sea} C60,${sea - 6} 120,${sea + 6} 180,${sea} S300,${sea - 6} 354,${sea}" fill="none" stroke="#CFE7DC" stroke-opacity=".8" stroke-width="1.8" stroke-linecap="round"/>
 <path class="ak-draw" data-at="1" pathLength="100" d="${trough(typ, 0, 1).replace(/^M18/, 'M10')}" fill="none" stroke="#82B6FF" stroke-opacity=".75" stroke-width="3.2" stroke-linecap="round"/>
 <g class="ak-draw" data-at="2" fill="none" stroke="#F2C46B" stroke-width="2" stroke-linecap="round" filter="url(#${p}-glow)">${picks.map((d, k) => `<path pathLength="100" d="${trough(d, k + 1, picks.length + 1)}"/>`).join('')}</g>
@@ -407,7 +405,7 @@ export function startArt(board, cm) {
   if (!s.ready) {
     const need = s.rule?.days ?? 756, have = s.have?.days ?? 0;
     const labels = lab(col('a', tag(plain(cm.head)), big(cm.big?.t ?? '')), srow(sealEl(null, `지금은 ${have}거래일`, 3)));
-    const stage = artStage({key: 'start-wait', cap: {t: `아직 리허설 — 종가 기록 ${have}거래일`, who: 'pig', face: 'sleepy'}, svg: fillSvg('akw', have / need), labels: check(labels, {have, need}),
+    const stage = artStage({key: 'start-wait', svg: fillSvg('akw', have / need), labels: check(labels, {have, need}),
       steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 900}, {c: 3, at: 3, ms: 900}], says: [[plain(cm.head)], [`지금은 ${have}거래일`], [cm.big?.t ?? ''], []]});
     return artSection({key: 'start', label: '처음', kicker: '처음', when: when(board.asOf), stage});
   }
@@ -418,7 +416,7 @@ export function startArt(board, cm) {
     col('a', tag(`${picks.length}곳 · 가장 깊게 떨어진 때`), big(pct(worst, 0), -1)),
     col('b', tag(`보통 회사(${s.measured}곳 가운데 값)`), big(pct(typ, 0), -1)),
     srow(sealEl(null, plain(cm.head), 3)));
-  const stage = artStage({key: 'start', cap: {t: `가장 깊은 골짜기 ${pct(worst, 0)} — 로미오도 깜짝`, who: 'pig', face: 'shock'}, svg: wavesSvg('akt', picks, typ), labels: check(labels, {worst: +worst.toFixed(6), typ: +typ.toFixed(6), n: picks.length}),
+  const stage = artStage({key: 'start', svg: wavesSvg('akt', picks, typ), labels: check(labels, {worst: +worst.toFixed(6), typ: +typ.toFixed(6), n: picks.length}),
     steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 1400}, {c: 3, at: 3, ms: 900}],
     says: [[plain(cm.head)], [`보통 회사(${s.measured}곳 가운데 값)`, pct(typ, 0)], [`${picks.length}곳`, pct(worst, 0)], [plain(cm.cap)]]});
   return artSection({key: 'start', label: '처음', kicker: '처음', when: `${korDate(board.asOf)} 종가까지 지난 3년 기록`, stage});
@@ -432,7 +430,7 @@ function dialSvg(p, bars) {
   const ticks = Array.from({length: 17}, (_, i) => { const x = 6 + i, [ax, ay] = pt(x, R - 6), [bx, by] = pt(x, R + (i % 3 === 0 ? 6 : 2)); return `<path d="M${F(ax)},${F(ay)} L${F(bx)},${F(by)}"/>`; }).join('');
   const reg = bars.find(b => b[3] === 'reg'), nxt = bars.find(b => b[3] === 'nxt'), [sx, sy] = pt(reg[2], R - 22);
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
-${actor('hog', {x: 332, y: H - 1, s: 0.36, face: 'wink', k: 0.9, P: p, flip: true})}
+${actor('gent', {x: 330, y: H - 1, s: 0.42, face: 'wink', prop: ['watch'], P: p, flip: true})}
 <path class="ak-draw" data-at="0" pathLength="100" d="${arc(6, 22, R)}" fill="none" stroke="#B9A8FF" stroke-opacity=".75" stroke-width="2.4"/>
 <g stroke="#CFE7DC" stroke-opacity=".4" stroke-width="1">${ticks}</g>
 <path d="M${cx - R},${cy} H${cx + R}" stroke="#4E6E62" stroke-width="1.4"/>
@@ -450,7 +448,7 @@ export function guideArt(bars, hm) {
     col('a', tag('정규장'), h('p', {class: 'ra-m ra-mt'}, `${hm(reg[1])}~${hm(reg[2])}`), sealEl('종가', hm(reg[2]), 4)),
     col('b', tag(nxt[0]), h('p', {class: 'ra-m ra-mt'}, `${hm(nxt[1])}~${hm(nxt[2])}`)));
   labels.querySelector('.ra-cb .ra-tag')?.setAttribute('data-ident', '');
-  const stage = artStage({key: 'guide', cap: {t: '막이 오르는 시간과 내리는 시간', who: 'hog', face: 'wink'}, svg: dialSvg('akh', bars), labels: check(labels, {reg: [reg[1], reg[2]], nxt: [nxt[1], nxt[2]]}),
+  const stage = artStage({key: 'guide', svg: dialSvg('akh', bars), labels: check(labels, {reg: [reg[1], reg[2]], nxt: [nxt[1], nxt[2]]}),
     steps: [{c: 0, at: 0, ms: 1000}, {c: 1, at: 1, ms: 1200}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 850}, {c: 3, at: 4, ms: 850}],
     says: [['한국 주식시장 안내'], ['정규장', `${hm(reg[1])}~${hm(reg[2])}`], [nxt[0], `${hm(nxt[1])}~${hm(nxt[2])}`], ['종가', hm(reg[2])]]});
   return artSection({key: 'guide', label: '시간(한국 시각)', kicker: '시간(한국 시각)', stage});
@@ -464,7 +462,7 @@ function jarsSvg(p, rows, start) {
   const ly = base - start * k, xs = [62, 180, 298];
   // 해마다 두 그릇(주식 · 아파트)을 한 묶음으로 — 한 번에 하나(규칙 28)
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
-${actor('pig', {x: 121, y: 50, s: 0.3, face: 'cheer', prop: ['coin'], P: p})}
+${actor('gent', {x: 121, y: 54, s: 0.32, face: 'cheer', prop: ['coin'], P: p})}
 ${rows.map((r, i) => shell(xs[i] - 22, 'a') + shell(xs[i] + 22, 'b')).join('')}
 ${rows.map((r, i) => `<g class="ak-up" data-at="${i + 1}">${fill(xs[i] - 22, r.a, 'a')}${fill(xs[i] + 22, r.b, 'b')}</g>`).join('')}
 <path class="ak-x" data-at="0" d="M14,${F(ly)} H346" stroke="#F4F1EA" stroke-opacity=".7" stroke-width="1.4" stroke-dasharray="4 4"/>
@@ -479,7 +477,7 @@ export function longArt(LONG, man, START) {
   const labels = h('div', {class: 'ra-lab ra-three'}, ...rows.map(r => h('div', {class: 'ra-col ra-c3'}, h('p', {class: 'ra-tag'}, `${r.y}년 뒤`), h('p', {class: 'ra-m3 ra-ga'}, man(r.a)), h('p', {class: 'ra-m3 ra-gb'}, man(r.b)))));
   const wrap = h('div', {class: 'ra-fwrap'}, labels, h('p', {class: 'ra-key'}, h('i', {class: 'ra-dot ra-ga', 'aria-hidden': 'true'}), '주식 — 코스피 · 배당 넣음(가정)', ' ', h('i', {class: 'ra-dot ra-gb', 'aria-hidden': 'true'}), '서울 아파트 — 값만'));
   // 세 해를 하나씩(10 → 20 → 30) — 짝(주식 · 아파트)은 한 묶음(jarsSvg)
-  const stage = artStage({key: 'long', cap: {t: '로미오의 저금통 — 오래 들고 있으면', who: 'pig', face: 'cheer', prop: ['coin']}, /* 「10 · 20 · 30년 뒤」는 아래 이름표가 말함(자막은 숫자 없이 — 다른 말에서 「· 30년 뒤」만 따로 바뀌던 것) */ svg: jarsSvg('akj', rows, START), labels: check(wrap, {rows: rows.map(r => [r.y, r.a, r.b]), start: START}),
+  const stage = artStage({key: 'long', svg: jarsSvg('akj', rows, START), labels: check(wrap, {rows: rows.map(r => [r.y, r.a, r.b]), start: START}),
     steps: [{c: 0, at: 0, ms: 950}, {c: 1, at: 1, ms: 1150}, {c: 2, at: 2, ms: 1150}, {c: 3, at: 3, ms: 1150}],
     says: [['500만 원을 오래 들고 있었다면'], ['10년 뒤', man(rows[0].a), man(rows[0].b)], ['20년 뒤', man(rows[1].a), man(rows[1].b)], ['30년 뒤', man(rows[2].a), man(rows[2].b)]]});
   return artSection({key: 'long', label: '500만 원을 오래 들고 있었다면', kicker: '500만 원을 오래 들고 있었다면', stage});
@@ -492,7 +490,7 @@ function stairsSvg(p, rank, n) {
   const i = n - rank, lx = x0 + i * sw + sw / 2, ly = y0 - (i + 1) * shh - 14;
   return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H, {floor: false})}
 <g class="ak-up" data-at="0">${steps}</g>
-<g class="ak-mv" data-at="1" data-v="x0:${F(-(lx - x0 - sw / 2))}px;y0:${F(y0 - shh - 14 - ly)}px"><circle cx="${F(lx)}" cy="${F(ly)}" r="16" fill="url(#${p}-sun)"/>${actor('pig', {x: lx, y: ly + 14, s: 0.3, face: 'cheer', prop: ['flag'], P: p})}</g>
+<g class="ak-mv" data-at="1" data-v="x0:${F(-(lx - x0 - sw / 2))}px;y0:${F(y0 - shh - 14 - ly)}px"><circle cx="${F(lx)}" cy="${F(ly)}" r="16" fill="url(#${p}-sun)"/>${actor('gent', {x: lx, y: ly + 16, s: 0.32, face: 'cheer', prop: ['flag'], P: p})}</g>
 <circle class="ak-pop" data-at="2" cx="${F(lx)}" cy="${F(ly)}" r="26" fill="none" stroke="#F2C46B" stroke-opacity=".7" stroke-width="1.4"/>
 </svg>`;
 }
@@ -503,7 +501,7 @@ export function koreaArt(RANKS) {
   const labels = lab(
     col('a', tag(what), h('p', {class: 'ra-m ra-mb'}, v), sealEl(null, `${n}곳 중 ${rank}위`, 3)),
     how ? col('b', h('p', {class: 'ra-sub'}, how)) : null);
-  const stage = artStage({key: 'korea', cap: {t: `세계 무대 ${n}곳 가운데 ${rank}위`, who: 'pig', face: 'cheer'}, svg: stairsSvg('akk', rank, n), labels: check(labels, {rank, n, v}),
+  const stage = artStage({key: 'korea', svg: stairsSvg('akk', rank, n), labels: check(labels, {rank, n, v}),
     steps: [{c: 0, at: 0, ms: 1100}, {c: 1, at: 1, ms: 1500}, {c: 2, at: 2, ms: 850}, {c: 3, at: 3, ms: 900}],
     says: [[what, v], [`${n}곳 중 ${rank}위`], how ? [how] : [], []]});
   return artSection({key: 'korea', label: '한국 주식시장은 몇 위인가', kicker: '한국 주식시장은 몇 위인가', stage});
@@ -519,7 +517,7 @@ function quietSvg(p) {
 ${hills(p, H, 0.55)}
 <path class="ak-draw" data-at="0" pathLength="100" d="M${F(sx)},${F(ey)} A${r},${r} 0 0 1 ${F(ex)},${F(ey)}" fill="none" stroke="#F4F1EA" stroke-opacity=".3" stroke-width="1.2"/>
 <g class="ak-turn" data-at="1" data-v="ox:${cx}px;oy:${cy}px;a0:${-a}deg;a1:${a}deg"><circle cx="${cx}" cy="${cy - r}" r="18" fill="url(#${p}-halo)"/><circle cx="${cx}" cy="${cy - r}" r="8" fill="#F4F1EA"/><circle cx="${cx + 3.5}" cy="${cy - r - 2}" r="6.4" fill="#DCD8CC" fill-opacity=".55"/></g>
-${actor('pig', {x: 108, y: H - 12, s: 0.38, face: 'sleepy', P: p})}${actor('hog', {x: 180, y: H - 12, s: 0.34, face: 'sleepy', k: 0.65, P: p})}${actor('cat', {x: 252, y: H - 12, s: 0.37, face: 'sleepy', P: p})}
+${actor('gent', {x: 140, y: H - 12, s: 0.42, face: 'sleepy', prop: ['cane'], P: p})}${actor('lady', {x: 220, y: H - 12, s: 0.42, face: 'sleepy', P: p})}
 <circle class="ak-pop" data-at="2" cx="${F(ex - 26)}" cy="${F(ey + 28)}" r="3" fill="#F4F1EA" fill-opacity=".6"/>
 <path class="ak-x" data-at="3" d="M24,${H - 42} H336" stroke="#CFE7DC" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="4 6"/>
 </svg>`;
@@ -528,7 +526,7 @@ ${actor('pig', {x: 108, y: H - 12, s: 0.38, face: 'sleepy', P: p})}${actor('hog'
 export function quietArt({key, label, tagText = null, word = '없음', when: w = null}) {
   const t = tagText ?? label;
   const labels = lab(col('a', tag(t), big(word)));
-  const stage = artStage({key: 'quiet-' + key, cap: {t: '막간 — 오늘은 쉬어 갑니다', who: 'pig', face: 'sleepy'}, svg: quietSvg('akq'), labels: check(labels, {quiet: key}),
+  const stage = artStage({key: 'quiet-' + key, svg: quietSvg('akq'), labels: check(labels, {quiet: key}),
     steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1600}, {c: 2, at: 2, ms: 800}, {c: 3, at: 3, ms: 900}],
     says: [[t, word], [], [], []]});
   return artSection({key, label, kicker: label, when: w, stage});

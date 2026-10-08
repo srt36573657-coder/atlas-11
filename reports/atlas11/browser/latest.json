@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-08T01:46:51.278Z",
+  "at": "2026-10-08T02:58:21.320Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-07-58d58ca4",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 75,
+        "decoColors": 83,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 72,
+        "decoColors": 67,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 54,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 69,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -101,7 +101,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 41,
+        "decoColors": 25,
         "truncated": 0,
         "formatDates": 0
       },
@@ -111,7 +111,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 29,
         "truncated": 0,
         "formatDates": 0
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 24,
         "truncated": 0,
         "formatDates": 0
       },
@@ -131,7 +131,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 56,
+        "decoColors": 49,
         "truncated": 0,
         "formatDates": 0
       },
@@ -141,7 +141,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 53,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -151,7 +151,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 33,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -161,7 +161,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 39,
         "truncated": 0,
         "formatDates": 0
       },
@@ -171,7 +171,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 55,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 2
       },
@@ -181,7 +181,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 46,
+        "decoColors": 34,
         "truncated": 0,
         "formatDates": 1
       },
@@ -191,7 +191,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 54,
+        "decoColors": 47,
         "truncated": 0,
         "formatDates": 0
       }
@@ -203,7 +203,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 75,
+        "decoColors": 83,
         "truncated": 0,
         "formatDates": 0
       },
@@ -213,7 +213,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 72,
+        "decoColors": 66,
         "truncated": 0,
         "formatDates": 0
       },
@@ -223,7 +223,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 54,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -233,7 +233,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 69,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -243,7 +243,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 70,
+        "decoColors": 68,
         "truncated": 0,
         "formatDates": 0
       },
@@ -253,7 +253,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 71,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -263,7 +263,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 70,
+        "decoColors": 68,
         "truncated": 0,
         "formatDates": 0
       },
@@ -273,7 +273,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 70,
+        "decoColors": 68,
         "truncated": 0,
         "formatDates": 0
       },
@@ -283,7 +283,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 41,
+        "decoColors": 25,
         "truncated": 0,
         "formatDates": 0
       },
@@ -293,7 +293,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 29,
         "truncated": 0,
         "formatDates": 0
       },
@@ -303,7 +303,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 24,
         "truncated": 0,
         "formatDates": 0
       },
@@ -313,7 +313,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 56,
+        "decoColors": 49,
         "truncated": 0,
         "formatDates": 0
       },
@@ -323,7 +323,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 53,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -333,7 +333,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 33,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -343,7 +343,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 38,
         "truncated": 0,
         "formatDates": 0
       },
@@ -353,7 +353,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 55,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 2
       },
@@ -363,7 +363,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 46,
+        "decoColors": 34,
         "truncated": 0,
         "formatDates": 1
       },
@@ -373,7 +373,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 55,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       }
@@ -385,7 +385,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 72,
+        "decoColors": 80,
         "truncated": 0,
         "formatDates": 0
       },
@@ -395,7 +395,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 68,
+        "decoColors": 62,
         "truncated": 0,
         "formatDates": 0
       },
@@ -405,7 +405,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       },
@@ -415,7 +415,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       },
@@ -425,7 +425,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 66,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -435,7 +435,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 66,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -445,7 +445,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 66,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -455,7 +455,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 66,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -465,7 +465,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 23,
         "truncated": 0,
         "formatDates": 0
       },
@@ -475,7 +475,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 48,
+        "decoColors": 27,
         "truncated": 0,
         "formatDates": 0
       },
@@ -485,7 +485,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 41,
+        "decoColors": 21,
         "truncated": 0,
         "formatDates": 0
       },
@@ -495,7 +495,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 53,
+        "decoColors": 46,
         "truncated": 0,
         "formatDates": 0
       },
@@ -505,7 +505,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 37,
         "truncated": 0,
         "formatDates": 0
       },
@@ -515,7 +515,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 30,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -525,7 +525,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 40,
+        "decoColors": 34,
         "truncated": 0,
         "formatDates": 0
       },
@@ -535,7 +535,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 52,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 2
       },
@@ -545,7 +545,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 31,
         "truncated": 0,
         "formatDates": 1
       },
@@ -555,7 +555,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 52,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       }
@@ -567,7 +567,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 75,
+        "decoColors": 83,
         "truncated": 0,
         "formatDates": 0
       },
@@ -577,7 +577,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 72,
+        "decoColors": 67,
         "truncated": 0,
         "formatDates": 0
       },
@@ -587,7 +587,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 54,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -597,7 +597,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 69,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -647,7 +647,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 41,
+        "decoColors": 25,
         "truncated": 0,
         "formatDates": 0
       },
@@ -657,7 +657,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 29,
         "truncated": 0,
         "formatDates": 0
       },
@@ -667,7 +667,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 24,
         "truncated": 0,
         "formatDates": 0
       },
@@ -677,7 +677,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 56,
+        "decoColors": 49,
         "truncated": 0,
         "formatDates": 0
       },
@@ -687,7 +687,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 53,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -697,7 +697,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 33,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -707,7 +707,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 44,
+        "decoColors": 39,
         "truncated": 0,
         "formatDates": 0
       },
@@ -717,7 +717,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 55,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 2
       },
@@ -727,7 +727,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 46,
+        "decoColors": 34,
         "truncated": 0,
         "formatDates": 1
       },
@@ -737,7 +737,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 54,
+        "decoColors": 47,
         "truncated": 0,
         "formatDates": 0
       }
@@ -749,7 +749,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 72,
+        "decoColors": 80,
         "truncated": 0,
         "formatDates": 0
       },
@@ -759,7 +759,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 68,
+        "decoColors": 62,
         "truncated": 0,
         "formatDates": 0
       },
@@ -769,7 +769,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       },
@@ -779,7 +779,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       },
@@ -789,7 +789,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -799,7 +799,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -809,7 +809,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -819,7 +819,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 64,
         "truncated": 0,
         "formatDates": 0
       },
@@ -829,7 +829,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 23,
         "truncated": 0,
         "formatDates": 0
       },
@@ -839,7 +839,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 48,
+        "decoColors": 27,
         "truncated": 0,
         "formatDates": 0
       },
@@ -849,7 +849,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 41,
+        "decoColors": 21,
         "truncated": 0,
         "formatDates": 0
       },
@@ -859,7 +859,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 53,
+        "decoColors": 45,
         "truncated": 0,
         "formatDates": 0
       },
@@ -869,7 +869,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 50,
+        "decoColors": 37,
         "truncated": 0,
         "formatDates": 0
       },
@@ -879,7 +879,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 30,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -889,7 +889,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 40,
+        "decoColors": 34,
         "truncated": 0,
         "formatDates": 0
       },
@@ -899,7 +899,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 52,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 2
       },
@@ -909,7 +909,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 43,
+        "decoColors": 31,
         "truncated": 0,
         "formatDates": 1
       },
@@ -919,7 +919,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 52,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       }
@@ -1416,13 +1416,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(813px → 813px)",
+      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(850px → 850px)",
       "ok": true,
       "detail": {
-        "y0": 813,
+        "y0": 850,
         "rb": {
           "hash": "#/rise",
-          "y": 813
+          "y": 850
         }
       }
     },
@@ -1549,13 +1549,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1414px → 1414px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1450px → 1450px)",
       "ok": true,
       "detail": {
-        "y0": 1414,
+        "y0": 1450,
         "sb": {
           "hash": "#/similar",
-          "y": 1414
+          "y": 1450
         }
       }
     },
@@ -2404,7 +2404,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1268,
+        "first": 1304,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -2506,13 +2506,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1268px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1304px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 4가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1268,
+        "first": 1304,
         "ih": 800
       }
     },
@@ -2736,13 +2736,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1518px → 1518px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1554px → 1554px)",
       "ok": true,
       "detail": {
-        "yBefore": 1518,
+        "yBefore": 1554,
         "back": {
           "hash": "#/road",
-          "y": 1518,
+          "y": 1554,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -3692,7 +3692,7 @@
       }
     },
     {
-      "name": "pc 돈의 이동 — 그림 한 장(돈의 파장 집 다섯 · 로미오 · 줄리엣 · 티볼트 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
+      "name": "pc 돈의 이동 — 그림 한 장(병 둘 · 금빛 물결 다섯 · 금화 · 신사 · 숙녀 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
       "ok": true,
       "detail": null
     },
@@ -3710,12 +3710,12 @@
       }
     },
     {
-      "name": "pc 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-pop:ak-pop) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
+      "name": "pc 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-turn:ak-turn) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
       "ok": true,
       "detail": {
         "max": 1,
         "worst": [
-          "ak-pop:ak-pop"
+          "ak-turn:ak-turn"
         ],
         "steps": [
           "0",
@@ -3728,8 +3728,8 @@
         ],
         "cap0": 0,
         "cap1": 1,
-        "cap2": 1,
-        "cap3": 2
+        "cap2": 0,
+        "cap3": 1
       }
     },
     {
@@ -3741,14 +3741,14 @@
       }
     },
     {
-      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 405px ≤ 아래 탭 579px · 360×640 네 줄 끝 389px ≤ 아래 탭 579px · 430×700 네 줄 끝 421px ≤ 아래 탭 639px",
+      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 453px ≤ 아래 탭 579px · 360×640 네 줄 끝 432px ≤ 아래 탭 579px · 430×700 네 줄 끝 481px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 99,
-          "rowsBottom": 405,
+          "map": 134,
+          "rowsBottom": 453,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -3756,8 +3756,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 99,
-          "rowsBottom": 389,
+          "map": 134,
+          "rowsBottom": 432,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -3765,8 +3765,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 99,
-          "rowsBottom": 421,
+          "map": 134,
+          "rowsBottom": 481,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -3816,8 +3816,9 @@
         "done": true,
         "step": "6",
         "now": 3,
-        "walk": "matrix(1, 0, 0, 1, 0, 0)",
-        "trail": "0px",
+        "tilt": "matrix(0.788011, 0.615661, -0.615661, 0.788011, 0, 0)",
+        "fill": "matrix(1, 0, 0, 0.64, 0, 0)",
+        "ride": "1",
         "on": 7,
         "nodes": 0
       }
@@ -4330,13 +4331,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(926px → 926px)",
+      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(886px → 886px)",
       "ok": true,
       "detail": {
-        "y0": 926,
+        "y0": 886,
         "rb": {
           "hash": "#/rise",
-          "y": 926
+          "y": 886
         }
       }
     },
@@ -4463,13 +4464,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1527px → 1527px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1487px → 1487px)",
       "ok": true,
       "detail": {
-        "y0": 1527,
+        "y0": 1487,
         "sb": {
           "hash": "#/similar",
-          "y": 1527
+          "y": 1487
         }
       }
     },
@@ -5318,7 +5319,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1285,
+        "first": 1245,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -5420,13 +5421,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1285px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1245px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 4가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1285,
+        "first": 1245,
         "ih": 844
       }
     },
@@ -5642,13 +5643,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2133px → 2133px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2093px → 2093px)",
       "ok": true,
       "detail": {
-        "yBefore": 2133,
+        "yBefore": 2093,
         "back": {
           "hash": "#/road",
-          "y": 2133,
+          "y": 2093,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -6598,7 +6599,7 @@
       }
     },
     {
-      "name": "mobile 돈의 이동 — 그림 한 장(돈의 파장 집 다섯 · 로미오 · 줄리엣 · 티볼트 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
+      "name": "mobile 돈의 이동 — 그림 한 장(병 둘 · 금빛 물결 다섯 · 금화 · 신사 · 숙녀 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
       "ok": true,
       "detail": null
     },
@@ -6616,12 +6617,12 @@
       }
     },
     {
-      "name": "mobile 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-pop:ak-pop) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
+      "name": "mobile 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-turn:ak-turn) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
       "ok": true,
       "detail": {
         "max": 1,
         "worst": [
-          "ak-pop:ak-pop"
+          "ak-turn:ak-turn"
         ],
         "steps": [
           "0",
@@ -6634,8 +6635,8 @@
         ],
         "cap0": 0,
         "cap1": 1,
-        "cap2": 1,
-        "cap3": 2
+        "cap2": 0,
+        "cap3": 1
       }
     },
     {
@@ -6647,14 +6648,14 @@
       }
     },
     {
-      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 405px ≤ 아래 탭 579px · 360×640 네 줄 끝 389px ≤ 아래 탭 579px · 430×700 네 줄 끝 421px ≤ 아래 탭 639px",
+      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 453px ≤ 아래 탭 579px · 360×640 네 줄 끝 432px ≤ 아래 탭 579px · 430×700 네 줄 끝 481px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 99,
-          "rowsBottom": 405,
+          "map": 134,
+          "rowsBottom": 453,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -6662,8 +6663,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 99,
-          "rowsBottom": 389,
+          "map": 134,
+          "rowsBottom": 432,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -6671,8 +6672,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 99,
-          "rowsBottom": 421,
+          "map": 134,
+          "rowsBottom": 481,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -6722,8 +6723,9 @@
         "done": true,
         "step": "6",
         "now": 3,
-        "walk": "matrix(1, 0, 0, 1, 0, 0)",
-        "trail": "0px",
+        "tilt": "matrix(0.788011, 0.615661, -0.615661, 0.788011, 0, 0)",
+        "fill": "matrix(1, 0, 0, 0.64, 0, 0)",
+        "ride": "1",
         "on": 7,
         "nodes": 0
       }
@@ -9411,5 +9413,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-08T01-40-12-873Z"
+  "dir": "reports/atlas11/browser/2026-10-08T02-51-40-690Z"
 }

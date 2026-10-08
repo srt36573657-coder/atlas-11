@@ -9,7 +9,7 @@
    · 움직임 줄이기 설정이면 처음부터 끝 모습 · 오른쪽부터 쓰는 말은 그림을 뒤집음(style.css .ra-svg)
    · 그림 속 값(높이 · 길이 · 자리)은 data-v="k:.62;x0:-40px" → CSS 변수(--k · --x0)로 옮김(CSSOM · 글 속 style 속성 없음 · CSP) */
 import {h, pct, finite} from './util.js';
-import {castDefs, stageDefs, stage, portrait} from './cast.js'; // 배우 · 무대 · 자막 앞 얼굴(2026-10-08 06:40 영화)
+import {castDefs, stageDefs, stage} from './cast.js'; // 배우(신사 · 숙녀) · 무대(2026-10-08 06:40 영화 · 10:34 사람으로)
 import {pic} from './story.js';
 import {t as tr, LOCALE, LANG} from './i18n.js';
 import {hold, release, idleIn} from './motion.js';
@@ -68,16 +68,12 @@ function vars(root) {
  *         says(기승전결 넷 — 한국어 낱말 묶음 · 그 말로 읽음), setup(art => …) · cls}
  */
 export function artStage(spec) {
-  const {key, svg, labels, steps, says = [[], [], [], []], setup = null, cls = '', cap = null} = spec;
+  const {key, svg, labels, steps, says = [[], [], [], []], setup = null, cls = ''} = spec;
   const fresh = !played.has(key); played.add(key);
-  const art = h('div', {class: 'ra-art', html: svg});
-  // 자막(영화 · 2026-10-08 06:40 「로미오 줄리엣을 토대로 각본 · 현재 주식상황을 위트있게」) — 그림 바로 아래 띠(그림을 가리지 않음 · 처음 그림 위에 겹쳤더니 배우 · 집을 가림)
-  // cap = 글 하나 또는 {t: 자막, who: 말하는 배우(pig · cat · hog), face: 표정, prop} — 말하는 배우 얼굴을 크게(그림 속 배우는 작아도 표정이 보이게)
-  const capT = cap && typeof cap === 'object' ? cap.t : cap, capWho = cap && typeof cap === 'object' ? cap.who : null;
-  const capEl = capT ? h('p', {class: 'ra-cap'}, capWho ? h('span', {class: 'ra-who', html: portrait(capWho, cap.face, `pt-${String(key).replace(/[^a-z0-9]/gi, '')}`, cap.prop ?? [])}) : null, h('span', {class: 'ra-ct'}, capT)) : null;
+  const art = h('div', {class: 'ra-art', html: svg}); // 자막 띠는 뺌(2026-10-08 10:34 마카오 시각 「로미오 줄리엣 그거 빼 해보니 엉망이다」) — 그림 · 이름 · 숫자만
   vars(art); if (setup) setup(art);
   const beats = h('ol', {class: 'ra-beats', 'aria-hidden': 'true'}, ...['기', '승', '전', '결'].map(x => h('li', null, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, x))));
-  const box = h('div', {class: `ra ak-${key}${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(',')}, art, capEl, labels, // data-plan = 걸음마다 기승전결:그림 번호(검사기가 계산으로 봄)
+  const box = h('div', {class: `ra ak-${key}${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(',')}, art, labels, // data-plan = 걸음마다 기승전결:그림 번호(검사기가 계산으로 봄)
     h('div', {class: 'ra-ctl'}, beats,
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(true)}, pic('say', 'sy-bi'), h('span', null, '소리로 듣기'))));

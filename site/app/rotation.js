@@ -11,7 +11,7 @@
 import {h, korDate, finite} from './util.js';
 import {pic} from './story.js';
 import {artStage, defs, hills} from './art.js'; // 한 번에 하나 · 기승전결 · 다시 보기 · 소리로 듣기 — 모든 그림이 같이 쓰는 틀 · 무대 · 배우 색
-import {actor} from './cast.js'; // 배우 셋(2026-10-08 06:40 영화)
+import {actor} from './cast.js'; // 배우 둘(신사 · 숙녀 — 2026-10-08 10:34 마카오 시각 「사람으로」)
 
 const ACTOR = {foreign: '외국인', institution: '기관', individual: '개인'};
 const sign = v => (v > 0 ? '+' : v < 0 ? '−' : '');
@@ -30,32 +30,54 @@ function whoMoved(r) {
   return {sell: sell && sell[1] < 0 ? {actor: ACTOR[sell[0]], v: sell[1]} : null, buy: buy && buy[1] > 0 ? {actor: ACTOR[buy[0]], v: buy[1]} : null};
 }
 
-/* ── 그림 한 장 — 영화 「로미오와 줄리엣」 프롤로그(2026-10-08 06:40 「청자로 하지 말고 이 세 캐릭터를 주식 캐릭터로 … 한편에 영화처럼」 · 06:46 「1차 파장만 있다 5차 파장까지」) ──
-   청자 매병 대신 무대: 돈의 파장 1~5차(lib/atlas11/rotation.mjs waves — 10거래일씩 돈이 가장 많이 들어간 업종을 차례로 · 지난 기록만)를 집 다섯 채로
-   · 기: 집들이 서고(파장마다 한 채 · 지붕 위 점 = 몇 차) → 로미오(돼지 · 돈)가 1차 집에서 지금 집까지 걸어감
-   · 승: 지나온 길(점선)이 그려짐 · 전: 지금 집 발코니에 줄리엣(반함) → 티볼트(고슴도치 · 가시 = 포모값)
-   · 결: 낙관(판 쪽 · 산 쪽 — 순매매가 없는 판은 빠지는 곳 포모값) · 그림에는 글자가 없다(이름 · 숫자는 아래 HTML) · 한 번에 하나 */
-const HOUSE = ['#B9A8FF', '#FFB3C7', '#FFD9A0', '#9FE0C8', '#F7A8D8'];
-function house(x, base, w, hh, i, cur) {
-  const c = HOUSE[i % HOUSE.length], roof = `M${x - w / 2 - 4},${base - hh} L${x},${base - hh - w * 0.55} L${x + w / 2 + 4},${base - hh}Z`;
-  const pips = Array.from({length: i + 1}, (_, k) => `<circle cx="${(x - (i * 3.5) + k * 7).toFixed(1)}" cy="${(base - hh - w * 0.55 - 6).toFixed(1)}" r="2.2" fill="#FFE7A3"/>`).join(''); // 몇 차 = 점 수
-  return `<rect x="${(x - w / 2).toFixed(1)}" y="${base - hh}" width="${w}" height="${hh}" rx="3" fill="${c}" fill-opacity="${cur ? 1 : 0.82}" stroke="#2A1F5C" stroke-opacity=".35"/>`
-    + `<path d="${roof}" fill="#7E1730" fill-opacity="${cur ? 1 : 0.85}"/><rect x="${(x - w * 0.16).toFixed(1)}" y="${(base - hh * 0.5).toFixed(1)}" width="${(w * 0.32).toFixed(1)}" height="${(hh * 0.5).toFixed(1)}" rx="2" fill="#3B2F7A"/>`
-    + (cur ? `<rect x="${(x - w / 2 - 6).toFixed(1)}" y="${(base - hh * 0.62).toFixed(1)}" width="${w + 12}" height="4" rx="2" fill="#F2E6D0"/>` : '') + pips;
+/* ── 그림 한 장 — 돈의 이동(2026-10-08 10:27 마카오 시각 사장님 「돈에 이동을 이렇게 표현하냐 · 아까 청자가 백배 나아 · 청자보다 더 잘 표현 해야지」
+     · 10:34 「로미오 줄리엣 그거 빼 · 신사 숙녀다운 애들로 · 사람으로」 · 06:46 「1차 파장만 있다 5차 파장까지」)
+   앞 판(청자 매병 둘 · 00:12)의 힘(병이 기울어 금빛을 쏟고 → 다른 병에 금빛이 차오름)을 그대로 살리고 더함:
+   · 기: 빠지는 곳의 큰 병(보라)이 받침 위에서 기울고 → 금빛 물줄기가 물결 다섯(돈의 파장 1차~5차 · 물결 높이 = 그 파장에 들어간 돈)을 넘어 → 들어가는 곳의 큰 병(분홍)에 금빛이 차오름
+   · 승: 금화 하나가 물결 다섯을 차례로 넘어(꼭짓점 · 골) 들어가는 병 입으로 — 1차부터 지금까지 돈이 옮겨 온 길
+   · 전: 들어가는 병 밑 가마 불(높이 = 포모값 ÷ 100)
+   · 결: 낙관(판 쪽 · 산 쪽 — 순매매가 없는 판은 빠지는 곳 포모값)
+   · 배우 둘(움직이지 않음 · 표정만): 빠지는 병 옆 신사(깜짝 — 돈이 나감) · 들어가는 병 옆 숙녀(활짝 — 돈이 들어옴)
+   · 물결 위 점 = 몇 차(아래 칩 「1차 … 5차」와 같은 차례) · 그림에는 글자가 없다(이름 · 숫자는 아래 HTML) · 한 번에 하나 */
+const RVASE = 'M29.7,0 L42.3,0 L41.4,7.2 C63,10.8 72,23.4 68.4,36 C64.8,55.8 55.8,77.4 52.2,90 L56.7,99 L15.3,99 L19.8,90 C16.2,77.4 7.2,55.8 3.6,36 C0,23.4 9,10.8 30.6,7.2 Z'; // 매병(폭 72 · 높이 99 · 입 가운데 36,0) — art.js VASE 와 같은 모양
+const RINLAY = '<circle cx="36" cy="34" r="10" fill="none" stroke="#FFF8E7" stroke-opacity=".55" stroke-width="1.1"/><path d="M30,35 c2,-4 7,-5 9,-1 c1,3 -2,5 -4,3" fill="none" stroke="#FFF8E7" stroke-opacity=".65" stroke-width="1.1" stroke-linecap="round"/>'
+  + '<path d="M17,60 c5,-5 11,-4 13,1 M42,66 c4,-4 10,-3 11,2 M24,78 c3,-3 8,-2 9,1" fill="none" stroke="#FFF8E7" stroke-opacity=".42" stroke-width="1" stroke-linecap="round"/>'
+  + '<path d="M19.8,90 L52.2,90" stroke="#F2C46B" stroke-opacity=".8" stroke-width="1.4"/>'; // 상감 구름 · 둥근 창 · 금 띠
+const P = (x, y) => ({x, y}), f1 = v => (Math.round(v * 10) / 10).toFixed(1);
+/** 물결 다섯을 지나는 금빛 물줄기 — 쏟아진 금빛이 그리는 활(병 입 → 위로 솟았다가 → 들어가는 병 입) 위에 잔물결 다섯(꼭짓점 T · 골 V) · 꼭짓점 높이 = 그 파장에 들어간 돈 */
+function riverOf(ws, S, E) {
+  const n = ws.length, C = P(214, 12), bz = t => P((1 - t) ** 2 * S.x + 2 * (1 - t) * t * C.x + t * t * E.x, (1 - t) ** 2 * S.y + 2 * (1 - t) * t * C.y + t * t * E.y);
+  const amts = ws.map(w => (finite(w.amount) ? Math.abs(w.amount) : 0)), mx = Math.max(...amts, 1e-9);
+  const ts = ws.map((_, i) => (n > 1 ? 0.14 + i * (0.66 / (n - 1)) : 0.47));
+  const tops = ts.map((t, i) => { const b = bz(t); return P(b.x, b.y - (4 + 9 * amts[i] / mx)); });
+  const vals = ts.slice(0, -1).map((t, i) => { const b = bz((t + ts[i + 1]) / 2); return P(b.x, b.y + 1.5); });
+  const pts = [S]; tops.forEach((t, i) => { pts.push(t); if (vals[i]) pts.push(vals[i]); });
+  let d = `M${f1(S.x)},${f1(S.y)}`;
+  for (let k = 1; k < pts.length; k++) { const a = pts[k - 1], b = pts[k], h = (b.x - a.x) / 2; d += ` C${f1(a.x + h)},${f1(a.y)} ${f1(b.x - h)},${f1(b.y)} ${f1(b.x)},${f1(b.y)}`; }
+  const T = tops.at(-1); d += ` C${f1(T.x + 9)},${f1(T.y)} ${f1(E.x)},${f1(E.y - 18)} ${f1(E.x)},${f1(E.y)}`;
+  return {d, tops, pts};
 }
 function artSvg(r) {
-  const p = 'rt', H = 168, base = 158, ws = r.waves?.length ? r.waves : [{n: 1, to: r.pair.to}], k = ws.length;
-  const xs = ws.map((_, i) => (k === 1 ? 250 : 46 + i * (230 / (k - 1)))), sz = ws.map((_, i) => 32 + i * 3), hz = ws.map((_, i) => 32 + i * 6); // 집 크게(휴대폰에서 보이게 · 옆집과 지붕이 닿지 않게 — 간격 57.5 · 가장 큰 집 지붕 폭 52)
-  const last = k - 1, xL = xs[last], topL = base - hz[last];
-  const trail = xs.map((x, i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${(base - hz[i] - sz[i] * 0.55 - 14).toFixed(1)}`).join(' ');
-  const f = finite(r.fomo.to) ? r.fomo.to : 0, kk = 0.6 + 0.75 * Math.min(1, f / 100), hogFace = f >= 80 ? 'angry' : f >= 60 ? 'shock' : f >= 40 ? 'happy' : 'sleepy';
-  const pigEnd = xL - sz[last] / 2 - 16;
-  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${hills(p, H, 0.5)}
-<g class="ak-pop" data-at="0">${ws.map((w, i) => house(xs[i], base, sz[i], hz[i], i, i === last)).join('')}</g>
-<g class="ak-mv" data-at="1" data-v="x0:${(xs[0] - pigEnd).toFixed(1)}px">${actor('pig', {x: pigEnd, y: base + 1, s: 0.44, face: 'love', prop: ['coin'], P: p})}</g>
-<path class="ak-draw" data-at="2" pathLength="100" d="${trail}" fill="none" stroke="#FFE7A3" stroke-width="2" stroke-linecap="round" stroke-opacity=".9"/>
-<g class="ak-pop" data-at="3">${actor('cat', {x: xL, y: topL + hz[last] * 0.38 - 2, s: 0.38, face: 'love', prop: ['heart'], P: p})}</g>
-<g class="ak-pop" data-at="4">${actor('hog', {x: Math.min(334, xL + sz[last] / 2 + 20), y: base + 1, s: 0.42, face: hogFace, k: kk, P: p, flip: true})}</g>
+  const p = 'rt', H = 228, fy = H - 14, ws = r.waves?.length ? r.waves : [{n: 1, to: r.pair.to, amount: r.in?.[0]?.amount}];
+  const S = P(144, 50), E = P(284, 90); // 기운 병의 입(받침 위 병 38도 — 축 96.7,139) · 들어가는 병의 입
+  const {d, tops, pts} = riverOf(ws, S, E);
+  const pips = tops.map((t, i) => Array.from({length: i + 1}, (_, k) => `<circle cx="${f1(t.x - i * 2.6 + k * 5.2)}" cy="${f1(t.y - 8)}" r="1.9" fill="#FFE7A3" fill-opacity="${i === tops.length - 1 ? 1 : 0.8}"/>`).join('')).join(''); // 물결 위 점 = 몇 차
+  const rp = [...pts]; while (rp.length < 10) rp.push(tops.at(-1)); // 물결이 다섯보다 적은 판도 꼭짓점 열 자리(CSS 변수)를 다 채움
+  const ride = rp.slice(0, 10).map((q, i) => `x${i}:${f1(q.x - E.x)}px;y${i}:${f1(q.y - 6 - (E.y - 4))}px`).join(';'); // 금화가 넘는 꼭짓점 · 골(끝 = 병 입 위)
+  const fo = finite(r.fomo.to) ? Math.max(0.12, Math.min(1, r.fomo.to / 100)) : 0.12;
+  const gentFace = 'shock', ladyFace = 'joy';
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${hills(p, H, 0.45)}
+<defs><clipPath id="${p}-in"><path d="${RVASE}"/></clipPath><linearGradient id="${p}-pour" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#D99A35"/><stop offset=".45" stop-color="#FFE7AE"/><stop offset="1" stop-color="#F2C46B"/></linearGradient>
+<linearGradient id="${p}-fl" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#FF6B45"/><stop offset=".55" stop-color="#FFAE5C"/><stop offset="1" stop-color="#FFE3A0" stop-opacity=".85"/></linearGradient></defs>
+<path d="${d}" fill="none" stroke="#FFE7A3" stroke-opacity=".22" stroke-width="1.4" stroke-dasharray="2 5" stroke-linecap="round"/>${pips}
+<g fill="#2A2156" stroke="#8E7BFF" stroke-opacity=".5" stroke-width="1"><rect x="54" y="139" width="64" height="6" rx="3"/><rect x="82" y="145" width="8" height="${fy - 151}"/><rect x="66" y="${fy - 6}" width="40" height="6" rx="3"/></g>
+<g class="ak-turn" data-at="0" data-v="ox:96.7px;oy:139px;a0:0deg;a1:38deg"><g transform="translate(40,40)"><path d="${RVASE}" fill="url(#${p}-glz)" stroke="#2A1F5C" stroke-width=".9"/>${RINLAY}<ellipse cx="36" cy="1.6" rx="6.5" ry="2" fill="#F2C46B"/></g></g>
+<path class="ak-draw" data-at="1" pathLength="100" d="${d}" fill="none" stroke="url(#${p}-pour)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#${p}-glow)"/>
+<path d="M244,${fy} L244,190 C244,180 324,180 324,190 L324,${fy} Z" fill="#2A2156" stroke="#8E7BFF" stroke-opacity=".5" stroke-width="1"/><path d="M258,${fy} L258,197 C258,190 310,190 310,197 L310,${fy} Z" fill="#100C24"/>
+<g class="ak-pop" data-at="4"><ellipse cx="284" cy="${fy - 3}" rx="${f1(14 + 10 * fo)}" ry="${f1(3 + 3 * fo)}" fill="#FF8A50" fill-opacity=".35"/><g transform="translate(284,${fy}) scale(${f1(0.6 + 0.9 * fo)}) translate(-284,-${fy})"><path class="rt-flame" d="M284,${fy} C272,${fy - 5} 269,${fy - 17} 275,${fy - 26} C276,${fy - 18} 280,${fy - 15} 282,${fy - 19} C280,${fy - 28} 284,${fy - 34} 290,${fy - 40} C290,${fy - 30} 299,${fy - 24} 297,${fy - 13} C296,${fy - 7} 291,${fy - 2} 284,${fy} Z" fill="url(#${p}-fl)"/></g></g>
+<g transform="translate(248,89)"><path d="${RVASE}" fill="url(#${p}-glz2)" stroke="#2A1F5C" stroke-width=".9"/><g clip-path="url(#${p}-in)"><rect class="ak-up" data-at="2" data-v="k:.64" x="-2" y="0" width="76" height="99" fill="url(#${p}-gold)" fill-opacity=".9"/></g>${RINLAY}<ellipse cx="36" cy="1.6" rx="6.5" ry="2" fill="#F2C46B"/></g>
+<g class="ak-ride" data-at="3" data-v="${ride}"><circle cx="${E.x}" cy="${E.y - 4}" r="9" fill="url(#${p}-halo)"/><circle cx="${E.x}" cy="${E.y - 4}" r="5.6" fill="url(#${p}-gold)" stroke="#C8891E" stroke-width="1"/><circle cx="${E.x}" cy="${E.y - 4}" r="3.6" fill="none" stroke="#C8891E" stroke-width=".7"/></g>
+${actor('gent', {x: 36, y: fy + 1, s: 0.58, face: gentFace, prop: ['cane'], P: p})}${actor('lady', {x: 214, y: fy + 1, s: 0.58, face: ladyFace, prop: ['fan'], P: p})}
 </svg>`;
 }
 /** 긴 업종 이름(바깥 판 「다각적 산업용 제품 도매」 등)은 글씨를 줄여 한 화면에(규칙 30) */
@@ -80,7 +102,7 @@ function labelsOf(r) {
   return h('div', {class: 'ra-fwrap ra-rotwrap'}, main, seals, rw);
 }
 /** 걸음 일곱(한 번에 하나) — c = 기승전결 차례 · at = 움직이는 그림 · ms = 머무는 시간 */
-const ART_STEPS = [{c: 0, at: 0, ms: 950}, {c: 0, at: 1, ms: 1900}, {c: 1, at: 2, ms: 1300}, {c: 2, at: 3, ms: 1000}, {c: 2, at: 4, ms: 1150}, {c: 3, at: 5, ms: 750}, {c: 3, at: 6, ms: 1400}]; // 집 → 로미오 걸음 → 지나온 길 → 줄리엣 → 티볼트(포모) → 낙관 둘
+const ART_STEPS = [{c: 0, at: 0, ms: 950}, {c: 0, at: 1, ms: 1300}, {c: 0, at: 2, ms: 1150}, {c: 1, at: 3, ms: 2700}, {c: 2, at: 4, ms: 1200}, {c: 3, at: 5, ms: 750}, {c: 3, at: 6, ms: 1400}]; // 기울기 → 물줄기(물결 다섯) → 차오름 → 금화가 물결 다섯을 넘음 → 가마 불(포모) → 낙관 둘
 const ART_STEPS6 = [...ART_STEPS.slice(0, 5), {c: 3, at: 5, ms: 1400}]; // 순매매 자료가 없는 판 — 결 낙관 하나
 /** 소리 — 차례마다 한 덩이(그 말로 읽음) */
 function sayOf(r) {
@@ -89,8 +111,7 @@ function sayOf(r) {
     ['포모값', score(r.fomo.to), r.fomo.toWord ?? '없음'], r.flows ? ['판 쪽', w.sell?.actor ?? '없음', '산 쪽', w.buy?.actor ?? '없음'] : ['빠지는 곳', p.from.label, '포모값', score(r.fomo.from), r.fomo.fromWord ?? '없음']];
 }
 /** 그림 한 장 — art.js 틀(한 번에 하나 · 차례 점 넷 · 다시 보기 · 소리로 듣기 · 화면 밖이면 멈춤 · 움직임 줄이기면 끝 모습) */
-const artPlayer = r => artStage({key: 'rot', svg: artSvg(r), labels: labelsOf(r), steps: r.flows ? ART_STEPS : ART_STEPS6, says: sayOf(r),
-  cap: {t: [`로미오(돈)가 집 ${(r.waves ?? []).length || 1}곳을 건넜다`, ' — ', h('span', {class: 'ra-ts'}, `${korDate(r.pair.start)}부터`), ' ', h('b', {class: 'ra-td'}, `${r.pair.days}거래일${r.pair.atLeast ? ' 넘게' : '째'}`)], who: 'pig', face: 'love', prop: ['coin']}}); // 포모값은 티볼트 가시 크기(그림 속 transform 속성 — 글 속 style 없음)
+const artPlayer = r => artStage({key: 'rot', svg: artSvg(r), labels: labelsOf(r), steps: r.flows ? ART_STEPS : ART_STEPS6, says: sayOf(r)}); // 자막 띠 뺌(2026-10-08 10:34 마카오 시각)
 
 /** 맨 위 무대 — 제목 · 기간(달 위) · 그림 한 장 · 이름 · 숫자 · 낙관 · 차례 점 · 단추 둘 · 아래에 빠지는 곳 셋 · 들어가는 곳 셋 · 셈 방법(접힘) */
 export function rotationBox(r) {
@@ -100,7 +121,8 @@ export function rotationBox(r) {
   return h('section', {class: 'sy rt', 'aria-label': '돈의 이동', 'data-from': p.from.id, 'data-to': p.to.id, 'data-place': r.place ?? 'kr',
     'data-check': JSON.stringify({from: p.from.id, to: p.to.id, start: p.start, days: p.days, outAmt: r.out[0].amount, inAmt: r.in[0].amount, fomo: r.fomo.to, waves: (r.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])})}, // 빠짐없이 도는 검사기가 /story.json 과 맞댐(규칙 34 · 파장은 scripts/atlas11/verify/waves_verify.py 가 따로 셈)
     h('p', {class: 'sy-k'}, h('span', null, '돈의 이동'), h('span', {class: 'sy-kw'}, `지난 ${r.window.days}거래일 · ${korDate(r.asOf)} 종가까지`)),
-    artPlayer(r), // 기간(○월 ○일부터 ○거래일째)은 그림 아래 자막 끝으로(규칙 1 — 자막 띠를 넣으면서 그림 위 기간 줄을 뺌 · 긴 말에서 그림이 첫 화면 아래로 밀리던 것)
+    h('p', {class: 'ra-t'}, h('span', {class: 'ra-ts'}, `${korDate(p.start)}부터`), ' ', h('b', {class: 'ra-td'}, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`)), // 기간(자막 띠를 빼며 그림 위로 되돌림)
+    artPlayer(r),
     h('div', {class: 'rt-all'},
       h('div', {class: 'rt-col', 'data-side': 'out'}, h('p', {class: 'rt-h'}, '빠지는 곳'), h('ol', {class: 'rt-ol'}, ...r.out.map(li))),
       h('div', {class: 'rt-col', 'data-side': 'in'}, h('p', {class: 'rt-h'}, '들어가는 곳'), h('ol', {class: 'rt-ol'}, ...r.in.map(li)))),

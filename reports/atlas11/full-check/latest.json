@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-08T01:32:43.406Z",
- "seconds": 223,
+ "at": "2026-10-08T02:49:51.896Z",
+ "seconds": 222,
  "lap": {
-  "crawl": 107.5,
-  "trans": 176.1,
-  "layout": 223.2
+  "crawl": 105.4,
+  "trans": 167.2,
+  "layout": 221.5
  },
- "code": "9407695fd4236c35",
+ "code": "4af37c6a66f8ab3d",
  "boards": [
   "kr",
   "us",
@@ -32,10 +32,10 @@
  "motion": 77,
  "edge": 60,
  "transLangs": 73,
- "transStrings": 35342,
+ "transStrings": 35314,
  "layoutLangs": 74,
  "layoutPages": 2160,
- "transShapes": 2777,
+ "transShapes": 2757,
  "failed": 0,
  "ok": true,
  "fails": []
