@@ -14,6 +14,8 @@ import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {readSiteLog} from '../../lib/atlas11/changelog.mjs';
 import {storyFrom} from './story/build.mjs';
+import {lensFrom} from './lens/build.mjs'; // 판 읽기(2026-10-08 20:19 마카오 시각 「ATLAS 개편 실행 지시서」 — 다섯 탭이 함께 읽는 lens.json)
+import {lensJson} from '../../lib/atlas11/lens.mjs';
 const run = promisify(execFile);
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -46,6 +48,13 @@ export async function buildDist() {
     if (!ok) continue;
     await copyDir(path.join(root, 'site'), path.join(dist, id)); await copyDir(dir, path.join(dist, `${id}/data/atlas11/view`));
     places.push({id, label, href: `/${id}/`});
+  }
+  // 판 읽기(lens.json · 「ATLAS 개편 실행 지시서」) — 판마다 저장소 자료로 다시 셈(lib/atlas11/lens.mjs) · 셈이 멈추면 「계산 못 함」 파일(판 이름은 그 판 그대로 — 화면이 판과 맞댐) · 올리기는 멈추지 않음
+  for (const p of places) {
+    const vdir = path.join(dist, p.href.replace(/^\//, ''), 'data/atlas11/view');
+    let text; try { const l = await lensFrom(root, p.id); if (l.problems?.length) console.warn(`lens ${p.id} problems: ` + JSON.stringify(l.problems.slice(0, 5))); text = lensJson(l); }
+    catch (e) { const m = JSON.parse(await fs.readFile(path.join(vdir, 'manifest.json'), 'utf8')); text = JSON.stringify({schema: 'atlas11-lens-1', none: true, boardId: m.boardId, place: p.id, problems: ['셈 멈춤: ' + e.message]}); console.warn(`lens ${p.id}: ` + e.message); }
+    await fs.writeFile(path.join(vdir, 'lens.json'), text + '\n');
   }
   const usOk = places.some(p => p.id === 'us'), abroad = places.slice(1).map(p => p.id);
   await fs.writeFile(path.join(dist, 'places.json'), JSON.stringify({schema: 'atlas11-places-1', places}) + '\n');

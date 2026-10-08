@@ -1,0 +1,116 @@
+/* ATLAS 11 · 판 읽기 화면 옷 — 「ATLAS 개편 실행 지시서」(사장님 2026-10-08 20:19 마카오 시각 첨부)
+   아래 탭 다섯(시장 · 돈 흐름 · 종목 · 일정 · 검증) · 위 막대(ATLAS · 한국/미국 · 찾기 · 관심 ★ · 안내 ⓘ · 보기) · 첫 화면 ① 언제 ~ ⑤ 다음 확인
+   오름 = 빨강 · 내림 = 파랑 + 부호 · ▲▼(색 하나에만 기대지 않음) · 글 속 style 속성 없음(CSP) · 320 · 360 · 390 · 430px 와 PC */
+
+/* ── 위 막대: 둥근 단추 넷(찾기 · 관심 · 안내 · 보기) ── */
+.top-inner { gap: 6px; padding-inline: 12px; }
+.top .tb-b { width: 42px; height: 42px; border-radius: 21px; color: var(--ink); text-decoration: none; }
+.top .tb-b svg { width: 22px; height: 22px; }
+.top .tb-b[aria-current="page"] { background: var(--ink); color: var(--bg); }
+.top .tb-b { transition: none; } /* 화면을 바꿀 때 위 막대 단추 색이 바뀌며 움직이지 않게(그림과 함께 움직이면 「한 번에 하나」가 깨짐 · 규칙 28) */
+.wordmark { min-width: 42px; }
+.top .wordmark::before { margin-inline-end: 8px; }
+.wm-t { display: none; }
+@media (min-width: 440px) { .wm-t { display: inline; } .top .wordmark::before { margin-inline-end: 10px; } }
+.tb-more { position: relative; flex: none; }
+.tb-more > summary { list-style: none; cursor: pointer; }
+.tb-more > summary::-webkit-details-marker { display: none; }
+.tb-menu { position: absolute; inset-inline-end: 0; top: 48px; z-index: 30; display: flex; gap: 8px; padding: 8px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--hair), 0 8px 24px rgba(0, 0, 0, .18); }
+.tb-menu .round { width: 44px; height: 44px; }
+
+/* ── 첫 화면 ① ~ ⑤(판단 정보 먼저 · 작게 · 한 화면에) ── */
+.mk-first { display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; margin-top: 6px; }
+.mk-b { padding: 7px 11px 8px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+.mk-h { font-weight: 700; color: var(--sub); overflow-wrap: anywhere; }
+.mk-no { color: var(--ink); }
+.mk-l { margin: 1px 0 0; font-size: .9375rem; line-height: 1.42; overflow-wrap: anywhere; }
+.mk-s { margin: 3px 0 0; }
+.mk-b a { font-weight: 700; color: var(--link); }
+.mk-go a { display: inline-block; padding: 3px 0; }
+.mk-b .fd-form { margin-top: 8px; }
+.sk-form .fd-in { padding-inline-start: 16px; } /* 돋보기 그림 없는 찾기 칸(종목 탭) — 왼쪽 빈 자리 50px 를 안내 글에(글씨 200% · 390px 에서 안내 글이 잘리던 것 — 2026-10-08 화면 검사) */
+html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-step="4"] .sk-form .fd-in { font-size: .875rem; } /* 글씨 175% · 200% — 칸 글씨를 한 단 작게(그래도 28px) · 320px 에서도 안내 글 「이름 · 기호 · 초성」이 잘리지 않게 */
+
+/* ── 숫자 · 표시 ── */
+.lv-n { font-weight: 700; } .lv-n.up { color: var(--up-ink); } .lv-n.down { color: var(--down-ink); } .lv-n.flat, .lv-n.na { color: var(--sub); }
+.lv-tag { display: inline-block; margin-inline-start: 4px; padding: 1px 7px; border-radius: 999px; font-size: .75rem; font-weight: 700; line-height: 1.5; background: var(--fill); color: var(--ink2); max-width: 100%; overflow-wrap: anywhere; vertical-align: 1px; }
+.lv-tag.lvl-broad, .lv-tag.trd-spread { background: color-mix(in srgb, var(--up) 16%, var(--card)); color: var(--up-ink); }
+.lv-tag.lvl-narrow, .lv-tag.lvl-mixed { background: color-mix(in srgb, var(--warn) 16%, var(--card)); color: var(--warn); }
+.lv-tag.lvl-weak, .lv-tag.trd-fade { background: color-mix(in srgb, var(--down) 14%, var(--card)); color: var(--down-ink); }
+.lv-tag.hot { background: color-mix(in srgb, var(--up) 10%, var(--card)); }
+.lv-tag.st-late, .lv-tag.st-stale, .lv-tag.st-ca, .lv-tag.st-missing { background: color-mix(in srgb, var(--warn) 18%, var(--card)); color: var(--warn); }
+.lv-tag.agr-same { color: var(--ink2); } .lv-tag.agr-diff { color: var(--warn); }
+.lv-tag.bk-new { color: var(--ink); } .lv-tag.bk-up { color: var(--up-ink); } .lv-tag.bk-down { color: var(--down-ink); }
+.lv-sum { display: inline; margin: 0; }
+.lv-ex { margin: 4px 0 0; }
+.lv-how-l { padding-inline-start: 18px; } .lv-how-l li { margin: 3px 0; overflow-wrap: anywhere; }
+.lv-how-l code { font-size: .75rem; overflow-wrap: anywhere; }
+.lv-none { font-weight: 500; }
+
+/* ── 업종 진단 카드 ── */
+.sc-fs { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 8px; }
+.sc-fs .sc-f { flex: 1 1 auto; min-width: 0; min-height: 40px; padding: 4px 8px; border-radius: 10px; background: var(--fill); font-size: .875rem; }
+.sc-list, .of-list, .fw-list, .sk-list, .wl-list, .ck-to { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.sc-card { padding: 10px 12px; border-radius: 14px; background: var(--bg); box-shadow: 0 0 0 1px var(--hair); }
+.sc-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px; color: var(--ink); text-decoration: none; min-height: 32px; }
+.sc-name { font-size: 1.0625rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--sep); text-underline-offset: 3px; }
+.sc-when { margin: 2px 0 4px; overflow-wrap: anywhere; }
+.sc-card .mk-l { font-size: .875rem; }
+.sc-more { width: 100%; }
+.of-list li { font-size: .875rem; overflow-wrap: anywhere; }
+.of-n { font-weight: 700; }
+
+/* ── 투자자 매매 ── */
+.fw-t td { white-space: normal; min-width: 7.5em; }
+.fw-p { margin: 8px 0 0; padding-inline-start: 18px; font-size: .875rem; } .fw-p li { margin: 2px 0; }
+.fw-prov { font-weight: 500; font-size: .875rem; }
+.fw-list li, .ck-to li { font-size: .9375rem; overflow-wrap: anywhere; }
+.fw-g a { font-weight: 700; }
+
+/* ── 종목 목록 ── */
+.sk-seg { max-width: none; margin-top: 10px; }
+.sk-seg .sk-b { font-size: .875rem; padding: 4px 4px 7px; }
+.sk-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; margin: 8px 0; }
+.sk-sel { width: 100%; min-width: 0; min-height: 44px; padding: 0 10px; border-radius: 12px; border: 0; background: var(--fill); color: var(--ink); font: inherit; font-size: .9375rem; }
+.sk-row { padding: 8px 10px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+.sk-a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: baseline; color: var(--ink); text-decoration: none; min-height: 40px; }
+.sk-name { font-weight: 700; overflow-wrap: anywhere; }
+.sk-sub { grid-column: 1; overflow-wrap: anywhere; }
+.sk-r { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.sk-why { margin: 4px 0 0; font-size: .875rem; overflow-wrap: anywhere; }
+.sk-dom { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: .8125rem; }
+.dm { padding: 1px 8px; border-radius: 999px; background: var(--fill); color: var(--ink2); overflow-wrap: anywhere; }
+
+/* ── 검증 ── */
+.ck-rec { margin-top: 10px; }
+.ck-t td { white-space: normal; min-width: 8em; text-align: start; vertical-align: top; font-size: .8125rem; }
+.ck-wait b { color: var(--warn); }
+.ck-base th { color: var(--sub); }
+
+/* ── 관심종목 ── */
+.wl-d > summary { min-height: 44px; display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; }
+.wl-form { display: grid; gap: 4px; margin-top: 6px; }
+.wl-l { font-size: .875rem; font-weight: 700; color: var(--sub); }
+.wl-t { width: 100%; min-height: 3.2em; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--sep); background: var(--bg); color: var(--ink); font: inherit; font-size: .9375rem; resize: vertical; }
+.wl-dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: .875rem; }
+.wl-dl dt { color: var(--sub); font-weight: 700; } .wl-dl dd { margin: 0; overflow-wrap: anywhere; }
+.wl-row { padding: 10px 12px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+
+/* ── 종목 상세 ①~⑥ · 비교 ── */
+.c-status { margin: 4px 0 0; overflow-wrap: anywhere; }
+.cd-l { margin: 0; padding-inline-start: 18px; } .cd-l li { margin: 3px 0; font-size: .9375rem; overflow-wrap: anywhere; }
+.cd-cmp .c-table td, .cd-cmp .c-table th { white-space: nowrap; }
+
+/* ── 업종 순환 ── */
+.rs-dates ul { margin: 0; padding-inline-start: 18px; } .rs-dates li { margin: 3px 0; overflow-wrap: anywhere; }
+.rs-tbl .c-table td { white-space: normal; min-width: 5.5em; }
+
+/* ── 일정: 사건 카드 ── */
+.ev-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.ev-card { padding: 10px 12px; border-radius: 14px; background: var(--bg); box-shadow: 0 0 0 1px var(--hair); }
+.ev-h { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+.ev-l { margin: 4px 0; overflow-wrap: anywhere; }
+
+/* 2026-10-08 말 73개 × 글씨 다섯째 단(200%) 검사가 잡은 넘침 — 표 칸 · 긴 숫자 · 이름표가 줄을 바꿈(「괜찮다」며 넘기지 않음 · 규칙 34) */
+.mk-b, .sc-card, .sk-row, .wl-row, .ev-card, .cd-box { min-width: 0; overflow-wrap: anywhere; }
+html[data-font-step="3"] .sk-tools, html[data-font-step="4"] .sk-tools { grid-template-columns: minmax(0, 1fr); }

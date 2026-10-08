@@ -11,7 +11,7 @@
 import {logArt, quietArt} from './scenes.js'; // 그림 한 장(매듭 끈 · 규칙 33) · 기록 파일을 못 읽은 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, korDate, stamp, place} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot} from './parts.js';
+import {foot, segNav, CHECK_SEGS} from './parts.js';
 import {integrityText} from './frame.js';
 
 const KIND = {issue: '이슈', update: '업데이트', data: '자료 변경'}, PLACE = {kr: '한국 판', us: '미국 판'};
@@ -89,6 +89,7 @@ export async function renderLog(main, {manifest} = {}) {
 
   main.replaceChildren(h('div', {class: 'b-page lg-page'},
     logArt(all) ?? quietArt({key: 'log', label: '기록'}), // 그림 한 장(매듭 끈 · 규칙 33 · 기록 파일을 못 읽은 날은 빈 하늘) — 넣으면서 뺀 것: 날마다 펼쳐 둔 긴 목록(가장 새 날만 펼침)
+    segNav(CHECK_SEGS, 'ops', '검증 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 운영 기록은 아래 탭 「검증」 안 보기 · 그림 아래
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '기록 ', h('span', {class: 'b-count'}, `${n.all}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, '그 날 장 이슈 · 화면을 바꾼 날(업데이트) · 자료가 바뀐 날(자료 변경) · 새것이 위'),

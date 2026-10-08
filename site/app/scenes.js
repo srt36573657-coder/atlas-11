@@ -545,6 +545,99 @@ export function koreaArt(RANKS) {
   return artSection({key: 'korea', label: '한국 주식시장은 몇 위인가', kicker: '한국 주식시장은 몇 위인가', stage});
 }
 
+/* ═════════ 15~19. 판 읽기(lens.json) 그림 — 「ATLAS 개편 실행 지시서」(사장님 2026-10-08 20:19 마카오 시각 첨부) ═════════
+   「그림 · 캐릭터 · 음성은 판단 정보를 설명하는 데 사용한다」 — 그림은 판단 정보(① 언제 ~ ⑤ 다음 확인) 아래 · 그림 숫자 = 판 읽기 숫자 그대로(검사기가 lens.json 으로 다시 맞댐)
+     시장      — 구슬 두 그릇(ATLAS 선정 표본 하루: 붉은 구슬 = 오른 곳 · 푸른 구슬 = 내린 곳 · 낙관 = 공식 지수 하루 변화)
+     투자자 매매 — 기둥 둘(외국인 · 기관 5거래일 순매수 추정액 · 위 = 순매수 빨강 · 아래 = 순매도 파랑 · 길이 = 큰 쪽에 견줌)
+     종목      — 구슬 두 그릇(근거 강화 · 근거 약화 곳 수 · 낙관 = 새로 발견 곳 수)
+     검증      — 매듭 끈(매듭 하나 = 고정 기록 한 장 · 낙관 = 평가 대기 / 평가 끝)
+     관심종목   — 별 하나 = 관심 등록 한 곳(이 기기) */
+const PILLAR_MAX = 66;
+function pillarsSvg(p, vals) {
+  const H = 196, zy = 104, mx = Math.max(1e-9, ...vals.map(v => (finite(v) ? Math.abs(v) : 0))), xs = [130, 230];
+  const bar = (v, k) => { const len = finite(v) ? Math.max(4, Math.abs(v) / mx * PILLAR_MAX) : 4, up = finite(v) && v > 0, y = up ? zy - len : zy, x = xs[k];
+    return `<g class="ak-up" data-at="${k + 1}"><rect x="${x - 22}" y="${F(y)}" width="44" height="${F(len)}" rx="6" fill="url(#${p}-${finite(v) && v !== 0 ? (up ? 'red' : 'blue') : 'hill'})" stroke="#0B1411" stroke-opacity=".45" stroke-width=".9"/></g>`; };
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}
+${hills(p, H, 0.5)}
+<path class="ak-draw" data-at="0" pathLength="100" d="M70,${zy} H290" stroke="#CFE7DC" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round"/>
+${vals.map((v, k) => bar(v, k)).join('')}
+<g class="ak-mv" data-at="3" data-v="y0:40px">${actor('lady', {x: 40, y: H - 2, s: 0.42, face: finite(vals[0]) && vals[0] > 0 ? 'cheer' : 'sad', P: p})}${actor('gent', {x: 320, y: H - 2, s: 0.42, face: finite(vals[1]) && vals[1] > 0 ? 'joy' : 'sad', P: p, flip: true})}</g>
+</svg>`;
+}
+const sealAt = (tagText, word, at, ident = false) => h('p', {class: 'ra-seal ra-seal-co', 'data-at': String(at)}, h('span', {class: 'ra-st'}, tagText), ' ', h('span', {class: 'ra-sw', ...(ident ? {'data-ident': ''} : {})}, word));
+/** 시장(#/) — ATLAS 선정 표본 하루 오름 · 내림 곳 수 · 공식 지수 하루 변화(판 읽기 그대로) */
+export function marketArt(lens) {
+  const d1 = lens?.market?.sample?.d1, ix = (lens?.market?.index ?? [])[0];
+  if (!d1?.n) return null;
+  const v = finite(ix?.changePct) ? ix.changePct : null;
+  const labels = lab(col('a', tag('오름'), big(`${d1.up}곳`, 1)), col('b', tag('내림'), big(`${d1.down}곳`, -1)),
+    srow(sealAt(ix?.name ?? '지수', finite(v) ? `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(2)}%` : '없음', 3)));
+  const stage = artStage({key: 'market', svg: beadsSvg('akm', d1.up, d1.down), labels: check(labels, {up: d1.up, down: d1.down, flat: d1.flat, n: d1.n, idx: v}),
+    steps: [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1300}, {c: 2, at: 2, ms: 900}, {c: 3, at: 3, ms: 900}],
+    says: [[`${d1.n}곳 중 ${d1.up}곳이 올랐다`], [`${d1.n}곳 중 ${d1.down}곳이 내렸다`], [`보합 ${d1.flat}곳`], [ix?.name ?? '지수', finite(v) ? `${v.toFixed(2)}%` : '없음']]});
+  return artSection({key: 'market', label: '시장', kicker: '시장', when: `ATLAS 선정 ${lens.market.sample.n}곳 · 하루 · ${when(lens.asOf)}`, stage});
+}
+/** 투자자 매매(#/flow) — 외국인 · 기관 5거래일 순매수 추정액(공식 금액 아님) */
+export function flowWhoArt(lens) {
+  const m = lens?.flows?.available ? lens.flows.market : null; if (!m) return null;
+  const f = m.foreign?.d5?.est ?? null, i = m.institution?.d5?.est ?? null;
+  if (!finite(f) && !finite(i)) return null;
+  const won = v => { if (!finite(v)) return '계산 불가'; const s = v > 0 ? '+' : v < 0 ? '−' : '', a = Math.abs(v); return a >= 1e12 ? `${s}${(a / 1e12).toFixed(2)}조 원` : `${s}${Math.round(a / 1e8).toLocaleString('ko-KR')}억 원`; };
+  const labels = lab(col('a', tag('외국인'), big(won(f), Math.sign(f ?? 0))), col('b', tag('기관'), big(won(i), Math.sign(i ?? 0))), srow(sealAt('추정', '5거래일', 4)));
+  const stage = artStage({key: 'flowwho', svg: pillarsSvg('akw', [f, i]), labels: check(labels, {f5: finite(f) ? Math.round(f / 1e8) : null, i5: finite(i) ? Math.round(i / 1e8) : null}),
+    steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1200}, {c: 1, at: 2, ms: 1200}, {c: 2, at: 3, ms: 1100}, {c: 3, at: 4, ms: 900}],
+    says: [['외국인', won(f)], ['기관', won(i)], ['5거래일'], ['추정']]});
+  return artSection({key: 'flowwho', label: '투자자 매매', kicker: '투자자 매매', when: `5거래일 · ${when(lens.asOf)}`, stage});
+}
+/** 종목(#/stocks) — 근거 강화 · 근거 약화 곳 수 · 새로 발견 곳 수(실험 규칙) */
+export function stocksArt(lens) {
+  const b = lens?.buckets; if (!b || lens?.changes == null) return null;
+  const labels = lab(col('a', tag('근거 강화'), big(`${b.up}곳`, 1)), col('b', tag('근거 약화'), big(`${b.down}곳`, -1)), srow(sealAt('새로 발견', `${b.new}곳`, 3)));
+  const stage = artStage({key: 'stocks', svg: beadsSvg('aks', b.up, b.down), labels: check(labels, {up: b.up, down: b.down, new: b.new}),
+    steps: [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1300}, {c: 2, at: 2, ms: 900}, {c: 3, at: 3, ms: 900}],
+    says: [['근거 강화', `${b.up}곳`], ['근거 약화', `${b.down}곳`], [], ['새로 발견', `${b.new}곳`]]});
+  return artSection({key: 'stocks', label: '종목', kicker: '종목', when: `${korDate(lens.changes.from)} 기록과 견줌 · ${when(lens.asOf)}`, stage});
+}
+function recordsSvg(p, recs) {
+  const H = 150, n = recs.length, mx = Math.max(...recs.map(r => r.n), 1), xs = recs.map((_, k) => (n === 1 ? 180 : 40 + (280 / (n - 1)) * k));
+  const cy = x => 70 + Math.sin(x / 34) * 8;
+  const cord = `M10,${F(cy(10))} ` + Array.from({length: 34}, (_, i) => { const x = 10 + (i + 1) * (340 / 34); return `L${F(x)},${F(cy(x))}`; }).join(' ');
+  const knots = recs.map((r, k) => { const rr = 5 + 8 * Math.sqrt(r.n / mx); return `<circle cx="${F(xs[k])}" cy="${F(cy(xs[k]))}" r="${F(rr)}" fill="${r.done ? '#8FD3B6' : '#F2C46B'}" stroke="#0B1411" stroke-opacity=".5" stroke-width="1"/>`; }).join('');
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H)}
+<path class="ak-draw" data-at="0" pathLength="100" d="${cord}" fill="none" stroke="#C9B49A" stroke-width="2.2" stroke-linecap="round"/>
+<g class="ak-pop" data-at="1">${knots}</g>
+<g class="ak-mv" data-at="2" data-v="y0:40px">${actor('lady', {x: 36, y: H - 2, s: 0.38, face: 'happy', P: p})}${actor('gent', {x: 324, y: H - 2, s: 0.38, face: 'sleepy', P: p, flip: true})}</g>
+</svg>`;
+}
+/** 검증(#/check) — 고정 기록 n장 · 평가 대기 · 평가 끝(판 읽기 그대로) */
+export function checkArt(lens) {
+  const v = lens?.verify, recs = v?.records ?? []; if (!recs.length) return null;
+  const evals = recs.flatMap(r => Object.values(r.evals).flat()), pending = evals.filter(e => e.status === 'pending').length, done = evals.filter(e => e.status === 'done').length;
+  const knots = recs.map(r => ({n: r.sizes.next + r.sizes.similar + r.sizes.hotCodes, done: Object.values(r.evals).flat().some(e => e.status === 'done')}));
+  const labels = lab(col('a', tag('고정 기록'), big(`${recs.length}장`)), col('b', tag('평가 끝'), big(`${done}건`)), srow(sealAt('평가 대기', `${pending}건`, 3)));
+  const stage = artStage({key: 'check', svg: recordsSvg('akc', knots), labels: check(labels, {records: recs.length, pending, done}),
+    steps: [{c: 0, at: 0, ms: 1100}, {c: 1, at: 1, ms: 1100}, {c: 2, at: 2, ms: 1000}, {c: 3, at: 3, ms: 900}],
+    says: [['고정 기록', `${recs.length}장`], ['평가 끝', `${done}건`], [], ['평가 대기', `${pending}건`]]});
+  return artSection({key: 'check', label: '검증', kicker: '검증', when: `${korDate(recs[0].asOf)}~${korDate(recs.at(-1).asOf)} 기록`, stage});
+}
+function starsSvg(p, n) {
+  const H = 150, k = Math.min(n, 24), xs = k === 1 ? [180] : Array.from({length: k}, (_, i) => 30 + (300 * i) / (k - 1)), ys = xs.map((_, i) => 34 + (i % 3) * 18);
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}${stage(p, H)}
+<path class="ak-draw" data-at="0" pathLength="100" d="M20,96 H340" stroke="#F4F1EA" stroke-opacity=".3" stroke-width="1.2" stroke-dasharray="4 6"/>
+<g class="ak-pop" data-at="1" fill="url(#${p}-gold)">${xs.map((x, i) => `<polygon transform="translate(${F(x)},${F(ys[i])})" points="${star(8)}"/>`).join('')}</g>
+<g class="ak-mv" data-at="2" data-v="y0:40px">${actor('lady', {x: 60, y: H - 2, s: 0.38, face: 'joy', P: p})}${actor('gent', {x: 300, y: H - 2, s: 0.38, face: 'happy', P: p, flip: true})}</g>
+</svg>`;
+}
+/** 관심종목(#/watch) — 이 기기에 등록한 곳 수(0곳이면 빈 하늘) */
+export function watchArt(n) {
+  if (!(n > 0)) return quietArt({key: 'watch', label: '관심종목', word: '0곳'});
+  const labels = lab(col('a', tag('관심종목'), big(`${n}곳`)), srow(sealAt('저장', '이 기기에만', 3)));
+  const stage = artStage({key: 'watch', svg: starsSvg('akv', n), labels: check(labels, {n}),
+    steps: [{c: 0, at: 0, ms: 900}, {c: 1, at: 1, ms: 1100}, {c: 2, at: 2, ms: 1000}, {c: 3, at: 3, ms: 900}],
+    says: [['관심종목', `${n}곳`], [], [], ['이 기기에만']]});
+  return artSection({key: 'watch', label: '관심종목', kicker: '관심종목', stage});
+}
+
 /* ═════════ 14. 빈 하늘 — 자료가 비는 날(2026-10-08 05:05 빈 날 막기) ═════════
    그 화면의 그림이 그릴 값을 못 찾은 날(예비 0곳 · 새 회사뿐인 업종 · 기사 · 일정 자료를 못 읽은 날 등)에도 화면마다 그림 한 장(규칙 33)
    — 달이 빈 하늘을 건넘 · 이름표는 그 화면 이름과 「없음」(또는 「0곳」) 하나 · 숫자를 지어내지 않음 · 한 번에 하나 · 기승전결 넷 */

@@ -29,6 +29,8 @@ export async function loadManifest() { const m = await loadJSON('manifest.json')
 export const loadBoard = () => loadJSON('board.json');
 export const loadAgenda = () => loadJSON('agenda.json');
 export const loadStock = code => loadJSON('stocks/' + code + '.json');
+/** 판 읽기(「ATLAS 개편 실행 지시서」 2026-10-08 — 시장 · 돈 흐름 · 종목 · 검증이 함께 읽음 · 판 이름이 다르면 쓰지 않음) */
+export const loadLens = () => loadJSON('lens.json');
 
 /** 다른 시장 판(한국 판에서 미국 판 · 미국 판에서 한국 판) — 「찾기」가 두 판을 함께 찾을 때(2026-10-05 20:24 「종목을 찾는 기능」)
    그 판의 목록(manifest) → 판(board) · 판 목록에 적힌 SHA-256 과 맞대어 다르면 쓰지 않는다(보안 연결 · localhost 에서만 잴 수 있음) */

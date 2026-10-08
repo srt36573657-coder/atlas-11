@@ -8,6 +8,39 @@ import {state, loadAgenda} from './store.js';
 import {marketStrip} from './frame.js';
 import {eventLine, disclosureLine, marketBox, howBox, foot, nextBox} from './parts.js';
 import {agendaComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17)
+import {loadLens, loadBoard} from './store.js';
+import {pv, idxName} from './lensparts.js';
+import {LV, LV_WORD} from './parts.js';
+
+/* 사건 카드(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 8) — 날짜 · 시간대 · 받은 날 · 확정 여부 · 원문 · 직접 관련 종목 · 업종 참고 종목 · 중요 이유 · 발표 뒤 확인할 것
+   · 설명 차례: 새 사실 → 기업에 미치는 경로 → 규모 → 반영 시점 → 미확인 · 업종 행사는 회사 확정 일정이 아님 · 중요도(별)와 호재 · 악재 방향을 나눔(방향은 매기지 않음)
+   · 지난 일정: 그날 지수 · 관련 종목 하루 변화를 보이되 인과로 단정하지 않음 · 예상치가 없는 사건에 예상값을 만들지 않음 */
+const STATUS_EV = {scheduled: '확정 일정(공식 출처)', announced: '발표된 사실(공식 출처)'};
+function evCard(e, lens, nameOf) {
+  const co = codes => codes.flatMap((c, i) => [i ? ' · ' : null, h('a', {href: '#/stock/' + c}, h('span', {'data-ident': ''}, nameOf.get(c) ?? c))]);
+  const sure = e.scope === 'sector' ? '업종 행사 — 회사 참가 확인 안 됨(회사 확정 일정 아님)' : STATUS_EV[e.status] ?? '확인 안 됨';
+  return h('li', {class: 'ev-card', 'data-event': e.id},
+    h('p', {class: 'ev-h'}, e.level ? h('b', {class: 'lv lv' + e.level, title: LV_WORD[e.level]}, LV[e.level]) : null, ' ', h('span', {class: 'ag-date'}, korDate(e.date)), ' ', h('span', {'data-ident': '', lang: e.scope === 'market' ? null : 'ko'}, e.name)),
+    h('p', {class: 'ev-l muted xs'}, `새 사실: ${sure} → 경로: `, h('span', {'data-ident': '', lang: 'ko'}, e.route ?? '—'), ' → 규모: 재지 않음 → 반영 시점: ', korDate(e.date), ' → 미확인: 실제 내용 · 크기'),
+    h('ul', {class: 'cd-l'},
+      h('li', null, h('b', null, '날짜 · 시간대'), ` · ${korDate(e.date)} · 시각은 원문 기준(저장 안 함)`, e.seen ? ` · 받은 날 ${korDate(e.seen)}` : ''),
+      h('li', null, h('b', null, '원문'), ' · ', ...e.sources.slice(0, 2).flatMap((x, i) => [i ? ' · ' : null, x.url ? h('a', {href: x.url, target: '_blank', rel: 'noopener noreferrer', 'data-ident': '', lang: 'ko'}, x.name ?? '출처') : h('span', {'data-ident': '', lang: 'ko'}, x.name ?? '출처')])),
+      e.direct.length ? h('li', null, h('b', null, '직접 관련 종목'), ' · ', ...co(e.direct)) : null,
+      e.nRef ? h('li', null, h('b', null, '업종 참고 종목'), ` · ${e.nRef}곳 · `, ...co(e.ref.slice(0, 5))) : null,
+      h('li', null, h('b', null, '중요 이유'), e.level ? ` · ${LV_WORD[e.level]} — 종류로 매긴 ATLAS 규칙` : ' · 중요도 매기지 않음', ' · 호재 · 악재 방향은 매기지 않음'),
+      e.after ? h('li', null, h('b', null, '그 뒤 관측(인과 아님)'), e.after.session ? [` · 그날 ${idxName(lens)} `, pv(e.after.idx), ...e.after.stocks.flatMap(x => [' · ', h('span', {'data-ident': ''}, nameOf.get(x.code) ?? x.code), ' ', pv(x.day)])] : ' · 그날은 장이 열리지 않음')
+        : h('li', null, h('b', null, '발표 뒤 확인할 것'), ' · 원문의 실제 내용 · 그날 관련 종목 종가 · 지수 하루 변화')));
+}
+function eventsBox(lens, board) {
+  const ev = lens?.events ?? []; if (!ev.length) return null;
+  const nameOf = new Map(board.companies.map(c => [c.code, c.name])), up = ev.filter(e => e.date >= lens.asOf), past = ev.filter(e => e.date < lens.asOf).reverse();
+  return h('section', {class: 'b-box ev-box', 'aria-label': '사건 카드'},
+    h('h2', {class: 'b-box-h'}, `사건 카드 ${ev.length}건`, h('small', null, ' · 확인된 일정표 · 일정마다 공식 출처')),
+    h('h3', {class: 'ag-h'}, `다가오는 것 ${up.length}건`), up.length ? h('ol', {class: 'ev-list'}, ...up.slice(0, 12).map(e => evCard(e, lens, nameOf))) : h('p', {class: 'muted small'}, '없음'),
+    up.length > 12 ? h('p', {class: 'muted xs'}, `그 밖 ${up.length - 12}건은 아래 날짜별 목록`) : null,
+    h('h3', {class: 'ag-h'}, `지난 것 ${past.length}건`, h('small', null, ' · 그 뒤 관측은 인과가 아님')), past.length ? h('ol', {class: 'ev-list'}, ...past.slice(0, 8).map(e => evCard(e, lens, nameOf))) : h('p', {class: 'muted small'}, '없음'),
+    h('p', {class: 'muted xs'}, '설명 차례: 새 사실 → 경로 → 규모 → 반영 시점 → 미확인 · 같은 발표를 되풀이한 기사는 한 사건 · 이름이 비슷하다는 까닭만으로 다른 회사 기사를 붙이지 않음'));
+}
 
 /** 긴 공시 목록은 앞 10건만 펼치고 나머지는 접는다(2026-10-05 15:24 「잡스가 … 36가지」 D1 · D2 — 일정 화면이 휴대폰 화면 열여덟 장 길이라)
    접힌 줄도 같은 목록 안에 그대로 있다(지우지 않음 · 화면 읽기 프로그램과 검사기는 모두 셈) · 12건 이하면 접지 않는다 */
@@ -19,7 +52,8 @@ function foldList(items, line, what) {
 }
 
 export async function renderAgenda(main, {manifest}) {
-  const agenda = await loadAgenda();
+  const [agenda, lens0, board] = await Promise.all([loadAgenda(), loadLens().catch(() => null), loadBoard().catch(() => null)]);
+  const lens = lens0 && !lens0.none ? lens0 : null;
   const evs = new Map(), notices = [], big = [];
   for (const [code, e] of Object.entries(agenda.byCode ?? {})) {
     for (const ev of e.upcoming ?? []) { const x = evs.get(ev.id) ?? {...ev, who: []}; x.who.push({code, name: e.name}); evs.set(ev.id, x); }
@@ -41,6 +75,7 @@ export async function renderAgenda(main, {manifest}) {
       h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'), h('p', {class: 'b-lead'}, '확인된 일정만 모았습니다(일정마다 공식 출처) · 별(★)은 일정·공시의 종류로 매긴 중요도입니다'))),
     nextBox(manifest.universeNext), // 바뀔 회사 묶음 미리 보기 — 「무엇이 다가오나」라 일정 탭으로(2026-10-05 「잡스라면」 9번 · 오늘 판과 섞이지 않게)
     marketBox(agenda, {max: 0}),
+    lens && board ? eventsBox(lens, board) : null, // 사건 카드(지시서 8)
     h('section', {class: 'b-box', 'aria-label': '회사·업종 일정'},
       h('h2', {class: 'b-box-h'}, `회사·업종 일정 ${list.length}건`, h('small', null, ' · 날짜 차례')),
       list.length ? h('div', {class: 'a-days'}, ...days.map(d => h('section', {class: 'a-day'}, h('h3', {class: 'a-day-h'}, korDate(d)), h('ul', {class: 'ag-list'}, ...list.filter(e => e.date === d).map(e => eventLine(e, {who: e.who, withRoute: true, date: false})))))) : h('p', {class: 'muted small'}, '확인된 회사·업종 일정 없음'),

@@ -24,7 +24,7 @@
 import {h, korDate, pct, num, finite, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
 import {marketStrip} from './frame.js';
-import {foot, hotSwitch, hotCounts, movesBox, sunNum, sunKey} from './parts.js'; // 「ATLAS가 하지 않는 일」 상자는 아래 탭 「처음」으로 옮김(2026-10-07 00:49 · 규칙 1)
+import {foot, segNav, MARKET_SEGS, movesBox, sunNum, sunKey} from './parts.js'; // 「ATLAS가 하지 않는 일」 상자는 아래 탭 「처음」으로 옮김(2026-10-07 00:49 · 규칙 1)
 import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
@@ -82,12 +82,13 @@ export async function renderHome(main, {manifest}) {
     //   불장 업종이 없는 날은 빈 하늘(규칙 33)
     hotArt(board) ?? quietArt({key: 'home', label: '불장', when: `${korDate(board.asOf)} 종가`}),
     marketStrip(manifest),
-    hotSwitch('home', hotCounts(board)),
+    segNav(MARKET_SEGS, 'hot', '시장 보기 바꾸기'), // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 불장은 아래 탭 「시장」 안(#/hot) · 옛 스위치(불장 · 예비 · 오름 상위)는 예비 · 오름 상위가 「종목」으로 가며 시장 보기 바꾸기로
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '불장 ', h('span', {class: 'b-count'}, `업종 ${hot.length}개`)),
       ...lateLines(late, board)),
     hot.length ? null : h('p', {class: 'b-note'}, '지난 20거래일 동안 평균이 오른 업종이 없습니다'),
+    h('p', {class: 'muted xs'}, `불장 = 20거래일 평균 상승이 큰 업종을 ${board.hot?.want ?? 11}개까지 고른 목록 · 시장 열기 지표가 아님(시장 상태는 「요약」의 업종 진단)`), // 「ATLAS 개편 실행 지시서」 4 — 개수 상한이 있는 숫자를 시장 지표로 쓰지 않음
     flowsEl,
     h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'), // 2026-10-08 01:27 「글이 너무 많아 · 이런식으로 모두」 — 설명 줄은 접음(규칙 13)
       h('p', {class: 'b-when'}, `업종 ${groups.length}개 가운데 지난 20거래일 평균이 많이 오른 ${hot.length}개 · ${span(from, to)}`),
@@ -176,6 +177,7 @@ export async function renderMap(main, {manifest}) {
   main.replaceChildren(h('div', {class: 'b-page t-page'},
     mapArt(board) ?? quietArt({key: 'map', label: '지도', tagText: '지난 20거래일', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(산수화 봉우리 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈 · 문장 · 거대 숫자 · 점)
     marketStrip(manifest),
+    segNav(MARKET_SEGS, 'map', '시장 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 지도는 아래 탭 「시장」 안(요약 · 불장 · 지도)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '지도 ', h('span', {class: 'b-count'}, `업종 ${groups.length}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, headLine(groups, n, from, to)),

@@ -5,7 +5,7 @@
 import {riseArt, quietArt} from './scenes.js'; // 그림 한 장(풍등 · 규칙 33) · 0곳인 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, korDate, pct, signCls, place} from './util.js';
 import {state, loadBoard} from './store.js';
-import {foot, sparkSvg, sparkScale, hotSwitch, hotCounts, movesBox, sunTag} from './parts.js';
+import {foot, sparkSvg, sparkScale, segNav, STOCK_SEGS, movesBox, sunTag} from './parts.js';
 import {sunOf} from './shapes.js';
 import {mode} from './view-home.js';
 
@@ -25,7 +25,7 @@ export async function renderRise(main, {manifest}) {
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   state.summary = `${korDate(to)} 종가 기준. 불장 밖에서 많이 오른 ${n}곳. ${items.slice(0, 3).map((x, i) => `${i + 1}. ${x.name} ${pct(x.change20, 1)}`).join(', ')}.`;
   main.replaceChildren(h('div', {class: 'b-page r-page'},
-    hotSwitch('rise', hotCounts(board)),
+    segNav(STOCK_SEGS, 'rise', '종목 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 예비 · 오름 상위는 아래 탭 「종목」 안
     riseArt(board) ?? quietArt({key: 'rise', label: '오름 상위', word: '0곳', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(풍등 · 규칙 33 · 0곳인 날은 빈 하늘) — 넣으면서 뺀 것: 아래 긴 설명 두 줄(「어떻게 셌나」로 접음)
     movesBox(board.moves), // 저녁 7시 들고 남 — 세 화면 같은 자리(옛 한 줄은 지움)
     h('header', {class: 'b-head'},

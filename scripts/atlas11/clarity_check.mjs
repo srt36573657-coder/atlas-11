@@ -19,8 +19,14 @@ export const SCREENS = [
   // 2026-10-04 15:37 사장님 「이제 예측을 하지 않는다 예측에 관련된 모든 기능과 화면을 삭제하고. 표현하지 마라」
   // 2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」: 36칸 판 · 업종(불장 1위 업종) · 회사 · 일정
   // 2026-10-05 10:24 「잡스라면 36가지」 1차: 탭 「불장」(#/ · 큰 흐름) · 탭 「업종」(#/map · 73칸 판)
-  {id: 'home', name: '불장', hash: '#/', wait: '.h-page .hs-seg'},
-  {id: 'flow', name: '돈 흐름', hash: '#/flow', wait: '.fl-page .sy'}, // 2026-10-08 17:41 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 — 아래 탭 둘째 · 1위~3위 업종 회사
+  // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 아래 탭 다섯(시장 · 돈 흐름 · 종목 · 일정 · 검증) · 시장 첫 화면 ① ~ ⑤ · 옛 「불장」은 #/hot · 옛 「돈 흐름」 그림은 #/flow/rotation
+  {id: 'market', name: '시장', hash: '#/', wait: '.mk-page [data-first="5"]'},
+  {id: 'home', name: '불장', hash: '#/hot', wait: '.h-page .hs-seg'},
+  {id: 'flowwho', name: '투자자 매매', hash: '#/flow', wait: '.fw-page [data-first="1"]'},
+  {id: 'flow', name: '업종 순환', hash: '#/flow/rotation', wait: '.fl-page .sy'}, // 2026-10-08 17:41 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 — 1위~3위 업종 회사 · 20:19 지시서 — 「돈 흐름」 안 「업종 순환」
+  {id: 'stocks', name: '종목', hash: '#/stocks', wait: '.sk-page .sk-row'},
+  {id: 'check', name: '검증', hash: '#/check', wait: '.ck-page [data-first="1"]'},
+  {id: 'watch', name: '관심종목', hash: '#/watch', wait: '.wl-page [data-first="1"]'},
   {id: 'map', name: '지도', hash: '#/map', wait: '.lm-c'}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 옛 이름 「업종 73칸」 · 맨 위 지도 한 장 + 73칸
   {id: 'land', name: '지도 갈래', hash: '#/map/f/semi', wait: '.l-grid .t-tile'}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 땅을 누르면 오는 갈래 화면(반도체 · 미국 판도 같은 id)
   {id: 'industry', name: '업종', hash: board => '#/i/' + (board?.hot?.items?.[0]?.id ?? board?.groups?.[0]?.id ?? ''), wait: '.b-card .spark'},
@@ -38,7 +44,7 @@ export const SCREENS = [
   {id: 'stock', name: '회사', hash: '#/stock/005930', wait: '.c-chart svg.lc'},
   {id: 'agenda', name: '일정', hash: '#/agenda', wait: '.a-days, .b-box'},
   // 2026-10-05 20:24 「아틀란스에서 종목을 찾는 기능을 넣어라」: 아래 탭 「찾기」 — 이름 두 글자를 넣은 화면(한국 · 미국 판 줄이 함께)을 잰다
-  {id: 'find', name: '찾기', hash: '#/find', wait: '.fd-page #fd-in', settle: async page => { await page.locator('#fd-in').fill('반도'); await page.waitForTimeout(250); }},
+  {id: 'find', name: '종목 찾기', hash: '#/stocks', wait: '.sk-page .fd-in', settle: async page => { await page.locator('.sk-page .fd-in').fill('반도'); await page.waitForTimeout(250); }}, // 옛 「찾기」 탭은 「종목」의 찾기 칸(2026-10-08 지시서 7)
   {id: 'log', name: '기록', hash: '#/log', wait: '.lg-page .lg-item'}, // 2026-10-06 16:10 「… 기록 하는 탭」 — 아래 탭 여섯째(업데이트 · 자료 변경 날짜)
   // 2026-10-07 00:49 「이대로 사이트에 올려줘」: 아래 탭 일곱째 「처음」(찍은 다섯 · 미국 판은 「언제부터」만) — 맨 아래 접힌 「ATLAS가 하지 않는 일」도 펼쳐서 잰다
   {id: 'guide', name: '한국 주식시장 안내', hash: '#/guide', wait: '.gd-page .gd-row'}, // 2026-10-07 05:31 「외국인들 … 한국 주식시장을 제대로 알수 있게」

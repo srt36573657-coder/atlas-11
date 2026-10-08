@@ -126,7 +126,7 @@ function labelsOf(r) {
   const ws = r.waves ?? [];
   // 돈의 파장 1~5차(06:46) — 지난 기록에서 돈이 차례로 가장 많이 들어간 업종 · 마지막이 지금 · 이름은 그 말로(73개 말 · 업종 이름 사전)
   // 자리: 지금 짝(빠지는 곳 → 들어가는 곳) 이름 · 숫자 다음(지나온 이야기 — 「지난 줄거리」) · 긴 말에서도 지금 짝이 첫 화면에(규칙 30)
-  const rw = ws.length ? h('ol', {class: 'rw', 'aria-label': '돈의 파장'}, ...ws.map((x, i) => h('li', {class: 'rw-c' + (i === ws.length - 1 ? ' rw-now' : ''), 'data-n': String(x.n)}, h('b', {class: 'rw-k'}, `${x.n}차`), ' ', h('span', {class: 'rw-l'}, x.to.label)))) : null;
+  const rw = ws.length ? h('ol', {class: 'rw', 'aria-label': '강세 파장'}, ...ws.map((x, i) => h('li', {class: 'rw-c' + (i === ws.length - 1 ? ' rw-now' : ''), 'data-n': String(x.n)}, h('b', {class: 'rw-k'}, `${x.n}차`), ' ', h('span', {class: 'rw-l'}, x.to.label)))) : null;
   // 메달 — 위 medal(금 · 은 · 동 · 화면 읽기 「1위」)
   const outs = (r.out ?? []).slice(0, 3), ins = (r.in ?? []).slice(0, 3);
   // 줄 맞춘 두 칸(왼쪽 = 빠지는 곳 · 가장 많이 나간 순 / 오른쪽 = 들어가는 곳 · 가장 많이 들어간 순 — 12:43 · 12:59 「1등부터 3등까지」)
@@ -151,8 +151,8 @@ const ART_STEPS6 = [...ART_STEPS.slice(0, 6), {c: 3, at: 6, ms: 1400}]; // 순�
 function sayOf(r) {
   const p = r.pair, w = whoMoved(r);
   const rk = xs => (xs ?? []).slice(0, 3).flatMap((x, i) => [`${i + 1}위`, x.label]);
-  return [['빠지는 곳', ...rk(r.out), '들어가는 곳', ...rk(r.in)], ['돈의 파장', ...(r.waves ?? []).map(x => `${x.n}차 ${x.to.label}`), `${korDate(p.start)}부터`, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`],
-    ['포모값', score(r.fomo.to), r.fomo.toWord ?? '없음'], r.flows ? ['판 쪽', w.sell?.actor ?? '없음', '산 쪽', w.buy?.actor ?? '없음'] : ['빠지는 곳', p.from.label, '포모값', score(r.fomo.from), r.fomo.fromWord ?? '없음']];
+  return [['줄어든 곳', ...rk(r.out), '늘어난 곳', ...rk(r.in)], ['강세 파장', ...(r.waves ?? []).map(x => `${x.n}차 ${x.to.label}`), `${korDate(p.start)}부터`, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`],
+    ['포모값', score(r.fomo.to), r.fomo.toWord ?? '없음'], r.flows ? ['판 쪽', w.sell?.actor ?? '없음', '산 쪽', w.buy?.actor ?? '없음'] : ['줄어든 곳', p.from.label, '포모값', score(r.fomo.from), r.fomo.fromWord ?? '없음']];
 }
 /** 그림 한 장 — art.js 틀(한 번에 하나 · 차례 점 넷 · 다시 보기 · 소리로 듣기 · 화면 밖이면 멈춤 · 움직임 줄이기면 끝 모습) */
 const artPlayer = r => artStage({key: 'rot', svg: artSvg(r), labels: labelsOf(r), steps: r.flows ? ART_STEPS : ART_STEPS6, says: sayOf(r)}); // 자막 띠 뺌(2026-10-08 10:34 마카오 시각)
@@ -174,7 +174,7 @@ export function rotationCos(r, board) {
     s.cs.length ? h('ul', {class: 'rc-ul'}, ...s.cs.map(coRow)) : h('p', {class: 'rc-none muted'}, '회사 0곳'));
   const block = (key, head) => { const xs = all.filter(s => s.side === key); return xs.length ? h('div', {class: 'rc-side', 'data-side': key}, h('p', {class: 'rc-h'}, head), ...xs.map(grp)) : null; };
   return h('div', {class: 'rc', 'data-cos': JSON.stringify(all.map(s => [s.side, s.rank, s.x.id, s.cs.map(c => c.code)]))},
-    block('in', '들어가는 곳'), block('out', '빠지는 곳'), // 들어가는 곳 먼저(12:43 「돈에 흐름이 지금 어디로 가는가」 · 12:59 「돈이 빠지는곳도」)
+    block('in', '늘어난 곳'), block('out', '줄어든 곳'), // 들어가는 곳 먼저(12:43 「돈에 흐름이 지금 어디로 가는가」 · 12:59 「돈이 빠지는곳도」)
     h('p', {class: 'rc-k muted xs'}, '회사 = 지난 20거래일 종가 변화 · 차례 = 20거래일 변화 순'));
 }
 
@@ -183,18 +183,18 @@ export function rotationBox(r, board = null) {
   if (!r || r.none || !r.pair) return null;
   const p = r.pair;
   const u = unitOf(r), li = x => h('li', {class: 'rt-li'}, h('span', {class: 'rt-l'}, x.label), h('span', {class: 'rt-v'}, ...amt(x.amount, u)), h('span', {class: 'rt-f'}, h('span', null, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(x.fomo)}, score(x.fomo))));
-  return h('section', {class: 'sy rt', 'aria-label': '돈 흐름', 'data-from': p.from.id, 'data-to': p.to.id, 'data-place': r.place ?? 'kr',
+  return h('section', {class: 'sy rt', 'aria-label': '업종 순환', 'data-from': p.from.id, 'data-to': p.to.id, 'data-place': r.place ?? 'kr',
     'data-check': JSON.stringify({from: p.from.id, to: p.to.id, start: p.start, days: p.days, outAmt: r.out[0].amount, inAmt: r.in[0].amount, outs: (r.out ?? []).slice(0, 3).map(x => [x.id, x.amount]), ins: (r.in ?? []).slice(0, 3).map(x => [x.id, x.amount]), fomo: r.fomo.to, waves: (r.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])})}, // 빠짐없이 도는 검사기가 /story.json 과 맞댐(규칙 34 · 파장은 scripts/atlas11/verify/waves_verify.py 가 따로 셈)
-    h('p', {class: 'sy-k'}, h('span', null, '돈 흐름'), h('span', {class: 'sy-kw'}, `지난 ${r.window.days}거래일 · ${korDate(r.asOf)} 종가까지`)), // 이름 = 아래 탭 「돈 흐름」(규칙 2 · 2026-10-08 17:41 · 옛 「돈의 이동」)
+    h('p', {class: 'sy-k'}, h('span', null, '업종 순환'), h('span', {class: 'sy-kw'}, `지난 ${r.window.days}거래일 · ${korDate(r.asOf)} 종가까지`)), // 이름 = 아래 탭 「돈 흐름」(규칙 2 · 2026-10-08 17:41 · 옛 「돈의 이동」)
     h('p', {class: 'ra-t'}, h('span', {class: 'ra-ts'}, `${korDate(p.start)}부터`), ' ', h('b', {class: 'ra-td'}, `${p.days}거래일${p.atLeast ? ' 넘게' : '째'}`)), // 기간(자막 띠를 빼며 그림 위로 되돌림)
     artPlayer(r),
     board ? rotationCos(r, board) : null,
     h('div', {class: 'rt-all'},
-      h('div', {class: 'rt-col', 'data-side': 'out'}, h('p', {class: 'rt-h'}, '빠지는 곳'), h('ol', {class: 'rt-ol'}, ...r.out.map(li))),
-      h('div', {class: 'rt-col', 'data-side': 'in'}, h('p', {class: 'rt-h'}, '들어가는 곳'), h('ol', {class: 'rt-ol'}, ...r.in.map(li)))),
+      h('div', {class: 'rt-col', 'data-side': 'out'}, h('p', {class: 'rt-h'}, '줄어든 곳'), h('ol', {class: 'rt-ol'}, ...r.out.map(li))),
+      h('div', {class: 'rt-col', 'data-side': 'in'}, h('p', {class: 'rt-h'}, '늘어난 곳'), h('ol', {class: 'rt-ol'}, ...r.in.map(li)))),
     h('details', {class: 'rt-how'}, h('summary', null, '어떻게 셌나'),
       h('p', null, `「${u}」 = 업종 시가총액 몫 — 시장 전체가 같은 비율로 움직였을 때와 견준 차이(업종 ${r.groups}개 · 더하면 0)`),
-      h('p', null, '기간 = 들어가는 곳이 빠지는 곳보다 앞서기 시작한 날(두 업종 지수 비의 마지막 바닥)부터'),
+      h('p', null, '추정 시작일 = 늘어난 곳이 줄어든 곳보다 앞서기 시작한 날(두 업종 지수 비의 마지막 바닥 · 나중에 확인한 날)'),
       h('p', null, `포모값 = 옛 ATLAS FOMO ${r.fomo.of}가지 가운데 종가로 셀 수 있는 ${r.fomo.items}가지(10일 상승률 · 상승 가속 · 상승일 비중 · 20일 평균 이격 · 60일 고점 돌파 · 상승 변동 집중)를 지난 ${r.fomo.refs}번과 견준 백분위 · 거래량 · 장중 · 개인 · 관심 ${r.fomo.of - r.fomo.items}가지는 자료가 없어 뺌`),
       r.flows ? h('p', null, `순매매 = 외국인 · 기관 · 개인이 사고판 주식 수 × 그날 종가(어림) · ${korDate(r.flows.from)}~${korDate(r.flows.to)}`) : null));
 }
@@ -203,12 +203,12 @@ export function rotationBox(r, board = null) {
 export function rotationEnd(r) {
   if (!r || r.none || !r.pair) return null;
   const p = r.pair;
-  return h('section', {class: 'sy-end rt-end', 'aria-label': '돈 흐름'},
-    h('p', {class: 'sy-end-k'}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': '', 'aria-hidden': 'true'}, '결'), h('span', null, '돈 흐름')),
+  return h('section', {class: 'sy-end rt-end', 'aria-label': '업종 순환'},
+    h('p', {class: 'sy-end-k'}, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': '', 'aria-hidden': 'true'}, '결'), h('span', null, '업종 순환')),
     h('p', {class: 'sy-end-m', 'data-speak': ''}, pic('m:in', 'sy-ifi'), h('span', null, `${p.from.label} → ${p.to.label}`)),
     h('p', {class: 'sy-end-s'}, sinceLine(p)),
     h('p', {class: 'sy-end-s'}, h('span', null, '포모값'), ' ', h('b', null, score(r.fomo.to)), ' · ', h('span', null, r.fomo.toWord ?? '없음')));
 }
 
 /** 소리로 듣기 한 줄(화면 요약) */
-export const rotationSay = r => (!r || r.none || !r.pair ? '' : `돈 흐름. 빠지는 곳: ${r.pair.from.label}. 들어가는 곳: ${r.pair.to.label}. ${sinceLine(r.pair)}. 포모값 ${score(r.fomo.to)}, ${r.fomo.toWord ?? '없음'}. `);
+export const rotationSay = r => (!r || r.none || !r.pair ? '' : `업종 순환. 줄어든 곳: ${r.pair.from.label}. 늘어난 곳: ${r.pair.to.label}. ${sinceLine(r.pair)}. 포모값 ${score(r.fomo.to)}, ${r.fomo.toWord ?? '없음'}. `);
