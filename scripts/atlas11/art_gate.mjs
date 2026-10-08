@@ -42,8 +42,14 @@ export async function dictParity(root) {
   return bad;
 }
 
-/** 검사 결과 하나가 문을 지나는가(②③⑤⑥) — r = latest.json · now = 지금 화면 코드 지문 · 걸린 까닭 목록(비면 지나감) */
-export function reportProblems(r, now) {
+/** 번역 면제(2026-10-09 · 사장님 03:14 「번역 작업 하지마 올린 프롬프트 존중해서 작업해」 · 03:59 「알아서 해」) — reports/atlas11/full-check/trans-waiver.json
+ *  기한(until · 한국 날짜) 안에서만 · 「번역 안 된 한국어」 실패만 봐줌(그 밖의 실패 · 층을 덜 돈 결과는 그대로 막음) · 파일을 지우면 면제 끝 */
+export async function transWaiver(root, today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10)) {
+  let w = null; try { w = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/full-check/trans-waiver.json'), 'utf8')); } catch { return null; }
+  return w?.schema === 'atlas11-trans-waiver-1' && /^\d{4}-\d{2}-\d{2}$/.test(w.until ?? '') && today <= w.until && Array.isArray(w.said) && w.said.length ? w : null;
+}
+/** 검사 결과 하나가 문을 지나는가(②③⑤⑥) — r = latest.json · now = 지금 화면 코드 지문 · waiver = 번역 면제(없으면 null) · 걸린 까닭 목록(비면 지나감) */
+export function reportProblems(r, now, waiver = null) {
   const bad = [];
   if (r.code !== now) bad.push(`화면 코드가 검사 뒤에 바뀜(검사 ${r.code} · 지금 ${now}) — 빠짐없이 도는 검사를 다시 돌려야 함`);
   if (r.quick) bad.push('빠른 검사 결과임(모든 화면을 돌지 않음)');
@@ -53,20 +59,23 @@ export function reportProblems(r, now) {
   if (!(r.edge > 0)) bad.push('빈 날 길(값이 비는 날 · 없는 주소)을 돌지 않은 결과임');
   if (!(r.transLangs >= 73)) bad.push(`73개 말 계산 층(남은 한국어)을 돌지 않은 결과임(${r.transLangs ?? 0}개 말)`); // v3(2026-10-08 06:42 「10배 정교」)
   if (!(r.layoutLangs >= 74)) bad.push(`74개 말 가장 긴 글 층(한 화면 · 넘침)을 돌지 않은 결과임(${r.layoutLangs ?? 0}개 말)`);
-  if (r.failed !== 0 || !r.ok) bad.push(`검사 실패 ${r.failed}개`);
+  const transOnly = !!waiver && r.shape === true && Number.isInteger(r.transFailed) && r.otherFailed === 0 && r.failed === r.transFailed; // 번역만 남은 결과 + 기한 안 면제
+  if ((r.failed !== 0 || !r.ok) && !transOnly) bad.push(`검사 실패 ${r.failed}개${Number.isInteger(r.otherFailed) ? `(번역 밖 ${r.otherFailed}개 · 번역 안 된 한국어 ${r.transFailed}개${waiver ? '' : ' — 번역 면제 없음'})` : ''}`);
   return bad;
 }
 export async function artGate(root = process.cwd()) {
   const bad = [];
   let r = null;
   try { r = JSON.parse(await fs.readFile(path.join(root, 'reports/atlas11/full-check/latest.json'), 'utf8')); } catch { bad.push('빠짐없이 도는 검사 결과가 없음(node scripts/atlas11/full_check.mjs)'); }
-  if (r) bad.push(...reportProblems(r, await codePrint(root)));
+  const waiver = await transWaiver(root);
+  if (r) bad.push(...reportProblems(r, await codePrint(root), waiver));
   bad.push(...await dictParity(root));
-  return {ok: !bad.length, bad, report: r ? {at: r.at, seconds: r.seconds, pages: r.pages, byLang: r.byLang ?? null, edge: r.edge ?? 0, transLangs: r.transLangs ?? 0, layoutLangs: r.layoutLangs ?? 0, numbers: r.numbers, failed: r.failed, code: r.code} : null};
+  return {ok: !bad.length, bad, waiver: waiver && r && r.failed > 0 ? {until: waiver.until, said: waiver.said, transFailed: r.transFailed} : null,
+    report: r ? {at: r.at, seconds: r.seconds, pages: r.pages, byLang: r.byLang ?? null, edge: r.edge ?? 0, transLangs: r.transLangs ?? 0, layoutLangs: r.layoutLangs ?? 0, numbers: r.numbers, failed: r.failed, transFailed: r.transFailed ?? null, otherFailed: r.otherFailed ?? null, code: r.code} : null};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
   const g = await artGate();
-  if (g.ok) console.log(`올리기 문 통과 — 화면 ${g.report.pages}개(영어 ${g.report.byLang?.en ?? '?'} · 한국어 ${g.report.byLang?.ko ?? '?'} · 빈 날 ${g.report.edge}) · 번역 ${g.report.transLangs}개 말 · 가장 긴 글 ${g.report.layoutLangs}개 말 · 맞댄 숫자 ${g.report.numbers}개 · 실패 0 · ${g.report.seconds}초 · 검사 ${g.report.at}`);
+  if (g.ok) console.log(`올리기 문 통과 — 화면 ${g.report.pages}개(영어 ${g.report.byLang?.en ?? '?'} · 한국어 ${g.report.byLang?.ko ?? '?'} · 빈 날 ${g.report.edge}) · 번역 ${g.report.transLangs}개 말 · 가장 긴 글 ${g.report.layoutLangs}개 말 · 맞댄 숫자 ${g.report.numbers}개 · ${g.waiver ? `번역 밖 실패 0 · 번역 안 된 한국어 ${g.waiver.transFailed}건은 번역 면제(${g.waiver.until}까지 · ${g.waiver.said[0]})` : '실패 0'} · ${g.report.seconds}초 · 검사 ${g.report.at}`);
   else { console.error('올리기 문 막힘:\n' + g.bad.map(x => ' · ' + x).join('\n')); process.exit(1); }
 }

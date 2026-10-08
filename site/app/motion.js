@@ -25,8 +25,12 @@ export const idleIn = () => Math.max(0, busyUntil - now());
 /** 돈 이야기 짚어 주기가 도는 동안 — 줄 전체가 기다림 */
 export function hold(owner) { holder = owner; clearTimeout(timer); }
 export function release(owner) { if (holder === owner) { holder = null; pump(); } }
+/** 2026-10-09 「ATLAS 업데이트 실행 프롬프트」 7 「처음에는 최신 결과가 멈춘 채로」 — 화면을 열 때 막대가 자라는 등장 움직임을 끔(정적 우선 · chart.css 도 같이 끔)
+ *  부르는 곳(지도 갈래 장 · 안내 시간 띠 · 한국 순위 띠 · 긴 눈 막대)은 그대로 두고 여기서 아무것도 하지 않음 · 움직임은 그림 칸의 「재생」을 누를 때만(art.js) */
+export const STATIC_FIRST = true;
 /** 이 화면(key)에서 처음이면 el 을 줄에 세우고 true · 이미 했으면 그대로(멈춘 그림) false · dur = 움직이는 시간(ms) */
 export function playOnce(key, el, {when = 'seen', dur = 900} = {}) {
+  if (STATIC_FIRST) return false;
   if (!el || played.has(key)) return false;
   played.add(key);
   el.setAttribute('data-motion', '');

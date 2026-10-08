@@ -114,3 +114,93 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 /* 2026-10-08 말 73개 × 글씨 다섯째 단(200%) 검사가 잡은 넘침 — 표 칸 · 긴 숫자 · 이름표가 줄을 바꿈(「괜찮다」며 넘기지 않음 · 규칙 34) */
 .mk-b, .sc-card, .sk-row, .wl-row, .ev-card, .cd-box { min-width: 0; overflow-wrap: anywhere; }
 html[data-font-step="3"] .sk-tools, html[data-font-step="4"] .sk-tools { grid-template-columns: minmax(0, 1fr); }
+
+/* ── 후보 7(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」) — 이름 · 이유 · 값 · 위험이 차례로 읽힘(11) · 상태 색은 값의 빨강 · 파랑과 다른 뜻(조건 충족 = 먹 테 · 조건 대기 = 점선 · 재검토 = 주황) ── */
+.cd-rule { margin: 3px 0 0; font-size: .875rem; line-height: 1.5; color: var(--sub); overflow-wrap: anywhere; }
+.cd-rule b { color: var(--ink2); }
+.cd-toc { margin: 3px 0 2px; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.cd-list { margin: 4px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); }
+.cd-row { padding: 10px 0 12px; border-top: 1px solid var(--sep); min-width: 0; overflow-wrap: anywhere; }
+.cd-row:first-child { border-top: 0; padding-top: 4px; }
+.cd-main { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; min-height: 48px; color: var(--ink); text-decoration: none; }
+.mk-b a.cd-main { font-weight: 400; color: var(--ink); }
+.cd-rk { font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 2.4em; color: var(--ink); }
+.cd-nm { min-width: 0; }
+.cd-name { display: block; font-size: 1.1875rem; font-weight: 700; line-height: 1.3; text-decoration: underline; text-decoration-color: var(--sep); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.cd-sec { display: block; margin-top: 1px; font-size: .8125rem; color: var(--sub); }
+.cd-st { display: inline-flex; align-items: center; gap: 3px; flex: none; padding: 2px 9px; border-radius: 999px; border: 1.5px solid currentColor; font-size: .8125rem; font-weight: 700; line-height: 1.35; white-space: nowrap; background: var(--card); }
+.cd-st-met { color: var(--ink); }
+.cd-st-wait { color: var(--sub); border-style: dashed; background: var(--fill); }
+.cd-st-recheck { color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--card)); }
+.cd-px, .cd-why, .cd-risk, .cd-note { margin: 4px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.cd-px b { font-variant-numeric: tabular-nums; }
+.cd-k { display: inline-block; margin-inline-end: 2px; padding: 0 6px; border-radius: 6px; background: var(--fill); font-size: .75rem; font-weight: 700; line-height: 1.6; color: var(--sub); vertical-align: 1px; }
+.cd-risk .cd-k { color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--card)); }
+.cd-note { color: var(--sub); font-size: .875rem; }
+.cd-note-re { color: var(--warn); font-weight: 700; }
+.cd-src { color: var(--ink2); }
+.cd-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+.cd-btn, .mk-b a.cd-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+.cd-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cd-chg { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 3px; }
+.cd-chg li { font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.bc.cd-funnel .bc-bar { background: var(--sub); } /* 곳 수 막대 — 값의 오름 · 내림(빨강 · 파랑)과 다른 뜻(chart.css .bc-bar.up 보다 뒤에서 이기게 한 단 더) */
+.bc.cd-funnel .bc-bar.bc-mine { background: var(--ink); }
+.bc.cd-funnel .bc-val { color: var(--ink); }
+.cd-rules .cd-l li { line-height: 1.55; }
+
+/* ── 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) ── */
+.ex-nav { display: flex; margin: 0 0 4px; border-bottom: 1px solid var(--sep); }
+.ex-b { flex: 1 1 0; min-width: 0; min-height: 44px; display: flex; align-items: center; justify-content: center; padding: 6px 4px 4px; border-bottom: 3px solid transparent; color: var(--sub); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; text-align: center; }
+.ex-b[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.ex-b:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* ── 다른 후보와 비교(#/compare) — 같은 축 · 짝을 바꾸면 막대만 옮겨 감 ── */
+.cmp-picks { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin: 6px 0 0; }
+.cmp-pick { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.cmp-who { flex: none; font-weight: 700; }
+.cmp-sel { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 0 8px; border-radius: 12px; border: 1.5px solid var(--sep); background: var(--card); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; }
+.cmp-sel:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[data-font-step="4"] .cmp-picks { grid-template-columns: minmax(0, 1fr); }
+.cmp-say { font-size: clamp(1.0625rem, 4.6vw, 1.25rem); }
+.cmp-cap { margin: 6px 0 2px; font-size: .8125rem; font-weight: 700; color: var(--sub); }
+.cmp-bar { transition: left .45s cubic-bezier(.2, .7, .2, 1), width .45s cubic-bezier(.2, .7, .2, 1); }
+.c-table.cmp-t th, .c-table.cmp-t td { min-width: 6.5em; white-space: normal; text-align: start; vertical-align: top; } /* 긴 위험 글이 한 줄로 늘어 칸이 화면 밖으로 가던 것(2026-10-09 화면 사진) */
+@media (prefers-reduced-motion: reduce) { .cmp-bar { transition: none; } }
+
+/* ── 종목 화면 「후보 판단」 — 여섯 질문 · 주장 → 관측 → 계산 · 해석 → 반대 근거 → 확인할 것 ── */
+.cj-box, .cj-q { scroll-margin-top: 64px; }
+.cj-h { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.cj-h:focus { outline: none; } .cj-h:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cj-sum, .cj-risk { margin: 6px 0 0; font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; }
+.cj-risk .cd-k { color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--card)); }
+.cj-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.cj-q { margin: 12px 0 0; padding: 10px 6px 4px; border-top: 1px solid var(--sep); border-radius: 8px; }
+.cj-q:focus { outline: none; }
+.cj-qh { margin: 0 0 6px; font-size: 1rem; font-weight: 700; overflow-wrap: anywhere; }
+.cj-dl { display: grid; gap: 5px; margin: 0; }
+.cj-r { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; } /* 휴대폰: 이름(주장 · 관측 …) 위 · 내용 아래(표가 화면 밖으로 나가지 않게) · 넓은 화면은 두 칸 */
+@media (min-width: 560px) { .cj-r { grid-template-columns: 5.6em minmax(0, 1fr); gap: 2px 8px; } }
+.cj-r dt { font-size: .8125rem; font-weight: 700; line-height: 1.6; color: var(--sub); }
+.cj-r dd { margin: 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; min-width: 0; }
+.cj-ok { font-weight: 700; white-space: nowrap; } .cj-ok.yes { color: var(--ink); } .cj-ok.no { color: var(--warn); }
+.cj-t { margin: 2px 0; } .c-table.cj-t th, .c-table.cj-t td { font-size: .875rem; white-space: normal; text-align: start; vertical-align: top; padding: 6px 4px; }
+.cj-flags { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 2px; font-size: .9375rem; }
+.cj-hi { animation: cj-hi 1.4s ease-out 1; }
+@keyframes cj-hi { from { background: color-mix(in srgb, var(--warn) 16%, transparent); } to { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .cj-hi { animation: none; } }
+html[data-font-step="3"] .cj-r, html[data-font-step="4"] .cj-r { grid-template-columns: minmax(0, 1fr); gap: 0; }
+html[data-font-step="2"] .cd-main, html[data-font-step="3"] .cd-main, html[data-font-step="4"] .cd-main { grid-template-columns: auto minmax(0, 1fr); }
+html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-st, html[data-font-step="4"] .cd-main .cd-st { grid-column: 2; justify-self: start; }
+
+/* 후보 → 종목 화면 「후보 판단」 머리로 이어짐(화면 넘김 · 사람이 누른 때만 · 움직임 줄이기면 없음) */
+::view-transition-group(cd-name) { animation-duration: .34s; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+.wl-cand { margin: 4px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.ck-cand th { color: var(--ink); }
+.cd-secs { margin: 3px 0 4px; font-size: .9375rem; line-height: 1.55; overflow-wrap: anywhere; }
+.cd-secs a { font-weight: 700; }
+.cd-more { margin-inline-start: 4px; white-space: nowrap; }
+.bc.cmp-bc .bc-bar.cmp-pow { background: var(--ink2); } /* 회사 크기에 견준 순매수 세기 — 값의 오름 · 내림이 아님(빨강 · 파랑을 쓰지 않음) */
+.bc.cmp-bc .bc-val.cmp-pow { color: var(--ink); }

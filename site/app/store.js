@@ -52,5 +52,5 @@ const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARE
 const keyOf = key => 'atlas11:' + (SHARED.has(key) ? '' : scope) + key;
 export const prefs = {
   get(key, fallback) { try { const v = localStorage.getItem(keyOf(key)); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },
-  set(key, value) { try { localStorage.setItem(keyOf(key), JSON.stringify(value)); } catch {} },
+  set(key, value) { try { localStorage.setItem(keyOf(key), JSON.stringify(value)); return true; } catch { return false; } }, // 저장했으면 true · 이 브라우저가 막으면 false(관심 등록이 바로 알림 — 2026-10-09 지시서 0-E)
 };

@@ -7,7 +7,7 @@
    · 업종 강도 표: 시장(지수) 대비 20 · 5거래일 격차(%p) · 상승 참여(5거래일 상승 비율 vs 20거래일) · 가격과 외국인+기관 방향 */
 import {h, korDate, stamp, place, finite} from './util.js';
 import {state, loadBoard, loadLens} from './store.js';
-import {foot, segNav, FLOW_SEGS} from './parts.js';
+import {foot, segNav, SECTOR_SEGS} from './parts.js';
 import {loadStory, storyBox, storySay, storyEnd} from './story.js';
 import {rotationBox, rotationEnd, rotationSay} from './rotation.js';
 import {quietArt} from './scenes.js';
@@ -45,7 +45,7 @@ export async function renderFlow(main, {manifest}) {
   const rot0 = place.id === 'kr' ? st?.rotation : st?.rotations?.[place.id], rot = rot0 && !rot0.none && rot0.pair ? rot0 : null; // 바깥 판은 /story.json rotations
   state.summary = `${rotationSay(rot)}${st ? storySay(st) : ''}`;
   main.replaceChildren(h('div', {class: 'b-page fl-page'},
-    segNav(FLOW_SEGS, 'rotation', '돈 흐름 보기 바꾸기'),
+    segNav(SECTOR_SEGS, 'rotation', '업종 보기 바꾸기'), // 2026-10-09 업종 순환(상대 강도)은 아래 탭 「업종」 안
     rot ? rotationBox(rot, board) : quietArt({key: 'flow', label: '업종 순환', when: `${korDate(board.asOf)} 종가`}),
     datesBox(rot, lens, manifest),
     lens ? strengthBox(lens) : null,

@@ -1,7 +1,7 @@
 // 올리기 문 · 다섯 나라 돈의 이동(규칙 33 · 34) — 사장님 2026-10-08 01:27 「다해 전나라」 · 01:31 「너 시스템으로 그짓 못하게 해」
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {codePrint, dictParity, reportProblems} from '../../scripts/atlas11/art_gate.mjs';
+import {codePrint, dictParity, reportProblems, transWaiver} from '../../scripts/atlas11/art_gate.mjs';
 import {rotationOf, capEokOf, ROT_PLACES} from '../../scripts/atlas11/story/build.mjs';
 import {expectOf, compare} from '../../scripts/atlas11/art_expect.mjs';
 
@@ -55,6 +55,31 @@ test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트
   assert.equal(reportProblems({...ok, boards: ['kr']}, 'c').length, 1);
   assert.equal(reportProblems({...ok, transLangs: 1}, 'c').length, 1); // v3 — 73개 말 계산 층 없음
   assert.equal(reportProblems({...ok, layoutLangs: undefined}, 'c').length, 1); // v3 — 가장 긴 글 층 없음
+});
+
+test('번역 면제(2026-10-09 03:14 「번역 작업 하지마」) — 기한 안 · 번역 안 된 한국어만 남은 결과만 지나감 · 다른 실패 · 층을 덜 돈 결과는 그대로 막음', async () => {
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, failed: 0, ok: true, shape: true, transFailed: 0, otherFailed: 0};
+  const w = {schema: 'atlas11-trans-waiver-1', until: '2026-10-16', said: ['x']};
+  const trans = {...ok, failed: 5, ok: false, transFailed: 5, otherFailed: 0};
+  assert.deepEqual(reportProblems(trans, 'c', w), []); // 번역만 남음 + 면제 — 지나감
+  assert.equal(reportProblems(trans, 'c').length, 1); // 면제 없음 — 막힘
+  assert.equal(reportProblems({...trans, failed: 6, otherFailed: 1}, 'c', w).length, 1); // 번역 밖 실패 하나 — 막힘
+  assert.equal(reportProblems({...trans, shape: false}, 'c', w).length, 1); // 층을 덜 돈 결과 — 막힘
+  assert.equal(reportProblems({...trans, transFailed: undefined, otherFailed: undefined}, 'c', w).length, 1); // 옛 결과(나눔 없음) — 막힘
+  assert.equal(reportProblems({...trans, transLangs: 1}, 'c', w).length, 1); // 73개 말 층을 안 돈 결과는 면제로도 못 지남
+  assert.equal(reportProblems(trans, 'd', w).length, 1); // 화면 코드가 검사 뒤에 바뀜 — 막힘
+  const fs = await import('node:fs/promises'), os = await import('node:os'), path = await import('node:path');
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'waiver-')), f = path.join(dir, 'reports/atlas11/full-check/trans-waiver.json');
+  assert.equal(await transWaiver(dir, '2026-10-09'), null); // 파일 없음
+  await fs.mkdir(path.dirname(f), {recursive: true});
+  await fs.writeFile(f, JSON.stringify(w));
+  assert.equal((await transWaiver(dir, '2026-10-16'))?.until, '2026-10-16'); // 마지막 날까지
+  assert.equal(await transWaiver(dir, '2026-10-17'), null); // 기한 지남 — 저절로 끝
+  await fs.writeFile(f, JSON.stringify({...w, said: []}));
+  assert.equal(await transWaiver(dir, '2026-10-09'), null); // 누가 말했는지 없으면 무효
+  await fs.writeFile(f, JSON.stringify({...w, schema: 'x'}));
+  assert.equal(await transWaiver(dir, '2026-10-09'), null);
+  await fs.rm(dir, {recursive: true, force: true});
 });
 
 test('빈 날 기대값 — 그릴 값이 없으면 빈 하늘(숫자를 지어내지 않음) · 못 읽은 일정은 오류 화면 · 20거래일 값이 없는 회사도 그림', () => {

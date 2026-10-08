@@ -16,7 +16,8 @@ import {startComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:1
 const cards = () => h('nav', {class: 'st-cards', 'aria-label': '더 보기'},
   h('a', {class: 'gd-card', href: '#/guide'}, h('b', null, '한국 주식시장 안내 ›'), h('small', null, '시간 · 규칙 · 계좌 · 세금 — 한국에 사는 외국인도')),
   h('a', {class: 'gd-card', href: '#/long'}, h('b', null, '500만 원을 오래 들고 있었다면 ›'), h('small', null, '10년 · 20년 · 30년 — 지난 기록에서 가장 나빴던 때로 · 주식과 아파트')),
-  h('a', {class: 'gd-card', href: '#/korea'}, h('b', null, '한국 주식시장은 몇 위인가 ›'), h('small', null, '25개 시장과 견준 순위 10가지 · 수익 · 값 · 배당 · 오르내림')));
+  h('a', {class: 'gd-card', href: '#/korea'}, h('b', null, '한국 주식시장은 몇 위인가 ›'), h('small', null, '25개 시장과 견준 순위 10가지 · 수익 · 값 · 배당 · 오르내림')),
+  h('a', {class: 'gd-card', href: '#/learn'}, h('b', null, '같은 평균, 다른 구조 — 읽는 법 연습 ›'), h('small', null, '평균이 모두 +4%인 연습 묶음 셋 · 상승 1위 제외해 비교'))); // 2026-10-09 셋째 개정본 0-E
 export async function renderStart(main, {manifest}) {
   const board = await loadBoard(), s = board.start;
   const year = String(board.asOf ?? '').slice(0, 4);

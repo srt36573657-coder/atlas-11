@@ -205,7 +205,7 @@ export function newsLine(brief, {here = false} = {}) {
 }
 
 /** 「ATLAS가 하지 않는 일」 — 잡스는 안 한 일도 한 일만큼 자랑했다(포춘 2008. 3.) · 애플 2026 원칙 「제품이 무엇을 왜 하는지 숨김없이」 · 접어 둠 */
-export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '어느 회사를 고르라고 하지 않습니다', '알림을 보내지 않습니다',
+export const NOT_DO = ['지난 기록만 보여 줍니다(거래일 15:30 종가 · 16:00에 올림)', '앞날 값을 맞히지 않습니다', '사거나 팔라고 하지 않습니다 — 「매수 검토 후보」는 미리 정한 규칙으로 고른 검토 차례(연구용 · 성능 검증 전)이고 결정은 보는 사람이 합니다', '알림을 보내지 않습니다',
   '축하 그림 · 점수 · 배지를 쓰지 않습니다', '「그때 샀다면 얼마」 같은 가정 수익은 「500만 원을 오래 들고 있었다면」 한 화면에서만 셈합니다 — 지난 기록에서 가장 나빴던 때로', '값이 늦거나 빠지면 그렇다고 적습니다(빈 칸에 숫자를 지어 넣지 않음)',
   '광고를 싣지 않고 유료 결제를 받지 않습니다 — 영원히, 상업적 이익을 좇지 않습니다']; // 여덟째(2026-10-07 05:30 「상업적 광고 수익이 없는 순수한 정보 제공처인지 안내 하라」 · 05:38 「광고 그리고 유료결제는 영원히 없다」)
 /* 일곱째 줄 끝은 처음에 「(0 으로 채우지 않음)」이었다 — 이 상자가 첫 화면 접힘에 있을 때는 또렷함 검사가 못 봤고, 「처음」 탭으로 옮기며 펼쳐 재니
@@ -242,9 +242,17 @@ export function movesBox(mv) {
    셋째 이름은 처음에 「많이 오른 곳」이었으나 또렷함 검사 2번(숫자 없는 「많이」 = 흐릿한 말)에 걸려 「오름 상위」로 — 뜻은 같고(불장 밖에서 20거래일 많이 오른 차례) 흐릿한 말이 없다 */
 export const hotCounts = board => ({home: board?.hot?.items?.length ?? 0, similar: board?.similar?.items?.length ?? 0, rise: board?.next?.items?.length ?? 0});
 /** 탭 안 보기 바꾸기(「ATLAS 개편 실행 지시서」 2026-10-08 20:19 마카오 시각 — 아래 탭 다섯 · 탭마다 하위 화면) — 옛 불장 탭 스위치(hotSwitch · 불장 · 예비 · 오름 상위)를 이 한 틀로(규칙 1)
- *  시장 = 요약 · 불장 · 지도 / 돈 흐름 = 투자자 매매 · 업종 순환 / 종목 = 목록 · 출목표 · 예비 · 오름 상위 / 검증 = 선정 결과 · 운영 기록 */
-export const MARKET_SEGS = [{id: 'market', href: '#/', label: '요약'}, {id: 'hot', href: '#/hot', label: '불장'}, {id: 'map', href: '#/map', label: '지도'}];
-export const FLOW_SEGS = [{id: 'who', href: '#/flow', label: '투자자 매매'}, {id: 'rotation', href: '#/flow/rotation', label: '업종 순환'}];
+ *  2026-10-09 「ATLAS 업데이트 실행 프롬프트」 4 — 메인 탭 다섯: 시장 · 업종 · 종목 · 일정 · 검증(옛 「돈 흐름」 탭은 시장 · 업종 안으로 · 주소는 그대로)
+ *  시장 = 요약 · 투자자 매매(실제 매매 #/flow) / 업종 = 업종 진단(#/sectors) · 업종 순환(상대 강도 #/flow/rotation) · 불장 · 지도 / 종목 = 목록 · 출목표 · 예비 · 오름 상위 / 검증 = 선정 결과 · 운영 기록 */
+export const MARKET_SEGS = [{id: 'market', href: '#/market', label: '요약'}, {id: 'who', href: '#/flow', label: '투자자 매매'}]; // 2026-10-09 시장 요약은 #/market(첫 화면 #/ 는 「후보 7」)
+/** 탐색 맨 위 줄(2026-10-09 03:09 「ATLAS 제품 재설계 명령」 9 — 시장 · 업종 · 일정 · 검색은 흐름에 잇고 숙련 사용자는 직접 탐색) — 아래 탭 「탐색」 안 화면마다 같은 자리(app.js 가 붙임) */
+const AREA = {market: 'market', flow: 'market', sectors: 'sectors', rotation: 'sectors', hot: 'sectors', map: 'sectors', land: 'sectors', stocks: 'stocks', road: 'stocks', similar: 'stocks', rise: 'stocks', agenda: 'agenda'};
+export const EXPLORE = [{id: 'market', href: '#/market', label: '시장'}, {id: 'sectors', href: '#/sectors', label: '업종'}, {id: 'stocks', href: '#/stocks', label: '종목'}, {id: 'agenda', href: '#/agenda', label: '일정'}];
+export function exploreNav(view) {
+  const cur = AREA[view] ?? null;
+  return h('nav', {class: 'ex-nav', 'aria-label': '탐색'}, ...EXPLORE.map(x => h('a', {class: 'ex-b', href: x.href, 'data-area': x.id, 'aria-current': x.id === cur ? 'page' : null}, x.label)));
+}
+export const SECTOR_SEGS = [{id: 'sectors', href: '#/sectors', label: '업종 진단'}, {id: 'rotation', href: '#/flow/rotation', label: '업종 순환'}, {id: 'hot', href: '#/hot', label: '불장'}, {id: 'map', href: '#/map', label: '지도'}];
 export const STOCK_SEGS = [{id: 'list', href: '#/stocks', label: '목록'}, {id: 'road', href: '#/road', label: '출목표'}, {id: 'similar', href: '#/similar', label: '예비'}, {id: 'rise', href: '#/rise', label: '오름 상위'}];
 export const CHECK_SEGS = [{id: 'picks', href: '#/check', label: '선정 결과'}, {id: 'ops', href: '#/log', label: '운영 기록'}];
 export function segNav(segs, active, label, counts = {}) {
@@ -255,7 +263,7 @@ export function segNav(segs, active, label, counts = {}) {
 export function promiseBox(board = null) {
   // 첫 줄은 시장마다(한국 15:30 · 미국 뉴욕 16:00) · 셋째 줄은 「처음」 탭에 찍은 곳이 있으면 그에 맞게(2026-10-07 00:49 「이대로 사이트에 올려줘」 — 아래 탭 「처음」 · 이 상자는 첫 화면에서 「처음」으로 옮김)
   const n = board?.start?.ready ? (board.start.picks?.length ?? 0) : 0;
-  const list = [place.notDo, NOT_DO[1], n ? `「처음」 탭의 ${n}곳 말고는 회사를 고르지 않습니다 — ${n}곳도 지난 기록으로 찍은 것이라 틀릴 수 있습니다` : NOT_DO[2], ...NOT_DO.slice(3)];
+  const list = [place.notDo, NOT_DO[1], n ? `${NOT_DO[2]} · 「처음」 화면의 ${n}곳도 지난 기록으로 찍은 것이라 틀릴 수 있습니다` : NOT_DO[2], ...NOT_DO.slice(3)]; // 2026-10-09 「후보 7」(재설계 명령) — 옛 「어느 회사를 고르라고 하지 않습니다」를 고침(줄 수는 그대로 여덟)
   return h('details', {class: 'b-how b-promise-box'}, h('summary', null, `ATLAS가 하지 않는 일 ${list.length}가지`), h('ul', null, ...list.map(x => h('li', null, x))));
 }
 /** 맨 아래: 약속 한 줄 · 출처

@@ -20,10 +20,15 @@ export const SCREENS = [
   // 2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」: 36칸 판 · 업종(불장 1위 업종) · 회사 · 일정
   // 2026-10-05 10:24 「잡스라면 36가지」 1차: 탭 「불장」(#/ · 큰 흐름) · 탭 「업종」(#/map · 73칸 판)
   // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 아래 탭 다섯(시장 · 돈 흐름 · 종목 · 일정 · 검증) · 시장 첫 화면 ① ~ ⑤ · 옛 「불장」은 #/hot · 옛 「돈 흐름」 그림은 #/flow/rotation
-  {id: 'market', name: '시장', hash: '#/', wait: '.mk-page [data-first="5"]'},
+  // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」(#/) · 다른 후보와 비교(#/compare) · 후보 종목 화면(후보 판단 여섯 질문) · 시장은 탐색 안 #/market
+  {id: 'cand', name: '후보 7', hash: '#/', wait: '.cd-page section[data-art]'},
+  {id: 'compare', name: '다른 후보와 비교', hash: '#/compare', wait: '.cmp-page section[data-art]'},
+  {id: 'stock-cand', name: '회사(후보 판단)', hash: board => '#/stock/' + (board?._cand ?? '005930'), wait: '.c-chart svg.lc'},
+  {id: 'market', name: '시장', hash: '#/market', wait: '.mk-page [data-first="5"]'},
+  {id: 'sectors', name: '업종', hash: '#/sectors', wait: '.sx-page [data-first="5"]'}, // 2026-10-09 「ATLAS 업데이트 실행 프롬프트」 4 — 아래 탭 「업종」(평균 펼치기)
   {id: 'home', name: '불장', hash: '#/hot', wait: '.h-page .hs-seg'},
   {id: 'flowwho', name: '투자자 매매', hash: '#/flow', wait: '.fw-page [data-first="1"]'},
-  {id: 'flow', name: '업종 순환', hash: '#/flow/rotation', wait: '.fl-page .sy'}, // 2026-10-08 17:41 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 — 1위~3위 업종 회사 · 20:19 지시서 — 「돈 흐름」 안 「업종 순환」
+  {id: 'flow', name: '업종 순환', hash: '#/flow/rotation', wait: '.fl-page .rt'}, // 2026-10-08 17:41 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 — 1위~3위 업종 회사 · 20:19 지시서 — 「돈 흐름」 안 「업종 순환」
   {id: 'stocks', name: '종목', hash: '#/stocks', wait: '.sk-page .sk-row'},
   {id: 'check', name: '검증', hash: '#/check', wait: '.ck-page [data-first="1"]'},
   {id: 'watch', name: '관심종목', hash: '#/watch', wait: '.wl-page [data-first="1"]'},
@@ -50,6 +55,7 @@ export const SCREENS = [
   {id: 'guide', name: '한국 주식시장 안내', hash: '#/guide', wait: '.gd-page .gd-row'}, // 2026-10-07 05:31 「외국인들 … 한국 주식시장을 제대로 알수 있게」
   {id: 'long', name: '500만 원을 오래 들고 있었다면', hash: '#/long', wait: '.lt-page .lt-row'}, // 2026-10-07 05:27
   {id: 'korea', name: '한국 주식시장은 몇 위인가', hash: '#/korea', wait: '.kr-page .kr-row'}, // 2026-10-07 05:29
+  {id: 'learn', name: '같은 평균, 다른 구조(읽는 법 연습)', hash: '#/learn', wait: '.lr-page .dc-row'}, // 2026-10-09 셋째 개정본 0-E
   {id: 'start', name: '처음', hash: '#/start', wait: '.st-page .st-row, .st-page .st-wait', settle: async page => { await page.evaluate(() => document.querySelectorAll('.st-page details').forEach(d => { d.open = true; })); }}, // 접힌 「기준 · 숫자 자세히」(02:39 「아주 효율적으로 해」)도 펼쳐서 잰다
 ];
 /** 화면 주소 — 업종 화면은 판(board.json)에 따라 정해진다 */
@@ -71,6 +77,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
   const out = {schema: 'atlas11-clarity-1', label, at: new Date().toISOString(), base, keys: KEYS, views: {}, inject: null};
   const board = await (await fetch(base + '/data/atlas11/view/board.json')).json().catch(() => null);
+  const lensC = await (await fetch(base + '/data/atlas11/view/lens.json')).json().catch(() => null); if (board && lensC?.cand?.items?.[0]) board._cand = lensC.cand.items[0].code; // 후보 판단 칸이 있는 회사 화면(첫 후보)
   for (const v of (inject ? VIEWS.slice(0, 1) : VIEWS.filter(x => !onlyViews || onlyViews.includes(x.id)))) {
     const ctx = await browser.newContext({viewport: v.viewport, isMobile: !!v.mobile, hasTouch: !!v.mobile, colorScheme: v.dark ? 'dark' : 'light', locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     if (v.font) await ctx.addInitScript(step => { try { localStorage.setItem('atlas11:font', String(step)); } catch {} }, v.font);

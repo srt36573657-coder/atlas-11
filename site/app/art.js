@@ -1,126 +1,89 @@
-/* ATLAS 11 · 그림 한 장 공통 틀 — 모든 화면 맨 위(규칙 33)
-   사장님 2026-10-08 00:12 「글이 너무 많아 더 과감하게 움직이는 도식화를 예술적으로 만들어봐 예술적으로 말이야」(첫 화면 「돈의 이동」 청자 그림 · 규칙 32)
-     → 01:27 「자 이런식으로 모두 첫페이지부터 마지막까지 다해 전나라 · 내가 명령하면 한부분 하고있어 절대 그러지 않는다 다 한다」
-     → 01:31 「너 대충했던 모든 곳을 점검해서 더 정확히 해라 · 너 시스템으로 그짓 못하게 해」
-   한 틀(artStage)을 모든 그림이 같이 쓴다 — 돈의 이동(rotation.js)도 이 틀:
-   · 그림(SVG · 글자 없음 · 화면 읽기 프로그램은 아래 이름 · 숫자를 읽음) + 이름 · 숫자(HTML · 늘 또렷함 · 흐려졌다 나타나지 않음) + 차례 점 넷(기 · 승 · 전 · 결) + 다시 보기 · 소리로 듣기
-   · 움직임은 한 번에 하나(규칙 28) — 걸음마다 data-at 이 같은 것 하나만 「now」 · 머무는 시간(ms)에서 0.15초 뺀 만큼만 움직임(--dur · 다음 걸음과 겹치지 않음)
-   · 처음 그린 그림만 저절로 한 번(이 창에서 그림마다 한 번) · 화면 밖이면 멈춤 · 다른 그림이 움직이는 동안 기다림(motion.js)
-   · 움직임 줄이기 설정이면 처음부터 끝 모습 · 오른쪽부터 쓰는 말은 그림을 뒤집음(style.css .ra-svg)
-   · 그림 속 값(높이 · 길이 · 자리)은 data-v="k:.62;x0:-40px" → CSS 변수(--k · --x0)로 옮김(CSSOM · 글 속 style 속성 없음 · CSP) */
+/* ATLAS 11 · 그림 한 장 공통 틀(규칙 33 · 2026-10-09 규칙 42 로 고침)
+   2026-10-09 「ATLAS 업데이트 실행 프롬프트」(사장님 01:41 마카오 시각 첨부) 0-F · 7 — 애니메이션은 이해를 돕는 데만:
+   · 처음에는 최신 결과가 멈춘 채로 보인다(저절로 재생 없음 · 무대 · 배우 · 끝없는 장식 움직임 없음 — 옛 규칙 35 를 내림)
+   · 기승전결 = 현재 관측 → 기여 요인 → 반대 근거 → 다음 확인 — 차례 단추 넷(누르면 그 차례로) · 처음으로 · 이전 · 재생/정지 · 다음 · 최신 결과 · 빠르기
+   · 움직임은 사람이 고를 때만 · 한 번에 하나 · 상태 바뀜은 바로(차례 단추 · 흐림) · 구성 움직임 0.3~0.6초(--dur) · 움직임 줄이기 설정이면 움직임 없이 바뀜
+   · 새 자료가 와도 사람이 보던 차례를 처음으로 돌리지 않는다(이 틀은 화면을 새로 그릴 때만 만들어짐 · 저절로 다시 돌지 않음)
+   · 그림 속 이름 · 숫자는 HTML(또렷함 · 번역 · 화면 읽기) — 차트 부품은 charts.js
+   옛 틀(2026-10-08 01:27 「다 한다」 · 06:40 무대 · 10:34 배우)에서 뺀 것: 처음 그릴 때 저절로 한 번 · 무대 · 배우 둘 · 그림마다 「소리로 듣기」(위 막대 소리 단추가 화면 요약을 읽음) */
 import {h, pct, finite} from './util.js';
-import {castDefs, stageDefs, stage} from './cast.js'; // 배우(신사 · 숙녀) · 무대(2026-10-08 06:40 영화 · 10:34 사람으로)
-import {pic} from './story.js';
-import {t as tr, LOCALE, LANG} from './i18n.js';
-import {hold, release, idleIn} from './motion.js';
+import {hold, release} from './motion.js';
 
-/** 변화 한 개(소수 한 자리 · 아주 작으면 둘째 자리 — comment.js 와 같은 모양) */
+/** 변화 한 개(소수 한 자리 · 아주 작으면 둘째 자리) — 판(board) 값(소수 · 0.123 = +12.3%) */
 export const p1 = v => pct(v, finite(v) && Math.abs(v) < 0.0005 ? 2 : 1);
-/** 오름 · 내림 숫자(빨강 · 파랑) — 부호가 숫자 앞(오른쪽부터 쓰는 말에서도) */
+/** 오름 · 내림 숫자(빨강 · 파랑 · 부호) — 판 값(소수) */
 export const chgEl = (v, cls = '') => h('b', {class: `rt-n ak-c${v > 0 ? ' up' : v < 0 ? ' down' : ''}${cls ? ' ' + cls : ''}`}, finite(v) ? p1(v) : '없음');
-/** 붉은 낙관 — tag(작은 말) · word(큰 말) · at(찍히는 걸음) */
-export const sealEl = (tag, word, at, cls = '') => h('p', {class: 'ra-seal' + (cls ? ' ' + cls : ''), 'data-at': String(at)}, tag ? h('span', {class: 'ra-st'}, tag) : null, tag ? ' ' : null, h('span', {class: 'ra-sw'}, word));
 /** 회사 이름 — 이름 그대로(이름 속 숫자를 단위 없는 숫자로 세지 않음) */
 export const coName = (name, cls = 'ra-n') => h('p', {class: cls}, h('span', {'data-ident': ''}, name));
 /** 업종 · 갈래 이름 */
 export const grName = (label, cls = 'ra-n') => h('p', {class: cls}, label);
-const r1 = v => Math.round(v * 10) / 10;
-export const f1 = v => (Number.isFinite(v) ? r1(v).toFixed(1) : '0');
+export const f1 = v => (Number.isFinite(v) ? (Math.round(v * 10) / 10).toFixed(1) : '0');
 
-/* ── 그림 공통 재료(무대 · 배우 · 금 · 보라 유리) — id 앞에 그림 이름을 붙여 한 화면에 그림이 둘이어도 겹치지 않게
-   2026-10-08 06:40 「청자로 하지 말고」 — 청자 유약(glz · glz2) · 먹빛 산을 보라 · 분홍 무대 빛으로 바꿈(이름은 그대로 — 그림마다 같은 자리) ── */
-export function defs(p) {
-  return castDefs(p) + stageDefs(p) + `<defs>
-<linearGradient id="${p}-glz" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4A3C8C"/><stop offset=".3" stop-color="#C9BBFF"/><stop offset=".58" stop-color="#9C8BFF"/><stop offset="1" stop-color="#3E3278"/></linearGradient>
-<linearGradient id="${p}-glz2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#A84F70"/><stop offset=".3" stop-color="#FFD0E0"/><stop offset=".6" stop-color="#F49AB8"/><stop offset="1" stop-color="#8E3E5E"/></linearGradient>
-<linearGradient id="${p}-gold" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFE7AE"/><stop offset="1" stop-color="#D99A35"/></linearGradient>
-<linearGradient id="${p}-red" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FF8A80"/><stop offset="1" stop-color="#B8423C"/></linearGradient>
-<linearGradient id="${p}-blue" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5E86C8"/><stop offset="1" stop-color="#A8C8FF"/></linearGradient>
-<linearGradient id="${p}-hill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#B9A8FF" stop-opacity=".16"/><stop offset="1" stop-color="#B9A8FF" stop-opacity=".02"/></linearGradient>
-<linearGradient id="${p}-flame" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#FF6B45"/><stop offset=".55" stop-color="#FFAE5C"/><stop offset="1" stop-color="#FFE3A0" stop-opacity=".85"/></linearGradient>
-<radialGradient id="${p}-halo"><stop offset="0" stop-color="#F4F1EA" stop-opacity=".42"/><stop offset="1" stop-color="#F4F1EA" stop-opacity="0"/></radialGradient>
-<radialGradient id="${p}-sun"><stop offset="0" stop-color="#FF8A70" stop-opacity=".55"/><stop offset="1" stop-color="#FF8A70" stop-opacity="0"/></radialGradient>
-<filter id="${p}-glow" x="-30%" y="-40%" width="160%" height="180%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-</defs>`;
-}
-/** 무대 + 먼 보랏빛 언덕 두 겹(바탕 · 움직이지 않음) — 높이 H 그림의 아래쪽(06:40 청자 · 먹빛 산 대신 극장 무대) */
-export const hills = (p, H, k = 1) => stage(p, H) + `<path d="M0,${H - 36 * k} C40,${H - 74 * k} 78,${H - 100 * k} 118,${H - 80 * k} C150,${H - 64 * k} 170,${H - 90 * k} 204,${H - 100 * k} C240,${H - 110 * k} 268,${H - 80 * k} 300,${H - 90 * k} C326,${H - 98 * k} 344,${H - 84 * k} 360,${H - 78 * k} L360,${H} L0,${H} Z" fill="url(#${p}-hill)"/>`
-  + `<path d="M0,${H - 18 * k} C50,${H - 44 * k} 96,${H - 54 * k} 140,${H - 38 * k} C176,${H - 26 * k} 214,${H - 50 * k} 252,${H - 44 * k} C292,${H - 38 * k} 330,${H - 50 * k} 360,${H - 40 * k} L360,${H} L0,${H} Z" fill="url(#${p}-hill)"/>`;
-/** 매병(폭 72 · 높이 99 · 입 가운데 36,0) — rotation.js 와 같은 모양 */
-export const VASE = 'M29.7,0 L42.3,0 L41.4,7.2 C63,10.8 72,23.4 68.4,36 C64.8,55.8 55.8,77.4 52.2,90 L56.7,99 L15.3,99 L19.8,90 C16.2,77.4 7.2,55.8 3.6,36 C0,23.4 9,10.8 30.6,7.2 Z';
-/** 항아리(폭 80 · 높이 84) */
-export const JAR = 'M24,0 L56,0 L55,6 C74,12 82,30 80,48 C78,66 68,80 56,84 L24,84 C12,80 2,66 0,48 C-2,30 6,12 25,6 Z';
-/** 별 다섯 끝(가운데 0,0 · 반지름 r) */
-export const star = (r, ri = r * 0.45) => Array.from({length: 10}, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? ri : r; return `${(Math.cos(a) * rr).toFixed(2)},${(Math.sin(a) * rr).toFixed(2)}`; }).join(' ');
+/** 차례 넷의 이름(지시서 7 「현재 관측 → 기여 요인 → 반대 근거 → 다음 확인」) */
+export const BEATS = ['관측과 비교', '구성과 기여', '반대 근거', '확인할 것']; // 2026-10-09 셋째 개정본 0-F 기승전결(기 = 현재 관측과 비교 · 승 = 구성과 기여 · 전 = 반대 근거와 제외 비교 · 결 = 다음 확인과 기록) — 옛 「현재 관측 · 기여 요인」 // 넷째 = 지시서의 「다음 확인」(화면 글은 흐릿한 말 「다음」 없이 · 또렷함 2번)
+/** 검사기만 쓰는 빠르기(atlas11:speed · 1~10) — 움직임 검사를 빠르게 돌 때 걸음 시간만 나눔 */
+const TEST_SPEED = (() => { try { const v = Number(JSON.parse(localStorage.getItem('atlas11:speed') ?? '1')); return v >= 1 && v <= 10 ? v : 1; } catch { return 1; } })();
+let speed = 1; // 사람이 고른 빠르기(1배 · 2배) — 이 창에서 그림끼리 같이 씀
+const durOf = ms => Math.max(300, Math.min(600, ms - 150)); // 구성 움직임 0.3~0.6초(다음 걸음과 겹치지 않게 머무는 시간보다 짧게)
 
-/* ── 재생기 ── */
-const played = new Set(); // 저절로 한 번은 이 창에서 그 그림을 처음 그릴 때만
-const calmNow = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-/** 검사기만 쓰는 빠르기(atlas11:speed · 1~10 · 보통 1) — 움직임 검사를 빠르게 돌 때 걸음 시간만 나눔(CSS 움직임은 검사기가 같은 배로 빠르게 · 2026-10-08 06:42 「10배 빠르게」) */
-const SPEED = (() => { try { const v = Number(JSON.parse(localStorage.getItem('atlas11:speed') ?? '1')); return v >= 1 && v <= 10 ? v : 1; } catch { return 1; } })();
-/** data-v="k:.62;x0:-40px" → --k · --x0 */
-function vars(root) {
-  for (const el of root.querySelectorAll('[data-v]')) for (const kv of el.getAttribute('data-v').split(';')) { const i = kv.indexOf(':'); if (i > 0) el.style.setProperty('--' + kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }
-}
 /**
- * 그림 한 장 + 이름 · 숫자 + 차례 점 넷 + 다시 보기 · 소리로 듣기
- * spec = {key(그림 이름 · 저절로 한 번 기억), svg(글 · 글자 없음), labels(HTML 요소), steps([{c: 기승전결 0~3, at: 움직이는 그림 번호, ms: 머무는 시간}]),
- *         says(기승전결 넷 — 한국어 낱말 묶음 · 그 말로 읽음), setup(art => …) · cls}
+ * 그림 한 장 — 차트(art · 요소 또는 HTML 글) + 이름 · 숫자(labels) + 차례 단추 넷 + 처음으로 · 이전 · 재생 · 다음 · 최신 결과 · 빠르기
+ * spec = {key(그림 이름), art | svg(차트), labels(HTML 요소), steps([{c: 차례 0~3, at: 켜지는 부품 번호, ms: 머무는 시간}]), cls, labFirst(요약을 차트 위에 — 기본), tail(차트 · 요약 다음 줄들)}
+ *   2026-10-09 모든 그림이 요약(이름 · 숫자) 먼저 → 차트(Apple 날씨 · 주식처럼 답 먼저 · 근거 그림 다음) — 긴 말 · 큰 글씨에서도 이름 · 숫자가 첫 화면에(규칙 30) · 펼치기 · 업종 순환 · 회사 그림이 먼저 쓰던 차례
+ * 부품(data-at = 번호)은 처음부터 모두 켜짐(최신 결과) — 차례를 고르면 그 차례까지 켜지고 나머지는 흐려짐 · 지금 부품 하나만 움직임
  */
 export function artStage(spec) {
-  const {key, svg, labels, steps, says = [[], [], [], []], setup = null, cls = ''} = spec;
-  const fresh = !played.has(key); played.add(key);
-  const art = h('div', {class: 'ra-art', html: svg}); // 자막 띠는 뺌(2026-10-08 10:34 마카오 시각 「로미오 줄리엣 그거 빼 해보니 엉망이다」) — 그림 · 이름 · 숫자만
-  vars(art); if (setup) setup(art);
-  const beats = h('ol', {class: 'ra-beats', 'aria-hidden': 'true'}, ...['기', '승', '전', '결'].map(x => h('li', null, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, x))));
-  const box = h('div', {class: `ra ak-${key}${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(',')}, art, labels, // data-plan = 걸음마다 기승전결:그림 번호(검사기가 계산으로 봄)
-    h('div', {class: 'ra-ctl'}, beats,
-      h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
-      h('button', {type: 'button', class: 'sy-btn', onclick: () => run(true)}, pic('say', 'sy-bi'), h('span', null, '소리로 듣기'))));
-  vars(box);
-  const parts = [...box.querySelectorAll('[data-at]')], dots = [...beats.children];
-  // 걸음마다 움직이는 시간(--dur) = 머무는 시간 − 0.15초(다음 걸음과 겹치지 않음 · 낙관은 CSS 0.5초 그대로)
-  for (const s of steps) for (const el of parts) if (Number(el.dataset.at) === s.at && !el.classList.contains('ra-seal')) el.style.setProperty('--dur', `${Math.max(250, s.ms - 150)}ms`);
-  let cur = -1, tick = 0, token = 0, voice = false, seen = true, waiting = null;
-  function paint(i, again = false) {
-    cur = i; const x = steps[i]; box.dataset.step = String(i); box.dataset.c = String(x.c); box.classList.remove('ra-done');
-    for (const el of parts) { const k = Number(el.dataset.at); el.classList.toggle('on', k <= x.at); const now = k === x.at; if (now && again) { el.classList.remove('now'); void el.getBoundingClientRect(); } el.classList.toggle('now', now); }
-    dots.forEach((d, k) => { d.classList.toggle('now', k === x.c); d.classList.toggle('on', k < x.c); });
+  const {key, art = null, svg = null, labels, steps, cls = '', labFirst = true, tail = []} = spec;
+  const artEl = art instanceof Node ? h('div', {class: 'ra-art'}, art) : h('div', {class: 'ra-art', html: art ?? svg ?? ''});
+  const last = steps.length - 1;
+  const beatBtns = BEATS.map((name, c) => h('button', {type: 'button', class: 'ra-beat', 'data-c': String(c), 'aria-pressed': 'false', onclick: () => jump(c)}, name));
+  const btn = (k, label, fn, extra = {}) => h('button', {type: 'button', class: 'ra-b ra-' + k, onclick: fn, ...extra}, label);
+  const playBtn = btn('play', '재생', () => (playing ? pause() : play()), {'aria-pressed': 'false'});
+  const speedBtn = btn('speed', `빠르기 ${speed}배`, () => { speed = speed === 1 ? 2 : 1; speedBtn.textContent = `빠르기 ${speed}배`; speedBtn.setAttribute('aria-pressed', String(speed > 1)); }, {'aria-pressed': String(speed > 1)});
+  const ctl = h('div', {class: 'ra-ctl'},
+    h('div', {class: 'ra-beats', role: 'group', 'aria-label': '차례'}, ...beatBtns),
+    h('div', {class: 'ra-btns', role: 'group', 'aria-label': '다시 보기'},
+      btn('first', '처음으로', () => { pause(); paint(0); }), btn('prev', '‹', () => { pause(); paint(Math.max(0, (done ? last : cur) - 1)); }, {'aria-label': '이전 걸음', title: '이전 걸음'}),
+      playBtn, btn('next', '›', () => { pause(); if (done) return; if (cur >= last - 1) finish(); else paint(cur + 1); }, {'aria-label': '다음 걸음', title: '다음 걸음'}),
+      btn('last', '최신 결과', () => { pause(); finish(); }), speedBtn));
+  const box = h('div', {class: `ra ra-done${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(','), // data-plan = 걸음마다 차례:부품 번호(검사기가 계산으로 봄)
+    'data-step': String(last), 'data-c': String(steps[last]?.c ?? 3)}, ...(labFirst ? [labels, artEl] : [artEl, labels]), ...tail, ctl); // labFirst = 요약 숫자를 차트 위에(펼치기 — 첫 화면에 숫자가 먼저)
+  const parts = [...box.querySelectorAll('[data-at]')];
+  for (const s of steps) for (const el of parts) if (Number(el.dataset.at) === s.at) el.style.setProperty('--dur', `${durOf(s.ms)}ms`);
+  let cur = last, done = true, playing = false, timer = 0;
+  function mark(c, all = false) { beatBtns.forEach((b, k) => { b.classList.toggle('on', all || k < c); b.setAttribute('aria-pressed', String(!all && k === c)); }); }
+  /** 걸음 i 모습 — moving = 재생 중(지금 부품 하나만 움직임) · 아니면 바로 바뀜 */
+  function paint(i, moving = false) {
+    cur = i; done = false; const x = steps[i];
+    box.classList.remove('ra-done'); box.classList.toggle('ra-moving', moving); box.dataset.step = String(i); box.dataset.c = String(x.c);
+    for (const el of parts) { const k = Number(el.dataset.at), now = k === x.at; el.classList.toggle('on', k <= x.at); if (now && moving) { el.classList.remove('now'); void el.getBoundingClientRect(); } el.classList.toggle('now', now); }
+    mark(x.c);
   }
-  function stop() { token++; clearTimeout(tick); waiting = null; if (voice) { try { window.speechSynthesis?.cancel(); } catch {} } voice = false; release(box); }
-  function done() { stop(); if (cur !== steps.length - 1) paint(steps.length - 1); for (const el of parts) { el.classList.add('on'); el.classList.remove('now'); } dots.forEach(d => { d.classList.add('on'); d.classList.remove('now'); }); box.classList.add('ra-done'); }
-  function say(c, then) {
-    try { const ss = window.speechSynthesis; if (!ss || typeof SpeechSynthesisUtterance !== 'function') return false;
-      const u = new SpeechSynthesisUtterance((says[c] ?? []).map(v => tr(v)).join('. ')); u.lang = LOCALE; u.rate = 0.9; u.pitch = 1; u.volume = 0.96;
-      const v = ss.getVoices().find(z => z.lang && z.lang.startsWith(LANG)); if (v) u.voice = v; let fin = false; u.onend = u.onerror = () => { if (!fin) { fin = true; then(); } }; ss.speak(u); return true; } catch { return false; }
-  }
-  function run(withVoice) {
-    stop(); const my = token; voice = withVoice; let i = 0, talking = false, after = null; hold(box);
-    if (withVoice) { try { window.speechSynthesis?.cancel(); } catch {} }
+  function finish() { cur = last; done = true; box.classList.add('ra-done'); box.classList.remove('ra-moving'); box.dataset.step = String(last); box.dataset.c = String(steps[last]?.c ?? 3);
+    for (const el of parts) { el.classList.add('on'); el.classList.remove('now'); } mark(3, true); }
+  function pause() { clearTimeout(timer); if (playing) { playing = false; playBtn.textContent = '재생'; playBtn.setAttribute('aria-pressed', 'false'); release(box); } box.classList.remove('ra-moving'); }
+  function play() {
+    pause(); playing = true; playBtn.textContent = '정지'; playBtn.setAttribute('aria-pressed', 'true'); hold(box);
+    let i = done || cur >= last ? 0 : cur + 1;
     const next = () => {
-      if (my !== token) return;
-      if (!box.isConnected) { stop(); return; }
-      if (i >= steps.length) { if (talking) { after = next; return; } done(); return; }
-      if (!seen && !voice) { waiting = next; release(box); return; }
-      const x = steps[i];
-      if (voice && talking && (i === 0 || steps[i - 1].c !== x.c)) { after = next; return; }
-      hold(box); paint(i++, true);
-      if (voice && (i === 1 || steps[i - 2].c !== x.c)) talking = say(x.c, () => { talking = false; if (my === token && after) { const f = after; after = null; tick = setTimeout(f, 380 / SPEED); } });
-      tick = setTimeout(next, x.ms / SPEED);
+      if (!playing) return;
+      if (!box.isConnected) { pause(); return; }
+      if (i > last) { pause(); finish(); return; }
+      const x = steps[i]; paint(i++, true);
+      timer = setTimeout(next, x.ms / (speed * TEST_SPEED));
     };
     next();
   }
-  if (typeof IntersectionObserver === 'function') new IntersectionObserver(es => { for (const e of es) { seen = e.isIntersecting; if (seen && waiting) { const w = waiting; waiting = null; tick = setTimeout(w, idleIn() + 60); } } }, {threshold: 0.35}).observe(art);
-  // 저절로 한 번 — 그리는 순간부터 움직임 줄을 잡아 둠(아래 막대 · 띠가 그림보다 먼저 움직이지 않게 · 규칙 28) · 붙지 않았으면 놓음
-  if (fresh && !calmNow()) { hold(box); paint(0); for (const el of parts) el.classList.remove('on', 'now'); dots.forEach(d => d.classList.remove('now', 'on')); setTimeout(() => { if (!box.isConnected) { release(box); return; } if (cur <= 0) run(false); }, 350 / SPEED); }
-  else done();
+  /** 차례 단추 — 그 차례의 첫 걸음으로(멈춘 채) */
+  function jump(c) { pause(); const i = steps.findIndex(s => s.c === c); if (i >= 0) { if (i === last) finish(); else paint(i); } }
+  mark(3, true);
   return box;
 }
 
-/** 그림 무대 — 맨 위 작은 이름표(kicker · when) · 큰 줄(title 조각) · 그림 · 그 아래(rest) */
-export function artSection({key, label, kicker, when = null, title = null, stage, rest = [], cls = ''}) {
-  return h('section', {class: `sy rt ak${cls ? ' ' + cls : ''}`, 'aria-label': label ?? kicker, 'data-art': key},
+/** 그림 칸 — 맨 위 작은 이름표(kicker · when) · 큰 줄(title 조각) · 그림 · 그 아래(rest) · first = 판단 정보 칸 번호(시장 · 업종 첫 화면의 ④) */
+export function artSection({key, label, kicker, when = null, title = null, stage, rest = [], cls = '', first = null}) {
+  return h('section', {class: `fig sy-fig ak${cls ? ' ' + cls : ''}`, 'aria-label': label ?? kicker, 'data-art': key, 'data-first': first == null ? null : String(first)},
     h('p', {class: 'sy-k'}, h('span', null, kicker), when ? h('span', {class: 'sy-kw'}, when) : null),
-    title ? h('p', {class: 'ra-t'}, ...title) : null,
+    title ? h('p', {class: 'ra-t'}, ...[].concat(title)) : null,
     stage, ...rest);
 }
