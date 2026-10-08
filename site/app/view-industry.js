@@ -29,8 +29,13 @@ export async function renderIndustry(main, {hash, manifest}) {
   const k = (board.groups ?? []).findIndex(g => g.id === id), g = board.groups?.[k];
   // 들어온 탭으로(2026-10-05 「잡스라면」 17번) · 출목표 탭에서 회사 화면을 거쳐 왔으면 「‹ 출목표」(「잡스가 … 36가지」 E6 — 아래 탭과 되돌아가기가 같은 곳)
   // 지도의 갈래 화면(#/map/f/…)에서 왔으면 그 갈래로(2026-10-06 07:03 「3단 클릭」 — 땅 → 업종 → 회사를 거꾸로 되짚음)
-  const land = state.tab === 'map' && state.land ? [...FAMILIES, OTHER].find(f => f.id === state.land) : null;
-  const back = land ? h('a', {class: 'c-back', href: '#/map/f/' + land.id}, '‹ ' + land.label) : state.tab === 'map' ? h('a', {class: 'c-back', href: '#/map'}, '‹ 지도') : state.tab === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표') : h('a', {class: 'c-back', href: '#/'}, '‹ 불장');
+  const from = state.origin; // 업종 · 회사 화면을 거쳐 오기 전 마지막 탭 화면(app.js — 회사 화면에 갔다 와도 그대로)
+  const land = from === 'land' && state.land ? [...FAMILIES, OTHER].find(f => f.id === state.land) : null;
+  // 되돌아가기 = 이 업종 화면에 들어온 화면(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 아래 탭 다섯 · 탭 안 화면마다)
+  const BACK = {map: ['#/map', '지도'], hot: ['#/hot', '불장'], road: ['#/road', '출목표'], stocks: ['#/stocks', '종목'], rotation: ['#/flow/rotation', '업종 순환'], flow: ['#/flow', '투자자 매매'], home: ['#/', '시장'], similar: ['#/similar', '예비'], rise: ['#/rise', '오름 상위'],
+    agenda: ['#/agenda', '일정'], check: ['#/check', '선정 결과'], log: ['#/log', '운영 기록'], watch: ['#/watch', '관심종목']};
+  const bk = BACK[from] ?? BACK.home;
+  const back = land ? h('a', {class: 'c-back', href: '#/map/f/' + land.id}, '‹ ' + land.label) : h('a', {class: 'c-back', href: bk[0]}, '‹ ', bk[1]);
   if (!g) { main.replaceChildren(h('div', {class: 'b-page'}, back, quietArt({key: 'industry', label: '업종', tagText: '이 업종은 지금 판에 없습니다'}))); return; } // 없는 업종 주소도 그림 한 장(빈 하늘 · 알림 줄을 그림 이름표로 — 규칙 1)
   const byCode = new Map(board.companies.map(c => [c.code, c])), cs = g.codes.map(code => byCode.get(code)).filter(Boolean).sort(riseDesc); // 가장 많이 오른 곳부터(2026-10-05 11:36)
   const shp = sunOf(board), nSun = sunCount(shp, cs.map(c => c.code));

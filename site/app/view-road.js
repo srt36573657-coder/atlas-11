@@ -38,7 +38,7 @@
 import {h, korDate, pct, finite, signCls, place} from './util.js';
 import {state, loadBoard, prefs} from './store.js';
 import {roadOf, roadSvg, STORY} from './road.js';
-import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon, sunTag} from './parts.js';
+import {foot, sparkSvg, sparkScale, scaleText, flowLine, newsLine, meanRets, meanSpark, sv, sunIcon, sunTag, segNav, STOCK_SEGS} from './parts.js';
 import {upLine} from './view-home.js';
 import {familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {SHAPES, SHAPE_PICS, sunOf} from './shapes.js';
@@ -261,7 +261,9 @@ export async function renderRoad(main, {manifest} = {}) {
     say();
   }
   function more(total) {
-    const was = shown; shownMemo.set(view + ':' + cur.id, Math.min(total, shown + MORE_STEP)); drawPage();
+    const was = shown, y = window.scrollY; shownMemo.set(view + ':' + cur.id, Math.min(total, shown + MORE_STEP)); drawPage();
+    // 화면은 그대로 — 누른 단추(초점)가 다시 그리며 사라질 때 브라우저가 쪽을 위로 옮기던 것(2026-10-08 화면 검사가 찾음: 2742px → 831px)을 누르기 전 자리로 되돌림
+    if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
     body.querySelectorAll('.f-tile')[was]?.focus({preventScroll: true}); // 새로 붙은 첫 칸으로 초점(화면은 그대로)
   }
   function pick(t, fromBottom) {
@@ -281,6 +283,7 @@ export async function renderRoad(main, {manifest} = {}) {
   const spkBox = sparkleBox(shp, () => { go('sun'); segBox.scrollIntoView({block: 'start', behavior: reduce()}); }, {to, keyText: keyText()});
   main.replaceChildren(h('div', {class: 'b-page f-page'},
     roadArt(board) ?? quietArt({key: 'road', label: '출목표', word: '0곳', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(구슬 두 그릇 · 규칙 33 · 값이 있는 회사가 없는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈)
+    segNav(STOCK_SEGS, 'road', '종목 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 출목표는 아래 탭 「종목」 안 보기(목록 · 출목표 · 예비 · 오름 상위) · 그림 아래(첫 화면 그림 이름표 · 규칙 30)
     h('header', {class: 'b-head'},
       h('div', {class: 'f-titlerow'}, h('h1', {class: 'b-title', 'data-speak': ''}, '출목표 ', h('span', {class: 'b-count'}, `${n}곳`))), // 개수는 제목 곁 작은 글(규칙 2) · 찾기는 아래 탭 「찾기」로
       h('p', {class: 'b-when', 'data-speak': ''}, `지난 ${days}거래일 · ${from ? korDate(from) + '부터 ' : ''}${korDate(to)} ${place.close} 종가까지`),

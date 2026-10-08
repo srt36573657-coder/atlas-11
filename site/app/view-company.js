@@ -13,6 +13,11 @@ import {sunOf} from './shapes.js';
 import {riseDesc} from './family.js';
 import {companyComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17) — 회사 화면은 숫자(값 · 20거래일) 바로 다음에 그 숫자를 읽는 한 줄
 import {similarReason, sunReason, beatsEl} from './reason.js'; // 「왜 태양인가」 · 「왜 예비인가」 기승전결 넷(2026-10-08 06:48 · 06:49)
+import {loadLens} from './store.js';
+import {pv, ppv, sharesTxt, idxName, LEVEL, tagEl} from './lensparts.js'; // 판 읽기(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 7 — 종목 상세 고정 순서 ①~⑥)
+import {whyText, LISTS, STATUS} from './view-stocks.js';
+import {watchBox} from './view-watch.js';
+import {relPct, stdev, pctRet} from './calc.js';
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -106,9 +111,87 @@ function nearBox(board, s, shp = null) {
       h('b', {class: 'chg20 nc-chg ' + (signCls(c.change20) || 'flat')}, finite(c.change20) ? pct(c.change20, 1) : '없음'))))));
 }
 
+/* ── 종목 상세 고정 순서(「ATLAS 개편 실행 지시서」 7): ① 지금 종가 · 기준 시각 · 자료 상태(머리) → ② 지난 확인 이후 달라진 점 → ③ 주목할 근거(3개까지)
+      → ④ 반대 근거와 위험 → ⑤ 다음 확인 조건 · 날짜 → ⑥ 같은 조건의 검증 상태 · 결과 — 근거 영역(가격 · 수급 · 실적 · 사건)은 따로 · 종합점수 없음 ── */
+/** 결산 연월 「2025.12」 → 「2025년 12월」(단위 없는 숫자를 쓰지 않음 · 또렷함 3번) */
+const fyTxt = fy => { const m = String(fy ?? '').match(/^(\d{4})\.(\d{1,2})$/); return m ? `${m[1]}년 ${Number(m[2])}월` : (fy || null); };
+const lsBox = (n, title, ...kids) => h('section', {class: 'b-box cd-box', 'data-order': String(n), 'aria-label': title}, h('h2', {class: 'b-box-h'}, h('span', {class: 'mk-no', 'aria-hidden': 'true'}, ['①', '②', '③', '④', '⑤', '⑥'][n - 1]), ' ', title), ...kids);
+const li2 = (k, ...v) => h('li', null, h('b', null, k), ' · ', ...v);
+/** 자료 상태 글 — 지연 · 오래된 종가: 「10월 7일(수) 종가까지만 있음」 · 기업행사 확인 필요: 가격 제한폭을 넘은 날 */
+export const statusWhy = ls => (ls.status === 'ca' ? `하루 변화가 가격 제한폭(±30%)을 넘은 날 ${(ls.jumps ?? []).map(korDate).join(' · ')}` : ls.status === 'missing' ? '종가 없음' : `${korDate(ls.date)} 종가까지만 있음`);
+function statusLine(ls, s) {
+  const st = ls ? (ls.status === 'ok' ? '그날 종가' : `${STATUS[ls.status]} — ${statusWhy(ls)}`) : '판 읽기 없음';
+  return h('p', {class: 'c-status muted xs', 'data-status': ls?.status ?? ''}, `자료 상태: ${st}`, s.closeSource?.observedAt ? ` · 종가 받은 때 ${stamp(s.closeSource.observedAt)}` : '');
+}
+function sinceBox(ls, lens) {
+  const x = ls?.since, why = ls ? whyText(ls) : null;
+  return lsBox(2, '지난 확인 이후 달라진 점',
+    !x ? h('p', {class: 'muted small'}, '견줄 앞 기록 없음') : h('ul', {class: 'cd-l'},
+      li2(`${korDate(x.from)} 기록 이후`, '종가 ', pv(x.r), ' · 업종 대비 ', ppv(x.vsGroup)),
+      lens.flows?.available ? li2('외국인+기관', sharesTxt(x.fiShares), ' · 순매수 주식 수 합(공식 값)') : null,
+      li2('새 공시', `${x.disc}건 · ★★★ ${x.discTop}건`),
+      li2('이번 기록 목록', ls.lists.length ? ls.lists.map(k => LISTS[k] ?? k).join(' · ') : '없음'),
+      why ? li2('묶음', h('span', {class: 'lv-tag bk-' + ls.bucket}, {new: '새로 발견', up: '근거 강화', down: '근거 약화'}[ls.bucket]), ' ', ...[].concat(why)) : null));
+}
+const vol = c => { const xs = (c ?? []).filter(v => finite(v) && v > 0); if (xs.length < 3) return null; const d = xs.slice(1).map((v, i) => pctRet(v, xs[i])); return stdev(d); };
+function evidenceBoxes(ls, lens, s) {
+  const pro = [], con = [], unknown = [], f = ls?.fund, fl = ls?.fl;
+  if (ls && finite(ls.vsGroup20)) (ls.vsGroup20 > 0 ? pro : con).push(['가격', ['20거래일 ', pv(ls.r20), ' · 업종 대비 ', ppv(ls.vsGroup20), ` · ${idxName(lens)} 대비 `, ppv(ls.vsIdx20)]]);
+  else unknown.push(['가격', ['20거래일 비교 계산 불가']]);
+  if (lens?.flows?.available) { if (fl && finite(fl.f5) && finite(fl.i5)) (fl.f5 + fl.i5 > 0 ? pro : con).push(['수급', [`외국인 ${sharesTxt(fl.f5)} · 기관 ${sharesTxt(fl.i5)} · 5거래일 순매수 주식 수(공식 값)`]]); else unknown.push(['수급', ['자료 없음']]); }
+  else unknown.push(['수급', [lens?.flows?.reason ?? '투자자별 매매 자료 없음']]);
+  if (f && finite(f.roe)) { const good = f.roe >= 5 && (f.debtExempt || (finite(f.debt) && f.debt <= 150)); (good ? pro : con).push(['실적', [`ROE ${f.roe.toFixed(1)}% · 부채비율 ${f.debtExempt ? '금융회사 빼고 봄' : finite(f.debt) ? Math.round(f.debt) + '%' : '없음'}${fyTxt(f.fy) ? ` · ${fyTxt(f.fy)} 결산(선정 때 값)` : ''}`]]); }
+  else unknown.push(['실적', ['자료 없음']]);
+  unknown.push(['현금흐름 · 기업가치', ['자료 없음(모으지 않음)']]);
+  if (ls && ls.status !== 'ok') con.push(['자료', [`${STATUS[ls.status]} — ${statusWhy(ls)}`]]);
+  if (ls?.cas?.length) con.push(['기업행사 공시', [ls.cas.join(' · ') + ' — 가격 기준 확인 필요']]);
+  const v1 = vol(s.c), vI = lens?.market?.ref?.vol20;
+  if (finite(v1)) con.push(['변동', [`20거래일 하루 변화 표준편차 ${v1.toFixed(2)}%`, finite(vI) ? ` · ${idxName(lens)} ${vI.toFixed(2)}%` : '']]);
+  const ul = xs => h('ul', {class: 'cd-l'}, ...xs.map(([k, v]) => li2(k, ...v)));
+  return [lsBox(3, '주목할 근거', pro.length ? ul(pro.slice(0, 3)) : h('p', {class: 'muted small'}, '주목할 근거 없음'), h('p', {class: 'muted xs'}, '영역마다 하나 · 불장 · 출목표 · 태양 · 포모는 같은 종가 자료라 「가격」 하나로 셈 · 종합점수 없음')),
+    lsBox(4, '반대 근거와 위험', con.length ? ul(con) : h('p', {class: 'muted small'}, '반대 근거 없음'), unknown.length ? h('p', {class: 'muted xs'}, `확인 못 한 것(낮은 가치와 다름): ${unknown.map(([k, v]) => `${k}: ${v.join('')}`).join(' · ')}`) : null)];
+}
+function nextBox(ls, lens, agenda, s) {
+  const up = (agenda?.byCode?.[s.code]?.upcoming ?? []).slice(0, 3);
+  return lsBox(5, '확인할 조건 · 날짜',
+    h('ul', {class: 'cd-l'},
+      ...up.map(e => li2(korDate(e.date), h('span', {'data-ident': '', lang: e.scope === 'market' ? null : 'ko'}, e.name), e.scope === 'sector' ? ' · 업종 행사(회사 참가 확인 안 됨)' : '')),
+      up.length ? null : li2('일정', '확인된 회사 · 업종 일정 없음'),
+      lens?.verify?.records?.length ? li2('다음 저녁 기록', '다음 거래일 19:00(한국 시각) — 목록에 남는지 · 빠지는지') : li2('고정 기록', '이 판은 아직 없음'),
+      li2('확인할 것', '업종 대비 격차의 방향', lens?.flows?.available ? ' · 외국인+기관 순매수 방향' : '', ' · 새 공시')));
+}
+function verifyBox(ls, lens) {
+  const recs = lens?.verify?.records ?? [], last = recs.at(-1), fs = ls?.firstSeen;
+  const evalTxt = e => (e.status === 'pending' ? `${e.h}거래일 평가 대기(${korDate(e.due)})` : e.status === 'done' ? `${e.h}거래일 평균 ${e.ret.mean?.toFixed(1)}% · 성공 ${e.success.hit}곳/${e.success.n}곳` : `${e.h}거래일 평가일 모름`);
+  return lsBox(6, '같은 조건의 검증 상태',
+    h('ul', {class: 'cd-l'},
+      ...(ls?.lists ?? []).filter(k => last?.evals?.[k]).map(k => li2(LISTS[k], last.evals[k].map(evalTxt).join(' · '))),
+      ls?.lists?.length ? null : li2('이번 기록 목록', '없음 — 이 종목에 걸린 검증 없음'),
+      fs ? li2('최초 포착', `${korDate(fs.asOf)} 기록 · ${fs.lists.map(k => LISTS[k] ?? k).join(' · ')} · 그 뒤 `, pv(fs.r), ` · ${idxName(lens)} 대비 `, ppv(fs.gap), ` · 기록 ${fs.records}장에 듦`) : li2('최초 포착', '저녁 기록에 든 적 없음')),
+    h('p', {class: 'muted xs'}, h('a', {href: '#/check'}, '선정 결과 검증 ›'), ' · 결과가 쌓이기 전에는 검증 전'));
+}
+function compareBox(ls, lens) {
+  if (!ls) return null;
+  const R = lens.market.ref ?? {}, sc = lens.sectors.find(x => x.id === ls.g);
+  const row = (n, a, b) => h('tr', null, h('th', {scope: 'row'}, `${n}거래일`), h('td', null, pv(a)), h('td', null, pv(b)), h('td', null, ppv(finite(a) && finite(b) ? a - b : null)), h('td', null, pv(relPct(a, b))));
+  return h('section', {class: 'b-box cd-cmp', 'aria-label': '비교'},
+    h('h2', {class: 'b-box-h'}, '비교 · 같은 기간', h('small', null, ` · ${korDate(lens.asOf)} 종가까지`)),
+    h('div', {class: 'c-scroll', 'data-scroll': 'x'}, h('table', {class: 'c-table'},
+      h('thead', null, h('tr', null, ...['기간', '이 종목', idxName(lens), '격차(%p)', '상대 가격비(%)'].map(x => h('th', {scope: 'col'}, x)))),
+      h('tbody', null, row(5, ls.r5, R.r5), row(20, ls.r20, R.r20), row(60, ls.r60, R.r60)))),
+    h('ul', {class: 'cd-l'},
+      li2('업종 평균 대비(20거래일)', ppv(ls.vsGroup20), sc ? ` · ${sc.label} 평균 ` : '', sc ? pv(sc.d20.mean) : '', sc ? [' ', tagEl(sc.level, LEVEL, 'lvl')] : ''),
+      li2('같은 업종 다른 곳 평균 대비', ppv(ls.vsPeers20), ' · 자기 자신을 뺀 평균'),
+      sc ? li2('업종 1위 제외 평균', pv(sc.d20.exTop1), ' · 상위 2개 제외 평균 ', pv(sc.d20.exTop2)) : null,
+      li2('위험조정 성과', '계산하지 않음(검증된 정의 없음)')),
+    h('p', {class: 'muted xs'}, '격차(%p)와 상대 가격비(%)는 다른 값 · 이 비교는 공식 순위 · 기록을 바꾸지 않음'),
+    h('details', {class: 'b-how'}, h('summary', null, '계산 · 출처 자세히'), h('p', {class: 'muted xs'}, '격차(%p) = 종목 수익률 − 지수 수익률 · 상대 가격비(%) = (1 + 종목) ÷ (1 + 지수) − 1'))); // 산식은 접힘(또렷함 3번 — 펼친 글에 단위 없는 숫자 없음)
+}
+
 export async function renderCompany(main, {hash, manifest}) {
   const code = decodeURIComponent(hash.replace(/^#\/stock\//, '')); // 한국 6자리 · 미국 영문 기호(AAPL · BRK.B)
-  const [s, agenda, board] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null)]);
+  const [s, agenda, board, lens0] = await Promise.all([loadStock(code), loadAgenda().catch(() => null), loadBoard().catch(() => null), loadLens().catch(() => null)]);
+  const lens = lens0 && !lens0.none ? lens0 : null, ls = lens?.stocks?.find(x => x.code === s.code) ?? null;
   const rows = s.closes60 ?? [], first = rows[0]?.date, last = rows.at(-1)?.date, band = s.cFrom ? rows.findIndex(r => r.date === s.cFrom) : -1;
   const shp = board ? sunOf(board) : null, sunOn = !!shp?.sparkle.has(s.code), sunHas = shp?.hits.get(s.code)?.length ?? 0, cm = board ? companyComment(board, s) : null;
   state.summary = `${commentSay(cm)}${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
@@ -120,17 +203,23 @@ export async function renderCompany(main, {hash, manifest}) {
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
     // 2026-10-05 탭 다섯: 「예비」(닮은 7곳) · 「22곳」에서 왔으면 그 목록으로(보던 자리 그대로)
     state.from === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표')
-      : state.from === 'find' ? h('a', {class: 'c-back', href: '#/find'}, '‹ 찾기') // 2026-10-05 20:24 「종목을 찾는 기능」 — 넣은 글자 · 결과 그대로
+      : state.from === 'stocks' ? h('a', {class: 'c-back', href: '#/stocks'}, '‹ 종목') // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 옛 「찾기」는 아래 탭 「종목」 안 · 넣은 글자 · 고른 묶음 그대로
+      : state.from === 'watch' ? h('a', {class: 'c-back', href: '#/watch'}, '‹ 관심종목')
+      : state.from === 'flow' ? h('a', {class: 'c-back', href: '#/flow'}, '‹ 투자자 매매') // 아래 탭 「돈 흐름」 첫 화면(route id 'flow')
+      : state.from === 'rotation' ? h('a', {class: 'c-back', href: '#/flow/rotation'}, '‹ 업종 순환')
       : state.from === 'similar' ? h('a', {class: 'c-back', href: '#/similar'}, '‹ 예비')
       : state.from === 'rise' ? h('a', {class: 'c-back', href: '#/rise'}, '‹ 오름 상위')
       : h('a', {class: 'c-back', href: s.group?.id ? '#/i/' + s.group.id : '#/'}, '‹ ', s.group?.label ?? manifest.universeSet?.label ?? '처음 화면'), // 「‹ 」 와 이름을 나눠 이름만 사전에서 찾음
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title' + (String(s.name ?? '').length > 10 ? ' c-long' : ''), 'data-speak': ''}, s.name, sunTag(sunOn)), // 긴 이름은 작게 · 두 줄까지(한국어 360px 에서 이름이 세 줄이 되어 그림 이름표가 아래 탭 밑으로 가던 것 — 2026-10-08 06:27 두 말 검사가 찾음) // 태양 회사면 이름 곁 작은 해(B3)
       // 업종: 한국거래소 업종(한국표준산업분류)이 있으면 그 이름 · 없으면 네이버 증권 업종(2026-10-05 365곳 묶음부터 더 잘게)
-      priceLine(s, {big: true})),
+      priceLine(s, {big: true})), // ① 지금 종가 · 기준 시각(머리) — 자료 상태 줄은 그림 바로 아래(긴 말에서도 그림 이름 · 숫자가 첫 화면에 · 규칙 30)
     // 2026-10-08 01:27 「이런식으로 모두」 — 값 바로 아래 그림 한 장(먹 붓질 · 규칙 33): 지난 20거래일 줄(기간은 그림 이름표 · 변화는 그림 숫자) · 논평 무대를 그림이 대신(규칙 1) · 순위 단추 · 지수 띠는 그림 아래
     art,
+    statusLine(ls, s), // ① 자료 상태(「ATLAS 개편 실행 지시서」 7 — 그날 종가 · 지연 · 오래된 종가 · 기업행사 확인 필요 · 받은 때)
     codeLine, // 기호 · 업종 줄은 그림 아래(값 · 그림이 한 화면에 · 규칙 30)
+    lens ? [sinceBox(ls, lens), ...evidenceBoxes(ls, lens, s), nextBox(ls, lens, agenda, s), verifyBox(ls, lens), compareBox(ls, lens)] : null, // ② ~ ⑥ · 비교(「ATLAS 개편 실행 지시서」 7)
+    watchBox(s), // ★ 관심 등록(이 기기에만 · 7)
     rankNav(board, s),
     marketStrip(manifest),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,

@@ -8,7 +8,7 @@ export const fin = v => typeof v === 'number' && Number.isFinite(v);
 const desc = (a, b) => (fin(b) ? b : -Infinity) - (fin(a) ? a : -Infinity);
 const byRise = key => (a, b) => desc(a.change20, b.change20) || String(a[key] ?? '').localeCompare(String(b[key] ?? '')); // 같으면 code · id 차례(family.js riseDesc 와 같은 규칙)
 /** b = 판(kr · us · cn · jp · vn) · others = [{id, label, n}](위 막대 시장 차례) */
-export function expectOf(b, board, agenda, story, log, others) {
+export function expectOf(b, board, agenda, story, log, others, lens = null, extra = {}) {
   setPlace({id: b});
   const cs = board.companies, byCode = new Map(cs.map(c => [c.code, c])), groups = board.groups ?? [], E = {};
   const Q = key => ({quiet: key}); // 빈 하늘(2026-10-08 05:05 빈 날 막기 — 그 화면 그림이 그릴 값이 없는 날 · scenes.js quietArt 의 data-check)
@@ -45,7 +45,33 @@ export function expectOf(b, board, agenda, story, log, others) {
   // 돈 흐름 업종의 회사(17:41 「돈에 흐름에 관련된 종목들을 표기하라」) — [쪽(들어가는 곳 먼저), 차례, 업종, 그 업종 회사 기호(오른 순)]
   E.flowCos = E.rot ? ['in', 'out'].flatMap(side => (rot[side] ?? []).slice(0, 3).map((x, i) => { const g = groups.find(y => y.id === x.id); return [side, i + 1, x.id, (g?.codes ?? []).map(c => byCode.get(c)).filter(Boolean).sort(byRise('code')).map(c => c.code)]; })) : null;
   E.flow = E.rot ? {from: rot.pair.from.id, to: rot.pair.to.id, start: rot.pair.start, days: rot.pair.days, outAmt: rot.out[0].amount, inAmt: rot.in[0].amount, outs: (rot.out ?? []).slice(0, 3).map(x => [x.id, x.amount]), ins: (rot.in ?? []).slice(0, 3).map(x => [x.id, x.amount]), fomo: rot.fomo.to, waves: (rot.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])} : Q('flow'); // 파장 1~5차(06:46 · 셈은 waves_verify.py 가 따로) · 빠지는 곳 · 들어가는 곳 1위~3위(10월 8일 12:43 · 12:59 「1등부터 3등까지 · 가장 많이 나간 순」)
+  // 판 읽기 그림(2026-10-08 20:19 「ATLAS 개편 실행 지시서」) — 판 읽기(lens.json)를 못 읽으면 빈 하늘
+  //   시장: 판 자료(board)로 따로 셈 — 그날 종가가 있는 회사 · 지난 20거래일 하루 변화가 한국 가격 제한폭(±30%)을 넘은 회사는 뺌 · 하루 변화 부호 · 공식 지수 하루 변화(판 목록 market)
+  const L = lens && !lens.none ? lens : null;
+  if (L) {
+    const lim = b === 'kr' ? 0.30 : Infinity, okC = cs.filter(c => c.date === board.asOf && fin(c.change1) && !(c.c ?? []).some((v, i, a) => i && fin(v) && fin(a[i - 1]) && a[i - 1] > 0 && Math.abs(v / a[i - 1] - 1) > lim));
+    const ix = (extra.market?.items ?? [])[0];
+    E.market = okC.length ? {up: okC.filter(c => c.change1 > 0).length, down: okC.filter(c => c.change1 < 0).length, flat: okC.filter(c => c.change1 === 0).length, n: okC.length, idx: fin(ix?.changePct) ? ix.changePct : null} : Q('market');
+    E.flowwho = fin(extra.flow5?.f) || fin(extra.flow5?.i) ? {f5: fin(extra.flow5.f) ? Math.round(extra.flow5.f / 1e8) : null, i5: fin(extra.flow5.i) ? Math.round(extra.flow5.i / 1e8) : null} : Q('flowwho');
+    E.stocks = L.changes ? {up: L.buckets.up, down: L.buckets.down, new: L.buckets.new} : Q('stocks');
+    const recs = L.verify?.records ?? [], ev = recs.flatMap(r => Object.values(r.evals).flat());
+    E.check = recs.length && (extra.records == null || extra.records === recs.length) ? {records: recs.length, pending: ev.filter(e => e.status === 'pending').length, done: ev.filter(e => e.status === 'done').length} : recs.length ? {records: extra.records} : Q('check');
+  } else { E.market = Q('market'); E.flowwho = Q('flowwho'); E.stocks = Q('stocks'); E.check = Q('check'); }
+  E.watch = Q('watch'); // 검사 창에는 관심 등록이 없음(이 기기 저장 · 빈 하늘)
   return E;
+}
+/** 투자자 매매 그림의 기대값 — 회사 화면 파일(stocks/*.json)의 날마다 순매매(주식 수) × 그날 종가(closes60)로 따로 셈(판 읽기와 다른 길) · 마지막 5거래일 줄이 다 있고 종가가 다 있는 회사만 */
+export function flowExpect(stockFiles) {
+  const dates = [...new Set(stockFiles.flatMap(s => (s?.context?.flows ?? []).map(r => r.date)))].sort().slice(-5);
+  if (dates.length < 5) return null;
+  let f = 0, i = 0, nf = 0;
+  for (const s of stockFiles) {
+    const rows = new Map((s?.context?.flows ?? []).map(r => [r.date, r])), cl = new Map((s?.closes60 ?? []).map(r => [r.date, r.close]));
+    let ff = 0, ii = 0, ok = true;
+    for (const d of dates) { const r = rows.get(d), c = cl.get(d); if (!r || !fin(r.foreignNet) || !fin(r.institutionNet) || !fin(c)) { ok = false; break; } ff += r.foreignNet * c; ii += r.institutionNet * c; }
+    if (ok) { f += ff; i += ii; nf++; }
+  }
+  return nf ? {f, i, n: nf} : null;
 }
 /** data-check(그림이 실은 값) ↔ 기대값 — 숫자는 소수 여섯째 자리까지 · bad(what) 로 알림 · 맞댄 숫자 수를 돌려줌 */
 export function compare(got, want, bad) {
