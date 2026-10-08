@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-08",
- "fetchedAt": "2026-10-08T10:00:00Z",
- "file": "reports/atlas11/context/2026-10-08/2026-10-08T10-00-00Z.json",
+ "fetchedAt": "2026-10-08T10:03:39Z",
+ "file": "reports/atlas11/context/2026-10-08/2026-10-08T10-03-39Z.json",
  "summary": {
   "day": "2026-10-08",
-  "fetchedAt": "2026-10-08T10:00:00Z",
+  "fetchedAt": "2026-10-08T10:03:39Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-08",
