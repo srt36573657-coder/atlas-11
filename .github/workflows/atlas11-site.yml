@@ -43,7 +43,7 @@ jobs:
         if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
         run: node scripts/atlas11/deploy_netlify.mjs --dir dist
       - name: 열렸는지 확인
-        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        if: ${{ always() && env.NETLIFY_AUTH_TOKEN != '' }} # 올리기가 실패해도 사이트 상태(응답 코드)를 남김 — 2026-10-09 넷리파이 Forbidden 까닭 찾기
         continue-on-error: true
         run: node scripts/atlas11/netlify_status.mjs
       - name: 열쇠 없음
