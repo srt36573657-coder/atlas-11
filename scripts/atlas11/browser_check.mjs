@@ -836,11 +836,16 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       secs: [...document.querySelectorAll('.gd-sec')].map(x => x.querySelector('.gd-h')?.textContent.replace(/^\d+/, '').trim()), rows: document.querySelectorAll('.gd-row').length,
       noSrc: [...document.querySelectorAll('.gd-row')].filter(r => ![...r.querySelectorAll('.gd-src a')].some(a => /^https:\/\//.test(a.getAttribute('href') ?? ''))).length,
       back: document.querySelector('.gd-page .c-back')?.getAttribute('href'), units: [...document.querySelectorAll('.gd-t b[lang="ko"]')].map(b => b.textContent).join(''),
-      foot: {guide: document.querySelector('.b-foot .b-guide a')?.getAttribute('href') ?? null, cheer: document.querySelector('.b-foot .b-cheer')?.textContent.trim() ?? null, promise: document.querySelector('.b-foot .b-promise')?.textContent.trim() ?? null},
+      foot: {guide: document.querySelector('.b-foot .b-guide a')?.getAttribute('href') ?? null, promise: document.querySelector('.b-foot .b-promise')?.textContent.trim() ?? null,
+        dup: !!document.querySelector('.b-foot .b-cheer, .b-foot .b-contact, .b-foot a[href^="sms:"]')}, // 하규 응원 · 건의 줄은 맨 위로 옮김(2026-10-08 14:42 마카오 시각 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」)
+      note: (() => { const t = document.getElementById('topnote'), tp = document.getElementById('top'), a = t?.querySelector('.tn-contact a'), r = t?.getBoundingClientRect(), mr = document.getElementById('main')?.getBoundingClientRect();
+        return {cheer: t?.querySelector('.tn-cheer')?.textContent.trim() ?? null, contact: t?.querySelector('.tn-contact')?.textContent.replace(/\s+/g, ' ').trim() ?? null, sms: a?.getAttribute('href') ?? null,
+          order: tp?.nextElementSibling === t && t?.nextElementSibling?.id === 'main', top: Math.round(r?.top ?? -1), bottom: Math.round(r?.bottom ?? -1), barBottom: Math.round(tp?.getBoundingClientRect().bottom ?? -1), mainTop: Math.round(mr?.top ?? -1)}; })(),
       sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
-    check(`${label} 「한국 주식시장 안내」(#/guide): 갈래 ${gd.secs.length}개(${gd.secs.join(' · ')}) · 줄 ${gd.rows}개 · 줄마다 출처 주소(없는 줄 ${gd.noSrc}) · 단위 글자 「${gd.units}」 · 아래 탭 「처음」 눌림 · 「‹ 처음」 · 맨 아래 안내 고리 · 하규 응원 · 「광고 · 유료 결제 없음」 · 옆으로 넘치지 않음`,
+    check(`${label} 「한국 주식시장 안내」(#/guide): 갈래 ${gd.secs.length}개(${gd.secs.join(' · ')}) · 줄 ${gd.rows}개 · 줄마다 출처 주소(없는 줄 ${gd.noSrc}) · 단위 글자 「${gd.units}」 · 아래 탭 「처음」 눌림 · 「‹ 처음」 · 맨 아래 안내 고리 · 「광고 · 유료 결제 없음」 · 맨 위(위 막대 ${gd.note.barBottom}px 바로 아래 ${gd.note.top}~${gd.note.bottom}px) 「${gd.note.cheer}」 · 「${gd.note.contact}」(${gd.note.sms}) · 맨 아래에는 두 줄이 없음 · 옆으로 넘치지 않음`,
       gd.hash === '#/guide' && gd.title === '한국 주식시장 안내' && gd.active === 'start' && gd.secs.join() === '시장,시간(한국 시각),규칙,계좌,세금(2026년),읽는 법' && gd.rows === 22 && gd.noSrc === 0 && gd.back === '#/start' && gd.units === '만억조'
-        && gd.foot.guide === '#/guide' && gd.foot.cheer === '하규야, 힘내라 — 늘 응원한다' && /광고 · 유료 결제 없음$/.test(gd.foot.promise ?? '') && gd.sw <= gd.cw, gd);
+        && gd.foot.guide === '#/guide' && !gd.foot.dup && /광고 · 유료 결제 없음$/.test(gd.foot.promise ?? '') && gd.sw <= gd.cw
+        && gd.note.cheer === '하규야, 힘내라 — 늘 응원한다' && gd.note.contact === '건의는 카톡이나 문자로 010-9011-7377' && gd.note.sms === 'sms:+821090117377' && gd.note.order && gd.note.top >= gd.note.barBottom - 1 && gd.note.bottom <= gd.note.mainTop + 1, gd);
     await wordsCheck(page, `${label} 「한국 주식시장 안내」`);
   }
   // ⑤-5 500만 원을 오래 들고 있었다면(#/long · 2026-10-07 05:27) · 한국 주식시장은 몇 위인가(#/korea · 05:29) — 규칙 24 · 숫자는 view-long.js LONG · view-korea.js RANKS 와 맞댐

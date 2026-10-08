@@ -73,6 +73,7 @@ html:not([lang="ko"]) .sy.rt > .ra-t .ra-td { font-size: .9375rem; }
 .ra-lab-rk > .ra-b { justify-self: end; text-align: end; min-width: 0; max-width: 100%; }
 .ra-lab-rk .ra-n.ra-a { color: #CFE2F7; } .ra-lab-rk .ra-n.ra-b { color: #FFE3A3; }
 .ra-lab-rk .ra-fomo { margin-top: 2px; }
+.ra-lab-rk > .ra-fomo { grid-column: 1 / -1; } /* 포모값은 한 줄 전체(오른쪽 끝) — 반 칸에서 「아주 높다」가 둘째 줄로 내려가 첫 화면을 한 줄 더 쓰던 것(2026-10-08 14:42 맨 위 줄로 첫 화면이 내려감 · 규칙 30) */
 .ra-gap { display: block; }
 .ra-rkr .ra-md { vertical-align: .18em; margin-inline-end: 6px; } /* 1위 메달은 이름 글줄 안(이름이 두 줄이 되어도 첫 줄 앞에 붙음) */
 .ra-nm { display: contents; } /* 이름 글자는 칸(.ra-n)의 글줄 그대로 — 띄어쓰기 없는 긴 말(태국어 · 라오어)이 글씨 200% 에서 칸 밖 상자로 잡히지 않게(말 73개 검사) */
@@ -89,3 +90,12 @@ html[lang="ko"] .ra-m2 { white-space: nowrap; }
 .ra-m2 .rt-u { font-size: .8125rem; margin-inline-start: 1px; }
 html:not([lang="ko"]) .rt .ra-rk { font-size: .875rem; margin-top: 3px; }
 html:not([lang="ko"]) .ak .ra-lab-rot .ra-m { font-size: 1.125rem; } /* 다른 말 — 금액 글씨 한 단계 작게(단위 낱말이 길어 두 줄이 되던 것) */
+
+/* 하규 응원 · 건의 받는 곳 — 모든 화면 맨 위(위 막대 바로 아래 · 2026-10-08 14:42 마카오 시각 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」 · 맨 아래 줄에서 옮김)
+   응원 한 줄 · 건의 한 줄(넓으면 한 줄에 둘) · 첫 화면 그림 · 이름 · 숫자가 아래 탭 위에 남게 낮게(규칙 30): 한국어 13px · 다른 말 12px(말 74개 가운데 66개가 두 줄)
+   그래도 넘치는 화면은 그림만 그만큼 작게(app.js fitFirst) */
+.topnote { max-width: 560px; margin: 0 auto; padding: 3px 8px 1px; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0 8px; font-size: .8125rem; line-height: 1.3; text-align: center; }
+html:not([lang="ko"]) .topnote { font-size: .75rem; }
+.topnote p { margin: 0; min-width: 0; }
+.tn-cheer { font-weight: 700; color: var(--ink); }
+.tn-contact a { font-weight: 700; }

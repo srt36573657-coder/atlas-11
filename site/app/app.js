@@ -187,6 +187,25 @@ window.addEventListener('resize', () => fitTabs());
 function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.setAttribute('aria-label', `글씨 크기 ${FONT_STEPS[Math.min(FONT_STEPS.length - 1, Math.max(0, prefs.get('font', 0)))]}% (누를 때마다 커지고 200% 다음은 100%)`); }
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) { const on = el.dataset.route === id; el.classList.toggle('active', on); if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); } }
 
+/** 하규 응원 · 건의 받는 곳 — 모든 화면 맨 위(위 막대 바로 아래 · 사장님 2026-10-08 14:42(마카오 시각) 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」)
+ *  맨 아래 줄(parts.js foot)에서 옮김(규칙 1 — 두 번 나오지 않게) · 글은 이미 말 73개로 옮긴 두 줄 그대로(새 번역 0줄) · 번호는 식별자 · 누르면 문자 앱(나라 밖에서도 되게 +82)
+ *  자료 목록을 읽기 전에 그림(자료를 못 읽은 오류 화면에도 맨 위에) */
+function topNote() {
+  document.getElementById('topnote')?.replaceChildren(h('p', {class: 'tn-cheer'}, '하규야, 힘내라 — 늘 응원한다'),
+    h('p', {class: 'tn-contact b-contact'}, '건의는 카톡이나 문자로', ' ', h('a', {href: 'sms:+821090117377', 'data-ident': ''}, '010-9011-7377')));
+}
+/** 첫 화면 맞추기(규칙 30 · 2026-10-08 14:42 맨 위 줄이 생겨 첫 화면이 그만큼 내려감) — 그림 아래 이름 · 숫자(.ra-lab)의 아래 끝이 아래 탭 위에 오도록
+ *  넘치는 만큼만 그림(.ra-art)을 작게(가운데 · 원래 폭의 60% 아래로는 줄이지 않음) · 넘치지 않으면 그대로 · 화면을 그린 뒤 · 화면 크기가 바뀔 때 · 글꼴을 다 읽은 뒤 다시 잼 */
+function fitFirst() {
+  const ra = document.querySelector('#main .ra'), art = ra?.querySelector('.ra-art'); if (!art) return;
+  art.style.removeProperty('width'); art.style.removeProperty('margin-inline');
+  const labs = [...ra.querySelectorAll('.ra-lab')], bar = document.getElementById('bottom'); if (!labs.length || !bar) return;
+  const over = Math.max(...labs.map(x => x.getBoundingClientRect().bottom)) + window.scrollY - bar.getBoundingClientRect().top; // 쪽 맨 위에서 본 자리(내려 본 자리와 상관없이)
+  const r = art.getBoundingClientRect(); if (over <= 0 || !r.width || !r.height) return;
+  art.style.width = `${Math.floor(r.width * Math.max(0.6, 1 - (over + 3) / r.height))}px`; art.style.marginInline = 'auto';
+}
+window.addEventListener('resize', () => fitFirst());
+document.fonts?.addEventListener?.('loadingdone', () => fitFirst()); // 글꼴을 늦게 다 읽으면 글 높이가 바뀜
 async function route() {
   let hash = location.hash;
   if (hash === '#main') { document.getElementById('main')?.focus(); return; } // 「본문으로 건너뛰기」는 화면을 바꾸지 않는다
@@ -213,6 +232,7 @@ async function route() {
   if (!restoring) window.scrollTo({top: 0});
   try { await r.render(main, {hash, manifest: app.manifest, restoring}); }
   catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
+  fitFirst(); setTimeout(fitFirst, 0); // 그린 뒤 한 번 · 번역(말 사전)이 글을 바꾼 뒤 한 번 더
   setTimeout(() => { if (app.view === r.id) document.documentElement.setAttribute('data-drawn', ''); }, 450); // 다 그린 뒤에는 같은 화면 안에서 다시 그려도(묶음 바꾸기) 움직이지 않음
   if (restoring && app.view === r.id) window.scrollTo({top: scrollMemo.get(r.id) ?? 0});
 }
@@ -237,7 +257,7 @@ async function watchManifest() {
 
 async function start() {
   if (I18N) await startI18n(); // 언어판: 사전을 읽고 이후 그려지는 글자를 모두 그 말로
-  applyFont();
+  applyFont(); topNote();
   const main = document.getElementById('main');
   main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료를 불러오는 중입니다'),
     h('div', {class: 'sk', 'aria-hidden': 'true'}, h('span', {class: 'sk-t'}), h('span', {class: 'sk-l'}), h('span', {class: 'sk-g'}))));

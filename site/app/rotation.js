@@ -133,7 +133,7 @@ function labelsOf(r) {
   const main = h('div', {class: 'ra-lab ra-lab-rot ra-lab-rk'},
     top1('a', p.from), top1('b', p.to),
     h('p', {class: 'ra-m ra-a'}, ...amt(a.amount, u)), h('p', {class: 'ra-m ra-b'}, ...amt(b.amount, u)),
-    h('span', {class: 'ra-gap ra-a'}), h('p', {class: 'ra-fomo ra-b'}, h('span', {class: 'ra-fk'}, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(r.fomo.to)}, score(r.fomo.to)), ' ', h('span', {class: 'ra-fw'}, r.fomo.toWord ?? '없음')),
+    h('p', {class: 'ra-fomo ra-b'}, h('span', {class: 'ra-fk'}, '포모값'), ' ', h('b', {class: 'rt-heat', 'data-heat': heatOf(r.fomo.to)}, score(r.fomo.to)), ' ', h('span', {class: 'ra-fw'}, r.fomo.toWord ?? '없음')),
   );
   // 2위 · 3위 두 줄 — 한국어 화면은 첫 화면 이름 · 숫자(.ra-lab · 검사기가 아래 탭 위인지 잼) · 다른 말은 1위 짝 바로 아래(긴 말 — 줄루어 · 아르메니아어 등은 여섯 이름이 한 화면에 다 들어가지 않음 · 1위 짝과 포모값이 첫 화면)
   const rows23 = h('div', {class: (ON ? '' : 'ra-lab ') + 'ra-lab-rk ra-lab-23'}, row('a', 1, outs[1]), row('b', 1, ins[1]), row('a', 2, outs[2]), row('b', 2, ins[2]));
