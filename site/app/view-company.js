@@ -12,6 +12,7 @@ import {agendaBox, roadBox, priceLine, foot, kindBadge, sparkSvg, sparkScale, fl
 import {sunOf} from './shapes.js';
 import {riseDesc} from './family.js';
 import {companyComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17) — 회사 화면은 숫자(값 · 20거래일) 바로 다음에 그 숫자를 읽는 한 줄
+import {similarReason, sunReason, beatsEl} from './reason.js'; // 「왜 태양인가」 · 「왜 예비인가」 기승전결 넷(2026-10-08 06:48 · 06:49)
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -41,7 +42,7 @@ function contextBox(c) {
   const flowTable = flows.length ? h('div', {class: 'c-scroll', 'data-scroll': 'x'}, h('table', {class: 'c-table'},
     h('thead', null, h('tr', null, ...['날짜', '외국인', '기관', '개인', '상태'].map(x => h('th', {scope: 'col'}, x)))),
     h('tbody', null, ...flows.map(r => h('tr', null, h('th', {scope: 'row'}, korDate(r.date)), h('td', {class: signCls(r.foreignNet)}, signed(r.foreignNet)), h('td', {class: signCls(r.institutionNet)}, signed(r.institutionNet)), h('td', {class: signCls(r.individualNet)}, signed(r.individualNet)), h('td', null, r.status === 'provisional_same_day' ? '잠정' : '보고')))))) : h('p', {class: 'muted small'}, '수급 자료를 받지 못했습니다(0 으로 채우지 않음).');
-  box.append(
+  box.append(...[ // null 은 걸러 붙임(DOM append 는 null 을 「null」 글자로 붙임 — 2026-10-08 07:10 v3 검사기가 접힌 칸 안 「null」 두 줄을 찾음)
     h('summary', null, `수급·기사·공시 기록 열기 · 기사 ${news.length}건 · 공시 ${disc.length}건`),
     // 미국 판: 투자자별 매매 공개 자료가 없다 — 빈 표 대신 그렇다고 한 줄(util.js place.flows === false)
     ...(place.flows === false ? [h('p', {class: 'muted xs'}, `받은 시각 ${stamp(c.fetchedAt)}`), h('h3', {class: 'ag-h'}, '수급'), h('p', {class: 'muted small'}, place.flowsNone ?? '투자자별 매매 자료 없음')]
@@ -53,7 +54,7 @@ function contextBox(c) {
     h('h3', {class: 'ag-h'}, `받은 공시 ${disc.length}건`),
     disc.length ? h('ul', {class: 'c-news'}, ...disc.map(d => h('li', null, h('span', {class: 'muted xs'}, `${hm(d.publishedAt)} `), d.corporateAction ? h('span', {class: 'ag-notice'}, '기업행위', d.actionWord ? [' · ', h('span', {'data-ident': '', lang: 'ko'}, d.actionWord)] : null) : null, ' ', h('span', {'data-ident': '', lang: 'ko'}, d.title)))) : h('p', {class: 'muted small'}, place.disclosuresNone && c.missing?.includes('공시') ? place.disclosuresNone : '받은 공시 없음'),
     c.disclosuresHidden ? h('p', {class: 'muted xs'}, `앞날을 짐작하는 말이 든 공시 제목 ${c.disclosuresHidden}건은 싣지 않음`) : null,
-    h('p', {class: 'muted xs'}, place.contextSource)); // 시장마다(util.js place)
+    h('p', {class: 'muted xs'}, place.contextSource)].filter(x => x != null)); // 시장마다(util.js place)
   return box;
 }
 
@@ -68,6 +69,14 @@ function sunCheck(shp, code, asOf) {
       return h('li', {class: y ? 'on' : 'off', 'data-shape': id, 'data-has': String(y)}, h('span', {class: 'c-sun-ck', 'aria-hidden': 'true'}, y ? '✓' : '·'), h('span', null, t.name), h('span', {class: 'sr-only'}, y ? ' 가짐' : ' 안 가짐')); })),
     h('p', {class: 'muted xs c-sun-n'}, `오른 회사 = 지난 20거래일 오른 순 1위~${shp.topN}위 · ${korDate(asOf)} 종가까지 모양을 견준 것일 뿐 앞날을 맞히지 않습니다 · `,
       h('a', {class: 'sun-go', href: '#/road/sun'}, `출목표에서 태양 ${shp.sparkle.size}곳 모아 보기 ›`)));
+}
+/** 「왜 태양인가」 · 「왜 예비인가」 — 근거를 기승전결 넷으로(reason.js · 늘 펼침) · 출목표 칸(태양 점검) 바로 아래 · 태양 · 예비인 회사만
+   사장님 2026-10-08 06:48 「그리고 왜 예비 후보인지 그 근거와 이유가 분명히 기승전결로 있어야 한다」 · 06:49 「태양도 왜 태양인지 마찮가지로 그 근거가 있러야 한다」 */
+function whyBoxes(board, shp, s) {
+  const sun = board && shp ? sunReason(shp, board, s.code) : null, sim = board ? similarReason(board, s.code) : null;
+  return [
+    sun ? h('section', {class: 'b-box rs-box rs-sun', 'aria-label': '왜 태양인가', 'data-why': 'sun'}, h('h2', {class: 'b-box-h rs-bh'}, sunIcon('sun-mid'), h('span', {'data-speak': ''}, '왜 태양인가')), beatsEl(sun, {speak: true})) : null,
+    sim ? h('section', {class: 'b-box rs-box', 'aria-label': '왜 예비인가', 'data-why': 'similar'}, h('h2', {class: 'b-box-h rs-bh'}, h('span', {'data-speak': ''}, '왜 예비인가')), beatsEl(sim, {speak: true})) : null];
 }
 
 /** 오른 순 자리 · 앞뒤 회사(2026-10-05 15:24 「잡스가 … 36가지」 E2 · E3 · E4) — 「‹ 11위 · 오른 순 365곳 가운데 12위 · 13위 ›」
@@ -127,6 +136,7 @@ export async function renderCompany(main, {hash, manifest}) {
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
       s.closeSource ? h('p', {class: 'muted xs'}, `마지막 종가: ${place.exchange} ${place.close} 종가 · 받은 시각 ${stamp(s.closeSource.observedAt)}`) : null),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '출목표', h('small', null, s.cFrom ? ` · 지난 ${Math.max(0, (s.c?.length ?? 1) - 1)}거래일 · ${korDate(s.cFrom)}부터` : '', finite(s.change20) ? ` · ${pct(s.change20, 1)}` : '')), roadBox(s.c, {note: true, title: false}), sunCheck(shp, s.code, board?.asOf ?? s.date)),
+    whyBoxes(board, shp, s), // 「왜 태양인가」 · 「왜 예비인가」(2026-10-08 06:48 · 06:49) — 태양 점검 바로 아래 · 태양 · 예비인 회사만
     briefBox(board, s), // 2026-10-05 「잡스라면」 22번 — 회사 화면 차례: 20거래일 변화 → 그래프 → 출목표 → 수급·기사 → 일정 → (접힘) 1년 숫자
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, '일정·공시'), agendaBox(agenda?.byCode?.[s.code] ?? null, {max: 0, builtDay: agenda?.sources?.disclosures?.day ?? null})),
     contextBox(s.context),

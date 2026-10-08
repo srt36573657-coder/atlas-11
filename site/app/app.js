@@ -257,5 +257,10 @@ async function start() {
   window.addEventListener('hashchange', route);
   setInterval(watchManifest, 5 * 60 * 1000);
   await route();
+  // 검사기 손잡이(2026-10-08 06:42 「10배 빠르면서도 10배 정교한 시스템」) — 빠짐없이 도는 검사기가 기다리지 않고 다 그린 순간 잼:
+  // atlasRoute(주소) = 주소를 바꾸고 그 화면을 다 그릴 때까지 기다림 · atlasFont(단) = 글씨 크기 · data-ready = 첫 화면까지 다 그림(사람이 쓰는 길은 그대로)
+  window.atlasRoute = async hh => { history.replaceState(null, '', location.pathname + location.search + hh); await route(); };
+  window.atlasFont = n => { prefs.set('font', n); applyFont(); fontLabel(); fitTabs(); };
+  document.documentElement.dataset.ready = '1';
 }
 start();

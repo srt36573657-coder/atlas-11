@@ -1,7 +1,9 @@
 // 돈의 이동(lib/atlas11/rotation.mjs) — 사장님 2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 돈에 이동이 되고 있냐 그리고 그 기간과 포모값은 어찌 되냐」
+//   · 돈의 파장 1~5차 — 2026-10-08 06:46 「그리고 돈에 흐름이 1차 파장만 있다 5차 파장까지 도입하라」
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ROT, chainIndex, closeMap, price6At, fomoOf, fomoWord, troughOf, buildRotation, checkRotation} from '../../lib/atlas11/rotation.mjs';
+import {rotationOf, ROT_PLACES} from '../../scripts/atlas11/story/build.mjs';
 import {calculateFomo} from '../../lib/fomo.mjs';
 
 const sessionsOf = n => { const out = []; for (let k = 0; out.length < n; k++) { const d = new Date(Date.UTC(2025, 0, 1 + k)); if (d.getUTCDay() % 6 !== 0) out.push(d.toISOString().slice(0, 10)); } return out; };
@@ -68,4 +70,96 @@ test('돈의 이동 — 오른 업종이 들어가는 쪽 · 내린 업종이 �
   assert.deepEqual(checkRotation(r), []);
   // 거래일이 모자라면 지어내지 않음
   assert.equal(buildRotation({assets, groups, sessions: sessions.slice(0, 5), asOf: sessions[4], capDay: sessions[4]}).none, true);
+});
+
+/* ── 돈의 파장 1~5차 ── */
+/** 파장 시험 자료 — leads: 오래된 마디부터 그 마디에 오르는 업종 번호(null = 모두 그대로) · pre: 맨 앞 자투리 거래일(10 미만 · 쓰이면 안 됨)
+   업종 다섯(한 곳씩 · 시가총액 1,000억) + 빠지는 업종 Z(5,000억 · 앞선 업종이 있는 마디에 하루 −0.3%) · 앞선 업종은 그 마디에 하루 +1%
+   · 자투리에는 업종3 이 하루 +5%(미끼 — 앞에서부터 끊으면 첫 마디의 앞선 업종이 됨) */
+const IDS = [0, 1, 2, 3, 4, 'Z'];
+function waveData(leads, pre = 5) {
+  const n = pre + 10 * leads.length + 1, sessions = sessionsOf(n);
+  const rate = (k, i) => { if (i <= pre) return k === 3 ? 0.05 : 0; const lead = leads[Math.floor((i - pre - 1) / 10)]; return lead == null ? 0 : k === lead ? 0.01 : k === 'Z' ? -0.003 : 0; };
+  const assets = IDS.map(k => { let c = 100; return {code: `C${k}`, name: `회사${k}`, quality: {marketCapEok: k === 'Z' ? 5000 : 1000}, prices: sessions.map((date, i) => { if (i > 0) c *= 1 + rate(k, i); return {date, close: c}; })}; });
+  const groups = IDS.map(k => ({id: `g${k}`, label: `업종${k}`, codes: [`C${k}`]}));
+  return {assets, groups, sessions, asOf: sessions.at(-1), capDay: sessions.at(-1), pre};
+}
+/** 따로 센 옮겨 간 돈 — 한 곳짜리 업종이라 업종 시가총액 = 시가총액 × 종가 ÷ 기준 날 종가 */
+function movedBy(d, k, a, b) {
+  const T = d.sessions.length - 1, L = (j, i) => d.assets[j].quality.marketCapEok * d.assets[j].prices[i].close / d.assets[j].prices[T].close;
+  const M = i => IDS.reduce((s, _, j) => s + L(j, i), 0), j = IDS.indexOf(k);
+  return L(j, b) - L(j, a) * M(b) / M(a);
+}
+const near = (got, want, msg) => assert.ok(Math.abs(got - Math.round(want)) <= 1, `${msg}: ${got} vs ${want}`);
+
+test('돈의 파장 — 세 업종이 차례로 앞서면 그 차례 그대로 1 · 2 · 3차 · 마지막 종가 날부터 거꾸로 10거래일씩(맨 앞 자투리는 안 씀)', () => {
+  const d = waveData([0, 1, 2]), r = buildRotation(d), at = j => d.sessions[d.pre + 10 * j];
+  assert.equal(r.none, false);
+  assert.deepEqual(r.waves.map(w => [w.n, w.to.label, w.from.label, w.start, w.end, w.days]),
+    [[1, '업종0', '업종Z', at(0), at(1), 10], [2, '업종1', '업종Z', at(1), at(2), 10], [3, '업종2', '업종Z', at(2), at(3), 10]]);
+  assert.ok(!r.waves.some(w => w.to.label === '업종3')); // 자투리(앞 5거래일)의 미끼는 어느 마디에도 없음
+  r.waves.forEach((w, j) => { near(w.amount, movedBy(d, [0, 1, 2][j], d.pre + 10 * j, d.pre + 10 * (j + 1)), `${w.n}차 들어간 돈`); near(w.fromAmount, movedBy(d, 'Z', d.pre + 10 * j, d.pre + 10 * (j + 1)), `${w.n}차 빠진 돈`); });
+  assert.ok(r.waves.every(w => w.amount > 0 && w.fromAmount < 0));
+  assert.equal(r.waves.at(-1).to.id, r.pair.to.id); assert.equal(r.waves.at(-1).end, r.asOf); assert.equal(r.waves.at(-1).start, r.window.from);
+  assert.deepEqual(r.waves.map(w => w.atLeast), [true, false, false]); // 맨 앞 마디 — 그보다 앞은 자료가 없어 「넘게」
+  assert.deepEqual(checkRotation(r), []);
+});
+
+test('돈의 파장 — 같은 업종이 이어 앞서면 한 파장(기간을 합치고 다시 셈) · 가장 새 다섯만 · 들어간 업종이 없는 마디는 파장을 끊음 · 12마디까지만', () => {
+  const d = waveData([0, 1, 2, 2, 3, 0, 1]), r = buildRotation(d), at = j => d.sessions[d.pre + 10 * j];
+  // 파장 여섯(0 · 1 · 2+2 · 3 · 0 · 1) 가운데 가장 새 다섯
+  assert.deepEqual(r.waves.map(w => [w.n, w.to.label, w.start, w.end, w.days, w.atLeast]),
+    [[1, '업종1', at(1), at(2), 10, false], [2, '업종2', at(2), at(4), 20, false], [3, '업종3', at(4), at(5), 10, false], [4, '업종0', at(5), at(6), 10, false], [5, '업종1', at(6), at(7), 10, false]]);
+  const merged = r.waves[1];
+  near(merged.amount, movedBy(d, 2, d.pre + 20, d.pre + 40), '합친 파장은 합친 기간 전체로 다시 셈');
+  near(merged.fromAmount, movedBy(d, 'Z', d.pre + 20, d.pre + 40), '합친 파장의 빠진 돈');
+  assert.deepEqual(checkRotation(r), []);
+  // 들어간 업종이 없는 마디(모두 그대로 — 옮겨 간 돈 0)를 사이에 두면 같은 업종이라도 잇지 않음
+  const g = buildRotation(waveData([0, null, 0, 1])), gat = j => d.sessions[d.pre + 10 * j];
+  assert.deepEqual(g.waves.map(w => [w.n, w.to.label, w.start, w.end]), [[1, '업종0', gat(0), gat(1)], [2, '업종0', gat(2), gat(3)], [3, '업종1', gat(3), gat(4)]]);
+  assert.deepEqual(checkRotation(g), []);
+  // 12마디(120거래일)보다 앞은 보지 않음 — 그 안이 모두 한 업종이면 파장 하나 · 「넘게」
+  const h = waveData([0, 0, ...new Array(12).fill(1)]), hr = buildRotation(h), T = h.sessions.length - 1;
+  assert.deepEqual(hr.waves.map(w => [w.n, w.to.label, w.from.label, w.start, w.end, w.days, w.atLeast]), [[1, '업종1', '업종Z', h.sessions[T - 120], h.sessions[T], 120, true]]);
+  near(hr.waves[0].amount, movedBy(h, 1, T - 120, T), '120거래일 파장');
+  assert.deepEqual(checkRotation(hr), []);
+});
+
+test('돈의 파장 — 들어간 돈이 똑같으면 판 차례 앞 업종 · 「들어가는 업종」과 같은 잣대라 마지막 파장 = pair.to', () => {
+  for (const before of [false, true]) {
+    const d = waveData([0, 1, 2]), twin = {...d.assets[2], code: 'CT'}, g = {id: 'gT', label: '업종T', codes: ['CT']};
+    d.assets.push(twin); d.groups.splice(before ? 2 : 3, 0, g); // 업종2 와 똑같은 쌍둥이를 앞 또는 뒤에
+    const r = buildRotation(d), want = before ? '업종T' : '업종2';
+    assert.equal(r.in[0].label, want); assert.equal(r.pair.to.label, want); assert.equal(r.waves.at(-1).to.label, want);
+    assert.deepEqual(checkRotation(r), []);
+  }
+});
+
+test('돈의 파장 검사 — 차례 · 날짜 · 방향 · 마지막 = 지금 들어가는 업종이 어긋나면 막음', () => {
+  const r = buildRotation(waveData([0, 1, 2, 3, 4, 0]));
+  assert.deepEqual(checkRotation(r), []);
+  const w = r.waves, bad = waves => checkRotation({...r, waves});
+  assert.deepEqual(bad(undefined), ['파장 수']);
+  assert.deepEqual(bad([...w, {...w.at(-1), n: 6}]), ['파장 수', '파장 날짜']);
+  assert.ok(bad([...w].reverse()).includes('파장 차례'));
+  assert.deepEqual(bad(w.map(x => ({...x, n: 6 - x.n})).reverse()), ['파장 날짜', '마지막 파장 ≠ 지금 들어가는 업종']); // 차례 번호만 맞추고 날짜는 거꾸로
+  assert.deepEqual(bad(w.map((x, i) => i === 1 ? {...x, amount: -x.amount} : x)), ['파장 방향']);
+  assert.deepEqual(bad(w.map((x, i) => i === 2 ? {...x, fromAmount: 0} : x)), ['파장 방향']);
+  assert.deepEqual(bad(w.map((x, i) => i === 4 ? {...x, to: w[0].to} : x)), ['마지막 파장 ≠ 지금 들어가는 업종']);
+  assert.deepEqual(bad(w.map((x, i) => i === 0 ? {...x, from: x.to} : x)), ['파장 업종']);
+  assert.deepEqual(bad(w.map((x, i) => i === 3 ? {...x, start: w[2].start} : x)), ['파장 날짜']); // 앞 파장과 겹침
+});
+
+test('돈의 파장 — 다섯 나라 실제 자료: 검사 통과 · 1차부터 · 날짜 겹치지 않음 · 마지막 파장 = 지금 들어가는 업종 · 마지막 종가 날', async () => {
+  for (const [place] of ROT_PLACES) {
+    const r = await rotationOf(process.cwd(), place);
+    assert.equal(r.none, false, `${place}: ${r.reason}`);
+    assert.deepEqual(checkRotation(r), [], place);
+    assert.ok(r.waves.length >= 1 && r.waves.length <= ROT.waves, place);
+    assert.deepEqual(r.waves.map(w => w.n), r.waves.map((_, i) => i + 1), place);
+    r.waves.forEach((w, i) => { assert.ok(w.start < w.end && (i === 0 || r.waves[i - 1].end <= w.start), `${place} ${w.n}차 날짜`); assert.ok(w.days % ROT.window === 0 && w.days <= ROT.window * ROT.waveWindows, `${place} ${w.n}차 기간`); assert.ok(w.amount > 0 && w.fromAmount < 0, `${place} ${w.n}차 방향`); });
+    assert.equal(r.waves.at(-1).to.id, r.pair.to.id, place);
+    assert.equal(r.waves.at(-1).to.label, r.in[0].label, place);
+    assert.equal(r.waves.at(-1).end, r.asOf, place);
+  }
 });
