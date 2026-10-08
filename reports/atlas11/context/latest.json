@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-08",
- "fetchedAt": "2026-10-08T12:00:38Z",
- "file": "reports/atlas11/context/2026-10-08/2026-10-08T12-00-38Z.json",
+ "fetchedAt": "2026-10-08T14:01:13Z",
+ "file": "reports/atlas11/context/2026-10-08/2026-10-08T14-01-13Z.json",
  "summary": {
   "day": "2026-10-08",
-  "fetchedAt": "2026-10-08T12:00:38Z",
+  "fetchedAt": "2026-10-08T14:01:13Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-08",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7217,
-   "distinct": 7169,
-   "republished": 48,
+   "distinct": 7168,
+   "republished": 49,
    "sameArticle": 0,
    "stocksWithTodayNews": 198,
-   "todayDistinct": 1296
+   "todayDistinct": 1303
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-08",
-     "value": 1344.5,
-     "changePct": 0.26
+     "value": 1343.1,
+     "changePct": 0.16
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-06",
-     "value": 15.01
+     "date": "2026-10-07",
+     "value": 15.08
     },
     "rows": 60
    },
@@ -113,6 +113,16 @@
     "latest": {
      "date": "2026-10-06",
      "value": 2.91
+    },
+    "rows": 60
+   },
+   {
+    "id": "BAA10Y",
+    "label": "미국 Baa 회사채 − 국채10년",
+    "factorId": "F05",
+    "latest": {
+     "date": "2026-10-06",
+     "value": 1.46
     },
     "rows": 60
    },
@@ -180,7 +190,7 @@
    }
   ],
   "revisions": 0,
-  "errors": 1,
+  "errors": 0,
   "usedInForecast": false
  },
  "factors": {
@@ -329,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-08",
-     "value": 1344.5,
+     "value": 1343.1,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -382,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-06",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-07",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-06",
-     "value": 15.01,
+     "latestObservation": "2026-10-07",
+     "value": 15.08,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-06-10"
     }
@@ -418,6 +428,28 @@
    ],
    "label": "미국 10년 물가연동채 실질수익률",
    "componentOnly": false,
+   "note": null,
+   "usedInForecast": false
+  },
+  "F05": {
+   "factorId": "F05",
+   "observed": true,
+   "stocks": null,
+   "scope": "market",
+   "latestObservation": "2026-10-06",
+   "calendarLagDays": 2,
+   "series": [
+    {
+     "series": "BAA10Y",
+     "label": "미국 Baa 회사채 − 국채10년",
+     "latestObservation": "2026-10-06",
+     "value": 1.46,
+     "unit": "percentage_points",
+     "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA10Y&cosd=2026-06-10"
+    }
+   ],
+   "label": "미국 Baa 회사채 − 국채10년",
+   "componentOnly": true,
    "note": null,
    "usedInForecast": false
   },
@@ -526,6 +558,6 @@
    "usedInForecast": false
   }
  },
- "errors": 1,
+ "errors": 0,
  "usedInForecast": false
 }
