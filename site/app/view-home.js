@@ -29,9 +29,8 @@ import {sunOf, sunCount} from './shapes.js';
 import {FAMILIES, OTHER, familyOf, familiesByRise, riseDesc, meanOf} from './family.js';
 import {landMap} from './landmap.js';
 import {homeComment, mapComment, landComment, commentSay} from './comment.js'; // 논평(2026-10-07 03:17 「섹시하게 논평이 있는 구조로」)
-import {loadStory, storyBox, storySay, storyEnd} from './story.js';
-import {rotationBox, rotationEnd, rotationSay} from './rotation.js'; // 돈의 이동(2026-10-07 22:06 「어떤 업종에서 어떤 업종으로 · 그 기간 · 포모값」)
-import {mapArt, landArt, quietArt} from './scenes.js'; // 그림 한 장(2026-10-08 01:27 「이런식으로 모두 · 다 한다」 · 규칙 33) · 값이 비는 날은 빈 하늘(05:05)
+// 돈의 이동 · 기사로 본 돈 이야기 · 결은 아래 탭 「돈 흐름」(view-flow.js)으로 옮김(2026-10-08 17:41 마카오 시각 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」)
+import {hotArt, mapArt, landArt, quietArt} from './scenes.js'; // 그림 한 장(2026-10-08 01:27 「이런식으로 모두 · 다 한다」 · 규칙 33) · 값이 비는 날은 빈 하늘(05:05)
 import {playOnce, stagger} from './motion.js'; // 움직이는 도식(2026-10-07 18:31) — 그림은 보일 때 한 번 자람 // 오늘의 돈 이야기(2026-10-07 16:34 「왕초보에게 시장을 해석시키지 마라」 — 탭 「불장」 맨 위 · 표지 자리)
 
 export const span = (from, to) => from && to ? `${korDate(from)}부터 ${korDate(to)}까지` : '';
@@ -45,7 +44,7 @@ export const headLine = (groups, n, from, to) => `업종 ${groups.length}개 가
 /** 늦은 종가 한 줄 — 2026-10-05 15:24 「잡스가 … 36가지」 A5: 굵은 주황 두 줄 → 작고 조용한 한 줄(알리되 소리치지 않게 · 글은 그대로 정직하게) */
 const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late', title: `${korDate(board.asOf)} 종가는 아직 받지 못함`}, c.date ? `${c.name}: ${korDate(c.date)} 종가까지만 있음` : `${c.name}: 종가 없음`));
 
-/* ───────── 탭 「불장」(#/) — 불장 업종만 · 같은 큰 갈래끼리 한 장 ───────── */
+/* ───────── 탭 「불장」(#/) — 불장 업종만 · 같은 큰 갈래끼리 한 장 · 맨 위 불장 그림(돈 흐름은 2026-10-08 17:41 부터 아래 탭 「돈 흐름」) ───────── */
 
 /** 큰 흐름 한 장 — 갈래 이름 · 불장 업종 몇 개 · 업종 줄(「불장 n위」 · 이름 · ▲변화 · 몇 곳 오름 · 태양 몇 곳 · 누르면 그 업종)
    2026-10-05 15:24 「잡스가 … 36가지」 C3: 장 머리에 개수가 두 번(「5개 평균」 · 「불장 업종 5개」) → 한 번(「평균」 · 「불장 업종 5개」) · B4: 줄마다 그 업종의 태양 수 */
@@ -73,17 +72,15 @@ export async function renderHome(main, {manifest}) {
   const groups = board.groups ?? [], hot = groups.filter(g => g.hot), late = board.late ?? [];
   const from = mode(board.companies.map(c => c.cFrom)), to = mode(board.companies.map(c => c.date)) ?? board.asOf;
   const flows = familiesByRise(hot); // 가장 많이 오른 큰 흐름부터(갈래 평균이 큰 순)
-  const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board), st = await loadStory();
-  const rot0 = place.id === 'kr' ? st?.rotation : st?.rotations?.[place.id], rot = rot0 && !rot0.none && rot0.pair ? rot0 : null; // 돈의 이동 — 다섯 나라 모두(2026-10-08 01:27 「다해 전나라」 · 바깥 판은 /story.json rotations)
-  state.summary = `${rotationSay(rot)}${st ? storySay(st) : commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
+  const shp = sunOf(board), hotSun = sunCount(shp, hot.flatMap(g => g.codes)), cm = homeComment(board);
+  state.summary = `${commentSay(cm)}${korDate(to)} 종가 기준. 불장 업종 ${hot.length}개, 큰 흐름 ${flows.length}개: ${flows.map(f => `${f.fam.label} ${f.groups.length}개`).join(', ')}.${shp.sparkle.size ? ` 태양 ${shp.sparkle.size}곳, 그 가운데 불장 업종에 ${hotSun}곳.` : ''}`;
   const top = Math.max(0, ...hot.map(g => (finite(g.change20) ? Math.abs(g.change20) : 0)));
   const flowsEl = h('div', {class: 'hf-flows'}, ...flows.map(f => flowCard(f, groups, shp, top)));
   main.replaceChildren(h('div', {class: 'b-page h-page'},
-    // 맨 위: 오늘의 돈 이야기(2026-10-07 16:34 — 세 장면 · 아래 두 줄) — 넣으면서 뺀 것(규칙 1): 이 탭의 표지(논평 무대) · /story.json 을 못 읽으면 옛 표지 그대로
-    // 2026-10-07 22:06 맨 위는 「돈의 이동」(빠지는 곳 → 들어가는 곳 · 기간 · 포모값 · 누가) — 넣으면서 뺀 것(규칙 1): 아래 기사 이야기의 짚어 주기(한눈 그림 · 네 줄) · 맨 아래 결 카드의 기사 이야기
-    // 2026-10-08 05:05 빈 날 막기 — 돈의 이동이 없는 날(거래일이 모자람 · 기사 이야기를 못 읽음)에도 맨 위 그림 한 장(빈 하늘) · 기사 이야기는 늘 접힌 채 아래(옛 표지 논평 무대는 뺌 — 규칙 1)
-    rot ? rotationBox(rot) : quietArt({key: 'home', label: '돈의 이동', when: `${korDate(board.asOf)} 종가`}),
-    st ? storyBox(st, {withPlayer: false, title: '기사로 본 돈 이야기', fold: true}) : null, // 옛 표지가 뺀 것: 「큰 흐름 n개 — 갈래 이름들」 줄(논평이 판을 이끄는 갈래를 말하고 갈래는 바로 아래 장들)
+    // 맨 위: 불장 그림 한 장(봉화대 · scenes.js hotArt · 규칙 33) — 2026-10-08 17:41(마카오 시각) 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」
+    //   그 전 맨 위(2026-10-07 16:34 오늘의 돈 이야기 → 22:06 돈의 이동 → 10-08 00:12 그림 한 장)는 아래 탭 「돈 흐름」(#/flow)으로 옮김 — 넣으면서 뺀 것(규칙 1): 이 탭의 돈의 이동 · 기사로 본 돈 이야기 · 맨 아래 결
+    //   불장 업종이 없는 날은 빈 하늘(규칙 33)
+    hotArt(board) ?? quietArt({key: 'home', label: '불장', when: `${korDate(board.asOf)} 종가`}),
     marketStrip(manifest),
     hotSwitch('home', hotCounts(board)),
     movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
@@ -96,7 +93,6 @@ export async function renderHome(main, {manifest}) {
       h('p', {class: 'b-when'}, `업종 ${groups.length}개 가운데 지난 20거래일 평균이 많이 오른 ${hot.length}개 · ${span(from, to)}`),
       h('p', {class: 't-key muted xs'}, `큰 흐름 = 같은 큰 갈래의 불장 업종을 한 장에 모은 것(갈래 이름은 ATLAS가 업종 이름을 보고 묶음) · 업종 ${groups.length}개 전체는 아래 탭 「지도」 · ${korDate(board.asOf)} ${place.close} 종가`)),
     sunKey(shp), // ☀ 표시의 뜻 + 출목표 「태양」으로 가는 길(B5)
-    rot ? rotationEnd(rot) : st ? storyEnd(st) : null, // 결 — 맨 아래 결론 한 번 더(2026-10-07 20:04 「기승전결」 · 맨 위 기(결론)와 맞물림)
     foot(manifest)));
 }
 

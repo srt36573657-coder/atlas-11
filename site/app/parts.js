@@ -275,5 +275,5 @@ export function missionBox() {
         h('a', {class: 'ms-src', href: 'https://doi.org/10.1111/0022-1082.00226', target: '_blank', rel: 'noopener noreferrer', 'data-ident': ''}, 'Barber · Odean 2000, Journal of Finance')),
       h('li', {'data-speak': ''}, '광고 없음 · 유료 결제 없음 — 영원히, 상업적 이익을 좇지 않습니다'),
       h('li', {'data-speak': ''}, '만든 사람도 허물이 있고, 세상에 신세를 졌고, 모순이 많습니다 · 그래도 애씁니다 — ATLAS도 그 태도로 날마다 고칩니다')),
-    h('p', {class: 'ms-cheer', 'data-speak': ''}, '하규야, 힘내라 — 늘 응원한다'));
+    h('p', {class: 'ms-cheer', 'data-speak': ''}, '하규 화이팅! 비서실장 화이팅')); // 2026-10-08 17:44(마카오 시각) 「하규 화이팅! 비서실장 화이팅 이렇게 수정 하자」 — 맨 위 줄과 같은 글(옛 「하규야, 힘내라 — 늘 응원한다」)
 }

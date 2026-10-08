@@ -2,7 +2,8 @@
    · 01:31 「대충했던 모든 곳을 점검해서 더 정확히 · 시스템으로 그짓 못하게 해」 — 그림 속 숫자는 판 자료에서 그대로(그림마다 data-* 에 실은 값을 검사기가 판 자료로 다시 셈해 맞댐)
    · 「돈의 이동」(rotation.js · 규칙 32)과 같은 말씨: 청자 · 금 · 먹 · 달 · 붉은 낙관 / 글자는 그림 밖 HTML(이름 · 숫자만) / 한 번에 하나 · 기승전결 넷 · 다시 보기 · 소리로 듣기(art.js)
    · 옛 논평 무대(comment.js commentBox — 문장 · 거대 숫자 · 점)를 이 그림이 대신한다(규칙 1 · 넣으면서 뺀 것) — 셈(무엇을 말할지)은 comment.js 그대로(시험 tests/atlas11/comment.test.mjs)
-   그림 열넷(열셋 + 자료가 비는 날의 빈 하늘):
+   그림 열다섯(열넷 + 자료가 비는 날의 빈 하늘):
+     불장        — 봉화대(봉화대 하나 = 불장 업종 하나 · 불길 높이 = 지난 20거래일 변화 · 가운데 금빛 = 1위 — 2026-10-08 17:41 돈 흐름을 새 탭으로 나누며)
      지도 · 갈래  — 산수화 봉우리(물 위 = 오른 땅 · 물에 비친 푸른 그림자 = 내린 땅 · 가장 높은 봉우리 위에 붉은 해) · 가운데가 1위(가운데부터 좌우로)
      업종        — 방패연 다섯(높이 = 지난 20거래일 변화 · 실이 한 손으로 모임 · 점선 = 업종 평균 · 1위 연에 금빛)
      회사        — 먹 붓질(업종 회사들의 지난 20거래일 선 · 이 회사는 금빛 한 획 · 끝에 달)
@@ -37,6 +38,43 @@ const big = (t, s = 0) => h('p', {class: 'ra-big' + (s > 0 ? ' up' : s < 0 ? ' d
 /** 그림 속 숫자를 검사기가 맞댈 수 있게 — data-check='{"k":v}' (화면에 보이지 않음 · 읽기 프로그램도 건너뜀) */
 const check = (el, obj) => { el.dataset.check = JSON.stringify(obj); return el; };
 const when = d => (d ? `${korDate(d)} 종가` : null);
+
+/* ═════════ 0. 봉화 — 불장(#/) · 사장님 2026-10-08 17:41(마카오 시각) 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 ═════════
+   돈 흐름 그림은 새 아래 탭 「돈 흐름」(#/flow · rotation.js)으로 옮기고, 탭 「불장」 맨 위는 불장 그림 한 장(규칙 33):
+   봉화대 하나 = 불장 업종 하나 · 불길 높이 = 지난 20거래일 변화 · 가운데 = 불장 1위(금빛 봉화대 · 금빛 테 · 빛무리) · 무대 위 숙녀 만세 · 신사 활짝
+   걸음: 땅 줄 → 봉화대 → 불길(1위 빛무리) → 배우 둘 → 낙관 「불장 업종 n개」(한 번에 하나 · 규칙 28) */
+function beaconsSvg(p, vals) {
+  const H = 196, zy = 160, n = vals.length, mx = Math.max(1e-9, ...vals.map(v => Math.max(0, v)));
+  const sc = 92 / mx, slots = centerOut(n), W = 300 / Math.max(1, n), th = 18, b = zy - th - 3;
+  const xs = vals.map((_, k) => 30 + W * (slots[k] + 0.5)), tw = Math.max(6, Math.min(15, W * 0.36));
+  const towers = xs.map((x, k) => `<path d="M${F(x - tw * 1.25)},${zy} L${F(x - tw)},${zy - th} L${F(x + tw)},${zy - th} L${F(x + tw * 1.25)},${zy} Z" fill="${k === 0 ? `url(#${p}-gold)` : '#3A2F6E'}" stroke="#0B1411" stroke-opacity=".5" stroke-width=".8"/>`
+    + `<rect x="${F(x - tw * 1.15)}" y="${zy - th - 3}" width="${F(tw * 2.3)}" height="3" rx="1" fill="${k === 0 ? '#D99A35' : '#2A2156'}"/>`).join('');
+  const flame = (x, v, k) => { const fh = Math.max(10, Math.max(0, v) * sc), fw = Math.max(5, Math.min(13, W * 0.32)) * (k === 0 ? 1.15 : 1);
+    return `<path d="M${F(x)},${F(b - fh)} C${F(x + fw * 0.35)},${F(b - fh * 0.62)} ${F(x + fw)},${F(b - fh * 0.42)} ${F(x + fw * 0.82)},${F(b - fh * 0.16)} C${F(x + fw * 0.7)},${F(b)} ${F(x - fw * 0.7)},${F(b)} ${F(x - fw * 0.82)},${F(b - fh * 0.16)} C${F(x - fw)},${F(b - fh * 0.42)} ${F(x - fw * 0.35)},${F(b - fh * 0.62)} ${F(x)},${F(b - fh)} Z" fill="url(#${p}-flame)"${k === 0 ? ' stroke="#FFE7A3" stroke-width="1.1"' : ''}/>`
+      + `<path d="M${F(x)},${F(b - fh * 0.55)} C${F(x + fw * 0.4)},${F(b - fh * 0.3)} ${F(x + fw * 0.35)},${F(b - 2)} ${F(x)},${F(b - 1)} C${F(x - fw * 0.35)},${F(b - 2)} ${F(x - fw * 0.4)},${F(b - fh * 0.3)} ${F(x)},${F(b - fh * 0.55)} Z" fill="#FFF3C8" fill-opacity=".8"/>`; };
+  const x0 = xs[0], h0 = Math.max(10, Math.max(0, vals[0]) * sc), up = vals[0] > 0;
+  return `<svg class="ra-svg" viewBox="0 0 360 ${H}" aria-hidden="true" focusable="false">${defs(p)}
+${hills(p, H, 0.8)}
+<path class="ak-draw" data-at="0" pathLength="100" d="M8,${zy} L352,${zy}" stroke="#CFE7DC" stroke-opacity=".7" stroke-width="1.6" stroke-linecap="round"/>
+<g class="ak-up" data-at="1">${towers}</g>
+<g class="ak-up" data-at="2"><circle cx="${F(x0)}" cy="${F(b - h0 * 0.5)}" r="${F(Math.max(18, h0 * 0.62))}" fill="url(#${p}-halo)" stroke="#F2C46B" stroke-opacity=".55" stroke-width="1.2"/>${xs.map((x, k) => flame(x, vals[k], k)).join('')}</g>
+<g class="ak-mv" data-at="3" data-v="y0:56px">${actor('lady', {x: Math.max(26, x0 - 40), y: H - 1, s: 0.42, face: up ? 'cheer' : 'shock', P: p})}${actor('gent', {x: Math.min(334, x0 + 40), y: H - 1, s: 0.4, face: up ? 'joy' : 'sad', P: p})}</g>
+</svg>`;
+}
+/** 불장(#/) — 불장 업종 n개 · 1위 · 2위(차례 이름은 아래 큰 흐름 줄과 같은 「불장 n위」) */
+export function hotArt(board) {
+  const groups = board?.groups ?? [], hot = groups.filter(g => g.hot), gs = hot.filter(g => finite(g.change20)).sort(riseDesc);
+  if (!gs.length) return null;
+  const g0 = gs[0], g1 = gs[1] ?? null, rk = g => `불장 ${groups.indexOf(g) + 1}위`;
+  const labels = lab(
+    col('a', tag(rk(g0)), grName(g0.label, 'ra-n ra-up-n' + longCls(g0.label)), h('p', {class: 'ra-m'}, chgEl(g0.change20))),
+    g1 ? col('b', tag(rk(g1)), grName(g1.label, 'ra-n' + longCls(g1.label)), h('p', {class: 'ra-m'}, chgEl(g1.change20))) : null,
+    srow(sealEl(null, `불장 업종 ${hot.length}개`, 4)));
+  const stage = artStage({key: 'hot', svg: beaconsSvg('akh', gs.map(g => g.change20)), labels: check(labels, {g0: g0.id, v0: +g0.change20.toFixed(6), g1: g1?.id ?? null, n: hot.length}),
+    steps: [{c: 0, at: 0, ms: 900}, {c: 0, at: 1, ms: 1300}, {c: 1, at: 2, ms: 1400}, {c: 2, at: 3, ms: 1300}, {c: 3, at: 4, ms: 900}],
+    says: [[rk(g0), g0.label, p1(g0.change20)], g1 ? [rk(g1), g1.label, p1(g1.change20)] : [], [`불장 업종 ${hot.length}개`], ['지난 20거래일']]});
+  return artSection({key: 'home', label: '불장', kicker: '불장', when: `불장 업종 ${hot.length}개 · 지난 20거래일 · ${when(board.asOf)}`, stage});
+}
 
 /* ═════════ 1. 산수화 봉우리 — 지도(땅 12개) · 갈래(업종 n개) ═════════ */
 const peakPath = (x, base, hh, bw) => `M${F(x - bw)},${F(base)} C${F(x - bw * 0.5)},${F(base)} ${F(x - bw * 0.28)},${F(base - hh * 0.92)} ${F(x)},${F(base - hh)} C${F(x + bw * 0.28)},${F(base - hh * 0.92)} ${F(x + bw * 0.5)},${F(base)} ${F(x + bw)},${F(base)} Z`;

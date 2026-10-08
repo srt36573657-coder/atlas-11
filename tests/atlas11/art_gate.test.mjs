@@ -44,8 +44,8 @@ test('그림 숫자 맞대기 — 기대값과 다르면 알리고 같으면 조
   assert.equal(E.ind.g.lead, 'A'); assert.equal(E.map.top, 'semi');
 });
 
-test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 다섯 나라 · 실패 0 · 같은 지문이어야 지나감(2026-10-08 05:05)', () => {
-  const ok = {code: 'c', quick: false, boards: ['kr', 'us', 'cn', 'jp', 'vn'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, failed: 0, ok: true};
+test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트 판(한국 · 미국 — 2026-10-08 18:33) · 실패 0 · 같은 지문이어야 지나감(2026-10-08 05:05)', () => {
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, failed: 0, ok: true};
   assert.deepEqual(reportProblems(ok, 'c'), []);
   assert.equal(reportProblems({...ok, langs: undefined}, 'c').length, 1); // 옛 결과(영어만) — 막힘
   assert.equal(reportProblems({...ok, langs: ['en']}, 'c').length, 1);
