@@ -170,6 +170,7 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   const want = kind === 'home' ? E.home : kind === 'map' ? E.map : kind === 'land' ? E.land[id] ?? {quiet: 'land'} : kind === 'ind' ? E.ind[id] ?? {quiet: 'industry'} : kind === 'co' ? E.co[id] ?? {quiet: 'fail'}
     : kind === 'similar' ? E.similar : kind === 'rise' ? E.rise : kind === 'road' ? E.road : kind === 'agenda' ? E.agenda : kind === 'find' ? E.find : kind === 'log' ? E.log : kind === 'start' ? E.start : null;
   if (kind === 'home') compare(b, where, E.home.quiet ? m.check : m.rot, want);
+  if (kind === 'home' && !E.home.quiet) { const o = m.rot?.outs ?? [], i2 = m.rot?.ins ?? []; stats.numbers += o.length + i2.length; if (o.some((x, k) => k && o[k - 1][1] > x[1])) no('빠지는 곳 1위~3위가 가장 많이 나간 순이 아님'); if (i2.some((x, k) => k && i2[k - 1][1] < x[1])) no('들어가는 곳 1위~3위가 가장 많이 들어간 순이 아님'); } // 10월 8일 12:59 「가장 많이 나간 순」
   else if (['guide', 'long', 'korea'].includes(kind)) { if (!m.check) no('그림 값(data-check) 없음'); }
   else compare(b, where, m.check, want);
   for (const k of ['topAvg', 'v0', 'v', 'avg', 'vl']) if (fin(want?.[k]) && ['map', 'land', 'ind', 'co', 'similar', 'rise', 'road'].includes(kind)) { stats.texts++; if (!m.labText.includes(pctText(want[k]))) no(`보이는 글에 ${pctText(want[k])} 없음`); }

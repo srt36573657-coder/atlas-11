@@ -921,7 +921,8 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           cols: [...ps.querySelectorAll('.rt-col')].map(c => [c.dataset.side, c.querySelectorAll('.rt-li').length].join(':')).join(), how: !!ps.querySelector('details.rt-how:not([open])'),
           // 그림 한 장(2026-10-08 00:12 「예술적으로」) — 그림에는 글자 없음 · 움직이는 것 일곱(기울기 · 물줄기 · 차오름 · 달 · 불 · 낙관 둘) · 글은 이름 · 숫자 · 포모값 · 낙관 · 기간뿐
           art: {svg: !!ps.querySelector('.ra-art svg[aria-hidden="true"]'), text: ps.querySelector('.ra-art svg')?.textContent.trim().length ?? -1, parts: [...ps.querySelectorAll('.ra [data-at]')].map(x => x.dataset.at).sort().join(),
-            names: [...ps.querySelectorAll('.ra-n')].map(x => x.textContent.trim()), amounts: [...ps.querySelectorAll('.ra-m')].map(x => x.textContent.trim()), fomo: ps.querySelector('.ra-fomo')?.textContent.replace(/\s+/g, ' ').trim(),
+            names: [...ps.querySelectorAll('.ra-n')].map(x => (x.querySelector('.ra-nm') ?? x).textContent.trim()), amounts: [...ps.querySelectorAll('.ra-m')].map(x => x.textContent.trim()), // 1위 이름 앞 메달(숫자 · 화면 읽기 「1위」)은 빼고 이름만
+            ranks: [...ps.querySelectorAll('.ra-rk')].map(x => [x.dataset.side, x.dataset.rank, x.querySelector('.ra-n2')?.textContent.trim(), x.querySelector('.ra-m2')?.textContent.replace(/\s+/g, ' ').trim()]), medals: [...ps.querySelectorAll('.ra-md')].map(x => x.dataset.n ?? '').join(''), medalsArt: ps.querySelectorAll('.ra-art circle[stroke="#1E1840"]').length, fomo: ps.querySelector('.ra-fomo')?.textContent.replace(/\s+/g, ' ').trim(), // ranks · medals: 12:43 · 12:59 「1등부터 3등까지 · 빠지는 곳도 3곳 · 가장 많이 나간 순」
             seals: [...ps.querySelectorAll('.ra-seal')].map(x => x.textContent.replace(/\s+/g, ' ').trim()), period: ps.querySelector('.ra-t')?.textContent.replace(/\s+/g, ' ').trim(), // 기간 줄은 그림 위(2026-10-08 10:34 자막 띠를 빼며 되돌림)
             beats: [...ps.querySelectorAll('.ra-beats li')].map(li => li.textContent.trim()).join(''), btns: [...ps.querySelectorAll('.ra-ctl .sy-btn')].map(x => x.textContent.trim()), rows: ps.querySelectorAll('.sy-row').length,
             folded: [...document.querySelectorAll('.sy-news > details.sy-fd, .sy-more > details.sy-fd')].length}} : null,
@@ -963,7 +964,10 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       const rpr = rot?.pair, since = rpr ? `${korD(rpr.start)}부터 · ${rpr.days}거래일${rpr.atLeast ? ' 넘게' : '째'}` : '', fomoTxt = rot ? (Number.isFinite(rot.fomo.to) ? `${Math.round(rot.fomo.to)}점` : '없음') : '';
       const amtTxt = v => `${v > 0 ? '+' : v < 0 ? '−' : ''}${(Math.abs(v) / 1e4).toFixed(Math.abs(v) >= 1e4 ? 1 : 2)}조 원`, ar = sy.rt?.art;
       const shapeOk = rot
-        ? !!ar && ar.svg && ar.text === 0 && ar.parts === '0,1,2,3,4,5,6' && ar.rows === 0 && ar.folded === 2
+        ? !!ar && ar.svg && ar.text === 0 && ar.parts === '0,1,2,3,4,5,6,7' && ar.rows === 0 && ar.folded === 2
+          && ar.medals === '112233'.slice(0, 2 * Math.min(rot.out.length, rot.in.length)) && ar.medalsArt === Math.min(3, rot.out.length) + Math.min(3, rot.in.length)
+          && JSON.stringify(ar.ranks) === JSON.stringify([1, 2].flatMap(k => [rot.out[k] ? ['out', String(k + 1), rot.out[k].label, amtTxt(rot.out[k].amount)] : null, rot.in[k] ? ['in', String(k + 1), rot.in[k].label, amtTxt(rot.in[k].amount)] : null]).filter(Boolean))
+          && rot.out.every((x, k) => k === 0 || rot.out[k - 1].amount <= x.amount) && rot.in.every((x, k) => k === 0 || rot.in[k - 1].amount >= x.amount)
           && ar.names[0] === rpr.from.label && ar.names[1] === rpr.to.label && ar.amounts[0] === amtTxt(rot.out[0].amount) && ar.amounts[1] === amtTxt(rot.in[0].amount)
           && ar.fomo === `포모값 ${fomoTxt} ${rot.fomo.toWord ?? '없음'}` && ar.period === `${korD(rpr.start)}부터 ${rpr.days}거래일${rpr.atLeast ? ' 넘게' : '째'}`
           && /^판 쪽 \S/.test(ar.seals[0] ?? '') && /^산 쪽 \S/.test(ar.seals[1] ?? '') && ar.beats === '기승전결' && ar.btns.join() === '다시 보기,소리로 듣기'
@@ -974,7 +978,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           && pl.mains[0] === st.now.role && pl.mains[1] === (st.event.short ?? st.event.text) && pl.mains[2] === st.next.role && pl.mains[3] === st.confirm
           && (!st.now.real?.evidence?.[0] || /^실제 돈 확인됨 · \d{1,2}월 \d{1,2}일\(.\)$/.test(pl.okLine ?? ''));
       const railOk = true;
-      check(rot ? `${label} 돈의 이동 — 그림 한 장(병 둘 · 금빛 물결 다섯 · 금화 · 신사 · 숙녀 · 글자 없는 그림 · 움직이는 것 ${ar?.parts ?? ''}) · 「${ar?.names?.join(' → ') ?? ''}」 「${ar?.amounts?.join(' · ') ?? ''}」 · 「${ar?.period ?? ''}」 · 「${ar?.fomo ?? ''}」 · 낙관 「${ar?.seals?.join(' · ') ?? ''}」 · 차례 「${ar?.beats ?? ''}」 = /story.json rotation · 빠지는 곳 ${rot.out.length} · 들어가는 곳 ${rot.in.length} · 셈 방법 · 기사 이야기 · 근거 모음 접힘(${ar?.folded ?? 0}) · 돈길 동전 ${sy.railCoins} · 시장 막대 ${sy.bars.length}`
+      check(rot ? `${label} 돈의 이동 — 그림 한 장(빠지는 병 셋 · 금빛 물결 다섯 · 시상대 병 셋 · 메달 ${ar?.medalsArt ?? 0} · 금화 · 신사 · 숙녀 · 글자 없는 그림 · 움직이는 것 ${ar?.parts ?? ''}) · 1위~3위 「${ar?.medals ?? ''}」 ${(ar?.ranks ?? []).map(x => x.slice(1, 3).join(' ')).join(' · ')} · 「${ar?.names?.join(' → ') ?? ''}」 「${ar?.amounts?.join(' · ') ?? ''}」 · 「${ar?.period ?? ''}」 · 「${ar?.fomo ?? ''}」 · 낙관 「${ar?.seals?.join(' · ') ?? ''}」 · 차례 「${ar?.beats ?? ''}」 = /story.json rotation · 빠지는 곳 ${rot.out.length} · 들어가는 곳 ${rot.in.length} · 셈 방법 · 기사 이야기 · 근거 모음 접힘(${ar?.folded ?? 0}) · 돈길 동전 ${sy.railCoins} · 시장 막대 ${sy.bars.length}`
           : `${label} 돈 이야기 — 첫 화면 기승전결 네 줄: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 가운데가 걸음 0) · 줄 「${pl?.letters ?? ''}」(${pl?.names ?? ''}) = /story.json(돈이 가는 곳 · 일 · 다음 · 볼 것) · ✓ 「${pl?.okLine ?? ''}」 · 단추 「${pl?.btns.join(' · ') ?? ''}」 · 돈길은 멈춘 그림(동전 ${sy.railCoins}) · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
         shapeOk && railOk && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0 && sy.railCoins === 0
           && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002),
@@ -991,11 +995,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           .map(a => `${(a.effect.target?.className?.baseVal ?? a.effect.target?.className ?? '?').toString().split(' ')[0]}${a.effect.pseudoElement ?? ''}:${a.animationName}`);
         let max = 0, worst = []; const steps = new Set(), caps = new Map(); const t0 = performance.now();
         while (performance.now() - t0 < 9000) { const xs = live(); if (xs.length > max) { max = xs.length; worst = xs; } const ra = document.querySelector('.ra'), pl = ra ?? document.querySelector('.sy-play'); if (pl?.dataset.step) { steps.add(pl.dataset.step); caps.set(pl.dataset.step, [...pl.querySelectorAll(ra ? '.ra-beats li' : '.sy-row')].findIndex(r => r.classList.contains('now'))); } await new Promise(r => setTimeout(r, 60)); }
-        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null, cap2: caps.get('2') ?? null, cap3: caps.get('3') ?? null};
+        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null, cap2: caps.get('2') ?? null, cap3: caps.get('3') ?? null, cap4: caps.get('4') ?? null};
       });
-      if (rot) one.cap1 = one.cap3; // 돈의 이동은 걸음 0 · 1 · 2 가 기(병이 기울고 → 금빛 물줄기가 물결 다섯을 지나 → 들어가는 병에 차오름) · 걸음 3 이 승(금화가 물결 다섯을 넘음)
+      if (rot) one.cap1 = one.cap4; // 돈의 이동은 걸음 0 · 1 · 2 · 3 이 기(병이 기울고 → 금빛 물줄기가 물결 다섯을 지나 1위 병으로 → 갈래 둘이 2위 · 3위 병으로 → 세 병에 차오름) · 걸음 4 가 승(금화가 물결 다섯을 넘음)
       check(`${label} 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 ${one.max}개${one.worst.length ? ' · ' + one.worst.join(' · ') : ''}) · 걸음 ${one.steps.join(' → ')} · 옥빛 줄 ${one.cap0 + 1}번(기) → ${one.cap1 + 1}번(승)`,
-        one.max <= 1 && one.steps.includes('0') && one.steps.includes(rot ? '3' : '1') && one.cap0 === 0 && one.cap1 === 1, one);
+        one.max <= 1 && one.steps.includes('0') && one.steps.includes(rot ? '4' : '1') && one.cap0 === 0 && one.cap1 === 1, one);
       // 「다시 보기」 — 처음 걸음(기 · 결론)부터 다시 · 옥빛 줄 = 1번
       await page.locator('.sy-btn').first().click(); await page.waitForTimeout(250);
       const rep = await page.evaluate(() => { const ra = document.querySelector('.ra'); return {step: (ra ?? document.querySelector('.sy-play'))?.dataset.step, now: [...document.querySelectorAll(ra ? '.ra-beats li' : '.sy-row')].findIndex(r => r.classList.contains('now'))}; });
@@ -1006,7 +1010,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
         const fc = await browser.newContext({viewport: {width: w, height: hh}, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'}); const fp = await fc.newPage();
         await fp.goto(base + '/#/', {waitUntil: 'networkidle'}); await fp.waitForSelector('.sy-rows, .ra-lab', {timeout: 15000}).catch(() => {}); await fp.waitForTimeout(150);
         fits.push(await fp.evaluate(([w, hh]) => { const ra = document.querySelector('.ra'), rows = [...document.querySelectorAll('.sy-row')], top = document.getElementById('top')?.getBoundingClientRect().bottom ?? 0, tab = document.getElementById('bottom')?.getBoundingClientRect().top ?? innerHeight;
-          return {w, hh, map: Math.round(document.querySelector(ra ? '.ra-art' : '.sy-map')?.getBoundingClientRect().top ?? -1), rowsBottom: Math.round((ra ? document.querySelector('.ra-lab') : rows.at(-1))?.getBoundingClientRect().bottom ?? 9999), top: Math.round(top), tab: Math.round(tab), sw: document.documentElement.scrollWidth}; }, [w, hh]));
+          return {w, hh, map: Math.round(document.querySelector(ra ? '.ra-art' : '.sy-map')?.getBoundingClientRect().top ?? -1), rowsBottom: Math.round(ra ? Math.max(...[...document.querySelectorAll('.ra-lab')].map(x => x.getBoundingClientRect().bottom), -1) : rows.at(-1)?.getBoundingClientRect().bottom ?? 9999), top: Math.round(top), tab: Math.round(tab), sw: document.documentElement.scrollWidth}; }, [w, hh]));
         await fc.close();
       }
       check(`${label} 돈 이야기 — 한 화면에 메인 정보: ${fits.map(f => `${f.w}×${f.hh} 네 줄 끝 ${f.rowsBottom}px ≤ 아래 탭 ${f.tab}px`).join(' · ')}`,
@@ -1020,12 +1024,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       const rm = await rp.evaluate(() => { const s = document.querySelector('.sy'); if (!s) return null; const ra = s.querySelector('.ra'), pl = ra ?? s.querySelector('.sy-play');
         return {running: document.getAnimations().filter(a => a.playState === 'running').length, coinsShown: [...s.querySelectorAll('.sy-coin')].filter(c => getComputedStyle(c).opacity !== '0').length,
           done: !!pl?.classList.contains(ra ? 'ra-done' : 'sy-done'), step: pl?.dataset.step ?? null, now: ra ? [...ra.querySelectorAll('.ra-beats li')].filter(li => li.classList.contains('on')).length - 1 : [...(pl?.querySelectorAll('.sy-row') ?? [])].findIndex(r => r.classList.contains('now')),
-          tilt: ra?.querySelector('.ak-turn[data-at="0"]') ? getComputedStyle(ra.querySelector('.ak-turn[data-at="0"]')).transform : null, fill: ra?.querySelector('.ak-up[data-at="2"]') ? getComputedStyle(ra.querySelector('.ak-up[data-at="2"]')).transform : null, ride: ra?.querySelector('.ak-ride[data-at="3"]') ? getComputedStyle(ra.querySelector('.ak-ride[data-at="3"]')).opacity : null, // 끝 모습: 병이 기욺 · 금빛이 차오름 · 금화가 병 입에 닿아 보임(2026-10-08 10:27 「청자보다 더 잘」)
+          tilt: ra?.querySelector('.ak-turn[data-at="0"]') ? getComputedStyle(ra.querySelector('.ak-turn[data-at="0"]')).transform : null, fill: ra?.querySelector('.ak-up[data-at="3"]') ? getComputedStyle(ra.querySelector('.ak-up[data-at="3"]')).transform : null, ride: ra?.querySelector('.ak-ride[data-at="4"]') ? getComputedStyle(ra.querySelector('.ak-ride[data-at="4"]')).opacity : null, // 끝 모습: 병이 기욺 · 금빛이 차오름 · 금화가 병 입에 닿아 보임(2026-10-08 10:27 「청자보다 더 잘」)
           on: [...(pl?.querySelectorAll('[data-at]') ?? [])].filter(x => x.classList.contains('on') && getComputedStyle(x).opacity === '1').length,
           nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length}; });
       await rctx.close();
-      check(`${label} 돈 이야기 — 움직임 줄이기 설정: 처음부터 끝 걸음(결 · 옥빛 줄 ${(rm?.now ?? -2) + 1}번) · 그림 ${rm?.on ?? 0}/7 켜짐 · 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'}`,
-        !!rm && rm.done && rm.step === '6' && rm.now === 3 && rm.on === 7 && (rot ? rm.tilt !== 'none' && rm.fill !== 'none' && rm.ride === '1' : rm.nodes === 6) && rm.running === 0 && rm.coinsShown === 0, rm);
+      check(`${label} 돈 이야기 — 움직임 줄이기 설정: 처음부터 끝 걸음(결 · 옥빛 줄 ${(rm?.now ?? -2) + 1}번) · 그림 ${rm?.on ?? 0}/${rot ? 8 : 7} 켜짐 · 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'}`,
+        !!rm && rm.done && rm.step === (rot ? '7' : '6') && rm.now === 3 && rm.on === (rot ? 8 : 7) && (rot ? rm.tilt !== 'none' && rm.fill !== 'none' && rm.ride === '1' : rm.nodes === 6) && rm.running === 0 && rm.coinsShown === 0, rm);
     }
   }
   // ⑥ 글씨 단추
