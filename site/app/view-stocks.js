@@ -82,14 +82,19 @@ export async function renderStocks(main, {manifest, focus = false} = {}) {
         h('span', {class: 'sk-name'}, h('span', {'data-ident': ''}, hit.c.name)), h('small', {class: 'sk-sub muted'}, h('span', {'data-place': hit.place.id}, hit.place.label), ' · ', h('span', {'data-ident': ''}, hit.c.code), ` · ${hit.c.group?.label ?? '업종 모름'}`),
         h('span', {class: 'sk-r'}, pv(finite(hit.c.change20) ? hit.c.change20 * 100 : null))))));
       // 넣은 글자는 그대로(번역하지 않음 — 한글이면 lang="ko" · 숫자도 식별자 data-ident) — 뒤 글만 사전에서
-      msg.replaceChildren(h('span', {'data-ident': '', lang: /[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(q) ? 'ko' : null}, `「${q}」`), ' ',!found.length ? '맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다' : found.length > hits.length ? `${found.length}곳 가운데 ${hits.length}곳 · 글자를 더 넣으면 좁혀짐` : `${found.length}곳`);
+      const clear = () => h('button', {class: 'b-link sk-clear', type: 'button', onclick: () => { memo.q = ''; input.value = ''; shown = 30; draw(); input.focus({preventScroll: true}); }}, '글자 지우기'); // 0곳이면 바로 다른 길(2026-10-09 지시서 0-E)
+      msg.replaceChildren(h('span', {'data-ident': '', lang: /[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(q) ? 'ko' : null}, `「${q}」`), ' ', ...(!found.length ? ['맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다 · 초성 · 영어 이름 · 기호로도 찾습니다 · ', clear()] : [found.length > hits.length ? `${found.length}곳 가운데 ${hits.length}곳 · 글자를 더 넣으면 좁혀짐` : `${found.length}곳`]));
       more.hidden = true; return;
     }
     msg.replaceChildren();
     let xs = all.filter(s => (memo.bucket === 'all' || s.bucket === memo.bucket) && (!memo.group || s.g === memo.group));
     const k = memo.sort; xs = [...xs].sort(k === 'name' ? (a, b) => String(a.name).localeCompare(String(b.name), 'ko') : (a, b) => (finite(b[k]) ? b[k] : -Infinity) - (finite(a[k]) ? a[k] : -Infinity));
     list.replaceChildren(...xs.slice(0, shown).map(s => row(s, flows)));
-    if (!xs.length) list.replaceChildren(h('li', {class: 'muted small'}, memo.bucket === 'all' ? '해당 종목 없음' : '이 묶음에 든 종목 없음'));
+    if (!xs.length) { // 0곳이면 거르기를 바꾸는 단추(2026-10-09 지시서 0-E)
+      const fixes = [memo.bucket !== 'all' ? h('button', {class: 'b-link sk-fix', type: 'button', onclick: () => { memo.bucket = 'all'; shown = 30; draw(); }}, '「전체 비교」로 보기') : null,
+        memo.group ? h('button', {class: 'b-link sk-fix', type: 'button', onclick: () => { memo.group = ''; groupSel.value = ''; shown = 30; draw(); }}, '업종 거르기 풀기') : null].filter(Boolean);
+      list.replaceChildren(h('li', {class: 'muted small sk-none'}, memo.bucket === 'all' ? '해당 종목 없음' : '이 묶음에 든 종목 없음', ...fixes.flatMap(b => [' · ', b])));
+    }
     more.hidden = xs.length <= shown;
   }
   state.summary = lens ? `종목 · ${korDate(lens.asOf)} 종가 · 새로 발견 ${cnt('new')}곳 · 근거 강화 ${cnt('up')}곳 · 근거 약화 ${cnt('down')}곳` : '종목';

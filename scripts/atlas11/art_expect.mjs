@@ -3,6 +3,7 @@
    갈래 나누기(family.js 표)만 화면과 같은 자료를 쓰고, 평균 · 차례 · 개수 · 날 수는 여기서 다시 셈 */
 import {familyOf} from '../../site/app/family.js';
 import {setPlace} from '../../site/app/util.js';
+import {CAND_RULES, CHANGE, EXCLUDE_RE, DILUTE_RE, HEAT_RE} from '../../lib/atlas11/cand.mjs'; // 후보 규칙의 숫자 · 낱말 목록만 같이 씀(세는 길은 여기서 따로 — 2026-10-09 「ATLAS 제품 재설계 명령」 14 계산 검증)
 const close = (a, b, eps = 1e-6) => fin(a) && fin(b) && Math.abs(a - b) <= eps;
 export const fin = v => typeof v === 'number' && Number.isFinite(v);
 const desc = (a, b) => (fin(b) ? b : -Infinity) - (fin(a) ? a : -Infinity);
@@ -49,15 +50,65 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
   //   시장: 판 자료(board)로 따로 셈 — 그날 종가가 있는 회사 · 지난 20거래일 하루 변화가 한국 가격 제한폭(±30%)을 넘은 회사는 뺌 · 하루 변화 부호 · 공식 지수 하루 변화(판 목록 market)
   const L = lens && !lens.none ? lens : null;
   if (L) {
-    const lim = b === 'kr' ? 0.30 : Infinity, okC = cs.filter(c => c.date === board.asOf && fin(c.change1) && !(c.c ?? []).some((v, i, a) => i && fin(v) && fin(a[i - 1]) && a[i - 1] > 0 && Math.abs(v / a[i - 1] - 1) > lim));
-    const ix = (extra.market?.items ?? [])[0];
-    E.market = okC.length ? {up: okC.filter(c => c.change1 > 0).length, down: okC.filter(c => c.change1 < 0).length, flat: okC.filter(c => c.change1 === 0).length, n: okC.length, idx: fin(ix?.changePct) ? ix.changePct : null} : Q('market');
+    // 2026-10-09 「ATLAS 업데이트 실행 프롬프트」 — 시장 · 업종 탭 · 업종 화면 · 회사 화면 그림은 판 읽기(lens.json)의 종목 20거래일 값(r20 · %)으로 그림 → 여기서 화면 코드(calc.js · decomp.js · observe.js)와 다른 길로 다시 셈
+    const st = L.stocks ?? [], valid = st.filter(s => fin(s.r20)), rs = valid.map(s => s.r20);
+    const avgOf = xs => (xs.length ? xs.reduce((t, x) => t + x, 0) / xs.length : null);
+    const medOf = xs => { const v = [...xs].sort((a, c) => a - c), n = v.length; return n ? (n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2) : null; };
+    const R = L.market?.ref ?? {}, I = fin(R.r20) ? R.r20 : null;
+    // 업종마다 값이 있는 종목 합 · 수(기여 1위 = 합이 가장 큰 업종 · 같으면 판 읽기 차례 앞)
+    const secs = (L.sectors ?? []).map(sc => { const ms = (sc.codes ?? []).map(c => st.find(x => x.code === c)).filter(Boolean), ok = ms.filter(x => fin(x.r20)); return {sc, ms, ok, sum: ok.reduce((t, x) => t + x.r20, 0), n: ok.length}; });
+    let top = null; for (const x of secs) if (x.n && (!top || x.sum > top.sum)) top = x;
+    // 관측 규칙(obs-rules-1)을 따로 셈 — 평평 ±1% · 표본 30곳 · 지수 대 오른 곳 비율 50%
+    const N = rs.length, U = N ? (rs.filter(x => x > 0).length / N) * 100 : null, Md = medOf(rs);
+    const kind = !fin(I) || N < 30 || !fin(Md) ? 'na' : Math.abs(I) < 1 && Math.abs(Md) < 1 ? 'flat' : I >= 1 && U < 50 ? 'divUp' : I <= -1 && U > 50 ? 'divDown' : (Math.abs(I) >= 1 ? I > 0 : Md > 0) ? 'agreeUp' : 'agreeDown';
+    E.market = N ? {idx: I, n: N, up: rs.filter(x => x > 0).length, down: rs.filter(x => x < 0).length, flat: rs.filter(x => x === 0).length, median: Md, mean: avgOf(rs), kind, top: top?.sc.id ?? null} : Q('market');
+    // 업종 탭(#/sectors) — 선정 평균을 업종마다 펼침 · 기여 1위 업종을 뺀 평균 · 시가총액 가중(값이 있는 종목 모두 시가총액이 있을 때만)
+    const capsOk = valid.length && valid.every(x => fin(x.fund?.cap) && x.fund.cap > 0), wAvg = xs => { const w = xs.reduce((t, x) => t + x.fund.cap, 0); return w > 0 ? xs.reduce((t, x) => t + x.fund.cap * x.r20, 0) / w : null; };
+    E.sectors = N ? {G: secs.length, n: N, mean: avgOf(rs), median: Md, up: rs.filter(x => x > 0).length, top: top?.sc.id ?? null, exTop: top && N > top.n ? (rs.reduce((t, x) => t + x, 0) - top.sum) / (N - top.n) : null, wMean: capsOk ? wAvg(valid) : null, u: 'pct'} : Q('sectors');
+    // 업종 화면(#/i/…) — 값이 있는 종목(수익률 큰 차례 · 같으면 기호 차례) · 상승 1위 · 1위를 뺀 평균 · 시가총액 가중
+    E.ind = Object.fromEntries(secs.map(({sc, ms, ok}) => {
+      if (!ok.length) return [sc.id, Q('industry')];
+      const srt = [...ok].sort((a, c) => c.r20 - a.r20 || a.code.localeCompare(c.code)), v = srt.map(x => x.r20), wOk = ok.every(x => fin(x.fund?.cap) && x.fund.cap > 0);
+      return [sc.id, {id: sc.id, n: ok.length, total: ms.length, mean: avgOf(v), median: medOf(v), up: v.filter(x => x > 0).length, lead: srt[0].code, r0: srt[0].r20, exTop: v.length > 1 ? avgOf(v.slice(1)) : null, wMean: wOk ? wAvg(ok) : null, u: 'pct'}];
+    }));
+    // 회사 화면 — 판 읽기에 그 종목 · 업종이 있으면 판 읽기 값(없으면 위 판 값 그대로)
+    for (const c of cs) { const me = st.find(x => x.code === c.code), sc = me?.g ? (L.sectors ?? []).find(x => x.id === me.g) : null; if (!me || !sc) continue;
+      E.co[c.code] = {code: c.code, v: fin(me.r20) ? me.r20 : null, avg: fin(sc.d20?.mean) ? sc.d20.mean : null, peers: (sc.codes ?? []).map(x => st.find(y => y.code === x)).filter(Boolean).length - 1, u: 'pct'}; }
     E.flowwho = fin(extra.flow5?.f) || fin(extra.flow5?.i) ? {f5: fin(extra.flow5.f) ? Math.round(extra.flow5.f / 1e8) : null, i5: fin(extra.flow5.i) ? Math.round(extra.flow5.i / 1e8) : null} : Q('flowwho');
     E.stocks = L.changes ? {up: L.buckets.up, down: L.buckets.down, new: L.buckets.new} : Q('stocks');
     const recs = L.verify?.records ?? [], ev = recs.flatMap(r => Object.values(r.evals).flat());
     E.check = recs.length && (extra.records == null || extra.records === recs.length) ? {records: recs.length, pending: ev.filter(e => e.status === 'pending').length, done: ev.filter(e => e.status === 'done').length} : recs.length ? {records: extra.records} : Q('check');
-  } else { E.market = Q('market'); E.flowwho = Q('flowwho'); E.stocks = Q('stocks'); E.check = Q('check'); }
+    // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 03:53 「돈에 흐름이 강한 업종내에서」 — 규칙 cand-rules-2)
+    //   돈 흐름(/story.json rotation — 사이트 「돈 흐름」 화면과 같은 파일)의 늘어난 곳 1~3위 · 판 업종 · 판 읽기 종목 값 · 일정표 공시(agenda.json)로 다섯 조건 · 진입 조건을 따로 셈 · 장 마감 뒤 공시는 뺌
+    const CA = L.cand, rot = story?.rotation;
+    if (CA?.ready && rot && !rot.none) {
+      const asOf = L.asOf, hm = String(L.when?.closeAt ?? '15:30').match(/(\d{1,2}):(\d{2})/), cut = Date.parse(`${asOf}T${hm[1].padStart(2, '0')}:${hm[2]}:00+09:00`);
+      const back = n => new Date(Date.parse(asOf + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10), from = back(CAND_RULES.windowDays), heatFrom = back(CAND_RULES.heatDays);
+      const okSecs = (rot.in ?? []).slice(0, CAND_RULES.sectors).filter(g => g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0).map(g => g.id);
+      const inSec = new Set(groups.filter(g => okSecs.includes(g.id)).flatMap(g => g.codes ?? []));
+      const pref = (t, name) => { const m = String(t).match(/\(([^()]*우[A-Z0-9]?)\)\s*$/); return !!m && m[1] !== name; };
+      let n0 = 0, data = 0, profit = 0, risk = 0, screen = 0, met = 0;
+      for (const s of st.filter(x => inSec.has(x.code))) {
+        n0++;
+        const ds = (agenda?.byCode?.[s.code]?.disclosures ?? []).filter(d => { const t = Date.parse(d.publishedAt ?? ''), day = String(d.publishedAt ?? '').slice(0, 10); return day >= from && (Number.isFinite(t) ? t <= cut : day <= asOf); });
+        const f = s.fund ?? {}, fl = s.fl ?? {}, okD = s.status === 'ok' && fin(s.r20), okP = fin(f.op) && fin(f.net) && f.op > 0 && f.net > 0;
+        const okR = !ds.some(d => !pref(d.title, s.name) && EXCLUDE_RE.test(d.title)), fi = fin(fl.f10e) && fin(fl.i10e) ? fl.f10e + fl.i10e : null;
+        if (okD) data++; if (okD && okP) profit++; if (okD && okP && okR) risk++;
+        const sc = okD && okP && okR && fin(fi) && fi > 0; if (sc) screen++;
+        const heat = ds.some(d => !pref(d.title, s.name) && HEAT_RE.test(d.title) && String(d.publishedAt).slice(0, 10) >= heatFrom), dil = ds.some(d => DILUTE_RE.test(d.title));
+        if (sc && s.r20 <= CAND_RULES.maxR20 && !heat && !dil) met++;
+      }
+      E.cand = {universe: st.length, sectors: okSecs.length, inSector: n0, data, profit, risk, screen, met, n: Math.min(CA.items.length, CAND_RULES.want)};
+      E.candRows = CA.items.map(x => [x.code, x.status, x.rank]); // 화면 줄 차례 = 판 읽기 후보(같은 발행본) · 7곳 상한
+      const pw = x => { const s = st.find(y => y.code === x.code), fl = s?.fl ?? {}, cap = s?.fund?.cap; return fin(fl.f10e) && fin(fl.i10e) && fin(cap) && cap > 0 ? Math.round(((fl.f10e + fl.i10e) / 1e8 / cap) * 100 * 1e4) / 1e4 : null; }; // 판 읽기 파일의 소수 넷째 자리와 같게
+      const [a, b2] = CA.items, sa = a && st.find(s => s.code === a.code), sb = b2 && st.find(s => s.code === b2.code);
+      E.compare = sa && sb ? {a: sa.code, b: sb.code, apow: pw(sa), bpow: pw(sb), ar20: sa.r20, br20: sb.r20} : Q('compare');
+    } else { E.cand = Q('cand'); E.compare = Q('compare'); }
+  } else { E.market = Q('market'); E.sectors = Q('sectors'); E.flowwho = Q('flowwho'); E.stocks = Q('stocks'); E.check = Q('check'); E.cand = Q('cand'); E.compare = Q('compare'); } // 판 읽기를 못 읽은 날 — 업종 화면 · 회사 화면은 위 판 값 그림 · 후보는 지어내지 않음(빈 축)
   E.watch = Q('watch'); // 검사 창에는 관심 등록이 없음(이 기기 저장 · 빈 하늘)
+  { // 읽는 법 연습(#/learn · 2026-10-09 셋째 개정본 0-E) — 연습용 숫자(시험과 같은 입력) · 처음 고른 묶음 B · 가정한 시장 +5% · 관측 규칙 「쏠림」 = 평균 1% 넘게 올랐는데 1위를 빼면 0 이하
+    const v = [24, 1, 0, -2, -3], s = [...v].sort((a, c) => a - c), m = v.reduce((t, x) => t + x, 0) / v.length, ex = (v.reduce((t, x) => t + x, 0) - Math.max(...v)) / (v.length - 1);
+    E.learn = {set: 'B', n: v.length, mean: m, median: s[2], up: v.filter(x => x > 0).length, exTop: ex, gap: m - 5, kind: m >= 1 && ex <= 0 ? 'concentrated' : 'other', u: 'pct'}; }
   return E;
 }
 /** 투자자 매매 그림의 기대값 — 회사 화면 파일(stocks/*.json)의 날마다 순매매(주식 수) × 그날 종가(closes60)로 따로 셈(판 읽기와 다른 길) · 마지막 5거래일 줄이 다 있고 종가가 다 있는 회사만 */

@@ -6,7 +6,7 @@
    · 옛 「돈 흐름」(업종 순환 · 시가총액 비중 그림)은 「업종 순환」(#/flow/rotation)으로 옮김 — 지우지 않음 */
 import {h, korDate, stamp, finite} from './util.js';
 import {state, loadBoard, loadLens} from './store.js';
-import {foot, segNav, FLOW_SEGS} from './parts.js';
+import {foot, segNav, MARKET_SEGS} from './parts.js';
 import {flowWhoArt, quietArt} from './scenes.js';
 import {pv, amt, sharesTxt, howBox, lensMissing, wonAmt} from './lensparts.js';
 
@@ -53,7 +53,7 @@ function stocksBox(F) {
 export async function renderFlowWho(main, {manifest}) {
   const [board, lens0] = await Promise.all([loadBoard(), loadLens().catch(() => null)]);
   const lens = lens0 && !lens0.none ? lens0 : null, F = lens?.flows;
-  const nav = segNav(FLOW_SEGS, 'who', '돈 흐름 보기 바꾸기');
+  const nav = segNav(MARKET_SEGS, 'who', '시장 보기 바꾸기'); // 2026-10-09 투자자 매매(실제 매매)는 아래 탭 「시장」 안
   if (!F?.available) {
     state.summary = `투자자 매매 · ${F?.reason ?? '자료 없음'}`;
     main.replaceChildren(h('div', {class: 'b-page fw-page'},

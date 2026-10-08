@@ -18,17 +18,23 @@
    2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 별도의 탭에 … 기록 하는 탭을 만들어 줘」: 아래 탭 여섯째 「기록」(#/log · view-log.js)
      넣으면서 뺀 것(규칙 1): 모든 화면 맨 아래 「기술 정보」 접힘 — 「기록」 탭 맨 아래로 옮김
    2026-10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」: 아래 탭 일곱째 「처음」(#/start · view-start.js · 셈 lib/atlas11/start.mjs · 규칙 21)
-     넣으면서 뺀 것(규칙 1): 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」 — 「처음」 탭 맨 아래로 옮김 */
-import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
+     넣으면서 뺀 것(규칙 1): 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」 — 「처음」 탭 맨 아래로 옮김
+   2026-10-09 03:09(마카오 시각) 「ATLAS 제품 재설계 명령 — 지금 매수할 가치가 있는 후보 7개를 찾는다」 9 「탐색 구조를 세 가지 작업으로」:
+     아래 탭 넷 = 후보 7(#/ · 매수 검토 후보 · 비교 #/compare) · 관심(#/watch · 관심 · 추적) · 검증(#/check · 운영 기록) · 탐색(#/market — 시장 · 업종 · 종목 · 일정을 맨 위 줄로 오감)
+     옛 주소는 모두 그대로 열림(옛 첫 화면 「시장」은 #/market · 넣으면서 뺀 것(규칙 1): 위 막대 관심 ★ — 아래 탭 「관심」이 대신) */
+import {h, speakScreen, stopSpeak, place, setPlace, korDate} from './util.js';
 import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
-import {renderMarket} from './view-market.js'; // 아래 탭 「시장」 첫 화면(2026-10-08 20:19 마카오 시각 「ATLAS 개편 실행 지시서」 — ① 언제 ~ ⑤ 다음 확인)
-import {renderFlowWho} from './view-flowwho.js'; // 「돈 흐름」 첫 화면 「투자자 매매」(지시서 6)
+import {renderMarket} from './view-market.js'; // 탐색 안 「시장」(#/market · 옛 첫 화면 — 2026-10-08 20:19 마카오 시각 「ATLAS 개편 실행 지시서」 — ① 언제 ~ ⑤ 다음 확인)
+import {renderCand, renderCompare} from './view-cand.js'; // 아래 탭 「후보 7」 첫 화면(#/) · 다른 후보와 비교(2026-10-09 03:09 「ATLAS 제품 재설계 명령」)
+import {exploreNav} from './parts.js'; // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정)
+import {renderFlowWho} from './view-flowwho.js'; // 시장 안 「투자자 매매」(지시서 6 · 2026-10-09 메인 탭 다섯 — 옛 「돈 흐름」 탭에서 옮김)
+import {renderSectors} from './view-sectors.js'; // 아래 탭 「업종」(2026-10-09 「ATLAS 업데이트 실행 프롬프트」 4 · 6 — 평균 펼치기 · 업종 진단)
 import {renderStocks} from './view-stocks.js'; // 아래 탭 「종목」(지시서 7 — 찾기 · 정렬 · 거르기 · 전체 목록 · 옛 「찾기」 탭)
 import {renderCheck} from './view-check.js'; // 아래 탭 「검증」 첫 화면 「선정 결과」(지시서 9)
 import {renderWatch} from './view-watch.js'; // 관심종목(위 막대 ★ · 지시서 3 · 7 — 여섯째 탭 없음)
-import {renderFlow} from './view-flow.js'; // 아래 탭 「돈 흐름」(2026-10-08 17:41 마카오 시각 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」)
+import {renderFlow} from './view-flow.js'; // 업종 안 「업종 순환」(옛 아래 탭 「돈 흐름」 · 2026-10-08 17:41 마카오 시각 「돈에 흐름과 불장을 분리한다」 · 2026-10-09 업종 탭 안으로)
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
@@ -38,14 +44,23 @@ import {renderRise} from './view-rise.js';
 import {renderLog} from './view-log.js';
 import {renderStart} from './view-start.js';
 import {renderGuide} from './view-guide.js'; // 한국 주식시장 안내(2026-10-07 05:31 「외국인들 특히 한국에 상주하는 외국인들도 한국 주식시장을 제대로 알수 있게」)
+import {renderLearn} from './view-learn.js'; // 읽는 법 연습 「같은 평균, 다른 구조」(2026-10-09 셋째 개정본 0-E · 연습용 숫자 · 안내 안)
 import {renderLong} from './view-long.js'; // 500만 원을 오래 들고 있었다면(2026-10-07 05:27 「10년후 20년후 30년후 장기보유 했을시 500만원이 얼마가 될지를 … 매우 보수적인 입장으로 … 부동산과 상대 비교」)
 import {quietArt} from './scenes.js'; // 오류 화면도 그림 한 장(빈 하늘 · 2026-10-08 05:05 빈 날 막기)
 import {renderKorea} from './view-korea.js'; // 한국 주식시장은 몇 위인가(2026-10-07 05:29 「대한민국이 다른 나라에 비해 얼마나 투자처로 우위인지 … 등수와 논리와 자료로」)
 
-const app = {view: null, manifest: null, tab: 'home', places: []};
+const app = {view: null, manifest: null, tab: 'cand', places: []};
 const ICON = {
+  // 후보 7: 줄 셋 앞 체크(검토할 목록 · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 9)
+  cand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6.5l1.8 1.8 3.2-3.6"/><path d="M3.5 13l1.8 1.8 3.2-3.6"/><path d="M11.5 7h9M11.5 13.5h9M11.5 19.5h9"/></svg>',
+  // 관심: 별(옛 위 막대 ★ — 아래 탭으로)
+  watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 17l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg>',
+  // 탐색: 나침반(시장 · 업종 · 종목 · 일정을 직접 찾아봄)
+  explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg>',
   // 시장: 오르내리는 선 하나와 바닥 줄(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 아래 탭 다섯: 시장 · 돈 흐름 · 종목 · 일정 · 검증)
   market: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5h17"/><path d="M4 16l4.5-5 3.5 3 6.5-8"/><path d="M15 6h3.5v3.5"/></svg>',
+  // 업종: 세로 축 하나에서 뻗은 길이가 다른 막대 셋(평균 펼치기 · 업종마다 기여 — 2026-10-09)
+  sectors: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4.5 3.5v17"/><path d="M4.5 7.5h13M4.5 12h8M4.5 16.5h15"/></svg>',
   // 종목: 줄 셋과 돋보기(목록 · 찾기)
   stocks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6h9M3.5 12h6M3.5 18h6"/><circle cx="16.5" cy="13.5" r="4"/><path d="M19.4 16.4 21.5 18.5"/></svg>',
   // 검증: 동그라미 안 체크
@@ -74,31 +89,43 @@ const ICON = {
   rise: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11.5M9 12h11.5M9 18h11.5"/><circle cx="4.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg>',
 };
 const routes = [
-  // 2026-10-08 20:19(마카오 시각) 「ATLAS 개편 실행 지시서」 — 아래 탭 다섯(시장 · 돈 흐름 · 종목 · 일정 · 검증) · 옛 화면은 지우지 않고 그 탭 안으로(옛 주소 그대로)
-  {id: 'home', tab: 'home', label: '시장', match: /^(#\/?)?$/, render: renderMarket}, // ① 언제 ~ ⑤ 다음 확인 · 옛 첫 화면(불장)은 #/hot
-  {id: 'hot', tab: 'home', match: /^#\/hot$/, render: renderHome}, // 옛 아래 탭 「불장」(2026-10-05 05:03) — 시장 안 「불장」
-  {id: 'map', tab: 'home', match: /^#\/map$/, render: renderMap}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 옛 이름 「업종」 · 주소는 그대로(#/map) · 시장 안 「지도」
-  {id: 'land', tab: 'home', match: /^#\/map\/f\/[a-z0-9]+$/, render: renderLand}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 지도 땅 → 그 갈래 화면 → 업종 → 회사
-  {id: 'flow', tab: 'flow', label: '돈 흐름', match: /^#\/flow$/, render: renderFlowWho}, // 투자자 매매(지시서 6) — 옛 「돈 흐름」 그림(2026-10-08 17:41)은 #/flow/rotation
-  {id: 'rotation', tab: 'flow', match: /^#\/flow\/rotation$/, render: renderFlow}, // 업종 순환(시장 대비 시가총액 변화 · 상대 강도)
+  // 2026-10-09 03:09(마카오 시각) 「ATLAS 제품 재설계 명령」 9 — 아래 탭 넷: 후보 7 · 관심 · 검증 · 탐색(시장 · 업종 · 종목 · 일정) · 옛 화면은 지우지 않고 그 탭 안으로(옛 주소 그대로)
+  // (옛: 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 아래 탭 다섯 · 2026-10-09 01:41 「ATLAS 업데이트 실행 프롬프트」 4 시장 · 업종 · 종목 · 일정 · 검증)
+  {id: 'cand', tab: 'cand', label: '후보 7', match: /^(#\/?)?$/, render: renderCand}, // 매수 검토 후보(최대 7곳) — ① 시장 · 기간 · 시점 ② 후보 ③ 이유 ④ 상태 · 위험
+  {id: 'compare', tab: 'cand', match: /^#\/compare(\/[A-Za-z0-9][A-Za-z0-9.\-]{0,11}){0,2}$/, render: renderCompare}, // 다른 후보와 비교(같은 기간 · 같은 기준)
+  {id: 'market', tab: 'market', label: '탐색', match: /^#\/market$/, render: renderMarket}, // 시장(옛 첫 화면 #/ — ① 기준 ~ ⑤ 다음 행동) · 아래 탭 「탐색」의 첫 화면
+  {id: 'flow', tab: 'market', match: /^#\/flow$/, render: renderFlowWho}, // 투자자 매매(실제 매매) — 시장 안(옛 아래 탭 「돈 흐름」 첫 화면 · 주소 그대로)
+  {id: 'sectors', tab: 'market', match: /^#\/sectors$/, render: renderSectors}, // 업종 진단 · 평균 펼치기(2026-10-09)
+  {id: 'rotation', tab: 'market', match: /^#\/flow\/rotation$/, render: renderFlow}, // 업종 순환(시장 대비 시가총액 변화 · 상대 강도) — 업종 안(주소 그대로)
+  {id: 'hot', tab: 'market', match: /^#\/hot$/, render: renderHome}, // 옛 아래 탭 「불장」(2026-10-05 05:03) — 업종 안 「불장」
+  {id: 'map', tab: 'market', match: /^#\/map$/, render: renderMap}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 주소 그대로(#/map) · 업종 안 「지도」
+  {id: 'land', tab: 'market', match: /^#\/map\/f\/[a-z0-9]+$/, render: renderLand}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 지도 땅 → 그 갈래 화면 → 업종 → 회사
   {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
   {id: 'stock', tab: 'from', match: /^#\/stock\/[A-Za-z0-9][A-Za-z0-9.\-]{0,11}$/, render: renderCompany}, // 한국 6자리 · 미국 영문 기호(2026-10-05 18:02 「미국 주식도」)
-  {id: 'stocks', tab: 'stocks', label: '종목', match: /^#\/stocks$/, render: renderStocks}, // 찾기 · 정렬 · 거르기 · 새로 발견 · 근거 강화 · 근거 약화 · 전체 비교(지시서 7) — 옛 #/find 는 여기로
-  {id: 'road', tab: 'stocks', match: /^#\/road$/, render: renderRoad}, // 출목표(2026-10-04 22:12) — 종목 안 보기
-  {id: 'similar', tab: 'stocks', match: /^#\/similar$/, render: renderSimilar},
-  {id: 'rise', tab: 'stocks', match: /^#\/rise$/, render: renderRise},
-  {id: 'agenda', tab: 'agenda', label: '일정', match: /^#\/agenda$/, render: renderAgenda},
-  {id: 'check', tab: 'check', label: '검증', match: /^#\/check$/, render: renderCheck}, // 선정 결과(지시서 9)
+  {id: 'stocks', tab: 'market', match: /^#\/stocks$/, render: renderStocks}, // 찾기 · 정렬 · 거르기 · 새로 발견 · 근거 강화 · 근거 약화 · 전체 비교(지시서 7) — 옛 #/find 는 여기로
+  {id: 'road', tab: 'market', match: /^#\/road$/, render: renderRoad}, // 출목표(2026-10-04 22:12) — 종목 안 보기
+  {id: 'similar', tab: 'market', match: /^#\/similar$/, render: renderSimilar},
+  {id: 'rise', tab: 'market', match: /^#\/rise$/, render: renderRise},
+  {id: 'agenda', tab: 'market', match: /^#\/agenda$/, render: renderAgenda},
+  {id: 'check', tab: 'check', label: '검증', match: /^#\/check$/, render: renderCheck}, // 선정 결과(지시서 9) · 후보 기록과 단순 선정 비교
   {id: 'log', tab: 'check', match: /^#\/log$/, render: renderLog}, // 운영 기록(옛 아래 탭 「기록」 · 2026-10-06 16:10) — 검증 안
-  {id: 'watch', tab: 'watch', match: /^#\/watch$/, render: renderWatch}, // 관심종목 — 위 막대 ★(아래 탭 아님)
+  {id: 'watch', tab: 'watch', label: '관심', match: /^#\/watch$/, render: renderWatch}, // 관심 · 추적 — 아래 탭(옛 위 막대 ★)
   {id: 'guide', tab: 'guide', match: /^#\/guide$/, render: renderGuide}, // 안내(위 막대 ⓘ) — 옛 아래 탭 「처음」 아래 화면들
   {id: 'long', tab: 'guide', match: /^#\/long$/, render: renderLong},
+  {id: 'learn', tab: 'guide', match: /^#\/learn$/, render: renderLearn},
   {id: 'korea', tab: 'guide', match: /^#\/korea$/, render: renderKorea},
   {id: 'start', tab: 'guide', match: /^#\/start$/, render: renderStart}, // 옛 아래 탭 「처음」(2026-10-07 00:49) — 위 막대 「안내」
 ];
-const TABS = ['home', 'flow', 'stocks', 'agenda', 'check']; // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 메인 탭 다섯(시장 · 돈 흐름 · 종목 · 일정 · 검증) · 옛 여덟(불장 · 돈 흐름 · 지도 · 출목표 · 일정 · 찾기 · 기록 · 처음)은 그 안으로 · 관심종목 · 안내는 위 막대
-/** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
-const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map', 'stocks', 'hot']), scrollMemo = new Map();
+const TABS = ['cand', 'watch', 'check', 'market']; // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 9 — 세 가지 작업(후보 7 · 관심 · 추적 · 검증) + 직접 탐색(시장 · 업종 · 종목 · 일정)
+const TAB_HREF = {cand: '#/', watch: '#/watch', check: '#/check', market: '#/market'};
+const EX_ROOT = new Set(['market', 'sectors', 'stocks', 'agenda']); // 탐색 네 곳의 첫 화면(parts.js EXPLORE) — 위 줄 [시장 · 업종 · 종목 · 일정]은 여기에만
+/** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳 · 업종 진단 · 업종 화면) — 회사 화면에 갔다 돌아오면 그 자리(지시서 0-E 「모바일에서 업종으로 돌아오면 보던 자리」)
+ *  업종 화면(#/i/…)은 업종마다 따로 기억(주소마다) · 나머지는 화면마다 */
+const KEEP_SCROLL = new Set(['cand', 'road', 'similar', 'rise', 'map', 'stocks', 'hot', 'sectors', 'industry', 'market', 'agenda', 'watch', 'check']), scrollMemo = new Map(); // 2026-10-09 후보 7 · 탐색 · 관심 · 검증도(뒤로 오면 선택 · 스크롤 · 초점 — 재설계 명령 8)
+/** 보던 화면에서 마지막으로 누른 링크(주소) — 그 화면으로 돌아오면 자리와 함께 초점도 그 링크로(2026-10-09 「ATLAS 업데이트 실행 프롬프트 — 통합본」 0-D 「뒤로 가면 이전 선택·스크롤·초점이 돌아온다」)
+ *  고른 상태(평균 펼치기의 「제외」 · 「모두 보기」)는 decomp.js 가 같은 주소에서 되살림(state.restoring) */
+const focusMemo = new Map();
+const memoKey = (id, hash) => (id === 'industry' ? hash : id);
 /** 선 그리기 움직임을 이미 보인 화면 */
 const drawn = new Set();
 const FONT_STEPS = [100, 125, 150, 175, 200];
@@ -157,7 +184,7 @@ function header() {
   // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
   //   보던 탭 · 하위 화면은 그대로 들고 간다(「ATLAS 개편 실행 지시서」 11 — 탭을 옮겨도 맥락 유지) — 회사 · 업종 화면은 판마다 달라 그 탭 첫 화면으로
-  const tabHash = () => { const x = location.hash; if (/^#\/(hot|map|flow|flow\/rotation|stocks|road|similar|rise|agenda|check|log|watch|start|guide|long|korea)?$/.test(x)) return x; const r = routes.find(y => y.match.test(x)); return r && r.tab === 'from' ? (app.tab === 'home' ? '#/' : TABS.includes(app.tab) ? '#/' + app.tab : '') : ''; };
+  const tabHash = () => { const x = location.hash; if (/^#\/(market|hot|map|flow|flow\/rotation|sectors|stocks|road|similar|rise|agenda|check|log|watch|start|guide|long|korea|learn)?$/.test(x)) return x; if (/^#\/compare/.test(x)) return '#/compare'; const r = routes.find(y => y.match.test(x)); return r && r.tab === 'from' ? TAB_HREF[app.tab] ?? '' : ''; }; // 비교는 판마다 후보가 달라 짝 없이
   const mktLinks = () => app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
     onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); });
   let mkt = null;
@@ -167,7 +194,7 @@ function header() {
     mkt = h('details', {class: 'mkt mkt-pick'}, h('summary', {class: 'mkt-cur', 'aria-label': '시장 고르기', 'data-place': place.id}, here.label), h('nav', {class: 'mkt-menu', 'aria-label': '시장 고르기'}, ...mktLinks()));
     document.addEventListener('click', e => { if (mkt.open && !mkt.contains(e.target)) mkt.open = false; });
   }
-  // 위 막대(「ATLAS 개편 실행 지시서」 3 — ATLAS 홈 · 한국/미국 · 찾기 · 관심종목 · 안내): 둥근 단추 넷 — 찾기(#/stocks · 글 칸에 바로) · 관심 ★(#/watch) · 안내 ⓘ(#/start)
+  // 위 막대(「ATLAS 개편 실행 지시서」 3 — ATLAS 홈 · 한국/미국 · 찾기 · 안내): 둥근 단추 셋 — 찾기(#/stocks · 글 칸에 바로) · 안내 ⓘ(#/start) · 보기 — 관심 ★ 은 2026-10-09 아래 탭 「관심」으로(재설계 명령 9)
   //   · 보기(점 셋) = 말 고르기(74개) · 글씨 크기 · 소리로 듣기를 한 묶음으로(좁은 화면에서 보조 기능을 묶음 · PC 도 같은 구조)
   const iconLink = (href, key, label, view) => h('a', {class: 'round tb-b', href, 'aria-label': label, title: label, 'data-view': view, html: ICON[key], onclick: () => { if (view === 'stocks') state.focusSearch = true; }});
   const fontBtn = h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); fitTabs(); }}, '가');
@@ -178,7 +205,7 @@ function header() {
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
     h('a', {class: 'wordmark', href: '#/', 'aria-label': 'ATLAS 처음 화면'}, h('span', {class: 'wm-t'}, 'ATLAS')),
     mkt,
-    iconLink('#/stocks', 'search', '종목 찾기', 'stocks'), iconLink('#/watch', 'star', '관심종목', 'watch'), iconLink('#/start', 'info', '안내', 'guide'),
+    iconLink('#/stocks', 'search', '종목 찾기', 'stocks'), iconLink('#/start', 'info', '안내', 'guide'),
     more));
   fontLabel();
   // 탭 이름에는 숫자를 넣지 않는다(2026-10-05 「잡스라면」 28번) — 개수는 화면 안에
@@ -188,7 +215,7 @@ function header() {
   //   회사 화면에서 되돌아올 때는 보던 묶는 법 · 탭 · 자리 그대로
   const toTop = (e, r) => { if (r.id === 'road' && app.view !== 'road') { resetRoad(); scrollMemo.delete('road'); }
     if (app.view === r.id) { e.preventDefault(); scrollMemo.delete(r.id); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } };
-  const tab = r => h('a', {href: r.id === 'home' ? '#/' : '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id === 'home' ? 'market' : r.id]}), h('span', {class: 'label'}, label(r)));
+  const tab = r => h('a', {href: TAB_HREF[r.id] ?? '#/' + r.id, class: 'bottom-link', dataset: {route: r.id}, onclick: e => toTop(e, r)}, h('span', {class: 'icon', 'aria-hidden': 'true', html: ICON[r.id === 'market' ? 'explore' : r.id]}), h('span', {class: 'label'}, label(r)));
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));
   fitTabs();
 }
@@ -222,6 +249,7 @@ function topNote() {
 /** 첫 화면 맞추기(규칙 30 · 2026-10-08 14:42 맨 위 줄이 생겨 첫 화면이 그만큼 내려감) — 그림 아래 이름 · 숫자(.ra-lab)의 아래 끝이 아래 탭 위에 오도록
  *  넘치는 만큼만 그림(.ra-art)을 작게(가운데 · 원래 폭의 60% 아래로는 줄이지 않음) · 넘치지 않으면 그대로 · 화면을 그린 뒤 · 화면 크기가 바뀔 때 · 글꼴을 다 읽은 뒤 다시 잼 */
 function fitFirst() {
+  if (!document.querySelector('#main .ra-art svg.ra-svg')) return; // 2026-10-09 자료 차트(HTML 막대 · 글자)는 폭을 줄이면 줄이 늘어 더 길어짐 — 옛 그림(SVG)만 줄임
   if (document.querySelector('#main [data-first]')) return; // 판단 정보가 먼저인 화면(시장 · 투자자 매매 · 종목 · 검증 · 관심종목 — 「ATLAS 개편 실행 지시서」 4)은 그림이 정보 아래라 줄이지 않음
   const ra = document.querySelector('#main .ra'), art = ra?.querySelector('.ra-art'); if (!art) return;
   art.style.removeProperty('width'); art.style.removeProperty('margin-inline');
@@ -245,32 +273,45 @@ async function route() {
   // 지운 화면의 옛 주소 → 처음 화면(주소 줄도 「#/」로 바꿔 둔다)
   if (!r) { r = routes[0]; hash = '#/'; history.replaceState(null, '', location.pathname + location.search + '#/'); }
   stopSpeak(); voice.on = false; document.getElementById('voice-btn')?.classList.remove('on'); document.getElementById('voice-btn')?.setAttribute('aria-pressed', 'false');
-  if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.view, window.scrollY);
+  if (app.view && KEEP_SCROLL.has(app.view)) scrollMemo.set(app.memo ?? app.view, window.scrollY);
   if (toSun) scrollMemo.delete('road'); // 태양 보기는 늘 맨 위부터
-  if (app.view !== r.id) state.from = app.view; // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로)
+  if (app.view !== r.id) { state.from = app.view; state.fromHash = app.hash ?? null; } // 회사 화면 「‹ 되돌아가기」가 온 곳을 알도록(글씨 단추로 같은 화면을 다시 그릴 때는 그대로) · 비교 화면은 주소(짝)까지
   if (r.id !== 'industry' && r.id !== 'stock') state.origin = r.id; // 업종 화면 「‹ 되돌아가기」 = 업종 · 회사 화면을 거쳐 오기 전 마지막 탭 화면(출목표 → 회사 → 업종이면 출목표)
   // 업종·회사 화면은 들어온 탭이 눌린 채로(탭 막대에 없는 화면) · 탭 화면이면 그 탭을 기억
   if (r.tab !== 'from') app.tab = r.tab;
   state.tab = app.tab; // 업종 화면 「‹ 되돌아가기」가 들어온 탭(불장 · 업종)을 알도록
-  markActive(app.tab); app.view = r.id; state.summary = '';
+  markActive(app.tab); app.view = r.id; app.hash = hash; app.memo = memoKey(r.id, hash); state.summary = '';
   document.documentElement.toggleAttribute('data-drawn', drawn.has(r.id)); drawn.add(r.id); // 이 화면을 이미 한 번 그렸으면 선 그리기 움직임 없이
   const main = document.getElementById('main');
   main.dataset.view = r.id; document.body.dataset.view = r.id;
   // 보던 자리로 돌아갈 화면이면 다 그린 뒤 그 자리로 · 아니면 그리기 전에 맨 위로(조금씩 그리는 동안 사람이 내려 본 자리를 끝에 되돌리지 않게)
-  const restoring = KEEP_SCROLL.has(r.id) && scrollMemo.has(r.id);
+  const restoring = KEEP_SCROLL.has(r.id) && scrollMemo.has(app.memo);
   if (!restoring) window.scrollTo({top: 0});
   const focus = !!state.focusSearch && r.id === 'stocks'; state.focusSearch = false;
-  try { await r.render(main, {hash, manifest: app.manifest, restoring, focus}); }
-  catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
+  state.restoring = restoring; // 돌아온 화면이면 그 화면 부품이 고른 상태를 되살림(decomp.js)
+  // 화면 넘김 움직임(2026-10-09 「ATLAS 제품 재설계 명령」 10 「후보를 누른다 → 같은 종목의 선정 근거로 자연스럽게 이어진다」):
+  //   후보 목록에서 누른 이름(state.vt)이 종목 화면 「후보 판단」 머리로 옮겨 감 — 사람이 누른 때만 · 움직임 줄이기면 없음 · 못 하는 브라우저는 그냥 바뀜(같은 정보)
+  const vt = state.vt; state.vt = null;
+  const draw = async () => { try { await r.render(main, {hash, manifest: app.manifest, restoring, focus}); } catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
+    if (EX_ROOT.has(r.id)) main.querySelector('.b-page')?.prepend(exploreNav(r.id)); }; // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) — 네 곳의 첫 화면에만(Apple 처럼 — 들어간 보기 · 땅 화면은 「보기 바꾸기」 · 「‹ 되돌아가기」 한 줄만 · 그림 이름 · 숫자가 한 화면에)
+  if (vt?.el?.isConnected && typeof document.startViewTransition === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    vt.el.style.setProperty('view-transition-name', vt.name);
+    try { const t = document.startViewTransition(() => draw()); await t.updateCallbackDone; t.finished.finally(() => { for (const el of document.querySelectorAll('[data-vt]')) { el.style.removeProperty('view-transition-name'); el.removeAttribute('data-vt'); } }).catch(() => {}); }
+    catch { await draw(); }
+  } else await draw();
   fitFirst(); setTimeout(fitFirst, 0); // 그린 뒤 한 번 · 번역(말 사전)이 글을 바꾼 뒤 한 번 더
   setTimeout(() => { if (app.view === r.id) document.documentElement.setAttribute('data-drawn', ''); }, 450); // 다 그린 뒤에는 같은 화면 안에서 다시 그려도(묶음 바꾸기) 움직이지 않음
-  if (restoring && app.view === r.id) window.scrollTo({top: scrollMemo.get(r.id) ?? 0});
+  if (restoring && app.view === r.id) { window.scrollTo({top: scrollMemo.get(app.memo) ?? 0});
+    const want = focusMemo.get(app.memo), el = want && !focus && (!document.activeElement || document.activeElement === document.body) ? [...main.querySelectorAll('a[href]')].find(x => x.getAttribute('href') === want) : null;
+    if (el) el.focus({preventScroll: true}); } // 누르고 나갔던 링크에 초점(화면 읽기 · 자판으로 이어 감 · 화면은 움직이지 않음) — 찾기 칸에 커서를 둔 화면(돋보기) · 그린 화면이 초점을 정한 때는 건드리지 않음
+  state.restoring = false;
 }
 /** 오류 화면 — 맨 위 그림 한 장(빈 하늘 · 제목은 그림 이름 · 규칙 1 넣으면서 뺀 것: 상자 제목) · 아래 까닭 한 줄 · 다시 불러오기 / 그림을 못 그려도 알림은 그대로 */
 function failure(title, e) {
   let art = null; try { art = quietArt({key: 'fail', label: title}); } catch {}
+  const last = prefs.get('lastOk', null); // 이 기기에서 마지막으로 제대로 읽은 자료(통합본 0-I 「조회 실패는 마지막 정상 자료의 시점을 표시한다」)
   const why = String(e?.message ?? e); // 까닭(기술 글 · 파일 이름 · HTTP 번호) — 한국어로 된 까닭은 그대로 둠(lang="ko" · 제목과 단추는 그 말로)
-  return [art, h('section', {class: 'b-box failure', role: 'alert'}, art ? null : h('h1', {class: 'b-box-h'}, title), h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'),
+  return [art, h('section', {class: 'b-box failure', role: 'alert'}, art ? null : h('h1', {class: 'b-box-h'}, title), last?.asOf ? h('p', {class: 'b-note'}, `이 기기에서 마지막으로 읽은 자료: ${korDate(last.asOf)} 종가`) : null, h('button', {class: 'b-btn', type: 'button', onclick: () => location.reload()}, '다시 불러오기'),
     h('details', {class: 'b-tech'}, h('summary', null, '기술 정보'), h('p', {class: 'muted', lang: /[가-힣]/.test(why) ? 'ko' : null}, why)))].filter(Boolean); // 까닭은 접어 둠(글을 줄임 · 규칙 13)
 }
 
@@ -280,7 +321,7 @@ async function watchManifest() {
     const r = await fetch(url('data/atlas11/view/manifest.json'), {cache: 'no-cache'}); if (!r.ok) return;
     const m = await r.json();
     if (m.boardId && app.manifest && m.boardId !== app.manifest.boardId && !document.getElementById('new-board')) {
-      document.getElementById('main').prepend(h('div', {id: 'new-board', class: 'b-note', role: 'status'}, '새 자료가 올라왔습니다. ', h('button', {class: 'b-link', type: 'button', onclick: () => location.reload()}, '새 자료로 다시 열기')));
+      document.getElementById('main').prepend(h('div', {id: 'new-board', class: 'b-note', role: 'status'}, `새 자료가 올라왔습니다(${m.asOf ? korDate(m.asOf) + ' 종가' : '날짜 없음'}) · 지금 화면은 그대로 · `, h('button', {class: 'b-link', type: 'button', onclick: () => location.reload()}, '새 자료로 다시 열기'))); // 읽던 화면 · 다시 보기를 바꾸지 않음 — 적용은 사람이 고름(통합본 0-I)
     }
   } catch {}
 }
@@ -293,6 +334,7 @@ async function start() {
     h('div', {class: 'sk', 'aria-hidden': 'true'}, h('span', {class: 'sk-t'}), h('span', {class: 'sk-l'}), h('span', {class: 'sk-g'}))));
   try { app.manifest = await loadManifest(); }
   catch (e) { main.replaceChildren(...failure('자료 목록을 읽지 못했습니다', e)); return; }
+  if (app.manifest.asOf) prefs.set('lastOk', {asOf: app.manifest.asOf, boardId: app.manifest.boardId}); // 다음에 못 읽으면 이 날짜를 알림
   setPlace(app.manifest.place); // 미국 판이면 달러 · 뉴욕 16:00 종가 · 수급 없음(util.js place) — 한국 판 manifest 에는 place 가 없어 한국 값 그대로
   try { const r = await fetch('/places.json', {cache: 'no-cache'}); if (r.ok) { const p = await r.json(); if (Array.isArray(p?.places)) app.places = p.places.filter(x => x && x.id && x.href && x.label); } } catch {}
   state.places = app.places; // 「찾기」가 다른 시장 판도 함께 찾도록
@@ -307,6 +349,7 @@ async function start() {
   // 출목표 보기(종목 안 · #/road)를 다른 화면에서 열면 늘 「오른 순」 첫 탭 맨 위(옛 아래 탭 「출목표」 약속 그대로 — 2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로」) · 회사 화면에서 되돌아올 때는 보던 자리
   document.addEventListener('click', e => { const a = e.target.closest?.('a.hs-b[data-seg="road"]'); if (a && app.view !== 'road') { resetRoad(); scrollMemo.delete('road'); } });
   window.addEventListener('hashchange', route);
+  document.addEventListener('click', e => { const a = e.target.closest?.('#main a[href^="#/"]'); if (a && app.view && KEEP_SCROLL.has(app.view)) focusMemo.set(app.memo ?? app.view, a.getAttribute('href')); }, true); // 돌아올 때 초점 자리(위 focusMemo)
   setInterval(watchManifest, 5 * 60 * 1000);
   await route();
   // 검사기 손잡이(2026-10-08 06:42 「10배 빠르면서도 10배 정교한 시스템」) — 빠짐없이 도는 검사기가 기다리지 않고 다 그린 순간 잼:

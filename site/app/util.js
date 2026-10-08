@@ -34,7 +34,7 @@ export const h = (tag, attrs = {}, ...children) => {
     if (v == null || v === false) continue;
     if (k === 'class') el.className = v; else if (k === 'html') el.innerHTML = v; else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v); else if (k === 'dataset') Object.assign(el.dataset, v); else el.setAttribute(k, v === true ? '' : v);
   }
-  for (const c of children.flat()) if (c != null && c !== false) el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  for (const c of children.flat(Infinity)) if (c != null && c !== false) el.append(c instanceof Node ? c : document.createTextNode(String(c))); // 겹친 배열도 펼침(2026-10-09 — 배열 안 배열이 「[object HTMLElement]」 글로 나오던 것)
   return el;
 };
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));

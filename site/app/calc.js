@@ -10,7 +10,7 @@
      상대 가격비 변화(%) = ((1 + a/100) ÷ (1 + b/100) − 1) × 100 — %p 격차와 다른 값(섞지 않음)
      거래대금 대비 순매수 비율(%) = 같은 기간 · 같은 대상의 순매수 대금 합 ÷ 거래대금 합 × 100
      최대 낙폭(%) = 평가 구간 안에서 그때까지 가장 높던 종가 대비 가장 크게 떨어진 폭 · 최저 수익률(%) = 기준가 대비 가장 낮았던 수익률 — 둘은 다른 값 */
-export const CALC_VERSION = 'calc-1';
+export const CALC_VERSION = 'calc-2'; // calc-1(2026-10-08) + 평균 펼치기(기여 · 제외 · 가중 · 재정규화) · 고정 예제 산식(2026-10-09)
 export const fin = v => typeof v === 'number' && Number.isFinite(v);
 
 /** 두 가격 사이 수익률(%) — 시작가가 0 이하이거나 값이 없으면 null(계산 불가) */
@@ -57,6 +57,46 @@ export function pathStats(path) {
   for (let i = 1; i < v.length; i++) { peak = Math.max(peak, v[i]); mdd = Math.max(mdd, (peak - v[i]) / peak * 100); minRet = Math.min(minRet, (v[i] / v[0] - 1) * 100); }
   return {ret: (v.at(-1) / v[0] - 1) * 100, mdd, minRet};
 }
+
+/* ── 평균 펼치기(calc-2 · 2026-10-09 「ATLAS 업데이트 실행 프롬프트」 0-C · 6 · 9) ──
+   묶음 = [{sum, count, w}] — 종목 하나는 {sum: 수익률, count: 1} · 업종 하나는 {sum: 유효 종목 수익률 합, count: 유효 종목 수}
+   동일가중 평균 = Σsum ÷ Σcount · 한 칸의 기여(%p) = 그 칸 sum ÷ Σcount(기여를 모두 더하면 평균) · 제외 = 그 칸의 sum · count 를 빼고 다시 나눔(분모가 줄어듦)
+   시가총액 가중 평균 = Σ(w × 수익률) ÷ Σw(값이 있는 칸만) · 제외하면 남은 칸의 가중치를 다시 합 100% 로(재정규화) — 가중치 시점은 부르는 쪽이 적음 */
+const okPart = p => p && fin(p.sum) && fin(p.count) && p.count > 0;
+/** 동일가중 평균 · 분모 — parts 가운데 skip(Set · 칸 번호)을 뺀 나머지 */
+export function poolMean(parts, skip = new Set()) {
+  let s = 0, n = 0; (parts ?? []).forEach((p, i) => { if (!skip.has(i) && okPart(p)) { s += p.sum; n += p.count; } });
+  return {mean: n ? s / n : null, n};
+}
+/** 칸마다 기여(%p) = sum ÷ 전체 count(제외한 칸은 null) · 합 = 평균 */
+export function contribs(parts, skip = new Set()) {
+  const {n} = poolMean(parts, skip);
+  return (parts ?? []).map((p, i) => (!skip.has(i) && okPart(p) && n ? p.sum / n : null));
+}
+/** 시가총액 가중 평균(%) — w 가 양수이고 값이 있는 칸만 · 제외 칸 뺀 뒤 남은 가중치로 다시 나눔 */
+export function weightedMean(rets, ws, skip = new Set()) {
+  let s = 0, wsum = 0; (rets ?? []).forEach((r, i) => { const w = ws?.[i]; if (!skip.has(i) && fin(r) && fin(w) && w > 0) { s += w * r; wsum += w; } });
+  return wsum > 0 ? s / wsum : null;
+}
+/** 가장 큰 값의 칸 번호(값이 같으면 앞 칸) — 「상승 1위」 · 「기여 1위」 고르기 */
+export function topIndex(vals) { let k = -1; (vals ?? []).forEach((v, i) => { if (fin(v) && (k < 0 || v > vals[k])) k = i; }); return k; }
+
+/* ── 고정 예제용 산식(지시서 18 — 시험 · 데모 전용 · 운영 값으로 쓰지 않음 · 중간 반올림 없음) ── */
+/** 가격 줄 → 끝 수익률 · 최대 낙폭(이전 고점 → 이후 저점 · 음수 %) · 현재 낙폭(구간 최고점 대비 지금 · 음수 %) · 최고점 회복에 필요한 상승률(%) */
+export function drawdowns(path) {
+  const v = path ?? []; if (v.length < 2 || !v.every(x => fin(x) && x > 0)) return null;
+  let peak = v[0], maxDD = 0;
+  for (const x of v) { peak = Math.max(peak, x); maxDD = Math.min(maxDD, (x / peak - 1) * 100); }
+  const last = v.at(-1);
+  return {ret: (last / v[0] - 1) * 100, maxDD, curDD: (last / peak - 1) * 100, toPeak: (peak / last - 1) * 100};
+}
+/** 원화 기준 수익률(소수) = (1 + 현지 수익률) × (1 + 원화 기준 외화 가치 변화율) − 1 — 입력도 소수 */
+export const krwReturn = (local, fx) => (fin(local) && fin(fx) ? (1 + local) * (1 + fx) - 1 : null);
+/** 주당순이익 = 순이익 ÷ 기간 가중평균 주식 수(같은 회계 · 희석 정의에서만 견줌) */
+export const eps = (net, shares) => (fin(net) && fin(shares) && shares > 0 ? net / shares : null);
+/** 조건부 가치: 주가 = EPS × PER · 그 주가가 되려면 필요한 EPS = 주가 ÷ PER(확률 · 목표주가 아님) */
+export const priceAt = (e, per) => (fin(e) && fin(per) ? e * per : null);
+export const epsNeeded = (price, per) => (fin(price) && fin(per) && per > 0 ? price / per : null);
 
 /** 보이는 글(한 자리 반올림 · 부호 — 반올림해 0 이면 부호 없음) — 계산에는 쓰지 않음 */
 const shown = (v, d) => { const a = Math.abs(v).toFixed(d), z = Number(a) === 0; return `${z ? '' : v > 0 ? '+' : '−'}${a}`; };

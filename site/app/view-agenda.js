@@ -67,7 +67,7 @@ export async function renderAgenda(main, {manifest}) {
   const cm = agendaComment([...(agenda.market ?? []), ...list], agenda.builtDay ?? null);
   state.summary = `${commentSay(cm)}일정. 다가오는 회사·업종 일정 ${list.length}건, 시장 전체 일정 ${(agenda.market ?? []).length}건.`;
   main.replaceChildren(h('div', {class: 'b-page a-page'},
-    agendaArt(cm) ?? agendaEmptyArt(agenda, list.length), // 일정이 없는 판도 그림 한 장(빈 하늘 · 일정 0건 · agenda 가 있으면 늘 그림 — 논평 무대를 뺌 · 규칙 1) // 그림 한 장(달이 그날로 · 규칙 33) — 넣으면서 뺀 것: 논평 무대 · 머리 아래 설명 한 줄(「어떻게 셌나」로 접음)
+    agendaArt(cm, [...(agenda.market ?? []), ...list]) ?? agendaEmptyArt(agenda, list.length), // 2026-10-09 날짜 축(점 = 일정 · 테 = 가장 중요한 일정) // 일정이 없는 판도 그림 한 장(빈 하늘 · 일정 0건 · agenda 가 있으면 늘 그림 — 논평 무대를 뺌 · 규칙 1) // 그림 한 장(달이 그날로 · 규칙 33) — 넣으면서 뺀 것: 논평 무대 · 머리 아래 설명 한 줄(「어떻게 셌나」로 접음)
     marketStrip(manifest),
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '일정'),

@@ -18,6 +18,7 @@ import {pv, ppv, sharesTxt, idxName, LEVEL, tagEl} from './lensparts.js'; // 판
 import {whyText, LISTS, STATUS} from './view-stocks.js';
 import {watchBox} from './view-watch.js';
 import {relPct, stdev, pctRet} from './calc.js';
+import {candJudgeBox} from './view-cand.js'; // 「후보 판단」 — 여섯 질문(2026-10-09 03:09 「ATLAS 제품 재설계 명령」 7 · 8)
 
 const signed = v => finite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('ko-KR') + '주' : '없음';
 const hm = iso => { if (!iso || !Number.isFinite(Date.parse(iso))) return ''; const t = kst(iso); return `${korDate(t.date)} ${t.time}`; };
@@ -104,7 +105,7 @@ function nearBox(board, s, shp = null) {
   const sc = sparkScale(cs);
   return h('section', {class: 'b-box c-near', 'aria-label': `같은 업종 ${cs.length}곳`},
     h('h2', {class: 'b-box-h'}, `같은 업종 ${cs.length}곳`, h('small', null, ` · ${g.label} · 지난 20거래일 많이 오른 순 · 선 그래프는 ${cs.length}곳 같은 눈금`)),
-    h('p', {class: 'c-near-go'}, h('a', {href: '#/i/' + g.id}, `${g.label} 업종 화면 · 누가 끌었나 ›`)), // 출목표에서 왔어도 그 업종 화면으로 가는 길(E6)
+    h('p', {class: 'c-near-go'}, h('a', {href: '#/i/' + g.id}, `${g.label} 업종 평균 · 구성 종목 확인 ›`)), // 출목표에서 왔어도 그 업종 화면으로 가는 길(E6) · 2026-10-09 「누가 끌었나」 → 평균 펼치기
     h('ol', {class: 'nc-list'}, ...cs.map(c => h('li', null, h('a', {class: 'nc-row', href: '#/stock/' + c.code},
       h('span', {class: 'nc-mid'}, h('span', {class: 'nc-name'}, c.name, sunTag(shp?.sparkle.has(c.code))), h('small', {class: 'nc-ind'}, c.sector ?? '')),
       sparkSvg(c, sc),
@@ -115,7 +116,7 @@ function nearBox(board, s, shp = null) {
       → ④ 반대 근거와 위험 → ⑤ 다음 확인 조건 · 날짜 → ⑥ 같은 조건의 검증 상태 · 결과 — 근거 영역(가격 · 수급 · 실적 · 사건)은 따로 · 종합점수 없음 ── */
 /** 결산 연월 「2025.12」 → 「2025년 12월」(단위 없는 숫자를 쓰지 않음 · 또렷함 3번) */
 const fyTxt = fy => { const m = String(fy ?? '').match(/^(\d{4})\.(\d{1,2})$/); return m ? `${m[1]}년 ${Number(m[2])}월` : (fy || null); };
-const lsBox = (n, title, ...kids) => h('section', {class: 'b-box cd-box', 'data-order': String(n), 'aria-label': title}, h('h2', {class: 'b-box-h'}, h('span', {class: 'mk-no', 'aria-hidden': 'true'}, ['①', '②', '③', '④', '⑤', '⑥'][n - 1]), ' ', title), ...kids);
+const lsBox = (n, title, ...kids) => h('section', {class: 'b-box cd-box', 'data-order': String(n), 'aria-label': title}, h('h2', {class: 'b-box-h'}, h('span', {class: 'mk-no', 'aria-hidden': 'true'}, ['①', '②', '③', '④', '⑤', '⑥', '⑦'][n - 1]), ' ', title), ...kids);
 const li2 = (k, ...v) => h('li', null, h('b', null, k), ' · ', ...v);
 /** 자료 상태 글 — 지연 · 오래된 종가: 「10월 7일(수) 종가까지만 있음」 · 기업행사 확인 필요: 가격 제한폭을 넘은 날 */
 export const statusWhy = ls => (ls.status === 'ca' ? `하루 변화가 가격 제한폭(±30%)을 넘은 날 ${(ls.jumps ?? []).map(korDate).join(' · ')}` : ls.status === 'missing' ? '종가 없음' : `${korDate(ls.date)} 종가까지만 있음`);
@@ -160,10 +161,24 @@ function nextBox(ls, lens, agenda, s) {
       lens?.verify?.records?.length ? li2('다음 저녁 기록', '다음 거래일 19:00(한국 시각) — 목록에 남는지 · 빠지는지') : li2('고정 기록', '이 판은 아직 없음'),
       li2('확인할 것', '업종 대비 격차의 방향', lens?.flows?.available ? ' · 외국인+기관 순매수 방향' : '', ' · 새 공시')));
 }
+/** ⑥ 실적 · 재무 · 가치평가(2026-10-09 「ATLAS 업데이트 실행 프롬프트」 11 · 13) — 판 읽기의 결산 숫자만 · 없는 값은 「자료 없음」 · 가치평가는 자료가 없어 계산하지 않음(지어내지 않음) */
+const eok = v => (finite(v) ? `${v < 0 ? '−' : ''}${Math.abs(v) >= 1e4 ? `${(Math.abs(v) / 1e4).toFixed(1)}조 원` : `${Math.round(Math.abs(v)).toLocaleString('ko-KR')}억 원`}` : '자료 없음');
+function fundBox(ls) {
+  const f = ls?.fund;
+  return lsBox(6, '실적 · 재무 · 가치평가',
+    !f ? h('p', {class: 'muted small'}, '자료 없음') : h('ul', {class: 'cd-l'},
+      li2('결산', fyTxt(f.fy) ?? '표시 없음'),
+      li2('ROE', finite(f.roe) ? `${f.roe.toFixed(1)}%` : '자료 없음', ' · 부채비율 ', f.debtExempt ? '금융회사는 빼고 봄' : finite(f.debt) ? `${Math.round(f.debt)}%` : '자료 없음'),
+      li2('영업이익', eok(f.op), ' · 순이익 ', eok(f.net)),
+      li2('시가총액', eok(f.cap), f.cap ? (f.capDay ? ` · ${korDate(f.capDay)}` : ' · 기준일 표시 없음') : ''),
+      li2('가치평가', '주당순이익(EPS) · 주가수익비율(PER) 자료 없음 — 조건부 가치(주가 = EPS × PER)를 계산하지 않음'),
+      li2('증권사 추정치', '모으지 않음 — 지어내지 않음')),
+    h('p', {class: 'muted xs'}, '결산 숫자는 지난 기록 · 앞날 값이 아님'));
+}
 function verifyBox(ls, lens) {
   const recs = lens?.verify?.records ?? [], last = recs.at(-1), fs = ls?.firstSeen;
   const evalTxt = e => (e.status === 'pending' ? `${e.h}거래일 평가 대기(${korDate(e.due)})` : e.status === 'done' ? `${e.h}거래일 평균 ${e.ret.mean?.toFixed(1)}% · 성공 ${e.success.hit}곳/${e.success.n}곳` : `${e.h}거래일 평가일 모름`);
-  return lsBox(6, '같은 조건의 검증 상태',
+  return lsBox(7, '같은 조건의 검증 상태',
     h('ul', {class: 'cd-l'},
       ...(ls?.lists ?? []).filter(k => last?.evals?.[k]).map(k => li2(LISTS[k], last.evals[k].map(evalTxt).join(' · '))),
       ls?.lists?.length ? null : li2('이번 기록 목록', '없음 — 이 종목에 걸린 검증 없음'),
@@ -197,14 +212,19 @@ export async function renderCompany(main, {hash, manifest}) {
   state.summary = `${commentSay(cm)}${s.name}. ${korDate(s.date)} 종가 ${won(s.close)}.${finite(s.change20) ? ` 지난 20거래일 ${pct(s.change20, 1)}.` : ''}${shp?.common.length && shp.hits.has(s.code) ? (sunOn ? ' 태양입니다.' : ` 공통 모양 ${shp.common.length}가지 가운데 ${sunHas}가지.`) : ''}`;
   const chartBox = h('div', {class: 'c-chart'});
   // 그림 한 장은 언제나(규칙 33) — 20거래일 값이 없는 회사도 먹 붓질(값 「없음」) · 판을 못 읽은 날은 빈 하늘 / 한 번만 만든다(저절로 한 번 · 그림마다 기억)
-  const art = (board ? companyArt(board, s, cm) : null) ?? quietArt({key: 'company', label: '지난 20거래일', when: s.date ? `${korDate(s.date)} 종가` : null});
+  const art = (board ? companyArt(board, s, lens) : null) ?? quietArt({key: 'company', label: '지난 20거래일', when: s.date ? `${korDate(s.date)} 종가` : null}); // 2026-10-09 같은 업종 회사들 사이 이 회사(같은 축 · 판 읽기 20거래일 · 판 읽기가 없으면 판 값)
+  const judge = lens ? candJudgeBox(lens, s) : null; // 후보면 여섯 질문 · 아니면 조건 상태 한 칸(판 읽기 cand)
+  if (judge && state.candGo) { const hd = judge.querySelector('.cj-hn'); if (hd) { hd.style.setProperty('view-transition-name', 'cd-name'); hd.dataset.vt = ''; } } // 후보 목록에서 누른 이름이 이 머리로 이어짐(app.js 화면 넘김)
   const codeLine = h('p', {class: 'b-when'}, h('code', null, s.code), s.ksic ? ` · 업종 ${s.group?.label ?? s.ksic}(한국거래소: ${s.ksic})` : s.sector ? ` · 업종 ${s.group?.label && s.group.label !== s.sector ? `${s.group.label}(${s.sector})` : s.sector}` : '', s.kind ? ' ' : null, kindBadge(s.kind));
   main.replaceChildren(h('article', {class: 'b-page c-page', 'data-code': s.code},
     // 뒤로: 출목표 한 판에서 왔으면 그 판(보던 자리 그대로) · 아니면 이 회사의 업종 화면(처음 화면 → 업종 → 회사 순서를 거꾸로) · 업종을 모르면 처음 화면
     // 2026-10-05 탭 다섯: 「예비」(닮은 7곳) · 「22곳」에서 왔으면 그 목록으로(보던 자리 그대로)
-    state.from === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표')
+    state.from === 'cand' ? h('a', {class: 'c-back', href: '#/'}, '‹ 후보 7곳') // 2026-10-09 아래 탭 「후보 7」(재설계 명령 9) — 목록 · 자리 · 초점 그대로
+      : state.from === 'compare' ? h('a', {class: 'c-back', href: state.fromHash ?? '#/compare'}, '‹ 다른 후보와 비교')
+      : state.from === 'market' ? h('a', {class: 'c-back', href: '#/market'}, '‹ 시장')
+      : state.from === 'road' ? h('a', {class: 'c-back', href: '#/road'}, '‹ 출목표')
       : state.from === 'stocks' ? h('a', {class: 'c-back', href: '#/stocks'}, '‹ 종목') // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 옛 「찾기」는 아래 탭 「종목」 안 · 넣은 글자 · 고른 묶음 그대로
-      : state.from === 'watch' ? h('a', {class: 'c-back', href: '#/watch'}, '‹ 관심종목')
+      : state.from === 'watch' ? h('a', {class: 'c-back', href: '#/watch'}, '‹ 관심')
       : state.from === 'flow' ? h('a', {class: 'c-back', href: '#/flow'}, '‹ 투자자 매매') // 아래 탭 「돈 흐름」 첫 화면(route id 'flow')
       : state.from === 'rotation' ? h('a', {class: 'c-back', href: '#/flow/rotation'}, '‹ 업종 순환')
       : state.from === 'similar' ? h('a', {class: 'c-back', href: '#/similar'}, '‹ 예비')
@@ -218,8 +238,9 @@ export async function renderCompany(main, {hash, manifest}) {
     art,
     statusLine(ls, s), // ① 자료 상태(「ATLAS 개편 실행 지시서」 7 — 그날 종가 · 지연 · 오래된 종가 · 기업행사 확인 필요 · 받은 때)
     codeLine, // 기호 · 업종 줄은 그림 아래(값 · 그림이 한 화면에 · 규칙 30)
-    lens ? [sinceBox(ls, lens), ...evidenceBoxes(ls, lens, s), nextBox(ls, lens, agenda, s), verifyBox(ls, lens), compareBox(ls, lens)] : null, // ② ~ ⑥ · 비교(「ATLAS 개편 실행 지시서」 7)
-    watchBox(s), // ★ 관심 등록(이 기기에만 · 7)
+    judge, // 후보 판단(2026-10-09 재설계 명령 7 — 왜 이 종목 · 왜 지금 · 지금 값의 뜻 · 진입 조건 · 판단이 바뀌는 조건 · 이어서 확인 · 선정 이후 결과)
+    lens ? [sinceBox(ls, lens), ...evidenceBoxes(ls, lens, s), nextBox(ls, lens, agenda, s), fundBox(ls), verifyBox(ls, lens), compareBox(ls, lens)] : null, // ② ~ ⑦ · 비교(「ATLAS 개편 실행 지시서」 7 · 2026-10-09 지시서 11 — ⑥ 실적 · 재무 · 가치평가)
+    watchBox(s, null, {cand: lens?.cand?.ready && lens.cand.flags?.[s.code] ? {flags: lens.cand.flags[s.code], rank: lens.cand.items.find(y => y.code === s.code)?.rank ?? null, status: lens.cand.items.find(y => y.code === s.code)?.status ?? null, asOf: lens.cand.asOf, rules: lens.cand.rules} : null}), // ★ 관심 등록(이 기기에만 · 7) — 등록 때 후보 상태도 함께(관심 화면이 바뀐 조건을 셈)
     rankNav(board, s),
     marketStrip(manifest),
     h('section', {class: 'b-box'}, h('h2', {class: 'b-box-h'}, `지난 ${rows.length}거래일 종가`, h('small', null, first ? ` · ${korDate(first)}부터 ${korDate(last)}까지${band > 0 ? ' · 옅은 띠 = 지난 20거래일(판 · 출목표와 같은 구간)' : ''}` : '')), chartBox,
@@ -232,5 +253,8 @@ export async function renderCompany(main, {hash, manifest}) {
     h('details', {class: 'b-how c-year'}, h('summary', null, '지난 1년 숫자 · 1년 최고·최저 · 252거래일 변화'), infoGrid(s)), // 기간이 20거래일과 달라 접어 둠(25번 「기간 잣대 하나」)
     nearBox(board, s, shp),
     foot(manifest)));
+  if (judge && state.candGo) { const go = state.candGo; state.candGo = null; // 「왜 선정됐나요?」로 왔으면 후보 판단 칸으로(위 막대 아래 · 초점은 칸 머리 — 화면 읽기 · 자판이 이어 감)
+    const t = go === 'why' ? judge : judge.querySelector('#cj-' + go) ?? judge; t.scrollIntoView({block: 'start'}); (t.querySelector('.cj-h') ?? t).focus?.({preventScroll: true}); }
+  else state.candGo = null;
   closeChart(chartBox, rows, {band: band > 0 ? band : null, ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}${band > 0 ? ` · ${korDate(rows[band].date)}부터 끝까지 옅은 띠(지난 20거래일)` : ''}`});
 }
