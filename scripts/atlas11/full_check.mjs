@@ -3,7 +3,7 @@
    사장님 2026-10-08 06:42 「시간이 너무 걸리는 문제를 시스템으로 먼저 개선한 후 지금보다 10배 빠르면서도 10배 정교한 시스템이 되는 구조를 먼저 짠 이후 작업하라」
    v2(01:31 · 05:05 · full_check_v2.mjs)는 화면마다 주소를 바꾸고 0.26초씩 기다려 22분(화면 4,286곳 · 영어 · 한국어 두 말). v3:
      ① 화면 안 순회 — 검사기가 화면 안에서 주소를 바꾸고 「다 그린 순간」(받는 파일 0 · 번역 끝 · 다음 그림 틀)을 잼(app.js atlasRoute) · 정해 둔 기다림 0
-        다섯 나라 모든 화면 × 영어(390×640 · 글이 가장 긴 말) · 한국어(360×640 · 사장님이 보는 말 · 가장 좁은 폭)
+        다섯 나라(2026-10-08 18:33 부터 사이트 판 = 한국 · 미국 · lib/atlas11/places.mjs) 모든 화면 × 영어(390×640 · 글이 가장 긴 말) · 한국어(360×640 · 사장님이 보는 말 · 가장 좁은 폭)
         화면마다: 그림 한 장 · 끝 모습 · 그림 숫자 = 판 자료로 따로 센 값(art_expect.mjs) · 보이는 % 글 · 이름 · 숫자가 아래 탭 위 · 옆 넘침(문서 + 그림 칸 부품마다)
                  · NaN 같은 글자 없음 · 링크가 판에 있는 곳 · 화면 오류 0 · 걸음 계획(기승전결 넷 · 걸음마다 그림 번호 하나 · 움직이는 부품은 다 걸음에 묶임)
      ② 계산 층 — 한국어로 그린 모든 화면의 글(글자 · 읽기 이름표 · 창 제목)을 사이트 번역 함수 그대로(i18n.js · 판 이름 더하기까지) 73개 말로 바꿔 남은 한국어 0
@@ -13,6 +13,7 @@
      ⑤ 빈 날 길 — 판 자료를 바꿔치기(판 목록 해시도 같이) — 한국 판 일부 빔 · 미국 판 모두 빔 · 없는 주소 셋 · 못 읽은 파일 → 두 말로 그림 한 장(빈 하늘) · 기대값 · 움직임
    결과: reports/atlas11/full-check/latest.json(schema 3) — 올리기 문(art_gate.mjs)이 지문 · 다섯 나라 · 두 말 · 73개 말 · 빈 날 · 실패 0 을 봄
    쓰는 법: node scripts/atlas11/full_check.mjs --base http://127.0.0.1:8823 --pw /opt/node-tools [--boards kr,us] [--quick] [--kinds home,map] [--lay] [--edge-only] [--jobs 3] [--out 파일] */
+import {SITE_BOARDS} from '../../lib/atlas11/places.mjs'; // 사이트에 싣는 판(2026-10-08 18:33 부터 한국 · 미국)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -27,9 +28,9 @@ import {expectOf, compare as cmp, pctText} from './art_expect.mjs'; // 그림 �
 
 const arg = (k, d = null) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const BASE = arg('--base', 'http://127.0.0.1:8823'), PW = arg('--pw', '/opt/node-tools'), EDGE_ONLY = process.argv.includes('--edge-only'), QUICK = process.argv.includes('--quick') || EDGE_ONLY || process.argv.includes('--kinds');
-const BOARDS = arg('--boards', 'kr,us,cn,jp,vn').split(','), OUT = arg('--out', 'reports/atlas11/full-check/latest.json'), JOBS = Number(arg('--jobs', '3'));
+const BOARDS = arg('--boards', SITE_BOARDS.join(',')).split(','), OUT = arg('--out', 'reports/atlas11/full-check/latest.json'), JOBS = Number(arg('--jobs', '3'));
 const LAY = (!QUICK || process.argv.includes('--lay')) && !process.argv.includes('--nolay'); // 고치는 동안 가장 긴 글 층만 더(--kinds home --lay) — 결과는 여전히 빠른 검사(문을 못 지남)
-const KINDS = arg('--kinds', null)?.split(',') ?? null; // 고치는 동안: 화면 종류만 골라 빠르게(home,map,land,ind,co,similar,rise,road,agenda,find,log,start,guide,long,korea) — 결과는 빠른 검사로 적혀 문을 못 지남
+const KINDS = arg('--kinds', null)?.split(',') ?? null; // 고치는 동안: 화면 종류만 골라 빠르게(home,flow,map,land,ind,co,similar,rise,road,agenda,find,log,start,guide,long,korea) — 결과는 빠른 검사로 적혀 문을 못 지남
 const ROOT = process.cwd(), DIST = path.join(ROOT, 'dist'), PRE = {kr: '/', us: '/us/', cn: '/cn/', jp: '/jp/', vn: '/vn/'};
 const SPEED = 4; // 움직임 검사 빠르기(걸음 사이 0.15초 틈이 0.04초 — 프레임마다 셈)
 const require = createRequire(PW.replace(/\/?$/, '/'));
@@ -77,6 +78,9 @@ const CRAWL = async ({routes, collect}) => {
     m.sw = document.documentElement.scrollWidth; m.cw = document.documentElement.clientWidth;
     m.over = []; if (sec) for (const x of sec.querySelectorAll('*')) { const r = x.getBoundingClientRect(); if (r.width && r.right > m.cw + 1) { m.over.push(cls(x)); if (m.over.length >= 3) break; } }
     m.done = !!ra?.classList.contains('ra-done');
+    // 돈 흐름 업종의 회사(2026-10-08 17:41 「돈에 흐름에 관련된 종목들을 표기하라」) — 그림이 실은 값(data-cos) · 화면에 그린 줄(업종 칸마다 회사 고리 차례)
+    { const x = document.querySelector('#main [data-cos]'); try { m.cos = x ? JSON.parse(x.dataset.cos) : null; } catch { m.cos = 'bad-json'; }
+      m.cosDom = [...document.querySelectorAll('#main .rc-g')].map(g => [g.closest('.rc-side')?.dataset.side ?? null, Number(g.dataset.rank), g.dataset.group, [...g.querySelectorAll('.rc-a')].map(a => a.dataset.code)]); }
     m.plan = ra?.dataset.plan ?? null;
     m.ats = ra ? [...new Set([...ra.querySelectorAll('[data-at]')].map(x => x.dataset.at))] : [];
     m.loose = ra ? [...ra.querySelectorAll('.ra-art [class*="ak-"]')].filter(x => !x.closest('[data-at]')).map(cls).slice(0, 3) : [];
@@ -137,7 +141,7 @@ for (const b of BOARDS) {
   const board = boardOf[b], agenda = await readJson(path.join(DIST, PRE[b].replace(/^\//, ''), 'data/atlas11/view/agenda.json')).catch(() => null);
   setPlace({id: b}); // familyOf 는 판마다 갈래 표가 다름 — 판을 먼저 고르고 셈(v3 첫 판이 판을 하나씩 밀려 셈하던 것)
   const groups = board.groups ?? [], famIds = [...new Set(groups.map(g => familyOf(g.label).id))];
-  const routes = [['#/', 'home'], ['#/map', 'map'], ...famIds.map(f => [`#/map/f/${f}`, 'land', f]), ...groups.map(g => [`#/i/${g.id}`, 'ind', g.id]),
+  const routes = [['#/', 'home'], ['#/flow', 'flow'], ['#/map', 'map'], ...famIds.map(f => [`#/map/f/${f}`, 'land', f]), ...groups.map(g => [`#/i/${g.id}`, 'ind', g.id]),
     ...(QUICK ? board.companies.slice(0, 12) : board.companies).map(c => [`#/stock/${c.code}`, 'co', c.code]),
     ['#/similar', 'similar'], ['#/rise', 'rise'], ['#/road', 'road'], ['#/agenda', 'agenda'], ['#/find', 'find'], ['#/log', 'log'], ['#/start', 'start'], ['#/guide', 'guide'], ['#/long', 'long'], ['#/korea', 'korea']];
   const picked = KINDS ? routes.filter(r => KINDS.includes(r[1])) : routes;
@@ -173,13 +177,14 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   const pp = planProblem(m); stats.plans++; if (pp) no('걸음 계획: ' + pp);
   for (const l of m.links) { stats.links++; const [, k, v] = /^#\/(i|stock|map\/f)\/(.+)$/.exec(l) ?? []; if (k === 'i' && !gids.has(v)) no('없는 업종 링크 ' + l); if (k === 'stock' && !codes.has(decodeURIComponent(v))) no('없는 회사 링크 ' + l); if (k === 'map/f' && !famIds.includes(v)) no('없는 갈래 링크 ' + l); }
   // 그림 숫자 ↔ 판 자료(따로 셈) — 값이 비는 날은 빈 하늘({quiet: 화면}) · 없는 주소 · 못 읽은 파일은 오류 화면의 빈 하늘({quiet: 'fail'})
-  const want = kind === 'home' ? E.home : kind === 'map' ? E.map : kind === 'land' ? E.land[id] ?? {quiet: 'land'} : kind === 'ind' ? E.ind[id] ?? {quiet: 'industry'} : kind === 'co' ? E.co[id] ?? {quiet: 'fail'}
+  const want = kind === 'home' ? E.home : kind === 'flow' ? E.flow : kind === 'map' ? E.map : kind === 'land' ? E.land[id] ?? {quiet: 'land'} : kind === 'ind' ? E.ind[id] ?? {quiet: 'industry'} : kind === 'co' ? E.co[id] ?? {quiet: 'fail'}
     : kind === 'similar' ? E.similar : kind === 'rise' ? E.rise : kind === 'road' ? E.road : kind === 'agenda' ? E.agenda : kind === 'find' ? E.find : kind === 'log' ? E.log : kind === 'start' ? E.start : null;
-  if (kind === 'home') compare(b, where, E.home.quiet ? m.check : m.rot, want);
-  if (kind === 'home' && !E.home.quiet) { const o = m.rot?.outs ?? [], i2 = m.rot?.ins ?? []; stats.numbers += o.length + i2.length; if (o.some((x, k) => k && o[k - 1][1] > x[1])) no('빠지는 곳 1위~3위가 가장 많이 나간 순이 아님'); if (i2.some((x, k) => k && i2[k - 1][1] < x[1])) no('들어가는 곳 1위~3위가 가장 많이 들어간 순이 아님'); } // 10월 8일 12:59 「가장 많이 나간 순」
+  if (kind === 'flow') compare(b, where, E.flow.quiet ? m.check : m.rot, want); // 돈 흐름(아래 탭 · 2026-10-08 17:41 — 그 전에는 탭 「불장」 맨 위)
+  if (kind === 'flow' && !E.flow.quiet) { const o = m.rot?.outs ?? [], i2 = m.rot?.ins ?? []; stats.numbers += o.length + i2.length; if (o.some((x, k) => k && o[k - 1][1] > x[1])) no('빠지는 곳 1위~3위가 가장 많이 나간 순이 아님'); if (i2.some((x, k) => k && i2[k - 1][1] < x[1])) no('들어가는 곳 1위~3위가 가장 많이 들어간 순이 아님');  const want2 = E.flowCos ?? []; stats.numbers += want2.reduce((t, x) => t + 2 + x[3].length, 0); if (JSON.stringify(m.cos) !== JSON.stringify(want2)) no(`돈 흐름 업종의 회사(data-cos)가 판 자료와 다름: ${JSON.stringify(m.cos)?.slice(0, 160)}`); if (JSON.stringify(m.cosDom) !== JSON.stringify(want2)) no(`돈 흐름 업종의 회사 줄(화면)이 판 자료와 다름: ${JSON.stringify(m.cosDom)?.slice(0, 160)}`); } // 10월 8일 12:59 「가장 많이 나간 순」
+  else if (kind === 'flow') { if (m.cos != null) no('돈 흐름이 없는 날인데 업종 회사 칸이 있음'); } // 빈 하늘(위에서 맞댐)
   else if (['guide', 'long', 'korea'].includes(kind)) { if (!m.check) no('그림 값(data-check) 없음'); }
   else compare(b, where, m.check, want);
-  for (const k of ['topAvg', 'v0', 'v', 'avg', 'vl']) if (fin(want?.[k]) && ['map', 'land', 'ind', 'co', 'similar', 'rise', 'road'].includes(kind)) { stats.texts++; if (!m.labText.includes(pctText(want[k]))) no(`보이는 글에 ${pctText(want[k])} 없음`); }
+  for (const k of ['topAvg', 'v0', 'v', 'avg', 'vl']) if (fin(want?.[k]) && ['home', 'map', 'land', 'ind', 'co', 'similar', 'rise', 'road'].includes(kind)) { stats.texts++; if (!m.labText.includes(pctText(want[k]))) no(`보이는 글에 ${pctText(want[k])} 없음`); }
 }
 
 /* ── ① 화면 안 순회(영어 · 한국어) + ④ 움직임 ── */
@@ -241,7 +246,7 @@ if ((!QUICK || EDGE_ONLY) && BOARDS.includes('kr')) { // A — 한국 판 일부
   bd.similar = {...(bd.similar ?? {}), items: []}; bd.next = {...(bd.next ?? {}), items: []}; bd.start = null;
   const s1 = {...await readJson(path.join(dir, `stocks/${x1}.json`)), change20: null}, s2 = {...await readJson(path.join(dir, `stocks/${x2}.json`)), group: null};
   EDGE.push({b: 'kr', name: '빈 날 A', board: bd, stocks: {[x1]: s1, [x2]: s2}, missing: ['/story.json', '/changelog.json', '/data/atlas11/view/agenda.json'], agenda: null,
-    visits: [['#/', 'home'], ['#/i/' + gNull.id, 'ind', gNull.id], ['#/stock/' + x1, 'co', x1], ['#/stock/' + x2, 'co', x2], ['#/similar', 'similar'], ['#/rise', 'rise'], ['#/start', 'start'], ['#/agenda', 'agenda'], ['#/log', 'log'],
+    visits: [['#/', 'home'], ['#/flow', 'flow'], ['#/i/' + gNull.id, 'ind', gNull.id], ['#/stock/' + x1, 'co', x1], ['#/stock/' + x2, 'co', x2], ['#/similar', 'similar'], ['#/rise', 'rise'], ['#/start', 'start'], ['#/agenda', 'agenda'], ['#/log', 'log'],
       ['#/road', 'road'], ['#/map', 'map'], ['#/find', 'find'], ['#/i/zznone', 'ind', 'zznone'], ['#/map/f/zznone', 'land', 'zznone'], ['#/stock/ZZNONE', 'co', 'ZZNONE']], motion: '#/similar'}); // 길잡이 규칙에 맞는 없는 주소(맞지 않으면 첫 화면으로 감)
 }
 if ((!QUICK || EDGE_ONLY) && BOARDS.includes('us')) { // B — 미국 판 모두 빔
@@ -251,7 +256,7 @@ if ((!QUICK || EDGE_ONLY) && BOARDS.includes('us')) { // B — 미국 판 모두
   const c0 = bd.companies[0].code, g0 = bd.groups[0].id, f0 = familyOf(bd.groups[0].label).id;
   const s0 = {...await readJson(path.join(dir, `stocks/${c0}.json`)), change20: null};
   EDGE.push({b: 'us', name: '빈 날 B', board: bd, stocks: {[c0]: s0}, missing: ['/story.json', '/changelog.json'], agenda: await readJson(path.join(dir, 'agenda.json')).catch(() => null),
-    visits: [['#/', 'home'], ['#/map', 'map'], ['#/map/f/' + f0, 'land', f0], ['#/i/' + g0, 'ind', g0], ['#/stock/' + c0, 'co', c0], ['#/similar', 'similar'], ['#/rise', 'rise'], ['#/road', 'road'],
+    visits: [['#/', 'home'], ['#/flow', 'flow'], ['#/map', 'map'], ['#/map/f/' + f0, 'land', f0], ['#/i/' + g0, 'ind', g0], ['#/stock/' + c0, 'co', c0], ['#/similar', 'similar'], ['#/rise', 'rise'], ['#/road', 'road'],
       ['#/agenda', 'agenda'], ['#/find', 'find'], ['#/log', 'log'], ['#/start', 'start'], ['#/guide', 'guide'], ['#/long', 'long'], ['#/korea', 'korea']], motion: '#/map'});
 }
 for (const x of EDGE) tasks.push(async () => {
@@ -311,7 +316,7 @@ tick('layout');
 await browser.close();
 
 const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), lap, code: await codePrint(ROOT), boards: BOARDS, quick: QUICK, langs: ['en', 'ko'], ...stats, failed: fails.length,
-  ok: fails.length === 0 && !QUICK && BOARDS.length === 5 && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1, fails: fails.slice(0, 400)};
+  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1, fails: fails.slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
 console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, failed: fails.length, ok: report.ok, seconds: report.seconds, lap}));

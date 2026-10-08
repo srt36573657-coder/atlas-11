@@ -37,9 +37,14 @@ export function expectOf(b, board, agenda, story, log, others) {
   const st = board.start;
   const picks = (st?.picks ?? []).map(p => p.mdd).filter(fin);
   E.start = !st ? Q('start') : st.ready ? (picks.length && fin(st.typical?.mdd) ? {worst: Math.min(...picks), typ: st.typical.mdd, n: picks.length} : Q('start')) : {have: st.have?.days ?? 0, need: st.rule?.days ?? 756};
+  // 불장(#/) — 봉화대 그림(2026-10-08 17:41 마카오 시각 「돈에 흐름과 불장을 분리한다」): 불장 업종 가운데 오른 순 1위 · 그 값 · 2위 · 불장 업종 수 · 셀 값이 없으면 빈 하늘
+  const hotG = groups.filter(g => g.hot), hotF = hotG.filter(g => fin(g.change20)).sort(byRise('id'));
+  E.home = hotF.length ? {g0: hotF[0].id, v0: hotF[0].change20, g1: hotF[1]?.id ?? null, n: hotG.length} : Q('home');
   const rot = b === 'kr' ? story?.rotation : story?.rotations?.[b];
-  E.rot = rot && !rot.none && rot.pair ? rot : null; // 없으면 첫 화면은 빈 하늘(E.home)
-  E.home = E.rot ? {from: rot.pair.from.id, to: rot.pair.to.id, start: rot.pair.start, days: rot.pair.days, outAmt: rot.out[0].amount, inAmt: rot.in[0].amount, outs: (rot.out ?? []).slice(0, 3).map(x => [x.id, x.amount]), ins: (rot.in ?? []).slice(0, 3).map(x => [x.id, x.amount]), fomo: rot.fomo.to, waves: (rot.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])} : Q('home'); // 파장 1~5차(06:46 · 셈은 waves_verify.py 가 따로) · 빠지는 곳 · 들어가는 곳 1위~3위(10월 8일 12:43 · 12:59 「1등부터 3등까지 · 가장 많이 나간 순」)
+  E.rot = rot && !rot.none && rot.pair ? rot : null; // 없으면 아래 탭 「돈 흐름」은 빈 하늘(E.flow)
+  // 돈 흐름 업종의 회사(17:41 「돈에 흐름에 관련된 종목들을 표기하라」) — [쪽(들어가는 곳 먼저), 차례, 업종, 그 업종 회사 기호(오른 순)]
+  E.flowCos = E.rot ? ['in', 'out'].flatMap(side => (rot[side] ?? []).slice(0, 3).map((x, i) => { const g = groups.find(y => y.id === x.id); return [side, i + 1, x.id, (g?.codes ?? []).map(c => byCode.get(c)).filter(Boolean).sort(byRise('code')).map(c => c.code)]; })) : null;
+  E.flow = E.rot ? {from: rot.pair.from.id, to: rot.pair.to.id, start: rot.pair.start, days: rot.pair.days, outAmt: rot.out[0].amount, inAmt: rot.in[0].amount, outs: (rot.out ?? []).slice(0, 3).map(x => [x.id, x.amount]), ins: (rot.in ?? []).slice(0, 3).map(x => [x.id, x.amount]), fomo: rot.fomo.to, waves: (rot.waves ?? []).map(x => [x.n, x.to.id, x.start, x.end])} : Q('flow'); // 파장 1~5차(06:46 · 셈은 waves_verify.py 가 따로) · 빠지는 곳 · 들어가는 곳 1위~3위(10월 8일 12:43 · 12:59 「1등부터 3등까지 · 가장 많이 나간 순」)
   return E;
 }
 /** data-check(그림이 실은 값) ↔ 기대값 — 숫자는 소수 여섯째 자리까지 · bad(what) 로 알림 · 맞댄 숫자 수를 돌려줌 */

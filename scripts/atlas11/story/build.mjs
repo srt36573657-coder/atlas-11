@@ -8,6 +8,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {buildStory, checkStory} from '../../../lib/atlas11/story.mjs';
 import {buildRotation, checkRotation, ROT} from '../../../lib/atlas11/rotation.mjs';
+import {SITE_BOARDS} from '../../../lib/atlas11/places.mjs'; // 사이트에 싣는 판만(2026-10-08 18:33 「한국 미국장만 두고 남머지 장은 삭제해」 — 한국 · 미국)
 
 const readJson = async f => JSON.parse(await fs.readFile(f, 'utf8'));
 const PLACES = [['kr', '한국', 'public/data/atlas11/view'], ['us', '미국', 'public/data/atlas11/us/view'], ['cn', '중국', 'public/data/atlas11/cn/view'], ['jp', '일본', 'public/data/atlas11/jp/view'], ['vn', '베트남', 'public/data/atlas11/vn/view']];
@@ -34,16 +35,17 @@ export async function rotationOf(root, place) {
   } catch (e) { return {schema: ROT.schema, none: true, reason: '셈 멈춤: ' + e.message}; }
 }
 export const rotationFrom = root => rotationOf(root, 'kr');
-/** 바깥 판 넷 — {us, cn, jp, vn} */
+/** 바깥 판 — {us}(2026-10-08 18:33 부터 · 옛 {us, cn, jp, vn} — 내린 판은 셈하지 않음) */
 export async function rotationsFrom(root) {
   const out = {};
-  for (const [place] of ROT_PLACES) if (place !== 'kr') out[place] = await rotationOf(root, place);
+  for (const [place] of ROT_PLACES) if (place !== 'kr' && SITE_BOARDS.includes(place)) out[place] = await rotationOf(root, place);
   return out;
 }
 
 export async function storyFrom(root, {made = new Date().toISOString()} = {}) {
   const boards = [], items = [];
   for (const [place, label, dir] of PLACES) {
+    if (!SITE_BOARDS.includes(place)) continue; // 내린 판(중국 · 일본 · 베트남)은 돈 이야기에서 뺌
     let b; try { b = await readJson(path.join(root, dir, 'board.json')); } catch { continue; }
     boards.push({place, label, asOf: b.asOf, groups: b.groups ?? []});
     if (place === 'kr') {

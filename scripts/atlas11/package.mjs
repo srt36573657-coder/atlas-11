@@ -25,7 +25,8 @@ const copyDir = async (from, to) => { await fs.mkdir(to, {recursive: true}); for
 export const LANGS = Object.freeze(['en', 'zh']);
 /** 바깥 판 — 미국(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) · 중국 · 일본 · 베트남(2026-10-07 05:25 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」)
    판 묶음(public/data/atlas11/<id>/view · 예측 없음 · 판 이름 · place.id 가 맞음)이 있는 것만 /<id>/ 에 같은 화면 코드와 함께 싣는다 · 차례 = 위 막대 시장 단추 차례 */
-export const ABROAD = Object.freeze([['us', '미국'], ['cn', '중국'], ['jp', '일본'], ['vn', '베트남']]);
+export {ABROAD} from '../../lib/atlas11/places.mjs'; // 2026-10-08 18:33(마카오 시각) 「한국 미국장만 두고 남머지 장은 삭제해」 — 미국 하나(옛 미국 · 중국 · 일본 · 베트남)
+import {ABROAD, RETIRED} from '../../lib/atlas11/places.mjs';
 
 export async function buildDist() {
   const manifest = JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11/view/manifest.json'), 'utf8'));
@@ -64,7 +65,7 @@ export async function buildDist() {
   await fs.writeFile(path.join(dist, 'story.json'), JSON.stringify(story) + '\n');
   await fs.writeFile(path.join(dist, '_headers'), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/story.json\n  Cache-Control: no-cache\n" + abroad.map(id => `/${id}/index.html\n  Cache-Control: no-cache\n/${id}/data/*\n  Cache-Control: no-cache\n/${id}/app/*\n  Cache-Control: no-cache\n`).join('') + "/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
-  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + abroad.map(id => `/${id}  /${id}/  301\n`).join('') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
+  await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + Object.keys(RETIRED).map(id => `/${id}/*  /  302\n/${id}  /  302\n`).join('') /* 내린 판(중국 · 일본 · 베트남 — 2026-10-08 18:33)의 옛 주소는 한국 판 첫 화면으로 */ + abroad.map(id => `/${id}  /${id}/  301\n`).join('') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사

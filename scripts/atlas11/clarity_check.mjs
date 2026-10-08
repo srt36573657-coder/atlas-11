@@ -20,6 +20,7 @@ export const SCREENS = [
   // 2026-10-04 21:55 「자 이제 학습한것 이상으로 만들어」: 36칸 판 · 업종(불장 1위 업종) · 회사 · 일정
   // 2026-10-05 10:24 「잡스라면 36가지」 1차: 탭 「불장」(#/ · 큰 흐름) · 탭 「업종」(#/map · 73칸 판)
   {id: 'home', name: '불장', hash: '#/', wait: '.h-page .hs-seg'},
+  {id: 'flow', name: '돈 흐름', hash: '#/flow', wait: '.fl-page .sy'}, // 2026-10-08 17:41 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」 — 아래 탭 둘째 · 1위~3위 업종 회사
   {id: 'map', name: '지도', hash: '#/map', wait: '.lm-c'}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 옛 이름 「업종 73칸」 · 맨 위 지도 한 장 + 73칸
   {id: 'land', name: '지도 갈래', hash: '#/map/f/semi', wait: '.l-grid .t-tile'}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 땅을 누르면 오는 갈래 화면(반도체 · 미국 판도 같은 id)
   {id: 'industry', name: '업종', hash: board => '#/i/' + (board?.hot?.items?.[0]?.id ?? board?.groups?.[0]?.id ?? ''), wait: '.b-card .spark'},

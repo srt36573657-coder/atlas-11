@@ -23,6 +23,7 @@ import {h, speakScreen, stopSpeak, place, setPlace} from './util.js';
 import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
 import {renderHome, renderMap, renderLand} from './view-home.js';
+import {renderFlow} from './view-flow.js'; // 아래 탭 「돈 흐름」(2026-10-08 17:41 마카오 시각 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」)
 import {renderCompany} from './view-company.js';
 import {renderIndustry} from './view-industry.js';
 import {renderAgenda} from './view-agenda.js';
@@ -41,6 +42,8 @@ const app = {view: null, manifest: null, tab: 'home', places: []};
 const ICON = {
   // 불장: 불꽃 하나 · 지도(옛 업종): 크기가 다른 땅 넷 — 로고 5번 「땅 나누기」와 같은 모양(옛: 같은 네 칸)
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c.7 3.1-1.8 4.7-3.2 6.7C7.7 11 7 12.6 7 14.2a5 5 0 0 0 10 0c0-2.4-1.2-4.1-2.3-5.4-.2 1.5-.9 2.4-1.9 2.9.4-3-.2-6.2-.8-8.9z"/></svg>',
+  // 돈 흐름: 동전 하나 → 화살(돈이 옮겨 감 · 2026-10-08 17:41)
+  flow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="12" r="4.5"/><path d="M7.5 9.8v4.4"/><path d="M13.5 12h7.5"/><path d="M17.8 8.6 21.2 12l-3.4 3.4"/></svg>',
   map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="8.5" height="10" rx="1.6"/><rect x="3.5" y="16.5" width="8.5" height="4" rx="1.4"/><rect x="15" y="3.5" width="5.5" height="5.5" rx="1.4"/><rect x="15" y="12" width="5.5" height="8.5" rx="1.6"/></svg>',
   road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="5" r="2.6"/><circle cx="5" cy="12" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="12" cy="5" r="2.6"/><circle cx="19" cy="5" r="2.6"/><circle cx="19" cy="12" r="2.6"/></svg>',
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M8 17h6"/></svg>',
@@ -57,6 +60,7 @@ const ICON = {
 };
 const routes = [
   {id: 'home', tab: 'home', label: '불장', match: /^(#\/?)?$/, render: renderHome},
+  {id: 'flow', tab: 'flow', label: '돈 흐름', match: /^#\/flow$/, render: renderFlow}, // 2026-10-08 17:41(마카오 시각) 「돈에 흐름과 불장을 분리한다 그리고 돈에 흐름에 관련된 종목들을 표기하라」 · 「별도에 탭을하나더 만들어라」 — 탭 「불장」 맨 위에 있던 돈의 흐름 · 1위~3위 업종 회사
   {id: 'map', tab: 'map', label: '지도', match: /^#\/map$/, render: renderMap}, // 2026-10-06 00:21 「잡스라면 … 개선하라」 — 옛 이름 「업종」 · 주소는 그대로(#/map)
   {id: 'land', tab: 'map', match: /^#\/map\/f\/[a-z0-9]+$/, render: renderLand}, // 2026-10-06 07:03 「왜 3단 클릭 구조가 아니지?」 — 지도 땅 → 그 갈래 화면 → 업종 → 회사
   {id: 'industry', tab: 'from', match: /^#\/i\/[a-z0-9]+$/, render: renderIndustry},
@@ -72,7 +76,7 @@ const routes = [
   {id: 'korea', tab: 'start', match: /^#\/korea$/, render: renderKorea},
   {id: 'start', tab: 'start', label: '처음', match: /^#\/start$/, render: renderStart}, // 2026-10-06 23:19 「초보들이 뭘사야 안전한지 … 잡스였다면」 · 10-07 00:40 「틀리더라도 일단 찍어」 · 00:49 「이대로 사이트에 올려줘」 — 지난 3년 가장 덜 떨어진 우량 큰 회사 다섯
 ];
-const TABS = ['home', 'map', 'road', 'agenda', 'find', 'log', 'start']; // 일곱째 「처음」(2026-10-07 00:49) — 넣으면서 뺀 것: 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」(「처음」 안으로)
+const TABS = ['home', 'flow', 'map', 'road', 'agenda', 'find', 'log', 'start']; // 일곱째 「처음」(2026-10-07 00:49) — 넣으면서 뺀 것: 첫 화면 맨 아래 접힌 「ATLAS가 하지 않는 일」(「처음」 안으로) · 여덟째 「돈 흐름」(2026-10-08 17:41 · 둘째 자리 — 「불장」 바로 옆) — 넣으면서 뺀 것: 탭 「불장」 맨 위 돈의 흐름 · 기사로 본 돈 이야기 · 결
 /** 보던 자리 기억(출목표 · 닮은 7곳 · 22곳) — 회사 화면에 갔다 돌아오면 그 자리 */
 const KEEP_SCROLL = new Set(['road', 'similar', 'rise', 'map', 'find']), scrollMemo = new Map();
 /** 선 그리기 움직임을 이미 보인 화면 */
@@ -132,8 +136,8 @@ function header() {
   }}, speakerIcon());
   // 시장 고르기 「한국 · 미국」(2026-10-05 18:02 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 사이트에 판이 둘 있을 때만(places.json · package.mjs 가 씀)
   //   한국 판은 / · 미국 판은 /us/ — 같은 화면 코드, 판만 다름 · 지금 판은 눌린 채로(aria-current)
-  //   보던 탭(불장 · 업종 · 출목표 · 일정 · 예비 · 오름 상위)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
-  const tabHash = () => /^#\/(map|road|agenda|similar|rise|log|start)?$/.test(location.hash) ? location.hash : '';
+  //   보던 탭(불장 · 돈 흐름 · 지도 · 출목표 · 일정 · 예비 · 오름 상위 · 기록 · 처음)은 그대로 들고 간다 — 회사 · 업종 화면은 판마다 달라 처음 화면으로
+  const tabHash = () => /^#\/(flow|map|road|agenda|similar|rise|log|start)?$/.test(location.hash) ? location.hash : ''; // 「돈 흐름」(2026-10-08 17:41)도 들고 감
   const mktLinks = () => app.places.map(p => { const href = p.href + (I18N ? '?lang=' + LANG : ''); return h('a', {class: 'mkt-b', href, 'data-place': p.id, 'aria-current': p.id === place.id ? 'page' : null, // 고른 말 그대로(기기에 못 적는 창에서도)
     onclick: e => { if (p.id !== place.id) e.currentTarget.setAttribute('href', href + tabHash()); }}, p.label); });
   // 시장이 셋 이상(2026-10-07 05:25 「자 중국 일본 베트남 주식도 넣어라 미국 장 처럼 말이다」 — 한국 · 미국 · 중국 · 일본 · 베트남)이면
@@ -168,15 +172,15 @@ function header() {
   document.getElementById('bottom').replaceChildren(...TABS.map(id => tab(routes.find(r => r.id === id))));
   fitTabs();
 }
-/** 아래 탭 이름 맞추기(2026-10-07 말 74개 — 독일어 「Termine」「Chronik」 처럼 긴 이름이 일곱 칸 중 제 칸을 넘지 않게)
- *  가장 넘치는 이름에 맞춰 일곱 이름을 같은 비율로 줄인다(--tab-k · 원래 크기의 55% 아래로는 안 줄임) · 말을 바꾼 뒤 · 글씨 단추 · 화면 폭이 바뀔 때 다시 잼 */
+/** 아래 탭 이름 맞추기(2026-10-07 말 74개 — 독일어 「Termine」「Chronik」 처럼 긴 이름이 일곱 칸 중 제 칸을 넘지 않게 · 2026-10-08 17:41 여덟 칸 — 칸 안 여백 6 → 2px)
+ *  가장 넘치는 이름에 맞춰 여덟 이름을 같은 비율로 줄인다(--tab-k · 원래 크기의 72% 아래로는 안 줄임 · 2026-10-08 탭 여덟 — 옛 일곱 · 55%) · 말을 바꾼 뒤 · 글씨 단추 · 화면 폭이 바뀔 때 다시 잼 */
 function fitTabs() {
   const bar = document.getElementById('bottom'); if (!bar) return;
   bar.style.removeProperty('--tab-k');
   requestAnimationFrame(() => {
     let k = 1;
-    for (const a of bar.querySelectorAll('.bottom-link')) { const l = a.querySelector('.label'); if (!l) continue; const room = a.clientWidth - 6, need = l.getBoundingClientRect().width; if (need > room && need > 0) k = Math.min(k, room / need); }
-    if (k < 1) bar.style.setProperty('--tab-k', Math.max(0.55, k - 0.01).toFixed(3));
+    for (const a of bar.querySelectorAll('.bottom-link')) { const l = a.querySelector('.label'); if (!l) continue; const room = a.clientWidth - 2, need = Math.max(l.scrollWidth, l.getBoundingClientRect().width); if (need > room && need > 0) k = Math.min(k, room / need); } // 이름 전체 폭(scrollWidth) — 칸에 잘린 폭(…)으로 재면 덜 줄어 「돈 흐…」처럼 잘렸음(2026-10-08 탭 여덟)
+    if (k < 1) bar.style.setProperty('--tab-k', Math.max(0.72, k - 0.01).toFixed(3)); // 여덟 칸(2026-10-08) — 다 같이 72% 아래로는 안 줄임(글씨 11px 아래로 가지 않게) · 그래도 넘치는 긴 이름만 끝을 「…」로(style.css)
     // 위 막대: 넘치면 시장 단추(한국 · 미국)만 줄임 — 둥근 단추(말 · 글씨 · 소리)는 44px 그대로
     const top = document.querySelector('.top-inner'), mkt = top?.querySelector('.mkt');
     if (top && mkt) { mkt.style.removeProperty('--mkt-k'); const over = top.scrollWidth - top.clientWidth, w = mkt.getBoundingClientRect().width;
@@ -188,10 +192,10 @@ function fontLabel() { const b = document.getElementById('font-btn'); if (b) b.s
 function markActive(id) { for (const el of document.querySelectorAll('[data-route]')) { const on = el.dataset.route === id; el.classList.toggle('active', on); if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); } }
 
 /** 하규 응원 · 건의 받는 곳 — 모든 화면 맨 위(위 막대 바로 아래 · 사장님 2026-10-08 14:42(마카오 시각) 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」)
- *  맨 아래 줄(parts.js foot)에서 옮김(규칙 1 — 두 번 나오지 않게) · 글은 이미 말 73개로 옮긴 두 줄 그대로(새 번역 0줄) · 번호는 식별자 · 누르면 문자 앱(나라 밖에서도 되게 +82)
+ *  맨 아래 줄(parts.js foot)에서 옮김(규칙 1 — 두 번 나오지 않게) · 번호는 식별자 · 누르면 문자 앱(나라 밖에서도 되게 +82) · 응원 글은 17:44 「하규 화이팅! 비서실장 화이팅」(말 73개 사전에 새로 넣음)
  *  자료 목록을 읽기 전에 그림(자료를 못 읽은 오류 화면에도 맨 위에) */
 function topNote() {
-  document.getElementById('topnote')?.replaceChildren(h('p', {class: 'tn-cheer'}, '하규야, 힘내라 — 늘 응원한다'),
+  document.getElementById('topnote')?.replaceChildren(h('p', {class: 'tn-cheer'}, '하규 화이팅! 비서실장 화이팅'), // 2026-10-08 17:44(마카오 시각) 「하규 화이팅! 비서실장 화이팅 이렇게 수정 하자」 — 옛 「하규야, 힘내라 — 늘 응원한다」
     h('p', {class: 'tn-contact b-contact'}, '건의는 카톡이나 문자로', ' ', h('a', {href: 'sms:+821090117377', 'data-ident': ''}, '010-9011-7377')));
 }
 /** 첫 화면 맞추기(규칙 30 · 2026-10-08 14:42 맨 위 줄이 생겨 첫 화면이 그만큼 내려감) — 그림 아래 이름 · 숫자(.ra-lab)의 아래 끝이 아래 탭 위에 오도록

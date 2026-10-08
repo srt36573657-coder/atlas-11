@@ -5,6 +5,7 @@
  *   일정: 이 세 시장의 일정표는 아직 없어 싣지 않는다(빈 일정 · 화면에 그렇게 적힘)
  *   node scripts/atlas11/world/build.mjs --market cn|jp|vn [--now ISO]
  */
+import {RETIRED} from '../../../lib/atlas11/places.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {buildBoard} from '../../../lib/atlas11/board.mjs';
@@ -43,6 +44,7 @@ export async function writeWorldView(market, files, {root = process.cwd()} = {})
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  if (RETIRED[arg('--market')]) { console.log(JSON.stringify({market: arg('--market'), skipped: `내린 판(${RETIRED[arg('--market')]}) — 판을 다시 만들지 않음`})); process.exit(0); } // 2026-10-08 18:33 「한국 미국장만 두고 남머지 장은 삭제해」
   const market = arg('--market'), now = arg('--now') ?? new Date().toISOString(), files = await buildWorldFiles(market, {now});
   const out = await writeWorldView(market, files);
   let changelog = null; try { changelog = await recordBoardChange(process.cwd(), files.get('board.json'), {place: market, made: files.get('manifest.json')?.generatedAt ?? now}); } catch (e) { console.warn(`${market} changelog write: ` + e.message); changelog = {wrote: false, error: e.message}; }

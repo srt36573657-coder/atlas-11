@@ -3,13 +3,14 @@
    사이트에 올리기 직전(deploy_netlify.mjs 맨 앞 · 손으로 올리기 · 평일 16:00 · 19:00 자동 올리기 모두 같은 길)에 이 문을 지난다. 하나라도 걸리면 올리지 않는다:
      ① 빠짐없이 도는 검사(full_check.mjs)의 결과 reports/atlas11/full-check/latest.json 이 있다
      ② 그 결과의 화면 코드 지문 = 지금 화면 코드 지문(site/app 의 .js · .css · 말 사전 .json · site/index.html) — 화면을 고치고 검사를 안 돌리면 여기서 막힘
-     ③ 그 결과가 다섯 나라 · 모든 화면(빠른 검사 아님)이고 실패 0
+     ③ 그 결과가 사이트의 모든 판(2026-10-08 18:33 부터 한국 · 미국 — lib/atlas11/places.mjs · 옛 다섯 나라) · 모든 화면(빠른 검사 아님)이고 실패 0
      ④ 말 사전 73개가 같은 열쇠를 다 가짐(만 · 억을 쓰는 말 셋은 그 셋끼리) — 영어로 다 돈 검사가 다른 말에서도 통하게
      ⑤ 그 결과가 두 말(영어 · 한국어 — 사장님이 보는 말 · 가장 좁은 폭 360)로 모든 화면을 돈 것(2026-10-08 05:05 — 한국어는 종류마다 한 곳만 재던 구멍)
      ⑥ 그 결과에 빈 날 길이 있음(자료를 바꿔치기해 값이 비는 날 · 없는 주소에도 그림 한 장인지 — 05:05 빈 날 막기)
      ⑦ 그 결과가 v3 — 73개 말 계산 층(모든 화면의 글을 73개 말로 바꿔 남은 한국어 0) · 74개 말 가장 긴 글 층(말마다 · 화면 종류마다 가장 긴 화면이 한 화면 · 넘침 0)을 돈 것(06:42)
    자료(종가 · 기사)가 날마다 바뀌는 것은 지문에 들지 않는다 — 자동 올리기는 화면 코드가 그대로면 지나간다
    쓰는 법: node scripts/atlas11/art_gate.mjs (지나가면 0 · 막히면 1과 까닭) */
+import {SITE_BOARDS} from '../../lib/atlas11/places.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -46,7 +47,7 @@ export function reportProblems(r, now) {
   const bad = [];
   if (r.code !== now) bad.push(`화면 코드가 검사 뒤에 바뀜(검사 ${r.code} · 지금 ${now}) — 빠짐없이 도는 검사를 다시 돌려야 함`);
   if (r.quick) bad.push('빠른 검사 결과임(모든 화면을 돌지 않음)');
-  if ((r.boards ?? []).length !== 5) bad.push(`다섯 나라가 아님(${(r.boards ?? []).join(' · ')})`);
+  if (!SITE_BOARDS.every(b => (r.boards ?? []).includes(b))) bad.push(`사이트 판(${SITE_BOARDS.join(' · ')})을 모두 돈 결과가 아님(${(r.boards ?? []).join(' · ')})`); // 2026-10-08 18:33 「한국 미국장만 두고 남머지 장은 삭제해」 — 옛 「다섯 나라」
   const langs = r.langs ?? ['en'];
   if (!['en', 'ko'].every(l => langs.includes(l))) bad.push(`두 말(영어 · 한국어)로 모든 화면을 돈 결과가 아님(${langs.join(' · ')})`);
   if (!(r.edge > 0)) bad.push('빈 날 길(값이 비는 날 · 없는 주소)을 돌지 않은 결과임');

@@ -9,6 +9,7 @@
  *   쓰는 곳: reports/atlas11/<시장>/runs/<시각>/(원문 견본 · 후보 · 고른 결과 · 입력 사본 — 덮어쓰지 않음) · public/data/atlas11/<시장>/{input.json, context.json}
  *   한국 · 미국 판 파일은 읽지도 쓰지도 않는다 · 장중 값은 종가로 쓰지 않는다(그 나라 마감 1시간 뒤부터 · markets.mjs closeFinal)
  */
+import {RETIRED} from '../../../lib/atlas11/places.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import zlib from 'node:zlib';
@@ -200,6 +201,8 @@ export async function collect({market, mode = 'auto'} = {}) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
+  // 내린 판(2026-10-08 18:33 마카오 시각 「한국 미국장만 두고 남머지 장은 삭제해」 — lib/atlas11/places.mjs RETIRED)은 받지 않고 끝(작업 파일은 고치지 않음 · 규칙 7 — 저녁 실행 뒤 저절로 돌아도 헛일 없이 끝남)
+  if (RETIRED[arg('--market')]) { console.log(JSON.stringify({market: arg('--market'), skipped: `내린 판(${RETIRED[arg('--market')]}) — 받지 않음`})); process.exit(0); }
   try { console.log(JSON.stringify(await collect({market: arg('--market'), mode: arg('--mode', 'auto')}))); }
   catch (e) { console.error(String(e?.message ?? e)); process.exitCode = 1; }
 }
