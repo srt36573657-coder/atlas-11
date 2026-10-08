@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-07T19:45:22.870Z",
+  "at": "2026-10-08T01:46:51.278Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-07-58d58ca4",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 75,
         "truncated": 0,
         "formatDates": 0
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 24,
+        "decoColors": 72,
         "truncated": 0,
         "formatDates": 0
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 22,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 21,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 28,
+        "decoColors": 70,
         "truncated": 0,
         "formatDates": 0
       },
@@ -81,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -91,7 +91,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -101,7 +101,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -111,7 +111,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -131,7 +131,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -141,7 +141,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 53,
         "truncated": 0,
         "formatDates": 0
       },
@@ -149,9 +149,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 33,
         "truncated": 0,
         "formatDates": 0
       },
@@ -161,7 +161,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -171,7 +171,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 55,
         "truncated": 0,
         "formatDates": 2
       },
@@ -181,7 +181,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 46,
         "truncated": 0,
         "formatDates": 1
       },
@@ -191,7 +191,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       }
@@ -203,7 +203,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 75,
         "truncated": 0,
         "formatDates": 0
       },
@@ -213,7 +213,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 24,
+        "decoColors": 72,
         "truncated": 0,
         "formatDates": 0
       },
@@ -223,7 +223,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 22,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       },
@@ -233,7 +233,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 21,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -243,7 +243,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 70,
         "truncated": 0,
         "formatDates": 0
       },
@@ -253,7 +253,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 28,
+        "decoColors": 71,
         "truncated": 0,
         "formatDates": 0
       },
@@ -263,7 +263,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 70,
         "truncated": 0,
         "formatDates": 0
       },
@@ -273,7 +273,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 70,
         "truncated": 0,
         "formatDates": 0
       },
@@ -283,7 +283,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -293,7 +293,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -303,7 +303,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -313,7 +313,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -323,7 +323,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 53,
         "truncated": 0,
         "formatDates": 0
       },
@@ -331,9 +331,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 33,
         "truncated": 0,
         "formatDates": 0
       },
@@ -343,7 +343,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -353,7 +353,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 55,
         "truncated": 0,
         "formatDates": 2
       },
@@ -363,7 +363,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 46,
         "truncated": 0,
         "formatDates": 1
       },
@@ -373,7 +373,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 55,
         "truncated": 0,
         "formatDates": 0
       }
@@ -385,7 +385,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 36,
+        "decoColors": 72,
         "truncated": 0,
         "formatDates": 0
       },
@@ -395,7 +395,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 20,
+        "decoColors": 68,
         "truncated": 0,
         "formatDates": 0
       },
@@ -405,7 +405,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 18,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -415,7 +415,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 17,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -425,7 +425,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 66,
         "truncated": 0,
         "formatDates": 0
       },
@@ -435,7 +435,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 66,
         "truncated": 0,
         "formatDates": 0
       },
@@ -445,7 +445,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 66,
         "truncated": 0,
         "formatDates": 0
       },
@@ -455,7 +455,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 66,
         "truncated": 0,
         "formatDates": 0
       },
@@ -465,7 +465,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 39,
         "truncated": 0,
         "formatDates": 0
       },
@@ -475,7 +475,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 48,
         "truncated": 0,
         "formatDates": 0
       },
@@ -485,7 +485,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -495,7 +495,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 53,
         "truncated": 0,
         "formatDates": 0
       },
@@ -505,7 +505,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -513,9 +513,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 30,
         "truncated": 0,
         "formatDates": 0
       },
@@ -525,7 +525,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -535,7 +535,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 2
       },
@@ -545,7 +545,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 43,
         "truncated": 0,
         "formatDates": 1
       },
@@ -555,7 +555,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       }
@@ -567,7 +567,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 75,
         "truncated": 0,
         "formatDates": 0
       },
@@ -577,7 +577,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 24,
+        "decoColors": 72,
         "truncated": 0,
         "formatDates": 0
       },
@@ -587,7 +587,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 22,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       },
@@ -597,7 +597,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 21,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -607,7 +607,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -617,7 +617,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 28,
+        "decoColors": 70,
         "truncated": 0,
         "formatDates": 0
       },
@@ -627,7 +627,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -637,7 +637,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 27,
+        "decoColors": 69,
         "truncated": 0,
         "formatDates": 0
       },
@@ -647,7 +647,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -657,7 +657,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -667,7 +667,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -677,7 +677,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 56,
         "truncated": 0,
         "formatDates": 0
       },
@@ -687,7 +687,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 53,
         "truncated": 0,
         "formatDates": 0
       },
@@ -695,9 +695,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 33,
         "truncated": 0,
         "formatDates": 0
       },
@@ -707,7 +707,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -717,7 +717,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 55,
         "truncated": 0,
         "formatDates": 2
       },
@@ -727,7 +727,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 46,
         "truncated": 0,
         "formatDates": 1
       },
@@ -737,7 +737,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 9,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       }
@@ -749,7 +749,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 36,
+        "decoColors": 72,
         "truncated": 0,
         "formatDates": 0
       },
@@ -759,7 +759,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 20,
+        "decoColors": 68,
         "truncated": 0,
         "formatDates": 0
       },
@@ -769,7 +769,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 18,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -779,7 +779,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 17,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -789,7 +789,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -799,7 +799,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -809,7 +809,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -819,7 +819,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 23,
+        "decoColors": 65,
         "truncated": 0,
         "formatDates": 0
       },
@@ -829,7 +829,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 39,
         "truncated": 0,
         "formatDates": 0
       },
@@ -839,7 +839,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 12,
+        "decoColors": 48,
         "truncated": 0,
         "formatDates": 0
       },
@@ -849,7 +849,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -859,7 +859,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 53,
         "truncated": 0,
         "formatDates": 0
       },
@@ -869,7 +869,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -877,9 +877,9 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 0,
+        "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 30,
         "truncated": 0,
         "formatDates": 0
       },
@@ -889,7 +889,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -899,7 +899,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 2
       },
@@ -909,7 +909,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 43,
         "truncated": 0,
         "formatDates": 1
       },
@@ -919,7 +919,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 52,
         "truncated": 0,
         "formatDates": 0
       }
@@ -1205,10 +1205,11 @@
       ]
     },
     {
-      "name": "pc 없는 갈래 주소 #/map/f/zzz → 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
+      "name": "pc 없는 갈래 주소 #/map/f/zzz → 빈 하늘 그림 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
       "ok": true,
       "detail": {
         "note": "이 갈래는 지금 판에 없습니다",
+        "quiet": "land",
         "back": "#/map"
       }
     },
@@ -1415,13 +1416,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(850px → 850px)",
+      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(813px → 813px)",
       "ok": true,
       "detail": {
-        "y0": 850,
+        "y0": 813,
         "rb": {
           "hash": "#/rise",
-          "y": 850
+          "y": 813
         }
       }
     },
@@ -1548,21 +1549,22 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1114px → 1114px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1414px → 1414px)",
       "ok": true,
       "detail": {
-        "y0": 1114,
+        "y0": 1414,
         "sb": {
           "hash": "#/similar",
-          "y": 1114
+          "y": 1414
         }
       }
     },
     {
-      "name": "pc 없는 업종 주소 #/i/zzzzzzzz → 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
+      "name": "pc 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
       "ok": true,
       "detail": {
         "note": "이 업종은 지금 판에 없습니다",
+        "quiet": "industry",
         "back": "#/"
       }
     },
@@ -2402,7 +2404,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1304,
+        "first": 1268,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -2504,13 +2506,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1304px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1268px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 4가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1304,
+        "first": 1268,
         "ih": 800
       }
     },
@@ -2734,13 +2736,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1554px → 1554px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1518px → 1518px)",
       "ok": true,
       "detail": {
-        "yBefore": 1554,
+        "yBefore": 1518,
         "back": {
           "hash": "#/road",
-          "y": 1554,
+          "y": 1518,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -3023,12 +3025,12 @@
       }
     },
     {
-      "name": "pc 찾기: 미국 「엔비디아」 줄 누름 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「239.24달러」",
+      "name": "pc 찾기: 미국 「엔비디아」 줄 누름 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
       "ok": true,
       "detail": {
         "path": "/us/#/stock/NVDA",
         "title": "엔비디아",
-        "close": "239.24달러"
+        "close": "237.47달러"
       }
     },
     {
@@ -3113,7 +3115,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 60개 = 기록 파일 60개(이슈 4 · 업데이트 45 · 자료 변경 11 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 68개 = 기록 파일 68개(이슈 5 · 업데이트 51 · 자료 변경 12 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -3124,45 +3126,45 @@
           "2026-10-05"
         ],
         "problems": [],
-        "issue": 4
+        "issue": 5
       }
     },
     {
-      "name": "pc 기록 「이슈」 누름 → 4줄 = 기록 파일 4줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「이슈」 누름 → 5줄 = 기록 파일 5줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "issue",
-        "n": 4,
+        "n": 5,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 45줄 = 기록 파일 45줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 51줄 = 기록 파일 51줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 45,
+        "n": 51,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 기록 「자료 변경」 누름 → 11줄 = 기록 파일 11줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「자료 변경」 누름 → 12줄 = 기록 파일 12줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "data",
-        "n": 11,
+        "n": 12,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 60줄 = 기록 파일 60줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 68줄 = 기록 파일 68줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 60,
+        "n": 68,
         "sw": 1280,
         "cw": 1280
       }
@@ -3604,7 +3606,7 @@
           },
           {
             "place": "us",
-            "k": 0.222,
+            "k": 0.21,
             "hidden": "true"
           },
           {
@@ -3690,7 +3692,7 @@
       }
     },
     {
-      "name": "pc 돈의 이동 — 그림 한 장(청자 매병 둘 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
+      "name": "pc 돈의 이동 — 그림 한 장(돈의 파장 집 다섯 · 로미오 · 줄리엣 · 티볼트 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
       "ok": true,
       "detail": null
     },
@@ -3708,12 +3710,12 @@
       }
     },
     {
-      "name": "pc 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ra-tilt:ra-tilt) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
+      "name": "pc 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-pop:ak-pop) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
       "ok": true,
       "detail": {
         "max": 1,
         "worst": [
-          "ra-tilt:ra-tilt"
+          "ak-pop:ak-pop"
         ],
         "steps": [
           "0",
@@ -3726,7 +3728,8 @@
         ],
         "cap0": 0,
         "cap1": 1,
-        "cap3": 1
+        "cap2": 1,
+        "cap3": 2
       }
     },
     {
@@ -3738,14 +3741,14 @@
       }
     },
     {
-      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 510px ≤ 아래 탭 579px · 360×640 네 줄 끝 488px ≤ 아래 탭 579px · 430×700 네 줄 끝 541px ≤ 아래 탭 639px",
+      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 405px ≤ 아래 탭 579px · 360×640 네 줄 끝 389px ≤ 아래 탭 579px · 430×700 네 줄 끝 421px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 134,
-          "rowsBottom": 510,
+          "map": 99,
+          "rowsBottom": 405,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -3753,8 +3756,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 134,
-          "rowsBottom": 488,
+          "map": 99,
+          "rowsBottom": 389,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -3762,8 +3765,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 134,
-          "rowsBottom": 541,
+          "map": 99,
+          "rowsBottom": 421,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -3813,8 +3816,8 @@
         "done": true,
         "step": "6",
         "now": 3,
-        "tilt": "matrix(0.788011, 0.615661, -0.615661, 0.788011, 0, 0)",
-        "fill": "matrix(1, 0, 0, 0.6, 0, 0)",
+        "walk": "matrix(1, 0, 0, 1, 0, 0)",
+        "trail": "0px",
         "on": 7,
         "nodes": 0
       }
@@ -4116,10 +4119,11 @@
       ]
     },
     {
-      "name": "mobile 없는 갈래 주소 #/map/f/zzz → 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
+      "name": "mobile 없는 갈래 주소 #/map/f/zzz → 빈 하늘 그림 「이 갈래는 지금 판에 없습니다」 · 지도로 가는 길",
       "ok": true,
       "detail": {
         "note": "이 갈래는 지금 판에 없습니다",
+        "quiet": "land",
         "back": "#/map"
       }
     },
@@ -4326,13 +4330,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(886px → 886px)",
+      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(926px → 926px)",
       "ok": true,
       "detail": {
-        "y0": 886,
+        "y0": 926,
         "rb": {
           "hash": "#/rise",
-          "y": 886
+          "y": 926
         }
       }
     },
@@ -4459,21 +4463,22 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1151px → 1151px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1527px → 1527px)",
       "ok": true,
       "detail": {
-        "y0": 1151,
+        "y0": 1527,
         "sb": {
           "hash": "#/similar",
-          "y": 1151
+          "y": 1527
         }
       }
     },
     {
-      "name": "mobile 없는 업종 주소 #/i/zzzzzzzz → 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
+      "name": "mobile 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
       "ok": true,
       "detail": {
         "note": "이 업종은 지금 판에 없습니다",
+        "quiet": "industry",
         "back": "#/"
       }
     },
@@ -5313,7 +5318,7 @@
           "t": "태양 53곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1245,
+        "first": 1285,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -5415,13 +5420,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1245px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 4가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1285px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 4가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1245,
+        "first": 1285,
         "ih": 844
       }
     },
@@ -5637,13 +5642,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2093px → 2093px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2133px → 2133px)",
       "ok": true,
       "detail": {
-        "yBefore": 2093,
+        "yBefore": 2133,
         "back": {
           "hash": "#/road",
-          "y": 2093,
+          "y": 2133,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -5926,12 +5931,12 @@
       }
     },
     {
-      "name": "mobile 찾기: 미국 「엔비디아」 줄 터치 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「239.24달러」",
+      "name": "mobile 찾기: 미국 「엔비디아」 줄 터치 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
       "ok": true,
       "detail": {
         "path": "/us/#/stock/NVDA",
         "title": "엔비디아",
-        "close": "239.24달러"
+        "close": "237.47달러"
       }
     },
     {
@@ -6016,7 +6021,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 60개 = 기록 파일 60개(이슈 4 · 업데이트 45 · 자료 변경 11 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 68개 = 기록 파일 68개(이슈 5 · 업데이트 51 · 자료 변경 12 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -6027,45 +6032,45 @@
           "2026-10-05"
         ],
         "problems": [],
-        "issue": 4
+        "issue": 5
       }
     },
     {
-      "name": "mobile 기록 「이슈」 누름 → 4줄 = 기록 파일 4줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「이슈」 누름 → 5줄 = 기록 파일 5줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "issue",
-        "n": 4,
+        "n": 5,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 45줄 = 기록 파일 45줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 51줄 = 기록 파일 51줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 45,
+        "n": 51,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 기록 「자료 변경」 누름 → 11줄 = 기록 파일 11줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「자료 변경」 누름 → 12줄 = 기록 파일 12줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "data",
-        "n": 11,
+        "n": 12,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 60줄 = 기록 파일 60줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 68줄 = 기록 파일 68줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 60,
+        "n": 68,
         "sw": 390,
         "cw": 390
       }
@@ -6507,7 +6512,7 @@
           },
           {
             "place": "us",
-            "k": 0.222,
+            "k": 0.21,
             "hidden": "true"
           },
           {
@@ -6593,7 +6598,7 @@
       }
     },
     {
-      "name": "mobile 돈의 이동 — 그림 한 장(청자 매병 둘 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
+      "name": "mobile 돈의 이동 — 그림 한 장(돈의 파장 집 다섯 · 로미오 · 줄리엣 · 티볼트 · 글자 없는 그림 · 움직이는 것 0,1,2,3,4,5,6) · 「반도체 → 전자부품」 「−14.7조 원 · +23.2조 원」 · 「9월 21일(월)부터 9거래일째」 · 「포모값 61점 높다」 · 낙관 「판 쪽 외국인 · 산 쪽 기관」 · 차례 「기승전결」 = /story.json rotation · 빠지는 곳 3 · 들어가는 곳 3 · 셈 방법 · 기사 이야기 · 근거 모음 접힘(2) · 돈길 동전 0 · 시장 막대 3",
       "ok": true,
       "detail": null
     },
@@ -6611,12 +6616,12 @@
       }
     },
     {
-      "name": "mobile 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ra-tilt:ra-tilt) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
+      "name": "mobile 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 1개 · ak-pop:ak-pop) · 걸음 0 → 1 → 2 → 3 → 4 → 5 → 6 · 옥빛 줄 1번(기) → 2번(승)",
       "ok": true,
       "detail": {
         "max": 1,
         "worst": [
-          "ra-tilt:ra-tilt"
+          "ak-pop:ak-pop"
         ],
         "steps": [
           "0",
@@ -6629,7 +6634,8 @@
         ],
         "cap0": 0,
         "cap1": 1,
-        "cap3": 1
+        "cap2": 1,
+        "cap3": 2
       }
     },
     {
@@ -6641,14 +6647,14 @@
       }
     },
     {
-      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 510px ≤ 아래 탭 579px · 360×640 네 줄 끝 488px ≤ 아래 탭 579px · 430×700 네 줄 끝 541px ≤ 아래 탭 639px",
+      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 405px ≤ 아래 탭 579px · 360×640 네 줄 끝 389px ≤ 아래 탭 579px · 430×700 네 줄 끝 421px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 134,
-          "rowsBottom": 510,
+          "map": 99,
+          "rowsBottom": 405,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -6656,8 +6662,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 134,
-          "rowsBottom": 488,
+          "map": 99,
+          "rowsBottom": 389,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -6665,8 +6671,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 134,
-          "rowsBottom": 541,
+          "map": 99,
+          "rowsBottom": 421,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -6716,8 +6722,8 @@
         "done": true,
         "step": "6",
         "now": 3,
-        "tilt": "matrix(0.788011, 0.615661, -0.615661, 0.788011, 0, 0)",
-        "fill": "matrix(1, 0, 0, 0.6, 0, 0)",
+        "walk": "matrix(1, 0, 0, 1, 0, 0)",
+        "trail": "0px",
         "on": 7,
         "nodes": 0
       }
@@ -6810,7 +6816,7 @@
       "detail": {
         "companies": 365,
         "groups": 73,
-        "asOf": "2026-10-06"
+        "asOf": "2026-10-07"
       }
     },
     {
@@ -6882,11 +6888,11 @@
       }
     },
     {
-      "name": "미국 판 불장: 시장 띠 「10월 6일(화) 16:00 뉴욕 시각 종가」 · S&P 500 · 나스닥 종합 · 다우존스 = 판(뉴욕 지수)",
+      "name": "미국 판 불장: 시장 띠 「10월 7일(수) 16:00 뉴욕 시각 종가」 · S&P 500 · 나스닥 종합 · 다우존스 = 판(뉴욕 지수)",
       "ok": true,
       "detail": {
         "st": {
-          "time": "10월 6일(화) 16:00 뉴욕 시각 종가",
+          "time": "10월 7일(수) 16:00 뉴욕 시각 종가",
           "names": [
             "S&P 500",
             "나스닥 종합",
@@ -6894,21 +6900,21 @@
           ],
           "title": "불장 업종 11개"
         },
-        "wantStrip": "10월 6일(화) 16:00 뉴욕 시각 종가"
+        "wantStrip": "10월 7일(수) 16:00 뉴욕 시각 종가"
       }
     },
     {
-      "name": "미국 회사 화면 P: 「에버퓨어」 · 값 「147.20달러」 = 판 종가(달러 · 소수 둘째 자리) · 「10월 6일(화) 16:00(뉴욕) 종가」",
+      "name": "미국 회사 화면 P: 「에버퓨어」 · 값 「152.66달러」 = 판 종가(달러 · 소수 둘째 자리) · 「10월 7일(수) 16:00(뉴욕) 종가」",
       "ok": true,
       "detail": {
         "cp": {
           "name": "에버퓨어",
-          "close": "147.20달러",
-          "date": "10월 6일(화) 16:00(뉴욕) 종가",
+          "close": "152.66달러",
+          "date": "10월 7일(수) 16:00(뉴욕) 종가",
           "flow": "수급 · 미국은 투자자별(외국인·기관) 매매를 날마다 공개하지 않음",
           "integ": null
         },
-        "wantClose": "147.20달러"
+        "wantClose": "152.66달러"
       }
     },
     {
@@ -6935,11 +6941,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 60개 = /changelog.json 60개 · 아래 탭 7개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 68개 = /changelog.json 68개 · 아래 탭 7개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 60,
-        "first": "u-20261008T010755-art",
+        "n": 68,
+        "first": "u-20261008T103442-waves",
         "tabs": 7,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -6952,7 +6958,7 @@
         "us5": {
           "rows": 0,
           "wait": "3년 기록이 쌓이는 2028년 8월부터 5곳을 찍습니다",
-          "when": "10월 6일(화) 뉴욕 종가 · 종가 기록 295거래일(2025년 8월 4일(월)부터)",
+          "when": "10월 7일(수) 뉴욕 종가 · 종가 기록 296거래일(2025년 8월 4일(월)부터)",
           "promise": "ATLAS가 하지 않는 일 8가지",
           "third": "어느 회사를 고르라고 하지 않습니다",
           "active": "start"
@@ -6971,7 +6977,7 @@
           "ready": false,
           "have": {
             "from": "2025-08-04",
-            "days": 295
+            "days": 296
           },
           "readyMonth": "2028-08"
         }
@@ -9405,5 +9411,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-07T19-36-56-216Z"
+  "dir": "reports/atlas11/browser/2026-10-08T01-40-12-873Z"
 }
