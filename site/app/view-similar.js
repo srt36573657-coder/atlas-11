@@ -12,6 +12,7 @@ import {sunOf} from './shapes.js';
 export {movesBox};
 import {mode} from './view-home.js';
 import {riseDesc} from './family.js';
+import {similarReason, beatsEl} from './reason.js'; // 「왜 예비인가」 기승전결 넷(2026-10-08 06:48 「왜 예비 후보인지 그 근거와 이유가 분명히 기승전결로」)
 
 const share = x => x.known ? x.yes / x.known : 0;
 const pc = v => `${Math.round(v * 100)}%`;
@@ -25,7 +26,12 @@ function chips(x, common) {
     return h('span', {class: 'sm-chip' + (has ? ' on' : unknown ? ' unk' : ''), 'data-trait': t.id}, h('span', {class: 'sm-ck', 'aria-hidden': 'true'}, has ? '✓' : unknown ? '?' : '·'), has ? t.chip : unknown ? `${t.chip} 모름` : t.chip);
   }));
 }
-function similarList(sim, byCode, items = sim.items ?? [], shp = null) {
+/** 「왜 예비인가」 — 줄 아래 접힌 칸(누르면 기승전결 넷 · reason.js) · 줄 링크(.sm-row) 밖 · 뒤에 둠(줄 모양 그대로 — 검사기가 줄을 읽음) */
+function whyFold(board, x) {
+  const beats = similarReason(board, x);
+  return beats ? h('details', {class: 'rs-fold', 'data-why': 'similar'}, h('summary', {'aria-label': `${x.name} · 왜 예비인가`}, '왜 예비인가'), beatsEl(beats, {speak: true})) : null;
+}
+function similarList(sim, byCode, items = sim.items ?? [], shp = null, board = null) {
   const common = (sim.common ?? []).map(id => sim.traits.find(t => t.id === id)).filter(Boolean);
   if (!items.length) return h('p', {class: 'b-note'}, sim.hotCompanies ? `불장 밖에서 공통점을 ${sim.need}가지 넘게 가진 회사가 없습니다` : '불장 업종이 없어 공통점을 셀 수 없습니다');
   const sc = sparkScale(items.map(x => byCode.get(x.code)).filter(Boolean));
@@ -36,7 +42,8 @@ function similarList(sim, byCode, items = sim.items ?? [], shp = null) {
       c ? sparkSvg(c, sc) : h('span', {class: 'sp-none'}, '선 그래프 없음'),
       h('b', {class: 'chg20 nc-chg ' + (signCls(x.change20) || 'flat')}, finite(x.change20) ? pct(x.change20, 1) : '없음'),
       // 공통점을 모두 가진 줄은 「✓ 모두」 한마디(2026-10-05 15:24 「잡스가 … 36가지」 D3 — 같은 칩 다섯이 줄마다 되풀이되지 않게 · 무엇인지는 아래 「불장 회사들의 공통점」)
-      h('span', {class: 'sm-cnt'}, h('b', null, `공통점 ${common.length}가지 중 ${x.matched}가지`), x.matched === common.length && common.length ? h('span', {class: 'sm-all'}, '✓ 모두') : chips(x, common)))); }));
+      h('span', {class: 'sm-cnt'}, h('b', null, `공통점 ${common.length}가지 중 ${x.matched}가지`), x.matched === common.length && common.length ? h('span', {class: 'sm-all'}, '✓ 모두') : chips(x, common))),
+      board ? whyFold(board, x) : null); }));
 }
 /** 공통점 막대 한 줄 — 불장 회사 · 나머지 회사 가운데 몇 %가 가졌나(폭은 CSSOM 으로만) */
 function traitRow(t, sim) {
@@ -77,7 +84,7 @@ export async function renderSimilar(main, {manifest}) {
       h('details', {class: 'b-how ak-more'}, h('summary', null, '어떻게 셌나'), h('p', {class: 'b-when', 'data-speak': ''}, `불장 닮은 ${n}곳 — 불장 ${hotN}개 업종 ${sim.hotCompanies}곳의 공통점 ${common.length}가지를 많이 가진, 불장 밖 회사 · ${korDate(to)} 종가`),
         h('p', {class: 't-sub'}, `지난 20거래일 많이 오른 순 · 줄마다 공통점 ✓(모두 가지면 「✓ 모두」) · 선 그래프는 ${n}곳이 같은 눈금(지난 20거래일 · 점선 = 첫날 종가) · 누르면 회사 화면`))),
     h('section', {class: 't-sec sm-sec', 'aria-label': `닮은 ${n}곳`},
-      similarList(sim, byCode, shown, shp)),
+      similarList(sim, byCode, shown, shp, board)),
     h('section', {class: 't-sec', 'aria-label': '불장 회사들의 공통점'},
       h('h2', {class: 't-h2', 'data-speak': ''}, `불장 회사들의 공통점 ${common.length}가지`),
       h('p', {class: 't-sub'}, `막대 = 그 점을 가진 회사가 몇 %인가 · 위 불장 ${sim.hotCompanies}곳 · 아래 나머지 ${sim.restCompanies}곳`),

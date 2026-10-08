@@ -256,8 +256,9 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     const hashes = [];
     for (const want of [`article.i-page[data-group="${g1.id}"] .b-card`, '.l-page .l-grid .t-tile', '.lm-n']) { await press1(page.locator('.c-back').first()); await page.waitForSelector(want); await page.waitForTimeout(250); hashes.push(await page.evaluate(() => location.hash)); }
     check(`${label} 되돌아가기 세 번 → ${hashes.join(' → ')}(업종 → 갈래 → 지도)`, hashes.join() === ['#/i/' + g1.id, '#/map/f/' + L1.id, '#/map'].join(), hashes);
-    const unk = await page.evaluate(async () => { location.hash = '#/map/f/zzz'; await new Promise(r => setTimeout(r, 400)); return {note: document.querySelector('.l-page .b-note')?.textContent.trim(), back: document.querySelector('.c-back')?.getAttribute('href')}; });
-    check(`${label} 없는 갈래 주소 #/map/f/zzz → 「${unk.note}」 · 지도로 가는 길`, unk.note === '이 갈래는 지금 판에 없습니다' && unk.back === '#/map', unk);
+    // 2026-10-08 05:05 빈 날 막기 — 없는 갈래 주소도 그림 한 장(빈 하늘 · 알림 줄은 그림 이름표로)
+    const unk = await page.evaluate(async () => { location.hash = '#/map/f/zzz'; await new Promise(r => setTimeout(r, 400)); const a = document.querySelector('.l-page section[data-art="land"]'); return {note: a?.querySelector('.ra-tag')?.textContent.trim(), quiet: JSON.parse(a?.querySelector('[data-check]')?.dataset.check ?? '{}').quiet, back: document.querySelector('.c-back')?.getAttribute('href')}; });
+    check(`${label} 없는 갈래 주소 #/map/f/zzz → 빈 하늘 그림 「${unk.note}」 · 지도로 가는 길`, unk.note === '이 갈래는 지금 판에 없습니다' && unk.quiet === 'land' && unk.back === '#/map', unk);
     await page.evaluate(() => { location.hash = '#/map'; }); await page.waitForSelector('.lm-n'); await page.waitForTimeout(300);
   }
   check(`${label} ${H}: 늦은 종가 표시 ${top.late.length}줄 = 판의 늦은 회사 ${board.late.length}곳`, top.late.length === board.late.length && board.late.every((c, i) => top.late[i]?.startsWith(c.name + ': ' + kd(c.date))), top.late);
@@ -421,9 +422,10 @@ async function scenario(label, viewport, {mobile = false} = {}) {
     }
   }
   // 없는 업종 주소 → 알림 + 처음 화면으로 가는 길
-  await page.evaluate(() => { location.hash = '#/i/zzzzzzzz'; }); await page.waitForSelector('.b-page .b-note'); await page.waitForTimeout(100);
-  const unk = await page.evaluate(() => ({note: document.querySelector('.b-page .b-note')?.textContent.trim(), back: document.querySelector('.c-back')?.getAttribute('href')}));
-  check(`${label} 없는 업종 주소 #/i/zzzzzzzz → 「${unk.note}」 · 들어온 탭으로 가는 길(${unk.back})`, unk.note === '이 업종은 지금 판에 없습니다' && ['#/', '#/map'].includes(unk.back), unk);
+  // 2026-10-08 05:05 빈 날 막기 — 없는 업종 주소도 그림 한 장(빈 하늘 · 알림 줄은 그림 이름표로)
+  await page.evaluate(() => { location.hash = '#/i/zzzzzzzz'; }); await page.waitForSelector('section[data-art="industry"] .ra-tag'); await page.waitForTimeout(100);
+  const unk = await page.evaluate(() => ({note: document.querySelector('section[data-art="industry"] .ra-tag')?.textContent.trim(), quiet: JSON.parse(document.querySelector('section[data-art="industry"] [data-check]')?.dataset.check ?? '{}').quiet, back: document.querySelector('.c-back')?.getAttribute('href')}));
+  check(`${label} 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「${unk.note}」 · 들어온 탭으로 가는 길(${unk.back})`, unk.note === '이 업종은 지금 판에 없습니다' && unk.quiet === 'industry' && ['#/', '#/map'].includes(unk.back), unk);
 
   // ② 회사 화면 세 곳(처음 · 늦은 종가 회사가 있으면 그 회사 · 마지막)
   // 태양 회사 한 곳도 넣는다(2026-10-05 15:24 「잡스가 … 36가지」 B2 — 태양 점검 칸이 태양 · 태양 아님 둘 다 맞는지)
@@ -920,7 +922,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           // 그림 한 장(2026-10-08 00:12 「예술적으로」) — 그림에는 글자 없음 · 움직이는 것 일곱(기울기 · 물줄기 · 차오름 · 달 · 불 · 낙관 둘) · 글은 이름 · 숫자 · 포모값 · 낙관 · 기간뿐
           art: {svg: !!ps.querySelector('.ra-art svg[aria-hidden="true"]'), text: ps.querySelector('.ra-art svg')?.textContent.trim().length ?? -1, parts: [...ps.querySelectorAll('.ra [data-at]')].map(x => x.dataset.at).sort().join(),
             names: [...ps.querySelectorAll('.ra-n')].map(x => x.textContent.trim()), amounts: [...ps.querySelectorAll('.ra-m')].map(x => x.textContent.trim()), fomo: ps.querySelector('.ra-fomo')?.textContent.replace(/\s+/g, ' ').trim(),
-            seals: [...ps.querySelectorAll('.ra-seal')].map(x => x.textContent.replace(/\s+/g, ' ').trim()), period: ps.querySelector('.ra-t')?.textContent.replace(/\s+/g, ' ').trim(),
+            seals: [...ps.querySelectorAll('.ra-seal')].map(x => x.textContent.replace(/\s+/g, ' ').trim()), period: [...ps.querySelectorAll('.ra-cap .ra-ts, .ra-cap .ra-td')].map(x => x.textContent.trim()).join(' '), // 기간은 그림 아래 자막 끝(2026-10-08 영화 — 그림 위 기간 줄을 뺌 · 규칙 1)
             beats: [...ps.querySelectorAll('.ra-beats li')].map(li => li.textContent.trim()).join(''), btns: [...ps.querySelectorAll('.ra-ctl .sy-btn')].map(x => x.textContent.trim()), rows: ps.querySelectorAll('.sy-row').length,
             folded: [...document.querySelectorAll('.sy-news > details.sy-fd, .sy-more > details.sy-fd')].length}} : null,
         scenes: [...(s?.querySelectorAll('.sy-s') ?? [])].map(x => x.classList[1]), titles: [...(s?.querySelectorAll('.sy-t') ?? [])].map(x => x.textContent.replace(/\s+/g, ' ').trim()),
@@ -972,7 +974,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           && pl.mains[0] === st.now.role && pl.mains[1] === (st.event.short ?? st.event.text) && pl.mains[2] === st.next.role && pl.mains[3] === st.confirm
           && (!st.now.real?.evidence?.[0] || /^실제 돈 확인됨 · \d{1,2}월 \d{1,2}일\(.\)$/.test(pl.okLine ?? ''));
       const railOk = true;
-      check(rot ? `${label} 돈의 이동 — 그림 한 장(청자 매병 둘 · 글자 없는 그림 · 움직이는 것 ${ar?.parts ?? ''}) · 「${ar?.names?.join(' → ') ?? ''}」 「${ar?.amounts?.join(' · ') ?? ''}」 · 「${ar?.period ?? ''}」 · 「${ar?.fomo ?? ''}」 · 낙관 「${ar?.seals?.join(' · ') ?? ''}」 · 차례 「${ar?.beats ?? ''}」 = /story.json rotation · 빠지는 곳 ${rot.out.length} · 들어가는 곳 ${rot.in.length} · 셈 방법 · 기사 이야기 · 근거 모음 접힘(${ar?.folded ?? 0}) · 돈길 동전 ${sy.railCoins} · 시장 막대 ${sy.bars.length}`
+      check(rot ? `${label} 돈의 이동 — 그림 한 장(돈의 파장 집 다섯 · 로미오 · 줄리엣 · 티볼트 · 글자 없는 그림 · 움직이는 것 ${ar?.parts ?? ''}) · 「${ar?.names?.join(' → ') ?? ''}」 「${ar?.amounts?.join(' · ') ?? ''}」 · 「${ar?.period ?? ''}」 · 「${ar?.fomo ?? ''}」 · 낙관 「${ar?.seals?.join(' · ') ?? ''}」 · 차례 「${ar?.beats ?? ''}」 = /story.json rotation · 빠지는 곳 ${rot.out.length} · 들어가는 곳 ${rot.in.length} · 셈 방법 · 기사 이야기 · 근거 모음 접힘(${ar?.folded ?? 0}) · 돈길 동전 ${sy.railCoins} · 시장 막대 ${sy.bars.length}`
           : `${label} 돈 이야기 — 첫 화면 기승전결 네 줄: 한눈 그림(그림 ${mp?.nodes ?? 0} · 줄 ${mp?.tracks ?? 0} — 뒤 줄 점선 · 가운데가 가장 큼 · 줄마다 동전 하나 · 가운데가 걸음 0) · 줄 「${pl?.letters ?? ''}」(${pl?.names ?? ''}) = /story.json(돈이 가는 곳 · 일 · 다음 · 볼 것) · ✓ 「${pl?.okLine ?? ''}」 · 단추 「${pl?.btns.join(' · ') ?? ''}」 · 돈길은 멈춘 그림(동전 ${sy.railCoins}) · 시장 막대 ${sy.bars.length}(길이 = 변화 ÷ 가장 큰 변화) · 그림엔 글자 없음`,
         shapeOk && railOk && sy.rail.length === 3 && sy.rail.every(r => r && r.svg && r.hidden === 'true') && sy.rail[1].w > sy.rail[0].w && sy.rail[1].w > sy.rail[2].w && sy.picText === 0 && sy.railCoins === 0
           && sy.bars.length === ms.length && sy.bars.every((b, i) => b.place === ms[i].place && b.hidden === 'true' && Math.abs(b.k - Math.max(0.04, Math.abs(ms[i].change20) / kTop)) < 0.002),
@@ -989,11 +991,11 @@ async function scenario(label, viewport, {mobile = false} = {}) {
           .map(a => `${(a.effect.target?.className?.baseVal ?? a.effect.target?.className ?? '?').toString().split(' ')[0]}${a.effect.pseudoElement ?? ''}:${a.animationName}`);
         let max = 0, worst = []; const steps = new Set(), caps = new Map(); const t0 = performance.now();
         while (performance.now() - t0 < 9000) { const xs = live(); if (xs.length > max) { max = xs.length; worst = xs; } const ra = document.querySelector('.ra'), pl = ra ?? document.querySelector('.sy-play'); if (pl?.dataset.step) { steps.add(pl.dataset.step); caps.set(pl.dataset.step, [...pl.querySelectorAll(ra ? '.ra-beats li' : '.sy-row')].findIndex(r => r.classList.contains('now'))); } await new Promise(r => setTimeout(r, 60)); }
-        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null, cap3: caps.get('3') ?? null};
+        return {max, worst: worst.slice(0, 6), steps: [...steps], cap0: caps.get('0') ?? null, cap1: caps.get('1') ?? null, cap2: caps.get('2') ?? null, cap3: caps.get('3') ?? null};
       });
-      if (rot) one.cap1 = one.cap3; // 돈의 이동은 걸음 0 · 1 · 2 가 기(빠지는 곳 → 동전 → 들어가는 곳) · 걸음 3 이 승(기간)
+      if (rot) one.cap1 = one.cap2; // 돈의 이동(2026-10-08 영화 · 돈의 파장)은 걸음 0 · 1 이 기(집 다섯 채 → 로미오 걸음) · 걸음 2 가 승(지나온 길) — 옛 청자 그림은 걸음 3 이 승이었음
       check(`${label} 돈 이야기 — 한 번에 하나만 움직임(9초 동안 가장 많을 때 ${one.max}개${one.worst.length ? ' · ' + one.worst.join(' · ') : ''}) · 걸음 ${one.steps.join(' → ')} · 옥빛 줄 ${one.cap0 + 1}번(기) → ${one.cap1 + 1}번(승)`,
-        one.max <= 1 && one.steps.includes('0') && one.steps.includes(rot ? '3' : '1') && one.cap0 === 0 && one.cap1 === 1, one);
+        one.max <= 1 && one.steps.includes('0') && one.steps.includes(rot ? '2' : '1') && one.cap0 === 0 && one.cap1 === 1, one);
       // 「다시 보기」 — 처음 걸음(기 · 결론)부터 다시 · 옥빛 줄 = 1번
       await page.locator('.sy-btn').first().click(); await page.waitForTimeout(250);
       const rep = await page.evaluate(() => { const ra = document.querySelector('.ra'); return {step: (ra ?? document.querySelector('.sy-play'))?.dataset.step, now: [...document.querySelectorAll(ra ? '.ra-beats li' : '.sy-row')].findIndex(r => r.classList.contains('now'))}; });
@@ -1018,12 +1020,12 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       const rm = await rp.evaluate(() => { const s = document.querySelector('.sy'); if (!s) return null; const ra = s.querySelector('.ra'), pl = ra ?? s.querySelector('.sy-play');
         return {running: document.getAnimations().filter(a => a.playState === 'running').length, coinsShown: [...s.querySelectorAll('.sy-coin')].filter(c => getComputedStyle(c).opacity !== '0').length,
           done: !!pl?.classList.contains(ra ? 'ra-done' : 'sy-done'), step: pl?.dataset.step ?? null, now: ra ? [...ra.querySelectorAll('.ra-beats li')].filter(li => li.classList.contains('on')).length - 1 : [...(pl?.querySelectorAll('.sy-row') ?? [])].findIndex(r => r.classList.contains('now')),
-          tilt: ra ? getComputedStyle(ra.querySelector('.ra-tilt')).transform : null, fill: ra ? getComputedStyle(ra.querySelector('.ra-fill')).transform : null,
+          walk: ra?.querySelector('.ak-mv[data-at="1"]') ? getComputedStyle(ra.querySelector('.ak-mv[data-at="1"]')).transform : null, trail: ra?.querySelector('.ak-draw[data-at="2"]') ? getComputedStyle(ra.querySelector('.ak-draw[data-at="2"]')).strokeDashoffset : null, // 끝 모습: 로미오가 지금 집에 닿음(옮김 0) · 지나온 길이 다 그려짐(2026-10-08 영화 — 옛 청자 기울기 · 차오름 대신)
           on: [...(pl?.querySelectorAll('[data-at]') ?? [])].filter(x => x.classList.contains('on') && getComputedStyle(x).opacity === '1').length,
           nodes: [...s.querySelectorAll('.sy-mn, .sy-node')].filter(n => getComputedStyle(n).opacity === '1' && getComputedStyle(n).transform === 'none').length}; });
       await rctx.close();
       check(`${label} 돈 이야기 — 움직임 줄이기 설정: 처음부터 끝 걸음(결 · 옥빛 줄 ${(rm?.now ?? -2) + 1}번) · 그림 ${rm?.on ?? 0}/7 켜짐 · 움직이는 것 ${rm?.running ?? '없음'} · 보이는 동전 ${rm?.coinsShown ?? '없음'}`,
-        !!rm && rm.done && rm.step === '6' && rm.now === 3 && rm.on === 7 && (rot ? rm.tilt !== 'none' && rm.fill !== 'none' : rm.nodes === 6) && rm.running === 0 && rm.coinsShown === 0, rm);
+        !!rm && rm.done && rm.step === '6' && rm.now === 3 && rm.on === 7 && (rot ? rm.walk === 'matrix(1, 0, 0, 1, 0, 0)' && parseFloat(rm.trail) === 0 : rm.nodes === 6) && rm.running === 0 && rm.coinsShown === 0, rm);
     }
   }
   // ⑥ 글씨 단추

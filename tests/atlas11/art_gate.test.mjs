@@ -45,7 +45,7 @@ test('그림 숫자 맞대기 — 기대값과 다르면 알리고 같으면 조
 });
 
 test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 다섯 나라 · 실패 0 · 같은 지문이어야 지나감(2026-10-08 05:05)', () => {
-  const ok = {code: 'c', quick: false, boards: ['kr', 'us', 'cn', 'jp', 'vn'], langs: ['en', 'ko'], edge: 60, failed: 0, ok: true};
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us', 'cn', 'jp', 'vn'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, failed: 0, ok: true};
   assert.deepEqual(reportProblems(ok, 'c'), []);
   assert.equal(reportProblems({...ok, langs: undefined}, 'c').length, 1); // 옛 결과(영어만) — 막힘
   assert.equal(reportProblems({...ok, langs: ['en']}, 'c').length, 1);
@@ -53,6 +53,8 @@ test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 다섯 �
   assert.equal(reportProblems({...ok, failed: 1, ok: false}, 'c').length, 1);
   assert.equal(reportProblems(ok, 'd').length, 1); // 화면 코드가 검사 뒤에 바뀜
   assert.equal(reportProblems({...ok, boards: ['kr']}, 'c').length, 1);
+  assert.equal(reportProblems({...ok, transLangs: 1}, 'c').length, 1); // v3 — 73개 말 계산 층 없음
+  assert.equal(reportProblems({...ok, layoutLangs: undefined}, 'c').length, 1); // v3 — 가장 긴 글 층 없음
 });
 
 test('빈 날 기대값 — 그릴 값이 없으면 빈 하늘(숫자를 지어내지 않음) · 못 읽은 일정은 오류 화면 · 20거래일 값이 없는 회사도 그림', () => {

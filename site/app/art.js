@@ -9,6 +9,7 @@
    · 움직임 줄이기 설정이면 처음부터 끝 모습 · 오른쪽부터 쓰는 말은 그림을 뒤집음(style.css .ra-svg)
    · 그림 속 값(높이 · 길이 · 자리)은 data-v="k:.62;x0:-40px" → CSS 변수(--k · --x0)로 옮김(CSSOM · 글 속 style 속성 없음 · CSP) */
 import {h, pct, finite} from './util.js';
+import {castDefs, stageDefs, stage, portrait} from './cast.js'; // 배우 · 무대 · 자막 앞 얼굴(2026-10-08 06:40 영화)
 import {pic} from './story.js';
 import {t as tr, LOCALE, LANG} from './i18n.js';
 import {hold, release, idleIn} from './motion.js';
@@ -26,23 +27,24 @@ export const grName = (label, cls = 'ra-n') => h('p', {class: cls}, label);
 const r1 = v => Math.round(v * 10) / 10;
 export const f1 = v => (Number.isFinite(v) ? r1(v).toFixed(1) : '0');
 
-/* ── 그림 공통 재료(청자 · 금 · 먹) — id 앞에 그림 이름을 붙여 한 화면에 그림이 둘이어도 겹치지 않게 ── */
+/* ── 그림 공통 재료(무대 · 배우 · 금 · 보라 유리) — id 앞에 그림 이름을 붙여 한 화면에 그림이 둘이어도 겹치지 않게
+   2026-10-08 06:40 「청자로 하지 말고」 — 청자 유약(glz · glz2) · 먹빛 산을 보라 · 분홍 무대 빛으로 바꿈(이름은 그대로 — 그림마다 같은 자리) ── */
 export function defs(p) {
-  return `<defs>
-<linearGradient id="${p}-glz" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3F6E5E"/><stop offset=".3" stop-color="#9CCDB8"/><stop offset=".58" stop-color="#77AE98"/><stop offset="1" stop-color="#335C4E"/></linearGradient>
-<linearGradient id="${p}-glz2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4E8673"/><stop offset=".3" stop-color="#BFE6D4"/><stop offset=".6" stop-color="#8CC4AE"/><stop offset="1" stop-color="#3D6D5D"/></linearGradient>
+  return castDefs(p) + stageDefs(p) + `<defs>
+<linearGradient id="${p}-glz" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4A3C8C"/><stop offset=".3" stop-color="#C9BBFF"/><stop offset=".58" stop-color="#9C8BFF"/><stop offset="1" stop-color="#3E3278"/></linearGradient>
+<linearGradient id="${p}-glz2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#A84F70"/><stop offset=".3" stop-color="#FFD0E0"/><stop offset=".6" stop-color="#F49AB8"/><stop offset="1" stop-color="#8E3E5E"/></linearGradient>
 <linearGradient id="${p}-gold" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFE7AE"/><stop offset="1" stop-color="#D99A35"/></linearGradient>
 <linearGradient id="${p}-red" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FF8A80"/><stop offset="1" stop-color="#B8423C"/></linearGradient>
 <linearGradient id="${p}-blue" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5E86C8"/><stop offset="1" stop-color="#A8C8FF"/></linearGradient>
-<linearGradient id="${p}-hill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8FD3B6" stop-opacity=".10"/><stop offset="1" stop-color="#8FD3B6" stop-opacity="0"/></linearGradient>
+<linearGradient id="${p}-hill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#B9A8FF" stop-opacity=".16"/><stop offset="1" stop-color="#B9A8FF" stop-opacity=".02"/></linearGradient>
 <linearGradient id="${p}-flame" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#FF6B45"/><stop offset=".55" stop-color="#FFAE5C"/><stop offset="1" stop-color="#FFE3A0" stop-opacity=".85"/></linearGradient>
 <radialGradient id="${p}-halo"><stop offset="0" stop-color="#F4F1EA" stop-opacity=".42"/><stop offset="1" stop-color="#F4F1EA" stop-opacity="0"/></radialGradient>
 <radialGradient id="${p}-sun"><stop offset="0" stop-color="#FF8A70" stop-opacity=".55"/><stop offset="1" stop-color="#FF8A70" stop-opacity="0"/></radialGradient>
 <filter id="${p}-glow" x="-30%" y="-40%" width="160%" height="180%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>`;
 }
-/** 먼 먹빛 산 두 겹(바탕 · 움직이지 않음) — 높이 H 그림의 아래쪽 */
-export const hills = (p, H, k = 1) => `<path d="M0,${H - 36 * k} C40,${H - 74 * k} 78,${H - 100 * k} 118,${H - 80 * k} C150,${H - 64 * k} 170,${H - 90 * k} 204,${H - 100 * k} C240,${H - 110 * k} 268,${H - 80 * k} 300,${H - 90 * k} C326,${H - 98 * k} 344,${H - 84 * k} 360,${H - 78 * k} L360,${H} L0,${H} Z" fill="url(#${p}-hill)"/>`
+/** 무대 + 먼 보랏빛 언덕 두 겹(바탕 · 움직이지 않음) — 높이 H 그림의 아래쪽(06:40 청자 · 먹빛 산 대신 극장 무대) */
+export const hills = (p, H, k = 1) => stage(p, H) + `<path d="M0,${H - 36 * k} C40,${H - 74 * k} 78,${H - 100 * k} 118,${H - 80 * k} C150,${H - 64 * k} 170,${H - 90 * k} 204,${H - 100 * k} C240,${H - 110 * k} 268,${H - 80 * k} 300,${H - 90 * k} C326,${H - 98 * k} 344,${H - 84 * k} 360,${H - 78 * k} L360,${H} L0,${H} Z" fill="url(#${p}-hill)"/>`
   + `<path d="M0,${H - 18 * k} C50,${H - 44 * k} 96,${H - 54 * k} 140,${H - 38 * k} C176,${H - 26 * k} 214,${H - 50 * k} 252,${H - 44 * k} C292,${H - 38 * k} 330,${H - 50 * k} 360,${H - 40 * k} L360,${H} L0,${H} Z" fill="url(#${p}-hill)"/>`;
 /** 매병(폭 72 · 높이 99 · 입 가운데 36,0) — rotation.js 와 같은 모양 */
 export const VASE = 'M29.7,0 L42.3,0 L41.4,7.2 C63,10.8 72,23.4 68.4,36 C64.8,55.8 55.8,77.4 52.2,90 L56.7,99 L15.3,99 L19.8,90 C16.2,77.4 7.2,55.8 3.6,36 C0,23.4 9,10.8 30.6,7.2 Z';
@@ -54,6 +56,8 @@ export const star = (r, ri = r * 0.45) => Array.from({length: 10}, (_, i) => { c
 /* ── 재생기 ── */
 const played = new Set(); // 저절로 한 번은 이 창에서 그 그림을 처음 그릴 때만
 const calmNow = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** 검사기만 쓰는 빠르기(atlas11:speed · 1~10 · 보통 1) — 움직임 검사를 빠르게 돌 때 걸음 시간만 나눔(CSS 움직임은 검사기가 같은 배로 빠르게 · 2026-10-08 06:42 「10배 빠르게」) */
+const SPEED = (() => { try { const v = Number(JSON.parse(localStorage.getItem('atlas11:speed') ?? '1')); return v >= 1 && v <= 10 ? v : 1; } catch { return 1; } })();
 /** data-v="k:.62;x0:-40px" → --k · --x0 */
 function vars(root) {
   for (const el of root.querySelectorAll('[data-v]')) for (const kv of el.getAttribute('data-v').split(';')) { const i = kv.indexOf(':'); if (i > 0) el.style.setProperty('--' + kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }
@@ -64,12 +68,16 @@ function vars(root) {
  *         says(기승전결 넷 — 한국어 낱말 묶음 · 그 말로 읽음), setup(art => …) · cls}
  */
 export function artStage(spec) {
-  const {key, svg, labels, steps, says = [[], [], [], []], setup = null, cls = ''} = spec;
+  const {key, svg, labels, steps, says = [[], [], [], []], setup = null, cls = '', cap = null} = spec;
   const fresh = !played.has(key); played.add(key);
   const art = h('div', {class: 'ra-art', html: svg});
+  // 자막(영화 · 2026-10-08 06:40 「로미오 줄리엣을 토대로 각본 · 현재 주식상황을 위트있게」) — 그림 바로 아래 띠(그림을 가리지 않음 · 처음 그림 위에 겹쳤더니 배우 · 집을 가림)
+  // cap = 글 하나 또는 {t: 자막, who: 말하는 배우(pig · cat · hog), face: 표정, prop} — 말하는 배우 얼굴을 크게(그림 속 배우는 작아도 표정이 보이게)
+  const capT = cap && typeof cap === 'object' ? cap.t : cap, capWho = cap && typeof cap === 'object' ? cap.who : null;
+  const capEl = capT ? h('p', {class: 'ra-cap'}, capWho ? h('span', {class: 'ra-who', html: portrait(capWho, cap.face, `pt-${String(key).replace(/[^a-z0-9]/gi, '')}`, cap.prop ?? [])}) : null, h('span', {class: 'ra-ct'}, capT)) : null;
   vars(art); if (setup) setup(art);
   const beats = h('ol', {class: 'ra-beats', 'aria-hidden': 'true'}, ...['기', '승', '전', '결'].map(x => h('li', null, h('span', {class: 'sy-chl', lang: 'ko', 'data-ident': ''}, x))));
-  const box = h('div', {class: `ra ak-${key}${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length)}, art, labels,
+  const box = h('div', {class: `ra ak-${key}${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(',')}, art, capEl, labels, // data-plan = 걸음마다 기승전결:그림 번호(검사기가 계산으로 봄)
     h('div', {class: 'ra-ctl'}, beats,
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(false)}, pic('re', 'sy-bi'), h('span', null, '다시 보기')),
       h('button', {type: 'button', class: 'sy-btn', onclick: () => run(true)}, pic('say', 'sy-bi'), h('span', null, '소리로 듣기'))));
@@ -101,14 +109,14 @@ export function artStage(spec) {
       const x = steps[i];
       if (voice && talking && (i === 0 || steps[i - 1].c !== x.c)) { after = next; return; }
       hold(box); paint(i++, true);
-      if (voice && (i === 1 || steps[i - 2].c !== x.c)) talking = say(x.c, () => { talking = false; if (my === token && after) { const f = after; after = null; tick = setTimeout(f, 380); } });
-      tick = setTimeout(next, x.ms);
+      if (voice && (i === 1 || steps[i - 2].c !== x.c)) talking = say(x.c, () => { talking = false; if (my === token && after) { const f = after; after = null; tick = setTimeout(f, 380 / SPEED); } });
+      tick = setTimeout(next, x.ms / SPEED);
     };
     next();
   }
   if (typeof IntersectionObserver === 'function') new IntersectionObserver(es => { for (const e of es) { seen = e.isIntersecting; if (seen && waiting) { const w = waiting; waiting = null; tick = setTimeout(w, idleIn() + 60); } } }, {threshold: 0.35}).observe(art);
   // 저절로 한 번 — 그리는 순간부터 움직임 줄을 잡아 둠(아래 막대 · 띠가 그림보다 먼저 움직이지 않게 · 규칙 28) · 붙지 않았으면 놓음
-  if (fresh && !calmNow()) { hold(box); paint(0); for (const el of parts) el.classList.remove('on', 'now'); dots.forEach(d => d.classList.remove('now', 'on')); setTimeout(() => { if (!box.isConnected) { release(box); return; } if (cur <= 0) run(false); }, 350); }
+  if (fresh && !calmNow()) { hold(box); paint(0); for (const el of parts) el.classList.remove('on', 'now'); dots.forEach(d => d.classList.remove('now', 'on')); setTimeout(() => { if (!box.isConnected) { release(box); return; } if (cur <= 0) run(false); }, 350 / SPEED); }
   else done();
   return box;
 }
