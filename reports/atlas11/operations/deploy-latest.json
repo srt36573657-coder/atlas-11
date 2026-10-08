@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-08T14:54:28.220Z",
-  "state": "ready",
+  "at": "2026-10-08T16:21:51.735Z",
+  "state": "failed",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
-  "url": "https://aaa7377.com",
-  "deployUrl": "https://6ac7aecc59709ee102f73f29--mulgil.netlify.app",
-  "deployId": "6ac7aecc59709ee102f73f29",
+  "url": null,
+  "deployUrl": null,
+  "deployId": null,
   "noindex": false,
-  "files": 1569,
-  "exitCode": 0,
-  "error": null
+  "files": 1582,
+  "exitCode": 1,
+  "error": "npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead\n ›   JSONHTTPError: Forbidden\n"
 }
