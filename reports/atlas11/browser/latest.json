@@ -1,9 +1,9 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-08T11:16:43.940Z",
+  "at": "2026-10-08T16:20:38.248Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
-  "boardId": "board-2026-10-08-fedd4484",
+  "boardId": "board-2026-10-08-821ddfb4",
   "asOf": "2026-10-08",
   "chromium": "playwright chromium (headless)",
   "viewports": {
@@ -11,10 +11,20 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 987,
+  "passed": 1088,
   "failed": 0,
   "clarity": {
     "pc": {
+      "market": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 34,
+        "lowContrast": 0,
+        "decoColors": 60,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "home": {
         "relDays": 0,
         "vague": 0,
@@ -25,13 +35,53 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "flowwho": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 7,
+        "lowContrast": 0,
+        "decoColors": 50,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "flow": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 86,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "stocks": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 85,
+        "decoColors": 59,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "check": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 5,
+        "lowContrast": 0,
+        "decoColors": 45,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "watch": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 45,
         "truncated": 0,
         "formatDates": 0
       },
@@ -141,7 +191,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 49,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -151,7 +201,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 58,
         "truncated": 0,
         "formatDates": 0
       },
@@ -159,7 +209,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 16,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 17,
         "truncated": 0,
@@ -207,6 +257,16 @@
       }
     },
     "mobile": {
+      "market": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 34,
+        "lowContrast": 0,
+        "decoColors": 58,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "home": {
         "relDays": 0,
         "vague": 0,
@@ -217,13 +277,53 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "flowwho": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 7,
+        "lowContrast": 0,
+        "decoColors": 49,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "flow": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 86,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "stocks": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 85,
+        "decoColors": 58,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "check": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 5,
+        "lowContrast": 0,
+        "decoColors": 44,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "watch": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 44,
         "truncated": 0,
         "formatDates": 0
       },
@@ -333,7 +433,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 49,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -343,7 +443,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 57,
         "truncated": 0,
         "formatDates": 0
       },
@@ -351,7 +451,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 16,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 17,
         "truncated": 0,
@@ -399,6 +499,16 @@
       }
     },
     "mobile-dark": {
+      "market": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 34,
+        "lowContrast": 0,
+        "decoColors": 55,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "home": {
         "relDays": 0,
         "vague": 0,
@@ -409,13 +519,53 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "flowwho": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 7,
+        "lowContrast": 0,
+        "decoColors": 46,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "flow": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 83,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "stocks": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 82,
+        "decoColors": 55,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "check": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 5,
+        "lowContrast": 0,
+        "decoColors": 41,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "watch": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 41,
         "truncated": 0,
         "formatDates": 0
       },
@@ -525,7 +675,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 46,
+        "decoColors": 47,
         "truncated": 0,
         "formatDates": 0
       },
@@ -535,7 +685,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 36,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       },
@@ -543,7 +693,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 16,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -591,13 +741,33 @@
       }
     },
     "pc-200": {
+      "market": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 34,
+        "lowContrast": 0,
+        "decoColors": 59,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "home": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 65,
+        "decoColors": 64,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "flowwho": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 7,
+        "lowContrast": 0,
+        "decoColors": 49,
         "truncated": 0,
         "formatDates": 0
       },
@@ -605,9 +775,39 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 84,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "stocks": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 83,
+        "decoColors": 59,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "check": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 5,
+        "lowContrast": 0,
+        "decoColors": 45,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "watch": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 45,
         "truncated": 0,
         "formatDates": 0
       },
@@ -717,7 +917,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 49,
+        "decoColors": 50,
         "truncated": 0,
         "formatDates": 0
       },
@@ -727,7 +927,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 39,
+        "decoColors": 58,
         "truncated": 0,
         "formatDates": 0
       },
@@ -735,7 +935,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 16,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 17,
         "truncated": 0,
@@ -783,6 +983,16 @@
       }
     },
     "mobile-dark-200": {
+      "market": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 34,
+        "lowContrast": 0,
+        "decoColors": 55,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "home": {
         "relDays": 0,
         "vague": 0,
@@ -793,13 +1003,53 @@
         "truncated": 0,
         "formatDates": 0
       },
+      "flowwho": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 7,
+        "lowContrast": 0,
+        "decoColors": 45,
+        "truncated": 0,
+        "formatDates": 0
+      },
       "flow": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 2,
+        "lowContrast": 0,
+        "decoColors": 80,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "stocks": {
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 79,
+        "decoColors": 55,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "check": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 5,
+        "lowContrast": 0,
+        "decoColors": 40,
+        "truncated": 0,
+        "formatDates": 0
+      },
+      "watch": {
+        "relDays": 0,
+        "vague": 0,
+        "bareNumbers": 0,
+        "graphable": 0,
+        "lowContrast": 0,
+        "decoColors": 40,
         "truncated": 0,
         "formatDates": 0
       },
@@ -909,7 +1159,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 45,
+        "decoColors": 46,
         "truncated": 0,
         "formatDates": 0
       },
@@ -919,7 +1169,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 36,
+        "decoColors": 54,
         "truncated": 0,
         "formatDates": 0
       },
@@ -927,7 +1177,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 16,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -977,13 +1227,249 @@
   },
   "checks": [
     {
-      "name": "pc 아래 탭 「돈 흐름」(#/flow · 둘째 탭 「돈 흐름」 눌림 · 탭 차례 home,flow,map,road,agenda,find,log,start): 맨 위 돈 흐름 그림 · 불장 것 없음 · 들어가는 곳 · 빠지는 곳 1위~3위 업종 6칸 — 칸마다 그 업종 회사(2차전지 5곳 · 전자부품 5곳 · 반도체 장비 5곳 · 반도체 5곳 · 조선 5곳 · 은행·카드 5곳) = 판 자료(이름 · 지난 20거래일 변화 · 오른 순 · 누르면 회사 화면) · 업종 이름을 누르면 업종 화면 · 옆으로 넘치지 않음",
+      "name": "pc 개편 · 아래 탭 다섯 시장 · 돈흐름 · 종목 · 일정 · 검증(「시장」 눌림) · 위 막대 찾기 · 관심 · 안내 · 보기(말 · 글씨 · 소리)",
       "ok": true,
       "detail": {
-        "hash": "#/flow",
+        "tabs": [
+          [
+            "home",
+            "시장"
+          ],
+          [
+            "flow",
+            "돈흐름"
+          ],
+          [
+            "stocks",
+            "종목"
+          ],
+          [
+            "agenda",
+            "일정"
+          ],
+          [
+            "check",
+            "검증"
+          ]
+        ],
+        "top": [
+          "stocks",
+          "watch",
+          "guide",
+          "more"
+        ],
+        "menu": true
+      }
+    },
+    {
+      "name": "pc 개편 · 시장 첫 화면: ① 언제 → ② 시장 → ③ 업종 → ④ 변화 → ⑤ 다음 확인 차례 · 그림은 그 아래(그림 위 497px · ⑤ 아래 429px) · ① 이 첫 화면 안 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": [
+        [
+          "1",
+          83,
+          142
+        ],
+        [
+          "2",
+          147,
+          229
+        ],
+        [
+          "3",
+          234,
+          294
+        ],
+        [
+          "4",
+          299,
+          359
+        ],
+        [
+          "5",
+          364,
+          429
+        ]
+      ]
+    },
+    {
+      "name": "pc 개편 · 시장 첫 화면 숫자 = 판 읽기: ATLAS 선정 365곳 하루 오름 87곳 · 내림 238곳 · 보합 10곳 · 「시장 전체 아님」 · 공식 업종 64개 · 10월 7일(수) 기록 이후 새 공시 62건 · 다음 확인 고리 넷",
+      "ok": true,
+      "detail": {
+        "t2": "② 시장 코스피 ▼ −2.62% · 코스닥 ▼ −0.69% ATLAS 선정 365곳(시장 전체 아님) 하루: 오름 87곳 · 내림 238곳 · 보합 10곳 · 상승 비율 26% 변동성 1.64%(코스피 20거래일 하루 변화 표준편차) · 거래대금: 자료 없음",
+        "t3": "③ 업종 공식 업종 64개 20거래일: 동반 강세 11개 · 일부 종목 주도 8개 · 엇갈림 1개 · 약세 28개 · 판단 보류 16개 ATLAS 업종 73개(5곳씩): 동반 강세 19개 · 일부 종목 주도 15개 ",
+        "t4": "④ 변화 10월 7일(수) 기록 이후 · 새 공시 62건(★★★ 15건) 불장 업종 들어옴 1개 · 빠짐 1개 (의료용품) · 오름 상위 22곳 들어옴 7곳 · 빠짐 7곳",
+        "links": [
+          "#/stocks",
+          "#/agenda",
+          "#/flow",
+          "#/check"
+        ]
+      }
+    },
+    {
+      "name": "pc 개편 · 투자자 매매: 표 3줄(외국인 · 기관 · 개인 × 1 · 5 · 10거래일 추정액 · 20거래일 계산 불가) = 판 읽기 · 「공식 값 = 순매수 주식 수」 · 그림 flowwho",
+      "ok": true,
+      "detail": {
+        "rows": [
+          [
+            "외국인",
+            "−9,771억 원 · 29곳 뺌",
+            "−3.98조 원 · 29곳 뺌",
+            "−10.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "기관",
+            "−7,404억 원 · 29곳 뺌",
+            "−4,853억 원 · 29곳 뺌",
+            "−9,905억 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "개인",
+            "+1.03조 원 · 29곳 뺌",
+            "+9,521억 원 · 29곳 뺌",
+            "+2.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ]
+        ],
+        "want": [
+          [
+            "외국인",
+            "−9,771억 원 · 29곳 뺌",
+            "−3.98조 원 · 29곳 뺌",
+            "−10.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "기관",
+            "−7,404억 원 · 29곳 뺌",
+            "−4,853억 원 · 29곳 뺌",
+            "−9,905억 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "개인",
+            "+1.03조 원 · 29곳 뺌",
+            "+9,521억 원 · 29곳 뺌",
+            "+2.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "pc 개편 · 종목 묶음 넷: new:24곳:true · up:22곳:false · down:26곳:false · all:365곳:false = 판 읽기(새로 발견 24곳 · 근거 강화 22곳 · 근거 약화 26곳 · 전체 365곳)",
+      "ok": true,
+      "detail": [
+        [
+          "new",
+          "24곳",
+          "true"
+        ],
+        [
+          "up",
+          "22곳",
+          "false"
+        ],
+        [
+          "down",
+          "26곳",
+          "false"
+        ],
+        [
+          "all",
+          "365곳",
+          "false"
+        ]
+      ]
+    },
+    {
+      "name": "pc 개편 · 「근거 강화」 누름 → 22줄 모두 근거 강화(판 읽기 22곳 · 한 번에 30줄까지)",
+      "ok": true,
+      "detail": {
+        "n": 22
+      }
+    },
+    {
+      "name": "pc 개편 · 검증: 고정 기록 4장 · 평가 대기 칸 48개 · 평가 끝 칸 0개 = 판 읽기(대기 48 · 끝 0) · 「검증 전」",
+      "ok": true,
+      "detail": {
+        "lead": "선정 결과 고정 기록 4장 · 10월 2일(금)~10월 8일(목) · 평가 끝 0건 · 평가 대기 36건 검증 전 · 첫 평가일 10월 13일(화)(5거래일)",
+        "wait": 48,
+        "done": 0,
+        "recs": 4
+      }
+    },
+    {
+      "name": "pc 개편 · 일정 사건 카드 20장 = 다가오는 것 12 + 지난 것 8",
+      "ok": true,
+      "detail": {
+        "ev": 20,
+        "upW": 27,
+        "pastW": 28
+      }
+    },
+    {
+      "name": "pc 개편 · 종목 상세(440110): ① 지금 종가 · 자료 상태(「자료 상태: 그날 종가 · 종가 받은 때 10월 8일(목) 16:50 K」) → ② ~ ⑥ 차례 2,3,4,5,6",
+      "ok": true,
+      "detail": {
+        "order": "2,3,4,5,6",
+        "status": "자료 상태: 그날 종가 · 종가 받은 때 10월 8일(목) 16:50 KST",
+        "head": true
+      }
+    },
+    {
+      "name": "pc 개편 · 관심 등록(440110) → 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 빼면 0개",
+      "ok": true,
+      "detail": {
+        "wb": "★ 관심 종목 · 이 기기에만 저장",
+        "w1": [
+          [
+            "440110",
+            "검사 등록 이유"
+          ]
+        ],
+        "w2": {
+          "rows": [
+            "440110"
+          ],
+          "art": "watch",
+          "lead": "★ 관심종목\n\n1곳 · 10월 8일(목) 종가와 견줌 · 이 기기에만 저장(다른 기기 · 계정과 맞춰지지 않음)"
+        },
+        "w3": 0
+      }
+    },
+    {
+      "name": "pc 개편 · 옛 주소: #/find → #/stocks(종목) · #/map → 시장(home) · #/road → 종목(stocks) · #/log → 검증(check) · #/start → 위 막대 안내(아래 탭 없음)",
+      "ok": true,
+      "detail": {
+        "of": {
+          "hash": "#/stocks",
+          "active": "stocks"
+        },
+        "old": {
+          "map": "home",
+          "road": "stocks",
+          "log": "check",
+          "start": null
+        }
+      }
+    },
+    {
+      "name": "pc 개편 화면: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "pc 「돈 흐름」 → 「업종 순환」(#/flow/rotation · 아래 탭 「돈 흐름」 눌림 · 탭 차례 home,flow,stocks,agenda,check): 첫 칸 업종 순환 그림 · 불장 것 없음 · 늘어난 곳 · 줄어든 곳(시장 대비 시가총액 비중) 1위~3위 업종 6칸 — 칸마다 그 업종 회사(2차전지 5곳 · 전자부품 5곳 · 반도체 장비 5곳 · 반도체 5곳 · 조선 5곳 · 은행·카드 5곳) = 판 자료 · 「실제 투자금 유입액 아님」 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "hash": "#/flow/rotation",
         "active": "flow",
         "label": "돈 흐름",
-        "order": "home,flow,map,road,agenda,find,log,start",
+        "order": "home,flow,stocks,agenda,check",
         "rot": true,
         "first": true,
         "hot": 0,
@@ -996,29 +1482,30 @@
           "out3 은행·카드: 우리금융지주 −5.4%, 기업은행 −5.5%, KB금융 −7.4%, 하나금융지주 −10.5%, 신한지주 −12.6%"
         ],
         "heads": [
-          "들어가는 곳",
-          "빠지는 곳"
+          "늘어난 곳",
+          "줄어든 곳"
         ],
         "key": "회사 = 지난 20거래일 종가 변화 · 차례 = 20거래일 변화 순",
+        "honest": true,
         "sw": 1280,
         "cw": 1280,
         "mis": []
       }
     },
     {
-      "name": "pc 아래 탭 「돈 흐름」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "name": "pc 「돈 흐름」 업종 순환: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "pc 아래 탭 「돈 흐름」: 첫 회사 「에코프로비엠」을 누르면 회사 화면(#/stock/247540)",
+      "name": "pc 「업종 순환」: 첫 회사 「에코프로비엠」을 누르면 회사 화면(#/stock/247540)",
       "ok": true,
       "detail": {
         "h0": "#/stock/247540"
       }
     },
     {
-      "name": "pc 탭 「불장」: 돈 흐름(그림 · 기사로 본 돈 이야기 · 결 · 업종 회사)은 없음 — 아래 탭 「돈 흐름」으로 나눔 · 맨 위 그림 「home」(봉화대)",
+      "name": "pc 시장 안 「불장」(#/hot): 돈 흐름(그림 · 기사로 본 돈 이야기 · 결 · 업종 회사)은 없음 — 「돈 흐름」으로 나눔 · 맨 위 그림 「home」(봉화대)",
       "ok": true,
       "detail": {
         "rot": 0,
@@ -1033,7 +1520,7 @@
       }
     },
     {
-      "name": "pc 탭 「불장」: 제목 「불장 업종 11개」 · 옛 큰 흐름 한 줄 없음(논평이 대신 · 2026-10-07) · 아래 탭 여덟 불장·돈흐름·지도·출목표·일정·찾기·기록·처음(「불장」 눌림) · 73칸 판은 여기 없음",
+      "name": "pc 탭 「불장」: 제목 「불장 업종 11개」 · 옛 큰 흐름 한 줄 없음(논평이 대신 · 2026-10-07) · 아래 탭 여덟 시장·돈흐름·종목·일정·검증(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
         "title": "불장 업종 11개",
@@ -1041,14 +1528,11 @@
         "tiles": 0,
         "active": "home",
         "tabs": [
-          "불장",
+          "시장",
           "돈흐름",
-          "지도",
-          "출목표",
+          "종목",
           "일정",
-          "찾기",
-          "기록",
-          "처음"
+          "검증"
         ],
         "footPromise": "지난 기록과 근거만 씁니다 · 값의 앞날은 맞히지 않습니다 · 광고 · 유료 결제 없음",
         "mvx": "moves",
@@ -1057,29 +1541,26 @@
       }
     },
     {
-      "name": "pc 탭 「불장」 맨 위 스위치 셋: 불장 11개 · 예비 7곳 · 오름 상위 22곳 · 「불장」 고름",
+      "name": "pc 시장 보기 바꾸기 셋(요약 · 불장 · 지도) · 「불장」 고름(2026-10-08 20:19 지시서 — 예비 · 오름 상위는 「종목」으로)",
       "ok": true,
       "detail": [
         {
-          "seg": "home",
+          "seg": "market",
           "href": "#/",
+          "cur": null,
+          "label": "요약"
+        },
+        {
+          "seg": "hot",
+          "href": "#/hot",
           "cur": "page",
-          "label": "불장",
-          "n": "11개"
+          "label": "불장"
         },
         {
-          "seg": "similar",
-          "href": "#/similar",
+          "seg": "map",
+          "href": "#/map",
           "cur": null,
-          "label": "예비",
-          "n": "7곳"
-        },
-        {
-          "seg": "rise",
-          "href": "#/rise",
-          "cur": null,
-          "label": "오름 상위",
-          "n": "22곳"
+          "label": "지도"
         }
       ]
     },
@@ -1109,7 +1590,7 @@
       "detail": {
         "hash": "#/i/ib8333ad0",
         "back": [
-          "#/",
+          "#/hot",
           "‹ 불장"
         ],
         "active": "home"
@@ -1125,7 +1606,7 @@
       }
     },
     {
-      "name": "pc 「태양 모아 보기 ›」 누름 → 출목표 「태양」 맨 위(주소 #/road · 칸 28개 = 태양 28곳 · 아래 탭 「출목표」 눌림)",
+      "name": "pc 「태양 모아 보기 ›」 누름 → 출목표 「태양」 맨 위(주소 #/road · 칸 28개 = 태양 28곳 · 아래 탭 「종목」 눌림)",
       "ok": true,
       "detail": {
         "hash": "#/road",
@@ -1133,11 +1614,11 @@
         "mode": "sun",
         "pressed": "sun",
         "n": 28,
-        "active": "road"
+        "active": "stocks"
       }
     },
     {
-      "name": "pc 탭 「지도」(업종 73칸): 제목 「지도 업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 35개 오름 · 365곳 · 지난 20거래일 · 9월 7일(월)부터 10월 8일(목)까지」(업종 35개 오름 · 가장 많은 회사의 기간) · 아래 탭 여덟 불장·돈흐름·지도·출목표·일정·찾기·기록·처음(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
+      "name": "pc 탭 「지도」(업종 73칸): 제목 「지도 업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 35개 오름 · 365곳 · 지난 20거래일 · 9월 7일(월)부터 10월 8일(목)까지」(업종 35개 오름 · 가장 많은 회사의 기간) · 아래 탭 여덟 시장·돈흐름·종목·일정·검증(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
       "ok": true,
       "detail": {
         "title": "지도 업종 73개",
@@ -1177,16 +1658,13 @@
           "씨씨에스: 10월 2일(금) 종가까지만 있음"
         ],
         "strip": "10월 8일(목) 15:30 KST 종가 코스피 6,625.93포인트 −2.62% 코스닥 892.27포인트 −0.69%",
-        "active": "map",
+        "active": "home",
         "tabs": [
-          "불장",
+          "시장",
           "돈흐름",
-          "지도",
-          "출목표",
+          "종목",
           "일정",
-          "찾기",
-          "기록",
-          "처음"
+          "검증"
         ],
         "cards": 0,
         "text52": false
@@ -1262,7 +1740,7 @@
           "#/map",
           "‹ 지도"
         ],
-        "active": "map",
+        "active": "home",
         "tiles": [
           {
             "id": "i3b897314",
@@ -1305,7 +1783,7 @@
           "#/map/f/semi",
           "‹ 반도체"
         ],
-        "active": "map",
+        "active": "home",
         "co": "#/stock/281820"
       }
     },
@@ -1318,7 +1796,7 @@
           "#/i/i3b897314",
           "‹ 반도체 검사·측정"
         ],
-        "active": "map"
+        "active": "home"
       }
     },
     {
@@ -1487,7 +1965,7 @@
         "hash": "#/rise",
         "title": "오름 상위 22곳",
         "when": "불장 11개 업종 밖 회사 22곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 7일(월)부터 10월 8일(목) 15:30 종가까지",
-        "active": "home",
+        "active": "stocks",
         "seg": "rise",
         "moves": null,
         "mvx": "moves",
@@ -1563,41 +2041,41 @@
           "#/rise",
           "‹ 오름 상위"
         ],
-        "active": "home"
+        "active": "stocks"
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(876px → 876px)",
+      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(873px → 873px)",
       "ok": true,
       "detail": {
-        "y0": 876,
+        "y0": 873,
         "rb": {
           "hash": "#/rise",
-          "y": 876
+          "y": 873
         }
       }
     },
     {
-      "name": "pc 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·fgn·ins·hold·y1 · 4가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
+      "name": "pc 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·fgn·ins·y1 · 4가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
       "ok": true,
       "detail": {
         "board": [
           "DB",
+          "드림시큐리티",
           "SK디스커버리",
           "씨젠",
           "에코프로비엠",
-          "한국공항",
-          "F&F",
-          "한미사이언스"
+          "SK이노베이션",
+          "F&F"
         ],
         "mine": [
           "DB",
+          "드림시큐리티",
           "SK디스커버리",
           "씨젠",
           "에코프로비엠",
-          "한국공항",
-          "F&F",
-          "한미사이언스"
+          "SK이노베이션",
+          "F&F"
         ],
         "common": [
           "ups",
@@ -1605,7 +2083,6 @@
           "r20",
           "fgn",
           "ins",
-          "hold",
           "y1"
         ],
         "cIds": [
@@ -1614,19 +2091,18 @@
           "r20",
           "fgn",
           "ins",
-          "hold",
           "y1"
         ]
       }
     },
     {
-      "name": "pc 스위치 「예비」 누름 → #/similar · 제목 「예비 7곳」 · 「불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 7가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가」 · 탭 「불장」 눌림 · 스위치 「예비」 고름",
+      "name": "pc 스위치 「예비」 누름 → #/similar · 제목 「예비 7곳」 · 「불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 6가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가」 · 탭 「불장」 눌림 · 스위치 「예비」 고름",
       "ok": true,
       "detail": {
         "hash": "#/similar",
         "title": "예비 7곳",
-        "when": "불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 7가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가",
-        "active": "home",
+        "when": "불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 6가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가",
+        "active": "stocks",
         "seg": "similar",
         "sw": 1280,
         "iw": 1280
@@ -1641,7 +2117,7 @@
       }
     },
     {
-      "name": "pc 「예비」: 공통점 막대 7줄 = 판의 공통점 7가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
+      "name": "pc 「예비」: 공통점 막대 6줄 = 판의 공통점 6가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
       "ok": true,
       "detail": {
         "barMisS": []
@@ -1689,36 +2165,37 @@
       "detail": null
     },
     {
-      "name": "pc 「예비」 줄 「한미사이언스」 누름 → 회사 화면 · 되돌아가기 「‹ 예비」 · 탭 「불장」 눌린 채로",
+      "name": "pc 「예비」 줄 「F&F」 누름 → 회사 화면 · 되돌아가기 「‹ 예비」 · 탭 「불장」 눌린 채로",
       "ok": true,
       "detail": {
-        "hash": "#/stock/008930",
-        "title": "한미사이언스",
+        "hash": "#/stock/383220",
+        "title": "F&F",
         "back": [
           "#/similar",
           "‹ 예비"
         ],
-        "active": "home"
+        "active": "stocks"
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1477px → 1477px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1474px → 1474px)",
       "ok": true,
       "detail": {
-        "y0": 1477,
+        "y0": 1474,
         "sb": {
           "hash": "#/similar",
-          "y": 1477
+          "y": 1474
         }
       }
     },
     {
-      "name": "pc 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
+      "name": "pc 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/similar)",
       "ok": true,
       "detail": {
         "note": "이 업종은 지금 판에 없습니다",
         "quiet": "industry",
-        "back": "#/"
+        "back": "#/similar",
+        "prevHash": "#/similar"
       }
     },
     {
@@ -4894,7 +5371,7 @@
         "code": "159010",
         "focus": true,
         "inView": true,
-        "active": "road"
+        "active": "stocks"
       }
     },
     {
@@ -4913,7 +5390,7 @@
           "#/road",
           "‹ 출목표"
         ],
-        "active": "road",
+        "active": "stocks",
         "road": "#/road/g/id486d496",
         "roadT": "출목표에서 「기계·조선·방산」 갈래와 함께 보기 ›"
       }
@@ -4929,13 +5406,13 @@
       }
     },
     {
-      "name": "pc 일정: 시장 4건 · 회사·업종 19건(10날) · 예고 공시 161건 · ★★★ 공시 161건 = 일정표 · 아래 탭 「일정」 눌림",
+      "name": "pc 일정: 시장 4건 · 회사·업종 19건(10날) · 예고 공시 162건 · ★★★ 공시 161건 = 일정표 · 아래 탭 「일정」 눌림",
       "ok": true,
       "detail": {
         "a": {
           "market": 4,
           "company": 19,
-          "notices": 161,
+          "notices": 162,
           "big": 161,
           "days": 10,
           "active": "agenda"
@@ -4943,7 +5420,7 @@
         "want": {
           "market": 4,
           "company": 19,
-          "notices": 161,
+          "notices": 162,
           "big": 161
         }
       }
@@ -4954,14 +5431,14 @@
       "detail": null
     },
     {
-      "name": "pc 일정: 긴 공시 목록 접기 — 예고 공시 10건 펼침 · 151건 접힘 · 아주 중요한 공시 10건 펼침 · 151건 접힘",
+      "name": "pc 일정: 긴 공시 목록 접기 — 예고 공시 10건 펼침 · 152건 접힘 · 아주 중요한 공시 10건 펼침 · 151건 접힘",
       "ok": true,
       "detail": [
         {
           "l": "예고 공시",
-          "all": 161,
+          "all": 162,
           "shown": 10,
-          "sum": "예고·알림 공시 151건 더 보기 · 모두 161건",
+          "sum": "예고·알림 공시 152건 더 보기 · 모두 162건",
           "open": false
         },
         {
@@ -4979,7 +5456,7 @@
       "detail": {
         "title": "출목표 365곳",
         "when": "지난 20거래일 · 9월 7일(월)부터 10월 8일(목) 15:30 종가까지",
-        "active": "road",
+        "active": "stocks",
         "mode": "rise",
         "tab": "r1",
         "segs": [
@@ -5084,7 +5561,7 @@
           "t": "태양 28곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1325,
+        "first": 1391,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -5188,13 +5665,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1325px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1391px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1325,
+        "first": 1391,
         "ih": 800
       }
     },
@@ -5337,21 +5814,24 @@
             "more": "이 탭 21위~40위 더 보기 · 남은 50곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 40,
             "more": "이 탭 41위~60위 더 보기 · 남은 30곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 60,
             "more": "이 탭 61위~70위 더 보기 · 남은 10곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 70,
@@ -5411,26 +5891,25 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1585px → 1585px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1661px → 1661px)",
       "ok": true,
       "detail": {
-        "yBefore": 1585,
+        "yBefore": 1661,
         "back": {
           "hash": "#/road",
-          "y": 1585,
+          "y": 1661,
           "mode": "flow",
           "tab": "flat-up"
         }
       }
     },
     {
-      "name": "pc 출목표 탭을 한 번 더 누름 → 맨 위로(0px) · 묶는 법·탭은 그대로(flow · flat-up)",
+      "name": "pc 출목표를 보다 아래 탭 「종목」 누름 → 종목 목록 맨 위(#/stocks · 0px)",
       "ok": true,
       "detail": {
-        "hash": "#/road",
+        "hash": "#/stocks",
         "y": 0,
-        "mode": "flow",
-        "tab": "flat-up"
+        "active": "stocks"
       }
     },
     {
@@ -5481,7 +5960,7 @@
       "detail": null
     },
     {
-      "name": "pc 흐름별을 보다 일정 탭 → 출목표 탭 누름 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 케이씨텍 · HLB생명과학",
+      "name": "pc 흐름별을 보다 일정 탭 → 종목 탭 → 출목표 보기 누름 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 케이씨텍 · HLB생명과학",
       "ok": true,
       "detail": {
         "hash": "#/road",
@@ -5507,56 +5986,43 @@
       }
     },
     {
-      "name": "pc 아래 탭 「찾기」 누름 → #/find · 제목 「찾기 730곳」(= 한국 365곳 · 미국 365곳) · 글 칸에 바로 커서 · 보기 단추 4개",
+      "name": "pc 위 막대 돋보기 누름 → #/stocks · 글 칸에 바로 커서 · 아래 탭 「종목」 눌림",
       "ok": true,
       "detail": {
-        "hash": "#/find",
-        "title": "찾기 730곳",
-        "focus": "fd-in",
-        "active": "find",
-        "tries": [
-          "삼성전자",
-          "엔비디아",
-          "ㅅㅅㅈㅈ (초성)",
-          "NVDA (기호)"
-        ],
+        "hash": "#/stocks",
+        "focus": true,
+        "active": "stocks",
+        "top": "page",
         "sw": 1280,
         "iw": 1280
       }
     },
     {
-      "name": "pc 찾기 「디」 → 20곳 보임(「32곳 가운데 20곳 · 글자를 더 넣으면 좁혀짐」) = find.js 로 센 32곳의 앞 20곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "pc 종목 찾기 「디」 → 30곳(「「디」 32곳 가운데 30곳 · 글자를 더 넣으면 좁혀짐」) = find.js 로 센 앞 30곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "32곳 가운데 20곳 · 글자를 더 넣으면 좁혀짐",
+          "msg": "「디」 32곳 가운데 30곳 · 글자를 더 넣으면 좁혀짐",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             },
             {
               "code": "187870",
-              "place": "kr",
               "href": "#/stock/187870",
               "name": "디바이스",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             },
             {
               "code": "003160",
-              "place": "kr",
               "href": "#/stock/003160",
               "name": "디아이",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550",
@@ -5566,22 +6032,19 @@
       }
     },
     {
-      "name": "pc 찾기 「ㄷㅋㅇㅌ」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "pc 종목 찾기 「ㄷㅋㅇㅌ」 → 1곳(「「ㄷㅋㅇㅌ」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「ㄷㅋㅇㅌ」 1곳",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550"
@@ -5589,22 +6052,19 @@
       }
     },
     {
-      "name": "pc 찾기 「290550」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "pc 종목 찾기 「290550」 → 1곳(「「290550」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「290550」 1곳",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550"
@@ -5612,22 +6072,19 @@
       }
     },
     {
-      "name": "pc 찾기 「엔비디아」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "name": "pc 종목 찾기 「엔비디아」 → 1곳(「「엔비디아」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「엔비디아」 1곳",
           "hits": [
             {
               "code": "NVDA",
-              "place": "us",
               "href": "/us/#/stock/NVDA",
               "name": "엔비디아",
-              "sun": false,
-              "mkt": "미국"
+              "mkt": "us"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "us:NVDA"
@@ -5635,22 +6092,19 @@
       }
     },
     {
-      "name": "pc 찾기 「nvda」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "name": "pc 종목 찾기 「nvda」 → 1곳(「「nvda」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「nvda」 1곳",
           "hits": [
             {
               "code": "NVDA",
-              "place": "us",
               "href": "/us/#/stock/NVDA",
               "name": "엔비디아",
-              "sun": false,
-              "mkt": "미국"
+              "mkt": "us"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "us:NVDA"
@@ -5658,48 +6112,32 @@
       }
     },
     {
-      "name": "pc 찾기: 없는 이름 → 「「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다」 · 줄 0개",
+      "name": "pc 종목 찾기: 없는 이름 → 「「없는회사이름」 맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다」 · 줄 0개",
       "ok": true,
       "detail": {
-        "msg": "「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다",
-        "hits": [],
-        "recent": false
+        "msg": "「없는회사이름」 맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다",
+        "hits": []
       }
     },
     {
-      "name": "pc 찾기: 「디케이티」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 찾기」",
+      "name": "pc 종목 찾기: 「디케이티」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 종목」",
       "ok": true,
       "detail": {
         "title": "디케이티",
-        "back": "‹ 찾기"
+        "back": "‹ 종목"
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 찾기」 → 찾기 그대로(넣은 글자 「디케이티」 · 줄 1개)",
+      "name": "pc 회사 화면 「‹ 종목」 → 종목 그대로(넣은 글자 「디케이티」 · 줄 1개)",
       "ok": true,
       "detail": {
-        "hash": "#/find",
+        "hash": "#/stocks",
         "value": "디케이티",
         "n": 1
       }
     },
     {
-      "name": "pc 찾기: 글자를 지우면 「최근 찾은 회사」 — 첫 줄 디케이티",
-      "ok": true,
-      "detail": {
-        "recent": true,
-        "first": {
-          "code": "290550",
-          "place": "kr",
-          "href": "#/stock/290550",
-          "name": "디케이티",
-          "sun": true,
-          "mkt": "한국"
-        }
-      }
-    },
-    {
-      "name": "pc 찾기: 미국 「엔비디아」 줄 누름 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
+      "name": "pc 종목 찾기: 미국 「엔비디아」 줄 누름 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
       "ok": true,
       "detail": {
         "path": "/us/#/stock/NVDA",
@@ -5708,92 +6146,93 @@
       }
     },
     {
-      "name": "pc 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/forecast → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/up → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/up → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/down → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/down → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/scores → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/scores → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/race → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/race → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/evolution → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/evolution → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/status → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/status → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/records → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/records → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 옛 주소 #/game → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "pc 옛 주소 #/game → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 76개 = 기록 파일 76개(이슈 6 · 업데이트 56 · 자료 변경 14 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 77개 = 기록 파일 77개(이슈 6 · 업데이트 57 · 자료 변경 14 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 5개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
         "days": [
+          "2026-10-09",
           "2026-10-08",
           "2026-10-07",
           "2026-10-06",
@@ -5814,11 +6253,11 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 56줄 = 기록 파일 56줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 57줄 = 기록 파일 57줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 56,
+        "n": 57,
         "sw": 1280,
         "cw": 1280
       }
@@ -5834,20 +6273,20 @@
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 76줄 = 기록 파일 76줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 77줄 = 기록 파일 77줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 76,
+        "n": 77,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 무결성(기록 탭 맨 아래 「기술 정보」): 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」 · 다른 화면 맨 아래 「기술 정보」 0개(옮김 · 규칙 1)",
+      "name": "pc 무결성(기록 탭 맨 아래 「기술 정보」): 「읽은 파일 2개 모두 판 목록의 SHA-256 과 같음」 · 다른 화면 맨 아래 「기술 정보」 0개(옮김 · 규칙 1)",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음",
+        "integ": "읽은 파일 2개 모두 판 목록의 SHA-256 과 같음",
         "footTech": 0
       }
     },
@@ -5858,7 +6297,6 @@
         "r": {
           "hash": "#/start",
           "title": "처음 5곳",
-          "active": "start",
           "rows": [
             "LG유플러스 −21%",
             "KT&G −23%",
@@ -5905,7 +6343,6 @@
       "detail": {
         "hash": "#/guide",
         "title": "한국 주식시장 안내",
-        "active": "start",
         "secs": [
           "시장",
           "시간(한국 시각)",
@@ -5960,7 +6397,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -6004,7 +6440,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -6048,7 +6483,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -6097,7 +6531,6 @@
       "detail": {
         "hash": "#/korea",
         "title": "한국 주식시장은 몇 위인가",
-        "active": "start",
         "when": "MSCI 나라별 지수 25개 시장 · 미국 달러 · 2026년 9월 30일(수) 종가 기준 · 순위와 사실만",
         "rows": [
           {
@@ -6193,7 +6626,7 @@
       "detail": null
     },
     {
-      "name": "pc 그림 한 장(규칙 33): 화면 15곳 — 불장 home · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 찾기 find · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 그림 하나 · 옛 논평 무대 없음 · 그림엔 글자 없음 · 걸음 넷 이상 · 차례 점 넷 · 단추 둘 · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 56개 = 검사기가 판에서 따로 센 값",
+      "name": "pc 그림 한 장(규칙 33): 화면 19곳 — 시장 market · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 그림 하나 · 옛 논평 무대 없음 · 그림엔 글자 없음 · 걸음 넷 이상 · 차례 점 넷 · 단추 둘 · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 65개 = 검사기가 판에서 따로 센 값",
       "ok": true,
       "detail": null
     },
@@ -6208,7 +6641,7 @@
         "rt": {
           "from": "id3ad7bf2",
           "to": "ie21045c7",
-          "k": "돈 흐름",
+          "k": "업종 순환",
           "kw": "지난 10거래일 · 10월 8일(목) 종가까지",
           "cols": "out:3,in:3",
           "how": true,
@@ -6350,7 +6783,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -6385,7 +6818,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -6449,14 +6882,14 @@
       }
     },
     {
-      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 541px ≤ 아래 탭 579px · 360×640 네 줄 끝 561px ≤ 아래 탭 579px · 430×700 네 줄 끝 552px ≤ 아래 탭 639px",
+      "name": "pc 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 576px ≤ 아래 탭 579px · 360×640 네 줄 끝 576px ≤ 아래 탭 579px · 430×700 네 줄 끝 614px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 172,
-          "rowsBottom": 541,
+          "map": 234,
+          "rowsBottom": 576,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -6464,8 +6897,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 172,
-          "rowsBottom": 561,
+          "map": 234,
+          "rowsBottom": 576,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -6473,8 +6906,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 155,
-          "rowsBottom": 552,
+          "map": 217,
+          "rowsBottom": 614,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -6498,7 +6931,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -6550,13 +6983,249 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「돈 흐름」(#/flow · 둘째 탭 「돈 흐름」 눌림 · 탭 차례 home,flow,map,road,agenda,find,log,start): 맨 위 돈 흐름 그림 · 불장 것 없음 · 들어가는 곳 · 빠지는 곳 1위~3위 업종 6칸 — 칸마다 그 업종 회사(2차전지 5곳 · 전자부품 5곳 · 반도체 장비 5곳 · 반도체 5곳 · 조선 5곳 · 은행·카드 5곳) = 판 자료(이름 · 지난 20거래일 변화 · 오른 순 · 누르면 회사 화면) · 업종 이름을 누르면 업종 화면 · 옆으로 넘치지 않음",
+      "name": "mobile 개편 · 아래 탭 다섯 시장 · 돈흐름 · 종목 · 일정 · 검증(「시장」 눌림) · 위 막대 찾기 · 관심 · 안내 · 보기(말 · 글씨 · 소리)",
       "ok": true,
       "detail": {
-        "hash": "#/flow",
+        "tabs": [
+          [
+            "home",
+            "시장"
+          ],
+          [
+            "flow",
+            "돈흐름"
+          ],
+          [
+            "stocks",
+            "종목"
+          ],
+          [
+            "agenda",
+            "일정"
+          ],
+          [
+            "check",
+            "검증"
+          ]
+        ],
+        "top": [
+          "stocks",
+          "watch",
+          "guide",
+          "more"
+        ],
+        "menu": true
+      }
+    },
+    {
+      "name": "mobile 개편 · 시장 첫 화면: ① 언제 → ② 시장 → ③ 업종 → ④ 변화 → ⑤ 다음 확인 차례 · 그림은 그 아래(그림 위 770px · ⑤ 아래 708px) · ① 이 첫 화면 안 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": [
+        [
+          "1",
+          100,
+          202
+        ],
+        [
+          "2",
+          207,
+          331
+        ],
+        [
+          "3",
+          336,
+          481
+        ],
+        [
+          "4",
+          486,
+          588
+        ],
+        [
+          "5",
+          593,
+          708
+        ]
+      ]
+    },
+    {
+      "name": "mobile 개편 · 시장 첫 화면 숫자 = 판 읽기: ATLAS 선정 365곳 하루 오름 87곳 · 내림 238곳 · 보합 10곳 · 「시장 전체 아님」 · 공식 업종 64개 · 10월 7일(수) 기록 이후 새 공시 62건 · 다음 확인 고리 넷",
+      "ok": true,
+      "detail": {
+        "t2": "② 시장 코스피 ▼ −2.62% · 코스닥 ▼ −0.69% ATLAS 선정 365곳(시장 전체 아님) 하루: 오름 87곳 · 내림 238곳 · 보합 10곳 · 상승 비율 26% 변동성 1.64%(코스피 20거래일 하루 변화 표준편차) · 거래대금: 자료 없음",
+        "t3": "③ 업종 공식 업종 64개 20거래일: 동반 강세 11개 · 일부 종목 주도 8개 · 엇갈림 1개 · 약세 28개 · 판단 보류 16개 ATLAS 업종 73개(5곳씩): 동반 강세 19개 · 일부 종목 주도 15개 ",
+        "t4": "④ 변화 10월 7일(수) 기록 이후 · 새 공시 62건(★★★ 15건) 불장 업종 들어옴 1개 · 빠짐 1개 (의료용품) · 오름 상위 22곳 들어옴 7곳 · 빠짐 7곳",
+        "links": [
+          "#/stocks",
+          "#/agenda",
+          "#/flow",
+          "#/check"
+        ]
+      }
+    },
+    {
+      "name": "mobile 개편 · 투자자 매매: 표 3줄(외국인 · 기관 · 개인 × 1 · 5 · 10거래일 추정액 · 20거래일 계산 불가) = 판 읽기 · 「공식 값 = 순매수 주식 수」 · 그림 flowwho",
+      "ok": true,
+      "detail": {
+        "rows": [
+          [
+            "외국인",
+            "−9,771억 원 · 29곳 뺌",
+            "−3.98조 원 · 29곳 뺌",
+            "−10.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "기관",
+            "−7,404억 원 · 29곳 뺌",
+            "−4,853억 원 · 29곳 뺌",
+            "−9,905억 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "개인",
+            "+1.03조 원 · 29곳 뺌",
+            "+9,521억 원 · 29곳 뺌",
+            "+2.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ]
+        ],
+        "want": [
+          [
+            "외국인",
+            "−9,771억 원 · 29곳 뺌",
+            "−3.98조 원 · 29곳 뺌",
+            "−10.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "기관",
+            "−7,404억 원 · 29곳 뺌",
+            "−4,853억 원 · 29곳 뺌",
+            "−9,905억 원 · 29곳 뺌",
+            "계산 불가"
+          ],
+          [
+            "개인",
+            "+1.03조 원 · 29곳 뺌",
+            "+9,521억 원 · 29곳 뺌",
+            "+2.37조 원 · 29곳 뺌",
+            "계산 불가"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "mobile 개편 · 종목 묶음 넷: new:24곳:true · up:22곳:false · down:26곳:false · all:365곳:false = 판 읽기(새로 발견 24곳 · 근거 강화 22곳 · 근거 약화 26곳 · 전체 365곳)",
+      "ok": true,
+      "detail": [
+        [
+          "new",
+          "24곳",
+          "true"
+        ],
+        [
+          "up",
+          "22곳",
+          "false"
+        ],
+        [
+          "down",
+          "26곳",
+          "false"
+        ],
+        [
+          "all",
+          "365곳",
+          "false"
+        ]
+      ]
+    },
+    {
+      "name": "mobile 개편 · 「근거 강화」 누름 → 22줄 모두 근거 강화(판 읽기 22곳 · 한 번에 30줄까지)",
+      "ok": true,
+      "detail": {
+        "n": 22
+      }
+    },
+    {
+      "name": "mobile 개편 · 검증: 고정 기록 4장 · 평가 대기 칸 48개 · 평가 끝 칸 0개 = 판 읽기(대기 48 · 끝 0) · 「검증 전」",
+      "ok": true,
+      "detail": {
+        "lead": "선정 결과 고정 기록 4장 · 10월 2일(금)~10월 8일(목) · 평가 끝 0건 · 평가 대기 36건 검증 전 · 첫 평가일 10월 13일(화)(5거래일)",
+        "wait": 48,
+        "done": 0,
+        "recs": 4
+      }
+    },
+    {
+      "name": "mobile 개편 · 일정 사건 카드 20장 = 다가오는 것 12 + 지난 것 8",
+      "ok": true,
+      "detail": {
+        "ev": 20,
+        "upW": 27,
+        "pastW": 28
+      }
+    },
+    {
+      "name": "mobile 개편 · 종목 상세(440110): ① 지금 종가 · 자료 상태(「자료 상태: 그날 종가 · 종가 받은 때 10월 8일(목) 16:50 K」) → ② ~ ⑥ 차례 2,3,4,5,6",
+      "ok": true,
+      "detail": {
+        "order": "2,3,4,5,6",
+        "status": "자료 상태: 그날 종가 · 종가 받은 때 10월 8일(목) 16:50 KST",
+        "head": true
+      }
+    },
+    {
+      "name": "mobile 개편 · 관심 등록(440110) → 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 빼면 0개",
+      "ok": true,
+      "detail": {
+        "wb": "★ 관심 종목 · 이 기기에만 저장",
+        "w1": [
+          [
+            "440110",
+            "검사 등록 이유"
+          ]
+        ],
+        "w2": {
+          "rows": [
+            "440110"
+          ],
+          "art": "watch",
+          "lead": "★ 관심종목\n\n1곳 · 10월 8일(목) 종가와 견줌 · 이 기기에만 저장(다른 기기 · 계정과 맞춰지지 않음)"
+        },
+        "w3": 0
+      }
+    },
+    {
+      "name": "mobile 개편 · 옛 주소: #/find → #/stocks(종목) · #/map → 시장(home) · #/road → 종목(stocks) · #/log → 검증(check) · #/start → 위 막대 안내(아래 탭 없음)",
+      "ok": true,
+      "detail": {
+        "of": {
+          "hash": "#/stocks",
+          "active": "stocks"
+        },
+        "old": {
+          "map": "home",
+          "road": "stocks",
+          "log": "check",
+          "start": null
+        }
+      }
+    },
+    {
+      "name": "mobile 개편 화면: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "mobile 「돈 흐름」 → 「업종 순환」(#/flow/rotation · 아래 탭 「돈 흐름」 눌림 · 탭 차례 home,flow,stocks,agenda,check): 첫 칸 업종 순환 그림 · 불장 것 없음 · 늘어난 곳 · 줄어든 곳(시장 대비 시가총액 비중) 1위~3위 업종 6칸 — 칸마다 그 업종 회사(2차전지 5곳 · 전자부품 5곳 · 반도체 장비 5곳 · 반도체 5곳 · 조선 5곳 · 은행·카드 5곳) = 판 자료 · 「실제 투자금 유입액 아님」 · 옆으로 넘치지 않음",
+      "ok": true,
+      "detail": {
+        "hash": "#/flow/rotation",
         "active": "flow",
         "label": "돈 흐름",
-        "order": "home,flow,map,road,agenda,find,log,start",
+        "order": "home,flow,stocks,agenda,check",
         "rot": true,
         "first": true,
         "hot": 0,
@@ -6569,29 +7238,30 @@
           "out3 은행·카드: 우리금융지주 −5.4%, 기업은행 −5.5%, KB금융 −7.4%, 하나금융지주 −10.5%, 신한지주 −12.6%"
         ],
         "heads": [
-          "들어가는 곳",
-          "빠지는 곳"
+          "늘어난 곳",
+          "줄어든 곳"
         ],
         "key": "회사 = 지난 20거래일 종가 변화 · 차례 = 20거래일 변화 순",
+        "honest": true,
         "sw": 390,
         "cw": 390,
         "mis": []
       }
     },
     {
-      "name": "mobile 아래 탭 「돈 흐름」: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
+      "name": "mobile 「돈 흐름」 업종 순환: 앞날 말·쓰지 않는 말 없음(우리 글 0 · 공식 이름 0) · 예측 표시 0",
       "ok": true,
       "detail": null
     },
     {
-      "name": "mobile 아래 탭 「돈 흐름」: 첫 회사 「에코프로비엠」을 누르면 회사 화면(#/stock/247540)",
+      "name": "mobile 「업종 순환」: 첫 회사 「에코프로비엠」을 누르면 회사 화면(#/stock/247540)",
       "ok": true,
       "detail": {
         "h0": "#/stock/247540"
       }
     },
     {
-      "name": "mobile 탭 「불장」: 돈 흐름(그림 · 기사로 본 돈 이야기 · 결 · 업종 회사)은 없음 — 아래 탭 「돈 흐름」으로 나눔 · 맨 위 그림 「home」(봉화대)",
+      "name": "mobile 시장 안 「불장」(#/hot): 돈 흐름(그림 · 기사로 본 돈 이야기 · 결 · 업종 회사)은 없음 — 「돈 흐름」으로 나눔 · 맨 위 그림 「home」(봉화대)",
       "ok": true,
       "detail": {
         "rot": 0,
@@ -6606,7 +7276,7 @@
       }
     },
     {
-      "name": "mobile 탭 「불장」: 제목 「불장 업종 11개」 · 옛 큰 흐름 한 줄 없음(논평이 대신 · 2026-10-07) · 아래 탭 여덟 불장·돈흐름·지도·출목표·일정·찾기·기록·처음(「불장」 눌림) · 73칸 판은 여기 없음",
+      "name": "mobile 탭 「불장」: 제목 「불장 업종 11개」 · 옛 큰 흐름 한 줄 없음(논평이 대신 · 2026-10-07) · 아래 탭 여덟 시장·돈흐름·종목·일정·검증(「불장」 눌림) · 73칸 판은 여기 없음",
       "ok": true,
       "detail": {
         "title": "불장 업종 11개",
@@ -6614,14 +7284,11 @@
         "tiles": 0,
         "active": "home",
         "tabs": [
-          "불장",
+          "시장",
           "돈흐름",
-          "지도",
-          "출목표",
+          "종목",
           "일정",
-          "찾기",
-          "기록",
-          "처음"
+          "검증"
         ],
         "footPromise": "지난 기록과 근거만 씁니다 · 값의 앞날은 맞히지 않습니다 · 광고 · 유료 결제 없음",
         "mvx": "moves",
@@ -6630,29 +7297,26 @@
       }
     },
     {
-      "name": "mobile 탭 「불장」 맨 위 스위치 셋: 불장 11개 · 예비 7곳 · 오름 상위 22곳 · 「불장」 고름",
+      "name": "mobile 시장 보기 바꾸기 셋(요약 · 불장 · 지도) · 「불장」 고름(2026-10-08 20:19 지시서 — 예비 · 오름 상위는 「종목」으로)",
       "ok": true,
       "detail": [
         {
-          "seg": "home",
+          "seg": "market",
           "href": "#/",
+          "cur": null,
+          "label": "요약"
+        },
+        {
+          "seg": "hot",
+          "href": "#/hot",
           "cur": "page",
-          "label": "불장",
-          "n": "11개"
+          "label": "불장"
         },
         {
-          "seg": "similar",
-          "href": "#/similar",
+          "seg": "map",
+          "href": "#/map",
           "cur": null,
-          "label": "예비",
-          "n": "7곳"
-        },
-        {
-          "seg": "rise",
-          "href": "#/rise",
-          "cur": null,
-          "label": "오름 상위",
-          "n": "22곳"
+          "label": "지도"
         }
       ]
     },
@@ -6682,7 +7346,7 @@
       "detail": {
         "hash": "#/i/ib8333ad0",
         "back": [
-          "#/",
+          "#/hot",
           "‹ 불장"
         ],
         "active": "home"
@@ -6698,7 +7362,7 @@
       }
     },
     {
-      "name": "mobile 「태양 모아 보기 ›」 터치 → 출목표 「태양」 맨 위(주소 #/road · 칸 28개 = 태양 28곳 · 아래 탭 「출목표」 눌림)",
+      "name": "mobile 「태양 모아 보기 ›」 터치 → 출목표 「태양」 맨 위(주소 #/road · 칸 28개 = 태양 28곳 · 아래 탭 「종목」 눌림)",
       "ok": true,
       "detail": {
         "hash": "#/road",
@@ -6706,11 +7370,11 @@
         "mode": "sun",
         "pressed": "sun",
         "n": 28,
-        "active": "road"
+        "active": "stocks"
       }
     },
     {
-      "name": "mobile 탭 「지도」(업종 73칸): 제목 「지도 업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 35개 오름 · 365곳 · 지난 20거래일 · 9월 7일(월)부터 10월 8일(목)까지」(업종 35개 오름 · 가장 많은 회사의 기간) · 아래 탭 여덟 불장·돈흐름·지도·출목표·일정·찾기·기록·처음(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
+      "name": "mobile 탭 「지도」(업종 73칸): 제목 「지도 업종 73개」 = 판의 불장 11개 · 결론 한 줄 「업종 73개 가운데 35개 오름 · 365곳 · 지난 20거래일 · 9월 7일(월)부터 10월 8일(목)까지」(업종 35개 오름 · 가장 많은 회사의 기간) · 아래 탭 여덟 시장·돈흐름·종목·일정·검증(「업종」 눌림) · 회사 카드·22곳 줄 없음 · 옛 「52」 글 없음 · 접힌 칸 「업종 73개 · 우량주 204곳 · 시대 트렌드 132곳 · 흑자 24곳 · 채움 5곳」",
       "ok": true,
       "detail": {
         "title": "지도 업종 73개",
@@ -6750,16 +7414,13 @@
           "씨씨에스: 10월 2일(금) 종가까지만 있음"
         ],
         "strip": "10월 8일(목) 15:30 KST 종가 코스피 6,625.93포인트 −2.62% 코스닥 892.27포인트 −0.69%",
-        "active": "map",
+        "active": "home",
         "tabs": [
-          "불장",
+          "시장",
           "돈흐름",
-          "지도",
-          "출목표",
+          "종목",
           "일정",
-          "찾기",
-          "기록",
-          "처음"
+          "검증"
         ],
         "cards": 0,
         "text52": false
@@ -6835,7 +7496,7 @@
           "#/map",
           "‹ 지도"
         ],
-        "active": "map",
+        "active": "home",
         "tiles": [
           {
             "id": "i3b897314",
@@ -6878,7 +7539,7 @@
           "#/map/f/semi",
           "‹ 반도체"
         ],
-        "active": "map",
+        "active": "home",
         "co": "#/stock/281820"
       }
     },
@@ -6891,7 +7552,7 @@
           "#/i/i3b897314",
           "‹ 반도체 검사·측정"
         ],
-        "active": "map"
+        "active": "home"
       }
     },
     {
@@ -7060,7 +7721,7 @@
         "hash": "#/rise",
         "title": "오름 상위 22곳",
         "when": "불장 11개 업종 밖 회사 22곳 — 지난 20거래일 동안 많이 오른 차례 · 한 업종 2곳까지 · 9월 7일(월)부터 10월 8일(목) 15:30 종가까지",
-        "active": "home",
+        "active": "stocks",
         "seg": "rise",
         "moves": null,
         "mvx": "moves",
@@ -7136,41 +7797,41 @@
           "#/rise",
           "‹ 오름 상위"
         ],
-        "active": "home"
+        "active": "stocks"
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(929px → 929px)",
+      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(926px → 926px)",
       "ok": true,
       "detail": {
-        "y0": 929,
+        "y0": 926,
         "rb": {
           "hash": "#/rise",
-          "y": 929
+          "y": 926
         }
       }
     },
     {
-      "name": "mobile 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·fgn·ins·hold·y1 · 4가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
+      "name": "mobile 「예비」: 판의 닮은 7곳 = 이 검사기가 따로 센 7곳(공통점 ups·r5·r20·fgn·ins·y1 · 4가지 이상 · 한 업종 2곳 · 같으면 20거래일 많이 오른 차례)",
       "ok": true,
       "detail": {
         "board": [
           "DB",
+          "드림시큐리티",
           "SK디스커버리",
           "씨젠",
           "에코프로비엠",
-          "한국공항",
-          "F&F",
-          "한미사이언스"
+          "SK이노베이션",
+          "F&F"
         ],
         "mine": [
           "DB",
+          "드림시큐리티",
           "SK디스커버리",
           "씨젠",
           "에코프로비엠",
-          "한국공항",
-          "F&F",
-          "한미사이언스"
+          "SK이노베이션",
+          "F&F"
         ],
         "common": [
           "ups",
@@ -7178,7 +7839,6 @@
           "r20",
           "fgn",
           "ins",
-          "hold",
           "y1"
         ],
         "cIds": [
@@ -7187,19 +7847,18 @@
           "r20",
           "fgn",
           "ins",
-          "hold",
           "y1"
         ]
       }
     },
     {
-      "name": "mobile 스위치 「예비」 터치 → #/similar · 제목 「예비 7곳」 · 「불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 7가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가」 · 탭 「불장」 눌림 · 스위치 「예비」 고름",
+      "name": "mobile 스위치 「예비」 터치 → #/similar · 제목 「예비 7곳」 · 「불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 6가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가」 · 탭 「불장」 눌림 · 스위치 「예비」 고름",
       "ok": true,
       "detail": {
         "hash": "#/similar",
         "title": "예비 7곳",
-        "when": "불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 7가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가",
-        "active": "home",
+        "when": "불장 닮은 7곳 — 불장 11개 업종 55곳의 공통점 6가지를 많이 가진, 불장 밖 회사 · 10월 8일(목) 종가",
+        "active": "stocks",
         "seg": "similar",
         "sw": 390,
         "iw": 390
@@ -7214,7 +7873,7 @@
       }
     },
     {
-      "name": "mobile 「예비」: 공통점 막대 7줄 = 판의 공통점 7가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
+      "name": "mobile 「예비」: 공통점 막대 6줄 = 판의 공통점 6가지 · 줄마다 불장 · 나머지 몇 %(막대 길이 = %)",
       "ok": true,
       "detail": {
         "barMisS": []
@@ -7262,36 +7921,37 @@
       "detail": null
     },
     {
-      "name": "mobile 「예비」 줄 「한미사이언스」 터치 → 회사 화면 · 되돌아가기 「‹ 예비」 · 탭 「불장」 눌린 채로",
+      "name": "mobile 「예비」 줄 「F&F」 터치 → 회사 화면 · 되돌아가기 「‹ 예비」 · 탭 「불장」 눌린 채로",
       "ok": true,
       "detail": {
-        "hash": "#/stock/008930",
-        "title": "한미사이언스",
+        "hash": "#/stock/383220",
+        "title": "F&F",
         "back": [
           "#/similar",
           "‹ 예비"
         ],
-        "active": "home"
+        "active": "stocks"
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1529px → 1529px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1526px → 1526px)",
       "ok": true,
       "detail": {
-        "y0": 1529,
+        "y0": 1526,
         "sb": {
           "hash": "#/similar",
-          "y": 1529
+          "y": 1526
         }
       }
     },
     {
-      "name": "mobile 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/)",
+      "name": "mobile 없는 업종 주소 #/i/zzzzzzzz → 빈 하늘 그림 「이 업종은 지금 판에 없습니다」 · 들어온 탭으로 가는 길(#/similar)",
       "ok": true,
       "detail": {
         "note": "이 업종은 지금 판에 없습니다",
         "quiet": "industry",
-        "back": "#/"
+        "back": "#/similar",
+        "prevHash": "#/similar"
       }
     },
     {
@@ -10467,7 +11127,7 @@
         "code": "159010",
         "focus": true,
         "inView": true,
-        "active": "road"
+        "active": "stocks"
       }
     },
     {
@@ -10486,7 +11146,7 @@
           "#/road",
           "‹ 출목표"
         ],
-        "active": "road",
+        "active": "stocks",
         "road": "#/road/g/id486d496",
         "roadT": "출목표에서 「기계·조선·방산」 갈래와 함께 보기 ›"
       }
@@ -10502,13 +11162,13 @@
       }
     },
     {
-      "name": "mobile 일정: 시장 4건 · 회사·업종 19건(10날) · 예고 공시 161건 · ★★★ 공시 161건 = 일정표 · 아래 탭 「일정」 눌림",
+      "name": "mobile 일정: 시장 4건 · 회사·업종 19건(10날) · 예고 공시 162건 · ★★★ 공시 161건 = 일정표 · 아래 탭 「일정」 눌림",
       "ok": true,
       "detail": {
         "a": {
           "market": 4,
           "company": 19,
-          "notices": 161,
+          "notices": 162,
           "big": 161,
           "days": 10,
           "active": "agenda"
@@ -10516,7 +11176,7 @@
         "want": {
           "market": 4,
           "company": 19,
-          "notices": 161,
+          "notices": 162,
           "big": 161
         }
       }
@@ -10527,14 +11187,14 @@
       "detail": null
     },
     {
-      "name": "mobile 일정: 긴 공시 목록 접기 — 예고 공시 10건 펼침 · 151건 접힘 · 아주 중요한 공시 10건 펼침 · 151건 접힘",
+      "name": "mobile 일정: 긴 공시 목록 접기 — 예고 공시 10건 펼침 · 152건 접힘 · 아주 중요한 공시 10건 펼침 · 151건 접힘",
       "ok": true,
       "detail": [
         {
           "l": "예고 공시",
-          "all": 161,
+          "all": 162,
           "shown": 10,
-          "sum": "예고·알림 공시 151건 더 보기 · 모두 161건",
+          "sum": "예고·알림 공시 152건 더 보기 · 모두 162건",
           "open": false
         },
         {
@@ -10552,7 +11212,7 @@
       "detail": {
         "title": "출목표 365곳",
         "when": "지난 20거래일 · 9월 7일(월)부터 10월 8일(목) 15:30 종가까지",
-        "active": "road",
+        "active": "stocks",
         "mode": "rise",
         "tab": "r1",
         "segs": [
@@ -10657,7 +11317,7 @@
           "t": "태양 28곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1291,
+        "first": 1357,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -10761,13 +11421,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1291px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1357px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1291,
+        "first": 1357,
         "ih": 844
       }
     },
@@ -10902,21 +11562,24 @@
             "more": "이 탭 21위~40위 더 보기 · 남은 50곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 40,
             "more": "이 탭 41위~60위 더 보기 · 남은 30곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 60,
             "more": "이 탭 61위~70위 더 보기 · 남은 10곳",
             "okOrder": true,
             "okLabel": true,
-            "still": true
+            "still": true,
+            "dy": 0
           },
           {
             "shown": 70,
@@ -10976,26 +11639,25 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2080px → 2080px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2146px → 2146px)",
       "ok": true,
       "detail": {
-        "yBefore": 2080,
+        "yBefore": 2146,
         "back": {
           "hash": "#/road",
-          "y": 2080,
+          "y": 2146,
           "mode": "flow",
           "tab": "flat-up"
         }
       }
     },
     {
-      "name": "mobile 출목표 탭을 한 번 더 터치 → 맨 위로(0px) · 묶는 법·탭은 그대로(flow · flat-up)",
+      "name": "mobile 출목표를 보다 아래 탭 「종목」 터치 → 종목 목록 맨 위(#/stocks · 0px)",
       "ok": true,
       "detail": {
-        "hash": "#/road",
+        "hash": "#/stocks",
         "y": 0,
-        "mode": "flow",
-        "tab": "flat-up"
+        "active": "stocks"
       }
     },
     {
@@ -11046,7 +11708,7 @@
       "detail": null
     },
     {
-      "name": "mobile 흐름별을 보다 일정 탭 → 출목표 탭 터치 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 케이씨텍 · HLB생명과학",
+      "name": "mobile 흐름별을 보다 일정 탭 → 종목 탭 → 출목표 보기 터치 → 「오른 순」 첫 탭 「1위~20위」 맨 위(0px) · 칸 20개 · 첫 칸 성호전자 · 케이씨텍 · HLB생명과학",
       "ok": true,
       "detail": {
         "hash": "#/road",
@@ -11072,56 +11734,43 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「찾기」 터치 → #/find · 제목 「찾기 730곳」(= 한국 365곳 · 미국 365곳) · 글 칸에 바로 커서 · 보기 단추 4개",
+      "name": "mobile 위 막대 돋보기 터치 → #/stocks · 글 칸에 바로 커서 · 아래 탭 「종목」 눌림",
       "ok": true,
       "detail": {
-        "hash": "#/find",
-        "title": "찾기 730곳",
-        "focus": "fd-in",
-        "active": "find",
-        "tries": [
-          "삼성전자",
-          "엔비디아",
-          "ㅅㅅㅈㅈ (초성)",
-          "NVDA (기호)"
-        ],
+        "hash": "#/stocks",
+        "focus": true,
+        "active": "stocks",
+        "top": "page",
         "sw": 390,
         "iw": 390
       }
     },
     {
-      "name": "mobile 찾기 「디」 → 20곳 보임(「32곳 가운데 20곳 · 글자를 더 넣으면 좁혀짐」) = find.js 로 센 32곳의 앞 20곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "mobile 종목 찾기 「디」 → 30곳(「「디」 32곳 가운데 30곳 · 글자를 더 넣으면 좁혀짐」) = find.js 로 센 앞 30곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "32곳 가운데 20곳 · 글자를 더 넣으면 좁혀짐",
+          "msg": "「디」 32곳 가운데 30곳 · 글자를 더 넣으면 좁혀짐",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             },
             {
               "code": "187870",
-              "place": "kr",
               "href": "#/stock/187870",
               "name": "디바이스",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             },
             {
               "code": "003160",
-              "place": "kr",
               "href": "#/stock/003160",
               "name": "디아이",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550",
@@ -11131,22 +11780,19 @@
       }
     },
     {
-      "name": "mobile 찾기 「ㄷㅋㅇㅌ」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "mobile 종목 찾기 「ㄷㅋㅇㅌ」 → 1곳(「「ㄷㅋㅇㅌ」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「ㄷㅋㅇㅌ」 1곳",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550"
@@ -11154,22 +11800,19 @@
       }
     },
     {
-      "name": "mobile 찾기 「290550」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티(한국)",
+      "name": "mobile 종목 찾기 「290550」 → 1곳(「「290550」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 디케이티",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「290550」 1곳",
           "hits": [
             {
               "code": "290550",
-              "place": "kr",
               "href": "#/stock/290550",
               "name": "디케이티",
-              "sun": true,
-              "mkt": "한국"
+              "mkt": "kr"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "kr:290550"
@@ -11177,22 +11820,19 @@
       }
     },
     {
-      "name": "mobile 찾기 「엔비디아」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "name": "mobile 종목 찾기 「엔비디아」 → 1곳(「「엔비디아」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「엔비디아」 1곳",
           "hits": [
             {
               "code": "NVDA",
-              "place": "us",
               "href": "/us/#/stock/NVDA",
               "name": "엔비디아",
-              "sun": false,
-              "mkt": "미국"
+              "mkt": "us"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "us:NVDA"
@@ -11200,22 +11840,19 @@
       }
     },
     {
-      "name": "mobile 찾기 「nvda」 → 1곳 보임(「1곳」) = find.js 로 센 1곳의 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아(미국)",
+      "name": "mobile 종목 찾기 「nvda」 → 1곳(「「nvda」 1곳」) = find.js 로 센 앞 1곳 · 차례 · 시장 · 주소 같음 · 첫 줄 엔비디아",
       "ok": true,
       "detail": {
         "got": {
-          "msg": "1곳",
+          "msg": "「nvda」 1곳",
           "hits": [
             {
               "code": "NVDA",
-              "place": "us",
               "href": "/us/#/stock/NVDA",
               "name": "엔비디아",
-              "sun": false,
-              "mkt": "미국"
+              "mkt": "us"
             }
-          ],
-          "recent": false
+          ]
         },
         "want": [
           "us:NVDA"
@@ -11223,48 +11860,32 @@
       }
     },
     {
-      "name": "mobile 찾기: 없는 이름 → 「「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다」 · 줄 0개",
+      "name": "mobile 종목 찾기: 없는 이름 → 「「없는회사이름」 맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다」 · 줄 0개",
       "ok": true,
       "detail": {
-        "msg": "「없는회사이름」에 맞는 회사가 한국 365곳 · 미국 365곳 안에 없습니다 · ATLAS 는 고른 730곳만 봅니다",
-        "hits": [],
-        "recent": false
+        "msg": "「없는회사이름」 맞는 회사 없음 · ATLAS 는 고른 회사만 봅니다",
+        "hits": []
       }
     },
     {
-      "name": "mobile 찾기: 「디케이티」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 찾기」",
+      "name": "mobile 종목 찾기: 「디케이티」 넣고 Enter → 그 회사 화면 · 되돌아가기 「‹ 종목」",
       "ok": true,
       "detail": {
         "title": "디케이티",
-        "back": "‹ 찾기"
+        "back": "‹ 종목"
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 찾기」 → 찾기 그대로(넣은 글자 「디케이티」 · 줄 1개)",
+      "name": "mobile 회사 화면 「‹ 종목」 → 종목 그대로(넣은 글자 「디케이티」 · 줄 1개)",
       "ok": true,
       "detail": {
-        "hash": "#/find",
+        "hash": "#/stocks",
         "value": "디케이티",
         "n": 1
       }
     },
     {
-      "name": "mobile 찾기: 글자를 지우면 「최근 찾은 회사」 — 첫 줄 디케이티",
-      "ok": true,
-      "detail": {
-        "recent": true,
-        "first": {
-          "code": "290550",
-          "place": "kr",
-          "href": "#/stock/290550",
-          "name": "디케이티",
-          "sun": true,
-          "mkt": "한국"
-        }
-      }
-    },
-    {
-      "name": "mobile 찾기: 미국 「엔비디아」 줄 터치 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
+      "name": "mobile 종목 찾기: 미국 「엔비디아」 줄 터치 → 미국 판 회사 화면 /us/#/stock/NVDA · 「엔비디아」 · 값 「237.47달러」",
       "ok": true,
       "detail": {
         "path": "/us/#/stock/NVDA",
@@ -11273,92 +11894,93 @@
       }
     },
     {
-      "name": "mobile 옛 주소 #/forecast → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/forecast → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/up → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/up → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/down → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/down → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/scores → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/scores → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/race → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/race → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/evolution → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/evolution → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/status → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/status → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/records → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/records → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 옛 주소 #/game → 탭 「불장」(#/ · 「불장 업종 11개」 · 불장 줄 11개)",
+      "name": "mobile 옛 주소 #/game → 아래 탭 「시장」 첫 화면(#/ · 정보 칸 1,2,3,4,5)",
       "ok": true,
       "detail": {
         "hash": "#/",
-        "rows": 11,
-        "title": "불장 업종 11개"
+        "firsts": "1,2,3,4,5",
+        "active": "home"
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 76개 = 기록 파일 76개(이슈 6 · 업데이트 56 · 자료 변경 14 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 4개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 77개 = 기록 파일 77개(이슈 6 · 업데이트 57 · 자료 변경 14 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 5개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
         "days": [
+          "2026-10-09",
           "2026-10-08",
           "2026-10-07",
           "2026-10-06",
@@ -11379,11 +12001,11 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 56줄 = 기록 파일 56줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 57줄 = 기록 파일 57줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 56,
+        "n": 57,
         "sw": 390,
         "cw": 390
       }
@@ -11399,20 +12021,20 @@
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 76줄 = 기록 파일 76줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 77줄 = 기록 파일 77줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 76,
+        "n": 77,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 무결성(기록 탭 맨 아래 「기술 정보」): 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」 · 다른 화면 맨 아래 「기술 정보」 0개(옮김 · 규칙 1)",
+      "name": "mobile 무결성(기록 탭 맨 아래 「기술 정보」): 「읽은 파일 2개 모두 판 목록의 SHA-256 과 같음」 · 다른 화면 맨 아래 「기술 정보」 0개(옮김 · 규칙 1)",
       "ok": true,
       "detail": {
-        "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음",
+        "integ": "읽은 파일 2개 모두 판 목록의 SHA-256 과 같음",
         "footTech": 0
       }
     },
@@ -11423,7 +12045,6 @@
         "r": {
           "hash": "#/start",
           "title": "처음 5곳",
-          "active": "start",
           "rows": [
             "LG유플러스 −21%",
             "KT&G −23%",
@@ -11470,7 +12091,6 @@
       "detail": {
         "hash": "#/guide",
         "title": "한국 주식시장 안내",
-        "active": "start",
         "secs": [
           "시장",
           "시간(한국 시각)",
@@ -11525,7 +12145,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -11569,7 +12188,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -11613,7 +12231,6 @@
       "detail": {
         "hash": "#/long",
         "title": "500만 원을 오래 들고 있었다면",
-        "active": "start",
         "when": "지난 기록에서 가장 나빴던 때를 다시 겪는다고 친 셈 · 앞날 값이 아닙니다 · 2025년 12월 30일(화) 종가까지 끝난 해만",
         "hero": [
           [
@@ -11662,7 +12279,6 @@
       "detail": {
         "hash": "#/korea",
         "title": "한국 주식시장은 몇 위인가",
-        "active": "start",
         "when": "MSCI 나라별 지수 25개 시장 · 미국 달러 · 2026년 9월 30일(수) 종가 기준 · 순위와 사실만",
         "rows": [
           {
@@ -11758,7 +12374,7 @@
       "detail": null
     },
     {
-      "name": "mobile 그림 한 장(규칙 33): 화면 15곳 — 불장 home · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 찾기 find · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 그림 하나 · 옛 논평 무대 없음 · 그림엔 글자 없음 · 걸음 넷 이상 · 차례 점 넷 · 단추 둘 · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 56개 = 검사기가 판에서 따로 센 값",
+      "name": "mobile 그림 한 장(규칙 33): 화면 19곳 — 시장 market · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 그림 하나 · 옛 논평 무대 없음 · 그림엔 글자 없음 · 걸음 넷 이상 · 차례 점 넷 · 단추 둘 · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 65개 = 검사기가 판에서 따로 센 값",
       "ok": true,
       "detail": null
     },
@@ -11773,7 +12389,7 @@
         "rt": {
           "from": "id3ad7bf2",
           "to": "ie21045c7",
-          "k": "돈 흐름",
+          "k": "업종 순환",
           "kw": "지난 10거래일 · 10월 8일(목) 종가까지",
           "cols": "out:3,in:3",
           "how": true,
@@ -11915,7 +12531,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -11950,7 +12566,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -12014,14 +12630,14 @@
       }
     },
     {
-      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 541px ≤ 아래 탭 579px · 360×640 네 줄 끝 561px ≤ 아래 탭 579px · 430×700 네 줄 끝 552px ≤ 아래 탭 639px",
+      "name": "mobile 돈 이야기 — 한 화면에 메인 정보: 390×640 네 줄 끝 576px ≤ 아래 탭 579px · 360×640 네 줄 끝 576px ≤ 아래 탭 579px · 430×700 네 줄 끝 614px ≤ 아래 탭 639px",
       "ok": true,
       "detail": [
         {
           "w": 390,
           "hh": 640,
-          "map": 172,
-          "rowsBottom": 541,
+          "map": 234,
+          "rowsBottom": 576,
           "top": 56,
           "tab": 579,
           "sw": 390
@@ -12029,8 +12645,8 @@
         {
           "w": 360,
           "hh": 640,
-          "map": 172,
-          "rowsBottom": 561,
+          "map": 234,
+          "rowsBottom": 576,
           "top": 56,
           "tab": 579,
           "sw": 360
@@ -12038,8 +12654,8 @@
         {
           "w": 430,
           "hh": 700,
-          "map": 155,
-          "rowsBottom": 552,
+          "map": 217,
+          "rowsBottom": 614,
           "top": 56,
           "tab": 639,
           "sw": 430
@@ -12063,7 +12679,7 @@
           },
           {
             "date": "10월 8일(목)",
-            "href": "https://n.news.naver.com/mnews/article/293/0000091390",
+            "href": "https://n.news.naver.com/mnews/article/421/0009218437",
             "kind": "hype"
           },
           {
@@ -12115,6 +12731,14 @@
       }
     },
     {
+      "name": "어두운 화면 market: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
+      }
+    },
+    {
       "name": "어두운 화면 home: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
@@ -12123,7 +12747,31 @@
       }
     },
     {
+      "name": "어두운 화면 flowwho: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
+      }
+    },
+    {
       "name": "어두운 화면 flow: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
+      }
+    },
+    {
+      "name": "어두운 화면 stocks: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "ok": true,
+      "detail": {
+        "bg": "rgb(13, 23, 20)",
+        "darkBg": "rgb(13, 23, 20)"
+      }
+    },
+    {
+      "name": "어두운 화면 check: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
       "ok": true,
       "detail": {
         "bg": "rgb(13, 23, 20)",
@@ -12287,12 +12935,12 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 76개 = /changelog.json 76개 · 아래 탭 8개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 77개 = /changelog.json 77개 · 아래 탭 5개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 76,
-        "first": "u-20261008T200201-markets",
-        "tabs": 8,
+        "n": 77,
+        "first": "u-20261009T011322-five-tabs",
+        "tabs": 5,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
       }
@@ -12307,7 +12955,7 @@
           "when": "10월 7일(수) 뉴욕 종가 · 종가 기록 296거래일(2025년 8월 4일(월)부터)",
           "promise": "ATLAS가 하지 않는 일 8가지",
           "third": "어느 회사를 고르라고 하지 않습니다",
-          "active": "start"
+          "active": null
         },
         "usReady": "2028년 8월",
         "start": {
@@ -12369,10 +13017,10 @@
       }
     },
     {
-      "name": "「미국」 단추 → 미국 판 돈 흐름 그대로(/us/#/flow) · 미국 돈 흐름 그림 · 업종 회사 칸 6개",
+      "name": "「미국」 단추 → 미국 판 돈 흐름 그대로(/us/#/flow/rotation) · 미국 돈 흐름 그림 · 업종 회사 칸 6개",
       "ok": true,
       "detail": {
-        "url": "/us/#/flow",
+        "url": "/us/#/flow/rotation",
         "place": "us",
         "cos": 6
       }
@@ -12383,6 +13031,25 @@
       "detail": {
         "errs": []
       }
+    },
+    {
+      "name": "화면 폭 pc market: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc market: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc market: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
     },
     {
       "name": "화면 폭 pc home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
@@ -12404,6 +13071,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc flowwho: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc flowwho: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc flowwho: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc flow: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -12419,6 +13105,63 @@
     },
     {
       "name": "또렷함 pc flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc stocks: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc stocks: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc stocks: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc check: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc check: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc check: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc watch: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc watch: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc watch: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -12746,7 +13489,7 @@
       "detail": null
     },
     {
-      "name": "아래 탭 이름 pc: 8개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 65px)",
+      "name": "아래 탭 이름 pc: 5개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 65px)",
       "ok": true,
       "detail": []
     },
@@ -12783,6 +13526,25 @@
       }
     },
     {
+      "name": "화면 폭 mobile market: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile market: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile market: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile home: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -12802,6 +13564,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile flowwho: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile flowwho: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile flowwho: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile flow: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -12817,6 +13598,63 @@
     },
     {
       "name": "또렷함 mobile flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile stocks: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile stocks: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile stocks: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile check: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile check: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile check: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile watch: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile watch: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile watch: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -13144,7 +13982,7 @@
       "detail": null
     },
     {
-      "name": "아래 탭 이름 mobile: 8개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 4px)",
+      "name": "아래 탭 이름 mobile: 5개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 30px)",
       "ok": true,
       "detail": []
     },
@@ -13181,6 +14019,25 @@
       }
     },
     {
+      "name": "화면 폭 mobile-dark market: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark market: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark market: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark home: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -13200,6 +14057,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark flowwho: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark flowwho: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark flowwho: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark flow: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -13215,6 +14091,63 @@
     },
     {
       "name": "또렷함 mobile-dark flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark stocks: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark stocks: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark stocks: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark check: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark check: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark check: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark watch: 390px = 기기 폭 390px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 390,
+        "visual": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark watch: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark watch: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -13542,7 +14475,7 @@
       "detail": null
     },
     {
-      "name": "아래 탭 이름 mobile-dark: 8개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 4px)",
+      "name": "아래 탭 이름 mobile-dark: 5개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 30px)",
       "ok": true,
       "detail": []
     },
@@ -13579,6 +14512,25 @@
       }
     },
     {
+      "name": "화면 폭 pc-200 market: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 market: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 market: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc-200 home: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -13598,6 +14550,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 pc-200 flowwho: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 flowwho: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 flowwho: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 pc-200 flow: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -13613,6 +14584,63 @@
     },
     {
       "name": "또렷함 pc-200 flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 stocks: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 stocks: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 stocks: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 check: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 check: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 check: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 pc-200 watch: 1280px = 기기 폭 1280px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 1280,
+        "visual": 1280,
+        "scroll": 1280
+      }
+    },
+    {
+      "name": "잘린 글자 pc-200 watch: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 pc-200 watch: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -13940,7 +14968,7 @@
       "detail": null
     },
     {
-      "name": "아래 탭 이름 pc-200: 8개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 59px)",
+      "name": "아래 탭 이름 pc-200: 5개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 59px)",
       "ok": true,
       "detail": []
     },
@@ -13977,6 +15005,25 @@
       }
     },
     {
+      "name": "화면 폭 mobile-dark-200 market: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 market: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 market: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark-200 home: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -13996,6 +15043,25 @@
       "detail": null
     },
     {
+      "name": "화면 폭 mobile-dark-200 flowwho: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 flowwho: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 flowwho: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
       "name": "화면 폭 mobile-dark-200 flow: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
       "ok": true,
       "detail": {
@@ -14011,6 +15077,63 @@
     },
     {
       "name": "또렷함 mobile-dark-200 flow: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark-200 stocks: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 stocks: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 stocks: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark-200 check: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 check: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 check: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "화면 폭 mobile-dark-200 watch: 360px = 기기 폭 360px(넘친 칸이 화면을 넓히지 않음)",
+      "ok": true,
+      "detail": {
+        "inner": 360,
+        "visual": 360,
+        "scroll": 360
+      }
+    },
+    {
+      "name": "잘린 글자 mobile-dark-200 watch: 0",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "또렷함 mobile-dark-200 watch: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 0",
       "ok": true,
       "detail": null
     },
@@ -14338,7 +15461,7 @@
       "detail": null
     },
     {
-      "name": "아래 탭 이름 mobile-dark-200: 8개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 2px)",
+      "name": "아래 탭 이름 mobile-dark-200: 5개 모두 제 칸 안 · 잘린 이름 없음(가장 좁은 남는 폭 22px)",
       "ok": true,
       "detail": []
     },
@@ -14402,5 +15525,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-08T11-09-43-565Z"
+  "dir": "reports/atlas11/browser/2026-10-08T16-13-30-124Z"
 }
