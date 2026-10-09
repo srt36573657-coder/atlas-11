@@ -160,16 +160,17 @@ async function candCheck(page, label, mobile, press) {
   // 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면 … 입체적으로 보여야하는 중심으로」 — 첫 화면 = ① 기준 한 줄 → ② 탑 한 줄 + 고른 한 곳 카드 + 짧은 줄 → ③ 자세히(접힘 · 맨 위 돈 유입 1~365등)
   // 규칙 4판(2026-10-09 11:35 「전종목 365개 … 돈에 유입이 강력한 7개 … 비율계산 … 포모지수 … 1등부터 365등까지 … 20만번」 · 11:57 「현명하게 해봐」) — 업종 조건 없음 · 업종 돈 흐름은 받침 색(곁 정보)
   const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, st = await get('story.json'), rot = st.rotation;
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(300);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .isl canvas'); await page.waitForTimeout(400);
   const readCard = () => page.evaluate(() => { const c = document.querySelector('.cd-card'); return {code: c?.dataset.code, rank: c?.querySelector('.cd-rk')?.textContent.trim(), name: c?.querySelector('.cd-name')?.textContent.trim(),
     why: c?.querySelector('.cd-why')?.innerText.replace(/\s+/g, ' ').trim(), risk: c?.querySelector('.cd-risk')?.innerText.replace(/\s+/g, ' ').trim(), btns: [...(c?.querySelectorAll('.cd-btn') ?? [])].map(b => b.textContent.trim()),
-    pressed: [...document.querySelectorAll('.cd-row .cd-pick[aria-pressed="true"]')].map(b => b.closest('.cd-row').dataset.code), sel: [...document.querySelectorAll('.l3-tw.sel')].map(g => g.dataset.code), picked: !!document.querySelector('.l3.picked')}; });
+    pressed: [...document.querySelectorAll('.cd-row .cd-pick[aria-pressed="true"]')].map(b => b.closest('.cd-row').dataset.code), sel: [...document.querySelectorAll('.isl-pin.sel')].map(g => g.dataset.code), picked: !!document.querySelector('.isl.picked')}; });
   const cd = await page.evaluate(() => ({firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [x.dataset.first, Math.round(r.top), Math.round(r.bottom), x.matches('section[data-art]')]; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.dataset.route).join(),
     rows: [...document.querySelectorAll('.cd-row')].map(li => ({code: li.dataset.code, rank: li.dataset.rank, status: li.dataset.status, name: li.querySelector('.cd-name')?.textContent.trim(), rk: li.querySelector('.cd-rk')?.textContent.trim(), pw: li.querySelector('.cd-pwv')?.textContent.trim(), m12: li.dataset.m12})),
-    labs: document.querySelectorAll('.l3-lab').length,
-    tws: [...document.querySelectorAll('.l3-tw')].map(g => ({code: g.dataset.code, rank: Number(g.dataset.rank), h: Number(g.dataset.h), m12: Number(g.dataset.m12), of: Number(g.dataset.of), dir: g.dataset.dir, ghost: g.querySelectorAll('.l3-gh-t').length})), rks: [...document.querySelectorAll('.l3-rk')].map(b => [b.dataset.code, b.dataset.n]),
-    svgText: document.querySelectorAll('.l3 svg text').length, rest: !!document.querySelector('.cd-page .ra.ra-rest'), shownBtns: [...document.querySelectorAll('.cd-page .ra-btns .ra-b')].filter(b => b.offsetParent).map(b => b.textContent.trim()),
+    isl: (() => { const e = document.querySelector('.cd-page .isl'); if (!e) return null; let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {} const cv = e.querySelector('canvas'), hd = e.querySelector('.isl-hud');
+      return {chk, cvw: cv?.width ?? 0, cvh: cv?.height ?? 0, at: e.dataset.at, inArt: !!e.closest('section[data-art] .ra-art'), pins: [...e.querySelectorAll('.isl-pin')].map(b => ({code: b.dataset.code, rank: Number(b.dataset.rank), at: b.dataset.at, sel: b.classList.contains('sel'), text: b.textContent, r: b.getBoundingClientRect().toJSON()})),
+        hud: hd?.innerText.replace(/\s+/g, ' ').trim() ?? '', hudR: hd?.getBoundingClientRect().toJSON() ?? null, stR: e.querySelector('.isl-stage')?.getBoundingClientRect().toJSON() ?? null, svgs: e.querySelectorAll('svg text').length, st: e.__isl?.state() ?? null}; })(),
+    rest: !!document.querySelector('.cd-page .ra.ra-rest'), shownBtns: [...document.querySelectorAll('.cd-page .ra-btns .ra-b')].filter(b => b.offsetParent).map(b => b.textContent.trim()),
     rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
   const fiOf = code => { const s = lens.stocks.find(x => x.code === code), fl = s?.fl ?? {}; return Number.isFinite(fl.f10e) && Number.isFinite(fl.i10e) ? (fl.f10e + fl.i10e) / 1e8 : null; };
   const powOf = code => { const s = lens.stocks.find(x => x.code === code), fi = fiOf(code), cap = s?.fund?.cap; return Number.isFinite(fi) && cap > 0 ? (fi / cap) * 100 : null; };
@@ -186,17 +187,39 @@ async function candCheck(page, label, mobile, press) {
   const wantRows = G.planted?.at && G.planted.at !== C.asOf ? C.items.map(x => x.code) : want;
   const m1W = code => Number((mOf(code) * 100).toFixed(1)), m12W = code => fpW(m1W(code)); // 보이는 글(소수 첫째 자리) — 판이 먼저 첫째 자리로 셈한 값과 같게
   const rowsOk = C.ready && C.rules === 'cand-rules-5' && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.map(r => r.code).join() === wantRows.join() && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.rk === `${i + 1}위` && r.status === x.status && r.name === x.name && r.pw === m12W(x.code) && r.m12 === String(m1W(x.code)); });
-  // 받침 색(곁 정보 · 고르는 데 쓰지 않음) — 그 회사 업종이 /story.json 돈 흐름 늘어난 곳 1~3위면 in(빨강) · 줄어든 곳 1~3위면 out(파랑) · 그 밖 mid(회색) · 돈 흐름 날짜가 판 날짜와 다르면 모두 mid
-  const sameDay = rot && !rot.none && rot.asOf === C.asOf, ins = sameDay ? (rot.in ?? []).slice(0, 3).map(g => g.id) : [], outs = sameDay ? (rot.out ?? []).slice(0, 3).map(g => g.id) : [];
-  const dirW = code => { const g = gOf(code); return ins.includes(g) ? 'in' : outs.includes(g) ? 'out' : 'mid'; };
-  // 탑 — 후보마다 하나(한 줄) · 높이 ∝ 20만 번 중 7곳에 든 횟수(같은 잣대 · 0부터 — 가장 낮게 그리는 4 보다 큰 탑끼리 높이 ÷ 횟수가 같음) · 빈 틀(20만 번) 하나씩 · 순위 동그라미 = 순위 · 땅 이름표 없음
-  const topW = Math.max(1, ...C.items.map(x => mOf(x.code) * 100).filter(Number.isFinite)); // 빈 틀 = 7곳 가운데 가장 센 1년 추세(%)
-  const twOk = cd.tws.length === C.items.length && C.items.every(x => cd.tws.some(t => t.code === x.code && t.rank === x.rank && Math.abs(t.m12 - mOf(x.code) * 100) < 1e-3 && Math.abs(t.of - topW) < 1e-3 && t.ghost === 1 && t.dir === dirW(x.code))) && cd.rks.length === C.items.length && cd.rks.every(([code, n]) => C.items.find(x => x.code === code)?.rank === Number(n));
-  const big = cd.tws.filter(t => t.h > 4.5 && t.m12 > 0), ratio = big.map(t => t.h / t.m12), propOk = big.length >= 1 && ratio.every(r => Math.abs(r - ratio[0]) / ratio[0] < 0.01);
-  check(`${label} 첫 화면 「후보 7」 탑 한 줄(규칙 5판 기르기판 · 2026-10-09 15:21 「만들어 줘」): ① 기준 → ② 그림 칸(탑 ${cd.tws.length}개 · 높이 ∝ 1년 추세 · 빈 틀 = 7곳 가운데 가장 센 1년 추세 · 받침 색 ${cd.tws.map(t => t.dir).join(' · ')} = /story.json 따로 셈) · 그림 안 글자 ${cd.svgText} · 땅 이름표 ${cd.labs} · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 ${wantRows.length}곳) · 「${cd.all}」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
-    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && twOk && propOk && cd.svgText === 0 && cd.labs === 0
+  // 섬(2026-10-09 17:36 「아주 색시한 전달력 있게 … 반영해」 — 옛 탑 일곱 줄을 바꿈 · site/app/island.js) — 이 검사기가 판 읽기 1년 추세(grow.m)로 따로 셈:
+  //   그물 기준선 = 1년 추세를 셀 수 있는 곳의 80번째 백분위(직선 보간) · 물 위 = 기준선 이상 곳 수 · 초록 = 그 가운데 기준 셋(그날 종가 · 흑자 · 위험 공시 없음 — flags 앞 셋)을 넘은 곳 수
+  //   핀 = 후보 7곳(순위 차례 · 걸음 1~7 · 글자 없이 번호는 그림 표시) · 처음 고른 한 곳 = 1위(금빛 핀 하나 · 위 이름표 = 순위 · 이름 · 1년 추세) · 움직임 없음(정적인 상태)
+  const qOf = xs => { const a = xs.filter(Number.isFinite).sort((x, y) => x - y), k = a.length; if (!k) return null; const pos = 0.8 * (k - 1), lo = Math.floor(pos), hi = Math.min(k - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
+  const qI = qOf(lens.stocks.map(s => mOf(s.code))), aboveW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI).length;
+  const greenW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI && String(C.flags?.[s.code] ?? '').slice(0, 3) === '111').length;
+  const I = cd.isl, x0 = C.items[0], pinR = (I?.pins ?? []).map(p => p.r), overlap = pinR.some((a, i) => pinR.some((b, j) => j > i && Math.hypot((a.x + a.width / 2) - (b.x + b.width / 2), (a.y + a.height / 2) - (b.y + b.height / 2)) < (a.width + b.width) / 2 - 1));
+  const islOk = !!I && I.inArt && I.at === '0' && I.cvw > 0 && I.cvh > 0 && I.svgs === 0 && I.chk?.above === aboveW && I.chk?.green === greenW && I.pins.length === C.items.length
+    && I.pins.every((p, i) => p.code === C.items[i].code && p.rank === C.items[i].rank && p.at === String(i + 1) && p.text === '' && p.sel === (i === 0)) && !overlap
+    && (!x0 || (I.hud.includes(`${x0.rank}위`) && I.hud.includes(x0.name) && I.hud.includes(m12W(x0.code)))) && I.st?.busy === false && I.st?.hero === (x0?.code ?? null) && I.st?.picked === false
+    && C.items.every((x, i) => x.status !== 'met' || (I.st?.seven?.[i]?.[1] ?? 0) > I.st.w);
+  check(`${label} 첫 화면 「후보 7」 섬(규칙 5판 기르기판 · 2026-10-09 17:36 「아주 색시한 전달력」): ① 기준 → ② 그림 칸(섬 ${lens.stocks.length}곳 · 물 위 ${I?.chk?.above}곳 = 따로 센 그물 ${aboveW}곳 · 초록 ${I?.chk?.green}곳 = 따로 셈 ${greenW}곳 · 핀 ${I?.pins.length}개 = 후보 차례 · 겹침 ${overlap ? '있음' : '없음'} · 위 이름표 「${I?.hud}」 · 정적인 상태) · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 ${wantRows.length}곳) · 「${cd.all}」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
+    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && islOk
       && cd.all === `돈 유입 1등~${lens.stocks.length}등 모두 보기 ›` && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
-    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want: wantRows, tws: cd.tws.slice(0, 3), dirs: C.items.map(x => dirW(x.code)), ratio: ratio.map(r => +r.toFixed(3)), shown: cd.shownBtns, all: cd.all});
+    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want: wantRows, isl: I && {chk: I.chk, pins: I.pins.map(p => [p.code, p.rank, p.at, p.sel, p.text]), hud: I.hud, st: I.st, cv: [I.cvw, I.cvh]}, aboveW, greenW, overlap, shown: cd.shownBtns, all: cd.all});
+  // 섬 손 — 후보가 아닌 탑(가장 높은 탑 · 꼭대기는 앞의 낮은 탑에 가리지 않음)을 누르면 이름표(이름 · 1년 추세 · 그물 안팎) · 같은 탑을 다시 누르면 풀림 · 옆으로 끌면 섬이 돌고 놓은 뒤 멈춤(정적인 상태로) · 가로로 넘치지 않음
+  const tallest = await page.evaluate(() => { const I2 = document.querySelector('.cd-page .isl').__isl, i = I2.tallest(), c = I2.codeAt(i), q = I2.tapPoint(c) ?? I2.pointOf(c), r = document.querySelector('.cd-page .isl-stage').getBoundingClientRect(); return {c, x: r.left + q[0], y: r.top + q[1], vis: r.top + q[1] > 60 && r.top + q[1] < innerHeight - 80}; });
+  if (!tallest.vis) { await page.evaluate(() => document.querySelector('.cd-page .isl-stage').scrollIntoView({block: 'center'})); await page.waitForTimeout(200); Object.assign(tallest, await page.evaluate(c => { const I2 = document.querySelector('.cd-page .isl').__isl, q = I2.tapPoint(c) ?? I2.pointOf(c), r = document.querySelector('.cd-page .isl-stage').getBoundingClientRect(); return {x: r.left + q[0], y: r.top + q[1]}; }, tallest.c)); }
+  await page.mouse.click(tallest.x, tallest.y); await page.waitForTimeout(250);
+  const tg = await page.evaluate(() => { const t = document.querySelector('.cd-page .isl-tag'), hd = document.querySelector('.cd-page .isl-hud'), R = e => e.getBoundingClientRect().toJSON(); return {tag: t && !t.hidden ? t.innerText.replace(/\s+/g, ' ').trim() : null, st: document.querySelector('.cd-page .isl').__isl.state(), tr: t && !t.hidden ? R(t) : null, hr: hd && getComputedStyle(hd).position === 'absolute' ? R(hd) : null, sr: R(document.querySelector('.cd-page .isl-stage'))}; });
+  const cross = (a, b) => !!a && !!b && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom, tagFree = !!tg.tr && !cross(tg.tr, tg.hr) && tg.tr.left >= tg.sr.left - 1 && tg.tr.right <= tg.sr.right + 1 && tg.tr.top >= tg.sr.top - 1 && tg.tr.bottom <= tg.sr.bottom + 1; // 누른 탑 이름표가 위 이름표(고른 한 곳)와 겹치지 않음 · 섬 안 — 글 위에 글 없음(2026-10-09 시험 서버 사진에서 겹친 것을 고침)
+  const tS = lens.stocks.find(s => s.code === tallest.c), tM = mOf(tallest.c), tagW = tS ? `${tS.name} ${fpW(m1W(tallest.c))} · ${tM !== null && tM >= qI ? (String(C.flags?.[tallest.c] ?? '').slice(0, 3) === '111' ? '그물 안' : '그물 안 · 기준 못 넘음') : tM === null ? '1년 추세 셀 수 없음' : '그물 밖'}` : null;
+  await page.mouse.click(tallest.x, tallest.y); await page.waitForTimeout(250);
+  const tg2 = await page.evaluate(() => { const t = document.querySelector('.cd-page .isl-tag'); return {hidden: !t || t.hidden, focus: document.querySelector('.cd-page .isl').__isl.state().focus}; });
+  const sr = await page.evaluate(() => document.querySelector('.cd-page .isl-stage').getBoundingClientRect().toJSON()), th0 = (await page.evaluate(() => document.querySelector('.cd-page .isl').__isl.state())).th;
+  await page.mouse.move(sr.x + sr.width * 0.3, sr.y + sr.height * 0.75); await page.mouse.down();
+  for (let k = 1; k <= 8; k++) { await page.mouse.move(sr.x + sr.width * 0.3 + k * 18, sr.y + sr.height * 0.75); await page.waitForTimeout(16); }
+  await page.mouse.up(); const th1 = (await page.evaluate(() => document.querySelector('.cd-page .isl').__isl.state())).th;
+  await page.waitForFunction(() => !document.querySelector('.cd-page .isl').__isl.state().busy, null, {timeout: 6000}).catch(() => {});
+  const dr = await page.evaluate(() => ({st: document.querySelector('.cd-page .isl').__isl.state(), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, card: document.querySelector('.cd-card')?.dataset.code}));
+  check(`${label} 섬 손: 가장 높은 탑(${tS?.name}) 누르면 이름표 「${tg.tag}」(위 이름표와 겹치지 않음 · 섬 안 · 카드는 그대로 ${dr.card}) · 다시 누르면 풀림 · 옆으로 끌면 섬이 돎(${th0.toFixed(2)} → ${th1.toFixed(2)}) · 놓은 뒤 멈춤 · 가로로 넘치지 않음`,
+    !!tagW && tg.tag === tagW && tagFree && tg.st.focus === tallest.c && tg2.hidden && tg2.focus === null && Math.abs(th1 - th0) > 0.5 && dr.st.busy === false && dr.sw <= dr.cw && dr.card === (x0?.code ?? undefined), {tallest, tagW, tg, tg2, th0, th1, dr});
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .isl canvas'); await page.waitForTimeout(300);
   // 날씨(경고만 · 2026-10-09 15:00 기르기판 「날씨로 쉬기는 버림 → 흐린 날엔 경고만」) — 판 읽기 값(파이썬 따로 세기 cand_grow_verify.py 가 입력 종가로 맞댐)과 같게:
   //   흐림이면 첫 화면 ① 아래 경고 한 줄(평균보다 x% 아래 · 경고만) · 맑음이면 없음 · 흐린 날 길 = lens.json 날씨만 바꿔(목록 지문도 맞춰) 다시 열어 봄 — 빈 날 길과 같은 바꿔치기
   const W = G.weather ?? null, wxSay = w => `날씨 흐림 · 365곳 평균 지수가 ${w.days ?? 200}거래일 평균보다 ${Math.abs(w.pD).toFixed(1)}% 아래`;
@@ -206,9 +229,9 @@ async function candCheck(page, label, mobile, press) {
   ln.cand.grow.weather = sim; const lt = JSON.stringify(ln); if (man.files?.['lens.json']) man.files['lens.json'] = {...man.files['lens.json'], sha256: createHash('sha256').update(lt).digest('hex'), bytes: Buffer.byteLength(lt)};
   const mt = JSON.stringify(man), wxRoute = u => u.pathname === vdir + 'lens.json' || u.pathname === vdir + 'manifest.json';
   await page.route(wxRoute, r => r.fulfill({status: 200, contentType: 'application/json', body: new URL(r.request().url()).pathname.endsWith('/manifest.json') ? mt : lt}));
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(200);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .isl canvas'); await page.waitForTimeout(200);
   const wxSim = await wxRead();
-  await page.unroute(wxRoute); await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(200);
+  await page.unroute(wxRoute); await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .isl canvas'); await page.waitForTimeout(200);
   const wxBack = await wxRead();
   check(`${label} 날씨(경고만): 판 읽기 ${W ? `${W.state === 'cloudy' ? '흐림' : '맑음'} ${fpW(W.pD)}(${W.days}거래일 평균 대비)` : '셀 수 없음'} → 첫 화면 경고 ${wxNow ? '한 줄' : '없음'} · 흐린 날 길(자료만 바꿔 −4.9%) → ① 아래 「${wxSim?.t.slice(0, 44) ?? '없음'}…」 · 되돌리면 ${wxBack ? '있음' : '없음'}`,
     (W?.state === 'cloudy' ? !!wxNow?.t.startsWith(wxSay(W)) : wxNow === null) && !!wxSim?.t.startsWith(wxSay(sim)) && wxSim.t.includes('경고만(고르는 셈은 그대로)') && wxSim.role === 'note' && wxSim.first === '1' && wxSim.sw <= wxSim.cw
@@ -221,8 +244,8 @@ async function candCheck(page, label, mobile, press) {
   const k0 = await readCard(), bads = [];
   if (C.items.length && !(cardOk(k0, C.items[0]) && !k0.picked)) bads.push({first: k0});
   for (const [i, x] of C.items.entries()) { await press(page.locator('.cd-row .cd-pick').nth(i)); await page.waitForTimeout(120); const c = await readCard(); if (!cardOk(c, x) || !c.picked) bads.push({i, c, want: cardWant(x)}); }
-  if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.l3-tw[data-code="${x.code}"]`).evaluate(g => g.dispatchEvent(new MouseEvent('click', {bubbles: true}))); await page.waitForTimeout(150); const c = await readCard(); if (!cardOk(c, x)) bads.push({tower: x.code, c}); }
-  check(`${label} 첫 화면 카드: 처음 1위(탑은 모두 또렷) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈) · 탑을 눌러도 같은 카드 · 다른 탑은 흐려짐`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
+  if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.isl-pin[data-code="${x.code}"]`).evaluate(g => g.click()); await page.waitForTimeout(150); const c = await readCard(); const hd = await page.evaluate(() => document.querySelector('.cd-page .isl-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? ''); if (!cardOk(c, x) || !hd.includes(`${x.rank}위`) || !hd.includes(x.name) || !hd.includes(m12W(x.code))) bads.push({pin: x.code, c, hd}); }
+  check(`${label} 첫 화면 카드: 처음 1위(금빛 핀 · 위 이름표) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 핀으로) · 섬의 핀을 눌러도 같은 카드 · 위 이름표도 그 곳`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
   // 「돈 유입 1~365등 모두 보기 ›」(11:35 「1등부터 365등까지 그것도 나열하는 곳을 만들어」) → ③ 자세히 맨 위 접힘이 열림(초점 · 화면 안) · 365줄 = 이 검사기가 따로 셈(등수 · 비율 · 포모지수 · 상태) · ★ = 후보 7곳 · 가로로 넘치지 않음
   const rankCheck = async () => {
     await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page .cd-all-a'); await page.waitForTimeout(200);
@@ -256,7 +279,7 @@ async function candCheck(page, label, mobile, press) {
   const en = await page.evaluate(() => ({focus: document.activeElement?.id ?? null, rows: [...document.querySelectorAll('#cj-entry .cj-t tbody tr')].map(tr => tr.querySelector('th')?.textContent.trim())}));
   check(`${label} 재설계 · 「진입 조건 확인」 → 그 칸으로(초점 #${en.focus}) · 조건 ${en.rows.length}줄(${en.rows.join(' · ')})`, en.focus === 'cj-entry' && en.rows.join() === '1년 추세,흑자,위험 공시(30일),희석 공시(30일 · 위험 줄)', en);
   await press(page.locator('.c-back')); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(500);
-  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null, card: document.querySelector('.cd-card')?.dataset.code ?? null, sel: [...document.querySelectorAll('.l3-tw.sel')].map(g => g.dataset.code).join()}));
+  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null, card: document.querySelector('.cd-card')?.dataset.code ?? null, sel: [...document.querySelectorAll('.isl-pin.sel')].map(g => g.dataset.code).join()}));
   check(`${label} 재설계 · 「‹ 후보 7곳」 → 보던 자리(${y0}px → ${bk.y}px) · 고른 카드 그대로(${bk.card}) · 누른 곳에 초점(${bk.focus})`, bk.hash === '#/' && Math.abs(bk.y - y0) <= 2 && bk.focus === '#/stock/' + x2.code && bk.card === x2.code && bk.sel === x2.code, {y0, bk});
   // 「다른 후보와 비교」(첫 줄) → 같은 기준 표 · 같은 축 막대 · 앞선 까닭 → 「나」를 바꾸면 그 자리에서(주소만 바뀜 · 화면을 새로 그리지 않음)
   const c0 = C.items[0], c1 = C.items[1];

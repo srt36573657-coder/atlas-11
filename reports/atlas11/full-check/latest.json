@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T10:00:03.379Z",
- "seconds": 317,
+ "at": "2026-10-09T10:54:16.459Z",
+ "seconds": 290,
  "lap": {
-  "crawl": 92,
-  "trans": 143.8,
-  "layout": 316.7
+  "crawl": 89.6,
+  "trans": 154.9,
+  "layout": 289.9
  },
- "code": "9755add5e731095e",
+ "code": "5883c0ee871adfc9",
  "boards": [
   "kr",
   "us"
@@ -19,20 +19,20 @@
  ],
  "pages": 1980,
  "byLang": {
-  "en": 990,
-  "ko": 990
+  "ko": 990,
+  "en": 990
  },
  "plans": 1980,
- "numbers": 11484,
+ "numbers": 11460,
  "links": 24328,
  "texts": 3242,
  "motion": 50,
  "edge": 94,
  "transLangs": 73,
- "transStrings": 27798,
+ "transStrings": 27805,
  "layoutLangs": 74,
  "layoutPages": 3456,
- "transShapes": 3622,
+ "transShapes": 3623,
  "failed": 2791,
  "transFailed": 2791,
  "otherFailed": 0,

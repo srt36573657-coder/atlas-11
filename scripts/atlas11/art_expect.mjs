@@ -81,8 +81,8 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
     // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 15:21 「만들어 줘」 — 규칙 cand-rules-5 기르기판)
     //   판 읽기 종목 값 · 일정표 공시(agenda.json)로 기준 셋(그날 종가 · 흑자 · 위험 공시 없음 · 장 마감 뒤 공시는 뺌)을 따로 셈
     //   1년 추세 값은 판 읽기(cand.grow.m — 파이썬 따로 세기 scripts/atlas11/verify/cand_grow_verify.py 가 입력 종가로 맞댐) · 그물 기준선(상위 20% · 직선 보간) · 초입 · 차례(1년 추세 큰 순 · 같은 업종 3곳 · 7곳)는 여기서 따로
-    //   담는 날이 지난 판은 7곳 = 담는 날 기록(판 읽기 그대로) · 받침 색 = 그 회사 업종의 돈 흐름(/story.json rotation 들어온 1~3위 · 빠진 1~3위 · 그 밖)
-    const CA = L.cand, rot = story?.rotation;
+    //   담는 날이 지난 판은 7곳 = 담는 날 기록(판 읽기 그대로)
+    const CA = L.cand;
     if (CA?.ready && CA.grow) {
       const asOf = L.asOf, hm = String(L.when?.closeAt ?? '15:30').match(/(\d{1,2}):(\d{2})/), cut = Date.parse(`${asOf}T${hm[1].padStart(2, '0')}:${hm[2]}:00+09:00`);
       const back = n => new Date(Date.parse(asOf + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10), from = back(CAND_RULES.windowDays);
@@ -99,10 +99,9 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
       const planted = CA.grow.planted?.at ?? asOf, order = planted === asOf ? pickT.map(s => s.code) : CA.items.map(x => x.code); // 담는 날이 지난 판 = 담는 날 기록의 7곳(판 읽기 그대로)
       const stOf = new Map(CA.items.map(x => [x.code, x.status])), byCode = new Map(st.map(s => [s.code, s]));
       E.candRows = order.map((c, i) => [c, stOf.get(c) ?? 'met', i + 1]); // 화면 줄 차례 = 따로 센 차례 · 상태는 판 읽기(재검토는 마감 뒤 공시 — 순위와 따로)
-      const ins = (rot && !rot.none && rot.asOf === asOf ? rot.in ?? [] : []).slice(0, CAND_RULES.sectors).map(g => g.id), outs = (rot && !rot.none && rot.asOf === asOf ? rot.out ?? [] : []).slice(0, CAND_RULES.sectors).map(g => g.id);
-      const plates = order.map(c => { const s = byCode.get(c); return [s?.gl ?? null, ins.includes(s?.g) ? 'in' : outs.includes(s?.g) ? 'out' : 'mid']; });
-      const towers = order.map((c, i) => [c, i + 1, stOf.get(c) ?? 'met', d1(fin(mOf(c)) ? mOf(c) * 100 : null)]); // 탑 = 1년 추세(%)
-      E.cand = {universe: st.length, valid, net, netElig, newc: fresh.length, n: order.length, plantedAt: planted, q: d1(fin(q) ? q * 100 : null), plates, towers};
+      const towers = order.map((c, i) => [c, i + 1, stOf.get(c) ?? 'met', d1(fin(mOf(c)) ? mOf(c) * 100 : null)]); // 핀 7곳 = 순위 · 상태 · 1년 추세(%)
+      // 섬(2026-10-09 17:36 — island.js) · 물 위 = 탑 높이로 센 곳 수 = 여기서 따로 센 그물(기준선 이상) · 초록 = 그 가운데 기준 셋을 넘은 곳(여기서 공시 · 결산으로 따로 셈) — 옛 받침 색(업종 돈 흐름)은 섬에 없음(③ 자세히 곁 정보)
+      E.cand = {universe: st.length, valid, net, netElig, newc: fresh.length, n: order.length, plantedAt: planted, q: d1(fin(q) ? q * 100 : null), towers, above: net, green: netElig};
       const [a, b2] = CA.items, sa = a && byCode.get(a.code), sb = b2 && byCode.get(b2.code);
       E.compare = sa && sb ? {a: sa.code, b: sb.code, am12: d1(fin(mOf(sa.code)) ? mOf(sa.code) * 100 : null), bm12: d1(fin(mOf(sb.code)) ? mOf(sb.code) * 100 : null), ar20: sa.r20, br20: sb.r20} : Q('compare');
     } else { E.cand = Q('cand'); E.compare = Q('compare'); }
