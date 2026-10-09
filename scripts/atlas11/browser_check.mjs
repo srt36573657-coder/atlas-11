@@ -124,6 +124,10 @@ const sunNT = codes => sunN(codes) ? `${sunN(codes)}곳` : null;
 // 우리 글에서 쓰지 않는 말(사장님 명령들) — 공식 이름(data-ident: 일정 이름·공시 제목·기사 제목)은 따로 본다
 const OUR_FORBIDDEN = /사라[!.\s]|팔라[!.\s]|추천|목표가|확실|보장|무조건/;
 const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
+// 쉬운 말(규칙 48 · 2026-10-09 22:40 마카오 시각) — 한국어 화면은 처음이 쉬운 말 · 이 검사의 옛 판정들은 전문가 말(옛 화면 글) 그대로 봄:
+//   창마다 「전문가 말」을 이 기기에 적어 두고 엶(주소에 ?level= 이 있으면 주소가 먼저) · 쉬운 말 화면은 {easy: true} 로 연 창(맨 아래 easyCheck)
+{ const open0 = browser.newContext.bind(browser);
+  browser.newContext = async (o = {}) => { const {easy = false, ...rest} = o; const c = await open0(rest); if (!easy) await c.addInitScript(() => { try { if (!/[?&]level=/.test(location.search)) localStorage.setItem('atlas11:level', 'pro'); } catch {} }); return c; }; }
 
 /** 화면 글 두 갈래: 우리 글(식별자 뺌) · 공식 이름(식별자) — 열린 칸만(닫힌 접힘 안은 innerText 에 없음) */
 const textsOf = page => page.evaluate(() => {
@@ -1619,15 +1623,65 @@ async function clarityCheck() {
   return table;
 }
 
+/** 쉬운 말(규칙 48) — 처음 연 한국어 화면 = 쉬운 말 · 「이 화면은?」 · 아래 탭 쉬운 이름 · 펼친 글에 어려운 말 없음 · 「전문가 말」 ↔ 「쉬운 말」 오가기 · 회사 화면 전문가 칸 접힘 · 3단 클릭 길 · 다른 말 화면엔 없음 */
+async function easyCheck() {
+  const {HARD} = await import('../../site/app/easy-ko.js'), {hardLeft, addEasyNames} = await import('../../site/app/easy.js'), lens = await get('data/atlas11/view/lens.json').catch(() => null);
+  addEasyNames([...board.companies.map(c => c.name), ...(board.groups ?? []).map(g => g.label)]);
+  const ctx = await browser.newContext({easy: true, viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'}); const page = await ctx.newPage();
+  const errs = []; page.on('pageerror', e => errs.push(e.message));
+  const ready = () => page.waitForFunction(() => document.documentElement.dataset.ready === '1', null, {timeout: 30000});
+  const front = () => page.evaluate(() => { const out = []; const w = document.createTreeWalker(document.getElementById('main'), NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) { const p = n.parentElement; if (!p || !/[가-힣]|KST|%p/.test(n.nodeValue) || p.closest('script, style, code, [data-ident], .lang, .ez-what') || (p.closest('[lang="ko"]') && p.closest('[lang="ko"]') !== document.documentElement) || !p.getClientRects().length) continue;
+      let hid = false; for (let x = p; x && x.id !== 'main'; x = x.parentElement) if (x.tagName === 'DETAILS' && !x.open && p.closest('summary')?.parentElement !== x) { hid = true; break; } if (!hid) out.push(n.nodeValue.trim()); } return out; });
+  await page.goto(base + '/#/', {waitUntil: 'load'}); await ready(); await page.waitForTimeout(200);
+  const s1 = await page.evaluate(() => ({level: document.documentElement.dataset.level ?? null, what: document.querySelector('#main .ez-what')?.textContent ?? '', tabs: [...document.querySelectorAll('#bottom .label')].map(x => x.textContent), first: document.querySelector('#main .b-page')?.firstElementChild?.className ?? '', whatAfterHello: document.querySelector('#main .hl-bar')?.nextElementSibling?.classList.contains('ez-what') ?? null}));
+  check(`쉬운 말: 처음 연 한국어 첫 화면 = 쉬운 말(html data-level) · 「이 화면은?」 한 줄 · 「친구에게 소개하기」 띠는 맨 위 그대로(규칙 45) · 아래 탭 ${s1.tabs.join(' · ')}`, s1.level === 'easy' && s1.what.startsWith('전문가 말이 화면은?') && (s1.whatAfterHello === null || s1.whatAfterHello === true) && s1.tabs.includes('지난 결과') && s1.tabs.includes('둘러보기'), s1);
+  const f1 = await front(), h1 = f1.flatMap(t => hardLeft(t).map(w => `${w}: ${t.slice(0, 30)}`));
+  check(`쉬운 말: 첫 화면 펼친 글 ${f1.length}줄 × 어려운 말 ${HARD.length}개 — 남은 것 ${h1.length}`, f1.length > 10 && !h1.length, h1.slice(0, 5));
+  const txt = await page.evaluate(() => document.getElementById('main').innerText);
+  check('쉬운 말: 첫 화면 쉬운 말 문장(살지 따져 볼 후보 · 명단 · 공부용 · 맞는지 아직 모름) · 옛 말(매수 검토 · 그물 · 연구용) 없음', /살지 따져 볼 후보/.test(txt) && /명단/.test(txt) && /공부용/.test(txt) && /맞는지 아직 모름/.test(txt) && !/매수 검토|그물|연구용/.test(txt), txt.slice(0, 200));
+  // 「전문가 말」 → 옛 화면 글 그대로 → 점 셋 메뉴 「쉬운 말」 → 다시 쉬운 말
+  await Promise.all([page.waitForNavigation({waitUntil: 'load'}).catch(() => {}), page.click('#main .ez-lv')]); await ready(); await page.waitForTimeout(200);
+  const s2 = await page.evaluate(() => ({level: document.documentElement.dataset.level ?? null, store: localStorage.getItem('atlas11:level'), what: !!document.querySelector('.ez-what'), txt: document.getElementById('main').innerText.slice(0, 600), tabs: [...document.querySelectorAll('#bottom .label')].map(x => x.textContent), hash: location.hash}));
+  check(`쉬운 말: 「전문가 말」을 누르면 같은 화면이 옛 글 그대로(매수 검토 후보 · 그물 · 아래 탭 ${s2.tabs.join(' · ')}) · 이 기기에 기억`, s2.level === null && s2.store === 'pro' && !s2.what && /매수 검토 후보/.test(s2.txt) && /그물/.test(s2.txt) && s2.tabs.includes('검증') && s2.tabs.includes('탐색') && s2.hash === '#/', {level: s2.level, store: s2.store, tabs: s2.tabs});
+  await page.click('.tb-more > summary'); const lb = await page.$('.tb-menu .ez-lv-b');
+  const lbs = lb ? await lb.evaluate(x => ({pressed: x.getAttribute('aria-pressed'), text: x.textContent, w: x.getBoundingClientRect().width, hgt: x.getBoundingClientRect().height})) : null;
+  if (lb) { await Promise.all([page.waitForNavigation({waitUntil: 'load'}).catch(() => {}), lb.click()]); await ready(); await page.waitForTimeout(200); }
+  const s3 = await page.evaluate(() => ({level: document.documentElement.dataset.level ?? null, store: localStorage.getItem('atlas11:level'), what: !!document.querySelector('#main .ez-what')}));
+  check('쉬운 말: 점 셋 메뉴 「쉬운 말」 단추(눌리지 않음 · 높이 44px)로 다시 쉬운 말', !!lbs && lbs.pressed === 'false' && lbs.hgt >= 44 && s3.level === 'easy' && s3.store === 'easy' && s3.what, {lbs, s3});
+  // 회사 화면 — 전문가 칸(② ~ ⑦ · 비교 표)은 접힘 · 펼치면 그대로 · 3단 클릭 길(회사 → 둘러보기 → 업종 → 회사)
+  const code = (lens?.cand?.ready ? lens.cand.items[0]?.code : null) ?? board.companies[0].code;
+  await page.evaluate(async c => { await window.atlasRoute('#/stock/' + c); }, code); await page.waitForTimeout(150);
+  const c1 = await page.evaluate(() => { const d = document.querySelector('#main details.ez-pro'); return {fold: !!d, open: d?.open ?? null, inside: d ? d.querySelectorAll('section, .b-box').length : 0, label: d?.querySelector('summary')?.textContent ?? '', what: document.querySelector('#main .ez-what')?.textContent ?? ''}; });
+  const f2 = await front(), h2 = f2.flatMap(t => hardLeft(t).map(w => `${w}: ${t.slice(0, 30)}`));
+  check(`쉬운 말: 회사 화면 전문가 칸 ${c1.inside}개는 「${c1.label.slice(0, 12)}…」 한 칸에 접힘 · 펼친 글 ${f2.length}줄에 어려운 말 ${h2.length}`, c1.fold && c1.open === false && c1.inside >= 3 && c1.what.includes('이 화면은?') && !h2.length, {c1, h2: h2.slice(0, 5)});
+  await page.click('#bottom .bottom-link[data-route="market"]'); await page.waitForFunction(() => location.hash === '#/market'); await page.waitForTimeout(150);
+  const g = await page.$('#main .mk-idx a.mk-g'); const gh = g ? await g.getAttribute('href') : null; if (g) { await g.click(); await page.waitForFunction(h => location.hash === h, gh); await page.waitForTimeout(150); }
+  const co = await page.$('#main a[href^="#/stock/"]'); const ch = co ? await co.getAttribute('href') : null; if (co) { await co.click(); await page.waitForFunction(h => location.hash === h, ch); await page.waitForTimeout(150); }
+  const s4 = await page.evaluate(() => ({hash: location.hash, what: document.querySelector('#main .ez-what')?.textContent ?? ''}));
+  check(`쉬운 말: 3단 클릭 길 그대로 — 회사 → 아래 탭 「둘러보기」 → 업종(${gh}) → 회사(${ch})`, !!gh && !!ch && s4.hash === ch && s4.what.includes('이 화면은?'), s4);
+  // 다른 말(영어) 화면에는 쉬운 말이 없음(73개 말은 전문가 말을 번역)
+  await page.goto(base + '/?lang=en#/', {waitUntil: 'load'}); await ready(); await page.waitForTimeout(200);
+  const s5 = await page.evaluate(() => ({level: document.documentElement.dataset.level ?? null, what: !!document.querySelector('.ez-what'), lv: !!document.querySelector('.ez-lv-b'), fold: !!document.querySelector('details.ez-pro')}));
+  check('쉬운 말: 영어 화면에는 쉬운 말 · 「이 화면은?」 · 단계 단추가 없음', !s5.level && !s5.what && !s5.lv && !s5.fold, s5);
+  await page.goto(base + '/?lang=ko#/', {waitUntil: 'load'}); await ready();
+  check('쉬운 말: 화면 오류 0', !errs.length, errs.slice(0, 3));
+  await ctx.close();
+}
+
 let clarity = null;
+const ONLY = arg('--only'); // 고치는 동안: --only easy = 쉬운 말 검사만(결과는 latest.json 에 적지 않음 — 빠른 검사)
 try {
+  if (ONLY === 'easy') { await easyCheck(); throw Object.assign(new Error('only'), {only: true}); }
   await scenario('pc', {width: 1280, height: 800});
   await scenario('mobile', {width: 390, height: 844}, {mobile: true});
   await darkCheck();
   await usCheck();
   await retiredCheck(); // 2026-10-08 18:33 중국 · 일본 · 베트남 내림(옛 worldCheck)
   clarity = await clarityCheck();
-} finally { await browser.close(); }
+  await easyCheck(); // 쉬운 말(규칙 48)
+} catch (e) { if (!e?.only) throw e; } finally { await browser.close(); }
+if (ONLY) { const f = checks.filter(c => !c.ok).length; console.log(JSON.stringify({only: ONLY, passed: checks.length - f, failed: f})); process.exit(f ? 1 : 0); }
 // 배포 묶음: 게임 쪽은 없고 옛 주소는 처음 화면으로 돌린다(넷리파이 _redirects)
 try { const red = await fs.readFile(path.join(process.cwd(), 'dist/_redirects'), 'utf8'); let game = true; try { await fs.access(path.join(process.cwd(), 'dist/game')); } catch { game = false; } check(`배포 묶음: game/ 폴더 없음 · _redirects 에 /game/* → / (${red.trim().split('\n').length}줄)`, !game && /^\/game\/\*\s+\/\s+302$/m.test(red)); } catch (e) { check('배포 묶음 dist/ 를 읽지 못함', false, {e: e.message}); }
 const summary = {schema: 'atlas11-browser-check-4', at: new Date().toISOString(), base, prediction: 'off', boardId: manifest.boardId, asOf: manifest.asOf, chromium: 'playwright chromium (headless)', viewports: {pc: '1280x800', mobile: '390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)', 'mobile-dark': '390x844 어두운 화면'}, passed: checks.filter(c => c.ok).length, failed: checks.filter(c => !c.ok).length, clarity, checks};

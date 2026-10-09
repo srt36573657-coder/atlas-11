@@ -1,13 +1,14 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T14:28:28.224Z",
- "seconds": 352,
+ "at": "2026-10-09T16:06:49.365Z",
+ "seconds": 401,
  "lap": {
-  "crawl": 109.2,
-  "trans": 211.5,
-  "layout": 351.7
+  "crawl": 159.8,
+  "easy": 160.2,
+  "trans": 257.4,
+  "layout": 400.6
  },
- "code": "c749c1d7f52178e7",
+ "code": "5cf781e9893ebdb7",
  "boards": [
   "kr",
   "us"
@@ -17,19 +18,19 @@
   "en",
   "ko"
  ],
- "pages": 1980,
+ "pages": 2970,
  "byLang": {
-  "ko": 990,
+  "ko": 1037,
   "en": 990
  },
- "plans": 1980,
- "numbers": 11590,
- "links": 25018,
- "texts": 3242,
+ "plans": 2970,
+ "numbers": 17385,
+ "links": 37527,
+ "texts": 4863,
  "motion": 50,
- "edge": 94,
+ "edge": 141,
  "transLangs": 73,
- "transStrings": 30089,
+ "transStrings": 30090,
  "layoutLangs": 74,
  "layoutPages": 3456,
  "d3": {
@@ -44,6 +45,28 @@
    "1": 27270,
    "2": 276670,
    "3": 583424
+  }
+ },
+ "easy": {
+  "pages": 990,
+  "edge": 47,
+  "what": 990,
+  "numPages": 990,
+  "numTokens": 291272,
+  "front": 93951,
+  "hardChecks": 7140276,
+  "hardHits": 0,
+  "bannedChecks": 93951,
+  "checks": 7526489,
+  "click3": {
+   "pairs": 443682,
+   "over": 0,
+   "max": 3,
+   "hist": {
+    "1": 13635,
+    "2": 138335,
+    "3": 291712
+   }
   }
  },
  "transShapes": 3687,
