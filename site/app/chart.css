@@ -250,3 +250,24 @@ html:not([lang="ko"]) .topnote { font-size: .75rem; }
 /* 관심종목 — 등록 뒤 확인된 것(새 공시 · 일정) · 적어 둔 조건은 아직 확인 안 됨(2026-10-09 셋째 개정본 0-I) */
 .wl-seen { margin: 4px 0 0; font-size: .875rem; line-height: 1.5; color: var(--ink2); }
 .wl-open { color: var(--sub); font-size: .8125rem; }
+
+/* ── 입체(3D) — 한국 · 미국 판 모든 화면의 그림(사장님 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지를 말하는것이다」)
+   잡스 36 고민 13 · 14 · 32 — 부품 둘(입체 막대 · 지도 섬 islandmap.js)로 모든 화면 · 값 = 앞면 길이 그대로(입체 때문에 숫자를 바꾸지 않음)
+   · 모든 그림이 같은 빛(왼쪽 위)과 같은 깊이(--d3) — 윗면은 같은 색을 밝게 · 옆면은 어둡게(오름 빨강 · 내림 파랑 뜻 그대로) · 움직이지 않음(정적인 상태) */
+:root { --d3: 5px; }
+.bc-track { height: 9px; margin-top: calc(4px + var(--d3)); border-radius: 2px; box-shadow: inset 0 1px 2px rgba(0, 0, 0, .14); } /* 바닥 홈 · 위에 윗면 자리 */
+.bc-bar { border-radius: 1px; }
+.bc-bar::before, .bc-bar::after { content: ''; position: absolute; background: inherit; pointer-events: none; }
+.bc-bar::before { left: 0; right: 0; bottom: 100%; height: var(--d3); transform: skewX(-45deg); transform-origin: 0 100%; filter: brightness(1.32) saturate(.92); } /* 윗면 — 위 끝이 오른쪽으로 깊이만큼 */
+.bc-bar::after { top: 0; bottom: 0; left: 100%; width: var(--d3); transform: skewY(-45deg); transform-origin: 0 0; filter: brightness(.66); } /* 옆면 — 오른쪽 끝이 위로 깊이만큼(윗면과 맞물림) */
+.hg-col { position: relative; border-radius: 1px 1px 0 0; }
+.hg-col::before, .hg-col::after { content: ''; position: absolute; background: inherit; pointer-events: none; }
+.hg-col::before { left: 0; right: 0; bottom: 100%; height: 3px; transform: skewX(-45deg); transform-origin: 0 100%; filter: brightness(1.32) saturate(.92); }
+.hg-col::after { top: 0; bottom: 0; left: 100%; width: 3px; transform: skewY(-45deg); transform-origin: 0 0; filter: brightness(.66); }
+.cl-seg { filter: drop-shadow(3px -3px 0 rgba(0, 0, 0, .2)); } /* 기록 막대 — 같은 쪽으로 깊이 */
+.da-dot { background-image: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, .62), rgba(255, 255, 255, 0) 58%); } /* 날짜 구슬 — 같은 빛 */
+.hm-c { box-shadow: 3px -3px 0 rgba(0, 0, 0, .14); } /* 칸 — 막대와 같은 쪽(오른쪽 위)으로 깊이 */
+.road .bead { filter: drop-shadow(.8px 1px 0 rgba(0, 0, 0, .35)); } /* 출목표 구슬 — 왼쪽 위 빛 · 그림자는 오른쪽 아래(날짜 구슬과 같은 빛) */
+.ra[data-scene^="quiet-"] .bc-track { height: 12px; border-radius: 6px; box-shadow: inset 2px 3px 4px rgba(0, 0, 0, .2), inset -1px -1px 0 rgba(255, 255, 255, .55); } /* 빈 하늘 — 값이 없는 날은 빈 홈(파인 자리)만 · 막대를 지어내지 않음 */
+@media (prefers-color-scheme: dark) { .bc-track { box-shadow: inset 0 1px 2px rgba(0, 0, 0, .45); } .cl-seg { filter: drop-shadow(3px -3px 0 rgba(0, 0, 0, .5)); } .hm-c { box-shadow: 3px -3px 0 rgba(0, 0, 0, .4); }
+  .ra[data-scene^="quiet-"] .bc-track { box-shadow: inset 2px 3px 4px rgba(0, 0, 0, .6), inset -1px -1px 0 rgba(255, 255, 255, .08); } }

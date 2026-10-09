@@ -326,10 +326,57 @@ async function usCandCheck(page, label) {
   check(`${label} 미국 판 「후보 7」 섬(2026-10-09 19:29 「미국장 까지 다 대입」): 물 위 ${u.chk?.above}곳 = 따로 센 ${aboveW}곳 · 그물 ${u.chk?.green}곳 = 따로 셈 ${greenW}곳 · 핀 ${u.pins.length}개 · 줄 차례 = 따로 센 차례(${wantRows.join(' · ')}) · 위 이름표 「${u.hud}」 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음`,
     ok, {chk: u.chk, aboveW, greenW, rows: u.rows, want: wantRows, hud: u.hud, all: u.all, rank: u.rank, honest, overlap, sw: u.sw, cw: u.cw});
 }
+/** 지도 섬(islandmap.js · 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지 … 아틀란스에 본질이 중심」) — 한국 · 미국 판
+ *   회사 화면: 금빛 = 그 회사 · 옥빛 = 같은 업종(판 읽기 g로 따로 셈) · 업종 화면: 옥빛 = 그 업종 회사들 · 시장: 지도의 날씨(오름 · 내림 곳 수 = 판 읽기 r20 부호로 따로 셈)
+ *   탑을 누르면 이름표에 이름 · 「회사 보기 ›」(그 회사 주소) · 옆 넘침 없음 · 첫 화면(섬이 곧 그림) · 안내 화면에는 없음 · 입체 막대(윗면 · 옆면)는 값 길이(앞면)를 바꾸지 않음 */
+async function mapCheck(page, label) {
+  for (const [pre, lp] of [['', 'data/atlas11/view/lens.json'], ['us/', 'us/data/atlas11/view/lens.json']]) {
+    const lens = await get(lp); if (!lens?.cand?.ready) { check(`${label} 지도 섬(${pre || 'kr'}): 판 읽기 후보가 없음`, false); continue; }
+    const st = lens.stocks, s0 = st.find(s => st.filter(t => t.g === s.g).length >= 3) ?? st[0], mates = st.filter(t => t.g === s0.g && t.code !== s0.code).map(t => String(t.code)).sort();
+    const read = () => page.evaluate(() => { const m = document.querySelector('#main section[data-art] .imap'); return m ? {d: JSON.parse(m.dataset.map), st: m.__imap.state(), cap: m.querySelector('.imap-cap')?.innerText ?? '', sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth} : null; });
+    await page.goto(base + '/' + pre + '#/stock/' + s0.code, {waitUntil: 'networkidle'}); await page.waitForSelector('#main section[data-art] .imap canvas', {timeout: 20000}); await page.waitForTimeout(300);
+    const co = await read();
+    const coOk = !!co && co.d.gold === String(s0.code) && co.st.lit.slice().sort().join() === mates.join() && co.cap.includes(s0.name) && co.sw <= co.cw;
+    // 탑 누르기 — 같은 업종 첫 회사 · 이름표에 「회사 보기 ›」 고리
+    const tgt = mates[0], pt = await page.evaluate(c => { const m = document.querySelector('#main .imap'), q = m.__imap.tapPoint(c), r = m.querySelector('.imap-stage').getBoundingClientRect(); if (!q) return null; m.scrollIntoView({block: 'center'}); return c; }, tgt);
+    let tagOk = false, tagTxt = null;
+    if (pt) { await page.waitForTimeout(200); const xy = await page.evaluate(c => { const m = document.querySelector('#main .imap'), q = m.__imap.tapPoint(c), r = m.querySelector('.imap-stage').getBoundingClientRect(); return [r.left + q[0], r.top + q[1]]; }, tgt);
+      await page.mouse.click(xy[0], xy[1]); await page.waitForTimeout(250);
+      const tg = await page.evaluate(() => { const t = document.querySelector('#main .imap-tag'); return t && !t.hidden ? {txt: t.innerText.replace(/\s+/g, ' ').trim(), href: t.querySelector('a')?.getAttribute('href') ?? null, focus: document.querySelector('#main .imap').__imap.state().focus} : null; });
+      tagTxt = tg?.txt ?? null; const nm = st.find(s => String(s.code) === tgt)?.name; tagOk = !!tg && tg.focus === tgt && tg.href === '#/stock/' + tgt && !!nm && tg.txt.includes(nm) && tg.txt.includes('회사 보기'); }
+    check(`${label} 지도 섬 회사 화면(${pre ? '미국' : '한국'} ${s0.name}): 금빛 = 그 회사 · 옥빛 ${co?.st.lit.length ?? 0}곳 = 같은 업종 ${mates.length}곳(따로 셈) · 탑을 누르면 이름표 「${tagTxt}」 · 옆 넘침 없음`, coOk && tagOk, {co, mates, tagTxt});
+    // 업종 화면 — 옥빛 = 그 업종 회사들(금빛 없음)
+    await page.goto(base + '/' + pre + '#/i/' + s0.g, {waitUntil: 'networkidle'}); await page.waitForSelector('#main section[data-art] .imap canvas', {timeout: 20000}); await page.waitForTimeout(200);
+    const ind = await read(), all5 = st.filter(t => t.g === s0.g).map(t => String(t.code)).sort();
+    check(`${label} 지도 섬 업종 화면(${pre ? '미국' : '한국'} ${s0.gl}): 옥빛 ${ind?.st.lit.length ?? 0}곳 = 그 업종 ${all5.length}곳 · 금빛 없음`, !!ind && ind.d.gold === null && ind.st.lit.slice().sort().join() === all5.join() && ind.sw <= ind.cw, {ind, all5});
+    // 시장 — 지도의 날씨(오름 · 내림 곳 수 = 판 읽기 r20 부호)
+    await page.goto(base + '/' + pre + '#/market', {waitUntil: 'networkidle'}); await page.waitForSelector('#main section[data-art]', {timeout: 20000}); await page.waitForTimeout(400);
+    const mk = await read(), upW = st.filter(s => Number.isFinite(s.r20) && s.r20 > 0).length, dnW = st.filter(s => Number.isFinite(s.r20) && s.r20 < 0).length;
+    check(`${label} 지도 섬 시장(${pre ? '미국' : '한국'}): 지도의 날씨 — 오름 ${mk?.d.up}곳 = 따로 센 ${upW}곳 · 내림 ${mk?.d.down}곳 = 따로 센 ${dnW}곳`, !!mk && mk.d.heat === true && mk.d.up === upW && mk.d.down === dnW && mk.sw <= mk.cw, {mk, upW, dnW});
+    // 업종 순환 — 순환 그림의 업종(#/i/…) 회사 · 회사 고리가 빛남(따로 셈)
+    await page.goto(base + '/' + pre + '#/flow/rotation', {waitUntil: 'networkidle'}); await page.waitForTimeout(500);
+    const ro = await page.evaluate(() => { const sec = document.querySelector('#main section.rt[data-place]'), m = sec?.querySelector('.imap');
+      return sec ? {gids: [...new Set([...sec.querySelectorAll('a[href^="#/i/"]')].map(a => a.getAttribute('href').slice(4)))], cos: [...new Set([...sec.querySelectorAll('a[href^="#/stock/"]')].map(a => a.getAttribute('href').slice(8)))], st: m ? m.__imap.state() : null} : null; });
+    if (ro) { const want = new Set(ro.cos.filter(c => st.some(s => String(s.code) === c))); for (const s of st) if (ro.gids.includes(s.g)) want.add(String(s.code));
+      const heatW = !want.size || want.size > st.length * 0.5, litW = heatW ? '' : [...want].sort().join();
+      check(`${label} 지도 섬 업종 순환(${pre ? '미국' : '한국'}): 업종 ${ro.gids.length}개 · 옥빛 ${ro.st?.lit.length ?? 0}곳 = 따로 센 ${heatW ? 0 : want.size}곳`, !!ro.st && ro.st.gold === null && ro.st.heat === heatW && ro.st.lit.slice().sort().join() === litW, {ro, want: [...want]}); }
+    else { const n = await page.evaluate(() => document.querySelectorAll('#main .imap').length); check(`${label} 지도 섬 업종 순환(${pre ? '미국' : '한국'}): 순환 그림 칸이 없는 날 — 지도 섬도 없음(${n}개)`, n === 0, {n}); }
+    // 첫 화면 · 안내 — 지도 섬 없음(첫 화면은 섬이 곧 그림)
+    await page.goto(base + '/' + pre + '#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page .isl canvas', {timeout: 20000});
+    const none = await page.evaluate(() => document.querySelectorAll('#main .imap').length);
+    check(`${label} 지도 섬(${pre ? '미국' : '한국'}): 첫 화면에는 따로 붙이지 않음(섬이 곧 그림)`, none === 0, {none});
+  }
+  // 입체 막대 — 윗면 · 옆면이 있어도 앞면 길이(값)는 그대로(--w)
+  await page.goto(base + '/#/rise', {waitUntil: 'networkidle'}); await page.waitForSelector('#main .bc-bar'); await page.waitForTimeout(200);
+  const d3 = await page.evaluate(() => { const b = [...document.querySelectorAll('#main .bc-bar:not(.bc-none)')][0]; if (!b) return null; const t = b.parentElement.getBoundingClientRect(), r = b.getBoundingClientRect(), w = parseFloat(getComputedStyle(b).getPropertyValue('--w'));
+    const be = getComputedStyle(b, '::before'), af = getComputedStyle(b, '::after'); return {w, real: r.width / t.width * 100, top: be.content !== 'none' && be.transform !== 'none', side: af.content !== 'none' && af.transform !== 'none'}; });
+  check(`${label} 입체 막대: 윗면 · 옆면이 있고 앞면 길이 = 값(${d3?.w}% · 실제 ${d3?.real?.toFixed(2)}%)`, !!d3 && d3.top && d3.side && Math.abs(d3.real - d3.w) < 0.6, d3);
+}
 async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');
   await candCheck(page, label, mobile, press);
   await usCandCheck(page, label); // 미국 판 「후보 7」 섬(2026-10-09 19:29) // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
+  await mapCheck(page, label); // 지도 섬 · 입체 막대(2026-10-09 19:45 「모든곳에 3d」 · 규칙 46)
   await page.goto(base + '/#/market', {waitUntil: 'networkidle'}); await page.waitForSelector('.mk-page [data-first="5"]'); await page.waitForTimeout(300);
   const firstsOf = sel => page.evaluate(sel => ({firsts: [...document.querySelectorAll(sel + ' [data-first]')].map(x => { const r = x.getBoundingClientRect(); return {n: x.dataset.first, art: x.matches('section[data-art]'), top: Math.round(r.top), bottom: Math.round(r.bottom), t: x.innerText.replace(/\s+/g, ' ').trim()}; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), tabs: [...document.querySelectorAll('.bottom-link')].map(a => [a.dataset.route, a.innerText.replace(/\s+/g, '')]), active: document.querySelector('.bottom-link.active')?.dataset.route,
@@ -427,10 +474,12 @@ async function restructCheck(page, label, mobile, press) {
   await press(page.locator('.bottom-link[data-route="watch"]')); await page.waitForSelector('.wl-page'); await page.waitForTimeout(200);
   const w1 = await page.evaluate(() => [...document.querySelectorAll('.wl-row')].map(li => [li.dataset.code, li.querySelector('dd')?.textContent.trim()]));
   await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.wl-page'); await page.waitForTimeout(200);
-  const w2 = await page.evaluate(() => ({rows: [...document.querySelectorAll('.wl-row')].map(li => li.dataset.code), art: document.querySelector('.wl-page section[data-art]')?.dataset.art, lead: document.querySelector('.wl-page [data-first="1"]')?.innerText ?? ''}));
-  await page.locator('.wl-row .b-link').first().click(); await page.waitForTimeout(200);
-  const w3 = await page.evaluate(() => document.querySelectorAll('.wl-row').length);
-  check(`${label} 개편 · 관심 등록(${code}) → 바로 「${wb.say}」 · 「${wb.h}」 · 관심종목 화면 줄 ${w1.length}개(이유 「${w1[0]?.[1]}」) · 다시 열어도 ${w2.rows.length}개 · 「이 기기에만 저장」 · 빼면 ${w3}개`, wb.h.startsWith('★ 관심 종목') && wb.say === '저장했습니다 · 이 기기에만' && w1.length === 1 && w1[0][0] === code && w1[0][1] === '검사 등록 이유' && w2.rows.join() === code && w2.lead.includes('이 기기에만 저장') && w2.art === 'watch' && w3 === 0, {wb, w1, w2, w3});
+  const w2 = await page.evaluate(() => { const m = document.querySelector('.wl-page section[data-art] .imap'); // 지도 섬(규칙 46) — 이 기기에 남긴 회사가 빛남
+    return {rows: [...document.querySelectorAll('.wl-row')].map(li => li.dataset.code), art: document.querySelector('.wl-page section[data-art]')?.dataset.art, lead: document.querySelector('.wl-page [data-first="1"]')?.innerText ?? '', map: m ? m.__imap.state() : null}; });
+  await page.locator('.wl-row .b-link').first().click(); await page.waitForTimeout(300);
+  const w3 = await page.evaluate(() => document.querySelectorAll('.wl-row').length), w3map = await page.evaluate(() => document.querySelectorAll('.wl-page .imap').length);
+  const inLens = lens.stocks.some(x => String(x.code) === String(code)), mapOk = inLens ? !!w2.map && w2.map.lit.join() === String(code) && w2.map.gold === null && w2.map.heat === false && w3map === 0 : w2.map === null;
+  check(`${label} 개편 · 관심 등록(${code}) → 바로 「${wb.say}」 · 「${wb.h}」 · 관심종목 화면 줄 ${w1.length}개(이유 「${w1[0]?.[1]}」) · 다시 열어도 ${w2.rows.length}개 · 「이 기기에만 저장」 · 지도 섬에서 그 회사만 빛남(${w2.map?.lit?.join() ?? '없음'}) · 빼면 ${w3}개 · 지도 ${w3map}개`, wb.h.startsWith('★ 관심 종목') && wb.say === '저장했습니다 · 이 기기에만' && w1.length === 1 && w1[0][0] === code && w1[0][1] === '검사 등록 이유' && w2.rows.join() === code && w2.lead.includes('이 기기에만 저장') && w2.art === 'watch' && w3 === 0 && mapOk, {wb, w1, w2, w3, w3map, inLens});
   // 옛 주소 #/find → #/stocks · 옛 아래 탭 화면은 그 탭 안(지도 → 업종 · 출목표 → 종목 · 기록 → 검증 · 처음 → 위 막대 안내)
   await page.goto(base + '/#/find', {waitUntil: 'networkidle'}); await page.waitForSelector('.sk-page .fd-in'); await page.waitForTimeout(200);
   const of = await page.evaluate(() => ({hash: location.hash, active: document.querySelector('.bottom-link.active')?.dataset.route}));
