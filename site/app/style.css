@@ -1330,3 +1330,15 @@ html:not([lang="ko"]) .rs-k::before { content: counter(rsb); }
 .rs-box .rs-bh { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 0 0 12px; }
 .rs-sun { box-shadow: 0 0 0 1.5px var(--sun), 0 0 12px var(--sun-glow), var(--lift); }
 .rs-sun .rs-beat[data-c="3"] > .rs-k { background: var(--sun-bg); color: var(--sun-ink); box-shadow: inset 0 0 0 1.5px var(--sun); }
+
+/* 쉬운 말(규칙 48 · 2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록」) — 한국어 화면에서만
+   · 화면마다 맨 위 「이 화면은?」 한 줄(무엇을 보는 화면인지 · 누르면 어디로) + 「전문가 말」 단추(옛 화면 글 그대로 보기)
+   · 회사 화면 ② ~ ⑦ · 비교 표는 「전문가용 자세히」 한 칸에 접음(펼치면 그대로) · 점 셋 메뉴에 쉬운 말 ↔ 전문가 말 */
+.ez-what { margin: 0 0 4px; padding: 5px 10px; border-radius: 12px; background: var(--card); color: var(--ink); font-size: .88rem; line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; box-shadow: inset 0 0 0 1px var(--hair); }
+.ez-what::after { content: ''; display: block; clear: both; }
+.ez-what b { font-weight: 700; }
+.ez-lv { float: right; display: inline-flex; align-items: center; min-height: 24px; margin: -1px 0 0 8px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--sep); background: transparent; color: var(--sub); font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
+.ez-pro { margin-top: 14px; }
+.ez-pro > summary { font-size: .98rem; }
+.ez-lv-b { flex: none; height: 44px; margin: 0; padding: 0 12px; border: 0; border-radius: 22px; background: var(--fill); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.ez-lv-b[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--ink); }

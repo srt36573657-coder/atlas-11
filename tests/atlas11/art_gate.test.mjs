@@ -45,7 +45,7 @@ test('그림 숫자 맞대기 — 기대값과 다르면 알리고 같으면 조
 });
 
 test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트 판(한국 · 미국 — 2026-10-08 18:33) · 실패 0 · 같은 지문이어야 지나감(2026-10-08 05:05)', () => {
-  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, d3: {map: 9, bars: 3}, click3: {pairs: 9, over: 0, max: 3}, failed: 0, ok: true};
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, d3: {map: 9, bars: 3}, click3: {pairs: 9, over: 0, max: 3}, easy: {pages: 9, edge: 2, numPages: 9, hardChecks: 99, click3: {pairs: 9, over: 0, max: 3}}, failed: 0, ok: true};
   assert.deepEqual(reportProblems(ok, 'c'), []);
   assert.equal(reportProblems({...ok, langs: undefined}, 'c').length, 1); // 옛 결과(영어만) — 막힘
   assert.equal(reportProblems({...ok, langs: ['en']}, 'c').length, 1);
@@ -59,10 +59,14 @@ test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트
   assert.equal(reportProblems({...ok, d3: {}}, 'c').length, 1);
   assert.equal(reportProblems({...ok, click3: undefined}, 'c').length, 1); // 3단 클릭 층 없음(규칙 47 · 2026-10-09 21:33) — 막힘
   assert.equal(reportProblems({...ok, click3: {pairs: 0}}, 'c').length, 1);
+  assert.equal(reportProblems({...ok, easy: undefined}, 'c').length, 1); // 쉬운 말 층 없음(규칙 48 · 2026-10-09 22:40) — 막힘
+  assert.equal(reportProblems({...ok, easy: {...ok.easy, edge: 0}}, 'c').length, 1); // 빈 날 길을 쉬운 말로 안 돎
+  assert.equal(reportProblems({...ok, easy: {...ok.easy, click3: {pairs: 0}}}, 'c').length, 1); // 쉬운 말 화면 3단 클릭을 안 잼
+  assert.equal(reportProblems({...ok, easy: {...ok.easy, numPages: 0}}, 'c').length, 1); // 숫자 맞대기를 안 함
 });
 
 test('번역 면제(2026-10-09 03:14 「번역 작업 하지마」) — 기한 안 · 번역 안 된 한국어만 남은 결과만 지나감 · 다른 실패 · 층을 덜 돈 결과는 그대로 막음', async () => {
-  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, d3: {map: 9}, click3: {pairs: 9, over: 0, max: 3}, failed: 0, ok: true, shape: true, transFailed: 0, otherFailed: 0};
+  const ok = {code: 'c', quick: false, boards: ['kr', 'us'], langs: ['en', 'ko'], edge: 60, transLangs: 73, layoutLangs: 74, d3: {map: 9}, click3: {pairs: 9, over: 0, max: 3}, easy: {pages: 9, edge: 2, numPages: 9, hardChecks: 99, click3: {pairs: 9, over: 0, max: 3}}, failed: 0, ok: true, shape: true, transFailed: 0, otherFailed: 0};
   const w = {schema: 'atlas11-trans-waiver-1', until: '2026-10-16', said: ['x']};
   const trans = {...ok, failed: 5, ok: false, transFailed: 5, otherFailed: 0};
   assert.deepEqual(reportProblems(trans, 'c', w), []); // 번역만 남음 + 면제 — 지나감

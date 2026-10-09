@@ -4,6 +4,7 @@
    기사·공시 제목에 앞날을 짐작하는 말이 있으면 판을 만들 때 빼고, 뺀 수만 적는다(lib/atlas11/board.mjs).
    2026-10-05 02:44 「잡스였다면」 개혁 — 앞 화면과 이어 보이기: 머리에 「지난 20거래일 ▲변화」(판·출목표 칸과 같은 숫자) · 60거래일 그래프 안에 그 20거래일을 옅은 띠로
      · 끝에 「같은 업종 4곳」(근처에 무엇이 있나 — 애플 WWDC17 길 찾기) */
+import {proFold} from './easy.js'; // 쉬운 말 화면에서 빽빽한 전문가 칸 접기(규칙 48)
 import {companyArt, quietArt} from './scenes.js'; // 그림 한 장(먹 붓질 · 규칙 33) · 판을 못 읽은 날은 빈 하늘(2026-10-08 05:05 빈 날 막기)
 import {h, won, pct, num, korDate, stamp, kst, signCls, signMark, finite, place} from './util.js';
 import {state, loadStock, loadAgenda, loadBoard} from './store.js';
@@ -239,7 +240,7 @@ export async function renderCompany(main, {hash, manifest}) {
     statusLine(ls, s), // ① 자료 상태(「ATLAS 개편 실행 지시서」 7 — 그날 종가 · 지연 · 오래된 종가 · 기업행사 확인 필요 · 받은 때)
     codeLine, // 기호 · 업종 줄은 그림 아래(값 · 그림이 한 화면에 · 규칙 30)
     judge, // 후보 판단(2026-10-09 재설계 명령 7 — 왜 이 종목 · 왜 지금 · 지금 값의 뜻 · 진입 조건 · 판단이 바뀌는 조건 · 이어서 확인 · 선정 이후 결과)
-    lens ? [sinceBox(ls, lens), ...evidenceBoxes(ls, lens, s), nextBox(ls, lens, agenda, s), fundBox(ls), verifyBox(ls, lens), compareBox(ls, lens)] : null, // ② ~ ⑦ · 비교(「ATLAS 개편 실행 지시서」 7 · 2026-10-09 지시서 11 — ⑥ 실적 · 재무 · 가치평가)
+    lens ? proFold('전문가용 자세히 — 달라진 점 · 까닭 · 위험 · 장부 · 비교 표', sinceBox(ls, lens), ...evidenceBoxes(ls, lens, s), nextBox(ls, lens, agenda, s), fundBox(ls), verifyBox(ls, lens), compareBox(ls, lens)) : null, // 쉬운 말 화면에서는 ② ~ ⑦ · 비교 표를 한 칸에 접어 둠(전문가 말 화면은 그대로 펼침 · 규칙 48) // ② ~ ⑦ · 비교(「ATLAS 개편 실행 지시서」 7 · 2026-10-09 지시서 11 — ⑥ 실적 · 재무 · 가치평가)
     watchBox(s, null, {cand: lens?.cand?.ready && lens.cand.flags?.[s.code] ? {flags: lens.cand.flags[s.code], rank: lens.cand.items.find(y => y.code === s.code)?.rank ?? null, status: lens.cand.items.find(y => y.code === s.code)?.status ?? null, asOf: lens.cand.asOf, rules: lens.cand.rules} : null}), // ★ 관심 등록(이 기기에만 · 7) — 등록 때 후보 상태도 함께(관심 화면이 바뀐 조건을 셈)
     rankNav(board, s),
     marketStrip(manifest),

@@ -11,6 +11,9 @@
      ③ 가장 긴 글 층 — 말마다(73) · 화면 종류마다(15) 글이 가장 긴 화면(다섯 나라 가운데)을 그 말로 열어 한 화면 · 옆 넘침 · 가장 큰 글씨(200%) 옆 넘침
      ④ 움직임 — 화면 종류 × 판마다 4배속으로(art.js atlas11:speed · CSS 는 브라우저 시간을 4배로): 처음 모습 = 최신 결과(저절로 재생 없음 · 2026-10-09) → 「재생」을 눌러 매 프레임 셈: 한 번에 하나 · 차례 넷 · 360×640 · 430×700 한 화면
      ⑤ 빈 날 길 — 판 자료를 바꿔치기(판 목록 해시도 같이) — 한국 판 일부 빔 · 미국 판 모두 빔 · 없는 주소 셋 · 못 읽은 파일 → 두 말로 그림 한 장(빈 하늘) · 기대값 · 움직임
+     ⑥ 쉬운 말 층(규칙 48 · 2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록 … 교차 검증을 100만번」) — 한국어 화면은 처음이 쉬운 말:
+        ① ⑤ 의 한국어는 전문가 말(?level=pro · 옛 검사 그대로 · ② 계산 층 재료) · 쉬운 말(?level=easy)로 모든 화면 · 빈 날 길을 한 번 더 — 같은 판정(한 화면 · 그림 · 입체 · 3단 클릭) +
+        「이 화면은?」 한 줄 · 펼친 글에 어려운 말(easy-ko.js HARD) 0 · 금지 말을 새로 넣지 않음 · 숫자 맞대기(쉬운 말 화면의 숫자 = 전문가 말 화면의 숫자 — 하나도 빠지거나 바뀌지 않음)
    결과: reports/atlas11/full-check/latest.json(schema 3) — 올리기 문(art_gate.mjs)이 지문 · 다섯 나라 · 두 말 · 73개 말 · 빈 날 · 실패 0 을 봄
    쓰는 법: node scripts/atlas11/full_check.mjs --base http://127.0.0.1:8823 --pw /opt/node-tools [--boards kr,us] [--quick] [--kinds home,map] [--lay] [--edge-only] [--jobs 3] [--out 파일] */
 import {SITE_BOARDS} from '../../lib/atlas11/places.mjs'; // 사이트에 싣는 판(2026-10-08 18:33 부터 한국 · 미국)
@@ -25,7 +28,11 @@ import {setPlace} from '../../site/app/util.js';
 import {codePrint} from './art_gate.mjs';
 import {familyOf} from '../../site/app/family.js'; // 갈래 이름표(자료) — 링크 검사용
 import {expectOf, compare as cmp, pctText, flowExpect} from './art_expect.mjs'; // 그림 숫자의 기대값(판 자료로 따로 셈 · browser_check 와 함께 씀)
-import {fmtPct} from '../../site/app/calc.js'; // 판 읽기(%) 값의 보이는 글 모양(소수 한 자리 · 부호) — 그림 이름표 글을 맞댈 때만
+import {fmtPct} from '../../site/app/calc.js';
+import {hardLeft, addEasyNames} from '../../site/app/easy.js'; // 쉬운 말 층 — 남은 어려운 말(easy-ko.js HARD · 낱말 안 · 이름 자리는 뺌)
+import {HARD} from '../../site/app/easy-ko.js';
+import {PREDICTION_WORDS} from '../../lib/atlas11/board.mjs'; // 앞날 말(쉬운 말이 새로 넣지 않았나)
+import {BANNED} from '../../lib/atlas11/changelog.mjs'; // 판 읽기(%) 값의 보이는 글 모양(소수 한 자리 · 부호) — 그림 이름표 글을 맞댈 때만
 
 const arg = (k, d = null) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const BASE = arg('--base', 'http://127.0.0.1:8823'), PW = arg('--pw', '/opt/node-tools'), EDGE_ONLY = process.argv.includes('--edge-only'), QUICK = process.argv.includes('--quick') || EDGE_ONLY || process.argv.includes('--kinds');
@@ -39,7 +46,8 @@ const {chromium} = require('playwright');
 const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
-const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}, click3: {pairs: 0, over: 0, max: 0, hist: {}}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
+const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}, click3: {pairs: 0, over: 0, max: 0, hist: {}},
+  easy: {pages: 0, edge: 0, what: 0, numPages: 0, numTokens: 0, front: 0, hardChecks: 0, hardHits: 0, bannedChecks: 0, checks: 0, click3: {pairs: 0, over: 0, max: 0, hist: {}}}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -56,7 +64,7 @@ const INIT = ({speed}) => {
   if (speed) { try { localStorage.setItem('atlas11:speed', String(speed)); } catch {} }
 };
 // 화면 여러 곳을 차례로 — 다 그린 순간 잼(collect = 한국어 글 · 한 화면 글을 모음)
-const CRAWL = async ({routes, collect}) => {
+const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
   const KO = /[가-힣]/, ATTRS = ['aria-label', 'title', 'placeholder', 'alt', 'data-speak'];
   const settle = async () => { for (let i = 0; i < 800 && (window.__inflight || 0) > 0; i++) await new Promise(r => setTimeout(r, 5)); await new Promise(r => setTimeout(r, 0)); }; // 받는 파일 0 → 한 번 쉼(번역 관찰자 · 미룬 일이 끝남) · 잴 때 브라우저가 자리를 바로 셈(프레임을 기다리지 않음)
   const skip = el => { if (!el || el.closest('script, style, noscript, .lang')) return true; const k = el.closest('[lang="ko"]'); return !!k && k !== document.documentElement; }; // 원문 표시(lang="ko") 안은 뺌 — 한국어 화면의 <html lang="ko"> 는 빼지 않음 · 말 고르기 메뉴(.lang)는 말마다 그 말로 새로 그림(번역이 아님)
@@ -103,6 +111,16 @@ const CRAWL = async ({routes, collect}) => {
     // 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이」 · 규칙 47) — 이 화면에서 한 번 눌러 가는 곳 모두(위 막대 · 탐색 줄 · 본문 · 아래 탭) · 접힌 칸 안은 「펼치기 + 누르기」 두 번(D)
     { const nav = new Set(); for (const a of document.querySelectorAll('a[href^="#/"]')) { const d = a.closest('details'), folded = !!d && !d.open && !a.closest('summary'); let hh = a.getAttribute('href'); try { hh = decodeURIComponent(hh); } catch {} nav.add((folded ? 'D' : '') + hh); } m.nav = [...nav]; }
     m.errs = window.__errs.slice(e0);
+    // 쉬운 말 층(규칙 48): 숫자 모음(본문 글 + 읽기 이름표 — 「이 화면은?」 줄은 뺌) · 「이 화면은?」 · 펼친 글(접힌 칸 · 원문 · 식별자 · 숨은 것 뺌)
+    if (nums) { const c = document.getElementById('main').cloneNode(true); c.querySelectorAll('.ez-what').forEach(x => x.remove()); const at = [...c.querySelectorAll('[aria-label], [title], [data-speak]')].map(x => ['aria-label', 'title', 'data-speak'].map(k => x.getAttribute(k) ?? '').join(' ')).join(' ');
+      m.nums = ((c.textContent + ' ' + at).match(/[+−\-]?\d[\d,]*(?:\.\d+)?/g) ?? []).sort().join(' '); }
+    if (easy) {
+      m.what = !!document.querySelector('#main .ez-what') && document.documentElement.dataset.level === 'easy';
+      const folded = el => { for (let x = el; x && x.id !== 'main'; x = x.parentElement) if (x.tagName === 'DETAILS' && !x.open && el.closest('summary')?.parentElement !== x) return true; return false; }; // 닫힌 접힘 안(그 접힘의 이름 줄은 보임 · 겹친 접힘도)
+      const fr = new Set(), w2 = document.createTreeWalker(document.getElementById('main'), NodeFilter.SHOW_TEXT);
+      for (let n = w2.nextNode(); n; n = w2.nextNode()) { const s = n.nodeValue; if (!KO.test(s) && !/\b(?:KST|ROE|EPS|PER)\b|\d%p\b/.test(s)) continue; const p = n.parentElement; if (!p || p.closest('script, style, noscript, code, [data-ident], .lang, .ez-what')) continue;
+        const src = p.closest('[lang="ko"]'); if (src && src !== document.documentElement) continue; if (!p.getClientRects().length || folded(p)) continue; fr.add(s.trim()); }
+      m.front = [...fr]; }
     // 맨 위 하규 응원 · 건의 줄(2026-10-08 14:42 마카오 시각 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」) — 모든 화면: 위 막대 바로 다음 · 본문 바로 앞 · 응원 글 · 문자 고리 · 맨 아래 줄에는 다시 나오지 않음
     { const t = document.getElementById('topnote'), tp = document.getElementById('top'), mn = document.getElementById('main');
       m.note = !!t && tp?.nextElementSibling === t && t.nextElementSibling === mn && t.getBoundingClientRect().height > 0 && !!t.querySelector('.tn-cheer')?.textContent.trim() && !!t.querySelector('.tn-contact a[href="sms:+821090117377"]')?.textContent.includes('010-9011-7377');
@@ -141,14 +159,14 @@ const FIT = () => { const labs = [...(document.querySelector('#main .ra')?.query
 /* ── 창 열기 · 일 나눠 돌리기 ── */
 const SHELL = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'; // 같은 크롬 엔진 · 창 없는 가벼운 판(빠름)
 const browser = await chromium.launch({executablePath: existsSync(SHELL) ? SHELL : process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined});
-async function openPage(b, lang, vp, {motion = false, forge = null} = {}) {
+async function openPage(b, lang, vp, {motion = false, forge = null, level = null} = {}) {
   const ctx = await browser.newContext({viewport: vp, colorScheme: 'dark', isMobile: true, hasTouch: true, reducedMotion: motion ? 'no-preference' : 'reduce'});
   await ctx.addInitScript(INIT, {speed: motion ? SPEED : 0});
   if (forge) await forge(ctx);
   const page = await ctx.newPage();
   page.on('console', m => { if (m.type() === 'error' && !(forge && /Failed to load resource/.test(m.text()))) page.evaluate(t => window.__errs?.push(t), m.text()).catch(() => {}); });
   if (motion) { const cdp = await ctx.newCDPSession(page); await cdp.send('Animation.enable'); await cdp.send('Animation.setPlaybackRate', {playbackRate: SPEED}); }
-  await page.goto(`${BASE}${PRE[b]}?lang=${lang}#main`, {waitUntil: 'domcontentloaded'});
+  await page.goto(`${BASE}${PRE[b]}?lang=${lang}${level ? '&level=' + level : lang === 'ko' ? '&level=pro' : ''}#main`, {waitUntil: 'domcontentloaded'}); // 한국어는 전문가 말이 기본 검사(옛 검사 그대로) · 쉬운 말 층만 level=easy(규칙 48)
   await page.waitForFunction(() => document.documentElement.dataset.ready === '1' && typeof window.atlasRoute === 'function', null, {timeout: 30000});
   return {ctx, page};
 }
@@ -241,10 +259,10 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
 
 /* ── 3단 클릭 층(사장님 2026-10-09 21:33 「아틀란스를 3단 클릭구조로 만든다 모든곳에 하나도 빠짐없이 … 점검 1000000만번」 · 21:37 「슬기롭게 해」 · 규칙 47)
    판 · 말마다 모든 화면 쌍(가는 화면 ≠ 오는 화면)의 최소 누름 수 — 화면에서 실제로 그린 고리만(위 막대 · 탐색 줄 · 본문 · 아래 탭) · 접힌 칸 안 고리 = 두 번 · 3번을 넘는 쌍이 하나라도 있으면 실패 ── */
-function click3(b, lang, res) {
+function click3(b, lang, res, C = stats.click3) {
   const nodes = S[b].routes.map(r => r[0]), idx = new Map(nodes.map((r, i) => [r, i])), N = nodes.length;
   const adj = res.map(m => { const e = new Map(); for (const l of m.nav ?? []) { const f = l.startsWith('D'), t = f ? l.slice(1) : l, j = idx.get(t); if (j == null) continue; const w = f ? 2 : 1; if (!e.has(j) || e.get(j) > w) e.set(j, w); } return [...e]; });
-  const C = stats.click3, overBy = new Map();
+  const overBy = new Map();
   for (let s0 = 0; s0 < N; s0++) {
     const d = new Uint8Array(N).fill(255); d[s0] = 0; let cur = [s0];
     for (let k = 0; k < 3 && cur.length; k++) { const nxt = []; for (const u of cur) for (const [v, w] of adj[u]) { const dv = d[u] + w; if (dv < d[v] && dv <= 3) { d[v] = dv; nxt.push(v); } } cur = nxt; } // 무게 1 · 2 — 세 바퀴면 3 까지 모두 닿음
@@ -259,10 +277,19 @@ const koPages = []; // 한국어로 그린 화면(글 모음) — ② ③ 이 �
 const tasks = [];
 for (const b of EDGE_ONLY ? [] : BOARDS) for (const lang of ['en', 'ko']) tasks.push(async () => {
   const {ctx, page} = await openPage(b, lang, VP[lang]);
-  const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: lang === 'ko'});
-  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.d3[m.d3 ?? 'none'] = (stats.d3[m.d3 ?? 'none'] ?? 0) + 1; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); }
+  const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: lang === 'ko', nums: lang === 'ko'});
+  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.d3[m.d3 ?? 'none'] = (stats.d3[m.d3 ?? 'none'] ?? 0) + 1; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') { koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); PRO[`${b} ${m.hash}`] = {nums: m.nums, texts: m.texts}; } }
   if (!QUICK) click3(b, lang, res);
   await ctx.close(); console.log(`${b} · ${lang}: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
+});
+// ⑥ 쉬운 말 층 — 한국어 쉬운 말(처음 화면)로 모든 화면: 같은 판정 + 쉬운 말 판정(맞대기는 전문가 말 화면이 다 돈 뒤 — 아래 easyJudge)
+const PRO = {}, EASYRES = [];
+for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
+  const {ctx, page} = await openPage(b, 'ko', VP.ko, {level: 'easy'});
+  const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: false, easy: true, nums: true});
+  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang: 'ko', tag: 'ko · 쉬운 말'}); stats.pages++; stats.easy.pages++; EASYRES.push({b, m, tag: 'ko · 쉬운 말'}); }
+  if (!QUICK) click3(b, 'ko · 쉬운 말', res, stats.easy.click3);
+  await ctx.close(); console.log(`${b} · 쉬운 말: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
 });
 for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
   const {ctx, page} = await openPage(b, 'ko', {width: 390, height: 640}, {motion: true});
@@ -331,10 +358,12 @@ if ((!QUICK || EDGE_ONLY) && BOARDS.includes('us')) { // B — 미국 판 모두
 for (const x of EDGE) tasks.push(async () => {
   const forge = await forgeOf(x.b, x.board, x.stocks, x.missing), E = expectOf(x.b, x.board, x.agenda, null, null, others, null); // 판 읽기는 못 읽은 날(빈 하늘)
   const groups = x.board.groups ?? [], ctxS = {E, gids: new Set(groups.map(g => g.id)), codes: new Set(x.board.companies.map(c => c.code)), famIds: [...new Set(groups.map(g => familyOf(g.label).id))]};
-  for (const lang of ['en', 'ko']) {
-    const {ctx, page} = await openPage(x.b, lang, VP[lang], {forge});
-    const res = await page.evaluate(CRAWL, {routes: x.visits.map(v => v[0]), collect: false});
-    res.forEach((m, i) => { const [, kind, id] = x.visits[i]; judge(m, {b: x.b, kind, id, ...ctxS, lang, tag: `${x.name} · ${lang}`}); stats.edge++; stats.pages++; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; });
+  for (const lang of ['en', 'ko', 'ko-easy']) { // 빈 날 길도 쉬운 말로 한 번 더(규칙 48 — 값이 비는 날의 글도 쉬운 말 · 숫자 맞대기)
+    const easy = lang === 'ko-easy', L = easy ? 'ko' : lang;
+    const {ctx, page} = await openPage(x.b, L, VP[L], {forge, level: easy ? 'easy' : null});
+    const res = await page.evaluate(CRAWL, {routes: x.visits.map(v => v[0]), collect: L === 'ko' && !easy, easy, nums: L === 'ko'});
+    res.forEach((m, i) => { const [, kind, id] = x.visits[i], tag = `${x.name} · ${easy ? 'ko · 쉬운 말' : lang}`; judge(m, {b: x.b, kind, id, ...ctxS, lang: L, tag}); stats.edge++; stats.pages++; stats.byLang[L] = (stats.byLang[L] ?? 0) + 1;
+      if (easy) { stats.easy.pages++; stats.easy.edge++; EASYRES.push({b: x.b, m, tag, pro: `${x.name} ${m.hash}`}); } else if (L === 'ko') PRO[`${x.name} ${m.hash}`] = {nums: m.nums, texts: m.texts}; });
     await ctx.close();
   }
   const {ctx, page} = await openPage(x.b, 'ko', {width: 390, height: 640}, {motion: true, forge});
@@ -342,6 +371,27 @@ for (const x of EDGE) tasks.push(async () => {
   console.log(`${x.name}(${x.b}): 화면 ${x.visits.length * 2}곳 · ${Math.round((Date.now() - t0) / 1000)}초`);
 });
 await pool(tasks, JOBS); tick('crawl');
+
+/* ── ⑥ 쉬운 말 판정(규칙 48) — 전문가 말 화면과 맞대기 ── */
+const BAN = new RegExp([PREDICTION_WORDS.source, '사라[!.\\s]|팔라[!.\\s]|추천|목표가|확실|보장|무조건', ...BANNED.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))].join('|'), 'g');
+{ const names = []; for (const bd of Object.values(boardOf)) { for (const c of bd.companies) names.push(c.name); for (const g of bd.groups ?? []) names.push(g.label); } addEasyNames(names); }
+for (const {b, m, tag, pro} of EASYRES) {
+  const where = `${m.hash} [${tag}]`, no = w => bad(b, where, w), E2 = stats.easy;
+  E2.checks++; if (m.what) E2.what++; else no('쉬운 말 화면 맨 위 「이 화면은?」 한 줄이 없음(규칙 48)');
+  const P = PRO[pro ?? `${b} ${m.hash}`];
+  if (!P?.nums && P?.nums !== '') no('맞댈 전문가 말 화면이 없음(숫자 맞대기 못 함)');
+  else { const a = m.nums.split(' ').filter(Boolean), z = P.nums.split(' ').filter(Boolean); E2.numPages++; E2.numTokens += Math.max(a.length, z.length); E2.checks += Math.max(a.length, z.length);
+    if (m.nums !== P.nums) { const ca = new Map(), cz = new Map(); for (const x of a) ca.set(x, (ca.get(x) ?? 0) + 1); for (const x of z) cz.set(x, (cz.get(x) ?? 0) + 1); const lost = [...cz].filter(([x, n]) => (ca.get(x) ?? 0) < n).map(([x]) => x), more = [...ca].filter(([x, n]) => (cz.get(x) ?? 0) < n).map(([x]) => x);
+      no(`쉬운 말 화면의 숫자가 전문가 말 화면과 다름(빠짐 ${lost.slice(0, 5).join(' ') || '없음'} · 더함 ${more.slice(0, 5).join(' ') || '없음'})`); } }
+  const proBan = new Set((P?.texts ?? []).flatMap(t => t.match(BAN) ?? []));
+  const hardHits = [], banHits = [];
+  for (const t of m.front ?? []) { E2.front++; E2.hardChecks += HARD.length; E2.bannedChecks++; E2.checks += HARD.length + 1;
+    const h = hardLeft(t); if (h.length) { E2.hardHits += h.length; hardHits.push(`${h.join(',')}: ${t.slice(0, 40)}`); }
+    for (const w of t.match(BAN) ?? []) if (!proBan.has(w)) banHits.push(`${w}: ${t.slice(0, 40)}`); }
+  if (hardHits.length) no(`쉬운 말 화면 펼친 글에 어려운 말 ${hardHits.length}줄: ${hardHits.slice(0, 3).join(' / ')}`);
+  if (banHits.length) no(`쉬운 말이 금지 말을 새로 넣음: ${banHits.slice(0, 3).join(' / ')}`);
+}
+tick('easy');
 
 /* ── ② 계산 층(따로 도는 일꾼 — check/trans_worker.mjs) → ③ 가장 긴 글 층(말 하나가 끝나면 바로 그 말 화면을 엶 — 둘이 겹쳐 돎) ── */
 const codesI18n = (await fs.readdir(path.join(ROOT, 'site/app/i18n'))).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort();
@@ -388,11 +438,11 @@ await browser.close();
 const TRANS = f => /^번역 안 된 한국어/.test(f.what ?? '');
 const transFailed = fails.filter(TRANS).length, otherFailed = fails.length - transFailed;
 const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), lap, code: await codePrint(ROOT), boards: BOARDS, quick: QUICK, langs: ['en', 'ko'], ...stats, failed: fails.length, transFailed, otherFailed,
-  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1,
-  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1, // 모든 층을 다 돈 결과인가(실패 수와 따로)
+  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0,
+  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0, // 모든 층을 다 돈 결과인가(실패 수와 따로)
   fails: [...fails.filter(f => !TRANS(f)), ...fails.filter(TRANS)].slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
-console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
+console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, easy: stats.easy, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
 for (const f of report.fails.slice(0, 40)) console.log(` ✗ ${f.board} ${f.route} — ${f.what}`); // 번역 밖 실패가 먼저
 process.exit(report.ok || (QUICK && !fails.length) ? 0 : 1);

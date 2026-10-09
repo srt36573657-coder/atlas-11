@@ -23,7 +23,9 @@
      아래 탭 넷 = 후보 7(#/ · 매수 검토 후보 · 비교 #/compare) · 관심(#/watch · 관심 · 추적) · 검증(#/check · 운영 기록) · 탐색(#/market — 시장 · 업종 · 종목 · 일정을 맨 위 줄로 오감)
      옛 주소는 모두 그대로 열림(옛 첫 화면 「시장」은 #/market · 넣으면서 뺀 것(규칙 1): 위 막대 관심 ★ — 아래 탭 「관심」이 대신) */
 import {h, speakScreen, stopSpeak, place, setPlace, korDate} from './util.js';
-import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
+import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js';
+import {EASY, startEasy, addEasyNames, whatLine, levelButton} from './easy.js'; // 쉬운 말(2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록 … 글은 참쉽게 그리고 ui/ux도 정말 쉽게」 · 규칙 48) — 한국어 화면 · 전문가 말은 단추 하나로
+import {familyOf} from './family.js'; // 쉬운 말이 바꾸지 않을 이름(갈래) // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, loadLens, prefs, url} from './store.js';
 import {attachMap} from './islandmap.js'; // 지도 섬 — 모든 화면 그림 칸 맨 아래(2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 아틀란스에 본질이 중심」 — ATLAS = 지도)
 import {renderHome, renderMap, renderLand} from './view-home.js';
@@ -200,7 +202,7 @@ function header() {
   const iconLink = (href, key, label, view) => h('a', {class: 'round tb-b', href, 'aria-label': label, title: label, 'data-view': view, html: ICON[key], onclick: () => { if (view === 'stocks') state.focusSearch = true; }});
   const fontBtn = h('button', {class: 'round font', id: 'font-btn', type: 'button', 'aria-label': '글씨 크기', onclick: () => { prefs.set('font', (prefs.get('font', 0) + 1) % FONT_STEPS.length); applyFont(); fontLabel(); route(); fitTabs(); }}, '가');
   const more = h('details', {class: 'tb-more'}, h('summary', {class: 'round tb-b', 'aria-label': '말 · 글씨 · 소리', title: '말 · 글씨 · 소리', html: ICON.more}),
-    h('div', {class: 'tb-menu'}, langPicker(), fontBtn, speakBtn));
+    h('div', {class: 'tb-menu'}, langPicker(), fontBtn, speakBtn, levelButton())); // 쉬운 말 ↔ 전문가 말(한국어 화면에서만 · 규칙 48)
   document.addEventListener('click', e => { if (more.open && !more.contains(e.target)) more.open = false; });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && more.open && !more.querySelector('.lang[open]')) { more.open = false; more.querySelector('summary')?.focus(); } });
   document.getElementById('top').replaceChildren(h('div', {class: 'top-inner' + (mkt ? ' has-mkt' : '')},
@@ -295,6 +297,7 @@ async function route() {
   const vt = state.vt; state.vt = null;
   const draw = async () => { try { await r.render(main, {hash, manifest: app.manifest, restoring, focus}); } catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
     if (EX_ROOT.has(r.id)) main.querySelector('.b-page')?.prepend(exploreNav(r.id));
+    if (EASY) { const w = whatLine(r.id, place.id), pg = main.querySelector('.b-page') ?? main, top = pg.querySelector(':scope > .ex-nav, :scope > .hl-bar'); if (w) { if (top) top.after(w); else pg.prepend(w); } } // 쉬운 말 화면 맨 위 「이 화면은?」 한 줄(탐색 네 곳은 위 줄 바로 아래 · 첫 화면은 「친구에게 소개하기」 띠 바로 아래 — 규칙 45 그대로 · 규칙 48)
     try { await attachMap(main, r.id, hash, loadLens); } catch {} }; // 지도 섬(그림 칸 맨 아래 · 그 화면 그림이 말하는 회사가 빛남) — 못 그리면 조용히 넘어감(화면은 그대로) // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) — 네 곳의 첫 화면에만(Apple 처럼 — 들어간 보기 · 땅 화면은 「보기 바꾸기」 · 「‹ 되돌아가기」 한 줄만 · 그림 이름 · 숫자가 한 화면에)
   if (vt?.el?.isConnected && typeof document.startViewTransition === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     vt.el.style.setProperty('view-transition-name', vt.name);
@@ -330,6 +333,7 @@ async function watchManifest() {
 
 async function start() {
   if (I18N) await startI18n(); // 언어판: 사전을 읽고 이후 그려지는 글자를 모두 그 말로
+  else if (EASY) startEasy(); // 쉬운 말(한국어 화면 기본 · 규칙 48): 이후 그려지는 글자를 쉬운 말 사전으로
   applyFont(); topNote();
   const main = document.getElementById('main');
   main.replaceChildren(h('section', {class: 'b-box loading', role: 'status', 'aria-live': 'polite'}, h('span', {class: 'wordmark'}, 'ATLAS'), h('p', null, '자료를 불러오는 중입니다'),
@@ -347,6 +351,7 @@ async function start() {
     const others = await Promise.allSettled(app.places.filter(p => p.id !== place.id).map(p => loadPlaceBoard(p.href)));
     for (const r of others) if (r.status === 'fulfilled') { try { addBoardNames(r.value.board, nk?.names); } catch {} }
   }
+  if (EASY) { try { const bd = await loadBoard(); addEasyNames([...bd.companies.map(c => c.name), ...(bd.groups ?? []).flatMap(g => [g.label, familyOf(g.label)?.label])]); } catch {} } // 회사 · 업종 · 갈래 이름은 쉬운 말로 바꾸지 않음
   header();
   // 출목표 보기(종목 안 · #/road)를 다른 화면에서 열면 늘 「오른 순」 첫 탭 맨 위(옛 아래 탭 「출목표」 약속 그대로 — 2026-10-05 11:36 「출목표 탭을 클릭하면 가장 상승한순으로」) · 회사 화면에서 되돌아올 때는 보던 자리
   document.addEventListener('click', e => { const a = e.target.closest?.('a.hs-b[data-seg="road"]'); if (a && app.view !== 'road') { resetRoad(); scrollMemo.delete('road'); } });
