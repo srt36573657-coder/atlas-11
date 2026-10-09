@@ -63,6 +63,8 @@ export function reportProblems(r, now, waiver = null) {
   if (!(r.click3?.pairs > 0)) bad.push('3단 클릭 층(모든 화면 쌍 3번 이하 — 규칙 47 · 2026-10-09 21:33 「3단 클릭구조 … 모든곳에 하나도 빠짐없이」)을 돌지 않은 결과임');
   const ez = r.easy; // 쉬운 말 층(규칙 48 · 2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 … 교차 검증을 100만번」) — 한국어 쉬운 말로 모든 화면 · 빈 날 길 · 3단 클릭 · 숫자 맞대기 · 어려운 말 맞대기
   if (!(ez?.pages > 0 && ez?.edge > 0 && ez?.click3?.pairs > 0 && ez?.numPages > 0 && ez?.hardChecks > 0)) bad.push('쉬운 말 층(한국어 쉬운 말로 모든 화면 · 빈 날 길 · 3단 클릭 · 숫자 · 어려운 말 맞대기 — 규칙 48)을 돌지 않은 결과임');
+  const tu = r.tour; // 둘러보기 층(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 판마다 첫 화면: 저절로 시작 · 걸음 넘김 · 한 번에 하나 · 손대면 멈춤 · 이어 보기 · 이 기기에서 끄기 · 움직임 줄이기는 저절로 안 돎
+  if (!(tu?.boards >= SITE_BOARDS.length && tu?.checks > 0 && tu?.rest > 0)) bad.push('둘러보기 층(첫 화면 저절로 둘러보기 — 규칙 49 ④)을 돌지 않은 결과임');
   const transOnly = !!waiver && r.shape === true && Number.isInteger(r.transFailed) && r.otherFailed === 0 && r.failed === r.transFailed; // 번역만 남은 결과 + 기한 안 면제
   if ((r.failed !== 0 || !r.ok) && !transOnly) bad.push(`검사 실패 ${r.failed}개${Number.isInteger(r.otherFailed) ? `(번역 밖 ${r.otherFailed}개 · 번역 안 된 한국어 ${r.transFailed}개${waiver ? '' : ' — 번역 면제 없음'})` : ''}`);
   return bad;

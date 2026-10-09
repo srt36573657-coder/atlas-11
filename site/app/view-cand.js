@@ -17,6 +17,9 @@ import {helloBar} from './hello.js'; // 맨 위 「친구에게 ATLAS 소개하�
 import {candIsland} from './island.js'; // 「후보 7」 섬(2026-10-09 17:02 「잡스가 … 3d방식으로 입체감과 정적인 상태 … 상호 작용속에 유기적인 아틀란스」 · 17:36 「아주 색시한 전달력 있게 … 반영해」 — 옛 탑 일곱 줄 land3d.js 를 바꿈)
 import {pv, ppv, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
+import {candTour} from './tour.js'; // 저절로 둘러보기(규칙 49 ④ · 2026-10-10 「4너에제안대로 해」 — 1위부터 8걸음 · 읽는 동안 멈춤 · 움직임 줄이기면 돌지 않음 · 끌 수 있음)
+import {MC_TAG, pctR, shareR} from './tour-model.js';
+import {LANG} from './i18n.js';
 
 export const ST = {met: '그물 안', wait: '그물 밖', recheck: '재검토'}; // 5판 상태(lib/atlas11/cand.mjs ST5) — 그물 안 · 그물 밖(석 달 동안은 그대로 · 다음 담는 날 정리) · 재검토(종가 없음 · 적자 · 위험 공시)
 const MARK = {met: '✓', wait: '…', recheck: '!'};
@@ -50,6 +53,18 @@ export const reasonEl = (x, C) => [h('span', {class: 'cd-wt'}, '1년 추세 ', h
 /** 업종 돈 흐름(곁 정보 — 고르는 데 쓰지 않음) 한 마디 */
 export const secDirTxt = sc => (sc?.dir === 'in' ? `돈이 들어온 업종 ${sc.rank}위(${sc.label})` : sc?.dir === 'out' ? `돈이 빠진 업종 ${sc.rank}위(${sc.label})` : `업종 돈 흐름 1위~3위 밖(${sc?.label ?? '업종 없음'})`);
 
+/* ── 몬테카를로 범위 · 소거(규칙 49 · 사장님 2026-10-10 「1예측한다 2a안」 — 차례는 미리 정한 규칙 그대로 · 범위와 위험만 · 늘 「모형 가정 아래 추정 · 검증 전」) ── */
+const rv = r => h('b', {class: `lv-n ${finite(r) ? (r > 0 ? 'up' : r < 0 ? 'down' : 'flat') : 'na'}`}, pctR(r)); // 비율 → 빨강 · 파랑 숫자(짧은 줄 — ▲▼ 없이)
+const ELIM_ST = {pass: '통과', hold: '보류', out: '제외'};
+/** 소거 한마디 — 통과 · 보류(처음 걸린 것) · 제외 + 하락 위험 표시(모형 시험 전 · 판정에 안 넣음) */
+export const elimTxt = E => { if (!E?.state) return '판정 없음'; const f = E.checks?.find(c => c.id === E.first)?.label ?? E.first;
+  return `${ELIM_ST[E.state] ?? E.state}${E.state !== 'pass' && f ? `(${f})` : ''}${(E.flags ?? []).includes('tail') ? ' · 하락 위험 표시' : ''}`; };
+/** 카드 한 줄 — 60거래일 범위(가운데 80%) · 손실 경로 · 소거 · 꼬리표 */
+function mcLine(R, E) {
+  return [h('span', {class: 'cd-k'}, '60거래일 범위'), ' ', ...(R ? [pv(R.q10 * 100), ' ~ ', pv(R.q90 * 100), ` · 손실 경로 ${shareR(R.ploss)}`] : ['이번 회차 셈 없음']),
+    ` · 소거 ${elimTxt(E)}`, h('small', {class: 'cd-tag'}, ` · ${MC_TAG}`)];
+}
+
 /* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
 function baseLines(C) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
@@ -63,10 +78,10 @@ const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' &&
 const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
-function cardOf(C, {riskAt = 2, actsAt = 3} = {}) {
+function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null} = {}) {
   const rk = h('span', {class: 'cd-rk'}), name = h('span', {class: 'cd-name', 'data-ident': ''}), sec = h('small', {class: 'cd-sec'}), stw = h('span', {class: 'cd-stw'}), px = h('p', {class: 'cd-px'});
-  const why = h('p', {class: 'ra-li cd-why'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
-  const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, risk, note, acts);
+  const why = h('p', {class: 'ra-li cd-why'}), mcl = h('p', {class: 'ra-li cd-mc'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
+  const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, mcl, risk, note, acts);
   const go = () => { state.candGo = 'why'; state.vt = {el: name, name: 'cd-name'}; }; // 이 이름이 종목 화면 「후보 판단」 머리로 이어짐(app.js 화면 넘김 움직임)
   function fill(x) {
     el.dataset.code = x.code;
@@ -74,6 +89,7 @@ function cardOf(C, {riskAt = 2, actsAt = 3} = {}) {
     stw.replaceChildren(stEl(x.status));
     px.replaceChildren(h('b', null, won(x.close)), ` · ${korDate(x.date)} 종가 · 20거래일 `, pv(x.r20));
     why.replaceChildren(h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C));
+    mcl.replaceChildren(...mcLine(mcOf(x.code), elOf(x.code))); // 60거래일 범위 · 손실 경로 · 소거(규칙 49 · 모형 가정 아래 추정 · 검증 전)
     risk.replaceChildren(h('span', {class: 'cd-k'}, '가장 큰 위험'), ' ', x.risk.text);
     const many = x.status === 'wait' && String(x.waitWhy ?? '').includes(' · '); // 조건 대기 까닭이 하나면 「가장 큰 위험」 줄과 같은 말이라 한 번만(글 줄이기) · 둘 이상이면 모두 적음 · 재검토 까닭은 따로
     note.hidden = !(x.status === 'recheck' || many); note.className = x.status === 'recheck' ? 'cd-note cd-note-re' : 'cd-note';
@@ -84,11 +100,12 @@ function cardOf(C, {riskAt = 2, actsAt = 3} = {}) {
   return {el, fill};
 }
 /** 짧은 줄 하나 — 순위 · 이름 · 1년 추세(그림은 위 탑 높이 — 줄에는 숫자만) · 상태 · 누르면 위 카드 */
-function miniRow(x, onPick) {
+function miniRow(x, onPick, R = null) {
   return h('li', {class: 'cd-row', 'data-code': x.code, 'data-rank': String(x.rank), 'data-status': x.status, 'data-m12': finite(x.grow?.m12D) ? String(x.grow.m12D) : ''},
-    h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 1년 추세 ${m12Txt(x)}`, onclick: () => onPick(x.code)},
+    h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 1년 추세 ${m12Txt(x)}${R ? ` · 60거래일 범위 ${pctR(R.q10)} ~ ${pctR(R.q90)} · 손실 경로 ${shareR(R.ploss)}` : ''}`, onclick: () => onPick(x.code)},
       h('span', {class: 'cd-rk'}, `${x.rank}위`),
-      h('span', {class: 'cd-nm'}, h('span', {class: 'cd-name', 'data-ident': ''}, x.name), x.sector ? h('small', {class: 'cd-sec'}, x.sector) : null),
+      h('span', {class: 'cd-nm'}, h('span', {class: 'cd-name', 'data-ident': ''}, x.name), x.sector ? h('small', {class: 'cd-sec'}, x.sector) : null,
+        R ? h('small', {class: 'cd-mcr', 'data-q10': String(R.q10), 'data-q90': String(R.q90), 'data-ploss': String(R.ploss)}, '60거래일 ', rv(R.q10), ' ~ ', rv(R.q90), ` · 손실 ${shareR(R.ploss)}`) : null),
       h('span', {class: 'cd-pw'}, h('b', {class: 'cd-pwv'}, m12Txt(x))),
       h('span', {class: `cd-stm cd-stm-${x.status}`}, x.status === 'met' ? '✓' : ST[x.status])));
 }
@@ -103,13 +120,16 @@ function growLine(C) {
 /* ── ② 그림: 섬 하나(365곳 · 물 높이 = 그물 기준선 · 빛나는 7곳 = 막 올라온 후보 · 금빛 = 고른 한 곳) + 고른 한 곳 카드 + 짧은 줄 일곱 ──
    2026-10-09 17:36 「아주 색시한 전달력」 — 하나만 빛나고(금빛 탑 · 위 이름표 = 이름 · 1년 추세) 나머지는 어둠 · 휴대폰 첫 화면에 섬과 이름표가 함께
    걸음(재생): 0 섬(20거래일 전 — 7곳 물 아래) → 1~7 핀 하나씩(그 탑이 물 위로 · 물결) → 카드의 위험 줄 → 카드의 단추 — 한 걸음에 움직이는 것은 하나(규칙 42) */
-export function candArt(C, {sel = null, stocks = []} = {}) {
+export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   if (!C?.ready || !C.pool) return null;
   const n = C.items.length;
   let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
-  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2}) : null;
-  const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false))) : [];
+  const M = lens?.mc && !lens.mc.none ? lens.mc : null, mcRow = new Map((M?.rows ?? []).map(r => [String(r.code), r])), elRow = new Map((lens?.elim && !lens.elim.none ? lens.elim.rows ?? [] : []).map(r => [String(r.code), r]));
+  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null}) : null;
+  const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false), mcRow.get(String(x.code)) ?? null)) : [];
   const isl = candIsland(C, stocks, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
+  // 저절로 둘러보기 — 섬 바로 아래 고정 칸(긴 글은 섬 밖 · 섬 위에는 고른 곳 이름표 하나) · 한국어 화면만(번역 미룸)
+  const tour = n && isl && LANG === 'ko' ? candTour({C, lens, isl, show: code => pick(code, true, false), hero: cur?.code ?? null, us: usRisk()}) : null;
   function pick(code, fromScene, user = true) { // fromScene = 섬(핀 · 탑)에서 고름 — 섬은 이미 바뀜 · 카드와 줄만
     const x = C.items.find(y => y.code === code); if (!x || !card) return;
     cur = x; card.fill(x); if (!fromScene) isl?.setSel(code, user);
@@ -122,17 +142,19 @@ export function candArt(C, {sel = null, stocks = []} = {}) {
   const note = h('p', {class: 'muted xs isl-note'}, `섬 = ${stocks.length}곳 · 업종 ${isl?.model.sectors ?? 0}곳은 십자 다섯 칸씩(센 업종이 가운데) · 탑 높이 = 1년 추세 차례(값은 이름표 글로) · 옆으로 끌면 섬이 돎 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)`);
   if (isl) isl.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
     towers: C.items.map(x => [x.code, x.rank, x.status, finite(x.grow?.m12D) ? x.grow.m12D : null]), above: isl.model.above, green: isl.model.green}); // 물 위 · 초록 = 섬이 탑 높이로 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳과 맞댐)
-  const art = h('div', {class: 'isl-wrap'}, isl ? isl.el : h('p', {class: 'muted', 'data-at': '0'}, '섬을 그릴 값이 모자람 — 지어내지 않음'), key, note);
+  const art = h('div', {class: 'isl-wrap'}, isl ? isl.el : h('p', {class: 'muted', 'data-at': '0'}, '섬을 그릴 값이 모자람 — 지어내지 않음'), tour?.el ?? null, key, note);
   const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` ${p.universe}곳 가운데 · 기준을 낮추지 않음`),
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const gl = growLine(C);
   const list = n ? h('ol', {class: 'cd-list cd-mini', 'aria-label': `후보 ${n}곳 — 누르면 위 카드`}, ...rows) : null;
+  const mcCap = n ? h('p', {class: 'muted xs cd-mccap'}, M ? `줄의 범위 = 60거래일 뒤 가운데 80% · 손실 = 0% 아래로 끝난 경로 몫 · ${MC_TAG} · 차례는 미리 정한 규칙 그대로(범위로 다시 줄 세우지 않음)` : `60거래일 범위 없음 — ${lens?.mc?.why ?? '몬테카를로 결과 없음'}`) : null;
   const all = (C.rank ?? []).length ? h('p', {class: 'cd-all'}, h('a', {href: '#/', class: 'cd-all-a', onclick: e => { e.preventDefault(); openRank(); }}, `돈 유입 1등~${C.rank.length}등 모두 보기 ›`)) : null;
   const steps = n ? [{c: 0, at: 0, ms: 1300}, ...C.items.map((x, k) => ({c: 1, at: k + 1, ms: 700})), {c: 2, at: n + 1, ms: 1200}, {c: 3, at: n + 2, ms: 1000}]
     : [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1000}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
   const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: `${p.universe}곳 전체에서`, title: n ? `그물 ${p.netElig}곳 · 물 위로 막 올라온 ${n}곳` : '새로 든 초입 없음',
-    stage: artStage({key: 'cand', art, labels, labFirst: false, tail: [gl, list, all].filter(Boolean), steps}), first: 2});
+    stage: artStage({key: 'cand', art, labels, labFirst: false, tail: [gl, mcCap, list, all].filter(Boolean), steps}), first: 2});
   isl?.bind(fig.querySelector('.ra'));
+  tour?.bind(fig.querySelector('.ra'));
   if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 금빛만) · 돌아오면 고른 그 카드
   return fig;
 }
@@ -201,6 +223,21 @@ function changesEl(C) {
   return kids;
 }
 
+/* ── 60거래일 범위 · 소거 — 이번 회차(규칙 49) ── */
+function roundEl(lens) {
+  const M = lens?.mc, E = lens?.elim, sum = xs => xs.reduce((t, r) => t + (finite(r.n) ? r.n : 0), 0);
+  const mcP = M && !M.none ? [h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '회차'), ' ', h('code', null, M.runId), ` · ${M.made ? stamp(M.made) : '만든 때 모름'} · ${korDate(M.asOf)} 종가 기준 · 이 판 경로 ${sum(M.rows ?? []).toLocaleString('ko-KR')}개(두 판 합 2,000만)`),
+    h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '모형'), ` ${M.model?.id ?? '모름'} — 평균 기울기 0 · 지난 ${M.input?.days ?? 500}거래일 하루 움직임을 같은 날짜로 다시 뽑아 이음 · 흔들림은 최근 움직임을 따라 커지고 작아짐${M.model?.limit ? ' · 하루 ±30% 가격 제한' : ' · 하루 가격 제한 없음'}`),
+    h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '쓰는 곳'), ' 위험과 범위만(손실 경로 몫 · 가운데 80% · 가장 나쁜 5% 평균) — 7곳 차례는 미리 정한 규칙 그대로 · 평균은 싣지 않음(기울기 0 이면 평균 차례가 흔들림 차례를 닮음)'),
+    h('p', {class: 'muted xs'}, `${MC_TAG} · 앞날을 맞힌다는 뜻 아님 · 지난 움직임이 앞으로도 같다고 가정한 셈`)]
+    : [h('p', {class: 'mk-l'}, `몬테카를로 결과 없음 — ${M?.why ?? '판 읽기에 없음'}`)];
+  const c = E && !E.none ? E.counts ?? {} : null;
+  const elP = c ? [h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '소거 1판'), ` ${E.rows?.length ?? 0}곳 — 통과 ${c.pass ?? 0} · 보류 ${c.hold ?? 0} · 제외 ${c.out ?? 0} · 검사 열 가지(마감 가격 → 오래된 가격 → 기업행사 → 분석 입력 → 거래 가능성 → 흑자 → 위험 공시 → 경로 수 → 수렴 → 하락 위험)`),
+    h('p', {class: 'muted xs'}, '하락 위험(가장 나쁜 5% 경로 평균이 −50%보다 나쁨)은 모형이 따로 시험을 통과하기 전까지 표시만 · 자료가 없는 검사는 판정에 넣지 않음(지어내지 않음)')]
+    : [h('p', {class: 'mk-l'}, `소거 판정 없음 — ${E?.why ?? '판 읽기에 없음'}`)];
+  return [...mcP, ...elP];
+}
+
 /* ── ⑤ 선정 이후 결과 · 규칙 ── */
 function resultEl(C, lens) {
   const v = lens?.verify, recs = (v?.records ?? []).filter(r => r.evals?.cand);
@@ -267,11 +304,12 @@ export async function renderCand(main, {manifest}) {
   const fold = (t, ...kids) => h('details', {class: 'cd-more-d'}, h('summary', null, t), ...kids);
   main.replaceChildren(h('div', {class: 'b-page cd-page'}, helloBar(),
     blk(1, '기준', ...baseLines(C)),
-    candArt(C, {sel: state.candSel, stocks: lens.stocks ?? []}),
+    candArt(C, {sel: state.candSel, stocks: lens.stocks ?? [], lens}),
     blk(3, '자세히', h('div', {class: 'cd-fold'},
       (C.rank ?? []).length ? rankFold(C) : null,
       fold(`어떻게 골랐나 · ${C.pool.universe}곳 → ${n}곳`, ...funnelEl(C)),
       fold('바뀐 후보 · 공통 위험', ...changesEl(C)),
+      fold('60거래일 범위 · 소거 — 이번 회차', ...roundEl(lens)),
       fold('선정 이후 결과', ...resultEl(C, lens)),
       fold('고르는 법 · 기준 자세히', rulesEl(C), baseMore(C, manifest)))),
     explore,

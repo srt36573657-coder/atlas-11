@@ -48,7 +48,7 @@ export function loadPlaceBoard(href) {
 
 /* 기기 저장(이 기기에만) — 글씨 크기 · 탭 자리
    미국 판(/us/)은 같은 주소 안이라 저장 칸을 따로 둔다(「atlas11:us:」 — 한국 판의 출목표 탭 자리와 섞이지 않게) · 글씨 크기는 두 판이 함께(2026-10-05 18:02 「미국 주식도」) */
-const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARED = new Set(['font', 'findRecent']); // 「최근 찾은 회사」도 두 판이 함께
+const scope = base === '/' ? '' : base.replace(/[^A-Za-z0-9]/g, '') + ':', SHARED = new Set(['font', 'findRecent', 'tour']); // 「최근 찾은 회사」도 두 판이 함께 · 첫 화면 저절로 둘러보기 끔(tour.js · 2026-10-10 규칙 49 ④)도
 const keyOf = key => 'atlas11:' + (SHARED.has(key) ? '' : scope) + key;
 export const prefs = {
   get(key, fallback) { try { const v = localStorage.getItem(keyOf(key)); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },

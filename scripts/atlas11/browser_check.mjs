@@ -126,8 +126,10 @@ const OUR_FORBIDDEN = /사라[!.\s]|팔라[!.\s]|추천|목표가|확실|보장|
 const browser = await chromium.launch({executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ?? undefined});
 // 쉬운 말(규칙 48 · 2026-10-09 22:40 마카오 시각) — 한국어 화면은 처음이 쉬운 말 · 이 검사의 옛 판정들은 전문가 말(옛 화면 글) 그대로 봄:
 //   창마다 「전문가 말」을 이 기기에 적어 두고 엶(주소에 ?level= 이 있으면 주소가 먼저) · 쉬운 말 화면은 {easy: true} 로 연 창(맨 아래 easyCheck)
+// 저절로 둘러보기(규칙 49 ④ · 2026-10-10) — 첫 화면 「처음 모습」 판정들은 둘러보기를 끈 기기(atlas11:tour = off)에서 봄 · 저절로 도는 쪽은 {tour: true} 로 연 창(tourCheck)과 full_check 둘러보기 층이 봄
 { const open0 = browser.newContext.bind(browser);
-  browser.newContext = async (o = {}) => { const {easy = false, ...rest} = o; const c = await open0(rest); if (!easy) await c.addInitScript(() => { try { if (!/[?&]level=/.test(location.search)) localStorage.setItem('atlas11:level', 'pro'); } catch {} }); return c; }; }
+  browser.newContext = async (o = {}) => { const {easy = false, tour = false, ...rest} = o; const c = await open0(rest); if (!easy) await c.addInitScript(() => { try { if (!/[?&]level=/.test(location.search)) localStorage.setItem('atlas11:level', 'pro'); } catch {} });
+    if (!tour) await c.addInitScript(() => { try { localStorage.setItem('atlas11:tour', '"off"'); } catch {} }); return c; }; }
 
 /** 화면 글 두 갈래: 우리 글(식별자 뺌) · 공식 이름(식별자) — 열린 칸만(닫힌 접힘 안은 innerText 에 없음) */
 const textsOf = page => page.evaluate(() => {
@@ -396,9 +398,35 @@ async function mapCheck(page, label) {
     const be = getComputedStyle(b, '::before'), af = getComputedStyle(b, '::after'); return {w, real: r.width / t.width * 100, top: be.content !== 'none' && be.transform !== 'none', side: af.content !== 'none' && af.transform !== 'none'}; });
   check(`${label} 입체 막대: 윗면 · 옆면이 있고 앞면 길이 = 값(${d3?.w}% · 실제 ${d3?.real?.toFixed(2)}%)`, !!d3 && d3.top && d3.side && Math.abs(d3.real - d3.w) < 0.6, d3);
 }
+/* 저절로 둘러보기(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 사람처럼: 가만히 두면 저절로 시작 · 아래 줄을 누르면 멈추고 누른 회사가 이김(섬 금빛 · 카드) · 움직임 줄이기 기기는 저절로 안 돎
+   기대값은 판 읽기(lens.cand · lens.mc · lens.elim)로 따로: 첫 걸음 글 = 1위 이름 · 1년 추세 · 핵심 숫자 걸음의 범위 숫자 = 판 읽기 몬테카를로 q10 · q90 */
+async function tourCheck(label) {
+  const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, R = new Map((lens.mc?.rows ?? []).map(r => [String(r.code), r])), x0 = C?.items?.[0], x2 = C?.items?.[2];
+  if (!x0) { check(`${label} 저절로 둘러보기: 후보가 없는 판 — 칸 없음`, true); return; }
+  const pr = v => (Number.isFinite(v) ? `${Number(Math.abs(v * 100).toFixed(1)) === 0 ? '' : v > 0 ? '+' : '−'}${Math.abs(v * 100).toFixed(1)}%` : '값 없음');
+  const ctx = await browser.newContext({tour: true, viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'no-preference'});
+  await ctx.addInitScript(() => { try { localStorage.setItem('atlas11:speed', '3'); } catch {} }); // 걸음 빠르기(검사기만 · art.js · tour.js 같은 열쇠)
+  const page = await ctx.newPage(); await page.goto(base + '/#/', {waitUntil: 'load'}); await page.waitForSelector('.cd-page .tu'); // 처음 걸음(1위)을 읽음 — 저절로 시작은 곧(단추는 「둘러보기」 또는 이미 「멈춤」)
+  const first = await page.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {body: t.querySelector('.tu-body').innerText.replace(/\s+/g, ' ').trim(), btns: [...t.querySelectorAll('.tu-ctl button')].map(b => b.textContent.trim()), kss: [...t.querySelectorAll('.tu-kss span')].map(x => x.textContent.trim())}; });
+  const auto = await page.waitForFunction(() => document.querySelector('.cd-page .tu')?.dataset.tour === 'play', null, {timeout: 8000}).then(() => true).catch(() => false);
+  const st2 = await page.waitForFunction(() => { const t = document.querySelector('.cd-page .tu'); return t && t.dataset.tourStep === '1' ? t.querySelector('.tu-body').innerText.replace(/\s+/g, ' ').trim() : false; }, null, {timeout: 8000}).then(h => h.jsonValue()).catch(() => null);
+  const pvW = v => `${v > 0 ? '▲' : v < 0 ? '▼' : '—'} ${pr(v)}`, r0 = R.get(String(x0.code)), wantKey = r0 ? `가운데 80% ${pvW(r0.q10)} ~ ${pvW(r0.q90)}` : null;
+  // 아래 줄 3위를 누름 → 멈춤 · 카드와 섬 금빛이 그 회사 · 기다려도 그대로
+  const row = page.locator(`.cd-row[data-code="${x2?.code ?? x0.code}"] .cd-pick`); await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(2500);
+  const after = await page.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, card: document.querySelector('.cd-card')?.dataset.code, hero: document.querySelector('.cd-page .isl').__isl.state().hero}; });
+  await ctx.close();
+  const rctx = await browser.newContext({tour: true, viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', reducedMotion: 'reduce'}); const rp = await rctx.newPage();
+  await rp.goto(base + '/#/', {waitUntil: 'networkidle'}); await rp.waitForSelector('.cd-page .tu'); await rp.waitForTimeout(2500);
+  const rmSt = await rp.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, auto: t.dataset.tourAuto, main: t.querySelector('.tu-main').textContent.trim()}; }); await rctx.close();
+  const want = x2?.code ?? x0.code;
+  check(`${label} 저절로 둘러보기(규칙 49 ④): 처음 글 「${first.body.slice(0, 40)}…」 · 단추 ${first.btns.join(' · ')} · 가만히 두면 저절로 시작(${auto}) · 둘째 걸음 범위 = 판 읽기(${wantKey ?? '범위 없음'}) · 아래 줄 ${want}을 누르면 멈춤(${after.mode}) · 카드 ${after.card} · 섬 금빛 ${after.hero} · 움직임 줄이기는 저절로 안 돎(${rmSt.mode} · 「${rmSt.main}」)`,
+    first.body.startsWith(`${x0.rank}위 · ${x0.name}`) && ['‹,둘러보기,›,자세히,처음', '‹,멈춤,›,자세히,처음'].includes(first.btns.join()) && first.kss.join() === '기 · 선택,승 · 납득,전 · 검증,결 · 결정' && auto && !!st2 && (!wantKey || st2.includes(wantKey)) && st2.includes('모형 가정 아래 추정 · 검증 전')
+      && after.mode === 'pause' && after.card === want && after.hero === want && rmSt.mode === 'rest' && rmSt.auto === '0' && rmSt.main === '둘러보기', {first, auto, st2, wantKey, after, rmSt});
+}
 async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');
   await candCheck(page, label, mobile, press);
+  await tourCheck(label); // 저절로 둘러보기(규칙 49 ④)
   await usCandCheck(page, label); // 미국 판 「후보 7」 섬(2026-10-09 19:29) // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
   await mapCheck(page, label); // 지도 섬 · 입체 막대(2026-10-09 19:45 「모든곳에 3d」 · 규칙 46)
   await page.goto(base + '/#/market', {waitUntil: 'networkidle'}); await page.waitForSelector('.mk-page [data-first="5"]'); await page.waitForTimeout(300);

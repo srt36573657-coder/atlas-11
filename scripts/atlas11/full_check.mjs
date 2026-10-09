@@ -47,7 +47,8 @@ const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
 const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}, click3: {pairs: 0, over: 0, max: 0, hist: {}},
-  easy: {pages: 0, edge: 0, what: 0, numPages: 0, numTokens: 0, front: 0, hardChecks: 0, hardHits: 0, bannedChecks: 0, checks: 0, click3: {pairs: 0, over: 0, max: 0, hist: {}}}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
+  easy: {pages: 0, edge: 0, what: 0, numPages: 0, numTokens: 0, front: 0, hardChecks: 0, hardHits: 0, bannedChecks: 0, checks: 0, click3: {pairs: 0, over: 0, max: 0, hist: {}}},
+  tour: {boards: 0, started: 0, steps: 0, most: 0, paused: 0, resumed: 0, off: 0, rest: 0, checks: 0}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -103,6 +104,7 @@ const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
     { const x = document.querySelector('#main [data-cos]'); try { m.cos = x ? JSON.parse(x.dataset.cos) : null; } catch { m.cos = 'bad-json'; }
       m.cosDom = [...document.querySelectorAll('#main .rc-g')].map(g => [g.closest('.rc-side')?.dataset.side ?? null, Number(g.dataset.rank), g.dataset.group, [...g.querySelectorAll('.rc-a')].map(a => a.dataset.code)]); }
     m.cand = [...document.querySelectorAll('#main .cd-row')].map(x => [x.dataset.code, x.dataset.status, Number(x.dataset.rank)]); // 후보 줄(2026-10-09 — 판 읽기 후보와 같은 차례 · 같은 상태)
+    { const t = document.querySelector('#main .tu'); m.tour = t ? {mode: t.dataset.tour, auto: t.dataset.tourAuto, pos: t.dataset.tourPos, step: t.dataset.tourStep} : null; } // 저절로 둘러보기(규칙 49 ④) — 움직임 줄이기 창이면 늘 rest(저절로 시작 안 함)
     m.plan = ra?.dataset.plan ?? null;
     m.ats = ra ? [...new Set([...ra.querySelectorAll('[data-at]')].map(x => x.dataset.at))] : [];
     m.loose = ra ? [...ra.querySelectorAll('.ra-art [class*="ak-"]')].filter(x => !x.closest('[data-at]')).map(cls).slice(0, 3) : [];
@@ -154,6 +156,22 @@ const MOTION = async ({hash, limit, scroll = false}) => {
   const out = {most, beats: [...beats], done: !!document.querySelector('#main .ra:not([data-old]).ra-done'), ms: Math.round(performance.now() - t1), startDone, played: !!play};
   window.scrollTo(0, 0); return out;
 };
+// 저절로 둘러보기 지켜보기(규칙 49 ④) — 처음 연 첫 화면에서 저절로 시작했나 · 걸음 want 개를 지나는 동안 매 프레임: 움직이는 것 수(웹 움직임 + 섬 캔버스 움직임) · 섬 금빛 = 카드 = 둘러보기 회사
+const TOUR_WATCH = async ({want = 5, limit = 15000}) => {
+  for (let i = 0; i < 300 && !document.querySelector('#main .tu'); i++) await new Promise(r => setTimeout(r, 20)); // 첫 화면은 판 읽기를 받은 뒤 그림(준비 표시보다 늦을 수 있음)
+  const t = document.querySelector('#main .tu'), I = document.querySelector('#main .isl')?.__isl;
+  if (!t) return {none: true};
+  const t0 = performance.now(); while (t.dataset.tour !== 'play' && performance.now() - t0 < 6000) await new Promise(r => setTimeout(r, 25));
+  const out = {started: t.dataset.tour === 'play', auto: t.dataset.tourAuto === '1', waitMs: Math.round(performance.now() - t0), most: 0, seen: [], same: [], ms: 0};
+  if (!out.started) return out;
+  const running = a => { if (a.playState !== 'running') return false; const tm = a.effect?.getComputedTiming?.(); if (!tm) return false; const lt = tm.localTime ?? 0, d = a.effect.getTiming(), delay = d.delay ?? 0, dur = typeof tm.activeDuration === 'number' ? tm.activeDuration : Infinity; return lt >= delay && lt < delay + dur; };
+  const key = () => `${t.dataset.tourPos}.${t.dataset.tourStep}`, seen = new Set([key()]), t1 = performance.now();
+  await new Promise(res => { const f = () => { out.most = Math.max(out.most, document.getAnimations().filter(running).length + (I?.state().busy ? 1 : 0)); const k = key();
+    if (!seen.has(k)) { seen.add(k); out.same.push([k, t.dataset.tourCode, I?.state().hero ?? null, document.querySelector('#main .cd-card')?.dataset.code ?? null]); }
+    if (seen.size >= want || performance.now() - t1 > limit) res(); else requestAnimationFrame(f); }; requestAnimationFrame(f); });
+  out.seen = [...seen]; out.ms = Math.round(performance.now() - t1); return out;
+};
+const TOUR_STATE = () => { const t = document.querySelector('#main .tu'); return t ? {mode: t.dataset.tour, auto: t.dataset.tourAuto, key: `${t.dataset.tourPos}.${t.dataset.tourStep}`, off: !t.querySelector('.tu-off')?.hidden ? t.querySelector('.tu-off')?.innerText.replace(/\s+/g, ' ').trim() : null, store: localStorage.getItem('atlas11:tour')} : null; };
 const FIT = () => { const labs = [...(document.querySelector('#main .ra')?.querySelectorAll('.ra-lab') ?? [])]; return {lb: labs.length ? Math.max(...labs.map(x => x.getBoundingClientRect().bottom)) : null, tab: document.getElementById('bottom')?.getBoundingClientRect().top ?? innerHeight, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; };
 
 /* ── 창 열기 · 일 나눠 돌리기 ── */
@@ -242,7 +260,13 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
     const want2 = E.candRows ?? [];
     if ((m.cand?.length ?? 0) > 7) no(`후보 줄 ${m.cand.length}개(7곳 상한)`);
     if (JSON.stringify(m.cand ?? []) !== JSON.stringify(E.cand?.quiet ? [] : want2)) no(`후보 줄이 판 읽기와 다름: ${JSON.stringify(m.cand)?.slice(0, 160)}`);
-    stats.numbers += want2.length * 3; }
+    stats.numbers += want2.length * 3;
+    // 저절로 둘러보기(규칙 49 ④ · 2026-10-10 「4너에제안대로 해」) — 한국어 화면 · 후보가 있으면 칸이 있음 · 이 검사 창(움직임 줄이기)에서는 저절로 시작하지 않음 · 다른 말 화면에는 없음(번역 미룸)
+    stats.tour.checks++;
+    if (m.tour && m.tour.mode !== 'rest') no(`움직임 줄이기 창인데 둘러보기가 저절로 돎(${m.tour.mode} · 규칙 49 ④ — 움직임 줄이기 기기는 저절로 시작하지 않음)`);
+    else if (m.tour) stats.tour.rest++;
+    if (String(lang).startsWith('ko') && want2.length && !E.cand?.quiet && !m.tour) no('한국어 첫 화면에 저절로 둘러보기 칸이 없음(규칙 49 ④)');
+    if (!String(lang).startsWith('ko') && m.tour) no(`${lang} 화면에 둘러보기 칸이 있음(한국어 화면만 — 번역 미룸)`); }
   if (lang !== 'ko' && m.left?.length) no('번역 안 된 한국어: ' + m.left.join(' / '));
   if (layoutOnly) return;
   const pp = planProblem(m); stats.plans++; if (pp) no('걸음 계획: ' + pp);
@@ -291,12 +315,53 @@ for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
   if (!QUICK) click3(b, 'ko · 쉬운 말', res, stats.easy.click3);
   await ctx.close(); console.log(`${b} · 쉬운 말: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
 });
+for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => { await tourOne(b); console.log(`${b} · 둘러보기 · ${Math.round((Date.now() - t0) / 1000)}초`); }); // 규칙 49 ④
 for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
   const {ctx, page} = await openPage(b, 'ko', {width: 390, height: 640}, {motion: true});
   const kinds = [...new Map(S[b].routes.map(r => [r[1], r])).values()];
   for (const [hash, kind] of QUICK ? kinds.slice(0, 6) : kinds) await motionOne(page, b, hash, null, kind);
   await ctx.close(); console.log(`${b} · 움직임 ${QUICK ? 6 : kinds.length}종 · ${Math.round((Date.now() - t0) / 1000)}초`);
 });
+/* ── 둘러보기 층(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 판마다 첫 화면을 처음 열어(움직임 줄이기 아님):
+   저절로 시작 · 걸음 넘김 · 한 번에 하나(웹 움직임 + 섬) · 섬 금빛 = 카드 = 둘러보기 회사 · 글을 누르면 멈춤(기다려도 그대로) · 「이어 보기」 · 「이 기기에서 끄기」 → 다시 열어도 저절로 안 돎
+   움직임 줄이기 창은 ① 모든 화면 판정이 봄(data-tour = rest) */
+async function tourOne(b) {
+  const where = '#/ [둘러보기]', T = stats.tour, no = w => bad(b, where, w), wait = ms => new Promise(r => setTimeout(r, ms));
+  const {ctx, page} = await openPage(b, 'ko', {width: 390, height: 640}, {motion: true});
+  try {
+    T.boards++;
+    await page.evaluate(() => window.atlasRoute('#/')); // 처음 여는 첫 화면(이 창에서 처음 — 저절로 시작할 수 있음)
+    const w = await page.evaluate(TOUR_WATCH, {want: 5, limit: 15000}); T.checks += 4;
+    if (w.none) { no('첫 화면에 둘러보기 칸이 없음'); return; }
+    if (!w.started || !w.auto) { no(`처음 열어 가만히 두어도 저절로 시작하지 않음(${w.waitMs}ms 기다림)`); return; }
+    T.started++; T.steps += w.seen.length; T.most = Math.max(T.most, w.most);
+    if (w.seen.length < 5) no(`걸음이 넘어가지 않음(${w.seen.join(' ')} · ${w.ms}ms)`);
+    if (w.most > 1) no(`둘러보기 동안 한 번에 ${w.most}개가 움직임(1이어야 함)`);
+    const diff = w.same.filter(x => !(x[1] === x[2] && x[2] === x[3])); T.checks += w.same.length;
+    if (diff.length) no(`섬 금빛 · 카드 · 둘러보기 회사가 다름: ${JSON.stringify(diff.slice(0, 2))}`);
+    // 글을 누르면 멈춤(읽는 중) — 기다려도 걸음 그대로
+    await page.click('#main .cd-why', {position: {x: 8, y: 6}}); await wait(120);
+    const p1 = await page.evaluate(TOUR_STATE); await wait(3200); const p2 = await page.evaluate(TOUR_STATE); T.checks += 2;
+    if (p1?.mode !== 'pause') no(`글을 눌러도 멈추지 않음(${p1?.mode})`); else if (p2?.key !== p1.key || p2?.mode !== 'pause') no(`멈춘 뒤에도 걸음이 넘어감(${p1.key} → ${p2?.key})`); else T.paused++;
+    // 「이어 보기」 — 섬을 화면에 두고 누르면 다시 넘어감
+    await page.evaluate(() => document.querySelector('#main .isl-stage').scrollIntoView({block: 'center'})); await wait(150);
+    await page.click('#main .tu-main'); const r0 = await page.evaluate(TOUR_STATE); T.checks += 2;
+    const moved = await page.waitForFunction(k => { const t = document.querySelector('#main .tu'); return t && `${t.dataset.tourPos}.${t.dataset.tourStep}` !== k; }, r0?.key, {timeout: 6000}).then(() => true).catch(() => false);
+    if (r0?.mode !== 'play' || !moved) no(`「이어 보기」를 눌러도 다시 넘어가지 않음(${r0?.mode})`); else T.resumed++;
+    // 멈춤 → 「이 기기에서 끄기」 → 다시 열면 저절로 안 돎(끈 줄은 「다시 켜기」)
+    await page.click('#main .tu-main'); await wait(80);
+    const sw = await page.$('#main .tu-off:not([hidden]) .tu-sw'); T.checks += 3;
+    if (!sw) { no('멈춘 뒤 「이 기기에서 끄기」 단추가 없음'); return; }
+    await sw.click(); const o1 = await page.evaluate(TOUR_STATE);
+    if (o1?.store !== '"off"') no(`「이 기기에서 끄기」가 저장되지 않음(${o1?.store})`);
+    await page.reload({waitUntil: 'domcontentloaded'}); await page.waitForFunction(() => document.documentElement.dataset.ready === '1' && typeof window.atlasRoute === 'function', null, {timeout: 30000});
+    await page.evaluate(() => (document.querySelector('#main .tu') ? null : window.atlasRoute('#/'))); await page.waitForSelector('#main .tu', {timeout: 15000});
+    await page.evaluate(() => document.querySelector('#main .isl-stage').scrollIntoView({block: 'center'})); await wait(2600);
+    const o2 = await page.evaluate(TOUR_STATE);
+    if (o2?.mode !== 'rest' || o2?.auto !== '0') no(`끈 뒤 다시 열었는데 저절로 돎(${o2?.mode} · auto ${o2?.auto})`); else if (!/꺼짐/.test(o2?.off ?? '')) no(`끈 뒤 「저절로 돌기: 꺼짐」 줄이 없음(${o2?.off})`); else T.off++;
+  } catch (e) { no('둘러보기를 재지 못함: ' + String(e?.message ?? e).slice(0, 200)); }
+  finally { await ctx.close(); }
+}
 async function motionOne(page, b, hash, tag = null, kind = null) {
   const where = tag ? `${hash} [${tag}]` : hash, info = INFO_FIRST.has(kind);
   await page.setViewportSize({width: 390, height: 640});
@@ -438,11 +503,11 @@ await browser.close();
 const TRANS = f => /^번역 안 된 한국어/.test(f.what ?? '');
 const transFailed = fails.filter(TRANS).length, otherFailed = fails.length - transFailed;
 const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), lap, code: await codePrint(ROOT), boards: BOARDS, quick: QUICK, langs: ['en', 'ko'], ...stats, failed: fails.length, transFailed, otherFailed,
-  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0,
-  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0, // 모든 층을 다 돈 결과인가(실패 수와 따로)
+  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0,
+  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0, // 모든 층을 다 돈 결과인가(실패 수와 따로) · 둘러보기 층(규칙 49 ④)
   fails: [...fails.filter(f => !TRANS(f)), ...fails.filter(TRANS)].slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
-console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, easy: stats.easy, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
+console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, easy: stats.easy, tour: stats.tour, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
 for (const f of report.fails.slice(0, 40)) console.log(` ✗ ${f.board} ${f.route} — ${f.what}`); // 번역 밖 실패가 먼저
 process.exit(report.ok || (QUICK && !fails.length) ? 0 : 1);
