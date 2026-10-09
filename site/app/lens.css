@@ -169,7 +169,7 @@ html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[d
 @media (prefers-reduced-motion: reduce) { .cmp-bar { transition: none; } }
 
 /* ── 종목 화면 「후보 판단」 — 여섯 질문 · 주장 → 관측 → 계산 · 해석 → 반대 근거 → 확인할 것 ── */
-.cj-box, .cj-q { scroll-margin-top: 64px; }
+.cj-box, .cj-q, .cd-rank-d { scroll-margin-top: 64px; } /* 위 막대(56px) 아래로 — 「돈 유입 1~365등 모두 보기 ›」 */
 .cj-h { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .cj-h:focus { outline: none; } .cj-h:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .cj-sum, .cj-risk { margin: 6px 0 0; font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; }
@@ -236,6 +236,7 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 .l3-met-t { fill: #A5D3C0; } .l3-met-l { fill: #5F9E86; } .l3-met-r { fill: #457F68; }
 .l3-wait-t { fill: #F1DDB0; } .l3-wait-l { fill: #D7B66F; } .l3-wait-r { fill: #B8954C; }
 .l3-re-t { fill: #E8D2C3; } .l3-re-l { fill: #C49C80; } .l3-re-r { fill: #A07A5F; }
+.l3-blue-t { fill: #A9C1EC; } .l3-blue-l { fill: #7F9FDC; } .l3-blue-r { fill: #5F82C9; } /* 파란 받침 = 돈이 빠진 업종(4판 · 곁 정보) */
 .l3-gh-t, .l3-gh-l, .l3-gh-r { fill: var(--ink); fill-opacity: .04; stroke: var(--ink2); stroke-opacity: .55; stroke-width: .8; stroke-dasharray: 2.5 2; stroke-linejoin: round; } /* 빈 틀 = 1만 번(꽉 차면 매번 듦) — 2026-10-09 몬테카를로 */
 .l3-tw.sel .l3-gh-t, .l3-tw.sel .l3-gh-l, .l3-tw.sel .l3-gh-r { stroke: var(--ink2); stroke-width: .8; }
 .bc-sw.ghost { height: 9px; border: 1.5px dashed var(--ink2); border-radius: 3px; background: none; }
@@ -248,6 +249,7 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
   .l3-met-t { fill: #6FB197; } .l3-met-l { fill: #4A8670; } .l3-met-r { fill: #386A57; }
   .l3-wait-t { fill: #C9A75E; } .l3-wait-l { fill: #9C8146; } .l3-wait-r { fill: #7A6436; }
   .l3-re-t { fill: #9C7A63; } .l3-re-l { fill: #7A5E4C; } .l3-re-r { fill: #5F4A3C; }
+  .l3-blue-t { fill: #3B5A99; } .l3-blue-l { fill: #314C83; } .l3-blue-r { fill: #263B66; }
   .bc-sw.met { background: #4A8670; } .bc-sw.wait { background: #9C8146; }
 }
 /* 고른 한 곳 카드 · 짧은 줄 일곱(설명은 한 번에 한 가지) */
@@ -286,3 +288,24 @@ html:not([lang="ko"]) .l3-lab, html[data-font-step="2"] .l3-lab, html[data-font-
 html:not([lang="ko"]) .l3-in, html[data-font-step="2"] .l3-in, html[data-font-step="3"] .l3-in, html[data-font-step="4"] .l3-in { order: 1; } html:not([lang="ko"]) .l3-out, html[data-font-step="2"] .l3-out, html[data-font-step="3"] .l3-out, html[data-font-step="4"] .l3-out { order: 2; }
 html[data-font-step="2"] .cd-ch, html[data-font-step="3"] .cd-ch, html[data-font-step="4"] .cd-ch { grid-template-columns: auto minmax(0, 1fr); } /* 큰 글씨 — 상태 칩이 이름 아래 줄로(이름이 한 글자씩 꺾이지 않게) */
 html[data-font-step="2"] .cd-ch .cd-stw, html[data-font-step="3"] .cd-ch .cd-stw, html[data-font-step="4"] .cd-ch .cd-stw, html[data-font-step="2"] .cd-ch .cd-px, html[data-font-step="3"] .cd-ch .cd-px, html[data-font-step="4"] .cd-ch .cd-px { grid-column: 1 / -1; }
+
+/* 규칙 4판(2026-10-09 11:35 「365개 … 1등부터 365등까지」) — 탑 일곱 한 줄 · 1~365등 목록(접힘을 열 때 그림) */
+.cd-all { margin: 6px 0 0; }
+.cd-all-a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; color: var(--ink); }
+.cd-all-a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 6px; }
+.rk-list { list-style: none; margin: 6px 0 0; padding: 0; }
+.rk-row { display: grid; grid-template-columns: 3.4em minmax(0, 1fr) auto; grid-template-areas: "n nm v" "n st st"; gap: 0 8px; align-items: center; padding: 6px 2px; border-top: 1px solid var(--sep); }
+.rk-row:first-child { border-top: 0; }
+.rk-n { grid-area: n; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rk-nm { grid-area: nm; min-width: 0; overflow-wrap: anywhere; }
+.rk-a { color: var(--ink); font-weight: 700; text-decoration: none; }
+.rk-s { display: block; color: var(--ink2); }
+.rk-star { color: var(--ink); }
+.rk-v { grid-area: v; justify-self: end; text-align: end; font-weight: 700; font-variant-numeric: tabular-nums; unicode-bidi: isolate; }
+.rk-x { display: block; font-weight: 400; color: var(--ink2); }
+.rk-st { grid-area: st; justify-self: start; font-size: .8125rem; font-weight: 700; padding: 0 7px; border-radius: 999px; }
+.rk-st-met { color: var(--ink); } .rk-st-wait { color: var(--sub); border: 1.5px dashed var(--sub); } .rk-st-out { color: var(--ink2); }
+.rk-pick { background: var(--fill); border-radius: 8px; }
+.rk-out .rk-a, .rk-out .rk-v { font-weight: 400; color: var(--ink2); }
+html[data-font-step="2"] .rk-row, html[data-font-step="3"] .rk-row, html[data-font-step="4"] .rk-row { grid-template-columns: 3.4em minmax(0, 1fr); grid-template-areas: "n nm" "n v" "n st"; }
+html[data-font-step="2"] .rk-v, html[data-font-step="3"] .rk-v, html[data-font-step="4"] .rk-v { justify-self: start; text-align: start; }

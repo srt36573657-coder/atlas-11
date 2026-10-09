@@ -52,11 +52,11 @@ export function watchBox(s, onChange = null, {cand = null} = {}) { // cand = 등
 function candLine(C, w) {
   if (!C?.ready) return null;
   const x = C.items.find(y => y.code === w.code), now = candFlagsOf(C, w.code), was = typeof w.cand?.flags === 'string' && w.cand.flags.length === FLAG_NAMES.length ? [...w.cand.flags].map(c => c === '1') : null; // 규칙이 바뀌어 조건 수가 다르면 견주지 않음
-  const first = now ? now.findIndex(ok => !ok) : -1;
+  const first = now ? now.findIndex(ok => !ok) : -1, ruleMoved = typeof w.cand?.flags === 'string' && !was; // 등록 뒤 고르는 규칙이 바뀜(조건 수가 다름 — 2026-10-09 규칙 4판)
   const diff = now && was ? FLAG_NAMES.map((k, i) => (now[i] !== was[i] ? `${k} ${was[i] ? '✓' : '✕'} → ${now[i] ? '✓' : '✕'}` : null)).filter(Boolean) : null;
   return h('p', {class: 'wl-cand'}, h('span', {class: 'cd-k'}, '후보 상태'), ' ',
     x ? [`검토 순위 ${x.rank}위 `, stEl(x.status), ` · 가장 큰 위험: ${x.risk.text}`] : now ? (first >= 0 ? `후보 아님 — 처음 막힌 조건: ${FLAG_NAMES[first]}` : '조건은 넘었지만 7곳 밖') : '이 판에 없음',
-    diff ? (diff.length ? ` · 등록(${korDate(w.cand.asOf)} 판) 뒤 바뀐 조건: ${diff.join(' · ')}` : ` · 등록(${korDate(w.cand.asOf)} 판) 뒤 바뀐 조건 없음`) : ' · 등록 때 후보 상태는 남기지 않았음(후보 기능 전에 등록)');
+    diff ? (diff.length ? ` · 등록(${korDate(w.cand.asOf)} 판) 뒤 바뀐 조건: ${diff.join(' · ')}` : ` · 등록(${korDate(w.cand.asOf)} 판) 뒤 바뀐 조건 없음`) : ruleMoved ? ` · 등록(${korDate(w.cand.asOf)} 판) 뒤 고르는 규칙이 바뀌어 조건을 견주지 않음` : was ? '' : ' · 등록 때 후보 상태는 남기지 않았음(후보 기능 전에 등록)');
 }
 export async function renderWatch(main, {manifest}) {
   const [board, agenda, lens] = await Promise.all([loadBoard(), loadAgenda().catch(() => null), loadLens().catch(() => null)]), byCode = new Map(board.companies.map(c => [c.code, c])), C = candOfLens(lens);

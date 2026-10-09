@@ -41,7 +41,7 @@ export async function lensFrom(root, place, {made = new Date().toISOString(), vi
   const candPubs = P.cand ? await readEvening(root, P.cand, manifest.universeSet?.id) : []; // 후보 발행본(저녁 기록에 후보가 없던 날 처음 낸 목록 — 같은 날 저녁 기록에 후보가 있으면 먼저 남은 쪽)
   const placeInfo = {closeAt: manifest.place?.closeAt ?? P.closeAt ?? null, flowsNone: manifest.place?.flowsNone ?? null};
   const sched = place === 'kr' ? await maybe(path.join(root, 'public/data/atlas11/schedule-events.json')) : null; // 확인된 일정표(공식 출처) — 미국 판은 일정 묶음(agenda)만
-  const rotation = place === 'kr' ? await rotationOf(root, place, {board, daily: true}).catch(() => null) : null; // 한국 판만(미국 판은 순매매 자료가 없어 후보를 고르지 않음) · daily = 날마다 값(후보의 1만 번 다시 뽑기)
+  const rotation = place === 'kr' ? await rotationOf(root, place, {board}).catch(() => null) : null; // 한국 판만 · 후보 4판은 업종 돈 흐름을 곁 정보로만 씀(고르는 셈은 회사 날마다 순매수 — lens.mjs candDaily)
   const lens = lensOf({place, board, manifest, agenda, assets: input.assets ?? [], snap, evening, events: sched?.events ?? [], candPubs, rotation, index: index ? {symbol: index.symbol, name: index.name, rows: index.rows, source: index.seed?.source ?? null} : null, sessions, made, placeInfo});
   lens.sources = {board: `${P.view}/board.json`, prices: P.input, index: index ? P.index : null, context: place === 'kr' ? manifest.market?.record ?? null : P.context ?? null, evening: evening.length ? `${P.evening}/${dirName(manifest.universeSet?.id)}` : null, cand: candPubs.length ? `${P.cand}/${dirName(manifest.universeSet?.id)}` : null, calendar: P.calendar};
   const bad = checkLens(lens); if (bad.length) lens.problems.push(...bad.map(x => '검사: ' + x));

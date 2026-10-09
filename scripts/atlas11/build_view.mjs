@@ -92,7 +92,7 @@ export async function writeEvening(files, {now, run = 'evening'}) {
   if (!st.ready) return {file: st.file, wrote: false, reason: `${st.asOf} 저녁 7시 전`};
   await fs.mkdir(path.dirname(path.join(root, st.file)), {recursive: true});
   let cand = null; // 막 만든 판으로 후보를 셈(판 읽기와 같은 셈) — 못 세도 저녁 기록은 그대로 남김(까닭은 실행 기록에)
-  try { const l = await lensFrom(root, 'kr', {made: now, view: {board: b, manifest: files.get('manifest.json'), agenda: files.get('agenda.json')}}); if (l.cand?.ready) cand = {items: candRecordOf(l.cand), rules: l.cand.rules, pool: l.cand.pool, mc: l.cand.mc ? {draws: l.cand.mc.draws, seed: l.cand.mc.seed, days: l.cand.mc.days, base: l.cand.mc.base, sectors: l.cand.mc.sectors, out: l.cand.mc.out, seeds: l.cand.mc.seeds} : null}; } catch (e) { console.warn('cand for evening: ' + e.message); }
+  try { const l = await lensFrom(root, 'kr', {made: now, view: {board: b, manifest: files.get('manifest.json'), agenda: files.get('agenda.json')}}); if (l.cand?.ready) cand = {items: candRecordOf(l.cand), rules: l.cand.rules, pool: l.cand.pool, mc: l.cand.mc ? {draws: l.cand.mc.draws, seed: l.cand.mc.seed, days: l.cand.mc.days, base: l.cand.mc.base, out: l.cand.mc.out, surged: l.cand.mc.surged, seeds: l.cand.mc.seeds} : null}; } catch (e) { console.warn('cand for evening: ' + e.message); }
   try { await fs.writeFile(path.join(root, st.file), JSON.stringify(eveningRecordOf(b, {universe: st.universe, recordedAt: now, run, cand}), null, 1), {flag: 'wx'}); return {file: st.file, wrote: true, cand: cand?.items.length ?? null}; }
   catch (e) { if (e.code === 'EEXIST') return {file: st.file, wrote: false, reason: '이미 있음'}; throw e; }
 }
