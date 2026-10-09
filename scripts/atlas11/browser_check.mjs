@@ -156,24 +156,46 @@ const sectorsW = lens => (lens.sectors ?? []).map(sc => { const ms = sc.codes.ma
    기대값은 판 읽기(lens.json)와 /story.json(돈 흐름)으로 이 검사기가 따로 셈 · 사람처럼 눌러 봄: 후보 → 「왜 선정됐나요?」 → 후보 판단 칸 → 「‹ 후보 7」(자리 · 초점) → 「다른 후보와 비교」 → 고르기 → 「진입 조건 확인」 */
 const eokW = v => { if (!Number.isFinite(v)) return '계산 불가'; const sg = v > 0 ? '+' : v < 0 ? '−' : '', a = Math.abs(v); return a >= 1e4 ? `${sg}${(a / 1e4).toFixed(1)}조` : `${sg}${Math.round(a).toLocaleString('ko-KR')}억`; };
 async function candCheck(page, label, mobile, press) {
+  // 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면 … 입체적으로 보여야하는 중심으로」 — 첫 화면 = ① 기준 한 줄 → ② 입체 땅(꺼진 땅 · 솟은 땅 · 후보 탑) + 고른 한 곳 카드 + 짧은 줄 → ③ 자세히(접힘)
   const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, st = await get('story.json'), rot = st.rotation;
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(300);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(300);
+  const readCard = () => page.evaluate(() => { const c = document.querySelector('.cd-card'); return {code: c?.dataset.code, rank: c?.querySelector('.cd-rk')?.textContent.trim(), name: c?.querySelector('.cd-name')?.textContent.trim(),
+    why: c?.querySelector('.cd-why')?.innerText.replace(/\s+/g, ' ').trim(), risk: c?.querySelector('.cd-risk')?.innerText.replace(/\s+/g, ' ').trim(), btns: [...(c?.querySelectorAll('.cd-btn') ?? [])].map(b => b.textContent.trim()),
+    pressed: [...document.querySelectorAll('.cd-row .cd-pick[aria-pressed="true"]')].map(b => b.closest('.cd-row').dataset.code), sel: [...document.querySelectorAll('.l3-tw.sel')].map(g => g.dataset.code), picked: !!document.querySelector('.l3.picked')}; });
   const cd = await page.evaluate(() => ({firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [x.dataset.first, Math.round(r.top), Math.round(r.bottom), x.matches('section[data-art]')]; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.dataset.route).join(),
-    rows: [...document.querySelectorAll('.cd-row')].map(li => ({code: li.dataset.code, rank: li.dataset.rank, status: li.dataset.status, name: li.querySelector('.cd-name')?.textContent.trim(), why: li.querySelector('.cd-why')?.innerText.replace(/\s+/g, ' ').trim(), risk: li.querySelector('.cd-risk')?.innerText.replace(/\s+/g, ' ').trim(), btns: [...li.querySelectorAll('.cd-btn')].map(b => b.textContent.trim())})),
-    secs: document.querySelector('.cd-secs')?.innerText.replace(/\s+/g, ' ').trim() ?? '', rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+    rows: [...document.querySelectorAll('.cd-row')].map(li => ({code: li.dataset.code, rank: li.dataset.rank, status: li.dataset.status, name: li.querySelector('.cd-name')?.textContent.trim(), rk: li.querySelector('.cd-rk')?.textContent.trim(), pw: li.querySelector('.cd-pwv')?.textContent.trim()})),
+    labs: [...document.querySelectorAll('.l3-lab')].map(a => ({out: a.classList.contains('l3-out'), name: a.querySelector('.l3-nm')?.textContent.trim(), amt: a.querySelector('.l3-amt')?.textContent.trim(), href: a.getAttribute('href')})),
+    tws: [...document.querySelectorAll('.l3-tw')].map(g => ({code: g.dataset.code, rank: Number(g.dataset.rank), h: Number(g.dataset.h), pow: Number(g.dataset.pow)})), rks: [...document.querySelectorAll('.l3-rk')].map(b => [b.dataset.code, b.dataset.n]),
+    svgText: document.querySelectorAll('.l3 svg text').length, rest: !!document.querySelector('.cd-page .ra.ra-rest'), shownBtns: [...document.querySelectorAll('.cd-page .ra-btns .ra-b')].filter(b => b.offsetParent).map(b => b.textContent.trim()),
+    rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
   const okSecs = (rot?.in ?? []).slice(0, 3).filter(g => g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0);
   const fiOf = code => { const s = lens.stocks.find(x => x.code === code), fl = s?.fl ?? {}; return Number.isFinite(fl.f10e) && Number.isFinite(fl.i10e) ? (fl.f10e + fl.i10e) / 1e8 : null; };
   const powOf = code => { const s = lens.stocks.find(x => x.code === code), fi = fiOf(code), cap = s?.fund?.cap; return Number.isFinite(fi) && cap > 0 ? (fi / cap) * 100 : null; };
-  const rowsOk = C.ready && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.status === x.status && r.name === x.name
-    && r.why.includes(`돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label}`) && r.why.includes(eokW(fiOf(x.code))) && r.why.includes(`시가총액의 ${powOf(x.code).toFixed(2)}%`) && r.risk === `가장 큰 위험 ${x.risk.text}` && r.btns.join() === '왜 선정됐나요?,다른 후보와 비교'; });
-  check(`${label} 재설계 · 첫 화면 「후보 7」: ① 기준 → ② 돈이 들어온 업종(${okSecs.map(g => g.label).join(' · ')}) · 후보 ${cd.rows.length}곳(순위 · 이름 · 고른 까닭 = 업종 차례 + 외국인+기관 금액 · 시가총액 대비 세기 · 가장 큰 위험 = 판 읽기 · /story.json 으로 따로 셈) → ③ 그림 → ④ → ⑤ · 「후보 7」 눌림`,
-    cd.firsts.map(x => x[0]).join() === '1,2,3,4,5' && cd.firsts.find(x => x[0] === '3')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && cd.done && cd.sw <= cd.cw
-      && okSecs.every(g => cd.secs.includes(g.label) && cd.secs.includes(eokW(g.amount))) && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
-    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), secs: cd.secs, rule: cd.rule, active: cd.active});
+  const rowsOk = C.ready && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.rk === `${i + 1}위` && r.status === x.status && r.name === x.name && r.pw === `${powOf(x.code).toFixed(2)}%`; });
+  // 땅 — 솟은 땅 = 늘어난 곳 1위~3위(금액 · /story.json 으로 따로 셈) · 꺼진 땅 = 줄어든 곳 1위~3위 · 이름을 누르면 그 업종 화면
+  const inW = (rot?.in ?? []).slice(0, 3), outW = (rot?.out ?? []).slice(0, 3), inL = cd.labs.filter(x => !x.out), outL = cd.labs.filter(x => x.out);
+  const landOk = inL.length === inW.length && inW.every((g, i) => inL[i].name === g.label && inL[i].amt === eokW(g.amount) && inL[i].href === '#/i/' + g.id) && outL.length === outW.length && outW.every((g, i) => outL[i].name === g.label && outL[i].amt === eokW(g.amount) && outL[i].href === '#/i/' + g.id);
+  // 탑 — 후보마다 하나 · 높이 ∝ 회사 크기에 견준 순매수(같은 잣대 · 0부터 — 가장 낮게 그리는 4 보다 큰 탑끼리 높이 ÷ 세기가 같음) · 순위 동그라미 = 순위
+  const twOk = cd.tws.length === C.items.length && C.items.every(x => cd.tws.some(t => t.code === x.code && t.rank === x.rank && Math.abs(t.pow - powOf(x.code)) < 1e-3)) && cd.rks.every(([code, n]) => C.items.find(x => x.code === code)?.rank === Number(n));
+  const big = cd.tws.filter(t => t.h > 4.5 && t.pow > 0), ratio = big.map(t => t.h / t.pow), propOk = big.length >= 1 && ratio.every(r => Math.abs(r - ratio[0]) / ratio[0] < 0.01);
+  check(`${label} 첫 화면 「후보 7」 입체 땅(2026-10-09 08:26 「입체적으로」): ① 기준 → ② 그림 칸(솟은 땅 ${inL.map(x => `${x.name} ${x.amt}`).join(' · ')} / 꺼진 땅 ${outL.map(x => `${x.name} ${x.amt}`).join(' · ')} = /story.json) · 탑 ${cd.tws.length}개(높이 ∝ 회사 크기에 견준 외국인+기관 순매수 — 따로 셈) · 그림 안 글자 ${cd.svgText} · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 세기 · 상태 = 판 읽기) → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
+    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && landOk && twOk && propOk && cd.svgText === 0
+      && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && okSecs.length === inL.length && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
+    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), labs: cd.labs, tws: cd.tws.slice(0, 3), ratio: ratio.map(r => +r.toFixed(3)), shown: cd.shownBtns});
+  // 카드 — 처음엔 1위 · 줄을 누르면 그 한 곳(고른 까닭 = 업종 차례 + 외국인+기관 금액 + 시가총액 대비 세기 · 가장 큰 위험 = 판 읽기) · 탑을 누르면 같은 카드 · 다른 탑은 흐려짐
+  const cardWant = x => ({code: x.code, rank: `${x.rank}위`, name: x.name});
+  const cardOk = (c, x) => c.code === x.code && c.rank === `${x.rank}위` && c.name === x.name && c.why.includes(`돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label}`) && c.why.includes(eokW(fiOf(x.code))) && c.why.includes(`시가총액의 ${powOf(x.code).toFixed(2)}%`)
+    && c.risk === `가장 큰 위험 ${x.risk.text}` && c.btns.join() === (C.items.length > 1 ? '왜 선정됐나요?,다른 후보와 비교' : '왜 선정됐나요?') && c.pressed.join() === x.code && c.sel.join() === x.code;
+  const k0 = await readCard(), bads = [];
+  if (C.items.length && !(cardOk(k0, C.items[0]) && !k0.picked)) bads.push({first: k0});
+  for (const [i, x] of C.items.entries()) { await press(page.locator('.cd-row .cd-pick').nth(i)); await page.waitForTimeout(120); const c = await readCard(); if (!cardOk(c, x) || !c.picked) bads.push({i, c, want: cardWant(x)}); }
+  if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.l3-tw[data-code="${x.code}"]`).evaluate(g => g.dispatchEvent(new MouseEvent('click', {bubbles: true}))); await page.waitForTimeout(150); const c = await readCard(); if (!cardOk(c, x)) bads.push({tower: x.code, c}); }
+  check(`${label} 첫 화면 카드: 처음 1위(탑은 모두 또렷) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈) · 탑을 눌러도 같은 카드 · 다른 탑은 흐려짐`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
   if (C.items.length < 2) return;
   // 후보 둘째 줄 「왜 선정됐나요?」 → 종목 화면 「후보 판단」 칸(초점 · 화면 안) → 「‹ 후보 7곳」 → 보던 자리 · 누른 곳에 초점
-  const x2 = C.items[1], btn = page.locator('.cd-row').nth(1).locator('.cd-btn').first(); await toMid(btn);
+  const x2 = C.items[1]; await press(page.locator('.cd-row .cd-pick').nth(1)); await page.waitForTimeout(150);
+  const btn = page.locator('.cd-card .cd-btn').first(); await toMid(btn);
   const y0 = await page.evaluate(() => Math.round(scrollY));
   await press(btn); await page.waitForSelector('.cj-box .cj-h'); await page.waitForTimeout(400);
   const cj = await page.evaluate(() => { const b = document.querySelector('.cj-box'), r = b?.getBoundingClientRect(); return {hash: location.hash, focus: document.activeElement?.classList.contains('cj-h') ?? false, top: r ? Math.round(r.top) : null, h: innerHeight,
@@ -184,11 +206,12 @@ async function candCheck(page, label, mobile, press) {
   const en = await page.evaluate(() => ({focus: document.activeElement?.id ?? null, rows: [...document.querySelectorAll('#cj-entry .cj-t tbody tr')].map(tr => tr.querySelector('th')?.textContent.trim())}));
   check(`${label} 재설계 · 「진입 조건 확인」 → 그 칸으로(초점 #${en.focus}) · 조건 ${en.rows.length}줄(${en.rows.join(' · ')})`, en.focus === 'cj-entry' && en.rows.join() === '20거래일 수익률,희석 공시(30일),과열 공시(7일)', en);
   await press(page.locator('.c-back')); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(500);
-  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null}));
-  check(`${label} 재설계 · 「‹ 후보 7곳」 → 보던 자리(${y0}px → ${bk.y}px) · 누른 곳에 초점(${bk.focus})`, bk.hash === '#/' && Math.abs(bk.y - y0) <= 2 && bk.focus === '#/stock/' + x2.code, {y0, bk});
+  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null, card: document.querySelector('.cd-card')?.dataset.code ?? null, sel: [...document.querySelectorAll('.l3-tw.sel')].map(g => g.dataset.code).join()}));
+  check(`${label} 재설계 · 「‹ 후보 7곳」 → 보던 자리(${y0}px → ${bk.y}px) · 고른 카드 그대로(${bk.card}) · 누른 곳에 초점(${bk.focus})`, bk.hash === '#/' && Math.abs(bk.y - y0) <= 2 && bk.focus === '#/stock/' + x2.code && bk.card === x2.code && bk.sel === x2.code, {y0, bk});
   // 「다른 후보와 비교」(첫 줄) → 같은 기준 표 · 같은 축 막대 · 앞선 까닭 → 「나」를 바꾸면 그 자리에서(주소만 바뀜 · 화면을 새로 그리지 않음)
   const c0 = C.items[0], c1 = C.items[1];
-  await press(page.locator('.cd-row').first().locator('.cd-btn', {hasText: '다른 후보와 비교'})); await page.waitForSelector('.cmp-page section[data-art]'); await page.waitForTimeout(300);
+  await press(page.locator('.cd-row .cd-pick').first()); await page.waitForTimeout(150);
+  await press(page.locator('.cd-card .cd-btn', {hasText: '다른 후보와 비교'})); await page.waitForSelector('.cmp-page section[data-art]'); await page.waitForTimeout(300);
   const cm = await page.evaluate(() => ({hash: location.hash, a: document.querySelector('#cmp-a')?.value, b: document.querySelector('#cmp-b')?.value, say: document.querySelector('.cmp-say')?.textContent.trim(), rows: document.querySelectorAll('.cmp-t tbody tr').length, chk: JSON.parse(document.querySelector('.cmp-page [data-check]')?.dataset.check ?? '{}'), back: document.querySelector('.c-back')?.textContent.trim(), firsts: [...document.querySelectorAll('.cmp-page [data-first]')].map(x => x.dataset.first).join()}));
   const pw0 = powOf(c0.code), pw1 = powOf(c1.code);
   const sayW = c0.met !== c1.met ? `앞선 쪽은 1위 ${c0.name} — 진입 조건 충족(상대 쪽은 조건 대기)` : `앞선 쪽은 1위 ${c0.name} — 회사 크기에 견준 외국인+기관 순매수가 더 셈(${pw0.toFixed(2)}% 대 ${pw1.toFixed(2)}%)`;
@@ -1003,7 +1026,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   for (const old of ['#/forecast', '#/up', '#/down', '#/scores', '#/race', '#/evolution', '#/status', '#/records', '#/game']) {
     await page.goto(base + '/' + old, {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(150);
     const r = await page.evaluate(() => ({hash: location.hash, firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => x.dataset.first).join(), active: document.querySelector('.bottom-link.active')?.dataset.route}));
-    check(`${label} 옛 주소 ${old} → 첫 화면 「후보 7」(#/ · 정보 칸 ${r.firsts})`, r.hash === '#/' && r.firsts === '1,2,3,4,5' && r.active === 'cand', r);
+    check(`${label} 옛 주소 ${old} → 첫 화면 「후보 7」(#/ · 정보 칸 ${r.firsts})`, r.hash === '#/' && r.firsts === '1,2,3' && r.active === 'cand', r); // 2026-10-09 08:26 첫 화면 ① 기준 → ② 입체 땅 → ③ 자세히
   }
   // ⑤ 아래 탭 「기록」(#/log · 2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 기록 하는 탭」) — 검사기가 /changelog.json 을 따로 읽어 화면과 줄마다 맞댐
   //   무결성은 이 탭 맨 아래 「기술 정보」(옛 모든 화면 맨 아래 접힘을 옮김 — 규칙 1)

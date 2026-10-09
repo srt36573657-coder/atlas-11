@@ -98,9 +98,13 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
         const heat = ds.some(d => !pref(d.title, s.name) && HEAT_RE.test(d.title) && String(d.publishedAt).slice(0, 10) >= heatFrom), dil = ds.some(d => DILUTE_RE.test(d.title));
         if (sc && s.r20 <= CAND_RULES.maxR20 && !heat && !dil) met++;
       }
-      E.cand = {universe: st.length, sectors: okSecs.length, inSector: n0, data, profit, risk, screen, met, n: Math.min(CA.items.length, CAND_RULES.want)};
       E.candRows = CA.items.map(x => [x.code, x.status, x.rank]); // 화면 줄 차례 = 판 읽기 후보(같은 발행본) · 7곳 상한
       const pw = x => { const s = st.find(y => y.code === x.code), fl = s?.fl ?? {}, cap = s?.fund?.cap; return fin(fl.f10e) && fin(fl.i10e) && fin(cap) && cap > 0 ? Math.round(((fl.f10e + fl.i10e) / 1e8 / cap) * 100 * 1e4) / 1e4 : null; }; // 판 읽기 파일의 소수 넷째 자리와 같게
+      // 입체 땅(2026-10-09 08:26 「입체적으로 보여야하는 중심으로」) — 솟은 땅 = 늘어난 곳 1위~3위(금액 · 조건 셋) · 꺼진 땅 = 줄어든 곳 1위~3위 · 탑 = 후보(순위 · 상태 · 세기 소수 둘째 자리)
+      const plates = (rot.in ?? []).slice(0, CAND_RULES.sectors).map(g => [g.label, Math.round(g.amount), g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0]);
+      const pits = (rot.out ?? []).slice(0, 3).map(g => [g.label, Math.round(g.amount)]);
+      const towers = CA.items.map(x => { const v = pw(x); return [x.code, x.rank, x.status, fin(v) ? Math.round(v * 100) / 100 : null]; });
+      E.cand = {universe: st.length, sectors: okSecs.length, inSector: n0, data, profit, risk, screen, met, n: Math.min(CA.items.length, CAND_RULES.want), plates, pits, towers};
       const [a, b2] = CA.items, sa = a && st.find(s => s.code === a.code), sb = b2 && st.find(s => s.code === b2.code);
       E.compare = sa && sb ? {a: sa.code, b: sb.code, apow: pw(sa), bpow: pw(sb), ar20: sa.r20, br20: sb.r20} : Q('compare');
     } else { E.cand = Q('cand'); E.compare = Q('compare'); }
