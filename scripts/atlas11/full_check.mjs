@@ -112,8 +112,8 @@ const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
     { const nav = new Set(); for (const a of document.querySelectorAll('a[href^="#/"]')) { const d = a.closest('details'), folded = !!d && !d.open && !a.closest('summary'); let hh = a.getAttribute('href'); try { hh = decodeURIComponent(hh); } catch {} nav.add((folded ? 'D' : '') + hh); } m.nav = [...nav]; }
     m.errs = window.__errs.slice(e0);
     // 쉬운 말 층(규칙 48): 숫자 모음(본문 글 + 읽기 이름표 — 「이 화면은?」 줄은 뺌) · 「이 화면은?」 · 펼친 글(접힌 칸 · 원문 · 식별자 · 숨은 것 뺌)
-    if (nums) { const c = document.getElementById('main').cloneNode(true); c.querySelectorAll('.ez-what').forEach(x => x.remove()); const at = [...c.querySelectorAll('[aria-label], [title], [data-speak]')].map(x => ['aria-label', 'title', 'data-speak'].map(k => x.getAttribute(k) ?? '').join(' ')).join(' ');
-      m.nums = ((c.textContent + ' ' + at).match(/[+−\-]?\d[\d,]*(?:\.\d+)?/g) ?? []).sort().join(' '); }
+    if (nums) { const c = document.getElementById('main').cloneNode(true); c.querySelectorAll('.ez-what, .ez-only').forEach(x => x.remove()); const at = [...c.querySelectorAll('[aria-label], [title], [data-speak]')].map(x => ['aria-label', 'title', 'data-speak'].map(k => x.getAttribute(k) ?? '').join(' ')).join(' ');
+      m.nums = ((c.textContent + ' ' + at).match(/[+−\-]?\d[\d,]*(?:\.\d+)?/g) ?? []).sort().join(' '); } // 쉬운 말 화면에만 있는 칸(「이 화면은?」 · 어려운 말 풀이 .ez-only)은 숫자 맞대기에서 뺌
     if (easy) {
       m.what = !!document.querySelector('#main .ez-what') && document.documentElement.dataset.level === 'easy';
       const folded = el => { for (let x = el; x && x.id !== 'main'; x = x.parentElement) if (x.tagName === 'DETAILS' && !x.open && el.closest('summary')?.parentElement !== x) return true; return false; }; // 닫힌 접힘 안(그 접힘의 이름 줄은 보임 · 겹친 접힘도)

@@ -3,6 +3,7 @@
    위에서 아래로: ① 기준 → ② 관측 한 문장(업종 폭) → ③ 핵심 수치 셋 → ④ 평균 펼치기(선정 표본 평균을 업종마다 기여로 · 「기여 1위 업종 제외」 · decomp.js) → ⑤ 다음 행동(기여 1위 업종의 구성 종목)
    그 아래: 업종 진단 목록(옛 시장 첫 화면에서 옮김 · 거르기 · 더 보기) · 공식 업종 · 규칙 · 계산 · 출처
    · ATLAS 업종(73개 · 5곳씩)과 공식 업종(네이버 업종)을 나눠 셈 · 실험 규칙(lens-rules-1 · obs-rules-1)은 검증 전이라고 적음 */
+import {proFold} from './easy.js'; // 쉬운 말 화면에서 빽빽한 전문가 칸 접기(규칙 48)
 import {h, korDate, place} from './util.js';
 import {state, loadBoard, loadLens} from './store.js';
 import {foot, segNav, SECTOR_SEGS} from './parts.js';
@@ -94,8 +95,8 @@ export async function renderSectors(main, {manifest}) {
     blk(5, '이어서 보기', h('div', {class: 'ob-next'}, top ? h('a', {class: 'ob-go', href: '#/i/' + top.id}, `${top.label} 구성 종목 보기 ›`) : null),
       h('p', {class: 'ob-more'}, h('a', {href: '#/flow/rotation'}, '업종 순환 ›'), h('a', {href: '#/hot'}, '불장 ›'), h('a', {href: '#/map'}, '지도 ›'), h('a', {href: '#mk-sectors', onclick: e => { e.preventDefault(); document.getElementById('mk-sectors')?.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }}, '업종 진단 목록 ›'))),
     sectorList(lens),
-    h('section', {class: 'b-box', 'aria-label': '공식 업종'}, h('h2', {class: 'b-box-h'}, `공식 업종 ${lens.official.length}개`, h('small', null, place.id === 'us' ? ' · 판의 업종 이름 · 업종마다 한 번' : ' · 네이버 증권 업종 · 업종마다 한 번')),
-      h('ol', {class: 'of-list'}, ...lens.official.map(x => h('li', null, h('span', {class: 'of-n'}, x.name), ' ', tagEl(x.level, LEVEL, 'lvl'), ' ', h('small', {class: 'muted'}, `${x.n}곳 · 평균 `), pv(x.d20.mean), h('small', {class: 'muted'}, ' · 중앙값 '), pv(x.d20.median))))),
+    proFold('전문가용 자세히 — 공식 업종 목록', h('section', {class: 'b-box', 'aria-label': '공식 업종'}, h('h2', {class: 'b-box-h'}, `공식 업종 ${lens.official.length}개`, h('small', null, place.id === 'us' ? ' · 판의 업종 이름 · 업종마다 한 번' : ' · 네이버 증권 업종 · 업종마다 한 번')),
+      h('ol', {class: 'of-list'}, ...lens.official.map(x => h('li', null, h('span', {class: 'of-n'}, x.name), ' ', tagEl(x.level, LEVEL, 'lvl'), ' ', h('small', {class: 'muted'}, `${x.n}곳 · 평균 `), pv(x.d20.mean), h('small', {class: 'muted'}, ' · 중앙값 '), pv(x.d20.median)))))), // 쉬운 말 화면에서는 접음(규칙 48)
     howBox(lens, ['기여(%p) = 그 업종 값이 있는 종목 수익률의 합 ÷ 선정 표본 전체 값이 있는 종목 수 · 업종 기여를 모두 더하면 선정 평균', '업종 제외 = 그 업종 종목의 합 · 수를 빼고 다시 나눔(분모가 줄어듦) · 시가총액 가중 = 남은 종목 시가총액으로 다시 나눔(합 100%)', `업종 상태 규칙 ${lens.rules?.id ?? '—'} · 관측 규칙 obs-rules-1 — 실험 규칙 · 검증 전`]),
     foot(manifest)));
   void fmtPp;

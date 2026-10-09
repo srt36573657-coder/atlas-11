@@ -1342,3 +1342,8 @@ html:not([lang="ko"]) .rs-k::before { content: counter(rsb); }
 .ez-pro > summary { font-size: .98rem; }
 .ez-lv-b { flex: none; height: 44px; margin: 0; padding: 0 12px; border: 0; border-radius: 22px; background: var(--fill); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
 .ez-lv-b[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--ink); }
+.ez-gl { margin: 6px 0 4px; display: grid; gap: 8px; }
+.ez-gi { padding: 8px 10px; border-radius: 10px; background: var(--fill); }
+.ez-gi dt { font-weight: 500; }
+.ez-gp { color: var(--sub); }
+.ez-gi dd { margin: 2px 0 0; color: var(--ink2); font-size: .92rem; line-height: 1.45; word-break: keep-all; }

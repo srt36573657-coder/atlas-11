@@ -10,7 +10,7 @@
    · 바꾸지 않는 것: 숫자 · 날짜 · 시각 · 회사 · 업종 · 갈래 이름 · 원문(lang="ko" — 기사 · 공시 제목 · 사장님 말씀) · 식별자(data-ident · code)
      → 교차 검증(scripts/atlas11/verify/easy_million.mjs · full_check 쉬운 말 층): 쉬운 말 화면의 숫자 = 전문가 말 화면의 숫자 · 어려운 말 0 · 금지 말 0 · 조사 맞음 · 두 번 바꿔도 같음 */
 import {LANG} from './i18n.js';
-import {WORDS, TPL, WHAT, HARD} from './easy-ko.js';
+import {WORDS, TPL, WHAT, HARD, GLOSS} from './easy-ko.js';
 
 const STORE = 'atlas11:level';
 const okLevel = v => (v === 'easy' || v === 'pro' ? v : null);
@@ -232,4 +232,12 @@ export function levelButton() {
   if (LANG !== 'ko' || typeof document === 'undefined') return null;
   const on = LEVEL === 'easy';
   return el('button', {class: 'ez-lv-b', type: 'button', lang: 'ko', 'data-ez-skip': '', 'aria-pressed': String(on), 'aria-label': on ? '쉬운 말로 보는 중 — 누르면 전문가 말(옛 화면 글)' : '전문가 말로 보는 중 — 누르면 쉬운 말', title: on ? '누르면 전문가 말' : '누르면 쉬운 말', onclick: () => setLevel(on ? 'pro' : 'easy')}, '쉬운 말');
+}
+/** 어려운 말 풀이 칸(쉬운 말 화면 「처음」 맨 아래) — 뉴스 말 → 쉬운 말 · 한 줄 뜻(뉴스 말이 그대로 보이게 lang="ko" · 쉬운 말 셈이 건드리지 않음) */
+export function glossaryBox() {
+  if (!EASY || typeof document === 'undefined') return null;
+  return el('section', {class: 'b-box ez-gloss ez-only', id: 'ez-gloss', lang: 'ko', 'data-ez': '', 'data-ez-skip': '', 'aria-label': '어려운 말 풀이'},
+    el('h2', {class: 'b-box-h'}, '어려운 말 풀이', el('small', null, ' · 뉴스 · 증권 앱 말 → ATLAS 쉬운 말')),
+    el('dl', {class: 'ez-gl'}, ...GLOSS.map(([pro, easy, mean]) => el('div', {class: 'ez-gi'}, el('dt', null, el('span', {class: 'ez-gp'}, pro), ' → ', el('b', null, easy)), el('dd', null, mean)))),
+    el('p', {class: 'muted xs'}, '맨 위 「전문가 말」 단추를 누르면 뉴스와 같은 말로 볼 수 있어요'));
 }
