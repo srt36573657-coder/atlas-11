@@ -12,8 +12,8 @@ import {foot} from './parts.js';
 import {blk} from './view-market.js';
 import {quietArt} from './scenes.js';
 import {artStage, artSection} from './art.js';
-import {barRows, axisOf, posOf} from './charts.js';
-import {candLand} from './land3d.js'; // 「후보 7」 입체 땅(2026-10-09 08:26 「입체적으로 보여야하는 중심으로」)
+import {barRows, axisOf, posOf, keyEl} from './charts.js';
+import {candIsland} from './island.js'; // 「후보 7」 섬(2026-10-09 17:02 「잡스가 … 3d방식으로 입체감과 정적인 상태 … 상호 작용속에 유기적인 아틀란스」 · 17:36 「아주 색시한 전달력 있게 … 반영해」 — 옛 탑 일곱 줄 land3d.js 를 바꿈)
 import {pv, ppv, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
 
@@ -52,7 +52,7 @@ export const secDirTxt = sc => (sc?.dir === 'in' ? `돈이 들어온 업종 ${sc
 /* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
 function baseLines(C) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
-  return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · 1년 추세 · 석 달(${C.hold ?? 60}거래일)마다 담음`),
+  return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · 석 달(${C.hold ?? 60}거래일)마다 담음`),
   h('p', {class: 'cd-rule'}, h('b', null, '매수 검토 우선순위'), ' — 예상 수익률 순위 아님 · ', h('b', null, '연구용 · 성능 검증 전'), ' · 포트폴리오 아님',
     rec ? ` · 고정 기록 ${md(new Date(Date.parse(rec.recordedAt) + 9 * 3600e3).toISOString().slice(0, 10))}` : ' · 고정 기록 전'), wxWarn(C)].filter(Boolean);
 }
@@ -62,9 +62,9 @@ const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' &&
 const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
-function cardOf(C) {
+function cardOf(C, {riskAt = 2, actsAt = 3} = {}) {
   const rk = h('span', {class: 'cd-rk'}), name = h('span', {class: 'cd-name', 'data-ident': ''}), sec = h('small', {class: 'cd-sec'}), stw = h('span', {class: 'cd-stw'}), px = h('p', {class: 'cd-px'});
-  const why = h('p', {class: 'ra-li cd-why'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': '2'}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': '3'});
+  const why = h('p', {class: 'ra-li cd-why'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
   const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, risk, note, acts);
   const go = () => { state.candGo = 'why'; state.vt = {el: name, name: 'cd-name'}; }; // 이 이름이 종목 화면 「후보 판단」 머리로 이어짐(app.js 화면 넘김 움직임)
   function fill(x) {
@@ -99,33 +99,40 @@ function growLine(C) {
     ...(S ? [` · 담은 뒤 7곳 `, pv(S.seven?.rD), ' · 그물 ', pv(S.net?.rD), ` · ${C.pool?.universe ?? 365}곳 평균 `, pv(S.all?.rD)] : [' · 담은 뒤 성적은 다음 판부터']));
 }
 
-/* ── ② 그림: 입체 땅(돈이 빠진 땅 · 들어온 땅 · 후보 탑) + 고른 한 곳 + 짧은 줄 일곱 ── */
-export function candArt(C, {sel = null} = {}) {
+/* ── ② 그림: 섬 하나(365곳 · 물 높이 = 그물 기준선 · 빛나는 7곳 = 막 올라온 후보 · 금빛 = 고른 한 곳) + 고른 한 곳 카드 + 짧은 줄 일곱 ──
+   2026-10-09 17:36 「아주 색시한 전달력」 — 하나만 빛나고(금빛 탑 · 위 이름표 = 이름 · 1년 추세) 나머지는 어둠 · 휴대폰 첫 화면에 섬과 이름표가 함께
+   걸음(재생): 0 섬(20거래일 전 — 7곳 물 아래) → 1~7 핀 하나씩(그 탑이 물 위로 · 물결) → 카드의 위험 줄 → 카드의 단추 — 한 걸음에 움직이는 것은 하나(규칙 42) */
+export function candArt(C, {sel = null, stocks = []} = {}) {
   if (!C?.ready || !C.pool) return null;
   const n = C.items.length;
   let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
-  const card = n ? cardOf(C) : null;
+  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2}) : null;
   const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false))) : [];
-  const land = candLand(C, {fmt: eokTxt, sel: cur?.code ?? null, onPick: code => pick(code, true)});
-  function pick(code, fromScene, user = true) {
+  const isl = candIsland(C, stocks, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
+  function pick(code, fromScene, user = true) { // fromScene = 섬(핀 · 탑)에서 고름 — 섬은 이미 바뀜 · 카드와 줄만
     const x = C.items.find(y => y.code === code); if (!x || !card) return;
-    cur = x; card.fill(x); land.setSel(code, user);
+    cur = x; card.fill(x); if (!fromScene) isl?.setSel(code, user);
     if (user) state.candSel = code; // 사람이 고른 것만 기억(돌아오면 그 카드 · 그 탑)
     for (const r of rows) r.querySelector('.cd-pick')?.setAttribute('aria-pressed', String(r.dataset.code === code));
-    if (fromScene) card.el.scrollIntoView?.({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
   }
-  const p = C.pool;
-  land.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: C.grow?.qD ?? null,
-    plates: land.check.plates, towers: land.check.towers});
+  const p = C.pool, q = C.grow?.qD;
+  const key = keyEl([{cls: 'isl-k-water', label: `물 높이 = 그물 기준선(1년 추세 ${pct1(q)})`}, {cls: 'isl-k-net', label: `물 위 = 그물 안 ${isl?.model.above ?? p.net}곳`},
+    {cls: 'isl-k-new', label: `옥빛 탑 · 핀 = 막 올라온 ${n}곳`}, {cls: 'isl-k-hero', label: '금빛 = 고른 한 곳'}], n ? null : 1);
+  const note = h('p', {class: 'muted xs isl-note'}, `섬 = ${stocks.length}곳 · 업종 ${isl?.model.sectors ?? 0}곳은 십자 다섯 칸씩(센 업종이 가운데) · 탑 높이 = 1년 추세 차례(값은 이름표 글로) · 옆으로 끌면 섬이 돎 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)`);
+  if (isl) isl.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
+    towers: C.items.map(x => [x.code, x.rank, x.status, finite(x.grow?.m12D) ? x.grow.m12D : null]), above: isl.model.above, green: isl.model.green}); // 물 위 · 초록 = 섬이 탑 높이로 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳과 맞댐)
+  const art = h('div', {class: 'isl-wrap'}, isl ? isl.el : h('p', {class: 'muted', 'data-at': '0'}, '섬을 그릴 값이 모자람 — 지어내지 않음'), key, note);
   const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` ${p.universe}곳 가운데 · 기준을 낮추지 않음`),
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const gl = growLine(C);
   const list = n ? h('ol', {class: 'cd-list cd-mini', 'aria-label': `후보 ${n}곳 — 누르면 위 카드`}, ...rows) : null;
   const all = (C.rank ?? []).length ? h('p', {class: 'cd-all'}, h('a', {href: '#/', class: 'cd-all-a', onclick: e => { e.preventDefault(); openRank(); }}, `돈 유입 1등~${C.rank.length}등 모두 보기 ›`)) : null;
-  const steps = [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
-  const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: `${p.universe}곳 전체에서`, title: n ? `그물 ${p.netElig}곳에 새로 든 초입` : '새로 든 초입 없음',
-    stage: artStage({key: 'cand', art: land.el, labels, labFirst: false, tail: [gl, list, all].filter(Boolean), steps}), first: 2});
-  if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 탑은 모두 또렷) · 돌아오면 고른 그 카드
+  const steps = n ? [{c: 0, at: 0, ms: 1300}, ...C.items.map((x, k) => ({c: 1, at: k + 1, ms: 700})), {c: 2, at: n + 1, ms: 1200}, {c: 3, at: n + 2, ms: 1000}]
+    : [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1000}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
+  const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: `${p.universe}곳 전체에서`, title: n ? `그물 ${p.netElig}곳 · 물 위로 막 올라온 ${n}곳` : '새로 든 초입 없음',
+    stage: artStage({key: 'cand', art, labels, labFirst: false, tail: [gl, list, all].filter(Boolean), steps}), first: 2});
+  isl?.bind(fig.querySelector('.ra'));
+  if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 금빛만) · 돌아오면 고른 그 카드
   return fig;
 }
 
@@ -256,7 +263,7 @@ export async function renderCand(main, {manifest}) {
   const fold = (t, ...kids) => h('details', {class: 'cd-more-d'}, h('summary', null, t), ...kids);
   main.replaceChildren(h('div', {class: 'b-page cd-page'},
     blk(1, '기준', ...baseLines(C)),
-    candArt(C, {sel: state.candSel}),
+    candArt(C, {sel: state.candSel, stocks: lens.stocks ?? []}),
     blk(3, '자세히', h('div', {class: 'cd-fold'},
       (C.rank ?? []).length ? rankFold(C) : null,
       fold(`어떻게 골랐나 · ${C.pool.universe}곳 → ${n}곳`, ...funnelEl(C)),
