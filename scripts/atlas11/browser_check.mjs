@@ -31,6 +31,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
 import {measureClarity} from './clarity/measure.mjs';
 import {familiesByRise, familyOf, riseDesc, FAMILIES, OTHER} from '../../site/app/family.js';
 import {SCREENS, VIEWS, renderAll, screenHash} from './clarity_check.mjs';
@@ -196,6 +197,22 @@ async function candCheck(page, label, mobile, press) {
     cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && twOk && propOk && cd.svgText === 0 && cd.labs === 0
       && cd.all === `돈 유입 1등~${lens.stocks.length}등 모두 보기 ›` && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
     {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want: wantRows, tws: cd.tws.slice(0, 3), dirs: C.items.map(x => dirW(x.code)), ratio: ratio.map(r => +r.toFixed(3)), shown: cd.shownBtns, all: cd.all});
+  // 날씨(경고만 · 2026-10-09 15:00 기르기판 「날씨로 쉬기는 버림 → 흐린 날엔 경고만」) — 판 읽기 값(파이썬 따로 세기 cand_grow_verify.py 가 입력 종가로 맞댐)과 같게:
+  //   흐림이면 첫 화면 ① 아래 경고 한 줄(평균보다 x% 아래 · 경고만) · 맑음이면 없음 · 흐린 날 길 = lens.json 날씨만 바꿔(목록 지문도 맞춰) 다시 열어 봄 — 빈 날 길과 같은 바꿔치기
+  const W = G.weather ?? null, wxSay = w => `날씨 흐림 · 365곳 평균 지수가 ${w.days ?? 200}거래일 평균보다 ${Math.abs(w.pD).toFixed(1)}% 아래`;
+  const wxRead = () => page.evaluate(() => { const e = document.querySelector('.cd-page .cd-wx'); return e ? {t: e.innerText.replace(/\s+/g, ' ').trim(), role: e.getAttribute('role'), first: e.closest('[data-first]')?.dataset.first ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth} : null; });
+  const wxNow = await wxRead(), vdir = new URL(base).pathname.replace(/\/$/, '') + '/data/atlas11/view/';
+  const man = await get('data/atlas11/view/manifest.json'), ln = await get('data/atlas11/view/lens.json'), sim = {days: 200, ratio: 0.9512, pD: -4.9, state: 'cloudy'};
+  ln.cand.grow.weather = sim; const lt = JSON.stringify(ln); if (man.files?.['lens.json']) man.files['lens.json'] = {...man.files['lens.json'], sha256: createHash('sha256').update(lt).digest('hex'), bytes: Buffer.byteLength(lt)};
+  const mt = JSON.stringify(man), wxRoute = u => u.pathname === vdir + 'lens.json' || u.pathname === vdir + 'manifest.json';
+  await page.route(wxRoute, r => r.fulfill({status: 200, contentType: 'application/json', body: new URL(r.request().url()).pathname.endsWith('/manifest.json') ? mt : lt}));
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(200);
+  const wxSim = await wxRead();
+  await page.unroute(wxRoute); await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(200);
+  const wxBack = await wxRead();
+  check(`${label} 날씨(경고만): 판 읽기 ${W ? `${W.state === 'cloudy' ? '흐림' : '맑음'} ${fpW(W.pD)}(${W.days}거래일 평균 대비)` : '셀 수 없음'} → 첫 화면 경고 ${wxNow ? '한 줄' : '없음'} · 흐린 날 길(자료만 바꿔 −4.9%) → ① 아래 「${wxSim?.t.slice(0, 44) ?? '없음'}…」 · 되돌리면 ${wxBack ? '있음' : '없음'}`,
+    (W?.state === 'cloudy' ? !!wxNow?.t.startsWith(wxSay(W)) : wxNow === null) && !!wxSim?.t.startsWith(wxSay(sim)) && wxSim.t.includes('경고만(고르는 셈은 그대로)') && wxSim.role === 'note' && wxSim.first === '1' && wxSim.sw <= wxSim.cw
+      && JSON.stringify(wxBack) === JSON.stringify(wxNow), {W, wxNow, wxSim, wxBack});
   // 카드 — 처음엔 1위 · 줄을 누르면 그 한 곳(고른 까닭 = 20만 번 중 횟수 + 돈 유입 비율 · 365곳 중 등수 · 포모지수 + 외국인+기관 금액 — 모두 따로 셈 · 가장 큰 위험 = 판 읽기) · 탑을 누르면 같은 카드 · 다른 탑은 흐려짐
   const cardWant = x => ({code: x.code, rank: `${x.rank}위`, name: x.name});
   const qW = fpW(G.qD), mdW = d => `${Number(String(d).slice(5, 7))}월 ${Number(String(d).slice(8, 10))}일`;

@@ -3,7 +3,7 @@
 //   4판(20만 번 다시 뽑기) 셈 도구(seedOf · rngOf · mcDraw · mcOf)는 4판 기록 따로 세기용으로 남아 그대로 시험
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {candOf, candRecordOf, candPubOf, CAND_RULES, RULES4, FLAGS5, seedOf, rngOf, mcOf, mcDraw, drawsTxt, inflowIndexOf, quantileOf, trendOf, plantOf} from '../../lib/atlas11/cand.mjs';
+import {candOf, candRecordOf, candPubOf, CAND_RULES, RULES4, FLAGS5, seedOf, rngOf, mcOf, mcDraw, drawsTxt, inflowIndexOf, quantileOf, trendOf, plantOf, weatherOf} from '../../lib/atlas11/cand.mjs';
 
 const even = (v, n = 10) => Array(n).fill(v / n);
 // 5판 작은 판 — 거래일 300개(그물은 252 + 20 거래일 기록이 있어야) · 값은 쓰는 날에만(판 날 · 20 · 40 · 252 · 272거래일 전)
@@ -128,4 +128,17 @@ test('글에 앞날 · 권유 말 없음 · 기록 모양(grow) · 발행본', (
   const rec = candRecordOf(c); assert.equal(rec.length, 3); assert.equal(rec[0].grow.plantedAt, ASOF); assert.equal(rec[0].grow.m12, 260);
   const pub = candPubOf({place: 'kr', asOf: ASOF, cand: c, universe: {id: 'u'}}, '2026-10-09T08:00:00Z');
   assert.equal(pub.rules, 'cand-rules-5'); assert.equal(pub.grow.planted.at, ASOF); assert.equal(pub.grow.netCodes.length, 8); assert.equal(pub.cand.length, 3);
+});
+
+test('날씨(경고만) — 365곳 같은 무게 평균 지수 ÷ 200거래일 평균 · 1 이상 맑음 · 아래 흐림 · 기록 모자람 · 값 있는 곳 절반 아래면 셀 수 없음(지어내지 않음)', () => {
+  const ses = Array.from({length: 260}, (_, i) => 'd' + String(i).padStart(3, '0')), codes = ['a', 'b', 'c', 'd'];
+  const up = (c, d) => 100 * (1 + 0.001 * Number(d.slice(1)));
+  const dn = (c, d) => { const i = Number(d.slice(1)); return i < 230 ? 100 * (1 + 0.002 * i) : 100 * (1 + 0.002 * 230) * (1 - 0.01 * (i - 230)); };
+  const w1 = weatherOf(codes, 259, ses, up); // 손 셈: 모두 같은 하루 수익률 → 지수 = 종가 비 · 1.259 ÷ 평균(1.060~1.259 = 1.1595) = 1.08581…
+  assert.deepEqual(w1, {days: 200, ratio: 1.0858, pD: 8.6, state: 'sunny'});
+  const w2 = weatherOf(codes, 259, ses, dn); assert.equal(w2.state, 'cloudy'); assert.ok(w2.ratio < 1 && w2.pD < 0);
+  assert.equal(weatherOf(codes, 150, ses, up), null); // 200거래일 기록 모자람
+  assert.equal(weatherOf(codes, 259, ses, (c, d) => (c === 'd' ? up(c, d) : null)), null); // 값이 있는 곳이 절반 아래인 날
+  assert.deepEqual(weatherOf(codes, 259, ses, (c, d) => (c === 'a' && Number(d.slice(1)) >= 250 ? up(c, d) * 10 : up(c, d))), w1); // 하루 ±50% 넘는 값(자료 오류)은 그날 평균에서 뺌
+  assert.equal(CAND_RULES.wxDays, 200);
 });
