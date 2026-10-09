@@ -1,0 +1,97 @@
+{
+ "schema": "atlas11-round-1",
+ "runId": "20261010-hand.2-8a1b34f4",
+ "slot": "hand",
+ "date": "2026-10-10",
+ "startedAt": "2026-10-10T07:38:45+09:00",
+ "endedAt": "2026-10-10T07:38:56+09:00",
+ "boards": {
+  "kr": {
+   "asOf": "2026-10-08",
+   "file": "public/data/atlas11/mc/kr/20261010-hand.2-8a1b34f4.json",
+   "paths": {
+    "target": 10000000,
+    "done": 10000000,
+    "nonfinite": 0,
+    "extreme": 392,
+    "clampedLimit": 707845,
+    "clampedVol": 12331
+   }
+  },
+  "us": {
+   "asOf": "2026-10-09",
+   "file": "public/data/atlas11/mc/us/20261010-hand.2-8a1b34f4.json",
+   "paths": {
+    "target": 10000000,
+    "done": 10000000,
+    "nonfinite": 0,
+    "extreme": 1857,
+    "clampedLimit": 0,
+    "clampedVol": 77941
+   }
+  }
+ },
+ "paths": {
+  "target": 20000000,
+  "done": 20000000,
+  "nonfinite": 0,
+  "reproRuns": 0
+ },
+ "time": {
+  "loadSec": 0.9,
+  "simSec": 10.4,
+  "peakRssMb": 237,
+  "cpu": 2
+ },
+ "engine": {
+  "file": "scripts/atlas11/mc/fhs_crn.py",
+  "sha256": "46189bd9433da30ea6af607e0bee85e1c255231f6f6cab80d745f9a0b0d29a02",
+  "model": "fhs-crn-2",
+  "total": 20000000,
+  "base": 20000,
+  "H": 60,
+  "places": [
+   "kr",
+   "us"
+  ],
+  "python": "3.13.16",
+  "numpy": "2.5.3",
+  "commit": "1f6bca02156705d959d734fbe0ca7f9f1605ed58"
+ },
+ "verify": {
+  "files": [
+   "reports/atlas11/rounds/20261010-hand.2-8a1b34f4.verify-mc.json",
+   "reports/atlas11/rounds/20261010-hand.2-8a1b34f4.verify-elim-kr.json",
+   "reports/atlas11/rounds/20261010-hand.2-8a1b34f4.verify-elim-us.json"
+  ],
+  "note": "검사 결과는 검사마다 따로 새 파일(이 기록은 고치지 않음)"
+ },
+ "published": false,
+ "track": {
+  "kr": {
+   "codes": [
+    "181710",
+    "124500",
+    "103590",
+    "039030",
+    "088350",
+    "161890",
+    "001450"
+   ],
+   "missing": []
+  },
+  "us": {
+   "codes": [
+    "BWLP",
+    "DAVE",
+    "UNIT",
+    "HAFN",
+    "ALSN",
+    "FCFS",
+    "DE"
+   ],
+   "missing": []
+  },
+  "from": "lens.cand.items(회차 앞 판 읽기 · 판마다 후보 최대 7곳)"
+ }
+}

@@ -13,7 +13,9 @@
  *          · se_판 = max(판이 적은 se, 같은 모형이면 판 경로 수에서 나올 se) · JS 표준오차 = 40묶음 묶음 평균법(계획은 10묶음 · 평균만 sd/√n)
  *          · 빈 날이 있는 회사만 √ 안에 2 × se_채움² (채움은 명세 안의 무작위 단계 — 엔진과 JS 가 서로 다른 채움 하나씩 · simOf 설명)
  *        + 난수가 없는 값(지금 흔들림 · 2년 흔들림 · 연 환산 √252)은 거의 똑같아야
- *   ③ 쓰기 — <회차 기록 폴더>/<runId>.verify.json 의 mc 칸만 바꿔 씀(elim 칸 등 다른 칸은 그대로)
+ *   ③ 범위 띠(엔진 --track 을 준 회차만 · 2026-10-10 2단계 첫 화면 둘러보기) — 성질(L2: 날 · 분위수 차례 · 0일 = 0 · 끝날 = 행 q10 · median · q90 · 대표 경로 3개 모양 · 한국 하루 ±30%)
+ *        + 다시 뽑기(L1: 따라간 회사마다 날 20 · 40 · H 의 분위수 0.10 · 0.50 · 0.90 · 5배 너비)
+ *   ④ 쓰기 — <회차 기록 폴더>/<runId>.verify.json 의 mc 칸만 바꿔 씀(elim 칸 등 다른 칸은 그대로)
  *   쓰는 법(저장소 맨 위에서): node scripts/atlas11/verify/mc_verify.mjs --run reports/atlas11/rounds/<runId>.json [--root 뿌리] [--out 파일] [--paths 40000]
  *     --root = 회차 기록에 적힌 판 결과 파일(public/data/atlas11/mc/…)의 뿌리 — 없으면 --run 경로의 reports/atlas11/rounds 앞 · 그것도 아니면 지금 폴더
  *     입력 종가 · 후보 파일은 지금 폴더(저장소 맨 위)에서 읽는다
@@ -34,6 +36,11 @@ const CAND_DIR = {kr: 'public/data/atlas11/cand/u2-n365-v1-2026-10-05/cand-rules
 const ROW_NUM = ['n', 'nBase', 'nExtra', 'nonfinite', 'extreme', 'clamped', 'mean', 'median', 'ploss', 'q05', 'q10', 'q90', 'cvar5', 'volNow', 'vol2y'];
 const SE_NUM = ['mean', 'ploss', 'q05', 'cvar5'];
 const STATS = ['ploss', 'q05', 'cvar5', 'mean'];
+// 범위 띠(2026-10-10 2단계 · 엔진 --track) — 성질(L2) + 다시 뽑기 맞대기(L1): 날 20 · 40 · H 의 분위수 0.10 · 0.50 · 0.90
+export const BAND_Q = [0.10, 0.50, 0.90], K_BAND = 5; // 5배 — 띠 맞대기는 회사마다 9개라 4배면 회차 헛경보가 커짐(자유도 39 t 꼬리 · 회차 약 3%) → 5배(약 0.2%)
+const TRACK_Q = [0.10, 0.25, 0.50, 0.75, 0.90], REP_F = [0.10, 0.50, 0.90];
+const trackDays = H => { const d = []; for (let x = 0; x <= H; x += 5) d.push(x); if (d.at(-1) !== H) d.push(H); return d; };
+const bandDaysOf = H => [...new Set([20, 40, H].filter(d => d >= 1 && d <= H))].sort((a, b) => a - b);
 
 export const sha256 = buf => crypto.createHash('sha256').update(buf).digest('hex');
 const fin = v => typeof v === 'number' && Number.isFinite(v);
@@ -109,22 +116,35 @@ export function residOf(Z, rnd, {demean, zclip}) {
   for (let t = 0; t < T; t++) Z[t] = Math.min(zclip, Math.max(-zclip, Z[t]));
   return Z;
 }
-/** 경로 n개 — 하루 r = √s² × z(고른 날의 잔차) · 한국은 r 을 [log(1−제한), log(1+제한)] 로 묶음 · 다음 s² = w + α r² + β s²(위 끝 cap) · 끝 = expm1(Σr) */
-export function pathsOf(Z, cur, v2y, rnd, {H, alpha, beta, vcap, limit}, n) {
+/** 경로 n개 — 하루 r = √s² × z(고른 날의 잔차) · 한국은 r 을 [log(1−제한), log(1+제한)] 로 묶음 · 다음 s² = w + α r² + β s²(위 끝 cap) · 끝 = expm1(Σr)
+ *  rec = {days: [1 이상 H 이하 · 오름차순]} 를 주면 rec.at[k][j] = 그날까지 expm1(Σr)(범위 띠 맞대기 · 난수를 더 쓰지 않아 끝값은 그대로) */
+export function pathsOf(Z, cur, v2y, rnd, {H, alpha, beta, vcap, limit}, n, rec = null) {
   const T = Z.length, w = (1 - alpha - beta) * v2y, cap = vcap * vcap * Math.max(v2y, cur * cur), s0 = cur * cur;
   const lo = limit == null ? -Infinity : Math.log(1 - limit), hi = limit == null ? Infinity : Math.log(1 + limit), out = new Float64Array(n);
+  const days = rec?.days ?? [], at = rec ? (rec.at = days.map(() => new Float64Array(n))) : null;
   for (let j = 0; j < n; j++) {
-    let s2 = s0, tot = 0;
+    let s2 = s0, tot = 0, k = 0;
     for (let t = 0; t < H; t++) {
       let r = Math.sqrt(s2) * Z[Math.floor(rnd() * T)];
       if (r < lo) r = lo; else if (r > hi) r = hi;
       const sn = w + alpha * (r * r) + beta * s2;
       s2 = sn > cap ? cap : sn;
       tot += r;
+      if (at && k < days.length && days[k] === t + 1) at[k++][j] = Math.expm1(tot);
     }
     out[j] = Math.expm1(tot);
   }
   return out;
+}
+/** 분위수 — 넘파이 기본(직선 보간) · 정렬된 배열 */
+const qSorted = (a, q) => { const n = a.length, pos = q * (n - 1), k = Math.floor(pos); return a[k] + (a[Math.min(n - 1, k + 1)] - a[k]) * (pos - k); };
+/** 날마다 분위수 + 표준오차(nb묶음 묶음 평균법 · 경로 차례대로 이어 자름) — at[k] = 그날 값들 · 값 = [k][q] */
+export function bandStatsOf(at, qs, nb = NB) {
+  return at.map(x => {
+    const n = x.length, all = Float64Array.from(x).sort(), parts = [];
+    for (let b = 0, s = 0; b < nb; b++) { const len = Math.floor(n / nb) + (b < n % nb ? 1 : 0); parts.push(Float64Array.from(x.subarray(s, s + len)).sort()); s += len; }
+    return qs.map(q => ({v: qSorted(all, q), se: sdOf(parts.map(p => qSorted(p, q))) / Math.sqrt(nb)}));
+  });
 }
 /** 한 묶음 — 평균 · sd · 손실 비율(0 미만) · q05(넘파이 기본 직선 보간) · cvar5(q05 이하 평균) */
 function blockOf(x) {
@@ -156,17 +176,25 @@ export function pickOf(runId, universe, cand, nPick = N_PICK) {
  *  빈 날이 있는 회사: 채움은 명세 안의 무작위 단계라 엔진 · JS 가 서로 다른 채움 하나씩을 쓴다 → 채움만 FILL_K번 바꾸고 날짜는 같게(공통 난수) 센 흩어짐 = seFill
  *  (2026-10-10 실측 원본 맞대기 — 미국 WBI 빈 날 31칸: 채움만으로 q05 sd 0.0090 · cvar5 sd 0.0109 = 경로 표준오차의 4~5배 · 빈 날 없는 회사는 0) */
 const FILL_K = 12, FILL_M = 10000;
-export function simOf(B, code, P, seed, nPaths) {
+/** days = 범위 띠 맞대기 날(따라간 회사만 · 없으면 null) — 같은 경로에서 날마다 BAND_Q 분위수 · 표준오차 · 빈 날 채움 흩어짐(band) */
+export function simOf(B, code, P, seed, nPaths, days = null) {
   const R = returnsOf(B, code), F = filterOf(R, P), rnd = mulberry32(seed), gaps = F.Z.reduce((s, v) => s + (Number.isFinite(v) ? 0 : 1), 0);
   const raw = gaps ? Float64Array.from(F.Z) : null;
   residOf(F.Z, rnd, P);
-  const S = statsOf(pathsOf(F.Z, F.cur, F.v2y, rnd, P, nPaths)), seFill = Object.fromEntries(STATS.map(k => [k, 0]));
+  const rec = days ? {days} : null;
+  const S = statsOf(pathsOf(F.Z, F.cur, F.v2y, rnd, P, nPaths, rec)), seFill = Object.fromEntries(STATS.map(k => [k, 0]));
+  const band = rec ? {days, q: BAND_Q, v: bandStatsOf(rec.at, BAND_Q), fill: days.map(() => BAND_Q.map(() => 0))} : null;
   if (gaps) {
-    const dSeed = Math.floor(rnd() * 4294967296), vs = [];
-    for (let k = 0; k < FILL_K; k++) { const Z = residOf(Float64Array.from(raw), rnd, P); vs.push(statsOf(pathsOf(Z, F.cur, F.v2y, mulberry32(dSeed), P, FILL_M)).v); }
+    const dSeed = Math.floor(rnd() * 4294967296), vs = [], bs = [];
+    for (let k = 0; k < FILL_K; k++) {
+      const Z = residOf(Float64Array.from(raw), rnd, P), r2 = rec ? {days} : null;
+      vs.push(statsOf(pathsOf(Z, F.cur, F.v2y, mulberry32(dSeed), P, FILL_M, r2)).v);
+      if (r2) bs.push(r2.at.map(x => { const a = Float64Array.from(x).sort(); return BAND_Q.map(q => qSorted(a, q)); }));
+    }
     for (const k of STATS) seFill[k] = sdOf(vs.map(v => v[k]));
+    if (band) band.fill = days.map((_, d) => BAND_Q.map((_, i) => sdOf(bs.map(b => b[d][i]))));
   }
-  return {...S, seFill, gaps, volNow: F.cur * SQ252, vol2y: Math.sqrt(F.v2y * 252), seed};
+  return {...S, seFill, gaps, band, volNow: F.cur * SQ252, vol2y: Math.sqrt(F.v2y * 252), seed};
 }
 /** 맞대기 너비 = K_SE[k] × √(max(se_판, se_같은모형)² + se_JS² + 2 × se_채움²) — se_같은모형 = se_JS × √(JS 경로 ÷ 판 경로)
  *  까닭(2026-10-10 실측): 계획 그대로(양쪽 10묶음 se · 4배)는 q05 · cvar5 맞대기 하나에 헛경보 약 0.1%(판 전체 730곳 맞대기 여섯 번 17,520개 중 9개) = 회차(160개)의 약 8% ·
@@ -321,12 +349,14 @@ export function verifyRun({runFile, root, repo = process.cwd(), nPaths = 40000, 
       return {ok: !missing.length && picks.length === N_PICK, value: {candFile: cand.file, cand: pk.cand, extra: pk.extra, missing}};
     });
     const base = fnv1a(runId), sims = new Map();
-    for (const code of picks) {
+    const hasBands = !!board && board.bands && typeof board.bands === 'object' && Array.isArray(board.track?.codes);
+    const tracked = hasBands ? board.track.codes.map(String) : [], BD = bandDaysOf(P.H);
+    for (const code of [...picks, ...tracked.filter(c => !picks.includes(c))]) { // 따라간 회사가 표본 밖이면 띠 맞대기에만(값 넷 맞대기는 표본 20곳만)
       try {
         const j = needJ(), idx = j.codes.indexOf(code);
         if (idx < 0) throw Error('입력에 이 회사가 없음(양수 종가 60개 이하)');
         if (!j.T) throw Error('로그수익 칸이 없음');
-        sims.set(code, {S: simOf(j, code, P, (base ^ (offset + idx + 1)) >>> 0, nPaths)});
+        sims.set(code, {S: simOf(j, code, P, (base ^ (offset + idx + 1)) >>> 0, nPaths, tracked.includes(code) ? BD : null)});
       } catch (e) { sims.set(code, {err: e}); }
     }
     check({id: `mc.${place}.sim.vol`, level: 'L1', target: tg('rows/*/volNow,vol2y'), input: inIn, expect: `표본 ${N_PICK}곳 volNow · vol2y(연 환산 √252) — 난수 없이 입력 종가에서 셈 · 차이 ≤ ${VOL_TOL}`}, () => {
@@ -352,6 +382,55 @@ export function verifyRun({runFile, root, repo = process.cwd(), nPaths = 40000, 
         const {s, tol, h0} = tolOf(k, sp, r.n, S), diff = j - p;
         return {ok: Math.abs(diff) <= tol, value: {prod: p, js: p8(j), diff: p8(diff), seProd: sp, seProdH0: p8(h0), seJs: p8(S.se[k]), seFill: p8(S.seFill[k]), gaps: S.gaps, tol: p8(tol), z: s > 0 ? p8(diff / s) : null, nProd: r.n, nJs: S.n, seed: S.seed}};
       });
+    }
+    // ③ 범위 띠(엔진 --track 을 준 회차만 · 2026-10-10 2단계 첫 화면 둘러보기 「시뮬레이션 요약」)
+    if (hasBands) {
+      const b = board, H = P.H, days = trackDays(H), eq = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+      check({id: `mc.${place}.bands.file`, level: 'L2', target: tg('track'), input: bIn, expect: `track.days = 0 · 5 … · ${H} · track.q = ${TRACK_Q.join(' · ')} · track.rep = ${REP_F.join(' · ')} · bands 열쇠 = track.codes(같은 모음) · 모두 판 행에 있음 · 띠 n = 행 n`}, () => {
+        const bad = [];
+        if (!eq(b.track.days, days)) bad.push(`days ${JSON.stringify(b.track.days)}`);
+        if (!eq(b.track.q, TRACK_Q)) bad.push(`q ${JSON.stringify(b.track.q)}`);
+        if (!eq(b.track.rep, REP_F)) bad.push(`rep ${JSON.stringify(b.track.rep)}`);
+        if (!eq(Object.keys(b.bands).sort(), [...tracked].sort())) bad.push(`bands 열쇠 ${Object.keys(b.bands).join(',')} ≠ track.codes ${tracked.join(',')}`); // 모음으로 맞댐 — JS 는 숫자 모양 열쇠(「103590」)를 앞으로 옮겨 적힌 차례를 잃음(차례는 track.codes 가 지님)
+        for (const c of tracked) { const r = prodRow.get(c); if (!r) bad.push(`${c}: 판 행 없음`); else if (b.bands[c]?.n !== r.n) bad.push(`${c}: 띠 n ${b.bands[c]?.n} ≠ 행 n ${r.n}`); }
+        return {ok: !bad.length, value: {codes: tracked, missing: b.track.missing ?? [], from: b.track.from ?? null, bad}};
+      });
+      check({id: `mc.${place}.bands.props`, level: 'L2', target: tg('bands'), input: bIn, expect: `날마다 분위수 다섯이 유한 · 작은 것부터 · 0일 = 모두 0 · ${H}일 0.10 · 0.50 · 0.90 = 행 q10 · median · q90 · 대표 경로 3개(길이 ${H + 1} · 0에서 시작 · 끝 = end · 끝값이 그 분위수 가까이(max(0.001, 2% × 가운데 80% 폭))${place === 'kr' ? ' · 하루 변화 ±30% 안' : ''})`}, () => {
+        const bad = [];
+        for (const c of tracked) {
+          const x = b.bands[c], r = prodRow.get(c), q = x?.q;
+          if (!Array.isArray(q) || q.length !== days.length) { bad.push(`${c}: q 줄 수 ${q?.length}`); continue; }
+          q.forEach((row, d) => { if (!Array.isArray(row) || row.length !== TRACK_Q.length || !row.every(fin) || row.some((v, i) => i && v < row[i - 1])) bad.push(`${c} ${days[d]}일: ${JSON.stringify(row)}`); });
+          if (!q[0].every(v => v === 0)) bad.push(`${c} 0일 ≠ 0: ${JSON.stringify(q[0])}`);
+          const last = q.at(-1), iq = last[4] - last[0], near = Math.max(0.001, 0.02 * iq);
+          if (r && [[0, 'q10'], [2, 'median'], [4, 'q90']].some(([i, k]) => !(Math.abs(last[i] - r[k]) <= 1e-9))) bad.push(`${c} ${H}일 ${JSON.stringify(last)} ≠ 행 ${r.q10} · ${r.median} · ${r.q90}`);
+          if (!Array.isArray(x.rep) || x.rep.length !== REP_F.length) { bad.push(`${c}: 대표 경로 ${x.rep?.length}개`); continue; }
+          x.rep.forEach((p, k) => {
+            const path = p?.path, qi = TRACK_Q.indexOf(REP_F[k]);
+            if (p?.f !== REP_F[k]) bad.push(`${c} 대표 ${k}: f ${p?.f}`);
+            if (!Number.isInteger(p?.idx) || p.idx < 0 || !r || p.idx >= r.nBase + r.nExtra) bad.push(`${c} 대표 ${k}: idx ${p?.idx}`);
+            if (!Array.isArray(path) || path.length !== H + 1 || !path.every(fin)) { bad.push(`${c} 대표 ${k}: 경로 모양`); return; }
+            if (path[0] !== 0 || path[H] !== p.end) bad.push(`${c} 대표 ${k}: 처음 ${path[0]} · 끝 ${path[H]} ≠ end ${p.end}`);
+            if (!(Math.abs(p.end - last[qi]) <= near)) bad.push(`${c} 대표 ${k}: end ${p.end} · 분위수 ${last[qi]}(허용 ${p8(near)})`);
+            if (place === 'kr') for (let t = 0; t < H; t++) { const g = (1 + path[t + 1]) / (1 + path[t]); if (!(g >= 0.7 - 1e-4 && g <= 1.3 + 1e-4)) { bad.push(`${c} 대표 ${k}: ${t + 1}일 변화 ${p8(g - 1)}`); break; } }
+          });
+        }
+        return {ok: !bad.length, value: {codes: tracked.length, bad: bad.slice(0, 12)}};
+      });
+      for (const code of tracked) {
+        check({id: `mc.${place}.bands.sim.${code}`, level: 'L1', target: tg(`bands/${code}`), input: inIn, expect: `날 ${BD.join(' · ')} 분위수 ${BAND_Q.join(' · ')}: |JS − 판| ≤ ${K_BAND} × √(h0² + se_JS² + 2 × se_채움²) — se_JS ${NB}묶음 · h0 = se_JS × √(n_JS ÷ n_판)(판은 띠 표준오차를 적지 않음)`}, () => {
+          const {S, err} = sims.get(code) ?? {}, r = prodRow.get(code), x = b.bands[code];
+          if (err) throw err;
+          if (!S?.band) throw Error('다시 셈에 띠가 없음');
+          if (!r || !x) throw Error('판 행 또는 띠 없음');
+          const bad = [], cells = [];
+          BD.forEach((d, k) => { const di = days.indexOf(d); BAND_Q.forEach((q, i) => {
+            const p = x.q[di]?.[TRACK_Q.indexOf(q)], js = S.band.v[k][i], h0 = js.se * Math.sqrt(S.n / r.n), fl = S.band.fill[k][i], s = Math.sqrt(h0 * h0 + js.se * js.se + 2 * fl * fl), diff = js.v - p;
+            cells.push([d, q, p, p8(js.v), p8(diff / s)]);
+            if (!fin(p) || !(Math.abs(diff) <= K_BAND * s)) bad.push(`${d}일 q${q}: 판 ${p} · JS ${p8(js.v)} · 허용 ${p8(K_BAND * s)}`); }); });
+          return {ok: !bad.length, value: {cells, bad, gaps: S.gaps, nProd: r.n, nJs: S.n, seed: S.seed}};
+        });
+      }
     }
     offset += J?.codes.length ?? 0;
   }

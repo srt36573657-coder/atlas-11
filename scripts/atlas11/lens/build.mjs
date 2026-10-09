@@ -42,6 +42,8 @@ export function mcFor({latest, result, asOf, inputSha}) {
   return {runId: result.runId, made: result.made ?? null, asOf: result.asOf, model: result.model ?? null, rng: result.rng ?? null,
     alloc: result.alloc ? {base: result.alloc.base, extra: result.alloc.extra, extraBoard: result.alloc.extraBoard, cap: result.alloc.cap, threshold: result.alloc.threshold, floor: result.alloc.floor ?? null} : null,
     paths: result.paths ?? null, input: result.input ? {file: result.input.file, sha256: result.input.sha256, days: result.input.days, from: result.input.from, to: result.input.to} : null,
+    track: result.track && Array.isArray(result.track.codes) ? {codes: result.track.codes, missing: result.track.missing ?? [], days: result.track.days, q: result.track.q, rep: result.track.rep, from: result.track.from ?? null} : null, // 범위 띠(2026-10-10 2단계 · 엔진 --track) — 후보 둘러보기 「시뮬레이션 요약」
+    bands: result.track && result.bands && typeof result.bands === 'object' ? Object.fromEntries(result.track.codes.filter(c => result.bands[c]).map(c => [c, result.bands[c]])) : null,
     rows: result.rows.map(r => Object.fromEntries(MC_ROW_KEYS.filter(k => k in r).map(k => [k, r[k]])))};
 }
 export async function lensFrom(root, place, {made = new Date().toISOString(), view = null} = {}) { // view = {board, manifest, agenda} — 막 만든 판(저녁 기록이 쓰기 전 · 파일로 내리기 전)

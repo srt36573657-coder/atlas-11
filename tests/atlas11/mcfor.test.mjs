@@ -23,3 +23,12 @@ test('기준일이 다르거나 · 입력 지문이 다르거나 · 결과가 �
   assert.match(mcFor({latest: {...latest, schema: 'x'}, result, asOf: '2026-10-08', inputSha: 'abc'}).why, /모양/);
   for (const x of [mcFor({latest, result, asOf: '2026-10-09', inputSha: 'abc'})]) assert.equal(x.none, true);
 });
+test('범위 띠 — 엔진이 따라간 회사(track.codes)만 싣고, 띠가 없는 회차는 null', () => {
+  const band = {n: 27000, q: [[0, 0, 0, 0, 0], [-0.4, -0.2, -0.01, 0.2, 0.5]], rep: [{f: 0.1, idx: 3, end: -0.4, path: [0, -0.4]}]};
+  const withB = {...result, track: {codes: ['A'], missing: ['Z'], days: [0, 60], q: [0.1, 0.25, 0.5, 0.75, 0.9], rep: [0.1, 0.5, 0.9], from: 'lens.cand.items', note: 'x'}, bands: {A: band, B: band}};
+  const m = mcFor({latest, result: withB, asOf: '2026-10-08', inputSha: 'abc'});
+  assert.deepEqual(m.track, {codes: ['A'], missing: ['Z'], days: [0, 60], q: [0.1, 0.25, 0.5, 0.75, 0.9], rep: [0.1, 0.5, 0.9], from: 'lens.cand.items'});
+  assert.deepEqual(Object.keys(m.bands), ['A'], 'track.codes 밖(B)은 싣지 않음'); assert.deepEqual(m.bands.A, band);
+  const old = mcFor({latest, result, asOf: '2026-10-08', inputSha: 'abc'});
+  assert.equal(old.track, null); assert.equal(old.bands, null);
+});

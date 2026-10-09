@@ -18,6 +18,7 @@
         → 판 안 spawn(2) = [채움(빈 날 잔차), 날짜]
   쓰는 법(저장소 맨 위에서):
     python3 scripts/atlas11/mc/fhs_crn.py --slot hand [--run-id ID] [--total 20000000] [--base 20000] [--h 60] [--places kr,us] [--out-root .]
+      [--track 'kr:181710,124500;us:BWLP' --track-from lens.cand.items]   ← 그 회사들만 범위 띠(날마다 분위수 · 대표 경로 3개 · 2026-10-10 2단계)
     python3 scripts/atlas11/mc/fhs_crn.py --codes kr:181710,us:BWLP --alloc-from <판 결과>[,<판 결과>] [--run-id ID]
       ↑ 재현 — 그 회사만 같은 셈(배분은 판 결과의 nBase · nExtra) · 파일 안 씀 · stdout {"repro": rows, …}
   쓰는 곳(<out-root> 아래 · 입력은 늘 저장소에서 읽음):
@@ -45,6 +46,11 @@ CAP_MAX, CAP_X = 200_000, 10  # 한 곳 추가 위 끝 = min(20만, 10 × base)
 MIN_CLOSES = 60  # 종가가 60개 넘는 회사만
 EXT_RET, EXT_LOG = 10.0, 1.0  # 아주 큰 움직임(지우지 않고 셈) — 60일 뒤 +1000% 넘음 · 하루 로그 움직임 1 넘음
 RUN_ID_RE = re.compile(r'^[0-9A-Za-z][0-9A-Za-z._-]{0,79}$')  # 파일 이름이 되므로 / 같은 글자 없음
+# 범위 띠(2026-10-10 2단계 · 설계 보고 ④ 「시뮬레이션 요약 — 범위 띠 + 대표 경로 3개」) — 따라갈 회사(--track)만 날마다 분위수 · 대표 경로
+TRACK_Q = (0.10, 0.25, 0.50, 0.75, 0.90)  # 옅은 띠 = 가운데 80% · 진한 띠 = 가운데 50% · 굵은 선 = 가운데 값
+REP_F = (0.10, 0.50, 0.90)  # 대표 경로 3개 — 끝값이 이 분위수에 가장 가까운 실제 경로
+TRACK_MAX = 12  # 판마다 따라갈 회사 위 끝(후보 7 + 경계 3 = 10 을 넉넉히)
+CODE_RE = re.compile(r'^[0-9A-Za-z][0-9A-Za-z._-]{0,19}$')
 
 
 def die(msg):
@@ -159,9 +165,10 @@ def params_of(cur_i, v2y_i):
     return np.float32(cur_i ** 2), np.float32((1 - ALPHA - BETA) * v2y_i), np.float32(VCAP * VCAP * max(v2y_i, cur_i ** 2))
 
 
-def simulate(zi, cols, s2_0, w, cap, lim):
+def simulate(zi, cols, s2_0, w, cap, lim, keep=None):
     """한 회사 · 경로 m 개(cols = H × m 날짜 번호) → tot(H일 로그 합 · float32) · flag(1 가격 제한 · 2 흔들림 위 끝 · 4 하루 로그 움직임 1 넘음)
-       경로끼리 섞는 셈이 없어 경로를 나눠 돌려도 값이 같음"""
+       경로끼리 섞는 셈이 없어 경로를 나눠 돌려도 값이 같음
+       keep = (H + 1) × m float32(0 으로 채운 것) — 주면 날마다 그날까지의 로그 합을 적음(keep[t + 1] = 그날 tot · 같은 셈 그대로라 keep[H] = tot)"""
     H, m = cols.shape
     s2 = np.full(m, s2_0, np.float32)
     tot = np.zeros(m, np.float32)
@@ -191,8 +198,43 @@ def simulate(zi, cols, s2_0, w, cap, lim):
             np.greater(u, EXT_LOG, out=b)
             big |= b
         tot += r
+        if keep is not None:
+            keep[t + 1] = tot
     flag = hitr.view(np.uint8) | (hitv.view(np.uint8) << 1) | (big.view(np.uint8) << 2)
     return tot, flag
+
+
+def track_days(H):
+    """범위 띠를 적는 날 — 0 · 5 · 10 … · H(H 가 5의 배수가 아니면 H 를 더함)"""
+    ds = list(range(0, H + 1, 5))
+    if ds[-1] != H:
+        ds.append(H)
+    return ds
+
+
+def bands_of(cum, tot):
+    """한 회사 범위 띠(2026-10-10 2단계 · 첫 화면 둘러보기 「시뮬레이션 요약」) — cum = (H + 1) × m 날마다 로그 합(simulate keep) · tot = 끝 로그 합
+       끝값이 유한한 경로만(stats_of 와 같은 경로) · 날마다 단순 수익의 분위수 TRACK_Q · 대표 경로 3개 = 끝값이 REP_F 분위수에 가장 가까운 실제 경로(같으면 앞 번호)
+       끝날(H) 분위수 0.10 · 0.50 · 0.90 은 판 행의 q10 · median · q90 과 같은 값(같은 경로 · 같은 셈)"""
+    with np.errstate(over='ignore', invalid='ignore'):
+        end = np.expm1(tot.astype(np.float64))
+    idx = np.flatnonzero(np.isfinite(end))
+    days = track_days(cum.shape[0] - 1)
+    q = []
+    for d in days:
+        with np.errstate(over='ignore', invalid='ignore'):
+            v = np.expm1(cum[d, idx].astype(np.float64))
+        q.append([r6(x) for x in np.quantile(v, TRACK_Q)] if idx.size else [None] * len(TRACK_Q))
+    rep = []
+    ef = end[idx]
+    for f in REP_F:
+        if not idx.size:
+            break
+        k = int(idx[int(np.argmin(np.abs(ef - float(np.quantile(ef, f)))))])
+        with np.errstate(over='ignore', invalid='ignore'):
+            path = np.expm1(cum[:, k].astype(np.float64))
+        rep.append({'f': f, 'idx': k, 'end': r6(end[k]), 'path': [r6(x) for x in path]})
+    return {'n': int(idx.size), 'q': q, 'rep': rep}
 
 
 def stats_of(tot, flag):
@@ -318,8 +360,9 @@ def row_of(code, nbase, nextra, st, cur_i, v2y_i):
             'volNow': r6(cur_i * math.sqrt(252)), 'vol2y': r6(math.sqrt(v2y_i * 252))}
 
 
-def run_board(place, bd, kid, H, base, extra_b, cap):
-    """한 판 — 기본 base 개(모든 회사) → 추가 몫 배분 → 추가 경로 → 회사마다 기본 + 추가 통계 · 회사 하나씩(모든 경로를 한꺼번에 들지 않음)"""
+def run_board(place, bd, kid, H, base, extra_b, cap, track=()):
+    """한 판 — 기본 base 개(모든 회사) → 추가 몫 배분 → 추가 경로 → 회사마다 기본 + 추가 통계 · 회사 하나씩(모든 경로를 한꺼번에 들지 않음)
+       track = 범위 띠를 낼 회사 기호들 — 그 회사만 같은 경로를 날마다 적어(keep) 띠 · 대표 경로(통계와 같은 경로 · 끝날 분위수 = 행 값)"""
     t0 = time.time()
     ss_fill, ss_dates = kid.spawn(2)
     Z, cur, v2y, T, data = prep_board(bd, ss_fill)
@@ -349,22 +392,38 @@ def run_board(place, bd, kid, H, base, extra_b, cap):
             raise RuntimeError('날짜 줄 앞 번호가 ①과 다름')
         D = D2
     rows = []
+    tset, bands = set(track), {}
     tally = {'done': 0, 'nonfinite': 0, 'extreme': 0, 'clampedLimit': 0, 'clampedVol': 0}
     for i in range(n):  # ② 추가 — 같은 날짜 줄의 다음 번호 · 기본과 이어 붙여 통계
-        e = int(ext[i])
+        e, tracked = int(ext[i]), codes[i] in tset
+        kb = ke = None
+        if tracked:  # 띠 — 기본 몫을 같은 날짜 · 같은 값으로 한 번 더 돌며 날마다 적음(①과 한 비트도 다르면 멈춤)
+            kb = np.zeros((H + 1, base), np.float32)
+            tb, fb = simulate(Z[i], D[:, :base], *par[i], lim, keep=kb)
+            if not (np.array_equal(tb, tot_b[i]) and np.array_equal(fb, fl_b[i])):
+                raise RuntimeError(f'{place}:{codes[i]} 띠 경로가 ① 기본 경로와 다름')
         if e:
-            te, fe = simulate(Z[i], D[:, base:base + e], *par[i], lim)
+            ke = np.zeros((H + 1, e), np.float32) if tracked else None
+            te, fe = simulate(Z[i], D[:, base:base + e], *par[i], lim, keep=ke)
             tt, ff = np.concatenate([tot_b[i], te]), np.concatenate([fl_b[i], fe])
         else:
             tt, ff = tot_b[i], fl_b[i]
         st = stats_of(tt, ff)
         rows.append(row_of(codes[i], base, e, st, float(cur[i]), float(v2y[i])))
+        if tracked:
+            b = bands_of(np.concatenate([kb, ke], axis=1) if ke is not None else kb, tt)
+            last, row = b['q'][-1], rows[-1]
+            if b['n'] != row['n'] or (row['n'] and (last[0], last[2], last[4]) != (row['q10'], row['median'], row['q90'])):
+                raise RuntimeError(f'{place}:{codes[i]} 띠 끝날 분위수가 행과 다름: {last} · {row["q10"]} {row["median"]} {row["q90"]}')
+            bands[codes[i]] = b
+            del kb, ke
         tally['done'] += st['n']; tally['nonfinite'] += st['nonfinite']; tally['extreme'] += st['extreme']
         tally['clampedLimit'] += st['hitLimit']; tally['clampedVol'] += st['hitVol']
     del tot_b, fl_b, D
     say(f'{place} · 회사 {n} · 날 {T} · 기본 {n * base:,}({t1 - t0:.1f}초) · 추가 {int(ext.sum()):,}({time.time() - t1:.1f}초) · 추가 위 끝 닿은 곳 {int((ext >= cap).sum()) if extra_b else 0}')
     return {'rows': rows, 'tally': tally, 'T': T, 'data': data, 'extra': int(ext.sum()),
-            'floor': {'stocks': int((need > 0).sum()), 'paths': int(floor_.sum()), 'target': SE_TARGET}}
+            'floor': {'stocks': int((need > 0).sum()), 'paths': int(floor_.sum()), 'target': SE_TARGET},
+            'bands': {c: bands[c] for c in track if c in bands}}  # 따라갈 회사 차례 그대로
 
 
 def write_new(path, text):
@@ -394,10 +453,39 @@ def write_replace(path, text):
 
 
 def board_text(res):
-    """판 결과 글 — 머리는 한 칸 들여쓰기 · rows 는 한 회사 한 줄"""
-    head = json.dumps({k: v for k, v in res.items() if k != 'rows'}, ensure_ascii=False, indent=1)
+    """판 결과 글 — 머리는 한 칸 들여쓰기 · bands(있으면) · rows 는 한 회사 한 줄"""
+    head = json.dumps({k: v for k, v in res.items() if k not in ('rows', 'bands')}, ensure_ascii=False, indent=1)
+    out = head[:-2]
+    if 'bands' in res:
+        bl = ',\n'.join(f'  {json.dumps(c)}: ' + json.dumps(b, ensure_ascii=False, separators=(',', ':')) for c, b in res['bands'].items())
+        out += ',\n "bands": {' + ('\n' + bl + '\n ' if bl else '') + '}'
     rows = ',\n'.join('  ' + json.dumps(r, ensure_ascii=False) for r in res['rows'])
-    return head[:-2] + ',\n "rows": [\n' + rows + '\n ]\n}\n'
+    return out + ',\n "rows": [\n' + rows + '\n ]\n}\n'
+
+
+def parse_track(text):
+    """--track 「kr:A,B;us:X」 → {판: [기호 …]}(차례 그대로 · 겹침 뺌) · 모양이 틀리면 멈춤"""
+    out = {}
+    if not text:
+        return out
+    for part in str(text).split(';'):
+        part = part.strip()
+        if not part:
+            continue
+        p, _, cs = part.partition(':')
+        if p not in PLACES or p in out:
+            die(f'--track 모양은 kr:기호,기호;us:기호 — {part!r}')
+        codes = []
+        for c in cs.split(','):
+            c = c.strip()
+            if not CODE_RE.match(c):
+                die(f'--track 회사 기호 모양이 아님: {c!r}')
+            if c not in codes:
+                codes.append(c)
+        if len(codes) > TRACK_MAX:
+            die(f'--track {p} 회사 {len(codes)}곳 — 판마다 {TRACK_MAX}곳까지')
+        out[p] = codes
+    return out
 
 
 def board_rel(place, run_id):
@@ -431,6 +519,7 @@ def run(a):
     if a.base < 1 or a.h < 1 or a.total < 1:
         die('--total · --base · --h 는 1 이상')
     places, out = parse_places(a.places), Path(a.out_root)
+    track = parse_track(a.track)  # 무거운 셈 전에 모양부터
     if a.run_id:
         check_free(out, a.run_id, places)  # 무거운 셈 전에 먼저 멈춤
     boards = {p: load_board(p) for p in PLACES}  # 회사 수 · 입력 지문은 늘 두 판(배분 · 회차 ID 가 --places 와 상관없게)
@@ -457,7 +546,8 @@ def run(a):
             die(f'{p} 추가 {share[p]:,} 개가 한 곳 위 끝 {cap:,} × {count[p]} 곳을 넘음 — --base 를 키우거나 --total 을 줄이세요')
     kids, seed_hex = board_kids(run_id), seed_hex_of(run_id)
     t1 = time.time()
-    done = {p: run_board(p, boards[p], kids[p], a.h, a.base, share[p], cap) for p in places}
+    tk = {p: [c for c in track.get(p, []) if c in boards[p]['codes']] for p in places}  # 입력에 없는(종가 60개 이하) 기호는 missing 으로 적음
+    done = {p: run_board(p, boards[p], kids[p], a.h, a.base, share[p], cap, tk[p]) for p in places}
     t_sim = time.time() - t1
     made = now_kst()
     results = {}
@@ -479,6 +569,10 @@ def run(a):
             'paths': {'target': a.base * count[p] + share[p], **d['tally']},
             'rows': d['rows'],
         }
+        if a.track is not None:  # 범위 띠 — --track 을 준 회차만(주지 않으면 옛 모양 그대로)
+            results[p]['track'] = {'codes': tk[p], 'missing': [c for c in track.get(p, []) if c not in tk[p]], 'days': track_days(a.h), 'q': list(TRACK_Q), 'rep': list(REP_F),
+                                   'from': a.track_from, 'note': '띠 = 그 회사 통계와 같은 경로(기본 + 추가)에서 날마다 센 분위수 · 대표 경로 = 끝값이 그 분위수에 가장 가까운 실제 경로 하나(전체 결과 아님)'}
+            results[p]['bands'] = d['bands']
         assert results[p]['paths']['done'] + results[p]['paths']['nonfinite'] == results[p]['paths']['target']
     for p in places:
         write_new(out / board_rel(p, run_id), board_text(results[p]))
@@ -493,6 +587,9 @@ def run(a):
                       'python': sys.version.split()[0], 'numpy': np.__version__, 'commit': git_head()},  # 실행 버전(지시서 7 · 15) — 넘파이 난수 흐름은 판이 바뀌면 달라질 수 있어 함께 남김
            'verify': {'files': [f'reports/atlas11/rounds/{run_id}.verify-mc.json'] + [f'reports/atlas11/rounds/{run_id}.verify-elim-{p}.json' for p in places],
                       'note': '검사 결과는 검사마다 따로 새 파일(이 기록은 고치지 않음)'}, 'published': False}
+    if a.track is not None:
+        rec['track'] = {p: {'codes': results[p]['track']['codes'], 'missing': results[p]['track']['missing']} for p in places}
+        rec['track']['from'] = a.track_from
     write_new(out / round_rel(run_id), json.dumps(rec, ensure_ascii=False, indent=1) + '\n')
     for p in places:  # 회차 기록까지 쓴 뒤에 가리키는 파일을 옮김
         ptr = {'schema': 'atlas11-mc-latest-1', 'runId': run_id, 'file': board_rel(p, run_id), 'asOf': results[p]['asOf'],
@@ -581,7 +678,11 @@ def main(argv=None):
     ap.add_argument('--codes', help='재현: kr:코드,us:코드 — 그 회사만 다시 셈(파일 안 씀)')
     ap.add_argument('--alloc-from', help='재현: 판 결과 파일(쉼표로 여럿) — nBase · nExtra · 회차 ID')
     ap.add_argument('--se-target', type=float, default=SE_TARGET, help='수렴 바닥 오차(기본 0.0045 · 시험에서 1 이면 바닥을 끔)')
+    ap.add_argument('--track', help='범위 띠를 낼 회사 「kr:기호,기호;us:기호」(판마다 12곳까지 · 빈 글이면 띠 칸만 비움)')
+    ap.add_argument('--track-from', help='따라갈 회사를 어디서 골랐나(기록용 글 · 예: lens.cand.items)')
     a = ap.parse_args(argv)
+    if a.track_from is not None and a.track is None:
+        die('--track-from 은 --track 과 함께')
     SE_TARGET = a.se_target
     if a.codes:
         repro(a)
