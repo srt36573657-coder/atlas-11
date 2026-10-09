@@ -7,6 +7,7 @@ ATLAS 11 · 매수 검토 후보 5판(기르기판) 따로 세기 — 사장님 
   · 1년 추세 = 20거래일 전 종가 ÷ 252거래일 전 종가 − 1 · 그날 종가가 있어야 · 소수 넷째 자리(자바스크립트 Math.round 와 같게 floor(x·10⁴ + 0.5)/10⁴)
   · 그물 = 셀 수 있는 곳 가운데 상위 20%(numpy.quantile 기본 = 직선 보간) · 초입 = 오늘 그물 안 · 20거래일 전 그물 밖
   · 기준(그날 종가 · 흑자 · 위험 공시 없음)은 공시 원문이 필요해 판 읽기 조건(flags 앞 셋)을 그대로 씀 — 가격 셈만 따로
+  · 날씨(경고만) = 365곳 같은 무게 평균 지수(날마다 두 종가가 다 있는 곳의 하루 수익률 평균 · ±50% 넘는 값은 뺌 · 이어 곱함) ÷ 지난 200거래일(오늘 포함) 지수 평균 — 1 이상 맑음
   python3 -I scripts/atlas11/verify/cand_grow_verify.py [--lens dist/data/atlas11/view/lens.json] [--out 파일]
   · 판 읽기(lens.json)는 package.mjs 가 dist 에 만든다(public 에는 없음) — 기본값 = dist
 """
@@ -50,6 +51,26 @@ def trend(code, k):
         return None
     return r4(b / a - 1)
 
+def weather(k, days=200):
+    if k < days or k >= len(ses):
+        return None
+    lvl, tot = 1.0, 1.0
+    for i in range(k - days + 2, k + 1):
+        s, n = 0.0, 0
+        for c in codes:
+            m = px.get(c, {})
+            a, b = m.get(ses[i - 1]), m.get(ses[i])
+            if a is not None and b is not None and a > 0:
+                r = b / a - 1
+                if abs(r) < 0.5:
+                    s += r
+                    n += 1
+        if n < len(codes) / 2:
+            return None
+        lvl *= 1 + s / n
+        tot += lvl
+    return r4(lvl / (tot / days))
+
 res = {'asOf': asof, 'rules': C.get('rules'), 'checks': {}}
 ok_all = True
 def chk(name, ok, detail=None):
@@ -78,6 +99,11 @@ else:
         {'py': [len(vals), len(net), len(net & elig), len((net - prev) & elig)], 'lens': [pool.get('valid'), pool.get('net'), pool.get('netElig'), pool.get('newc')]})
     order = sorted(net & elig, key=lambda c: (-m[c], c))
     chk('net_codes', order == G.get('netCodes'), {'py': order[:5], 'lens': (G.get('netCodes') or [])[:5]})
+    W = G.get('weather') or {}
+    wr = weather(k0, W.get('days') or 200)
+    chk('weather', wr is not None and W.get('ratio') is not None and abs(wr - W['ratio']) < 1.5e-4 and W.get('state') == ('sunny' if wr >= 1 else 'cloudy'),
+        {'py': wr, 'lens': [W.get('ratio'), W.get('state')]})
+    res['weather'] = {'ratio': wr, 'state': ('sunny' if wr is not None and wr >= 1 else 'cloudy' if wr is not None else None), 'pD': None if wr is None else round((wr - 1) * 100, 1)}
     gof = {s['code']: s.get('g') for s in L.get('stocks', [])}
     fresh = sorted((net - prev) & elig, key=lambda c: (-m[c], c))
     per, pick = {}, []

@@ -14,9 +14,17 @@
   "net_codes": {
    "match": true
   },
+  "weather": {
+   "match": true
+  },
   "seven": {
    "match": true
   }
+ },
+ "weather": {
+  "ratio": 1.0414,
+  "state": "sunny",
+  "pD": 4.1
  },
  "q": 66.14,
  "net": 68,

@@ -54,8 +54,12 @@ function baseLines(C) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
   return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · 1년 추세 · 석 달(${C.hold ?? 60}거래일)마다 담음`),
   h('p', {class: 'cd-rule'}, h('b', null, '매수 검토 우선순위'), ' — 예상 수익률 순위 아님 · ', h('b', null, '연구용 · 성능 검증 전'), ' · 포트폴리오 아님',
-    rec ? ` · 고정 기록 ${md(new Date(Date.parse(rec.recordedAt) + 9 * 3600e3).toISOString().slice(0, 10))}` : ' · 고정 기록 전')];
+    rec ? ` · 고정 기록 ${md(new Date(Date.parse(rec.recordedAt) + 9 * 3600e3).toISOString().slice(0, 10))}` : ' · 고정 기록 전'), wxWarn(C)].filter(Boolean);
 }
+/** 날씨 경고 한 줄(흐린 날만 · 고르는 셈은 그대로) — 기르기판 「날씨로 쉬기는 버림 → 흐린 날엔 경고만」(2026-10-09 15:00) · 맑은 날은 「③ 자세히」 규칙 ⑧에만 */
+const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' && finite(W.pD) ? h('p', {class: 'cd-wx', role: 'note'}, h('b', null, '날씨 흐림'),
+  ` · 365곳 평균 지수가 ${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% 아래 · 흐린 때 결과는 아직 모름 · 경고만(고르는 셈은 그대로)`) : null; };
+const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
 function cardOf(C) {
@@ -209,6 +213,7 @@ function rulesEl(C) {
       h('li', null, h('b', null, '⑤ 7곳 · 차례(검토 우선순위)'), ` · ④를 넘은 초입을 1년 추세 큰 순 · 같은 업종 ${C.perSector ?? 3}곳 · 7곳까지 — 모자라면 모자란 대로`),
       h('li', null, h('b', null, '⑥ 석 달 기다림'), ` · 2026년 10월 8일부터 ${hold}거래일마다 담음 — 그 사이 판은 담은 날 첫 기록의 7곳 그대로 · 상태만 날마다(그물 안 · 그물 밖 · 재검토)`),
       h('li', null, h('b', null, '⑦ 성적'), ' · 담은 날 종가 → 오늘 종가: 7곳 평균 · 그물 전체(담은 날 값으로 다시 셈) · 365곳 평균 — 실제 매매 성과 아님'),
+      h('li', null, h('b', null, '⑧ 날씨(경고만)'), ` · 365곳 같은 무게 평균 지수가 지난 ${C.grow?.weather?.days ?? 200}거래일 평균 위면 맑음 · 아래면 흐림 — 흐린 날엔 첫 화면에 경고 한 줄 · 고르는 데 쓰지 않음 · 흐린 때 그물 결과는 지난 기록(2년 · 큰 하락장 없음)이 적어 아직 모름 · ${wxTxt(C)}`),
       h('li', null, h('b', null, '버린 것'), ' · 가지치기(최고값보다 15% 내리면 빼기 — 석 달 기다리기와 섞으면 결과가 깎임) · 날씨로 쉬기(지난 2년엔 오히려 덜었음 — 흐린 날은 경고만) · 20만 번 다시 뽑기(돈 유입 7곳을 고르던 셈 — 4판 기록은 그대로)'),
       h('li', null, h('b', null, '곁 정보'), ` · 돈 유입 비율(외국인+기관 ${fd}거래일 순매수 ÷ 시가총액) · 포모지수 · 1~365등 · 업종 돈 흐름(탑 받침 색${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음`),
       h('li', null, h('b', null, '판단이 바뀌는 조건'), ` · 그물 밖(1년 추세가 기준선 아래 — 석 달은 그대로 두고 다음 담는 날 정리) · 사업 가설 훼손(해지 · 위험 · 희석 공시 · 결산 적자) · 담는 기간 끝(${hold}거래일) — 따로 셈`),

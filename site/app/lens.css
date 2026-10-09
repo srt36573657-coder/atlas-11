@@ -138,6 +138,8 @@ html[data-font-step="3"] .sk-tools, html[data-font-step="4"] .sk-tools { grid-te
 .cd-risk .cd-k { color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--card)); }
 .cd-note { color: var(--sub); font-size: .875rem; }
 .cd-note-re { color: var(--warn); font-weight: 700; }
+.cd-wx { margin: 6px 0 0; padding: 4px 0 4px 10px; border-left: 3px solid var(--warn); border-radius: 0; font-size: .9375rem; line-height: 1.5; color: var(--ink2); overflow-wrap: anywhere; } /* 날씨 흐림 경고(흐린 날만) */
+.cd-wx b { color: var(--warn); }
 .cd-src { color: var(--ink2); }
 .cd-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
 .cd-btn, .mk-b a.cd-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: inherit; font-size: .9375rem; font-weight: 700; text-decoration: none; cursor: pointer; }
