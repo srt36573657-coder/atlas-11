@@ -6,7 +6,7 @@
  *   지금 판으로 셈한 후보 목록을 public/data/atlas11/cand/<묶음>/<그날>.json 에 한 번 남긴다 — 파일이 있으면 쓰지 않음(flag wx) · 같은 날 저녁 기록에 후보가 있으면 쓰지 않음
  *   규칙이 바뀐 날(2026-10-09 10:14 「모테카를로 … 소거법」 → cand-rules-3): 그날 첫 기록(다른 규칙)은 그대로 두고(평가 대상 = 그날 첫 기록 — 고치지 않음)
  *     새 규칙의 첫 목록을 public/data/atlas11/cand/<묶음>/<규칙 이름>/<그날>.json 에 따로 한 번 남긴다(같은 날 · 같은 종가에서 두 규칙을 나중에 견줄 수 있게 · 판 읽기는 읽지 않음)
- *   node scripts/atlas11/cand_record.mjs [--dry]
+ *   node scripts/atlas11/cand_record.mjs [--dry] [--place kr|us]   (미국 판 — 2026-10-09 19:29 「미국장 까지 다 대입」 · 저녁 기록이 없어 이 발행본이 그날 첫 기록)
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -14,12 +14,14 @@ import {lensFrom, LENS_PLACES, dirName} from './lens/build.mjs';
 import {candPubOf} from '../../lib/atlas11/cand.mjs';
 
 const root = process.cwd(), dry = process.argv.includes('--dry'), now = new Date().toISOString();
-const lens = await lensFrom(root, 'kr', {made: now});
+const pi = process.argv.indexOf('--place'), where = pi > 0 ? process.argv[pi + 1] : 'kr';
+if (!LENS_PLACES[where]?.cand) { console.log(JSON.stringify({wrote: false, why: `후보 발행본 자리가 없는 판: ${where}`})); process.exit(1); }
+const lens = await lensFrom(root, where, {made: now});
 const pub = candPubOf(lens, now);
 if (!pub) { console.log(JSON.stringify({wrote: false, why: lens.cand?.why ?? '후보를 셀 수 없음'})); process.exit(0); }
 const uni = dirName(lens.universe?.id);
-let dir = path.join(root, LENS_PLACES.kr.cand, uni), file = path.join(dir, `${pub.asOf}.json`);
-const ev = await fs.readFile(path.join(root, LENS_PLACES.kr.evening, uni, `${pub.asOf}.json`), 'utf8').then(JSON.parse).catch(() => null);
+let dir = path.join(root, LENS_PLACES[where].cand, uni), file = path.join(dir, `${pub.asOf}.json`);
+const ev = await fs.readFile(path.join(root, LENS_PLACES[where].evening, uni, `${pub.asOf}.json`), 'utf8').then(JSON.parse).catch(() => null);
 const first = Array.isArray(ev?.cand) ? {rules: ev.candRules ?? null, src: '저녁 기록'} : await fs.readFile(file, 'utf8').then(t => ({rules: JSON.parse(t).rules ?? null, src: '후보 발행본'})).catch(() => null);
 if (first && first.rules === pub.rules) { console.log(JSON.stringify({wrote: false, why: `${pub.asOf} ${first.src}에 같은 규칙(${pub.rules}) 후보가 이미 있음(그 기록이 첫 기록)`})); process.exit(0); }
 if (first) { dir = path.join(dir, dirName(pub.rules)); file = path.join(dir, `${pub.asOf}.json`); pub.note += ` · 같은 날 첫 기록은 ${first.src}(${first.rules ?? '규칙 이름 없음'}) — 그 기록이 평가 대상 · 이 파일은 새 규칙의 첫 목록(나란히 견주기용)`; }

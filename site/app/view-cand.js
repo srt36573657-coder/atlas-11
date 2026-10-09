@@ -116,7 +116,7 @@ export function candArt(C, {sel = null, stocks = []} = {}) {
     for (const r of rows) r.querySelector('.cd-pick')?.setAttribute('aria-pressed', String(r.dataset.code === code));
   }
   const p = C.pool, q = C.grow?.qD;
-  const key = keyEl([{cls: 'isl-k-water', label: `물 높이 = 그물 기준선(1년 추세 ${pct1(q)})`}, {cls: 'isl-k-net', label: `물 위 = 그물 안 ${isl?.model.above ?? p.net}곳`},
+  const key = keyEl([{cls: 'isl-k-water', label: `물 높이 = 그물 기준선(1년 추세 ${pct1(q)})`}, {cls: 'isl-k-net', label: `물 위 ${isl?.model.above ?? p.net}곳 = 1년 추세 상위 ${C.netPct ?? 20}% · 그 가운데 기준을 넘은 곳 = 그물 ${isl?.model.green ?? p.netElig}곳`}, // 제목의 「그물 N곳」과 같은 수가 열쇠에도(2026-10-09 19:29 「못한 곳 개선」 — 「그물 57곳」 · 「그물 안 68곳」이 다른 말처럼 보이던 것)
     {cls: 'isl-k-new', label: `옥빛 탑 · 핀 = 막 올라온 ${n}곳`}, {cls: 'isl-k-hero', label: '금빛 = 고른 한 곳'}], n ? null : 1);
   const note = h('p', {class: 'muted xs isl-note'}, `섬 = ${stocks.length}곳 · 업종 ${isl?.model.sectors ?? 0}곳은 십자 다섯 칸씩(센 업종이 가운데) · 탑 높이 = 1년 추세 차례(값은 이름표 글로) · 옆으로 끌면 섬이 돎 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)`);
   if (isl) isl.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
@@ -143,13 +143,14 @@ function funnelEl(C) {
     {id: 'u', name: '후보군(ATLAS 선정)', ...m(p.universe)},
     {id: 'v', name: '① 1년 추세를 셀 수 있음(그날 종가 · 252거래일 기록)', ...m(p.valid, `${p.universe - p.valid}곳 뺌(기록이 모자람 — 지어내지 않음)`)},
     {id: 'g', name: `② 그물 — 1년 추세 상위 ${C.netPct ?? 20}%(기준선 ${pct1(G?.qD)})`, ...m(p.net, `${p.valid - p.net}곳은 기준선 아래`)},
-    {id: 'e', name: '③ 그날 종가 · 흑자 · 위험 공시 없음', ...m(p.netElig, `${p.net - p.netElig}곳 뺌`)},
+    {id: 'e', name: usRisk() ? '③ 그날 종가 · 흑자(위험 공시는 확인 못 함 — 미국 판 공시 자료 없음)' : '③ 그날 종가 · 흑자 · 위험 공시 없음', ...m(p.netElig, `${p.net - p.netElig}곳 뺌`)},
     {id: 'c', name: '④ 새로 듦(초입 — 20거래일 전에는 그물 밖)', ...m(p.newc, `${p.netElig - p.newc}곳은 전부터 그물 안`)},
     {id: 'n', name: held ? `⑤ ${md(P.at)} 담은 7곳 그대로(석 달 동안 · 날마다 바꾸지 않음)` : `⑤ 1년 추세 큰 순 · 같은 업종 ${C.perSector ?? 3}곳 · ${C.want ?? 7}곳까지`, ...m(n, n ? (C.held?.length ? `업종 한도로 밀린 곳 ${C.held.map(x => x.name).join(' · ')}` : '뺀 곳 없음') : '새로 든 곳 없음 — 기준을 낮추지 않음'), mine: true}];
   return [barRows(rows, {ax: {lo: 0, hi: Math.max(1, p.universe)}, cls: 'cd-funnel'}),
     held && G?.today?.length ? h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '오늘 새로 든 초입(다음 담는 날 후보 · 보이기만)'), ' ', G.today.map(x => `${x.name} ${pct1(x.m12D)}`).join(' · ')) : null,
-    h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '지난 기록으로 센 것(2024년 6월~2026년 10월 · 365곳)'), ' 매달 가장 센 1곳만 담으면 365곳 평균의 0.19배 · 그물을 석 달마다 다시 담으면 1.44배 · 석 달 뒤 평균을 이긴 날 100번 중 85번 · 초입 7곳은 평균이 가장 컸지만 이긴 날 60번'),
-    h('p', {class: 'muted xs'}, '지난 기록 셈은 비용 · 세금을 빼지 않음 · 365곳을 오늘 기준으로 골라 부풀었을 수 있음 · 2년 안에 큰 하락장이 없었음 · 업종 돈 흐름 · 돈 유입은 곁 정보(고르는 데 쓰지 않음)')].filter(Boolean);
+    usRisk() ? h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '지난 기록으로 센 것'), ' 한국 판(2024년 6월~2026년 10월 · 365곳)으로만 셈 — 미국 판은 아직 셈하지 않음(같은 규칙이 미국에서도 그랬는지 모름)')
+      : h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '지난 기록으로 센 것(2024년 6월~2026년 10월 · 365곳)'), ' 매달 가장 센 1곳만 담으면 365곳 평균의 0.19배 · 그물을 석 달마다 다시 담으면 1.44배 · 석 달 뒤 평균을 이긴 날 100번 중 85번 · 초입 7곳은 평균이 가장 컸지만 이긴 날 60번'),
+    h('p', {class: 'muted xs'}, usRisk() ? '미국 판은 외국인 · 기관 매매 자료가 없어 돈 유입 비율 · 포모지수 · 1~365등이 없음 · 업종 돈 흐름은 곁 정보(고르는 데 쓰지 않음)' : '지난 기록 셈은 비용 · 세금을 빼지 않음 · 365곳을 오늘 기준으로 골라 부풀었을 수 있음 · 2년 안에 큰 하락장이 없었음 · 업종 돈 흐름 · 돈 유입은 곁 정보(고르는 데 쓰지 않음)')].filter(Boolean);
 }
 
 /* ── 돈 유입 1~365등(11:35 「1등부터 365등까지 그것도 나열하는 곳을 만들어」) — 접힘을 열 때 그림(처음 화면을 가볍게) ── */
@@ -216,22 +217,24 @@ function rulesEl(C) {
       h('li', null, h('b', null, '① 1년 추세'), ' · 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(내리면 −) · 마지막 20거래일은 뺌(바로 앞 한 달은 되돌림이 섞여서) · 그날 종가가 없거나 기록이 모자라면 셈하지 않음'),
       h('li', null, h('b', null, '② 그물'), ` · 1년 추세를 셀 수 있는 곳 가운데 상위 ${np}%(기준선 ${pct1(C.grow?.qD)}) — 한 곳보다 넓게 담을수록 덜 흔들렸음(지난 기록 셈)`),
       h('li', null, h('b', null, '③ 초입'), ' · 오늘 그물 안 · 20거래일 전(같은 셈)에는 그물 밖이던 곳'),
-      h('li', null, h('b', null, '④ 기준'), ` · 그날 종가 있음 · 마지막 결산 영업이익 · 순이익 흑자 · 위험 공시 없음(거래정지 · 관리종목 · 상장폐지 · 불성실공시 · 감사의견 · 회생 · 횡령 · 배임 · 투자위험 · 투자경고 지정 · 공급계약 해지 — 최근 ${C.window?.days ?? 30}일 · 장 마감 전) — 낮추지 않음`),
+      h('li', null, h('b', null, '④ 기준'), usRisk() ? ' · 그날 종가 있음 · 마지막 결산 영업이익 · 순이익 흑자(나스닥 결산표 · 없으면 네이버 해외주식 결산 — 영업이익 칸이 없는 은행 · 카드사는 「결산 자료 모자람」) · 위험 공시는 확인 못 함(미국 판은 회사 공시 원문 자료가 없음 — 빼지도 · 없다고 쓰지도 않음)'
+        : ` · 그날 종가 있음 · 마지막 결산 영업이익 · 순이익 흑자 · 위험 공시 없음(거래정지 · 관리종목 · 상장폐지 · 불성실공시 · 감사의견 · 회생 · 횡령 · 배임 · 투자위험 · 투자경고 지정 · 공급계약 해지 — 최근 ${C.window?.days ?? 30}일 · 장 마감 전) — 낮추지 않음`),
       h('li', null, h('b', null, '⑤ 7곳 · 차례(검토 우선순위)'), ` · ④를 넘은 초입을 1년 추세 큰 순 · 같은 업종 ${C.perSector ?? 3}곳 · 7곳까지 — 모자라면 모자란 대로`),
       h('li', null, h('b', null, '⑥ 석 달 기다림'), ` · 2026년 10월 8일부터 ${hold}거래일마다 담음 — 그 사이 판은 담은 날 첫 기록의 7곳 그대로 · 상태만 날마다(그물 안 · 그물 밖 · 재검토)`),
       h('li', null, h('b', null, '⑦ 성적'), ' · 담은 날 종가 → 오늘 종가: 7곳 평균 · 그물 전체(담은 날 값으로 다시 셈) · 365곳 평균 — 실제 매매 성과 아님'),
       h('li', null, h('b', null, '⑧ 날씨(경고만)'), ` · 365곳 같은 무게 평균 지수가 지난 ${C.grow?.weather?.days ?? 200}거래일 평균 위면 맑음 · 아래면 흐림 — 흐린 날엔 첫 화면에 경고 한 줄 · 고르는 데 쓰지 않음 · 흐린 때 그물 결과는 지난 기록(2년 · 큰 하락장 없음)이 적어 아직 모름 · ${wxTxt(C)}`),
       h('li', null, h('b', null, '버린 것'), ' · 가지치기(최고값보다 15% 내리면 빼기 — 석 달 기다리기와 섞으면 결과가 깎임) · 날씨로 쉬기(지난 2년엔 오히려 덜었음 — 흐린 날은 경고만) · 20만 번 다시 뽑기(돈 유입 7곳을 고르던 셈 — 4판 기록은 그대로)'),
-      h('li', null, h('b', null, '곁 정보'), ` · 돈 유입 비율(외국인+기관 ${fd}거래일 순매수 ÷ 시가총액) · 포모지수 · 1~365등 · 업종 돈 흐름(탑 받침 색${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음`),
+      h('li', null, h('b', null, '곁 정보'), usRisk() ? ` · 업종 돈 흐름(「돈 흐름」 탭${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음 · 미국 판은 외국인 · 기관 매매 자료가 없어 돈 유입 비율 · 포모지수 · 1~365등 없음`
+        : ` · 돈 유입 비율(외국인+기관 ${fd}거래일 순매수 ÷ 시가총액) · 포모지수 · 1~365등 · 업종 돈 흐름(「돈 흐름」 탭${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음`),
       h('li', null, h('b', null, '판단이 바뀌는 조건'), ` · 그물 밖(1년 추세가 기준선 아래 — 석 달은 그대로 두고 다음 담는 날 정리) · 사업 가설 훼손(해지 · 위험 · 희석 공시 · 결산 적자) · 담는 기간 끝(${hold}거래일) — 따로 셈`),
-      h('li', null, h('b', null, '하지 않는 것'), ' · 「아직 가격에 반영 안 됨」이라고 단정하지 않음 · 목표가 · 기대 수익률 · 수익을 약속하는 말 없음 · 미국 판은 결산 · 공시 자료가 없어 고르지 않음')));
+      h('li', null, h('b', null, '하지 않는 것'), ' · 「아직 가격에 반영 안 됨」이라고 단정하지 않음 · 목표가 · 기대 수익률 · 수익을 약속하는 말 없음', usRisk() ? ' · 자료가 없는 위험 공시를 「없음」이라 쓰지 않음(확인 못 함)' : '')));
 }
 /** 기준 자세히(⑤ 맨 아래) — 시각 · 공시 범위 · 만든 때 · 규칙 이름 · 기록 */
 function baseMore(C, manifest) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
-  return h('p', {class: 'muted xs'}, `${place.closeAt} 종가 · 장중 값 아님 · 공시 ${md(C.window?.from)}~${md(C.asOf)} 장 마감까지 · 평가 ${C.evalDays ?? 20}거래일${C.evalEnd ? `(${md(C.evalEnd)}까지)` : ''}`,
+  return h('p', {class: 'muted xs'}, `${place.closeAt} 종가 · 장중 값 아님 · ${usRisk() ? '공시 자료 없음(위험 공시 확인 못 함)' : `공시 ${md(C.window?.from)}~${md(C.asOf)} 장 마감까지`} · 평가 ${C.evalDays ?? 20}거래일${C.evalEnd ? `(${md(C.evalEnd)}까지)` : ''}`,
     manifest?.generatedAt ? ` · 만든 때 ${stamp(manifest.generatedAt)}` : '', ' · 규칙 ', h('code', null, C.rules ?? 'cand-rules-5'), C.grow?.planted ? ` · 담은 날 ${md(C.grow.planted.at)}(${C.grow.planted.src === 'today' ? '오늘 셈' : C.grow.planted.src === 'recount' ? '기록 없음 — 그날 종가로 다시 셈' : '기록 그대로'})` : '',
-    rec ? ` · 고정 기록 ${stamp(rec.recordedAt)}(${rec.src === 'pub' ? '후보 발행본' : '저녁 기록'} · 고치지 않음)` : ' · 고정 기록 전 — 거래일 19:00 저녁 기록에 그날 목록을 남김(고치지 않음)');
+    rec ? ` · 고정 기록 ${stamp(rec.recordedAt)}(${rec.src === 'pub' ? '후보 발행본' : '저녁 기록'} · 고치지 않음)` : usRisk() ? ' · 고정 기록 전 — 미국 판은 담는 날 첫 목록을 후보 발행본으로 남김(고치지 않음)' : ' · 고정 기록 전 — 거래일 19:00 저녁 기록에 그날 목록을 남김(고치지 않음)');
 }
 
 export async function renderCand(main, {manifest}) {
@@ -293,8 +296,8 @@ function cmpTable(a, b, C) {
       row('담은 뒤', x => (finite(x.grow?.since?.rD) ? [pv(x.grow.since.rD), ` · ${md(x.grow.plantedAt)}부터`] : `${md(x.grow?.plantedAt)} 담음 — 다음 판부터`)),
       row('지금 값', x => `${won(x.close)} · ${md(x.date)} 종가`),
       row('업종 돈 흐름(곁 정보)', x => secDirTxt(x.flow.sector)),
-      row(`외국인+기관 ${C.flowDays ?? 10}거래일(곁 정보)`, x => [eokEl(x.flow.fi), ' (추정)']),
-      row('돈 유입 비율(곁 정보)', x => `${fpow(x.flow)} · ${C.pool?.universe ?? 365}곳 중 ${x.flow.powerRank ?? '?'}위 · 포모지수 ${finite(x.flow.fomo) ? `${x.flow.fomo}점` : '계산 불가'}`),
+      usRisk() ? null : row(`외국인+기관 ${C.flowDays ?? 10}거래일(곁 정보)`, x => [eokEl(x.flow.fi), ' (추정)']),
+      usRisk() ? null : row('돈 유입 비율(곁 정보)', x => `${fpow(x.flow)} · ${C.pool?.universe ?? 365}곳 중 ${x.flow.powerRank ?? '?'}위 · 포모지수 ${finite(x.flow.fomo) ? `${x.flow.fomo}점` : '계산 불가'}`),
       row('20거래일 수익률', x => pv(x.r20)),
       row(`${C.index?.name ?? '지수'} 대비(20거래일)`, x => ppv(x.gap)),
       row('52주 범위 자리', x => (finite(x.pos52) ? `${Math.round(x.pos52 * 100)}%` : '자료 없음')),
@@ -371,6 +374,8 @@ export async function renderCompare(main, {hash, manifest}) {
 const qRow = (k, ...v) => h('div', {class: 'cj-r'}, h('dt', null, k), h('dd', null, ...v));
 function qBox(id, q, rows) { return h('section', {class: 'cj-q', id, 'aria-label': q, tabindex: '-1'}, h('h3', {class: 'cj-qh'}, q), h('dl', {class: 'cj-dl'}, ...rows)); }
 const okEl = ok => h('b', {class: 'cj-ok ' + (ok ? 'yes' : 'no')}, ok ? '✓ 넘음' : '✕ 못 넘음');
+const naEl = () => h('b', {class: 'cj-ok na'}, '? 확인 못 함'); // 미국 판 위험 공시 — 자료가 없어 넘었다고도 · 못 넘었다고도 하지 않음
+const usRisk = () => place.id !== 'kr'; // 미국 판(2026-10-09 19:29 「미국장 까지 다 대입」) — 회사 공시 원문 · 외국인+기관 매매 자료 없음 · 지난 기록 셈은 한국 판으로만
 /** 후보가 아닌 종목 — 조건마다 넘었나(판 읽기 cand.flags) · 처음 막힌 조건 */
 export const FLAG_NAMES = ['그날 종가', '흑자', '위험 공시 없음', '1년 추세 셈', '그물 안(1년 추세 상위 20%)', '새로 듦(초입)']; // 규칙 5판(lib/atlas11/cand.mjs FLAGS5) — 4판 다섯 조건과 수가 달라 관심 목록이 규칙 바뀜을 알아봄
 export function candFlagsOf(C, code) { const f = C?.flags?.[code]; return typeof f === 'string' && f.length === FLAG_NAMES.length ? [...f].map(c => c === '1') : null; }
@@ -388,7 +393,7 @@ export function candJudgeBox(lens, s) {
     return h('section', {class: 'b-box cj-box cj-out', 'aria-label': '후보 판단', 'data-cand': 'out'},
       h('h2', {class: 'b-box-h'}, '후보 판단', h('small', null, ` · ${korDate(C.asOf)} 종가 · 규칙 ${C.rules}`)),
       h('p', {class: 'mk-l'}, h('b', null, '매수 검토 후보 아님'), firstFail >= 0 ? ` — 처음 막힌 조건: ${FLAG_NAMES[firstFail]}` : flags ? ' — 조건은 넘었지만 7곳 밖(순위 · 업종 한도 · 담는 날이 아님)' : ''),
-      flags ? h('ul', {class: 'cj-flags'}, ...FLAG_NAMES.map((k, i) => h('li', {'data-ok': String(flags[i])}, okEl(flags[i]), ' ', k))) : null,
+      flags ? h('ul', {class: 'cj-flags'}, ...FLAG_NAMES.map((k, i) => (i === 2 && usRisk() ? h('li', {'data-ok': 'na'}, naEl(), ' 위험 공시(미국 판 공시 자료 없음)') : h('li', {'data-ok': String(flags[i])}, okEl(flags[i]), ' ', k)))) : null,
       hist ? h('dl', {class: 'cj-dl'}, ...afterEl()) : null,
       h('p', {class: 'muted xs'}, h('a', {href: '#/'}, `지금 후보 ${C.items.length}곳 보기 ›`)));
   }
@@ -408,15 +413,16 @@ export function candJudgeBox(lens, s) {
     qBox('cj-why', '왜 이 종목인가?', [
       qRow('주장', `${C.pool?.universe ?? 365}곳 가운데 1년 동안 센 곳 상위 ${C.netPct ?? 20}%(그물)에 ${md(x.grow?.plantedAt)} 새로 들었고, 이익을 내는 회사`),
       qRow('관측', '1년 추세 ', h('b', null, m12Txt(x)), `(마지막 20거래일 뺌) · 그물 기준선 ${pct1(C.grow?.qD)} · 지금 ${ST[x.status]} · 업종 돈 흐름(곁 정보) ${secDirTxt(F.sector)}`),
-      qRow('계산 · 해석', `1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나 · 20거래일 전에는 그물 밖이던 곳(초입) · 영업이익 ${eokWon(f.op)} · 순이익 ${eokWon(f.net)}(${fyTxt(f.fy)})`),
-      qRow('곁 정보(고르는 데 쓰지 않음)', `돈 유입 비율 ${fpow(F)}(${C.pool?.universe ?? 365}곳 중 ${F.powerRank ?? '?'}위 · 포모지수 ${finite(F.fomo) ? `${F.fomo}점` : '계산 불가'}) · 외국인+기관 ${C.flowDays ?? 10}거래일 `, eokEl(F.fi)),
-      qRow('반대 근거', x.risk.text, ' · 한 곳은 크게 흔들림 — 지난 기록에서 덜 흔들린 쪽은 그물 전체'),
-      qRow('사업 변화', ev ? [`최근 30일 ${md(ev.date)} ${ev.kindLabel} 공시 `, title(ev.title), ` — ${PATH[ev.kind] ?? ''}`] : '최근 30일 사업 변화 공시(수주 · 시설투자 · 주주환원) 없음 — 1년 추세로 고름'),
+      qRow('계산 · 해석', `1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나 · 20거래일 전에는 그물 밖이던 곳(초입) · ${usRisk() ? x.checks.profit.now : `영업이익 ${eokWon(f.op)} · 순이익 ${eokWon(f.net)}(${fyTxt(f.fy)})`}`), // 미국 판 결산 금액은 출처마다 단위가 달라(천 달러 · 백만 달러) 흑자 · 적자만 씀
+      usRisk() ? qRow('곁 정보(고르는 데 쓰지 않음)', `${secDirTxt(F.sector)} · 미국 판은 외국인 · 기관 매매 자료가 없어 돈 유입 비율 · 포모지수 없음`)
+        : qRow('곁 정보(고르는 데 쓰지 않음)', `돈 유입 비율 ${fpow(F)}(${C.pool?.universe ?? 365}곳 중 ${F.powerRank ?? '?'}위 · 포모지수 ${finite(F.fomo) ? `${F.fomo}점` : '계산 불가'}) · 외국인+기관 ${C.flowDays ?? 10}거래일 `, eokEl(F.fi)),
+      qRow('반대 근거', x.risk.text, usRisk() ? ' · 한 곳은 크게 흔들림(지난 기록 셈은 한국 판으로만 함)' : ' · 한 곳은 크게 흔들림 — 지난 기록에서 덜 흔들린 쪽은 그물 전체'),
+      qRow('사업 변화', usRisk() ? '미국 판은 회사 공시 원문 자료가 없어 사업 변화 공시를 보지 못함 — 1년 추세로 고름' : ev ? [`최근 30일 ${md(ev.date)} ${ev.kindLabel} 공시 `, title(ev.title), ` — ${PATH[ev.kind] ?? ''}`] : '최근 30일 사업 변화 공시(수주 · 시설투자 · 주주환원) 없음 — 1년 추세로 고름'),
       qRow('확인할 것', `그 뒤 판(거래일 16:00)에서 그물 안에 남는지 · 다음 담는 날 ${nextTxt(C.grow)}`)]),
     qBox('cj-now', `왜 ${md(C.asOf)} 종가에 검토하나?`, [
       qRow('주장', `${md(x.grow?.plantedAt)}이 담는 날 — 석 달(${C.hold ?? 60}거래일)마다 한 번 담고 그 사이에는 바꾸지 않음`),
       qRow('관측', '이 회사 5거래일 ', pv(x.r5), ' · 20거래일 ', pv(x.r20), ` · ${idx} 대비 `, ppv(x.gap), finite(x.grow?.since?.rD) ? [' · 담은 뒤 ', pv(x.grow.since.rD)] : ''),
-      qRow('계산 · 해석', '지난 기록에서 그물은 20일보다 석 달을 기다릴 때 평균을 더 자주 이김(100번 중 63번 → 85번) · 「아직 가격에 반영 안 됨」이라고 하지 않음'),
+      qRow('계산 · 해석', usRisk() ? '지난 기록 셈(그물 · 석 달 기다림)은 한국 판으로만 함 — 미국 판은 셈 전 · 「아직 가격에 반영 안 됨」이라고 하지 않음' : '지난 기록에서 그물은 20일보다 석 달을 기다릴 때 평균을 더 자주 이김(100번 중 63번 → 85번) · 「아직 가격에 반영 안 됨」이라고 하지 않음'),
       qRow('반대 근거', lastWaves.length ? `업종 돈 흐름은 자주 바뀜(곁 정보) — 최근 파장 ${lastWaves.map(w => `${w.from} → ${w.to}(${w.days}거래일)`).join(' · ')}` : '2년 안에 큰 하락장이 없었음 — 큰 하락장에서는 시험되지 않음'),
       qRow('확인할 것', `거래일 16:00 판마다 그물 안팎 · 다음 담는 날 ${nextTxt(C.grow)}`)]),
     qBox('cj-price', `${won(x.close)}(${md(x.date)} 종가)은 분석에서 어떤 뜻인가?`, [
@@ -431,20 +437,20 @@ export function candJudgeBox(lens, s) {
         h('tbody', null,
           h('tr', null, h('th', {scope: 'row'}, '1년 추세'), h('td', null, `상위 ${C.netPct ?? 20}%(기준선 ${pct1(C.grow?.qD)})`), h('td', null, m12Txt(x)), h('td', null, okEl(!!x.grow?.inNet))),
           h('tr', null, h('th', {scope: 'row'}, '흑자'), h('td', null, '영업이익 · 순이익 모두 흑자'), h('td', null, x.checks.profit.now), h('td', null, okEl(x.checks.profit.ok))),
-          h('tr', null, h('th', {scope: 'row'}, '위험 공시(30일)'), h('td', null, '없음'), h('td', null, x.checks.risk.now), h('td', null, okEl(x.checks.risk.ok))),
-          h('tr', null, h('th', {scope: 'row'}, '희석 공시(30일 · 위험 줄)'), h('td', null, '적어 둠'), h('td', null, x.checks.dilute.now), h('td', null, okEl(x.checks.dilute.ok))))))),
+          h('tr', null, h('th', {scope: 'row'}, '위험 공시(30일)'), h('td', null, '없음'), h('td', null, x.checks.risk.now), h('td', null, x.checks.risk.unknown ? naEl() : okEl(x.checks.risk.ok))),
+          usRisk() ? null : h('tr', null, h('th', {scope: 'row'}, '희석 공시(30일 · 위험 줄)'), h('td', null, '적어 둠'), h('td', null, x.checks.dilute.now), h('td', null, okEl(x.checks.dilute.ok))))))),
       qRow('계산 · 해석', `상태 ${ST[x.status]} · 진입 가격 · 범위는 만들지 않음(산식 · 가정이 검증되지 않음 — 근거 부족)`),
       qRow('반대 근거', '그물 안은 오른다는 뜻이 아님 · 조건은 연구용(성능 검증 전)'),
       qRow('확인할 것', `담은 날 ${md(x.grow?.plantedAt)} · 다음 담는 날 ${nextTxt(C.grow)} · 거래일 16:00 판마다 상태만 다시 셈`)]),
     qBox('cj-exit', '무엇이 달라지면 판단을 거두는가?', [
       qRow('그물 밖', h('b', {class: 'cj-ok ' + (ex.net.broken ? 'no' : 'yes')}, ex.net.broken ? '! 나감' : '✓ 안'), ` · 이번 판: ${ex.net.now} · 석 달 동안은 그대로 두고 다음 담는 날 정리`),
-      qRow('사업 가설 훼손', h('b', {class: 'cj-ok ' + (ex.business.broken ? 'no' : 'yes')}, ex.business.broken ? '! 깨짐' : '✓ 유지'), ` · 이번 판: ${ex.business.now ?? '해당 공시 없음'} · 기준: 공급계약 해지 · 위험 공시 · 희석 공시 · 새 결산 적자`),
+      qRow('사업 가설 훼손', h('b', {class: 'cj-ok ' + (ex.business.broken ? 'no' : 'yes')}, ex.business.broken ? '! 깨짐' : '✓ 유지'), ` · 이번 판: ${ex.business.now ?? '해당 공시 없음'} · 기준: ${usRisk() ? '새 결산 적자(공시는 미국 판 자료 없음 — 확인 못 함)' : '공급계약 해지 · 위험 공시 · 희석 공시 · 새 결산 적자'}`),
       qRow('담는 기간', h('b', {class: 'cj-ok yes'}, '진행 중'), ` · ${md(per.start)} 담음 ~ 다음 담는 날 ${nextTxt(C.grow)}(${C.hold ?? 60}거래일)`),
       qRow('알아 둘 것', '셋은 따로 셈 · 값이 내렸다고 바로 빼지 않음(가지치기는 석 달 기다리기와 섞으면 지난 기록 결과를 깎았음) · 그 값에 판다는 뜻 아님')]),
     qBox('cj-next', '이어서 확인할 것', [
       ...(x.next?.events?.length ? x.next.events.map(e => qRow(md(e.date), h('span', {'data-ident': '', lang: 'ko'}, e.name))) : [qRow('일정', '확인된 회사 일정 없음')]),
       qRow('그물', x.next?.read ?? '그 뒤 판의 그물 안팎'),
-      qRow('기록', '거래일 19:00 저녁 기록 — 목록에 남는지 · 빠지는지 · 순위')]),
+      qRow('기록', usRisk() ? '미국 판은 저녁 기록이 없음 — 담는 날 첫 목록(후보 발행본)을 고치지 않고 두고 판마다 상태를 다시 셈' : '거래일 19:00 저녁 기록 — 목록에 남는지 · 빠지는지 · 순위')]),
     qBox('cj-after', '선정 이후 결과', afterEl()),
     h('p', {class: 'muted xs'}, `이 판단은 연구용 규칙(${C.rules} · 성능 검증 전)의 결과 · 사거나 팔라는 뜻 아님 · 후보 ${C.items.length}곳은 포트폴리오가 아님`));
   return box;

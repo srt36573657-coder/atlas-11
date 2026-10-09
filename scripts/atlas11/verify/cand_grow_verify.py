@@ -8,7 +8,7 @@ ATLAS 11 · 매수 검토 후보 5판(기르기판) 따로 세기 — 사장님 
   · 그물 = 셀 수 있는 곳 가운데 상위 20%(numpy.quantile 기본 = 직선 보간) · 초입 = 오늘 그물 안 · 20거래일 전 그물 밖
   · 기준(그날 종가 · 흑자 · 위험 공시 없음)은 공시 원문이 필요해 판 읽기 조건(flags 앞 셋)을 그대로 씀 — 가격 셈만 따로
   · 날씨(경고만) = 365곳 같은 무게 평균 지수(날마다 두 종가가 다 있는 곳의 하루 수익률 평균 · ±50% 넘는 값은 뺌 · 이어 곱함) ÷ 지난 200거래일(오늘 포함) 지수 평균 — 1 이상 맑음
-  python3 -I scripts/atlas11/verify/cand_grow_verify.py [--lens dist/data/atlas11/view/lens.json] [--out 파일]
+  python3 -I scripts/atlas11/verify/cand_grow_verify.py [--place kr|us] [--lens dist/data/atlas11/view/lens.json] [--out 파일]
   · 판 읽기(lens.json)는 package.mjs 가 dist 에 만든다(public 에는 없음) — 기본값 = dist
 """
 import json, math, sys, os
@@ -16,14 +16,16 @@ import numpy as np
 
 root = os.getcwd()
 args = sys.argv[1:]
-lens_path = args[args.index('--lens') + 1] if '--lens' in args else os.path.join(root, 'dist/data/atlas11/view/lens.json')
+where = args[args.index('--place') + 1] if '--place' in args else 'kr'  # 미국 판(2026-10-09 19:29 「미국장 까지 다 대입」) — 입력 = public/data/atlas11/us/input.json · 달력 = 그 파일 calendar 만
+lens_path = args[args.index('--lens') + 1] if '--lens' in args else os.path.join(root, 'dist/data/atlas11/view/lens.json' if where == 'kr' else 'dist/us/data/atlas11/view/lens.json')
 out_path = args[args.index('--out') + 1] if '--out' in args else None
-inp = json.load(open(os.path.join(root, 'public/data/input.json'), encoding='utf-8'))
+inp = json.load(open(os.path.join(root, 'public/data/input.json' if where == 'kr' else 'public/data/atlas11/us/input.json'), encoding='utf-8'))
 cal = {}
-try:
-    cal = json.load(open(os.path.join(root, 'public/data/rolling-calendar.json'), encoding='utf-8'))
-except Exception:
-    pass
+if where == 'kr':
+    try:
+        cal = json.load(open(os.path.join(root, 'public/data/rolling-calendar.json'), encoding='utf-8'))
+    except Exception:
+        pass
 L = json.load(open(lens_path, encoding='utf-8'))
 C = L.get('cand') or {}
 ses = sorted(set([d for d in (inp.get('calendar') or {}).get('sessions', []) if isinstance(d, str)] + [d for d in cal.get('sessions', []) if isinstance(d, str)]))
