@@ -4,7 +4,10 @@
      받는 사람: 링크 → 「○○님께」와 청자 합 → 누른 자리에서 뚜껑이 열리고 빛 → 일곱 별(북두칠성) → 메시지가 가운데 → 「ATLAS 후보 n곳 보기」(그때의 최신 후보 화면 #/)
    지키는 것: 가입 없음 · 홈 화면은 그대로(이 연출은 초대장 주소에서만) · 소리 없음 · 움직임 줄이기면 움직임 없이 같은 정보 · 「바로 보기」 · 3초 안에 메시지
      · 메시지 · 이름은 글자로만(textContent) · 주소에는 번호만 · 종목 · 가격 · 이유를 이 화면에 지어 넣지 않음(후보 수 · 기준 날짜는 판 자료 lens.json 그대로)
-     · 별 일곱 = 후보 자리 일곱(규칙 43 「최대 7곳」) — 후보가 7곳보다 적은 날은 빈 자리를 빈 고리로 */
+     · 별 일곱 = 후보 자리 일곱(규칙 43 「최대 7곳」) — 후보가 7곳보다 적은 날은 빈 자리를 빈 고리로
+   사진이 든 선물(2026-10-09 17:22 · 17:29 마카오 시각 · 사장님 초대장에만): 합을 열면 사진이 입에서 떠올라 제자리로 · 장면이 사진의 하늘빛으로 · 별 일곱은 사진 둘레 띠에서(invite-photo.js)
+     · 사진을 못 읽으면 지어내지 않고 사진 없는 원래 장면으로 */
+import {photoStage} from './invite-photo.js';
 const API = '/api/invite';
 const ID_RE = /^[A-Za-z0-9_-]{22}$/;
 const LIMIT = {name: 24, message: 300};
@@ -122,6 +125,20 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
   host.replaceChildren(scene);
   const lite = lowPower(); if (lite) scene.classList.add('iv-lite');
 
+  // 사진이 든 선물 — 사진 무대(사진 · 별가루 띠 · 일곱 별)와 장면 맨 뒤 하늘. 사진을 못 읽으면 걷어 내고 원래 장면으로
+  const ph = inv.photo?.src ? photoStage({src: inv.photo.src, w: inv.photo.w, h: inv.photo.h, alt: `${inv.from}님이 넣은 사진`}) : null;
+  let photoOk = !!ph;
+  const dropPhoto = () => { if (!ph || !photoOk) return; photoOk = false; ph.destroy(); ph.el.remove(); ph.backdrop.remove(); scene.classList.remove('iv-has-photo'); };
+  if (ph) {
+    scene.classList.add('iv-has-photo'); scene.prepend(ph.backdrop); after.prepend(ph.el);
+    ph.ready.catch(() => { const wasOpen = state === 'open'; dropPhoto(); if (wasOpen) { place(targets()); lineSvg.style.opacity = '1'; } });
+  }
+  const landPhoto = () => { // 사진을 열린 화면의 제자리(흐름)로
+    ph.el.getAnimations?.().forEach(a => a.cancel()); ph.el.classList.remove('flying');
+    for (const k of ['left', 'top', 'width', 'height']) ph.el.style[k] = '';
+    if (after.firstElementChild !== ph.el) after.prepend(ph.el);
+  };
+
   // 후보 수 · 기준 날짜(그때의 최신 판)
   loadLensInfo().then(info => {
     if (!info) return;
@@ -129,6 +146,7 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
     const day = korDay(info.asOf);
     goSub.textContent = `${day ? `${day} 15:30 종가 기준` : '기준 날짜는 열리는 화면 맨 위'} · 매수 검토 우선순위(예상 수익률 순위 아님) · 연구용 · 성능 검증 전${info.n === 0 ? ' · 이 날은 기준을 넘은 곳이 없습니다' : ''}`;
     stars.forEach((s, i) => s.classList.toggle('empty', i >= info.n));
+    ph?.setCount(info.n);
   });
 
   // 별 자리 — 장면 위쪽 띠 안(너비 360까지 · 높이 130)
@@ -145,16 +163,15 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
   const finish = () => { // 끝 모습 — 움직임 없이도 같은 정보
     for (const el of [giftBtn, ...stars, lineSvg, after, card, ...after.querySelectorAll('*')]) el.getAnimations?.().forEach(a => a.cancel());
     scene.classList.add('iv-open');
-    place(targets()); lineSvg.style.opacity = '1'; const pl = lineSvg.querySelector('polyline'); pl.getAnimations?.().forEach(a => a.cancel()); pl.style.strokeDasharray = ''; pl.style.strokeDashoffset = '';
+    if (photoOk) { ph.backdrop.getAnimations?.().forEach(a => a.cancel()); landPhoto(); ph.start('show'); }
+    else { place(targets()); lineSvg.style.opacity = '1'; const pl = lineSvg.querySelector('polyline'); pl.getAnimations?.().forEach(a => a.cancel()); pl.style.strokeDasharray = ''; pl.style.strokeDashoffset = ''; }
     for (const el of after.querySelectorAll('.iv-go, .iv-what, .iv-link')) el.style.opacity = '1';
     state = 'open'; running = false;
     live.textContent = `${inv.from}님의 메시지가 열렸습니다`;
   };
-  const open = async e => {
-    if (state !== 'closed' || running) return;
-    running = true;
-    if (reduced()) { finish(); card.focus({preventScroll: true}); return; }
-    const r = giftBtn.getBoundingClientRect(), sr = scene.getBoundingClientRect();
+  // 1막(같음): 누른 자리에서 뚜껑이 열리고 입에서 빛이 번짐
+  const openLid = async e => {
+    const r = giftBtn.getBoundingClientRect();
     const px = e && e.clientX ? e.clientX : r.left + r.width / 2; // 누른 자리(단추로 열면 한가운데)
     const side = Math.max(-1, Math.min(1, (px - (r.left + r.width / 2)) / (r.width / 2))); // -1 왼쪽 … 1 오른쪽
     const lid = giftBtn.querySelector('.lid'), glow = giftBtn.querySelector('.iv-glow'), mouthGlow = giftBtn.querySelector('.mouth-glow');
@@ -171,7 +188,21 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
     glow.style.left = `${50 + side * 12}%`;
     anim(mouthGlow, [{opacity: 0}, {opacity: 1}], {duration: 500 * T, delay: 140 * T});
     anim(glow, lite ? [{opacity: 0}, {opacity: .7}] : [{opacity: 0, transform: 'scale(.3)'}, {opacity: .95, transform: 'scale(1)', offset: .55}, {opacity: .55, transform: 'scale(1.12)'}], {duration: 1000 * T, delay: 160 * T, easing: 'ease-out'});
-    // 별 일곱: 입에서 나와 북두칠성 자리로 차례로
+    return {side, T};
+  };
+  // 마지막 막(같음): 메시지 카드 → 단추 · 설명
+  const showCard = async (e, T) => {
+    const rest = [...after.querySelectorAll('.iv-go, .iv-what, .iv-link')]; rest.forEach(el => { el.style.opacity = '0'; });
+    await anim(card, [{opacity: 0, transform: 'translateY(14px)'}, {opacity: 1, transform: 'none'}], {duration: 420 * T, easing: 'cubic-bezier(.2,.8,.2,1)'});
+    await Promise.all(rest.map(el => anim(el, [{opacity: 0}, {opacity: 1}], {duration: 320 * T})));
+    rest.forEach(el => { el.getAnimations?.().forEach(a => a.cancel()); el.style.opacity = '1'; });
+    state = 'open'; running = false;
+    live.textContent = `${inv.from}님의 메시지가 열렸습니다`;
+    if (e === null) card.focus({preventScroll: true}); // 글쇠로 열었으면 메시지로 초점
+  };
+  // 2막 · 별: 별 일곱이 입에서 나와 북두칠성 자리로 차례로
+  const playStars = async (e, {side, T}) => {
+    const r = giftBtn.getBoundingClientRect(), sr = scene.getBoundingClientRect();
     const pts = targets(), mx = r.left - sr.left + r.width * (0.5 + side * 0.12), my = r.top - sr.top + r.height * 0.54;
     lineSvg.querySelector('polyline').setAttribute('points', LINE.map(i => pts[i].join(',')).join(' '));
     const run = stars.map((s, i) => anim(s, [
@@ -192,18 +223,52 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
     scene.classList.add('iv-open'); place(targets());
     stars.forEach(s => s.getAnimations?.().forEach(a => { a.commitStyles?.(); a.cancel(); })); place(targets());
     lineSvg.style.opacity = '1';
-    const rest = [...after.querySelectorAll('.iv-go, .iv-what, .iv-link')]; rest.forEach(el => { el.style.opacity = '0'; });
-    await anim(card, [{opacity: 0, transform: 'translateY(14px)'}, {opacity: 1, transform: 'none'}], {duration: 420 * T, easing: 'cubic-bezier(.2,.8,.2,1)'});
-    await Promise.all(rest.map(el => anim(el, [{opacity: 0}, {opacity: 1}], {duration: 320 * T})));
-    rest.forEach(el => { el.getAnimations?.().forEach(a => a.cancel()); el.style.opacity = '1'; });
-    state = 'open'; running = false;
-    live.textContent = `${inv.from}님의 메시지가 열렸습니다`;
-    if (e === null) card.focus({preventScroll: true}); // 글쇠로 열었으면 메시지로 초점
+    await showCard(e, T);
+  };
+  // 2막 · 사진: 사진이 입에서 빛과 함께 떠올라 제자리로 · 장면이 사진의 하늘빛으로 · 별가루 띠가 소용돌이처럼 감기며 퍼짐
+  const playPhoto = async (e, {side, T}) => {
+    scene.classList.add('iv-open'); // 내려앉을 자리를 한 번 재고 바로 되돌림(그리기 전이라 깜빡이지 않음)
+    const sr0 = scene.getBoundingClientRect(), fr = ph.el.getBoundingClientRect();
+    scene.classList.remove('iv-open');
+    const F = {x: fr.left - sr0.left, y: fr.top - sr0.top, w: fr.width, h: fr.height};
+    const r = giftBtn.getBoundingClientRect(), sr = scene.getBoundingClientRect();
+    ph.el.classList.add('flying');
+    Object.assign(ph.el.style, {left: F.x + 'px', top: F.y + 'px', width: F.w + 'px', height: F.h + 'px'});
+    scene.append(ph.el);
+    const mx = r.left - sr.left + r.width * (0.5 + side * 0.08), my = r.top - sr.top + r.height * 0.55, fx = F.x + F.w / 2, fy = F.y + F.h * 0.62;
+    ph.start('reveal', {delay: 420 * T});
+    anim(ph.backdrop, [{opacity: 0}, {opacity: 1}], {duration: 1700 * T, delay: 200 * T, easing: 'ease-in-out', fill: 'both'});
+    const fly = anim(ph.el, [ // 뚜껑이 열린 뒤 빛 속에서 천천히 떠올라 제자리에 사뿐히
+      {transform: `translate(${mx - fx}px, ${my - fy}px) scale(.1)`, opacity: 0, filter: lite ? 'none' : 'blur(8px)'},
+      {opacity: 1, offset: 0.2},
+      {transform: 'translate(0px, 0px) scale(1)', opacity: 1, filter: 'blur(0px)'}],
+      {duration: 1500 * T, delay: 240 * T, easing: 'cubic-bezier(.3,.62,.18,1)', fill: 'both'}); // 기다리는 동안에도 첫 모습(작게 · 숨김) — 큰 사진이 먼저 번쩍이지 않게
+    await wait(720 * T); // 이름 · 합은 사진이 떠오르는 동안 물러남
+    anim(stage.querySelector('.iv-to'), [{opacity: 1}, {opacity: 0}], {duration: 380 * T});
+    anim(stage.querySelector('.iv-from'), [{opacity: 1}, {opacity: 0}], {duration: 300 * T});
+    anim(giftBtn, [{opacity: 1, transform: 'none'}, {opacity: 0, transform: 'translateY(26px) scale(.92)'}], {duration: 560 * T, easing: 'ease-in'});
+    await fly;
+    scene.classList.add('iv-open'); landPhoto(); // 내려앉기 — 잰 자리와 같아서 튀지 않음
+    ph.backdrop.getAnimations?.().forEach(a => a.cancel());
+    await showCard(e, T);
+  };
+  const open = async e => {
+    if (state !== 'closed' || running) return;
+    running = true;
+    if (reduced()) { finish(); card.focus({preventScroll: true}); return; }
+    const c = await openLid(e);
+    if (photoOk) { // 사진을 다 읽을 때까지(뚜껑이 열리는 동안 · 길어도 2.4초) — 못 읽으면 별 장면으로
+      const ok = await Promise.race([ph.ready.then(() => true, () => false), wait(2400).then(() => false)]);
+      if (ok && photoOk) return playPhoto(e, c);
+      dropPhoto();
+    }
+    return playStars(e, c);
   };
   const reset = () => { // 다시 보기 — 닫힌 합으로
     for (const el of scene.querySelectorAll('*')) el.getAnimations?.().forEach(a => a.cancel());
     scene.classList.remove('iv-open'); giftBtn.disabled = false; state = 'closed'; running = false;
     stars.forEach(s => { s.style.opacity = '0'; }); lineSvg.style.opacity = '0';
+    if (photoOk) { ph.reset(); landPhoto(); }
     for (const el of [stage.querySelector('.iv-to'), stage.querySelector('.iv-from'), giftBtn, stage.querySelector('.iv-act-closed')]) { el.style.opacity = ''; el.style.transform = ''; }
     giftBtn.querySelector('.lid').style.transformOrigin = '';
     for (const el of after.querySelectorAll('.iv-go, .iv-what, .iv-link')) el.style.opacity = '';
@@ -213,10 +278,10 @@ export function renderInvite(host, inv, {preview = false, onStatus = null} = {})
   openBtn.addEventListener('click', () => open(null));
   skipBtn.addEventListener('click', () => { if (state === 'closed' && !running) { running = true; finish(); card.focus({preventScroll: true}); } });
   replay.addEventListener('click', reset);
-  const onResize = () => { if (state === 'open') place(targets()); };
+  const onResize = () => { if (state === 'open' && !photoOk) place(targets()); };
   addEventListener('resize', onResize);
   lineSvg.style.opacity = '0';
-  return {open, finish, reset, scene, get state() { return state; }};
+  return {open, finish, reset, scene, destroy: () => { removeEventListener('resize', onResize); ph?.destroy(); }, get state() { return state; }, get photo() { return photoOk; }};
 }
 
 /* ── 받는 쪽 페이지 ── */
@@ -263,6 +328,34 @@ function kakaoInit() { // 열쇠 · SDK 판 · 무결성 값이 모두 있을 �
 }
 function field(id, label, input, extra) { return h('div', {class: 'iv-field'}, h('label', {for: id}, label), input, extra); }
 
+/* 사장님 사진 열쇠 — https://aaa7377.com/invite.html#owner=<열쇠> 로 한 번 열면 이 기기에 기억(주소에서는 바로 지움) · 서버가 SHA-256 으로 맞춰 봄 */
+const OWNER_KEY = 'atlas11:invite:owner';
+function ownerKeyFromUrl() {
+  const m = /(?:^#|&)owner=([A-Za-z0-9_-]{16,128})(?:&|$)/.exec(location.hash);
+  if (!m) return false;
+  store.set(OWNER_KEY, m[1]);
+  try { history.replaceState(null, '', location.pathname + location.search); } catch {}
+  return true;
+}
+/* 사진 줄이기 — 휴대폰에서 고른 사진을 JPEG 로(가장 긴 쪽 1100px부터 · 780KB 안 · 비율 1:2.5~2.5:1 로 가운데 자름) · 사진은 서버에 이것만 감 */
+async function shrinkPhoto(file) {
+  let src = null;
+  if (window.createImageBitmap) src = await createImageBitmap(file, {imageOrientation: 'from-image'}).catch(() => createImageBitmap(file).catch(() => null));
+  if (!src) src = await new Promise((resolve, reject) => { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => resolve(im); im.onerror = reject; im.src = fr.result; }; fr.onerror = reject; fr.readAsDataURL(file); });
+  const W0 = src.width || src.naturalWidth, H0 = src.height || src.naturalHeight;
+  if (!W0 || !H0) throw Error('photo');
+  let sx = 0, sy = 0, sw = W0, sh = H0; // 너무 긴 사진은 가운데만
+  if (W0 / H0 > 2.5) { sw = Math.round(H0 * 2.5); sx = Math.round((W0 - sw) / 2); } else if (H0 / W0 > 2.5) { sh = Math.round(W0 * 2.5); sy = Math.round((H0 - sh) / 2); }
+  for (const [max, q] of [[1100, 0.86], [1000, 0.8], [880, 0.74], [760, 0.7], [640, 0.66]]) {
+    const k = Math.min(1, max / Math.max(sw, sh)), w = Math.max(1, Math.round(sw * k)), hh = Math.max(1, Math.round(sh * k));
+    const c = document.createElement('canvas'); c.width = w; c.height = hh;
+    const g = c.getContext('2d'); g.fillStyle = '#000'; g.fillRect(0, 0, w, hh); g.drawImage(src, sx, sy, sw, sh, 0, 0, w, hh);
+    const url = c.toDataURL('image/jpeg', q);
+    if (url.startsWith('data:image/jpeg') && url.length * 0.75 < 780000) { let x = 2166136261; for (let i = 0; i < url.length; i += 7) { x ^= url.charCodeAt(i); x = Math.imul(x, 16777619); } return {src: url, w, h: hh, id: (x >>> 0).toString(36) + url.length.toString(36)}; }
+  }
+  throw Error('too big');
+}
+
 function compose(main) {
   document.body.className = 'iv-day';
   document.title = 'ATLAS 초대장 보내기';
@@ -275,10 +368,27 @@ function compose(main) {
   const count = h('span', {id: 'iv-msg-count'});
   const resetMsg = h('button', {type: 'button'}, '기본 문구로');
   const pvBtn = h('button', {class: 'iv-btn pri', type: 'submit'}, '미리 보기');
+  // 사진(사장님 초대장만) — 사진 열쇠가 이 기기에 있을 때만 보임
+  const ownerNew = ownerKeyFromUrl(), ownerKey = store.get(OWNER_KEY);
+  let photo = null; try { photo = ownerKey ? JSON.parse(store.sget('atlas11:invite:photo') ?? 'null') : null; } catch { photo = null; }
+  if (!(typeof photo?.src === 'string' && photo.src.startsWith('data:image/jpeg') && photo.w > 0 && photo.h > 0 && photo.id)) photo = null;
+  const photoIn = h('input', {class: 'iv-file', id: 'iv-photo', type: 'file', accept: 'image/*'});
+  const photoThumb = h('img', {class: 'iv-photo-thumb', alt: '고른 사진'});
+  const photoPick = h('label', {class: 'iv-photo-pick', for: 'iv-photo'}, '사진 고르기');
+  const photoDrop = h('button', {class: 'iv-photo-drop', type: 'button'}, '빼기');
+  const photoErr = h('p', {class: 'iv-err', id: 'iv-photo-err', role: 'alert'});
+  const photoField = ownerKey ? h('div', {class: 'iv-field iv-photo'},
+    h('span', {class: 'iv-label'}, '사진', h('small', null, '사장님 전용 · 넣지 않아도 됩니다')),
+    h('div', {class: 'iv-photo-row'}, photoThumb, h('div', {class: 'iv-photo-act'}, photoPick, photoDrop)),
+    h('p', {class: 'iv-photo-note'}, '이 초대장 링크로만 볼 수 있습니다 · 선물을 열면 사진이 별빛 속에 떠오르고 금빛 별가루가 둘레를 돕니다'),
+    photoIn, photoErr) : null;
+  const ownerNote = ownerNew ? h('p', {class: 'iv-owner-ok', role: 'status'}, '이 휴대폰에서 사진을 넣을 수 있습니다') : null;
   const form = h('form', {class: 'iv-form', novalidate: true},
+    ownerNote,
     field('iv-to', h('span', null, '받는 사람'), to, toErr),
     field('iv-from', h('span', null, '보내는 사람'), from, fromErr),
     field('iv-msg', h('span', null, '메시지', h('small', null, '고쳐 쓰셔도 됩니다 · 비워도 됩니다')), message, h('div', {class: 'iv-row'}, count, resetMsg)),
+    photoField,
     h('p', {class: 'iv-privacy'}, h('b', null, '링크를 가진 사람은 누구나 이 초대장을 열 수 있습니다.'), ' 초대장은 180일 동안 열리고, 보낸 뒤에는 고칠 수 없습니다. 주소에는 메시지가 들어가지 않습니다.'),
     pvBtn);
   const pv = h('section', {class: 'iv-pv', 'aria-label': '미리 보기와 보내기'}); pv.hidden = true;
@@ -291,11 +401,28 @@ function compose(main) {
   const keep = () => { store.sset('atlas11:invite:draft', JSON.stringify(draft())); };
   const upd = () => { const n = chars(message.value); count.textContent = `${n} / ${LIMIT.message}자`; count.className = n > LIMIT.message ? 'iv-err' : ''; };
   const links = new Map(); // 글(받는 사람 · 보내는 사람 · 메시지) → {id, url} — 같은 글로 두 번 만들지 않음
-  const keyOf = d => JSON.stringify(d);
+  const keyOf = (d, pic = photo) => JSON.stringify(d) + '|' + (pic?.id ?? '');
   let shownKey = null; // 지금 미리 보기에 보이는 글
   for (const el of [to, from, message]) el.addEventListener('input', () => { el.removeAttribute('aria-invalid'); upd(); keep(); if (!pv.hidden && shownKey !== keyOf(draft())) pv.hidden = true; }); // 글을 고치면 지난 미리 보기는 닫음(옛 글이 보내지지 않게)
   resetMsg.addEventListener('click', () => { message.value = DEFAULT_MESSAGE; upd(); keep(); message.focus(); });
   upd();
+  const photoUi = () => {
+    if (!photoField) return;
+    photoField.classList.toggle('has', !!photo); photoDrop.hidden = !photo;
+    if (photo) photoThumb.src = photo.src; else photoThumb.removeAttribute('src');
+    photoPick.textContent = photo ? '다른 사진' : '사진 고르기';
+  };
+  if (photoField) {
+    photoUi();
+    photoIn.addEventListener('change', async () => {
+      const f = photoIn.files?.[0]; if (!f) return;
+      photoErr.textContent = ''; photoPick.textContent = '사진을 줄이는 중…';
+      try { photo = await shrinkPhoto(f); store.sset('atlas11:invite:photo', JSON.stringify(photo)); }
+      catch { photoErr.textContent = '이 사진은 열 수 없습니다 — 다른 사진을 골라 주세요'; }
+      photoIn.value = ''; photoUi(); if (!pv.hidden && shownKey !== keyOf(draft())) pv.hidden = true;
+    });
+    photoDrop.addEventListener('click', () => { photo = null; try { sessionStorage.removeItem('atlas11:invite:photo'); } catch {} photoUi(); if (!pv.hidden && shownKey !== keyOf(draft())) pv.hidden = true; photoPick.focus(); });
+  }
 
   const check = () => {
     const d = draft(); let first = null;
@@ -316,7 +443,9 @@ function compose(main) {
     showPreview(d);
   });
 
+  let pvCtl = null;
   function showPreview(d) {
+    const pic = photo; // 미리 보기를 연 때의 사진(그 뒤에 바꾸면 이 미리 보기는 닫힘)
     const status = h('p', {class: 'iv-status', role: 'status', 'aria-live': 'polite'});
     const say = (t, bad = false) => { status.textContent = t; status.className = 'iv-status' + (bad ? ' bad' : ''); };
     const frame = h('div', {class: 'iv-frame'});
@@ -329,21 +458,28 @@ function compose(main) {
       h('div', {class: 'iv-pv-h'}, h('h2', null, '받는 사람에게 이렇게 보입니다'), h('p', null, '합을 눌러 열어 보세요')),
       frame,
       h('div', {class: 'iv-share'}, sendBtn, hint, copyBtn, madeBox, status, editBtn));
-    pv.hidden = false; shownKey = keyOf(d);
-    renderInvite(frame, d, {preview: true, onStatus: t => say(t)});
+    pv.hidden = false; shownKey = keyOf(d, pic);
+    pvCtl?.destroy?.(); pvCtl = renderInvite(frame, {...d, photo: pic ? {src: pic.src, w: pic.w, h: pic.h} : null}, {preview: true, onStatus: t => say(t)});
     pv.scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block: 'start'});
     let K = null; // 불러 둔 카카오 — 누른 순간 기다림 없이 쓰려고
     kakaoInit().then(k => { K = k; if (k) hint.textContent = '카카오톡에서 받을 사람이나 대화방을 고르세요'; });
 
     // 초대장 주소는 미리 보기를 여는 때 서버에 만들어 둔다(보내기 전에는 아무에게도 가지 않음 · 번호를 모르면 못 엶)
     // — 휴대폰(아이폰 Safari · 카카오톡 안 브라우저)은 단추를 누른 그 순간에만 복사 · 공유 창 · 카카오 공유를 허락하므로, 누른 뒤 서버를 기다리지 않게
-    const key = keyOf(d);
+    const key = keyOf(d, pic);
     let pending = null, lastErr = '';
     const create = async () => {
       try {
-        const r = await fetch(API, {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify(d)});
+        const headers = {'content-type': 'application/json'}; if (pic && ownerKey) headers['x-atlas-owner'] = ownerKey;
+        const r = await fetch(API, {method: 'POST', headers, body: JSON.stringify(pic ? {...d, photo: pic.src} : d)});
         const b = await r.json().catch(() => null);
-        if (!r.ok || !b?.id) { lastErr = r.status === 400 ? '받는 사람 · 보내는 사람 이름을 확인해 주세요' : '초대장을 만들지 못했습니다 — 잠시 뒤 다시 눌러 주세요'; return null; }
+        if (!r.ok || !b?.id) {
+          lastErr = r.status === 403 && b?.error === 'photo_owner_only' ? '사진 열쇠가 맞지 않습니다 — 사진을 빼면 보낼 수 있습니다'
+            : r.status === 413 ? '사진이 너무 큽니다 — 다른 사진을 골라 주세요'
+            : r.status === 400 ? (b?.fields?.some(f => f.field === 'photo') ? '이 사진은 보낼 수 없습니다 — 다른 사진을 골라 주세요' : '받는 사람 · 보내는 사람 이름을 확인해 주세요')
+            : '초대장을 만들지 못했습니다 — 잠시 뒤 다시 눌러 주세요';
+          return null;
+        }
         const m = {id: b.id, url: `${location.origin}/i/${b.id}`}; links.set(key, m); lastErr = '';
         return m;
       } catch { lastErr = '인터넷 연결을 확인한 뒤 다시 눌러 주세요'; return null; }
@@ -409,4 +545,5 @@ const main = document.getElementById('iv-main');
 if (main) {
   const id = inviteIdFrom(location);
   if (id != null) receive(main, id); else compose(main);
+  addEventListener('hashchange', () => { if (inviteIdFrom(location) == null && /(?:^#|&)owner=/.test(location.hash)) compose(main); }); // 열린 쓰기 화면에 사진 열쇠 링크를 다시 열어도 받음
 }
