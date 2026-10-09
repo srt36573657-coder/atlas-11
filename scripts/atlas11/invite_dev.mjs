@@ -28,7 +28,7 @@ if (process.argv.includes('--seed-expired')) {
   seeded = r.body.id;
 }
 
-const TYPES = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8'};
+const TYPES = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8', '.jpg': 'image/jpeg', '.mp4': 'video/mp4', '.webm': 'video/webm'}; // .jpg · .mp4 · .webm — 소개 영상(2026-10-09 hello.html)
 let globalHeaders = {};
 try { // 「/*」 덩어리만(넷리파이 _headers 형식)
   const t = await fs.readFile(path.join(dir, '_headers'), 'utf8'); let cur = null;
