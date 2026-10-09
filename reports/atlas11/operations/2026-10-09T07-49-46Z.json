@@ -1,0 +1,112 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-10-09T07:49:46Z",
+  "dayKST": "2026-10-09",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-10-09T07:49:46.430Z",
+      "status": "ok",
+      "durationMs": 28,
+      "session": false,
+      "afterClose": false,
+      "day": "2026-10-09",
+      "cutoff": "2026-10-08"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-10-09T07:49:46.458Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true,
+      "reason": "거래일이 아님"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-10-09T07:49:46.458Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-10-09T07:49:46.502Z",
+      "view": {
+        "boardId": "board-2026-10-08-2bc9a766",
+        "asOf": "2026-10-08",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 2945430,
+        "similar": [
+          "DB",
+          "드림시큐리티",
+          "SK디스커버리",
+          "씨젠",
+          "에코프로비엠",
+          "SK이노베이션",
+          "F&F"
+        ],
+        "moves": "2026-10-07 → 2026-10-08",
+        "evening": null,
+        "lead6": {
+          "groups": 15,
+          "companies": 74,
+          "both": 44,
+          "index": "코스피 2026-10-08 -27.3%"
+        },
+        "market": {
+          "file": "public/data/atlas11/market/KOSPI.json",
+          "added": [],
+          "mismatch": []
+        },
+        "changelog": {
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
+        },
+        "issue": {
+          "wrote": false,
+          "reason": "2026-10-08 이슈가 이미 있음"
+        }
+      },
+      "status": "ok",
+      "durationMs": 931
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu24",
+    "event": "workflow_dispatch",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "37901155167",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/37901155167",
+    "commit": "a16384f3ab0ad241391980bb88005e8895afe1b7",
+    "serverInstalled": true,
+    "scheduledRun": false
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": false,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-10-09",
+  "session": false,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-10-09",
+    "status": "non_trading_day",
+    "mayCollectFinalClose": false
+  },
+  "cutoff": "2026-10-08",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "거래일이 아님",
+  "inputSnapshotSHA256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d",
+  "expectedStocks": 365,
+  "finishedAt": "2026-10-09T07:49:47.433Z"
+}
