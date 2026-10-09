@@ -7,11 +7,14 @@
  *        20거래일 전 물 위 ⇔ 그 날 기준선 이상 · 빛나는 7곳 = 후보 차례 · 값 없음 = 바닥
  *   ② 고름: 기준선 = 넘파이 직선 보간(따로 셈) · 그물 안 · 초입 · 기준(그날 종가 · 흑자 · 위험 공시) · 7곳 = 1년 추세 큰 순 · 같은 업종 3곳(따로 고름) ·
  *        flags 여섯 글자 · 미국 판 위험 공시 = 「확인 못 함」(없다고 쓰지 않음)
+ *   ③ 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이 … 점검 1000000만번」): 탑을 누르면 그 회사 · 그 업종(같은 g 다섯 곳) ·
+ *        회사 고리 = 판의 회사 · 업종 고리 = 판의 업종 · 같은 탑을 다시 누르면 닫힘 · 다른 탑은 그 탑으로 · 지도 섬 처음 모습에서 업종마다 누를 수 있는 탑이 있음(가린 업종 0) ·
+ *        누를 수 있는 점은 섬 칸 안 · 그 점을 누르면 그 탑(각도 72가지)
  *   node scripts/atlas11/verify/million.mjs [--target 1000000] [--out reports/atlas11/verify/million-latest.json]
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {islandModel, ISL} from '../../../site/app/island-model.js';
+import {islandModel, ISL, MAP, mapView, zoneOf, tapStep, tapInfo, projOf, towerHull, insideHull, hitCell, tapPointOf} from '../../../site/app/island-model.js';
 import {candOf, CAND_RULES, RISK_UNKNOWN} from '../../../lib/atlas11/cand.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
@@ -110,15 +113,70 @@ function checkCand(seed, place) {
   ok('고름 · pool 그물 수', C.pool.net === B.stocks.filter(s => fin(m.get(s.code)) && m.get(s.code) >= q).length, tag);
 }
 
+/* ③ 3단 클릭 — 판 하나(섬 칸 · 판의 회사 · 업종 기호)에서 누름 셈과 자리 셈의 약속 */
+function fastHit(cells, v, zOf) { // hitCell 과 같은 셈 — 껍질을 한 번만 셈(맞대기 속도) · 둘이 같은지도 맞댐
+  const P = projOf(v), sn = Math.sin(v.th), cs = Math.cos(v.th), front = cells.map((_, i) => i).sort((a, b) => (cells[b].x * sn + cells[b].y * cs) - (cells[a].x * sn + cells[a].y * cs) || a - b);
+  const H = cells.map((c, i) => { const hl = towerHull(c, P, zOf(i)); let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; for (const q of hl) { x0 = Math.min(x0, q[0]); x1 = Math.max(x1, q[0]); y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); } return {hl, x0, x1, y0, y1}; });
+  return (px, py) => { for (const i of front) { const h = H[i]; if (px < h.x0 - 1 || px > h.x1 + 1 || py < h.y0 - 1 || py > h.y1 + 1) continue; if (insideHull(h.hl, px, py)) return i; } return -1; };
+}
+const nav3 = {hiddenZones: {}, tappable: {}};
+function checkNav3(C, stocks, tag, {codes = null, gids = null, geo = false} = {}) {
+  const M = islandModel(C, stocks); ok('3단 · 섬이 있음', !!M, tag); if (!M) return;
+  const cells = M.cells, n = cells.length, zones = new Map(); cells.forEach((c, i) => { const z = zoneOf(c); if (!zones.has(z)) zones.set(z, []); zones.get(z).push(i); });
+  for (let j = 0; j < n; j++) {
+    const c = cells[j], s1 = tapStep(cells, null, j), info = tapInfo(cells, s1);
+    ok('3단 · 탑을 누르면 그 회사', s1.i === j && !!info && info.co.code === c.code, `${tag} ${c.code}`);
+    ok('3단 · 회사 고리 = #/stock/기호', info?.co.href === `#/stock/${c.code}`, `${tag} ${c.code}`);
+    if (codes) ok('3단 · 회사 고리 = 판의 회사', codes.has(c.code), `${tag} ${c.code}`);
+    ok('3단 · 그 업종 = 같은 g 의 회사 모두', !!info && info.zone.cos.length === zones.get(zoneOf(c)).length && info.zone.cos.every(x => zoneOf(cells[cells.findIndex(y => y.code === x.code)]) === zoneOf(c)), `${tag} ${c.code}`);
+    ok('3단 · 업종 칸에 누른 회사 표시(하나)', !!info && info.zone.cos.filter(x => x.on).length === 1 && info.zone.cos.find(x => x.on)?.code === c.code, `${tag} ${c.code}`);
+    ok('3단 · 업종 고리 = #/i/업종', !!info && (c.g == null ? info.zone.href === null : info.zone.href === `#/i/${c.g}`), `${tag} ${c.code}`);
+    if (gids && c.g != null) ok('3단 · 업종 고리 = 판의 업종', gids.has(c.g), `${tag} ${c.g}`);
+    const s2 = tapStep(cells, s1, j); ok('3단 · 같은 탑을 다시 누르면 닫힘', s2.i === -1 && s2.z === null && tapInfo(cells, s2) === null, `${tag} ${c.code}`);
+    ok('3단 · 빈 곳을 누르면 닫힘', tapStep(cells, s1, -1).i === -1, `${tag} ${c.code}`);
+    for (let k = 0; k < n; k++) if (k !== j) { const s3 = tapStep(cells, s1, k); ok('3단 · 다른 탑을 누르면 그 탑 · 그 업종', s3.i === k && s3.z === zoneOf(cells[k]), `${tag} ${c.code}→${cells[k].code}`); }
+  }
+  if (!geo) return;
+  for (const W of [360, 390]) {
+    const Hp = Math.round(W * MAP.h), zOf = i => cells[i].hN;
+    for (let deg = 0; deg < 360; deg += 5) {
+      const th = deg * Math.PI / 180, v = mapView(W, th), hit = fastHit(cells, v, zOf), P = projOf(v); let tap = 0; const zoneOk = new Set();
+      for (let i = 0; i < n; i++) {
+        const c = cells[i], z = Math.max(zOf(i), 0.006); let q = null;
+        for (const f of [1, 0.9, 0.75, 0.6, 0.45, 0.3, 0.15, 0.02]) { for (const [ox, oy] of [[0, 0], [-0.2, 0], [0.2, 0], [0, 0.2], [0, -0.2], [-0.3, -0.3], [0.3, 0.3], [-0.3, 0.3], [0.3, -0.3]]) { const p = P(c.x + ox, c.y + oy, z * f); if (hit(p[0], p[1] + 1) === i) { q = [p[0], p[1] + 1]; break; } } if (q) break; }
+        if (!q) continue; tap++; zoneOk.add(zoneOf(c));
+        ok('3단 · 누를 수 있는 점은 섬 칸 안', q[0] >= 0 && q[0] <= W && q[1] >= 0 && q[1] <= Hp, `${tag} W${W} ${deg}° ${c.code}`);
+        ok('3단 · 그 점을 누르면 그 탑(앞 탑이 아님)', hit(q[0], q[1]) === i, `${tag} W${W} ${deg}° ${c.code}`);
+        if (deg % 45 === 0 && i % 7 === 0) ok('3단 · 빠른 셈 = 화면 셈(hitCell)', hitCell(cells, v, zOf, q[0], q[1]) === i, `${tag} W${W} ${deg}° ${c.code}`);
+      }
+      const hidden = zones.size - zoneOk.size;
+      if (Math.abs(th - MAP.th) < 0.05 || deg === 35) { nav3.hiddenZones[`${tag} W${W} 처음`] = hidden; nav3.tappable[`${tag} W${W} 처음`] = tap; }
+      ok('3단 · 섬 밖을 누르면 아무 탑도 아님', hit(-50, -50) === -1 && hit(W + 50, Hp + 50) === -1, `${tag} W${W} ${deg}°`);
+    }
+    // 처음 각도(MAP.th) — 업종마다 누를 수 있는 탑이 하나는 있음(가린 업종 0)
+    const v0 = mapView(W), hit0 = fastHit(cells, v0, zOf), P0 = projOf(v0), zoneOk0 = new Set(); let tap0 = 0;
+    for (let i = 0; i < n; i++) { const c = cells[i], z = Math.max(zOf(i), 0.006); let got = false;
+      for (const f of [1, 0.9, 0.75, 0.6, 0.45, 0.3, 0.15, 0.02]) { for (const [ox, oy] of [[0, 0], [-0.2, 0], [0.2, 0], [0, 0.2], [0, -0.2], [-0.3, -0.3], [0.3, 0.3], [-0.3, 0.3], [0.3, -0.3]]) { const p = P0(c.x + ox, c.y + oy, z * f); if (hit0(p[0], p[1] + 1) === i) { got = true; break; } } if (got) break; }
+      if (got) { tap0++; zoneOk0.add(zoneOf(c)); } }
+    nav3.hiddenZones[`${tag} W${W}`] = zones.size - zoneOk0.size; nav3.tappable[`${tag} W${W}`] = tap0;
+    ok('3단 · 지도 섬 처음 모습에서 업종마다 누를 수 있는 탑(가린 업종 0)', zoneOk0.size === zones.size, `${tag} W${W} 가린 업종 ${zones.size - zoneOk0.size}개`);
+  }
+}
+
 /* 실제 판 읽기(한국 · 미국) — 사이트 묶음(dist)에 있으면 섬 셈을 같은 약속으로 */
 const real = [];
 for (const [place, f] of [['kr', 'dist/data/atlas11/view/lens.json'], ['us', 'dist/us/data/atlas11/view/lens.json']]) {
-  try { const L = JSON.parse(await fs.readFile(f, 'utf8')); if (L.cand?.ready) { checkIsland(L.cand, L.stocks, `실제 ${place}`); real.push(place); } } catch {}
+  try { const L = JSON.parse(await fs.readFile(f, 'utf8')); if (L.cand?.ready) { checkIsland(L.cand, L.stocks, `실제 ${place}`); real.push(place);
+    const B = JSON.parse(await fs.readFile(f.replace('lens.json', 'board.json'), 'utf8')).catch?.(() => null) ?? JSON.parse(await fs.readFile(f.replace('lens.json', 'board.json'), 'utf8'));
+    checkNav3(L.cand, L.stocks, `실제 ${place}`, {codes: new Set(B.companies.map(c => String(c.code))), gids: new Set((B.groups ?? []).map(g => String(g.id))), geo: true}); } } catch (e) { if (process.env.MILLION_DEBUG) console.error(e); }
 }
 const t0 = Date.now(); let boardsI = 0, boardsC = 0;
 for (let seed = 1; boardsC < 60; seed++) { checkCand(seed, seed % 2 ? 'kr' : 'us'); boardsC++; }
-for (let seed = 1; checks < TARGET; seed++) { const {C, stocks} = randomIsland(seed); checkIsland(C, stocks, `무작위 섬 #${seed}`); boardsI++; }
-const res = {schema: 'atlas11-million-1', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), checks, target: TARGET, failed: fails.length, real, boards: {island: boardsI, cand: boardsC}, perKind, fails};
+let boardsN = 0; for (let seed = 1; seed <= 6; seed++) { const {C, stocks} = randomIsland(seed + 5000); checkNav3(C, stocks, `무작위 섬 3단 #${seed}`); boardsN++; } // 3단 클릭 — 무작위 판(누름 셈)
+const nav3Now = () => Object.entries(perKind).filter(([k]) => k.startsWith('3단')).reduce((t, [, v]) => t + v, 0);
+const base3 = nav3Now(); for (let seed = 1; checks - base3 < TARGET; seed++) { const {C, stocks} = randomIsland(seed); checkIsland(C, stocks, `무작위 섬 #${seed}`); boardsI++; } // 섬 · 고르는 셈 약속은 3단과 따로 목표 수만큼
+const nav3n = Object.entries(perKind).filter(([k]) => k.startsWith('3단')).reduce((t, [, v]) => t + v, 0);
+const res = {schema: 'atlas11-million-2', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), checks, target: TARGET, failed: fails.length, real, boards: {island: boardsI, cand: boardsC, nav3: boardsN}, nav3: {checks: nav3n, ...nav3}, perKind, fails};
 await fs.mkdir(path.dirname(OUT), {recursive: true}); await fs.writeFile(OUT, JSON.stringify(res, null, 1) + '\n');
-console.log(JSON.stringify({checks, failed: fails.length, real, boards: res.boards, seconds: res.seconds, sample: fails.slice(0, 5)}));
+console.log(JSON.stringify({checks, failed: fails.length, real, boards: res.boards, nav3: nav3n, hiddenZones: nav3.hiddenZones, seconds: res.seconds, sample: fails.slice(0, 5)}));
 process.exit(fails.length ? 1 : 0);

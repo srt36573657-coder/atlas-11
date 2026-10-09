@@ -8,12 +8,12 @@
    · 가만히 두면 멈춤 · 탑을 누르면 이름표(이름 · 업종 · 「회사 보기 ›」) · 옆으로 끌면 돎 · 놓으면 천천히 멈춤 · 움직임 줄이기 = 바로
    · 그림 값(data-check) 없음 — 그 화면의 값은 위 자료 그림 · 이 섬은 자리를 보이는 지도(새 셈 없음 · 판 읽기 값만 · 그림 속 글자는 HTML) */
 import {h, finite} from './util.js';
-import {islandModel} from './island-model.js';
-import {PAL, A, FACES} from './island.js';
+import {islandModel, A, MAP, tapStep, tapInfo, zoneOf, hullOf, hitCell, tapPointOf} from './island-model.js';
+import {PAL, FACES} from './island.js';
 
 const mm = q => typeof matchMedia === 'function' && matchMedia(q).matches;
-const TH = 0.62; // 지도는 늘 같은 방향(첫 화면 섬에 고른 곳이 없을 때 각도와 같음)
-const SKIP = new Set(['cand', 'log', 'guide', 'long', 'learn', 'korea']); // 첫 화면(섬이 곧 그림) · 회사가 없는 안내 · 기록 화면
+const TH = MAP.th, TILT = MAP.tilt; // 지도는 늘 같은 방향 · 모양은 island-model.js MAP(백만 번 맞대기가 같은 값으로 잼)
+const SKIP = new Set(['cand']); // 첫 화면만 뺌(섬이 곧 그림 · 같은 3단 클릭) — 2026-10-09 21:33 「모든곳에 하나도 빠짐없이」부터 안내 · 기록 · 읽는 법 연습 · 빈 하늘 화면에도 지도 섬(그 화면에 빛낼 회사가 없으면 지도의 날씨)
 const UP = [214, 69, 69], DOWN = [53, 110, 196]; // 오름 빨강 · 내림 파랑(화면 색 변수를 못 읽을 때)
 function cssRgb(name, fb) { // 화면 색 변수(--up · --down) → [r, g, b]
   try { const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); let m = v.match(/^#([0-9a-f]{6})$/i);
@@ -36,13 +36,15 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
     : `지도 · ${n}곳 가운데 ${who} ${litSet.size + (goldI >= 0 && !litSet.has(cells[goldI].code) ? 1 : 0)}곳이 빛남${goldI >= 0 ? ` · 금빛 = ${cells[goldI].name}` : ''} · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선`;
   const canvas = h('canvas', {class: 'imap-cv', role: 'img', 'aria-label': `ATLAS 지도 — ${capTxt}`});
   const tag = h('p', {class: 'imap-tag', hidden: true});
+  const zone = h('div', {class: 'imap-zone', hidden: true, 'aria-live': 'polite'}); // 3단 클릭 — 누른 탑의 업종(업종 보기 · 같은 업종 회사 이름 → 회사 화면)
   const stage = h('div', {class: 'imap-stage'}, canvas, tag);
-  const el = h('div', {class: 'imap', 'data-map': JSON.stringify({n, lit: litSet.size, gold: goldI >= 0 ? cells[goldI].code : null, heat, up: nUp, down: nDown})},
-    stage, h('p', {class: 'imap-cap'}, capTxt));
+  const el = h('div', {class: 'imap', 'data-nav': '3', 'data-map': JSON.stringify({n, lit: litSet.size, gold: goldI >= 0 ? cells[goldI].code : null, heat, up: nUp, down: nDown})},
+    stage, zone, h('p', {class: 'imap-cap'}, capTxt + ' · 탑을 누르면 회사 · 업종'));
   const ctx = canvas.getContext('2d');
   let pal = mm('(prefers-color-scheme: dark)') ? PAL.dark : PAL.light, rm = mm('(prefers-reduced-motion: reduce)'), upC = UP, downC = DOWN;
-  let Wp = 0, Hp = 0, s = 10, cx = 0, cy = 0, zmax = 60, dpr = 1, th = TH, sinT = 0, cosT = 1, vth = 0, raf = 0, dragging = false, focus = -1;
-  const tilt = 0.5, order = cells.map((_, i) => i);
+  let Wp = 0, Hp = 0, s = 10, cx = 0, cy = 0, zmax = 60, dpr = 1, th = TH, sinT = 0, cosT = 1, vth = 0, raf = 0, dragging = false, st = {z: null, i: -1};
+  const tilt = TILT, order = cells.map((_, i) => i); // 눕힘 0.7 · 탑 높이 0.15 — 처음 모습에서 업종 73개 모두 누를 수 있게(앞 탑에 통째로 가린 업종 0 · 백만 번 맞대기가 잼)
+  const view = () => ({th, s, cx, cy, tilt, zmax});
   const P = (x, y, z) => { const xr = x * cosT - y * sinT, yr = x * sinT + y * cosT; return [cx + xr * s, cy + yr * s * tilt - z * zmax]; };
   const rgb = (c, k = 1, a = 1) => `rgba(${Math.round(c[0] * k)},${Math.round(c[1] * k)},${Math.round(c[2] * k)},${a})`;
   const mix = (c, k) => (k <= 0 ? c : [c[0] + (pal.fade[0] - c[0]) * k, c[1] + (pal.fade[1] - c[1]) * k, c[2] + (pal.fade[2] - c[2]) * k]);
@@ -53,16 +55,16 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
   const pinIs = heat ? [] : cells.map((_, i) => i).filter(lights), PINS = pinIs.length > 0 && pinIs.length <= 7; // 빛나는 곳이 일곱 곳 이하면 탑마다 작은 핀(앞 탑에 가려도 자리가 보임 · 글자 없음)
   function colorsOf(i, under) { // [옆면, 윗면]
     if (i === goldI) return [pal.hero, pal.heroT];
-    if (i === focus) return [pal.focus, pal.focusT];
+    if (i === st.i) return [pal.focus, pal.focusT];
     if (heat) { const g = sgn(i), base = g > 0 ? upC : g < 0 ? downC : pal.gray; return under ? [mix(base, 0.78), mix(base, 0.66)] : [base, lighten(base, 0.35)]; } // 물 아래는 같은 색을 옅게(물 위 오름 · 내림이 먼저 읽히게)
     if (litSet.has(cells[i].code)) return [pal.seven, pal.sevenT];
     const pair = under ? [pal.stone, pal.stoneT] : cells[i].elig ? [pal.net, pal.netT] : [pal.gray, pal.grayT];
     return dim ? [mix(pair[0], 0.55), mix(pair[1], 0.55)] : pair;
   }
   function size() { const w = Math.round(stage.clientWidth); if (!w) return false; // 폭이 잡힌 뒤에만(지레짐작한 폭으로 그리지 않음)
-    Wp = w; Hp = Math.round(stage.clientHeight) || Math.round(Wp * 0.74); dpr = Math.min(2, window.devicePixelRatio || 1); // 높이는 CSS(가로 100 : 세로 74)가 붙는 순간 정함 — 그린 뒤 칸 높이가 바뀌어 「보던 자리」가 밀리지 않게
+    Wp = w; Hp = Math.round(stage.clientHeight) || Math.round(Wp * MAP.h); dpr = Math.min(2, window.devicePixelRatio || 1); // 높이는 CSS(가로 100 : 세로 80)가 붙는 순간 정함 — 그린 뒤 칸 높이가 바뀌어 「보던 자리」가 밀리지 않게
     canvas.width = Math.round(Wp * dpr); canvas.height = Math.round(Hp * dpr);
-    s = (Wp - 12) / 26.4; cx = Wp / 2; cy = Hp * 0.64; zmax = Wp * 0.2; upC = cssRgb('--up', UP); downC = cssRgb('--down', DOWN); return true; }
+    s = (Wp - 12) / 26.4; cx = Wp / 2; cy = Hp * MAP.cy; zmax = Wp * MAP.z; upC = cssRgb('--up', UP); downC = cssRgb('--down', DOWN); return true; }
   function prism(i, z0, z1, side, top, glow) {
     const cs = corners(i);
     for (const f of FACES) {
@@ -76,11 +78,8 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
       if (glow) ctx.restore(); }
   }
   function ellipse(z, r, fill, line) { const c = P(0, 0, z); ctx.beginPath(); ctx.ellipse(c[0], c[1], r * s, r * s * tilt, 0, 0, Math.PI * 2); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (line) { ctx.strokeStyle = line; ctx.lineWidth = 1; ctx.stroke(); } }
-  function hullOf(p) { p = p.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]), lo = [], up = [];
-    for (const q of p) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); }
-    for (let k = p.length - 1; k >= 0; k--) { const q = p[k]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); }
-    up.pop(); lo.pop(); return lo.concat(up); }
-  const zOf = i => cells[i].hN + (i === focus ? 8 / zmax : 0);
+  const inZone = i => st.z != null && zoneOf(cells[i]) === st.z;
+  const zOf = i => cells[i].hN + (i === st.i ? 8 / zmax : inZone(i) ? 5 / zmax : 0); // 누른 탑 · 그 업종은 조금 솟음
   function draw() {
     if (!Wp) return;
     sinT = Math.sin(th); cosT = Math.cos(th);
@@ -91,16 +90,16 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
     for (const i of order) { const z = zOf(i), [sd, tp] = colorsOf(i, true); if (z <= 0.006) { prism(i, 0, 0.006, sd, tp, null); continue; } prism(i, 0, Math.min(z, W0), sd, z <= W0 ? tp : null, null); }
     ellipse(W0, 14.4, pal.sea, pal.rim);
     for (const i of order) { const z = zOf(i); if (z <= W0) continue; const [sd, tp] = colorsOf(i, false); prism(i, W0, z, sd, tp, i === goldI ? pal.glowH : lights(i) ? pal.glow7 : null); }
-    if (!heat) for (const i of order) { if (!lights(i)) continue; // 앞 탑에 가려도 빛나는 곳이 보이게 — 테두리만 옅게 한 번 더(첫 화면 섬과 같은 법)
+    for (const i of order) { const L = !heat && lights(i), Z = inZone(i); if (!L && !Z) continue; // 앞 탑에 가려도 빛나는 곳 · 누른 업종이 보이게 — 테두리만 한 번 더(첫 화면 섬과 같은 법)
       const z = Math.max(zOf(i), 0.006), pts = []; for (const [x, y] of corners(i)) pts.push(P(x, y, 0), P(x, y, z));
       const hl = hullOf(pts); ctx.beginPath(); hl.forEach((q, k) => (k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath();
-      ctx.strokeStyle = (i === goldI ? pal.beam : pal.ring) + '0.75)'; ctx.lineWidth = 1.1; ctx.stroke(); }
+      ctx.strokeStyle = Z ? rgb(pal.focusT, 1, 0.95) : (i === goldI ? pal.beam : pal.ring) + '0.75)'; ctx.lineWidth = Z ? 1.6 : 1.1; ctx.stroke(); }
     if (PINS) for (const i of pinIs.slice().sort((a, b) => (cells[a].x * sinT + cells[a].y * cosT) - (cells[b].x * sinT + cells[b].y * cosT))) { // 핀 — 뒤에서 앞으로 · 금빛은 조금 크게
       const g = i === goldI, r = g ? 6 : 4.5, t = P(cells[i].x, cells[i].y, Math.max(zOf(i), 0.006)), top = Math.max(r + 2, t[1] - (g ? 17 : 14)), ink = g ? pal.lead : pal.stem;
       ctx.strokeStyle = ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(t[0], t[1]); ctx.lineTo(t[0], top + r); ctx.stroke();
       ctx.fillStyle = rgb(g ? pal.heroT : pal.sevenT); ctx.beginPath(); ctx.arc(t[0], top, r, 0, Math.PI * 2); ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = ink; ctx.stroke(); }
-    if (focus >= 0) { // 누른 탑 이름표 — 탑 위(섬 칸 안으로)
-      const t = P(cells[focus].x, cells[focus].y, zOf(focus)); tag.hidden = false;
+    if (st.i >= 0) { // 누른 탑 이름표 — 탑 위(섬 칸 안으로)
+      const focus = st.i, t = P(cells[focus].x, cells[focus].y, zOf(focus)); tag.hidden = false;
       const w = tag.offsetWidth || 140, hh = tag.offsetHeight || 26, x = Math.max(4, Math.min(Wp - w - 4, t[0] - w / 2)), y = Math.max(4, Math.min(Hp - hh - 4, t[1] - 10 - hh));
       tag.style.left = `${Math.round(x)}px`; tag.style.top = `${Math.round(y)}px`;
     } else tag.hidden = true;
@@ -108,18 +107,14 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
   const busy = () => dragging || vth !== 0;
   function step() { raf = 0; if (!dragging && vth) { th += vth; vth *= 0.92; if (Math.abs(vth) < 0.0004) vth = 0; } draw(); if (busy()) raf = requestAnimationFrame(step); }
   const kick = () => { if (rm) { vth = 0; draw(); return; } if (!raf) raf = requestAnimationFrame(step); };
-  function hit(px, py) {
-    sinT = Math.sin(th); cosT = Math.cos(th);
-    const front = [...order].sort((a, b) => (cells[b].x * sinT + cells[b].y * cosT) - (cells[a].x * sinT + cells[a].y * cosT));
-    const inside = (hl, x, y) => { let sg = 0; for (let k = 0; k < hl.length; k++) { const a = hl[k], b = hl[(k + 1) % hl.length], c = (b[0] - a[0]) * (y - a[1]) - (b[1] - a[1]) * (x - a[0]); if (c !== 0) { const t = c > 0 ? 1 : -1; if (!sg) sg = t; else if (t !== sg) return false; } } return true; };
-    for (const i of front) { const z = Math.max(zOf(i), 0.006), pts = []; for (const [x, y] of corners(i)) pts.push(P(x, y, 0), P(x, y, z)); if (inside(hullOf(pts), px, py)) return i; }
-    return -1;
-  }
-  function pick(i) {
-    if (i < 0 || i === focus) { focus = -1; draw(); return; }
-    focus = i; const c = cells[i];
-    tag.replaceChildren(h('span', {class: 'imap-nm', 'data-ident': ''}, c.name), ` · ${c.sec ?? '업종 없음'} · `, h('a', {href: `#/stock/${c.code}`}, '회사 보기 ›'));
-    draw();
+  const hit = (px, py) => hitCell(cells, view(), zOf, px, py); // 셈은 island-model.js(첫 화면 섬 · 백만 번 맞대기와 같은 셈)
+  function pick(i) { // 3단 클릭 — ① 섬 ② 누른 탑 = 그 회사(이름표 「회사 보기 ›」) + 그 업종(섬 아래 「업종 보기 ›」 · 같은 업종 회사 이름) ③ 누르면 그 화면
+    st = tapStep(cells, st, i); const info = tapInfo(cells, st);
+    if (!info) { tag.hidden = true; zone.hidden = true; zone.replaceChildren(); draw(); return; }
+    tag.replaceChildren(h('span', {class: 'imap-nm', 'data-ident': ''}, info.co.name), ` · ${info.co.sec ?? '업종 없음'} · `, h('a', {href: info.co.href}, '회사 보기 ›'));
+    zone.replaceChildren(h('p', {class: 'imap-zh'}, h('b', null, info.zone.label ?? '업종 없음'), ` · ${info.zone.cos.length}곳 · `, info.zone.href ? h('a', {href: info.zone.href}, '업종 보기 ›') : '업종 화면 없음'),
+      h('p', {class: 'imap-cos'}, ...info.zone.cos.map(x => h('a', {class: 'imap-co', href: x.href, 'aria-current': x.on ? 'true' : null, 'data-ident': ''}, x.name))));
+    zone.hidden = false; draw();
   }
   let down = null;
   stage.addEventListener('pointerdown', e => { if (e.target.closest?.('a')) return; down = {x: e.clientX, y: e.clientY, th, moved: false, lx: e.clientX, lt: performance.now()}; vth = 0; });
@@ -141,10 +136,8 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
   }
   let waits = 0; const first = () => { if (!el.isConnected) { if (++waits < 60) requestAnimationFrame(first); return; } if (size()) draw(); else if (!ro && ++waits < 60) requestAnimationFrame(first); };
   requestAnimationFrame(first);
-  el.__imap = {state: () => ({th, focus: focus >= 0 ? cells[focus].code : null, busy: busy(), gold: goldI >= 0 ? cells[goldI].code : null, lit: [...litSet], heat}),
-    tapPoint: code => { const i = byCode.get(String(code)); if (i == null) return null; sinT = Math.sin(th); cosT = Math.cos(th);
-      for (const f of [1, 0.8, 0.6, 0.4]) for (const [ox, oy] of [[0, 0], [-0.2, 0], [0.2, 0], [0, 0.2], [0, -0.2]]) { const q = P(cells[i].x + ox, cells[i].y + oy, Math.max(zOf(i), 0.006) * f); if (hit(q[0], q[1] + 1) === i) return [q[0], q[1] + 1]; }
-      return null; }};
+  el.__imap = {state: () => ({th, focus: st.i >= 0 ? cells[st.i].code : null, zone: st.z, busy: busy(), gold: goldI >= 0 ? cells[goldI].code : null, lit: [...litSet], heat}),
+    tapPoint: code => { const i = byCode.get(String(code)); if (i == null) return null; return tapPointOf(cells, view(), zOf, i); }};
   return {el, model: M};
 }
 
@@ -152,7 +145,7 @@ export function islandMap(C, stocks, {lit = [], gold = null, heat = false, who =
 export async function attachMap(main, view, hash, loadLens) {
   if (SKIP.has(view)) return null;
   const sec = main.querySelector('section[data-art], section.rt[data-place]'); // 그림 칸(업종 순환은 순환 그림 칸)
-  if (!sec || sec.querySelector('.isl, .imap, .ra[data-scene^="quiet-"]') || sec.dataset.art === 'cand') return null; // 빈 하늘(자료 없는 날 · 오류 화면)에는 붙이지 않음
+  if (!sec || sec.querySelector('.isl, .imap') || sec.dataset.art === 'cand') return null; // 빈 하늘(그 화면 그림 값이 없는 날)에도 지도는 붙임 — 지도는 그 화면의 값이 아니라 길(판 읽기를 못 읽으면 아래에서 조용히 넘어감)
   let lens = null; try { lens = await loadLens(); } catch { return null; }
   const C = lens?.cand, stocks = lens?.stocks ?? []; if (!C?.ready || !C.grow?.m || !stocks.length || !sec.isConnected) return null;
   const codes = new Set(), secs = new Set(), all = new Set(stocks.map(s => String(s.code)));
@@ -160,11 +153,10 @@ export async function attachMap(main, view, hash, loadLens) {
     if ((m = href.match(/^#\/stock\/([A-Za-z0-9][A-Za-z0-9.\-]{0,11})$/)) && all.has(m[1])) codes.add(m[1]);
     else if ((m = href.match(/^#\/i\/([a-z0-9]+)$/))) secs.add(m[1]); }
   for (const s of stocks) if (secs.has(s.g)) codes.add(String(s.code));
-  if (view === 'watch') { // 관심 — 이 기기에 남긴 회사가 빛남(빼면 지도도 다시 · 모두 빼면 지도 없음 — 날씨로 바꾸지 않음)
+  if (view === 'watch') { // 관심 — 이 기기에 남긴 회사가 빛남(빼면 지도도 다시 · 모두 빼면 지도의 날씨)
     const ol = main.querySelector('.wl-list');
     if (ol && !ol.__imapObs) { ol.__imapObs = new MutationObserver(() => { sec.querySelector('.imap')?.remove(); attachMap(main, view, hash, loadLens).catch(() => {}); }); ol.__imapObs.observe(ol, {childList: true}); }
-    for (const li of main.querySelectorAll('.wl-row[data-code]')) if (all.has(li.dataset.code)) codes.add(li.dataset.code);
-    if (!codes.size) return null; }
+    for (const li of main.querySelectorAll('.wl-row[data-code]')) if (all.has(li.dataset.code)) codes.add(li.dataset.code); } // 모두 빼면 지도의 날씨
   let gold = null;
   if (view === 'stock') { gold = hash.match(/^#\/stock\/([A-Za-z0-9][A-Za-z0-9.\-]{0,11})$/)?.[1] ?? null; for (const s of stocks) if (String(s.code) === gold) { for (const t of stocks) if (t.g === s.g) codes.add(String(t.code)); } } // 회사 화면 — 그 탑 금빛 · 같은 업종 옥빛
   if (view === 'compare') { // 비교 — 첫째 금빛 · 둘째 옥빛(그림 값 data-check 의 짝 · 짝을 바꾸면 지도도 다시)
