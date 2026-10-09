@@ -156,7 +156,8 @@ const sectorsW = lens => (lens.sectors ?? []).map(sc => { const ms = sc.codes.ma
    기대값은 판 읽기(lens.json)와 /story.json(돈 흐름)으로 이 검사기가 따로 셈 · 사람처럼 눌러 봄: 후보 → 「왜 선정됐나요?」 → 후보 판단 칸 → 「‹ 후보 7」(자리 · 초점) → 「다른 후보와 비교」 → 고르기 → 「진입 조건 확인」 */
 const eokW = v => { if (!Number.isFinite(v)) return '계산 불가'; const sg = v > 0 ? '+' : v < 0 ? '−' : '', a = Math.abs(v); return a >= 1e4 ? `${sg}${(a / 1e4).toFixed(1)}조` : `${sg}${Math.round(a).toLocaleString('ko-KR')}억`; };
 async function candCheck(page, label, mobile, press) {
-  // 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면 … 입체적으로 보여야하는 중심으로」 — 첫 화면 = ① 기준 한 줄 → ② 입체 땅(꺼진 땅 · 솟은 땅 · 후보 탑) + 고른 한 곳 카드 + 짧은 줄 → ③ 자세히(접힘)
+  // 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면 … 입체적으로 보여야하는 중심으로」 — 첫 화면 = ① 기준 한 줄 → ② 탑 한 줄 + 고른 한 곳 카드 + 짧은 줄 → ③ 자세히(접힘 · 맨 위 돈 유입 1~365등)
+  // 규칙 4판(2026-10-09 11:35 「전종목 365개 … 돈에 유입이 강력한 7개 … 비율계산 … 포모지수 … 1등부터 365등까지 … 20만번」 · 11:57 「현명하게 해봐」) — 업종 조건 없음 · 업종 돈 흐름은 받침 색(곁 정보)
   const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, st = await get('story.json'), rot = st.rotation;
   await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .l3'); await page.waitForTimeout(300);
   const readCard = () => page.evaluate(() => { const c = document.querySelector('.cd-card'); return {code: c?.dataset.code, rank: c?.querySelector('.cd-rk')?.textContent.trim(), name: c?.querySelector('.cd-name')?.textContent.trim(),
@@ -165,41 +166,64 @@ async function candCheck(page, label, mobile, press) {
   const cd = await page.evaluate(() => ({firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [x.dataset.first, Math.round(r.top), Math.round(r.bottom), x.matches('section[data-art]')]; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.dataset.route).join(),
     rows: [...document.querySelectorAll('.cd-row')].map(li => ({code: li.dataset.code, rank: li.dataset.rank, status: li.dataset.status, name: li.querySelector('.cd-name')?.textContent.trim(), rk: li.querySelector('.cd-rk')?.textContent.trim(), pw: li.querySelector('.cd-pwv')?.textContent.trim(), n: li.dataset.n})),
-    labs: [...document.querySelectorAll('.l3-lab')].map(a => ({out: a.classList.contains('l3-out'), name: a.querySelector('.l3-nm')?.textContent.trim(), amt: a.querySelector('.l3-amt')?.textContent.trim(), href: a.getAttribute('href')})),
-    tws: [...document.querySelectorAll('.l3-tw')].map(g => ({code: g.dataset.code, rank: Number(g.dataset.rank), h: Number(g.dataset.h), n: Number(g.dataset.n), of: Number(g.dataset.of), ghost: g.querySelectorAll('.l3-gh-t').length})), rks: [...document.querySelectorAll('.l3-rk')].map(b => [b.dataset.code, b.dataset.n]),
+    labs: document.querySelectorAll('.l3-lab').length,
+    tws: [...document.querySelectorAll('.l3-tw')].map(g => ({code: g.dataset.code, rank: Number(g.dataset.rank), h: Number(g.dataset.h), n: Number(g.dataset.n), of: Number(g.dataset.of), dir: g.dataset.dir, ghost: g.querySelectorAll('.l3-gh-t').length})), rks: [...document.querySelectorAll('.l3-rk')].map(b => [b.dataset.code, b.dataset.n]),
     svgText: document.querySelectorAll('.l3 svg text').length, rest: !!document.querySelector('.cd-page .ra.ra-rest'), shownBtns: [...document.querySelectorAll('.cd-page .ra-btns .ra-b')].filter(b => b.offsetParent).map(b => b.textContent.trim()),
-    rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
-  const okSecs = (rot?.in ?? []).slice(0, 3).filter(g => g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0);
+    rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
   const fiOf = code => { const s = lens.stocks.find(x => x.code === code), fl = s?.fl ?? {}; return Number.isFinite(fl.f10e) && Number.isFinite(fl.i10e) ? (fl.f10e + fl.i10e) / 1e8 : null; };
   const powOf = code => { const s = lens.stocks.find(x => x.code === code), fi = fiOf(code), cap = s?.fund?.cap; return Number.isFinite(fi) && cap > 0 ? (fi / cap) * 100 : null; };
-  // 1만 번 다시 뽑기(규칙 cand-rules-3 · 2026-10-09 10:14 「모테카를로 … 소거법」) — 횟수는 판 읽기 mc.counts(파이썬 따로 세기 scripts/atlas11/verify/cand_mc_verify.py 가 맞댐)
-  //   소거법 차례는 여기서 따로: 다섯 조건(flags)을 넘은 곳을 진입 조건 → 횟수 → 세기(따로 셈) → 금액 → 종목 기호 · 같은 업종 3곳 · 7곳
+  // 돈 유입 1~365등 · 포모지수 — 이 검사기가 판 읽기 종목 값으로 따로 셈: 비율 = 외국인+기관 10거래일(억) ÷ 시가총액(억) × 100 · 큰 순(같으면 금액 · 종목 기호) · 포모지수 = 비율을 셀 수 있는 곳 안 자리(1등 100점)
+  const ranked = lens.stocks.map(s => ({code: s.code, pw: powOf(s.code), fi: fiOf(s.code)})).filter(x => x.pw !== null).sort((p, q) => (q.pw - p.pw) || (q.fi - p.fi) || p.code.localeCompare(q.code));
+  const rkW = new Map(ranked.map((x, i) => [x.code, i + 1])), pws = ranked.map(x => x.pw);
+  const fomoW = code => { const v = powOf(code); if (v === null || !pws.length) return null; if (pws.length === 1) return 100; let lo = 0, eq = 0; for (const x of pws) { if (x < v) lo++; else if (x === v) eq++; } return Math.round(100 * (lo + 0.5 * (eq - 1)) / (pws.length - 1)); };
+  // 20만 번 다시 뽑기(규칙 cand-rules-4 · 2026-10-09 11:35) — 횟수는 판 읽기 mc.counts(파이썬 따로 세기 scripts/atlas11/verify/cand_mc_verify.py 가 맞댐)
+  //   소거법 차례는 여기서 따로: 네 조건(그날 종가 · 흑자 · 위험 공시 없음 · 외국인+기관 순매수 — flags 앞 넷)을 넘고 비율을 셀 수 있는 곳을 진입 조건(flags 다섯째) → 횟수 → 비율(따로 셈) → 금액 → 종목 기호 · 같은 업종 3곳 · 7곳
   const MC = C.mc ?? {}, nOf = code => MC.counts?.[code] ?? 0, draws = MC.draws ?? 0, timesW = v => `${Math.round(v).toLocaleString('ko-KR')}번`;
   const gOf = code => lens.stocks.find(x => x.code === code)?.g;
-  const elig = Object.entries(C.flags ?? {}).filter(([, f]) => f.startsWith('11111')).map(([code, f]) => ({code, met: f[5] === '1' ? 1 : 0, n: nOf(code), pw: powOf(code) ?? -1e9, fi: fiOf(code) ?? -1e9}))
+  const elig = Object.entries(C.flags ?? {}).filter(([code, f]) => f.length === 5 && f.startsWith('1111') && powOf(code) !== null).map(([code, f]) => ({code, met: f[4] === '1' ? 1 : 0, n: nOf(code), pw: powOf(code), fi: fiOf(code)}))
     .sort((p, q) => (q.met - p.met) || (q.n - p.n) || (q.pw - p.pw) || (q.fi - p.fi) || p.code.localeCompare(q.code));
   const per = new Map(), want = []; for (const e of elig) { const k = per.get(gOf(e.code)) ?? 0; if (k >= 3 || want.length >= 7) continue; per.set(gOf(e.code), k + 1); want.push(e.code); }
-  const rowsOk = C.ready && draws === 10000 && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.map(r => r.code).join() === want.join() && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.rk === `${i + 1}위` && r.status === x.status && r.name === x.name && r.pw === timesW(nOf(x.code)) && r.n === String(nOf(x.code)) && x.mc?.n === nOf(x.code); });
-  // 땅 — 솟은 땅 = 늘어난 곳 1위~3위(금액 · /story.json 으로 따로 셈) · 꺼진 땅 = 줄어든 곳 1위~3위 · 이름을 누르면 그 업종 화면
-  const inW = (rot?.in ?? []).slice(0, 3), outW = (rot?.out ?? []).slice(0, 3), inL = cd.labs.filter(x => !x.out), outL = cd.labs.filter(x => x.out);
-  const landOk = inL.length === inW.length && inW.every((g, i) => inL[i].name === g.label && inL[i].amt === eokW(g.amount) && inL[i].href === '#/i/' + g.id) && outL.length === outW.length && outW.every((g, i) => outL[i].name === g.label && outL[i].amt === eokW(g.amount) && outL[i].href === '#/i/' + g.id);
-  // 탑 — 후보마다 하나 · 높이 ∝ 1만 번 중 7곳에 든 횟수(같은 잣대 · 0부터 — 가장 낮게 그리는 4 보다 큰 탑끼리 높이 ÷ 횟수가 같음) · 빈 틀(1만 번) 하나씩 · 순위 동그라미 = 순위
-  const twOk = cd.tws.length === C.items.length && C.items.every(x => cd.tws.some(t => t.code === x.code && t.rank === x.rank && t.n === nOf(x.code) && t.of === draws && t.ghost === 1)) && cd.rks.every(([code, n]) => C.items.find(x => x.code === code)?.rank === Number(n));
+  const rowsOk = C.ready && C.rules === 'cand-rules-4' && draws === 200000 && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.map(r => r.code).join() === want.join() && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.rk === `${i + 1}위` && r.status === x.status && r.name === x.name && r.pw === timesW(nOf(x.code)) && r.n === String(nOf(x.code)) && x.mc?.n === nOf(x.code); });
+  // 받침 색(곁 정보 · 고르는 데 쓰지 않음) — 그 회사 업종이 /story.json 돈 흐름 늘어난 곳 1~3위면 in(빨강) · 줄어든 곳 1~3위면 out(파랑) · 그 밖 mid(회색) · 돈 흐름 날짜가 판 날짜와 다르면 모두 mid
+  const sameDay = rot && !rot.none && rot.asOf === C.asOf, ins = sameDay ? (rot.in ?? []).slice(0, 3).map(g => g.id) : [], outs = sameDay ? (rot.out ?? []).slice(0, 3).map(g => g.id) : [];
+  const dirW = code => { const g = gOf(code); return ins.includes(g) ? 'in' : outs.includes(g) ? 'out' : 'mid'; };
+  // 탑 — 후보마다 하나(한 줄) · 높이 ∝ 20만 번 중 7곳에 든 횟수(같은 잣대 · 0부터 — 가장 낮게 그리는 4 보다 큰 탑끼리 높이 ÷ 횟수가 같음) · 빈 틀(20만 번) 하나씩 · 순위 동그라미 = 순위 · 땅 이름표 없음
+  const twOk = cd.tws.length === C.items.length && C.items.every(x => cd.tws.some(t => t.code === x.code && t.rank === x.rank && t.n === nOf(x.code) && t.of === draws && t.ghost === 1 && t.dir === dirW(x.code))) && cd.rks.length === C.items.length && cd.rks.every(([code, n]) => C.items.find(x => x.code === code)?.rank === Number(n));
   const big = cd.tws.filter(t => t.h > 4.5 && t.n > 0), ratio = big.map(t => t.h / t.n), propOk = big.length >= 1 && ratio.every(r => Math.abs(r - ratio[0]) / ratio[0] < 0.01);
-  check(`${label} 첫 화면 「후보 7」 입체 땅(2026-10-09 08:26 「입체적으로」): ① 기준 → ② 그림 칸(솟은 땅 ${inL.map(x => `${x.name} ${x.amt}`).join(' · ')} / 꺼진 땅 ${outL.map(x => `${x.name} ${x.amt}`).join(' · ')} = /story.json) · 탑 ${cd.tws.length}개(높이 ∝ 1만 번 다시 뽑아 7곳에 든 횟수 · 빈 틀 = 1만 번) · 그림 안 글자 ${cd.svgText} · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 횟수 · 상태 = 판 읽기 · 소거법 차례 따로 셈 ${want.length}곳) → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
-    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && landOk && twOk && propOk && cd.svgText === 0
-      && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && okSecs.length === inL.length && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
-    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), labs: cd.labs, tws: cd.tws.slice(0, 3), ratio: ratio.map(r => +r.toFixed(3)), shown: cd.shownBtns});
-  // 카드 — 처음엔 1위 · 줄을 누르면 그 한 곳(고른 까닭 = 업종 차례 + 외국인+기관 금액 + 시가총액 대비 세기 · 가장 큰 위험 = 판 읽기) · 탑을 누르면 같은 카드 · 다른 탑은 흐려짐
+  check(`${label} 첫 화면 「후보 7」 탑 한 줄(규칙 4판 · 2026-10-09 11:35 「전종목 365개 … 20만번」): ① 기준 → ② 그림 칸(탑 ${cd.tws.length}개 · 높이 ∝ 20만 번 다시 뽑아 7곳에 든 횟수 · 빈 틀 = 20만 번 · 받침 색 ${cd.tws.map(t => t.dir).join(' · ')} = /story.json 따로 셈) · 그림 안 글자 ${cd.svgText} · 땅 이름표 ${cd.labs} · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 횟수 · 상태 = 판 읽기 · 소거법 차례 따로 셈 ${want.length}곳) · 「${cd.all}」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
+    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && twOk && propOk && cd.svgText === 0 && cd.labs === 0
+      && cd.all === `돈 유입 1등~${lens.stocks.length}등 모두 보기 ›` && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
+    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want, tws: cd.tws.slice(0, 3), dirs: C.items.map(x => dirW(x.code)), ratio: ratio.map(r => +r.toFixed(3)), shown: cd.shownBtns, all: cd.all});
+  // 카드 — 처음엔 1위 · 줄을 누르면 그 한 곳(고른 까닭 = 20만 번 중 횟수 + 돈 유입 비율 · 365곳 중 등수 · 포모지수 + 외국인+기관 금액 — 모두 따로 셈 · 가장 큰 위험 = 판 읽기) · 탑을 누르면 같은 카드 · 다른 탑은 흐려짐
   const cardWant = x => ({code: x.code, rank: `${x.rank}위`, name: x.name});
-  const cardOk = (c, x) => c.code === x.code && c.rank === `${x.rank}위` && c.name === x.name && c.why.includes(`돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label}`) && c.why.includes(eokW(fiOf(x.code))) && c.why.includes(`시가총액의 ${powOf(x.code).toFixed(2)}%`) && c.why.includes(`1만 번 다시 뽑아 ${timesW(nOf(x.code))} 7곳에 듦`)
+  const cardOk = (c, x) => c.code === x.code && c.rank === `${x.rank}위` && c.name === x.name && c.why.includes(`20만 번 다시 뽑아 ${timesW(nOf(x.code))} 7곳에 듦`)
+    && c.why.includes(`돈 유입 비율 ${powOf(x.code).toFixed(2)}%(${lens.stocks.length}곳 중 ${rkW.get(x.code)}위 · 포모지수 ${fomoW(x.code)}점)`) && c.why.includes(eokW(fiOf(x.code)))
     && c.risk === `가장 큰 위험 ${x.risk.text}` && c.btns.join() === (C.items.length > 1 ? '왜 선정됐나요?,다른 후보와 비교' : '왜 선정됐나요?') && c.pressed.join() === x.code && c.sel.join() === x.code;
   const k0 = await readCard(), bads = [];
   if (C.items.length && !(cardOk(k0, C.items[0]) && !k0.picked)) bads.push({first: k0});
   for (const [i, x] of C.items.entries()) { await press(page.locator('.cd-row .cd-pick').nth(i)); await page.waitForTimeout(120); const c = await readCard(); if (!cardOk(c, x) || !c.picked) bads.push({i, c, want: cardWant(x)}); }
   if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.l3-tw[data-code="${x.code}"]`).evaluate(g => g.dispatchEvent(new MouseEvent('click', {bubbles: true}))); await page.waitForTimeout(150); const c = await readCard(); if (!cardOk(c, x)) bads.push({tower: x.code, c}); }
   check(`${label} 첫 화면 카드: 처음 1위(탑은 모두 또렷) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈) · 탑을 눌러도 같은 카드 · 다른 탑은 흐려짐`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
-  if (C.items.length < 2) return;
+  // 「돈 유입 1~365등 모두 보기 ›」(11:35 「1등부터 365등까지 그것도 나열하는 곳을 만들어」) → ③ 자세히 맨 위 접힘이 열림(초점 · 화면 안) · 365줄 = 이 검사기가 따로 셈(등수 · 비율 · 포모지수 · 상태) · ★ = 후보 7곳 · 가로로 넘치지 않음
+  const rankCheck = async () => {
+    await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page .cd-all-a'); await page.waitForTimeout(200);
+    await press(page.locator('.cd-all-a')); await page.waitForSelector('details.cd-rank-d[open] li.rk-row');
+    await page.waitForFunction(() => { const t = document.querySelector('details.cd-rank-d > summary')?.getBoundingClientRect().top; return t >= 56 && t <= 120; }, null, {timeout: 4000}).catch(() => {}); await page.waitForTimeout(200); // 부드럽게 옮겨 가는 동안 기다림(못 오면 아래에서 실패)
+    const rk = await page.evaluate(() => { const d = document.querySelector('details.cd-rank-d'), r = d?.querySelector('summary')?.getBoundingClientRect(); return {open: !!d?.open, top: r ? Math.round(r.top) : null, h: innerHeight, focus: !!document.activeElement?.matches?.('details.cd-rank-d > summary'), sum: d?.querySelector('summary')?.textContent.trim(),
+      rows: [...(d?.querySelectorAll('li.rk-row') ?? [])].map(li => ({c: li.dataset.code, r: li.dataset.r, n: li.querySelector('.rk-n')?.textContent.trim(), nm: li.querySelector('.rk-a')?.textContent.trim(), pick: li.classList.contains('rk-pick'), star: !!li.querySelector('.rk-star'), v: li.querySelector('.rk-v')?.firstChild?.textContent.trim() ?? null, x: li.querySelector('.rk-x')?.textContent.trim() ?? null, st: li.querySelector('.rk-st')?.textContent.trim()})),
+      sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
+    const stW = code => { const f = C.flags?.[code] ?? '', ok4 = f.length === 5 && f.startsWith('1111') && powOf(code) !== null; return ok4 && f[4] === '1' ? '조건 충족' : ok4 ? '조건 대기' : '기준 밖'; };
+    const nameOf = code => lens.stocks.find(x => x.code === code)?.name, picked = new Set(C.items.map(x => x.code)), bad = [];
+    const ratioW = v => { const a = Math.abs(v).toFixed(2); return `${Number(a) === 0 ? '' : v < 0 ? '−' : ''}${a}%`; }; // 사이트 숫자 꼴(calc.js shown) — 온 값으로 소수 둘째 자리 · 0.00 이면 부호 없음 · 빠진 돈은 「−」
+    ranked.forEach((x, i) => { const r = rk.rows[i]; if (!r || r.c !== x.code || r.r !== String(i + 1) || r.n !== `${i + 1}위` || r.v !== ratioW(x.pw) || r.x !== `포모 ${fomoW(x.code)}점` || r.st !== stW(x.code) || r.nm !== nameOf(x.code) || r.pick !== picked.has(x.code) || r.star !== r.pick) bad.push({i, r, want: {c: x.code, pw: ratioW(x.pw), fomo: fomoW(x.code), st: stW(x.code)}}); });
+    const rest = rk.rows.slice(ranked.length), restW = lens.stocks.map(s => s.code).filter(c => !rkW.has(c));
+    const restOk = rest.length === restW.length && rest.every(r => r.r === '' && r.n === '등수 없음' && r.v === '자료 모자람' && r.x === null && r.st === stW(r.c) && !r.pick) && rest.map(r => r.c).sort().join() === [...restW].sort().join();
+    check(`${label} 「돈 유입 1등~${lens.stocks.length}등 모두 보기 ›」 → ③ 자세히 맨 위 「${rk.sum}」이 열림(초점 · 위 막대 바로 아래 ${rk.top}px) · ${rk.rows.length}줄(등수 · 비율 · 포모지수 · 상태 = 이 검사기가 따로 셈 ${ranked.length}곳 + 등수 없음 ${restW.length}곳) · ★ ${rk.rows.filter(r => r.pick).length}곳 = 후보 ${C.items.length}곳 · 가로로 넘치지 않음`,
+      rk.open && rk.focus && rk.top !== null && rk.top >= 56 && rk.top <= 120 && rk.sum === `돈 유입 1등~${lens.stocks.length}등 · 포모지수` && rk.rows.length === lens.stocks.length && !bad.length && restOk
+        && rk.rows.filter(r => r.pick).map(r => r.c).sort().join() === [...picked].sort().join() && rk.sw <= rk.cw,
+      {bad: bad.slice(0, 3), n: rk.rows.length, top: rk.top, focus: rk.focus, restN: rest.length, sw: rk.sw, cw: rk.cw});
+  };
+  if (C.items.length < 2) return rankCheck();
   // 후보 둘째 줄 「왜 선정됐나요?」 → 종목 화면 「후보 판단」 칸(초점 · 화면 안) → 「‹ 후보 7곳」 → 보던 자리 · 누른 곳에 초점
   const x2 = C.items[1]; await press(page.locator('.cd-row .cd-pick').nth(1)); await page.waitForTimeout(150);
   const btn = page.locator('.cd-card .cd-btn').first(); await toMid(btn);
@@ -221,8 +245,8 @@ async function candCheck(page, label, mobile, press) {
   await press(page.locator('.cd-card .cd-btn', {hasText: '다른 후보와 비교'})); await page.waitForSelector('.cmp-page section[data-art]'); await page.waitForTimeout(300);
   const cm = await page.evaluate(() => ({hash: location.hash, a: document.querySelector('#cmp-a')?.value, b: document.querySelector('#cmp-b')?.value, say: document.querySelector('.cmp-say')?.textContent.trim(), rows: document.querySelectorAll('.cmp-t tbody tr').length, chk: JSON.parse(document.querySelector('.cmp-page [data-check]')?.dataset.check ?? '{}'), back: document.querySelector('.c-back')?.textContent.trim(), firsts: [...document.querySelectorAll('.cmp-page [data-first]')].map(x => x.dataset.first).join()}));
   const pw0 = powOf(c0.code), pw1 = powOf(c1.code);
-  const sayW = c0.met !== c1.met ? `앞선 쪽은 1위 ${c0.name} — 진입 조건 충족(상대 쪽은 조건 대기)` : nOf(c0.code) !== nOf(c1.code) ? `앞선 쪽은 1위 ${c0.name} — 1만 번 다시 뽑아 7곳에 든 횟수가 더 많음(${timesW(nOf(c0.code))} 대 ${timesW(nOf(c1.code))})`
-    : `앞선 쪽은 1위 ${c0.name} — 회사 크기에 견준 외국인+기관 순매수가 더 셈(${pw0.toFixed(2)}% 대 ${pw1.toFixed(2)}%)`;
+  const sayW = c0.met !== c1.met ? `앞선 쪽은 1위 ${c0.name} — 진입 조건 충족(상대 쪽은 조건 대기)` : nOf(c0.code) !== nOf(c1.code) ? `앞선 쪽은 1위 ${c0.name} — 20만 번 다시 뽑아 7곳에 든 횟수가 더 많음(${timesW(nOf(c0.code))} 대 ${timesW(nOf(c1.code))})`
+    : pw0 !== pw1 ? `앞선 쪽은 1위 ${c0.name} — 돈 유입 비율이 더 큼(${pw0.toFixed(2)}% 대 ${pw1.toFixed(2)}%)` : `앞선 쪽은 1위 ${c0.name} — 외국인+기관 순매수 금액이 더 큼(${eokW(fiOf(c0.code))} 대 ${eokW(fiOf(c1.code))})`;
   check(`${label} 재설계 · 「다른 후보와 비교」 → #/compare/${c0.code}/${c1.code} · 「${cm.say}」(따로 셈) · 같은 기준 표 ${cm.rows}줄 · 같은 축 막대 값 = 판 읽기 · 「‹ 후보 7」`,
     cm.hash === `#/compare/${c0.code}/${c1.code}` && cm.a === c0.code && cm.b === c1.code && cm.say === sayW && cm.rows === 13 && Math.abs(cm.chk.apow - pw0) < 1e-4 && Math.abs(cm.chk.bpow - pw1) < 1e-4 && cm.back === '‹ 후보 7곳' && cm.firsts === '1,2,3,4,5', {cm, sayW});
   if (C.items.length >= 3) {
@@ -231,6 +255,7 @@ async function candCheck(page, label, mobile, press) {
     const cm2 = await page.evaluate(() => ({hash: location.hash, same: window.__cmpRow === document.querySelector('.cmp-row[data-who="b"]'), name: document.querySelector('.cmp-row[data-who="b"] .bc-name')?.textContent.trim(), chk: JSON.parse(document.querySelector('.cmp-page [data-check]')?.dataset.check ?? '{}')}));
     check(`${label} 재설계 · 비교 「나」를 ${c2.name}(으)로 → 주소 #/compare/${c0.code}/${c2.code} · 같은 막대가 그 자리에서 옮겨 감(화면을 새로 그리지 않음) · 값 = 판 읽기`, nodes0 && cm2.hash === `#/compare/${c0.code}/${c2.code}` && cm2.same && cm2.name === c2.name && cm2.chk.b === c2.code && Math.abs(cm2.chk.bpow - powOf(c2.code)) < 1e-4, cm2);
   }
+  await rankCheck();
 }
 async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');
