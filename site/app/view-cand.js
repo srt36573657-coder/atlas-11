@@ -13,6 +13,7 @@ import {blk} from './view-market.js';
 import {quietArt} from './scenes.js';
 import {artStage, artSection} from './art.js';
 import {barRows, axisOf, posOf, keyEl} from './charts.js';
+import {helloBar} from './hello.js'; // 맨 위 「친구에게 ATLAS 소개하기」 띠(2026-10-09 19:54 중국 시각 「지금 만든걸 아틀란에 맨위에 넣어 친구에게 소개하기로 지혜롭게」 · 한국 판 · 한국어 화면만)
 import {candIsland} from './island.js'; // 「후보 7」 섬(2026-10-09 17:02 「잡스가 … 3d방식으로 입체감과 정적인 상태 … 상호 작용속에 유기적인 아틀란스」 · 17:36 「아주 색시한 전달력 있게 … 반영해」 — 옛 탑 일곱 줄 land3d.js 를 바꿈)
 import {pv, ppv, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
@@ -243,7 +244,7 @@ export async function renderCand(main, {manifest}) {
   const explore = h('p', {class: 'ob-more'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 ›'), h('a', {href: '#/market'}, '시장 ›'), h('a', {href: '#/stocks'}, '종목 찾기 ›'), h('a', {href: '#/agenda'}, '일정 ›'));
   if (!lens || !C) { // 판 읽기를 못 읽은 날 — 후보를 지어내지 않음
     state.summary = `${korDate(board.asOf)} 종가 · 매수 검토 후보 판단 보류`;
-    main.replaceChildren(h('div', {class: 'b-page cd-page'},
+    main.replaceChildren(h('div', {class: 'b-page cd-page'}, helloBar(),
       blk(1, '기준', h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(board.asOf)} 종가`), ` · ${place.closeAt}`), lensMissing(lens0)),
       blk(2, '매수 검토 후보', h('p', {class: 'ob-say'}, '판단 보류 — 판 읽기 파일을 읽지 못해 후보를 셈하지 않음')),
       quietArt({key: 'cand', label: '매수 검토 후보', word: '0곳', when: `${korDate(board.asOf)} 종가`}), explore, foot(manifest)));
@@ -252,7 +253,7 @@ export async function renderCand(main, {manifest}) {
   }
   if (!C.ready) { // 미국 판 · 돈 흐름이나 매매 자료가 없는 판 — 고르지 않고 까닭
     state.summary = `${place.label} 판 · 매수 검토 후보 없음 · ${C.why}`;
-    main.replaceChildren(h('div', {class: 'b-page cd-page'},
+    main.replaceChildren(h('div', {class: 'b-page cd-page'}, helloBar(),
       blk(1, '기준', h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · ${place.closeAt} · 후보군 ${C.pool?.universe ?? 0}곳`)),
       blk(2, '매수 검토 후보 0곳', h('p', {class: 'ob-say'}, '고르지 않음'), h('p', {class: 'mk-l'}, C.why), h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '필요한 자료'), ' ', (C.need ?? []).join(' · ')),
         h('p', {class: 'muted xs'}, '자리를 채우려고 기준을 낮추거나 숫자를 지어내지 않음 · 한국 판에서는 같은 규칙으로 셈')),
@@ -264,7 +265,7 @@ export async function renderCand(main, {manifest}) {
   state.summary = n ? `매수 검토 후보 ${n}곳 · ${korDate(C.asOf)} 종가 · ${C.pool.universe}곳 가운데 1년 추세 상위 ${C.netPct ?? 20}% 그물 ${C.pool.netElig}곳에 새로 든 초입 · 석 달마다 담음 · 연구용 · 성능 검증 전. ` + C.items.map(x => `${x.rank}위 ${x.name} · 1년 추세 ${m12Txt(x)} · ${ST[x.status]} · 가장 큰 위험 ${x.risk.text}`).join('. ')
     : `${korDate(C.asOf)} 종가 · 새로 든 초입 없음 · 기준을 낮추지 않음`;
   const fold = (t, ...kids) => h('details', {class: 'cd-more-d'}, h('summary', null, t), ...kids);
-  main.replaceChildren(h('div', {class: 'b-page cd-page'},
+  main.replaceChildren(h('div', {class: 'b-page cd-page'}, helloBar(),
     blk(1, '기준', ...baseLines(C)),
     candArt(C, {sel: state.candSel, stocks: lens.stocks ?? []}),
     blk(3, '자세히', h('div', {class: 'cd-fold'},
