@@ -11,6 +11,19 @@ import {marketArt, quietArt} from './scenes.js';
 import {pv, pctNum, sumLine, exclLine, howBox, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
 import {marketObservation} from './observe.js';
+import {groupByFamily} from './family.js';
+
+/** 3단 클릭 길잡이(사장님 2026-10-09 21:33 마카오 「아틀란스를 3단 클릭구조로 만든다 모든곳에 하나도 빠짐없이」 · 21:37 「슬기롭게 해」 · 규칙 47)
+ *  탐색 탭 첫 화면 = 모든 화면에서 한 번 — 여기에 갈래 12개 · 업종 73개를 모두 걸어 「어느 화면에서나 3번이면 회사」(탐색 → 업종 → 회사) · 갈래는 2번
+ *  차례 = 판의 업종 차례로 묶은 갈래(family.js groupByFamily) · 섬의 3단 클릭(탑 → 회사 · 업종 → 화면)은 그림 길 · 이 칸은 글 길(가린 탑 · 화면 읽기 · 판 읽기를 못 읽은 날에도) */
+export function mapIndex(board) {
+  const fams = groupByFamily(board?.groups ?? []); if (!fams.length) return null;
+  const nG = fams.reduce((t, f) => t + f.groups.length, 0);
+  return h('section', {class: 'b-box mk-idx', 'aria-label': '3번이면 회사 — 갈래 · 업종 모두'},
+    h('h2', {class: 'b-box-h'}, '3번이면 회사', h('small', null, ` · 갈래 ${fams.length}개 → 업종 ${nG}개 → 회사`)),
+    ...fams.map(({fam, groups}) => h('p', {class: 'mk-f'}, h('a', {class: 'mk-fa', href: `#/map/f/${fam.id}`}, `${fam.label} ›`),
+      ...groups.map(g => h('a', {class: 'mk-g', href: `#/i/${g.id}`}, g.label)))));
+}
 
 const NO = ['①', '②', '③', '④', '⑤'];
 /** 판단 정보 칸 하나 — 칸 번호 · 이름 · 내용 */
@@ -67,7 +80,7 @@ export async function renderMarket(main, {manifest}) {
       blk(3, '핵심 수치', h('div', {class: 'ob-nums'}, ...ixs.slice(0, 1).map(x => num(`${x.name} 하루`, finite(x.changePct) ? fmtPct(x.changePct, 2) : '없음', sideCls(x.changePct))), num('최근 20거래일', '계산 불가'), num('오른 곳', '계산 불가'))),
       quietArt({key: 'market', label: '시장', when: `${korDate(board.asOf)} 종가`}),
       blk(5, '이어서 보기', h('div', {class: 'ob-next'}, h('a', {class: 'ob-go', href: '#/sectors'}, '변화의 근거 보기 ›')), more),
-      today, foot(manifest)));
+      today, mapIndex(board), foot(manifest)));
     main.querySelector('section[data-art]')?.setAttribute('data-first', '4');
     return;
   }
@@ -89,6 +102,7 @@ export async function renderMarket(main, {manifest}) {
       line(`${idxName(lens)} 5거래일 `, pv(R.r5), ' · 20거래일 ', pv(R.r20)),
       exclLine(lens.market.sample.excluded, 0)),
     howBox(lens, ['관측 한 문장 · 반대 근거 = 정해진 규칙(obs-rules-1 · 실험 규칙 · 검증 전): 지수와 중앙값이 모두 ±1% 안이면 「뚜렷한 변화 없음」 · 표본이 30곳보다 적으면 판단 보류', '공식 지수: 네이버 증권 지수 · 변동성: 저장소 지수 종가(seed + 판마다 이어 붙임)', '시장 전체 오름/내림 수 · 거래대금: 모으지 않음']),
+    mapIndex(board), // 3단 클릭 길잡이 — 갈래 · 업종 모두(어느 화면에서나 탐색 → 업종 → 회사) · 시장 글 다음 맨 아래
     foot(manifest)));
   main.querySelector('section[data-art]')?.setAttribute('data-first', '4'); // ④ 핵심 차트 + 반대 근거(빈 축이어도 같은 자리)
 }

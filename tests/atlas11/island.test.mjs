@@ -2,7 +2,7 @@
 //   물 위 = 그물 안(판 읽기 flags 다섯째) · 높이 = 같은 무리 안 1년 추세 차례 · 업종 = 십자 다섯 칸 구역(빈틈없이 · 겹치지 않음) · 센 업종이 가운데 · 20거래일 전 높이 = 그 날 기준선(grow.qp)으로
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {islandModel, centersOf, ISL} from '../../site/app/island-model.js';
+import {islandModel, centersOf, ISL, tapStep, tapInfo, hitCell, tapPointOf, mapView} from '../../site/app/island-model.js';
 
 /** 작은 판 — 업종 셋(가 · 나 · 다 · 다섯 곳씩) · m = [오늘 1년 추세, 20거래일 전] · f = flags(그날 종가 · 흑자 · 위험 공시 없음 · 추세 셈 · 그물 안 · 새로 듦) */
 const ROWS = [
@@ -47,3 +47,21 @@ test('값이 없으면 섬을 그리지 않음(지어내지 않음)', () => {
   assert.equal(islandModel({grow: null}, stocks), null);
   assert.equal(islandModel(C, []), null);
 });
+
+test('3단 클릭(2026-10-09 21:33) — 탑을 누르면 그 회사 · 그 업종(같은 g 다섯 곳 · 누른 회사 표시) · 같은 탑 · 빈 곳 = 닫힘 · 다른 탑 = 그 탑 · 고리 #/stock · #/i', () => {
+  const cells = islandModel(C, stocks).cells, j = cells.findIndex(c => c.code === 'b2'), s1 = tapStep(cells, null, j), info = tapInfo(cells, s1);
+  assert.equal(s1.i, j); assert.equal(info.co.href, '#/stock/b2'); assert.equal(info.zone.href, '#/i/나'); assert.equal(info.zone.label, '업종나');
+  assert.deepEqual(info.zone.cos.map(x => x.code).sort(), ['b1', 'b2', 'b3', 'b4', 'b5']);
+  assert.equal(info.zone.cos.filter(x => x.on).map(x => x.code).join(), 'b2');
+  assert.deepEqual(tapStep(cells, s1, j), {z: null, i: -1}); assert.equal(tapInfo(cells, tapStep(cells, s1, j)), null);
+  const k = cells.findIndex(c => c.code === 'c1'); assert.equal(tapStep(cells, s1, k).i, k); assert.notEqual(tapStep(cells, s1, k).z, s1.z);
+  assert.deepEqual(tapStep(cells, s1, -1), {z: null, i: -1});
+});
+
+test('자리 셈(첫 화면 섬 · 지도 섬 같은 셈) — 누를 수 있는 점을 누르면 그 탑 · 섬 밖 = 아무 탑도 아님', () => {
+  const cells = islandModel(C, stocks).cells, zOf = i => cells[i].hN;
+  for (const th of [0, 0.62, 1.7, 3.3, 5.1]) { const v = mapView(360, th); let n = 0;
+    for (let i = 0; i < cells.length; i++) { const q = tapPointOf(cells, v, zOf, i); if (q) { n++; assert.equal(hitCell(cells, v, zOf, q[0], q[1]), i, `${th} ${cells[i].code}`); } }
+    assert.ok(n >= 5, `누를 수 있는 탑 ${n}곳`); assert.equal(hitCell(cells, v, zOf, -100, -100), -1); }
+});
+

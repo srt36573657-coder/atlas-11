@@ -297,9 +297,20 @@ html[data-font-step="2"] .rk-v, html[data-font-step="3"] .rk-v, html[data-font-s
 /* ── 지도 섬(islandmap.js · 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지 … 아틀란스에 본질이 중심」)
    모든 화면 그림 칸 맨 아래 — 첫 화면 섬과 같은 섬 · 같은 방향 · 그 화면 그림이 말하는 회사만 옥빛(주인공은 금빛) · 나머지 어둠 · 전체를 말하는 화면은 오름 빨강 · 내림 파랑 */
 .imap { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--sep); }
-.imap-stage { position: relative; overflow: hidden; max-width: 30rem; margin: 0 auto; aspect-ratio: 100 / 74; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-.imap-cv { display: block; width: 100%; height: 100%; border-radius: 12px; cursor: grab; } /* 높이 = 칸(가로 100 : 세로 74) — 붙는 순간 정해져 그린 뒤 화면이 밀리지 않음 */
+.imap-stage { position: relative; overflow: hidden; max-width: 30rem; margin: 0 auto; aspect-ratio: 100 / 80; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.imap-cv { display: block; width: 100%; height: 100%; border-radius: 12px; cursor: grab; } /* 높이 = 칸(가로 100 : 세로 80) — 붙는 순간 정해져 그린 뒤 화면이 밀리지 않음 */
 .imap-cv:active { cursor: grabbing; }
 .imap-tag { position: absolute; left: 0; top: 0; max-width: 84%; margin: 0; padding: 2px 10px; border-radius: 8px; background: var(--card); border: 1px solid var(--sep); font-size: .875rem; font-weight: 700; line-height: 1.4; color: var(--ink); overflow-wrap: anywhere; }
 .imap-tag a { font-weight: 700; }
 .imap-cap { margin: 6px 0 0; font-size: .8125rem; line-height: 1.45; color: var(--sub); }
+/* 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이」) — 누른 탑의 업종 칸: 업종 보기 › · 같은 업종 회사 이름(누르면 회사 화면) */
+.imap-zone { max-width: 30rem; margin: 8px auto 0; padding: 8px 10px; border-radius: 12px; background: var(--card); border: 1px solid var(--sep); }
+.imap-zh { margin: 0; font-size: .9375rem; line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+.imap-zh a { font-weight: 700; }
+.imap-cos { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
+.imap-co { display: inline-flex; align-items: center; min-height: 36px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.imap-co[aria-current="true"] { border-color: var(--ink); font-weight: 800; }
+/* 3단 클릭 길잡이(탐색 첫 화면 · 2026-10-09 21:33) — 갈래 → 업종 모두 · 누르는 자리 36px 이상 */
+.mk-idx .mk-f { margin: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mk-idx .mk-fa { display: inline-flex; align-items: center; min-height: 36px; padding: 0 4px 0 0; font-weight: 800; color: var(--ink); text-decoration: none; }
+.mk-idx .mk-g { display: inline-flex; align-items: center; min-height: 36px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; text-decoration: none; overflow-wrap: anywhere; }

@@ -39,7 +39,7 @@ const {chromium} = require('playwright');
 const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
-const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46)
+const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}, click3: {pairs: 0, over: 0, max: 0, hist: {}}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -100,6 +100,8 @@ const CRAWL = async ({routes, collect}) => {
     m.loose = ra ? [...ra.querySelectorAll('.ra-art [class*="ak-"]')].filter(x => !x.closest('[data-at]')).map(cls).slice(0, 3) : [];
     m.weird = (document.getElementById('main')?.textContent.match(/\b(NaN|undefined|Infinity|null)\b|\[object /g) ?? []).slice(0, 3); // 접힌 칸 안 글까지(자리 셈 없이 빠르게)
     m.links = [...document.querySelectorAll('#main a[href^="#/"]')].map(a => a.getAttribute('href')).filter(h => /^#\/(i|stock|map\/f)\//.test(h));
+    // 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이」 · 규칙 47) — 이 화면에서 한 번 눌러 가는 곳 모두(위 막대 · 탐색 줄 · 본문 · 아래 탭) · 접힌 칸 안은 「펼치기 + 누르기」 두 번(D)
+    { const nav = new Set(); for (const a of document.querySelectorAll('a[href^="#/"]')) { const d = a.closest('details'), folded = !!d && !d.open && !a.closest('summary'); let hh = a.getAttribute('href'); try { hh = decodeURIComponent(hh); } catch {} nav.add((folded ? 'D' : '') + hh); } m.nav = [...nav]; }
     m.errs = window.__errs.slice(e0);
     // 맨 위 하규 응원 · 건의 줄(2026-10-08 14:42 마카오 시각 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」) — 모든 화면: 위 막대 바로 다음 · 본문 바로 앞 · 응원 글 · 문자 고리 · 맨 아래 줄에는 다시 나오지 않음
     { const t = document.getElementById('topnote'), tp = document.getElementById('top'), mn = document.getElementById('main');
@@ -237,6 +239,20 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   for (const k of ['topAvg', 'v0', 'v', 'avg', 'vl', 'mean']) if (fin(want?.[k]) && ['home', 'map', 'land', 'ind', 'co', 'similar', 'rise', 'road', 'sectors', 'learn'].includes(kind)) { stats.texts++; const t = want.u === 'pct' ? fmtPct(want[k]) : pctText(want[k]); if (!m.labText.includes(t)) no(`보이는 글에 ${t} 없음`); } // u = 'pct' — 판 읽기 % 값(소수 아님)
 }
 
+/* ── 3단 클릭 층(사장님 2026-10-09 21:33 「아틀란스를 3단 클릭구조로 만든다 모든곳에 하나도 빠짐없이 … 점검 1000000만번」 · 21:37 「슬기롭게 해」 · 규칙 47)
+   판 · 말마다 모든 화면 쌍(가는 화면 ≠ 오는 화면)의 최소 누름 수 — 화면에서 실제로 그린 고리만(위 막대 · 탐색 줄 · 본문 · 아래 탭) · 접힌 칸 안 고리 = 두 번 · 3번을 넘는 쌍이 하나라도 있으면 실패 ── */
+function click3(b, lang, res) {
+  const nodes = S[b].routes.map(r => r[0]), idx = new Map(nodes.map((r, i) => [r, i])), N = nodes.length;
+  const adj = res.map(m => { const e = new Map(); for (const l of m.nav ?? []) { const f = l.startsWith('D'), t = f ? l.slice(1) : l, j = idx.get(t); if (j == null) continue; const w = f ? 2 : 1; if (!e.has(j) || e.get(j) > w) e.set(j, w); } return [...e]; });
+  const C = stats.click3, overBy = new Map();
+  for (let s0 = 0; s0 < N; s0++) {
+    const d = new Uint8Array(N).fill(255); d[s0] = 0; let cur = [s0];
+    for (let k = 0; k < 3 && cur.length; k++) { const nxt = []; for (const u of cur) for (const [v, w] of adj[u]) { const dv = d[u] + w; if (dv < d[v] && dv <= 3) { d[v] = dv; nxt.push(v); } } cur = nxt; } // 무게 1 · 2 — 세 바퀴면 3 까지 모두 닿음
+    for (let t = 0; t < N; t++) { if (t === s0) continue; C.pairs++; const dt = d[t]; C.hist[dt === 255 ? '4+' : dt] = (C.hist[dt === 255 ? '4+' : dt] ?? 0) + 1; if (dt <= 3) { if (dt > C.max) C.max = dt; } else { C.over++; if (!overBy.has(s0)) overBy.set(s0, []); overBy.get(s0).push(nodes[t]); } }
+  }
+  for (const [s0, list] of overBy) bad(b, lang === 'en' ? nodes[s0] : `${nodes[s0]} [${lang}]`, `3번 안에 못 가는 화면 ${list.length}곳(3단 클릭 · 규칙 47): ${list.slice(0, 3).join(' · ')}`);
+}
+
 /* ── ① 화면 안 순회(영어 · 한국어) + ④ 움직임 ── */
 const VP = {en: {width: 390, height: 640}, ko: {width: 360, height: 640}};
 const koPages = []; // 한국어로 그린 화면(글 모음) — ② ③ 이 씀
@@ -245,6 +261,7 @@ for (const b of EDGE_ONLY ? [] : BOARDS) for (const lang of ['en', 'ko']) tasks.
   const {ctx, page} = await openPage(b, lang, VP[lang]);
   const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: lang === 'ko'});
   for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.d3[m.d3 ?? 'none'] = (stats.d3[m.d3 ?? 'none'] ?? 0) + 1; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); }
+  if (!QUICK) click3(b, lang, res);
   await ctx.close(); console.log(`${b} · ${lang}: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
 });
 for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
@@ -376,6 +393,6 @@ const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), se
   fails: [...fails.filter(f => !TRANS(f)), ...fails.filter(TRANS)].slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
-console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
+console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
 for (const f of report.fails.slice(0, 40)) console.log(` ✗ ${f.board} ${f.route} — ${f.what}`); // 번역 밖 실패가 먼저
 process.exit(report.ok || (QUICK && !fails.length) ? 0 : 1);

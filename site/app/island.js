@@ -11,7 +11,7 @@
    · 그림 속 글자는 모두 HTML(이름표 · 핀 번호 · 경고) — 또렷함 · 말 바꾸기 · 화면 읽기 · 캔버스에는 글자가 없음
    · 캔버스 움직임은 rAF(손댈 때 · 재생 걸음 동안만) — 다 멈추면 그리지 않음(정적인 상태) · 움직임 줄이기 설정이면 바로 바뀜 */
 import {h, finite} from './util.js';
-import {islandModel} from './island-model.js';
+import {islandModel, A, tapInfo, zoneOf, hullOf, hitCell} from './island-model.js';
 
 const mm = q => typeof matchMedia === 'function' && matchMedia(q).matches;
 export const PAL = {
@@ -22,7 +22,7 @@ export const PAL = {
     gray: [42, 49, 47], grayT: [60, 68, 65], seven: [60, 170, 132], sevenT: [146, 242, 204], hero: [222, 166, 52], heroT: [255, 220, 128], focus: [196, 228, 214], focusT: [240, 251, 246],
     fade: [15, 25, 21], sea: 'rgba(28,70,60,0.58)', rim: 'rgba(95,201,162,0.30)', ring: 'rgba(146,242,204,', beam: 'rgba(255,214,120,', lead: 'rgba(255,214,120,0.9)', stem: 'rgba(146,242,204,0.85)', glow7: 'rgba(95,231,177,0.5)', glowH: 'rgba(255,200,90,0.8)'},
 };
-export const A = 0.40; // 탑 한 변의 반(칸 = 1) — 탑 사이 길
+export {A}; // 탑 한 변의 반(칸 = 1 · island-model.js) — 지도 섬이 함께 씀
 export const FACES = [[1, 2, 1, 0], [3, 0, -1, 0], [2, 3, 0, 1], [0, 1, 0, -1]]; // 모서리 둘 · 바깥쪽 방향(x, y)
 const pctTxt = v => (finite(v) ? `${Number(Math.abs(v).toFixed(1)) === 0 ? '' : v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%` : '셀 수 없음');
 
@@ -35,11 +35,12 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
   const cells = M.cells, n = cells.length, W0 = M.w, seven = M.seven, isSeven = new Set(seven);
   const canvas = h('canvas', {class: 'isl-cv', role: 'img', 'aria-label': `섬 하나 = ${n}곳 · 탑 높이 = 1년 추세 차례 · 물 높이 = 그물 기준선 · 물 위 ${M.above}곳 = 그물 안 · 빛나는 탑 ${seven.length}개 = 막 올라온 후보 · 금빛 = 고른 한 곳`});
   const hud = h('div', {class: 'isl-hud', 'aria-live': 'polite'}), tag = h('p', {class: 'isl-tag', hidden: true}), when = h('p', {class: 'isl-when', hidden: true});
+  const zone = h('div', {class: 'imap-zone isl-zone', hidden: true, 'aria-live': 'polite'}); // 3단 클릭(2026-10-09 21:33) — 누른 탑의 업종: 업종 보기 › · 같은 업종 회사 이름(누르면 회사 화면) · 지도 섬과 같은 칸
   const pins = seven.map((i, k) => { const c = cells[i];
     return h('button', {type: 'button', class: 'isl-pin', 'data-at': String(k + 1), 'data-code': c.code, 'data-rank': String(c.rank), 'aria-label': `검토 순위 ${c.rank}위 ${c.name} — 1년 추세 ${pctTxt(c.m12)}`,
       onclick: e => { e.stopPropagation(); pickCand(i, true); }}); }); // 번호는 CSS(::before · data-rank) — 글자로 넣으면 단위 없는 숫자로 읽힘
   const stage = h('div', {class: 'isl-stage'}, canvas, ...pins, tag, when);
-  const el = h('div', {class: 'isl', 'data-at': '0'}, stage, hud); // 이름표는 섬 위(아주 큰 글씨면 섬 아래 — lens.css)
+  const el = h('div', {class: 'isl', 'data-at': '0', 'data-nav': '3'}, stage, hud, zone); // 이름표는 섬 위(아주 큰 글씨면 섬 아래 — lens.css) · 업종 칸은 섬 아래
   const ctx = canvas.getContext('2d');
   // 상태 — hero = 아래 카드의 후보(금빛) · focus = 누른 탑(후보가 아니면 이름표만) · H = 지금 그리는 높이(0~1)
   let pal = mm('(prefers-color-scheme: dark)') ? PAL.dark : PAL.light, rm = mm('(prefers-reduced-motion: reduce)');
@@ -194,9 +195,16 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
     for (let j = 0; j < n; j++) if (j !== i && cells[j].d === cells[i].d) { k++; liftT[j] = 7; liftAt[j] = now + 90 * k; dropAt[j] = now + 90 * k + 900; }
     if (cells[i].hN > W0) ripples.push({i, t: now});
   }
+  function zoneFill(i) { // 3단 클릭 ② — 누른 탑의 업종(업종 보기 › · 같은 업종 회사 이름 → 회사 화면) · i < 0 = 닫음
+    const info = i >= 0 ? tapInfo(cells, {z: zoneOf(cells[i]), i}) : null;
+    if (!info) { zone.hidden = true; zone.replaceChildren(); return; }
+    zone.replaceChildren(h('p', {class: 'imap-zh'}, h('b', null, info.zone.label ?? '업종 없음'), ` · ${info.zone.cos.length}곳 · `, info.zone.href ? h('a', {href: info.zone.href}, '업종 보기 ›') : '업종 화면 없음'),
+      h('p', {class: 'imap-cos'}, ...info.zone.cos.map(x => h('a', {class: 'imap-co', href: x.href, 'aria-current': x.on ? 'true' : null, 'data-ident': ''}, x.name))));
+    zone.hidden = false;
+  }
   function pickCand(i, user, notify = true) { // 후보 고름 — 카드 · 금빛 · 이름표 · (사람이 고르면) 섬이 그 탑 쪽으로 돎
     if (!isSeven.has(i)) return;
-    const prev = heroI; heroI = i; hero = seven.indexOf(i); focus = -1; fadeT = 0;
+    const prev = heroI; heroI = i; hero = seven.indexOf(i); focus = -1; fadeT = 0; zoneFill(-1);
     if (user) { picked = true; el.classList.add('picked'); for (let j = 0; j < n; j++) { liftT[j] = 0; dropAt[j] = 0; } liftT[i] = 10; liftAt[i] = performance.now(); liftWave(i);
       const b = quadOf(i); let d = b - th; d = Math.atan2(Math.sin(d), Math.cos(d)); if (Math.abs(d) > 0.01) spin = {a: th, b: th + d, t: performance.now(), ms: 700}; }
     pins.forEach((p, k) => { p.classList.toggle('sel', seven[k] === i); p.setAttribute('aria-pressed', String(seven[k] === i)); });
@@ -204,30 +212,16 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
     if (user && notify && prev !== i) onPick(cells[i].code);
     go();
   }
-  function pickAny(i) { // 후보가 아닌 탑 — 이름표만(카드는 후보만) · 같은 업종이 답함 · 나머지는 흐려짐
-    if (i < 0) { focus = -1; fadeT = 0; go(); return; }
+  function pickAny(i) { // 후보가 아닌 탑 — 이름표(회사 보기 ›) · 섬 아래 업종 칸(카드는 후보만) · 같은 업종이 답함 · 나머지는 흐려짐
+    if (i < 0) { focus = -1; fadeT = 0; zoneFill(-1); go(); return; }
     if (isSeven.has(i)) { pickCand(i, true); return; }
     focus = i; fadeT = 1; for (let j = 0; j < n; j++) { liftT[j] = 0; dropAt[j] = 0; } liftT[i] = 10; liftAt[i] = performance.now(); liftWave(i);
     const c = cells[i];
-    tag.textContent = `${c.name} ${pctTxt(c.m12)} · ${c.hN > W0 ? (c.elig ? '그물 안' : '그물 안 · 기준 못 넘음') : c.m12 == null ? '1년 추세 셀 수 없음' : '그물 밖'}`;
-    go();
+    tag.replaceChildren(`${c.name} ${pctTxt(c.m12)} · ${c.hN > W0 ? (c.elig ? '그물 안' : '그물 안 · 기준 못 넘음') : c.m12 == null ? '1년 추세 셀 수 없음' : '그물 밖'} · `, h('a', {href: `#/stock/${c.code}`}, '회사 보기 ›'));
+    zoneFill(i); go();
   }
   // 손 — 누르기(탑 · 핀) · 옆으로 끌기(돎 · 놓으면 천천히 멈춤) · 세로로 끌면 화면이 내려감(touch-action: pan-y)
-  function hullOf(p) { p = p.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]), lo = [], up = [];
-    for (const q of p) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); }
-    for (let k = p.length - 1; k >= 0; k--) { const q = p[k]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); }
-    up.pop(); lo.pop(); return lo.concat(up); }
-  const inside = (hl, x, y) => { let sg = 0; for (let k = 0; k < hl.length; k++) { const a = hl[k], b = hl[(k + 1) % hl.length], c = (b[0] - a[0]) * (y - a[1]) - (b[1] - a[1]) * (x - a[0]); if (c !== 0) { const t = c > 0 ? 1 : -1; if (!sg) sg = t; else if (t !== sg) return false; } } return true; };
-  function hit(px, py) {
-    sinT = Math.sin(th); cosT = Math.cos(th);
-    const front = [...order].sort((a, b) => (cells[b].x * sinT + cells[b].y * cosT) - (cells[a].x * sinT + cells[a].y * cosT));
-    for (const i of front) {
-      const z = Math.max(zOf(i), 0.006), pts = []; for (const [x, y] of corners(i)) { pts.push(P(x, y, 0)); pts.push(P(x, y, z)); }
-      const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]); if (px < Math.min(...xs) - 1 || px > Math.max(...xs) + 1 || py < Math.min(...ys) - 1 || py > Math.max(...ys) + 1) continue;
-      if (inside(hullOf(pts), px, py)) return i;
-    }
-    return -1;
-  }
+  function hit(px, py) { sinT = Math.sin(th); cosT = Math.cos(th); return hitCell(cells, {th, s, cx, cy, tilt, zmax}, zOf, px, py); } // 셈은 island-model.js(지도 섬 · 백만 번 맞대기와 같은 셈)
   let down = null;
   stage.addEventListener('pointerdown', e => { if (e.target.closest?.('.isl-pin')) return; down = {x: e.clientX, y: e.clientY, th, moved: false, lx: e.clientX, lt: performance.now()}; vth = 0; spin = null; });
   stage.addEventListener('pointermove', e => {

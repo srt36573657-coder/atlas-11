@@ -60,6 +60,7 @@ export function reportProblems(r, now, waiver = null) {
   if (!(r.transLangs >= 73)) bad.push(`73개 말 계산 층(남은 한국어)을 돌지 않은 결과임(${r.transLangs ?? 0}개 말)`); // v3(2026-10-08 06:42 「10배 정교」)
   if (!(r.layoutLangs >= 74)) bad.push(`74개 말 가장 긴 글 층(한 화면 · 넘침)을 돌지 않은 결과임(${r.layoutLangs ?? 0}개 말)`);
   if (!r.d3 || typeof r.d3 !== 'object' || !Object.keys(r.d3).length) bad.push('입체 층(모든 화면 그림에 입체 — 규칙 46 · 2026-10-09 19:27 「모든곳에 3d」)을 돌지 않은 결과임');
+  if (!(r.click3?.pairs > 0)) bad.push('3단 클릭 층(모든 화면 쌍 3번 이하 — 규칙 47 · 2026-10-09 21:33 「3단 클릭구조 … 모든곳에 하나도 빠짐없이」)을 돌지 않은 결과임');
   const transOnly = !!waiver && r.shape === true && Number.isInteger(r.transFailed) && r.otherFailed === 0 && r.failed === r.transFailed; // 번역만 남은 결과 + 기한 안 면제
   if ((r.failed !== 0 || !r.ok) && !transOnly) bad.push(`검사 실패 ${r.failed}개${Number.isInteger(r.otherFailed) ? `(번역 밖 ${r.otherFailed}개 · 번역 안 된 한국어 ${r.transFailed}개${waiver ? '' : ' — 번역 면제 없음'})` : ''}`);
   return bad;
