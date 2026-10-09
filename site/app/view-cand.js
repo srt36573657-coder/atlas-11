@@ -13,6 +13,7 @@ import {blk} from './view-market.js';
 import {quietArt} from './scenes.js';
 import {artStage, artSection} from './art.js';
 import {barRows, axisOf, posOf} from './charts.js';
+import {candLand} from './land3d.js'; // 「후보 7」 입체 땅(2026-10-09 08:26 「입체적으로 보여야하는 중심으로」)
 import {pv, ppv, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
 
@@ -38,66 +39,88 @@ const pairOf = (C, code) => { const xs = C?.items ?? [], i = xs.findIndex(x => x
 /** 고른 까닭 한 문장 — 어느 업종(돈 흐름 차례) · 이 회사에 들어온 외국인+기관 돈 · 회사 크기에 견준 세기 */
 export const reasonEl = (x, C) => [`돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label} · 외국인+기관 ${C.flowDays ?? 10}거래일 `, eokEl(x.flow.fi), ` = 시가총액의 ${powTxt(x.flow.power)}`];
 
-/* ── ① 기준 ── */
-function baseLines(C, lens) {
+/* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
+function baseLines(C) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
-  return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`),
-    ` · 후보군 ${C.pool?.universe ?? lens?.stocks?.length ?? 0}곳 · 돈 흐름 최근 ${C.flowDays ?? 10}거래일 · 비교 ${C.index?.name ?? idxName(lens)} · 평가 ${C.evalDays ?? 20}거래일`),
+  return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · 돈 흐름 ${C.flowDays ?? 10}거래일`),
   h('p', {class: 'cd-rule'}, h('b', null, '매수 검토 우선순위'), ' — 예상 수익률 순위 아님 · ', h('b', null, '연구용 · 성능 검증 전'), ' · 포트폴리오 아님',
     rec ? ` · 고정 기록 ${md(new Date(Date.parse(rec.recordedAt) + 9 * 3600e3).toISOString().slice(0, 10))}` : ' · 고정 기록 전')];
 }
-/** 돈이 들어온 업종 한 줄(② 맨 위) — 1위~3위 · 시장 대비 시가총액 · 외국인+기관 · 빠진 업종은 까닭 */
-function sectorsEl(C) {
-  const S = C.flow?.sectors ?? [];
-  return h('p', {class: 'cd-secs'}, h('span', {class: 'cd-k'}, '돈이 들어온 업종'), ' ',
-    ...S.flatMap((s, i) => [i ? ' · ' : null, `${s.rank}위 `, h('a', {href: '#/i/' + s.id}, s.label), ' ', eokEl(s.amount), s.ok ? null : ` — 뺌(${s.why})`]),
-    ' ', h('a', {class: 'cd-more', href: '#/flow/rotation'}, '돈 흐름 자세히 ›'));
-}
 
-/* ── ② 후보 목록 ── */
-function rowEl(x, C) {
-  const go = e => { state.candGo = 'why'; const nm = e.currentTarget.closest('.cd-row')?.querySelector('.cd-nm'); if (nm) state.vt = {el: nm, name: 'cd-name'}; }; // 이 이름이 종목 화면 「후보 판단」 머리로 이어짐(app.js 화면 넘김 움직임)
+/* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
+function cardOf(C) {
+  const rk = h('span', {class: 'cd-rk'}), name = h('span', {class: 'cd-name', 'data-ident': ''}), sec = h('small', {class: 'cd-sec'}), stw = h('span', {class: 'cd-stw'}), px = h('p', {class: 'cd-px'});
+  const why = h('p', {class: 'ra-li cd-why'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': '2'}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': '3'});
+  const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, risk, note, acts);
+  const go = () => { state.candGo = 'why'; state.vt = {el: name, name: 'cd-name'}; }; // 이 이름이 종목 화면 「후보 판단」 머리로 이어짐(app.js 화면 넘김 움직임)
+  function fill(x) {
+    el.dataset.code = x.code;
+    rk.textContent = `${x.rank}위`; name.textContent = x.name; sec.textContent = x.sector ?? '';
+    stw.replaceChildren(stEl(x.status));
+    px.replaceChildren(h('b', null, won(x.close)), ` · ${korDate(x.date)} 종가 · 20거래일 `, pv(x.r20));
+    why.replaceChildren(h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C));
+    risk.replaceChildren(h('span', {class: 'cd-k'}, '가장 큰 위험'), ' ', x.risk.text);
+    const many = x.status === 'wait' && String(x.waitWhy ?? '').includes(' · '); // 조건 대기 까닭이 하나면 「가장 큰 위험」 줄과 같은 말이라 한 번만(글 줄이기) · 둘 이상이면 모두 적음 · 재검토 까닭은 따로
+    note.hidden = !(x.status === 'recheck' || many); note.className = x.status === 'recheck' ? 'cd-note cd-note-re' : 'cd-note';
+    note.textContent = x.status === 'recheck' ? `재검토 까닭: ${x.recheckWhy}` : many ? `조건 대기 까닭: ${x.waitWhy}` : '';
+    acts.replaceChildren(...[h('a', {class: 'cd-btn', href: stockHref(x.code), onclick: go}, '왜 선정됐나요?'),
+      C.items.length > 1 ? h('a', {class: 'cd-btn', href: `#/compare/${x.code}/${pairOf(C, x.code)}`, onclick: () => { state.compareBack = '#/'; }}, '다른 후보와 비교') : null].filter(Boolean));
+  }
+  return {el, fill};
+}
+/** 짧은 줄 하나 — 순위 · 이름 · 돈이 들어온 세기(탑 높이와 같은 잣대) · 상태 · 누르면 위 카드 */
+function miniRow(x, pmax, onPick) {
+  const w = finite(x.flow?.power) && pmax > 0 ? Math.max(2, (x.flow.power / pmax) * 100) : 0, bar = h('span', {class: 'cd-pwb'});
+  bar.style.setProperty('--w', `${w.toFixed(1)}%`);
   return h('li', {class: 'cd-row', 'data-code': x.code, 'data-rank': String(x.rank), 'data-status': x.status},
-    h('a', {class: 'cd-main', href: stockHref(x.code), onclick: go, 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 왜 선정됐나요?`},
+    h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 회사 크기에 견준 외국인+기관 순매수 ${powTxt(x.flow?.power)}`, onclick: () => onPick(x.code)},
       h('span', {class: 'cd-rk'}, `${x.rank}위`),
       h('span', {class: 'cd-nm'}, h('span', {class: 'cd-name', 'data-ident': ''}, x.name), x.sector ? h('small', {class: 'cd-sec'}, x.sector) : null),
-      stEl(x.status)),
-    h('p', {class: 'cd-px'}, h('b', null, won(x.close)), ` · ${korDate(x.date)} 종가 · 20거래일 `, pv(x.r20)),
-    h('p', {class: 'cd-why'}, h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C)),
-    h('p', {class: 'cd-risk'}, h('span', {class: 'cd-k'}, '가장 큰 위험'), ' ', x.risk.text),
-    x.status === 'wait' ? h('p', {class: 'cd-note'}, `조건 대기 까닭: ${x.waitWhy || '진입 조건'}`) : x.status === 'recheck' ? h('p', {class: 'cd-note cd-note-re'}, `재검토 까닭: ${x.recheckWhy}`) : null,
-    h('p', {class: 'cd-acts'},
-      h('a', {class: 'cd-btn', href: stockHref(x.code), onclick: go}, '왜 선정됐나요?'),
-      C.items.length > 1 ? h('a', {class: 'cd-btn', href: `#/compare/${x.code}/${pairOf(C, x.code)}`, onclick: () => { state.compareBack = '#/'; }}, '다른 후보와 비교') : null));
-}
-/** 한눈에 — 순위 · 이름(조건 충족이 아니면 상태) 한 줄 · 아래 줄마다 자세히 */
-function tocEl(C) {
-  const all = C.items.every(x => x.status === C.items[0].status);
-  return h('p', {class: 'cd-toc'}, h('span', {class: 'cd-k'}, '한눈에'), ' ',
-    ...C.items.flatMap((x, i) => [i ? ' · ' : null, `${x.rank}위 `, h('span', {'data-ident': ''}, x.name), !all && x.status !== 'met' ? `(${ST[x.status]})` : null]),
-    all ? ` — ${C.items.length}곳 모두 ${ST[C.items[0].status]}` : ` — 조건 충족 ${C.items.filter(x => x.status === 'met').length}곳`);
+      h('span', {class: 'cd-pw'}, h('span', {class: 'cd-pwt', 'aria-hidden': 'true'}, bar), h('b', {class: 'cd-pwv'}, powTxt(x.flow?.power))),
+      h('span', {class: `cd-stm cd-stm-${x.status}`}, x.status === 'met' ? '✓' : ST[x.status])));
 }
 
-/* ── ③ 그림: 어떻게 골랐나(같은 축 막대 — 조건마다 남은 곳) ── */
-export function candArt(C) {
-  const p = C?.pool; if (!C?.ready || !p) return null;
-  const n = C.items.length, m = (v, sub = null) => ({v, txt: `${v}곳`, sub});
+/* ── ② 그림: 입체 땅(돈이 빠진 땅 · 들어온 땅 · 후보 탑) + 고른 한 곳 + 짧은 줄 일곱 ── */
+export function candArt(C, {sel = null} = {}) {
+  if (!C?.ready || !C.pool) return null;
+  const n = C.items.length, pmax = Math.max(...C.items.map(x => (finite(x.flow?.power) && x.flow.power > 0 ? x.flow.power : 0)), 0);
+  let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
+  const card = n ? cardOf(C) : null;
+  const rows = n ? C.items.map(x => miniRow(x, pmax, code => pick(code, false))) : [];
+  const land = candLand(C, {fmt: eokTxt, sel: cur?.code ?? null, onPick: code => pick(code, true)});
+  function pick(code, fromScene, user = true) {
+    const x = C.items.find(y => y.code === code); if (!x || !card) return;
+    cur = x; card.fill(x); land.setSel(code, user);
+    if (user) state.candSel = code; // 사람이 고른 것만 기억(돌아오면 그 카드 · 그 탑)
+    for (const r of rows) r.querySelector('.cd-pick')?.setAttribute('aria-pressed', String(r.dataset.code === code));
+    if (fromScene) card.el.scrollIntoView?.({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+  const p = C.pool;
+  land.el.dataset.check = JSON.stringify({universe: p.universe, sectors: p.sectors, inSector: p.inSector, data: p.data, profit: p.profit, risk: p.risk, screen: p.screen, met: p.met, n,
+    plates: land.check.plates, pits: land.check.pits, towers: land.check.towers});
+  const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` 돈이 들어온 업종 안 ${p.inSector}곳 · 기준을 낮추지 않음`),
+    h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
+  const list = n ? h('ol', {class: 'cd-list cd-mini', 'aria-label': `후보 ${n}곳 — 누르면 위 카드`}, ...rows) : null;
+  const steps = [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
+  const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: '돈이 들어온 업종 안에서', title: n ? '돈이 들어온 땅 위에 선 탑' : '조건을 모두 넘은 곳 없음',
+    stage: artStage({key: 'cand', art: land.el, labels, labFirst: false, tail: list ? [list] : [], steps}), first: 2});
+  if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 탑은 모두 또렷) · 돌아오면 고른 그 카드
+  return fig;
+}
+
+/* ── ③ 자세히(접힘) — 어떻게 골랐나(조건마다 남은 곳) ── */
+function funnelEl(C) {
+  const p = C.pool, n = C.items.length, m = (v, sub = null) => ({v, txt: `${v}곳`, sub});
   const rows = [
-    {id: 'u', name: '후보군(ATLAS 선정)', ...m(p.universe), at: 0},
-    {id: 's', name: `① 돈이 들어온 업종 ${p.sectors}곳 안`, ...m(p.inSector, `업종 순환 1위~3위 가운데 외국인+기관 순매수 · 값도 오른 업종`), at: 0},
-    {id: 'd', name: '② 그날 종가 있음', ...m(p.data, `${p.inSector - p.data}곳 뺌(빈칸을 숫자로 채우지 않음)`), at: 1},
-    {id: 'f', name: '③ 흑자(영업이익 · 순이익)', ...m(p.profit, `${p.data - p.profit}곳 뺌`), at: 1},
-    {id: 'r', name: '④ 위험 공시 없음', ...m(p.risk, `${p.profit - p.risk}곳 뺌`), at: 2},
-    {id: 'w', name: `⑤ 외국인+기관 ${C.flowDays ?? 10}거래일 순매수`, ...m(p.screen, `${p.risk - p.screen}곳 뺌 · 진입 조건까지 ${p.met}곳`), at: 2},
-    {id: 'n', name: `검토 후보(${C.want ?? 7}곳 상한 · 같은 업종 ${C.perSector ?? 3}곳까지)`, ...m(n, n ? `순위 1위~${n}위` : '조건을 모두 넘은 곳 없음 — 기준을 낮추지 않음'), at: 3, mine: true}];
-  const chart = barRows(rows, {ax: {lo: 0, hi: Math.max(1, p.universe)}, cls: 'cd-funnel'});
-  const labels = h('div', {class: 'ra-lab'},
-    h('p', {class: 'ra-li'}, h('span', {class: 'ra-k ra-tag'}, '돈 흐름'), `업종 ${p.sectors}곳 · 그 안 ${p.inSector}곳에서 다섯 조건을 넘은 곳 ${p.screen}곳`),
-    h('p', {class: 'ra-li'}, h('span', {class: 'ra-k ra-tag'}, '반대 근거'), `금액은 추정(공식 금액 아님) · 업종 금액은 시장 대비 시가총액 변화(실제 투자금 아님)`),
-    h('p', {class: 'ra-li'}, h('span', {class: 'ra-k ra-tag'}, '확인할 것'), `평가 ${C.evalDays ?? 20}거래일${C.evalEnd ? `(${md(C.evalEnd)})` : ''} · 연구용 · 성능 검증 전`));
-  labels.dataset.check = JSON.stringify({universe: p.universe, sectors: p.sectors, inSector: p.inSector, data: p.data, profit: p.profit, risk: p.risk, screen: p.screen, met: p.met, n});
-  const steps = [{c: 0, at: 0, ms: 1200}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 1400}, {c: 3, at: 3, ms: 1100}];
-  return artSection({key: 'cand', label: '어떻게 골랐나', kicker: '어떻게 골랐나 · 조건마다 남은 곳', when: `${korDate(C.asOf)} 종가`, stage: artStage({key: 'cand', art: chart, labels, steps}), first: 3});
+    {id: 'u', name: '후보군(ATLAS 선정)', ...m(p.universe)},
+    {id: 's', name: `① 돈이 들어온 업종 ${p.sectors}곳 안`, ...m(p.inSector, `업종 순환 1위~3위 가운데 외국인+기관 순매수 · 값도 오른 업종`)},
+    {id: 'd', name: '② 그날 종가 있음', ...m(p.data, `${p.inSector - p.data}곳 뺌(빈칸을 숫자로 채우지 않음)`)},
+    {id: 'f', name: '③ 흑자(영업이익 · 순이익)', ...m(p.profit, `${p.data - p.profit}곳 뺌`)},
+    {id: 'r', name: '④ 위험 공시 없음', ...m(p.risk, `${p.profit - p.risk}곳 뺌`)},
+    {id: 'w', name: `⑤ 외국인+기관 ${C.flowDays ?? 10}거래일 순매수`, ...m(p.screen, `${p.risk - p.screen}곳 뺌 · 진입 조건까지 ${p.met}곳`)},
+    {id: 'n', name: `검토 후보(${C.want ?? 7}곳 상한 · 같은 업종 ${C.perSector ?? 3}곳까지)`, ...m(n, n ? `순위 1위~${n}위` : '조건을 모두 넘은 곳 없음 — 기준을 낮추지 않음'), mine: true}];
+  return [barRows(rows, {ax: {lo: 0, hi: Math.max(1, p.universe)}, cls: 'cd-funnel'}),
+    h('p', {class: 'muted xs'}, '금액은 추정(공식 금액 아님) · 업종 금액은 시장 대비 시가총액 변화(실제 투자금 아님)')];
 }
 
 /* ── ④ 바뀐 후보 · 공통 위험 ── */
@@ -131,7 +154,7 @@ function resultEl(C, lens) {
 }
 function rulesEl(C) {
   const W = C.flow?.window;
-  return h('details', {class: 'b-how cd-rules'}, h('summary', null, '고르는 법 자세히 · 여섯 질문과 대용'),
+  return h('div', {class: 'cd-rules'},
     h('ul', {class: 'cd-l'},
       h('li', null, h('b', null, '한 문장'), ' · 돈이 들어온 업종에서, 돈이 실제로 들어온 회사를 고른다(규칙 ', h('code', null, C.rules ?? 'cand-rules-2'), ' · 연구용 · 성능 검증 전)'),
       h('li', null, h('b', null, '후보군'), ` · ATLAS 선정 묶음 ${C.pool?.universe ?? 0}곳(${place.label} · 시장 전체 아님)`),
@@ -179,13 +202,15 @@ export async function renderCand(main, {manifest}) {
   const n = C.items.length;
   state.summary = n ? `매수 검토 후보 ${n}곳 · ${korDate(C.asOf)} 종가 · 돈이 들어온 업종 ${(C.flow?.sectors ?? []).filter(s => s.ok).map(s => s.label).join(' · ')} · 연구용 · 성능 검증 전. ` + C.items.map(x => `${x.rank}위 ${x.name} · ${ST[x.status]} · 가장 큰 위험 ${x.risk.text}`).join('. ')
     : `${korDate(C.asOf)} 종가 · 조건을 모두 넘은 곳 없음 · 기준을 낮추지 않음`;
+  const fold = (t, ...kids) => h('details', {class: 'cd-more-d'}, h('summary', null, t), ...kids);
   main.replaceChildren(h('div', {class: 'b-page cd-page'},
-    blk(1, '기준', ...baseLines(C, lens)),
-    blk(2, `매수 검토 후보 ${n}곳${n < (C.want ?? 7) ? ` · 상한 ${C.want ?? 7}곳` : ''}`, sectorsEl(C), n ? [tocEl(C), h('ol', {class: 'cd-list'}, ...C.items.map(x => rowEl(x, C)))]
-      : [h('p', {class: 'ob-say'}, '조건을 모두 넘은 곳 없음'), h('p', {class: 'mk-l'}, `돈이 들어온 업종 안 ${C.pool.inSector}곳 가운데 다섯 조건을 넘은 곳 0곳 · 기준을 낮추지 않음 — 비워 둠`)]),
-    candArt(C),
-    blk(4, '바뀐 후보 · 공통 위험', ...changesEl(C)),
-    blk(5, '선정 이후 결과', ...resultEl(C, lens), rulesEl(C), baseMore(C, manifest)),
+    blk(1, '기준', ...baseLines(C)),
+    candArt(C, {sel: state.candSel}),
+    blk(3, '자세히', h('div', {class: 'cd-fold'},
+      fold(`어떻게 골랐나 · ${C.pool.universe}곳 → ${n}곳`, ...funnelEl(C)),
+      fold('바뀐 후보 · 공통 위험', ...changesEl(C)),
+      fold('선정 이후 결과', ...resultEl(C, lens)),
+      fold('고르는 법 · 기준 자세히', rulesEl(C), baseMore(C, manifest)))),
     explore,
     foot(manifest)));
 }
