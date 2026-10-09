@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T10:54:16.459Z",
- "seconds": 290,
+ "at": "2026-10-09T12:20:41.055Z",
+ "seconds": 355,
  "lap": {
-  "crawl": 89.6,
-  "trans": 154.9,
-  "layout": 289.9
+  "crawl": 113,
+  "trans": 340.8,
+  "layout": 355
  },
- "code": "5883c0ee871adfc9",
+ "code": "82cec7faf68477b2",
  "boards": [
   "kr",
   "us"
@@ -23,16 +23,16 @@
   "en": 990
  },
  "plans": 1980,
- "numbers": 11460,
- "links": 24328,
+ "numbers": 11590,
+ "links": 24334,
  "texts": 3242,
  "motion": 50,
  "edge": 94,
  "transLangs": 73,
- "transStrings": 27805,
+ "transStrings": 28588,
  "layoutLangs": 74,
  "layoutPages": 3456,
- "transShapes": 3623,
+ "transShapes": 3660,
  "failed": 2791,
  "transFailed": 2791,
  "otherFailed": 0,
@@ -42,12 +42,12 @@
   {
    "board": "us",
    "route": "#/",
-   "what": "번역 안 된 한국어: 기준 / · 16:00 New York time · 후보군 365곳 / 매수 검토 후보 0곳 / 고르지 않음 / 결산 흑자 · 위험 공시(회사 발표 원문) 자료가 없어 기준을 셀 수 없음 — 후보를 고르지 않음(숫자를 지 / 필요한 자료"
+   "what": "번역 안 된 한국어: 기준 / · 석 달(60거래일)마다 담음 / 매수 검토 우선순위 / — 예상 수익률 순위 아님 · / 연구용 · 성능 검증 전 / · 포트폴리오 아님"
   },
   {
    "board": "us",
-   "route": "#/compare",
-   "what": "번역 안 된 한국어: 후보 7곳 / 기준 / 다른 후보와 비교 / 비교할 후보가 0곳 — 둘 이상일 때 같은 기준으로 견줌 / 숫자를 지어내지 않음 / 값이 생기면 그림"
+   "route": "#/compare/BWLP/DAVE",
+   "what": "번역 안 된 한국어: 후보 7곳 / 기준 / · 같은 기간(1년 추세 · 수익률 20거래일) · 비교 S&P 500 · 같은 규칙 / 고르기 · 후보 둘 / 나 / 같은 기준에서의 차이"
   },
   {
    "board": "us",
