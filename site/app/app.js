@@ -24,7 +24,7 @@
      옛 주소는 모두 그대로 열림(옛 첫 화면 「시장」은 #/market · 넣으면서 뺀 것(규칙 1): 위 막대 관심 ★ — 아래 탭 「관심」이 대신) */
 import {h, speakScreen, stopSpeak, place, setPlace, korDate} from './util.js';
 import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js';
-import {EASY, startEasy, addEasyNames, whatLine, levelButton} from './easy.js'; // 쉬운 말(2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록 … 글은 참쉽게 그리고 ui/ux도 정말 쉽게」 · 규칙 48) — 한국어 화면 · 전문가 말은 단추 하나로
+import {EASY, startEasy, addEasyNames, whatLine, levelButton, glossaryBox} from './easy.js'; // 쉬운 말(2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록 … 글은 참쉽게 그리고 ui/ux도 정말 쉽게」 · 규칙 48) — 한국어 화면 · 전문가 말은 단추 하나로
 import {familyOf} from './family.js'; // 쉬운 말이 바꾸지 않을 이름(갈래) // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
 import {state, loadManifest, loadBoard, loadPlaceBoard, loadLens, prefs, url} from './store.js';
 import {attachMap} from './islandmap.js'; // 지도 섬 — 모든 화면 그림 칸 맨 아래(2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 아틀란스에 본질이 중심」 — ATLAS = 지도)
@@ -297,7 +297,8 @@ async function route() {
   const vt = state.vt; state.vt = null;
   const draw = async () => { try { await r.render(main, {hash, manifest: app.manifest, restoring, focus}); } catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
     if (EX_ROOT.has(r.id)) main.querySelector('.b-page')?.prepend(exploreNav(r.id));
-    if (EASY) { const w = whatLine(r.id, place.id), pg = main.querySelector('.b-page') ?? main, top = pg.querySelector(':scope > .ex-nav, :scope > .hl-bar'); if (w) { if (top) top.after(w); else pg.prepend(w); } } // 쉬운 말 화면 맨 위 「이 화면은?」 한 줄(탐색 네 곳은 위 줄 바로 아래 · 첫 화면은 「친구에게 소개하기」 띠 바로 아래 — 규칙 45 그대로 · 규칙 48)
+    if (EASY) { const w = whatLine(r.id, place.id), pg = main.querySelector('.b-page') ?? main, top = pg.querySelector(':scope > .ex-nav, :scope > .hl-bar'); if (w) { if (top) top.after(w); else pg.prepend(w); } }
+    if (EASY && r.id === 'start') { const g = glossaryBox(), pg = main.querySelector('.b-page') ?? main, ft = pg.querySelector(':scope > .b-foot'); if (g) { if (ft) ft.before(g); else pg.append(g); } } // 「처음」 맨 아래 어려운 말 풀이(뉴스 말 → 쉬운 말 · 규칙 48) // 쉬운 말 화면 맨 위 「이 화면은?」 한 줄(탐색 네 곳은 위 줄 바로 아래 · 첫 화면은 「친구에게 소개하기」 띠 바로 아래 — 규칙 45 그대로 · 규칙 48)
     try { await attachMap(main, r.id, hash, loadLens); } catch {} }; // 지도 섬(그림 칸 맨 아래 · 그 화면 그림이 말하는 회사가 빛남) — 못 그리면 조용히 넘어감(화면은 그대로) // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) — 네 곳의 첫 화면에만(Apple 처럼 — 들어간 보기 · 땅 화면은 「보기 바꾸기」 · 「‹ 되돌아가기」 한 줄만 · 그림 이름 · 숫자가 한 화면에)
   if (vt?.el?.isConnected && typeof document.startViewTransition === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     vt.el.style.setProperty('view-transition-name', vt.name);

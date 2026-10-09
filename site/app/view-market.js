@@ -4,6 +4,7 @@
    · 뚜렷한 변화가 없으면 「뚜렷한 변화 없음」 · 값이 모자라면 「판단 보류」(0 으로 채우지 않음)
    · 그 아래: 앞 기록 이후 달라진 것(가격 변화 · 구성 변경 · 자료 정정 · 기간 이동 · 누락 해소 — 지시서 0-D) · 하루 변화 · 선정 표본 · 계산 · 출처
    넣으면서 뺀 것(규칙 1): 옛 ③ 업종 · 업종 진단 목록 · 공식 업종 목록 → 아래 탭 「업종」(#/sectors · view-sectors.js) · 옛 그림(구슬 두 그릇 · 하루) → 20거래일 분포 */
+import {proFold} from './easy.js'; // 쉬운 말 화면에서 빽빽한 전문가 칸 접기(규칙 48)
 import {h, korDate, stamp, kst, finite, place} from './util.js';
 import {state, loadBoard, loadAgenda, loadLens} from './store.js';
 import {foot, segNav, MARKET_SEGS} from './parts.js';
@@ -95,12 +96,12 @@ export async function renderMarket(main, {manifest}) {
       num('오른 곳', `${S.up}/${S.n}곳`, '', `상승 비율 ${pctNum(S.upRatio)}`))),
     marketArt(lens, o) ?? quietArt({key: 'market', label: '시장', when: `${korDate(board.asOf)} 종가`}),
     blk(5, '이어서 보기', h('div', {class: 'ob-next'}, h('a', {class: 'ob-go', href: '#/sectors'}, '변화의 근거 보기 ›')), more),
-    changesBox(lens),
+    proFold('전문가용 자세히 — 달라진 것 · 하루 변화 · 고른 곳 숫자', changesBox(lens), // 쉬운 말 화면에서는 세 칸을 한 칸에 접음(전문가 말 화면은 그대로 · 규칙 48) · 「3번이면 회사」는 접지 않음(3단 클릭 보장)
     today,
     h('section', {class: 'b-box mk-sample', 'aria-label': 'ATLAS 선정 표본'}, h('h2', {class: 'b-box-h'}, `ATLAS 선정 ${lens.market.sample.n}곳`, h('small', null, ' · 시장 전체 아님 · 같은 기간 같은 종가')),
       line('하루 ', sumLine(lens.market.sample.d1, {ex: false})), line('5거래일 ', sumLine(lens.market.sample.d5, {ex: false})), line('20거래일 ', sumLine(S)),
       line(`${idxName(lens)} 5거래일 `, pv(R.r5), ' · 20거래일 ', pv(R.r20)),
-      exclLine(lens.market.sample.excluded, 0)),
+      exclLine(lens.market.sample.excluded, 0))),
     howBox(lens, ['관측 한 문장 · 반대 근거 = 정해진 규칙(obs-rules-1 · 실험 규칙 · 검증 전): 지수와 중앙값이 모두 ±1% 안이면 「뚜렷한 변화 없음」 · 표본이 30곳보다 적으면 판단 보류', '공식 지수: 네이버 증권 지수 · 변동성: 저장소 지수 종가(seed + 판마다 이어 붙임)', '시장 전체 오름/내림 수 · 거래대금: 모으지 않음']),
     mapIndex(board), // 3단 클릭 길잡이 — 갈래 · 업종 모두(어느 화면에서나 탐색 → 업종 → 회사) · 시장 글 다음 맨 아래
     foot(manifest)));

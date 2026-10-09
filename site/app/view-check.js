@@ -5,6 +5,7 @@
    · 비교 기준: 시장(지수) · 업종 비교군 · 같은 날 단순 최근 20거래일 상승률 상위(그날까지 종가만 · 미래 자료 없음)
    · 기록 기능을 만든 것과 투자 성능을 입증한 것은 다름 — 결과가 쌓이기 전에는 「검증 전」
    · 「운영 기록」(옛 아래 탭 「기록」 · #/log)은 위 「보기 바꾸기」 */
+import {proFold} from './easy.js'; // 쉬운 말 화면에서 빽빽한 전문가 칸 접기(규칙 48)
 import {h, korDate, stamp, finite} from './util.js';
 import {state, loadBoard, loadLens} from './store.js';
 import {foot, segNav, CHECK_SEGS} from './parts.js';
@@ -56,7 +57,7 @@ export async function renderCheck(main, {manifest}) {
     segNav(CHECK_SEGS, 'picks', '검증 보기 바꾸기'),
     (lens ? checkArt(lens) : null) ?? quietArt({key: 'check', label: '검증', word: '기록 0장', when: `${korDate(board.asOf)} 종가`}),
     lens && recs.length ? recordTable(lens) : null,
-    lens && v ? turnoverBox(v) : null,
+    proFold('전문가용 자세히 — 바뀐 목록 · 기록 규칙', lens && v ? turnoverBox(v) : null, // 쉬운 말 화면에서는 두 칸을 접음(규칙 48)
     lens ? h('section', {class: 'b-box', 'aria-label': '기록 규칙'}, h('h2', {class: 'b-box-h'}, '기록 규칙'),
       h('ul', null,
         h('li', null, '선정 = 저녁 기록 — 그 날 저녁 7시 뒤 한 번 남기고 고치지 않음(정정은 새 기록) · 기록마다 남긴 때 · 판 이름 · 묶음 버전'),
@@ -65,7 +66,7 @@ export async function renderCheck(main, {manifest}) {
         h('li', null, '후보 관측 성과 ≠ 실제 매매 성과 — 진입 · 청산 · 비중 · 비용 · 슬리피지 규칙이 없음 · 규칙을 바꾸면 새 버전으로 따로 평가(지난 자료에 맞는다는 까닭만으로 바꾸지 않음)'),
         h('li', null, '그날까지의 종가만 씀(미래 자료 없음) · 가격수익률(배당 빼고) · 실제 매매 성과가 아님(비용 · 슬리피지 없음)'),
         h('li', null, `묶음(365곳)은 ${korDate(lens.universe?.selectedOn)}에 고름 — 그 앞 날짜 기록은 고른 뒤의 묶음으로 본 것`),
-        h('li', null, '가중치를 저절로 바꾸지 않음 · 새 조건은 따로 검증하고 버전을 남긴 뒤에만 씀'))) : null,
+        h('li', null, '가중치를 저절로 바꾸지 않음 · 새 조건은 따로 검증하고 버전을 남긴 뒤에만 씀'))) : null),
     lens ? howBox(lens, ['평가 = 기록한 날 종가에서 5 · 10 · 20번째 거래일 종가까지(거래일 달력 · 임시 휴장은 바뀔 수 있음)']) : null,
     foot(manifest)));
 }
