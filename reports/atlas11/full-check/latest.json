@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T12:20:41.055Z",
- "seconds": 355,
+ "at": "2026-10-09T12:27:25.047Z",
+ "seconds": 300,
  "lap": {
-  "crawl": 113,
-  "trans": 340.8,
-  "layout": 355
+  "crawl": 92.2,
+  "trans": 160.2,
+  "layout": 300.4
  },
- "code": "82cec7faf68477b2",
+ "code": "47403ad539fffc74",
  "boards": [
   "kr",
   "us"
