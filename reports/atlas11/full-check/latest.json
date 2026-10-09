@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T04:55:32.022Z",
- "seconds": 248,
+ "at": "2026-10-09T08:20:48.488Z",
+ "seconds": 282,
  "lap": {
-  "crawl": 77.8,
-  "trans": 134.5,
-  "layout": 247.9
+  "crawl": 82.8,
+  "trans": 146,
+  "layout": 282.4
  },
- "code": "292adf5fccc149ae",
+ "code": "198518fb7a662ccb",
  "boards": [
   "kr",
   "us"
@@ -23,16 +23,16 @@
   "en": 990
  },
  "plans": 1980,
- "numbers": 11486,
- "links": 24368,
+ "numbers": 11484,
+ "links": 24328,
  "texts": 3242,
  "motion": 50,
  "edge": 94,
  "transLangs": 73,
- "transStrings": 27844,
+ "transStrings": 27796,
  "layoutLangs": 74,
  "layoutPages": 3456,
- "transShapes": 3636,
+ "transShapes": 3620,
  "failed": 2791,
  "transFailed": 2791,
  "otherFailed": 0,
@@ -42,7 +42,7 @@
   {
    "board": "us",
    "route": "#/",
-   "what": "번역 안 된 한국어: 기준 / · 16:00 New York time · 후보군 365곳 / 매수 검토 후보 0곳 / 고르지 않음 / Foreign investors · 기관 매매와 공시 자료가 없어 「돈이 들어온 회사」를 셀 수 없음 — 후 / 필요한 자료"
+   "what": "번역 안 된 한국어: 기준 / · 16:00 New York time · 후보군 365곳 / 매수 검토 후보 0곳 / 고르지 않음 / 결산 흑자 · 위험 공시(회사 발표 원문) 자료가 없어 기준을 셀 수 없음 — 후보를 고르지 않음(숫자를 지 / 필요한 자료"
   },
   {
    "board": "us",
