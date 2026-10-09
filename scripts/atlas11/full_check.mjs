@@ -164,7 +164,7 @@ for (const b of BOARDS) {
   const vdir = path.join(DIST, PRE[b].replace(/^\//, ''), 'data/atlas11/view'), lens = await readJson(path.join(vdir, 'lens.json')).catch(() => null), man = await readJson(path.join(vdir, 'manifest.json'));
   const stockFiles = await Promise.all(board.companies.map(c => readJson(path.join(vdir, 'stocks', c.code + '.json')).catch(() => null)));
   const evDir = b === 'kr' ? path.join(ROOT, 'public/data/atlas11/evening', String(man.universeSet?.id ?? 'none').replace(/[^A-Za-z0-9._-]/g, '_')) : path.join(ROOT, `public/data/atlas11/${b}/evening`);
-  const cdDir = b === 'kr' ? path.join(ROOT, 'public/data/atlas11/cand', String(man.universeSet?.id ?? 'none').replace(/[^A-Za-z0-9._-]/g, '_')) : null; // 후보 발행본(2026-10-09 — 저녁 기록이 없는 날이면 검증 기록 한 장)
+  const cdDir = path.join(ROOT, b === 'kr' ? 'public/data/atlas11/cand' : `public/data/atlas11/${b}/cand`, String(man.universeSet?.id ?? 'none').replace(/[^A-Za-z0-9._-]/g, '_')); // 후보 발행본(2026-10-09 — 저녁 기록이 없는 날이면 검증 기록 한 장 · 미국 판도 19:29 「미국장 까지 다 대입」부터 후보 발행본을 남김)
   const dayFiles = async d => (d ? (await fs.readdir(d).catch(() => [])).filter(n => /^\d{4}-\d{2}-\d{2}\.json$/.test(n)) : []);
   const records = new Set([...await dayFiles(evDir), ...await dayFiles(cdDir)]).size;
   const extra = {market: man.market, flow5: b === 'kr' ? flowExpect(stockFiles) : null, records};

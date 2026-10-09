@@ -3,7 +3,7 @@
 //   4판(20만 번 다시 뽑기) 셈 도구(seedOf · rngOf · mcDraw · mcOf)는 4판 기록 따로 세기용으로 남아 그대로 시험
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {candOf, candRecordOf, candPubOf, CAND_RULES, RULES4, FLAGS5, seedOf, rngOf, mcOf, mcDraw, drawsTxt, inflowIndexOf, quantileOf, trendOf, plantOf, weatherOf} from '../../lib/atlas11/cand.mjs';
+import {candOf, candRecordOf, candPubOf, CAND_RULES, RULES4, FLAGS5, seedOf, rngOf, mcOf, mcDraw, drawsTxt, inflowIndexOf, quantileOf, trendOf, plantOf, weatherOf, RISK_UNKNOWN} from '../../lib/atlas11/cand.mjs';
 
 const even = (v, n = 10) => Array(n).fill(v / n);
 // 5판 작은 판 — 거래일 300개(그물은 252 + 20 거래일 기록이 있어야) · 값은 쓰는 날에만(판 날 · 20 · 40 · 252 · 272거래일 전)
@@ -110,8 +110,13 @@ test('담는 날 사이 — 담는 날 첫 기록의 7곳 그대로 · 상태만
 
 test('고르지 않는 날 — 미국 판 · 1년 기록 모자람(지어내지 않음) · 장 마감 뒤 공시는 상태만', () => {
   const {stocks, priceAt, board} = boardOf(SPEC);
-  const us = candOf({place: 'us', asOf: ASOF, stocks, board, sessions: SES, priceAt});
-  assert.equal(us.ready, false); assert.ok(us.why.includes('지어내지 않음'));
+  // 미국 판(2026-10-09 19:29 「미국장 까지 다 대입」) — 같은 규칙으로 고름 · 위험 공시는 「확인 못 함」(공시 원문 자료가 없어 빼지도 · 없다고 쓰지도 않음) · 돈 유입 1~365등 없음(투자자 매매 자료 없음)
+  const us = candOf({place: 'us', asOf: ASOF, stocks, board, agenda: agendaOf(RISK), sessions: SES, priceAt});
+  assert.equal(us.ready, true); assert.equal(us.rank, null);
+  assert.ok(us.items.length > 0 && us.items.every(x => x.checks.risk.unknown === true && x.checks.risk.now === RISK_UNKNOWN), '미국 판 위험 공시 = 확인 못 함');
+  assert.ok(us.items.every(x => !x.risk.text.includes('100번 중') && x.entry.rule.includes('확인 못 함')), '한국 판 지난 기록 셈 · 「위험 공시 없음」을 미국 판 글에 쓰지 않음');
+  const jp = candOf({place: 'jp', asOf: ASOF, stocks, board, sessions: SES, priceAt});
+  assert.equal(jp.ready, false); assert.ok(jp.why.includes('지어내지 않음'), '자료가 없는 판은 고르지 않음');
   const short = candOf({asOf: SES[200], stocks, board, sessions: SES, priceAt});
   assert.equal(short.ready, false); assert.ok(short.why.includes('272거래일'));
   const late = {...RISK, n1: [disc('관리종목 지정', `${ASOF}T16:10:00+09:00`)]};

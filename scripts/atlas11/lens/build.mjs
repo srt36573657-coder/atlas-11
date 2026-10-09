@@ -17,7 +17,7 @@ const maybe = async f => { try { return await readJson(f); } catch { return null
 const dirName = id => String(id ?? 'none').replace(/[^A-Za-z0-9._-]/g, '_');
 export const LENS_PLACES = {
   kr: {view: 'public/data/atlas11/view', input: 'public/data/input.json', index: 'public/data/atlas11/market/KOSPI.json', evening: 'public/data/atlas11/evening', calendar: 'public/data/rolling-calendar.json', closeAt: '15:30 KST', cand: 'public/data/atlas11/cand'}, // cand = 매수 검토 후보 발행본(2026-10-09 · 고치지 않음 · scripts/atlas11/cand_record.mjs)
-  us: {view: 'public/data/atlas11/us/view', input: 'public/data/atlas11/us/input.json', index: 'public/data/atlas11/us/market/INX.json', evening: 'public/data/atlas11/us/evening', calendar: null, context: 'public/data/atlas11/us/context.json'},
+  us: {view: 'public/data/atlas11/us/view', input: 'public/data/atlas11/us/input.json', index: 'public/data/atlas11/us/market/INX.json', evening: 'public/data/atlas11/us/evening', calendar: null, context: 'public/data/atlas11/us/context.json', cand: 'public/data/atlas11/us/cand'}, // cand = 후보 발행본(2026-10-09 19:29 「미국장 까지 다 대입」 — 미국 판 저녁 기록이 없어 발행본이 첫 기록)
 };
 async function readEvening(root, dir, universe) {
   const d = path.join(root, dir, dirName(universe)); let names = [];

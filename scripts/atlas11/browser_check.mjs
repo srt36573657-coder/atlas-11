@@ -298,9 +298,38 @@ async function candCheck(page, label, mobile, press) {
   }
   await rankCheck();
 }
+/** 미국 판 「후보 7」 섬(2026-10-09 19:29 「미국장 까지 다 대입」) — 같은 규칙 · 위험 공시는 「확인 못 함」(공시 원문 자료 없음 — 없다고 쓰지 않음) · 돈 유입 1~365등 없음(투자자 매매 자료 없음)
+ *   이 검사기가 미국 판 읽기(us/data/atlas11/view/lens.json)의 1년 추세(grow.m)로 기준선 · 물 위 · 초록 · 7곳 차례를 따로 셈해 섬 그림 값 · 핀 · 위 이름표와 맞댐 */
+async function usCandCheck(page, label) {
+  const lens = await get('us/data/atlas11/view/lens.json'), C = lens.cand;
+  if (!C?.ready) { check(`${label} 미국 판 「후보 7」 섬: 판 읽기에 미국 판 후보가 없음(${C?.why ?? '판 읽기 없음'})`, false, {why: C?.why}); return; }
+  await page.goto(base + '/us/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .isl canvas', {timeout: 20000}); await page.waitForTimeout(400);
+  const G = C.grow ?? {}, M = G.m ?? {}, mOf = code => (Number.isFinite(M[code]?.[0]) ? M[code][0] : null), cmpC = (a, b) => (a < b ? -1 : a > b ? 1 : 0), gOf = code => lens.stocks.find(x => x.code === code)?.g;
+  const qOf = xs => { const a = xs.filter(Number.isFinite).sort((x, y) => x - y), k = a.length; if (!k) return null; const pos = 0.8 * (k - 1), lo = Math.floor(pos), hi = Math.min(k - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
+  const qI = qOf(lens.stocks.map(s => mOf(s.code))), aboveW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI).length;
+  const greenW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI && String(C.flags?.[s.code] ?? '').slice(0, 3) === '111').length;
+  const fresh = Object.entries(C.flags ?? {}).filter(([code, f]) => f === '111111' && mOf(code) !== null).map(([code]) => ({code, m: mOf(code)})).sort((p, q) => (q.m - p.m) || cmpC(p.code, q.code));
+  const per = new Map(), want = []; for (const e of fresh) { const k = per.get(gOf(e.code)) ?? 0; if (k >= 3 || want.length >= 7) continue; per.set(gOf(e.code), k + 1); want.push(e.code); }
+  const wantRows = G.planted?.at && G.planted.at !== C.asOf ? C.items.map(x => x.code) : want, x0 = C.items[0];
+  const m12W = code => fpW(Number((mOf(code) * 100).toFixed(1)));
+  const u = await page.evaluate(() => { const e = document.querySelector('.cd-page .isl'); let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {}
+    return {chk, pins: [...e.querySelectorAll('.isl-pin')].map(b => ({code: b.dataset.code, rank: Number(b.dataset.rank), sel: b.classList.contains('sel'), r: b.getBoundingClientRect().toJSON()})), hud: e.querySelector('.isl-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? '',
+      rows: [...document.querySelectorAll('.cd-row')].map(li => li.dataset.code), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, rank: !!document.querySelector('details.cd-rank-d'), st: e.__isl?.state() ?? null,
+      text: document.querySelector('.cd-page')?.innerText ?? '', place: document.querySelector('.place-btn[aria-pressed="true"], [data-place].on')?.textContent?.trim() ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
+  const pinR = u.pins.map(p => p.r), overlap = pinR.some((a, i) => pinR.some((b, j) => j > i && Math.hypot((a.x + a.width / 2) - (b.x + b.width / 2), (a.y + a.height / 2) - (b.y + b.height / 2)) < (a.width + b.width) / 2 - 1));
+  // 상세 접힘 글(어떻게 골랐나 · 고르는 법)에 「확인 못 함」이 있고 「위험 공시 없음」은 없어야(미국 판은 공시 자료가 없음 — 없다고 쓰지 않음)
+  const folds = await page.evaluate(() => { document.querySelectorAll('.cd-page details').forEach(d => { d.open = true; }); return document.querySelector('.cd-page')?.innerText ?? ''; });
+  const honest = folds.includes('확인 못 함') && !folds.includes('위험 공시 없음') && !folds.includes('100번 중 60번') && !folds.includes('외국인+기관');
+  const ok = u.chk?.above === aboveW && u.chk?.green === greenW && u.chk?.n === C.items.length && u.rows.join() === wantRows.join() && u.pins.length === C.items.length
+    && u.pins.every((p, i) => p.code === C.items[i].code && p.rank === i + 1 && p.sel === (i === 0)) && !overlap && (!x0 || (u.hud.includes(`${x0.rank}위`) && u.hud.includes(x0.name) && u.hud.includes(m12W(x0.code))))
+    && u.st?.busy === false && u.all === null && !u.rank && honest && u.sw <= u.cw;
+  check(`${label} 미국 판 「후보 7」 섬(2026-10-09 19:29 「미국장 까지 다 대입」): 물 위 ${u.chk?.above}곳 = 따로 센 ${aboveW}곳 · 그물 ${u.chk?.green}곳 = 따로 셈 ${greenW}곳 · 핀 ${u.pins.length}개 · 줄 차례 = 따로 센 차례(${wantRows.join(' · ')}) · 위 이름표 「${u.hud}」 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음`,
+    ok, {chk: u.chk, aboveW, greenW, rows: u.rows, want: wantRows, hud: u.hud, all: u.all, rank: u.rank, honest, overlap, sw: u.sw, cw: u.cw});
+}
 async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');
-  await candCheck(page, label, mobile, press); // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
+  await candCheck(page, label, mobile, press);
+  await usCandCheck(page, label); // 미국 판 「후보 7」 섬(2026-10-09 19:29) // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
   await page.goto(base + '/#/market', {waitUntil: 'networkidle'}); await page.waitForSelector('.mk-page [data-first="5"]'); await page.waitForTimeout(300);
   const firstsOf = sel => page.evaluate(sel => ({firsts: [...document.querySelectorAll(sel + ' [data-first]')].map(x => { const r = x.getBoundingClientRect(); return {n: x.dataset.first, art: x.matches('section[data-art]'), top: Math.round(r.top), bottom: Math.round(r.bottom), t: x.innerText.replace(/\s+/g, ' ').trim()}; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), tabs: [...document.querySelectorAll('.bottom-link')].map(a => [a.dataset.route, a.innerText.replace(/\s+/g, '')]), active: document.querySelector('.bottom-link.active')?.dataset.route,

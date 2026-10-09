@@ -1,0 +1,347 @@
+{
+ "schema": "atlas11-cand-1",
+ "place": "us",
+ "asOf": "2026-10-08",
+ "recordedAt": "2026-10-09T11:38:43.361Z",
+ "boardId": "board-2026-10-08-d2e00151",
+ "universe": "us1-n365-v1-2026-10-05",
+ "rules": "cand-rules-5",
+ "label": "매수 검토 후보 규칙 5판 — 기르기판: 1년 추세 상위 20% 그물 · 새로 든 초입 7곳 · 석 달 담아 두기(연구용 · 성능 검증 전)",
+ "window": {
+  "days": 30,
+  "from": "2026-09-08",
+  "to": "2026-10-08",
+  "cutoff": "2026-10-08T16:00:00+09:00"
+ },
+ "index": {
+  "name": "S&P 500",
+  "r20": 2.2874981888114654
+ },
+ "evalDays": 20,
+ "evalEnd": null,
+ "pool": {
+  "universe": 365,
+  "valid": 363,
+  "net": 73,
+  "netElig": 64,
+  "newc": 16,
+  "data": 363,
+  "profit": 335,
+  "risk": 335
+ },
+ "grow": {
+  "q": 40.056000000000004,
+  "qD": 40.1,
+  "netPct": 20,
+  "hold": 60,
+  "planted": {
+   "at": "2026-10-08",
+   "next": null,
+   "src": "today",
+   "recordedAt": null,
+   "day": 0
+  },
+  "since": null,
+  "netCodes": [
+   "SNDK",
+   "MU",
+   "WDC",
+   "DELL",
+   "TER",
+   "COHR",
+   "IRDM",
+   "AMD",
+   "VLO",
+   "INSW",
+   "CIEN",
+   "AMAT",
+   "LRCX",
+   "OII",
+   "DINO",
+   "MPC",
+   "PSX",
+   "GLW",
+   "KEYS",
+   "JBHT",
+   "BWLP",
+   "NUE",
+   "WHD",
+   "ARIS",
+   "MSGS",
+   "DAVE",
+   "CRS",
+   "TGT",
+   "MSGE",
+   "TDW",
+   "STLD",
+   "CAT",
+   "MRK",
+   "UNIT",
+   "KLAC",
+   "FIVE",
+   "IESC",
+   "PANW",
+   "ACA",
+   "LTH",
+   "HAFN",
+   "VRT",
+   "CSCO",
+   "GEV",
+   "ALSN",
+   "BNY",
+   "GM",
+   "JBL",
+   "HAL",
+   "FCFS",
+   "DE",
+   "RUSHA",
+   "IDT",
+   "NEM",
+   "EXEL",
+   "XOM",
+   "COP",
+   "DVN",
+   "WAB",
+   "C",
+   "VIK",
+   "JNJ",
+   "ODC",
+   "LSTR"
+  ],
+  "today": [
+   {
+    "code": "BWLP",
+    "name": "BW LPG",
+    "m12D": 88.8
+   },
+   {
+    "code": "DAVE",
+    "name": "데이브",
+    "m12D": 76.6
+   },
+   {
+    "code": "UNIT",
+    "name": "유니티 그룹 (델라웨어)",
+    "m12D": 64.2
+   },
+   {
+    "code": "HAFN",
+    "name": "하프니아",
+    "m12D": 56.5
+   },
+   {
+    "code": "ALSN",
+    "name": "앨리슨 트랜스미션 홀딩스",
+    "m12D": 52.4
+   },
+   {
+    "code": "FCFS",
+    "name": "퍼스트캐쉬 홀딩스",
+    "m12D": 48
+   },
+   {
+    "code": "DE",
+    "name": "디어",
+    "m12D": 46.9
+   }
+  ],
+  "weather": {
+   "days": 200,
+   "ratio": 1.0383,
+   "pD": 3.8,
+   "state": "sunny"
+  }
+ },
+ "flow": {
+  "window": null,
+  "sectors": []
+ },
+ "top": [],
+ "cand": [
+  {
+   "rank": 1,
+   "code": "BWLP",
+   "name": "BW LPG",
+   "g": "i8bcce425",
+   "close": 26.32,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +88.8%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "52주 최고값 근처(1년 범위의 100% 자리) — 되돌림 폭이 클 수 있음",
+   "gap": 2.9925018111885304,
+   "r20": 5.279999999999996,
+   "grow": {
+    "m12": 88.82,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "오일 및 가스 수송 서비스",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 2,
+   "code": "DAVE",
+   "name": "데이브",
+   "g": "i1c2cd686",
+   "close": 353.4,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +76.6%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 · 위험 공시는 확인 못 함(미국 판 공시 자료 없음) — 지난 2년 셈은 한국 판으로만 함(미국 판은 셈 전)",
+   "gap": -3.6715812337941744,
+   "r20": -1.384083044982709,
+   "grow": {
+    "m12": 76.64,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "핀테크",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 3,
+   "code": "UNIT",
+   "name": "유니티 그룹 (델라웨어)",
+   "g": "i37c30173",
+   "close": 7.4,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +64.2%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 · 위험 공시는 확인 못 함(미국 판 공시 자료 없음) — 지난 2년 셈은 한국 판으로만 함(미국 판은 셈 전)",
+   "gap": -27.312827469459886,
+   "r20": -25.02532928064842,
+   "grow": {
+    "m12": 64.23,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "통합 통신 서비스",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 4,
+   "code": "HAFN",
+   "name": "하프니아",
+   "g": "i8bcce425",
+   "close": 10.85,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +56.5%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "52주 최고값 근처(1년 범위의 100% 자리) — 되돌림 폭이 클 수 있음",
+   "gap": 13.631305229991963,
+   "r20": 15.918803418803428,
+   "grow": {
+    "m12": 56.52,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "오일 및 가스 수송 서비스",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 5,
+   "code": "ALSN",
+   "name": "앨리슨 트랜스미션 홀딩스",
+   "g": "i1a053ff4",
+   "close": 109.11,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +52.4%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "같은 업종 후보 2곳 — 같은 사건에 함께 흔들릴 수 있음",
+   "gap": -16.737866700650894,
+   "r20": -14.450368511839429,
+   "grow": {
+    "m12": 52.4,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "중장비 및 차량",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 6,
+   "code": "FCFS",
+   "name": "퍼스트캐쉬 홀딩스",
+   "g": "i07f11f2d",
+   "close": 211.49,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +48.0%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 · 위험 공시는 확인 못 함(미국 판 공시 자료 없음) — 지난 2년 셈은 한국 판으로만 함(미국 판은 셈 전)",
+   "gap": -9.275799710493226,
+   "r20": -6.988301521681761,
+   "grow": {
+    "m12": 47.97,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "소비자 대출",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  },
+  {
+   "rank": 7,
+   "code": "DE",
+   "name": "디어",
+   "g": "i1a053ff4",
+   "close": 652.58,
+   "date": "2026-10-08",
+   "status": "met",
+   "reason": "1년 추세 +46.9%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +40.1%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "같은 업종 후보 2곳 — 같은 사건에 함께 흔들릴 수 있음",
+   "gap": -6.028242207456181,
+   "r20": -3.740744018644715,
+   "grow": {
+    "m12": 46.9,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "중장비 및 차량",
+    "sectorRank": null,
+    "fi": null,
+    "power": null,
+    "rank": null,
+    "fomo": null
+   }
+  }
+ ],
+ "held": [],
+ "nWaiting": 9,
+ "note": "처음 낸 후보 목록 — 고치지 않음(정정은 새 기록) · 평가 = 이 날 종가에서 5 · 10 · 20 · 60거래일 뒤 · 실제 매매 성과 아님"
+}

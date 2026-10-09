@@ -185,7 +185,7 @@ html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[d
 @media (min-width: 560px) { .cj-r { grid-template-columns: 5.6em minmax(0, 1fr); gap: 2px 8px; } }
 .cj-r dt { font-size: .8125rem; font-weight: 700; line-height: 1.6; color: var(--sub); }
 .cj-r dd { margin: 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; min-width: 0; }
-.cj-ok { font-weight: 700; white-space: nowrap; } .cj-ok.yes { color: var(--ink); } .cj-ok.no { color: var(--warn); }
+.cj-ok { font-weight: 700; white-space: nowrap; } .cj-ok.yes { color: var(--ink); } .cj-ok.no { color: var(--warn); } .cj-ok.na { color: var(--sub); } /* 미국 판 위험 공시 — 확인 못 함 */
 .cj-t { margin: 2px 0; } .c-table.cj-t th, .c-table.cj-t td { font-size: .875rem; white-space: normal; text-align: start; vertical-align: top; padding: 6px 4px; }
 .cj-flags { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 2px; font-size: .9375rem; }
 .cj-hi { animation: cj-hi 1.4s ease-out 1; }
