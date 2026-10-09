@@ -21,6 +21,10 @@ export function summaryLines({dep, st, man, since, deployOutcome, token}) {
     const out = ['## 올라갔습니다', '', `- 주소: ${dep.url}`, `- 올린 때: ${kstText(dep.at)} (한국 시각)`, `- 올린 파일: ${dep.files}개`];
     if (man) out.push(`- 화면 판: ${man.universeSet?.label ?? `${man.companies}곳`} · ${man.asOf} 종가`);
     if (st?.api?.published) out.push(`- 넷리파이: ${st.api.published === 'ready' ? '열림' : st.api.published}${st.api.customDomain ? ` · ${st.api.customDomain}` : ''}`);
+    // 2026-10-09 선물형 초대장 — 초대장 저장 기능(넷리파이 함수 /api/invite)이 같이 올라갔는지(못 올렸으면 화면만 올라간 것)
+    const fn = dep.functions;
+    if (fn?.state === 'deployed') out.push('- 초대장 저장 기능(/api/invite): 함께 올라감');
+    else if (fn?.state === 'failed') out.push(`- 초대장 저장 기능(/api/invite): 못 올림 — 화면만 올라감 · 까닭: ${String(fn.error ?? '모름').replace(/\s+/g, ' ').slice(-200)}`);
     out.push('', '휴대폰에서 aaa7377.com 을 새로 고침하면 바로 보입니다.');
     return out;
   }

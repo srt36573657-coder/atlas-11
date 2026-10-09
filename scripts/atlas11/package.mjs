@@ -76,6 +76,7 @@ export async function buildDist() {
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
   await fs.writeFile(path.join(dist, '_redirects'), '/game/*  /  302\n/game  /  302\n/downloads/*  /  302\n/docs/*  /  302\n' + Object.keys(RETIRED).map(id => `/${id}/*  /  302\n/${id}  /  302\n`).join('') /* 내린 판(중국 · 일본 · 베트남 — 2026-10-08 18:33)의 옛 주소는 한국 판 첫 화면으로 */ + abroad.map(id => `/${id}  /${id}/  301\n`).join('') + LANGS.map(lg => (usOk ? `/${lg}/us/*  /us/?lang=${lg}  301\n/${lg}/us  /us/?lang=${lg}  301\n` : '') + `/${lg}/*  /?lang=${lg}  301\n/${lg}  /?lang=${lg}  301\n`).join('')) // 옛 따로 주소(/en · /zh · /en/us …) → 한 주소 그 말로(넓은 것은 뒤 — 앞 줄이 먼저 맞음); // /us(끝 빗금 없음)는 한국 자료를 읽게 되므로 /us/ 로
   await fs.writeFile(path.join(dist, 'netlify.toml'), '[build]\n  publish = "."\n');
+  await addInvite(dist, root); // 선물형 초대장 — /i/<번호> 길 · 검색 제외 · 카카오 공유 설정(아래 addInvite)
   await fs.writeFile(path.join(dist, 'README.txt'), `ATLAS 11 정적 배포 묶음 · ${manifest.universeSet?.label ?? manifest.companies + '곳'} 판\n판 ${manifest.boardId} · 종가 기준일 ${manifest.asOf} · 만든 시각 ${manifest.generatedAt}\n\n이 폴더(index.html 이 맨 위)를 그대로 Netlify Drop 에 올리면 화면이 열립니다.\n매일 수집·예약 실행은 포함되지 않습니다.\n`);
   // 비밀키 검사
   const secretPattern = /(FRED_API_KEY|NAVER_CLIENT_SECRET|KRX_API_KEY|NETLIFY_AUTH_TOKEN|AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|-----BEGIN (RSA |EC )?PRIVATE KEY-----)\s*[:=]\s*['"]?[A-Za-z0-9_\-]{8,}/;
@@ -84,6 +85,21 @@ export async function buildDist() {
   for (const f of files) { const st = await fs.stat(f); bytes += st.size; if (/\.(html|js|css|json|md|txt|toml|csv)$/.test(f) && st.size < 20e6) { const t = await fs.readFile(f, 'utf8'); if (secretPattern.test(t)) throw Error('SECRET_IN_DIST ' + f); } hashes[path.relative(dist, f)] = await sha(f); }
   await fs.writeFile(path.join(dist, 'dist-manifest.json'), JSON.stringify({schema: 'atlas11-dist-manifest-2', boardId: manifest.boardId, asOf: manifest.asOf, prediction: 'off', builtAt: new Date().toISOString(), files: files.length, bytes, hashes}, null, 1));
   return {dist, files: files.length + 1, bytes, boardId: manifest.boardId};
+}
+
+/** 선물형 초대장(사장님 2026-10-09 16:12 마카오 시각 첨부 「카카오톡으로 보내는 선물형 초대장」) — dist 에 세 가지를 더한다
+ *   ① _redirects 맨 앞 「/i/*  /invite.html  200」(주소는 그대로 · 번호만 들어감) ② _headers 에 초대장 쪽 검색 제외 · 주소 안 넘김 · 새로 받기
+ *   ③ /invite-config.json — config/atlas11/invite.json 의 카카오 열쇠 · SDK 판 · 무결성 값이 셋 다 있을 때만 싣고, 그때만 보안 규칙(script-src)에 카카오 SDK 주소 하나를 더함 */
+export async function addInvite(dist, rootDir = root) {
+  let cfg = null; try { cfg = JSON.parse(await fs.readFile(path.join(rootDir, 'config/atlas11/invite.json'), 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const k = cfg?.kakao, kakao = k?.key && k?.version && k?.integrity ? {key: String(k.key), version: String(k.version), integrity: String(k.integrity)} : null;
+  await fs.writeFile(path.join(dist, 'invite-config.json'), JSON.stringify({schema: 'atlas11-invite-config-1', kakao}) + '\n');
+  const rp = path.join(dist, '_redirects'); await fs.writeFile(rp, '/i/*  /invite.html  200\n' + await fs.readFile(rp, 'utf8'));
+  const hp = path.join(dist, '_headers'); let head = await fs.readFile(hp, 'utf8');
+  if (kakao) head = head.replace("script-src 'self';", "script-src 'self' https://t1.kakaocdn.net;");
+  const quiet = '  X-Robots-Tag: noindex, nofollow, noarchive\n  Referrer-Policy: no-referrer\n  Cache-Control: no-cache\n';
+  await fs.writeFile(hp, head + '/i/*\n' + quiet + '/invite.html\n' + quiet + '/invite-config.json\n  Cache-Control: no-cache\n');
+  return {kakao: !!kakao};
 }
 
 export async function zipAll({full = true} = {}) {

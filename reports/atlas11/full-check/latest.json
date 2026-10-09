@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-09T08:46:51.266Z",
- "seconds": 374,
+ "at": "2026-10-09T09:13:23.089Z",
+ "seconds": 324,
  "lap": {
-  "crawl": 110.5,
-  "trans": 257.4,
-  "layout": 373.8
+  "crawl": 92.6,
+  "trans": 148.2,
+  "layout": 324.2
  },
- "code": "301355d00d97cee1",
+ "code": "65883a8c7aaf3b56",
  "boards": [
   "kr",
   "us"
@@ -19,8 +19,8 @@
  ],
  "pages": 1980,
  "byLang": {
-  "ko": 990,
-  "en": 990
+  "en": 990,
+  "ko": 990
  },
  "plans": 1980,
  "numbers": 11484,

@@ -1,0 +1,14 @@
+{
+  "schema": "atlas11-invite-config-1",
+  "note": "선물형 초대장(2026-10-09) · 카카오톡 공유 설정 — 세 칸(key · version · integrity)이 모두 차야 카카오 공유가 켜진다. 비어 있으면 휴대폰 공유 창 · 링크 복사로 보낸다.",
+  "kakao": {
+    "key": "",
+    "version": "2.8.3",
+    "integrity": ""
+  },
+  "howTo": [
+    "key = Kakao Developers › 내 애플리케이션 › [앱] › 플랫폼 키 › JavaScript 키(공개해도 되는 열쇠 · 아래 도메인에서만 동작)",
+    "도메인 등록 둘: [JavaScript SDK 도메인]과 [제품 링크 관리 › 웹 도메인]에 https://aaa7377.com",
+    "version · integrity = Kakao Developers 문서 「JavaScript › 다운로드」의 최신 판 번호와 「SRI 해시 복사」 값(2026-10-09 확인한 최신 판 2.8.3 · 해시는 아직 못 받음)"
+  ]
+}

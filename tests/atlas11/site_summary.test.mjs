@@ -15,6 +15,14 @@ test('올리기 결과 한 줄: 앞 실행의 기록(시작보다 이른 것)은
   const t = summaryLines({dep, man, st: null, since: Date.parse('2026-10-05T03:00:00Z'), deployOutcome: 'failure', token: true}).join('\n');
   assert.match(t, /^## 못 올렸습니다/); assert.doesNotMatch(t, /올라갔습니다/);
 });
+test('올리기 결과 한 줄: 초대장 저장 기능(/api/invite)이 같이 올라갔는지 · 못 올렸으면 화면만 올라갔다고', () => {
+  const at = {since: Date.parse('2026-10-05T00:40:00Z'), deployOutcome: 'success', token: true, man, st: null};
+  assert.match(summaryLines({...at, dep: {...dep, functions: {state: 'deployed', names: ['invite']}}}).join('\n'), /초대장 저장 기능\(\/api\/invite\): 함께 올라감/);
+  const failed = summaryLines({...at, dep: {...dep, functions: {state: 'failed', error: 'bundling\nfailed'}}}).join('\n');
+  assert.match(failed, /^## 올라갔습니다/); assert.match(failed, /못 올림 — 화면만 올라감 · 까닭: bundling failed/);
+  assert.doesNotMatch(summaryLines({...at, dep: {...dep, functions: {state: 'none'}}}).join('\n'), /초대장/);
+  assert.doesNotMatch(summaryLines({...at, dep}).join('\n'), /초대장/); // 옛 기록(함수 칸 없음)
+});
 test('올리기 결과 한 줄: 단계가 실패면 기록이 ready 여도 「못 올렸습니다」 · 열쇠가 없으면 그 까닭', () => {
   assert.match(summaryLines({dep, man, since: 0, deployOutcome: 'failure', token: true}).join('\n'), /^## 못 올렸습니다/);
   assert.match(summaryLines({dep: null, man, since: 0, deployOutcome: 'skipped', token: false}).join('\n'), /NETLIFY_AUTH_TOKEN/);
