@@ -204,3 +204,86 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 .cd-more { margin-inline-start: 4px; white-space: nowrap; }
 .bc.cmp-bc .bc-bar.cmp-pow { background: var(--ink2); } /* 회사 크기에 견준 순매수 세기 — 값의 오름 · 내림이 아님(빨강 · 파랑을 쓰지 않음) */
 .bc.cmp-bc .bc-val.cmp-pow { color: var(--ink); }
+
+/* ── 후보 7 입체 땅(land3d.js · 사장님 2026-10-09 08:26 「넘 글이 많다 … 입체적으로 보여야하는 중심으로」) — 꺼진 땅 · 솟은 땅 · 탑 · 이름표는 HTML ── */
+.l3-wrap { max-width: 30rem; margin: 4px auto 0; } /* 넓은 화면(PC)에서도 그림이 휴대폰 한 장 크기 — 너무 커지지 않게 */
+.l3 { position: relative; margin: 0 -4px; }
+.l3-stage { position: relative; }
+.l3-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.l3-over, .l3-badges { position: absolute; inset: 0; pointer-events: none; }
+.l3-lab, .l3-rk { position: absolute; left: var(--x); top: var(--y); pointer-events: auto; }
+.l3-lab { width: 31%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center; text-decoration: none; color: var(--ink); line-height: 1.2; overflow-wrap: anywhere; }
+.l3-nm { font-size: .9375rem; font-weight: 700; }
+.l3-amt { font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; }
+.l3-in .l3-amt { color: var(--up-ink); } .l3-out .l3-amt { color: var(--down-ink); } .l3-out .l3-nm { color: var(--ink2); }
+.l3-no { opacity: .6; }
+.l3-lab:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 6px; }
+.l3-rk { transform: translate(-50%, -100%); min-width: 26px; height: 26px; padding: 0 5px; border-radius: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; cursor: pointer; background: var(--card); color: var(--ink); box-shadow: 0 0 0 1.5px var(--ink2); }
+.l3-rk::before { content: attr(data-n); } /* 순위 숫자는 그림 표시(화면 읽기 · 소리는 아래 줄 「1위 …」 — 「돈 흐름」 메달 .rc-md 와 같은 방법) */
+.l3-rk-wait { box-shadow: 0 0 0 1.5px var(--sub); color: var(--sub); }
+.l3-rk-re { box-shadow: 0 0 0 1.5px var(--warn); color: var(--warn); }
+.l3-rk.sel { background: var(--ink); color: var(--card); box-shadow: 0 0 0 1.5px var(--ink); }
+.l3-tw { cursor: pointer; transition: opacity .2s, transform .2s; }
+.l3-tw.sel { transform: translateY(-4px); } /* 고른 탑이 살짝 들림 — 움직임 줄이기면 제자리(아래) */
+@media (prefers-reduced-motion: reduce) { .l3-tw { transition: none; } .l3-tw.sel { transform: none; } }
+.l3.picked .l3-tw:not(.sel) { opacity: .62; }
+.l3-note { margin: 2px 0 0; }
+.l3-tw.sel polygon { stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; }
+.l3-tile { fill: var(--fill); stroke: var(--sep); stroke-width: 1; }
+.l3-up-t { fill: #F2C4C8; } .l3-up-l { fill: #DE959C; } .l3-up-r { fill: #C46871; }
+.l3-off-t { fill: #DCE3DF; } .l3-off-l { fill: #BFC9C4; } .l3-off-r { fill: #A6B2AC; }
+.l3-dn-f { fill: #8FAEE6; } .l3-dn-w1 { fill: #6E92D8; } .l3-dn-w2 { fill: #5A80CC; } .l3-dn-lip { fill: none; stroke: #3F66B8; stroke-width: 1.2; }
+.l3-met-t { fill: #A5D3C0; } .l3-met-l { fill: #5F9E86; } .l3-met-r { fill: #457F68; }
+.l3-wait-t { fill: #F1DDB0; } .l3-wait-l { fill: #D7B66F; } .l3-wait-r { fill: #B8954C; }
+.l3-re-t { fill: #E8D2C3; } .l3-re-l { fill: #C49C80; } .l3-re-r { fill: #A07A5F; }
+.bc-sw.met { height: 9px; border: 0; border-radius: 3px; background: #5F9E86; }
+.bc-sw.wait { height: 9px; border: 0; border-radius: 3px; background: #D7B66F; }
+@media (prefers-color-scheme: dark) {
+  .l3-up-t { fill: #93404A; } .l3-up-l { fill: #74313A; } .l3-up-r { fill: #5B262D; }
+  .l3-off-t { fill: #3E4B46; } .l3-off-l { fill: #313C38; } .l3-off-r { fill: #27302D; }
+  .l3-dn-f { fill: #263B66; } .l3-dn-w1 { fill: #314C83; } .l3-dn-w2 { fill: #3B5A99; } .l3-dn-lip { stroke: #86B2FF; }
+  .l3-met-t { fill: #6FB197; } .l3-met-l { fill: #4A8670; } .l3-met-r { fill: #386A57; }
+  .l3-wait-t { fill: #C9A75E; } .l3-wait-l { fill: #9C8146; } .l3-wait-r { fill: #7A6436; }
+  .l3-re-t { fill: #9C7A63; } .l3-re-l { fill: #7A5E4C; } .l3-re-r { fill: #5F4A3C; }
+  .bc-sw.met { background: #4A8670; } .bc-sw.wait { background: #9C8146; }
+}
+/* 고른 한 곳 카드 · 짧은 줄 일곱(설명은 한 번에 한 가지) */
+.cd-card { gap: 6px; }
+.cd-ch { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 2px 10px; margin: 0; }
+.cd-ch .cd-rk { font-size: 1.125rem; }
+.cd-ch .cd-name { text-decoration: none; }
+.cd-ch .cd-px { grid-column: 2 / -1; margin: 0; font-size: .875rem; color: var(--sub); }
+.cd-mini .cd-row { padding: 0; border-top: 1px solid var(--sep); }
+.cd-mini .cd-row:first-child { border-top: 0; padding-top: 0; }
+.cd-pick { display: grid; grid-template-columns: 2em minmax(0, 1fr) minmax(56px, 26%) auto; align-items: center; gap: 0 10px; width: 100%; min-height: 48px; padding: 4px 6px; border: 0; border-radius: 10px; background: none; color: var(--ink); font: inherit; text-align: start; cursor: pointer; }
+.cd-pick[aria-pressed="true"] { background: var(--fill); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.cd-pick:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.cd-pick .cd-rk { min-width: 0; text-align: center; }
+.cd-pick .cd-name { font-size: 1.0625rem; text-decoration: none; }
+.cd-pw { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 6px; min-width: 0; }
+.cd-pwt { position: relative; display: block; height: 8px; border-radius: 4px; background: var(--fill); direction: ltr; }
+.cd-pick[aria-pressed="true"] .cd-pwt { background: var(--card); }
+.cd-pwb { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w); border-radius: 4px; background: #5F9E86; }
+.cd-row[data-status="wait"] .cd-pwb { background: #D7B66F; } .cd-row[data-status="recheck"] .cd-pwb { background: #C49C80; }
+.cd-pwv { font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; }
+.cd-stm { justify-self: end; font-size: .8125rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; white-space: nowrap; }
+.cd-stm-met { color: var(--ink); } .cd-stm-wait { color: var(--sub); border: 1.5px dashed var(--sub); } .cd-stm-recheck { color: var(--warn); border: 1.5px solid var(--warn); }
+.cd-fold { margin: 0; display: grid; gap: 0; }
+.cd-fold > details { border-top: 1px solid var(--sep); }
+.cd-fold > details:first-child { border-top: 0; }
+.cd-fold summary { display: flex; align-items: center; gap: 8px; min-height: 48px; font-size: 1rem; font-weight: 700; cursor: pointer; list-style: none; }
+.cd-fold summary::-webkit-details-marker { display: none; }
+.cd-fold summary::after { content: '›'; margin-inline-start: auto; font-size: 1.25rem; color: var(--sub); transition: transform .2s; }
+.cd-fold details[open] > summary::after { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .cd-fold summary::after { transition: none; } }
+.cd-fold details > *:not(summary) { margin-bottom: 8px; }
+html[data-font-step="2"] .cd-pick, html[data-font-step="3"] .cd-pick, html[data-font-step="4"] .cd-pick { grid-template-columns: 2.6em minmax(0, 1fr); gap: 2px 10px; } /* 큰 글씨(150% 이상) — 세기 · 상태가 이름 아래 줄로(옆으로 넘치거나 잘리지 않게) */
+html[data-font-step="2"] .cd-pick .cd-pw, html[data-font-step="3"] .cd-pick .cd-pw, html[data-font-step="4"] .cd-pick .cd-pw, html[data-font-step="2"] .cd-pick .cd-stm, html[data-font-step="3"] .cd-pick .cd-stm, html[data-font-step="4"] .cd-pick .cd-stm { grid-column: 2; }
+html[data-font-step="2"] .cd-pick .cd-stm, html[data-font-step="3"] .cd-pick .cd-stm, html[data-font-step="4"] .cd-pick .cd-stm { justify-self: start; white-space: normal; }
+
+/* 다른 말 · 큰 글씨(150% 이상)에서는 업종 이름표를 그림 아래 세 칸으로(솟은 땅 줄 → 꺼진 땅 줄 · 칸 = 그림의 세 기둥 · 이름이 길어도 겹치지 않음) */
+html:not([lang="ko"]) .l3-over, html[data-font-step="2"] .l3-over, html[data-font-step="3"] .l3-over, html[data-font-step="4"] .l3-over { position: static; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 6px; margin: 4px 0 0; pointer-events: auto; }
+html:not([lang="ko"]) .l3-lab, html[data-font-step="2"] .l3-lab, html[data-font-step="3"] .l3-lab, html[data-font-step="4"] .l3-lab { position: static; width: auto; transform: none; }
+html:not([lang="ko"]) .l3-in, html[data-font-step="2"] .l3-in, html[data-font-step="3"] .l3-in, html[data-font-step="4"] .l3-in { order: 1; } html:not([lang="ko"]) .l3-out, html[data-font-step="2"] .l3-out, html[data-font-step="3"] .l3-out, html[data-font-step="4"] .l3-out { order: 2; }
+html[data-font-step="2"] .cd-ch, html[data-font-step="3"] .cd-ch, html[data-font-step="4"] .cd-ch { grid-template-columns: auto minmax(0, 1fr); } /* 큰 글씨 — 상태 칩이 이름 아래 줄로(이름이 한 글자씩 꺾이지 않게) */
+html[data-font-step="2"] .cd-ch .cd-stw, html[data-font-step="3"] .cd-ch .cd-stw, html[data-font-step="4"] .cd-ch .cd-stw, html[data-font-step="2"] .cd-ch .cd-px, html[data-font-step="3"] .cd-ch .cd-px, html[data-font-step="4"] .cd-ch .cd-px { grid-column: 1 / -1; }

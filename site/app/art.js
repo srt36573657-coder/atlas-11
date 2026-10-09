@@ -46,7 +46,8 @@ export function artStage(spec) {
       btn('first', '처음으로', () => { pause(); paint(0); }), btn('prev', '‹', () => { pause(); paint(Math.max(0, (done ? last : cur) - 1)); }, {'aria-label': '이전 걸음', title: '이전 걸음'}),
       playBtn, btn('next', '›', () => { pause(); if (done) return; if (cur >= last - 1) finish(); else paint(cur + 1); }, {'aria-label': '다음 걸음', title: '다음 걸음'}),
       btn('last', '최신 결과', () => { pause(); finish(); }), speedBtn));
-  const box = h('div', {class: `ra ra-done${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(','), // data-plan = 걸음마다 차례:부품 번호(검사기가 계산으로 봄)
+  // ra-rest = 처음(최신 결과)에는 「재생」 하나만 보임 — 누르면 차례 넷 · 단추 여섯이 열림(2026-10-09 08:26 「넘 글이 많다」)
+  const box = h('div', {class: `ra ra-done ra-rest${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(','), // data-plan = 걸음마다 차례:부품 번호(검사기가 계산으로 봄)
     'data-step': String(last), 'data-c': String(steps[last]?.c ?? 3)}, ...(labFirst ? [labels, artEl] : [artEl, labels]), ...tail, ctl); // labFirst = 요약 숫자를 차트 위에(펼치기 — 첫 화면에 숫자가 먼저)
   const parts = [...box.querySelectorAll('[data-at]')];
   for (const s of steps) for (const el of parts) if (Number(el.dataset.at) === s.at) el.style.setProperty('--dur', `${durOf(s.ms)}ms`);
@@ -63,7 +64,7 @@ export function artStage(spec) {
     for (const el of parts) { el.classList.add('on'); el.classList.remove('now'); } mark(3, true); }
   function pause() { clearTimeout(timer); if (playing) { playing = false; playBtn.textContent = '재생'; playBtn.setAttribute('aria-pressed', 'false'); release(box); } box.classList.remove('ra-moving'); }
   function play() {
-    pause(); playing = true; playBtn.textContent = '정지'; playBtn.setAttribute('aria-pressed', 'true'); hold(box);
+    box.classList.remove('ra-rest'); pause(); playing = true; playBtn.textContent = '정지'; playBtn.setAttribute('aria-pressed', 'true'); hold(box);
     let i = done || cur >= last ? 0 : cur + 1;
     const next = () => {
       if (!playing) return;

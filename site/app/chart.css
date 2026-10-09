@@ -123,6 +123,11 @@ html[data-font-step="2"] .bc-val .rt-n, html[data-font-step="3"] .bc-val .rt-n, 
 .ra-b.ra-play { border-color: var(--ink); background: var(--ink); color: var(--card); }
 .ra-b[aria-pressed="true"].ra-speed { background: var(--fill); }
 .ra-beat:focus-visible, .ra-b:focus-visible { outline: 2px solid var(--geum); outline-offset: 2px; }
+/* 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면」 — 처음(최신 결과)에는 「▶ 재생」 하나만 · 누르면 차례 넷과 단추 여섯이 열려 멈추고 넘겨 볼 수 있음(단추는 그대로 있음 · 화면 읽기도 그대로) */
+.ra.ra-rest .ra-beats, .ra.ra-rest .ra-btns > .ra-b:not(.ra-play) { display: none; }
+.ra.ra-rest .ra-ctl { margin-top: 10px; }
+.ra-b.ra-play::before { content: '▶'; margin-inline-end: 6px; font-size: .75em; }
+.ra-b.ra-play[aria-pressed="true"]::before { content: '❚❚'; letter-spacing: -1px; }
 /* 차례를 고르면: 그 차례까지 켜짐 · 나머지는 흐림(바로 · 움직임 없음) · 지금 부품은 옥빛 테 · 재생 중에만 지금 부품 하나가 0.3~0.6초 나타남 */
 .ra:not(.ra-done) [data-at]:not(.on) { opacity: .14; }
 .ra:not(.ra-done) [data-at].now { outline: 2px solid var(--geum); outline-offset: 3px; border-radius: 6px; }
