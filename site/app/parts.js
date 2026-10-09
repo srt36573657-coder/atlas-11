@@ -3,7 +3,6 @@
    일정 이름·공시 제목은 공식 이름 그대로라(「SEDEX 2026」 · 「2단계 가격제한폭」) 또렷함 검사에서 식별자(data-ident)로 센다 — 우리 숫자가 아님. */
 import {h, won, pct, korDate, stamp, signCls, signMark, finite, kst, place} from './util.js';
 import {roadOf, roadSvg, roadKey, unitText} from './road.js';
-import {LANG} from './i18n.js';
 
 /** 「…원으로 · …달러로」 — 돈 단위 끝 글자에 받침이 있으면(ㄹ 빼고) 「으로」(원 · 위안 · 엔 · 동 — 2026-10-07 중국 · 일본 · 베트남 판을 붙이며 「원로」로 쓰던 것도 바로잡음) */
 const roOf = u => { const c = String(u ?? '').slice(-1).charCodeAt(0) - 0xAC00, j = c >= 0 && c < 11172 ? c % 28 : 0; return j && j !== 8 ? '으로' : '로'; };
@@ -275,7 +274,7 @@ export function foot(m) {
     // 외국인도(2026-10-07 05:31) — 화면마다 맨 아래 「한국 주식시장 안내 ›」
     // 건의 받는 곳(06:43)과 하규 응원(10월 7일 05:31)은 2026-10-08 14:42(마카오 시각) 「하규야 힘내라하고 연락처가 아래 있다 위로 올려」로 모든 화면 맨 위(app.js #topnote)로 옮김 — 여기서는 뺌(규칙 1)
     h('p', {class: 'b-guide'}, h('a', {href: '#/guide'}, '한국 주식시장 안내 ›')),
-    LANG === 'ko' ? h('p', {class: 'b-guide', lang: 'ko'}, h('a', {href: '/invite.html'}, 'ATLAS 초대장 보내기 ›')) : null, // 2026-10-09 16:12(마카오 시각) 「카카오톡으로 보내는 선물형 초대장」 — 보내는 화면(invite.html) · 받는 화면 /i/<번호> · 초대장은 한국어 판만(카카오톡) — 다른 말 화면에는 이 줄을 그리지 않음(그래서 lang="ko")
+    // 「ATLAS 초대장 보내기 ›」(2026-10-09 16:12 마카오 시각 · 선물형 초대장)는 19:54(중국 시각) 「지금 만든걸 아틀란에 맨위에 넣어 친구에게 소개하기로 지혜롭게」로 첫 화면 맨 위 「친구에게 ATLAS 소개하기」 → 소개 영상 창 안 「초대장 만들기 ›」로 옮김(hello.js · 규칙 1 — 넣으면서 뺀 것)
     h('p', null, place.foot)); // 시장마다(util.js place)
 }
 /** ATLAS가 되고 싶은 것(아래 탭 「처음」 · 2026-10-07 05:38 「인간이 가지고 있는 힘 그리고 뇌동매매에서오는 문제를 두축으로 비교하여 … 나침판이되고 지도가 되며 힘이 됐으면」
