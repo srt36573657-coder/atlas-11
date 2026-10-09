@@ -33,7 +33,7 @@ export function centersOf(k) {
 /**
  * 섬 한 장의 값 — C = 판 읽기 후보 묶음(lens.cand · 규칙 cand-rules-5) · stocks = 판 읽기 종목(lens.stocks · code · name · g · gl)
  * 반환 {w, cells[], seven[], above, green, districts, sectors} 또는 null(값이 없음 — 그리지 않음)
- *   cell = {code, name, sec, x, y, d, hN, hP, up(물 위 = 그물 안), elig(그날 종가 · 흑자 · 위험 공시 없음), rank(후보 순위 · 아니면 0), m12(1년 추세 % 소수 첫째 자리), status}
+ *   cell = {code, name, sec, x, y, d, hN, hP, up(물 위 = 그물 안), elig(그날 종가 · 흑자 · 위험 공시 없음), rank(후보 순위 · 아니면 0), m12(1년 추세 % 소수 첫째 자리), m12p(20거래일 전 1년 추세 %), status}
  */
 export function islandModel(C, stocks) {
   const G = C?.grow, M = G?.m, F = C?.flags ?? {};
@@ -56,7 +56,7 @@ export function islandModel(C, stocks) {
   groups.forEach((g, d) => g.idx.forEach((i, k) => {
     const [ax, ay] = ISL.arms[k], s = stocks[i];
     cells[i] = {code: codes[i], name: s.name ?? codes[i], sec: g.sec, x: cen[d][0] + ax, y: cen[d][1] + ay, d, hN: hN[i], hP: hP[i], up: up[i], elig: elig[i],
-      rank: rankOf.get(codes[i]) ?? 0, m12: m[i] === null ? null : Number((m[i] * 100).toFixed(1)), status: stOf.get(codes[i]) ?? null};
+      rank: rankOf.get(codes[i]) ?? 0, m12: m[i] === null ? null : Number((m[i] * 100).toFixed(1)), m12p: mp[i] === null ? null : Number((mp[i] * 100).toFixed(1)), status: stOf.get(codes[i]) ?? null}; // m12p = 20거래일 전 1년 추세(%) — 재생 첫 걸음 위 이름표
   }));
   const seven = [...(C.items ?? [])].sort((a, b) => a.rank - b.rank).map(x => codes.indexOf(String(x.code))).filter(i => i >= 0);
   return {w, cells, seven, above: cells.filter(c => c.hN > w).length, green: cells.filter(c => c.hN > w && c.elig).length, districts: groups.length, sectors: secs.length};

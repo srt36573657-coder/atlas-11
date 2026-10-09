@@ -293,3 +293,13 @@ html[data-font-step="2"] .cd-ch .cd-stw, html[data-font-step="3"] .cd-ch .cd-stw
 .rk-out .rk-a, .rk-out .rk-v { font-weight: 400; color: var(--ink2); }
 html[data-font-step="2"] .rk-row, html[data-font-step="3"] .rk-row, html[data-font-step="4"] .rk-row { grid-template-columns: 3.4em minmax(0, 1fr); grid-template-areas: "n nm" "n v" "n st"; }
 html[data-font-step="2"] .rk-v, html[data-font-step="3"] .rk-v, html[data-font-step="4"] .rk-v { justify-self: start; text-align: start; }
+
+/* ── 지도 섬(islandmap.js · 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지 … 아틀란스에 본질이 중심」)
+   모든 화면 그림 칸 맨 아래 — 첫 화면 섬과 같은 섬 · 같은 방향 · 그 화면 그림이 말하는 회사만 옥빛(주인공은 금빛) · 나머지 어둠 · 전체를 말하는 화면은 오름 빨강 · 내림 파랑 */
+.imap { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--sep); }
+.imap-stage { position: relative; overflow: hidden; max-width: 30rem; margin: 0 auto; aspect-ratio: 100 / 74; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.imap-cv { display: block; width: 100%; height: 100%; border-radius: 12px; cursor: grab; } /* 높이 = 칸(가로 100 : 세로 74) — 붙는 순간 정해져 그린 뒤 화면이 밀리지 않음 */
+.imap-cv:active { cursor: grabbing; }
+.imap-tag { position: absolute; left: 0; top: 0; max-width: 84%; margin: 0; padding: 2px 10px; border-radius: 8px; background: var(--card); border: 1px solid var(--sep); font-size: .875rem; font-weight: 700; line-height: 1.4; color: var(--ink); overflow-wrap: anywhere; }
+.imap-tag a { font-weight: 700; }
+.imap-cap { margin: 6px 0 0; font-size: .8125rem; line-height: 1.45; color: var(--sub); }

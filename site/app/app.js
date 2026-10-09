@@ -24,7 +24,8 @@
      옛 주소는 모두 그대로 열림(옛 첫 화면 「시장」은 #/market · 넣으면서 뺀 것(규칙 1): 위 막대 관심 ★ — 아래 탭 「관심」이 대신) */
 import {h, speakScreen, stopSpeak, place, setPlace, korDate} from './util.js';
 import {ON as I18N, LANG, LANG_LIST, LANG_INFO, startI18n, addBoardNames} from './i18n.js'; // 언어팩(2026-10-06 20:33 「친구가 중국 그리고 미국인이야 언어팩을 만들어 줘야해」 · 22:00 「한도메인에서 탭을 누르면 영어 중국어가 나오게」) — 위 막대 말 단추
-import {state, loadManifest, loadBoard, loadPlaceBoard, prefs, url} from './store.js';
+import {state, loadManifest, loadBoard, loadPlaceBoard, loadLens, prefs, url} from './store.js';
+import {attachMap} from './islandmap.js'; // 지도 섬 — 모든 화면 그림 칸 맨 아래(2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 아틀란스에 본질이 중심」 — ATLAS = 지도)
 import {renderHome, renderMap, renderLand} from './view-home.js';
 import {renderMarket} from './view-market.js'; // 탐색 안 「시장」(#/market · 옛 첫 화면 — 2026-10-08 20:19 마카오 시각 「ATLAS 개편 실행 지시서」 — ① 언제 ~ ⑤ 다음 확인)
 import {renderCand, renderCompare} from './view-cand.js'; // 아래 탭 「후보 7」 첫 화면(#/) · 다른 후보와 비교(2026-10-09 03:09 「ATLAS 제품 재설계 명령」)
@@ -293,7 +294,8 @@ async function route() {
   //   후보 목록에서 누른 이름(state.vt)이 종목 화면 「후보 판단」 머리로 옮겨 감 — 사람이 누른 때만 · 움직임 줄이기면 없음 · 못 하는 브라우저는 그냥 바뀜(같은 정보)
   const vt = state.vt; state.vt = null;
   const draw = async () => { try { await r.render(main, {hash, manifest: app.manifest, restoring, focus}); } catch (e) { main.replaceChildren(...failure('화면을 그리지 못했습니다', e)); }
-    if (EX_ROOT.has(r.id)) main.querySelector('.b-page')?.prepend(exploreNav(r.id)); }; // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) — 네 곳의 첫 화면에만(Apple 처럼 — 들어간 보기 · 땅 화면은 「보기 바꾸기」 · 「‹ 되돌아가기」 한 줄만 · 그림 이름 · 숫자가 한 화면에)
+    if (EX_ROOT.has(r.id)) main.querySelector('.b-page')?.prepend(exploreNav(r.id));
+    try { await attachMap(main, r.id, hash, loadLens); } catch {} }; // 지도 섬(그림 칸 맨 아래 · 그 화면 그림이 말하는 회사가 빛남) — 못 그리면 조용히 넘어감(화면은 그대로) // 탐색 맨 위 줄(시장 · 업종 · 종목 · 일정) — 네 곳의 첫 화면에만(Apple 처럼 — 들어간 보기 · 땅 화면은 「보기 바꾸기」 · 「‹ 되돌아가기」 한 줄만 · 그림 이름 · 숫자가 한 화면에)
   if (vt?.el?.isConnected && typeof document.startViewTransition === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     vt.el.style.setProperty('view-transition-name', vt.name);
     try { const t = document.startViewTransition(() => draw()); await t.updateCallbackDone; t.finished.finally(() => { for (const el of document.querySelectorAll('[data-vt]')) { el.style.removeProperty('view-transition-name'); el.removeAttribute('data-vt'); } }).catch(() => {}); }

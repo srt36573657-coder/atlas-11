@@ -14,7 +14,7 @@ import {h, finite} from './util.js';
 import {islandModel} from './island-model.js';
 
 const mm = q => typeof matchMedia === 'function' && matchMedia(q).matches;
-const PAL = {
+export const PAL = {
   light: {sky: ['#F4F8F5', '#E2EBE5'], halo: 'rgba(79,143,119,0.16)', base: [210, 220, 214], stone: [190, 201, 195], stoneT: [220, 228, 223], net: [143, 191, 171], netT: [214, 236, 226],
     gray: [178, 186, 182], grayT: [214, 219, 216], seven: [38, 128, 99], sevenT: [94, 196, 158], hero: [176, 124, 26], heroT: [242, 190, 80], focus: [23, 48, 42], focusT: [79, 143, 119],
     fade: [228, 235, 231], sea: 'rgba(79,143,119,0.20)', rim: 'rgba(56,120,98,0.45)', ring: 'rgba(38,128,99,', beam: 'rgba(214,160,40,', lead: 'rgba(150,104,18,0.95)', stem: 'rgba(38,128,99,0.9)', glow7: null, glowH: 'rgba(214,160,40,0.55)'},
@@ -22,8 +22,8 @@ const PAL = {
     gray: [42, 49, 47], grayT: [60, 68, 65], seven: [60, 170, 132], sevenT: [146, 242, 204], hero: [222, 166, 52], heroT: [255, 220, 128], focus: [196, 228, 214], focusT: [240, 251, 246],
     fade: [15, 25, 21], sea: 'rgba(28,70,60,0.58)', rim: 'rgba(95,201,162,0.30)', ring: 'rgba(146,242,204,', beam: 'rgba(255,214,120,', lead: 'rgba(255,214,120,0.9)', stem: 'rgba(146,242,204,0.85)', glow7: 'rgba(95,231,177,0.5)', glowH: 'rgba(255,200,90,0.8)'},
 };
-const A = 0.40; // 탑 한 변의 반(칸 = 1) — 탑 사이 길
-const FACES = [[1, 2, 1, 0], [3, 0, -1, 0], [2, 3, 0, 1], [0, 1, 0, -1]]; // 모서리 둘 · 바깥쪽 방향(x, y)
+export const A = 0.40; // 탑 한 변의 반(칸 = 1) — 탑 사이 길
+export const FACES = [[1, 2, 1, 0], [3, 0, -1, 0], [2, 3, 0, 1], [0, 1, 0, -1]]; // 모서리 둘 · 바깥쪽 방향(x, y)
 const pctTxt = v => (finite(v) ? `${Number(Math.abs(v).toFixed(1)) === 0 ? '' : v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%` : '셀 수 없음');
 
 /**
@@ -183,11 +183,11 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
     draw();
   }
   const go = () => (rm ? settle() : kick());
-  function hudFill() {
+  function hudFill(past = false) { // past = 「재생」에서 고른 곳이 아직 물 위로 오르기 전(20거래일 전 값 — 그림과 이름표가 같은 때를 말함)
     const c = cells[heroI]; if (!c) { hud.replaceChildren(); return; }
-    const say = c.status === 'met' || c.status == null ? '1년 추세 · 물 위로 막 올라옴' : c.status === 'wait' ? '1년 추세 · 그물 밖(물 아래)' : '1년 추세 · 재검토';
+    const say = past ? '20거래일 전 1년 추세 · 그물 밖(물 아래)' : c.status === 'met' || c.status == null ? '1년 추세 · 물 위로 막 올라옴' : c.status === 'wait' ? '1년 추세 · 그물 밖(물 아래)' : '1년 추세 · 재검토';
     hud.replaceChildren(h('p', {class: 'isl-h1'}, h('span', {class: 'isl-rk'}, `${c.rank}위`), ' ', h('span', {class: 'isl-nm', 'data-ident': ''}, c.name)),
-      h('p', {class: 'isl-h2'}, h('b', {class: 'isl-big'}, pctTxt(c.m12))), h('p', {class: 'isl-cap'}, say));
+      h('p', {class: 'isl-h2'}, h('b', {class: 'isl-big'}, pctTxt(past ? c.m12p : c.m12))), h('p', {class: 'isl-cap'}, say));
   }
   function liftWave(i) { // 누른 탑이 솟고 같은 업종이 가까운 차례로 따라 솟았다 가라앉음
     const now = performance.now(); let k = 0;
@@ -253,6 +253,7 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
       const j = seven[i - 1]; when.hidden = false; when.textContent = `물 위로 ${i}곳째 — ${cells[j].name}`;
       if (moving && !rm) rise = {i: j, t: performance.now(), ms: 520}; else H[j] = cells[j].hN;
     } else { seven.forEach(j => { H[j] = cells[j].hN; }); when.hidden = true; }
+    const past = !done && i >= 0 && i < seven.indexOf(heroI) + 1; hudFill(past); // 고른 곳이 오르기 전 걸음 = 20거래일 전 값 · 오른 뒤 = 그날 값
     kick(); if (rm) settle();
   }
   function bind(box) { if (!box) return; new MutationObserver(() => onStep(box)).observe(box, {attributes: true, attributeFilter: ['class', 'data-step']}); }

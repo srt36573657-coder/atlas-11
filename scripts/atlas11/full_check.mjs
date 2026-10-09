@@ -39,7 +39,7 @@ const {chromium} = require('playwright');
 const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
-const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0};
+const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -79,6 +79,14 @@ const CRAWL = async ({routes, collect}) => {
     m.sw = document.documentElement.scrollWidth; m.cw = document.documentElement.clientWidth;
     m.over = []; if (sec) for (const x of sec.querySelectorAll('*')) { const r = x.getBoundingClientRect(); if (r.width && r.right > m.cw + 1) { m.over.push(cls(x)); if (m.over.length >= 3) break; } }
     m.done = !!ra?.classList.contains('ra-done');
+    // 모든 화면 3D(사장님 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지」 · 규칙 46) — 그림 칸 안에 첫 화면 섬 · 지도 섬 · 입체 막대(윗면 · 옆면이 보이는 막대) · 입체 그림자 부품 ·
+    //   값이 없는 칸의 파인 홈(빈 하늘 · 값 없는 막대 줄 — 막대를 지어내지 않음) 가운데 하나 · 보이는 막대는 모두 윗면 · 옆면이 있어야 함(납작한 막대 = 실패)
+    { const art = document.querySelector('#main section[data-art], #main section.rt[data-place]'), shown = el => getComputedStyle(el).display !== 'none' && el.getClientRects().length > 0;
+      const face = el => { const s = getComputedStyle(el, '::before'); return s.content !== 'none' && s.transform !== 'none'; };
+      const bars = art ? [...art.querySelectorAll('.bc-bar, .hg-col')].filter(shown) : [];
+      m.d3flat = bars.filter(b => !face(b)).length;
+      m.d3 = !art || m.d3flat ? null : art.querySelector('.isl canvas') ? 'island' : art.querySelector('.imap canvas') ? 'map' : bars.length ? 'bars'
+        : art.querySelector('.cl-seg, .da-dot, .hm-c, .road .bead') ? 'shade' : [...art.querySelectorAll('.bc-track')].some(t => shown(t) && getComputedStyle(t).boxShadow.includes('inset')) ? 'groove' : null; }
     // 판단 정보가 먼저인 화면(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 4 — 시장 · 투자자 매매 · 종목 · 검증 · 관심종목): [번호, 위, 아래] · 그림 칸 위 끝
     m.firsts = [...document.querySelectorAll('#main [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [Number(x.dataset.first), Math.round(r.top), Math.round(r.bottom)]; });
     m.artTop = sec ? Math.round(sec.getBoundingClientRect().top) : null;
@@ -197,6 +205,8 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   if (m.footDup) no('맨 아래 줄에 하규 응원 · 건의 줄이 또 있음(맨 위로 옮김 · 규칙 1)');
   if (bigFont) return; // 가장 큰 글씨는 옆 넘침만(한 화면은 보통 글씨 규칙)
   if (m.arts !== 1) no(`그림 수 ${m.arts}(1이어야 함)`);
+  if (m.d3flat) no(`윗면 · 옆면이 없는 납작한 막대 ${m.d3flat}개(규칙 46 — 보이는 막대는 모두 입체)`);
+  else if (!m.d3) no('그림에 입체가 없음(규칙 46 — 섬 · 지도 섬 · 입체 막대 · 입체 그림자 · 값이 없는 칸의 파인 홈 가운데 하나)');
   if (!m.done) no('움직임 줄이기 설정에서 끝 모습이 아님');
   if (INFO_FIRST.has(kind)) { // 판단 정보 먼저(지시서 4) — 첫 칸이 한 화면 안 · 칸 번호 차례 · 그림은 정보 칸 아래 · 시장 첫 화면은 ① ~ ⑤ 다섯
     const f = m.firsts ?? [], nums = f.map(x => x[0]);
@@ -234,7 +244,7 @@ const tasks = [];
 for (const b of EDGE_ONLY ? [] : BOARDS) for (const lang of ['en', 'ko']) tasks.push(async () => {
   const {ctx, page} = await openPage(b, lang, VP[lang]);
   const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: lang === 'ko'});
-  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); }
+  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.d3[m.d3 ?? 'none'] = (stats.d3[m.d3 ?? 'none'] ?? 0) + 1; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); }
   await ctx.close(); console.log(`${b} · ${lang}: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
 });
 for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
@@ -366,6 +376,6 @@ const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), se
   fails: [...fails.filter(f => !TRANS(f)), ...fails.filter(TRANS)].slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
-console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
+console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
 for (const f of report.fails.slice(0, 40)) console.log(` ✗ ${f.board} ${f.route} — ${f.what}`); // 번역 밖 실패가 먼저
 process.exit(report.ok || (QUICK && !fails.length) ? 0 : 1);
