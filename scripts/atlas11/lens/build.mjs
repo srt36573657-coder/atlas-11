@@ -9,7 +9,9 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {lensOf, checkLens, lensJson} from '../../../lib/atlas11/lens.mjs';
+import {elimOf} from '../../../lib/atlas11/elim.mjs'; // 소거 1판(2026-10-10 사장님 승인 · 계획 docs/superpowers/plans/2026-10-10-atlas-phase1-engine.md Task 3)
 import {rotationOf} from '../story/build.mjs'; // 돈 흐름(업종 순환) — 매수 검토 후보가 「돈이 들어온 업종」을 고를 때(2026-10-09 03:53 「돈에 흐름이 강한 업종내에서 종목을 찾아내야 해」)
 
 const readJson = async f => JSON.parse(await fs.readFile(f, 'utf8'));
@@ -25,6 +27,23 @@ async function readEvening(root, dir, universe) {
   return (await Promise.all(names.map(n => maybe(path.join(d, n))))).filter(Boolean);
 }
 export {dirName};
+/** 몬테카를로 결과 칸만 판 읽기에 싣는 모양(값은 비율 · 화면이 쓰는 칸만) */
+const MC_ROW_KEYS = ['code', 'n', 'nBase', 'nExtra', 'nonfinite', 'extreme', 'mean', 'median', 'ploss', 'q05', 'q10', 'q90', 'cvar5', 'se', 'volNow'];
+/**
+ * 몬테카를로 결과를 판 읽기에 붙일지 — 같은 기준일 · 같은 입력 지문(파일 바이트 sha256)일 때만 · 아니면 {none: true, why}(지어내지 않음) · 순수 함수
+ *   latest = public/data/atlas11/mc/<판>/latest.json · result = 그 파일이 가리키는 결과(atlas11-mc-2)
+ */
+export function mcFor({latest, result, asOf, inputSha}) {
+  if (!latest) return {none: true, why: '이번 회차 몬테카를로 결과 없음'};
+  if (latest.schema !== 'atlas11-mc-latest-1') return {none: true, why: '가리키는 파일 모양이 다름'};
+  if (latest.asOf !== asOf) return {none: true, why: `몬테카를로 기준일(${latest.asOf ?? '없음'})이 판 기준일(${asOf ?? '없음'})과 다름`};
+  if (!inputSha || latest.inputSha256 !== inputSha) return {none: true, why: '입력 지문이 판의 입력과 다름 — 입력이 바뀐 뒤 아직 다시 셈 안 함'};
+  if (!result || result.schema !== 'atlas11-mc-2' || result.runId !== latest.runId || result.asOf !== asOf || !Array.isArray(result.rows)) return {none: true, why: '결과 파일을 못 읽거나 가리키는 파일과 다름'};
+  return {runId: result.runId, made: result.made ?? null, asOf: result.asOf, model: result.model ?? null, rng: result.rng ?? null,
+    alloc: result.alloc ? {base: result.alloc.base, extra: result.alloc.extra, extraBoard: result.alloc.extraBoard, cap: result.alloc.cap, threshold: result.alloc.threshold, floor: result.alloc.floor ?? null} : null,
+    paths: result.paths ?? null, input: result.input ? {file: result.input.file, sha256: result.input.sha256, days: result.input.days, from: result.input.from, to: result.input.to} : null,
+    rows: result.rows.map(r => Object.fromEntries(MC_ROW_KEYS.filter(k => k in r).map(k => [k, r[k]])))};
+}
 export async function lensFrom(root, place, {made = new Date().toISOString(), view = null} = {}) { // view = {board, manifest, agenda} — 막 만든 판(저녁 기록이 쓰기 전 · 파일로 내리기 전)
   const P = LENS_PLACES[place]; if (!P) throw Error('판 없음: ' + place);
   const v = path.join(root, P.view);
@@ -45,6 +64,17 @@ export async function lensFrom(root, place, {made = new Date().toISOString(), vi
   const rotation = place === 'kr' ? await rotationOf(root, place, {board}).catch(() => null) : null; // 한국 판만 · 후보 4판은 업종 돈 흐름을 곁 정보로만 씀(고르는 셈은 회사 날마다 순매수 — lens.mjs candDaily)
   const lens = lensOf({place, board, manifest, agenda, assets: input.assets ?? [], snap, evening, events: sched?.events ?? [], candPubs, growPubs, rotation, index: index ? {symbol: index.symbol, name: index.name, rows: index.rows, source: index.seed?.source ?? null} : null, sessions, made, placeInfo});
   lens.sources = {board: `${P.view}/board.json`, prices: P.input, index: index ? P.index : null, context: place === 'kr' ? manifest.market?.record ?? null : P.context ?? null, evening: evening.length ? `${P.evening}/${dirName(manifest.universeSet?.id)}` : null, cand: candPubs.length ? `${P.cand}/${dirName(manifest.universeSet?.id)}` : null, calendar: P.calendar};
+  // 몬테카를로(위험 · 범위 — 사장님 2026-10-10 「1예측한다 2a안」) · 소거 1판 — 셈이 멈춰도 판 읽기는 그대로(그 칸만 「없음」 · 까닭은 problems)
+  try {
+    const latest = await maybe(path.join(root, `public/data/atlas11/mc/${place}/latest.json`));
+    const file = typeof latest?.file === 'string' && new RegExp(`^public/data/atlas11/mc/${place}/[\\w.-]+\\.json$`).test(latest.file) ? latest.file : null;
+    const result = file ? await maybe(path.join(root, file)) : null;
+    const inputSha = createHash('sha256').update(await fs.readFile(path.join(root, P.input))).digest('hex');
+    lens.mc = mcFor({latest, result, asOf: lens.asOf, inputSha});
+    if (latest && !file) lens.mc = {none: true, why: '가리키는 파일 이름이 이 판 결과 폴더 밖'};
+  } catch (e) { lens.mc = {none: true, why: '셈 멈춤: ' + e.message}; lens.problems.push('몬테카를로: ' + e.message); }
+  try { lens.elim = elimOf({place, asOf: lens.asOf, at: made, stocks: lens.stocks, cand: lens.cand, agendaByCode: agenda?.byCode ?? null, mc: lens.mc?.none ? null : lens.mc, calibrated: false}); }
+  catch (e) { lens.elim = {none: true, why: '셈 멈춤: ' + e.message}; lens.problems.push('소거: ' + e.message); }
   const bad = checkLens(lens); if (bad.length) lens.problems.push(...bad.map(x => '검사: ' + x));
   return lens;
 }
