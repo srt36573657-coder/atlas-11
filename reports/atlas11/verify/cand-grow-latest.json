@@ -1,0 +1,36 @@
+{
+ "asOf": "2026-10-08",
+ "rules": "cand-rules-5",
+ "checks": {
+  "trend_values": {
+   "match": true
+  },
+  "threshold": {
+   "match": true
+  },
+  "pool": {
+   "match": true
+  },
+  "net_codes": {
+   "match": true
+  },
+  "seven": {
+   "match": true
+  }
+ },
+ "q": 66.14,
+ "net": 68,
+ "netElig": 57,
+ "newc": 7,
+ "seven": [
+  "181710",
+  "124500",
+  "103590",
+  "039030",
+  "088350",
+  "161890",
+  "001450"
+ ],
+ "planted": "2026-10-08",
+ "match": true
+}

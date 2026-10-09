@@ -78,39 +78,33 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
     E.stocks = L.changes ? {up: L.buckets.up, down: L.buckets.down, new: L.buckets.new} : Q('stocks');
     const recs = L.verify?.records ?? [], ev = recs.flatMap(r => Object.values(r.evals).flat());
     E.check = recs.length && (extra.records == null || extra.records === recs.length) ? {records: recs.length, pending: ev.filter(e => e.status === 'pending').length, done: ev.filter(e => e.status === 'done').length} : recs.length ? {records: extra.records} : Q('check');
-    // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 11:35 「전종목 365개 … 돈에 유입이 강력한 7개 … 1등부터 365등까지 … 20만번」 — 규칙 cand-rules-4)
-    //   판 읽기 종목 값 · 일정표 공시(agenda.json)로 기준 넷(종가 · 흑자 · 위험 공시 없음 · 순매수 +)과 진입 조건을 따로 셈 · 장 마감 뒤 공시는 뺌 · 업종 조건 없음(365곳 전체)
-    //   20만 번 다시 뽑은 횟수는 판 읽기(mc.counts — 파이썬 따로 세기 scripts/atlas11/verify/cand_mc_verify.py 가 맞댐) · 소거법 차례(진입 → 횟수 → 비율 → 금액 → 기호 · 같은 업종 3곳 · 7곳)는 여기서 따로
-    //   받침 색 = 그 회사 업종의 돈 흐름(/story.json rotation 들어온 1~3위 · 빠진 1~3위 · 그 밖)
+    // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 15:21 「만들어 줘」 — 규칙 cand-rules-5 기르기판)
+    //   판 읽기 종목 값 · 일정표 공시(agenda.json)로 기준 셋(그날 종가 · 흑자 · 위험 공시 없음 · 장 마감 뒤 공시는 뺌)을 따로 셈
+    //   1년 추세 값은 판 읽기(cand.grow.m — 파이썬 따로 세기 scripts/atlas11/verify/cand_grow_verify.py 가 입력 종가로 맞댐) · 그물 기준선(상위 20% · 직선 보간) · 초입 · 차례(1년 추세 큰 순 · 같은 업종 3곳 · 7곳)는 여기서 따로
+    //   담는 날이 지난 판은 7곳 = 담는 날 기록(판 읽기 그대로) · 받침 색 = 그 회사 업종의 돈 흐름(/story.json rotation 들어온 1~3위 · 빠진 1~3위 · 그 밖)
     const CA = L.cand, rot = story?.rotation;
-    if (CA?.ready) {
+    if (CA?.ready && CA.grow) {
       const asOf = L.asOf, hm = String(L.when?.closeAt ?? '15:30').match(/(\d{1,2}):(\d{2})/), cut = Date.parse(`${asOf}T${hm[1].padStart(2, '0')}:${hm[2]}:00+09:00`);
-      const back = n => new Date(Date.parse(asOf + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10), from = back(CAND_RULES.windowDays), heatFrom = back(CAND_RULES.heatDays);
+      const back = n => new Date(Date.parse(asOf + 'T00:00:00Z') - n * 864e5).toISOString().slice(0, 10), from = back(CAND_RULES.windowDays);
       const pref = (t, name) => { const m = String(t).match(/\(([^()]*우[A-Z0-9]?)\)\s*$/); return !!m && m[1] !== name; };
-      let flow = 0, data = 0, profit = 0, risk = 0, screen = 0, met = 0; const elig = [];
-      for (const s of st) {
-        const f = s.fund ?? {}, fl = s.fl ?? {}, cap = f.cap, fi = fin(fl.f10e) && fin(fl.i10e) ? (fl.f10e + fl.i10e) / 1e8 : null, ratio = fin(fi) && fin(cap) && cap > 0;
-        if (!ratio) continue; flow++;
-        const ds = (agenda?.byCode?.[s.code]?.disclosures ?? []).filter(d => { const t = Date.parse(d.publishedAt ?? ''), day = String(d.publishedAt ?? '').slice(0, 10); return day >= from && (Number.isFinite(t) ? t <= cut : day <= asOf); });
-        const okD = s.status === 'ok' && fin(s.r20), okP = fin(f.op) && fin(f.net) && f.op > 0 && f.net > 0, okR = !ds.some(d => !pref(d.title, s.name) && EXCLUDE_RE.test(d.title));
-        if (okD) data++; if (okD && okP) profit++; if (okD && okP && okR) risk++;
-        const sc = okD && okP && okR && fi > 0; if (sc) screen++;
-        const heat = ds.some(d => !pref(d.title, s.name) && HEAT_RE.test(d.title) && String(d.publishedAt).slice(0, 10) >= heatFrom), dil = ds.some(d => DILUTE_RE.test(d.title));
-        const ok = sc && s.r20 <= CAND_RULES.maxR20 && !heat && !dil; if (ok) met++;
-        if (sc) elig.push({code: s.code, g: s.g, gl: s.gl ?? null, met: ok ? 1 : 0, fi, pw: (fi / cap) * 100});
-      }
-      const nOf = code => CA.mc?.counts?.[code] ?? 0, per = new Map();
-      const order = elig.sort((p, q) => (q.met - p.met) || (nOf(q.code) - nOf(p.code)) || (q.pw - p.pw) || (q.fi - p.fi) || p.code.localeCompare(q.code))
-        .filter(e => { const k = per.get(e.g) ?? 0; if (k >= CAND_RULES.perSector) return false; per.set(e.g, k + 1); return true; }).slice(0, CAND_RULES.want);
-      const stOf = new Map(CA.items.map(x => [x.code, x.status]));
-      E.candRows = order.map((e, i) => [e.code, stOf.get(e.code) ?? (e.met ? 'met' : 'wait'), i + 1]); // 화면 줄 차례 = 소거법 차례(따로 셈) · 상태는 판 읽기(재검토는 마감 뒤 공시 · 가격 기준 — 순위와 따로)
+      const M = CA.grow.m ?? {}, mOf = c => (fin(M[c]?.[0]) ? M[c][0] : null), mpOf = c => (fin(M[c]?.[1]) ? M[c][1] : null);
+      const qOf = xs => { const a = xs.filter(fin).sort((x, y) => x - y), k = a.length; if (!k) return null; const pos = ((100 - CAND_RULES.netPct) / 100) * (k - 1), lo = Math.floor(pos), hi = Math.min(k - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
+      const q = qOf(st.map(s => mOf(s.code))), qp = qOf(st.map(s => mpOf(s.code))), d1 = v => (fin(v) ? Number(v.toFixed(1)) : null);
+      const elig = s => { const f = s.fund ?? {}; const ds = (agenda?.byCode?.[s.code]?.disclosures ?? []).filter(d => { const t = Date.parse(d.publishedAt ?? ''), day = String(d.publishedAt ?? '').slice(0, 10); return day >= from && (Number.isFinite(t) ? t <= cut : day <= asOf); });
+        return s.status === 'ok' && fin(s.r20) && fin(f.op) && fin(f.net) && f.op > 0 && f.net > 0 && !ds.some(d => !pref(d.title, s.name) && EXCLUDE_RE.test(d.title)); };
+      const inNet = s => fin(mOf(s.code)) && fin(q) && mOf(s.code) >= q, inPrev = s => fin(mpOf(s.code)) && fin(qp) && mpOf(s.code) >= qp;
+      const valid = st.filter(s => fin(mOf(s.code))).length, net = st.filter(inNet).length, netElig = st.filter(s => inNet(s) && elig(s)).length;
+      const fresh = st.filter(s => inNet(s) && !inPrev(s) && elig(s)).sort((a, b) => (mOf(b.code) - mOf(a.code)) || (a.code < b.code ? -1 : a.code > b.code ? 1 : 0)), per = new Map();
+      const pickT = fresh.filter(s => { const k = per.get(s.g) ?? 0; if (k >= CAND_RULES.perSector) return false; per.set(s.g, k + 1); return true; }).slice(0, CAND_RULES.want);
+      const planted = CA.grow.planted?.at ?? asOf, order = planted === asOf ? pickT.map(s => s.code) : CA.items.map(x => x.code); // 담는 날이 지난 판 = 담는 날 기록의 7곳(판 읽기 그대로)
+      const stOf = new Map(CA.items.map(x => [x.code, x.status])), byCode = new Map(st.map(s => [s.code, s]));
+      E.candRows = order.map((c, i) => [c, stOf.get(c) ?? 'met', i + 1]); // 화면 줄 차례 = 따로 센 차례 · 상태는 판 읽기(재검토는 마감 뒤 공시 — 순위와 따로)
       const ins = (rot && !rot.none && rot.asOf === asOf ? rot.in ?? [] : []).slice(0, CAND_RULES.sectors).map(g => g.id), outs = (rot && !rot.none && rot.asOf === asOf ? rot.out ?? [] : []).slice(0, CAND_RULES.sectors).map(g => g.id);
-      const plates = order.map(e => [e.gl, ins.includes(e.g) ? 'in' : outs.includes(e.g) ? 'out' : 'mid']);
-      const towers = order.map((e, i) => [e.code, i + 1, stOf.get(e.code) ?? (e.met ? 'met' : 'wait'), nOf(e.code)]); // 탑 = 20만 번 가운데 7곳에 든 횟수
-      E.cand = {universe: st.length, flow, data, profit, risk, screen, met, n: order.length, mc: CAND_RULES.draws, plates, towers};
-      const pw = x => { const s = st.find(y => y.code === x.code), fl = s?.fl ?? {}, cap = s?.fund?.cap; return fin(fl.f10e) && fin(fl.i10e) && fin(cap) && cap > 0 ? Math.round(((fl.f10e + fl.i10e) / 1e8 / cap) * 100 * 1e4) / 1e4 : null; }; // 판 읽기 파일의 소수 넷째 자리와 같게
-      const [a, b2] = CA.items, sa = a && st.find(s => s.code === a.code), sb = b2 && st.find(s => s.code === b2.code);
-      E.compare = sa && sb ? {a: sa.code, b: sb.code, apow: pw(sa), bpow: pw(sb), ar20: sa.r20, br20: sb.r20} : Q('compare');
+      const plates = order.map(c => { const s = byCode.get(c); return [s?.gl ?? null, ins.includes(s?.g) ? 'in' : outs.includes(s?.g) ? 'out' : 'mid']; });
+      const towers = order.map((c, i) => [c, i + 1, stOf.get(c) ?? 'met', d1(fin(mOf(c)) ? mOf(c) * 100 : null)]); // 탑 = 1년 추세(%)
+      E.cand = {universe: st.length, valid, net, netElig, newc: fresh.length, n: order.length, plantedAt: planted, q: d1(fin(q) ? q * 100 : null), plates, towers};
+      const [a, b2] = CA.items, sa = a && byCode.get(a.code), sb = b2 && byCode.get(b2.code);
+      E.compare = sa && sb ? {a: sa.code, b: sb.code, am12: d1(fin(mOf(sa.code)) ? mOf(sa.code) * 100 : null), bm12: d1(fin(mOf(sb.code)) ? mOf(sb.code) * 100 : null), ar20: sa.r20, br20: sb.r20} : Q('compare');
     } else { E.cand = Q('cand'); E.compare = Q('compare'); }
   } else { E.market = Q('market'); E.sectors = Q('sectors'); E.flowwho = Q('flowwho'); E.stocks = Q('stocks'); E.check = Q('check'); E.cand = Q('cand'); E.compare = Q('compare'); } // 판 읽기를 못 읽은 날 — 업종 화면 · 회사 화면은 위 판 값 그림 · 후보는 지어내지 않음(빈 축)
   E.watch = Q('watch'); // 검사 창에는 관심 등록이 없음(이 기기 저장 · 빈 하늘)
