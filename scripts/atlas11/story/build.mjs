@@ -21,7 +21,7 @@ export const ROT_PLACES = [['kr', 'public/data/input.json', 'public/data/atlas11
   ['cn', 'public/data/atlas11/cn/input.json', 'public/data/atlas11/cn/view/board.json'], ['jp', 'public/data/atlas11/jp/input.json', 'public/data/atlas11/jp/view/board.json'], ['vn', 'public/data/atlas11/vn/input.json', 'public/data/atlas11/vn/view/board.json']];
 /** 시가총액(억 · 그 나라 돈) — 한국 marketCapEok · 바깥 판 capUsd(미국) · cap(중국 · 일본 · 베트남) = 천 단위 → ÷ 100,000 */
 export const capEokOf = (place, q) => place === 'kr' ? q?.marketCapEok : (Number.isFinite(q?.capUsd ?? q?.cap) ? (q.capUsd ?? q.cap) / 1e5 : null);
-export async function rotationOf(root, place, {board: viewBoard = null} = {}) { // viewBoard = 막 만든 판(저녁 기록이 파일로 내리기 전 — 매수 검토 후보가 같은 판으로 셈)
+export async function rotationOf(root, place, {board: viewBoard = null, daily = false} = {}) { // viewBoard = 막 만든 판(저녁 기록이 파일로 내리기 전 — 매수 검토 후보가 같은 판으로 셈) · daily = 날마다 값(후보의 1만 번 다시 뽑기만 · story.json 에는 싣지 않음)
   const [, inFile, boardFile] = ROT_PLACES.find(x => x[0] === place) ?? [];
   if (!inFile) return {schema: ROT.schema, none: true, reason: '판 없음'};
   try {
@@ -29,7 +29,7 @@ export async function rotationOf(root, place, {board: viewBoard = null} = {}) { 
     let flows = [];
     if (place === 'kr') { try { const latest = await readJson(path.join(root, 'reports/atlas11/context/latest.json')); if (/^reports\/atlas11\/context\/[\w./-]+\.json$/.test(latest?.file ?? '')) flows = (await readJson(path.join(root, latest.file))).flows ?? []; } catch {} }
     const assets = (input.assets ?? []).map(a => ({...a, quality: {...(a.quality ?? {}), marketCapEok: capEokOf(place, a.quality)}}));
-    const r = buildRotation({assets, groups: board.groups ?? [], sessions: input.calendar?.sessions ?? [], asOf: board.asOf, capDay: String(input.universe?.selectedAt ?? board.asOf).slice(0, 10), flows, place});
+    const r = buildRotation({assets, groups: board.groups ?? [], sessions: input.calendar?.sessions ?? [], asOf: board.asOf, capDay: String(input.universe?.selectedAt ?? board.asOf).slice(0, 10), flows, place, daily});
     const bad = checkRotation(r);
     return bad.length ? {schema: ROT.schema, none: true, reason: bad.join(', ')} : r;
   } catch (e) { return {schema: ROT.schema, none: true, reason: '셈 멈춤: ' + e.message}; }

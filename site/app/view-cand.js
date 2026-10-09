@@ -28,6 +28,9 @@ export const eokTxt = v => { if (!finite(v)) return '계산 불가'; const s = v
 const eokEl = v => h('b', {class: `lv-n ${finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : 'flat') : 'na'}`}, eokTxt(v));
 const eokWon = v => (finite(v) ? `${v < 0 ? '−' : ''}${Math.abs(v) >= 1e4 ? `${(Math.abs(v) / 1e4).toFixed(1)}조 원` : `${Math.round(Math.abs(v)).toLocaleString('ko-KR')}억 원`}` : '자료 없음');
 const powTxt = v => (finite(v) ? `${v.toFixed(2)}%` : '계산 불가');
+/** 1만 번 다시 뽑기(몬테카를로 · 규칙 cand-rules-3 · 2026-10-09 10:14) — 「6,944번」 · 「1만 번」 */
+const timesTxt = v => (finite(v) ? `${Math.round(v).toLocaleString('ko-KR')}번` : '계산 불가');
+const drawsTxt = v => (finite(v) && v > 0 && v % 10000 === 0 ? `${v / 10000}만 번` : timesTxt(v));
 const fyTxt = fy => { const m = String(fy ?? '').match(/^(\d{4})\.(\d{1,2})$/); return m ? `${m[1]}년 ${Number(m[2])}월 결산` : '결산'; };
 const title = t => h('span', {class: 'cd-src', 'data-ident': '', lang: 'ko'}, `「${t}」`); // 공시 제목은 원문 그대로
 /** 사업 변화가 이익으로 이어지는 길(공시 종류마다 — 고르는 데는 쓰지 않음 · 크기 · 기간은 원문 확인) */
@@ -37,7 +40,8 @@ export const candOfLens = lens => (lens && !lens.none ? lens.cand ?? null : null
 /** 가장 가까운 다른 후보(비교 짝) — 바로 아래 순위 · 마지막이면 바로 위 */
 const pairOf = (C, code) => { const xs = C?.items ?? [], i = xs.findIndex(x => x.code === code); return i < 0 ? xs[0]?.code ?? null : (xs[i + 1] ?? xs[i - 1])?.code ?? null; };
 /** 고른 까닭 한 문장 — 어느 업종(돈 흐름 차례) · 이 회사에 들어온 외국인+기관 돈 · 회사 크기에 견준 세기 */
-export const reasonEl = (x, C) => [`돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label} · 외국인+기관 ${C.flowDays ?? 10}거래일 `, eokEl(x.flow.fi), ` = 시가총액의 ${powTxt(x.flow.power)}`];
+export const reasonEl = (x, C) => [...(x.mc ? [`${drawsTxt(x.mc.of)} 다시 뽑아 `, h('b', {class: 'cd-mcn'}, timesTxt(x.mc.n)), ' 7곳에 듦 · '] : []),
+  `돈이 들어온 업종 ${x.flow.sector.rank}위 ${x.flow.sector.label} · 외국인+기관 ${C.flowDays ?? 10}거래일 `, eokEl(x.flow.fi), ` = 시가총액의 ${powTxt(x.flow.power)}`];
 
 /* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
 function baseLines(C) {
@@ -68,25 +72,24 @@ function cardOf(C) {
   }
   return {el, fill};
 }
-/** 짧은 줄 하나 — 순위 · 이름 · 돈이 들어온 세기(탑 높이와 같은 잣대) · 상태 · 누르면 위 카드 */
-function miniRow(x, pmax, onPick) {
-  const w = finite(x.flow?.power) && pmax > 0 ? Math.max(2, (x.flow.power / pmax) * 100) : 0, bar = h('span', {class: 'cd-pwb'});
-  bar.style.setProperty('--w', `${w.toFixed(1)}%`);
-  return h('li', {class: 'cd-row', 'data-code': x.code, 'data-rank': String(x.rank), 'data-status': x.status},
-    h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 회사 크기에 견준 외국인+기관 순매수 ${powTxt(x.flow?.power)}`, onclick: () => onPick(x.code)},
+/** 짧은 줄 하나 — 순위 · 이름 · 1만 번 다시 뽑아 7곳에 든 횟수(그림은 위 탑 높이 — 줄에는 숫자만) · 상태 · 누르면 위 카드 */
+function miniRow(x, draws, onPick) {
+  const n = x.mc?.n;
+  return h('li', {class: 'cd-row', 'data-code': x.code, 'data-rank': String(x.rank), 'data-status': x.status, 'data-n': finite(n) ? String(n) : ''},
+    h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · ${drawsTxt(draws)} 다시 뽑아 ${timesTxt(n)} 7곳에 듦`, onclick: () => onPick(x.code)},
       h('span', {class: 'cd-rk'}, `${x.rank}위`),
       h('span', {class: 'cd-nm'}, h('span', {class: 'cd-name', 'data-ident': ''}, x.name), x.sector ? h('small', {class: 'cd-sec'}, x.sector) : null),
-      h('span', {class: 'cd-pw'}, h('span', {class: 'cd-pwt', 'aria-hidden': 'true'}, bar), h('b', {class: 'cd-pwv'}, powTxt(x.flow?.power))),
+      h('span', {class: 'cd-pw'}, h('b', {class: 'cd-pwv'}, timesTxt(n))),
       h('span', {class: `cd-stm cd-stm-${x.status}`}, x.status === 'met' ? '✓' : ST[x.status])));
 }
 
 /* ── ② 그림: 입체 땅(돈이 빠진 땅 · 들어온 땅 · 후보 탑) + 고른 한 곳 + 짧은 줄 일곱 ── */
 export function candArt(C, {sel = null} = {}) {
   if (!C?.ready || !C.pool) return null;
-  const n = C.items.length, pmax = Math.max(...C.items.map(x => (finite(x.flow?.power) && x.flow.power > 0 ? x.flow.power : 0)), 0);
+  const n = C.items.length, draws = C.mc?.draws ?? 10000;
   let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
   const card = n ? cardOf(C) : null;
-  const rows = n ? C.items.map(x => miniRow(x, pmax, code => pick(code, false))) : [];
+  const rows = n ? C.items.map(x => miniRow(x, draws, code => pick(code, false))) : [];
   const land = candLand(C, {fmt: eokTxt, sel: cur?.code ?? null, onPick: code => pick(code, true)});
   function pick(code, fromScene, user = true) {
     const x = C.items.find(y => y.code === code); if (!x || !card) return;
@@ -96,13 +99,13 @@ export function candArt(C, {sel = null} = {}) {
     if (fromScene) card.el.scrollIntoView?.({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
   }
   const p = C.pool;
-  land.el.dataset.check = JSON.stringify({universe: p.universe, sectors: p.sectors, inSector: p.inSector, data: p.data, profit: p.profit, risk: p.risk, screen: p.screen, met: p.met, n,
+  land.el.dataset.check = JSON.stringify({universe: p.universe, sectors: p.sectors, inSector: p.inSector, data: p.data, profit: p.profit, risk: p.risk, screen: p.screen, met: p.met, n, mc: C.mc?.draws ?? null,
     plates: land.check.plates, pits: land.check.pits, towers: land.check.towers});
   const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` 돈이 들어온 업종 안 ${p.inSector}곳 · 기준을 낮추지 않음`),
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const list = n ? h('ol', {class: 'cd-list cd-mini', 'aria-label': `후보 ${n}곳 — 누르면 위 카드`}, ...rows) : null;
   const steps = [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1400}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
-  const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: '돈이 들어온 업종 안에서', title: n ? '돈이 들어온 땅 위에 선 탑' : '조건을 모두 넘은 곳 없음',
+  const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: '돈이 들어온 업종 안에서', title: n ? `${drawsTxt(draws)} 다시 뽑아도 남은 탑` : '조건을 모두 넘은 곳 없음',
     stage: artStage({key: 'cand', art: land.el, labels, labFirst: false, tail: list ? [list] : [], steps}), first: 2});
   if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 탑은 모두 또렷) · 돌아오면 고른 그 카드
   return fig;
@@ -110,7 +113,7 @@ export function candArt(C, {sel = null} = {}) {
 
 /* ── ③ 자세히(접힘) — 어떻게 골랐나(조건마다 남은 곳) ── */
 function funnelEl(C) {
-  const p = C.pool, n = C.items.length, m = (v, sub = null) => ({v, txt: `${v}곳`, sub});
+  const p = C.pool, n = C.items.length, m = (v, sub = null) => ({v, txt: `${v}곳`, sub}), draws = C.mc?.draws ?? 10000, out = C.mc?.out ?? [];
   const rows = [
     {id: 'u', name: '후보군(ATLAS 선정)', ...m(p.universe)},
     {id: 's', name: `① 돈이 들어온 업종 ${p.sectors}곳 안`, ...m(p.inSector, `업종 순환 1위~3위 가운데 외국인+기관 순매수 · 값도 오른 업종`)},
@@ -118,9 +121,14 @@ function funnelEl(C) {
     {id: 'f', name: '③ 흑자(영업이익 · 순이익)', ...m(p.profit, `${p.data - p.profit}곳 뺌`)},
     {id: 'r', name: '④ 위험 공시 없음', ...m(p.risk, `${p.profit - p.risk}곳 뺌`)},
     {id: 'w', name: `⑤ 외국인+기관 ${C.flowDays ?? 10}거래일 순매수`, ...m(p.screen, `${p.risk - p.screen}곳 뺌 · 진입 조건까지 ${p.met}곳`)},
-    {id: 'n', name: `검토 후보(${C.want ?? 7}곳 상한 · 같은 업종 ${C.perSector ?? 3}곳까지)`, ...m(n, n ? `순위 1위~${n}위` : '조건을 모두 넘은 곳 없음 — 기준을 낮추지 않음'), mine: true}];
+    {id: 'n', name: `⑥ ${drawsTxt(draws)} 다시 뽑아 소거 · 같은 업종 ${C.perSector ?? 3}곳 · ${C.want ?? 7}곳까지`, ...m(n, n ? (out.length ? `뺀 곳 ${out.map(x => `${x.name}(${timesTxt(x.n)} · ${x.why})`).join(' · ')}` : '뺀 곳 없음') : '조건을 모두 넘은 곳 없음 — 기준을 낮추지 않음'), mine: true}];
+  const M = C.mc;
   return [barRows(rows, {ax: {lo: 0, hi: Math.max(1, p.universe)}, cls: 'cd-funnel'}),
-    h('p', {class: 'muted xs'}, '금액은 추정(공식 금액 아님) · 업종 금액은 시장 대비 시가총액 변화(실제 투자금 아님)')];
+    M ? h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '업종이 3곳에 든 횟수'), ' ', (M.sectors ?? []).map(s => `${s.label} ${timesTxt(s.n)}${s.rank ? '' : '(3곳 밖)'}`).join(' · ')) : null,
+    M?.outside?.length ? h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, `기준 밖이라 넣지 않음(지난 ${C.flowDays ?? 10}거래일 그대로 세면)`), ' ', M.outside.map(x => `${x.name} ${timesTxt(x.n)}(${x.why})`).join(' · ')) : null,
+    M?.seeds ? h('p', {class: 'mk-l cd-mcl'}, h('span', {class: 'cd-k'}, '흔들림 검사'), ` 씨앗을 바꿔 ${M.seeds.n}번 더 — 7곳 ${M.seeds.sameSet ? '같음' : '다름'} · 차례 ${M.seeds.sameOrder ? '같음' : `바뀐 곳 ${M.seeds.moved.map(x => x.name).join(' · ')}`}`) : null,
+    M ? h('p', {class: 'muted xs'}, `${drawsTxt(draws)} = 지난 ${C.flowDays ?? 10}거래일 가운데 열 날을 다시 뽑아(같은 날 거듭 · 빠짐 있음) 같은 규칙으로 7곳을 골라 본 횟수 · 앞날 아님 · 열 날을 그대로 한 번씩 뽑으면 다시 뽑기 전과 같은 7곳${M.asIs?.same ? ' ✓' : ' — 다름(검사 필요)'}`) : null,
+    h('p', {class: 'muted xs'}, '금액은 추정(공식 금액 아님) · 업종 금액은 시장 대비 시가총액 변화(실제 투자금 아님)')].filter(Boolean);
 }
 
 /* ── ④ 바뀐 후보 · 공통 위험 ── */
@@ -138,7 +146,7 @@ function changesEl(C) {
   }
   const common = (C.common ?? []).map(g => `${g.sector ?? '같은 업종'} ${g.n}곳(${C.items.filter(x => x.g === g.g).map(x => x.name).join(' · ')})`);
   kids.push(h('p', {class: 'mk-l'}, h('span', {class: 'cd-k'}, '공통 위험'), ' ', common.length ? `${common.join(' · ')} — 같은 업종은 같은 사건에 함께 흔들릴 수 있음 · 7곳 모두 돈 흐름 한 가지 잣대` : '같은 업종 후보 없음 · 7곳 모두 돈 흐름 한 가지 잣대'),
-    h('p', {class: 'muted xs'}, `분산 규칙: 같은 업종은 ${C.perSector ?? 3}곳까지 — `, (C.held ?? []).length ? `밀린 곳 ${C.held.map(x => x.name).join(' · ')}` : '이번에 밀린 곳 없음'));
+    h('p', {class: 'muted xs'}, `분산 규칙: 같은 업종은 ${C.perSector ?? 3}곳까지 — `, (C.held ?? []).length ? `밀린 곳 ${C.held.map(x => (finite(x.mc) ? `${x.name}(${timesTxt(x.mc)})` : x.name)).join(' · ')}` : '이번에 밀린 곳 없음'));
   if (C.nWaiting) kids.push(h('details', {class: 'b-how'}, h('summary', null, `조건은 넘었지만 ${C.want ?? 7}곳 밖 ${C.nWaiting}곳`),
     h('p', {class: 'muted xs'}, C.waiting.map(x => `${x.name}(${x.status})`).join(' · ') + (C.nWaiting > C.waiting.length ? ` 외 ${C.nWaiting - C.waiting.length}곳` : ''))));
   return kids;
@@ -156,11 +164,13 @@ function rulesEl(C) {
   const W = C.flow?.window;
   return h('div', {class: 'cd-rules'},
     h('ul', {class: 'cd-l'},
-      h('li', null, h('b', null, '한 문장'), ' · 돈이 들어온 업종에서, 돈이 실제로 들어온 회사를 고른다(규칙 ', h('code', null, C.rules ?? 'cand-rules-2'), ' · 연구용 · 성능 검증 전)'),
+      h('li', null, h('b', null, '한 문장'), ` · 돈이 들어온 업종에서 돈이 실제로 들어온 회사를 고르고, 지난 ${C.flowDays ?? 10}거래일을 ${drawsTxt(C.mc?.draws ?? 10000)} 다시 뽑아 자주 남은 곳부터 7곳을 남긴다(규칙 `, h('code', null, C.rules ?? 'cand-rules-3'), ' · 연구용 · 성능 검증 전)'),
       h('li', null, h('b', null, '후보군'), ` · ATLAS 선정 묶음 ${C.pool?.universe ?? 0}곳(${place.label} · 시장 전체 아님)`),
       h('li', null, h('b', null, '① 돈이 들어온 업종'), ` · 돈 흐름(업종 순환 · ${W ? `${md(W.from)}~${md(W.to)} ` : ''}${C.flowDays ?? 10}거래일 시장 대비 시가총액 몫 변화) 「늘어난 곳」 1위~3위 가운데 같은 기간 외국인+기관 순매수(추정)가 + 이고 업종 값도 오른 곳`),
       h('li', null, h('b', null, '② 그 안 회사'), ` · 그날 종가 있음 · 마지막 결산 영업이익 · 순이익 흑자 · 위험 공시 없음(거래정지 · 관리종목 · 상장폐지 · 불성실공시 · 감사의견 · 회생 · 횡령 · 배임 · 투자위험 · 투자경고 지정 · 공급계약 해지 — 최근 ${C.window?.days ?? 30}일 · 장 마감 전) · 외국인+기관 ${C.flowDays ?? 10}거래일 순매수(추정) +`),
-      h('li', null, h('b', null, '③ 차례(검토 우선순위)'), ' · 진입 조건 충족 먼저 → 회사 크기(시가총액)에 견준 외국인+기관 순매수 세기가 큰 순 → 금액 → 종목 기호(동점 처리) · 같은 업종 3곳까지 · 7곳 상한 · 점수 · 가중치 · 확률을 만들지 않음'),
+      h('li', null, h('b', null, `③ ${drawsTxt(C.mc?.draws ?? 10000)} 다시 뽑기(몬테카를로)`), ` · 지난 ${C.flowDays ?? 10}거래일 가운데 열 날을 다시 뽑아(같은 날 거듭 · 빠짐 있음) 그 날들의 업종 금액 · 업종 값 · 외국인+기관과 회사 순매수로 ①②와 차례를 처음부터 다시 셈 → 회사마다 7곳에 든 횟수 · 다시 뽑는 회사는 종가 · 흑자 · 위험 공시 없음을 넘은 ${C.mc?.base ?? '?'}곳 · 씨앗(규칙 이름 · 판 날짜)이 같으면 누가 돌려도 같은 횟수 · 다른 셈틀(파이썬)로 따로 세어 맞댐 · 지난 자료가 얼마나 단단한지 — 앞날이 아님`),
+      h('li', null, h('b', null, '④ 소거법 · 차례(검토 우선순위)'), ' · ①② 기준을 넘은 곳을 진입 조건 충족 먼저 → 7곳에 든 횟수가 많은 순 → 회사 크기(시가총액)에 견준 외국인+기관 순매수 세기 → 금액 → 종목 기호로 세우고 같은 업종 3곳 · 7곳까지 남김 · 절반(5,000번) 아래는 빼지 않고 「가장 큰 위험」에 적음 · 점수 · 가중치를 만들지 않음'),
+      h('li', null, h('b', null, '흔들림 검사'), ` · 씨앗만 바꿔 ${drawsTxt(C.mc?.draws ?? 10000)}을 ${C.mc?.seeds?.n ?? 4}번 더 돌려 같은 소거법 — 7곳 · 차례가 같은지 적음(공식 답은 첫 씨앗) · 횟수 차이가 100번 안쪽인 곳끼리는 차례가 바뀔 수 있음`),
       h('li', null, h('b', null, '진입 조건(상태)'), ' · 20거래일 수익률 +30.0% 이하 · 희석 공시(유상증자 · 전환사채 · 신주인수권 등 — 30일) 없음 · 과열 공시(공매도 과열 · 단기과열 · 투자경고 지정예고 — 7일) 없음 → 조건 충족 / 아니면 조건 대기 · 진입 가격 · 범위는 만들지 않음'),
       h('li', null, h('b', null, '갱신 · 교체'), ' · 거래일 16:00 판마다 다시 셈 · 저녁 19:00 기록에 그날 목록을 남김(고치지 않음) · 앞 기록과 신규 · 유지 · 제외를 적음'),
       h('li', null, h('b', null, '판단이 바뀌는 조건'), ` · 돈 흐름 이탈(업종이 1위~3위 밖 · 외국인+기관 순매도) · 사업 가설 훼손(해지 · 위험 · 희석 공시 · 결산 적자) · 가격 기준 이탈(처음 기록 종가 대비 −10.0% 또는 지수 대비 −5.0%p 아래) · 평가 기간 종료(${C.evalDays ?? 20}거래일) — 따로 셈`),
@@ -172,7 +182,7 @@ function rulesEl(C) {
 function baseMore(C, manifest) {
   const rec = (C.records ?? []).find(r => r.asOf === C.asOf) ?? null;
   return h('p', {class: 'muted xs'}, `${place.closeAt} 종가 · 장중 값 아님 · 공시 ${md(C.window?.from)}~${md(C.asOf)} 장 마감까지 · 평가 ${C.evalDays ?? 20}거래일${C.evalEnd ? `(${md(C.evalEnd)}까지)` : ''}`,
-    manifest?.generatedAt ? ` · 만든 때 ${stamp(manifest.generatedAt)}` : '', ' · 규칙 ', h('code', null, C.rules ?? 'cand-rules-2'),
+    manifest?.generatedAt ? ` · 만든 때 ${stamp(manifest.generatedAt)}` : '', ' · 규칙 ', h('code', null, C.rules ?? 'cand-rules-3'), C.mc ? ` · 씨앗 ${C.mc.seed}` : '',
     rec ? ` · 고정 기록 ${stamp(rec.recordedAt)}(${rec.src === 'pub' ? '후보 발행본' : '저녁 기록'} · 고치지 않음)` : ' · 고정 기록 전 — 거래일 19:00 저녁 기록에 그날 목록을 남김(고치지 않음)');
 }
 
@@ -221,6 +231,7 @@ function decide(a, b) {
   if (!a || !b) return null;
   const [p, q] = a.rank <= b.rank ? [a, b] : [b, a], head = `앞선 쪽은 ${p.rank}위 ${p.name}`;
   if (p.met !== q.met) return `${head} — 진입 조건 충족(상대 쪽은 조건 대기)`;
+  if (finite(p.mc?.n) && finite(q.mc?.n) && p.mc.n !== q.mc.n) return `${head} — ${drawsTxt(p.mc.of)} 다시 뽑아 7곳에 든 횟수가 더 많음(${timesTxt(p.mc.n)} 대 ${timesTxt(q.mc.n)})`;
   if ((p.flow.power ?? 0) !== (q.flow.power ?? 0)) return `${head} — 회사 크기에 견준 외국인+기관 순매수가 더 셈(${powTxt(p.flow.power)} 대 ${powTxt(q.flow.power)})`;
   return `${head} — 외국인+기관 순매수 금액이 더 큼(${eokTxt(p.flow.fi)} 대 ${eokTxt(q.flow.fi)})`;
 }
@@ -231,6 +242,7 @@ function cmpTable(a, b, C) {
     h('tbody', null,
       row('검토 순위', x => `${x.rank}위`),
       row('상태', x => stEl(x.status)),
+      row(`${drawsTxt(C.mc?.draws ?? 10000)} 다시 뽑기`, x => `${timesTxt(x.mc?.n)} 7곳에 듦`),
       row('지금 값', x => `${won(x.close)} · ${md(x.date)} 종가`),
       row('업종(돈 흐름)', x => [`${x.flow.sector.rank}위 ${x.flow.sector.label} `, eokEl(x.flow.sector.amount)]),
       row(`외국인+기관 ${C.flowDays ?? 10}거래일`, x => [eokEl(x.flow.fi), ' (추정)']),
@@ -300,7 +312,7 @@ export async function renderCompare(main, {hash, manifest}) {
   main.replaceChildren(h('div', {class: 'b-page cmp-page'}, back,
     blk(1, '기준', h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`), ` · 같은 기간(돈 흐름 ${C.flowDays ?? 10}거래일 · 수익률 20거래일) · 비교 ${C.index?.name ?? '지수'} · 같은 규칙`)),
     blk(2, '고르기 · 후보 둘', h('div', {class: 'cmp-picks'}, pickA, pickB)),
-    blk(3, '같은 기준에서의 차이', sayBox, tableBox, h('p', {class: 'muted xs'}, '순위는 미리 정한 규칙의 차례(진입 조건 충족 → 회사 크기에 견준 외국인+기관 순매수 → 금액) — 오를 차례가 아님')),
+    blk(3, '같은 기준에서의 차이', sayBox, tableBox, h('p', {class: 'muted xs'}, `순위는 미리 정한 규칙의 차례(진입 조건 충족 → ${drawsTxt(C.mc?.draws ?? 10000)} 다시 뽑아 7곳에 든 횟수 → 회사 크기에 견준 외국인+기관 순매수 → 금액) — 오를 차례가 아님`)),
     fig,
     blk(5, '이어서 보기', linkBox),
     foot(manifest)));
@@ -350,6 +362,7 @@ export function candJudgeBox(lens, s) {
       qRow('관측', `업종 ${F.sector.label} — 돈 흐름 ${F.sector.rank}위 · ${C.flowDays ?? 10}거래일 시장 대비 시가총액 `, eokEl(F.sector.amount), ' · 업종 외국인+기관 ', eokEl(F.sector.fi),
         ` · 이 회사 외국인 ${finite(F.f10) ? `${F.f10 > 0 ? '+' : F.f10 < 0 ? '−' : ''}${Math.abs(F.f10).toLocaleString('ko-KR')}주` : '자료 없음'} · 기관 ${finite(F.i10) ? `${F.i10 > 0 ? '+' : F.i10 < 0 ? '−' : ''}${Math.abs(F.i10).toLocaleString('ko-KR')}주` : '자료 없음'}(추정 `, eokEl(F.fi), ')'),
       qRow('계산 · 해석', `회사 크기에 견준 세기 = 순매수 ${eokTxt(F.fi)} ÷ 시가총액 ${eokWon(F.cap)} = ${powTxt(F.power)} — 다섯 조건을 넘은 ${C.pool?.screen ?? '?'}곳 가운데 ${F.powerRank ?? '?'}번째로 셈 · 영업이익 ${eokWon(f.op)} · 순이익 ${eokWon(f.net)}(${fyTxt(f.fy)})`),
+      x.mc ? qRow(`${drawsTxt(x.mc.of)} 다시 뽑기`, `지난 ${C.flowDays ?? 10}거래일을 ${drawsTxt(x.mc.of)} 다시 뽑아 같은 규칙으로 고르면 ${timesTxt(x.mc.n)} 7곳에 듦 · ${x.mc.sector} 업종이 돈이 들어온 3곳에 든 것 ${timesTxt(x.mc.sectorN)} — 지난 자료가 얼마나 단단한지(앞날 아님)`) : null,
       qRow('반대 근거', x.risk.text, ' · 사고판 돈은 값을 움직이는 힘일 뿐 — 사업 · 실적이 바뀌었다는 뜻은 아님'),
       qRow('사업 변화', ev ? [`최근 30일 ${md(ev.date)} ${ev.kindLabel} 공시 `, title(ev.title), ` — ${PATH[ev.kind] ?? ''}`] : '최근 30일 사업 변화 공시(수주 · 시설투자 · 주주환원) 없음 — 돈 흐름만으로 고름'),
       qRow('확인할 것', '그 뒤 판(거래일 16:00)에서 업종이 1위~3위에 남는지 · 이 회사 외국인+기관 순매수가 이어지는지')]),
