@@ -78,7 +78,8 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
     E.stocks = L.changes ? {up: L.buckets.up, down: L.buckets.down, new: L.buckets.new} : Q('stocks');
     const recs = L.verify?.records ?? [], ev = recs.flatMap(r => Object.values(r.evals).flat());
     E.check = recs.length && (extra.records == null || extra.records === recs.length) ? {records: recs.length, pending: ev.filter(e => e.status === 'pending').length, done: ev.filter(e => e.status === 'done').length} : recs.length ? {records: extra.records} : Q('check');
-    // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 03:53 「돈에 흐름이 강한 업종내에서」 — 규칙 cand-rules-2)
+    // 매수 검토 후보(#/ · 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 · 03:53 「돈에 흐름이 강한 업종내에서」 · 10:14 「모테카를로 … 소거법」 — 규칙 cand-rules-3)
+    //   1만 번 다시 뽑은 횟수는 판 읽기(mc.counts — 파이썬 따로 세기 scripts/atlas11/verify/cand_mc_verify.py 가 맞댐) · 소거법 차례(진입 → 횟수 → 세기 → 금액 → 기호 · 같은 업종 3곳 · 7곳)는 여기서 따로
     //   돈 흐름(/story.json rotation — 사이트 「돈 흐름」 화면과 같은 파일)의 늘어난 곳 1~3위 · 판 업종 · 판 읽기 종목 값 · 일정표 공시(agenda.json)로 다섯 조건 · 진입 조건을 따로 셈 · 장 마감 뒤 공시는 뺌
     const CA = L.cand, rot = story?.rotation;
     if (CA?.ready && rot && !rot.none) {
@@ -87,7 +88,7 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
       const okSecs = (rot.in ?? []).slice(0, CAND_RULES.sectors).filter(g => g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0).map(g => g.id);
       const inSec = new Set(groups.filter(g => okSecs.includes(g.id)).flatMap(g => g.codes ?? []));
       const pref = (t, name) => { const m = String(t).match(/\(([^()]*우[A-Z0-9]?)\)\s*$/); return !!m && m[1] !== name; };
-      let n0 = 0, data = 0, profit = 0, risk = 0, screen = 0, met = 0;
+      let n0 = 0, data = 0, profit = 0, risk = 0, screen = 0, met = 0; const elig = [];
       for (const s of st.filter(x => inSec.has(x.code))) {
         n0++;
         const ds = (agenda?.byCode?.[s.code]?.disclosures ?? []).filter(d => { const t = Date.parse(d.publishedAt ?? ''), day = String(d.publishedAt ?? '').slice(0, 10); return day >= from && (Number.isFinite(t) ? t <= cut : day <= asOf); });
@@ -96,15 +97,21 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
         if (okD) data++; if (okD && okP) profit++; if (okD && okP && okR) risk++;
         const sc = okD && okP && okR && fin(fi) && fi > 0; if (sc) screen++;
         const heat = ds.some(d => !pref(d.title, s.name) && HEAT_RE.test(d.title) && String(d.publishedAt).slice(0, 10) >= heatFrom), dil = ds.some(d => DILUTE_RE.test(d.title));
-        if (sc && s.r20 <= CAND_RULES.maxR20 && !heat && !dil) met++;
+        const ok = sc && s.r20 <= CAND_RULES.maxR20 && !heat && !dil; if (ok) met++;
+        if (sc) elig.push({code: s.code, g: s.g, met: ok ? 1 : 0, fi: fi / 1e8, cap: s.fund?.cap});
       }
-      E.candRows = CA.items.map(x => [x.code, x.status, x.rank]); // 화면 줄 차례 = 판 읽기 후보(같은 발행본) · 7곳 상한
+      const draws = CA.mc?.draws ?? 0, nOf = code => CA.mc?.counts?.[code] ?? 0;
+      const per = new Map(), order = elig.map(e => ({...e, n: nOf(e.code), pw: fin(e.cap) && e.cap > 0 ? (e.fi / e.cap) * 100 : -1e9}))
+        .sort((p, q) => (q.met - p.met) || (q.n - p.n) || (q.pw - p.pw) || (q.fi - p.fi) || p.code.localeCompare(q.code))
+        .filter(e => { const k = per.get(e.g) ?? 0; if (k >= CAND_RULES.perSector) return false; per.set(e.g, k + 1); return true; }).slice(0, CAND_RULES.want);
+      const stOf = new Map(CA.items.map(x => [x.code, x.status]));
+      E.candRows = order.map((e, i) => [e.code, stOf.get(e.code) ?? (e.met ? 'met' : 'wait'), i + 1]); // 화면 줄 차례 = 소거법 차례(따로 셈) · 상태는 판 읽기(재검토는 마감 뒤 공시 · 가격 기준 — 순위와 따로)
       const pw = x => { const s = st.find(y => y.code === x.code), fl = s?.fl ?? {}, cap = s?.fund?.cap; return fin(fl.f10e) && fin(fl.i10e) && fin(cap) && cap > 0 ? Math.round(((fl.f10e + fl.i10e) / 1e8 / cap) * 100 * 1e4) / 1e4 : null; }; // 판 읽기 파일의 소수 넷째 자리와 같게
       // 입체 땅(2026-10-09 08:26 「입체적으로 보여야하는 중심으로」) — 솟은 땅 = 늘어난 곳 1위~3위(금액 · 조건 셋) · 꺼진 땅 = 줄어든 곳 1위~3위 · 탑 = 후보(순위 · 상태 · 세기 소수 둘째 자리)
       const plates = (rot.in ?? []).slice(0, CAND_RULES.sectors).map(g => [g.label, Math.round(g.amount), g.amount > 0 && (g.who?.foreign ?? 0) + (g.who?.institution ?? 0) > 0 && g.change > 0]);
       const pits = (rot.out ?? []).slice(0, 3).map(g => [g.label, Math.round(g.amount)]);
-      const towers = CA.items.map(x => { const v = pw(x); return [x.code, x.rank, x.status, fin(v) ? Math.round(v * 100) / 100 : null]; });
-      E.cand = {universe: st.length, sectors: okSecs.length, inSector: n0, data, profit, risk, screen, met, n: Math.min(CA.items.length, CAND_RULES.want), plates, pits, towers};
+      const towers = order.map((e, i) => [e.code, i + 1, stOf.get(e.code) ?? (e.met ? 'met' : 'wait'), nOf(e.code)]); // 탑 = 1만 번 가운데 7곳에 든 횟수
+      E.cand = {universe: st.length, sectors: okSecs.length, inSector: n0, data, profit, risk, screen, met, n: order.length, mc: CAND_RULES.draws, plates, pits, towers};
       const [a, b2] = CA.items, sa = a && st.find(s => s.code === a.code), sb = b2 && st.find(s => s.code === b2.code);
       E.compare = sa && sb ? {a: sa.code, b: sb.code, apow: pw(sa), bpow: pw(sb), ar20: sa.r20, br20: sb.r20} : Q('compare');
     } else { E.cand = Q('cand'); E.compare = Q('compare'); }

@@ -70,6 +70,18 @@ test('돈의 이동 — 오른 업종이 들어가는 쪽 · 내린 업종이 �
   assert.deepEqual(checkRotation(r), []);
   // 거래일이 모자라면 지어내지 않음
   assert.equal(buildRotation({assets, groups, sessions: sessions.slice(0, 5), asOf: sessions[4], capDay: sessions[4]}).none, true);
+  // 날마다 값(매수 검토 후보의 1만 번 다시 뽑기 · 2026-10-09 10:14) — 달라고 할 때만 · 열 날을 더하면 10거래일 값과 같음 · 날마다 업종을 모두 더하면 0
+  assert.equal(r.daily, undefined, '보통은 싣지 않음(story.json 크기 그대로)');
+  const rd = buildRotation({assets, groups, sessions, asOf, capDay: sessions.at(-3), flows, daily: true}), D = rd.daily;
+  assert.deepEqual(D.dates, sessions.slice(-ROT.window));
+  for (const row of [...rd.in, ...rd.out]) {
+    const g = D.sectors.find(x => x.id === row.id), sum = a => a.reduce((x, y) => x + y, 0);
+    assert.ok(Math.abs(sum(g.c) - row.amount) <= 0.5 + 1e-6, `${row.label} 옮겨 간 돈 ${sum(g.c)} vs ${row.amount}`);
+    assert.ok(Math.abs(Math.exp(sum(g.lr)) - 1 - row.change) < 1e-6, `${row.label} 값 오르내림`);
+  }
+  for (let i = 0; i < ROT.window; i++) assert.ok(Math.abs(D.sectors.reduce((x, g) => x + g.c[i], 0)) < 1e-6, '그날 업종을 모두 더하면 0');
+  const g0 = D.sectors.find(x => x.id === 'g0'); assert.ok(Math.abs(g0.fi[ROT.window - 2] - (-1e7 + 5e6) * assets[0].prices.at(-2).close / 1e8) < 1e-9); assert.equal(g0.fi.filter(x => x !== 0).length, 1);
+  assert.deepEqual(checkRotation(rd), []);
 });
 
 /* ── 돈의 파장 1~5차 ── */
