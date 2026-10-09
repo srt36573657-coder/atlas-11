@@ -10,5 +10,5 @@
 - 밀어 넣기 전 문도 켠다: `git config core.hooksPath scripts/atlas11/hooks`.
 - 걸린 것을 「괜찮다」며 넘기지 않는다 — 원인을 고치고 다시 돌린다.
 - 번역 면제(`reports/atlas11/full-check/trans-waiver.json` · 2026-11-30까지 — 2026-10-10 사장님 「7너가 해결해」로 10-16 에서 한 번 늘림 · 처음 말씀 2026-10-09 03:14 「번역 작업 하지마」)는 「번역 안 된 한국어」 실패만 봐준다 — 그 밖의 실패는 그대로 막힌다. 사장님 말씀 없이 기한을 늘리거나 범위를 넓히지 않는다.
-- 규칙 49(2026-10-10 05:14 설계 승인): 예측 허용은 몬테카를로 모형 범위만(「모형 가정 아래 추정 · 검증 전」) · 차례는 미리 정한 규칙(A안) · 하루 4번 08 · 12 · 16 · 21시(서울) · 회차는 `node scripts/atlas11/round.mjs --slot <때>`(엔진 `scripts/atlas11/mc/fhs_crn.py` → 판 읽기 `lens.mc` · `lens.elim` → 따로 세기 `verify/mc_verify.mjs` · `verify/elim_verify.py` · 기록은 새 파일만 `reports/atlas11/rounds/`) · 엔진 · 소거 기준을 바꾸면 새 판 이름으로 따로 평가.
+- 규칙 49(2026-10-10 05:14 설계 승인): 예측 허용은 몬테카를로 모형 범위만(「모형 가정 아래 추정 · 검증 전」) · 차례는 미리 정한 규칙(A안) · 하루 4번 08 · 12 · 16 · 21시(서울) · 회차는 `node scripts/atlas11/round.mjs --slot <때>`(엔진 `scripts/atlas11/mc/fhs_crn.py` → 판 읽기 `lens.mc` · `lens.elim` → 따로 세기 `verify/mc_verify.mjs` · `verify/elim_verify.py` · 기록은 새 파일만 `reports/atlas11/rounds/`) · 엔진 · 소거 기준을 바꾸면 새 판 이름으로 따로 평가 · 첫 화면 저절로 둘러보기(④ · `site/app/tour.js` · `tour-model.js`)는 빠짐없이 도는 검사의 둘러보기 층(tour)이 판마다 봄 — 결과에 둘러보기 층이 없으면 문이 막는다 · 회차는 후보를 범위 띠(`--track`)로 따라감.
 - 예약이 걸린 작업 파일(`atlas11-daily.yml` · `atlas11-evening.yml`)은 고치지 않는다(규칙 7).

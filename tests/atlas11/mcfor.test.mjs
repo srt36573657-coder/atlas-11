@@ -32,3 +32,13 @@ test('범위 띠 — 엔진이 따라간 회사(track.codes)만 싣고, 띠가 �
   const old = mcFor({latest, result, asOf: '2026-10-08', inputSha: 'abc'});
   assert.equal(old.track, null); assert.equal(old.bands, null);
 });
+test('사이트 판 읽기(siteLens) — 후보는 몬테카를로 · 소거 행 전부 · 나머지는 줄이고, 들어온 판 읽기는 바꾸지 않음', async () => {
+  const {siteLens} = await import('../../scripts/atlas11/lens/build.mjs');
+  const full = {code: 'B', n: 1, nBase: 1, nExtra: 0, nonfinite: 0, extreme: 0, mean: 0.1, median: 0, ploss: 0.5, q05: -0.4, q10: -0.3, q90: 0.5, cvar5: -0.5, se: {mean: 0.1}, volNow: 0.5};
+  const l = {cand: {ready: true, items: [{code: 'A'}]}, mc: {runId: 'r', rows: [{...full, code: 'A'}, full]}, elim: {counts: {pass: 1}, rows: [{code: 'A', state: 'pass', first: null, checks: [{id: 'close'}]}, {code: 'B', state: 'hold', first: 'risk', flags: [], checks: [{id: 'close'}]}]}};
+  const before = JSON.stringify(l), s = siteLens(l);
+  assert.equal(JSON.stringify(l), before, '들어온 판 읽기는 그대로');
+  assert.deepEqual(s.mc.rows[0], {...full, code: 'A'}); assert.deepEqual(Object.keys(s.mc.rows[1]), ['code', 'n', 'median', 'ploss', 'q05', 'q10', 'q90', 'cvar5']);
+  assert.deepEqual(s.elim.rows[1], {code: 'B', state: 'hold', first: 'risk'}); assert.equal(s.elim.rows[0].checks.length, 1); assert.deepEqual(s.elim.counts, {pass: 1});
+  assert.deepEqual(siteLens({none: true}), {none: true});
+});

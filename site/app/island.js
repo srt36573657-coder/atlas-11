@@ -259,6 +259,33 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
     matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', ev => { rm = ev.matches; });
   }
   function setSel(code, user = false) { const i = cells.findIndex(c => c.code === code); if (i >= 0 && isSeven.has(i)) pickCand(i, user, false); } // 아래 줄 · 카드에서 고름 — 카드는 이미 바뀜(다시 알리지 않음)
+  // 저절로 둘러보기(tour.js · 규칙 49 ④ · 2026-10-10 「4너에제안대로 해」) — 사람이 고른 것이 아님(picked 아님 · 카드에 다시 알리지 않음) · 한 번에 하나만 움직임 · 움직임 줄이기면 바로 끝 모습
+  const idxOf = code => cells.findIndex(c => c.code === code);
+  /** ① 고르기 — 섬이 돌아 그 탑을 앞으로 · 금빛 · 살짝 솟음 */
+  function tourTo(code) {
+    const i = idxOf(code); if (!isSeven.has(i)) return false;
+    heroI = i; hero = seven.indexOf(i); focus = -1; fadeT = 0; zoneFill(-1); tag.hidden = true;
+    for (let j = 0; j < n; j++) { liftT[j] = 0; dropAt[j] = 0; } liftT[i] = 10; liftAt[i] = performance.now();
+    const b = quadOf(i); let d = b - th; d = Math.atan2(Math.sin(d), Math.cos(d)); spin = Math.abs(d) > 0.01 ? {a: th, b: th + d, t: performance.now(), ms: 700} : null;
+    pins.forEach((p, k) => { p.classList.toggle('sel', seven[k] === i); p.setAttribute('aria-pressed', String(seven[k] === i)); });
+    hudFill(); go(); return true;
+  }
+  /** ③ 가장 큰 근거 — 그 탑만 20거래일 전 높이(물 아래)에서 지금 높이(물 위)로 다시 솟음 · 물을 뚫을 때 물결 */
+  function tourRise(code) {
+    const i = idxOf(code); if (i < 0) return false;
+    const c = cells[i]; vth = 0; if (spin) { th = spin.b; spin = null; }
+    if (rm || !(c.hP < c.hN)) { H[i] = c.hN; if (!rm) ripples.push({i, t: performance.now()}); go(); return true; }
+    H[i] = c.hP; rise = {i, t: performance.now(), ms: 1100}; kick(); return true;
+  }
+  /** ④ 함께 움직이는 곳 — 같은 업종 회사(peers · 판 읽기 g 로 센 기호)가 가까운 차례로 솟았다 가라앉음 */
+  function tourWave(code, peers = []) {
+    const i = idxOf(code); if (i < 0) return false;
+    const now = performance.now(), set = new Set(peers); let k = 0; if (spin) { th = spin.b; spin = null; }
+    for (let j = 0; j < n; j++) { if (j === i) continue; liftT[j] = 0; dropAt[j] = 0; if (set.has(cells[j].code)) { k++; liftT[j] = 7; liftAt[j] = now + 110 * k; dropAt[j] = now + 110 * k + 1100; } }
+    liftT[i] = 10; go(); return true;
+  }
+  /** 다른 움직임이 시작할 때(그림 「재생」) — 하던 움직임을 바로 끝 모습으로 */
+  const calm = () => { if (spin || rise || vth || ripples.length || liftT.some((v, j) => v !== lift[j] || liftV[j] !== 0)) settle(); };
   // 처음 — 그날 종가 그대로 멈춘 그림(고른 것 아님 — 1위가 금빛)
   pins.forEach((p, k) => { p.classList.toggle('sel', seven[k] === heroI); p.setAttribute('aria-pressed', String(seven[k] === heroI)); });
   hudFill();
@@ -276,5 +303,5 @@ export function candIsland(C, stocks, {sel = null, onPick = () => {}} = {}) {
         if (hit(q[0], q[1] + 1) === i) return [q[0], q[1] + 1];
       }
       return null; }};
-  return {el, model: M, setSel, bind};
+  return {el, model: M, setSel, bind, tour: {to: tourTo, rise: tourRise, wave: tourWave, calm, busy: () => !!busy(), stage}};
 }

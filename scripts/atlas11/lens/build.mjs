@@ -46,6 +46,16 @@ export function mcFor({latest, result, asOf, inputSha}) {
     bands: result.track && result.bands && typeof result.bands === 'object' ? Object.fromEntries(result.track.codes.filter(c => result.bands[c]).map(c => [c, result.bands[c]])) : null,
     rows: result.rows.map(r => Object.fromEntries(MC_ROW_KEYS.filter(k => k in r).map(k => [k, r[k]])))};
 }
+/** 사이트에 싣는 판 읽기(사이트 묶음 package.mjs) — 후보(cand.items)는 몬테카를로 행 · 소거 행을 다 싣고, 나머지 회사는 판정 · 처음 걸린 검사 · 범위 숫자만(휴대폰 첫 화면 파일을 가볍게)
+ *   다 센 행은 회차 기록(public/data/atlas11/mc · reports/atlas11/rounds 검사 파일)에 그대로 · 순수 함수(들어온 판 읽기를 바꾸지 않음) */
+const MC_SLIM = ['code', 'n', 'median', 'ploss', 'q05', 'q10', 'q90', 'cvar5'];
+export function siteLens(l) {
+  if (!l || l.none) return l;
+  const keep = new Set((l.cand?.ready ? l.cand.items ?? [] : []).map(x => String(x.code))), out = {...l}, why = '사이트 파일을 가볍게 — 후보만 전부 · 나머지는 줄임(다 센 행은 회차 기록에)';
+  if (Array.isArray(l.elim?.rows)) out.elim = {...l.elim, rows: l.elim.rows.map(r => (keep.has(String(r.code)) ? r : {code: r.code, state: r.state, first: r.first})), slim: {full: [...keep], why}};
+  if (Array.isArray(l.mc?.rows)) out.mc = {...l.mc, rows: l.mc.rows.map(r => (keep.has(String(r.code)) ? r : Object.fromEntries(MC_SLIM.filter(k => k in r).map(k => [k, r[k]])))), slim: {full: [...keep], keys: MC_SLIM, why}};
+  return out;
+}
 export async function lensFrom(root, place, {made = new Date().toISOString(), view = null} = {}) { // view = {board, manifest, agenda} — 막 만든 판(저녁 기록이 쓰기 전 · 파일로 내리기 전)
   const P = LENS_PLACES[place]; if (!P) throw Error('판 없음: ' + place);
   const v = path.join(root, P.view);
