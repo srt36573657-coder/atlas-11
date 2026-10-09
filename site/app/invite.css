@@ -95,6 +95,44 @@ button { font: inherit; color: inherit; }
 .iv-foot { text-align: center; font-size: .875rem; color: var(--n-sub); }
 .iv-foot a { color: var(--n-sub); }
 
+/* ── 사진이 든 선물(사장님 초대장에만 · invite-photo.js) — 열면 장면이 사진의 하늘빛으로 바뀌고, 사진 둘레를 별가루 띠 두 줄과 일곱 별이 돈다 ── */
+.iv-ph-bg { position: absolute; inset: -32px; z-index: -1; overflow: hidden; opacity: 0; pointer-events: none;
+  background: radial-gradient(90% 60% at 50% 30%, var(--ph-mid, #3A2F52), var(--ph-deep, #120E1C) 72%); will-change: transform, opacity; }
+.iv-ph-bg img { position: absolute; left: -12%; top: -8%; width: 124%; height: 116%; object-fit: cover; filter: blur(16px) saturate(1.15) brightness(.62); }
+.iv-ph-bg .far { position: absolute; inset: 0; width: 100%; height: 100%; }
+.iv-ph-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 6, 14, .18), rgba(8, 6, 14, .38) 46%, rgba(8, 6, 14, .74)); }
+.iv-open.iv-has-photo .iv-ph-bg { opacity: 1; }
+.iv-has-photo .iv-sky { display: none; } /* 일곱 별은 사진 둘레 띠에서 돈다 */
+.iv-has-photo.iv-open .iv-stage { padding-top: 2px; }
+.iv-frame .iv-has-photo.iv-open .iv-stage { padding-top: 2px; }
+.iv-ph { position: relative; z-index: 1; width: min(100%, 400px, calc(64vh * var(--ph-wr, .8))); aspect-ratio: var(--ph-ratio, 4 / 5); margin: 0 auto;
+  perspective: 900px; perspective-origin: 50% var(--ph-cy, 62%); touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: grab; }
+.iv-ph:active { cursor: grabbing; }
+.iv-ph.flying { position: absolute; left: 0; top: 0; margin: 0; z-index: 3; transform-origin: 50% var(--ph-cy, 62%); }
+.iv-ph-card { position: absolute; inset: 0; z-index: 1; transform-origin: 50% var(--ph-cy, 62%); transform-style: flat; will-change: transform; }
+.iv-ph-card::before { content: ''; position: absolute; inset: -4% -12% -2%; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, var(--ph-glow, rgba(150, 120, 200, .5)), rgba(0, 0, 0, 0)); filter: blur(22px); } /* 사진 뒤 은은한 빛(사진 빛깔) */
+.iv-ph-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 26px; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent, #000 11%, #000 86%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent, #000 11%, #000 86%, transparent);
+  mask-composite: intersect; }
+/* 빛 한 줄기 — 사진 위를 가끔 비스듬히 지나감(유리에 비친 빛) */
+.iv-ph-glint { position: absolute; inset: 0; overflow: hidden; border-radius: 26px; pointer-events: none; mix-blend-mode: screen; opacity: .0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.iv-ph-glint::before { content: ''; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 40%; transform: skewX(-18deg);
+  background: linear-gradient(90deg, rgba(255, 248, 232, 0), rgba(255, 248, 232, .32), rgba(255, 248, 232, 0)); }
+.iv-open .iv-ph-glint { opacity: 1; }
+.iv-open .iv-ph-glint::before { animation: iv-glint 7.5s 2.4s ease-in-out infinite; }
+@keyframes iv-glint { 0% { left: -60%; } 18%, 100% { left: 130%; } }
+.iv-ph-c { position: absolute; left: -30%; top: -12%; width: 160%; height: 124%; pointer-events: none; }
+.iv-ph-c.back { z-index: 0; }
+.iv-ph-c.front { z-index: 2; }
+.iv-has-photo .iv-after > .iv-card { margin-top: -22px; }
+.iv-has-photo .iv-go-sub, .iv-has-photo .iv-what { color: #CFC6DD; }
+.iv-has-photo .iv-link { color: #D9D1E6; }
+.iv-has-photo .iv-btn.pri { box-shadow: 0 10px 30px -12px var(--ph-glow, rgba(166, 205, 186, .55)); }
+.iv-frame .iv-ph { width: min(100%, 400px); }
+
 /* 열 수 없는 초대장 · 불러오는 중 */
 .iv-note { display: grid; justify-items: center; gap: 14px; max-width: 26rem; margin: 0 auto; text-align: center; }
 .iv-note h1 { margin: 0; font-size: 1.5rem; line-height: 1.35; }
@@ -144,6 +182,19 @@ textarea.iv-in { min-height: 9.5em; resize: vertical; line-height: 1.75; }
 .iv-made input { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--d-sep); border-radius: 12px; background: #fff; color: var(--d-ink); font-family: var(--ui); font-size: 1rem; }
 .iv-status { min-height: 1.6em; margin: 4px 0 0; text-align: center; font-size: 1rem; font-weight: 700; color: var(--d-jade); }
 .iv-status.bad { color: var(--d-err); }
+/* 사진 넣기(사장님 초대장만) */
+.iv-owner-ok { margin: 0 0 16px; padding: 10px 12px; border-radius: 12px; background: #E6F0EA; color: var(--d-jade); font-size: .9375rem; font-weight: 700; }
+.iv-label { font-size: 1.0625rem; font-weight: 700; }
+.iv-label small { margin-left: 6px; font-size: .9375rem; font-weight: 400; color: var(--d-sub); }
+.iv-file { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; opacity: 0; }
+.iv-photo-row { display: flex; align-items: center; gap: 14px; }
+.iv-photo-thumb { width: 64px; height: 80px; flex: none; border-radius: 12px; object-fit: cover; background: #241D33; box-shadow: 0 0 0 1px rgba(46, 91, 78, .18), 0 6px 14px -6px rgba(23, 48, 42, .45); }
+.iv-photo:not(.has) .iv-photo-thumb { display: none; }
+.iv-photo-act { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.iv-photo-pick { display: inline-flex; align-items: center; min-height: 46px; padding: 8px 18px; border-radius: 999px; background: #fff; color: var(--d-ink); box-shadow: inset 0 0 0 1.5px #9FBBAE; font-weight: 700; cursor: pointer; }
+.iv-photo:focus-within .iv-photo-pick { outline: 3px solid var(--d-jade); outline-offset: 2px; }
+.iv-photo-drop { min-height: 44px; padding: 8px 10px; border: 0; background: none; color: var(--d-sub); font-family: var(--font); font-size: 1rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.iv-photo-note { margin: 0; font-size: .9375rem; line-height: 1.55; color: var(--d-sub); }
 
 @media (min-width: 720px) {
   .iv-scene { padding-left: 32px; padding-right: 32px; }
@@ -155,4 +206,5 @@ textarea.iv-in { min-height: 9.5em; resize: vertical; line-height: 1.75; }
 }
 @media (prefers-reduced-motion: reduce) {
   .iv-btn { transition: none; } .iv-btn:active { transform: none; }
+  .iv-open .iv-ph-glint::before { animation: none; }
 }

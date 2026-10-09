@@ -5,7 +5,8 @@
  *   더 보는 것: 긴 이름 · 빈 메시지 · 긴 메시지 · 잘못된 · 없는 · 기간이 지난 링크 · 새로고침 · 링크 복사(공유 창이 없는 곳) · 움직임 줄이기 · 320px · 컴퓨터 화면 · 글자로만(HTML 아님) · 보안 규칙(CSP) 어김 0
  *   이 기계에서 못 보는 것(보고에 「확인 못 함」으로): 아이폰 Safari · 카카오톡 안 브라우저(웹킷) · 실제 카카오 공유(열쇠 없음) · 넷리파이 실제 저장소
  *   쓰는 법: node scripts/atlas11/invite_dev.mjs --dir dist --port 8824 --seed-expired  (다른 창)
- *           node scripts/atlas11/check/invite_check.mjs --base http://127.0.0.1:8824 --pw <playwright 폴더> --expired <번호> [--shots <폴더>]
+ *           node scripts/atlas11/check/invite_check.mjs --base http://127.0.0.1:8824 --pw <playwright 폴더> --expired <번호> --owner-key <시험 열쇠> [--shots <폴더>]
+ *   사진 초대장(사장님 전용)은 시험 열쇠로 본다 — 시험 서버를 같은 열쇠로 띄움(invite_dev.mjs --owner-key) · 진짜 열쇠 · 사장님 사진은 쓰지 않음(시험 사진은 화면에서 그림)
  *   결과: reports/atlas11/invite-check/latest.json(검사마다 통과 · 까닭)
  */
 import fs from 'node:fs/promises';
@@ -13,7 +14,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 
 const arg = (n, d = null) => { const i = process.argv.indexOf(n); return i < 0 ? d : process.argv[i + 1]; };
-const base = arg('--base', 'http://127.0.0.1:8824'), shots = arg('--shots', null), expired = arg('--expired', null);
+const base = arg('--base', 'http://127.0.0.1:8824'), shots = arg('--shots', null), expired = arg('--expired', null), ownerKey = arg('--owner-key', null);
 const require = createRequire(path.resolve(arg('--pw', process.env.PW ?? '.')) + '/node_modules/');
 const {chromium} = require('playwright');
 const DEFAULT_MESSAGE = '좋은 기회는 소중한 사람과 함께 나누고 싶었습니다.\n당신의 다음 선택에 도움이 되길 바랍니다.';
@@ -167,13 +168,76 @@ try {
   await d.waitForFunction(() => { const c = document.querySelector('.iv-open .iv-card'); return c && getComputedStyle(c).opacity === '1'; }, null, {timeout: 6000});
   check('컴퓨터 화면에서도 열림 · 넘침 없음', await noOverflow(d));
   await d.waitForTimeout(500); await shot(d, 'd1-desktop');
+
+  // ⑧ 사진 초대장(사장님 전용 열쇠 — 여기서는 시험 열쇠)
+  if (ownerKey) {
+    const P = await ctxOf(); await P.grantPermissions(['clipboard-read', 'clipboard-write'], {origin: base});
+    const pc = await P.newPage(); watch(pc);
+    await pc.goto(base + '/invite.html'); await pc.waitForSelector('#iv-to');
+    check('사진 칸: 열쇠 없는 기기에는 없음', (await pc.locator('#iv-photo').count()) === 0);
+    await pc.goto(base + '/invite.html#owner=' + ownerKey); await pc.waitForSelector('.iv-owner-ok'); // 같은 화면에서 주소 끝만 바뀌어도(hashchange) 받음
+    check('사진 열쇠 링크: 이 기기에 기억 · 주소에서 지움 · 안내 한 줄', await pc.evaluate(() => location.hash === '' && !!localStorage.getItem('atlas11:invite:owner')) && (await pc.textContent('.iv-owner-ok')).includes('사진'));
+    const jpg = Buffer.from((await pc.evaluate(() => { // 시험 사진(화면에서 그림 — 사장님 사진은 저장소에 두지 않음)
+      const c = document.createElement('canvas'); c.width = 1200; c.height = 1500; const g = c.getContext('2d');
+      const gr = g.createLinearGradient(0, 0, 1200, 1500); gr.addColorStop(0, '#2B1E4A'); gr.addColorStop(1, '#6B4C8F'); g.fillStyle = gr; g.fillRect(0, 0, 1200, 1500);
+      g.fillStyle = '#F4E6D0'; g.beginPath(); g.ellipse(600, 950, 330, 470, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#F2C9A8'; g.beginPath(); g.arc(600, 400, 170, 0, Math.PI * 2); g.fill();
+      return c.toDataURL('image/jpeg', 0.9); })).split(',')[1], 'base64');
+    await pc.fill('#iv-to', '하늘'); await pc.fill('#iv-from', '바다');
+    await pc.setInputFiles('#iv-photo', {name: 'test.jpg', mimeType: 'image/jpeg', buffer: jpg});
+    await pc.waitForSelector('.iv-photo.has', {timeout: 8000});
+    const th = await pc.evaluate(() => { const i = document.querySelector('.iv-photo-thumb'); return {w: i.naturalWidth, h: i.naturalHeight, jpeg: i.src.startsWith('data:image/jpeg')}; });
+    check('사진 고르기: 가장 긴 쪽 1100px · JPEG 로 줄임', th.h === 1100 && th.w === 880 && th.jpeg, JSON.stringify(th));
+    let sent = null; pc.on('request', q => { if (q.method() === 'POST' && new URL(q.url()).pathname === '/api/invite') sent = {key: q.headers()['x-atlas-owner'] === ownerKey, photo: (q.postData() ?? '').includes('data:image/jpeg;base64,')}; });
+    const made = pc.waitForResponse(q => q.request().method() === 'POST' && new URL(q.url()).pathname === '/api/invite');
+    await pc.click('button[type=submit]'); await pc.waitForSelector('.iv-frame .iv-ph', {state: 'attached'}); const mr = await made;
+    check('미리 보기: 사진 무대 · 사진과 열쇠를 함께 보냄', mr.status() === 201 && sent?.key && sent?.photo, JSON.stringify(sent));
+    await pc.click('.iv-share .iv-btn.sec'); await pc.waitForSelector('#iv-url'); const purl = await pc.inputValue('#iv-url');
+    await shot(pc, 'p0-compose-photo', true);
+    const Q = await ctxOf(); const q = await Q.newPage(); watch(q);
+    await q.goto(purl); await q.waitForSelector('.iv-gift'); await q.evaluate(() => document.fonts.ready);
+    check('사진 초대장: 닫힌 화면은 같음(이름 · 합 · 열어 보기) · 사진은 열기 전에 숨김', (await q.locator('.iv-scene.iv-has-photo').count()) === 1 && !(await q.locator('.iv-ph').isVisible()) && (await q.textContent('.iv-to')).includes('하늘님께'));
+    const pg = await q.locator('.iv-gift').boundingBox(); const tp = Date.now();
+    await q.mouse.click(pg.x + pg.width * 0.7, pg.y + pg.height * 0.4);
+    await q.waitForTimeout(500); await shot(q, 'p1-photo-rising');
+    await q.waitForFunction(() => { const c = document.querySelector('.iv-open .iv-card'); return c && getComputedStyle(c).opacity === '1'; }, null, {timeout: 8000});
+    const pms = Date.now() - tp;
+    check('사진 초대장 열기 → 메시지를 읽을 수 있을 때까지 5초 안', pms <= 5000, `${pms}ms`);
+    await q.waitForTimeout(900);
+    const litOf = () => q.evaluate(() => [...document.querySelectorAll('.iv-ph-c')].map(c => { const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 20) n++; return n; }));
+    const ps = await q.evaluate(() => { const img = document.querySelector('.iv-ph-img'), r = img.getBoundingClientRect(), card = document.querySelector('.iv-card').getBoundingClientRect();
+      return {nw: img.naturalWidth, alt: img.alt, top: Math.round(r.top), cardTop: Math.round(card.top), bg: getComputedStyle(document.querySelector('.iv-ph-bg')).opacity, sw: document.documentElement.scrollWidth, iw: innerWidth}; });
+    const lit = await litOf();
+    check('사진 · 별가루 띠(사진 앞 · 뒤 두 겹) · 하늘빛 바탕 · 카드는 사진 아래', ps.nw > 0 && ps.alt.includes('바다') && lit[0] > 500 && lit[1] > 500 && Number(ps.bg) > 0.95 && ps.cardTop > ps.top + 150 && ps.sw <= ps.iw + 1, JSON.stringify({...ps, lit}));
+    await shot(q, 'p2-photo-open'); await shot(q, 'p2-photo-open-full', true);
+    const box = await q.locator('.iv-ph').boundingBox();
+    await q.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await q.mouse.down(); await q.mouse.move(box.x + box.width * 0.92, box.y + box.height / 2, {steps: 10}); await q.waitForTimeout(350);
+    const ryOf = async () => Number(/rotateY\((-?[\d.]+)deg\)/.exec(await q.evaluate(() => document.querySelector('.iv-ph-card').style.transform))?.[1] ?? NaN);
+    const ry1 = await ryOf(); await shot(q, 'p3-photo-drag'); await q.mouse.up();
+    check('옆으로 끌면 사진과 띠가 함께 입체로 기욺', Math.abs(ry1) > 6, `rotateY ${ry1}°`);
+    await q.waitForTimeout(1800); const ry2 = await ryOf();
+    check('놓으면 용수철처럼 제자리(숨 쉬듯 조금만 기욺)', Math.abs(ry2) < 4.6, `rotateY ${ry2}°`);
+    const before = (await litOf())[1]; await q.mouse.click(box.x + box.width * 0.3, box.y + box.height * 0.25); await q.waitForTimeout(160); const after = (await litOf())[1];
+    check('톡 누르면 그 자리에서 별가루가 퍼짐', after > before + 200, `${before} → ${after}`);
+    await shot(q, 'p4-photo-tap');
+    const PR = await ctxOf({reducedMotion: 'reduce', viewport: {width: 320, height: 568}}); const pr = await PR.newPage(); watch(pr);
+    await pr.goto(purl); await pr.waitForSelector('.iv-gift'); await pr.click('.iv-act-closed .iv-btn'); await pr.waitForSelector('.iv-open .iv-ph'); await pr.waitForTimeout(700);
+    const prs = await pr.evaluate(() => ({run: document.getAnimations().filter(a => a.playState === 'running').length, lit: [...document.querySelectorAll('.iv-ph-c')].map(c => { const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 20) n++; return n; }),
+      t1: document.querySelector('.iv-ph-card').style.transform, sw: document.documentElement.scrollWidth, iw: innerWidth}));
+    await pr.waitForTimeout(400); const t2 = await pr.evaluate(() => document.querySelector('.iv-ph-card').style.transform);
+    check('움직임 줄이기 · 320px: 사진 초대장도 멈춘 한 장(띠는 그려 둠) · 넘침 없음', prs.run === 0 && prs.lit[1] > 300 && prs.t1 === t2 && prs.sw <= prs.iw + 1, JSON.stringify({...prs, t2}));
+    await shot(pr, 'p5-photo-reduced-320', true);
+    const no = await fetch(base + '/api/invite', {method: 'POST', headers: {'content-type': 'application/json', origin: base}, body: JSON.stringify({to: 'a', from: 'b', photo: 'data:image/jpeg;base64,' + jpg.subarray(0, 1500).toString('base64')})});
+    check('열쇠 없이 사진을 보내면 막힘', no.status === 403 || no.status === 413, String(no.status));
+    const pid = new URL(purl).pathname.split('/').pop(), pf = await fetch(`${base}/api/invite?photo=${pid}`);
+    check('사진 응답: JPEG · 다른 사이트에 못 붙임 · 검색 제외 · 주소 안 넘김', pf.status === 200 && pf.headers.get('content-type') === 'image/jpeg' && pf.headers.get('cross-origin-resource-policy') === 'same-origin' && /noimageindex/.test(pf.headers.get('x-robots-tag') ?? '') && pf.headers.get('referrer-policy') === 'no-referrer');
+  } else check('사진 초대장', false, '--owner-key 없음(시험 서버도 invite_dev.mjs --owner-key 같은 열쇠로)');
 } catch (e) { check('검사 도중 오류', false, e.message); }
 check('보안 규칙(CSP) 어김 0', csp.length === 0, csp.slice(0, 2).join(' | '));
 check('화면 오류 0', pageErrors.length === 0, pageErrors.slice(0, 2).join(' | '));
 await browser.close();
 const pass = checks.filter(c => c.ok).length, fail = checks.length - pass;
 const report = {schema: 'atlas11-invite-check-1', at: new Date().toISOString(), base, engine: 'chromium(playwright) — 아이폰 Safari · 카카오톡 안 브라우저(웹킷)는 이 기계에서 못 봄', pass, fail, checks,
-  notChecked: ['아이폰 Safari', '카카오톡 안 브라우저', '실제 카카오 공유(카카오 열쇠 없음)', '넷리파이 실제 저장소(올린 뒤 확인)']};
+  notChecked: ['아이폰 Safari', '카카오톡 안 브라우저', '실제 카카오 공유(카카오 열쇠 없음)', '넷리파이 실제 저장소(올린 뒤 확인)', '진짜 사진 열쇠(사장님 휴대폰에만 · 여기서는 시험 열쇠)', '휴대폰 기울기(이 기계에 센서 없음)']};
 await fs.mkdir('reports/atlas11/invite-check', {recursive: true});
 await fs.writeFile('reports/atlas11/invite-check/latest.json', JSON.stringify(report, null, 2) + '\n');
 console.log(`\n통과 ${pass} · 실패 ${fail}`);

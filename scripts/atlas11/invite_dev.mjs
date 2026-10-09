@@ -3,7 +3,8 @@
  * ATLAS 11 · 선물형 초대장 시험 서버 — 넷리파이처럼 dist/ 를 내보내고 /i/<번호> → invite.html(그대로 200) · /api/invite → 함수 셈(lib/atlas11/invite.mjs)
  *   저장소: 넷리파이 Blobs 로컬 서버(@netlify/blobs/server) — 실제 함수 파일(functions/atlas11/invite.mjs)을 그대로 부른다
  *   머리글: dist/_headers 의 「/*」 머리글(CSP 등)을 모든 응답에 붙여 실제 사이트와 같은 보안 규칙으로 시험
- *   쓰는 법: node scripts/atlas11/invite_dev.mjs --dir dist --port 8824 [--blobs <폴더>]
+ *   쓰는 법: node scripts/atlas11/invite_dev.mjs --dir dist --port 8824 [--blobs <폴더>] [--seed-expired] [--owner-key <시험 열쇠>]
+ *   --owner-key: 사진 초대장 시험용 열쇠(진짜 열쇠가 아님) — 그 SHA-256 을 ATLAS_INVITE_OWNER_SHA256 으로 함수에 넘김(시험 서버에서만)
  */
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -16,6 +17,8 @@ const blobsDir = arg('--blobs', null) ?? await fs.mkdtemp(path.join(os.tmpdir(),
 const {BlobsServer} = await import('@netlify/blobs/server');
 const blobs = new BlobsServer({directory: blobsDir, token: 'dev'}); const {port: bport} = await blobs.start();
 process.env.NETLIFY_BLOBS_CONTEXT = Buffer.from(JSON.stringify({edgeURL: `http://127.0.0.1:${bport}`, uncachedEdgeURL: `http://127.0.0.1:${bport}`, siteID: 'dev', token: 'dev'})).toString('base64');
+const ownerKey = arg('--owner-key', null);
+if (ownerKey) process.env.ATLAS_INVITE_OWNER_SHA256 = (await import('node:crypto')).createHash('sha256').update(ownerKey).digest('hex');
 const fn = (await import('../../functions/atlas11/invite.mjs')).default;
 // --seed-expired: 시험용으로 181일 전에 만든 초대장 하나(기간이 지난 링크 안내를 보려고) — 번호를 첫 줄에 알림
 let seeded = null;
