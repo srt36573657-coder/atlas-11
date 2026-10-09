@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-10-09T21:48:56.341Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-09T21:48:56.444Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-09T21-48-56",
+   "newYork": {
+    "date": "2026-10-09",
+    "hm": "17:48",
+    "weekday": 5
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-09T21:48:57.410Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-09T21:49:14.133Z",
+   "asked": 365,
+   "got": 363,
+   "latest": "2026-10-09"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-09T21:49:14.302Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/MSFT.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-09T21:49:27.914Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-09T21:49:28.222Z",
+   "news": 365,
+   "newsItems": 5843,
+   "index": [
+    "S&P 500 2026-10-09",
+    "나스닥 종합 2026-10-09",
+    "다우존스 2026-10-09"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-09T21:49:28.492Z",
+   "assets": 365,
+   "asOf": "2026-10-09",
+   "late": 2,
+   "sessions": 298,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-09T21-48-56/input.json.gz",
+    "sha256": "63e1fbdf8aa91ff02e4a7aedaef4e3bbe4273e4318f1821e0a146ff2463e9d65",
+    "bytes": 661093
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day?startDateTime=202508050000&endDateTime=202610092359",
+   "status": 200,
+   "ms": 901
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 150
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/MSFT.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 166
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609190000&endDateTime=202610092359",
+   "status": 200,
+   "ms": 151
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-09T21:49:28.492Z"
+}
