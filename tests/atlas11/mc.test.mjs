@@ -171,3 +171,39 @@ T('있는 결과는 덮어쓰지 않는다(규칙 8)', () => {
   assert.match(r.stderr, /덮어쓰지 않음/);
   assert.equal(fs.readFileSync(f, 'utf8'), before);
 });
+
+// 범위 띠(--track · 2026-10-10 2단계 첫 화면 둘러보기 「시뮬레이션 요약」) — 같은 회차 ID · 같은 몫이면 띠가 없는 결과와 행이 똑같고(띠는 같은 경로를 적기만 함),
+//   띠 끝날 분위수 = 행 q10 · median · q90 · 대표 경로 3개 · 입력에 없는 기호는 missing · 다시 돌려도 띠가 같음
+T('범위 띠 — 행은 그대로 · 끝날 분위수 = 행 값 · 대표 경로 · 없는 기호는 missing · 재현', () => {
+  const k0 = readRes(tmp, 'kr', ID), u0 = readRes(tmp, 'us', ID), kc = [k0.rows[5].code, k0.rows[200].code], uc = [u0.rows[7].code];
+  const runT = dir => run(['--run-id', ID, '--slot', 'hand', '--total', '73000', '--base', '100', '--out-root', dir, '--track', `kr:${kc.join(',')},NOPE1;us:${uc[0]}`, '--track-from', '시험']);
+  const tA = mkTmp(), tB = mkTmp(), a = runT(tA), b = runT(tB);
+  assert.equal(a.status, 0, a.stderr); assert.equal(b.status, 0, b.stderr);
+  const rec = lastLine(a);
+  assert.deepEqual(rec.track, {kr: {codes: kc, missing: ['NOPE1']}, us: {codes: uc, missing: []}, from: '시험'});
+  for (const [place, codes, r0] of [['kr', kc, k0], ['us', uc, u0]]) {
+    const x = readRes(tA, place, ID), y = readRes(tB, place, ID);
+    assert.deepEqual(x.rows, r0.rows, '띠를 적어도 행(통계)은 띠 없는 회차와 똑같음');
+    assert.deepEqual(x.bands, y.bands, '같은 회차 ID 면 띠도 똑같음');
+    assert.deepEqual(x.track.days, [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]); assert.deepEqual(x.track.q, [0.1, 0.25, 0.5, 0.75, 0.9]); assert.deepEqual(x.track.rep, [0.1, 0.5, 0.9]);
+    assert.deepEqual(Object.keys(x.bands).sort(), [...codes].sort()); assert.deepEqual(x.track.codes, codes);
+    for (const c of codes) {
+      const B = x.bands[c], row = x.rows.find(r => r.code === c), last = B.q.at(-1);
+      assert.equal(B.n, row.n); assert.equal(B.q.length, 13); assert.deepEqual(B.q[0], [0, 0, 0, 0, 0]);
+      for (const q of B.q) assert.ok(q.every((v, i) => !i || v >= q[i - 1]), `${c} 분위수 차례`);
+      assert.deepEqual([last[0], last[2], last[4]], [row.q10, row.median, row.q90], `${c} 끝날 분위수 = 행`);
+      assert.equal(B.rep.length, 3);
+      B.rep.forEach((p, k) => { assert.equal(p.f, [0.1, 0.5, 0.9][k]); assert.equal(p.path.length, 61); assert.equal(p.path[0], 0); assert.equal(p.path[60], p.end); assert.ok(Number.isInteger(p.idx) && p.idx >= 0 && p.idx < row.nBase + row.nExtra);
+        assert.ok(Math.abs(p.end - last[[0, 2, 4][k]]) <= Math.max(0.001, 0.05 * (last[4] - last[0])), `${c} 대표 경로 끝 ≈ 분위수`); });
+      if (place === 'kr') for (const p of B.rep) for (let t = 0; t < 60; t++) { const g = (1 + p.path[t + 1]) / (1 + p.path[t]); assert.ok(g >= 0.7 - 1e-4 && g <= 1.3 + 1e-4, `${c} ${t + 1}일 ±30%`); }
+    }
+  }
+  assert.equal(k0.bands, undefined, '--track 을 안 주면 띠 칸이 없음(옛 모양)'); assert.equal(k0.track, undefined);
+});
+
+T('범위 띠 --track 모양이 틀리면 셈 전에 멈춤', () => {
+  for (const bad of ['jp:1234', 'kr:12 34', 'kr:' + Array.from({length: 13}, (_, i) => `A${i}`).join(',')]) {
+    const r = run(['--run-id', 'x-hand-1', '--slot', 'hand', '--total', '73000', '--base', '100', '--out-root', mkTmp(), '--track', bad]);
+    assert.notEqual(r.status, 0, bad); assert.match(r.stderr, /--track/, bad);
+  }
+});
