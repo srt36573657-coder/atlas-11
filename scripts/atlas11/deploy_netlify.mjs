@@ -7,17 +7,22 @@
  *   새로 만든 사이트에는 검색 제외(X-Robots-Tag: noindex · robots.txt)를 붙인다 — 공개 주소지만 검색에 걸리지 않게.
  *   열쇠는 화면·로그·파일 어디에도 쓰지 않는다.
  * 남기는 것: reports/atlas11/operations/deploy-latest.json · deploy-log.jsonl · 기록 장부 operation(kind: site_deploy)
+ * 함수(2026-10-09 선물형 초대장 · /api/invite): functions/atlas11 만 함께 올린다 — 저장소 밖 임시 폴더에 그 함수 · 함수가 부르는 저장소 파일 · 쓰는 패키지만 옮겨
+ *   넷리파이 도구가 거기서 묶게 한다(저장소의 옛 netlify/functions · netlify.toml 은 끼지 않음). 함수를 넣어 올리다 실패하면 함수 없이 한 번 더 올린다(자료 올리기는 멈추지 않음).
+ *   함수는 올릴 때마다 같이 올라가야 남는다(넷리파이는 올릴 때마다 통째로 바꿈) — 손 · 평일 16:00 · 19:00 자동 올리기 모두 이 길.
  */
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {spawn} from 'node:child_process';
+import {builtinModules} from 'node:module';
 import {appendRecord} from '../../lib/atlas11/records.mjs';
 
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
 const API = 'https://api.netlify.com/api/v1';
 const SITE_FILE = 'deploy/netlify-site.json';
+export const FUNCTIONS_DIR = 'functions/atlas11';
 
 async function api(method, pathname, token, body) {
   const res = await fetch(API + pathname, {method, headers: {Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', 'User-Agent': 'atlas11-deploy'}, body: body ? JSON.stringify(body) : undefined, signal: AbortSignal.timeout(30000)});
@@ -51,8 +56,8 @@ export async function resolveSite({token, envSiteId = process.env.NETLIFY_SITE_I
 }
 
 /** 올릴 폴더 준비: 저장소 밖 임시 폴더로 복사(저장소 netlify.toml 의 함수 설정이 끼지 않게) · 새 사이트면 검색 제외 */
-export async function stageDir(distDir, {noindex = true} = {}) {
-  const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'atlas11-site-'));
+export async function stageDir(distDir, {noindex = true, into = null} = {}) {
+  const tmp = into ?? await fs.mkdtemp(path.join(os.tmpdir(), 'atlas11-site-'));
   await fs.cp(distDir, tmp, {recursive: true});
   if (noindex) {
     const hp = path.join(tmp, '_headers'); let headers = ''; try { headers = await fs.readFile(hp, 'utf8'); } catch (e) { if (e.code !== 'ENOENT') throw e; }
@@ -63,6 +68,38 @@ export async function stageDir(distDir, {noindex = true} = {}) {
   return tmp;
 }
 
+/** 함수 준비: rootDir/functions/atlas11 의 .mjs · .js 와 그것이 부르는 저장소 파일(상대 경로) · 패키지(+ 그 의존성)를 stageRoot 에 같은 자리로 옮긴다
+ *  반환: null(함수 없음) 또는 {rel, dir, functions, files, packages} — 넷리파이 도구가 stageRoot 에서 돌면 묶을 때 저장소 밖 파일을 빠뜨리지 않는다(2026-10-09 직접 확인) */
+export async function stageFunctions(rootDir, stageRoot, fnRel = FUNCTIONS_DIR) {
+  let names = [];
+  try { names = (await fs.readdir(path.join(rootDir, fnRel))).filter(f => /\.m?js$/.test(f)).sort(); } catch (e) { if (e.code === 'ENOENT') return null; throw e; }
+  if (!names.length) return null;
+  const copied = new Set(), pkgs = new Set(), queue = names.map(n => path.join(fnRel, n)), builtin = new Set(builtinModules);
+  while (queue.length) {
+    const rel = path.normalize(queue.shift()); if (copied.has(rel)) continue;
+    if (rel.startsWith('..') || path.isAbsolute(rel)) throw Error('함수가 저장소 밖 파일을 부름: ' + rel);
+    copied.add(rel);
+    const text = await fs.readFile(path.join(rootDir, rel), 'utf8');
+    await fs.mkdir(path.dirname(path.join(stageRoot, rel)), {recursive: true}); await fs.copyFile(path.join(rootDir, rel), path.join(stageRoot, rel));
+    for (const m of text.matchAll(/(?:^|[\s;])(?:import|export)\s[^'"]*?from\s*['"]([^'"]+)['"]|(?:^|[\s;])import\s*['"]([^'"]+)['"]|import\(\s*['"]([^'"]+)['"]\s*\)/g)) {
+      const spec = m[1] ?? m[2] ?? m[3];
+      if (spec.startsWith('.')) queue.push(path.join(path.dirname(rel), spec));
+      else if (!spec.startsWith('node:') && !builtin.has(spec.split('/')[0])) pkgs.add(spec.startsWith('@') ? spec.split('/').slice(0, 2).join('/') : spec.split('/')[0]);
+    }
+  }
+  const seen = new Set(), pq = [...pkgs];
+  while (pq.length) {
+    const p = pq.shift(); if (seen.has(p)) continue;
+    const from = path.join(rootDir, 'node_modules', p);
+    try { await fs.access(path.join(from, 'package.json')); } catch { continue; } // 다른 패키지 안쪽(node_modules)에 든 의존성 — 그 패키지를 통째로 옮길 때 같이 옴
+    seen.add(p);
+    await fs.cp(from, path.join(stageRoot, 'node_modules', p), {recursive: true, dereference: true});
+    const pj = JSON.parse(await fs.readFile(path.join(from, 'package.json'), 'utf8'));
+    for (const d of Object.keys(pj.dependencies ?? {})) pq.push(d);
+  }
+  return {rel: fnRel, dir: path.join(stageRoot, fnRel), functions: names.map(n => n.replace(/\.m?js$/, '')), files: [...copied].sort(), packages: [...seen].sort()};
+}
+
 function run(cmd, args, env, cwd) {
   return new Promise(resolve => { const p = spawn(cmd, args, {env, cwd, stdio: ['ignore', 'pipe', 'pipe']}); let out = '', err = ''; p.stdout.on('data', d => { out += d; }); p.stderr.on('data', d => { err += d; }); p.on('close', code => resolve({code, out, err})); });
 }
@@ -71,13 +108,25 @@ export async function deploy({distDir = path.join(root, 'dist'), message = null,
   const token = process.env.NETLIFY_AUTH_TOKEN;
   if (!token) return {state: 'skipped', reason: 'NETLIFY_AUTH_TOKEN 없음 — 저장소 비밀에 넣으면 다음 실행부터 올라감'};
   const site = await resolveSite({token});
-  const stage = await stageDir(distDir, {noindex: site.source !== 'env'});
-  // 넷리파이 도구는 실행 위치(cwd)의 netlify.toml 을 읽는다 → 저장소가 아니라 올릴 폴더 안에서 돌린다(옛 함수 설정이 끼지 않게)
-  const r = await run('npx', ['--yes', 'netlify-cli', 'deploy', '--prod', '--dir', stage, '--site', site.siteId, '--message', message ?? `atlas11 daily ${now.slice(0, 10)}`, '--json'], {...process.env, NETLIFY_AUTH_TOKEN: token, NETLIFY_SITE_ID: site.siteId}, stage);
-  let out = null; try { out = JSON.parse(r.out.slice(r.out.indexOf('{'))); } catch {}
+  // 올릴 폴더: 임시 뿌리 아래 publish(화면 · 자료) + functions/atlas11(함수) — 넷리파이 도구는 그 뿌리에서 돈다(뿌리의 netlify.toml 은 publish 한 줄)
+  const stageRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'atlas11-site-'));
+  const stage = path.join(stageRoot, 'publish'); await fs.mkdir(stage);
+  await stageDir(distDir, {noindex: site.source !== 'env', into: stage});
+  await fs.writeFile(path.join(stageRoot, 'netlify.toml'), '[build]\n  publish = "publish"\n');
+  let fns = null, fnError = null;
+  try { fns = await stageFunctions(root, stageRoot); } catch (e) { fnError = String(e.message); }
+  const env = {...process.env, NETLIFY_AUTH_TOKEN: token, NETLIFY_SITE_ID: site.siteId};
+  const cli = withFns => ['--yes', 'netlify-cli', 'deploy', '--prod', '--dir', 'publish', ...(withFns ? ['--functions', fns.rel] : []), '--site', site.siteId, '--message', message ?? `atlas11 daily ${now.slice(0, 10)}`, '--json'];
+  const parse = r => { try { return JSON.parse(r.out.slice(r.out.indexOf('{'))); } catch { return null; } };
   const redact = s => String(s ?? '').split(token).join('***').slice(-600);
-  const result = {schema: 'atlas11-site-deploy-1', at: now, state: r.code === 0 && out ? 'ready' : 'failed', siteSource: site.source, siteCreated: site.created, siteId: site.siteId, url: out?.url ?? site.url ?? null, deployUrl: out?.deploy_url ?? null, deployId: out?.deploy_id ?? null, noindex: site.source !== 'env', files: (await fs.readdir(stage, {recursive: true})).length, exitCode: r.code, error: r.code === 0 ? null : redact(r.err || r.out)};
-  await fs.rm(stage, {recursive: true, force: true});
+  let r = await run('npx', cli(!!fns), env, stageRoot), out = parse(r), fnState = fns ? 'deployed' : fnError ? 'failed' : 'none';
+  if (fns && !(r.code === 0 && out)) { // 함수를 넣어 올리다 실패 → 함수 없이 한 번 더(그날 자료는 올라가게)
+    fnError = redact(r.err || r.out); fnState = 'failed';
+    r = await run('npx', cli(false), env, stageRoot); out = parse(r);
+  }
+  const result = {schema: 'atlas11-site-deploy-1', at: now, state: r.code === 0 && out ? 'ready' : 'failed', siteSource: site.source, siteCreated: site.created, siteId: site.siteId, url: out?.url ?? site.url ?? null, deployUrl: out?.deploy_url ?? null, deployId: out?.deploy_id ?? null, noindex: site.source !== 'env', files: (await fs.readdir(stage, {recursive: true})).length, exitCode: r.code, error: r.code === 0 ? null : redact(r.err || r.out),
+    functions: {state: fnState, names: fns?.functions ?? [], packages: fns?.packages ?? [], error: fnState === 'failed' ? fnError : null}};
+  await fs.rm(stageRoot, {recursive: true, force: true});
   const ops = path.join(root, 'reports/atlas11/operations'); await fs.mkdir(ops, {recursive: true});
   await fs.writeFile(path.join(ops, 'deploy-latest.json'), JSON.stringify(result, null, 2));
   await fs.appendFile(path.join(ops, 'deploy-log.jsonl'), JSON.stringify(result) + '\n');
