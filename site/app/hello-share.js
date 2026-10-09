@@ -4,7 +4,7 @@
    · 휴대폰 공유 창(카카오톡 · 문자)이 있으면 그것으로 · 없으면 링크 복사 · 복사도 막히면 주소 글을 그대로 보여 줌 */
 export const HELLO_PATH = '/hello.html';
 export const helloUrl = () => new URL(HELLO_PATH, location.origin).href;
-export const HELLO_SHARE = {title: 'ATLAS를 소개합니다', text: '공주님이 36초 동안 ATLAS를 소개해요. 행복하세요!'};
+export const HELLO_SHARE = {title: 'ATLAS를 소개합니다', text: '공주님이 우주 꽃밭에서 1분 동안 ATLAS를 소개해요. 행복하세요!'};
 
 export async function shareHello() {
   const url = helloUrl();
