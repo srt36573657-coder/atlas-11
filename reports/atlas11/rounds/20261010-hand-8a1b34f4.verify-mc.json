@@ -1,0 +1,5393 @@
+{
+ "schema": "atlas11-round-verify-1",
+ "runId": "20261010-hand-8a1b34f4",
+ "mc": {
+  "version": "mc_verify-1",
+  "runId": "20261010-hand-8a1b34f4",
+  "at": "2026-10-09T22:19:51.474Z",
+  "sec": 4.9,
+  "pathsPerStock": 40000,
+  "sample": {
+   "kr": {
+    "cand": {
+     "file": "public/data/atlas11/cand/u2-n365-v1-2026-10-05/cand-rules-5/2026-10-08.json",
+     "sha256": "4850823b29f604fb2f6815fdb00998da4d9c397ae0b156bc3ad20a4bd0fb49dc",
+     "asOf": "2026-10-08",
+     "rules": "cand-rules-5",
+     "codes": [
+      "181710",
+      "124500",
+      "103590",
+      "039030",
+      "088350",
+      "161890",
+      "001450"
+     ]
+    },
+    "extra": [
+     "005290",
+     "033920",
+     "003160",
+     "096530",
+     "003490",
+     "161390",
+     "097950",
+     "016360",
+     "277810",
+     "000150",
+     "140410",
+     "095340",
+     "194700"
+    ],
+    "model": {
+     "H": 60,
+     "L": 500,
+     "lambdaFilter": 0.94,
+     "floor": 0.000025,
+     "alpha": 0.06,
+     "beta": 0.93,
+     "zclip": 8,
+     "vcap": 4,
+     "demean": true,
+     "limit": 0.3
+    },
+    "notRun": null
+   },
+   "us": {
+    "cand": {
+     "file": "public/data/atlas11/us/cand/us1-n365-v1-2026-10-05/2026-10-08.json",
+     "sha256": "dbe5f5ca3d8dc2f8a58ddb419e508b859ee6dcc3471c52d53b4c29192dc1f112",
+     "asOf": "2026-10-08",
+     "rules": "cand-rules-5",
+     "codes": [
+      "BWLP",
+      "DAVE",
+      "UNIT",
+      "HAFN",
+      "ALSN",
+      "FCFS",
+      "DE"
+     ]
+    },
+    "extra": [
+     "BDX",
+     "GM",
+     "AUGO",
+     "MU",
+     "AWR",
+     "PH",
+     "NDAQ",
+     "DECK",
+     "TJX",
+     "ACIW",
+     "PEG",
+     "MTN",
+     "RGLD"
+    ],
+    "model": {
+     "H": 60,
+     "L": 500,
+     "lambdaFilter": 0.94,
+     "floor": 0.000025,
+     "alpha": 0.06,
+     "beta": 0.93,
+     "zclip": 8,
+     "vcap": 4,
+     "demean": true,
+     "limit": null
+    },
+    "notRun": null
+   }
+  },
+  "summary": {
+   "made": 189,
+   "ran": 189,
+   "pass": 189,
+   "fail": 0,
+   "error": 0,
+   "notRun": 0
+  },
+  "checks": [
+   {
+    "id": "mc.round.paths",
+    "step": "⑧",
+    "level": "L2",
+    "target": "reports/atlas11/rounds/20261010-hand-8a1b34f4.json#paths",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "reports/atlas11/rounds/20261010-hand-8a1b34f4.json",
+     "sha256": "84e3837f9de6e878544846d99143256ac630c511f74e1548b9ec7ffb42f30bdf"
+    },
+    "expect": "판마다 paths 합(target · done · nonfinite) = 회차 paths · done + nonfinite = target",
+    "result": "pass",
+    "value": {
+     "target": 20000000,
+     "done": 20000000,
+     "nonfinite": 0,
+     "boards": {
+      "kr": {
+       "target": 10000000,
+       "done": 10000000,
+       "nonfinite": 0,
+       "extreme": 360,
+       "clampedLimit": 705310,
+       "clampedVol": 12058
+      },
+      "us": {
+       "target": 10000000,
+       "done": 10000000,
+       "nonfinite": 0,
+       "extreme": 1824,
+       "clampedLimit": 0,
+       "clampedVol": 79483
+      }
+     },
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:46.533Z"
+   },
+   {
+    "id": "mc.kr.file",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "schema atlas11-mc-2 · runId · place · asOf · paths 가 회차 기록과 같음 · 종목 기호 겹침 없음",
+    "result": "pass",
+    "value": {
+     "schema": "atlas11-mc-2",
+     "runId": "20261010-hand-8a1b34f4",
+     "asOf": "2026-10-08",
+     "rows": 365,
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:46.535Z"
+   },
+   {
+    "id": "mc.kr.input.sha256",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#input.sha256",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "input.sha256 = 지금 입력 파일 바이트의 sha256",
+    "result": "pass",
+    "value": {
+     "recorded": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d",
+     "now": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "at": "2026-10-09T22:19:46.628Z"
+   },
+   {
+    "id": "mc.kr.paths.sum",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#paths",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "Σ(n + nonfinite) = paths.target · Σn = paths.done · Σnonfinite = paths.nonfinite",
+    "result": "pass",
+    "value": {
+     "target": 10000000,
+     "done": 10000000,
+     "nonfinite": 0,
+     "sumN": 10000000,
+     "sumNonfinite": 0
+    },
+    "at": "2026-10-09T22:19:46.628Z"
+   },
+   {
+    "id": "mc.kr.rows.alloc",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "모든 행 n + nonfinite = nBase + nExtra(넷 다 0 이상 정수)",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:46.630Z"
+   },
+   {
+    "id": "mc.kr.rows.order",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "모든 행 q05 ≤ q10 ≤ median ≤ q90",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:46.631Z"
+   },
+   {
+    "id": "mc.kr.rows.cvar5",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "모든 행 cvar5 ≤ q05",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:46.631Z"
+   },
+   {
+    "id": "mc.kr.rows.ploss",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "모든 행 0 ≤ ploss ≤ 1",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:46.631Z"
+   },
+   {
+    "id": "mc.kr.rows.finite",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "모든 행 숫자 칸(n · nBase · nExtra · nonfinite · extreme · clamped · mean · median · ploss · q05 · q10 · q90 · cvar5 · volNow · vol2y · se 넷)이 다 있고 유한",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:46.633Z"
+   },
+   {
+    "id": "mc.kr.model.drift",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#model.drift",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "model.drift === 0(기울기 0)",
+    "result": "pass",
+    "value": {
+     "drift": 0
+    },
+    "at": "2026-10-09T22:19:46.633Z"
+   },
+   {
+    "id": "mc.kr.model.limit",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#model.limit",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "model.limit === 0.3(한국 하루 가격 제한 ±30%)",
+    "result": "pass",
+    "value": {
+     "limit": 0.3
+    },
+    "at": "2026-10-09T22:19:46.633Z"
+   },
+   {
+    "id": "mc.kr.model.spec",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#model",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json",
+     "sha256": "07c35e93b364b0d0bb9c4083bd29bac59b133dd9fca86e5094e65e793a22f824"
+    },
+    "expect": "model = fhs-crn-2(H 60 · L 500 · λ 0.94 · 바닥 0.000025 · α 0.06 · β 0.93 · 자름 ±8 · 위 끝 4 · 평균 뺌)",
+    "result": "pass",
+    "value": {
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:46.633Z"
+   },
+   {
+    "id": "mc.kr.sim.universe",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#input",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "입력 종가에서 다시 센 판(양수 종가 60개 넘는 회사) = 판 행 · input.stocks · input.days · input.to 같음",
+    "result": "pass",
+    "value": {
+     "stocks": {
+      "prod": 365,
+      "js": 365
+     },
+     "days": {
+      "prod": 500,
+      "js": 500
+     },
+     "to": {
+      "prod": "2026-10-08",
+      "js": "2026-10-08"
+     },
+     "from": {
+      "prod": "2024-09-12",
+      "js": "2024-09-12"
+     },
+     "onlyJs": [],
+     "onlyProd": []
+    },
+    "at": "2026-10-09T22:19:47.055Z"
+   },
+   {
+    "id": "mc.kr.sim.sample",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/cand/u2-n365-v1-2026-10-05/cand-rules-5/2026-10-08.json",
+     "sha256": "4850823b29f604fb2f6815fdb00998da4d9c397ae0b156bc3ad20a4bd0fb49dc"
+    },
+    "expect": "후보(기준일 이하 가장 새 후보 파일 cand[].code · 최대 7곳) + 씨앗 FNV-1a(회차 ID)로 섞어 고른 나머지 = 20곳 · 모두 판 행과 입력에 있음",
+    "result": "pass",
+    "value": {
+     "candFile": "public/data/atlas11/cand/u2-n365-v1-2026-10-05/cand-rules-5/2026-10-08.json",
+     "cand": [
+      "181710",
+      "124500",
+      "103590",
+      "039030",
+      "088350",
+      "161890",
+      "001450"
+     ],
+     "extra": [
+      "005290",
+      "033920",
+      "003160",
+      "096530",
+      "003490",
+      "161390",
+      "097950",
+      "016360",
+      "277810",
+      "000150",
+      "140410",
+      "095340",
+      "194700"
+     ],
+     "missing": []
+    },
+    "at": "2026-10-09T22:19:47.057Z"
+   },
+   {
+    "id": "mc.kr.sim.vol",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/*/volNow,vol2y",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "표본 20곳 volNow · vol2y(연 환산 √252) — 난수 없이 입력 종가에서 셈 · 차이 ≤ 0.000001",
+    "result": "pass",
+    "value": {
+     "stocks": 20,
+     "maxDiff": 4.9179487e-7,
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.181710.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/181710/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.5322,
+     "js": 0.53145,
+     "diff": -0.00075,
+     "seProd": 0.002856,
+     "seProdH0": 0.0024967558,
+     "seJs": 0.0021811988,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.014374624,
+     "z": -0.2087011,
+     "nProd": 30528,
+     "nJs": 40000,
+     "seed": 209645308
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.181710.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/181710/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.507781,
+     "js": -0.50904717,
+     "diff": -0.0012661662,
+     "seProd": 0.002871,
+     "seProdH0": 0.0029675949,
+     "seJs": 0.00259253,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015762148,
+     "z": -0.32131819,
+     "nProd": 30528,
+     "nJs": 40000,
+     "seed": 209645308
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.181710.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/181710/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.606319,
+     "js": -0.6067622,
+     "diff": -0.00044320498,
+     "seProd": 0.003269,
+     "seProdH0": 0.0027735119,
+     "seJs": 0.0024229766,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016276204,
+     "z": -0.10892097,
+     "nProd": 30528,
+     "nJs": 40000,
+     "seed": 209645308
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.181710.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/181710/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.106663,
+     "js": 0.1005055,
+     "diff": -0.0061574982,
+     "seProd": 0.003739,
+     "seProdH0": 0.0035383909,
+     "seJs": 0.003091185,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.024256724,
+     "z": -1.2692354,
+     "nProd": 30528,
+     "nJs": 40000,
+     "seed": 209645308
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.124500.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/124500/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.537337,
+     "js": 0.53595,
+     "diff": -0.001387,
+     "seProd": 0.003269,
+     "seProdH0": 0.0032448781,
+     "seJs": 0.0024744722,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016399695,
+     "z": -0.33829898,
+     "nProd": 23261,
+     "nJs": 40000,
+     "seed": 209645323
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.124500.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/124500/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.502571,
+     "js": -0.49987832,
+     "diff": 0.0026926755,
+     "seProd": 0.002872,
+     "seProdH0": 0.003094236,
+     "seJs": 0.0023595959,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015565083,
+     "z": 0.69197842,
+     "nProd": 23261,
+     "nJs": 40000,
+     "seed": 209645323
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.124500.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/124500/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.583973,
+     "js": -0.5783739,
+     "diff": 0.005599098,
+     "seProd": 0.003519,
+     "seProdH0": 0.0029504801,
+     "seJs": 0.0022499708,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016707234,
+     "z": 1.3405206,
+     "nProd": 23261,
+     "nJs": 40000,
+     "seed": 209645323
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.124500.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/124500/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.111548,
+     "js": 0.11602238,
+     "diff": 0.0044743831,
+     "seProd": 0.004278,
+     "seProdH0": 0.0043752608,
+     "seJs": 0.003336477,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.027511355,
+     "z": 0.81318843,
+     "nProd": 23261,
+     "nJs": 40000,
+     "seed": 209645323
+    },
+    "at": "2026-10-09T22:19:48.065Z"
+   },
+   {
+    "id": "mc.kr.sim.103590.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/103590/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.521591,
+     "js": 0.516575,
+     "diff": -0.005016,
+     "seProd": 0.002974,
+     "seProdH0": 0.0033525286,
+     "seJs": 0.0028152259,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017511114,
+     "z": -1.1457866,
+     "nProd": 28206,
+     "nJs": 40000,
+     "seed": 209645336
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.103590.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/103590/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.443879,
+     "js": -0.44089968,
+     "diff": 0.0029793189,
+     "seProd": 0.002357,
+     "seProdH0": 0.0032946547,
+     "seJs": 0.0027666273,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017208824,
+     "z": 0.69250959,
+     "nProd": 28206,
+     "nJs": 40000,
+     "seed": 209645336
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.103590.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/103590/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.539566,
+     "js": -0.53257994,
+     "diff": 0.0069860609,
+     "seProd": 0.00341,
+     "seProdH0": 0.0030425579,
+     "seJs": 0.0025549335,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017043842,
+     "z": 1.6395507,
+     "nProd": 28206,
+     "nJs": 40000,
+     "seed": 209645336
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.103590.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/103590/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.070465,
+     "js": 0.074983899,
+     "diff": 0.0045188988,
+     "seProd": 0.002709,
+     "seProdH0": 0.0028138647,
+     "seJs": 0.0023628925,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.018371919,
+     "z": 1.2298386,
+     "nProd": 28206,
+     "nJs": 40000,
+     "seed": 209645336
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.039030.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/039030/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.52117,
+     "js": 0.52285,
+     "diff": 0.00168,
+     "seProd": 0.003257,
+     "seProdH0": 0.003772843,
+     "seJs": 0.0028933057,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.019018123,
+     "z": 0.35334718,
+     "nProd": 23524,
+     "nJs": 40000,
+     "seed": 209645415
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.039030.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/039030/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.480147,
+     "js": -0.48924596,
+     "diff": -0.0090989578,
+     "seProd": 0.002852,
+     "seProdH0": 0.0031325565,
+     "seJs": 0.0024022848,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015790571,
+     "z": -2.3049092,
+     "nProd": 23524,
+     "nJs": 40000,
+     "seed": 209645415
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.039030.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/039030/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.570401,
+     "js": -0.57822701,
+     "diff": -0.0078260079,
+     "seProd": 0.003126,
+     "seProdH0": 0.0031039462,
+     "seJs": 0.0023803443,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015716445,
+     "z": -1.9918011,
+     "nProd": 23524,
+     "nJs": 40000,
+     "seed": 209645415
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.039030.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/039030/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.094248,
+     "js": 0.087142368,
+     "diff": -0.0071056317,
+     "seProd": 0.003552,
+     "seProdH0": 0.0035764436,
+     "seJs": 0.0027426915,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.022535142,
+     "z": -1.5765669,
+     "nProd": 23524,
+     "nJs": 40000,
+     "seed": 209645415
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.088350.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/088350/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.545772,
+     "js": 0.547725,
+     "diff": 0.001953,
+     "seProd": 0.003135,
+     "seProdH0": 0.0030395052,
+     "seJs": 0.0024136332,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015825979,
+     "z": 0.49361876,
+     "nProd": 25223,
+     "nJs": 40000,
+     "seed": 209645352
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.088350.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/088350/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.377053,
+     "js": -0.37672356,
+     "diff": 0.00032944288,
+     "seProd": 0.002276,
+     "seProdH0": 0.002136721,
+     "seJs": 0.0016967435,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011355432,
+     "z": 0.11604768,
+     "nProd": 25223,
+     "nJs": 40000,
+     "seed": 209645352
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.088350.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/088350/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.453847,
+     "js": -0.45607534,
+     "diff": -0.0022283361,
+     "seProd": 0.002137,
+     "seProdH0": 0.0020712697,
+     "seJs": 0.0016447694,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.010786685,
+     "z": -0.82632845,
+     "nProd": 25223,
+     "nJs": 40000,
+     "seed": 209645352
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.088350.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/088350/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.054443,
+     "js": 0.051822483,
+     "diff": -0.002620517,
+     "seProd": 0.002696,
+     "seProdH0": 0.0026883938,
+     "seJs": 0.00213482,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017194383,
+     "z": -0.76202706,
+     "nProd": 25223,
+     "nJs": 40000,
+     "seed": 209645352
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161890.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161890/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.498084,
+     "js": 0.497675,
+     "diff": -0.000409,
+     "seProd": 0.002264,
+     "seProdH0": 0.0027953451,
+     "seJs": 0.0030872749,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016659037,
+     "z": -0.098204954,
+     "nProd": 48791,
+     "nJs": 40000,
+     "seed": 209645306
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161890.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161890/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.42931,
+     "js": -0.42633403,
+     "diff": 0.0029759718,
+     "seProd": 0.002166,
+     "seProdH0": 0.0024814424,
+     "seJs": 0.0027405899,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.014788314,
+     "z": 0.8049523,
+     "nProd": 48791,
+     "nJs": 40000,
+     "seed": 209645306
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161890.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161890/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.543155,
+     "js": -0.53860138,
+     "diff": 0.0045536156,
+     "seProd": 0.003412,
+     "seProdH0": 0.0025134384,
+     "seJs": 0.0027759275,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017594325,
+     "z": 1.0352464,
+     "nProd": 48791,
+     "nJs": 40000,
+     "seed": 209645306
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161890.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161890/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.061232,
+     "js": 0.060966966,
+     "diff": -0.00026503357,
+     "seProd": 0.001829,
+     "seProdH0": 0.0018256318,
+     "seJs": 0.0020162902,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.01361127,
+     "z": -0.097358129,
+     "nProd": 48791,
+     "nJs": 40000,
+     "seed": 209645306
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.001450.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/001450/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.515396,
+     "js": 0.517425,
+     "diff": 0.002029,
+     "seProd": 0.003233,
+     "seProdH0": 0.0035071334,
+     "seJs": 0.0027110617,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017731256,
+     "z": 0.45772279,
+     "nProd": 23902,
+     "nJs": 40000,
+     "seed": 209645546
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.001450.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/001450/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.329098,
+     "js": -0.33153842,
+     "diff": -0.0024404248,
+     "seProd": 0.00342,
+     "seProdH0": 0.0031939869,
+     "seJs": 0.0024689953,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016872386,
+     "z": -0.57856069,
+     "nProd": 23902,
+     "nJs": 40000,
+     "seed": 209645546
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.001450.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/001450/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.417331,
+     "js": -0.42534357,
+     "diff": -0.0080125699,
+     "seProd": 0.003257,
+     "seProdH0": 0.0033426137,
+     "seJs": 0.0025838858,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016899483,
+     "z": -1.8965243,
+     "nProd": 23902,
+     "nJs": 40000,
+     "seed": 209645546
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.001450.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/001450/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.03565,
+     "js": 0.035630076,
+     "diff": -0.000019923777,
+     "seProd": 0.001961,
+     "seProdH0": 0.0020581513,
+     "seJs": 0.0015909789,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.013006922,
+     "z": -0.0076589132,
+     "nProd": 23902,
+     "nJs": 40000,
+     "seed": 209645546
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.005290.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/005290/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.511587,
+     "js": 0.5114,
+     "diff": -0.000187,
+     "seProd": 0.002868,
+     "seProdH0": 0.0027713091,
+     "seJs": 0.0024151764,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.014997867,
+     "z": -0.049873759,
+     "nProd": 30380,
+     "nJs": 40000,
+     "seed": 209645522
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.005290.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/005290/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.439644,
+     "js": -0.43866681,
+     "diff": 0.00097718866,
+     "seProd": 0.002208,
+     "seProdH0": 0.0022245842,
+     "seJs": 0.0019387095,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011803301,
+     "z": 0.33115776,
+     "nProd": 30380,
+     "nJs": 40000,
+     "seed": 209645522
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.005290.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/005290/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.529798,
+     "js": -0.5307033,
+     "diff": -0.00090530492,
+     "seProd": 0.003516,
+     "seProdH0": 0.0027547469,
+     "seJs": 0.0024007425,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017029772,
+     "z": -0.21264053,
+     "nProd": 30380,
+     "nJs": 40000,
+     "seed": 209645522
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.005290.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/005290/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.077528,
+     "js": 0.076040504,
+     "diff": -0.0014874957,
+     "seProd": 0.002692,
+     "seProdH0": 0.0026177267,
+     "seJs": 0.0022813304,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017643223,
+     "z": -0.42154875,
+     "nProd": 30380,
+     "nJs": 40000,
+     "seed": 209645522
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.033920.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/033920/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.514384,
+     "js": 0.516325,
+     "diff": 0.001941,
+     "seProd": 0.003499,
+     "seProdH0": 0.0033046742,
+     "seJs": 0.0023602986,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016882659,
+     "z": 0.45988017,
+     "nProd": 20405,
+     "nJs": 40000,
+     "seed": 209645438
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.033920.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/033920/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.152164,
+     "js": -0.1514301,
+     "diff": 0.00073390489,
+     "seProd": 0.001291,
+     "seProdH0": 0.0014215962,
+     "seJs": 0.0010153472,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.006987836,
+     "z": 0.42010424,
+     "nProd": 20405,
+     "nJs": 40000,
+     "seed": 209645438
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.033920.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/033920/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.197586,
+     "js": -0.19609165,
+     "diff": 0.0014943544,
+     "seProd": 0.0013,
+     "seProdH0": 0.001756536,
+     "seJs": 0.0012545713,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0086342275,
+     "z": 0.69229327,
+     "nProd": 20405,
+     "nJs": 40000,
+     "seed": 209645438
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.033920.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/033920/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.006351,
+     "js": 0.0061746254,
+     "diff": -0.00017637462,
+     "seProd": 0.000798,
+     "seProdH0": 0.0007966942,
+     "seJs": 0.00056902318,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0049004882,
+     "z": -0.17995617,
+     "nProd": 20405,
+     "nJs": 40000,
+     "seed": 209645438
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003160.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003160/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.546314,
+     "js": 0.55255,
+     "diff": 0.006236,
+     "seProd": 0.003348,
+     "seProdH0": 0.0031062212,
+     "seJs": 0.0023093872,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016268927,
+     "z": 1.5332296,
+     "nProd": 22110,
+     "nJs": 40000,
+     "seed": 209645537
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003160.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003160/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.507914,
+     "js": -0.50601515,
+     "diff": 0.0018988525,
+     "seProd": 0.002343,
+     "seProdH0": 0.0031723842,
+     "seJs": 0.0023585775,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015812354,
+     "z": 0.48034656,
+     "nProd": 22110,
+     "nJs": 40000,
+     "seed": 209645537
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003160.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003160/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.588926,
+     "js": -0.5899771,
+     "diff": -0.0010510956,
+     "seProd": 0.00357,
+     "seProdH0": 0.003306482,
+     "seJs": 0.0024582755,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017338059,
+     "z": -0.24249441,
+     "nProd": 22110,
+     "nJs": 40000,
+     "seed": 209645537
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003160.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003160/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.087293,
+     "js": 0.08622096,
+     "diff": -0.0010720401,
+     "seProd": 0.00414,
+     "seProdH0": 0.0041560502,
+     "seJs": 0.0030899053,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.025894144,
+     "z": -0.20700435,
+     "nProd": 22110,
+     "nJs": 40000,
+     "seed": 209645537
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.096530.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/096530/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.509344,
+     "js": 0.5068,
+     "diff": -0.002544,
+     "seProd": 0.002795,
+     "seProdH0": 0.0032265426,
+     "seJs": 0.0028859074,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017315444,
+     "z": -0.58768344,
+     "nProd": 32000,
+     "nJs": 40000,
+     "seed": 209645345
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.096530.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/096530/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.372387,
+     "js": -0.37023526,
+     "diff": 0.0021517391,
+     "seProd": 0.003018,
+     "seProdH0": 0.002107656,
+     "seJs": 0.0018851448,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.014233535,
+     "z": 0.60469562,
+     "nProd": 32000,
+     "nJs": 40000,
+     "seed": 209645345
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.096530.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/096530/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.472031,
+     "js": -0.4672667,
+     "diff": 0.0047642957,
+     "seProd": 0.002357,
+     "seProdH0": 0.0023634226,
+     "seJs": 0.0021139094,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.012683457,
+     "z": 1.5025228,
+     "nProd": 32000,
+     "nJs": 40000,
+     "seed": 209645345
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.096530.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/096530/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.044456,
+     "js": 0.047315929,
+     "diff": 0.0028599293,
+     "seProd": 0.001934,
+     "seProdH0": 0.0019770781,
+     "seJs": 0.0017683524,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.013262643,
+     "z": 1.0781898,
+     "nProd": 32000,
+     "nJs": 40000,
+     "seed": 209645345
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003490.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003490/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.526521,
+     "js": 0.527425,
+     "diff": 0.000904,
+     "seProd": 0.00336,
+     "seProdH0": 0.003102909,
+     "seJs": 0.0023052024,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016298986,
+     "z": 0.2218543,
+     "nProd": 22077,
+     "nJs": 40000,
+     "seed": 209645540
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003490.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003490/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.287986,
+     "js": -0.29159678,
+     "diff": -0.0036107784,
+     "seProd": 0.002131,
+     "seProdH0": 0.0024159898,
+     "seJs": 0.0017948788,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.012039001,
+     "z": -1.1996937,
+     "nProd": 22077,
+     "nJs": 40000,
+     "seed": 209645540
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003490.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003490/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.361026,
+     "js": -0.35950814,
+     "diff": 0.0015178642,
+     "seProd": 0.003458,
+     "seProdH0": 0.0025293863,
+     "seJs": 0.0018791229,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015742359,
+     "z": 0.38567642,
+     "nProd": 22077,
+     "nJs": 40000,
+     "seed": 209645540
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.003490.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/003490/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.028486,
+     "js": 0.02655442,
+     "diff": -0.0019315805,
+     "seProd": 0.001821,
+     "seProdH0": 0.0017890532,
+     "seJs": 0.0013291172,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011272304,
+     "z": -0.85678156,
+     "nProd": 22077,
+     "nJs": 40000,
+     "seed": 209645540
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161390.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161390/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.496979,
+     "js": 0.49765,
+     "diff": 0.000671,
+     "seProd": 0.002769,
+     "seProdH0": 0.0030598874,
+     "seJs": 0.0027625123,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016489699,
+     "z": 0.16276829,
+     "nProd": 32603,
+     "nJs": 40000,
+     "seed": 209645316
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161390.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161390/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.297459,
+     "js": -0.29428902,
+     "diff": 0.0031699828,
+     "seProd": 0.00257,
+     "seProdH0": 0.002458104,
+     "seJs": 0.0022192132,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.013582228,
+     "z": 0.93356783,
+     "nProd": 32603,
+     "nJs": 40000,
+     "seed": 209645316
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161390.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161390/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.400492,
+     "js": -0.39170055,
+     "diff": 0.0087914496,
+     "seProd": 0.004241,
+     "seProdH0": 0.0037489223,
+     "seJs": 0.0033845834,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.021704004,
+     "z": 1.6202448,
+     "nProd": 32603,
+     "nJs": 40000,
+     "seed": 209645316
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.161390.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/161390/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.025423,
+     "js": 0.024616189,
+     "diff": -0.00080681067,
+     "seProd": 0.001352,
+     "seProdH0": 0.0013335832,
+     "seJs": 0.0012039789,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0090518911,
+     "z": -0.44565863,
+     "nProd": 32603,
+     "nJs": 40000,
+     "seed": 209645316
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.097950.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/097950/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.495655,
+     "js": 0.497575,
+     "diff": 0.00192,
+     "seProd": 0.003418,
+     "seProdH0": 0.003061993,
+     "seJs": 0.0022397595,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.016345885,
+     "z": 0.46984303,
+     "nProd": 21402,
+     "nJs": 40000,
+     "seed": 209645351
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.097950.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/097950/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.193552,
+     "js": -0.19003669,
+     "diff": 0.0035153126,
+     "seProd": 0.002065,
+     "seProdH0": 0.0017985765,
+     "seJs": 0.0013156068,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0097939134,
+     "z": 1.4357132,
+     "nProd": 21402,
+     "nJs": 40000,
+     "seed": 209645351
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.097950.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/097950/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.256743,
+     "js": -0.25730898,
+     "diff": -0.00056597552,
+     "seProd": 0.003019,
+     "seProdH0": 0.0027187629,
+     "seJs": 0.0019886966,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.014460581,
+     "z": -0.15655679,
+     "nProd": 21402,
+     "nJs": 40000,
+     "seed": 209645351
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.097950.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/097950/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.009872,
+     "js": 0.0086072231,
+     "diff": -0.0012647769,
+     "seProd": 0.000927,
+     "seProdH0": 0.00092253276,
+     "seJs": 0.00067480607,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0057330015,
+     "z": -1.103067,
+     "nProd": 21402,
+     "nJs": 40000,
+     "seed": 209645351
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.016360.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/016360/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.511317,
+     "js": 0.5143,
+     "diff": 0.002983,
+     "seProd": 0.002984,
+     "seProdH0": 0.0029414061,
+     "seJs": 0.0024633727,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015477706,
+     "z": 0.77091528,
+     "nProd": 28055,
+     "nJs": 40000,
+     "seed": 209645479
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.016360.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/016360/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.313145,
+     "js": -0.31889653,
+     "diff": -0.0057515252,
+     "seProd": 0.003156,
+     "seProdH0": 0.0027711784,
+     "seJs": 0.0023208102,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015669842,
+     "z": -1.468177,
+     "nProd": 28055,
+     "nJs": 40000,
+     "seed": 209645479
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.016360.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/016360/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.399349,
+     "js": -0.40987392,
+     "diff": -0.01052492,
+     "seProd": 0.004353,
+     "seProdH0": 0.0031127805,
+     "seJs": 0.0026068956,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.020295621,
+     "z": -2.0743234,
+     "nProd": 28055,
+     "nJs": 40000,
+     "seed": 209645479
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.016360.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/016360/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.032323,
+     "js": 0.029541003,
+     "diff": -0.0027819966,
+     "seProd": 0.001684,
+     "seProdH0": 0.0016869159,
+     "seJs": 0.0014127606,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011001793,
+     "z": -1.2643378,
+     "nProd": 28055,
+     "nJs": 40000,
+     "seed": 209645479
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.277810.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/277810/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.551466,
+     "js": 0.55595,
+     "diff": 0.004484,
+     "seProd": 0.001887,
+     "seProdH0": 0.001758386,
+     "seJs": 0.0023168696,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011952341,
+     "z": 1.5006265,
+     "nProd": 69444,
+     "nJs": 40000,
+     "seed": 209645260
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.277810.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/277810/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.423697,
+     "js": -0.42554172,
+     "diff": -0.001844715,
+     "seProd": 0.001532,
+     "seProdH0": 0.0015691933,
+     "seJs": 0.0020675871,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.010382511,
+     "z": -0.7107009,
+     "nProd": 69444,
+     "nJs": 40000,
+     "seed": 209645260
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.277810.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/277810/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.503042,
+     "js": -0.50565955,
+     "diff": -0.0026175543,
+     "seProd": 0.002011,
+     "seProdH0": 0.0017616828,
+     "seJs": 0.0023212135,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.012284724,
+     "z": -0.85229565,
+     "nProd": 69444,
+     "nJs": 40000,
+     "seed": 209645260
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.277810.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/277810/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.064424,
+     "js": 0.063827311,
+     "diff": -0.00059668946,
+     "seProd": 0.001877,
+     "seProdH0": 0.0018798734,
+     "seJs": 0.0024769427,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015547644,
+     "z": -0.19189064,
+     "nProd": 69444,
+     "nJs": 40000,
+     "seed": 209645260
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.000150.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/000150/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.510606,
+     "js": 0.50815,
+     "diff": -0.002456,
+     "seProd": 0.003296,
+     "seProdH0": 0.0029190311,
+     "seJs": 0.0022137536,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015881723,
+     "z": -0.61857267,
+     "nProd": 23006,
+     "nJs": 40000,
+     "seed": 209645566
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.000150.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/000150/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.510664,
+     "js": -0.50315913,
+     "diff": 0.0075048705,
+     "seProd": 0.003382,
+     "seProdH0": 0.0037308822,
+     "seJs": 0.0028294505,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.018729772,
+     "z": 1.6027682,
+     "nProd": 23006,
+     "nJs": 40000,
+     "seed": 209645566
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.000150.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/000150/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.602956,
+     "js": -0.59893467,
+     "diff": 0.0040213281,
+     "seProd": 0.001788,
+     "seProdH0": 0.0036825465,
+     "seJs": 0.0027927933,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.018487117,
+     "z": 0.87008226,
+     "nProd": 23006,
+     "nJs": 40000,
+     "seed": 209645566
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.000150.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/000150/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.107787,
+     "js": 0.10327509,
+     "diff": -0.0045119088,
+     "seProd": 0.003825,
+     "seProdH0": 0.0036683157,
+     "seJs": 0.0027820009,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.023648549,
+     "z": -0.95395046,
+     "nProd": 23006,
+     "nJs": 40000,
+     "seed": 209645566
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.140410.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/140410/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.548051,
+     "js": 0.549475,
+     "diff": 0.001424,
+     "seProd": 0.003115,
+     "seProdH0": 0.0029813074,
+     "seJs": 0.0023815497,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015684389,
+     "z": 0.36316365,
+     "nProd": 25525,
+     "nJs": 40000,
+     "seed": 209645313
+    },
+    "at": "2026-10-09T22:19:48.066Z"
+   },
+   {
+    "id": "mc.kr.sim.140410.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/140410/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.45394,
+     "js": -0.46234376,
+     "diff": -0.0084037595,
+     "seProd": 0.003307,
+     "seProdH0": 0.0024403228,
+     "seJs": 0.0019493964,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.015355205,
+     "z": -2.1891624,
+     "nProd": 25525,
+     "nJs": 40000,
+     "seed": 209645313
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.140410.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/140410/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.537176,
+     "js": -0.54513099,
+     "diff": -0.0079549872,
+     "seProd": 0.003821,
+     "seProdH0": 0.0029449596,
+     "seJs": 0.002352514,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.017948532,
+     "z": -1.7728441,
+     "nProd": 25525,
+     "nJs": 40000,
+     "seed": 209645313
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.140410.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/140410/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.07812,
+     "js": 0.07283013,
+     "diff": -0.0052898705,
+     "seProd": 0.003433,
+     "seProdH0": 0.0033322159,
+     "seJs": 0.0026618649,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.02172039,
+     "z": -1.21772,
+     "nProd": 25525,
+     "nJs": 40000,
+     "seed": 209645313
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.095340.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/095340/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.511902,
+     "js": 0.5077,
+     "diff": -0.004202,
+     "seProd": 0.003222,
+     "seProdH0": 0.0035931811,
+     "seJs": 0.00278738,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.0181903,
+     "z": -0.92400897,
+     "nProd": 24071,
+     "nJs": 40000,
+     "seed": 209645346
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.095340.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/095340/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.490312,
+     "js": -0.48852943,
+     "diff": 0.0017825681,
+     "seProd": 0.004573,
+     "seProdH0": 0.00324458,
+     "seJs": 0.0025169556,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.020879615,
+     "z": 0.34149445,
+     "nProd": 24071,
+     "nJs": 40000,
+     "seed": 209645346
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.095340.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/095340/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.58319,
+     "js": -0.58561617,
+     "diff": -0.0024261735,
+     "seProd": 0.003944,
+     "seProdH0": 0.0031678751,
+     "seJs": 0.0024574525,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.018587828,
+     "z": -0.52209941,
+     "nProd": 24071,
+     "nJs": 40000,
+     "seed": 209645346
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.095340.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/095340/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.095732,
+     "js": 0.095620509,
+     "diff": -0.00011149081,
+     "seProd": 0.003592,
+     "seProdH0": 0.00356685,
+     "seJs": 0.0027669538,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.02267074,
+     "z": -0.024589142,
+     "nProd": 24071,
+     "nJs": 40000,
+     "seed": 209645346
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.194700.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/194700/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.510759,
+     "js": 0.515575,
+     "diff": 0.004816,
+     "seProd": 0.002161,
+     "seProdH0": 0.0020603867,
+     "seJs": 0.0023825992,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.012866515,
+     "z": 1.4972198,
+     "nProd": 53489,
+     "nJs": 40000,
+     "seed": 209645290
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.194700.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/194700/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.35231,
+     "js": -0.35008263,
+     "diff": 0.0022273725,
+     "seProd": 0.003089,
+     "seProdH0": 0.0020348822,
+     "seJs": 0.0023531061,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.01553269,
+     "z": 0.57359606,
+     "nProd": 53489,
+     "nJs": 40000,
+     "seed": 209645290
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.194700.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/194700/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.461031,
+     "js": -0.454491,
+     "diff": 0.0065399978,
+     "seProd": 0.003412,
+     "seProdH0": 0.002665723,
+     "seJs": 0.0030826006,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.018393116,
+     "z": 1.4222707,
+     "nProd": 53489,
+     "nJs": 40000,
+     "seed": 209645290
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.kr.sim.194700.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/kr/20261010-hand-8a1b34f4.json#rows/194700/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/input.json",
+     "sha256": "904d7015edfc4522ab6cbb8a1f8722545102a0d0387548272bf535aae8bf785d"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.041771,
+     "js": 0.041626489,
+     "diff": -0.00014451119,
+     "seProd": 0.001424,
+     "seProdH0": 0.0014393547,
+     "seJs": 0.0016644474,
+     "seFill": 0,
+     "gaps": 0,
+     "tol": 0.011002417,
+     "z": -0.065672473,
+     "nProd": 53489,
+     "nJs": 40000,
+     "seed": 209645290
+    },
+    "at": "2026-10-09T22:19:48.067Z"
+   },
+   {
+    "id": "mc.us.file",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "schema atlas11-mc-2 · runId · place · asOf · paths 가 회차 기록과 같음 · 종목 기호 겹침 없음",
+    "result": "pass",
+    "value": {
+     "schema": "atlas11-mc-2",
+     "runId": "20261010-hand-8a1b34f4",
+     "asOf": "2026-10-09",
+     "rows": 365,
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:48.070Z"
+   },
+   {
+    "id": "mc.us.input.sha256",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#input.sha256",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "input.sha256 = 지금 입력 파일 바이트의 sha256",
+    "result": "pass",
+    "value": {
+     "recorded": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3",
+     "now": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.paths.sum",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#paths",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "Σ(n + nonfinite) = paths.target · Σn = paths.done · Σnonfinite = paths.nonfinite",
+    "result": "pass",
+    "value": {
+     "target": 10000000,
+     "done": 10000000,
+     "nonfinite": 0,
+     "sumN": 10000000,
+     "sumNonfinite": 0
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.rows.alloc",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "모든 행 n + nonfinite = nBase + nExtra(넷 다 0 이상 정수)",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.rows.order",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "모든 행 q05 ≤ q10 ≤ median ≤ q90",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.rows.cvar5",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "모든 행 cvar5 ≤ q05",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.rows.ploss",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "모든 행 0 ≤ ploss ≤ 1",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.rows.finite",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "모든 행 숫자 칸(n · nBase · nExtra · nonfinite · extreme · clamped · mean · median · ploss · q05 · q10 · q90 · cvar5 · volNow · vol2y · se 넷)이 다 있고 유한",
+    "result": "pass",
+    "value": {
+     "rows": 365,
+     "bad": 0,
+     "first": []
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.model.drift",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#model.drift",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "model.drift === 0(기울기 0)",
+    "result": "pass",
+    "value": {
+     "drift": 0
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.model.limit",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#model.limit",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "model.limit === null(미국 가격 제한 없음)",
+    "result": "pass",
+    "value": {
+     "limit": null
+    },
+    "at": "2026-10-09T22:19:48.090Z"
+   },
+   {
+    "id": "mc.us.model.spec",
+    "step": "⑧",
+    "level": "L2",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#model",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json",
+     "sha256": "a6d19c646ab575415c584d1ea1c1747a5b997f5f3a97cbfe544c31408bb2cd6f"
+    },
+    "expect": "model = fhs-crn-2(H 60 · L 500 · λ 0.94 · 바닥 0.000025 · α 0.06 · β 0.93 · 자름 ±8 · 위 끝 4 · 평균 뺌)",
+    "result": "pass",
+    "value": {
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:48.091Z"
+   },
+   {
+    "id": "mc.us.sim.universe",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#input",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "입력 종가에서 다시 센 판(양수 종가 60개 넘는 회사) = 판 행 · input.stocks · input.days · input.to 같음",
+    "result": "pass",
+    "value": {
+     "stocks": {
+      "prod": 365,
+      "js": 365
+     },
+     "days": {
+      "prod": 298,
+      "js": 298
+     },
+     "to": {
+      "prod": "2026-10-09",
+      "js": "2026-10-09"
+     },
+     "from": {
+      "prod": "2025-08-05",
+      "js": "2025-08-05"
+     },
+     "onlyJs": [],
+     "onlyProd": []
+    },
+    "at": "2026-10-09T22:19:48.178Z"
+   },
+   {
+    "id": "mc.us.sim.sample",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/cand/us1-n365-v1-2026-10-05/2026-10-08.json",
+     "sha256": "dbe5f5ca3d8dc2f8a58ddb419e508b859ee6dcc3471c52d53b4c29192dc1f112"
+    },
+    "expect": "후보(기준일 이하 가장 새 후보 파일 cand[].code · 최대 7곳) + 씨앗 FNV-1a(회차 ID)로 섞어 고른 나머지 = 20곳 · 모두 판 행과 입력에 있음",
+    "result": "pass",
+    "value": {
+     "candFile": "public/data/atlas11/us/cand/us1-n365-v1-2026-10-05/2026-10-08.json",
+     "cand": [
+      "BWLP",
+      "DAVE",
+      "UNIT",
+      "HAFN",
+      "ALSN",
+      "FCFS",
+      "DE"
+     ],
+     "extra": [
+      "BDX",
+      "GM",
+      "AUGO",
+      "MU",
+      "AWR",
+      "PH",
+      "NDAQ",
+      "DECK",
+      "TJX",
+      "ACIW",
+      "PEG",
+      "MTN",
+      "RGLD"
+     ],
+     "missing": []
+    },
+    "at": "2026-10-09T22:19:48.179Z"
+   },
+   {
+    "id": "mc.us.sim.vol",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/*/volNow,vol2y",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "표본 20곳 volNow · vol2y(연 환산 √252) — 난수 없이 입력 종가에서 셈 · 차이 ≤ 0.000001",
+    "result": "pass",
+    "value": {
+     "stocks": 20,
+     "maxDiff": 4.9829151e-7,
+     "bad": []
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BWLP.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BWLP/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.475282,
+     "js": 0.480675,
+     "diff": 0.005393,
+     "seProd": 0.00327,
+     "seProdH0": 0.0032004297,
+     "seJs": 0.0024438273,
+     "seFill": 0.00058068664,
+     "gaps": 1,
+     "tol": 0.016656331,
+     "z": 1.2951231,
+     "nProd": 23323,
+     "nJs": 40000,
+     "seed": 209645156
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BWLP.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BWLP/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.252317,
+     "js": -0.25258851,
+     "diff": -0.00027150553,
+     "seProd": 0.003518,
+     "seProdH0": 0.0027158741,
+     "seJs": 0.0020738237,
+     "seFill": 0.0013146943,
+     "gaps": 1,
+     "tol": 0.017948331,
+     "z": -0.060508252,
+     "nProd": 23323,
+     "nJs": 40000,
+     "seed": 209645156
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BWLP.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BWLP/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.325148,
+     "js": -0.32556917,
+     "diff": -0.00042116994,
+     "seProd": 0.003076,
+     "seProdH0": 0.0031365821,
+     "seJs": 0.0023950736,
+     "seFill": 0.001184015,
+     "gaps": 1,
+     "tol": 0.017147972,
+     "z": -0.098243675,
+     "nProd": 23323,
+     "nJs": 40000,
+     "seed": 209645156
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BWLP.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BWLP/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.014411,
+     "js": 0.013975007,
+     "diff": -0.00043599268,
+     "seProd": 0.001107,
+     "seProdH0": 0.0011121401,
+     "seJs": 0.00084922293,
+     "seFill": 0.00019612161,
+     "gaps": 1,
+     "tol": 0.0071326057,
+     "z": -0.30563352,
+     "nProd": 23323,
+     "nJs": 40000,
+     "seed": 209645156
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DAVE.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DAVE/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.480856,
+     "js": 0.479,
+     "diff": -0.001856,
+     "seProd": 0.002916,
+     "seProdH0": 0.0027843761,
+     "seJs": 0.0023853183,
+     "seFill": 0.00041778637,
+     "gaps": 1,
+     "tol": 0.015253532,
+     "z": -0.48670694,
+     "nProd": 29356,
+     "nJs": 40000,
+     "seed": 209645107
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DAVE.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DAVE/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.448898,
+     "js": -0.45013552,
+     "diff": -0.0012375226,
+     "seProd": 0.002389,
+     "seProdH0": 0.0032043781,
+     "seJs": 0.0027451255,
+     "seFill": 0.00071693018,
+     "gaps": 1,
+     "tol": 0.017358217,
+     "z": -0.28517274,
+     "nProd": 29356,
+     "nJs": 40000,
+     "seed": 209645107
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DAVE.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DAVE/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.5565,
+     "js": -0.55830969,
+     "diff": -0.0018096873,
+     "seProd": 0.002951,
+     "seProdH0": 0.0039881974,
+     "seJs": 0.0034166075,
+     "seFill": 0.00054349075,
+     "gaps": 1,
+     "tol": 0.02123005,
+     "z": -0.34096712,
+     "nProd": 29356,
+     "nJs": 40000,
+     "seed": 209645107
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DAVE.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DAVE/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.065541,
+     "js": 0.06576852,
+     "diff": 0.0002275198,
+     "seProd": 0.002291,
+     "seProdH0": 0.0022561419,
+     "seJs": 0.0019327908,
+     "seFill": 0.00023387624,
+     "gaps": 1,
+     "tol": 0.015077929,
+     "z": 0.075447961,
+     "nProd": 29356,
+     "nJs": 40000,
+     "seed": 209645107
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.UNIT.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/UNIT/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.503015,
+     "js": 0.506225,
+     "diff": 0.00321,
+     "seProd": 0.002739,
+     "seProdH0": 0.0031266967,
+     "seJs": 0.0028542563,
+     "seFill": 0.0010299676,
+     "gaps": 1,
+     "tol": 0.017908513,
+     "z": 0.71697744,
+     "nProd": 33333,
+     "nJs": 40000,
+     "seed": 209644866
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.UNIT.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/UNIT/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.366761,
+     "js": -0.3618823,
+     "diff": 0.0048787021,
+     "seProd": 0.0018,
+     "seProdH0": 0.002467268,
+     "seJs": 0.0022522859,
+     "seFill": 0.0040599489,
+     "gaps": 1,
+     "tol": 0.026571134,
+     "z": 0.73443641,
+     "nProd": 33333,
+     "nJs": 40000,
+     "seed": 209644866
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.UNIT.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/UNIT/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.459639,
+     "js": -0.46174085,
+     "diff": -0.0021018492,
+     "seProd": 0.002888,
+     "seProdH0": 0.0031603435,
+     "seJs": 0.0028849713,
+     "seFill": 0.0045585104,
+     "gaps": 1,
+     "tol": 0.030950506,
+     "z": -0.27164004,
+     "nProd": 33333,
+     "nJs": 40000,
+     "seed": 209644866
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.UNIT.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/UNIT/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.044764,
+     "js": 0.04369443,
+     "diff": -0.0010695704,
+     "seProd": 0.002003,
+     "seProdH0": 0.0018209475,
+     "seJs": 0.0016622817,
+     "seFill": 0.0017253572,
+     "gaps": 1,
+     "tol": 0.017838795,
+     "z": -0.29978774,
+     "nProd": 33333,
+     "nJs": 40000,
+     "seed": 209644866
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.HAFN.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/HAFN/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.50019,
+     "js": 0.49495,
+     "diff": -0.00524,
+     "seProd": 0.00325,
+     "seProdH0": 0.0025256682,
+     "seJs": 0.0019427545,
+     "seFill": 0.00065845319,
+     "gaps": 1,
+     "tol": 0.01559688,
+     "z": -1.3438585,
+     "nProd": 23667,
+     "nJs": 40000,
+     "seed": 209645056
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.HAFN.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/HAFN/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.310136,
+     "js": -0.31136692,
+     "diff": -0.0012309159,
+     "seProd": 0.002482,
+     "seProdH0": 0.0027228504,
+     "seJs": 0.0020944278,
+     "seFill": 0.0015299171,
+     "gaps": 1,
+     "tol": 0.01623913,
+     "z": -0.30319749,
+     "nProd": 23667,
+     "nJs": 40000,
+     "seed": 209645056
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.HAFN.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/HAFN/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.38672,
+     "js": -0.39036876,
+     "diff": -0.003648765,
+     "seProd": 0.002771,
+     "seProdH0": 0.0037378122,
+     "seJs": 0.0028751406,
+     "seFill": 0.0016545399,
+     "gaps": 1,
+     "tol": 0.021057133,
+     "z": -0.69311715,
+     "nProd": 23667,
+     "nJs": 40000,
+     "seed": 209645056
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.HAFN.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/HAFN/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.027287,
+     "js": 0.028882884,
+     "diff": 0.0015958837,
+     "seProd": 0.001588,
+     "seProdH0": 0.0015797489,
+     "seJs": 0.0012151494,
+     "seFill": 0.00026984763,
+     "gaps": 1,
+     "tol": 0.010178369,
+     "z": 0.78395849,
+     "nProd": 23667,
+     "nJs": 40000,
+     "seed": 209645056
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ALSN.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ALSN/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.50754,
+     "js": 0.504725,
+     "diff": -0.002815,
+     "seProd": 0.003443,
+     "seProdH0": 0.002825528,
+     "seJs": 0.0020515746,
+     "seFill": 0.00111151,
+     "gaps": 1,
+     "tol": 0.017220507,
+     "z": -0.65387157,
+     "nProd": 21088,
+     "nJs": 40000,
+     "seed": 209645186
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ALSN.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ALSN/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.229902,
+     "js": -0.22442003,
+     "diff": 0.0054819731,
+     "seProd": 0.001178,
+     "seProdH0": 0.0021876508,
+     "seJs": 0.0015884213,
+     "seFill": 0.0015655521,
+     "gaps": 1,
+     "tol": 0.013977585,
+     "z": 1.5687898,
+     "nProd": 21088,
+     "nJs": 40000,
+     "seed": 209645186
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ALSN.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ALSN/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.284498,
+     "js": -0.28119805,
+     "diff": 0.0032999547,
+     "seProd": 0.001501,
+     "seProdH0": 0.002944874,
+     "seJs": 0.00213823,
+     "seFill": 0.0020152372,
+     "gaps": 1,
+     "tol": 0.018489639,
+     "z": 0.71390355,
+     "nProd": 21088,
+     "nJs": 40000,
+     "seed": 209645186
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ALSN.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ALSN/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.01298,
+     "js": 0.015142234,
+     "diff": 0.0021622342,
+     "seProd": 0.001176,
+     "seProdH0": 0.0011519607,
+     "seJs": 0.00083642183,
+     "seFill": 0.00033410715,
+     "gaps": 1,
+     "tol": 0.0075924842,
+     "z": 1.4239306,
+     "nProd": 21088,
+     "nJs": 40000,
+     "seed": 209645186
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.FCFS.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/FCFS/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.500424,
+     "js": 0.49555,
+     "diff": -0.004874,
+     "seProd": 0.00343,
+     "seProdH0": 0.0034014995,
+     "seJs": 0.0024791308,
+     "seFill": 0.00064590786,
+     "gaps": 1,
+     "tol": 0.017318376,
+     "z": -1.1257407,
+     "nProd": 21248,
+     "nJs": 40000,
+     "seed": 209645074
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.FCFS.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/FCFS/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.235705,
+     "js": -0.23202714,
+     "diff": 0.0036778631,
+     "seProd": 0.002931,
+     "seProdH0": 0.0022266498,
+     "seJs": 0.0016228596,
+     "seFill": 0.0011224763,
+     "gaps": 1,
+     "tol": 0.014829344,
+     "z": 0.9920501,
+     "nProd": 21248,
+     "nJs": 40000,
+     "seed": 209645074
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.FCFS.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/FCFS/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.307476,
+     "js": -0.30043174,
+     "diff": 0.0070442638,
+     "seProd": 0.003484,
+     "seProdH0": 0.0027407574,
+     "seJs": 0.0019975591,
+     "seFill": 0.0015640911,
+     "gaps": 1,
+     "tol": 0.018339579,
+     "z": 1.5364068,
+     "nProd": 21248,
+     "nJs": 40000,
+     "seed": 209645074
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.FCFS.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/FCFS/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.013256,
+     "js": 0.015211058,
+     "diff": 0.0019550577,
+     "seProd": 0.00119,
+     "seProdH0": 0.0011731286,
+     "seJs": 0.00085501683,
+     "seFill": 0.00021858297,
+     "gaps": 1,
+     "tol": 0.0074878415,
+     "z": 1.3054882,
+     "nProd": 21248,
+     "nJs": 40000,
+     "seed": 209645074
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DE.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DE/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.520102,
+     "js": 0.517125,
+     "diff": -0.002977,
+     "seProd": 0.003285,
+     "seProdH0": 0.0035895988,
+     "seJs": 0.0027297477,
+     "seFill": 0.0043748247,
+     "gaps": 1,
+     "tol": 0.030624154,
+     "z": -0.3888434,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209645104
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DE.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DE/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.269359,
+     "js": -0.27268726,
+     "diff": -0.003328257,
+     "seProd": 0.002824,
+     "seProdH0": 0.0025323498,
+     "seJs": 0.0019257517,
+     "seFill": 0.0083712094,
+     "gaps": 1,
+     "tol": 0.049288991,
+     "z": -0.27010145,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209645104
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DE.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DE/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.351198,
+     "js": -0.35516487,
+     "diff": -0.0039668713,
+     "seProd": 0.004029,
+     "seProdH0": 0.0029237268,
+     "seJs": 0.0022233784,
+     "seFill": 0.013510182,
+     "gaps": 1,
+     "tol": 0.078610561,
+     "z": -0.20184928,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209645104
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DE.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DE/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.022625,
+     "js": 0.024162615,
+     "diff": 0.001537615,
+     "seProd": 0.001577,
+     "seProdH0": 0.0015958859,
+     "seJs": 0.001213608,
+     "seFill": 0.0032546535,
+     "gaps": 1,
+     "tol": 0.025102408,
+     "z": 0.30626844,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209645104
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BDX.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BDX/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.416955,
+     "js": 0.421725,
+     "diff": 0.00477,
+     "seProd": 0.003328,
+     "seProdH0": 0.0036487533,
+     "seJs": 0.0027030343,
+     "seFill": 0.00078291414,
+     "gaps": 1,
+     "tol": 0.018695755,
+     "z": 1.0205525,
+     "nProd": 21952,
+     "nJs": 40000,
+     "seed": 209645165
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BDX.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BDX/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.160404,
+     "js": -0.16524546,
+     "diff": -0.0048414596,
+     "seProd": 0.001435,
+     "seProdH0": 0.001836794,
+     "seJs": 0.001360716,
+     "seFill": 0.00065171596,
+     "gaps": 1,
+     "tol": 0.009858866,
+     "z": -1.9643069,
+     "nProd": 21952,
+     "nJs": 40000,
+     "seed": 209645165
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BDX.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BDX/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.236665,
+     "js": -0.24223706,
+     "diff": -0.0055720565,
+     "seProd": 0.002786,
+     "seProdH0": 0.0032421143,
+     "seJs": 0.0024017919,
+     "seFill": 0.00088726125,
+     "gaps": 1,
+     "tol": 0.016901775,
+     "z": -1.3186914,
+     "nProd": 21952,
+     "nJs": 40000,
+     "seed": 209645165
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.BDX.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/BDX/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.029434,
+     "js": 0.030602317,
+     "diff": 0.0011683169,
+     "seProd": 0.000894,
+     "seProdH0": 0.00092040909,
+     "seJs": 0.00068184859,
+     "seFill": 0.000067265659,
+     "gaps": 1,
+     "tol": 0.0057469986,
+     "z": 1.0164583,
+     "nProd": 21952,
+     "nJs": 40000,
+     "seed": 209645165
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.GM.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/GM/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.554737,
+     "js": 0.5489,
+     "diff": -0.005837,
+     "seProd": 0.003253,
+     "seProdH0": 0.0032563606,
+     "seJs": 0.002487868,
+     "seFill": 0.00086807869,
+     "gaps": 1,
+     "tol": 0.01711163,
+     "z": -1.3644521,
+     "nProd": 23348,
+     "nJs": 40000,
+     "seed": 209645069
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.GM.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/GM/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.282873,
+     "js": -0.28502832,
+     "diff": -0.0021553175,
+     "seProd": 0.002651,
+     "seProdH0": 0.0024547862,
+     "seJs": 0.0018754631,
+     "seFill": 0.0015744545,
+     "gaps": 1,
+     "tol": 0.015749528,
+     "z": -0.54739864,
+     "nProd": 23348,
+     "nJs": 40000,
+     "seed": 209645069
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.GM.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/GM/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.353081,
+     "js": -0.35796124,
+     "diff": -0.0048802431,
+     "seProd": 0.004222,
+     "seProdH0": 0.0030619778,
+     "seJs": 0.0023393591,
+     "seFill": 0.0020734569,
+     "gaps": 1,
+     "tol": 0.022590735,
+     "z": -0.86411409,
+     "nProd": 23348,
+     "nJs": 40000,
+     "seed": 209645069
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.GM.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/GM/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.022704,
+     "js": 0.023557378,
+     "diff": 0.0008533776,
+     "seProd": 0.00201,
+     "seProdH0": 0.0019027006,
+     "seJs": 0.0014536682,
+     "seFill": 0.00047890882,
+     "gaps": 1,
+     "tol": 0.012856865,
+     "z": 0.33187625,
+     "nProd": 23348,
+     "nJs": 40000,
+     "seed": 209645069
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AUGO.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AUGO/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.482528,
+     "js": 0.481275,
+     "diff": -0.001253,
+     "seProd": 0.00316,
+     "seProdH0": 0.0033884573,
+     "seJs": 0.0026794535,
+     "seFill": 0.0010523783,
+     "gaps": 1,
+     "tol": 0.018276154,
+     "z": -0.27423712,
+     "nProd": 25012,
+     "nJs": 40000,
+     "seed": 209645180
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AUGO.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AUGO/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.501795,
+     "js": -0.50557113,
+     "diff": -0.0037761323,
+     "seProd": 0.003709,
+     "seProdH0": 0.0041659246,
+     "seJs": 0.0032942429,
+     "seFill": 0.00087230128,
+     "gaps": 1,
+     "tol": 0.021809643,
+     "z": -0.69256195,
+     "nProd": 25012,
+     "nJs": 40000,
+     "seed": 209645180
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AUGO.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AUGO/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.605607,
+     "js": -0.61328057,
+     "diff": -0.0076735726,
+     "seProd": 0.00343,
+     "seProdH0": 0.0039682934,
+     "seJs": 0.0031379642,
+     "seFill": 0.0010424862,
+     "gaps": 1,
+     "tol": 0.021078037,
+     "z": -1.4562215,
+     "nProd": 25012,
+     "nJs": 40000,
+     "seed": 209645180
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AUGO.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AUGO/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.084907,
+     "js": 0.086694152,
+     "diff": 0.0017871518,
+     "seProd": 0.002952,
+     "seProdH0": 0.0030339335,
+     "seJs": 0.0023991106,
+     "seFill": 0.00040088188,
+     "gaps": 1,
+     "tol": 0.019546033,
+     "z": 0.45716482,
+     "nProd": 25012,
+     "nJs": 40000,
+     "seed": 209645180
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.MU.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MU/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.501373,
+     "js": 0.502775,
+     "diff": 0.001402,
+     "seProd": 0.00266,
+     "seProdH0": 0.0032425298,
+     "seJs": 0.0030475899,
+     "seFill": 0.0012056684,
+     "gaps": 1,
+     "tol": 0.019061617,
+     "z": 0.2942038,
+     "nProd": 35335,
+     "nJs": 40000,
+     "seed": 209644977
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.MU.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MU/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.394703,
+     "js": -0.39376333,
+     "diff": 0.00093966558,
+     "seProd": 0.002325,
+     "seProdH0": 0.0023809943,
+     "seJs": 0.0022378497,
+     "seFill": 0.0026629372,
+     "gaps": 1,
+     "tol": 0.019943751,
+     "z": 0.18846316,
+     "nProd": 35335,
+     "nJs": 40000,
+     "seed": 209644977
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.MU.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MU/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.473774,
+     "js": -0.47272419,
+     "diff": 0.0010498078,
+     "seProd": 0.002724,
+     "seProdH0": 0.0026714435,
+     "seJs": 0.0025108372,
+     "seFill": 0.0024498487,
+     "gaps": 1,
+     "tol": 0.020289109,
+     "z": 0.20696972,
+     "nProd": 35335,
+     "nJs": 40000,
+     "seed": 209644977
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.MU.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MU/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.050801,
+     "js": 0.050229171,
+     "diff": -0.00057182881,
+     "seProd": 0.001828,
+     "seProdH0": 0.0018543687,
+     "seJs": 0.0017428846,
+     "seFill": 0.00091116199,
+     "gaps": 1,
+     "tol": 0.014262505,
+     "z": -0.20046577,
+     "nProd": 35335,
+     "nJs": 40000,
+     "seed": 209644977
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AWR.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AWR/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.503067,
+     "js": 0.50505,
+     "diff": 0.001983,
+     "seProd": 0.003448,
+     "seProdH0": 0.0028708326,
+     "seJs": 0.0020816506,
+     "seFill": 0.0012787304,
+     "gaps": 1,
+     "tol": 0.017660023,
+     "z": 0.44915003,
+     "nProd": 21031,
+     "nJs": 40000,
+     "seed": 209645175
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AWR.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AWR/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.1395,
+     "js": -0.13978612,
+     "diff": -0.0002861156,
+     "seProd": 0.001377,
+     "seProdH0": 0.001295548,
+     "seJs": 0.00093940632,
+     "seFill": 0.0031518362,
+     "gaps": 1,
+     "tol": 0.019035443,
+     "z": -0.06012271,
+     "nProd": 21031,
+     "nJs": 40000,
+     "seed": 209645175
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AWR.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AWR/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.18222,
+     "js": -0.18144738,
+     "diff": 0.00077261544,
+     "seProd": 0.001905,
+     "seProdH0": 0.0018947204,
+     "seJs": 0.0013738683,
+     "seFill": 0.00510524,
+     "gaps": 1,
+     "tol": 0.030369324,
+     "z": 0.10176261,
+     "nProd": 21031,
+     "nJs": 40000,
+     "seed": 209645175
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.AWR.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/AWR/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.004155,
+     "js": 0.0039916739,
+     "diff": -0.00016332612,
+     "seProd": 0.000648,
+     "seProdH0": 0.00065299141,
+     "seJs": 0.00047348632,
+     "seFill": 0.00012099835,
+     "gaps": 1,
+     "tol": 0.0041227063,
+     "z": -0.1980812,
+     "nProd": 21031,
+     "nJs": 40000,
+     "seed": 209645175
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PH.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PH/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.509474,
+     "js": 0.510825,
+     "diff": 0.001351,
+     "seProd": 0.003398,
+     "seProdH0": 0.0033324993,
+     "seJs": 0.00245103,
+     "seFill": 0.00076569438,
+     "gaps": 1,
+     "tol": 0.017309663,
+     "z": 0.31219556,
+     "nProd": 21638,
+     "nJs": 40000,
+     "seed": 209644950
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PH.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PH/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.183612,
+     "js": -0.18652612,
+     "diff": -0.0029141183,
+     "seProd": 0.002171,
+     "seProdH0": 0.0017858496,
+     "seJs": 0.00131348,
+     "seFill": 0.00092203921,
+     "gaps": 1,
+     "tol": 0.011411421,
+     "z": -1.0214743,
+     "nProd": 21638,
+     "nJs": 40000,
+     "seed": 209644950
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PH.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PH/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.236799,
+     "js": -0.23987221,
+     "diff": -0.0030732145,
+     "seProd": 0.003108,
+     "seProdH0": 0.0020381987,
+     "seJs": 0.0014990809,
+     "seFill": 0.0018526086,
+     "gaps": 1,
+     "tol": 0.017330309,
+     "z": -0.70932712,
+     "nProd": 21638,
+     "nJs": 40000,
+     "seed": 209644950
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PH.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PH/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.007914,
+     "js": 0.0090466222,
+     "diff": 0.0011326222,
+     "seProd": 0.000955,
+     "seProdH0": 0.00096029727,
+     "seJs": 0.00070629195,
+     "seFill": 0.00018803,
+     "gaps": 1,
+     "tol": 0.0061068194,
+     "z": 0.92734212,
+     "nProd": 21638,
+     "nJs": 40000,
+     "seed": 209644950
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.NDAQ.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/NDAQ/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.433627,
+     "js": 0.434625,
+     "diff": 0.000998,
+     "seProd": 0.003188,
+     "seProdH0": 0.0034421198,
+     "seJs": 0.0026750719,
+     "seFill": 0.00069062993,
+     "gaps": 1,
+     "tol": 0.017869813,
+     "z": 0.2233935,
+     "nProd": 24159,
+     "nJs": 40000,
+     "seed": 209644983
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.NDAQ.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/NDAQ/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.238438,
+     "js": -0.23469966,
+     "diff": 0.0037383406,
+     "seProd": 0.002742,
+     "seProdH0": 0.0027317485,
+     "seJs": 0.002123001,
+     "seFill": 0.00079819932,
+     "gaps": 1,
+     "tol": 0.014587634,
+     "z": 1.0250711,
+     "nProd": 24159,
+     "nJs": 40000,
+     "seed": 209644983
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.NDAQ.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/NDAQ/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.347753,
+     "js": -0.34045164,
+     "diff": 0.007301359,
+     "seProd": 0.004196,
+     "seProdH0": 0.0040755189,
+     "seJs": 0.0031673232,
+     "seFill": 0.00096658407,
+     "gaps": 1,
+     "tol": 0.02172811,
+     "z": 1.3441315,
+     "nProd": 24159,
+     "nJs": 40000,
+     "seed": 209644983
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.NDAQ.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/NDAQ/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.01469,
+     "js": 0.014293356,
+     "diff": -0.00039664358,
+     "seProd": 0.000966,
+     "seProdH0": 0.0009569651,
+     "seJs": 0.00074371335,
+     "seFill": 0.00013175761,
+     "gaps": 1,
+     "tol": 0.0061664124,
+     "z": -0.32161616,
+     "nProd": 24159,
+     "nJs": 40000,
+     "seed": 209644983
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DECK.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DECK/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.501518,
+     "js": 0.5072,
+     "diff": 0.005682,
+     "seProd": 0.003224,
+     "seProdH0": 0.0026786845,
+     "seJs": 0.0020771035,
+     "seFill": 0.0084298666,
+     "gaps": 1,
+     "tol": 0.050093327,
+     "z": 0.45371313,
+     "nProd": 24051,
+     "nJs": 40000,
+     "seed": 209645111
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DECK.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DECK/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.26219,
+     "js": -0.26286316,
+     "diff": -0.000673163,
+     "seProd": 0.001875,
+     "seProdH0": 0.0023381099,
+     "seJs": 0.0018130154,
+     "seFill": 0.016180867,
+     "gaps": 1,
+     "tol": 0.092294719,
+     "z": -0.029174497,
+     "nProd": 24051,
+     "nJs": 40000,
+     "seed": 209645111
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DECK.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DECK/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.361609,
+     "js": -0.35677667,
+     "diff": 0.0048323321,
+     "seProd": 0.002486,
+     "seProdH0": 0.0033503971,
+     "seJs": 0.0025979624,
+     "seFill": 0.027366448,
+     "gaps": 1,
+     "tol": 0.15573411,
+     "z": 0.1241175,
+     "nProd": 24051,
+     "nJs": 40000,
+     "seed": 209645111
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.DECK.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/DECK/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.023273,
+     "js": 0.023197543,
+     "diff": -0.000075456604,
+     "seProd": 0.001545,
+     "seProdH0": 0.0015379466,
+     "seJs": 0.0011925534,
+     "seFill": 0.0034080518,
+     "gaps": 1,
+     "tol": 0.025999443,
+     "z": -0.014511196,
+     "nProd": 24051,
+     "nJs": 40000,
+     "seed": 209645111
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.TJX.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/TJX/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.503306,
+     "js": 0.503325,
+     "diff": 0.000019,
+     "seProd": 0.003436,
+     "seProdH0": 0.0032550703,
+     "seJs": 0.0023681615,
+     "seFill": 0.001472449,
+     "gaps": 1,
+     "tol": 0.018654971,
+     "z": 0.0040739811,
+     "nProd": 21172,
+     "nJs": 40000,
+     "seed": 209644888
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.TJX.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/TJX/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.17907,
+     "js": -0.18037689,
+     "diff": -0.0013068899,
+     "seProd": 0.001638,
+     "seProdH0": 0.0018654363,
+     "seJs": 0.001357161,
+     "seFill": 0.001280205,
+     "gaps": 1,
+     "tol": 0.011730022,
+     "z": -0.44565641,
+     "nProd": 21172,
+     "nJs": 40000,
+     "seed": 209644888
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.TJX.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/TJX/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.235526,
+     "js": -0.23539908,
+     "diff": 0.00012692295,
+     "seProd": 0.002086,
+     "seProdH0": 0.0027390237,
+     "seJs": 0.0019927221,
+     "seFill": 0.00146298,
+     "gaps": 1,
+     "tol": 0.015876429,
+     "z": 0.031977707,
+     "nProd": 21172,
+     "nJs": 40000,
+     "seed": 209644888
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.TJX.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/TJX/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.008054,
+     "js": 0.0075647692,
+     "diff": -0.00048923075,
+     "seProd": 0.000878,
+     "seProdH0": 0.00086867118,
+     "seJs": 0.00063198441,
+     "seFill": 0.000066779603,
+     "gaps": 1,
+     "tol": 0.0054295656,
+     "z": -0.45052476,
+     "nProd": 21172,
+     "nJs": 40000,
+     "seed": 209644888
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ACIW.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ACIW/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.482157,
+     "js": 0.476275,
+     "diff": -0.005882,
+     "seProd": 0.003382,
+     "seProdH0": 0.0033838257,
+     "seJs": 0.0024997404,
+     "seFill": 0.00069282032,
+     "gaps": 1,
+     "tol": 0.017278416,
+     "z": -1.3616989,
+     "nProd": 21829,
+     "nJs": 40000,
+     "seed": 209645193
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ACIW.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ACIW/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.204724,
+     "js": -0.20257143,
+     "diff": 0.0021525717,
+     "seProd": 0.002095,
+     "seProdH0": 0.0021326145,
+     "seJs": 0.0015754307,
+     "seFill": 0.0011967818,
+     "gaps": 1,
+     "tol": 0.012582273,
+     "z": 0.68431884,
+     "nProd": 21829,
+     "nJs": 40000,
+     "seed": 209645193
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ACIW.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ACIW/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.274326,
+     "js": -0.27438532,
+     "diff": -0.000059316864,
+     "seProd": 0.002381,
+     "seProdH0": 0.0029468459,
+     "seJs": 0.0021769294,
+     "seFill": 0.00075724443,
+     "gaps": 1,
+     "tol": 0.015268142,
+     "z": -0.015540034,
+     "nProd": 21829,
+     "nJs": 40000,
+     "seed": 209645193
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.ACIW.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/ACIW/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.008845,
+     "js": 0.0095141142,
+     "diff": 0.00066911422,
+     "seProd": 0.000919,
+     "seProdH0": 0.00092609521,
+     "seJs": 0.00068413618,
+     "seFill": 0.000067116449,
+     "gaps": 1,
+     "tol": 0.0057764693,
+     "z": 0.57917232,
+     "nProd": 21829,
+     "nJs": 40000,
+     "seed": 209645193
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PEG.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PEG/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.494698,
+     "js": 0.49505,
+     "diff": 0.000352,
+     "seProd": 0.003479,
+     "seProdH0": 0.0036452523,
+     "seJs": 0.0026191969,
+     "seFill": 0.00088214614,
+     "gaps": 1,
+     "tol": 0.018635201,
+     "z": 0.075555932,
+     "nProd": 20651,
+     "nJs": 40000,
+     "seed": 209644947
+    },
+    "at": "2026-10-09T22:19:51.473Z"
+   },
+   {
+    "id": "mc.us.sim.PEG.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PEG/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.171189,
+     "js": -0.17041232,
+     "diff": 0.00077668094,
+     "seProd": 0.001834,
+     "seProdH0": 0.0015808537,
+     "seJs": 0.0011358794,
+     "seFill": 0.0012701449,
+     "gaps": 1,
+     "tol": 0.011228759,
+     "z": 0.27667561,
+     "nProd": 20651,
+     "nJs": 40000,
+     "seed": 209644947
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.PEG.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PEG/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.222501,
+     "js": -0.22344622,
+     "diff": -0.00094522005,
+     "seProd": 0.00131,
+     "seProdH0": 0.0021140551,
+     "seJs": 0.0015189968,
+     "seFill": 0.0015099531,
+     "gaps": 1,
+     "tol": 0.013467886,
+     "z": -0.28073301,
+     "nProd": 20651,
+     "nJs": 40000,
+     "seed": 209644947
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.PEG.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/PEG/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.005174,
+     "js": 0.0064370899,
+     "diff": 0.0012630899,
+     "seProd": 0.000797,
+     "seProdH0": 0.00080177452,
+     "seJs": 0.00057609326,
+     "seFill": 0.000083750719,
+     "gaps": 1,
+     "tol": 0.004971806,
+     "z": 1.2702526,
+     "nProd": 20651,
+     "nJs": 40000,
+     "seed": 209644947
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.MTN.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MTN/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.516903,
+     "js": 0.519,
+     "diff": 0.002097,
+     "seProd": 0.003286,
+     "seProdH0": 0.0031317253,
+     "seJs": 0.002381553,
+     "seFill": 0.0011087462,
+     "gaps": 1,
+     "tol": 0.017402633,
+     "z": 0.48199603,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209644978
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.MTN.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MTN/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.253814,
+     "js": -0.2527547,
+     "diff": 0.0010592965,
+     "seProd": 0.002327,
+     "seProdH0": 0.0018757392,
+     "seJs": 0.0014264254,
+     "seFill": 0.0025634659,
+     "gaps": 1,
+     "tol": 0.018151511,
+     "z": 0.23343435,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209644978
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.MTN.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MTN/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.317062,
+     "js": -0.31608246,
+     "diff": 0.0009795423,
+     "seProd": 0.00327,
+     "seProdH0": 0.0022814674,
+     "seJs": 0.0017349656,
+     "seFill": 0.0024592365,
+     "gaps": 1,
+     "tol": 0.020316966,
+     "z": 0.19285208,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209644978
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.MTN.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/MTN/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.020047,
+     "js": 0.020606048,
+     "diff": 0.00055904753,
+     "seProd": 0.001395,
+     "seProdH0": 0.0014089555,
+     "seJs": 0.0010714548,
+     "seFill": 0.00023485698,
+     "gaps": 1,
+     "tol": 0.0090048412,
+     "z": 0.31041499,
+     "nProd": 23132,
+     "nJs": 40000,
+     "seed": 209644978
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.RGLD.ploss",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/RGLD/ploss",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.487034,
+     "js": 0.483475,
+     "diff": -0.003559,
+     "seProd": 0.00338,
+     "seProdH0": 0.0033709653,
+     "seJs": 0.0024922926,
+     "seFill": 0.0011540114,
+     "gaps": 1,
+     "tol": 0.018021945,
+     "z": -0.78992582,
+     "nProd": 21865,
+     "nJs": 40000,
+     "seed": 209644934
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.RGLD.q05",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/RGLD/q05",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.277601,
+     "js": -0.2770328,
+     "diff": 0.00056819885,
+     "seProd": 0.003119,
+     "seProdH0": 0.0027163522,
+     "seJs": 0.0020083104,
+     "seFill": 0.0011150897,
+     "gaps": 1,
+     "tol": 0.016123683,
+     "z": 0.14096007,
+     "nProd": 21865,
+     "nJs": 40000,
+     "seed": 209644934
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.RGLD.cvar5",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/RGLD/cvar5",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 4 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": -0.356853,
+     "js": -0.35824229,
+     "diff": -0.0013892891,
+     "seProd": 0.001812,
+     "seProdH0": 0.0031664281,
+     "seJs": 0.0023410699,
+     "seFill": 0.00073492048,
+     "gaps": 1,
+     "tol": 0.016290901,
+     "z": -0.34112026,
+     "nProd": 21865,
+     "nJs": 40000,
+     "seed": 209644934
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   },
+   {
+    "id": "mc.us.sim.RGLD.mean",
+    "step": "⑧",
+    "level": "L1",
+    "target": "public/data/atlas11/mc/us/20261010-hand-8a1b34f4.json#rows/RGLD/mean",
+    "version": "mc_verify-1",
+    "input": {
+     "file": "public/data/atlas11/us/input.json",
+     "sha256": "009581acb5961aec624397aa0c18cae59ed80d9e268c10a4b26dda4f326df3e3"
+    },
+    "expect": "|JS − 판| ≤ 5 × √(max(se_판, se_JS × √(n_JS ÷ n_판))² + se_JS² + 2 × se_채움²) — se_JS 40묶음 · se_채움 = 빈 날 채움만 12번 바꿔 센 흩어짐(빈 날 없으면 0)",
+    "result": "pass",
+    "value": {
+     "prod": 0.017801,
+     "js": 0.018393894,
+     "diff": 0.0005928937,
+     "seProd": 0.001325,
+     "seProdH0": 0.0013138164,
+     "seJs": 0.00097135823,
+     "seFill": 0.00018054793,
+     "gaps": 1,
+     "tol": 0.0083131777,
+     "z": 0.35659872,
+     "nProd": 21865,
+     "nJs": 40000,
+     "seed": 209644934
+    },
+    "at": "2026-10-09T22:19:51.474Z"
+   }
+  ]
+ }
+}

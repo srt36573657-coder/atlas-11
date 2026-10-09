@@ -32,5 +32,22 @@
   "옛 엔진 코드(저장소 맨 위 lib/*.mjs · scripts/*.mjs · tests/*.test.mjs 등 v6~v10)는 돌지 않는 보관본으로 남김 — 매일 실행이 쓰는 lib/rolling-operation.mjs · lib/input-revisions.mjs · lib/rolling-calendar.mjs 가 그 폴더에 함께 있음",
   "관측 수집(scripts/atlas11/collect_context.mjs)의 요인 표시(factors)는 수집 기록의 일부라 그대로 — 화면에는 내지 않음",
   "config/atlas11 의 예측 설정 파일(horizon · scoring-policy · evolution)은 그 명령의 기록으로 남김(쓰는 코드는 지움)"
- ]
+ ],
+ "lifted": {
+  "at": "2026-10-10 05:14 마카오 시각(서울 06:14)",
+  "by": "사장님",
+  "text": [
+   "1예측한다",
+   "2a안",
+   "3 너가 알아서 해 4번은 지켜",
+   "4너에제안대로 해",
+   "5 너에제안대로해",
+   "6은 너가 가장 현명하게 해라",
+   "7너가 해결해"
+  ],
+  "scope": "앞날 값은 몬테카를로 모형의 60거래일 범위 · 손실 경로 비율 · 가장 나쁜 5% 경로 평균으로만 · 언제나 「모형 가정 아래 추정 · 검증 전」 · 차례는 미리 정한 규칙(A안) — 자세히 docs/ATLAS_원칙.md 규칙 49",
+  "still": "추천 · 목표가 · 사라 · 팔라 · 확실 · 보장 · 무조건 · 확률 은 쓰지 않음 · 옛 예측 기록은 보관 그대로(규칙 8)",
+  "stage": "1단계(2026-10-10): 셈과 기록만(판 읽기 lens.mc · lens.elim) — 판 묶음 표시 prediction:'off' 와 남의 글 거르기는 화면을 바꾸는 2단계에서 고침",
+  "record": "이 칸은 기록 — 위 order(2026-10-04)는 고치지 않고 남김"
+ }
 }

@@ -1,0 +1,91 @@
+{
+ "schema": "atlas11-rounds-latest-1",
+ "runId": "20261010-hand-8a1b34f4",
+ "slot": "hand",
+ "date": "2026-10-10",
+ "startedAt": "2026-10-09T22:19:33.837Z",
+ "endedAt": "2026-10-09T22:19:52.800Z",
+ "file": "reports/atlas11/rounds/20261010-hand-8a1b34f4.json",
+ "paths": {
+  "target": 20000000,
+  "done": 20000000,
+  "nonfinite": 0,
+  "reproRuns": 0
+ },
+ "time": {
+  "loadSec": 1.1,
+  "simSec": 9.4,
+  "peakRssMb": 237,
+  "cpu": 2
+ },
+ "boards": {
+  "kr": {
+   "asOf": "2026-10-08",
+   "mc": "20261010-hand-8a1b34f4",
+   "elim": {
+    "pass": 269,
+    "hold": 26,
+    "out": 70
+   }
+  },
+  "us": {
+   "asOf": "2026-10-09",
+   "mc": "20261010-hand-8a1b34f4",
+   "elim": {
+    "pass": 0,
+    "hold": 344,
+    "out": 21
+   }
+  }
+ },
+ "verify": [
+  {
+   "label": "mc_verify",
+   "code": 0,
+   "sec": 5,
+   "summary": {
+    "made": 189,
+    "ran": 189,
+    "pass": 189,
+    "fail": 0,
+    "error": 0,
+    "notRun": 0
+   },
+   "out": "reports/atlas11/rounds/20261010-hand-8a1b34f4.verify-mc.json",
+   "err": null
+  },
+  {
+   "label": "elim_verify-kr",
+   "code": 0,
+   "sec": 1.1,
+   "summary": {
+    "made": 2190,
+    "ran": 2190,
+    "pass": 2190,
+    "fail": 0,
+    "error": 0,
+    "notRun": 0
+   },
+   "out": "reports/atlas11/rounds/20261010-hand-8a1b34f4.verify-elim-kr.json",
+   "err": null
+  },
+  {
+   "label": "elim_verify-us",
+   "code": 0,
+   "sec": 0.3,
+   "summary": {
+    "made": 1825,
+    "ran": 1825,
+    "pass": 1825,
+    "fail": 0,
+    "error": 0,
+    "notRun": 0
+   },
+   "out": "reports/atlas11/rounds/20261010-hand-8a1b34f4.verify-elim-us.json",
+   "err": null
+  }
+ ],
+ "ok": true,
+ "published": false,
+ "note": "검사 수는 실제로 돈 검사만 셈(같은 비교를 되풀이해 채우지 않음) · 경로 수와 검사 수는 따로 셈"
+}
