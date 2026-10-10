@@ -19,7 +19,7 @@
   3개월 가장 깊이 빠짐 = 선의 꼭대기에서 가장 많이 내려간 비율 · 1년 값은 dump.mjs(px.r1y · px.mdd1y · 10월 8일까지 252거래일)
 고르기 다시 셈: select.py 와 같은 문 · 같은 차례로 다시 골라 proposal.json 의 365곳과 한 곳도 다르지 않은지 먼저 본다(다르면 멈춤).
 """
-import json, os, sys, math, collections, statistics as st
+import gzip, json, os, sys, math, collections, statistics as st
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -309,7 +309,51 @@ def dump(name, obj):
         json.dump(obj, f, ensure_ascii=False, separators=(',', ':'))
         f.write('\n')
     return os.path.getsize(p)
+# ── ⑤ 4단 「지나온 길」(사장님 2026-10-11 08:10 「지금 3단 클릭으로 되어있어 5단 클릭으로 해」) — 회사마다 3년 남짓 종가 · 해마다 번 돈 ──
+#   days.json = 거래일(365곳 가운데 절반 넘게 종가가 있는 날 — pick36.py 와 같은 날) · 365곳 같은 무게 지수(날마다 평균 · 하루 ±50% 넘는 값 뺌 · 이어 곱함 · 첫날 = 100)
+#   co/<번호>.json = 그 회사 종가(days 색인 k0 부터 · 없는 날 null) · 하루 ±30.5% 넘게 바뀐 날(한국 가격 제한 밖 — 주식 수 바뀜일 수 있음) · 해마다 기록(예상 E 뺌)
+BUNDLE = os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10/bundle.json.gz')
+bnd = json.load(gzip.open(BUNDLE, 'rt', encoding='utf-8'))
+iso8 = lambda d: '%s-%s-%s' % (d[:4], d[4:6], d[6:])
+crow = {c: {iso8(r[0]): r[4] for r in bnd['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0} for c in members}
+dcnt = collections.Counter(d for c in members for d in crow[c])
+DAYS = sorted(d for d, n in dcnt.items() if n > len(members) / 2 and d <= asof)
+if DAYS[-1] != asof:
+    die('긴 날짜의 마지막 날이 %s 가 아님' % asof)
+lvl, allv = 100.0, [100.0]
+for k in range(1, len(DAYS)):
+    rs = [crow[c][DAYS[k]] / crow[c][DAYS[k - 1]] - 1 for c in members if DAYS[k] in crow[c] and DAYS[k - 1] in crow[c]]
+    rs = [r for r in rs if abs(r) < 0.5]
+    if rs:
+        lvl *= 1 + sum(rs) / len(rs)
+    allv.append(round(lvl, 2))
+os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
+nco = 0
+for c in members:
+    ks = [k for k, d in enumerate(DAYS) if d in crow[c]]
+    k0 = ks[0]
+    cl = [crow[c].get(d) for d in DAYS[k0:]]
+    jumps = []
+    prev = None
+    for k in range(k0, len(DAYS)):
+        v = crow[c].get(DAYS[k])
+        if v and prev and abs(v / prev - 1) > 0.305:
+            jumps.append([DAYS[k], d2((v / prev - 1) * 100)])
+        if v:
+            prev = v
+    now = NOWROW.get(c) or SELROW[c]
+    f = now.get('fin') or {}
+    yrs = [p for p in (f.get('periods') or []) if not p.endswith('E')]
+    fin = {'years': yrs, **{key: [((f.get(key) or {}).get(y)) for y in yrs] for key in ('rev', 'op', 'net', 'roe', 'debt')}}
+    with open(os.path.join(OUT, 'co', c + '.json'), 'w', encoding='utf-8') as fh:
+        json.dump({'schema': 'atlas-new-co-1', 'code': c, 'k0': k0, 'close': cl, 'jumps': jumps, 'fin': fin, 'per': now.get('per'), 'pbr': now.get('pbr'), 'key': 'net' if isfin(SELROW[c]) else 'op'}, fh, ensure_ascii=False, separators=(',', ':'))
+        fh.write('\n')
+    nco += 1
+with open(os.path.join(OUT, 'days.json'), 'w', encoding='utf-8') as fh:
+    json.dump({'schema': 'atlas-new-days-1', 'asOf': asof, 'dates': DAYS, 'all': allv}, fh, ensure_ascii=False, separators=(',', ':'))
+    fh.write('\n')
+
 sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES)}
-print(json.dumps({'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'names': len(names),
+print(json.dumps({'days': len(DAYS), 'co': nco, 'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'names': len(names),
                   'all': {'chg': core_all['chg'], 'cwChg': core_all['cwChg'], 'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat']},
                   'dd50': ndd50, 'dd30': ndd30, 'perMedian': per_med, 'jump': sum(1 for c in companies.values() if c['jump'])}, ensure_ascii=False))
