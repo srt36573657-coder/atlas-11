@@ -34,8 +34,9 @@ test('후보마다 8걸음 — 기승전결 차례 · 이름 · 그림 손잡이
 test('핵심 숫자 = 판 읽기 몬테카를로 행 · 꼬리표 · 평균(mean)은 어디에도 없음', () => {
   const s = T.items[0].steps[1], t = text(s);
   assert.ok(s.title.includes(MC_TAG));
-  assert.ok(t.includes(`가운데 80% ${pctR(-0.42)} ~ ${pctR(0.725)}`)); assert.ok(t.includes(`가운데 값 ${pctR(-0.037)}`));
-  assert.ok(t.includes('손실로 끝난 경로 53.8%')); assert.ok(t.includes(`가장 나쁜 5% 경로 평균 ${pctR(-0.608)}`));
+  assert.ok(t.includes(`경로 100번 중 80번이 ${pctR(-0.42)} ~ ${pctR(0.725)} 사이`)); assert.ok(t.includes(`가운데 값 ${pctR(-0.037)}`)); // 2026-10-10 18:22 다섯 팀 전체 검토 — 자연 빈도 · ▲▼ 없이
+  assert.ok(t.includes('손실로 끝난 경로 100번 중 54번')); assert.ok(t.includes(`가장 나쁜 5% 경로 평균 ${pctR(-0.608)}`));
+  assert.ok(s.lines.flat().filter(x => typeof x === 'object').every(x => 'm' in x), '셈 틀 숫자는 {m}(먹색 · 부호만 — 지난 기록 숫자 꼴 아님)');
   for (const x of all) assert.ok(!text(x).includes('+7.8%') && !text(x).includes('7.77'), '평균(mean +7.8%)을 싣지 않음');
   assert.ok(T.items[0].steps[4].title.includes(MC_TAG), '시뮬레이션 요약에도 꼬리표');
 });
@@ -52,7 +53,7 @@ test('범위 띠 — 따라간 회사만 그림 · 없으면 까닭', () => {
 test('소거 까닭 — 통과 · 보류(처음 걸린 것) · 하락 위험은 표시만 · 판정 없음은 까닭', () => {
   const a = T.items[0].steps[5], b = T.items[1].steps[5], c = T.items[2].steps[5];
   assert.equal(a.title, '소거 기준을 모두 넘음'); assert.deepEqual(a.checks.map(x => x.mark), ['✓', '·']); assert.match(a.note, /표시만/);
-  assert.equal(b.title, '보류 — 처음 걸린 것: risk'); assert.match(text(b), /확인 못 함/);
+  assert.equal(b.title, '보류 — 자료가 없어 확인 못 한 것: risk'); assert.match(text(b), /확인 못 함/); // 보류는 「걸린 것」이 아니라 확인 못 함(2026-10-10 18:22 다섯 팀 전체 검토)
   assert.equal(c.title, '소거 판정 없음');
 });
 test('판단과 다음 확인 — 한국 · 미국(위험 공시 확인 못 함) · 마지막 걸음은 처음으로 돌아가 멈춤', () => {

@@ -52,7 +52,7 @@ const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } ca
    · 한국 시각 08:00 ~ 20:00 위에 막대 다섯 = 바로 아래 글 줄과 같은 사실(출처도 그 줄) — 넥스트레이드 · 시작 값 · 정규장 · 마감 값 · 애프터마켓
    · 보일 때 위에서부터 차례로 자람(motion.js · 처음 한 번) · 그림은 화면 읽기 프로그램에서 건너뜀(같은 사실을 아래 글 줄이 읽음) */
 const DAY = [8, 20];
-export const DAY_BARS = [['NXT', 8, 20, 'nxt'], ['시작 값', 8.5, 9, 'auc'], ['정규장', 9, 15.5, 'reg'], ['마감 값', 15 + 20 / 60, 15.5, 'auc'], ['애프터마켓', 16, 20, 'aft']];
+export const DAY_BARS = [['넥스트레이드', 8, 20, 'nxt'], ['시작 값', 8.5, 9, 'auc'], ['정규장', 9, 15.5, 'reg'], ['마감 값', 15 + 20 / 60, 15.5, 'auc'], ['애프터마켓', 16, 20, 'aft']]; // 옛 「NXT」(영어 약자가 두 번 · 2026-10-10 18:22 다섯 팀 전체 검토 — 구글 · 클로드팀) — 줄 글 「대체거래소 넥스트레이드(NXT · …)」에서 한 번 풂
 const hm = x => `${String(Math.floor(x)).padStart(2, '0')}:${String(Math.round((x % 1) * 60)).padStart(2, '0')}`;
 const at = x => `${((x - DAY[0]) / (DAY[1] - DAY[0]) * 100).toFixed(3)}%`;
 function dayLine() {

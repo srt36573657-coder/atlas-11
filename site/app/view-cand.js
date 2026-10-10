@@ -50,21 +50,28 @@ export const candOfLens = lens => (lens && !lens.none ? lens.cand ?? null : null
 const pairOf = (C, code) => { const xs = C?.items ?? [], i = xs.findIndex(x => x.code === code); return i < 0 ? xs[0]?.code ?? null : (xs[i + 1] ?? xs[i - 1])?.code ?? null; };
 /** 고른 까닭 한 문장 — 1년 추세 · 365곳 가운데 상위 20% 그물(기준선) · 담는 날 새로 든 초입 · 담은 뒤(담는 날이 지났으면)
  *   한 덩이(span)로 묶음 — 카드 줄(.ra-li)은 flex 라 조각마다 따로 줄을 바꿔 「(마지막 20거래일 뺌)」이 줄 머리에 홀로 오던 것을 막음(글이 이어서 흐름) */
-export const reasonEl = (x, C) => [h('span', {class: 'cd-wt'}, '1년 추세 ', h('b', {class: 'cd-mcn'}, m12Txt(x)), `(마지막 20거래일 뺌) · ${C.pool?.universe ?? 365}곳 가운데 상위 ${C.netPct ?? 20}% 그물(기준선 ${pct1(C.grow?.qD)}) · ${md(x.grow?.plantedAt)} 새로 든 초입`,
+export const reasonEl = (x, C) => [h('span', {class: 'cd-wt'}, '1년 추세 ', h('b', {class: 'cd-mcn'}, m12Txt(x)), `(마지막 20거래일 뺌) · 값 있는 ${C.pool?.valid ?? C.pool?.universe ?? 365}곳 가운데 상위 ${C.netPct ?? 20}% 그물(기준선 ${pct1(C.grow?.qD)}) · ${md(x.grow?.plantedAt)} 새로 든 초입`,
   ...(finite(x.grow?.since?.rD) ? [' · 담은 뒤 ', pv(x.grow.since.rD)] : []))];
 /** 업종 돈 흐름(곁 정보 — 고르는 데 쓰지 않음) 한 마디 */
 export const secDirTxt = sc => (sc?.dir === 'in' ? `돈이 들어온 업종 ${sc.rank}위(${sc.label})` : sc?.dir === 'out' ? `돈이 빠진 업종 ${sc.rank}위(${sc.label})` : `업종 돈 흐름 1위~3위 밖(${sc?.label ?? '업종 없음'})`);
 
 /* ── 몬테카를로 범위 · 소거(규칙 49 · 사장님 2026-10-10 「1예측한다 2a안」 — 차례는 미리 정한 규칙 그대로 · 범위와 위험만 · 늘 「모형 가정 아래 추정 · 검증 전」) ── */
-const rv = r => h('b', {class: `lv-n ${finite(r) ? (r > 0 ? 'up' : r < 0 ? 'down' : 'flat') : 'na'}`}, pctR(r)); // 비율 → 빨강 · 파랑 숫자(짧은 줄 — ▲▼ 없이)
+/** 셈 틀(몬테카를로) 숫자 — 지난 기록 숫자(빨강 · 파랑 · ▲▼)와 다른 모양: 먹색 · 부호만(2026-10-10 18:22 다섯 팀 전체 검토 — 클로드팀 「셈 틀 값이 지난 기록과 같은 모양으로 나옴」) */
+const rv = r => h('b', {class: 'lv-n mc-n'}, pctR(r));
 const ELIM_ST = {pass: '통과', hold: '보류', out: '제외'};
-/** 소거 한마디 — 통과 · 보류(처음 걸린 것) · 제외 + 하락 위험 표시(모형 시험 전 · 판정에 안 넣음) */
-export const elimTxt = E => { if (!E?.state) return '판정 없음'; const f = E.checks?.find(c => c.id === E.first)?.label ?? E.first;
-  return `${ELIM_ST[E.state] ?? E.state}${E.state !== 'pass' && f ? `(${f})` : ''}${(E.flags ?? []).includes('tail') ? ' · 하락 위험 표시' : ''}`; };
-/** 카드 한 줄 — 60거래일 범위(가운데 80%) · 손실 경로 · 소거 · 꼬리표 */
-function mcLine(R, E) {
-  return [h('span', {class: 'cd-k'}, '60거래일 범위'), ' ', ...(R ? [pv(R.q10 * 100), ' ~ ', pv(R.q90 * 100), ` · 손실 경로 ${shareR(R.ploss)}(${freqR(R.ploss)})`] : ['이번 회차 셈 없음']),
-    ` · 소거 ${elimTxt(E)}`, h('small', {class: 'cd-tag'}, ` · ${MC_TAG}`)];
+const ELIM_CODE = {close: '마감 가격', stale: '오래된 가격', ca: '기업행사', history: '분석 입력', liquidity: '거래 가능성', profit: '흑자', risk: '위험 공시', paths: '경로 수', converge: '수렴', tail: '하락 위험'}; // 줄인 행(이름표 없음)도 낱말로 — 영어 기호를 화면에 내지 않음
+/** 소거 한마디 — 통과 · 보류(그 검사를 자료가 없어 확인 못 함) · 제외(처음 걸린 것) — 보류는 「나쁜 것이 있었다」가 아니라 「확인 못 함」(미국 판 위험 공시 · 늦은 마감 가격 — 클로드팀 · 머크팀)
+ *  하락 위험 = 숫자로(가장 나쁜 5% 경로 평균 · 기준 −50% · 표시만 — 머크팀 「내림 위험 표시」 → 숫자) */
+export const elimTxt = (E, R = null) => { if (!E?.state) return '판정 없음'; const f = E.checks?.find(c => c.id === E.first)?.label ?? ELIM_CODE[E.first] ?? E.first;
+  const tail = (E.flags ?? []).includes('tail') ? (finite(R?.cvar5) ? ` · 가장 나쁜 5% 경로 평균 ${pctR(R.cvar5)}(기준 −50%보다 나쁨 · 표시만)` : ' · 하락 위험 표시(기준 −50%보다 나쁨)') : '';
+  const hold = {risk: '위험 공시가 있는지 확인 못 함 — 자료 없음', close: '그날 종가가 늦음', stale: '가격이 늦음', profit: '결산 자료 모자람'}[E.first] ?? `${f} 확인 못 함 — 자료 없음`;
+  return `${ELIM_ST[E.state] ?? E.state}${E.state === 'hold' ? `(${hold})` : E.state === 'out' && f ? `(${f})` : ''}${tail}`; };
+/** 몫의 365곳 가운데값(비교 대상 — 머크팀 「손실 몫에 비교 대상이 없음」) — 이번 회차 모든 회사 행의 가운데값 */
+export const mcMid = (M, k) => { const v = (M?.rows ?? []).map(r => r?.[k]).filter(finite).sort((a, b) => a - b); return v.length ? (v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2) : null; };
+/** 카드 한 줄 — 60거래일 범위(100번 중 80번이 든 사이) · 손실 경로(100번 중 n번 · 365곳 가운데값) · 소거 · 꼬리표 */
+function mcLine(R, E, mid = null, uni = 365) {
+  return [h('span', {class: 'cd-k'}, '60거래일 범위'), ' ', ...(R ? ['100번 중 80번이 ', rv(R.q10), ' ~ ', rv(R.q90), ' 사이', ` · 손실 경로 ${freqR(R.ploss)}${finite(mid) ? `(${uni}곳 가운데값 ${Math.round(mid * 100)}번)` : ''}`] : ['이번 회차 셈 없음']),
+    ` · 소거 ${elimTxt(E, R)}`, h('small', {class: 'cd-tag'}, ` · ${MC_TAG}`)];
 }
 
 /* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
@@ -83,7 +90,7 @@ const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' &&
 const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
-function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null} = {}) {
+function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null, mid = null} = {}) {
   const rk = h('span', {class: 'cd-rk'}), name = h('span', {class: 'cd-name', 'data-ident': ''}), sec = h('small', {class: 'cd-sec'}), stw = h('span', {class: 'cd-stw'}), px = h('p', {class: 'cd-px'});
   const why = h('p', {class: 'ra-li cd-why'}), mcl = h('p', {class: 'ra-li cd-mc'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
   const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, mcl, risk, note, acts);
@@ -94,7 +101,7 @@ function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null
     stw.replaceChildren(stEl(x.status));
     px.replaceChildren(h('b', null, won(x.close)), ` · ${korDate(x.date)} 종가 · 20거래일 `, pv(x.r20));
     why.replaceChildren(h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C));
-    mcl.replaceChildren(...mcLine(mcOf(x.code), elOf(x.code))); // 60거래일 범위 · 손실 경로 · 소거(규칙 49 · 모형 가정 아래 추정 · 검증 전)
+    mcl.replaceChildren(...mcLine(mcOf(x.code), elOf(x.code), mid, C.pool?.universe ?? 365)); // 60거래일 범위 · 손실 경로 · 소거(규칙 49 · 모형 가정 아래 추정 · 검증 전)
     risk.replaceChildren(h('span', {class: 'cd-k'}, '가장 큰 위험'), ' ', x.risk.text);
     const many = x.status === 'wait' && String(x.waitWhy ?? '').includes(' · '); // 조건 대기 까닭이 하나면 「가장 큰 위험」 줄과 같은 말이라 한 번만(글 줄이기) · 둘 이상이면 모두 적음 · 재검토 까닭은 따로
     note.hidden = !(x.status === 'recheck' || many); note.className = x.status === 'recheck' ? 'cd-note cd-note-re' : 'cd-note';
@@ -110,7 +117,7 @@ function miniRow(x, onPick, R = null) {
     h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 1년 추세 ${m12Txt(x)}${R ? ` · 60거래일 범위 ${pctR(R.q10)} ~ ${pctR(R.q90)} · 손실 경로 ${freqR(R.ploss)}` : ''}`, onclick: () => onPick(x.code)},
       h('span', {class: 'cd-rk'}, `${x.rank}위`),
       h('span', {class: 'cd-nm'}, h('span', {class: 'cd-name', 'data-ident': ''}, x.name), x.sector ? h('small', {class: 'cd-sec'}, x.sector) : null,
-        R ? h('small', {class: 'cd-mcr', 'data-q10': String(R.q10), 'data-q90': String(R.q90), 'data-ploss': String(R.ploss)}, '60거래일 ', rv(R.q10), ' ~ ', rv(R.q90), ` · 손실 경로 ${freqR(R.ploss)}`) : null),
+        R ? h('small', {class: 'cd-mcr', 'data-q10': String(R.q10), 'data-q90': String(R.q90), 'data-ploss': String(R.ploss)}, '60거래일 ', rv(R.q10), ' ~ ', rv(R.q90), ' 사이', ` · 손실 경로 ${freqR(R.ploss)}`) : null),
       h('span', {class: 'cd-pw'}, h('b', {class: 'cd-pwv'}, m12Txt(x))),
       h('span', {class: `cd-stm cd-stm-${x.status}`}, x.status === 'met' ? '✓' : ST[x.status])));
 }
@@ -130,7 +137,7 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   const n = C.items.length;
   let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
   const M = lens?.mc && !lens.mc.none ? lens.mc : null, mcRow = new Map((M?.rows ?? []).map(r => [String(r.code), r])), elRow = new Map((lens?.elim && !lens.elim.none ? lens.elim.rows ?? [] : []).map(r => [String(r.code), r]));
-  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null}) : null;
+  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null, mid: mcMid(M, 'ploss')}) : null;
   const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false), mcRow.get(String(x.code)) ?? null)) : [];
   const pic = candBars(C, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
   // 저절로 둘러보기 — 막대 그림 바로 아래 고정 칸(긴 글은 그림 밖 · 그림 위에는 고른 곳 이름표 하나) · 한국어 화면만(번역 미룸)
@@ -142,9 +149,11 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
     for (const r of rows) r.querySelector('.cd-pick')?.setAttribute('aria-pressed', String(r.dataset.code === code));
   }
   const p = C.pool, q = C.grow?.qD, PM = pic?.model, pc = v => (finite(v) ? `${Number(Math.abs(v).toFixed(1)) === 0 ? '' : v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%` : '셀 수 없음');
-  const key = keyEl([{cls: 'up', label: `막대 = ${C.asOf ? `${md(C.asOf)} 종가` : '마지막 종가'} 1년 추세`}, {cls: '', label: `점선 = 그물 기준선(1년 추세 상위 ${C.netPct ?? 20}% · ${pc(q)})`}, {cls: 'cb-k-past', label: '짧은 세로 줄 = 20거래일 전 1년 추세'}, {cls: 'cb-k-hero', label: '금빛 테 = 아래 카드의 회사'}], n ? null : 1);
-  const ctx = h('p', {class: 'cb-ctx'}, `${p.universe}곳 가운데 1년 추세 상위 ${C.netPct ?? 20}% ${PM?.above ?? p.net}곳 · 그 가운데 기준을 넘은 그물 ${PM?.green ?? p.netElig}곳 · 막 들어온 ${n}곳`); // 365곳 이야기 — 바둑판 없이 글 한 줄(제목의 「그물 N곳」과 같은 수)
-  const note = h('p', {class: 'muted xs cb-note'}, '줄을 누르면 그 회사 카드 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)');
+  const key = keyEl([{cls: 'up', label: `막대 = 1년 추세(${C.asOf ? `${md(C.asOf)} 종가 판` : '마지막 판'} · 마지막 20거래일 뺌)`}, {cls: '', label: `점선 = 그물 기준선(1년 추세 상위 ${C.netPct ?? 20}% · ${pc(q)})`}, {cls: 'cb-k-past', label: '짧은 세로 줄 = 20거래일 전 1년 추세'}, {cls: 'cb-k-hero', label: '금빛 테 = 아래 카드의 회사'}], n ? null : 1); // 「10월 8일 종가 1년 추세」는 그날까지 값으로 읽힘(클로드팀) — 마지막 20거래일을 뺀 값
+  const ctx = h('p', {class: 'cb-ctx'}, `${p.universe}곳 가운데 값 있는 ${p.valid}곳 · 그 가운데 1년 추세 상위 ${C.netPct ?? 20}% ${PM?.above ?? p.net}곳 · 기준을 넘은 그물 ${PM?.green ?? p.netElig}곳 · 막 들어온 ${n}곳`); // 365곳 이야기 — 바둑판 없이 글 한 줄(제목의 「그물 N곳」과 같은 수)
+  const riskHold = C.items.filter(x => elRow.get(String(x.code))?.state === 'hold' && elRow.get(String(x.code))?.first === 'risk').length; // 미국 판 — 7곳 모두 위험 공시 자료가 없어 걸러내기 보류(카드 안에만 있던 것을 그림 밑 한 줄로 · 2026-10-10 18:22 다섯 팀 전체 검토 · 구글팀)
+  const note = h('p', {class: 'muted xs cb-note'}, '줄을 누르면 그 회사 카드 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)', p.universe > p.valid ? ` · 값 없는 ${p.universe - p.valid}곳 = 그날 종가가 늦거나 1년 기록이 모자람(이번 셈에서 빠짐 · 못 넘은 것 아님)` : '',
+    riskHold ? h('b', {class: 'cb-hold'}, ` · ${riskHold === n ? `${n}곳 모두` : `${n}곳 가운데 ${riskHold}곳`} 위험 공시가 있는지 확인 못 함(공시 자료 없음 · 걸러내기 보류)`) : null);
   if (pic) pic.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
     bars: PM.rows.map(r => [r.code, r.rank, r.status, r.m12, r.m12p]), above: PM.above, green: PM.green}); // 막대 = 판 읽기 값 · 선 위 · 초록 = 그림이 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳 · 1년 추세 · 20거래일 전 값과 맞댐)
   const playRow = n && pic ? h('div', {class: 'cb-playrow'}, h('span', {class: 'cb-playcap'}, `${n}곳이 하나씩 기준선을 넘는 모습`)) : null; // 「▶ 재생」이 이 줄 맨 앞(artStage ctlSlot)
@@ -153,7 +162,7 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const gl = growLine(C);
   const list0 = n ? h('ol', {class: 'cd-list cd-mini', 'aria-label': `후보 ${n}곳 — 누르면 위 카드`}, ...rows) : null;
-  const mcCap = n ? h('p', {class: 'muted xs cd-mccap'}, M ? `줄의 범위 = 60거래일 뒤 가운데 80% · 손실 경로 = 0% 아래로 끝난 경로 수(100번 중 몇 번) · ${MC_TAG} · 차례는 미리 정한 규칙 그대로(범위로 다시 줄 세우지 않음)` : `60거래일 범위 없음 — ${lens?.mc?.why ?? '몬테카를로 결과 없음'}`) : null;
+  const mcCap = n ? h('p', {class: 'muted xs cd-mccap'}, M ? `줄의 범위 = 60거래일 뒤 경로 100번 중 가운데 80번이 든 사이 · 손실 경로 = 0% 아래로 끝난 경로 수(100번 중 몇 번 · ${p.universe}곳 가운데값 ${finite(mcMid(M, 'ploss')) ? `${Math.round(mcMid(M, 'ploss') * 100)}번` : '셈 없음'}) · ${MC_TAG} · 차례는 미리 정한 규칙 그대로(범위로 다시 줄 세우지 않음)` : `60거래일 범위 없음 — ${lens?.mc?.why ?? '몬테카를로 결과 없음'}`) : null;
   const list = list0 ? h('details', {class: 'cd-more-d cd-rows-d'}, h('summary', null, `${n}곳 60거래일 범위 · 손실 경로 보기`), mcCap, list0) : null; // 접힘(처음엔 막대 그림과 카드만)
   const all = (C.rank ?? []).length ? h('p', {class: 'cd-all'}, h('a', {href: '#/', class: 'cd-all-a', onclick: e => { e.preventDefault(); openRank(); }}, `돈 유입 1등~${C.rank.length}등 모두 보기 ›`)) : null;
   const steps = n ? [{c: 0, at: 0, ms: 1300}, ...C.items.map((x, k) => ({c: 1, at: k + 1, ms: 700})), {c: 2, at: n + 1, ms: 1200}, {c: 3, at: n + 2, ms: 1000}]
@@ -392,7 +401,7 @@ export async function renderCompare(main, {hash, manifest}) {
     for (const [box, cur, other] of [[pickA, A, B], [pickB, B, A]]) { const sel = box.querySelector('select'); sel.value = cur.code; for (const o of sel.options) o.disabled = o.value === other.code; }
     for (const r of R) setBar(r);
     why.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '앞선 까닭'), decide(A, B));
-    risk.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '반대 근거'), `가 ${A.risk.text} · 나 ${B.risk.text}`);
+    risk.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '반대 근거'), A.risk.text === B.risk.text ? `둘 다 ${A.risk.text}` : `가 ${A.risk.text} · 나 ${B.risk.text}`); // 같은 글이면 한 번(2026-10-10 18:22 다섯 팀 전체 검토 · 삼성 · 클로드팀)
     next.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '확인할 것'), `그 뒤 판(거래일 16:00)의 그물 안팎 · 다음 담는 날 ${nextTxt(C.grow)}`);
     labels.dataset.check = JSON.stringify({a: A.code, b: B.code, am12: A.grow?.m12D ?? null, bm12: B.grow?.m12D ?? null, ar20: A.r20, br20: B.r20});
     sayBox.textContent = decide(A, B);
@@ -418,9 +427,18 @@ export async function renderCompare(main, {hash, manifest}) {
 
 /* ═════════ 종목 화면 「후보 판단」 칸 — 여섯 질문(7) · 주장 → 관측 → 계산 · 해석 → 반대 근거 → 확인할 것 ═════════ */
 const qRow = (k, ...v) => h('div', {class: 'cj-r'}, h('dt', null, k), h('dd', null, ...v));
-function qBox(id, q, rows) { return h('section', {class: 'cj-q', id, 'aria-label': q, tabindex: '-1'}, h('h3', {class: 'cj-qh'}, q), h('dl', {class: 'cj-dl'}, ...rows)); }
+/** 물음 칸 하나 — 물음 한 줄만 보이고 누르면 펼침(2026-10-10 18:22 다섯 팀 전체 검토 · 삼성 · 구글팀 — 일곱 칸이 다 펼쳐져 회사 화면 7,294px · 위 단추 다섯은 제 칸을 열고 그리로) */
+function qBox(id, q, rows) { return h('details', {class: 'cj-q', id, 'aria-label': q, tabindex: '-1'}, h('summary', {class: 'cj-qh'}, q), h('dl', {class: 'cj-dl'}, ...rows)); }
 const okEl = ok => h('b', {class: 'cj-ok ' + (ok ? 'yes' : 'no')}, ok ? '✓ 넘음' : '✕ 못 넘음');
-const naEl = () => h('b', {class: 'cj-ok na'}, '? 확인 못 함'); // 미국 판 위험 공시 — 자료가 없어 넘었다고도 · 못 넘었다고도 하지 않음
+const naEl = (t = '? 확인 못 함') => h('b', {class: 'cj-ok na'}, t); // 미국 판 위험 공시 — 자료가 없어 넘었다고도 · 못 넘었다고도 하지 않음
+/** 조건 하나(후보가 아닌 종목) — 그날 종가가 늦은 곳은 「✕ 못 넘음」이 아니라 「? 늦음 · ? 셈 못 함」(2026-10-10 18:22 다섯 팀 전체 검토 — 구글 · 클로드 · 머크팀: 삼성전자처럼 자료가 늦었을 뿐인 곳에 ✕ 넷)
+ *  1년 추세를 셀 수 없으면 그 뒤 조건(그물 안 · 새로 듦)도 셈 못 함 · 미국 판 위험 공시는 자료가 없어 확인 못 함 */
+function flagLi(flags, i, k) {
+  if (i === 2 && usRisk()) return h('li', {'data-ok': 'na'}, naEl(), ' 위험 공시(미국 판 공시 자료 없음)');
+  if (i === 0 && !flags[0]) return h('li', {'data-ok': 'na'}, naEl('? 늦음'), ` ${k}(자료가 늦게 옴 — 새 종가가 오면 다시 셈)`);
+  if (i >= 3 && !flags[3]) return h('li', {'data-ok': 'na'}, naEl('? 셈 못 함'), ` ${k}${flags[0] ? '(1년 기록이 모자람)' : '(그날 종가 없음)'}`);
+  return h('li', {'data-ok': String(flags[i])}, okEl(flags[i]), ' ', k);
+}
 const usRisk = () => place.id !== 'kr'; // 미국 판(2026-10-09 19:29 「미국장 까지 다 대입」) — 회사 공시 원문 · 외국인+기관 매매 자료 없음 · 지난 기록 셈은 한국 판으로만
 /** 후보가 아닌 종목 — 조건마다 넘었나(판 읽기 cand.flags) · 처음 막힌 조건 */
 export const FLAG_NAMES = ['그날 종가', '흑자', '위험 공시 없음', '1년 추세 셈', '그물 안(1년 추세 상위 20%)', '새로 듦(초입)']; // 규칙 5판(lib/atlas11/cand.mjs FLAGS5) — 4판 다섯 조건과 수가 달라 관심 목록이 규칙 바뀜을 알아봄
@@ -435,17 +453,17 @@ export function candJudgeBox(lens, s) {
     : [qRow('기록', '아직 이 종목이 든 후보 고정 기록 없음 — 기록하면 그날 종가부터 셈')]);
   if (!x) { // 후보가 아닌 종목 — 조건 상태만(짧게)
     if (!flags && !hist) return null;
-    const firstFail = flags ? flags.findIndex(ok => !ok) : -1;
+    const firstFail = flags ? flags.findIndex((ok, i) => !ok && !(i === 2 && usRisk())) : -1, late = !!flags && !flags[0];
     return h('section', {class: 'b-box cj-box cj-out', 'aria-label': '후보 판단', 'data-cand': 'out'},
       h('h2', {class: 'b-box-h'}, '후보 판단', h('small', null, ` · ${korDate(C.asOf)} 종가 · 규칙 ${C.rules}`)),
-      h('p', {class: 'mk-l'}, h('b', null, '매수 검토 후보 아님'), firstFail >= 0 ? ` — 처음 막힌 조건: ${FLAG_NAMES[firstFail]}` : flags ? ' — 조건은 넘었지만 7곳 밖(순위 · 업종 한도 · 담는 날이 아님)' : ''),
-      flags ? h('ul', {class: 'cj-flags'}, ...FLAG_NAMES.map((k, i) => (i === 2 && usRisk() ? h('li', {'data-ok': 'na'}, naEl(), ' 위험 공시(미국 판 공시 자료 없음)') : h('li', {'data-ok': String(flags[i])}, okEl(flags[i]), ' ', k)))) : null,
+      h('p', {class: 'mk-l'}, h('b', null, '매수 검토 후보 아님'), late ? ' — 그날 종가가 늦어 이번 판은 셈 못 함(못 넘은 것이 아님)' : firstFail >= 0 ? ` — 처음 막힌 조건: ${FLAG_NAMES[firstFail]}` : flags ? ' — 조건은 넘었지만 7곳 밖(순위 · 업종 한도 · 담는 날이 아님)' : ''),
+      flags ? h('ul', {class: 'cj-flags'}, ...FLAG_NAMES.map((k, i) => flagLi(flags, i, k))) : null,
       hist ? h('dl', {class: 'cj-dl'}, ...afterEl()) : null,
       h('p', {class: 'muted xs'}, h('a', {href: '#/'}, `지금 후보 ${C.items.length}곳 보기 ›`)));
   }
   const F = x.flow, f = x.fund ?? {}, ex = x.exit, per = ex.period, idx = C.index?.name ?? '지수', ev = x.evidence;
   const W = C.flow?.waves ?? [], lastWaves = W.slice(-3);
-  const go = id => () => { const t = box.querySelector('#' + id); if (!t) return; t.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); t.focus({preventScroll: true}); t.classList.remove('cj-hi'); void t.offsetWidth; t.classList.add('cj-hi'); };
+  const go = id => () => { const t = box.querySelector('#' + id); if (!t) return; t.open = true; t.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); t.focus({preventScroll: true}); t.classList.remove('cj-hi'); void t.offsetWidth; t.classList.add('cj-hi'); };
   const btn = (label, id) => h('button', {type: 'button', class: 'cd-btn', 'aria-controls': id, onclick: go(id)}, label);
   const box = h('section', {class: 'b-box cj-box', 'aria-label': '후보 판단', 'data-cand': x.code, 'data-status': x.status},
     h('h2', {class: 'b-box-h cj-h', tabindex: '-1'}, h('span', {class: 'cj-hn'}, `후보 판단 · 검토 순위 ${x.rank}위`), ' ', stEl(x.status)),
@@ -472,7 +490,7 @@ export function candJudgeBox(lens, s) {
       qRow('반대 근거', lastWaves.length ? `업종 돈 흐름은 자주 바뀜(곁 정보) — 최근 파장 ${lastWaves.map(w => `${w.from} → ${w.to}(${w.days}거래일)`).join(' · ')}` : '2년 안에 큰 하락장이 없었음 — 큰 하락장에서는 시험되지 않음'),
       qRow('확인할 것', `거래일 16:00 판마다 그물 안팎 · 다음 담는 날 ${nextTxt(C.grow)}`)]),
     qBox('cj-price', `${won(x.close)}(${md(x.date)} 종가)은 분석에서 어떤 뜻인가?`, [
-      qRow('주장', '이 값은 판단의 기준선 — 싸다 · 비싸다를 말하지 않음'),
+      qRow('주장', '이 값은 견줄 때 쓰는 그날 가격 — 싸다 · 비싸다를 말하지 않음'),
       qRow('관측', finite(x.pos52) ? `52주 범위의 ${Math.round(x.pos52 * 100)}% 자리(최저 ${won(x.low52)} ~ 최고 ${won(x.high52)})` : '52주 범위 자료 없음', ` · 담은 날 ${md(x.grow?.plantedAt)}`, finite(x.grow?.since?.rD) ? [' · 담은 뒤 ', pv(x.grow.since.rD)] : ''),
       qRow('계산 · 해석', '가격에 실린 기대는 직접 볼 수 없음 — 대용: 돈 흐름 · 20거래일 수익률 · 52주 자리 · 컨센서스 · 가치평가(EPS · PER) 자료 없음 → 적정가를 셈하지 않음'),
       qRow('반대 근거', !finite(x.pos52) ? '범위를 몰라 자리를 말할 수 없음' : x.pos52 >= 0.9 ? '52주 최고 근처 — 되돌림 폭이 클 수 있음' : x.pos52 <= 0.2 ? '52주 최저 근처 — 낙폭이 크다고 싸다는 뜻 아님' : '범위 가운데 — 값만으로는 판단 근거 없음'),
@@ -485,12 +503,13 @@ export function candJudgeBox(lens, s) {
           h('tr', null, h('th', {scope: 'row'}, '흑자'), h('td', null, '영업이익 · 순이익 모두 흑자'), h('td', null, x.checks.profit.now), h('td', null, okEl(x.checks.profit.ok))),
           h('tr', null, h('th', {scope: 'row'}, '위험 공시(30일)'), h('td', null, '없음'), h('td', null, x.checks.risk.now), h('td', null, x.checks.risk.unknown ? naEl() : okEl(x.checks.risk.ok))),
           usRisk() ? null : h('tr', null, h('th', {scope: 'row'}, '희석 공시(30일 · 위험 줄)'), h('td', null, '적어 둠'), h('td', null, x.checks.dilute.now), h('td', null, okEl(x.checks.dilute.ok))))))),
-      qRow('계산 · 해석', `상태 ${ST[x.status]} · 진입 가격 · 범위는 만들지 않음(산식 · 가정이 검증되지 않음 — 근거 부족)`),
+      qRow('계산 · 해석', `상태 ${ST[x.status]} · 진입 가격대는 만들지 않음(산식 · 가정이 검증되지 않음 — 근거 부족 · 60거래일 범위는 셈 틀 어림이지 살 값이 아님)`),
       qRow('반대 근거', '그물 안은 오른다는 뜻이 아님 · 조건은 연구용(성능 검증 전)'),
       qRow('확인할 것', `담은 날 ${md(x.grow?.plantedAt)} · 다음 담는 날 ${nextTxt(C.grow)} · 거래일 16:00 판마다 상태만 다시 셈`)]),
     qBox('cj-exit', '무엇이 달라지면 판단을 거두는가?', [
       qRow('그물 밖', h('b', {class: 'cj-ok ' + (ex.net.broken ? 'no' : 'yes')}, ex.net.broken ? '! 나감' : '✓ 안'), ` · 이번 판: ${ex.net.now} · 석 달 동안은 그대로 두고 다음 담는 날 정리`),
-      qRow('사업 가설 훼손', h('b', {class: 'cj-ok ' + (ex.business.broken ? 'no' : 'yes')}, ex.business.broken ? '! 깨짐' : '✓ 유지'), ` · 이번 판: ${ex.business.now ?? '해당 공시 없음'} · 기준: ${usRisk() ? '새 결산 적자(공시는 미국 판 자료 없음 — 확인 못 함)' : '공급계약 해지 · 위험 공시 · 희석 공시 · 새 결산 적자'}`),
+      usRisk() && !ex.business.broken ? qRow('사업 가설 훼손', naEl(), ' · 이번 판: 결산은 흑자 · 공시는 미국 판 자료가 없어 확인 못 함(없다고 쓰지 않음) · 기준: 새 결산 적자 · 해지 · 위험 · 희석 공시') // 머크 · 클로드팀 — 옛 「✓ 유지 · 해당 공시 없음」은 자료 없는 것을 없다고 씀
+        : qRow('사업 가설 훼손', h('b', {class: 'cj-ok ' + (ex.business.broken ? 'no' : 'yes')}, ex.business.broken ? '! 깨짐' : '✓ 유지'), ` · 이번 판: ${ex.business.now ?? '해당 공시 없음'} · 기준: ${usRisk() ? '새 결산 적자(공시는 미국 판 자료 없음 — 확인 못 함)' : '공급계약 해지 · 위험 공시 · 희석 공시 · 새 결산 적자'}`),
       qRow('담는 기간', h('b', {class: 'cj-ok yes'}, '진행 중'), ` · ${md(per.start)} 담음 ~ 다음 담는 날 ${nextTxt(C.grow)}(${C.hold ?? 60}거래일)`),
       qRow('알아 둘 것', '셋은 따로 셈 · 값이 내렸다고 바로 빼지 않음(가지치기는 석 달 기다리기와 섞으면 지난 기록 결과를 깎았음) · 그 값에 판다는 뜻 아님')]),
     qBox('cj-next', '이어서 확인할 것', [

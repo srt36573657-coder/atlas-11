@@ -38,9 +38,11 @@ const sideCls = v => (finite(v) ? (v > 0 ? 'up' : v < 0 ? 'down' : '') : '');
 export function baseLine(board, lens, manifest) {
   const W = lens?.when, S = lens?.market?.sample?.d20;
   const made = manifest?.generatedAt ? (kst(manifest.generatedAt).date === board.asOf ? `${kst(manifest.generatedAt).time} KST` : stamp(manifest.generatedAt)) : '없음';
-  return h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(board.asOf)} 종가`), ` · ${place.closeAt} · 장중 값 아님`,
-    W ? [` · 분석 기간 최근 20거래일(${korDate(W.windows?.d20)}~${korDate(board.asOf)})`, ` · ATLAS 선정 ${W.companies}곳(시장 전체 아님)`, S ? ` · 값이 있는 ${S.n}곳` : '',
-      W.late + W.stale ? ` · 지연 ${W.late + W.stale}곳` : '', W.ca ? ` · 기업행사 확인 ${W.ca}곳` : '', ` · 만든 때 ${made}`] : ` · 만든 때 ${made}`);
+  // 2026-10-10 18:22 다섯 팀 전체 검토(구글 · 잡스 · 삼성팀 — ① 기준 다섯 줄이 그림을 첫 화면 밖으로 밀어냄) — 보이는 줄은 날짜 · 몇 곳(시장 전체 아님) · 값 있는 곳 · 늦은 곳만 · 나머지(시각 · 장중 아님 · 기간 · 기업행사 · 만든 때)는 「기준 자세히」 접힘
+  return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(board.asOf)} 종가`),
+    W ? [` · ATLAS 선정 ${W.companies}곳(시장 전체 아님)`, S ? ` · 값이 있는 ${S.n}곳` : '', W.late + W.stale ? ` · 지연 ${W.late + W.stale}곳` : ''] : ''),
+    h('details', {class: 'ob-more-d'}, h('summary', null, '기준 자세히'),
+      h('p', {class: 'muted small'}, `${place.closeAt} · 장중 값 아님`, W ? [` · 분석 기간 최근 20거래일(${korDate(W.windows?.d20)}~${korDate(board.asOf)})`, W.ca ? ` · 기업행사 확인 ${W.ca}곳` : '', ` · 만든 때 ${made}`] : ` · 만든 때 ${made}`))];
 }
 /** 앞 기록 이후 달라진 것(지시서 0-D) — 저녁 기록(고치지 않음) 둘을 견줘 목록에 들고 난 까닭을 나눔(가격 변화 · 구성 변경 · 누락 해소 · 자료 지연) · 기간 이동 · 자료 정정(모으지 않음) */
 export function changesBox(lens) {

@@ -255,7 +255,7 @@ export async function renderCompany(main, {hash, manifest}) {
     nearBox(board, s, shp),
     foot(manifest)));
   if (judge && state.candGo) { const go = state.candGo; state.candGo = null; // 「왜 선정됐나요?」로 왔으면 후보 판단 칸으로(위 막대 아래 · 초점은 칸 머리 — 화면 읽기 · 자판이 이어 감)
-    const t = go === 'why' ? judge : judge.querySelector('#cj-' + go) ?? judge; t.scrollIntoView({block: 'start'}); (t.querySelector('.cj-h') ?? t).focus?.({preventScroll: true}); }
+    const t = go === 'why' ? judge : judge.querySelector('#cj-' + go) ?? judge; const q = judge.querySelector('#cj-' + go); if (q) q.open = true; t.scrollIntoView({block: 'start'}); (t.querySelector('.cj-h') ?? t).focus?.({preventScroll: true}); } // 물음 칸은 접힘 — 「왜 선정됐나요?」로 오면 그 칸을 펼쳐 둠(2026-10-10 18:22 다섯 팀 전체 검토)
   else state.candGo = null;
   closeChart(chartBox, rows, {band: band > 0 ? band : null, ariaLabel: `${s.name} 지난 ${rows.length}거래일 종가 · 처음 ${won(rows[0]?.close)} · 마지막 ${won(rows.at(-1)?.close)}${band > 0 ? ` · ${korDate(rows[band].date)}부터 끝까지 옅은 띠(지난 20거래일)` : ''}`});
 }

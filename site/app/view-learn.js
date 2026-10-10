@@ -64,7 +64,7 @@ export function renderLearn(main, {manifest}) {
       h('div', {class: 'c-scroll', 'data-scroll': 'x'}, h('table', {class: 'c-table'},
         h('thead', null, h('tr', null, ...['묶음', '5곳 수익률', '평균', '중앙값', '오른 곳', '1위 기여 · 나머지 합', '1위 제외 평균', '시장(가정) 대비'].map(x => h('th', {scope: 'col'}, x)))),
         h('tbody', null, ...rows))),
-      h('p', {class: 'muted xs'}, '기여(%p) = 수익률 ÷ 5곳 · 모두 더하면 평균 · 1위 제외 평균 = 나머지 4곳 평균 · 시장 대비(%p) = 평균 − 시장(가정) · 셈은 calc.js(시험 tests/atlas11/calc.test.mjs)')),
+      h('p', {class: 'muted xs'}, '기여(%p) = 수익률 ÷ 5곳 · 모두 더하면 평균 · 1위 제외 평균 = 나머지 4곳 평균 · 시장 대비(%p) = 평균 − 시장(가정)')), // 옛 끝 「셈은 calc.js(시험 …)」 — 화면에 개발 파일 이름(2026-10-10 18:22 다섯 팀 전체 검토 · 구글 · 클로드팀) · 셈 자리는 코드 주석과 시험에
     foot(manifest)));
   draw(pick);
 }

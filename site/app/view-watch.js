@@ -65,6 +65,13 @@ export async function renderWatch(main, {manifest}) {
      확인된 것 = 종가 변화(위 줄) · 등록한 날 뒤 새 공시 수 · 다가오는 일정 수(일정표) — 적어 둔 「확인할 조건」은 ATLAS가 판정하지 않음(사람이 확인) */
   const since = w => { const a = agenda?.byCode?.[w.code]; if (!a) return null; const after = (a.disclosures ?? []).filter(d => String(d.publishedAt ?? '').slice(0, 10) > String(w.date ?? '')), up = (a.upcoming ?? []).filter(e => e.date >= board.asOf);
     return {n: after.length, top: after.filter(d => d.level === 3).length, up: up.length, next: up[0] ?? null}; };
+  /** 후보 7곳을 ★ 한 번으로 바로 담기(이유 · 반대 근거는 비워 두고 나중에 회사 화면에서) — 등록 때 후보 상태도 함께(회사 화면 등록과 같은 모양) */
+  const sugBox = () => (C?.ready && C.items.length ? h('li', {class: 'wl-sugbox'}, h('p', {class: 'mk-l'}, h('b', null, `후보 ${C.items.length}곳에서 바로 담기`), ' · ★ 한 번 · 이유는 나중에 회사 화면에서'),
+    h('ul', {class: 'wl-sugs'}, ...C.items.filter(x => x?.code).map(x => { const nm = x.name ?? String(x.code); return h('li', {class: 'wl-sug', 'data-code': x.code},
+      h('a', {class: 'wl-sug-a', href: '#/stock/' + encodeURIComponent(x.code).replace(/%2E/gi, '.')}, Number.isFinite(x.rank) ? h('span', {class: 'cd-rk'}, `${x.rank}위`) : null, ' ', h('span', {'data-ident': ''}, nm)),
+      h('button', {class: 'b-btn wl-sug-b', type: 'button', 'aria-label': `${nm} 관심에 담기`, onclick: () => {
+        watchAdd({code: x.code, name: nm, at: new Date().toISOString(), date: x.date ?? null, price: x.close ?? null, reason: '', counter: '', next: '', cand: {flags: C.flags?.[x.code] ?? null, rank: x.rank ?? null, status: x.status ?? null, asOf: C.asOf ?? null, rules: C.rules ?? null}});
+        const k = draw(); const lead = main.querySelector('.wl-page [data-first="1"] .mk-l b'); if (lead) lead.textContent = `${k}곳`; }}, '★ 담기')); }))) : null);
   const draw = () => {
     const xs = watchList();
     list.replaceChildren(...xs.map(w => { const c = byCode.get(w.code), r = c ? pctRet(c.close, w.price) : null;
@@ -75,7 +82,7 @@ export async function renderWatch(main, {manifest}) {
         (() => { const s = since(w); return h('p', {class: 'wl-seen'}, h('b', null, '등록 뒤 확인된 것'), ' · ', s ? [`새 공시 ${s.n}건${s.top ? `(★★★ ${s.top}건)` : ''}`, ' · ', s.next ? `다가오는 일정 ${s.up}건 · 가장 가까운 날 ${korDate(s.next.date)}` : '다가오는 일정 없음'] : '일정표에 없음'); })(),
         h('dl', {class: 'wl-dl'}, h('dt', null, '등록 이유'), h('dd', {lang: 'ko'}, w.reason || '적지 않음'), h('dt', null, '반대 근거'), h('dd', {lang: 'ko'}, w.counter || '적지 않음'), h('dt', null, '확인할 조건'), h('dd', null, h('span', {lang: 'ko'}, w.next || '적지 않음'), w.next ? h('small', {class: 'wl-open'}, ' · 아직 확인 안 됨(ATLAS가 판정하지 않음 · 직접 확인)') : null)),
         h('button', {class: 'b-link', type: 'button', onclick: () => { watchRemove(w.code); draw(); }}, '관심에서 빼기')); }));
-    if (!xs.length) list.replaceChildren(h('li', {class: 'muted small'}, '관심 등록한 종목이 없습니다 · 회사 화면의 「★ 관심 등록」으로 남깁니다'));
+    if (!xs.length) list.replaceChildren(...[h('li', {class: 'muted small'}, '관심 등록한 종목이 없습니다 · 회사 화면의 「★ 관심 등록」으로 남깁니다'), sugBox()].filter(Boolean)); // 빈 화면에 할 일 하나(2026-10-10 18:22 다섯 팀 전체 검토 — 구글 · 클로드 · 잡스 · 삼성팀: 「0곳」만 세 번 · 누를 것이 없음)
     state.summary = `관심종목 ${xs.length}곳 · 이 기기에만 저장`;
     return xs.length;
   };

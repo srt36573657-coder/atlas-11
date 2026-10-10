@@ -22,8 +22,8 @@ export const shareR = v => (fin(v) ? `${(v * 100).toFixed(1)}%` : '값 없음');
 const md = d => { const m = String(d ?? '').match(/^\d{4}-(\d{2})-(\d{2})/); return m ? `${Number(m[1])}월 ${Number(m[2])}일` : '날짜 없음'; };
 const int = n => (fin(n) ? Math.round(n).toLocaleString('ko-KR') : '값 없음');
 const m12Of = x => (fin(x?.grow?.m12D) ? x.grow.m12D : fin(x?.grow?.m12) ? x.grow.m12 : null);
-/** 글 조각 → 읽는 글(소리 · 시험) — {r: 비율} · {p: %} 숫자는 사이트 숫자 꼴로 */
-export const plainOf = parts => parts.map(s => (typeof s === 'string' ? s : 'r' in s ? pctR(s.r) : 'p' in s ? pct1(s.p) : '')).join('');
+/** 글 조각 → 읽는 글(소리 · 시험) — {r: 비율} · {m: 셈 틀 비율} · {p: %} 숫자는 사이트 숫자 꼴로 */
+export const plainOf = parts => parts.map(s => (typeof s === 'string' ? s : 'r' in s ? pctR(s.r) : 'm' in s ? pctR(s.m) : 'p' in s ? pct1(s.p) : '')).join('');
 
 /**
  * 둘러보기 한 판 — C = lens.cand · mc = lens.mc(없으면 {none, why}) · elim = lens.elim · stocks = lens.stocks · us = 미국 판(위험 공시 자료 없음)
@@ -44,7 +44,7 @@ export function tourOf({C, mc = null, elim = null, stocks = [], us = false} = {}
     const nx = xs[k + 1] ?? null, last = !nx;
     const steps = [
       {title: `${x.rank}위 · ${x.name}`, lines: [[`미리 정한 규칙 차례 ${x.rank}번째 · 1년 추세 `, {p: m12}, ` · ${x.sector ?? '업종 없음'}`]], act: 'to'},
-      R ? {title: `60거래일 뒤 범위 · ${MC_TAG}`, lines: [['가운데 80% ', {r: R.q10}, ' ~ ', {r: R.q90}, ' · 가운데 값 ', {r: R.median}], [`손실로 끝난 경로 ${shareR(R.ploss)} · 가장 나쁜 5% 경로 평균 `, {r: R.cvar5}]],
+      R ? {title: `60거래일 뒤 범위 · ${MC_TAG}`, lines: [['경로 100번 중 80번이 ', {m: R.q10}, ' ~ ', {m: R.q90}, ' 사이 · 가운데 값 ', {m: R.median}], [`손실로 끝난 경로 100번 중 ${fin(R.ploss) ? Math.round(R.ploss * 100) : '?'}번 · 가장 나쁜 5% 경로 평균 `, {m: R.cvar5}]], // 셈 틀 숫자는 ▲▼ · 빨강 · 파랑 없이(2026-10-10 18:22 다섯 팀 전체 검토)
         note: `경로 ${int(R.n)}개 · 평균 기울기 0 · 지난 500거래일 하루 움직임을 다시 뽑아 이은 경로 · 평균은 싣지 않음`}
         : {title: `60거래일 뒤 범위 · ${MC_TAG}`, lines: [[`이번 회차 범위 없음 — ${mcOk ? '이 회사 행이 없음' : mc?.why ?? '몬테카를로 결과 없음'}`]]},
       {title: '가장 큰 근거 하나', lines: [['1년 추세 ', {p: m12}, ` — ${uni}곳 가운데 상위 ${net}% 그물(기준선 `, {p: q}, ')'], [`${md(x.grow?.plantedAt)} 담을 때 새로 든 초입(그 20거래일 전에는 그물 밖)`]], act: 'rise'},
@@ -53,7 +53,7 @@ export function tourOf({C, mc = null, elim = null, stocks = [], us = false} = {}
       B && days ? {title: `시뮬레이션 요약 · ${MC_TAG}`, lines: [], fan: {days, q: B.q, rep: B.rep, n: B.n, H},
         note: `옅은 띠 = 가운데 80% · 진한 띠 = 가운데 50% · 굵은 선 = 가운데 값 · 점선 3개 = 대표 경로(끝값이 아래 10% · 가운데 · 위 10% 자리에 가장 가까운 실제 경로 하나씩 — 전체 결과 아님) · 경로 ${int(B.n)}개`}
         : {title: `시뮬레이션 요약 · ${MC_TAG}`, lines: [[mcOk ? '이 회사 범위 띠 없음 — 이번 회차에 띠를 세지 않음' : `범위 띠 없음 — ${mc?.why ?? '몬테카를로 결과 없음'}`]]},
-      E ? {title: E.state === 'pass' ? '소거 기준을 모두 넘음' : `${ELIM_ST[E.state] ?? '판정'} — 처음 걸린 것: ${E.checks?.find(c => c.id === E.first)?.label ?? E.first ?? '없음'}`,
+      E ? {title: E.state === 'pass' ? '소거 기준을 모두 넘음' : `${ELIM_ST[E.state] ?? '판정'} — ${E.state === 'hold' ? '자료가 없어 확인 못 한 것' : '처음 걸린 것'}: ${E.checks?.find(c => c.id === E.first)?.label ?? E.first ?? '없음'}`, // 보류 = 나쁜 것이 있었다가 아니라 확인 못 함(2026-10-10 18:22 다섯 팀 전체 검토)
         lines: E.state === 'pass' ? [] : [[E.checks?.find(c => c.id === E.first)?.value ?? '까닭 없음']],
         checks: (E.checks ?? []).map(c => ({id: c.id, label: c.label, verdict: c.verdict, mark: MARK[c.verdict] ?? '·', value: c.value})),
         note: (E.flags ?? []).includes('tail') ? '하락 위험(가장 나쁜 5% 평균이 −50%보다 나쁨)은 모형 시험 통과 전이라 표시만 — 판정에 넣지 않음' : '· = 자료가 없어 판정에 넣지 않은 검사'}

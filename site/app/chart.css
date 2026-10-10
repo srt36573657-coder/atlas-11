@@ -138,6 +138,8 @@ html[data-font-step="2"] .bc-val .rt-n, html[data-font-step="3"] .bc-val .rt-n, 
 /* ── 판단 정보 칸(시장 · 업종 첫 화면 ① ~ ⑤ — 지시서 5) ── */
 .ob-base { margin: 0; font-size: .875rem; line-height: 1.5; color: var(--sub); }
 .ob-base b { color: var(--ink2); }
+.ob-more-d { margin: 2px 0 0; } .ob-more-d > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; color: var(--ink2); font-weight: 700; } /* ① 기준 자세히(2026-10-10 18:22 다섯 팀 전체 검토) */
+.ob-more-d > p { margin: 0 0 4px; }
 .ob-say { margin: 4px 0 0; font-size: clamp(1.25rem, 5.6vw, 1.5rem); font-weight: 700; line-height: 1.38; letter-spacing: -.01em; color: var(--ink); }
 html:not([lang="ko"]) .ob-say { font-size: clamp(1.125rem, 5vw, 1.3125rem); }
 .ob-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 10px 0 0; }
@@ -172,7 +174,7 @@ html:not([lang="ko"]) .dc-v { font-size: .9375rem; } /* 다른 말은 단위 낱
 .dc-b { min-height: 44px; padding: 0 14px; border: 1px solid var(--sep); border-radius: 999px; background: var(--card); color: var(--ink); font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
 .dc-b[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--card); }
 .dc-b:focus-visible, .dc-x:focus-visible { outline: 2px solid var(--geum); outline-offset: 2px; }
-.dc-x { flex: none; min-width: 44px; min-height: 36px; margin-inline-start: 4px; padding: 0 10px; border: 1px solid var(--sep); border-radius: 999px; background: var(--card); color: var(--ink2); font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
+.dc-x { flex: none; min-width: 44px; min-height: 44px; margin-inline-start: 4px; padding: 0 10px; border: 1px solid var(--sep); border-radius: 999px; background: var(--card); color: var(--ink2); font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
 .dc-x[aria-pressed="true"] { border-color: var(--ink2); background: var(--fill); color: var(--ink); }
 .dc-row .bc-top { flex-wrap: wrap; }
 .dc-note { margin: 8px 0 0; font-size: .8125rem; line-height: 1.5; color: var(--sub); }
@@ -242,6 +244,7 @@ html:not([lang="ko"]) .topnote { font-size: .75rem; }
 
 /* 막대 둘째 색(긴 눈 · 서울 아파트) · 차트 아래 줄 묶음 */
 .bc-bar.bc-alt { background: var(--sub); }
+.bc-bar.acc, .bc-bar.up.acc { background: var(--geum); } /* 무엇을 가리키는 막대(시간 · 주식 · 자리) — 빨강 · 파랑은 오름 · 내림에만(2026-10-10 18:22 다섯 팀 전체 검토) */
 .bc-row .bc-track + .bc-track { margin-top: 3px; }
 .ra-tail { display: grid; gap: 4px; margin: 8px 0 0; }
 /* 관심 등록 결과 한 줄(저장함 · 저장하지 못함) · 0곳일 때 거르기 바꾸는 단추 */

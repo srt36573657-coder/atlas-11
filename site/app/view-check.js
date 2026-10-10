@@ -47,16 +47,20 @@ export async function renderCheck(main, {manifest}) {
   const [board, lens0] = await Promise.all([loadBoard(), loadLens().catch(() => null)]);
   const lens = lens0 && !lens0.none ? lens0 : null, v = lens?.verify, recs = v?.records ?? [];
   const pending = recs.flatMap(r => Object.values(r.evals).flat()).filter(e => e.status === 'pending').length;
+  // 2026-10-10 18:22 다섯 팀 전체 검토(머크 · 클로드팀) — 첫 화면 목록과 채점하는 목록이 다른 규칙 판이면 맨 위에 밝힘 · 평가 끝이 하나도 없으면 「평가 대기」 표는 한 줄로 접음(구글 · 삼성 · 잡스팀)
+  const ver = r => String(r ?? '').match(/(\d+)$/)?.[1] ?? '?', curR = lens?.cand?.rules ?? null, lastC = [...recs].reverse().find(r => r.cand?.rules) ?? null;
+  const ruleNote = curR && lastC && lastC.cand.rules !== curR ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(curR)}판)는 아직 채점 기록에 없음`), ` — 여기서 채점하는 후보 목록은 ${korDate(lastC.asOf)} 기록의 규칙 ${ver(lastC.cand.rules)}판 목록`) : null;
+  const table = lens && recs.length ? recordTable(lens) : null;
   state.summary = recs.length ? `선정 결과 · 고정 기록 ${recs.length}장 · 평가 끝 ${v.done}건 · 평가 대기 ${pending}건 · 첫 평가일 ${korDate(v.firstDue)} · 검증 전` : '선정 결과 · 고정 기록 없음 · 검증 전';
   main.replaceChildren(h('div', {class: 'b-page ck-page'},
+    segNav(CHECK_SEGS, 'picks', '검증 보기 바꾸기'), // 2026-10-10 18:22 다섯 팀 전체 검토 — 보기 바꾸기 줄은 늘 「이 화면은?」 바로 밑(화면마다 같은 자리)
     h('section', {class: 'mk-b', 'data-first': '1', 'aria-label': '선정 결과'}, h('h2', {class: 'mk-h'}, '선정 결과'),
       lens ? (recs.length
-        ? [h('p', {class: 'mk-l'}, h('b', null, `고정 기록 ${recs.length}장`), ` · ${korDate(recs[0].asOf)}~${korDate(recs.at(-1).asOf)} · 평가 끝 ${v.done}건 · 평가 대기 ${pending}건`),
-          h('p', {class: 'mk-l'}, v.done ? '결과가 쌓이는 중 · 아직 투자 성능을 입증한 것이 아님' : h('b', null, '검증 전'), v.firstDue ? ` · 첫 평가일 ${korDate(v.firstDue)}(5거래일)` : '')]
+        ? [h('p', {class: 'mk-l'}, h('b', null, `고정 기록 ${recs.length}장`), ` · ${korDate(recs[0].asOf)}~${korDate(recs.at(-1).asOf)} · 평가 끝 ${v.done}건 · 평가 대기 ${pending}건 · ${korDate(lens.asOf ?? board.asOf)} 종가까지 셈`), // 평가 표를 접어도 기준 시각이 첫 칸에(또렷함 검사)
+          h('p', {class: 'mk-l'}, v.done ? '결과가 쌓이는 중 · 아직 투자 성능을 입증한 것이 아님' : h('b', null, '검증 전'), v.firstDue ? ` · 첫 평가일 ${korDate(v.firstDue)}(5거래일)` : ''), ruleNote]
         : h('p', {class: 'mk-l'}, '이 판은 아직 고정 기록이 없음 · 검증 전')) : lensMissing(lens0)),
-    segNav(CHECK_SEGS, 'picks', '검증 보기 바꾸기'),
     (lens ? checkArt(lens) : null) ?? quietArt({key: 'check', label: '검증', word: '기록 0장', when: `${korDate(board.asOf)} 종가`}),
-    lens && recs.length ? recordTable(lens) : null,
+    table && !v.done ? h('details', {class: 'ag-fold ck-fold'}, h('summary', null, `평가 표 ${recs.length}장 — 모두 평가 대기 ${pending}칸 · 첫 평가일 ${v.firstDue ? korDate(v.firstDue) : '달력에 아직 없음'}`, h('small', null, ' · 누르면 펼침')), table) : table,
     proFold('전문가용 자세히 — 바뀐 목록 · 기록 규칙', lens && v ? turnoverBox(v) : null, // 쉬운 말 화면에서는 두 칸을 접음(규칙 48)
     lens ? h('section', {class: 'b-box', 'aria-label': '기록 규칙'}, h('h2', {class: 'b-box-h'}, '기록 규칙'),
       h('ul', null,
