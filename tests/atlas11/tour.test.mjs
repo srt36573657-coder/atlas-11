@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import {tourOf, fanOf, dwellOf, plainOf, speakOf, pctR, TOUR_STEPS, KSS, MC_TAG} from '../../site/app/tour-model.js';
 import {PREDICTION_WORDS} from '../../lib/atlas11/board.mjs';
 import {BANNED} from '../../lib/atlas11/changelog.mjs';
+import {TPL} from '../../site/app/easy-ko.js';
 
 const BAN = new RegExp([PREDICTION_WORDS.source, '사라[!.\\s]|팔라[!.\\s]|추천|목표가|확실|보장|무조건|확률', ...BANNED.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))].join('|'));
 const item = (rank, code, g, extra = {}) => ({rank, code, name: `회사${rank}`, sector: `업종${g}`, g, status: 'met', grow: {m12D: 100 - rank, plantedAt: '2026-10-08'}, risk: {text: '한 곳만 보면 흔들림이 큼'}, ...extra});
@@ -88,4 +89,9 @@ test('읽을 시간 — 글이 길수록 길게 · 섬이 움직이는 걸음은
   assert.equal(dwellOf(base), 3800); assert.equal(dwellOf({...base, isl: 'to'}), 4700); assert.equal(dwellOf({...base, isl: 'rise'}), 4900);
   assert.equal(dwellOf({...base, title: '가'.repeat(400)}), 10000);
   assert.ok(dwellOf({...base, title: '가'.repeat(60)}) > dwellOf({...base, title: '가'.repeat(20)}));
+});
+test('쉬운 말 화면에서 뜻이 틀어지지 않음 — 기승전결 칸 · 걸음 이름 · 단추의 「 · 」 조각이 통째 틀(TPL · 아래 탭 이름 등) 열쇠가 아님', () => {
+  const keys = new Set(Object.keys(TPL)), segs = [...KSS.map(([k, w]) => `${k} · ${w}`), ...TOUR_STEPS.map(([k, n], i) => `${k} · ${i + 1}/8 ${n}`), '저절로 설명', '멈춤', '이어 보기', '자세히', '처음', '저절로 설명: 켬', '저절로 설명: 꺼짐(이 기기)', '이 기기에서 끄기', '다시 켜기'].flatMap(t => t.split(/ · | — /).map(x => x.trim()));
+  assert.deepEqual(segs.filter(x => keys.has(x)), [], '「전 · 검증」 → 「전 · 지난 결과」 같은 것');
+  assert.ok(!segs.includes('둘러보기'), '단추 이름이 쉬운 말 아래 탭 「둘러보기」(탐색)와 겹치지 않음');
 });
