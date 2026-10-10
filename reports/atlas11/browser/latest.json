@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-10T04:10:19.594Z",
+  "at": "2026-10-10T05:35:05.286Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-08-f6cf91d5",
@@ -21,7 +21,7 @@
         "bareNumbers": 0,
         "graphable": 9,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 4
       },
@@ -31,7 +31,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 4
       },
@@ -41,7 +41,7 @@
         "bareNumbers": 0,
         "graphable": 6,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 10
       },
@@ -51,7 +51,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -61,7 +61,7 @@
         "bareNumbers": 0,
         "graphable": 25,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -71,7 +71,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -81,7 +81,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -91,7 +91,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -101,7 +101,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -111,7 +111,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 2
       },
@@ -121,7 +121,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -131,7 +131,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -141,7 +141,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -151,7 +151,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -161,7 +161,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -171,7 +171,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -181,7 +181,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -191,7 +191,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -201,7 +201,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -211,7 +211,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -221,7 +221,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -231,7 +231,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 3
       },
@@ -241,7 +241,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -249,11 +249,11 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 4
+        "formatDates": 5
       },
       "guide": {
         "relDays": 0,
@@ -261,7 +261,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -271,7 +271,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 2
       },
@@ -281,7 +281,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 1
       },
@@ -291,7 +291,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -301,7 +301,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       }
@@ -313,7 +313,7 @@
         "bareNumbers": 0,
         "graphable": 9,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 4
       },
@@ -323,7 +323,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 4
       },
@@ -333,7 +333,7 @@
         "bareNumbers": 0,
         "graphable": 6,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 10
       },
@@ -343,7 +343,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -353,7 +353,7 @@
         "bareNumbers": 0,
         "graphable": 25,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -363,7 +363,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -373,7 +373,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -383,7 +383,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -393,7 +393,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -403,7 +403,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 2
       },
@@ -413,7 +413,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -423,7 +423,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -433,7 +433,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -443,7 +443,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -453,7 +453,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -463,7 +463,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -473,7 +473,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -483,7 +483,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -493,7 +493,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -503,7 +503,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -513,7 +513,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -523,7 +523,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 3
       },
@@ -533,7 +533,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -541,11 +541,11 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 4
+        "formatDates": 5
       },
       "guide": {
         "relDays": 0,
@@ -553,7 +553,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -563,7 +563,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 2
       },
@@ -573,7 +573,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 1
       },
@@ -583,7 +583,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -593,7 +593,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       }
@@ -605,7 +605,7 @@
         "bareNumbers": 0,
         "graphable": 9,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 4
       },
@@ -615,7 +615,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 4
       },
@@ -625,7 +625,7 @@
         "bareNumbers": 0,
         "graphable": 6,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 10
       },
@@ -635,7 +635,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -645,7 +645,7 @@
         "bareNumbers": 0,
         "graphable": 25,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -655,7 +655,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 0
       },
@@ -665,7 +665,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -675,7 +675,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -685,7 +685,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -695,7 +695,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 2
       },
@@ -705,7 +705,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -715,7 +715,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -725,7 +725,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -735,7 +735,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -745,7 +745,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -755,7 +755,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 23,
         "truncated": 0,
         "formatDates": 0
       },
@@ -765,7 +765,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -775,7 +775,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -785,7 +785,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -795,7 +795,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -805,7 +805,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -815,7 +815,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 3
       },
@@ -825,7 +825,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -833,11 +833,11 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 10,
         "truncated": 0,
-        "formatDates": 4
+        "formatDates": 5
       },
       "guide": {
         "relDays": 0,
@@ -845,7 +845,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -855,7 +855,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 2
       },
@@ -865,7 +865,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 1
       },
@@ -875,7 +875,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -885,7 +885,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       }
@@ -897,7 +897,7 @@
         "bareNumbers": 0,
         "graphable": 9,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 4
       },
@@ -907,7 +907,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 4
       },
@@ -917,7 +917,7 @@
         "bareNumbers": 0,
         "graphable": 6,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 10
       },
@@ -927,7 +927,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -937,7 +937,7 @@
         "bareNumbers": 0,
         "graphable": 25,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -947,7 +947,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -957,7 +957,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -967,7 +967,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -977,7 +977,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -987,7 +987,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 2
       },
@@ -997,7 +997,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1007,7 +1007,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1017,7 +1017,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1027,7 +1027,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1037,7 +1037,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1047,7 +1047,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 15,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1057,7 +1057,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1067,7 +1067,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1077,7 +1077,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1087,7 +1087,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1097,7 +1097,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1107,7 +1107,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 6,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 3
       },
@@ -1117,7 +1117,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1125,11 +1125,11 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
-        "formatDates": 4
+        "formatDates": 5
       },
       "guide": {
         "relDays": 0,
@@ -1137,7 +1137,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1147,7 +1147,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 2
       },
@@ -1157,7 +1157,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 5,
         "truncated": 0,
         "formatDates": 1
       },
@@ -1167,7 +1167,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1177,7 +1177,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 4,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 0
       }
@@ -1189,7 +1189,7 @@
         "bareNumbers": 0,
         "graphable": 9,
         "lowContrast": 0,
-        "decoColors": 11,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 4
       },
@@ -1199,7 +1199,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 4
       },
@@ -1209,7 +1209,7 @@
         "bareNumbers": 0,
         "graphable": 6,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 10
       },
@@ -1219,7 +1219,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1229,7 +1229,7 @@
         "bareNumbers": 0,
         "graphable": 25,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1239,7 +1239,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 8,
+        "decoColors": 19,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1249,7 +1249,7 @@
         "bareNumbers": 0,
         "graphable": 7,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1259,7 +1259,7 @@
         "bareNumbers": 0,
         "graphable": 2,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 17,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1269,7 +1269,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1279,7 +1279,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 2
       },
@@ -1289,7 +1289,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1299,7 +1299,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 18,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1309,7 +1309,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1319,7 +1319,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 16,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1329,7 +1329,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1339,7 +1339,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 23,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1349,7 +1349,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1359,7 +1359,7 @@
         "bareNumbers": 0,
         "graphable": 3,
         "lowContrast": 0,
-        "decoColors": 10,
+        "decoColors": 22,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1369,7 +1369,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1379,7 +1379,7 @@
         "bareNumbers": 0,
         "graphable": 1,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 14,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1389,7 +1389,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 11,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1399,7 +1399,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 3,
+        "decoColors": 12,
         "truncated": 0,
         "formatDates": 3
       },
@@ -1409,7 +1409,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 10,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1417,11 +1417,11 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 10,
         "truncated": 0,
-        "formatDates": 4
+        "formatDates": 5
       },
       "guide": {
         "relDays": 0,
@@ -1429,7 +1429,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1439,7 +1439,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 2
       },
@@ -1449,7 +1449,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 0,
+        "decoColors": 7,
         "truncated": 0,
         "formatDates": 1
       },
@@ -1459,7 +1459,7 @@
         "bareNumbers": 0,
         "graphable": 4,
         "lowContrast": 0,
-        "decoColors": 2,
+        "decoColors": 9,
         "truncated": 0,
         "formatDates": 0
       },
@@ -1469,7 +1469,7 @@
         "bareNumbers": 0,
         "graphable": 5,
         "lowContrast": 0,
-        "decoColors": 1,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 0
       }
@@ -2720,7 +2720,7 @@
       "ok": true,
       "detail": {
         "bgs": [
-          "rgb(248, 251, 247)"
+          "rgb(251, 250, 255)"
         ],
         "legend": 0
       }
@@ -8326,7 +8326,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 94개 = 기록 파일 94개(이슈 8 · 업데이트 70 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 97개 = 기록 파일 97개(이슈 8 · 업데이트 73 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -8353,11 +8353,11 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 70줄 = 기록 파일 70줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 73줄 = 기록 파일 73줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 70,
+        "n": 73,
         "sw": 1280,
         "cw": 1280
       }
@@ -8373,11 +8373,11 @@
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 94줄 = 기록 파일 94줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 97줄 = 기록 파일 97줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 94,
+        "n": 97,
         "sw": 1280,
         "cw": 1280
       }
@@ -8922,7 +8922,7 @@
       }
     },
     {
-      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5012ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5018ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -8945,7 +8945,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5012
+        "ms": 5018
       }
     },
     {
@@ -10271,7 +10271,7 @@
       "ok": true,
       "detail": {
         "bgs": [
-          "rgb(248, 251, 247)"
+          "rgb(251, 250, 255)"
         ],
         "legend": 0
       }
@@ -15869,7 +15869,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 94개 = 기록 파일 94개(이슈 8 · 업데이트 70 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 97개 = 기록 파일 97개(이슈 8 · 업데이트 73 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -15896,11 +15896,11 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 70줄 = 기록 파일 70줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 73줄 = 기록 파일 73줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 70,
+        "n": 73,
         "sw": 390,
         "cw": 390
       }
@@ -15916,11 +15916,11 @@
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 94줄 = 기록 파일 94줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 97줄 = 기록 파일 97줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 94,
+        "n": 97,
         "sw": 390,
         "cw": 390
       }
@@ -16465,7 +16465,7 @@
       }
     },
     {
-      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5015ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5006ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -16488,7 +16488,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5015
+        "ms": 5006
       }
     },
     {
@@ -16571,131 +16571,131 @@
       }
     },
     {
-      "name": "어두운 화면 cand: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 cand: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 compare: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 compare: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 market: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 market: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 home: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 home: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 flowwho: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 flowwho: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 sectors: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 sectors: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 flow: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 flow: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 stocks: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 stocks: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 check: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 check: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 map: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 map: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 industry: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 industry: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 similar: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 similar: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 rise: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 rise: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 road: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 road: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 company: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 company: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
-      "name": "어두운 화면 agenda: 바탕이 밤 바탕색 #0D1714(rgb(13, 23, 20))",
+      "name": "어두운 화면 agenda: 바탕이 밤 바탕색 #111433(rgb(17, 20, 51))",
       "ok": true,
       "detail": {
-        "bg": "rgb(13, 23, 20)",
-        "darkBg": "rgb(13, 23, 20)"
+        "bg": "rgb(17, 20, 51)",
+        "darkBg": "rgb(17, 20, 51)"
       }
     },
     {
@@ -16799,11 +16799,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 94개 = /changelog.json 94개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 97개 = /changelog.json 97개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 94,
-        "first": "u-20261010T113144-flat1",
+        "n": 97,
+        "first": "u-20261010T142602-night1",
         "tabs": 4,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -17348,7 +17348,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 4",
+      "name": "또렷함 pc log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 5",
       "ok": true,
       "detail": null
     },
@@ -17936,7 +17936,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 4",
+      "name": "또렷함 mobile log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 5",
       "ok": true,
       "detail": null
     },
@@ -18524,7 +18524,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 4",
+      "name": "또렷함 mobile-dark log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 5",
       "ok": true,
       "detail": null
     },
@@ -19112,7 +19112,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 pc-200 log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 4",
+      "name": "또렷함 pc-200 log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 5",
       "ok": true,
       "detail": null
     },
@@ -19700,7 +19700,7 @@
       "detail": null
     },
     {
-      "name": "또렷함 mobile-dark-200 log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 4",
+      "name": "또렷함 mobile-dark-200 log: 1 내일·오늘·어제 0 · 2 흐릿한 말 0 · 3 단위·기준 빠진 숫자 0 · 5 대비 모자람 0 · (참고) 날짜 모양 5",
       "ok": true,
       "detail": null
     },
@@ -19958,5 +19958,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-10T04-02-00-185Z"
+  "dir": "reports/atlas11/browser/2026-10-10T05-26-40-847Z"
 }
