@@ -2,7 +2,7 @@
    사장님 2026-10-09 03:09(마카오 시각) 첨부 「ATLAS 제품 재설계 명령 — 목적: 지금 매수할 가치가 있는 후보 7개를 찾는다」 · 03:59 「잡스라면 … 애플의 방식이 중심」
    · 13:48 「난 하루에 돈이 몰리는 것을 찾는게 아닌데 요즘 올리곳을 찾아 시스템에 도입 하는거야」 · 14:21 · 14:36 · 15:00 「더 현명하고 지혜로운 방법을 찾아봐」 · 15:21 「만들어 줘」
    · 셈은 판 읽기(lens.json · lib/atlas11/cand.mjs 규칙 cand-rules-5 「기르기판 — 1년 추세 상위 20% 그물 · 새로 든 초입 7곳 · 석 달 담아 두기」 · 연구용 · 성능 검증 전) 한 곳 — 목록 · 이유 · 그림 · 기록이 같은 판
-   · 잡스라면(한 문장): 「한 곳을 맞히지 말고 — 1년 동안 센 곳을 그물로 넓게 담고, 새로 든 곳을 7곳 보이고, 석 달은 기다린다」 — 첫 화면은 ① 시점 → ② 칸 그림(365곳 · 굵은 선 = 그물 기준선 · 번호 칸 7 — 2026-10-10 입체 섬을 바꿈) · 그물 한 줄 → ③ 자세히
+   · 잡스라면(한 문장): 「한 곳을 맞히지 말고 — 1년 동안 센 곳을 그물로 넓게 담고, 새로 든 곳을 7곳 보이고, 석 달은 기다린다」 — 첫 화면은 ① 시점 → ② 후보 막대 그래프(막대 = 1년 추세 · 점선 = 그물 기준선 — 2026-10-10 입체 섬 · 바둑판을 바꿈) · 그물 한 줄 → ③ 자세히
    · 「매수 검토 우선순위」 — 예상 수익률 순위 아님 · 7곳은 상한(모자라면 모자란 대로 · 없으면 없다고) · 포트폴리오 아님 · 돈 유입 1~365등은 곁 정보
    · 단추 이름 = 누르면 보는 것(8): 왜 선정됐나요? · 다른 후보와 비교 · 진입 조건 확인 · 판단이 바뀌는 조건 · 선정 이후 결과
    · 움직임(10): 처음에는 최신 결과가 멈춘 채 · 후보를 누르면 그 이름이 종목 화면 「후보 판단」 머리로 옮겨 가며 이어짐(움직임 줄이기면 바로) · 비교는 같은 축에서 막대만 옮겨 감 */
@@ -14,7 +14,7 @@ import {quietArt} from './scenes.js';
 import {artStage, artSection} from './art.js';
 import {barRows, axisOf, posOf, keyEl} from './charts.js';
 import {helloBar} from './hello.js'; // 맨 위 「친구에게 ATLAS 소개하기」 띠(2026-10-09 19:54 중국 시각 「지금 만든걸 아틀란에 맨위에 넣어 친구에게 소개하기로 지혜롭게」 · 한국 판 · 한국어 화면만)
-import {candTiles} from './tiles.js'; // 「후보 7」 칸 그림(사장님 2026-10-10 09:51 · 09:53 「3d 영구 삭제해」 · 「모두다」 — 옛 입체 섬 island.js 를 바꿈 · 같은 사실을 평평하게)
+import {candBars} from './candbars.js'; // 「후보 7」 막대 그래프(사장님 2026-10-10 11:19 「바둑판 영구 삭제해」 — 같은 날 09:51 「3d 영구 삭제해」로 입체 섬을 바꾼 칸 그림(바둑판)을 다시 바꿈)
 import {pv, ppv, lensMissing, idxName} from './lensparts.js';
 import {fmtPct} from './calc.js';
 import {candTour} from './tour.js'; // 저절로 둘러보기(규칙 49 ④ · 2026-10-10 「4너에제안대로 해」 — 1위부터 8걸음 · 읽는 동안 멈춤 · 움직임 줄이기면 돌지 않음 · 끌 수 있음)
@@ -99,7 +99,7 @@ function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null
   }
   return {el, fill};
 }
-/** 짧은 줄 하나 — 순위 · 이름 · 1년 추세(그림은 위 칸 차례 — 줄에는 숫자만) · 상태 · 누르면 위 카드 */
+/** 짧은 줄 하나 — 순위 · 이름 · 1년 추세(그림은 위 막대 — 줄에는 숫자만) · 상태 · 누르면 위 카드 */
 function miniRow(x, onPick, R = null) {
   return h('li', {class: 'cd-row', 'data-code': x.code, 'data-rank': String(x.rank), 'data-status': x.status, 'data-m12': finite(x.grow?.m12D) ? String(x.grow.m12D) : ''},
     h('button', {type: 'button', class: 'cd-pick', 'aria-pressed': 'false', 'aria-label': `검토 순위 ${x.rank}위 ${x.name} · ${ST[x.status]} · 1년 추세 ${m12Txt(x)}${R ? ` · 60거래일 범위 ${pctR(R.q10)} ~ ${pctR(R.q90)} · 손실 경로 ${shareR(R.ploss)}` : ''}`, onclick: () => onPick(x.code)},
@@ -117,9 +117,9 @@ function growLine(C) {
     ...(S ? [` · 담은 뒤 7곳 `, pv(S.seven?.rD), ' · 그물 ', pv(S.net?.rD), ` · ${C.pool?.universe ?? 365}곳 평균 `, pv(S.all?.rD)] : [' · 담은 뒤 성적은 다음 판부터']));
 }
 
-/* ── ② 그림: 칸 그림 한 장(365곳 · 왼쪽 위부터 1년 추세 차례 · 굵은 선 = 그물 기준선 · 번호 칸 7곳 = 막 들어온 후보 · 금빛 = 고른 한 곳) + 고른 한 곳 카드 + 짧은 줄 일곱 ──
-   2026-10-10 09:51 · 09:53 「3d 영구 삭제해」 · 「모두다」 — 입체 섬 대신 평평한 칸(같은 사실) · 하나만 빛나고(금빛 칸 · 위 이름표 = 이름 · 1년 추세) 나머지는 옅게
-   걸음(재생): 0 칸 그림(20거래일 전 — 7곳 빈 칸) → 1~7 번호 칸 하나씩(그 칸이 채워짐) → 카드의 위험 줄 → 카드의 단추 — 한 걸음에 움직이는 것은 하나(규칙 42) */
+/* ── ② 그림: 후보 막대 그래프 한 장(줄 하나 = 후보 한 곳 · 막대 = 오늘 1년 추세 · 점선 = 그물 기준선 · 짧은 세로 줄 = 20거래일 전 · 금빛 테 = 고른 한 곳) + 고른 한 곳 카드 + 짧은 줄 일곱 ──
+   2026-10-10 11:19 「바둑판 영구 삭제해」 — 칸 그림(365칸 바둑판)을 지우고 막대로 · 365곳 이야기는 글 한 줄(그물 곳 수 · 기준 넘은 곳) · 하나만 빛남(금빛 테 · 위 이름표 = 이름 · 1년 추세)
+   걸음(재생): 0 막대(20거래일 전 값 · 그때 기준선) → 1~7 한 곳씩 오늘 값(값 글이 나타남) → 카드의 위험 줄 → 카드의 단추 — 한 걸음에 움직이는 것은 하나(규칙 42) */
 export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   if (!C?.ready || !C.pool) return null;
   const n = C.items.length;
@@ -127,22 +127,22 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   const M = lens?.mc && !lens.mc.none ? lens.mc : null, mcRow = new Map((M?.rows ?? []).map(r => [String(r.code), r])), elRow = new Map((lens?.elim && !lens.elim.none ? lens.elim.rows ?? [] : []).map(r => [String(r.code), r]));
   const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null}) : null;
   const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false), mcRow.get(String(x.code)) ?? null)) : [];
-  const pic = candTiles(C, stocks, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
-  // 저절로 둘러보기 — 칸 그림 바로 아래 고정 칸(긴 글은 그림 밖 · 그림 위에는 고른 곳 이름표 하나) · 한국어 화면만(번역 미룸)
+  const pic = candBars(C, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
+  // 저절로 둘러보기 — 막대 그림 바로 아래 고정 칸(긴 글은 그림 밖 · 그림 위에는 고른 곳 이름표 하나) · 한국어 화면만(번역 미룸)
   const tour = n && pic && LANG === 'ko' ? candTour({C, lens, pic, show: code => pick(code, true, false), hero: cur?.code ?? null, us: usRisk()}) : null;
-  function pick(code, fromScene, user = true) { // fromScene = 그림(번호 칸)에서 고름 — 그림은 이미 바뀜 · 카드와 줄만
+  function pick(code, fromScene, user = true) { // fromScene = 그림(막대 줄)에서 고름 — 그림은 이미 바뀜 · 카드와 줄만
     const x = C.items.find(y => y.code === code); if (!x || !card) return;
     cur = x; card.fill(x); if (!fromScene) pic?.setSel(code, user);
     if (user) state.candSel = code; // 사람이 고른 것만 기억(돌아오면 그 카드 · 그 칸)
     for (const r of rows) r.querySelector('.cd-pick')?.setAttribute('aria-pressed', String(r.dataset.code === code));
   }
-  const p = C.pool, q = C.grow?.qD, PM = pic?.model;
-  const key = keyEl([{cls: 'tl-k-net', label: `굵은 선 위 ${PM?.above ?? p.net}곳 = 1년 추세 상위 ${C.netPct ?? 20}% · 그 가운데 기준을 넘은 초록 칸 = 그물 ${PM?.green ?? p.netElig}곳`}, // 제목의 「그물 N곳」과 같은 수가 열쇠에도(2026-10-09 19:29 「못한 곳 개선」)
-    {cls: 'tl-k-new', label: `번호 칸 = 막 들어온 ${n}곳`}, {cls: 'tl-k-hero', label: '금빛 = 고른 한 곳'}, PM?.none ? {cls: 'tl-k-na', label: `빗금 = 1년 추세를 셀 수 없음 ${PM.none}곳`} : null], n ? null : 1);
-  const note = h('p', {class: 'muted xs tl-note'}, `칸 하나 = 회사 하나(${stocks.length}곳) · 왼쪽 위부터 1년 추세가 큰 차례(값은 이름표 글로) · 칸을 누르면 회사 · 업종 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)`);
+  const p = C.pool, q = C.grow?.qD, PM = pic?.model, pc = v => (finite(v) ? `${Number(Math.abs(v).toFixed(1)) === 0 ? '' : v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%` : '셀 수 없음');
+  const key = keyEl([{cls: 'up', label: `막대 = ${C.asOf ? `${md(C.asOf)} 종가` : '마지막 종가'} 1년 추세`}, {cls: '', label: `점선 = 그물 기준선(1년 추세 상위 ${C.netPct ?? 20}% · ${pc(q)})`}, {cls: 'cb-k-past', label: '짧은 세로 줄 = 20거래일 전 1년 추세'}, {cls: 'cb-k-hero', label: '금빛 테 = 고른 한 곳'}], n ? null : 1);
+  const ctx = h('p', {class: 'cb-ctx'}, `${p.universe}곳 가운데 1년 추세 상위 ${C.netPct ?? 20}% ${PM?.above ?? p.net}곳 · 그 가운데 기준을 넘은 그물 ${PM?.green ?? p.netElig}곳 · 막 들어온 ${n}곳`); // 365곳 이야기 — 바둑판 없이 글 한 줄(제목의 「그물 N곳」과 같은 수)
+  const note = h('p', {class: 'muted xs cb-note'}, '줄을 누르면 그 회사 카드 · 1년 추세 = 252거래일 전 종가에서 20거래일 전 종가까지 몇 % 올랐나(지난 기록 · 앞날 아님)');
   if (pic) pic.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
-    tiles: C.items.map(x => [x.code, x.rank, x.status, finite(x.grow?.m12D) ? x.grow.m12D : null]), above: PM.above, green: PM.green, none: PM.none, head: PM.order.slice(0, 3).map(i => PM.cells[i].code)}); // 선 위 · 초록 · 빗금 · 맨 앞 셋 = 칸 그림이 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳 · 차례와 맞댐)
-  const art = h('div', {class: 'tl-wrap'}, pic ? pic.el : h('p', {class: 'muted', 'data-at': '0'}, '칸 그림을 그릴 값이 모자람 — 지어내지 않음'), tour?.el ?? null, key, note);
+    bars: PM.rows.map(r => [r.code, r.rank, r.status, r.m12, r.m12p]), above: PM.above, green: PM.green}); // 막대 = 판 읽기 값 · 선 위 · 초록 = 그림이 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳 · 1년 추세 · 20거래일 전 값과 맞댐)
+  const art = h('div', {class: 'cb-wrap'}, pic ? pic.el : h('p', {class: 'muted', 'data-at': '0'}, '막대를 그릴 값이 모자람 — 지어내지 않음'), tour?.el ?? null, key, ctx, note);
   const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` ${p.universe}곳 가운데 · 기준을 낮추지 않음`),
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const gl = growLine(C);

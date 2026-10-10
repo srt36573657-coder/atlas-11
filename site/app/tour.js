@@ -1,8 +1,8 @@
 /* ATLAS 11 · 첫 화면 「후보 7」 저절로 둘러보기(화면) — 규칙 49 ④ · 걸음 글과 셈은 tour-model.js
    사장님 2026-10-10 05:14(마카오) 「4너에제안대로 해」 — 설계 보고 ④: 저절로 재생 · 읽는 동안 멈춤 · 「움직임 줄이기」 기기는 돌지 않음 · 끌 수 있음
-   · 가만히 두면(칸 그림이 화면에 반 넘게 보이고 1.5초) 1위부터 8걸음씩 → 7곳 한 바퀴 → 처음(1위)으로 돌아와 멈춤(끝없이 돌지 않음 · 이 창에서 한 번)
-   · 움직이는 것은 칸 그림 하나(고른 칸 · 빈 칸 → 채움 · 같은 업종 테 — 2026-10-10 「3d 영구 삭제해」 뒤로 돌기 · 솟기 없음) — 글은 움직이지 않고 바로 바뀜 · 그림 「재생」이 돌면 기다림(한 번에 하나 · 규칙 28)
-   · 읽는 동안 멈춤 — 화면을 만지거나 · 누르거나 · 굴리거나 · 글쇠를 누르면 멈춤(「이어 보기」로 다시) · 글 위 마우스 · 칸 그림과 글 칸이 모두 화면 밖 · 다른 탭 · 소리로 읽는 중이면 기다림
+   · 가만히 두면(막대 그림이 화면에 반 넘게 보이고 1.5초) 1위부터 8걸음씩 → 7곳 한 바퀴 → 처음(1위)으로 돌아와 멈춤(끝없이 돌지 않음 · 이 창에서 한 번)
+   · 움직이는 것은 막대 그림 하나(고른 줄 금빛 · 막대가 20거래일 전 길이에서 오늘 길이로 · 같은 업종 후보 줄 테 — 2026-10-10 「3d 영구 삭제해」 · 「바둑판 영구 삭제해」 뒤로 섬 · 칸 그림 없음) — 글은 움직이지 않고 바로 바뀜 · 그림 「재생」이 돌면 기다림(한 번에 하나 · 규칙 28)
+   · 읽는 동안 멈춤 — 화면을 만지거나 · 누르거나 · 굴리거나 · 글쇠를 누르면 멈춤(「이어 보기」로 다시) · 글 위 마우스 · 막대 그림과 글 칸이 모두 화면 밖 · 다른 탭 · 소리로 읽는 중이면 기다림
    · 「움직임 줄이기」: 저절로 시작하지 않음 · 단추로는 걸음만 바뀜(그림은 움직이지 않고 끝 모습) · 이 기기에서 끔: prefs 'tour' = 'off'(멈춘 뒤 줄 · 「자세히」 안)
    · 한국어 화면만(번역은 미룸 — 사장님 2026-10-09 03:14 「번역 작업 하지마」) · 화면 코드에 글자를 그리는 곳은 HTML 뿐(범위 띠 그림 SVG 에는 글자 없음)
    검사기용 표시: data-tour = play | pause | rest · data-tour-pos · data-tour-step · data-tour-code · data-tour-auto(저절로 시작했으면 1) · el.__tour.state() */
@@ -42,7 +42,7 @@ const bodyOf = (s, asOf, withValue = false) => [h('p', {class: 'tu-t'}, s.title)
   s.fan ? fanEl(s.fan, asOf) : null, s.checks?.length ? checksEl(s.checks, withValue) : null, s.note ? h('p', {class: 'tu-n'}, s.note) : null].filter(Boolean);
 
 /**
- * 둘러보기 — C = lens.cand · lens = 판 읽기(mc · elim · stocks) · pic = candTiles(…) 반환(tour 손잡이 — tiles.js) · show(code) = 카드 · 짧은 줄을 그 회사로(그림은 손대지 않음)
+ * 둘러보기 — C = lens.cand · lens = 판 읽기(mc · elim · stocks) · pic = candBars(…) 반환(tour 손잡이 — candbars.js) · show(code) = 카드 · 짧은 줄을 그 회사로(그림은 손대지 않음)
  *   hero = 지금 그림의 금빛 회사 · us = 미국 판 · 반환 {el, bind(raBox)} 또는 null(후보 없음 · 그림 없음)
  */
 export function candTour({C, lens, pic, show, hero = null, us = false}) {
@@ -78,7 +78,7 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
     [...kss.children].forEach(x => x.classList.toggle('on', x.dataset.k === s.k));
     body.replaceChildren(...bodyOf(s, asOf));
     keepTall();
-    if (act) { // 칸 그림 — 회사가 바뀌면 그 칸 금빛(카드 · 줄도) · 같은 회사면 걸음 움직임 하나(빈 칸 → 채움 · 같은 업종 테)
+    if (act) { // 막대 그림 — 회사가 바뀌면 그 줄 금빛(카드 · 줄도) · 같은 회사면 걸음 움직임 하나(막대 자람 · 같은 업종 테)
       const changed = shown !== it.code;
       if (changed || s.act === 'to') { I.to(it.code); show(it.code); shown = it.code; }
       if (!changed && s.act === 'rise') I.rise(it.code); else if (!changed && s.act === 'wave') I.wave(it.code, s.peers ?? []);
@@ -147,7 +147,7 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
 
   /* ── 저절로 시작 · 기다림 · 멈춤 ── */
   const canAuto = () => !rm && !tourOff() && !state.tourSeen && !touched && mode === 'rest';
-  function armAuto() { // 칸 그림이 반 넘게 보인 뒤 1.5초 — 그 사이 손을 대면 시작하지 않음
+  function armAuto() { // 막대 그림이 반 넘게 보인 뒤 1.5초 — 그 사이 손을 대면 시작하지 않음
     clearTimeout(autoT); autoT = 0;
     if (!canAuto() || !vis) return;
     autoT = setTimeout(() => { autoT = 0; if (!alive() || !canAuto() || !vis || holds.has('art')) return; autoed = true; el.dataset.tourAuto = '1'; pos = 0; step = 0; play(); }, 1500 / TEST_SPEED);
@@ -164,7 +164,7 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
   body.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hold('hover'); }, {signal}); // 글 위에 마우스 = 읽는 중(단추 위는 아님 — 「이어 보기」를 누른 마우스가 그대로 있어도 넘어감)
   body.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') unhold('hover'); }, {signal});
   if (typeof matchMedia === 'function') matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', ev => { rm = ev.matches; if (rm) { clearTimeout(autoT); autoT = 0; } setMode(mode); }, {signal});
-  if (typeof IntersectionObserver === 'function') { // 저절로 시작 = 칸 그림이 반 넘게 보일 때 · 걸음 넘김은 그림이나 글 칸 가운데 하나가 보이는 동안(둘 다 화면 밖이면 기다림)
+  if (typeof IntersectionObserver === 'function') { // 저절로 시작 = 막대 그림이 반 넘게 보일 때 · 걸음 넘김은 그림이나 글 칸 가운데 하나가 보이는 동안(둘 다 화면 밖이면 기다림)
     io = new IntersectionObserver(es => {
       if (!alive()) return;
       for (const x of es) { if (x.target === I.stage) vis = x.intersectionRatio >= 0.5; else visText = x.intersectionRatio >= 0.25; }
@@ -173,7 +173,7 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
     }, {threshold: [0, 0.25, 0.5, 1]});
     io.observe(I.stage); io.observe(el);
   }
-  /** 그림 칸(.ra) — 「재생」 · 차례 단추로 끝 모습이 아니면 기다림(칸 그림은 그림 걸음이 맡음 · 하던 움직임은 끝 모습으로) */
+  /** 그림 칸(.ra) — 「재생」 · 차례 단추로 끝 모습이 아니면 기다림(막대 그림은 그림 걸음이 맡음 · 하던 움직임은 끝 모습으로) */
   function bind(box) {
     if (!box || typeof MutationObserver !== 'function') return;
     const check = () => { if (!alive()) return; if (box.classList.contains('ra-done')) unhold('art'); else if (!holds.has('art')) { hold('art'); clearTimeout(autoT); autoT = 0; I.calm(); } else hold('art'); };
