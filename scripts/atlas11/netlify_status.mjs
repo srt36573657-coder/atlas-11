@@ -21,7 +21,7 @@ if (token) {
     out.api = {status: r.status, state: s.state ?? null, customDomain: s.custom_domain ?? null, published: s.published_deploy?.state ?? null, publishedAt: s.published_deploy?.published_at ?? null, ssl: s.ssl ?? null, passwordSet: has(s.password), hasPassword: s.has_password ?? null, ssoLogin: s.sso_login ?? null, ssoLoginContext: s.sso_login_context ?? null, visitorAccess: Object.fromEntries(Object.entries(s).filter(([k]) => /protect|visitor|password_context|access|sso|rbac|login/i.test(k)).map(([k, v]) => [k, typeof v === 'string' && /password/i.test(k) ? has(v) : v])), accountSlug: s.account_slug ?? null, accountType: s.account_type ?? null, plan: s.plan ?? null};
   } catch (e) { out.apiError = String(e.message).slice(0, 200); }
 }
-for (const u of site.url ? [site.url, site.url + '/data/atlas11/view/manifest.json', site.url + '/atlas/', site.url + '/atlas/data/core.json'] : []) { // /atlas/ = 새 ATLAS(2026-10-11 규칙 54)
+for (const u of site.url ? [site.url, site.url + '/data/atlas11/view/manifest.json', site.url + '/atlas/', site.url + '/atlas/data/core.json', site.url + '/old/', site.url + '/old/data/atlas11/view/manifest.json'] : []) { // /atlas/ = 새 ATLAS(2026-10-11 규칙 54) · 첫 화면(/)도 새 ATLAS · /old/ = 옛 한국 판
   try {
     const r = await fetch(u, {redirect: 'manual', signal: AbortSignal.timeout(20000)});
     const text = await r.text();
