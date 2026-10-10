@@ -420,8 +420,8 @@ async function tourCheck(label) {
   const rmSt = await rp.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, auto: t.dataset.tourAuto, main: t.querySelector('.tu-main').textContent.trim()}; }); await rctx.close();
   const want = x2?.code ?? x0.code;
   check(`${label} 저절로 둘러보기(규칙 49 ④): 처음 글 「${first.body.slice(0, 40)}…」 · 단추 ${first.btns.join(' · ')} · 가만히 두면 저절로 시작(${auto}) · 둘째 걸음 범위 = 판 읽기(${wantKey ?? '범위 없음'}) · 아래 줄 ${want}을 누르면 멈춤(${after.mode}) · 카드 ${after.card} · 섬 금빛 ${after.hero} · 움직임 줄이기는 저절로 안 돎(${rmSt.mode} · 「${rmSt.main}」)`,
-    first.body.startsWith(`${x0.rank}위 · ${x0.name}`) && ['‹,둘러보기,›,자세히,처음', '‹,멈춤,›,자세히,처음'].includes(first.btns.join()) && first.kss.join() === '기 · 선택,승 · 납득,전 · 검증,결 · 결정' && auto && !!st2 && (!wantKey || st2.includes(wantKey)) && st2.includes('모형 가정 아래 추정 · 검증 전')
-      && after.mode === 'pause' && after.card === want && after.hero === want && rmSt.mode === 'rest' && rmSt.auto === '0' && rmSt.main === '둘러보기', {first, auto, st2, wantKey, after, rmSt});
+    first.body.startsWith(`${x0.rank}위 · ${x0.name}`) && ['‹,저절로 설명,›,자세히,처음', '‹,멈춤,›,자세히,처음'].includes(first.btns.join()) && first.kss.join() === '기 · 선택,승 · 납득,전 · 따져 봄,결 · 결정' && auto && !!st2 && (!wantKey || st2.includes(wantKey)) && st2.includes('모형 가정 아래 추정 · 검증 전')
+      && after.mode === 'pause' && after.card === want && after.hero === want && rmSt.mode === 'rest' && rmSt.auto === '0' && rmSt.main === '저절로 설명', {first, auto, st2, wantKey, after, rmSt});
 }
 async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');

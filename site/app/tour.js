@@ -56,14 +56,14 @@ export function candTour({C, lens, isl, show, hero = null, us = false}) {
   const dots = h('span', {class: 'tu-dots', 'aria-hidden': 'true'}, ...TOUR_STEPS.map(() => h('i')));
   const kss = h('p', {class: 'tu-kss', 'aria-hidden': 'true'}, ...KSS.map(([k, w]) => h('span', {'data-k': k}, `${k} · ${w}`)));
   const body = h('div', {class: 'tu-body', 'aria-live': 'polite'});
-  const mainBtn = h('button', {type: 'button', class: 'tu-b tu-main', 'aria-pressed': 'false', onclick: () => (mode === 'play' ? pause() : play())}, '둘러보기');
+  const mainBtn = h('button', {type: 'button', class: 'tu-b tu-main', 'aria-pressed': 'false', onclick: () => (mode === 'play' ? pause() : play())}, '저절로 설명');
   const prevBtn = h('button', {type: 'button', class: 'tu-b tu-arw', 'aria-label': '이전 걸음', title: '이전 걸음', onclick: () => move(-1)}, '‹');
   const nextBtn = h('button', {type: 'button', class: 'tu-b tu-arw', 'aria-label': '다음 걸음', title: '다음 걸음', onclick: () => move(1)}, '›');
   const moreBtn = h('button', {type: 'button', class: 'tu-b', 'aria-expanded': 'false', onclick: () => toggleMore()}, '자세히');
   const homeBtn = h('button', {type: 'button', class: 'tu-b', 'aria-label': '처음부터 다시(1위 첫 걸음)', onclick: () => home()}, '처음');
   const offLine = h('p', {class: 'tu-off', hidden: true}), moreBox = h('div', {class: 'tu-more', hidden: true});
-  const el = h('div', {class: 'tu', role: 'region', 'aria-label': `후보 ${N}곳 저절로 둘러보기`, 'data-tour': 'rest', 'data-tour-auto': '0'},
-    h('p', {class: 'tu-head'}, kEl, who, dots), kss, body, h('div', {class: 'tu-ctl', role: 'group', 'aria-label': '둘러보기 조작'}, prevBtn, mainBtn, nextBtn, moreBtn, homeBtn), offLine, moreBox);
+  const el = h('div', {class: 'tu', role: 'region', 'aria-label': `후보 ${N}곳 저절로 설명`, 'data-tour': 'rest', 'data-tour-auto': '0'},
+    h('p', {class: 'tu-head'}, kEl, who, dots), kss, body, h('div', {class: 'tu-ctl', role: 'group', 'aria-label': '저절로 설명 조작'}, prevBtn, mainBtn, nextBtn, moreBtn, homeBtn), offLine, moreBox);
   const ac = typeof AbortController === 'function' ? new AbortController() : null, signal = ac?.signal;
   let io = null, mo = null, wasIn = false;
   const alive = () => { if (el.isConnected) { wasIn = true; return true; } if (wasIn) cleanup(); return false; }; // 화면에 붙기 전(만드는 중)에는 치우지 않음 · 붙었다 떨어지면(다른 화면) 다 치움
@@ -98,12 +98,12 @@ export function candTour({C, lens, isl, show, hero = null, us = false}) {
   }
   function offOf(inMore = false) { // 저절로 돌기 — 이 기기에서 끔 · 다시 켬(두 판 함께)
     const off = tourOff();
-    return h('p', {class: inMore ? 'tu-off tu-off-in' : 'tu-off'}, h('span', null, off ? '저절로 돌기: 꺼짐(이 기기)' : '저절로 돌기: 켬'), ' ',
+    return h('p', {class: inMore ? 'tu-off tu-off-in' : 'tu-off'}, h('span', null, off ? '저절로 설명: 꺼짐(이 기기)' : '저절로 설명: 켬'), ' ',
       h('button', {type: 'button', class: 'tu-b tu-sw', 'aria-pressed': String(off), onclick: () => { prefs.set(TOUR_KEY, off ? 'on' : 'off'); if (!off && mode === 'play') pause(); setMode(mode); if (more) fillMore(); }}, off ? '다시 켜기' : '이 기기에서 끄기'));
   }
   function setMode(m) {
     mode = m; el.dataset.tour = m;
-    mainBtn.textContent = m === 'play' ? '멈춤' : m === 'pause' ? '이어 보기' : '둘러보기'; mainBtn.setAttribute('aria-pressed', String(m === 'play'));
+    mainBtn.textContent = m === 'play' ? '멈춤' : m === 'pause' ? '이어 보기' : '저절로 설명'; // 단추 이름은 「둘러보기」가 아님 — 쉬운 말 화면 아래 탭 「탐색」이 「둘러보기」라 겹침 mainBtn.setAttribute('aria-pressed', String(m === 'play'));
     body.setAttribute('aria-live', m === 'play' ? 'off' : 'polite'); // 저절로 바뀌는 동안은 화면 읽기가 걸음마다 끼어들지 않게(멈추면 다시 읽음)
     const showOff = m !== 'play' && !rm && (autoed || tourOff());
     offLine.hidden = !showOff; if (showOff) offLine.replaceChildren(...offOf().childNodes);
