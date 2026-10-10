@@ -128,9 +128,11 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
   }
   function hold(why) { if (holds.has(why)) return; holds.add(why); clearTimeout(timer); timer = 0; }
   function unhold(why) { if (!holds.delete(why)) return; if (!holds.size && mode === 'play') schedule(); }
-  function play() {
+  function play(intro = false) { // intro = 처음 저절로 시작할 때 한 번 — 7곳이 하나씩 기준선을 넘는 모습(⓪) 뒤 첫 걸음(2026-10-10 다섯 팀 「오와!」)
     if (!alive()) return;
-    setMode('play'); state.tourSeen = true; paint(true); talk(); schedule();
+    setMode('play'); state.tourSeen = true;
+    if (intro && I.cross) { paint(false); hold('intro'); I.cross(() => { holds.delete('intro'); if (!alive() || mode !== 'play') return; if (holds.size) { paint(false); return; } paint(true); talk(); schedule(); }, TEST_SPEED); return; } // 다른 까닭으로 기다리는 중(재생 · 읽는 중 · 화면 밖)이면 그림은 그대로 두고 기다림이 풀린 뒤 넘김
+    paint(true); talk(); schedule();
   }
   function pause() { clearTimeout(timer); timer = 0; if (speaking) { clearInterval(speaking); speaking = 0; holds.delete('speech'); stopSpeak(); } if (mode === 'play') setMode('pause'); }
   function move(d) {
@@ -150,7 +152,7 @@ export function candTour({C, lens, pic, show, hero = null, us = false}) {
   function armAuto() { // 막대 그림이 반 넘게 보인 뒤 1.5초 — 그 사이 손을 대면 시작하지 않음
     clearTimeout(autoT); autoT = 0;
     if (!canAuto() || !vis) return;
-    autoT = setTimeout(() => { autoT = 0; if (!alive() || !canAuto() || !vis || holds.has('art')) return; autoed = true; el.dataset.tourAuto = '1'; pos = 0; step = 0; play(); }, 1500 / TEST_SPEED);
+    autoT = setTimeout(() => { autoT = 0; if (!alive() || !canAuto() || !vis || holds.has('art')) return; autoed = true; el.dataset.tourAuto = '1'; pos = 0; step = 0; play(true); }, 1500 / TEST_SPEED);
   }
   const userAct = e => { // 사람이 화면에 손댐 = 읽는 중 · 고르는 중 — 멈춤(다시 저절로 이어 가지 않음)
     if (!alive()) return;

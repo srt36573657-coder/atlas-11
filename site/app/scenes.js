@@ -210,7 +210,7 @@ export function logArt(entries) {
     li(1, tag('모두'), h('b', null, `${entries.length}개`), ` · ${days.length}일`),
     li(2, tag('가장 새 날'), h('b', null, korDate(last.d)), ` · ${last.n}개`),
     li(3, tag('나눔'), `업데이트 ${k.update}개 · 자료 변경 ${k.data}개 · 이슈 ${k.issue}개`)), {n: entries.length, days: days.length, last: last.d, lastN: last.n, ...k});
-  const key = keyEl([{cls: 'up', label: '옥빛 = 업데이트'}, {cls: 'ex', label: '회색 = 자료 변경'}, {cls: 'down', label: '먹빛 = 이슈'}]);
+  const key = keyEl([{cls: 'acc', label: '보라 = 업데이트'}, {cls: 'subc', label: '회색 = 자료 변경'}, {cls: 'inkc', label: '먹빛 = 이슈'}]); // 보기 칸 = 기둥 칸 색 그대로(2026-10-10 다섯 팀 검토 — 옛 보기는 빨강 · 파랑 칸이라 「오름 · 내림」과 섞임)
   return fig('log', '기록', '기록', `최근 ${shown.length}일 · 날마다 기록 수`, artStage({key: 'log', art: h('div', {'data-at': '0'}, cols, key), labels, steps: STEPS4}), {cls: 'ak-short'});
 }
 
@@ -313,7 +313,7 @@ export function checkArt(lens) {
   const evals = recs.flatMap(r => Object.values(r.evals).flat()), pending = evals.filter(e => e.status === 'pending').length, done = evals.filter(e => e.status === 'done').length;
   const cols = columnsEl(recs.map((r, k) => { const ev = Object.values(r.evals).flat(); return {key: r.asOf, label: k === 0 || k === recs.length - 1 ? `${Number(r.asOf.slice(5, 7))}월 ${Number(r.asOf.slice(8, 10))}일` : '', parts: [{v: ev.filter(e => e.status === 'done').length, cls: 'done'}, {v: ev.filter(e => e.status === 'pending').length, cls: 'wait'}]}; }));
   const labels = check(lab(li(1, tag('고정 기록'), h('b', null, `${recs.length}장`)), li(2, tag('평가 끝'), h('b', null, `${done}건`), ' · ', tag('평가 대기'), h('b', null, `${pending}건`)), li(3, tag('확인할 것'), '지난 기록을 센 것 — 투자 성과 입증 아님')), {records: recs.length, pending, done});
-  return fig('check', '검증', '검증', `${korDate(recs[0].asOf)}~${korDate(recs.at(-1).asOf)} 기록`, artStage({key: 'check', art: h('div', {'data-at': '0'}, cols, keyEl([{cls: 'up', label: '옥빛 = 평가 끝'}, {cls: 'ex', label: '흐린 칸 = 평가 대기'}])), labels, steps: STEPS4}));
+  return fig('check', '검증', '검증', `${korDate(recs[0].asOf)}~${korDate(recs.at(-1).asOf)} 기록`, artStage({key: 'check', art: h('div', {'data-at': '0'}, cols, keyEl([{cls: 'acc', label: '보라 = 평가 끝'}, {cls: 'ex', label: '흐린 칸 = 평가 대기'}])), labels, steps: STEPS4}));
 }
 /** 관심종목(#/watch) — 이 기기에 등록한 곳 수(0곳이면 빈 축) */
 export function watchArt(n) {
