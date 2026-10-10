@@ -99,9 +99,12 @@ export function expectOf(b, board, agenda, story, log, others, lens = null, extr
       const planted = CA.grow.planted?.at ?? asOf, order = planted === asOf ? pickT.map(s => s.code) : CA.items.map(x => x.code); // 담는 날이 지난 판 = 담는 날 기록의 7곳(판 읽기 그대로)
       const stOf = new Map(CA.items.map(x => [x.code, x.status])), byCode = new Map(st.map(s => [s.code, s]));
       E.candRows = order.map((c, i) => [c, stOf.get(c) ?? 'met', i + 1]); // 화면 줄 차례 = 따로 센 차례 · 상태는 판 읽기(재검토는 마감 뒤 공시 — 순위와 따로)
-      const towers = order.map((c, i) => [c, i + 1, stOf.get(c) ?? 'met', d1(fin(mOf(c)) ? mOf(c) * 100 : null)]); // 핀 7곳 = 순위 · 상태 · 1년 추세(%)
-      // 섬(2026-10-09 17:36 — island.js) · 물 위 = 탑 높이로 센 곳 수 = 여기서 따로 센 그물(기준선 이상) · 초록 = 그 가운데 기준 셋을 넘은 곳(여기서 공시 · 결산으로 따로 셈) — 옛 받침 색(업종 돈 흐름)은 섬에 없음(③ 자세히 곁 정보)
-      E.cand = {universe: st.length, valid, net, netElig, newc: fresh.length, n: order.length, plantedAt: planted, q: d1(fin(q) ? q * 100 : null), towers, above: net, green: netElig};
+      const tiles = order.map((c, i) => [c, i + 1, stOf.get(c) ?? 'met', d1(fin(mOf(c)) ? mOf(c) * 100 : null)]); // 번호 칸 7곳 = 순위 · 상태 · 1년 추세(%)
+      // 칸 그림(2026-10-10 「3d 영구 삭제해」 — tiles.js · 옛 입체 섬을 바꿈) · 굵은 선 위 = 칸 그림이 센 그물 안 = 여기서 따로 센 그물(기준선 이상) · 초록 = 그 가운데 기준 셋을 넘은 곳(여기서 공시 · 결산으로 따로 셈)
+      //   빗금 = 1년 추세를 셀 수 없는 곳 · 맨 앞 세 칸 = 그물 안을 1년 추세 큰 순(같으면 기호 차례)으로 따로 줄 세운 앞 셋(그물이 셋보다 적으면 그물 밖이 이어짐)
+      const byM = (a, b) => (mOf(b.code) - mOf(a.code)) || (a.code < b.code ? -1 : a.code > b.code ? 1 : 0), byC = (a, b) => (a.code < b.code ? -1 : a.code > b.code ? 1 : 0);
+      const head = [...st.filter(inNet).sort(byM), ...st.filter(s => fin(mOf(s.code)) && !inNet(s)).sort(byM), ...st.filter(s => !fin(mOf(s.code))).sort(byC)].slice(0, 3).map(s => s.code);
+      E.cand = {universe: st.length, valid, net, netElig, newc: fresh.length, n: order.length, plantedAt: planted, q: d1(fin(q) ? q * 100 : null), tiles, above: net, green: netElig, none: st.length - valid, head};
       const [a, b2] = CA.items, sa = a && byCode.get(a.code), sb = b2 && byCode.get(b2.code);
       E.compare = sa && sb ? {a: sa.code, b: sb.code, am12: d1(fin(mOf(sa.code)) ? mOf(sa.code) * 100 : null), bm12: d1(fin(mOf(sb.code)) ? mOf(sb.code) * 100 : null), ar20: sa.r20, br20: sb.r20} : Q('compare');
     } else { E.cand = Q('cand'); E.compare = Q('compare'); }
