@@ -49,7 +49,10 @@ export async function renderCheck(main, {manifest}) {
   const pending = recs.flatMap(r => Object.values(r.evals).flat()).filter(e => e.status === 'pending').length;
   // 2026-10-10 18:22 다섯 팀 전체 검토(머크 · 클로드팀) — 첫 화면 목록과 채점하는 목록이 다른 규칙 판이면 맨 위에 밝힘 · 평가 끝이 하나도 없으면 「평가 대기」 표는 한 줄로 접음(구글 · 삼성 · 잡스팀)
   const ver = r => String(r ?? '').match(/(\d+)$/)?.[1] ?? '?', curR = lens?.cand?.rules ?? null, lastC = [...recs].reverse().find(r => r.cand?.rules) ?? null;
-  const ruleNote = curR && lastC && lastC.cand.rules !== curR ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(curR)}판)는 아직 채점 기록에 없음`), ` — 여기서 채점하는 후보 목록은 ${korDate(lastC.asOf)} 기록의 규칙 ${ver(lastC.cand.rules)}판 목록`) : null;
+  // 첫 화면 7곳의 채점 날(클로드 · 잡스팀 2026-10-10 20:47) — 담은 날 기록의 채점일(같은 날 종가부터 5 · 10 · 20거래일)을 보이기만 함 · 그 7곳을 채점 셈에 넣는 것은 사장님 확인 뒤
+  const planted = lens?.cand?.grow?.planted?.at ?? null, dues = (recs.find(r => r.asOf === planted)?.evals?.cand ?? []).map(e => e.due).filter(Boolean);
+  const ruleNote = curR && lastC && lastC.cand.rules !== curR ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(curR)}판)는 아직 채점 기록에 없음`), ` — 여기서 채점하는 후보 목록은 ${korDate(lastC.asOf)} 기록의 규칙 ${ver(lastC.cand.rules)}판 목록`,
+    dues.length ? ` · 첫 화면 ${lens.cand.items?.length ?? 0}곳의 기준은 ${korDate(planted)} 종가 — 채점에 넣으면 채점 날은 ${dues.map(d => korDate(d)).join(' · ')}(${[5, 10, 20].slice(0, dues.length).map(k => `${k}거래일`).join(' · ')}) · 아직 넣지 않음` : '') : null;
   const table = lens && recs.length ? recordTable(lens) : null;
   state.summary = recs.length ? `선정 결과 · 고정 기록 ${recs.length}장 · 평가 끝 ${v.done}건 · 평가 대기 ${pending}건 · 첫 평가일 ${korDate(v.firstDue)} · 검증 전` : '선정 결과 · 고정 기록 없음 · 검증 전';
   main.replaceChildren(h('div', {class: 'b-page ck-page'},

@@ -190,7 +190,11 @@ html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[d
 .cj-h { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .cj-h:focus { outline: none; } .cj-h:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .cj-sum, .cj-risk { margin: 6px 0 0; font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; }
-.cj-mc { margin: 6px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; } /* 첫 화면 카드와 같은 셈 틀 줄(2026-10-10 다섯 팀 전체 검토 · 머크팀) */
+.cj-mc { margin: 6px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+/* 7일 뒤 한 줄(2026-10-10 20:47 사장님 「7일 … 딱 하나만」 · 세 팀 검토 — 모두 반반 한 줄 · 카드는 고른 곳 범위) */
+.cb-w7 { margin: 8px 0 4px; padding: 8px 12px; border-radius: 12px; background: var(--card); box-shadow: 0 0 0 2px var(--geum); font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.cb-w7 b { font-size: 1.0625rem; }
+.cd-w7 { overflow-wrap: anywhere; } /* 첫 화면 카드와 같은 셈 틀 줄(2026-10-10 다섯 팀 전체 검토 · 머크팀) */
 .cj-risk .cd-k { color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--card)); }
 .cj-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
 .cj-q { margin: 12px 0 0; padding: 10px 6px 4px; border-top: 1px solid var(--sep); border-radius: 8px; }
@@ -376,3 +380,7 @@ html[data-font-step="2"] .rk-v, html[data-font-step="3"] .rk-v, html[data-font-s
 .mk-idx .mk-f { margin: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .mk-idx .mk-fa { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px 0 0; font-weight: 800; color: var(--ink); text-decoration: none; }
 .mk-idx .mk-g { display: inline-flex; align-items: center; min-height: 44px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; text-decoration: none; overflow-wrap: anywhere; }
+
+/* 찾기 첫 글자 단추(2026-10-10 세 팀 검토 — 새 판의 「눌러 보기」) */
+.sk-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 8px 0 0; }
+.sk-chip { min-height: 44px; min-width: 64px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--sep); background: var(--card); color: var(--ink); font-weight: 700; font-size: 1rem; cursor: pointer; }
