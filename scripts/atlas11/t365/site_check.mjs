@@ -16,11 +16,12 @@ const {chromium} = require('playwright');
 const exe = ['/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'].find(f => fs.existsSync(f));
 const core = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/core.json'), 'utf8'));
 const comp = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/comp.json'), 'utf8')).companies;
+const pick = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/pick36.json'), 'utf8'));
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
-const routes = ['#/', '#/list', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), '#/info'];
+const routes = ['#/', '#/list', '#/36', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), '#/info'];
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
 
@@ -31,6 +32,7 @@ function expect(route) {
   if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg3)])}; }
   if (kind === 'c') { const c = comp[arg]; return {trio: [pct(c.chg3), pct(c.r1y), pct(c.mdd3)], price: Math.round(c.price).toLocaleString('ko-KR') + '원'}; }
   if (!kind) return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)])};
+  if (kind === '36') return {p36: pick.picks.map(p => [p.name, '번 길 ' + r1(p.avg).toFixed(1) + '%']), test: pick.backtest ? `${pick.backtest.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${pick.backtest.wins}번` : null, total: Math.round(pick.total).toLocaleString('ko-KR') + '원'};
   return {};
 }
 
@@ -74,6 +76,7 @@ for (const [w, hgt, font] of plans) {
       res.count = document.querySelector('#view .count')?.textContent ?? '';
       res.rows = [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => [x.querySelector('.nm').firstChild.textContent, x.querySelector('.val').textContent]);
       res.trio = [...document.querySelectorAll('#view .trio b')].map(x => x.textContent);
+      res.p36 = [...document.querySelectorAll('#view ol.p36 li')].map(x => [x.querySelector('.nm').textContent, x.querySelector('.val').textContent]);
       return res;
     }, {banned: BANNED});
     screens++;
@@ -89,6 +92,7 @@ for (const [w, hgt, font] of plans) {
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
+    if (e.p36) { numbers += e.p36.length + 2; if (JSON.stringify(r.p36) !== JSON.stringify(e.p36)) fail(tag, '36곳 줄 다름'); if (e.test && !r.text.includes(e.test)) fail(tag, '지난 기록 시험 글 다름'); if (!r.text.includes(e.total)) fail(tag, '1주씩 합계 다름'); }
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); if (!r.text.includes(e.price)) fail(tag, `1주 값 ${e.price} 없음`); }
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
   }

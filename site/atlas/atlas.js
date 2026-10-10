@@ -18,6 +18,7 @@ const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 function pct(x) { if (x == null || !isFinite(x)) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; }  // 100% 넘으면 소수 없이(+215%)
 const cls = x => (x == null ? 'flat' : r1(x) > 0 ? 'up' : r1(x) < 0 ? 'down' : 'flat');
 function md(d) { const p = String(d).split('-'); return (+p[1]) + '월 ' + (+p[2]) + '일'; }
+const ymd = d => String(d).slice(0, 4) + '년 ' + md(d);
 function eok(v) { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); if (a >= 10000) return s + r1(a / 10000).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원'; return s + Math.round(a).toLocaleString('ko-KR') + '억 원'; }
 /** 조사 — 받침 있으면 앞말(은 · 이 · 과) · 없으면 뒷말(는 · 가 · 와) · 한글이 아니면 둘 다 */
 function josa(w, a, b) { const ch = String(w).trim().slice(-1), k = ch.charCodeAt(0) - 0xAC00; if (k < 0 || k > 11171) return w + a + '(' + b + ')'; return w + (k % 28 ? a : b); }
@@ -34,7 +35,8 @@ const chgOf = (node, mode = state.mode) => (mode === 'cw' ? node.cwChg : node.ch
 
 // ── 자료 받기 ──
 async function getJson(name) { const r = await fetch('/atlas/data/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(name + ' ' + r.status); return r.json(); }
-let compP = null, namesP = null;
+let compP = null, namesP = null, pickP = null;
+function needPick() { if (!pickP) pickP = getJson('pick36.json').then(p => { D.pick = p; }).catch(e => { pickP = null; throw e; }); return pickP; }
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; }).catch(e => { compP = null; throw e; }); return compP; }
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
 
@@ -283,6 +285,8 @@ async function viewCompany(v, code) {
     h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(c.mdd3))));
   v.append(h('p', {class: 'won', text: `100만 원어치였다면 3개월 안 가장 나쁠 때 ${Math.round(keep * 100).toLocaleString('ko-KR')}만 원이었습니다.`}));
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
+  const slot36 = h('div'); v.append(slot36);
+  needPick().then(() => { const p = D.pick.picks.find(x => x.code === code); if (p && slot36.isConnected) slot36.append(h('p', {class: 'in36'}, `월요일 매수 검토 36곳 가운데 ${p.rank}번째(번 길 ${r1(p.avg).toFixed(1)}%) · `, h('a', {href: '#/36', text: '36곳과 지난 기록 시험 보기'}))); }).catch(() => {});
   const chartHost = h('div');
   v.append(chartHost);
   const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} 3개월 선 — ${md(C.base)} = 100에서 ${pct(c.chg3)} · 가장 깊이 빠짐 ${pct(c.mdd3)}`});
@@ -319,6 +323,54 @@ async function viewCompany(v, code) {
     p.t27 ? h('li', {text: '그 물건 수출: 산업통상부 「수출입 동향」 — 매달 1일.'}) : null)));
   v.append(more);
   v.append(foot());
+}
+
+// ── 화면 ⑥ 월요일 36곳(사장님 00:15 「몬테카를로 1억 × 4방향 → 소거법 → 36개 · 각 한 주씩」) — 지난 기록 시험을 맨 위에 그대로 ──
+async function view36(v) {
+  await Promise.all([needPick(), needComp()]);
+  const C = D.core, K = D.pick, S = K.spec, B = K.backtest;
+  const tell = tellRow(`${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤를 셈`, null);
+  v.append(tell.el, h('h1', {class: 'head', text: `월요일 매수 검토 ${K.picks.length}곳`}),
+    h('p', {class: 'count', text: `몬테카를로 ${Math.round(S.totalPairs / 1e8)}억 길(찾기 4방향 + 지우기 4방향) · ${K.eligible}곳 셈 → ${K.cutN}곳 지움 → ${K.picks.length}곳`}));
+  if (B) {
+    const box = h('div', {class: 'test'}, h('h2', {text: '먼저 — 지난 기록에서는?'}),
+      h('p', {class: 'big', text: `같은 셈을 지난 ${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번(${Math.round(B.rate * 100)}%)뿐입니다.`}),
+      h('p', {}, '한 달 평균: 36곳 ', pctEl(B.meanPick), ' · 365곳 ', pctEl(B.meanAll), ` — ${B.passes ? '문턱을 넘었습니다.' : '아무거나 고른 것보다 못했습니다. 정해 둔 문턱(60% · 두 절반 55%)을 못 넘어 「통한다」고 할 수 없습니다.'}`));
+    box.append(h('p', {class: 'small', text: `시험 기간: ${ymd(B.rows[0].t)} ~ ${ymd(B.rows[B.rows.length - 1].to)} · 한 달(20거래일)씩. 그 전 넉 달은 내리는 장 날이 20일이 안 되어 셀 수 없었습니다(기준대로 뺌).`}));
+    const host = h('div', {class: 'bt'}); box.append(host); v.append(box);
+    btChart(host, B.rows);
+    box.append(h('p', {class: 'small note', text: '막대 하나 = 한 번의 시험(한 달) · 위 빨강 = 36곳이 365곳 평균보다 나음 · 아래 파랑 = 못함.'}));
+  }
+  v.append(h('div', {class: 'dirs4'}, ...K.dirs.map(d => h('div', {}, h('b', {text: d.name}), h('span', {text: `지난 ${K.window.days}거래일 가운데 ${d.days}일`})))));
+  v.append(h('p', {class: 'note', text: `「4방향」 = 시장이 갈 방향 넷. 어느 쪽이 올지는 모른다고 보고 넷을 같은 무게로 셌습니다. 지난 2년은 오르는 장이 많아 내리는 장 날이 적습니다.`}));
+  const ol = h('ol', {class: 'p36'});
+  for (const p of K.picks) { const c = D.comp[p.code];
+    ol.append(h('li', {}, h('a', {href: '#/c/' + p.code}, h('span', {class: 'no num', text: p.rank}), h('span', {class: 'nm', text: p.name}), h('b', {class: 'val num', text: '번 길 ' + r1(p.avg).toFixed(1) + '%'}),
+      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · 3개월 ${pct(c.chg3)}`})))); }
+  v.append(h('h2', {class: 'sec', text: `${K.picks.length}곳 — 번 길 많은 순`}), h('p', {text: `번 길 = ${S.horizon}거래일 뒤 사고팔 돈(0.3%)을 빼고도 남은 길의 몫 · 4방향 평균`}), ol);
+  v.append(h('div', {class: 'alt'}, `${K.picks.length}곳을 1주씩이면 합계 `, h('b', {class: 'num', text: won(K.total)}), ` — ${md(K.asOf)} 종가로 셈 · 월요일 값은 다릅니다.`));
+  v.append(h('details', {class: 'more'}, h('summary', {text: '어떻게 셌나요 — 돌리기 전에 정한 기준'}), h('div', {class: 'in'}, h('ul', {},
+    h('li', {text: `방향: 날마다 그날로 끝나는 20거래일 시장(365곳 같은 무게)으로 가름 — 흔들림이 위 25%면 크게 출렁이는 장, 아니면 +3% 넘게 오름 · −3% 넘게 내림 · 그 사이`}),
+    h('li', {text: `길: 그 방향 날들에서 20일을 뽑아 365곳에 똑같이 적용(함께 움직임을 지킴) · 방향마다 ${S.paths.toLocaleString('ko-KR')}길 × 365곳 = 약 1억`}),
+    h('li', {text: `찾기: 번 길의 몫(사고팔 돈 0.3% 빼고) · 지우기: 다른 난수로 다시 돌려 −15% 넘게 잃는 길의 몫이 가장 나쁜 방향에서 큰 순으로 3분의 1`}),
+    h('li', {text: `고르기: 남은 곳에서 번 길 많은 순 · 한 업종 ${S.perIndustry}곳까지 · 기준을 먼저 적어 둔 기록(커밋 f58803a6)`}),
+    h('li', {text: '지난 기록 시험: 2024년 7월부터 한 달(20거래일)마다 그날까지 자료로만 같은 셈(길은 방향마다 1천만) → 한 달 뒤 값으로 채점'}),
+    h('li', {text: '한계: 365곳은 10월 2일까지 자료로 고른 곳이라 이미 오른 회사가 많습니다. 모형 가정 아래 셈일 뿐 앞날 값이 아닙니다.'})))));
+  v.append(foot());
+}
+function btChart(host, rows) {
+  const W = Math.max(260, Math.round(host.getBoundingClientRect().width || 320)), Hh = 150, P = 8, n = rows.length;
+  const ex = rows.map(r => r.pick - r.all), M = Math.max(1, ...ex.map(Math.abs)) * 1.1;
+  const bw = (W - 2 * P) / n, Y = x => Hh / 2 - x / M * (Hh / 2 - P);
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `지난 ${n}번 시험 — 36곳이 365곳 평균보다 나은 때 ${ex.filter(x => x > 0).length}번`});
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: '#A9A3CC', 'stroke-width': 1.5}));
+  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 2, fill: x > 0 ? '#FF5A66' : '#5C97FF'})); });
+  host.append(svg);
+  host.append(h('div', {class: 'ax'}, h('span', {text: ymd(rows[0].t)}), h('span', {text: ymd(rows[n - 1].t)})));
+  const tip = h('div', {class: 'tip num'}); tip.hidden = true; host.append(tip);
+  const mv = e => { const r = svg.getBoundingClientRect(); let k = Math.floor(((e.clientX - r.left) * W / r.width - P) / bw); k = Math.max(0, Math.min(n - 1, k)); const q = rows[k];
+    tip.hidden = false; tip.textContent = `${md(q.t)} · 36곳 ${pct(q.pick)} · 365곳 ${pct(q.all)}`; tip.style.left = Math.min(r.width - 120, Math.max(120, (P + (k + 0.5) * bw) * r.width / W)) + 'px'; };
+  svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { tip.hidden = true; });
 }
 
 // ── 화면 ⑤ 업종 63 ──
@@ -448,11 +500,12 @@ async function route() {
   if (hsh === lastMain && $('#view').childElementCount) return;
   lastMain = hsh;
   const v = $('#view'); v.textContent = ''; chartDraw = null;
-  $('#tabHome').toggleAttribute('aria-current', false); $('#tabList').toggleAttribute('aria-current', false);
+  $('#tabHome').toggleAttribute('aria-current', false); $('#tabList').toggleAttribute('aria-current', false); $('#tab36').toggleAttribute('aria-current', false);
   try {
     const [, kind, arg] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [];
     if (!kind) { $('#tabHome').setAttribute('aria-current', 'page'); viewHome(v); }
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
+    else if (kind === '36') { $('#tab36').setAttribute('aria-current', 'page'); await view36(v); }
     else if (kind === 'g') viewGroup(v, decodeURIComponent(arg));
     else if (kind === 'i') await viewIndustry(v, decodeURIComponent(arg));
     else if (kind === 'c') await viewCompany(v, decodeURIComponent(arg));
