@@ -153,6 +153,7 @@ function lineChart(host, {v, avg, label}) {
 function foot() {
   const C = D.core;
   return h('footer', {class: 'foot'},
+    h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/old/', text: '옛 ATLAS'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources.price} · 3개월 = ${md(C.base)} → ${md(C.asOf)}(${C.days}거래일) · 365곳은 ${md(C.pickAsOf)} 종가까지 보고 고름.`}),
     h('p', {text: '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.'}));
 }
@@ -201,7 +202,8 @@ function viewHome(v) {
   }
   words(state.mode);
   const host = h('div');
-  v.append(tell.el, head, count, host);
+  const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello.jpg', alt: '', width: 44, height: 44, decoding: 'async'}), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+  v.append(hello, tell.el, head, count, host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
   const rc = race(host, {items, parent: A, label: '큰 갈래 10개 — 3개월 경주 · 많이 오른 순: ' + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
@@ -509,7 +511,7 @@ async function route() {
     else if (kind === 'g') viewGroup(v, decodeURIComponent(arg));
     else if (kind === 'i') await viewIndustry(v, decodeURIComponent(arg));
     else if (kind === 'c') await viewCompany(v, decodeURIComponent(arg));
-    else viewMissing(v);
+    else { location.replace('/old/' + location.search + location.hash); return; } // 옛 ATLAS 주소(#/stocks · #/road …)는 옛 판으로
   } catch (e) {
     v.textContent = ''; v.append(h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}));
     const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => { lastMain = ''; route(); }); v.append(again);
@@ -519,6 +521,7 @@ async function route() {
 }
 
 async function boot() {
+  try { const lg = new URLSearchParams(location.search).get('lang'); if (lg && lg !== 'ko') { location.replace('/old/' + location.search + location.hash); return; } } catch { /* 주소 못 읽음 */ }
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }
   $('#fontBtn').addEventListener('click', () => { setFont((state.font + 1) % 3); lastMain = ''; route(); });
   $('#helpBtn').addEventListener('click', () => { location.hash = '#/info'; });
