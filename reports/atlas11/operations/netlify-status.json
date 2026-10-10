@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-10T22:20:50.579Z",
+  "at": "2026-10-10T22:34:51.800Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-10T22:20:49.453Z",
+    "publishedAt": "2026-10-10T22:34:51.242Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-8ee5c8c3\",\"generatedAt\":\"2026-10-10T22:19:45.214Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-df5a6a35\",\"generatedAt\":\"2026-10-10T22:33:50.110Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
