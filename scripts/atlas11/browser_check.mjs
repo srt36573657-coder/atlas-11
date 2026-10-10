@@ -239,6 +239,7 @@ async function candCheck(page, label, mobile, press) {
     && c.risk === `가장 큰 위험 ${x.risk.text}` && c.btns.join() === (C.items.length > 1 ? '왜 선정됐나요?,다른 후보와 비교' : '왜 선정됐나요?') && c.pressed.join() === x.code && c.sel.join() === x.code;
   const k0 = await readCard(), bads = [];
   if (C.items.length && !(cardOk(k0, C.items[0]) && !k0.picked)) bads.push({first: k0});
+  await page.evaluate(() => document.querySelectorAll('.cd-rows-d').forEach(d => { d.open = true; })); // 짧은 줄 일곱 = 접힘(2026-10-10 13:51 다섯 팀 검토 「같은 7곳이 두 번」) — 사람처럼 펼친 뒤 누름
   for (const [i, x] of C.items.entries()) { await press(page.locator('.cd-row .cd-pick').nth(i)); await page.waitForTimeout(120); const c = await readCard(); if (!cardOk(c, x) || !c.picked) bads.push({i, c, want: cardWant(x)}); }
   if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.cb-row[data-code="${x.code}"]`).evaluate(g => g.click()); await page.waitForTimeout(150); const c = await readCard(); const hd = await page.evaluate(() => document.querySelector('.cd-page .cb-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? ''); if (!cardOk(c, x) || !hd.includes(`${x.rank}위`) || !hd.includes(x.name) || !hd.includes(m12W(x.code))) bads.push({pin: x.code, c, hd}); }
   check(`${label} 첫 화면 카드: 처음 1위(금빛 테 · 위 이름표) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 줄로) · 막대 줄을 눌러도 같은 카드 · 위 이름표도 그 곳`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
@@ -263,7 +264,7 @@ async function candCheck(page, label, mobile, press) {
   };
   if (C.items.length < 2) return rankCheck();
   // 후보 둘째 줄 「왜 선정됐나요?」 → 종목 화면 「후보 판단」 칸(초점 · 화면 안) → 「‹ 후보 7곳」 → 보던 자리 · 누른 곳에 초점
-  const x2 = C.items[1]; await press(page.locator('.cd-row .cd-pick').nth(1)); await page.waitForTimeout(150);
+  const x2 = C.items[1]; await page.evaluate(() => document.querySelectorAll('.cd-rows-d').forEach(d => { d.open = true; })); await press(page.locator('.cd-row .cd-pick').nth(1)); await page.waitForTimeout(150);
   const btn = page.locator('.cd-card .cd-btn').first(); await toMid(btn);
   const y0 = await page.evaluate(() => Math.round(scrollY));
   await press(btn); await page.waitForSelector('.cj-box .cj-h'); await page.waitForTimeout(400);
@@ -279,7 +280,7 @@ async function candCheck(page, label, mobile, press) {
   check(`${label} 재설계 · 「‹ 후보 7곳」 → 보던 자리(${y0}px → ${bk.y}px) · 고른 카드 그대로(${bk.card}) · 누른 곳에 초점(${bk.focus})`, bk.hash === '#/' && Math.abs(bk.y - y0) <= 2 && bk.focus === '#/stock/' + x2.code && bk.card === x2.code && bk.sel === x2.code, {y0, bk});
   // 「다른 후보와 비교」(첫 줄) → 같은 기준 표 · 같은 축 막대 · 앞선 까닭 → 「나」를 바꾸면 그 자리에서(주소만 바뀜 · 화면을 새로 그리지 않음)
   const c0 = C.items[0], c1 = C.items[1];
-  await press(page.locator('.cd-row .cd-pick').first()); await page.waitForTimeout(150);
+  await page.evaluate(() => document.querySelectorAll('.cd-rows-d').forEach(d => { d.open = true; })); await press(page.locator('.cd-row .cd-pick').first()); await page.waitForTimeout(150);
   await press(page.locator('.cd-card .cd-btn', {hasText: '다른 후보와 비교'})); await page.waitForSelector('.cmp-page section[data-art]'); await page.waitForTimeout(300);
   const cm = await page.evaluate(() => ({hash: location.hash, a: document.querySelector('#cmp-a')?.value, b: document.querySelector('#cmp-b')?.value, say: document.querySelector('.cmp-say')?.textContent.trim(), rows: document.querySelectorAll('.cmp-t tbody tr').length, chk: JSON.parse(document.querySelector('.cmp-page [data-check]')?.dataset.check ?? '{}'), back: document.querySelector('.c-back')?.textContent.trim(), firsts: [...document.querySelectorAll('.cmp-page [data-first]')].map(x => x.dataset.first).join()}));
   const ST5W = {met: '그물 안', wait: '그물 밖', recheck: '재검토'};
@@ -362,7 +363,7 @@ async function flatCheck(page, label) {
     const be = getComputedStyle(b, '::before'), af = getComputedStyle(b, '::after'), tr = getComputedStyle(b.parentElement); return {w, real: r.width / t.width * 100, face: (be.content !== 'none' && be.transform !== 'none') || (af.content !== 'none' && af.transform !== 'none'), groove: /inset/.test(tr.boxShadow) && tr.boxShadow !== 'none'}; });
   check(`${label} 평평한 막대: 윗면 · 옆면 · 파인 홈 없음 · 길이 = 값(${bar?.w}% · 실제 ${bar?.real?.toFixed(2)}%)`, !!bar && !bar.face && !bar.groove && Math.abs(bar.real - bar.w) < 0.6, bar);
 }
-/* 저절로 둘러보기(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 사람처럼: 가만히 두면 저절로 시작 · 아래 줄을 누르면 멈추고 누른 회사가 이김(그림 금빛 · 카드) · 움직임 줄이기 기기는 저절로 안 돎
+/* 저절로 둘러보기(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」 · 13:51 다섯 팀 검토로 기승전결 칸 이름 「승 · 근거」 「결 · 확인」) — 사람처럼: 가만히 두면 저절로 시작 · 아래 줄을 누르면 멈추고 누른 회사가 이김(그림 금빛 · 카드) · 움직임 줄이기 기기는 저절로 안 돎
    기대값은 판 읽기(lens.cand · lens.mc · lens.elim)로 따로: 첫 걸음 글 = 1위 이름 · 1년 추세 · 핵심 숫자 걸음의 범위 숫자 = 판 읽기 몬테카를로 q10 · q90 */
 async function tourCheck(label) {
   const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, R = new Map((lens.mc?.rows ?? []).map(r => [String(r.code), r])), x0 = C?.items?.[0], x2 = C?.items?.[2];
@@ -376,7 +377,7 @@ async function tourCheck(label) {
   const st2 = await page.waitForFunction(() => { const t = document.querySelector('.cd-page .tu'); return t && t.dataset.tourStep === '1' ? t.querySelector('.tu-body').innerText.replace(/\s+/g, ' ').trim() : false; }, null, {timeout: 8000}).then(h => h.jsonValue()).catch(() => null);
   const pvW = v => `${v > 0 ? '▲' : v < 0 ? '▼' : '—'} ${pr(v)}`, r0 = R.get(String(x0.code)), wantKey = r0 ? `가운데 80% ${pvW(r0.q10)} ~ ${pvW(r0.q90)}` : null;
   // 아래 줄 3위를 누름 → 멈춤 · 카드와 그림 금빛이 그 회사 · 기다려도 그대로
-  const row = page.locator(`.cd-row[data-code="${x2?.code ?? x0.code}"] .cd-pick`); await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(2500);
+  await page.evaluate(() => document.querySelectorAll('.cd-rows-d').forEach(d => { d.open = true; })); const row = page.locator(`.cd-row[data-code="${x2?.code ?? x0.code}"] .cd-pick`); await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(2500);
   const after = await page.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, card: document.querySelector('.cd-card')?.dataset.code, hero: document.querySelector('.cd-page .cb').__cb.state().hero}; });
   await ctx.close();
   const rctx = await browser.newContext({tour: true, viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', reducedMotion: 'reduce'}); const rp = await rctx.newPage();
@@ -384,7 +385,7 @@ async function tourCheck(label) {
   const rmSt = await rp.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, auto: t.dataset.tourAuto, main: t.querySelector('.tu-main').textContent.trim()}; }); await rctx.close();
   const want = x2?.code ?? x0.code;
   check(`${label} 저절로 둘러보기(규칙 49 ④): 처음 글 「${first.body.slice(0, 40)}…」 · 단추 ${first.btns.join(' · ')} · 가만히 두면 저절로 시작(${auto}) · 둘째 걸음 범위 = 판 읽기(${wantKey ?? '범위 없음'}) · 아래 줄 ${want}을 누르면 멈춤(${after.mode}) · 카드 ${after.card} · 그림 금빛 ${after.hero} · 움직임 줄이기는 저절로 안 돎(${rmSt.mode} · 「${rmSt.main}」)`,
-    first.body.startsWith(`${x0.rank}위 · ${x0.name}`) && ['‹,저절로 설명,›,자세히,처음', '‹,멈춤,›,자세히,처음'].includes(first.btns.join()) && first.kss.join() === '기 · 선택,승 · 납득,전 · 따져 봄,결 · 결정' && auto && !!st2 && (!wantKey || st2.includes(wantKey)) && st2.includes('모형 가정 아래 추정 · 검증 전')
+    first.body.startsWith(`${x0.rank}위 · ${x0.name}`) && ['‹,저절로 설명,›,자세히,처음', '‹,멈춤,›,자세히,처음'].includes(first.btns.join()) && first.kss.join() === '기 · 선택,승 · 근거,전 · 따져 봄,결 · 확인' && auto && !!st2 && (!wantKey || st2.includes(wantKey)) && st2.includes('모형 가정 아래 추정 · 검증 전')
       && after.mode === 'pause' && after.card === want && after.hero === want && rmSt.mode === 'rest' && rmSt.auto === '0' && rmSt.main === '저절로 설명', {first, auto, st2, wantKey, after, rmSt});
 }
 async function restructCheck(page, label, mobile, press) {

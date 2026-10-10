@@ -12,7 +12,7 @@ import {posOf} from '../../site/app/charts.js';
 const C = {
   grow: {m: {a1: [1.2, 0.3], b1: [0.7, 0.1], c1: [0.66, null], a2: [0.9, 0.95], z9: [null, 0.2]}, q: 66.128, qD: 66.1, qp: 47.818},
   flags: {a1: '111111', b1: '111111', c1: '111111', a2: '011110', z9: '110000', n0: '111100'},
-  items: [{code: 'b1', rank: 2, status: 'met', name: '회사b1', sector: '업종나', g: 7}, {code: 'c1', rank: 3, status: 'wait'}, {code: 'a1', rank: 1, status: 'met', name: '회사a1', sector: '업종가', g: '3'}]};
+  items: [{code: 'b1', rank: 2, status: 'met', name: '회사b1', sector: '업종나', g: 7, r20: -20.7627}, {code: 'c1', rank: 3, status: 'wait'}, {code: 'a1', rank: 1, status: 'met', name: '회사a1', sector: '업종가', g: '3', r20: 3.46}]};
 
 test('줄 = 후보(순위 차례) · 1년 추세 % = 판 읽기 값 × 100(소수 첫째) · 이름이 없으면 기호 · 상태 · 업종은 그대로', () => {
   const M = barsModel(C);
@@ -20,6 +20,7 @@ test('줄 = 후보(순위 차례) · 1년 추세 % = 판 읽기 값 × 100(소�
   assert.deepEqual(M.rows.map(r => [r.m12, r.m12p]), [[120, 30], [70, 10], [66, null]], '20거래일 전 값이 없으면 null(지어내지 않음)');
   assert.equal(M.rows[2].name, 'c1'); assert.equal(M.rows[0].name, '회사a1');
   assert.deepEqual(M.rows.map(r => r.status), ['met', 'met', 'wait']); assert.deepEqual(M.rows.map(r => r.g), ['3', '7', null]); assert.equal(M.rows[1].sector, '업종나');
+  assert.deepEqual(M.rows.map(r => r.r20), [3.5, -20.8, null], '위 이름표 「그 뒤 20거래일」 값 = 판 읽기 r20(소수 첫째) · 없으면 null(2026-10-10 다섯 팀 검토)');
 });
 
 test('점선 = 오늘 기준선(grow.qD) · 20거래일 전 기준선 = grow.qp(소수 첫째) · 같은 축이 0 · 두 기준선 · 모든 값을 담음 · 자리는 값 차례 그대로', () => {

@@ -28,12 +28,13 @@ const durOf = ms => Math.max(300, Math.min(600, ms - 150)); // 구성 움직임 
 
 /**
  * 그림 한 장 — 차트(art · 요소 또는 HTML 글) + 이름 · 숫자(labels) + 차례 단추 넷 + 처음으로 · 이전 · 재생 · 다음 · 최신 결과 · 빠르기
- * spec = {key(그림 이름), art | svg(차트), labels(HTML 요소), steps([{c: 차례 0~3, at: 켜지는 부품 번호, ms: 머무는 시간}]), cls, labFirst(요약을 차트 위에 — 기본), tail(차트 · 요약 다음 줄들)}
+ * spec = {key(그림 이름), art | svg(차트), labels(HTML 요소), steps([{c: 차례 0~3, at: 켜지는 부품 번호, ms: 머무는 시간}]), cls, labFirst(요약을 차트 위에 — 기본), tail(차트 · 요약 다음 줄들),
+ *   ctlSlot(다시 보기 단추를 넣을 칸 — 주면 그 칸 맨 앞 · 2026-10-10 13:51 다섯 팀 검토 「재생 단추가 그림에서 멂」 → 첫 화면은 막대 바로 밑)}
  *   2026-10-09 모든 그림이 요약(이름 · 숫자) 먼저 → 차트(Apple 날씨 · 주식처럼 답 먼저 · 근거 그림 다음) — 긴 말 · 큰 글씨에서도 이름 · 숫자가 첫 화면에(규칙 30) · 펼치기 · 업종 순환 · 회사 그림이 먼저 쓰던 차례
  * 부품(data-at = 번호)은 처음부터 모두 켜짐(최신 결과) — 차례를 고르면 그 차례까지 켜지고 나머지는 흐려짐 · 지금 부품 하나만 움직임
  */
 export function artStage(spec) {
-  const {key, art = null, svg = null, labels, steps, cls = '', labFirst = true, tail = []} = spec;
+  const {key, art = null, svg = null, labels, steps, cls = '', labFirst = true, tail = [], ctlSlot = null} = spec;
   const artEl = art instanceof Node ? h('div', {class: 'ra-art'}, art) : h('div', {class: 'ra-art', html: art ?? svg ?? ''});
   const last = steps.length - 1;
   const beatBtns = BEATS.map((name, c) => h('button', {type: 'button', class: 'ra-beat', 'data-c': String(c), 'aria-pressed': 'false', onclick: () => jump(c)}, name));
@@ -48,7 +49,8 @@ export function artStage(spec) {
       btn('last', '최신 결과', () => { pause(); finish(); }), speedBtn));
   // ra-rest = 처음(최신 결과)에는 「재생」 하나만 보임 — 누르면 차례 넷 · 단추 여섯이 열림(2026-10-09 08:26 「넘 글이 많다」)
   const box = h('div', {class: `ra ra-done ra-rest${cls ? ' ' + cls : ''}`, 'data-scene': key, 'data-steps': String(steps.length), 'data-plan': steps.map(s => `${s.c}:${s.at}`).join(','), // data-plan = 걸음마다 차례:부품 번호(검사기가 계산으로 봄)
-    'data-step': String(last), 'data-c': String(steps[last]?.c ?? 3)}, ...(labFirst ? [labels, artEl] : [artEl, labels]), ...tail, ctl); // labFirst = 요약 숫자를 차트 위에(펼치기 — 첫 화면에 숫자가 먼저)
+    'data-step': String(last), 'data-c': String(steps[last]?.c ?? 3)}, ...(labFirst ? [labels, artEl] : [artEl, labels]), ...tail, ...(ctlSlot ? [] : [ctl])); // labFirst = 요약 숫자를 차트 위에(펼치기 — 첫 화면에 숫자가 먼저)
+  if (ctlSlot) ctlSlot.prepend(ctl); // 단추 칸이 그림 안에 있어도 같은 상자(.ra) 안 — 걸음 · 처음 「재생」 하나(ra-rest)는 그대로
   const parts = [...box.querySelectorAll('[data-at]')];
   for (const s of steps) for (const el of parts) if (Number(el.dataset.at) === s.at) el.style.setProperty('--dur', `${durOf(s.ms)}ms`);
   let cur = last, done = true, playing = false, timer = 0;

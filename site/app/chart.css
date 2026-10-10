@@ -63,6 +63,7 @@ html[data-font-step="2"] .bc-val .rt-n, html[data-font-step="3"] .bc-val .rt-n, 
 .bc-sw { flex: none; display: inline-block; width: 14px; height: 0; border-top: 2px dashed var(--ink); }
 .bc-sw.idx { border-top-style: dotted; border-top-color: var(--sub); }
 .bc-sw.up { height: 9px; border: 0; border-radius: 3px; background: var(--up); } .bc-sw.down { height: 9px; border: 0; border-radius: 3px; background: var(--down); }
+.bc-sw.acc, .bc-sw.subc, .bc-sw.inkc { height: 9px; border: 0; border-radius: 3px; } .bc-sw.acc { background: var(--geum); } .bc-sw.subc { background: var(--sub); } .bc-sw.inkc { background: var(--ink); } /* 기둥 칸(.cl-seg update · done · data · issue)과 같은 색 */
 .bc-sw.ex { height: 9px; border: 1px solid var(--sep); border-radius: 3px; background: repeating-linear-gradient(135deg, var(--fill) 0 3px, transparent 3px 5px); }
 .bc-sw.med { border-top-style: dashed; } .bc-sw.avg { border-top-style: dotted; border-top-color: var(--ink); } .bc-sw.ix { border-top: 3px solid var(--ink); }
 

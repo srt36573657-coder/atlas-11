@@ -4,7 +4,7 @@
 
 /* ── 위 막대: 둥근 단추 넷(찾기 · 관심 · 안내 · 보기) ── */
 .top-inner { gap: 6px; padding-inline: 12px; }
-.top .tb-b { width: 42px; height: 42px; border-radius: 21px; color: var(--ink); text-decoration: none; }
+.top .tb-b { width: 44px; height: 44px; border-radius: 22px; color: var(--ink); text-decoration: none; }
 .top .tb-b svg { width: 22px; height: 22px; }
 .top .tb-b[aria-current="page"] { background: var(--ink); color: var(--bg); }
 .top .tb-b { transition: none; } /* 화면을 바꿀 때 위 막대 단추 색이 바뀌며 움직이지 않게(그림과 함께 움직이면 「한 번에 하나」가 깨짐 · 규칙 28) */
@@ -218,17 +218,30 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 .cb-rk { color: var(--cb-gold); font-weight: 800; }
 .cb-nm { min-width: 0; }
 .cb-big { margin-inline-start: auto; font-size: 1.5rem; font-weight: 800; color: var(--cb-gold); font-variant-numeric: tabular-nums; letter-spacing: -.01em; unicode-bidi: isolate; direction: ltr; }
-.cb-cap { font-size: .8125rem; font-weight: 700; line-height: 1.35; color: var(--sub); }
+.cb-cap { font-size: .875rem; font-weight: 700; line-height: 1.35; color: var(--sub); }
+.cb-cap .up { color: var(--up-ink); } .cb-cap .down { color: var(--down-ink); } /* 그 뒤 20거래일 오르내림 — 빨강 오름 · 파랑 내림(부호 함께) */
 .cb-stage { position: relative; display: grid; gap: 4px; }
 .cb-row { display: block; width: 100%; min-width: 0; margin: 0; padding: 6px 8px 8px; border: 0; border-radius: 10px; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer; }
 .cb-row.sel { background: var(--fill); outline: 2px solid var(--cb-gold-bg); outline-offset: 0; } /* 고른 한 곳 — 금빛 테(막대 색은 오름 · 내림 뜻 그대로) */
 .cb-row.sel .bc-rk { color: var(--cb-gold); font-weight: 800; }
 .cb-row:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .cb-row.wv { outline: 2px solid var(--geum); outline-offset: 0; } /* 저절로 설명 ④ — 같은 업종 후보 줄에 차례로 테 */
-.cb-sec { flex: none; max-width: 40%; font-size: .75rem; color: var(--sub); overflow-wrap: anywhere; }
-.cb-past { position: absolute; top: -3px; bottom: -3px; left: var(--l); width: 3px; margin-left: -1.5px; border-radius: 1px; background: var(--sub); } /* 20거래일 전 1년 추세 */
+.cb-sec { flex: none; max-width: 40%; font-size: .8125rem; color: var(--sub); overflow-wrap: anywhere; }
+.cb-past { position: absolute; top: -3px; bottom: -3px; left: var(--l); width: 3px; margin-left: -1.5px; border-radius: 1px; background: var(--sub); box-shadow: 0 0 0 1.5px var(--card); } /* 20거래일 전 1년 추세 · 판 색 테(빨강 막대 위에서도 보이게 — 2026-10-10 다섯 팀 검토 구글팀 「대비 1.02:1」) */
 .cb-when { margin: 4px 0 0; font-size: .875rem; font-weight: 700; line-height: 1.4; color: var(--ink); text-align: end; }
-.cb-ctx { margin: 8px 0 0; font-size: .8125rem; line-height: 1.45; color: var(--sub); }
+.cb-ctx { margin: 8px 0 0; font-size: .875rem; line-height: 1.45; color: var(--sub); }
+/* 「▶ 재생」 = 막대 바로 밑 한 줄(2026-10-10 13:51 다섯 팀 검토 — 잡스팀 · 삼성팀 · 구글팀 「재생 단추가 그림에서 세 화면 아래」) · 누르면 7곳이 하나씩 기준선을 넘음 */
+.cb-playrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 8px 0 4px; }
+.cb-playrow > .ra-ctl { margin: 0; }
+.ra:not(.ra-rest) .cb-playrow > .ra-ctl { flex: 1 1 100%; }
+.cb-playcap { order: 2; min-width: 0; font-size: .9375rem; font-weight: 700; line-height: 1.35; color: var(--ink2); overflow-wrap: anywhere; }
+.ra:not(.ra-rest) .cb-playcap { display: none; }
+/* 짧은 줄 일곱 = 접힘(잡스팀 · 삼성팀 「같은 7곳이 두 번」) — 범위 · 손실 경로는 이 안 */
+.cd-rows-d { margin: 10px 0 0; border-top: 1px solid var(--sep); }
+.cd-rows-d > summary { display: flex; align-items: center; gap: 8px; min-height: 48px; font-size: 1rem; font-weight: 700; cursor: pointer; list-style: none; overflow-wrap: anywhere; }
+.cd-rows-d > summary::-webkit-details-marker { display: none; }
+.cd-rows-d > summary::after { content: '›'; margin-inline-start: auto; font-size: 1.25rem; color: var(--sub); }
+.cd-rows-d[open] > summary::after { transform: rotate(90deg); }
 .cb-note { margin: 2px 0 0; }
 .ra:not(.ra-done) .cb .cb-val[data-at].now { border-radius: 4px; outline-offset: 2px; } /* 걸음 테두리(art 공통)를 값 글에 맞게 */
 .bc-sw.cb-k-past { width: 3px; height: 12px; border: 0; border-radius: 1px; background: var(--sub); }

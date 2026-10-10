@@ -28,7 +28,7 @@ export function barsModel(C) {
   const G = C?.grow, M = G?.m, F = C?.flags ?? {}, xs = [...(C?.items ?? [])].sort((a, b) => a.rank - b.rank);
   if (!G || !M || !xs.length) return null;
   const rows = xs.map(x => { const c = String(x.code), m = M[c] ?? [];
-    return {code: c, name: x.name ?? c, rank: x.rank, status: x.status ?? null, sector: x.sector ?? null, g: x.g != null ? String(x.g) : null, m12: d1(m[0]), m12p: d1(m[1])}; });
+    return {code: c, name: x.name ?? c, rank: x.rank, status: x.status ?? null, sector: x.sector ?? null, g: x.g != null ? String(x.g) : null, m12: d1(m[0]), m12p: d1(m[1]), r20: fin(x.r20) ? Number(x.r20.toFixed(1)) : null}; }); // r20 = 마지막 20거래일 오르내림(%)
   const q = fin(G.qD) ? G.qD : fin(G.q) ? Number(G.q.toFixed(1)) : null, qp = fin(G.qp) ? Number(G.qp.toFixed(1)) : null;
   const ax = axisOf([0, q, qp, ...rows.flatMap(r => [r.m12, r.m12p])]);
   const codes = Object.keys(F), up = c => String(F[c] ?? '')[4] === '1' && fin(M[c]?.[0]);
@@ -42,7 +42,7 @@ export function barsModel(C) {
 export function candBars(C, {sel = null, onPick = () => {}} = {}) {
   const M = barsModel(C); if (!M) return null;
   const rows = M.rows, n = rows.length, P = v => `${posOf(M.ax, v).toFixed(2)}%`, day = C.asOf ? md(C.asOf) : '마지막 종가', dayC = C.asOf ? `${md(C.asOf)} 종가` : '마지막 종가'; // 날짜는 판의 종가 날(「오늘」 같은 말 대신 — 또렷함 1)
-  let rm = mm('(prefers-reduced-motion: reduce)'), hero = Math.max(0, rows.findIndex(r => r.code === sel)), picked = false, anim = null, waveT = [], waveEnd = 0;
+  let rm = mm('(prefers-reduced-motion: reduce)'), hero = Math.max(0, rows.findIndex(r => r.code === sel)), picked = false, anim = null, waveT = [], waveEnd = 0, crossing = null; // crossing = 처음 한 번 「선을 넘는 모습」이 도는 중이면 {stop}
   const parts = rows.map((r, k) => {
     const bar = h('span', {class: 'bc-bar cb-bar'}), past = h('span', {class: 'cb-past'}), ref = h('span', {class: 'bc-ref cb-ref'}), zero = h('span', {class: 'bc-zero'});
     zero.style.setProperty('--l', P(0)); past.style.setProperty('--l', P(fin(r.m12p) ? r.m12p : 0)); if (!fin(r.m12p)) past.hidden = true;
@@ -71,15 +71,16 @@ export function candBars(C, {sel = null, onPick = () => {}} = {}) {
   function paintSel() { parts.forEach((p, k) => { p.btn.classList.toggle('sel', k === hero); p.btn.setAttribute('aria-pressed', String(k === hero)); }); }
   function hudFill(pastV = false) { // pastV = 「재생」에서 고른 곳이 아직 오늘 값으로 오기 전(20거래일 전 값 — 그림과 이름표가 같은 때)
     const r = rows[hero]; if (!r) { hud.replaceChildren(); return; }
-    const say = pastV ? '20거래일 전 1년 추세' : r.status === 'met' || r.status == null ? '1년 추세 · 그물에 막 들어옴' : r.status === 'wait' ? '1년 추세 · 그물 밖' : '1년 추세 · 재검토';
+    const tail = r.status === 'met' || r.status == null ? null : r.status === 'wait' ? '그물 밖' : '재검토'; // 2026-10-10 13:51 다섯 팀 검토 — 큰 숫자는 지난 1년(마지막 20거래일 뺌) · 그 뒤 20거래일 값을 곁에(구글팀 · 클로드팀)
+    const say = pastV ? ['20거래일 전 1년 추세'] : ['1년 추세(마지막 20거래일 뺌)', ...(fin(r.r20) ? [' · 그 뒤 ', h('span', {class: side(r.r20)}, pctTxt(r.r20))] : []), ...(tail ? [` · ${tail}`] : [])];
     hud.replaceChildren(h('p', {class: 'cb-h1'}, h('span', {class: 'cb-rk'}, `${r.rank}위`), ' ', h('span', {class: 'cb-nm', 'data-ident': ''}, r.name), ' ', h('b', {class: 'cb-big'}, pctTxt(pastV ? r.m12p : r.m12))),
-      h('p', {class: 'cb-cap'}, say));
+      h('p', {class: 'cb-cap'}, ...say));
   }
   const pop = k => { if (rm || !parts[k]?.bar.animate) return; anim?.finish(); anim = parts[k].bar.animate([{opacity: 0.35}, {opacity: 1}], {duration: 600, easing: 'ease-out'}); };
   function pickRow(k, user, notify = true) { // 후보 고름 — 카드 · 금빛 · 위 이름표
     if (!rows[k]) return;
     const prev = hero; hero = k;
-    if (user) { picked = true; el.classList.add('picked'); pop(k); }
+    if (user) { crossEnd(); picked = true; el.classList.add('picked'); pop(k); } // 사람이 고르면 「선을 넘는 모습」은 바로 끝 모습
     paintSel(); hudFill();
     if (user && notify && prev !== k) onPick(rows[k].code);
   }
@@ -104,7 +105,26 @@ export function candBars(C, {sel = null, onPick = () => {}} = {}) {
   /* ── 저절로 설명(tour.js · 규칙 49 ④) — 사람이 고른 것이 아님(picked 아님 · 카드에 다시 알리지 않음) · 한 번에 하나 · 움직임 줄이기면 바로 끝 모습 ── */
   const idxOf = code => rows.findIndex(r => r.code === code);
   /** 다른 움직임이 시작할 때(그림 「재생」) · 걸음이 바뀔 때 — 하던 것을 바로 끝 모습으로 */
-  function calm() { anim?.finish(); anim = null; waveT.forEach(clearTimeout); waveT = []; waveEnd = 0; parts.forEach(p => p.btn.classList.remove('wv')); }
+  function calm() { crossEnd(); anim?.finish(); anim = null; waveT.forEach(clearTimeout); waveT = []; waveEnd = 0; parts.forEach(p => p.btn.classList.remove('wv')); }
+  /** ⓪ 저절로 설명 처음 한 번 — 7곳이 위에서부터 하나씩 20거래일 전 길이에서 오늘 길이로 자라 기준선(점선)을 넘는 모습
+   *   2026-10-10 13:51 사장님 「구글팀 … 머크팀이 이걸 고쳐 … 바보도 오와! 전문가도 오와!」 — 구글팀 · 잡스팀 · 삼성팀이 같이 고른 「오와!」 장면
+   *   한 번에 막대 하나(앞 막대가 다 자란 뒤 다음 — 규칙 28) · 다 되면 done() · 움직임 줄이기 · 값이 없으면 바로 done() · speed = 검사 빠르기 */
+  function tourCross(done = () => {}, speed = 1) {
+    calm();
+    const ps = parts.filter(p => fin(p.r.m12p) && fin(p.r.m12));
+    if (rm || !ps.length || !ps[0].bar.animate) { done(); return; }
+    ps.forEach(p => { setBar(p, p.r.m12p, M.q); p.btn.classList.add('past'); });
+    const at = v => { const g = barGeo(M.ax, v); return {left: `${g.l.toFixed(2)}%`, width: `${g.w.toFixed(2)}%`}; };
+    let k = 0; const c = {stop: false, done, ps}; crossing = c;
+    const next = () => {
+      if (c.stop || k >= ps.length) { if (crossing === c) crossing = null; ps.forEach(p => { setBar(p, p.r.m12, M.q); p.btn.classList.remove('past'); }); c.done = null; done(); return; }
+      const p = ps[k++]; setBar(p, p.r.m12, M.q); p.btn.classList.remove('past');
+      const a = p.bar.animate([at(p.r.m12p), at(p.r.m12)], {duration: 300 / speed, easing: 'ease-out'}); anim = a;
+      a.finished.then(() => setTimeout(next, 60 / speed), () => setTimeout(next, 0));
+    };
+    next();
+  }
+  function crossEnd() { const c = crossing; if (!c) return; crossing = null; c.stop = true; c.ps.forEach(p => { setBar(p, p.r.m12, M.q); p.btn.classList.remove('past'); }); } // 바로 끝 모습(오늘 값) — 이어 부를 done 은 다음 차례가 부름
   /** ① 고르기 — 그 줄 금빛 · 위 이름표 · 막대가 한 번 옅었다 돌아옴 */
   function tourTo(code) { const k = idxOf(code); if (k < 0) return false; calm(); hero = k; paintSel(); hudFill(); pop(k); return true; }
   /** ③ 가장 큰 근거 — 그 막대가 20거래일 전 길이에서 오늘 길이로(한 번) */
@@ -131,5 +151,5 @@ export function candBars(C, {sel = null, onPick = () => {}} = {}) {
   nowAll(); paintSel(); hudFill();
   el.__cb = {state: () => ({hero: rows[hero]?.code ?? null, busy: waving(), picked, past: parts.filter(p => p.btn.classList.contains('past')).map(p => p.r.code), rows: rows.map(r => r.code)}),
     rowOf: code => parts[idxOf(code)]?.btn ?? null};
-  return {el, model: M, setSel, bind, tour: {to: tourTo, rise: tourRise, wave: tourWave, calm, busy, stage}};
+  return {el, model: M, setSel, bind, tour: {to: tourTo, rise: tourRise, wave: tourWave, cross: tourCross, calm, busy, stage}};
 }
