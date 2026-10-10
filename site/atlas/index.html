@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#141738">
+<meta name="description" content="ATLAS — 한국 우량주 365곳의 지난 3개월. 큰 갈래 10개 · 업종 63개 · 회사 365곳을 세 번 눌러 봅니다. 지난 기록을 센 것입니다.">
+<title>ATLAS · 365곳 3개월</title>
+<!-- 새 ATLAS(2026-10-11 · 사장님 06:13 「aaa7377.com에 올려 … 잡스 방식이 중심이 되고 구글팀 클로드팀 cai팀 그리고 찰리 망거팀 삼성팀 들이 도와서
+     일반인들이 바로 알수 있고 쉽게 사용가능하며 별도에 설명이 없어도 감탄이 니오게 새로운 아틀란스를 만들어 봐라 이 토대로 말이다」)
+     토대 = 365곳(t365-v1 · 2026-10-10 23:18) · 큰 갈래 10 · 업종 63 · 3개월 지수(7월 6일 = 100) — 자료는 scripts/atlas11/t365/site_build.py 가 만든 /atlas/data/*.json
+     옛 첫 화면(/) · /new 는 그대로 둔다. 보안 규칙(CSP: script-src 'self' · style-src 'self')에 맞춰 글 속 style · 글 속 script 를 쓰지 않는다. -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/app/fonts.css">
+<link rel="stylesheet" href="/atlas/atlas.css">
+<script type="module" src="/atlas/atlas.js"></script>
+</head>
+<body>
+<header class="band">
+ <div class="band-in">
+  <a class="brand" href="#/" aria-label="ATLAS 처음 화면">
+   <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#8973C3" stroke-width="2.5"/><path d="M8 20 L13 13 L17 17 L22 9" fill="none" stroke="#E9C46A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+   <b>ATLAS</b>
+  </a>
+  <button class="find" type="button" id="openFind" aria-label="회사나 업종 이름으로 찾기">
+   <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+   <span>찾기</span>
+  </button>
+  <button class="ibtn" type="button" id="fontBtn" aria-label="글씨 크기 바꾸기 (지금 보통)">가</button>
+  <button class="ibtn" type="button" id="helpBtn" aria-label="ATLAS 는 어떻게 셌나요">?</button>
+ </div>
+</header>
+<main class="view" id="view" tabindex="-1"><p class="boot">ATLAS 를 여는 중입니다…</p></main>
+<nav class="tabbar" aria-label="아래 탭">
+ <div class="tabbar-in">
+  <a href="#/" id="tabHome">한눈에</a>
+  <a href="#/list" id="tabList">업종 63</a>
+  <button type="button" id="tabFind">찾기</button>
+ </div>
+</nav>
+<div class="sheet" id="findSheet" role="dialog" aria-modal="true" aria-label="회사 · 업종 찾기" hidden>
+ <div class="sheet-in">
+  <div class="sheet-top">
+   <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="예: 삼성 · ㅅㅅㅈㅈ · 반도체" aria-label="회사나 업종 이름">
+   <button class="close" type="button" data-close="findSheet">닫기</button>
+  </div>
+  <div class="sheet-body"><p class="hint" id="qHint" aria-live="polite">이름 한 글자부터 찾습니다 · 첫 글자(ㅅㅅㅈㅈ) · 종목 번호도 됩니다.</p><ul class="hits" id="hits"></ul></div>
+ </div>
+</div>
+<div class="sheet" id="infoSheet" role="dialog" aria-modal="true" aria-labelledby="infoTitle" hidden>
+ <div class="sheet-in">
+  <div class="sheet-top"><h2 id="infoTitle">ATLAS 는 어떻게 셌나요</h2><button class="close" type="button" data-close="infoSheet">닫기</button></div>
+  <div class="sheet-body" id="infoBody"></div>
+ </div>
+</div>
+<noscript><p class="boot">이 화면은 자바스크립트가 켜져 있어야 열립니다.</p></noscript>
+</body>
+</html>
