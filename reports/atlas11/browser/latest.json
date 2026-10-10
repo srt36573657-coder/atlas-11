@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-10T00:04:10.665Z",
+  "at": "2026-10-10T02:57:51.519Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-08-f6cf91d5",
@@ -11,7 +11,7 @@
     "mobile": "390x844 (터치 흉내 — 실제 아이폰 기기 검증 아님)",
     "mobile-dark": "390x844 어두운 화면"
   },
-  "passed": 1241,
+  "passed": 1225,
   "failed": 0,
   "clarity": {
     "pc": {
@@ -49,7 +49,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -79,7 +79,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 8,
+        "graphable": 7,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -99,7 +99,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -109,7 +109,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -119,7 +119,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -129,7 +129,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -159,7 +159,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -169,7 +169,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 15,
         "truncated": 0,
@@ -179,7 +179,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -189,7 +189,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -229,7 +229,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -239,7 +239,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -249,7 +249,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 7,
+        "graphable": 6,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -259,7 +259,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -269,7 +269,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -279,7 +279,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -289,7 +289,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 5,
+        "graphable": 4,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -341,7 +341,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -371,7 +371,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 8,
+        "graphable": 7,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -391,7 +391,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -401,7 +401,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -411,7 +411,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -421,7 +421,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -451,7 +451,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -461,7 +461,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 15,
         "truncated": 0,
@@ -471,7 +471,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -481,7 +481,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -521,7 +521,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -531,7 +531,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -541,7 +541,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 7,
+        "graphable": 6,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -551,7 +551,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -561,7 +561,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -571,7 +571,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -581,7 +581,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 5,
+        "graphable": 4,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -605,7 +605,7 @@
         "bareNumbers": 0,
         "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 3
       },
@@ -633,7 +633,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -663,7 +663,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 8,
+        "graphable": 7,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -683,7 +683,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -693,7 +693,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -703,7 +703,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -713,7 +713,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -743,7 +743,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -753,7 +753,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -763,7 +763,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -773,7 +773,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -813,7 +813,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -823,7 +823,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -833,7 +833,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 7,
+        "graphable": 6,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -843,7 +843,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -853,7 +853,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -863,7 +863,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -873,7 +873,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 5,
+        "graphable": 4,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -925,7 +925,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -955,7 +955,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 8,
+        "graphable": 7,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -975,7 +975,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -985,7 +985,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -995,7 +995,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -1005,7 +1005,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 11,
         "truncated": 0,
@@ -1035,7 +1035,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -1045,7 +1045,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 15,
         "truncated": 0,
@@ -1055,7 +1055,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -1065,7 +1065,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 14,
         "truncated": 0,
@@ -1105,7 +1105,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -1115,7 +1115,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -1125,7 +1125,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 7,
+        "graphable": 6,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -1135,7 +1135,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 4,
         "truncated": 0,
@@ -1145,7 +1145,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -1155,7 +1155,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -1165,7 +1165,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 5,
+        "graphable": 4,
         "lowContrast": 0,
         "decoColors": 5,
         "truncated": 0,
@@ -1189,7 +1189,7 @@
         "bareNumbers": 0,
         "graphable": 8,
         "lowContrast": 0,
-        "decoColors": 14,
+        "decoColors": 13,
         "truncated": 0,
         "formatDates": 3
       },
@@ -1217,7 +1217,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -1247,7 +1247,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 8,
+        "graphable": 7,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -1267,7 +1267,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -1277,7 +1277,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 6,
+        "graphable": 5,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -1287,7 +1287,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -1297,7 +1297,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -1327,7 +1327,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1337,7 +1337,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1347,7 +1347,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1357,7 +1357,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 4,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1397,7 +1397,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 3,
         "truncated": 0,
@@ -1407,7 +1407,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -1417,7 +1417,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 7,
+        "graphable": 6,
         "lowContrast": 0,
         "decoColors": 1,
         "truncated": 0,
@@ -1427,7 +1427,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -1437,7 +1437,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -1447,7 +1447,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 1,
+        "graphable": 0,
         "lowContrast": 0,
         "decoColors": 0,
         "truncated": 0,
@@ -1457,7 +1457,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 5,
+        "graphable": 4,
         "lowContrast": 0,
         "decoColors": 2,
         "truncated": 0,
@@ -1477,7 +1477,7 @@
   },
   "checks": [
     {
-      "name": "pc 첫 화면 「후보 7」 섬(규칙 5판 기르기판 · 2026-10-09 17:36 「아주 색시한 전달력」): ① 기준 → ② 그림 칸(섬 365곳 · 물 위 68곳 = 따로 센 그물 68곳 · 초록 57곳 = 따로 셈 57곳 · 핀 7개 = 후보 차례 · 겹침 없음 · 위 이름표 「1위 NHN +165.2% 1년 추세 · 물 위로 막 올라옴」 · 정적인 상태) · 짧은 줄 7개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 7곳) · 「돈 유입 1등~365등 모두 보기 ›」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(재생)",
+      "name": "pc 첫 화면 「후보 7」 칸 그림(규칙 5판 기르기판 · 2026-10-10 「3d 영구 삭제해」 — 입체 섬을 바꿈): ① 기준 → ② 그림 칸(칸 365개 = 판 읽기 365곳 · 선 위 68곳 = 따로 센 그물 68곳 · 초록 57곳 = 따로 셈 57곳 · 빗금 29곳 = 따로 셈 29곳 · 맨 앞 세 칸 043260 000500 009150 = 따로 셈 · 굵은 선 「그물 기준선 · 1년 추세 +66.1%」 · 번호 칸 7개 = 후보 차례 · 위 이름표 「1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴」 · 캔버스 0개 · 정적인 상태) · 짧은 줄 7개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 7곳) · 「돈 유입 1등~365등 모두 보기 ›」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(재생)",
       "ok": true,
       "detail": {
         "firsts": [
@@ -1490,13 +1490,13 @@
           [
             "2",
             268,
-            2300,
+            2444,
             true
           ],
           [
             "3",
-            2314,
-            2644,
+            2458,
+            2788,
             false
           ]
         ],
@@ -1529,7 +1529,7 @@
           "161890",
           "001450"
         ],
-        "isl": {
+        "tl": {
           "chk": {
             "universe": 365,
             "valid": 336,
@@ -1539,7 +1539,7 @@
             "n": 7,
             "plantedAt": "2026-10-08",
             "q": 66.1,
-            "towers": [
+            "tiles": [
               [
                 "181710",
                 1,
@@ -1584,106 +1584,110 @@
               ]
             ],
             "above": 68,
-            "green": 57
+            "green": 57,
+            "none": 29,
+            "head": [
+              "043260",
+              "000500",
+              "009150"
+            ]
           },
+          "head": [
+            "043260",
+            "000500",
+            "009150"
+          ],
+          "line": "그물 기준선 · 1년 추세 +66.1%",
+          "b0": 68,
+          "b2": 29,
           "pins": [
             [
               "181710",
               1,
               "1",
               true,
-              ""
+              "",
+              0
             ],
             [
               "124500",
               2,
               "2",
               false,
-              ""
+              "",
+              0
             ],
             [
               "103590",
               3,
               "3",
               false,
-              ""
+              "",
+              0
             ],
             [
               "039030",
               4,
               "4",
               false,
-              ""
+              "",
+              0
             ],
             [
               "088350",
               5,
               "5",
               false,
-              ""
+              "",
+              0
             ],
             [
               "161890",
               6,
               "6",
               false,
-              ""
+              "",
+              0
             ],
             [
               "001450",
               7,
               "7",
               false,
-              ""
+              "",
+              0
             ]
           ],
-          "hud": "1위 NHN +165.2% 1년 추세 · 물 위로 막 올라옴",
+          "hud": "1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴",
           "st": {
-            "th": -2.356194490192345,
             "hero": "181710",
             "focus": null,
+            "zone": null,
             "busy": false,
-            "w": 0.33,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
-          "cv": [
-            480,
-            451
-          ]
+          "cells": 365,
+          "canvas": 0
         },
         "aboveW": 68,
         "greenW": 57,
-        "overlap": false,
+        "noneW": 29,
+        "headW": [
+          "043260",
+          "000500",
+          "009150"
+        ],
+        "lineW": "그물 기준선 · 1년 추세 +66.1%",
         "shown": [
           "재생"
         ],
@@ -1691,87 +1695,36 @@
       }
     },
     {
-      "name": "pc 섬 손: 가장 높은 탑(성호전자) 누르면 이름표 「성호전자 +1372.2% · 그물 안 · 회사 보기 ›」(회사 보기 = 그 회사 · 위 이름표와 겹치지 않음 · 섬 안 · 카드는 그대로 181710) · 섬 아래 업종 칸(3단 클릭 — 업종 보기 = 그 업종 · 같은 업종 5곳 = 판 읽기 · 누른 회사 표시) · 다시 누르면 둘 다 풀림 · 옆으로 끌면 섬이 돎(-2.36 → -4.08) · 놓은 뒤 멈춤 · 가로로 넘치지 않음",
+      "name": "pc 칸 그림 손(3단 클릭): 칸(성호전자) 누르면 위 이름표 자리에 「누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›」(칸 위에 글 없음 · 그림 안 밀림 · 카드는 그대로 181710) · 그림 아래 업종 칸(업종 보기 = 그 업종 · 같은 업종 5곳 = 판 읽기 · 누른 회사 표시 · 같은 업종 칸 테 4개) · 다시 누르면 둘 다 풀리고 위 이름표는 고른 한 곳(「1위 NHN +165.2% 1년 추세 · 그」) · 「회사 보기 ›」 → #/stock/043260(그림에서 두 번) · 움직임 없음 · 가로로 넘치지 않음",
       "ok": true,
       "detail": {
-        "tallest": {
-          "c": "043260",
-          "x": 652.5350747573979,
-          "y": 533.9093845633163,
-          "vis": true
-        },
-        "tagW": "성호전자 +1372.2% · 그물 안 · 회사 보기 ›",
+        "tapC": "043260",
+        "tagW": "누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›",
         "tg": {
-          "tag": "성호전자 +1372.2% · 그물 안 · 회사 보기 ›",
+          "tap": true,
+          "tag": "누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›",
           "href": "#/stock/043260",
           "st": {
-            "th": -2.356194490192345,
             "hero": "181710",
             "focus": "043260",
-            "busy": true,
-            "w": 0.33,
+            "zone": "g:ib8333ad0",
+            "busy": false,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
-          "tr": {
-            "x": 514,
-            "y": 625.03125,
-            "width": 278.484375,
-            "height": 24.890625,
-            "top": 625.03125,
-            "right": 792.484375,
-            "bottom": 649.921875,
-            "left": 514
-          },
-          "hr": {
-            "x": 412,
-            "y": 348.03125,
-            "width": 157.703125,
-            "height": 70.53125,
-            "top": 348.03125,
-            "right": 569.703125,
-            "bottom": 418.5625,
-            "left": 412
-          },
-          "sr": {
-            "x": 400,
-            "y": 340.03125,
-            "width": 480,
-            "height": 451,
-            "top": 340.03125,
-            "right": 880,
-            "bottom": 791.03125,
-            "left": 400
-          },
+          "gTop": 389,
+          "over": 0,
+          "zn": 4,
+          "on": 1,
           "zone": {
             "g": "#/i/ib8333ad0",
             "cos": [
@@ -1800,55 +1753,36 @@
         },
         "tg2": {
           "hidden": true,
+          "hud": "1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴",
           "zoneHidden": true,
-          "focus": null
+          "focus": null,
+          "zn": 0
         },
         "zW": "#/stock/001820,#/stock/036830,#/stock/043260,#/stock/058610,#/stock/417200",
-        "th0": -2.356194490192345,
-        "th1": -4.084194490192345,
         "dr": {
           "st": {
-            "th": -4.626311880239368,
             "hero": "181710",
             "focus": null,
+            "zone": null,
             "busy": false,
-            "w": 0.33,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
+          "anims": 1,
           "sw": 1280,
           "cw": 1280,
           "card": "181710"
-        }
+        },
+        "nav2": "#/stock/043260"
       }
     },
     {
@@ -1873,7 +1807,7 @@
       }
     },
     {
-      "name": "pc 첫 화면 카드: 처음 1위(금빛 핀 · 위 이름표) · 줄 7개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 핀으로) · 섬의 핀을 눌러도 같은 카드 · 위 이름표도 그 곳",
+      "name": "pc 첫 화면 카드: 처음 1위(금빛 칸 · 위 이름표) · 줄 7개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 칸으로) · 칸 그림의 번호 칸을 눌러도 같은 카드 · 위 이름표도 그 곳",
       "ok": true,
       "detail": []
     },
@@ -1883,7 +1817,7 @@
       "detail": {
         "hash": "#/stock/124500",
         "focus": true,
-        "top": 65,
+        "top": 64,
         "h": 800,
         "head": "후보 판단 · 검토 순위 2위",
         "qs": [
@@ -1920,13 +1854,13 @@
       }
     },
     {
-      "name": "pc 재설계 · 「‹ 후보 7곳」 → 보던 자리(1130px → 1130px) · 고른 카드 그대로(124500) · 누른 곳에 초점(#/stock/124500)",
+      "name": "pc 재설계 · 「‹ 후보 7곳」 → 보던 자리(1274px → 1274px) · 고른 카드 그대로(124500) · 누른 곳에 초점(#/stock/124500)",
       "ok": true,
       "detail": {
-        "y0": 1130,
+        "y0": 1274,
         "bk": {
           "hash": "#/",
-          "y": 1130,
+          "y": 1274,
           "focus": "#/stock/124500",
           "card": "124500",
           "sel": "124500"
@@ -1988,7 +1922,7 @@
       }
     },
     {
-      "name": "pc 저절로 둘러보기(규칙 49 ④): 처음 글 「1위 · NHN 미리 정한 규칙 차례 1번째 · 1년 추세 ▲ +165.…」 · 단추 ‹ · 저절로 설명 · › · 자세히 · 처음 · 가만히 두면 저절로 시작(true) · 둘째 걸음 범위 = 판 읽기(가운데 80% ▼ −42.0% ~ ▲ +72.5%) · 아래 줄 103590을 누르면 멈춤(pause) · 카드 103590 · 섬 금빛 103590 · 움직임 줄이기는 저절로 안 돎(rest · 「저절로 설명」)",
+      "name": "pc 저절로 둘러보기(규칙 49 ④): 처음 글 「1위 · NHN 미리 정한 규칙 차례 1번째 · 1년 추세 ▲ +165.…」 · 단추 ‹ · 저절로 설명 · › · 자세히 · 처음 · 가만히 두면 저절로 시작(true) · 둘째 걸음 범위 = 판 읽기(가운데 80% ▼ −42.0% ~ ▲ +72.5%) · 아래 줄 103590을 누르면 멈춤(pause) · 카드 103590 · 그림 금빛 103590 · 움직임 줄이기는 저절로 안 돎(rest · 「저절로 설명」)",
       "ok": true,
       "detail": {
         "first": {
@@ -2023,7 +1957,7 @@
       }
     },
     {
-      "name": "pc 미국 판 「후보 7」 섬(2026-10-09 19:29 「미국장 까지 다 대입」): 물 위 73곳 = 따로 센 73곳 · 그물 66곳 = 따로 셈 66곳 · 핀 7개 · 줄 차례 = 따로 센 차례(BWLP · DAVE · UNIT · HAFN · ALSN · FCFS · DE) · 위 이름표 「1위 BW LPG +92.9% 1년 추세 · 물 위로 막 올라옴」 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음",
+      "name": "pc 미국 판 「후보 7」 칸 그림(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 입체 지움): 칸 365개 · 선 위 73곳 = 따로 센 73곳 · 그물 66곳 = 따로 셈 66곳 · 빗금 2곳 = 따로 셈 2곳 · 번호 칸 7개 · 줄 차례 = 따로 센 차례(BWLP · DAVE · UNIT · HAFN · ALSN · FCFS · DE) · 위 이름표 「1위 BW LPG +92.9% 1년 추세 · 그물에 막 들어옴」 · 캔버스 0개 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음",
       "ok": true,
       "detail": {
         "chk": {
@@ -2035,7 +1969,7 @@
           "n": 7,
           "plantedAt": "2026-10-08",
           "q": 40,
-          "towers": [
+          "tiles": [
             [
               "BWLP",
               1,
@@ -2080,10 +2014,17 @@
             ]
           ],
           "above": 73,
-          "green": 66
+          "green": 66,
+          "none": 2,
+          "head": [
+            "SNDK",
+            "LITE",
+            "MU"
+          ]
         },
         "aboveW": 73,
         "greenW": 66,
+        "noneW": 2,
         "rows": [
           "BWLP",
           "DAVE",
@@ -2102,56 +2043,22 @@
           "FCFS",
           "DE"
         ],
-        "hud": "1위 BW LPG +92.9% 1년 추세 · 물 위로 막 올라옴",
+        "hud": "1위 BW LPG +92.9% 1년 추세 · 그물에 막 들어옴",
         "all": null,
         "rank": false,
         "honest": true,
-        "overlap": false,
+        "cells": 365,
+        "canvas": 0,
         "sw": 1280,
         "cw": 1280
       }
     },
     {
-      "name": "pc 지도 섬 회사 화면(한국 삼성전자): 금빛 = 그 회사 · 옥빛 4곳 = 같은 업종 4곳(따로 셈) · 탑을 누르면 이름표 「SK하이닉스 · 반도체 · 회사 보기 ›」 · 섬 아래 업종 칸 「반도체 · 5곳 · 업종 보기 ›」(같은 업종 5곳 · 누른 회사 표시) · 「회사 보기」 → 그 회사 화면(섬에서 두 번) · 옆 넘침 없음",
+      "name": "pc 입체 없음(한국 · 2026-10-10 「3d 영구 삭제해」 · 「모두다」): 화면 10곳 · 그림 부품 1603개 — 캔버스 · 섬 · 지도 섬 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 없음",
       "ok": true,
       "detail": {
-        "co": {
-          "d": {
-            "n": 365,
-            "lit": 4,
-            "gold": "005930",
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": "005930",
-            "lit": [
-              "000990",
-              "440110",
-              "000660",
-              "402340"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 금빛 = 삼성전자 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "mates": [
-          "000660",
-          "000990",
-          "402340",
-          "440110"
-        ],
-        "tagTxt": "SK하이닉스 · 반도체 · 회사 보기 ›",
-        "zoneTxt": "반도체 · 5곳 · 업종 보기 ›",
-        "zoneOk": true,
-        "navOk": true
+        "bad": [],
+        "parts": 1603
       }
     },
     {
@@ -2184,244 +2091,11 @@
       }
     },
     {
-      "name": "pc 지도 섬 업종 화면(한국 반도체): 옥빛 5곳 = 그 업종 5곳 · 금빛 없음",
+      "name": "pc 입체 없음(미국 · 2026-10-10 「3d 영구 삭제해」 · 「모두다」): 화면 10곳 · 그림 부품 1340개 — 캔버스 · 섬 · 지도 섬 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 없음",
       "ok": true,
       "detail": {
-        "ind": {
-          "d": {
-            "n": 365,
-            "lit": 5,
-            "gold": null,
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "000990",
-              "440110",
-              "000660",
-              "005930",
-              "402340"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "all5": [
-          "000660",
-          "000990",
-          "005930",
-          "402340",
-          "440110"
-        ]
-      }
-    },
-    {
-      "name": "pc 지도 섬 시장(한국): 지도의 날씨 — 오름 150곳 = 따로 센 150곳 · 내림 185곳 = 따로 센 185곳",
-      "ok": true,
-      "detail": {
-        "mk": {
-          "d": {
-            "n": 365,
-            "lit": 0,
-            "gold": null,
-            "heat": true,
-            "up": 150,
-            "down": 185
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [],
-            "heat": true
-          },
-          "cap": "지도 · 365곳 · 빨강 = 20거래일 오름 150곳 · 파랑 = 내림 185곳 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "upW": 150,
-        "dnW": 185
-      }
-    },
-    {
-      "name": "pc 지도 섬 업종 순환(한국): 업종 6개 · 옥빛 30곳 = 따로 센 30곳",
-      "ok": true,
-      "detail": {
-        "ro": {
-          "gids": [
-            "ie21045c7",
-            "ied098178",
-            "iafb9068f",
-            "id3ad7bf2",
-            "i049670fa",
-            "ia26340cb"
-          ],
-          "cos": [
-            "247540",
-            "373220",
-            "003670",
-            "006400",
-            "066970",
-            "353200",
-            "020150",
-            "222800",
-            "009150",
-            "011070",
-            "036930",
-            "403870",
-            "039030",
-            "240810",
-            "042700",
-            "000990",
-            "440110",
-            "402340",
-            "005930",
-            "000660",
-            "010140",
-            "329180",
-            "009540",
-            "042660",
-            "267250",
-            "316140",
-            "024110",
-            "105560",
-            "086790",
-            "055550"
-          ],
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "247540",
-              "373220",
-              "003670",
-              "006400",
-              "066970",
-              "353200",
-              "020150",
-              "222800",
-              "009150",
-              "011070",
-              "036930",
-              "403870",
-              "039030",
-              "240810",
-              "042700",
-              "000990",
-              "440110",
-              "402340",
-              "005930",
-              "000660",
-              "010140",
-              "329180",
-              "009540",
-              "042660",
-              "267250",
-              "316140",
-              "024110",
-              "105560",
-              "086790",
-              "055550"
-            ],
-            "heat": false
-          }
-        },
-        "want": [
-          "247540",
-          "373220",
-          "003670",
-          "006400",
-          "066970",
-          "353200",
-          "020150",
-          "222800",
-          "009150",
-          "011070",
-          "036930",
-          "403870",
-          "039030",
-          "240810",
-          "042700",
-          "000990",
-          "440110",
-          "402340",
-          "005930",
-          "000660",
-          "010140",
-          "329180",
-          "009540",
-          "042660",
-          "267250",
-          "316140",
-          "024110",
-          "105560",
-          "086790",
-          "055550"
-        ]
-      }
-    },
-    {
-      "name": "pc 지도 섬(한국): 첫 화면에는 따로 붙이지 않음(섬이 곧 그림)",
-      "ok": true,
-      "detail": {
-        "none": 0
-      }
-    },
-    {
-      "name": "pc 지도 섬 회사 화면(미국 엔비디아): 금빛 = 그 회사 · 옥빛 4곳 = 같은 업종 4곳(따로 셈) · 탑을 누르면 이름표 「AMD(어드밴스드 마이크로 디바이시스) · 반도체 · 회사 보기 ›」 · 섬 아래 업종 칸 「반도체 · 5곳 · 업종 보기 ›」(같은 업종 5곳 · 누른 회사 표시) · 「회사 보기」 → 그 회사 화면(섬에서 두 번) · 옆 넘침 없음",
-      "ok": true,
-      "detail": {
-        "co": {
-          "d": {
-            "n": 365,
-            "lit": 4,
-            "gold": "NVDA",
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": "NVDA",
-            "lit": [
-              "AMD",
-              "MU",
-              "INTC",
-              "AVGO"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 금빛 = 엔비디아 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "mates": [
-          "AMD",
-          "AVGO",
-          "INTC",
-          "MU"
-        ],
-        "tagTxt": "AMD(어드밴스드 마이크로 디바이시스) · 반도체 · 회사 보기 ›",
-        "zoneTxt": "반도체 · 5곳 · 업종 보기 ›",
-        "zoneOk": true,
-        "navOk": true
+        "bad": [],
+        "parts": 1340
       }
     },
     {
@@ -2455,211 +2129,13 @@
       }
     },
     {
-      "name": "pc 지도 섬 업종 화면(미국 반도체): 옥빛 5곳 = 그 업종 5곳 · 금빛 없음",
-      "ok": true,
-      "detail": {
-        "ind": {
-          "d": {
-            "n": 365,
-            "lit": 5,
-            "gold": null,
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "AMD",
-              "MU",
-              "NVDA",
-              "INTC",
-              "AVGO"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "all5": [
-          "AMD",
-          "AVGO",
-          "INTC",
-          "MU",
-          "NVDA"
-        ]
-      }
-    },
-    {
-      "name": "pc 지도 섬 시장(미국): 지도의 날씨 — 오름 141곳 = 따로 센 141곳 · 내림 222곳 = 따로 센 222곳",
-      "ok": true,
-      "detail": {
-        "mk": {
-          "d": {
-            "n": 365,
-            "lit": 0,
-            "gold": null,
-            "heat": true,
-            "up": 141,
-            "down": 222
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [],
-            "heat": true
-          },
-          "cap": "지도 · 365곳 · 빨강 = 20거래일 오름 141곳 · 파랑 = 내림 222곳 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 1280,
-          "cw": 1280
-        },
-        "upW": 141,
-        "dnW": 222
-      }
-    },
-    {
-      "name": "pc 지도 섬 업종 순환(미국): 업종 6개 · 옥빛 30곳 = 따로 센 30곳",
-      "ok": true,
-      "detail": {
-        "ro": {
-          "gids": [
-            "ibaad6b46",
-            "ifd978f53",
-            "i9c4db22a",
-            "id3ad7bf2",
-            "i27a36aee",
-            "i6b74dc98"
-          ],
-          "cos": [
-            "CRWD",
-            "PANW",
-            "PLTR",
-            "MSFT",
-            "ORCL",
-            "CPNG",
-            "RVLV",
-            "AMZN",
-            "DDS",
-            "FIVE",
-            "CIEN",
-            "LITE",
-            "ANET",
-            "CSCO",
-            "MSI",
-            "AMD",
-            "MU",
-            "NVDA",
-            "INTC",
-            "AVGO",
-            "JPM",
-            "WFC",
-            "USB",
-            "PNC",
-            "BAC",
-            "META",
-            "GOOGL",
-            "MA",
-            "UBER",
-            "NFLX"
-          ],
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "CRWD",
-              "PANW",
-              "PLTR",
-              "MSFT",
-              "ORCL",
-              "CPNG",
-              "RVLV",
-              "AMZN",
-              "DDS",
-              "FIVE",
-              "CIEN",
-              "LITE",
-              "ANET",
-              "CSCO",
-              "MSI",
-              "AMD",
-              "MU",
-              "NVDA",
-              "INTC",
-              "AVGO",
-              "JPM",
-              "WFC",
-              "USB",
-              "PNC",
-              "BAC",
-              "META",
-              "GOOGL",
-              "MA",
-              "UBER",
-              "NFLX"
-            ],
-            "heat": false
-          }
-        },
-        "want": [
-          "CRWD",
-          "PANW",
-          "PLTR",
-          "MSFT",
-          "ORCL",
-          "CPNG",
-          "RVLV",
-          "AMZN",
-          "DDS",
-          "FIVE",
-          "CIEN",
-          "LITE",
-          "ANET",
-          "CSCO",
-          "MSI",
-          "AMD",
-          "MU",
-          "NVDA",
-          "INTC",
-          "AVGO",
-          "JPM",
-          "WFC",
-          "USB",
-          "PNC",
-          "BAC",
-          "META",
-          "GOOGL",
-          "MA",
-          "UBER",
-          "NFLX"
-        ]
-      }
-    },
-    {
-      "name": "pc 지도 섬(미국): 첫 화면에는 따로 붙이지 않음(섬이 곧 그림)",
-      "ok": true,
-      "detail": {
-        "none": 0
-      }
-    },
-    {
-      "name": "pc 입체 막대: 윗면 · 옆면이 있고 앞면 길이 = 값(96.15% · 실제 96.15%)",
+      "name": "pc 평평한 막대: 윗면 · 옆면 · 파인 홈 없음 · 길이 = 값(96.15% · 실제 96.15%)",
       "ok": true,
       "detail": {
         "w": 96.15,
         "real": 96.14886886503068,
-        "top": true,
-        "side": true
+        "face": false,
+        "groove": false
       }
     },
     {
@@ -2718,13 +2194,13 @@
           "4",
           true,
           519,
-          1344
+          895
         ],
         [
           "5",
           false,
-          1358,
-          1545
+          909,
+          1096
         ]
       ]
     },
@@ -2974,15 +2450,15 @@
       }
     },
     {
-      "name": "pc 업종 화면 → 회사(#/stock/058610) → 「‹ 전기 부품」 → 업종 화면 보던 자리(287px → 287px)",
+      "name": "pc 업종 화면 → 회사(#/stock/058610) → 「‹ 전기 부품」 → 업종 화면 보던 자리(263px → 263px)",
       "ok": true,
       "detail": {
         "cbk": {
           "hash": "#/stock/058610",
           "back": "#/i/ib8333ad0"
         },
-        "yI": 287,
-        "yB": 287
+        "yI": 263,
+        "yB": 263
       }
     },
     {
@@ -3062,7 +2538,7 @@
       }
     },
     {
-      "name": "pc 개편 · 관심 등록(440110) → 바로 「저장했습니다 · 이 기기에만」 · 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 지도 섬에서 그 회사만 빛남(440110) · 빼면 0개 · 지도 1개(날씨 true)",
+      "name": "pc 개편 · 관심 등록(440110) → 바로 「저장했습니다 · 이 기기에만」 · 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 빼면 0개 · 지도 섬 0개(입체 지움)",
       "ok": true,
       "detail": {
         "wb": {
@@ -3081,22 +2557,10 @@
           ],
           "art": "watch",
           "lead": "★ 관심 · 추적\n\n1곳 · 10월 8일(목) 종가와 견줌 · 후보 조건이 등록 뒤 어떻게 달라졌나 · 이 기기에만 저장(다른 기기 · 계정과 맞춰지지 않음)",
-          "map": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "440110"
-            ],
-            "heat": false
-          }
+          "map": 0
         },
         "w3": 0,
-        "w3map": 1,
-        "w3heat": true,
-        "inLens": true
+        "w3map": 0
       }
     },
     {
@@ -3712,13 +3176,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(1151px → 1151px)",
+      "name": "pc 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(703px → 703px)",
       "ok": true,
       "detail": {
-        "y0": 1151,
+        "y0": 703,
         "rb": {
           "hash": "#/rise",
-          "y": 1151
+          "y": 703
         }
       }
     },
@@ -3845,13 +3309,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1752px → 1752px)",
+      "name": "pc 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1304px → 1304px)",
       "ok": true,
       "detail": {
-        "y0": 1752,
+        "y0": 1304,
         "sb": {
           "hash": "#/similar",
-          "y": 1752
+          "y": 1304
         }
       }
     },
@@ -8308,7 +7772,7 @@
           "t": "태양 28곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1705,
+        "first": 1275,
         "ih": 800,
         "keyIn": true,
         "keyHead": 0,
@@ -8412,13 +7876,13 @@
       }
     },
     {
-      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1705px(PC)",
+      "name": "pc 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1275px(PC)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1705,
+        "first": 1275,
         "ih": 800
       }
     },
@@ -8638,13 +8102,13 @@
       }
     },
     {
-      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1975px → 1975px)",
+      "name": "pc 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(1545px → 1545px)",
       "ok": true,
       "detail": {
-        "yBefore": 1975,
+        "yBefore": 1545,
         "back": {
           "hash": "#/road",
-          "y": 1975,
+          "y": 1545,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -8974,7 +8438,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 93개 = 기록 파일 93개(이슈 8 · 업데이트 69 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 94개 = 기록 파일 94개(이슈 8 · 업데이트 70 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -9001,11 +8465,11 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 69줄 = 기록 파일 69줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 70줄 = 기록 파일 70줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 69,
+        "n": 70,
         "sw": 1280,
         "cw": 1280
       }
@@ -9021,11 +8485,11 @@
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 93줄 = 기록 파일 93줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 94줄 = 기록 파일 94줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 93,
+        "n": 94,
         "sw": 1280,
         "cw": 1280
       }
@@ -9468,7 +8932,7 @@
       "detail": null
     },
     {
-      "name": "pc 그림 한 장(규칙 33 · 42): 화면 23곳 — 후보 7 cand · 다른 후보와 비교 compare · 시장 market · 업종 탭 sectors · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 읽는 법 연습 industry · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 자료 차트 하나 · 옛 논평 무대 없음 · 처음에는 최신 결과(멈춤) · 걸음 넷 · 차례 단추 넷(현재 관측 · 기여 요인 · 반대 근거 · 확인할 것) · 조작 여섯(처음으로 · ‹ · 재생 · › · 최신 결과 · 빠르기) · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 138개 = 검사기가 판에서 따로 센 값",
+      "name": "pc 그림 한 장(규칙 33 · 42): 화면 23곳 — 후보 7 cand · 다른 후보와 비교 compare · 시장 market · 업종 탭 sectors · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 읽는 법 연습 industry · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 자료 차트 하나 · 옛 논평 무대 없음 · 처음에는 최신 결과(멈춤) · 걸음 넷 · 차례 단추 넷(현재 관측 · 기여 요인 · 반대 근거 · 확인할 것) · 조작 여섯(처음으로 · ‹ · 재생 · › · 최신 결과 · 빠르기) · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 142개 = 검사기가 판에서 따로 센 값",
       "ok": true,
       "detail": null
     },
@@ -9570,7 +9034,7 @@
       }
     },
     {
-      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5016ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5015ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -9593,7 +9057,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5016
+        "ms": 5015
       }
     },
     {
@@ -9676,7 +9140,7 @@
       }
     },
     {
-      "name": "mobile 첫 화면 「후보 7」 섬(규칙 5판 기르기판 · 2026-10-09 17:36 「아주 색시한 전달력」): ① 기준 → ② 그림 칸(섬 365곳 · 물 위 68곳 = 따로 센 그물 68곳 · 초록 57곳 = 따로 셈 57곳 · 핀 7개 = 후보 차례 · 겹침 없음 · 위 이름표 「1위 NHN +165.2% 1년 추세 · 물 위로 막 올라옴」 · 정적인 상태) · 짧은 줄 7개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 7곳) · 「돈 유입 1등~365등 모두 보기 ›」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(재생)",
+      "name": "mobile 첫 화면 「후보 7」 칸 그림(규칙 5판 기르기판 · 2026-10-10 「3d 영구 삭제해」 — 입체 섬을 바꿈): ① 기준 → ② 그림 칸(칸 365개 = 판 읽기 365곳 · 선 위 68곳 = 따로 센 그물 68곳 · 초록 57곳 = 따로 셈 57곳 · 빗금 29곳 = 따로 셈 29곳 · 맨 앞 세 칸 043260 000500 009150 = 따로 셈 · 굵은 선 「그물 기준선 · 1년 추세 +66.1%」 · 번호 칸 7개 = 후보 차례 · 위 이름표 「1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴」 · 캔버스 0개 · 정적인 상태) · 짧은 줄 7개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 7곳) · 「돈 유입 1등~365등 모두 보기 ›」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(재생)",
       "ok": true,
       "detail": {
         "firsts": [
@@ -9689,13 +9153,13 @@
           [
             "2",
             285,
-            2525,
+            2658,
             true
           ],
           [
             "3",
-            2539,
-            2869,
+            2672,
+            3003,
             false
           ]
         ],
@@ -9728,7 +9192,7 @@
           "161890",
           "001450"
         ],
-        "isl": {
+        "tl": {
           "chk": {
             "universe": 365,
             "valid": 336,
@@ -9738,7 +9202,7 @@
             "n": 7,
             "plantedAt": "2026-10-08",
             "q": 66.1,
-            "towers": [
+            "tiles": [
               [
                 "181710",
                 1,
@@ -9783,106 +9247,110 @@
               ]
             ],
             "above": 68,
-            "green": 57
+            "green": 57,
+            "none": 29,
+            "head": [
+              "043260",
+              "000500",
+              "009150"
+            ]
           },
+          "head": [
+            "043260",
+            "000500",
+            "009150"
+          ],
+          "line": "그물 기준선 · 1년 추세 +66.1%",
+          "b0": 68,
+          "b2": 29,
           "pins": [
             [
               "181710",
               1,
               "1",
               true,
-              ""
+              "",
+              0
             ],
             [
               "124500",
               2,
               "2",
               false,
-              ""
+              "",
+              0
             ],
             [
               "103590",
               3,
               "3",
               false,
-              ""
+              "",
+              0
             ],
             [
               "039030",
               4,
               "4",
               false,
-              ""
+              "",
+              0
             ],
             [
               "088350",
               5,
               "5",
               false,
-              ""
+              "",
+              0
             ],
             [
               "161890",
               6,
               "6",
               false,
-              ""
+              "",
+              0
             ],
             [
               "001450",
               7,
               "7",
               false,
-              ""
+              "",
+              0
             ]
           ],
-          "hud": "1위 NHN +165.2% 1년 추세 · 물 위로 막 올라옴",
+          "hud": "1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴",
           "st": {
-            "th": -2.356194490192345,
             "hero": "181710",
             "focus": null,
+            "zone": null,
             "busy": false,
-            "w": 0.33,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
-          "cv": [
-            322,
-            303
-          ]
+          "cells": 365,
+          "canvas": 0
         },
         "aboveW": 68,
         "greenW": 57,
-        "overlap": false,
+        "noneW": 29,
+        "headW": [
+          "043260",
+          "000500",
+          "009150"
+        ],
+        "lineW": "그물 기준선 · 1년 추세 +66.1%",
         "shown": [
           "재생"
         ],
@@ -9890,87 +9358,36 @@
       }
     },
     {
-      "name": "mobile 섬 손: 가장 높은 탑(성호전자) 누르면 이름표 「성호전자 +1372.2% · 그물 안 · 회사 보기 ›」(회사 보기 = 그 회사 · 위 이름표와 겹치지 않음 · 섬 안 · 카드는 그대로 181710) · 섬 아래 업종 칸(3단 클릭 — 업종 보기 = 그 업종 · 같은 업종 5곳 = 판 읽기 · 누른 회사 표시) · 다시 누르면 둘 다 풀림 · 옆으로 끌면 섬이 돎(-2.36 → -4.08) · 놓은 뒤 멈춤 · 가로로 넘치지 않음",
+      "name": "mobile 칸 그림 손(3단 클릭): 칸(성호전자) 누르면 위 이름표 자리에 「누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›」(칸 위에 글 없음 · 그림 안 밀림 · 카드는 그대로 181710) · 그림 아래 업종 칸(업종 보기 = 그 업종 · 같은 업종 5곳 = 판 읽기 · 누른 회사 표시 · 같은 업종 칸 테 4개) · 다시 누르면 둘 다 풀리고 위 이름표는 고른 한 곳(「1위 NHN +165.2% 1년 추세 · 그」) · 「회사 보기 ›」 → #/stock/043260(그림에서 두 번) · 움직임 없음 · 가로로 넘치지 않음",
       "ok": true,
       "detail": {
-        "tallest": {
-          "c": "043260",
-          "x": 203.3031478093875,
-          "y": 476.76254105689753,
-          "vis": true
-        },
-        "tagW": "성호전자 +1372.2% · 그물 안 · 회사 보기 ›",
+        "tapC": "043260",
+        "tagW": "누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›",
         "tg": {
-          "tag": "성호전자 +1372.2% · 그물 안 · 회사 보기 ›",
+          "tap": true,
+          "tag": "누른 칸 성호전자 +1372.2% 그물 안 · 회사 보기 ›",
           "href": "#/stock/043260",
           "st": {
-            "th": -2.356194490192345,
             "hero": "181710",
             "focus": "043260",
-            "busy": true,
-            "w": 0.33,
+            "zone": "g:ib8333ad0",
+            "busy": false,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
-          "tr": {
-            "x": 87,
-            "y": 551.921875,
-            "width": 231.828125,
-            "height": 43.78125,
-            "top": 551.921875,
-            "right": 318.828125,
-            "bottom": 595.703125,
-            "left": 87
-          },
-          "hr": {
-            "x": 46,
-            "y": 364.921875,
-            "width": 157.703125,
-            "height": 70.53125,
-            "top": 364.921875,
-            "right": 203.703125,
-            "bottom": 435.453125,
-            "left": 46
-          },
-          "sr": {
-            "x": 34,
-            "y": 356.921875,
-            "width": 322,
-            "height": 303,
-            "top": 356.921875,
-            "right": 356,
-            "bottom": 659.921875,
-            "left": 34
-          },
+          "gTop": 415,
+          "over": 0,
+          "zn": 4,
+          "on": 1,
           "zone": {
             "g": "#/i/ib8333ad0",
             "cos": [
@@ -9999,55 +9416,36 @@
         },
         "tg2": {
           "hidden": true,
+          "hud": "1위 NHN +165.2% 1년 추세 · 그물에 막 들어옴",
           "zoneHidden": true,
-          "focus": null
+          "focus": null,
+          "zn": 0
         },
         "zW": "#/stock/001820,#/stock/036830,#/stock/043260,#/stock/058610,#/stock/417200",
-        "th0": -2.356194490192345,
-        "th1": -4.084194490192345,
         "dr": {
           "st": {
-            "th": -4.595177927101379,
             "hero": "181710",
             "focus": null,
+            "zone": null,
             "busy": false,
-            "w": 0.33,
+            "picked": false,
+            "past": [],
             "seven": [
-              [
-                "181710",
-                0.7994029850746267
-              ],
-              [
-                "124500",
-                0.6847761194029851
-              ],
-              [
-                "103590",
-                0.6561194029850745
-              ],
-              [
-                "039030",
-                0.551044776119403
-              ],
-              [
-                "088350",
-                0.5032835820895523
-              ],
-              [
-                "161890",
-                0.47462686567164175
-              ],
-              [
-                "001450",
-                0.4459701492537313
-              ]
-            ],
-            "picked": false
+              "181710",
+              "124500",
+              "103590",
+              "039030",
+              "088350",
+              "161890",
+              "001450"
+            ]
           },
+          "anims": 1,
           "sw": 390,
           "cw": 390,
           "card": "181710"
-        }
+        },
+        "nav2": "#/stock/043260"
       }
     },
     {
@@ -10072,7 +9470,7 @@
       }
     },
     {
-      "name": "mobile 첫 화면 카드: 처음 1위(금빛 핀 · 위 이름표) · 줄 7개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 핀으로) · 섬의 핀을 눌러도 같은 카드 · 위 이름표도 그 곳",
+      "name": "mobile 첫 화면 카드: 처음 1위(금빛 칸 · 위 이름표) · 줄 7개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 칸으로) · 칸 그림의 번호 칸을 눌러도 같은 카드 · 위 이름표도 그 곳",
       "ok": true,
       "detail": []
     },
@@ -10119,13 +9517,13 @@
       }
     },
     {
-      "name": "mobile 재설계 · 「‹ 후보 7곳」 → 보던 자리(1151px → 1151px) · 고른 카드 그대로(124500) · 누른 곳에 초점(#/stock/124500)",
+      "name": "mobile 재설계 · 「‹ 후보 7곳」 → 보던 자리(1284px → 1284px) · 고른 카드 그대로(124500) · 누른 곳에 초점(#/stock/124500)",
       "ok": true,
       "detail": {
-        "y0": 1151,
+        "y0": 1284,
         "bk": {
           "hash": "#/",
-          "y": 1151,
+          "y": 1284,
           "focus": "#/stock/124500",
           "card": "124500",
           "sel": "124500"
@@ -10187,7 +9585,7 @@
       }
     },
     {
-      "name": "mobile 저절로 둘러보기(규칙 49 ④): 처음 글 「1위 · NHN 미리 정한 규칙 차례 1번째 · 1년 추세 ▲ +165.…」 · 단추 ‹ · 저절로 설명 · › · 자세히 · 처음 · 가만히 두면 저절로 시작(true) · 둘째 걸음 범위 = 판 읽기(가운데 80% ▼ −42.0% ~ ▲ +72.5%) · 아래 줄 103590을 누르면 멈춤(pause) · 카드 103590 · 섬 금빛 103590 · 움직임 줄이기는 저절로 안 돎(rest · 「저절로 설명」)",
+      "name": "mobile 저절로 둘러보기(규칙 49 ④): 처음 글 「1위 · NHN 미리 정한 규칙 차례 1번째 · 1년 추세 ▲ +165.…」 · 단추 ‹ · 저절로 설명 · › · 자세히 · 처음 · 가만히 두면 저절로 시작(true) · 둘째 걸음 범위 = 판 읽기(가운데 80% ▼ −42.0% ~ ▲ +72.5%) · 아래 줄 103590을 누르면 멈춤(pause) · 카드 103590 · 그림 금빛 103590 · 움직임 줄이기는 저절로 안 돎(rest · 「저절로 설명」)",
       "ok": true,
       "detail": {
         "first": {
@@ -10222,7 +9620,7 @@
       }
     },
     {
-      "name": "mobile 미국 판 「후보 7」 섬(2026-10-09 19:29 「미국장 까지 다 대입」): 물 위 73곳 = 따로 센 73곳 · 그물 66곳 = 따로 셈 66곳 · 핀 7개 · 줄 차례 = 따로 센 차례(BWLP · DAVE · UNIT · HAFN · ALSN · FCFS · DE) · 위 이름표 「1위 BW LPG +92.9% 1년 추세 · 물 위로 막 올라옴」 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음",
+      "name": "mobile 미국 판 「후보 7」 칸 그림(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 입체 지움): 칸 365개 · 선 위 73곳 = 따로 센 73곳 · 그물 66곳 = 따로 셈 66곳 · 빗금 2곳 = 따로 셈 2곳 · 번호 칸 7개 · 줄 차례 = 따로 센 차례(BWLP · DAVE · UNIT · HAFN · ALSN · FCFS · DE) · 위 이름표 「1위 BW LPG +92.9% 1년 추세 · 그물에 막 들어옴」 · 캔버스 0개 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음",
       "ok": true,
       "detail": {
         "chk": {
@@ -10234,7 +9632,7 @@
           "n": 7,
           "plantedAt": "2026-10-08",
           "q": 40,
-          "towers": [
+          "tiles": [
             [
               "BWLP",
               1,
@@ -10279,10 +9677,17 @@
             ]
           ],
           "above": 73,
-          "green": 66
+          "green": 66,
+          "none": 2,
+          "head": [
+            "SNDK",
+            "LITE",
+            "MU"
+          ]
         },
         "aboveW": 73,
         "greenW": 66,
+        "noneW": 2,
         "rows": [
           "BWLP",
           "DAVE",
@@ -10301,56 +9706,22 @@
           "FCFS",
           "DE"
         ],
-        "hud": "1위 BW LPG +92.9% 1년 추세 · 물 위로 막 올라옴",
+        "hud": "1위 BW LPG +92.9% 1년 추세 · 그물에 막 들어옴",
         "all": null,
         "rank": false,
         "honest": true,
-        "overlap": false,
+        "cells": 365,
+        "canvas": 0,
         "sw": 390,
         "cw": 390
       }
     },
     {
-      "name": "mobile 지도 섬 회사 화면(한국 삼성전자): 금빛 = 그 회사 · 옥빛 4곳 = 같은 업종 4곳(따로 셈) · 탑을 누르면 이름표 「SK하이닉스 · 반도체 · 회사 보기 ›」 · 섬 아래 업종 칸 「반도체 · 5곳 · 업종 보기 ›」(같은 업종 5곳 · 누른 회사 표시) · 「회사 보기」 → 그 회사 화면(섬에서 두 번) · 옆 넘침 없음",
+      "name": "mobile 입체 없음(한국 · 2026-10-10 「3d 영구 삭제해」 · 「모두다」): 화면 10곳 · 그림 부품 1603개 — 캔버스 · 섬 · 지도 섬 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 없음",
       "ok": true,
       "detail": {
-        "co": {
-          "d": {
-            "n": 365,
-            "lit": 4,
-            "gold": "005930",
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": "005930",
-            "lit": [
-              "000990",
-              "440110",
-              "000660",
-              "402340"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 금빛 = 삼성전자 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "mates": [
-          "000660",
-          "000990",
-          "402340",
-          "440110"
-        ],
-        "tagTxt": "SK하이닉스 · 반도체 · 회사 보기 ›",
-        "zoneTxt": "반도체 · 5곳 · 업종 보기 ›",
-        "zoneOk": true,
-        "navOk": true
+        "bad": [],
+        "parts": 1603
       }
     },
     {
@@ -10383,244 +9754,11 @@
       }
     },
     {
-      "name": "mobile 지도 섬 업종 화면(한국 반도체): 옥빛 5곳 = 그 업종 5곳 · 금빛 없음",
+      "name": "mobile 입체 없음(미국 · 2026-10-10 「3d 영구 삭제해」 · 「모두다」): 화면 10곳 · 그림 부품 1340개 — 캔버스 · 섬 · 지도 섬 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 없음",
       "ok": true,
       "detail": {
-        "ind": {
-          "d": {
-            "n": 365,
-            "lit": 5,
-            "gold": null,
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "000990",
-              "440110",
-              "000660",
-              "005930",
-              "402340"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "all5": [
-          "000660",
-          "000990",
-          "005930",
-          "402340",
-          "440110"
-        ]
-      }
-    },
-    {
-      "name": "mobile 지도 섬 시장(한국): 지도의 날씨 — 오름 150곳 = 따로 센 150곳 · 내림 185곳 = 따로 센 185곳",
-      "ok": true,
-      "detail": {
-        "mk": {
-          "d": {
-            "n": 365,
-            "lit": 0,
-            "gold": null,
-            "heat": true,
-            "up": 150,
-            "down": 185
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [],
-            "heat": true
-          },
-          "cap": "지도 · 365곳 · 빨강 = 20거래일 오름 150곳 · 파랑 = 내림 185곳 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "upW": 150,
-        "dnW": 185
-      }
-    },
-    {
-      "name": "mobile 지도 섬 업종 순환(한국): 업종 6개 · 옥빛 30곳 = 따로 센 30곳",
-      "ok": true,
-      "detail": {
-        "ro": {
-          "gids": [
-            "ie21045c7",
-            "ied098178",
-            "iafb9068f",
-            "id3ad7bf2",
-            "i049670fa",
-            "ia26340cb"
-          ],
-          "cos": [
-            "247540",
-            "373220",
-            "003670",
-            "006400",
-            "066970",
-            "353200",
-            "020150",
-            "222800",
-            "009150",
-            "011070",
-            "036930",
-            "403870",
-            "039030",
-            "240810",
-            "042700",
-            "000990",
-            "440110",
-            "402340",
-            "005930",
-            "000660",
-            "010140",
-            "329180",
-            "009540",
-            "042660",
-            "267250",
-            "316140",
-            "024110",
-            "105560",
-            "086790",
-            "055550"
-          ],
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "247540",
-              "373220",
-              "003670",
-              "006400",
-              "066970",
-              "353200",
-              "020150",
-              "222800",
-              "009150",
-              "011070",
-              "036930",
-              "403870",
-              "039030",
-              "240810",
-              "042700",
-              "000990",
-              "440110",
-              "402340",
-              "005930",
-              "000660",
-              "010140",
-              "329180",
-              "009540",
-              "042660",
-              "267250",
-              "316140",
-              "024110",
-              "105560",
-              "086790",
-              "055550"
-            ],
-            "heat": false
-          }
-        },
-        "want": [
-          "247540",
-          "373220",
-          "003670",
-          "006400",
-          "066970",
-          "353200",
-          "020150",
-          "222800",
-          "009150",
-          "011070",
-          "036930",
-          "403870",
-          "039030",
-          "240810",
-          "042700",
-          "000990",
-          "440110",
-          "402340",
-          "005930",
-          "000660",
-          "010140",
-          "329180",
-          "009540",
-          "042660",
-          "267250",
-          "316140",
-          "024110",
-          "105560",
-          "086790",
-          "055550"
-        ]
-      }
-    },
-    {
-      "name": "mobile 지도 섬(한국): 첫 화면에는 따로 붙이지 않음(섬이 곧 그림)",
-      "ok": true,
-      "detail": {
-        "none": 0
-      }
-    },
-    {
-      "name": "mobile 지도 섬 회사 화면(미국 엔비디아): 금빛 = 그 회사 · 옥빛 4곳 = 같은 업종 4곳(따로 셈) · 탑을 누르면 이름표 「AMD(어드밴스드 마이크로 디바이시스) · 반도체 · 회사 보기 ›」 · 섬 아래 업종 칸 「반도체 · 5곳 · 업종 보기 ›」(같은 업종 5곳 · 누른 회사 표시) · 「회사 보기」 → 그 회사 화면(섬에서 두 번) · 옆 넘침 없음",
-      "ok": true,
-      "detail": {
-        "co": {
-          "d": {
-            "n": 365,
-            "lit": 4,
-            "gold": "NVDA",
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": "NVDA",
-            "lit": [
-              "AMD",
-              "MU",
-              "INTC",
-              "AVGO"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 금빛 = 엔비디아 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "mates": [
-          "AMD",
-          "AVGO",
-          "INTC",
-          "MU"
-        ],
-        "tagTxt": "AMD(어드밴스드 마이크로 디바이시스) · 반도체 · 회사 보기 ›",
-        "zoneTxt": "반도체 · 5곳 · 업종 보기 ›",
-        "zoneOk": true,
-        "navOk": true
+        "bad": [],
+        "parts": 1340
       }
     },
     {
@@ -10654,211 +9792,13 @@
       }
     },
     {
-      "name": "mobile 지도 섬 업종 화면(미국 반도체): 옥빛 5곳 = 그 업종 5곳 · 금빛 없음",
-      "ok": true,
-      "detail": {
-        "ind": {
-          "d": {
-            "n": 365,
-            "lit": 5,
-            "gold": null,
-            "heat": false,
-            "up": 0,
-            "down": 0
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "AMD",
-              "MU",
-              "NVDA",
-              "INTC",
-              "AVGO"
-            ],
-            "heat": false
-          },
-          "cap": "지도 · 365곳 가운데 이 그림의 5곳이 빛남 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "all5": [
-          "AMD",
-          "AVGO",
-          "INTC",
-          "MU",
-          "NVDA"
-        ]
-      }
-    },
-    {
-      "name": "mobile 지도 섬 시장(미국): 지도의 날씨 — 오름 141곳 = 따로 센 141곳 · 내림 222곳 = 따로 센 222곳",
-      "ok": true,
-      "detail": {
-        "mk": {
-          "d": {
-            "n": 365,
-            "lit": 0,
-            "gold": null,
-            "heat": true,
-            "up": 141,
-            "down": 222
-          },
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [],
-            "heat": true
-          },
-          "cap": "지도 · 365곳 · 빨강 = 20거래일 오름 141곳 · 파랑 = 내림 222곳 · 탑 높이 = 1년 추세 차례 · 물 = 그물 기준선 · 탑을 누르면 회사 · 업종",
-          "sw": 390,
-          "cw": 390
-        },
-        "upW": 141,
-        "dnW": 222
-      }
-    },
-    {
-      "name": "mobile 지도 섬 업종 순환(미국): 업종 6개 · 옥빛 30곳 = 따로 센 30곳",
-      "ok": true,
-      "detail": {
-        "ro": {
-          "gids": [
-            "ibaad6b46",
-            "ifd978f53",
-            "i9c4db22a",
-            "id3ad7bf2",
-            "i27a36aee",
-            "i6b74dc98"
-          ],
-          "cos": [
-            "CRWD",
-            "PANW",
-            "PLTR",
-            "MSFT",
-            "ORCL",
-            "CPNG",
-            "RVLV",
-            "AMZN",
-            "DDS",
-            "FIVE",
-            "CIEN",
-            "LITE",
-            "ANET",
-            "CSCO",
-            "MSI",
-            "AMD",
-            "MU",
-            "NVDA",
-            "INTC",
-            "AVGO",
-            "JPM",
-            "WFC",
-            "USB",
-            "PNC",
-            "BAC",
-            "META",
-            "GOOGL",
-            "MA",
-            "UBER",
-            "NFLX"
-          ],
-          "st": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "CRWD",
-              "PANW",
-              "PLTR",
-              "MSFT",
-              "ORCL",
-              "CPNG",
-              "RVLV",
-              "AMZN",
-              "DDS",
-              "FIVE",
-              "CIEN",
-              "LITE",
-              "ANET",
-              "CSCO",
-              "MSI",
-              "AMD",
-              "MU",
-              "NVDA",
-              "INTC",
-              "AVGO",
-              "JPM",
-              "WFC",
-              "USB",
-              "PNC",
-              "BAC",
-              "META",
-              "GOOGL",
-              "MA",
-              "UBER",
-              "NFLX"
-            ],
-            "heat": false
-          }
-        },
-        "want": [
-          "CRWD",
-          "PANW",
-          "PLTR",
-          "MSFT",
-          "ORCL",
-          "CPNG",
-          "RVLV",
-          "AMZN",
-          "DDS",
-          "FIVE",
-          "CIEN",
-          "LITE",
-          "ANET",
-          "CSCO",
-          "MSI",
-          "AMD",
-          "MU",
-          "NVDA",
-          "INTC",
-          "AVGO",
-          "JPM",
-          "WFC",
-          "USB",
-          "PNC",
-          "BAC",
-          "META",
-          "GOOGL",
-          "MA",
-          "UBER",
-          "NFLX"
-        ]
-      }
-    },
-    {
-      "name": "mobile 지도 섬(미국): 첫 화면에는 따로 붙이지 않음(섬이 곧 그림)",
-      "ok": true,
-      "detail": {
-        "none": 0
-      }
-    },
-    {
-      "name": "mobile 입체 막대: 윗면 · 옆면이 있고 앞면 길이 = 값(96.15% · 실제 96.15%)",
+      "name": "mobile 평평한 막대: 윗면 · 옆면 · 파인 홈 없음 · 길이 = 값(96.15% · 실제 96.15%)",
       "ok": true,
       "detail": {
         "w": 96.15,
         "real": 96.14712732919256,
-        "top": true,
-        "side": true
+        "face": false,
+        "groove": false
       }
     },
     {
@@ -10917,13 +9857,13 @@
           "4",
           true,
           604,
-          1430
+          1088
         ],
         [
           "5",
           false,
-          1444,
-          1675
+          1102,
+          1334
         ]
       ]
     },
@@ -11173,15 +10113,15 @@
       }
     },
     {
-      "name": "mobile 업종 화면 → 회사(#/stock/058610) → 「‹ 전기 부품」 → 업종 화면 보던 자리(432px → 432px)",
+      "name": "mobile 업종 화면 → 회사(#/stock/058610) → 「‹ 전기 부품」 → 업종 화면 보던 자리(408px → 408px)",
       "ok": true,
       "detail": {
         "cbk": {
           "hash": "#/stock/058610",
           "back": "#/i/ib8333ad0"
         },
-        "yI": 432,
-        "yB": 432
+        "yI": 408,
+        "yB": 408
       }
     },
     {
@@ -11261,7 +10201,7 @@
       }
     },
     {
-      "name": "mobile 개편 · 관심 등록(440110) → 바로 「저장했습니다 · 이 기기에만」 · 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 지도 섬에서 그 회사만 빛남(440110) · 빼면 0개 · 지도 1개(날씨 true)",
+      "name": "mobile 개편 · 관심 등록(440110) → 바로 「저장했습니다 · 이 기기에만」 · 「★ 관심 종목 · 이 기기에만 저장」 · 관심종목 화면 줄 1개(이유 「검사 등록 이유」) · 다시 열어도 1개 · 「이 기기에만 저장」 · 빼면 0개 · 지도 섬 0개(입체 지움)",
       "ok": true,
       "detail": {
         "wb": {
@@ -11280,22 +10220,10 @@
           ],
           "art": "watch",
           "lead": "★ 관심 · 추적\n\n1곳 · 10월 8일(목) 종가와 견줌 · 후보 조건이 등록 뒤 어떻게 달라졌나 · 이 기기에만 저장(다른 기기 · 계정과 맞춰지지 않음)",
-          "map": {
-            "th": 0.62,
-            "focus": null,
-            "zone": null,
-            "busy": false,
-            "gold": null,
-            "lit": [
-              "440110"
-            ],
-            "heat": false
-          }
+          "map": 0
         },
         "w3": 0,
-        "w3map": 1,
-        "w3heat": true,
-        "inLens": true
+        "w3map": 0
       }
     },
     {
@@ -11911,13 +10839,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(1149px → 1149px)",
+      "name": "mobile 회사 화면 「‹ 오름 상위」 → 오름 상위 · 보던 자리(808px → 808px)",
       "ok": true,
       "detail": {
-        "y0": 1149,
+        "y0": 808,
         "rb": {
           "hash": "#/rise",
-          "y": 1149
+          "y": 808
         }
       }
     },
@@ -12044,13 +10972,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1749px → 1749px)",
+      "name": "mobile 회사 화면 「‹ 예비」 → 예비 · 보던 자리(1409px → 1409px)",
       "ok": true,
       "detail": {
-        "y0": 1749,
+        "y0": 1409,
         "sb": {
           "hash": "#/similar",
-          "y": 1749
+          "y": 1409
         }
       }
     },
@@ -16507,7 +15435,7 @@
           "t": "태양 28곳 한곳에 모아 보기 ›",
           "sun": true
         },
-        "first": 1623,
+        "first": 1282,
         "ih": 844,
         "keyIn": true,
         "keyHead": 0,
@@ -16611,13 +15539,13 @@
       }
     },
     {
-      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1623px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
+      "name": "mobile 출목표 첫 화면: 태양 상자 뜻 한 줄 「오른 회사들의 공통 모양 5가지를 모두 가진 곳」 · 칸 읽는 법은 접힘 안 · 첫 칸 1282px(휴대폰 두 화면 1688px 안 — 2026-10-07 04:01 「과감하게」 논평 무대 · 04:27 「더 과감하게」 표지가 첫 화면을 차지)",
       "ok": true,
       "detail": {
         "spkS": "오른 회사들의 공통 모양 5가지를 모두 가진 곳",
         "keyIn": true,
         "keyHead": 0,
-        "first": 1623,
+        "first": 1282,
         "ih": 844
       }
     },
@@ -16829,13 +15757,13 @@
       }
     },
     {
-      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2411px → 2411px)",
+      "name": "mobile 회사 화면 「‹ 출목표」 → 출목표 · 같은 묶는 법(흐름별) · 같은 탭(flat-up) · 보던 자리(2070px → 2070px)",
       "ok": true,
       "detail": {
-        "yBefore": 2411,
+        "yBefore": 2070,
         "back": {
           "hash": "#/road",
-          "y": 2411,
+          "y": 2070,
           "mode": "flow",
           "tab": "flat-up"
         }
@@ -17165,7 +16093,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 93개 = 기록 파일 93개(이슈 8 · 업데이트 69 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 94개 = 기록 파일 94개(이슈 8 · 업데이트 70 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -17192,11 +16120,11 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 69줄 = 기록 파일 69줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 70줄 = 기록 파일 70줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 69,
+        "n": 70,
         "sw": 390,
         "cw": 390
       }
@@ -17212,11 +16140,11 @@
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 93줄 = 기록 파일 93줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 94줄 = 기록 파일 94줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 93,
+        "n": 94,
         "sw": 390,
         "cw": 390
       }
@@ -17659,7 +16587,7 @@
       "detail": null
     },
     {
-      "name": "mobile 그림 한 장(규칙 33 · 42): 화면 23곳 — 후보 7 cand · 다른 후보와 비교 compare · 시장 market · 업종 탭 sectors · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 읽는 법 연습 industry · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 자료 차트 하나 · 옛 논평 무대 없음 · 처음에는 최신 결과(멈춤) · 걸음 넷 · 차례 단추 넷(현재 관측 · 기여 요인 · 반대 근거 · 확인할 것) · 조작 여섯(처음으로 · ‹ · 재생 · › · 최신 결과 · 빠르기) · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 138개 = 검사기가 판에서 따로 센 값",
+      "name": "mobile 그림 한 장(규칙 33 · 42): 화면 23곳 — 후보 7 cand · 다른 후보와 비교 compare · 시장 market · 업종 탭 sectors · 불장 home · 투자자 매매 flowwho · 종목 stocks · 검증 check · 관심종목 watch · 지도 map · 지도 갈래 land · 업종 industry · 회사 company · 예비 similar · 오름 상위 rise · 출목표 road · 일정 agenda · 읽는 법 연습 industry · 기록 log · 처음 start · 안내 guide · 500만 원 long · 몇 위 korea · 화면마다 자료 차트 하나 · 옛 논평 무대 없음 · 처음에는 최신 결과(멈춤) · 걸음 넷 · 차례 단추 넷(현재 관측 · 기여 요인 · 반대 근거 · 확인할 것) · 조작 여섯(처음으로 · ‹ · 재생 · › · 최신 결과 · 빠르기) · 이름 · 숫자가 첫 화면 아래 탭 위 · 그림 숫자 142개 = 검사기가 판에서 따로 센 값",
       "ok": true,
       "detail": null
     },
@@ -17761,7 +16689,7 @@
       }
     },
     {
-      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5020ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5006ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -17784,7 +16712,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5020
+        "ms": 5006
       }
     },
     {
@@ -18095,11 +17023,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 93개 = /changelog.json 93개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 94개 = /changelog.json 94개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 93,
-        "first": "u-20261010T083623-tour1",
+        "n": 94,
+        "first": "u-20261010T113144-flat1",
         "tabs": 4,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -21171,7 +20099,7 @@
       }
     },
     {
-      "name": "쉬운 말: 첫 화면 펼친 글 96줄 × 어려운 말 76개 — 남은 것 0",
+      "name": "쉬운 말: 첫 화면 펼친 글 98줄 × 어려운 말 76개 — 남은 것 0",
       "ok": true,
       "detail": []
     },
@@ -21212,7 +20140,7 @@
       }
     },
     {
-      "name": "쉬운 말: 회사 화면 전문가 칸 7개는 「전문가용 자세히 — 달…」 한 칸에 접힘 · 펼친 글 210줄에 어려운 말 0",
+      "name": "쉬운 말: 회사 화면 전문가 칸 7개는 「전문가용 자세히 — 달…」 한 칸에 접힘 · 펼친 글 209줄에 어려운 말 0",
       "ok": true,
       "detail": {
         "c1": {
@@ -21254,5 +20182,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-09T23-55-37-943Z"
+  "dir": "reports/atlas11/browser/2026-10-10T02-49-25-690Z"
 }
