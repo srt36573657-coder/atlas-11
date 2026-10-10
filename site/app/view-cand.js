@@ -363,6 +363,7 @@ function cmpTable(a, b, C) {
 export async function renderCompare(main, {hash, manifest}) {
   const [board, lens0] = await Promise.all([loadBoard(), loadLens().catch(() => null)]);
   const lens = lens0 && !lens0.none ? lens0 : null, C = candOfLens(lens), xs = C?.ready ? C.items : [];
+  const mcRows = new Map((lens?.mc && !lens.mc.none ? lens.mc.rows ?? [] : []).map(r => [String(r.code), r])), mcOf = code => mcRows.get(String(code)) ?? null;
   const back = h('a', {class: 'c-back', href: state.compareBack ?? '#/'}, '‹ ', state.compareBack?.startsWith('#/stock/') ? '종목 화면' : '후보 7곳');
   if (xs.length < 2) {
     state.summary = '다른 후보와 비교 · 비교할 후보가 둘 미만';
@@ -401,7 +402,9 @@ export async function renderCompare(main, {hash, manifest}) {
     for (const [box, cur, other] of [[pickA, A, B], [pickB, B, A]]) { const sel = box.querySelector('select'); sel.value = cur.code; for (const o of sel.options) o.disabled = o.value === other.code; }
     for (const r of R) setBar(r);
     why.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '앞선 까닭'), decide(A, B));
-    risk.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '반대 근거'), A.risk.text === B.risk.text ? `둘 다 ${A.risk.text}` : `가 ${A.risk.text} · 나 ${B.risk.text}`); // 같은 글이면 한 번(2026-10-10 18:22 다섯 팀 전체 검토 · 삼성 · 클로드팀)
+    const Ra = mcOf(A.code), Rb = mcOf(B.code);
+    risk.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '반대 근거'), A.risk.text === B.risk.text ? `둘 다 ${A.risk.text}` : `가 ${A.risk.text} · 나 ${B.risk.text}`, // 같은 글이면 한 번(2026-10-10 18:22 다섯 팀 전체 검토 · 삼성 · 클로드팀)
+      Ra || Rb ? ` · 셈 틀 손실 경로 가 ${freqR(Ra?.ploss)} · 나 ${freqR(Rb?.ploss)}(${MC_TAG})` : ''); // 머크팀 — 비교 화면에도 위험 숫자
     next.replaceChildren(h('span', {class: 'ra-k ra-tag'}, '확인할 것'), `그 뒤 판(거래일 16:00)의 그물 안팎 · 다음 담는 날 ${nextTxt(C.grow)}`);
     labels.dataset.check = JSON.stringify({a: A.code, b: B.code, am12: A.grow?.m12D ?? null, bm12: B.grow?.m12D ?? null, ar20: A.r20, br20: B.r20});
     sayBox.textContent = decide(A, B);
@@ -469,6 +472,8 @@ export function candJudgeBox(lens, s) {
     h('h2', {class: 'b-box-h cj-h', tabindex: '-1'}, h('span', {class: 'cj-hn'}, `후보 판단 · 검토 순위 ${x.rank}위`), ' ', stEl(x.status)),
     h('p', {class: 'cj-sum'}, h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C)),
     h('p', {class: 'cj-risk'}, h('span', {class: 'cd-k'}, '가장 강한 반대 근거'), ' ', x.risk.text), // 반대 근거는 이유 바로 아래(7)
+    (() => { const M = lens?.mc && !lens.mc.none ? lens.mc : null, R = (M?.rows ?? []).find(r => String(r.code) === String(x.code)) ?? null, E = (lens?.elim && !lens.elim.none ? lens.elim.rows ?? [] : []).find(r => String(r.code) === String(x.code)) ?? null;
+      return M ? h('p', {class: 'cj-mc'}, ...mcLine(R, E, mcMid(M, 'ploss'), C.pool?.universe ?? 365)) : null; })(), // 첫 화면 카드와 같은 셈 틀 줄(2026-10-10 18:22 다섯 팀 전체 검토 · 머크팀 — 위험 숫자를 세 화면에 똑같이)
     x.status === 'recheck' ? h('p', {class: 'cd-note cd-note-re'}, `재검토 까닭: ${x.recheckWhy}`) : x.status === 'wait' ? h('p', {class: 'cd-note'}, `조건 대기 까닭: ${x.waitWhy}`) : null,
     h('nav', {class: 'cj-acts', 'aria-label': '후보 판단 바로 가기'},
       btn('왜 선정됐나요?', 'cj-why'),

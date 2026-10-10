@@ -190,6 +190,7 @@ html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[d
 .cj-h { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .cj-h:focus { outline: none; } .cj-h:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .cj-sum, .cj-risk { margin: 6px 0 0; font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; }
+.cj-mc { margin: 6px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; } /* 첫 화면 카드와 같은 셈 틀 줄(2026-10-10 다섯 팀 전체 검토 · 머크팀) */
 .cj-risk .cd-k { color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--card)); }
 .cj-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
 .cj-q { margin: 12px 0 0; padding: 10px 6px 4px; border-top: 1px solid var(--sep); border-radius: 8px; }
