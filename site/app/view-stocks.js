@@ -70,9 +70,12 @@ export async function renderStocks(main, {manifest, focus = false} = {}) {
   const here = {id: place.id, label: place.label, href: ''}, boards = [{place: here, companies: board.companies, here: true}];
   const others = (state.places ?? []).filter(p => p.id !== place.id);
   Promise.allSettled(others.map(p => loadPlaceBoard(p.href))).then(rs => rs.forEach((r, i) => { if (r.status === 'fulfilled') boards.push({place: {id: others[i].id, label: others[i].label, href: others[i].href}, companies: r.value.board.companies, here: false}); if (memo.q) draw(); }));
-  const input = h('input', {class: 'fd-in', type: 'search', value: memo.q, placeholder: '이름 · 기호 · 초성', 'aria-label': '회사 이름 · 기호 · 초성으로 찾기', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'search',
+  const input = h('input', {class: 'fd-in', type: 'search', value: memo.q, placeholder: '이름 · 첫 글자', 'aria-label': '회사 이름 · 기호 · 초성으로 찾기', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'search',
     oninput: () => { memo.q = input.value; shown = 30; draw(); }});
   const form = h('form', {class: 'fd-form sk-form', role: 'search', 'aria-label': '회사 찾기', onsubmit: e => { e.preventDefault(); const hit = findIn(boards, input.value.trim())[0]; if (hit) location.href = stockHref(hit); }}, input);
+  // 눌러 보는 첫 글자(새 판 찾기 · 구글 · 잡스팀 2026-10-10 20:47) — 누르면 칸에 넣고 바로 찾음(한국 · 미국 두 판 함께)
+  const chip = t => h('button', {class: 'sk-chip', type: 'button', 'data-ident': '', onclick: () => { input.value = t; memo.q = t; shown = 30; draw(); }}, t);
+  const chips = h('p', {class: 'sk-chips'}, h('span', {class: 'muted small'}, '첫 글자만 쳐도 돼요 · 눌러 보기'), chip('ㅅㅅㅈㅈ'), chip('ㅎㄷㅊ'), chip('ㅇㅂㄷㅇ'));
   function draw() {
     for (const b of segBtns) b.setAttribute('aria-pressed', String(b.dataset.b === memo.bucket));
     const q = memo.q.trim();
@@ -101,7 +104,7 @@ export async function renderStocks(main, {manifest, focus = false} = {}) {
   main.replaceChildren(h('div', {class: 'b-page sk-page'},
     h('section', {class: 'mk-b', 'data-first': '1', 'aria-label': '종목'}, h('h2', {class: 'mk-h'}, '종목'),
       lens ? h('p', {class: 'mk-l'}, h('b', null, `${korDate(lens.asOf)} 종가 · ${all.length}곳`), hasPrev ? ` · ${korDate(lens.changes.from)} 저녁 기록과 견줌` : ' · 견줄 앞 기록 없음(전체 비교만)') : lensMissing(lens0),
-      form, msg),
+      form, chips, msg),
     segNav(STOCK_SEGS, 'list', '종목 보기 바꾸기'),
     h('div', {class: 'f-seg sk-seg', role: 'group', 'aria-label': '묶음'}, ...segBtns),
     h('div', {class: 'sk-tools'}, sortSel, groupSel),

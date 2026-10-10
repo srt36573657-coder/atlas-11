@@ -53,6 +53,8 @@ const ICON = {
 /* ── 글 셈 ── */
 const fin = v => typeof v === 'number' && isFinite(v);
 const pct = (v, k = 0) => (fin(v) ? (v > 0 ? '+' : v < 0 ? M : '') + Math.abs(v).toFixed(k) + '%' : '–');
+/* 셈 틀 범위 값은 앞 세 자리까지만(48,829원 → 48,800원) */
+const sig3 = v => { if (!fin(v) || v === 0) return v; const p = Math.pow(10, Math.floor(Math.log10(Math.abs(v))) - 2); return Math.round(v / p) * p; };
 const money = (v, kr) => (fin(v) ? (kr ? Math.round(v).toLocaleString('ko-KR') + '원' : '$' + (v >= 100 ? v.toFixed(0) : v.toFixed(2))) : '–');
 const kday = (iso, base) => { const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/); if (!m) return '날짜 없음'; const yr = base && !String(base).startsWith(m[1]) ? m[1] + '년 ' : ''; return yr + Number(m[2]) + '월 ' + Number(m[3]) + '일'; };
 const ktime = iso => { const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); return m ? Number(m[2]) + '월 ' + Number(m[3]) + '일 ' + m[4] + ':' + m[5] : ''; };
@@ -65,6 +67,20 @@ function addSessions(iso, n) {
   return d.toISOString().slice(0, 10);
 }
 const todaySeoul = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+function addWeekdays(iso, n) { const d = new Date(String(iso).slice(0, 10) + 'T00:00:00Z'); if (isNaN(d)) return null; let c = 0; while (c < n) { d.setUTCDate(d.getUTCDate() + 1); const w = d.getUTCDay(); if (w === 0 || w === 6) continue; c++; } return d.toISOString().slice(0, 10); }
+/* 7일 뒤(5거래일 · 첫 채점일) — 사장님 2026-10-10 20:47(서울) 「7일 예측까지 해 · 가장 확률 높은 거 딱 하나만」
+   셈 틀(몬테카를로)은 평균 기울기 0 — 오를지 내릴지를 정하지 않고 흔들림의 크기만 잰다. 그래서 「가장 그럴듯한 하나」는 회사 하나가 아니라
+   「7곳 모두 반반 · 가운데 값이 지금 값 근처」 한 줄(구글 · 클로드 · 잡스 세 팀 검토). 값은 판 읽기 mc.bands[기호].q 의 5거래일 줄(10 · 25 · 50 · 75 · 90%)만 씀 */
+function week7(D) {
+  const track = D.mc && D.mc.track, days = track && Array.isArray(track.days) ? track.days : [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60], k = days.indexOf(5);
+  if (k < 0) return null;
+  const rows = D.items.map(x => ({x, q: x.band && Array.isArray(x.band.q) && Array.isArray(x.band.q[k]) ? x.band.q[k] : null})).filter(r => r.q && r.q.every(fin));
+  if (!rows.length) return null;
+  const meds = rows.map(r => r.q[2]), lo = Math.min(...meds), hi = Math.max(...meds), big = Math.max(...meds.map(Math.abs));
+  const planted = D.items[0] ? D.items[0].planted : D.cand.asOf;
+  return {day: D.kr ? addSessions(planted, 5) : addWeekdays(planted, 5), n: rows.length, lo, hi, big, band: Math.ceil(big * 100 + 1e-9), of: x => { const r = rows.find(y => y.x === x); return r ? r.q : null; }};
+}
+const median = xs => { const a = xs.filter(fin).sort((p, q) => p - q), n = a.length; return n ? (n % 2 ? a[(n - 1) / 2] : (a[n / 2 - 1] + a[n / 2]) / 2) : null; };
 
 /* ── 자료 ── */
 async function getJSON(u) { const r = await fetch(u, {cache: 'no-cache'}); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }
@@ -179,8 +195,13 @@ function viewToday(main) {
   const planted = its[0] ? its[0].planted : D.cand.asOf;
   const title = kr ? '1년 오른 무리에 새로 든 7곳' : '미국 · 검사가 덜 끝난 7곳';
   const sub = kr ? kday(D.cand.asOf) + ' 마감 값 · 첫 채점 ' + kday(addSessions(planted, 5)) : kday(its[0] ? its[0].date : D.cand.asOf) + '(미국) 마감 값';
-  const legend = ex ? '오른쪽: 가장 나쁜 5% 경로 평균 · 60거래일 · 모형 가정 아래 추정 · 검증 전' : '오른쪽 숫자: 석 달 뒤 앞날 100가지(모형) 중 손해인 수';
+  const mid = D.mc && Array.isArray(D.mc.rows) ? median(D.mc.rows.map(r => r.ploss)) : null;
+  const legend = ex ? '오른쪽: 가장 나쁜 5% 경로 평균 · 60거래일 · 모형 가정 아래 추정 · 검증 전' : '오른쪽 숫자: 석 달 뒤 앞날 100가지(모형) 중 손해인 수' + (fin(mid) ? ' · ' + (kr ? '한국' : '미국') + ' 365곳 가운데값 ' + Math.round(mid * 100) : '');
   main.append(h('div', {class: 'head'}, h('h1', {class: 'h1'}, title), h('p', {class: 'sub'}, sub), (kr || S.usShow) && its.length ? h('p', {class: 'small'}, legend) : null));
+  const W7 = (kr || S.usShow) && its.length ? week7(D) : null;
+  if (W7) main.append(h('section', {class: 'w7 fade', 'aria-label': '7일 뒤'}, // 한 줄 + 덧말 한 줄(7곳 목록이 첫 화면에 남게 — 사장님이 좋아하신 이름 · 움직이는 그래프)
+    h('p', {class: 'w7-big'}, '7일 뒤' + (W7.day ? '(' + kday(W7.day) + (ex ? ' · 5거래일' : '') + ')' : '') + ': ' + (ex ? '가운데 값 ' + pct(W7.lo * 100, 1) + ' ~ ' + pct(W7.hi * 100, 1) : W7.n + '곳 모두 반반')),
+    h('p', {class: 'w7-sub'}, ex ? '기울기 0 모형 — 방향은 셈하지 않음 · 한 곳을 고를 근거 없음 · 모형 가정 아래 추정 · 검증 전' : '셈 틀은 오를지 내릴지 정하지 않아요 · 가장 흔한 모습은 지금 값 근처(±' + W7.band + '%) · 그래서 한 곳을 고르지 않음 · 셈 틀로 어림한 값 · 아직 확인 전')));
   const idx = D.index;
   if (kr && idx && fin(idx.gap) && idx.gap <= -0.1) main.append(h('a', {class: 'alert', href: '#/record'}, ICON.warn(), h('span', {}, '조심: 코스피가 1년 꼭대기보다 ' + Math.round(Math.abs(idx.gap) * 100) + '% 아래'), h('i', {'aria-hidden': 'true'}, '›')));
   if (!its.length) { main.append(h('div', {class: 'card'}, h('p', {class: 'body'}, '오늘은 적어 둔 곳이 없습니다. 규칙에 맞는 곳이 없으면 비워 둡니다.'))); S.say = title + '. 오늘은 적어 둔 곳이 없습니다.'; return; }
@@ -192,7 +213,7 @@ function viewToday(main) {
     S.say = title + '. 미국 7곳은 위험 공시 검사를 아직 못 했습니다. 그래서 이름을 접어 두었습니다.';
     return;
   }
-  const rows = h('div', {class: 'rows'}), say = [title + '. ' + sub + '.'];
+  const rows = h('div', {class: 'rows'}), say = [title + '. ' + sub + '.' + (W7 ? ' 7일 뒤, ' + W7.n + '곳 모두 반반입니다. 셈 틀은 오를지 내릴지 정하지 않습니다. 가장 흔한 모습은 지금 값 근처입니다.' : '')];
   for (const x of its) {
     const m = x.mc, loss = m && fin(m.ploss) ? Math.round(m.ploss * 100) : null;
     const sp = spark(x.closes);
@@ -238,6 +259,14 @@ function viewCompany(main, place, code) {
       w5 != null ? h('div', {class: 'pair', 'aria-hidden': 'true'}, h('em', {class: 'down'}, w5 + '만 원'), worst) : null,
       h('p', {class: 'small'}, tag)));
   } else main.append(h('div', {class: 'card'}, h('p', {class: 'body'}, '오늘은 이 회사의 앞날 계산이 없습니다(모형 계산이 올라오면 저절로 보입니다).')));
+  const W7 = week7(D), q7 = W7 ? W7.of(x) : null;
+  if (q7 && fin(x.close)) {
+    main.append(h('section', {class: 'card w7c fade'},
+      h('p', {class: 'cap'}, '7일 뒤' + (W7.day ? ' · ' + kday(W7.day) + ' 마감' : '')),
+      h('p', {class: 'big'}, '100가지 중 80가지가 ' + money(sig3(x.close * (1 + q7[0])), kr) + ' ~ ' + money(sig3(x.close * (1 + q7[4])), kr) + ' 사이'),
+      h('p', {class: 'body'}, ex ? '5거래일 10 · 50 · 90% ' + pct(q7[0] * 100, 1) + ' · ' + pct(q7[2] * 100, 1) + ' · ' + pct(q7[4] * 100, 1) + ' · 기준 ' + money(x.close, kr) + '(' + kday(x.date) + ' 종가)' : '가운데 값은 지금 값 근처(' + pct(q7[2] * 100, 1) + ') — 셈 틀은 오를지 내릴지 정하지 않습니다 · 기준 ' + money(x.close, kr) + '(' + kday(x.date) + ')'),
+      h('p', {class: 'small'}, '셈 틀로 어림한 값 · 아직 확인 전 · 값 하나를 맞힌다는 뜻 아님')));
+  }
   if (g) {
     main.append(h('figure', {class: 'fig'},
       s('svg', {viewBox: '0 0 ' + g.W + ' ' + g.Ht, role: 'img', 'aria-label': '지난 석 달 실제 가격과 앞으로 석 달의 추정 범위'},
@@ -284,7 +313,7 @@ function viewCompany(main, place, code) {
       kv('계산 때', ktime(D.mc.made) + '(서울)')));
   }
   main.append(h('p', {class: 'small'}, '자료: ATLAS 판 ' + kday(D.cand.asOf) + (kr ? ' · 한국 값은 오후 3시 30분 마감 동시호가 값' : '') + (D.mc && D.mc.made ? ' · 모형 계산 ' + ktime(D.mc.made) + '(서울)' : '')));
-  S.say = x.name + '. ' + (mcOk ? '석 달 뒤, 모형이 그린 앞날 100가지 중 ' + loss + '가지는 손해. ' + (w5 != null ? '가장 나쁜 5가지 평균, 100만 원이 ' + w5 + '만 원. ' : '') : '') + (g ? '석 달 뒤 10가지 중 1가지는 ' + money(g.p10, kr) + ' 아래. ' : '') + '모형 가정 아래 추정이고, 검증 전입니다.';
+  S.say = x.name + '. ' + (mcOk ? '석 달 뒤, 모형이 그린 앞날 100가지 중 ' + loss + '가지는 손해. ' + (w5 != null ? '가장 나쁜 5가지 평균, 100만 원이 ' + w5 + '만 원. ' : '') : '') + (q7 && fin(x.close) ? '7일 뒤, 100가지 중 80가지가 ' + money(sig3(x.close * (1 + q7[0])), kr) + '에서 ' + money(sig3(x.close * (1 + q7[4])), kr) + ' 사이. ' : '') + (g ? '석 달 뒤 10가지 중 1가지는 ' + money(g.p10, kr) + ' 아래. ' : '') + '모형 가정 아래 추정이고, 검증 전입니다.';
 }
 
 /* ── ② 찾기(첫 글자로 · 돈의 흐름) ── */
@@ -318,7 +347,7 @@ function drawHits(box, note) {
     box.append(h('div', {class: 'hit'},
       h('div', {class: 'hit-a'}, h('b', {}, x.name), h('span', {class: 'num ' + (x.ret > 0 ? 'up' : x.ret < 0 ? 'down' : '')}, '1년 ' + pct(x.ret))),
       h('div', {class: 'hit-b'}, h('span', {}, (kr ? '한국' : '미국') + ' · ' + sec(x.sector) + ' · ' + money(x.close, kr) + '(' + kday(x.date) + ')'),
-        x.cand ? h('a', {href: '#/c/' + x.place + '/' + encodeURIComponent(x.code)}, '오늘 7곳 ›') : null)));
+        x.cand ? h('a', {href: '#/c/' + x.place + '/' + encodeURIComponent(x.code)}, '오늘 7곳 ›') : h('a', {href: (kr ? '/' : '/us/') + '#/stock/' + encodeURIComponent(x.code).replace(/%2E/gi, '.')}, '회사 ›'))));
   }
 }
 function viewFind(main) {

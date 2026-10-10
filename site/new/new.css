@@ -79,7 +79,7 @@ a { color: inherit; }
 .row-sub { font-family: var(--sans); font-size: 1rem; line-height: 1.4; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .row-r { flex: none; width: 128px; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
 .row-r svg { width: 108px; height: 28px; display: block; }
-.row-n { font-family: var(--sans); font-size: 1.0625rem; line-height: 1.35; font-weight: 700; color: var(--down-ink); white-space: nowrap; }
+.row-n { font-family: var(--sans); font-size: 1.0625rem; line-height: 1.35; font-weight: 700; color: var(--ink); white-space: nowrap; } /* 셈 틀 숫자는 먹색(빨강 · 파랑은 지난 오르내림에만 — 규칙 53 ② · 2026-10-10 세 팀 검토) */
 
 /* 선 · 띠 그림(평평하게) */
 .ln { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
@@ -103,13 +103,13 @@ a { color: inherit; }
 
 /* 막대(평평한 띠) */
 .bar { height: 18px; border-radius: 9px; background: var(--fill); overflow: hidden; display: flex; }
-.bar > span { display: block; height: 100%; border-radius: 9px; background: var(--down); transform-origin: left center; animation: grow 1.1s cubic-bezier(.2, .7, .2, 1) .3s both; }
+.bar > span { display: block; height: 100%; border-radius: 9px; background: var(--ink2); transform-origin: left center; animation: grow 1.1s cubic-bezier(.2, .7, .2, 1) .3s both; } /* 셈 틀 막대 = 먹색(규칙 53 ②) */
 .bar.up > span { background: var(--up); }
 .bar.soft > span { background: var(--accent); }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .pair { display: flex; align-items: center; gap: 8px; }
 .pair > em { width: 82px; flex: none; font-style: normal; font-family: var(--sans); font-size: .9375rem; color: var(--sub); }
-.pair > em.down { color: var(--down-ink); font-weight: 700; }
+.pair > em.down { color: var(--ink); font-weight: 700; }
 .pair .bar { flex: 1; height: 16px; }
 .pair .bar.full { background: var(--sep); }
 
@@ -189,3 +189,10 @@ a { color: inherit; }
 .fade { animation: fade .3s ease-out both; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .draw { animation: none; stroke-dashoffset: 0; } .bar > span, .fade { animation: none; } }
+
+/* 7일 뒤 한 줄(2026-10-10 20:47 사장님 「7일 … 가장 확률 높은 거 딱 하나만」 — 셈 틀은 방향을 정하지 않아 「7곳 모두 반반」 한 줄 · 세 팀 검토) */
+.w7 { margin: 0; padding: 12px 14px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 2px var(--accent-mid); display: flex; flex-direction: column; gap: 4px; }
+.w7-k { margin: 0; font-family: var(--sans); font-size: .9375rem; font-weight: 700; color: var(--ink2); letter-spacing: .02em; }
+.w7-big { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.35; }
+.w7-sub { margin: 0; font-family: var(--sans); font-size: 1rem; line-height: 1.45; color: var(--ink2); }
+.w7c { box-shadow: 0 0 0 2px var(--accent-mid); }

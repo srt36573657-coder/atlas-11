@@ -68,11 +68,26 @@ export const elimTxt = (E, R = null) => { if (!E?.state) return '판정 없음';
   return `${ELIM_ST[E.state] ?? E.state}${E.state === 'hold' ? `(${hold})` : E.state === 'out' && f ? `(${f})` : ''}${tail}`; };
 /** 몫의 365곳 가운데값(비교 대상 — 머크팀 「손실 몫에 비교 대상이 없음」) — 이번 회차 모든 회사 행의 가운데값 */
 export const mcMid = (M, k) => { const v = (M?.rows ?? []).map(r => r?.[k]).filter(finite).sort((a, b) => a - b); return v.length ? (v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2) : null; };
-/** 카드 한 줄 — 60거래일 범위(100번 중 80번이 든 사이) · 손실 경로(100번 중 n번 · 365곳 가운데값) · 소거 · 꼬리표 */
+/** 카드 한 줄 — 나쁜 쪽부터(새 판 · 세 팀 검토 2026-10-10 20:47): 손실 경로(100번 중 n번 · 365곳 가운데값) → 범위(100번 중 80번이 든 사이) → 소거 · 꼬리표 */
 function mcLine(R, E, mid = null, uni = 365) {
-  return [h('span', {class: 'cd-k'}, '60거래일 범위'), ' ', ...(R ? ['100번 중 80번이 ', rv(R.q10), ' ~ ', rv(R.q90), ' 사이', ` · 손실 경로 ${freqR(R.ploss)}${finite(mid) ? `(${uni}곳 가운데값 ${Math.round(mid * 100)}번)` : ''}`] : ['이번 회차 셈 없음']),
+  return [h('span', {class: 'cd-k'}, '석 달(60거래일) 뒤 · 셈 틀'), ' ', ...(R ? [`손실 경로 ${freqR(R.ploss)}${finite(mid) ? `(${uni}곳 가운데값 ${Math.round(mid * 100)}번)` : ''} · 100번 중 80번이 `, rv(R.q10), ' ~ ', rv(R.q90), ' 사이'] : ['이번 회차 셈 없음']),
     ` · 소거 ${elimTxt(E, R)}`, h('small', {class: 'cd-tag'}, ` · ${MC_TAG}`)];
 }
+/** 7일 뒤(5거래일 · 첫 채점일) — 사장님 2026-10-10 20:47(서울) 「7일 예측까지 해 · 가장 확률 높은 거 딱 하나만」
+ *  셈 틀은 평균 기울기 0 — 오를지 내릴지를 정하지 않아 「가장 그럴듯한 하나」는 회사 하나가 아니라 「모두 반반 · 지금 값 근처」(구글 · 클로드 · 잡스 세 팀)
+ *  값 = 판 읽기 mc.bands[기호].q 의 5거래일 줄(10 · 25 · 50 · 75 · 90%) · 날짜 = 그 담은 날 채점 기록의 첫 채점일(없으면 「5거래일 뒤」) */
+// 셈 틀 범위의 원 값은 앞 세 자리까지만(48,829원 → 48,800원 — 셈 틀이 원 단위까지 안다고 읽히지 않게)
+const sig3 = v => { if (!finite(v) || v === 0) return v; const p = 10 ** (Math.floor(Math.log10(Math.abs(v))) - 2); return Math.round(v / p) * p; };
+export function week7Of(C, lens) {
+  const M = lens?.mc && !lens.mc.none ? lens.mc : null, days = M?.track?.days ?? [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60], k = days.indexOf(5);
+  if (!M?.bands || k < 0) return null;
+  const q = new Map(C.items.map(x => [String(x.code), M.bands[String(x.code)]?.q?.[k]]).filter(([, r]) => Array.isArray(r) && r.length === 5 && r.every(finite)));
+  if (!q.size) return null;
+  const meds = [...q.values()].map(r => r[2]), planted = C.grow?.planted?.at ?? C.asOf;
+  const due = (lens?.verify?.records ?? []).find(r => r.asOf === planted)?.evals?.cand?.[0]?.due ?? null;
+  return {q, n: q.size, day: due, lo: Math.min(...meds), hi: Math.max(...meds), band: Math.ceil(Math.max(...meds.map(Math.abs)) * 100 + 1e-9)};
+}
+const w7When = W => (W.day ? `7일 뒤(${md(W.day)})` : '7일 뒤(5거래일)');
 
 /* ── ① 기준(한 줄 + 작은 약속 한 줄) ── */
 function baseLines(C, lens = null) {
@@ -90,10 +105,10 @@ const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' &&
 const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
-function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null, mid = null} = {}) {
+function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null, mid = null, W7 = null} = {}) {
   const rk = h('span', {class: 'cd-rk'}), name = h('span', {class: 'cd-name', 'data-ident': ''}), sec = h('small', {class: 'cd-sec'}), stw = h('span', {class: 'cd-stw'}), px = h('p', {class: 'cd-px'});
-  const why = h('p', {class: 'ra-li cd-why'}), mcl = h('p', {class: 'ra-li cd-mc'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
-  const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, mcl, risk, note, acts);
+  const why = h('p', {class: 'ra-li cd-why'}), mcl = h('p', {class: 'ra-li cd-mc'}), w7l = h('p', {class: 'ra-li cd-w7'}), risk = h('p', {class: 'ra-li cd-risk', 'data-at': String(riskAt)}), note = h('p', {class: 'cd-note'}), acts = h('p', {class: 'cd-acts', 'data-at': String(actsAt)});
+  const el = h('div', {class: 'ra-lab cd-card', 'aria-live': 'polite'}, h('div', {class: 'cd-ch'}, rk, h('span', {class: 'cd-nm'}, name, sec), stw, px), why, mcl, w7l, risk, note, acts);
   const go = () => { state.candGo = 'why'; state.vt = {el: name, name: 'cd-name'}; }; // 이 이름이 종목 화면 「후보 판단」 머리로 이어짐(app.js 화면 넘김 움직임)
   function fill(x) {
     el.dataset.code = x.code;
@@ -102,6 +117,8 @@ function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null
     px.replaceChildren(h('b', null, won(x.close)), ` · ${korDate(x.date)} 종가 · 20거래일 `, pv(x.r20));
     why.replaceChildren(h('span', {class: 'cd-k'}, '고른 까닭'), ' ', ...reasonEl(x, C));
     mcl.replaceChildren(...mcLine(mcOf(x.code), elOf(x.code), mid, C.pool?.universe ?? 365)); // 60거래일 범위 · 손실 경로 · 소거(규칙 49 · 모형 가정 아래 추정 · 검증 전)
+    const q7 = W7?.q.get(String(x.code)); w7l.hidden = !(q7 && finite(x.close)); // 7일 뒤(5거래일) 범위 — 값 하나가 아니라 100번 중 80번이 든 값 사이(값 하나는 목표가로 읽힘 · 클로드팀)
+    w7l.replaceChildren(...(q7 && finite(x.close) ? [h('span', {class: 'cd-k'}, w7When(W7)), ` 100번 중 80번이 ${won(sig3(x.close * (1 + q7[0])))} ~ ${won(sig3(x.close * (1 + q7[4])))} 사이 · 가운데 값은 지금 값 근처(${pctR(q7[2])}) · 오를지 내릴지는 정하지 않음`, h('small', {class: 'cd-tag'}, ` · ${MC_TAG}`)] : []));
     risk.replaceChildren(h('span', {class: 'cd-k'}, '가장 큰 위험'), ' ', x.risk.text);
     const many = x.status === 'wait' && String(x.waitWhy ?? '').includes(' · '); // 조건 대기 까닭이 하나면 「가장 큰 위험」 줄과 같은 말이라 한 번만(글 줄이기) · 둘 이상이면 모두 적음 · 재검토 까닭은 따로
     note.hidden = !(x.status === 'recheck' || many); note.className = x.status === 'recheck' ? 'cd-note cd-note-re' : 'cd-note';
@@ -137,7 +154,8 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   const n = C.items.length;
   let cur = C.items.find(x => x.code === sel) ?? C.items[0] ?? null;
   const M = lens?.mc && !lens.mc.none ? lens.mc : null, mcRow = new Map((M?.rows ?? []).map(r => [String(r.code), r])), elRow = new Map((lens?.elim && !lens.elim.none ? lens.elim.rows ?? [] : []).map(r => [String(r.code), r]));
-  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null, mid: mcMid(M, 'ploss')}) : null;
+  const W7 = n ? week7Of(C, lens) : null;
+  const card = n ? cardOf(C, {riskAt: n + 1, actsAt: n + 2, mcOf: code => mcRow.get(String(code)) ?? null, elOf: code => elRow.get(String(code)) ?? null, mid: mcMid(M, 'ploss'), W7}) : null;
   const rows = n ? C.items.map(x => miniRow(x, code => pick(code, false), mcRow.get(String(x.code)) ?? null)) : [];
   const pic = candBars(C, {sel: cur?.code ?? null, onPick: code => pick(code, true)});
   // 저절로 둘러보기 — 막대 그림 바로 아래 고정 칸(긴 글은 그림 밖 · 그림 위에는 고른 곳 이름표 하나) · 한국어 화면만(번역 미룸)
@@ -157,7 +175,9 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   if (pic) pic.el.dataset.check = JSON.stringify({universe: p.universe, valid: p.valid, net: p.net, netElig: p.netElig, newc: p.newc, n, plantedAt: C.grow?.planted?.at ?? null, q: q ?? null,
     bars: PM.rows.map(r => [r.code, r.rank, r.status, r.m12, r.m12p]), above: PM.above, green: PM.green}); // 막대 = 판 읽기 값 · 선 위 · 초록 = 그림이 센 값(검사기가 판 읽기로 따로 센 그물 · 기준 넘은 곳 · 1년 추세 · 20거래일 전 값과 맞댐)
   const playRow = n && pic ? h('div', {class: 'cb-playrow'}, h('span', {class: 'cb-playcap'}, `${n}곳이 하나씩 기준선을 넘는 모습`)) : null; // 「▶ 재생」이 이 줄 맨 앞(artStage ctlSlot)
-  const art = h('div', {class: 'cb-wrap'}, pic ? pic.el : h('p', {class: 'muted', 'data-at': '0'}, '막대를 그릴 값이 모자람 — 지어내지 않음'), playRow, tour?.el ?? null, key, ctx, note);
+  // 7일 뒤 한 줄(사장님 2026-10-10 20:47 「가장 확률 높은 거 딱 하나만」 — 셈 틀이 그리는 가장 흔한 모습 하나: 모두 반반 · 지금 값 근처 · 한 곳을 고르지 않음)
+  const w7 = W7 ? h('p', {class: 'cb-w7'}, h('b', null, `${w7When(W7)}: ${W7.n}곳 모두 반반`), ` — 셈 틀은 오를지 내릴지 정하지 않음 · 가장 흔한 모습은 지금 값 근처(가운데 값 ±${W7.band}% 안) · 그래서 한 곳을 고르지 않음 · ${MC_TAG}`) : null;
+  const art = h('div', {class: 'cb-wrap'}, pic ? pic.el : h('p', {class: 'muted', 'data-at': '0'}, '막대를 그릴 값이 모자람 — 지어내지 않음'), playRow, w7, tour?.el ?? null); // 범례 · 365곳 줄 · 덧말은 카드 밑(막대를 누르면 바뀌는 카드가 바로 아래 — 잡스 · 구글팀)
   const labels = card ? card.el : h('div', {class: 'ra-lab'}, h('p', {class: 'ra-li', 'data-at': '2'}, h('span', {class: 'cd-k'}, '조건을 모두 넘은 곳 없음'), ` ${p.universe}곳 가운데 · 기준을 낮추지 않음`),
     h('p', {class: 'ra-li', 'data-at': '3'}, h('a', {href: '#/flow/rotation'}, '돈 흐름 자세히 ›')));
   const gl = growLine(C);
@@ -168,7 +188,7 @@ export function candArt(C, {sel = null, stocks = [], lens = null} = {}) {
   const steps = n ? [{c: 0, at: 0, ms: 1300}, ...C.items.map((x, k) => ({c: 1, at: k + 1, ms: 700})), {c: 2, at: n + 1, ms: 1200}, {c: 3, at: n + 2, ms: 1000}]
     : [{c: 0, at: 0, ms: 1300}, {c: 1, at: 1, ms: 1000}, {c: 2, at: 2, ms: 1200}, {c: 3, at: 3, ms: 1000}];
   const fig = artSection({key: 'cand', label: '매수 검토 후보', kicker: `매수 검토 후보 ${n}곳`, when: `${p.universe}곳 전체에서`, title: n ? `그물 ${p.netElig}곳 · 막 들어온 ${n}곳` : '새로 든 초입 없음',
-    stage: artStage({key: 'cand', art, labels, labFirst: false, tail: [gl, list, all].filter(Boolean), steps, ctlSlot: playRow}), first: 2});
+    stage: artStage({key: 'cand', art, labels, labFirst: false, tail: [key, ctx, note, gl, list, all].filter(Boolean), steps, ctlSlot: playRow}), first: 2});
   pic?.bind(fig.querySelector('.ra'));
   tour?.bind(fig.querySelector('.ra'));
   if (cur) pick(cur.code, false, !!sel && sel === cur.code); // 처음 열면 1위 카드(고른 것 아님 — 금빛만) · 돌아오면 고른 그 카드
