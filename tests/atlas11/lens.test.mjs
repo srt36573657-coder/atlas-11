@@ -114,6 +114,21 @@ test('저녁 기록: 들고 남 · 새로 발견 · 근거 약화 · 원인(지�
   assert.ok(r0.baseline.next.every(e => e.status === 'done'), '비교 기준(단순 최근 상승률 상위)도 같은 날 · 같은 기간');
 });
 
+test('첫 화면 7곳(5판 규칙 폴더 발행본)도 채점 — 같은 날 처음 남은 목록과 규칙이 다를 때만 · 5 · 10 · 20 · 60거래일(사장님 2026-10-10 22:36 「알아서해」)', () => {
+  const {assets, board, index} = fixture();
+  const d = SES[5], first = {asOf: d, recordedAt: '2026-08-10T10:00:00Z', rules: 'cand-rules-2', cand: [{code: 'A1'}, {code: 'A2'}]};
+  const g5 = {asOf: d, recordedAt: '2026-08-11T07:00:00Z', rules: 'cand-rules-5', cand: [{code: 'A3'}, {code: 'B1'}]};
+  const l = lensOf({place: 'kr', board, assets, index, sessions: SES, candPubs: [first], growPubs: [g5]});
+  const r = l.verify.records.find(x => x.asOf === d);
+  assert.deepEqual(r.evals.grow.map(e => e.h), [5, 10, 20, 60], '첫 화면 7곳은 담는 기간(60거래일)까지');
+  assert.deepEqual(r.evals.cand.map(e => e.h), [5, 10, 20], '같은 날 첫 목록(다른 규칙 판)은 그대로');
+  assert.equal(r.grow.rules, 'cand-rules-5'); assert.equal(r.sizes.grow, 2);
+  const e5 = r.evals.grow.find(e => e.h === 5); assert.equal(e5.status, 'done'); assert.equal(e5.due, SES[10]); assert.equal(e5.n, 2);
+  // 규칙이 같으면 따로 세지 않음(같은 목록을 두 번 채점하지 않음)
+  const same = lensOf({place: 'kr', board, assets, index, sessions: SES, candPubs: [first], growPubs: [{...g5, rules: 'cand-rules-2'}]});
+  assert.equal(same.verify.records.find(x => x.asOf === d).evals.grow, undefined);
+});
+
 test('빈 판 · 기록 없음 — 멈추지 않고 계산 불가', () => {
   const l = lensOf({place: 'kr', board: {boardId: 'b0', asOf: AS_OF, companies: [], groups: []}, assets: [], sessions: SES});
   assert.equal(l.market.sample.d20.n, 0); assert.equal(l.market.sample.d20.mean, null); assert.equal(l.changes, null); assert.deepEqual(l.verify.records, []);

@@ -12,8 +12,9 @@ import {foot, segNav, CHECK_SEGS} from './parts.js';
 import {checkArt, quietArt} from './scenes.js';
 import {pv, ppv, pctNum, howBox, lensMissing, idxName} from './lensparts.js';
 
-const LIST_NAME = {cand: '매수 검토 후보', next: '오름 상위 22곳', similar: '예비 7곳', hot: '불장 업종 회사'}; // cand = 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 13 — 그날 처음 남은 후보 목록(저녁 기록 · 후보 발행본)
-const KEYS = ['cand', 'next', 'similar', 'hot'];
+const LIST_NAME = {grow: '첫 화면 후보', cand: '매수 검토 후보', next: '오름 상위 22곳', similar: '예비 7곳', hot: '불장 업종 회사'}; // cand = 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 13 — 그날 처음 남은 후보 목록(저녁 기록 · 후보 발행본)
+const KEYS = ['grow', 'cand', 'next', 'similar', 'hot']; // grow = 첫 화면 7곳(5판 규칙 폴더 발행본 · 그날 처음 남은 목록과 규칙이 다를 때만 · 60거래일까지 — 사장님 2026-10-10 22:36 「알아서해」)
+const ver = r => String(r ?? '').match(/(\d+)$/)?.[1] ?? '?';
 function evalCell(e, lens) {
   if (e.status === 'pending') return h('td', {class: 'ck-wait'}, h('b', null, '평가 대기'), h('small', {class: 'muted'}, ` · ${korDate(e.due)}`));
   if (e.status !== 'done') return h('td', {class: 'muted'}, '평가일 모름(달력 밖)');
@@ -24,14 +25,14 @@ function evalCell(e, lens) {
 function recordTable(lens) {
   const recs = [...lens.verify.records].reverse();
   return h('section', {class: 'b-box ck-box', 'aria-label': '평가 일정과 결과'},
-    h('h2', {class: 'b-box-h'}, '평가 일정과 결과', h('small', null, ' · 기록마다 5거래일 · 10거래일 · 20거래일 뒤')),
+    h('h2', {class: 'b-box-h'}, '평가 일정과 결과', h('small', null, ' · 기록마다 5거래일 · 10거래일 · 20거래일 뒤', recs.some(r => r.evals?.grow) ? '(첫 화면 후보는 60거래일까지)' : '')),
     ...recs.map(r => h('div', {class: 'ck-rec', 'data-asof': r.asOf},
-      h('h3', {class: 'ag-h'}, `${korDate(r.asOf)} 기록`, h('small', null, ` · 남긴 때 ${stamp(r.recordedAt)}`, r.cand ? ` · 후보 목록 남긴 때 ${stamp(r.cand.recordedAt)}(${r.cand.src === 'pub' ? '후보 발행본' : '저녁 기록'} · 규칙 ${r.cand.rules ?? '표시 없음'})` : '')),
+      h('h3', {class: 'ag-h'}, `${korDate(r.asOf)} 기록`, h('small', null, ` · 남긴 때 ${stamp(r.recordedAt)}`, r.cand ? ` · 후보 목록 남긴 때 ${stamp(r.cand.recordedAt)}(${r.cand.src === 'pub' ? '후보 발행본' : '저녁 기록'} · 규칙 ${r.cand.rules ?? '표시 없음'})` : '', r.grow ? ` · 첫 화면 후보 남긴 때 ${stamp(r.grow.recordedAt)}(규칙 ${r.grow.rules ?? '표시 없음'})` : '')),
       h('div', {class: 'c-scroll', 'data-scroll': 'x'}, h('table', {class: 'c-table ck-t'},
-        h('thead', null, h('tr', null, h('th', {scope: 'col'}, '목록'), h('th', {scope: 'col'}, '5거래일'), h('th', {scope: 'col'}, '10거래일'), h('th', {scope: 'col'}, '20거래일'))),
+        h('thead', null, h('tr', null, h('th', {scope: 'col'}, '목록'), h('th', {scope: 'col'}, '5거래일'), h('th', {scope: 'col'}, '10거래일'), h('th', {scope: 'col'}, '20거래일'), r.evals?.grow ? h('th', {scope: 'col'}, '60거래일') : null)),
         h('tbody', null,
-          ...KEYS.filter(k => r.evals?.[k]).map(k => h('tr', {class: k === 'cand' ? 'ck-cand' : null}, h('th', {scope: 'row'}, LIST_NAME[k], h('small', {class: 'muted'}, ` ${k === 'hot' ? r.sizes.hotCodes : r.sizes[k]}곳`)), ...r.evals[k].map(e => evalCell(e, lens)))),
-          ...['cand', 'next'].filter(k => r.baseline?.[k]).map(k => h('tr', {class: 'ck-base'}, h('th', {scope: 'row'}, `비교 기준: 단순 20거래일 상승률 상위(${LIST_NAME[k]}와 같은 수)`, h('small', {class: 'muted'}, ` ${r.sizes[k]}곳`)), ...r.baseline[k].map(e => evalCell(e, lens))))))))),
+          ...KEYS.filter(k => r.evals?.[k]).map(k => h('tr', {class: k === 'cand' || k === 'grow' ? 'ck-cand' : null}, h('th', {scope: 'row'}, k === 'grow' ? `${LIST_NAME.grow}(규칙 ${ver(r.grow?.rules)}판)` : LIST_NAME[k], h('small', {class: 'muted'}, ` ${k === 'hot' ? r.sizes.hotCodes : r.sizes[k]}곳`)), ...r.evals[k].map(e => evalCell(e, lens)), r.evals.grow && k !== 'grow' ? h('td', {class: 'muted'}, '—') : null)),
+          ...['cand', 'next'].filter(k => r.baseline?.[k]).map(k => h('tr', {class: 'ck-base'}, h('th', {scope: 'row'}, `비교 기준: 단순 20거래일 상승률 상위(${LIST_NAME[k]}와 같은 수)`, h('small', {class: 'muted'}, ` ${r.sizes[k]}곳`)), ...r.baseline[k].map(e => evalCell(e, lens)), r.evals?.grow ? h('td', {class: 'muted'}, '—') : null))))))),
     h('p', {class: 'muted xs'}, `성공 = ${lens.verify.success.replace(/^성공 = /, '')} · 손실 = 수익률이 0% 보다 낮은 곳 · 최대 낙폭 = 구간 안 가장 높던 종가 대비 가장 크게 떨어진 폭 · 최저 수익률 = 기준가 대비 가장 낮던 수익률`));
 }
 function turnoverBox(v) {
@@ -48,11 +49,12 @@ export async function renderCheck(main, {manifest}) {
   const lens = lens0 && !lens0.none ? lens0 : null, v = lens?.verify, recs = v?.records ?? [];
   const pending = recs.flatMap(r => Object.values(r.evals).flat()).filter(e => e.status === 'pending').length;
   // 2026-10-10 18:22 다섯 팀 전체 검토(머크 · 클로드팀) — 첫 화면 목록과 채점하는 목록이 다른 규칙 판이면 맨 위에 밝힘 · 평가 끝이 하나도 없으면 「평가 대기」 표는 한 줄로 접음(구글 · 삼성 · 잡스팀)
-  const ver = r => String(r ?? '').match(/(\d+)$/)?.[1] ?? '?', curR = lens?.cand?.rules ?? null, lastC = [...recs].reverse().find(r => r.cand?.rules) ?? null;
-  // 첫 화면 7곳의 채점 날(클로드 · 잡스팀 2026-10-10 20:47) — 담은 날 기록의 채점일(같은 날 종가부터 5 · 10 · 20거래일)을 보이기만 함 · 그 7곳을 채점 셈에 넣는 것은 사장님 확인 뒤
-  const planted = lens?.cand?.grow?.planted?.at ?? null, dues = (recs.find(r => r.asOf === planted)?.evals?.cand ?? []).map(e => e.due).filter(Boolean);
-  const ruleNote = curR && lastC && lastC.cand.rules !== curR ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(curR)}판)는 아직 채점 기록에 없음`), ` — 여기서 채점하는 후보 목록은 ${korDate(lastC.asOf)} 기록의 규칙 ${ver(lastC.cand.rules)}판 목록`,
-    dues.length ? ` · 첫 화면 ${lens.cand.items?.length ?? 0}곳의 기준은 ${korDate(planted)} 종가 — 채점에 넣으면 채점 날은 ${dues.map(d => korDate(d)).join(' · ')}(${[5, 10, 20].slice(0, dues.length).map(k => `${k}거래일`).join(' · ')}) · 아직 넣지 않음` : '') : null;
+  // 22:36 「알아서해」 — 첫 화면 7곳(5판 규칙 폴더 발행본)도 채점(판 읽기 verify grow · 5 · 10 · 20 · 60거래일) → 그 채점 날을 맨 위에(규칙 판이 다른 같은 날 첫 목록도 그대로 채점)
+  const curR = lens?.cand?.rules ?? null, lastC = [...recs].reverse().find(r => r.cand?.rules) ?? null, gRec = [...recs].reverse().find(r => r.grow && r.evals?.grow) ?? null;
+  const gDue = gRec ? gRec.evals.grow.filter(e => e.due).map(e => `${korDate(e.due)}(${e.h}거래일)`) : [], gNo = gRec ? gRec.evals.grow.filter(e => !e.due).map(e => `${e.h}거래일`) : [];
+  const ruleNote = gRec ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(gRec.grow.rules)}판) ${gRec.sizes.grow}곳도 채점함`), ` — ${korDate(gRec.asOf)} 종가 기준`,
+      gDue.length ? ` · 채점 날 ${gDue.join(' · ')}` : '', gNo.length ? ` · ${gNo.join(' · ')}은 거래일 달력이 닿으면` : '', gRec.cand?.rules && gRec.cand.rules !== gRec.grow.rules ? ` · 그날 처음 남은 목록(규칙 ${ver(gRec.cand.rules)}판)도 그대로 채점` : '')
+    : curR && lastC && lastC.cand.rules !== curR ? h('p', {class: 'mk-l ck-rule'}, h('b', null, `첫 화면 후보(규칙 ${ver(curR)}판)는 아직 채점 기록에 없음`), ` — 여기서 채점하는 후보 목록은 ${korDate(lastC.asOf)} 기록의 규칙 ${ver(lastC.cand.rules)}판 목록`) : null;
   const table = lens && recs.length ? recordTable(lens) : null;
   state.summary = recs.length ? `선정 결과 · 고정 기록 ${recs.length}장 · 평가 끝 ${v.done}건 · 평가 대기 ${pending}건 · 첫 평가일 ${korDate(v.firstDue)} · 검증 전` : '선정 결과 · 고정 기록 없음 · 검증 전';
   main.replaceChildren(h('div', {class: 'b-page ck-page'},
@@ -70,6 +72,7 @@ export async function renderCheck(main, {manifest}) {
         h('li', null, '선정 = 저녁 기록 — 그 날 저녁 7시 뒤 한 번 남기고 고치지 않음(정정은 새 기록) · 기록마다 남긴 때 · 판 이름 · 묶음 버전'),
         h('li', null, `비교 기준 = ${idxName(lens)} · 같은 업종 다른 곳 평균 · 같은 날 단순 최근 20거래일 상승률 상위 — 같은 날 · 같은 기간`),
         h('li', null, '매수 검토 후보 = 그날 처음 남은 후보 목록(저녁 기록 · 후보 발행본 가운데 먼저 남은 것 · 고치지 않음) · 비교: 시장(지수) · 같은 후보군의 단순 선정(20거래일 상승률 상위 같은 수) · 기존 ATLAS 목록(오름 상위 · 예비 · 불장)'),
+        h('li', null, '첫 화면 후보 = 그날 처음 남은 목록과 규칙 판이 다르면 첫 화면 규칙 폴더의 발행본(고치지 않음)도 따로 채점 · 5거래일 · 10거래일 · 20거래일 · 60거래일(담는 기간) · 비교: 시장(지수) · 같은 업종'),
         h('li', null, '후보 관측 성과 ≠ 실제 매매 성과 — 진입 · 청산 · 비중 · 비용 · 슬리피지 규칙이 없음 · 규칙을 바꾸면 새 버전으로 따로 평가(지난 자료에 맞는다는 까닭만으로 바꾸지 않음)'),
         h('li', null, '그날까지의 종가만 씀(미래 자료 없음) · 가격수익률(배당 빼고) · 실제 매매 성과가 아님(비용 · 슬리피지 없음)'),
         h('li', null, `묶음(365곳)은 ${korDate(lens.universe?.selectedOn)}에 고름 — 그 앞 날짜 기록은 고른 뒤의 묶음으로 본 것`),

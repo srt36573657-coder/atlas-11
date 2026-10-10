@@ -1,0 +1,69 @@
+{
+ "windows": 107,
+ "from": "2024-07-23",
+ "to": "2026-09-30",
+ "dropped": 4,
+ "randomUp": 0.5051,
+ "randomBeat": 0.4312,
+ "signals": {
+  "S1": {
+   "name": "1위(1년 추세 가장 큼)",
+   "n": 107,
+   "beat": 48,
+   "beatRate": 0.4486,
+   "p": 0.8771,
+   "firstHalf": 0.4906,
+   "secondHalf": 0.4074,
+   "up": 53,
+   "upRate": 0.4953,
+   "upVsRandomPp": -0.98,
+   "meanRetPct": 1.342,
+   "passes": false
+  },
+  "S2": {
+   "name": "가장 덜 흔들린 곳(셈 틀의 가운데 값 가장 높은 쪽)",
+   "n": 107,
+   "beat": 40,
+   "beatRate": 0.3738,
+   "p": 0.9967,
+   "firstHalf": 0.3585,
+   "secondHalf": 0.3889,
+   "up": 53,
+   "upRate": 0.4953,
+   "upVsRandomPp": -0.98,
+   "meanRetPct": 0.394,
+   "passes": false
+  },
+  "S3": {
+   "name": "최근 5거래일 가장 많이 내린 곳",
+   "n": 107,
+   "beat": 42,
+   "beatRate": 0.3925,
+   "p": 0.99,
+   "firstHalf": 0.3774,
+   "secondHalf": 0.4074,
+   "up": 49,
+   "upRate": 0.4579,
+   "upVsRandomPp": -4.72,
+   "meanRetPct": -0.108,
+   "passes": false
+  },
+  "S4": {
+   "name": "최근 20거래일 가장 많이 오른 곳",
+   "n": 107,
+   "beat": 50,
+   "beatRate": 0.4673,
+   "p": 0.7803,
+   "firstHalf": 0.4906,
+   "secondHalf": 0.4444,
+   "up": 56,
+   "upRate": 0.5234,
+   "upVsRandomPp": 1.82,
+   "meanRetPct": 1.211,
+   "passes": false
+  }
+ },
+ "anyPasses": false,
+ "made": "2026-10-10T13:47:42+00:00",
+ "asOf": "2026-10-08"
+}
