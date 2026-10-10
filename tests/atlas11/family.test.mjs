@@ -72,5 +72,8 @@ test('큰 갈래(바깥 판): 미국 · 중국 · 일본 · 베트남 판 업종
     setPlace({id: 'cn'});
     assert.equal(familyOf('항공').id, 'auto'); assert.equal(familyOf('항공우주 및 방위').id, 'mach'); assert.equal(familyOf('금').id, 'mat'); assert.equal(familyOf('금융, 상품 시장 운영 및 서비스 제공').id, 'fin');
     assert.equal(familyOf('철 및 강철').id, 'mat'); assert.equal(familyOf('민자 발전 사업').id, 'energy'); assert.equal(familyOf('항만 운영 및 서비스').id, 'auto'); assert.equal(familyOf('증류주 및 포도주').id, 'cons');
+    setPlace({id: 'us'}); // 2026-10-10 18:22 다섯 팀 전체 검토(구글팀) — 미국 판 부동산 REITs 3업종 15곳이 「REITs」 속 「IT」로 인터넷·소프트웨어에 들던 것
+    for (const n of ['상업용 REITs', '주거용 REITs', '특수 REITs']) assert.equal(familyOf(n).id, 'fin', n);
+    assert.equal(familyOf('IT 서비스').id, 'soft'); assert.equal(familyOf('IT서비스').id, 'soft');
   } finally { setPlace({id: 'kr'}); }
 });

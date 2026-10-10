@@ -118,9 +118,10 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .b-title { font-size: 2.125rem; font-weight: 400; letter-spacing: -.035em; line-height: 1.15; margin: 0; overflow-wrap: anywhere; }
 .b-when { margin: 6px 0 0; font-size: 1.0625rem; color: var(--sub); }
 .b-late { margin: 6px 0 0; font-size: .9375rem; color: var(--warn); font-weight: 700; }
+.b-late-d { margin: 8px 0 0; } .b-late-d > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: .9375rem; color: var(--warn); font-weight: 700; line-height: 1.4; } /* 늦은 곳 한 줄 접힘(2026-10-10 18:22 다섯 팀 전체 검토) */
 .b-lead { margin: 10px 0 0; font-size: 1.0625rem; line-height: 1.55; color: var(--ink2); }
 .b-how { margin: 12px 0 0; padding: 10px 14px; background: var(--card); border-radius: 14px; color: var(--ink); }
-.b-how summary, .nx-how summary { cursor: pointer; font-weight: 700; min-height: 32px; display: flex; align-items: baseline; gap: 6px; list-style: none; padding: 4px 0; }
+.b-how summary, .nx-how summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: baseline; gap: 6px; list-style: none; padding: 4px 0; }
 .b-how summary::-webkit-details-marker, .nx-how summary::-webkit-details-marker { display: none; }
 .b-how summary::before, .nx-how summary::before { content: '▸'; flex: none; color: var(--sub); }
 .b-how[open] > summary::before, .nx-how[open] > summary::before { content: '▾'; }
@@ -255,7 +256,7 @@ html[data-font-step="3"] .rk-row .scale, html[data-font-step="4"] .rk-row .scale
 .ag-src { font-size: .8125rem; color: var(--link); white-space: nowrap; }
 .ag-times { flex: none; color: var(--sub); font-size: .8125rem; white-space: nowrap; }
 .ag-notice { flex: none; font-size: .8125rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--fill); color: var(--ink); }
-.ag-more { margin: 6px 0 0; } .ag-more a { font-weight: 700; display: inline-flex; align-items: center; min-height: 32px; }
+.ag-more { margin: 6px 0 0; } .ag-more a { font-weight: 700; display: inline-flex; align-items: center; min-height: 44px; }
 
 /* 바뀔 52곳 미리 보기 — 빨강·파랑은 지난 오르내림에만 쓰므로 여기는 글자 색과 회색만 */
 .nx { margin: 4px 0 0; padding: 16px 14px 14px; background: var(--card); border-radius: 16px; color: var(--ink); }
@@ -554,7 +555,7 @@ html[data-font-step="2"] .f-seg-b, html[data-font-step="3"] .f-seg-b, html[data-
 .mvx-none .mvx-when { font-size: .8125rem; }
 /* A4 업종 화면 업종 이름 출처(접힘) */
 .i-names { margin: 4px 0 0; }
-.i-names summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; list-style: none; font-size: .875rem; font-weight: 700; color: var(--sub); }
+.i-names summary { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; cursor: pointer; list-style: none; font-size: .875rem; font-weight: 700; color: var(--sub); }
 .i-names summary::-webkit-details-marker { display: none; }
 .i-names summary::before { content: '▸'; } .i-names[open] > summary::before { content: '▾'; }
 .i-names p { margin: 2px 0 0; line-height: 1.5; }
@@ -653,7 +654,7 @@ body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xml
 /* 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」 — 위 막대 「한국 · 미국」 고르기(판이 둘일 때만 · places.json)
    막대 안이라 색 이름은 막대 색(--ink = 막대 글자 · --fill = 막대 둥근 단추) · 지금 판은 막대 글자색 바탕에 막대색 글자(뒤집은 색) */
 .mkt { flex: none; display: inline-flex; gap: 2px; padding: 2px; border-radius: 999px; background: var(--fill); zoom: var(--mkt-k, 1); } /* --mkt-k: 위 막대가 넘치면 시장 단추만 같은 비율로 줄임(app.js fitTabs · 2026-10-07 말 74개 — 「USA」「Hàn Quốc」처럼 긴 이름) */
-.mkt-b { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 44px; padding: 0 11px; border-radius: 999px; color: var(--ink); font-size: .9375rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.mkt-b { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 11px; border-radius: 999px; color: var(--ink); font-size: .9375rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .mkt-b[aria-current="page"] { background: var(--ink); color: var(--band); }
 .mkt-b:focus-visible { outline: 3px solid var(--geum); outline-offset: 2px; }
 html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7px; font-size: .8125rem; }
@@ -731,6 +732,8 @@ html[data-font-step="3"] .mkt-b, html[data-font-step="4"] .mkt-b { padding: 0 7p
 .lg-place { color: var(--sub); font-weight: 700; }
 .lg-time { margin-inline-start: auto; color: var(--sub); font-weight: 700; font-variant-numeric: tabular-nums; }
 .lg-title { margin: 7px 0 2px; font-size: 1.0625rem; font-weight: 700; line-height: 1.4; }
+.lg-sum { display: block; cursor: pointer; list-style: none; min-height: 44px; } .lg-sum::-webkit-details-marker { display: none; } /* 기록 한 줄 = 제목 한 줄 · 누르면 펼침(2026-10-10 18:22 다섯 팀 전체 검토) */
+.lg-sum .lg-title::after { content: ' ⌄'; color: var(--sub); font-weight: 500; } .lg-it[open] > .lg-sum .lg-title::after { content: ' ⌃'; }
 .lg-what { margin: 4px 0 0; padding-inline-start: 1.15em; line-height: 1.55; }
 .lg-what li { margin: 2px 0; }
 .lg-removed { margin: 7px 0 0; font-size: .9375rem; line-height: 1.5; }

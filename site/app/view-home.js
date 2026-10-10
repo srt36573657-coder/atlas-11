@@ -42,7 +42,9 @@ export const upLine = g => g.measured ? (g.up === g.measured ? `${g.measured}곳
 /** 결론 한 문장 — 업종 몇 개가 올랐나(지난 20거래일 평균이 0 보다 큰 업종) */
 export const headLine = (groups, n, from, to) => `업종 ${groups.length}개 가운데 ${groups.filter(g => finite(g.change20) && g.change20 > 0).length}개 오름 · ${n}곳 · 지난 20거래일 · ${span(from, to)}`;
 /** 늦은 종가 한 줄 — 2026-10-05 15:24 「잡스가 … 36가지」 A5: 굵은 주황 두 줄 → 작고 조용한 한 줄(알리되 소리치지 않게 · 글은 그대로 정직하게) */
-const lateLines = (late, board) => late.map(c => h('p', {class: 'b-late', title: `${korDate(board.asOf)} 종가는 아직 받지 못함`}, c.date ? `${c.name}: ${korDate(c.date)} 종가까지만 있음` : `${c.name}: 종가 없음`));
+const lateRows = (late, board) => late.map(c => h('p', {class: 'b-late', title: `${korDate(board.asOf)} 종가는 아직 받지 못함`}, c.date ? `${c.name}: ${korDate(c.date)} 종가까지만 있음` : `${c.name}: 종가 없음`));
+/** 2026-10-10 18:22 다섯 팀 전체 검토(다섯 팀 모두) — 늦은 곳 이름 29줄이 그림 바로 아래 업종 목록을 막음 → 한 줄 「자료 늦은 n곳(앞 이름 등) ›」 접힘(이름은 그대로 안에) */
+const lateLines = (late, board) => (late.length > 3 ? [h('details', {class: 'b-late-d'}, h('summary', null, `자료 늦은 ${late.length}곳(${late.slice(0, 2).map(c => c.name).join(' · ')} 등) — ${korDate(board.asOf)} 종가를 아직 못 받음(그 전 종가까지만 있음)`), ...lateRows(late, board))] : lateRows(late, board));
 
 /* ───────── 탭 「불장」(#/) — 불장 업종만 · 같은 큰 갈래끼리 한 장 · 맨 위 불장 그림(돈 흐름은 2026-10-08 17:41 부터 아래 탭 「돈 흐름」) ───────── */
 
@@ -80,10 +82,10 @@ export async function renderHome(main, {manifest}) {
     // 맨 위: 불장 그림 한 장(봉화대 · scenes.js hotArt · 규칙 33) — 2026-10-08 17:41(마카오 시각) 「돈에 흐름과 불장을 분리한다 · 별도에 탭을하나더 만들어라」
     //   그 전 맨 위(2026-10-07 16:34 오늘의 돈 이야기 → 22:06 돈의 이동 → 10-08 00:12 그림 한 장)는 아래 탭 「돈 흐름」(#/flow)으로 옮김 — 넣으면서 뺀 것(규칙 1): 이 탭의 돈의 이동 · 기사로 본 돈 이야기 · 맨 아래 결
     //   불장 업종이 없는 날은 빈 하늘(규칙 33)
+    segNav(SECTOR_SEGS, 'hot', '업종 보기 바꾸기'), // 2026-10-09 불장은 아래 탭 「업종」 안 // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 불장은 아래 탭 「시장」 안(#/hot) · 옛 스위치(불장 · 예비 · 오름 상위)는 예비 · 오름 상위가 「종목」으로 가며 시장 보기 바꾸기로 · 2026-10-10 18:22 다섯 팀 전체 검토 — 보기 바꾸기 줄은 늘 「이 화면은?」 바로 밑(그림 위 · 화면마다 같은 자리)
     hotArt(board) ?? quietArt({key: 'home', label: '불장', when: `${korDate(board.asOf)} 종가`}),
+    movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번 · 2026-10-10 다섯 팀 전체 검토부터 보기 바꾸기 줄 → 그림 → 이 칸)
     marketStrip(manifest),
-    segNav(SECTOR_SEGS, 'hot', '업종 보기 바꾸기'), // 2026-10-09 불장은 아래 탭 「업종」 안 // 2026-10-08 20:19 「ATLAS 개편 실행 지시서」 — 불장은 아래 탭 「시장」 안(#/hot) · 옛 스위치(불장 · 예비 · 오름 상위)는 예비 · 오름 상위가 「종목」으로 가며 시장 보기 바꾸기로
-    movesBox(board.moves), // 저녁 7시 들고 남 — 불장 · 예비 · 오름 상위 세 화면 같은 자리(24번)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '불장 ', h('span', {class: 'b-count'}, `업종 ${hot.length}개`)),
       ...lateLines(late, board)),
@@ -175,9 +177,9 @@ export async function renderMap(main, {manifest}) {
   const grid = h('nav', {class: 't-grid', 'aria-label': `업종 ${groups.length}개 · 지난 20거래일 변화가 큰 차례`}, ...groups.map((g, i) => tile(g, i, shp)));
   const mb = mapBox(groups); state.land = null; // 지도 첫 장 — 업종 화면 「‹ 되돌아가기」는 지도로
   main.replaceChildren(h('div', {class: 'b-page t-page'},
+    segNav(SECTOR_SEGS, 'map', '업종 보기 바꾸기'), // 2026-10-09 지도는 아래 탭 「업종」 안 // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 지도는 아래 탭 「시장」 안(요약 · 불장 · 지도) · 2026-10-10 18:22 다섯 팀 전체 검토 — 보기 바꾸기 줄은 늘 「이 화면은?」 바로 밑(그림 위 · 화면마다 같은 자리)
     mapArt(board) ?? quietArt({key: 'map', label: '지도', tagText: '지난 20거래일', when: `${korDate(board.asOf)} 종가`}), // 그림 한 장(산수화 봉우리 · 규칙 33 · 값이 비는 날은 빈 하늘) — 넣으면서 뺀 것: 논평 무대(같은 셈 · 문장 · 거대 숫자 · 점)
     marketStrip(manifest),
-    segNav(SECTOR_SEGS, 'map', '업종 보기 바꾸기'), // 2026-10-09 지도는 아래 탭 「업종」 안 // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 지도는 아래 탭 「시장」 안(요약 · 불장 · 지도)
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '지도 ', h('span', {class: 'b-count'}, `업종 ${groups.length}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, headLine(groups, n, from, to)),

@@ -36,21 +36,24 @@ async function loadLog() {
   cached = log; return log;
 }
 
-function item(e) {
+/** 기록 한 줄 — 제목 한 줄(종류 · 판 · 시각 · 제목)만 보이고 누르면 펼침(2026-10-10 18:22 다섯 팀 전체 검토 — 다섯 팀 모두 「기록 98개가 다 펼쳐져 10,191px」 · 글과 파일은 그대로 · 규칙 13)
+ *  open = 가장 새 날의 앞 3개만 펼침 */
+function item(e, open = false) {
   const re = e.idents?.length ? identRe(e.idents) : IDENT;
   const orig = e.kind === 'update' ? 'ko' : null; // 업데이트 글은 손으로 쓴 원문(언어판에서도 한국어 그대로) · 자료 변경 · 이슈 줄은 틀로 만든 글이라 바뀜
-  return h('li', {class: 'lg-item', 'data-kind': e.kind, 'data-id': e.id},
-    h('p', {class: 'lg-top'},
-      h('span', {class: 'lg-kind lg-' + e.kind}, KIND[e.kind]),
-      PLACE[e.place] ? h('span', {class: 'lg-place'}, PLACE[e.place]) : null,
-      h('time', {class: 'lg-time', datetime: e.live}, e.live.slice(11, 16))),
-    h('h3', {class: 'lg-title', lang: orig}, ...withIdent(e.title, re)),
+  return h('li', {class: 'lg-item', 'data-kind': e.kind, 'data-id': e.id}, h('details', {class: 'lg-it', open: open ? '' : null},
+    h('summary', {class: 'lg-sum'},
+      h('span', {class: 'lg-top'},
+        h('span', {class: 'lg-kind lg-' + e.kind}, KIND[e.kind]),
+        PLACE[e.place] ? h('span', {class: 'lg-place'}, PLACE[e.place]) : null,
+        h('time', {class: 'lg-time', datetime: e.live}, e.live.slice(11, 16))),
+      h('h3', {class: 'lg-title', lang: orig}, ...withIdent(e.title, re))),
     h('ul', {class: 'lg-what', lang: orig}, ...e.what.map(w => h('li', null, ...withQuote(w, re)))),
     ...(e.fixed ?? []).map(f => h('p', {class: 'lg-fixed muted xs'}, `${korDate(f.made.slice(0, 10))} ${f.made.slice(11, 16)} 업데이트가 이 기록의 글 한 줄을 고침 — 옛 글은 기록 파일에 그대로`)), // 고침(2026-10-07 · 규칙 8 — 파일은 고치지 않음)
     e.removed?.length ? h('p', {class: 'lg-removed'}, h('b', null, '뺀 것 '), h('span', {lang: orig}, e.removed.join(' · '))) : null,
     e.why ? h('p', {class: 'lg-why muted small'}, '까닭 · ', h('span', {lang: 'ko'}, ...withQuote(e.why))) : null,
     e.commits?.length ? h('p', {class: 'lg-commits muted xs'}, '커밋 ', ...e.commits.flatMap((c, i) => [i ? ' · ' : null, h('code', null, c)])) : null,
-    e.source ? h('p', {class: 'lg-src muted xs'}, '출처 · ', ...withIdent(e.source, re)) : null);
+    e.source ? h('p', {class: 'lg-src muted xs'}, '출처 · ', ...withIdent(e.source, re)) : null));
 }
 
 /** 날짜(사이트에 올라간 날)마다 묶어 새것이 위 */
@@ -61,7 +64,7 @@ function days(entries) {
   return [...by].map(([d, es], k) => h('li', {class: 'lg-day', 'data-date': d},
     h('details', {class: 'lg-dd', open: k === 0 ? '' : null},
       h('summary', {class: 'lg-date'}, korDate(d), h('small', {class: 'lg-n'}, ` ${es.length}개`)),
-      h('ol', {class: 'lg-items'}, ...es.map(item)))));
+      h('ol', {class: 'lg-items'}, ...es.map((e, i) => item(e, k === 0 && i < 3))))));
 }
 
 export async function renderLog(main, {manifest} = {}) {
@@ -88,8 +91,8 @@ export async function renderLog(main, {manifest} = {}) {
     h('p', {class: 'lg-from'}, `기록은 ${log?.from ? korDate(log.from.slice(0, 10)) : '10월 5일(월)'}부터 — 저장소가 그때 새로 시작해 그 전 기록은 없음 · 한 줄 한 파일로 쌓기만 하고 고치지 않음 · 이슈는 종가 날짜마다 한 번`));
 
   main.replaceChildren(h('div', {class: 'b-page lg-page'},
+    segNav(CHECK_SEGS, 'ops', '검증 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 운영 기록은 아래 탭 「검증」 안 보기 · 그림 아래 · 2026-10-10 18:22 다섯 팀 전체 검토 — 보기 바꾸기 줄은 늘 「이 화면은?」 바로 밑(그림 위 · 화면마다 같은 자리)
     logArt(all) ?? quietArt({key: 'log', label: '기록'}), // 그림 한 장(매듭 끈 · 규칙 33 · 기록 파일을 못 읽은 날은 빈 하늘) — 넣으면서 뺀 것: 날마다 펼쳐 둔 긴 목록(가장 새 날만 펼침)
-    segNav(CHECK_SEGS, 'ops', '검증 보기 바꾸기'), // 「ATLAS 개편 실행 지시서」(2026-10-08 20:19) — 운영 기록은 아래 탭 「검증」 안 보기 · 그림 아래
     h('header', {class: 'b-head'},
       h('h1', {class: 'b-title', 'data-speak': ''}, '기록 ', h('span', {class: 'b-count'}, `${n.all}개`)),
       h('p', {class: 'b-when', 'data-speak': ''}, '그 날 장 이슈 · 화면을 바꾼 날(업데이트) · 자료가 바뀐 날(자료 변경) · 새것이 위'),

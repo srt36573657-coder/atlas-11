@@ -19,7 +19,7 @@ export const tourOff = () => prefs.get(TOUR_KEY, 'on') === 'off';
 const voiceOn = () => document.getElementById('voice-btn')?.getAttribute('aria-pressed') === 'true';
 
 /** 글 조각 → 화면 조각({r: 비율} · {p: %} 는 빨강 · 파랑 숫자) */
-const seg = parts => parts.map(p => (typeof p === 'string' ? p : 'r' in p ? pv(Number.isFinite(p.r) ? p.r * 100 : null) : 'p' in p ? pv(p.p) : ''));
+const seg = parts => parts.map(p => (typeof p === 'string' ? p : 'r' in p ? pv(Number.isFinite(p.r) ? p.r * 100 : null) : 'm' in p ? h('b', {class: 'lv-n mc-n'}, pctR(p.m)) : 'p' in p ? pv(p.p) : '')); // {m} = 셈 틀 숫자(먹색 · 부호만)
 /** 범위 띠 그림 — 옅은 띠 80% · 진한 띠 50% · 굵은 선 가운데 값 · 점선 대표 경로 3개 · 0% 선 · 눈금 글은 HTML */
 function fanEl(F, asOf) {
   const g = fanOf(F);

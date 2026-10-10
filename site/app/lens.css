@@ -33,6 +33,7 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 
 /* ── 숫자 · 표시 ── */
 .lv-n { font-weight: 700; } .lv-n.up { color: var(--up-ink); } .lv-n.down { color: var(--down-ink); } .lv-n.flat, .lv-n.na { color: var(--sub); }
+.lv-n.mc-n { color: var(--ink); font-variant-numeric: tabular-nums; } /* 셈 틀(몬테카를로) 숫자 — 지난 기록의 빨강 · 파랑과 다른 먹색 · 부호만(2026-10-10 18:22 다섯 팀 전체 검토) */
 .lv-tag { display: inline-block; margin-inline-start: 4px; padding: 1px 7px; border-radius: 999px; font-size: .75rem; font-weight: 700; line-height: 1.5; background: var(--fill); color: var(--ink2); max-width: 100%; overflow-wrap: anywhere; vertical-align: 1px; }
 .lv-tag.lvl-broad, .lv-tag.trd-spread { background: color-mix(in srgb, var(--up) 16%, var(--card)); color: var(--up-ink); }
 .lv-tag.lvl-narrow, .lv-tag.lvl-mixed { background: color-mix(in srgb, var(--warn) 16%, var(--card)); color: var(--warn); }
@@ -49,7 +50,7 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 
 /* ── 업종 진단 카드 ── */
 .sc-fs { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 8px; }
-.sc-fs .sc-f { flex: 1 1 auto; min-width: 0; min-height: 40px; padding: 4px 8px; border-radius: 10px; background: var(--fill); font-size: .875rem; }
+.sc-fs .sc-f { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 4px 8px; border-radius: 10px; background: var(--fill); font-size: .875rem; }
 .sc-list, .of-list, .fw-list, .sk-list, .wl-list, .ck-to { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .sc-card { padding: 10px 12px; border-radius: 14px; background: var(--bg); box-shadow: 0 0 0 1px var(--hair); }
 .sc-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px; color: var(--ink); text-decoration: none; min-height: 32px; }
@@ -73,7 +74,7 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 .sk-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; margin: 8px 0; }
 .sk-sel { width: 100%; min-width: 0; min-height: 44px; padding: 0 10px; border-radius: 12px; border: 0; background: var(--fill); color: var(--ink); font: inherit; font-size: .9375rem; }
 .sk-row { padding: 8px 10px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
-.sk-a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: baseline; color: var(--ink); text-decoration: none; min-height: 40px; }
+.sk-a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: baseline; color: var(--ink); text-decoration: none; min-height: 48px; } /* 회사 줄 = 엄지 크기(2026-10-10 18:22 다섯 팀 전체 검토 · 삼성팀) */
 .sk-name { font-weight: 700; overflow-wrap: anywhere; }
 .sk-sub { grid-column: 1; overflow-wrap: anywhere; }
 .sk-r { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
@@ -95,6 +96,12 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 .wl-dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: .875rem; }
 .wl-dl dt { color: var(--sub); font-weight: 700; } .wl-dl dd { margin: 0; overflow-wrap: anywhere; }
 .wl-row { padding: 10px 12px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+/* 빈 관심 화면 — 후보 7곳 ★ 한 번 담기(2026-10-10 18:22 다섯 팀 전체 검토) */
+.wl-sugbox { padding: 10px 12px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--hair); }
+.wl-sugs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.wl-sug { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.wl-sug-a { flex: 1 1 auto; min-width: 0; min-height: 48px; display: flex; align-items: center; gap: 6px; overflow-wrap: anywhere; color: var(--ink); text-decoration: none; font-weight: 700; }
+.wl-sug-b { flex: none; min-height: 48px; min-width: 88px; margin-top: 0; }
 
 /* ── 종목 상세 ①~⑥ · 비교 ── */
 .c-status { margin: 4px 0 0; overflow-wrap: anywhere; }
@@ -109,6 +116,14 @@ html[data-font-step="3"] .sk-form .fd-in { font-size: 1rem; } html[data-font-ste
 .ev-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .ev-card { padding: 10px 12px; border-radius: 14px; background: var(--bg); box-shadow: 0 0 0 1px var(--hair); }
 .ev-h { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+/* 사건 카드 한 줄(별 · 날짜 · 이름) · 누르면 펼침 · 지난 것은 한 줄 접힘(2026-10-10 18:22 다섯 팀 전체 검토) */
+.ev-d > summary.ev-h { cursor: pointer; list-style: none; min-height: 44px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 4px; }
+.ev-d > summary::-webkit-details-marker, .ev-past > summary::-webkit-details-marker { display: none; }
+.ev-d > summary.ev-h::after { content: '⌄'; margin-inline-start: auto; padding-inline-start: 8px; color: var(--sub); font-weight: 500; } .ev-d[open] > summary.ev-h::after { content: '⌃'; }
+.ev-d[open] > .ev-l { margin-top: 4px; }
+.ev-how { margin: 4px 0 8px; line-height: 1.5; }
+.ev-past { margin: 10px 0 0; } .ev-past > summary.ag-h { cursor: pointer; list-style: none; min-height: 44px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 6px; }
+.ev-past > summary.ag-h::before { content: '▸'; color: var(--sub); } .ev-past[open] > summary.ag-h::before { content: '▾'; }
 .ev-l { margin: 4px 0; overflow-wrap: anywhere; }
 
 /* 2026-10-08 말 73개 × 글씨 다섯째 단(200%) 검사가 잡은 넘침 — 표 칸 · 긴 숫자 · 이름표가 줄을 바꿈(「괜찮다」며 넘기지 않음 · 규칙 34) */
@@ -180,6 +195,8 @@ html[data-font-step="2"] .cmp-picks, html[data-font-step="3"] .cmp-picks, html[d
 .cj-q { margin: 12px 0 0; padding: 10px 6px 4px; border-top: 1px solid var(--sep); border-radius: 8px; }
 .cj-q:focus { outline: none; }
 .cj-qh { margin: 0 0 6px; font-size: 1rem; font-weight: 700; overflow-wrap: anywhere; }
+summary.cj-qh { cursor: pointer; list-style: none; min-height: 44px; display: flex; align-items: center; gap: 6px; margin: 0; } summary.cj-qh::-webkit-details-marker { display: none; }
+summary.cj-qh::after { content: '⌄'; margin-inline-start: auto; color: var(--sub); font-weight: 500; } .cj-q[open] > summary.cj-qh::after { content: '⌃'; } .cj-q[open] > summary.cj-qh { margin-bottom: 6px; }
 .cj-dl { display: grid; gap: 5px; margin: 0; }
 .cj-r { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; } /* 휴대폰: 이름(주장 · 관측 …) 위 · 내용 아래(표가 화면 밖으로 나가지 않게) · 넓은 화면은 두 칸 */
 @media (min-width: 560px) { .cj-r { grid-template-columns: 5.6em minmax(0, 1fr); gap: 2px 8px; } }
@@ -356,5 +373,5 @@ html[data-font-step="2"] .rk-v, html[data-font-step="3"] .rk-v, html[data-font-s
 
 /* 3단 클릭 길잡이(탐색 첫 화면 · 2026-10-09 21:33) — 갈래 → 업종 모두 · 누르는 자리 36px 이상 */
 .mk-idx .mk-f { margin: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.mk-idx .mk-fa { display: inline-flex; align-items: center; min-height: 36px; padding: 0 4px 0 0; font-weight: 800; color: var(--ink); text-decoration: none; }
-.mk-idx .mk-g { display: inline-flex; align-items: center; min-height: 36px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; text-decoration: none; overflow-wrap: anywhere; }
+.mk-idx .mk-fa { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px 0 0; font-weight: 800; color: var(--ink); text-decoration: none; }
+.mk-idx .mk-g { display: inline-flex; align-items: center; min-height: 44px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; text-decoration: none; overflow-wrap: anywhere; }

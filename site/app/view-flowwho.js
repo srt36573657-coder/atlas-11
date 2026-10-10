@@ -29,7 +29,8 @@ function dirLine(F) {
   const f = F.market.foreign.d5.est, i = F.market.institution.d5.est;
   if (!finite(f) || !finite(i)) return h('p', {class: 'mk-l'}, '주체별 방향: 계산 불가');
   const same = Math.sign(f) === Math.sign(i);
-  return h('p', {class: 'mk-l'}, '5거래일 방향: 외국인 ', amt(f), ' · 기관 ', amt(i), ' — ', h('b', null, same ? '같은 방향' : '반대 방향'));
+  const w = v => (v > 0 ? '순매수' : v < 0 ? '순매도' : '0'); // 금액은 아래 그림 이름표에 한 번만(2026-10-10 18:22 다섯 팀 전체 검토 — 같은 금액이 한 화면에 네 번 · 구글 · 잡스팀)
+  return h('p', {class: 'mk-l'}, `5거래일 방향: 외국인 ${w(f)} · 기관 ${w(i)} — `, h('b', null, same ? '같은 방향' : '반대 방향'), ' · 금액은 아래 그림');
 }
 function groupsBox(F) {
   const gs = F.groups.filter(g => finite(g.fiEst5)), top = [...gs].sort((a, b) => b.fiEst5 - a.fiEst5).slice(0, 5), bot = [...gs].sort((a, b) => a.fiEst5 - b.fiEst5).slice(0, 5);
@@ -57,19 +58,20 @@ export async function renderFlowWho(main, {manifest}) {
   if (!F?.available) {
     state.summary = `투자자 매매 · ${F?.reason ?? '자료 없음'}`;
     main.replaceChildren(h('div', {class: 'b-page fw-page'},
+      nav,
       h('section', {class: 'mk-b', 'data-first': '1', 'aria-label': '투자자 매매'}, h('h2', {class: 'mk-h'}, '투자자 매매'),
         h('p', {class: 'mk-l'}, lens ? (F?.reason ?? '투자자별 매매 자료 없음') : lensMissing(lens0)), h('p', {class: 'mk-l'}, '값을 만들어 넣지 않습니다 · ', h('a', {href: '#/flow/rotation'}, '업종 순환 보기 ›'))),
-      nav, quietArt({key: 'flowwho', label: '투자자 매매', when: `${korDate(board.asOf)} 종가`}), foot(manifest)));
+      quietArt({key: 'flowwho', label: '투자자 매매', when: `${korDate(board.asOf)} 종가`}), foot(manifest)));
     return;
   }
   const M = F.market;
   state.summary = `투자자 매매 · ${korDate(F.dates.at(-1))}까지 5거래일 추정액 · 외국인 ${wonAmt(M.foreign.d5.est)} · 기관 ${wonAmt(M.institution.d5.est)} · 개인 ${wonAmt(M.individual.d5.est)} · 공식 값 = 순매수 주식 수`;
   main.replaceChildren(h('div', {class: 'b-page fw-page'},
+    nav, // 보기 바꾸기 줄은 늘 「이 화면은?」 바로 밑(「요약」 화면과 같은 자리 — 2026-10-10 18:22 다섯 팀 전체 검토 · 구글 · 삼성팀)
     h('section', {class: 'mk-b', 'data-first': '1', 'aria-label': '언제 · 무엇'}, h('h2', {class: 'mk-h'}, '투자자 매매'),
       h('p', {class: 'mk-l'}, h('b', null, `${korDate(F.dates[0])}~${korDate(F.dates.at(-1))} · ${F.dates.length}거래일`), ` · 모은 때 ${stamp(F.fetchedAt)}`),
       h('p', {class: 'mk-l'}, '공식 값 = 순매수 주식 수 · 금액 = 추정(주식 수 × 그날 종가) · 공식 순매매 금액은 모으지 않음'),
       dirLine(F)),
-    nav,
     flowWhoArt(lens) ?? quietArt({key: 'flowwho', label: '투자자 매매', when: `${korDate(board.asOf)} 종가`}),
     tableBox(F), groupsBox(F), stocksBox(F),
     howBox(lens, ['추정액 = 날마다 순매수 주식 수 × 그날 종가의 합(공식 금액 아님) · 그날 종가가 없는 곳은 빼고 그 수를 적음', '기관은 연기금 포함 합계 · 출처: 네이버 증권 종목 투자자 동향', '거래대금 대비 순매수 비율 · 20거래일 누적: 자료가 없어 계산 불가']),

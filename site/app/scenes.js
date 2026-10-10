@@ -242,7 +242,7 @@ export function guideArt(bars, hm) {
   if (!reg || !nxt) return null;
   const ax = {lo: 6, hi: 22}, seg = (a, b, cls) => { const el = h('span', {class: `bc-bar ${cls}`}); el.style.setProperty('--l', `${posOf(ax, a).toFixed(2)}%`); el.style.setProperty('--w', `${(posOf(ax, b) - posOf(ax, a)).toFixed(2)}%`); return el; };
   const row = (name, ident, a, b, cls) => h('div', {class: 'bc-row'}, h('p', {class: 'bc-top'}, h('span', {class: 'bc-name', 'data-ident': ident ? '' : null}, name), h('b', {class: 'bc-val flat'}, `${hm(a)}~${hm(b)}`)), h('span', {class: 'bc-track', 'aria-hidden': 'true'}, seg(a, b, cls)));
-  const art = h('div', {class: 'bc', 'data-at': '0'}, row('정규장', false, reg[1], reg[2], 'up'), row(nxt[0], true, nxt[1], nxt[2], 'flat'));
+  const art = h('div', {class: 'bc', 'data-at': '0'}, row('정규장', false, reg[1], reg[2], 'acc'), row(nxt[0], true, nxt[1], nxt[2], 'flat')); // 시간 막대는 오름이 아니라 보라(빨강 = 오름 · 2026-10-10 18:22 다섯 팀 전체 검토)
   const labels = check(lab(li(1, tag('정규장'), h('b', null, `${hm(reg[1])}~${hm(reg[2])}`)), li(2, h('span', {class: 'ra-k ra-tag', 'data-ident': ''}, nxt[0]), h('b', null, `${hm(nxt[1])}~${hm(nxt[2])}`)), li(3, tag('종가'), h('b', null, hm(reg[2])))), {reg: [reg[1], reg[2]], nxt: [nxt[1], nxt[2]]});
   return fig('guide', '시간(한국 시각)', '시간(한국 시각)', '06:00~22:00', artStage({key: 'guide', art, labels, steps: STEPS4}));
 }
@@ -255,8 +255,9 @@ export function longArt(LONG, man, START) {
   if (rows.length !== 3) return null;
   const ax = {lo: 0, hi: Math.max(...rows.flatMap(r => [r.a, r.b])) * 1.04};
   // 해마다 한 줄 · 막대 둘(위 = 주식 · 아래 = 서울 아파트) · 점선 = 처음 500만 원
-  const yr = r => h('div', {class: 'bc-row'}, h('p', {class: 'bc-top'}, h('span', {class: 'bc-name'}, `${r.y}년 뒤`), h('b', {class: 'bc-val flat'}, `${man(r.a)} · ${man(r.b)}`)), trackEl(ax, r.a, [{v: START}]), trackEl(ax, r.b, [{v: START}], 'bc-alt'));
-  const art = h('div', null, h('div', {class: 'bc', 'data-at': '0'}, ...rows.map(yr)), keyEl([{cls: 'up', label: '위 막대 = 주식'}, {cls: 'ex', label: '아래 막대 = 서울 아파트'}, {cls: '', label: `점선 = 처음 ${man(START)}`}]));
+  const yr = r => h('div', {class: 'bc-row'}, h('p', {class: 'bc-top'}, h('span', {class: 'bc-name'}, `${r.y}년 뒤`), h('b', {class: 'bc-val flat'}, `${man(r.a)} · ${man(r.b)}`)), trackEl(ax, r.a, [{v: START}], 'acc'), trackEl(ax, r.b, [{v: START}], 'bc-alt'));
+  // 막대 색 = 무엇(주식 보라 · 아파트 회색) — 빨강 · 파랑은 오름 · 내림에만(500만 원보다 줄어든 349만 원이 빨강이던 것 · 2026-10-10 18:22 다섯 팀 전체 검토)
+  const art = h('div', null, h('div', {class: 'bc', 'data-at': '0'}, ...rows.map(yr)), keyEl([{cls: 'acc', label: '위 막대 = 주식'}, {cls: 'subc', label: '아래 막대 = 서울 아파트'}, {cls: '', label: `점선 = 처음 ${man(START)}`}]));
   const labels = check(lab(...rows.map((r, i) => li(i + 1, tag(`${r.y}년 뒤`), `주식 ${man(r.a)} · 서울 아파트 ${man(r.b)}`))), {rows: rows.map(r => [r.y, r.a, r.b]), start: START});
   return fig('long', '500만 원을 오래 들고 있었다면', '500만 원을 오래 들고 있었다면', '가장 나빴던 때 · 주식 = 코스피 · 배당 넣음(가정)', artStage({key: 'long', art, labels, steps: STEPS4}));
 }
@@ -267,7 +268,7 @@ export function koreaArt(RANKS) {
   const [what, v, rank, n, how] = r;
   const ax = {lo: 0.5, hi: n + 0.5}, dots = h('span', {class: 'bc-track', 'aria-hidden': 'true'});
   for (let k = 1; k <= n; k++) { const d = h('span', {class: 'bc-ref' + (k === rank ? '' : ' idx')}); d.style.setProperty('--l', `${posOf(ax, k).toFixed(2)}%`); dots.append(d); }
-  const me = h('span', {class: 'bc-bar up'}); me.style.setProperty('--l', `${(posOf(ax, rank) - 1.6).toFixed(2)}%`); me.style.setProperty('--w', '3.2%'); dots.append(me);
+  const me = h('span', {class: 'bc-bar acc'}); // 자리 표시 = 보라(오름 아님) me.style.setProperty('--l', `${(posOf(ax, rank) - 1.6).toFixed(2)}%`); me.style.setProperty('--w', '3.2%'); dots.append(me);
   const art = h('div', {class: 'bc', 'data-at': '0'}, h('div', {class: 'bc-row'}, h('p', {class: 'bc-top'}, h('span', {class: 'bc-name'}, '1위 ← 순위 → 마지막'), h('b', {class: 'bc-val flat'}, `${n}곳`)), dots));
   const labels = check(lab(li(1, tag(what), h('b', null, v)), li(2, tag('자리'), h('b', null, `${n}곳 중 ${rank}위`)), li(3, tag('확인할 것'), how ?? '')), {rank, n, v});
   return fig('korea', '한국 주식시장은 몇 위인가', '한국 주식시장은 몇 위인가', null, artStage({key: 'korea', art, labels, steps: STEPS4}));
