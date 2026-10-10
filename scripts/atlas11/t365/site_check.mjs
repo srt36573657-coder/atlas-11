@@ -3,7 +3,7 @@
 //   쓰는 법: node scripts/atlas11/t365/site_check.mjs --base http://127.0.0.1:8899 [--pw /opt/node-tools/] [--out reports/atlas11/verify/atlas-new-check-latest.json]
 //   폭 셋(360×640 · 390×844 · 900×900) × 글씨 셋(보통 · 크게 · 아주 크게 — 360 에서만 셋, 나머지는 보통)마다 화면마다 본다:
 //     오류 0(보안 규칙 CSP 걸림 포함) · 옆 넘침 0 · 보이는 글씨 21px 이상 · 누르는 자리 44px 이상 · 금지 말 0 · 캔버스 · 3D 0 · 작은 네모 20개 이상(바둑판) 0
-//     숫자 = 자료(머리 % · 오름/내림 수 · 줄마다 % · 회사 세 숫자 · 1주 값) · 3번 누르면 회사(첫 화면에서 링크를 따라 가장 짧은 누름 수)
+//     숫자 = 자료(머리 % · 오름/내림 수 · 줄마다 % · 회사 세 숫자 · 1주 값 — 3단 회사 · 4단 처음과 끝) · 3번 누르면 회사 · 4번이면 4단 · 5번이면 5단(첫 화면에서 링크를 따라 가장 짧은 누름 수)
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,20 +17,33 @@ const exe = ['/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headles
 const core = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/core.json'), 'utf8'));
 const comp = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/comp.json'), 'utf8')).companies;
 const pick = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/pick36.json'), 'utf8'));
+const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
+const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
-const routes = ['#/', '#/list', '#/36', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), '#/info'];
+const routes = ['#/', '#/list', '#/36', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info'];
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
 
 function expect(route) {
   // 화면마다 자료에서 따로 만든 기대 글(보기 = 한 회사 한 표)
   const [, kind, arg] = route.match(/^#\/(\w*)\/?(.*)$/) || [];
-  if (kind === 'g') { const g = core.groups.find(x => x.id === arg); return {head: pct(g.chg), up: g.up, down: g.down, rows: g.inds.map(n => { const i = core.industries.find(x => x.name === n); return [n, pct(i.chg)]; })}; }
-  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg3)])}; }
-  if (kind === 'c') { const c = comp[arg]; return {trio: [pct(c.chg3), pct(c.r1y), pct(c.mdd3)], price: Math.round(c.price).toLocaleString('ko-KR') + '원'}; }
+  if (kind === 'g') { const g = core.groups.find(x => x.id === arg); return {step: 1, head: pct(g.chg), up: g.up, down: g.down, rows: g.inds.map(n => { const i = core.industries.find(x => x.name === n); return [n, pct(i.chg)]; })}; }
+  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg3)])}; }
+  if (kind === 'c') {
+    const [code, sub] = arg.split('/'), c = comp[code];
+    if (!sub) return {step: 3, trio: [pct(c.chg3), pct(c.r1y), pct(c.mdd3)], price: Math.round(c.price).toLocaleString('ko-KR') + '원'};
+    if (sub === 'past') { // 4단 — 처음 보기 1년(253거래일) · 자료 파일에서 따로 셈
+      const co = coOf(code), n = days.dates.length, from = Math.max(co.k0, n - 253), cl = co.close.slice(from - co.k0).filter(x => x != null);
+      const base = cl[0], last = cl.at(-1); let peak = 0, m = 0; for (const x of cl) { peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); }
+      const wn = x => Math.round(x).toLocaleString('ko-KR') + '원';
+      return {step: 4, trio: [pct((last / base - 1) * 100), pct(m * 100), pct((last / peak - 1) * 100)], price: [wn(base), wn(last)]}; // 처음 · 끝 1주 값
+    }
+    const k = pick.companies[code];
+    return {step: 5, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖'};
+  }
   if (!kind) return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)])};
   if (kind === '36') return {p36: pick.picks.map(p => [p.name, '번 길 ' + r1(p.avg).toFixed(1) + '%']), test: pick.backtest ? `${pick.backtest.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${pick.backtest.wins}번` : null, total: Math.round(pick.total).toLocaleString('ko-KR') + '원'};
   return {};
@@ -78,6 +91,8 @@ for (const [w, hgt, font] of plans) {
       res.trio = [...document.querySelectorAll('#view .trio b')].map(x => x.textContent);
       res.p36 = [...document.querySelectorAll('#view ol.p36 li')].map(x => [x.querySelector('.nm').textContent, x.querySelector('.val').textContent]);
       res.hello = document.querySelector('#view a.hello')?.getAttribute('href') ?? null;
+      res.step = document.querySelector('#view .st-t b')?.textContent ?? null;
+      res.dirs = [...document.querySelectorAll('#view ul.dirbars li')].map(li => [...li.querySelectorAll('.dl .num')].map(x => x.textContent));
       res.foot = [...document.querySelectorAll('#view .foot .links a')].map(a => a.getAttribute('href'));
       return res;
     }, {banned: BANNED});
@@ -94,10 +109,12 @@ for (const [w, hgt, font] of plans) {
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
+    if (e.step) { numbers++; if (r.step !== `5단 중 ${e.step}단`) fail(tag, `5단 표시 ${r.step} ≠ ${e.step}단`); }
+    if (e.dirs !== undefined) { numbers += 9; if (e.dirs && JSON.stringify(r.dirs) !== JSON.stringify(e.dirs)) fail(tag, '4방향 숫자 다름'); if (!e.dirs && !r.text.includes('? 셈 못 함')) fail(tag, '셈 못 함 표시 없음'); if (e.dirs && !r.text.includes(e.status)) fail(tag, '36곳 자리 글 다름 ' + e.status); }
     if (route === '#/') { numbers++; if (r.hello !== '/hello.html') fail(tag, '첫 화면 맨 위 「친구에게 소개하기」 없음(규칙 45)'); }
     if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/old/', '/us/'])) fail(tag, '맨 아래 길(소개 · 옛 ATLAS · 미국 판) 다름'); }
     if (e.p36) { numbers += e.p36.length + 2; if (JSON.stringify(r.p36) !== JSON.stringify(e.p36)) fail(tag, '36곳 줄 다름'); if (e.test && !r.text.includes(e.test)) fail(tag, '지난 기록 시험 글 다름'); if (!r.text.includes(e.total)) fail(tag, '1주씩 합계 다름'); }
-    if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); if (!r.text.includes(e.price)) fail(tag, `1주 값 ${e.price} 없음`); }
+    if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
   }
   // 찾기 — 한 글자 · 첫 글자 · 영어 이름 소리 · 번호 · 365곳 밖
@@ -135,8 +152,10 @@ await b.close();
 // 3번 누르면 회사 — 첫 화면에서 화면 안 링크로만 가장 짧은 누름 수(390 · 보통 글씨에서 모은 링크)
 const depth = new Map([['#/', 0]]), q = ['#/'];
 while (q.length) { const r = q.shift(); for (const l of links.get(r) ?? []) { const n = l === '#/' ? '#/' : l; if (!depth.has(n)) { depth.set(n, depth.get(r) + 1); if (links.has(n)) q.push(n); } } }
-let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); } }
-const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
+let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); }
+  const d4 = depth.get(`#/c/${c}/past`), d5 = depth.get(`#/c/${c}/range`); if (d4 == null || d4 > 4) fail('4단', `${comp[c].name} ${d4 ?? '닿지 않음'}`); if (d5 == null || d5 > 5) fail('5단', `${comp[c].name} ${d5 ?? '닿지 않음'}`); }
+const max5 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
+const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click5: {deepest: max5}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({screens, numbers, fails: fails.length, click3: res.click3, first: fails.slice(0, 8)}));
 process.exit(fails.length ? 1 : 0);

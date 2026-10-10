@@ -35,7 +35,9 @@ const chgOf = (node, mode = state.mode) => (mode === 'cw' ? node.cwChg : node.ch
 
 // ── 자료 받기 ──
 async function getJson(name) { const r = await fetch('/atlas/data/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(name + ' ' + r.status); return r.json(); }
-let compP = null, namesP = null, pickP = null;
+let compP = null, namesP = null, pickP = null, daysP = null; const coP = new Map();
+function needDays() { if (!daysP) daysP = getJson('days.json').then(d => { D.days = d; }).catch(e => { daysP = null; throw e; }); return daysP; }
+function needCo(code) { if (!coP.has(code)) coP.set(code, getJson('co/' + encodeURIComponent(code) + '.json').catch(e => { coP.delete(code); throw e; })); return coP.get(code); }
 function needPick() { if (!pickP) pickP = getJson('pick36.json').then(p => { D.pick = p; }).catch(e => { pickP = null; throw e; }); return pickP; }
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; }).catch(e => { compP = null; throw e; }); return compP; }
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
@@ -179,6 +181,18 @@ function legend(parentName) {
 }
 function crumbs(...parts) { const c = h('nav', {class: 'crumb', 'aria-label': '지금 자리'}); parts.forEach((p, i) => { if (i) c.append(h('i', {text: '›', 'aria-hidden': 'true'})); c.append(p.href ? h('a', {href: p.href, text: p.text}) : h('span', {text: p.text})); }); return c; }
 const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
+const LV = ['갈래', '업종', '회사', '지나온 길', '범위 · 점검'];
+/** 5단 표시 — hrefs[k] = k+1단으로 가는 길(지나온 단 · 바로 다음 단만) · 그 밖은 누르지 못함 */
+function steps(now, hrefs = []) {
+  const nav = h('nav', {class: 'steps', 'aria-label': `5단 가운데 ${now}단 — ${LV[now - 1]}`});
+  const row = h('ol', {class: 'st'});
+  LV.forEach((name, k) => {
+    const n = k + 1, cls = n < now ? 'past' : n === now ? 'now' : 'next', inner = [h('b', {class: 'num', text: n}), h('span', {class: 'sr', text: `단 ${name}`})];
+    row.append(h('li', {class: cls}, hrefs[k] && n !== now ? h('a', {href: hrefs[k], 'aria-label': `${n}단 ${name}로`}, ...inner) : h('span', {class: 'cell', 'aria-current': n === now ? 'step' : null}, ...inner)));
+  });
+  nav.append(row, h('p', {class: 'st-t'}, h('b', {text: `5단 중 ${now}단`}), ` · ${LV[now - 1]}`));
+  return nav;
+}
 
 // ── 화면 ① 한눈에 — 「지난 3개월, 어느 쪽이 올랐나?」 ──
 function viewHome(v) {
@@ -218,7 +232,7 @@ function viewHome(v) {
   const share = Math.round(F.dd50 / F.n1y * 10);
   v.append(h('div', {class: 'munger'}, h('p', {class: 'mq', text: `이 365곳도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다.`}),
     h('p', {class: 's', text: `반값을 견딜 수 있나요? — ${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가로 셈`})));
-  v.append(h('p', {class: 'note', text: `줄을 누르면 그 갈래의 업종이, 또 누르면 회사가 나옵니다. 365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔기 때문에 선이 좋아 보이기 쉽습니다.`}));
+  v.append(h('p', {class: 'note', text: `줄을 누르면 5단으로 내려갑니다 — 1단 갈래 → 2단 업종 → 3단 회사 → 4단 지나온 길 → 5단 범위 · 점검. 365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔기 때문에 선이 좋아 보이기 쉽습니다.`}));
   v.append(foot());
 }
 
@@ -236,7 +250,7 @@ function viewGroup(v, id) {
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), tell.el, head, h('p', {class: 'say', text: g.say + ` · 업종 ${inds.length}개`}), count, host);
+  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, h('p', {class: 'say', text: g.say + ` · 업종 ${inds.length}개`}), count, host);
   const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null}));
   const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — 3개월 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
@@ -263,7 +277,7 @@ async function viewIndustry(v, name) {
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), tell.el, head, count, host);
+  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, count, host);
   const items = i.members.map(c => ({key: c, name: D.comp[c].name, href: '#/c/' + c, v: D.lines[c].map(x => (x == null ? null : x / 100)), cw: null}));
   const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — 3개월 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg3)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
@@ -279,7 +293,8 @@ async function viewCompany(v, code) {
   if (!c) return viewMissing(v, code);
   const i = ind(c.i), g = gById(c.g), line = D.lines[code].map(x => (x == null ? null : x / 100));
   v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}));
-  v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name}), h('small', {text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code}`})));
+  v.append(steps(3, ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, null, `#/c/${code}/past`]));
+  v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name}), h('small', {text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${won(c.price)}`})));
   const keep = r1(100 + c.mdd3) / 100;
   v.append(h('div', {class: 'trio'},
     h('div', {}, h('span', {text: '3개월'}), pctEl(c.chg3)),
@@ -303,6 +318,128 @@ async function viewCompany(v, code) {
   if (p.t27) why.append(h('p', {}, `2027 흐름: 2027 정부 예산안 · 9월 수출에 나온 업종(${p.theme})`, h('span', {class: 'tag', text: 'ATLAS가 묶음'})));
   why.append(h('p', {class: 'small', text: '기본 문 여섯(흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주)을 지났을 뿐, 좋은 회사로 매긴 것은 아닙니다.'}));
   v.append(why);
+  v.append(nextStep(`#/c/${code}/past`, '4단 지나온 길', '1년 · 3년 주가 · 해마다 번 돈 · 몸값'));
+  v.append(foot());
+}
+function nextStep(href, title, sub) { return h('a', {class: 'nextst', href}, h('span', {}, h('b', {text: title}), h('span', {text: sub})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); }
+
+// ── 4단 지나온 길 — 1주 값 3개월 · 1년 · 3년(365곳 평균 점선) · 해마다 번 돈 · 몸값 ──
+const PERIODS = [['3m', '3개월', 64], ['1y', '1년', 253], ['3y', '3년', 757]];
+async function viewPast(v, code) {
+  await needComp();
+  const C = D.core, c = D.comp[code];
+  if (!c) return viewMissing(v, code);
+  await Promise.all([needDays(), needCo(code).then(x => { D.co = x; })]);
+  const co = await needCo(code), dd = D.days, i = ind(c.i), g = gById(c.g);
+  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}, {href: '#/c/' + code, text: c.name}));
+  v.append(steps(4, ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, '#/c/' + code, null, `#/c/${code}/range`]));
+  v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name + ' — 지나온 길'}), h('small', {text: `1주 값 · ${md(dd.asOf)} 종가까지`})));
+  const stat = h('div', {class: 'trio'}), wonLine = h('p', {class: 'won'}), chartHost = h('div'), key = h('p', {class: 'lkey'}), jumpNote = h('div');
+  let per = state.per || '1y';
+  const segBox = h('div', {class: 'seg seg3', role: 'group', 'aria-label': '기간 바꾸기'});
+  const btns = PERIODS.map(([id, name]) => { const b = h('button', {type: 'button', 'aria-pressed': String(id === per), text: name}); b.addEventListener('click', () => { per = state.per = id; btns.forEach((x, k) => x.setAttribute('aria-pressed', String(PERIODS[k][0] === per))); draw(); }); return b; });
+  segBox.append(...btns);
+  v.append(segBox, stat, wonLine, chartHost, key, jumpNote);
+  const nAll = dd.dates.length, k0 = co.k0;
+  function draw() {
+    const len = PERIODS.find(p => p[0] === per)[2], from = Math.max(k0, nAll - len);
+    const dates = dd.dates.slice(from), cl = co.close.slice(from - k0), base = cl.find(x => x != null);
+    const allv = dd.all.slice(from), avg = allv.map(x => x / allv[0] * base);
+    const last = [...cl].reverse().find(x => x != null);
+    let peak = 0, m = 0; for (const x of cl) { if (x == null) continue; peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); }
+    const name = PERIODS.find(p => p[0] === per)[1], short = from === k0 && nAll - len < k0;
+    stat.replaceChildren(
+      h('div', {}, h('span', {text: name + (short ? '(상장 뒤)' : '')}), pctEl((last / base - 1) * 100)),
+      h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(m * 100)),
+      h('div', {}, h('span', {text: '꼭대기에서 지금'}), pctEl((last / peak - 1) * 100)));
+    const lastK = cl.length - 1 - [...cl].reverse().findIndex(x => x != null);
+    wonLine.textContent = `1주 ${ymd(dates[cl.findIndex(x => x != null)])} ${won(base)} → ${ymd(dates[lastK])} ${won(last)}`;
+    priceChart(chartHost, {dates, close: cl, avg, jumps: co.jumps, label: `${c.name} ${name} 1주 값 — ${won(base)}에서 ${won(last)}(${pct((last / base - 1) * 100)})`});
+    chartDraw = draw;
+    key.replaceChildren(h('span', {}, h('i', {class: 'l-co'}), `${c.name} — ${ymd(dates[0])}보다 위 빨강 · 아래 파랑`), h('span', {}, h('i', {class: 'l-avg'}), '365곳 평균(같은 날 같은 값에서 출발)'));
+    const js = co.jumps.filter(j => j[0] >= dates[0]);
+    jumpNote.replaceChildren(...(js.length ? [h('p', {class: 'note'}, h('span', {class: 'q', text: '? '}), `하루에 30% 넘게 바뀐 날 ${js.map(j => ymd(j[0]) + ' ' + pct(j[1])).join(' · ')} — 한국 주식은 하루 30%까지만 움직이므로 주식 수가 바뀐 날(쪼개기 · 증자)일 수 있습니다. 확인 못 함.`)] : []));
+  }
+  draw();
+  // 해마다 번 돈(기록만 · 증권사 짐작 E 는 넣지 않음)
+  const f = co.fin, rows = [];
+  for (const [k, name] of [['rev', '매출'], ['op', '영업이익'], ['net', '순이익']]) { if (k === 'op' && co.key === 'net') continue; const vals = f[k] || []; if (vals.some(x => x != null)) rows.push([name, vals]); }
+  const fb = h('div', {class: 'box'}, h('h2', {text: '해마다 번 돈(결산 기록)'}));
+  if (!rows.length || !f.years.length) fb.append(h('p', {class: 'q', text: '? 결산 기록이 없습니다'}));
+  for (const [name, vals] of rows) {
+    const mx = Math.max(1, ...vals.filter(x => x != null).map(Math.abs));
+    const list = h('ul', {class: 'fin'});
+    f.years.forEach((y, k) => { const x = vals[k], bar = h('i', {class: 'fb ' + (x != null && x < 0 ? 'neg' : 'pos')}); if (x != null) bar.style.width = Math.max(2, Math.abs(x) / mx * 100) + '%';
+      list.append(h('li', {}, h('span', {class: 'y', text: fy(y)}), h('span', {class: 'ft', 'aria-hidden': 'true'}, bar), h('b', {class: 'num', text: x == null ? '?' : eok(x)}))); });
+    fb.append(h('h3', {text: name}), list);
+  }
+  fb.append(h('p', {class: 'small', text: `기록만 보입니다 — 증권사가 짐작한 올해 값은 넣지 않았습니다. 막대 길이는 같은 줄 안에서만 견줍니다.`}));
+  v.append(fb);
+  // 몸값
+  const ly = f.years.length - 1;
+  v.append(h('div', {class: 'box'}, h('h2', {text: '몸값'}), h('ul', {class: 'chk'},
+    h('li', {}, h('span', {class: 'm ok', text: '·'}), h('span', {}, h('b', {text: '시가총액 '}), eok(c.cap))),
+    h('li', {}, h('span', {class: 'm ' + (co.per != null ? 'ok' : 'q'), text: co.per != null ? '·' : '?'}), h('span', {}, h('b', {text: '1년 순이익의 '}), co.per != null ? `${r1(co.per).toFixed(1)}배(365곳 가운데값 ${r1(C.facts.perMedian).toFixed(1)}배)` : '? 자료 없음')),
+    h('li', {}, h('span', {class: 'm ' + (co.pbr != null ? 'ok' : 'q'), text: co.pbr != null ? '·' : '?'}), h('span', {}, h('b', {text: '장부 값의 '}), co.pbr != null ? `${r1(co.pbr).toFixed(1)}배` : '? 자료 없음')),
+    ly >= 0 ? h('li', {}, h('span', {class: 'm ok', text: '·'}), h('span', {}, h('b', {text: `${fy(f.years[ly])} 빚 · 이익률 `}), `부채비율 ${f.debt?.[ly] != null ? r1(f.debt[ly]).toFixed(1) + '%' : '?'} · 자기자본 이익률 ${f.roe?.[ly] != null ? r1(f.roe[ly]).toFixed(1) + '%' : '?'}`)) : null)));
+  v.append(h('p', {class: 'src', text: '네이버 증권 · 결산 · 10월 10일 모음'}));
+  v.append(nextStep(`#/c/${code}/range`, '5단 범위 · 점검', '몬테카를로 4방향 · 사기 전에 볼 것 · 확인할 곳'));
+  v.append(foot());
+}
+
+function priceChart(host, {dates, close, avg, jumps, label}) {
+  host.textContent = '';
+  const wrap = h('div', {class: 'lc'}); host.append(wrap);
+  const n = close.length, W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 220, P = 10;
+  const vals = [...close, ...avg].filter(x => x != null);
+  if (!vals.length) { wrap.append(h('p', {class: 'q', text: '? 이 기간 값을 못 읽었습니다'})); return; }
+  let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
+  const X = i => P + i * (W - 2 * P) / Math.max(1, n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
+  const base = close.find(x => x != null), id = 'pc' + (++lcN);
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});
+  const defs = sv('defs'); const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(base)})); const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(base), width: W, height: H - Y(base)})); defs.append(cu, cd); svg.append(defs);
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: '#A9A3CC', 'stroke-width': 1.5, 'stroke-dasharray': '5 5'}));
+  const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
+  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: '#CDBEF6', 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
+  const d = path(close);
+  svg.append(sv('path', {d, fill: 'none', stroke: '#FF5A66', 'stroke-width': 3, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: '#5C97FF', 'stroke-width': 3, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}d)`}));
+  for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: '#E9C46A', 'stroke-width': 3})); }
+  const lastK = close.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
+  svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 5.5, fill: close[lastK] >= base ? '#FF5A66' : '#5C97FF', stroke: '#111433', 'stroke-width': 2}));
+  const cx = sv('line', {y1: P, y2: H - P, stroke: '#F3F1FC', 'stroke-width': 1.5}), dot = sv('circle', {r: 6, fill: '#F3F1FC'}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
+  wrap.append(svg);
+  const yt = h('span', {class: 'yl num', text: won(Math.round(hi))}), yb = h('span', {class: 'yl num', text: won(Math.round(lo))}); yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
+  const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
+  wrap.append(h('div', {class: 'ax'}, h('span', {text: ymd(dates[0])}), h('span', {text: ymd(dates[n - 1])})));
+  const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - P) / ((W - 2 * P) / Math.max(1, n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (close[i] == null) return;
+    cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('visibility', 'visible'); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(close[i])); dot.setAttribute('visibility', 'visible');
+    tip.hidden = false; tip.textContent = `${ymd(dates[i])} · ${won(close[i])} · ${pct((close[i] / base - 1) * 100)}`; tip.style.left = Math.min(r.width - 120, Math.max(120, X(i) * r.width / W)) + 'px'; };
+  svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); tip.hidden = true; });
+}
+
+// ── 5단 범위 · 점검 — 몬테카를로 4방향(36곳 셈 · 모든 365곳) · 사기 전에 볼 것 · 확인할 것 ──
+async function viewRange(v, code) {
+  await Promise.all([needComp(), needPick()]);
+  const C = D.core, c = D.comp[code];
+  if (!c) return viewMissing(v, code);
+  const i = ind(c.i), g = gById(c.g), K = D.pick, k = K.companies[code], S = K.spec, B = K.backtest;
+  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}, {href: '#/c/' + code, text: c.name}, {href: `#/c/${code}/past`, text: '지나온 길'}));
+  v.append(steps(5, ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, '#/c/' + code, `#/c/${code}/past`]));
+  v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name + ' — 범위 · 점검'}), h('small', {text: `${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤`})));
+  const box = h('div', {class: 'box'}, h('h2', {text: '시장이 이렇게 가면 — 몬테카를로 4방향'}));
+  if (!k || !k.ok) box.append(h('p', {class: 'q', text: '? 셈 못 함 — 어느 한 방향에서 이 회사 값이 있는 날이 20일이 안 됩니다.'}));
+  else {
+    const list = h('ul', {class: 'dirbars'});
+    K.dirs.forEach((d, j) => { const w = k.win[j], b = k.big[j], bw = h('i', {class: 'db pos'}), bb = h('i', {class: 'db neg'}); bw.style.width = w + '%'; bb.style.width = b + '%';
+      list.append(h('li', {}, h('b', {class: 'dn', text: d.name}), h('span', {class: 'dl'}, h('span', {class: 'dt'}, bw), h('span', {class: 'num', text: `번 길 ${r1(w).toFixed(1)}%`})), h('span', {class: 'dl'}, h('span', {class: 'dt'}, bb), h('span', {class: 'num', text: `크게 잃는 길 ${r1(b).toFixed(1)}%`})))); });
+    box.append(h('p', {class: 'small', text: `방향마다 지난 날들에서 20일을 뽑아 ${S.paths.toLocaleString('ko-KR')}번 — 번 길 = 사고팔 돈 0.3% 빼고 남음 · 크게 잃는 길 = −15% 밑`}), list);
+    const status = k.rank ? `월요일 매수 검토 36곳 가운데 ${k.rank}번째(번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%)` : k.cut ? `지움 — 가장 나쁜 방향에서 크게 잃는 길(${r1(k.worst).toFixed(1)}%)이 큰 3분의 1에 들었습니다` : `남았지만 36곳 밖 — 번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%`;
+    box.append(h('p', {class: 'alt'}, h('b', {text: status}), ' · ', h('a', {class: 'inl', href: '#/36', text: '36곳 보기'})));
+  }
+  if (B) box.append(h('p', {class: 'small', text: `모형 가정 아래 셈일 뿐 앞날 값이 아닙니다 — 같은 셈은 지난 ${B.n}번 가운데 ${B.wins}번만 365곳 평균보다 나았습니다.`}));
+  v.append(box);
+  const p = c.pick;
   // 사기 전에 볼 것(멍거팀) — 기록으로 채울 수 있는 것만 · 모르면 ?
   const f = c.fin, fk = f ? (f.key === 'net' ? '순이익' : '영업이익') : '이익';
   const rec = f && f.av != null ? (f.bv > f.av ? 'ok' : 'no') : 'q';
@@ -324,6 +461,7 @@ async function viewCompany(v, code) {
     p.t27 ? h('li', {}, '2027 예산 국회 통과: ', h('a', {href: 'https://www.korea.kr', rel: 'noopener', target: '_blank', text: '정책브리핑'}), ' — 국회 의결 기한 12월 2일.') : null,
     p.t27 ? h('li', {text: '그 물건 수출: 산업통상부 「수출입 동향」 — 매달 1일.'}) : null)));
   v.append(more);
+  v.append(h('p', {class: 'links2'}, h('a', {href: '#/c/' + code, text: '3단 회사로'}), h('a', {href: '#/', text: '처음 화면으로'})));
   v.append(foot());
 }
 
@@ -510,7 +648,7 @@ async function route() {
     else if (kind === '36') { $('#tab36').setAttribute('aria-current', 'page'); await view36(v); }
     else if (kind === 'g') viewGroup(v, decodeURIComponent(arg));
     else if (kind === 'i') await viewIndustry(v, decodeURIComponent(arg));
-    else if (kind === 'c') await viewCompany(v, decodeURIComponent(arg));
+    else if (kind === 'c') { const [code, sub] = decodeURIComponent(arg).split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
     else { location.replace('/old/' + location.search + location.hash); return; } // 옛 ATLAS 주소(#/stocks · #/road …)는 옛 판으로
   } catch (e) {
     v.textContent = ''; v.append(h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}));
