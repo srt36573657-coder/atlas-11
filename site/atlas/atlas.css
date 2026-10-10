@@ -111,6 +111,13 @@ h1.head .num { font-family: var(--sans); font-weight: 800; }
 .note { color: var(--sub); margin: 14px 0 0; }
 .foot { color: var(--mute); margin: 22px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
 .foot p { margin: 0 0 8px; }
+.foot .links { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.foot .links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--violet-ink); text-decoration: underline; text-underline-offset: 3px; }
+.hello { display: grid; grid-template-columns: 44px minmax(0, 1fr) 0.7em; align-items: center; gap: 10px; min-height: 56px; padding: 6px 10px; margin: 4px 0 4px; border-radius: 14px; background: var(--deck); border: 1px solid var(--gold); }
+.hello img { width: 44px; height: 44px; object-fit: cover; border-radius: 10px; display: block; }
+.hello .hw { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; min-width: 0; }
+.hello .hw span { color: var(--sub); }
+.hello .chev { color: var(--mute); text-align: center; }
 
 /* 회사 화면 */
 .co-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0 0 6px; }
