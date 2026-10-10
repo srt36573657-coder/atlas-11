@@ -203,7 +203,7 @@ function viewToday(main) {
     h('p', {class: 'w7-big'}, '7일 뒤' + (W7.day ? '(' + kday(W7.day) + (ex ? ' · 5거래일' : '') + ')' : '') + ': ' + (ex ? '가운데 값 ' + pct(W7.lo * 100, 1) + ' ~ ' + pct(W7.hi * 100, 1) : W7.n + '곳 모두 반반')),
     h('p', {class: 'w7-sub'}, ex ? '기울기 0 모형 — 방향은 셈하지 않음 · 한 곳을 고를 근거 없음 · 모형 가정 아래 추정 · 검증 전' : '셈 틀은 오를지 내릴지 정하지 않아요 · 가장 흔한 모습은 지금 값 근처(±' + W7.band + '%) · 그래서 한 곳을 고르지 않음 · 셈 틀로 어림한 값 · 아직 확인 전')));
   const idx = D.index;
-  if (kr && idx && fin(idx.gap) && idx.gap <= -0.1) main.append(h('a', {class: 'alert', href: '#/record'}, ICON.warn(), h('span', {}, '조심: 코스피가 1년 꼭대기보다 ' + Math.round(Math.abs(idx.gap) * 100) + '% 아래'), h('i', {'aria-hidden': 'true'}, '›')));
+  if (kr && idx && fin(idx.gap) && idx.gap <= -0.1) main.append(h('a', {class: 'alert', href: '#/record'}, ICON.warn(), h('span', {}, '조심: 코스피가 1년 꼭대기보다 ' + Math.round(Math.abs(idx.gap) * 100) + '% 아래 — 이 규칙이 약했던 때와 닮음'), h('i', {'aria-hidden': 'true'}, '›')));
   if (!its.length) { main.append(h('div', {class: 'card'}, h('p', {class: 'body'}, '오늘은 적어 둔 곳이 없습니다. 규칙에 맞는 곳이 없으면 비워 둡니다.'))); S.say = title + '. 오늘은 적어 둔 곳이 없습니다.'; return; }
   if (!kr && !S.usShow) {
     main.append(h('div', {class: 'card gate fade'},
@@ -402,13 +402,15 @@ function viewRecord(main) {
     h('div', {class: 'marklabels'}, h('div', {}, h('span', {}, '적은 날'), h('b', {}, kday(planted))), pts.map(p => h('div', {}, h('span', {}, p.n + '거래일'), h('b', {}, kday(p.d, planted)))))));
   main.append(h('section', {class: 'card'}, h('p', {class: 'cap'}, kday(planted) + '에 적어 둔 7곳 · 그날 종가'),
     its.map(x => h('a', {class: 'ledger', href: '#/c/kr/' + encodeURIComponent(x.code)}, h('b', {}, x.name), h('span', {class: 'num'}, money(x.close, true) + ' ›')))));
-  const idx = D.index;
+  const idx = D.index, wx = D.cand && D.cand.grow ? D.cand.grow.weather : null;
   if (idx && fin(idx.close) && fin(idx.high)) {
     const nowBar = h('div', {class: 'bar'}, h('span', {})); nowBar.firstChild.style.width = Math.round(100 * idx.close / idx.high) + '%';
     main.append(h('section', {class: 'card warn'}, h('p', {class: 'cap'}, '이 규칙이 약했던 때'),
       h('p', {class: 'big'}, '시장이 크게 빠졌다가 다시 오를 때, 1년 동안 많이 오른 회사들이 크게 뒤처졌습니다.'),
       h('p', {class: 'small'}, 'Daniel · Moskowitz, 「Momentum Crashes」, Journal of Financial Economics(2016)'),
       h('p', {class: 'body strong'}, '지금 코스피 ' + Math.round(idx.close).toLocaleString('ko-KR') + ' — ' + kday(idx.highDate) + ' 꼭대기 ' + Math.round(idx.high).toLocaleString('ko-KR') + '보다 ' + Math.round(Math.abs(idx.gap) * 100) + '% 아래(' + kday(idx.date) + ')'),
+      /* 날씨는 ATLAS 첫 화면과 같은 잣대(365곳 같은 무게 평균 ÷ 200거래일 평균)로 함께 — 두 화면이 서로 다른 말을 하지 않게(2026-10-10 22:36 「알아서해」) */
+      wx && fin(wx.pD) ? h('p', {class: 'body'}, '날씨(ATLAS 첫 화면과 같은 잣대): ' + (wx.state === 'cloudy' ? '흐림' : '맑음') + ' — 365곳 같은 무게 평균이 ' + (wx.days || 200) + '거래일 평균보다 ' + Math.abs(wx.pD).toFixed(1) + '% ' + (wx.pD < 0 ? '아래' : '위') + ' · 코스피와는 다른 잣대') : null,
       h('div', {class: 'pair', 'aria-hidden': 'true'}, h('em', {}, '꼭대기'), h('div', {class: 'bar full'})),
       h('div', {class: 'pair', 'aria-hidden': 'true'}, h('em', {class: 'down'}, '지금'), nowBar)));
   }

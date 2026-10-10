@@ -94,15 +94,19 @@ function baseLines(C, lens = null) {
   const day = C.grow?.planted?.at ?? C.asOf, rec = (C.records ?? []).find(r => r.asOf === day) ?? null; // 기록은 담은 날 목록(판 날짜가 하루 지나도 같은 기록 — 미국 판)
   const vr = (lens?.verify?.records ?? []).find(r => r.asOf === day), rr = vr?.cand?.rules ?? rec?.rules ?? null, ver = r => String(r ?? '').match(/(\d+)$/)?.[1] ?? '?';
   const other = rec && rr && C.rules && rr !== C.rules; // 그 날 고정 기록이 다른 규칙 판의 목록(예: 한국 10월 8일 = 2판 7곳 · 이 화면 = 5판)
+  const gr = vr?.grow && vr?.evals?.grow && vr.grow.rules === C.rules ? vr.grow : null; // 이 화면 7곳 자체의 고정 기록(5판 규칙 폴더 발행본 · 지난 결과가 채점 — 2026-10-10 22:36 「알아서해」)
+  const kd = t => md(new Date(Date.parse(t) + 9 * 3600e3).toISOString().slice(0, 10));
   return [h('p', {class: 'ob-base'}, h('b', null, `${place.label} · ${korDate(C.asOf)} 종가`)), // 「석 달마다 담음」은 그림 아래 그물 줄(다음 담는 날)에 — 규칙 1(기록 한 줄을 넣은 만큼 뺌)
   h('p', {class: 'cd-rule'}, h('b', null, '매수 검토 우선순위'), ' — 예상 수익률 순위 아님 · ', h('b', null, '연구용 · 성능 검증 전'), ' · 포트폴리오 아님',
-    rec ? ` · 고정 기록 ${md(new Date(Date.parse(rec.recordedAt) + 9 * 3600e3).toISOString().slice(0, 10))}` : ' · 고정 기록 전',
-    other ? ` = 규칙 ${ver(rr)}판 목록(이 화면 ${ver(C.rules)}판 · 지난 결과에서 채점)` : ''), wxWarn(C)].filter(Boolean);
+    gr?.recordedAt ? ` · 고정 기록 ${kd(gr.recordedAt)}(이 ${vr.sizes?.grow ?? C.items?.length ?? 7}곳 · 지난 결과에서 채점)` : rec ? ` · 고정 기록 ${kd(rec.recordedAt)}` : ' · 고정 기록 전',
+    !gr && other ? ` = 규칙 ${ver(rr)}판 목록(이 화면 ${ver(C.rules)}판 · 지난 결과에서 채점)` : ''), wxWarn(C)].filter(Boolean);
 }
 /** 날씨 경고 한 줄(흐린 날만 · 고르는 셈은 그대로) — 기르기판 「날씨로 쉬기는 버림 → 흐린 날엔 경고만」(2026-10-09 15:00) · 맑은 날은 「③ 자세히」 규칙 ⑧에만 */
 const wxWarn = C => { const W = C.grow?.weather; return W?.state === 'cloudy' && finite(W.pD) ? h('p', {class: 'cd-wx', role: 'note'}, h('b', null, '날씨 흐림'),
   ` · 365곳 평균 지수가 ${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% 아래 · 흐린 때 결과는 아직 모름 · 경고만(고르는 셈은 그대로)`) : null; };
 const wxTxt = (C) => { const W = C.grow?.weather; return W && finite(W.pD) ? `${md(C.asOf)} 종가 기준 ${W.state === 'cloudy' ? '흐림' : '맑음'}(${W.days ?? 200}거래일 평균보다 ${Math.abs(W.pD).toFixed(1)}% ${W.pD < 0 ? '아래' : '위'})` : '셀 수 없음(가격 기록 모자람 — 지어내지 않음)'; };
+// 코스피 1년 꼭대기와의 거리(판 board.lead6.index) — 날씨와 다른 잣대라 이름을 붙여 따로 · 새 판(/new) 「조심」 줄과 같은 사실(2026-10-10 22:36 「알아서해」 — 두 화면이 서로 다른 말을 하지 않게)
+const ddTxt = idx => idx && finite(idx.gap) && finite(idx.high) && idx.gap <= -0.1 ? ` · 따로: ${idx.name ?? '지수'}는 1년 꼭대기(${md(idx.highDate)} ${Math.round(idx.high).toLocaleString('ko-KR')}포인트)보다 ${Math.round(Math.abs(idx.gap) * 100)}% 아래 — 1년 추세 규칙이 약했던 때(시장이 크게 빠졌다가 다시 오를 때)와 닮음(Daniel · Moskowitz 2016년 논문)` : '';
 
 /* ── ② 고른 한 곳 카드(그림의 이름 · 숫자 — 설명은 한 번에 한 가지) ── */
 function cardOf(C, {riskAt = 2, actsAt = 3, mcOf = () => null, elOf = () => null, mid = null, W7 = null} = {}) {
@@ -275,14 +279,21 @@ function roundEl(lens) {
 }
 
 /* ── ⑤ 선정 이후 결과 · 규칙 ── */
+// 첫 화면 7곳도 채점(판 읽기 verify grow — 사장님 2026-10-10 22:36 「알아서해」) — 채점 날을 한 줄로 · 달력 밖 날은 「달력이 닿으면」
+function scoreLine(v) {
+  const g = [...(v?.records ?? [])].reverse().find(r => r.evals?.grow); if (!g) return null;
+  const due = g.evals.grow.filter(e => e.due), no = g.evals.grow.filter(e => !e.due);
+  return h('p', {class: 'mk-l cd-grow'}, h('b', null, `이 ${g.sizes?.grow ?? 7}곳도 채점함`), ` · ${md(g.asOf)} 종가 기준`, due.length ? ` · ${due.map(e => `${md(e.due)}(${e.h}거래일)`).join(' · ')}` : '', no.length ? ` · ${no.map(e => `${e.h}거래일`).join(' · ')}은 거래일 달력이 닿으면` : '');
+}
 function resultEl(C, lens) {
   const v = lens?.verify, recs = (v?.records ?? []).filter(r => r.evals?.cand);
   const ev = recs.flatMap(r => r.evals.cand), done = ev.filter(e => e.status === 'done').length, wait = ev.filter(e => e.status === 'pending');
   return [h('p', {class: 'mk-l'}, recs.length ? [h('b', null, `후보 기록 ${recs.length}장`), ` · 평가 끝 ${done}건 · 평가 대기 ${wait.length}건`, wait[0] ? ` · 첫 평가일 ${md(wait.map(e => e.due).sort()[0])}` : ''] : '후보 고정 기록 없음 — 평가할 것이 아직 없음'),
+    scoreLine(v),
     h('p', {class: 'mk-l'}, h('a', {href: '#/check'}, '선정 이후 결과 · 시장 · 단순 선정과 비교 ›')),
     h('p', {class: 'muted xs'}, '검증 전 — 기록 기능이 있다는 것과 투자 성능이 입증됐다는 것은 다름 · 후보 관측 성과 ≠ 실제 매매 성과(진입 · 청산 · 비중 · 비용 규칙 없음)')];
 }
-function rulesEl(C) {
+function rulesEl(C, idx = null) {
   const W = C.flow?.window, fd = C.flowDays ?? 10, np = C.netPct ?? 20, hold = C.hold ?? 60;
   return h('div', {class: 'cd-rules'},
     h('ul', {class: 'cd-l'},
@@ -296,7 +307,7 @@ function rulesEl(C) {
       h('li', null, h('b', null, '⑤ 7곳 · 차례(검토 우선순위)'), ` · ④를 넘은 초입을 1년 추세 큰 순 · 같은 업종 ${C.perSector ?? 3}곳 · 7곳까지 — 모자라면 모자란 대로`),
       h('li', null, h('b', null, '⑥ 석 달 기다림'), ` · 2026년 10월 8일부터 ${hold}거래일마다 담음 — 그 사이 판은 담은 날 첫 기록의 7곳 그대로 · 상태만 날마다(그물 안 · 그물 밖 · 재검토)`),
       h('li', null, h('b', null, '⑦ 성적'), ' · 담은 날 종가 → 오늘 종가: 7곳 평균 · 그물 전체(담은 날 값으로 다시 셈) · 365곳 평균 — 실제 매매 성과 아님'),
-      h('li', null, h('b', null, '⑧ 날씨(경고만)'), ` · 365곳 같은 무게 평균 지수가 지난 ${C.grow?.weather?.days ?? 200}거래일 평균 위면 맑음 · 아래면 흐림 — 흐린 날엔 첫 화면에 경고 한 줄 · 고르는 데 쓰지 않음 · 흐린 때 그물 결과는 지난 기록(2년 · 큰 하락장 없음)이 적어 아직 모름 · ${wxTxt(C)}`),
+      h('li', null, h('b', null, '⑧ 날씨(경고만)'), ` · 365곳 같은 무게 평균 지수가 지난 ${C.grow?.weather?.days ?? 200}거래일 평균 위면 맑음 · 아래면 흐림 — 흐린 날엔 첫 화면에 경고 한 줄 · 고르는 데 쓰지 않음 · 흐린 때 그물 결과는 지난 기록(2년 · 큰 하락장 없음)이 적어 아직 모름 · ${wxTxt(C)}${ddTxt(idx)}`),
       h('li', null, h('b', null, '버린 것'), ' · 가지치기(최고값보다 15% 내리면 빼기 — 석 달 기다리기와 섞으면 결과가 깎임) · 날씨로 쉬기(지난 2년엔 오히려 덜었음 — 흐린 날은 경고만) · 20만 번 다시 뽑기(돈 유입 7곳을 고르던 셈 — 4판 기록은 그대로)'),
       h('li', null, h('b', null, '곁 정보'), usRisk() ? ` · 업종 돈 흐름(「돈 흐름」 탭${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음 · 미국 판은 외국인 · 기관 매매 자료가 없어 돈 유입 비율 · 포모지수 · 1~365등 없음`
         : ` · 돈 유입 비율(외국인+기관 ${fd}거래일 순매수 ÷ 시가총액) · 포모지수 · 1~365등 · 업종 돈 흐름(「돈 흐름」 탭${W ? ` · ${md(W.from)}~${md(W.to)}` : ''}) — 고르는 데 쓰지 않음`),
@@ -347,7 +358,7 @@ export async function renderCand(main, {manifest}) {
       fold('바뀐 후보 · 공통 위험', ...changesEl(C)),
       fold('60거래일 범위 · 소거 — 이번 회차', ...roundEl(lens)),
       fold('선정 이후 결과', ...resultEl(C, lens)),
-      fold('고르는 법 · 기준 자세히', rulesEl(C), baseMore(C, manifest)))),
+      fold('고르는 법 · 기준 자세히', rulesEl(C, board?.lead6?.index ?? null), baseMore(C, manifest)))),
     explore,
     foot(manifest)));
 }
