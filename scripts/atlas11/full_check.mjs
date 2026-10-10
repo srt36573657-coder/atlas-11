@@ -12,7 +12,7 @@
      ④ 움직임 — 화면 종류 × 판마다 4배속으로(art.js atlas11:speed · CSS 는 브라우저 시간을 4배로): 처음 모습 = 최신 결과(저절로 재생 없음 · 2026-10-09) → 「재생」을 눌러 매 프레임 셈: 한 번에 하나 · 차례 넷 · 360×640 · 430×700 한 화면
      ⑤ 빈 날 길 — 판 자료를 바꿔치기(판 목록 해시도 같이) — 한국 판 일부 빔 · 미국 판 모두 빔 · 없는 주소 셋 · 못 읽은 파일 → 두 말로 그림 한 장(빈 하늘) · 기대값 · 움직임
      ⑥ 쉬운 말 층(규칙 48 · 2026-10-09 22:40 마카오 시각 「아이큐 92 남자 고등학생이 이해하고 공감가며 사용할수 있도록 … 교차 검증을 100만번」) — 한국어 화면은 처음이 쉬운 말:
-        ① ⑤ 의 한국어는 전문가 말(?level=pro · 옛 검사 그대로 · ② 계산 층 재료) · 쉬운 말(?level=easy)로 모든 화면 · 빈 날 길을 한 번 더 — 같은 판정(한 화면 · 그림 · 입체 · 3단 클릭) +
+        ① ⑤ 의 한국어는 전문가 말(?level=pro · 옛 검사 그대로 · ② 계산 층 재료) · 쉬운 말(?level=easy)로 모든 화면 · 빈 날 길을 한 번 더 — 같은 판정(한 화면 · 그림 · 입체 없음 · 3단 클릭) +
         「이 화면은?」 한 줄 · 펼친 글에 어려운 말(easy-ko.js HARD) 0 · 금지 말을 새로 넣지 않음 · 숫자 맞대기(쉬운 말 화면의 숫자 = 전문가 말 화면의 숫자 — 하나도 빠지거나 바뀌지 않음)
    결과: reports/atlas11/full-check/latest.json(schema 3) — 올리기 문(art_gate.mjs)이 지문 · 다섯 나라 · 두 말 · 73개 말 · 빈 날 · 실패 0 을 봄
    쓰는 법: node scripts/atlas11/full_check.mjs --base http://127.0.0.1:8823 --pw /opt/node-tools [--boards kr,us] [--quick] [--kinds home,map] [--lay] [--edge-only] [--jobs 3] [--out 파일] */
@@ -46,9 +46,9 @@ const {chromium} = require('playwright');
 const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
-const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, d3: {}, click3: {pairs: 0, over: 0, max: 0, hist: {}},
+const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, flat: {pages: 0, checks: 0, hits: 0}, click3: {pairs: 0, over: 0, max: 0, hist: {}},
   easy: {pages: 0, edge: 0, what: 0, numPages: 0, numTokens: 0, front: 0, hardChecks: 0, hardHits: 0, bannedChecks: 0, checks: 0, click3: {pairs: 0, over: 0, max: 0, hist: {}}},
-  tour: {boards: 0, started: 0, steps: 0, most: 0, paused: 0, resumed: 0, off: 0, rest: 0, checks: 0}}; // d3 = 그림 입체 갈래별 화면 수(섬 · 지도 · 막대 · 그림자 · 홈 — 규칙 46) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
+  tour: {boards: 0, started: 0, steps: 0, most: 0, paused: 0, resumed: 0, off: 0, rest: 0, checks: 0}}; // flat = 입체 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」 — 본 화면 · 본 부품 · 걸린 것) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -88,14 +88,23 @@ const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
     m.sw = document.documentElement.scrollWidth; m.cw = document.documentElement.clientWidth;
     m.over = []; if (sec) for (const x of sec.querySelectorAll('*')) { const r = x.getBoundingClientRect(); if (r.width && r.right > m.cw + 1) { m.over.push(cls(x)); if (m.over.length >= 3) break; } }
     m.done = !!ra?.classList.contains('ra-done');
-    // 모든 화면 3D(사장님 2026-10-09 19:27 · 19:45 「모든곳에 3d를 다 적용 … 미국장 한국장 모든 페이지」 · 규칙 46) — 그림 칸 안에 첫 화면 섬 · 지도 섬 · 입체 막대(윗면 · 옆면이 보이는 막대) · 입체 그림자 부품 ·
-    //   값이 없는 칸의 파인 홈(빈 하늘 · 값 없는 막대 줄 — 막대를 지어내지 않음) 가운데 하나 · 보이는 막대는 모두 윗면 · 옆면이 있어야 함(납작한 막대 = 실패)
-    { const art = document.querySelector('#main section[data-art], #main section.rt[data-place]'), shown = el => getComputedStyle(el).display !== 'none' && el.getClientRects().length > 0;
-      const face = el => { const s = getComputedStyle(el, '::before'); return s.content !== 'none' && s.transform !== 'none'; };
-      const bars = art ? [...art.querySelectorAll('.bc-bar, .hg-col')].filter(shown) : [];
-      m.d3flat = bars.filter(b => !face(b)).length;
-      m.d3 = !art || m.d3flat ? null : art.querySelector('.isl canvas') ? 'island' : art.querySelector('.imap canvas') ? 'map' : bars.length ? 'bars'
-        : art.querySelector('.cl-seg, .da-dot, .hm-c, .road .bead') ? 'shade' : [...art.querySelectorAll('.bc-track')].some(t => shown(t) && getComputedStyle(t).boxShadow.includes('inset')) ? 'groove' : null; }
+    // 입체 없음(사장님 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 「모든 화면 3D」 지움 · 10:00 「가 나 는 지우지마」 = 초대장 사진 · 소개 영상은 따로 쪽이라 이 검사 밖)
+    //   화면 전체: 캔버스 · 섬 · 지도 섬 없음 · 그림 칸(조작 단추 줄 빼고 보이는 부품 모두): 3D 변환 · 원근 · 그림자 필터 · 어긋나거나 번진 그림자(입체 그림자 · 파인 홈) · 막대 · 기둥 · 칸의 기울인 면(가상 요소) · 구슬 빛 없음
+    { const main = document.getElementById('main'), art = document.querySelector('#main section[data-art], #main section.rt[data-place]'), hit = [];
+      const lens3 = x => (x.replace(/rgba?\([^)]*\)/g, '').match(/-?\d*\.?\d+px/g) ?? []).map(parseFloat);
+      const depth = bs => bs && bs !== 'none' && bs.split(/,(?![^(]*\))/).some(x => { const [dx = 0, dy = 0, bl = 0] = lens3(x); return (bl > 0 && (dx !== 0 || dy !== 0)) || (dx !== 0 && dy !== 0) || (/inset/.test(x) && bl > 0); }); // 깊이 = 비껴 번진 그림자 · 두 쪽으로 어긋난 그림자(입체 그림자) · 번진 안쪽 그림자(파인 홈) — 테(0 0 0 1px) · 빛무리(0 0 10px) · 한 쪽 띠(inset 3px 0 0)는 평평
+      const dropDepth = f => /drop-shadow/.test(f) && [...f.matchAll(/drop-shadow\(([^()]*(?:\([^)]*\)[^()]*)*)\)/g)].some(m2 => { const [dx = 0, dy = 0] = lens3(m2[1]); return dx !== 0 || dy !== 0; });
+      if (main?.querySelector('canvas')) hit.push('캔버스');
+      if (main?.querySelector('.isl, .imap, [class*="isl-"], [class*="imap-"]')) hit.push('섬 · 지도 섬');
+      let n = 0;
+      if (art) for (const el of art.querySelectorAll('*')) { if (el.closest('.ra-ctl') || !el.getClientRects().length) continue; const st = getComputedStyle(el); if (st.display === 'none') continue; n++;
+        if (/matrix3d/.test(st.transform) || st.perspective !== 'none' || st.transformStyle === 'preserve-3d') hit.push('3D 변환 ' + cls(el));
+        if (dropDepth(st.filter)) hit.push('그림자 필터 ' + cls(el));
+        if (depth(st.boxShadow)) hit.push('입체 그림자 ' + cls(el));
+        if (el.matches('.bc-bar, .hg-col, .cl-seg, .hm-c, .tl-c')) for (const ps of ['::before', '::after']) { const q = getComputedStyle(el, ps); if (q.content !== 'none' && q.transform !== 'none') hit.push(`기울인 면 ${cls(el)}${ps}`); }
+        if (el.matches('.da-dot, .bead') && /radial-gradient/.test(st.backgroundImage)) hit.push('구슬 빛 ' + cls(el));
+        if (hit.length > 8) break; }
+      m.flat = {n, hit: [...new Set(hit)].slice(0, 6)}; }
     // 판단 정보가 먼저인 화면(2026-10-08 20:19 「ATLAS 개편 실행 지시서」 4 — 시장 · 투자자 매매 · 종목 · 검증 · 관심종목): [번호, 위, 아래] · 그림 칸 위 끝
     m.firsts = [...document.querySelectorAll('#main [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [Number(x.dataset.first), Math.round(r.top), Math.round(r.bottom)]; });
     m.artTop = sec ? Math.round(sec.getBoundingClientRect().top) : null;
@@ -156,10 +165,10 @@ const MOTION = async ({hash, limit, scroll = false}) => {
   const out = {most, beats: [...beats], done: !!document.querySelector('#main .ra:not([data-old]).ra-done'), ms: Math.round(performance.now() - t1), startDone, played: !!play};
   window.scrollTo(0, 0); return out;
 };
-// 저절로 둘러보기 지켜보기(규칙 49 ④) — 처음 연 첫 화면에서 저절로 시작했나 · 걸음 want 개를 지나는 동안 매 프레임: 움직이는 것 수(웹 움직임 + 섬 캔버스 움직임) · 섬 금빛 = 카드 = 둘러보기 회사
+// 저절로 둘러보기 지켜보기(규칙 49 ④) — 처음 연 첫 화면에서 저절로 시작했나 · 걸음 want 개를 지나는 동안 매 프레임: 움직이는 것 수(웹 움직임 + 칸 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사
 const TOUR_WATCH = async ({want = 5, limit = 15000}) => {
   for (let i = 0; i < 300 && !document.querySelector('#main .tu'); i++) await new Promise(r => setTimeout(r, 20)); // 첫 화면은 판 읽기를 받은 뒤 그림(준비 표시보다 늦을 수 있음)
-  const t = document.querySelector('#main .tu'), I = document.querySelector('#main .isl')?.__isl;
+  const t = document.querySelector('#main .tu'), I = document.querySelector('#main .tl')?.__tl;
   if (!t) return {none: true};
   const t0 = performance.now(); while (t.dataset.tour !== 'play' && performance.now() - t0 < 6000) await new Promise(r => setTimeout(r, 25));
   const out = {started: t.dataset.tour === 'play', auto: t.dataset.tourAuto === '1', waitMs: Math.round(performance.now() - t0), most: 0, seen: [], same: [], ms: 0};
@@ -243,8 +252,9 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   if (m.footDup) no('맨 아래 줄에 하규 응원 · 건의 줄이 또 있음(맨 위로 옮김 · 규칙 1)');
   if (bigFont) return; // 가장 큰 글씨는 옆 넘침만(한 화면은 보통 글씨 규칙)
   if (m.arts !== 1) no(`그림 수 ${m.arts}(1이어야 함)`);
-  if (m.d3flat) no(`윗면 · 옆면이 없는 납작한 막대 ${m.d3flat}개(규칙 46 — 보이는 막대는 모두 입체)`);
-  else if (!m.d3) no('그림에 입체가 없음(규칙 46 — 섬 · 지도 섬 · 입체 막대 · 입체 그림자 · 값이 없는 칸의 파인 홈 가운데 하나)');
+  stats.flat.pages++; stats.flat.checks += (m.flat?.n ?? 0) + 2; // 입체 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」)
+  if (!m.flat) no('입체 없음 층을 재지 못함');
+  else if (m.flat.hit.length) { stats.flat.hits += m.flat.hit.length; no(`입체가 남음(2026-10-10 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 지움): ${m.flat.hit.join(' · ')}`); }
   if (!m.done) no('움직임 줄이기 설정에서 끝 모습이 아님');
   if (INFO_FIRST.has(kind)) { // 판단 정보 먼저(지시서 4) — 첫 칸이 한 화면 안 · 칸 번호 차례 · 그림은 정보 칸 아래 · 시장 첫 화면은 ① ~ ⑤ 다섯
     const f = m.firsts ?? [], nums = f.map(x => x[0]);
@@ -302,7 +312,7 @@ const tasks = [];
 for (const b of EDGE_ONLY ? [] : BOARDS) for (const lang of ['en', 'ko']) tasks.push(async () => {
   const {ctx, page} = await openPage(b, lang, VP[lang]);
   const res = await page.evaluate(CRAWL, {routes: S[b].routes.map(r => r[0]), collect: lang === 'ko', nums: lang === 'ko'});
-  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.d3[m.d3 ?? 'none'] = (stats.d3[m.d3 ?? 'none'] ?? 0) + 1; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') { koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); PRO[`${b} ${m.hash}`] = {nums: m.nums, texts: m.texts}; } }
+  for (const m of res) { const [, kind, id] = S[b].kindOf.get(m.hash); judge(m, {b, kind, id, ...S[b], lang, tag: lang === 'en' ? null : lang}); stats.pages++; stats.byLang[lang] = (stats.byLang[lang] ?? 0) + 1; if (lang === 'ko') { koPages.push({b, kind, id, hash: m.hash, texts: m.texts, lay: m.lay}); PRO[`${b} ${m.hash}`] = {nums: m.nums, texts: m.texts}; } }
   if (!QUICK) click3(b, lang, res);
   await ctx.close(); console.log(`${b} · ${lang}: 화면 ${res.length}곳 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 지금까지 ${fails.length}`);
 });
@@ -323,7 +333,7 @@ for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
   await ctx.close(); console.log(`${b} · 움직임 ${QUICK ? 6 : kinds.length}종 · ${Math.round((Date.now() - t0) / 1000)}초`);
 });
 /* ── 둘러보기 층(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 판마다 첫 화면을 처음 열어(움직임 줄이기 아님):
-   저절로 시작 · 걸음 넘김 · 한 번에 하나(웹 움직임 + 섬) · 섬 금빛 = 카드 = 둘러보기 회사 · 글을 누르면 멈춤(기다려도 그대로) · 「이어 보기」 · 「이 기기에서 끄기」 → 다시 열어도 저절로 안 돎
+   저절로 시작 · 걸음 넘김 · 한 번에 하나(웹 움직임 + 칸 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사 · 글을 누르면 멈춤(기다려도 그대로) · 「이어 보기」 · 「이 기기에서 끄기」 → 다시 열어도 저절로 안 돎
    움직임 줄이기 창은 ① 모든 화면 판정이 봄(data-tour = rest) */
 async function tourOne(b) {
   const where = '#/ [둘러보기]', T = stats.tour, no = w => bad(b, where, w), wait = ms => new Promise(r => setTimeout(r, ms));
@@ -338,13 +348,13 @@ async function tourOne(b) {
     if (w.seen.length < 5) no(`걸음이 넘어가지 않음(${w.seen.join(' ')} · ${w.ms}ms)`);
     if (w.most > 1) no(`둘러보기 동안 한 번에 ${w.most}개가 움직임(1이어야 함)`);
     const diff = w.same.filter(x => !(x[1] === x[2] && x[2] === x[3])); T.checks += w.same.length;
-    if (diff.length) no(`섬 금빛 · 카드 · 둘러보기 회사가 다름: ${JSON.stringify(diff.slice(0, 2))}`);
+    if (diff.length) no(`그림 금빛 · 카드 · 둘러보기 회사가 다름: ${JSON.stringify(diff.slice(0, 2))}`);
     // 글을 누르면 멈춤(읽는 중) — 기다려도 걸음 그대로
     await page.click('#main .cd-why', {position: {x: 8, y: 6}}); await wait(120);
     const p1 = await page.evaluate(TOUR_STATE); await wait(3200); const p2 = await page.evaluate(TOUR_STATE); T.checks += 2;
     if (p1?.mode !== 'pause') no(`글을 눌러도 멈추지 않음(${p1?.mode})`); else if (p2?.key !== p1.key || p2?.mode !== 'pause') no(`멈춘 뒤에도 걸음이 넘어감(${p1.key} → ${p2?.key})`); else T.paused++;
-    // 「이어 보기」 — 섬을 화면에 두고 누르면 다시 넘어감
-    await page.evaluate(() => document.querySelector('#main .isl-stage').scrollIntoView({block: 'center'})); await wait(150);
+    // 「이어 보기」 — 칸 그림을 화면에 두고 누르면 다시 넘어감
+    await page.evaluate(() => document.querySelector('#main .tl-stage').scrollIntoView({block: 'center'})); await wait(150);
     await page.click('#main .tu-main'); const r0 = await page.evaluate(TOUR_STATE); T.checks += 2;
     const moved = await page.waitForFunction(k => { const t = document.querySelector('#main .tu'); return t && `${t.dataset.tourPos}.${t.dataset.tourStep}` !== k; }, r0?.key, {timeout: 6000}).then(() => true).catch(() => false);
     if (r0?.mode !== 'play' || !moved) no(`「이어 보기」를 눌러도 다시 넘어가지 않음(${r0?.mode})`); else T.resumed++;
@@ -356,7 +366,7 @@ async function tourOne(b) {
     if (o1?.store !== '"off"') no(`「이 기기에서 끄기」가 저장되지 않음(${o1?.store})`);
     await page.reload({waitUntil: 'domcontentloaded'}); await page.waitForFunction(() => document.documentElement.dataset.ready === '1' && typeof window.atlasRoute === 'function', null, {timeout: 30000});
     await page.evaluate(() => (document.querySelector('#main .tu') ? null : window.atlasRoute('#/'))); await page.waitForSelector('#main .tu', {timeout: 15000});
-    await page.evaluate(() => document.querySelector('#main .isl-stage').scrollIntoView({block: 'center'})); await wait(2600);
+    await page.evaluate(() => document.querySelector('#main .tl-stage').scrollIntoView({block: 'center'})); await wait(2600);
     const o2 = await page.evaluate(TOUR_STATE);
     if (o2?.mode !== 'rest' || o2?.auto !== '0') no(`끈 뒤 다시 열었는데 저절로 돎(${o2?.mode} · auto ${o2?.auto})`); else if (!/꺼짐/.test(o2?.off ?? '')) no(`끈 뒤 「저절로 돌기: 꺼짐」 줄이 없음(${o2?.off})`); else T.off++;
   } catch (e) { no('둘러보기를 재지 못함: ' + String(e?.message ?? e).slice(0, 200)); }
@@ -503,11 +513,11 @@ await browser.close();
 const TRANS = f => /^번역 안 된 한국어/.test(f.what ?? '');
 const transFailed = fails.filter(TRANS).length, otherFailed = fails.length - transFailed;
 const report = {schema: 'atlas11-full-check-3', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), lap, code: await codePrint(ROOT), boards: BOARDS, quick: QUICK, langs: ['en', 'ko'], ...stats, failed: fails.length, transFailed, otherFailed,
-  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0,
-  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0, // 모든 층을 다 돈 결과인가(실패 수와 따로) · 둘러보기 층(규칙 49 ④)
+  ok: fails.length === 0 && !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0 && stats.flat.pages > 0 && stats.flat.checks > 0,
+  shape: !QUICK && SITE_BOARDS.every(b => BOARDS.includes(b)) && stats.edge > 0 && stats.transLangs === codesI18n.length && stats.layoutLangs === codesI18n.length + 1 && stats.easy.pages > 0 && stats.easy.edge > 0 && stats.easy.click3.pairs > 0 && stats.tour.boards === BOARDS.length && stats.tour.checks > 0 && stats.flat.pages > 0 && stats.flat.checks > 0, // 모든 층을 다 돈 결과인가(실패 수와 따로) · 둘러보기 층(규칙 49 ④) · 입체 없음 층(2026-10-10)
   fails: [...fails.filter(f => !TRANS(f)), ...fails.filter(TRANS)].slice(0, 400)};
 await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true});
 await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(report, null, 1) + '\n');
-console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, d3: stats.d3, click3: stats.click3, easy: stats.easy, tour: stats.tour, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
+console.log(JSON.stringify({pages: stats.pages, byLang: stats.byLang, plans: stats.plans, numbers: stats.numbers, links: stats.links, texts: stats.texts, motion: stats.motion, edge: stats.edge, transLangs: stats.transLangs, transStrings: stats.transStrings, layoutLangs: stats.layoutLangs, layoutPages: stats.layoutPages, flat: stats.flat, click3: stats.click3, easy: stats.easy, tour: stats.tour, failed: fails.length, transFailed, otherFailed, ok: report.ok, seconds: report.seconds, lap}));
 for (const f of report.fails.slice(0, 40)) console.log(` ✗ ${f.board} ${f.route} — ${f.what}`); // 번역 밖 실패가 먼저
 process.exit(report.ok || (QUICK && !fails.length) ? 0 : 1);

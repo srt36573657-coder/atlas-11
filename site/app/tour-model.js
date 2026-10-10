@@ -28,7 +28,7 @@ export const plainOf = parts => parts.map(s => (typeof s === 'string' ? s : 'r' 
 /**
  * 둘러보기 한 판 — C = lens.cand · mc = lens.mc(없으면 {none, why}) · elim = lens.elim · stocks = lens.stocks · us = 미국 판(위험 공시 자료 없음)
  * 반환 null(후보 없음) 또는 {items: [{code, rank, name, steps: [8걸음]}]}
- *   걸음 = {k(기승전결), name, title, lines: [[글 조각 …]], note, isl('to' | 'rise' | 'wave' | null), peers(같은 업종 기호), fan(범위 띠), checks(소거 검사), ms(머무는 시간)}
+ *   걸음 = {k(기승전결), name, title, lines: [[글 조각 …]], note, act(그림 손잡이 'to' 고름 | 'rise' 빈 칸 → 채움 | 'wave' 같은 업종 칸에 테 | null), peers(같은 업종 기호), fan(범위 띠), checks(소거 검사), ms(머무는 시간)}
  */
 export function tourOf({C, mc = null, elim = null, stocks = [], us = false} = {}) {
   const xs = C?.ready ? (C.items ?? []) : [];
@@ -43,13 +43,13 @@ export function tourOf({C, mc = null, elim = null, stocks = [], us = false} = {}
     const peerTxt = peerS.length ? `${peerS.slice(0, 4).map(s => s.name).join(' · ')}${peerS.length > 4 ? ` 외 ${peerS.length - 4}곳` : ''}` : '';
     const nx = xs[k + 1] ?? null, last = !nx;
     const steps = [
-      {title: `${x.rank}위 · ${x.name}`, lines: [[`미리 정한 규칙 차례 ${x.rank}번째 · 1년 추세 `, {p: m12}, ` · ${x.sector ?? '업종 없음'}`]], isl: 'to'},
+      {title: `${x.rank}위 · ${x.name}`, lines: [[`미리 정한 규칙 차례 ${x.rank}번째 · 1년 추세 `, {p: m12}, ` · ${x.sector ?? '업종 없음'}`]], act: 'to'},
       R ? {title: `60거래일 뒤 범위 · ${MC_TAG}`, lines: [['가운데 80% ', {r: R.q10}, ' ~ ', {r: R.q90}, ' · 가운데 값 ', {r: R.median}], [`손실로 끝난 경로 ${shareR(R.ploss)} · 가장 나쁜 5% 경로 평균 `, {r: R.cvar5}]],
         note: `경로 ${int(R.n)}개 · 평균 기울기 0 · 지난 500거래일 하루 움직임을 다시 뽑아 이은 경로 · 평균은 싣지 않음`}
         : {title: `60거래일 뒤 범위 · ${MC_TAG}`, lines: [[`이번 회차 범위 없음 — ${mcOk ? '이 회사 행이 없음' : mc?.why ?? '몬테카를로 결과 없음'}`]]},
-      {title: '가장 큰 근거 하나', lines: [['1년 추세 ', {p: m12}, ` — ${uni}곳 가운데 상위 ${net}% 그물(기준선 `, {p: q}, ')'], [`${md(x.grow?.plantedAt)} 담을 때 새로 든 초입(그 20거래일 전에는 그물 밖)`]], isl: 'rise'},
-      {title: '반대 요인과 함께 움직이는 곳', lines: [[`가장 큰 위험: ${x.risk?.text ?? '자료 없음'}`], [peerS.length ? `같은 업종 ${peerS.length}곳(${peerTxt})이 함께 솟음 — 같은 사건에 함께 흔들릴 수 있음` : '같은 업종 회사 없음 — 함께 솟는 탑 없음']],
-        note: '회사 사이 원인(원가 · 환율 · 거래처) 자료는 아직 없음 — 지금은 같은 업종만 보임(지어내지 않음)', isl: 'wave', peers: peerS.map(s => String(s.code))},
+      {title: '가장 큰 근거 하나', lines: [['1년 추세 ', {p: m12}, ` — ${uni}곳 가운데 상위 ${net}% 그물(기준선 `, {p: q}, ')'], [`${md(x.grow?.plantedAt)} 담을 때 새로 든 초입(그 20거래일 전에는 그물 밖)`]], act: 'rise'},
+      {title: '반대 요인과 함께 움직이는 곳', lines: [[`가장 큰 위험: ${x.risk?.text ?? '자료 없음'}`], [peerS.length ? `같은 업종 ${peerS.length}곳(${peerTxt}) 칸에 테가 켜짐 — 같은 사건에 함께 흔들릴 수 있음` : '같은 업종 회사 없음']],
+        note: '회사 사이 원인(원가 · 환율 · 거래처) 자료는 아직 없음 — 지금은 같은 업종만 보임(지어내지 않음)', act: 'wave', peers: peerS.map(s => String(s.code))},
       B && days ? {title: `시뮬레이션 요약 · ${MC_TAG}`, lines: [], fan: {days, q: B.q, rep: B.rep, n: B.n, H},
         note: `옅은 띠 = 가운데 80% · 진한 띠 = 가운데 50% · 굵은 선 = 가운데 값 · 점선 3개 = 대표 경로(끝값이 아래 10% · 가운데 · 위 10% 자리에 가장 가까운 실제 경로 하나씩 — 전체 결과 아님) · 경로 ${int(B.n)}개`}
         : {title: `시뮬레이션 요약 · ${MC_TAG}`, lines: [[mcOk ? '이 회사 범위 띠 없음 — 이번 회차에 띠를 세지 않음' : `범위 띠 없음 — ${mc?.why ?? '몬테카를로 결과 없음'}`]]},
@@ -63,17 +63,17 @@ export function tourOf({C, mc = null, elim = null, stocks = [], us = false} = {}
         [`바뀌는 조건: 그물 밖 · 적자 · 위험 공시 — 석 달(${hold}거래일)은 담아 두고 다음 담는 날 정리`],
         [`다음 확인: 다음 담는 날(${next ? md(next) : `${md(planted)}부터 ${hold}거래일 뒤`}) · 범위와 판정은 회차마다 다시 셈`]]},
       {title: last ? '한 바퀴 끝' : '다음 회사', lines: [[last ? `${xs.length}곳을 다 봤어요 — 처음(1위 ${xs[0].name})으로 돌아가 멈춤` : `다음은 ${nx.rank}위 · ${nx.name} — 같은 8걸음으로 봅니다`]]},
-    ].map((s, i) => ({k: TOUR_STEPS[i][0], name: TOUR_STEPS[i][1], note: null, isl: null, ...s}));
+    ].map((s, i) => ({k: TOUR_STEPS[i][0], name: TOUR_STEPS[i][1], note: null, act: null, ...s}));
     for (const s of steps) s.ms = dwellOf(s);
     return {code, rank: x.rank, name: x.name, steps};
   });
   return {items, H};
 }
 
-/** 읽을 시간(ms) — 글 길이 · 섬 움직임(고르기 0.9초 · 다시 솟음 1.1초 · 함께 솟음 1.2초) · 그림 1.5초 · 3.8 ~ 10초(설계 보고 ④ 시안과 같은 셈) */
+/** 읽을 시간(ms) — 글 길이 · 그림 손잡이(고르기 0.9초 · 빈 칸 → 채움 1.1초 · 같은 업종 테 1.2초) · 범위 그림 1.5초 · 3.8 ~ 10초(설계 보고 ④ 시안과 같은 셈) */
 export function dwellOf(s) {
   const n = [s.title, ...s.lines.map(plainOf), s.note ?? ''].join(' ').length + (s.checks ? 40 : 0);
-  const move = s.isl === 'to' ? 900 : s.isl === 'rise' ? 1100 : s.isl === 'wave' ? 1200 : s.fan ? 1500 : 0;
+  const move = s.act === 'to' ? 900 : s.act === 'rise' ? 1100 : s.act === 'wave' ? 1200 : s.fan ? 1500 : 0;
   return Math.min(10000, Math.max(3800, 1400 + n * 70)) + move;
 }
 /** 읽는 글(소리로 듣기 · 화면 읽기) — 제목 · 줄 · 소거 검사 · 덧말 */
