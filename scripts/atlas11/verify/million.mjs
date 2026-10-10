@@ -1,20 +1,22 @@
 #!/usr/bin/env node
 /**
  * ATLAS 11 · 백만 번 맞대기 — 사장님 2026-10-09 19:25 「오류 있느지 1000000번 점 검하고」
- *   무작위 판(씨앗 고정 · 다시 돌려도 같은 판)과 실제 판 읽기(한국 · 미국)로, 칸 그림 셈(site/app/tiles-model.js — 2026-10-10 09:51 · 09:53 「3d 영구 삭제해」 · 「모두다」로
- *   옛 입체 섬 셈 island-model.js 를 바꿈)과 고르는 셈(lib/atlas11/cand.mjs)의 약속을 하나하나 따로 셈해 맞댄다 — 맞댄 횟수가 1,000,000 을 넘을 때까지
- *   (한 번 = 약속 하나를 회사 하나 · 판 하나에서 따로 센 값과 견줌)
- *   ① 칸: 묶음 셋(그물 안 ⇔ flags 다섯째 · 셀 수 없음 ⇔ 1년 추세 없음 · 나머지 그물 밖) · 묶음 안 차례 = 1년 추세 큰 순(같으면 기호 차례) · 자리(줄 · 칸) = 차례 ÷ 20 ·
- *        한 칸에 한 회사 · 20거래일 전 그물 안 ⇔ 그 날 기준선 이상 · 초록 = 기준 셋 · 번호 칸 7곳 = 후보 차례
+ *   무작위 판(씨앗 고정 · 다시 돌려도 같은 판)과 실제 판 읽기(한국 · 미국)로, 첫 화면 막대 그래프 셈(site/app/candbars.js — 2026-10-10 11:19(마카오) 「바둑판 영구 삭제해」로
+ *   365칸 바둑판 셈 tiles-model.js 를 바꿈)과 고르는 셈(lib/atlas11/cand.mjs)의 약속을 하나하나 따로 셈해 맞댄다 — 맞댄 횟수가 1,000,000 을 넘을 때까지
+ *   (한 번 = 약속 하나를 줄 하나 · 판 하나에서 따로 센 값과 견줌)
+ *   ① 막대: 줄 = 후보(순위 차례) · 1년 추세 % = 판 읽기 값(소수 첫째) · 20거래일 전 % · 점선 = 기준선(qD) · 그때 기준선(qp 소수 첫째) · 같은 축(따로 셈)이 0 · 기준선 · 모든 값을 담음 ·
+ *        막대 = 0 에서 값까지(오름 = 0 의 오른쪽 · 내림 = 왼쪽 · 아주 짧으면 0.6%) · 값이 없으면 막대 없음 · 짧은 세로 줄 자리 = 20거래일 전 값 · 큰 값이 오른쪽 ·
+ *        그물 안 곳 수(flags 다섯째 · 값 있음) · 기준 셋을 넘은 곳 수(앞 셋 111)
  *   ② 고름: 기준선 = 넘파이 직선 보간(따로 셈) · 그물 안 · 초입 · 기준(그날 종가 · 흑자 · 위험 공시) · 7곳 = 1년 추세 큰 순 · 같은 업종 3곳(따로 고름) ·
  *        flags 여섯 글자 · 미국 판 위험 공시 = 「확인 못 함」(없다고 쓰지 않음)
- *   ③ 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이 … 점검 1000000만번」): 칸을 누르면 그 회사 · 그 업종(같은 g 모두) ·
- *        회사 고리 = 판의 회사 · 업종 고리 = 판의 업종 · 같은 칸을 다시 누르면 닫힘 · 다른 칸은 그 칸으로 · 평평한 그림이라 모든 업종에 누를 칸이 있음(가린 칸 0)
+ *   ③ 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이 … 점검 1000000만번」): 실제 판에서 막대 줄 = 판의 회사(줄 → 카드 → 회사 화면) ·
+ *        후보 업종 = 판의 업종 — 화면마다 누름 수는 빠짐없이 도는 검사의 3단 클릭 층(click3)이 잼
  *   node scripts/atlas11/verify/million.mjs [--target 1000000] [--out reports/atlas11/verify/million-latest.json]
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {tilesModel, COLS, zoneOf, tapStep, tapInfo} from '../../../site/app/tiles-model.js';
+import {barsModel, barGeo} from '../../../site/app/candbars.js';
+import {posOf} from '../../../site/app/charts.js';
 import {candOf, CAND_RULES, RISK_UNKNOWN} from '../../../lib/atlas11/cand.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
@@ -24,50 +26,51 @@ const ok = (kind, cond, what) => { checks++; perKind[kind] = (perKind[kind] ?? 0
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 function rngOf(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
 const qLin = (xs, p) => { const a = xs.filter(fin).sort((x, y) => x - y), n = a.length; if (!n) return null; const pos = (p / 100) * (n - 1), lo = Math.floor(pos), hi = Math.min(n - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
-const byCode = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+const near = (a, b) => Math.abs(a - b) < 1e-9;
 
-/* ① 칸 그림 셈 — 판 하나(C · stocks)에서 약속을 회사마다 맞댐 */
-function checkTiles(C, stocks, tag) {
-  const M = tilesModel(C, stocks); ok('칸 · 값이 있으면 그림', !!M, tag); if (!M) return;
-  const cells = M.cells, n = stocks.length, F = C.flags ?? {}, Gm = C.grow.m;
-  ok('칸 · 칸 수', cells.length === n, tag);
-  const mOf = c => (fin(Gm[c]?.[0]) ? Gm[c][0] : null), mpOf = c => (fin(Gm[c]?.[1]) ? Gm[c][1] : null), qp = fin(C.grow.qp) ? C.grow.qp / 100 : null;
-  const blkW = c => { const m = mOf(c); return m === null ? 2 : String(F[c] ?? '')[4] === '1' ? 0 : 1; };
-  const want = [0, 1, 2].map(b => stocks.map(s => String(s.code)).filter(c => blkW(c) === b).sort((a, z) => (b === 2 ? 0 : mOf(z) - mOf(a)) || byCode(a, z))); // 따로 줄 세움
-  ok('칸 · 묶음 수 = 따로 센 수', M.blocks.join() === want.map(x => x.length).join(), `${tag} ${M.blocks} vs ${want.map(x => x.length)}`);
-  ok('칸 · 그리는 차례 = 묶음 ① → ② → ③ · 1년 추세 큰 순', M.order.map(i => cells[i].code).join() === want.flat().join(), tag);
-  const spot = new Set();
-  for (const c of cells) {
-    const b = blkW(c.code), k = want[b].indexOf(c.code), up = String(F[c.code] ?? '')[4] === '1' && mOf(c.code) !== null;
-    ok('칸 · 선 위 ⇔ 그물 안', (c.blk === 0) === up && c.up === up, `${tag} ${c.code}`);
-    ok('칸 · 값 없음 = 셋째 묶음', (mOf(c.code) === null) === (c.blk === 2), `${tag} ${c.code}`);
-    ok('칸 · 차례 = 1년 추세 차례', c.blk === b && c.k === k, `${tag} ${c.code} ${c.k} vs ${k}`);
-    ok('칸 · 자리 = 차례 ÷ 20(줄 · 칸)', c.row === Math.floor(k / COLS) && c.col === k % COLS && c.col >= 0 && c.col < COLS, `${tag} ${c.code}`);
-    spot.add(`${c.blk}:${c.row}:${c.col}`);
-    const upP = mpOf(c.code) !== null && qp !== null && mpOf(c.code) >= qp;
-    ok('칸 · 20거래일 전 그물 안 ⇔ 그 날 기준선 이상', c.upP === upP, `${tag} ${c.code}`);
-    ok('칸 · 초록 = 그물 안 · 기준 셋', c.elig === (String(F[c.code] ?? '').slice(0, 3) === '111'), `${tag} ${c.code}`);
-    ok('칸 · 1년 추세 % = 판 읽기 값(소수 첫째)', c.m12 === (mOf(c.code) === null ? null : Number((mOf(c.code) * 100).toFixed(1))), `${tag} ${c.code}`);
-  }
-  ok('칸 · 한 칸에 한 회사(자리가 겹치지 않음)', spot.size === n, tag);
-  const items = [...(C.items ?? [])].sort((a, b) => a.rank - b.rank);
-  ok('칸 · 번호 칸 수 = 후보 수', M.seven.length === items.filter(x => stocks.some(s => String(s.code) === String(x.code))).length, tag);
-  M.seven.forEach((i, k) => ok('칸 · 번호 칸 차례 = 후보 차례', cells[i].code === String(items[k].code) && cells[i].rank === items[k].rank, `${tag} ${k}`));
-  ok('칸 · 선 위 곳 수', M.above === cells.filter(c => c.up).length, tag);
-  ok('칸 · 빗금 곳 수', M.none === cells.filter(c => c.m12 === null).length, tag);
+/* ① 막대 그래프 셈 — 판 하나(C)에서 약속을 줄마다 맞댐 · 축 · 자리는 따로 셈(같은 꼴 · 다른 코드) */
+function checkBars(C, tag) {
+  const M = barsModel(C), Gm = C?.grow?.m, items = [...(C?.items ?? [])].sort((a, b) => a.rank - b.rank);
+  ok('막대 · 값이 있으면 그림 · 없으면 그리지 않음', !!M === !!(C?.grow && Gm && items.length), tag); if (!M) return;
+  const d1 = v => (fin(v) ? Number((v * 100).toFixed(1)) : null), G = C.grow;
+  const qW = fin(G.qD) ? G.qD : fin(G.q) ? Number(G.q.toFixed(1)) : null, qpW = fin(G.qp) ? Number(G.qp.toFixed(1)) : null;
+  ok('막대 · 줄 수 = 후보 수', M.rows.length === items.length && M.n === items.length, `${tag} ${M.rows.length} vs ${items.length}`);
+  ok('막대 · 점선 = 기준선(qD) · 그때 기준선(qp 소수 첫째)', M.q === qW && M.qp === qpW, `${tag} ${M.q}/${M.qp} vs ${qW}/${qpW}`);
+  const all = [0, qW, qpW, ...items.flatMap(x => [d1(Gm[String(x.code)]?.[0]), d1(Gm[String(x.code)]?.[1])])].filter(fin);
+  let lo = Math.min(...all), hi = Math.max(...all); if (hi - lo < 1e-9) { lo = -1; hi = 1; } const span = hi - lo; if (lo < 0) lo -= span * 0.04; if (hi > 0) hi += span * 0.04; // 축 따로 셈(4% 여유)
+  ok('막대 · 같은 축(따로 셈)', near(M.ax.lo, lo) && near(M.ax.hi, hi), `${tag} ${M.ax.lo}~${M.ax.hi} vs ${lo}~${hi}`);
+  const pW = v => ((v - lo) / (hi - lo)) * 100, p0 = pW(0);
+  ok('막대 · 0 · 기준선이 축 안', [0, qW, qpW].filter(fin).every(v => v >= M.ax.lo && v <= M.ax.hi), tag);
+  items.forEach((x, k) => {
+    const r = M.rows[k], c = String(x.code), m = Gm[c] ?? [], who = `${tag} ${c}`;
+    ok('막대 · 줄 차례 = 순위 차례', !!r && r.code === c && r.rank === x.rank, who); if (!r) return;
+    ok('막대 · 1년 추세 % = 판 읽기 값(소수 첫째)', r.m12 === d1(m[0]), `${who} ${r.m12} vs ${m[0]}`);
+    ok('막대 · 20거래일 전 % = 판 읽기 값(소수 첫째)', r.m12p === d1(m[1]), `${who} ${r.m12p} vs ${m[1]}`);
+    for (const v of [r.m12, r.m12p]) if (fin(v)) ok('막대 · 같은 축이 값을 담음', v >= M.ax.lo && v <= M.ax.hi && near(posOf(M.ax, v), pW(v)), `${who} ${v}`);
+    const g = barGeo(M.ax, r.m12);
+    if (!fin(r.m12)) ok('막대 · 값이 없으면 막대 없음', g === null, who);
+    else { const pv = pW(r.m12), want = r.m12 > 0 ? {l: p0, w: Math.max(0.6, pv - p0)} : r.m12 < 0 ? {l: pv, w: Math.max(0.6, p0 - pv)} : {l: p0, w: 0.6};
+      ok('막대 · 막대 = 0 에서 값까지(오름 오른쪽 · 내림 왼쪽 · 짧으면 0.6%)', !!g && near(g.l, want.l) && near(g.w, want.w), `${who} ${g?.l}/${g?.w} vs ${want.l}/${want.w}`); }
+    if (fin(r.m12p)) ok('막대 · 짧은 세로 줄 자리 = 20거래일 전 값', near(posOf(M.ax, r.m12p), pW(r.m12p)), who);
+    const pr = M.rows[k - 1]; if (pr && fin(pr.m12) && fin(r.m12)) ok('막대 · 큰 값이 오른쪽(값 차례 = 자리 차례)', Math.sign(posOf(M.ax, r.m12) - posOf(M.ax, pr.m12)) === Math.sign(r.m12 - pr.m12), who);
+  });
+  const F = C.flags ?? {}, codes = Object.keys(F), upW = c => String(F[c] ?? '')[4] === '1' && fin(Gm[c]?.[0]);
+  ok('막대 · 그물 안 곳 수(flags 다섯째 · 값 있음)', M.above === codes.filter(upW).length, `${tag} ${M.above}`);
+  ok('막대 · 기준 셋을 넘은 곳 수(앞 셋 111)', M.green === codes.filter(c => upW(c) && String(F[c]).slice(0, 3) === '111').length, `${tag} ${M.green}`);
 }
 
-/* 무작위 판 — 업종 73곳 × 5곳 · 1년 추세 · 20거래일 전 값 · 기준 셋 · 값 빠짐 */
-function randomTiles(seed) {
-  const r = rngOf(seed), stocks = [], m = {}, flags = {}, nSec = 73;
-  for (let g = 0; g < nSec; g++) for (let k = 0; k < 5; k++) { const code = `R${String(seed % 1000).padStart(3, '0')}${String(g * 5 + k).padStart(3, '0')}`; stocks.push({code, name: code, g: 'g' + g, gl: '업종' + g});
-    const a = r() < 0.03 ? null : Number(((r() - 0.3) * 2).toFixed(4)), b = r() < 0.03 ? null : Number(((r() - 0.3) * 2).toFixed(4)); m[code] = [a, b]; }
-  const q = qLin(stocks.map(s => m[s.code][0]), 80), qp = qLin(stocks.map(s => m[s.code][1]), 80);
-  for (const s of stocks) { const [a, b] = m[s.code], e = [r() < 0.95, r() < 0.9, r() < 0.97], inNet = fin(a) && a >= q, inPrev = fin(b) && b >= qp;
-    flags[s.code] = [...e, fin(a), inNet, inNet && !inPrev].map(x => (x ? '1' : '0')).join(''); }
-  const fresh = stocks.filter(s => flags[s.code] === '111111').sort((x, y) => m[y.code][0] - m[x.code][0] || (x.code < y.code ? -1 : 1));
-  const per = new Map(), items = []; for (const s of fresh) { if (items.length >= 7) break; const k = per.get(s.g) ?? 0; if (k >= 3) continue; per.set(s.g, k + 1); items.push({code: s.code, rank: items.length + 1, status: 'met'}); }
-  return {C: {grow: {m, qp: fin(qp) ? qp * 100 : null}, flags, items}, stocks};
+/* 무작위 막대 판 — 회사 수 · 1년 추세(오름 · 내림 · 아주 작음 · 아주 큼 · 같은 값 · 빠짐) · 20거래일 전 · 기준 셋 · 후보 0~9곳 · qD 없음 · qp 없음 */
+function randomBars(seed) {
+  const r = rngOf(seed * 2654435761 + 7), N = 8 + Math.floor(r() * 393), m = {}, flags = {}, codes = [];
+  const val = () => { const u = r(); return u < 0.04 ? null : u < 0.08 ? 0 : u < 0.12 ? Number(((r() - 0.5) * 0.004).toFixed(4)) : u < 0.15 ? Number((3 + r() * 9).toFixed(4)) : Number(((r() - 0.3) * 2).toFixed(4)); };
+  for (let i = 0; i < N; i++) { const code = `B${String(seed % 10000).padStart(4, '0')}${String(i).padStart(3, '0')}`; codes.push(code); m[code] = [val(), val()]; if (i && r() < 0.05) m[code][0] = m[codes[i - 1]][0]; } // 같은 값도
+  const q = qLin(codes.map(c => m[c][0]), 80), qp = qLin(codes.map(c => m[c][1]), 80);
+  for (const c of codes) { const [a, b] = m[c], e = [r() < 0.95, r() < 0.9, r() < 0.97], inNet = fin(a) && fin(q) && a >= q, inPrev = fin(b) && fin(qp) && b >= qp; flags[c] = [...e, fin(a), inNet, inNet && !inPrev].map(x => (x ? '1' : '0')).join(''); }
+  const nItems = Math.floor(r() * 10), pick = [...codes].sort(() => r() - 0.5).slice(0, nItems).sort((x, y) => (m[y][0] ?? -9) - (m[x][0] ?? -9));
+  const items = pick.map((code, k) => ({code, rank: k + 1, status: r() < 0.8 ? 'met' : 'wait', name: r() < 0.9 ? '회사' + code : undefined, g: r() < 0.9 ? 'g' + Math.floor(r() * 73) : null}));
+  if (r() < 0.5) items.reverse(); // 차례가 뒤섞여 와도 순위 차례로
+  const qPct = fin(q) ? q * 100 : null, grow = {m, q: qPct, qD: r() < 0.1 || !fin(qPct) ? undefined : Number(qPct.toFixed(1)), qp: r() < 0.05 || !fin(qp) ? null : qp * 100};
+  return {grow: r() < 0.01 ? null : grow, flags, items};
 }
 
 /* ② 고르는 셈 — 무작위 종가 300거래일 · 결산 · 공시로 candOf 를 돌리고 따로 셈해 맞댐 */
@@ -112,45 +115,24 @@ function checkCand(seed, place) {
   }
   if (place !== 'kr') ok('고름 · 미국 판 돈 유입 1~365등 없음', C.rank === null, tag);
   ok('고름 · pool 그물 수', C.pool.net === B.stocks.filter(s => fin(m.get(s.code)) && m.get(s.code) >= q).length, tag);
+  checkBars(C, `고른 판 ${tag}`); // 고르는 셈이 낸 묶음을 그대로 막대로(판 읽기와 같은 꼴)
 }
 
-/* ③ 3단 클릭 — 판 하나(칸 · 판의 회사 · 업종 기호)에서 누름 셈의 약속 · 평평한 그림이라 모든 칸을 누를 수 있음 */
-const nav3 = {zones: {}, tappable: {}};
-function checkNav3(C, stocks, tag, {codes = null, gids = null} = {}) {
-  const M = tilesModel(C, stocks); ok('3단 · 칸 그림이 있음', !!M, tag); if (!M) return;
-  const cells = M.cells, n = cells.length, zones = new Map(); cells.forEach((c, i) => { const z = zoneOf(c); if (!zones.has(z)) zones.set(z, []); zones.get(z).push(i); });
-  for (let j = 0; j < n; j++) {
-    const c = cells[j], s1 = tapStep(cells, null, j), info = tapInfo(cells, s1);
-    ok('3단 · 칸을 누르면 그 회사', s1.i === j && !!info && info.co.code === c.code, `${tag} ${c.code}`);
-    ok('3단 · 회사 고리 = #/stock/기호', info?.co.href === `#/stock/${c.code}`, `${tag} ${c.code}`);
-    if (codes) ok('3단 · 회사 고리 = 판의 회사', codes.has(c.code), `${tag} ${c.code}`);
-    ok('3단 · 그 업종 = 같은 g 의 회사 모두', !!info && info.zone.cos.length === zones.get(zoneOf(c)).length && info.zone.cos.every(x => zoneOf(cells[cells.findIndex(y => y.code === x.code)]) === zoneOf(c)), `${tag} ${c.code}`);
-    ok('3단 · 업종 칸에 누른 회사 표시(하나)', !!info && info.zone.cos.filter(x => x.on).length === 1 && info.zone.cos.find(x => x.on)?.code === c.code, `${tag} ${c.code}`);
-    ok('3단 · 업종 고리 = #/i/업종', !!info && (c.g == null ? info.zone.href === null : info.zone.href === `#/i/${c.g}`), `${tag} ${c.code}`);
-    if (gids && c.g != null) ok('3단 · 업종 고리 = 판의 업종', gids.has(c.g), `${tag} ${c.g}`);
-    const s2 = tapStep(cells, s1, j); ok('3단 · 같은 칸을 다시 누르면 닫힘', s2.i === -1 && s2.z === null && tapInfo(cells, s2) === null, `${tag} ${c.code}`);
-    ok('3단 · 빈 곳을 누르면 닫힘', tapStep(cells, s1, -1).i === -1, `${tag} ${c.code}`);
-    for (let k = 0; k < n; k++) if (k !== j) { const s3 = tapStep(cells, s1, k); ok('3단 · 다른 칸을 누르면 그 칸 · 그 업종', s3.i === k && s3.z === zoneOf(cells[k]), `${tag} ${c.code}→${cells[k].code}`); }
-  }
-  const spots = new Set(cells.map(c => `${c.blk}:${c.row}:${c.col}`)), zoneOk = new Set(cells.filter(c => c.col >= 0 && c.col < COLS).map(zoneOf));
-  nav3.zones[tag] = zones.size; nav3.tappable[tag] = spots.size;
-  ok('3단 · 모든 업종에 누를 칸이 있음(가린 칸 0 — 평평한 그림)', zoneOk.size === zones.size && spots.size === n, `${tag} 업종 ${zoneOk.size}/${zones.size} · 칸 ${spots.size}/${n}`);
-}
-
-/* 실제 판 읽기(한국 · 미국) — 사이트 묶음(dist)에 있으면 칸 그림 셈을 같은 약속으로 */
-const real = [];
+/* 실제 판 읽기(한국 · 미국) — 사이트 묶음(dist)에 있으면 막대 셈을 같은 약속으로 · 3단: 막대 줄 = 판의 회사 · 후보 업종 = 판의 업종 */
+const real = [], click3 = {};
 for (const [place, f] of [['kr', 'dist/data/atlas11/view/lens.json'], ['us', 'dist/us/data/atlas11/view/lens.json']]) {
-  try { const L = JSON.parse(await fs.readFile(f, 'utf8')); if (L.cand?.ready) { checkTiles(L.cand, L.stocks, `실제 ${place}`); real.push(place);
-    const B = JSON.parse(await fs.readFile(f.replace('lens.json', 'board.json'), 'utf8'));
-    checkNav3(L.cand, L.stocks, `실제 ${place}`, {codes: new Set(B.companies.map(c => String(c.code))), gids: new Set((B.groups ?? []).map(g => String(g.id)))}); } } catch (e) { if (process.env.MILLION_DEBUG) console.error(e); }
+  try { const L = JSON.parse(await fs.readFile(f, 'utf8')); if (!L.cand?.ready) continue;
+    checkBars(L.cand, `실제 ${place}`); real.push(place);
+    const B = JSON.parse(await fs.readFile(f.replace('lens.json', 'board.json'), 'utf8')), codes = new Set(B.companies.map(c => String(c.code))), gids = new Set((B.groups ?? []).map(g => String(g.id)));
+    const M = barsModel(L.cand); let n = 0;
+    for (const r of M?.rows ?? []) { ok('3단 · 막대 줄 = 판의 회사(줄 → 카드 → 회사 화면)', codes.has(r.code), `실제 ${place} ${r.code}`); n++; if (r.g != null) ok('3단 · 후보 업종 = 판의 업종', gids.has(r.g), `실제 ${place} ${r.g}`); }
+    click3[place] = n;
+  } catch (e) { if (process.env.MILLION_DEBUG) console.error(e); }
 }
-const t0 = Date.now(); let boardsT = 0, boardsC = 0;
+const t0 = Date.now(); let boardsB = 0, boardsC = 0;
 for (let seed = 1; boardsC < 60; seed++) { checkCand(seed, seed % 2 ? 'kr' : 'us'); boardsC++; }
-let boardsN = 0; for (let seed = 1; seed <= 6; seed++) { const {C, stocks} = randomTiles(seed + 5000); checkNav3(C, stocks, `무작위 칸 3단 #${seed}`); boardsN++; } // 3단 클릭 — 무작위 판(누름 셈)
-const nav3Now = () => Object.entries(perKind).filter(([k]) => k.startsWith('3단')).reduce((t, [, v]) => t + v, 0);
-const base3 = nav3Now(); for (let seed = 1; checks - base3 < TARGET; seed++) { const {C, stocks} = randomTiles(seed); checkTiles(C, stocks, `무작위 칸 #${seed}`); boardsT++; } // 칸 · 고르는 셈 약속은 3단과 따로 목표 수만큼
-const nav3n = nav3Now();
-const res = {schema: 'atlas11-million-3', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), checks, target: TARGET, failed: fails.length, real, boards: {tiles: boardsT, cand: boardsC, nav3: boardsN}, nav3: {checks: nav3n, ...nav3}, perKind, fails};
+for (let seed = 1; checks < TARGET; seed++) { checkBars(randomBars(seed), `무작위 막대 #${seed}`); boardsB++; } // 막대 · 고르는 셈 약속을 목표 수만큼
+const res = {schema: 'atlas11-million-4', at: new Date().toISOString(), seconds: Math.round((Date.now() - t0) / 1000), checks, target: TARGET, failed: fails.length, real, boards: {bars: boardsB, cand: boardsC}, click3, perKind, fails};
 await fs.mkdir(path.dirname(OUT), {recursive: true}); await fs.writeFile(OUT, JSON.stringify(res, null, 1) + '\n');
-console.log(JSON.stringify({checks, failed: fails.length, real, boards: res.boards, nav3: nav3n, seconds: res.seconds, sample: fails.slice(0, 5)}));
+console.log(JSON.stringify({checks, failed: fails.length, real, boards: res.boards, click3, seconds: res.seconds, sample: fails.slice(0, 5)}));
 process.exit(fails.length ? 1 : 0);

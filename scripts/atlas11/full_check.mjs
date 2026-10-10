@@ -48,7 +48,7 @@ const fin = v => typeof v === 'number' && Number.isFinite(v);
 const HAN = /[가-힣]/;
 const fails = [], stats = {pages: 0, byLang: {}, plans: 0, numbers: 0, links: 0, texts: 0, motion: 0, edge: 0, transLangs: 0, transStrings: 0, layoutLangs: 0, layoutPages: 0, flat: {pages: 0, checks: 0, hits: 0}, click3: {pairs: 0, over: 0, max: 0, hist: {}},
   easy: {pages: 0, edge: 0, what: 0, numPages: 0, numTokens: 0, front: 0, hardChecks: 0, hardHits: 0, bannedChecks: 0, checks: 0, click3: {pairs: 0, over: 0, max: 0, hist: {}}},
-  tour: {boards: 0, started: 0, steps: 0, most: 0, paused: 0, resumed: 0, off: 0, rest: 0, checks: 0}}; // flat = 입체 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」 — 본 화면 · 본 부품 · 걸린 것) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
+  tour: {boards: 0, started: 0, steps: 0, most: 0, paused: 0, resumed: 0, off: 0, rest: 0, checks: 0}}; // flat = 입체 · 바둑판 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」 · 「바둑판 영구 삭제해」 — 본 화면 · 본 부품 · 걸린 것) · click3 = 모든 화면 쌍의 최소 누름 수(3단 클릭 — 규칙 47)
 const bad = (b, r, what) => { fails.push({board: b, route: r, what}); };
 const compare = (b, r, got, want) => { stats.numbers += cmp(got, want, w => bad(b, r, w)); };
 const t0 = Date.now(), lap = {};
@@ -88,7 +88,8 @@ const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
     m.sw = document.documentElement.scrollWidth; m.cw = document.documentElement.clientWidth;
     m.over = []; if (sec) for (const x of sec.querySelectorAll('*')) { const r = x.getBoundingClientRect(); if (r.width && r.right > m.cw + 1) { m.over.push(cls(x)); if (m.over.length >= 3) break; } }
     m.done = !!ra?.classList.contains('ra-done');
-    // 입체 없음(사장님 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 「모든 화면 3D」 지움 · 10:00 「가 나 는 지우지마」 = 초대장 사진 · 소개 영상은 따로 쪽이라 이 검사 밖)
+    // 입체 · 바둑판 없음(사장님 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 「모든 화면 3D」 지움 · 10:00 「가 나 는 지우지마」 = 초대장 사진 · 소개 영상은 따로 쪽이라 이 검사 밖 ·
+    //   11:19 「바둑판 영구 삭제해」 — 화면 어디에도 작은 네모 칸 20개 넘게 줄지어 깔린 판(CSS 칸 배치 · 옛 첫 화면 칸 그림 .tl)이 없어야 함 · 규칙 51)
     //   화면 전체: 캔버스 · 섬 · 지도 섬 없음 · 그림 칸(조작 단추 줄 빼고 보이는 부품 모두): 3D 변환 · 원근 · 그림자 필터 · 어긋나거나 번진 그림자(입체 그림자 · 파인 홈) · 막대 · 기둥 · 칸의 기울인 면(가상 요소) · 구슬 빛 없음
     { const main = document.getElementById('main'), art = document.querySelector('#main section[data-art], #main section.rt[data-place]'), hit = [];
       const lens3 = x => (x.replace(/rgba?\([^)]*\)/g, '').match(/-?\d*\.?\d+px/g) ?? []).map(parseFloat);
@@ -96,6 +97,9 @@ const CRAWL = async ({routes, collect, easy = false, nums = false}) => {
       const dropDepth = f => /drop-shadow/.test(f) && [...f.matchAll(/drop-shadow\(([^()]*(?:\([^)]*\)[^()]*)*)\)/g)].some(m2 => { const [dx = 0, dy = 0] = lens3(m2[1]); return dx !== 0 || dy !== 0; });
       if (main?.querySelector('canvas')) hit.push('캔버스');
       if (main?.querySelector('.isl, .imap, [class*="isl-"], [class*="imap-"]')) hit.push('섬 · 지도 섬');
+      if (main?.querySelector('.tl, .tl-grid, .tl-c')) hit.push('바둑판(칸 그림)');
+      if (main) for (const g of main.querySelectorAll('*')) { if (g.childElementCount < 20 || !g.getClientRects().length) continue; const d = getComputedStyle(g).display; if (d !== 'grid' && d !== 'inline-grid') continue; // 바둑판 = 칸 배치 안에 작은 네모(44px 이하 · 가로세로 비슷)가 20개 넘게
+        let sq = 0; for (const c of g.children) { const r = c.getBoundingClientRect(); if (r.width > 0 && r.width <= 44 && Math.abs(r.width - r.height) <= Math.max(2, 0.2 * Math.max(r.width, r.height))) sq++; } if (sq >= 20) hit.push('바둑판 ' + cls(g)); }
       let n = 0;
       if (art) for (const el of art.querySelectorAll('*')) { if (el.closest('.ra-ctl') || !el.getClientRects().length) continue; const st = getComputedStyle(el); if (st.display === 'none') continue; n++;
         if (/matrix3d/.test(st.transform) || st.perspective !== 'none' || st.transformStyle === 'preserve-3d') hit.push('3D 변환 ' + cls(el));
@@ -165,10 +169,10 @@ const MOTION = async ({hash, limit, scroll = false}) => {
   const out = {most, beats: [...beats], done: !!document.querySelector('#main .ra:not([data-old]).ra-done'), ms: Math.round(performance.now() - t1), startDone, played: !!play};
   window.scrollTo(0, 0); return out;
 };
-// 저절로 둘러보기 지켜보기(규칙 49 ④) — 처음 연 첫 화면에서 저절로 시작했나 · 걸음 want 개를 지나는 동안 매 프레임: 움직이는 것 수(웹 움직임 + 칸 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사
+// 저절로 둘러보기 지켜보기(규칙 49 ④) — 처음 연 첫 화면에서 저절로 시작했나 · 걸음 want 개를 지나는 동안 매 프레임: 움직이는 것 수(웹 움직임 + 막대 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사
 const TOUR_WATCH = async ({want = 5, limit = 15000}) => {
   for (let i = 0; i < 300 && !document.querySelector('#main .tu'); i++) await new Promise(r => setTimeout(r, 20)); // 첫 화면은 판 읽기를 받은 뒤 그림(준비 표시보다 늦을 수 있음)
-  const t = document.querySelector('#main .tu'), I = document.querySelector('#main .tl')?.__tl;
+  const t = document.querySelector('#main .tu'), I = document.querySelector('#main .cb')?.__cb;
   if (!t) return {none: true};
   const t0 = performance.now(); while (t.dataset.tour !== 'play' && performance.now() - t0 < 6000) await new Promise(r => setTimeout(r, 25));
   const out = {started: t.dataset.tour === 'play', auto: t.dataset.tourAuto === '1', waitMs: Math.round(performance.now() - t0), most: 0, seen: [], same: [], ms: 0};
@@ -252,9 +256,9 @@ function judge(m, {b, kind, id, E, gids, codes, famIds, lang, tag, layoutOnly = 
   if (m.footDup) no('맨 아래 줄에 하규 응원 · 건의 줄이 또 있음(맨 위로 옮김 · 규칙 1)');
   if (bigFont) return; // 가장 큰 글씨는 옆 넘침만(한 화면은 보통 글씨 규칙)
   if (m.arts !== 1) no(`그림 수 ${m.arts}(1이어야 함)`);
-  stats.flat.pages++; stats.flat.checks += (m.flat?.n ?? 0) + 2; // 입체 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」)
+  stats.flat.pages++; stats.flat.checks += (m.flat?.n ?? 0) + 3; // 입체 · 바둑판 없음 층(2026-10-10 「3d 영구 삭제해」 · 「모두다」 · 「바둑판 영구 삭제해」)
   if (!m.flat) no('입체 없음 층을 재지 못함');
-  else if (m.flat.hit.length) { stats.flat.hits += m.flat.hit.length; no(`입체가 남음(2026-10-10 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 지움): ${m.flat.hit.join(' · ')}`); }
+  else if (m.flat.hit.length) { stats.flat.hits += m.flat.hit.length; no(`입체 · 바둑판이 남음(2026-10-10 「3d 영구 삭제해」 · 「모두다」 · 「바둑판 영구 삭제해」 — 규칙 50 · 51): ${m.flat.hit.join(' · ')}`); }
   if (!m.done) no('움직임 줄이기 설정에서 끝 모습이 아님');
   if (INFO_FIRST.has(kind)) { // 판단 정보 먼저(지시서 4) — 첫 칸이 한 화면 안 · 칸 번호 차례 · 그림은 정보 칸 아래 · 시장 첫 화면은 ① ~ ⑤ 다섯
     const f = m.firsts ?? [], nums = f.map(x => x[0]);
@@ -333,7 +337,7 @@ for (const b of EDGE_ONLY ? [] : BOARDS) tasks.push(async () => {
   await ctx.close(); console.log(`${b} · 움직임 ${QUICK ? 6 : kinds.length}종 · ${Math.round((Date.now() - t0) / 1000)}초`);
 });
 /* ── 둘러보기 층(규칙 49 ④ · 사장님 2026-10-10 05:14 「4너에제안대로 해」) — 판마다 첫 화면을 처음 열어(움직임 줄이기 아님):
-   저절로 시작 · 걸음 넘김 · 한 번에 하나(웹 움직임 + 칸 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사 · 글을 누르면 멈춤(기다려도 그대로) · 「이어 보기」 · 「이 기기에서 끄기」 → 다시 열어도 저절로 안 돎
+   저절로 시작 · 걸음 넘김 · 한 번에 하나(웹 움직임 + 막대 그림의 테 차례) · 그림 금빛 = 카드 = 둘러보기 회사 · 글을 누르면 멈춤(기다려도 그대로) · 「이어 보기」 · 「이 기기에서 끄기」 → 다시 열어도 저절로 안 돎
    움직임 줄이기 창은 ① 모든 화면 판정이 봄(data-tour = rest) */
 async function tourOne(b) {
   const where = '#/ [둘러보기]', T = stats.tour, no = w => bad(b, where, w), wait = ms => new Promise(r => setTimeout(r, ms));
@@ -353,8 +357,8 @@ async function tourOne(b) {
     await page.click('#main .cd-why', {position: {x: 8, y: 6}}); await wait(120);
     const p1 = await page.evaluate(TOUR_STATE); await wait(3200); const p2 = await page.evaluate(TOUR_STATE); T.checks += 2;
     if (p1?.mode !== 'pause') no(`글을 눌러도 멈추지 않음(${p1?.mode})`); else if (p2?.key !== p1.key || p2?.mode !== 'pause') no(`멈춘 뒤에도 걸음이 넘어감(${p1.key} → ${p2?.key})`); else T.paused++;
-    // 「이어 보기」 — 칸 그림을 화면에 두고 누르면 다시 넘어감
-    await page.evaluate(() => document.querySelector('#main .tl-stage').scrollIntoView({block: 'center'})); await wait(150);
+    // 「이어 보기」 — 막대 그림을 화면에 두고 누르면 다시 넘어감
+    await page.evaluate(() => document.querySelector('#main .cb-stage').scrollIntoView({block: 'center'})); await wait(150);
     await page.click('#main .tu-main'); const r0 = await page.evaluate(TOUR_STATE); T.checks += 2;
     const moved = await page.waitForFunction(k => { const t = document.querySelector('#main .tu'); return t && `${t.dataset.tourPos}.${t.dataset.tourStep}` !== k; }, r0?.key, {timeout: 6000}).then(() => true).catch(() => false);
     if (r0?.mode !== 'play' || !moved) no(`「이어 보기」를 눌러도 다시 넘어가지 않음(${r0?.mode})`); else T.resumed++;
@@ -366,7 +370,7 @@ async function tourOne(b) {
     if (o1?.store !== '"off"') no(`「이 기기에서 끄기」가 저장되지 않음(${o1?.store})`);
     await page.reload({waitUntil: 'domcontentloaded'}); await page.waitForFunction(() => document.documentElement.dataset.ready === '1' && typeof window.atlasRoute === 'function', null, {timeout: 30000});
     await page.evaluate(() => (document.querySelector('#main .tu') ? null : window.atlasRoute('#/'))); await page.waitForSelector('#main .tu', {timeout: 15000});
-    await page.evaluate(() => document.querySelector('#main .tl-stage').scrollIntoView({block: 'center'})); await wait(2600);
+    await page.evaluate(() => document.querySelector('#main .cb-stage').scrollIntoView({block: 'center'})); await wait(2600);
     const o2 = await page.evaluate(TOUR_STATE);
     if (o2?.mode !== 'rest' || o2?.auto !== '0') no(`끈 뒤 다시 열었는데 저절로 돎(${o2?.mode} · auto ${o2?.auto})`); else if (!/꺼짐/.test(o2?.off ?? '')) no(`끈 뒤 「저절로 돌기: 꺼짐」 줄이 없음(${o2?.off})`); else T.off++;
   } catch (e) { no('둘러보기를 재지 못함: ' + String(e?.message ?? e).slice(0, 200)); }

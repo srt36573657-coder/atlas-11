@@ -207,61 +207,35 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 .bc.cmp-bc .bc-bar.cmp-pow { background: var(--ink2); } /* 회사 크기에 견준 순매수 세기 — 값의 오름 · 내림이 아님(빨강 · 파랑을 쓰지 않음) */
 .bc.cmp-bc .bc-val.cmp-pow { color: var(--ink); }
 
-/* ── 후보 7 칸 그림(tiles.js · 사장님 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — 옛 입체 섬(island.js)을 바꿈)
-   평평한 칸 하나 = 회사 하나 · 하나만 빛남(고른 한 곳 = 금빛 칸 · 위 이름표 숫자) · 막 들어온 일곱 = 옥빛 번호 칸 · 나머지는 옅게 · 그림자 · 기울임 · 입체 없음
-   · 움직이는 CSS 는 걸음 부품(.now — art.js)뿐 — 고름 · 누름 · 테는 바로 바뀜(전환 없음 · 한 번에 하나 규칙 42) · 칸 사이 틈 2px */
-.tl-wrap { max-width: 30rem; margin: 2px auto 0; } /* 넓은 화면(PC)에서도 휴대폰 한 장 크기 */
-.tl { --tl-out: #DCE4E0; --tl-up: #B4C4BC; --tl-net: #8FBFAB; --tl-na: #C3CEC8; --tl-seven: #23735A; --tl-seven-ink: #FFFFFF; --tl-hero: #F2BE50; --tl-hero-ink: #2A1A00; --tl-gold: #8A5F0E; position: relative; }
-.tl-hud { margin: 0 0 8px; }
-.tl-hud p { margin: 0; }
-.tl-h1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--ink); overflow-wrap: anywhere; }
-.tl-rk { color: var(--tl-gold); font-weight: 800; }
-.tl-nm { min-width: 0; }
-.tl-big { margin-inline-start: auto; font-size: 1.5rem; font-weight: 800; color: var(--tl-gold); font-variant-numeric: tabular-nums; letter-spacing: -.01em; unicode-bidi: isolate; direction: ltr; }
-.tl-cap { font-size: .8125rem; font-weight: 700; line-height: 1.35; color: var(--sub); }
-.tl-stage { position: relative; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-.tl-grid { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 2px; direction: ltr; } /* 어느 말에서나 왼쪽 위가 1년 추세 1등 */
-.tl-c { display: block; aspect-ratio: 1; min-width: 0; margin: 0; padding: 0; border: 0; border-radius: 3px; background: var(--tl-out); cursor: pointer; }
-.tl-c.tl-up { background: var(--tl-up); }
-.tl-c.tl-net { background: var(--tl-net); }
-.tl-c.tl-na { background: repeating-linear-gradient(135deg, var(--tl-na) 0 2px, transparent 2px 4px); outline: 1px solid var(--tl-na); outline-offset: -1px; }
-.tl-c.tl-seven { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; background: var(--tl-seven); color: var(--tl-seven-ink); font: inherit; font-size: .625rem; font-weight: 800; line-height: 1; }
-.tl-c.tl-seven::before { content: attr(data-rank); } /* 순위 숫자는 그림 표시(화면 읽기는 aria-label 「검토 순위 1위 …」) */
-.tl-c.tl-seven.sel { z-index: 2; background: var(--tl-hero); color: var(--tl-hero-ink); outline: 2px solid var(--tl-gold); outline-offset: 1px; }
-.tl-c.tl-seven.past { background: transparent; color: var(--tl-seven); outline: 1.5px dashed var(--tl-seven); outline-offset: -1.5px; } /* 「재생」 — 20거래일 전 그물 밖(빈 칸) */
-.tl-c.tl-seven.sel.past { color: var(--tl-gold); outline-color: var(--tl-gold); }
-.tl-c.tl-seven:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.tl-c.on { background: var(--ink); } /* 누른 칸 */
-.tl-c.zn { outline: 1.5px solid var(--ink); outline-offset: -1.5px; } /* 누른 칸과 같은 업종 */
-.tl-c.wv { outline: 2px solid var(--tl-seven); outline-offset: 0; } /* 저절로 설명 ④ — 같은 업종 칸에 차례로 테 */
-.ra:not(.ra-done) .tl .tl-c[data-at].now { border-radius: 3px; outline-offset: 1px; } /* 걸음 테두리(art 공통 6px)를 칸에 맞게 */
-.tl-line { display: flex; align-items: center; gap: 6px; margin: 5px 0; font-size: .75rem; font-weight: 800; line-height: 1.3; color: var(--ink); } /* 그물 기준선 — 굵은 선 위 = 그물 안 */
-.tl-line::after { content: ''; flex: 1 1 auto; min-width: 24px; border-top: 3px solid var(--ink); }
-.tl-line-t { min-width: 0; overflow-wrap: anywhere; }
-.tl-cap2 { margin: 7px 0 3px; font-size: .75rem; font-weight: 700; line-height: 1.3; color: var(--sub); }
-.tl-when { position: absolute; right: 0; bottom: 0; z-index: 3; max-width: 86%; margin: 0; padding: 2px 10px; border-radius: 8px; background: var(--card); border: 1px solid var(--sep); font-size: .875rem; font-weight: 700; color: var(--ink); pointer-events: none; text-align: end; }
-.tl-hud.tap .tl-big { color: var(--ink); } /* 누른 칸 — 위 이름표 자리에 잠깐(금빛은 고른 한 곳만 · 칸 위에 글을 얹지 않음) */
-.tl-tk { display: inline-flex; align-items: center; padding: 0 7px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink2); font-size: .75rem; font-weight: 700; line-height: 1.6; }
-.tl-hud .tl-cap { display: flex; flex-wrap: wrap; align-items: center; column-gap: 4px; min-height: 28px; } /* 고른 한 곳 · 누른 칸이 같은 높이(그림이 밀리지 않게) */
-.tl-tag a { display: inline-flex; align-items: center; min-height: 28px; font-weight: 800; color: var(--ink); }
-.tl-note { margin: 2px 0 0; }
-/* 3단 클릭(2026-10-09 21:33 「아틀란스를 3단 클릭구조로 … 모든곳에 하나도 빠짐없이」) — 누른 칸의 업종 칸: 업종 보기 › · 같은 업종 회사 이름(누르면 회사 화면) */
-.tl-zone { margin: 8px 0 0; padding: 8px 10px; border-radius: 12px; background: var(--card); border: 1px solid var(--sep); }
-.tl-zh { margin: 0; font-size: .9375rem; line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
-.tl-zh a { font-weight: 700; }
-.tl-cos { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
-.tl-co { display: inline-flex; align-items: center; min-height: 36px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--sep); background: var(--fill); color: var(--ink); font-size: .875rem; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
-.tl-co[aria-current="true"] { border-color: var(--ink); font-weight: 800; }
-.bc-sw.tl-k-net { height: 9px; border: 0; border-radius: 3px; background: #8FBFAB; }
-.bc-sw.tl-k-new { height: 9px; border: 0; border-radius: 3px; background: #23735A; }
-.bc-sw.tl-k-hero { height: 9px; border: 0; border-radius: 3px; background: #F2BE50; }
-.bc-sw.tl-k-na { height: 9px; border: 1px solid var(--sep); border-radius: 3px; background: repeating-linear-gradient(135deg, var(--fill) 0 3px, transparent 3px 5px); }
-@media (prefers-color-scheme: dark) {
-  .tl { --tl-out: #25322D; --tl-up: #3A4B44; --tl-net: #46705F; --tl-na: #3A4943; --tl-seven: #3FAF88; --tl-seven-ink: #06221A; --tl-gold: #FFD978; }
-  .bc-sw.tl-k-net { background: #46705F; } .bc-sw.tl-k-new { background: #3FAF88; }
-}
-/* ── 저절로 둘러보기(tour.js · 규칙 49 ④ · 2026-10-10 「4너에제안대로 해」) — 칸 그림 바로 아래 고정 칸 · 긴 글은 여기서(그림 위에는 고른 곳 이름표 하나)
-   · 글은 움직이지 않음(전환 · 애니메이션 없음 — 움직이는 것은 그림 칸 하나) · 범위 띠 그림 SVG 에는 글자 없음(눈금 글은 HTML) */
+/* ── 후보 7 막대 그래프(candbars.js · 사장님 2026-10-10 11:19(마카오) 「바둑판 영구 삭제해」 — 같은 날 칸 그림(365칸 바둑판)을 바꿈 · 09:51 「3d 영구 삭제해」로 평평하게)
+   막대는 공통 막대(.bc-* — chart.css) · 빨강 = 오름 · 파랑 = 내림 · 점선 = 그물 기준선 · 짧은 세로 줄 = 20거래일 전 · 하나만 빛남(고른 한 곳 = 금빛 테 · 위 이름표 숫자)
+   · 바둑판 · 입체 · 그림자 없음(규칙 50 · 51) · 움직이는 CSS 는 걸음 부품(.now — art.js)뿐 — 고름 · 테는 바로 바뀜 */
+.cb-wrap { max-width: 30rem; margin: 2px auto 0; } /* 넓은 화면(PC)에서도 휴대폰 한 장 크기 */
+.cb { --cb-gold: #8A5F0E; --cb-gold-bg: #F2BE50; position: relative; }
+.cb-hud { margin: 0 0 8px; }
+.cb-hud p { margin: 0; }
+.cb-h1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--ink); overflow-wrap: anywhere; }
+.cb-rk { color: var(--cb-gold); font-weight: 800; }
+.cb-nm { min-width: 0; }
+.cb-big { margin-inline-start: auto; font-size: 1.5rem; font-weight: 800; color: var(--cb-gold); font-variant-numeric: tabular-nums; letter-spacing: -.01em; unicode-bidi: isolate; direction: ltr; }
+.cb-cap { font-size: .8125rem; font-weight: 700; line-height: 1.35; color: var(--sub); }
+.cb-stage { position: relative; display: grid; gap: 4px; }
+.cb-row { display: block; width: 100%; min-width: 0; margin: 0; padding: 6px 8px 8px; border: 0; border-radius: 10px; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer; }
+.cb-row.sel { background: var(--fill); outline: 2px solid var(--cb-gold-bg); outline-offset: 0; } /* 고른 한 곳 — 금빛 테(막대 색은 오름 · 내림 뜻 그대로) */
+.cb-row.sel .bc-rk { color: var(--cb-gold); font-weight: 800; }
+.cb-row:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cb-row.wv { outline: 2px solid var(--geum); outline-offset: 0; } /* 저절로 설명 ④ — 같은 업종 후보 줄에 차례로 테 */
+.cb-sec { flex: none; max-width: 40%; font-size: .75rem; color: var(--sub); overflow-wrap: anywhere; }
+.cb-past { position: absolute; top: -3px; bottom: -3px; left: var(--l); width: 3px; margin-left: -1.5px; border-radius: 1px; background: var(--sub); } /* 20거래일 전 1년 추세 */
+.cb-when { margin: 4px 0 0; font-size: .875rem; font-weight: 700; line-height: 1.4; color: var(--ink); text-align: end; }
+.cb-ctx { margin: 8px 0 0; font-size: .8125rem; line-height: 1.45; color: var(--sub); }
+.cb-note { margin: 2px 0 0; }
+.ra:not(.ra-done) .cb .cb-val[data-at].now { border-radius: 4px; outline-offset: 2px; } /* 걸음 테두리(art 공통)를 값 글에 맞게 */
+.bc-sw.cb-k-past { width: 3px; height: 12px; border: 0; border-radius: 1px; background: var(--sub); }
+.bc-sw.cb-k-hero { width: 14px; height: 10px; border: 2px solid #F2BE50; border-radius: 3px; background: none; }
+@media (prefers-color-scheme: dark) { .cb { --cb-gold: #FFD978; } }
+/* ── 저절로 둘러보기(tour.js · 규칙 49 ④ · 2026-10-10 「4너에제안대로 해」) — 막대 그림 바로 아래 고정 칸 · 긴 글은 여기서(그림 위에는 고른 곳 이름표 하나)
+   · 글은 움직이지 않음(전환 · 애니메이션 없음 — 움직이는 것은 그림 하나) · 범위 띠 그림 SVG 에는 글자 없음(눈금 글은 HTML) */
 .tu { --tu-b80: rgba(79, 143, 119, .20); --tu-b50: rgba(79, 143, 119, .42); margin: 8px 0 2px; padding: 10px 12px 8px; border-radius: 14px; background: var(--fill); }
 .tu-head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin: 0; font-size: .8125rem; font-weight: 700; line-height: 1.4; color: var(--sub); }
 .tu-k { color: var(--ink); }

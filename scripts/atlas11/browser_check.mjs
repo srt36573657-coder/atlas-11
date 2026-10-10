@@ -164,21 +164,22 @@ const sectorsW = lens => (lens.sectors ?? []).map(sc => { const ms = sc.codes.ma
 const eokW = v => { if (!Number.isFinite(v)) return '계산 불가'; const sg = v > 0 ? '+' : v < 0 ? '−' : '', a = Math.abs(v); return a >= 1e4 ? `${sg}${(a / 1e4).toFixed(1)}조` : `${sg}${Math.round(a).toLocaleString('ko-KR')}억`; };
 async function candCheck(page, label, mobile, press) {
   // 2026-10-09 08:26 사장님 「넘 글이 많다 잡스였다면 …」 — 첫 화면 = ① 기준 한 줄 → ② 그림 + 고른 한 곳 카드 + 짧은 줄 → ③ 자세히(접힘 · 맨 위 돈 유입 1~365등)
-  // 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — ② 그림은 평평한 칸 그림(site/app/tiles.js · 옛 입체 섬을 바꿈 · 캔버스 없음)
+  // 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 · 11:19 「바둑판 영구 삭제해」 — ② 그림은 후보 막대 그래프(site/app/candbars.js · 입체 섬 → 칸 그림 → 막대 · 캔버스 · 바둑판 없음)
   // 규칙 4판(2026-10-09 11:35 「전종목 365개 … 돈에 유입이 강력한 7개 … 비율계산 … 포모지수 … 1등부터 365등까지 … 20만번」 · 11:57 「현명하게 해봐」) — 업종 조건 없음 · 업종 돈 흐름은 곁 정보
   const lens = await get('data/atlas11/view/lens.json'), C = lens.cand, st = await get('story.json'), rot = st.rotation;
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .tl .tl-grid'); await page.waitForTimeout(400);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .cb .cb-row'); await page.waitForTimeout(400);
   const readCard = () => page.evaluate(() => { const c = document.querySelector('.cd-card'); return {code: c?.dataset.code, rank: c?.querySelector('.cd-rk')?.textContent.trim(), name: c?.querySelector('.cd-name')?.textContent.trim(),
     why: c?.querySelector('.cd-why')?.innerText.replace(/\s+/g, ' ').trim(), risk: c?.querySelector('.cd-risk')?.innerText.replace(/\s+/g, ' ').trim(), btns: [...(c?.querySelectorAll('.cd-btn') ?? [])].map(b => b.textContent.trim()),
-    pressed: [...document.querySelectorAll('.cd-row .cd-pick[aria-pressed="true"]')].map(b => b.closest('.cd-row').dataset.code), sel: [...document.querySelectorAll('.tl-seven.sel')].map(g => g.dataset.code), picked: !!document.querySelector('.tl.picked')}; });
+    pressed: [...document.querySelectorAll('.cd-row .cd-pick[aria-pressed="true"]')].map(b => b.closest('.cd-row').dataset.code), sel: [...document.querySelectorAll('.cb-row.sel')].map(g => g.dataset.code), picked: !!document.querySelector('.cb.picked')}; });
   const cd = await page.evaluate(() => ({firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => { const r = x.getBoundingClientRect(); return [x.dataset.first, Math.round(r.top), Math.round(r.bottom), x.matches('section[data-art]')]; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), active: document.querySelector('.bottom-link.active')?.dataset.route, tabs: [...document.querySelectorAll('.bottom-link')].map(a => a.dataset.route).join(),
     rows: [...document.querySelectorAll('.cd-row')].map(li => ({code: li.dataset.code, rank: li.dataset.rank, status: li.dataset.status, name: li.querySelector('.cd-name')?.textContent.trim(), rk: li.querySelector('.cd-rk')?.textContent.trim(), pw: li.querySelector('.cd-pwv')?.textContent.trim(), m12: li.dataset.m12})),
-    tl: (() => { const e = document.querySelector('.cd-page .tl'); if (!e) return null; let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {} const hd = e.querySelector('.tl-hud'), T = e.__tl, blk = b => (b.parentElement.classList.contains('tl-b0') ? 0 : b.parentElement.classList.contains('tl-b1') ? 1 : 2);
-      return {chk, at: e.dataset.at, inArt: !!e.closest('section[data-art] .ra-art'), canvas: document.querySelectorAll('#main canvas').length, cells: e.querySelectorAll('.tl-c').length, b0: e.querySelectorAll('.tl-b0 .tl-c').length, b2: e.querySelectorAll('.tl-b2 .tl-c').length,
-        head: [...e.querySelectorAll('.tl-grid .tl-c')].slice(0, 3).map(x => T?.codeAt(Number(x.dataset.i))), line: e.querySelector('.tl-line')?.innerText.replace(/\s+/g, ' ').trim() ?? '',
-        pins: [...e.querySelectorAll('.tl-seven')].map(b => ({code: b.dataset.code, rank: Number(b.dataset.rank), at: b.dataset.at, sel: b.classList.contains('sel'), text: b.textContent, blk: blk(b)})),
-        hud: hd?.innerText.replace(/\s+/g, ' ').trim() ?? '', svgs: e.querySelectorAll('svg text').length, st: T?.state() ?? null}; })(),
+    cb: (() => { const e = document.querySelector('.cd-page .cb'); if (!e) return null; let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {} const hd = e.querySelector('.cb-hud');
+      const pos = (x, t) => { const a = x.getBoundingClientRect(), b = t.getBoundingClientRect(); return {l: (a.left - b.left) / b.width * 100, w: a.width / b.width * 100, c: (a.left + a.width / 2 - b.left) / b.width * 100}; };
+      return {chk, at: e.dataset.at, inArt: !!e.closest('section[data-art] .ra-art'), canvas: document.querySelectorAll('#main canvas').length, board: document.querySelectorAll('#main .tl, #main .tl-grid, #main .tl-c').length,
+        rows: [...e.querySelectorAll('.cb-row')].map(b => { const t = b.querySelector('.bc-track'), v = b.querySelector('.cb-val'), bar = b.querySelector('.cb-bar'), ref = b.querySelector('.cb-ref'), past = b.querySelector('.cb-past');
+          return {code: b.dataset.code, rank: Number(b.dataset.rank), sel: b.classList.contains('sel'), val: v?.textContent.trim(), at: v?.dataset.at, up: bar?.classList.contains('up'), bar: pos(bar, t), ref: pos(ref, t), past: past && !past.hidden ? pos(past, t) : null}; }),
+        hud: hd?.innerText.replace(/\s+/g, ' ').trim() ?? '', ctx: document.querySelector('.cd-page .cb-ctx')?.innerText.replace(/\s+/g, ' ').trim() ?? '', svgs: e.querySelectorAll('svg text').length, st: e.__cb?.state() ?? null}; })(),
     rest: !!document.querySelector('.cd-page .ra.ra-rest'), shownBtns: [...document.querySelectorAll('.cd-page .ra-btns .ra-b')].filter(b => b.offsetParent).map(b => b.textContent.trim()),
     rule: document.querySelector('.cd-rule')?.innerText.replace(/\s+/g, ' ').trim() ?? '', done: !!document.querySelector('.cd-page section[data-art] .ra.ra-done'), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
   const fiOf = code => { const s = lens.stocks.find(x => x.code === code), fl = s?.fl ?? {}; return Number.isFinite(fl.f10e) && Number.isFinite(fl.i10e) ? (fl.f10e + fl.i10e) / 1e8 : null; };
@@ -196,46 +197,25 @@ async function candCheck(page, label, mobile, press) {
   const wantRows = G.planted?.at && G.planted.at !== C.asOf ? C.items.map(x => x.code) : want;
   const m1W = code => Number((mOf(code) * 100).toFixed(1)), m12W = code => fpW(m1W(code)); // 보이는 글(소수 첫째 자리) — 판이 먼저 첫째 자리로 셈한 값과 같게
   const rowsOk = C.ready && C.rules === 'cand-rules-5' && cd.rows.length === C.items.length && cd.rows.length <= 7 && cd.rows.map(r => r.code).join() === wantRows.join() && cd.rows.every((r, i) => { const x = C.items[i]; return r.code === x.code && r.rank === String(i + 1) && r.rk === `${i + 1}위` && r.status === x.status && r.name === x.name && r.pw === m12W(x.code) && r.m12 === String(m1W(x.code)); });
-  // 칸 그림(2026-10-10 「3d 영구 삭제해」 — site/app/tiles.js) — 이 검사기가 판 읽기 1년 추세(grow.m)로 따로 셈:
+  // 막대 그림(2026-10-10 11:19 「바둑판 영구 삭제해」 — site/app/candbars.js) — 이 검사기가 판 읽기 1년 추세(grow.m)로 따로 셈:
   //   그물 기준선 = 1년 추세를 셀 수 있는 곳의 80번째 백분위(직선 보간) · 선 위 = 기준선 이상 곳 수 · 초록 = 그 가운데 기준 셋(그날 종가 · 흑자 · 위험 공시 없음 — flags 앞 셋)을 넘은 곳 수
-  //   빗금 = 1년 추세를 셀 수 없는 곳 · 맨 앞 세 칸 = 선 위를 1년 추세 큰 순(같으면 기호)으로 · 번호 칸 = 후보 7곳(순위 차례 · 걸음 1~7 · 글자 없이 번호는 그림 표시) · 처음 고른 한 곳 = 1위(금빛 칸 하나 · 위 이름표) · 움직임 없음
+  //   줄 = 후보 순위 차례 · 값 글 = 1년 추세 · 막대 길이 · 점선 자리 · 짧은 세로 줄 자리 = 같은 축(0 · 기준선 둘 · 모든 값)으로 따로 셈한 자리(±0.8%) · 처음 고른 한 곳 = 1위(금빛 테 · 위 이름표) · 움직임 없음 · 캔버스 · 바둑판 없음
   const qOf = xs => { const a = xs.filter(Number.isFinite).sort((x, y) => x - y), k = a.length; if (!k) return null; const pos = 0.8 * (k - 1), lo = Math.floor(pos), hi = Math.min(k - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
   const qI = qOf(lens.stocks.map(s => mOf(s.code))), aboveW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI).length;
-  const greenW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI && String(C.flags?.[s.code] ?? '').slice(0, 3) === '111').length, noneW = lens.stocks.filter(s => mOf(s.code) === null).length;
-  const byMW = (a, b) => (mOf(b.code) - mOf(a.code)) || cmpC(a.code, b.code), headW = [...lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI).sort(byMW), ...lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) < qI).sort(byMW)].slice(0, 3).map(s => String(s.code));
-  const T = cd.tl, x0 = C.items[0], lineW = `그물 기준선 · 1년 추세 ${fpW(G.qD)}`;
-  const tlOk = !!T && T.inArt && T.at === '0' && T.canvas === 0 && T.svgs === 0 && T.cells === lens.stocks.length && T.b0 === aboveW && T.b2 === noneW && T.chk?.above === aboveW && T.chk?.green === greenW && T.chk?.none === noneW
-    && T.head.join() === headW.join() && T.line === lineW && T.pins.length === C.items.length
-    && T.pins.slice().sort((a, b) => Number(a.at) - Number(b.at)).every((p, i) => p.code === C.items[i].code && p.rank === C.items[i].rank && p.at === String(i + 1) && p.text === '' && p.sel === (i === 0) && (C.items[i].status !== 'met' || p.blk === 0))
-    && (!x0 || (T.hud.includes(`${x0.rank}위`) && T.hud.includes(x0.name) && T.hud.includes(m12W(x0.code)))) && T.st?.busy === false && T.st?.hero === (x0?.code ?? null) && T.st?.picked === false && T.st?.past.length === 0;
-  check(`${label} 첫 화면 「후보 7」 칸 그림(규칙 5판 기르기판 · 2026-10-10 「3d 영구 삭제해」 — 입체 섬을 바꿈): ① 기준 → ② 그림 칸(칸 ${T?.cells}개 = 판 읽기 ${lens.stocks.length}곳 · 선 위 ${T?.chk?.above}곳 = 따로 센 그물 ${aboveW}곳 · 초록 ${T?.chk?.green}곳 = 따로 셈 ${greenW}곳 · 빗금 ${T?.chk?.none}곳 = 따로 셈 ${noneW}곳 · 맨 앞 세 칸 ${T?.head?.join(' ')} = 따로 셈 · 굵은 선 「${T?.line}」 · 번호 칸 ${T?.pins.length}개 = 후보 차례 · 위 이름표 「${T?.hud}」 · 캔버스 ${T?.canvas}개 · 정적인 상태) · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 ${wantRows.length}곳) · 「${cd.all}」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
-    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && tlOk
+  const greenW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI && String(C.flags?.[s.code] ?? '').slice(0, 3) === '111').length;
+  const mpOf = code => (Number.isFinite(M[code]?.[1]) ? M[code][1] : null), d1W = v => (v === null ? null : Number((v * 100).toFixed(1)));
+  const axVals = [0, G.qD, Number.isFinite(G.qp) ? Number(G.qp.toFixed(1)) : null, ...C.items.flatMap(x => [d1W(mOf(x.code)), d1W(mpOf(x.code))])].filter(Number.isFinite);
+  const axLo0 = Math.min(0, ...axVals), axHi0 = Math.max(0, ...axVals), span = axHi0 - axLo0, axLo = axLo0 < 0 ? axLo0 - span * 0.04 : axLo0, axHi = axHi0 > 0 ? axHi0 + span * 0.04 : axHi0, posW = v => (v - axLo) / (axHi - axLo) * 100;
+  const B = cd.cb, x0 = C.items[0], ctxW = `${lens.stocks.length}곳 가운데 1년 추세 상위 20% ${aboveW}곳 · 그 가운데 기준을 넘은 그물 ${greenW}곳 · 막 들어온 ${C.items.length}곳`;
+  const geo = (B?.rows ?? []).map(r => { const m = d1W(mOf(r.code)), mp = d1W(mpOf(r.code)); return {code: r.code, bar: Math.abs(r.bar.w - Math.max(0.6, Math.abs(posW(m) - posW(0)))), ref: Math.abs(r.ref.c - posW(G.qD)), past: mp === null ? 0 : Math.abs((r.past?.c ?? -99) - posW(mp))}; });
+  const geoBad = geo.filter(g => g.bar > 0.8 || g.ref > 0.8 || g.past > 0.8);
+  const cbOk = !!B && B.inArt && B.at === '0' && B.canvas === 0 && B.board === 0 && B.svgs === 0 && B.chk?.above === aboveW && B.chk?.green === greenW && B.rows.length === C.items.length
+    && B.rows.every((r, i) => r.code === C.items[i].code && r.rank === C.items[i].rank && r.at === String(i + 1) && r.val === m12W(r.code) && r.sel === (i === 0) && r.up === (mOf(r.code) > 0)) && !geoBad.length
+    && B.ctx === ctxW && (!x0 || (B.hud.includes(`${x0.rank}위`) && B.hud.includes(x0.name) && B.hud.includes(m12W(x0.code)))) && B.st?.busy === false && B.st?.hero === (x0?.code ?? null) && B.st?.picked === false && B.st?.past.length === 0;
+  check(`${label} 첫 화면 「후보 7」 막대 그래프(규칙 5판 기르기판 · 2026-10-10 「3d 영구 삭제해」 · 「바둑판 영구 삭제해」): ① 기준 → ② 그림 칸(막대 ${B?.rows.length}줄 = 후보 차례 · 값 글 = 1년 추세 · 막대 길이 · 점선 · 20거래일 전 줄 자리 = 같은 축으로 따로 셈(어긋남 ${geoBad.length}줄) · 「${B?.ctx}」 = 따로 센 선 위 ${aboveW}곳 · 그물 ${greenW}곳 · 위 이름표 「${B?.hud}」 · 캔버스 ${B?.canvas}개 · 바둑판 ${B?.board}개 · 정적인 상태) · 짧은 줄 ${cd.rows.length}개(순위 · 이름 · 1년 추세 · 상태 = 판 읽기 · 그물 · 초입 차례 따로 셈 ${wantRows.length}곳) · 「${cd.all}」 → ③ 자세히 · 「후보 7」 눌림 · 처음에는 「재생」 하나만(${cd.shownBtns.join()})`,
+    cd.firsts.map(x => x[0]).join() === '1,2,3' && cd.firsts.find(x => x[0] === '2')?.[3] === true && cd.firsts[0][2] <= cd.tab && cd.active === 'cand' && cd.tabs === 'cand,watch,check,market' && rowsOk && cbOk
       && cd.all === `돈 유입 1등~${lens.stocks.length}등 모두 보기 ›` && cd.done && cd.rest && cd.shownBtns.join() === '재생' && cd.sw <= cd.cw && cd.rule.includes('예상 수익률 순위 아님') && cd.rule.includes('연구용 · 성능 검증 전') && cd.rule.includes('포트폴리오 아님'),
-    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want: wantRows, tl: T && {chk: T.chk, head: T.head, line: T.line, b0: T.b0, b2: T.b2, pins: T.pins.map(p => [p.code, p.rank, p.at, p.sel, p.text, p.blk]), hud: T.hud, st: T.st, cells: T.cells, canvas: T.canvas}, aboveW, greenW, noneW, headW, lineW, shown: cd.shownBtns, all: cd.all});
-  // 칸 누르기(3단 클릭 · 규칙 47) — 후보가 아닌 첫 칸을 누르면 위 이름표 자리에 그 회사(「누른 칸」 · 이름 · 1년 추세 · 그물 안팎 · 회사 보기 ›) · 그림 아래 업종 칸(업종 보기 · 같은 업종 회사 · 누른 회사 표시) · 같은 업종 칸에 테
-  //   · 칸 위에 글을 얹지 않음 · 그림이 밀리지 않음 · 같은 칸을 다시 누르면 둘 다 풀리고 위 이름표는 고른 한 곳으로 · 카드는 그대로 · 움직임 없음 · 가로로 넘치지 않음 · 「회사 보기 ›」 → 그 회사 화면(그림에서 두 번)
-  const tapC = await page.evaluate(() => { const e = document.querySelector('.cd-page .tl'), c = e.querySelector('.tl-grid .tl-c:not(.tl-seven)'); c.scrollIntoView({block: 'center'}); return e.__tl.codeAt(Number(c.dataset.i)); });
-  await page.waitForTimeout(200);
-  const xyOf = c => page.evaluate(c => { const r = document.querySelector('.cd-page .tl').__tl.cellOf(c).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }, c);
-  const g0 = await page.evaluate(() => Math.round(document.querySelector('.cd-page .tl-grid').getBoundingClientRect().top));
-  let xy = await xyOf(tapC); await page.mouse.click(xy[0], xy[1]); await page.waitForTimeout(250);
-  const tg = await page.evaluate(() => { const hd = document.querySelector('.cd-page .tl-hud'), t = hd?.querySelector('.tl-tag'), z = document.querySelector('.cd-page .tl-zone');
-    return {tap: !!hd?.classList.contains('tap'), tag: hd?.classList.contains('tap') ? hd.innerText.replace(/\s+/g, ' ').trim() : null, href: t?.querySelector('a')?.getAttribute('href') ?? null, st: document.querySelector('.cd-page .tl').__tl.state(), gTop: Math.round(document.querySelector('.cd-page .tl-grid').getBoundingClientRect().top), over: document.querySelectorAll('.cd-page .tl-stage .tl-tag').length,
-      zn: document.querySelectorAll('.cd-page .tl-c.zn').length, on: document.querySelectorAll('.cd-page .tl-c.on').length,
-      zone: z && !z.hidden ? {g: z.querySelector('.tl-zh a')?.getAttribute('href') ?? null, cos: [...z.querySelectorAll('a.tl-co')].map(a => [a.getAttribute('href'), a.getAttribute('aria-current')])} : null}; }); // 3단 클릭 — 누른 칸의 업종 칸
-  const tagIn = tg.tap && tg.over === 0 && Math.abs(tg.gTop - g0) <= 1; // 위 이름표 자리(칸 위에 글 없음 · 그림이 밀리지 않음)
-  const tS = lens.stocks.find(s => s.code === tapC), tM = mOf(tapC), tagW = tS ? `누른 칸 ${tS.name} ${fpW(m1W(tapC))} ${tM !== null && tM >= qI ? (String(C.flags?.[tapC] ?? '').slice(0, 3) === '111' ? '그물 안' : '그물 안 · 기준 못 넘음') : tM === null ? '1년 추세 셀 수 없음' : '그물 밖'} · 회사 보기 ›` : null;
-  const sameG = tS ? lens.stocks.filter(x => x.g === tS.g) : [], zW = sameG.map(x => '#/stock/' + x.code).sort().join(), zoneOk = !!tg.zone && tg.zone.g === `#/i/${tS?.g}` && tg.zone.cos.map(x => x[0]).sort().join() === zW && tg.zone.cos.filter(x => x[1] === 'true').map(x => x[0]).join() === `#/stock/${tapC}` && tg.href === `#/stock/${tapC}`;
-  xy = await xyOf(tapC); await page.mouse.click(xy[0], xy[1]); await page.waitForTimeout(250);
-  const tg2 = await page.evaluate(() => { const hd = document.querySelector('.cd-page .tl-hud'), z = document.querySelector('.cd-page .tl-zone'); return {hidden: !hd?.classList.contains('tap'), hud: hd?.innerText.replace(/\s+/g, ' ').trim() ?? '', zoneHidden: !z || z.hidden, focus: document.querySelector('.cd-page .tl').__tl.state().focus, zn: document.querySelectorAll('.cd-page .tl-c.zn').length}; });
-  const dr = await page.evaluate(() => ({st: document.querySelector('.cd-page .tl').__tl.state(), anims: document.getAnimations().length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, card: document.querySelector('.cd-card')?.dataset.code}));
-  xy = await xyOf(tapC); await page.mouse.click(xy[0], xy[1]); await page.waitForTimeout(200);
-  await page.locator('.cd-page .tl-hud .tl-tag a').click(); await page.waitForFunction(c => location.hash === '#/stock/' + c, tapC, {timeout: 8000}).catch(() => {}); await page.waitForTimeout(250);
-  const nav2 = await page.evaluate(() => location.hash);
-  check(`${label} 칸 그림 손(3단 클릭): 칸(${tS?.name}) 누르면 위 이름표 자리에 「${tg.tag}」(칸 위에 글 없음 · 그림 안 밀림 · 카드는 그대로 ${dr.card}) · 그림 아래 업종 칸(업종 보기 = 그 업종 · 같은 업종 ${tg.zone?.cos.length ?? 0}곳 = 판 읽기 · 누른 회사 표시 · 같은 업종 칸 테 ${tg.zn}개) · 다시 누르면 둘 다 풀리고 위 이름표는 고른 한 곳(「${tg2.hud.slice(0, 24)}」) · 「회사 보기 ›」 → ${nav2}(그림에서 두 번) · 움직임 없음 · 가로로 넘치지 않음`,
-    !!tagW && tg.tag === tagW && tagIn && zoneOk && tg.on === 1 && tg.zn === sameG.length - 1 && tg.st.focus === tapC && tg2.hidden && tg2.zoneHidden && tg2.focus === null && tg2.zn === 0 && (!x0 || tg2.hud.startsWith(`${x0.rank}위 ${x0.name}`)) && dr.st.busy === false && dr.sw <= dr.cw && dr.card === (x0?.code ?? undefined) && nav2 === '#/stock/' + tapC,
-    {tapC, tagW, tg, tg2, zW, dr, nav2});
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .tl .tl-grid'); await page.waitForTimeout(300);
+    {firsts: cd.firsts, rows: cd.rows.slice(0, 2), want: wantRows, cb: B && {chk: B.chk, rows: B.rows.map(r => [r.code, r.rank, r.at, r.sel, r.val]), hud: B.hud, ctx: B.ctx, st: B.st, canvas: B.canvas, board: B.board}, ctxW, geoBad, shown: cd.shownBtns, all: cd.all});
   // 날씨(경고만 · 2026-10-09 15:00 기르기판 「날씨로 쉬기는 버림 → 흐린 날엔 경고만」) — 판 읽기 값(파이썬 따로 세기 cand_grow_verify.py 가 입력 종가로 맞댐)과 같게:
   //   흐림이면 첫 화면 ① 아래 경고 한 줄(평균보다 x% 아래 · 경고만) · 맑음이면 없음 · 흐린 날 길 = lens.json 날씨만 바꿔(목록 지문도 맞춰) 다시 열어 봄 — 빈 날 길과 같은 바꿔치기
   const W = G.weather ?? null, wxSay = w => `날씨 흐림 · 365곳 평균 지수가 ${w.days ?? 200}거래일 평균보다 ${Math.abs(w.pD).toFixed(1)}% 아래`;
@@ -245,9 +225,9 @@ async function candCheck(page, label, mobile, press) {
   ln.cand.grow.weather = sim; const lt = JSON.stringify(ln); if (man.files?.['lens.json']) man.files['lens.json'] = {...man.files['lens.json'], sha256: createHash('sha256').update(lt).digest('hex'), bytes: Buffer.byteLength(lt)};
   const mt = JSON.stringify(man), wxRoute = u => u.pathname === vdir + 'lens.json' || u.pathname === vdir + 'manifest.json';
   await page.route(wxRoute, r => r.fulfill({status: 200, contentType: 'application/json', body: new URL(r.request().url()).pathname.endsWith('/manifest.json') ? mt : lt}));
-  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .tl .tl-grid'); await page.waitForTimeout(200);
+  await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .cb .cb-row'); await page.waitForTimeout(200);
   const wxSim = await wxRead();
-  await page.unroute(wxRoute); await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .tl .tl-grid'); await page.waitForTimeout(200);
+  await page.unroute(wxRoute); await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.reload({waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .cb .cb-row'); await page.waitForTimeout(200);
   const wxBack = await wxRead();
   check(`${label} 날씨(경고만): 판 읽기 ${W ? `${W.state === 'cloudy' ? '흐림' : '맑음'} ${fpW(W.pD)}(${W.days}거래일 평균 대비)` : '셀 수 없음'} → 첫 화면 경고 ${wxNow ? '한 줄' : '없음'} · 흐린 날 길(자료만 바꿔 −4.9%) → ① 아래 「${wxSim?.t.slice(0, 44) ?? '없음'}…」 · 되돌리면 ${wxBack ? '있음' : '없음'}`,
     (W?.state === 'cloudy' ? !!wxNow?.t.startsWith(wxSay(W)) : wxNow === null) && !!wxSim?.t.startsWith(wxSay(sim)) && wxSim.t.includes('경고만(고르는 셈은 그대로)') && wxSim.role === 'note' && wxSim.first === '1' && wxSim.sw <= wxSim.cw
@@ -260,8 +240,8 @@ async function candCheck(page, label, mobile, press) {
   const k0 = await readCard(), bads = [];
   if (C.items.length && !(cardOk(k0, C.items[0]) && !k0.picked)) bads.push({first: k0});
   for (const [i, x] of C.items.entries()) { await press(page.locator('.cd-row .cd-pick').nth(i)); await page.waitForTimeout(120); const c = await readCard(); if (!cardOk(c, x) || !c.picked) bads.push({i, c, want: cardWant(x)}); }
-  if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.tl-seven[data-code="${x.code}"]`).evaluate(g => g.click()); await page.waitForTimeout(150); const c = await readCard(); const hd = await page.evaluate(() => document.querySelector('.cd-page .tl-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? ''); if (!cardOk(c, x) || !hd.includes(`${x.rank}위`) || !hd.includes(x.name) || !hd.includes(m12W(x.code))) bads.push({pin: x.code, c, hd}); }
-  check(`${label} 첫 화면 카드: 처음 1위(금빛 칸 · 위 이름표) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 칸으로) · 칸 그림의 번호 칸을 눌러도 같은 카드 · 위 이름표도 그 곳`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
+  if (C.items.length > 1) { const x = C.items.at(-1); await page.locator(`.cb-row[data-code="${x.code}"]`).evaluate(g => g.click()); await page.waitForTimeout(150); const c = await readCard(); const hd = await page.evaluate(() => document.querySelector('.cd-page .cb-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? ''); if (!cardOk(c, x) || !hd.includes(`${x.rank}위`) || !hd.includes(x.name) || !hd.includes(m12W(x.code))) bads.push({pin: x.code, c, hd}); }
+  check(`${label} 첫 화면 카드: 처음 1위(금빛 테 · 위 이름표) · 줄 ${C.items.length}개를 차례로 누르면 그 한 곳만(고른 까닭 · 가장 큰 위험 · 단추 둘 = 판 읽기 · 따로 셈 · 금빛이 그 줄로) · 막대 줄을 눌러도 같은 카드 · 위 이름표도 그 곳`, C.items.length > 0 && !bads.length, bads.slice(0, 2));
   // 「돈 유입 1~365등 모두 보기 ›」(11:35 「1등부터 365등까지 그것도 나열하는 곳을 만들어」) → ③ 자세히 맨 위 접힘이 열림(초점 · 화면 안) · 365줄 = 이 검사기가 따로 셈(등수 · 비율 · 포모지수 · 상태) · ★ = 후보 7곳 · 가로로 넘치지 않음
   const rankCheck = async () => {
     await page.goto(base + '/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page .cd-all-a'); await page.waitForTimeout(200);
@@ -295,7 +275,7 @@ async function candCheck(page, label, mobile, press) {
   const en = await page.evaluate(() => ({focus: document.activeElement?.id ?? null, rows: [...document.querySelectorAll('#cj-entry .cj-t tbody tr')].map(tr => tr.querySelector('th')?.textContent.trim())}));
   check(`${label} 재설계 · 「진입 조건 확인」 → 그 칸으로(초점 #${en.focus}) · 조건 ${en.rows.length}줄(${en.rows.join(' · ')})`, en.focus === 'cj-entry' && en.rows.join() === '1년 추세,흑자,위험 공시(30일),희석 공시(30일 · 위험 줄)', en);
   await press(page.locator('.c-back')); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(500);
-  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null, card: document.querySelector('.cd-card')?.dataset.code ?? null, sel: [...document.querySelectorAll('.tl-seven.sel')].map(g => g.dataset.code).join()}));
+  const bk = await page.evaluate(() => ({hash: location.hash, y: Math.round(scrollY), focus: document.activeElement?.getAttribute('href') ?? null, card: document.querySelector('.cd-card')?.dataset.code ?? null, sel: [...document.querySelectorAll('.cb-row.sel')].map(g => g.dataset.code).join()}));
   check(`${label} 재설계 · 「‹ 후보 7곳」 → 보던 자리(${y0}px → ${bk.y}px) · 고른 카드 그대로(${bk.card}) · 누른 곳에 초점(${bk.focus})`, bk.hash === '#/' && Math.abs(bk.y - y0) <= 2 && bk.focus === '#/stock/' + x2.code && bk.card === x2.code && bk.sel === x2.code, {y0, bk});
   // 「다른 후보와 비교」(첫 줄) → 같은 기준 표 · 같은 축 막대 · 앞선 까닭 → 「나」를 바꾸면 그 자리에서(주소만 바뀜 · 화면을 새로 그리지 않음)
   const c0 = C.items[0], c1 = C.items[1];
@@ -314,12 +294,12 @@ async function candCheck(page, label, mobile, press) {
   }
   await rankCheck();
 }
-/** 미국 판 「후보 7」 칸 그림(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 「3d 영구 삭제해」 — 입체 섬을 바꿈) — 같은 규칙 · 위험 공시는 「확인 못 함」(공시 원문 자료 없음 — 없다고 쓰지 않음) · 돈 유입 1~365등 없음(투자자 매매 자료 없음)
- *   이 검사기가 미국 판 읽기(us/data/atlas11/view/lens.json)의 1년 추세(grow.m)로 기준선 · 선 위 · 초록 · 빗금 · 7곳 차례를 따로 셈해 칸 그림 값 · 번호 칸 · 위 이름표와 맞댐 */
+/** 미국 판 「후보 7」 막대 그래프(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 「3d 영구 삭제해」 · 「바둑판 영구 삭제해」 — 입체 섬 · 칸 그림을 바꿈) — 같은 규칙 · 위험 공시는 「확인 못 함」(공시 원문 자료 없음 — 없다고 쓰지 않음) · 돈 유입 1~365등 없음(투자자 매매 자료 없음)
+ *   이 검사기가 미국 판 읽기(us/data/atlas11/view/lens.json)의 1년 추세(grow.m)로 기준선 · 선 위 · 초록 · 7곳 차례를 따로 셈해 막대 그림 값 · 줄 · 위 이름표와 맞댐 */
 async function usCandCheck(page, label) {
   const lens = await get('us/data/atlas11/view/lens.json'), C = lens.cand;
-  if (!C?.ready) { check(`${label} 미국 판 「후보 7」 칸 그림: 판 읽기에 미국 판 후보가 없음(${C?.why ?? '판 읽기 없음'})`, false, {why: C?.why}); return; }
-  await page.goto(base + '/us/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .tl .tl-grid', {timeout: 20000}); await page.waitForTimeout(400);
+  if (!C?.ready) { check(`${label} 미국 판 「후보 7」 막대 그래프: 판 읽기에 미국 판 후보가 없음(${C?.why ?? '판 읽기 없음'})`, false, {why: C?.why}); return; }
+  await page.goto(base + '/us/#/', {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art] .cb .cb-row', {timeout: 20000}); await page.waitForTimeout(400);
   const G = C.grow ?? {}, M = G.m ?? {}, mOf = code => (Number.isFinite(M[code]?.[0]) ? M[code][0] : null), cmpC = (a, b) => (a < b ? -1 : a > b ? 1 : 0), gOf = code => lens.stocks.find(x => x.code === code)?.g;
   const qOf = xs => { const a = xs.filter(Number.isFinite).sort((x, y) => x - y), k = a.length; if (!k) return null; const pos = 0.8 * (k - 1), lo = Math.floor(pos), hi = Math.min(k - 1, lo + 1); return a[lo] + (a[hi] - a[lo]) * (pos - lo); };
   const qI = qOf(lens.stocks.map(s => mOf(s.code))), aboveW = lens.stocks.filter(s => mOf(s.code) !== null && mOf(s.code) >= qI).length;
@@ -328,27 +308,28 @@ async function usCandCheck(page, label) {
   const per = new Map(), want = []; for (const e of fresh) { const k = per.get(gOf(e.code)) ?? 0; if (k >= 3 || want.length >= 7) continue; per.set(gOf(e.code), k + 1); want.push(e.code); }
   const wantRows = G.planted?.at && G.planted.at !== C.asOf ? C.items.map(x => x.code) : want, x0 = C.items[0];
   const m12W = code => fpW(Number((mOf(code) * 100).toFixed(1)));
-  const u = await page.evaluate(() => { const e = document.querySelector('.cd-page .tl'); let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {}
-    return {chk, pins: [...e.querySelectorAll('.tl-seven')].map(b => ({code: b.dataset.code, rank: Number(b.dataset.rank), at: Number(b.dataset.at), sel: b.classList.contains('sel')})).sort((a, b) => a.at - b.at), hud: e.querySelector('.tl-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? '', cells: e.querySelectorAll('.tl-c').length, canvas: document.querySelectorAll('#main canvas').length, // 번호 칸: 그림 차례(오늘 1년 추세) ≠ 순위(담는 날) — 걸음 번호 차례로 맞댐
-      rows: [...document.querySelectorAll('.cd-row')].map(li => li.dataset.code), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, rank: !!document.querySelector('details.cd-rank-d'), st: e.__tl?.state() ?? null,
+  const u = await page.evaluate(() => { const e = document.querySelector('.cd-page .cb'); let chk = null; try { chk = JSON.parse(e.dataset.check); } catch {}
+    return {chk, pins: [...e.querySelectorAll('.cb-row')].map(b => ({code: b.dataset.code, rank: Number(b.dataset.rank), sel: b.classList.contains('sel'), val: b.querySelector('.cb-val')?.textContent.trim()})), hud: e.querySelector('.cb-hud')?.innerText.replace(/\s+/g, ' ').trim() ?? '', cells: e.querySelectorAll('.cb-row').length, canvas: document.querySelectorAll('#main canvas').length, board: document.querySelectorAll('#main .tl, #main .tl-grid, #main .tl-c').length,
+      rows: [...document.querySelectorAll('.cd-row')].map(li => li.dataset.code), all: document.querySelector('.cd-all-a')?.textContent.trim() ?? null, rank: !!document.querySelector('details.cd-rank-d'), st: e.__cb?.state() ?? null,
       text: document.querySelector('.cd-page')?.innerText ?? '', sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
   // 상세 접힘 글(어떻게 골랐나 · 고르는 법)에 「확인 못 함」이 있고 「위험 공시 없음」은 없어야(미국 판은 공시 자료가 없음 — 없다고 쓰지 않음)
   const folds = await page.evaluate(() => { document.querySelectorAll('.cd-page details').forEach(d => { d.open = true; }); return document.querySelector('.cd-page')?.innerText ?? ''; });
   const honest = folds.includes('확인 못 함') && !folds.includes('위험 공시 없음') && !folds.includes('100번 중 60번') && !folds.includes('외국인+기관');
-  const ok = u.chk?.above === aboveW && u.chk?.green === greenW && u.chk?.none === noneW && u.chk?.n === C.items.length && u.cells === lens.stocks.length && u.canvas === 0 && u.rows.join() === wantRows.join() && u.pins.length === C.items.length
-    && u.pins.every((p, i) => p.code === C.items[i].code && p.rank === i + 1 && p.sel === (i === 0)) && (!x0 || (u.hud.includes(`${x0.rank}위`) && u.hud.includes(x0.name) && u.hud.includes(m12W(x0.code))))
+  const ok = u.chk?.above === aboveW && u.chk?.green === greenW && u.chk?.n === C.items.length && u.cells === C.items.length && u.canvas === 0 && u.board === 0 && u.rows.join() === wantRows.join() && u.pins.length === C.items.length
+    && u.pins.every((p, i) => p.code === C.items[i].code && p.rank === i + 1 && p.sel === (i === 0) && p.val === m12W(p.code)) && (!x0 || (u.hud.includes(`${x0.rank}위`) && u.hud.includes(x0.name) && u.hud.includes(m12W(x0.code))))
     && u.st?.busy === false && u.all === null && !u.rank && honest && u.sw <= u.cw;
-  check(`${label} 미국 판 「후보 7」 칸 그림(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 입체 지움): 칸 ${u.cells}개 · 선 위 ${u.chk?.above}곳 = 따로 센 ${aboveW}곳 · 그물 ${u.chk?.green}곳 = 따로 셈 ${greenW}곳 · 빗금 ${u.chk?.none}곳 = 따로 셈 ${noneW}곳 · 번호 칸 ${u.pins.length}개 · 줄 차례 = 따로 센 차례(${wantRows.join(' · ')}) · 위 이름표 「${u.hud}」 · 캔버스 ${u.canvas}개 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음`,
-    ok, {chk: u.chk, aboveW, greenW, noneW, rows: u.rows, want: wantRows, hud: u.hud, all: u.all, rank: u.rank, honest, cells: u.cells, canvas: u.canvas, sw: u.sw, cw: u.cw});
+  check(`${label} 미국 판 「후보 7」 막대 그래프(2026-10-09 19:29 「미국장 까지 다 대입」 · 2026-10-10 입체 · 바둑판 지움): 막대 ${u.cells}줄 · 선 위 ${u.chk?.above}곳 = 따로 센 ${aboveW}곳 · 그물 ${u.chk?.green}곳 = 따로 셈 ${greenW}곳 · 값 글 = 1년 추세 · 줄 차례 = 따로 센 차례(${wantRows.join(' · ')}) · 위 이름표 「${u.hud}」 · 캔버스 ${u.canvas}개 · 바둑판 ${u.board}개 · 돈 유입 1~365등 없음 · 위험 공시 「확인 못 함」(「없음」이라 쓰지 않음) · 옆 넘침 없음`,
+    ok, {chk: u.chk, aboveW, greenW, rows: u.rows, want: wantRows, hud: u.hud, all: u.all, rank: u.rank, honest, cells: u.cells, canvas: u.canvas, board: u.board, sw: u.sw, cw: u.cw});
 }
 /** 입체 없음(사장님 2026-10-10 09:51 · 09:53(마카오) 「3d 영구 삭제해」 · 「모두다」 — 옛 규칙 46 지움 · 10:00 「가 나 는 지우지마」 = 초대장 사진 · 소개 영상은 따로 쪽이라 밖) — 한국 · 미국 판
  *   회사 · 업종 · 시장 · 업종 순환 · 첫 화면 · 오른 차례 · 출목표 · 기록: 화면에 캔버스 · 섬 · 지도 섬이 없음 · 막대 · 기둥의 윗면 · 옆면(기울인 가상 요소) · 입체 그림자 · 그림자 필터 · 파인 홈 · 구슬 빛이 없음
  *   막대 길이 = 값(--w) 그대로 · 3단 클릭 길잡이(규칙 47 — 지도 섬이 없어도 아래 탭 「탐색」 → 업종 → 회사 세 번) */
 async function flatCheck(page, label) {
-  const FLAT = () => { const main = document.getElementById('main'), out = {canvas: main.querySelectorAll('canvas').length, isl: main.querySelectorAll('.isl, .imap, [class*="isl-"], [class*="imap-"]').length, parts: 0, bad: []};
+  const FLAT = () => { const main = document.getElementById('main'), out = {canvas: main.querySelectorAll('canvas').length, isl: main.querySelectorAll('.isl, .imap, [class*="isl-"], [class*="imap-"], .tl, .tl-grid, .tl-c').length, parts: 0, bad: []};
+    for (const g of main.querySelectorAll('*')) { if (g.childElementCount < 20 || !g.getClientRects().length) continue; const d = getComputedStyle(g).display; if (d !== 'grid' && d !== 'inline-grid') continue; let sq = 0; for (const c of g.children) { const r = c.getBoundingClientRect(); if (r.width > 0 && r.width <= 44 && Math.abs(r.width - r.height) <= Math.max(2, 0.2 * Math.max(r.width, r.height))) sq++; } if (sq >= 20) out.bad.push('바둑판 ' + String(g.className?.baseVal ?? g.className).split(' ')[0]); } // 바둑판(2026-10-10 11:19 「바둑판 영구 삭제해」 · 규칙 51)
     const lens3 = x => (x.replace(/rgba?\([^)]*\)/g, '').match(/-?\d*\.?\d+px/g) ?? []).map(parseFloat);
     const depth = bs => bs && bs !== 'none' && bs.split(/,(?![^(]*\))/).some(x => { const [dx = 0, dy = 0, bl = 0] = lens3(x); return (bl > 0 && (dx !== 0 || dy !== 0)) || (dx !== 0 && dy !== 0) || (/inset/.test(x) && bl > 0); });
-    for (const el of main.querySelectorAll('.bc-bar, .bc-track, .hg-col, .cl-seg, .hm-c, .da-dot, .bead, .tl-c')) { if (!el.getClientRects().length) continue; out.parts++; const st = getComputedStyle(el), nm = String(el.className?.baseVal ?? el.className).split(' ')[0];
+    for (const el of main.querySelectorAll('.bc-bar, .bc-track, .hg-col, .cl-seg, .hm-c, .da-dot, .bead')) { if (!el.getClientRects().length) continue; out.parts++; const st = getComputedStyle(el), nm = String(el.className?.baseVal ?? el.className).split(' ')[0];
       for (const ps of ['::before', '::after']) { const q = getComputedStyle(el, ps); if (q.content !== 'none' && q.transform !== 'none') out.bad.push(nm + ps); }
       if (depth(st.boxShadow)) out.bad.push(nm + ' 그림자'); if (/drop-shadow/.test(st.filter)) out.bad.push(nm + ' 그림자 필터'); if (/radial-gradient/.test(st.backgroundImage) && el.matches('.da-dot, .bead')) out.bad.push(nm + ' 구슬 빛'); if (/matrix3d/.test(st.transform)) out.bad.push(nm + ' 3D'); }
     out.bad = [...new Set(out.bad)].slice(0, 6); return out; };
@@ -360,7 +341,7 @@ async function flatCheck(page, label) {
       await page.goto(base + '/' + pre + hh, {waitUntil: 'networkidle'}); await page.waitForSelector('#main section[data-art], #main section.rt[data-place]', {timeout: 20000}).catch(() => {}); await page.waitForTimeout(250);
       seen.push([hh, await page.evaluate(FLAT)]); }
     const badOnes = seen.filter(([, r]) => r.canvas || r.isl || r.bad.length), parts = seen.reduce((t, [, r]) => t + r.parts, 0);
-    check(`${label} 입체 없음(${pre ? '미국' : '한국'} · 2026-10-10 「3d 영구 삭제해」 · 「모두다」): 화면 ${seen.length}곳 · 그림 부품 ${parts}개 — 캔버스 · 섬 · 지도 섬 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 ${badOnes.length ? '남음' : '없음'}`,
+    check(`${label} 입체 · 바둑판 없음(${pre ? '미국' : '한국'} · 2026-10-10 「3d 영구 삭제해」 · 「모두다」 · 「바둑판 영구 삭제해」): 화면 ${seen.length}곳 · 그림 부품 ${parts}개 — 캔버스 · 섬 · 지도 섬 · 바둑판 · 윗면 · 옆면 · 입체 그림자 · 파인 홈 · 구슬 빛 ${badOnes.length ? '남음' : '없음'}`,
       !badOnes.length && parts > 0, {bad: badOnes.slice(0, 3), parts});
     // 3단 클릭 길잡이(규칙 47) — 어느 화면에서나 아래 탭 「탐색」 → 업종 → 회사(세 번) · 탐색 첫 화면에 판의 업종 모두 · 갈래 모두
     const bd = await get(lp.replace('lens.json', 'board.json'));
@@ -396,7 +377,7 @@ async function tourCheck(label) {
   const pvW = v => `${v > 0 ? '▲' : v < 0 ? '▼' : '—'} ${pr(v)}`, r0 = R.get(String(x0.code)), wantKey = r0 ? `가운데 80% ${pvW(r0.q10)} ~ ${pvW(r0.q90)}` : null;
   // 아래 줄 3위를 누름 → 멈춤 · 카드와 그림 금빛이 그 회사 · 기다려도 그대로
   const row = page.locator(`.cd-row[data-code="${x2?.code ?? x0.code}"] .cd-pick`); await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(2500);
-  const after = await page.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, card: document.querySelector('.cd-card')?.dataset.code, hero: document.querySelector('.cd-page .tl').__tl.state().hero}; });
+  const after = await page.evaluate(() => { const t = document.querySelector('.cd-page .tu'); return {mode: t.dataset.tour, card: document.querySelector('.cd-card')?.dataset.code, hero: document.querySelector('.cd-page .cb').__cb.state().hero}; });
   await ctx.close();
   const rctx = await browser.newContext({tour: true, viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, locale: 'ko-KR', reducedMotion: 'reduce'}); const rp = await rctx.newPage();
   await rp.goto(base + '/#/', {waitUntil: 'networkidle'}); await rp.waitForSelector('.cd-page .tu'); await rp.waitForTimeout(2500);
@@ -410,8 +391,8 @@ async function restructCheck(page, label, mobile, press) {
   const lens = await get('data/atlas11/view/lens.json');
   await candCheck(page, label, mobile, press);
   await tourCheck(label); // 저절로 둘러보기(규칙 49 ④)
-  await usCandCheck(page, label); // 미국 판 「후보 7」 칸 그림(2026-10-09 19:29 · 2026-10-10 입체 지움) // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
-  await flatCheck(page, label); // 입체 없음(2026-10-10 09:51 · 09:53 「3d 영구 삭제해」 · 「모두다」) · 평평한 막대 · 3단 클릭 길잡이
+  await usCandCheck(page, label); // 미국 판 「후보 7」 막대 그래프(2026-10-09 19:29 · 2026-10-10 입체 · 바둑판 지움) // 2026-10-09 03:09 「ATLAS 제품 재설계 명령」 — 첫 화면 「후보 7」 · 비교 · 종목 화면 후보 판단 · 뒤로 오면 자리 · 초점
+  await flatCheck(page, label); // 입체 · 바둑판 없음(2026-10-10 「3d 영구 삭제해」 · 「모두다」 · 「바둑판 영구 삭제해」) · 평평한 막대 · 3단 클릭 길잡이
   await page.goto(base + '/#/market', {waitUntil: 'networkidle'}); await page.waitForSelector('.mk-page [data-first="5"]'); await page.waitForTimeout(300);
   const firstsOf = sel => page.evaluate(sel => ({firsts: [...document.querySelectorAll(sel + ' [data-first]')].map(x => { const r = x.getBoundingClientRect(); return {n: x.dataset.first, art: x.matches('section[data-art]'), top: Math.round(r.top), bottom: Math.round(r.bottom), t: x.innerText.replace(/\s+/g, ' ').trim()}; }),
     tab: Math.round(document.getElementById('bottom').getBoundingClientRect().top), tabs: [...document.querySelectorAll('.bottom-link')].map(a => [a.dataset.route, a.innerText.replace(/\s+/g, '')]), active: document.querySelector('.bottom-link.active')?.dataset.route,
@@ -1212,7 +1193,7 @@ async function scenario(label, viewport, {mobile = false} = {}) {
   for (const old of ['#/forecast', '#/up', '#/down', '#/scores', '#/race', '#/evolution', '#/status', '#/records', '#/game']) {
     await page.goto(base + '/' + old, {waitUntil: 'networkidle'}); await page.waitForSelector('.cd-page section[data-art]'); await page.waitForTimeout(150);
     const r = await page.evaluate(() => ({hash: location.hash, firsts: [...document.querySelectorAll('.cd-page [data-first]')].map(x => x.dataset.first).join(), active: document.querySelector('.bottom-link.active')?.dataset.route}));
-    check(`${label} 옛 주소 ${old} → 첫 화면 「후보 7」(#/ · 정보 칸 ${r.firsts})`, r.hash === '#/' && r.firsts === '1,2,3' && r.active === 'cand', r); // 2026-10-09 08:26 첫 화면 ① 기준 → ② 그림(2026-10-10 부터 평평한 칸 그림) → ③ 자세히
+    check(`${label} 옛 주소 ${old} → 첫 화면 「후보 7」(#/ · 정보 칸 ${r.firsts})`, r.hash === '#/' && r.firsts === '1,2,3' && r.active === 'cand', r); // 2026-10-09 08:26 첫 화면 ① 기준 → ② 그림(2026-10-10 부터 후보 막대 그래프) → ③ 자세히
   }
   // ⑤ 아래 탭 「기록」(#/log · 2026-10-06 16:10 「업데이트한 날짜랑 자료 변경한 날짜를 … 기록 하는 탭」) — 검사기가 /changelog.json 을 따로 읽어 화면과 줄마다 맞댐
   //   무결성은 이 탭 맨 아래 「기술 정보」(옛 모든 화면 맨 아래 접힘을 옮김 — 규칙 1)

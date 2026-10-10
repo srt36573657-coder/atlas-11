@@ -20,7 +20,7 @@ const T = tourOf({C, mc, elim, stocks});
 const all = T.items.flatMap(it => it.steps);
 const text = s => [s.title, ...s.lines.map(plainOf), s.note ?? '', ...(s.checks ?? []).map(c => `${c.label} ${c.value}`)].join(' ');
 
-test('후보마다 8걸음 — 기승전결 차례 · 이름 · 그림 손잡이(칸 그림 — 2026-10-10 입체 섬을 바꿈)', () => {
+test('후보마다 8걸음 — 기승전결 차례 · 이름 · 그림 손잡이(막대 그림 — 2026-10-10 입체 섬 · 바둑판을 바꿈)', () => {
   assert.equal(T.items.length, 3);
   for (const it of T.items) {
     assert.deepEqual(it.steps.map(s => [s.k, s.name]), TOUR_STEPS.map(x => [...x]));
@@ -41,8 +41,8 @@ test('핵심 숫자 = 판 읽기 몬테카를로 행 · 꼬리표 · 평균(mean
 });
 test('같은 업종(판 읽기 g)만 함께 움직이는 곳 · 원인 자료는 없다고 밝힘', () => {
   const s = T.items[0].steps[3];
-  assert.deepEqual(s.peers, ['C', 'D']); assert.match(text(s), /같은 업종 2곳\(회사3 · 이웃\) 칸에 테가 켜짐/); assert.match(s.note, /자료는 아직 없음/);
-  assert.ok(!all.some(x => /솟|탑|섬|돎|돌기|입체/.test(text(x))), '입체 섬 말(솟음 · 탑 · 섬 · 돎 · 입체) 없음 — 2026-10-10 「3d 영구 삭제해」');
+  assert.deepEqual(s.peers, ['C', 'D']); assert.match(text(s), /같은 업종 2곳\(회사3 · 이웃\) — 같은 사건에 함께 흔들릴 수 있음/); assert.match(s.note, /자료는 아직 없음/);
+  assert.ok(!all.some(x => /솟|탑|섬|돎|돌기|입체|칸에 테|바둑판/.test(text(x))), '입체 섬 · 바둑판 말(솟음 · 탑 · 섬 · 돎 · 입체 · 칸 · 바둑판) 없음 — 2026-10-10 「3d 영구 삭제해」 · 「바둑판 영구 삭제해」');
   assert.deepEqual(T.items[1].steps[3].peers, []); assert.match(text(T.items[1].steps[3]), /같은 업종 회사 없음/);
 });
 test('범위 띠 — 따라간 회사만 그림 · 없으면 까닭', () => {
