@@ -25,28 +25,29 @@
      · 그래서 ②의 「금빛 세 자리」 가운데 「이름 옆 작은 인장」 자리는 이제 옥빛 한 색이 아니라 로고 그림이다(나머지 두 자리 — 고른 탭 선 · 고른 단추 선 — 는 그대로) */
 :root {
   --font: 'Gowun Batang', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
-  /* 비색 바탕 · 백토빛 판 · 숲먹 글자 */
-  --bg: #E2EBE5; --card: #F8FBF7; --ink: #17302A; --ink2: #2C4840; --sub: #4A6258; --sep: #D0DED5; --fill: #E3ECE6; --link: #17302A;
+  /* 밤하늘 옷(2026-10-10 12:53 마카오 · 사장님 「1분영상 분석후 그 중심색으로 아틀란스를 다시 색을 변경한다」) — 공주님 1분 영상 120장을 색 무리로 나눈 중심색(색상 293도 남보라)
+     라일락 안개 바탕 · 별빛 판 · 남색 먹 글자 · 빨강 = 오름 · 파랑 = 내림은 그대로 · 셈과 대비 docs/design/night-violet · 옛 청자 옷(2026-10-05)은 docs/design/celadon */
+  --bg: #EBE9F5; --card: #FBFAFF; --ink: #242240; --ink2: #3E3B5B; --sub: #5D5978; --sep: #D9D7E7; --fill: #ECEAF6; --link: #242240;
   --up: #B4232F; --down: #1F4FB5; --up-ink: #A41F2A; --down-ink: #1C47A3; --warn: #7D4C00;
-  --fire-bg: #2E5B4E; --fire-ink: #F0F8F3; --seg-on: #F8FBF7;
-  --bar: #F8FBF7;
-  /* 위 막대: 짙은 청자 · 둥근 단추 · 아래 상감 선(백토빛) */
-  --band: #1B3B32; --band-ink: #F2F8F4; --band-sub: #BFD6CB; --band-fill: #2A5247;
-  --eun: #F8FBF7;
-  /* 옥빛 — 밝은·어두운 화면 같은 하나(고른 탭 선 · 고른 단추 선 · 이름 옆 인장) */
-  --geum: #4F8F77;
-  --hair: rgba(46, 91, 78, .10); --lift: 0 1px 1px rgba(23, 48, 42, .03), 0 8px 24px rgba(23, 48, 42, .07);
+  --fire-bg: #54457C; --fire-ink: #F7F6FC; --seg-on: #FBFAFF;
+  --bar: #FBFAFF;
+  /* 위 막대: 영상 밤하늘 #141738(색 있는 곳 1위 무리) · 둥근 단추 = 영상 둘째 무리 #2F3152 · 아래 선(별빛) */
+  --band: #141738; --band-ink: #F7F6FD; --band-sub: #CAC6E6; --band-fill: #2F3152;
+  --eun: #FBFAFF;
+  /* 은하 보라(영상 중심 색상 295도) — 밝은·어두운 화면 같은 하나(고른 탭 선 · 고른 단추 선 · 이름 옆 인장) · 닿는 바탕 모두 3:1 이상 */
+  --geum: #8973C3;
+  --hair: rgba(84, 69, 124, .10); --lift: 0 1px 1px rgba(36, 34, 64, .03), 0 8px 24px rgba(36, 34, 64, .07);
 }
 @media (prefers-color-scheme: dark) {
-  /* 밤 청자(2026-10-05 16:29 「청자가 낫다」): 같은 구조 · 불만 낮춤 · 옥빛은 같은 하나 — 옛 밤 판(검정 바탕 · 놋쇠빛)은 머리 주석 ⑥ */
-  :root { --bg: #0D1714; --card: #15231E; --ink: #E8F1EB; --ink2: #CADBD1; --sub: #9BB3A7; --sep: #283B34; --fill: #1C2D27; --link: #E8F1EB;
+  /* 밤 화면 = 영상 밤하늘 바탕 #111433(영상 전체 1위 무리) · 같은 구조 · 불만 낮춤 · 은하 보라는 같은 하나(2026-10-10 12:53) — 옛 밤 청자(2026-10-05 16:29 「청자가 낫다」) · 옛 밤 판(검정 바탕 · 놋쇠빛)은 머리 주석 ⑥ */
+  :root { --bg: #111433; --card: #202038; --ink: #EEEDF8; --ink2: #D7D5E7; --sub: #ABA6C6; --sep: #36374E; --fill: #29293F; --link: #EEEDF8;
     --up: #FF5A66; --down: #5C97FF; --up-ink: #FF8088; --down-ink: #86B2FF; --warn: #FFB547;
-    --fire-bg: #BFD9CB; --fire-ink: #0D1714; --seg-on: #283B34;
-    --bar: #0A1310;
-    --band: #13261F; --band-ink: #E8F1EB; --band-sub: #9BB3A7; --band-fill: #1E342C;
-    --eun: #6FA48C;
-    --geum: #4F8F77;
-    --hair: rgba(232, 241, 235, .10); --lift: 0 0 0 0 transparent; } /* 그림자 목록 안의 none 은 규칙 전체를 무효로 만든다 — 투명 그림자로 */
+    --fire-bg: #D3CBEF; --fire-ink: #111433; --seg-on: #2F2E48;
+    --bar: #111223;
+    --band: #212347; --band-ink: #EEEDF8; --band-sub: #ABA6C6; --band-fill: #333658;
+    --eun: #A293D1;
+    --geum: #8973C3;
+    --hair: rgba(238, 237, 248, .10); --lift: 0 0 0 0 transparent; } /* 그림자 목록 안의 none 은 규칙 전체를 무효로 만든다 — 투명 그림자로 */
 }
 * { box-sizing: border-box; }
 html { font-size: 100%; -webkit-text-size-adjust: 100%; background: var(--bg); }
@@ -70,8 +71,8 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .wordmark { margin-inline-end: auto; font-weight: 600; letter-spacing: .32em; font-size: 1.0625rem; color: var(--ink); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
 /* (옛 · 2026-10-06 00:01 까지) 금빛 자리 3 — 작은 인장(화면마다 한 번): 아틀라스가 떠받친 하늘(둥근 하늘 + 기울어진 띠 하나 · 혼천의 모양) · 색은 --geum 그대로(모양만 그림으로 오려 냄)
    지금 — 로고 5번 「땅 나누기」(사장님 「이거 맞아 알아서 해」): 칸 여섯 · 넓이 = 회사 크기 · 빨간 칸 = 가장 붉게 오른 땅
-   위 막대는 밝은 · 어두운 화면 모두 짙은 청자 바탕이라 그림 한 벌(../logo-band.svg) · 크기 16 → 20px(칸 여섯이 작으면 뭉침) */
-.top .wordmark::before { content: ''; flex: none; width: 20px; height: 20px; margin-inline-end: 12px; background: url('../logo-band.svg') center / contain no-repeat; }
+   위 막대는 밝은 · 어두운 화면 모두 영상 밤하늘 바탕이라 그림 한 벌(../logo-band-night.svg — 2026-10-10 밤하늘 옷 · 옛 ../logo-band.svg 는 초대장(가)이 그대로 씀) · 크기 16 → 20px(칸 여섯이 작으면 뭉침) */
+.top .wordmark::before { content: ''; flex: none; width: 20px; height: 20px; margin-inline-end: 12px; background: url('../logo-band-night.svg') center / contain no-repeat; }
 .round { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--fill); color: var(--ink); display: grid; place-items: center; font: 700 1.125rem/1 var(--font); cursor: pointer; padding: 0; flex: none; transition: background-color .2s ease-out, color .2s ease-out; }
 .round.on { background: var(--ink); color: var(--bg); }
 
@@ -641,13 +642,13 @@ body { line-height: 1.55; background-image: url("data:image/svg+xml,%3Csvg%20xml
 .f-seg { border-radius: 16px; }
 .f-seg-b { border-radius: 14px; }
 .hf-chg, .t-chg, .b-c20, .nc-chg, .f-chg, .mv-val { font-variant-numeric: lining-nums tabular-nums; font-feature-settings: "lnum" 1, "tnum" 1; }
-.mvx.mvx-quiet { --ink: #17302A; --sub: #4A6258; --fill: #E3ECE6; --link: #17302A; margin-top: 8px; }
+.mvx.mvx-quiet { --ink: #242240; --sub: #5D5978; --fill: #ECEAF6; --link: #242240; margin-top: 8px; }
 /* 상징: 위 막대 = 짙은 청자 · 아래 가장자리에 상감처럼 가는 선 두 줄(백토빛 · 옥빛) */
-.top { background: linear-gradient(180deg, #22463C, #1B3B32); box-shadow: inset 0 -1px 0 rgba(248, 251, 247, .85), inset 0 -4px 0 #1B3B32, inset 0 -5px 0 rgba(111, 164, 140, .9); }
+.top { background: linear-gradient(180deg, #3E395A, #141738); box-shadow: inset 0 -1px 0 rgba(251, 250, 255, .85), inset 0 -4px 0 #141738, inset 0 -5px 0 rgba(162, 147, 209, .9); }
 @media (prefers-color-scheme: dark) {
   body { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'260'%20height%3D'260'%3E%3Cg%20fill%3D'none'%20stroke%3D'%23BFD9CB'%20stroke-opacity%3D'.06'%20stroke-width%3D'.8'%3E%3Cpath%20d%3D'M10%2040L60%2052L85%2020L130%2060L190%2044L250%2070'%2F%3E%3Cpath%20d%3D'M60%2052L70%20110L40%20160L80%20220L60%20260'%2F%3E%3Cpath%20d%3D'M130%2060L150%20120L210%20140L240%20200'%2F%3E%3Cpath%20d%3D'M150%20120L100%20170L130%20230L200%20250'%2F%3E%3Cpath%20d%3D'M0%20120L40%20160'%2F%3E%3Cpath%20d%3D'M210%20140L260%20120'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
-  .mvx.mvx-quiet { --ink: #E8F1EB; --sub: #9BB3A7; --fill: #1C2D27; --link: #E8F1EB; }
-  .top { background: linear-gradient(180deg, #183129, #13261F); box-shadow: inset 0 -1px 0 rgba(191, 217, 203, .40), inset 0 -4px 0 #13261F, inset 0 -5px 0 rgba(111, 164, 140, .65); }
+  .mvx.mvx-quiet { --ink: #EEEDF8; --sub: #ABA6C6; --fill: #29293F; --link: #EEEDF8; }
+  .top { background: linear-gradient(180deg, #252849, #212347); box-shadow: inset 0 -1px 0 rgba(211, 203, 239, .40), inset 0 -4px 0 #212347, inset 0 -5px 0 rgba(162, 147, 209, .65); }
 }
 /* 2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」 — 위 막대 「한국 · 미국」 고르기(판이 둘일 때만 · places.json)
    막대 안이라 색 이름은 막대 색(--ink = 막대 글자 · --fill = 막대 둥근 단추) · 지금 판은 막대 글자색 바탕에 막대색 글자(뒤집은 색) */
@@ -824,10 +825,10 @@ html[lang="zh-CN"] [lang="ko"] { font-family: 'Pretendard Variable', Pretendard,
    · 숫자 그림: 점 하나 = 하나(붉은 점 오름 · 푸른 점 내림 · 빈 점 값 없음 · 흰 테 = 이 화면이 말하는 그 하나 · 일정은 첫 점 = 일정을 모은 날 · 별 = 그날) · 막대 = 길이로 견줌 · 글자 없음
    · 넣으면서 뺀 것(규칙 1): 무대의 둥근 테두리 · 흐림 등장(솟아오름으로 바꿈) · 한글 숫자 따로 작게(cm-han — 글자 너비 합이 대신) */
 .cm { position: relative; margin: 10px 0 16px; padding: 18px 20px 20px 22px; border-radius: 24px; overflow: hidden; color: #F4F1EA;
-  background-color: #0C1512; background-image: radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%);
+  background-color: #0F1123; background-image: radial-gradient(120% 110% at 12% 0%, #2B3052 0%, #13152B 52%, #080917 100%);
   box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 22px 44px -28px rgba(0, 0, 0, .75); }
-.cm.cm-t-up { background-image: radial-gradient(80% 48% at 32% 58%, rgba(255, 90, 102, .17), rgba(255, 90, 102, 0) 72%), radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%); }
-.cm.cm-t-down { background-image: radial-gradient(80% 48% at 32% 58%, rgba(92, 151, 255, .17), rgba(92, 151, 255, 0) 72%), radial-gradient(120% 110% at 12% 0%, #24392F 0%, #0F1A16 52%, #070C0A 100%); }
+.cm.cm-t-up { background-image: radial-gradient(80% 48% at 32% 58%, rgba(255, 90, 102, .17), rgba(255, 90, 102, 0) 72%), radial-gradient(120% 110% at 12% 0%, #2B3052 0%, #13152B 52%, #080917 100%); }
+.cm.cm-t-down { background-image: radial-gradient(80% 48% at 32% 58%, rgba(92, 151, 255, .17), rgba(92, 151, 255, 0) 72%), radial-gradient(120% 110% at 12% 0%, #2B3052 0%, #13152B 52%, #080917 100%); }
 .cm::before { content: ''; position: absolute; inset-inline-start: 0; top: 20px; bottom: 20px; width: 3px; border-radius: 0 3px 3px 0; background: var(--geum); }
 .cm-tag { margin: 0; font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: rgba(244, 241, 234, .66); }
 .cm-h { margin: 10px 0 0; font-size: 1.5rem; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere; }
@@ -951,14 +952,14 @@ html:not([lang="ko"]) .sun-n { flex-wrap: wrap; }
 .lt-grp { display: grid; gap: 6px; margin: 0 0 12px; }
 .lt-yr { font-size: .9375rem; font-weight: 700; }
 .lt-hb { position: relative; display: block; height: 28px; border-radius: 0 8px 8px 0; background: var(--band-fill); }
-.lt-hb::after { content: ''; position: absolute; inset-block: -4px; inset-inline-start: 25%; border-inline-start: 2px dashed rgba(232, 241, 235, .75); z-index: 1; } /* 25% = 처음 500만 원(막대 끝 2,000만 원) */
+.lt-hb::after { content: ''; position: absolute; inset-block: -4px; inset-inline-start: 25%; border-inline-start: 2px dashed rgba(238, 237, 248, .75); z-index: 1; } /* 25% = 처음 500만 원(막대 끝 2,000만 원) */
 .lt-hfill { position: absolute; inset-block: 0; inset-inline-start: 0; border-start-end-radius: 8px; border-end-end-radius: 8px; transform-origin: left center; animation: lt-grow .5s cubic-bezier(.3, .7, .3, 1) calc(.15s + var(--i, 0) * .55s) both; } /* 2026-10-07 19:40 「하나하나」 — 막대 여섯이 하나씩(앞 막대가 다 자란 뒤) */
 [dir="rtl"] .lt-hfill { transform-origin: right center; }
-.lt-hfill.lt-stock, .lt-dot.lt-stock { background: #8FD3B6; } /* 주식 = 박하색(빨강은 「오름」 뜻이라 쓰지 않음) */
+.lt-hfill.lt-stock, .lt-dot.lt-stock { background: #BFB8FE; } /* 주식 = 박하색(빨강은 「오름」 뜻이라 쓰지 않음) */
 .lt-hfill.lt-home, .lt-dot.lt-home { background: #D8C08F; }
 .lt-dot.lt-mark { width: 0; height: 12px; border-radius: 0; border-inline-start: 2px dashed var(--band-ink); }
 .lt-bv { position: absolute; top: 50%; transform: translateY(-50%); padding-inline: 6px; font-size: .875rem; font-weight: 700; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 2; }
-.lt-bv.lt-in { color: #0D1714; }
+.lt-bv.lt-in { color: #111433; }
 .lt-bv:not(.lt-in) { margin-inline-start: 4px; border-radius: 6px; background: var(--band); } /* 점선(500만 원) 위에 글이 겹쳐도 읽히게 */
 .lt-bv.lt-end { margin-inline-start: 0; } /* 막대 밖에도 안에도 안 들어가면 칸 맨 끝(글 바탕이 막대를 덮음) */
 .lt-warn { margin: -2px 0 8px; color: var(--warn); font-size: .875rem; }
@@ -1026,9 +1027,9 @@ html[data-font-step="3"] .mkt-cur, html[data-font-step="4"] .mkt-cur { padding: 
    · 처음 그릴 때 한 번 차례로 등장(일 → 줄 → 돈 받는 곳 → 점선 → 다음 · 약 2초) · 동전은 계속 흐름 · 움직임 줄이기 설정이면 멈춘 그림(위 공통 규칙 — 동전은 숨음)
    · 글은 처음부터 보임(흐려졌다 나타나지 않음 — 대비 검사 · 바로 읽기) · 움직이는 것은 그림 · 큰 이름만 아래 선에서 솟아오름(표지 거대 숫자와 같은 움직임)
    넣으면서 뺀 것(규칙 1): 장면 상자 셋의 바탕 · 테두리(첫 장면 회색 상자 · 가운데 옥빛 상자) — 동그라미와 줄이 그 일을 함 · 줄 옆 꺾쇠(동전이 방향을 보임) */
-.sy { --mint: #8FD3B6; --sand: #D8C08F; --rail: 48px;
+.sy { --mint: #BFB8FE; --sand: #D8C08F; --rail: 48px;
   position: relative; margin: 0 -20px 18px; padding: 18px 20px 20px; overflow: hidden; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere; /* 2026-10-07 20:52 「한 화면에」 — 위 · 옆 여백을 줄여 네 줄이 첫 화면에 */
-  background-color: #0B1411; background-image: radial-gradient(64% 26% at 50% 9%, rgba(143, 211, 182, .17), rgba(143, 211, 182, 0) 72%), radial-gradient(120% 90% at 12% 0%, #22382E 0%, #0E1915 50%, #070C0A 100%); }
+  background-color: #0E1022; background-image: radial-gradient(64% 26% at 50% 9%, rgba(191, 184, 254, .17), rgba(191, 184, 254, 0) 72%), radial-gradient(120% 90% at 12% 0%, #2A2F51 0%, #12142A 50%, #080917 100%); }
 .sy::before { content: ''; position: absolute; top: 0; inset-inline-start: 24px; width: 44px; height: 3px; border-radius: 0 0 3px 3px; background: var(--geum); }
 @media (min-width: 600px) { .sy { margin-inline: 0; margin-top: 12px; border-radius: 28px; box-shadow: 0 0 0 1px rgba(244, 241, 234, .07), 0 30px 60px -36px rgba(0, 0, 0, .8); } }
 .sy a { color: inherit; }
@@ -1039,13 +1040,13 @@ html[data-font-step="3"] .mkt-cur, html[data-font-step="4"] .mkt-cur { padding: 
 .sy-map { display: flex; align-items: center; margin: 22px 2px 28px; }
 .sy-mn { flex: none; display: grid; place-items: center; width: min(15vw, 64px); height: min(15vw, 64px); border-radius: 50%; color: #F4F1EA; background: rgba(244, 241, 234, .06); box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .34); }
 .sy-mn svg { width: 50%; height: 50%; }
-.sy-mn2 { position: relative; width: min(24vw, 100px); height: min(24vw, 100px); color: #0B1411;
-  background: radial-gradient(circle at 34% 30%, #E9FFF5 0%, #8FD3B6 46%, #4F8F77 100%); box-shadow: 0 0 0 6px rgba(143, 211, 182, .13), 0 0 40px 10px rgba(143, 211, 182, .40); }
+.sy-mn2 { position: relative; width: min(24vw, 100px); height: min(24vw, 100px); color: #0E1022;
+  background: radial-gradient(circle at 34% 30%, #F8F8FF 0%, #BFB8FE 46%, #8973C3 100%); box-shadow: 0 0 0 6px rgba(191, 184, 254, .13), 0 0 40px 10px rgba(191, 184, 254, .40); }
 .sy-mn2 svg { stroke-width: 1.9; }
 .sy-mn3 { background: none; box-shadow: none; border: 2px dashed rgba(244, 241, 234, .48); color: rgba(244, 241, 234, .74); }
-.sy-tr { position: relative; flex: 1 1 0; min-width: 22px; height: 3px; margin: 0 9px; border-radius: 2px; background: linear-gradient(90deg, rgba(216, 192, 143, .60), rgba(143, 211, 182, .95)); }
+.sy-tr { position: relative; flex: 1 1 0; min-width: 22px; height: 3px; margin: 0 9px; border-radius: 2px; background: linear-gradient(90deg, rgba(216, 192, 143, .60), rgba(191, 184, 254, .95)); }
 .sy-tr-d { height: 0; border-radius: 0; background: none; border-top: 2px dashed rgba(244, 241, 234, .40); }
-html[dir="rtl"] .sy-tr:not(.sy-tr-d) { background: linear-gradient(270deg, rgba(216, 192, 143, .60), rgba(143, 211, 182, .95)); }
+html[dir="rtl"] .sy-tr:not(.sy-tr-d) { background: linear-gradient(270deg, rgba(216, 192, 143, .60), rgba(191, 184, 254, .95)); }
 /* 동전 — 선 길이만 한 투명 띠가 움직이고 그 끝에 금빛 동전 하나(띠가 선 하나만큼 미끄러짐 · 화면 폭 · 글씨 크기가 바뀌어도 선 끝까지) */
 .sy-coin { position: absolute; inset: 0; display: block; opacity: 0; pointer-events: none; }
 .sy-coin::after { content: ''; position: absolute; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #FFF8E1 0%, #FFD98A 50%, #C9962E 100%); box-shadow: 0 0 9px 2px rgba(255, 196, 84, .60); }
@@ -1060,35 +1061,35 @@ html[dir="rtl"] .sy-tr.now .sy-coin { animation-name: sy-run-r; }
 /* 돈길 — 장면 · 줄은 같은 두 칸(왼쪽 줄 칸 · 오른쪽 글) · 줄 칸 폭은 글씨 크기와 상관없이 같음 */
 .sy-s, .sy-line { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); column-gap: 14px; margin: 0; }
 .sy-rail { display: flex; flex-direction: column; align-items: center; min-height: 100%; }
-.sy-node { position: relative; flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #F4F1EA; background: #14201C; box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .36); }
+.sy-node { position: relative; flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #F4F1EA; background: #181A33; box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, .36); }
 .sy-node svg { width: 21px; height: 21px; }
-.sy-s2 .sy-node { width: 48px; height: 48px; color: #0B1411; background: radial-gradient(circle at 34% 30%, #E9FFF5 0%, #8FD3B6 48%, #4F8F77 100%); box-shadow: 0 0 0 4px rgba(143, 211, 182, .16), 0 0 26px 6px rgba(143, 211, 182, .40); }
+.sy-s2 .sy-node { width: 48px; height: 48px; color: #0E1022; background: radial-gradient(circle at 34% 30%, #F8F8FF 0%, #BFB8FE 48%, #8973C3 100%); box-shadow: 0 0 0 4px rgba(191, 184, 254, .16), 0 0 26px 6px rgba(191, 184, 254, .40); }
 .sy-s2 .sy-node svg { width: 27px; height: 27px; }
 .sy-s3 .sy-node { background: none; box-shadow: none; border: 1.5px dashed rgba(244, 241, 234, .55); color: rgba(244, 241, 234, .78); }
 .sy-rl { position: relative; flex: 1 1 auto; width: 2px; min-height: 14px; margin-top: 6px; border-radius: 1px; background: linear-gradient(rgba(216, 192, 143, .55), rgba(216, 192, 143, .70)); }
-.sy-line .sy-rl { margin-top: 0; background: linear-gradient(rgba(216, 192, 143, .70), rgba(143, 211, 182, .95)); }
+.sy-line .sy-rl { margin-top: 0; background: linear-gradient(rgba(216, 192, 143, .70), rgba(191, 184, 254, .95)); }
 .sy-s2 .sy-rl, .sy-dash .sy-rl { width: 0; border-radius: 0; background: none; border-inline-start: 2px dashed rgba(244, 241, 234, .42); } /* 가운데에서 다음으로 가는 줄은 처음부터 점선 */
 .sy-c { min-width: 0; padding: 0 0 10px; }
 .sy-t { margin: 9px 0 6px; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: rgba(244, 241, 234, .66); }
 .sy-s2 .sy-t { margin-top: 14px; color: var(--mint); }
 .sy-main { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .9); }
 .sy-money { margin: 8px 0 0; }
-.sy-chip { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; color: #0C1512; background: var(--sand); }
+.sy-chip { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; color: #0F1123; background: var(--sand); }
 .sy-line .sy-c { padding: 14px 0 20px; }
 .sy-why { display: block; font-size: .9375rem; font-weight: 700; line-height: 1.45; color: rgba(244, 241, 234, .84); }
 .sy-dash .sy-why { color: rgba(244, 241, 234, .72); font-weight: 400; }
-.sy-role { margin: 0; font-size: clamp(1.75rem, 7.6vw, 2.625rem); font-weight: 700; line-height: 1.14; letter-spacing: -.02em; color: #F4F1EA; text-shadow: 0 0 .55em rgba(143, 211, 182, .30); }
+.sy-role { margin: 0; font-size: clamp(1.75rem, 7.6vw, 2.625rem); font-weight: 700; line-height: 1.14; letter-spacing: -.02em; color: #F4F1EA; text-shadow: 0 0 .55em rgba(191, 184, 254, .30); }
 .sy-does { margin: 8px 0 0; font-size: .9375rem; line-height: 1.5; color: rgba(244, 241, 234, .74); }
 .sy-changed { margin: 12px 0 0; font-size: 1.125rem; font-weight: 700; line-height: 1.45; color: #F4F1EA; }
 .sy-m { display: grid; gap: 12px; margin: 14px 0 0; }
 .sy-mr { display: block; padding-top: 12px; border-top: 1px solid rgba(244, 241, 234, .10); } /* 갈래 이름표 위 · 글은 그 아래 전체 폭(큰 글씨에서도 근거 줄이 좁아지지 않게) */
 .sy-mr dt { display: inline-block; margin: 0 0 6px; padding: 1px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 700; }
-.sy-mr[data-kind="real"] dt { color: #0C1512; background: var(--mint); }
-.sy-mr[data-kind="stock"] dt { color: #0C1512; background: var(--sand); }
+.sy-mr[data-kind="real"] dt { color: #0F1123; background: var(--mint); }
+.sy-mr[data-kind="stock"] dt { color: #0F1123; background: var(--sand); }
 .sy-mr[data-kind="hype"] dt { color: rgba(244, 241, 234, .82); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .40); }
 .sy-mr dd { margin: 0; min-width: 0; }
 .sy-st { display: flex; align-items: center; gap: 8px; font-size: 1rem; line-height: 1.45; color: #F4F1EA; }
-.sy-ok { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: #0B1411; background: var(--mint); box-shadow: 0 0 14px rgba(143, 211, 182, .45); }
+.sy-ok { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: #0E1022; background: var(--mint); box-shadow: 0 0 14px rgba(191, 184, 254, .45); }
 .sy-ok svg { width: 16px; height: 16px; stroke-width: 2.8; }
 .sy-w { margin: 6px 0 0; font-size: .8125rem; color: rgba(244, 241, 234, .78); }
 /* 주식 투자금 — 시장마다 막대(옅은 모래빛 · 길이 = 지난 20거래일 변화 ÷ 가장 큰 변화) */
@@ -1121,7 +1122,7 @@ html[dir="rtl"] .sy-bf { transform-origin: right center; background: linear-grad
 .sy-if b { color: #F4F1EA; }
 .sy-ifi { justify-self: center; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; }
 .sy-ifi svg { width: 18px; height: 18px; stroke-width: 2.2; }
-.sy-if [data-if="on"] .sy-ifi { color: #0B1411; background: var(--mint); }
+.sy-if [data-if="on"] .sy-ifi { color: #0E1022; background: var(--mint); }
 .sy-if [data-if="re"] .sy-ifi { color: #FFCB6B; box-shadow: inset 0 0 0 1.5px rgba(255, 203, 107, .75); }
 .sy-oth { margin: 16px 0 0; }
 .sy-oh { margin: 0; font-size: .8125rem; line-height: 1.5; color: rgba(244, 241, 234, .55); }
@@ -1145,23 +1146,23 @@ html[dir="rtl"] .sy-tr.now { transform-origin: right center; }
 .sy-play .sy-mn2 { width: min(18vw, 76px); height: min(18vw, 76px); }
 .sy-rows { display: grid; gap: 6px; margin: 0; }
 .sy-row { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 10px; align-items: start; padding: 8px 12px 9px 8px; border-radius: 14px; background: rgba(244, 241, 234, .05); box-shadow: inset 0 0 0 1px rgba(244, 241, 234, .12); }
-.sy-row.now { background: rgba(79, 143, 119, .20); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .75); }
+.sy-row.now { background: rgba(137, 115, 195, .20); box-shadow: inset 0 0 0 1.5px rgba(191, 184, 254, .75); }
 .sy-rb { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(244, 241, 234, .10); color: #F4F1EA; counter-increment: syr; }
 .sy-rows { counter-reset: syr; }
 .sy-rb .sy-chl { font-size: 1.0625rem; font-weight: 700; line-height: 1; }
 html:not([lang="ko"]) .sy-rb .sy-chl { display: none; }
 html:not([lang="ko"]) .sy-rb::before { content: counter(syr); font-size: 1rem; font-weight: 700; line-height: 1; }
-.sy-row.now .sy-rb { background: var(--mint); color: #0B1411; }
+.sy-row.now .sy-rb { background: var(--mint); color: #0E1022; }
 .sy-rc { min-width: 0; }
 .sy-rl2 { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; margin: 0 0 2px; font-size: .8125rem; font-weight: 700; line-height: 1.35; color: rgba(244, 241, 234, .74); }
 .sy-rmn { color: var(--mint); }
 .sy-rm { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.35; color: #F4F1EA; }
-.sy-rm-big { font-size: clamp(1.3125rem, 5.8vw, 1.625rem); line-height: 1.2; letter-spacing: -.015em; text-shadow: 0 0 .55em rgba(143, 211, 182, .30); }
+.sy-rm-big { font-size: clamp(1.3125rem, 5.8vw, 1.625rem); line-height: 1.2; letter-spacing: -.015em; text-shadow: 0 0 .55em rgba(191, 184, 254, .30); }
 .sy-rs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin: 4px 0 0; font-size: .875rem; font-weight: 700; line-height: 1.35; color: rgba(244, 241, 234, .86); }
 .sy-ri { flex: none; }
 .sy-rs .sy-ok { width: 22px; height: 22px; }
 .sy-rs .sy-ok svg { width: 15px; height: 15px; }
-.sy-rm .sy-ifi { width: 26px; height: 26px; margin-top: 1px; color: #0B1411; background: var(--mint); }
+.sy-rm .sy-ifi { width: 26px; height: 26px; margin-top: 1px; color: #0E1022; background: var(--mint); }
 .sy-rm .sy-ifi svg { width: 16px; height: 16px; }
 .sy-ok.now .sy-okp { stroke-dasharray: 24; animation: sy-draw .55s ease-out both; } /* ✓ 하나가 그려짐(동그라미는 그대로 — 움직이는 것은 ✓ 하나) */
 .sy-ifi.now { animation: sy-pop .5s cubic-bezier(.2, .9, .3, 1.2) both; } /* ↓ 하나가 켜짐 */
@@ -1181,14 +1182,14 @@ html:not([lang="ko"]) .sy-rb::before { content: counter(syr); font-size: 1rem; f
 .sy-news:not(:has(.sy-fd[open])) { padding-bottom: 12px; }
 .sy-mfd > summary { display: flex; gap: 8px; }
 /* 결 — 탭 「불장」 맨 아래(2026-10-07 20:04 「기승전결」) · 맨 위 무대와 같은 어둠 · 옥빛 테 — 처음(결론)과 끝(볼 것)이 맞물림 */
-.sy-end { --mint: #8FD3B6; position: relative; margin: 22px 0 8px; padding: 18px 18px 16px; border-radius: 22px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
-  background-color: #0B1411; background-image: radial-gradient(120% 90% at 12% 0%, #22382E 0%, #0E1915 50%, #070C0A 100%); box-shadow: inset 0 0 0 1.5px rgba(143, 211, 182, .55); }
-.sy-end-k { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 3px 12px; border-radius: 999px; background: var(--mint); color: #0B1411; font-size: .875rem; font-weight: 700; }
+.sy-end { --mint: #BFB8FE; position: relative; margin: 22px 0 8px; padding: 18px 18px 16px; border-radius: 22px; color: #F4F1EA; word-break: keep-all; overflow-wrap: anywhere;
+  background-color: #0E1022; background-image: radial-gradient(120% 90% at 12% 0%, #2A2F51 0%, #12142A 50%, #080917 100%); box-shadow: inset 0 0 0 1.5px rgba(191, 184, 254, .55); }
+.sy-end-k { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 3px 12px; border-radius: 999px; background: var(--mint); color: #0E1022; font-size: .875rem; font-weight: 700; }
 .sy-end-k .sy-chl { font-size: 1rem; }
 html:not([lang="ko"]) .sy-end-k .sy-chl { display: none; }
 .sy-end-t { margin: 12px 0 6px; font-size: .9375rem; font-weight: 700; letter-spacing: .04em; color: var(--mint); }
 .sy-end-m { display: flex; align-items: flex-start; gap: 10px; margin: 0; font-size: 1.375rem; font-weight: 700; line-height: 1.35; color: #F4F1EA; }
-.sy-end-m .sy-ifi { flex: none; margin-top: 3px; color: #0B1411; background: var(--mint); }
+.sy-end-m .sy-ifi { flex: none; margin-top: 3px; color: #0E1022; background: var(--mint); }
 .sy-end-s { margin: 10px 0 0; font-size: 1rem; line-height: 1.5; color: rgba(244, 241, 234, .86); }
 .sy-end-s + .sy-end-s { margin-top: 4px; }
 .sy-end-s b { color: #F4F1EA; }

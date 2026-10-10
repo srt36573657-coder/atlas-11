@@ -236,7 +236,7 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 @media (prefers-color-scheme: dark) { .cb { --cb-gold: #FFD978; } }
 /* ── 저절로 둘러보기(tour.js · 규칙 49 ④ · 2026-10-10 「4너에제안대로 해」) — 막대 그림 바로 아래 고정 칸 · 긴 글은 여기서(그림 위에는 고른 곳 이름표 하나)
    · 글은 움직이지 않음(전환 · 애니메이션 없음 — 움직이는 것은 그림 하나) · 범위 띠 그림 SVG 에는 글자 없음(눈금 글은 HTML) */
-.tu { --tu-b80: rgba(79, 143, 119, .20); --tu-b50: rgba(79, 143, 119, .42); margin: 8px 0 2px; padding: 10px 12px 8px; border-radius: 14px; background: var(--fill); }
+.tu { --tu-b80: rgba(137, 115, 195, .20); --tu-b50: rgba(137, 115, 195, .42); margin: 8px 0 2px; padding: 10px 12px 8px; border-radius: 14px; background: var(--fill); }
 .tu-head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin: 0; font-size: .8125rem; font-weight: 700; line-height: 1.4; color: var(--sub); }
 .tu-k { color: var(--ink); }
 .tu-who { min-width: 0; overflow-wrap: anywhere; }
@@ -280,7 +280,7 @@ html[data-font-step="2"] .cd-main .cd-st, html[data-font-step="3"] .cd-main .cd-
 .tu-x { display: flex; justify-content: space-between; gap: 8px; margin: 3px 0 0 3.4em; font-size: .75rem; color: var(--sub); }
 html[data-font-step="3"] .tu-kss, html[data-font-step="4"] .tu-kss, html[data-font-step="3"] .tu-ck, html[data-font-step="4"] .tu-ck { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 html[data-font-step="4"] .tu-ck { grid-template-columns: minmax(0, 1fr); }
-@media (prefers-color-scheme: dark) { .tu { --tu-b80: rgba(95, 201, 162, .16); --tu-b50: rgba(95, 201, 162, .34); } }
+@media (prefers-color-scheme: dark) { .tu { --tu-b80: rgba(175, 164, 254, .16); --tu-b50: rgba(175, 164, 254, .34); } }
 /* 카드 · 짧은 줄의 60거래일 범위(몬테카를로 · 모형 가정 아래 추정 · 검증 전) */
 .cd-mc { margin: 4px 0 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
 .cd-tag { color: var(--sub); font-size: .8125rem; font-weight: 400; }
