@@ -1,6 +1,6 @@
 {
   "schema": "atlas11-browser-check-4",
-  "at": "2026-10-10T11:00:34.094Z",
+  "at": "2026-10-10T11:32:59.113Z",
   "base": "http://127.0.0.1:8823",
   "prediction": "off",
   "boardId": "board-2026-10-08-f6cf91d5",
@@ -29,7 +29,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -39,7 +39,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -59,7 +59,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 25,
+        "graphable": 21,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -249,7 +249,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -281,7 +281,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 1
       },
@@ -321,7 +321,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -331,7 +331,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -351,7 +351,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 25,
+        "graphable": 21,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -541,7 +541,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -573,7 +573,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 1
       },
@@ -613,7 +613,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 9,
         "truncated": 0,
@@ -623,7 +623,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -643,7 +643,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 25,
+        "graphable": 21,
         "lowContrast": 0,
         "decoColors": 13,
         "truncated": 0,
@@ -833,7 +833,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -865,7 +865,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 1
       },
@@ -905,7 +905,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -915,7 +915,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -935,7 +935,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 25,
+        "graphable": 21,
         "lowContrast": 0,
         "decoColors": 7,
         "truncated": 0,
@@ -1125,7 +1125,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 6,
         "truncated": 0,
@@ -1157,7 +1157,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 5,
+        "decoColors": 6,
         "truncated": 0,
         "formatDates": 1
       },
@@ -1197,7 +1197,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 9,
         "truncated": 0,
@@ -1207,7 +1207,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 3,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1227,7 +1227,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 25,
+        "graphable": 21,
         "lowContrast": 0,
         "decoColors": 13,
         "truncated": 0,
@@ -1417,7 +1417,7 @@
         "relDays": 0,
         "vague": 0,
         "bareNumbers": 0,
-        "graphable": 2,
+        "graphable": 1,
         "lowContrast": 0,
         "decoColors": 10,
         "truncated": 0,
@@ -1449,7 +1449,7 @@
         "bareNumbers": 0,
         "graphable": 0,
         "lowContrast": 0,
-        "decoColors": 7,
+        "decoColors": 8,
         "truncated": 0,
         "formatDates": 1
       },
@@ -8310,7 +8310,7 @@
       }
     },
     {
-      "name": "pc 아래 탭 「기록」(#/log): 줄 102개 = 기록 파일 102개(이슈 8 · 업데이트 78 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "pc 아래 탭 「기록」(#/log): 줄 104개 = 기록 파일 104개(이슈 8 · 업데이트 80 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -8337,11 +8337,11 @@
       }
     },
     {
-      "name": "pc 기록 「업데이트」 누름 → 78줄 = 기록 파일 78줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「업데이트」 누름 → 80줄 = 기록 파일 80줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 78,
+        "n": 80,
         "sw": 1280,
         "cw": 1280
       }
@@ -8357,11 +8357,11 @@
       }
     },
     {
-      "name": "pc 기록 「모두」 누름 → 102줄 = 기록 파일 102줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "pc 기록 「모두」 누름 → 104줄 = 기록 파일 104줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 102,
+        "n": 104,
         "sw": 1280,
         "cw": 1280
       }
@@ -8611,7 +8611,7 @@
       "detail": null
     },
     {
-      "name": "pc 「한국 주식시장은 몇 위인가」(#/korea): 순위 10가지(10년 수익(해마다 · 배당 넣음) 25곳 중 2위 · 1년 수익 25곳 중 1위 · 2000년 말부터 수익(해마다) 13곳 중 1위 · 이익에 견준 값(PER) 25곳 중 3위 · 장부에 견준 값(PBR) 25곳 중 15위 · 배당 25곳 중 25위 · 10년 오르내림 폭 25곳 중 1위 · 오르내림에 견준 수익(10년 · 샤프 비율) 25곳 중 8위 · 시장 크기(상장 회사 값 합) 22곳 중 8위 · 지배구조 점수 12곳 중 8위) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 6줄 · 출처 6곳 · 기준 종가 · 넘침 없음",
+      "name": "pc 「한국 주식시장은 몇 위인가」(#/korea): 순위 10가지(10년 수익(해마다 · 배당 넣음) 25곳 중 2위 · 1년 수익 25곳 중 1위 · 2000년 말부터 수익(해마다) 13곳 중 1위 · 이익에 견준 값(PER) 25곳 중 3위 · 장부에 견준 값(PBR) 25곳 중 15위 · 배당 25곳 중 25위 · 10년 오르내림 폭 25곳 중 1위 · 오르내림에 견준 수익(10년 · 샤프 비율) 25곳 중 8위 · 시장 크기(상장 회사 값 합) 22곳 중 8위 · 지배구조 점수 12곳 중 8위) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 6줄 · 출처 6곳 · 기준 종가 · 넘침 없음 · 그림의 한국 자리 표시(보라 · 4.40%)",
       "ok": true,
       "detail": {
         "hash": "#/korea",
@@ -8701,6 +8701,12 @@
         ],
         "logic": 6,
         "src": 6,
+        "mark": {
+          "cls": "bc-bar acc",
+          "l": "4.40%",
+          "w": "3.2%",
+          "inTrack": true
+        },
         "sw": 1280,
         "cw": 1280
       }
@@ -8906,7 +8912,7 @@
       }
     },
     {
-      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5013ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "pc 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5021ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -8929,7 +8935,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5013
+        "ms": 5021
       }
     },
     {
@@ -15837,7 +15843,7 @@
       }
     },
     {
-      "name": "mobile 아래 탭 「기록」(#/log): 줄 102개 = 기록 파일 102개(이슈 8 · 업데이트 78 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
+      "name": "mobile 아래 탭 「기록」(#/log): 줄 104개 = 기록 파일 104개(이슈 8 · 업데이트 80 · 자료 변경 16 · 검사에 걸려 빠진 줄 0) · 같은 차례(새것이 위) · 날짜 묶음 6개 · 줄마다 종류 · 올라간 때 · 제목 · 무엇 · 뺀 것 · 출처 · 「기록」 눌림 · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "mis": [],
@@ -15864,11 +15870,11 @@
       }
     },
     {
-      "name": "mobile 기록 「업데이트」 누름 → 78줄 = 기록 파일 78줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「업데이트」 누름 → 80줄 = 기록 파일 80줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "update",
-        "n": 78,
+        "n": 80,
         "sw": 390,
         "cw": 390
       }
@@ -15884,11 +15890,11 @@
       }
     },
     {
-      "name": "mobile 기록 「모두」 누름 → 102줄 = 기록 파일 102줄(같은 차례) · 옆으로 넘치지 않음",
+      "name": "mobile 기록 「모두」 누름 → 104줄 = 기록 파일 104줄(같은 차례) · 옆으로 넘치지 않음",
       "ok": true,
       "detail": {
         "pressed": "all",
-        "n": 102,
+        "n": 104,
         "sw": 390,
         "cw": 390
       }
@@ -16138,7 +16144,7 @@
       "detail": null
     },
     {
-      "name": "mobile 「한국 주식시장은 몇 위인가」(#/korea): 순위 10가지(10년 수익(해마다 · 배당 넣음) 25곳 중 2위 · 1년 수익 25곳 중 1위 · 2000년 말부터 수익(해마다) 13곳 중 1위 · 이익에 견준 값(PER) 25곳 중 3위 · 장부에 견준 값(PBR) 25곳 중 15위 · 배당 25곳 중 25위 · 10년 오르내림 폭 25곳 중 1위 · 오르내림에 견준 수익(10년 · 샤프 비율) 25곳 중 8위 · 시장 크기(상장 회사 값 합) 22곳 중 8위 · 지배구조 점수 12곳 중 8위) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 6줄 · 출처 6곳 · 기준 종가 · 넘침 없음",
+      "name": "mobile 「한국 주식시장은 몇 위인가」(#/korea): 순위 10가지(10년 수익(해마다 · 배당 넣음) 25곳 중 2위 · 1년 수익 25곳 중 1위 · 2000년 말부터 수익(해마다) 13곳 중 1위 · 이익에 견준 값(PER) 25곳 중 3위 · 장부에 견준 값(PBR) 25곳 중 15위 · 배당 25곳 중 25위 · 10년 오르내림 폭 25곳 중 1위 · 오르내림에 견준 수익(10년 · 샤프 비율) 25곳 중 8위 · 시장 크기(상장 회사 값 합) 22곳 중 8위 · 지배구조 점수 12곳 중 8위) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 6줄 · 출처 6곳 · 기준 종가 · 넘침 없음 · 그림의 한국 자리 표시(보라 · 4.40%)",
       "ok": true,
       "detail": {
         "hash": "#/korea",
@@ -16228,6 +16234,12 @@
         ],
         "logic": 6,
         "src": 6,
+        "mark": {
+          "cls": "bc-bar acc",
+          "l": "4.40%",
+          "w": "3.2%",
+          "inTrack": true
+        },
         "sw": 390,
         "cw": 390
       }
@@ -16433,7 +16445,7 @@
       }
     },
     {
-      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5010ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
+      "name": "mobile 업종 순환 — 처음 1.5초 움직임 0개 · 최신 결과(걸음 3) · 「재생」 → 걸음 0,1,2,3 · 한 번에 움직인 걸음 가장 많을 때 1개 · 차례 단추가 걸음을 따라 눌림 · 5019ms 뒤 다시 최신 결과 · 단추 「정지」 → 「재생」",
       "ok": true,
       "detail": {
         "start": {
@@ -16456,7 +16468,7 @@
           "step": "3",
           "btn": "재생"
         },
-        "ms": 5010
+        "ms": 5019
       }
     },
     {
@@ -16767,11 +16779,11 @@
       }
     },
     {
-      "name": "미국 판 「기록」 탭: 줄 102개 = /changelog.json 102개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
+      "name": "미국 판 「기록」 탭: 줄 104개 = /changelog.json 104개 · 아래 탭 4개 · 미국 눌림 · 무결성 「읽은 파일 1개 모두 판 목록의 SHA-256 과 같음」",
       "ok": true,
       "detail": {
-        "n": 102,
-        "first": "u-20261010T194600-log-fix3",
+        "n": 104,
+        "first": "u-20261010T204000-atlas2-2",
         "tabs": 4,
         "here": "us",
         "integ": "읽은 파일 1개 모두 판 목록의 SHA-256 과 같음"
@@ -19884,7 +19896,7 @@
       }
     },
     {
-      "name": "쉬운 말: 회사 화면 전문가 칸 7개는 「전문가용 자세히 — 달…」 한 칸에 접힘 · 펼친 글 121줄에 어려운 말 0",
+      "name": "쉬운 말: 회사 화면 전문가 칸 7개는 「전문가용 자세히 — 달…」 한 칸에 접힘 · 펼친 글 127줄에 어려운 말 0",
       "ok": true,
       "detail": {
         "c1": {
@@ -19926,5 +19938,5 @@
       "detail": null
     }
   ],
-  "dir": "reports/atlas11/browser/2026-10-10T10-51-59-964Z"
+  "dir": "reports/atlas11/browser/2026-10-10T11-24-32-062Z"
 }
