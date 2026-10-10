@@ -6,7 +6,7 @@
 
 /* ── 그림 칸 ── */
 .fig { position: relative; margin: 8px 0 14px; padding: 14px 14px 12px; border-radius: 18px; background: var(--card); color: var(--ink); box-shadow: 0 0 0 1px var(--hair), var(--lift); overflow-wrap: anywhere; }
-.fig::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(120% 70% at 0% 0%, rgba(79, 143, 119, .07), rgba(79, 143, 119, 0) 70%); } /* 스푸마토 — 옅은 바탕 한 겹(글 · 숫자 위에는 없음) */
+.fig::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(120% 70% at 0% 0%, rgba(137, 115, 195, .07), rgba(137, 115, 195, 0) 70%); } /* 스푸마토 — 옅은 바탕 한 겹(글 · 숫자 위에는 없음) */
 .fig > * { position: relative; }
 .fig .sy-k { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0; }
 .fig .sy-k > span:first-child { font-size: .9375rem; font-weight: 700; letter-spacing: .02em; color: var(--ink); }

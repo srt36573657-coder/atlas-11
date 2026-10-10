@@ -1,14 +1,14 @@
 {
  "schema": "atlas11-full-check-3",
- "at": "2026-10-10T03:59:29.265Z",
- "seconds": 320,
+ "at": "2026-10-10T05:09:12.184Z",
+ "seconds": 354,
  "lap": {
-  "crawl": 133,
-  "easy": 133.2,
-  "trans": 193.2,
-  "layout": 320.2
+  "crawl": 155.4,
+  "easy": 155.7,
+  "trans": 223.3,
+  "layout": 353.9
  },
- "code": "29827898266358ab",
+ "code": "04bd7651c7c65f26",
  "boards": [
   "kr",
   "us"
@@ -53,12 +53,12 @@
   "edge": 47,
   "what": 990,
   "numPages": 990,
-  "numTokens": 286296,
-  "front": 93245,
-  "hardChecks": 7086620,
+  "numTokens": 286358,
+  "front": 93247,
+  "hardChecks": 7086772,
   "hardHits": 0,
-  "bannedChecks": 93245,
-  "checks": 7467151,
+  "bannedChecks": 93247,
+  "checks": 7467367,
   "click3": {
    "pairs": 443682,
    "over": 0,
