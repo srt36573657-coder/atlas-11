@@ -268,7 +268,7 @@ export function koreaArt(RANKS) {
   const [what, v, rank, n, how] = r;
   const ax = {lo: 0.5, hi: n + 0.5}, dots = h('span', {class: 'bc-track', 'aria-hidden': 'true'});
   for (let k = 1; k <= n; k++) { const d = h('span', {class: 'bc-ref' + (k === rank ? '' : ' idx')}); d.style.setProperty('--l', `${posOf(ax, k).toFixed(2)}%`); dots.append(d); }
-  const me = h('span', {class: 'bc-bar acc'}); // 자리 표시 = 보라(오름 아님) me.style.setProperty('--l', `${(posOf(ax, rank) - 1.6).toFixed(2)}%`); me.style.setProperty('--w', '3.2%'); dots.append(me);
+  const me = h('span', {class: 'bc-bar acc'}); me.style.setProperty('--l', `${(posOf(ax, rank) - 1.6).toFixed(2)}%`); me.style.setProperty('--w', '3.2%'); dots.append(me); // 자리 표시 = 보라(오름 아님 · 2026-10-10 18:22 다섯 팀 전체 검토)
   const art = h('div', {class: 'bc', 'data-at': '0'}, h('div', {class: 'bc-row'}, h('p', {class: 'bc-top'}, h('span', {class: 'bc-name'}, '1위 ← 순위 → 마지막'), h('b', {class: 'bc-val flat'}, `${n}곳`)), dots));
   const labels = check(lab(li(1, tag(what), h('b', null, v)), li(2, tag('자리'), h('b', null, `${n}곳 중 ${rank}위`)), li(3, tag('확인할 것'), how ?? '')), {rank, n, v});
   return fig('korea', '한국 주식시장은 몇 위인가', '한국 주식시장은 몇 위인가', null, artStage({key: 'korea', art, labels, steps: STEPS4}));

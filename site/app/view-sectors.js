@@ -24,11 +24,10 @@ export function sectorCard(sc, lens) {
     line('20거래일 ', sumLine(sc.d20)),
     line('5거래일 ', sumLine(sc.d5, {ex: false})),
     line(`${idxName(lens)} 대비 20거래일 `, ppv(sc.vs20), ' · 5거래일 ', ppv(sc.vs5)),
-    h('p', {class: 'muted xs'}, '선정 5곳 vs 업종 전체: 자료 없음(선정 5곳만 모음) · 업종 시가총액 커버리지: 계산 불가(업종 전체 시가총액 없음)'),
-    exclLine(sc.excluded));
+    exclLine(sc.excluded)); // 카드마다 같던 「선정 5곳 vs 업종 전체 · 커버리지」 줄은 목록 머리에 한 번(2026-10-10 18:22 다섯 팀 전체 검토 · 구글 · 잡스 · 삼성팀)
 }
 /** 업종 진단 목록 — 거르기(동반 강세 · 일부 종목 주도 · 강세 확산 · 강세 약화 · 약세) · 처음 12개 · 더 보기 */
-export function sectorList(lens, {first = 12} = {}) {
+export function sectorList(lens, {first = 10} = {}) { // 처음 10장(2026-10-10 다섯 팀 전체 검토 · 구글팀 — 옛 12장)
   const all = [...(lens.sectors ?? [])].sort((a, b) => (b.d20.mean ?? -Infinity) - (a.d20.mean ?? -Infinity));
   const F = [['all', '전체', () => true], ['broad', LEVEL.broad, s => s.level === 'broad'], ['narrow', LEVEL.narrow, s => s.level === 'narrow'], ['spread', TREND.spread, s => s.trend === 'spread'], ['fade', TREND.fade, s => s.trend === 'fade'], ['weak', LEVEL.weak, s => s.level === 'weak']];
   let cur = 'all', shown = first;
@@ -43,6 +42,7 @@ export function sectorList(lens, {first = 12} = {}) {
   draw();
   return h('section', {class: 'b-box sc-box', id: 'mk-sectors', 'aria-label': '업종 진단'},
     h('h2', {class: 'b-box-h'}, '업종 진단', h('small', null, ` · ATLAS 업종 ${all.length}개 · 20거래일 평균이 큰 차례`)),
+    h('p', {class: 'muted xs sc-same'}, '모든 카드 같음: 선정 5곳 vs 업종 전체는 자료 없음(선정 5곳만 모음) · 업종 시가총액 커버리지는 계산 불가(업종 전체 시가총액 없음)'),
     h('div', {class: 'sc-fs', role: 'group', 'aria-label': '업종 거르기'}, ...btns),
     list, more,
     h('details', {class: 'b-how'}, h('summary', null, '규칙 · 실험 규칙(검증 전)'), h('ul', null, ...RULE_LINES.map(x => h('li', null, x)),

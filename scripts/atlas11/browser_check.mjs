@@ -1298,11 +1298,13 @@ async function scenario(label, viewport, {mobile = false} = {}) {
       rows: [...document.querySelectorAll('.kr-row')].map(r => ({w: r.querySelector('.kr-w')?.textContent.trim(), v: r.querySelector('.kr-v')?.textContent.trim(), rank: r.querySelector('.kr-rank b')?.textContent.trim(),
         cells: r.querySelectorAll('.kr-strip .kr-c').length, me: [...r.querySelectorAll('.kr-strip .kr-c')].findIndex(c => c.classList.contains('kr-me')), meN: r.querySelectorAll('.kr-strip .kr-me').length})),
       logic: document.querySelectorAll('.kr-logic li').length, src: [...document.querySelectorAll('.kr-src a')].filter(a => /^https:\/\//.test(a.getAttribute('href') ?? '')).length,
+      mark: (() => { const m = document.querySelector('.kr-page section[data-art] .bc-track .bc-bar'); return m ? {cls: m.className, l: m.style.getPropertyValue('--l'), w: m.style.getPropertyValue('--w'), inTrack: !!m.parentElement?.classList.contains('bc-track')} : null; })(), // 그림의 한국 자리 표시(보라 · 2026-10-10 다섯 팀 전체 검토 — 한 번 빠졌던 것을 다시 막음)
       sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
     const want = [['15.74%', 2, 25], ['151.66%', 1, 25], ['13.70%', 1, 13], ['10.25배', 3, 25], ['2.29배', 15, 25], ['0.81%', 25, 25], ['32.71%', 1, 25], ['0.53배', 8, 25], ['4.04조 달러', 8, 22], ['57.1%', 8, 12]];
     const stripOk = kr.rows.length === want.length && kr.rows.every((r, i) => r.v === want[i][0] && r.rank === `${want[i][2]}곳 중 ${want[i][1]}위` && r.cells === want[i][2] && r.me === want[i][1] - 1 && r.meN === 1);
-    check(`${label} 「한국 주식시장은 몇 위인가」(#/korea): 순위 ${kr.rows.length}가지(${kr.rows.map(r => `${r.w} ${r.rank}`).join(' · ')}) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 ${kr.logic}줄 · 출처 ${kr.src}곳 · 기준 종가 · 넘침 없음`,
-      kr.hash === '#/korea' && kr.title === '한국 주식시장은 몇 위인가' && kr.active === undefined && /2026년 9월 30일\(수\) 종가 기준/.test(kr.when ?? '') && stripOk && kr.logic === 6 && kr.src >= 6 && kr.sw <= kr.cw, kr);
+    check(`${label} 「한국 주식시장은 몇 위인가」(#/korea): 순위 ${kr.rows.length}가지(${kr.rows.map(r => `${r.w} ${r.rank}`).join(' · ')}) · 순위 띠의 한국 칸 자리 · 숫자를 함께 보면 ${kr.logic}줄 · 출처 ${kr.src}곳 · 기준 종가 · 넘침 없음 · 그림의 한국 자리 표시(보라 · ${kr.mark?.l ?? '없음'})`,
+      kr.hash === '#/korea' && kr.title === '한국 주식시장은 몇 위인가' && kr.active === undefined && /2026년 9월 30일\(수\) 종가 기준/.test(kr.when ?? '') && stripOk && kr.logic === 6 && kr.src >= 6 && kr.sw <= kr.cw
+        && !!kr.mark?.inTrack && /\bacc\b/.test(kr.mark.cls) && kr.mark.w === '3.2%' && /%$/.test(kr.mark.l), kr);
     await wordsCheck(page, `${label} 「한국 주식시장은 몇 위인가」`);
   }
   // ⑤-7 읽는 법 연습 「같은 평균, 다른 구조」(#/learn · 2026-10-09 셋째 개정본 0-E · 18-A) — 연습용 세 묶음(검사기가 따로 셈) · 같은 축 · 묶음마다 다른 요약 · 1위 제외해 비교
