@@ -71,6 +71,11 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.deepEqual(core.dates, W); assert.equal(core.days, 20); assert.equal(core.pickAsOf, next);
   assert.equal(comp[bent], undefined); assert.equal(comp[halt], undefined);
   assert.equal(fs.readdirSync(path.join(dist, 'atlas/data/co')).length, 365);
+  // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 가짜 하루가 「봉인 뒤 지금까지」에 한 칸 붙고 · 3년 전 길과 다시 여는 날은 그대로
+  const tm = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/time.json'), 'utf8')).capsules[0];
+  assert.equal(tm.since.days, 1); assert.deepEqual(tm.since.dates, [tm.seal, next]); assert.ok(tm.since.chg365 != null && tm.since.chgPool != null);
+  assert.deepEqual(tm.opens.map(o => o.y), [3, 5, 10]); assert.equal(tm.past.to, tm.seal);
+  assert.equal(core.time.since.days, 1); assert.equal(core.time.digest, tm.digest.slice(0, 12));
   const upd = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/updates.json'), 'utf8'));
   assert.equal(upd.records[0].result, '바꿈'); assert.equal(upd.records[0].asOf, next); assert.equal(upd.records[0].in.length, rep.in.length);
   const files = fs.readdirSync(rec); assert.equal(files.length, 1);

@@ -20,6 +20,7 @@ export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
 const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'pick36.json'];
+const OPT_FILES = ['time.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 
 async function copyAll(from, to) {
   await fs.mkdir(to, {recursive: true});
@@ -53,6 +54,7 @@ async function mirrorLive(target) {
   const stage = target + '.live';
   await fs.rm(stage, {recursive: true, force: true}); await fs.mkdir(path.join(stage, 'co'), {recursive: true});
   for (const f of DATA_FILES) await fs.writeFile(path.join(stage, f), await getLive(f));
+  for (const f of OPT_FILES) { try { await fs.writeFile(path.join(stage, f), await getLive(f)); } catch { try { await fs.copyFile(path.join(target, f), path.join(stage, f)); } catch { /* 없으면 없음 */ } } }
   const comp = JSON.parse(await fs.readFile(path.join(stage, 'comp.json'), 'utf8')).companies, codes = Object.keys(comp);
   let next = 0; const work = async () => { while (next < codes.length) { const c = codes[next++]; await fs.writeFile(path.join(stage, 'co', c + '.json'), await getLive(`co/${c}.json`)); } };
   await Promise.all([work(), work(), work(), work(), work(), work()]);

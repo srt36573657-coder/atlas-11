@@ -433,7 +433,96 @@ with open(os.path.join(OUT, 'days.json'), 'w', encoding='utf-8') as fh:
     json.dump({'schema': 'atlas-new-days-1', 'asOf': asof, 'dates': DAYS, 'all': allv}, fh, ensure_ascii=False, separators=(',', ':'))
     fh.write('\n')
 
+# ── ⑥ 시간(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 … 과감하게 하라」) ──
+#   봉인(capsule.py · reports/atlas11/t365/capsule/capsule-<번호>.json — 잠근 날 · 규칙 · 회사 · 종가 · 봉인 번호)을 읽어
+#   ⓐ 지나온 길 = 봉인 날 3년 전(그날 또는 그 뒤 첫 거래일) → 봉인 날: 봉인한 365곳 · 후보 모두를 그때 같은 돈으로 나눠 샀다면(그대로 둠 · 그날 값이 없으면 그 앞 값)
+#   ⓑ 봉인 뒤 지금까지 = 봉인 날 종가(잠근 값) → 마지막 종가 날: 365곳 · 36곳 · 후보 모두(같은 셈 · 회차마다 다시)
+#   ⓒ 다시 여는 날 = 봉인에 적힌 3 · 5 · 10년 뒤(남은 날은 화면이 오늘 날짜로 셈) — 앞날 값은 만들지 않음(규칙 49)
+from capsule import digest_of, plus_years  # noqa: E402
+from datetime import date as _date  # noqa: E402
+CAP_DIR = os.path.join(ROOT, 'reports', 'atlas11', 't365', 'capsule')
+MROW = {}
+
+
+def mrow(c):
+    """후보 회사의 종가 표(모음 + 이어 받은 일봉) — 마지막 종가 날까지"""
+    if c not in MROW:
+        st_ = (MERGED['stocks'].get(c) or {}).get('fchart') or {}
+        MROW[c] = {iso8(r[0]): r[4] for r in (st_.get('rows') or []) if r[4] and r[4] > 0 and iso8(r[0]) <= asof}
+    return MROW[c]
+
+
+def hold(codes, days, base_px):
+    """같은 돈을 나눠 사서 그대로 둔 값의 평균(첫날 = 100) · 그날 값이 없으면 그 앞 값 · 기준 값이 없는 회사는 뺌"""
+    have = [c for c in codes if base_px.get(c)]
+    last, out = {}, []
+    for d in days:
+        s = 0.0
+        for c in have:
+            v = mrow(c).get(d)
+            if v:
+                last[c] = v
+            s += last.get(c, base_px[c]) / base_px[c]
+        out.append(round(s / len(have) * 100, 2) if have else None)
+    return out, have
+
+
+TIME = None
+caps = sorted((f for f in os.listdir(CAP_DIR) if f.startswith('capsule-') and f.endswith('.json')), key=lambda f: int(f[8:-5])) if os.path.isdir(CAP_DIR) else []
+tcaps = []
+for fn in caps:
+    cap = json.load(open(os.path.join(CAP_DIR, fn), encoding='utf-8'))
+    if digest_of(cap) != cap['digest']:
+        die('봉인 %s 의 내용이 봉인 번호와 다름 — 봉인은 고치지 않습니다(바꾸려면 새 번호)' % fn)
+    seal = cap['seal']
+    if seal > asof or seal not in DAYS:
+        continue  # 봉인 날이 이 자료 밖(시험 자료 등)이면 건너뜀
+    mem = [m[0] for m in cap['members']]
+    pool = [p[0] for p in cap['pool'] if p[1]]
+    # ⓐ 지나온 길 — 봉인 날 3년 전부터
+    p_from = next(d for d in DAYS if d >= plus_years(_date.fromisoformat(seal), -3).isoformat())
+    W = [d for d in DAYS if p_from <= d <= seal]
+    pb = {c: mrow(c).get(p_from) for c in set(mem) | set(pool)}
+    pv365, ph365 = hold(mem, W, pb)
+    pvpool, phpool = hold(pool, W, pb)
+    rat = [mrow(c)[seal] / pb[c] for c in ph365 if mrow(c).get(seal)]
+    half = 0
+    for c in ph365:
+        pk, mm = 0, 0.0
+        for d in W:
+            v = mrow(c).get(d)
+            if v:
+                pk = max(pk, v)
+                mm = min(mm, v / pk - 1)
+        half += mm <= -0.5
+    past = {'from': p_from, 'to': seal, 'dates': W, 'v365': pv365, 'vpool': pvpool, 'n365': len(ph365), 'skip365': len(mem) - len(ph365),
+            'nPool': len(phpool), 'mult365': round(pv365[-1] / 100, 4), 'multPool': round(pvpool[-1] / 100, 4),
+            'med365': round(st.median(rat), 4) if rat else None, 'half': half}
+    # ⓑ 봉인 뒤 지금까지 — 잠근 종가에서
+    TD = [d for d in DAYS if seal <= d <= asof]
+    sp = {m[0]: m[2] for m in cap['members']}
+    sp.update({p[0]: p[1] for p in cap['pool'] if p[1]})
+    sv365, sh365 = hold(mem, TD, sp)
+    sv36, sh36 = hold([x[1] for x in cap['picks36']], TD, {x[1]: x[3] for x in cap['picks36']})
+    svpool, shpool = hold(pool, TD, sp)
+    stale = lambda codes: sum(1 for c in codes if not mrow(c).get(TD[-1]))
+    since = {'dates': TD, 'days': len(TD) - 1, 'v365': sv365, 'v36': sv36, 'vpool': svpool,
+             'chg365': d2(sv365[-1] - 100) if len(TD) > 1 else None, 'chg36': d2(sv36[-1] - 100) if len(TD) > 1 else None,
+             'chgPool': d2(svpool[-1] - 100) if len(TD) > 1 else None,
+             'have365': len(sh365), 'have36': len(sh36), 'havePool': len(shpool), 'stale365': stale(sh365), 'stalePool': stale(shpool)}
+    tcaps.append({'id': cap['id'], 'seal': seal, 'digest': cap['digest'], 'sealedAt': cap['sealedAt'], 'file': 'reports/atlas11/t365/capsule/' + fn,
+                  'version': cap['version'], 'pick36': cap['pick36'], 'opens': cap['opens'], 'rules': cap['rules'], 'members': [[m[0], m[2]] for m in cap['members']],
+                  'n36': len(cap['picks36']), 'nPool': len(cap['pool']), 'poolNoClose': len(cap['pool']) - len(pool), 'past': past, 'since': since})
+if tcaps:
+    TIME = {'schema': 'atlas-new-time-1', 'asOf': asof, 'capsules': tcaps}
+    k0 = tcaps[0]
+    core['time'] = {'id': k0['id'], 'seal': k0['seal'], 'digest': k0['digest'][:12], 'opens': k0['opens'],
+                    'past': {k: k0['past'][k] for k in ('from', 'mult365', 'multPool', 'n365', 'nPool', 'half')},
+                    'since': {k: k0['since'][k] for k in ('days', 'chg365', 'chg36', 'chgPool')}}
+
 sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES)}
+if TIME:
+    sz['time.json'] = dump('time.json', TIME)
 print(json.dumps({'days': len(DAYS), 'co': nco, 'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'names': len(names),
                   'all': {'chg': core_all['chg'], 'cwChg': core_all['cwChg'], 'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat']},
                   'dd50': ndd50, 'dd30': ndd30, 'perMedian': per_med, 'jump': sum(1 for c in companies.values() if c['jump']),

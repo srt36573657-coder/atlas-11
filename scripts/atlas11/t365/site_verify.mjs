@@ -7,10 +7,12 @@
 //             ⑨ 갈래 · 업종 · 전체의 방향 · 세기 · 힘(11:04 · 11:10 「이 화면에서 나와야 해」 — 곧은 선 · 앞 반 · 뒤 반)
 //             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표(후보 표 모두) 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 · 밖 까닭 = proposal.json
 //             ⑩ 회사마다 고른 까닭(층 · 네이버 업종 · 두 팀 잣대 숫자 · 30거래일) · 깔때기 · 업종 대세 순서 표 · 층마다 가운데값 = proposal.json(사장님 11:43 대세 365곳)
-//   365곳 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 d365-v1) — 그 판의 고르기는 daese_verify.mjs 가 따로 다시 셈
+//             ⑫ 시간(사장님 14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 봉인 번호(sha256) · 3년 전 → 봉인 날 · 봉인 뒤 지금까지 · 다시 여는 날 · 첫 화면 요약
+//   365곳 =scripts/atlas11/t365/universe.json 이 가리키는 판(지금 d365-v1) — 그 판의 고르기는 daese_verify.mjs 가 따로 다시 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import zlib from 'node:zlib';
+import crypto from 'node:crypto';
 import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
 const dataDir = path.resolve(ROOT, process.argv[2] ?? 'site/atlas/data');
@@ -175,6 +177,65 @@ for (const c of codes) {
   same(JSON.stringify(co.jumps.map(j => j[0])), JSON.stringify(jw), `하루 30% 넘게 바뀐 날 ${c}`);
   checks++; if (co.fin.years.some(y => y.endsWith('E'))) bad.push({what: `결산 해에 짐작 E 섞임 ${c}`});
 }
+// ⑫ 시간 — 봉인(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 … 과감하게 하라」)
+//   봉인 파일(reports/atlas11/t365/capsule/capsule-<번호>.json)마다: 봉인 번호를 노드로 다시 셈(열쇠 차례 JSON · sha256) · 3년 전 → 봉인 날(같은 돈 나눠 사서 그대로 · 그날 값 없으면 앞 값)
+//   · 봉인 뒤 지금까지(잠근 종가에서) · 다시 여는 날 · 첫 화면 요약(core.time)을 site_build.py 와 다른 길(노드 · 모음 원본 + 같은 이어 받기 규칙)로 따로 셈
+const CAPD = path.join(ROOT, 'reports/atlas11/t365/capsule');
+const caps = fs.existsSync(CAPD) ? fs.readdirSync(CAPD).filter(f => /^capsule-\d+\.json$/.test(f)).sort((a, b) => +a.slice(8, -5) - +b.slice(8, -5)) : [];
+const canon = x => (Array.isArray(x) ? '[' + x.map(canon).join(',') + ']' : x && typeof x === 'object' ? '{' + Object.keys(x).sort().map(k => JSON.stringify(k) + ':' + canon(x[k])).join(',') + '}' : JSON.stringify(x));
+const allClose = new Map(); // 후보 누구든 — 모음 + 이어 받은 종가(위 ① 과 같은 규칙)
+const snaps = CLOSES && fs.existsSync(CLOSES) ? fs.readdirSync(CLOSES).filter(f => f.endsWith('.json.gz')).sort().map(fn => JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CLOSES, fn))).toString('utf8'))).filter(s => ['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(s.schema)) : [];
+const cl = c => {
+  if (allClose.has(c)) return allClose.get(c);
+  const m = new Map(); for (const r of bundle.stocks[c]?.fchart?.rows ?? []) if (r[4] > 0 && iso(r[0]) <= core.asOf) m.set(iso(r[0]), r[4]);
+  const b = new Map(m);
+  for (const s of snaps) { const rs = s.rows?.[c]; if (!rs) continue; if (rs.some(([d, v]) => iso(d) <= BLAST && b.has(iso(d)) && Math.abs(v / b.get(iso(d)) - 1) > 0.005)) continue; for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= core.asOf) m.set(iso(d), v); }
+  allClose.set(c, m); return m;
+};
+const hold = (cs, ds, base) => { const have = cs.filter(c => base[c]), last = new Map(); return {have, v: ds.map(d => { if (!have.length) return null; let s = 0; for (const c of have) { const x = cl(c).get(d); if (x) last.set(c, x); s += (last.get(c) ?? base[c]) / base[c]; } return Math.round(s / have.length * 100 * 100) / 100; })}; };
+const nearA = (a, b, tol, what) => { checks++; if (!Array.isArray(a) || a.length !== b.length || a.some((x, k) => (x == null || b[k] == null ? x !== b[k] : Math.abs(x - b[k]) > tol))) bad.push({what, got: JSON.stringify(a)?.slice(0, 80), want: JSON.stringify(b).slice(0, 80)}); };
+const plusY = (d, n) => { const [y, m, dd] = d.split('-').map(Number); const t = new Date(Date.UTC(y + n, m - 1, dd)); return t.getUTCMonth() === m - 1 ? t.toISOString().slice(0, 10) : `${y + n}-${String(m).padStart(2, '0')}-28`; };
+const TJ = fs.existsSync(path.join(dataDir, 'time.json')) ? J(path.join(dataDir, 'time.json')) : null;
+const wantCaps = [];
+for (const fn of caps) {
+  const cap = J(path.join(CAPD, fn)), body = {}; for (const k of ['id', 'seal', 'version', 'opens', 'rules', 'members', 'picks36', 'pool']) body[k] = cap[k];
+  same(crypto.createHash('sha256').update(canon(body), 'utf8').digest('hex'), cap.digest, `봉인 번호 ${fn}`);
+  if (cap.seal > core.asOf || !DAYS.includes(cap.seal)) continue;
+  wantCaps.push(cap);
+  const got = TJ?.capsules?.find(x => x.id === cap.id); if (!got) { bad.push({what: `시간 자료에 봉인 ${cap.id}호 없음`}); continue; }
+  same(got.digest, cap.digest, `봉인 ${cap.id}호 번호`); sameJ(got.opens, [3, 5, 10].map(y => ({y, date: plusY(cap.seal, y)})), `봉인 ${cap.id}호 다시 여는 날 = 3 · 5 · 10년 뒤`); sameJ(got.opens, cap.opens, `다시 여는 날 = 봉인 파일`);
+  sameJ(got.rules, cap.rules, `잠근 규칙 = 봉인 파일`); sameJ(got.members, cap.members.map(m => [m[0], m[2]]), `봉인 365곳 · 잠근 종가`);
+  const mem = cap.members.map(m => m[0]), pool = cap.pool.filter(p => p[1]).map(p => p[0]);
+  // 3년 전 → 봉인 날
+  const from = DAYS.find(d => d >= plusY(cap.seal, -3)), PW = DAYS.filter(d => d >= from && d <= cap.seal);
+  same(got.past.from, from, '3년 전 = 봉인 날 3년 전 그날 또는 그 뒤 첫 거래일'); sameJ(got.past.dates, PW, '지나온 길 날짜');
+  const pb = Object.fromEntries([...new Set([...mem, ...pool])].map(c => [c, cl(c).get(from) ?? null]));
+  const a = hold(mem, PW, pb), p = hold(pool, PW, pb);
+  nearA(got.past.v365, a.v, 0.011, '지나온 길 365곳'); nearA(got.past.vpool, p.v, 0.011, '지나온 길 후보 모두');
+  same(got.past.n365, a.have.length, '3년 전 값 있던 365곳 수'); same(got.past.skip365, mem.length - a.have.length, '3년 전 값 없던 곳 수'); same(got.past.nPool, p.have.length, '3년 전 값 있던 후보 수');
+  near(got.past.mult365, a.v.at(-1) / 100, 0.0002, '365곳 배'); near(got.past.multPool, p.v.at(-1) / 100, 0.0002, '후보 모두 배');
+  const rat = a.have.map(c => cl(c).get(cap.seal) / pb[c]).filter(x => isFinite(x)).sort((x, y) => x - y), mid = rat.length >> 1;
+  near(got.past.med365, rat.length ? Math.round((rat.length % 2 ? rat[mid] : (rat[mid - 1] + rat[mid]) / 2) * 1e4) / 1e4 : null, 0.0002, '365곳 가운데 회사 배');
+  let half = 0; for (const c of a.have) { let pk = 0, mm = 0; for (const d of PW) { const x = cl(c).get(d); if (x) { pk = Math.max(pk, x); mm = Math.min(mm, x / pk - 1); } } if (mm <= -0.5) half++; }
+  same(got.past.half, half, '3년 사이 반값 아래로 떨어진 적 있는 곳');
+  // 봉인 뒤 지금까지 — 잠근 종가에서
+  const TD = DAYS.filter(d => d >= cap.seal && d <= core.asOf), sp = {...Object.fromEntries(cap.pool.filter(x => x[1])), ...Object.fromEntries(cap.members.map(m => [m[0], m[2]]))};
+  sameJ(got.since.dates, TD, '봉인 뒤 날짜'); same(got.since.days, TD.length - 1, '봉인 뒤 거래일 수');
+  const s1 = hold(mem, TD, sp), s2 = hold(cap.picks36.map(x => x[1]), TD, Object.fromEntries(cap.picks36.map(x => [x[1], x[3]]))), s3 = hold(pool, TD, sp);
+  nearA(got.since.v365, s1.v, 0.011, '봉인 뒤 365곳'); nearA(got.since.v36, s2.v, 0.011, '봉인 뒤 36곳'); nearA(got.since.vpool, s3.v, 0.011, '봉인 뒤 후보 모두');
+  const chgOf = v => (TD.length > 1 ? Math.round((v.at(-1) - 100) * 100) / 100 : null);
+  near(got.since.chg365, chgOf(s1.v), 0.0101, '봉인 뒤 365곳 %'); near(got.since.chg36, chgOf(s2.v), 0.0101, '봉인 뒤 36곳 %'); near(got.since.chgPool, chgOf(s3.v), 0.0101, '봉인 뒤 후보 %');
+  same(got.since.have365, s1.have.length, '봉인 뒤 값 있는 365곳'); same(got.since.have36, s2.have.length, '봉인 뒤 값 있는 36곳'); same(got.since.havePool, s3.have.length, '봉인 뒤 값 있는 후보');
+  same(got.since.stale365, s1.have.filter(c => !cl(c).get(TD.at(-1))).length, '마지막 날 값 없는 365곳(앞 값으로 셈)');
+  if (cap === wantCaps[0]) { // 첫 화면 요약
+    const k = core.time; if (!k) { bad.push({what: '첫 화면 시간 요약(core.time) 없음'}); continue; }
+    same(k.id, cap.id, '요약 봉인 번호'); same(k.digest, cap.digest.slice(0, 12), '요약 봉인 번호 앞 12자'); sameJ(k.opens, cap.opens, '요약 다시 여는 날');
+    sameJ(k.past, {from, mult365: got.past.mult365, multPool: got.past.multPool, n365: a.have.length, nPool: p.have.length, half}, '요약 지나온 길');
+    sameJ(k.since, {days: TD.length - 1, chg365: got.since.chg365, chg36: got.since.chg36, chgPool: got.since.chgPool}, '요약 봉인 뒤');
+  }
+}
+same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = 이 자료 안 봉인 수'); same(!!core.time, wantCaps.length > 0, '첫 화면 시간 요약 있음 = 봉인 있음');
+
 const res = {schema: 'atlas-new-data-verify-1', made: new Date().toISOString(), data: path.relative(ROOT, dataDir), asOf: core.asOf, checks, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({checks, bad: bad.length, first: bad.slice(0, 5)}));

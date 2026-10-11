@@ -22,10 +22,14 @@ const comp = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/comp.js
 const pick = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/pick36.json'), 'utf8'));
 const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
 const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.json'), 'utf8')); // 업데이트 탭(사장님 12:41)
+const tdata = fs.existsSync(path.join(ROOT, 'site/atlas/data/time.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/time.json'), 'utf8')) : null; // 봉인 시간(14:37 · 14:39 「3년후 5년후 10년후 이야기」)
 const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 const md = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일`;
+const ymd = d => d.slice(0, 4) + '년 ' + md(d);
+const won100 = m => (m == null ? '?' : Math.round(m * 100).toLocaleString('ko-KR') + '만 원');
+const ddayText = d => { const k = new Date(Date.now() + 9 * 36e5), t = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate()); const [y, m, x] = d.split('-').map(Number), n = Math.round((Date.UTC(y, m - 1, x) - t) / 864e5); return n > 0 ? 'D-' + n.toLocaleString('ko-KR') : n === 0 ? '오늘 엶' : '엶 날 지남 — 다시 셀 차례'; }; // 화면과 같은 꼴(서울 오늘부터)
 // 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로」 — 화면 어디에도 옛 3개월 창(「3개월」 · 옛 기준일 7월 6일)이 남지 않았는지 · 기준일 = 마지막 종가 날의 20거래일 전인지
 const cal = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/input.json'), 'utf8')).calendar.sessions;
 const W20 = cal.filter(d => d <= core.asOf).slice(-21);
@@ -34,7 +38,7 @@ if (core.base !== W20[0] || core.days !== 20 || JSON.stringify(core.dates) !== J
 const trText = t => (t.d === 'up' ? '▲ ' : t.d === 'down' ? '▼ ' : '▶ ') + (t.s === 'strong' ? '강하게 ' : '') + {up: '오름', down: '내림', flat: '옆걸음'}[t.d] + (t.t === 'gain' ? ' · 힘 붙음' : t.t === 'fade' ? ' · 힘 빠짐' : '');
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
-const routes = ['#/', '#/list', '#/36', '#/up', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info'];
+const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info'];
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
 
@@ -58,7 +62,11 @@ function expect(route) {
     const k = pick.companies[code];
     return {step: 5, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖'};
   }
-  if (!kind) return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, trd: core.groups.map(g => trText(g.tr))};
+  if (!kind) { const T = core.time; return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, trd: core.groups.map(g => trText(g.tr)),
+    why: T ? ['3년 전', ymd(T.past.from), won100(T.past.mult365), won100(T.past.multPool), `지금 · 봉인 ${T.id}호`, ...T.opens.flatMap(o => [`${o.y}년 뒤`, ymd(o.date), ddayText(o.date)]), `${T.past.n365}곳 중 ${T.past.half}곳`, `봉인 번호 ${T.digest}`] : []}; }
+  if (kind === 'time') { const K = tdata.capsules[0], P = K.past, S = K.since; return {title: `봉인 ${K.id}호 — ${md(K.seal)} 365곳`,
+    why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
+      ...(S.days ? [pct(S.chg365), pct(S.chg36), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
   if (kind === '36') { const B = pick.backtest;
     return {p36: pick.picks.map(p => [p.name, '번 길 ' + r1(p.avg).toFixed(1) + '%']), test: B ? `${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번` : null, total: Math.round(pick.total).toLocaleString('ko-KR') + '원',
       why: B ? [`${B.wins}번(${Math.round(B.rate * 100)}%)${B.rate < 0.5 ? '뿐' : ''}입니다`, B.passes ? '문턱을 넘었습니다' : B.meanPick < B.meanAll ? '아무거나 고른 것보다 못했습니다' : '한 달 평균은 나았지만', ...(B.skipped?.length ? [`셀 수 없어 뺀 때 ${B.skipped.length}번`] : [])] : []}; }
