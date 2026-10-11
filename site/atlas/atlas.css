@@ -435,3 +435,47 @@ ol.opens li .mo { align-self: center; }
 @keyframes mo-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes mo-twinkle { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .mo, .mo * { animation: none !important; } }
+
+/* 4단 앞으로 클까?(사장님 2026-10-11 16:51 「… 경쟁 회사가 어떻게 되고 있는데 … 상식적인 얘기로 미래 추론 … 주가가 아니라 회사의 성장 … 담백하게」)
+   회사 크기(매출 · 2025년 = 1)만 · 보라 계열만(빨강 · 파랑은 오름 · 내림에만 · 금빛은 고른 한 곳 · ? · 조심에만) · 범위 띠 = 세 팀이 따져 본 「100번 중 80번쯤」 */
+.gc { position: relative; margin: 8px 0 4px; }
+.gc svg { display: block; width: 100%; overflow: visible; touch-action: pan-y; }
+.gc .yl { position: absolute; left: 2px; color: var(--mute); background: var(--night); padding: 0 6px; border-radius: 8px; pointer-events: none; line-height: 1.2; }
+.gc .ax { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 8px; color: var(--mute); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.gc .tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--ink); color: var(--night); padding: 3px 12px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-weight: 700; }
+.lkey .l-gact { width: 14px; height: 18px; border-radius: 3px; background: var(--violet-ink); }
+.lkey .l-gest { width: 14px; height: 18px; border-radius: 3px; border: 2px dashed var(--violet-ink); }
+.lkey .l-gband { width: 14px; height: 18px; border-radius: 4px; background: rgba(137, 115, 195, .38); border: 1px solid var(--violet-ink); box-sizing: border-box; }
+.lkey .l-gone { border-top: 2px dashed var(--mute); }
+ol.yrs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+ol.yrs li { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 12px 14px; min-width: 0; }
+ol.yrs p { margin: 0 0 4px; line-height: 1.45; }
+ol.yrs .yh { color: var(--sub); }
+ol.yrs .yh b { color: var(--ink-hi); font-weight: 750; }
+ol.yrs .ym b { font-size: 1.42rem; font-weight: 800; letter-spacing: -0.02em; color: var(--violet-ink); }
+ol.yrs .ym span { color: var(--sub); }
+ol.yrs .yg { color: var(--sub); }
+ol.yrs .yt { color: var(--ink); margin-top: 6px; }
+.gchip { display: inline-block; padding: 0 10px; border-radius: 10px; font-weight: 750; line-height: 1.5; }
+.gchip.g5 { background: var(--violet); color: var(--ink-hi); }
+.gchip.g4 { background: rgba(137, 115, 195, .42); color: var(--ink-hi); }
+.gchip.g3 { background: var(--card3); color: var(--ink); }
+.gchip.g2 { border: 1px solid var(--hair2); color: var(--ink); }
+.gchip.g1 { border: 1px dashed var(--mute); color: var(--ink); }
+.box .shape { color: var(--violet-ink); }
+ul.riv { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; line-height: 1.55; }
+ul.riv li { min-width: 0; overflow-wrap: anywhere; } /* 띄어쓰기 없는 긴 이름(예: GST(글로벌스탠다드테크놀로지))도 칸 안에서 줄바꿈 */
+ul.riv b { color: var(--ink-hi); font-weight: 700; }
+ul.riv .w { color: var(--sub); }
+ul.riv a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+ul.peers { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+ul.peers li { display: grid; grid-template-columns: minmax(0, 7.2em) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+ul.peers .pn { color: var(--sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ul.peers li.me .pn { color: var(--ink-hi); font-weight: 750; }
+ul.peers .pt { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
+ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(137, 115, 195, .45); }
+ul.peers .pb.me { background: var(--violet-ink); }
+ul.gbars { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
+ul.gbars li { display: grid; grid-template-columns: 5.4em minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+ul.gbars .gt { position: relative; height: 16px; background: rgba(255, 255, 255, .06); border-radius: 8px; overflow: hidden; }
+ul.gbars .gf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; background: rgba(137, 115, 195, .6); }

@@ -401,6 +401,20 @@ for k in range(1, len(DAYS)):
     if rs:
         lvl *= 1 + sum(rs) / len(rs)
     allv.append(round(lvl, 2))
+# ⑤-1 회사 성장 이야기(사장님 2026-10-11 16:51 「… 경쟁 회사가 어떻게 되고 있는데 … 독점 회사면 독보적으로 … 경쟁이 많아가지고 좀 그럴 것이다 … 상식적인 얘기로 미래 추론을 해라 …
+#   주가를 … 하라는 얘기가 아니라 회사의 성장을 얘기 하란 얘기야 … 담백하게」 · 16:56 「3번」 365곳 모두 · 16:57 「이건 봉인하지마」)
+#   숫자(구글팀) = grow.py build() — 결산 · 2026E · 우리나라 상장 같은 업종 안 크기 · 이야기(애플팀 · 클로드팀) = reports/atlas11/t365/grow/stories-*.json 가장 새 것
+#   co/<번호>.json 의 grow 와 grow.json(요약) — 이야기가 아직 없는 회사는 숫자만(화면 「? 조사 중」) · 봉인하지 않음(새 소식이 나오면 새 파일)
+import subprocess  # noqa: E402
+import grow  # noqa: E402
+IND_ALL = json.loads(subprocess.run(['node', os.path.join(HERE, 'ind_all.mjs'), NOW], check=True, capture_output=True, text=True).stdout)
+GB = grow.build(N, NAMES, {'companies': companies}, bnd, IND_ALL)
+STORIES = grow.latest_stories(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow'))
+GROWCO = {c: grow.site_entry(GB[c], STORIES.get(c)) for c in members}
+gsum = {c: {'s': e['story']['shape'], 'g': {h: e['story']['h'][h]['g'] for h in grow.HS}, 'm': {h: e['story']['h'][h]['mid'] for h in grow.HS}} for c, e in GROWCO.items() if e['story']}
+core['grow'] = {'written': len(gsum), 'of': len(GROWCO), 'files': sorted({e['story']['file'] for e in GROWCO.values() if e['story']}),
+                'g10': {gr: sum(1 for x in gsum.values() if x['g']['10'] == gr) for gr in grow.GRADES}, 'g10none': sum(1 for x in gsum.values() if x['g']['10'] is None),
+                'shapes': {k: sum(1 for x in gsum.values() if x['s'] == k) for k in ('혼자 앞섬', '몇 곳이 나눔', '다투는 곳이 많음', '새로 생기는 판')}}
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
 for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님
     if fn.endswith('.json') and fn[:-5] not in members:
@@ -426,7 +440,7 @@ for c in members:
         sc = PSCALE[c]
         cper = now.get('per') if sc == 1.0 or now.get('per') is None else round(now.get('per') * sc, 2)
         cpbr = now.get('pbr') if sc == 1.0 or now.get('pbr') is None else round(now.get('pbr') * sc, 2)
-        json.dump({'schema': 'atlas-new-co-1', 'code': c, 'k0': k0, 'close': cl, 'jumps': jumps, 'fin': fin, 'per': cper, 'pbr': cpbr, 'key': 'net' if isfin(SELROW[c]) else 'op'}, fh, ensure_ascii=False, separators=(',', ':'))
+        json.dump({'schema': 'atlas-new-co-1', 'code': c, 'k0': k0, 'close': cl, 'jumps': jumps, 'fin': fin, 'per': cper, 'pbr': cpbr, 'key': 'net' if isfin(SELROW[c]) else 'op', 'grow': GROWCO[c]}, fh, ensure_ascii=False, separators=(',', ':'))
         fh.write('\n')
     nco += 1
 with open(os.path.join(OUT, 'days.json'), 'w', encoding='utf-8') as fh:
@@ -523,6 +537,7 @@ if tcaps:
 sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES)}
 if TIME:
     sz['time.json'] = dump('time.json', TIME)
+sz['grow.json'] = dump('grow.json', {'schema': 'atlas-new-grow-1', 'asOf': asof, 'written': len(gsum), 'of': len(GROWCO), 'companies': gsum})
 print(json.dumps({'days': len(DAYS), 'co': nco, 'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'names': len(names),
                   'all': {'chg': core_all['chg'], 'cwChg': core_all['cwChg'], 'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat']},
                   'dd50': ndd50, 'dd30': ndd30, 'perMedian': per_med, 'jump': sum(1 for c in companies.values() if c['jump']),

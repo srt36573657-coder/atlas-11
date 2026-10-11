@@ -8,6 +8,7 @@
 //             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표(후보 표 모두) 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 · 밖 까닭 = proposal.json
 //             ⑩ 회사마다 고른 까닭(층 · 네이버 업종 · 두 팀 잣대 숫자 · 30거래일) · 깔때기 · 업종 대세 순서 표 · 층마다 가운데값 = proposal.json(사장님 11:43 대세 365곳)
 //             ⑫ 시간(사장님 14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 봉인 번호(sha256) · 3년 전 → 봉인 날 · 봉인 뒤 지금까지 · 다시 여는 날 · 첫 화면 요약
+//             ⑬ 회사 성장 이야기(16:51 · 봉인 안 함) — 매출을 모음 결산 글에서 따로 읽어 맞댐 · 이야기 기록과 맞댐 · 말 등급 다시 셈 · 금지 말 · 요약 수
 //   365곳 =scripts/atlas11/t365/universe.json 이 가리키는 판(지금 d365-v1) — 그 판의 고르기는 daese_verify.mjs 가 따로 다시 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
@@ -235,6 +236,54 @@ for (const fn of caps) {
   }
 }
 same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = 이 자료 안 봉인 수'); same(!!core.time, wantCaps.length > 0, '첫 화면 시간 요약 있음 = 봉인 있음');
+
+// ⑬ 회사 성장 이야기(사장님 2026-10-11 16:51 · 16:56 「3번」 365곳 모두 · 16:57 「이건 봉인하지마」) — 노드로 따로:
+//   매출(차트 숫자)은 모음의 네이버 연간 결산 글을 여기서 따로 읽어 맞댐(grow.py · dump.mjs 길과 다른 길) · 이야기는 기록 파일(reports/atlas11/t365/grow/stories-*.json · 회사마다 가장 새 파일)과 맞댐
+//   말 등급은 범위에서 다시 셈 · 범위 차례(0 < lo ≤ mid ≤ hi) · 근거 주소 http(s) · 금지 말 · 요약(grow.json · core.grow) 수
+{
+  const GDIR = path.join(ROOT, 'reports/atlas11/t365/grow');
+  const files = fs.existsSync(GDIR) ? fs.readdirSync(GDIR).filter(f => /^stories-.*\.json$/.test(f)).sort() : [];
+  const ST = {}; for (const f of files) { const rec = J(path.join(GDIR, f)); for (const [code, x] of Object.entries(rec.companies)) ST[code] = {...x, file: 'reports/atlas11/t365/grow/' + f}; }
+  const gr = (lo, hi) => { if (lo == null || hi == null) return null; const f = lo >= 1 ? 1 : hi <= 1 ? 0 : Math.log(hi) / (Math.log(hi) - Math.log(lo)); return f >= 0.9 ? '아주 높다' : f >= 0.65 ? '높다' : f >= 0.35 ? '반반' : f >= 0.1 ? '낮다' : '아주 낮다'; };
+  const BAN = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률', '주가', '목표 주가', '유망', '대박'];
+  const num = t => (t == null || t === '' || t === '-' ? null : Number(String(t).replace(/,/g, '')));
+  const GJ = fs.existsSync(path.join(dataDir, 'grow.json')) ? J(path.join(dataDir, 'grow.json')) : null;
+  if (!GJ) bad.push({what: '성장 요약 grow.json 없음'});
+  let written = 0;
+  for (const c of Object.keys(comp)) {
+    const G = J(path.join(dataDir, 'co', c + '.json')).grow;
+    if (!G) { bad.push({what: `성장 자료 없음 ${c}`}); continue; }
+    // 매출 — 모음 결산 글을 따로 읽음(해 · 값 · 증권사 평균치 E)
+    let fi = null; try { fi = JSON.parse(bundle.stocks[c].finance.text).financeInfo; } catch { /* 없음 */ }
+    if (fi) {
+      const row = (fi.rowList || []).find(r => r.title === '매출액'), heads = fi.trTitleList || [];
+      sameJ(G.years, heads.map(t => t.title.replace(/\.$/, '').slice(0, 4) + (t.isConsensus === 'Y' ? 'E' : '')), `성장 해 ${c}`);
+      sameJ(G.rev, heads.map(t => num(row?.columns?.[t.key]?.value)), `성장 매출(모음 결산 글) ${c}`);
+    } else same(G.years.length, 0, `결산 글이 없는데 해가 있음 ${c}`);
+    const act = G.years.map((y, k) => [y, G.rev[k]]).filter(([y]) => !y.endsWith('E'));
+    same(G.baseYear, act.at(-1)?.[0] ?? null, `성장 바탕 해 ${c}`); same(G.baseRev, act.at(-1)?.[1] ?? null, `성장 바탕 매출 ${c}`);
+    checks++; if (G.top.some((t, k) => k && (G.top[k - 1][1] ?? 0) < (t[1] ?? 0))) bad.push({what: `같은 업종 큰 순 차례 ${c}`});
+    checks++; if (G.ind.rank != null && G.ind.rank <= G.top.length && G.top[G.ind.rank - 1]?.[2] !== c) bad.push({what: `같은 업종 차례에 이 회사 자리 ${c}`, got: G.top[G.ind.rank - 1]?.[2], want: c});
+    const st = ST[c];
+    same(!!G.story, !!st, `성장 이야기 있음 = 기록 있음 ${c}`);
+    if (!st || !G.story) continue;
+    written++;
+    same(G.story.shape, st.judge.shape, `판의 모양 ${c}`); same(G.story.file, st.file, `이야기 기록 파일 ${c}`);
+    for (const k of ['1', '3', '5', '10']) {
+      const x = G.story.h[k], y = st.judge.h[k] || {};
+      same(x.lo, y.lo ?? null, `범위 lo ${c} ${k}년`); same(x.mid, y.mid ?? null, `범위 mid ${c} ${k}년`); same(x.hi, y.hi ?? null, `범위 hi ${c} ${k}년`); same(x.g, gr(y.lo, y.hi), `말 등급 ${c} ${k}년`);
+      if (x.mid != null) { checks++; if (!(0 < x.lo && x.lo <= x.mid && x.mid <= x.hi)) bad.push({what: `범위 차례 ${c} ${k}년`, got: [x.lo, x.mid, x.hi]}); }
+    }
+    sameJ(G.story.facts, st.research.facts || [], `근거 기사 ${c}`);
+    for (const f of G.story.facts) { checks++; if (!/^https?:\/\//.test(f.url || '')) bad.push({what: `근거 주소 ${c}`, got: f.url}); }
+    const txt = JSON.stringify([Object.values(G.story.h).map(x => x.t), G.story.brk, G.story.teams, G.story.sells, G.story.why, G.story.market, G.story.events, G.story.unknown, G.story.rivals.map(r => [r.name, r.note, r.where]), G.story.facts.map(f => f.text)]);
+    for (const w of BAN) { checks++; if (txt.includes(w)) bad.push({what: `성장 이야기 금지 말 「${w}」 ${c}`}); }
+    if (GJ) { const sm = GJ.companies[c]; same(sm?.s, G.story.shape, `요약 판의 모양 ${c}`); sameJ(sm?.g, Object.fromEntries(['1', '3', '5', '10'].map(k => [k, G.story.h[k].g])), `요약 말 등급 ${c}`); sameJ(sm?.m, Object.fromEntries(['1', '3', '5', '10'].map(k => [k, G.story.h[k].mid])), `요약 가운데 ${c}`); }
+  }
+  if (GJ) { same(GJ.written, written, '성장 요약 쓴 곳 수'); same(GJ.of, Object.keys(comp).length, '성장 요약 365곳'); same(Object.keys(GJ.companies).length, written, '성장 요약 회사 수'); }
+  same(core.grow?.written, written, '첫 화면 성장 요약 쓴 곳 수'); same(core.grow?.of, Object.keys(comp).length, '첫 화면 성장 요약 365곳');
+  if (GJ && core.grow) sameJ(core.grow.g10, Object.fromEntries(['아주 높다', '높다', '반반', '낮다', '아주 낮다'].map(g => [g, Object.values(GJ.companies).filter(x => x.g['10'] === g).length])), '첫 화면 10년 말 등급 수');
+}
 
 const res = {schema: 'atlas-new-data-verify-1', made: new Date().toISOString(), data: path.relative(ROOT, dataDir), asOf: core.asOf, checks, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');

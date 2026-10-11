@@ -38,7 +38,7 @@ if (core.base !== W20[0] || core.days !== 20 || JSON.stringify(core.dates) !== J
 const trText = t => (t.d === 'up' ? '▲ ' : t.d === 'down' ? '▼ ' : '▶ ') + (t.s === 'strong' ? '강하게 ' : '') + {up: '오름', down: '내림', flat: '옆걸음'}[t.d] + (t.t === 'gain' ? ' · 힘 붙음' : t.t === 'fade' ? ' · 힘 빠짐' : '');
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
-const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info'];
+const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), '#/info']; // grow = 4단 앞으로 클까?(사장님 16:51 회사 성장 이야기)
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
 
@@ -53,6 +53,14 @@ function expect(route) {
         `「${q.sector}」 · ${core.funnel.sectors}업종 가운데 대세 순서 ${q.srank}번째`, `업종 ${pct(q.schg)} · 이 회사 ${q.r30 == null ? '? 셈 못 함' : pct(q.r30)}`, `많이 오른 순 ${q.srank}번째`];
       if (q.part) why.push(`${q.inN}곳만 넣었습니다 — 이 회사는 ${q.prank}번째`);
       return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100', why}; }
+    if (sub === 'grow') { // 4단 앞으로 클까?(사장님 16:51) — 자료 파일(co/<번호>.json grow)에서 따로 만든 기대 글 · 범위 → 말 등급도 따로 셈
+      const G = coOf(code).grow, S = G?.story, xm = m => (Math.round(m * 10 + 1e-9) / 10).toFixed(1) + '배';
+      if (!S) return {step: 4, title: `${c.name} — 앞으로 클까?`, why: ['? 세 팀 이야기는 아직입니다', `「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`]};
+      const gr = (lo, hi) => { if (lo == null || hi == null) return null; const f = lo >= 1 ? 1 : hi <= 1 ? 0 : Math.log(hi) / (Math.log(hi) - Math.log(lo)); return f >= 0.9 ? '아주 높다' : f >= 0.65 ? '높다' : f >= 0.35 ? '반반' : f >= 0.1 ? '낮다' : '아주 낮다'; };
+      const why = [S.shape, `근거 기사 ${S.facts.length}개`, `「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`];
+      for (const k of ['1', '3', '5', '10']) { const x = S.h[k]; if (x.mid == null) { why.push('? 자료 모자람'); continue; } why.push(`${xm(x.mid)}쯤`, `(${xm(x.lo)} ~ ${xm(x.hi)})`); const g = gr(x.lo, x.hi); if (g !== x.g) fail(route, `말 등급이 범위와 다름 ${k}년 ${x.g} ≠ ${g}`); why.push(g); }
+      return {step: 4, title: `${c.name} — 앞으로 클까?`, why};
+    }
     if (sub === 'past') { // 4단 — 처음 보기 1년(253거래일) · 자료 파일에서 따로 셈
       const co = coOf(code), n = days.dates.length, from = Math.max(co.k0, n - 253), cl = co.close.slice(from - co.k0).filter(x => x != null);
       const base = cl[0], last = cl.at(-1); let peak = 0, m = 0; for (const x of cl) { peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); }
@@ -207,7 +215,7 @@ for (const [w, hgt, font] of plans) {
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
     if (e.title) { numbers++; if (!r.head.includes(e.title)) fail(tag, `머리 ${r.head} ≠ ${e.title}`); }
     if (e.axis) { numbers++; if (!r.text.includes(e.axis)) fail(tag, `그림 아래 「${e.axis}」 없음`); }
-    for (const old of ['3개월', '7월 6일']) if (r.text.includes(old)) fail(tag, `옛 3개월 창 글 「${old}」이 남음`);
+    if (!route.endsWith('/grow')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old)) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 4단 앞으로 클까?는 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
     if (e.step) { numbers++; if (r.step !== `5단 중 ${e.step}단`) fail(tag, `5단 표시 ${r.step} ≠ ${e.step}단`); }
@@ -267,7 +275,7 @@ await b.close();
 const depth = new Map([['#/', 0]]), q = ['#/'];
 while (q.length) { const r = q.shift(); for (const l of links.get(r) ?? []) { const n = l === '#/' ? '#/' : l; if (!depth.has(n)) { depth.set(n, depth.get(r) + 1); if (links.has(n)) q.push(n); } } }
 let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); }
-  const d4 = depth.get(`#/c/${c}/past`), d5 = depth.get(`#/c/${c}/range`); if (d4 == null || d4 > 4) fail('4단', `${comp[c].name} ${d4 ?? '닿지 않음'}`); if (d5 == null || d5 > 5) fail('5단', `${comp[c].name} ${d5 ?? '닿지 않음'}`); }
+  const d4 = depth.get(`#/c/${c}/past`), d5 = depth.get(`#/c/${c}/range`), dg = depth.get(`#/c/${c}/grow`); if (d4 == null || d4 > 4) fail('4단', `${comp[c].name} ${d4 ?? '닿지 않음'}`); if (dg == null || dg > 4) fail('4단 앞으로 클까?', `${comp[c].name} ${dg ?? '닿지 않음'}`); if (d5 == null || d5 > 5) fail('5단', `${comp[c].name} ${d5 ?? '닿지 않음'}`); }
 const max5 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
 const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click5: {deepest: max5}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
