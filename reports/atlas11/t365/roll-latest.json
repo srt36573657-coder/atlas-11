@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T05:17:38.192Z",
- "kst": "2026-10-11 14:17",
- "slot": null,
- "reason": "밤보라 프로 — 구도 그대로 고급스러운 모양(13:29 말씀)",
+ "at": "2026-10-11T06:52:17.702Z",
+ "kst": "2026-10-11 15:52",
+ "slot": "16:10",
+ "reason": "한층 위로 — 잘한 것 180개 · 봉인 1호(14:37 · 14:39 말씀)",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-6LvcuD/closes/20261011T051738Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-88FyVY/closes/20261011T065217Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 87,
+  "sec": 89,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -61,14 +61,14 @@
  },
  "verify": {
   "daese": "{\"checks\":6041,\"bad\":0,\"first\":[]}",
-  "site": "{\"checks\":319809,\"bad\":0,\"first\":[]}",
+  "site": "{\"checks\":319845,\"bad\":0,\"first\":[]}",
   "pick36": "{\"checks\":197,\"mcChecks\":96,\"skipped\":0,\"bad\":0,\"first\":[]}"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 87
+   "sec": 89.1
   },
   {
    "name": "후보 표",
@@ -93,22 +93,22 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 5.5
+   "sec": 7
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 1.5
+   "sec": 2.6
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 51.5
+   "sec": 48.9
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 19.9
+   "sec": 20.2
   }
  ]
 }
