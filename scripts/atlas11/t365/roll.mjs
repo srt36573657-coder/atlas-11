@@ -3,7 +3,8 @@
 //   올리기 묶음(scripts/atlas11/package.mjs)이 site/ 를 dist/ 로 옮긴 바로 뒤에 부른다 — 평일 16:00 · 19:00 예약 올리기와 손 올리기가 모두 이 길을 지남
 //   (예약 작업 파일 atlas11-daily.yml · atlas11-evening.yml 은 고치지 않음 — 규칙 7)
 //   ① 깃허브 실행기면(GITHUB_ACTIONS=true · ATLAS_T365_FETCH 가 0 이 아니면) 365곳 종가를 이어 받는다(closes_fetch.mjs → reports/atlas11/t365/closes/*.json.gz 새 파일)
-//   ② 이어 받은 종가 파일이 있으면 dump.mjs 두 번 → site_build.py(ATLAS_T365_CLOSES) 로 다시 셈 — 기준일 = 새 마지막 종가 날의 20거래일 전
+//   ② 이어 받은 종가 파일이 있으면 dump.mjs(universe.json 의 모음 · 기준) → site_build.py(ATLAS_T365_CLOSES) 로 다시 셈 — 기준일 = 새 마지막 종가 날의 20거래일 전
+//      (사장님 2026-10-11 11:43 대세 365곳(d365-v1) — 고를 때 표 = 지금 표라 한 번만 풂 · 365곳은 universe.json 이 가리키는 판 그대로)
 //   ③ 따로 세기 site_verify.mjs 가 같은 종가로 다시 세어 틀림 0 이고 마지막 종가 날이 저장된 자료보다 뒤일 때만 dist/atlas/data 를 바꿈
 //   무엇이든 멈추면 저장된 자료(site/atlas/data) 그대로 올림 — 올리기는 멈추지 않음 · 까닭은 결과에 그대로 적음(통과로 적지 않음)
 //   결과: 깃허브 실행기에서는 reports/atlas11/t365/roll-latest.json(덮어씀) + roll-log.jsonl(한 줄씩 더함) — 올리기 뒤 기록 커밋에 실림
@@ -13,8 +14,8 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 
-export const BUNDLE_SEL = ['reports/atlas11/universe/2026-10-05-0940/bundle.json.gz', '2026-10-02']; // 고를 때 표(365곳을 다시 골라 맞댐)
-export const BUNDLE_NOW = ['reports/atlas11/universe/2026-10-10/bundle.json.gz', '2026-10-08'];    // 회사 이름 · 몸값 · 결산(모음 날 값)
+const ACT = JSON.parse(fss.readFileSync(new URL('./universe.json', import.meta.url), 'utf8'));
+export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름 · 몸값 · 결산(모음 날 값) — 대세 365곳은 이 표로 고름
 
 async function copyAll(from, to) {
   await fs.mkdir(to, {recursive: true});
@@ -40,13 +41,11 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     rep.files = files.length;
     if (!files.length) { rep.why = '이어 받은 종가 파일 없음 — 저장된 자료 그대로'; return await done(); }
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'atlas-roll-'));
-    const sel = path.join(tmp, 'sel.json'), now = path.join(tmp, 'now.json'), out = path.join(tmp, 'data');
-    for (const [[b, a], o] of [[BUNDLE_SEL, sel], [BUNDLE_NOW, now]]) {
-      const r = run('node', ['scripts/atlas11/t365/dump.mjs', b, o, a]);
-      if (r.status !== 0) throw Error('dump.mjs 멈춤: ' + tail(r.stderr || r.stdout));
-    }
+    const now = path.join(tmp, 'now.json'), out = path.join(tmp, 'data');
+    { const r = run('node', ['scripts/atlas11/t365/dump.mjs', BUNDLE_NOW[0], now, BUNDLE_NOW[1]]);
+      if (r.status !== 0) throw Error('dump.mjs 멈춤: ' + tail(r.stderr || r.stdout)); }
     const env = {ATLAS_T365_CLOSES: closes};
-    const bld = run('python3', ['scripts/atlas11/t365/site_build.py', sel, now, out], env);
+    const bld = run('python3', ['scripts/atlas11/t365/site_build.py', now, out], env);
     rep.build = tail(bld.stdout || bld.stderr);
     if (bld.status !== 0) throw Error('site_build.py 멈춤: ' + tail(bld.stderr || bld.stdout));
     const ver = run('node', ['scripts/atlas11/t365/site_verify.mjs', out, path.join(tmp, 'verify.json')], env);

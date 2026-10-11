@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""새 ATLAS 사이트 자료(aaa7377.com/atlas/) — 365곳(t365-v1) · 큰 갈래 10 · 업종 63 · 지난 20거래일 지수를 화면이 읽는 JSON 세 벌로.
+"""새 ATLAS 사이트 자료(aaa7377.com) — 지금 쓰는 365곳(universe.json · d365-v1 대세 365곳) · 큰 갈래 · 업종 · 지난 20거래일 지수를 화면이 읽는 JSON 으로.
 사장님 2026-10-11 06:13 「aaa7377.com에 올려 … 잡스 방식이 중심이 되고 구글팀 클로드팀 cai팀 그리고 찰리 망거팀 삼성팀 들이 도와서
 일반인들이 바로 알수 있고 쉽게 사용가능하며 별도에 설명이 없어도 감탄이 니오게 새로운 아틀란스를 만들어 봐라 이 토대로 말이다」
 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로 하라 지금은 7월 6일이 기준이잖아 이기준을 현재에서 지난 20일로 변경한다 항상 그렇게 하라」
   → 창 = 거래소 달력에서 마지막 종가 날(asOf)까지 거래일 21개(기준일 = asOf 의 20거래일 전 · 그날 = 100 · 변화 20번).
-    날짜를 박아 두지 않음 — 자료의 마지막 날이 바뀌면 기준일도 같이 움직임(옛 3개월 창 7월 6일 = 100 은 industry-index.json 기록으로 남김).
+    날짜를 박아 두지 않음 — 자료의 마지막 날이 바뀌면 기준일도 같이 움직임(옛 3개월 창 7월 6일 = 100 은 t365 industry-index.json 기록으로 남김).
+사장님 2026-10-11 11:43 「두 팀이 함께 고른 8업종(178곳)을 「대세였던 곳」으로 삼고, 나머지는 한 팀만 고른 업종부터 대세에 가까운 순서로 채워 365곳을 만들까요? 어 그렇게 해」
+  → 365곳 = daese.py(d365-v1 · 10월 8일 종가까지 30거래일) · 옛 t365-v1(10월 2일 · 1년 20% · 2027 흐름)은 기록으로 남김
 
 쓰는 법(저장소 맨 위에서):
-  node scripts/atlas11/t365/dump.mjs reports/atlas11/universe/2026-10-05-0940/bundle.json.gz <임시>/sel.json 2026-10-02   ← 고를 때 표(그대로 고르기를 다시 셈)
-  node scripts/atlas11/t365/dump.mjs reports/atlas11/universe/2026-10-10/bundle.json.gz      <임시>/now.json 2026-10-08   ← 지금 값(10월 8일 종가)
-  python3 scripts/atlas11/t365/site_build.py <임시>/sel.json <임시>/now.json site/atlas/data
+  node scripts/atlas11/t365/dump.mjs reports/atlas11/universe/2026-10-10/bundle.json.gz <임시>/now.json 2026-10-08   ← 고를 때 · 지금 값(10월 8일 종가)
+  python3 scripts/atlas11/t365/site_build.py <임시>/now.json site/atlas/data
 만드는 것:
-  core.json  — 날짜 21개(기준일 + 20거래일) · 365곳 전체 · 갈래 10 · 업종 63(한 회사 한 표 지수 v · 큰 회사는 크게 지수 cw) · 고른 깔때기 · 규칙(첫 화면이 먼저 읽음)
-  comp.json  — 회사 365곳 요약(선 빼고 · 첫 그림 뒤에 받음)
+  core.json  — 날짜 21개(기준일 + 20거래일) · 365곳 전체 · 갈래 · 업종(한 회사 한 표 지수 v · 큰 회사는 크게 지수 cw) · 고른 깔때기 · 규칙 · 업종 대세 순서 표(첫 화면이 먼저 읽음)
+  comp.json  — 회사 365곳 요약(선 빼고 · 첫 그림 뒤에 받음) · 회사마다 고른 까닭(층 · 네이버 업종 · 두 팀 잣대 · 30거래일)
   lines.json — 회사마다 20거래일 선(기준일 = 100 · 값 × 100 정수 · 값 없는 날 null)
-  names.json — 1,375곳 이름 · 365곳 안/밖 · 밖이면 어느 문에서 왜(찾기 칸이 읽음)
+  names.json — 후보 1,378곳 이름 · 365곳 안/밖 · 밖이면 어느 문에서 왜(찾기 칸이 읽음)
 셈(숫자는 모두 여기서 한 번만 · 화면은 보여 주기만 · 종가는 모음 bundle.json.gz 네이버 일봉 그대로):
   회사 선 = 그날 종가 ÷ 기준일 종가 × 100(기준일 종가가 없으면 선 없음)
   한 회사 한 표 = 날마다 회사들 하루 변화의 같은 무게 평균(±50% 넘는 값 뺌)을 이어 곱함 · 기준일 = 100
-  큰 회사는 크게 = 기준일에 시가총액만큼 사 두었다면(사고 그대로 둠) — 기준일 몸값 = 10월 2일 몸값 × 기준일 종가 ÷ 10월 2일 종가
+  큰 회사는 크게 = 기준일에 시가총액만큼 사 두었다면(사고 그대로 둠) — 기준일 몸값 = 고른 날(10월 8일) 몸값 × 기준일 종가 ÷ 고른 날 종가
                    날마다 Σ(기준일 몸값 × 선 값) ÷ Σ 기준일 몸값 · 그날 값이 없으면 앞 값
   20거래일 가장 깊이 빠짐 = 선의 꼭대기에서 가장 많이 내려간 비율
   1주 값 · 1년 = 거래소 달력 asOf 까지 253거래일(1년 = asOf 종가 ÷ 252거래일 전 종가 · 1년 가장 깊이 빠짐은 값이 200일 이상일 때) — dump.mjs 값과 맞대어 다르면 멈춤
-고르기 다시 셈: select.py 와 같은 문 · 같은 차례로 다시 골라 proposal.json 의 365곳과 한 곳도 다르지 않은지 먼저 본다(다르면 멈춤).
+고르기 다시 셈: daese.select() 로 다시 골라 proposal.json 의 365곳 · 차례와 한 곳도 다르지 않은지 먼저 본다(다르면 멈춤).
 """
 import gzip, json, os, sys, math, collections, statistics as st
 from datetime import datetime, timezone, timedelta
@@ -30,16 +31,18 @@ from decimal import Decimal, ROUND_HALF_UP
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, HERE)
-from rules import blue, growth, nz, isfin, SECTOR2THEME, THEMES27  # noqa: E402
+from rules import isfin  # noqa: E402
+import daese  # noqa: E402
 
-SEL, NOW, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
-T365 = os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365')
-IDX = json.load(open(os.path.join(T365, 'industry-index.json'), encoding='utf-8'))
-BYI = json.load(open(os.path.join(T365, 'by-industry.json'), encoding='utf-8'))
-PRO = json.load(open(os.path.join(T365, 'proposal.json'), encoding='utf-8'))
-S = json.load(open(SEL, encoding='utf-8'))
+if len(sys.argv) != 3:
+    sys.exit('site_build: 쓰는 법 python3 scripts/atlas11/t365/site_build.py <now.json(dump.mjs · 10월 10일 모음)> <자료 폴더> — 옛 고를 때 표(sel.json)는 이제 받지 않음')
+NOW, OUT = sys.argv[1], sys.argv[2]
+ACT = json.load(open(os.path.join(HERE, 'universe.json'), encoding='utf-8'))
+UNI = os.path.join(ROOT, ACT['dir'])
+BYI = json.load(open(os.path.join(UNI, 'by-industry.json'), encoding='utf-8'))
+PRO = json.load(open(os.path.join(UNI, 'proposal.json'), encoding='utf-8'))
 N = json.load(open(NOW, encoding='utf-8'))
-CAP, ATV, DEBT, DAYS, R1Y, PICK = 1000, 3, 200, 260, 0.20, 365  # select.py 와 같은 문
+PICK = 365
 
 
 def die(m):
@@ -57,64 +60,40 @@ def d2(x):
     return None if x is None else float(Decimal(repr(x)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
 
 
-# ── ① 고르기 다시 셈(select.py 그대로) — 1,375곳 모두 안/밖과 까닭 ──
-rows = S['rows']
-status = {}
-pool = []
-for r in rows:
-    f = blue(r, CAP, ATV, DEBT, DAYS)
-    if f:
-        status[r['code']] = {'s': 'gate', 'why': f}
-    else:
-        pool.append(r)
-union = []
-for r in pool:
-    gok, gsrc, ga, gb = growth(r)
-    r1y = r['px']['r1y']
-    t26 = r1y is not None and r1y >= R1Y and gok
-    th = SECTOR2THEME.get(nz(r['sector']))
-    t27 = th is not None and gok
-    if t26 or t27:
-        union.append({'r': r, 't26': t26, 't27': t27, 'th': th, 'gok': gok, 'gsrc': gsrc, 'ga': ga, 'gb': gb})
-    else:
-        bits = []
-        if not gok:
-            bits.append('이익이 늘지 않음' + ('(증권사 짐작 기준)' if gsrc == 'e' else '(지난 두 해 기록)' if gsrc == 'a' else '(이익 자료 없음)'))
-        else:
-            bits.append('1년 주가 %s(20%%에 못 미침)' % (('%+.0f%%' % (r1y * 100)).replace('-', '−') if r1y is not None else '? 셈 못 함'))
-            bits.append('2027 흐름 업종 아님')
-        status[r['code']] = {'s': 'trend', 'why': ' · '.join(bits)}
-both = sorted([u for u in union if u['t26'] and u['t27']], key=lambda u: -u['r']['capEok'])
-one = sorted([u for u in union if not (u['t26'] and u['t27'])], key=lambda u: -u['r']['capEok'])
-order = both + one
-picked = order[:PICK]
-for k, u in enumerate(order):
-    if k < PICK:
-        status[u['r']['code']] = {'s': 'in'}
-    else:
-        status[u['r']['code']] = {'s': 'cut', 'why': '흐름 문까지 지난 %d곳 가운데 시가총액 순서 %d번째 — 365곳 밖' % (len(order), k + 1)}
-if [u['r']['code'] for u in picked] != [x['code'] for x in PRO['picked']]:
-    die('다시 고른 365곳이 proposal.json 과 다름 — 고를 때 표(첫 인자)가 2026-10-05-0940 모음 · 10월 2일 기준인지 보세요')
-SELPICK = {u['r']['code']: u for u in picked}
-FUNNEL = {'universe': len(rows), 'gate': len(pool), 'union': len(union), 'picked': len(picked),
-          'both': len(both), 'only26': sum(1 for u in union if u['t26'] and not u['t27']), 'only27': sum(1 for u in union if u['t27'] and not u['t26']),
-          'gateFails': collections.Counter(v['why'] for v in status.values() if v['s'] == 'gate').most_common()}
+# ── ① 고르기 다시 셈(daese.select 그대로) — 후보 1,378곳 모두 안/밖과 까닭 ──
+if PRO['rules']['version'] != ACT['version'] or N['asOf'] != ACT['asOf']:
+    die('universe.json(%s · %s) 과 proposal.json(%s) · 후보 표(%s)가 다름' % (ACT['version'], ACT['asOf'], PRO['rules']['version'], N['asOf']))
+rows = N['rows']
+bnd = json.load(gzip.open(os.path.join(ROOT, ACT['bundle']), 'rt', encoding='utf-8'))
+CAL = json.load(open(os.path.join(ROOT, 'public/data/input.json'), encoding='utf-8'))['calendar']['sessions']
+RES = daese.select(rows, bnd, CAL, N['asOf'])
+if [p['code'] for p in RES['picked']] != [p['code'] for p in PRO['picked']]:
+    die('다시 고른 365곳이 proposal.json 과 다름 — 후보 표(첫 인자)가 %s 을 %s 기준으로 푼 것인지 보세요' % (ACT['bundle'], ACT['asOf']))
+status = RES['status']
+SELPICK = {p['code']: p for p in RES['picked']}
+SECT = {x['name']: x for x in RES['sectors']}
+RC = RES['counts']
+FUNNEL = {'universe': RC['universe'], 'gate': RC['gate'], 'ranked': RC['rankedCompanies'], 'picked': RC['picked'],
+          'sectors': RC['ranked'], 'top': RC['top'], 'tiers': [RC['tier1'], RC['tier2'], RC['tier3']], 'gateFails': RC['gateFails'],
+          'steps': [{'k': 'universe', 'n': RC['universe'], 't': '코스피 · 코스닥 시가총액 목록(%s 모음)' % kd(N['collectedAt'][:10])},
+                    {'k': 'gate', 'n': RC['gate'], 't': '기본 문 여섯 — 흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주'},
+                    {'k': 'ranked', 'n': RC['rankedCompanies'], 't': '대세 순서를 매긴 업종 %d개 — 네이버 업종에 기본 문 지난 회사가 3곳 이상' % RC['ranked']},
+                    {'k': 'picked', 'n': RC['picked'], 't': '대세 순서 — 두 팀 모두 고른 업종(1층) → 한 팀(2층) → 대세에 가까운 순(3층)'}],
+          'stop': {'gate': 1, 'sector': 2, 'cut': 3}, 'stopName': {'gate': '기본 문', 'sector': '업종 대세 순서', 'cut': '365곳 채우기'}}
 
 # ── ② 20거래일 창 · 지수 · 회사 선 — 모음 종가에서 바로(사장님 09:37 「현재에서 지난 20일 거래 · 항상」) ──
-#   industry-index.json 은 묶음(갈래 → 업종 → 회사)만 씀 · 그 안의 3개월 값(7월 6일 = 100)은 옛 기록으로 남김
-NOWROW = {r['code']: r for r in N['rows']}
-SELROW = {r['code']: r for r in rows}
+#   by-industry.json(organize.mjs)의 묶음(갈래 → 업종 → 회사)을 씀
+NOWROW = {r['code']: r for r in rows}
+SELROW = NOWROW  # 대세 365곳은 지금 값(10월 8일)으로 고름 — 고를 때 표 = 지금 표
 members = {}
 ind_of = {}
-for g in IDX['groups']:
+for g in BYI['groups']:
     for i in g['industries']:
-        for m in i['members']:
+        for m in i['companies']:
             members[m['code']] = m
             ind_of[m['code']] = (g['id'], i['name'])
 if len(members) != PICK or set(members) != set(SELPICK):
-    die('지수 파일의 회사 %d곳이 365곳과 다름' % len(members))
-BUNDLE = os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10/bundle.json.gz')
-bnd = json.load(gzip.open(BUNDLE, 'rt', encoding='utf-8'))
+    die('업종 정리 파일의 회사 %d곳이 365곳과 다름' % len(members))
 iso8 = lambda d: '%s-%s-%s' % (d[:4], d[4:6], d[6:])
 crow = {c: {iso8(r[0]): r[4] for r in bnd['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0} for c in members}
 BASEROW = {c: dict(crow[c]) for c in members}
@@ -145,7 +124,6 @@ if CLOSES and os.path.isdir(CLOSES):
 dcnt = collections.Counter(d for c in members for d in crow[c])
 DAYS = sorted(d for d, n in dcnt.items() if n > len(members) / 2)  # 365곳 가운데 절반 넘게 종가가 있는 날
 asof = DAYS[-1]  # 마지막 종가 날 = 「현재」
-CAL = json.load(open(os.path.join(ROOT, 'public/data/input.json'), encoding='utf-8'))['calendar']['sessions']
 Y = [d for d in CAL if d <= asof]
 if not Y or Y[-1] != asof:
     die('마지막 종가 날 %s 이 거래소 달력의 거래일이 아님' % asof)
@@ -155,7 +133,7 @@ if any(d not in DAYS for d in dates):
     die('20거래일 창 안에 365곳 절반 넘게 종가가 없는 날이 있음: %s' % [d for d in dates if d not in DAYS])
 NDAY = len(dates)
 base = dates[0]
-PICK_ASOF = S['asOf']  # 10월 2일 — 고를 때 쓴 마지막 종가
+PICK_ASOF = N['asOf']  # 10월 8일 — 고를 때 쓴 마지막 종가(대세 365곳)
 kPick = dates.index(PICK_ASOF) if PICK_ASOF in dates else None  # 고른 날이 창 밖으로 나가면 금빛 세로선 없음
 px = lambda c, d: crow[c].get(d)
 mv = {}
@@ -199,12 +177,12 @@ def mdd(v):
     return m
 
 
-cap_sel = {c: SELROW[c]['capEok'] for c in members}  # 고를 때(10월 2일) 몸값 · 억 원
+cap_sel = {c: SELROW[c]['capEok'] for c in members}  # 고를 때(10월 8일) 몸값 · 억 원
 capb = {}
 for c in members:
     a, b = px(c, PICK_ASOF), px(c, base)
     if not a:
-        die('%s 10월 2일 종가 없음' % c)
+        die('%s 고른 날(%s) 종가 없음' % (c, PICK_ASOF))
     capb[c] = cap_sel[c] * b / a if b else None  # 기준일 몸값(주식 수가 그대로라고 봄) · 기준일 종가가 없으면 빼고 셈
 
 
@@ -291,22 +269,22 @@ def node(name, codes, v):
 # 갈래 · 업종 차례 = 20거래일 많이 오른 순(사장님 2026-10-11 00:00 「올름차순으로 배열을 해」 → 많이 오른 순)
 all_codes = list(members)
 core_all = node('365곳 전체', all_codes, eq_index(all_codes))
-gv = {g['id']: eq_index([m['code'] for i in g['industries'] for m in i['members']]) for g in IDX['groups']}
-iv = {i['name']: eq_index([m['code'] for m in i['members']]) for g in IDX['groups'] for i in g['industries']}
-if len(iv) != sum(len(g['industries']) for g in IDX['groups']):
+gv = {g['id']: eq_index([m['code'] for i in g['industries'] for m in i['companies']]) for g in BYI['groups']}
+iv = {i['name']: eq_index([m['code'] for m in i['companies']]) for g in BYI['groups'] for i in g['industries']}
+if len(iv) != sum(len(g['industries']) for g in BYI['groups']):
     die('업종 이름이 겹침')
 SHORT = {'semi': '반도체', 'bio': '바이오', 'heavy': '조선·방산', 'it': 'IT·통신', 'power': '전력·에너지', 'kcon': 'K-소비재',
          'mat': '소재·건설', 'elec': '전자부품', 'fin': '금융', 'hold': '지주·유통'}
 SAY = {g['id']: g['say'] for g in BYI['groups']}
 groups, industries = [], []
-for g in sorted(IDX['groups'], key=lambda g: -gv[g['id']][-1]):
-    gc = [m['code'] for i in g['industries'] for m in i['members']]
+for g in sorted(BYI['groups'], key=lambda g: -gv[g['id']][-1]):
+    gc = [m['code'] for i in g['industries'] for m in i['companies']]
     gn = node(g['name'], gc, gv[g['id']])
     inds = sorted(g['industries'], key=lambda i: -iv[i['name']][-1])
     gn.update({'id': g['id'], 'short': SHORT[g['id']], 'say': SAY[g['id']], 'inds': [i['name'] for i in inds]})
     groups.append(gn)
     for i in inds:
-        ic = [m['code'] for m in sorted(i['members'], key=lambda m: -(mchg[m['code']] if mchg[m['code']] is not None else -9))]
+        ic = [m['code'] for m in sorted(i['companies'], key=lambda m: -(mchg[m['code']] if mchg[m['code']] is not None else -9))]
         inn = node(i['name'], ic, iv[i['name']])
         inn.update({'g': g['id'], 'members': ic})
         industries.append(inn)
@@ -363,11 +341,7 @@ for c, m in members.items():
                 die('%s %s 이 dump.mjs 와 다름: %r ≠ %r' % (c, nm, a, b))
     PERX[c] = per
     rec = fin_pair(now, key) or fin_pair(sel, key)
-    est_label = None
-    if u['gsrc'] == 'e':
-        f = sel.get('fin') or {}
-        ests = [p for p in (f.get('periods') or []) if p.endswith('E')]
-        est_label = ests[0] if ests else None
+    x = SECT[u['sector']]  # 고른 까닭 — 그 회사 네이버 업종의 두 팀 잣대(10월 8일까지 30거래일)
     companies[c] = {
         'name': sel['name'], 'market': sel['market'], 'g': gid, 'i': iname,
         'cap': ((now or sel).get('capEok') if PSCALE[c] == 1.0 or (now or sel).get('capEok') is None else round((now or sel).get('capEok') * PSCALE[c])), 'price': close, 'priceDate': lastd,
@@ -376,9 +350,11 @@ for c, m in members.items():
         'mdd1y': d2(mdd1y * 100) if mdd1y is not None else None,
         'per': per, 'jump': jump, 'products': (now or sel).get('products') or None, 'sector': sel.get('sector'),
         'fin': {'key': key, **rec} if rec else None,
-        'pick': {'t26': u['t26'], 't27': u['t27'], 'theme': u['th'], 'r1y': d2(sel['px']['r1y'] * 100), 'gsrc': u['gsrc'],
-                 'ga': u['ga'], 'gb': u['gb'], 'gkey': key, 'estLabel': est_label,
-                 'recUp': (rec['bv'] > rec['av']) if rec and rec.get('av') is not None else None},
+        'pick': {'tier': u['tier'], 'sector': u['sector'], 'srank': x['rank'], 'google': x['google'], 'cia': x['cia'], 'strong': x['strong'], 'hits': x['hits'],
+                 'schg': d2(x['chg'] * 100), 'sfit': d2(x['fit'] * 100), 'sr2': d2(x['r2']), 'z': d2(x['z']),
+                 'sbr': d2(x['br'] * 100), 'smon': d2(x['mon'] * 100), 'searn': d2(x['earn'] * 100),
+                 'sn': x['n'], 'inN': x['inN'], 'part': u['part'], 'prank': u['prank'], 'pn': u['pn'],
+                 'r30': d2(u['r30'] * 100) if u['r30'] is not None else None},
     }
     lines[c] = [None if x is None else int(round(x * 100)) for x in v]
 
@@ -387,8 +363,7 @@ per_med = d2(st.median(pers)) if pers else None
 ndd50 = sum(1 for c in companies.values() if c['mdd1y'] is not None and c['mdd1y'] <= -50)
 ndd30 = sum(1 for c in companies.values() if c['mdd1y'] is not None and c['mdd1y'] <= -30)
 n1y = sum(1 for c in companies.values() if c['mdd1y'] is not None)
-t26c = [companies[c]['chg'] for c in companies if companies[c]['pick']['t26'] and companies[c]['chg'] is not None]
-t27o = [companies[c]['chg'] for c in companies if not companies[c]['pick']['t26'] and companies[c]['chg'] is not None]
+tier_chg = {t: [x['chg'] for x in companies.values() if x['pick']['tier'] == t and x['chg'] is not None] for t in (1, 2, 3)}
 big2 = sorted(companies, key=lambda c: -(companies[c]['cap'] or 0))[:2]
 
 core = {
@@ -399,19 +374,22 @@ core = {
     'roll': {'files': OVER['files'], 'added': OVER['added'], 'mismatch': len(OVER['mismatch'])},
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
-                'pick': '네이버 증권 시가총액 · 결산 · 증권사 짐작 · %s 모음(%s 종가까지)' % (kd(S['collectedAt'][:10]), kd(PICK_ASOF)),
-                'budget': '2027년 정부 예산안(2026년 9월 1일 국무회의 · 정책브리핑) · 2026년 9월 수출입 동향(산업통상부 10월 1일)'},
+                'pick': '네이버 증권 시가총액 · 결산 · 업종 · 일봉 · %s 모음(%s 종가까지 30거래일)' % (kd(N['collectedAt'][:10]), kd(PICK_ASOF))},
     'dates': dates, 'all': core_all, 'groups': groups, 'industries': industries,
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
-              'perMedian': per_med, 'perN': len(pers), 't26n': len(t26c), 't26med': d2(st.median(t26c)), 't27n': len(t27o), 't27med': d2(st.median(t27o)),
+              'perMedian': per_med, 'perN': len(pers),
+              'tiers': [{'t': t, 'n': sum(1 for x in companies.values() if x['pick']['tier'] == t), 'med': d2(st.median(tier_chg[t])) if tier_chg[t] else None} for t in (1, 2, 3)],
               'big': [{'code': c, 'name': companies[c]['name'], 'chg': companies[c]['chg']} for c in big2],
               'jumpN': sum(1 for c in companies.values() if c['jump'])},
     'funnel': FUNNEL,
-    'rules': {'gate': PRO['rules']['gate'], 't26': PRO['rules']['trend26'], 't27': PRO['rules']['trend27'],
-              'themes': {t: ev for t, (_, ev) in THEMES27.items()}},
+    'rules': {'version': PRO['rules']['version'], 'gate': PRO['rules']['gate'], 'window': PRO['rules']['window'], 'google': PRO['rules']['google'], 'cia': PRO['rules']['cia'],
+              'tiers': PRO['rules']['tiers'], 'bias': PRO['rules']['bias'], 'next': PRO['rules']['next'],
+              'pickWin': {k: RES['window'][k] for k in ('from', 'to', 'days')},
+              'sectors': [{'name': x['name'], 'rank': x['rank'], 'tier': x['tier'], 'google': x['google'], 'cia': x['cia'], 'n': x['n'], 'in': x['inN'], 'chg': d2(x['chg'] * 100)} for x in RES['sectors']],
+              'unranked': {'sectors': len(RES['unranked']), 'companies': RC['unrankedCompanies']}},
 }
 
-# ── ④ 찾기 이름표 1,375곳 ──
+# ── ④ 찾기 이름표(후보 표 모두) ──
 names = []
 for r in sorted(rows, key=lambda r: -(r['capEok'] or 0)):
     s = status[r['code']]
@@ -422,7 +400,7 @@ for r in sorted(rows, key=lambda r: -(r['capEok'] or 0)):
         item['w'] = s['why']
         item['m'] = r['market']
     names.append(item)
-NAMES = {'schema': 'atlas-new-names-1', 'asOf': PICK_ASOF, 'n': len(names), 'funnel': {k: FUNNEL[k] for k in ('universe', 'gate', 'union', 'picked')}, 'rows': names}
+NAMES = {'schema': 'atlas-new-names-1', 'asOf': PICK_ASOF, 'collected': kd(N['collectedAt'][:10]), 'n': len(names), 'funnel': {k: FUNNEL[k] for k in ('universe', 'gate', 'ranked', 'picked')}, 'rows': names}
 
 os.makedirs(OUT, exist_ok=True)
 def dump(name, obj):
@@ -443,6 +421,9 @@ for k in range(1, len(DAYS)):
         lvl *= 1 + sum(rs) / len(rs)
     allv.append(round(lvl, 2))
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
+for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님
+    if fn.endswith('.json') and fn[:-5] not in members:
+        os.remove(os.path.join(OUT, 'co', fn))
 nco = 0
 for c in members:
     ks = [k for k, d in enumerate(DAYS) if d in crow[c]]

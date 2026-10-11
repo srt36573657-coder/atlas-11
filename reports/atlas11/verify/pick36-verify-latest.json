@@ -1,10 +1,10 @@
 {
  "schema": "pick36-verify-1",
- "made": "2026-10-10T22:26:49.657Z",
+ "made": "2026-10-11T03:06:24.978Z",
  "file": "site/atlas/data/pick36.json",
  "asOf": "2026-10-08",
- "version": "pick36-v1",
- "checks": 191,
+ "version": "pick36-v2",
+ "checks": 197,
  "mcChecks": 96,
  "skipped": 0,
  "bad": 0,

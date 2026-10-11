@@ -19,7 +19,8 @@ const out = path.resolve(ROOT, arg('--out', 'reports/atlas11/t365/closes'));
 const count = Math.max(5, Math.min(60, +arg('--count', 30) || 30));
 const budget = Math.max(30, +arg('--budget-s', 240) || 240) * 1000;
 const fixture = arg('--fixture', null);
-const pro = JSON.parse(await fs.readFile(path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365/proposal.json'), 'utf8'));
+const act = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳(사장님 11:43 대세 365곳 = d365-v1)
+const pro = JSON.parse(await fs.readFile(path.join(ROOT, act.dir, 'proposal.json'), 'utf8'));
 const codes = pro.picked.map(p => p.code);
 const doFetch = fixture ? fixtureFetch(path.resolve(fixture)) : globalThis.fetch;
 const url = code => `https://fchart.stock.naver.com/sise.nhn?symbol=${code}&timeframe=day&count=${count}&requestType=0`;

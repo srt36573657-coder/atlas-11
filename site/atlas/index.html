@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#141738">
-<meta name="description" content="ATLAS — 한국 우량주 365곳의 지난 20거래일. 큰 갈래 10개 · 업종 63개 · 회사 365곳을 세 번 눌러 봅니다. 지난 기록을 센 것입니다.">
+<meta name="description" content="ATLAS — 지난 30거래일 「대세」였던 업종부터 고른 한국 주식 365곳의 지난 20거래일. 큰 갈래 → 업종 → 회사를 눌러 봅니다. 지난 기록을 센 것입니다.">
 <title>ATLAS · 365곳 20거래일</title>
 <!-- 새 ATLAS(2026-10-11 · 사장님 06:13 「aaa7377.com에 올려 … 잡스 방식이 중심이 되고 구글팀 클로드팀 cai팀 그리고 찰리 망거팀 삼성팀 들이 도와서
      일반인들이 바로 알수 있고 쉽게 사용가능하며 별도에 설명이 없어도 감탄이 니오게 새로운 아틀란스를 만들어 봐라 이 토대로 말이다」)
-     토대 = 365곳(t365-v1 · 2026-10-10 23:18) · 큰 갈래 10 · 업종 63 · 20거래일 지수(기준일 = 마지막 종가 날의 20거래일 전 = 100 · 2026-10-11 09:37 「항상 현재에서 지난 20일 거래」) — 자료는 scripts/atlas11/t365/site_build.py 가 만든 /atlas/data/*.json
+     토대 = 365곳(scripts/atlas11/t365/universe.json — 2026-10-11 11:43 대세 365곳 d365-v1 · 옛 t365-v1 은 기록) · 큰 갈래 9 · 업종 40 · 20거래일 지수(기준일 = 마지막 종가 날의 20거래일 전 = 100 · 2026-10-11 09:37 「항상 현재에서 지난 20일 거래」) — 자료는 scripts/atlas11/t365/site_build.py 가 만든 /atlas/data/*.json
      옛 첫 화면(/) · /new 는 그대로 둔다. 보안 규칙(CSP: script-src 'self' · style-src 'self')에 맞춰 글 속 style · 글 속 script 를 쓰지 않는다. -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -36,7 +36,7 @@
 <nav class="tabbar" aria-label="아래 탭">
  <div class="tabbar-in">
   <a href="#/" id="tabHome">한눈에</a>
-  <a href="#/list" id="tabList">업종 63</a>
+  <a href="#/list" id="tabList">업종 40</a>
   <a href="#/36" id="tab36">36곳</a>
   <button type="button" id="tabFind">찾기</button>
  </div>

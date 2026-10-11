@@ -235,7 +235,7 @@ function viewHome(v) {
   v.append(hello, tell.el, head, count, host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
-  const rc = race(host, {items, parent: A, label: `큰 갈래 10개 — 지난 ${C.days}거래일 경주 · 많이 오른 순: ` + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
+  const rc = race(host, {items, parent: A, label: `큰 갈래 ${C.groups.length}개 — 지난 ${C.days}거래일 경주 · 많이 오른 순: ` + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
     auto: !state.played && !RM.matches,
     onTick: (k, held, rows) => {
       if (held) { const w = rows.find(r => r.it.key === winner.id), rank = rows.slice().sort((a, b) => (b.cur ?? 0) - (a.cur ?? 0)).indexOf(w) + 1; tell.t.replaceChildren(h('b', {text: md(C.dates[k])}), ` · ${winner.short} ${rank}등 `, pctEl(w.cur - 100)); }
@@ -247,7 +247,7 @@ function viewHome(v) {
   const share = Math.round(F.dd50 / F.n1y * 10);
   v.append(h('div', {class: 'munger'}, h('p', {class: 'mq', text: `이 365곳도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다.`}),
     h('p', {class: 's', text: `반값을 견딜 수 있나요? — ${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가로 셈`})));
-  v.append(h('p', {class: 'note', text: `줄을 누르면 5단으로 내려갑니다 — 1단 갈래 → 2단 업종 → 3단 회사 → 4단 지나온 길 → 5단 범위 · 점검. 365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔기 때문에 선이 좋아 보이기 쉽습니다.`}));
+  v.append(h('p', {class: 'note', text: `줄을 누르면 5단으로 내려갑니다 — 1단 갈래 → 2단 업종 → 3단 회사 → 4단 지나온 길 → 5단 범위 · 점검. 365곳은 ${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」였던 업종부터 골랐기 때문에, 그 기간과 겹치는 선은 좋아 보이기 쉽습니다.`}));
   v.append(foot());
 }
 
@@ -326,17 +326,26 @@ async function viewCompany(v, code) {
   const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`});
   draw(); chartDraw = draw;
   v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-co'}), `${c.name} — ${md(C.base)}보다 위 빨강 · 아래 파랑`), i.n > 1 ? h('span', {}, h('i', {class: 'l-avg'}), i.name + ' 평균') : null, C.kPick != null ? h('span', {}, h('i', {class: 'l-pick'}), `고른 날 ${md(C.pickAsOf)}`) : null));
-  // 왜 365곳에 들었나(클로드팀) — 고를 때 값 · 남의 짐작은 꼬리표 · 앞날 숫자는 쓰지 않음
-  const p = c.pick, gk = p.gkey === 'net' ? '순이익' : '영업이익';
-  const why = h('div', {class: 'box'}, h('h2', {text: '왜 365곳에 들었나요?'}));
-  if (p.t26) why.append(h('p', {}, '2026 흐름: 고를 때(', md(C.pickAsOf), '까지) 1년 주가 ', pctEl(p.r1y), ' · 20% 넘게 오름'));
-  if (p.gsrc === 'e') why.append(h('p', {}, `이익: ${fy(p.estLabel)} ${gk}을 증권사들이 ${fy(c.fin?.b)}보다 많게 짐작함`, h('span', {class: 'tag', text: '남의 짐작'})));
-  else if (p.gsrc === 'a') why.append(h('p', {text: `이익: ${gk} 기록이 늘어남(${fy(c.fin?.a)} → ${fy(c.fin?.b)})`}));
-  if (p.t27) why.append(h('p', {}, `2027 흐름: 2027 정부 예산안 · 9월 수출에 나온 업종(${p.theme})`, h('span', {class: 'tag', text: 'ATLAS가 묶음'})));
-  why.append(h('p', {class: 'small', text: '기본 문 여섯(흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주)을 지났을 뿐, 좋은 회사로 매긴 것은 아닙니다.'}));
-  v.append(why);
+  // 왜 365곳에 들었나(사장님 11:43 대세 365곳) — 고를 때(그 30거래일) 값 · 업종은 네이버 업종 · 앞날 숫자는 쓰지 않음
+  v.append(whyBox(c));
   v.append(nextStep(`#/c/${code}/past`, '4단 지나온 길', '1년 · 3년 주가 · 해마다 번 돈 · 몸값'));
   v.append(foot());
+}
+// 왜 365곳에 들었나(사장님 2026-10-11 11:43 대세 365곳 · 클로드팀) — 층 · 네이버 업종 · 두 팀 잣대 · 이 회사 30거래일(고를 때 값만 · 앞날 숫자 없음)
+function whyBox(c) {
+  const C = D.core, p = c.pick, W = C.rules.pickWin, F = C.funnel;
+  const box = h('div', {class: 'box'}, h('h2', {text: '왜 365곳에 들었나요?'}));
+  const tier = {1: '1층 — 두 팀 모두 「대세」로 본 업종', 2: `2층 — ${p.google ? '구글팀' : 'CIA팀'}만 「대세」로 본 업종`, 3: '3층 — 대세에 가까운 순서로 채운 업종'}[p.tier];
+  box.append(h('p', {}, h('b', {text: tier})));
+  box.append(h('p', {text: `네이버 업종 「${p.sector}」 · ${F.sectors}업종 가운데 대세 순서 ${p.srank}번째 · 이 업종에서 기본 문을 지난 곳 ${p.sn}곳`}));
+  box.append(h('p', {}, `${W.days}거래일(${md(W.from)} → ${md(W.to)}) 업종 `, pctEl(p.schg), ' · 이 회사 ', p.r30 == null ? h('span', {class: 'q', text: '? 셈 못 함'}) : pctEl(p.r30)));
+  const cut = (on, t) => `${t} ${on ? '이상' : '밑'}`;
+  box.append(h('ul', {class: 'tm'},
+    h('li', {text: `구글팀 — 흔들림에 견주어 많이 오른 순 ${p.srank}번째 · 위 20%(${F.top}번째까지) ${p.google ? '안 → 고름' : '밖 → 안 고름'}`}),
+    h('li', {text: `CIA팀 — 꾸준히 10% 넘게 오름 ${p.strong ? '맞음' : '아님'}(곧은 선 ${pct(p.sfit)}) · 오른 회사 ${r1(p.sbr).toFixed(1)}%(${cut(p.hits[0], '60%')}) · 거래대금 몫 ${pct(p.smon)}(${cut(p.hits[1], '+10%')}) · 이익 늘어난 회사 ${r1(p.searn).toFixed(1)}%(${cut(p.hits[2], '60%')}) → ${p.cia ? '고름' : '안 고름'}`})));
+  if (p.part) box.append(h('p', {text: `이 업종 ${p.sn}곳을 다 넣으면 365곳을 넘어서, 업종 안에서 ${W.days}거래일 많이 오른 순으로 ${p.inN}곳만 넣었습니다 — 이 회사는 ${p.prank}번째.`}));
+  box.append(h('p', {class: 'small', text: '기본 문 여섯(흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주)을 지났을 뿐, 좋은 회사로 매긴 것은 아닙니다. 이미 오른 업종에서 골랐기 때문에 그 기간과 겹치는 선은 좋아 보이기 쉽습니다.'}));
+  return box;
 }
 function nextStep(href, title, sub) { return h('a', {class: 'nextst', href}, h('span', {}, h('b', {text: title}), h('span', {text: sub})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); }
 
@@ -456,13 +465,12 @@ async function viewRange(v, code) {
   }
   if (B) box.append(h('p', {class: 'small', text: `모형 가정 아래 셈일 뿐 앞날 값이 아닙니다 — 같은 셈은 지난 ${B.n}번 가운데 ${B.wins}번만 365곳 평균보다 나았습니다.`}));
   v.append(box);
-  const p = c.pick;
   // 사기 전에 볼 것(멍거팀) — 기록으로 채울 수 있는 것만 · 모르면 ?
   const f = c.fin, fk = f ? (f.key === 'net' ? '순이익' : '영업이익') : '이익';
   const rec = f && f.av != null ? (f.bv > f.av ? 'ok' : 'no') : 'q';
   const li = (m, ...kids) => h('li', {}, h('span', {class: 'm ' + m, 'aria-hidden': 'true', text: m === 'ok' ? '✓' : m === 'no' ? '!' : '?'}), h('span', {}, ...kids));
   const chk = h('ul', {class: 'chk'},
-    li(rec, h('b', {text: '번 돈(기록) '}), f && f.av != null ? `${fk} ${fy(f.a)} ${eok(f.av)} → ${fy(f.b)} ${eok(f.bv)} · ${f.bv > f.av ? '늘었음' : '줄었음'}` : h('span', {class: 'q', text: '? 두 해 기록이 없음'}), rec === 'no' && p.gsrc === 'e' ? h('span', {class: 'tag', text: '짐작으로 고름'}) : null),
+    li(rec, h('b', {text: '번 돈(기록) '}), f && f.av != null ? `${fk} ${fy(f.a)} ${eok(f.av)} → ${fy(f.b)} ${eok(f.bv)} · ${f.bv > f.av ? '늘었음' : '줄었음'}` : h('span', {class: 'q', text: '? 두 해 기록이 없음'})),
     li(c.mdd1y != null && c.mdd1y <= -50 ? 'no' : 'ok', h('b', {text: '지나온 1년 '}), '1년 ', pctEl(c.r1y, 'span'), ' · 1년 안 가장 깊이 빠짐 ', pctEl(c.mdd1y, 'span')),
     li(c.per != null ? 'ok' : 'q', h('b', {text: '몸값 '}), `시가총액 ${eok(c.cap)}`, c.per != null ? ` · 1년 순이익의 ${r1(c.per).toFixed(1)}배(365곳 가운데값 ${r1(C.facts.perMedian).toFixed(1)}배)` : h('span', {class: 'q', text: ' · 순이익 몇 배인지 ? 자료 없음'})),
     li('ok', h('b', {text: '1주 값 '}), `${won(c.price)}(${md(c.priceDate || C.asOf)} 종가) — 한 주의 값일 뿐, 싸고 비쌈이 아닙니다`),
@@ -475,8 +483,7 @@ async function viewRange(v, code) {
     h('li', {}, '거래정지 · 관리종목 · 투자경고: ', h('a', {href: 'https://kind.krx.co.kr', rel: 'noopener', target: '_blank', text: 'KIND(한국거래소)'}), ' — ATLAS 는 아직 이 표시를 거르지 못합니다(?).'),
     h('li', {}, '3분기 실제 이익: ', h('a', {href: 'https://dart.fss.or.kr', rel: 'noopener', target: '_blank', text: 'DART(전자공시)'}), ' 분기보고서 — 11월 중순까지. 증권사 짐작과 견줘 보세요.'),
     h('li', {}, '주식 수 바뀜(쪼개기 · 증자): DART 주요사항보고서 — ', C.facts.jumpN ? `${C.days}거래일 선이 하루 30% 넘게 튄 곳 ${C.facts.jumpN}곳(? 확인 못 함).` : `${C.days}거래일 선이 하루 30% 넘게 튄 곳은 없었습니다.`),
-    p.t27 ? h('li', {}, '2027 예산 국회 통과: ', h('a', {href: 'https://www.korea.kr', rel: 'noopener', target: '_blank', text: '정책브리핑'}), ' — 국회 의결 기한 12월 2일.') : null,
-    p.t27 ? h('li', {text: '그 물건 수출: 산업통상부 「수출입 동향」 — 매달 1일.'}) : null)));
+    h('li', {text: `업종 「대세」가 이어지는지: 1단 · 2단 줄 아래 방향 · 세기 · 힘 — 날마다 새 종가로 다시 셉니다. 365곳은 ${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일로 한 번 고른 것이고, 다시 고르는 일은 아직 하지 않습니다.`}))));
   v.append(more);
   v.append(h('p', {class: 'links2'}, h('a', {href: '#/c/' + code, text: '3단 회사로'}), h('a', {href: '#/', text: '처음 화면으로'})));
   v.append(foot());
@@ -491,15 +498,16 @@ async function view36(v) {
     h('p', {class: 'count', text: `몬테카를로 ${Math.round(S.totalPairs / 1e8)}억 길(찾기 4방향 + 지우기 4방향) · ${K.eligible}곳 셈 → ${K.cutN}곳 지움 → ${K.picks.length}곳`}));
   if (B) {
     const box = h('div', {class: 'test'}, h('h2', {text: '먼저 — 지난 기록에서는?'}),
-      h('p', {class: 'big', text: `같은 셈을 지난 ${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번(${Math.round(B.rate * 100)}%)뿐입니다.`}),
-      h('p', {}, '한 달 평균: 36곳 ', pctEl(B.meanPick), ' · 365곳 ', pctEl(B.meanAll), ` — ${B.passes ? '문턱을 넘었습니다.' : '아무거나 고른 것보다 못했습니다. 정해 둔 문턱(60% · 두 절반 55%)을 못 넘어 「통한다」고 할 수 없습니다.'}`));
-    box.append(h('p', {class: 'small', text: `시험 기간: ${ymd(B.rows[0].t)} ~ ${ymd(B.rows[B.rows.length - 1].to)} · 한 달(20거래일)씩. 그 전 넉 달은 내리는 장 날이 20일이 안 되어 셀 수 없었습니다(기준대로 뺌).`}));
+      h('p', {class: 'big', text: `같은 셈을 지난 ${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번(${Math.round(B.rate * 100)}%)${B.rate < 0.5 ? '뿐' : ''}입니다.`}),
+      h('p', {}, '한 달 평균: 36곳 ', pctEl(B.meanPick), ' · 365곳 ', pctEl(B.meanAll), ` — ${B.passes ? '정해 둔 문턱(60% · 두 절반 55% · 우연일 몫 5% 밑)을 넘었습니다. 그래도 지난 기록일 뿐입니다.' : (B.meanPick < B.meanAll ? '아무거나 고른 것보다 못했습니다. ' : '한 달 평균은 나았지만, ') + '정해 둔 문턱(60% · 두 절반 55% · 우연일 몫 5% 밑)을 못 넘어 「통한다」고 할 수 없습니다.'}`));
+    box.append(h('p', {class: 'small', text: `시험 기간: ${ymd(B.rows[0].t)} ~ ${ymd(B.rows[B.rows.length - 1].to)} · 한 달(20거래일)씩.` + (B.skipped?.length ? ` 셀 수 없어 뺀 때 ${B.skipped.length}번(${B.skipped.map(ymd).join(' · ')}) — 그때까지 어느 방향 날이 20일이 안 됨(기준대로 뺌).` : '')}));
     const host = h('div', {class: 'bt'}); box.append(host); v.append(box);
     btChart(host, B.rows);
     box.append(h('p', {class: 'small note', text: '막대 하나 = 한 번의 시험(한 달) · 위 빨강 = 36곳이 365곳 평균보다 나음 · 아래 파랑 = 못함.'}));
   }
   v.append(h('div', {class: 'dirs4'}, ...K.dirs.map(d => h('div', {}, h('b', {text: d.name}), h('span', {text: `지난 ${K.window.days}거래일 가운데 ${d.days}일`})))));
-  v.append(h('p', {class: 'note', text: `「4방향」 = 시장이 갈 방향 넷. 어느 쪽이 올지는 모른다고 보고 넷을 같은 무게로 셌습니다. 지난 2년은 오르는 장이 많아 내리는 장 날이 적습니다.`}));
+  { const up = K.dirs.find(d => d.id === 'up')?.days ?? 0, dn = K.dirs.find(d => d.id === 'down')?.days ?? 0;
+    v.append(h('p', {class: 'note', text: `「4방향」 = 시장이 갈 방향 넷. 어느 쪽이 올지는 모른다고 보고 넷을 같은 무게로 셌습니다.` + (up > dn * 2 ? ` 지난 ${K.window.days}거래일은 오르는 장(${up}일)이 내리는 장(${dn}일)보다 훨씬 많았습니다.` : '')})); }
   const ol = h('ol', {class: 'p36'});
   for (const p of K.picks) { const c = D.comp[p.code];
     ol.append(h('li', {}, h('a', {href: '#/c/' + p.code}, h('span', {class: 'no num', text: p.rank}), h('span', {class: 'nm', text: p.name}), h('b', {class: 'val num', text: '번 길 ' + r1(p.avg).toFixed(1) + '%'}),
@@ -510,9 +518,9 @@ async function view36(v) {
     h('li', {text: `방향: 날마다 그날로 끝나는 20거래일 시장(365곳 같은 무게)으로 가름 — 흔들림이 위 25%면 크게 출렁이는 장, 아니면 +3% 넘게 오름 · −3% 넘게 내림 · 그 사이`}),
     h('li', {text: `길: 그 방향 날들에서 20일을 뽑아 365곳에 똑같이 적용(함께 움직임을 지킴) · 방향마다 ${S.paths.toLocaleString('ko-KR')}길 × 365곳 = 약 1억`}),
     h('li', {text: `찾기: 번 길의 몫(사고팔 돈 0.3% 빼고) · 지우기: 다른 난수로 다시 돌려 −15% 넘게 잃는 길의 몫이 가장 나쁜 방향에서 큰 순으로 3분의 1`}),
-    h('li', {text: `고르기: 남은 곳에서 번 길 많은 순 · 한 업종 ${S.perIndustry}곳까지 · 기준을 먼저 적어 둔 기록(커밋 73f94cca)`}),
+    h('li', {text: `고르기: 남은 곳에서 번 길 많은 순 · 한 업종 ${S.perIndustry}곳까지 · 기준을 먼저 적어 둔 기록(커밋 ${S.specCommit ?? '73f94cca'} · ${S.version})`}),
     h('li', {text: '지난 기록 시험: 2024년 7월부터 한 달(20거래일)마다 그날까지 자료로만 같은 셈(길은 방향마다 1천만) → 한 달 뒤 값으로 채점'}),
-    h('li', {text: '한계: 365곳은 10월 2일까지 자료로 고른 곳이라 이미 오른 회사가 많습니다. 모형 가정 아래 셈일 뿐 앞날 값이 아닙니다.'})))));
+    h('li', {text: `한계: 365곳은 ${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」 업종으로 고른 곳이라 이미 오른 회사가 많고, 지난 기록 시험도 그 365곳 안에서만 했습니다. 모형 가정 아래 셈일 뿐 앞날 값이 아닙니다.`})))));
   v.append(foot());
 }
 function btChart(host, rows) {
@@ -585,7 +593,7 @@ function renderHits() {
   const q = $('#q').value, ul = $('#hits'), hint = $('#qHint'); ul.textContent = '';
   if (!q.trim()) { hint.textContent = '이름 한 글자부터 찾습니다 · 첫 글자(ㅅㅅㅈㅈ) · 종목 번호도 됩니다.'; return; }
   const hits = search(q);
-  if (!hits.length) { hint.textContent = `「${q}」 — 찾는 이름이 없습니다. 코스피 · 코스닥 ${D.names.funnel.universe.toLocaleString('ko-KR')}곳(10월 5일 모음) 안에 없는 이름입니다. 띄어쓰기를 빼거나 첫 글자로도 찾아보세요.`; return; }
+  if (!hits.length) { hint.textContent = `「${q}」 — 찾는 이름이 없습니다. 코스피 · 코스닥 ${D.names.funnel.universe.toLocaleString('ko-KR')}곳(${D.names.collected} 모음) 안에 없는 이름입니다. 띄어쓰기를 빼거나 첫 글자로도 찾아보세요.`; return; }
   hint.textContent = `「${q}」 — ${hits.length >= 40 ? '앞 40개' : hits.length + '개'}`;
   for (const x of hits) {
     if (x.kind === 'g') ul.append(h('li', {}, h('a', {href: '#/g/' + x.g.id, 'data-go': '1'}, h('span', {class: 'nm', text: x.g.name}), pctEl(x.g.chg), h('span', {class: 'g2', text: `큰 갈래 · ${x.g.n}곳`}))));
@@ -597,12 +605,8 @@ function renderHits() {
 
 // ── 도움말 · 365곳 밖(깔때기) ──
 function funnel(stop) {
-  const F = D.core.funnel, R = D.core.rules, steps = [
-    {k: 'universe', n: F.universe, t: '코스피 · 코스닥 시가총액 목록(10월 5일 모음)'},
-    {k: 'gate', n: F.gate, t: '기본 문 여섯 — 흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주'},
-    {k: 'union', n: F.union, t: '흐름 문 — 1년 20% 넘게 오르고 이익이 늘어남, 또는 2027 흐름 업종에 이익이 늘어남'},
-    {k: 'picked', n: F.picked, t: '시가총액 큰 순 — 두 흐름 모두 든 곳부터'}];
-  const at = {gate: 1, trend: 2, cut: 3}[stop] ?? 4;
+  const F = D.core.funnel, steps = F.steps;  // 줄 · 멈춘 자리는 자료(site_build.py)가 정함
+  const at = F.stop[stop] ?? steps.length;
   const ol = h('ol', {class: 'funnel'});
   steps.forEach((s, ix) => { const fill = h('i', {class: 'fill'}); fill.style.width = (s.n / F.universe * 100) + '%';
     ol.append(h('li', {class: stop ? (ix < at ? 'past' : ix === at ? 'stop' : 'no') : ''}, fill, h('span', {}, h('b', {class: 'num', text: s.n.toLocaleString('ko-KR') + '곳'}), h('span', {text: s.t})))); });
@@ -614,27 +618,31 @@ function showInfo(code) {
     const r = D.names?.rows.find(x => x.c === code);
     $('#infoTitle').textContent = r ? r.n + ' — 365곳 밖' : '365곳 밖';
     if (!r) { body.append(h('p', {class: 'q', text: '? 이 이름표를 못 찾았습니다.'})); return; }
-    const stopName = {gate: '기본 문', trend: '흐름 문', cut: '365곳 자르기'}[r.s];
+    const stopName = C.funnel.stopName[r.s] ?? '365곳 고르기';
     body.append(h('p', {text: `${josa(r.n, '은', '는')} ${stopName}에서 멈췄습니다(${r.m === 'KOSPI' ? '코스피' : '코스닥'}).`}), h('div', {class: 'why', text: r.w}), funnel(r.s));
-    body.append(h('p', {class: 'note', text: '365곳은 10월 2일 종가 · 10월 5일 모은 결산으로 한 번 고른 것입니다. 들고 빠짐은 다음에 다시 고를 때 바뀔 수 있습니다.'}));
+    body.append(h('p', {class: 'note', text: `365곳은 ${md(C.rules.pickWin.to)} 종가까지 ${C.rules.pickWin.days}거래일로 한 번 고른 것입니다. 다시 고르면 들고 빠짐이 바뀔 수 있습니다.`}));
     return;
   }
   $('#infoTitle').textContent = 'ATLAS 는 어떻게 셌나요';
-  body.append(h('p', {text: `한국 우량주 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 세 번 눌러 봅니다. 앞날 값은 내지 않습니다.`}));
+  body.append(h('p', {text: `${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」였던 업종부터 고른 한국 주식 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 눌러 봅니다. 앞날 값은 내지 않습니다.`}));
   body.append(h('p', {text: `줄 아래 「▲ 강하게 오름 · 힘 붙음」 = 이 기간의 방향 · 세기 · 힘입니다. 방향 = 기간 동안 그은 곧은 선이 3% 넘게 기울고 처음보다 끝도 같은 쪽(아니면 「옆걸음」) · 강하게 = 그 선이 10% 넘고 들쭉날쭉하지 않음 · 힘 붙음 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대). 지난 기록이고 앞날 값이 아닙니다.`}));
   body.append(h('h2', {class: 'sec', text: '365곳은 이렇게 골랐습니다'}), funnel(null));
-  body.append(h('details', {class: 'more'}, h('summary', {text: '기본 문 여섯 · 흐름 문 — 원문'}), h('div', {class: 'in'}, h('ul', {}, ...D.core.rules.gate.map(t => h('li', {text: t})), h('li', {text: '2026 흐름: ' + D.core.rules.t26}), h('li', {text: '2027 흐름: ' + D.core.rules.t27})))));
-  body.append(h('p', {class: 'note', text: `365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔습니다 — 그래서 선이 좋아 보이기 쉽습니다(${C.days}거래일 가운데값: 그 ${F.t26n}곳 ${pct(F.t26med)} · 업종으로만 든 ${F.t27n}곳 ${pct(F.t27med)}).`}));
+  const RU = C.rules;
+  body.append(h('details', {class: 'more'}, h('summary', {text: '기본 문 여섯 · 대세 순서 — 원문'}), h('div', {class: 'in'}, h('ul', {}, ...RU.gate.map(t => h('li', {text: t})), h('li', {text: RU.window}), h('li', {text: RU.google}), h('li', {text: RU.cia}), ...RU.tiers.map(t => h('li', {text: t}))))));
+  body.append(h('p', {class: 'note', text: `${RU.bias} (${C.days}거래일 가운데값: ` + F.tiers.map(t => `${t.t}층 ${t.n}곳 ${pct(t.med)}`).join(' · ') + ')'}));
   body.append(h('h2', {class: 'sec', text: '셈'}), h('ul', {class: 'note'},
     h('li', {text: `${md(C.base)} 종가 = 100. 「한 회사 한 표」 = 날마다 회사들의 오르내림을 같은 무게로 평균 내어 이어 곱함(하루 ±50% 넘는 값은 자료 오류로 뺌).`}),
     h('li', {text: `「큰 회사는 크게」 = ${md(C.base)}에 시가총액만큼 사 두었다고 보고 그대로 둔 값.`}),
     h('li', {text: '배당은 넣지 않은 주가만 셉니다. 「가장 깊이 빠짐」 = 꼭대기에서 가장 많이 내려간 비율.'})));
-  body.append(h('h2', {class: 'sec', text: '자료 · 때'}), h('ul', {class: 'note'}, h('li', {text: C.sources.price}), h('li', {text: C.sources.pick}), h('li', {text: C.sources.budget})));
+  body.append(h('h2', {class: 'sec', text: '자료 · 때'}), h('ul', {class: 'note'}, h('li', {text: C.sources.price}), h('li', {text: C.sources.pick})));
   body.append(h('h2', {class: 'sec', text: '모르는 것 ?'}), h('ul', {class: 'note'},
     h('li', {text: '? 거래정지 · 관리종목 · 투자경고 표시 — 아직 거르지 못합니다.'}),
-    h('li', {text: `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.`}),
-    h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. 짐작은 고른 까닭에만 쓰고 앞날 숫자로 보여 주지 않습니다.'})));
-  const th = h('details', {class: 'more'}, h('summary', {text: '2027 흐름 업종 10가지 — 근거'}), h('div', {class: 'in'}, h('ul', {}, ...Object.entries(C.rules.themes).map(([t, ev]) => h('li', {text: `${t}: ${ev}`})))));
+    h('li', {text: C.sincePick ? `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.` : `? 고른 뒤 기록 — ${md(C.pickAsOf)} 종가로 골라 고른 뒤 기록은 아직 없습니다. 지금 보이는 선은 모두 고른 기간 안입니다.`}),
+    h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. 짐작은 CIA팀 잣대 ③(이익이 늘어난 회사)에만 쓰고 앞날 숫자로 보여 주지 않습니다.'}),
+    h('li', {text: `? 다시 고르기 — ${RU.next}.`})));
+  const th = h('details', {class: 'more'}, h('summary', {text: `업종 대세 순서 ${RU.sectors.length}개 — 1층 · 2층 · 3층`}), h('div', {class: 'in'}, h('ol', {class: 'srank'},
+    ...RU.sectors.map(x => h('li', {}, h('b', {text: x.name}), ` — ${x.tier}층${x.google ? ' · 구글팀' : ''}${x.cia ? ' · CIA팀' : ''} · 30거래일 ${pct(x.chg)} · ${x.in === x.n ? `${x.n}곳 모두` : x.in ? `${x.n}곳 중 ${x.in}곳` : `${x.n}곳 밖`}`))),
+    h('p', {class: 'small', text: `업종 = 네이버 업종 · 기본 문 지난 회사가 3곳 미만인 업종 ${RU.unranked.sectors}개(${RU.unranked.companies}곳)는 순서를 매기지 않았습니다.`})));
   body.append(th, foot());
 }
 
@@ -688,7 +696,7 @@ async function boot() {
   $('#hits').addEventListener('click', e => { const a = e.target.closest('a[data-go]'); if (!a) return; e.preventDefault(); const to = a.getAttribute('href'); $('#findSheet').hidden = true; delete document.body.dataset.sheet; if (to.startsWith('#/x/')) location.hash = to; else location.replace(to); });
   let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (chartDraw) chartDraw(); }, 200); });
   addEventListener('hashchange', route);
-  try { D.core = await getJson('core.json'); }
+  try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; }
   catch (e) { const v = $('#view'); v.textContent = ''; v.append(h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'})); return; }
   await route();
   setTimeout(() => { needComp().catch(() => {}); }, 400);

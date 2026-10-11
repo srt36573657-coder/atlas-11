@@ -5,7 +5,9 @@
 //             ② 업종 · 갈래 · 전체 「한 회사 한 표」 지수(날마다 같은 무게 평균 · 하루 ±50% 넘는 값 뺌 · 이어 곱함)
 //             ③ 「큰 회사는 크게」 지수(기준일에 몸값만큼 사 두고 그대로) ④ 오름 · 내림 수 ⑤ 1년 반값 아래 떨어진 적 있는 곳 수 · 30% 넘게
 //             ⑨ 갈래 · 업종 · 전체의 방향 · 세기 · 힘(11:04 · 11:10 「이 화면에서 나와야 해」 — 곧은 선 · 앞 반 · 뒤 반)
-//             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표 1,375곳 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 = proposal.json 셈
+//             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표(후보 표 모두) 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 · 밖 까닭 = proposal.json
+//             ⑩ 회사마다 고른 까닭(층 · 네이버 업종 · 두 팀 잣대 숫자 · 30거래일) · 깔때기 · 업종 대세 순서 표 · 층마다 가운데값 = proposal.json(사장님 11:43 대세 365곳)
+//   365곳 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 d365-v1) — 그 판의 고르기는 daese_verify.mjs 가 따로 다시 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import zlib from 'node:zlib';
@@ -15,13 +17,14 @@ const dataDir = path.resolve(ROOT, process.argv[2] ?? 'site/atlas/data');
 const outFile = path.resolve(ROOT, process.argv[3] ?? 'reports/atlas11/verify/atlas-new-data-latest.json');
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const core = J(path.join(dataDir, 'core.json')), comp = J(path.join(dataDir, 'comp.json')).companies, lines = J(path.join(dataDir, 'lines.json')).lines, names = J(path.join(dataDir, 'names.json'));
-const T = path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365');
+const ACT = J(path.join(ROOT, 'scripts/atlas11/t365/universe.json')), T = path.join(ROOT, ACT.dir);
 const byInd = J(path.join(T, 'by-industry.json')), pro = J(path.join(T, 'proposal.json'));
-const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, 'reports/atlas11/universe/2026-10-10/bundle.json.gz'))).toString('utf8'));
+const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
 const cal = J(path.join(ROOT, 'public/data/input.json')).calendar.sessions;
 const bad = []; let checks = 0;
 const near = (a, b, tol, what) => { checks++; if (a == null || b == null ? a !== b : Math.abs(a - b) > tol) bad.push({what, got: a, want: b}); };
 const same = (a, b, what) => { checks++; if (a !== b) bad.push({what, got: a, want: b}); };
+const sameJ = (a, b, what) => same(JSON.stringify(a), JSON.stringify(b), what); // 배열 · 묶음은 글로 바꿔 맞댐
 
 // 종가 표 — 회사마다 날짜 → 종가(0 은 없는 값)
 const close = new Map();
@@ -65,7 +68,7 @@ function eqIndex(cs) {
   for (let k = 1; k < W.length; k++) { let s = 0, n = 0; for (const c of cs) { const a = px(c, W[k - 1]), b = px(c, W[k]); if (a && b) { const r = b / a - 1; if (Math.abs(r) < 0.5) { s += r; n++; } } } if (n) lvl *= 1 + s / n; out.push(lvl); }
   return out;
 }
-// ③ 큰 회사는 크게 — 기준일 몸값 = 고를 때(10월 2일) 몸값 × 기준일 종가 ÷ 10월 2일 종가(기준일 종가가 없는 곳은 뺌)
+// ③ 큰 회사는 크게 — 기준일 몸값 = 고를 때(core.pickAsOf) 몸값 × 기준일 종가 ÷ 고른 날 종가(기준일 종가가 없는 곳은 뺌)
 const capSel = new Map(pro.picked.map(p => [p.code, p.capEok]));
 function cwIndex(cs0) {
   const cs = cs0.filter(c => px(c, W[0]));
@@ -130,7 +133,28 @@ same(names.rows.length, pro.counts.universe, '이름표 수 = 모음 회사 수'
 const gf = Object.fromEntries(pro.counts.gateFails); const nf = {}; for (const r of names.rows) if (r.s === 'gate') nf[r.w] = (nf[r.w] ?? 0) + 1;
 same(JSON.stringify(Object.keys(nf).sort().map(k => [k, nf[k]])), JSON.stringify(Object.keys(gf).sort().map(k => [k, gf[k]])), '기본 문마다 빠진 수 = proposal.json');
 same(names.rows.filter(r => r.s !== 'gate').length, pro.counts.gate, '기본 문 지난 수');
-same(names.rows.filter(r => r.s === 'in' || r.s === 'cut').length, pro.counts.union, '흐름 문 지난 수');
+same(names.rows.filter(r => r.s === 'in' || r.s === 'cut').length, pro.counts.rankedCompanies, '대세 순서를 매긴 업종 회사 수');
+{ const ow = new Map(pro.outside.map(o => [o.code, [o.s, o.why]])); for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w], ow.get(r.c) ?? null, `밖 까닭 ${r.c}`); }
+same(pro.rules.version, ACT.version, 'proposal 판 = universe.json 판');
+// ⑩ 고른 까닭 · 깔때기 · 업종 대세 순서 표 · 층마다 가운데값(사장님 11:43)
+const r2 = x => (x == null ? null : Math.round(x * 100) / 100), SX = new Map(pro.sectors.map(x => [x.name, x]));
+for (const p of pro.picked) {
+  const got = comp[p.code]?.pick, x = SX.get(p.sector); if (!got || !x) { bad.push({what: `까닭 없음 ${p.code}`}); continue; }
+  for (const [k, v] of [['tier', p.tier], ['sector', p.sector], ['srank', x.rank], ['google', x.google], ['cia', x.cia], ['strong', x.strong], ['hits', x.hits], ['sn', x.n], ['inN', x.inN], ['part', p.part], ['prank', p.prank], ['pn', p.pn]]) sameJ(got[k], v, `까닭 ${p.code} ${k}`);
+  for (const [k, v] of [['schg', x.chg * 100], ['sfit', x.fit * 100], ['sr2', x.r2], ['z', x.z], ['sbr', x.br * 100], ['smon', x.mon * 100], ['searn', x.earn * 100], ['r30', p.r30 == null ? null : p.r30 * 100]]) near(got[k], r2(v), 0.0101, `까닭 ${p.code} ${k}`);
+}
+const PC = pro.counts, FU = core.funnel;
+sameJ([FU.universe, FU.gate, FU.ranked, FU.picked, FU.sectors, FU.top, FU.tiers], [PC.universe, PC.gate, PC.rankedCompanies, PC.picked, PC.ranked, PC.top, [PC.tier1, PC.tier2, PC.tier3]], '깔때기 숫자');
+sameJ(FU.steps.map(x => x.n), [PC.universe, PC.gate, PC.rankedCompanies, PC.picked], '깔때기 줄 숫자');
+sameJ(core.rules.sectors.map(x => [x.name, x.rank, x.tier, x.google, x.cia, x.n, x.in]), pro.sectors.map(x => [x.name, x.rank, x.tier, x.google, x.cia, x.n, x.inN]), '업종 대세 순서 표');
+core.rules.sectors.forEach(x => near(x.chg, r2(SX.get(x.name)?.chg * 100), 0.0101, `업종 대세 순서 표 30거래일 ${x.name}`));
+sameJ(core.rules.pickWin, {from: pro.window.from, to: pro.window.to, days: pro.window.days}, '고른 창');
+for (const t of [1, 2, 3]) {
+  const xs = codes.filter(c => pro.picked.find(p => p.code === c).tier === t).map(c => comp[c].chg).filter(x => x != null).sort((a, b) => a - b);
+  const med = xs.length ? (xs.length % 2 ? xs[(xs.length - 1) / 2] : (xs[xs.length / 2 - 1] + xs[xs.length / 2]) / 2) : null;
+  const ft = core.facts.tiers.find(y => y.t === t);
+  same(ft?.n, codes.filter(c => pro.picked.find(p => p.code === c).tier === t).length, `${t}층 회사 수`); near(ft?.med, med == null ? null : Math.round(med * 100) / 100, 0.0101, `${t}층 ${core.days}거래일 가운데값`);
+}
 
 // ⑧ 4단 자료(2026-10-11 08:10 「5단 클릭」) — 거래일 · 365곳 3년 지수 · 회사마다 종가 · 하루 ±30.5% 넘은 날
 const days = J(path.join(dataDir, 'days.json'));

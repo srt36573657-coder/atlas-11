@@ -11,8 +11,9 @@ import {spawnSync} from 'node:child_process';
 import {rollAtlas} from '../../scripts/atlas11/t365/roll.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
-const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, 'reports/atlas11/universe/2026-10-10/bundle.json.gz'))).toString('utf8'));
-const codes = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365/proposal.json'), 'utf8')).picked.map(p => p.code);
+const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳(사장님 11:43 대세 365곳)
+const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
+const codes = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8')).picked.map(p => p.code);
 const cal = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/input.json'), 'utf8')).calendar.sessions;
 const rowsOf = c => bundle.stocks[c].fchart.rows.filter(r => r[4] > 0);
 
