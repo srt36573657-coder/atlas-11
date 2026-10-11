@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-11T06:56:37.911Z",
+  "at": "2026-10-11T07:17:31.847Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-11T06:56:37.039Z",
+    "publishedAt": "2026-10-11T07:17:30.990Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-b6ade095\",\"generatedAt\":\"2026-10-11T06:52:16.102Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-89120a6c\",\"generatedAt\":\"2026-10-11T07:12:36.680Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T06:53:59Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T07:14:20Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -91,6 +91,15 @@
       "bodyStart": "/* 새 ATLAS(aaa7377.com/) — 모양 사장님 2026-10-11 06:13 「잡스 방식이 중심 … 구글 · 클로드 · CIA · 찰리 멍거 · 삼성 팀이 도와 … 설명 없이도 감탄이 나오게 새로운 아틀란스」 2026-10-11 13:29 「https://jjundev.github.io/li-pairs/#/z/kr-kospi200 여기를 참고해서 여기 디자인처럼 고급스럽게 전문적인 느낌으로 … 지금 구도 참좋아 유지 하면서 구글팀 클로드팀 이라면 그리고 애플팀이라면 어떻게 할지 고민해서 … 멋지게 만들어봐」 = 밤보라"
     },
     {
+      "url": "https://aaa7377.com/atlas/data/time.json",
+      "status": 200,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-08\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"pick36\":\"pick36-v3\",\"opens\""
+    },
+    {
       "url": "https://aaa7377.com/old/",
       "status": 200,
       "wwwAuthenticate": null,
@@ -106,7 +115,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-b6ade095\",\"generatedAt\":\"2026-10-11T06:52:16.102Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-89120a6c\",\"generatedAt\":\"2026-10-11T07:12:36.680Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
