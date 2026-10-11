@@ -36,11 +36,12 @@ const chgOf = (node, mode = state.mode) => (mode === 'cw' ? node.cwChg : node.ch
 
 // ── 자료 받기 ──
 async function getJson(name) { const r = await fetch('/atlas/data/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(name + ' ' + r.status); return r.json(); }
-let compP = null, namesP = null, pickP = null, daysP = null; const coP = new Map();
+let compP = null, namesP = null, pickP = null, daysP = null, updP = null; const coP = new Map();
 function needDays() { if (!daysP) daysP = getJson('days.json').then(d => { D.days = d; }).catch(e => { daysP = null; throw e; }); return daysP; }
 function needCo(code) { if (!coP.has(code)) coP.set(code, getJson('co/' + encodeURIComponent(code) + '.json').catch(e => { coP.delete(code); throw e; })); return coP.get(code); }
 function needPick() { if (!pickP) pickP = getJson('pick36.json').then(p => { D.pick = p; }).catch(e => { pickP = null; throw e; }); return pickP; }
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; }).catch(e => { compP = null; throw e; }); return compP; }
+function needUpd() { if (!updP) updP = getJson('updates.json').then(u => { D.upd = u; }).catch(e => { updP = null; throw e; }); return updP; }
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
 
 // ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 기준일(20거래일 전)과 같음 ──
@@ -320,7 +321,7 @@ async function viewCompany(v, code) {
   v.append(h('p', {class: 'won', text: `100만 원어치였다면 ${C.days}거래일 안 가장 나쁠 때 ${Math.round(keep * 100).toLocaleString('ko-KR')}만 원이었습니다.`}));
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
   const slot36 = h('div'); v.append(slot36);
-  needPick().then(() => { const p = D.pick.picks.find(x => x.code === code); if (p && slot36.isConnected) slot36.append(h('p', {class: 'in36'}, `월요일 매수 검토 36곳 가운데 ${p.rank}번째(번 길 ${r1(p.avg).toFixed(1)}%) · `, h('a', {href: '#/36', text: '36곳과 지난 기록 시험 보기'}))); }).catch(() => {});
+  needPick().then(() => { const p = D.pick.picks.find(x => x.code === code); if (p && slot36.isConnected) slot36.append(h('p', {class: 'in36'}, `매수 검토 36곳 가운데 ${p.rank}번째(번 길 ${r1(p.avg).toFixed(1)}%) · `, h('a', {href: '#/36', text: '36곳과 지난 기록 시험 보기'}))); }).catch(() => {});
   const chartHost = h('div');
   v.append(chartHost);
   const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`});
@@ -460,7 +461,7 @@ async function viewRange(v, code) {
     K.dirs.forEach((d, j) => { const w = k.win[j], b = k.big[j], bw = h('i', {class: 'db pos'}), bb = h('i', {class: 'db neg'}); bw.style.width = w + '%'; bb.style.width = b + '%';
       list.append(h('li', {}, h('b', {class: 'dn', text: d.name}), h('span', {class: 'dl'}, h('span', {class: 'dt'}, bw), h('span', {class: 'num', text: `번 길 ${r1(w).toFixed(1)}%`})), h('span', {class: 'dl'}, h('span', {class: 'dt'}, bb), h('span', {class: 'num', text: `크게 잃는 길 ${r1(b).toFixed(1)}%`})))); });
     box.append(h('p', {class: 'small', text: `방향마다 지난 날들에서 20일을 뽑아 ${S.paths.toLocaleString('ko-KR')}번 — 번 길 = 사고팔 돈 0.3% 빼고 남음 · 크게 잃는 길 = −15% 밑`}), list);
-    const status = k.rank ? `월요일 매수 검토 36곳 가운데 ${k.rank}번째(번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%)` : k.cut ? `지움 — 가장 나쁜 방향에서 크게 잃는 길(${r1(k.worst).toFixed(1)}%)이 큰 3분의 1에 들었습니다` : `남았지만 36곳 밖 — 번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%`;
+    const status = k.rank ? `매수 검토 36곳 가운데 ${k.rank}번째(번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%)` : k.cut ? `지움 — 가장 나쁜 방향에서 크게 잃는 길(${r1(k.worst).toFixed(1)}%)이 큰 3분의 1에 들었습니다` : `남았지만 36곳 밖 — 번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%`;
     box.append(h('p', {class: 'alt'}, h('b', {text: status}), ' · ', h('a', {class: 'inl', href: '#/36', text: '36곳 보기'})));
   }
   if (B) box.append(h('p', {class: 'small', text: `모형 가정 아래 셈일 뿐 앞날 값이 아닙니다 — 같은 셈은 지난 ${B.n}번 가운데 ${B.wins}번만 365곳 평균보다 나았습니다.`}));
@@ -489,12 +490,12 @@ async function viewRange(v, code) {
   v.append(foot());
 }
 
-// ── 화면 ⑥ 월요일 36곳(사장님 00:15 「몬테카를로 1억 × 4방향 → 소거법 → 36개 · 각 한 주씩」) — 지난 기록 시험을 맨 위에 그대로 ──
+// ── 화면 ⑥ 36곳(사장님 00:15 「몬테카를로 1억 × 4방향 → 소거법 → 36개 · 각 한 주씩」 · 12:41 「하루에 4번」부터 회차마다 새 365곳으로 다시 셈) — 지난 기록 시험을 맨 위에 그대로 ──
 async function view36(v) {
   await Promise.all([needPick(), needComp()]);
   const C = D.core, K = D.pick, S = K.spec, B = K.backtest;
   const tell = tellRow(`${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤를 셈`, null);
-  v.append(tell.el, h('h1', {class: 'head', text: `월요일 매수 검토 ${K.picks.length}곳`}),
+  v.append(tell.el, h('h1', {class: 'head', text: `매수 검토 ${K.picks.length}곳 — ${md(K.asOf)} 값`}),
     h('p', {class: 'count', text: `몬테카를로 ${Math.round(S.totalPairs / 1e8)}억 길(찾기 4방향 + 지우기 4방향) · ${K.eligible}곳 셈 → ${K.cutN}곳 지움 → ${K.picks.length}곳`}));
   if (B) {
     const box = h('div', {class: 'test'}, h('h2', {text: '먼저 — 지난 기록에서는?'}),
@@ -511,9 +512,9 @@ async function view36(v) {
   const ol = h('ol', {class: 'p36'});
   for (const p of K.picks) { const c = D.comp[p.code];
     ol.append(h('li', {}, h('a', {href: '#/c/' + p.code}, h('span', {class: 'no num', text: p.rank}), h('span', {class: 'nm', text: p.name}), h('b', {class: 'val num', text: '번 길 ' + r1(p.avg).toFixed(1) + '%'}),
-      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · ${D.core.days}거래일 ${pct(c.chg)}`})))); }
+      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · ${D.core.days}거래일 ${c ? pct(c.chg) : '? 지금 365곳 밖'}`})))); }
   v.append(h('h2', {class: 'sec', text: `${K.picks.length}곳 — 번 길 많은 순`}), h('p', {text: `번 길 = ${S.horizon}거래일 뒤 사고팔 돈(0.3%)을 빼고도 남은 길의 몫 · 4방향 평균`}), ol);
-  v.append(h('div', {class: 'alt'}, `${K.picks.length}곳을 1주씩이면 합계 `, h('b', {class: 'num', text: won(K.total)}), ` — ${md(K.asOf)} 종가로 셈 · 월요일 값은 다릅니다.`));
+  v.append(h('div', {class: 'alt'}, `${K.picks.length}곳을 1주씩이면 합계 `, h('b', {class: 'num', text: won(K.total)}), ` — ${md(K.asOf)} 값으로 셈 · 사는 날 값은 다릅니다.`));
   v.append(h('details', {class: 'more'}, h('summary', {text: '어떻게 셌나요 — 돌리기 전에 정한 기준'}), h('div', {class: 'in'}, h('ul', {},
     h('li', {text: `방향: 날마다 그날로 끝나는 20거래일 시장(365곳 같은 무게)으로 가름 — 흔들림이 위 25%면 크게 출렁이는 장, 아니면 +3% 넘게 오름 · −3% 넘게 내림 · 그 사이`}),
     h('li', {text: `길: 그 방향 날들에서 20일을 뽑아 365곳에 똑같이 적용(함께 움직임을 지킴) · 방향마다 ${S.paths.toLocaleString('ko-KR')}길 × 365곳 = 약 1억`}),
@@ -536,6 +537,56 @@ function btChart(host, rows) {
   const mv = e => { const r = svg.getBoundingClientRect(); let k = Math.floor(((e.clientX - r.left) * W / r.width - P) / bw); k = Math.max(0, Math.min(n - 1, k)); const q = rows[k];
     tip.hidden = false; tip.textContent = `${md(q.t)} · 36곳 ${pct(q.pick)} · 365곳 ${pct(q.all)}`; tip.style.left = Math.min(r.width - 120, Math.max(120, (P + (k + 0.5) * bw) * r.width / W)) + 'px'; };
   svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { tip.hidden = true; });
+}
+
+// ── 화면 ⑦ 업데이트(사장님 2026-10-11 12:41 「업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」) ──
+//   회차마다 한 줄 — 언제 · 어느 회차 · 결과(바꿈 · 그대로 · 실패) · 고른 날 · 기준일 · 새로 든 곳 · 빠진 곳 · 층 · 1등 갈래 · 그림 = 회차마다 들고 난 수
+const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+const kstLabel = k => { const d = new Date(k.slice(0, 10) + 'T00:00:00Z'); return `${md(k.slice(0, 10))}(${DOW[d.getUTCDay()]}) ${k.slice(11, 16)}`; };
+const RES_WORD = {'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'};
+function namesLine(list, max = 6) { return list.slice(0, max).map(x => x.n).join(' · ') + (list.length > max ? ` 외 ${list.length - max}곳` : ''); }
+async function viewUpdates(v) {
+  await needUpd();
+  const U = D.upd, R = U.records, last = R[0];
+  const tell = tellRow(`하루 4번 · ${U.slots.join(' · ')}(서울)`, null);
+  v.append(tell.el, h('h1', {class: 'head', text: '업데이트 기록 — 하루 4번'}),
+    h('p', {class: 'count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
+  v.append(h('p', {class: 'note', text: '회차마다 그날까지 값으로 365곳을 다시 고릅니다(뽑는 규칙은 그대로). 기준일은 늘 고른 날의 20거래일 전입니다. 기록은 지우지 않습니다.'}));
+  const host = h('div', {class: 'upchart'}); v.append(host); upChart(host, R.slice(0, 28).reverse());
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-in'}), '새로 든 곳'), h('span', {}, h('i', {class: 'l-out'}), '빠진 곳'), h('span', {text: '막대 하나 = 회차 하나 · 오른쪽이 최근'})));
+  const ol = h('ol', {class: 'uplist'});
+  for (const r of R) {
+    const li = h('li', {class: 'r-' + ({'바꿈': 'ch', '그대로': 'same', '실패': 'fail'}[r.result] ?? 'same')});
+    li.append(h('p', {class: 'uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 회차' : '그 밖 올림'} `, h('span', {class: 'chip res', text: RES_WORD[r.result] ?? r.result})));
+    if (!r.slot && r.reason) li.append(h('p', {class: 'small', text: r.reason}));
+    if (r.asOf) li.append(h('p', {text: `고른 날 ${md(r.asOf)}${r.provisional ? '(그날 저녁 8시 전 값 — 아직 바뀜)' : ''} · 기준일 ${md(r.base)}` + (r.tiers ? ` · 1층 ${r.tiers[0]} · 2층 ${r.tiers[1]} · 3층 ${r.tiers[2]}` : '')}));
+    if (r.in?.length || r.out?.length) {
+      li.append(h('p', {}, h('b', {class: 'ni', text: `새로 든 곳 ${r.in.length}`}), r.in.length ? ' ' + namesLine(r.in) : ''));
+      li.append(h('p', {}, h('b', {class: 'no2', text: `빠진 곳 ${r.out.length}`}), r.out.length ? ' ' + namesLine(r.out) : ''));
+      if (r.in.length > 6 || r.out.length > 6) li.append(h('details', {class: 'more'}, h('summary', {text: '모두 보기'}), h('div', {class: 'in'}, h('p', {text: '새로 든 곳: ' + r.in.map(x => x.n).join(' · ')}), h('p', {text: '빠진 곳: ' + r.out.map(x => x.n).join(' · ')}))));
+    } else if (r.result !== '실패') li.append(h('p', {text: '365곳은 앞 회차와 같습니다.'}));
+    if (r.top?.short) li.append(h('p', {}, `1등 갈래 ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 365곳 ', pctEl(r.all?.chg, 'span'), ` · 20거래일`));
+    if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
+    ol.append(li);
+  }
+  v.append(h('h2', {class: 'sec', text: `회차 ${U.n}번 가운데 최근 ${R.length}번`}), ol);
+  v.append(foot());
+}
+function upChart(host, rows) {
+  const W = Math.max(260, Math.round(host.getBoundingClientRect().width || 320)), Hh = 132, P = 8, n = Math.max(rows.length, 1);
+  const M = Math.max(4, ...rows.flatMap(r => [r.in?.length ?? 0, r.out?.length ?? 0])) * 1.15, bw = Math.min((W - 2 * P) / n, 36), x0 = W - P - n * bw, Y0 = Hh / 2, sc = (Hh / 2 - P) / M; // 오른쪽이 최근 · 막대 폭은 36 까지
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `최근 ${rows.length}회차 — 새로 든 곳 ${rows.reduce((t, r) => t + (r.in?.length ?? 0), 0)} · 빠진 곳 ${rows.reduce((t, r) => t + (r.out?.length ?? 0), 0)}`});
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: '#A9A3CC', 'stroke-width': 1.5}));
+  rows.forEach((r, k) => {
+    const x = x0 + k * bw + bw * 0.18, w = Math.max(2, bw * 0.64), a = (r.in?.length ?? 0) * sc, b = (r.out?.length ?? 0) * sc;
+    if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 3, fill: 'none', stroke: '#E9C46A', 'stroke-width': 1.5}));
+    else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: '#A9A3CC'}));
+    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 2, fill: '#8973C3'}));
+    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 2, fill: '#CDBEF6'}));
+  });
+  host.append(svg);
+  if (rows.length > 1) host.append(h('div', {class: 'ax'}, h('span', {text: kstLabel(rows[0].kst)}), h('span', {text: kstLabel(rows[rows.length - 1].kst)})));
+  else if (rows.length) host.append(h('div', {class: 'ax'}, h('span', {}), h('span', {text: kstLabel(rows[0].kst)})));
 }
 
 // ── 화면 ⑤ 업종 63 ──
@@ -666,12 +717,13 @@ async function route() {
   if (hsh === lastMain && $('#view').childElementCount) return;
   lastMain = hsh;
   const v = $('#view'); v.textContent = ''; chartDraw = null;
-  $('#tabHome').toggleAttribute('aria-current', false); $('#tabList').toggleAttribute('aria-current', false); $('#tab36').toggleAttribute('aria-current', false);
+  for (const t of ['#tabHome', '#tabList', '#tab36', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, arg] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [];
     if (!kind) { $('#tabHome').setAttribute('aria-current', 'page'); viewHome(v); }
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
     else if (kind === '36') { $('#tab36').setAttribute('aria-current', 'page'); await view36(v); }
+    else if (kind === 'up') { $('#tabUp').setAttribute('aria-current', 'page'); await viewUpdates(v); }
     else if (kind === 'g') viewGroup(v, decodeURIComponent(arg));
     else if (kind === 'i') await viewIndustry(v, decodeURIComponent(arg));
     else if (kind === 'c') { const [code, sub] = decodeURIComponent(arg).split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
@@ -689,7 +741,7 @@ async function boot() {
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }
   $('#fontBtn').addEventListener('click', () => { setFont((state.font + 1) % 3); lastMain = ''; route(); });
   $('#helpBtn').addEventListener('click', () => { location.hash = '#/info'; });
-  $('#openFind').addEventListener('click', openFind); $('#tabFind').addEventListener('click', openFind);
+  $('#openFind').addEventListener('click', openFind); $('#tabFind')?.addEventListener('click', openFind); // 아래 탭 「찾기」 자리는 「업데이트」(12:41) — 찾기는 맨 위 단추
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeSheet(b.dataset.close)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.dataset.sheet) closeSheet(document.body.dataset.sheet); });
   $('#q').addEventListener('input', () => { if (D.names) renderHits(); });

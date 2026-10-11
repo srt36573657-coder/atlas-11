@@ -1,6 +1,6 @@
 {
  "schema": "atlas-new-check-1",
- "made": "2026-10-11T03:26:04.255Z",
+ "made": "2026-10-11T04:18:13.318Z",
  "base": "http://127.0.0.1:8899",
  "plans": [
   "360×640",
@@ -9,9 +9,9 @@
   "390×844",
   "900×900"
  ],
- "routes": 1146,
- "screens": 5752,
- "numbers": 60617,
+ "routes": 1147,
+ "screens": 5757,
+ "numbers": 60652,
  "click3": {
   "companies": 365,
   "over3": 0,

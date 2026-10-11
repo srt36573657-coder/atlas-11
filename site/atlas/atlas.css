@@ -233,7 +233,7 @@ a.inl, .links2 a { color: var(--violet-ink); text-decoration: underline; text-un
 /* 아래 탭 — 엄지가 닿는 곳(삼성팀) */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--band); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
 .tabbar-in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
-.tabbar a, .tabbar button { min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-top: 3px solid transparent; background: none; cursor: pointer; color: var(--sub); font-weight: 600; }
+.tabbar a, .tabbar button { min-height: 56px; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-top: 3px solid transparent; background: none; cursor: pointer; color: var(--sub); font-weight: 600; font-size: 21px; white-space: nowrap; letter-spacing: -0.02em; } /* 탭 넷(한눈에 · 업종 · 36곳 · 업데이트)이 360px 에 한 줄 — 글씨 크기 단추와 상관없이 21px */
 .tabbar [aria-current="page"] { color: var(--ink); font-weight: 800; border-top-color: var(--gold); }
 
 /* 찾기 · 도움말 · 365곳 밖 — 아래서 올라오는 판(삼성팀) */
@@ -286,3 +286,19 @@ a.inl, .links2 a { color: var(--violet-ink); text-decoration: underline; text-un
 .trd .tt, .trh .tt { color: var(--sub); font-weight: 500; }
 .trh { margin: 0 0 6px; font-weight: 700; color: var(--sub); }
 .note.trn { margin-top: 2px; }
+
+/* 업데이트 탭(사장님 2026-10-11 12:41 「업데이트는 하루에 4번 … 업데이트 탭 만들어서 기록해놓아라」) — 회차마다 한 줄 · 들고 난 곳은 보라(오름 · 내림 색은 쓰지 않음) */
+.upchart { position: relative; margin: 8px 0 2px; }
+.upchart .ax { display: flex; justify-content: space-between; color: var(--sub); margin-top: 2px; gap: 8px; }
+.lkey .l-in { height: 12px; background: #8973C3; border-radius: 2px; }
+.lkey .l-out { height: 12px; background: #CDBEF6; border-radius: 2px; }
+ol.uplist { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+ol.uplist li { padding: 10px 12px; border-radius: 14px; background: var(--deck); border: 1px solid var(--line); }
+ol.uplist li.r-fail { border-color: var(--gold); }
+ol.uplist li p { margin: 0 0 4px; }
+ol.uplist .uh { margin-bottom: 6px; }
+ol.uplist .chip.res { color: var(--ink); }
+ol.uplist li.r-ch .chip.res { border-color: var(--violet); }
+ol.uplist li.r-fail .chip.res { border-color: var(--gold); color: var(--gold); }
+ol.uplist .ni { color: var(--violet-ink); } ol.uplist .no2 { color: var(--sub); }
+ol.uplist .small { color: var(--sub); }

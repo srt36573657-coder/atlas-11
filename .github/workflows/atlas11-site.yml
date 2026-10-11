@@ -3,10 +3,17 @@ run-name: aaa7377.com 올리기 · ${{ github.actor }}
 # 2026-10-05 10:24 사장님 「나 여기서 클릭하면 업로드되게 만들어 줘」 — 이 작업이 그 단추다(파일 이름 atlas11-site.yml 은 그대로라 주소도 그대로)
 # 누르는 곳: 이 작업 화면 오른쪽 「Run workflow」 → 펼쳐진 칸의 초록 「Run workflow」 — 2~3분 뒤 aaa7377.com 에 올라감
 # 하는 일: 지금 저장소의 판(종가 · 수급 · 기사 · 일정)으로 화면 묶음을 다시 만들어 aaa7377.com 에 올린다
-#   종가 수집은 하지 않는다 — 그건 평일 16:00(atlas11-daily) · 19:00(atlas11-evening) 자동 실행이 한다
+#   옛 판 종가 수집은 하지 않는다 — 그건 평일 16:00(atlas11-daily) · 19:00(atlas11-evening) 자동 실행이 한다
+#   새 ATLAS(첫 화면)는 올릴 때마다 회차를 돈다(package.mjs → scripts/atlas11/t365/roll.mjs): 후보 1,378곳 일봉을 받아 그날까지 값으로 365곳을 다시 고르고 기록
+#   (사장님 2026-10-11 12:41 「기준은 항상 오늘날짜로 … 업데이트는 하루에 4번 … 업데이트 탭 만들어서 기록」 — 하루 4번은 Claude 예약 작업이 이 작업을 누름 · reason 에 회차 이름)
 # 결과: 실행 화면 맨 위 요약 칸에 「올라갔습니다」(주소 · 올린 때 · 파일 수) 또는 「못 올렸습니다 · 까닭」(scripts/atlas11/site_summary.mjs)
 on:
   workflow_dispatch:
+    inputs:
+      reason:
+        description: '누른 까닭(예약 작업이 회차 이름을 적음 · 비워 두면 손 올림)'
+        required: false
+        default: ''
 permissions:
   contents: write
 concurrency:
@@ -16,9 +23,10 @@ jobs:
   site:
     name: aaa7377.com 에 올리기
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       TZ: Asia/Seoul
+      ATLAS_UPDATE_REASON: ${{ inputs.reason }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
     steps:
@@ -34,6 +42,8 @@ jobs:
           cache: npm
       - name: 준비물 설치
         run: npm ci
+      - name: 파이썬 준비(36곳 셈 numpy)
+        run: python3 -m pip install --user --break-system-packages -q numpy || python3 -m pip install --user -q numpy
       - name: 화면 묶음 만들기
         run: |
           node scripts/atlas11/build_view.mjs
@@ -61,4 +71,11 @@ jobs:
           git config user.email atlas11-bot@users.noreply.github.com
           git add -A reports/
           [ -f deploy/netlify-site.json ] && git add deploy/netlify-site.json
-          if git diff --cached --quiet; then echo "nothing to commit"; else git commit -m "atlas11 site deploy $(date +%Y-%m-%d) [skip ci]" && git pull --rebase --autostash -q && git push; fi
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "atlas11 site deploy $(date +%Y-%m-%d) [skip ci]"
+          # 같은 때 다른 기록이 먼저 들어가면 밀기가 막힘(2026-10-11 12:27 실제로 한 번) — 받아 붙이고 다시 밀기, 다섯 번까지
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash -q && git push; then exit 0; fi
+            echo "밀기 다시 $i — 다른 기록이 먼저 들어감"; sleep $((i * 7))
+          done
+          exit 1
