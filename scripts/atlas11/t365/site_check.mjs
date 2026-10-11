@@ -21,6 +21,11 @@ const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.js
 const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
+const md = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일`;
+// 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로」 — 화면 어디에도 옛 3개월 창(「3개월」 · 옛 기준일 7월 6일)이 남지 않았는지 · 기준일 = 마지막 종가 날의 20거래일 전인지
+const cal = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/input.json'), 'utf8')).calendar.sessions;
+const W20 = cal.filter(d => d <= core.asOf).slice(-21);
+if (core.base !== W20[0] || core.days !== 20 || JSON.stringify(core.dates) !== JSON.stringify(W20)) { console.error('기준일이 마지막 종가 날의 20거래일 전이 아님', core.base, W20[0], core.days); process.exit(1); }
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
 const routes = ['#/', '#/list', '#/36', ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info'];
@@ -31,10 +36,10 @@ function expect(route) {
   // 화면마다 자료에서 따로 만든 기대 글(보기 = 한 회사 한 표)
   const [, kind, arg] = route.match(/^#\/(\w*)\/?(.*)$/) || [];
   if (kind === 'g') { const g = core.groups.find(x => x.id === arg); return {step: 1, head: pct(g.chg), up: g.up, down: g.down, rows: g.inds.map(n => { const i = core.industries.find(x => x.name === n); return [n, pct(i.chg)]; })}; }
-  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg3)])}; }
+  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg)])}; }
   if (kind === 'c') {
     const [code, sub] = arg.split('/'), c = comp[code];
-    if (!sub) return {step: 3, trio: [pct(c.chg3), pct(c.r1y), pct(c.mdd3)], price: Math.round(c.price).toLocaleString('ko-KR') + '원'};
+    if (!sub) return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100'};
     if (sub === 'past') { // 4단 — 처음 보기 1년(253거래일) · 자료 파일에서 따로 셈
       const co = coOf(code), n = days.dates.length, from = Math.max(co.k0, n - 253), cl = co.close.slice(from - co.k0).filter(x => x != null);
       const base = cl[0], last = cl.at(-1); let peak = 0, m = 0; for (const x of cl) { peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); }
@@ -44,7 +49,7 @@ function expect(route) {
     const k = pick.companies[code];
     return {step: 5, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖'};
   }
-  if (!kind) return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)])};
+  if (!kind) return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`};
   if (kind === '36') return {p36: pick.picks.map(p => [p.name, '번 길 ' + r1(p.avg).toFixed(1) + '%']), test: pick.backtest ? `${pick.backtest.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${pick.backtest.wins}번` : null, total: Math.round(pick.total).toLocaleString('ko-KR') + '원'};
   return {};
 }
@@ -107,6 +112,9 @@ for (const [w, hgt, font] of plans) {
     if (font === 0 && w === 390) links.set(route, r.links);
     const e = expect(route);
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
+    if (e.title) { numbers++; if (!r.head.includes(e.title)) fail(tag, `머리 ${r.head} ≠ ${e.title}`); }
+    if (e.axis) { numbers++; if (!r.text.includes(e.axis)) fail(tag, `그림 아래 「${e.axis}」 없음`); }
+    for (const old of ['3개월', '7월 6일']) if (r.text.includes(old)) fail(tag, `옛 3개월 창 글 「${old}」이 남음`);
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
     if (e.step) { numbers++; if (r.step !== `5단 중 ${e.step}단`) fail(tag, `5단 표시 ${r.step} ≠ ${e.step}단`); }
@@ -134,7 +142,7 @@ for (const [w, hgt, font] of plans) {
   }
   await ctx.close();
 }
-// 경주(움직임 켬) — 7.5초 뒤 맨 위 줄 = 3개월 1등 갈래 · 금빛 테
+// 경주(움직임 켬) — 8초 뒤 맨 위 줄 = 20거래일 1등 갈래 · 금빛 테
 {
   const ctx = await b.newContext({viewport: {width: 390, height: 844}});
   const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));

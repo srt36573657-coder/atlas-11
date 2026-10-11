@@ -16,6 +16,7 @@ import {readSiteLog} from '../../lib/atlas11/changelog.mjs';
 import {storyFrom} from './story/build.mjs';
 import {lensFrom, siteLens} from './lens/build.mjs'; // 판 읽기(2026-10-08 20:19 마카오 시각 「ATLAS 개편 실행 지시서」 — 다섯 탭이 함께 읽는 lens.json)
 import {lensJson} from '../../lib/atlas11/lens.mjs';
+import {rollAtlas} from './t365/roll.mjs'; // 새 ATLAS 기준일 = 마지막 종가 날의 20거래일 전 · 날마다(2026-10-11 09:37)
 const run = promisify(execFile);
 const root = process.cwd();
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
@@ -36,6 +37,9 @@ export async function buildDist() {
   const dist = path.join(root, 'dist');
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
+  // 새 ATLAS 날마다 굴리기(2026-10-11 09:37 사장님 「기준일을 항상 현재 날짜에서 지난 20일 거래로 … 항상 그렇게 하라」) — 이어 받은 종가로 dist/atlas/data 를 다시 셈
+  //   깃허브 실행기에서만 종가를 받음 · 따로 세기 틀림 0 이고 새 거래일일 때만 바꿈 · 멈추면 저장된 자료 그대로(올리기는 멈추지 않음) — scripts/atlas11/t365/roll.mjs
+  await rollAtlas({root, dist});
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다

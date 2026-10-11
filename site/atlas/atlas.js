@@ -1,8 +1,9 @@
 // 새 ATLAS(aaa7377.com/atlas/) — 사장님 2026-10-11 06:13 「잡스 방식이 중심이 되고 구글팀 클로드팀 cai팀 그리고 찰리 망거팀 삼성팀 들이 도와서
 //   일반인들이 바로 알수 있고 쉽게 사용가능하며 별도에 설명이 없어도 감탄이 니오게 새로운 아틀란스를 만들어 봐라 이 토대로 말이다」
-// 잡스팀: 화면마다 질문 하나 · 같은 경주 그림으로 세 번 내려감(갈래 → 업종 → 회사) · 첫 화면 3개월 경주(약 6초 · 한 번 · 누르면 끝으로)
+// 잡스팀: 화면마다 질문 하나 · 같은 경주 그림으로 세 번 내려감(갈래 → 업종 → 회사) · 첫 화면 지난 20거래일 경주(약 6초 · 한 번 · 누르면 끝으로)
+// 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로 하라 … 항상 그렇게 하라」 — 기준일 = 마지막 종가 날의 20거래일 전(자료 core.base · core.days 를 읽음 · 날짜를 박지 않음)
 // 구글팀: 찾기 칸을 늘 위에 · 한 글자 · 첫 글자(ㅅㅅㅈㅈ) · 영어 이름 소리(에스케이) · 365곳 밖이면 깔때기로 까닭
-// 클로드팀: 회사 1곳뿐인 업종 표시 · 고른 기준일 세로선 · 남의 짐작은 꼬리표 · 모르는 것은 「?」
+// 클로드팀: 회사 1곳뿐인 업종 표시 · 고른 날 세로선 · 남의 짐작은 꼬리표 · 모르는 것은 「?」
 // CIA팀: 숫자 밑 「출처 · 때」 · 다르게 보면(큰 회사는 크게) · 확인할 것
 // 멍거팀: 오른 % 옆에 같은 크기로 가장 깊이 빠짐 · 반값을 견딜 수 있나요 · 사기 전에 볼 것(기록만)
 // 삼성팀: 360px 한 화면 · 아래 탭 · 뒤로 = 앞 화면(주소 #) · 늘 밤 화면 · 움직임은 위치 · 크기만
@@ -42,8 +43,8 @@ function needPick() { if (!pickP) pickP = getJson('pick36.json').then(p => { D.p
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; }).catch(e => { compP = null; throw e; }); return compP; }
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
 
-// ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 7월 6일과 같음 ──
-//   items: [{key, name, href, v:[64], cw:[64], badge}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
+// ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 기준일(20거래일 전)과 같음 ──
+//   items: [{key, name, href, v:[21], cw:[21], badge}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
 function race(host, {items, parent, wide = false, label, onTick, onDone, auto = false}) {
   const C = D.core, n = C.dates.length;
   const board = h('div', {class: 'board' + (wide ? ' wide' : ''), role: 'list', 'aria-label': label});
@@ -65,12 +66,12 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   function paint(k, settle) {
     for (const r of rows) {
       const v = at(mode === 'cw' && r.it.cw ? r.it.cw : r.it.v, k); r.cur = v;
-      const d = (v ?? 100) - 100, s = Math.min(1, Math.abs(d) / M);
+      const d = v == null ? null : v - 100, s = d == null ? 0 : Math.min(1, Math.abs(d) / M);  // 값이 없는 날(거래정지 · 새 값 못 받음)은 「?」 · 막대 없음
       r.pos.style.transform = 'scaleX(' + (d > 0 ? s : 0) + ')'; r.neg.style.transform = 'scaleX(' + (d < 0 ? s : 0) + ')';
       r.val.textContent = pct(d); r.val.className = 'val num ' + cls(d);
       if (r.avg) { const p = at(mode === 'cw' ? parent.cw : parent.v, k) - 100; r.avg.style.left = (50 + Math.max(-1, Math.min(1, p / M)) * 50) + '%'; }
     }
-    const order = rows.slice().sort((a, b) => (b.cur ?? 0) - (a.cur ?? 0));
+    const order = rows.slice().sort((a, b) => (b.cur ?? -Infinity) - (a.cur ?? -Infinity) || 0);
     order.forEach((r, i) => { if (r.rank !== i || settle) { r.rank = i; r.row.style.transform = 'translateY(' + (i * rowH) + 'px)'; } });
     return order;
   }
@@ -86,7 +87,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   function play() {
     if (RM.matches || n < 2) { finish(); return; }
     cancelAnimationFrame(raf); playing = true; board.classList.add('playing'); rows.forEach(r => r.row.classList.remove('win'));
-    const per = 80, hold = 800, lowK = parent ? parent.v.indexOf(Math.min(...parent.v)) : -1;
+    const per = Math.max(80, Math.round(4800 / Math.max(1, n - 1))), hold = 800, lowK = parent ? parent.v.indexOf(Math.min(...parent.v)) : -1;
     let t0 = performance.now(), held = false;
     paint(0, true);
     const step = now => {
@@ -109,7 +110,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   };
 }
 
-// ── 3개월 선(회사 화면 그림 한 장) — 7월 6일 위 빨강 · 아래 파랑 · 연보라 점선 = 업종 평균 · 금빛 세로선 = 고른 기준일 ──
+// ── 20거래일 선(회사 화면 그림 한 장) — 기준일 위 빨강 · 아래 파랑 · 연보라 점선 = 업종 평균 · 금빛 세로선 = 고른 날(창 안에 있을 때만) ──
 let lcN = 0;
 function lineChart(host, {v, avg, label}) {
   const C = D.core, n = C.dates.length, kPick = C.kPick;
@@ -118,7 +119,7 @@ function lineChart(host, {v, avg, label}) {
   host.append(wrap);
   const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 210, P = 10;
   const vals = [...v, ...(avg || []), 100].filter(x => x != null);
-  if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'q', text: '? 이 회사 3개월 값을 못 읽었습니다'})); return; }
+  if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'q', text: `? 이 회사 ${C.days}거래일 값을 못 읽었습니다`})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 2; lo -= pad; hi += pad;
   const X = i => P + i * (W - 2 * P) / (n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
   const id = 'lc' + (++lcN);
@@ -128,7 +129,7 @@ function lineChart(host, {v, avg, label}) {
   const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(100), width: W, height: H - Y(100)}));
   defs.append(cu, cd); svg.append(defs);
   svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: '#A9A3CC', 'stroke-width': 1.5, 'stroke-dasharray': '5 5'}));
-  svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: '#E9C46A', 'stroke-width': 2.5}));
+  if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: '#E9C46A', 'stroke-width': 2.5}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
   if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: '#CDBEF6', 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
   const d = path(v);
@@ -142,7 +143,7 @@ function lineChart(host, {v, avg, label}) {
   const yt = h('span', {class: 'yl num', text: Math.round(hi)}), yb = h('span', {class: 'yl num', text: Math.round(lo)});
   yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
-  const pick = h('span', {class: 'yl', text: '고른 기준일'}); pick.style.top = '0'; pick.style.left = Math.min(W - 110, Math.max(0, X(kPick) - 104)) + 'px'; wrap.append(pick);
+  if (kPick != null) { const pick = h('span', {class: 'yl', text: '고른 날'}); pick.style.top = '0'; pick.style.left = Math.min(W - 80, Math.max(0, X(kPick) - 74)) + 'px'; wrap.append(pick); }
   wrap.append(h('div', {class: 'ax'}, h('span', {text: md(C.dates[0]) + ' = 100'}), h('span', {text: md(C.dates[n - 1])})));
   const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - P) / ((W - 2 * P) / (n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (v[i] == null) return;
     cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('visibility', 'visible'); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(v[i])); dot.setAttribute('visibility', 'visible');
@@ -156,7 +157,8 @@ function foot() {
   const C = D.core;
   return h('footer', {class: 'foot'},
     h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/old/', text: '옛 ATLAS'}), h('a', {href: '/us/', text: '미국 판'})),
-    h('p', {text: `자료: ${C.sources.price} · 3개월 = ${md(C.base)} → ${md(C.asOf)}(${C.days}거래일) · 365곳은 ${md(C.pickAsOf)} 종가까지 보고 고름.`}),
+    h('p', {text: `자료: ${C.sources.price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · 365곳은 ${md(C.pickAsOf)} 종가까지 보고 고름.`}),
+    C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
     h('p', {text: '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.'}));
 }
 function seg(onPick) {
@@ -169,7 +171,7 @@ function seg(onPick) {
 }
 function tellRow(text, onPlay) {
   const t = h('span', {class: 't', text});
-  const play = onPlay ? h('button', {class: 'ibtn', type: 'button', 'aria-label': '3개월 경주 다시 보기', title: '다시 보기'}, svgPlay()) : null;
+  const play = onPlay ? h('button', {class: 'ibtn', type: 'button', 'aria-label': '경주 다시 보기', title: '다시 보기'}, svgPlay()) : null;
   if (play) play.addEventListener('click', onPlay);
   const say = h('button', {class: 'ibtn', type: 'button', 'aria-label': '이 화면 소리로 듣기', text: '♪'});
   say.addEventListener('click', speak);
@@ -177,7 +179,7 @@ function tellRow(text, onPlay) {
 }
 function svgPlay() { const s = sv('svg', {width: 14, height: 14, viewBox: '0 0 14 14', 'aria-hidden': 'true'}); s.append(sv('path', {d: 'M3 1.5 L12 7 L3 12.5 Z', fill: 'currentColor'})); return s; }
 function legend(parentName) {
-  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균'), h('span', {text: '가운데 = ' + md(D.core.base) + '과 같음'}));
+  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균'), h('span', {text: '가운데 = 기준일(' + md(D.core.base) + ')과 같음'}));
 }
 function crumbs(...parts) { const c = h('nav', {class: 'crumb', 'aria-label': '지금 자리'}); parts.forEach((p, i) => { if (i) c.append(h('i', {text: '›', 'aria-hidden': 'true'})); c.append(p.href ? h('a', {href: p.href, text: p.text}) : h('span', {text: p.text})); }); return c; }
 const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
@@ -194,22 +196,22 @@ function steps(now, hrefs = []) {
   return nav;
 }
 
-// ── 화면 ① 한눈에 — 「지난 3개월, 어느 쪽이 올랐나?」 ──
+// ── 화면 ① 한눈에 — 「지난 20거래일, 어느 쪽이 올랐나?」 ──
 function viewHome(v) {
   const C = D.core, A = C.all, F = C.facts;
   const top = (m) => C.groups.slice().sort((a, b) => chgOf(b, m) - chgOf(a, m))[0];
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
-  const big = F.big.map(b => `${b.name} ${pct(b.chg3)}`).join(' · ');
+  const big = F.big.map(b => `${b.name} ${pct(b.chg)}`).join(' · ');
   function words(m) {
     const t = top(m);
     if (m === 'eq') {
-      head.replaceChildren('지난 3개월 1등은 ', t.name);
+      head.replaceChildren(`지난 ${C.days}거래일 1등은 `, t.short);  // 금빛 테 줄의 이름과 같게
       count.replaceChildren(h('b', {class: 'up', text: A.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: A.down + '곳 내림'}), A.flat ? ` · ${A.flat}곳 그대로` : '', h('span', {class: 'sr', text: ` — 365곳 가운데`}));
       alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 365곳이 ', pctEl(A.cwChg), ` — ${big}. 아래 단추로 바꿔 보세요.`);
     } else {
       const negs = C.groups.filter(g => r1(g.cwChg) < 0).length;
-      head.replaceChildren(negs === C.groups.length ? `큰 회사는 크게 치면 ${negs}갈래 모두 내림` : `큰 회사는 크게 치면 1등은 ${t.name}`);
+      head.replaceChildren(negs === C.groups.length ? `큰 회사는 크게 치면 ${negs}갈래 모두 내림` : `큰 회사는 크게 치면 1등은 ${t.short}`);
       count.replaceChildren('365곳 몸값으로 세면 ', pctEl(A.cwChg), ` · ${big}`);
       alt.replaceChildren('한 회사 한 표로 세면 365곳 ', pctEl(A.chg), ` · ${A.up}곳 오름 · ${A.down}곳 내림.`);
     }
@@ -220,7 +222,7 @@ function viewHome(v) {
   v.append(hello, tell.el, head, count, host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
-  const rc = race(host, {items, parent: A, label: '큰 갈래 10개 — 3개월 경주 · 많이 오른 순: ' + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
+  const rc = race(host, {items, parent: A, label: `큰 갈래 10개 — 지난 ${C.days}거래일 경주 · 많이 오른 순: ` + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
     auto: !state.played && !RM.matches,
     onTick: (k, held, rows) => {
       if (held) { const w = rows.find(r => r.it.key === winner.id), rank = rows.slice().sort((a, b) => (b.cur ?? 0) - (a.cur ?? 0)).indexOf(w) + 1; tell.t.replaceChildren(h('b', {text: md(C.dates[k])}), ` · ${winner.short} ${rank}등 `, pctEl(w.cur - 100)); }
@@ -244,7 +246,7 @@ function viewGroup(v, id) {
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
-    head.replaceChildren(g.name + ' 3개월 ', pctEl(chgOf(g, m), 'span'));
+    head.replaceChildren(`${g.name} ${C.days}거래일 `, pctEl(chgOf(g, m), 'span'));
     if (m === 'eq') { count.replaceChildren(`${g.n}곳 중 `, h('b', {class: 'up', text: g.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: g.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(g.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(g.cwChg), ` · 한 회사 한 표로는 `, pctEl(g.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(g.chg), ` · ${g.up}곳 오름 · ${g.down}곳 내림.`); }
   }
@@ -252,7 +254,7 @@ function viewGroup(v, id) {
   const host = h('div');
   v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, h('p', {class: 'say', text: g.say + ` · 업종 ${inds.length}개`}), count, host);
   const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null}));
-  const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — 3개월 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
+  const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — ${C.days}거래일 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   v.append(legend(g.short), seg(m => { words(m); rc.setMode(m); }), alt);
   const low = g.low;
@@ -271,7 +273,7 @@ async function viewIndustry(v, name) {
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
-    head.replaceChildren(i.name + ' 3개월 ', pctEl(chgOf(i, m), 'span'));
+    head.replaceChildren(`${i.name} ${C.days}거래일 `, pctEl(chgOf(i, m), 'span'));
     if (m === 'eq') { count.replaceChildren(`${i.n}곳 중 `, h('b', {class: 'up', text: i.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: i.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(i.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(i.cwChg), ' · 한 회사 한 표로는 ', pctEl(i.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(i.chg), ` · ${i.up}곳 오름 · ${i.down}곳 내림.`); }
   }
@@ -279,7 +281,7 @@ async function viewIndustry(v, name) {
   const host = h('div');
   v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, count, host);
   const items = i.members.map(c => ({key: c, name: D.comp[c].name, href: '#/c/' + c, v: D.lines[c].map(x => (x == null ? null : x / 100)), cw: null}));
-  const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — 3개월 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg3)).join(', '),
+  const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — ${C.days}거래일 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   v.append(legend(i.name), seg(m => { words(m); rc.setMode(m); }), alt);
   v.append(h('p', {class: 'note', text: '회사 줄은 그 회사 주가 그대로라 두 보기에서 같습니다 — 바뀌는 것은 흰 점선(업종 평균)과 맨 위 숫자입니다.'}));
@@ -295,20 +297,20 @@ async function viewCompany(v, code) {
   v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}));
   v.append(steps(3, ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, null, `#/c/${code}/past`]));
   v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name}), h('small', {text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${won(c.price)}`})));
-  const keep = r1(100 + c.mdd3) / 100;
+  const keep = r1(100 + c.mdd) / 100;
   v.append(h('div', {class: 'trio'},
-    h('div', {}, h('span', {text: '3개월'}), pctEl(c.chg3)),
+    h('div', {}, h('span', {text: `${C.days}거래일`}), pctEl(c.chg)),
     h('div', {}, h('span', {text: '1년'}), pctEl(c.r1y)),
-    h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(c.mdd3))));
-  v.append(h('p', {class: 'won', text: `100만 원어치였다면 3개월 안 가장 나쁠 때 ${Math.round(keep * 100).toLocaleString('ko-KR')}만 원이었습니다.`}));
+    h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(c.mdd))));
+  v.append(h('p', {class: 'won', text: `100만 원어치였다면 ${C.days}거래일 안 가장 나쁠 때 ${Math.round(keep * 100).toLocaleString('ko-KR')}만 원이었습니다.`}));
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
   const slot36 = h('div'); v.append(slot36);
   needPick().then(() => { const p = D.pick.picks.find(x => x.code === code); if (p && slot36.isConnected) slot36.append(h('p', {class: 'in36'}, `월요일 매수 검토 36곳 가운데 ${p.rank}번째(번 길 ${r1(p.avg).toFixed(1)}%) · `, h('a', {href: '#/36', text: '36곳과 지난 기록 시험 보기'}))); }).catch(() => {});
   const chartHost = h('div');
   v.append(chartHost);
-  const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} 3개월 선 — ${md(C.base)} = 100에서 ${pct(c.chg3)} · 가장 깊이 빠짐 ${pct(c.mdd3)}`});
+  const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`});
   draw(); chartDraw = draw;
-  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-co'}), `${c.name} — ${md(C.base)}보다 위 빨강 · 아래 파랑`), i.n > 1 ? h('span', {}, h('i', {class: 'l-avg'}), i.name + ' 평균') : null, h('span', {}, h('i', {class: 'l-pick'}), `고른 기준일 ${md(C.pickAsOf)}`)));
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-co'}), `${c.name} — ${md(C.base)}보다 위 빨강 · 아래 파랑`), i.n > 1 ? h('span', {}, h('i', {class: 'l-avg'}), i.name + ' 평균') : null, C.kPick != null ? h('span', {}, h('i', {class: 'l-pick'}), `고른 날 ${md(C.pickAsOf)}`) : null));
   // 왜 365곳에 들었나(클로드팀) — 고를 때 값 · 남의 짐작은 꼬리표 · 앞날 숫자는 쓰지 않음
   const p = c.pick, gk = p.gkey === 'net' ? '순이익' : '영업이익';
   const why = h('div', {class: 'box'}, h('h2', {text: '왜 365곳에 들었나요?'}));
@@ -323,8 +325,8 @@ async function viewCompany(v, code) {
 }
 function nextStep(href, title, sub) { return h('a', {class: 'nextst', href}, h('span', {}, h('b', {text: title}), h('span', {text: sub})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); }
 
-// ── 4단 지나온 길 — 1주 값 3개월 · 1년 · 3년(365곳 평균 점선) · 해마다 번 돈 · 몸값 ──
-const PERIODS = [['3m', '3개월', 64], ['1y', '1년', 253], ['3y', '3년', 757]];
+// ── 4단 지나온 길 — 1주 값 20거래일 · 1년 · 3년(365곳 평균 점선) · 해마다 번 돈 · 몸값 ──
+const PERIODS = [['20d', '20거래일', 21], ['1y', '1년', 253], ['3y', '3년', 757]];
 async function viewPast(v, code) {
   await needComp();
   const C = D.core, c = D.comp[code];
@@ -457,7 +459,7 @@ async function viewRange(v, code) {
   const more = h('details', {class: 'more'}, h('summary', {text: '확인할 것 — 어디서 · 언제'}), h('div', {class: 'in'}, h('ol', {},
     h('li', {}, '거래정지 · 관리종목 · 투자경고: ', h('a', {href: 'https://kind.krx.co.kr', rel: 'noopener', target: '_blank', text: 'KIND(한국거래소)'}), ' — ATLAS 는 아직 이 표시를 거르지 못합니다(?).'),
     h('li', {}, '3분기 실제 이익: ', h('a', {href: 'https://dart.fss.or.kr', rel: 'noopener', target: '_blank', text: 'DART(전자공시)'}), ' 분기보고서 — 11월 중순까지. 증권사 짐작과 견줘 보세요.'),
-    h('li', {}, '주식 수 바뀜(쪼개기 · 증자): DART 주요사항보고서 — 3개월 선이 하루 30% 넘게 튄 곳은 없었습니다.'),
+    h('li', {}, '주식 수 바뀜(쪼개기 · 증자): DART 주요사항보고서 — ', C.facts.jumpN ? `${C.days}거래일 선이 하루 30% 넘게 튄 곳 ${C.facts.jumpN}곳(? 확인 못 함).` : `${C.days}거래일 선이 하루 30% 넘게 튄 곳은 없었습니다.`),
     p.t27 ? h('li', {}, '2027 예산 국회 통과: ', h('a', {href: 'https://www.korea.kr', rel: 'noopener', target: '_blank', text: '정책브리핑'}), ' — 국회 의결 기한 12월 2일.') : null,
     p.t27 ? h('li', {text: '그 물건 수출: 산업통상부 「수출입 동향」 — 매달 1일.'}) : null)));
   v.append(more);
@@ -486,7 +488,7 @@ async function view36(v) {
   const ol = h('ol', {class: 'p36'});
   for (const p of K.picks) { const c = D.comp[p.code];
     ol.append(h('li', {}, h('a', {href: '#/c/' + p.code}, h('span', {class: 'no num', text: p.rank}), h('span', {class: 'nm', text: p.name}), h('b', {class: 'val num', text: '번 길 ' + r1(p.avg).toFixed(1) + '%'}),
-      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · 3개월 ${pct(c.chg3)}`})))); }
+      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · ${D.core.days}거래일 ${pct(c.chg)}`})))); }
   v.append(h('h2', {class: 'sec', text: `${K.picks.length}곳 — 번 길 많은 순`}), h('p', {text: `번 길 = ${S.horizon}거래일 뒤 사고팔 돈(0.3%)을 빼고도 남은 길의 몫 · 4방향 평균`}), ol);
   v.append(h('div', {class: 'alt'}, `${K.picks.length}곳을 1주씩이면 합계 `, h('b', {class: 'num', text: won(K.total)}), ` — ${md(K.asOf)} 종가로 셈 · 월요일 값은 다릅니다.`));
   v.append(h('details', {class: 'more'}, h('summary', {text: '어떻게 셌나요 — 돌리기 전에 정한 기준'}), h('div', {class: 'in'}, h('ul', {},
@@ -517,10 +519,10 @@ function btChart(host, rows) {
 function viewList(v) {
   const C = D.core;
   const multi = C.industries.filter(i => i.n > 1).sort((a, b) => b.chg - a.chg), single = C.industries.filter(i => i.n === 1).sort((a, b) => b.chg - a.chg);
-  v.append(h('h1', {class: 'head', text: `업종 ${C.industries.length}개 — 3개월 많이 오른 순`}), h('p', {class: 'count', text: `${md(C.base)} → ${md(C.asOf)} · 큰 갈래와 상관없이 업종만 줄 세웠습니다.`}));
+  v.append(h('h1', {class: 'head', text: `업종 ${C.industries.length}개 — ${C.days}거래일 많이 오른 순`}), h('p', {class: 'count', text: `${md(C.base)} → ${md(C.asOf)} · 큰 갈래와 상관없이 업종만 줄 세웠습니다.`}));
   const mk = (list, label) => { const host = h('div'); v.append(host); race(host, {items: list.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: gById(i.g).short})), parent: null, wide: true, label}); };
   v.append(h('h2', {class: 'sec', text: `회사 2곳 이상인 업종 ${multi.length}개`}));
-  mk(multi, `회사 2곳 이상 업종 ${multi.length}개 — 3개월 많이 오른 순`);
+  mk(multi, `회사 2곳 이상 업종 ${multi.length}개 — ${C.days}거래일 많이 오른 순`);
   v.append(h('h2', {class: 'sec', text: `회사 1곳뿐인 업종 ${single.length}개`}), h('p', {text: '업종 평균이 아니라 그 회사 하나의 값입니다.'}));
   mk(single, `회사 1곳뿐인 업종 ${single.length}개`);
   v.append(foot());
@@ -573,7 +575,7 @@ function renderHits() {
   for (const x of hits) {
     if (x.kind === 'g') ul.append(h('li', {}, h('a', {href: '#/g/' + x.g.id, 'data-go': '1'}, h('span', {class: 'nm', text: x.g.name}), pctEl(x.g.chg), h('span', {class: 'g2', text: `큰 갈래 · ${x.g.n}곳`}))));
     else if (x.kind === 'i') ul.append(h('li', {}, h('a', {href: hrefInd(x.i), 'data-go': '1'}, h('span', {class: 'nm', text: x.i.name}), pctEl(x.i.chg), h('span', {class: 'g2', text: `업종 · ${gById(x.i.g).short} · ${x.i.n}곳`}))));
-    else if (x.r.s === 'in') { const c = D.comp[x.r.c]; ul.append(h('li', {}, h('a', {href: '#/c/' + x.r.c, 'data-go': '1'}, h('span', {class: 'nm', text: x.r.n}), pctEl(c.chg3), h('span', {class: 'g2', text: `${c.i} · ${gById(c.g).short} · 3개월`})))); }
+    else if (x.r.s === 'in') { const c = D.comp[x.r.c]; ul.append(h('li', {}, h('a', {href: '#/c/' + x.r.c, 'data-go': '1'}, h('span', {class: 'nm', text: x.r.n}), pctEl(c.chg), h('span', {class: 'g2', text: `${c.i} · ${gById(c.g).short} · ${D.core.days}거래일`})))); }
     else ul.append(h('li', {class: 'out'}, h('a', {href: '#/x/' + x.r.c, 'data-go': '1'}, h('span', {class: 'nm', text: x.r.n}), h('span', {class: 'chip', text: '365곳 밖'}), h('span', {class: 'g2', text: x.r.w}))));
   }
 }
@@ -603,10 +605,10 @@ function showInfo(code) {
     return;
   }
   $('#infoTitle').textContent = 'ATLAS 는 어떻게 셌나요';
-  body.append(h('p', {text: `한국 우량주 365곳이 지난 3개월(${md(C.base)} → ${md(C.asOf)}) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 세 번 눌러 봅니다. 앞날 값은 내지 않습니다.`}));
+  body.append(h('p', {text: `한국 우량주 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 세 번 눌러 봅니다. 앞날 값은 내지 않습니다.`}));
   body.append(h('h2', {class: 'sec', text: '365곳은 이렇게 골랐습니다'}), funnel(null));
   body.append(h('details', {class: 'more'}, h('summary', {text: '기본 문 여섯 · 흐름 문 — 원문'}), h('div', {class: 'in'}, h('ul', {}, ...D.core.rules.gate.map(t => h('li', {text: t})), h('li', {text: '2026 흐름: ' + D.core.rules.t26}), h('li', {text: '2027 흐름: ' + D.core.rules.t27})))));
-  body.append(h('p', {class: 'note', text: `365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔습니다 — 그래서 3개월 선이 좋아 보이기 쉽습니다(3개월 가운데값: 그 ${F.t26n}곳 ${pct(F.t26med)} · 업종으로만 든 ${F.t27n}곳 ${pct(F.t27med)}).`}));
+  body.append(h('p', {class: 'note', text: `365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔습니다 — 그래서 선이 좋아 보이기 쉽습니다(${C.days}거래일 가운데값: 그 ${F.t26n}곳 ${pct(F.t26med)} · 업종으로만 든 ${F.t27n}곳 ${pct(F.t27med)}).`}));
   body.append(h('h2', {class: 'sec', text: '셈'}), h('ul', {class: 'note'},
     h('li', {text: `${md(C.base)} 종가 = 100. 「한 회사 한 표」 = 날마다 회사들의 오르내림을 같은 무게로 평균 내어 이어 곱함(하루 ±50% 넘는 값은 자료 오류로 뺌).`}),
     h('li', {text: `「큰 회사는 크게」 = ${md(C.base)}에 시가총액만큼 사 두었다고 보고 그대로 둔 값.`}),
@@ -614,7 +616,7 @@ function showInfo(code) {
   body.append(h('h2', {class: 'sec', text: '자료 · 때'}), h('ul', {class: 'note'}, h('li', {text: C.sources.price}), h('li', {text: C.sources.pick}), h('li', {text: C.sources.budget})));
   body.append(h('h2', {class: 'sec', text: '모르는 것 ?'}), h('ul', {class: 'note'},
     h('li', {text: '? 거래정지 · 관리종목 · 투자경고 표시 — 아직 거르지 못합니다.'}),
-    h('li', {text: `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.days - C.kPick}거래일뿐이라 아직 짧습니다.`}),
+    h('li', {text: `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.`}),
     h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. 짐작은 고른 까닭에만 쓰고 앞날 숫자로 보여 주지 않습니다.'})));
   const th = h('details', {class: 'more'}, h('summary', {text: '2027 흐름 업종 10가지 — 근거'}), h('div', {class: 'in'}, h('ul', {}, ...Object.entries(C.rules.themes).map(([t, ev]) => h('li', {text: `${t}: ${ev}`})))));
   body.append(th, foot());
