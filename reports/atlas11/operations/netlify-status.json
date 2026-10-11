@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-11T18:28:25.244Z",
+  "at": "2026-10-11T20:28:43.256Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-11T18:28:24.300Z",
+    "publishedAt": "2026-10-11T20:28:42.456Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-cb5c3015\",\"generatedAt\":\"2026-10-11T18:24:09.172Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-819676a1\",\"generatedAt\":\"2026-10-11T20:24:26.314Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T18:25:49Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T20:26:15Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -124,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-cb5c3015\",\"generatedAt\":\"2026-10-11T18:24:09.172Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-819676a1\",\"generatedAt\":\"2026-10-11T20:24:26.314Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
