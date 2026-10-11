@@ -274,7 +274,9 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
       same(x.lo, y.lo ?? null, `범위 lo ${c} ${k}년`); same(x.mid, y.mid ?? null, `범위 mid ${c} ${k}년`); same(x.hi, y.hi ?? null, `범위 hi ${c} ${k}년`); same(x.g, gr(y.lo, y.hi), `말 등급 ${c} ${k}년`);
       if (x.mid != null) { checks++; if (!(0 < x.lo && x.lo <= x.mid && x.mid <= x.hi)) bad.push({what: `범위 차례 ${c} ${k}년`, got: [x.lo, x.mid, x.hi]}); }
     }
-    sameJ(G.story.facts, st.research.facts || [], `근거 기사 ${c}`);
+    sameJ(G.story.facts.map(({chk, ...f}) => f), st.research.facts || [], `근거 기사 ${c}`); // chk = 따로 다시 확인 판정(7단 · 아래에서 기록과 맞댐)
+    if (G.ind.size === 'rev') same(G.ind.me, G.baseRev, `5단 이 회사 크기 = 바탕 매출 ${c}`); // 5단 막대 「이 회사」 줄
+    checks++; if (G.ind.rank != null && G.top.length && G.ind.me != null && G.ind.rank > G.top.length && G.ind.me > (G.top.at(-1)[1] ?? 0)) bad.push({what: `5단 이 회사 크기가 위 다섯보다 큼 ${c}`, got: G.ind.me});
     for (const f of G.story.facts) { checks++; if (!/^https?:\/\//.test(f.url || '')) bad.push({what: `근거 주소 ${c}`, got: f.url}); }
     const txt = JSON.stringify([Object.values(G.story.h).map(x => x.t), G.story.brk, G.story.teams, G.story.sells, G.story.why, G.story.market, G.story.events, G.story.unknown, G.story.rivals.map(r => [r.name, r.note, r.where]), G.story.facts.map(f => f.text)]);
     for (const w of BAN) { checks++; if (txt.includes(w)) bad.push({what: `성장 이야기 금지 말 「${w}」 ${c}`}); }
@@ -286,7 +288,22 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
     if (ck.length) { const rec = J(path.join(GDIR, ck.at(-1))), cnt = (arr, ks) => Object.fromEntries([['n', arr.length], ...ks.map(k => [k, arr.filter(x => x.verdict === k).length])]);
       sameJ(core.grow?.check?.facts, cnt(rec.facts.items, ['맞음', '일부만 맞음', '틀림', '못 엶']), '따로 다시 확인 사실 수'); sameJ(core.grow?.check?.rivals, cnt(rec.rivals.items, ['기사로 확인', '다른 일을 함', '확인 못 함']), '따로 다시 확인 경쟁 회사 수');
       same(core.grow?.check?.file, 'reports/atlas11/t365/grow/' + ck.at(-1), '따로 다시 확인 기록 파일');
+      // 7단(2026-10-12 CIA팀) — 회사마다 화면에 붙인 판정 = 기록(경쟁 회사는 기사 주소가 없던 것만 · 사실은 주소와 글이 같은 것만)
+      const RV = new Map(rec.rivals.items.map(x => [x.code + '|' + x.rival, x])), FV = new Map(rec.facts.items.map(x => [x.code + '|' + x.url + '|' + x.text, x.verdict]));
+      for (const c of Object.keys(comp)) { const S = J(path.join(dataDir, 'co', c + '.json')).grow?.story; if (!S) continue;
+        for (const r of S.rivals) { const x = !r.url ? RV.get(c + '|' + r.name) : null; sameJ(r.chk ?? null, x ? {v: x.verdict, url: x.url || null} : null, `경쟁 회사 따로 확인 판정 ${c} ${r.name}`); }
+        for (const f of S.facts) same(f.chk ?? null, FV.get(c + '|' + f.url + '|' + f.text) ?? null, `근거 기사 따로 확인 판정 ${c}`); }
     } else same(core.grow?.check ?? null, null, '따로 다시 확인 기록이 없는데 요약이 있음'); }
+  { // 치우침(6단 「다르게 보면」 · grow_bias.py screen()) — 노드로 지금 365곳에서 다시 셈: 10년 가운데의 가운데값 · 1년 가운데 × 2025년 매출 ÷ 올해 증권사 평균치의 가운데값
+    const med = a => { const x = [...a].sort((p, q) => p - q), n = x.length; return n ? (n % 2 ? x[(n - 1) / 2] : (x[n / 2 - 1] + x[n / 2]) / 2) : null; };
+    const m10 = [], rat = [];
+    for (const c of Object.keys(comp)) { const G = J(path.join(dataDir, 'co', c + '.json')).grow, S = G?.story; if (!S) continue;
+      if (S.h['10'].mid != null) m10.push(S.h['10'].mid);
+      const ek = G.years.findIndex(y => y.endsWith('E')), est = ek >= 0 ? G.rev[ek] : null;
+      if (S.h['1'].mid != null && est && G.baseRev) rat.push(S.h['1'].mid * G.baseRev / est); }
+    near(core.grow?.bias?.m10, med(m10) == null ? null : Math.round(med(m10) * 100) / 100, 0.0051, '6단 다르게 보면 — 10년 가운데의 가운데값'); same(core.grow?.bias?.n10, m10.length, '6단 다르게 보면 — 10년 가운데 있는 곳');
+    near(core.grow?.bias?.cons, med(rat) == null ? null : Math.round(med(rat) * 1000) / 1000, 0.00051, '6단 다르게 보면 — 증권사 견줌 가운데값'); same(core.grow?.bias?.consN, rat.length, '6단 다르게 보면 — 증권사 견줌 곳 수');
+  }
   if (GJ && core.grow) sameJ(core.grow.g10, Object.fromEntries(['아주 높다', '높다', '반반', '낮다', '아주 낮다'].map(g => [g, Object.values(GJ.companies).filter(x => x.g['10'] === g).length])), '첫 화면 10년 말 등급 수');
 }
 

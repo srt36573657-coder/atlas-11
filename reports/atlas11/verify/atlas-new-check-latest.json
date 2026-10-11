@@ -1,6 +1,6 @@
 {
  "schema": "atlas-new-check-1",
- "made": "2026-10-11T12:53:49.109Z",
+ "made": "2026-10-11T16:49:23.457Z",
  "base": "http://127.0.0.1:8899",
  "plans": [
   "360×640",
@@ -9,19 +9,28 @@
   "390×844",
   "900×900"
  ],
- "routes": 1513,
- "screens": 7587,
- "numbers": 93282,
+ "routes": 1878,
+ "screens": 9412,
+ "numbers": 123772,
  "click3": {
   "companies": 365,
   "over3": 0,
   "max": 3
  },
- "click5": {
-  "deepest": 5
+ "click7": {
+  "deepest": 7,
+  "steps": [
+   "갈래",
+   "업종",
+   "회사",
+   "지나온 길",
+   "누구와 다투나",
+   "앞으로 클까?",
+   "범위 · 확인"
+  ]
  },
  "friends": {
-  "shown": 45450,
+  "shown": 56400,
   "kinds": 11
  },
  "fails": 0,

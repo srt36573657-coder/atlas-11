@@ -6,7 +6,8 @@
 //     오류 0(보안 규칙 CSP 걸림 포함) · 옆 넘침 0 · 보이는 글씨 21px 이상 · 누르는 자리 44px 이상 · 금지 말 0 · 캔버스 · 3D 0 · 작은 네모 20개 이상(바둑판) 0
 //     글자 대비(2026-10-11 13:29 「고급스럽게 … 구글팀이라면」) — 보이는 글마다 글자색 ÷ 뒤 바탕(조상 바탕색 · 번짐 색 마디를 겹쳐 셈 · 경주판 줄은 막대 색까지)이
 //       보통 글 4.5 · 큰 글(24px 이상 · 굵은 18.66px 이상) 3 넘게(WCAG 2.2 1.4.3) · 못 가는 단(흐린 칸)은 빼고 셈
-//     숫자 = 자료(머리 % · 오름/내림 수 · 줄마다 % · 회사 세 숫자 · 1주 값 — 3단 회사 · 4단 처음과 끝) · 3번 누르면 회사 · 4번이면 4단 · 5번이면 5단(첫 화면에서 링크를 따라 가장 짧은 누름 수)
+//     숫자 = 자료(머리 % · 오름/내림 수 · 줄마다 % · 회사 세 숫자 · 1주 값 — 3단 회사 · 4단 처음과 끝) · 3번 누르면 회사 · n단은 n번 안(4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위 · 확인 — 첫 화면에서 링크를 따라 가장 짧은 누름 수)
+//   7단(사장님 2026-10-12 00:50 「지금 5단계 클릭이잖아 7단계로 한다」 · 네 팀): 「7단 중 n단」 · 옛 5단 글(「5단 중」 · 「사기 전에 볼 것」 · 3단 36곳 줄 · 3단 「4단 앞으로 클까?」)이 어느 화면에도 없음 · 접은 글(「자세히」)도 금지 말 · 기대 글을 봄(textContent)
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import path from 'node:path';
@@ -38,7 +39,7 @@ if (core.base !== W20[0] || core.days !== 20 || JSON.stringify(core.dates) !== J
 const trText = t => (t.d === 'up' ? '▲ ' : t.d === 'down' ? '▼ ' : '▶ ') + (t.s === 'strong' ? '강하게 ' : '') + {up: '오름', down: '내림', flat: '옆걸음'}[t.d] + (t.t === 'gain' ? ' · 힘 붙음' : t.t === 'fade' ? ' · 힘 빠짐' : '');
 const pct = x => { if (x == null) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; };
 
-const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/range`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), '#/info']; // grow = 4단 앞으로 클까?(사장님 16:51 회사 성장 이야기)
+const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
 
@@ -53,13 +54,21 @@ function expect(route) {
         `「${q.sector}」 · ${core.funnel.sectors}업종 가운데 대세 순서 ${q.srank}번째`, `업종 ${pct(q.schg)} · 이 회사 ${q.r30 == null ? '? 셈 못 함' : pct(q.r30)}`, `많이 오른 순 ${q.srank}번째`];
       if (q.part) why.push(`${q.inN}곳만 넣었습니다 — 이 회사는 ${q.prank}번째`);
       return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100', why}; }
-    if (sub === 'grow') { // 4단 앞으로 클까?(사장님 16:51) — 자료 파일(co/<번호>.json grow)에서 따로 만든 기대 글 · 범위 → 말 등급도 따로 셈
+    if (sub === 'rivals' || sub === 'grow') { // 5단 누구와 다투나 · 6단 앞으로 클까?(사장님 16:51 · 7단 2026-10-12) — 자료 파일(co/<번호>.json grow)에서 따로 만든 기대 글 · 범위 → 말 등급도 따로 셈
       const G = coOf(code).grow, S = G?.story, xm = m => (Math.round(m * 10 + 1e-9) / 10).toFixed(1) + '배';
-      if (!S) return {step: 4, title: `${c.name} — 앞으로 클까?`, why: ['? 세 팀 이야기는 아직입니다', `「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`]};
+      if (sub === 'rivals') {
+        const why = [`「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`];
+        if (!S) why.push('? 세 팀 이야기는 아직입니다'); else { why.push(S.shape, ...S.rivals.map(r => r.name)); for (const r of S.rivals) if (!r.url && r.chk) why.push(r.chk.v === '기사로 확인' && r.chk.url ? '따로 확인한 글' : `따로 찾아봄 · ${r.chk.v}`); }
+        if (!G.top.some(t => t[2] === code) && G.ind.me != null) why.push(`${c.name}(${G.ind.rank ?? '?'}번째)`); // 막대 위 다섯 밖이면 「이 회사」 줄을 더함
+        return {step: 5, title: `${c.name} — 누구와 다투나?`, why};
+      }
+      if (!S) return {step: 6, title: `${c.name} — 앞으로 클까?`, why: ['? 세 팀 이야기는 아직입니다']};
       const gr = (lo, hi) => { if (lo == null || hi == null) return null; const f = lo >= 1 ? 1 : hi <= 1 ? 0 : Math.log(hi) / (Math.log(hi) - Math.log(lo)); return f >= 0.9 ? '아주 높다' : f >= 0.65 ? '높다' : f >= 0.35 ? '반반' : f >= 0.1 ? '낮다' : '아주 낮다'; };
-      const why = [S.shape, `근거 기사 ${S.facts.length}개`, `「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`];
+      const why = [`근거 기사 ${S.facts.length}개`];
       for (const k of ['1', '3', '5', '10']) { const x = S.h[k]; if (x.mid == null) { why.push('? 자료 모자람'); continue; } why.push(`${xm(x.mid)}쯤`, `(${xm(x.lo)} ~ ${xm(x.hi)})`); const g = gr(x.lo, x.hi); if (g !== x.g) fail(route, `말 등급이 범위와 다름 ${k}년 ${x.g} ≠ ${g}`); why.push(g); }
-      return {step: 4, title: `${c.name} — 앞으로 클까?`, why};
+      const BI = core.grow?.bias; if (BI) why.push(`365곳 10년 뒤 가운데 ${xm(BI.m10)}쯤`, `= ${BI.cons.toFixed(2)}배 · ${BI.consN}곳 가운데값`);
+      for (const f of S.facts) if (f.chk) why.push(`따로 다시 확인: ${f.chk}`);
+      return {step: 6, title: `${c.name} — 앞으로 클까?`, why};
     }
     if (sub === 'past') { // 4단 — 처음 보기 1년(253거래일) · 자료 파일에서 따로 셈
       const co = coOf(code), n = days.dates.length, from = Math.max(co.k0, n - 253), cl = co.close.slice(from - co.k0).filter(x => x != null);
@@ -68,7 +77,8 @@ function expect(route) {
       return {step: 4, trio: [pct((last / base - 1) * 100), pct(m * 100), pct((last / peak - 1) * 100)], price: [wn(base), wn(last)]}; // 처음 · 끝 1주 값
     }
     const k = pick.companies[code];
-    return {step: 5, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖'};
+    return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖',
+      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인']};
   }
   if (!kind) { const T = core.time; return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, trd: core.groups.map(g => trText(g.tr)),
     why: T ? ['3년 전', ymd(T.past.from), won100(T.past.mult365), won100(T.past.multPool), `지금 · 봉인 ${T.id}호`, ...T.opens.flatMap(o => [`${o.y}년 뒤`, ymd(o.date), ddayText(o.date)]), `${T.past.n365}곳 중 ${T.past.half}곳`, `봉인 번호 ${T.digest}`] : []}; }
@@ -181,7 +191,8 @@ for (const [w, hgt, font] of plans) {
       }
       for (const a of scope.querySelectorAll('a[href], button')) { if (!vis(a)) continue; const bb = a.getBoundingClientRect(); if (bb.height < 43.5 || bb.width < 43.5) res.taps.push((a.textContent.trim() || a.getAttribute('aria-label') || a.tagName).slice(0, 20) + ` ${Math.round(bb.width)}×${Math.round(bb.height)}`); }
       const text = scope.innerText; res.text = text;
-      for (const w of banned) if (text.includes(w)) res.banned.push(w);
+      { const tw = document.createTreeWalker(sheet || document.querySelector('#view'), NodeFilter.SHOW_TEXT), parts = []; for (let n = tw.nextNode(); n; n = tw.nextNode()) parts.push(n.textContent); res.all = parts.join('\n'); } // 접은 「자세히」 속 글까지(7단) — 글 마디마다 끊어 붙임(옆 칸 글이 이어 붙어 없는 말이 생기지 않게 · 예: 「조사」+「라온…」)
+      for (const w of banned) if (text.includes(w) || res.all.includes(w)) res.banned.push(w);
       res.links = [...document.querySelectorAll('#view a[href^="#/"], .tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
       res.head = document.querySelector('#view h1')?.textContent ?? '';
       res.count = document.querySelector('#view .count')?.textContent ?? '';
@@ -215,10 +226,12 @@ for (const [w, hgt, font] of plans) {
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
     if (e.title) { numbers++; if (!r.head.includes(e.title)) fail(tag, `머리 ${r.head} ≠ ${e.title}`); }
     if (e.axis) { numbers++; if (!r.text.includes(e.axis)) fail(tag, `그림 아래 「${e.axis}」 없음`); }
-    if (!route.endsWith('/grow')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old)) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 4단 앞으로 클까?는 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
+    if (!route.endsWith('/grow') && !route.endsWith('/rivals')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old)) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 5단 · 6단은 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
-    if (e.step) { numbers++; if (r.step !== `5단 중 ${e.step}단`) fail(tag, `5단 표시 ${r.step} ≠ ${e.step}단`); }
+    if (e.step) { numbers++; if (r.step !== `7단 중 ${e.step}단`) fail(tag, `7단 표시 ${r.step} ≠ ${e.step}단`); }
+    for (const old of ['5단 중', '5단으로 내려갑니다', '사기 전에 볼 것', '4단 앞으로 클까?', '5단 범위']) if (r.all.includes(old) || r.text.includes(old)) fail(tag, `옛 5단 글 「${old}」이 남음`);
+    if (e.step === 3 && (r.all.includes('매수 검토 36곳 가운데') || r.all.includes('봉인 1호에 든 회사'))) fail(tag, '3단에 36곳 · 봉인 줄이 남음(7단으로 옮김)');
     if (e.trd) { numbers += e.trd.length; if (JSON.stringify(r.trd) !== JSON.stringify(e.trd)) fail(tag, `방향 · 세기 줄 ${JSON.stringify(r.trd).slice(0, 120)} ≠ ${JSON.stringify(e.trd).slice(0, 120)}`); }
     if (r.trdCut?.length) fail(tag, '방향 · 세기 줄이 잘림: ' + r.trdCut.slice(0, 2).join(' · '));
     if (e.trh) { numbers++; if (r.trh !== e.trh) fail(tag, `머리 밑 방향 ${r.trh} ≠ ${e.trh}`); }
@@ -226,7 +239,7 @@ for (const [w, hgt, font] of plans) {
     if (route === '#/') { numbers++; if (r.hello !== '/hello.html') fail(tag, '첫 화면 맨 위 「친구에게 소개하기」 없음(규칙 45)'); }
     if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/old/', '/us/'])) fail(tag, '맨 아래 길(소개 · 옛 ATLAS · 미국 판) 다름'); }
     if (e.p36) { numbers += e.p36.length + 2; if (JSON.stringify(r.p36) !== JSON.stringify(e.p36)) fail(tag, '36곳 줄 다름'); if (e.test && !r.text.includes(e.test)) fail(tag, '지난 기록 시험 글 다름'); if (!r.text.includes(e.total)) fail(tag, '1주씩 합계 다름'); }
-    for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want)) fail(tag, `글 「${want}」 없음`); }
+    for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
     if (route === '#/' && w === 390 && font === 0) {
       await p.evaluate(() => [...document.querySelectorAll('#view .seg button')][1].click()); await p.waitForTimeout(900);
@@ -275,9 +288,9 @@ await b.close();
 const depth = new Map([['#/', 0]]), q = ['#/'];
 while (q.length) { const r = q.shift(); for (const l of links.get(r) ?? []) { const n = l === '#/' ? '#/' : l; if (!depth.has(n)) { depth.set(n, depth.get(r) + 1); if (links.has(n)) q.push(n); } } }
 let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); }
-  const d4 = depth.get(`#/c/${c}/past`), d5 = depth.get(`#/c/${c}/range`), dg = depth.get(`#/c/${c}/grow`); if (d4 == null || d4 > 4) fail('4단', `${comp[c].name} ${d4 ?? '닿지 않음'}`); if (dg == null || dg > 4) fail('4단 앞으로 클까?', `${comp[c].name} ${dg ?? '닿지 않음'}`); if (d5 == null || d5 > 5) fail('5단', `${comp[c].name} ${d5 ?? '닿지 않음'}`); }
-const max5 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
-const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click5: {deepest: max5}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
+  for (const [sub, n, nm] of [['past', 4, '4단 지나온 길'], ['rivals', 5, '5단 누구와 다투나'], ['grow', 6, '6단 앞으로 클까?'], ['range', 7, '7단 범위 · 확인']]) { const dn = depth.get(`#/c/${c}/${sub}`); if (dn == null || dn > n) fail(nm, `${comp[c].name} ${dn ?? '닿지 않음'}`); } }
+const max7 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
+const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click7: {deepest: max7, steps: ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인']}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({screens, numbers, fails: fails.length, click3: res.click3, first: fails.slice(0, 8)}));
 process.exit(fails.length ? 1 : 0);

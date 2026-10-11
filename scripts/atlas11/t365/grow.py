@@ -96,7 +96,7 @@ def build(now, names, comp, bundle, ind_of):
             'cap': c.get('cap'), 'per': c.get('per'),
             'fin': {'periods': periods, 'rev': series(fin, 'rev'), 'op': series(fin, 'op'), 'net': series(fin, 'net'),
                     'debt': series(fin, 'debt'), 'roe': series(fin, 'roe')},
-            'ind': {'name': c['i'], 'n': len(peers), 'rank': rank, 'size': kind,
+            'ind': {'name': c['i'], 'n': len(peers), 'rank': rank, 'size': kind, 'me': me,  # me = 이 회사 크기(5단 막대 「이 회사」 줄 · 2026-10-12)
                     'share': round(me / tot * 100, 1) if me and tot else None, 'near': near, 'gap12': gap12, 'top': top},
             'naver': naver_peers(bundle, code),
         }
@@ -143,7 +143,7 @@ def site_entry(b, st_):
     by = act[-1] if act else None
     base = f['rev'][by] if by is not None else None
     e = {'years': yrs, 'rev': f['rev'], 'baseYear': yrs[by] if by is not None else None, 'baseRev': base,
-         'ind': {k: b['ind'][k] for k in ('name', 'n', 'rank', 'share', 'near', 'gap12')}, 'top': [[t['n'], t['v'], t['c']] for t in b['ind']['top']],
+         'ind': {k: b['ind'][k] for k in ('name', 'n', 'rank', 'share', 'near', 'gap12', 'size', 'me')}, 'top': [[t['n'], t['v'], t['c']] for t in b['ind']['top']],
          'story': None}
     if st_:
         j, r = st_['judge'], st_['research']
