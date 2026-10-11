@@ -23,3 +23,6 @@ reports/prediction-candidate/*
 !reports/rolling/
 reports/rolling/*
 !reports/rolling/versions/
+# 파이썬이 저절로 만드는 캐시 — 커밋하지 않음(2026-10-11 끝 검사에서 걸림)
+__pycache__/
+*.pyc
