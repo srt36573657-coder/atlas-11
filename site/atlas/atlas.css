@@ -410,3 +410,28 @@ ol.opens .dd { font-size: 1.2rem; }
 .capin { margin: 10px 0 0; padding: 10px 14px; border-radius: 16px; border: 1px solid var(--gold-line); background: var(--gold-wash); }
 .capin a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
 main.view:focus { outline: none; } /* 화면이 바뀌면 읽기 초점을 새 화면으로(구글팀 · 애플팀 — 화면 읽기가 새 제목부터) */
+
+/* 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 … 공주님은 절대 넣지 말고 곳곳에 잘어울리게」)
+   판판한 작은 그림(atlas.js MO) — 숫자 · 회사 · 그림(차트) · 조심 상자 옆에는 두지 않음 · 움직임은 위치 · 투명도만 · 움직임 줄이기면 멈춤 */
+.mo { display: inline-block; vertical-align: -0.25em; flex: 0 0 auto; overflow: visible; }
+.when .mo { margin-left: 8px; }
+.when .nw { white-space: nowrap; }
+.hello { position: relative; }
+.hello-mo { position: absolute; right: 24px; top: -15px; display: inline-flex; align-items: flex-start; gap: 0; pointer-events: none; }
+.hello-mo .mo-heart { margin: 2px 0 0 -6px; animation: mo-float 3.2s ease-in-out infinite; }
+ol.opens li .mo { align-self: center; }
+.mo-catsleep { display: block; margin: 10px auto 0; }
+.mo-catsleep .zz { animation: mo-twinkle 2.8s ease-in-out infinite; }
+.note.nx { display: flex; align-items: flex-start; gap: 8px; }
+.note.nx .mo-parrot { margin: -6px 2px 0 0; }
+.boot .mo-cat { vertical-align: -0.4em; margin-right: 6px; animation: mo-float 1.6s ease-in-out infinite; }
+.foot { border-top: 0; padding-top: 0; }
+.foot-mo { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 4px; margin: 0 0 14px; border-bottom: 1px solid var(--hair); }
+.foot-mo span { display: inline-flex; align-items: flex-end; gap: 6px; }
+.foot-mo .mo-butterfly { margin-bottom: 12px; animation: mo-float 3.6s ease-in-out infinite; }
+#infoSheet .sheet-top .mo-rainbow { margin-right: 4px; }
+.mo-star { animation: mo-twinkle 2.6s ease-in-out infinite; }
+.mo-whale { animation: mo-float 4.5s ease-in-out infinite; }
+@keyframes mo-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes mo-twinkle { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .mo, .mo * { animation: none !important; } }

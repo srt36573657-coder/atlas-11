@@ -77,6 +77,7 @@ function expect(route) {
 
 const b = await chromium.launch(exe ? {executablePath: exe} : {});
 const plans = [[360, 640, 0], [360, 640, 1], [360, 640, 2], [390, 844, 0], [900, 900, 0]];
+let moTotal = 0; // 영상 친구 그림 수(화면 × 판 합)
 const links = new Map(); // 길 → 그 화면에서 누를 수 있는 길(3번 누름 셈)
 for (const [w, hgt, font] of plans) {
   const ctx = await b.newContext({viewport: {width: w, height: hgt}, reducedMotion: 'reduce'});
@@ -137,6 +138,39 @@ for (const [w, hgt, font] of plans) {
         const bb = e.getBoundingClientRect();
         if (bb.width >= 8 && bb.width <= 44 && Math.abs(bb.width - bb.height) <= 2 && !e.closest('svg')) res.squares++;
       }
+      // 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 … 공주님은 절대 넣지 말고 곳곳에 잘어울리게」) — 꾸밈 그림 지킴:
+      //  정해 둔 11가지만(사람 · 공주님 그림 없음 — 사진은 소개 띠 한 장뿐) · 화면 읽기에서 숨김 · 자료 칸 안에 없음 · 글자를 덮지 않음 ·
+      //  숫자 · 그림(차트) · ? 와 10px 넘게 떨어짐 · 빨강 · 파랑(오름 · 내림 색)과 색상 25° 안의 진한 색 없음(규칙 53)
+      res.mo = []; res.moN = 0;
+      const MO_OK = new Set(['heart', 'star', 'moon', 'daisy', 'tulip', 'cat', 'catsleep', 'parrot', 'rainbow', 'whale', 'butterfly']);
+      const ZONE = '.board, .row, .trio, .lc, .tc, .upchart, ol.p36, .munger, .test, .bt, ul.dirbars, ol.funnel, .key, .lkey, .track, .num, .q, .chip, .box, .digest, .srank, .tell, .trh, .seg, ol.steps, .co-head, .crumb, .badge';
+      for (const im of scope.querySelectorAll('img')) if (vis(im) && !im.closest('a.hello')) res.mo.push('사진 ' + (im.getAttribute('src') || '').slice(-24));
+      const okl = hx => { const v = (hx || '').trim().replace('#', ''); if (!/^[0-9a-f]{6}$/i.test(v)) return null; const f = c => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; const [R, G, B] = [0, 2, 4].map(i => f(parseInt(v.slice(i, i + 2), 16)));
+        const l = Math.cbrt(0.4122214708 * R + 0.5363325363 * G + 0.0514459929 * B), m = Math.cbrt(0.2119034982 * R + 0.6806995451 * G + 0.1073969566 * B), q = Math.cbrt(0.0883024619 * R + 0.2817188376 * G + 0.6299787005 * B);
+        const A = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * q, Bb = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * q; return {h: (Math.atan2(Bb, A) * 180 / Math.PI + 360) % 360, c: Math.hypot(A, Bb)}; };
+      const rootS = getComputedStyle(document.documentElement), sig = ['--up', '--down', '--up-ink', '--down-ink'].map(k => okl(rootS.getPropertyValue(k))).filter(Boolean);
+      if (sig.length < 4) res.mo.push('오름 · 내림 색 이름을 못 읽음');
+      const hueGap = (a, b2) => { const d = Math.abs(a - b2) % 360; return d > 180 ? 360 - d : d; };
+      const gapOf = (a, b2) => Math.hypot(Math.max(0, b2.left - a.right, a.left - b2.right), Math.max(0, b2.top - a.bottom, a.top - b2.bottom));
+      const shut = el => { const d = el.closest('details:not([open])'); return !!d && !el.closest('summary'); }; // 닫힌 「자세히」 속 글은 그려지지 않음(크롬은 자리만 셈)
+      const bar = el => !!el.closest('nav.tabbar, header.band'); // 위 · 아래 고정 막대 — 스크롤 따라 덮고 지나감(겹침 아님)
+      const mos = [...scope.querySelectorAll('svg.mo')].filter(m => vis(m) && !shut(m));
+      if (mos.length) {
+        const near = [...scope.querySelectorAll('.num, .q, svg:not(.mo)')].filter(x => !x.closest('svg.mo') && vis(x) && !shut(x) && !bar(x)).map(x => [x, x.getBoundingClientRect()]);
+        const texts = []; const tw = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+        for (let n = tw.nextNode(); n; n = tw.nextNode()) { const pe = n.parentElement; if (!n.textContent.trim() || !pe || pe.closest('svg') || !vis(pe) || shut(pe) || bar(pe)) continue; const rg = document.createRange(); rg.selectNodeContents(n); for (const q of rg.getClientRects()) if (q.width > 0 && q.height > 0) texts.push([q, n.textContent.trim().slice(0, 10)]); }
+        for (const m of mos) {
+          res.moN++;
+          const nm = [...m.classList].find(c => c.startsWith('mo-'))?.slice(3) ?? '?';
+          if (!MO_OK.has(nm)) res.mo.push('정해 둔 친구가 아님 ' + nm);
+          if (!m.closest('[aria-hidden="true"]')) res.mo.push(nm + ' 화면 읽기에 보임');
+          const z = m.parentElement?.closest(ZONE); if (z) res.mo.push(`${nm} 자료 칸 안 .${String(z.className?.baseVal ?? z.className).split(' ')[0]}`);
+          const mb = m.getBoundingClientRect(), ib = {left: mb.left + 1, right: mb.right - 1, top: mb.top + 1, bottom: mb.bottom - 1};
+          const hit = texts.find(([q]) => q.left < ib.right && q.right > ib.left && q.top < ib.bottom && q.bottom > ib.top); if (hit) res.mo.push(`${nm} 글자를 덮음 「${hit[1]}」`);
+          const nb = near.find(([x, q]) => gapOf(mb, q) < 10); if (nb) res.mo.push(`${nm} 숫자 · 그림 · ? 와 ${gapOf(mb, nb[1]).toFixed(0)}px 「${(nb[0].textContent || nb[0].tagName).trim().slice(0, 10)}」`);
+          for (const el of m.querySelectorAll('[fill], [stroke]')) for (const at of ['fill', 'stroke']) { const L = okl(el.getAttribute(at)); if (L && L.c >= 0.05 && sig.some(g => hueGap(L.h, g.h) < 25)) res.mo.push(`${nm} 오름 · 내림 색 근처 ${el.getAttribute(at)}`); }
+        }
+      }
       for (const a of scope.querySelectorAll('a[href], button')) { if (!vis(a)) continue; const bb = a.getBoundingClientRect(); if (bb.height < 43.5 || bb.width < 43.5) res.taps.push((a.textContent.trim() || a.getAttribute('aria-label') || a.tagName).slice(0, 20) + ` ${Math.round(bb.width)}×${Math.round(bb.height)}`); }
       const text = scope.innerText; res.text = text;
       for (const w of banned) if (text.includes(w)) res.banned.push(w);
@@ -165,6 +199,9 @@ for (const [w, hgt, font] of plans) {
     if (r.banned.length) fail(tag, '금지 말: ' + r.banned.join(' · '));
     if (r.canvas || r.d3) fail(tag, `입체 · 캔버스 ${r.canvas + r.d3}`);
     if (r.squares >= 20) fail(tag, `작은 네모 ${r.squares}개(바둑판)`);
+    if (r.mo.length) fail(tag, '영상 친구 자리: ' + [...new Set(r.mo)].slice(0, 3).join(' · '));
+    if (r.moN < 1) fail(tag, '영상 친구가 하나도 없음(맨 아래 꽃밭 · 도움말 무지개가 빠짐)');
+    moTotal += r.moN;
     if (font === 0 && w === 390) links.set(route, r.links);
     const e = expect(route);
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
@@ -232,7 +269,7 @@ while (q.length) { const r = q.shift(); for (const l of links.get(r) ?? []) { co
 let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); }
   const d4 = depth.get(`#/c/${c}/past`), d5 = depth.get(`#/c/${c}/range`); if (d4 == null || d4 > 4) fail('4단', `${comp[c].name} ${d4 ?? '닿지 않음'}`); if (d5 == null || d5 > 5) fail('5단', `${comp[c].name} ${d5 ?? '닿지 않음'}`); }
 const max5 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
-const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click5: {deepest: max5}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
+const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click5: {deepest: max5}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({screens, numbers, fails: fails.length, click3: res.click3, first: fails.slice(0, 8)}));
 process.exit(fails.length ? 1 : 0);

@@ -1,6 +1,6 @@
 {
  "schema": "atlas-new-check-1",
- "made": "2026-10-11T06:49:56.334Z",
+ "made": "2026-10-11T08:01:47.530Z",
  "base": "http://127.0.0.1:8899",
  "plans": [
   "360×640",
@@ -19,6 +19,10 @@
  },
  "click5": {
   "deepest": 5
+ },
+ "friends": {
+  "shown": 34500,
+  "kinds": 11
  },
  "fails": 0,
  "kinds": [],

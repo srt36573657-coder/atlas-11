@@ -27,7 +27,7 @@ const won = v => (v == null ? '?' : Math.round(v).toLocaleString('ko-KR') + '원
 function fy(p) { if (!p) return '?'; const [y, m] = p.replace('E', '').split('.'); return y + '년' + (m && m !== '12' ? '(' + (+m) + '월 결산)' : ''); }
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 function h(tag, attrs = {}, ...kids) { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (v == null || v === false) continue; if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v === true ? '' : v); } for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k)); return e; }
-function sv(tag, attrs = {}) { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; }
+function sv(tag, attrs = {}) { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v); return e; }
 const pctEl = (x, tag = 'b') => h(tag, {class: 'num ' + cls(x), text: pct(x)});
 /** 두 값이 한 자리로 같아 보이면 둘째 자리까지(+3.46% · +3.54% — 「같은데 못했다」로 헷갈리지 않게) */
 const pct2El = (x, y) => { if (x == null || y == null || pct(x) !== pct(y) || Math.abs(x) >= 100) return pctEl(x); const v = Math.round(x * 100) / 100; return h('b', {class: 'num ' + cls(x), text: (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%'}); };
@@ -176,7 +176,7 @@ function lineChart(host, {v, avg, label}) {
 // ── 공통 조각 ──
 function foot() {
   const C = D.core;
-  return h('footer', {class: 'foot'},
+  return h('footer', {class: 'foot'}, footFriends(),
     h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/old/', text: '옛 ATLAS'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources.price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · 365곳은 ${md(C.pickAsOf)} 종가까지 보고 고름.`}),
     C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
@@ -251,7 +251,8 @@ function viewHome(v) {
   }
   words(state.mode);
   const host = h('div');
-  const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello.jpg', alt: '', width: 44, height: 44, decoding: 'async'}), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+  const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello.jpg', alt: '', width: 44, height: 44, decoding: 'async'}), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})),
+    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
   v.append(hello, tell.el, head, count, host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
@@ -585,7 +586,7 @@ async function viewUpdates(v) {
     h('p', {class: 'count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
   v.append(h('p', {class: 'note', text: '회차마다 그날까지 값으로 365곳을 다시 고릅니다(뽑는 규칙은 그대로). 기준일은 늘 고른 날의 20거래일 전입니다. 기록은 지우지 않습니다.'}));
   { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
-    v.append(h('p', {class: 'note'}, '다음 회차 ', h('b', {class: 'num', text: nx}), `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 365곳과 봉인 뒤 값을 그때 다시 셉니다.`)); }
+    v.append(h('p', {class: 'note nx'}, MO.parrot(34), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}), `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 365곳과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 앵무새 막비가 다음 회차를 알림 — 글은 한 덩어리로 옆에서 흐름
   const host = h('div', {class: 'upchart'}); v.append(host); upChart(host, R.slice(0, 28).reverse());
   v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-in'}), '새로 든 곳'), h('span', {}, h('i', {class: 'l-out'}), '빠진 곳'), h('span', {text: '막대 하나 = 회차 하나 · 오른쪽이 최근'})));
   const ol = h('ol', {class: 'uplist'});
@@ -625,6 +626,48 @@ function upChart(host, rows) {
   else if (rows.length) host.append(h('div', {class: 'ax'}, h('span', {}), h('span', {text: kstLabel(rows[0].kst)})));
 }
 
+// ── 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 이런것들 있잖아 공주님은 절대 넣지 말고 곳곳에 잘어울리게 먼저 배치해봐 구글팀 클로드팀 애플팀이라면 어떻게 배치할것인지 기획한다음 해」) ──
+//   소개 영상(공주님 1분 영상)의 친구들을 판판한 작은 그림으로 — 주황 아기 고양이 · 하얀 고양이 · 앵무새 막비(갈라 — 분홍 몸 · 회색 날개) · 무지개 · 웃는 달 · 별 · 우주 고래 · 꽃 · 하트 · 나비
+//   공주님은 그리지 않음 · 그림 파일 없이 코드로(가벼움) · 모두 화면 읽기에서 숨김(aria-hidden) · 입체 · 그림자 · 빛 없음(규칙 50) · 빨강 · 파랑은 쓰지 않음(규칙 53 — 오름 · 내림 색과 헷갈리지 않게)
+//   클로드팀: 숫자 · 회사 · 그림(차트) · 조심 상자 옆에는 두지 않음(「좋다」로 읽히지 않게 — site_check 「꾸밈 자리」가 잼) · 애플팀: 뜻 있는 자리에 작게 · 구글팀: 한 벌(같은 색 · 같은 굵기)
+const MOC = {pink: '#F2A7D6', galah: '#EFA6D2', crest: '#F9D6E4', lav: '#C9B6F2', lavD: '#A893E0', yellow: '#F6D97A', yellowD: '#8A6A2A', white: '#F6F3FF', whiteL: '#CFC6EE',
+  orange: '#F2A65A', orangeD: '#C9761F', grey: '#ABA8BE', mint: '#9EDDB4', peach: '#F9C48F', whale: '#B4A4EE', whaleL: '#DCD3FA', whaleD: '#9887DD', eye: '#3A2F5A', cheek: '#F6BCDD', beak: '#EDE7F2'};
+// 색 — 빨강 · 파랑은 오름 · 내림에만(규칙 53): 분홍은 자홍 쪽(OKLab 색상 340°대) · 고래는 연보라 · 무지개에 파랑 띠 없음 — site_check 「영상 친구」가 색상 25° 안을 잼
+function moSvg(name, w, hgt, vb, ...kids) { const s = sv('svg', {class: 'mo mo-' + name, viewBox: vb, width: w, height: hgt, 'aria-hidden': 'true', focusable: 'false'}); s.append(...kids.flat().filter(Boolean)); return s; }
+const moLine = (d, color, wd = 2) => sv('path', {d, fill: 'none', stroke: color, 'stroke-width': wd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'});
+const starD = (cx, cy, R, r) => { let d = ''; for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, q = k % 2 ? r : R; d += (k ? 'L' : 'M') + (cx + q * Math.cos(a)).toFixed(1) + ' ' + (cy + q * Math.sin(a)).toFixed(1); } return d + 'Z'; };
+const MO = {
+  heart: (z = 18) => moSvg('heart', z, z, '0 0 48 48', sv('path', {d: 'M24 41C10 31 4 23 4 15.5 4 9.5 8.8 5 14.5 5c4 0 7.5 2.2 9.5 5.5C26 7.2 29.5 5 33.5 5 39.2 5 44 9.5 44 15.5 44 23 38 31 24 41Z', fill: MOC.pink})),
+  star: (z = 22) => moSvg('star', z, z, '0 0 48 48', sv('path', {d: starD(24, 25, 19, 8.5), fill: MOC.yellow, stroke: MOC.yellow, 'stroke-width': 4, 'stroke-linejoin': 'round'})),
+  moon: (z = 24) => moSvg('moon', z, z, '0 0 48 48', sv('circle', {cx: 24, cy: 24, r: 19, fill: MOC.yellow}), moLine('M15.5 22.5q2.8 2.6 5.6 0', MOC.yellowD, 2.2), moLine('M26.9 22.5q2.8 2.6 5.6 0', MOC.yellowD, 2.2),
+    moLine('M20 29.5q4 3.4 8 0', MOC.yellowD, 2), sv('circle', {cx: 14, cy: 27.5, r: 2.6, fill: MOC.cheek}), sv('circle', {cx: 34, cy: 27.5, r: 2.6, fill: MOC.cheek})),
+  daisy: (z = 22) => moSvg('daisy', z, z, '0 0 48 48', [0, 45, 90, 135, 180, 225, 270, 315].map(a => sv('ellipse', {cx: 24, cy: 11.5, rx: 5.4, ry: 9.5, fill: MOC.white, transform: `rotate(${a} 24 24)`})), sv('circle', {cx: 24, cy: 24, r: 6.8, fill: MOC.yellow})),
+  tulip: (z = 24) => moSvg('tulip', z * 0.75, z, '0 0 36 48', moLine('M18 46V24', MOC.mint, 3), sv('path', {d: 'M18 38q-8-2-10-10 8 1 10 8Z', fill: MOC.mint}), sv('path', {d: 'M8 10q2 15 10 15t10-15l-5 4-5-7-5 7Z', fill: MOC.galah})),
+  cat: (kind = 'orange', z = 40) => { const b = kind === 'orange' ? MOC.orange : MOC.white, line = kind === 'orange' ? null : MOC.whiteL;
+    return moSvg('cat', z * 0.85, z, '0 0 40 47', moLine('M30 41q9-2 7-12-1-4-4-3', b, 4.5), sv('ellipse', {cx: 20, cy: 35, rx: 12, ry: 10.5, fill: b, stroke: line, 'stroke-width': line ? 1.2 : 0}),
+      sv('path', {d: 'M9.5 13 12 2l7 7.5ZM20.5 9.5 28 2l2.5 11Z', fill: b, stroke: line, 'stroke-width': line ? 1.2 : 0, 'stroke-linejoin': 'round'}), sv('circle', {cx: 20, cy: 19, r: 11, fill: b, stroke: line, 'stroke-width': line ? 1.2 : 0}),
+      sv('path', {d: 'M12.6 9.6 13.6 5l3 3.4ZM23.4 8.4 26.4 5l1 4.6Z', fill: MOC.cheek}), moLine('M14 19.5q2-2.4 4 0', MOC.eye, 1.8), moLine('M22 19.5q2-2.4 4 0', MOC.eye, 1.8),
+      sv('path', {d: 'M19 22.4h2l-1 1.3Z', fill: MOC.cheek}), moLine('M18.3 24.6q1.7 1.3 3.4 0', MOC.eye, 1.3),
+      kind === 'orange' ? [moLine('M16 10.6l1 3', MOC.orangeD, 1.7), moLine('M20 9.6v3.4', MOC.orangeD, 1.7), moLine('M24 10.6l-1 3', MOC.orangeD, 1.7), moLine('M13 33q3 1 5 0', MOC.orangeD, 1.6)] : moLine('M12.5 28.5q7.5 4 15 0', MOC.galah, 2.2)); },
+  catSleep: (z = 64) => moSvg('catsleep', z, z * 0.56, '0 0 64 36', moLine('M53 27q7 6-6 8-17 2-30-2', MOC.orange, 5), sv('ellipse', {cx: 35, cy: 24, rx: 21, ry: 10.5, fill: MOC.orange}),
+    sv('path', {d: 'M8 17 9 7l7 6ZM18 13l6-6 1 10Z', fill: MOC.orange, 'stroke-linejoin': 'round'}), sv('circle', {cx: 16, cy: 22, r: 10, fill: MOC.orange}),
+    moLine('M10.5 22.5q2 1.6 4 0', MOC.eye, 1.6), moLine('M17.5 22.5q2 1.6 4 0', MOC.eye, 1.6), moLine('M31 15q2 4 0 8', MOC.orangeD, 2), moLine('M39 14.5q2 4 0 8', MOC.orangeD, 2), moLine('M47 16q2 3.6 0 7', MOC.orangeD, 2),
+    sv('g', {class: 'zz'}, moLine('M27 3h4l-4 4.5h4', MOC.lav, 1.5), moLine('M33.5 1h3l-3 3.4h3', MOC.lav, 1.3))),
+  parrot: (z = 34) => moSvg('parrot', z * 0.83, z, '0 0 40 48', sv('path', {d: 'M19 38 15 47l8-5Z', fill: MOC.grey}), sv('ellipse', {cx: 21, cy: 28, rx: 10, ry: 13, fill: MOC.galah}),
+    sv('path', {d: 'M24 19q10 6 6 20-4 4-10 2 4-10 4-22Z', fill: MOC.grey}), sv('circle', {cx: 18, cy: 14, r: 8, fill: MOC.galah}), sv('path', {d: 'M12.5 9q2-7.5 9.5-6.5-4 2-3 5.5Z', fill: MOC.crest}),
+    sv('path', {d: 'M10.6 14.6q-4.2 1-3.6 4.6 2.6-1 4.6-2.3Z', fill: MOC.beak}), sv('circle', {cx: 15.6, cy: 13, r: 2.7, fill: MOC.crest}), sv('circle', {cx: 15.6, cy: 13, r: 1.5, fill: MOC.eye}),
+    moLine('M18 41v3.5', MOC.grey, 2), moLine('M23 41v3.5', MOC.grey, 2)),
+  rainbow: (w = 50) => moSvg('rainbow', w, w * 0.56, '0 0 60 34', [MOC.pink, MOC.peach, MOC.yellow, MOC.mint, MOC.lav].map((c, i) => { const r = 26 - i * 4.2; return moLine(`M${(30 - r).toFixed(1)} 31A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${(30 + r).toFixed(1)} 31`, c, 4); }),
+    [[6, 30], [54, 30]].map(([x, y]) => [sv('circle', {cx: x - 3.5, cy: y, r: 3.6, fill: MOC.white}), sv('circle', {cx: x, cy: y - 2.4, r: 4.2, fill: MOC.white}), sv('circle', {cx: x + 3.8, cy: y, r: 3.4, fill: MOC.white})])),
+  whale: (z = 40) => moSvg('whale', z, z * 0.6, '0 0 58 35', sv('path', {d: 'M5 19q2-13 21-13 16 0 21 9 5-6 9-9-1 7-4 10 4 2 5 8-6-1-10-4-6 8-21 8-19 0-21-9Z', fill: MOC.whale}),
+    sv('path', {d: 'M8 22q8 7 22 6 10-1 15-6-15 4-37 0Z', fill: MOC.whaleL}), sv('path', {d: 'M23 23q4 6 10 5-4-3-5-6Z', fill: MOC.whaleD}), sv('circle', {cx: 13, cy: 16, r: 1.7, fill: MOC.eye}),
+    moLine('M8.5 20.5q4 3 8 1', MOC.eye, 1.3), sv('path', {d: 'M15 0.5l1 3.4 3.4 1-3.4 1-1 3.4-1-3.4-3.4-1 3.4-1Z', fill: MOC.yellow}), sv('path', {d: 'M22 3l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7Z', fill: MOC.yellow})),
+  butterfly: (z = 26) => moSvg('butterfly', z, z * 0.8, '0 0 40 32', sv('ellipse', {cx: 12, cy: 11, rx: 9, ry: 7, fill: MOC.lav}), sv('ellipse', {cx: 28, cy: 11, rx: 9, ry: 7, fill: MOC.lav}),
+    sv('ellipse', {cx: 14, cy: 22, rx: 6, ry: 5, fill: MOC.galah}), sv('ellipse', {cx: 26, cy: 22, rx: 6, ry: 5, fill: MOC.galah}), moLine('M20 8v18', MOC.eye, 2), moLine('M20 8q-3-5-6-6', MOC.eye, 1.2), moLine('M20 8q3-5 6-6', MOC.eye, 1.2)),
+};
+/** 맨 아래 꽃밭 — 모든 화면 끝에 꽃 · 나비 · 고양이 둘이 가는 선 위에 앉아 있음(끝까지 읽은 사람에게 작은 인사) */
+function footFriends() { return h('div', {class: 'foot-mo', 'aria-hidden': 'true'}, h('span', {class: 'fm-l'}, MO.daisy(24), MO.tulip(28), MO.daisy(18), MO.butterfly(26)), h('span', {class: 'fm-r'}, MO.cat('orange', 38), MO.cat('white', 42))); }
+
 // ── 시간(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 섹시한 묘미를 담은 아틀란스를 한층 업그래이드하라 과감하게 하라」) ──
 //   클로드팀: 앞날 값은 그리지 않음(규칙 49) — 고른 날을 봉인해 3 · 5 · 10년 뒤 그날 종가로 다시 엶 · 봉인 뒤는 회차마다 실제 값으로 한 칸씩
 //   애플팀: 시간 노선도(지난 3년 → 지금 → 3 · 5 · 10년 뒤) · 남은 날은 「D-1,093」 · 구글팀: 봉인 번호(sha256)로 잠근 내용을 누구나 맞대 봄 · 셈은 site_build.py ⑥ · 따로 세기 site_verify.mjs ⑫
@@ -635,12 +678,13 @@ let timeP = null;
 function needTime() { if (!timeP) timeP = getJson('time.json').then(t => { D.time = t; }).catch(e => { timeP = null; throw e; }); return timeP; }
 function timeLine(T) {
   const P = T.past, S = T.since;
-  const st = (cls, when, sub, ...what) => h('li', {class: cls}, h('p', {class: 'when'}, h('b', {text: when}), sub ? ` · ${sub}` : null), h('p', {class: 'what'}, ...what));
+  const st = (cls, when, sub, icon, ...what) => h('li', {class: cls}, h('p', {class: 'when'}, h('b', {text: when}), sub ? ' · ' : null, sub ? h('span', {class: 'nw'}, sub, icon) : icon), h('p', {class: 'what'}, ...what)); // 날짜와 친구 그림은 함께 줄바꿈(그림만 홀로 한 줄 X)
+  const sky = y => (y <= 3 ? MO.star(22) : y <= 5 ? MO.moon(24) : MO.whale(40)); // 멀수록 먼 우주(16:29 영상 친구들)
   const ol = h('ol', {class: 'stations', 'aria-label': '시간 노선도 — 3년 전 · 지금(봉인) · 3년 뒤 · 5년 뒤 · 10년 뒤'},
-    st('past', '3년 전', ymd(P.from), '그때 100만 원어치씩 샀다면 봉인 날 365곳 평균 ', h('b', {class: 'num', text: won100(P.mult365)}), ' · 후보 모두 ', h('b', {class: 'num', text: won100(P.multPool)})),
-    st('now', '지금 · 봉인 ' + T.id + '호', md(T.seal), ...(S.days ? [`봉인 뒤 ${S.days}거래일 — 365곳 `, pctEl(S.chg365, 'b'), ' · 36곳 ', pctEl(S.chg36, 'b'), ' · 후보 모두 ', pctEl(S.chgPool, 'b')]
+    st('past', '3년 전', ymd(P.from), MO.daisy(22), '그때 100만 원어치씩 샀다면 봉인 날 365곳 평균 ', h('b', {class: 'num', text: won100(P.mult365)}), ' · 후보 모두 ', h('b', {class: 'num', text: won100(P.multPool)})),
+    st('now', '지금 · 봉인 ' + T.id + '호', md(T.seal), null, ...(S.days ? [`봉인 뒤 ${S.days}거래일 — 365곳 `, pctEl(S.chg365, 'b'), ' · 36곳 ', pctEl(S.chg36, 'b'), ' · 후보 모두 ', pctEl(S.chgPool, 'b')]
       : [`365곳 · 36곳을 이날 종가 그대로 잠금 — 다음 거래일부터 한 칸씩 채웁니다`])),
-    ...T.opens.map(o => st('future', `${o.y}년 뒤`, ymd(o.date), h('b', {class: 'num dd', text: ddayText(o.date)}), ' · 그날 종가로 엽니다')));
+    ...T.opens.map(o => st('future', `${o.y}년 뒤`, ymd(o.date), sky(o.y), h('b', {class: 'num dd', text: ddayText(o.date)}), ' · 그날 종가로 엽니다')));
   return h('section', {class: 'tl'}, h('h2', {class: 'sec', text: '시간 — 지난 3년 · 지금 · 3 · 5 · 10년 뒤'}), ol,
     h('p', {class: 'note tln', text: `지난 3년은 지금 고른 곳을 거꾸로 본 값이라 좋아 보이기 쉽고, 그 사이 ${P.n365}곳 중 ${P.half}곳은 한때 반값 아래로 떨어졌습니다. 앞날 값은 그리지 않습니다.`}),
     nextStep('#/time', `봉인 ${T.id}호 열어 보기`, `봉인 번호 ${T.digest} · 잠근 규칙 · 봉인 뒤 지금까지`));
@@ -699,7 +743,7 @@ async function viewTime(v) {
     h('span', {}, h('i', {class: 'l-pick'}), `봉인 날 = 100`), h('span', {}, h('i', {class: 'l-open'}), `3년 뒤 여는 날`)));
   // 지금 — 봉인 뒤 지금까지(현재에 집중)
   v.append(h('h2', {class: 'sec', text: '지금 — 봉인 뒤 지금까지'}));
-  if (!S.days) v.append(h('p', {}, h('span', {class: 'q', text: '? '}), `아직 0거래일 — ${md(K.seal)}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 4번) 한 칸씩 채웁니다.`));
+  if (!S.days) v.append(h('p', {}, h('span', {class: 'q', text: '? '}), `아직 0거래일 — ${md(K.seal)}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 4번) 한 칸씩 채웁니다.`), MO.catSleep(72)); // 기다리는 자리 — 잠든 아기 고양이(16:29)
   else {
     const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: '봉인 365곳'}), pctEl(S.chg365)), h('div', {}, h('span', {text: '봉인 36곳'}), pctEl(S.chg36)), h('div', {}, h('span', {text: '후보 모두'}), pctEl(S.chgPool)));
     v.append(trio); fitNums(trio);
@@ -713,7 +757,7 @@ async function viewTime(v) {
     h('p', {class: 'note', text: `이 365곳은 ${md(K.seal)}에 고른 곳이라, 3년을 거꾸로 보면 좋아 보이기 쉽습니다(뒤늦게 고른 효과). 3년 전에는 이 365곳을 알 수 없었습니다. 그때 값이 없던 ${P.skip365}곳은 뺐습니다.`}));
   // 앞날 — 다시 여는 날(3 · 5 · 10년 뒤)
   v.append(h('h2', {class: 'sec', text: '앞날 — 다시 여는 날'}),
-    h('ol', {class: 'opens'}, ...K.opens.map(o => h('li', {}, h('span', {class: 'oy', text: `${o.y}년 뒤`}), h('span', {class: 'od', text: ymd(o.date)}), h('b', {class: 'num dd', text: ddayText(o.date)})))),
+    h('ol', {class: 'opens'}, ...K.opens.map(o => h('li', {}, o.y <= 3 ? MO.star(24) : o.y <= 5 ? MO.moon(26) : MO.whale(44), h('span', {class: 'oy', text: `${o.y}년 뒤`}), h('span', {class: 'od', text: ymd(o.date)}), h('b', {class: 'num dd', text: ddayText(o.date)})))),
     h('p', {class: 'note', text: '그날 장이 쉬면 그 뒤 첫 거래일 종가로 엽니다. 365곳 · 36곳이 후보 모두보다 나았는지만 셉니다 — 그 사이 365곳을 날마다 다시 골라도 이 봉인은 그대로입니다.'}));
   v.append(h('details', {class: 'more'}, h('summary', {text: '그날 이렇게 셉니다 — 봉인과 함께 잠근 규칙'}), h('div', {class: 'in'}, h('ol', {}, ...K.rules.map(r => h('li', {text: r}))))));
   v.append(h('div', {class: 'box seal'}, h('h2', {text: `봉인 번호 ${K.digest.slice(0, 12)}`}), h('p', {class: 'digest', text: K.digest}),
@@ -849,7 +893,7 @@ async function route() {
   if (hsh === lastMain && $('#view').childElementCount) return;
   lastMain = hsh;
   const v = $('#view'); v.textContent = ''; chartDraw = null;
-  const opening = h('p', {class: 'boot', text: '여는 중입니다…'}); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
+  const opening = h('p', {class: 'boot'}, MO.cat('white', 34), ' 여는 중입니다…'); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
   for (const t of ['#tabHome', '#tabList', '#tab36', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, arg] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [];
@@ -863,7 +907,7 @@ async function route() {
     else if (kind === 'c') { const [code, sub] = decodeURIComponent(arg).split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
     else { location.replace('/old/' + location.search + location.hash); return; } // 옛 ATLAS 주소(#/stocks · #/road …)는 옛 판으로
   } catch (e) {
-    v.textContent = ''; v.append(h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}));
+    v.textContent = ''; v.append(MO.catSleep(72), h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}));
     const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => { lastMain = ''; route(); }); v.append(again);
   }
   opening.remove();
@@ -877,6 +921,7 @@ async function boot() {
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }
   $('#fontBtn').addEventListener('click', () => { setFont((state.font + 1) % 3); lastMain = ''; route(); });
   $('#helpBtn').addEventListener('click', () => { location.hash = '#/info'; });
+  $('#infoSheet .sheet-top')?.insertBefore(MO.rainbow(44), $('#infoSheet .close')); // 도움말 판 머리 — 무지개(16:29 영상 친구들)
   $('#openFind').addEventListener('click', openFind); $('#tabFind')?.addEventListener('click', openFind); // 아래 탭 「찾기」 자리는 「업데이트」(12:41) — 찾기는 맨 위 단추
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeSheet(b.dataset.close)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.dataset.sheet) closeSheet(document.body.dataset.sheet); });
@@ -886,7 +931,7 @@ async function boot() {
   addEventListener('hashchange', route);
   document.querySelector('.tabbar')?.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (a && a.getAttribute('href') === (location.hash || '#/')) { e.preventDefault(); window.scrollTo({top: 0, behavior: RM.matches ? 'auto' : 'smooth'}); } });
   try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; }
-  catch (e) { const v = $('#view'); v.textContent = ''; const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => location.reload()); v.append(h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}), again); return; }
+  catch (e) { const v = $('#view'); v.textContent = ''; const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => location.reload()); v.append(MO.catSleep(72), h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요. (' + e.message + ')'}), again); return; }
   await route();
   setTimeout(() => { needComp().catch(() => {}); }, 400);
 }
