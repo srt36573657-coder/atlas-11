@@ -282,6 +282,11 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
   }
   if (GJ) { same(GJ.written, written, '성장 요약 쓴 곳 수'); same(GJ.of, Object.keys(comp).length, '성장 요약 365곳'); same(Object.keys(GJ.companies).length, written, '성장 요약 회사 수'); }
   same(core.grow?.written, written, '첫 화면 성장 요약 쓴 곳 수'); same(core.grow?.of, Object.keys(comp).length, '첫 화면 성장 요약 365곳');
+  { const ck = fs.existsSync(GDIR) ? fs.readdirSync(GDIR).filter(f => /^check-.*\.json$/.test(f)).sort() : []; // 따로 다시 확인 — 가장 새 기록의 수를 파일에서 다시 셈
+    if (ck.length) { const rec = J(path.join(GDIR, ck.at(-1))), cnt = (arr, ks) => Object.fromEntries([['n', arr.length], ...ks.map(k => [k, arr.filter(x => x.verdict === k).length])]);
+      sameJ(core.grow?.check?.facts, cnt(rec.facts.items, ['맞음', '일부만 맞음', '틀림', '못 엶']), '따로 다시 확인 사실 수'); sameJ(core.grow?.check?.rivals, cnt(rec.rivals.items, ['기사로 확인', '다른 일을 함', '확인 못 함']), '따로 다시 확인 경쟁 회사 수');
+      same(core.grow?.check?.file, 'reports/atlas11/t365/grow/' + ck.at(-1), '따로 다시 확인 기록 파일');
+    } else same(core.grow?.check ?? null, null, '따로 다시 확인 기록이 없는데 요약이 있음'); }
   if (GJ && core.grow) sameJ(core.grow.g10, Object.fromEntries(['아주 높다', '높다', '반반', '낮다', '아주 낮다'].map(g => [g, Object.values(GJ.companies).filter(x => x.g['10'] === g).length])), '첫 화면 10년 말 등급 수');
 }
 

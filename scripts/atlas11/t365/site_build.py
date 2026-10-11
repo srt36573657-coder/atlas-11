@@ -415,6 +415,11 @@ gsum = {c: {'s': e['story']['shape'], 'g': {h: e['story']['h'][h]['g'] for h in 
 core['grow'] = {'written': len(gsum), 'of': len(GROWCO), 'files': sorted({e['story']['file'] for e in GROWCO.values() if e['story']}),
                 'g10': {gr: sum(1 for x in gsum.values() if x['g']['10'] == gr) for gr in grow.GRADES}, 'g10none': sum(1 for x in gsum.values() if x['g']['10'] is None),
                 'shapes': {k: sum(1 for x in gsum.values() if x['s'] == k) for k in ('혼자 앞섬', '몇 곳이 나눔', '다투는 곳이 많음', '새로 생기는 판')}}
+GCHK = sorted(f for f in os.listdir(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow')) if f.startswith('check-') and f.endswith('.json')) if os.path.isdir(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow')) else []
+if GCHK:  # 따로 다시 확인(17:56 「예약」 4차) — 가장 새 기록의 수만
+    _gc = json.load(open(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow', GCHK[-1]), encoding='utf-8'))
+    core['grow']['check'] = {'file': 'reports/atlas11/t365/grow/' + GCHK[-1], 'made': _gc['made'][:10],
+                             'facts': {k: _gc['facts'][k] for k in ('n', '맞음', '일부만 맞음', '틀림', '못 엶')}, 'rivals': {k: _gc['rivals'][k] for k in ('n', '기사로 확인', '다른 일을 함', '확인 못 함')}}
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
 for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님
     if fn.endswith('.json') and fn[:-5] not in members:

@@ -600,7 +600,8 @@ function peerBox(c, G, S) {
 function growNotes(S) {
   return h('div', {class: 'note'},
     h('p', {text: '현실 기준선 — 빨리 큰 회사가 오래 계속 빨리 크는 일은 드뭅니다. 증권사 평균치도 좋게 나오는 쪽으로 기웁니다(Chan · Karceski · Lakonishok 2003). 다투는 회사가 많으면 남보다 높은 이익은 평균으로 돌아옵니다(Fama · French 2000).'}),
-    h('p', {text: S ? `이 이야기는 봉인하지 않습니다 — 쓴 날 ${md(S.made)} · 새 소식이 나오면 고쳐 씁니다. 범위는 「100번 중 80번쯤 이 안」으로 잡은 세 팀의 따짐이며, 맞힘이 아닙니다.` : '세 팀 이야기를 쓰면 같은 자리에 범위와 까닭이 보입니다.'}));
+    h('p', {text: S ? `이 이야기는 봉인하지 않습니다 — 쓴 날 ${md(S.made)} · 새 소식이 나오면 고쳐 씁니다. 범위는 「100번 중 80번쯤 이 안」으로 잡은 세 팀의 따짐이며, 맞힘이 아닙니다.` : '세 팀 이야기를 쓰면 같은 자리에 범위와 까닭이 보입니다.'}),
+    D.core.grow?.check ? h('p', {text: checkLine(D.core.grow.check)}) : null);
 }
 function growSummary(Gs) {
   const rows = [...GRADES_ALL.map(gr => [gr, Gs.g10[gr] ?? 0]), ['? 자료 모자람', Gs.g10none ?? 0], ['조사 중', Gs.of - Gs.written]];
@@ -609,9 +610,12 @@ function growSummary(Gs) {
   for (const [name, n] of rows) { const f = h('i', {class: 'gf'}); f.style.width = (n / mx * 100) + '%'; ul.append(h('li', {}, h('span', {text: name}), h('span', {class: 'gt', 'aria-hidden': 'true'}, f), h('b', {class: 'num', text: n + '곳'}))); }
   return h('section', {class: 'gsum'}, h('h2', {class: 'sec', text: '회사마다 — 앞으로 클까?'}),
     h('p', {text: `세 팀이 365곳 가운데 ${Gs.written}곳을 따졌습니다 — 주가가 아니라 회사 크기(매출)만 봅니다. 10년 뒤 2025년보다 더 커져 있을까요?`}), ul,
-    h('p', {class: 'note', text: `판의 모양: 혼자 앞섬 ${Gs.shapes['혼자 앞섬']}곳 · 몇 곳이 나눔 ${Gs.shapes['몇 곳이 나눔']}곳 · 다투는 곳이 많음 ${Gs.shapes['다투는 곳이 많음']}곳 · 새로 생기는 판 ${Gs.shapes['새로 생기는 판']}곳. 회사마다 3단 회사 → 4단 「앞으로 클까?」에서 경쟁 회사와 까닭을 봅니다. 이 이야기는 봉인하지 않습니다.`}));
+    h('p', {class: 'note', text: `판의 모양: 혼자 앞섬 ${Gs.shapes['혼자 앞섬']}곳 · 몇 곳이 나눔 ${Gs.shapes['몇 곳이 나눔']}곳 · 다투는 곳이 많음 ${Gs.shapes['다투는 곳이 많음']}곳 · 새로 생기는 판 ${Gs.shapes['새로 생기는 판']}곳. 회사마다 3단 회사 → 4단 「앞으로 클까?」에서 경쟁 회사와 까닭을 봅니다. 이 이야기는 봉인하지 않습니다.`}),
+    Gs.check ? h('p', {class: 'note', text: checkLine(Gs.check)}) : null);
 }
 const GRADES_ALL = ['아주 높다', '높다', '반반', '낮다', '아주 낮다'];
+// 따로 다시 확인(17:56 「예약」 4차) — 판정을 쓰지 않은 다른 팀이 근거 기사를 직접 열어 봄
+const checkLine = K => `따로 다시 확인(${md(K.made)}): 근거 기사 ${K.facts.n}개를 다른 팀이 직접 열어 봄 — 맞음 ${K.facts['맞음']} · 일부만 맞음 ${K.facts['일부만 맞음']} · 틀림 ${K.facts['틀림']} · 못 엶 ${K.facts['못 엶']}. 「기사로 못 봄」 경쟁 회사 ${K.rivals.n}곳은 기사로 확인 ${K.rivals['기사로 확인']} · 다른 일을 함 ${K.rivals['다른 일을 함']} · 확인 못 함 ${K.rivals['확인 못 함']}.`;
 function growChart(host, c, G) {
   host.textContent = '';
   const wrap = h('div', {class: 'gc'}); host.append(wrap);
