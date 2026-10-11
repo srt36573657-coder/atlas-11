@@ -1,9 +1,9 @@
 {
  "schema": "atlas11-d365-verify-1",
- "made": "2026-10-11T02:56:08.359Z",
- "version": "d365-v1",
+ "made": "2026-10-11T03:54:47.408Z",
+ "version": "d365-v2",
  "asOf": "2026-10-08",
- "checks": 6037,
+ "checks": 6041,
  "bad": 0,
  "first": []
 }

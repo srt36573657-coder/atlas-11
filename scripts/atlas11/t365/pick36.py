@@ -7,6 +7,10 @@
 pick36-v2(2026-10-11 · 사장님 11:43 「두 팀이 함께 고른 8업종(178곳)을 「대세였던 곳」으로 … 365곳을 만들까요? 어 그렇게 해」)
   — 아래 셈 · 기준 · 문턱은 v1 과 한 글자도 같고 회사만 universe.json 의 365곳(d365-v1 대세 365곳)으로 바뀜(판 이름이 씨앗에 들어가 난수도 새로).
     전부 돌리기 전에 이 파일 · universe.json 을 커밋해 두어야 돌아감(기준을 먼저 적어 둔 커밋 = spec.specCommit) · 셀 수 없어 뺀 시험 날도 기록(backtest.skipped).
+pick36-v3(2026-10-11 · 사장님 12:41 「아니 내일이면 내일 다시 그다음날도 다시 기준은 항상 오늘날짜로 해야 하고 업데이트는 하루에 4번 해야 하고 …」)
+  — 셈 · 기준 · 문턱은 v1 · v2 와 같음 · 회사 = 회차마다 새로 고른 대세 365곳(d365-v2 · 환경 변수 ATLAS_D365_DIR 폴더 또는 universe.json 폴더) ·
+    일봉 = 모음 + 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES · daese.merge 와 같은 규칙) · 기준일 = 고르는 날(proposal.json asOf) ·
+    회차마다 돌릴 때는 --out <폴더> --no-record(화면 자료만 · 요약은 회차 기록에 남김 — 기록 파일이 하루 넷씩 쌓이지 않게)
 
 ━━ 돌리기 전에 정한 것(결과를 보고 바꾸지 않음 · 바꾸면 새 판 이름 pick36-v2) ━━
 자료  reports/atlas11/universe/2026-10-10/bundle.json.gz 일봉(10월 8일 종가까지) · 회사 = universe.json 의 365곳(v1 = t365-v1 2026-10-10-t365 · v2 = d365-v1 2026-10-11-d365 의 by-industry.json)
@@ -41,10 +45,15 @@ import numpy as np
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 ACT = json.load(open(os.path.join(ROOT, 'scripts/atlas11/t365/universe.json'), encoding='utf-8'))  # 지금 쓰는 365곳
-VERSION = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2'}[ACT['version']]
+VERSION = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2', 'd365-v2': 'pick36-v3'}[ACT['version']]
 if ACT.get('pick36') != VERSION:
     sys.exit('pick36: universe.json 의 pick36(%s) 이 365곳 판(%s)에 맞는 이름(%s)과 다름' % (ACT.get('pick36'), ACT['version'], VERSION))
 QUICK = '--quick' in sys.argv
+NO_RECORD = '--no-record' in sys.argv
+OUTDIR = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv else os.path.join(ROOT, 'site/atlas/data')
+UNI = os.environ.get('ATLAS_D365_DIR') or os.path.join(ROOT, ACT['dir'])  # 회차마다 새로 고른 폴더(roll.mjs)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import daese  # noqa: E402  이어 받은 일봉을 합치는 규칙을 고르기와 하나로
 H, LIMIT, WIN, WMIN, VOLQ, UPTH, DNTH = 20, 0.305, 500, 250, 0.75, 0.03, -0.03
 PROFIT, BIGLOSS, CUT, N_PICK, PER_IND = 0.003, -0.15, 1 / 3, 36, 5
 PAIRS = 100_000_000 // (100 if QUICK else 1)
@@ -56,8 +65,9 @@ t0 = time.time()
 def say(m):
     print(f'[{time.time() - t0:7.1f}s] {m}', file=sys.stderr, flush=True)
 
-byi = json.load(open(os.path.join(ROOT, ACT['dir'], 'by-industry.json'), encoding='utf-8'))
-pro = json.load(open(os.path.join(ROOT, ACT['dir'], 'proposal.json'), encoding='utf-8'))
+byi = json.load(open(os.path.join(UNI, 'by-industry.json'), encoding='utf-8'))
+pro = json.load(open(os.path.join(UNI, 'proposal.json'), encoding='utf-8'))
+SEL8 = pro.get('asOf', ACT['asOf']).replace('-', '')  # 고르는 날 — 그날까지 일봉만 씀
 if pro['rules']['version'] != ACT['version']:
     sys.exit('pick36: proposal.json 판이 universe.json 과 다름')
 SPEC_FILES = ['scripts/atlas11/t365/pick36.py', 'scripts/atlas11/t365/universe.json']
@@ -70,7 +80,8 @@ companies = [(c['code'], c['name'], g['id'], i['name']) for g in byi['groups'] f
 codes = [c[0] for c in companies]
 NC = len(codes)
 bundle = json.load(gzip.open(os.path.join(ROOT, ACT['bundle']), 'rt', encoding='utf-8'))
-rows = {c: {r[0]: r[4] for r in bundle['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0} for c in codes}
+merged, mst = daese.merge(bundle, codes, daese.read_closes(os.environ.get('ATLAS_T365_CLOSES')))
+rows = {c: {r[0]: r[4] for r in merged['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0 and r[0] <= SEL8} for c in codes}
 cnt = {}
 for c in codes:
     for d in rows[c]:
@@ -185,9 +196,29 @@ def choose(T, asof, cols, pairs):
             'rg': f['rg'], 'npath': f['npath'], 'pools': {d: f['dirs'][d]['pool'] for d, _ in DIRS}}
 
 
-# ── ① 지금(10월 8일 기준) ──
+# ── 지문(같은 회사 · 같은 값이면 앞 회차 36곳을 그대로 씀 — 사장님 12:41 「하루에 4번」 · 셈 시간 아낌) ──
+MEMBERS_DIGEST = hashlib.sha256(','.join(codes).encode()).hexdigest()[:16]
+CLOSES_DIGEST = hashlib.sha256(json.dumps([[d for d in DATES]] + [[rows[c].get(d) for d in DATES] for c in codes]).encode()).hexdigest()[:16]
+if '--reuse' in sys.argv and not QUICK:
+    try:
+        old = json.load(open(sys.argv[sys.argv.index('--reuse') + 1], encoding='utf-8'))
+        o = old.get('spec') or {}
+        if (o.get('version'), o.get('specCommit'), o.get('membersDigest'), o.get('closesDigest'), old.get('asOf'), o.get('quick')) == (VERSION, SPEC_COMMIT, MEMBERS_DIGEST, CLOSES_DIGEST, iso(DATES[-1]), False):
+            os.makedirs(OUTDIR, exist_ok=True)
+            with open(os.path.join(OUTDIR, 'pick36.json'), 'w', encoding='utf-8') as f:
+                json.dump(old, f, ensure_ascii=False, separators=(',', ':'))
+                f.write('\n')
+            print(json.dumps({'reused': True, 'asOf': old.get('asOf'), 'membersDigest': MEMBERS_DIGEST, 'closesDigest': CLOSES_DIGEST}, ensure_ascii=False))
+            sys.exit(0)
+        say('앞 회차 36곳과 회사 · 값이 달라 새로 셈')
+    except (OSError, ValueError, KeyError) as e:
+        say('앞 회차 36곳을 못 읽어 새로 셈: %s' % e)
+
+# ── ① 지금(고르는 날 기준) ──
 T = ND - 1
 ASOF = iso(DATES[T])
+if ASOF != pro.get('asOf', ACT['asOf']):
+    sys.exit('pick36: 마지막 거래일(%s)이 고르는 날(%s)과 다름' % (ASOF, pro.get('asOf')))
 cols_all = list(range(NC))
 say(f'지금 셈 — 기준일 {ASOF} · 방향마다 회사 × 경로 {PAIRS:,}')
 now = choose(T, ASOF, cols_all, PAIRS)
@@ -258,21 +289,22 @@ made = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 spec = {'version': VERSION, 'dir': '가 · 시장 방향 넷', 'horizon': H, 'profit': PROFIT, 'bigLoss': BIGLOSS, 'cut': '3분의 1', 'perIndustry': PER_IND,
         'window': WIN, 'volQ': VOLQ, 'upTh': UPTH, 'downTh': DNTH, 'pairs': PAIRS, 'pairsBacktest': PAIRS_BT,
         'paths': now['npath'], 'totalPairs': now['npath'] * NC * len(DIRS) * 2, 'quick': QUICK,
-        'universe': ACT['version'], 'specCommit': SPEC_COMMIT, 'pickAsOf': ACT['asOf']}
+        'universe': ACT['version'], 'specCommit': SPEC_COMMIT, 'pickAsOf': pro.get('asOf', ACT['asOf']), 'closes': {k: mst[k] for k in ('files', 'added')},
+        'membersDigest': MEMBERS_DIGEST, 'closesDigest': CLOSES_DIGEST}
 out = {'schema': 'atlas-new-pick36-1', 'made': made, 'asOf': ASOF, 'spec': spec,
        'dirs': [{'id': d, 'name': nm, 'days': rg['n'][d], 'pool': now['pools'][d]} for d, nm in DIRS],
        'volTh': rg['volTh'], 'window': {'from': iso(DATES[int(rg['days'][0])]), 'to': ASOF, 'days': int(len(rg['days']))},
        'eligible': int(now['ok'].sum()), 'cutN': now['ncut'], 'alive': len(now['alive']),
        'picks': [{'rank': k + 1, 'code': c, 'name': names[c], 'g': grps[c], 'i': inds[c], 'price': price[c], **{x: per_co[c][x] for x in ('avg', 'win', 'big', 'worst')}} for k, c in enumerate(picks)],
        'total': total, 'companies': per_co, 'backtest': btsum}
-os.makedirs(os.path.join(ROOT, 'site/atlas/data'), exist_ok=True)
-with open(os.path.join(ROOT, 'site/atlas/data/pick36.json'), 'w', encoding='utf-8') as f:
+os.makedirs(OUTDIR, exist_ok=True)
+with open(os.path.join(OUTDIR, 'pick36.json'), 'w', encoding='utf-8') as f:
     json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
     f.write('\n')
 rec = os.path.join(ROOT, 'reports/atlas11/verify', f"pick36-{ASOF}-{made.replace(':', '').replace('-', '')}.json")
-if not QUICK:
+if not QUICK and not NO_RECORD:
     with open(rec, 'x', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
         f.write('\n')
-say(f"36곳: {', '.join(names[c] for c in picks[:10])} … · 1주씩 합계 {total:,.0f}원 · 기록 {os.path.relpath(rec, ROOT) if not QUICK else '(빠른 셈 — 기록 안 씀)'}")
+say(f"36곳: {', '.join(names[c] for c in picks[:10])} … · 1주씩 합계 {total:,.0f}원 · 기록 {os.path.relpath(rec, ROOT) if not (QUICK or NO_RECORD) else '(빠른 셈 · 회차 셈 — 기록 파일 안 씀)'}")
 print(json.dumps({'asOf': ASOF, 'paths': now['npath'], 'totalPairs': spec['totalPairs'], 'eligible': out['eligible'], 'cut': out['cutN'], 'picks': len(picks), 'total': total, 'backtest': {k: v for k, v in (btsum or {}).items() if k != 'rows'}}, ensure_ascii=False))

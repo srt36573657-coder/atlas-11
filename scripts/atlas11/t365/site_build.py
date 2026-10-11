@@ -38,7 +38,7 @@ if len(sys.argv) != 3:
     sys.exit('site_build: 쓰는 법 python3 scripts/atlas11/t365/site_build.py <now.json(dump.mjs · 10월 10일 모음)> <자료 폴더> — 옛 고를 때 표(sel.json)는 이제 받지 않음')
 NOW, OUT = sys.argv[1], sys.argv[2]
 ACT = json.load(open(os.path.join(HERE, 'universe.json'), encoding='utf-8'))
-UNI = os.path.join(ROOT, ACT['dir'])
+UNI = os.environ.get('ATLAS_D365_DIR') or os.path.join(ROOT, ACT['dir'])  # 회차마다 새로 고른 폴더(roll.mjs)를 넘기면 그것
 BYI = json.load(open(os.path.join(UNI, 'by-industry.json'), encoding='utf-8'))
 PRO = json.load(open(os.path.join(UNI, 'proposal.json'), encoding='utf-8'))
 N = json.load(open(NOW, encoding='utf-8'))
@@ -60,15 +60,18 @@ def d2(x):
     return None if x is None else float(Decimal(repr(x)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
 
 
-# ── ① 고르기 다시 셈(daese.select 그대로) — 후보 1,378곳 모두 안/밖과 까닭 ──
+# ── ① 고르기 다시 셈(daese.prepare · select 그대로) — 후보 모두 안/밖과 까닭 ──
+#   사장님 12:41 「기준은 항상 오늘날짜로 … 하루에 4번」 — 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES)까지 합쳐 고르는 날 = 그날
 if PRO['rules']['version'] != ACT['version'] or N['asOf'] != ACT['asOf']:
     die('universe.json(%s · %s) 과 proposal.json(%s) · 후보 표(%s)가 다름' % (ACT['version'], ACT['asOf'], PRO['rules']['version'], N['asOf']))
-rows = N['rows']
 bnd = json.load(gzip.open(os.path.join(ROOT, ACT['bundle']), 'rt', encoding='utf-8'))
-CAL = json.load(open(os.path.join(ROOT, 'public/data/input.json'), encoding='utf-8'))['calendar']['sessions']
-RES = daese.select(rows, bnd, CAL, N['asOf'])
+CLOSES = os.environ.get('ATLAS_T365_CLOSES')
+rows, MERGED, CAL, SELDAY, OVER = daese.prepare(N['rows'], bnd, CLOSES, ROOT, N['asOf'])
+if PRO.get('asOf', N['asOf']) != SELDAY:
+    die('proposal.json 의 고르는 날(%s)과 다시 셈한 고르는 날(%s)이 다름 — 같은 이어 받은 일봉인지 보세요' % (PRO.get('asOf'), SELDAY))
+RES = daese.select(rows, MERGED, CAL, SELDAY)
 if [p['code'] for p in RES['picked']] != [p['code'] for p in PRO['picked']]:
-    die('다시 고른 365곳이 proposal.json 과 다름 — 후보 표(첫 인자)가 %s 을 %s 기준으로 푼 것인지 보세요' % (ACT['bundle'], ACT['asOf']))
+    die('다시 고른 365곳이 proposal.json 과 다름 — 후보 표(첫 인자)가 %s 을 %s 기준으로 푼 것인지 · 같은 이어 받은 일봉인지 보세요' % (ACT['bundle'], ACT['asOf']))
 status = RES['status']
 SELPICK = {p['code']: p for p in RES['picked']}
 SECT = {x['name']: x for x in RES['sectors']}
@@ -76,15 +79,15 @@ RC = RES['counts']
 FUNNEL = {'universe': RC['universe'], 'gate': RC['gate'], 'ranked': RC['rankedCompanies'], 'picked': RC['picked'],
           'sectors': RC['ranked'], 'top': RC['top'], 'tiers': [RC['tier1'], RC['tier2'], RC['tier3']], 'gateFails': RC['gateFails'],
           'steps': [{'k': 'universe', 'n': RC['universe'], 't': '코스피 · 코스닥 시가총액 목록(%s 모음)' % kd(N['collectedAt'][:10])},
-                    {'k': 'gate', 'n': RC['gate'], 't': '기본 문 여섯 — 흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주'},
+                    {'k': 'gate', 'n': RC['gate'], 't': '기본 문 — 흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주 · 그날 종가'},
                     {'k': 'ranked', 'n': RC['rankedCompanies'], 't': '대세 순서를 매긴 업종 %d개 — 네이버 업종에 기본 문 지난 회사가 3곳 이상' % RC['ranked']},
                     {'k': 'picked', 'n': RC['picked'], 't': '대세 순서 — 두 팀 모두 고른 업종(1층) → 한 팀(2층) → 대세에 가까운 순(3층)'}],
           'stop': {'gate': 1, 'sector': 2, 'cut': 3}, 'stopName': {'gate': '기본 문', 'sector': '업종 대세 순서', 'cut': '365곳 채우기'}}
 
-# ── ② 20거래일 창 · 지수 · 회사 선 — 모음 종가에서 바로(사장님 09:37 「현재에서 지난 20일 거래 · 항상」) ──
-#   by-industry.json(organize.mjs)의 묶음(갈래 → 업종 → 회사)을 씀
-NOWROW = {r['code']: r for r in rows}
-SELROW = NOWROW  # 대세 365곳은 지금 값(10월 8일)으로 고름 — 고를 때 표 = 지금 표
+# ── ② 20거래일 창 · 지수 · 회사 선 — 모음 종가 + 이어 받은 종가(사장님 09:37 「현재에서 지난 20일 거래 · 항상」 · 12:41 「기준은 항상 오늘날짜」) ──
+#   by-industry.json(organize.mjs)의 묶음(갈래 → 업종 → 회사)을 씀 · 창의 끝 = 고르는 날
+NOWROW = {r['code']: r for r in N['rows']}   # 모음 날 값(결산 · 몸값 배율)
+SELROW = {r['code']: r for r in rows}        # 고르는 날에 맞춘 값(몸값 · 거래대금)
 members = {}
 ind_of = {}
 for g in BYI['groups']:
@@ -95,35 +98,13 @@ for g in BYI['groups']:
 if len(members) != PICK or set(members) != set(SELPICK):
     die('업종 정리 파일의 회사 %d곳이 365곳과 다름' % len(members))
 iso8 = lambda d: '%s-%s-%s' % (d[:4], d[4:6], d[6:])
-crow = {c: {iso8(r[0]): r[4] for r in bnd['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0} for c in members}
-BASEROW = {c: dict(crow[c]) for c in members}
-BLAST = max(d for c in members for d in crow[c])  # 모음의 마지막 날(10월 8일)
-# 이어 받은 종가(사장님 09:37 「항상」) — 환경 변수 ATLAS_T365_CLOSES = closes_fetch.mjs 가 남긴 폴더(올리기 package.mjs 가 넘김)
-#   파일 이름(받은 때) 차례로 · 모음 마지막 날 뒤의 날만 이어 붙임 · 같은 날은 나중 파일이 이김(저녁 8시 전 값 → 다음 날 다시 받은 값)
-#   그 파일의 모음 안 날 값이 모음과 0.5% 넘게 다르면(쪼개기 · 증자로 지난 값을 고쳐 적음 등) 그 회사는 그 파일에서 받지 않음 → 그 회사 새 날은 「?」
-CLOSES = os.environ.get('ATLAS_T365_CLOSES')
-OVER = {'files': 0, 'added': 0, 'mismatch': [], 'lastFile': None}
-if CLOSES and os.path.isdir(CLOSES):
-    for fn in sorted(f for f in os.listdir(CLOSES) if f.endswith('.json.gz')):
-        snap = json.load(gzip.open(os.path.join(CLOSES, fn), 'rt', encoding='utf-8'))
-        if snap.get('schema') != 'atlas-t365-closes-1':
-            continue
-        OVER['files'] += 1
-        for c, rs in (snap.get('rows') or {}).items():
-            if c not in crow:
-                continue
-            if any(iso8(d) <= BLAST and iso8(d) in BASEROW[c] and abs(v / BASEROW[c][iso8(d)] - 1) > 0.005 for d, v in rs):
-                OVER['mismatch'].append([fn, c])
-                continue
-            for d, v in rs:
-                if iso8(d) > BLAST and v and v > 0:
-                    if iso8(d) not in crow[c]:
-                        OVER['added'] += 1
-                    crow[c][iso8(d)] = v
-                    OVER['lastFile'] = {'file': fn, 'startedAt': snap.get('startedAt')}
+crow = {c: {iso8(r[0]): r[4] for r in MERGED['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0 and iso8(r[0]) <= SELDAY} for c in members}
+BLAST = OVER['blast']  # 모음의 마지막 날(10월 8일)
 dcnt = collections.Counter(d for c in members for d in crow[c])
 DAYS = sorted(d for d, n in dcnt.items() if n > len(members) / 2)  # 365곳 가운데 절반 넘게 종가가 있는 날
-asof = DAYS[-1]  # 마지막 종가 날 = 「현재」
+asof = DAYS[-1]  # 마지막 종가 날 = 「현재」 = 고르는 날
+if asof != SELDAY:
+    die('365곳 마지막 종가 날 %s 이 고르는 날 %s 과 다름' % (asof, SELDAY))
 Y = [d for d in CAL if d <= asof]
 if not Y or Y[-1] != asof:
     die('마지막 종가 날 %s 이 거래소 달력의 거래일이 아님' % asof)
@@ -133,7 +114,7 @@ if any(d not in DAYS for d in dates):
     die('20거래일 창 안에 365곳 절반 넘게 종가가 없는 날이 있음: %s' % [d for d in dates if d not in DAYS])
 NDAY = len(dates)
 base = dates[0]
-PICK_ASOF = N['asOf']  # 10월 8일 — 고를 때 쓴 마지막 종가(대세 365곳)
+PICK_ASOF = SELDAY  # 고르는 날 = 마지막 종가 날(사장님 12:41 「기준은 항상 오늘날짜」)
 kPick = dates.index(PICK_ASOF) if PICK_ASOF in dates else None  # 고른 날이 창 밖으로 나가면 금빛 세로선 없음
 px = lambda c, d: crow[c].get(d)
 mv = {}
@@ -374,7 +355,7 @@ core = {
     'roll': {'files': OVER['files'], 'added': OVER['added'], 'mismatch': len(OVER['mismatch'])},
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
-                'pick': '네이버 증권 시가총액 · 결산 · 업종 · 일봉 · %s 모음(%s 종가까지 30거래일)' % (kd(N['collectedAt'][:10]), kd(PICK_ASOF))},
+                'pick': '네이버 증권 시가총액 · 결산 · 업종(%s 모음) · 일봉(%s 값까지 30거래일)' % (kd(N['collectedAt'][:10]), kd(PICK_ASOF))},
     'dates': dates, 'all': core_all, 'groups': groups, 'industries': industries,
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
               'perMedian': per_med, 'perN': len(pers),

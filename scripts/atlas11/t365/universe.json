@@ -1,8 +1,14 @@
 {
- "about": "새 ATLAS(aaa7377.com) 가 지금 쓰는 365곳 — 사장님 2026-10-11 11:43 「두 팀이 함께 고른 8업종(178곳)을 「대세였던 곳」으로 삼고, 나머지는 한 팀만 고른 업종부터 대세에 가까운 순서로 채워 365곳을 만들까요? 어 그렇게 해」로 t365-v1(reports/atlas11/universe/2026-10-10-t365 · 기록으로 남김) → d365-v1. site_build.py · site_verify.mjs · closes_fetch.mjs · roll.mjs · pick36.py · pick36_verify.mjs 가 이 파일을 읽음.",
- "version": "d365-v1",
- "dir": "reports/atlas11/universe/2026-10-11-d365",
+ "about": "새 ATLAS(aaa7377.com) 가 지금 쓰는 365곳 판 — 사장님 2026-10-11 11:43 「두 팀이 함께 고른 8업종(178곳)을 「대세였던 곳」으로 … 어 그렇게 해」로 t365-v1 → d365-v1, 12:41 「아니 내일이면 내일 다시 그다음날도 다시 기준은 항상 오늘날짜로 해야 하고 업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」로 d365-v2(회차마다 그날까지 값으로 다시 고름 · 그날 종가 없는 곳 뺌). dir = 저장소에 남긴 바탕(10월 8일 값으로 고른 판 · 회차가 막히면 이 판으로 올림) · 회차마다 고른 판은 roll.mjs 가 임시 폴더에 만들고 회차 기록(reports/atlas11/t365/updates)에 남김. site_build.py · site_verify.mjs · closes_fetch.mjs · roll.mjs · pick36.py · pick36_verify.mjs · daese_verify.mjs 가 이 파일을 읽음.",
+ "version": "d365-v2",
+ "dir": "reports/atlas11/universe/2026-10-11-d365-v2",
  "bundle": "reports/atlas11/universe/2026-10-10/bundle.json.gz",
  "asOf": "2026-10-08",
- "pick36": "pick36-v2"
+ "pick36": "pick36-v3",
+ "slots": [
+  "08:10",
+  "12:10",
+  "16:10",
+  "21:10"
+ ]
 }

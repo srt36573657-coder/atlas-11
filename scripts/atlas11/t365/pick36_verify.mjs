@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// 월요일 36곳(pick36-v1 · v2) 따로 세기 — pick36.py(파이썬 · numpy)와 다른 길(노드 · 다른 난수)로 다시 세어 맞댐
+// 36곳(pick36-v1 · v2 · v3) 따로 세기 — pick36.py(파이썬 · numpy)와 다른 길(노드 · 다른 난수)로 다시 세어 맞댐
+//   v3(사장님 2026-10-11 12:41 「기준은 항상 오늘날짜 · 하루에 4번」): 회사 = 환경 변수 ATLAS_D365_DIR 폴더(회차마다 새로 고른 365곳) · 일봉 = 모음 + ATLAS_T365_CLOSES(같은 합치기 규칙을 따로 짬) · 고르는 날까지
 //   회사 = scripts/atlas11/t365/universe.json 의 365곳(v2 = 사장님 2026-10-11 11:43 대세 365곳 d365-v1) · 화면 자료의 판 이름 · 365곳 판이 universe.json 과 같아야 함
 //   쓰는 법(저장소 맨 위에서): node scripts/atlas11/t365/pick36_verify.mjs [화면 자료 = site/atlas/data/pick36.json] [결과 = reports/atlas11/verify/pick36-verify-latest.json]
 //   ① 거래일 · 하루 수익 · 시장 · 방향 날 수 · 출렁 문턱(역사 창 500거래일)을 처음부터 다시 셈 — 같아야 함
@@ -16,8 +17,9 @@ const outFile = path.resolve(ROOT, process.argv[3] ?? 'reports/atlas11/verify/pi
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const pk = J(file), S = pk.spec;
 const ACT = J(path.join(ROOT, 'scripts/atlas11/t365/universe.json'));
-const byi = J(path.join(ROOT, ACT.dir, 'by-industry.json'));
-const pro = J(path.join(ROOT, ACT.dir, 'proposal.json'));
+const UNI = process.env.ATLAS_D365_DIR || path.join(ROOT, ACT.dir);
+const byi = J(path.join(UNI, 'by-industry.json'));
+const pro = J(path.join(UNI, 'proposal.json'));
 const capSel = new Map(pro.picked.map(p => [p.code, p.capEok]));
 const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
 const cos = byi.groups.flatMap(g => g.industries.flatMap(i => i.companies.map(c => ({code: c.code, name: c.name, g: g.id, i: i.name}))));
@@ -28,6 +30,18 @@ const near = (a, b, tol, what) => { checks++; if (!(Math.abs(a - b) <= tol)) bad
 
 // ① 거래일 · 수익 · 시장 · 방향
 const rows = cos.map(c => new Map((bundle.stocks[c.code]?.fchart?.rows ?? []).filter(r => r[4] > 0).map(r => [r[0], r[4]])));
+{ // 이어 받은 일봉 — 파일 이름 차례 · 모음 마지막 날 뒤만 · 같은 날은 나중 파일 · 모음 안 날 값이 0.5% 넘게 다르면 그 파일에서 그 회사는 안 받음 · 고르는 날까지
+  const blast = rows.flatMap(m => [...m.keys()]).sort().at(-1), sel8 = String(pro.asOf ?? ACT.asOf).replaceAll('-', ''), CL = process.env.ATLAS_T365_CLOSES, ix = new Map(cos.map((c, j) => [c.code, j]));
+  const base = rows.map(m => new Map(m));
+  if (CL && fs.existsSync(CL)) for (const fn of fs.readdirSync(CL).filter(f => f.endsWith('.json.gz')).sort()) {
+    const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CL, fn))).toString('utf8'));
+    if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue;
+    for (const [code, rs] of Object.entries(snap.rows ?? {})) { const j = ix.get(code); if (j == null) continue;
+      if (rs.some(x => x[0] <= blast && base[j].has(x[0]) && x[1] && Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) continue;
+      for (const x of rs) if (x[0] > blast && x[1] > 0) rows[j].set(x[0], x[1]); }
+  }
+  for (const m of rows) for (const d of [...m.keys()]) if (d > sel8) m.delete(d);
+}
 const cnt = new Map(); for (const m of rows) for (const d of m.keys()) cnt.set(d, (cnt.get(d) ?? 0) + 1);
 const DATES = [...cnt].filter(([, n]) => n > NC / 2).map(([d]) => d).sort();
 const ND = DATES.length;
@@ -40,7 +54,7 @@ for (let k = 1; k < ND; k++) {
 }
 const iso = d => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`;
 same(iso(DATES[ND - 1]), pk.asOf, '기준일');
-same(S.version, ACT.pick36, '판 이름 = universe.json'); same(S.universe ?? 't365-v1', ACT.version, '365곳 판 = universe.json'); same(S.quick, false, '빠른 셈이 아님');
+same(S.version, ACT.pick36, '판 이름 = universe.json'); same(S.universe ?? 't365-v1', ACT.version, '365곳 판 = universe.json'); if (!process.argv.includes('--allow-quick')) same(S.quick, false, '빠른 셈이 아님'); // 시험(t365-roll.test)만 빠른 셈을 받음
 same(Object.keys(pk.companies).sort().join(), cos.map(c => c.code).sort().join(), '회사 365곳 = universe.json 365곳');
 const T = ND - 1, lo = Math.max(H, T - S.window + 1), days = []; for (let k = lo; k <= T; k++) days.push(k);
 const cum = days.map(k => { let s = 0; for (let q = k - H + 1; q <= k; q++) if (!Number.isNaN(Mk[q])) s += Math.log1p(Mk[q]); return s; });

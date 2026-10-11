@@ -17,10 +17,10 @@ const dataDir = path.resolve(ROOT, process.argv[2] ?? 'site/atlas/data');
 const outFile = path.resolve(ROOT, process.argv[3] ?? 'reports/atlas11/verify/atlas-new-data-latest.json');
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const core = J(path.join(dataDir, 'core.json')), comp = J(path.join(dataDir, 'comp.json')).companies, lines = J(path.join(dataDir, 'lines.json')).lines, names = J(path.join(dataDir, 'names.json'));
-const ACT = J(path.join(ROOT, 'scripts/atlas11/t365/universe.json')), T = path.join(ROOT, ACT.dir);
+const ACT = J(path.join(ROOT, 'scripts/atlas11/t365/universe.json')), T = process.env.ATLAS_D365_DIR || path.join(ROOT, ACT.dir); // 회차마다 새로 고른 폴더(사장님 12:41 「하루에 4번」)
 const byInd = J(path.join(T, 'by-industry.json')), pro = J(path.join(T, 'proposal.json'));
 const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
-const cal = J(path.join(ROOT, 'public/data/input.json')).calendar.sessions;
+const calBase = [...new Set([...J(path.join(ROOT, 'public/data/input.json')).calendar.sessions, ...(fs.existsSync(path.join(ROOT, 'public/data/rolling-calendar.json')) ? J(path.join(ROOT, 'public/data/rolling-calendar.json')).sessions ?? [] : [])])].sort(); // input.json + 11월까지 늘린 달력
 const bad = []; let checks = 0;
 const near = (a, b, tol, what) => { checks++; if (a == null || b == null ? a !== b : Math.abs(a - b) > tol) bad.push({what, got: a, want: b}); };
 const same = (a, b, what) => { checks++; if (a !== b) bad.push({what, got: a, want: b}); };
@@ -39,16 +39,19 @@ const baseRow = new Map([...close].map(([c, m]) => [c, new Map(m)]));
 const CLOSES = process.env.ATLAS_T365_CLOSES;
 if (CLOSES && fs.existsSync(CLOSES)) for (const fn of fs.readdirSync(CLOSES).filter(f => f.endsWith('.json.gz')).sort()) {
   const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CLOSES, fn))).toString('utf8'));
-  if (snap.schema !== 'atlas-t365-closes-1') continue;
+  if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue; // 1 = [날, 종가] · 2 = [날, 종가, 거래량]
   for (const [c, rs] of Object.entries(snap.rows ?? {})) {
     const m = close.get(c), b = baseRow.get(c); if (!m) continue;
     if (rs.some(([d, v]) => iso(d) <= BLAST && b.has(iso(d)) && Math.abs(v / b.get(iso(d)) - 1) > 0.005)) continue;
-    for (const [d, v] of rs) if (iso(d) > BLAST && v > 0) m.set(iso(d), v);
+    for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= pro.asOf) m.set(iso(d), v); // 고르는 날까지만(창의 끝 = 고르는 날)
   }
 }
 // 20거래일 창 — 마지막 종가 날(365곳 절반 넘게 종가가 있는 마지막 날)부터 거꾸로 거래소 달력 21일
 const lastDay = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > 365 / 2).map(([d]) => d).sort().at(-1); })();
 same(core.asOf, lastDay, '마지막 종가 날 = 모음(+ 이어 받은 종가)의 마지막 거래일');
+same(core.asOf, pro.asOf, '마지막 종가 날 = 고르는 날(proposal.json)'); same(core.pickAsOf, pro.asOf, '고른 날 = 고르는 날');
+const dataDays = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > 365 / 2).map(([d]) => d); })();
+const cal = [...new Set([...calBase, ...dataDays.filter(d => d > calBase.at(-1))])].sort(); // 달력이 끝난 뒤는 절반 넘게 종가가 있는 날
 const W = cal.filter(d => d <= core.asOf).slice(-21);
 same(JSON.stringify(W), JSON.stringify(core.dates), '20거래일 창 날짜 21개(기준일 + 20) = 거래소 달력');
 same(core.base, W[0], '기준일 = 20거래일 전'); same(core.days, 20, '창 길이 20거래일');
