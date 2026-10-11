@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-10T23:43:02.778Z",
+  "at": "2026-10-11T00:31:40.982Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-10T23:43:01.613Z",
+    "publishedAt": "2026-10-11T00:31:39.564Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-ec927821\",\"generatedAt\":\"2026-10-10T23:41:20.606Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-e9f38ac4\",\"generatedAt\":\"2026-10-11T00:30:15.063Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -64,6 +64,24 @@
       "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-10T23:12:37Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-07-06\",\"days\":63,\"pickAsOf\":\"2026-10-02\",\"kPick\":60,\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결산 · 증권사 짐작 · 10월 5일 모음(10월 2일 종가까지)\",\"budget\":\"2027년 정부 예산안(2026년 9월 1일 국무회의"
     },
     {
+      "url": "https://aaa7377.com/atlas/data/days.json",
+      "status": 200,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "{\"schema\":\"atlas-new-days-1\",\"asOf\":\"2026-10-08\",\"dates\":[\"2023-04-25\",\"2023-04-26\",\"2023-04-27\",\"2023-04-28\",\"2023-05-02\",\"2023-05-03\",\"2023-05-04\",\"2023-05-08\",\"2023-05-09\",\"2023-05-10\",\"2023-05-11\",\"2023-05-12\",\"2023-05-15\",\"2023-05-16\",\"2023-05-17\",\"2023-05-18\",\"2023-05-19\",\"2023-05-22\",\"2023-05"
+    },
+    {
+      "url": "https://aaa7377.com/atlas/data/co/042700.json",
+      "status": 200,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "{\"schema\":\"atlas-new-co-1\",\"code\":\"042700\",\"k0\":0,\"close\":[20450,21550,21500,20550,21350,23200,21700,21500,21450,21000,20450,20350,19600,19810,20250,21350,25950,26150,26600,26550,27300,27150,27200,26550,26350,25700,25150,25000,25650,26600,26500,26600,26350,29150,29100,29300,30900,29200,29050,30350,3"
+    },
+    {
       "url": "https://aaa7377.com/old/",
       "status": 200,
       "wwwAuthenticate": null,
@@ -79,7 +97,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-ec927821\",\"generatedAt\":\"2026-10-10T23:41:20.606Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-e9f38ac4\",\"generatedAt\":\"2026-10-11T00:30:15.063Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
