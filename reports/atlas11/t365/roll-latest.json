@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T10:57:02.815Z",
- "kst": "2026-10-11 19:57",
- "slot": null,
- "reason": "4단 앞으로 클까? — 회사 성장 이야기 271곳(사장님 16:51)",
+ "at": "2026-10-11T12:12:23.302Z",
+ "kst": "2026-10-11 21:12",
+ "slot": "21:10",
+ "reason": "21:10 회차",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-rsUMVi/closes/20261011T105702Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-gzLLPU/closes/20261011T121223Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 99,
+  "sec": 105,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -68,12 +68,12 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 99.4
+   "sec": 104.5
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 1.9
+   "sec": 2
   },
   {
    "name": "365곳 다시 고르기",
@@ -93,22 +93,22 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 6.9
+   "sec": 7.1
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.3
+   "sec": 2.4
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 47.6
+   "sec": 48
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 20
+   "sec": 20.1
   }
  ]
 }

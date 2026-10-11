@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-11T11:01:39.317Z",
+  "at": "2026-10-11T12:16:41.743Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-11T11:01:37.721Z",
+    "publishedAt": "2026-10-11T12:16:40.762Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-64b401b0\",\"generatedAt\":\"2026-10-11T10:57:01.239Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-2c3ee1f3\",\"generatedAt\":\"2026-10-11T12:12:21.724Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T10:58:54Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T12:14:20Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -100,6 +100,15 @@
       "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-08\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"pick36\":\"pick36-v3\",\"opens\""
     },
     {
+      "url": "https://aaa7377.com/atlas/data/grow.json",
+      "status": 200,
+      "wwwAuthenticate": null,
+      "robots": null,
+      "server": "Netlify",
+      "location": null,
+      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-08\",\"written\":271,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
+    },
+    {
       "url": "https://aaa7377.com/old/",
       "status": 200,
       "wwwAuthenticate": null,
@@ -115,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-64b401b0\",\"generatedAt\":\"2026-10-11T10:57:01.239Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-2c3ee1f3\",\"generatedAt\":\"2026-10-11T12:12:21.724Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
