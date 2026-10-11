@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T17:57:44.014Z",
- "kst": "2026-10-12 02:57",
+ "at": "2026-10-11T18:24:10.727Z",
+ "kst": "2026-10-12 03:24",
  "slot": null,
- "reason": "",
+ "reason": "전체 점검 — 네 팀 고침 · 1억 번 눌러 보기",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-p8UnSl/closes/20261011T175744Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-0TWvzx/closes/20261011T182410Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 104,
+  "sec": 86,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -61,14 +61,14 @@
  },
  "verify": {
   "daese": "{\"checks\":6041,\"bad\":0,\"first\":[]}",
-  "site": "{\"checks\":344700,\"bad\":0,\"first\":[]}",
+  "site": "{\"checks\":344702,\"bad\":0,\"first\":[]}",
   "pick36": "{\"checks\":197,\"mcChecks\":96,\"skipped\":0,\"bad\":0,\"first\":[]}"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 104.5
+   "sec": 86.3
   },
   {
    "name": "후보 표",
@@ -78,7 +78,7 @@
   {
    "name": "365곳 다시 고르기",
    "code": 0,
-   "sec": 4
+   "sec": 3.9
   },
   {
    "name": "업종 정리",
@@ -88,22 +88,22 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 2.2
+   "sec": 2
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 7.1
+   "sec": 7.3
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.4
+   "sec": 2.5
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 49.1
+   "sec": 46.2
   },
   {
    "name": "36곳 따로 세기",
