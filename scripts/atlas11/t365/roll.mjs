@@ -32,6 +32,9 @@ async function copyAll(from, to) {
 const kstOf = d => new Date(d.getTime() + 9 * 36e5).toISOString().replace('T', ' ').slice(0, 16); // 2026-10-12 16:10
 /** 하루 4번 회차 이름(08:10 …) — 그 시각 5분 앞 ~ 50분 뒤에 시작했으면 그 회차 · 아니면 null(종가 올리기 · 손 올리기 등)
  *  (2026-10-11 15:52 손 올리기가 20분 앞이라 「16:10 회차」로 적힌 일 — 그 기록은 그대로 두고 창을 5분 앞으로 좁힘) */
+/** 기록에 적을 회차 이름 — 손 올리기(까닭 글에 「회차」가 없음)는 회차 창 안이라도 회차로 적지 않음
+ *  (2026-10-11 21:57 손 올리기 「앞으로 클까? …」가 「21:10 회차」로 한 번 더 적힌 일 — 그 기록은 그대로 둠) */
+export const slotFor = (kst, reason = '') => (String(reason).trim() && !/회차/.test(reason) ? null : slotOf(kst));
 export const slotOf = kst => { const m = +kst.slice(11, 13) * 60 + +kst.slice(14, 16); const s = (ACT.slots ?? []).map(x => [x, +x.slice(0, 2) * 60 + +x.slice(3, 5)]).find(([, t]) => m >= t - 5 && m <= t + 50); return s ? s[0] : null; };
 
 /** 지난 회차 기록(새 파일만 쌓임) — 이름 차례 */
@@ -67,7 +70,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   const recDir = recordDir === undefined ? (ci && !closesDir ? path.join(root, UPDATES_DIR) : null) : recordDir;
   const useLive = liveFallback === undefined ? (ci && !closesDir) : liveFallback;
   const kst = kstOf(now);
-  const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotOf(kst), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
+  const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotFor(kst, reason), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
     fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, verify: {}, steps: []};
   const tail = s => String(s ?? '').trim().split('\n').slice(-2).join(' | ').slice(0, 500);
   const run = (name, cmd, args, env = {}, timeout = 600000) => {

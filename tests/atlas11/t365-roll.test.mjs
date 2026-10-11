@@ -10,7 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {spawnSync} from 'node:child_process';
-import {rollAtlas, readRecords, tabData, slotOf} from '../../scripts/atlas11/t365/roll.mjs';
+import {rollAtlas, readRecords, tabData, slotOf, slotFor} from '../../scripts/atlas11/t365/roll.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳 판
@@ -42,6 +42,8 @@ test('closes_fetch — 일봉 XML 을 [날, 종가, 거래량] 으로 · 후보 
 test('회차 이름 — 08:10 · 12:10 · 16:10 · 21:10 근처만 그 회차', () => {
   assert.equal(slotOf('2026-10-12 08:12'), '08:10'); assert.equal(slotOf('2026-10-12 16:47'), '16:10'); assert.equal(slotOf('2026-10-12 17:20'), null); assert.equal(slotOf('2026-10-12 21:05'), '21:10');
   assert.equal(slotOf('2026-10-11 15:52'), null); // 20분 앞 손 올리기는 회차가 아님(15:52 일 뒤 창을 5분 앞으로)
+  assert.equal(slotFor('2026-10-11 21:57', '앞으로 클까? 365곳 모두'), null); // 회차 창 안이라도 손 올리기는 회차가 아님(21:57 일)
+  assert.equal(slotFor('2026-10-11 21:12', '21:10 회차'), '21:10'); assert.equal(slotFor('2026-10-12 08:12', ''), '08:10'); assert.equal(slotFor('2026-10-12 16:47'), '16:10');
 });
 
 test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값으로 365곳을 다시 고르고 · 기준일이 따라가고 · 따로 세기 셋 틀림 0 · 기록 · 업데이트 탭', async () => {
