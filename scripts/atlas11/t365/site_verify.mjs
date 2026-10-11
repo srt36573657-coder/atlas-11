@@ -294,6 +294,8 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
         for (const r of S.rivals) { const x = !r.url ? RV.get(c + '|' + r.name) : null; sameJ(r.chk ?? null, x ? {v: x.verdict, url: x.url || null} : null, `경쟁 회사 따로 확인 판정 ${c} ${r.name}`); }
         for (const f of S.facts) same(f.chk ?? null, FV.get(c + '|' + f.url + '|' + f.text) ?? null, `근거 기사 따로 확인 판정 ${c}`); }
     } else same(core.grow?.check ?? null, null, '따로 다시 확인 기록이 없는데 요약이 있음'); }
+  { let fn = 0; for (const c of Object.keys(comp)) { const S = J(path.join(dataDir, 'co', c + '.json')).grow?.story; if (S) fn += S.facts.length; } same(core.grow?.factN, fn, '따로 다시 확인 표본의 모집단(근거 기사 수)'); } // CIA팀 2026-10-12
+  { const fut = calBase.filter(d => d > core.asOf); same(core.mcEnd ?? null, fut.length >= 20 ? fut[19] : null, '7단 한 달 범위 맞대 볼 날 = 고른 날에서 20거래일 뒤'); }
   { // 치우침(6단 「다르게 보면」 · grow_bias.py screen()) — 노드로 지금 365곳에서 다시 셈: 10년 가운데의 가운데값 · 1년 가운데 × 2025년 매출 ÷ 올해 증권사 평균치의 가운데값
     const med = a => { const x = [...a].sort((p, q) => p - q), n = x.length; return n ? (n % 2 ? x[(n - 1) / 2] : (x[n / 2 - 1] + x[n / 2]) / 2) : null; };
     const m10 = [], rat = [];

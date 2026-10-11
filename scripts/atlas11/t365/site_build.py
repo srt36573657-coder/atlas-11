@@ -430,6 +430,9 @@ if GCHK:  # 따로 다시 확인(17:56 「예약」 4차) — 가장 새 기록�
 # 치우침(6단 「다르게 보면」 · CIA팀 「바깥에서 보기」) — grow_bias.py 와 같은 셈을 지금 365곳으로(site_verify ⑬ 이 노드로 다시 셈)
 import grow_bias  # noqa: E402
 core['grow']['bias'] = grow_bias.screen(grow_bias.bias([(c, companies[c], GROWCO[c]) for c in sorted(members)]))
+core['grow']['factN'] = sum(len(e['story']['facts']) for e in GROWCO.values() if e['story'])  # 따로 다시 확인 「표본」의 모집단(CIA팀 2026-10-12)
+_fut = [d for d in daese.cal_sessions(ROOT) if d > asof]
+core['mcEnd'] = _fut[19] if len(_fut) >= 20 else None  # 7단 한 달 범위를 처음 맞대 볼 날 = 고른 날에서 20거래일 뒤(거래소 달력 · CIA팀 2026-10-12)
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
 for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님
     if fn.endswith('.json') and fn[:-5] not in members:

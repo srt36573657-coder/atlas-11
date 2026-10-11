@@ -29,6 +29,7 @@
 }
 html { font-size: 21px; -webkit-text-size-adjust: 100%; background: var(--night); scrollbar-color: var(--card3) var(--night); }
 html.f2 { font-size: 24px; } html.f3 { font-size: 27px; }
+html.f3 { --roww: 4.7rem; } html.f3 .board.wide .row:not(.two) .nm { white-space: normal; overflow-wrap: anywhere; line-height: 1.18; } /* 아주 크게 — 업종 탭의 긴 업종 이름이 「…」로 잘리던 것은 두 줄로(애플팀 2026-10-12) */
 body { margin: 0; background: var(--night); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.5; letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 button, input { font: inherit; color: inherit; letter-spacing: inherit; }
 a { color: inherit; text-decoration: none; }
@@ -151,7 +152,7 @@ h1.head .num { font-weight: 800; }
 
 /* 회사 화면 — 큰 이름 · 숫자 카드 셋(참고 사이트의 숫자 카드: 이름표 위 · 큰 숫자 아래) */
 .co-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0 0 8px; }
-.co-head h1 { font-weight: 800; font-size: 1.5rem; line-height: 1.22; letter-spacing: -0.03em; margin: 0; min-width: 0; overflow-wrap: anywhere; color: var(--ink-hi); }
+.co-head h1 { font-weight: 800; font-size: 1.5rem; line-height: 1.22; letter-spacing: -0.03em; margin: 0; min-width: 0; overflow-wrap: anywhere; text-wrap: balance; color: var(--ink-hi); } /* 고르게 줄바꿈(애플팀 2026-10-12) */
 .co-head small { color: var(--sub); font-size: 1rem; }
 .trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.2em, 1fr)); gap: 8px; margin: 6px 0 6px; }
 .trio div { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 10px 10px 12px 12px; min-width: 0; }
@@ -250,7 +251,7 @@ ol.st li.next > a:hover { border-color: var(--violet-ink); background: var(--vio
 ol.st li.next > .cell { opacity: .45; }
 .st-t { margin: 6px 0 0; color: var(--sub); }
 .st-t b { color: var(--ink); }
-.st-t .lk { display: inline-block; font-size: 1rem; font-weight: 650; line-height: 1.35; color: var(--violet-ink); border: 1px solid var(--violet-line); border-radius: 8px; padding: 0 7px; margin-left: 2px; } /* 앎의 종류(CIA팀) — 기록 · 조사 · 판단 · 셈 · 확인 */
+.st-t .lk { font-weight: 650; color: var(--violet-ink); } /* 앎의 종류(CIA팀) — 기록 · 조사 · 판단 · 셈 · 테 없는 글(애플팀 2026-10-12: 단추처럼 보이던 것) */
 .nextst { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 8px; margin: 18px 0 0; padding: 14px 16px; min-height: 64px; border-radius: 18px; background: linear-gradient(100deg, rgba(137, 115, 195, .34), rgba(137, 115, 195, .12)); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
 .nextst:hover { border-color: var(--violet-ink); }
 .nextst b { display: block; font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; color: var(--ink-hi); }
@@ -267,8 +268,11 @@ ul.fin .fb.pos { background: linear-gradient(90deg, rgba(137, 115, 195, .55), va
 ul.dirbars { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 12px; }
 ul.dirbars li { display: grid; gap: 4px; }
 ul.dirbars .dn { font-weight: 800; color: var(--ink-hi); }
-ul.dirbars .dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; }
-ul.dirbars .dt { position: relative; height: 12px; background: rgba(255, 255, 255, .06); border-radius: 6px; overflow: hidden; }
+ul.dirbars .dl { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; align-items: center; } /* 막대 칸 폭을 모든 줄에서 같게(애플팀 2026-10-12: 같은 값이 다른 길이로 그려지던 것) — 글은 칸 안에서 줄바꿈 */
+ul.dirbars .dl .num { white-space: normal; overflow-wrap: anywhere; }
+ul.dirbars .dm { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1px; border-radius: 2px; background: var(--ink); } /* 365곳 가운데값 눈금(CIA팀) */
+.lkey .l-dw { width: 22px; height: 10px; border-radius: 5px; background: var(--violet-ink); } .lkey .l-db { width: 22px; height: 10px; border-radius: 5px; background: var(--gold); } .lkey .l-dm { width: 3px; height: 18px; border-radius: 2px; background: var(--ink); }
+ul.dirbars .dt { position: relative; height: 12px; background: rgba(255, 255, 255, .06); border-radius: 6px; } /* 눈금이 위아래로 조금 나오게 — 숨김 없음 */
 ul.dirbars .db { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
 ul.dirbars .db.pos { background: linear-gradient(90deg, rgba(137, 115, 195, .55), var(--violet-ink)); } ul.dirbars .db.neg { background: linear-gradient(90deg, rgba(233, 196, 106, .45), var(--gold)); } /* 7단(클로드팀): 모형 셈은 오름 · 내림 색(빨강 · 파랑)을 쓰지 않음 — 규칙 53 · 번 길 보라 · 크게 잃는 길 금빛(조심) */
 a.inl, .links2 a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
@@ -471,7 +475,7 @@ ul.riv .w { color: var(--sub); }
 ul.riv a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 ul.peers { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
 ul.peers li { display: grid; grid-template-columns: minmax(0, 7.2em) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
-ul.peers .pn { color: var(--sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ul.peers .pn { color: var(--sub); overflow-wrap: anywhere; } /* 이름은 줄바꿈 — 「SNT에너지(6…」처럼 잘리던 것(애플팀 2026-10-12) */
 ul.peers li.me .pn { color: var(--ink-hi); font-weight: 750; }
 ul.peers .pt { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
 ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(137, 115, 195, .45); }

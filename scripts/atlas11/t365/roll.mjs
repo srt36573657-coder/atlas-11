@@ -44,8 +44,9 @@ export function readRecords(root) {
   return fss.readdirSync(dir).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)).sort().map(f => { try { return JSON.parse(fss.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } }).filter(Boolean);
 }
 /** 화면 「업데이트」 탭 자료 — 새 회차가 위 · 365곳 목록은 빼고 들고 난 이름만 */
+// 업데이트 탭: 까닭이 회차가 아니면(손 올리기) 회차 이름 없이 보임 — 옛 기록 파일은 그대로(클로드팀 2026-10-12: 15:52 · 21:57 손 올리기가 16:10 · 21:10 회차로 두 번 보이던 것)
 export function tabData(records) {
-  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.slot, reason: r.reason || null, result: r.result, why: r.why || null,
+  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason ? slotFor(r.kst, r.reason) : r.slot, reason: r.reason || null, result: r.result, why: r.why || null,
     asOf: r.asOf, base: r.base, provisional: r.provisional, version: r.version, in: r.in ?? [], out: r.out ?? [], tiers: r.tiers ?? null, all: r.all ?? null, top: r.top ?? null,
     pick36: r.pick36 ? {first: r.pick36.first, reused: r.pick36.reused, test: r.pick36.test} : null, served: r.served}));
   return {schema: 'atlas-new-updates-1', made: new Date().toISOString(), slots: ACT.slots ?? [], n: records.length, records: rows};
