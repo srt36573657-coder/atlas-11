@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T20:24:27.865Z",
- "kst": "2026-10-12 05:24",
- "slot": null,
- "reason": "명품 ATLAS — 글씨 · 색감 · 선 · 느낌(구조 그대로)",
+ "at": "2026-10-11T23:12:22.478Z",
+ "kst": "2026-10-12 08:12",
+ "slot": "08:10",
+ "reason": "08:10 회차",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-l4IFM6/closes/20261011T202427Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-SI0kB1/closes/20261011T231222Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 96,
+  "sec": 87,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -68,7 +68,7 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 96
+   "sec": 86.6
   },
   {
    "name": "후보 표",
@@ -98,17 +98,17 @@
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.4
+   "sec": 2.3
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 46.9
+   "sec": 46.4
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 20.1
+   "sec": 20
   }
  ]
 }
