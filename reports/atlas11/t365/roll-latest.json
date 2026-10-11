@@ -1,23 +1,23 @@
 {
  "schema": "atlas-t365-roll-1",
- "at": "2026-10-11T01:10:02.944Z",
+ "at": "2026-10-11T02:26:14.585Z",
  "ci": true,
  "fetch": {
   "code": 0,
-  "out": "{\"file\":\"reports/atlas11/t365/closes/20261011T011002Z.json.gz\",\"ok\":365,\"failed\":0,\"last\":\"20261008\",\"sec\":37,\"firstErrors\":[]}",
+  "out": "{\"file\":\"reports/atlas11/t365/closes/20261011T022614Z.json.gz\",\"ok\":365,\"failed\":0,\"last\":\"20261008\",\"sec\":39,\"firstErrors\":[]}",
   "err": ""
  },
- "files": 1,
+ "files": 2,
  "used": "static",
  "asOf": "2026-10-08",
  "base": "2026-09-07",
  "roll": {
-  "files": 1,
+  "files": 2,
   "added": 0,
   "mismatch": 0
  },
  "provisional": false,
- "build": "{\"days\": 840, \"co\": 365, \"bytes\": {\"core.json\": 40429, \"comp.json\": 187014, \"lines.json\": 46658, \"names.json\": 135959}, \"groups\": 10, \"industries\": 63, \"companies\": 365, \"names\": 1375, \"all\": {\"chg\": 8.66, \"cwChg\": -4.45, \"up\": 211, \"down\": 153, \"flat\": 1}, \"dd50\": 217, \"dd30\": 327, \"perMedian\": 16.71, \"jump\": 0, \"asOf\": \"2026-10-08\", \"base\": \"2026-09-07\", \"roll\": {\"files\": 1, \"added\": 0, \"mismatch\": 0}, \"provisional\": false, \"mismatch\": []}",
- "verify": "{\"checks\":311946,\"bad\":0,\"first\":[]}",
+ "build": "{\"days\": 840, \"co\": 365, \"bytes\": {\"core.json\": 52534, \"comp.json\": 187014, \"lines.json\": 46658, \"names.json\": 135959}, \"groups\": 10, \"industries\": 63, \"companies\": 365, \"names\": 1375, \"all\": {\"chg\": 8.66, \"cwChg\": -4.45, \"up\": 211, \"down\": 153, \"flat\": 1}, \"dd50\": 217, \"dd30\": 327, \"perMedian\": 16.71, \"jump\": 0, \"asOf\": \"2026-10-08\", \"base\": \"2026-09-07\", \"roll\": {\"files\": 2, \"added\": 0, \"mismatch\": 0}, \"provisional\": false, \"mismatch\": []}",
+ "verify": "{\"checks\":312982,\"bad\":0,\"first\":[]}",
  "why": "새 거래일 없음(마지막 종가 2026-10-08 · 저장된 자료 2026-10-08) — 저장된 자료 그대로"
 }
