@@ -1,23 +1,114 @@
 {
- "schema": "atlas-t365-roll-1",
- "at": "2026-10-11T03:32:08.354Z",
+ "schema": "atlas-t365-update-1",
+ "at": "2026-10-11T04:20:51.884Z",
+ "kst": "2026-10-11 13:20",
+ "slot": null,
+ "reason": "손 올림 — 하루 4번 회차 시작(12:41 말씀)",
  "ci": true,
+ "version": "d365-v2",
+ "result": "그대로",
+ "served": "rolled",
+ "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "code": 0,
-  "out": "{\"file\":\"reports/atlas11/t365/closes/20261011T033208Z.json.gz\",\"ok\":365,\"failed\":0,\"last\":\"20261008\",\"sec\":36,\"firstErrors\":[]}",
-  "err": ""
+  "file": "../../../../../tmp/atlas-roll-QltlVF/closes/20261011T042051Z.json.gz",
+  "ok": 1378,
+  "failed": 0,
+  "last": "20261008",
+  "sec": 87,
+  "firstErrors": []
  },
- "files": 3,
- "used": "static",
  "asOf": "2026-10-08",
  "base": "2026-09-07",
+ "provisional": false,
  "roll": {
-  "files": 3,
+  "files": 1,
   "added": 0,
   "mismatch": 0
  },
- "provisional": false,
- "build": "{\"days\": 840, \"co\": 365, \"bytes\": {\"core.json\": 43781, \"comp.json\": 232212, \"lines.json\": 47223, \"names.json\": 149214}, \"groups\": 9, \"industries\": 40, \"companies\": 365, \"names\": 1378, \"all\": {\"chg\": 13.18, \"cwChg\": -2.49, \"up\": 255, \"down\": 110, \"flat\": 0}, \"dd50\": 247, \"dd30\": 333, \"perMedian\": 15.62, \"jump\": 0, \"asOf\": \"2026-10-08\", \"base\": \"2026-09-07\", \"roll\": {\"files\": 3, \"added\": 0, \"mismatch\": 0}, \"provisional\": false, \"mismatch\": []}",
- "verify": "{\"checks\":319807,\"bad\":0,\"first\":[]}",
- "why": "새 거래일 없음(마지막 종가 2026-10-08 · 저장된 자료 2026-10-08) — 저장된 자료 그대로"
+ "digest": "c81095cc385a8f5c",
+ "in": [],
+ "out": [],
+ "counts": {
+  "gate": 705,
+  "ranked": 687,
+  "picked": 365
+ },
+ "tiers": [
+  178,
+  51,
+  136
+ ],
+ "all": {
+  "chg": 13.18,
+  "up": 255,
+  "down": 110
+ },
+ "top": {
+  "short": "반도체",
+  "chg": 25.81
+ },
+ "pick36": {
+  "first": [
+   "방림",
+   "가비아",
+   "삼성전기"
+  ],
+  "reused": false,
+  "test": {
+   "n": 24,
+   "wins": 10
+  }
+ },
+ "verify": {
+  "daese": "{\"checks\":6041,\"bad\":0,\"first\":[]}",
+  "site": "{\"checks\":319809,\"bad\":0,\"first\":[]}",
+  "pick36": "{\"checks\":197,\"mcChecks\":96,\"skipped\":0,\"bad\":0,\"first\":[]}"
+ },
+ "steps": [
+  {
+   "name": "일봉 받기",
+   "code": 0,
+   "sec": 86.8
+  },
+  {
+   "name": "후보 표",
+   "code": 0,
+   "sec": 1.9
+  },
+  {
+   "name": "365곳 다시 고르기",
+   "code": 0,
+   "sec": 4
+  },
+  {
+   "name": "업종 정리",
+   "code": 0,
+   "sec": 0.1
+  },
+  {
+   "name": "고르기 따로 세기",
+   "code": 0,
+   "sec": 2.2
+  },
+  {
+   "name": "사이트 자료",
+   "code": 0,
+   "sec": 5.3
+  },
+  {
+   "name": "사이트 자료 따로 세기",
+   "code": 0,
+   "sec": 1.4
+  },
+  {
+   "name": "36곳 셈",
+   "code": 0,
+   "sec": 46.5
+  },
+  {
+   "name": "36곳 따로 세기",
+   "code": 0,
+   "sec": 20
+  }
+ ]
 }
