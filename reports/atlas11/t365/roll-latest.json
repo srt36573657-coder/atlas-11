@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T08:03:26.184Z",
- "kst": "2026-10-11 17:03",
+ "at": "2026-10-11T10:57:02.815Z",
+ "kst": "2026-10-11 19:57",
  "slot": null,
- "reason": "영상 친구들 — 고양이 · 무지개 · 앵무새 · 꽃 · 우주 · 하트(공주님 없음) · 사장님 16:29",
+ "reason": "4단 앞으로 클까? — 회사 성장 이야기 271곳(사장님 16:51)",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-qKNp7R/closes/20261011T080326Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-rsUMVi/closes/20261011T105702Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 100,
+  "sec": 99,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -61,24 +61,24 @@
  },
  "verify": {
   "daese": "{\"checks\":6041,\"bad\":0,\"first\":[]}",
-  "site": "{\"checks\":319845,\"bad\":0,\"first\":[]}",
+  "site": "{\"checks\":336616,\"bad\":0,\"first\":[]}",
   "pick36": "{\"checks\":197,\"mcChecks\":96,\"skipped\":0,\"bad\":0,\"first\":[]}"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 100.4
+   "sec": 99.4
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 2
+   "sec": 1.9
   },
   {
    "name": "365곳 다시 고르기",
    "code": 0,
-   "sec": 3.9
+   "sec": 4
   },
   {
    "name": "업종 정리",
@@ -93,7 +93,7 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 6.7
+   "sec": 6.9
   },
   {
    "name": "사이트 자료 따로 세기",
@@ -103,7 +103,7 @@
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 46
+   "sec": 47.6
   },
   {
    "name": "36곳 따로 세기",
