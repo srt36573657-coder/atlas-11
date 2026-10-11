@@ -29,6 +29,20 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '
 function h(tag, attrs = {}, ...kids) { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (v == null || v === false) continue; if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v === true ? '' : v); } for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k)); return e; }
 function sv(tag, attrs = {}) { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; }
 const pctEl = (x, tag = 'b') => h(tag, {class: 'num ' + cls(x), text: pct(x)});
+// 그림 색은 atlas.css 의 색 이름(토큰)에서 읽음(구글팀 2026-10-11 13:29 「고급스럽게」: 색 이름은 한 곳) — 못 읽으면 같은 값
+const TOK0 = {up: '#FF5A66', down: '#5C97FF', gold: '#E9C46A', ink: '#F2F1F8', night: '#111433', mute: '#9C98BC', violet: '#8973C3', 'violet-ink': '#CDBEF6'};
+function tok() { const s = getComputedStyle(document.documentElement), o = {}; for (const k of Object.keys(TOK0)) o[k] = s.getPropertyValue('--' + k).trim() || TOK0[k]; return o; }
+/** 숫자 카드 — 긴 숫자(+2,920%)가 카드 밖으로 넘치면 한 단 작게(애플팀: 넘치거나 잘리지 않게 · 숫자는 그대로) */
+function fitNums(box) { const go = () => { for (const b of box.querySelectorAll('b')) { b.classList.remove('fit'); if (b.scrollWidth > b.clientWidth + 1) b.classList.add('fit'); } }; go(); document.fonts?.ready.then(() => { if (box.isConnected) go(); }); }
+/** 선 아래 · 위 면(기준선까지 닫은 길) — 값이 빈 날은 끊음 */
+function areaPath(arr, X, Y, by) { let d = '', seg = []; const flush = () => { if (seg.length) d += 'M' + X(seg[0]).toFixed(1) + ' ' + by.toFixed(1) + seg.map(i => 'L' + X(i).toFixed(1) + ' ' + Y(arr[i]).toFixed(1)).join('') + 'L' + X(seg[seg.length - 1]).toFixed(1) + ' ' + by.toFixed(1) + 'Z'; seg = []; }; arr.forEach((y, i) => { if (y == null) flush(); else seg.push(i); }); flush(); return d; }
+/** 기준선 위 빨강 · 아래 파랑 옅은 면(판판한 번짐 — 입체 아님) */
+function fadeDefs(defs, id, T, P, H, by) {
+  const gu = sv('linearGradient', {id: id + 'gu', gradientUnits: 'userSpaceOnUse', x1: 0, y1: P, x2: 0, y2: by}); gu.append(sv('stop', {offset: 0, 'stop-color': T.up, 'stop-opacity': 0.26}), sv('stop', {offset: 1, 'stop-color': T.up, 'stop-opacity': 0.02}));
+  const gd = sv('linearGradient', {id: id + 'gd', gradientUnits: 'userSpaceOnUse', x1: 0, y1: by, x2: 0, y2: H - P}); gd.append(sv('stop', {offset: 0, 'stop-color': T.down, 'stop-opacity': 0.02}), sv('stop', {offset: 1, 'stop-color': T.down, 'stop-opacity': 0.26}));
+  defs.append(gu, gd);
+}
+const hairs = (svg, W, P, ys) => { for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: '#FFFFFF', 'stroke-opacity': 0.08, 'stroke-width': 1})); };
 const gById = id => D.core.groups.find(g => g.id === id);
 const ind = name => D.core.industries.find(i => i.name === name);
 const series = (node, mode = state.mode) => (mode === 'cw' ? node.cw : node.v);
@@ -124,22 +138,25 @@ function lineChart(host, {v, avg, label}) {
   if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'q', text: `? 이 회사 ${C.days}거래일 값을 못 읽었습니다`})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 2; lo -= pad; hi += pad;
   const X = i => P + i * (W - 2 * P) / (n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
-  const id = 'lc' + (++lcN);
+  const id = 'lc' + (++lcN), T = tok();
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});
   const defs = sv('defs');
   const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(100)}));
   const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(100), width: W, height: H - Y(100)}));
-  defs.append(cu, cd); svg.append(defs);
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: '#A9A3CC', 'stroke-width': 1.5, 'stroke-dasharray': '5 5'}));
-  if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: '#E9C46A', 'stroke-width': 2.5}));
+  defs.append(cu, cd); fadeDefs(defs, id, T, P, H, Y(100)); svg.append(defs);
+  hairs(svg, W, P, [P, H - P]); // 가로 가는 선 = 위 · 아래 끝(왼쪽 숫자 자리)
+  const ad = areaPath(v, X, Y, Y(100));
+  svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
+  if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: T.gold, 'stroke-width': 2}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: '#CDBEF6', 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
+  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
   const d = path(v);
-  svg.append(sv('path', {d, fill: 'none', stroke: '#FF5A66', 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}u)`}));
-  svg.append(sv('path', {d, fill: 'none', stroke: '#5C97FF', 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
   const lastK = v.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
-  svg.append(sv('circle', {cx: X(lastK), cy: Y(v[lastK]), r: 5.5, fill: v[lastK] >= 100 ? '#FF5A66' : '#5C97FF', stroke: '#111433', 'stroke-width': 2}));
-  const cx = sv('line', {y1: P, y2: H - P, stroke: '#F3F1FC', 'stroke-width': 1.5}), dot = sv('circle', {r: 6, fill: '#F3F1FC'});
+  svg.append(sv('circle', {cx: X(lastK), cy: Y(v[lastK]), r: 5.5, fill: v[lastK] >= 100 ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
+  const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2});
   cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
   wrap.append(svg);
   const yt = h('span', {class: 'yl num', text: Math.round(hi)}), yb = h('span', {class: 'yl num', text: Math.round(lo)});
@@ -314,17 +331,18 @@ async function viewCompany(v, code) {
   v.append(steps(3, ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, null, `#/c/${code}/past`]));
   v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name}), h('small', {text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${won(c.price)}`})));
   const keep = r1(100 + c.mdd) / 100;
-  v.append(h('div', {class: 'trio'},
+  const trio = h('div', {class: 'trio'},
     h('div', {}, h('span', {text: `${C.days}거래일`}), pctEl(c.chg)),
     h('div', {}, h('span', {text: '1년'}), pctEl(c.r1y)),
-    h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(c.mdd))));
+    h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(c.mdd)));
+  v.append(trio); fitNums(trio);
   v.append(h('p', {class: 'won', text: `100만 원어치였다면 ${C.days}거래일 안 가장 나쁠 때 ${Math.round(keep * 100).toLocaleString('ko-KR')}만 원이었습니다.`}));
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
   const slot36 = h('div'); v.append(slot36);
   needPick().then(() => { const p = D.pick.picks.find(x => x.code === code); if (p && slot36.isConnected) slot36.append(h('p', {class: 'in36'}, `매수 검토 36곳 가운데 ${p.rank}번째(번 길 ${r1(p.avg).toFixed(1)}%) · `, h('a', {href: '#/36', text: '36곳과 지난 기록 시험 보기'}))); }).catch(() => {});
   const chartHost = h('div');
   v.append(chartHost);
-  const draw = () => lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`});
+  const draw = () => { lineChart(chartHost, {v: line, avg: i.n > 1 ? i.v : null, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`}); fitNums(trio); };
   draw(); chartDraw = draw;
   v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-co'}), `${c.name} — ${md(C.base)}보다 위 빨강 · 아래 파랑`), i.n > 1 ? h('span', {}, h('i', {class: 'l-avg'}), i.name + ' 평균') : null, C.kPick != null ? h('span', {}, h('i', {class: 'l-pick'}), `고른 날 ${md(C.pickAsOf)}`) : null));
   // 왜 365곳에 들었나(사장님 11:43 대세 365곳) — 고를 때(그 30거래일) 값 · 업종은 네이버 업종 · 앞날 숫자는 쓰지 않음
@@ -379,6 +397,7 @@ async function viewPast(v, code) {
       h('div', {}, h('span', {text: name + (short ? '(상장 뒤)' : '')}), pctEl((last / base - 1) * 100)),
       h('div', {}, h('span', {text: '가장 깊이 빠짐'}), pctEl(m * 100)),
       h('div', {}, h('span', {text: '꼭대기에서 지금'}), pctEl((last / peak - 1) * 100)));
+    fitNums(stat);
     const lastK = cl.length - 1 - [...cl].reverse().findIndex(x => x != null);
     wonLine.textContent = `1주 ${ymd(dates[cl.findIndex(x => x != null)])} ${won(base)} → ${ymd(dates[lastK])} ${won(last)}`;
     priceChart(chartHost, {dates, close: cl, avg, jumps: co.jumps, label: `${c.name} ${name} 1주 값 — ${won(base)}에서 ${won(last)}(${pct((last / base - 1) * 100)})`});
@@ -422,19 +441,22 @@ function priceChart(host, {dates, close, avg, jumps, label}) {
   if (!vals.length) { wrap.append(h('p', {class: 'q', text: '? 이 기간 값을 못 읽었습니다'})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
   const X = i => P + i * (W - 2 * P) / Math.max(1, n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
-  const base = close.find(x => x != null), id = 'pc' + (++lcN);
+  const base = close.find(x => x != null), id = 'pc' + (++lcN), T = tok();
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});
-  const defs = sv('defs'); const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(base)})); const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(base), width: W, height: H - Y(base)})); defs.append(cu, cd); svg.append(defs);
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: '#A9A3CC', 'stroke-width': 1.5, 'stroke-dasharray': '5 5'}));
+  const defs = sv('defs'); const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(base)})); const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(base), width: W, height: H - Y(base)})); defs.append(cu, cd); fadeDefs(defs, id, T, P, H, Y(base)); svg.append(defs);
+  hairs(svg, W, P, [P, H - P]);
+  const ad = areaPath(close, X, Y, Y(base));
+  svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: '#CDBEF6', 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
+  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
   const d = path(close);
-  svg.append(sv('path', {d, fill: 'none', stroke: '#FF5A66', 'stroke-width': 3, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}u)`}));
-  svg.append(sv('path', {d, fill: 'none', stroke: '#5C97FF', 'stroke-width': 3, 'stroke-linejoin': 'round', 'clip-path': `url(#${id}d)`}));
-  for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: '#E9C46A', 'stroke-width': 3})); }
+  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
+  for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: T.gold, 'stroke-width': 2.5})); }
   const lastK = close.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
-  svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 5.5, fill: close[lastK] >= base ? '#FF5A66' : '#5C97FF', stroke: '#111433', 'stroke-width': 2}));
-  const cx = sv('line', {y1: P, y2: H - P, stroke: '#F3F1FC', 'stroke-width': 1.5}), dot = sv('circle', {r: 6, fill: '#F3F1FC'}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
+  svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 5.5, fill: close[lastK] >= base ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
+  const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
   wrap.append(svg);
   const yt = h('span', {class: 'yl num', text: won(Math.round(hi))}), yb = h('span', {class: 'yl num', text: won(Math.round(lo))}); yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
@@ -529,8 +551,10 @@ function btChart(host, rows) {
   const ex = rows.map(r => r.pick - r.all), M = Math.max(1, ...ex.map(Math.abs)) * 1.1;
   const bw = (W - 2 * P) / n, Y = x => Hh / 2 - x / M * (Hh / 2 - P);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `지난 ${n}번 시험 — 36곳이 365곳 평균보다 나은 때 ${ex.filter(x => x > 0).length}번`});
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: '#A9A3CC', 'stroke-width': 1.5}));
-  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 2, fill: x > 0 ? '#FF5A66' : '#5C97FF'})); });
+  const T = tok();
+  hairs(svg, W, P, [P, Hh - P]);
+  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 2.5, fill: x > 0 ? T.up : T.down})); });
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: T.mute, 'stroke-width': 1.25}));
   host.append(svg);
   host.append(h('div', {class: 'ax'}, h('span', {text: ymd(rows[0].t)}), h('span', {text: ymd(rows[n - 1].t)})));
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; host.append(tip);
@@ -576,13 +600,15 @@ function upChart(host, rows) {
   const W = Math.max(260, Math.round(host.getBoundingClientRect().width || 320)), Hh = 132, P = 8, n = Math.max(rows.length, 1);
   const M = Math.max(4, ...rows.flatMap(r => [r.in?.length ?? 0, r.out?.length ?? 0])) * 1.15, bw = Math.min((W - 2 * P) / n, 36), x0 = W - P - n * bw, Y0 = Hh / 2, sc = (Hh / 2 - P) / M; // 오른쪽이 최근 · 막대 폭은 36 까지
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `최근 ${rows.length}회차 — 새로 든 곳 ${rows.reduce((t, r) => t + (r.in?.length ?? 0), 0)} · 빠진 곳 ${rows.reduce((t, r) => t + (r.out?.length ?? 0), 0)}`});
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: '#A9A3CC', 'stroke-width': 1.5}));
+  const T = tok();
+  hairs(svg, W, P, [P, Hh - P]);
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: T.mute, 'stroke-width': 1.25}));
   rows.forEach((r, k) => {
     const x = x0 + k * bw + bw * 0.18, w = Math.max(2, bw * 0.64), a = (r.in?.length ?? 0) * sc, b = (r.out?.length ?? 0) * sc;
-    if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 3, fill: 'none', stroke: '#E9C46A', 'stroke-width': 1.5}));
-    else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: '#A9A3CC'}));
-    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 2, fill: '#8973C3'}));
-    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 2, fill: '#CDBEF6'}));
+    if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 3, fill: 'none', stroke: T.gold, 'stroke-width': 1.5}));
+    else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: T.mute}));
+    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 2.5, fill: T.violet}));
+    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 2.5, fill: T['violet-ink']}));
   });
   host.append(svg);
   if (rows.length > 1) host.append(h('div', {class: 'ax'}, h('span', {text: kstLabel(rows[0].kst)}), h('span', {text: kstLabel(rows[rows.length - 1].kst)})));

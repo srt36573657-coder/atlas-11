@@ -4,6 +4,8 @@
 //   쓰는 법: node scripts/atlas11/t365/site_check.mjs --base http://127.0.0.1:8899 [--pw /opt/node-tools/] [--out reports/atlas11/verify/atlas-new-check-latest.json]
 //   폭 셋(360×640 · 390×844 · 900×900) × 글씨 셋(보통 · 크게 · 아주 크게 — 360 에서만 셋, 나머지는 보통)마다 화면마다 본다:
 //     오류 0(보안 규칙 CSP 걸림 포함) · 옆 넘침 0 · 보이는 글씨 21px 이상 · 누르는 자리 44px 이상 · 금지 말 0 · 캔버스 · 3D 0 · 작은 네모 20개 이상(바둑판) 0
+//     글자 대비(2026-10-11 13:29 「고급스럽게 … 구글팀이라면」) — 보이는 글마다 글자색 ÷ 뒤 바탕(조상 바탕색 · 번짐 색 마디를 겹쳐 셈 · 경주판 줄은 막대 색까지)이
+//       보통 글 4.5 · 큰 글(24px 이상 · 굵은 18.66px 이상) 3 넘게(WCAG 2.2 1.4.3) · 못 가는 단(흐린 칸)은 빼고 셈
 //     숫자 = 자료(머리 % · 오름/내림 수 · 줄마다 % · 회사 세 숫자 · 1주 값 — 3단 회사 · 4단 처음과 끝) · 3번 누르면 회사 · 4번이면 4단 · 5번이면 5단(첫 화면에서 링크를 따라 가장 짧은 누름 수)
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
@@ -85,15 +87,45 @@ for (const [w, hgt, font] of plans) {
     } catch { fail(tag, '그려지지 않음'); continue; }
     await p.waitForTimeout(60);
     const r = await p.evaluate(({banned}) => {
-      const res = {over: document.documentElement.scrollWidth - innerWidth, small: [], taps: [], banned: [], canvas: document.querySelectorAll('canvas').length, d3: 0, squares: 0, links: [], text: ''};
+      const res = {over: document.documentElement.scrollWidth - innerWidth, small: [], taps: [], banned: [], lowc: [], canvas: document.querySelectorAll('canvas').length, d3: 0, squares: 0, links: [], text: ''};
       const sheet = document.querySelector('.sheet:not([hidden])'), scope = sheet || document.body;
       const vis = e => { const s = getComputedStyle(e); if (s.visibility === 'hidden' || s.display === 'none' || e.closest('[hidden]') || e.closest('.sr')) return false; const b = e.getBoundingClientRect(); return b.width > 0 && b.height > 0; };
+      // 글자 대비 — 색 읽기 · 겹치기 · 밝기(WCAG 2)
+      const P = c => { const m = /rgba?\(([^)]+)\)/.exec(c || ''); if (!m) return null; const v = m[1].split(/[\s,/]+/).filter(Boolean).map(Number); return [v[0], v[1], v[2], v.length > 3 ? v[3] : 1]; };
+      const over = (t, b) => { const a = t[3] + b[3] * (1 - t[3]); return a ? [0, 1, 2].map(i => (t[i] * t[3] + b[i] * b[3] * (1 - t[3])) / a).concat(a) : [0, 0, 0, 0]; };
+      const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+      const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+      const stopsOf = s => (s.backgroundImage && s.backgroundImage !== 'none' ? [...s.backgroundImage.matchAll(/rgba?\([^)]*\)/g)].map(m => P(m[0])).filter(Boolean) : []);
+      const ROOT_BG = P(getComputedStyle(document.documentElement).backgroundColor) || [17, 20, 51, 1];
+      const memo = new Map();
+      const bgOf = el => { // 이 칸 뒤에 깔린 바탕 후보(번짐 색은 마디마다 하나씩) — 맨 위 불투명 바탕까지
+        if (!el) return [ROOT_BG]; if (memo.has(el)) return memo.get(el);
+        const s = getComputedStyle(el), c = P(s.backgroundColor) || [0, 0, 0, 0], g = stopsOf(s);
+        let out = c[3] >= 1 ? [c] : bgOf(el.parentElement).map(p => (c[3] > 0 ? over(c, p) : p));
+        if (g.length) out = out.flatMap(b => g.map(t => over(t, b)));
+        if (out.length > 12) out = out.slice(0, 12);
+        memo.set(el, out); return out;
+      };
+      const opa = el => { let o = 1; for (let x = el; x; x = x.parentElement) o *= +getComputedStyle(x).opacity; return o; };
+      // 옆으로 잘림 — 글 칸이 넘침을 숨기는 조상(overflow) 밖으로 나가면 실패(줄임표 … 로 일부러 줄인 칸은 뺌)
+      res.clip = [];
+      const clipAnc = el => { const out = []; for (let x = el.parentElement; x && x !== document.body && x !== document.documentElement; x = x.parentElement) { const s = getComputedStyle(x); if (s.overflowX !== 'visible' && s.textOverflow !== 'ellipsis') out.push(x); } return out; };
       for (const e of scope.querySelectorAll('*')) {
         if (!vis(e)) continue;
         const s = getComputedStyle(e);
         if (/matrix3d|perspective/.test(s.transform) || s.perspective !== 'none') res.d3++;
         const own = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
         if (own && parseFloat(s.fontSize) < 21 && !e.closest('svg')) res.small.push(e.tagName + ':' + e.textContent.trim().slice(0, 16) + ' ' + s.fontSize);
+        if (own && !e.closest('svg') && !e.closest('ol.st li.next > .cell')) { // 못 가는 단(흐린 칸)은 WCAG 「쓸 수 없는 칸」이라 뺌
+          const fg0 = P(s.color); let bgs = bgOf(e);
+          const row = e.closest('.board:not(.wide) .row'); // 경주판 줄 글은 막대(빨강 · 파랑 번짐) 위에도 놓임
+          if (row) { const bars = [...row.querySelectorAll('.bar')].flatMap(b => { const bs = getComputedStyle(b); return [P(bs.backgroundColor), ...stopsOf(bs)].filter(x => x && x[3] > 0); }); bgs = bgs.flatMap(b => [b, ...bars.map(t => over(t, b))]); }
+          if (fg0) { const fg = [fg0[0], fg0[1], fg0[2], fg0[3] * opa(e)], fs = parseFloat(s.fontSize), big = fs >= 24 || (fs >= 18.66 && +s.fontWeight >= 700), need = big ? 3 : 4.5;
+            const worst = Math.min(...bgs.map(b => cr(over(fg, b), b)));
+            if (worst < need) res.lowc.push(`${e.tagName}.${(e.className || '').toString().split(' ')[0]}:${e.textContent.trim().slice(0, 12)} ${worst.toFixed(2)}<${need}`); }
+          const bb = e.getBoundingClientRect();
+          for (const a of clipAnc(e)) { const ab = a.getBoundingClientRect(); if (bb.right > ab.right + 1 || bb.left < ab.left - 1) { res.clip.push(`${e.tagName}:${e.textContent.trim().slice(0, 12)} ${Math.round(bb.right - ab.right)}px`); break; } }
+        }
         const bb = e.getBoundingClientRect();
         if (bb.width >= 8 && bb.width <= 44 && Math.abs(bb.width - bb.height) <= 2 && !e.closest('svg')) res.squares++;
       }
@@ -119,6 +151,8 @@ for (const [w, hgt, font] of plans) {
     if (errs.length) fail(tag, '오류: ' + errs.slice(0, 2).join(' | '));
     if (r.over > 0) fail(tag, `옆 넘침 ${r.over}px`);
     if (r.small.length) fail(tag, '21px 미만: ' + r.small.slice(0, 3).join(' · '));
+    if (r.lowc.length) fail(tag, '대비 낮음: ' + r.lowc.slice(0, 3).join(' · '));
+    if (r.clip.length) fail(tag, '옆으로 잘림: ' + r.clip.slice(0, 3).join(' · '));
     if (r.taps.length) fail(tag, '44px 미만 누름: ' + r.taps.slice(0, 3).join(' · '));
     if (r.banned.length) fail(tag, '금지 말: ' + r.banned.join(' · '));
     if (r.canvas || r.d3) fail(tag, `입체 · 캔버스 ${r.canvas + r.d3}`);
@@ -159,6 +193,8 @@ for (const [w, hgt, font] of plans) {
       const t = await p.$eval('#hits', x => x.innerText);
       screens++; numbers++;
       if (!t.includes(want)) fail(`${w} 찾기 ${q}`, `결과에 ${want} 없음`);
+      const clipF = await p.evaluate(() => { const H = document.querySelector('#hits').getBoundingClientRect(); return [...document.querySelectorAll('#hits li *')].filter(x => { const bx = x.getBoundingClientRect(); return bx.width > 0 && (bx.right > H.right + 1 || bx.left < H.left - 1); }).length; });
+      if (clipF) fail(`${w} 찾기 ${q}`, `결과 줄이 옆으로 잘림 ${clipF}칸`);
       const errsF = errs.splice(0); if (errsF.length) fail(`${w} 찾기 ${q}`, '오류: ' + errsF[0]);
       await p.evaluate(() => { document.querySelector('[data-close="findSheet"]').click(); });
     }
