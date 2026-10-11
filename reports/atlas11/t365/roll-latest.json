@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-11T16:51:09.083Z",
- "kst": "2026-10-12 01:51",
+ "at": "2026-10-11T17:57:44.014Z",
+ "kst": "2026-10-12 02:57",
  "slot": null,
- "reason": "7단 — 네 팀 자료 배치(누구와 다투나 · 앞으로 클까? · 범위 · 확인)",
+ "reason": "",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-qttneo/closes/20261011T165109Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-p8UnSl/closes/20261011T175744Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261008",
-  "sec": 109,
+  "sec": 104,
   "firstErrors": []
  },
  "asOf": "2026-10-08",
@@ -68,17 +68,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 109.1
+   "sec": 104.5
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 2
+   "sec": 1.9
   },
   {
    "name": "365곳 다시 고르기",
    "code": 0,
-   "sec": 4.1
+   "sec": 4
   },
   {
    "name": "업종 정리",
@@ -93,22 +93,22 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 7.4
+   "sec": 7.1
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.6
+   "sec": 2.4
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 50.9
+   "sec": 49.1
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 20.8
+   "sec": 20
   }
  ]
 }
