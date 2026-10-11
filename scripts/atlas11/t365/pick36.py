@@ -4,9 +4,12 @@
 총 1억번 돌려 그렇게 1억번씩을 4방향으로 돌려서 값을 찾아낸 이후 그다음 소거법도 같은 방식으로 대입해서 찾아내 돌아오는 월요일에 매수 할 36개에
 종목을 각 한주씩만 매수 하는 조건이야」 → 「4방향」 뜻을 여쭸으나 답이 없어 계획 카드(00:30)에 적은 「가. 시장이 갈 방향 넷」으로 셈.
 06:13 「이걸 … 새로운 아틀란스 … 이 토대로」 다음에 새 ATLAS 의 탭 하나로 붙임.
+pick36-v2(2026-10-11 · 사장님 11:43 「두 팀이 함께 고른 8업종(178곳)을 「대세였던 곳」으로 … 365곳을 만들까요? 어 그렇게 해」)
+  — 아래 셈 · 기준 · 문턱은 v1 과 한 글자도 같고 회사만 universe.json 의 365곳(d365-v1 대세 365곳)으로 바뀜(판 이름이 씨앗에 들어가 난수도 새로).
+    전부 돌리기 전에 이 파일 · universe.json 을 커밋해 두어야 돌아감(기준을 먼저 적어 둔 커밋 = spec.specCommit) · 셀 수 없어 뺀 시험 날도 기록(backtest.skipped).
 
 ━━ 돌리기 전에 정한 것(결과를 보고 바꾸지 않음 · 바꾸면 새 판 이름 pick36-v2) ━━
-자료  reports/atlas11/universe/2026-10-10/bundle.json.gz 일봉(10월 8일 종가까지) · 회사 = t365-v1 365곳(2026-10-10-t365/by-industry.json)
+자료  reports/atlas11/universe/2026-10-10/bundle.json.gz 일봉(10월 8일 종가까지) · 회사 = universe.json 의 365곳(v1 = t365-v1 2026-10-10-t365 · v2 = d365-v1 2026-10-11-d365 의 by-industry.json)
 하루 수익  로그(오늘 종가 ÷ 앞 거래일 종가) · 한국 하루 가격 제한(±30%) 밖이면(|단순 수익| > 30.5%) 주식 수 바뀜으로 보고 그날 그 회사 값 없음
 거래일  365곳 가운데 절반 넘게 종가가 있는 날
 시장  365곳 하루 단순 수익의 같은 무게 평균(그날 값 있는 회사만)
@@ -27,17 +30,20 @@
       (경로만 방향마다 「회사 × 경로」 1,000만 · 기록에 적음) → t 종가에 같은 무게로 36곳 → t+20 종가(그날 값 없으면 그 전 마지막 값)
       견줌 = 같은 날 그때 값 있는 365곳 같은 무게 평균(아무거나 36곳의 기대값) · 맞음 = 36곳 > 365곳 평균
       문턱(「지난 기록에서 통함」이라고 쓸 조건) = 맞음 60% 이상 · 한쪽 이항 검정 p < 0.05 · 앞 절반 · 뒤 절반 모두 55% 이상 — 못 넘으면 「통한다고 할 수 없음」
-한계  365곳은 10월 2일까지 자료로 고른 것(이미 많이 오른 회사가 많음) — 시험은 그 안에서 「아무거나 36곳」과 견줌으로만 읽음 · 앞날 값이 아님(모형 가정 아래 셈)
+한계  v1 365곳은 10월 2일까지 · v2 365곳은 10월 8일까지 30거래일 대세 업종으로 고른 것(이미 많이 오른 회사가 많음) — 시험은 그 안에서 「아무거나 36곳」과 견줌으로만 읽음 · 앞날 값이 아님(모형 가정 아래 셈)
 
 쓰는 법(저장소 맨 위에서): python3 scripts/atlas11/t365/pick36.py [--quick]   (--quick = 경로 1/100 · 시험 빼고 · 고칠 때만)
 만드는 것: site/atlas/data/pick36.json(화면) · reports/atlas11/verify/pick36-<기준일>-<만든 때>.json(기록 · 새 파일만)
 """
-import gzip, hashlib, json, math, os, sys, time
+import gzip, hashlib, json, math, os, subprocess, sys, time
 from datetime import datetime, timezone
 import numpy as np
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
-VERSION = 'pick36-v1'
+ACT = json.load(open(os.path.join(ROOT, 'scripts/atlas11/t365/universe.json'), encoding='utf-8'))  # 지금 쓰는 365곳
+VERSION = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2'}[ACT['version']]
+if ACT.get('pick36') != VERSION:
+    sys.exit('pick36: universe.json 의 pick36(%s) 이 365곳 판(%s)에 맞는 이름(%s)과 다름' % (ACT.get('pick36'), ACT['version'], VERSION))
 QUICK = '--quick' in sys.argv
 H, LIMIT, WIN, WMIN, VOLQ, UPTH, DNTH = 20, 0.305, 500, 250, 0.75, 0.03, -0.03
 PROFIT, BIGLOSS, CUT, N_PICK, PER_IND = 0.003, -0.15, 1 / 3, 36, 5
@@ -50,13 +56,20 @@ t0 = time.time()
 def say(m):
     print(f'[{time.time() - t0:7.1f}s] {m}', file=sys.stderr, flush=True)
 
-byi = json.load(open(os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365/by-industry.json'), encoding='utf-8'))
-pro = json.load(open(os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10-t365/proposal.json'), encoding='utf-8'))
+byi = json.load(open(os.path.join(ROOT, ACT['dir'], 'by-industry.json'), encoding='utf-8'))
+pro = json.load(open(os.path.join(ROOT, ACT['dir'], 'proposal.json'), encoding='utf-8'))
+if pro['rules']['version'] != ACT['version']:
+    sys.exit('pick36: proposal.json 판이 universe.json 과 다름')
+SPEC_FILES = ['scripts/atlas11/t365/pick36.py', 'scripts/atlas11/t365/universe.json']
+git = lambda *a: subprocess.run(['git', *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+SPEC_COMMIT = git('log', '-1', '--format=%h', '--', *SPEC_FILES)
+if not QUICK and (not SPEC_COMMIT or git('status', '--porcelain', '--', *SPEC_FILES)):
+    sys.exit('pick36: 돌리기 전에 정한 것(이 파일 · universe.json)을 먼저 커밋하세요 — 기준을 먼저 적어 둔 커밋이 있어야 전부 돌림')
 cap_sel = {p['code']: p['capEok'] for p in pro['picked']}
 companies = [(c['code'], c['name'], g['id'], i['name']) for g in byi['groups'] for i in g['industries'] for c in i['companies']]
 codes = [c[0] for c in companies]
 NC = len(codes)
-bundle = json.load(gzip.open(os.path.join(ROOT, 'reports/atlas11/universe/2026-10-10/bundle.json.gz'), 'rt', encoding='utf-8'))
+bundle = json.load(gzip.open(os.path.join(ROOT, ACT['bundle']), 'rt', encoding='utf-8'))
 rows = {c: {r[0]: r[4] for r in bundle['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0} for c in codes}
 cnt = {}
 for c in codes:
@@ -185,13 +198,16 @@ say('방향 날 수 ' + json.dumps(rg['n'], ensure_ascii=False) + f" · 출렁 �
 price = {codes[j]: (float(P[T, j]) if not np.isnan(P[T, j]) else None) for j in range(NC)}
 
 # ── ② 지난 기록 시험 ──
-bt = []
+bt, bt_skip, bt_plan = [], [], 0
 if not QUICK:
     k0 = next(k for k, d in enumerate(DATES) if d >= '20240701')
     k = k0
     while k + H <= T:
+        bt_plan += 1
         cols = [j for j in range(NC) if not np.isnan(P[k, j])]
         res = choose(k, iso(DATES[k]), cols, PAIRS_BT)
+        if res is None:
+            bt_skip.append(iso(DATES[k]))  # 역사 창 · 어느 방향 날이 20일이 안 되어 셀 수 없음(기준대로 뺌)
         if res is not None:
             def ret(j):
                 a = P[k, j]
@@ -223,7 +239,7 @@ if bt:
     ex = [b['pick'] - b['all'] for b in bt]
     btsum = {'n': n, 'wins': w, 'rate': round(w / n, 4), 'p': round(p, 4), 'firstHalf': round(r1_, 4), 'secondHalf': round(r2_, 4),
              'meanPick': round(float(np.mean([b['pick'] for b in bt])), 2), 'meanAll': round(float(np.mean([b['all'] for b in bt])), 2),
-             'meanExcess': round(float(np.mean(ex)), 2), 'passes': passes, 'rows': bt}
+             'meanExcess': round(float(np.mean(ex)), 2), 'passes': passes, 'planned': bt_plan, 'skipped': bt_skip, 'rows': bt}
     say(f'시험 {n}번 · 맞음 {w}번({w / n:.1%}) · p {p:.4f} · 앞 {r1_:.0%} 뒤 {r2_:.0%} · 문턱 {"넘음" if passes else "못 넘음"}')
 
 # ── ③ 기록 ──
@@ -241,7 +257,8 @@ total = sum(price[c] for c in picks if price[c])
 made = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 spec = {'version': VERSION, 'dir': '가 · 시장 방향 넷', 'horizon': H, 'profit': PROFIT, 'bigLoss': BIGLOSS, 'cut': '3분의 1', 'perIndustry': PER_IND,
         'window': WIN, 'volQ': VOLQ, 'upTh': UPTH, 'downTh': DNTH, 'pairs': PAIRS, 'pairsBacktest': PAIRS_BT,
-        'paths': now['npath'], 'totalPairs': now['npath'] * NC * len(DIRS) * 2, 'quick': QUICK}
+        'paths': now['npath'], 'totalPairs': now['npath'] * NC * len(DIRS) * 2, 'quick': QUICK,
+        'universe': ACT['version'], 'specCommit': SPEC_COMMIT, 'pickAsOf': ACT['asOf']}
 out = {'schema': 'atlas-new-pick36-1', 'made': made, 'asOf': ASOF, 'spec': spec,
        'dirs': [{'id': d, 'name': nm, 'days': rg['n'][d], 'pool': now['pools'][d]} for d, nm in DIRS],
        'volTh': rg['volTh'], 'window': {'from': iso(DATES[int(rg['days'][0])]), 'to': ASOF, 'days': int(len(rg['days']))},
