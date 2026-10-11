@@ -255,4 +255,10 @@ test('고침 — 지난 기록 파일은 그대로 · 뒤에 만든 업데이트
   assert.deepEqual(l2.problems, []); assert.equal(o2.why, '미국 판 10월 7일(수) 자료로 나온 글'); assert.deepEqual(o2.fixed, [{by: fx2.id, made: fx2.made, field: 'why'}]); assert.equal(old2.why, '미국 판 오늘 자료로 나온 글');
   assert.deepEqual(validateEntry({...fix, kind: 'data', asOf: '2026-10-06', place: 'kr'}).includes('fixes'), true, '고침은 업데이트 줄만');
   assert.match(validateEntry({...fix, fixes: [{...fix.fixes[0], to: '둘 · 절대 넘침 없음'}]}).join(), /금지 말 「절대」/);
+  // 커밋 번호(2026-10-12) — 올릴 때 앞 커밋 위로 다시 얹혀(rebase) 번호가 바뀐 것을 화면에서만 바로잡음 · 커밋 번호 모양만
+  const old3 = {...old, commits: ['e41f8928']}, fx3 = {...fix, id: 'u-20261007T014200-fix3', made: '2026-10-07T01:42:00+09:00', fixes: [{id: old.id, field: 'commits', index: 0, from: 'e41f8928', to: '2161c698'}]};
+  assert.deepEqual(validateEntry(fx3), []);
+  for (const to of ['커밋', 'E41F8928', '2161c6', '']) assert.deepEqual(validateEntry({...fx3, fixes: [{...fx3.fixes[0], to}]}), ['fixes'], to);
+  const l3 = siteLog([old3, fx3], {now: '2026-10-07T01:50:00+09:00'}), o3 = l3.entries.find(e => e.id === old.id);
+  assert.deepEqual(l3.problems, []); assert.deepEqual(o3.commits, ['2161c698']); assert.deepEqual(o3.fixed, [{by: fx3.id, made: fx3.made, field: 'commits', index: 0}]); assert.deepEqual(old3.commits, ['e41f8928'], '들어온 기록(파일)은 그대로');
 });
