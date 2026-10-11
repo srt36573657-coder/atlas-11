@@ -4,6 +4,7 @@
 //   맞대는 것: ① 회사 365곳 20거래일 선(기준일 = 마지막 종가 날의 20거래일 전 = 100 · 사장님 2026-10-11 09:37 「현재에서 지난 20일 거래 · 항상」)
 //             ② 업종 · 갈래 · 전체 「한 회사 한 표」 지수(날마다 같은 무게 평균 · 하루 ±50% 넘는 값 뺌 · 이어 곱함)
 //             ③ 「큰 회사는 크게」 지수(기준일에 몸값만큼 사 두고 그대로) ④ 오름 · 내림 수 ⑤ 1년 반값 아래 떨어진 적 있는 곳 수 · 30% 넘게
+//             ⑨ 갈래 · 업종 · 전체의 방향 · 세기 · 힘(11:04 · 11:10 「이 화면에서 나와야 해」 — 곧은 선 · 앞 반 · 뒤 반)
 //             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표 1,375곳 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 = proposal.json 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
@@ -72,7 +73,24 @@ function cwIndex(cs0) {
   const last = cs.map(() => null);
   return W.map((d, k) => { let num = 0, den = 0; cs.forEach((c, j) => { const x = px(c, d); if (x) last[j] = x / px(c, W[0]) * 100; if (last[j] != null) { num += w[j] * last[j]; den += w[j]; } }); return num / den; });
 }
+// ⑨ 방향 · 세기 · 힘(사장님 11:04 · 11:10) — 화면 자료의 지수(v · cw)로 site_build.py trend() 와 같은 규칙을 따로 짜서 맞댐
+const trendOf = v => {
+  const n = v.length, xs = v.map((_, i) => i), ys = v.map(x => Math.log(x)), mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n;
+  let sxx = 0, sxy = 0, ss = 0; for (let i = 0; i < n; i++) { sxx += (xs[i] - mx) ** 2; sxy += (xs[i] - mx) * (ys[i] - my); ss += (ys[i] - my) ** 2; }
+  const b = sxy / sxx; let res = 0; for (let i = 0; i < n; i++) res += (ys[i] - (my + b * (xs[i] - mx))) ** 2;
+  const r2 = ss > 0 ? 1 - res / ss : 0, fit = Math.exp(b * (n - 1)) - 1, chg = v[n - 1] / v[0] - 1, mid = Math.floor((n - 1) / 2), h1 = v[mid] / v[0] - 1, h2 = v[n - 1] / v[mid] - 1;
+  const d = fit > 0.03 && chg > 0 ? 'up' : fit < -0.03 && chg < 0 ? 'down' : 'flat';
+  return {d, s: d !== 'flat' && Math.abs(fit) >= 0.10 && r2 >= 0.6 ? 'strong' : null, t: h2 - h1 > 0.03 ? 'gain' : h1 - h2 > 0.03 ? 'fade' : null, fit: fit * 100, r2, h1: h1 * 100, h2: h2 * 100};
+};
+const chkTrend = (node, label) => {
+  for (const [key, ser] of [['tr', node.v], ['trc', node.cw]]) {
+    const want = trendOf(ser), got = node[key] ?? {};
+    same(got.d, want.d, `${label} ${key} 방향`); same(got.s ?? null, want.s, `${label} ${key} 세기`); same(got.t ?? null, want.t, `${label} ${key} 힘`);
+    near(got.fit, Math.round(want.fit * 100) / 100, 0.0101, `${label} ${key} 곧은 선`); near(got.h1, Math.round(want.h1 * 100) / 100, 0.0101, `${label} ${key} 앞 반`); near(got.h2, Math.round(want.h2 * 100) / 100, 0.0101, `${label} ${key} 뒤 반`); near(got.r2, Math.round(want.r2 * 100) / 100, 0.0101, `${label} ${key} 곧음`);
+  }
+};
 const chk = (node, cs, label) => {
+  chkTrend(node, label);
   const e = eqIndex(cs), cw = cwIndex(cs);
   e.forEach((x, k) => near(node.v[k], Math.round(x * 100) / 100, 0.0101, `${label} 한 회사 한 표 ${W[k]}`));
   cw.forEach((x, k) => near(node.cw[k], Math.round(x * 100) / 100, 0.0101, `${label} 큰 회사는 크게 ${W[k]}`));

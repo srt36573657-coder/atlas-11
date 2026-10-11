@@ -54,9 +54,10 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   const rows = items.map(it => {
     const pos = h('i', {class: 'bar pos'}), neg = h('i', {class: 'bar neg'}), avg = parent ? h('i', {class: 'avg'}) : null;
     const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, it.name, it.badge ? h('span', {class: 'badge', text: it.badge}) : null);
-    const row = h('a', {class: 'row', href: it.href, role: 'listitem'}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, h('i', {class: 'zero'}), neg, pos, avg), val, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+    const trd = it.tr ? trEl(state.mode === 'cw' && it.trc ? it.trc : it.tr) : null;
+    const row = h('a', {class: 'row' + (trd ? ' two' : ''), href: it.href, role: 'listitem'}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, h('i', {class: 'zero'}), neg, pos, avg), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
     board.append(row);
-    return {it, row, pos, neg, avg, val, rank: -1, cur: 100};
+    return {it, row, pos, neg, avg, val, trd, rank: -1, cur: 100};
   });
   host.append(board);
   const rowH = rows.length ? rows[0].row.getBoundingClientRect().height + (wide ? 4 : 0) : 0;
@@ -105,7 +106,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   if (auto) play();
   return {
     play, finish,
-    setMode(m) { mode = m; M = m === 'cw' ? Mcw : Meq; board.classList.add('smooth'); finish(); setTimeout(() => board.classList.remove('smooth'), 600); },
+    setMode(m) { mode = m; M = m === 'cw' ? Mcw : Meq; for (const r of rows) if (r.trd) trFill(r.trd, m === 'cw' && r.it.trc ? r.it.trc : r.it.tr); board.classList.add('smooth'); finish(); setTimeout(() => board.classList.remove('smooth'), 600); },
     stop() { cancelAnimationFrame(raf); playing = false; },
   };
 }
@@ -184,6 +185,18 @@ function legend(parentName) {
 function crumbs(...parts) { const c = h('nav', {class: 'crumb', 'aria-label': '지금 자리'}); parts.forEach((p, i) => { if (i) c.append(h('i', {text: '›', 'aria-hidden': 'true'})); c.append(p.href ? h('a', {href: p.href, text: p.text}) : h('span', {text: p.text})); }); return c; }
 const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
 const LV = ['갈래', '업종', '회사', '지나온 길', '범위 · 점검'];
+/** 기간 안 방향 · 세기 · 힘(사장님 11:04 「업종이 기간내에 오르고 있는지 내리고 있는지 그 강도」 · 11:10 「이 화면에서 나와야 해」) — 셈은 site_build.py trend() */
+const TR_WORD = {up: '오름', down: '내림', flat: '옆걸음'};
+function trText(t) { if (!t) return ''; return (t.d === 'up' ? '▲ ' : t.d === 'down' ? '▼ ' : '▶ ') + (t.s === 'strong' ? '강하게 ' : '') + TR_WORD[t.d] + (t.t === 'gain' ? ' · 힘 붙음' : t.t === 'fade' ? ' · 힘 빠짐' : ''); }
+function trFill(el, t) {
+  el.className = el.className.replace(/\b(up|down|flat)\b/g, '').trim() + ' ' + (t?.d ?? 'flat');
+  if (!t) { el.textContent = ''; return el; }
+  const words = trText(t), cut = words.indexOf(' · ');
+  el.replaceChildren(h('span', {class: 'tdw', text: cut < 0 ? words : words.slice(0, cut)}), cut < 0 ? '' : h('span', {class: 'tt', text: words.slice(cut)}));
+  el.setAttribute('aria-label', `이 기간 ${words.replace(/[▲▼▶] /, '')}`);
+  return el;
+}
+const trEl = (t, cls = 'trd') => trFill(h('span', {class: cls}), t);
 /** 5단 표시 — hrefs[k] = k+1단으로 가는 길(지나온 단 · 바로 다음 단만) · 그 밖은 누르지 못함 */
 function steps(now, hrefs = []) {
   const nav = h('nav', {class: 'steps', 'aria-label': `5단 가운데 ${now}단 — ${LV[now - 1]}`});
@@ -220,7 +233,7 @@ function viewHome(v) {
   const host = h('div');
   const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello.jpg', alt: '', width: 44, height: 44, decoding: 'async'}), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
   v.append(hello, tell.el, head, count, host);
-  const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw}));
+  const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
   const rc = race(host, {items, parent: A, label: `큰 갈래 10개 — 지난 ${C.days}거래일 경주 · 많이 오른 순: ` + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
     auto: !state.played && !RM.matches,
@@ -230,7 +243,7 @@ function viewHome(v) {
     },
     onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   state.played = true;
-  v.append(legend('365곳'), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(legend('365곳'), h('p', {class: 'note trn', text: `줄 아래 = ${md(C.base)} → ${md(C.asOf)} 방향 · 세기 · 힘: 「강하게」 = 곧게 10% 넘게 · 「힘 붙음」 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대)`}), seg(m => { words(m); rc.setMode(m); }), alt);
   const share = Math.round(F.dd50 / F.n1y * 10);
   v.append(h('div', {class: 'munger'}, h('p', {class: 'mq', text: `이 365곳도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다.`}),
     h('p', {class: 's', text: `반값을 견딜 수 있나요? — ${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가로 셈`})));
@@ -243,17 +256,18 @@ function viewGroup(v, id) {
   const C = D.core, g = gById(id);
   if (!g) return viewMissing(v);
   const inds = g.inds.map(ind);
+  const gtr = h('p', {class: 'trh'});
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
-    head.replaceChildren(`${g.name} ${C.days}거래일 `, pctEl(chgOf(g, m), 'span'));
+    head.replaceChildren(`${g.name} ${C.days}거래일 `, pctEl(chgOf(g, m), 'span')); trFill(gtr, m === 'cw' ? g.trc : g.tr);
     if (m === 'eq') { count.replaceChildren(`${g.n}곳 중 `, h('b', {class: 'up', text: g.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: g.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(g.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(g.cwChg), ` · 한 회사 한 표로는 `, pctEl(g.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(g.chg), ` · ${g.up}곳 오름 · ${g.down}곳 내림.`); }
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, h('p', {class: 'say', text: g.say + ` · 업종 ${inds.length}개`}), count, host);
-  const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null}));
+  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, gtr, h('p', {class: 'say', text: g.say + ` · 업종 ${inds.length}개`}), count, host);
+  const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null, tr: i.tr, trc: i.trc}));
   const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — ${C.days}거래일 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   v.append(legend(g.short), seg(m => { words(m); rc.setMode(m); }), alt);
@@ -270,16 +284,17 @@ async function viewIndustry(v, name) {
   if (i.n === 1) { location.replace('#/c/' + i.members[0]); return; }
   await needComp();
   const g = gById(i.g);
+  const itr = h('p', {class: 'trh'});
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
-    head.replaceChildren(`${i.name} ${C.days}거래일 `, pctEl(chgOf(i, m), 'span'));
+    head.replaceChildren(`${i.name} ${C.days}거래일 `, pctEl(chgOf(i, m), 'span')); trFill(itr, m === 'cw' ? i.trc : i.tr);
     if (m === 'eq') { count.replaceChildren(`${i.n}곳 중 `, h('b', {class: 'up', text: i.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: i.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(i.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(i.cwChg), ' · 한 회사 한 표로는 ', pctEl(i.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(i.chg), ` · ${i.up}곳 오름 · ${i.down}곳 내림.`); }
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, count, host);
+  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, itr, count, host);
   const items = i.members.map(c => ({key: c, name: D.comp[c].name, href: '#/c/' + c, v: D.lines[c].map(x => (x == null ? null : x / 100)), cw: null}));
   const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — ${C.days}거래일 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
@@ -606,6 +621,7 @@ function showInfo(code) {
   }
   $('#infoTitle').textContent = 'ATLAS 는 어떻게 셌나요';
   body.append(h('p', {text: `한국 우량주 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 세 번 눌러 봅니다. 앞날 값은 내지 않습니다.`}));
+  body.append(h('p', {text: `줄 아래 「▲ 강하게 오름 · 힘 붙음」 = 이 기간의 방향 · 세기 · 힘입니다. 방향 = 기간 동안 그은 곧은 선이 3% 넘게 기울고 처음보다 끝도 같은 쪽(아니면 「옆걸음」) · 강하게 = 그 선이 10% 넘고 들쭉날쭉하지 않음 · 힘 붙음 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대). 지난 기록이고 앞날 값이 아닙니다.`}));
   body.append(h('h2', {class: 'sec', text: '365곳은 이렇게 골랐습니다'}), funnel(null));
   body.append(h('details', {class: 'more'}, h('summary', {text: '기본 문 여섯 · 흐름 문 — 원문'}), h('div', {class: 'in'}, h('ul', {}, ...D.core.rules.gate.map(t => h('li', {text: t})), h('li', {text: '2026 흐름: ' + D.core.rules.t26}), h('li', {text: '2027 흐름: ' + D.core.rules.t27})))));
   body.append(h('p', {class: 'note', text: `365곳 가운데 ${F.t26n}곳은 이미 1년에 20% 넘게 올라서 뽑혔습니다 — 그래서 선이 좋아 보이기 쉽습니다(${C.days}거래일 가운데값: 그 ${F.t26n}곳 ${pct(F.t26med)} · 업종으로만 든 ${F.t27n}곳 ${pct(F.t27med)}).`}));

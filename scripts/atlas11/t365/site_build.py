@@ -253,12 +253,39 @@ def below_at(codes, k):
     return sum(1 for c in codes if (filled(mv[c])[k] or 100) < 100)
 
 
+TR_DIR, TR_STRONG, TR_TURN = 0.03, 0.10, 0.03  # 방향 3% · 강하게 10%(곧음 0.6 이상) · 힘 3%p
+
+
+def trend(v):
+    """기간 안 방향 · 세기 · 힘 — 사장님 2026-10-11 11:04 「업종이 기간내에 오르고 있는지 내리고 있는지 그 강도가 어떤지등을 표현 해야해」 · 11:10 「이 화면에서 나와야 해」
+    곧은 선 = ln(지수)을 날(0 … n−1)에 맞춘 기울기 → 기간 변화 fit = e^(기울기 × (n−1)) − 1 · 곧음 r2 = 그 선에 붙어 가는 정도(0 ~ 1)
+    방향 d: fit > 3% 이고 처음→끝도 오름 = up · fit < −3% 이고 처음→끝도 내림 = down · 그 밖 flat(옆걸음)
+    세기 s: 오름 · 내림 가운데 |fit| ≥ 10% 이고 r2 ≥ 0.6 = strong(「강하게」)
+    힘 t(오르는 힘): 뒤 반(가운데 날 → 끝) 변화 − 앞 반(처음 → 가운데 날) 변화 > 3%p = gain(「힘 붙음」) · < −3%p = fade(「힘 빠짐」)"""
+    n = len(v)
+    xs = list(range(n))
+    ys = [math.log(x) for x in v]
+    mx, my = sum(xs) / n, sum(ys) / n
+    sxx = sum((x - mx) ** 2 for x in xs)
+    b = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
+    ss = sum((y - my) ** 2 for y in ys)
+    res = sum((y - (my + b * (x - mx))) ** 2 for x, y in zip(xs, ys))
+    r2 = 1 - res / ss if ss > 0 else 0.0
+    fit, chg, mid = math.exp(b * (n - 1)) - 1, v[-1] / v[0] - 1, (n - 1) // 2
+    h1, h2 = v[mid] / v[0] - 1, v[-1] / v[mid] - 1
+    d = 'up' if fit > TR_DIR and chg > 0 else 'down' if fit < -TR_DIR and chg < 0 else 'flat'
+    s = 'strong' if d != 'flat' and abs(fit) >= TR_STRONG and r2 >= 0.6 else None
+    t = 'gain' if h2 - h1 > TR_TURN else 'fade' if h1 - h2 > TR_TURN else None
+    return {'d': d, 's': s, 't': t, 'fit': d2(fit * 100), 'r2': round(r2, 2), 'h1': d2(h1 * 100), 'h2': d2(h2 * 100)}
+
+
 def node(name, codes, v):
     cw = capw(codes)
     up, dn, fl = breadth(codes)
     k = low_day(v)
     return {'name': name, 'n': len(codes), 'v': v, 'cw': cw, 'chg': d2(v[-1] - 100), 'cwChg': d2(cw[-1] - 100),
-            'mdd': d2(mdd(v) * 100), 'up': up, 'down': dn, 'flat': fl, 'low': {'k': k, 'v': v[k], 'below': below_at(codes, k)}}
+            'mdd': d2(mdd(v) * 100), 'up': up, 'down': dn, 'flat': fl, 'low': {'k': k, 'v': v[k], 'below': below_at(codes, k)},
+            'tr': trend(v), 'trc': trend(cw)}
 
 
 # 갈래 · 업종 차례 = 20거래일 많이 오른 순(사장님 2026-10-11 00:00 「올름차순으로 배열을 해」 → 많이 오른 순)
