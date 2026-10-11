@@ -44,7 +44,7 @@ function fadeDefs(defs, id, T, P, H, by) {
   const gd = sv('linearGradient', {id: id + 'gd', gradientUnits: 'userSpaceOnUse', x1: 0, y1: by, x2: 0, y2: H - P}); gd.append(sv('stop', {offset: 0, 'stop-color': T.down, 'stop-opacity': 0.02}), sv('stop', {offset: 1, 'stop-color': T.down, 'stop-opacity': 0.26}));
   defs.append(gu, gd);
 }
-const hairs = (svg, W, P, ys) => { for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: '#FFFFFF', 'stroke-opacity': 0.08, 'stroke-width': 1})); };
+const hairs = (svg, W, P, ys) => { for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: '#FFFFFF', 'stroke-opacity': 0.14, 'stroke-width': 1})); };
 const gById = id => D.core.groups.find(g => g.id === id);
 const ind = name => D.core.industries.find(i => i.name === name);
 const series = (node, mode = state.mode) => (mode === 'cw' ? node.cw : node.v);
@@ -151,13 +151,13 @@ function lineChart(host, {v, avg, label}) {
   hairs(svg, W, P, [P, H - P]); // 가로 가는 선 = 위 · 아래 끝(왼쪽 숫자 자리)
   const ad = areaPath(v, X, Y, Y(100));
   svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1}));
   if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: T.gold, 'stroke-width': 2}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
+  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 3, 'stroke-dasharray': '0.1 6', 'stroke-linecap': 'round'}));
   const d = path(v);
-  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
-  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
   const lastK = v.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
   svg.append(sv('circle', {cx: X(lastK), cy: Y(v[lastK]), r: 5.5, fill: v[lastK] >= 100 ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
   const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2});
@@ -468,13 +468,13 @@ function priceChart(host, {dates, close, avg, jumps, label}) {
   hairs(svg, W, P, [P, H - P]);
   const ad = areaPath(close, X, Y, Y(base));
   svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: T.mute, 'stroke-width': 1}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round'}));
+  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 3, 'stroke-dasharray': '0.1 6', 'stroke-linecap': 'round'}));
   const d = path(close);
   svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
   svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
-  for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: T.gold, 'stroke-width': 2.5})); }
+  for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: T.gold, 'stroke-width': 2})); }
   const lastK = close.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
   svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 5.5, fill: close[lastK] >= base ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
   const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
@@ -692,15 +692,15 @@ function growChart(host, c, G) {
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `${c.name} 매출 길 — ${G.baseYear}년 매출 = 1 · ` +
     slots.map(s => s.kind === 'fut' ? `${s.k}년 뒤(${s.lab}) ${s.x?.mid != null ? xMul(s.x.lo) + '~' + xMul(s.x.hi) + ' 가운데 ' + xMul(s.x.mid) : '자료 모자람'}` : `${s.lab}${s.kind === 'est' ? ' 증권사 평균치' : ''} ${xMul(s.v)}`).join(', ')});
   hairs(svg, W, P, [Y(0)]);
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(1), y2: Y(1), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(1), y2: Y(1), stroke: T.mute, 'stroke-width': 1}));
   const tipOf = [];
   slots.forEach((s, j) => {
     const x = X(j);
-    if (s.kind === 'act') svg.append(sv('rect', {x: x - bw / 2, y: Y(Math.max(0, s.v)), width: bw, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 4, fill: T['violet-ink']}));
-    else if (s.kind === 'est') svg.append(sv('rect', {x: x - bw / 2 + 1, y: Y(Math.max(0, s.v)), width: bw - 2, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 4, fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '5 4'}));
+    if (s.kind === 'act') svg.append(sv('rect', {x: x - bw / 2, y: Y(Math.max(0, s.v)), width: bw, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 1, fill: T['violet-ink']}));
+    else if (s.kind === 'est') svg.append(sv('rect', {x: x - bw / 2 + 1, y: Y(Math.max(0, s.v)), width: bw - 2, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 1, fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
     else if (s.x && s.x.mid != null) {
-      svg.append(sv('rect', {x: x - bw / 2, y: Y(s.x.hi), width: bw, height: Math.max(2, Y(s.x.lo) - Y(s.x.hi)), rx: 6, fill: T.violet, 'fill-opacity': 0.38, stroke: T['violet-ink'], 'stroke-width': 1}));
-      svg.append(sv('line', {x1: x - bw / 2 - 3, x2: x + bw / 2 + 3, y1: Y(s.x.mid), y2: Y(s.x.mid), stroke: T.ink, 'stroke-width': 3, 'stroke-linecap': 'round'}));
+      svg.append(sv('rect', {x: x - bw / 2, y: Y(s.x.hi), width: bw, height: Math.max(2, Y(s.x.lo) - Y(s.x.hi)), rx: 1, fill: T.violet, 'fill-opacity': 0.38, stroke: T['violet-ink'], 'stroke-width': 1}));
+      svg.append(sv('line', {x1: x - bw / 2 - 3, x2: x + bw / 2 + 3, y1: Y(s.x.mid), y2: Y(s.x.mid), stroke: T.ink, 'stroke-width': 3, 'stroke-linecap': 'butt'}));
     } else svg.append(sv('line', {x1: x - bw / 2, x2: x + bw / 2, y1: Y(1), y2: Y(1), stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '2 4'}));
     tipOf.push(s.kind === 'fut' ? `${s.k}년 뒤 ${s.lab}년 · ${s.x?.mid != null ? `${xMul(s.x.lo)} ~ ${xMul(s.x.hi)} · 가운데 ${xMul(s.x.mid)}` : '? 자료 모자람'}` : `${s.lab}년${s.kind === 'est' ? ' 증권사 평균치' : ''} · ${xMul(s.v)}`);
   });
@@ -756,8 +756,8 @@ function btChart(host, rows) {
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `지난 ${n}번 시험 — 36곳이 365곳 평균보다 나은 때 ${ex.filter(x => x > 0).length}번`});
   const T = tok();
   hairs(svg, W, P, [P, Hh - P]);
-  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 2.5, fill: x > 0 ? T.up : T.down})); });
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: T.mute, 'stroke-width': 1.25}));
+  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 1, fill: x > 0 ? T.up : T.down})); });
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: T.mute, 'stroke-width': 1}));
   host.append(svg);
   host.append(h('div', {class: 'ax'}, h('span', {text: ymd(rows[0].t)}), h('span', {text: ymd(rows[n - 1].t)})));
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; host.append(tip);
@@ -807,13 +807,13 @@ function upChart(host, rows) {
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `최근 ${rows.length}회차 — 새로 든 곳 ${rows.reduce((t, r) => t + (r.in?.length ?? 0), 0)} · 빠진 곳 ${rows.reduce((t, r) => t + (r.out?.length ?? 0), 0)}`});
   const T = tok();
   hairs(svg, W, P, [P, Hh - P]);
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: T.mute, 'stroke-width': 1.25}));
+  svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: T.mute, 'stroke-width': 1}));
   rows.forEach((r, k) => {
     const x = x0 + k * bw + bw * 0.18, w = Math.max(2, bw * 0.64), a = (r.in?.length ?? 0) * sc, b = (r.out?.length ?? 0) * sc;
-    if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 3, fill: 'none', stroke: T.gold, 'stroke-width': 1.5}));
+    if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 1, fill: 'none', stroke: T.gold, 'stroke-width': 1.5}));
     else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: T.mute}));
-    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 2.5, fill: T.violet}));
-    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 2.5, fill: T['violet-ink']}));
+    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 1, fill: T.violet}));
+    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 1, fill: T['violet-ink']}));
   });
   host.append(svg);
   if (rows.length > 1) host.append(h('div', {class: 'ax'}, h('span', {text: kstLabel(rows[0].kst)}), h('span', {text: kstLabel(rows[rows.length - 1].kst)})));
@@ -897,19 +897,19 @@ function timeChart(host, K) {
   const Y = v => Pd + (hi - v) * (H - 2 * Pd) / (hi - lo);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `봉인 ${K.id}호 — 3년 전 ${ymd(P.from)}부터 봉인 날 ${ymd(K.seal)}까지 실제 선(봉인 날 = 100) · 그 뒤 3년 뒤 ${ymd(open3)}까지는 비워 둠(앞날 값을 그리지 않음)`});
   const xs = X(S.dates.at(-1));
-  svg.append(sv('rect', {x: xs.toFixed(1), y: Pd, width: Math.max(0, W - Pd - xs).toFixed(1), height: H - 2 * Pd, fill: T.violet, 'fill-opacity': 0.07, rx: 6})); // 아직 오지 않은 날 — 비워 둠
+  svg.append(sv('rect', {x: xs.toFixed(1), y: Pd, width: Math.max(0, W - Pd - xs).toFixed(1), height: H - 2 * Pd, fill: T.violet, 'fill-opacity': 0.07, rx: 1})); // 아직 오지 않은 날 — 비워 둠
   hairs(svg, W, Pd, [Pd, H - Pd]);
-  svg.append(sv('line', {x1: Pd, x2: W - Pd, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1.25, 'stroke-dasharray': '4 5'}));
+  svg.append(sv('line', {x1: Pd, x2: W - Pd, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1}));
   const path = (ds, arr) => { let d = '', on = false; arr.forEach((v, i) => { if (v == null) { on = false; return; } d += (on ? 'L' : 'M') + X(ds[i]).toFixed(1) + ' ' + Y(v).toFixed(1); on = true; }); return d; };
-  svg.append(sv('path', {d: path(P.dates, ppool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '5 4', 'stroke-linejoin': 'round'}));
+  svg.append(sv('path', {d: path(P.dates, ppool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '6 4', 'stroke-linejoin': 'round'}));
   svg.append(sv('path', {d: path(P.dates, p365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round'}));
   if (S.days) {
-    svg.append(sv('path', {d: path(S.dates, S.vpool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '5 4'}));
+    svg.append(sv('path', {d: path(S.dates, S.vpool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
     svg.append(sv('path', {d: path(S.dates, S.v36), fill: 'none', stroke: T.violet, 'stroke-width': 2.5, 'stroke-linecap': 'round'}));
-    svg.append(sv('path', {d: path(S.dates, S.v365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 3, 'stroke-linecap': 'round'}));
+    svg.append(sv('path', {d: path(S.dates, S.v365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linecap': 'round'}));
   }
   svg.append(sv('line', {x1: X(K.seal), x2: X(K.seal), y1: Pd - 4, y2: H - Pd + 4, stroke: T.gold, 'stroke-width': 2})); // 봉인 날
-  svg.append(sv('line', {x1: X(open3), x2: X(open3), y1: Pd - 4, y2: H - Pd + 4, stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '4 4'})); // 3년 뒤 여는 날
+  svg.append(sv('line', {x1: X(open3), x2: X(open3), y1: Pd - 4, y2: H - Pd + 4, stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '6 4'})); // 3년 뒤 여는 날
   const lk = S.dates.length - 1;
   svg.append(sv('circle', {cx: X(S.dates[lk]), cy: Y(S.v365[lk]), r: 5.5, fill: T['violet-ink'], stroke: T.night, 'stroke-width': 2.5}));
   const cx = sv('line', {y1: Pd, y2: H - Pd, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}); cx.setAttribute('visibility', 'hidden'); svg.append(cx);
