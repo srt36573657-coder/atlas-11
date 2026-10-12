@@ -172,7 +172,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     rep.result = prev && prev.digest === rep.digest ? '그대로' : '바꿈';
     if (rep.result === '그대로') rep.why = '새 값 없음 — 앞 회차와 같은 값으로 다시 만듦';
     // 시장 판독(지난 사실만) → 네 눈 점검(이번 회차 자료 + 화면 코드) — 걸리면 새 자료를 올리지 않음(아래 catch: 지금 사이트 자료 그대로)
-    rep.market = readMarket(out, prev?.market ?? null);
+    rep.market = readMarket(out, prev?.market ?? null, now);
     if (!inspectRun(out, rep.market)) throw Error('네 눈 점검에서 걸림 — ' + failLine());
     // 옮겨 놓고 한 번에 바꿈(반쯤 바뀐 자료가 올라가지 않게)
     const stage = target + '.roll';
@@ -190,7 +190,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   async function done() { // 기록을 못 남겨도 올리기는 멈추지 않음
     if (tmp) await fs.rm(tmp, {recursive: true, force: true}).catch(() => {});
     // 이번 회차에 올라가는 자료(새로 바꾸지 못했으면 지금 자료)의 시장 판독 · 네 눈 점검 — 이미 했으면(바꿈 · 걸림) 그대로
-    if (!rep.market) { try { rep.market = readMarket(target, prev?.market ?? null); } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + '시장 판독 못 함: ' + String(e?.message ?? e).slice(0, 120); } }
+    if (!rep.market) { try { rep.market = readMarket(target, prev?.market ?? null, now); } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + '시장 판독 못 함: ' + String(e?.message ?? e).slice(0, 120); } }
     if (!rep.inspect) { try { if (!inspectRun(target, rep.market)) rep.why = (rep.why ? rep.why + ' · ' : '') + '네 눈 점검에서 걸림(올라가는 자료) — ' + failLine(); } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + String(e?.message ?? e).slice(0, 200); } }
     try { // 「업데이트」 탭 자료 — 이번 회차까지
       await fs.mkdir(target, {recursive: true});

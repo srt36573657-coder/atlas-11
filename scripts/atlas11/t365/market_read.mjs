@@ -33,8 +33,12 @@ export function dayCount(lines) {
   return {up, down, flat, none};
 }
 
-/** dataDir = 그 회차가 올리는 자료 폴더(core.json · lines.json) · prev = 앞 회차 판독(없으면 null) */
-export function readMarket(dataDir, prev = null) {
+/** 때 말 — 「장 중」은 서울 정규장(9:00 ~ 15:30)에 고른 날 값을 받았을 때만 · 그 밖에 아직 바뀌는 값은 「저녁 8시 전 값」(2026-10-12 16:48 회차: 장 끝 뒤에도 「장 중 값」이라 적던 것) */
+export const whenWord = (provisional, asOf, now) => { if (!provisional) return '마감 값'; const t = now ? new Date(now.getTime() + 9 * 36e5).toISOString() : '';
+  return t.slice(0, 10) === asOf && t.slice(11, 16) >= '09:00' && t.slice(11, 16) < '15:30' ? '장 중 값(아직 바뀜)' : '저녁 8시 전 값(아직 바뀜)'; };
+
+/** dataDir = 그 회차가 올리는 자료 폴더(core.json · lines.json) · prev = 앞 회차 판독(없으면 null) · now = 그 회차 때(때 말) */
+export function readMarket(dataDir, prev = null, now = null) {
   const J = f => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
   const core = J('core.json'), lines = J('lines.json').lines;
   const day = dayCount(lines), A = core.all, v = A.v ?? [], cw = A.cw ?? [];
@@ -52,7 +56,7 @@ export function readMarket(dataDir, prev = null) {
     vsPrev: null, lines: []};
   if (prev?.day && prev.asOf) out.vsPrev = {asOf: prev.asOf, dayUp: prev.day.up, topSame: (prev.groups?.top?.id ?? null) === (top?.id ?? null), prevTop: prev.groups?.top?.short ?? null};
   // 쉬운 말 — 줄마다 숫자 하나 이상 · 지난 사실만
-  const when = `${mdText(core.asOf)} ${core.provisional ? '장 중 값(아직 바뀜)' : '마감 값'}`;
+  const when = `${mdText(core.asOf)} ${whenWord(!!core.provisional, core.asOf, now)}`;
   out.lines.push(`${when} — 365곳 가운데 ${day.up}곳 오름 · ${day.down}곳 내림 → ${out.day.word}`);
   out.lines.push(`${core.days}거래일(${mdText(core.base)}부터) — 한 회사 한 표 ${pctText(A.chg)} · 큰 회사는 크게 ${pctText(A.cwChg)} → ${out.span.size}`);
   if (top && low) out.lines.push(`가장 센 갈래 ${top.short} ${pctText(top.chg)}${top.tr ? `(${trText(top.tr)})` : ''} · 가장 약한 갈래 ${low.short} ${pctText(low.chg)}`);

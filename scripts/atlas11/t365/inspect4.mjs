@@ -128,7 +128,7 @@ function appleLens(S) {
 }
 
 // ═════════ 🔎 구글 — 숫자 맞대기 ═════════
-function googleLens(S, market) {
+function googleLens(S, market, now = new Date()) {
   const {core} = S, comp = S.comp.companies, lines = S.lines.lines, dates = core.dates, W = dates.length;
   const dIdx = new Map(S.days.dates.map((d, k) => [d, k]));
   const pairs = []; for (let a = 0; a < W; a++) for (let b = a + 1; b < W; b++) pairs.push(a * 64 + b);
@@ -165,6 +165,8 @@ function googleLens(S, market) {
     const gs = core.groups.filter(g => g.chg != null), mx = gs.reduce((m, g) => (g.chg > m.chg ? g : m), gs[0]), mn = gs.reduce((m, g) => (g.chg < m.chg ? g : m), gs[0]);
     mk.push(['하루 오른 곳', market.day?.up, up], ['하루 내린 곳', market.day?.down, down], ['20거래일 한 회사 한 표', market.span?.chg, core.all.chg], ['20거래일 큰 회사는 크게', market.span?.cwChg, core.all.cwChg],
       ['가장 센 갈래', market.groups?.top?.id, mx?.id], ['가장 약한 갈래', market.groups?.low?.id, mn?.id], ['고른 날', market.asOf, core.asOf], ['장 중 값 표시', market.provisional, !!core.provisional]);
+    const t = new Date(now.getTime() + 9 * 36e5).toISOString(); // 「장 중」 말 = 정규장(9:00 ~ 15:30)에 고른 날 값을 받았을 때만(2026-10-12 16:48 회차: 장 끝 뒤에도 「장 중 값」)
+    mk.push(['「장 중」 말 = 정규장 때만', /장 중/.test(market.lines?.[0] ?? ''), !!core.provisional && t.slice(0, 10) === core.asOf && t.slice(11, 16) >= '09:00' && t.slice(11, 16) < '15:30']);
   }
   const P = S.pick.picks;
   return {key: 'google', name: '구글', what: '숫자가 서로 맞나 — 같은 숫자를 다른 파일 · 다른 길로 다시 셈', kinds: [
@@ -344,7 +346,7 @@ function ciaLens(S, market) {
 /** 네 눈 — 눈마다 n번 · 대상은 먼저 모두 한 번씩 · 나머지는 무작위 */
 export async function inspect4({siteDir, dataDir = null, market = null, n = 1e7, seed = 20261012, now = new Date(), log = () => {}} = {}) {
   const t0 = Date.now(), S = load(siteDir, dataDir), todayKst = new Date(now.getTime() + 9 * 36e5).toISOString().slice(0, 10), ctx = {todayKst};
-  const lenses = [appleLens(S), googleLens(S, market), claudeLens(S, market), ciaLens(S, market)];
+  const lenses = [appleLens(S), googleLens(S, market, now), claudeLens(S, market), ciaLens(S, market)];
   const out = [];
   for (const [li, L] of lenses.entries()) {
     const t1 = Date.now(), rnd = rng((seed + li * 7919) >>> 0);

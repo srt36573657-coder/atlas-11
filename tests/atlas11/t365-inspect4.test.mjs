@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {inspect4, routeRunner, siteGraph, BANNED} from '../../scripts/atlas11/t365/inspect4.mjs';
-import {readMarket, breadthWord, sizeWord, pctText, MR_RULE} from '../../scripts/atlas11/t365/market_read.mjs';
+import {readMarket, breadthWord, sizeWord, pctText, MR_RULE, whenWord} from '../../scripts/atlas11/t365/market_read.mjs';
 import {HEADER_TOP} from '../../scripts/atlas11/site_headers.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
@@ -35,6 +35,12 @@ test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', 
   assert.equal(sizeWord(13.2, -2.5), '작은 · 중간 회사 쪽이 더 오름'); assert.equal(sizeWord(-8, -2), '큰 회사 쪽이 덜 내림'); assert.equal(sizeWord(1, 0), '회사 크기와 상관없이 비슷'); assert.equal(sizeWord(-2, -9), '작은 · 중간 회사 쪽이 덜 내림');
   assert.equal(pctText(-2.49), '−2.5%'); assert.equal(pctText(13.18), '+13.2%'); assert.equal(pctText(null), '?');
   assert.equal(MR_RULE.id, 'mr-v1');
+  // 때 말 — 「장 중」은 정규장(9:00 ~ 15:30)에 고른 날 값을 받았을 때만(2026-10-12 16:48 회차: 장 끝 뒤에도 「장 중 값」이던 것)
+  assert.equal(whenWord(false, '2026-10-12', new Date('2026-10-12T05:00:00Z')), '마감 값');
+  assert.equal(whenWord(true, '2026-10-12', new Date('2026-10-12T05:00:00Z')), '장 중 값(아직 바뀜)');
+  assert.equal(whenWord(true, '2026-10-12', new Date('2026-10-12T07:48:00Z')), '저녁 8시 전 값(아직 바뀜)');
+  assert.equal(whenWord(true, '2026-10-12', new Date('2026-10-13T01:00:00Z')), '저녁 8시 전 값(아직 바뀜)', '다음 날 장 중이라도 고른 날이 어제면 장 중 아님');
+  assert.equal(whenWord(true, '2026-10-12', null), '저녁 8시 전 값(아직 바뀜)');
   const m = readMarket(DATA, null), core = JSON.parse(fs.readFileSync(path.join(DATA, 'core.json'), 'utf8'));
   assert.equal(m.asOf, core.asOf); assert.equal(m.span.chg, core.all.chg); assert.ok(m.day.up + m.day.down + m.day.flat + m.day.none === Object.keys(JSON.parse(fs.readFileSync(path.join(DATA, 'lines.json'), 'utf8')).lines).length);
   assert.equal(m.lines.length, 3); for (const t of m.lines) { assert.match(t, /\d/); for (const w of BANNED) assert.ok(!t.includes(w), t); }
@@ -89,11 +95,11 @@ test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 �
     const c1 = Object.keys(comp.companies)[1], co1 = JSON.parse(fs.readFileSync(path.join(T.data, 'co', c1 + '.json'), 'utf8'));
     co1.extra = {url: 'javascript:alert(1)', note: '<img src=x onerror=alert(1)> nfp_' + 'A'.repeat(30)}; fs.writeFileSync(path.join(T.data, 'co', c1 + '.json'), JSON.stringify(co1));
     const c2 = Object.keys(comp.companies)[2]; fs.rmSync(path.join(T.data, 'co', c2 + '.json')); // 회사 파일 없음 → 4~7단이 못 열림
-    const market = readMarket(T.data, null); market.lines.push('반도체는 곧 오른다 — 지금 사세요');
+    const market = readMarket(T.data, null); market.lines.push('반도체는 곧 오른다 — 지금 사세요'); market.lines[0] = market.lines[0].replace('마감 값', '장 중 값(아직 바뀜)'); // 장이 끝난 자료에 「장 중」
     const r = await inspect4({siteDir: T.tmp, market, n: N, now: NOW});
     assert.equal(r.ok, false);
     assert.ok(kind(r, 'apple', 'list').fail > 0 && kind(r, 'apple', 'company').fail > 0, '애플: 깨진 36곳 길 · 회사 파일 없음');
-    assert.ok(kind(r, 'google', 'company').fail > 0 && kind(r, 'google', 'pick').fail > 0, '구글: 1주 값 · 36곳 이름');
+    assert.ok(kind(r, 'google', 'company').fail > 0 && kind(r, 'google', 'pick').fail > 0 && kind(r, 'google', 'market').fail > 0, '구글: 1주 값 · 36곳 이름 · 「장 중」 말');
     assert.ok(kind(r, 'claude', 'banned').fail > 0 && kind(r, 'claude', 'market').fail > 0, '클로드: 판독 글 금지 말 · 권하는 말');
     assert.ok(kind(r, 'cia', 'inject').fail > 0 && kind(r, 'cia', 'url').fail > 0 && kind(r, 'cia', 'secret').fail > 0, 'CIA: 끼운 코드 · javascript: 주소 · 넷리파이 열쇠 꼴');
     // 화면 코드 — 바깥 주소 · 안전 문장이 빠지면
