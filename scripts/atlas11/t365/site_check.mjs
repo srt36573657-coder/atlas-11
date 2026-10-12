@@ -11,6 +11,7 @@
 //   맨 위 슬라이드 7장(사장님 2026-10-12 18:31 · 19:59 「이게 맨위에 있어서 슬라이드로」 · 20:11 「응」): 판 · 글씨마다 바 칸 일곱을 차례로 눌러 장마다 + 「자세히」 다섯도 열어 화면 판정을 다시 돎(숨은 장도 21px · 대비 · 잘림 · 44px) ·
 //     보이는 장 꼭 하나 = 고른 칸 · 누름 차례 하나 · 잠긴 장 여섯 · 장이 칸에 꼭 맞음 · 바 한 줄 · 「n / 7 · 이름」 · 칸 표시(「!」「?」) = 자료 · 장마다 기대 글 · 「자세히 — 이름」 +
 //     뒷장 조심(앞 회차 값 · 못 받은 값 · 문턱)이 첫 화면에서 금빛으로 보이나 · home.json 을 못 읽어도 멈추지 않나 · 다음 날 아침에 어제 값을 「오늘」이라 하지 않나 · 손가락 밀기(소개 장 · 세로 · 끝 장) · 저절로 넘김 · 손대면 멈춤
+//   오늘의 눈금(2026-10-12 23:10 다섯 팀 · 10-13 00:18 핵심 위주): 2장 결론 줄 · 읽는 법 줄 · 「자세히」 두 지수 줄을 종가에서 따로 셈한 글(gaugeX · gaugeTextX)과 맞댐 · 「자세히」 여섯(2장 오늘 더함)
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import path from 'node:path';
@@ -50,16 +51,36 @@ const dayWord = d => (!d ? '?' : d === todayK() ? '오늘' : mdw(d));
 const eokW = v => { if (v == null) return '?'; const a = Math.abs(Math.round(v)), jo = Math.floor(a / 10000), r = a % 10000; return (jo ? jo.toLocaleString('ko-KR') + '조' + (r ? ' ' : '') : '') + (r || !jo ? r.toLocaleString('ko-KR') + '억' : '') + ' 원'; };
 const iga = x => { const c = x.charCodeAt(x.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? x + '이' : x + '가'; };
 const numK = v => (v == null ? '?' : Number(v).toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '365곳'], DETAIL = ['idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
+const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '365곳'], DETAIL = ['today', 'idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
+// 오늘의 눈금(다섯 팀 합침 2026-10-12 23:10) — 화면(atlas.js gauge · gaugeLine)과 따로 셈: 종가 쌍마다 하루 % · 평소 = 오늘 앞 20거래일 하루 움직임 크기 평균 ·
+//   「n월 n일 뒤 가장 큼」 = 같은 쪽으로 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 · 3개월 안에 없으면 「3개월 중 가장 크게」
+function gaugeX(x) {
+  const c = (x?.rows ?? []).map(r => r[1]), dt = (x?.rows ?? []).map(r => r[0]); if (c.length < 22) return null;
+  const mv = []; for (let i = c.length - 1; i >= 1; i--) if (c[i] > 0 && c[i - 1] > 0) mv.unshift({d: dt[i], v: (c[i] / c[i - 1] - 1) * 100});
+  if (mv.length < 21) return null; const t = mv.at(-1).v, past = mv.slice(0, -1);
+  const hit = past.map((m, i) => ({...m, back: past.length - i})).filter(m => (t < 0 ? m.v <= t : m.v >= t)).at(-1);
+  const avg = past.slice(-20).map(m => Math.abs(m.v)).reduce((a, b) => a + b, 0) / 20;
+  let run = 0, prod = 1; for (const m of [...mv].reverse()) { if (t === 0 || Math.sign(m.v) !== Math.sign(t)) break; run++; prod *= 1 + m.v / 100; }
+  return {t, hit, ratio: avg > 0 ? Math.abs(t) / avg : null, run, runChg: (prod - 1) * 100};
+}
+function gaugeTextX(name, g) {
+  if (!g) return `${name} — ? 3개월 값이 모자라 견주지 못함`; if (!g.t) return `${name} — 그대로(움직임 0)`;
+  const way = g.t < 0 ? '내림' : '오름', R = g.ratio, u = R == null ? '평소 ?' : R >= 1.25 ? `평소의 ${(R >= 10 ? Math.round(R) : Math.round(R * 10) / 10).toLocaleString('ko-KR')}배로` : R >= 0.8 ? '평소만큼' : '평소보다 작게';
+  return `${name} — ${u} ${way}${!g.hit ? ` · 3개월 중 가장 크게 ${way}` : g.hit.back >= 5 ? ` · ${md(g.hit.d)} 뒤 가장 큼` : ''}`;
+}
 function hubExpect(H) {
   const K = H.idx?.KOSPI, Q = H.idx?.KOSDAQ, S = H.sectors, F = H.flows, U = H.us, T = H.s365, st = H.stale ?? {}, A = H.alerts ?? [];
   const marks = HUBID.map(id => { if (id === 'hello' || id === 'today') return ''; const bang = (id === 'idx' && A.some(a => a.kind === 'idx')) || (id === 'flow' && A.some(a => a.kind === 'flow'));
     const q = (id === 'idx' && (!H.idx || st.idx)) || (id === 'sec' && (!S || st.sectors)) || (id === 'flow' && (!F || st.flows)) || (id === 'us' && (!U || st.us)) || (id === 's365' && !T?.list?.length); return (bang ? '!' : '') + (q ? '?' : ''); });
-  const s1 = [K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', `${mdw(H.kst.slice(0, 10))} ${H.kst.slice(11, 16)} 받음`];
-  if (S?.breadth) s1.push(`시장 ${S.breadth.n.toLocaleString('ko-KR')}곳 중 ${S.breadth.up.toLocaleString('ko-KR')}곳 오름 · ${S.breadth.down.toLocaleString('ko-KR')}곳 내림`);
-  const ix = A.filter(a => a.kind === 'idx'), fx = A.filter(a => a.kind === 'flow'), way = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
-  if (ix.length) s1.push(`! ${ix.length > 1 ? '두 지수 모두' : ix[0].name} 3% 넘게 ${way(ix)} ›`); // 짧은 조심 줄(2026-10-12 20:30 — 360 폭에서 바가 첫 화면 안에)
-  for (const a of fx) s1.push(`! 외국 투자자${fx.length > 1 ? ' ' + a.name : ''} 1조 원 넘게 ${a.v < 0 ? '팖' : '삼'} ›`);
+  const d0 = H.kst.slice(0, 10), gK = gaugeX(K), gQ = gaugeX(Q), mainX = gK ? ['코스피', gK, K] : gQ ? ['코스닥', gQ, Q] : null;
+  const s1 = [K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', `${dayWord(d0) === '오늘' || d0 === (K ?? Q)?.date ? '' : mdw(d0) + ' '}${H.kst.slice(11, 16)} 받음`];
+  // 2장은 핵심 하나(2026-10-13 00:18 「핵심위주로」) — 결론 한 줄(코스피 · 없으면 코스닥) · 눈금 그림 · 읽는 법 한 줄 · 「자세히」(코스닥 · 시장 넓이 · 「!」)
+  if (mainX) s1.push(gaugeTextX(mainX[0], mainX[1]), `진한 막대 = ${mainX[0] === '코스피' ? '' : '코스닥이 '}${dayWord(mainX[2].date) === '오늘' ? '오늘' : '이날'}만큼 ${mainX[1].t < 0 ? '내린' : '오른'} 날`, '자세히 ›');
+  const BB = S?.breadth, dnB = BB && BB.down >= BB.up, A2 = H.alerts ?? [], ixA = A2.filter(a => a.kind === 'idx'), wayA = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
+  const today = [`${(K ?? Q)?.date ? dayWord((K ?? Q).date) + ' ' : ''}시장 — 평소와 견줌`, ...(K ? [gaugeTextX('코스피', gK)] : []), ...(Q ? [gaugeTextX('코스닥', gQ)] : []),
+    ...(BB && BB.up + BB.down ? [`시장 ${BB.n.toLocaleString('ko-KR')}곳 중 ${BB.up.toLocaleString('ko-KR')}곳 오름 · ${BB.down.toLocaleString('ko-KR')}곳 내림 — 10곳 중 ${Math.round((dnB ? BB.down : BB.up) / (BB.up + BB.flat + BB.down) * 10)}곳 ${dnB ? '내림' : '오름'}`] : []),
+    ...(ixA.length ? [`! ${ixA.length > 1 ? '두 지수 모두' : ixA[0].name} 하루 3% 넘게 ${wayA(ixA)} — 미리 정한 문턱`] : []),
+    ...A2.filter(a => a.kind === 'flow').map(a => `! 외국 투자자가 ${a.name}에서 ${eokW(a.v)} 더 ${a.v < 0 ? '팖' : '삼'} — 하루 1조 원 문턱`)];
   const sd = S?.date ?? K?.date, fd = F?.KOSPI?.date ?? F?.KOSDAQ?.date;
   const all = F ? ['KOSPI', 'KOSDAQ'].flatMap(m => [['personal', '개인'], ['foreign', '외국 투자자'], ['institutional', '기관']].map(([k, kn]) => ({mn: m === 'KOSPI' ? '코스피' : '코스닥', kn, val: F[m]?.[k] ?? null}))).filter(x => x.val != null) : [];
   const big = all.sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0], bigT = big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : null;
@@ -67,15 +88,18 @@ function hubExpect(H) {
   const slides = [
     ['친구에게 소개하기', '공주님 1분 영상 · 보내기'],
     s1,
-    K || Q ? ['코스피 · 코스닥 — 3개월', ...(K ? [`코스피 ${pct(K.day)}`] : []), ...(Q ? [`코스닥 ${pct(Q.day)}`] : []), more] : ['? 지수 값을 못 받았습니다.', more],
+    K || Q ? ['코스피 · 코스닥 — 3개월', ...[K, Q].filter(Boolean).flatMap(x => [x.name, numK(x.close), pct(x.day)]), more] : ['? 지수 값을 못 받았습니다.', more],
     S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label.replace('7', '3')} · 약한 3`, S.strong[0].name, pct(S.strong[0].chg), S.weak[0].name, pct(S.weak[0].chg), more] : ['? 업종 값을 못 받았습니다.', more],
     F ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`, ...(bigT ? [bigT] : []), more] : ['? 사고판 돈을 못 받았습니다.', more],
     U ? ['미국 — 마지막 장', `미국 ${U.date ? mdw(U.date) : '?'} 장 끝 — ${U.n}개 가운데 ${U.up}개 오름`, ...U.rows.map(r => r.name), more] : ['? 미국 값을 못 받았습니다.', more],
     T?.list?.length ? [`365곳 — ${dayWord(T.date)}`, `${T.up}곳 오름 · ${T.down}곳 내림`, ...(T.top ? [T.top.n, T.bot.n] : []), more] : ['? 365곳 값이 없습니다.', more],
   ];
-  const details = { // 「자세히」 = 14:54 종합 정보 칸 그대로
+  const details = { // 「자세히」 = 14:54 종합 정보 칸 그대로(+ 2장 오늘 — 2026-10-13 00:18)
+    today,
     idx: K || Q ? ['코스피 · 코스닥 — 3개월', ...(K ? [`코스피 ${numK(K.close)}`] : []), ...(Q ? [`코스닥 ${numK(Q.close)}`] : [])] : ['? 지수 값을 못 받았습니다.'],
-    sec: S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label} · 약한 7`, `가장 강한 ${S.strong[0].name} ${pct(S.strong[0].chg)}`, `가장 약한 ${S.weak[0].name} ${pct(S.weak[0].chg)}`, ...S.strong.map(g => g.name), ...S.weak.map(g => g.name)] : ['? 업종 값을 못 받았습니다.'],
+    sec: S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label} · 약한 7`, `가장 강한 ${S.strong[0].name} ${pct(S.strong[0].chg)}`, `가장 약한 ${S.weak[0].name} ${pct(S.weak[0].chg)}`, ...S.strong.map(g => g.name), ...S.weak.map(g => g.name),
+      ...(S.breadth ? [`시장 ${S.breadth.n.toLocaleString('ko-KR')}곳 중 ${S.breadth.up.toLocaleString('ko-KR')}곳 오름 · ${S.breadth.down.toLocaleString('ko-KR')}곳 내림`] : []), // 2장에서 옮김(다섯 팀 합침)
+      `다르게 보면 — ${S.label}업종도 회사로 세면 ${S.strong.reduce((a, g) => a + (g.up ?? 0), 0).toLocaleString('ko-KR')}곳 오름 · ${S.strong.reduce((a, g) => a + (g.down ?? 0), 0).toLocaleString('ko-KR')}곳 내림`] : ['? 업종 값을 못 받았습니다.'],
     flow: F ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`, ...(bigT ? [bigT] : []), '코스피', '코스닥'] : ['? 사고판 돈을 못 받았습니다.'],
     us: U ? ['미국 — 마지막 장', `미국 ${U.date ? mdw(U.date) : '?'} 장 끝 — ${U.n}개 가운데 ${U.up}개 오름`] : ['? 미국 값을 못 받았습니다.'],
     s365: T?.list?.length ? [`365곳 — ${dayWord(T.date)}`, `${T.up}곳 오름 · ${T.down}곳 내림`, '가장 많이 오른', ...(T.top ? [T.top.n, T.bot.n] : [])] : ['? 365곳 값이 없습니다.'],
