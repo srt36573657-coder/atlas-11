@@ -1,0 +1,93 @@
+{
+ "made": "2026-10-12T19:01:06.606Z",
+ "base": "https://aaa7377.com",
+ "media": [
+  {
+   "path": "/media/atlas-moon-face.jpg",
+   "status": 200,
+   "bytes": 8331,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello-wide.jpg",
+   "status": 200,
+   "bytes": 59000,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello-132.jpg",
+   "status": 200,
+   "bytes": 5600,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello-face.jpg",
+   "status": 200,
+   "bytes": 7158,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello.jpg",
+   "status": 200,
+   "bytes": 153717,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello.mp4",
+   "status": 200,
+   "bytes": 892582,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/media/atlas-hello.webm",
+   "status": 200,
+   "bytes": 392853,
+   "old": false,
+   "sameAsRepo": true
+  },
+  {
+   "path": "/og-hello.jpg",
+   "status": 200,
+   "bytes": 101626,
+   "old": false,
+   "sameAsRepo": true
+  }
+ ],
+ "oldFound": 0,
+ "sameAsRepo": 8,
+ "shots": [
+  "reports/atlas11/probe/live-view/p1-slide1.png",
+  "reports/atlas11/probe/live-view/p2-slide2.png",
+  "reports/atlas11/probe/live-view/p3-slide2-detail.png",
+  "reports/atlas11/probe/live-view/p4-up-2111.png",
+  "reports/atlas11/probe/live-view/p4-up-top.png",
+  "reports/atlas11/probe/live-view/p5-hello.png",
+  "reports/atlas11/probe/live-view/p6-old.png"
+ ],
+ "texts": {
+  "moon": "url(\"https://aaa7377.com/media/atlas-moon-face.jpg\")",
+  "slide2": "10월 12일(월) 코스피 −3.6% · 코스닥 −4.8%\n\n03:53 받음 · 장 끝 값\n\n코스피 — 평소의 2.8배로 내림 · 9월 2일 뒤 가장 큼\n\n10월 12일\n\n진한 막대 = 이날만큼 내린 날\n\n자세히 ›",
+  "detail": "자세히 — 오늘\n접기 ×\n\n10월 12일(월) 시장 — 평소와 견줌\n\n코스피 — 평소의 2.8배로 내림 · 9월 2일 뒤 가장 큼\n\n10월 12일\n\n코스닥 — 평소의 3.9배로 내림 · 7월 29일 뒤 가장 큼\n\n10월 12일\n\n시장 2,869곳 중 489곳 오름 · 2,166곳 내림 — 10곳 중 8곳 내림\n\n! 두 지수 모두 평소의 2.5배 넘게 내림 — 미리 정한 문턱\n\n! 외국 투자자가 코스피에서 2조 103억 원 더 팖 — 하루 1조 원 문턱\n\n눈금 읽는 법",
+  "moonUp": "url(\"https://aaa7377.com/media/atlas-moon-face.jpg\")",
+  "up2111": [
+   "10월 12일(월) 21:11 · 그 밖 올림 실패\n\n새 ATLAS 맨 위 슬라이드 7장 올림(사장님 19:59 · 20:11)\n\n고른 날 10월 12일 · 기준일 9월 8일 · 1층 160 · 2층 40 · 3층 165\n\n1등 갈래 반도체 +22.1% · 365곳 +9.9% · 20거래일\n\n시장 판독 — 하루 44곳 오름 · 319곳 내림(넓게 내린 날) · 작은 · 중간 회사 쪽이 더 오름\n\n? 네 눈 점검(눈마다 1,000만 번) — 클로드 걸림 412,807건\n\n? 네 눈 점검에서 걸림 — 클로드 412807건(숫자 없는 판독 줄: 앞 회차와 같은 값입니다.) — 지금 사이트 자료 그대로 다시 올림",
+   "10월 12일(월) 21:11 · 그 밖 올림 실패"
+  ],
+  "hello": {
+   "poster": "/media/atlas-hello.jpg",
+   "src": [
+    "/media/atlas-hello.mp4",
+    "/media/atlas-hello.webm"
+   ],
+   "og": "https://aaa7377.com/og-hello.jpg"
+  }
+ },
+ "errors": [],
+ "ok": true
+}
