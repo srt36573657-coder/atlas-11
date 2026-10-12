@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-12",
- "fetchedAt": "2026-10-12T08:11:50Z",
- "file": "reports/atlas11/context/2026-10-12/2026-10-12T08-11-50Z.json",
+ "fetchedAt": "2026-10-12T10:00:57Z",
+ "file": "reports/atlas11/context/2026-10-12/2026-10-12T10-00-57Z.json",
  "summary": {
   "day": "2026-10-12",
-  "fetchedAt": "2026-10-12T08:11:50Z",
+  "fetchedAt": "2026-10-12T10:00:57Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-12",
@@ -31,17 +31,17 @@
   },
   "news": {
    "stocks": 365,
-   "raw": 7210,
+   "raw": 7209,
    "distinct": 7165,
-   "republished": 45,
+   "republished": 44,
    "sameArticle": 0,
-   "stocksWithTodayNews": 196,
-   "todayDistinct": 1281
+   "stocksWithTodayNews": 206,
+   "todayDistinct": 1359
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 787
+   "corporateActions": 788
   },
   "macro": [
    {
@@ -60,7 +60,7 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-12",
-     "value": 1332.8,
+     "value": 1332.9,
      "changePct": -0.83
     },
     "rows": 10
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-12",
-   "corporateActions": 787,
+   "corporateActions": 788,
    "recentActions": [
+    {
+     "code": "105840",
+     "title": "(주)우진 변경상장(주식소각)",
+     "publishedAt": "2026-10-12T17:18:40+09:00",
+     "word": "소각"
+    },
     {
      "code": "290650",
      "title": "(주)엘앤씨바이오 (정정)유무상증자결정(주주배정후 실권주 일반공모)",
@@ -305,12 +311,6 @@
      "title": "(주)알테오젠 회사합병 결정(종속회사의 주요경영사항)",
      "publishedAt": "2026-10-06T06:52:13+09:00",
      "word": "합병"
-    },
-    {
-     "code": "196170",
-     "title": "(주)알테오젠 회사합병 결정(소규모합병)",
-     "publishedAt": "2026-10-06T06:51:36+09:00",
-     "word": "합병"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-12",
-     "value": 1332.8,
+     "value": 1332.9,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
