@@ -86,7 +86,7 @@ function hubExpect(H) {
   const big = all.sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0], bigT = big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : null;
   const more = '자세히 ›';
   const slides = [
-    ['친구에게 소개하기', '공주님 1분 영상 · 보내기'],
+    ['친구에게 소개하기', '막비 24초 영상 · 보내기'],
     s1,
     K || Q ? ['코스피 · 코스닥 — 3개월', ...[K, Q].filter(Boolean).flatMap(x => [x.name, numK(x.close), pct(x.day)]), more] : ['? 지수 값을 못 받았습니다.', more],
     S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label.replace('7', '3')} · 약한 3`, S.strong[0].name, pct(S.strong[0].chg), S.weak[0].name, pct(S.weak[0].chg), more] : ['? 업종 값을 못 받았습니다.', more],
@@ -214,12 +214,12 @@ const probe = ({banned}) => {
         const bb = e.getBoundingClientRect();
         if (bb.width >= 8 && bb.width <= 44 && Math.abs(bb.width - bb.height) <= 2 && !e.closest('svg')) res.squares++;
       }
-      // 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 … 공주님은 절대 넣지 말고 곳곳에 잘어울리게」) — 꾸밈 그림 지킴:
-      //  정해 둔 11가지만(사람 · 공주님 그림 없음 — 사진은 소개 띠 한 장뿐 · 공주님 얼굴은 사장님 2026-10-12 10:53 「달있는곳에 우리 공주님 얼굴 넣어봐」로 제목 옆 달 안에만(바탕 그림 · 아래 「달 속 공주님」)) · 화면 읽기에서 숨김 · 자료 칸 안에 없음 · 글자를 덮지 않음 ·
+      // 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 … 곳곳에 잘어울리게」) — 꾸밈 그림 지킴:
+      //  정해 둔 11가지만(사람 그림 없음 — 그림은 막비 소개 그림뿐 · 막비 얼굴은 제목 옆 달 안에만(바탕 그림 · 아래 「달 속 막비」 · 2026-10-13 03:39 「이 앵무새로」)) · 화면 읽기에서 숨김 · 자료 칸 안에 없음 · 글자를 덮지 않음 ·
       //  숫자 · 그림(차트) · ? 와 10px 넘게 떨어짐 · 빨강 · 파랑(오름 · 내림 색)과 색상 25° 안의 진한 색 없음(규칙 53)
       res.mo = []; res.moN = 0;
-      // 달 속 공주님(사장님 2026-10-12 10:53) — 화면 제목(h1) 옆 달(::before 바탕 그림)에 얼굴이 있어야 함 · 제목이 없는 판(도움말 · 찾기)은 셈 밖
-      { const hd = document.querySelector('#view h1.head, #view .co-head h1'); res.moonFace = !hd || sheet || !vis(hd) ? null : /atlas-moon-face\.jpg/.test(getComputedStyle(hd, '::before').backgroundImage); /* 슬라이드 7장 가운데 2장(오늘) 밖에서는 제목이 숨음(2026-10-12 19:59 · 20:11) */ }
+      // 달 속 막비(2026-10-13 03:39) — 화면 제목(h1) 옆 달(::before 바탕 그림)에 막비 얼굴이 있어야 함 · 제목이 없는 판(도움말 · 찾기)은 셈 밖
+      { const hd = document.querySelector('#view h1.head, #view .co-head h1'); res.moonFace = !hd || sheet || !vis(hd) ? null : /makbi-moon\.svg/.test(getComputedStyle(hd, '::before').backgroundImage); /* 슬라이드 7장 가운데 2장(오늘) 밖에서는 제목이 숨음(2026-10-12 19:59 · 20:11) */ }
       const MO_OK = new Set(['heart', 'star', 'moon', 'daisy', 'tulip', 'cat', 'catsleep', 'parrot', 'rainbow', 'whale', 'butterfly']);
       const ZONE = '.board, .row, .trio, .lc, .tc, .upchart, ol.p36, .munger, .test, .bt, ul.dirbars, ol.funnel, .key, .lkey, .track, .num, .q, .chip, .box, .digest, .srank, .tell, .trh, .seg, ol.steps, .co-head, .crumb, .badge';
       for (const im of scope.querySelectorAll('img')) if (vis(im) && !im.closest('a.hello')) res.mo.push('사진 ' + (im.getAttribute('src') || '').slice(-24));
@@ -284,7 +284,7 @@ function judge(tag, r, errs) {
   if (r.squares >= 20) fail(tag, `작은 네모 ${r.squares}개(바둑판)`);
   if (r.mo.length) fail(tag, '영상 친구 자리: ' + [...new Set(r.mo)].slice(0, 3).join(' · '));
   if (r.moN < 1) fail(tag, '영상 친구가 하나도 없음(맨 아래 꽃밭 · 도움말 무지개가 빠짐)');
-  if (r.moonFace === false) fail(tag, '달 속 공주님 얼굴이 없음(제목 옆 달)');
+  if (r.moonFace === false) fail(tag, '달 속 막비가 없음(제목 옆 달)');
 }
 const b = await chromium.launch(exe ? {executablePath: exe} : {});
 const plans = [[360, 640, 0], [360, 640, 1], [360, 640, 2], [390, 844, 0], [900, 900, 0]];

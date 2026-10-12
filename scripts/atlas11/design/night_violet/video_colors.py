@@ -1,5 +1,6 @@
-# ATLAS 밤하늘 옷 ① — 공주님 1분 영상 색 세기(사장님 2026-10-10 12:53 마카오 「1분영상 분석후 그 중심색으로 아틀란스를 다시 색을 변경한다」)
-#   쓰는 법: ffmpeg -i site/media/atlas-hello.mp4 -vf "fps=2,scale=180:320:flags=area" <폴더>/fr/f%03d.png
+# ATLAS 밤하늘 옷 ① — 옛 소개 영상 색 세기(사장님 2026-10-10 12:53 마카오 「1분영상 분석후 그 중심색으로 아틀란스를 다시 색을 변경한다」)
+#   (그 영상은 2026-10-13 03:38 「모든 흔적 다 지워」로 지움 — 이 셈은 그때 기록만 남음 · 다시 돌릴 수 없음)
+#   쓰던 법: ffmpeg -i <영상> -vf "fps=2,scale=180:320:flags=area" <폴더>/fr/f%03d.png
 #            python3 scripts/atlas11/design/night_violet/video_colors.py <폴더>   → <폴더>/colors.json
 #   0.5초마다 120장 · 180×320 · OKLab 무리 나누기(k-means · 씨앗 고정) · 몫 = 넓이 × 시간 · 색 있는 곳 = OKLCH 채도 0.04 이상
 import numpy as np, json, sys, glob

@@ -477,10 +477,10 @@ function hubMark(H, id) {
   const q = (id === 'idx' && (!H.idx || S.idx)) || (id === 'sec' && (!H.sectors || S.sectors)) || (id === 'flow' && (!H.flows || S.flows)) || (id === 'us' && (!H.us || S.us)) || (id === 's365' && !H.s365?.list?.length);
   return (bang ? '!' : '') + (q ? '?' : '');
 }
-/** 1장 소개 — 「친구에게 소개하기」(공주님 1분 영상 표지 · 보내기) — 공주님 사진은 이 고리 안에만 */
+/** 1장 소개 — 「친구에게 소개하기」(앵무새 막비 24초 영상 · 보내기 · 2026-10-13 03:39 사장님 「이 앵무새로 귀엽게 재미나게 그리고 위트있게 해」) — 그림은 코드 그림(SVG) · 사람 얼굴 사진 없음 */
 function slideHello() {
-  return h('a', {class: 'hello hs-hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello-wide.jpg', alt: '', width: 720, height: 450, decoding: 'async'}),
-    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기 ›'})));
+  return h('a', {class: 'hello hs-hello', href: '/hello.html'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 720, height: 450, decoding: 'async'}),
+    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기 ›'})));
 }
 /** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */
 function miniLine(x, span, live) {
@@ -636,7 +636,7 @@ async function viewHome(v) {
   }
   words(state.mode);
   const host = h('div');
-  const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello-132.jpg', alt: '', width: 44, height: 44, decoding: 'async'}) /* 띠 사진은 작은 판(6KB · 2026-10-12 구글팀: 720×1280 128KB 를 44px 로 받던 것) — 영상 표지는 그대로 */, h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})),
+  const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 44, height: 44, decoding: 'async'}) /* 띠 그림 = 둥근 막비 얼굴(코드 그림 · 3.6KB) */, h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기'})),
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
   // 맨 위 = 슬라이드 7장(1장 「친구에게 소개하기」 · 사장님 19:59 · 20:11) → 그 아래 20거래일 경주(1단 입구) · 자료를 못 읽으면 옛 소개 띠 + 「?」
   if (H) hub(v, H); else add(v, hello, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
@@ -1210,9 +1210,9 @@ function upChart(host, rows) {
   else if (rows.length) host.append(h('div', {class: 'ax'}, h('span', {}), h('span', {text: kstLabel(rows[0].kst)})));
 }
 
-// ── 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 이런것들 있잖아 공주님은 절대 넣지 말고 곳곳에 잘어울리게 먼저 배치해봐 구글팀 클로드팀 애플팀이라면 어떻게 배치할것인지 기획한다음 해」) ──
-//   소개 영상(공주님 1분 영상)의 친구들을 판판한 작은 그림으로 — 주황 아기 고양이 · 하얀 고양이 · 앵무새 막비(갈라 — 분홍 몸 · 회색 날개) · 무지개 · 웃는 달 · 별 · 우주 고래 · 꽃 · 하트 · 나비
-//   공주님은 그리지 않음 · 그림 파일 없이 코드로(가벼움) · 모두 화면 읽기에서 숨김(aria-hidden) · 입체 · 그림자 · 빛 없음(규칙 50) · 빨강 · 파랑은 쓰지 않음(규칙 53 — 오름 · 내림 색과 헷갈리지 않게)
+// ── 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 이런것들 있잖아 … 곳곳에 잘어울리게 먼저 배치해봐 구글팀 클로드팀 애플팀이라면 어떻게 배치할것인지 기획한다음 해」) ──
+//   옛 소개 영상의 친구들을 판판한 작은 그림으로 — 주황 아기 고양이 · 하얀 고양이 · 앵무새 막비(갈라 — 분홍 몸 · 회색 날개) · 무지개 · 웃는 달 · 별 · 우주 고래 · 꽃 · 하트 · 나비
+//   사람 그림 없음 · 그림 파일 없이 코드로(가벼움) · 모두 화면 읽기에서 숨김(aria-hidden) · 입체 · 그림자 · 빛 없음(규칙 50) · 빨강 · 파랑은 쓰지 않음(규칙 53 — 오름 · 내림 색과 헷갈리지 않게)
 //   클로드팀: 숫자 · 회사 · 그림(차트) · 조심 상자 옆에는 두지 않음(「좋다」로 읽히지 않게 — site_check 「꾸밈 자리」가 잼) · 애플팀: 뜻 있는 자리에 작게 · 구글팀: 한 벌(같은 색 · 같은 굵기)
 const MOC = {pink: '#F2A7D6', galah: '#EFA6D2', crest: '#F9D6E4', lav: '#C9B6F2', lavD: '#A893E0', yellow: '#F6D97A', yellowD: '#8A6A2A', white: '#F6F3FF', whiteL: '#CFC6EE',
   orange: '#F2A65A', orangeD: '#C9761F', grey: '#ABA8BE', mint: '#9EDDB4', peach: '#F9C48F', whale: '#B4A4EE', whaleL: '#DCD3FA', whaleD: '#9887DD', eye: '#3A2F5A', cheek: '#F6BCDD', beak: '#EDE7F2'};

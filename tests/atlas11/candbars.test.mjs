@@ -52,7 +52,7 @@ test('값이 없으면 그리지 않음(지어내지 않음) · 숫자 글', () 
 });
 
 test('입체 · 바둑판 없음 — ATLAS 화면 코드(site/app · 초대장 사진 · 소개 영상 빼고)에 입체 섬 · 지도 섬 · 원근 · 365칸 바둑판(칸 그림)이 없음(2026-10-10 「3d 영구 삭제해」 · 「가 나 는 지우지마」 · 「바둑판 영구 삭제해」)', () => {
-  const dir = path.resolve(import.meta.dirname, '../../site/app'), KEEP = new Set(['invite.js', 'invite-photo.js', 'invite.css', 'hello.js', 'hello.css', 'hello-page.js', 'hello-share.js']); // 가(초대장 사진) · 나(공주님 영상)는 사장님 10:00 「가 나 는 지우지마」
+  const dir = path.resolve(import.meta.dirname, '../../site/app'), KEEP = new Set(['invite.js', 'invite-photo.js', 'invite.css', 'hello.js', 'hello.css', 'hello-page.js', 'hello-share.js']); // 가(초대장 사진) · 나(소개 영상 — 2026-10-13 부터 앵무새 막비)는 사장님 10:00 「가 나 는 지우지마」
   const BAD = /perspective\s*:|preserve-3d|rotate[XY]\(|rotate3d\(|translate3d\(|translateZ\(|matrix3d\(|getContext\(\s*['"]webgl|skew[XY]\(|--d3\b|drop-shadow\(|from '\.\/island|islandmap|candIsland/;
   const BOARD = /from '\.\/tiles|tilesModel|candTiles|tapStep|['" .]tl(-[a-z0-9]+)?['" {,:]/; // 옛 칸 그림 모듈 · 셈 · 칸 이름(.tl · .tl-grid · .tl-c …)
   const hits = [], board = [];

@@ -11,7 +11,9 @@ const B = 'https://aaa7377.com', dir = 'reports/atlas11/probe/live-view'; await 
 // 지운 옛 그림 판(git 블롭 번호 · 그림이 아니라 번호만)
 const OLD = new Set(`${(await fs.readFile('scripts/atlas11/probe/old-media-blobs.txt', 'utf8'))}`.split(/\s+/).filter(Boolean));
 const blobId = buf => crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${buf.length}\0`), buf])).digest('hex');
-const MEDIA = ['/media/atlas-moon-face.jpg', '/media/atlas-hello-wide.jpg', '/media/atlas-hello-132.jpg', '/media/atlas-hello-face.jpg', '/media/atlas-hello.jpg', '/media/atlas-hello.mp4', '/media/atlas-hello.webm', '/og-hello.jpg'];
+const MEDIA = ['/media/makbi-moon.svg', '/media/makbi-icon.svg', '/media/makbi-hello.svg', '/media/makbi-poster.jpg', '/media/makbi-intro.mp4', '/media/makbi-intro.webm', '/og-makbi.jpg',
+  // 옛 주소 — 지운 그림이 다시 나오지 않는지(없거나 첫 화면 글이 와야 함)
+  '/media/atlas-moon-face.jpg', '/media/atlas-hello-wide.jpg', '/media/atlas-hello-132.jpg', '/media/atlas-hello-face.jpg', '/media/atlas-hello.jpg', '/media/atlas-hello.mp4', '/media/atlas-hello.webm', '/og-hello.jpg'];
 const out = {made: new Date().toISOString(), base: B, media: [], oldFound: 0, sameAsRepo: 0, shots: [], texts: {}, errors: []};
 for (const p of MEDIA) {
   try {

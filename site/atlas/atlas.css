@@ -8,9 +8,9 @@
              · 글자 대비 검사(site_check 「대비」 — 보통 글 4.5 · 굵거나 큰 글 3 넘게)
      클로드팀 빨강 · 파랑은 오름 · 내림에만(「!」 조심 표시를 빨강에서 금빛으로 — 규칙 53) · 금빛은 「고른 한 곳 · 고른 날 · 모름(?) · 조심」에만
              · 위험 · 정직 글(멍거 · 지난 기록 시험 · 맨 아래 한 줄)은 숫자만큼 또렷하게
-   색: 2026-10-12 10:53 사장님 「10번이 좋아 그리고 달있는곳에 우리 공주님 얼굴 넣어봐」 = 청자 밤(푸른색 계열 시안 10번) — 이 판은 늘 밤 화면(color-scheme: dark)
+   색: 2026-10-12 10:53 사장님 「10번이 좋아」 = 청자 밤(푸른색 계열 시안 10번) — 이 판은 늘 밤 화면(color-scheme: dark)
      고른 길: 09:16 모래 달항아리(모양 · 10번 창 한 칸 · 달빛 마루는 그대로) → 10:44 「지금보면 갈색과 베이지색 두개야 해보니 넘 답답해 그래서 프른색 계열로 다시 11가지 샘플을 보여줘」 → 10번 청자 밤
-     달 = 제목 옆 둥근 창 안에 공주님 얼굴(`/media/atlas-moon-face.jpg` · 소개 영상 얼굴 사진을 둥글게) — 영상 친구 꾸밈에는 여전히 공주님 없음
+     달 = 제목 옆 둥근 창 안에 앵무새 막비 얼굴(`/media/makbi-moon.svg` · 코드 그림 · 2026-10-13 03:39 사장님 「이 앵무새로」) — 사람 얼굴 사진은 쓰지 않음
      (옛 밤보라 — #111433 · #141738 · #8973C3 — 는 옛 판 /old/ · 미국 판 /us/ 에 그대로) · 빨강 = 오름 · 파랑 = 내림(쨍한 파랑 · 바탕 청자와 색상이 멀게) · 금빛 = 고른 한 곳 · 고른 날 · ? · 조심
    모든 칸에 바탕을 직접 칠함(삼성팀 「어두운 화면을 켜도 꺼도 색이 같게」 그대로)
    입체 없음(규칙 50: 그림자 입체 · 그림자 필터 · 원근 · 3D 변환 · 캔버스 · 구슬 빛 없음 — 판판한 색 · 판판한 번짐 색만) · 바둑판 없음(규칙 51) · 글씨 21px 이상(1rem = 21px) · 누르는 자리 44px 이상
@@ -426,7 +426,7 @@ ol.opens .dd { font-size: 1.2rem; }
 .capin a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
 main.view:focus { outline: none; } /* 화면이 바뀌면 읽기 초점을 새 화면으로(구글팀 · 애플팀 — 화면 읽기가 새 제목부터) */
 
-/* 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 … 공주님은 절대 넣지 말고 곳곳에 잘어울리게」)
+/* 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 무지개 우주서 하트 … 곳곳에 잘어울리게」)
    판판한 작은 그림(atlas.js MO) — 숫자 · 회사 · 그림(차트) · 조심 상자 옆에는 두지 않음 · 움직임은 위치 · 투명도만 · 움직임 줄이기면 멈춤 */
 .mo { display: inline-block; vertical-align: -0.25em; flex: 0 0 auto; overflow: visible; }
 .when .mo { margin-left: 8px; }
@@ -634,8 +634,8 @@ ol.st { margin-left: -10px; margin-right: -10px; } /* 넓힌 여백(24px)에서�
 /* 8번 달항아리 + 10번 창 한 칸(건축가) — 모든 화면 제목 오른쪽에 창처럼 둥근 달 하나 · 제목 오른쪽을 비워 글자에 걸치지 않음 · 테 없음 · 제목 높이를 넘지 않음 */
 h1.head, .co-head h1 { position: relative; z-index: 0; padding-right: calc(2.64em + 16px); }
 .co-head h1 { flex: 1 1 100%; }
-h1.head::before, .co-head h1::before { content: ''; position: absolute; z-index: -1; top: 0; right: 0; height: min(100%, 2.64em); aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--moon); background: var(--moon) url(/media/atlas-moon-face.jpg) center / cover no-repeat; }
-/* 달 속 공주님(사장님 2026-10-12 10:53 「달있는곳에 우리 공주님 얼굴 넣어봐」) — 둥근 달 테 안에 얼굴 · 꾸밈 그림(영상 친구)에는 여전히 공주님 없음 · 화면 읽기에는 안 읽힘(바탕 그림) */
+h1.head::before, .co-head h1::before { content: ''; position: absolute; z-index: -1; top: 0; right: 0; height: min(100%, 2.64em); aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--moon); background: var(--moon) url(/media/makbi-moon.svg) center / cover no-repeat; }
+/* 달 속 막비(2026-10-13 03:39 사장님 「이 앵무새로 귀엽게 재미나게 그리고 위트있게 해」) — 둥근 달 테 안에 막비 얼굴(코드 그림) · 화면 읽기에는 안 읽힘(바탕 그림) */
 /* 10번 달빛 마루(건축가) — 달빛은 1등 줄에만(밤 화면이라 옅은 달빛) */
 .board .row.win, .board .row.win:hover { background: var(--moonrow); }
 

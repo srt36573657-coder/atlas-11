@@ -6,7 +6,7 @@
 //   🔎 구글 — 숫자가 서로 맞나: 같은 숫자가 파일마다 같은가(선 ↔ 회사 종가 · 1주 값 · 바뀐 비율 · 이름 · 갈래 · 업종 · 36곳 · 날짜) ·
 //      「한 회사 한 표」 지수 · 오른 곳 · 내린 곳 수를 다른 길로 다시 셈 · 시장 판독 숫자 다시 셈 · 숫자가 모두 참 숫자인가
 //   🤖 클로드 — 말이 정직하고 안전한가: 자료 · 시장 판독 글에 사고팔기 권하는 말 · 앞날 장담(화면 금지 말과 같은 목록) · 깨진 글자 ·
-//      모형 표지 「모형 가정 아래 추정 · 검증 전」 · 안전 문장 · 장 중 값 표시 · 모르는 값은 「?」 · 말 등급 · 공주님은 제목 달에만
+//      모형 표지 「모형 가정 아래 추정 · 검증 전」 · 안전 문장 · 장 중 값 표시 · 모르는 값은 「?」 · 말 등급 · 사람 얼굴 그림 없음(막비는 제목 달 · 1장 · 띠에만 — 2026-10-13 03:38)
 //   🕵 CIA — 뚫리거나 새는 곳이 없나: 주소 흔들기(atlas.js 의 진짜 길 함수 route() 를 떼어 이상한 주소를 넣어 봄 — 멈춤 · 거짓 까닭 · 바깥으로 가는 길) ·
 //      이름 주소 왕복 · 비밀 · 개인 메일 · 바깥 주소 · 숨은 글자 · 끼워 넣은 코드 · 위험한 코드 · 보안 머리말 · 자료 크기
 //   셈: 씨앗 무작위(xorshift32 · 다시 돌리면 같은 결과) · 눈마다 먼저 대상을 모두 한 번씩 본 뒤 남은 번 수를 무작위로 채움 → 「번 수」와 「서로 다른 대상 수」를 함께 적음
@@ -17,6 +17,17 @@ import path from 'node:path';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import {HEADER_TOP} from '../site_headers.mjs';
+/** 옛 사람 얼굴 그림 판(2026-10-13 03:38 「모든 흔적 다 지워」로 저장소 기록에서도 지운 블롭 43개)이 site 안에 다시 들어오면 막음
+ *  목록 = scripts/atlas11/probe/old-media-blobs.txt(그림이 아니라 번호만) · 목록을 못 읽으면 실패(조용히 넘기지 않음) */
+const OLD_FACE_LIST = path.join(path.dirname(new URL(import.meta.url).pathname), '../probe/old-media-blobs.txt');
+function noOldFace(siteDir) {
+  let old; try { old = new Set(fs.readFileSync(OLD_FACE_LIST, 'utf8').split(/\s+/).filter(Boolean)); } catch { return false; }
+  if (!old.size) return false;
+  const walk = d => fs.readdirSync(d, {withFileTypes: true}).flatMap(e => e.isDirectory() ? (e.name === 'data' || e.name === 'node_modules' ? [] : walk(path.join(d, e.name))) : /\.(jpe?g|png|webp|gif|mp4|webm|svg|avif)$/i.test(e.name) ? [path.join(d, e.name)] : []);
+  for (const f of walk(siteDir)) { const b = fs.readFileSync(f); if (old.has(crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${b.length}\0`), b])).digest('hex'))) return false; }
+  return true;
+}
+
 
 export const INSPECT_VERSION = 'i4-v1';
 /** 화면 금지 말 — site_check.mjs BANNED 와 같은 목록(시험이 맞대 봄) */
@@ -226,8 +237,9 @@ function claudeLens(S, market) {
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
     ['모르는 값은 「?」(pct)', () => /function pct\(x\) \{ if \(x == null \|\| !isFinite\(x\)\) return '\?';/.test(S.js)],
     ['시장 판독 상자 「지난 값만 · 앞날 맞히기 아님」', () => S.js.includes('지난 값만 · 앞날 맞히기 아님')],
-    ['그림 파일은 소개 사진뿐(맨 위 슬라이드 1장 · 자료를 못 읽을 때 옛 띠 — 공주님 사진을 꾸밈에 쓰지 않음)', () => [...S.js.matchAll(/src:\s*'([^']+)'/g)].every(m => ['/media/atlas-hello-132.jpg', '/media/atlas-hello-wide.jpg'].includes(m[1]))], // 2026-10-12 20:11 맨 위 슬라이드 1장 「친구에게 소개하기」
-    ['공주님 얼굴은 제목 달에만(atlas.css url)', () => [...S.css.matchAll(/url\(\s*['"]?([^'")]+)/g)].every(m => m[1].startsWith('data:') || m[1] === '/media/atlas-moon-face.jpg')],
+    ['그림 파일은 막비 그림뿐(맨 위 슬라이드 1장 · 자료를 못 읽을 때 옛 띠 — 사람 얼굴 그림 없음 · 2026-10-13 03:38)', () => [...S.js.matchAll(/src:\s*'([^']+)'/g)].every(m => ['/media/makbi-icon.svg', '/media/makbi-hello.svg'].includes(m[1]))], // 2026-10-12 20:11 맨 위 슬라이드 1장 「친구에게 소개하기」
+    ['막비 얼굴은 제목 달에만(atlas.css url)', () => [...S.css.matchAll(/url\(\s*['"]?([^'")]+)/g)].every(m => m[1].startsWith('data:') || m[1] === '/media/makbi-moon.svg')],
+    ['옛 사람 얼굴 그림 판(지운 블롭 43개)이 사이트 안에 없음(2026-10-13 03:38 「모든 흔적 다 지워」)', () => noOldFace(S.siteDir)],
   ];
   return {key: 'claude', name: '클로드', what: '말이 정직하고 안전한가 — 자료 · 시장 판독 글을 읽음', kinds: [
     {k: 'banned', name: '사고팔기 권하는 말 · 앞날 장담(화면 금지 말 19개) — 우리가 쓴 글', items: texts.length, check(i) {
@@ -247,7 +259,7 @@ function claudeLens(S, market) {
       if (!growCos.length) return null; const [c, x] = growCos[i];
       for (const [y, w] of Object.entries(x.g ?? {})) if (w != null && !LEVELS.has(w)) return `${c} ${y}년 말 등급 「${w}」`; // 비어 있으면 화면이 「자료 모자람」
       for (const [y, m] of Object.entries(x.m ?? {})) if (m != null && !(m > 0)) return `${c} ${y}년 배수 ${m}`; return null; }},
-    {k: 'code', name: '화면 코드 — 안전 문장 · 모형 표지 · 「?」 · 공주님 자리', items: code.length, check(i) { return code[i][1]() ? null : `없음: ${code[i][0]}`; }},
+    {k: 'code', name: '화면 코드 — 안전 문장 · 모형 표지 · 「?」 · 막비 자리 · 옛 얼굴 그림 없음', items: code.length, check(i) { return code[i][1]() ? null : `없음: ${code[i][0]}`; }},
   ]};
 }
 

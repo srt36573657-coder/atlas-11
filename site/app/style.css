@@ -25,7 +25,7 @@
      · 그래서 ②의 「금빛 세 자리」 가운데 「이름 옆 작은 인장」 자리는 이제 옥빛 한 색이 아니라 로고 그림이다(나머지 두 자리 — 고른 탭 선 · 고른 단추 선 — 는 그대로) */
 :root {
   --font: 'Gowun Batang', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
-  /* 밤하늘 옷(2026-10-10 12:53 마카오 · 사장님 「1분영상 분석후 그 중심색으로 아틀란스를 다시 색을 변경한다」) — 공주님 1분 영상 120장을 색 무리로 나눈 중심색(색상 293도 남보라)
+  /* 밤하늘 옷(2026-10-10 12:53 마카오 · 사장님 「1분영상 분석후 그 중심색으로 아틀란스를 다시 색을 변경한다」) — 옛 소개 영상 120장을 색 무리로 나눈 중심색(색상 293도 남보라)
      라일락 안개 바탕 · 별빛 판 · 남색 먹 글자 · 빨강 = 오름 · 파랑 = 내림은 그대로 · 셈과 대비 docs/design/night-violet · 옛 청자 옷(2026-10-05)은 docs/design/celadon */
   --bg: #EBE9F5; --card: #FBFAFF; --ink: #242240; --ink2: #3E3B5B; --sub: #5D5978; --sep: #D9D7E7; --fill: #ECEAF6; --link: #242240;
   --up: #B4232F; --down: #1F4FB5; --up-ink: #A41F2A; --down-ink: #1C47A3; --warn: #7D4C00;

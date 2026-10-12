@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 const dir = 'reports/atlas11/probe/live-check'; await fs.mkdir(dir, {recursive: true});
 const B = 'https://aaa7377.com';
 const T = [['/', ['atlas.js']], ['/atlas/', ['atlas.js']], ['/atlas/atlas.js', ['function gauge(', 'function homeToday(', '평소와 견줌', '평소의 2.5배 넘게', "class: 'hstep'"]], ['/atlas/atlas.css', ['.gauge', '.hstep']],
-  ['/atlas/data/home.json', ['"rule":"home-v3"', '"why":']], ['/atlas/data/updates.json', ['home-v3']], ['/media/atlas-hello-wide.jpg', []], ['/hello.html', []]];
+  ['/atlas/data/home.json', ['"rule":"home-v3"', '"why":']], ['/atlas/data/updates.json', ['home-v3']], ['/media/makbi-hello.svg', []], ['/media/makbi-moon.svg', []], ['/hello.html', []]];
 const out = [];
 for (const [p, marks] of T) {
   let status = 0, bytes = 0, sha = null, has = {}, err = null, type = '';
