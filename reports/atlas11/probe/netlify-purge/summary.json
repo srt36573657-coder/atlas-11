@@ -1,0 +1,12 @@
+{
+ "made": "2026-10-12T19:00:22.343Z",
+ "from": "2026-10-09T12:15:00Z",
+ "listed": 521,
+ "candidates": 79,
+ "deleted": 27,
+ "failed": 52,
+ "remaining": null,
+ "publishedKept": false,
+ "publishedAfterFrom": true,
+ "error": "The operation was aborted due to timeout"
+}
