@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-12T17:09:45.055Z",
- "kst": "2026-10-13 02:09",
+ "at": "2026-10-12T18:50:50.133Z",
+ "kst": "2026-10-13 03:50",
  "slot": null,
- "reason": "「!」 문턱 home-v3 올림(사장님 01:28 「1억번 계산고 360도 사고」)",
+ "reason": "소개 그림 앵무새 막비로 바꿈",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-T3UnXj/closes/20261012T170945Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-FxRn1f/closes/20261012T185050Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261012",
-  "sec": 99,
+  "sec": 89,
   "firstErrors": []
  },
  "asOf": "2026-10-12",
@@ -132,7 +132,7 @@
   "nEach": 10000000,
   "fail": 0,
   "ok": true,
-  "ms": 131303,
+  "ms": 178428,
   "lenses": [
    {
     "key": "apple",
@@ -170,7 +170,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-13 02:13",
+  "kst": "2026-10-13 03:53",
   "live": false,
   "idx": true,
   "flows": true,
@@ -193,17 +193,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 99
+   "sec": 88.7
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 1.4
+   "sec": 1.9
   },
   {
    "name": "365곳 다시 고르기",
    "code": 0,
-   "sec": 3.1
+   "sec": 4
   },
   {
    "name": "업종 정리",
@@ -213,32 +213,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.6
+   "sec": 2.1
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 5.8
+   "sec": 7.5
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 1.9
+   "sec": 2.4
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 64.3
+   "sec": 47.5
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 15.5
+   "sec": 20
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3.3
+   "sec": 2.8
   },
   {
    "name": "첫 화면 자료",
@@ -248,7 +248,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 131.3
+   "sec": 178.5
   }
  ]
 }
