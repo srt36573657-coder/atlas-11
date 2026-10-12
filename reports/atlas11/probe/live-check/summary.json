@@ -1,0 +1,105 @@
+{
+ "made": "2026-10-12T17:23:43.095Z",
+ "base": "https://aaa7377.com",
+ "files": [
+  {
+   "path": "/",
+   "status": 200,
+   "type": "text/html; charset=UTF-8",
+   "bytes": 4893,
+   "sha256": "df7f7a362ef009c9a3c25b44fc44b0f09a1a8ae1040282e4e67b8fca9bdd34b5",
+   "has": {
+    "atlas.js": true
+   },
+   "err": null
+  },
+  {
+   "path": "/atlas/",
+   "status": 200,
+   "type": "text/html; charset=UTF-8",
+   "bytes": 4893,
+   "sha256": "df7f7a362ef009c9a3c25b44fc44b0f09a1a8ae1040282e4e67b8fca9bdd34b5",
+   "has": {
+    "atlas.js": true
+   },
+   "err": null
+  },
+  {
+   "path": "/atlas/atlas.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 189097,
+   "sha256": "e7cba9a9a7a1266cea6d4b7b0a323cdab80e99888f2ac18d0a7e37a8c4c5c190",
+   "has": {
+    "function gauge(": true,
+    "function homeToday(": true,
+    "평소와 견줌": true,
+    "평소의 2.5배 넘게": true,
+    "class: 'hstep'": true
+   },
+   "err": null
+  },
+  {
+   "path": "/atlas/atlas.css",
+   "status": 200,
+   "type": "text/css; charset=UTF-8",
+   "bytes": 74921,
+   "sha256": "2e2656a7a8694548556c3b361c2650682e647e32f3570b9df5af2e3c6ba37347",
+   "has": {
+    ".gauge": true,
+    ".hstep": true
+   },
+   "err": null
+  },
+  {
+   "path": "/atlas/data/home.json",
+   "status": 200,
+   "type": "application/json",
+   "bytes": 12184,
+   "sha256": "f7a66a1763a690d6e7bcc1dee26bafdcbf08c5150c90081a89090182738fdfe2",
+   "has": {
+    "\"rule\":\"home-v3\"": true,
+    "\"why\":": true,
+    "_home": {
+     "rule": "home-v3",
+     "kst": "2026-10-13 02:13",
+     "alerts": [
+      "idx:KOSPI:usual",
+      "idx:KOSDAQ:usual",
+      "flow:KOSPI:-"
+     ]
+    }
+   },
+   "err": null
+  },
+  {
+   "path": "/atlas/data/updates.json",
+   "status": 200,
+   "type": "application/json",
+   "bytes": 59197,
+   "sha256": "eb3494a642ef6378d0fa35fcfaf8272d5bcc7d61736ed242c389904f27ba5589",
+   "has": {
+    "home-v3": true
+   },
+   "err": null
+  },
+  {
+   "path": "/media/atlas-hello-wide.jpg",
+   "status": 200,
+   "type": "image/jpeg",
+   "bytes": 39328,
+   "sha256": "8b44f952528b66ac558c613f8725bc2886e1b824e3a645a0a93174102b84b532",
+   "has": {},
+   "err": null
+  },
+  {
+   "path": "/hello.html",
+   "status": 200,
+   "type": "text/html; charset=UTF-8",
+   "bytes": 3005,
+   "sha256": "65795fc6d7ea0528913fbb919aaf9107318b7be9e38697d74b63ffc593e233ad",
+   "has": {},
+   "err": null
+  }
+ ]
+}
