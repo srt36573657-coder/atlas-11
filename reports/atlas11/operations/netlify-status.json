@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-11T23:16:41.532Z",
+  "at": "2026-10-12T01:07:20.923Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-11T23:16:40.644Z",
+    "publishedAt": "2026-10-12T01:07:19.863Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -34,7 +34,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!doctype html> <html lang=\"ko\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> <meta name=\"color-scheme\" content=\"dark\"> <meta name=\"theme-color\" content=\"#141738\"> <meta name=\"description\" content=\"ATLAS — 지난 30거래일 「대세」였던 업종부터"
+      "bodyStart": "<!doctype html> <html lang=\"ko\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> <meta name=\"color-scheme\" content=\"light\"> <meta name=\"theme-color\" content=\"#2A2017\"> <meta name=\"description\" content=\"ATLAS — 지난 30거래일 「대세」였던 업종부"
     },
     {
       "url": "https://aaa7377.com/data/atlas11/view/manifest.json",
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-67283a6e\",\"generatedAt\":\"2026-10-11T23:12:20.911Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-9a71cf34\",\"generatedAt\":\"2026-10-12T01:03:03.925Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -52,7 +52,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!doctype html> <html lang=\"ko\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> <meta name=\"color-scheme\" content=\"dark\"> <meta name=\"theme-color\" content=\"#141738\"> <meta name=\"description\" content=\"ATLAS — 지난 30거래일 「대세」였던 업종부터"
+      "bodyStart": "<!doctype html> <html lang=\"ko\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> <meta name=\"color-scheme\" content=\"light\"> <meta name=\"theme-color\" content=\"#2A2017\"> <meta name=\"description\" content=\"ATLAS — 지난 30거래일 「대세」였던 업종부"
     },
     {
       "url": "https://aaa7377.com/atlas/data/core.json",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-11T23:14:01Z\",\"asOf\":\"2026-10-08\",\"base\":\"2026-09-07\",\"days\":20,\"pickAsOf\":\"2026-10-08\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":0,\"mismatch\":0},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음(10월 8일 종가까지)\",\"pick\":\"네이버 증권 시가총액 · 결"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-12T01:05:05Z\",\"asOf\":\"2026-10-12\",\"base\":\"2026-09-08\",\"days\":20,\"pickAsOf\":\"2026-10-12\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":1377,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음 + 날마다 이어 받음(10월 12일 종가까지)\",\"pick\":\""
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -70,7 +70,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-days-1\",\"asOf\":\"2026-10-08\",\"dates\":[\"2023-04-25\",\"2023-04-26\",\"2023-04-27\",\"2023-04-28\",\"2023-05-02\",\"2023-05-03\",\"2023-05-04\",\"2023-05-08\",\"2023-05-09\",\"2023-05-10\",\"2023-05-11\",\"2023-05-12\",\"2023-05-15\",\"2023-05-16\",\"2023-05-17\",\"2023-05-18\",\"2023-05-19\",\"2023-05-22\",\"2023-05"
+      "bodyStart": "{\"schema\":\"atlas-new-days-1\",\"asOf\":\"2026-10-12\",\"dates\":[\"2023-04-25\",\"2023-04-26\",\"2023-04-27\",\"2023-04-28\",\"2023-05-02\",\"2023-05-03\",\"2023-05-04\",\"2023-05-08\",\"2023-05-09\",\"2023-05-10\",\"2023-05-11\",\"2023-05-12\",\"2023-05-15\",\"2023-05-16\",\"2023-05-17\",\"2023-05-18\",\"2023-05-19\",\"2023-05-22\",\"2023-05"
     },
     {
       "url": "https://aaa7377.com/atlas/data/co/042700.json",
@@ -97,7 +97,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-08\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"pick36\":\"pick36-v3\",\"opens\""
+      "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-12\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"pick36\":\"pick36-v3\",\"opens\""
     },
     {
       "url": "https://aaa7377.com/atlas/data/grow.json",
@@ -106,7 +106,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-08\",\"written\":365,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
+      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-12\",\"written\":312,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
     },
     {
       "url": "https://aaa7377.com/old/",
@@ -124,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-67283a6e\",\"generatedAt\":\"2026-10-11T23:12:20.911Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-9a71cf34\",\"generatedAt\":\"2026-10-12T01:03:03.925Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
