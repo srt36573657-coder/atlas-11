@@ -1,6 +1,7 @@
 // 새 ATLAS 회차(하루 4번) — 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로 하라 … 항상 그렇게 하라」
 //   12:41 「아니 내일이면 내일 다시 그다음날도 다시 기준은 항상 오늘날짜로 해야 하고 업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」
-//   올리기 묶음(scripts/atlas11/package.mjs)이 site/ 를 dist/ 로 옮긴 바로 뒤에 부른다 — 하루 4번(08:10 · 12:10 · 16:10 · 21:10 서울 · Claude 예약 작업이 「aaa7377.com 올리기」를 누름) ·
+//   올리기 묶음(scripts/atlas11/package.mjs)이 site/ 를 dist/ 로 옮긴 바로 뒤에 부른다 — 하루 4번(10:00 · 12:00 · 14:00 · 18:00 서울 · Claude 예약 작업이 1분 앞에 「aaa7377.com 올리기」를 누름 ·
+//   2026-10-12 12:41 「10시 12시 14시 18시 업데이틀 하라」 — 그 전은 08:10 · 12:10 · 16:10 · 21:10 · 회차 이름 목록은 universe.json slots) ·
 //   평일 16:47 · 19:00 예약 올리기 · 손 올리기가 모두 이 길을 지남(예약 작업 파일 atlas11-daily.yml · atlas11-evening.yml 은 고치지 않음 — 규칙 7)
 //   ① 깃허브 실행기면 후보 1,378곳 일봉(종가 · 거래량)을 이어 받는다(closes_fetch.mjs → 임시 폴더 · 모음 뒤 날을 한 번에 받으므로 지난 파일이 필요 없음)
 //   ② dump.mjs → daese.py --closes(그날까지 값으로 365곳을 다시 고름 · d365-v2) → organize.mjs → daese_verify.mjs(노드로 따로 · 틀림 0)
@@ -46,7 +47,8 @@ export function readRecords(root) {
 /** 화면 「업데이트」 탭 자료 — 새 회차가 위 · 365곳 목록은 빼고 들고 난 이름만 */
 // 업데이트 탭: 까닭이 회차가 아니면(손 올리기) 회차 이름 없이 보임 — 옛 기록 파일은 그대로(클로드팀 2026-10-12: 15:52 · 21:57 손 올리기가 16:10 · 21:10 회차로 두 번 보이던 것)
 export function tabData(records) {
-  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason ? slotFor(r.kst, r.reason) : r.slot, reason: r.reason || null, result: r.result, why: r.why || null,
+  // 회차 이름은 그 회차가 적은 것 그대로(2026-10-12 12:41 회차 시각을 바꿈 — 옛 08:10 · 16:10 기록이 새 시각표로 다시 매겨지지 않게) · 손 올리기만 회차 이름을 지움
+  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason && !/회차/.test(r.reason) ? null : r.slot, reason: r.reason || null, result: r.result, why: r.why || null,
     asOf: r.asOf, base: r.base, provisional: r.provisional, version: r.version, in: r.in ?? [], out: r.out ?? [], tiers: r.tiers ?? null, all: r.all ?? null, top: r.top ?? null,
     pick36: r.pick36 ? {first: r.pick36.first, reused: r.pick36.reused, test: r.pick36.test} : null, served: r.served}));
   return {schema: 'atlas-new-updates-1', made: new Date().toISOString(), slots: ACT.slots ?? [], n: records.length, records: rows};

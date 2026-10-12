@@ -39,11 +39,22 @@ test('closes_fetch — 일봉 XML 을 [날, 종가, 거래량] 으로 · 후보 
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 
-test('회차 이름 — 08:10 · 12:10 · 16:10 · 21:10 근처만 그 회차', () => {
-  assert.equal(slotOf('2026-10-12 08:12'), '08:10'); assert.equal(slotOf('2026-10-12 16:47'), '16:10'); assert.equal(slotOf('2026-10-12 17:20'), null); assert.equal(slotOf('2026-10-12 21:05'), '21:10');
-  assert.equal(slotOf('2026-10-11 15:52'), null); // 20분 앞 손 올리기는 회차가 아님(15:52 일 뒤 창을 5분 앞으로)
-  assert.equal(slotFor('2026-10-11 21:57', '앞으로 클까? 365곳 모두'), null); // 회차 창 안이라도 손 올리기는 회차가 아님(21:57 일)
-  assert.equal(slotFor('2026-10-11 21:12', '21:10 회차'), '21:10'); assert.equal(slotFor('2026-10-12 08:12', ''), '08:10'); assert.equal(slotFor('2026-10-12 16:47'), '16:10');
+test('회차 이름 — 10:00 · 12:00 · 14:00 · 18:00 근처만 그 회차(2026-10-12 12:41 「10시 12시 14시 18시」)', () => {
+  assert.equal(slotOf('2026-10-12 10:02'), '10:00'); assert.equal(slotOf('2026-10-12 09:56'), '10:00'); assert.equal(slotOf('2026-10-12 14:47'), '14:00'); assert.equal(slotOf('2026-10-12 15:20'), null);
+  assert.equal(slotOf('2026-10-12 17:58'), '18:00'); assert.equal(slotOf('2026-10-12 08:12'), null); assert.equal(slotOf('2026-10-12 21:12'), null); // 옛 시각은 이제 회차가 아님
+  assert.equal(slotOf('2026-10-12 11:40'), null); // 20분 앞 손 올리기는 회차가 아님(창은 5분 앞부터)
+  assert.equal(slotFor('2026-10-12 12:20', '앞으로 클까? 365곳 모두'), null); // 회차 창 안이라도 손 올리기는 회차가 아님
+  assert.equal(slotFor('2026-10-12 18:03', '18:00 회차'), '18:00'); assert.equal(slotFor('2026-10-12 12:02', ''), '12:00'); assert.equal(slotFor('2026-10-12 14:30'), '14:00');
+});
+
+test('업데이트 탭 — 회차 시각을 바꿔도 옛 회차 기록의 회차 이름은 그대로 · 손 올리기만 지움', () => {
+  const recs = [{at: '2026-10-11T23:12:27Z', kst: '2026-10-12 08:12', slot: '08:10', reason: '08:10 회차', result: '바꿈'},
+    {at: '2026-10-12T03:12:11Z', kst: '2026-10-12 12:12', slot: '12:10', reason: '12:10 회차', result: '바꿈'},
+    {at: '2026-10-12T03:27:00Z', kst: '2026-10-12 12:27', slot: '12:10', reason: '청자 밤 올림', result: '그대로'},
+    {at: '2026-10-11T07:12:00Z', kst: '2026-10-11 16:12', slot: '16:10', reason: '', result: '바꿈'}];
+  const t = tabData(recs).records;
+  assert.deepEqual(t.map(r => r.slot), ['16:10', null, '12:10', '08:10']); // 새 회차가 위(넣은 차례의 거꾸로)
+  assert.deepEqual(tabData([]).slots, ['10:00', '12:00', '14:00', '18:00']);
 });
 
 test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값으로 365곳을 다시 고르고 · 기준일이 따라가고 · 따로 세기 셋 틀림 0 · 기록 · 업데이트 탭', async () => {
@@ -56,16 +67,16 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const bent = pro.picked[0].code, halt = pro.picked[1].code;
   rows[bent] = rows[bent].map(([d, v, vol], k) => [d, k === 20 ? Math.round(v * 1.1) : v, vol]); // 모음 안 날 하나를 10% 다르게 = 지난 값을 고쳐 적은 것처럼
   rows[halt] = rows[halt].slice(0, -1); // 새 날 값이 없음 = 거래정지처럼
-  fs.writeFileSync(path.join(closes, '20991231T071000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next + 'T07:10:00.000Z', rows, errors: []})));
+  fs.writeFileSync(path.join(closes, '20991231T071000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next + 'T05:00:00.000Z', rows, errors: []})));
   const dist = path.join(tmp, 'dist'); fs.cpSync(path.join(ROOT, 'site/atlas'), path.join(dist, 'atlas'), {recursive: true});
   const rec = path.join(tmp, 'updates');
-  const rep = await rollAtlas({root: ROOT, dist, closesDir: closes, recordDir: rec, now: new Date(next + 'T07:12:00Z'), pick36Quick: true, log: () => {}});
+  const rep = await rollAtlas({root: ROOT, dist, closesDir: closes, recordDir: rec, now: new Date(next + 'T05:02:00Z'), pick36Quick: true, log: () => {}});
   assert.equal(rep.result, '바꿈', rep.why); assert.equal(rep.served, 'rolled');
-  assert.equal(rep.slot, '16:10');
+  assert.equal(rep.slot, '14:00');
   assert.equal(rep.asOf, next);
   const W = cal.filter(d => d <= next).slice(-21);
   assert.equal(rep.base, W[0]);
-  assert.equal(rep.provisional, true); // 16:10(서울) 받음 = 저녁 8시 전
+  assert.equal(rep.provisional, true); // 14:02(서울) 받음 = 저녁 8시 전
   for (const k of ['daese', 'site', 'pick36']) assert.match(rep.verify[k], /"bad":0/, k);
   assert.ok(rep.out.some(x => x.c === bent) && rep.out.some(x => x.c === halt), '고쳐 적힌 회사 · 그날 값 없는 회사는 빠짐');
   assert.equal(rep.members.length, 365); assert.equal(new Set(rep.members).size, 365);
