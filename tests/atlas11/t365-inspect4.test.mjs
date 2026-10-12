@@ -45,11 +45,12 @@ test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', 
 
 test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 화면에서 회사 3번 · n단 n번', () => {
   const J = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
-  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json')};
+  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json'), home: fs.existsSync(path.join(DATA, 'home.json')) ? J('home.json') : null}; // 첫 화면 365곳 막대 양 끝 길(2026-10-12 14:54)도 함께
   S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
   const {nodes, depth} = siteGraph(S);
   assert.equal(nodes.size, 6 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5);
   for (const c of S.codes.slice(0, 50)) { assert.ok(depth.get('#/c/' + c) <= 3); assert.ok(depth.get(`#/c/${c}/range`) <= 7); }
+  if (S.home?.s365?.top) { const top = '#/c/' + S.home.s365.top.c; assert.ok(nodes.get('#/').links.includes(top)); assert.equal(depth.get(top), 1); } // 오늘 가장 많이 오른 곳은 첫 화면에서 1번
   // 실제 화면에서 모은 길 지도(site_check.mjs --links)가 있으면 길 하나하나 맞대 봄(2026-10-12: 화면 1,878 · 다른 길 0)
   const lf = process.env.ATLAS_LINKS; if (!lf) return;
   const map = JSON.parse(fs.readFileSync(lf, 'utf8'));

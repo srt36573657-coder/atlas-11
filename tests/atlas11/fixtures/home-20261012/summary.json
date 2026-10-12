@@ -1,0 +1,132 @@
+[
+ {
+  "name": "kospi-day.json",
+  "url": "https://api.stock.naver.com/chart/domestic/index/KOSPI/day?startDateTime=20260614&endDateTime=20261012",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 13250,
+  "ms": 1049,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:00.083Z"
+ },
+ {
+  "name": "kosdaq-day.json",
+  "url": "https://api.stock.naver.com/chart/domestic/index/KOSDAQ/day?startDateTime=20260614&endDateTime=20261012",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 12949,
+  "ms": 174,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:00.257Z"
+ },
+ {
+  "name": "kospi-trend.json",
+  "url": "https://m.stock.naver.com/api/index/KOSPI/trend",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 103,
+  "ms": 986,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:01.243Z"
+ },
+ {
+  "name": "kosdaq-trend.json",
+  "url": "https://m.stock.naver.com/api/index/KOSDAQ/trend",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 99,
+  "ms": 167,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:01.410Z"
+ },
+ {
+  "name": "kospi-trend-page.json",
+  "url": "https://m.stock.naver.com/api/index/KOSPI/trend?pageSize=10&page=1",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 103,
+  "ms": 166,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:01.576Z"
+ },
+ {
+  "name": "kospi-price.json",
+  "url": "https://m.stock.naver.com/api/index/KOSPI/price?pageSize=10&page=1",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2567,
+  "ms": 165,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:01.741Z"
+ },
+ {
+  "name": "kosdaq-price.json",
+  "url": "https://m.stock.naver.com/api/index/KOSDAQ/price?pageSize=10&page=1",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 2468,
+  "ms": 171,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:01.912Z"
+ },
+ {
+  "name": "industry.json",
+  "url": "https://m.stock.naver.com/api/stocks/industry?page=1&pageSize=100",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 8661,
+  "ms": 196,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:02.108Z"
+ },
+ {
+  "name": "us-inx.json",
+  "url": "https://api.stock.naver.com/index/.INX/price?page=1&pageSize=60",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 34718,
+  "ms": 185,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:02.293Z"
+ },
+ {
+  "name": "us-ixic.json",
+  "url": "https://api.stock.naver.com/index/.IXIC/price?page=1&pageSize=60",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 35240,
+  "ms": 176,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:02.469Z"
+ },
+ {
+  "name": "us-dji.json",
+  "url": "https://api.stock.naver.com/index/.DJI/price?page=1&pageSize=60",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 35008,
+  "ms": 176,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:02.645Z"
+ },
+ {
+  "name": "us-sox.json",
+  "url": "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=60",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 35149,
+  "ms": 180,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:02.825Z"
+ },
+ {
+  "name": "us-vix.json",
+  "url": "https://api.stock.naver.com/index/.VIX/price?page=1&pageSize=60",
+  "status": 200,
+  "type": "application/json;charset=UTF-8",
+  "bytes": 32259,
+  "ms": 176,
+  "err": null,
+  "fetchedAt": "2026-10-12T05:59:03.001Z"
+ }
+]

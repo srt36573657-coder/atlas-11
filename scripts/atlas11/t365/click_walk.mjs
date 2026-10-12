@@ -51,7 +51,7 @@ while (clicks < N) {
 const ms = Date.now() - t0, visited = seen.reduce((a, b) => a + b, 0);
 // ⑤ 점검용 길 지도 맞대기(도움말 판 #/info 의 보기 고리는 판이라 뺌)
 const mirror = (() => { const D = path.resolve(ROOT, arg('--data', 'site/atlas/data')), J = f => JSON.parse(fs.readFileSync(path.join(D, f), 'utf8'));
-  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json')}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
+  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json'), home: fs.existsSync(path.join(D, 'home.json')) ? J('home.json') : null}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
   const {nodes} = siteGraph(S), real = Object.keys(map).filter(r => r !== '#/info'), diff = [];
   for (const r of real) if (!nodes.has(r)) diff.push('점검 지도에 없는 화면 ' + r);
   for (const r of nodes.keys()) if (r !== '#/info' && !(r in map)) diff.push('실제에 없는 화면 ' + r);

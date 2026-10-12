@@ -36,7 +36,7 @@ function load(siteDir, dataDir) {
   const opt = f => { try { return J(f); } catch { return null; } };
   const S = {siteDir, dataDir: D, js: fs.readFileSync(path.join(A, 'atlas.js'), 'utf8'), css: fs.readFileSync(path.join(A, 'atlas.css'), 'utf8'), html: fs.readFileSync(path.join(A, 'index.html'), 'utf8'),
     fontsCss: fs.existsSync(path.join(A, 'fonts.css')) ? fs.readFileSync(path.join(A, 'fonts.css'), 'utf8') : '',
-    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), pick: J('pick36.json'), grow: opt('grow.json'), time: opt('time.json'), co: {}, coBytes: {}, files: {}};
+    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), pick: J('pick36.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), co: {}, coBytes: {}, files: {}};
   const coDir = path.join(D, 'co');
   for (const f of fs.existsSync(coDir) ? fs.readdirSync(coDir) : []) { if (!f.endsWith('.json')) continue; const t = fs.readFileSync(path.join(coDir, f), 'utf8'); S.coBytes[f.slice(0, -5)] = t.length; try { S.co[f.slice(0, -5)] = JSON.parse(t); } catch { S.co[f.slice(0, -5)] = null; } }
   for (const f of fs.readdirSync(D)) { const p = path.join(D, f); if (fs.statSync(p).isFile()) S.files[f] = fs.statSync(p).size; }
@@ -67,7 +67,8 @@ export function siteGraph(S) {
   const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
   const nodes = new Map();
   const add = (r, links, step = null, co = null, allow = null) => nodes.set(r, {links: [...links.filter(Boolean), ...TABS], step, co, allow});
-  add('#/', [...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
+  const H = S.home?.s365, ends = [H?.top?.c, H?.bot?.c].filter(c => c && comp[c]).map(c => '#/c/' + c); // 첫 화면 365곳 막대 양 끝(가장 많이 오른 · 내린 곳 — 2026-10-12 14:54)
+  add('#/', [...ends, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
   add('#/list', core.industries.map(hrefInd), null, null, 1);
   add('#/36', S.pick.picks.map(p => '#/c/' + p.code), null, null, 1);
   add('#/up', [], null, null, 1); add('#/time', [], null, null, 2); add('#/info', [], null, null, 1);
@@ -135,7 +136,27 @@ function googleLens(S, market) {
   const eq = cs => { const out = [100]; let lvl = 100; for (let k = 1; k < W; k++) { let s = 0, n = 0; for (const c of cs) { const a = lines[c]?.[k - 1], b = lines[c]?.[k]; if (a && b) { const r = b / a - 1; if (Math.abs(r) < 0.5) { s += r; n++; } } } if (n) lvl *= 1 + s / n; out.push(lvl); } return out; };
   const series = [{name: '365곳 전체', obj: core.all, cs: S.codes}, ...core.groups.map(g => ({name: '갈래 ' + g.short, obj: g, cs: S.codes.filter(c => comp[c].g === g.id)})), ...core.industries.map(i => ({name: '업종 ' + i.name, obj: i, cs: i.members}))];
   for (const s of series) s.re = eq(s.cs);
-  const nums = [...numbers(core, 'core', []), ...numbers(S.comp, 'comp', []), ...numbers(S.lines, 'lines', []), ...numbers(S.pick, 'pick36', [])];
+  const nums = [...numbers(core, 'core', []), ...numbers(S.comp, 'comp', []), ...numbers(S.lines, 'lines', []), ...numbers(S.pick, 'pick36', []), ...(S.home ? numbers(S.home, 'home', []) : [])];
+  // 첫 화면 종합 정보(home.json · 2026-10-12 14:54) — 다른 길로 다시 셈
+  const HM = S.home, hchk = [];
+  if (HM) {
+    hchk.push(['고른 날 · 기준일 = 365곳 자료', () => HM.asOf === core.asOf && HM.base === core.base]);
+    for (const k of ['KOSPI', 'KOSDAQ']) { const x = HM.idx?.[k]; if (!x) continue; const R = x.rows, n = R.length;
+      hchk.push([`${k} 날짜 차례 · 값`, () => R.every((r, j) => r[1] > 0 && (!j || r[0] > R[j - 1][0])) && R.at(-1)[0] === x.date && R.at(-1)[1] === x.close]);
+      hchk.push([`${k} 하루 비율`, () => n < 2 || Math.abs((R[n - 1][1] / R[n - 2][1] - 1) * 100 - x.day) <= 0.006]);
+      hchk.push([`${k} 가장 높던 · 낮던 날`, () => x.hi.v === Math.max(...R.map(r => r[1])) && x.lo.v === Math.min(...R.map(r => r[1])) && Math.abs((x.close / x.hi.v - 1) * 100 - x.hi.vs) <= 0.006 && Math.abs((x.close / x.lo.v - 1) * 100 - x.lo.vs) <= 0.006]);
+      hchk.push([`${k} 3개월 안`, () => { const f = new Date(x.date + 'T00:00:00Z'); f.setUTCMonth(f.getUTCMonth() - 3); return R[0][0] >= f.toISOString().slice(0, 10) && n >= 40; }]); }
+    const L = HM.s365?.list ?? [];
+    hchk.push(['365곳 오늘 오름 · 내림 다시 셈', () => { let up = 0, down = 0; for (const c of S.codes) { const a = lines[c][W - 2], b = lines[c][W - 1]; if (a == null || b == null || !a) continue; if (b > a) up++; else if (b < a) down++; } return HM.s365.up === up && HM.s365.down === down; }]);
+    hchk.push(['365곳 막대 차례 · 양 끝', () => L.every((x, j) => comp[x[0]] && (!j || L[j - 1][1] >= x[1])) && (!L.length || (HM.s365.top.c === L[0][0] && HM.s365.bot.c === L.at(-1)[0]))]);
+    hchk.push(['20거래일 견줌 = 365곳 지수', () => HM.cmp20.eq === core.all.chg && HM.cmp20.cw === core.all.cwChg && HM.cmp20.base === core.base]);
+    if (HM.sectors) { const T = HM.sectors;
+      hchk.push(['업종 강 7 · 약 7 차례 · 회사 5곳 이상', () => T.strong.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.strong[j - 1].chg >= g.chg)) && T.weak.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.weak[j - 1].chg <= g.chg)) && T.strong.length <= 7 && T.weak.length <= 7]);
+      hchk.push(['업종 이름표(강한 7 · 덜 내린 7)', () => T.label === (T.strong.reduce((t, g) => t + g.chg, 0) / Math.max(1, T.strong.length) < 0 ? '덜 내린 7' : '강한 7')]);
+      hchk.push(['업종 365곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]); }
+    if (HM.us) hchk.push(['미국 지수가 60거래일 낮음 ~ 높음 안', () => HM.us.rows.every(r => r.close == null || (r.close >= r.lo - 1e-9 && r.close <= r.hi + 1e-9))]);
+    hchk.push(['「!」 문턱(지수 3% · 외국 투자자 1조 원)', () => (HM.alerts ?? []).every(a => (a.kind === 'idx' ? Math.abs(a.v) >= 3 : Math.abs(a.v) >= 10000))]);
+  }
   const fileAsOf = [['lines.json', S.lines.asOf], ['comp.json', S.comp.asOf], ['days.json', S.days.asOf], ['names.json', S.names.asOf], ['days 마지막 날', S.days.dates.at(-1)]];
   // 시장 판독 — 다른 길(회사마다 「바뀐 비율」 부호가 아니라 선의 마지막 두 칸)로 다시 셈
   const mk = []; if (market) {
@@ -178,13 +199,14 @@ function googleLens(S, market) {
       const age = (Date.parse(today) - Date.parse(core.asOf)) / 864e5; return age <= 12 ? null : `고른 날 ${core.asOf} 이 ${age}일 묵음(12일 넘음)`; }},
     {k: 'number', name: '숫자가 모두 참 숫자인가(NaN · 끝없음 없음)', items: nums.length, check(i) { const x = nums[i]; return Number.isFinite(x.v) ? null : `${x.where}.${x.key} = ${x.v}`; }},
     {k: 'market', name: '시장 판독 숫자 다시 셈', items: mk.length, check(i) { const [what, got, want] = mk[i]; return got === want ? null : `판독 ${what} ${got} ≠ 다시 셈 ${want}`; }},
+    {k: 'home', name: '첫 화면 종합 정보 다시 셈(지수 · 365곳 · 업종 · 미국 · 「!」)', items: hchk.length, check(i) { let ok = false; try { ok = hchk[i][1](); } catch { ok = false; } return ok ? null : `첫 화면: ${hchk[i][0]}`; }},
   ]};
 }
 
 // ═════════ 🤖 클로드 — 말 ═════════
 function claudeLens(S, market) {
   const comp = S.comp.companies;
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : [])];
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
   for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
   const mlines = (market?.lines ?? []).map(s => ({where: '시장 판독', key: 'line', s, proper: false}));
   texts.push(...mlines);
@@ -257,7 +279,7 @@ function ciaLens(S, market) {
     ...S.codes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
     ...S.names.rows.filter(r => r.s !== 'in').slice(0, 2000).map(r => ['#/x/' + r.c, ['info', r.c]])];
   // 글 — 자료 모두 + 시장 판독
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : [])];
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
   for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
   for (const s of market?.lines ?? []) texts.push({where: '시장 판독', key: 'line', s});
   const INJ = /<\s*\/?\s*(script|iframe|img|svg|object|embed|style|link|meta|form|input|a)\b|javascript:|vbscript:|data:text\/html|\bon[a-z]{3,}\s*=/i;
@@ -267,7 +289,7 @@ function ciaLens(S, market) {
   const SECRET = [[/nfp_[A-Za-z0-9]{20,}/, '넷리파이 열쇠'], [/gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}/, '깃허브 열쇠'], [/AKIA[0-9A-Z]{16}/, 'AWS 열쇠'], [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, '개인 키'],
     [/xox[baprs]-[A-Za-z0-9-]{10,}/, '슬랙 열쇠'], [/sk-(ant-)?[A-Za-z0-9_-]{32,}/, 'API 열쇠'], [/NETLIFY_(AUTH_TOKEN|SITE_ID)\s*[=:]/, '넷리파이 이름 + 값'], [/"(siteId|deployId|site_id|deploy_id|deployUrl)"\s*:/, '넷리파이 번호 칸'],
     [/[A-Za-z0-9._%+-]+@(gmail|naver|daum|hanmail|kakao|outlook|hotmail|yahoo|icloud)\.[a-z.]{2,}/i, '개인 메일 주소']];
-  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'pick36.json', 'lines.json', 'days.json', 'grow.json', 'time.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
+  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'pick36.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
     ...S.codes.filter(c => S.co[c]).map(c => ['co/' + c + '.json', JSON.stringify(S.co[c])])];
   const chunks = []; for (const [f, t] of docs) for (let k = 0; k < Math.max(1, t.length); k += 1800) chunks.push([f, k, t.slice(k, k + 2000)]);
   // 화면 코드 규칙
@@ -287,7 +309,7 @@ function ciaLens(S, market) {
   const heads = [['default-src \'self\'', /default-src 'self'/], ['script-src \'self\'(안에 박은 코드 · eval 막음)', /script-src 'self'(;|$)/m], ['object-src \'none\'', /object-src 'none'/], ['frame-ancestors \'none\'(남의 화면에 못 끼움)', /frame-ancestors 'none'/],
     ['base-uri · form-action \'self\'', /base-uri 'self'.*form-action 'self'/], ['X-Frame-Options: DENY', /X-Frame-Options: DENY/], ['X-Content-Type-Options: nosniff', /X-Content-Type-Options: nosniff/],
     ['Referrer-Policy', /Referrer-Policy: strict-origin-when-cross-origin/], ['Permissions-Policy(카메라 · 마이크 · 위치 막음)', /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/], ['unsafe-inline · unsafe-eval 없음', null]];
-  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'pick36.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6};
+  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'pick36.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5};
   const sizes = [...Object.entries(S.files).map(([f, b]) => [f, b, LIM[f] ?? 1e6]), ...Object.entries(S.coBytes).map(([c, b]) => ['co/' + c + '.json', b, 2.5e5]), ['co 파일 수', Object.keys(S.coBytes).length, null]];
   const codeOk = c => /^[0-9A-Z]{6}$/.test(c);
   return {key: 'cia', name: 'CIA', what: '뚫리거나 새는 곳이 없나 — 이상한 주소 넣어 보기 · 비밀 · 바깥 주소 · 끼운 코드', route: R, kinds: [

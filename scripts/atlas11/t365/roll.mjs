@@ -8,6 +8,7 @@
 //   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → pick36.py(같은 값이면 지금 사이트의 36곳을 그대로 씀) → pick36_verify.mjs(틀림 0)
 //   ④ 모두 통과하면 dist/atlas/data 를 바꿈 · 하나라도 멈추면 지금 사이트(aaa7377.com)의 자료를 그대로 받아 올림(옛 바탕으로 돌아가지 않게) · 그것도 못 하면 저장소 바탕 그대로
 //   ⑤ 회차 기록: reports/atlas11/t365/updates/<받은 때 UTC>.json(새 파일 · 지우지 않음) + 화면 「업데이트」 탭 자료 dist/atlas/data/updates.json(마지막 60회차)
+//   ⑤-2 첫 화면 종합 정보(2026-10-12 14:54 · market_fetch.mjs → home_build.mjs → 자료 home.json)
 //   ⑥ 시장 판독(2026-10-12 12:41 「시장을 판독해서」 · market_read.mjs — 지난 사실만 · 판독 규칙 mr-v1) · 네 눈 점검(같은 날 「업데이트 할때마다 아틀란스 점검을
 //      애플 구글 클로드 cia방식으로 각각 1000만번씩」 · inspect4.mjs — 새 자료 + 화면 코드를 눈마다 ATLAS_INSPECT_N 번(기본 1,000만) · 하나라도 걸리면 ④처럼 새 자료를 올리지 않음)
 //      기록: 회차 기록의 market · inspect(짧은 꼴) + 깃허브 실행기면 reports/atlas11/t365/inspect/<받은 때>.json(전부 · 새 파일)
@@ -26,7 +27,7 @@ export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
 const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'pick36.json'];
-const OPT_FILES = ['time.json', 'grow.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
+const OPT_FILES = ['time.json', 'grow.json', 'home.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 
 async function copyAll(from, to) {
   await fs.mkdir(to, {recursive: true});
@@ -85,7 +86,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   const useLive = liveFallback === undefined ? (ci && !closesDir) : liveFallback;
   const kst = kstOf(now);
   const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotFor(kst, reason), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
-    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, market: null, inspect: null, verify: {}, steps: []};
+    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, market: null, inspect: null, home: null, homeFetch: null, verify: {}, steps: []};
   const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 1e7)); // 네 눈 점검 — 눈마다 번 수(사장님 「각각 1000만번씩」 · 시험만 줄임)
   let inspectFull = null;
   /** 네 눈 점검 — dataDir 자료 + dist 화면 코드 · 끝나지 못하면 throw · 걸린 것이 있으면 결과를 남기고 false */
@@ -142,6 +143,18 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     const p36 = run('36곳 셈', 'python3', p36args, env2, 900000);
     const pv = run('36곳 따로 세기', 'node', ['scripts/atlas11/t365/pick36_verify.mjs', path.join(out, 'pick36.json'), path.join(tmp, 'pv.json'), ...(pick36Quick ? ['--allow-quick'] : [])], env2);
     rep.verify.pick36 = tail(pv.stdout);
+    // 첫 화면 종합 정보(사장님 2026-10-12 14:54 「첫화면에 3개월 코스피 코스닥 지수 그래프 … 365개 종목 … 업종 강 7 · 약 7 … 수급 … 미국장 분위기」 · 네 팀 합친 안)
+    //   깃허브 실행기면 지수 · 수급 · 업종 · 미국장 원문을 받음(market_fetch.mjs · 못 받아도 회차는 계속) → home_build.mjs(못 받은 조각 = 지금 사이트 자료의 그 조각 · 「앞 회차 값」)
+    let raw = null, prevHome = fss.existsSync(path.join(target, 'home.json')) ? path.join(target, 'home.json') : '';
+    if (ci && !closesDir && process.env.ATLAS_HOME_FETCH !== '0') {
+      raw = path.join(tmp, 'home-raw');
+      const t0 = Date.now(), r = spawnSync('node', ['scripts/atlas11/t365/market_fetch.mjs', '--out', raw], {cwd: root, encoding: 'utf8', timeout: 300000, maxBuffer: 16 << 20});
+      rep.steps.push({name: '첫 화면 원문 받기', code: r.status, sec: Math.round((Date.now() - t0) / 100) / 10});
+      try { rep.homeFetch = JSON.parse(String(r.stdout).trim().split('\n').at(-1)); } catch { rep.homeFetch = {code: r.status, err: tail(r.stderr)}; }
+    }
+    if (useLive) { try { await fs.writeFile(path.join(tmp, 'home-live.json'), await getLive('home.json')); prevHome = path.join(tmp, 'home-live.json'); } catch { /* 지금 사이트에 아직 없음 — 저장된 것 */ } }
+    const hb = run('첫 화면 자료', 'node', ['scripts/atlas11/t365/home_build.mjs', '--data', out, '--raw', raw ?? '', '--prev', prevHome, '--out', path.join(out, 'home.json'), '--now', now.toISOString()]);
+    try { rep.home = JSON.parse(String(hb.stdout).trim().split('\n').at(-1)); } catch { rep.home = null; }
     // 회차 기록 — 고른 날 · 기준일 · 365곳 · 들고 난 곳 · 층 · 1등 갈래
     const pro = JSON.parse(await fs.readFile(path.join(upd, 'proposal.json'), 'utf8'));
     const core = JSON.parse(await fs.readFile(path.join(out, 'core.json'), 'utf8'));

@@ -638,3 +638,42 @@ h1.head::before, .co-head h1::before { content: ''; position: absolute; z-index:
 /* 달 속 공주님(사장님 2026-10-12 10:53 「달있는곳에 우리 공주님 얼굴 넣어봐」) — 둥근 달 테 안에 얼굴 · 꾸밈 그림(영상 친구)에는 여전히 공주님 없음 · 화면 읽기에는 안 읽힘(바탕 그림) */
 /* 10번 달빛 마루(건축가) — 달빛은 1등 줄에만(밤 화면이라 옅은 달빛) */
 .board .row.win, .board .row.win:hover { background: var(--moonrow); }
+
+/* ── 첫 화면 종합 정보(사장님 2026-10-12 14:54 「첫화면에 … 종합정보가 있어야 해 … 애플 구글 cia 클로드 … 토론후 결정해서 만들어」) ──
+   카드 하나 = 이름표(h2) → 한 문장(.lead) → 그림 하나 → 접힌 자세히 · 막대는 모두 가운데 0 · 수급은 옥색 한 색(오름 · 내림 아님) · 글씨 21px 이상 */
+.when { margin: 2px 0 10px; color: var(--sub); font-variant-numeric: tabular-nums; }
+.lead { margin: 2px 0 10px; color: var(--ink); line-height: 1.55; }
+.lead b, .lead .num { font-weight: 800; }
+.q.alert { margin: 6px 0 0; }
+.brd { display: grid; gap: 8px; margin: 4px 0 8px; }
+.brow { display: grid; grid-template-columns: 7.2em 1fr; align-items: center; gap: 10px; }
+.brow .bl { color: var(--sub); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.brow .bb { display: flex; height: 16px; border-radius: 3px; overflow: hidden; background: var(--card2); }
+.brow .bb i { display: block; height: 100%; }
+.brow .bb .up { background: var(--up); } .brow .bb .down { background: var(--down); } .brow .bb .flat { background: var(--mute); opacity: .55; }
+.ipans { display: grid; gap: 14px; margin: 6px 0 0; }
+.ipan .il { margin: 0 0 2px; } .ipan .il b { color: var(--ink-hi); }
+.ipan svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ipan .ax, .strip + .ax { display: flex; justify-content: space-between; color: var(--mute); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.ipan .cap { margin: 4px 0 0; color: var(--sub); line-height: 1.5; }
+h3.sh { font-size: 1.04rem; font-weight: 800; margin: 16px 0 4px; color: var(--ink-hi); }
+h3.sh.up { color: var(--up-ink); } h3.sh.down { color: var(--down-ink); }
+ol.srows, ol.urows { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+ol.srows .sl, ol.urows .sl { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0; }
+ol.srows .sn, ol.urows .sn { min-width: 0; overflow-wrap: anywhere; }
+ol.srows .sl b, ol.urows .sl b { flex: 0 0 auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+ol.srows .ss { margin: 2px 0 0; color: var(--sub); font-variant-numeric: tabular-nums; }
+.dbar { position: relative; display: block; height: 10px; margin: 4px 0 0; border-radius: 3px; background: var(--card2); }
+.dbar .z { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--mute); }
+.dbar .f { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+.dbar .f.up { background: var(--up); } .dbar .f.down { background: var(--down); } .dbar .f.one { background: var(--violet); } .dbar .f.flat { background: var(--mute); }
+ol.urows .uc { margin-left: auto; color: var(--sub); font-variant-numeric: tabular-nums; }
+.ruler { position: relative; display: block; height: 14px; margin: 6px 0 0; }
+.ruler .rl { position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: var(--mute); opacity: .7; border-radius: 1px; }
+.ruler .rd { position: absolute; top: 0; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--ink-hi); }
+.strip { margin: 6px 0 0; touch-action: pan-y; }
+.strip svg { display: block; width: 100%; height: auto; cursor: pointer; }
+.pick { margin: 6px 0 0; min-height: 44px; }
+.pick a.play { display: inline-flex; align-items: center; min-height: 44px; }
+.ends a { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
+h2.sec.rt { margin-top: 26px; }

@@ -108,6 +108,10 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const ins = fs.readdirSync(path.join(tmp, 'inspect')); assert.deepEqual(ins, files);
   assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'inspect', ins[0]), 'utf8')).lenses.length, 4);
   assert.deepEqual(upd.records[0].market.lines, rep.market.lines); assert.equal(upd.records[0].inspect.fail, 0); assert.equal(upd.slots.join(), '10:00,12:00,14:00,18:00');
+  // 첫 화면 종합 정보(2026-10-12 14:54) — 이번 회차 자료로 다시(365곳 · 20거래일) · 받지 못한 조각은 저장된 첫 화면 자료의 조각(앞 회차 값 꼬리표)
+  const home = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/home.json'), 'utf8'));
+  assert.equal(home.asOf, next); assert.equal(home.s365.date, next); assert.ok(home.s365.list.length > 300); assert.ok(rep.steps.some(s => s.name === '첫 화면 자료' && s.code === 0));
+  assert.ok(home.idx && home.stale.idx, '받지 못한 지수는 앞 자료 + 꼬리표');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 
