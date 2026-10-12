@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const HOME_RULE = {id: 'home-v1', minSector: 5, top: 7, months: 3, minRows: 40, alertIdx: 3, alertFlow: 10000}; // minRows = 3개월에 거래일이 이보다 적게 오면 덜 받은 것으로 보고 앞 회차 값(네 눈 점검 구글 눈 「3개월 안」과 같은 문턱 — 덜 받은 값 하나가 회차 전체를 막지 않게)
+export const HOME_RULE = {id: 'home-v2', minSector: 5, top: 7, months: 3, minRows: 40, alertIdx: 3, alertFlow: 10000, open: '09:00', close: '15:30'}; // minRows = 3개월에 거래일이 이보다 적게 오면 덜 받은 것으로 보고 앞 회차 값(네 눈 점검 구글 눈 「3개월 안」과 같은 문턱 — 덜 받은 값 하나가 회차 전체를 막지 않게)
 const US = [['INX', '.INX', 'S&P 500', 'us-inx.json'], ['IXIC', '.IXIC', '나스닥', 'us-ixic.json'], ['DJI', '.DJI', '다우', 'us-dji.json'], ['SOX', '.SOX', '미국 반도체', 'us-sox.json'], ['VIX', '.VIX', '미국 불안 지수', 'us-vix.json']];
 const num = x => { if (x == null) return null; const v = typeof x === 'number' ? x : +String(x).replace(/[,+\s]/g, ''); return Number.isFinite(v) ? v : null; };
 const iso8 = d => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
@@ -81,14 +81,18 @@ export function buildHome({dataDir, rawDir = null, prev = null, now = new Date()
   const J = f => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
   const core = J('core.json'), lines = J('lines.json').lines, comp = J('comp.json').companies;
   const kst = new Date((fetchedAt ? Date.parse(fetchedAt) : now.getTime()) + 9 * 36e5).toISOString();
-  const ind = readRaw(rawDir, 'industry.json'), live = ind?.marketStatus === 'OPEN';
-  const opt = {months: HOME_RULE.months, base: core.base, asOf: core.asOf, live, today: kst.slice(0, 10)};
+  // 장 중 = 서울 정규장 9:00 ~ 15:30 사이에 받았고 네이버 업종 장 상태도 「OPEN」(home-v2 · 2026-10-12 16:04 회차에서 찾음: 15:30 뒤에도 네이버는 시간외 · 저녁 장 때문에 「OPEN」 —
+  //   그대로 쓰면 장이 끝난 뒤에도 첫 화면이 「장 중」이라 적음 · 지수 종가는 15:30에 정해짐) · 업종을 못 받았으면 시각과 지수 날짜로만
+  const ind = readRaw(rawDir, 'industry.json'), hm = kst.slice(11, 16), live0 = hm >= HOME_RULE.open && hm < HOME_RULE.close && (ind ? ind.marketStatus === 'OPEN' : true);
+  const opt = {months: HOME_RULE.months, base: core.base, asOf: core.asOf, live: live0, today: kst.slice(0, 10)};
   const got = {
     idx: (() => { const k = indexPiece(readRaw(rawDir, 'kospi-day.json'), '코스피', opt), q = indexPiece(readRaw(rawDir, 'kosdaq-day.json'), '코스닥', opt); return k || q ? {KOSPI: k, KOSDAQ: q} : null; })(),
-    flows: (() => { const k = flowPiece(readRaw(rawDir, 'kospi-trend.json')), q = flowPiece(readRaw(rawDir, 'kosdaq-trend.json')); return k || q ? {KOSPI: k, KOSDAQ: q, live} : null; })(),
+    flows: (() => { const k = flowPiece(readRaw(rawDir, 'kospi-trend.json')), q = flowPiece(readRaw(rawDir, 'kosdaq-trend.json')); return k || q ? {KOSPI: k, KOSDAQ: q, live: false} : null; })(),
     sectors: sectorPiece(ind, comp),
     us: usPiece(US.map(([key, sym, name, f]) => [key, sym, name, f, readRaw(rawDir, f)])),
   };
+  const live = live0 && (got.idx ? !!(got.idx.KOSPI?.live || got.idx.KOSDAQ?.live) : !!ind); // 지수 마지막 날이 오늘이어야(쉬는 날 · 장 열기 전은 장 중 아님)
+  if (got.flows) got.flows.live = live;
   const out = {schema: 'atlas-new-home-1', rule: HOME_RULE.id, made: now.toISOString(), kst: kst.slice(0, 16).replace('T', ' '), live, asOf: core.asOf, base: core.base, days: core.days, stale: {}, errors: []};
   // 못 받은 조각 = 앞 자료의 같은 조각(앞 회차 값 꼬리표) · 그것도 없으면 null
   for (const k of ['idx', 'flows', 'sectors', 'us']) {

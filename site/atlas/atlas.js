@@ -249,8 +249,10 @@ const numK = (v, k = 2) => (v == null ? '?' : Number(v).toLocaleString('ko-KR', 
 /** 억 원 → 「1조 7,507억 원」 */
 const eokW = v => { if (v == null) return '?'; const a = Math.abs(Math.round(v)), jo = Math.floor(a / 10000), r = a % 10000; return (jo ? jo.toLocaleString('ko-KR') + '조' + (r ? ' ' : '') : '') + (r || !jo ? r.toLocaleString('ko-KR') + '억' : '') + ' 원'; };
 const BW = (up, down) => { const n = up + down; if (!n) return '?'; const s = up / n; return s >= 0.65 ? '넓게 오른 날' : s <= 0.35 ? '넓게 내린 날' : '오른 곳 · 내린 곳이 섞인 날'; }; // 판독 규칙 mr-v1 과 같은 문턱
-const staleNote = (H, k) => (H?.stale?.[k] ? h('p', {class: 'q', text: `? 이번에 못 받아 앞 회차(${H.stale[k]}) 값입니다.`}) : null);
+const staleNote = (H, k) => { const t = H?.stale?.[k]; return t ? h('p', {class: 'q', text: `? 이번에 못 받아 앞 회차(${/^\d{4}-\d{2}-\d{2}/.test(t) ? mdw(t.slice(0, 10)) + ' ' + t.slice(11, 16) : t}) 값입니다.`}) : null; };
 const add = (v, ...xs) => v.append(...xs.filter(Boolean)); // 없는 조각(null)을 글 「null」로 붙이지 않게
+/** 이름 뒤 「이 · 가」 — 받침이 있으면 이(코스닥이 · 개인이 · 기관이) · 없으면 가(코스피가 · 외국 투자자가) */
+const iga = s => { const c = String(s).charCodeAt(String(s).length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? s + '이' : s + '가'; };
 /** 길이 · 자리는 CSSOM 으로(보안 규칙 CSP style-src 'self' — style 속성 글은 막힘) */
 const st = (el, css) => { Object.assign(el.style, css); return el; };
 /** 가운데 0 막대 한 줄(HTML) — 오름 · 내림 색(kind 'pm') 또는 옥색 한 색(kind 'one') */
@@ -272,7 +274,7 @@ function homeHead(v, H) {
     v.append(box);
   }
   if (B) add(v, h('p', {class: 'lead'}, `시장 ${B.n.toLocaleString('ko-KR')}곳 중 `, h('b', {class: 'up', text: B.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: B.down.toLocaleString('ko-KR') + '곳 내림'}), ` → ${BW(B.up, B.down)}`));
-  for (const a of H?.alerts ?? []) v.append(h('p', {class: 'q alert', text: a.kind === 'idx' ? `! ${a.name}가 하루에 ${pct(a.v)} — 3% 넘게 움직인 날입니다` : `! 외국 투자자가 ${a.name}에서 하루에 ${eokW(a.v)} 더 ${a.v < 0 ? '팔았습니다' : '샀습니다'} — 1조 원 넘음`}));
+  for (const a of H?.alerts ?? []) v.append(h('p', {class: 'q alert', text: a.kind === 'idx' ? `! ${iga(a.name)} 하루에 ${pct(a.v)} — 3% 넘게 움직인 날입니다` : `! 외국 투자자가 ${a.name}에서 하루에 ${eokW(a.v)} 더 ${a.v < 0 ? '팔았습니다' : '샀습니다'} — 1조 원 넘음`}));
 }
 function idxPanel(x, span, band, live) {
   const box = h('div', {class: 'ipan'});
@@ -327,7 +329,7 @@ function homeFlows(v, H) {
   const who = [['personal', '개인'], ['foreign', '외국 투자자'], ['institutional', '기관']], mk = [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']];
   const all = mk.flatMap(([m, mn]) => who.map(([k, kn]) => ({mn, kn, val: F[m]?.[k] ?? null}))).filter(x => x.val != null);
   const big = all.slice().sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0];
-  add(v, h('p', {class: 'lead', text: big ? `${big.kn}가 ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}${F.live ? ' (장 중 · 잠정)' : ''}` : '? 값 없음'}), staleNote(H, 'flows'));
+  add(v, h('p', {class: 'lead', text: big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}${F.live ? ' (장 중 · 잠정)' : ''}` : '? 값 없음'}), staleNote(H, 'flows'));
   const max = Math.max(...all.map(x => Math.abs(x.val)), 1);
   for (const [m, mn] of mk) {
     const d = F[m]; v.append(h('h3', {class: 'sh', text: `${mn}${d?.date ? ' · ' + md(d.date) : ''}`}));

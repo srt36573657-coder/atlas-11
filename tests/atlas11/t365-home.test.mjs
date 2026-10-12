@@ -44,6 +44,19 @@ test('첫 화면 자료 — 못 받은 조각은 앞 회차 값(꼬리표) · �
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 
+test('「장 중」은 서울 정규장(9:00 ~ 15:30)에 받은 값만 — 15:30 뒤 네이버 「OPEN」(시간외 · 저녁 장)은 장 끝(home-v2)', () => {
+  const at = iso => buildHome({dataDir: DATA, rawDir: RAW, now: new Date(iso), fetchedAt: iso});
+  const h1604 = at('2026-10-12T07:04:00Z'); // 16:04 — 원문 장 상태는 OPEN(14:59 받은 것)이어도
+  assert.equal(HOME_RULE.id, 'home-v2'); assert.equal(h1604.live, false); assert.equal(h1604.idx.KOSPI.live, false); assert.equal(h1604.flows.live, false);
+  assert.equal(at('2026-10-12T06:29:00Z').live, true, '15:29 는 장 중'); assert.equal(at('2026-10-12T06:30:00Z').live, false, '15:30 부터 장 끝');
+  assert.equal(at('2026-10-11T23:59:00Z').live, false, '8:59 는 장 열기 전');
+  assert.equal(at('2026-10-17T01:00:00Z').live, false, '토요일 10:00 — 지수 마지막 날이 오늘이 아님');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'home-raw-'));
+  for (const f of ['kospi-day.json', 'kosdaq-day.json']) fs.copyFileSync(path.join(RAW, f), path.join(tmp, f)); // 업종을 못 받아도 시각 · 지수 날짜로
+  assert.equal(buildHome({dataDir: DATA, rawDir: tmp, fetchedAt: '2026-10-12T01:00:00Z'}).live, true);
+  fs.rmSync(tmp, {recursive: true, force: true});
+});
+
 test('업종 · 수급 · 지수 조각 — 회사 5곳 미만 뺌 · 「덜 내린 7」 · 글 숫자', () => {
   const groups = Array.from({length: 20}, (_, k) => ({no: k, name: 'U' + k, totalCount: k % 4 === 0 ? 3 : 10, changeRate: String(-1 - k / 10), riseCount: 2, fallCount: 7, steadyCount: 1}));
   const S = sectorPiece({groups, marketStatus: 'CLOSE'}, {});
