@@ -29,3 +29,4 @@
 {"at":"2026-10-12T09:01:25.980Z","kst":"2026-10-12 18:01","slot":"18:00","result":"바꿈","served":"rolled","asOf":"2026-10-12","base":"2026-09-08","in":7,"out":7,"inspectFail":0,"why":null}
 {"at":"2026-10-12T10:02:34.904Z","kst":"2026-10-12 19:02","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-10-12","base":"2026-09-08","in":4,"out":4,"inspectFail":0,"why":null}
 {"at":"2026-10-12T10:09:31.179Z","kst":"2026-10-12 19:09","slot":null,"result":"실패","served":"live","asOf":"2026-10-12","base":"2026-09-08","in":1,"out":1,"inspectFail":412803,"why":"네 눈 점검에서 걸림 — 클로드 412803건(숫자 없는 판독 줄: 앞 회차와 같은 값입니다.) — 지금 사이트 자료 그대로 다시 올림"}
+{"at":"2026-10-12T10:31:39.911Z","kst":"2026-10-12 19:31","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-10-12","base":"2026-09-08","in":1,"out":1,"inspectFail":0,"why":null}
