@@ -1,5 +1,5 @@
 # 「!」 문턱 견주기 — 지난 기록 전부 + 1억 날 흉내(블록 붓스트랩)
-#   쓰는 법: python3 -I alert_study.py <index-long 폴더> <결과.json> [흉내 날 수=100000000]
+#   쓰는 법: python3 -I alert_study.py <index-long 폴더> <결과.json> [흉내 날 수=100000000] [흉내 지수=kospi|kosdaq]
 import json, sys, math
 import numpy as np
 src, out = sys.argv[1], sys.argv[2]; NSIM = int(sys.argv[3]) if len(sys.argv) > 3 else 100_000_000
@@ -63,7 +63,8 @@ for idx in ('kospi', 'kosdaq'):
     report['real'][idx] = m; report['years'][idx] = per_year(d, R, valid)
     report['last59'][idx] = {name: int(al[-59:].sum()) for name, al in R.items()} | {'_dates': [str(d[-59]), str(d[-1])]}
 # 1억 날 흉내 — 코스피 하루 움직임을 60거래일 덩어리째 뽑아 이어 붙임(흔들림이 몰리는 모양을 살림) · 250거래일 = 한 해
-rng = np.random.default_rng(20261013); d, r = series['kospi']; N = len(r); L = 60; CH = 10_000_000 - (10_000_000 % 250)
+SIMIDX = sys.argv[4] if len(sys.argv) > 4 else 'kospi'  # 2026-10-13 02:21 「안 한 거 다 해」 — 코스닥도 흉내
+rng = np.random.default_rng(20261013); d, r = series[SIMIDX]; N = len(r); L = 60; CH = 10_000_000 - (10_000_000 % 250)
 agg = {}; done = 0
 while done < NSIM:
     n = min(CH, NSIM - done); n -= n % L; nb = n // L
@@ -84,6 +85,6 @@ for name, g in agg.items():
     report['sim'][name] = {'days': g['days'], 'perYear': g['alerts'] / g['days'] * 250, 'catch5': g['caught5'] / max(1, g['big5']), 'small': g['small'] / max(1, g['alerts']),
                            'zeroYear': g['zeroY'] / g['years'], 'over36Year': g['over36Y'] / g['years'], 'years': g['years'],
                            'p10': int(np.searchsorted(cdf, 0.1)), 'p50': int(np.searchsorted(cdf, 0.5)), 'p90': int(np.searchsorted(cdf, 0.9))}
-report['simDays'] = int(done); report['made'] = __import__('datetime').datetime.utcnow().isoformat() + 'Z'
+report['simIndex'] = SIMIDX; report['simDays'] = int(done); report['made'] = __import__('datetime').datetime.utcnow().isoformat() + 'Z'
 json.dump(report, open(out, 'w'), ensure_ascii=False, indent=1)
 print('ok', done)
