@@ -8,23 +8,27 @@
              · 글자 대비 검사(site_check 「대비」 — 보통 글 4.5 · 굵거나 큰 글 3 넘게)
      클로드팀 빨강 · 파랑은 오름 · 내림에만(「!」 조심 표시를 빨강에서 금빛으로 — 규칙 53) · 금빛은 「고른 한 곳 · 고른 날 · 모름(?) · 조심」에만
              · 위험 · 정직 글(멍거 · 지난 기록 시험 · 맨 아래 한 줄)은 숫자만큼 또렷하게
-   색: 규칙 52 밤하늘 세 닻 그대로(밤 바탕 #111433 · 위 막대 #141738 · 강조 #8973C3) · 빨강 = 오름 · 파랑 = 내림 · 금빛 고른 테
-   이 판은 늘 밤 화면(color-scheme: dark) — 삼성팀 「어두운 화면을 켜도 꺼도 색이 같게」 · 모든 칸에 바탕을 직접 칠함
+   색: 2026-10-12 09:16 사장님 「10번으로 한다 10번 기준으로 전 페이지 다 변경 한다」 = 모래 달항아리(아래 「모래 달항아리」 묶음) — 이 판은 늘 낮 화면(color-scheme: light)
+     고른 길: 07:56 기본색 시안 11 → 11번 모래 베이지 · 08:13 모양 시안 11 → 9번 여백 · 08:27 장인 시안 11 → 10번 옻칠 · 08:36 예술 시안 11 → 8번 달항아리 · 08:47 예술가 다섯 토론 시안 11 → 10번 창 한 칸 · 달빛 마루
+     (옛 밤보라 — 밤 바탕 #111433 · 위 막대 #141738 · 강조 #8973C3 — 는 옛 판 /old/ · 미국 판 /us/ 에 그대로) · 빨강 = 오름 · 파랑 = 내림 · 금빛 = 고른 한 곳 · 고른 날 · ? · 조심
+   모든 칸에 바탕을 직접 칠함(삼성팀 「어두운 화면을 켜도 꺼도 색이 같게」 그대로)
    입체 없음(규칙 50: 그림자 입체 · 그림자 필터 · 원근 · 3D 변환 · 캔버스 · 구슬 빛 없음 — 판판한 색 · 판판한 번짐 색만) · 바둑판 없음(규칙 51) · 글씨 21px 이상(1rem = 21px) · 누르는 자리 44px 이상
    보안 규칙(CSP style-src 'self'): 글 속 style 없음 — 움직이는 값은 atlas.js 가 CSSOM(el.style.x)으로만 */
 :root {
-  color-scheme: dark;
-  --night: #111433; --band: #141738; --violet: #8973C3;                 /* 규칙 52 닻 세 색 — 그대로 */
-  /* 색감 명품팀(2026-10-12 03:11 「명품팀 … 색감에 명품팀」) — 보석함: 자수정 면 · 진주 글 · 라일락 은사 선 · 루비 오름 · 사파이어 내림 · 금빛은 값 그대로 테 · 글에만 */
-  --card: #211B44; --card2: #2C2452; --card3: #372E62;                   /* 면 세 단 — 자수정 벨벳(밤 바탕보다 강조 보라 쪽 · 그림자 대신 밝기) */
-  --hair: rgba(214, 196, 255, .13); --hair2: rgba(214, 196, 255, .24);  /* 가는 선 — 라일락 은사 */
-  --seam: rgba(137, 115, 195, .55);                                      /* 위 막대 밑 · 아래 탭 위 한 줄 — 자수정 실 */
-  --lift: rgba(255, 255, 255, .045); --press: rgba(255, 255, 255, .08);  /* 올림 · 누름 상태 층 */
-  --ink: #F5EBE2; --ink-hi: #FFF9F3; --sub: #C9BAD6; --mute: #AA9BBE;    /* 글 — 진주(제목) · 상아(몸글) · 연자주 회색(보조) */
-  --violet-ink: #D2BEFE; --violet-wash: rgba(137, 115, 195, .2); --violet-line: rgba(210, 190, 254, .45); --violet-glow: rgba(137, 115, 195, .46);
-  --gold: #E9C46A; --gold-wash: rgba(255, 244, 228, .05); --gold-line: rgba(233, 196, 106, .6);   /* 금빛 = 뜻 있는 테 · 글만(값 그대로) — 금 테 안 물은 진주: 금과 보라는 맞색이라 섞으면 흙빛 */
-  --up: #E84363; --down: #497BE1; --up-ink: #FF989C; --down-ink: #99BEFF; /* 루비 · 사파이어(오름 · 내림 뜻 그대로) */
-  --up-fill: rgba(232, 67, 99, .3); --down-fill: rgba(73, 123, 225, .3); --up-fade: rgba(232, 67, 99, .03); --down-fade: rgba(73, 123, 225, .03);
+  color-scheme: light;
+  /* 모래 달항아리(2026-10-12 09:16) — 색 이름은 옛 이름 그대로(night = 바탕 · band = 밝은 막대 · violet = 강조) · 값만 모래 베이지 · 강조는 올리브 */
+  --night: #E8DECD; --band: #F0E8DA; --violet: #55612F;                 /* 바탕 모래 베이지 · 밝은 막대 · 강조 올리브(빨강 · 파랑 · 금빛과 겹치지 않는 색) */
+  --card: #F5EFE4; --card2: #DFD3BF; --card3: #D5C7B0;                   /* 면 세 단 — 밝은 한지 · 모래 두 단 */
+  --hair: rgba(47, 34, 20, .12); --hair2: rgba(47, 34, 20, .22);        /* 가는 선 — 먹 */
+  --seam: rgba(85, 97, 47, .45);
+  --lift: rgba(0, 0, 0, .035); --press: rgba(0, 0, 0, .06);              /* 올림 · 누름 상태 층 */
+  --ink: #2A2017; --ink-hi: #18110A; --sub: #574838; --mute: #655443;    /* 글 — 먹갈색 · 보조 흙빛(바탕 위 대비 4.5 넘게) */
+  --violet-ink: #424C22; --violet-wash: rgba(85, 97, 47, .12); --violet-line: rgba(66, 76, 34, .4); --violet-glow: rgba(85, 97, 47, .16);
+  --gold: #835B00; --gold-wash: rgba(131, 91, 0, .06); --gold-line: rgba(131, 91, 0, .6);   /* 금빛 = 뜻 있는 테 · 글만 — 밝은 바탕이라 진한 금(글 대비 4.5 넘게) */
+  --up: #D8244A; --down: #2B63D9; --up-ink: #C0183A; --down-ink: #1F52C2; /* 오름 · 내림 뜻 그대로 — 밝은 바탕에 맞춘 진하기 */
+  --up-fill: rgba(216, 36, 74, .3); --down-fill: rgba(43, 99, 217, .3); --up-fade: rgba(216, 36, 74, .03); --down-fade: rgba(43, 99, 217, .03);
+  --lacquer: #2A2017; --lacquer-ink: #F5EFE4; --lacquer-sub: #D5C5B5; --lacquer-gold: #E9C46A; /* 옻칠한 위 · 아래 막대(10번) — 막대 안 글 · 금빛 표시는 밝은 색 */
+  --moon: #F4ECDE;                                                       /* 달항아리 · 달빛(8번 · 10번) */
   --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --row: 2.1rem; --roww: 3.3rem; --row2: 3.2rem; --roww2: 4.7rem; /* 방향 · 세기 · 힘 한 줄이 붙은 줄(11:10 「이 화면에서 나와야 해」) */
@@ -36,7 +40,7 @@ body { margin: 0; background: var(--night); color: var(--ink); font-family: var(
 button, input { font: inherit; color: inherit; letter-spacing: inherit; }
 a { color: inherit; text-decoration: none; }
 a, button, summary { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(137, 115, 195, .5); color: #fff; }
+::selection { background: rgba(85, 97, 47, .3); color: var(--ink-hi); }
 :focus-visible { outline: 3px solid var(--violet-ink); outline-offset: 2px; } /* 테는 칸의 둥근 모서리를 그대로 따라감 */
 .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; white-space: nowrap; }
 .up { color: var(--up-ink); } .down { color: var(--down-ink); } .flat { color: var(--sub); }
@@ -95,16 +99,16 @@ h1.head .num { font-weight: 800; }
 .board.wide .row .val { grid-column: 2; grid-row: 1; }
 .board.wide .row .chev { grid-column: 3; grid-row: 1 / 3; }
 .board.wide .row .track { grid-column: 1 / 3; grid-row: 2; }
-.track { position: relative; height: 16px; border-radius: 8px; background: rgba(255, 255, 255, .055); overflow: hidden; }
-.track .zero { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, .34); }
+.track { position: relative; height: 16px; border-radius: 8px; background: rgba(42, 32, 23, .06); overflow: hidden; }
+.track .zero { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(42, 32, 23, .35); }
 .track .bar { position: absolute; top: 2px; bottom: 2px; width: 50%; transform: scaleX(0); }
-.track .bar.pos { left: 50%; transform-origin: 0 50%; background: linear-gradient(90deg, rgba(232, 67, 99, .5), var(--up)); border-radius: 0 6px 6px 0; }
-.track .bar.neg { right: 50%; transform-origin: 100% 50%; background: linear-gradient(270deg, rgba(73, 123, 225, .5), var(--down)); border-radius: 6px 0 0 6px; }
+.track .bar.pos { left: 50%; transform-origin: 0 50%; background: linear-gradient(90deg, rgba(216, 36, 74, .5), var(--up)); border-radius: 0 6px 6px 0; }
+.track .bar.neg { right: 50%; transform-origin: 100% 50%; background: linear-gradient(270deg, rgba(43, 99, 217, .5), var(--down)); border-radius: 6px 0 0 6px; }
 .track .avg { position: absolute; top: -2px; bottom: -2px; width: 0; border-left: 2px dotted var(--ink); left: 50%; }
 .board:not(.wide) .row { grid-template-columns: minmax(0, 1fr) auto 0.7em; }
 .board:not(.wide) .row > .track { position: absolute; left: 0; right: 0; top: 3px; bottom: 3px; height: auto; background: none; border-radius: 10px; z-index: 0; }
 .board:not(.wide) .row > .nm, .board:not(.wide) .row > .val, .board:not(.wide) .row > .chev { position: relative; z-index: 1; }
-.board:not(.wide) .track .zero { width: 1px; margin-left: -0.5px; background: rgba(255, 255, 255, .3); }
+.board:not(.wide) .track .zero { width: 1px; margin-left: -0.5px; background: rgba(42, 32, 23, .3); }
 .board:not(.wide) .track .bar { top: 0; bottom: 0; }
 .board:not(.wide) .track .bar.pos { background: linear-gradient(90deg, var(--up-fade), var(--up-fill)); border-bottom: 3px solid var(--up); border-radius: 0 10px 10px 0; }
 .board:not(.wide) .track .bar.neg { background: linear-gradient(270deg, var(--down-fade), var(--down-fill)); border-bottom: 3px solid var(--down); border-radius: 10px 0 0 10px; }
@@ -113,7 +117,7 @@ h1.head .num { font-weight: 800; }
 .row.win { outline: 2px solid var(--gold); outline-offset: -2px; animation: glow 1.6s ease 1; }
 .board .row.win { background: var(--violet-wash); } /* 고른 한 줄 = 금 테 안 자수정 */
 .board .row.win:hover { background: var(--violet-glow); }
-@keyframes glow { 0% { outline-color: rgba(233, 196, 106, 0); } 30% { outline-color: rgba(233, 196, 106, 1); } 100% { outline-color: rgba(233, 196, 106, .9); } }
+@keyframes glow { 0% { outline-color: rgba(131, 91, 0, 0); } 30% { outline-color: rgba(131, 91, 0, 1); } 100% { outline-color: rgba(131, 91, 0, .9); } }
 .row.dim .nm, .row.dim .val { opacity: .55; }
 .badge { display: inline-block; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--violet-ink); border: 1px solid var(--violet-line); background: var(--violet-wash); border-radius: 8px; padding: 0 7px; margin-left: 6px; vertical-align: 1px; letter-spacing: -0.02em; }
 .key { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--sub); margin: 10px 0 0; }
@@ -144,7 +148,7 @@ h1.head .num { font-weight: 800; }
 .foot .links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .foot .links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; }
 .foot .links a:hover { text-decoration-color: currentColor; }
-.hello { display: grid; grid-template-columns: 44px minmax(0, 1fr) 0.7em; align-items: center; gap: 12px; min-height: 60px; padding: 8px 12px 8px 8px; margin: 4px 0 6px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(137, 115, 195, .1) 75%); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
+.hello { display: grid; grid-template-columns: 44px minmax(0, 1fr) 0.7em; align-items: center; gap: 12px; min-height: 60px; padding: 8px 12px 8px 8px; margin: 4px 0 6px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(85, 97, 47, .05) 75%); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
 .hello:hover { border-color: var(--violet-ink); }
 .hello img { width: 44px; height: 44px; object-fit: cover; border-radius: 12px; display: block; }
 .hello .hw { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; min-width: 0; }
@@ -215,7 +219,7 @@ h2.sec { font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; margin: 
 h2.sec + p { margin: 0; color: var(--sub); }
 
 /* 36곳 — 맨 위 지난 기록 시험(클로드팀: 정직한 결과를 먼저 · 금빛 = 조심) · 36곳은 묶음 목록 */
-.test { margin: 12px 0 0; padding: 16px 16px 12px; border-radius: 20px; background: linear-gradient(180deg, var(--gold-wash), rgba(233, 196, 106, 0) 45%), var(--card); border: 1px solid var(--gold-line); }
+.test { margin: 12px 0 0; padding: 16px 16px 12px; border-radius: 20px; background: linear-gradient(180deg, var(--gold-wash), rgba(131, 91, 0, 0) 45%), var(--card); border: 1px solid var(--gold-line); }
 .test h2 { font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--gold); }
 .test p { margin: 0 0 8px; line-height: 1.6; }
 .test .big { font-weight: 750; font-size: 1.2rem; line-height: 1.42; letter-spacing: -0.02em; color: var(--ink-hi); }
@@ -245,7 +249,7 @@ ol.p36 .g2 { grid-column: 2 / -1; color: var(--sub); line-height: 1.55; }
 .steps { margin: 0 0 8px; }
 ol.st { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; } /* 7단(2026-10-12) — 360px 에서 한 칸 45.7px(44px 위) */
 ol.st li > a, ol.st li > .cell { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 12px; border: 2px solid var(--hair2); background: none; color: var(--sub); font-weight: 800; transition: background-color .2s var(--ease), border-color .2s var(--ease); }
-ol.st li.past > a, ol.st li.past > .cell { background: var(--violet); border-color: var(--violet); color: #fff; }
+ol.st li.past > a, ol.st li.past > .cell { background: var(--violet); border-color: var(--violet); color: #FBF8F1; }
 ol.st li.past > a:hover { border-color: var(--violet-ink); }
 ol.st li.now > .cell { background: var(--ink); border-color: var(--ink); color: var(--night); }
 ol.st li.next > a { border-color: var(--violet-line); color: var(--violet-ink); border-style: dashed; }
@@ -254,7 +258,7 @@ ol.st li.next > .cell { opacity: .45; }
 .st-t { margin: 6px 0 0; color: var(--sub); }
 .st-t b { color: var(--ink); }
 .st-t .lk { font-weight: 650; color: var(--violet-ink); } /* 앎의 종류(CIA팀) — 기록 · 조사 · 판단 · 셈 · 테 없는 글(애플팀 2026-10-12: 단추처럼 보이던 것) */
-.nextst { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 8px; margin: 18px 0 0; padding: 14px 16px; min-height: 64px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(137, 115, 195, .16)); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
+.nextst { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 8px; margin: 18px 0 0; padding: 14px 16px; min-height: 64px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(85, 97, 47, .06)); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
 .nextst:hover { border-color: var(--violet-ink); }
 .nextst b { display: block; font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; color: var(--ink-hi); }
 .nextst span span { color: var(--sub); }
@@ -264,9 +268,9 @@ ol.st li.next > .cell { opacity: .45; }
 ul.fin { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
 ul.fin li { display: grid; grid-template-columns: 4.6em minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 ul.fin .y { color: var(--sub); }
-ul.fin .ft { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
+ul.fin .ft { position: relative; height: 14px; background: rgba(42, 32, 23, .06); border-radius: 7px; overflow: hidden; }
 ul.fin .fb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; }
-ul.fin .fb.pos { background: linear-gradient(90deg, rgba(137, 115, 195, .55), var(--violet)); } ul.fin .fb.neg { background: var(--mute); }
+ul.fin .fb.pos { background: linear-gradient(90deg, rgba(85, 97, 47, .55), var(--violet)); } ul.fin .fb.neg { background: var(--mute); }
 ul.dirbars { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 12px; }
 ul.dirbars li { display: grid; gap: 4px; }
 ul.dirbars .dn { font-weight: 800; color: var(--ink-hi); }
@@ -274,9 +278,9 @@ ul.dirbars .dl { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 
 ul.dirbars .dl .num { white-space: normal; overflow-wrap: anywhere; }
 ul.dirbars .dm { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1px; border-radius: 2px; background: var(--ink); } /* 365곳 가운데값 눈금(CIA팀) */
 .lkey .l-dw { width: 22px; height: 10px; border-radius: 5px; background: var(--violet-ink); } .lkey .l-db { width: 22px; height: 10px; border-radius: 5px; background: var(--gold); } .lkey .l-dm { width: 3px; height: 18px; border-radius: 2px; background: var(--ink); }
-ul.dirbars .dt { position: relative; height: 12px; background: rgba(255, 255, 255, .06); border-radius: 6px; } /* 눈금이 위아래로 조금 나오게 — 숨김 없음 */
+ul.dirbars .dt { position: relative; height: 12px; background: rgba(42, 32, 23, .06); border-radius: 6px; } /* 눈금이 위아래로 조금 나오게 — 숨김 없음 */
 ul.dirbars .db { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
-ul.dirbars .db.pos { background: linear-gradient(90deg, rgba(137, 115, 195, .55), var(--violet-ink)); } ul.dirbars .db.neg { background: linear-gradient(90deg, rgba(233, 196, 106, .45), var(--gold)); } /* 7단(클로드팀): 모형 셈은 오름 · 내림 색(빨강 · 파랑)을 쓰지 않음 — 규칙 53 · 번 길 보라 · 크게 잃는 길 금빛(조심) */
+ul.dirbars .db.pos { background: linear-gradient(90deg, rgba(85, 97, 47, .55), var(--violet-ink)); } ul.dirbars .db.neg { background: linear-gradient(90deg, rgba(131, 91, 0, .45), var(--gold)); } /* 7단(클로드팀): 모형 셈은 오름 · 내림 색(빨강 · 파랑)을 쓰지 않음 — 규칙 53 · 번 길 보라 · 크게 잃는 길 금빛(조심) */
 a.inl, .links2 a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
 a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decoration-color: currentColor; }
 .links2 { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; }
@@ -316,7 +320,7 @@ a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decorat
 /* 깔때기 — 1,375곳 → 365곳(구글팀: 「내 회사는 왜 없지?」에 그림으로 답함) */
 .funnel { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
 .funnel li { position: relative; padding: 10px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); overflow: hidden; }
-.funnel li .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(137, 115, 195, .30), rgba(137, 115, 195, .16)); }
+.funnel li .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(85, 97, 47, .24), rgba(85, 97, 47, .1)); }
 .funnel li span { position: relative; display: flex; justify-content: space-between; gap: 8px; }
 .funnel li.stop { border: 2px solid var(--gold); }
 .funnel li.past span { color: var(--sub); }
@@ -329,7 +333,7 @@ a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decorat
 }
 /* 클로드팀 — 「대비를 더」를 켠 사람에게는 선 · 흐린 글을 더 또렷하게 · 윈도 고대비에서도 막대 색을 지킴 */
 @media (prefers-contrast: more) {
-  :root { --hair: rgba(214, 196, 255, .26); --hair2: rgba(214, 196, 255, .4); --sub: #E0D8EC; --mute: #CBC2DD; --violet-line: rgba(210, 190, 254, .7); }
+  :root { --hair: rgba(47, 34, 20, .3); --hair2: rgba(47, 34, 20, .45); --sub: #3F3428; --mute: #4A3E31; --violet-line: rgba(66, 76, 34, .7); }
 }
 @media (forced-colors: active) {
   .track .bar, .key i, .lkey i, ul.fin .fb, ul.dirbars .db { forced-color-adjust: none; }
@@ -452,7 +456,7 @@ ol.opens li .mo { align-self: center; }
 .gc .tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--ink); color: var(--night); padding: 3px 12px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-weight: 700; }
 .lkey .l-gact { width: 14px; height: 18px; border-radius: 3px; background: var(--violet-ink); }
 .lkey .l-gest { width: 14px; height: 18px; border-radius: 3px; border: 2px dashed var(--violet-ink); }
-.lkey .l-gband { width: 14px; height: 18px; border-radius: 4px; background: rgba(137, 115, 195, .38); border: 1px solid var(--violet-ink); box-sizing: border-box; }
+.lkey .l-gband { width: 14px; height: 18px; border-radius: 4px; background: rgba(85, 97, 47, .3); border: 1px solid var(--violet-ink); box-sizing: border-box; }
 .lkey .l-gone { border-top: 2px dashed var(--mute); }
 ol.yrs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 ol.yrs li { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 12px 14px; min-width: 0; }
@@ -465,7 +469,7 @@ ol.yrs .yg { color: var(--sub); }
 ol.yrs .yt { color: var(--ink); margin-top: 6px; }
 .gchip { display: inline-block; padding: 0 10px; border-radius: 10px; font-weight: 750; line-height: 1.5; }
 .gchip.g5 { background: var(--violet); color: var(--ink-hi); }
-.gchip.g4 { background: rgba(137, 115, 195, .42); color: var(--ink-hi); }
+.gchip.g4 { background: rgba(85, 97, 47, .22); color: var(--ink-hi); }
 .gchip.g3 { background: var(--card3); color: var(--ink); }
 .gchip.g2 { border: 1px solid var(--hair2); color: var(--ink); }
 .gchip.g1 { border: 1px dashed var(--mute); color: var(--ink); }
@@ -479,13 +483,13 @@ ul.peers { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8p
 ul.peers li { display: grid; grid-template-columns: minmax(0, 7.2em) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 ul.peers .pn { color: var(--sub); overflow-wrap: anywhere; } /* 이름은 줄바꿈 — 「SNT에너지(6…」처럼 잘리던 것(애플팀 2026-10-12) */
 ul.peers li.me .pn { color: var(--ink-hi); font-weight: 750; }
-ul.peers .pt { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
-ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(137, 115, 195, .45); }
+ul.peers .pt { position: relative; height: 14px; background: rgba(42, 32, 23, .06); border-radius: 7px; overflow: hidden; }
+ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(85, 97, 47, .4); }
 ul.peers .pb.me { background: var(--violet-ink); }
 ul.gbars { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
 ul.gbars li { display: grid; grid-template-columns: 5.4em minmax(0, 1fr) auto; gap: 8px; align-items: center; }
-ul.gbars .gt { position: relative; height: 16px; background: rgba(255, 255, 255, .06); border-radius: 8px; overflow: hidden; }
-ul.gbars .gf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; background: rgba(137, 115, 195, .6); }
+ul.gbars .gt { position: relative; height: 16px; background: rgba(42, 32, 23, .06); border-radius: 8px; overflow: hidden; }
+ul.gbars .gf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; background: rgba(85, 97, 47, .5); }
 
 /* ════ 명품 ATLAS(사장님 2026-10-12 03:11 「자 명품팀 만든다 글씨에 명품팀 색감에 명품팀 그리고 선에 명품팀 느낌에 명품팀 최고에 장임에 정신으로 똘똘 뭉친다 그래서 아틀란스에 지금에 구조를 유지하면서 최대한 과감하게 명품 아틀란스를 디자인적으로 혁신 하라」) ════
    네 명품팀을 서로 모르게 따로 돌려 합침 — 색감 「밤 보석함」(맨 위 :root 값 · 자수정 면 · 진주 글 · 라일락 은사 선 · 루비 오름 · 사파이어 내림 · 세 닻 그대로)
@@ -555,7 +559,7 @@ ol.st li.next > a { border-color: var(--violet-ink); }
 .track { border-radius: 2px; }
 .track .bar:is(.pos, .neg), .key :is(.k-up, .k-dn), .lkey .l-co { border-radius: 0; }
 .board:not(.wide) .track .bar:is(.pos, .neg) { border-radius: 0; border-bottom-width: 2px; }
-.track .zero { width: 1px; margin-left: -.5px; background: rgba(255, 255, 255, .5); }
+.track .zero { width: 1px; margin-left: -.5px; background: rgba(42, 32, 23, .45); }
 :is(ul.fin, ul.peers, ul.gbars, ul.dirbars) :is(.ft, .fb, .pt, .pb, .gt, .gf, .dt, .db), .lkey :is(.l-dw, .l-db, .l-in, .l-out, .l-gact, .l-gest, .l-gband) { border-radius: 1px; }
 ul.dirbars .dm { top: -4px; bottom: -4px; width: 2px; margin-left: -1px; border-radius: 0; }
 .lkey .l-dm { width: 2px; border-radius: 0; }
@@ -579,3 +583,53 @@ ol.stations li.future .dd, ol.opens .dd { font-size: 1.36rem; }
 ol.st .num { font-size: 1.12rem; }
 .st-t, .trio span, ol.yrs .yh { font-weight: 600; letter-spacing: .04em; }
 .note, .alt, .box p, .foot p { text-wrap: pretty; }
+
+/* ════ 모래 달항아리(사장님 2026-10-12 09:16 「10번으로 한다 10번 기준으로 전 페이지 다 변경 한다」) ════
+   고른 길(모두 첫 화면 시안 11장씩으로 먼저 여쭙고 사장님이 번호로 고르심 · 사이트는 고르신 뒤에만):
+     07:56 「지금 보라색이다 기본색을 변경할 것이다 11가지 샘플을 먼저 제안하라 … 첫화면을 기준으로」 → 11번 모래 베이지(맨 위 :root 값)
+     08:13 「11번을 기준으로 디자인 셈플 혁신 가져 11가지」 → 9번 여백(넓은 여백 · 고요한 바탕체 제목 · 가는 선)
+     08:27 「9번에다가 장인정신을 담은 11가지」 → 10번 옻칠(위 · 아래 막대를 옻칠한 나무색)
+     08:36 「10번을 더 예술에 혼을 담은 장인정신으로 11장」 → 8번 달항아리(제목 뒤 둥근 달)
+     08:47 「8번이 낫고 이걸 예술가들이 토론햐서 더 혼을 담은 11장」 → 10번 창 한 칸 · 달빛 마루(건축가: 달은 창처럼 글자에 걸치지 않게 · 달빛은 1등 줄에만)
+   예술가 다섯(도예가 · 수묵화가 · 서예가 · 글자 디자이너 · 건축가 — 서로 모르게 따로) 모두 같은 말: 달의 테를 지움 · 빨간 도장 금지(빨강 = 오름) · 글자 밑 번짐 금지
+   글자 디자이너가 찾은 것: 경주판 막대를 바탕 칠로 그리면 글자 바탕으로 세어져 대비 검사에 걸림 → 첫 화면 막대는 밑줄로 */
+
+/* 9번 여백 — 넓은 여백 · 고요한 바탕체 제목(고운바탕 400 · site/atlas/fonts.css) · 가는 선 · 줄 글은 중간 굵기 */
+main.view { padding-left: 24px; padding-right: 24px; }
+.hello { background: none; border: 0; padding: 18px 0 2px; min-height: 52px; border-radius: 0; } /* 위 18px — 띠 상자를 걷어도 무지개(영상 친구)가 첫 줄 글을 덮지 않게(아주 큰 글씨 · 360px 까지) */
+.hello img { width: 36px; height: 36px; }
+.tell { color: var(--mute); }
+h1.head, .co-head h1 { font-weight: 400; letter-spacing: 0; }
+h1.head { font-size: 1.6rem; line-height: 1.32; margin: 20px 0 8px; }
+.co-head h1 { font-size: 1.6rem; line-height: 1.28; }
+html.f2 h1.head, html.f2 .co-head h1 { font-size: 1.42rem; } html.f3 h1.head, html.f3 .co-head h1 { font-size: 1.28rem; }
+.count { margin-bottom: 20px; }
+.board:not(.wide) { --row2: 4.1rem; }
+.board:not(.wide) .row { border-radius: 0; } .board:not(.wide) .row::after { display: none; }
+.row .nm, .row .val { font-weight: 500; } .trd { font-weight: 500; }
+.board:not(.wide) .row.two { padding-bottom: 10px; }
+.board:not(.wide) .row > .track { top: auto; bottom: 8px; height: 2px; border-radius: 0; background: rgba(42, 32, 23, .1); overflow: visible; }
+.board:not(.wide) .track .bar.pos { background: none; border: 0; border-bottom: 2px solid var(--up); border-radius: 0; }
+.board:not(.wide) .track .bar.neg { background: none; border: 0; border-bottom: 2px solid var(--down); border-radius: 0; }
+.board:not(.wide) .track .avg { top: -5px; bottom: -3px; border-left-width: 2px; }
+.board.wide .track { height: 10px; border-radius: 0; } .board.wide .track .bar { border-radius: 0; }
+ol.st { margin-left: -10px; margin-right: -10px; } /* 넓힌 여백(24px)에서도 360px 에서 7단 한 칸 45.7px — 누르는 자리 44px 위 */
+.gchip.g5 { color: #FBF8F1; } /* 「아주 높다」 — 올리브 바탕에는 밝은 글(대비 6.3) */
+.row.win, .board .row.win { outline: 1px solid var(--gold); outline-offset: -1px; animation: none; }
+
+/* 10번 옻칠 — 위 · 아래 막대를 옻칠한 나무색 · 올리브 한 줄 · 막대 안 글과 표시는 밝은 색 */
+.band, .tabbar { background: var(--lacquer); } .band { border-bottom: 2px solid var(--violet); } .tabbar { border-top: 2px solid var(--violet); }
+.brand b { color: var(--lacquer-ink); } .brand svg circle, .brand svg path { stroke: var(--lacquer-ink); }
+.band .find, .band .ibtn { color: var(--lacquer-ink); border-color: rgba(245, 239, 228, .4); } .band .find { color: var(--lacquer-sub); }
+.band .find:hover, .band .ibtn:hover, .band .find:active, .band .ibtn:active { background: rgba(245, 239, 228, .1); }
+.band .ibtn[aria-pressed="true"] { border-color: var(--lacquer-gold); }
+.tabbar a, .tabbar button { color: var(--lacquer-sub); } .tabbar a:hover, .tabbar button:hover { color: var(--lacquer-ink); }
+.tabbar [aria-current="page"] { color: var(--lacquer-ink); } .tabbar [aria-current="page"]::before { background: var(--lacquer-ink); }
+.band :focus-visible, .tabbar :focus-visible { outline-color: var(--lacquer-ink); }
+
+/* 8번 달항아리 + 10번 창 한 칸(건축가) — 모든 화면 제목 오른쪽에 창처럼 둥근 달 하나 · 제목 오른쪽을 비워 글자에 걸치지 않음 · 테 없음 · 제목 높이를 넘지 않음 */
+h1.head, .co-head h1 { position: relative; z-index: 0; padding-right: calc(2.64em + 16px); }
+.co-head h1 { flex: 1 1 100%; }
+h1.head::before, .co-head h1::before { content: ''; position: absolute; z-index: -1; top: 0; right: 0; height: min(100%, 2.64em); aspect-ratio: 1 / 1; border-radius: 50%; background: var(--moon); }
+/* 10번 달빛 마루(건축가) — 달빛은 1등 줄에만 */
+.board .row.win, .board .row.win:hover { background: var(--moon); }

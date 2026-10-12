@@ -84,7 +84,7 @@ function expect(route) {
     }
     const k = pick.companies[code];
     return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖',
-      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['흰 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
+      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['검은 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
   }
   if (!kind) { const T = core.time; return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, trd: core.groups.map(g => trText(g.tr)),
     why: T ? ['3년 전', ymd(T.past.from), won100(T.past.mult365), won100(T.past.multPool), `지금 · 봉인 ${T.id}호`, ...T.opens.flatMap(o => [`${o.y}년 뒤`, ymd(o.date), ddayText(o.date)]), `${T.past.n365}곳 중 ${T.past.half}곳`, `봉인 번호 ${T.digest}`] : []}; }

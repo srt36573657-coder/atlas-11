@@ -32,7 +32,7 @@ const pctEl = (x, tag = 'b') => h(tag, {class: 'num ' + cls(x), text: pct(x)});
 /** 두 값이 한 자리로 같아 보이면 둘째 자리까지(+3.46% · +3.54% — 「같은데 못했다」로 헷갈리지 않게) */
 const pct2El = (x, y) => { if (x == null || y == null || pct(x) !== pct(y) || Math.abs(x) >= 100) return pctEl(x); const v = Math.round(x * 100) / 100; return h('b', {class: 'num ' + cls(x), text: (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%'}); };
 // 그림 색은 atlas.css 의 색 이름(토큰)에서 읽음(구글팀 2026-10-11 13:29 「고급스럽게」: 색 이름은 한 곳) — 못 읽으면 같은 값
-const TOK0 = {up: '#FF5A66', down: '#5C97FF', gold: '#E9C46A', ink: '#F2F1F8', night: '#111433', mute: '#9C98BC', violet: '#8973C3', 'violet-ink': '#CDBEF6'};
+const TOK0 = {up: '#D8244A', down: '#2B63D9', gold: '#835B00', ink: '#2A2017', night: '#E8DECD', mute: '#655443', violet: '#55612F', 'violet-ink': '#424C22'}; // 모래 달항아리(2026-10-12 09:16)
 function tok() { const s = getComputedStyle(document.documentElement), o = {}; for (const k of Object.keys(TOK0)) o[k] = s.getPropertyValue('--' + k).trim() || TOK0[k]; return o; }
 /** 숫자 카드 — 긴 숫자(+2,920%)가 카드 밖으로 넘치면 한 단 작게(애플팀: 넘치거나 잘리지 않게 · 숫자는 그대로) */
 function fitNums(box) { const go = () => { for (const b of box.querySelectorAll('b')) { b.classList.remove('fit'); if (b.scrollWidth > b.clientWidth + 1) b.classList.add('fit'); } }; go(); document.fonts?.ready.then(() => { if (box.isConnected) go(); }); }
@@ -44,7 +44,7 @@ function fadeDefs(defs, id, T, P, H, by) {
   const gd = sv('linearGradient', {id: id + 'gd', gradientUnits: 'userSpaceOnUse', x1: 0, y1: by, x2: 0, y2: H - P}); gd.append(sv('stop', {offset: 0, 'stop-color': T.down, 'stop-opacity': 0.02}), sv('stop', {offset: 1, 'stop-color': T.down, 'stop-opacity': 0.26}));
   defs.append(gu, gd);
 }
-const hairs = (svg, W, P, ys) => { for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: '#FFFFFF', 'stroke-opacity': 0.14, 'stroke-width': 1})); };
+const hairs = (svg, W, P, ys) => { const ink = tok().ink; for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: ink, 'stroke-opacity': 0.12, 'stroke-width': 1})); }; // 가는 눈금선 — 바탕이 밝아져 먹으로(2026-10-12 모래 달항아리)
 const gById = id => D.core.groups.find(g => g.id === id);
 const ind = name => D.core.industries.find(i => i.name === name);
 const series = (node, mode = state.mode) => (mode === 'cw' ? node.cw : node.v);
@@ -327,7 +327,7 @@ async function viewIndustry(v, name) {
   const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — ${C.days}거래일 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   v.append(legend(i.name), seg(m => { words(m); rc.setMode(m); }), alt);
-  v.append(h('p', {class: 'note', text: '회사 줄은 그 회사 주가 그대로라 두 보기에서 같습니다 — 바뀌는 것은 흰 점선(업종 평균)과 맨 위 숫자입니다.'}));
+  v.append(h('p', {class: 'note', text: '회사 줄은 그 회사 주가 그대로라 두 보기에서 같습니다 — 바뀌는 것은 점선(업종 평균)과 맨 위 숫자입니다.'}));
   v.append(foot());
 }
 
@@ -511,7 +511,7 @@ async function viewRange(v, code) {
       list.append(h('li', {}, h('b', {class: 'dn', text: d.name}),
         h('span', {class: 'dl'}, h('span', {class: 'dt', role: 'img', 'aria-label': `번 길 ${r1(w).toFixed(1)}% · 365곳 가운데값 ${r1(mw).toFixed(1)}%`}, bw, tw), h('span', {class: 'num', text: `번 길 ${r1(w).toFixed(1)}%`})),
         h('span', {class: 'dl'}, h('span', {class: 'dt', role: 'img', 'aria-label': `크게 잃는 길 ${r1(b).toFixed(1)}% · 365곳 가운데값 ${r1(mb).toFixed(1)}%`}, bb, tb), h('span', {class: 'num', text: `크게 잃는 길 ${r1(b).toFixed(1)}%`})))); });
-    box.append(list, h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dw'}), '번 길'), h('span', {}, h('i', {class: 'l-db'}), '크게 잃는 길'), h('span', {}, h('i', {class: 'l-dm'}), '흰 눈금 = 365곳 가운데값')));
+    box.append(list, h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dw'}), '번 길'), h('span', {}, h('i', {class: 'l-db'}), '크게 잃는 길'), h('span', {}, h('i', {class: 'l-dm'}), '검은 눈금 = 365곳 가운데값')));
     box.append(h('p', {class: 'small', text: `방향마다 지난 날들에서 20일을 뽑아 ${S.paths.toLocaleString('ko-KR')}번 — 번 길 = 사고팔 돈 0.3% 빼고 남음 · 크게 잃는 길 = −15% 밑 · 어느 방향이 올지는 모릅니다`}));
     const status = k.rank ? `셈 차례: 36곳 가운데 ${k.rank}번째(번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%)` : k.cut ? `지움 — 가장 나쁜 방향에서 크게 잃는 길(${r1(k.worst).toFixed(1)}%)이 큰 3분의 1에 들었습니다` : `남았지만 36곳 밖 — 번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%`;
     box.append(h('p', {class: 'small'}, h('b', {text: status}), ' — 셈 차례일 뿐, 좋은 회사로 매긴 것이 아닙니다.'));
