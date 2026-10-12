@@ -11,6 +11,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import {spawnSync} from 'node:child_process';
 import {rollAtlas, readRecords, tabData, slotOf, slotFor} from '../../scripts/atlas11/t365/roll.mjs';
+process.env.ATLAS_INSPECT_N ??= '20000'; // 네 눈 점검 — 회차는 눈마다 1,000만 번 · 시험은 줄여 돎
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳 판
@@ -55,6 +56,10 @@ test('업데이트 탭 — 회차 시각을 바꿔도 옛 회차 기록의 회�
   const t = tabData(recs).records;
   assert.deepEqual(t.map(r => r.slot), ['16:10', null, '12:10', '08:10']); // 새 회차가 위(넣은 차례의 거꾸로)
   assert.deepEqual(tabData([]).slots, ['10:00', '12:00', '14:00', '18:00']);
+  // 옛 화면 단 이름이 든 손 올리기 까닭은 탭에서만 지금 이름을 덧붙임(기록 파일은 그대로)
+  const old = tabData([{at: '2026-10-11T10:57:02Z', kst: '2026-10-11 19:57', slot: null, reason: '4단 앞으로 클까? — 회사 성장 이야기 271곳(사장님 16:51)', result: '바꿈'}]).records[0];
+  assert.equal(old.reason, '앞으로 클까?(그때 4단 · 지금 6단) — 회사 성장 이야기 271곳(사장님 16:51)'); assert.ok(!old.reason.includes('4단 앞으로 클까?'));
+  for (const r of readRecords(ROOT)) assert.ok(!tabData([r]).records[0].reason?.includes('4단 앞으로 클까?'), r.kst);
 });
 
 test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값으로 365곳을 다시 고르고 · 기준일이 따라가고 · 따로 세기 셋 틀림 0 · 기록 · 업데이트 탭', async () => {
@@ -96,6 +101,13 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const saved = JSON.parse(fs.readFileSync(path.join(rec, files[0]), 'utf8'));
   assert.deepEqual(saved.members, rep.members);
   const tab = tabData([saved]); assert.equal(tab.records.length, 1); assert.equal(tab.records[0].members, undefined); // 탭 자료에는 365곳 목록을 싣지 않음
+  // 시장 판독 · 네 눈 점검(2026-10-12 12:41) — 이번 회차 자료로 · 눈 넷 · 실패 0 · 기록(짧은 꼴) + 전부는 inspect/ 새 파일 · 업데이트 탭에도
+  assert.equal(rep.market.asOf, next); assert.ok(rep.market.lines.length >= 3); assert.match(rep.market.lines[0], /곳 오름 · \d+곳 내림/);
+  assert.equal(rep.inspect.fail, 0, JSON.stringify(rep.inspect.lenses.map(l => l.first))); assert.deepEqual(rep.inspect.lenses.map(l => [l.key, l.n]), [['apple', 20000], ['google', 20000], ['claude', 20000], ['cia', 20000]]);
+  assert.ok(rep.steps.some(s => s.name === '네 눈 점검' && s.code === 0));
+  const ins = fs.readdirSync(path.join(tmp, 'inspect')); assert.deepEqual(ins, files);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'inspect', ins[0]), 'utf8')).lenses.length, 4);
+  assert.deepEqual(upd.records[0].market.lines, rep.market.lines); assert.equal(upd.records[0].inspect.fail, 0); assert.equal(upd.slots.join(), '10:00,12:00,14:00,18:00');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 
@@ -107,5 +119,6 @@ test('회차 — 이어 받은 일봉이 없으면 「그대로」 · 저장된 
   assert.equal(rep.result, '그대로'); assert.equal(rep.served, 'stored');
   const upd = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/updates.json'), 'utf8'));
   assert.equal(upd.records[0].result, '그대로'); assert.equal(upd.n, readRecords(ROOT).length + 1);
+  assert.ok(rep.market?.lines?.length >= 3 && rep.inspect?.lenses?.length === 4, '새 값이 없어도 올라가는 자료를 판독 · 점검');
   fs.rmSync(tmp, {recursive: true, force: true});
 });

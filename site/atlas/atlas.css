@@ -376,6 +376,9 @@ ol.uplist li.r-fail .chip.res { border-color: var(--gold-line); color: var(--gol
 ol.uplist .ni { color: var(--violet-ink); } ol.uplist .no2 { color: var(--sub); }
 ol.uplist .small { color: var(--sub); }
 ol.uplist details.more { background: var(--card2); margin: 8px 0 4px; }
+/* 시장 판독(2026-10-12 12:41 「시장을 판독해서」) — 업데이트 탭 맨 위 상자 · 지난 사실만 */
+.mread ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.6; }
+.mread li { margin: 3px 0; }
 
 /* 시간(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 섹시한 묘미 … 과감하게 하라」)
    시간 노선도 — 왼쪽 세로 길: 지난 길은 보라 실선 · 지금(봉인 = 고른 날)은 금빛 고리 · 앞날은 점선과 빈 고리 · 남은 날은 「D-1,093」

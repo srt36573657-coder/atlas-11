@@ -8,6 +8,9 @@
 //   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → pick36.py(같은 값이면 지금 사이트의 36곳을 그대로 씀) → pick36_verify.mjs(틀림 0)
 //   ④ 모두 통과하면 dist/atlas/data 를 바꿈 · 하나라도 멈추면 지금 사이트(aaa7377.com)의 자료를 그대로 받아 올림(옛 바탕으로 돌아가지 않게) · 그것도 못 하면 저장소 바탕 그대로
 //   ⑤ 회차 기록: reports/atlas11/t365/updates/<받은 때 UTC>.json(새 파일 · 지우지 않음) + 화면 「업데이트」 탭 자료 dist/atlas/data/updates.json(마지막 60회차)
+//   ⑥ 시장 판독(2026-10-12 12:41 「시장을 판독해서」 · market_read.mjs — 지난 사실만 · 판독 규칙 mr-v1) · 네 눈 점검(같은 날 「업데이트 할때마다 아틀란스 점검을
+//      애플 구글 클로드 cia방식으로 각각 1000만번씩」 · inspect4.mjs — 새 자료 + 화면 코드를 눈마다 ATLAS_INSPECT_N 번(기본 1,000만) · 하나라도 걸리면 ④처럼 새 자료를 올리지 않음)
+//      기록: 회차 기록의 market · inspect(짧은 꼴) + 깃허브 실행기면 reports/atlas11/t365/inspect/<받은 때>.json(전부 · 새 파일)
 //   결과는 통과로 꾸미지 않음 — 「바꿈」 · 「그대로」(새 값 없음) · 「실패」(까닭) 가운데 하나
 import fs from 'node:fs/promises';
 import fss from 'node:fs';
@@ -15,6 +18,8 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
+import {readMarket} from './market_read.mjs';
+import {inspectBrief} from './inspect4.mjs';
 
 const ACT = JSON.parse(fss.readFileSync(new URL('./universe.json', import.meta.url), 'utf8'));
 export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름 · 몸값 · 결산(모음 날 값)
@@ -44,13 +49,19 @@ export function readRecords(root) {
   if (!fss.existsSync(dir)) return [];
   return fss.readdirSync(dir).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)).sort().map(f => { try { return JSON.parse(fss.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } }).filter(Boolean);
 }
+/** 옛 손 올리기 까닭 글 속 화면 단 이름(그 뒤 바뀜) — 기록 파일은 그대로 두고 업데이트 탭에만 지금 이름을 덧붙여 보임
+ *  (2026-10-12 화면 돌기를 올리는 묶음 dist 로 돌리자 10-11 19:57 손 올리기 까닭 「4단 앞으로 클까?」가 걸림 — 그 뒤 7단에서 6단) */
+const SHOW_OLD = [['4단 앞으로 클까?', '앞으로 클까?(그때 4단 · 지금 6단)']];
+export const showReason = s => SHOW_OLD.reduce((t, [a, b]) => t.split(a).join(b), String(s));
 /** 화면 「업데이트」 탭 자료 — 새 회차가 위 · 365곳 목록은 빼고 들고 난 이름만 */
 // 업데이트 탭: 까닭이 회차가 아니면(손 올리기) 회차 이름 없이 보임 — 옛 기록 파일은 그대로(클로드팀 2026-10-12: 15:52 · 21:57 손 올리기가 16:10 · 21:10 회차로 두 번 보이던 것)
 export function tabData(records) {
   // 회차 이름은 그 회차가 적은 것 그대로(2026-10-12 12:41 회차 시각을 바꿈 — 옛 08:10 · 16:10 기록이 새 시각표로 다시 매겨지지 않게) · 손 올리기만 회차 이름을 지움
-  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason && !/회차/.test(r.reason) ? null : r.slot, reason: r.reason || null, result: r.result, why: r.why || null,
+  const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason && !/회차/.test(r.reason) ? null : r.slot, reason: r.reason ? showReason(r.reason) : null, result: r.result, why: r.why || null,
     asOf: r.asOf, base: r.base, provisional: r.provisional, version: r.version, in: r.in ?? [], out: r.out ?? [], tiers: r.tiers ?? null, all: r.all ?? null, top: r.top ?? null,
-    pick36: r.pick36 ? {first: r.pick36.first, reused: r.pick36.reused, test: r.pick36.test} : null, served: r.served}));
+    pick36: r.pick36 ? {first: r.pick36.first, reused: r.pick36.reused, test: r.pick36.test} : null, served: r.served,
+    market: r.market ? {asOf: r.market.asOf, provisional: r.market.provisional, lines: r.market.lines, day: r.market.day && {up: r.market.day.up, down: r.market.day.down, word: r.market.day.word}, size: r.market.span?.size ?? null} : null,
+    inspect: r.inspect ? {nEach: r.inspect.nEach, fail: r.inspect.fail, lenses: r.inspect.lenses.map(l => ({key: l.key, name: l.name, n: l.n, fail: l.fail}))} : null}));
   return {schema: 'atlas-new-updates-1', made: new Date().toISOString(), slots: ACT.slots ?? [], n: records.length, records: rows};
 }
 async function getLive(file) { // 지금 사이트의 자료 한 벌(회차가 막혔을 때 옛 바탕으로 돌아가지 않게)
@@ -74,7 +85,23 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   const useLive = liveFallback === undefined ? (ci && !closesDir) : liveFallback;
   const kst = kstOf(now);
   const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotFor(kst, reason), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
-    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, verify: {}, steps: []};
+    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, market: null, inspect: null, verify: {}, steps: []};
+  const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 1e7)); // 네 눈 점검 — 눈마다 번 수(사장님 「각각 1000만번씩」 · 시험만 줄임)
+  let inspectFull = null;
+  /** 네 눈 점검 — dataDir 자료 + dist 화면 코드 · 끝나지 못하면 throw · 걸린 것이 있으면 결과를 남기고 false */
+  const inspectRun = (dataDir, market) => {
+    const box = fss.mkdtempSync(path.join(os.tmpdir(), 'atlas-i4-')), mf = path.join(box, 'market.json'), of = path.join(box, 'inspect.json');
+    try {
+      fss.writeFileSync(mf, JSON.stringify(market ?? null));
+      const t0 = Date.now(), r = spawnSync('node', ['scripts/atlas11/t365/inspect4.mjs', '--site', dist, '--data', dataDir, '--market', mf, '--n', String(N4), '--now', now.toISOString(), '--out', of], {cwd: root, encoding: 'utf8', timeout: 1500000, maxBuffer: 64 << 20});
+      rep.steps.push({name: '네 눈 점검', code: r.status, sec: Math.round((Date.now() - t0) / 100) / 10});
+      let full = null; try { full = JSON.parse(fss.readFileSync(of, 'utf8')); } catch { /* 아래 */ }
+      if (!full) throw Error('네 눈 점검이 끝나지 못함: ' + tail(r.stderr || r.stdout || r.error?.message));
+      inspectFull = full; rep.inspect = inspectBrief(full);
+      return full.ok;
+    } finally { fss.rmSync(box, {recursive: true, force: true}); }
+  };
+  const failLine = () => rep.inspect.lenses.filter(l => l.fail).map(l => `${l.name} ${l.fail}건(${l.first[0] ?? '-'})`).join(' · ');
   const tail = s => String(s ?? '').trim().split('\n').slice(-2).join(' | ').slice(0, 500);
   const run = (name, cmd, args, env = {}, timeout = 600000) => {
     const t0 = Date.now(), r = spawnSync(cmd, args, {cwd: root, env: {...process.env, ...env}, encoding: 'utf8', timeout, maxBuffer: 256 << 20});
@@ -131,6 +158,9 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     rep.digest = crypto.createHash('sha256').update(JSON.stringify([pro.asOf, pro.from?.closes?.added, members, core.all.v, core.provisional])).digest('hex').slice(0, 16);
     rep.result = prev && prev.digest === rep.digest ? '그대로' : '바꿈';
     if (rep.result === '그대로') rep.why = '새 값 없음 — 앞 회차와 같은 값으로 다시 만듦';
+    // 시장 판독(지난 사실만) → 네 눈 점검(이번 회차 자료 + 화면 코드) — 걸리면 새 자료를 올리지 않음(아래 catch: 지금 사이트 자료 그대로)
+    rep.market = readMarket(out, prev?.market ?? null);
+    if (!inspectRun(out, rep.market)) throw Error('네 눈 점검에서 걸림 — ' + failLine());
     // 옮겨 놓고 한 번에 바꿈(반쯤 바뀐 자료가 올라가지 않게)
     const stage = target + '.roll';
     await fs.rm(stage, {recursive: true, force: true});
@@ -140,11 +170,15 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     return await done();
   } catch (e) {
     rep.result = '실패'; rep.why = String(e?.message ?? e).slice(0, 500);
+    rep.market = null; // 판독은 실제로 올라가는 자료(아래 지금 사이트 자료)로 다시(done) — 네 눈 점검 결과는 걸린 새 자료의 것을 그대로 둠(왜 막았는지)
     if (useLive) { try { await mirrorLive(target); rep.served = 'live'; rep.why += ' — 지금 사이트 자료 그대로 다시 올림'; } catch (e2) { rep.why += ' — 지금 사이트 자료도 못 받아 저장소 바탕 그대로: ' + String(e2?.message ?? e2).slice(0, 120); } }
     return await done();
   }
   async function done() { // 기록을 못 남겨도 올리기는 멈추지 않음
     if (tmp) await fs.rm(tmp, {recursive: true, force: true}).catch(() => {});
+    // 이번 회차에 올라가는 자료(새로 바꾸지 못했으면 지금 자료)의 시장 판독 · 네 눈 점검 — 이미 했으면(바꿈 · 걸림) 그대로
+    if (!rep.market) { try { rep.market = readMarket(target, prev?.market ?? null); } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + '시장 판독 못 함: ' + String(e?.message ?? e).slice(0, 120); } }
+    if (!rep.inspect) { try { if (!inspectRun(target, rep.market)) rep.why = (rep.why ? rep.why + ' · ' : '') + '네 눈 점검에서 걸림(올라가는 자료) — ' + failLine(); } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + String(e?.message ?? e).slice(0, 200); } }
     try { // 「업데이트」 탭 자료 — 이번 회차까지
       await fs.mkdir(target, {recursive: true});
       await fs.writeFile(path.join(target, 'updates.json'), JSON.stringify(tabData([...prevAll, rep])) + '\n');
@@ -155,11 +189,12 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
         const name = rep.at.replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z') + '.json';
         await fs.writeFile(path.join(recDir, name), JSON.stringify(rep, null, 1) + '\n', {flag: 'wx'});
         const dir = path.dirname(recDir); // 깃허브 실행기 = reports/atlas11/t365 · 시험 = 임시 폴더(저장소 기록을 건드리지 않음)
+        if (inspectFull) { await fs.mkdir(path.join(dir, 'inspect'), {recursive: true}); await fs.writeFile(path.join(dir, 'inspect', name), JSON.stringify({...inspectFull, at: rep.at, kst: rep.kst, slot: rep.slot}, null, 1) + '\n', {flag: 'wx'}); }
         await fs.writeFile(path.join(dir, 'roll-latest.json'), JSON.stringify({...rep, members: undefined}, null, 1) + '\n');
-        await fs.appendFile(path.join(dir, 'roll-log.jsonl'), JSON.stringify({at: rep.at, kst: rep.kst, slot: rep.slot, result: rep.result, served: rep.served, asOf: rep.asOf, base: rep.base, in: rep.in?.length ?? null, out: rep.out?.length ?? null, why: rep.why}) + '\n');
+        await fs.appendFile(path.join(dir, 'roll-log.jsonl'), JSON.stringify({at: rep.at, kst: rep.kst, slot: rep.slot, result: rep.result, served: rep.served, asOf: rep.asOf, base: rep.base, in: rep.in?.length ?? null, out: rep.out?.length ?? null, inspectFail: rep.inspect?.fail ?? null, why: rep.why}) + '\n');
       } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + '회차 기록을 못 남김: ' + String(e?.message ?? e).slice(0, 120); }
     }
-    try { log(`atlas 회차: ${rep.result} · ${rep.kst}(${rep.slot ?? '회차 밖'}) · 고른 날 ${rep.asOf ?? '-'} · 기준일 ${rep.base ?? '-'} · 들어옴 ${rep.in?.length ?? '-'} · 빠짐 ${rep.out?.length ?? '-'} · ${rep.why ?? ''}`); } catch { /* 로그 실패도 무시 */ }
+    try { log(`atlas 회차: ${rep.result} · ${rep.kst}(${rep.slot ?? '회차 밖'}) · 고른 날 ${rep.asOf ?? '-'} · 기준일 ${rep.base ?? '-'} · 들어옴 ${rep.in?.length ?? '-'} · 빠짐 ${rep.out?.length ?? '-'} · 네 눈 점검 ${rep.inspect ? rep.inspect.lenses.map(l => `${l.name} ${l.n}번 실패 ${l.fail}`).join(' · ') : '-'} · ${rep.why ?? ''}`); } catch { /* 로그 실패도 무시 */ }
     return rep;
   }
 }

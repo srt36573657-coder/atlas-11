@@ -1,0 +1,103 @@
+// 새 ATLAS 시장 판독 · 네 눈 점검(사장님 2026-10-12 12:41 「10시 12시 14시 18시 업데이틀 하라 시장을 판독해서 말이다 그라고 업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩 하라」)
+//   시험은 번 수를 줄여 돔 — 걸려야 할 것(깨진 길 · 틀린 숫자 · 금지 말 · 끼운 코드 · 비밀 · 깨진 주소)을 일부러 넣어 네 눈이 각각 잡는지 봄
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {inspect4, routeRunner, siteGraph, BANNED} from '../../scripts/atlas11/t365/inspect4.mjs';
+import {readMarket, breadthWord, sizeWord, pctText, MR_RULE} from '../../scripts/atlas11/t365/market_read.mjs';
+import {HEADER_TOP} from '../../scripts/atlas11/site_headers.mjs';
+
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+const SITE = path.join(ROOT, 'site');
+const DATA = path.join(SITE, 'atlas/data');
+const N = 200000; // 눈마다 대상(가장 많은 클로드 눈 약 8만)을 모두 한 번씩 보고도 남는 수 — 남은 번 수로 사람처럼 누르기 · 주소 흔들기도 돎
+const NOW = new Date(JSON.parse(fs.readFileSync(path.join(DATA, 'core.json'), 'utf8')).asOf + 'T09:00:00Z'); // 「오늘」 = 자료의 고른 날 저녁(시험이 날짜가 지나도 「묵은 자료」로 걸리지 않게)
+
+function copySite() { // 화면 코드 + 자료를 임시 폴더로(고쳐 넣기 시험)
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'i4-'));
+  fs.cpSync(path.join(SITE, 'atlas'), path.join(tmp, 'atlas'), {recursive: true});
+  return {tmp, data: path.join(tmp, 'atlas/data'), J: f => JSON.parse(fs.readFileSync(path.join(tmp, 'atlas/data', f), 'utf8')), W: (f, x) => fs.writeFileSync(path.join(tmp, 'atlas/data', f), JSON.stringify(x))};
+}
+const lens = (r, k) => r.lenses.find(l => l.key === k);
+const kind = (r, l, k) => lens(r, l).kinds.find(x => x.k === k);
+
+test('금지 말 목록 = 화면 검사(site_check.mjs)의 목록', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/site_check.mjs'), 'utf8');
+  const m = src.match(/const BANNED = (\[[^\]]+\]);/);
+  assert.ok(m); assert.deepEqual(BANNED, JSON.parse(m[1].replace(/'/g, '"')));
+});
+
+test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', () => {
+  assert.equal(breadthWord(65, 35), '넓게 오른 날'); assert.equal(breadthWord(64, 36), '오른 곳 · 내린 곳이 섞인 날'); assert.equal(breadthWord(35, 65), '넓게 내린 날'); assert.equal(breadthWord(0, 0), '?');
+  assert.equal(breadthWord(70, 30, 'span'), '넓게 오름');
+  assert.equal(sizeWord(13.2, -2.5), '작은 · 중간 회사 쪽이 더 오름'); assert.equal(sizeWord(-8, -2), '큰 회사 쪽이 덜 내림'); assert.equal(sizeWord(1, 0), '회사 크기와 상관없이 비슷'); assert.equal(sizeWord(-2, -9), '작은 · 중간 회사 쪽이 덜 내림');
+  assert.equal(pctText(-2.49), '−2.5%'); assert.equal(pctText(13.18), '+13.2%'); assert.equal(pctText(null), '?');
+  assert.equal(MR_RULE.id, 'mr-v1');
+  const m = readMarket(DATA, null), core = JSON.parse(fs.readFileSync(path.join(DATA, 'core.json'), 'utf8'));
+  assert.equal(m.asOf, core.asOf); assert.equal(m.span.chg, core.all.chg); assert.ok(m.day.up + m.day.down + m.day.flat + m.day.none === Object.keys(JSON.parse(fs.readFileSync(path.join(DATA, 'lines.json'), 'utf8')).lines).length);
+  assert.equal(m.lines.length, 3); for (const t of m.lines) { assert.match(t, /\d/); for (const w of BANNED) assert.ok(!t.includes(w), t); }
+  const again = readMarket(DATA, m); assert.equal(again.lines.at(-1), '앞 회차와 같은 값입니다.');
+  const other = readMarket(DATA, {...m, asOf: '2026-10-07', day: {up: 100}, groups: {top: {id: 'bio', short: '바이오'}}});
+  assert.match(other.lines.at(-1), /하루 오른 곳 100곳 → \d+곳 · 1등 갈래 바이오 → /);
+});
+
+test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 화면에서 회사 3번 · n단 n번', () => {
+  const J = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
+  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json')};
+  S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
+  const {nodes, depth} = siteGraph(S);
+  assert.equal(nodes.size, 6 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5);
+  for (const c of S.codes.slice(0, 50)) { assert.ok(depth.get('#/c/' + c) <= 3); assert.ok(depth.get(`#/c/${c}/range`) <= 7); }
+  // 실제 화면에서 모은 길 지도(site_check.mjs --links)가 있으면 길 하나하나 맞대 봄(2026-10-12: 화면 1,878 · 다른 길 0)
+  const lf = process.env.ATLAS_LINKS; if (!lf) return;
+  const map = JSON.parse(fs.readFileSync(lf, 'utf8'));
+  assert.deepEqual(new Set(Object.keys(map)), new Set(nodes.keys()));
+  for (const [r, ls] of Object.entries(map)) if (r !== '#/info') assert.deepEqual(new Set(ls.filter(x => x !== '#/info')), new Set(nodes.get(r).links.filter(x => x !== '#/info')), r);
+});
+
+test('진짜 길 함수(route) — 깨진 주소에도 멈추지 않고 「없는 주소」 · 옛 주소는 옛 판으로', async () => {
+  const R = routeRunner(fs.readFileSync(path.join(SITE, 'atlas/atlas.js'), 'utf8'));
+  const go = async h => (await R.run(h));
+  let r = await go('#/x/%'); assert.equal(r.err, null); assert.deepEqual(r.calls, [['info', '?']]);
+  r = await go('#/g/%ZZ'); assert.equal(r.err, null); assert.deepEqual(r.calls.map(c => c[0]), ['missing']);
+  r = await go('#/c/%E0%A4%A/past'); assert.deepEqual(r.calls.map(c => c[0]), ['missing']);
+  r = await go('#/c/005930/past'); assert.deepEqual(r.calls, [['past', '005930']]);
+  r = await go('#/i/' + encodeURIComponent('반도체 장비')); assert.deepEqual(r.calls, [['i', '반도체 장비']]);
+  r = await go('#/stocks'); assert.deepEqual(r.calls, [['replace', '/old/#/stocks']]);
+  r = await go(''); assert.deepEqual(r.calls, [['home']]);
+});
+
+test('네 눈 점검 — 지금 자료는 네 눈 모두 실패 0 · 눈마다 정한 번 수', async () => {
+  const market = readMarket(DATA, null);
+  const r = await inspect4({siteDir: SITE, market, n: N, now: NOW});
+  const stale = await inspect4({siteDir: SITE, market, n: 3000, now: new Date(Date.parse(NOW) + 20 * 864e5)}); // 20일 묵으면 구글 눈이 잡음
+  assert.ok(kind(stale, 'google', 'date').fail > 0);
+  for (const l of r.lenses) assert.equal(l.fail, 0, `${l.name}: ${JSON.stringify(l.kinds.flatMap(k => k.first)).slice(0, 300)}`);
+  assert.deepEqual(r.lenses.map(l => [l.key, l.n]), [['apple', N], ['google', N], ['claude', N], ['cia', N]]);
+  assert.ok(r.ok); assert.ok(lens(r, 'google').things > 50000); assert.ok(kind(r, 'apple', 'click').n > 0 && kind(r, 'cia', 'fuzz').n > 0);
+  assert.match(HEADER_TOP, /frame-ancestors 'none'/);
+});
+
+test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 · 틀린 숫자 · 금지 말 · 끼운 코드 · 비밀 · 바깥 주소)', async () => {
+  const T = copySite();
+  try {
+    const pick = T.J('pick36.json'); pick.picks[0].code = '999999'; T.W('pick36.json', pick); // 36곳 첫 회사가 365곳에 없음 → 깨진 길
+    const comp = T.J('comp.json'); const c0 = Object.keys(comp.companies)[0]; comp.companies[c0].price += 1; T.W('comp.json', comp); // 1주 값이 회사 파일과 다름
+    const c1 = Object.keys(comp.companies)[1], co1 = JSON.parse(fs.readFileSync(path.join(T.data, 'co', c1 + '.json'), 'utf8'));
+    co1.extra = {url: 'javascript:alert(1)', note: '<img src=x onerror=alert(1)> nfp_' + 'A'.repeat(30)}; fs.writeFileSync(path.join(T.data, 'co', c1 + '.json'), JSON.stringify(co1));
+    const c2 = Object.keys(comp.companies)[2]; fs.rmSync(path.join(T.data, 'co', c2 + '.json')); // 회사 파일 없음 → 4~7단이 못 열림
+    const market = readMarket(T.data, null); market.lines.push('반도체는 곧 오른다 — 지금 사세요');
+    const r = await inspect4({siteDir: T.tmp, market, n: N, now: NOW});
+    assert.equal(r.ok, false);
+    assert.ok(kind(r, 'apple', 'list').fail > 0 && kind(r, 'apple', 'company').fail > 0, '애플: 깨진 36곳 길 · 회사 파일 없음');
+    assert.ok(kind(r, 'google', 'company').fail > 0 && kind(r, 'google', 'pick').fail > 0, '구글: 1주 값 · 36곳 이름');
+    assert.ok(kind(r, 'claude', 'banned').fail > 0 && kind(r, 'claude', 'market').fail > 0, '클로드: 판독 글 금지 말 · 권하는 말');
+    assert.ok(kind(r, 'cia', 'inject').fail > 0 && kind(r, 'cia', 'url').fail > 0 && kind(r, 'cia', 'secret').fail > 0, 'CIA: 끼운 코드 · javascript: 주소 · 넷리파이 열쇠 꼴');
+    // 화면 코드 — 바깥 주소 · 안전 문장이 빠지면
+    const js = path.join(T.tmp, 'atlas/atlas.js'); fs.writeFileSync(js, fs.readFileSync(js, 'utf8').replace('저는 투자 상담사가 아닙니다', '저는').replace("'https://dart.fss.or.kr'", "'https://evil.example'"));
+    const r2 = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: 2000, now: NOW});
+    assert.ok(kind(r2, 'claude', 'code').fail > 0 && kind(r2, 'cia', 'code').fail > 0);
+  } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
+});

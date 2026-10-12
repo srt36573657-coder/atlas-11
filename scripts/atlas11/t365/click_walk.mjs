@@ -8,8 +8,10 @@
 //     ④ 깊이 — 첫 화면에서 가장 짧은 누름 수(지도 전체를 넓게 셈): 회사 3번 · n단 n번 안
 //   무작위: 정해진 씨앗(xorshift32)이라 다시 돌리면 같은 길 · 누를 때마다 2% 는 새 사람(첫 화면부터)
 // 쓰는 법: node scripts/atlas11/t365/click_walk.mjs --links <길 지도.json> [--n 100000000] [--seed 20261012] [--out reports/atlas11/verify/atlas-new-walk-latest.json]
+//   ⑤ 점검용 길 지도(inspect4.mjs siteGraph — 회차마다 도는 네 눈 점검 · 애플 눈이 씀)가 이 실제 길 지도와 길 하나하나 같은가(2026-10-12 12:41 「업데이트 할때마다 … 점검」 · --data 자료 폴더 = 화면에 쓴 자료)
 import fs from 'node:fs';
 import path from 'node:path';
+import {siteGraph} from './inspect4.mjs';
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i < 0 ? d : process.argv[i + 1]; };
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
 const map = JSON.parse(fs.readFileSync(path.resolve(arg('--links')), 'utf8'));
@@ -47,11 +49,20 @@ while (clicks < N) {
   cur = e.j < 0 ? home : e.j; // 판(#/x/ · 찾기)은 닫고 처음으로
 }
 const ms = Date.now() - t0, visited = seen.reduce((a, b) => a + b, 0);
-const fails = brokenN + skipN + bad.noHome.length + bad.noNext.length + unreached + overDeep;
+// ⑤ 점검용 길 지도 맞대기(도움말 판 #/info 의 보기 고리는 판이라 뺌)
+const mirror = (() => { const D = path.resolve(ROOT, arg('--data', 'site/atlas/data')), J = f => JSON.parse(fs.readFileSync(path.join(D, f), 'utf8'));
+  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json')}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
+  const {nodes} = siteGraph(S), real = Object.keys(map).filter(r => r !== '#/info'), diff = [];
+  for (const r of real) if (!nodes.has(r)) diff.push('점검 지도에 없는 화면 ' + r);
+  for (const r of nodes.keys()) if (r !== '#/info' && !(r in map)) diff.push('실제에 없는 화면 ' + r);
+  for (const r of real) { if (!nodes.has(r)) continue; const a = new Set(map[r].filter(x => x !== '#/info')), b = new Set(nodes.get(r).links.filter(x => x !== '#/info'));
+    for (const x of a) if (!b.has(x)) diff.push(`${r} → ${x} 점검 지도에 없음`); for (const x of b) if (!a.has(x)) diff.push(`${r} → ${x} 실제에 없음`); }
+  return {pages: nodes.size, diff: diff.length, first: diff.slice(0, 10)}; })();
+const fails = brokenN + skipN + bad.noHome.length + bad.noNext.length + unreached + overDeep + mirror.diff;
 const res = {schema: 'atlas-new-walk-1', made: new Date().toISOString(), why: '사장님 2026-10-12 02:21 「이제 전체 검검을 하라 구글 클로드 애플 cia 관점으로 1억번 하라」 — 실제 화면에서 모은 길 지도 위에서 무작위로 1억 번 누름',
   links: path.basename(arg('--links')), seed: SEED, clicks, users, ms, pages: routes.length, edges: L.reduce((a, l) => a + l.length, 0), visited, notVisited: routes.filter((r, i) => !seen[i]).slice(0, 20),
   broken: brokenN, brokenLinks: [...bad.broken].slice(0, 20), skip: skipN, skipLinks: [...bad.skip].slice(0, 20), noHome: bad.noHome.slice(0, 20), noNext: bad.noNext.slice(0, 20),
-  depth: {unreached, overDeep, deepestByStep: deep}, fails};
+  depth: {unreached, overDeep, deepestByStep: deep}, mirror, fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
-console.log(JSON.stringify({clicks, users, ms, pages: res.pages, visited, broken: brokenN, skip: skipN, noHome: bad.noHome.length, noNext: bad.noNext.length, depth: res.depth, fails}));
+console.log(JSON.stringify({clicks, users, ms, pages: res.pages, visited, broken: brokenN, skip: skipN, noHome: bad.noHome.length, noNext: bad.noNext.length, depth: res.depth, mirror: {pages: mirror.pages, diff: mirror.diff}, fails}));
 process.exit(fails ? 1 : 0);

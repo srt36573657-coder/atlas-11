@@ -772,13 +772,19 @@ const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 const kstLabel = k => { const d = new Date(k.slice(0, 10) + 'T00:00:00Z'); return `${md(k.slice(0, 10))}(${DOW[d.getUTCDay()]}) ${k.slice(11, 16)}`; };
 const RES_WORD = {'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'};
 function namesLine(list, max = 6) { return list.slice(0, max).map(x => x.n).join(' · ') + (list.length > max ? ` 외 ${list.length - max}곳` : ''); }
+const manText = n => (n >= 1e4 && n % 1e4 === 0 ? (n / 1e4).toLocaleString('ko-KR') + '만' : Number(n).toLocaleString('ko-KR')); // 10000000 → 1,000만
+/** 네 눈 점검 한 줄(사장님 2026-10-12 12:41 「업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩」) */
+const inspectLine = (I, all) => `네 눈 점검(눈마다 ${manText(I.nEach)} 번) — ` + (all || I.fail ? I.lenses.filter(l => all || l.fail).map(l => `${l.name} ${l.fail ? '걸림 ' + l.fail.toLocaleString('ko-KR') + '건' : '이상 없음'}`).join(' · ') : '모두 이상 없음');
 async function viewUpdates(v) {
   await needUpd();
   const U = D.upd, R = U.records, last = R[0];
   const tell = tellRow(`하루 4번 · ${U.slots.join(' · ')}(서울)`, null);
   v.append(tell.el, h('h1', {class: 'head', text: '업데이트 기록 — 하루 4번'}),
     h('p', {class: 'count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
-  v.append(h('p', {class: 'note', text: '회차마다 그날까지 값으로 365곳을 다시 고릅니다(뽑는 규칙은 그대로). 기준일은 늘 고른 날의 20거래일 전입니다. 기록은 지우지 않습니다.'}));
+  v.append(h('p', {class: 'note', text: '회차마다 그날까지 값으로 365곳을 다시 고릅니다(뽑는 규칙은 그대로). 기준일은 늘 고른 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 1,000만 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.'}));
+  // 시장 판독(사장님 2026-10-12 12:41 「시장을 판독해서」) — 마지막 회차가 올린 자료로 · 지난 사실만(규칙 49 · 판독 규칙 mr-v1 = market_read.mjs)
+  if (last?.market?.lines?.length) v.append(h('div', {class: 'alt mread'}, h('p', {}, h('b', {text: '지금 시장 판독'}), ' — 지난 값만 · 앞날 맞히기 아님'), h('ul', {}, ...last.market.lines.map(t => h('li', {text: t})))));
+  if (last?.inspect) v.append(h('p', {class: last.inspect.fail ? 'q' : 'note'}, (last.inspect.fail ? '? ' : '') + inspectLine(last.inspect, true)));
   { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
     v.append(h('p', {class: 'note nx'}, MO.parrot(34), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}), `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 365곳과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 앵무새 막비가 다음 회차를 알림 — 글은 한 덩어리로 옆에서 흐름
   const host = h('div', {class: 'upchart'}); v.append(host); upChart(host, R.slice(0, 28).reverse());
@@ -795,6 +801,8 @@ async function viewUpdates(v) {
       if (r.in.length > 6 || r.out.length > 6) li.append(h('details', {class: 'more'}, h('summary', {text: '모두 보기'}), h('div', {class: 'in'}, h('p', {text: '새로 든 곳: ' + r.in.map(x => x.n).join(' · ')}), h('p', {text: '빠진 곳: ' + r.out.map(x => x.n).join(' · ')}))));
     } else if (r.result !== '실패') li.append(h('p', {text: '365곳은 앞 회차와 같습니다.'}));
     if (r.top?.short) li.append(h('p', {}, `1등 갈래 ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 365곳 ', pctEl(r.all?.chg, 'span'), ` · 20거래일`));
+    if (r.market?.day) li.append(h('p', {class: 'small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
+    if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
     if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
     ol.append(li);
   }
@@ -1091,10 +1099,12 @@ async function freshCheck() {
 async function route() {
   if (!D.core) return; // 첫 자료를 받은 뒤 boot 가 길을 엶(구글팀: 받는 중에 탭을 누르면 멈추던 것)
   freshCheck();
+  // 주소 풀기 — 깨진 주소(%E0 · %ZZ …)는 멈추지 않고 null → 「없는 주소」(CIA 눈 2026-10-12: 「자료를 못 읽었습니다」로 까닭이 틀리던 것 · #/x/ 는 아예 멈추던 것)
+  const dec = s => { try { return decodeURIComponent(s); } catch { return null; } };
   const hsh = location.hash || '#/';
   if (hsh.startsWith('#/find')) { showFind(); return; }
   if (hsh.startsWith('#/info')) { showInfo(null); return; }
-  if (hsh.startsWith('#/x/')) { try { await needNames(); } catch { /* 아래에서 ? */ } showInfo(decodeURIComponent(hsh.slice(4))); return; }
+  if (hsh.startsWith('#/x/')) { try { await needNames(); } catch { /* 아래에서 ? */ } showInfo(dec(hsh.slice(4)) ?? '?'); return; }
   for (const id of ['findSheet', 'infoSheet']) { const s = $('#' + id); if (!s.hidden) { s.hidden = true; delete document.body.dataset.sheet; } }
   if (hsh === lastMain && $('#view').childElementCount) return;
   lastMain = hsh;
@@ -1103,15 +1113,16 @@ async function route() {
   const opening = h('p', {class: 'boot'}, MO.cat('white', 34), ' 여는 중입니다…'); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
   for (const t of ['#tabHome', '#tabList', '#tab36', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
-    const [, kind, arg] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [];
+    const [, kind, raw] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [], arg = dec(raw ?? '');
     if (!kind) { $('#tabHome').setAttribute('aria-current', 'page'); viewHome(v); }
+    else if (arg == null && /^[gic]$/.test(kind)) viewMissing(v); // 깨진 주소 = 없는 주소
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
     else if (kind === '36') { $('#tab36').setAttribute('aria-current', 'page'); await view36(v); }
     else if (kind === 'up') { $('#tabUp').setAttribute('aria-current', 'page'); await viewUpdates(v); }
     else if (kind === 'time') await viewTime(v);
-    else if (kind === 'g') viewGroup(v, decodeURIComponent(arg));
-    else if (kind === 'i') await viewIndustry(v, decodeURIComponent(arg));
-    else if (kind === 'c') { const [code, sub] = decodeURIComponent(arg).split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'rivals') await viewRivals(v, code); else if (sub === 'grow') await viewGrow(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
+    else if (kind === 'g') viewGroup(v, arg);
+    else if (kind === 'i') await viewIndustry(v, arg);
+    else if (kind === 'c') { const [code, sub] = arg.split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'rivals') await viewRivals(v, code); else if (sub === 'grow') await viewGrow(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
     else { location.replace('/old/' + location.search + location.hash); return; } // 옛 ATLAS 주소(#/stocks · #/road …)는 옛 판으로
   } catch (e) {
     console.error(e);

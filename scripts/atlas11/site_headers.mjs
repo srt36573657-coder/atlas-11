@@ -1,0 +1,3 @@
+// aaa7377.com 보안 머리말 맨 윗부분(모든 주소) — 올리기 묶음(package.mjs)이 _headers 맨 앞에 씀 · 새 ATLAS 네 눈 점검(t365/inspect4.mjs CIA 눈)이 이 값을 봄
+//   (2026-10-12 12:41 「업데이트 할때마다 … cia방식으로」 — 점검은 회차 안(올리기 묶음이 _headers 를 쓰기 전)에 돌아 같은 값을 한 곳에 둠 · 값은 그 전과 같음)
+export const HEADER_TOP = "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n";
