@@ -477,9 +477,10 @@ function hubMark(H, id) {
   const q = (id === 'idx' && (!H.idx || S.idx)) || (id === 'sec' && (!H.sectors || S.sectors)) || (id === 'flow' && (!H.flows || S.flows)) || (id === 'us' && (!H.us || S.us)) || (id === 's365' && !H.s365?.list?.length);
   return (bang ? '!' : '') + (q ? '?' : '');
 }
-/** 1장 소개 — 「친구에게 소개하기」(앵무새 막비 24초 영상 · 보내기 · 2026-10-13 03:39 사장님 「이 앵무새로 귀엽게 재미나게 그리고 위트있게 해」) — 그림은 코드 그림(SVG) · 사람 얼굴 사진 없음 */
+/** 1장 소개 — 그림 자리에 사장님 글(2026-10-13 05:42 「앵무새 그게 있는곳에 글 제대로 딱 올려 알겠지 이대로 올려」 — 글자 · 띄어쓰기 그대로 · 05:49 「생각해세요 여가 아니라 생각해보세요」로 끝 한 곳 · 05:52 「고쳐」로 「번신분 → 버신 분」만 고침) · 아래 「친구에게 소개하기」(막비 24초 영상 · 보내기)는 그대로 */
+const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '10명중에 몇명 전 1명입니다', '왜? 그럴까요! 생각해보세요  아틀란스 올림!'];
 function slideHello() {
-  return h('a', {class: 'hello hs-hello', href: '/hello.html'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 720, height: 450, decoding: 'async'}),
+  return h('a', {class: 'hello hs-hello hs-say', href: '/hello.html'}, h('span', {class: 'hmsg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t}))),
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기 ›'})));
 }
 /** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */

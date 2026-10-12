@@ -702,6 +702,11 @@ html.f2 .hs > h1.head { font-size: 1.16rem; } html.f3 .hs > h1.head { font-size:
 .hs a.hello.hs-hello .hw b { font-size: 1.14rem; color: var(--ink-hi); }
 .hs a.hello.hs-hello .hw span { color: var(--ink); }
 .hs a.hello.hs-hello .hello-mo { top: 12px; right: 14px; }
+/* 1장 사장님 글(2026-10-13 05:42 「앵무새 그게 있는곳에 글 제대로 딱 올려 … 이대로 올려」) — 그림 자리에 큰 글 · 띄어쓰기 그대로(pre-wrap) · 위 꾸밈(무지개 · 하트) 아래에서 시작 · 아래 「친구에게 소개하기」 그대로 */
+.hs a.hello.hs-hello.hs-say { justify-content: space-between; }
+.hs a.hello.hs-hello .hmsg { position: relative; display: grid; gap: 4px; padding: 64px 18px 8px; font-size: 1.32rem; font-weight: 800; line-height: 1.42; color: var(--ink-hi); word-break: keep-all; overflow-wrap: anywhere; }
+.hs a.hello.hs-hello .hml { white-space: pre-wrap; }
+@media (max-width: 380px) { .hs a.hello.hs-hello .hmsg { padding: 58px 16px 4px; font-size: 1.16rem; gap: 2px; line-height: 1.38; } } /* 좁은 휴대폰(360) — 글이 한 줄 더 늘어 바가 아래 탭 밑으로 가던 것(05:5x 「버신 분 · 생각해보세요」로 바꾼 뒤 슬라이드 481px · 바 아래 끝 607 > 582) */
 .mini2 { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 2px; }
 .mline .il { margin: 0; } .mline .il b { color: var(--ink-hi); }
 .mline svg, .mstrip svg { display: block; width: 100%; height: auto; overflow: visible; }
