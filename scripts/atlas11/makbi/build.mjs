@@ -3,7 +3,7 @@
 //   만드는 것(모두 사람 얼굴 없음 · 앵무새 막비만):
 //     site/media/makbi-moon.svg   제목 옆 달(둥근 창) 속 막비 얼굴
 //     site/media/makbi-icon.svg   둥근 막비 얼굴(옛 판 띠 · 맨 위 1장이 못 열릴 때 띠)
-//     site/media/makbi-hello.svg  맨 위 1장 그림(720×450) — 그래프 횃대에 앉은 막비 · 「짹! 지난 기록만」
+//     site/media/makbi-hello.svg  맨 위 1장 그림(세로 720×880) — 그래프 횃대에 앉은 막비 · 「짹! 지난 기록만」
 //     site/og-makbi.jpg           링크 미리보기(1200×630)
 //     site/media/makbi-poster.jpg · makbi-intro.mp4 · makbi-intro.webm  소개 영상(720×1280 · 24초 · 소리 없음 · 자막)
 //   위트 = 앵무새는 들은 말만 따라 한다 → ATLAS 도 지난 기록만 말한다(앞날 맞히기 없음 · 안전 문장과 같은 뜻)
@@ -21,19 +21,21 @@ const P = {night: '#0C2824', deep: '#061A17', card: '#12322D', jade: '#6CC7A8', 
 let seed = 20261013; const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
 const stars = (w, h, n, maxY) => Array.from({length: n}, () => `<circle cx="${(rnd() * w).toFixed(1)}" cy="${(rnd() * maxY).toFixed(1)}" r="${(0.8 + rnd() * 1.8).toFixed(1)}" fill="#fff" opacity="${(0.25 + rnd() * 0.6).toFixed(2)}"/>`).join('');
 
-/** 맨 위 1장 — 밤하늘 · 달 · 그래프 횃대 위 막비(안경) · 말풍선 「짹! 지난 기록만」 (아래 40% 는 화면 글이 덮음) */
+/** 맨 위 1장 — 세로 칸(휴대폰 슬라이드는 세로로 길어 그림을 가운데 맞춰 자름 · object-fit cover · 50% 30%)에 맞춘 세로 그림 720×880
+ *  가운데 기둥(가로 140 ~ 580 · 세로 100 ~ 570)에 말풍선 · 막비 · 그래프 횃대 — 넓은 칸에서 위가 잘려도 말풍선이 남게 · 아래 35% 는 화면 글이 덮음
+ *  (2026-10-13 05:2x 진짜 브라우저 확인: 가로 그림 720×450 은 양옆이 잘려 「짹!」 · 막비가 잘렸음) */
 function helloScene() {
-  const pts = [[0, 318], [80, 306], [150, 322], [230, 292], [310, 304], [390, 276], [470, 288], [560, 258], [640, 268], [720, 246]];
-  return svg(720, 450, `<defs><linearGradient id="hs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#103A33"/><stop offset=".7" stop-color="${P.night}"/><stop offset="1" stop-color="${P.deep}"/></linearGradient>
+  const W = 720, H = 880, pts = [[0, 600], [90, 586], [170, 600], [250, 566], [330, 578], [360, 548], [430, 560], [510, 528], [600, 540], [720, 514]];
+  return svg(W, H, `<defs><linearGradient id="hs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#103A33"/><stop offset=".72" stop-color="${P.night}"/><stop offset="1" stop-color="${P.deep}"/></linearGradient>
     <radialGradient id="hm" cx="50%" cy="50%" r="50%"><stop offset=".6" stop-color="${P.moon}" stop-opacity=".35"/><stop offset="1" stop-color="${P.moon}" stop-opacity="0"/></radialGradient></defs>
-  <rect width="720" height="450" fill="url(#hs)"/>${stars(720, 450, 46, 250)}
-  <circle cx="96" cy="84" r="78" fill="url(#hm)"/><circle cx="96" cy="84" r="46" fill="${P.moon}"/><circle cx="80" cy="74" r="7" fill="#E6DCC8"/><circle cx="108" cy="98" r="5" fill="#E6DCC8"/>
-  <polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="${P.jade}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  ${pts.slice(1, -1).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6.5" fill="${P.night}" stroke="${P.jade}" stroke-width="3.5"/>`).join('')}<circle cx="720" cy="246" r="9" fill="${P.gold}"/>
-  <g transform="translate(398 46) scale(.93)">${makbi({id: 'h', glasses: true, tilt: -9, crestUp: .55})}</g>
-  <g transform="translate(126 118)"><path d="M0 18 a18 18 0 0 1 18 -18 h228 a18 18 0 0 1 18 18 v58 a18 18 0 0 1 -18 18 h-172 l-26 22 l4 -22 h-34 a18 18 0 0 1 -18 -18 z" fill="#FFFFFF" transform="translate(264 0) scale(-1 1)"/>
-    <text x="132" y="44" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="30" font-weight="800" fill="${P.night}">짹! 지난 기록만</text>
-    <text x="132" y="77" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="21" font-weight="600" fill="#2E5B52">들은 것만 따라 말해요</text></g>`);
+  <rect width="${W}" height="${H}" fill="url(#hs)"/>${stars(W, H, 60, 520)}
+  <circle cx="586" cy="96" r="70" fill="url(#hm)"/><circle cx="586" cy="96" r="40" fill="${P.moon}"/><circle cx="574" cy="88" r="6" fill="#E6DCC8"/><circle cx="598" cy="108" r="4.5" fill="#E6DCC8"/>
+  <polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="${P.jade}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  ${pts.slice(1, -1).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7.5" fill="${P.night}" stroke="${P.jade}" stroke-width="4"/>`).join('')}<circle cx="720" cy="514" r="10" fill="${P.gold}"/>
+  <g transform="translate(222 262) scale(1.15)">${makbi({id: 'h', glasses: true, tilt: -9, crestUp: .55})}</g>
+  <g transform="translate(150 100)"><path d="M0 22 a22 22 0 0 1 22 -22 h376 a22 22 0 0 1 22 22 v80 a22 22 0 0 1 -22 22 h-168 l-24 30 l-4 -30 h-180 a22 22 0 0 1 -22 -22 z" fill="#FFFFFF"/>
+    <text x="210" y="58" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="40" font-weight="800" fill="${P.night}">짹! 지난 기록만</text>
+    <text x="210" y="102" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="28" font-weight="600" fill="#2E5B52">들은 것만 따라 말해요</text></g>`);
 }
 if (!only || only === 'svg') {
   await fs.writeFile(path.join(MEDIA, 'makbi-moon.svg'), svg(100, 100, makbiHead({id: 'm'})));
