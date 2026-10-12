@@ -92,6 +92,7 @@ export function buildHome({dataDir, rawDir = null, prev = null, now = new Date()
     us: usPiece(US.map(([key, sym, name, f]) => [key, sym, name, f, readRaw(rawDir, f)])),
   };
   const live = live0 && (got.idx ? !!(got.idx.KOSPI?.live || got.idx.KOSDAQ?.live) : !!ind); // 지수 마지막 날이 오늘이어야(쉬는 날 · 장 열기 전은 장 중 아님)
+  if (got.sectors) got.sectors.date = got.idx?.KOSPI?.date ?? got.idx?.KOSDAQ?.date ?? null; // 업종 · 시장 오르내림 값의 날 = 같이 받은 지수의 마지막 날(업종 원문에는 날짜 칸이 없음 · CIA팀 2026-10-12 18:31 — 화면 「오늘 업종」을 보는 날짜로 셈)
   if (got.flows) got.flows.live = live;
   const out = {schema: 'atlas-new-home-1', rule: HOME_RULE.id, made: now.toISOString(), kst: kst.slice(0, 16).replace('T', ' '), live, asOf: core.asOf, base: core.base, days: core.days, stale: {}, errors: []};
   // 못 받은 조각 = 앞 자료의 같은 조각(앞 회차 값 꼬리표) · 그것도 없으면 null

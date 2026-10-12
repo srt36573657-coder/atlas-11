@@ -19,7 +19,7 @@ test('첫 화면 자료 — 지수 3개월 · 수급 · 업종 강 7 · 약 7 ·
   assert.ok(K.rows.length >= 55 && K.rows.length <= 70, '3개월 = 거래일 약 60'); assert.ok(K.rows[0][0] >= '2026-07-12');
   assert.equal(K.hi.d, '2026-07-15'); assert.equal(K.lo.d, '2026-07-30'); assert.equal(Q.day, -4.36);
   assert.deepEqual(home.flows.KOSPI, {date: '2026-10-12', personal: 12616, foreign: -17507, institutional: -1711});
-  const S = home.sectors; assert.equal(S.label, '강한 7'); assert.equal(S.strong.length, 7); assert.equal(S.weak.length, 7);
+  const S = home.sectors; assert.equal(S.label, '강한 7'); assert.equal(S.date, K.date, '업종 값의 날 = 같이 받은 지수의 마지막 날(화면 「오늘 업종」을 보는 날짜로 셈 · 2026-10-12 18:31)'); assert.equal(S.strong.length, 7); assert.equal(S.weak.length, 7);
   assert.equal(S.strong[0].name, '해운사'); assert.equal(S.weak[0].name, '기계'); assert.ok([...S.strong, ...S.weak].every(g => g.n >= HOME_RULE.minSector && g.name !== '기타'));
   assert.deepEqual(S.breadth, {up: 405, down: 2233, flat: 231, n: 2869}); // 「기타」 1,541곳 뺌
   const comp = J('comp.json').companies; assert.equal(S.weak[0].in365, Object.values(comp).filter(c => c.sector === '기계').length);

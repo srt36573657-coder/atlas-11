@@ -153,7 +153,8 @@ function googleLens(S, market, now = new Date()) {
     if (HM.sectors) { const T = HM.sectors;
       hchk.push(['업종 강 7 · 약 7 차례 · 회사 5곳 이상', () => T.strong.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.strong[j - 1].chg >= g.chg)) && T.weak.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.weak[j - 1].chg <= g.chg)) && T.strong.length <= 7 && T.weak.length <= 7]);
       hchk.push(['업종 이름표(강한 7 · 덜 내린 7)', () => T.label === (T.strong.reduce((t, g) => t + g.chg, 0) / Math.max(1, T.strong.length) < 0 ? '덜 내린 7' : '강한 7')]);
-      hchk.push(['업종 365곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]); }
+      hchk.push(['업종 365곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]);
+      hchk.push(['업종 날짜 = 같이 받은 지수의 마지막 날', () => T.date == null || HM.stale?.sectors || HM.stale?.idx || T.date === (HM.idx?.KOSPI?.date ?? HM.idx?.KOSDAQ?.date)]); } // 2026-10-12 18:31 「오늘 업종」을 보는 날짜로 셈
     if (HM.us) hchk.push(['미국 지수가 60거래일 낮음 ~ 높음 안', () => HM.us.rows.every(r => r.close == null || (r.close >= r.lo - 1e-9 && r.close <= r.hi + 1e-9))]);
     hchk.push(['「!」 문턱(지수 3% · 외국 투자자 1조 원)', () => (HM.alerts ?? []).every(a => (a.kind === 'idx' ? Math.abs(a.v) >= 3 : Math.abs(a.v) >= 10000))]);
     hchk.push(['「장 중」 표시 = 서울 정규장(9:00 ~ 15:30)에 받은 값만', () => { const t = String(HM.kst ?? '').slice(11, 16); return !HM.live || (t >= '09:00' && t < '15:30'); }]); // 2026-10-12 16:04 회차: 장 끝 뒤에도 「장 중」이던 것

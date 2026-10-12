@@ -677,3 +677,23 @@ ol.urows .uc { margin-left: auto; color: var(--sub); font-variant-numeric: tabul
 .pick a.play { display: inline-flex; align-items: center; min-height: 44px; }
 .ends a { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
 h2.sec.rt { margin-top: 26px; }
+
+/* ── 첫 화면 여섯 장(사장님 2026-10-12 18:31 「그 친구 (소개하기) 밑에 바를 만들어가지고 이렇게 슬라이드로 나오게 해야 돼」 · 네 팀 합친 안 — atlas.js hub()) ──
+   바 = 「친구에게 소개하기」 바로 밑 이름표 단추 여섯 · 21px 고정(글씨 크기 단추와 상관없이 — 아래 탭과 같은 법) · 좁은 화면은 세 칸 두 줄(옆으로 밀려 숨는 이름표 없음) · 넓으면 한 줄
+   지금 장 = 밝은 굵은 글 + 옥색 밑줄(뒤집은 흰 바탕이면 금빛 「!」「?」가 안 보여서 — 금빛은 조심 · 모름에만) · 장은 하나만 보임(나머지 [hidden]) · 들어오는 움직임은 옅어짐 한 번(움직임 줄이기면 없음 · 입체 없음) */
+.hub { margin: 2px 0 6px; }
+.hubbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin: 2px 0 4px; padding: 3px; border: 1px solid var(--hair); border-radius: 16px; background: var(--card2); }
+@media (min-width: 620px) { .hubbar { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.hubbar button { min-height: 48px; min-width: 0; padding: 2px 0 0; border: 0; border-bottom: 3px solid transparent; border-radius: 13px; background: none; color: var(--sub); font-family: inherit; font-size: 21px; font-weight: 650; line-height: 1.2; white-space: nowrap; letter-spacing: -0.03em; cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease); }
+.hubbar button:hover { color: var(--ink); }
+.hubbar button[aria-selected="true"] { background: var(--card3); color: var(--ink-hi); font-weight: 800; border-bottom-color: var(--violet-ink); }
+.hubbar .hm { color: var(--gold); font-weight: 800; margin-left: 2px; }
+.hp.in { animation: hp-in .2s var(--ease) both; }
+@keyframes hp-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .hp.in { animation: none; } }
+.hp > h2.sec:first-child { margin-top: 12px; padding-top: 0; border-top: 0; }
+.hp > h1.head:first-child { margin-top: 12px; }
+button.q.alert { display: block; width: 100%; min-height: 44px; margin: 6px 0 0; padding: 6px 0; border: 0; background: none; text-align: left; font: inherit; font-weight: 800; color: var(--gold); line-height: 1.45; cursor: pointer; }
+button.q.alert:hover { text-decoration: underline; text-underline-offset: 4px; }
+.hnext { display: block; margin: 14px 0 0 auto; min-height: 48px; padding: 6px 2px 6px 14px; border: 0; background: none; color: var(--violet-ink); font: inherit; font-weight: 750; cursor: pointer; }
+.hnext:hover { text-decoration: underline; text-underline-offset: 4px; }
