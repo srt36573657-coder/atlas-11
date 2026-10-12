@@ -710,6 +710,21 @@ ol.mrows li { display: flex; align-items: baseline; justify-content: space-betwe
 ol.mrows .sn { color: var(--sub); min-width: 0; }
 ol.mrows.bars { gap: 4px; } ol.mrows.bars li { display: block; } ol.mrows.bars .sl { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 10px; row-gap: 0; margin: 0; }
 ol.mrows.bars .sl > b { margin-left: auto; } /* 한 줄에 안 들어가면(360 · 아주 큰 글씨의 「1조 7,507억 원 더 팖」) 돈은 다음 줄 오른쪽으로 — 장 칸 밖으로 잘리지 않게 */
+/* 오늘의 눈금 · 엄지 줄(다섯 팀 합침 — 2026-10-12 23:10 「구글 삼성 그리고 머스크 그리고 cia 그리고 이건희 회장님 정신 철학을 녹여내」) */
+.gauge svg { display: block; width: 100%; height: auto; overflow: visible; }
+.gauge { position: relative; margin: 2px 0 0; }
+.gauge .gtd { position: absolute; right: 0; top: -2px; color: var(--gold); font-weight: 800; line-height: 1.3; } .gauge.gup .gtd { top: auto; bottom: -2px; } /* 오늘 막대(맨 오른쪽) 반대쪽 빈 반 */
+.gcap { margin: 0; color: var(--sub); }
+.hs .lead.say { margin: 0; }
+.mline .il { display: flex; align-items: baseline; gap: 10px; } .mline .il .iv { margin-left: auto; color: var(--sub); } .mline .il > b:last-child { min-width: 3.4em; text-align: right; font-weight: 800; }
+.mline .stk { margin: 0; color: var(--sub); }
+.mline svg { height: 60px; } html.f2 .mline svg { height: 44px; } html.f3 .mline svg { height: 36px; } /* 큰 글씨에서는 선을 낮춰 장 높이를 지킴 */
+ol.mrows li.uin { display: grid; grid-template-columns: minmax(0, 1fr) auto 64px; align-items: center; gap: 10px; }
+ol.mrows li.uin .ruler { margin: 0; }
+ol.mrows li.uin > b { font-weight: 800; font-variant-numeric: tabular-nums; }
+.hstep { min-width: 48px; min-height: 44px; padding: 0; border: 0; background: none; color: var(--violet-ink); font: inherit; font-size: 1.3rem; font-weight: 800; line-height: 1; cursor: pointer; }
+.hnow .hn { margin-right: auto; }
+.hnow .hstep + .hn { margin-right: 0; } .hnow .hn + .hstep { margin-right: auto; }
 .mcap { margin: 2px 0 0; color: var(--ink-hi); font-weight: 800; }
 .mstrip + .ax { display: flex; justify-content: space-between; color: var(--mute); margin-top: 2px; }
 .mtop { margin: 2px 0 0; color: var(--sub); }
