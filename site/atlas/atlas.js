@@ -295,9 +295,9 @@ function gaugeLine(name, g) {
   return `${name} — ${u}${u.endsWith('배') ? '로' : ''} ${way}${tail}`;
 }
 /** 눈금 그림 — 3개월 하루하루 막대(날짜 차례) · 점선 = 오늘 깊이 · 진한 막대 = 오늘만큼 같은 쪽으로 움직인 날 · 오늘 막대는 금빛 테(뜻 있는 표시) · 바둑판 아님(SVG 막대 한 장) */
-function gaugeSvg(name, g, dw = '오늘') {
+function gaugeSvg(name, g, dw = '오늘', size = '') {
   // 눈금 높이는 오늘에 맞춤(오늘 막대 = 반 높이의 약 60%) — 3개월에 한두 번 있던 아주 큰 날(7월 −10.8% · +17.9%)이 오늘을 납작하게 만들지 않게 · 그보다 큰 날은 끝까지(잘림)
-  const W = 320, Hh = 60, n = g.n, bw = W / n, mx = Math.max(Math.abs(g.t) * 1.6, 1), mid = Hh / 2, T = tok(), Y = v => mid - Math.max(-1, Math.min(1, v / mx)) * (mid - 2);
+  const W = 320, Hh = size === 'big' ? 88 : 56, n = g.n, bw = W / n, mx = Math.max(Math.abs(g.t) * 1.6, 1), mid = Hh / 2, T = tok(), Y = v => mid - Math.max(-1, Math.min(1, v / mx)) * (mid - 2);
   const same = v => (g.t < 0 ? v <= g.t : g.t > 0 ? v >= g.t : false);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: '100%', height: Hh, role: 'img', 'aria-label': `${name} 3개월 ${n}거래일 하루 움직임 — 오늘 ${pct(g.t)} · 오늘만큼 ${g.t < 0 ? '내린' : '오른'} 날 오늘 넣고 ${g.rank ?? '?'}날`});
   svg.append(sv('line', {x1: 0, x2: W, y1: mid, y2: mid, stroke: T.mute, 'stroke-width': 1}));
@@ -308,21 +308,34 @@ function gaugeSvg(name, g, dw = '오늘') {
   if (g.t) svg.append(sv('line', {x1: 0, x2: W, y1: Y(g.t).toFixed(1), y2: Y(g.t).toFixed(1), stroke: T.ink, 'stroke-width': 1, 'stroke-dasharray': '3 3', opacity: 0.8}));
   return h('div', {class: 'gauge' + (g.t > 0 ? ' gup' : '')}, svg, h('span', {class: 'gtd', 'aria-hidden': 'true', text: dw})); // 「오늘」은 보는 날짜가 값의 날일 때만(다음 날 아침엔 「10월 12일」) // 「오늘」 이름표는 오늘 막대 반대쪽 빈 반에(내린 날 = 위 · 오른 날 = 아래)
 }
-/** 2장 오늘 — 결론 먼저(CIA · 구글): 머리(오늘 두 지수) · 받은 때 한 줄 · 오늘의 눈금(평소의 몇 배 · 언제 뒤 가장 큼 · 3개월 하루하루 막대) · 시장 넓이 한 줄
- *  지움(머스크 · 구글): 시장 오르내림 막대 줄(아래 글과 같은 말) · 「!」 글 줄(문턱 표시는 바 칸 금빛 「!」 그대로 · 크기는 눈금이 말함) */
+/** 2장 오늘 — 핵심 하나(사장님 2026-10-13 00:18 「핵심위주로」): 제목(오늘 두 지수) · 받은 때 · 결론 한 줄(평소의 몇 배 · 언제 뒤 가장 큼) · 눈금 그림(크게) · 읽는 법 한 줄
+ *  코스닥 눈금 · 시장 넓이 · 「!」 글은 「자세히」(homeToday) · 지움(머스크 · 구글): 오르내림 막대 줄 · 「!」 단추 줄(문턱 표시는 바 칸 금빛 「!」 그대로) */
 function homeHead(v, H, go) {
-  const K = H.idx?.KOSPI, Q = H.idx?.KOSDAQ, B = H.sectors?.breadth, d0 = H.kst.slice(0, 10);
+  const K = H.idx?.KOSPI, Q = H.idx?.KOSDAQ, d0 = H.kst.slice(0, 10);
   v.append(h('h1', {class: 'head'}, K || Q ? [`${dayWord((K ?? Q).date)} 코스피 `, pctEl(K?.day, 'span'), ' · 코스닥 ', pctEl(Q?.day, 'span')] : '오늘 시장 — ?'));
-  v.append(h('p', {class: 'when', text: `${dayWord(d0) === '오늘' ? '' : mdw(d0) + ' '}${H.kst.slice(11, 16)} 받음 · ${liveWord(H)}`}));
-  const gK = gauge(K), gQ = gauge(Q), main = gK ? ['코스피', gK, K] : gQ ? ['코스닥', gQ, Q] : null, dw = main ? dayWord(main[2].date) : '오늘';
-  if (K || Q) {
-    if (K) v.append(h('p', {class: 'lead say', text: gaugeLine('코스피', gK)}));
-    if (main) v.append(gaugeSvg(main[0], main[1], dw), h('p', {class: 'gcap', text: `진한 막대 = ${main[0] === '코스피' ? '' : '코스닥이 '}${dw}만큼 ${main[1].t < 0 ? '내린' : '오른'} 날`}));
-    if (Q) v.append(h('p', {class: 'lead say', text: gaugeLine('코스닥', gQ)}));
-  } else v.append(h('p', {class: 'q', text: '? 지수 값을 못 받았습니다.'}));
-  if (B && B.up + B.down) { const dn = B.down >= B.up, k = Math.round((dn ? B.down : B.up) / (B.up + B.flat + B.down) * 10);
-    v.append(h('p', {class: 'lead say'}, '시장 ', h('b', {class: dn ? 'down' : 'up', text: `10곳 중 ${k}곳 ${dn ? '내림' : '오름'}`}))); } // 곳 수는 4장 「자세히」 맨 위
+  v.append(h('p', {class: 'when', text: `${dayWord(d0) === '오늘' || d0 === (K ?? Q)?.date ? '' : mdw(d0) + ' '}${H.kst.slice(11, 16)} 받음 · ${liveWord(H)}`})); // 날짜는 제목에 한 번(받은 날이 값의 날과 다를 때만 여기에도)
+  const main = gauge(K) ? ['코스피', gauge(K), K] : gauge(Q) ? ['코스닥', gauge(Q), Q] : null;
+  if (!main) { v.append(h('p', {class: 'q', text: K || Q ? '? 3개월 값이 모자라 오늘을 견주지 못했습니다.' : '? 지수 값을 못 받았습니다.'})); return; }
+  const td = dayWord(main[2].date) === '오늘', dw = td ? '오늘' : '이날'; // 다음 날 아침 = 「이날」(제목에 날짜) · 이름표는 「10월 12일」
+  v.append(h('p', {class: 'lead say', text: gaugeLine(main[0], main[1])}), gaugeSvg(main[0], main[1], td ? '오늘' : md(main[2].date), 'big'),
+    h('p', {class: 'gcap', text: `진한 막대 = ${main[0] === '코스피' ? '' : '코스닥이 '}${dw}만큼 ${main[1].t < 0 ? '내린' : '오른'} 날`}));
+}
+/** 2장 「자세히」 — 두 지수 눈금 · 시장 넓이(10곳 중 n곳 · 곳 수) · 문턱 「!」(글) · 읽는 법 */
+function homeToday(v, H) {
+  const K = H.idx?.KOSPI, Q = H.idx?.KOSDAQ, B = H.sectors?.breadth, A = H.alerts ?? [], d = (K ?? Q)?.date;
+  v.append(h('h2', {class: 'sec', text: `${d ? dayWord(d) + ' ' : ''}시장 — 평소와 견줌`})); // 「오늘」은 보는 날짜가 값의 날일 때만(다음 날 아침 검사)
+  for (const [name, x] of [['코스피', K], ['코스닥', Q]]) { if (!x) continue; const g = gauge(x);
+    v.append(h('p', {class: 'lead', text: gaugeLine(name, g)})); if (g) v.append(gaugeSvg(name, g, dayWord(x.date) === '오늘' ? '오늘' : md(x.date))); }
+  if (B && B.up + B.down) { const dn = B.down >= B.up, k = Math.round((dn ? B.down : B.up) / (B.up + B.flat + B.down) * 10), nn = B.n.toLocaleString('ko-KR');
+    v.append(h('p', {}, `시장 ${nn}곳 중 `, h('b', {class: 'up', text: B.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: B.down.toLocaleString('ko-KR') + '곳 내림'}), ` — 10곳 중 ${k}곳 ${dn ? '내림' : '오름'}${liveTag(H)}`)); }
   else v.append(h('p', {class: 'q', text: '? 시장 전체 오른 곳 · 내린 곳 수를 못 받았습니다.'}));
+  const ix = A.filter(a => a.kind === 'idx'), fx = A.filter(a => a.kind === 'flow'), way = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
+  if (ix.length) v.append(h('p', {class: 'q', text: `! ${ix.length > 1 ? '두 지수 모두' : ix[0].name} 하루 3% 넘게 ${way(ix)} — 미리 정한 문턱`}));
+  for (const a of fx) v.append(h('p', {class: 'q', text: `! 외국 투자자가 ${a.name}에서 ${eokW(a.v)} 더 ${a.v < 0 ? '팖' : '삼'} — 하루 1조 원 문턱`}));
+  v.append(h('details', {class: 'more'}, h('summary', {text: '눈금 읽는 법'}), h('div', {class: 'in'},
+    h('p', {text: '막대 하나 = 3개월 가운데 하루(왼쪽이 옛날 · 맨 오른쪽 금빛 테가 오늘). 점선 = 오늘 움직인 깊이. 진한 막대 = 오늘만큼 같은 쪽으로 움직인 날.'}),
+    h('p', {text: '평소 = 오늘 앞 20거래일 하루 움직임 크기의 평균. 「n월 n일 뒤 가장 큼」은 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 적습니다.'}),
+    h('p', {text: '센 것일 뿐 — 다음 날을 말하지 않습니다.'}))));
 }
 function idxPanel(x, span, band, live) {
   const box = h('div', {class: 'ipan'});
@@ -354,7 +367,7 @@ function homeIndex(v, H) {
   v.append(h('details', {class: 'more'}, h('summary', {text: '그림 읽는 법 · 오늘의 눈금 · 출처'}), h('div', {class: 'in'},
     ...[K, Q].filter(Boolean).map(x => h('p', {}, `${x.name} — 가장 높던 ${md(x.hi.d)}보다 `, pctEl(x.hi.vs, 'span'), ` · 가장 낮던 ${md(x.lo.d)}보다 `, pctEl(x.lo.vs, 'span'))),
     // 오늘의 눈금(2장) 셈 — 지난 사실만(다섯 팀 합침 2026-10-12 23:10)
-    ...[K, Q].filter(Boolean).map(x => { const g = gauge(x); return h('p', {text: !g ? `${x.name} 오늘의 눈금 — ? 3개월 값이 모자람` : `${x.name} 오늘의 눈금 — 오늘 ${pct(g.t)} · 평소(오늘 앞 20거래일 하루 움직임 크기 평균) ${numK(g.avg, 1)}% · 3개월 ${g.n}거래일 가운데 오늘만큼 ${g.t < 0 ? '내린' : '오른'} 날 ${g.rank ?? '?'}날(오늘 넣고)${g.since ? ` · 그 앞 마지막 날 ${md(g.since)}` : ''}`}); }),
+    ...[K, Q].filter(Boolean).map(x => { const g = gauge(x); return h('p', {text: !g ? `${x.name} 오늘의 눈금 — ? 3개월 값이 모자람` : `${x.name} 오늘의 눈금 — 오늘 ${pct(g.t)} · 평소(오늘 앞 20거래일 하루 움직임 크기 평균) ${numK(g.avg, 1)}% · 3개월 ${g.n}거래일 가운데 오늘만큼 ${g.t < 0 ? '내린' : '오른'} 날 ${g.rank ?? '?'}날(오늘 넣고)${g.since ? ` · 그 앞 마지막 날 ${md(g.since)}` : ''}${g.streak >= 2 ? ` · ${g.streak}거래일째 ${g.t < 0 ? '내림' : '오름'}(그동안 ${pct(g.streakChg)})` : ''}`}); }),
     h('p', {text: '「n월 n일 뒤 가장 큼」은 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 적습니다. 센 것일 뿐 — 다음 날을 말하지 않습니다.'}),
     h('p', {text: `옅은 띠 = 아래 365곳 경주 기간(${md(C.base)} → ${md(C.asOf)} · 20거래일). 두 칸은 같은 비율 폭이라 기울기를 견줄 수 있습니다. 마지막 동그라미가 속이 비면 장 중에 받은 값(마감 값 아님)입니다.`}),
     h('p', {text: '날마다 종가 · 네이버 증권 지수. 지난 20거래일: 코스피 ' + pct(H.cmp20?.kospi) + ' · 코스닥 ' + pct(H.cmp20?.kosdaq) + '.'}))));
@@ -477,8 +490,6 @@ function miniLine(x, span, live) {
   svg.append(sv('path', {d: rows.map((r, k) => (k ? 'L' : 'M') + X(k).toFixed(1) + ' ' + Y(lv[k]).toFixed(1)).join(''), fill: 'none', stroke: T.ink, 'stroke-width': 2, 'stroke-linejoin': 'round'}),
     sv('circle', {cx: X(n - 1).toFixed(1), cy: Y(lv[n - 1]).toFixed(1), r: 4, fill: live ? T.night : (x.day < 0 ? T.down : T.up), stroke: x.day < 0 ? T.down : T.up, 'stroke-width': 2}));
   box.append(svg);
-  const g = gauge(x); // 며칠째 같은 쪽(CIA) — 둘째 날부터
-  if (g && g.streak >= 2) box.append(h('p', {class: 'stk', text: `${g.streak}거래일째 ${g.t < 0 ? '내림' : '오름'} · 그동안 ${pct(g.streakChg)}`}));
   return box;
 }
 function miniIdx(v, H) {
@@ -539,7 +550,7 @@ function hub(v, H) {
   const now = h('p', {class: 'hnow'}, prev, nowT, next, RM.matches ? null : play);
   const close = h('button', {type: 'button', class: 'hclose', text: '접기 ×'}), detT = h('b'), det = h('div', {class: 'hdet', hidden: true}, h('p', {class: 'hdh'}, detT, close));
   const MINI = {today: (p, x) => homeHead(p, x, go), idx: miniIdx, sec: miniSec, flow: miniFlow, us: miniUS, s365: mini365};
-  const FULL = {idx: homeIndex, sec: homeSectors, flow: homeFlows, us: homeUS, s365: home365};
+  const FULL = {today: homeToday, idx: homeIndex, sec: homeSectors, flow: homeFlows, us: homeUS, s365: home365}; // 2장 「자세히」(2026-10-13 00:18 핵심 위주 — 코스닥 눈금 · 시장 넓이 · 「!」 글)
   const slides = [], tabs = [], dets = [];
   let cur = 0, timer = 0, settleT = 0, inView = true, swiped = 0;
   st(box, {}).style.setProperty('--dwell', DWELL + 'ms');

@@ -50,7 +50,7 @@ const dayWord = d => (!d ? '?' : d === todayK() ? '오늘' : mdw(d));
 const eokW = v => { if (v == null) return '?'; const a = Math.abs(Math.round(v)), jo = Math.floor(a / 10000), r = a % 10000; return (jo ? jo.toLocaleString('ko-KR') + '조' + (r ? ' ' : '') : '') + (r || !jo ? r.toLocaleString('ko-KR') + '억' : '') + ' 원'; };
 const iga = x => { const c = x.charCodeAt(x.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? x + '이' : x + '가'; };
 const numK = v => (v == null ? '?' : Number(v).toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '365곳'], DETAIL = ['idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
+const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '365곳'], DETAIL = ['today', 'idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
 // 오늘의 눈금(다섯 팀 합침 2026-10-12 23:10) — 화면(atlas.js gauge · gaugeLine)과 따로 셈: 종가 쌍마다 하루 % · 평소 = 오늘 앞 20거래일 하루 움직임 크기 평균 ·
 //   「n월 n일 뒤 가장 큼」 = 같은 쪽으로 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 · 3개월 안에 없으면 「3개월 중 가장 크게」
 function gaugeX(x) {
@@ -72,10 +72,14 @@ function hubExpect(H) {
   const marks = HUBID.map(id => { if (id === 'hello' || id === 'today') return ''; const bang = (id === 'idx' && A.some(a => a.kind === 'idx')) || (id === 'flow' && A.some(a => a.kind === 'flow'));
     const q = (id === 'idx' && (!H.idx || st.idx)) || (id === 'sec' && (!S || st.sectors)) || (id === 'flow' && (!F || st.flows)) || (id === 'us' && (!U || st.us)) || (id === 's365' && !T?.list?.length); return (bang ? '!' : '') + (q ? '?' : ''); });
   const d0 = H.kst.slice(0, 10), gK = gaugeX(K), gQ = gaugeX(Q), mainX = gK ? ['코스피', gK, K] : gQ ? ['코스닥', gQ, Q] : null;
-  const s1 = [K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', `${dayWord(d0) === '오늘' ? '' : mdw(d0) + ' '}${H.kst.slice(11, 16)} 받음`];
-  if (K) s1.push(gaugeTextX('코스피', gK)); if (Q) s1.push(gaugeTextX('코스닥', gQ));
-  if (mainX) s1.push(`진한 막대 = ${mainX[0] === '코스피' ? '' : '코스닥이 '}${dayWord(mainX[2].date)}만큼 ${mainX[1].t < 0 ? '내린' : '오른'} 날`);
-  if (S?.breadth && S.breadth.up + S.breadth.down) { const B = S.breadth, dn = B.down >= B.up; s1.push(`시장 10곳 중 ${Math.round((dn ? B.down : B.up) / (B.up + B.flat + B.down) * 10)}곳 ${dn ? '내림' : '오름'}`); }
+  const s1 = [K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', `${dayWord(d0) === '오늘' || d0 === (K ?? Q)?.date ? '' : mdw(d0) + ' '}${H.kst.slice(11, 16)} 받음`];
+  // 2장은 핵심 하나(2026-10-13 00:18 「핵심위주로」) — 결론 한 줄(코스피 · 없으면 코스닥) · 눈금 그림 · 읽는 법 한 줄 · 「자세히」(코스닥 · 시장 넓이 · 「!」)
+  if (mainX) s1.push(gaugeTextX(mainX[0], mainX[1]), `진한 막대 = ${mainX[0] === '코스피' ? '' : '코스닥이 '}${dayWord(mainX[2].date) === '오늘' ? '오늘' : '이날'}만큼 ${mainX[1].t < 0 ? '내린' : '오른'} 날`, '자세히 ›');
+  const BB = S?.breadth, dnB = BB && BB.down >= BB.up, A2 = H.alerts ?? [], ixA = A2.filter(a => a.kind === 'idx'), wayA = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
+  const today = [`${(K ?? Q)?.date ? dayWord((K ?? Q).date) + ' ' : ''}시장 — 평소와 견줌`, ...(K ? [gaugeTextX('코스피', gK)] : []), ...(Q ? [gaugeTextX('코스닥', gQ)] : []),
+    ...(BB && BB.up + BB.down ? [`시장 ${BB.n.toLocaleString('ko-KR')}곳 중 ${BB.up.toLocaleString('ko-KR')}곳 오름 · ${BB.down.toLocaleString('ko-KR')}곳 내림 — 10곳 중 ${Math.round((dnB ? BB.down : BB.up) / (BB.up + BB.flat + BB.down) * 10)}곳 ${dnB ? '내림' : '오름'}`] : []),
+    ...(ixA.length ? [`! ${ixA.length > 1 ? '두 지수 모두' : ixA[0].name} 하루 3% 넘게 ${wayA(ixA)} — 미리 정한 문턱`] : []),
+    ...A2.filter(a => a.kind === 'flow').map(a => `! 외국 투자자가 ${a.name}에서 ${eokW(a.v)} 더 ${a.v < 0 ? '팖' : '삼'} — 하루 1조 원 문턱`)];
   const sd = S?.date ?? K?.date, fd = F?.KOSPI?.date ?? F?.KOSDAQ?.date;
   const all = F ? ['KOSPI', 'KOSDAQ'].flatMap(m => [['personal', '개인'], ['foreign', '외국 투자자'], ['institutional', '기관']].map(([k, kn]) => ({mn: m === 'KOSPI' ? '코스피' : '코스닥', kn, val: F[m]?.[k] ?? null}))).filter(x => x.val != null) : [];
   const big = all.sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0], bigT = big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : null;
@@ -83,13 +87,14 @@ function hubExpect(H) {
   const slides = [
     ['친구에게 소개하기', '공주님 1분 영상 · 보내기'],
     s1,
-    K || Q ? ['코스피 · 코스닥 — 3개월', ...[[K, gK], [Q, gQ]].filter(([x]) => x).flatMap(([x, g]) => [x.name, numK(x.close), pct(x.day), ...(g && g.run >= 2 ? [`${g.run}거래일째 ${g.t < 0 ? '내림' : '오름'} · 그동안 ${pct(g.runChg)}`] : [])]), more] : ['? 지수 값을 못 받았습니다.', more],
+    K || Q ? ['코스피 · 코스닥 — 3개월', ...[K, Q].filter(Boolean).flatMap(x => [x.name, numK(x.close), pct(x.day)]), more] : ['? 지수 값을 못 받았습니다.', more],
     S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label.replace('7', '3')} · 약한 3`, S.strong[0].name, pct(S.strong[0].chg), S.weak[0].name, pct(S.weak[0].chg), more] : ['? 업종 값을 못 받았습니다.', more],
     F ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`, ...(bigT ? [bigT] : []), more] : ['? 사고판 돈을 못 받았습니다.', more],
     U ? ['미국 — 마지막 장', `미국 ${U.date ? mdw(U.date) : '?'} 장 끝 — ${U.n}개 가운데 ${U.up}개 오름`, ...U.rows.map(r => r.name), more] : ['? 미국 값을 못 받았습니다.', more],
     T?.list?.length ? [`365곳 — ${dayWord(T.date)}`, `${T.up}곳 오름 · ${T.down}곳 내림`, ...(T.top ? [T.top.n, T.bot.n] : []), more] : ['? 365곳 값이 없습니다.', more],
   ];
-  const details = { // 「자세히」 = 14:54 종합 정보 칸 그대로
+  const details = { // 「자세히」 = 14:54 종합 정보 칸 그대로(+ 2장 오늘 — 2026-10-13 00:18)
+    today,
     idx: K || Q ? ['코스피 · 코스닥 — 3개월', ...(K ? [`코스피 ${numK(K.close)}`] : []), ...(Q ? [`코스닥 ${numK(Q.close)}`] : [])] : ['? 지수 값을 못 받았습니다.'],
     sec: S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label} · 약한 7`, `가장 강한 ${S.strong[0].name} ${pct(S.strong[0].chg)}`, `가장 약한 ${S.weak[0].name} ${pct(S.weak[0].chg)}`, ...S.strong.map(g => g.name), ...S.weak.map(g => g.name),
       ...(S.breadth ? [`시장 ${S.breadth.n.toLocaleString('ko-KR')}곳 중 ${S.breadth.up.toLocaleString('ko-KR')}곳 오름 · ${S.breadth.down.toLocaleString('ko-KR')}곳 내림`] : []), // 2장에서 옮김(다섯 팀 합침)
