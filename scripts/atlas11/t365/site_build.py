@@ -391,7 +391,7 @@ def dump(name, obj):
         f.write('\n')
     return os.path.getsize(p)
 # ── ⑤ 4단 「지나온 길」(사장님 2026-10-11 08:10 「지금 3단 클릭으로 되어있어 5단 클릭으로 해」) — 회사마다 3년 남짓 종가 · 해마다 번 돈 ──
-#   days.json = 거래일(365곳 가운데 절반 넘게 종가가 있는 날 — pick36.py 와 같은 날) · 365곳 같은 무게 지수(날마다 평균 · 하루 ±50% 넘는 값 뺌 · 이어 곱함 · 첫날 = 100)
+#   days.json = 거래일(365곳 가운데 절반 넘게 종가가 있는 날 — range_mc.py 와 같은 날) · 365곳 같은 무게 지수(날마다 평균 · 하루 ±50% 넘는 값 뺌 · 이어 곱함 · 첫날 = 100)
 #   co/<번호>.json = 그 회사 종가(days 색인 k0 부터 · 없는 날 null) · 하루 ±30.5% 넘게 바뀐 날(한국 가격 제한 밖 — 주식 수 바뀜일 수 있음) · 해마다 기록(예상 E 뺌)
 #   (모음 · 종가 표 crow · 거래일 DAYS 는 ② 에서 읽은 것을 그대로 씀)
 lvl, allv = 100.0, [100.0]
@@ -468,7 +468,8 @@ with open(os.path.join(OUT, 'days.json'), 'w', encoding='utf-8') as fh:
 # ── ⑥ 시간(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 … 과감하게 하라」) ──
 #   봉인(capsule.py · reports/atlas11/t365/capsule/capsule-<번호>.json — 잠근 날 · 규칙 · 회사 · 종가 · 봉인 번호)을 읽어
 #   ⓐ 지나온 길 = 봉인 날 3년 전(그날 또는 그 뒤 첫 거래일) → 봉인 날: 봉인한 365곳 · 후보 모두를 그때 같은 돈으로 나눠 샀다면(그대로 둠 · 그날 값이 없으면 그 앞 값)
-#   ⓑ 봉인 뒤 지금까지 = 봉인 날 종가(잠근 값) → 마지막 종가 날: 365곳 · 36곳 · 후보 모두(같은 셈 · 회차마다 다시)
+#   ⓑ 봉인 뒤 지금까지 = 봉인 날 종가(잠근 값) → 마지막 종가 날: 365곳 · 후보 모두(같은 셈 · 회차마다 다시)
+#      — 봉인 1호에 함께 잠근 골라 낸 목록(옛 36곳)은 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」로 셈 · 화면 자료에서 뺌(봉인 파일 · 번호는 그대로)
 #   ⓒ 다시 여는 날 = 봉인에 적힌 3 · 5 · 10년 뒤(남은 날은 화면이 오늘 날짜로 셈) — 앞날 값은 만들지 않음(규칙 49)
 from capsule import digest_of, plus_years  # noqa: E402
 from datetime import date as _date  # noqa: E402
@@ -535,22 +536,24 @@ for fn in caps:
     sp = {m[0]: m[2] for m in cap['members']}
     sp.update({p[0]: p[1] for p in cap['pool'] if p[1]})
     sv365, sh365 = hold(mem, TD, sp)
-    sv36, sh36 = hold([x[1] for x in cap['picks36']], TD, {x[1]: x[3] for x in cap['picks36']})
     svpool, shpool = hold(pool, TD, sp)
     stale = lambda codes: sum(1 for c in codes if not mrow(c).get(TD[-1]))
-    since = {'dates': TD, 'days': len(TD) - 1, 'v365': sv365, 'v36': sv36, 'vpool': svpool,
-             'chg365': d2(sv365[-1] - 100) if len(TD) > 1 else None, 'chg36': d2(sv36[-1] - 100) if len(TD) > 1 else None,
+    since = {'dates': TD, 'days': len(TD) - 1, 'v365': sv365, 'vpool': svpool,
+             'chg365': d2(sv365[-1] - 100) if len(TD) > 1 else None,
              'chgPool': d2(svpool[-1] - 100) if len(TD) > 1 else None,
-             'have365': len(sh365), 'have36': len(sh36), 'havePool': len(shpool), 'stale365': stale(sh365), 'stalePool': stale(shpool)}
+             'have365': len(sh365), 'havePool': len(shpool), 'stale365': stale(sh365), 'stalePool': stale(shpool)}
+    rules_shown = [r for r in cap['rules'] if '36곳' not in r]  # 골라 낸 목록 줄은 화면에서 뺌(봉인 파일은 그대로)
+    hidden = len(cap['rules']) - len(rules_shown)
     tcaps.append({'id': cap['id'], 'seal': seal, 'digest': cap['digest'], 'sealedAt': cap['sealedAt'], 'file': 'reports/atlas11/t365/capsule/' + fn,
-                  'version': cap['version'], 'pick36': cap['pick36'], 'opens': cap['opens'], 'rules': cap['rules'], 'members': [[m[0], m[2]] for m in cap['members']],
-                  'n36': len(cap['picks36']), 'nPool': len(cap['pool']), 'poolNoClose': len(cap['pool']) - len(pool), 'past': past, 'since': since})
+                  'version': cap['version'], 'opens': cap['opens'], 'rules': rules_shown, 'members': [[m[0], m[2]] for m in cap['members']],
+                  'rulesNote': ('봉인 규칙 %d줄 가운데 골라 낸 목록에 대한 %d줄은 사장님 2026-10-13 말씀으로 화면에서 뺐습니다 — 봉인 파일 · 봉인 번호는 그대로' % (len(cap['rules']), hidden)) if hidden else None,
+                  'nPool': len(cap['pool']), 'poolNoClose': len(cap['pool']) - len(pool), 'past': past, 'since': since})
 if tcaps:
     TIME = {'schema': 'atlas-new-time-1', 'asOf': asof, 'capsules': tcaps}
     k0 = tcaps[0]
     core['time'] = {'id': k0['id'], 'seal': k0['seal'], 'digest': k0['digest'][:12], 'opens': k0['opens'],
                     'past': {k: k0['past'][k] for k in ('from', 'mult365', 'multPool', 'n365', 'nPool', 'half')},
-                    'since': {k: k0['since'][k] for k in ('days', 'chg365', 'chg36', 'chgPool')}}
+                    'since': {k: k0['since'][k] for k in ('days', 'chg365', 'chgPool')}}
 
 sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES)}
 if TIME:

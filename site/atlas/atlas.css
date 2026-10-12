@@ -219,30 +219,6 @@ ol.ilist .g2 { grid-column: 2 / -1; color: var(--sub); }
 h2.sec { font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; margin: 22px 0 4px; color: var(--ink-hi); }
 h2.sec + p { margin: 0; color: var(--sub); }
 
-/* 36곳 — 맨 위 지난 기록 시험(클로드팀: 정직한 결과를 먼저 · 금빛 = 조심) · 36곳은 묶음 목록 */
-.test { margin: 12px 0 0; padding: 16px 16px 12px; border-radius: 20px; background: linear-gradient(180deg, var(--gold-wash), rgba(233, 196, 106, 0) 45%), var(--card); border: 1px solid var(--gold-line); }
-.test h2 { font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--gold); }
-.test p { margin: 0 0 8px; line-height: 1.6; }
-.test .big { font-weight: 750; font-size: 1.2rem; line-height: 1.42; letter-spacing: -0.02em; color: var(--ink-hi); }
-.test .small { color: var(--sub); }
-.bt { position: relative; margin: 10px 0 2px; }
-.bt svg { display: block; width: 100%; overflow: visible; touch-action: pan-y; }
-.bt .ax { display: flex; justify-content: space-between; color: var(--mute); font-variant-numeric: tabular-nums; }
-.bt .tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--ink); color: var(--night); padding: 3px 12px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-weight: 700; }
-.dirs4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
-.dirs4 div { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 10px 12px 12px; }
-.dirs4 b { display: block; font-weight: 750; color: var(--ink-hi); }
-.dirs4 span { color: var(--sub); }
-ol.p36 { list-style: none; margin: 12px 0 0; padding: 2px 0; background: var(--card); border: 1px solid var(--hair); border-radius: 18px; overflow: hidden; }
-ol.p36 li a { position: relative; display: grid; grid-template-columns: 1.7em minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 0 8px; align-items: baseline; padding: 12px 14px 12px 10px; min-height: 44px; transition: background-color .15s ease; }
-ol.p36 li + li a::before { content: ''; position: absolute; left: calc(10px + 1.7em + 8px); right: 0; top: 0; height: 1px; background: var(--hair); }
-ol.p36 li a:hover { background: var(--lift); }
-ol.p36 li a:active { background: var(--press); }
-ol.p36 li a:focus-visible { outline-offset: -3px; }
-ol.p36 .no { color: var(--mute); text-align: right; }
-ol.p36 .nm { font-weight: 700; min-width: 0; }
-ol.p36 .val { font-weight: 800; }
-ol.p36 .g2 { grid-column: 2 / -1; color: var(--sub); line-height: 1.55; }
 .in36 { margin: 10px 0 0; padding: 10px 14px; border-radius: 16px; border: 1px solid var(--violet-line); background: var(--violet-wash); }
 .in36 a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
 
@@ -288,8 +264,8 @@ a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decorat
 
 /* 아래 탭 — 엄지가 닿는 곳(삼성팀) · 지금 탭 = 밝은 글 + 위 가운데 짧은 보라 띠(애플팀) */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--band); border-top: 1px solid var(--seam); padding-bottom: env(safe-area-inset-bottom); }
-.tabbar-in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
-.tabbar a, .tabbar button { position: relative; min-height: 56px; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-top: 3px solid transparent; background: none; cursor: pointer; color: var(--mute); font-weight: 600; font-size: 21px; white-space: nowrap; letter-spacing: -0.02em; transition: color .2s var(--ease); } /* 탭 넷(한눈에 · 업종 · 36곳 · 업데이트)이 360px 에 한 줄 — 글씨 크기 단추와 상관없이 21px */
+.tabbar-in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); }
+.tabbar a, .tabbar button { position: relative; min-height: 56px; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-top: 3px solid transparent; background: none; cursor: pointer; color: var(--mute); font-weight: 600; font-size: 21px; white-space: nowrap; letter-spacing: -0.02em; transition: color .2s var(--ease); } /* 탭 셋(한눈에 · 업종 · 업데이트 — 2026-10-13 06:45 하나 지움)이 360px 에 한 줄 — 글씨 크기 단추와 상관없이 21px */
 .tabbar a:hover, .tabbar button:hover { color: var(--sub); }
 .tabbar [aria-current="page"] { color: var(--ink-hi); font-weight: 800; }
 .tabbar [aria-current="page"]::before { content: ''; position: absolute; top: -3px; left: 50%; width: 36px; margin-left: -18px; height: 3px; border-radius: 0 0 3px 3px; background: var(--violet-ink); }
@@ -382,7 +358,7 @@ ol.uplist details.more { background: var(--card2); margin: 8px 0 4px; }
 
 /* 시간(사장님 2026-10-11 14:37 · 14:39 「현재에 집중하며 과거도 존중하며 3년후 5년후 10년후에 이야기를 담에내는 섹시한 묘미 … 과감하게 하라」)
    시간 노선도 — 왼쪽 세로 길: 지난 길은 보라 실선 · 지금(봉인 = 고른 날)은 금빛 고리 · 앞날은 점선과 빈 고리 · 남은 날은 「D-1,093」
-   앞날 값은 그리지 않음(규칙 49) — 봉인한 365곳 · 36곳을 그날 종가로 다시 엶 · 점 · 길은 글 없는 꾸밈(가상 요소)이라 바둑판 셈에 들지 않음 */
+   앞날 값은 그리지 않음(규칙 49) — 봉인한 365곳을 그날 종가로 다시 엶 · 점 · 길은 글 없는 꾸밈(가상 요소)이라 바둑판 셈에 들지 않음 */
 section.tl { margin: 24px 0 0; }
 section.tl h2.sec { margin-top: 0; }
 ol.stations { list-style: none; margin: 12px 0 0; padding: 0; }
@@ -412,7 +388,6 @@ ol.stations li.future .dd { font-size: 1.2rem; }
 .tc .tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--ink); color: var(--night); padding: 3px 12px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-weight: 700; }
 .lkey .l-k365 { height: 4px; border-radius: 2px; background: var(--violet-ink); }
 .lkey .l-kpool { border-top: 3px dashed var(--mute); }
-.lkey .l-k36 { height: 3px; border-radius: 2px; background: var(--violet); }
 .lkey .l-open { width: 0; height: 18px; border-left: 3px dashed var(--violet-ink); }
 ol.opens { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
 ol.opens li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding: 12px 14px; border-radius: 16px; background: var(--card); border: 1px dashed var(--violet-line); }
@@ -545,21 +520,19 @@ ol.st li.past > :is(a, .cell) { background: none; color: var(--violet-ink); bord
 .board .row { border-radius: 0; } .board .row::after { content: ''; position: absolute; left: 8px; right: 6px; bottom: 0; border-top: 1px solid var(--hair); }
 .row.win { animation: none; outline: 4px double var(--gold); outline-offset: -4px; }
 .tabbar [aria-current="page"]::before { top: -6px; width: 44px; margin-left: -22px; border-radius: 0; }
-ol.uplist li, ol.p36, .hits, .dirs4 div, .why, .test { background: none; border: 0; border-radius: 0; }
+ol.uplist li, .hits, .why { background: none; border: 0; border-radius: 0; }
 ol.uplist li { border-top: var(--rl); padding: 16px 0 8px; }
-.dirs4 div { border-left: var(--rl); padding: 2px 4px 4px 12px; }
-ol.p36, .hits { border-top: var(--rl); border-bottom: var(--rl); }
+.hits { border-top: var(--rl); border-bottom: var(--rl); }
 .why { border-left: 2px solid var(--gold); padding: 2px 0 2px 14px; }
-.test { border-top: 2px solid var(--gold); padding: 14px 0 10px; }
 ol.uplist details.more { background: none; }
 details.more > summary, details.more[open] > summary { border-radius: 0; padding: 0 2px; }
 details.more .in { padding: 4px 2px 14px; }
 .munger { padding: 16px 0 16px 18px; } .munger::before { top: 16px; bottom: 16px; }
 ol.st li.now > .cell { border-radius: 4px 4px 0 0; }
 ol.st li.next > a { border-color: var(--violet-ink); }
-.box, .munger, .nextst, .test { margin-top: 24px; }
+.box, .munger, .nextst { margin-top: 24px; }
 .sheet-top input, .funnel li, ol.opens li { border-radius: 4px; }
-.seg button, .badge, .chip, .gchip, :is(.lc, .tc, .gc) :is(.yl, .tip), .bt .tip { border-radius: 2px; }
+.seg button, .badge, .chip, .gchip, :is(.lc, .tc, .gc) :is(.yl, .tip) { border-radius: 2px; }
 .track { border-radius: 2px; }
 .track .bar:is(.pos, .neg), .key :is(.k-up, .k-dn), .lkey .l-co { border-radius: 0; }
 .board:not(.wide) .track .bar:is(.pos, .neg) { border-radius: 0; border-bottom-width: 2px; }
@@ -574,13 +547,13 @@ ol.stations li:is(*, .now)::before { left: 12.5px; border-left-width: 2px; }
 /* ── 글씨팀: 새김 글씨 — 제목 · 큰 숫자 · ATLAS 만 고운바탕 700(글꼴은 site/atlas/fonts.css) ── */
 :root { --serif: 'Gowun Batang', 'Pretendard Variable', Pretendard, serif; }
 .brand b { font-family: var(--serif); letter-spacing: .22em; margin-right: -.22em; }
-h1.head, .co-head h1, h2.sec, .box h2, .test h2, .sheet-top h2, .nextst b, .munger .mq, .test .big, ol.stations .when b, ol.opens .oy, .trio b, ol.yrs .ym b, .dd, ol.st .num { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
+h1.head, .co-head h1, h2.sec, .box h2, .sheet-top h2, .nextst b, .munger .mq, ol.stations .when b, ol.opens .oy, .trio b, ol.yrs .ym b, .dd, ol.st .num { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
 h1.head { font-size: 1.66rem; line-height: 1.2; margin-bottom: 8px; }
 .co-head h1 { font-size: 1.8rem; line-height: 1.18; }
 html.f2 h1.head { font-size: 1.5rem; } html.f2 .co-head h1 { font-size: 1.66rem; }
 html.f3 h1.head { font-size: 1.36rem; } html.f3 .co-head h1 { font-size: 1.52rem; }
-h2.sec, .box h2, .test h2, .sheet-top h2, .nextst b { font-size: 1.2rem; line-height: 1.32; }
-.munger .mq, .test .big { font-size: 1.26rem; line-height: 1.5; }
+h2.sec, .box h2, .sheet-top h2, .nextst b { font-size: 1.2rem; line-height: 1.32; }
+.munger .mq { font-size: 1.26rem; line-height: 1.5; }
 .trio b { font-size: 1.6rem; line-height: 1.12; margin: 0; } .trio b.fit { font-size: 1.24rem; }
 ol.yrs .ym b { font-size: 1.72rem; }
 ol.stations li.future .dd, ol.opens .dd { font-size: 1.36rem; }

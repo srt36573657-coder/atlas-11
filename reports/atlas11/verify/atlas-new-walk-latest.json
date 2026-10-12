@@ -1,15 +1,15 @@
 {
  "schema": "atlas-new-walk-1",
- "made": "2026-10-12T21:15:34.880Z",
+ "made": "2026-10-12T23:21:49.333Z",
  "why": "사장님 2026-10-12 02:21 「이제 전체 검검을 하라 구글 클로드 애플 cia 관점으로 1억번 하라」 — 실제 화면에서 모은 길 지도 위에서 무작위로 1억 번 누름",
- "links": "links20.json",
+ "links": "links22.json",
  "seed": 20261012,
  "clicks": 100000000,
  "users": 2040941,
- "ms": 3799,
- "pages": 1878,
- "edges": 23505,
- "visited": 1878,
+ "ms": 3770,
+ "pages": 1877,
+ "edges": 21587,
+ "visited": 1877,
  "notVisited": [],
  "broken": 0,
  "brokenLinks": [],
@@ -29,7 +29,7 @@
   }
  },
  "mirror": {
-  "pages": 1878,
+  "pages": 1877,
   "diff": 0,
   "first": []
  },

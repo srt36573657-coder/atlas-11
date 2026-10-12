@@ -199,13 +199,15 @@ const plusY = (d, n) => { const [y, m, dd] = d.split('-').map(Number); const t =
 const TJ = fs.existsSync(path.join(dataDir, 'time.json')) ? J(path.join(dataDir, 'time.json')) : null;
 const wantCaps = [];
 for (const fn of caps) {
-  const cap = J(path.join(CAPD, fn)), body = {}; for (const k of ['id', 'seal', 'version', 'opens', 'rules', 'members', 'picks36', 'pool']) body[k] = cap[k];
+  const cap = J(path.join(CAPD, fn)), body = {}; for (const k of ['id', 'seal', 'version', 'opens', 'rules', 'members', 'picks36', 'pool']) if (k in cap) body[k] = cap[k]; // 봉인 1호는 그때 잠근 그대로(옛 36곳 칸 포함) — 새 봉인에는 그 칸 없음
   same(crypto.createHash('sha256').update(canon(body), 'utf8').digest('hex'), cap.digest, `봉인 번호 ${fn}`);
   if (cap.seal > core.asOf || !DAYS.includes(cap.seal)) continue;
   wantCaps.push(cap);
   const got = TJ?.capsules?.find(x => x.id === cap.id); if (!got) { bad.push({what: `시간 자료에 봉인 ${cap.id}호 없음`}); continue; }
   same(got.digest, cap.digest, `봉인 ${cap.id}호 번호`); sameJ(got.opens, [3, 5, 10].map(y => ({y, date: plusY(cap.seal, y)})), `봉인 ${cap.id}호 다시 여는 날 = 3 · 5 · 10년 뒤`); sameJ(got.opens, cap.opens, `다시 여는 날 = 봉인 파일`);
-  sameJ(got.rules, cap.rules, `잠근 규칙 = 봉인 파일`); sameJ(got.members, cap.members.map(m => [m[0], m[2]]), `봉인 365곳 · 잠근 종가`);
+  sameJ(got.rules, cap.rules.filter(r => !r.includes('36곳')), `잠근 규칙 = 봉인 파일(골라 낸 목록 줄만 뺌 — 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)`); same(!!got.rulesNote, cap.rules.some(r => r.includes('36곳')), '뺀 규칙 줄이 있으면 화면에 알림');
+  for (const k of ['pick36', 'n36']) { checks++; if (k in got) bad.push({what: `시간 자료에 「${k}」(36곳 흔적)`}); }
+  for (const k of ['v36', 'chg36', 'have36']) { checks++; if (k in (got.since ?? {})) bad.push({what: `봉인 뒤 자료에 「${k}」(36곳 흔적)`}); } sameJ(got.members, cap.members.map(m => [m[0], m[2]]), `봉인 365곳 · 잠근 종가`);
   const mem = cap.members.map(m => m[0]), pool = cap.pool.filter(p => p[1]).map(p => p[0]);
   // 3년 전 → 봉인 날
   const from = DAYS.find(d => d >= plusY(cap.seal, -3)), PW = DAYS.filter(d => d >= from && d <= cap.seal);
@@ -222,17 +224,17 @@ for (const fn of caps) {
   // 봉인 뒤 지금까지 — 잠근 종가에서
   const TD = DAYS.filter(d => d >= cap.seal && d <= core.asOf), sp = {...Object.fromEntries(cap.pool.filter(x => x[1])), ...Object.fromEntries(cap.members.map(m => [m[0], m[2]]))};
   sameJ(got.since.dates, TD, '봉인 뒤 날짜'); same(got.since.days, TD.length - 1, '봉인 뒤 거래일 수');
-  const s1 = hold(mem, TD, sp), s2 = hold(cap.picks36.map(x => x[1]), TD, Object.fromEntries(cap.picks36.map(x => [x[1], x[3]]))), s3 = hold(pool, TD, sp);
-  nearA(got.since.v365, s1.v, 0.011, '봉인 뒤 365곳'); nearA(got.since.v36, s2.v, 0.011, '봉인 뒤 36곳'); nearA(got.since.vpool, s3.v, 0.011, '봉인 뒤 후보 모두');
+  const s1 = hold(mem, TD, sp), s3 = hold(pool, TD, sp);
+  nearA(got.since.v365, s1.v, 0.011, '봉인 뒤 365곳'); nearA(got.since.vpool, s3.v, 0.011, '봉인 뒤 후보 모두');
   const chgOf = v => (TD.length > 1 ? Math.round((v.at(-1) - 100) * 100) / 100 : null);
-  near(got.since.chg365, chgOf(s1.v), 0.0101, '봉인 뒤 365곳 %'); near(got.since.chg36, chgOf(s2.v), 0.0101, '봉인 뒤 36곳 %'); near(got.since.chgPool, chgOf(s3.v), 0.0101, '봉인 뒤 후보 %');
-  same(got.since.have365, s1.have.length, '봉인 뒤 값 있는 365곳'); same(got.since.have36, s2.have.length, '봉인 뒤 값 있는 36곳'); same(got.since.havePool, s3.have.length, '봉인 뒤 값 있는 후보');
+  near(got.since.chg365, chgOf(s1.v), 0.0101, '봉인 뒤 365곳 %'); near(got.since.chgPool, chgOf(s3.v), 0.0101, '봉인 뒤 후보 %');
+  same(got.since.have365, s1.have.length, '봉인 뒤 값 있는 365곳'); same(got.since.havePool, s3.have.length, '봉인 뒤 값 있는 후보');
   same(got.since.stale365, s1.have.filter(c => !cl(c).get(TD.at(-1))).length, '마지막 날 값 없는 365곳(앞 값으로 셈)');
   if (cap === wantCaps[0]) { // 첫 화면 요약
     const k = core.time; if (!k) { bad.push({what: '첫 화면 시간 요약(core.time) 없음'}); continue; }
     same(k.id, cap.id, '요약 봉인 번호'); same(k.digest, cap.digest.slice(0, 12), '요약 봉인 번호 앞 12자'); sameJ(k.opens, cap.opens, '요약 다시 여는 날');
     sameJ(k.past, {from, mult365: got.past.mult365, multPool: got.past.multPool, n365: a.have.length, nPool: p.have.length, half}, '요약 지나온 길');
-    sameJ(k.since, {days: TD.length - 1, chg365: got.since.chg365, chg36: got.since.chg36, chgPool: got.since.chgPool}, '요약 봉인 뒤');
+    sameJ(k.since, {days: TD.length - 1, chg365: got.since.chg365, chgPool: got.since.chgPool}, '요약 봉인 뒤');
   }
 }
 same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = 이 자료 안 봉인 수'); same(!!core.time, wantCaps.length > 0, '첫 화면 시간 요약 있음 = 봉인 있음');

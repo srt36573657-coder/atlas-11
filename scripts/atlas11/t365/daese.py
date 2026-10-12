@@ -29,7 +29,7 @@ CIA팀     값 강함(곧은 선 30거래일 +10% 넘음 · 곧음 0.6 이상 ·
   node scripts/atlas11/t365/dump.mjs reports/atlas11/universe/2026-10-10/bundle.json.gz <임시>/now.json 2026-10-08
   python3 scripts/atlas11/t365/daese.py <임시>/now.json <결과 폴더> [--closes <이어 받은 일봉 폴더>]
 만드는 것: proposal.json(365곳 · 업종 표 · 밖 회사마다 까닭 · 고르는 날 · 이어 받은 일봉 셈) · list.csv(365곳)
-site_build.py · pick36.py 는 select() · merge() 를 불러 같은 값으로 다시 고르고 proposal.json 과 한 곳도 다르지 않은지 먼저 본다.
+site_build.py · range_mc.py 는 select() · merge() 를 불러 같은 값으로 다시 고르고 proposal.json 과 한 곳도 다르지 않은지 먼저 본다.
 """
 import collections, gzip, json, math, os, statistics as st, sys
 from datetime import datetime, timezone

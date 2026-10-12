@@ -75,14 +75,14 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   fs.writeFileSync(path.join(closes, '20991231T071000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next + 'T05:00:00.000Z', rows, errors: []})));
   const dist = path.join(tmp, 'dist'); fs.cpSync(path.join(ROOT, 'site/atlas'), path.join(dist, 'atlas'), {recursive: true});
   const rec = path.join(tmp, 'updates');
-  const rep = await rollAtlas({root: ROOT, dist, closesDir: closes, recordDir: rec, now: new Date(next + 'T05:02:00Z'), pick36Quick: true, log: () => {}});
+  const rep = await rollAtlas({root: ROOT, dist, closesDir: closes, recordDir: rec, now: new Date(next + 'T05:02:00Z'), rangeQuick: true, log: () => {}});
   assert.equal(rep.result, '바꿈', rep.why); assert.equal(rep.served, 'rolled');
   assert.equal(rep.slot, '14:00');
   assert.equal(rep.asOf, next);
   const W = cal.filter(d => d <= next).slice(-21);
   assert.equal(rep.base, W[0]);
   assert.equal(rep.provisional, true); // 14:02(서울) 받음 = 저녁 8시 전
-  for (const k of ['daese', 'site', 'pick36']) assert.match(rep.verify[k], /"bad":0/, k);
+  for (const k of ['daese', 'site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
   assert.ok(rep.out.some(x => x.c === bent) && rep.out.some(x => x.c === halt), '고쳐 적힌 회사 · 그날 값 없는 회사는 빠짐');
   assert.equal(rep.members.length, 365); assert.equal(new Set(rep.members).size, 365);
   const core = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/core.json'), 'utf8'));
@@ -90,9 +90,15 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.deepEqual(core.dates, W); assert.equal(core.days, 20); assert.equal(core.pickAsOf, next);
   assert.equal(comp[bent], undefined); assert.equal(comp[halt], undefined);
   assert.equal(fs.readdirSync(path.join(dist, 'atlas/data/co')).length, 365);
+  // 36곳 영구 삭제(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 7단 범위 자료만 · 36곳 자료 · 칸 · 글 없음
+  assert.ok(fs.existsSync(path.join(dist, 'atlas/data/range.json')), '7단 범위 자료'); assert.ok(!fs.existsSync(path.join(dist, 'atlas/data/pick36.json')), '36곳 자료 없음');
+  const rg = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/range.json'), 'utf8')); assert.equal(rg.schema, 'atlas-new-range-1'); assert.equal(rg.asOf, next);
+  for (const k of ['picks', 'backtest', 'cutN', 'total']) assert.ok(!(k in rg), k);
+  for (const f of fs.readdirSync(path.join(dist, 'atlas/data')).filter(f => f.endsWith('.json'))) assert.ok(!/(?<![\d,])36곳|pick36|매수 검토/.test(fs.readFileSync(path.join(dist, 'atlas/data', f), 'utf8')), '36곳 흔적 ' + f);
   // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 가짜 하루가 「봉인 뒤 지금까지」에 한 칸 붙고 · 3년 전 길과 다시 여는 날은 그대로
   const tm = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/time.json'), 'utf8')).capsules[0];
   assert.equal(tm.since.days, 1); assert.deepEqual(tm.since.dates, [tm.seal, next]); assert.ok(tm.since.chg365 != null && tm.since.chgPool != null);
+  assert.ok(!('v36' in tm.since) && !('chg36' in tm.since) && !('pick36' in tm), '봉인 화면 자료에 36곳 없음');
   assert.deepEqual(tm.opens.map(o => o.y), [3, 5, 10]); assert.equal(tm.past.to, tm.seal);
   assert.equal(core.time.since.days, 1); assert.equal(core.time.digest, tm.digest.slice(0, 12));
   const upd = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/updates.json'), 'utf8'));

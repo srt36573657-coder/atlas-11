@@ -2,8 +2,8 @@
 // 새 ATLAS 네 눈 점검 — 사장님 2026-10-12 12:41 「업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩 하라」
 //   업데이트(회차)마다 올리기 바로 앞 묶음(코드 = <site>/atlas · 자료 = 그 회차가 만든 자료 폴더)을 네 눈으로 각각 N번(기본 1,000만 번) 다시 확인
 //   🍎 애플 — 쉽게 · 빨리 닿나: 자료로 그린 화면 길 지도(atlas.js 링크 규칙과 같게 · 실제 화면에서 모은 지도와 맞대 봄 — tests) 위에서
-//      사람처럼 아무 길이나 누름(깨진 길 · 단 건너뛰기) + 화면마다 깊이(회사 3번 · n단 n번) · 처음으로 가는 길 · 다음 단 길 + 화면에 필요한 자료(회사 파일 · 36곳 · 찾기)
-//   🔎 구글 — 숫자가 서로 맞나: 같은 숫자가 파일마다 같은가(선 ↔ 회사 종가 · 1주 값 · 바뀐 비율 · 이름 · 갈래 · 업종 · 36곳 · 날짜) ·
+//      사람처럼 아무 길이나 누름(깨진 길 · 단 건너뛰기) + 화면마다 깊이(회사 3번 · n단 n번) · 처음으로 가는 길 · 다음 단 길 + 화면에 필요한 자료(회사 파일 · 찾기)
+//   🔎 구글 — 숫자가 서로 맞나: 같은 숫자가 파일마다 같은가(선 ↔ 회사 종가 · 1주 값 · 바뀐 비율 · 이름 · 갈래 · 업종 · 날짜) ·
 //      「한 회사 한 표」 지수 · 오른 곳 · 내린 곳 수를 다른 길로 다시 셈 · 시장 판독 숫자 다시 셈 · 숫자가 모두 참 숫자인가
 //   🤖 클로드 — 말이 정직하고 안전한가: 자료 · 시장 판독 글에 사고팔기 권하는 말 · 앞날 장담(화면 금지 말과 같은 목록) · 깨진 글자 ·
 //      모형 표지 「모형 가정 아래 추정 · 검증 전」 · 안전 문장 · 장 중 값 표시 · 모르는 값은 「?」 · 말 등급 · 사람 얼굴 그림 없음(막비는 제목 달 · 1장 · 띠에만 — 2026-10-13 03:38)
@@ -39,6 +39,7 @@ export const INSPECT_VERSION = 'i4-v1';
 export const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const SAFETY = '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.';
 const MODEL_TAG = '모형 가정 아래 추정 · 검증 전';
+const NO36 = /(?<![\d,])36곳|pick36|view36|tab36|매수 검토|["']#\/36["']/; // 「136곳」 같은 숫자는 아님 // 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 다시 들어오면 클로드 눈이 막음
 const LEVELS = new Set(['아주 높다', '높다', '반반', '낮다', '아주 낮다']);
 const CODE_HOSTS = new Set(['aaa7377.com', 'kind.krx.co.kr', 'dart.fss.or.kr', 'www.w3.org']);
 // 사람 이름 · 회사 이름 · 업종 이름 · 기사 제목처럼 밖에서 온 이름은 금지 말을 보지 않음(「사라」 → 「사라진」 같은 이름 · 제목) — 깨진 글자 · 숨은 글자 · 끼운 코드는 봄
@@ -52,7 +53,7 @@ function load(siteDir, dataDir) {
   const opt = f => { try { return J(f); } catch { return null; } };
   const S = {siteDir, dataDir: D, js: fs.readFileSync(path.join(A, 'atlas.js'), 'utf8'), css: fs.readFileSync(path.join(A, 'atlas.css'), 'utf8'), html: fs.readFileSync(path.join(A, 'index.html'), 'utf8'),
     fontsCss: fs.existsSync(path.join(A, 'fonts.css')) ? fs.readFileSync(path.join(A, 'fonts.css'), 'utf8') : '',
-    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), pick: J('pick36.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), co: {}, coBytes: {}, files: {}};
+    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), co: {}, coBytes: {}, files: {}};
   const coDir = path.join(D, 'co');
   for (const f of fs.existsSync(coDir) ? fs.readdirSync(coDir) : []) { if (!f.endsWith('.json')) continue; const t = fs.readFileSync(path.join(coDir, f), 'utf8'); S.coBytes[f.slice(0, -5)] = t.length; try { S.co[f.slice(0, -5)] = JSON.parse(t); } catch { S.co[f.slice(0, -5)] = null; } }
   for (const f of fs.readdirSync(D)) { const p = path.join(D, f); if (fs.statSync(p).isFile()) S.files[f] = fs.statSync(p).size; }
@@ -79,14 +80,13 @@ function numbers(obj, where, out, key = '') {
 // ═════════ 🍎 애플 — 화면 길 지도(atlas.js 와 같은 링크 규칙) ═════════
 export function siteGraph(S) {
   const {core} = S, comp = S.comp.companies;
-  const TABS = ['#/', '#/list', '#/36', '#/up', '#/info']; // 아래 탭 넷 + 맨 위 「?」 단추(index.html)
+  const TABS = ['#/', '#/list', '#/up', '#/info']; // 아래 탭 셋 + 맨 위 「?」 단추(index.html · 2026-10-13 06:45 탭 하나 지움)
   const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
   const nodes = new Map();
   const add = (r, links, step = null, co = null, allow = null) => nodes.set(r, {links: [...links.filter(Boolean), ...TABS], step, co, allow});
   const H = S.home?.s365, ends = [H?.top?.c, H?.bot?.c].filter(c => c && comp[c]).map(c => '#/c/' + c); // 첫 화면 365곳 막대 양 끝(가장 많이 오른 · 내린 곳 — 2026-10-12 14:54)
   add('#/', [...ends, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
   add('#/list', core.industries.map(hrefInd), null, null, 1);
-  add('#/36', S.pick.picks.map(p => '#/c/' + p.code), null, null, 1);
   add('#/up', [], null, null, 1); add('#/time', [], null, null, 2); add('#/info', [], null, null, 1);
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);
   for (const i of core.industries) if (i.n > 1) add('#/i/' + encodeURIComponent(i.name), ['#/', '#/g/' + i.g, ...i.members.map(c => '#/c/' + c)], 2, null, 2);
@@ -134,12 +134,9 @@ function appleLens(S) {
       if (!S.co[c]) return `${c} 회사 파일(co/${c}.json) 없음 — 4~7단이 「자료를 못 읽었습니다」`;
       if (!inNames.has(c)) return `${c} 찾기 이름표에 「365곳 안」으로 없음`;
       return null; }},
-    {k: 'list', name: '목록마다 — 36곳 · 업종 명단 · 찾기 이름표', items: S.pick.picks.length + S.core.industries.length + 1, check(i) {
-      const P = S.pick.picks;
-      if (i < P.length) { const p = P[i]; return comp[p.code] ? null : `36곳 ${p.rank}번 ${p.code} 가 365곳에 없음(깨진 길)`; }
-      i -= P.length;
+    {k: 'list', name: '목록마다 — 업종 명단 · 찾기 이름표', items: S.core.industries.length + 1, check(i) {
       if (i < S.core.industries.length) { const ind = S.core.industries[i]; const bad = ind.members.find(c => !comp[c]); if (bad) return `업종 ${ind.name} 의 ${bad} 가 365곳에 없음`; if (ind.n !== ind.members.length) return `업종 ${ind.name} 곳 수 ${ind.n} ≠ 명단 ${ind.members.length}`; return S.gid.has(ind.g) ? null : `업종 ${ind.name} 갈래 ${ind.g} 없음`; }
-      const extra = [...inNames].filter(c => !comp[c]); return extra.length ? `찾기에 365곳 안이라는데 없는 회사 ${extra.slice(0, 3).join(' · ')}` : (P.length > 0 && P.length <= 36 ? null : `36곳 수 ${P.length}`); }},
+      const extra = [...inNames].filter(c => !comp[c]); return extra.length ? `찾기에 365곳 안이라는데 없는 회사 ${extra.slice(0, 3).join(' · ')}` : null; }},
   ]};
 }
 
@@ -152,7 +149,7 @@ function googleLens(S, market, now = new Date()) {
   const eq = cs => { const out = [100]; let lvl = 100; for (let k = 1; k < W; k++) { let s = 0, n = 0; for (const c of cs) { const a = lines[c]?.[k - 1], b = lines[c]?.[k]; if (a && b) { const r = b / a - 1; if (Math.abs(r) < 0.5) { s += r; n++; } } } if (n) lvl *= 1 + s / n; out.push(lvl); } return out; };
   const series = [{name: '365곳 전체', obj: core.all, cs: S.codes}, ...core.groups.map(g => ({name: '갈래 ' + g.short, obj: g, cs: S.codes.filter(c => comp[c].g === g.id)})), ...core.industries.map(i => ({name: '업종 ' + i.name, obj: i, cs: i.members}))];
   for (const s of series) s.re = eq(s.cs);
-  const nums = [...numbers(core, 'core', []), ...numbers(S.comp, 'comp', []), ...numbers(S.lines, 'lines', []), ...numbers(S.pick, 'pick36', []), ...(S.home ? numbers(S.home, 'home', []) : [])];
+  const nums = [...numbers(core, 'core', []), ...numbers(S.comp, 'comp', []), ...numbers(S.lines, 'lines', []), ...numbers(S.range, 'range', []), ...(S.home ? numbers(S.home, 'home', []) : [])];
   // 첫 화면 종합 정보(home.json · 2026-10-12 14:54) — 다른 길로 다시 셈
   const HM = S.home, hchk = [];
   if (HM) {
@@ -188,7 +185,6 @@ function googleLens(S, market, now = new Date()) {
     const t = new Date(now.getTime() + 9 * 36e5).toISOString(); // 「장 중」 말 = 정규장(9:00 ~ 15:30)에 고른 날 값을 받았을 때만(2026-10-12 16:48 회차: 장 끝 뒤에도 「장 중 값」)
     mk.push(['「장 중」 말 = 정규장 때만', /장 중/.test(market.lines?.[0] ?? ''), !!core.provisional && t.slice(0, 10) === core.asOf && t.slice(11, 16) >= '09:00' && t.slice(11, 16) < '15:30']);
   }
-  const P = S.pick.picks;
   return {key: 'google', name: '구글', what: '숫자가 서로 맞나 — 같은 숫자를 다른 파일 · 다른 길로 다시 셈', kinds: [
     {k: 'window', name: '회사 선 ↔ 회사 종가(아무 두 날 사이 비율)', items: S.codes.length * pairs.length, check(i) {
       const c = S.codes[(i / pairs.length) | 0], p = pairs[i % pairs.length], a = (p / 64) | 0, b = p % 64, co = S.co[c];
@@ -211,9 +207,10 @@ function googleLens(S, market, now = new Date()) {
       const s = series[i], up = s.cs.filter(c => comp[c].chg > 0).length, down = s.cs.filter(c => comp[c].chg < 0).length;
       if (s.obj.n != null && s.obj.n !== s.cs.length) return `${s.name} 곳 수 ${s.obj.n} ≠ ${s.cs.length}`;
       return s.obj.up === up && s.obj.down === down ? null : `${s.name} 오름 ${s.obj.up} · 내림 ${s.obj.down} ≠ 다시 셈 ${up} · ${down}`; }},
-    {k: 'pick', name: '36곳 — 차례 · 이름 · 갈래 · 업종', items: P.length, check(i) {
-      const p = P[i], x = comp[p.code]; if (p.rank !== i + 1) return `36곳 ${i + 1}번째 차례 ${p.rank}`;
-      return x && x.name === p.name && x.g === p.g && x.i === p.i ? null : `36곳 ${p.rank}번 ${p.code} 이름 · 갈래 · 업종이 회사 자료와 다름`; }},
+    {k: 'range', name: '7단 범위 — 회사 365곳 그대로 · 고른 목록 · 차례 없음(2026-10-13 06:45 「영구 삭제」)', items: S.codes.length + 1, check(i) {
+      if (i === S.codes.length) return ['picks', 'backtest', 'cutN', 'total'].some(k => k in S.range) ? '범위 자료에 고른 목록 · 시험 칸이 있음' : (S.range.asOf === core.asOf ? null : `범위 날짜 ${S.range.asOf} ≠ 고른 날 ${core.asOf}`);
+      const c = S.codes[i], k = S.range.companies?.[c]; if (!k) return `${c} 7단 범위 자료 없음`; if ('rank' in k || 'cut' in k) return `${c} 범위 자료에 차례 · 지움 칸`;
+      return !k.ok || (k.win.length === 4 && k.big.length === 4) ? null : `${c} 4방향 칸 수 ${k.win.length} · ${k.big.length}`; }},
     {k: 'date', name: '날짜 — 창 21칸 · 기준일 · 고른 날 · 파일마다 같은 날', items: W + fileAsOf.length + 1, check(i, rnd, ctx) {
       if (i < W) { if (i && !(dates[i] > dates[i - 1])) return `날짜 차례 ${dates[i - 1]} → ${dates[i]}`; if (!dIdx.has(dates[i])) return `${dates[i]} 가 긴 날짜표에 없음`; return null; }
       i -= W; if (i < fileAsOf.length) { const [f, d] = fileAsOf[i]; return d === core.asOf ? null : `${f} 날짜 ${d} ≠ 고른 날 ${core.asOf}`; }
@@ -229,16 +226,19 @@ function googleLens(S, market, now = new Date()) {
 // ═════════ 🤖 클로드 — 말 ═════════
 function claudeLens(S, market) {
   const comp = S.comp.companies;
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
   for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
   const mlines = (market?.lines ?? []).map(s => ({where: '시장 판독', key: 'line', s, proper: false}));
   texts.push(...mlines);
   const BROKEN = /�|Ã.|Â.|ì[\u0080-¿]|ë[\u0080-¿]|ê[\u0080-¿]/;
   const growCos = S.grow ? Object.entries(S.grow.companies ?? {}) : [];
   const unknownKeys = ['per', 'r1y', 'mdd1y', 'chg', 'mdd', 'cap', 'price'];
+  // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 — 2026-10-13 07:2x 묶음이 4분 넘게 걸리던 것 · 옛 얼굴 문과 같은 까닭)
+  const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !/(?<![\d,])36곳|매수 검토/.test(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null]));
   const code = [
     ['안전 문장(맨 아래)', () => S.js.includes(SAFETY)],
-    ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상(7단 · 36곳)', () => S.js.split(MODEL_TAG).length - 1 >= 2],
+    ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],
+    ['36곳 없음 — 화면 코드 · 자료에 「36곳 · 매수 검토」 · 36곳 화면 · 탭 · 자료 파일 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)', () => no36],
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
     ['모르는 값은 「?」(pct)', () => /function pct\(x\) \{ if \(x == null \|\| !isFinite\(x\)\) return '\?';/.test(S.js)],
     ['시장 판독 상자 「지난 값만 · 앞날 맞히기 아님」', () => S.js.includes('지난 값만 · 앞날 맞히기 아님')],
@@ -278,7 +278,7 @@ export function routeRunner(js) {
   const rec = k => (...x) => { calls.push([k, ...x.slice(1)]); };
   const box = {D: {core: {}}, location: {hash: '#/', search: '', replace: u => calls.push(['replace', u])}, freshCheck() {}, showFind: () => calls.push(['find']), showInfo: x => calls.push(['info', x]), needNames: async () => {},
     $: () => el(), document: {body: {dataset: {}}, title: ''}, lastMain: '', routeSeq: 0, chartDraw: null, h: () => el(), MO: {cat: () => el(), catSleep: () => { calls.push(['error-screen']); return el(); }}, window: {scrollTo() {}}, console: {error() {}},
-    viewHome: rec('home'), viewList: rec('list'), view36: rec('36'), viewUpdates: rec('up'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'),
+    viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'),
     decodeURIComponent, encodeURIComponent, Promise, Object, String, Array};
   vm.createContext(box);
   vm.runInContext(js.slice(a, b) + '\n;globalThis.__route = route;', box);
@@ -303,7 +303,7 @@ function ciaLens(S, market) {
     ...S.codes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
     ...S.names.rows.filter(r => r.s !== 'in').slice(0, 2000).map(r => ['#/x/' + r.c, ['info', r.c]])];
   // 글 — 자료 모두 + 시장 판독
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.pick, 'pick36', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : [])];
   for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
   for (const s of market?.lines ?? []) texts.push({where: '시장 판독', key: 'line', s});
   const INJ = /<\s*\/?\s*(script|iframe|img|svg|object|embed|style|link|meta|form|input|a)\b|javascript:|vbscript:|data:text\/html|\bon[a-z]{3,}\s*=/i;
@@ -313,7 +313,7 @@ function ciaLens(S, market) {
   const SECRET = [[/nfp_[A-Za-z0-9]{20,}/, '넷리파이 열쇠'], [/gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}/, '깃허브 열쇠'], [/AKIA[0-9A-Z]{16}/, 'AWS 열쇠'], [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, '개인 키'],
     [/xox[baprs]-[A-Za-z0-9-]{10,}/, '슬랙 열쇠'], [/sk-(ant-)?[A-Za-z0-9_-]{32,}/, 'API 열쇠'], [/NETLIFY_(AUTH_TOKEN|SITE_ID)\s*[=:]/, '넷리파이 이름 + 값'], [/"(siteId|deployId|site_id|deploy_id|deployUrl)"\s*:/, '넷리파이 번호 칸'],
     [/[A-Za-z0-9._%+-]+@(gmail|naver|daum|hanmail|kakao|outlook|hotmail|yahoo|icloud)\.[a-z.]{2,}/i, '개인 메일 주소']];
-  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'pick36.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
+  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'range.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
     ...S.codes.filter(c => S.co[c]).map(c => ['co/' + c + '.json', JSON.stringify(S.co[c])])];
   const chunks = []; for (const [f, t] of docs) for (let k = 0; k < Math.max(1, t.length); k += 1800) chunks.push([f, k, t.slice(k, k + 2000)]);
   // 화면 코드 규칙
@@ -333,7 +333,7 @@ function ciaLens(S, market) {
   const heads = [['default-src \'self\'', /default-src 'self'/], ['script-src \'self\'(안에 박은 코드 · eval 막음)', /script-src 'self'(;|$)/m], ['object-src \'none\'', /object-src 'none'/], ['frame-ancestors \'none\'(남의 화면에 못 끼움)', /frame-ancestors 'none'/],
     ['base-uri · form-action \'self\'', /base-uri 'self'.*form-action 'self'/], ['X-Frame-Options: DENY', /X-Frame-Options: DENY/], ['X-Content-Type-Options: nosniff', /X-Content-Type-Options: nosniff/],
     ['Referrer-Policy', /Referrer-Policy: strict-origin-when-cross-origin/], ['Permissions-Policy(카메라 · 마이크 · 위치 막음)', /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/], ['unsafe-inline · unsafe-eval 없음', null]];
-  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'pick36.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5};
+  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'range.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5};
   const sizes = [...Object.entries(S.files).map(([f, b]) => [f, b, LIM[f] ?? 1e6]), ...Object.entries(S.coBytes).map(([c, b]) => ['co/' + c + '.json', b, 2.5e5]), ['co 파일 수', Object.keys(S.coBytes).length, null]];
   const codeOk = c => /^[0-9A-Z]{6}$/.test(c);
   return {key: 'cia', name: 'CIA', what: '뚫리거나 새는 곳이 없나 — 이상한 주소 넣어 보기 · 비밀 · 바깥 주소 · 끼운 코드', route: R, kinds: [
@@ -341,7 +341,7 @@ function ciaLens(S, market) {
       const hsh = fuzzHash(rnd, S), r = await R.run(hsh), show = JSON.stringify(hsh.slice(0, 60));
       if (r.err) return `${show} 멈춤: ${String(r.err.message ?? r.err).slice(0, 80)}`;
       if (r.calls.some(c => c[0] === 'error-screen')) return `${show} 「자료를 못 읽었습니다」(주소가 잘못됐는데 까닭이 틀림)`;
-      const rep = r.calls.find(c => c[0] === 'replace'); if (rep && !(String(rep[1]).startsWith('/old/') || /^#\/c\/[0-9A-Z]{6}$/.test(rep[1])) || (rep && String(rep[1]).startsWith('//'))) return `${show} 바깥으로 가는 길 ${rep[1]}`;
+      const rep = r.calls.find(c => c[0] === 'replace'); if (rep && !(String(rep[1]).startsWith('/old/') || /^#\/c\/[0-9A-Z]{6}$/.test(rep[1]) || rep[1] === '#/') || (rep && String(rep[1]).startsWith('//'))) return `${show} 바깥으로 가는 길 ${rep[1]}`; // #/ = 지운 36곳 옛 주소(2026-10-13)
       if (!r.calls.length) return `${show} 아무 화면도 안 열림`; return null; }},
     {k: 'trip', name: '이름 주소 왕복 — 화면이 만든 주소가 같은 대상을 여나', items: trips.length, async: true, async check(i) {
       const [hsh, want] = trips[i], r = await R.run(hsh); const got = r.calls.find(c => c[0] !== 'replace');

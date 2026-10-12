@@ -5,7 +5,7 @@
 //   평일 16:47 · 19:00 예약 올리기 · 손 올리기가 모두 이 길을 지남(예약 작업 파일 atlas11-daily.yml · atlas11-evening.yml 은 고치지 않음 — 규칙 7)
 //   ① 깃허브 실행기면 후보 1,378곳 일봉(종가 · 거래량)을 이어 받는다(closes_fetch.mjs → 임시 폴더 · 모음 뒤 날을 한 번에 받으므로 지난 파일이 필요 없음)
 //   ② dump.mjs → daese.py --closes(그날까지 값으로 365곳을 다시 고름 · d365-v2) → organize.mjs → daese_verify.mjs(노드로 따로 · 틀림 0)
-//   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → pick36.py(같은 값이면 지금 사이트의 36곳을 그대로 씀) → pick36_verify.mjs(틀림 0)
+//   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → range_mc.py(7단 범위 · 같은 값이면 지금 사이트 범위를 그대로 씀) → range_verify.mjs(틀림 0) — 36곳은 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」로 지움
 //   ④ 모두 통과하면 dist/atlas/data 를 바꿈 · 하나라도 멈추면 지금 사이트(aaa7377.com)의 자료를 그대로 받아 올림(옛 바탕으로 돌아가지 않게) · 그것도 못 하면 저장소 바탕 그대로
 //   ⑤ 회차 기록: reports/atlas11/t365/updates/<받은 때 UTC>.json(새 파일 · 지우지 않음) + 화면 「업데이트」 탭 자료 dist/atlas/data/updates.json(마지막 60회차)
 //   ⑤-2 첫 화면 종합 정보(2026-10-12 14:54 · market_fetch.mjs → home_build.mjs → 자료 home.json)
@@ -26,7 +26,7 @@ const ACT = JSON.parse(fss.readFileSync(new URL('./universe.json', import.meta.u
 export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름 · 몸값 · 결산(모음 날 값)
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
-const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'pick36.json'];
+const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json'];
 const OPT_FILES = ['time.json', 'grow.json', 'home.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 
 async function copyAll(from, to) {
@@ -60,7 +60,7 @@ export function tabData(records) {
   // 회차 이름은 그 회차가 적은 것 그대로(2026-10-12 12:41 회차 시각을 바꿈 — 옛 08:10 · 16:10 기록이 새 시각표로 다시 매겨지지 않게) · 손 올리기만 회차 이름을 지움
   const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason && !/회차/.test(r.reason) ? null : r.slot, reason: r.reason ? showReason(r.reason) : null, result: r.result, why: r.why || null,
     asOf: r.asOf, base: r.base, provisional: r.provisional, version: r.version, in: r.in ?? [], out: r.out ?? [], tiers: r.tiers ?? null, all: r.all ?? null, top: r.top ?? null,
-    pick36: r.pick36 ? {first: r.pick36.first, reused: r.pick36.reused, test: r.pick36.test} : null, served: r.served,
+    served: r.served, // 옛 기록의 36곳 칸은 화면 자료에 싣지 않음(2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 · 기록 파일은 그대로)
     market: r.market ? {asOf: r.market.asOf, provisional: r.market.provisional, lines: r.market.lines, day: r.market.day && {up: r.market.day.up, down: r.market.day.down, word: r.market.day.word}, size: r.market.span?.size ?? null} : null,
     inspect: r.inspect ? {nEach: r.inspect.nEach, fail: r.inspect.fail, lenses: r.inspect.lenses.map(l => ({key: l.key, name: l.name, n: l.n, fail: l.fail}))} : null}));
   return {schema: 'atlas-new-updates-1', made: new Date().toISOString(), slots: ACT.slots ?? [], n: records.length, records: rows};
@@ -80,13 +80,13 @@ async function mirrorLive(target) {
   await fs.rm(target, {recursive: true, force: true}); await fs.rename(stage, target);
 }
 
-export async function rollAtlas({root, dist, log = console.log, closesDir = null, recordDir = undefined, reason = process.env.ATLAS_UPDATE_REASON || '', liveFallback = undefined, now = new Date(), pick36Quick = false} = {}) {
+export async function rollAtlas({root, dist, log = console.log, closesDir = null, recordDir = undefined, reason = process.env.ATLAS_UPDATE_REASON || '', liveFallback = undefined, now = new Date(), rangeQuick = false} = {}) {
   const ci = process.env.GITHUB_ACTIONS === 'true';
   const recDir = recordDir === undefined ? (ci && !closesDir ? path.join(root, UPDATES_DIR) : null) : recordDir;
   const useLive = liveFallback === undefined ? (ci && !closesDir) : liveFallback;
   const kst = kstOf(now);
   const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotFor(kst, reason), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
-    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, pick36: null, market: null, inspect: null, home: null, homeFetch: null, verify: {}, steps: []};
+    fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, all: null, top: null, range: null, market: null, inspect: null, home: null, homeFetch: null, verify: {}, steps: []};
   const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 1e7)); // 네 눈 점검 — 눈마다 번 수(사장님 「각각 1000만번씩」 · 시험만 줄임)
   let inspectFull = null;
   /** 네 눈 점검 — dataDir 자료 + dist 화면 코드 · 끝나지 못하면 throw · 걸린 것이 있으면 결과를 남기고 false */
@@ -136,13 +136,13 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     run('사이트 자료', 'python3', ['scripts/atlas11/t365/site_build.py', now0, out], env2);
     const sv = run('사이트 자료 따로 세기', 'node', ['scripts/atlas11/t365/site_verify.mjs', out, path.join(tmp, 'sv.json')], env2);
     rep.verify.site = tail(sv.stdout);
-    // 36곳 — 같은 회사 · 같은 값이면 지금 사이트의 36곳을 그대로(셈 시간 아낌 · pick36.py 가 판단) · numpy 가 없으면 깃허브 실행기에서 한 번 깔아 봄
+    // 7단 범위 — 같은 회사 · 같은 값이면 지금 사이트 범위를 그대로(셈 시간 아낌 · range_mc.py 가 판단) · numpy 가 없으면 깃허브 실행기에서 한 번 깔아 봄
     if (ci && spawnSync('python3', ['-c', 'import numpy'], {encoding: 'utf8'}).status !== 0) spawnSync('python3', ['-m', 'pip', 'install', '--user', '--break-system-packages', '-q', 'numpy'], {encoding: 'utf8', timeout: 240000});
-    const p36args = ['scripts/atlas11/t365/pick36.py', '--out', out, '--no-record', ...(pick36Quick ? ['--quick'] : [])]; // 빠른 셈은 시험에서만
-    if (useLive) { try { await fs.writeFile(path.join(tmp, 'pick36-live.json'), await getLive('pick36.json')); p36args.push('--reuse', path.join(tmp, 'pick36-live.json')); } catch { /* 없으면 새로 셈 */ } }
-    const p36 = run('36곳 셈', 'python3', p36args, env2, 900000);
-    const pv = run('36곳 따로 세기', 'node', ['scripts/atlas11/t365/pick36_verify.mjs', path.join(out, 'pick36.json'), path.join(tmp, 'pv.json'), ...(pick36Quick ? ['--allow-quick'] : [])], env2);
-    rep.verify.pick36 = tail(pv.stdout);
+    const rgArgs = ['scripts/atlas11/t365/range_mc.py', '--out', out, '--no-record', ...(rangeQuick ? ['--quick'] : [])]; // 빠른 셈은 시험에서만
+    if (useLive) { try { await fs.writeFile(path.join(tmp, 'range-live.json'), await getLive('range.json')); rgArgs.push('--reuse', path.join(tmp, 'range-live.json')); } catch { /* 없으면 새로 셈 */ } }
+    const rgRun = run('7단 범위 셈', 'python3', rgArgs, env2, 900000);
+    const rv = run('7단 범위 따로 세기', 'node', ['scripts/atlas11/t365/range_verify.mjs', path.join(out, 'range.json'), path.join(tmp, 'rv.json'), ...(rangeQuick ? ['--allow-quick'] : [])], env2);
+    rep.verify.range = tail(rv.stdout);
     // 첫 화면 종합 정보(사장님 2026-10-12 14:54 「첫화면에 3개월 코스피 코스닥 지수 그래프 … 365개 종목 … 업종 강 7 · 약 7 … 수급 … 미국장 분위기」 · 네 팀 합친 안)
     //   깃허브 실행기면 지수 · 수급 · 업종 · 미국장 원문을 받음(market_fetch.mjs · 못 받아도 회차는 계속) → home_build.mjs(못 받은 조각 = 지금 사이트 자료의 그 조각 · 「앞 회차 값」)
     let raw = null, prevHome = fss.existsSync(path.join(target, 'home.json')) ? path.join(target, 'home.json') : '';
@@ -158,7 +158,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     // 회차 기록 — 고른 날 · 기준일 · 365곳 · 들고 난 곳 · 층 · 1등 갈래
     const pro = JSON.parse(await fs.readFile(path.join(upd, 'proposal.json'), 'utf8'));
     const core = JSON.parse(await fs.readFile(path.join(out, 'core.json'), 'utf8'));
-    const pk = JSON.parse(await fs.readFile(path.join(out, 'pick36.json'), 'utf8'));
+    const rg = JSON.parse(await fs.readFile(path.join(out, 'range.json'), 'utf8'));
     const members = pro.picked.map(p => p.code), names = Object.fromEntries([...pro.picked, ...pro.outside].map(x => [x.code, x.name]));
     const before = prev?.members ?? Object.keys(JSON.parse(await fs.readFile(path.join(target, 'comp.json'), 'utf8')).companies);
     const bset = new Set(before), mset = new Set(members);
@@ -166,7 +166,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
       in: members.filter(c => !bset.has(c)).map(c => ({c, n: names[c]})), out: before.filter(c => !mset.has(c)).map(c => ({c, n: names[c] ?? c})),
       counts: {gate: pro.counts.gate, ranked: pro.counts.rankedCompanies, picked: pro.counts.picked}, tiers: [pro.counts.tier1, pro.counts.tier2, pro.counts.tier3],
       all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg},
-      pick36: {first: pk.picks.slice(0, 3).map(p => p.name), reused: /reused/.test(p36.stdout), test: pk.backtest ? {n: pk.backtest.n, wins: pk.backtest.wins} : null}});
+      range: {eligible: rg.eligible, reused: /reused/.test(rgRun.stdout)}});
     // 값 지문 — 고른 날 · 이어 붙인 값 수 · 365곳 · 365곳 지수 · 아직 바뀜 여부 · 같으면 「그대로」(새 값 없음)
     rep.digest = crypto.createHash('sha256').update(JSON.stringify([pro.asOf, pro.from?.closes?.added, members, core.all.v, core.provisional])).digest('hex').slice(0, 16);
     rep.result = prev && prev.digest === rep.digest ? '그대로' : '바꿈';

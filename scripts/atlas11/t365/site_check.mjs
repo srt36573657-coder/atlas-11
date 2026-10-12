@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// 새 ATLAS(aaa7377.com/atlas/) 화면 빠짐없이 돌기 — 첫 화면 · 갈래 · 업종(1곳뿐인 업종은 회사로 넘어감) · 회사 365 · 업종 탭 · 36곳 · 도움말 · 찾기 · 365곳 밖
-//   2026-10-11 11:43 대세 365곳(d365-v1): 회사 화면 「왜 365곳에 들었나요?」 층 · 대세 순서 · 업종 · 회사 30거래일 · 일부만 든 업종 글 · 도움말 층마다 가운데값 · 깔때기 숫자 · 36곳 시험 글(자료대로)도 맞댐
+// 새 ATLAS(aaa7377.com/atlas/) 화면 빠짐없이 돌기 — 첫 화면 · 갈래 · 업종(1곳뿐인 업종은 회사로 넘어감) · 회사 365 · 업종 탭 · 도움말 · 찾기 · 365곳 밖
+//   2026-10-13 06:45 사장님 「매수 검토 36곳 영구 삭제 하라」: 36곳 화면 · 탭 · 7단 차례 줄 · 봉인 36곳을 지움 — 모든 화면에 「36곳 · 매수 검토」 글 · #/36 길 0 · #/36 은 첫 화면으로(「36곳 없음」 검사)
+//   2026-10-11 11:43 대세 365곳(d365-v1): 회사 화면 「왜 365곳에 들었나요?」 층 · 대세 순서 · 업종 · 회사 30거래일 · 일부만 든 업종 글 · 도움말 층마다 가운데값 · 깔때기 숫자도 맞댐
 //   쓰는 법: node scripts/atlas11/t365/site_check.mjs --base http://127.0.0.1:8899 [--pw /opt/node-tools/] [--out reports/atlas11/verify/atlas-new-check-latest.json]
 //   폭 셋(360×640 · 390×844 · 900×900) × 글씨 셋(보통 · 크게 · 아주 크게 — 360 에서만 셋, 나머지는 보통)마다 화면마다 본다:
 //     오류 0(보안 규칙 CSP 걸림 포함) · 옆 넘침 0 · 보이는 글씨 21px 이상 · 누르는 자리 44px 이상 · 금지 말 0 · 캔버스 · 3D 0 · 작은 네모 20개 이상(바둑판) 0
@@ -24,7 +25,7 @@ const {chromium} = require('playwright');
 const exe = ['/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'].find(f => fs.existsSync(f));
 const core = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/core.json'), 'utf8'));
 const comp = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/comp.json'), 'utf8')).companies;
-const pick = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/pick36.json'), 'utf8'));
+const rng = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/range.json'), 'utf8')); // 7단 범위(range-v1)
 const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
 const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.json'), 'utf8')); // 업데이트 탭(사장님 12:41)
 const tdata = fs.existsSync(path.join(ROOT, 'site/atlas/data/time.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/time.json'), 'utf8')) : null; // 봉인 시간(14:37 · 14:39 「3년후 5년후 10년후 이야기」)
@@ -106,7 +107,7 @@ function hubExpect(H) {
   };
   return {marks, slides, details};
 }
-const routes = ['#/', '#/list', '#/36', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
+const routes = ['#/', '#/list', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
 if (arg('--only')) routes.splice(0, routes.length, ...arg('--only').split(',')); // 고치는 동안 빨리(그 길만) — 3번 누름 셈 · 문은 못 지남(전부를 돌린 결과만 커밋)
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
@@ -149,9 +150,9 @@ function expect(route) {
       const wn = x => Math.round(x).toLocaleString('ko-KR') + '원', short = from === co.k0 && n - 253 < co.k0, same1y = !short && c.r1y != null && c.mdd1y != null; // 1년은 3단 · 7단과 같은 회사 자료 값(2026-10-12)
       return {step: 4, trio: [pct(same1y ? c.r1y : (last / base - 1) * 100), pct(same1y ? c.mdd1y : m * 100), pct((last / peak - 1) * 100)], price: [wn(base), wn(last)], why: ['가장 높을 때 ' + wn(Math.max(...cl)), '가장 낮을 때 ' + wn(Math.min(...cl))]}; // 처음 · 끝 1주 값 · 그림 위 · 아래 글 = 실제 값
     }
-    const k = pick.companies[code];
-    return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖',
-      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['흰 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
+    const k = rng.companies[code];
+    return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null,
+      why: ['모형 가정 아래 추정 · 검증 전', '앞날 값이 아닙니다', '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['흰 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
   }
   if (!kind) { const T = core.time, H = home, K = H?.idx?.KOSPI, Q = H?.idx?.KOSDAQ, sd = H?.sectors?.date ?? K?.date, fd = H?.flows?.KOSPI?.date ?? H?.flows?.KOSDAQ?.date;
     // 첫 화면 종합 정보(14:54) → 맨 위 슬라이드 7장(19:59 · 20:11) — 머리 = 2장 오늘 지수(「오늘」은 보는 날짜로) · 장 이름 · 업종 1등 · 꼴찌 · 365곳 양 끝 · 봉인 한 줄 · 경주 제목은 그 아래(h2) · 장마다 보이는 글은 아래 hubExpect
@@ -161,10 +162,7 @@ function expect(route) {
         ...(T ? [`봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`, ddayText(T.opens[0].date)] : []), '저는 투자 상담사가 아닙니다'], hub: H ? hubExpect(H) : null}; }
   if (kind === 'time') { const K = tdata.capsules[0], P = K.past, S = K.since; return {title: `봉인 ${K.id}호 — ${md(K.seal)} 365곳`,
     why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
-      ...(S.days ? [pct(S.chg365), pct(S.chg36), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
-  if (kind === '36') { const B = pick.backtest;
-    return {p36: pick.picks.map(p => [p.name, '번 길 ' + r1(p.avg).toFixed(1) + '%']), test: B ? `${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번` : null, total: Math.round(pick.total).toLocaleString('ko-KR') + '원',
-      why: B ? ['모형 가정 아래 추정 · 검증 전', `${B.wins}번(${Math.round(B.rate * 100)}%)${B.rate < 0.5 ? '뿐' : ''}입니다`, B.passes ? '문턱을 넘었습니다' : B.meanPick < B.meanAll ? '아무거나 고른 것보다 못했습니다' : '한 달 평균은 나았지만', ...(B.skipped?.length ? [`셀 수 없어 뺀 때 ${B.skipped.length}번`] : [])] : []}; }
+      ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
   if (kind === 'up') { const r0 = upd.records[0]; return {title: '업데이트 기록', why: r0 ? [{'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'}[r0.result], ...(r0.asOf ? [`고른 날 ${md(r0.asOf)}`, `기준일 ${md(r0.base)}`] : []), ...(r0.in?.length ? [`새로 든 곳 ${r0.in.length}`, `빠진 곳 ${r0.out.length}`] : [])] : ['아직 기록이 없습니다']}; }
   if (kind === 'info') return {why: [...core.facts.tiers.map(t => `${t.t}층 ${t.n}곳 ${pct(t.med)}`), ...core.funnel.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]};
   return {};
@@ -221,7 +219,7 @@ const probe = ({banned}) => {
       // 달 속 막비(2026-10-13 03:39) — 화면 제목(h1) 옆 달(::before 바탕 그림)에 막비 얼굴이 있어야 함 · 제목이 없는 판(도움말 · 찾기)은 셈 밖
       { const hd = document.querySelector('#view h1.head, #view .co-head h1'); res.moonFace = !hd || sheet || !vis(hd) ? null : /makbi-moon\.svg/.test(getComputedStyle(hd, '::before').backgroundImage); /* 슬라이드 7장 가운데 2장(오늘) 밖에서는 제목이 숨음(2026-10-12 19:59 · 20:11) */ }
       const MO_OK = new Set(['heart', 'star', 'moon', 'daisy', 'tulip', 'cat', 'catsleep', 'parrot', 'rainbow', 'whale', 'butterfly']);
-      const ZONE = '.board, .row, .trio, .lc, .tc, .upchart, ol.p36, .munger, .test, .bt, ul.dirbars, ol.funnel, .key, .lkey, .track, .num, .q, .chip, .box, .digest, .srank, .tell, .trh, .seg, ol.steps, .co-head, .crumb, .badge';
+      const ZONE = '.board, .row, .trio, .lc, .tc, .upchart, .munger, ul.dirbars, ol.funnel, .key, .lkey, .track, .num, .q, .chip, .box, .digest, .srank, .tell, .trh, .seg, ol.steps, .co-head, .crumb, .badge';
       for (const im of scope.querySelectorAll('img')) if (vis(im) && !im.closest('a.hello')) res.mo.push('사진 ' + (im.getAttribute('src') || '').slice(-24));
       const okl = hx => { const v = (hx || '').trim().replace('#', ''); if (!/^[0-9a-f]{6}$/i.test(v)) return null; const f = c => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; const [R, G, B] = [0, 2, 4].map(i => f(parseInt(v.slice(i, i + 2), 16)));
         const l = Math.cbrt(0.4122214708 * R + 0.5363325363 * G + 0.0514459929 * B), m = Math.cbrt(0.2119034982 * R + 0.6806995451 * G + 0.1073969566 * B), q = Math.cbrt(0.0883024619 * R + 0.2817188376 * G + 0.6299787005 * B);
@@ -261,7 +259,7 @@ const probe = ({banned}) => {
       res.trdCut = [...document.querySelectorAll('#view .board .row .trd')].filter(x => x.scrollWidth > x.clientWidth + 1).map(x => x.textContent);
       res.trh = document.querySelector('#view .trh')?.textContent ?? null;
       res.trio = [...document.querySelectorAll('#view .trio b')].map(x => x.textContent);
-      res.p36 = [...document.querySelectorAll('#view ol.p36 li')].map(x => [x.querySelector('.nm').textContent, x.querySelector('.val').textContent]);
+      res.l36 = document.querySelectorAll('a[href="#/36"]').length; // 지운 화면으로 가는 길(2026-10-13 06:45)
       res.hello = document.querySelector('#view a.hello')?.getAttribute('href') ?? null;
       res.step = document.querySelector('#view .st-t b')?.textContent ?? null;
       res.dirs = [...document.querySelectorAll('#view ul.dirbars li')].map(li => [...li.querySelectorAll('.dl .num')].map(x => x.textContent));
@@ -322,11 +320,12 @@ for (const [w, hgt, font] of plans) {
     for (const old of ['5단 중', '5단으로 내려갑니다', '사기 전에 볼 것', '4단 앞으로 클까?', '5단 범위', '앞날 값은 내지 않습니다', '지금의 몇 배쯤', '조사하는 중이라 다음 차례에 채웁니다', '기본 문 여섯']) if (r.all.includes(old) || r.text.includes(old)) fail(tag, `옛 글 「${old}」이 남음`); // 7단 · 2026-10-12 네 팀 점검으로 바꾼 글
     if (e.dm !== undefined) { numbers++; if (r.dm !== e.dm) fail(tag, `7단 365곳 가운데값 눈금 ${r.dm} ≠ ${e.dm}`); }
     if (e.below !== undefined) { numbers++; if (r.below !== e.below) fail(tag, `6단 「올해 짐작보다 작게 봄」 ${r.below} ≠ ${e.below}`); }
-    if (e.step === 3 && (r.all.includes('매수 검토 36곳 가운데') || r.all.includes('봉인 1호에 든 회사'))) fail(tag, '3단에 36곳 · 봉인 줄이 남음(7단으로 옮김)');
+    if (e.step === 3 && r.all.includes('봉인 1호에 든 회사')) fail(tag, '3단에 봉인 줄이 남음(7단으로 옮김)');
+    if (/(?<![\d,])36곳|매수 검토/.test(r.all) || /(?<![\d,])36곳|매수 검토/.test(r.text) || r.l36) fail(tag, '36곳 글 · 길이 남음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)');
     if (e.trd) { numbers += e.trd.length; if (JSON.stringify(r.trd) !== JSON.stringify(e.trd)) fail(tag, `방향 · 세기 줄 ${JSON.stringify(r.trd).slice(0, 120)} ≠ ${JSON.stringify(e.trd).slice(0, 120)}`); }
     if (r.trdCut?.length) fail(tag, '방향 · 세기 줄이 잘림: ' + r.trdCut.slice(0, 2).join(' · '));
     if (e.trh) { numbers++; if (r.trh !== e.trh) fail(tag, `머리 밑 방향 ${r.trh} ≠ ${e.trh}`); }
-    if (e.dirs !== undefined) { numbers += 9; if (e.dirs && JSON.stringify(r.dirs) !== JSON.stringify(e.dirs)) fail(tag, '4방향 숫자 다름'); if (!e.dirs && !r.text.includes('? 셈 못 함')) fail(tag, '셈 못 함 표시 없음'); if (e.dirs && !r.text.includes(e.status)) fail(tag, '36곳 자리 글 다름 ' + e.status); }
+    if (e.dirs !== undefined) { numbers += 9; if (e.dirs && JSON.stringify(r.dirs) !== JSON.stringify(e.dirs)) fail(tag, '4방향 숫자 다름'); if (!e.dirs && !r.text.includes('? 셈 못 함')) fail(tag, '셈 못 함 표시 없음'); }
     if (route === '#/') { numbers++; if (r.hello !== '/hello.html') fail(tag, '첫 화면 맨 위 「친구에게 소개하기」 없음(규칙 45)'); }
     if (route === '#/' && e.hub) { // 맨 위 슬라이드 7장(사장님 19:59 · 20:11) — 바 칸을 차례로 눌러 장마다 다시 잼 + 「자세히」 다섯도 열어 잼(숨은 장 · 접힌 자세히도 21px · 대비 · 잘림 · 44px · 글)
       for (let k = 0; k < HUBID.length; k++) {
@@ -359,7 +358,6 @@ for (const [w, hgt, font] of plans) {
       await p.evaluate(() => document.querySelectorAll('#view .hbar [role=tab]')[0].click()); await p.evaluate(() => window.scrollTo(0, 0));
     }
     if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/old/', '/us/'])) fail(tag, '맨 아래 길(소개 · 옛 ATLAS · 미국 판) 다름'); }
-    if (e.p36) { numbers += e.p36.length + 2; if (JSON.stringify(r.p36) !== JSON.stringify(e.p36)) fail(tag, '36곳 줄 다름'); if (e.test && !r.text.includes(e.test)) fail(tag, '지난 기록 시험 글 다름'); if (!r.text.includes(e.total)) fail(tag, '1주씩 합계 다름'); }
     for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
     if (route === '#/' && w === 390 && font === 0) {
@@ -455,6 +453,22 @@ if (home) {
     await p.evaluate(() => document.querySelector('#hs-' + ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'][[...document.querySelectorAll('#view .hbar [role=tab]')].findIndex(t => t.getAttribute('aria-selected') === 'true')] + ' .hmore')?.click());
     screens++; if (errs.length) fail('저절로 넘김', '오류 ' + errs[0]);
     await ctx.close(); }
+}
+// 36곳 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 옛 주소 #/36 은 첫 화면으로 · 아래 탭 셋 · 「36곳 · 매수 검토」 글 0 · range.json 만 받음(pick36.json 안 받음)
+{
+  const ctx = await b.newContext({viewport: {width: 390, height: 844}, reducedMotion: 'reduce'});
+  const p = await ctx.newPage(); const errs = [], asked = []; p.on('pageerror', e => errs.push(e.message)); p.on('request', q => asked.push(q.url()));
+  await p.goto(base + '/atlas/#/36', {waitUntil: 'networkidle'}); await p.waitForSelector('#view .hbar'); await p.waitForTimeout(900); // 첫 화면 h1 은 숨은 제목이라 .hbar 로 기다림
+  const r = await p.evaluate(() => ({hash: location.hash, tabs: [...document.querySelectorAll('nav.tabbar a')].map(a => a.textContent.trim()), all: document.body.innerText}));
+  await p.goto(base + '/atlas/#/c/' + Object.keys(comp)[0] + '/range', {waitUntil: 'networkidle'}); await p.waitForTimeout(900);
+  const r7 = await p.evaluate(() => document.body.innerText);
+  screens += 2; numbers += 4;
+  if (r.hash !== '#/' && r.hash !== '') fail('36곳 없음', `옛 주소 #/36 이 첫 화면으로 가지 않음(${r.hash})`);
+  if (!(r.tabs.length === 3 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · '));
+  if (/(?<![\d,])36곳|매수 검토/.test(r.all + r7)) fail('36곳 없음', '「36곳 · 매수 검토」 글이 보임'); // 「136곳」 같은 숫자는 아님(2026-10-13 07:4x 도움말 「3층 136곳」을 잘못 잡던 것)
+  if (asked.some(u => /pick36/.test(u)) || !asked.some(u => /\/range\.json/.test(u))) fail('36곳 없음', '자료 받기 — pick36.json 을 받거나 range.json 을 안 받음');
+  if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);
+  await ctx.close();
 }
 // 경주(움직임 켬) — 8초 뒤 맨 위 줄 = 20거래일 1등 갈래 · 금빛 테
 {

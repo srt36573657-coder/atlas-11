@@ -52,10 +52,10 @@ test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', 
 
 test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 화면에서 회사 3번 · n단 n번', () => {
   const J = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
-  const S = {core: J('core.json'), comp: J('comp.json'), pick: J('pick36.json'), home: fs.existsSync(path.join(DATA, 'home.json')) ? J('home.json') : null}; // 첫 화면 365곳 막대 양 끝 길(2026-10-12 14:54)도 함께
+  const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), home: fs.existsSync(path.join(DATA, 'home.json')) ? J('home.json') : null}; // 첫 화면 365곳 막대 양 끝 길(2026-10-12 14:54)도 함께
   S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
   const {nodes, depth} = siteGraph(S);
-  assert.equal(nodes.size, 6 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5);
+  assert.equal(nodes.size, 5 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5);
   for (const c of S.codes.slice(0, 50)) { assert.ok(depth.get('#/c/' + c) <= 3); assert.ok(depth.get(`#/c/${c}/range`) <= 7); }
   if (S.home?.s365?.top) { const top = '#/c/' + S.home.s365.top.c; assert.ok(nodes.get('#/').links.includes(top)); assert.equal(depth.get(top), 1); } // 오늘 가장 많이 오른 곳은 첫 화면에서 1번
   // 실제 화면에서 모은 길 지도(site_check.mjs --links)가 있으면 길 하나하나 맞대 봄(2026-10-12: 화면 1,878 · 다른 길 0)
@@ -92,7 +92,7 @@ test('네 눈 점검 — 지금 자료는 네 눈 모두 실패 0 · 눈마다 �
 test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 · 틀린 숫자 · 금지 말 · 끼운 코드 · 비밀 · 바깥 주소)', async () => {
   const T = copySite();
   try {
-    const pick = T.J('pick36.json'); pick.picks[0].code = '999999'; T.W('pick36.json', pick); // 36곳 첫 회사가 365곳에 없음 → 깨진 길
+    const rg = T.J('range.json'); rg.picks = [{rank: 1, code: '005930'}]; T.W('range.json', rg); // 지운 고른 목록이 자료에 다시 들어옴(2026-10-13 06:45 「영구 삭제」) → 구글 range · 클로드 code
     const comp = T.J('comp.json'); const c0 = Object.keys(comp.companies)[0]; comp.companies[c0].price += 1; T.W('comp.json', comp); // 1주 값이 회사 파일과 다름
     const c1 = Object.keys(comp.companies)[1], co1 = JSON.parse(fs.readFileSync(path.join(T.data, 'co', c1 + '.json'), 'utf8'));
     co1.extra = {url: 'javascript:alert(1)', note: '<img src=x onerror=alert(1)> nfp_' + 'A'.repeat(30)}; fs.writeFileSync(path.join(T.data, 'co', c1 + '.json'), JSON.stringify(co1));
@@ -100,12 +100,12 @@ test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 �
     const market = readMarket(T.data, null); market.lines.push('반도체는 곧 오른다 — 지금 사세요'); market.lines[0] = market.lines[0].replace('마감 값', '장 중 값(아직 바뀜)'); // 장이 끝난 자료에 「장 중」
     const r = await inspect4({siteDir: T.tmp, market, n: N, now: NOW});
     assert.equal(r.ok, false);
-    assert.ok(kind(r, 'apple', 'list').fail > 0 && kind(r, 'apple', 'company').fail > 0, '애플: 깨진 36곳 길 · 회사 파일 없음');
-    assert.ok(kind(r, 'google', 'company').fail > 0 && kind(r, 'google', 'pick').fail > 0 && kind(r, 'google', 'market').fail > 0, '구글: 1주 값 · 36곳 이름 · 「장 중」 말');
+    assert.ok(kind(r, 'apple', 'company').fail > 0, '애플: 회사 파일 없음');
+    assert.ok(kind(r, 'google', 'company').fail > 0 && kind(r, 'google', 'range').fail > 0 && kind(r, 'google', 'market').fail > 0, '구글: 1주 값 · 지운 고른 목록 · 「장 중」 말');
     assert.ok(kind(r, 'claude', 'banned').fail > 0 && kind(r, 'claude', 'market').fail > 0, '클로드: 판독 글 금지 말 · 권하는 말');
     assert.ok(kind(r, 'cia', 'inject').fail > 0 && kind(r, 'cia', 'url').fail > 0 && kind(r, 'cia', 'secret').fail > 0, 'CIA: 끼운 코드 · javascript: 주소 · 넷리파이 열쇠 꼴');
     // 화면 코드 — 바깥 주소 · 안전 문장이 빠지면
-    const js = path.join(T.tmp, 'atlas/atlas.js'); fs.writeFileSync(js, fs.readFileSync(js, 'utf8').replace('저는 투자 상담사가 아닙니다', '저는').replace("'https://dart.fss.or.kr'", "'https://evil.example'"));
+    const js = path.join(T.tmp, 'atlas/atlas.js'); fs.writeFileSync(js, fs.readFileSync(js, 'utf8').replace('저는 투자 상담사가 아닙니다', '저는').replace("'https://dart.fss.or.kr'", "'https://evil.example'") + "\nconst x36 = '매수 검토 36곳';\n"); // 지운 글이 다시 들어오면 클로드 눈이 막음
     const r2 = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: 2000, now: NOW});
     assert.ok(kind(r2, 'claude', 'code').fail > 0 && kind(r2, 'cia', 'code').fail > 0);
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }

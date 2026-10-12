@@ -52,10 +52,10 @@ const chgOf = (node, mode = state.mode) => (mode === 'cw' ? node.cwChg : node.ch
 
 // ── 자료 받기 ──
 async function getJson(name) { const r = await fetch('/atlas/data/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(name + ' ' + r.status); return r.json(); }
-let compP = null, namesP = null, pickP = null, daysP = null, updP = null; const coP = new Map();
+let compP = null, namesP = null, rangeP = null, daysP = null, updP = null; const coP = new Map();
 function needDays() { if (!daysP) daysP = getJson('days.json').then(d => { D.days = d; }).catch(e => { daysP = null; throw e; }); return daysP; }
 function needCo(code) { if (!coP.has(code)) coP.set(code, getJson('co/' + encodeURIComponent(code) + '.json').catch(e => { coP.delete(code); throw e; })); return coP.get(code); }
-function needPick() { if (!pickP) pickP = getJson('pick36.json').then(p => { D.pick = p; }).catch(e => { pickP = null; throw e; }); return pickP; }
+function needRange() { if (!rangeP) rangeP = getJson('range.json').then(p => { D.range = p; }).catch(e => { rangeP = null; throw e; }); return rangeP; } // 7단 범위(사장님 2026-10-13 06:45 말씀으로 고른 목록 · 차례는 지움)
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; }).catch(e => { compP = null; throw e; }); return compP; }
 // grow.json(회사 성장 요약)은 화면에서 읽지 않음 — 7단부터 회사마다 co/<번호>.json 의 grow 를 씀(자료 따로 세기 · 올린 뒤 확인에는 남음)
 function needUpd() { if (!updP) updP = getJson('updates.json').then(u => { D.upd = u; }).catch(e => { updP = null; throw e; }); return updP; }
@@ -738,7 +738,7 @@ async function viewCompany(v, code) {
   const lv = line.filter(x => x != null), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv.at(-1) : null, man = x => Math.round(x).toLocaleString('ko-KR') + '만 원'; // 선 = 기준일 100
   v.append(h('p', {class: 'won', text: low == null ? '? 값을 못 읽었습니다' : low < 100 ? `${md(C.base)}에 100만 원어치였다면 가장 낮을 때 ${man(low)} · 끝 ${man(last)}` : `${md(C.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${man(last)}`}));
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
-  // 36곳 자리 · 봉인 줄은 7단 「범위 · 확인」으로 옮김(네 팀 — 회사 첫 화면에 결론처럼 먼저 보이지 않게)
+  // 봉인 줄은 7단 「범위 · 확인」으로 옮김(네 팀 — 회사 첫 화면에 결론처럼 먼저 보이지 않게)
   v.append(nextStep(`#/c/${code}/past`, '4단 지나온 길', '1년 · 3년 주가 · 해마다 번 돈 · 몸값'));
   // 왜 365곳에 들었나(사장님 11:43 대세 365곳) — 고를 때(그 30거래일) 값 · 업종은 네이버 업종 · 앞날 숫자는 쓰지 않음
   v.append(whyBox(c));
@@ -873,18 +873,18 @@ function priceChart(host, {dates, close, avg, jumps, label}) {
 }
 
 // ── 7단 범위 · 확인 — 한 달 범위(몬테카를로 4방향 · 모형 셈) · 확인표 · 지켜볼 날 · 확인할 곳(7단 · 2026-10-12 00:50 네 팀)
-//    끝은 「사기」가 아니라 「확인」(클로드팀 · CIA팀) — 「모형 가정 아래 추정 · 검증 전」을 맨 위에 · 모형 막대는 오름 · 내림 색을 쓰지 않음(규칙 53) · 36곳 고리 없음
+//    끝은 「사기」가 아니라 「확인」(클로드팀 · CIA팀) — 「모형 가정 아래 추정 · 검증 전」을 맨 위에 · 모형 막대는 오름 · 내림 색을 쓰지 않음(규칙 53) · 고른 목록 · 차례 없음(2026-10-13 06:45 지움)
 const nextSlot = slots => { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), mm = x => +x.slice(0, 2) * 60 + +x.slice(3, 5), nx = slots.find(x => mm(x) > m); return nx ? nx : slots[0] + ' · 내일'; };
 async function viewRange(v, code) {
-  await Promise.all([needComp(), needPick()]);
+  await Promise.all([needComp(), needRange()]);
   const C = D.core, c = D.comp[code];
   if (!c) return viewMissing(v, code);
   const [co] = await Promise.all([needCo(code).catch(() => null), needDays().catch(() => null)]); // 하루 30% 넘게 바뀐 날(1년 줄 「?」 — 클로드팀) · 1년 창은 거래일 표로
-  const i = ind(c.i), g = gById(c.g), K = D.pick, k = K.companies[code], S = K.spec, B = K.backtest;
+  const i = ind(c.i), g = gById(c.g), K = D.range, k = K.companies[code], S = K.spec;
   v.append(stepsCo(7, code, g, i));
   v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name + ' — 범위 · 확인'}), h('small', {text: `여기부터 다시 주가 · ${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤`})));
   const box = h('div', {class: 'box'}, h('h2', {text: '시장이 이렇게 가면 — 몬테카를로 4방향'}));
-  box.append(h('p', {class: 'alt'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), B ? ` — 같은 셈은 지난 ${B.n}번 가운데 ${B.wins}번만 365곳 평균보다 나았습니다.` : ' — 지난 기록 시험 ?'));
+  box.append(h('p', {class: 'alt'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), ' — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.'));
   if (!k || !k.ok) box.append(h('p', {class: 'q', text: '? 셈 못 함 — 어느 한 방향에서 이 회사 값이 있는 날이 20일이 안 됩니다.'}));
   else {
     const list = h('ul', {class: 'dirbars'});
@@ -896,8 +896,6 @@ async function viewRange(v, code) {
         h('span', {class: 'dl'}, h('span', {class: 'dt', role: 'img', 'aria-label': `크게 잃는 길 ${r1(b).toFixed(1)}% · 365곳 가운데값 ${r1(mb).toFixed(1)}%`}, bb, tb), h('span', {class: 'num', text: `크게 잃는 길 ${r1(b).toFixed(1)}%`})))); });
     box.append(list, h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dw'}), '번 길'), h('span', {}, h('i', {class: 'l-db'}), '크게 잃는 길'), h('span', {}, h('i', {class: 'l-dm'}), '흰 눈금 = 365곳 가운데값')));
     box.append(h('p', {class: 'small', text: `방향마다 지난 날들에서 20일을 뽑아 ${S.paths.toLocaleString('ko-KR')}번 — 번 길 = 사고팔 돈 0.3% 빼고 남음 · 크게 잃는 길 = −15% 밑 · 어느 방향이 올지는 모릅니다`}));
-    const status = k.rank ? `셈 차례: 36곳 가운데 ${k.rank}번째(번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%)` : k.cut ? `지움 — 가장 나쁜 방향에서 크게 잃는 길(${r1(k.worst).toFixed(1)}%)이 큰 3분의 1에 들었습니다` : `남았지만 36곳 밖 — 번 길 4방향 평균 ${r1(k.avg).toFixed(1)}%`;
-    box.append(h('p', {class: 'small'}, h('b', {text: status}), ' — 셈 차례일 뿐, 좋은 회사로 매긴 것이 아닙니다.'));
   }
   v.append(box);
   // 확인표(옛 「사기 전에 볼 것」 · 멍거팀) — 기록으로 채울 수 있는 것만 · 「·」 기록 · 「!」 조심 · 「?」 모름(클로드팀: ✓ 는 「좋음」으로 읽혀 「·」로)
@@ -1097,58 +1095,6 @@ function growChart(host, c, G) {
   svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { cx.setAttribute('visibility', 'hidden'); tip.hidden = true; });
 }
 
-// ── 화면 ⑥ 36곳(사장님 00:15 「몬테카를로 1억 × 4방향 → 소거법 → 36개 · 각 한 주씩」 · 12:41 「하루에 4번」부터 회차마다 새 365곳으로 다시 셈) — 지난 기록 시험을 맨 위에 그대로 ──
-async function view36(v) {
-  await Promise.all([needPick(), needComp()]);
-  const C = D.core, K = D.pick, S = K.spec, B = K.backtest;
-  const tell = tellRow(`${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤를 셈`, null);
-  v.append(tell.el, h('h1', {class: 'head', text: `매수 검토 ${K.picks.length}곳 — ${md(K.asOf)} 값`}),
-    h('p', {class: 'count', text: `몬테카를로 ${Math.round(S.totalPairs / 1e8)}억 길(찾기 4방향 + 지우기 4방향) · ${K.eligible}곳 셈 → ${K.cutN}곳 지움 → ${K.picks.length}곳`}),
-    h('p', {class: 'alt'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), ' — 셈으로 추린 목록일 뿐 좋은 회사로 매긴 것이 아닙니다. 아래 지난 기록 시험부터 보세요.')); // 규칙 49(클로드팀 2026-10-12)
-  if (B) {
-    const box = h('div', {class: 'test'}, h('h2', {text: '먼저 — 지난 기록에서는?'}),
-      h('p', {class: 'big', text: `같은 셈을 지난 ${B.n}번에 대입했더니, 36곳이 365곳 평균보다 나았던 때는 ${B.wins}번(${Math.round(B.rate * 100)}%)${B.rate < 0.5 ? '뿐' : ''}입니다.`}),
-      h('p', {}, '한 달 평균: 36곳 ', pct2El(B.meanPick, B.meanAll), ' · 365곳 ', pct2El(B.meanAll, B.meanPick), ` — ${B.passes ? '정해 둔 문턱(60% · 두 절반 55% · 우연일 몫 5% 밑)을 넘었습니다. 그래도 지난 기록일 뿐입니다.' : (B.meanPick < B.meanAll ? '아무거나 고른 것보다 못했습니다. ' : '한 달 평균은 나았지만, ') + '정해 둔 문턱(60% · 두 절반 55% · 우연일 몫 5% 밑)을 못 넘어 「통한다」고 할 수 없습니다.'}`));
-    box.append(h('p', {class: 'small', text: `시험 기간: ${ymd(B.rows[0].t)} ~ ${ymd(B.rows[B.rows.length - 1].to)} · 한 달(20거래일)씩.` + (B.skipped?.length ? ` 셀 수 없어 뺀 때 ${B.skipped.length}번(${B.skipped.map(ymd).join(' · ')}) — 그때까지 어느 방향 날이 20일이 안 됨(기준대로 뺌).` : '')}));
-    const host = h('div', {class: 'bt'}); box.append(host); v.append(box);
-    btChart(host, B.rows);
-    box.append(h('p', {class: 'small note', text: '막대 하나 = 한 번의 시험(한 달) · 위 빨강 = 36곳이 365곳 평균보다 나음 · 아래 파랑 = 못함.'}));
-  }
-  v.append(h('div', {class: 'dirs4'}, ...K.dirs.map(d => h('div', {}, h('b', {text: d.name}), h('span', {text: `지난 ${K.window.days}거래일 가운데 ${d.days}일`})))));
-  { const up = K.dirs.find(d => d.id === 'up')?.days ?? 0, dn = K.dirs.find(d => d.id === 'down')?.days ?? 0;
-    v.append(h('p', {class: 'note', text: `「4방향」 = 시장이 갈 방향 넷. 어느 쪽이 올지는 모른다고 보고 넷을 같은 무게로 셌습니다. 36곳은 셈으로 추린 목록일 뿐 좋은 회사로 매긴 것이 아닙니다.` + (up > dn * 2 ? ` 지난 ${K.window.days}거래일은 오르는 장(${up}일)이 내리는 장(${dn}일)보다 훨씬 많았습니다.` : '')})); }
-  const ol = h('ol', {class: 'p36'});
-  for (const p of K.picks) { const c = D.comp[p.code];
-    ol.append(h('li', {}, h('a', {href: '#/c/' + p.code}, h('span', {class: 'no num', text: p.rank}), h('span', {class: 'nm', text: p.name}), h('b', {class: 'val num', text: '번 길 ' + r1(p.avg).toFixed(1) + '%'}),
-      h('span', {class: 'g2', text: `${p.i} · 1주 ${won(p.price)} · 크게 잃는 길 ${r1(p.worst).toFixed(1)}%(가장 나쁜 방향) · ${D.core.days}거래일 ${c ? pct(c.chg) : '? 지금 365곳 밖'}`})))); }
-  v.append(h('h2', {class: 'sec', text: `${K.picks.length}곳 — 번 길 많은 순`}), h('p', {text: `번 길 = ${S.horizon}거래일 뒤 사고팔 돈(0.3%)을 빼고도 남은 길의 몫 · 4방향 평균`}), ol);
-  v.append(h('div', {class: 'alt'}, `${K.picks.length}곳을 1주씩이면 합계 `, h('b', {class: 'num', text: won(K.total)}), ` — ${md(K.asOf)} 값으로 셈 · 사는 날 값은 다르고, 사고파는 데 드는 돈은 넣지 않았습니다.`));
-  v.append(h('details', {class: 'more'}, h('summary', {text: '어떻게 셌나요 — 돌리기 전에 정한 기준'}), h('div', {class: 'in'}, h('ul', {},
-    h('li', {text: `방향: 날마다 그날로 끝나는 20거래일 시장(365곳 같은 무게)으로 가름 — 흔들림이 위 25%면 크게 출렁이는 장, 아니면 +3% 넘게 오름 · −3% 넘게 내림 · 그 사이`}),
-    h('li', {text: `길: 그 방향 날들에서 20일을 뽑아 365곳에 똑같이 적용(함께 움직임을 지킴) · 방향마다 ${S.paths.toLocaleString('ko-KR')}길 × 365곳 = 약 1억`}),
-    h('li', {text: `찾기: 번 길의 몫(사고팔 돈 0.3% 빼고) · 지우기: 다른 난수로 다시 돌려 −15% 넘게 잃는 길의 몫이 가장 나쁜 방향에서 큰 순으로 3분의 1`}),
-    h('li', {text: `고르기: 남은 곳에서 번 길 많은 순 · 한 업종 ${S.perIndustry}곳까지 · 기준을 먼저 적어 둔 기록(커밋 ${S.specCommit ?? '73f94cca'} · ${S.version})`}),
-    h('li', {text: '지난 기록 시험: 2024년 7월부터 한 달(20거래일)마다 그날까지 자료로만 같은 셈(길은 방향마다 1천만) → 한 달 뒤 값으로 채점'}),
-    h('li', {text: `한계: 365곳은 ${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」 업종으로 고른 곳이라 이미 오른 회사가 많고, 지난 기록 시험도 그 365곳 안에서만 했습니다. 모형 가정 아래 셈일 뿐 앞날 값이 아닙니다.`})))));
-  v.append(foot());
-}
-function btChart(host, rows) {
-  const W = Math.max(260, Math.round(host.getBoundingClientRect().width || 320)), Hh = 150, P = 8, n = rows.length;
-  const ex = rows.map(r => r.pick - r.all), M = Math.max(1, ...ex.map(Math.abs)) * 1.1;
-  const bw = (W - 2 * P) / n, Y = x => Hh / 2 - x / M * (Hh / 2 - P);
-  const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `지난 ${n}번 시험 — 36곳이 365곳 평균보다 나은 때 ${ex.filter(x => x > 0).length}번`});
-  const T = tok();
-  hairs(svg, W, P, [P, Hh - P]);
-  ex.forEach((x, k) => { const y0 = Y(0), y1 = Y(x); svg.append(sv('rect', {x: (P + k * bw + bw * 0.15).toFixed(1), y: Math.min(y0, y1).toFixed(1), width: (bw * 0.7).toFixed(1), height: Math.max(1, Math.abs(y1 - y0)).toFixed(1), rx: 1, fill: x > 0 ? T.up : T.down})); });
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(0), y2: Y(0), stroke: T.mute, 'stroke-width': 1}));
-  host.append(svg);
-  host.append(h('div', {class: 'ax'}, h('span', {text: ymd(rows[0].t)}), h('span', {text: ymd(rows[n - 1].t)})));
-  const tip = h('div', {class: 'tip num'}); tip.hidden = true; host.append(tip);
-  const mv = e => { const r = svg.getBoundingClientRect(); let k = Math.floor(((e.clientX - r.left) * W / r.width - P) / bw); k = Math.max(0, Math.min(n - 1, k)); const q = rows[k];
-    tip.hidden = false; tip.textContent = `${md(q.t)} · 36곳 ${pct(q.pick)} · 365곳 ${pct(q.all)}`; tip.style.left = Math.min(r.width - 120, Math.max(120, (P + (k + 0.5) * bw) * r.width / W)) + 'px'; };
-  svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { tip.hidden = true; });
-}
-
 // ── 화면 ⑦ 업데이트(사장님 2026-10-11 12:41 「업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」) ──
 //   회차마다 한 줄 — 언제 · 어느 회차 · 결과(바꿈 · 그대로 · 실패) · 고른 날 · 기준일 · 새로 든 곳 · 빠진 곳 · 층 · 1등 갈래 · 그림 = 회차마다 들고 난 수
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
@@ -1267,8 +1213,8 @@ function timeLine(T) {
   const sky = y => (y <= 3 ? MO.star(22) : y <= 5 ? MO.moon(24) : MO.whale(40)); // 멀수록 먼 우주(16:29 영상 친구들)
   const ol = h('ol', {class: 'stations', 'aria-label': '시간 노선도 — 3년 전 · 지금(봉인) · 3년 뒤 · 5년 뒤 · 10년 뒤'},
     st('past', '3년 전', ymd(P.from), MO.daisy(22), '그때 100만 원어치씩 샀다면 봉인 날 365곳 평균 ', h('b', {class: 'num', text: won100(P.mult365)}), ' · 후보 모두 ', h('b', {class: 'num', text: won100(P.multPool)})),
-    st('now', '지금 · 봉인 ' + T.id + '호', md(T.seal), null, ...(S.days ? [`봉인 뒤 ${S.days}거래일 — 365곳 `, pctEl(S.chg365, 'b'), ' · 36곳 ', pctEl(S.chg36, 'b'), ' · 후보 모두 ', pctEl(S.chgPool, 'b')]
-      : [`365곳 · 36곳을 이날 종가 그대로 잠금 — 다음 거래일부터 한 칸씩 채웁니다`])),
+    st('now', '지금 · 봉인 ' + T.id + '호', md(T.seal), null, ...(S.days ? [`봉인 뒤 ${S.days}거래일 — 365곳 `, pctEl(S.chg365, 'b'), ' · 후보 모두 ', pctEl(S.chgPool, 'b')]
+      : [`365곳을 이날 종가 그대로 잠금 — 다음 거래일부터 한 칸씩 채웁니다`])),
     ...T.opens.map(o => st('future', `${o.y}년 뒤`, ymd(o.date), sky(o.y), h('b', {class: 'num dd', text: ddayText(o.date)}), ' · 그날 종가로 엽니다')));
   return h('section', {class: 'tl'}, h('h2', {class: 'sec', text: '시간 — 지난 3년 · 지금 · 3 · 5 · 10년 뒤'}), ol,
     h('p', {class: 'note tln', text: `지난 3년은 지금 고른 곳을 거꾸로 본 값이라 좋아 보이기 쉽고, 그 사이 ${P.n365}곳 중 ${P.half}곳은 한때 반값 아래로 떨어졌습니다. 앞날 값은 그리지 않습니다.`}),
@@ -1283,7 +1229,7 @@ function timeChart(host, K) {
   const x0 = day(P.from), x1 = day(open3), X = d => Pd + (day(d) - x0) / (x1 - x0) * (W - 2 * Pd);
   const last365 = P.v365.at(-1), lastPool = P.vpool.at(-1); // 봉인 날 = 100 으로 맞춤
   const p365 = P.v365.map(v => (v == null ? null : v / last365 * 100)), ppool = P.vpool.map(v => (v == null ? null : v / lastPool * 100));
-  const vals = [...p365, ...ppool, ...S.v365, ...S.v36, ...S.vpool, 100].filter(v => v != null);
+  const vals = [...p365, ...ppool, ...S.v365, ...S.vpool, 100].filter(v => v != null);
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.08 || 4; lo -= pad; hi += pad;
   const Y = v => Pd + (hi - v) * (H - 2 * Pd) / (hi - lo);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `봉인 ${K.id}호 — 3년 전 ${ymd(P.from)}부터 봉인 날 ${ymd(K.seal)}까지 실제 선(봉인 날 = 100) · 그 뒤 3년 뒤 ${ymd(open3)}까지는 비워 둠(앞날 값을 그리지 않음)`});
@@ -1296,7 +1242,6 @@ function timeChart(host, K) {
   svg.append(sv('path', {d: path(P.dates, p365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round'}));
   if (S.days) {
     svg.append(sv('path', {d: path(S.dates, S.vpool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
-    svg.append(sv('path', {d: path(S.dates, S.v36), fill: 'none', stroke: T.violet, 'stroke-width': 2.5, 'stroke-linecap': 'round'}));
     svg.append(sv('path', {d: path(S.dates, S.v365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linecap': 'round'}));
   }
   svg.append(sv('line', {x1: X(K.seal), x2: X(K.seal), y1: Pd - 4, y2: H - Pd + 4, stroke: T.gold, 'stroke-width': 2})); // 봉인 날
@@ -1322,17 +1267,17 @@ async function viewTime(v) {
   if (!K) { v.append(h('h1', {class: 'head', text: '봉인이 아직 없습니다'}), h('p', {class: 'count', text: '? 봉인 파일을 못 찾았습니다.'})); v.append(foot()); return; }
   const P = K.past, S = K.since, tell = tellRow(`봉인 ${ymd(K.seal)} · 봉인 번호 ${K.digest.slice(0, 12)}`, null);
   v.append(tell.el, h('h1', {class: 'head', text: `봉인 ${K.id}호 — ${md(K.seal)} 365곳을 3 · 5 · 10년 뒤 다시 엽니다`}),
-    h('p', {class: 'count', text: `365곳 · 36곳 · 후보 ${K.nPool.toLocaleString('ko-KR')}곳을 ${md(K.seal)} 종가 그대로 잠금 · 앞날 값은 그리지 않습니다`}));
+    h('p', {class: 'count', text: `365곳 · 후보 ${K.nPool.toLocaleString('ko-KR')}곳을 ${md(K.seal)} 종가 그대로 잠금 · 앞날 값은 그리지 않습니다`}));
   const host = h('div'); v.append(host); const draw = () => timeChart(host, K); draw(); chartDraw = draw;
-  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-k365'}), '봉인 365곳'), S.days ? h('span', {}, h('i', {class: 'l-k36'}), '봉인 36곳') : null, h('span', {}, h('i', {class: 'l-kpool'}), '후보 모두'),
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-k365'}), '봉인 365곳'), h('span', {}, h('i', {class: 'l-kpool'}), '후보 모두'),
     h('span', {}, h('i', {class: 'l-pick'}), `봉인 날 = 100`), h('span', {}, h('i', {class: 'l-open'}), `3년 뒤 여는 날`)));
   // 지금 — 봉인 뒤 지금까지(현재에 집중)
   v.append(h('h2', {class: 'sec', text: '지금 — 봉인 뒤 지금까지'}));
   if (!S.days) v.append(h('p', {}, h('span', {class: 'q', text: '? '}), `아직 0거래일 — ${md(K.seal)}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 4번) 한 칸씩 채웁니다.`), MO.catSleep(72)); // 기다리는 자리 — 잠든 아기 고양이(16:29)
   else {
-    const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: '봉인 365곳'}), pctEl(S.chg365)), h('div', {}, h('span', {text: '봉인 36곳'}), pctEl(S.chg36)), h('div', {}, h('span', {text: '후보 모두'}), pctEl(S.chgPool)));
+    const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: '봉인 365곳'}), pctEl(S.chg365)), h('div', {}, h('span', {text: '후보 모두'}), pctEl(S.chgPool)));
     v.append(trio); fitNums(trio);
-    v.append(h('p', {class: 'src', text: `${md(K.seal)} 종가 → ${md(S.dates.at(-1))} 종가 · 봉인 뒤 ${S.days}거래일 · 같은 돈 나눠 사서 그대로 · 값 있는 ${S.have365}곳 · ${S.have36}곳 · ${S.havePool.toLocaleString('ko-KR')}곳` + (S.stale365 ? ` · 마지막 날 값 없는 ${S.stale365}곳은 앞 값` : '')}));
+    v.append(h('p', {class: 'src', text: `${md(K.seal)} 종가 → ${md(S.dates.at(-1))} 종가 · 봉인 뒤 ${S.days}거래일 · 같은 돈 나눠 사서 그대로 · 값 있는 ${S.have365}곳 · ${S.havePool.toLocaleString('ko-KR')}곳` + (S.stale365 ? ` · 마지막 날 값 없는 ${S.stale365}곳은 앞 값` : '')}));
   }
   // 지나온 길 — 3년 전부터(과거 존중)
   v.append(h('h2', {class: 'sec', text: '지나온 길 — 3년 전부터'}),
@@ -1343,9 +1288,9 @@ async function viewTime(v) {
   // 앞날 — 다시 여는 날(3 · 5 · 10년 뒤)
   v.append(h('h2', {class: 'sec', text: '앞날 — 다시 여는 날'}),
     h('ol', {class: 'opens'}, ...K.opens.map(o => h('li', {}, o.y <= 3 ? MO.star(24) : o.y <= 5 ? MO.moon(26) : MO.whale(44), h('span', {class: 'oy', text: `${o.y}년 뒤`}), h('span', {class: 'od', text: ymd(o.date)}), h('b', {class: 'num dd', text: ddayText(o.date)})))),
-    h('p', {class: 'note', text: '그날 장이 쉬면 그 뒤 첫 거래일 종가로 엽니다. 365곳 · 36곳이 후보 모두보다 나았는지만 셉니다 — 그 사이 365곳을 날마다 다시 골라도 이 봉인은 그대로입니다.'}));
+    h('p', {class: 'note', text: '그날 장이 쉬면 그 뒤 첫 거래일 종가로 엽니다. 365곳이 후보 모두보다 나았는지만 셉니다 — 그 사이 365곳을 날마다 다시 골라도 이 봉인은 그대로입니다.'}));
   if (D.core.grow) v.append(growSummary(D.core.grow)); // 회사마다 앞으로 클까?(사장님 16:51 · 봉인과 따로 — 16:57 「이건 봉인하지마」)
-  v.append(h('details', {class: 'more'}, h('summary', {text: '그날 이렇게 셉니다 — 봉인과 함께 잠근 규칙'}), h('div', {class: 'in'}, h('ol', {}, ...K.rules.map(r => h('li', {text: r}))))));
+  v.append(h('details', {class: 'more'}, h('summary', {text: '그날 이렇게 셉니다 — 봉인과 함께 잠근 규칙'}), h('div', {class: 'in'}, h('ol', {}, ...K.rules.map(r => h('li', {text: r}))), K.rulesNote ? h('p', {class: 'small', text: K.rulesNote}) : null)));
   v.append(h('div', {class: 'box seal'}, h('h2', {text: `봉인 번호 ${K.digest.slice(0, 12)}`}), h('p', {class: 'digest', text: K.digest}),
     h('p', {class: 'small', text: `기록 파일 ${K.file} · 지우지 않음 · 잠근 내용(날 · 규칙 · 회사 · 종가)이 한 글자만 바뀌어도 번호가 달라집니다 — 회차마다 다른 셈(노드)으로 번호를 다시 맞대 봅니다.`})));
   v.append(foot());
@@ -1495,13 +1440,13 @@ async function route() {
   const my = ++routeSeq, root = $('#view'); root.textContent = ''; chartDraw = null;
   const v = h('div', {class: 'vw'}); root.append(v); // 길마다 새 칸 — 늦게 끝난 앞 화면은 떨어진 칸에 그려져 보이지 않음(구글팀: 두 화면이 겹치던 것)
   const opening = h('p', {class: 'boot'}, MO.cat('white', 34), ' 여는 중입니다…'); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
-  for (const t of ['#tabHome', '#tabList', '#tab36', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
+  for (const t of ['#tabHome', '#tabList', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, raw] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [], arg = dec(raw ?? '');
     if (!kind) { $('#tabHome').setAttribute('aria-current', 'page'); await viewHome(v); }
     else if (arg == null && /^[gic]$/.test(kind)) viewMissing(v); // 깨진 주소 = 없는 주소
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
-    else if (kind === '36') { $('#tab36').setAttribute('aria-current', 'page'); await view36(v); }
+    else if (kind === '36') { location.replace('#/'); return; } // 지운 화면(사장님 2026-10-13 06:45 「영구 삭제」) — 옛 주소는 첫 화면으로
     else if (kind === 'up') { $('#tabUp').setAttribute('aria-current', 'page'); await viewUpdates(v); }
     else if (kind === 'time') await viewTime(v);
     else if (kind === 'g') viewGroup(v, arg);
