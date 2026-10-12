@@ -1,12 +1,12 @@
 {
- "made": "2026-10-12T19:00:22.343Z",
+ "made": "2026-10-12T19:02:29.392Z",
  "from": "2026-10-09T12:15:00Z",
- "listed": 521,
- "candidates": 79,
- "deleted": 27,
- "failed": 52,
- "remaining": null,
- "publishedKept": false,
+ "listed": 493,
+ "candidates": 51,
+ "deleted": 51,
+ "failed": 0,
+ "remaining": 0,
+ "publishedKept": true,
  "publishedAfterFrom": true,
- "error": "The operation was aborted due to timeout"
+ "error": null
 }
