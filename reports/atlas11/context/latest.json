@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-12",
- "fetchedAt": "2026-10-12T10:08:34Z",
- "file": "reports/atlas11/context/2026-10-12/2026-10-12T10-08-34Z.json",
+ "fetchedAt": "2026-10-12T12:01:35Z",
+ "file": "reports/atlas11/context/2026-10-12/2026-10-12T12-01-35Z.json",
  "summary": {
   "day": "2026-10-12",
-  "fetchedAt": "2026-10-12T10:08:34Z",
+  "fetchedAt": "2026-10-12T12:01:35Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-12",
@@ -22,21 +22,21 @@
   },
   "flows": {
    "stocks": 365,
-   "stocksWithToday": 0,
+   "stocksWithToday": 365,
    "provisional": true,
-   "foreignNetSharesSum": null,
-   "institutionNetSharesSum": null,
-   "individualNetSharesSum": null,
+   "foreignNetSharesSum": -9132302,
+   "institutionNetSharesSum": 6873251,
+   "individualNetSharesSum": 1773847,
    "note": "수량(주) 합계 · 종목마다 주가가 달라 금액 합계가 아님 · 당일 값은 잠정일 수 있음"
   },
   "news": {
    "stocks": 365,
-   "raw": 7210,
+   "raw": 7209,
    "distinct": 7166,
-   "republished": 44,
+   "republished": 43,
    "sameArticle": 0,
    "stocksWithTodayNews": 207,
-   "todayDistinct": 1364
+   "todayDistinct": 1378
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-12",
-     "value": 1333.1,
-     "changePct": -0.81
+     "value": 1334,
+     "changePct": -0.74
     },
     "rows": 10
    },
@@ -151,9 +151,9 @@
     "label": "국고채 3년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-10-08",
-     "value": 3.994,
-     "changePct": 1.24
+     "date": "2026-10-12",
+     "value": 3.922,
+     "changePct": -1.8
     },
     "rows": 10
    },
@@ -162,9 +162,9 @@
     "label": "국고채 10년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-10-08",
-     "value": 4.394,
-     "changePct": 0.07
+     "date": "2026-10-12",
+     "value": 4.319,
+     "changePct": -1.71
     },
     "rows": 10
    },
@@ -198,9 +198,9 @@
    "factorId": "F14",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-08",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-12",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "외국인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 값은 16:00 에 잠정일 수 있어 다음 날 다시 받아 바뀌면 정정 기록",
@@ -211,9 +211,9 @@
    "factorId": "F16",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-08",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-12",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "기관 합계 순매매 수량(종목별)",
    "componentOnly": true,
    "note": "정의는 연기금 제외 기관 · 받은 값은 연기금이 포함된 기관 합계 → 일부 성분",
@@ -224,9 +224,9 @@
    "factorId": "F19",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-10-08",
-   "lagSessions": 1,
-   "provisionalToday": false,
+   "latestObservation": "2026-10-12",
+   "lagSessions": 0,
+   "provisionalToday": true,
    "label": "개인 순매매 수량(종목별)",
    "componentOnly": false,
    "note": "네이버 종목 투자자 동향 표 · 당일 잠정 가능",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-12",
-     "value": 1333.1,
+     "value": 1334,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -488,22 +488,22 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-08",
-   "calendarLagDays": 4,
+   "latestObservation": "2026-10-12",
+   "calendarLagDays": 0,
    "series": [
     {
      "series": "KR3YT=RR",
      "label": "국고채 3년",
-     "latestObservation": "2026-10-08",
-     "value": 3.994,
+     "latestObservation": "2026-10-12",
+     "value": 3.922,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR3YT=RR/prices?page=1&pageSize=10"
     },
     {
      "series": "KR10YT=RR",
      "label": "국고채 10년",
-     "latestObservation": "2026-10-08",
-     "value": 4.394,
+     "latestObservation": "2026-10-12",
+     "value": 4.319,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR10YT=RR/prices?page=1&pageSize=10"
     }
