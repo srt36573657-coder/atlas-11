@@ -678,22 +678,56 @@ ol.urows .uc { margin-left: auto; color: var(--sub); font-variant-numeric: tabul
 .ends a { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
 h2.sec.rt { margin-top: 26px; }
 
-/* ── 첫 화면 여섯 장(사장님 2026-10-12 18:31 「그 친구 (소개하기) 밑에 바를 만들어가지고 이렇게 슬라이드로 나오게 해야 돼」 · 네 팀 합친 안 — atlas.js hub()) ──
-   바 = 「친구에게 소개하기」 바로 밑 이름표 단추 여섯 · 21px 고정(글씨 크기 단추와 상관없이 — 아래 탭과 같은 법) · 좁은 화면은 세 칸 두 줄(옆으로 밀려 숨는 이름표 없음) · 넓으면 한 줄
-   지금 장 = 밝은 굵은 글 + 옥색 밑줄(뒤집은 흰 바탕이면 금빛 「!」「?」가 안 보여서 — 금빛은 조심 · 모름에만) · 장은 하나만 보임(나머지 [hidden]) · 들어오는 움직임은 옅어짐 한 번(움직임 줄이기면 없음 · 입체 없음) */
-.hub { margin: 2px 0 6px; }
-.hubbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin: 2px 0 4px; padding: 3px; border: 1px solid var(--hair); border-radius: 16px; background: var(--card2); }
-@media (min-width: 620px) { .hubbar { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-.hubbar button { min-height: 48px; min-width: 0; padding: 2px 0 0; border: 0; border-bottom: 3px solid transparent; border-radius: 13px; background: none; color: var(--sub); font-family: inherit; font-size: 21px; font-weight: 650; line-height: 1.2; white-space: nowrap; letter-spacing: -0.03em; cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease); }
-.hubbar button:hover { color: var(--ink); }
-.hubbar button[aria-selected="true"] { background: var(--card3); color: var(--ink-hi); font-weight: 800; border-bottom-color: var(--violet-ink); }
-.hubbar .hm { color: var(--gold); font-weight: 800; margin-left: 2px; }
-.hp.in { animation: hp-in .2s var(--ease) both; }
-@keyframes hp-in { from { opacity: 0; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .hp.in { animation: none; } }
-.hp > h2.sec:first-child { margin-top: 12px; padding-top: 0; border-top: 0; }
-.hp > h1.head:first-child { margin-top: 12px; }
+/* ── 맨 위 슬라이드 7장(사장님 2026-10-12 19:59 「이게 맨위에 있어서 슬라이드로 나오게 하라고요」 · 20:11 확인 그림에 「응」 — atlas.js hub()) ──
+   슬라이드 칸(둥근 면) 안에 장 7개를 한 줄로 · 옆으로 0.45초 미끄러짐(움직임 줄이기면 바로) · 지금 장 밖은 visibility hidden(.off) · 칸 높이 = 가장 긴 장
+   바 = 슬라이드 밑 칸 7(누르는 자리 44px 넘게 · 금빛 「!」「?」 21px · 가는 줄이 지금 장에서 5초 동안 차오름) · 그 밑 「n / 7 · 이름」 + 「‖ 멈춤」 · 「자세히」는 그 밑에 그 장의 전부 */
+.hub { margin: 4px 0 8px; }
+.hvp { position: relative; overflow: hidden; border-radius: 18px; background: var(--card); border: 1px solid var(--hair); }
+.hrail { display: flex; align-items: stretch; transition: transform .45s var(--ease); }
+@media (prefers-reduced-motion: reduce) { .hrail { transition: none; } }
+.hs { flex: 0 0 100%; min-width: 0; box-sizing: border-box; padding: 14px 16px 6px; display: flex; flex-direction: column; gap: 4px; }
+.hs.off { visibility: hidden; }
+.hs > h2.sec { margin: 0; padding: 0; border: 0; }
+.hs > h1.head { margin: 0 0 2px; font-size: 1.24rem; }
+html.f2 .hs > h1.head { font-size: 1.16rem; } html.f3 .hs > h1.head { font-size: 1.08rem; }
+.hs .when, .hs .lead { margin: 0; }
+.hs .brd { margin: 2px 0; }
+.hs button.q.alert { margin: 0; padding: 4px 0; }
+.hmore { margin: auto 0 0 auto; min-height: 44px; padding: 4px 2px 4px 14px; border: 0; background: none; color: var(--violet-ink); font: inherit; font-weight: 750; cursor: pointer; }
+.hmore:hover, .hplay:hover, .hclose:hover { text-decoration: underline; text-underline-offset: 4px; }
+.hs0 { padding: 0; }
+.hs a.hello.hs-hello { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 0; flex: 1 1 auto; min-height: 240px; margin: 0; padding: 0; border: 0; border-radius: 0; background: var(--band); overflow: hidden; }
+.hs a.hello.hs-hello img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; border-radius: 0; }
+.hs a.hello.hs-hello .hw { position: relative; display: grid; gap: 0; padding: 40px 16px 14px; background: linear-gradient(rgba(6, 26, 23, 0), rgba(6, 26, 23, .9) 45%); }
+.hs a.hello.hs-hello .hw b { font-size: 1.14rem; color: var(--ink-hi); }
+.hs a.hello.hs-hello .hw span { color: var(--ink); }
+.hs a.hello.hs-hello .hello-mo { top: 12px; right: 14px; }
+.mini2 { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 2px; }
+.mline .il { margin: 0; } .mline .il b { color: var(--ink-hi); }
+.mline svg, .mstrip svg { display: block; width: 100%; height: auto; overflow: visible; }
+ol.mrows { list-style: none; margin: 2px 0 0; padding: 0; display: grid; gap: 2px; }
+ol.mrows li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+ol.mrows .sn { color: var(--sub); min-width: 0; }
+ol.mrows.bars { gap: 4px; } ol.mrows.bars li { display: block; } ol.mrows.bars .sl { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 10px; row-gap: 0; margin: 0; }
+ol.mrows.bars .sl > b { margin-left: auto; } /* 한 줄에 안 들어가면(360 · 아주 큰 글씨의 「1조 7,507억 원 더 팖」) 돈은 다음 줄 오른쪽으로 — 장 칸 밖으로 잘리지 않게 */
+.mcap { margin: 2px 0 0; color: var(--ink-hi); font-weight: 800; }
+.mstrip + .ax { display: flex; justify-content: space-between; color: var(--mute); margin-top: 2px; }
+.mtop { margin: 2px 0 0; color: var(--sub); }
+.hbar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; margin: 2px 0 0; }
+.hbar button { min-height: 48px; min-width: 0; padding: 0; border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; }
+.hbar .hm { min-height: 1.2em; font-size: 21px; line-height: 1.2; font-weight: 800; color: var(--gold); }
+.hbar .hl { display: block; width: calc(100% - 6px); height: 6px; border-radius: 3px; background: var(--hair2); overflow: hidden; margin-bottom: 6px; }
+.hbar .hf { display: block; width: 0; height: 100%; background: var(--violet-ink); }
+.hbar .done .hf { width: 100%; }
+.hbar [aria-selected="true"] .hl { background: var(--card3); }
+.hub.run .hbar .on .hf { animation: hb-fill var(--dwell, 5s) linear both; }
+@keyframes hb-fill { from { width: 0; } to { width: 100%; } }
+.hnow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; color: var(--sub); font-variant-numeric: tabular-nums; }
+.hnow .hn b { color: var(--ink-hi); }
+.hplay, .hclose { min-height: 44px; padding: 0 2px 0 12px; border: 0; background: none; color: var(--violet-ink); font: inherit; font-weight: 750; cursor: pointer; white-space: nowrap; }
+.hdet { margin: 6px 0 0; padding: 2px 0 0; border-top: 1px solid var(--hair); }
+.hdh { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; }
+.hdh b { color: var(--ink-hi); }
+.hd > h1.head:first-child, .hd > h2.sec:first-child { margin-top: 6px; padding-top: 0; border-top: 0; }
 button.q.alert { display: block; width: 100%; min-height: 44px; margin: 6px 0 0; padding: 6px 0; border: 0; background: none; text-align: left; font: inherit; font-weight: 800; color: var(--gold); line-height: 1.45; cursor: pointer; }
 button.q.alert:hover { text-decoration: underline; text-underline-offset: 4px; }
-.hnext { display: block; margin: 14px 0 0 auto; min-height: 48px; padding: 6px 2px 6px 14px; border: 0; background: none; color: var(--violet-ink); font: inherit; font-weight: 750; cursor: pointer; }
-.hnext:hover { text-decoration: underline; text-underline-offset: 4px; }

@@ -223,7 +223,7 @@ function claudeLens(S, market) {
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
     ['모르는 값은 「?」(pct)', () => /function pct\(x\) \{ if \(x == null \|\| !isFinite\(x\)\) return '\?';/.test(S.js)],
     ['시장 판독 상자 「지난 값만 · 앞날 맞히기 아님」', () => S.js.includes('지난 값만 · 앞날 맞히기 아님')],
-    ['그림 파일은 띠 사진 하나뿐(공주님 사진을 꾸밈에 쓰지 않음)', () => [...S.js.matchAll(/src:\s*'([^']+)'/g)].every(m => m[1] === '/media/atlas-hello-132.jpg')],
+    ['그림 파일은 소개 사진뿐(맨 위 슬라이드 1장 · 자료를 못 읽을 때 옛 띠 — 공주님 사진을 꾸밈에 쓰지 않음)', () => [...S.js.matchAll(/src:\s*'([^']+)'/g)].every(m => ['/media/atlas-hello-132.jpg', '/media/atlas-hello-wide.jpg'].includes(m[1]))], // 2026-10-12 20:11 맨 위 슬라이드 1장 「친구에게 소개하기」
     ['공주님 얼굴은 제목 달에만(atlas.css url)', () => [...S.css.matchAll(/url\(\s*['"]?([^'")]+)/g)].every(m => m[1].startsWith('data:') || m[1] === '/media/atlas-moon-face.jpg')],
   ];
   return {key: 'claude', name: '클로드', what: '말이 정직하고 안전한가 — 자료 · 시장 판독 글을 읽음', kinds: [

@@ -12,7 +12,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const NS = 'http://www.w3.org/2000/svg';
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const D = {core: null, comp: null, lines: null, names: null};
-const state = {mode: 'eq', played: false, font: 0, hub: 0}; // hub = 첫 화면 여섯 장 가운데 보는 장(사장님 2026-10-12 18:31)
+const state = {mode: 'eq', played: false, font: 0, hub: 0, hubStop: false, hubDet: false}; // hub = 맨 위 슬라이드 7장 가운데 보는 장 · hubStop = 손대서 멈춤 · hubDet = 「자세히」 열림(사장님 2026-10-12 19:59 · 20:11)
 
 // ── 숫자 · 말 ──
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
@@ -242,11 +242,8 @@ function steps(now, hrefs = []) {
 //   카드 하나 = 이름표 → 한 문장 → 그림 하나 → 접힌 자세히(애플) · 때는 맨 위에 한 번 · 다를 때만 카드에(구글) · 지수는 3개월 전 = 100 으로 맞추지 않고 두 칸(같은 비율 폭) ·
 //   업종은 회사 5곳 이상 · 오른 곳 수와 365곳 수를 함께 · 365곳의 치우침을 숫자로(CIA) · 「수급」 → 누가 사고팔았나 · 더 삼 / 더 팖 · VIX → 미국 불안 지수 · 한국 다음에 미국(클로드)
 //   자료 = home.json(scripts/atlas11/t365/home_build.mjs · 회차마다) · 못 받은 조각은 「?」 · 앞날 · 사고팔기 말 없음(규칙 49) · 빨강 · 파랑은 오름 · 내림에만(수급 막대는 옥색 한 색)
-// ── 첫 화면 여섯 장(사장님 2026-10-12 18:31 「그 친구 (소개하기) 밑에 바를 만들어가지고 이렇게 슬라이드로 나오게 해야 돼 … Apple Google CIA Claude … 고민 해가지고」) ──
-//   네 팀을 다시 서로 모르게 따로 돌려 합친 안(설계 기록 「첫 화면 여섯 장」): 바 = 「친구에게 소개하기」 바로 밑 이름표 단추 여섯(오늘 · 지수 · 업종 · 사고팔기 · 미국 · 365곳 ·
-//   21px 고정 · 좁은 화면은 세 칸 두 줄 — 옆으로 밀려 숨는 이름표 없음) · 지금 장 = 밝은 글 + 옥색 밑줄 · 그 장에 문턱 넘은 값이면 금빛 「!」 · 못 받았거나 앞 회차 값이면 금빛 「?」 ·
-//   장은 한 번에 하나만 보임(나머지 hidden — 옆으로 늘어놓으면 옆으로 잘림 · 화면 읽기가 여섯 장을 한꺼번에 읽음) · 주소는 #/ 그대로(장 번호는 state — 회사에 갔다 뒤로 오면 그 장 ·
-//   새로 열거나 아래 「한눈에」를 누르면 1장) · 넘기는 법 = 이름표 · 장 끝 「다음 장 ›」 · 옆으로 밀기 · ← → 키 · 저절로 넘어가지 않음 · 점(●○) 없음 · 「오늘」은 보는 사람의 서울 날짜로
+// ── 첫 화면 여섯 장(사장님 2026-10-12 18:31 「그 친구 (소개하기) 밑에 바를 만들어가지고 이렇게 슬라이드로」) → 맨 위 슬라이드 7장(19:59 「이게 맨위에 있어서 슬라이드로 나오게 하라고요」 ·
+//   20:11 확인 그림에 「응」) — 「친구에게 소개하기」 띠를 따로 두지 않고 맨 위 자리를 통째로 슬라이드로(1장 소개) · 바는 슬라이드 밑 · 5초마다 저절로 · 손대면 멈춤 — 아래 hub() 머리 글
 let homeP = null;
 function needHome() { if (!homeP) homeP = getJson('home.json').then(x => { D.home = x; }).catch(() => { D.home = null; homeP = null; }); return homeP; }
 const mdw = d => { const x = new Date(d + 'T00:00:00Z'); return `${md(d)}(${DOW[x.getUTCDay()]})`; };
@@ -270,7 +267,7 @@ const kstNow = () => new Date(Date.now() + 9 * 36e5).toISOString();
 const dayWord = d => (!d ? '?' : d === kstNow().slice(0, 10) ? '오늘' : mdw(d));
 /** 장 중 말 — 정규장(9:00 ~ 15:30)에 받은 값이고 지금도 그 장 안이면 「장 중」 · 그 장이 지났으면 「장 중에 받은 값」 · 장 밖에 받았으면 「장 끝 값」 */
 const inSession = H => { if (!H?.live) return false; const n = kstNow(), t = n.slice(11, 16); return n.slice(0, 10) === H.kst.slice(0, 10) && t >= '09:00' && t < '15:30'; };
-const liveWord = H => (!H?.live ? '장 끝 값' : inSession(H) ? '장 중 — 값이 아직 바뀝니다' : '장 중에 받은 값 — 마감 값과 다를 수 있습니다');
+const liveWord = H => (!H?.live ? '장 끝 값' : inSession(H) ? '장 중 — 값이 아직 바뀝니다' : '장 중에 받은 값(마감 값과 다를 수 있음)');
 const liveTag = H => (!H?.live ? '' : inSession(H) ? ' (장 중)' : ' (장 중에 받은 값)');
 /** 1장 오늘 — 머리(오늘 두 지수) · 받은 때 · 시장 전체 오르내림 막대 한 줄 · 문턱을 넘은 값만 금빛 「!」(누르면 그 장으로) */
 function homeHead(v, H, go) {
@@ -283,13 +280,14 @@ function homeHead(v, H, go) {
     v.append(h('div', {class: 'brd', role: 'img', 'aria-label': `시장 ${nn}곳 가운데 ${B.up.toLocaleString('ko-KR')}곳 오름 · ${B.down.toLocaleString('ko-KR')}곳 내림`},
       h('div', {class: 'brow'}, h('span', {class: 'bl', 'aria-hidden': 'true', text: '시장 ' + nn + '곳'}),
         h('span', {class: 'bb', 'aria-hidden': 'true'}, st(h('i', {class: 'up'}), {width: w(B.up)}), st(h('i', {class: 'flat'}), {width: w(B.flat)}), st(h('i', {class: 'down'}), {width: w(B.down)})))));
-    v.append(h('p', {class: 'lead'}, `시장 ${nn}곳 중 `, h('b', {class: 'up', text: B.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: B.down.toLocaleString('ko-KR') + '곳 내림'}), ` → ${BW(B.up, B.down)}${liveTag(H)}`));
+    v.append(h('p', {class: 'lead'}, `시장 ${nn}곳 중 `, h('b', {class: 'up', text: B.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: B.down.toLocaleString('ko-KR') + '곳 내림'}), ` → ${BW(B.up, B.down)}`)); // 장 중 꼬리표는 바로 위 받은 때 줄에 한 번(같은 말 두 번 X)
   } else v.append(h('p', {class: 'q', text: '? 시장 전체 오른 곳 · 내린 곳 수를 못 받았습니다.'}));
-  // 조심 「!」 — 미리 정한 문턱(지수 하루 ±3% · 외국 투자자 하루 1조 원)을 넘은 값만 · 두 지수는 한 줄로 · 누르면 그 장으로(클로드팀)
+  // 조심 「!」 — 미리 정한 문턱(지수 하루 ±3% · 외국 투자자 하루 1조 원)을 넘은 값만 · 누르면 그 장으로(클로드팀) · 짧게 한 줄(값은 바로 위 제목과 그 장에 — 360 폭에서 바가 첫 화면 안에 보이게)
   const ix = A.filter(a => a.kind === 'idx'), fx = A.filter(a => a.kind === 'flow');
   const alert = (text, k) => { const b = h('button', {type: 'button', class: 'q alert', text}); b.addEventListener('click', () => go(k, 'alert')); return b; };
-  if (ix.length) v.append(alert(ix.length > 1 ? `! ${ix.map(a => `${a.name} ${pct(a.v)}`).join(' · ')} — 하루에 3% 넘게 움직였습니다 ›` : `! ${iga(ix[0].name)} 하루에 ${pct(ix[0].v)} — 3% 넘게 움직였습니다 ›`, 1));
-  for (const a of fx) v.append(alert(`! 외국 투자자가 ${a.name}에서 하루에 ${eokW(a.v)} 더 ${a.v < 0 ? '팔았습니다' : '샀습니다'} — 1조 원 넘음 ›`, 3));
+  const way = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
+  if (ix.length) v.append(alert(`! ${ix.length > 1 ? '두 지수 모두' : ix[0].name} 3% 넘게 ${way(ix)} ›`, 2));
+  for (const a of fx) v.append(alert(`! 외국 투자자${fx.length > 1 ? ' ' + a.name : ''} 1조 원 넘게 ${a.v < 0 ? '팖' : '삼'} ›`, 4));
 }
 function idxPanel(x, span, band, live) {
   const box = h('div', {class: 'ipan'});
@@ -400,58 +398,154 @@ function home365(v, H) {
       h('ol', {class: 'srows'}, ...list.map(([nm, x]) => h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: nm}), pctEl(x, 'b')), dbar(x, mx)))))));
   }
 }
-// ── 바 + 여섯 장 ──
-const HUB = [['today', '오늘', homeHead], ['idx', '지수', homeIndex], ['sec', '업종', homeSectors], ['flow', '사고팔기', homeFlows], ['us', '미국', homeUS], ['s365', '365곳', home365]];
-let hubGo = null; // 아래 「한눈에」를 누르면 1장으로(맨 아래 tabbar)
-/** 이름표 표시 — 그 장에 문턱을 넘은 값이 있으면 「!」 · 못 받았거나 앞 회차 값이면 「?」(금빛 · 뒷장 조심이 첫 장에서도 보이게) */
+// ── 맨 위 슬라이드 7장(사장님 2026-10-12 19:59 「이게 맨위에 있어서 슬라이드로 나오게 하라고요」 · 20:11 확인 그림에 「응」) ──
+//   맨 위 「친구에게 소개하기」 자리를 통째로 슬라이드로: 1 소개 · 2 오늘 · 3 지수 · 4 업종 · 5 사고팔기 · 6 미국 · 7 365곳 · 바로 밑에 바(칸 7 — 지금 칸이 차오름 · 누르면 그 장 ·
+//   그 장에 문턱 넘은 값이면 금빛 「!」 · 못 받았거나 앞 회차 값이면 금빛 「?」) · 그 밑 「n / 7 · 이름」과 「‖ 멈춤」 단추
+//   5초마다 저절로 넘어감(확인 그림 그대로 · 사장님 「응」) — 손가락 · 마우스 · 키보드가 닿거나 「자세히」를 열거나 「멈춤」을 누르면 멈춤 · 화면 밖 · 다른 창이면 쉼 · 움직임 줄이기면 저절로 안 넘어감(WCAG 2.2.2)
+//   장은 짧은 요약(그림 하나) · 「자세히 ›」 = 바 밑에 그 장의 전부(14:54 종합 정보 칸 그대로) · 지금 장 밖 장은 visibility hidden + inert(옆으로 잘림 · 화면 읽기 · 누름 차례에서 뺌)
+//   주소는 #/ 그대로(장 번호 · 멈춤 · 자세히는 state — 회사에 갔다 뒤로 오면 그대로 · 새로 열거나 아래 「한눈에」를 누르면 1장부터 다시 넘어감)
+const SLIDES = [['hello', '소개'], ['today', '오늘'], ['idx', '지수'], ['sec', '업종'], ['flow', '사고팔기'], ['us', '미국'], ['s365', '365곳']];
+const DWELL = 5000; // 한 장에 머무는 때(확인 그림 「5초마다」)
+let hubGo = null; // 아래 「한눈에」를 누르면 1장부터(맨 아래 tabbar)
+/** 바 칸 표시 — 그 장에 문턱을 넘은 값이 있으면 「!」 · 못 받았거나 앞 회차 값이면 「?」(금빛 · 뒷장 조심이 첫 장에서도 보이게) */
 function hubMark(H, id) {
   const S = H.stale ?? {}, A = H.alerts ?? [];
   const bang = (id === 'idx' && A.some(a => a.kind === 'idx')) || (id === 'flow' && A.some(a => a.kind === 'flow'));
   const q = (id === 'idx' && (!H.idx || S.idx)) || (id === 'sec' && (!H.sectors || S.sectors)) || (id === 'flow' && (!H.flows || S.flows)) || (id === 'us' && (!H.us || S.us)) || (id === 's365' && !H.s365?.list?.length);
   return (bang ? '!' : '') + (q ? '?' : '');
 }
+/** 1장 소개 — 「친구에게 소개하기」(공주님 1분 영상 표지 · 보내기) — 공주님 사진은 이 고리 안에만 */
+function slideHello() {
+  return h('a', {class: 'hello hs-hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello-wide.jpg', alt: '', width: 720, height: 450, decoding: 'async'}),
+    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기 ›'})));
+}
+/** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */
+function miniLine(x, span, live) {
+  const box = h('div', {class: 'mline'});
+  if (!x) { box.append(h('p', {class: 'q', text: '? 값 없음'})); return box; }
+  box.append(h('p', {class: 'il'}, h('b', {text: x.name + ' '}), pctEl(x.day, 'span')));
+  const W = 320, Hh = 76, P = 5, rows = x.rows, n = rows.length, lv = rows.map(r => Math.log(r[1])), mid = (Math.max(...lv) + Math.min(...lv)) / 2, top = mid + span / 2, bot = mid - span / 2;
+  const X = k => P + k * (W - 2 * P) / Math.max(1, n - 1), Y = l => P + (top - l) / (top - bot) * (Hh - 2 * P), T = tok();
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: '100%', height: Hh, role: 'img', 'aria-label': `${x.name} 3개월 — 가장 높던 ${md(x.hi.d)}보다 ${pct(x.hi.vs)}`});
+  svg.append(sv('path', {d: rows.map((r, k) => (k ? 'L' : 'M') + X(k).toFixed(1) + ' ' + Y(lv[k]).toFixed(1)).join(''), fill: 'none', stroke: T.ink, 'stroke-width': 2, 'stroke-linejoin': 'round'}),
+    sv('circle', {cx: X(n - 1).toFixed(1), cy: Y(lv[n - 1]).toFixed(1), r: 4, fill: live ? T.night : (x.day < 0 ? T.down : T.up), stroke: x.day < 0 ? T.down : T.up, 'stroke-width': 2}));
+  box.append(svg);
+  return box;
+}
+function miniIdx(v, H) {
+  const K = H.idx?.KOSPI, Q = H.idx?.KOSDAQ;
+  v.append(h('h2', {class: 'sec', text: '코스피 · 코스닥 — 3개월'}));
+  if (!K && !Q) { v.append(h('p', {class: 'q', text: '? 지수 값을 못 받았습니다.'})); return; }
+  const X = K ?? Q, sp = [K, Q].filter(Boolean).map(x => Math.log(Math.max(...x.rows.map(r => r[1]))) - Math.log(Math.min(...x.rows.map(r => r[1])))), span = Math.max(...sp) * 1.08 || 0.1;
+  add(v, h('p', {class: 'when', text: `${md(X.rows[0][0])} → ${md(X.date)}${liveTag(H)}`}), staleNote(H, 'idx'), h('div', {class: 'mini2'}, miniLine(K, span, H.live), miniLine(Q, span, H.live)));
+}
+/** 4장 업종 — 강한 3 · 약한 3(7 · 7 과 막대는 「자세히」) */
+function miniSec(v, H) {
+  const S = H.sectors, d = S?.date ?? H.idx?.KOSPI?.date;
+  v.append(h('h2', {class: 'sec', text: `${d ? dayWord(d) + ' ' : ''}업종 — ${(S?.label ?? '강한 7').replace('7', '3')} · 약한 3`}));
+  if (!S) { v.append(h('p', {class: 'q', text: '? 업종 값을 못 받았습니다.'})); return; }
+  const six = [...S.strong.slice(0, 3), ...S.weak.slice(0, 3)], max = Math.max(...six.map(g => Math.abs(g.chg)), 0.5);
+  add(v, staleNote(H, 'sectors'), h('ol', {class: 'mrows bars'}, ...six.map(g => h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: g.name}), pctEl(g.chg, 'b')), dbar(g.chg, max)))));
+}
+/** 5장 사고팔기 — 가장 큰 쪽 한 문장 + 코스피 세 줄(돈 · 막대는 「자세히」) */
+function miniFlow(v, H) {
+  const F = H.flows, d = F?.KOSPI?.date ?? F?.KOSDAQ?.date;
+  v.append(h('h2', {class: 'sec', text: `${d ? dayWord(d) + ' ' : ''}누가 사고팔았나`}));
+  if (!F) { v.append(h('p', {class: 'q', text: '? 사고판 돈을 못 받았습니다.'})); return; }
+  const who = [['personal', '개인'], ['foreign', '외국 투자자'], ['institutional', '기관']], mk = [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']];
+  const big = mk.flatMap(([m, mn]) => who.map(([k, kn]) => ({mn, kn, val: F[m]?.[k] ?? null}))).filter(x => x.val != null).sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0];
+  const m0 = F.KOSPI ? 'KOSPI' : 'KOSDAQ';
+  add(v, h('p', {class: 'lead', text: big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : '? 값 없음'}), staleNote(H, 'flows'),
+    h('p', {class: 'mcap', text: m0 === 'KOSPI' ? '코스피' : '코스닥'}), h('ol', {class: 'mrows bars'}, ...who.map(([k, kn]) => { const x = F[m0]?.[k] ?? null, mx = Math.max(...who.map(([q]) => Math.abs(F[m0]?.[q] ?? 0)), 1);
+      return h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: kn}), h('b', {class: 'num', text: x == null ? '?' : `${eokW(x)} 더 ${x < 0 ? '팖' : '삼'}`})), dbar(x, mx, 'one')); })));
+}
+/** 6장 미국 — 마지막 장 · 지수마다 바뀐 비율(60거래일 자는 「자세히」) */
+function miniUS(v, H) {
+  const U = H.us;
+  v.append(h('h2', {class: 'sec', text: '미국 — 마지막 장'}));
+  if (!U) { v.append(h('p', {class: 'q', text: '? 미국 값을 못 받았습니다.'})); return; }
+  add(v, h('p', {class: 'lead', text: `미국 ${U.date ? mdw(U.date) : '?'} 장 끝 — ${U.n}개 가운데 ${U.up}개 오름`}), staleNote(H, 'us'),
+    h('ol', {class: 'mrows bars'}, ...U.rows.map(r => { const at = r.close != null && r.hi > r.lo ? (r.close - r.lo) / (r.hi - r.lo) * 100 : null;
+      return h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: r.name}), pctEl(r.chg, 'b')), h('span', {class: 'ruler', role: 'img', 'aria-label': at == null ? `${r.name} 60거래일 자리 ?` : `${r.name} 60거래일 가장 낮음 ~ 가장 높음 가운데 ${Math.round(at)}% 자리`}, h('i', {class: 'rl'}), at == null ? null : st(h('i', {class: 'rd'}), {left: at.toFixed(1) + '%'}))); })));
+}
+/** 7장 365곳 — 오른 곳 · 내린 곳 + 365곳 가는 막대 그림(누르는 그림 · 회사 고리는 「자세히」 — 옆 밀기와 손가락이 부딪히지 않게) */
+function mini365(v, H) {
+  const S = H.s365;
+  v.append(h('h2', {class: 'sec', text: `365곳 — ${S?.date ? dayWord(S.date) : '?'}`}));
+  if (!S || !S.list.length) { v.append(h('p', {class: 'q', text: '? 365곳 값이 없습니다.'})); return; }
+  const L = S.list, n = L.length, W = 360, Hh = 110, max = Math.max(...L.map(x => Math.abs(x[1])), 1), T = tok(), bw = W / n, mid = Hh / 2;
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: '100%', height: Hh, role: 'img', 'aria-label': `365곳 바뀐 비율 — 많이 오른 차례 · ${S.up}곳 오름 · ${S.down}곳 내림`});
+  svg.append(sv('line', {x1: 0, x2: W, y1: mid, y2: mid, stroke: T.mute, 'stroke-width': 1}));
+  L.forEach(([, c], k) => { const hgt = Math.max(1, Math.abs(c) / max * (mid - 2)); svg.append(sv('rect', {x: (k * bw).toFixed(2), y: (c >= 0 ? mid - hgt : mid).toFixed(1), width: Math.max(0.6, bw - 0.2).toFixed(2), height: hgt.toFixed(1), fill: c > 0 ? T.up : c < 0 ? T.down : T.mute})); });
+  add(v, h('p', {class: 'lead'}, h('b', {class: 'up', text: S.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: S.down + '곳 내림'}), S.flat ? ` · ${S.flat}곳 그대로` : ''), h('div', {class: 'mstrip'}, svg),
+    h('div', {class: 'ax'}, h('span', {text: '많이 오름'}), h('span', {text: '많이 내림'})),
+    S.top ? h('p', {class: 'mtop'}, `▲ ${S.top.n} `, pctEl(S.top.chg, 'span'), ` · ▼ ${S.bot.n} `, pctEl(S.bot.chg, 'span')) : null);
+}
 function hub(v, H) {
-  const box = h('section', {class: 'hub', 'aria-label': '오늘 시장 — 여섯 장'});
-  const bar = h('div', {class: 'hubbar', role: 'tablist', 'aria-label': '여섯 장 — 눌러서 넘기기'}), deck = h('div', {class: 'hdeck'});
-  const tabs = [], panels = [];
-  let cur = 0, swiped = 0;
-  function go(k, how) {
-    if (k < 0 || k >= HUB.length) return;
-    cur = k; state.hub = k;
-    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === k)); t.tabIndex = j === k ? 0 : -1; });
-    panels.forEach((p, j) => { p.hidden = j !== k; p.querySelector('.pick')?.replaceChildren(); p.querySelector('rect.cur')?.setAttribute('fill-opacity', 0); }); // 장을 바꾸면 그림에서 고른 회사 이름은 지움(CIA팀)
-    if (how) { const p = panels[k]; p.classList.remove('in'); void p.offsetWidth; p.classList.add('in'); }
-    if (how === 'key') tabs[k].focus();
-    if (how === 'next' || how === 'swipe' || how === 'alert') { // 바가 위로 벗어나 있으면 바를 위 막대 밑으로(장마다 키가 달라 아래 경주판이 손가락 밑으로 뛰어들지 않게)
-      const top = document.querySelector('.band')?.getBoundingClientRect().bottom ?? 0, y = bar.getBoundingClientRect().top;
-      if (y < top) window.scrollTo({top: scrollY + y - top - 8, behavior: RM.matches ? 'auto' : 'smooth'});
-    }
+  const N = SLIDES.length, box = h('section', {class: 'hub', 'aria-roledescription': '슬라이드 묶음', 'aria-label': '오늘 시장 — 슬라이드 7장'});
+  const vp = h('div', {class: 'hvp'}), rail = h('div', {class: 'hrail'}), bar = h('div', {class: 'hbar', role: 'tablist', 'aria-label': '슬라이드 7장 — 눌러서 가기'});
+  const nowT = h('span', {class: 'hn', 'aria-live': 'off'}), play = h('button', {type: 'button', class: 'hplay'}), now = h('p', {class: 'hnow'}, nowT, RM.matches ? null : play);
+  const close = h('button', {type: 'button', class: 'hclose', text: '접기 ×'}), detT = h('b'), det = h('div', {class: 'hdet', hidden: true}, h('p', {class: 'hdh'}, detT, close));
+  const MINI = {today: (p, x) => homeHead(p, x, go), idx: miniIdx, sec: miniSec, flow: miniFlow, us: miniUS, s365: mini365};
+  const FULL = {idx: homeIndex, sec: homeSectors, flow: homeFlows, us: homeUS, s365: home365};
+  const slides = [], tabs = [], dets = [];
+  let cur = 0, timer = 0, settleT = 0, inView = true, swiped = 0;
+  st(box, {}).style.setProperty('--dwell', DWELL + 'ms');
+  const running = () => box.isConnected && !state.hubStop && !RM.matches && !document.hidden && inView && !state.hubDet;
+  function fill(run) { tabs.forEach((t, j) => { t.classList.toggle('done', j < cur || (j === cur && !run)); t.classList.remove('on'); }); if (run) { void tabs[cur].offsetWidth; tabs[cur].classList.add('on'); } }
+  function schedule() {
+    clearTimeout(timer); const run = running();
+    box.classList.toggle('run', run); fill(run);
+    play.textContent = state.hubStop ? '▶ 넘기기' : '‖ 멈춤'; play.setAttribute('aria-label', state.hubStop ? '저절로 넘기기 다시' : '저절로 넘기기 멈춤');
+    if (run) timer = setTimeout(() => { if (box.isConnected) go(cur + 1, 'auto'); }, DWELL);
   }
-  HUB.forEach(([id, name, build], k) => {
-    const mark = hubMark(H, id), say = (mark.includes('!') ? ' — 조심할 값 있음' : '') + (mark.includes('?') ? ' — 모르는 값 있음' : '');
-    const tab = h('button', {type: 'button', role: 'tab', id: 'ht-' + id, 'aria-controls': 'hp-' + id, 'aria-selected': 'false', tabindex: '-1', 'aria-label': name + say}, name, mark ? h('b', {class: 'hm', 'aria-hidden': 'true', text: mark}) : null);
+  function stop() { if (!state.hubStop) { state.hubStop = true; schedule(); } }
+  function settle() { slides.forEach((s, j) => { const off = j !== cur; s.classList.toggle('off', off); if (off) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden'); s.inert = off; }); }
+  function showDet() { const d = dets[cur]; det.hidden = !state.hubDet || !d; dets.forEach(x => { if (x) x.hidden = x !== d; }); detT.textContent = `자세히 — ${SLIDES[cur][1]}`; }
+  function go(k, how) {
+    k = ((k % N) + N) % N; cur = k; state.hub = k;
+    slides[k].classList.remove('off'); slides[k].removeAttribute('aria-hidden'); slides[k].inert = false;
+    rail.style.transform = `translateX(${-100 * k}%)`;
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === k)); t.tabIndex = j === k ? 0 : -1; });
+    nowT.replaceChildren(h('b', {text: `${k + 1} / ${N}`}), ` · ${SLIDES[k][1]}`);
+    for (const d of dets) { d?.querySelector('.pick')?.replaceChildren(); d?.querySelector('rect.cur')?.setAttribute('fill-opacity', 0); } // 장을 바꾸면 그림에서 고른 회사 이름은 지움
+    showDet();
+    if (how === 'key') tabs[k].focus();
+    clearTimeout(settleT); settleT = setTimeout(settle, RM.matches || !how ? 0 : 480); // 넘어가는 동안만 두 장이 보임
+    schedule();
+  }
+  function openDet(k) { state.hubDet = true; state.hubStop = true; if (k !== cur) go(k, 'tab'); else { showDet(); schedule(); }
+    const top = document.querySelector('.band')?.getBoundingClientRect().bottom ?? 0, y = det.getBoundingClientRect().top; if (y > innerHeight - 80) window.scrollTo({top: scrollY + y - top - 8, behavior: RM.matches ? 'auto' : 'smooth'}); }
+  close.addEventListener('click', () => { state.hubDet = false; showDet(); const top = document.querySelector('.band')?.getBoundingClientRect().bottom ?? 0, y = box.getBoundingClientRect().top; if (y < top) window.scrollTo({top: scrollY + y - top - 8, behavior: RM.matches ? 'auto' : 'smooth'}); });
+  SLIDES.forEach(([id, name], k) => {
+    const mark = MINI[id] && FULL[id] ? hubMark(H, id) : '', say = (mark.includes('!') ? ' — 조심할 값 있음' : '') + (mark.includes('?') ? ' — 모르는 값 있음' : '');
+    const tab = h('button', {type: 'button', role: 'tab', id: 'ht-' + id, 'aria-controls': 'hs-' + id, 'aria-selected': 'false', tabindex: '-1', 'aria-label': `${k + 1}장 ${name}${say}`}, h('b', {class: 'hm', 'aria-hidden': 'true', text: mark}), h('i', {class: 'hl', 'aria-hidden': 'true'}, h('i', {class: 'hf'})));
     tab.addEventListener('click', () => go(k, 'tab'));
-    const panel = h('div', {class: 'hp', role: 'tabpanel', id: 'hp-' + id, 'aria-label': `여섯 장 가운데 ${k + 1}장 — ${name}`, tabindex: '-1', hidden: true});
-    build(panel, H, go);
-    const nx = h('button', {type: 'button', class: 'hnext', text: k < HUB.length - 1 ? `다음 장 · ${HUB[k + 1][1]} ›` : `처음 장 · ${HUB[0][1]} ›`});
-    nx.addEventListener('click', () => go(k < HUB.length - 1 ? k + 1 : 0, 'next'));
-    panel.append(nx);
-    tabs.push(tab); panels.push(panel); bar.append(tab); deck.append(panel);
+    const sl = h('div', {class: 'hs' + (id === 'hello' ? ' hs0' : ''), role: 'tabpanel', id: 'hs-' + id, 'aria-roledescription': '슬라이드', 'aria-label': `7장 가운데 ${k + 1}장 — ${name}`});
+    if (id === 'hello') sl.append(slideHello()); else MINI[id](sl, H);
+    if (FULL[id]) { const more = h('button', {type: 'button', class: 'hmore', text: '자세히 ›'}); more.addEventListener('click', () => openDet(k)); sl.append(more);
+      const d = h('div', {class: 'hd', id: 'hd-' + id, hidden: true}); FULL[id](d, H); dets[k] = d; det.append(d); }
+    slides.push(sl); tabs.push(tab); rail.append(sl); bar.append(tab);
   });
-  bar.addEventListener('keydown', e => { const k = {ArrowRight: cur + 1, ArrowLeft: cur - 1, Home: 0, End: HUB.length - 1}[e.key]; if (k == null) return; e.preventDefault(); go((k + HUB.length) % HUB.length, 'key'); });
-  // 옆으로 밀기 — 손가락 하나 · 화면 가장자리 24px 밖에서 시작 · 가로 60px 넘게 · 세로의 2배 넘게 · 365곳 막대 그림에서 시작하면 회사 고르기(장 그대로) · 민 뒤 0.4초 누름은 버림(엉뚱한 회사로 가지 않게)
-  let sx = null, sy = 0, onStrip = false;
-  deck.addEventListener('touchstart', e => { const t = e.touches[0]; sx = e.touches.length === 1 && t.clientX > 24 && t.clientX < innerWidth - 24 ? t.clientX : null; sy = t.clientY; onStrip = !!e.target.closest?.('.strip'); }, {passive: true});
-  deck.addEventListener('touchcancel', () => { sx = null; }, {passive: true});
-  deck.addEventListener('touchend', e => {
-    if (sx == null || onStrip) { sx = null; return; }
-    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; sx = null;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) { const k = cur + (dx < 0 ? 1 : -1); if (k >= 0 && k < HUB.length) { swiped = Date.now(); go(k, 'swipe'); } }
-  }, {passive: true});
-  deck.addEventListener('click', e => { if (Date.now() - swiped < 400) { e.preventDefault(); e.stopPropagation(); } }, true);
-  box.append(bar, deck); v.append(box);
-  go(Math.min(HUB.length - 1, Math.max(0, state.hub ?? 0)));
-  hubGo = k => go(k);
+  play.addEventListener('click', () => { state.hubStop = !state.hubStop; if (!state.hubStop) state.hubDet = false; showDet(); schedule(); });
+  bar.addEventListener('keydown', e => { const k = {ArrowRight: cur + 1, ArrowLeft: cur - 1, Home: 0, End: N - 1}[e.key]; if (k == null) return; e.preventDefault(); go(k, 'key'); });
+  // 손대면 멈춤 — 누름(손가락 · 마우스) · 키 · 키보드 초점(「‖ 멈춤」 단추는 빼고 — 그 단추가 켜고 끔)
+  box.addEventListener('pointerdown', e => { if (!e.target.closest('.hplay')) stop(); });
+  box.addEventListener('keydown', e => { if (!e.target.closest('.hplay')) stop(); });
+  box.addEventListener('focusin', e => { if (e.target.matches?.(':focus-visible') && !e.target.closest('.hplay')) stop(); });
+  // 옆으로 밀기 — 손가락 하나 · 화면 가장자리 24px 밖에서 시작 · 가로 50px 넘게 · 세로의 2배 넘게 · 끝 장에서는 제자리 · 민 뒤 0.4초 누름은 버림(소개 고리가 잘못 열리지 않게)
+  let sx = null, sy = 0;
+  vp.addEventListener('touchstart', e => { const t = e.touches[0]; sx = e.touches.length === 1 && t.clientX > 24 && t.clientX < innerWidth - 24 ? t.clientX : null; sy = t.clientY; }, {passive: true});
+  vp.addEventListener('touchcancel', () => { sx = null; }, {passive: true});
+  vp.addEventListener('touchend', e => { if (sx == null) return; const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; sx = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 2 * Math.abs(dy)) { const k = cur + (dx < 0 ? 1 : -1); if (k >= 0 && k < N) { swiped = Date.now(); go(k, 'swipe'); } } }, {passive: true});
+  vp.addEventListener('click', e => { if (Date.now() - swiped < 400) { e.preventDefault(); e.stopPropagation(); } }, true);
+  // 화면 밖 · 다른 창이면 쉼
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { for (const x of es) inView = x.isIntersecting; schedule(); }, {threshold: 0.5}).observe(vp);
+  document.addEventListener('visibilitychange', () => { if (box.isConnected) schedule(); });
+  vp.append(rail); box.append(vp, bar, now, det); v.append(box);
+  go(Math.min(N - 1, Math.max(0, state.hub ?? 0)));
+  hubGo = k => { state.hubStop = false; state.hubDet = false; go(k); };
 }
 async function viewHome(v) {
   await needHome();
@@ -477,9 +571,8 @@ async function viewHome(v) {
   const host = h('div');
   const hello = h('a', {class: 'hello', href: '/hello.html'}, h('img', {src: '/media/atlas-hello-132.jpg', alt: '', width: 44, height: 44, decoding: 'async'}) /* 띠 사진은 작은 판(6KB · 2026-10-12 구글팀: 720×1280 128KB 를 44px 로 받던 것) — 영상 표지는 그대로 */, h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '공주님 1분 영상 · 보내기'})),
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
-  v.append(hello);
-  // 종합 정보 = 「친구에게 소개하기」 바로 밑 바 + 여섯 장(사장님 18:31) → 그 아래 20거래일 경주(1단 입구)
-  if (H) hub(v, H); else add(v, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
+  // 맨 위 = 슬라이드 7장(1장 「친구에게 소개하기」 · 사장님 19:59 · 20:11) → 그 아래 20거래일 경주(1단 입구) · 자료를 못 읽으면 옛 소개 띠 + 「?」
+  if (H) hub(v, H); else add(v, hello, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
   v.append(tell.el, head, count, host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
@@ -1372,7 +1465,7 @@ async function boot() {
   $('#hits').addEventListener('click', e => { const a = e.target.closest('a[data-go]'); if (!a) return; e.preventDefault(); const to = a.getAttribute('href'); $('#findSheet').hidden = true; delete document.body.dataset.sheet; if (to.startsWith('#/x/')) location.hash = to; else location.replace(to); });
   let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (chartDraw) chartDraw(); }, 200); });
   addEventListener('hashchange', route);
-  document.querySelector('.tabbar')?.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (!a) return; if (a.getAttribute('href') === '#/') { state.hub = 0; hubGo?.(0); } /* 「한눈에」를 누르면 여섯 장의 1장부터(뒤로 가기는 보던 장 그대로) */ if (a.getAttribute('href') === (location.hash || '#/')) { e.preventDefault(); window.scrollTo({top: 0, behavior: RM.matches ? 'auto' : 'smooth'}); } });
+  document.querySelector('.tabbar')?.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (!a) return; if (a.getAttribute('href') === '#/') { state.hub = 0; state.hubStop = false; state.hubDet = false; hubGo?.(0); } /* 「한눈에」를 누르면 슬라이드 1장부터 다시 넘어감(뒤로 가기는 보던 장 · 멈춤 그대로) */ if (a.getAttribute('href') === (location.hash || '#/')) { e.preventDefault(); window.scrollTo({top: 0, behavior: RM.matches ? 'auto' : 'smooth'}); } });
   try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; }
   catch (e) { console.error(e); const v = $('#view'); v.textContent = ''; const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => location.reload()); v.append(MO.catSleep(72), h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요.'}), again); return; }
   await route();
