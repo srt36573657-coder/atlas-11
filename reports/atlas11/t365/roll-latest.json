@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-12T18:50:50.133Z",
- "kst": "2026-10-13 03:50",
+ "at": "2026-10-12T20:18:53.537Z",
+ "kst": "2026-10-13 05:18",
  "slot": null,
- "reason": "소개 그림 앵무새 막비로 바꿈",
+ "reason": "막비 그림 · 24초 영상 올림",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-FxRn1f/closes/20261012T185050Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-EdV8LA/closes/20261012T201853Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261012",
-  "sec": 89,
+  "sec": 108,
   "firstErrors": []
  },
  "asOf": "2026-10-12",
@@ -132,7 +132,7 @@
   "nEach": 10000000,
   "fail": 0,
   "ok": true,
-  "ms": 178428,
+  "ms": 172503,
   "lenses": [
    {
     "key": "apple",
@@ -155,7 +155,7 @@
     "name": "클로드",
     "n": 10000000,
     "fail": 0,
-    "things": 76192,
+    "things": 76193,
     "first": []
    },
    {
@@ -170,7 +170,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-13 03:53",
+  "kst": "2026-10-13 05:22",
   "live": false,
   "idx": true,
   "flows": true,
@@ -193,7 +193,7 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 88.7
+   "sec": 108
   },
   {
    "name": "후보 표",
@@ -213,32 +213,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 2.1
+   "sec": 2.2
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 7.5
+   "sec": 7.7
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.4
+   "sec": 2.5
   },
   {
    "name": "36곳 셈",
    "code": 0,
-   "sec": 47.5
+   "sec": 48.3
   },
   {
    "name": "36곳 따로 세기",
    "code": 0,
-   "sec": 20
+   "sec": 19.9
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 2.8
+   "sec": 4.5
   },
   {
    "name": "첫 화면 자료",
@@ -248,7 +248,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 178.5
+   "sec": 172.5
   }
  ]
 }
