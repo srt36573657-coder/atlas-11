@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-12",
- "fetchedAt": "2026-10-12T12:01:35Z",
- "file": "reports/atlas11/context/2026-10-12/2026-10-12T12-01-35Z.json",
+ "fetchedAt": "2026-10-12T14:02:02Z",
+ "file": "reports/atlas11/context/2026-10-12/2026-10-12T14-02-02Z.json",
  "summary": {
   "day": "2026-10-12",
-  "fetchedAt": "2026-10-12T12:01:35Z",
+  "fetchedAt": "2026-10-12T14:02:02Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-12",
@@ -31,12 +31,12 @@
   },
   "news": {
    "stocks": 365,
-   "raw": 7209,
-   "distinct": 7166,
+   "raw": 7210,
+   "distinct": 7167,
    "republished": 43,
    "sameArticle": 0,
-   "stocksWithTodayNews": 207,
-   "todayDistinct": 1378
+   "stocksWithTodayNews": 208,
+   "todayDistinct": 1383
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-12",
-     "value": 1334,
-     "changePct": -0.74
+     "value": 1334.9,
+     "changePct": -0.68
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-08",
-     "value": 15.41
+     "date": "2026-10-09",
+     "value": 14.84
     },
     "rows": 60
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-12",
-     "value": 1334,
+     "value": 1334.9,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -392,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-08",
-   "calendarLagDays": 4,
+   "latestObservation": "2026-10-09",
+   "calendarLagDays": 3,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-08",
-     "value": 15.41,
+     "latestObservation": "2026-10-09",
+     "value": 14.84,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-06-14"
     }
