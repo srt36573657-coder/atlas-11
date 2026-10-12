@@ -4,7 +4,7 @@
  "dir": "reports/atlas11/universe/2026-10-11-d365-v2",
  "bundle": "reports/atlas11/universe/2026-10-10/bundle.json.gz",
  "asOf": "2026-10-08",
- "pick36": "pick36-v3",
+ "range": "range-v1",
  "slots": [
   "10:00",
   "12:00",

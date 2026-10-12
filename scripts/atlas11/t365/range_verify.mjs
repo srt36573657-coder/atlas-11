@@ -1,26 +1,24 @@
 #!/usr/bin/env node
-// 36곳(pick36-v1 · v2 · v3) 따로 세기 — pick36.py(파이썬 · numpy)와 다른 길(노드 · 다른 난수)로 다시 세어 맞댐
-//   v3(사장님 2026-10-11 12:41 「기준은 항상 오늘날짜 · 하루에 4번」): 회사 = 환경 변수 ATLAS_D365_DIR 폴더(회차마다 새로 고른 365곳) · 일봉 = 모음 + ATLAS_T365_CLOSES(같은 합치기 규칙을 따로 짬) · 고르는 날까지
-//   회사 = scripts/atlas11/t365/universe.json 의 365곳(v2 = 사장님 2026-10-11 11:43 대세 365곳 d365-v1) · 화면 자료의 판 이름 · 365곳 판이 universe.json 과 같아야 함
-//   쓰는 법(저장소 맨 위에서): node scripts/atlas11/t365/pick36_verify.mjs [화면 자료 = site/atlas/data/pick36.json] [결과 = reports/atlas11/verify/pick36-verify-latest.json]
+// 7단 범위(range-v1) 따로 세기 — range_mc.py(파이썬 · numpy)와 다른 길(노드 · 다른 난수)로 다시 세어 맞댐
+//   사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 옛 36곳 고르기 · 지우기 · 지난 기록 시험 검사는 지움 · 대신 「고른 목록 · 차례가 자료에 없음」을 셈
+//   회사 = 환경 변수 ATLAS_D365_DIR 폴더(회차마다 새로 고른 365곳) 또는 universe.json 폴더 · 일봉 = 모음 + ATLAS_T365_CLOSES(같은 합치기 규칙)
+//   쓰는 법(저장소 맨 위에서): node scripts/atlas11/t365/range_verify.mjs [화면 자료 = site/atlas/data/range.json] [결과 = reports/atlas11/verify/range-verify-latest.json]
 //   ① 거래일 · 하루 수익 · 시장 · 방향 날 수 · 출렁 문턱(역사 창 500거래일)을 처음부터 다시 셈 — 같아야 함
 //   ② 회사 12곳 × 4방향을 회사마다 따로 뽑기(경로 200만 · 다른 난수)로 번 길 몫 · 크게 잃는 길 몫을 다시 셈 — 몬테카를로 흔들림 4배 안이어야 함
 //      (그 방향 날에 값이 빈 회사는 파이썬이 빈칸을 한 번 고정해 채우므로 맞대지 않고 건너뜀 — 건너뛴 수를 적음)
-//   ③ 회사마다 값(번 길 평균 · 가장 나쁜 방향 크게 잃는 길)으로 지우기 · 36곳 고르기를 다시 함 — 같은 36곳 · 같은 차례
-//   ④ 지난 기록 시험의 「365곳 평균」 줄을 종가로 다시 셈 · 36곳 1주씩 합계를 종가로 다시 셈
+//   ③ 회사마다 평균 · 가장 나쁜 방향 값이 네 방향 값과 맞음 · 셈한 회사 수 · 고른 목록 · 차례 · 지움 표시 · 지난 기록 시험이 자료에 없음
 import fs from 'node:fs';
 import zlib from 'node:zlib';
 import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
-const file = path.resolve(ROOT, process.argv[2] ?? 'site/atlas/data/pick36.json');
-const outFile = path.resolve(ROOT, process.argv[3] ?? 'reports/atlas11/verify/pick36-verify-latest.json');
+const file = path.resolve(ROOT, process.argv[2] ?? 'site/atlas/data/range.json');
+const outFile = path.resolve(ROOT, process.argv[3] ?? 'reports/atlas11/verify/range-verify-latest.json');
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const pk = J(file), S = pk.spec;
 const ACT = J(path.join(ROOT, 'scripts/atlas11/t365/universe.json'));
 const UNI = process.env.ATLAS_D365_DIR || path.join(ROOT, ACT.dir);
 const byi = J(path.join(UNI, 'by-industry.json'));
 const pro = J(path.join(UNI, 'proposal.json'));
-const capSel = new Map(pro.picked.map(p => [p.code, p.capEok]));
 const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
 const cos = byi.groups.flatMap(g => g.industries.flatMap(i => i.companies.map(c => ({code: c.code, name: c.name, g: g.id, i: i.name}))));
 const NC = cos.length, H = S.horizon;
@@ -54,7 +52,7 @@ for (let k = 1; k < ND; k++) {
 }
 const iso = d => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`;
 same(iso(DATES[ND - 1]), pk.asOf, '기준일');
-same(S.version, ACT.pick36, '판 이름 = universe.json'); same(S.universe ?? 't365-v1', ACT.version, '365곳 판 = universe.json'); if (!process.argv.includes('--allow-quick')) same(S.quick, false, '빠른 셈이 아님'); // 시험(t365-roll.test)만 빠른 셈을 받음
+same(S.version, ACT.range, '판 이름 = universe.json'); same(pk.schema, 'atlas-new-range-1', '자료 틀'); same(S.universe ?? 't365-v1', ACT.version, '365곳 판 = universe.json'); if (!process.argv.includes('--allow-quick')) same(S.quick, false, '빠른 셈이 아님'); // 시험(t365-roll.test)만 빠른 셈을 받음
 same(Object.keys(pk.companies).sort().join(), cos.map(c => c.code).sort().join(), '회사 365곳 = universe.json 365곳');
 const T = ND - 1, lo = Math.max(H, T - S.window + 1), days = []; for (let k = lo; k <= T; k++) days.push(k);
 const cum = days.map(k => { let s = 0; for (let q = k - H + 1; q <= k; q++) if (!Number.isNaN(Mk[q])) s += Math.log1p(Mk[q]); return s; });
@@ -68,8 +66,8 @@ for (const d of pk.dirs) same(lab.filter(x => x === d.id).length, d.days, `방�
 // ② 회사 12곳 × 4방향 — 회사마다 따로 뽑기(다른 난수 · xoshiro128**)
 function rng(seed) { let a = seed >>> 0, b = 0x9E3779B9, c = 0x243F6A88, d = 0xB7E15162; const rotl = (x, k) => (x << k) | (x >>> (32 - k)); const next = () => { const r = Math.imul(rotl(Math.imul(b, 5), 7), 9) >>> 0; const t = b << 9; c ^= a; d ^= b; b ^= c; a ^= d; c ^= t; d = rotl(d, 11); return r; }; for (let i = 0; i < 20; i++) next(); return () => next() / 4294967296; }
 const NJS = 2_000_000;
-const pickCodes = pk.picks.map(p => p.code);
-const sample = [...pickCodes.slice(0, 4), ...pickCodes.slice(-2), ...Object.entries(pk.companies).filter(([, v]) => v.cut).slice(0, 3).map(([c]) => c), ...Object.entries(pk.companies).filter(([c, v]) => !v.cut && !pickCodes.includes(c) && v.ok).slice(0, 3).map(([c]) => c)];
+const okCodes = Object.entries(pk.companies).filter(([, v]) => v.ok).map(([c]) => c).sort();
+const sample = okCodes.length <= 12 ? okCodes : Array.from({length: 12}, (_, k) => okCodes[Math.floor(k * (okCodes.length - 1) / 11)]); // 고르지 않고 고르게 퍼뜨린 12곳
 const npy = S.paths;
 let mcChecks = 0;
 for (const code of sample) {
@@ -90,40 +88,19 @@ for (const code of sample) {
   });
 }
 
-// ③ 지우기 · 고르기 다시
-const C = Object.entries(pk.companies).map(([code, v]) => ({code, ...v, i: cos.find(c => c.code === code).i}));
-const elig = C.filter(c => c.ok);
-same(elig.length, pk.eligible, '셈한 회사 수');
-const ncut = Math.floor(elig.length / 3 + 1e-9);
-same(ncut, pk.cutN, '지운 수');
-// 화면 자료는 소수 둘째 자리로 줄인 값 — 차례가 그 반올림에서 갈리면 원값으로만 정해짐 → 같은 값 묶음은 「같음」으로 셈
-const cutSet = new Set([...elig].sort((a, b) => b.worst - a.worst || capSel.get(b.code) - capSel.get(a.code)).slice(0, ncut).map(c => c.code));
-const flaggedCut = new Set(C.filter(c => c.cut).map(c => c.code));
-const borderline = [...cutSet].filter(c => !flaggedCut.has(c)).concat([...flaggedCut].filter(c => !cutSet.has(c)));
-const wcut = Math.min(...[...flaggedCut].map(c => pk.companies[c].worst)), wkeep = Math.max(...elig.filter(c => !flaggedCut.has(c.code)).map(c => c.worst));
-checks++; if (!(wcut >= wkeep)) bad.push({what: '지운 곳의 가장 나쁜 값 ≥ 남은 곳', got: wcut, want: `≥ ${wkeep}`});
-checks++; if (borderline.some(c => Math.abs(pk.companies[c].worst - wkeep) > 0.011 && Math.abs(pk.companies[c].worst - wcut) > 0.011)) bad.push({what: '지운 차례 다름(경계 밖)', got: borderline});
-const alive = elig.filter(c => !flaggedCut.has(c.code)).sort((a, b) => b.avg - a.avg || capSel.get(b.code) - capSel.get(a.code));
-const per = new Map(), mine = [];
-for (const c of alive) { if ((per.get(c.i) ?? 0) >= S.perIndustry) continue; per.set(c.i, (per.get(c.i) ?? 0) + 1); mine.push(c.code); if (mine.length === 36) break; }
-const diff = mine.filter((c, k) => c !== pickCodes[k]);
-checks++; if (diff.length) { const tie = diff.every(c => { const a = pk.companies[c].avg; return pickCodes.some(p => Math.abs(pk.companies[p].avg - a) <= 0.011); }); if (!tie) bad.push({what: '36곳 다시 고르기 다름', got: mine.slice(0, 8), want: pickCodes.slice(0, 8)}); }
-for (const [k, p] of pk.picks.entries()) same(p.rank, k + 1, '차례 ' + p.code);
-const counts = new Map(); for (const p of pk.picks) counts.set(p.i, (counts.get(p.i) ?? 0) + 1);
-checks++; if ([...counts.values()].some(n => n > S.perIndustry)) bad.push({what: '한 업종 5곳 넘음'});
-
-// ④ 시험 365곳 평균 · 합계
-const kOf = new Map(DATES.map((d, k) => [iso(d), k]));
-for (const b of pk.backtest?.rows ?? []) {
-  const k = kOf.get(b.t); const cols = []; for (let j = 0; j < NC; j++) if (!Number.isNaN(P[k][j])) cols.push(j);
-  const ret = j => { for (let q = k + H; q > k; q--) if (!Number.isNaN(P[q][j])) return P[q][j] / P[k][j] - 1; return 0; };
-  near(Math.round(cols.reduce((s, j) => s + ret(j), 0) / cols.length * 10000) / 100, b.all, 0.0101, `시험 ${b.t} 365곳 평균`);
-  same(cols.length, b.n, `시험 ${b.t} 회사 수`);
+// ③ 평균 · 가장 나쁜 방향 · 셈한 수 · 고른 목록 없음(36곳 영구 삭제)
+const C = Object.entries(pk.companies);
+same(C.filter(([, v]) => v.ok).length, pk.eligible, '셈한 회사 수');
+for (const [code, v] of C) {
+  if (!v.ok) continue;
+  near(v.avg, Math.round(v.win.reduce((a, b) => a + b, 0) / v.win.length * 100) / 100, 0.0101, '평균 ' + code);
+  near(v.worst, Math.max(...v.big), 0.0101, '가장 나쁜 방향 ' + code);
+  for (const k of ['rank', 'cut']) { checks++; if (k in v) bad.push({what: `회사 ${code} 에 「${k}」(고르기 흔적)`}); }
 }
-const total = pk.picks.reduce((s, p) => s + P[T][cos.findIndex(c => c.code === p.code)], 0);
-near(total, pk.total, 0.5, '36곳 1주씩 합계');
+for (const k of ['picks', 'backtest', 'cutN', 'alive', 'total']) { checks++; if (k in pk) bad.push({what: `자료에 「${k}」(36곳 흔적)`}); }
+checks++; if (/36곳|매수 검토/.test(JSON.stringify(pk))) bad.push({what: '자료 글에 「36곳 · 매수 검토」'});
 
-const res = {schema: 'pick36-verify-1', made: new Date().toISOString(), file: path.relative(ROOT, file), asOf: pk.asOf, version: S.version, checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 20)};
+const res = {schema: 'range-verify-1', made: new Date().toISOString(), file: path.relative(ROOT, file), asOf: pk.asOf, version: S.version, checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 6)}));
 process.exit(bad.length ? 1 : 0);
