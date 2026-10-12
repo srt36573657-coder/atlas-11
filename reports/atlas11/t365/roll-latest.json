@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-12T21:50:12.159Z",
- "kst": "2026-10-13 06:50",
+ "at": "2026-10-12T23:22:54.484Z",
+ "kst": "2026-10-13 08:22",
  "slot": null,
- "reason": "",
+ "reason": "36곳 탭 영구 삭제",
  "ci": true,
  "version": "d365-v2",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-xVBLt6/closes/20261012T215012Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-iNq3n0/closes/20261012T232254Z.json.gz",
   "ok": 1378,
   "failed": 0,
   "last": "20261012",
-  "sec": 108,
+  "sec": 103,
   "firstErrors": []
  },
  "asOf": "2026-10-12",
@@ -47,17 +47,9 @@
   "short": "반도체",
   "chg": 22.14
  },
- "pick36": {
-  "first": [
-   "방림",
-   "삼성전기",
-   "서호전기"
-  ],
-  "reused": false,
-  "test": {
-   "n": 24,
-   "wins": 10
-  }
+ "range": {
+  "eligible": 357,
+  "reused": false
  },
  "market": {
   "schema": "atlas-market-read-1",
@@ -132,14 +124,14 @@
   "nEach": 10000000,
   "fail": 0,
   "ok": true,
-  "ms": 147388,
+  "ms": 167186,
   "lenses": [
    {
     "key": "apple",
     "name": "애플",
     "n": 10000000,
     "fail": 0,
-    "things": 2322,
+    "things": 2285,
     "first": []
    },
    {
@@ -147,7 +139,7 @@
     "name": "구글",
     "n": 10000000,
     "fail": 0,
-    "things": 103665,
+    "things": 103330,
     "first": []
    },
    {
@@ -155,7 +147,7 @@
     "name": "클로드",
     "n": 10000000,
     "fail": 0,
-    "things": 76193,
+    "things": 75764,
     "first": []
    },
    {
@@ -163,14 +155,14 @@
     "name": "CIA",
     "n": 10000000,
     "fail": 0,
-    "things": 44473,
+    "things": 44244,
     "first": []
    }
   ]
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-13 06:53",
+  "kst": "2026-10-13 08:25",
   "live": false,
   "idx": true,
   "flows": true,
@@ -178,7 +170,7 @@
   "us": true,
   "stale": {},
   "errors": [],
-  "alerts": 3
+  "alerts": 2
  },
  "homeFetch": {
   "ok": 10,
@@ -186,24 +178,24 @@
  },
  "verify": {
   "daese": "{\"checks\":6038,\"bad\":0,\"first\":[]}",
-  "site": "{\"checks\":344389,\"bad\":0,\"first\":[]}",
-  "pick36": "{\"checks\":197,\"mcChecks\":96,\"skipped\":0,\"bad\":0,\"first\":[]}"
+  "site": "{\"checks\":344392,\"bad\":0,\"first\":[]}",
+  "range": "{\"checks\":1540,\"mcChecks\":94,\"skipped\":1,\"bad\":0,\"first\":[]}"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 107.7
+   "sec": 103.1
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 1.7
+   "sec": 2
   },
   {
    "name": "365곳 다시 고르기",
    "code": 0,
-   "sec": 3.7
+   "sec": 4.1
   },
   {
    "name": "업종 정리",
@@ -213,32 +205,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.8
+   "sec": 2.1
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 7.2
+   "sec": 7.8
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 2.1
+   "sec": 2.4
   },
   {
-   "name": "36곳 셈",
+   "name": "7단 범위 셈",
    "code": 0,
-   "sec": 41.9
+   "sec": 13.8
   },
   {
-   "name": "36곳 따로 세기",
+   "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 17.5
+   "sec": 20.8
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 4.2
+   "sec": 3.5
   },
   {
    "name": "첫 화면 자료",
@@ -248,7 +240,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 147.4
+   "sec": 167.2
   }
  ]
 }
