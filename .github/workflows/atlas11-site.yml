@@ -35,6 +35,8 @@ jobs:
         run: echo "at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - name: 저장소 받기
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }} # 누른 때가 아니라 일을 시작할 때의 최신 판(같은 줄에 선 매일 실행이 먼저 넣은 기록까지) — 2026-10-12 17:19 손 올리기가 누른 때 판으로 받아 매일 실행 기록과 겹쳐 「기록 남기기」 실패
       - name: 노드 준비
         uses: actions/setup-node@v4
         with:
@@ -74,8 +76,13 @@ jobs:
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
           git commit -m "atlas11 site deploy $(date +%Y-%m-%d) [skip ci]"
           # 같은 때 다른 기록이 먼저 들어가면 밀기가 막힘(2026-10-11 12:27 실제로 한 번) — 받아 붙이고 다시 밀기, 다섯 번까지
+          # 2026-10-12 17:19 — 같은 「최신」 파일(roll-latest · deploy-latest)을 다른 기록이 먼저 고쳐 rebase 가 부딪히면 그대로 멈춰 다섯 번 모두 실패했음
+          #   → 부딪히면 rebase 를 거두고, 겹친 곳은 이번 기록으로(-X theirs = 다시 얹는 이번 커밋) 다시 얹음 · 한 줄씩 붙는 기록(.jsonl)은 .gitattributes union 으로 두 쪽 줄을 모두 남김
           for i in 1 2 3 4 5; do
             if git pull --rebase --autostash -q && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            if git pull --rebase -X theirs --autostash -q && git push; then echo "겹친 「최신」 파일은 이번 기록으로 — $i"; exit 0; fi
+            git rebase --abort 2>/dev/null || true
             echo "밀기 다시 $i — 다른 기록이 먼저 들어감"; sleep $((i * 7))
           done
           exit 1

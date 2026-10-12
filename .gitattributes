@@ -3,3 +3,5 @@
 # 덧붙이기만 하는 기록(.jsonl · 한 줄 = 기록 하나 · id 로 겹침을 가림)은 두 쪽 줄을 모두 남기는 union 으로 합친다 — 줄을 지우거나 고치지 않는다(원칙 규칙 8).
 reports/atlas11/ledger/**/*.jsonl merge=union
 reports/atlas11/operations/deploy-log.jsonl merge=union
+# 2026-10-12 17:19 — 회차 기록 줄(roll-log)도 같은 까닭으로 부딪힘(올리기 기록 남기기 실패) → union
+reports/atlas11/t365/roll-log.jsonl merge=union
