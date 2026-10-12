@@ -330,11 +330,14 @@ function homeToday(v, H) {
     v.append(h('p', {}, `시장 ${nn}곳 중 `, h('b', {class: 'up', text: B.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: B.down.toLocaleString('ko-KR') + '곳 내림'}), ` — 10곳 중 ${k}곳 ${dn ? '내림' : '오름'}${liveTag(H)}`)); }
   else v.append(h('p', {class: 'q', text: '? 시장 전체 오른 곳 · 내린 곳 수를 못 받았습니다.'}));
   const ix = A.filter(a => a.kind === 'idx'), fx = A.filter(a => a.kind === 'flow'), way = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
-  if (ix.length) v.append(h('p', {class: 'q', text: `! ${ix.length > 1 ? '두 지수 모두' : ix[0].name} 하루 3% 넘게 ${way(ix)} — 미리 정한 문턱`}));
+  // 「!」 문턱 home-v3(2026-10-13 01:28 「1억번 계산고 360도 사고」) — 평소의 2.5배 넘고 1.5% 넘음(usual) · 또는 하루 5% 넘음(big)
+  for (const why of ['big', 'usual']) { const xs = ix.filter(a => (a.why ?? 'usual') === why); if (!xs.length) continue;
+    v.append(h('p', {class: 'q', text: `! ${xs.length > 1 ? '두 지수 모두' : xs[0].name} ${why === 'big' ? '하루 5% 넘게' : '평소의 2.5배 넘게'} ${way(xs)} — 미리 정한 문턱`})); }
   for (const a of fx) v.append(h('p', {class: 'q', text: `! 외국 투자자가 ${a.name}에서 ${eokW(a.v)} 더 ${a.v < 0 ? '팖' : '삼'} — 하루 1조 원 문턱`}));
   v.append(h('details', {class: 'more'}, h('summary', {text: '눈금 읽는 법'}), h('div', {class: 'in'},
     h('p', {text: '막대 하나 = 3개월 가운데 하루(왼쪽이 옛날 · 맨 오른쪽 금빛 테가 오늘). 점선 = 오늘 움직인 깊이. 진한 막대 = 오늘만큼 같은 쪽으로 움직인 날.'}),
     h('p', {text: '평소 = 오늘 앞 20거래일 하루 움직임 크기의 평균. 「n월 n일 뒤 가장 큼」은 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 적습니다.'}),
+    h('p', {text: '금빛 「!」 = 평소의 2.5배 넘게 움직이고 1.5% 넘을 때, 또는 하루 5% 넘을 때입니다. 코스피 1990년 · 코스닥 1996년부터의 날마다 기록과 1억 날 흉내로 280가지 문턱을 견줘 골랐습니다(해마다 약 18번 · 조용한 장과 거친 장의 차이가 가장 작음).'}),
     h('p', {text: '센 것일 뿐 — 다음 날을 말하지 않습니다.'}))));
 }
 function idxPanel(x, span, band, live) {

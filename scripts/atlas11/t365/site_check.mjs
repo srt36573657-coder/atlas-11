@@ -79,7 +79,7 @@ function hubExpect(H) {
   const BB = S?.breadth, dnB = BB && BB.down >= BB.up, A2 = H.alerts ?? [], ixA = A2.filter(a => a.kind === 'idx'), wayA = xs => (xs.every(a => a.v < 0) ? '내림' : xs.every(a => a.v > 0) ? '오름' : '움직임');
   const today = [`${(K ?? Q)?.date ? dayWord((K ?? Q).date) + ' ' : ''}시장 — 평소와 견줌`, ...(K ? [gaugeTextX('코스피', gK)] : []), ...(Q ? [gaugeTextX('코스닥', gQ)] : []),
     ...(BB && BB.up + BB.down ? [`시장 ${BB.n.toLocaleString('ko-KR')}곳 중 ${BB.up.toLocaleString('ko-KR')}곳 오름 · ${BB.down.toLocaleString('ko-KR')}곳 내림 — 10곳 중 ${Math.round((dnB ? BB.down : BB.up) / (BB.up + BB.flat + BB.down) * 10)}곳 ${dnB ? '내림' : '오름'}`] : []),
-    ...(ixA.length ? [`! ${ixA.length > 1 ? '두 지수 모두' : ixA[0].name} 하루 3% 넘게 ${wayA(ixA)} — 미리 정한 문턱`] : []),
+    ...['big', 'usual'].flatMap(why => { const xs = ixA.filter(a => (a.why ?? 'usual') === why); return xs.length ? [`! ${xs.length > 1 ? '두 지수 모두' : xs[0].name} ${why === 'big' ? '하루 5% 넘게' : '평소의 2.5배 넘게'} ${wayA(xs)} — 미리 정한 문턱`] : []; }), // home-v3
     ...A2.filter(a => a.kind === 'flow').map(a => `! 외국 투자자가 ${a.name}에서 ${eokW(a.v)} 더 ${a.v < 0 ? '팖' : '삼'} — 하루 1조 원 문턱`)];
   const sd = S?.date ?? K?.date, fd = F?.KOSPI?.date ?? F?.KOSDAQ?.date;
   const all = F ? ['KOSPI', 'KOSDAQ'].flatMap(m => [['personal', '개인'], ['foreign', '외국 투자자'], ['institutional', '기관']].map(([k, kn]) => ({mn: m === 'KOSPI' ? '코스피' : '코스닥', kn, val: F[m]?.[k] ?? null}))).filter(x => x.val != null) : [];

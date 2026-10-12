@@ -156,7 +156,10 @@ function googleLens(S, market, now = new Date()) {
       hchk.push(['업종 365곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]);
       hchk.push(['업종 날짜 = 같이 받은 지수의 마지막 날', () => T.date == null || HM.stale?.sectors || HM.stale?.idx || T.date === (HM.idx?.KOSPI?.date ?? HM.idx?.KOSDAQ?.date)]); } // 2026-10-12 18:31 「오늘 업종」을 보는 날짜로 셈
     if (HM.us) hchk.push(['미국 지수가 60거래일 낮음 ~ 높음 안', () => HM.us.rows.every(r => r.close == null || (r.close >= r.lo - 1e-9 && r.close <= r.hi + 1e-9))]);
-    hchk.push(['「!」 문턱(지수 3% · 외국 투자자 1조 원)', () => (HM.alerts ?? []).every(a => (a.kind === 'idx' ? Math.abs(a.v) >= 3 : Math.abs(a.v) >= 10000))]);
+    // 「!」 문턱 home-v3(2026-10-13) — 지수: 평소(앞 20거래일 하루 움직임 크기 평균)의 2.5배 넘고 1.5% 넘음 · 또는 하루 5% 넘음 · 외국 투자자 1조 원 — 따로 셈해 맞는 「!」만 있고 빠진 「!」 없음
+    const idxWant = k => { const x = HM.idx?.[k]; if (!x?.rows || x.day == null || HM.stale?.idx) return false; const c = x.rows.map(r => r[1]), ch = c.slice(1).map((v, i) => (v / c[i] - 1) * 100), t = Math.abs(ch[ch.length - 1]);
+      const prev = ch.slice(Math.max(0, ch.length - 21), ch.length - 1), u = prev.length === 20 ? prev.reduce((s, v) => s + Math.abs(v), 0) / 20 : null; return t >= 5 || (u != null && t >= 2.5 * u && t >= 1.5); };
+    hchk.push(['「!」 문턱(지수 평소의 2.5배 · 1.5% · 늘 5% · 외국 투자자 1조 원)', () => (HM.alerts ?? []).every(a => (a.kind === 'idx' ? idxWant(a.key) : Math.abs(a.v) >= 10000)) && ['KOSPI', 'KOSDAQ'].every(k => idxWant(k) === (HM.alerts ?? []).some(a => a.kind === 'idx' && a.key === k))]);
     hchk.push(['「장 중」 표시 = 서울 정규장(9:00 ~ 15:30)에 받은 값만', () => { const t = String(HM.kst ?? '').slice(11, 16); return !HM.live || (t >= '09:00' && t < '15:30'); }]); // 2026-10-12 16:04 회차: 장 끝 뒤에도 「장 중」이던 것
   }
   const fileAsOf = [['lines.json', S.lines.asOf], ['comp.json', S.comp.asOf], ['days.json', S.days.asOf], ['names.json', S.names.asOf], ['days 마지막 날', S.days.dates.at(-1)]];

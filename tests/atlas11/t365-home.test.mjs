@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {buildHome, sectorPiece, flowPiece, indexPiece, HOME_RULE} from '../../scripts/atlas11/t365/home_build.mjs';
+import {buildHome, sectorPiece, flowPiece, indexPiece, idxAlert, HOME_RULE} from '../../scripts/atlas11/t365/home_build.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const RAW = path.join(ROOT, 'tests/atlas11/fixtures/home-20261012'), DATA = path.join(ROOT, 'site/atlas/data');
@@ -44,10 +44,10 @@ test('첫 화면 자료 — 못 받은 조각은 앞 회차 값(꼬리표) · �
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 
-test('「장 중」은 서울 정규장(9:00 ~ 15:30)에 받은 값만 — 15:30 뒤 네이버 「OPEN」(시간외 · 저녁 장)은 장 끝(home-v2)', () => {
+test('「장 중」은 서울 정규장(9:00 ~ 15:30)에 받은 값만 — 15:30 뒤 네이버 「OPEN」(시간외 · 저녁 장)은 장 끝(home-v2 부터)', () => {
   const at = iso => buildHome({dataDir: DATA, rawDir: RAW, now: new Date(iso), fetchedAt: iso});
   const h1604 = at('2026-10-12T07:04:00Z'); // 16:04 — 원문 장 상태는 OPEN(14:59 받은 것)이어도
-  assert.equal(HOME_RULE.id, 'home-v2'); assert.equal(h1604.live, false); assert.equal(h1604.idx.KOSPI.live, false); assert.equal(h1604.flows.live, false);
+  assert.equal(HOME_RULE.id, 'home-v3'); assert.equal(h1604.live, false); assert.equal(h1604.idx.KOSPI.live, false); assert.equal(h1604.flows.live, false);
   assert.equal(at('2026-10-12T06:29:00Z').live, true, '15:29 는 장 중'); assert.equal(at('2026-10-12T06:30:00Z').live, false, '15:30 부터 장 끝');
   assert.equal(at('2026-10-11T23:59:00Z').live, false, '8:59 는 장 열기 전');
   assert.equal(at('2026-10-17T01:00:00Z').live, false, '토요일 10:00 — 지수 마지막 날이 오늘이 아님');
@@ -67,4 +67,16 @@ test('업종 · 수급 · 지수 조각 — 회사 5곳 미만 뺌 · 「덜 내
   const x = indexPiece(two, '코스피', {...o, minRows: 2});
   assert.equal(x.day, 10); assert.equal(x.chg20, 10); assert.equal(x.live, false);
   assert.equal(indexPiece(two, '코스피', o), null, '3개월에 거래일 40개 미만 = 덜 받음 → 앞 회차 값(회차를 막지 않게)');
+});
+
+test('지수 「!」 문턱 home-v3 — 평소(앞 20거래일 하루 움직임 크기 평균)의 2.5배 넘고 1.5% 넘음 · 또는 하루 5% 넘음(2026-10-13 01:28 「1억번 계산고 360도 사고」)', () => {
+  const mk = (moves, today) => { let v = 1000; const rows = [['2026-01-01', v]]; [...moves, today].forEach((m, k) => { v *= 1 + m / 100; rows.push([`2026-02-${String(k + 1).padStart(2, '0')}`, v]); }); return {rows, day: today}; };
+  const calm = Array.from({length: 22}, (_, k) => (k % 2 ? 0.4 : -0.4)); // 평소 0.4%
+  assert.equal(idxAlert(mk(calm, 1.2)), null, '1.2% = 평소의 3배지만 1.5% 바닥 밑 — 작은 날에 「!」 없음');
+  assert.deepEqual(idxAlert(mk(calm, -1.6)), {why: 'usual', ratio: 4}, '1.6% = 평소의 4배 · 1.5% 넘음');
+  const wild = Array.from({length: 22}, (_, k) => (k % 2 ? 3 : -3)); // 평소 3%
+  assert.equal(idxAlert(mk(wild, -4.5)), null, '거친 장 4.5% = 평소의 1.5배 · 5% 밑 — 「!」 없음(옛 3% 문턱이면 켜짐)');
+  assert.equal(idxAlert(mk(wild, -6)).why, 'big', '하루 5% 넘으면 평소와 상관없이 늘');
+  assert.equal(idxAlert({rows: [['2026-01-01', 100], ['2026-01-02', 106]], day: 6}).why, 'big', '평소를 셀 수 없어도(20거래일 모자람) 5% 넘으면 켜짐');
+  assert.equal(idxAlert({rows: [['2026-01-01', 100], ['2026-01-02', 104]], day: 4}), null, '평소를 셀 수 없으면 5% 밑은 켜지 않음');
 });

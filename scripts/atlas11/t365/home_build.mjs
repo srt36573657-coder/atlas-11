@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const HOME_RULE = {id: 'home-v2', minSector: 5, top: 7, months: 3, minRows: 40, alertIdx: 3, alertFlow: 10000, open: '09:00', close: '15:30'}; // minRows = 3개월에 거래일이 이보다 적게 오면 덜 받은 것으로 보고 앞 회차 값(네 눈 점검 구글 눈 「3개월 안」과 같은 문턱 — 덜 받은 값 하나가 회차 전체를 막지 않게)
+export const HOME_RULE = {id: 'home-v3', minSector: 5, top: 7, months: 3, minRows: 40, alertK: 2.5, alertFloor: 1.5, alertCap: 5, alertWin: 20, alertFlow: 10000, open: '09:00', close: '15:30'}; // home-v3(2026-10-13 01:28 「1억번 계산고 360도 사고」): 지수 「!」 = 평소(앞 20거래일 하루 움직임 크기 평균)의 2.5배 넘고 1.5% 넘음 · 또는 하루 5% 넘음(옛 home-v2 = 하루 3%) · // minRows = 3개월에 거래일이 이보다 적게 오면 덜 받은 것으로 보고 앞 회차 값(네 눈 점검 구글 눈 「3개월 안」과 같은 문턱 — 덜 받은 값 하나가 회차 전체를 막지 않게)
 const US = [['INX', '.INX', 'S&P 500', 'us-inx.json'], ['IXIC', '.IXIC', '나스닥', 'us-ixic.json'], ['DJI', '.DJI', '다우', 'us-dji.json'], ['SOX', '.SOX', '미국 반도체', 'us-sox.json'], ['VIX', '.VIX', '미국 불안 지수', 'us-vix.json']];
 const num = x => { if (x == null) return null; const v = typeof x === 'number' ? x : +String(x).replace(/[,+\s]/g, ''); return Number.isFinite(v) ? v : null; };
 const iso8 = d => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
@@ -32,6 +32,19 @@ export function indexPiece(raw, name, {months, base, asOf, live, today, minRows 
   const at = d => all.find(r => r[0] === d)?.[1] ?? null, b = at(base), a = at(asOf);
   return {name, rows, date: last, close: lastClose, day: r2((lastClose / prevClose - 1) * 100), live: !!live && last === today,
     hi: {d: hi[0], v: hi[1], vs: r2((lastClose / hi[1] - 1) * 100)}, lo: {d: lo[0], v: lo[1], vs: r2((lastClose / lo[1] - 1) * 100)}, chg20: b && a ? r2((a / b - 1) * 100) : null};
+}
+/** 지수 「!」 문턱(home-v3 · 사장님 2026-10-13 01:28 「너에 의견이 맞니 1억번 계산고 360도 사고 해서 가장 날까론 저의를 내」)
+ *  오늘 움직임이 평소(오늘 앞 20거래일 하루 움직임 크기 평균)의 2.5배 넘고 1.5% 넘을 때 · 또는 하루 5% 넘을 때(평소와 상관없이)
+ *  고른 까닭(scripts/atlas11/t365/alert_study.py · reports/atlas11/t365/alert-study-2026-10-13.json — 코스피 1990 ~ · 코스닥 1996 ~ 날마다 + 1억 날 흉내):
+ *  하루 3% = 조용한 장 · 거친 장 켜지는 날이 75배 차이(지난 3개월 59날 중 21날) · 「평소의 2배」만 = 해마다 약 35번 · 1.5% 밑 작은 날이 「!」의 22% · 5% 넘는 날 22% 놓침 ·
+ *  이 문턱 = 해마다 약 18번 · 장 차이 2배 · 5% 넘는 날 모두 · 1.5% 밑 0(280가지 가운데 두 지수 모두 조건을 지킨 것 중 장마다 가장 고름) */
+export function idxAlert(x, rule = HOME_RULE) {
+  const c = (x?.rows ?? []).map(r => r[1]); if (c.length < 2) return null;
+  const d = []; for (let k = 1; k < c.length; k++) if (c[k - 1] > 0 && c[k] > 0) d.push((c[k] / c[k - 1] - 1) * 100);
+  const t = d.at(-1), a = Math.abs(t ?? 0), W = rule.alertWin;
+  const avg = d.length > W ? d.slice(-W - 1, -1).reduce((s, v) => s + Math.abs(v), 0) / W : null;
+  const big = a >= rule.alertCap, usual = avg != null && a >= rule.alertK * avg && a >= rule.alertFloor;
+  return big || usual ? {why: big ? 'big' : 'usual', ratio: avg ? r2(a / avg) : null} : null;
 }
 /** 수급 — 억 원(+ = 더 삼 · − = 더 팖) */
 export function flowPiece(raw) {
@@ -111,7 +124,7 @@ export function buildHome({dataDir, rawDir = null, prev = null, now = new Date()
   out.cmp20 = {base: core.base, asOf: core.asOf, kospi: i20('KOSPI'), kosdaq: i20('KOSDAQ'), eq: core.all.chg, cw: core.all.cwChg};
   // 미리 정한 문턱을 넘으면 「!」(금빛 · 조심) — 지난 사실만
   const alerts = [];
-  for (const k of ['KOSPI', 'KOSDAQ']) { const x = out.idx?.[k]; if (x?.day != null && Math.abs(x.day) >= HOME_RULE.alertIdx && !out.stale.idx) alerts.push({kind: 'idx', key: k, name: x.name, v: x.day}); }
+  for (const k of ['KOSPI', 'KOSDAQ']) { const x = out.idx?.[k], al = x?.day != null && !out.stale.idx ? idxAlert(x) : null; if (al) alerts.push({kind: 'idx', key: k, name: x.name, v: x.day, ...al}); } // home-v3
   for (const k of ['KOSPI', 'KOSDAQ']) { const f = out.flows?.[k]?.foreign; if (f != null && Math.abs(f) >= HOME_RULE.alertFlow && !out.stale.flows) alerts.push({kind: 'flow', key: k, name: k === 'KOSPI' ? '코스피' : '코스닥', v: f}); }
   out.alerts = alerts;
   return out;
