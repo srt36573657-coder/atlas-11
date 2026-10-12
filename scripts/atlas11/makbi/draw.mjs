@@ -55,7 +55,7 @@ export function makbi(o = {}) {
 </g>`;
 }
 /** 머리만(달 · 둥근 아이콘) — viewBox 0 0 100 100 · 얼굴이 둥근 창을 채움 */
-export function makbiHead(o = {}) {
-  return `<g transform="translate(50 57) scale(.53) translate(-120 -112)">${makbi({...o, tilt: o.tilt ?? -6}).replace(/<path d="M106 238[^>]*\/>|<g transform="rotate\([^)]*84 178\)">[\s\S]*?<\/g>\s*<g transform="rotate\([^)]*156 178\)">[\s\S]*?<\/g>|<ellipse cx="120" cy="198"[^>]*\/>|<g fill="none" stroke="#AE4A70"[\s\S]*?<\/g>|<g fill="${C.foot}">[\s\S]*?<\/g>/g, '')}</g>`;
+export function makbiHead(o = {}) { // 몸 · 날개 · 발 · 꼬리를 뺀 머리만(발 색 #959CA8 = C.foot — 정규식 안에서는 ${} 가 안 풀려 글자로 적음)
+  return `<g transform="translate(50 57) scale(.53) translate(-120 -112)">${makbi({...o, tilt: o.tilt ?? -6}).replace(/<path d="M106 238[^>]*\/>|<g transform="rotate\([^)]*84 178\)">[\s\S]*?<\/g>\s*<g transform="rotate\([^)]*156 178\)">[\s\S]*?<\/g>|<ellipse cx="120" cy="198"[^>]*\/>|<g fill="none" stroke="#AE4A70"[\s\S]*?<\/g>|<g fill="#959CA8">[\s\S]*?<\/g>/g, '')}</g>`;
 }
 export const svg = (w, h, body, extra = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"${extra}>${body}</svg>`;

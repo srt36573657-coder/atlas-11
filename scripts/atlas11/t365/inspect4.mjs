@@ -20,7 +20,12 @@ import {HEADER_TOP} from '../site_headers.mjs';
 /** 옛 사람 얼굴 그림 판(2026-10-13 03:38 「모든 흔적 다 지워」로 저장소 기록에서도 지운 블롭 43개)이 site 안에 다시 들어오면 막음
  *  목록 = scripts/atlas11/probe/old-media-blobs.txt(그림이 아니라 번호만) · 목록을 못 읽으면 실패(조용히 넘기지 않음) */
 const OLD_FACE_LIST = path.join(path.dirname(new URL(import.meta.url).pathname), '../probe/old-media-blobs.txt');
+const noOldFaceMemo = new Map(); // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 파일은 한 번만 읽음 — 2026-10-13 04:5x 묶음이 10분 넘게 걸리던 것)
 function noOldFace(siteDir) {
+  if (noOldFaceMemo.has(siteDir)) return noOldFaceMemo.get(siteDir);
+  const r = noOldFaceOnce(siteDir); noOldFaceMemo.set(siteDir, r); return r;
+}
+function noOldFaceOnce(siteDir) {
   let old; try { old = new Set(fs.readFileSync(OLD_FACE_LIST, 'utf8').split(/\s+/).filter(Boolean)); } catch { return false; }
   if (!old.size) return false;
   const walk = d => fs.readdirSync(d, {withFileTypes: true}).flatMap(e => e.isDirectory() ? (e.name === 'data' || e.name === 'node_modules' ? [] : walk(path.join(d, e.name))) : /\.(jpe?g|png|webp|gif|mp4|webm|svg|avif)$/i.test(e.name) ? [path.join(d, e.name)] : []);

@@ -157,7 +157,7 @@ h1, h2, h3, h4 { letter-spacing: -.01em; line-height: 1.25; }
 .b-name-row:active { opacity: .7; }
 .b-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 2px 0 12px; }
 .b-close { font-size: 1.25rem; font-weight: 700; white-space: nowrap; }
-.b-chg { font-weight: 700; white-space: nowrap; } .b-chg.up { color: var(--up-ink); } .b-chg.down { color: var(--down-ink); } .b-chg.flat { color: var(--sub); }
+.b-chg { font-weight: 700; white-space: nowrap; } .b-chg.up { color: var(--up-ink); } .b-chg.down { color: var(--down-ink); } .b-chg.flat { color: var(--sub); white-space: normal; } /* 「전날과 같음」은 낱말이라 줄을 바꿀 수 있게(2026-10-13 빠짐없는 검사: 이탈리아 말 · 글씨 200% 에서 「uguale al giorno prima」가 옆으로 넘침 388 > 360) */
 .b-date { font-size: .875rem; color: var(--sub); }
 .b-price.big { margin: 10px 0 0; } .b-price.big .b-close { font-size: 2rem; letter-spacing: -.02em; } .b-price.big .b-chg { font-size: 1.125rem; }
 
