@@ -2,3 +2,5 @@
 # 밀어 넣기 문(규칙 34 · 2026-10-08 01:31 「너 시스템으로 그짓 못하게 해」) — 화면 코드를 고치고 빠짐없이 도는 검사(full_check.mjs)를 안 돌렸으면 막는다
 # 켜는 법(저장소마다 한 번): git config core.hooksPath scripts/atlas11/hooks
 node scripts/atlas11/art_gate.mjs || { echo "밀어 넣기 막힘 — node scripts/atlas11/full_check.mjs 를 돌려 실패 0 결과를 함께 커밋하세요(규칙 34)"; exit 1; }
+# 장부 문(2026-10-13 02:33 「뭘걸거야?」) — 틀림 장부 reports/atlas11/trust/ 는 새 파일만
+node scripts/atlas11/trust_gate.mjs || { echo "밀어 넣기 막힘 — 틀림 장부를 지우거나 고쳤습니다. 되돌리고 새 틀림은 새 파일로 더하세요"; exit 1; }
