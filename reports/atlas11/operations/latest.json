@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-12T16:33:38Z",
+  "at": "2026-10-12T16:43:45Z",
   "dayKST": "2026-10-13",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-12T16:33:39.312Z",
+      "startedAt": "2026-10-12T16:43:45.524Z",
       "status": "ok",
-      "durationMs": 35,
+      "durationMs": 28,
       "session": true,
       "afterClose": false,
       "day": "2026-10-13",
@@ -17,30 +17,30 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-12T16:33:39.347Z",
+      "startedAt": "2026-10-12T16:43:45.552Z",
       "status": "ok",
-      "durationMs": 0,
+      "durationMs": 1,
       "skipped": true,
       "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-12T16:33:39.347Z",
+      "startedAt": "2026-10-12T16:43:45.553Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-12T16:33:39.390Z",
+      "startedAt": "2026-10-12T16:43:45.599Z",
       "view": {
-        "boardId": "board-2026-10-12-ca25bf3b",
+        "boardId": "board-2026-10-12-be98b5da",
         "asOf": "2026-10-12",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2917911,
+        "bytes": 2917933,
         "similar": [
           "DB",
           "아스플로",
@@ -64,9 +64,8 @@
           "mismatch": []
         },
         "changelog": {
-          "file": "reports/atlas11/changelog/data-kr/kr-20261013T013338.json",
-          "wrote": true,
-          "title": "수급 · 기사 · 공시를 새로 모음"
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
         },
         "issue": {
           "wrote": false,
@@ -74,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1346
+      "durationMs": 1331
     }
   ],
   "runtime": {
@@ -83,10 +82,10 @@
     "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "38277992859",
+    "runId": "38279069652",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38277992859",
-    "commit": "5c4483c16e494541ad5ae67b221453dfe0feaa45",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38279069652",
+    "commit": "26931ff020394dc7a0de3cc6b73aac16531ca604",
     "serverInstalled": true,
     "scheduledRun": true
   },
@@ -113,5 +112,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "49b59be8e2d074ce9dbcb11ba7afd29be974a5cbd2134d113199c69cf02f999c",
   "expectedStocks": 365,
-  "finishedAt": "2026-10-12T16:33:40.736Z"
+  "finishedAt": "2026-10-12T16:43:46.930Z"
 }
