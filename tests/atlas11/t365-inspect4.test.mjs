@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {inspect4, routeRunner, siteGraph, BANNED} from '../../scripts/atlas11/t365/inspect4.mjs';
-import {readMarket, breadthWord, sizeWord, pctText, MR_RULE, whenWord} from '../../scripts/atlas11/t365/market_read.mjs';
+import {readMarket, breadthWord, sizeWord, pctText, MR_RULE, whenWord, mdText} from '../../scripts/atlas11/t365/market_read.mjs';
 import {HEADER_TOP} from '../../scripts/atlas11/site_headers.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
@@ -44,7 +44,8 @@ test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', 
   const m = readMarket(DATA, null), core = JSON.parse(fs.readFileSync(path.join(DATA, 'core.json'), 'utf8'));
   assert.equal(m.asOf, core.asOf); assert.equal(m.span.chg, core.all.chg); assert.ok(m.day.up + m.day.down + m.day.flat + m.day.none === Object.keys(JSON.parse(fs.readFileSync(path.join(DATA, 'lines.json'), 'utf8')).lines).length);
   assert.equal(m.lines.length, 3); for (const t of m.lines) { assert.match(t, /\d/); for (const w of BANNED) assert.ok(!t.includes(w), t); }
-  const again = readMarket(DATA, m); assert.equal(again.lines.at(-1), '앞 회차와 같은 값입니다.');
+  const again = readMarket(DATA, m); assert.equal(again.lines.at(-1), `앞 회차(${mdText(m.asOf)})와 같은 값 — 하루 오른 곳 ${m.day.up}곳 · 1등 갈래 ${m.groups.top.short} 그대로`);
+  for (const t of again.lines) assert.match(t, /\d/, '앞 회차와 같은 값이어도 줄마다 숫자(클로드 눈 「줄마다 숫자」 — 2026-10-12 21:11 회차가 여기서 걸림)');
   const other = readMarket(DATA, {...m, asOf: '2026-10-07', day: {up: 100}, groups: {top: {id: 'bio', short: '바이오'}}});
   assert.match(other.lines.at(-1), /하루 오른 곳 100곳 → \d+곳 · 1등 갈래 바이오 → /);
 });
@@ -77,7 +78,8 @@ test('진짜 길 함수(route) — 깨진 주소에도 멈추지 않고 「없�
 });
 
 test('네 눈 점검 — 지금 자료는 네 눈 모두 실패 0 · 눈마다 정한 번 수', async () => {
-  const market = readMarket(DATA, null);
+  const market = readMarket(DATA, readMarket(DATA, null)); // 앞 회차와 같은 값인 회차(주말 · 바로 이어 올림 — 2026-10-12 21:11 회차가 클로드 눈 「줄마다 숫자」에 걸렸던 것)도 실패 0
+  assert.equal(market.lines.length, 4);
   const r = await inspect4({siteDir: SITE, market, n: N, now: NOW});
   const stale = await inspect4({siteDir: SITE, market, n: 3000, now: new Date(Date.parse(NOW) + 20 * 864e5)}); // 20일 묵으면 구글 눈이 잡음
   assert.ok(kind(stale, 'google', 'date').fail > 0);

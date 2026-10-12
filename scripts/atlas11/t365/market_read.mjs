@@ -60,7 +60,8 @@ export function readMarket(dataDir, prev = null, now = null) {
   out.lines.push(`${when} — 365곳 가운데 ${day.up}곳 오름 · ${day.down}곳 내림 → ${out.day.word}`);
   out.lines.push(`${core.days}거래일(${mdText(core.base)}부터) — 한 회사 한 표 ${pctText(A.chg)} · 큰 회사는 크게 ${pctText(A.cwChg)} → ${out.span.size}`);
   if (top && low) out.lines.push(`가장 센 갈래 ${top.short} ${pctText(top.chg)}${top.tr ? `(${trText(top.tr)})` : ''} · 가장 약한 갈래 ${low.short} ${pctText(low.chg)}`);
-  if (out.vsPrev) out.lines.push(out.vsPrev.asOf === core.asOf && out.vsPrev.dayUp === day.up && out.vsPrev.topSame ? '앞 회차와 같은 값입니다.'
+  // 앞 회차와 값이 같아도 숫자를 적음(2026-10-12 21:11 손 올리기 회차: 숫자 없는 「앞 회차와 같은 값입니다.」가 클로드 눈 「줄마다 숫자」에 걸려 회차 실패 — 주말 · 쉬는 날 회차마다 날 일)
+  if (out.vsPrev) out.lines.push(out.vsPrev.asOf === core.asOf && out.vsPrev.dayUp === day.up && out.vsPrev.topSame ? `앞 회차(${mdText(out.vsPrev.asOf)})와 같은 값 — 하루 오른 곳 ${day.up}곳 · 1등 갈래 ${top?.short ?? '?'} 그대로`
     : `앞 회차(${mdText(out.vsPrev.asOf)})와 견줌 — 하루 오른 곳 ${out.vsPrev.dayUp}곳 → ${day.up}곳 · 1등 갈래 ${out.vsPrev.topSame ? '그대로 ' + (top?.short ?? '?') : (out.vsPrev.prevTop ?? '?') + ' → ' + (top?.short ?? '?')}`);
   return out;
 }
