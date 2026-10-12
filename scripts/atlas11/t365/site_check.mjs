@@ -84,7 +84,7 @@ function expect(route) {
     }
     const k = pick.companies[code];
     return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null, status: !k || !k.ok ? '? 셈 못 함' : k.rank ? `36곳 가운데 ${k.rank}번째` : k.cut ? '지움' : '남았지만 36곳 밖',
-      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['검은 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
+      why: ['모형 가정 아래 추정 · 검증 전', ...(pick.backtest ? [`지난 ${pick.backtest.n}번 가운데 ${pick.backtest.wins}번만`] : []), '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? ['흰 눈금 = 365곳 가운데값'] : [])], dm: k && k.ok ? 8 : 0};
   }
   if (!kind) { const T = core.time; return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: `지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, trd: core.groups.map(g => trText(g.tr)),
     why: T ? ['3년 전', ymd(T.past.from), won100(T.past.mult365), won100(T.past.multPool), `지금 · 봉인 ${T.id}호`, ...T.opens.flatMap(o => [`${o.y}년 뒤`, ymd(o.date), ddayText(o.date)]), `${T.past.n365}곳 중 ${T.past.half}곳`, `봉인 번호 ${T.digest}`] : []}; }
@@ -163,9 +163,11 @@ for (const [w, hgt, font] of plans) {
         if (bb.width >= 8 && bb.width <= 44 && Math.abs(bb.width - bb.height) <= 2 && !e.closest('svg')) res.squares++;
       }
       // 영상 친구들(사장님 2026-10-11 16:29 「곳곳에 영상에 있는 고양이 무지개 앵무새 꽃 … 공주님은 절대 넣지 말고 곳곳에 잘어울리게」) — 꾸밈 그림 지킴:
-      //  정해 둔 11가지만(사람 · 공주님 그림 없음 — 사진은 소개 띠 한 장뿐) · 화면 읽기에서 숨김 · 자료 칸 안에 없음 · 글자를 덮지 않음 ·
+      //  정해 둔 11가지만(사람 · 공주님 그림 없음 — 사진은 소개 띠 한 장뿐 · 공주님 얼굴은 사장님 2026-10-12 10:53 「달있는곳에 우리 공주님 얼굴 넣어봐」로 제목 옆 달 안에만(바탕 그림 · 아래 「달 속 공주님」)) · 화면 읽기에서 숨김 · 자료 칸 안에 없음 · 글자를 덮지 않음 ·
       //  숫자 · 그림(차트) · ? 와 10px 넘게 떨어짐 · 빨강 · 파랑(오름 · 내림 색)과 색상 25° 안의 진한 색 없음(규칙 53)
       res.mo = []; res.moN = 0;
+      // 달 속 공주님(사장님 2026-10-12 10:53) — 화면 제목(h1) 옆 달(::before 바탕 그림)에 얼굴이 있어야 함 · 제목이 없는 판(도움말 · 찾기)은 셈 밖
+      { const hd = document.querySelector('#view h1.head, #view .co-head h1'); res.moonFace = !hd || sheet ? null : /atlas-moon-face\.jpg/.test(getComputedStyle(hd, '::before').backgroundImage); }
       const MO_OK = new Set(['heart', 'star', 'moon', 'daisy', 'tulip', 'cat', 'catsleep', 'parrot', 'rainbow', 'whale', 'butterfly']);
       const ZONE = '.board, .row, .trio, .lc, .tc, .upchart, ol.p36, .munger, .test, .bt, ul.dirbars, ol.funnel, .key, .lkey, .track, .num, .q, .chip, .box, .digest, .srank, .tell, .trh, .seg, ol.steps, .co-head, .crumb, .badge';
       for (const im of scope.querySelectorAll('img')) if (vis(im) && !im.closest('a.hello')) res.mo.push('사진 ' + (im.getAttribute('src') || '').slice(-24));
@@ -228,6 +230,7 @@ for (const [w, hgt, font] of plans) {
     if (r.squares >= 20) fail(tag, `작은 네모 ${r.squares}개(바둑판)`);
     if (r.mo.length) fail(tag, '영상 친구 자리: ' + [...new Set(r.mo)].slice(0, 3).join(' · '));
     if (r.moN < 1) fail(tag, '영상 친구가 하나도 없음(맨 아래 꽃밭 · 도움말 무지개가 빠짐)');
+    if (r.moonFace === false) fail(tag, '달 속 공주님 얼굴이 없음(제목 옆 달)');
     moTotal += r.moN;
     if (font === 0 && w === 390) links.set(route, r.links);
     const e = expect(route);
