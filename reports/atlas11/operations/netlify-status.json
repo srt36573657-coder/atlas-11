@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-12T05:06:35.824Z",
+  "at": "2026-10-12T05:39:53.995Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-12T05:06:34.194Z",
+    "publishedAt": "2026-10-12T05:39:53.180Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-f3457acc\",\"generatedAt\":\"2026-10-12T05:01:27.073Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-43b0b2d6\",\"generatedAt\":\"2026-10-12T05:32:58.934Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-12T05:03:24Z\",\"asOf\":\"2026-10-12\",\"base\":\"2026-09-08\",\"days\":20,\"pickAsOf\":\"2026-10-12\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":1377,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음 + 날마다 이어 받음(10월 12일 종가까지)\",\"pick\":\""
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-12T05:34:41Z\",\"asOf\":\"2026-10-12\",\"base\":\"2026-09-08\",\"days\":20,\"pickAsOf\":\"2026-10-12\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":1377,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음 + 날마다 이어 받음(10월 12일 종가까지)\",\"pick\":\""
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -106,7 +106,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-12\",\"written\":313,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
+      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-12\",\"written\":306,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
     },
     {
       "url": "https://aaa7377.com/old/",
@@ -124,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-f3457acc\",\"generatedAt\":\"2026-10-12T05:01:27.073Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-08-43b0b2d6\",\"generatedAt\":\"2026-10-12T05:32:58.934Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-08\",\"companies\":365,\"late\":[{\"code\":\"005930\",\"name\":\"삼성전자\",\"date\":\"2026-10-07\"},{\"code\":\"402340\",\"nam"
     }
   ]
 }
