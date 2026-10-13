@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-13",
- "fetchedAt": "2026-10-13T12:00:31Z",
- "file": "reports/atlas11/context/2026-10-13/2026-10-13T12-00-31Z.json",
+ "fetchedAt": "2026-10-13T14:00:39Z",
+ "file": "reports/atlas11/context/2026-10-13/2026-10-13T14-00-39Z.json",
  "summary": {
   "day": "2026-10-13",
-  "fetchedAt": "2026-10-13T12:00:31Z",
+  "fetchedAt": "2026-10-13T14:00:39Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-13",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7210,
-   "distinct": 7164,
-   "republished": 46,
+   "distinct": 7163,
+   "republished": 47,
    "sameArticle": 0,
    "stocksWithTodayNews": 200,
-   "todayDistinct": 1409
+   "todayDistinct": 1419
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-13",
-     "value": 1341.5,
-     "changePct": 0.41
+     "value": 1343.8,
+     "changePct": 0.58
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-09",
-     "value": 14.84
+     "date": "2026-10-12",
+     "value": 15.21
     },
     "rows": 60
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-13",
-     "value": 1341.5,
+     "value": 1343.8,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -392,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-09",
-   "calendarLagDays": 4,
+   "latestObservation": "2026-10-12",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-09",
-     "value": 14.84,
+     "latestObservation": "2026-10-12",
+     "value": 15.21,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-06-15"
     }

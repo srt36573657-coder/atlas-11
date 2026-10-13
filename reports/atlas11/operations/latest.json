@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-13T12:01:48Z",
+  "at": "2026-10-13T14:01:38Z",
   "dayKST": "2026-10-13",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-13T12:01:49.031Z",
+      "startedAt": "2026-10-13T14:01:38.705Z",
       "status": "ok",
-      "durationMs": 18,
+      "durationMs": 330,
       "session": true,
       "afterClose": true,
       "day": "2026-10-13",
@@ -17,19 +17,19 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-13T12:01:49.049Z",
+      "startedAt": "2026-10-13T14:01:39.035Z",
       "status": "ok",
-      "durationMs": 25767,
+      "durationMs": 21661,
       "attempted": true,
       "observations": 0,
       "errors": 41,
-      "recordId": "collection-bbb49dfb4c78a969"
+      "recordId": "collection-d77a244848c58dea"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-13T12:02:14.816Z",
+      "startedAt": "2026-10-13T14:02:00.696Z",
       "status": "ok",
-      "durationMs": 5394,
+      "durationMs": 5536,
       "changed": false,
       "confirmedToday": 361,
       "actualAsOf": "2026-10-01",
@@ -37,15 +37,15 @@
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-13T12:02:20.221Z",
+      "startedAt": "2026-10-13T14:02:06.235Z",
       "view": {
-        "boardId": "board-2026-10-13-677c55bb",
+        "boardId": "board-2026-10-13-d1618837",
         "asOf": "2026-10-13",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2936815,
+        "bytes": 2936997,
         "similar": [
           "DB",
           "펌텍코리아",
@@ -78,7 +78,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1301
+      "durationMs": 1338
     }
   ],
   "runtime": {
@@ -87,10 +87,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "38394071079",
+    "runId": "38409515286",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38394071079",
-    "commit": "67ccea3cad78f485e65d1360a40a740863e2c2a5",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38409515286",
+    "commit": "6f96a6ad37021de2b2726ff1fb7e5672efe17e60",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -142,18 +142,8 @@
         "stockCode": "207940",
         "day": "2026-10-01",
         "reviewedClose": 1429000,
-        "fetchedClose": 1418993,
-        "message": "직전 검토 종가와 15:30 봉이 다름 · 이 종목은 넘기지 않음",
-        "adjustment": {
-          "day": "2026-10-01",
-          "reviewedClose": 1429000,
-          "fetchedClose": 1418993,
-          "ratio": 0.9929972008397481,
-          "secondDay": "2026-09-30",
-          "accepted": false,
-          "reason": "second_day_bar_missing",
-          "note": "2026-09-30 15:30 봉을 못 받음"
-        }
+        "fetchedClose": null,
+        "message": "직전 거래일 15:30 봉 없음(보관 기간 밖일 수 있음) · 교차 검증 불가 · 넘기지 않음"
       },
       {
         "code": "DAY_MISSING",
@@ -385,13 +375,13 @@
       "failed": 1,
       "finalizedToday": 0,
       "crossChecked": 26,
-      "requests": 72,
-      "durationMs": 25739,
+      "requests": 71,
+      "durationMs": 21631,
       "corporateActionAdjusted": []
     },
-    "durationMs": 25740
+    "durationMs": 21632
   },
-  "collectionRecordId": "collection-bbb49dfb4c78a969",
+  "collectionRecordId": "collection-d77a244848c58dea",
   "inputChanged": false,
   "actualAsOf": "2026-10-01",
   "freshStocks": 0,
@@ -768,5 +758,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-10-13) 확정 종가 361/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-13T12:02:21.522Z"
+  "finishedAt": "2026-10-13T14:02:07.573Z"
 }
