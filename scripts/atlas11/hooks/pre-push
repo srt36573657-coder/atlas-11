@@ -6,3 +6,5 @@ node scripts/atlas11/art_gate.mjs || { echo "밀어 넣기 막힘 — node scrip
 node scripts/atlas11/trust_gate.mjs || { echo "밀어 넣기 막힘 — 틀림 장부를 지우거나 고쳤습니다. 되돌리고 새 틀림은 새 파일로 더하세요"; exit 1; }
 # 얼굴 문(2026-10-13 03:38 「모든 흔적 다 지워」) — 지운 옛 사람 얼굴 그림이 다시 들어오면 막음
 node scripts/atlas11/face_gate.mjs || { echo "밀어 넣기 막힘 — 지운 옛 얼굴 그림이 다시 들어 있습니다. 그 파일을 빼고 다시 밀어 넣으세요"; exit 1; }
+# 커밋 번호 문(2026-10-13 12:3x · 틀림 장부 19번) — 기록 탭 줄의 커밋 번호가 저장소 줄기에 있어야 함(다시 쌓기 뒤 바뀐 번호를 막음)
+node scripts/atlas11/changelog_commit_gate.mjs || { echo "밀어 넣기 막힘 — 기록 탭 커밋 번호가 저장소에 없습니다. 바뀐 번호로 고침 줄을 더하세요"; exit 1; }
