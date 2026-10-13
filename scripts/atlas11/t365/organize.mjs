@@ -3,6 +3,7 @@
 //   큰 갈래(groups.json) → 업종(ATLAS 업종 이름 · group365Of) → 회사(시가총액 큰 순) · 빠진 업종이 있으면 멈춤(지어내지 않음)
 //   d365(proposal 회사에 층 tier 가 있음): 회사마다 층 · 네이버 업종 · 대세 순서 · 30거래일 · 업종 · 갈래마다 층별 수
 //   h365(회사에 든 까닭 kind 가 있음 · 2026-10-13 13:04 「힘이 붙는 종목으로」): 회사마다 든 까닭(힘 붙음 · 남김 · 채움) · 앞 · 뒤 10거래일 · 업종 · 갈래마다 든 까닭별 수
+//   mg(proposal 판 이름 mg- · 2026-10-14 00:03 「가 로 하자」 멍거 조건): 회사마다 3해 · ROE · 부채비율 · 가장 낮은 ROE · 업종 · 갈래마다 수만
 import fs from 'node:fs';
 import path from 'node:path';
 import {group365Of} from '../../../lib/atlas11/universe.mjs';
@@ -10,18 +11,20 @@ const [,, candsPath, propPath, outDir] = process.argv;
 const C = JSON.parse(fs.readFileSync(candsPath, 'utf8')).rows, P = JSON.parse(fs.readFileSync(propPath, 'utf8'));
 const G = JSON.parse(fs.readFileSync(new URL('./groups.json', import.meta.url), 'utf8')).groups;
 const by = new Map(C.map(c => [c.code, c])), gOf = new Map(G.flatMap(g => g.industries.map(i => [i, g.id])));
-const H365 = P.picked.every(p => p.kind != null), D365 = !H365 && P.picked.every(p => p.tier != null);
+const MG = /^mg-/.test(P.rules?.version ?? ''), H365 = !MG && P.picked.every(p => p.kind != null), D365 = !MG && !H365 && P.picked.every(p => p.tier != null);
 const rows = P.picked.map(p => { const c = by.get(p.code); if (!c) { console.error('후보 표에 없는 회사', p.code); process.exit(1); } return {...p, industry: group365Of({sector: c.sector, ksic: c.ksic})}; });
 const lost = [...new Set(rows.filter(r => !gOf.has(r.industry)).map(r => r.industry))];
 if (lost.length) { console.error('큰 갈래에 없는 업종:', lost.join(' · ')); process.exit(1); }
 const tiers = cs => [1, 2, 3].map(t => cs.filter(r => r.tier === t).length);
 const kinds = cs => Object.fromEntries(['gain', 'keep', 'fill'].map(k => [k, cs.filter(r => r.kind === k).length]));
-const co = r => H365
+const co = r => MG
+  ? {code: r.code, name: r.name, market: r.market, capEok: r.capEok, sector: r.sector, years: r.years, roe: r.roe, debt: r.debt, minRoe: r.minRoe, why: r.why}
+  : H365
   ? {code: r.code, name: r.name, market: r.market, capEok: r.capEok, kind: r.kind, sector: r.sector, h1: r.h1, h2: r.h2, d: r.d, why: r.why}
   : D365
   ? {code: r.code, name: r.name, market: r.market, capEok: r.capEok, tier: r.tier, sector: r.sector, srank: r.srank, r30: r.r30, part: r.part, why: r.why}
   : {code: r.code, name: r.name, market: r.market, capEok: r.capEok, r1y: r.r1y, t26: r.t26, t27: r.t27, theme: r.theme, why: r.why};
-const tally = cs => (H365 ? {kinds: kinds(cs)} : D365 ? {tiers: tiers(cs)} : {t26: cs.filter(r => r.t26).length, t27: cs.filter(r => r.t27).length});
+const tally = cs => (MG ? {} : H365 ? {kinds: kinds(cs)} : D365 ? {tiers: tiers(cs)} : {t26: cs.filter(r => r.t26).length, t27: cs.filter(r => r.t27).length});
 const groups = G.map(g => {
   const inds = g.industries.map(name => { const cs = rows.filter(r => r.industry === name).sort((a, b) => b.capEok - a.capEok || a.code.localeCompare(b.code));
     return {name, n: cs.length, capEok: cs.reduce((t, r) => t + r.capEok, 0), ...tally(cs), companies: cs.map(co)}; }).filter(i => i.n)
@@ -31,15 +34,18 @@ const groups = G.map(g => {
 }).filter(g => g.n).sort((a, b) => b.n - a.n || b.capEok - a.capEok);
 const total = groups.reduce((t, g) => t + g.n, 0);
 if (total !== rows.length) { console.error('합이 안 맞음', total, rows.length); process.exit(1); }
-const out = {schema: H365 ? 'atlas11-h365-by-industry-1' : D365 ? 'atlas11-d365-by-industry-1' : 'atlas11-t365-by-industry-1', made: new Date().toISOString(), from: path.basename(path.dirname(propPath)) + '/proposal.json', rules: P.rules.version,
+const out = {schema: MG ? 'atlas11-mg-by-industry-1' : H365 ? 'atlas11-h365-by-industry-1' : D365 ? 'atlas11-d365-by-industry-1' : 'atlas11-t365-by-industry-1', made: new Date().toISOString(), from: path.basename(path.dirname(propPath)) + '/proposal.json', rules: P.rules.version,
   order: '큰 갈래 = 회사 수 많은 순(같으면 시가총액 합 큰 순) · 업종 = 회사 수 많은 순 · 회사 = 시가총액 큰 순', counts: {companies: total, groups: groups.length, industries: groups.reduce((t, g) => t + g.industries.length, 0)}, groups};
 fs.writeFileSync(path.join(outDir, 'by-industry.json'), JSON.stringify(out, null, 1));
 const q = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
 const KIND = {gain: '힘 붙음', keep: '남김', fill: '채움'};
-const csv = [H365 ? ['큰 갈래', '업종', '차례(시가총액)', '종목코드', '회사', '시장', '시가총액(억 원)', '든 까닭', '네이버 업종', '앞 10거래일(%)', '뒤 10거래일(%)', '까닭'].join(',')
+const csv = [MG ? ['큰 갈래', '업종', '차례(시가총액)', '종목코드', '회사', '시장', '시가총액(억 원)', '네이버 업종', '결산 3해', 'ROE 3해(%)', '부채비율 3해(%)', '까닭'].join(',')
+  : H365 ? ['큰 갈래', '업종', '차례(시가총액)', '종목코드', '회사', '시장', '시가총액(억 원)', '든 까닭', '네이버 업종', '앞 10거래일(%)', '뒤 10거래일(%)', '까닭'].join(',')
   : D365 ? ['큰 갈래', '업종', '차례', '종목코드', '회사', '시장', '시가총액(억 원)', '층', '네이버 업종', '대세 순서', '30거래일(%)', '까닭'].join(',')
   : ['큰 갈래', '업종', '차례', '종목코드', '회사', '시장', '시가총액(억 원)', '1년 주가(%)', '2026 흐름', '2027 흐름', '까닭'].join(',')];
-for (const g of groups) for (const i of g.industries) i.companies.forEach((c, k) => csv.push((H365
+for (const g of groups) for (const i of g.industries) i.companies.forEach((c, k) => csv.push((MG
+  ? [g.name, i.name, k + 1, c.code, q(c.name), c.market, c.capEok, q(c.sector), c.years.join(' '), c.roe.map(x => x.toFixed(1)).join(' '), c.debt.map(x => x.toFixed(1)).join(' '), q(c.why)]
+  : H365
   ? [g.name, i.name, k + 1, c.code, c.name, c.market, c.capEok, KIND[c.kind], c.sector, (c.h1 * 100).toFixed(1), (c.h2 * 100).toFixed(1), q(c.why)]
   : D365
   ? [g.name, i.name, k + 1, c.code, c.name, c.market, c.capEok, c.tier, c.sector, c.srank, c.r30 == null ? '' : (c.r30 * 100).toFixed(1), q(c.why)]

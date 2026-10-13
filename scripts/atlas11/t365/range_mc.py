@@ -32,7 +32,7 @@ import numpy as np
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 ACT = json.load(open(os.path.join(ROOT, 'scripts/atlas11/t365/universe.json'), encoding='utf-8'))  # 지금 쓰는 365곳
 VERSION = 'range-v1'
-SEED = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2', 'd365-v2': 'pick36-v3', 'h365-v1': 'pick36-v3'}[ACT['version']]  # 옛 셈과 같은 씨앗 이름(같은 자료면 같은 숫자 · 화면에 안 나옴 · 힘 붙은 365곳도 같은 씨앗 — 같은 회사면 같은 범위)
+SEED = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2', 'd365-v2': 'pick36-v3', 'h365-v1': 'pick36-v3', 'mg-v1': 'pick36-v3'}[ACT['version']]  # 옛 셈과 같은 씨앗 이름(같은 자료면 같은 숫자 · 화면에 안 나옴 · 힘 붙은 365곳도 같은 씨앗 — 같은 회사면 같은 범위)
 if ACT.get('range') != VERSION:
     sys.exit('range: universe.json 의 range(%s) 이 이 셈 이름(%s)과 다름' % (ACT.get('range'), VERSION))
 QUICK = '--quick' in sys.argv
