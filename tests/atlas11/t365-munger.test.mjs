@@ -42,7 +42,7 @@ print(json.dumps({'s': {c: v['s'] for c, v in res['status'].items()}, 'w': {c: v
 });
 
 test('10월 10일 모음 — 26곳 · 깔때기 · 노드 따로 세기 틀림 0 · 값을 바꾸면 잡음 · 주가를 안 씀', () => {
-  assert.equal(ACT.version, 'mg-v1');
+  assert.equal(ACT.version, 'ml-v1', '지금 바탕 판 = 멍거 · 린치 조건(멍거 갈래는 이 시험의 munger.py 그대로)');
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mg-'));
   try {
     const now = path.join(tmp, 'now.json');
@@ -54,8 +54,8 @@ test('10월 10일 모음 — 26곳 · 깔때기 · 노드 따로 세기 틀림 0
     for (const p of a.picked) { assert.equal(p.years.length, 3); assert.ok(p.net.every(x => x > 0) && p.debt.every(x => x <= 100) && p.roe.every(x => x >= 18), p.name); assert.ok(p.years.every(y => !y.endsWith('E'))); }
     const names = a.picked.map(p => p.name); for (const n of ['에이피알', '한미반도체', '코웨이']) assert.ok(names.includes(n), n);
     const out = Object.fromEntries(a.outside.map(o => [o.name, o])); assert.equal(out['삼성전자'].s, 'roe'); assert.equal(out['SK하이닉스'].s, 'loss'); assert.equal(out['현대차'].s, 'debt');
-    // 바탕 판(저장소)과 같은 곳 · 같은 차례
-    const base = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.map(p => p.code));
+    // 바탕 판(저장소 · ml-v1)의 멍거 갈래와 같은 곳 · 같은 차례
+    const base = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.filter(p => p.tags.includes('mg')).map(p => p.code));
     r = spawnSync('node', ['scripts/atlas11/t365/munger_verify.mjs', now, path.join(tmp, 'a', 'proposal.json'), path.join(tmp, 'v.json')], {cwd: ROOT, encoding: 'utf8'}); assert.equal(r.status, 0, r.stdout + r.stderr); assert.match(r.stdout, /틀림 0/);
     // 값을 바꾸면 따로 세기가 잡음 — ① 고른 곳 하나의 ROE 를 18 밑으로 ② 밖 회사 하나의 멈춘 자리를 바꿈
     const bad1 = JSON.parse(JSON.stringify(a)); bad1.picked[0].roe[1] = 12; fs.writeFileSync(path.join(tmp, 'bad1.json'), JSON.stringify(bad1));

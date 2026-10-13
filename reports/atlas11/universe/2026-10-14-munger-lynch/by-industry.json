@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-ml-by-industry-1",
- "made": "2026-10-13T22:10:56.567Z",
+ "made": "2026-10-13T22:36:34.005Z",
  "from": "2026-10-14-munger-lynch/proposal.json",
  "rules": "ml-v1",
  "order": "큰 갈래 = 회사 수 많은 순(같으면 시가총액 합 큰 순) · 업종 = 회사 수 많은 순 · 회사 = 시가총액 큰 순",

@@ -97,7 +97,7 @@ def rules_text(res, slots, asof_word):
         'data': '회사 목록 · 결산 = 모음 %s · 확정 결산 마지막 3해(예상치는 안 씀) · 린치의 값 = %s 값' % (BUNDLE, asof_word),
         'groups': [
             {'k': 'mg', 'name': munger.NAME, 'n': nm, 'conds': m['conds'], 'price': m['price'], 'notCounted': m['notCounted'], 'limits': m['limits'],
-             'who': '찰리 멍거 — 버크셔 해서웨이 부회장(1978 ~ 2023)'},
+             'who': '찰리 멍거 — 버크셔 해서웨이 부회장'},
             {'k': 'ly', 'name': lynch.NAME, 'n': nl, 'conds': lynch.conds(asof_word),
              'price': '값으로 고릅니다 — 크는 빠르기에 견줘 값이 싼지를 %s 값으로 셌습니다(린치 「값이 성장률보다 낮을 것」).' % asof_word,
              'notCounted': '숫자로 못 센 린치 조건 — 빚(정한 숫자 없이 업종과 견줌) · 「성장하지 않는 업종 안」은 사람이 볼 몫입니다.',

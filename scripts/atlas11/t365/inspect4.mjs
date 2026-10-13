@@ -204,7 +204,7 @@ function googleLens(S, market, now = new Date()) {
     {k: 'company', name: '회사 — 1주 값 · 20거래일 비율 · 이름 · 번호', items: S.codes.length * 4, check(i) {
       const c = S.codes[i >> 2], x = comp[c], co = S.co[c], L = lines[c];
       switch (i & 3) {
-        case 0: { const lc = co ? co.close.findLast(v => v != null) ?? null : undefined; return co && x.price === lc ? null : `${c} 1주 값 ${x.price} ≠ 회사 파일 마지막 종가 ${lc}`; } // 마지막 값 있는 날(거래가 멈춘 회사도 남는 멍거 조건 — 끝 칸이 빈 날일 수 있음 · 2026-10-14)
+        case 0: { const lc = co ? co.close.findLast(v => v != null) ?? null : undefined; return co && x.price === lc ? null : `${c} 1주 값 ${x.price} ≠ 회사 파일 마지막 종가 ${lc}`; } // 마지막 값 있는 날(거래가 멈춘 회사도 남는 멍거 갈래 — 끝 칸이 빈 날일 수 있음 · 2026-10-14)
         case 1: if (L[0] == null || L[W - 1] == null) return x.chg == null ? null : `${c} 선이 비었는데 비율 ${x.chg}`; return Math.abs(x.chg - (L[W - 1] / L[0] * 100 - 100)) <= 0.011 ? null : `${c} 비율 ${x.chg} ≠ 선 ${(L[W - 1] / L[0] * 100 - 100).toFixed(2)}`;
         case 2: { const r = S.names.rows.find(y => y.c === c); return r && r.n === x.name ? null : `${c} 이름 「${x.name}」 ≠ 찾기 이름표 「${r?.n}」`; }
         default: return co && co.code === c ? null : `${c} 회사 파일 번호 ${co?.code}`;
@@ -244,16 +244,20 @@ function claudeLens(S, market) {
   const unknownKeys = ['per', 'r1y', 'mdd1y', 'chg', 'mdd', 'cap', 'price'];
   // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 — 2026-10-13 07:2x 묶음이 4분 넘게 걸리던 것 · 옛 얼굴 문과 같은 까닭)
   const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !has36Text(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null, S.upd ?? null])) /* 업데이트 탭 글도(13:0x 08:22 까닭 칸 「36곳 탭 영구 삭제」를 놓친 것) */;
-  // 멍거 조건(2026-10-14 00:03 「가 로 하자」 · mg-v1) — 화면 자료에 옛 기준 말 · 차례 칸 없음 · 회사마다 3해 값 · 세 조건을 모두 넘음(한 번만 셈)
+  // 멍거 · 린치 조건(2026-10-14 06:05 「가」 · ml-v1 — 멍거 갈래는 00:03 「가 로 하자」 그대로) — 화면 자료에 옛 기준 말 · 차례 칸 없음 · 꼬리표마다 갈래 값 · 갈래 조건을 넘음(한 번만 셈)
   const oldWords = oldRuleHits(JSON.stringify([S.core, S.comp, S.names, S.home ?? null, (S.upd?.records ?? []).map(r => [r.reason, r.why])]));
-  const noRank = Object.values(comp).every(x => x.pick && Array.isArray(x.pick.years) && x.pick.years.length === 3 && !['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia'].some(k => k in x.pick));
-  const RU = S.core.rules ?? {}, mgOk = Object.values(comp).every(x => x.pick?.net?.every(v => v > 0) && x.pick?.debt?.every(v => v <= RU.debtLine) && x.pick?.roe?.every(v => v >= RU.roeLine));
+  const noRank = Object.values(comp).every(x => x.pick && Array.isArray(x.pick.tags) && x.pick.tags.length > 0 && !['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia', 'years', 'net', 'roe', 'debt'].some(k => k in x.pick));
+  const RU = S.core.rules ?? {};
+  const tagOk = Object.values(comp).every(x => JSON.stringify(x.pick?.tags) === JSON.stringify([x.pick?.mg ? 'mg' : null, x.pick?.ly ? 'ly' : null].filter(Boolean)));
+  const mgOk = Object.values(comp).every(x => !x.pick?.mg || (x.pick.mg.years?.length === 3 && x.pick.mg.net.every(v => v > 0) && x.pick.mg.debt.every(v => v <= RU.debtLine) && x.pick.mg.roe.every(v => v >= RU.roeLine)));
+  const lyOk = Object.values(comp).every(x => !x.pick?.ly || (x.pick.ly.g >= RU.growLine?.[0] && x.pick.ly.g <= RU.growLine?.[1] && x.pick.ly.score >= RU.scoreLine && x.pick.ly.pxDay === RU.lyDay && x.pick.ly.eps.every(v => v > 0)));
   const code = [
     ['안전 문장(맨 아래)', () => S.js.includes(SAFETY)],
-    ['멍거 조건 — 자료에 옛 기준 말(OLD_RULE_WORDS 목록) 없음 · 지난 회차 · 봉인은 「옛 규칙(…)」 꼬리표만(걸린 글이 기록에 다시 실려도 걸리지 않게 이름에 그 말을 안 씀)', () => oldWords.length === 0],
-    ['멍거 조건 — 회사마다 3해 값 · 차례 · 층 · 옛 든 까닭 칸 없음(규칙 55)', () => noRank],
-    ['멍거 조건 — 고른 곳 모두 세 조건(3해 돈 벎 · 빚 ≤ 자기 돈 · 해마다 18원 넘게)을 넘음', () => RU.version === 'mg-v1' && mgOk],
-    ['멍거 조건 — 이름 밑 세 조건 · 「멍거가 고른 목록이 아닙니다」', () => S.js.includes('const pickLine = C =>') && RU.conds?.length === 3 && String(RU.notMunger ?? '').includes('멍거가 고른 목록이 아닙니다') && !S.js.includes('그중 「힘 붙음」 ${k.gain}')],
+    ['멍거 · 린치 조건 — 자료에 옛 기준 말(OLD_RULE_WORDS 목록) 없음 · 지난 회차 · 봉인은 「옛 규칙(…)」 꼬리표만(걸린 글이 기록에 다시 실려도 걸리지 않게 이름에 그 말을 안 씀)', () => oldWords.length === 0],
+    ['멍거 · 린치 조건 — 회사마다 꼬리표와 갈래 값이 맞음 · 차례 · 층 · 옛 든 까닭 칸 없음(규칙 55)', () => noRank && tagOk],
+    ['멍거 갈래 — 꼬리표 mg 회사 모두 세 조건(3해 돈 벎 · 빚 ≤ 자기 돈 · 해마다 18원 넘게)을 넘음', () => RU.version === 'ml-v1' && mgOk],
+    ['린치 갈래 — 꼬리표 ly 회사 모두 두 조건(한 주 이익 해마다 20 ~ 25% · 점수 2 넘음 · 모음 날 값)을 넘음', () => RU.version === 'ml-v1' && lyOk],
+    ['멍거 · 린치 조건 — 이름 밑 갈래마다 수 · 「멍거 · 린치가 고른 목록이 아닙니다」', () => S.js.includes('const pickLine = C =>') && RU.groups?.length === 2 && RU.groups[0]?.conds?.length === 3 && RU.groups[1]?.conds?.length === 2 && String(RU.notMunger ?? '').includes('멍거 · 린치가 고른 목록이 아닙니다') && /^멍거 조건 \d+곳 · 린치 조건 \d+곳 · 둘 다 \d+곳$/.test(RU.line ?? '') && !S.js.includes('그중 「힘 붙음」 ${k.gain}')],
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],
     ['36곳 없음 — 화면 코드 · 자료에 「36곳 · 매수 검토」 · 36곳 화면 · 탭 · 자료 파일 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)', () => no36],
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],

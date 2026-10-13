@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 새 ATLAS(aaa7377.com/atlas/) 화면 빠짐없이 돌기 — 첫 화면 · 갈래 · 업종(1곳뿐인 업종은 회사로 넘어감) · 회사 365 · 업종 탭 · 도움말 · 찾기 · 365곳 밖
 //   2026-10-13 06:45 사장님 「매수 검토 36곳 영구 삭제 하라」: 36곳 화면 · 탭 · 7단 차례 줄 · 봉인 36곳을 지움 — 모든 화면에 「36곳 · 매수 검토」 글 · #/36 길 0 · #/36 은 첫 화면으로(「36곳 없음」 검사)
+//   2026-10-14 06:05 멍거 · 린치 조건(ml-v1 · 「가」): 회사 화면 「왜 멍거 · 린치 조건 N곳에 들었나요?」 넘은 갈래마다 값(멍거 세 조건 · 린치 두 조건) · 이름 밑 갈래마다 수 · 깔때기 두 갈래 ·
 //   2026-10-14 00:03 멍거 조건(mg-v1 · 「가 로 하자」): 회사 화면 「왜 멍거 조건 N곳에 들었나요?」 세 조건 해마다 값 · 이름 밑 세 조건 · 옛 「힘 붙은 365곳」 글 0 ·
 //   (옛) 2026-10-13 13:04 힘 붙은 365곳(h365-v1 · 「힘이 붙는 종목으로」): 회사 화면 「왜 365곳에 들었나요?」 든 까닭 · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱 · 이름 밑 한 줄 ·
 //     도움말 고른 곳 · 안 고른 곳 가운데값 · 회차 시각 = slots · 깔때기 숫자도 맞댐 · 옛 기준 말(대세 · 층 · 두 팀) 0(지난 회차 「옛 규칙(대세 업종)」 꼬리표 · 봉인 화면 빼고) · 순위 글 0 · 좁은 금지 말 9개 0
@@ -36,7 +37,7 @@ const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co
 const lines = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.json'), 'utf8')).lines; // 3단 100만 원 줄(기준일 = 100 · 2026-10-12 클로드팀)
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
 // 바탕 회사 이름 · 밑 한 줄(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 수는 자료에서) · 억 원 글(atlas.js eok 과 같은 셈을 따로 적음)
-const PN = `${core.rules.name} ${core.funnel.picked}곳`, NPK = core.funnel.picked, PLINE = core.rules.conds.map(x => x.t).join(' · ');
+const PN = `${core.rules.name} ${core.funnel.picked}곳`, NPK = core.funnel.picked, PLINE = core.rules.line ?? core.rules.conds.map(x => x.t).join(' · ');
 const eokS = v => { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); if (a >= 10000) return s + (Math.floor(a / 10000 * 10 + 0.5 + 1e-7) / 10).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원'; return s + Math.round(a).toLocaleString('ko-KR') + '억 원'; };
 const DOW = ['일', '월', '화', '수', '목', '금', '토'], mdw = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일(${DOW[new Date(d + 'T00:00:00Z').getUTCDay()]})`;
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
@@ -64,7 +65,7 @@ const dayWord = d => (!d ? '?' : d === todayK() ? '오늘' : mdw(d));
 const eokW = v => { if (v == null) return '?'; const a = Math.abs(Math.round(v)), jo = Math.floor(a / 10000), r = a % 10000; return (jo ? jo.toLocaleString('ko-KR') + '조' + (r ? ' ' : '') : '') + (r || !jo ? r.toLocaleString('ko-KR') + '억' : '') + ' 원'; };
 const iga = x => { const c = x.charCodeAt(x.length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? x + '이' : x + '가'; };
 const numK = v => (v == null ? '?' : Number(v).toLocaleString('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '멍거 조건'], DETAIL = ['today', 'idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
+const HUBID = ['hello', 'today', 'idx', 'sec', 'flow', 'us', 's365'], HUBNM = ['소개', '오늘', '지수', '업종', '사고팔기', '미국', '멍거 · 린치'], DETAIL = ['today', 'idx', 'sec', 'flow', 'us', 's365']; // 맨 위 슬라이드 7장(사장님 19:59 · 20:11)
 // 오늘의 눈금(다섯 팀 합침 2026-10-12 23:10) — 화면(atlas.js gauge · gaugeLine)과 따로 셈: 종가 쌍마다 하루 % · 평소 = 오늘 앞 20거래일 하루 움직임 크기 평균 ·
 //   「n월 n일 뒤 가장 큼」 = 같은 쪽으로 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 · 3개월 안에 없으면 「3개월 중 가장 크게」
 function gaugeX(x) {
@@ -131,12 +132,19 @@ function expect(route) {
   if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg)]), trh: trText(i.tr)}; }
   if (kind === 'c') {
     const [code, sub] = arg.split('/'), c = comp[code];
-    if (!sub) { // 왜 멍거 조건 N곳에 들었나요?(2026-10-14 00:03 「가 로 하자」 · mg-v1) — 세 조건 해마다 값(comp.json 에서 따로 만든 글 · 차례 없음)
-      const q = c.pick, Y = q.years.map(y => String(y).slice(0, 4) + '년');
-      const why = [`왜 ${PN}에 들었나요?`, '세 조건을 모두 넘었습니다', '① 해마다 남긴 돈 — ' + q.net.map((x, k) => `${Y[k]} ${eokS(x)}`).join(' · '),
-        '② 자기 돈 100원에 빚 — ' + q.debt.map((x, k) => `${Y[k]} ${Math.round(x)}원`).join(' · '), '③ 자기 돈 100원으로 번 돈 — ' + q.roe.map((x, k) => `${Y[k]} ${r1(x).toFixed(1)}원`).join(' · '),
-        '멍거가 고른 목록이 아닙니다', '좋은 회사 순서가 아닙니다'];
-      for (const [x, ok] of [[q.net.every(v => v > 0), '① 해마다 남긴 돈이 0 보다 큼'], [q.debt.every(v => v <= core.rules.debtLine), '② 빚 ≤ 자기 돈'], [q.roe.every(v => v >= core.rules.roeLine), '③ 해마다 18원 넘게']]) if (!x) fail(route, `든 까닭 값이 조건을 못 넘음 — ${ok}`);
+    if (!sub) { // 왜 멍거 · 린치 조건 N곳에 들었나요?(2026-10-14 06:05 「가」 · ml-v1) — 넘은 갈래마다 값(comp.json 에서 따로 만든 글 · 차례 없음)
+      const q = c.pick, why = [`왜 ${PN}에 들었나요?`], won = x => `${Math.round(x).toLocaleString('ko-KR')}원`;
+      if (!q?.mg && !q?.ly) fail(route, '든 까닭 값이 없음(멍거 · 린치 모두 없음)');
+      if (JSON.stringify(q.tags) !== JSON.stringify([q.mg ? 'mg' : null, q.ly ? 'ly' : null].filter(Boolean))) fail(route, `꼬리표 ${q.tags}가 값과 다름`);
+      if (q.mg) { const m = q.mg, Y = m.years.map(y => String(y).slice(0, 4) + '년');
+        why.push('멍거 조건 — 세 조건을 모두 넘었습니다', '① 해마다 남긴 돈 — ' + m.net.map((x, k) => `${Y[k]} ${eokS(x)}`).join(' · '),
+          '② 자기 돈 100원에 빚 — ' + m.debt.map((x, k) => `${Y[k]} ${Math.round(x)}원`).join(' · '), '③ 자기 돈 100원으로 번 돈 — ' + m.roe.map((x, k) => `${Y[k]} ${r1(x).toFixed(1)}원`).join(' · '));
+        for (const [x, ok] of [[m.net.every(v => v > 0), '① 해마다 남긴 돈이 0 보다 큼'], [m.debt.every(v => v <= core.rules.debtLine), '② 빚 ≤ 자기 돈'], [m.roe.every(v => v >= core.rules.roeLine), '③ 해마다 18원 넘게']]) if (!x) fail(route, `멍거 든 까닭 값이 조건을 못 넘음 — ${ok}`); }
+      if (q.ly) { const l = q.ly;
+        why.push('린치 조건 — 두 조건을 모두 넘었습니다', '① 한 주가 번 돈 — ' + [`${l.years[0]}년 ${won(l.eps[0])}`, `${l.years[1]}년 ${won(l.eps[1])}`, `해마다 ${r1(l.g).toFixed(1)}% 큼`].join(' · '),
+          '② 크는 빠르기에 견줘 값 — ' + [`배당 ${r1(l.yld).toFixed(1)}%`, `이익의 ${r1(l.per).toFixed(1)}배 값`, `점수 ${l.score.toFixed(2)}`, '2 넘음', `${md(l.pxDay)} 값`].join(' · '), '점수 = (한 주 이익이 해마다 큰 % + 배당 %) ÷ 1년 이익의 몇 배 값');
+        for (const [x, ok] of [[l.g >= core.rules.growLine[0] && l.g <= core.rules.growLine[1], '① 해마다 20 ~ 25%'], [l.score >= core.rules.scoreLine, '② 점수 2 넘음']]) if (!x) fail(route, `린치 든 까닭 값이 조건을 못 넘음 — ${ok}`); }
+      why.push('멍거 · 린치가 고른 목록이 아닙니다', '좋은 회사 순서가 아닙니다');
       const lv = lines[code].filter(x => x != null).map(x => x / 100), low = Math.min(...lv), last = lv.at(-1), man = x => Math.round(x).toLocaleString('ko-KR') + '만 원';
       why.push(low < 100 ? `${md(core.base)}에 100만 원어치였다면 가장 낮을 때 ${man(low)} · 끝 ${man(last)}` : `${md(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${man(last)}`, `가장 깊이 빠짐(${core.days}거래일)`);
       return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100', why}; }
@@ -180,7 +188,7 @@ function expect(route) {
       ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
   if (kind === 'up') { const r0 = upd.records[0]; return {title: '업데이트 기록', why: r0 ? [{'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'}[r0.result], ...(r0.asOf ? [`고른 날 ${md(r0.asOf)}`, `기준일 ${md(r0.base)}`] : []), ...(r0.in?.length ? [`새로 든 곳 ${r0.in.length}`, `빠진 곳 ${r0.out.length}`, ...(r0.stay != null ? [`그대로 ${r0.stay}`] : [])] : []), ...(r0.ruleChanged ? ['이 회차에 고르는 기준이 바뀌었습니다'] : [])] : ['아직 기록이 없습니다']}; }
   if (kind === 'info') { // 도움말 — 이름 밑 한 줄 · 멍거가 고른 목록 아님 · 깔때기 · 값 · 기다림 · 회차 시각(= universe.json slots · 틀림 장부 21번)
-    return {why: [`${PN} — ${PLINE}`, core.rules.notMunger, `${PN}은 이렇게 골랐습니다`, ...core.funnel.steps.map(x => x.n.toLocaleString('ko-KR') + '곳'), core.rules.price, core.rules.wait, core.rules.notCounted,
+    return {why: [`${PN} — ${PLINE}`, core.rules.notMunger, `${PN}은 이렇게 골랐습니다`, ...core.funnel.groups.flatMap(g => [`${g.name} ${g.n}곳`, ...g.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]), core.rules.price, core.rules.wait, core.rules.notCounted,
       `? 다시 고르기 — 하루 ${core.rules.slots.length}번(${core.rules.slots.join(' · ')} 서울)`]}; }
   return {};
 }

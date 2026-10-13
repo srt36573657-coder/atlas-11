@@ -89,7 +89,7 @@ test('네 눈 점검 — 지금 자료는 네 눈 모두 실패 0 · 눈마다 �
   assert.ok(kind(stale, 'google', 'date').fail > 0);
   for (const l of r.lenses) assert.equal(l.fail, 0, `${l.name}: ${JSON.stringify(l.kinds.flatMap(k => k.first)).slice(0, 300)}`);
   assert.deepEqual(r.lenses.map(l => [l.key, l.n]), [['apple', N], ['google', N], ['claude', N], ['cia', N]]);
-  assert.ok(r.ok); assert.ok(lens(r, 'google').things > 5000, '구글 눈이 셀 것 — 회사 수에 따라 늘고 줆(365곳 때 5만 넘음 · 멍거 조건 26곳 때 9,523)'); assert.ok(kind(r, 'apple', 'click').n > 0 && kind(r, 'cia', 'fuzz').n > 0);
+  assert.ok(r.ok); assert.ok(lens(r, 'google').things > 5000, '구글 눈이 셀 것 — 회사 수에 따라 늘고 줆(365곳 때 5만 넘음 · 멍거 조건 26곳 때 9,523 · 멍거 · 린치 41곳 때 1만 넘음)'); assert.ok(kind(r, 'apple', 'click').n > 0 && kind(r, 'cia', 'fuzz').n > 0);
   assert.match(HEADER_TOP, /frame-ancestors 'none'/);
 });
 
@@ -115,11 +115,12 @@ test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 �
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
 });
 
-test('네 눈 점검 — 멍거 조건(2026-10-14 00:03): 옛 기준 말 · 차례 칸 · 좁은 금지 말 · 조건 밑 값이 들어오면 클로드 눈이 잡음', async () => {
+test('네 눈 점검 — 멍거 · 린치 조건(2026-10-14 06:05): 옛 기준 말 · 차례 칸 · 좁은 금지 말 · 조건 밑 값 · 꼬리표가 어긋나면 클로드 눈이 잡음', async () => {
   const T = copySite();
   try {
     const core = T.J('core.json'); core.rules.window = '지난 30거래일 「대세」였던 업종부터'; core.rules.label += ' · 유망한 곳'; T.W('core.json', core); // 옛 기준 말 · 좁은 금지 말
-    const comp = T.J('comp.json'); const [c0, c1] = Object.keys(comp.companies); comp.companies[c0].pick.rank = 1; comp.companies[c1].pick.roe[0] = 9.5; T.W('comp.json', comp); // 회사마다 차례(규칙 55) · 18원 못 넘은 해(멍거 조건)
+    const comp = T.J('comp.json'), cs = Object.values(comp.companies), cm = cs.find(x => x.pick.mg), cl = cs.find(x => x.pick.ly && !x.pick.mg);
+    cs[0].pick.rank = 1; cm.pick.mg.roe[0] = 9.5; cl.pick.ly.score = 1.2; T.W('comp.json', comp); // 회사마다 차례(규칙 55) · 18원 못 넘은 해(멍거 갈래) · 점수 2 밑(린치 갈래)
     const r = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: N, now: NOW}); // 눈마다 대상을 모두 한 번씩 보는 수(N)
     assert.equal(r.ok, false); assert.ok(kind(r, 'claude', 'code').fail > 0, '옛 기준 말 · 차례 칸'); assert.ok(kind(r, 'claude', 'narrow').fail > 0, '좁은 금지 말');
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
