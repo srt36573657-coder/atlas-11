@@ -130,7 +130,8 @@ function expect(route) {
     if (!sub) { // 왜 365곳에 들었나요?(2026-10-13 13:04 「힘이 붙는 종목으로」 · h365-v1) — 든 까닭 · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱(comp.json 에서 따로 만든 글 · 차례 없음)
       const q = c.pick, W = core.rules.pickWin, half = Math.floor(W.days / 2), turn = r1(core.rules.turn);
       const why = [{gain: `힘 붙음 — 뒤 ${half}거래일이 앞 ${half}거래일보다 ${turn}%p 넘게 더 올랐습니다`, keep: `앞 회차에 들었고, 오늘도 ${core.rules.buf}번째 안이라 남겼습니다`, fill: `문턱 ${turn}%p는 못 넘었지만, 그다음 차례라 빈자리에 들었습니다`}[q.kind],
-        `앞 ${half}거래일 ${pct(q.h1)} → 뒤 ${half}거래일 ${pct(q.h2)}`, `뒤가 앞보다 ${r1(Math.abs(q.d)).toFixed(1)}%p ${q.d >= 0 ? '더' : '덜'} 올랐습니다 · 문턱 ${turn}%p`, '좋은 회사로 매긴 것은 아닙니다'];
+        `앞 ${half}거래일 ${pct(q.h1)} → 뒤 ${half}거래일 ${pct(q.h2)}`, (q.h2 < 0 ? (q.d > 0 ? `뒤 ${half}거래일에도 내렸지만, 앞보다 ${r1(Math.abs(q.d)).toFixed(1)}%p 덜 내렸습니다` : `뒤 ${half}거래일에 앞보다 ${r1(Math.abs(q.d)).toFixed(1)}%p 더 내렸습니다`)
+          : `뒤가 앞보다 ${r1(Math.abs(q.d)).toFixed(1)}%p ${q.d >= 0 ? '더' : '덜'} 올랐습니다`) + ` · 문턱 ${turn}%p`, '좋은 회사로 매긴 것은 아닙니다']; // 뒤 10거래일에도 내린 회사에 「더 올랐습니다」를 쓰지 않음(틀림 장부 22번)
       const lv = lines[code].filter(x => x != null).map(x => x / 100), low = Math.min(...lv), last = lv.at(-1), man = x => Math.round(x).toLocaleString('ko-KR') + '만 원';
       why.push(low < 100 ? `${md(core.base)}에 100만 원어치였다면 가장 낮을 때 ${man(low)} · 끝 ${man(last)}` : `${md(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${man(last)}`, `가장 깊이 빠짐(${core.days}거래일)`);
       return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100', why}; }

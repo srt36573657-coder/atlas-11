@@ -88,8 +88,10 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   for (const k of ['h365', 'site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
   // 힘 붙은 365곳(h365-v1 · 사장님 2026-10-13 13:04 「힘이 붙는 종목으로」) — 든 까닭 수 · 층 없음 · 앞 회차 판이 다르면 「기준이 바뀜」 · 완충 없음 · 그대로 + 새로 듦 = 365
   assert.equal(rep.version, 'h365-v1'); assert.equal(rep.tiers, null);
-  assert.equal(rep.kinds.gain + rep.kinds.keep + rep.kinds.fill, 365); assert.equal(rep.kinds.keep, 0, '앞 회차 판이 d365 면 남김 없음');
-  assert.equal(rep.ruleChanged, prevRec.version !== 'h365-v1'); assert.equal(rep.buffer, false);
+  assert.equal(rep.kinds.gain + rep.kinds.keep + rep.kinds.fill, 365);
+  // 앞 회차(저장소 마지막 성공 회차)가 h365-v1 이면 완충(남김)을 쓰고, 옛 판(d365)이면 기준이 바뀐 회차 · 남김 없음(2026-10-13 15:16 첫 h365 회차 뒤로는 앞쪽)
+  assert.equal(rep.ruleChanged, prevRec.version !== 'h365-v1'); assert.equal(rep.buffer, prevRec.version === 'h365-v1');
+  if (prevRec.version !== 'h365-v1') assert.equal(rep.kinds.keep, 0, '앞 회차 판이 d365 면 남김 없음');
   assert.equal(rep.stay + rep.in.length, 365); assert.equal(rep.out.length, rep.in.length);
   assert.ok(rep.out.some(x => x.c === bent) && rep.out.some(x => x.c === halt), '고쳐 적힌 회사 · 그날 값 없는 회사는 빠짐');
   assert.equal(rep.members.length, 365); assert.equal(new Set(rep.members).size, 365);

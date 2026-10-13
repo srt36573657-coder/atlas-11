@@ -770,6 +770,12 @@ function stepsCo(now, code, g, i) { return steps(now, ALLH(code, g, i).map((x, k
 const coCrumbs = (c, g, i, code) => crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}, {href: '#/c/' + code, text: c.name});
 // 왜 365곳에 들었나(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · 네 팀 기획 · CIA팀 중심) — 든 까닭(힘 붙음 · 남김 · 채움) · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱
 //   고를 때 값만 · 앞날 숫자 없음 · 차례(n번째)는 싣지 않음(클로드팀 · 규칙 55) · 「힘 붙음」 글자는 굵게만(빨강 · 파랑은 두 숫자 부호에만 · 규칙 53)
+/** 앞 · 뒤 10거래일 견줌 한 문장 — 뒤 10거래일에도 내린 회사에 「더 올랐습니다」라고 쓰지 않음(2026-10-13 15:2x 탐침 그림에서 찾은 틀린 말 · 틀림 장부 22번) */
+function diffWords(p, half) {
+  const x = `${r1(Math.abs(p.d)).toFixed(1)}%p`;
+  if (p.h2 < 0) return p.d > 0 ? `뒤 ${half}거래일에도 내렸지만, 앞보다 ${x} 덜 내렸습니다` : `뒤 ${half}거래일에 앞보다 ${x} 더 내렸습니다`;
+  return p.d >= 0 ? `뒤가 앞보다 ${x} 더 올랐습니다` : `뒤가 앞보다 ${x} 덜 올랐습니다`;
+}
 function whyBox(c) {
   const C = D.core, p = c.pick, W = C.rules.pickWin, R = C.rules, half = Math.floor(W.days / 2), turn = r1(R.turn);
   const box = h('div', {class: 'box'}, h('h2', {text: '왜 365곳에 들었나요?'}));
@@ -779,7 +785,7 @@ function whyBox(c) {
   if (!head) { box.append(h('p', {class: 'q', text: '? 든 까닭을 못 읽었습니다'})); return box; }
   box.append(h('p', {}, h('b', {text: head})));
   box.append(h('p', {}, `앞 ${half}거래일 `, pctEl(p.h1), ` → 뒤 ${half}거래일 `, pctEl(p.h2)));
-  box.append(h('p', {text: `뒤가 앞보다 ${r1(Math.abs(p.d)).toFixed(1)}%p ${p.d >= 0 ? '더' : '덜'} 올랐습니다 · 문턱 ${turn}%p`}));
+  box.append(h('p', {text: diffWords(p, half) + ` · 문턱 ${turn}%p`}));
   box.append(h('details', {class: 'more'}, h('summary', {text: '잰 날 — 눌러서 보기'}), h('div', {class: 'in'}, h('ul', {class: 'tm'},
     h('li', {text: `잰 날 ${md(W.from)} → ${md(W.to)} · 가운데 날 ${md(W.mid)}`}),
     h('li', {text: `네이버 업종 「${p.sector}」 · 기본 문을 지난 ${C.funnel.gate.toLocaleString('ko-KR')}곳 가운데 「힘 붙음」은 ${C.funnel.gainAll.toLocaleString('ko-KR')}곳`})))));
