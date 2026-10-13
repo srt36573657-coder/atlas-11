@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // 새 ATLAS(aaa7377.com/atlas/) 화면 빠짐없이 돌기 — 첫 화면 · 갈래 · 업종(1곳뿐인 업종은 회사로 넘어감) · 회사 365 · 업종 탭 · 도움말 · 찾기 · 365곳 밖
 //   2026-10-13 06:45 사장님 「매수 검토 36곳 영구 삭제 하라」: 36곳 화면 · 탭 · 7단 차례 줄 · 봉인 36곳을 지움 — 모든 화면에 「36곳 · 매수 검토」 글 · #/36 길 0 · #/36 은 첫 화면으로(「36곳 없음」 검사)
-//   2026-10-11 11:43 대세 365곳(d365-v1): 회사 화면 「왜 365곳에 들었나요?」 층 · 대세 순서 · 업종 · 회사 30거래일 · 일부만 든 업종 글 · 도움말 층마다 가운데값 · 깔때기 숫자도 맞댐
+//   2026-10-13 13:04 힘 붙은 365곳(h365-v1 · 「힘이 붙는 종목으로」): 회사 화면 「왜 365곳에 들었나요?」 든 까닭 · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱 · 이름 밑 한 줄 ·
+//     도움말 고른 곳 · 안 고른 곳 가운데값 · 회차 시각 = slots · 깔때기 숫자도 맞댐 · 옛 기준 말(대세 · 층 · 두 팀) 0(지난 회차 「옛 규칙(대세 업종)」 꼬리표 · 봉인 화면 빼고) · 순위 글 0 · 좁은 금지 말 9개 0
 //   쓰는 법: node scripts/atlas11/t365/site_check.mjs --base http://127.0.0.1:8899 [--pw /opt/node-tools/] [--out reports/atlas11/verify/atlas-new-check-latest.json]
 //   폭 셋(360×640 · 390×844 · 900×900) × 글씨 셋(보통 · 크게 · 아주 크게 — 360 에서만 셋, 나머지는 보통)마다 화면마다 본다:
 //     오류 0(보안 규칙 CSP 걸림 포함) · 옆 넘침 0 · 보이는 글씨 21px 이상 · 누르는 자리 44px 이상 · 금지 말 0 · 캔버스 · 3D 0 · 작은 네모 20개 이상(바둑판) 0
@@ -29,14 +30,18 @@ const rng = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/range.js
 const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
 const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.json'), 'utf8')); // 업데이트 탭(사장님 12:41)
 const tdata = fs.existsSync(path.join(ROOT, 'site/atlas/data/time.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/time.json'), 'utf8')) : null; // 봉인 시간(14:37 · 14:39 「3년후 5년후 10년후 이야기」)
+const NAMES = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/names.json'), 'utf8')), OUT1 = NAMES.rows.find(r => r.s !== 'in'); // 찾기 · 365곳 밖 보기 — 365곳 밖 첫 회사(번호를 박지 않음 · 회차마다 바뀜 · 애플팀 2026-10-13)
 const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
 const lines = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.json'), 'utf8')).lines; // 3단 100만 원 줄(기준일 = 100 · 2026-10-12 클로드팀)
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
 const DOW = ['일', '월', '화', '수', '목', '금', '토'], mdw = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일(${DOW[new Date(d + 'T00:00:00Z').getUTCDay()]})`;
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
+// 좁은 금지 말 · 옛 기준 말(힘 붙은 365곳 · 사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · 클로드팀) — inspect4.mjs NARROW · OLD_RULE_WORDS 와 같은 목록(시험이 맞대 봄)
 // 지운 36곳 화면의 글 — inspect4.mjs OLD36_TEXT 와 같은 목록(시험이 맞대 봄) · 「36곳 내림」 같은 셈 글은 아님(2026-10-13 14:2x 바이오 갈래를 잘못 잡던 것)
 const OLD36 = ['매수 검토', '셈 차례', '봉인 36곳', '365곳 · 36곳', '36곳이 365곳 평균보다', '한 달 평균: 36곳', '36곳은 셈으로 추린', '36곳 밖 —', '36곳 고리', '36곳 탭'];
 const has36 = t => OLD36.some(w => String(t).includes(w));
+const NARROW = ['유망', '주목', '강세', '놓치', '매수 신호', '살 만한', '모멘텀', '힘이 붙는', '급등주'];
+const OLD_RULE_WORDS = ['대세', '1층 —', '2층 —', '3층 —', '두 팀 모두', '구글팀 잣대', 'CIA팀 잣대'];
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 const md = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일`;
 const ymd = d => d.slice(0, 4) + '년 ' + md(d);
@@ -122,9 +127,10 @@ function expect(route) {
   if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg)]), trh: trText(i.tr)}; }
   if (kind === 'c') {
     const [code, sub] = arg.split('/'), c = comp[code];
-    if (!sub) { const q = c.pick, why = [{1: '1층 — 두 팀 모두 「대세」로 본 업종', 2: `2층 — ${q.google ? '구글팀' : 'CIA팀'}만 「대세」로 본 업종`, 3: '3층 — 대세에 가까운 순서로 채운 업종'}[q.tier],
-        `「${q.sector}」 · ${core.funnel.sectors}업종 가운데 대세 순서 ${q.srank}번째`, `업종 ${pct(q.schg)} · 이 회사 ${q.r30 == null ? '? 셈 못 함' : pct(q.r30)}`, `많이 오른 순 ${q.srank}번째`];
-      if (q.part) why.push(`${q.inN}곳만 넣었습니다 — 이 회사는 ${q.prank}번째`);
+    if (!sub) { // 왜 365곳에 들었나요?(2026-10-13 13:04 「힘이 붙는 종목으로」 · h365-v1) — 든 까닭 · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱(comp.json 에서 따로 만든 글 · 차례 없음)
+      const q = c.pick, W = core.rules.pickWin, half = Math.floor(W.days / 2), turn = r1(core.rules.turn);
+      const why = [{gain: `힘 붙음 — 뒤 ${half}거래일이 앞 ${half}거래일보다 ${turn}%p 넘게 더 올랐습니다`, keep: `앞 회차에 들었고, 오늘도 ${core.rules.buf}번째 안이라 남겼습니다`, fill: `문턱 ${turn}%p는 못 넘었지만, 그다음 차례라 빈자리에 들었습니다`}[q.kind],
+        `앞 ${half}거래일 ${pct(q.h1)} → 뒤 ${half}거래일 ${pct(q.h2)}`, `뒤가 앞보다 ${r1(Math.abs(q.d)).toFixed(1)}%p ${q.d >= 0 ? '더' : '덜'} 올랐습니다 · 문턱 ${turn}%p`, '좋은 회사로 매긴 것은 아닙니다'];
       const lv = lines[code].filter(x => x != null).map(x => x / 100), low = Math.min(...lv), last = lv.at(-1), man = x => Math.round(x).toLocaleString('ko-KR') + '만 원';
       why.push(low < 100 ? `${md(core.base)}에 100만 원어치였다면 가장 낮을 때 ${man(low)} · 끝 ${man(last)}` : `${md(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${man(last)}`, `가장 깊이 빠짐(${core.days}거래일)`);
       return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: Math.round(c.price).toLocaleString('ko-KR') + '원', axis: md(core.base) + ' = 100', why}; }
@@ -160,14 +166,16 @@ function expect(route) {
   if (!kind) { const T = core.time, H = home, K = H?.idx?.KOSPI, Q = H?.idx?.KOSDAQ, sd = H?.sectors?.date ?? K?.date, fd = H?.flows?.KOSPI?.date ?? H?.flows?.KOSDAQ?.date;
     // 첫 화면 종합 정보(14:54) → 맨 위 슬라이드 7장(19:59 · 20:11) — 머리 = 2장 오늘 지수(「오늘」은 보는 날짜로) · 장 이름 · 업종 1등 · 꼴찌 · 365곳 양 끝 · 봉인 한 줄 · 경주 제목은 그 아래(h2) · 장마다 보이는 글은 아래 hubExpect
     return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', trd: core.groups.map(g => trText(g.tr)),
-      why: [`지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, ...(H ? ['코스피 · 코스닥 — 3개월', ...(H.flows ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`] : []), '미국 — 마지막 장', ...(H.s365?.list?.length ? [`365곳 — ${dayWord(H.s365.date)}`] : []),
+      why: [`지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, `힘 붙은 365곳 — 그중 「힘 붙음」 ${core.facts.kinds.gain}곳`, ...(H ? ['코스피 · 코스닥 — 3개월', ...(H.flows ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`] : []), '미국 — 마지막 장', ...(H.s365?.list?.length ? [`365곳 — ${dayWord(H.s365.date)}`] : []),
         ...(H.sectors ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${H.sectors.label} · 약한 7`, H.sectors.strong[0].name, H.sectors.weak[0].name] : []), ...(H.s365?.top ? [H.s365.top.n, H.s365.bot.n] : [])] : ['? 오늘 시장 자료를 못 읽었습니다']),
         ...(T ? [`봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`, ddayText(T.opens[0].date)] : []), '저는 투자 상담사가 아닙니다'], hub: H ? hubExpect(H) : null}; }
   if (kind === 'time') { const K = tdata.capsules[0], P = K.past, S = K.since; return {title: `봉인 ${K.id}호 — ${md(K.seal)} 365곳`,
     why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
       ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
-  if (kind === 'up') { const r0 = upd.records[0]; return {title: '업데이트 기록', why: r0 ? [{'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'}[r0.result], ...(r0.asOf ? [`고른 날 ${md(r0.asOf)}`, `기준일 ${md(r0.base)}`] : []), ...(r0.in?.length ? [`새로 든 곳 ${r0.in.length}`, `빠진 곳 ${r0.out.length}`] : [])] : ['아직 기록이 없습니다']}; }
-  if (kind === 'info') return {why: [...core.facts.tiers.map(t => `${t.t}층 ${t.n}곳 ${pct(t.med)}`), ...core.funnel.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]};
+  if (kind === 'up') { const r0 = upd.records[0]; return {title: '업데이트 기록', why: r0 ? [{'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'}[r0.result], ...(r0.asOf ? [`고른 날 ${md(r0.asOf)}`, `기준일 ${md(r0.base)}`] : []), ...(r0.in?.length ? [`새로 든 곳 ${r0.in.length}`, `빠진 곳 ${r0.out.length}`, ...(r0.stay != null ? [`그대로 ${r0.stay}`] : [])] : []), ...(r0.ruleChanged ? ['이 회차에 고르는 기준이 바뀌었습니다'] : [])] : ['아직 기록이 없습니다']}; }
+  if (kind === 'info') { const P = core.facts.pickCmp, k = core.facts.kinds, rest = k.keep + k.fill; // 도움말 — 이름 밑 한 줄 · 고른 곳 · 안 고른 곳 가운데값 · 깔때기 · 회차 시각(= universe.json slots · 틀림 장부 21번)
+    return {why: [`힘 붙은 365곳 — 그중 「힘 붙음」 ${k.gain}곳` + (rest ? ` · 나머지 ${rest}곳은 그다음 차례로 채움` : ''), `고른 ${P.in.n}곳 ${pct(P.in.med)}`, `안 고른 ${P.out.n}곳 ${pct(P.out.med)}`, ...core.funnel.steps.map(x => x.n.toLocaleString('ko-KR') + '곳'),
+      `? 다시 고르기 — 하루 ${core.rules.slots.length}번(${core.rules.slots.join(' · ')} 서울)`, core.rules.past]}; }
   return {};
 }
 
@@ -327,6 +335,10 @@ for (const [w, hgt, font] of plans) {
     if (e.below !== undefined) { numbers++; if (r.below !== e.below) fail(tag, `6단 「올해 짐작보다 작게 봄」 ${r.below} ≠ ${e.below}`); }
     if (e.step === 3 && r.all.includes('봉인 1호에 든 회사')) fail(tag, '3단에 봉인 줄이 남음(7단으로 옮김)');
     if (has36(r.all) || has36(r.text) || r.l36) fail(tag, '36곳 글 · 길이 남음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)');
+    { const t = (r.all + '\n' + r.text).split('옛 규칙(대세 업종)').join(''); // 힘 붙은 365곳(2026-10-13 13:04) — 옛 기준 말 0(지난 회차 · 봉인 꼬리표만) · 좁은 금지 말 0 · 순위 글 0(규칙 55)
+      const ow = OLD_RULE_WORDS.filter(x => t.includes(x)); if (ow.length) fail(tag, `옛 기준 말 「${ow.join(' · ')}」이 남음`);
+      const nw = NARROW.filter(x => t.includes(x)); if (nw.length) fail(tag, `좁은 금지 말 「${nw.join(' · ')}」(클로드팀)`);
+      if (/힘 (차례|순서) \d+번째|힘 붙은 365곳 가운데 \d+번째/.test(t)) fail(tag, '순위 글이 보임(규칙 55)'); } // 회사 이야기 글의 「국내 상위 3곳」 같은 남의 사실은 아님(14:2x)
     if (e.trd) { numbers += e.trd.length; if (JSON.stringify(r.trd) !== JSON.stringify(e.trd)) fail(tag, `방향 · 세기 줄 ${JSON.stringify(r.trd).slice(0, 120)} ≠ ${JSON.stringify(e.trd).slice(0, 120)}`); }
     if (r.trdCut?.length) fail(tag, '방향 · 세기 줄이 잘림: ' + r.trdCut.slice(0, 2).join(' · '));
     if (e.trh) { numbers++; if (r.trh !== e.trh) fail(tag, `머리 밑 방향 ${r.trh} ≠ ${e.trh}`); }
@@ -376,7 +388,7 @@ for (const [w, hgt, font] of plans) {
   }
   // 찾기 — 한 글자 · 첫 글자 · 영어 이름 소리 · 번호 · 365곳 밖
   if (font === 0) {
-    for (const [q, want] of [['삼성', '삼성전자'], ['ㅅㅅㅈㅈ', '삼성전자'], ['에스케이하이', 'SK하이닉스'], ['005930', '삼성전자'], ['반도체 부품', '반도체 부품'], ['카카오', '365곳 밖']]) {
+    for (const [q, want] of [['삼성', '삼성전자'], ['ㅅㅅㅈㅈ', '삼성전자'], ['에스케이하이', 'SK하이닉스'], ['005930', '삼성전자'], [core.industries[0].name, core.industries[0].name], [OUT1.n, '365곳 밖']]) {
       await p.evaluate(() => { location.hash = '#/find'; });
       await p.waitForFunction(() => !document.querySelector('#findSheet').hidden);
       await p.fill('#q', q); await p.waitForTimeout(250);
@@ -388,7 +400,7 @@ for (const [w, hgt, font] of plans) {
       const errsF = errs.splice(0); if (errsF.length) fail(`${w} 찾기 ${q}`, '오류: ' + errsF[0]);
       await p.evaluate(() => { document.querySelector('[data-close="findSheet"]').click(); });
     }
-    await p.evaluate(() => { location.hash = '#/x/035720'; });
+    await p.evaluate(c => { location.hash = '#/x/' + c; }, OUT1.c);
     try { await p.waitForFunction(() => document.querySelector('#infoBody .funnel'), null, {timeout: 5000}); const t = await p.$eval('#infoBody', x => x.innerText); screens++; if (!/멈췄습니다/.test(t)) fail(`${w} 365곳 밖`, '까닭 줄 없음'); } catch { fail(`${w} 365곳 밖`, '깔때기 안 그려짐'); }
   }
   await ctx.close();

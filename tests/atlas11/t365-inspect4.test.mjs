@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {inspect4, routeRunner, siteGraph, BANNED} from '../../scripts/atlas11/t365/inspect4.mjs';
+import {inspect4, routeRunner, siteGraph, BANNED, NARROW, OLD_RULE_WORDS, oldRuleHits} from '../../scripts/atlas11/t365/inspect4.mjs';
 import {readMarket, breadthWord, sizeWord, pctText, MR_RULE, whenWord, mdText} from '../../scripts/atlas11/t365/market_read.mjs';
 import {HEADER_TOP} from '../../scripts/atlas11/site_headers.mjs';
 
@@ -27,6 +27,9 @@ test('금지 말 목록 = 화면 검사(site_check.mjs)의 목록', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/site_check.mjs'), 'utf8');
   const m = src.match(/const BANNED = (\[[^\]]+\]);/);
   assert.ok(m); assert.deepEqual(BANNED, JSON.parse(m[1].replace(/'/g, '"')));
+  // 힘 붙은 365곳(2026-10-13 13:04) — 좁은 금지 말 9개 · 옛 기준 말도 두 목록이 같음
+  for (const [nm, list] of [['NARROW', NARROW], ['OLD_RULE_WORDS', OLD_RULE_WORDS]]) { const x = src.match(new RegExp(`const ${nm} = (\\[[^\\]]+\\]);`)); assert.ok(x, nm); assert.deepEqual(list, JSON.parse(x[1].replace(/'/g, '"')), nm); }
+  assert.equal(NARROW.length, 9); assert.deepEqual(oldRuleHits('봉인 1호는 옛 규칙(대세 업종)으로 고른 365곳'), []); assert.deepEqual(oldRuleHits('「대세」였던 업종부터'), ['대세']);
 });
 
 test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', () => {
@@ -108,5 +111,15 @@ test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 �
     const js = path.join(T.tmp, 'atlas/atlas.js'); fs.writeFileSync(js, fs.readFileSync(js, 'utf8').replace('저는 투자 상담사가 아닙니다', '저는').replace("'https://dart.fss.or.kr'", "'https://evil.example'") + "\nconst x36 = '매수 검토 36곳';\n"); // 지운 글이 다시 들어오면 클로드 눈이 막음
     const r2 = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: 2000, now: NOW});
     assert.ok(kind(r2, 'claude', 'code').fail > 0 && kind(r2, 'cia', 'code').fail > 0);
+  } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
+});
+
+test('네 눈 점검 — 힘 붙은 365곳(2026-10-13 13:04): 옛 기준 말 · 차례 칸 · 좁은 금지 말이 다시 들어오면 클로드 눈이 잡음', async () => {
+  const T = copySite();
+  try {
+    const core = T.J('core.json'); core.rules.window = '지난 30거래일 「대세」였던 업종부터'; core.rules.label += ' · 유망한 곳'; T.W('core.json', core); // 옛 기준 말 · 좁은 금지 말
+    const comp = T.J('comp.json'); const c0 = Object.keys(comp.companies)[0]; comp.companies[c0].pick.rank = 1; T.W('comp.json', comp); // 회사마다 차례(규칙 55)
+    const r = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: N, now: NOW}); // 눈마다 대상을 모두 한 번씩 보는 수(N)
+    assert.equal(r.ok, false); assert.ok(kind(r, 'claude', 'code').fail > 0, '옛 기준 말 · 차례 칸'); assert.ok(kind(r, 'claude', 'narrow').fail > 0, '좁은 금지 말');
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
 });

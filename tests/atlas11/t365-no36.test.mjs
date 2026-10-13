@@ -47,6 +47,6 @@ test('봉인 1호는 그때 잠근 그대로(파일 · 번호) — 화면 자료
 test('지운 36곳 화면 글 목록 — 화면 검사 · 네 눈 점검이 같은 목록 · 「36곳 내림」 같은 셈 글은 걸리지 않음(2026-10-13 14:2x)', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/site_check.mjs'), 'utf8'), m = src.match(/const OLD36 = (\[[^\]]+\]);/);
   assert.ok(m); assert.deepEqual(OLD36_TEXT, JSON.parse(m[1].replace(/'/g, '"')));
-  for (const t of ['61곳 중 25곳 오름 · 36곳 내림', '「?」 36곳 뺌', '365곳 가운데 36곳 오름', '하루 오른 곳 65곳 → 36곳']) assert.equal(has36Text(t), false, t);
+  for (const t of ['61곳 중 25곳 오름 · 36곳 내림', '「?」 36곳 뺌', '365곳 가운데 36곳 오름', '그중 「힘 붙음」 36곳']) assert.equal(has36Text(t), false, t);
   for (const t of ['매수 검토 36곳', '셈 차례: 36곳 가운데 3번째', '봉인 36곳', '365곳 · 36곳 · 후보']) assert.equal(has36Text(t), true, t);
 });

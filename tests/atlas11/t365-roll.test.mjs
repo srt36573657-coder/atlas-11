@@ -70,7 +70,9 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const next = cal.find(d => d > asOf0), n8 = next.replaceAll('-', '');
   const rows = {};
   codes.forEach((c, j) => { const rs = rowsOf(c).slice(-25).map(r => [r[0], r[4], r[5]]); if (!rs.length) return; const m = ((j * 7919) % 1601 - 800) / 10000; rs.push([n8, Math.round(rs.at(-1)[1] * (1 + m)), rs.at(-1)[2]]); rows[c] = rs; });
-  const bent = pro.picked[0].code, halt = pro.picked[1].code;
+  // 앞 회차(저장소 마지막 성공 회차)의 365곳 가운데 둘 — 하나는 지난 값을 고쳐 적은 것처럼 · 하나는 거래정지처럼(그날 값 없음) → 이번 회차에 빠짐
+  const prevRec = [...readRecords(ROOT)].reverse().find(r => r.members?.length && r.result !== '실패');
+  const [bent, halt] = prevRec.members;
   rows[bent] = rows[bent].map(([d, v, vol], k) => [d, k === 20 ? Math.round(v * 1.1) : v, vol]); // 모음 안 날 하나를 10% 다르게 = 지난 값을 고쳐 적은 것처럼
   rows[halt] = rows[halt].slice(0, -1); // 새 날 값이 없음 = 거래정지처럼
   fs.writeFileSync(path.join(closes, '20991231T071000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next + 'T05:00:00.000Z', rows, errors: []})));
@@ -83,7 +85,12 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const W = cal.filter(d => d <= next).slice(-21);
   assert.equal(rep.base, W[0]);
   assert.equal(rep.provisional, true); // 14:02(서울) 받음 = 저녁 8시 전
-  for (const k of ['daese', 'site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
+  for (const k of ['h365', 'site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
+  // 힘 붙은 365곳(h365-v1 · 사장님 2026-10-13 13:04 「힘이 붙는 종목으로」) — 든 까닭 수 · 층 없음 · 앞 회차 판이 다르면 「기준이 바뀜」 · 완충 없음 · 그대로 + 새로 듦 = 365
+  assert.equal(rep.version, 'h365-v1'); assert.equal(rep.tiers, null);
+  assert.equal(rep.kinds.gain + rep.kinds.keep + rep.kinds.fill, 365); assert.equal(rep.kinds.keep, 0, '앞 회차 판이 d365 면 남김 없음');
+  assert.equal(rep.ruleChanged, prevRec.version !== 'h365-v1'); assert.equal(rep.buffer, false);
+  assert.equal(rep.stay + rep.in.length, 365); assert.equal(rep.out.length, rep.in.length);
   assert.ok(rep.out.some(x => x.c === bent) && rep.out.some(x => x.c === halt), '고쳐 적힌 회사 · 그날 값 없는 회사는 빠짐');
   assert.equal(rep.members.length, 365); assert.equal(new Set(rep.members).size, 365);
   const core = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/core.json'), 'utf8'));
@@ -104,6 +111,8 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.equal(core.time.since.days, 1); assert.equal(core.time.digest, tm.digest.slice(0, 12));
   const upd = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/updates.json'), 'utf8'));
   assert.equal(upd.records[0].result, '바꿈'); assert.equal(upd.records[0].asOf, next); assert.equal(upd.records[0].in.length, rep.in.length);
+  assert.equal(upd.records[0].stay, rep.stay); assert.deepEqual(upd.records[0].kinds, rep.kinds); assert.equal(upd.records[0].ruleChanged, rep.ruleChanged);
+  for (const r of upd.records) assert.ok(!('tiers' in r), '업데이트 탭 자료에 층 칸 없음 ' + r.kst);
   const files = fs.readdirSync(rec); assert.equal(files.length, 1);
   const saved = JSON.parse(fs.readFileSync(path.join(rec, files[0]), 'utf8'));
   assert.deepEqual(saved.members, rep.members);

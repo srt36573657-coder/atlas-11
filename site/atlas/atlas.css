@@ -750,3 +750,11 @@ html.f3 .board.wide .row { --roww: 5rem; }
 .key .k-dn { border-top-color: var(--down); }
 .key .k-avg { width: 18px; height: 0; border-left: 0; border-top: 2px dashed var(--ink); opacity: .6; }
 .key .k-b0 { width: 18px; height: 0; border-top: 1px dotted rgba(255, 255, 255, .55); }
+
+/* ════ 힘 붙은 365곳(사장님 2026-10-13 13:04 「365개 종목기준을 힘이 붙는 종목으로」 · h365-v1) ════
+   이름 밑 한 줄(굵은 이름 + 수) · 업데이트 탭 「그대로 n」을 가장 큰 글씨로(「다 바뀌었다」로 안 읽히게 · 애플팀) · 기준이 바뀐 회차 = 점선 빈 막대(자에서 뺌) */
+.say.pk { margin: -2px 0 10px; }
+.say.pk b { color: var(--ink-hi); }
+ol.uplist .stay b { font-size: 1.25rem; color: var(--ink-hi); }
+ol.uplist .q.turn { font-weight: 700; }
+.lkey .l-turn { width: 12px; height: 12px; border: 1.5px dashed var(--sub); border-radius: 1px; background: none; }

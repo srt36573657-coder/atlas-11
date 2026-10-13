@@ -19,7 +19,7 @@ import {fetchWithRetry, parseFchartXml, fixtureFetch} from '../collect_naver.mjs
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i < 0 ? d : process.argv[i + 1]; };
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
 const out = path.resolve(ROOT, arg('--out', 'reports/atlas11/t365/closes'));
-const act = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳 판(대세 365곳)
+const act = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳 판(2026-10-13 부터 힘 붙은 365곳 h365-v1 · 후보 모두 = 고른 365곳 + 밖)
 const weekdaysSince = d0 => { let n = 0; for (let t = Date.parse(d0 + 'T00:00:00Z') + 864e5; t <= Date.now() + 9 * 36e5; t += 864e5) { const w = new Date(t).getUTCDay(); if (w !== 0 && w !== 6) n++; } return n; };
 const count = Math.max(5, Math.min(400, +arg('--count', 0) || Math.max(30, weekdaysSince(act.asOf) + 10)));
 const budget = Math.max(30, +arg('--budget-s', 420) || 420) * 1000;

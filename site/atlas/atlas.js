@@ -8,7 +8,12 @@
 // 멍거팀: 오른 % 옆에 같은 크기로 가장 깊이 빠짐 · 반값을 견딜 수 있나요 · 사기 전에 볼 것(기록만)
 // 삼성팀: 360px 한 화면 · 아래 탭 · 뒤로 = 앞 화면(주소 #) · 늘 밤 화면 · 움직임은 위치 · 크기만
 // 숫자는 자료(site_build.py)가 소수 둘째 자리까지 셈 · 화면은 한 가지 반올림(r1 · 반은 위로)으로만 보임
+// 사장님 2026-10-13 13:04 「매번 업데이트 할때 365개 종목기준을 힘이 붙는 종목으로 기준을 변경한다 … cia팀이 중심이 되서 나머지팀은 협력하여 기횓한후 알트라스에 적용시킨다」
+//   → 365곳 = 「힘 붙은 365곳」(h365-v1 · 네 팀 기획) — 이름 바로 밑에 늘 「그중 힘 붙음 n곳 · 나머지 m곳은 그다음 차례로 채움」 · 회사마다 앞 10거래일 → 뒤 10거래일 · 차례(순위)는 싣지 않음(규칙 55)
+//   · 「힘 붙음」 글자는 빨강으로 칠하지 않음(덜 내린 곳도 들어 있음 · 규칙 53) · 옛 「대세 · 층 · 두 팀」 글은 지난 회차 기록의 「옛 규칙(대세 업종)」 꼬리표에만
 const $ = (s, el = document) => el.querySelector(s);
+/** 힘 붙은 365곳 이름 밑 한 줄(사장님께 여쭌 ② · 숫자는 회차마다 자료에서) */
+const pickLine = C => { const k = C?.facts?.kinds; if (!k) return '? 365곳 고른 수를 못 읽었습니다'; const rest = (k.keep ?? 0) + (k.fill ?? 0); return `그중 「힘 붙음」 ${k.gain}곳` + (rest ? ` · 나머지 ${rest}곳은 그다음 차례로 채움` : ''); };
 const NS = 'http://www.w3.org/2000/svg';
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const D = {core: null, comp: null, lines: null, names: null};
@@ -448,14 +453,14 @@ function homeUS(v, H) {
     h('p', {text: '줄 밑 자 = 지난 60거래일 가장 낮음(왼쪽) ~ 가장 높음(오른쪽) 가운데 지금 자리.'}),
     h('p', {text: '미국 장은 한국 장이 끝난 뒤 열려 한국 오늘 값과 같은 날이 아닙니다. 출처 네이버 증권 해외 지수.'}))));
 }
-/** 6장 365곳 — 제목에 값의 날짜 · 「이미 오른 업종에서 골랐다」를 그림 위로(CIA팀) · 그림 = 365곳 하나하나를 가는 막대로 많이 오른 차례(바둑판 아님) · 20거래일 견줌은 접음 */
+/** 6장 365곳 — 제목에 값의 날짜 · 「힘 붙음 회사부터 골랐다」를 그림 위로(CIA팀 · 2026-10-13 「힘 붙은 365곳」 · 이름 밑 한 줄) · 그림 = 365곳 하나하나를 가는 막대로 많이 오른 차례(바둑판 아님) · 20거래일 견줌은 접음 */
 function home365(v, H) {
   const S = H.s365;
-  v.append(h('h2', {class: 'sec', text: `365곳 — ${S?.date ? dayWord(S.date) : '?'}`}));
+  v.append(h('h2', {class: 'sec', text: `힘 붙은 365곳 — ${S?.date ? dayWord(S.date) : '?'}`}), h('p', {class: 'say', text: pickLine(D.core)}));
   if (!S || !S.list.length) { v.append(h('p', {class: 'q', text: '? 365곳 값이 없습니다.'})); return; }
   const B = H.sectors?.bias, sd = H.sectors?.date ?? H.idx?.KOSPI?.date;
   add(v, h('p', {class: 'lead'}, h('b', {class: 'up', text: S.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: S.down + '곳 내림'}), S.flat ? ` · ${S.flat}곳 그대로` : ''),
-    B ? h('p', {class: 'note', text: `365곳은 이미 오른 업종에서 골랐습니다 — ${sd ? dayWord(sd) + ' ' : ''}약한 7업종에 365곳 가운데 ${B.weak365}곳 · ${H.sectors.label}업종에 ${B.strong365}곳이 있습니다.`}) : null);
+    B ? h('p', {class: 'note', text: `365곳은 지난 ${D.core.rules.pickWin.days}거래일 「힘 붙음」 회사부터 골랐습니다 — ${sd ? dayWord(sd) + ' ' : ''}약한 7업종에 365곳 가운데 ${B.weak365}곳 · ${H.sectors.label}업종에 ${B.strong365}곳이 있습니다.`}) : null);
   const L = S.list, n = L.length, W = 360, Hh = 96, max = Math.max(...L.map(x => Math.abs(x[1])), 1), T = tok(), bw = W / n, mid = Hh / 2;
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: '100%', height: Hh, role: 'img', 'aria-label': `365곳 바뀐 비율 — 많이 오른 차례 · ${S.up}곳 오름 · ${S.down}곳 내림 · 가장 많이 오른 ${S.top?.n} ${pct(S.top?.chg)} · 가장 많이 내린 ${S.bot?.n} ${pct(S.bot?.chg)}`});
   svg.append(sv('line', {x1: 0, x2: W, y1: mid, y2: mid, stroke: T.mute, 'stroke-width': 1}));
@@ -469,10 +474,10 @@ function home365(v, H) {
   v.append(host, h('div', {class: 'ax'}, h('span', {text: '많이 오름'}), h('span', {text: '많이 내림'})), pick);
   v.append(h('p', {class: 'links2 ends'}, S.top ? h('a', {href: '#/c/' + S.top.c}, '▲ 가장 많이 오른 ', h('b', {text: S.top.n}), ' ', pctEl(S.top.chg, 'span')) : null,
     S.bot ? h('a', {href: '#/c/' + S.bot.c}, '▼ 가장 많이 내린 ', h('b', {text: S.bot.n}), ' ', pctEl(S.bot.chg, 'span')) : null));
-  // 지난 20거래일 견줌 — 365곳을 시장 옆에 같은 자로(CIA팀) · 접음(고른 기간이 이 20거래일과 겹쳐 365곳이 좋아 보이기 쉬움 — 까닭은 맨 아래 7단 안내 줄)
+  // 지난 20거래일 견줌 — 365곳을 시장 옆에 같은 자로(CIA팀) · 접음(고른 기간이 이 20거래일과 같아 365곳이 좋아 보이기 쉬움 — 머리에 「고른 기간과 같은 날」 · 애플팀)
   const M = H.cmp20; if (M) {
     const list = [['코스피', M.kospi], ['코스닥', M.kosdaq], ['365곳 · 한 회사 한 표', M.eq], ['365곳 · 큰 회사는 크게', M.cw]], mx = Math.max(...list.map(x => Math.abs(x[1] ?? 0)), 1);
-    v.append(h('details', {class: 'more'}, h('summary', {text: `지난 20거래일 견줌(${md(M.base)} → ${md(M.asOf)})`}), h('div', {class: 'in'},
+    v.append(h('details', {class: 'more'}, h('summary', {text: `지난 20거래일 견줌(${md(M.base)} → ${md(M.asOf)} · 고른 기간과 같은 날)`}), h('div', {class: 'in'},
       h('ol', {class: 'srows'}, ...list.map(([nm, x]) => h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: nm}), pctEl(x, 'b')), dbar(x, mx)))))));
   }
 }
@@ -551,7 +556,7 @@ function miniUS(v, H) {
 /** 7장 365곳 — 오른 곳 · 내린 곳 + 365곳 가는 막대 그림(누르는 그림 · 회사 고리는 「자세히」 — 옆 밀기와 손가락이 부딪히지 않게) */
 function mini365(v, H) {
   const S = H.s365;
-  v.append(h('h2', {class: 'sec', text: `365곳 — ${S?.date ? dayWord(S.date) : '?'}`}));
+  v.append(h('h2', {class: 'sec', text: `힘 붙은 365곳 — ${S?.date ? dayWord(S.date) : '?'}`}));
   if (!S || !S.list.length) { v.append(h('p', {class: 'q', text: '? 365곳 값이 없습니다.'})); return; }
   const L = S.list, n = L.length, W = 360, Hh = 110, max = Math.max(...L.map(x => Math.abs(x[1])), 1), T = tok(), bw = W / n, mid = Hh / 2;
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: '100%', height: Hh, role: 'img', 'aria-label': `365곳 바뀐 비율 — 많이 오른 차례 · ${S.up}곳 오름 · ${S.down}곳 내림`});
@@ -656,7 +661,7 @@ async function viewHome(v) {
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
   // 맨 위 = 슬라이드 7장(1장 「친구에게 소개하기」 · 사장님 19:59 · 20:11) → 그 아래 20거래일 경주(1단 입구) · 자료를 못 읽으면 옛 소개 띠 + 「?」
   if (H) hub(v, H); else add(v, hello, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
-  v.append(tell.el, head, count, host);
+  v.append(tell.el, head, count, h('p', {class: 'say pk'}, h('b', {text: '힘 붙은 365곳'}), ' — ' + pickLine(C)), host);
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
   const autoplay = !state.played && !RM.matches; state.played = true; // 경주는 화면에 들어올 때 한 번 저절로(애플팀 — 위에 여섯 장이 있어 처음엔 화면 밖에서 돌다 끝나던 것)
@@ -668,12 +673,12 @@ async function viewHome(v) {
     },
     onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   if (autoplay && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); if (host.isConnected) rc.play(); } }, {threshold: 0.35}); io.observe(host); }
-  v.append(legend('365곳'), h('p', {class: 'note trn', text: `줄 아래 = ${md(C.base)} → ${md(C.asOf)} 방향 · 세기 · 힘: 「강하게」 = 곧게 10% 넘게 · 「힘 붙음」 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대)`}), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(legend('365곳'), h('p', {class: 'note trn', text: `줄 아래 = ${md(C.base)} → ${md(C.asOf)} 방향 · 세기 · 힘: 「강하게」 = 곧게 10% 넘게 · 「힘 붙음」 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대) · 365곳을 이 힘으로 골라 줄마다 「힘 붙음」이 많습니다 — 고른 규칙 때문입니다.`}), seg(m => { words(m); rc.setMode(m); }), alt);
   const share = Math.round(F.dd50 / F.n1y * 10);
   v.append(h('p', {class: 'note', text: `이 365곳도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다 — 반값을 견딜 수 있나요? (${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가)`}));
   const T = C.time; // 시간 노선도는 한 줄 고리로(애플 · 구글 · 클로드 팀 — 첫 화면이 길어져서) · 봉인 화면은 그대로
   if (T) v.append(h('p', {class: 'links2'}, h('a', {href: '#/time'}, `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶 · 3년 뒤까지 `, h('b', {class: 'num', text: ddayText(T.opens[0].date)}), ' ›')));
-  v.append(h('p', {class: 'note', text: `줄을 누르면 7단까지 내려갑니다 — 갈래 → 업종 → 회사 → 지나온 길 → 누구와 다투나 → 앞으로 클까? → 범위 · 확인. 365곳은 ${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」였던 업종부터 골랐기 때문에, 그 기간과 겹치는 선은 좋아 보이기 쉽습니다.`}));
+  v.append(h('p', {class: 'note', text: `줄을 누르면 7단까지 내려갑니다 — 갈래 → 업종 → 회사 → 지나온 길 → 누구와 다투나 → 앞으로 클까? → 범위 · 확인. 365곳은 ${md(C.rules.pickWin.from)} → ${md(C.rules.pickWin.to)} 뒤 ${Math.floor(C.rules.pickWin.days / 2)}거래일에 더 오른 회사부터 골랐기 때문에, 이 선은 끝이 들려 보이기 쉽습니다 — 앞날 값이 아닙니다.`}));
   v.append(foot());
 }
 
@@ -755,7 +760,7 @@ async function viewCompany(v, code) {
   v.append(h('p', {class: 'src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · ATLAS 셈`}));
   // 봉인 줄은 7단 「범위 · 확인」으로 옮김(네 팀 — 회사 첫 화면에 결론처럼 먼저 보이지 않게)
   v.append(nextStep(`#/c/${code}/past`, '4단 지나온 길', '1년 · 3년 주가 · 해마다 번 돈 · 몸값'));
-  // 왜 365곳에 들었나(사장님 11:43 대세 365곳) — 고를 때(그 30거래일) 값 · 업종은 네이버 업종 · 앞날 숫자는 쓰지 않음
+  // 왜 365곳에 들었나(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · 힘 붙은 365곳) — 고를 때(그 20거래일) 값 · 앞날 숫자 · 차례는 쓰지 않음
   v.append(whyBox(c));
   v.append(foot());
 }
@@ -763,20 +768,22 @@ async function viewCompany(v, code) {
 const ALLH = (code, g, i) => ['#/g/' + g.id, i.n > 1 ? hrefInd(i) : null, '#/c/' + code, `#/c/${code}/past`, `#/c/${code}/rivals`, `#/c/${code}/grow`, `#/c/${code}/range`];
 function stepsCo(now, code, g, i) { return steps(now, ALLH(code, g, i).map((x, k) => (k < now - 1 || k === now ? x : null))); }
 const coCrumbs = (c, g, i, code) => crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, i.n > 1 ? {href: hrefInd(i), text: i.name} : {text: i.name + '(1곳)'}, {href: '#/c/' + code, text: c.name});
-// 왜 365곳에 들었나(사장님 2026-10-11 11:43 대세 365곳 · 클로드팀) — 층 · 네이버 업종 · 두 팀 잣대 · 이 회사 30거래일(고를 때 값만 · 앞날 숫자 없음)
+// 왜 365곳에 들었나(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · 네 팀 기획 · CIA팀 중심) — 든 까닭(힘 붙음 · 남김 · 채움) · 앞 10거래일 → 뒤 10거래일 · 뒤 − 앞 · 문턱
+//   고를 때 값만 · 앞날 숫자 없음 · 차례(n번째)는 싣지 않음(클로드팀 · 규칙 55) · 「힘 붙음」 글자는 굵게만(빨강 · 파랑은 두 숫자 부호에만 · 규칙 53)
 function whyBox(c) {
-  const C = D.core, p = c.pick, W = C.rules.pickWin, F = C.funnel;
+  const C = D.core, p = c.pick, W = C.rules.pickWin, R = C.rules, half = Math.floor(W.days / 2), turn = r1(R.turn);
   const box = h('div', {class: 'box'}, h('h2', {text: '왜 365곳에 들었나요?'}));
-  const tier = {1: '1층 — 두 팀 모두 「대세」로 본 업종', 2: `2층 — ${p.google ? '구글팀' : 'CIA팀'}만 「대세」로 본 업종`, 3: '3층 — 대세에 가까운 순서로 채운 업종'}[p.tier];
-  box.append(h('p', {}, h('b', {text: tier})));
-  box.append(h('p', {text: `네이버 업종 「${p.sector}」 · ${F.sectors}업종 가운데 대세 순서 ${p.srank}번째 · 이 업종에서 기본 문을 지난 곳 ${p.sn}곳`}));
-  box.append(h('p', {}, `${W.days}거래일(${md(W.from)} → ${md(W.to)}) 업종 `, pctEl(p.schg), ' · 이 회사 ', p.r30 == null ? h('span', {class: 'q', text: '? 셈 못 함'}) : pctEl(p.r30)));
-  const cut = (on, t) => `${t} ${on ? '이상' : '밑'}`;
-  box.append(h('details', {class: 'more'}, h('summary', {text: '두 팀이 잰 숫자 — 눌러서 보기'}), h('div', {class: 'in'}, h('ul', {class: 'tm'}, // 7단(네 팀): 두 팀 잣대 숫자는 접음
-    h('li', {text: `구글팀 — 흔들림에 견주어 많이 오른 순 ${p.srank}번째 · 위 20%(${F.top}번째까지) ${p.google ? '안 → 고름' : '밖 → 안 고름'}`}),
-    h('li', {text: `CIA팀 — 꾸준히 10% 넘게 오름 ${p.strong ? '맞음' : '아님'}(곧은 선 ${pct(p.sfit)}) · 오른 회사 ${r1(p.sbr).toFixed(1)}%(${cut(p.hits[0], '60%')}) · 거래대금 몫 ${pct(p.smon)}(${cut(p.hits[1], '+10%')}) · 이익 늘어난 회사(증권사 짐작) ${r1(p.searn).toFixed(1)}%(${cut(p.hits[2], '60%')}) → ${p.cia ? '고름' : '안 고름'}`})))));
-  if (p.part) box.append(h('p', {text: `이 업종 ${p.sn}곳을 다 넣으면 365곳을 넘어서, 업종 안에서 ${W.days}거래일 많이 오른 순으로 ${p.inN}곳만 넣었습니다 — 이 회사는 ${p.prank}번째.`}));
-  box.append(h('p', {class: 'small', text: `기본 문 ${C.rules.gate.length === 7 ? '일곱(흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주 · 그날 종가)' : C.rules.gate.length + '개'}을 지났을 뿐, 좋은 회사로 매긴 것은 아닙니다. 이미 오른 업종에서 골랐기 때문에 그 기간과 겹치는 선은 좋아 보이기 쉽습니다.`}));
+  const head = {gain: `힘 붙음 — 뒤 ${half}거래일이 앞 ${half}거래일보다 ${turn}%p 넘게 더 올랐습니다`,
+    keep: `앞 회차에 들었고, 오늘도 ${R.buf}번째 안이라 남겼습니다 — 문턱 ${turn}%p는 못 넘었습니다`,
+    fill: `문턱 ${turn}%p는 못 넘었지만, 그다음 차례라 빈자리에 들었습니다`}[p?.kind];
+  if (!head) { box.append(h('p', {class: 'q', text: '? 든 까닭을 못 읽었습니다'})); return box; }
+  box.append(h('p', {}, h('b', {text: head})));
+  box.append(h('p', {}, `앞 ${half}거래일 `, pctEl(p.h1), ` → 뒤 ${half}거래일 `, pctEl(p.h2)));
+  box.append(h('p', {text: `뒤가 앞보다 ${r1(Math.abs(p.d)).toFixed(1)}%p ${p.d >= 0 ? '더' : '덜'} 올랐습니다 · 문턱 ${turn}%p`}));
+  box.append(h('details', {class: 'more'}, h('summary', {text: '잰 날 — 눌러서 보기'}), h('div', {class: 'in'}, h('ul', {class: 'tm'},
+    h('li', {text: `잰 날 ${md(W.from)} → ${md(W.to)} · 가운데 날 ${md(W.mid)}`}),
+    h('li', {text: `네이버 업종 「${p.sector}」 · 기본 문을 지난 ${C.funnel.gate.toLocaleString('ko-KR')}곳 가운데 「힘 붙음」은 ${C.funnel.gainAll.toLocaleString('ko-KR')}곳`})))));
+  box.append(h('p', {class: 'small', text: `기본 문 ${R.gate.length === 7 ? '일곱(흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주 · 그날 종가)' : R.gate.length + '개'}을 지났을 뿐, 좋은 회사로 매긴 것은 아닙니다. 뒤 ${half}거래일에 더 오른 곳을 골라, 그 선은 끝이 들려 보이기 쉽습니다.`}));
   return box;
 }
 function nextStep(href, title, sub) { return h('a', {class: 'nextst', href}, h('span', {}, h('b', {text: title}), h('span', {text: sub})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); }
@@ -948,7 +955,7 @@ async function viewRange(v, code) {
     h('li', {}, '거래정지 · 관리종목 · 투자경고: ', h('a', {href: 'https://kind.krx.co.kr', rel: 'noopener', target: '_blank', text: 'KIND(한국거래소)'}), ' — ATLAS 는 아직 이 표시를 거르지 못합니다(?).'),
     h('li', {}, '3분기 실제 이익: ', h('a', {href: 'https://dart.fss.or.kr', rel: 'noopener', target: '_blank', text: 'DART(전자공시)'}), ' 분기보고서 — 11월 중순까지. 증권사 짐작과 견줘 보세요.'),
     h('li', {}, '주식 수 바뀜(쪼개기 · 증자): DART 주요사항보고서 — ', C.facts.jumpN ? `${C.days}거래일 선이 하루 30% 넘게 튄 곳 ${C.facts.jumpN}곳(? 확인 못 함).` : `${C.days}거래일 선이 하루 30% 넘게 튄 곳은 없었습니다.`),
-    h('li', {text: `업종 「대세」가 이어지는지: 1단 · 2단 줄 아래 방향 · 세기 · 힘 — 날마다 새 종가로 다시 셉니다. 365곳은 회차마다(하루 4번) 그날까지 ${C.rules.pickWin.days}거래일로 다시 고릅니다 — 들고 난 곳은 「업데이트」 탭에 남습니다.`}))));
+    h('li', {text: `이 회사 힘이 이어지는지: 3단 「왜 365곳에 들었나요?」 두 숫자(앞 ${Math.floor(C.rules.pickWin.days / 2)}거래일 → 뒤 ${Math.floor(C.rules.pickWin.days / 2)}거래일) — 365곳은 회차마다(하루 ${C.rules.slots.length}번) 그날까지 ${C.rules.pickWin.days}거래일로 다시 고릅니다 · 들고 난 곳은 「업데이트」 탭에 남습니다.`}))));
   v.append(more);
   v.append(h('p', {class: 'links2'}, h('a', {href: '#/c/' + code, text: '3단 회사로'}), h('a', {href: '#/', text: '처음 화면으로'})));
   v.append(foot());
@@ -1111,10 +1118,13 @@ function growChart(host, c, G) {
 }
 
 // ── 화면 ⑦ 업데이트(사장님 2026-10-11 12:41 「업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」) ──
-//   회차마다 한 줄 — 언제 · 어느 회차 · 결과(바꿈 · 그대로 · 실패) · 고른 날 · 기준일 · 새로 든 곳 · 빠진 곳 · 층 · 1등 갈래 · 그림 = 회차마다 들고 난 수
+//   회차마다 한 줄 — 언제 · 어느 회차 · 결과(바꿈 · 그대로 · 실패) · 고른 날 · 기준일 · 그대로 남은 곳(가장 큰 글씨) · 새로 든 곳 · 빠진 곳 · 1등 갈래 · 그림 = 회차마다 들고 난 수
+//   2026-10-13 13:04 「힘이 붙는 종목으로」 — 고르는 기준이 바뀐 회차는 한 줄로 밝힘(들고 난 곳이 많은 까닭) · 그림은 점선 빈 막대 · 자(가장 큰 수)에서 뺌 · 옛 기록은 「옛 규칙(대세 업종)」 꼬리표(애플 · 클로드팀)
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 const kstLabel = k => { const d = new Date(k.slice(0, 10) + 'T00:00:00Z'); return `${md(k.slice(0, 10))}(${DOW[d.getUTCDay()]}) ${k.slice(11, 16)}`; };
 const RES_WORD = {'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'};
+const OLD_NAME = v => (/^d365/.test(v ?? '') ? '대세 업종' : /^t365/.test(v ?? '') ? '1년 우량' : null), OLD_RULE = v => (OLD_NAME(v) ? `옛 규칙(${OLD_NAME(v)})` : null); // 지난 회차 기록 · 봉인의 판 — 그때 이름 그대로 꼬리표로만
+const RULE_TURN = r => `이 회차에 고르는 기준이 바뀌었습니다 — ${OLD_RULE(r.prevVersion) ?? '옛 규칙'} → 힘 붙은 365곳. 들고 난 곳이 많은 것은 기준 때문이고, 시장이 바뀐 것이 아닙니다.`;
 function namesLine(list, max = 6) { return list.slice(0, max).map(x => x.n).join(' · ') + (list.length > max ? ` 외 ${list.length - max}곳` : ''); }
 const manText = n => (n >= 1e4 && n % 1e4 === 0 ? (n / 1e4).toLocaleString('ko-KR') + '만' : Number(n).toLocaleString('ko-KR')); // 10000000 → 1,000만
 /** 네 눈 점검 한 줄(사장님 2026-10-12 12:41 「업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩」) */
@@ -1122,29 +1132,33 @@ const inspectLine = (I, all) => `네 눈 점검(눈마다 ${manText(I.nEach)} �
 async function viewUpdates(v) {
   await needUpd();
   const U = D.upd, R = U.records, last = R[0];
-  const tell = tellRow(`하루 4번 · ${U.slots.join(' · ')}(서울)`, null);
-  v.append(tell.el, h('h1', {class: 'head', text: '업데이트 기록 — 하루 4번'}),
+  const tell = tellRow(`하루 ${U.slots.length}번 · ${U.slots.join(' · ')}(서울)`, null);
+  v.append(tell.el, h('h1', {class: 'head', text: `업데이트 기록 — 하루 ${U.slots.length}번`}),
     h('p', {class: 'count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
-  v.append(h('p', {class: 'note', text: '회차마다 그날까지 값으로 365곳을 다시 고릅니다(뽑는 규칙은 그대로). 기준일은 늘 고른 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 1,000만 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.'}));
+  const h0 = [...R].reverse().find(r => r.version === D.core.rules.version); // 이 규칙으로 처음 고른 회차(지난 기록에서 셈 · 날짜를 박지 않음)
+  v.append(h('p', {class: 'note', text: `회차마다 그날까지 값으로 힘 붙은 365곳을 다시 고릅니다(${h0 ? md(h0.kst.slice(0, 10)) + '부터' : '이번 회차부터'} 이 규칙 · 그 전 기록은 옛 규칙). 기준일은 늘 고른 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 1,000만 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.`}));
   // 시장 판독(사장님 2026-10-12 12:41 「시장을 판독해서」) — 마지막 회차가 올린 자료로 · 지난 사실만(규칙 49 · 판독 규칙 mr-v1 = market_read.mjs)
   if (last?.market?.lines?.length) v.append(h('div', {class: 'alt mread'}, h('p', {}, h('b', {text: '지금 시장 판독'}), ' — 지난 값만 · 앞날 맞히기 아님'), h('ul', {}, ...last.market.lines.map(t => h('li', {text: t})))));
   if (last?.inspect) v.append(h('p', {class: last.inspect.fail ? 'q' : 'note'}, (last.inspect.fail ? '? ' : '') + inspectLine(last.inspect, true)));
   { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
     v.append(h('p', {class: 'note nx'}, MO.parrot(34), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}), `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 365곳과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 앵무새 막비가 다음 회차를 알림 — 글은 한 덩어리로 옆에서 흐름
   const host = h('div', {class: 'upchart'}); v.append(host); upChart(host, R.slice(0, 28).reverse());
-  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-in'}), '새로 든 곳'), h('span', {}, h('i', {class: 'l-out'}), '빠진 곳'), h('span', {text: '막대 하나 = 회차 하나 · 오른쪽이 최근'})));
+  const turnIn = R.slice(0, 28).find(r => r.ruleChanged);
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-in'}), '새로 든 곳'), h('span', {}, h('i', {class: 'l-out'}), '빠진 곳'), turnIn ? h('span', {}, h('i', {class: 'l-turn'}), `점선 = 고르는 기준이 바뀐 회차(새로 든 곳 ${turnIn.in?.length ?? '?'} · 자에서 뺌)`) : null, h('span', {text: '막대 하나 = 회차 하나 · 오른쪽이 최근'})));
   const ol = h('ol', {class: 'uplist'});
   for (const r of R) {
     const li = h('li', {class: 'r-' + ({'바꿈': 'ch', '그대로': 'same', '실패': 'fail'}[r.result] ?? 'same')});
     li.append(h('p', {class: 'uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 회차' : '그 밖 올림'} `, h('span', {class: 'chip res', text: RES_WORD[r.result] ?? r.result})));
     if (!r.slot && r.reason) li.append(h('p', {class: 'small', text: r.reason}));
-    if (r.asOf) li.append(h('p', {text: `고른 날 ${md(r.asOf)}${r.provisional ? '(그날 저녁 8시 전 값 — 아직 바뀜)' : ''} · 기준일 ${md(r.base)}` + (r.tiers ? ` · 1층 ${r.tiers[0]} · 2층 ${r.tiers[1]} · 3층 ${r.tiers[2]}` : '')}));
+    if (r.ruleChanged) li.append(h('p', {class: 'q turn', text: RULE_TURN(r)}));
+    if (r.asOf) li.append(h('p', {text: `고른 날 ${md(r.asOf)}${r.provisional ? '(그날 저녁 8시 전 값 — 아직 바뀜)' : ''} · 기준일 ${md(r.base)}` + (OLD_RULE(r.version) ? ` · ${OLD_RULE(r.version)}` : '')}));
+    if (r.stay != null && (r.in?.length || r.out?.length)) li.append(h('p', {class: 'stay'}, h('b', {class: 'num', text: `그대로 ${r.stay}`}), r.kinds ? ` · 그중 「힘 붙음」 ${r.kinds.gain}곳` : ''));
     if (r.in?.length || r.out?.length) {
       li.append(h('p', {}, h('b', {class: 'ni', text: `새로 든 곳 ${r.in.length}`}), r.in.length ? ' ' + namesLine(r.in) : ''));
       li.append(h('p', {}, h('b', {class: 'no2', text: `빠진 곳 ${r.out.length}`}), r.out.length ? ' ' + namesLine(r.out) : ''));
       if (r.in.length > 6 || r.out.length > 6) li.append(h('details', {class: 'more'}, h('summary', {text: '모두 보기'}), h('div', {class: 'in'}, h('p', {text: '새로 든 곳: ' + r.in.map(x => x.n).join(' · ')}), h('p', {text: '빠진 곳: ' + r.out.map(x => x.n).join(' · ')}))));
     } else if (r.result !== '실패') li.append(h('p', {text: '365곳은 앞 회차와 같습니다.'}));
-    if (r.top?.short) li.append(h('p', {}, `1등 갈래 ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 365곳 ', pctEl(r.all?.chg, 'span'), ` · 20거래일`));
+    if (r.top?.short) li.append(h('p', {}, `1등 갈래 ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 365곳 ', pctEl(r.all?.chg, 'span'), ` · 20거래일` + (r.in?.length ? '(고른 곳이 바뀐 것도 섞임)' : '')));
     if (r.market?.day) li.append(h('p', {class: 'small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
     if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
     if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
@@ -1155,13 +1169,14 @@ async function viewUpdates(v) {
 }
 function upChart(host, rows) {
   const W = Math.max(260, Math.round(host.getBoundingClientRect().width || 320)), Hh = 132, P = 8, n = Math.max(rows.length, 1);
-  const M = Math.max(4, ...rows.flatMap(r => [r.in?.length ?? 0, r.out?.length ?? 0])) * 1.15, bw = Math.min((W - 2 * P) / n, 36), x0 = W - P - n * bw, Y0 = Hh / 2, sc = (Hh / 2 - P) / M; // 오른쪽이 최근 · 막대 폭은 36 까지
+  const M = Math.max(4, ...rows.filter(r => !r.ruleChanged).flatMap(r => [r.in?.length ?? 0, r.out?.length ?? 0])) * 1.15, bw = Math.min((W - 2 * P) / n, 36), x0 = W - P - n * bw, Y0 = Hh / 2, sc = (Hh / 2 - P) / M; // 오른쪽이 최근 · 막대 폭은 36 까지 · 기준이 바뀐 회차는 자에서 뺌(다른 막대가 납작해지지 않게 · 애플팀)
   const svg = sv('svg', {viewBox: `0 0 ${W} ${Hh}`, width: W, height: Hh, role: 'img', 'aria-label': `최근 ${rows.length}회차 — 새로 든 곳 ${rows.reduce((t, r) => t + (r.in?.length ?? 0), 0)} · 빠진 곳 ${rows.reduce((t, r) => t + (r.out?.length ?? 0), 0)}`});
   const T = tok();
   hairs(svg, W, P, [P, Hh - P]);
   svg.append(sv('line', {x1: P, x2: W - P, y1: Y0, y2: Y0, stroke: T.mute, 'stroke-width': 1}));
   rows.forEach((r, k) => {
     const x = x0 + k * bw + bw * 0.18, w = Math.max(2, bw * 0.64), a = (r.in?.length ?? 0) * sc, b = (r.out?.length ?? 0) * sc;
+    if (r.ruleChanged) { svg.append(sv('rect', {x: x.toFixed(1), y: P, width: w.toFixed(1), height: Hh - 2 * P, rx: 1, fill: 'none', stroke: T.mute, 'stroke-width': 1.2, 'stroke-dasharray': '3 3'})); return; } // 점선 빈 막대 = 기준이 바뀐 회차
     if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 1, fill: 'none', stroke: T.gold, 'stroke-width': 1.5}));
     else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: T.mute}));
     if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 1, fill: T.violet}));
@@ -1303,7 +1318,8 @@ async function viewTime(v) {
   // 앞날 — 다시 여는 날(3 · 5 · 10년 뒤)
   v.append(h('h2', {class: 'sec', text: '앞날 — 다시 여는 날'}),
     h('ol', {class: 'opens'}, ...K.opens.map(o => h('li', {}, o.y <= 3 ? MO.star(24) : o.y <= 5 ? MO.moon(26) : MO.whale(44), h('span', {class: 'oy', text: `${o.y}년 뒤`}), h('span', {class: 'od', text: ymd(o.date)}), h('b', {class: 'num dd', text: ddayText(o.date)})))),
-    h('p', {class: 'note', text: '그날 장이 쉬면 그 뒤 첫 거래일 종가로 엽니다. 365곳이 후보 모두보다 나았는지만 셉니다 — 그 사이 365곳을 날마다 다시 골라도 이 봉인은 그대로입니다.'}));
+    h('p', {class: 'note', text: '그날 장이 쉬면 그 뒤 첫 거래일 종가로 엽니다. 365곳이 후보 모두보다 나았는지만 셉니다 — 그 사이 365곳을 날마다 다시 골라도 이 봉인은 그대로입니다.'}),
+    K.version !== D.core.rules.version ? h('p', {class: 'note', text: `봉인 ${K.id}호는 ${md(K.seal)} 옛 규칙(${OLD_NAME(K.version) ?? K.version})으로 고른 365곳을 잠근 것입니다. 그 뒤 고르는 기준이 바뀌어(힘 붙은 365곳) 봉인 ${K.id}호의 365곳과 지금 365곳은 다릅니다.`}) : null);
   if (D.core.grow) v.append(growSummary(D.core.grow)); // 회사마다 앞으로 클까?(사장님 16:51 · 봉인과 따로 — 16:57 「이건 봉인하지마」)
   v.append(h('details', {class: 'more'}, h('summary', {text: '그날 이렇게 셉니다 — 봉인과 함께 잠근 규칙'}), h('div', {class: 'in'}, h('ol', {}, ...K.rules.map(r => h('li', {text: r}))), K.rulesNote ? h('p', {class: 'small', text: K.rulesNote}) : null)));
   v.append(h('div', {class: 'box seal'}, h('h2', {text: `봉인 번호 ${K.digest.slice(0, 12)}`}), h('p', {class: 'digest', text: K.digest}),
@@ -1327,7 +1343,7 @@ function viewMissing(v, code) { // 365곳에서 빠진 회사(회차마다 다�
   const head = h('h1', {class: 'head', text: '없는 주소입니다'}), say = h('p', {class: 'count', text: code ? `「${code}」는 지금 365곳에 없습니다. 찾기로 이름을 쳐 보세요.` : '주소가 바뀌었거나 잘못 들어왔습니다.'}), more = h('div');
   v.append(head, say, more, h('p', {}, h('a', {class: 'play', href: '#/', text: '처음 화면으로'})), foot());
   if (code) needNames().then(() => { const r = D.names?.rows.find(x => x.c === code); if (!r || !head.isConnected) return;
-    head.textContent = r.n + ' — 지금 365곳 밖'; say.textContent = `${josa(r.n, '은', '는')} ${D.core.funnel.stopName[r.s] ?? '365곳 고르기'}에서 멈췄습니다 — 회차마다(하루 4번) 다시 고르므로 다음 회차에 들어올 수도 있습니다.`;
+    head.textContent = r.n + ' — 지금 365곳 밖'; say.textContent = `${josa(r.n, '은', '는')} ${D.core.funnel.stopName[r.s] ?? '365곳 고르기'}에서 멈췄습니다 — 회차마다(하루 ${D.core.rules.slots.length}번) 다시 고르므로 다음 회차에 들어올 수도 있습니다.`;
     more.append(h('div', {class: 'why', text: r.w}), funnel(r.s)); }).catch(() => {});
 }
 
@@ -1397,16 +1413,23 @@ function showInfo(code) {
     if (!r) { body.append(h('p', {class: 'q', text: '? 이 이름표를 못 찾았습니다.'})); return; }
     const stopName = C.funnel.stopName[r.s] ?? '365곳 고르기';
     body.append(h('p', {text: `${josa(r.n, '은', '는')} ${stopName}에서 멈췄습니다(${r.m === 'KOSPI' ? '코스피' : '코스닥'}).`}), h('div', {class: 'why', text: r.w}), funnel(r.s));
-    body.append(h('p', {class: 'note', text: `365곳은 ${md(C.rules.pickWin.to)} 종가까지 ${C.rules.pickWin.days}거래일로 고른 것이고, 회차마다(하루 4번) 그날 값으로 다시 고릅니다 — 다음 회차에 들어올 수도 있습니다.`}));
+    body.append(h('p', {class: 'note', text: `365곳은 ${md(C.rules.pickWin.to)} 종가까지 ${C.rules.pickWin.days}거래일로 고른 것이고, 회차마다(하루 ${C.rules.slots.length}번) 그날 값으로 다시 고릅니다 — 다음 회차에 들어올 수도 있습니다.`}));
     return;
   }
   $('#infoTitle').textContent = 'ATLAS 는 어떻게 셌나요';
-  body.append(h('p', {text: `${md(C.rules.pickWin.to)}까지 ${C.rules.pickWin.days}거래일 「대세」였던 업종부터 고른 한국 주식 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사 → 7단까지 눌러 봅니다. 앞날 값은 6단 회사 크기 범위(세 팀의 따짐)와 7단 몬테카를로 범위(모형 셈)로만 보이며, 맞힘이 아닙니다.`}));
-  body.append(h('p', {text: `줄 아래 「▲ 강하게 오름 · 힘 붙음」 = 이 기간의 방향 · 세기 · 힘입니다. 방향 = 기간 동안 그은 곧은 선이 3% 넘게 기울고 처음보다 끝도 같은 쪽(아니면 「옆걸음」) · 강하게 = 그 선이 10% 넘고 들쭉날쭉하지 않음 · 힘 붙음 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대). 지난 기록이고 앞날 값이 아닙니다.`}));
+  body.append(h('p', {}, h('b', {text: '힘 붙은 365곳'}), ` — ${pickLine(C)}.`));
+  body.append(h('p', {text: `365곳 = 기본 문을 지난 곳 가운데 「힘 붙음」 회사를 먼저, 모자라면 그다음 차례로 · 힘 = 뒤 ${Math.floor(C.rules.pickWin.days / 2)}거래일 오름 − 앞 ${Math.floor(C.rules.pickWin.days / 2)}거래일 오름(${md(C.rules.pickWin.from)} → ${md(C.rules.pickWin.to)}) · 지난 기록이고 앞날 값이 아닙니다 · 하루 ${C.rules.slots.length}번 다시 고릅니다 · 좋은 회사 순서가 아닙니다.`}));
+  body.append(h('p', {text: `이 365곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사 → 7단까지 눌러 봅니다. 앞날 값은 6단 회사 크기 범위(세 팀의 따짐)와 7단 몬테카를로 범위(모형 셈)로만 보이며, 맞힘이 아닙니다.`}));
+  body.append(h('p', {text: `줄 아래 「▲ 강하게 오름 · 힘 붙음」 = 이 기간의 방향 · 세기 · 힘입니다. 방향 = 기간 동안 그은 곧은 선이 3% 넘게 기울고 처음보다 끝도 같은 쪽(아니면 「옆걸음」) · 강하게 = 그 선이 10% 넘고 들쭉날쭉하지 않음 · 힘 붙음 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대). 지난 기록이고 앞날 값이 아닙니다. 365곳을 이 힘으로 골라 줄마다 「힘 붙음」이 많습니다 — 고른 규칙 때문입니다.`}));
   body.append(h('h2', {class: 'sec', text: '365곳은 이렇게 골랐습니다'}), funnel(null));
   const RU = C.rules;
-  body.append(h('details', {class: 'more'}, h('summary', {text: `기본 문 ${RU.gate.length}개 · 대세 순서 — 원문`}), h('div', {class: 'in'}, h('ul', {}, ...RU.gate.map(t => h('li', {text: t})), h('li', {text: RU.window}), h('li', {text: RU.google}), h('li', {text: RU.cia}), ...RU.tiers.map(t => h('li', {text: t}))))));
-  body.append(h('p', {class: 'note', text: `${RU.bias} (${C.days}거래일 가운데값: ` + F.tiers.map(t => `${t.t}층 ${t.n}곳 ${pct(t.med)}`).join(' · ') + ')'}));
+  body.append(h('details', {class: 'more'}, h('summary', {text: `기본 문 ${RU.gate.length}개 · 힘 차례 — 원문`}), h('div', {class: 'in'}, h('ul', {}, ...RU.gate.map(t => h('li', {text: t})), h('li', {text: RU.window}), h('li', {text: RU.rule}), ...RU.fill.map(t => h('li', {text: t})), h('li', {text: RU.q})))));
+  const PC = F.pickCmp;
+  body.append(h('p', {class: 'note', text: `${RU.bias} (${C.days}거래일 가운데값: 고른 ${PC.in.n}곳 ${pct(PC.in.med)} · 셀 수 있었지만 안 고른 ${PC.out.n}곳 ${pct(PC.out.med)})`}));
+  body.append(h('ul', {class: 'note'}, h('li', {text: RU.past}),
+    F.gainDown ? h('li', {text: `「힘 붙음」에는 뒤 ${Math.floor(C.rules.pickWin.days / 2)}거래일에도 내렸지만 덜 내린 곳 ${F.gainDown}곳이 들어 있습니다.`}) : null,
+    h('li', {text: `${Math.floor(C.rules.pickWin.days / 2)}거래일 값은 흔들림이 큽니다 — 회차마다 새로 든 곳 · 빠진 곳은 「업데이트」 탭에 남습니다.`}),
+    C.provisional ? h('li', {text: '? 장 중 값 — 오후 3시 30분 종가 전이라 「힘 붙음」이 바뀔 수 있습니다.'}) : null));
   body.append(h('h2', {class: 'sec', text: '셈'}), h('ul', {class: 'note'},
     h('li', {text: `${md(C.base)} 종가 = 100. 「한 회사 한 표」 = 날마다 회사들의 오르내림을 같은 무게로 평균 내어 이어 곱함(하루 ±50% 넘는 값은 자료 오류로 뺌).`}),
     h('li', {text: `「큰 회사는 크게」 = ${md(C.base)}에 시가총액만큼 사 두었다고 보고 그대로 둔 값.`}),
@@ -1415,12 +1438,10 @@ function showInfo(code) {
   body.append(h('h2', {class: 'sec', text: '모르는 것 ?'}), h('ul', {class: 'note'},
     h('li', {text: '? 거래정지 · 관리종목 · 투자경고 표시 — 아직 거르지 못합니다.'}),
     h('li', {text: C.sincePick ? `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.` : `? 고른 뒤 기록 — ${md(C.pickAsOf)} 종가로 골라 고른 뒤 기록은 아직 없습니다. 지금 보이는 선은 모두 고른 기간 안입니다.`}),
-    h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. CIA팀 잣대 ③(이익이 늘어난 회사)과 6단 그림의 올해 매출 한 칸(점선 · 「남의 짐작」)에 쓰고, 세 팀 이야기 글 속에 증권사 짐작을 옮긴 곳도 있습니다 — 그대로 믿을 값이 아닙니다.'}),
+    h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. 6단 그림의 올해 매출 한 칸(점선 · 「남의 짐작」)에 쓰고, 세 팀 이야기 글 속에 증권사 짐작을 옮긴 곳도 있습니다 — 그대로 믿을 값이 아닙니다. 365곳을 고를 때는 쓰지 않습니다.'}),
+    F.kinds && C.funnel.q ? h('li', {text: `? 셈 못 함 — 20거래일 안에 종가가 빈 날 · 끊긴 값(쪼개기 등) · 거래량 0인 날이 있는 ${C.funnel.q}곳은 힘을 못 재 넣지 않았습니다.`}) : null,
     h('li', {text: `? 다시 고르기 — ${RU.next}.`})));
-  const th = h('details', {class: 'more'}, h('summary', {text: `업종 대세 순서 ${RU.sectors.length}개 — 1층 · 2층 · 3층`}), h('div', {class: 'in'}, h('ol', {class: 'srank'},
-    ...RU.sectors.map(x => h('li', {}, h('b', {text: x.name}), ` — ${x.tier}층${x.google ? ' · 구글팀' : ''}${x.cia ? ' · CIA팀' : ''} · 30거래일 ${pct(x.chg)} · ${x.in === x.n ? `${x.n}곳 모두` : x.in ? `${x.n}곳 중 ${x.in}곳` : `${x.n}곳 밖`}`))),
-    h('p', {class: 'small', text: `업종 = 네이버 업종 · 기본 문 지난 회사가 3곳 미만인 업종 ${RU.unranked.sectors}개(${RU.unranked.companies}곳)는 순서를 매기지 않았습니다.`})));
-  body.append(th, foot());
+  body.append(foot());
 }
 
 // ── 소리 · 글씨 ──

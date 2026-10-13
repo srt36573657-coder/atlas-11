@@ -5,7 +5,7 @@
 숫자는 옛 셈과 같은 씨앗을 써서 같은 자료면 7단 막대 숫자가 한 자리도 안 바뀜(바꾸지 않았다는 증거 · range_verify.mjs)
 
 ━━ 돌리기 전에 정한 것(결과를 보고 바꾸지 않음 · 바꾸면 새 판 이름) ━━
-자료  모음 bundle.json.gz 일봉 + 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES · daese.merge 와 같은 규칙) · 회사 = 회차마다 고른 대세 365곳(ATLAS_D365_DIR 또는 universe.json 폴더)
+자료  모음 bundle.json.gz 일봉 + 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES · daese.merge 와 같은 규칙) · 회사 = 회차마다 고른 365곳(2026-10-13 부터 힘 붙은 365곳 h365-v1 · ATLAS_D365_DIR 또는 universe.json 폴더)
 하루 수익  로그(오늘 종가 ÷ 앞 거래일 종가) · 한국 하루 가격 제한(±30%) 밖이면(|단순 수익| > 30.5%) 주식 수 바뀜으로 보고 그날 그 회사 값 없음
 거래일  365곳 가운데 절반 넘게 종가가 있는 날
 시장  365곳 하루 단순 수익의 같은 무게 평균(그날 값 있는 회사만)
@@ -32,7 +32,7 @@ import numpy as np
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 ACT = json.load(open(os.path.join(ROOT, 'scripts/atlas11/t365/universe.json'), encoding='utf-8'))  # 지금 쓰는 365곳
 VERSION = 'range-v1'
-SEED = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2', 'd365-v2': 'pick36-v3'}[ACT['version']]  # 옛 셈과 같은 씨앗 이름(같은 자료면 같은 숫자 · 화면에 안 나옴)
+SEED = {'t365-v1': 'pick36-v1', 'd365-v1': 'pick36-v2', 'd365-v2': 'pick36-v3', 'h365-v1': 'pick36-v3'}[ACT['version']]  # 옛 셈과 같은 씨앗 이름(같은 자료면 같은 숫자 · 화면에 안 나옴 · 힘 붙은 365곳도 같은 씨앗 — 같은 회사면 같은 범위)
 if ACT.get('range') != VERSION:
     sys.exit('range: universe.json 의 range(%s) 이 이 셈 이름(%s)과 다름' % (ACT.get('range'), VERSION))
 QUICK = '--quick' in sys.argv
