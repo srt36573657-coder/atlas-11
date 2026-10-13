@@ -62,10 +62,23 @@ await step('36곳 없음', async () => { // 사장님 2026-10-13 06:45 「매수
   await page.goto(B + '/?v=' + Date.now() + '#/36', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
   const r = await page.evaluate(() => ({hash: location.hash, tabs: [...document.querySelectorAll('nav.tabbar a')].map(a => a.textContent.trim()), seen: (document.body.innerText.match(/(?<![\d,])36곳|매수 검토/g) ?? []).length}));
   await shot('p7-no36');
+  await page.goto(B + '/?v=' + Date.now() + '#/up', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
+  r.seenUp = (await page.evaluate(() => document.body.innerText.match(/(?<![\d,])36곳|매수 검토/g) ?? [])).length; // 업데이트 탭 글도(13:0x)
+  r.seen += r.seenUp;
   const get = async u => { try { const x = await fetch(B + u + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)}); const t = await x.text(); return {status: x.status, json: /^\s*\{/.test(t), picks: /"picks"|(?<![\d,])36곳/.test(t)}; } catch { return {status: 0}; } };
   const pick = await get('/atlas/data/pick36.json'), range = await get('/atlas/data/range.json'); // 없는 파일은 404 또는 첫 화면 글(되돌려 보내기) — 36곳 자료(JSON)만 아니면 됨
   out.no36 = {...r, pick36: pick, range, ok: (r.hash === '#/' || r.hash === '') && r.tabs.length === 3 && r.seen === 0 && !pick.json && !pick.picks && range.status === 200 && range.json && !range.picks};
   if (!out.no36.ok) out.errors.push('36곳 없음: ' + JSON.stringify(out.no36).slice(0, 160));
+});
+await step('줄 선 그래프', async () => { // 사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」
+  const cnt = () => page.evaluate(() => { const rows = [...document.querySelectorAll('#view .board .row')]; return {rows: rows.length, lines: rows.filter(r => (r.querySelector('.track .spk .ln')?.getAttribute('d') ?? '').length > 10).length}; });
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
+  await page.evaluate(() => { const b = document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 140); }); await page.waitForTimeout(9000); // 경주가 끝날 때까지
+  const home = await cnt(); await shot('p8-home-board');
+  await page.goto(B + '/?v=' + Date.now() + '#/list', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2500);
+  const list = await cnt(); await shot('p9-list');
+  out.spark = {home, list, ok: home.rows > 0 && home.lines === home.rows && list.rows > 0 && list.lines === list.rows};
+  if (!out.spark.ok) out.errors.push('줄 선 그래프: ' + JSON.stringify(out.spark));
 });
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');

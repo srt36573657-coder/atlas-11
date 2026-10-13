@@ -62,7 +62,10 @@ function needUpd() { if (!updP) updP = getJson('updates.json').then(u => { D.upd
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
 
 // ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 기준일(20거래일 전)과 같음 ──
+//   줄마다 작은 선 그래프(사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」) — 막대 대신 20거래일 선 ·
+//   줄마다 제 눈금(사진처럼 모양이 보이게 — 크기는 옆 숫자가 말함) · 점선 = 기준일 값 · 흐린 점선 = 위 단 평균(같은 눈금) · 오르면 빨강 · 내리면 파랑 · 경주 때 선이 날마다 자람
 //   items: [{key, name, href, v:[21], cw:[21], badge}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
+const SPW = 100, SPH = 30; // 줄 선 그래프 viewBox(늘여 그림 · 선 굵기는 그대로)
 function race(host, {items, parent, wide = false, label, onTick, onDone, auto = false}) {
   const C = D.core, n = C.dates.length;
   const board = h('div', {class: 'board' + (wide ? ' wide' : ''), role: 'group', 'aria-label': label}); // 줄은 링크 그대로(구글팀 2026-10-12: role=listitem 이 링크를 가렸음)
@@ -70,25 +73,37 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
   const Meq = scale(items.map(it => it.v).concat(parent ? [parent.v] : [])), Mcw = scale(items.map(it => it.cw || it.v).concat(parent ? [parent.cw] : []));
   let M = state.mode === 'cw' ? Mcw : Meq;
   const rows = items.map(it => {
-    const pos = h('i', {class: 'bar pos'}), neg = h('i', {class: 'bar neg'}), avg = parent ? h('i', {class: 'avg'}) : null;
+    const spk = sv('svg', {class: 'spk', viewBox: `0 0 ${SPW} ${SPH}`, preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false'});
+    const pa = parent ? sv('path', {class: 'pa'}) : null, ln = sv('path', {class: 'ln'});
+    const b0 = sv('line', {class: 'b0', x1: 0, x2: SPW, y1: SPH / 2, y2: SPH / 2});
+    spk.append(b0, ...(pa ? [pa] : []), ln);
     const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, it.name, it.badge ? h('span', {class: 'badge', text: it.badge}) : null);
     const trd = it.tr ? trEl(state.mode === 'cw' && it.trc ? it.trc : it.tr) : null;
-    const row = h('a', {class: 'row' + (trd ? ' two' : ''), href: it.href}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, h('i', {class: 'zero'}), neg, pos, avg), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+    const row = h('a', {class: 'row' + (trd ? ' two' : ''), href: it.href}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, spk), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
     board.append(row);
-    return {it, row, pos, neg, avg, val, trd, rank: -1, cur: 100};
+    return {it, row, ln, pa, b0, rng: {}, val, trd, rank: -1, cur: 100};
   });
   host.append(board);
   const rowH = rows.length ? rows[0].row.getBoundingClientRect().height + (wide ? 4 : 0) : 0;
   board.style.height = (rows.length * rowH) + 'px';
   const at = (arr, k) => { const a = Math.floor(k), b = Math.min(n - 1, a + 1), f = k - a; const x = arr[a], y = arr[b]; if (x == null) return y; if (y == null) return x; return x + (y - x) * f; };
+  // 선 — 0 ~ k 날까지(값이 빈 날은 끊음) · 세로 = 그 줄의 낮은 값 ~ 높은 값(기준일 값 100 · 위 단 평균 포함)
+  const sx = j => (j / Math.max(1, n - 1) * SPW).toFixed(2);
+  const sy = (v, [lo, hi]) => (hi - lo < 1e-9 ? SPH / 2 : 2 + (hi - v) / (hi - lo) * (SPH - 4)).toFixed(2);
+  const lineTo = (arr, k, R) => { if (!arr) return ''; let d = '', on = false; const a = Math.floor(k);
+    for (let j = 0; j <= a && j < n; j++) { const x = arr[j]; if (x == null) { on = false; continue; } d += (on ? 'L' : 'M') + sx(j) + ' ' + sy(x, R); on = true; }
+    if (k > a && a + 1 < n && on) { const x = at(arr, k); if (x != null) d += 'L' + sx(k) + ' ' + sy(x, R); }
+    return d; };
+  const rngOf = r => { if (!r.rng[mode]) { const vs = [...(mode === 'cw' && r.it.cw ? r.it.cw : r.it.v), ...(parent ? (mode === 'cw' ? parent.cw : parent.v) : []), 100].filter(x => x != null && isFinite(x)); r.rng[mode] = [Math.min(...vs), Math.max(...vs)]; } return r.rng[mode]; };
   let mode = state.mode;
   function paint(k, settle) {
     for (const r of rows) {
       const v = at(mode === 'cw' && r.it.cw ? r.it.cw : r.it.v, k); r.cur = v;
       const d = v == null ? null : v - 100, s = d == null ? 0 : Math.min(1, Math.abs(d) / M);  // 값이 없는 날(거래정지 · 새 값 못 받음)은 「?」 · 막대 없음
-      r.pos.style.transform = 'scaleX(' + (d > 0 ? s : 0) + ')'; r.neg.style.transform = 'scaleX(' + (d < 0 ? s : 0) + ')';
+      const R = rngOf(r), y0 = sy(100, R); if (r.b0.getAttribute('y1') !== y0) { r.b0.setAttribute('y1', y0); r.b0.setAttribute('y2', y0); }
+      r.ln.setAttribute('d', lineTo(mode === 'cw' && r.it.cw ? r.it.cw : r.it.v, k, R)); r.ln.setAttribute('class', 'ln ' + cls(d)); void s;
       r.val.textContent = pct(d); r.val.className = 'val num ' + cls(d);
-      if (r.avg) { const p = at(mode === 'cw' ? parent.cw : parent.v, k) - 100; r.avg.style.left = (50 + Math.max(-1, Math.min(1, p / M)) * 50) + '%'; }
+      if (r.pa) r.pa.setAttribute('d', lineTo(mode === 'cw' ? parent.cw : parent.v, k, R));
     }
     const order = rows.slice().sort((a, b) => (b.cur ?? -Infinity) - (a.cur ?? -Infinity) || 0);
     order.forEach((r, i) => { if (r.rank !== i || settle) { r.rank = i; r.row.style.transform = 'translateY(' + (i * rowH) + 'px)'; } });
@@ -202,7 +217,7 @@ function tellRow(text, onPlay) {
 }
 function svgPlay() { const s = sv('svg', {width: 14, height: 14, viewBox: '0 0 14 14', 'aria-hidden': 'true'}); s.append(sv('path', {d: 'M3 1.5 L12 7 L3 12.5 Z', fill: 'currentColor'})); return s; }
 function legend(parentName) {
-  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균'), h('span', {text: '가운데 = 기준일(' + md(D.core.base) + ')과 같음'}));
+  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균'), h('span', {}, h('i', {class: 'k-b0'}), '기준일(' + md(D.core.base) + ') 값'));
 }
 function crumbs(...parts) { const c = h('nav', {class: 'crumb', 'aria-label': '지금 자리'}); parts.forEach((p, i) => { if (i) c.append(h('i', {text: '›', 'aria-hidden': 'true'})); c.append(p.href ? h('a', {href: p.href, text: p.text}) : h('span', {text: p.text})); }); return c; }
 const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));

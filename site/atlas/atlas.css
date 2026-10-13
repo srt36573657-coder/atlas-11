@@ -724,3 +724,29 @@ ol.mrows li.uin > b { font-weight: 800; font-variant-numeric: tabular-nums; }
 .hd > h1.head:first-child, .hd > h2.sec:first-child { margin-top: 6px; padding-top: 0; border-top: 0; }
 button.q.alert { display: block; width: 100%; min-height: 44px; margin: 6px 0 0; padding: 6px 0; border: 0; background: none; text-align: left; font: inherit; font-weight: 800; color: var(--gold); line-height: 1.45; cursor: pointer; }
 button.q.alert:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* ════ 줄마다 선 그래프(사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」) ════
+   막대 대신 20거래일 선 — 한 판 안 같은 눈금 · 가운데 점선 = 기준일 값 · 흐린 점선 = 위 단 평균 · 빨강 = 오름 · 파랑 = 내림(규칙 53)
+   좁은 판(첫 화면 9 갈래) = 첫 줄 이름과 숫자 사이 · 넓은 판(업종 · 회사 줄) = 둘째 줄 전체 · 선 굵기는 늘여도 그대로(non-scaling) */
+.track .bar, .track .zero, .track .avg { display: none; }
+.track .spk { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.track .spk .b0 { stroke: rgba(255, 255, 255, .34); stroke-width: 1; stroke-dasharray: 2 3; fill: none; vector-effect: non-scaling-stroke; }
+.track .spk .pa { stroke: var(--ink); stroke-opacity: .42; stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.track .spk .ln { stroke-width: 2.2; fill: none; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.track .spk .ln.up { stroke: var(--up); } .track .spk .ln.down { stroke: var(--down); } .track .spk .ln.flat { stroke: var(--sub); }
+.board .row > .track, .board:not(.wide) .row > .track, .board.wide .row .track { background: none; border: 0; border-radius: 0; overflow: visible; }
+.board.wide .row { --roww: 3.6rem; grid-template-rows: auto 24px; }
+.board.wide .row.two { grid-template-rows: auto 24px auto; height: calc(var(--roww2) + 6px); }
+.board.wide .row .track { height: 24px; }
+html.f3 .board.wide .row { --roww: 5rem; }
+.board:not(.wide) .row { grid-template-columns: minmax(0, max-content) minmax(0, 1fr) auto 0.7em; }
+.board:not(.wide) .row > .track { position: relative; inset: auto; left: auto; right: auto; top: auto; bottom: auto; height: 26px; grid-column: 2; grid-row: 1; z-index: 1; margin: 0 2px; }
+.board:not(.wide) .row > .nm, .board:not(.wide) .row.two > .nm { grid-column: 1; grid-row: 1; }
+.board:not(.wide) .row > .val, .board:not(.wide) .row.two > .val { grid-column: 3; grid-row: 1; }
+.board:not(.wide) .row > .track, .board:not(.wide) .row.two > .track { grid-column: 2; grid-row: 1; }
+.board:not(.wide) .row.two > .trd { grid-column: 1 / 4; grid-row: 2; }
+.board:not(.wide) .row > .chev, .board:not(.wide) .row.two > .chev { grid-column: 4; grid-row: 1 / 3; }
+.key .k-up, .key .k-dn { width: 18px; height: 0; background: none; border-radius: 0; border-top: 2px solid var(--up); }
+.key .k-dn { border-top-color: var(--down); }
+.key .k-avg { width: 18px; height: 0; border-left: 0; border-top: 2px dashed var(--ink); opacity: .6; }
+.key .k-b0 { width: 18px; height: 0; border-top: 1px dotted rgba(255, 255, 255, .55); }

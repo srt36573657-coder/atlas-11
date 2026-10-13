@@ -53,7 +53,7 @@ function load(siteDir, dataDir) {
   const opt = f => { try { return J(f); } catch { return null; } };
   const S = {siteDir, dataDir: D, js: fs.readFileSync(path.join(A, 'atlas.js'), 'utf8'), css: fs.readFileSync(path.join(A, 'atlas.css'), 'utf8'), html: fs.readFileSync(path.join(A, 'index.html'), 'utf8'),
     fontsCss: fs.existsSync(path.join(A, 'fonts.css')) ? fs.readFileSync(path.join(A, 'fonts.css'), 'utf8') : '',
-    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), co: {}, coBytes: {}, files: {}};
+    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), upd: opt('updates.json'), co: {}, coBytes: {}, files: {}};
   const coDir = path.join(D, 'co');
   for (const f of fs.existsSync(coDir) ? fs.readdirSync(coDir) : []) { if (!f.endsWith('.json')) continue; const t = fs.readFileSync(path.join(coDir, f), 'utf8'); S.coBytes[f.slice(0, -5)] = t.length; try { S.co[f.slice(0, -5)] = JSON.parse(t); } catch { S.co[f.slice(0, -5)] = null; } }
   for (const f of fs.readdirSync(D)) { const p = path.join(D, f); if (fs.statSync(p).isFile()) S.files[f] = fs.statSync(p).size; }
@@ -234,7 +234,7 @@ function claudeLens(S, market) {
   const growCos = S.grow ? Object.entries(S.grow.companies ?? {}) : [];
   const unknownKeys = ['per', 'r1y', 'mdd1y', 'chg', 'mdd', 'cap', 'price'];
   // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 — 2026-10-13 07:2x 묶음이 4분 넘게 걸리던 것 · 옛 얼굴 문과 같은 까닭)
-  const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !/(?<![\d,])36곳|매수 검토/.test(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null]));
+  const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !/(?<![\d,])36곳|매수 검토/.test(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null, S.upd ?? null])) /* 업데이트 탭 글도(13:0x 08:22 까닭 칸 「36곳 탭 영구 삭제」를 놓친 것) */;
   const code = [
     ['안전 문장(맨 아래)', () => S.js.includes(SAFETY)],
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],

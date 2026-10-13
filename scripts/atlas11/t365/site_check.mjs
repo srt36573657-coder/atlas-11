@@ -254,6 +254,7 @@ const probe = ({banned}) => {
       res.links = [...document.querySelectorAll('#view a[href^="#/"], .tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
       res.head = document.querySelector('#view h1')?.textContent ?? '';
       res.count = document.querySelector('#view .count')?.textContent ?? '';
+      res.spk = [...document.querySelectorAll('#view .board .row')].map(x => { const ln = x.querySelector('.track .spk .ln'), v = x.querySelector('.val'), b = x.querySelector('.track')?.getBoundingClientRect(); return {d: (ln?.getAttribute('d') ?? '').length, ln: ln?.getAttribute('class') ?? '', val: v?.className ?? '', w: b ? Math.round(b.width) : 0, h: b ? Math.round(b.height) : 0, n: x.querySelector('.nm')?.textContent ?? ''}; }); // 줄마다 선 그래프(2026-10-13 12:30)
       res.rows = [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => [x.querySelector('.nm').firstChild.textContent, x.querySelector('.val').textContent]);
       res.trd = [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => x.querySelector('.trd')?.textContent ?? null);
       res.trdCut = [...document.querySelectorAll('#view .board .row .trd')].filter(x => x.scrollWidth > x.clientWidth + 1).map(x => x.textContent);
@@ -315,6 +316,7 @@ for (const [w, hgt, font] of plans) {
     if (e.axis) { numbers++; if (!r.text.includes(e.axis)) fail(tag, `그림 아래 「${e.axis}」 없음`); }
     if (!route.endsWith('/grow') && !route.endsWith('/rivals')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old) && !(old === '3개월' && route === '#/')) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 첫 화면은 코스피 · 코스닥 3개월 그림(2026-10-12 14:54)이라 「3개월」을 봐줌 // 5단 · 6단은 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
+    if (r.spk?.length) { numbers += r.spk.length; const bad = r.spk.filter(x => !x.d || x.h < 16 || (/\b(up|down)\b/.exec(x.ln)?.[1] ?? 'flat') !== (/\b(up|down)\b/.exec(x.val)?.[1] ?? 'flat')); if (bad.length) fail(tag, `줄 선 그래프 — 선 없음 · 낮음 · 색이 숫자와 다름: ${bad.slice(0, 3).map(x => x.n + ' ' + x.ln + ' / ' + x.val + ' ' + x.h + 'px').join(' · ')}`); } // 사장님 2026-10-13 12:30 「이 사진처럼 … 그래프가 표현되게해」
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
     if (e.step) { numbers++; if (r.step !== `7단 중 ${e.step}단`) fail(tag, `7단 표시 ${r.step} ≠ ${e.step}단`); }
     for (const old of ['5단 중', '5단으로 내려갑니다', '사기 전에 볼 것', '4단 앞으로 클까?', '5단 범위', '앞날 값은 내지 않습니다', '지금의 몇 배쯤', '조사하는 중이라 다음 차례에 채웁니다', '기본 문 여섯']) if (r.all.includes(old) || r.text.includes(old)) fail(tag, `옛 글 「${old}」이 남음`); // 7단 · 2026-10-12 네 팀 점검으로 바꾼 글
