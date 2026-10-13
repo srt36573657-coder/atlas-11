@@ -1,0 +1,317 @@
+{
+ "schema": "atlas-inspect4-1",
+ "version": "i4-v1",
+ "made": "2026-10-13T14:07:14.133Z",
+ "why": "사장님 2026-10-12 12:41 「업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩 하라」",
+ "seed": 20261012,
+ "nEach": 10000000,
+ "asOf": "2026-10-13",
+ "base": "2026-09-09",
+ "provisional": false,
+ "companies": 365,
+ "ms": 162908,
+ "fail": 0,
+ "ok": true,
+ "lenses": [
+  {
+   "key": "apple",
+   "name": "애플",
+   "what": "쉽게 · 빨리 닿나 — 자료로 그린 화면 길 지도 위에서 사람처럼 눌러 봄",
+   "n": 10000000,
+   "fail": 0,
+   "things": 2340,
+   "ms": 2665,
+   "kinds": [
+    {
+     "k": "screen",
+     "name": "화면마다 — 깊이(회사 3번 · n단 n번) · 처음으로 · 다음 단 · 깨진 길",
+     "items": 1903,
+     "n": 1667351,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "click",
+     "name": "사람처럼 아무 길이나 누름(2%는 새 사람)",
+     "items": null,
+     "n": 4999210,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "company",
+     "name": "회사마다 — 갈래 · 업종 · 선 · 회사 파일(4~7단 자료)",
+     "items": 365,
+     "n": 1666536,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "list",
+     "name": "목록마다 — 업종 명단 · 찾기 이름표",
+     "items": 72,
+     "n": 1666903,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    }
+   ]
+  },
+  {
+   "key": "google",
+   "name": "구글",
+   "what": "숫자가 서로 맞나 — 같은 숫자를 다른 파일 · 다른 길로 다시 셈",
+   "n": 10000000,
+   "fail": 0,
+   "things": 101693,
+   "ms": 11594,
+   "kinds": [
+    {
+     "k": "window",
+     "name": "회사 선 ↔ 회사 종가(아무 두 날 사이 비율)",
+     "items": 76650,
+     "n": 1176178,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "company",
+     "name": "회사 — 1주 값 · 20거래일 비율 · 이름 · 번호",
+     "items": 1460,
+     "n": 1100904,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "index",
+     "name": "「한 회사 한 표」 지수(전체 · 갈래 · 업종) 날마다 다시 셈",
+     "items": 1722,
+     "n": 1101775,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "count",
+     "name": "오른 곳 · 내린 곳 · 곳 수(전체 · 갈래 · 업종)",
+     "items": 82,
+     "n": 1100687,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "range",
+     "name": "7단 범위 — 회사 365곳 그대로 · 고른 목록 · 차례 없음(2026-10-13 06:45 「영구 삭제」)",
+     "items": 366,
+     "n": 1099726,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "date",
+     "name": "날짜 — 창 21칸 · 기준일 · 고른 날 · 파일마다 같은 날",
+     "items": 27,
+     "n": 1100167,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "number",
+     "name": "숫자가 모두 참 숫자인가(NaN · 끝없음 없음)",
+     "items": 21358,
+     "n": 1120110,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "market",
+     "name": "시장 판독 숫자 다시 셈",
+     "items": 9,
+     "n": 1100716,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "home",
+     "name": "첫 화면 종합 정보 다시 셈(지수 · 365곳 · 업종 · 미국 · 「!」)",
+     "items": 19,
+     "n": 1099737,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    }
+   ]
+  },
+  {
+   "key": "claude",
+   "name": "클로드",
+   "what": "말이 정직하고 안전한가 — 자료 · 시장 판독 글을 읽음",
+   "n": 10000000,
+   "fail": 0,
+   "things": 93173,
+   "ms": 19257,
+   "kinds": [
+    {
+     "k": "banned",
+     "name": "사고팔기 권하는 말 · 앞날 장담(화면 금지 말 19개) — 우리가 쓴 글",
+     "items": 30146,
+     "n": 1446582,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "narrow",
+     "name": "좁은 금지 말 9개(힘 붙은 365곳 · 클로드팀) — 우리가 쓴 글",
+     "items": 30146,
+     "n": 1444181,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "broken",
+     "name": "깨진 글자 · 빈 이름",
+     "items": 30146,
+     "n": 1444006,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "market",
+     "name": "시장 판독 글 — 줄마다 숫자 · 지난 사실(앞날 말 없음)",
+     "items": 4,
+     "n": 1415409,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "unknown",
+     "name": "모르는 값은 비워 둠(「?」로 보임 — 0 · 빈 글로 채우지 않음)",
+     "items": 2555,
+     "n": 1417557,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "grow",
+     "name": "앞으로 클까? 말 등급 다섯 · 배수 범위(주가 아님)",
+     "items": 164,
+     "n": 1415226,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "code",
+     "name": "화면 코드 — 안전 문장 · 모형 표지 · 「?」 · 막비 자리 · 옛 얼굴 그림 없음",
+     "items": 12,
+     "n": 1417039,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    }
+   ]
+  },
+  {
+   "key": "cia",
+   "name": "CIA",
+   "what": "뚫리거나 새는 곳이 없나 — 이상한 주소 넣어 보기 · 비밀 · 바깥 주소 · 끼운 코드",
+   "n": 10000000,
+   "fail": 0,
+   "things": 36850,
+   "ms": 129225,
+   "kinds": [
+    {
+     "k": "fuzz",
+     "name": "주소 흔들기 — 진짜 길 함수(route)에 이상한 주소를 넣어 봄",
+     "items": null,
+     "n": 4981235,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "trip",
+     "name": "이름 주소 왕복 — 화면이 만든 주소가 같은 대상을 여나",
+     "items": 2911,
+     "n": 714988,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "inject",
+     "name": "자료 글에 끼운 코드 · 숨은 글자(방향 바꿈 · 폭 없는 글자 · 제어 글자) 없음",
+     "items": 30146,
+     "n": 743221,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "url",
+     "name": "자료 속 주소 — https 만 · 이상한 꼴 없음",
+     "items": 1055,
+     "n": 713259,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "secret",
+     "name": "비밀 열쇠 · 넷리파이 번호 · 개인 메일이 화면 파일에 없음",
+     "items": 1972,
+     "n": 714451,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "code",
+     "name": "화면 코드 — 위험한 코드 · 바깥 주소 · 없는 대상 처리",
+     "items": 16,
+     "n": 711098,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "header",
+     "name": "보안 머리말(CSP 등 — 올릴 때 _headers)",
+     "items": 10,
+     "n": 709505,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    },
+    {
+     "k": "shape",
+     "name": "자료 모양 — 회사 번호 꼴 · 파일 크기 · 회사 파일 수",
+     "items": 740,
+     "n": 712243,
+     "fail": 0,
+     "failItems": 0,
+     "first": []
+    }
+   ],
+   "routeFp": "cadf36633941"
+  }
+ ],
+ "at": "2026-10-13T14:02:13.182Z",
+ "kst": "2026-10-13 23:02",
+ "slot": null
+}
