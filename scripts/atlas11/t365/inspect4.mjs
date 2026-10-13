@@ -40,8 +40,8 @@ export const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '�
 /** 좁은 금지 말 — 힘 붙은 365곳(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · 클로드팀) · site_check.mjs NARROW 와 같은 목록(시험이 맞대 봄) — 이름 · 설명 글이 「사라는 신호」로 읽히지 않게 */
 export const NARROW = ['유망', '주목', '강세', '놓치', '매수 신호', '살 만한', '모멘텀', '힘이 붙는', '급등주'];
 /** 옛 기준 말 — 지난 회차 · 봉인 꼬리표 「옛 규칙(대세 업종)」 밖에서는 0(2026-10-13 13:04 · 힘 붙은 365곳) */
-export const OLD_RULE_WORDS = ['대세', '1층 —', '2층 —', '3층 —', '두 팀 모두', '구글팀 잣대', 'CIA팀 잣대'];
-export const oldRuleHits = t => { const x = String(t).split('옛 규칙(대세 업종)').join(''); return OLD_RULE_WORDS.filter(w => x.includes(w)); };
+export const OLD_RULE_WORDS = ['대세', '1층 —', '2층 —', '3층 —', '두 팀 모두', '구글팀 잣대', 'CIA팀 잣대', '힘 붙은 365곳', '그중 「힘 붙음」', '빈자리에 들었습니다', '번째 안이라 남겼습니다']; // 뒤 넷: 2026-10-14 00:03 멍거 조건 뒤 옛 「힘 붙은 365곳」 글
+export const oldRuleHits = t => { const x = String(t).split('옛 규칙(대세 업종)').join('').split('옛 규칙(힘 붙음)').join(''); return OLD_RULE_WORDS.filter(w => x.includes(w)); };
 const SAFETY = '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.';
 const MODEL_TAG = '모형 가정 아래 추정 · 검증 전';
 /** 지운 36곳 화면의 글(옛 atlas.js 에 있던 그대로) — 보이는 글 · 자료 글에 다시 나오면 실패 · 「36곳 내림」 같은 셈 글(회차마다 바뀌는 수)은 아님
@@ -141,11 +141,11 @@ function appleLens(S) {
       if (!(g.inds ?? []).includes(ind.name)) return `${c} 업종 ${x.i} 가 갈래 ${x.g} 목록에 없음`;
       const ln = S.lines.lines[c]; if (!ln || ln.length !== S.core.dates.length) return `${c} 선 칸 수 ${ln?.length} ≠ ${S.core.dates.length}`;
       if (!S.co[c]) return `${c} 회사 파일(co/${c}.json) 없음 — 4~7단이 「자료를 못 읽었습니다」`;
-      if (!inNames.has(c)) return `${c} 찾기 이름표에 「365곳 안」으로 없음`;
+      if (!inNames.has(c)) return `${c} 찾기 이름표에 「고른 곳 안」으로 없음`;
       return null; }},
     {k: 'list', name: '목록마다 — 업종 명단 · 찾기 이름표', items: S.core.industries.length + 1, check(i) {
-      if (i < S.core.industries.length) { const ind = S.core.industries[i]; const bad = ind.members.find(c => !comp[c]); if (bad) return `업종 ${ind.name} 의 ${bad} 가 365곳에 없음`; if (ind.n !== ind.members.length) return `업종 ${ind.name} 곳 수 ${ind.n} ≠ 명단 ${ind.members.length}`; return S.gid.has(ind.g) ? null : `업종 ${ind.name} 갈래 ${ind.g} 없음`; }
-      const extra = [...inNames].filter(c => !comp[c]); return extra.length ? `찾기에 365곳 안이라는데 없는 회사 ${extra.slice(0, 3).join(' · ')}` : null; }},
+      if (i < S.core.industries.length) { const ind = S.core.industries[i]; const bad = ind.members.find(c => !comp[c]); if (bad) return `업종 ${ind.name} 의 ${bad} 가 고른 곳에 없음`; if (ind.n !== ind.members.length) return `업종 ${ind.name} 곳 수 ${ind.n} ≠ 명단 ${ind.members.length}`; return S.gid.has(ind.g) ? null : `업종 ${ind.name} 갈래 ${ind.g} 없음`; }
+      const extra = [...inNames].filter(c => !comp[c]); return extra.length ? `찾기에 고른 곳 안이라는데 없는 회사 ${extra.slice(0, 3).join(' · ')}` : null; }},
   ]};
 }
 
@@ -156,26 +156,26 @@ function googleLens(S, market, now = new Date()) {
   const pairs = []; for (let a = 0; a < W; a++) for (let b = a + 1; b < W; b++) pairs.push(a * 64 + b);
   // 「한 회사 한 표」 지수를 선(lines)에서 따로 다시 셈 — 하루 ±50% 넘는 값 뺌 · 이어 곱함
   const eq = cs => { const out = [100]; let lvl = 100; for (let k = 1; k < W; k++) { let s = 0, n = 0; for (const c of cs) { const a = lines[c]?.[k - 1], b = lines[c]?.[k]; if (a && b) { const r = b / a - 1; if (Math.abs(r) < 0.5) { s += r; n++; } } } if (n) lvl *= 1 + s / n; out.push(lvl); } return out; };
-  const series = [{name: '365곳 전체', obj: core.all, cs: S.codes}, ...core.groups.map(g => ({name: '갈래 ' + g.short, obj: g, cs: S.codes.filter(c => comp[c].g === g.id)})), ...core.industries.map(i => ({name: '업종 ' + i.name, obj: i, cs: i.members}))];
+  const series = [{name: '고른 곳 전체', obj: core.all, cs: S.codes}, ...core.groups.map(g => ({name: '갈래 ' + g.short, obj: g, cs: S.codes.filter(c => comp[c].g === g.id)})), ...core.industries.map(i => ({name: '업종 ' + i.name, obj: i, cs: i.members}))];
   for (const s of series) s.re = eq(s.cs);
   const nums = [...numbers(core, 'core', []), ...numbers(S.comp, 'comp', []), ...numbers(S.lines, 'lines', []), ...numbers(S.range, 'range', []), ...(S.home ? numbers(S.home, 'home', []) : [])];
   // 첫 화면 종합 정보(home.json · 2026-10-12 14:54) — 다른 길로 다시 셈
   const HM = S.home, hchk = [];
   if (HM) {
-    hchk.push(['고른 날 · 기준일 = 365곳 자료', () => HM.asOf === core.asOf && HM.base === core.base]);
+    hchk.push(['고른 날 · 기준일 = 고른 곳 자료', () => HM.asOf === core.asOf && HM.base === core.base]);
     for (const k of ['KOSPI', 'KOSDAQ']) { const x = HM.idx?.[k]; if (!x) continue; const R = x.rows, n = R.length;
       hchk.push([`${k} 날짜 차례 · 값`, () => R.every((r, j) => r[1] > 0 && (!j || r[0] > R[j - 1][0])) && R.at(-1)[0] === x.date && R.at(-1)[1] === x.close]);
       hchk.push([`${k} 하루 비율`, () => n < 2 || Math.abs((R[n - 1][1] / R[n - 2][1] - 1) * 100 - x.day) <= 0.006]);
       hchk.push([`${k} 가장 높던 · 낮던 날`, () => x.hi.v === Math.max(...R.map(r => r[1])) && x.lo.v === Math.min(...R.map(r => r[1])) && Math.abs((x.close / x.hi.v - 1) * 100 - x.hi.vs) <= 0.006 && Math.abs((x.close / x.lo.v - 1) * 100 - x.lo.vs) <= 0.006]);
       hchk.push([`${k} 3개월 안`, () => { const f = new Date(x.date + 'T00:00:00Z'); f.setUTCMonth(f.getUTCMonth() - 3); return R[0][0] >= f.toISOString().slice(0, 10) && n >= 40; }]); }
     const L = HM.s365?.list ?? [];
-    hchk.push(['365곳 오늘 오름 · 내림 다시 셈', () => { let up = 0, down = 0; for (const c of S.codes) { const a = lines[c][W - 2], b = lines[c][W - 1]; if (a == null || b == null || !a) continue; if (b > a) up++; else if (b < a) down++; } return HM.s365.up === up && HM.s365.down === down; }]);
-    hchk.push(['365곳 막대 차례 · 양 끝', () => L.every((x, j) => comp[x[0]] && (!j || L[j - 1][1] >= x[1])) && (!L.length || (HM.s365.top.c === L[0][0] && HM.s365.bot.c === L.at(-1)[0]))]);
-    hchk.push(['20거래일 견줌 = 365곳 지수', () => HM.cmp20.eq === core.all.chg && HM.cmp20.cw === core.all.cwChg && HM.cmp20.base === core.base]);
+    hchk.push(['고른 곳 오늘 오름 · 내림 다시 셈', () => { let up = 0, down = 0; for (const c of S.codes) { const a = lines[c][W - 2], b = lines[c][W - 1]; if (a == null || b == null || !a) continue; if (b > a) up++; else if (b < a) down++; } return HM.s365.up === up && HM.s365.down === down; }]);
+    hchk.push(['고른 곳 막대 차례 · 양 끝', () => L.every((x, j) => comp[x[0]] && (!j || L[j - 1][1] >= x[1])) && (!L.length || (HM.s365.top.c === L[0][0] && HM.s365.bot.c === L.at(-1)[0]))]);
+    hchk.push(['20거래일 견줌 = 고른 곳 지수', () => HM.cmp20.eq === core.all.chg && HM.cmp20.cw === core.all.cwChg && HM.cmp20.base === core.base]);
     if (HM.sectors) { const T = HM.sectors;
       hchk.push(['업종 강 7 · 약 7 차례 · 회사 5곳 이상', () => T.strong.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.strong[j - 1].chg >= g.chg)) && T.weak.every((g, j) => g.n >= 5 && g.name !== '기타' && (!j || T.weak[j - 1].chg <= g.chg)) && T.strong.length <= 7 && T.weak.length <= 7]);
       hchk.push(['업종 이름표(강한 7 · 덜 내린 7)', () => T.label === (T.strong.reduce((t, g) => t + g.chg, 0) / Math.max(1, T.strong.length) < 0 ? '덜 내린 7' : '강한 7')]);
-      hchk.push(['업종 365곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]);
+      hchk.push(['업종 고른 곳 수 다시 셈', () => [...T.strong, ...T.weak].every(g => g.in365 === S.codes.filter(c => comp[c].sector === g.name).length)]);
       hchk.push(['업종 날짜 = 같이 받은 지수의 마지막 날', () => T.date == null || HM.stale?.sectors || HM.stale?.idx || T.date === (HM.idx?.KOSPI?.date ?? HM.idx?.KOSDAQ?.date)]); } // 2026-10-12 18:31 「오늘 업종」을 보는 날짜로 셈
     if (HM.us) hchk.push(['미국 지수가 60거래일 낮음 ~ 높음 안', () => HM.us.rows.every(r => r.close == null || (r.close >= r.lo - 1e-9 && r.close <= r.hi + 1e-9))]);
     // 「!」 문턱 home-v3(2026-10-13) — 지수: 평소(앞 20거래일 하루 움직임 크기 평균)의 2.5배 넘고 1.5% 넘음 · 또는 하루 5% 넘음 · 외국 투자자 1조 원 — 따로 셈해 맞는 「!」만 있고 빠진 「!」 없음
@@ -204,7 +204,7 @@ function googleLens(S, market, now = new Date()) {
     {k: 'company', name: '회사 — 1주 값 · 20거래일 비율 · 이름 · 번호', items: S.codes.length * 4, check(i) {
       const c = S.codes[i >> 2], x = comp[c], co = S.co[c], L = lines[c];
       switch (i & 3) {
-        case 0: return co && x.price === co.close.at(-1) ? null : `${c} 1주 값 ${x.price} ≠ 회사 파일 마지막 종가 ${co?.close.at(-1)}`;
+        case 0: { const lc = co ? co.close.findLast(v => v != null) ?? null : undefined; return co && x.price === lc ? null : `${c} 1주 값 ${x.price} ≠ 회사 파일 마지막 종가 ${lc}`; } // 마지막 값 있는 날(거래가 멈춘 회사도 남는 멍거 조건 — 끝 칸이 빈 날일 수 있음 · 2026-10-14)
         case 1: if (L[0] == null || L[W - 1] == null) return x.chg == null ? null : `${c} 선이 비었는데 비율 ${x.chg}`; return Math.abs(x.chg - (L[W - 1] / L[0] * 100 - 100)) <= 0.011 ? null : `${c} 비율 ${x.chg} ≠ 선 ${(L[W - 1] / L[0] * 100 - 100).toFixed(2)}`;
         case 2: { const r = S.names.rows.find(y => y.c === c); return r && r.n === x.name ? null : `${c} 이름 「${x.name}」 ≠ 찾기 이름표 「${r?.n}」`; }
         default: return co && co.code === c ? null : `${c} 회사 파일 번호 ${co?.code}`;
@@ -216,7 +216,7 @@ function googleLens(S, market, now = new Date()) {
       const s = series[i], up = s.cs.filter(c => comp[c].chg > 0).length, down = s.cs.filter(c => comp[c].chg < 0).length;
       if (s.obj.n != null && s.obj.n !== s.cs.length) return `${s.name} 곳 수 ${s.obj.n} ≠ ${s.cs.length}`;
       return s.obj.up === up && s.obj.down === down ? null : `${s.name} 오름 ${s.obj.up} · 내림 ${s.obj.down} ≠ 다시 셈 ${up} · ${down}`; }},
-    {k: 'range', name: '7단 범위 — 회사 365곳 그대로 · 고른 목록 · 차례 없음(2026-10-13 06:45 「영구 삭제」)', items: S.codes.length + 1, check(i) {
+    {k: 'range', name: '7단 범위 — 고른 회사 그대로 · 고른 목록 · 차례 없음(2026-10-13 06:45 「영구 삭제」)', items: S.codes.length + 1, check(i) {
       if (i === S.codes.length) return ['picks', 'backtest', 'cutN', 'total'].some(k => k in S.range) ? '범위 자료에 고른 목록 · 시험 칸이 있음' : (S.range.asOf === core.asOf ? null : `범위 날짜 ${S.range.asOf} ≠ 고른 날 ${core.asOf}`);
       const c = S.codes[i], k = S.range.companies?.[c]; if (!k) return `${c} 7단 범위 자료 없음`; if ('rank' in k || 'cut' in k) return `${c} 범위 자료에 차례 · 지움 칸`;
       return !k.ok || (k.win.length === 4 && k.big.length === 4) ? null : `${c} 4방향 칸 수 ${k.win.length} · ${k.big.length}`; }},
@@ -228,7 +228,7 @@ function googleLens(S, market, now = new Date()) {
       const age = (Date.parse(today) - Date.parse(core.asOf)) / 864e5; return age <= 12 ? null : `고른 날 ${core.asOf} 이 ${age}일 묵음(12일 넘음)`; }},
     {k: 'number', name: '숫자가 모두 참 숫자인가(NaN · 끝없음 없음)', items: nums.length, check(i) { const x = nums[i]; return Number.isFinite(x.v) ? null : `${x.where}.${x.key} = ${x.v}`; }},
     {k: 'market', name: '시장 판독 숫자 다시 셈', items: mk.length, check(i) { const [what, got, want] = mk[i]; return got === want ? null : `판독 ${what} ${got} ≠ 다시 셈 ${want}`; }},
-    {k: 'home', name: '첫 화면 종합 정보 다시 셈(지수 · 365곳 · 업종 · 미국 · 「!」)', items: hchk.length, check(i) { let ok = false; try { ok = hchk[i][1](); } catch { ok = false; } return ok ? null : `첫 화면: ${hchk[i][0]}`; }},
+    {k: 'home', name: '첫 화면 종합 정보 다시 셈(지수 · 고른 곳 · 업종 · 미국 · 「!」)', items: hchk.length, check(i) { let ok = false; try { ok = hchk[i][1](); } catch { ok = false; } return ok ? null : `첫 화면: ${hchk[i][0]}`; }},
   ]};
 }
 
@@ -244,14 +244,16 @@ function claudeLens(S, market) {
   const unknownKeys = ['per', 'r1y', 'mdd1y', 'chg', 'mdd', 'cap', 'price'];
   // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 — 2026-10-13 07:2x 묶음이 4분 넘게 걸리던 것 · 옛 얼굴 문과 같은 까닭)
   const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !has36Text(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null, S.upd ?? null])) /* 업데이트 탭 글도(13:0x 08:22 까닭 칸 「36곳 탭 영구 삭제」를 놓친 것) */;
-  // 힘 붙은 365곳(2026-10-13 13:04) — 화면 자료에 옛 기준 말 · 차례 칸 없음 · 회사마다 든 까닭 셋 가운데 하나(한 번만 셈)
+  // 멍거 조건(2026-10-14 00:03 「가 로 하자」 · mg-v1) — 화면 자료에 옛 기준 말 · 차례 칸 없음 · 회사마다 3해 값 · 세 조건을 모두 넘음(한 번만 셈)
   const oldWords = oldRuleHits(JSON.stringify([S.core, S.comp, S.names, S.home ?? null, (S.upd?.records ?? []).map(r => [r.reason, r.why])]));
-  const noRank = Object.values(comp).every(x => x.pick && ['gain', 'keep', 'fill'].includes(x.pick.kind) && !['tier', 'srank', 'rank', 'prank', 'google', 'cia'].some(k => k in x.pick));
+  const noRank = Object.values(comp).every(x => x.pick && Array.isArray(x.pick.years) && x.pick.years.length === 3 && !['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia'].some(k => k in x.pick));
+  const RU = S.core.rules ?? {}, mgOk = Object.values(comp).every(x => x.pick?.net?.every(v => v > 0) && x.pick?.debt?.every(v => v <= RU.debtLine) && x.pick?.roe?.every(v => v >= RU.roeLine));
   const code = [
     ['안전 문장(맨 아래)', () => S.js.includes(SAFETY)],
-    ['힘 붙은 365곳 — 자료에 옛 기준 말(대세 · 층 · 두 팀) 없음(지난 회차 · 봉인 「옛 규칙(대세 업종)」 꼬리표만)', () => oldWords.length === 0],
-    ['힘 붙은 365곳 — 회사마다 든 까닭(힘 붙음 · 남김 · 채움) · 차례 · 층 칸 없음(규칙 55)', () => noRank],
-    ['힘 붙은 365곳 — 이름 밑 한 줄(그중 「힘 붙음」 n곳)', () => S.js.includes('그중 「힘 붙음」') && S.js.includes('힘 붙은 365곳')],
+    ['멍거 조건 — 자료에 옛 기준 말(OLD_RULE_WORDS 목록) 없음 · 지난 회차 · 봉인은 「옛 규칙(…)」 꼬리표만(걸린 글이 기록에 다시 실려도 걸리지 않게 이름에 그 말을 안 씀)', () => oldWords.length === 0],
+    ['멍거 조건 — 회사마다 3해 값 · 차례 · 층 · 옛 든 까닭 칸 없음(규칙 55)', () => noRank],
+    ['멍거 조건 — 고른 곳 모두 세 조건(3해 돈 벎 · 빚 ≤ 자기 돈 · 해마다 18원 넘게)을 넘음', () => RU.version === 'mg-v1' && mgOk],
+    ['멍거 조건 — 이름 밑 세 조건 · 「멍거가 고른 목록이 아닙니다」', () => S.js.includes('const pickLine = C =>') && RU.conds?.length === 3 && String(RU.notMunger ?? '').includes('멍거가 고른 목록이 아닙니다') && !S.js.includes('그중 「힘 붙음」 ${k.gain}')],
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],
     ['36곳 없음 — 화면 코드 · 자료에 「36곳 · 매수 검토」 · 36곳 화면 · 탭 · 자료 파일 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)', () => no36],
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
@@ -377,7 +379,7 @@ function ciaLens(S, market) {
       const [what, re] = heads[i]; if (!re) return /unsafe-(inline|eval)/.test(HEADER_TOP) ? `머리말에 ${what.split(' ')[0]}` : null; return re.test(HEADER_TOP) ? null : `머리말 없음: ${what}`; }},
     {k: 'shape', name: '자료 모양 — 회사 번호 꼴 · 파일 크기 · 회사 파일 수', items: S.codes.length + sizes.length, check(i) {
       if (i < S.codes.length) { const c = S.codes[i]; return codeOk(c) ? null : `회사 번호 꼴 「${c}」`; }
-      const [f, b, lim] = sizes[i - S.codes.length]; if (lim == null) return b === S.codes.length ? null : `회사 파일 ${b}개 ≠ 365곳 ${S.codes.length}`; return b <= lim ? null : `${f} ${b}바이트(한도 ${lim})`; }},
+      const [f, b, lim] = sizes[i - S.codes.length]; if (lim == null) return b === S.codes.length ? null : `회사 파일 ${b}개 ≠ 고른 곳 ${S.codes.length}`; return b <= lim ? null : `${f} ${b}바이트(한도 ${lim})`; }},
   ]};
 }
 

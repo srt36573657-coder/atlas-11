@@ -1,7 +1,7 @@
 // 새 ATLAS 회차(하루 4번) — 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로 하라 … 항상 그렇게 하라」
 //   12:41 「아니 내일이면 내일 다시 그다음날도 다시 기준은 항상 오늘날짜로 해야 하고 업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」
 //   ① closes_fetch.mjs — 네이버 일봉 XML(재생 모드)을 [날, 종가, 거래량] 으로 새 파일에 남김 · 후보 모두(1,378곳)가 기본 · 없는 곳은 errors
-//   ② roll.mjs — 모음 뒤 가짜 하루(시험용 · 저장소에 남기지 않음)를 후보 모두에 이어 붙이면 365곳을 그날 값으로 다시 고르고(들고 난 곳) ·
+//   ② roll.mjs — 모음 뒤 가짜 하루(시험용 · 저장소에 남기지 않음)를 후보 모두에 이어 붙이면 그날 값으로 다시 셈(멍거 조건 mg-v1 은 결산만으로 고르므로 같은 곳 · 2026-10-14) ·
 //      기준일이 하루 따라가고 · 그날 종가가 없는 회사(거래정지처럼)와 지난 값이 다르게 다시 받힌 회사는 빠지고 · 따로 세기 셋 모두 틀림 0 · 회차 기록 · 업데이트 탭 자료가 생김
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -63,16 +63,18 @@ test('업데이트 탭 — 회차 시각을 바꿔도 옛 회차 기록의 회�
   for (const r of readRecords(ROOT)) assert.ok(!tabData([r]).records[0].reason?.includes('4단 앞으로 클까?'), r.kst);
 });
 
-test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값으로 365곳을 다시 고르고 · 기준일이 따라가고 · 따로 세기 셋 틀림 0 · 기록 · 업데이트 탭', async () => {
+test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값으로 다시 세고(멍거 조건은 결산만으로 고름 · 같은 곳) · 기준일이 따라가고 · 따로 세기 셋 틀림 0 · 기록 · 업데이트 탭', async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 't365-roll-'));
   const closes = path.join(tmp, 'closes'); fs.mkdirSync(closes);
   const asOf0 = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/core.json'), 'utf8')).asOf;
   const next = cal.find(d => d > asOf0), n8 = next.replaceAll('-', '');
   const rows = {};
   codes.forEach((c, j) => { const rs = rowsOf(c).slice(-25).map(r => [r[0], r[4], r[5]]); if (!rs.length) return; const m = ((j * 7919) % 1601 - 800) / 10000; rs.push([n8, Math.round(rs.at(-1)[1] * (1 + m)), rs.at(-1)[2]]); rows[c] = rs; });
-  // 앞 회차(저장소 마지막 성공 회차)의 365곳 가운데 둘 — 하나는 지난 값을 고쳐 적은 것처럼 · 하나는 거래정지처럼(그날 값 없음) → 이번 회차에 빠짐
+  // 멍거 조건(mg-v1 · 사장님 2026-10-14 00:03 「가 로 하자」) 바탕 판의 고른 곳 가운데 둘 — 하나는 지난 값을 고쳐 적은 것처럼 · 하나는 거래정지처럼(그날 값 없음)
+  //   → 고르기는 결산만으로 하므로 둘 다 그대로 남음(멍거 「기다림」 · 주가가 바뀌어도 고른 곳은 안 바뀜)
   const prevRec = [...readRecords(ROOT)].reverse().find(r => r.members?.length && r.result !== '실패');
-  const [bent, halt] = prevRec.members;
+  const base = JSON.parse(fs.readFileSync(path.join(ROOT, JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')).dir, 'proposal.json'), 'utf8')).picked.map(p => p.code);
+  const [bent, halt] = base;
   rows[bent] = rows[bent].map(([d, v, vol], k) => [d, k === 20 ? Math.round(v * 1.1) : v, vol]); // 모음 안 날 하나를 10% 다르게 = 지난 값을 고쳐 적은 것처럼
   rows[halt] = rows[halt].slice(0, -1); // 새 날 값이 없음 = 거래정지처럼
   fs.writeFileSync(path.join(closes, '20991231T071000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next + 'T05:00:00.000Z', rows, errors: []})));
@@ -85,21 +87,18 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const W = cal.filter(d => d <= next).slice(-21);
   assert.equal(rep.base, W[0]);
   assert.equal(rep.provisional, true); // 14:02(서울) 받음 = 저녁 8시 전
-  for (const k of ['h365', 'site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
-  // 힘 붙은 365곳(h365-v1 · 사장님 2026-10-13 13:04 「힘이 붙는 종목으로」) — 든 까닭 수 · 층 없음 · 앞 회차 판이 다르면 「기준이 바뀜」 · 완충 없음 · 그대로 + 새로 듦 = 365
-  assert.equal(rep.version, 'h365-v1'); assert.equal(rep.tiers, null);
-  assert.equal(rep.kinds.gain + rep.kinds.keep + rep.kinds.fill, 365);
-  // 앞 회차(저장소 마지막 성공 회차)가 h365-v1 이면 완충(남김)을 쓰고, 옛 판(d365)이면 기준이 바뀐 회차 · 남김 없음(2026-10-13 15:16 첫 h365 회차 뒤로는 앞쪽)
-  assert.equal(rep.ruleChanged, prevRec.version !== 'h365-v1'); assert.equal(rep.buffer, prevRec.version === 'h365-v1');
-  if (prevRec.version !== 'h365-v1') assert.equal(rep.kinds.keep, 0, '앞 회차 판이 d365 면 남김 없음');
-  assert.equal(rep.stay + rep.in.length, 365); assert.equal(rep.out.length, rep.in.length);
-  assert.ok(rep.out.some(x => x.c === bent) && rep.out.some(x => x.c === halt), '고쳐 적힌 회사 · 그날 값 없는 회사는 빠짐');
-  assert.equal(rep.members.length, 365); assert.equal(new Set(rep.members).size, 365);
+  assert.match(rep.verify.pick, /틀림 0/, 'pick'); for (const k of ['site', 'range']) assert.match(rep.verify[k], /"bad":0/, k);
+  // 멍거 조건(mg-v1) — 든 까닭 수 · 층 · 완충 없음 · 앞 회차 판이 다르면 「기준이 바뀜」 · 같은 모음이면 바탕 판과 같은 곳(주가로 안 바뀜)
+  assert.equal(rep.version, 'mg-v1'); assert.equal(rep.tiers, null); assert.equal(rep.kinds, null); assert.equal(rep.buffer, false);
+  assert.equal(rep.ruleChanged, prevRec.version !== 'mg-v1');
+  assert.deepEqual(rep.members, base, '같은 모음이면 바탕 판과 같은 곳 · 같은 차례');
+  assert.equal(rep.stay + rep.in.length, rep.members.length); assert.equal(new Set(rep.members).size, rep.members.length);
+  assert.ok(rep.members.includes(bent) && rep.members.includes(halt), '고쳐 적힌 회사 · 그날 값 없는 회사도 그대로(결산만으로 고름)');
   const core = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/core.json'), 'utf8'));
   const comp = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/comp.json'), 'utf8')).companies;
   assert.deepEqual(core.dates, W); assert.equal(core.days, 20); assert.equal(core.pickAsOf, next);
-  assert.equal(comp[bent], undefined); assert.equal(comp[halt], undefined);
-  assert.equal(fs.readdirSync(path.join(dist, 'atlas/data/co')).length, 365);
+  assert.ok(comp[bent] && comp[halt]); assert.notEqual(comp[halt].priceDate, next, '그날 값이 없는 회사는 앞 날 값');
+  assert.equal(fs.readdirSync(path.join(dist, 'atlas/data/co')).length, rep.members.length);
   // 36곳 영구 삭제(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 7단 범위 자료만 · 36곳 자료 · 칸 · 글 없음
   assert.ok(fs.existsSync(path.join(dist, 'atlas/data/range.json')), '7단 범위 자료'); assert.ok(!fs.existsSync(path.join(dist, 'atlas/data/pick36.json')), '36곳 자료 없음');
   const rg = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/range.json'), 'utf8')); assert.equal(rg.schema, 'atlas-new-range-1'); assert.equal(rg.asOf, next);
@@ -128,7 +127,7 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.deepEqual(upd.records[0].market.lines, rep.market.lines); assert.equal(upd.records[0].inspect.fail, 0); assert.equal(upd.slots.join(), '10:00,12:00,14:00,18:00');
   // 첫 화면 종합 정보(2026-10-12 14:54) — 이번 회차 자료로 다시(365곳 · 20거래일) · 받지 못한 조각은 저장된 첫 화면 자료의 조각(앞 회차 값 꼬리표)
   const home = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/home.json'), 'utf8'));
-  assert.equal(home.asOf, next); assert.equal(home.s365.date, next); assert.ok(home.s365.list.length > 300); assert.ok(rep.steps.some(s => s.name === '첫 화면 자료' && s.code === 0));
+  assert.equal(home.asOf, next); assert.equal(home.s365.date, next); assert.equal(home.s365.n, rep.members.length); assert.equal(home.s365.list.length, rep.members.length - 2, '그날 값이 없는 두 곳(지난 값을 고쳐 적은 곳 · 거래정지처럼)만 오늘 막대에서 빠짐'); assert.ok(rep.steps.some(s => s.name === '첫 화면 자료' && s.code === 0));
   assert.ok(home.idx && home.stale.idx, '받지 못한 지수는 앞 자료 + 꼬리표');
   fs.rmSync(tmp, {recursive: true, force: true});
 });

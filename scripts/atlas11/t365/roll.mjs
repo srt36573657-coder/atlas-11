@@ -4,9 +4,9 @@
 //   2026-10-12 12:41 「10시 12시 14시 18시 업데이틀 하라」 — 그 전은 08:10 · 12:10 · 16:10 · 21:10 · 회차 이름 목록은 universe.json slots) ·
 //   평일 16:47 · 19:00 예약 올리기 · 손 올리기가 모두 이 길을 지남(예약 작업 파일 atlas11-daily.yml · atlas11-evening.yml 은 고치지 않음 — 규칙 7)
 //   ① 깃허브 실행기면 후보 1,378곳 일봉(종가 · 거래량)을 이어 받는다(closes_fetch.mjs → 임시 폴더 · 모음 뒤 날을 한 번에 받으므로 지난 파일이 필요 없음)
-//   ② dump.mjs → h365.py --closes --prev(그날까지 값으로 365곳을 다시 고름 · h365-v1 힘 붙은 365곳 · 사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 ·
-//      앞 회차 기록 = 마지막 성공 회차의 365곳 · 그 판이 h365-v1 일 때만 완충) → organize.mjs → h365_verify.mjs(노드로 따로 · 같은 앞 회차 기록 · 틀림 0)
-//      (옛 d365-v2 = daese.py · daese_verify.mjs 는 봉인 1호 다시 셈에 그대로 둠)
+//   ② dump.mjs → munger.py --closes(멍거 조건 mg-v1 · 사장님 2026-10-14 00:03 「가 로 하자」 — 모음 결산만으로 고름 · 같은 모음이면 회차마다 같은 곳 ·
+//      새 결산이 담긴 모음이 들어와야 바뀜) → organize.mjs → munger_verify.mjs(노드로 따로 · 틀림 0)
+//      (옛 h365-v1 = h365.py · h365_verify.mjs · 옛 d365-v2 = daese.py · daese_verify.mjs 는 기록 · 봉인 1호 다시 셈에 그대로 둠)
 //   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → range_mc.py(7단 범위 · 같은 값이면 지금 사이트 범위를 그대로 씀) → range_verify.mjs(틀림 0) — 36곳은 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」로 지움
 //   ④ 모두 통과하면 dist/atlas/data 를 바꿈 · 하나라도 멈추면 지금 사이트(aaa7377.com)의 자료를 그대로 받아 올림(옛 바탕으로 돌아가지 않게) · 그것도 못 하면 저장소 바탕 그대로
 //   ⑤ 회차 기록: reports/atlas11/t365/updates/<받은 때 UTC>.json(새 파일 · 지우지 않음) + 화면 「업데이트」 탭 자료 dist/atlas/data/updates.json(마지막 60회차)
@@ -54,7 +54,7 @@ export function readRecords(root) {
 }
 /** 옛 손 올리기 까닭 글 속 화면 단 이름(그 뒤 바뀜) — 기록 파일은 그대로 두고 업데이트 탭에만 지금 이름을 덧붙여 보임
  *  (2026-10-12 화면 돌기를 올리는 묶음 dist 로 돌리자 10-11 19:57 손 올리기 까닭 「4단 앞으로 클까?」가 걸림 — 그 뒤 7단에서 6단) */
-const SHOW_OLD = [['4단 앞으로 클까?', '앞으로 클까?(그때 4단 · 지금 6단)'], ['36곳 탭 영구 삭제', '아래 탭 하나 영구 삭제(사장님 06:45)'], ['365곳을 대세 365곳으로 바꿈', '365곳을 옛 규칙(대세 업종) 365곳으로 바꿈']]; // 셋째: 2026-10-13 13:04 「힘이 붙는 종목으로」 뒤 옛 기준 이름은 「옛 규칙(대세 업종)」 꼬리표로만(기록 파일은 그대로) // 둘째: 08:22 올리기 까닭 칸에 지운 탭 이름을 적은 것 — 기록 파일은 그대로 · 화면만(규칙 55 · 틀림 장부 20번)
+const SHOW_OLD = [['4단 앞으로 클까?', '앞으로 클까?(그때 4단 · 지금 6단)'], ['36곳 탭 영구 삭제', '아래 탭 하나 영구 삭제(사장님 06:45)'], ['365곳을 대세 365곳으로 바꿈', '365곳을 옛 규칙(대세 업종) 365곳으로 바꿈'], ['365곳 새 기준 — 힘 붙은 365곳', '365곳 새 기준 — 옛 규칙(힘 붙음) 365곳']]; // 넷째: 2026-10-14 00:03 「가 로 하자」(멍거 조건) 뒤 힘 붙은 365곳도 옛 규칙 꼬리표로만 // 셋째: 2026-10-13 13:04 「힘이 붙는 종목으로」 뒤 옛 기준 이름은 「옛 규칙(대세 업종)」 꼬리표로만(기록 파일은 그대로) // 둘째: 08:22 올리기 까닭 칸에 지운 탭 이름을 적은 것 — 기록 파일은 그대로 · 화면만(규칙 55 · 틀림 장부 20번)
 export const showReason = s => SHOW_OLD.reduce((t, [a, b]) => t.split(a).join(b), String(s));
 /** 화면 「업데이트」 탭 자료 — 새 회차가 위 · 365곳 목록은 빼고 들고 난 이름만 */
 // 업데이트 탭: 까닭이 회차가 아니면(손 올리기) 회차 이름 없이 보임 — 옛 기록 파일은 그대로(클로드팀 2026-10-12: 15:52 · 21:57 손 올리기가 16:10 · 21:10 회차로 두 번 보이던 것)
@@ -62,7 +62,7 @@ export function tabData(records) {
   // 회차 이름은 그 회차가 적은 것 그대로(2026-10-12 12:41 회차 시각을 바꿈 — 옛 08:10 · 16:10 기록이 새 시각표로 다시 매겨지지 않게) · 손 올리기만 회차 이름을 지움
   const rows = records.slice(-60).reverse().map(r => ({at: r.at, kst: r.kst, slot: r.reason && !/회차/.test(r.reason) ? null : r.slot, reason: r.reason ? showReason(r.reason) : null, result: r.result, why: r.why || null,
     asOf: r.asOf, base: r.base, provisional: r.provisional, version: r.version, in: r.in ?? [], out: r.out ?? [], all: r.all ?? null, top: r.top ?? null,
-    // 그대로 남은 수 · 든 까닭(h365-v1) · 기준이 바뀐 회차 — 옛 기록(d365)의 층 칸은 싣지 않음(2026-10-13 13:04 「힘이 붙는 종목으로」 · 기록 파일은 그대로)
+    // 그대로 남은 수 · 든 까닭(h365-v1 기록만 · 멍거 조건 mg-v1 은 없음) · 기준이 바뀐 회차 — 옛 기록(d365)의 층 칸은 싣지 않음(기록 파일은 그대로)
     stay: r.stay ?? (Array.isArray(r.members) ? r.members.length - (r.in?.length ?? 0) : null), kinds: r.kinds ?? null, ruleChanged: r.ruleChanged ?? false, prevVersion: r.prevVersion ?? null,
     served: r.served, // 옛 기록의 36곳 칸은 화면 자료에 싣지 않음(2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 · 기록 파일은 그대로)
     market: r.market ? {asOf: r.market.asOf, provisional: r.market.provisional, lines: r.market.lines, day: r.market.day && {up: r.market.day.up, down: r.market.day.down, word: r.market.day.word}, size: r.market.span?.size ?? null} : null,
@@ -130,16 +130,14 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     }
     if (!closes || !fss.existsSync(closes) || !fss.readdirSync(closes).some(f => f.endsWith('.json.gz'))) { rep.result = '그대로'; rep.why = '이어 받은 일봉 없음 — 저장된 자료 그대로'; return await done(); }
     const env = {ATLAS_T365_CLOSES: closes};
-    const now0 = path.join(tmp, 'now.json'), upd = path.join(tmp, 'h365'), out = path.join(tmp, 'data'), prevF = path.join(tmp, 'prev.json');
+    const now0 = path.join(tmp, 'now.json'), upd = path.join(tmp, 'pick'), out = path.join(tmp, 'data');
     run('후보 표', 'node', ['scripts/atlas11/t365/dump.mjs', BUNDLE_NOW[0], now0, BUNDLE_NOW[1]]);
     await fs.mkdir(upd, {recursive: true});
-    // 앞 회차 기록(완충) — 마지막 성공 회차의 판 · 때 · 365곳(판이 h365-v1 이 아니면 h365.py 가 쓰지 않음 · 고르기 · 따로 세기 · 사이트 자료가 같은 파일을 읽음)
-    await fs.writeFile(prevF, JSON.stringify(prev ? {version: prev.version ?? null, at: prev.at ?? null, members: prev.members ?? []} : {version: null, at: null, members: []}));
-    if (prev) env.ATLAS_H365_PREV = prevF;
-    run('365곳 다시 고르기', 'python3', ['scripts/atlas11/t365/h365.py', now0, upd, '--closes', closes, ...(prev ? ['--prev', prevF] : [])]);
+    // 멍거 조건(mg-v1) — 모음 결산만 · 앞 회차 기록 · 주가는 고르는 데 안 씀(사장님 2026-10-14 00:03 「가 로 하자」 · 멍거 「기다림」)
+    run('바탕 회사 고르기(멍거 조건)', 'python3', ['scripts/atlas11/t365/munger.py', now0, upd, '--closes', closes]);
     run('업종 정리', 'node', ['scripts/atlas11/t365/organize.mjs', now0, path.join(upd, 'proposal.json'), upd]);
-    const dv = run('고르기 따로 세기', 'node', ['scripts/atlas11/t365/h365_verify.mjs', now0, path.join(upd, 'proposal.json'), path.join(tmp, 'hv.json')], env);
-    rep.verify.h365 = tail(dv.stdout);
+    const dv = run('고르기 따로 세기', 'node', ['scripts/atlas11/t365/munger_verify.mjs', now0, path.join(upd, 'proposal.json'), path.join(tmp, 'mv.json')], env);
+    rep.verify.pick = tail(dv.stdout);
     const env2 = {...env, ATLAS_D365_DIR: upd};
     run('사이트 자료', 'python3', ['scripts/atlas11/t365/site_build.py', now0, out], env2);
     const sv = run('사이트 자료 따로 세기', 'node', ['scripts/atlas11/t365/site_verify.mjs', out, path.join(tmp, 'sv.json')], env2);
@@ -172,8 +170,8 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     const bset = new Set(before), mset = new Set(members);
     Object.assign(rep, {asOf: core.asOf, base: core.base, provisional: core.provisional, roll: core.roll, members,
       in: members.filter(c => !bset.has(c)).map(c => ({c, n: names[c]})), out: before.filter(c => !mset.has(c)).map(c => ({c, n: names[c] ?? c})),
-      counts: {gate: pro.counts.gate, measured: pro.counts.measured, q: pro.counts.q, picked: pro.counts.picked}, tiers: null,
-      kinds: {gain: pro.counts.gain, keep: pro.counts.keep, fill: pro.counts.fill}, stay: members.filter(c => bset.has(c)).length,
+      counts: {known: pro.counts.known, s1: pro.counts.s1, s2: pro.counts.s2, q: pro.counts.q, picked: pro.counts.picked}, tiers: null,
+      kinds: null, stay: members.filter(c => bset.has(c)).length,
       ruleChanged: !!prev && (prev.version ?? null) !== ACT.version, prevVersion: prev?.version ?? null, buffer: pro.from?.prev?.used ?? false,
       all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg},
       range: {eligible: rg.eligible, reused: /reused/.test(rgRun.stdout)}});

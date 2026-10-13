@@ -30,6 +30,7 @@ test('금지 말 목록 = 화면 검사(site_check.mjs)의 목록', () => {
   // 힘 붙은 365곳(2026-10-13 13:04) — 좁은 금지 말 9개 · 옛 기준 말도 두 목록이 같음
   for (const [nm, list] of [['NARROW', NARROW], ['OLD_RULE_WORDS', OLD_RULE_WORDS]]) { const x = src.match(new RegExp(`const ${nm} = (\\[[^\\]]+\\]);`)); assert.ok(x, nm); assert.deepEqual(list, JSON.parse(x[1].replace(/'/g, '"')), nm); }
   assert.equal(NARROW.length, 9); assert.deepEqual(oldRuleHits('봉인 1호는 옛 규칙(대세 업종)으로 고른 365곳'), []); assert.deepEqual(oldRuleHits('「대세」였던 업종부터'), ['대세']);
+  assert.deepEqual(oldRuleHits('365곳 새 기준 — 옛 규칙(힘 붙음) 365곳'), []); assert.deepEqual(oldRuleHits('힘 붙은 365곳 — 그중'), ['힘 붙은 365곳']); // 2026-10-14 멍거 조건 뒤 옛 이름
 });
 
 test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', () => {
@@ -88,7 +89,7 @@ test('네 눈 점검 — 지금 자료는 네 눈 모두 실패 0 · 눈마다 �
   assert.ok(kind(stale, 'google', 'date').fail > 0);
   for (const l of r.lenses) assert.equal(l.fail, 0, `${l.name}: ${JSON.stringify(l.kinds.flatMap(k => k.first)).slice(0, 300)}`);
   assert.deepEqual(r.lenses.map(l => [l.key, l.n]), [['apple', N], ['google', N], ['claude', N], ['cia', N]]);
-  assert.ok(r.ok); assert.ok(lens(r, 'google').things > 50000); assert.ok(kind(r, 'apple', 'click').n > 0 && kind(r, 'cia', 'fuzz').n > 0);
+  assert.ok(r.ok); assert.ok(lens(r, 'google').things > 5000, '구글 눈이 셀 것 — 회사 수에 따라 늘고 줆(365곳 때 5만 넘음 · 멍거 조건 26곳 때 9,523)'); assert.ok(kind(r, 'apple', 'click').n > 0 && kind(r, 'cia', 'fuzz').n > 0);
   assert.match(HEADER_TOP, /frame-ancestors 'none'/);
 });
 
@@ -114,11 +115,11 @@ test('네 눈 점검 — 일부러 망가뜨리면 눈마다 잡음(깨진 길 �
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }
 });
 
-test('네 눈 점검 — 힘 붙은 365곳(2026-10-13 13:04): 옛 기준 말 · 차례 칸 · 좁은 금지 말이 다시 들어오면 클로드 눈이 잡음', async () => {
+test('네 눈 점검 — 멍거 조건(2026-10-14 00:03): 옛 기준 말 · 차례 칸 · 좁은 금지 말 · 조건 밑 값이 들어오면 클로드 눈이 잡음', async () => {
   const T = copySite();
   try {
     const core = T.J('core.json'); core.rules.window = '지난 30거래일 「대세」였던 업종부터'; core.rules.label += ' · 유망한 곳'; T.W('core.json', core); // 옛 기준 말 · 좁은 금지 말
-    const comp = T.J('comp.json'); const c0 = Object.keys(comp.companies)[0]; comp.companies[c0].pick.rank = 1; T.W('comp.json', comp); // 회사마다 차례(규칙 55)
+    const comp = T.J('comp.json'); const [c0, c1] = Object.keys(comp.companies); comp.companies[c0].pick.rank = 1; comp.companies[c1].pick.roe[0] = 9.5; T.W('comp.json', comp); // 회사마다 차례(규칙 55) · 18원 못 넘은 해(멍거 조건)
     const r = await inspect4({siteDir: T.tmp, market: readMarket(T.data, null), n: N, now: NOW}); // 눈마다 대상을 모두 한 번씩 보는 수(N)
     assert.equal(r.ok, false); assert.ok(kind(r, 'claude', 'code').fail > 0, '옛 기준 말 · 차례 칸'); assert.ok(kind(r, 'claude', 'narrow').fail > 0, '좁은 금지 말');
   } finally { fs.rmSync(T.tmp, {recursive: true, force: true}); }

@@ -80,23 +80,24 @@ await step('줄 선 그래프', async () => { // 사장님 2026-10-13 12:30 「�
   out.spark = {home, list, ok: home.rows > 0 && home.lines === home.rows && list.rows > 0 && list.lines === list.rows};
   if (!out.spark.ok) out.errors.push('줄 선 그래프: ' + JSON.stringify(out.spark));
 });
-await step('힘 붙은 365곳', async () => { // 사장님 2026-10-13 13:04 「365개 종목기준을 힘이 붙는 종목으로」 · 15:10 「응」 — 자료 판 · 이름 밑 한 줄 · 3단 든 까닭 · 업데이트 탭 기준 바뀜 줄
+await step('멍거 조건', async () => { // 사장님 2026-10-13 23:34 「철저하게 찰리 망거 조건만 해」 · 2026-10-14 00:03 「가 로 하자」 — 자료 판 · 이름 밑 세 조건 · 3단 든 까닭(해마다 값) · 업데이트 탭 기준 바뀜 줄 · 옛 기준 말 0
   const core = await (await fetch(B + '/atlas/data/core.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
   const comp = (await (await fetch(B + '/atlas/data/comp.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json()).companies;
-  const k = core.facts?.kinds ?? null, g0 = Object.keys(comp).find(c => comp[c].pick?.kind === 'gain');
+  const n = core.funnel?.picked ?? null, name = `${core.rules?.name ?? '?'} ${n}곳`, c0 = Object.keys(comp)[0];
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
   const home = await page.evaluate(() => document.querySelector('#view .say.pk')?.innerText ?? '');
-  await page.evaluate(() => { const e = document.querySelector('#view .say.pk'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 160); }); await page.waitForTimeout(500); await shot('p10-h365-home');
+  await page.evaluate(() => { const e = document.querySelector('#view .say.pk'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 160); }); await page.waitForTimeout(500); await shot('p12-munger-home');
   let why = '';
-  if (g0) { await page.goto(B + '/?v=' + Date.now() + '#/c/' + g0, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
-    why = await page.evaluate(() => [...document.querySelectorAll('#view .box')].find(b => /왜 365곳에/.test(b.innerText))?.innerText ?? '');
-    await page.evaluate(() => { const b = [...document.querySelectorAll('#view .box')].find(x => /왜 365곳에/.test(x.innerText)); if (b) b.scrollIntoView({block: 'center'}); }); await page.waitForTimeout(400); await shot('p11-h365-why'); }
+  if (c0) { await page.goto(B + '/?v=' + Date.now() + '#/c/' + c0, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
+    why = await page.evaluate(() => [...document.querySelectorAll('#view .box')].find(b => /왜 멍거 조건/.test(b.innerText))?.innerText ?? '');
+    await page.evaluate(() => { const b = [...document.querySelectorAll('#view .box')].find(x => /왜 멍거 조건/.test(x.innerText)); if (b) b.scrollIntoView({block: 'center'}); }); await page.waitForTimeout(400); await shot('p13-munger-why'); }
   await page.goto(B + '/?v=' + Date.now() + '#/up', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
   const up = await page.evaluate(() => document.body.innerText);
-  const old = (up + home + why).split('옛 규칙(대세 업종)').join('').includes('대세');
-  out.h365 = {version: core.rules?.version ?? null, kinds: k, home, why: why.slice(0, 300), turn: /이 회차에 고르는 기준이 바뀌었습니다/.test(up), stay: (up.match(/그대로 \d+/) ?? [null])[0], old,
-    ok: core.rules?.version === 'h365-v1' && !!k && k.gain + k.keep + k.fill === 365 && home.includes('힘 붙은 365곳') && home.includes(`그중 「힘 붙음」 ${k.gain}곳`) && /힘 붙음 — 뒤 10거래일이 앞 10거래일보다/.test(why) && !old};
-  if (!out.h365.ok) out.errors.push('힘 붙은 365곳: ' + JSON.stringify({...out.h365, why: undefined}).slice(0, 200));
+  const strip = t => t.split('옛 규칙(대세 업종)').join('').split('옛 규칙(힘 붙음)').join('');
+  const old = /대세|힘 붙은 365곳|그중 「힘 붙음」/.test(strip(up + home + why));
+  out.munger = {version: core.rules?.version ?? null, n, home, why: why.slice(0, 300), turn: /이 회차에 고르는 기준이 바뀌었습니다/.test(up), old,
+    ok: core.rules?.version === 'mg-v1' && n > 0 && Object.keys(comp).length === n && home.includes(name) && home.includes('자기 돈 100원으로 해마다 18원 넘게 벎') && /세 조건을 모두 넘었습니다/.test(why) && /자기 돈 100원에 빚/.test(why) && !old};
+  if (!out.munger.ok) out.errors.push('멍거 조건: ' + JSON.stringify({...out.munger, why: undefined}).slice(0, 200));
 });
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');

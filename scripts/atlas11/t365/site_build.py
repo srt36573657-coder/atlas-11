@@ -9,6 +9,9 @@
   → 365곳 = daese.py(d365-v1 · 10월 8일 종가까지 30거래일) · 옛 t365-v1(10월 2일 · 1년 20% · 2027 흐름)은 기록으로 남김
 사장님 2026-10-13 13:04 「매번 업데이트 할때 365개 종목기준을 힘이 붙는 종목으로 기준을 변경한다 … cia팀이 중심이 되서 나머지팀은 협력하여 기횓한후 알트라스에 적용시킨다」
   → 365곳 = h365.py(h365-v1 힘 붙은 365곳 · 회차마다 그날까지 지난 20거래일 · 앞 회차 기록 = 환경 변수 ATLAS_H365_PREV) · 옛 d365-v2 는 기록 · 봉인 1호로 남김
+사장님 2026-10-13 23:14(서울) 「기준 다시 만들어봐 찰리 멍거라면」 · 23:34 「철저하게 찰리 망거 조건만 해」 · 2026-10-14 00:03 「가 로 하자」
+  → 바탕 = munger.py(mg-v1 멍거 조건 — 모음 결산만 · 3해 모두 돈 벎 · 빚 ≤ 자기 돈 · ROE 3해 모두 18% 이상 · 곳 수는 셈한 그대로 · 365곳 채우지 않음)
+    · 옛 h365-v1 · d365-v2 는 회차 기록 · 봉인 1호로 남김 · 아래 글의 「365곳」은 이제 「고른 곳(N곳)」
 
 쓰는 법(저장소 맨 위에서):
   node scripts/atlas11/t365/dump.mjs reports/atlas11/universe/2026-10-10/bundle.json.gz <임시>/now.json 2026-10-08   ← 고를 때 · 지금 값(10월 8일 종가)
@@ -25,7 +28,7 @@
                    날마다 Σ(기준일 몸값 × 선 값) ÷ Σ 기준일 몸값 · 그날 값이 없으면 앞 값
   20거래일 가장 깊이 빠짐 = 선의 꼭대기에서 가장 많이 내려간 비율
   1주 값 · 1년 = 거래소 달력 asOf 까지 253거래일(1년 = asOf 종가 ÷ 252거래일 전 종가 · 1년 가장 깊이 빠짐은 값이 200일 이상일 때) — dump.mjs 값과 맞대어 다르면 멈춤
-고르기 다시 셈: h365.select() 로 다시 골라(같은 앞 회차 기록) proposal.json 의 365곳 · 차례 · 앞 회차 지문과 한 곳도 다르지 않은지 먼저 본다(다르면 멈춤).
+고르기 다시 셈: munger.select() 로 다시 골라 proposal.json 의 고른 곳 · 차례와 한 곳도 다르지 않은지 먼저 본다(다르면 멈춤).
 """
 import gzip, json, os, sys, math, collections, statistics as st
 from datetime import datetime, timezone, timedelta
@@ -35,7 +38,7 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, HERE)
 from rules import isfin  # noqa: E402
 import daese  # noqa: E402
-import h365  # noqa: E402
+import munger  # noqa: E402  멍거 조건(mg-v1 · 2026-10-14 00:03 「가 로 하자」)
 
 if len(sys.argv) != 3:
     sys.exit('site_build: 쓰는 법 python3 scripts/atlas11/t365/site_build.py <now.json(dump.mjs · 10월 10일 모음)> <자료 폴더> — 옛 고를 때 표(sel.json)는 이제 받지 않음')
@@ -45,7 +48,7 @@ UNI = os.environ.get('ATLAS_D365_DIR') or os.path.join(ROOT, ACT['dir'])  # 회�
 BYI = json.load(open(os.path.join(UNI, 'by-industry.json'), encoding='utf-8'))
 PRO = json.load(open(os.path.join(UNI, 'proposal.json'), encoding='utf-8'))
 N = json.load(open(NOW, encoding='utf-8'))
-PICK = 365
+PICK = None  # 고른 곳 수 — 멍거 조건은 셈한 그대로(아래 RES 에서)
 
 
 def die(m):
@@ -63,9 +66,9 @@ def d2(x):
     return None if x is None else float(Decimal(repr(x)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
 
 
-# ── ① 고르기 다시 셈(daese.prepare · h365.select 그대로) — 후보 모두 안/밖과 까닭 ──
-#   사장님 12:41 「기준은 항상 오늘날짜로 … 하루에 4번」 — 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES)까지 합쳐 고르는 날 = 그날
-#   2026-10-13 13:04 「힘이 붙는 종목으로」 — 앞 회차 기록(환경 변수 ATLAS_H365_PREV · roll.mjs 가 h365.py 에 넘긴 것과 같은 파일)
+# ── ① 고르기 다시 셈(daese.prepare · munger.select 그대로) — 후보 모두 안/밖과 까닭 ──
+#   사장님 12:41 「기준은 항상 오늘날짜로 … 하루에 4번」 — 이어 받은 일봉(환경 변수 ATLAS_T365_CLOSES)까지 합쳐 고르는 날 = 그날(값 · 그림의 날)
+#   2026-10-14 00:03 「가 로 하자」 — 고르기는 모음 결산만(주가 · 앞 회차 기록을 안 씀 · 새 결산이 담긴 모음이 들어와야 바뀜)
 if PRO['rules']['version'] != ACT['version'] or N['asOf'] != ACT['asOf']:
     die('universe.json(%s · %s) 과 proposal.json(%s) · 후보 표(%s)가 다름' % (ACT['version'], ACT['asOf'], PRO['rules']['version'], N['asOf']))
 bnd = json.load(gzip.open(os.path.join(ROOT, ACT['bundle']), 'rt', encoding='utf-8'))
@@ -73,22 +76,23 @@ CLOSES = os.environ.get('ATLAS_T365_CLOSES')
 rows, MERGED, CAL, SELDAY, OVER = daese.prepare(N['rows'], bnd, CLOSES, ROOT, N['asOf'])
 if PRO.get('asOf', N['asOf']) != SELDAY:
     die('proposal.json 의 고르는 날(%s)과 다시 셈한 고르는 날(%s)이 다름 — 같은 이어 받은 일봉인지 보세요' % (PRO.get('asOf'), SELDAY))
-PREVF = os.environ.get('ATLAS_H365_PREV')
-RES = h365.select(rows, MERGED, CAL, SELDAY, h365.load_prev(PREVF) if PREVF and os.path.exists(PREVF) else None)
+RES = munger.select(rows, SELDAY)
 if [p['code'] for p in RES['picked']] != [p['code'] for p in PRO['picked']]:
-    die('다시 고른 365곳이 proposal.json 과 다름 — 후보 표(첫 인자)가 %s 을 %s 기준으로 푼 것인지 · 같은 이어 받은 일봉 · 같은 앞 회차 기록인지 보세요' % (ACT['bundle'], ACT['asOf']))
-if RES['prev'] != PRO['from']['prev']:
-    die('앞 회차 기록이 proposal.json 과 다름: %s ≠ %s' % (RES['prev'], PRO['from']['prev']))
+    die('다시 고른 곳이 proposal.json 과 다름 — 후보 표(첫 인자)가 %s 을 %s 기준으로 푼 것인지 보세요' % (ACT['bundle'], ACT['asOf']))
 status = RES['status']
 SELPICK = {p['code']: p for p in RES['picked']}
 RC = RES['counts']
-FUNNEL = {'universe': RC['universe'], 'gate': RC['gate'], 'measured': RC['measured'], 'picked': RC['picked'], 'q': RC['q'], 'qWhy': RC['qWhy'],
-          'gainAll': RC['gainAll'], 'gain': RC['gain'], 'keep': RC['keep'], 'fill': RC['fill'], 'gainDown': RC['gainDown'], 'gateFails': RC['gateFails'],
-          'steps': [{'k': 'universe', 'n': RC['universe'], 't': '코스피 · 코스닥 시가총액 목록(%s 모음)' % kd(N['collectedAt'][:10])},
-                    {'k': 'gate', 'n': RC['gate'], 't': '기본 문 — 흑자 · 빚 · 몸값 · 거래 · 기록 1년 · 보통주 · 그날 종가'},
-                    {'k': 'measured', 'n': RC['measured'], 't': '힘을 잴 수 있음 — 20거래일 종가 · 거래가 다 있음' + (' · 「?」 %d곳 뺌' % RC['q'] if RC['q'] else '')},
-                    {'k': 'picked', 'n': RC['picked'], 't': '「힘 붙음」 %d곳 먼저 → 그다음 차례로 %d곳 채움' % (RC['gain'], RC['keep'] + RC['fill'])}],
-          'stop': {'gate': 1, 'q': 2, 'cut': 3}, 'stopName': {'gate': '기본 문', 'q': '힘 재기', 'cut': '365곳 채우기'}}
+PICK = RC['picked']
+if PICK < 1:
+    die('멍거 조건을 넘은 곳이 없음')
+FUNNEL = {'universe': RC['universe'], 'known': RC['known'], 's1': RC['s1'], 's2': RC['s2'], 'picked': RC['picked'], 'q': RC['q'],
+          'loss': RC['loss'], 'debt': RC['debt'], 'roe': RC['roe'],
+          'steps': [{'k': 'universe', 'n': RC['universe'], 't': '코스피 · 코스닥 회사 목록(%s 모음)' % kd(N['collectedAt'][:10])},
+                    {'k': 'known', 'n': RC['known'], 't': '3년 성적표가 다 있는 곳' + (' · 「?」 %d곳 뺌' % RC['q'] if RC['q'] else '')},
+                    {'k': 's1', 'n': RC['s1'], 't': '① 3년 모두 돈을 벌었음'},
+                    {'k': 's2', 'n': RC['s2'], 't': '② 빚이 자기 돈보다 적음'},
+                    {'k': 'picked', 'n': RC['picked'], 't': '③ 자기 돈 100원으로 해마다 18원 넘게 벎'}],
+          'stop': dict(munger.STOP), 'stopName': dict(munger.STOP_NAME)}
 
 # ── ② 20거래일 창 · 지수 · 회사 선 — 모음 종가 + 이어 받은 종가(사장님 09:37 「현재에서 지난 20일 거래 · 항상」 · 12:41 「기준은 항상 오늘날짜」) ──
 #   by-industry.json(organize.mjs)의 묶음(갈래 → 업종 → 회사)을 씀 · 창의 끝 = 고르는 날
@@ -102,7 +106,7 @@ for g in BYI['groups']:
             members[m['code']] = m
             ind_of[m['code']] = (g['id'], i['name'])
 if len(members) != PICK or set(members) != set(SELPICK):
-    die('업종 정리 파일의 회사 %d곳이 365곳과 다름' % len(members))
+    die('업종 정리 파일의 회사 %d곳이 고른 %d곳과 다름' % (len(members), PICK))
 iso8 = lambda d: '%s-%s-%s' % (d[:4], d[4:6], d[6:])
 crow = {c: {iso8(r[0]): r[4] for r in MERGED['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0 and iso8(r[0]) <= SELDAY} for c in members}
 BLAST = OVER['blast']  # 모음의 마지막 날(10월 8일)
@@ -167,10 +171,13 @@ def mdd(v):
 cap_sel = {c: SELROW[c]['capEok'] for c in members}  # 고를 때(10월 8일) 몸값 · 억 원
 capb = {}
 for c in members:
-    a, b = px(c, PICK_ASOF), px(c, base)
-    if not a:
-        die('%s 고른 날(%s) 종가 없음' % (c, PICK_ASOF))
-    capb[c] = cap_sel[c] * b / a if b else None  # 기준일 몸값(주식 수가 그대로라고 봄) · 기준일 종가가 없으면 빼고 셈
+    # 고른 날 몸값의 바탕 종가 — 그날 종가가 있으면 그날(daese.refresh 가 그날 값으로 맞춤) · 없으면 모음 날 종가(refresh 가 몸값을 안 바꿈)
+    #   멍거 조건(mg-v1)은 결산만으로 고르므로 거래가 멈춘 회사도 남음(2026-10-14 · 회차 시험 「거래정지처럼」) — 둘 다 없으면 큰 회사는 크게 셈에서만 뺌
+    a = px(c, PICK_ASOF)
+    if not a and PICK_ASOF != N['asOf']:
+        a = px(c, N['asOf'])
+    b = px(c, base)
+    capb[c] = cap_sel[c] * b / a if (a and b and cap_sel[c]) else None  # 기준일 몸값(주식 수가 그대로라고 봄) · 기준일 종가가 없으면 빼고 셈
 
 
 def capw(codes):
@@ -255,7 +262,7 @@ def node(name, codes, v):
 
 # 갈래 · 업종 차례 = 20거래일 많이 오른 순(사장님 2026-10-11 00:00 「올름차순으로 배열을 해」 → 많이 오른 순)
 all_codes = list(members)
-core_all = node('365곳 전체', all_codes, eq_index(all_codes))
+core_all = node('고른 곳 전체', all_codes, eq_index(all_codes))
 gv = {g['id']: eq_index([m['code'] for i in g['industries'] for m in i['companies']]) for g in BYI['groups']}
 iv = {i['name']: eq_index([m['code'] for m in i['companies']]) for g in BYI['groups'] for i in g['industries']}
 if len(iv) != sum(len(g['industries']) for g in BYI['groups']):
@@ -336,8 +343,9 @@ for c, m in members.items():
         'mdd1y': d2(mdd1y * 100) if mdd1y is not None else None,
         'per': per, 'jump': jump, 'products': (now or sel).get('products') or None, 'sector': sel.get('sector'),
         'fin': {'key': key, **rec} if rec else None,
-        # 든 까닭(h365-v1) — 힘 붙음(gain) · 앞 회차라 남김(keep) · 그다음 차례로 채움(fill) · 앞 10거래일 h1 · 뒤 10거래일 h2 · 뒤 − 앞 d(%p) · 차례는 싣지 않음(규칙 55)
-        'pick': {'kind': u['kind'], 'sector': u['sector'], 'h1': d2(u['h1'] * 100), 'h2': d2(u['h2'] * 100), 'd': d2(u['d'] * 100)},
+        # 든 까닭(mg-v1 멍거 조건) — 확정 결산 3해 · 순이익(억 원) · 본업 이익(억 원 · 금융은 없음) · ROE(%) · 부채비율(%) · 차례는 싣지 않음(규칙 55)
+        'pick': {'sector': u['sector'], 'years': list(u['years']), 'net': list(u['net']), 'op': list(u['op']) if u['op'] else None,
+                 'roe': [d2(x) for x in u['roe']], 'debt': [d2(x) for x in u['debt']]},
     }
     lines[c] = [None if x is None else int(round(x * 100)) for x in v]
 
@@ -348,7 +356,7 @@ ndd30 = sum(1 for c in companies.values() if c['mdd1y'] is not None and c['mdd1y
 n1y = sum(1 for c in companies.values() if c['mdd1y'] is not None)
 big2 = sorted(companies, key=lambda c: -(companies[c]['cap'] or 0))[:2]
 
-RTXT = h365.rules_text(RES, ACT.get('slots') or [])  # 회차 시각은 universe.json slots 에서(틀림 장부 21번 — 옛 시각 글이 남던 것)
+RTXT = munger.rules_text(RES, ACT.get('slots') or [])  # 회차 시각은 universe.json slots 에서(틀림 장부 21번 — 옛 시각 글이 남던 것)
 core = {
     'schema': 'atlas-new-core-1', 'made': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
     'asOf': asof, 'base': base, 'days': NDAY - 1, 'pickAsOf': PICK_ASOF, 'kPick': kPick, 'sincePick': DAYS.index(asof) - DAYS.index(PICK_ASOF),
@@ -357,20 +365,17 @@ core = {
     'roll': {'files': OVER['files'], 'added': OVER['added'], 'mismatch': len(OVER['mismatch'])},
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
-                'pick': '네이버 증권 시가총액 · 결산 · 업종(%s 모음) · 일봉(%s 값까지 %d거래일)' % (kd(N['collectedAt'][:10]), kd(PICK_ASOF), RES['window']['days'])},
+                'pick': '네이버 증권 결산 · 업종(%s 모음) · 확정 결산 3해(예상치는 안 씀)' % kd(N['collectedAt'][:10])},
     'dates': dates, 'all': core_all, 'groups': groups, 'industries': industries,
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
               'perMedian': per_med, 'perN': len(pers),
-              # 고른 곳 · 셀 수 있었지만 안 고른 곳의 20거래일 가운데값(고른 기간과 같은 창 — 치우침을 숫자로 · 애플팀 ⑦)
-              'pickCmp': {'in': {'n': RC['picked'], 'med': d2(RC['medR20In'] * 100) if RC['medR20In'] is not None else None},
-                          'out': {'n': RC['out'], 'med': d2(RC['medR20Out'] * 100) if RC['medR20Out'] is not None else None}},
-              'kinds': {'gain': RC['gain'], 'keep': RC['keep'], 'fill': RC['fill']}, 'gainDown': RC['gainDown'],
+              # 멍거 조건(mg-v1) — 값이 1년 이익의 30배 넘는 곳 수(빼지 않고 보여 주기만) · 금융 수
+              'mg': {'per30': RC['per30'], 'fin': RC['fin']},
               'big': [{'code': c, 'name': companies[c]['name'], 'chg': companies[c]['chg']} for c in big2],
               'jumpN': sum(1 for c in companies.values() if c['jump'])},
     'funnel': FUNNEL,
-    'rules': {**{k: RTXT[k] for k in ('version', 'label', 'gate', 'window', 'rule', 'fill', 'q', 'bias', 'past', 'next')},
-              'pickWin': dict(RES['window']), 'turn': d2(h365.TURN * 100), 'buf': h365.BUF, 'slots': list(ACT.get('slots') or []),
-              'prev': {k: RES['prev'][k] for k in ('used', 'version', 'at')}},
+    'rules': {**{k: RTXT[k] for k in ('version', 'label', 'data', 'conds', 'price', 'wait', 'notCounted', 'limits', 'notMunger', 'q', 'next')},
+              'name': munger.NAME, 'debtLine': munger.DEBT, 'roeLine': munger.ROE, 'slots': list(ACT.get('slots') or [])},
 }
 
 # ── ④ 찾기 이름표(후보 표 모두) ──
@@ -384,7 +389,7 @@ for r in sorted(rows, key=lambda r: -(r['capEok'] or 0)):
         item['w'] = s['why']
         item['m'] = r['market']
     names.append(item)
-NAMES = {'schema': 'atlas-new-names-1', 'asOf': PICK_ASOF, 'collected': kd(N['collectedAt'][:10]), 'n': len(names), 'funnel': {k: FUNNEL[k] for k in ('universe', 'gate', 'measured', 'picked')}, 'rows': names}
+NAMES = {'schema': 'atlas-new-names-1', 'asOf': PICK_ASOF, 'collected': kd(N['collectedAt'][:10]), 'n': len(names), 'funnel': {k: FUNNEL[k] for k in ('universe', 'known', 's1', 's2', 'picked')}, 'rows': names}
 
 os.makedirs(OUT, exist_ok=True)
 def dump(name, obj):

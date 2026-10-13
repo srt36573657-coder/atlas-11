@@ -40,7 +40,7 @@ test('첫 화면 자료 — 못 받은 조각은 앞 회차 값(꼬리표) · �
   assert.ok(!h2.alerts.some(a => a.kind === 'flow'), '앞 회차 값으로는 「!」를 띄우지 않음');
   const h3 = buildHome({dataDir: DATA, rawDir: null, prev: null});
   assert.equal(h3.idx, null); assert.equal(h3.flows, null); assert.equal(h3.sectors, null); assert.equal(h3.us, null); assert.equal(h3.errors.length, 4);
-  assert.ok(h3.s365.list.length > 300, '365곳은 자료로 늘 셈');
+  assert.ok(h3.s365.list.length >= 1 && h3.s365.list.length === h3.s365.n, '고른 곳은 자료로 늘 셈(멍거 조건 수 그대로)');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 

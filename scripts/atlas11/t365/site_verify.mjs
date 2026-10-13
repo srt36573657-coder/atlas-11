@@ -6,11 +6,11 @@
 //             ③ 「큰 회사는 크게」 지수(기준일에 몸값만큼 사 두고 그대로) ④ 오름 · 내림 수 ⑤ 1년 반값 아래 떨어진 적 있는 곳 수 · 30% 넘게
 //             ⑨ 갈래 · 업종 · 전체의 방향 · 세기 · 힘(11:04 · 11:10 「이 화면에서 나와야 해」 — 곧은 선 · 앞 반 · 뒤 반)
 //             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표(후보 표 모두) 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 · 밖 까닭 = proposal.json
-//             ⑩ 회사마다 든 까닭(힘 붙음 · 남김 · 채움 · 앞 10거래일 · 뒤 10거래일 · 뒤 − 앞을 종가에서 따로 셈) · 깔때기 · 규칙 글 · 회차 시각 = universe.json slots ·
-//                고른 곳 · 안 고른 곳 가운데값 = proposal.json(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · h365-v1)
+//             ⑩ 회사마다 든 까닭(멍거 조건 mg-v1 · 3해 순이익 · 본업 이익 · ROE · 부채비율이 proposal.json 과 같고 세 조건을 모두 넘는지) · 깔때기 · 규칙 글 · 회차 시각 = universe.json slots
+//                (사장님 2026-10-14 00:03 「가 로 하자」 · 고르기 자체는 munger_verify.mjs 가 따로)
 //             ⑫ 시간(사장님 14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 봉인 번호(sha256) · 3년 전 → 봉인 날 · 봉인 뒤 지금까지 · 다시 여는 날 · 첫 화면 요약
 //             ⑬ 회사 성장 이야기(16:51 · 봉인 안 함) — 매출을 모음 결산 글에서 따로 읽어 맞댐 · 이야기 기록과 맞댐 · 말 등급 다시 셈 · 금지 말 · 요약 수
-//   365곳 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 h365-v1) — 그 판의 고르기는 h365_verify.mjs 가 따로 다시 셈
+//   바탕 회사 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 mg-v1 멍거 조건) — 그 판의 고르기는 munger_verify.mjs 가 따로 다시 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import zlib from 'node:zlib';
@@ -50,11 +50,12 @@ if (CLOSES && fs.existsSync(CLOSES)) for (const fn of fs.readdirSync(CLOSES).fil
     for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= pro.asOf) m.set(iso(d), v); // 고르는 날까지만(창의 끝 = 고르는 날)
   }
 }
-// 20거래일 창 — 마지막 종가 날(365곳 절반 넘게 종가가 있는 마지막 날)부터 거꾸로 거래소 달력 21일
-const lastDay = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > 365 / 2).map(([d]) => d).sort().at(-1); })();
+// 20거래일 창 — 마지막 종가 날(고른 곳 절반 넘게 종가가 있는 마지막 날)부터 거꾸로 거래소 달력 21일
+const NPICK = pro.picked.length; // 고른 곳 수(멍거 조건 mg-v1 은 셈한 그대로 · 옛 판은 365)
+const lastDay = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > NPICK / 2).map(([d]) => d).sort().at(-1); })();
 same(core.asOf, lastDay, '마지막 종가 날 = 모음(+ 이어 받은 종가)의 마지막 거래일');
 same(core.asOf, pro.asOf, '마지막 종가 날 = 고르는 날(proposal.json)'); same(core.pickAsOf, pro.asOf, '고른 날 = 고르는 날');
-const dataDays = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > 365 / 2).map(([d]) => d); })();
+const dataDays = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > NPICK / 2).map(([d]) => d); })();
 const cal = [...new Set([...calBase, ...dataDays.filter(d => d > calBase.at(-1))])].sort(); // 달력이 끝난 뒤는 절반 넘게 종가가 있는 날
 const W = cal.filter(d => d <= core.asOf).slice(-21);
 same(JSON.stringify(W), JSON.stringify(core.dates), '20거래일 창 날짜 21개(기준일 + 20) = 거래소 달력');
@@ -64,7 +65,7 @@ const px = (c, d) => close.get(c)?.get(d) ?? null;
 
 // ① 회사 선
 const codes = Object.keys(comp);
-same(codes.length, 365, '회사 수');
+same(codes.length, NPICK, '회사 수 = 고른 곳 수');
 for (const c of codes) {
   const b = px(c, W[0]); const L = lines[c];
   W.forEach((d, k) => { const x = px(c, d); const want = x && b ? Math.round(x / b * 10000) / 100 : null; near(L[k] == null ? null : L[k] / 100, want, 0.0101, `선 ${c} ${d}`); });
@@ -77,9 +78,11 @@ function eqIndex(cs) {
 }
 // ③ 큰 회사는 크게 — 기준일 몸값 = 고를 때(core.pickAsOf) 몸값 × 기준일 종가 ÷ 고른 날 종가(기준일 종가가 없는 곳은 뺌)
 const capSel = new Map(pro.picked.map(p => [p.code, p.capEok]));
+// 고른 날 종가가 없는 회사(거래가 멈춤 — 멍거 조건은 결산만으로 고르므로 남음) = 모음 날 종가가 바탕(몸값을 그날로 안 맞췄으므로) · 둘 다 없으면 뺌
+const capBase = c => px(c, core.pickAsOf) ?? (core.pickAsOf !== ACT.asOf ? px(c, ACT.asOf) : null);
 function cwIndex(cs0) {
-  const cs = cs0.filter(c => px(c, W[0]));
-  const w = cs.map(c => capSel.get(c) * px(c, W[0]) / px(c, core.pickAsOf));
+  const cs = cs0.filter(c => px(c, W[0]) && capBase(c) && capSel.get(c));
+  const w = cs.map(c => capSel.get(c) * px(c, W[0]) / capBase(c));
   const last = cs.map(() => null);
   return W.map((d, k) => { let num = 0, den = 0; cs.forEach((c, j) => { const x = px(c, d); if (x) last[j] = x / px(c, W[0]) * 100; if (last[j] != null) { num += w[j] * last[j]; den += w[j]; } }); return num / den; });
 }
@@ -109,7 +112,7 @@ const chk = (node, cs, label) => {
   same(node.up, up, `${label} 오른 곳`); same(node.down, dn, `${label} 내린 곳`);
 };
 const all = byInd.groups.flatMap(g => g.industries.flatMap(i => i.companies.map(c => c.code)));
-chk(core.all, all, '365곳');
+chk(core.all, all, '고른 곳 전체');
 for (const g of byInd.groups) {
   const node = core.groups.find(x => x.id === g.id); if (!node) { bad.push({what: '갈래 없음 ' + g.id}); continue; }
   chk(node, g.industries.flatMap(i => i.companies.map(c => c.code)), '갈래 ' + g.name);
@@ -135,43 +138,37 @@ same(core.facts.dd50, dd50, '1년 반값 아래 떨어진 적 있는 곳'); same
 same(core.facts.jumpN, jumpN, '20거래일 안 하루 30% 넘게 튄 곳 수');
 // ⑦ 이름표
 const inSet = names.rows.filter(r => r.s === 'in').map(r => r.c).sort(), proSet = pro.picked.map(p => p.code).sort();
-same(JSON.stringify(inSet), JSON.stringify(proSet), '이름표 「안」 = proposal.json 365곳');
+same(JSON.stringify(inSet), JSON.stringify(proSet), '이름표 「안」 = proposal.json 고른 곳');
 same(names.rows.length, pro.counts.universe, '이름표 수 = 모음 회사 수');
-const gf = Object.fromEntries(pro.counts.gateFails); const nf = {}; for (const r of names.rows) if (r.s === 'gate') nf[r.w] = (nf[r.w] ?? 0) + 1;
-same(JSON.stringify(Object.keys(nf).sort().map(k => [k, nf[k]])), JSON.stringify(Object.keys(gf).sort().map(k => [k, gf[k]])), '기본 문마다 빠진 수 = proposal.json');
-same(names.rows.filter(r => r.s !== 'gate').length, pro.counts.gate, '기본 문 지난 수');
-same(names.rows.filter(r => r.s === 'in' || r.s === 'cut').length, pro.counts.measured, '힘을 잴 수 있는 회사 수(안 + 자리 밖)');
-same(names.rows.filter(r => r.s === 'q').length, pro.counts.q, '「?」 회사 수(힘을 못 잼)');
+{ const ns = {q: 0, loss: 0, debt: 0, roe: 0}; for (const r of names.rows) if (r.s in ns) ns[r.s]++; // 멍거 조건(mg-v1) — 멈춘 자리마다 수
+  sameJ(ns, {q: pro.counts.q, loss: pro.counts.loss, debt: pro.counts.debt, roe: pro.counts.roe}, '멈춘 자리마다 수(모름 · ① · ② · ③) = proposal.json');
+  same(names.rows.filter(r => !['in', 'q', 'loss', 'debt', 'roe'].includes(r.s)).length, 0, '이름표 멈춘 자리는 모름 · ① · ② · ③ 뿐'); }
 { const ow = new Map(pro.outside.map(o => [o.code, [o.s, o.why]])); for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w], ow.get(r.c) ?? null, `밖 까닭 ${r.c}`); }
 same(pro.rules.version, ACT.version, 'proposal 판 = universe.json 판');
-// ⑩ 든 까닭 · 깔때기 · 규칙 글 · 고른 곳 · 안 고른 곳 가운데값(사장님 2026-10-13 13:04 「힘이 붙는 종목으로」 · h365-v1)
-//    회사마다 앞 10거래일 h1 · 뒤 10거래일 h2 · d = h2 − h1 을 이 파일이 종가에서 따로 다시 셈(창 = 20거래일 창 W · 가운데 날 W[10])
-const r2 = x => (x == null ? null : Math.round(x * 100) / 100), PC = pro.counts, FU = core.funnel;
-sameJ(core.rules.pickWin, pro.window, '고른 창(K−20 · K−10 · K)'); same(pro.window.from, W[0], '고른 창의 처음 = 화면 기준일'); same(pro.window.mid, W[10], '고른 창의 가운데 날 = 화면 창 가운데 날');
-const kc = {gain: 0, keep: 0, fill: 0}; let gainDown = 0;
+// ⑩ 든 까닭 · 깔때기 · 규칙 글(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 고르기 자체는 munger_verify.mjs 가 후보 표에서 따로 다시 셈)
+//    회사마다 3해 값이 proposal.json 과 같고 세 조건을 모두 넘는지 · 순위 · 옛 칸 없음 · 깔때기 = proposal.json · 규칙 글 = proposal.json
+const PC = pro.counts, FU = core.funnel, DEBT = 100, ROE = 18;
 for (const p of pro.picked) {
   const got = comp[p.code]?.pick; if (!got) { bad.push({what: `까닭 없음 ${p.code}`}); continue; }
-  sameJ([got.kind, got.sector], [p.kind, p.sector], `까닭 ${p.code} 든 까닭 · 네이버 업종`);
-  const a = px(p.code, W[0]), m = px(p.code, W[10]), z = px(p.code, W[20]);
-  if (!(a && m && z)) { bad.push({what: `까닭 ${p.code} 창 종가 빔`}); continue; }
-  const h1 = m / a - 1, h2 = z / m - 1;
-  near(got.h1, r2(h1 * 100), 0.0101, `까닭 ${p.code} 앞 10거래일`); near(got.h2, r2(h2 * 100), 0.0101, `까닭 ${p.code} 뒤 10거래일`); near(got.d, r2((h2 - h1) * 100), 0.0101, `까닭 ${p.code} 뒤 − 앞`);
-  same(got.kind === 'gain', h2 - h1 > 0.03, `까닭 ${p.code} 힘 붙음 = 뒤 − 앞 3%p 넘음`);
-  for (const k of ['tier', 'srank', 'rank', 'prank', 'google', 'cia']) same(k in got, false, `까닭 ${p.code} 옛 칸 · 차례 없음(${k})`);
-  if (got.kind in kc) kc[got.kind]++; if (got.kind === 'gain' && h2 < 0) gainDown++;
+  sameJ([got.sector, got.years, got.net, got.op], [p.sector, p.years, p.net, p.op], `까닭 ${p.code} 업종 · 3해 · 순이익 · 본업 이익`);
+  got.roe.forEach((v, i) => near(v, Math.round(p.roe[i] * 100) / 100, 0.0051, `까닭 ${p.code} ROE ${p.years[i]}`));
+  got.debt.forEach((v, i) => near(v, Math.round(p.debt[i] * 100) / 100, 0.0051, `까닭 ${p.code} 부채비율 ${p.years[i]}`));
+  same(p.years.length === 3 && p.years.every(y => !String(y).endsWith('E')), true, `까닭 ${p.code} 확정 결산 3해`);
+  same(p.net.every(x => x > 0) && (p.fin || p.op.every(x => x > 0)), true, `까닭 ${p.code} ① 3해 모두 돈 벎`);
+  same(p.debt.every(x => x <= DEBT), true, `까닭 ${p.code} ② 빚 ≤ 자기 돈`);
+  same(p.roe.every(x => x >= ROE), true, `까닭 ${p.code} ③ 3해 모두 18% 이상`);
+  for (const k of ['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia']) same(k in got, false, `까닭 ${p.code} 옛 칸 · 차례 없음(${k})`);
 }
-sameJ(core.facts.kinds, kc, '든 까닭마다 수(회사 칸에서 셈)'); sameJ(kc, {gain: PC.gain, keep: PC.keep, fill: PC.fill}, '든 까닭마다 수 = proposal.json');
-same(core.facts.gainDown, gainDown, '힘 붙음 가운데 뒤 10거래일에도 내린 곳(종가에서 셈)'); same(gainDown, PC.gainDown, '뒤 10거래일에도 내린 곳 = proposal.json');
-sameJ([FU.universe, FU.gate, FU.measured, FU.picked, FU.q, FU.qWhy, FU.gainAll, FU.gain, FU.keep, FU.fill, FU.gainDown], [PC.universe, PC.gate, PC.measured, PC.picked, PC.q, PC.qWhy, PC.gainAll, PC.gain, PC.keep, PC.fill, PC.gainDown], '깔때기 숫자');
-sameJ(FU.steps.map(x => x.n), [PC.universe, PC.gate, PC.measured, PC.picked], '깔때기 줄 숫자');
-for (const k of ['ranked', 'sectors', 'top', 'tiers']) same(k in FU, false, `깔때기 옛 칸 없음(${k})`);
-for (const k of ['version', 'label', 'gate', 'rule', 'fill', 'q', 'bias', 'past']) sameJ(core.rules[k], pro.rules[k], `규칙 글 ${k} = proposal.json`);
-same(core.rules.next, `하루 ${ACT.slots.length}번(${ACT.slots.join(' · ')} 서울) 그날까지 값으로 다시 고름 — 장이 없는 날은 「새 값 없음」으로 기록만`, '도움말 회차 시각 = universe.json slots(틀림 장부 21번)');
-for (const k of ['google', 'cia', 'tiers', 'sectors', 'unranked']) same(k in core.rules, false, `규칙 옛 칸 없음(${k})`);
-sameJ(core.rules.prev, {used: pro.from.prev.used, version: pro.from.prev.version, at: pro.from.prev.at}, '앞 회차 기록 = proposal.json');
-{ const xs = codes.map(c => comp[c].chg).filter(x => x != null).sort((p, q) => p - q), n = xs.length, md = n ? (n % 2 ? xs[(n - 1) / 2] : (xs[n / 2 - 1] + xs[n / 2]) / 2) : null;
-  near(core.facts.pickCmp.in.med, md == null ? null : Math.round(md * 100) / 100, 0.0101, `고른 365곳 ${core.days}거래일 가운데값(회사 칸에서 셈)`); same(core.facts.pickCmp.in.n, codes.length, '고른 곳 수'); }
-near(core.facts.pickCmp.in.med, r2(PC.medR20In * 100), 0.0101, '고른 곳 가운데값 = proposal.json'); near(core.facts.pickCmp.out.med, PC.medR20Out == null ? null : r2(PC.medR20Out * 100), 0.0101, '안 고른 곳 가운데값 = proposal.json'); same(core.facts.pickCmp.out.n, PC.out, '안 고른 곳 수');
+sameJ([FU.universe, FU.known, FU.s1, FU.s2, FU.picked, FU.q, FU.loss, FU.debt, FU.roe], [PC.universe, PC.known, PC.s1, PC.s2, PC.picked, PC.q, PC.loss, PC.debt, PC.roe], '깔때기 숫자');
+sameJ(FU.steps.map(x => x.n), [PC.universe, PC.known, PC.s1, PC.s2, PC.picked], '깔때기 줄 숫자');
+same(PC.known - PC.loss, PC.s1, '깔때기 ① = 자료 있는 곳 − ① 빠짐'); same(PC.s1 - PC.debt, PC.s2, '깔때기 ② = ① − ② 빠짐'); same(PC.s2 - PC.roe, PC.picked, '깔때기 ③ = ② − ③ 빠짐');
+same(codes.length, PC.picked, '사이트 회사 수 = 고른 곳 수');
+for (const k of ['ranked', 'sectors', 'top', 'tiers', 'gate', 'measured', 'gainAll', 'kinds']) same(k in FU, false, `깔때기 옛 칸 없음(${k})`);
+for (const k of ['version', 'label', 'conds', 'price', 'wait', 'notCounted', 'limits', 'notMunger', 'q']) sameJ(core.rules[k], pro.rules[k], `규칙 글 ${k} = proposal.json`);
+same(core.rules.next, `하루 ${ACT.slots.length}번(${ACT.slots.join(' · ')} 서울) 값과 그림만 새로 · 고른 곳은 새 1년 성적표가 들어와야 바뀜`, '도움말 회차 시각 = universe.json slots(틀림 장부 21번)');
+for (const k of ['google', 'cia', 'tiers', 'sectors', 'unranked', 'pickWin', 'turn', 'buf', 'fill', 'bias', 'past']) same(k in core.rules, false, `규칙 옛 칸 없음(${k})`);
+for (const k of ['pickCmp', 'kinds', 'gainDown']) same(k in core.facts, false, `사실 옛 칸 없음(${k})`);
+same(core.facts.mg?.per30, pro.picked.filter(p => p.per != null && p.per > 30).length, '값이 1년 이익의 30배 넘는 곳 수 = proposal.json');
 
 // ⑧ 4단 자료(2026-10-11 08:10 「5단 클릭」) — 거래일 · 365곳 3년 지수 · 회사마다 종가 · 하루 ±30.5% 넘은 날
 const days = J(path.join(dataDir, 'days.json'));
