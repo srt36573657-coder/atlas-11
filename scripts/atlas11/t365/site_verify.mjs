@@ -6,11 +6,11 @@
 //             ③ 「큰 회사는 크게」 지수(기준일에 몸값만큼 사 두고 그대로) ④ 오름 · 내림 수 ⑤ 1년 반값 아래 떨어진 적 있는 곳 수 · 30% 넘게
 //             ⑨ 갈래 · 업종 · 전체의 방향 · 세기 · 힘(11:04 · 11:10 「이 화면에서 나와야 해」 — 곧은 선 · 앞 반 · 뒤 반)
 //             ⑥ 회사 1주 값 · 1년 변화 ⑦ 이름표(후보 표 모두) 가운데 「안」 = proposal.json 365곳 · 문마다 빠진 수 · 밖 까닭 = proposal.json
-//             ⑩ 회사마다 든 까닭(멍거 조건 mg-v1 · 3해 순이익 · 본업 이익 · ROE · 부채비율이 proposal.json 과 같고 세 조건을 모두 넘는지) · 깔때기 · 규칙 글 · 회차 시각 = universe.json slots
-//                (사장님 2026-10-14 00:03 「가 로 하자」 · 고르기 자체는 munger_verify.mjs 가 따로)
+//             ⑩ 회사마다 든 까닭(멍거 · 린치 조건 ml-v1 · 꼬리표마다 값이 proposal.json 과 같고 그 갈래 조건을 넘는지 · 린치 성장 · 점수 다시 셈) · 깔때기 두 갈래 · 규칙 글 · 회차 시각 = universe.json slots
+//                (사장님 2026-10-14 06:05 「가」 · 고르기 자체는 ml_verify.mjs 가 따로)
 //             ⑫ 시간(사장님 14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 봉인 번호(sha256) · 3년 전 → 봉인 날 · 봉인 뒤 지금까지 · 다시 여는 날 · 첫 화면 요약
 //             ⑬ 회사 성장 이야기(16:51 · 봉인 안 함) — 매출을 모음 결산 글에서 따로 읽어 맞댐 · 이야기 기록과 맞댐 · 말 등급 다시 셈 · 금지 말 · 요약 수
-//   바탕 회사 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 mg-v1 멍거 조건) — 그 판의 고르기는 munger_verify.mjs 가 따로 다시 셈
+//   바탕 회사 = scripts/atlas11/t365/universe.json 이 가리키는 판(지금 ml-v1 멍거 · 린치 조건) — 그 판의 고르기는 ml_verify.mjs 가 따로 다시 셈
 //   틀린 것이 하나라도 있으면 끝 코드 1
 import fs from 'node:fs';
 import zlib from 'node:zlib';
@@ -51,7 +51,7 @@ if (CLOSES && fs.existsSync(CLOSES)) for (const fn of fs.readdirSync(CLOSES).fil
   }
 }
 // 20거래일 창 — 마지막 종가 날(고른 곳 절반 넘게 종가가 있는 마지막 날)부터 거꾸로 거래소 달력 21일
-const NPICK = pro.picked.length; // 고른 곳 수(멍거 조건 mg-v1 은 셈한 그대로 · 옛 판은 365)
+const NPICK = pro.picked.length; // 고른 곳 수(멍거 · 린치 조건 ml-v1 은 셈한 그대로 · 옛 판은 365)
 const lastDay = (() => { const n = new Map(); for (const m of close.values()) for (const d of m.keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > NPICK / 2).map(([d]) => d).sort().at(-1); })();
 same(core.asOf, lastDay, '마지막 종가 날 = 모음(+ 이어 받은 종가)의 마지막 거래일');
 same(core.asOf, pro.asOf, '마지막 종가 날 = 고르는 날(proposal.json)'); same(core.pickAsOf, pro.asOf, '고른 날 = 고르는 날');
@@ -136,39 +136,60 @@ for (const c of codes) {
 }
 same(core.facts.dd50, dd50, '1년 반값 아래 떨어진 적 있는 곳'); same(core.facts.dd30, dd30, '1년 30% 넘게 빠진 적 있는 곳'); same(core.facts.n1y, n1y, '1년 값 있는 곳');
 same(core.facts.jumpN, jumpN, '20거래일 안 하루 30% 넘게 튄 곳 수');
-// ⑦ 이름표
+// ⑦ 이름표(ml-v1 · 2026-10-14 06:05 「가」) — 안 = 고른 곳 · 밖은 「out」 또는 두 갈래 모두 모름 「q」 · 밖마다 갈래별 멈춘 자리(sm · sl)와 까닭 = proposal.json
 const inSet = names.rows.filter(r => r.s === 'in').map(r => r.c).sort(), proSet = pro.picked.map(p => p.code).sort();
 same(JSON.stringify(inSet), JSON.stringify(proSet), '이름표 「안」 = proposal.json 고른 곳');
 same(names.rows.length, pro.counts.universe, '이름표 수 = 모음 회사 수');
-{ const ns = {q: 0, loss: 0, debt: 0, roe: 0}; for (const r of names.rows) if (r.s in ns) ns[r.s]++; // 멍거 조건(mg-v1) — 멈춘 자리마다 수
-  sameJ(ns, {q: pro.counts.q, loss: pro.counts.loss, debt: pro.counts.debt, roe: pro.counts.roe}, '멈춘 자리마다 수(모름 · ① · ② · ③) = proposal.json');
-  same(names.rows.filter(r => !['in', 'q', 'loss', 'debt', 'roe'].includes(r.s)).length, 0, '이름표 멈춘 자리는 모름 · ① · ② · ③ 뿐'); }
-{ const ow = new Map(pro.outside.map(o => [o.code, [o.s, o.why]])); for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w], ow.get(r.c) ?? null, `밖 까닭 ${r.c}`); }
+same(names.rows.filter(r => !['in', 'out', 'q'].includes(r.s)).length, 0, '이름표 표시는 안 · 밖 · 모름 뿐');
+same(names.rows.filter(r => r.s === 'q').length, pro.counts.q, '두 갈래 모두 모름 수 = proposal.json');
+{ const ow = new Map(pro.outside.map(o => [o.code, [o.s, `멍거 — ${o.mg.why} / 린치 — ${o.ly.why}`, o.mg.s, o.ly.s]]));
+  for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w, r.sm, r.sl], ow.get(r.c) ?? null, `밖 까닭 · 갈래마다 멈춘 자리 ${r.c}`); }
 same(pro.rules.version, ACT.version, 'proposal 판 = universe.json 판');
-// ⑩ 든 까닭 · 깔때기 · 규칙 글(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 고르기 자체는 munger_verify.mjs 가 후보 표에서 따로 다시 셈)
-//    회사마다 3해 값이 proposal.json 과 같고 세 조건을 모두 넘는지 · 순위 · 옛 칸 없음 · 깔때기 = proposal.json · 규칙 글 = proposal.json
-const PC = pro.counts, FU = core.funnel, DEBT = 100, ROE = 18;
+// ⑩ 든 까닭 · 깔때기 · 규칙 글(ml-v1 — 고르기 자체는 ml_verify.mjs 가 후보 표 · 모음에서 따로 다시 셈)
+//    꼬리표마다 값이 proposal.json 과 같고 그 갈래 조건을 모두 넘는지 · 린치 성장 · 점수는 여기서 다시 셈 · 순위 · 옛 칸 없음 · 깔때기 두 갈래 = proposal.json · 규칙 글 = proposal.json
+const PC = pro.counts, FU = core.funnel, MC = PC.mg, LC = PC.ly, DEBT = 100, ROE = 18;
 for (const p of pro.picked) {
   const got = comp[p.code]?.pick; if (!got) { bad.push({what: `까닭 없음 ${p.code}`}); continue; }
-  sameJ([got.sector, got.years, got.net, got.op], [p.sector, p.years, p.net, p.op], `까닭 ${p.code} 업종 · 3해 · 순이익 · 본업 이익`);
-  got.roe.forEach((v, i) => near(v, Math.round(p.roe[i] * 100) / 100, 0.0051, `까닭 ${p.code} ROE ${p.years[i]}`));
-  got.debt.forEach((v, i) => near(v, Math.round(p.debt[i] * 100) / 100, 0.0051, `까닭 ${p.code} 부채비율 ${p.years[i]}`));
-  same(p.years.length === 3 && p.years.every(y => !String(y).endsWith('E')), true, `까닭 ${p.code} 확정 결산 3해`);
-  same(p.net.every(x => x > 0) && (p.fin || p.op.every(x => x > 0)), true, `까닭 ${p.code} ① 3해 모두 돈 벎`);
-  same(p.debt.every(x => x <= DEBT), true, `까닭 ${p.code} ② 빚 ≤ 자기 돈`);
-  same(p.roe.every(x => x >= ROE), true, `까닭 ${p.code} ③ 3해 모두 18% 이상`);
-  for (const k of ['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia']) same(k in got, false, `까닭 ${p.code} 옛 칸 · 차례 없음(${k})`);
+  sameJ([got.sector, got.tags], [p.sector, p.tags], `까닭 ${p.code} 업종 · 꼬리표`);
+  same(p.tags.length > 0 && p.tags.every(t => t === 'mg' || t === 'ly'), true, `까닭 ${p.code} 꼬리표는 mg · ly`);
+  if (p.tags.includes('mg')) {
+    const m = p.mg, g = got.mg ?? {};
+    sameJ([g.years, g.net, g.op], [m.years, m.net, m.op], `까닭 ${p.code} 멍거 3해 · 순이익 · 본업 이익`);
+    (g.roe ?? []).forEach((v, i) => near(v, Math.round(m.roe[i] * 100) / 100, 0.0051, `까닭 ${p.code} ROE ${m.years[i]}`));
+    (g.debt ?? []).forEach((v, i) => near(v, Math.round(m.debt[i] * 100) / 100, 0.0051, `까닭 ${p.code} 부채비율 ${m.years[i]}`));
+    same(m.years.length === 3 && m.years.every(y => !String(y).endsWith('E')), true, `까닭 ${p.code} 확정 결산 3해`);
+    same(m.net.every(x => x > 0) && (m.fin || m.op.every(x => x > 0)), true, `까닭 ${p.code} 멍거 ① 3해 모두 돈 벎`);
+    same(m.debt.every(x => x <= DEBT), true, `까닭 ${p.code} 멍거 ② 빚 ≤ 자기 돈`);
+    same(m.roe.every(x => x >= ROE), true, `까닭 ${p.code} 멍거 ③ 3해 모두 18% 이상`);
+  } else { same(got.mg, null, `까닭 ${p.code} 멍거 값 없음`); same(p.mg, null, `proposal ${p.code} 멍거 값 없음`); }
+  if (p.tags.includes('ly')) {
+    const l = p.ly, g = got.ly ?? {};
+    sameJ([g.years, g.eps, g.dps, g.px, g.pxDay, g.per], [l.years, l.eps, l.dps, l.px, l.pxDay, l.per], `까닭 ${p.code} 린치 해 · EPS · 배당 · 값 · 날 · PER`);
+    const gr = (Math.sqrt(l.eps[1] / l.eps[0]) - 1) * 100, yl = (l.dps ?? 0) / l.px * 100, sc = (gr + yl) / l.per;
+    near(l.g, gr, 1e-9, `까닭 ${p.code} 린치 성장 다시 셈`); near(l.score, sc, 1e-9, `까닭 ${p.code} 린치 점수 다시 셈`);
+    near(g.g, Math.round(gr * 100) / 100, 0.0051, `까닭 ${p.code} 린치 성장(화면)`); near(g.yld, Math.round(yl * 100) / 100, 0.0051, `까닭 ${p.code} 배당 %(화면)`); near(g.score, Math.round(sc * 100) / 100, 0.0051, `까닭 ${p.code} 린치 점수(화면)`);
+    same(l.eps[0] > 0 && l.eps[1] > 0 && gr >= 20 && gr <= 25, true, `까닭 ${p.code} 린치 ① 한 주 이익 해마다 20 ~ 25%`);
+    same(sc >= 2, true, `까닭 ${p.code} 린치 ② (성장 + 배당) ÷ PER ≥ 2`);
+    same(l.pxDay, ACT.asOf, `까닭 ${p.code} 린치 값의 날 = 모음 날`);
+  } else { same(got.ly, null, `까닭 ${p.code} 린치 값 없음`); same(p.ly, null, `proposal ${p.code} 린치 값 없음`); }
+  for (const k of ['kind', 'h1', 'h2', 'd', 'tier', 'srank', 'rank', 'prank', 'google', 'cia', 'years', 'net', 'op', 'roe', 'debt']) same(k in got, false, `까닭 ${p.code} 옛 칸 · 차례 없음(${k})`);
 }
-sameJ([FU.universe, FU.known, FU.s1, FU.s2, FU.picked, FU.q, FU.loss, FU.debt, FU.roe], [PC.universe, PC.known, PC.s1, PC.s2, PC.picked, PC.q, PC.loss, PC.debt, PC.roe], '깔때기 숫자');
-sameJ(FU.steps.map(x => x.n), [PC.universe, PC.known, PC.s1, PC.s2, PC.picked], '깔때기 줄 숫자');
-same(PC.known - PC.loss, PC.s1, '깔때기 ① = 자료 있는 곳 − ① 빠짐'); same(PC.s1 - PC.debt, PC.s2, '깔때기 ② = ① − ② 빠짐'); same(PC.s2 - PC.roe, PC.picked, '깔때기 ③ = ② − ③ 빠짐');
+sameJ([FU.universe, FU.picked, FU.both, FU.q], [PC.universe, PC.picked, PC.both, PC.q], '깔때기 숫자(모두 · 고른 곳 · 둘 다 · 모름)');
+sameJ((FU.groups ?? []).map(g => [g.k, g.n]), [['mg', MC.picked], ['ly', LC.picked]], '깔때기 두 갈래 · 고른 수');
+sameJ(FU.groups?.[0]?.steps.map(x => x.n), [PC.universe, MC.known, MC.s1, MC.s2, MC.picked], '멍거 깔때기 줄 숫자');
+sameJ(FU.groups?.[1]?.steps.map(x => x.n), [PC.universe, LC.known, LC.l0, LC.l1, LC.picked], '린치 깔때기 줄 숫자');
+same(MC.known - MC.loss, MC.s1, '멍거 ① = 자료 있는 곳 − ① 빠짐'); same(MC.s1 - MC.debt, MC.s2, '멍거 ② = ① − ② 빠짐'); same(MC.s2 - MC.roe, MC.picked, '멍거 ③ = ② − ③ 빠짐');
+same(LC.known - LC.loss, LC.l0, '린치 성장 셈 = 자료 있는 곳 − 못 셈'); same(LC.l0 - LC.g, LC.l1, '린치 ① = 성장 셈 − ① 빠짐'); same(LC.l1 - LC.peg, LC.picked, '린치 ② = ① − ② 빠짐');
+same(MC.picked + LC.picked - PC.both, PC.picked, '고른 곳 = 멍거 + 린치 − 둘 다');
+same(pro.picked.filter(p => p.tags.length === 2).length, PC.both, '둘 다 꼬리표 수 = proposal 셈');
 same(codes.length, PC.picked, '사이트 회사 수 = 고른 곳 수');
-for (const k of ['ranked', 'sectors', 'top', 'tiers', 'gate', 'measured', 'gainAll', 'kinds']) same(k in FU, false, `깔때기 옛 칸 없음(${k})`);
-for (const k of ['version', 'label', 'conds', 'price', 'wait', 'notCounted', 'limits', 'notMunger', 'q']) sameJ(core.rules[k], pro.rules[k], `규칙 글 ${k} = proposal.json`);
+for (const k of ['ranked', 'sectors', 'top', 'tiers', 'gate', 'measured', 'gainAll', 'kinds', 'steps', 'stop', 'stopName', 'known', 's1', 's2', 'loss', 'debt', 'roe']) same(k in FU, false, `깔때기 옛 칸 없음(${k})`);
+for (const k of ['version', 'label', 'line', 'groups', 'conds', 'price', 'wait', 'notCounted', 'limits', 'notMunger', 'q']) sameJ(core.rules[k], pro.rules[k], `규칙 글 ${k} = proposal.json`);
+same(core.rules.lyDay, ACT.asOf, '린치 값의 날 = universe.json 모음 날');
 same(core.rules.next, `하루 ${ACT.slots.length}번(${ACT.slots.join(' · ')} 서울) 값과 그림만 새로 · 고른 곳은 새 1년 성적표가 들어와야 바뀜`, '도움말 회차 시각 = universe.json slots(틀림 장부 21번)');
 for (const k of ['google', 'cia', 'tiers', 'sectors', 'unranked', 'pickWin', 'turn', 'buf', 'fill', 'bias', 'past']) same(k in core.rules, false, `규칙 옛 칸 없음(${k})`);
 for (const k of ['pickCmp', 'kinds', 'gainDown']) same(k in core.facts, false, `사실 옛 칸 없음(${k})`);
-same(core.facts.mg?.per30, pro.picked.filter(p => p.per != null && p.per > 30).length, '값이 1년 이익의 30배 넘는 곳 수 = proposal.json');
+same(core.facts.mg?.per30, pro.picked.filter(p => p.tags.includes('mg') && p.per != null && p.per > 30).length, '멍거 갈래 값이 1년 이익의 30배 넘는 곳 수 = proposal.json');
 
 // ⑧ 4단 자료(2026-10-11 08:10 「5단 클릭」) — 거래일 · 365곳 3년 지수 · 회사마다 종가 · 하루 ±30.5% 넘은 날
 const days = J(path.join(dataDir, 'days.json'));

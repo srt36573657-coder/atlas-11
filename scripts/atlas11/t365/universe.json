@@ -1,7 +1,7 @@
 {
- "about": "새 ATLAS(aaa7377.com) 가 지금 쓰는 바탕 회사 판 — 사장님 2026-10-13 23:14(서울) 「기준 다시 만들어봐 찰리 멍거라면」 · 23:34 「철저하게 찰리 망거 조건만 해」 · 2026-10-14 00:03 「가 로 하자」로 h365-v1(힘 붙은 365곳) → mg-v1(멍거 조건 — 모음 결산만 · 3해 모두 돈 벎 · 빚 ≤ 자기 돈 · ROE 3해 모두 18% 이상 · 곳 수는 셈한 그대로 · 고르기 scripts/atlas11/t365/munger.py · 따로 세기 munger_verify.mjs). dir = 저장소에 남긴 바탕(10월 10일 모음으로 고른 판 · 회차가 막히면 이 판으로 올림) · 회차마다 같은 모음이면 같은 곳(새 결산이 담긴 모음이 들어와야 바뀜). site_build.py · site_verify.mjs · closes_fetch.mjs · roll.mjs · range_mc.py · range_verify.mjs · munger_verify.mjs 가 이 파일을 읽음. 옛 판(h365-v1 · h365.py · h365_verify.mjs · d365-v2 · daese.py · daese_verify.mjs)은 회차 기록 · 봉인 1호 다시 셈에 그대로 둠.",
- "version": "mg-v1",
- "dir": "reports/atlas11/universe/2026-10-14-munger",
+ "about": "새 ATLAS(aaa7377.com) 가 지금 쓰는 바탕 회사 판 — 사장님 2026-10-14 05:37(싱가포르) 「세계적인 주식투자 2인을 더 찾아 내 봐」 · 06:03 「가」(린치 조건 18곳을 사이트에) · 06:05 「가」(멍거 26곳과 함께 · 겹치면 한 번)로 mg-v1(멍거 조건) → ml-v1(멍거 · 린치 조건 — 멍거 갈래 munger.py 그대로 · 린치 갈래 lynch.py: 한 주 이익 해마다 20 ~ 25% · (성장 + 배당) ÷ PER ≥ 2 · 모음 날 값 · 곳 수는 셈한 그대로 · 고르기 scripts/atlas11/t365/ml.py · 따로 세기 ml_verify.mjs · 규칙 59)",
+ "version": "ml-v1",
+ "dir": "reports/atlas11/universe/2026-10-14-munger-lynch",
  "bundle": "reports/atlas11/universe/2026-10-10/bundle.json.gz",
  "asOf": "2026-10-08",
  "range": "range-v1",
@@ -12,5 +12,5 @@
   "18:00"
  ],
  "slotsWhy": "2026-10-12 12:41 사장님 「10시 12시 14시 18시 업데이틀 하라 시장을 판독해서 말이다」 — 그 전(10-11 12:41 ~ 10-12 12:10)은 08:10 · 12:10 · 16:10 · 21:10 · 지난 회차 기록의 회차 이름은 그대로 둠",
- "versionWhy": "2026-10-14 00:03 사장님 「가 로 하자」(멍거 조건 · 빚이 자기 돈보다 적으면 통과) — 그 전 2026-10-13 15:22 ~ 2026-10-14 은 h365-v1(reports/atlas11/universe/2026-10-13-h365) · 2026-10-11 11:43 ~ 2026-10-13 은 d365-v2(reports/atlas11/universe/2026-10-11-d365-v2) · 지난 회차 기록의 판 이름은 그대로 둠"
+ "versionWhy": "2026-10-14 06:05(싱가포르) 사장님 「가」(멍거 26곳과 린치 18곳을 함께 41곳) — 그 전 2026-10-14 00:03(서울) ~ 은 mg-v1(reports/atlas11/universe/2026-10-14-munger) · 2026-10-13 15:22 ~ 2026-10-14 은 h365-v1(reports/atlas11/universe/2026-10-13-h365) · 2026-10-11 11:43 ~ 2026-10-13 은 d365-v2(reports/atlas11/universe/2026-10-11-d365-v2) · 지난 회차 기록의 판 이름은 그대로 둠"
 }

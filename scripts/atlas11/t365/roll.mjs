@@ -4,8 +4,8 @@
 //   2026-10-12 12:41 「10시 12시 14시 18시 업데이틀 하라」 — 그 전은 08:10 · 12:10 · 16:10 · 21:10 · 회차 이름 목록은 universe.json slots) ·
 //   평일 16:47 · 19:00 예약 올리기 · 손 올리기가 모두 이 길을 지남(예약 작업 파일 atlas11-daily.yml · atlas11-evening.yml 은 고치지 않음 — 규칙 7)
 //   ① 깃허브 실행기면 후보 1,378곳 일봉(종가 · 거래량)을 이어 받는다(closes_fetch.mjs → 임시 폴더 · 모음 뒤 날을 한 번에 받으므로 지난 파일이 필요 없음)
-//   ② dump.mjs → munger.py --closes(멍거 조건 mg-v1 · 사장님 2026-10-14 00:03 「가 로 하자」 — 모음 결산만으로 고름 · 같은 모음이면 회차마다 같은 곳 ·
-//      새 결산이 담긴 모음이 들어와야 바뀜) → organize.mjs → munger_verify.mjs(노드로 따로 · 틀림 0)
+//   ② dump.mjs → ml.py --closes(멍거 · 린치 조건 ml-v1 · 사장님 2026-10-14 06:05 「가」 — 모음 결산 · 모음 날 값만으로 고름 · 같은 모음이면 회차마다 같은 곳 ·
+//      새 결산이 담긴 모음이 들어와야 바뀜) → organize.mjs → ml_verify.mjs(노드로 따로 · 틀림 0) · 옛 mg-v1 = munger.py · munger_verify.mjs 는 멍거 갈래로 그대로
 //      (옛 h365-v1 = h365.py · h365_verify.mjs · 옛 d365-v2 = daese.py · daese_verify.mjs 는 기록 · 봉인 1호 다시 셈에 그대로 둠)
 //   ③ site_build.py(ATLAS_T365_CLOSES · ATLAS_D365_DIR) → site_verify.mjs(틀림 0) → range_mc.py(7단 범위 · 같은 값이면 지금 사이트 범위를 그대로 씀) → range_verify.mjs(틀림 0) — 36곳은 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」로 지움
 //   ④ 모두 통과하면 dist/atlas/data 를 바꿈 · 하나라도 멈추면 지금 사이트(aaa7377.com)의 자료를 그대로 받아 올림(옛 바탕으로 돌아가지 않게) · 그것도 못 하면 저장소 바탕 그대로
@@ -133,10 +133,10 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     const now0 = path.join(tmp, 'now.json'), upd = path.join(tmp, 'pick'), out = path.join(tmp, 'data');
     run('후보 표', 'node', ['scripts/atlas11/t365/dump.mjs', BUNDLE_NOW[0], now0, BUNDLE_NOW[1]]);
     await fs.mkdir(upd, {recursive: true});
-    // 멍거 조건(mg-v1) — 모음 결산만 · 앞 회차 기록 · 주가는 고르는 데 안 씀(사장님 2026-10-14 00:03 「가 로 하자」 · 멍거 「기다림」)
-    run('바탕 회사 고르기(멍거 조건)', 'python3', ['scripts/atlas11/t365/munger.py', now0, upd, '--closes', closes]);
+    // 멍거 · 린치 조건(ml-v1) — 모음 결산 · 모음 날 값만 · 앞 회차 기록 · 회차 날 값은 고르는 데 안 씀(사장님 2026-10-14 06:05 「가」 · 같은 모음이면 회차마다 같은 곳)
+    run('바탕 회사 고르기(멍거 · 린치 조건)', 'python3', ['scripts/atlas11/t365/ml.py', now0, upd, '--closes', closes]);
     run('업종 정리', 'node', ['scripts/atlas11/t365/organize.mjs', now0, path.join(upd, 'proposal.json'), upd]);
-    const dv = run('고르기 따로 세기', 'node', ['scripts/atlas11/t365/munger_verify.mjs', now0, path.join(upd, 'proposal.json'), path.join(tmp, 'mv.json')], env);
+    const dv = run('고르기 따로 세기', 'node', ['scripts/atlas11/t365/ml_verify.mjs', now0, path.join(upd, 'proposal.json'), path.join(tmp, 'mv.json')], env);
     rep.verify.pick = tail(dv.stdout);
     const env2 = {...env, ATLAS_D365_DIR: upd};
     run('사이트 자료', 'python3', ['scripts/atlas11/t365/site_build.py', now0, out], env2);
@@ -170,7 +170,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     const bset = new Set(before), mset = new Set(members);
     Object.assign(rep, {asOf: core.asOf, base: core.base, provisional: core.provisional, roll: core.roll, members,
       in: members.filter(c => !bset.has(c)).map(c => ({c, n: names[c]})), out: before.filter(c => !mset.has(c)).map(c => ({c, n: names[c] ?? c})),
-      counts: {known: pro.counts.known, s1: pro.counts.s1, s2: pro.counts.s2, q: pro.counts.q, picked: pro.counts.picked}, tiers: null,
+      counts: {picked: pro.counts.picked, mg: pro.counts.mg?.picked ?? null, ly: pro.counts.ly?.picked ?? null, both: pro.counts.both ?? null, q: pro.counts.q}, tiers: null,
       kinds: null, stay: members.filter(c => bset.has(c)).length,
       ruleChanged: !!prev && (prev.version ?? null) !== ACT.version, prevVersion: prev?.version ?? null, buffer: pro.from?.prev?.used ?? false,
       all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg},
