@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-12T23:29:22.307Z",
+  "at": "2026-10-13T01:07:34.739Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-12T23:29:21.517Z",
+    "publishedAt": "2026-10-13T01:07:33.952Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-12-8629b387\",\"generatedAt\":\"2026-10-12T23:22:52.910Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-12\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-12-b748f06e\",\"generatedAt\":\"2026-10-13T01:00:38.107Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-12\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-12T23:24:50Z\",\"asOf\":\"2026-10-12\",\"base\":\"2026-09-08\",\"days\":20,\"pickAsOf\":\"2026-10-12\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":1377,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음 + 날마다 이어 받음(10월 12일 종가까지)\",\"pick\":"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-13T01:02:21Z\",\"asOf\":\"2026-10-13\",\"base\":\"2026-09-09\",\"days\":20,\"pickAsOf\":\"2026-10-13\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":2752,\"mismatch\":2},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 10일 모음 + 날마다 이어 받음(10월 13일 종가까지)\",\"pick\":\""
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
@@ -70,7 +70,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-days-1\",\"asOf\":\"2026-10-12\",\"dates\":[\"2023-04-25\",\"2023-04-26\",\"2023-04-27\",\"2023-04-28\",\"2023-05-02\",\"2023-05-03\",\"2023-05-04\",\"2023-05-08\",\"2023-05-09\",\"2023-05-10\",\"2023-05-11\",\"2023-05-12\",\"2023-05-15\",\"2023-05-16\",\"2023-05-17\",\"2023-05-18\",\"2023-05-19\",\"2023-05-22\",\"2023-05"
+      "bodyStart": "{\"schema\":\"atlas-new-days-1\",\"asOf\":\"2026-10-13\",\"dates\":[\"2023-04-25\",\"2023-04-26\",\"2023-04-27\",\"2023-04-28\",\"2023-05-02\",\"2023-05-03\",\"2023-05-04\",\"2023-05-08\",\"2023-05-09\",\"2023-05-10\",\"2023-05-11\",\"2023-05-12\",\"2023-05-15\",\"2023-05-16\",\"2023-05-17\",\"2023-05-18\",\"2023-05-19\",\"2023-05-22\",\"2023-05"
     },
     {
       "url": "https://aaa7377.com/atlas/data/co/042700.json",
@@ -97,7 +97,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-12\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"opens\":[{\"y\":3,\"date\":\"2029"
+      "bodyStart": "{\"schema\":\"atlas-new-time-1\",\"asOf\":\"2026-10-13\",\"capsules\":[{\"id\":1,\"seal\":\"2026-10-08\",\"digest\":\"93e34aebbb09db72731effb22ca3992a1ca1bc34eb67010ac7928c0cfbbf0dcd\",\"sealedAt\":\"2026-10-11T06:19:54Z\",\"file\":\"reports/atlas11/t365/capsule/capsule-1.json\",\"version\":\"d365-v2\",\"opens\":[{\"y\":3,\"date\":\"2029"
     },
     {
       "url": "https://aaa7377.com/atlas/data/grow.json",
@@ -106,7 +106,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-12\",\"written\":308,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
+      "bodyStart": "{\"schema\":\"atlas-new-grow-1\",\"asOf\":\"2026-10-13\",\"written\":316,\"of\":365,\"companies\":{\"042700\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"아주 높다\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.38,\"3\":1.25,\"5\":1.3,\"10\":1.48}},\"036930\":{\"s\":\"몇 곳이 나눔\",\"g\":{\"1\":\"반반\",\"3\":\"반반\",\"5\":\"반반\",\"10\":\"반반\"},\"m\":{\"1\":1.1,\"3\":1.18,\"5\":1.3,\"10\":"
     },
     {
       "url": "https://aaa7377.com/old/",
@@ -124,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-12-8629b387\",\"generatedAt\":\"2026-10-12T23:22:52.910Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-12\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-12-b748f06e\",\"generatedAt\":\"2026-10-13T01:00:38.107Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-12\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     }
   ]
 }
