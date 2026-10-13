@@ -39,6 +39,11 @@ export const INSPECT_VERSION = 'i4-v1';
 export const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
 const SAFETY = '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.';
 const MODEL_TAG = '모형 가정 아래 추정 · 검증 전';
+/** 지운 36곳 화면의 글(옛 atlas.js 에 있던 그대로) — 보이는 글 · 자료 글에 다시 나오면 실패 · 「36곳 내림」 같은 셈 글(회차마다 바뀌는 수)은 아님
+ *  (2026-10-13 14:2x 화면 돌기에서 바이오 갈래 「36곳 내림」을 36곳 글로 잘못 잡은 것 — 자료 글(업데이트 탭 시장 판독 줄 60회차 포함)에 「36곳 오름」 같은 수가 한 번 나오면
+ *   그 뒤 60회차 동안 네 눈 점검이 막혀 새 자료가 안 올라갈 뻔함) · site_check.mjs OLD36 과 같은 목록(시험이 맞대 봄) */
+export const OLD36_TEXT = ['매수 검토', '셈 차례', '봉인 36곳', '365곳 · 36곳', '36곳이 365곳 평균보다', '한 달 평균: 36곳', '36곳은 셈으로 추린', '36곳 밖 —', '36곳 고리', '36곳 탭'];
+export const has36Text = t => OLD36_TEXT.some(w => String(t).includes(w));
 const NO36 = /(?<![\d,])36곳|pick36|view36|tab36|매수 검토|["']#\/36["']/; // 「136곳」 같은 숫자는 아님 // 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 다시 들어오면 클로드 눈이 막음
 const LEVELS = new Set(['아주 높다', '높다', '반반', '낮다', '아주 낮다']);
 const CODE_HOSTS = new Set(['aaa7377.com', 'kind.krx.co.kr', 'dart.fss.or.kr', 'www.w3.org']);
@@ -234,7 +239,7 @@ function claudeLens(S, market) {
   const growCos = S.grow ? Object.entries(S.grow.companies ?? {}) : [];
   const unknownKeys = ['per', 'r1y', 'mdd1y', 'chg', 'mdd', 'cap', 'price'];
   // 한 번만 셈(네 눈이 1,000만 번 뽑아 물어도 — 2026-10-13 07:2x 묶음이 4분 넘게 걸리던 것 · 옛 얼굴 문과 같은 까닭)
-  const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !/(?<![\d,])36곳|매수 검토/.test(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null, S.upd ?? null])) /* 업데이트 탭 글도(13:0x 08:22 까닭 칸 「36곳 탭 영구 삭제」를 놓친 것) */;
+  const no36 = !NO36.test(S.js + S.css + S.html) && S.files['pick36.json'] == null && !has36Text(JSON.stringify([S.core, S.range, S.time ?? null, S.home ?? null, S.grow ?? null, S.upd ?? null])) /* 업데이트 탭 글도(13:0x 08:22 까닭 칸 「36곳 탭 영구 삭제」를 놓친 것) */;
   const code = [
     ['안전 문장(맨 아래)', () => S.js.includes(SAFETY)],
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],

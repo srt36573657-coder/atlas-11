@@ -98,7 +98,7 @@ for (const [code, v] of C) {
   for (const k of ['rank', 'cut']) { checks++; if (k in v) bad.push({what: `회사 ${code} 에 「${k}」(고르기 흔적)`}); }
 }
 for (const k of ['picks', 'backtest', 'cutN', 'alive', 'total']) { checks++; if (k in pk) bad.push({what: `자료에 「${k}」(36곳 흔적)`}); }
-checks++; if (/(?<![\d,])36곳|매수 검토/.test(JSON.stringify(pk))) bad.push({what: '자료 글에 「36곳 · 매수 검토」'});
+checks++; if (/매수 검토|셈 차례|봉인 36곳|365곳 · 36곳|36곳이 365곳 평균보다/.test(JSON.stringify(pk))) bad.push({what: '자료 글에 지운 36곳 화면 글'}); // 「36곳 내림」 같은 셈 글은 아님(2026-10-13 14:2x)
 
 const res = {schema: 'range-verify-1', made: new Date().toISOString(), file: path.relative(ROOT, file), asOf: pk.asOf, version: S.version, checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');

@@ -34,6 +34,9 @@ const lines = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
 const DOW = ['일', '월', '화', '수', '목', '금', '토'], mdw = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일(${DOW[new Date(d + 'T00:00:00Z').getUTCDay()]})`;
 const BANNED = ['예측', '예외 없이', '절대', '상승 신호', '폭락 경보기', '팔 때', '들어갈 때', '시작을 맞힌다', '곧 오른다', '오를 것', '내릴 것', '사라', '팔라', '추천', '목표가', '확실', '보장', '무조건', '확률'];
+// 지운 36곳 화면의 글 — inspect4.mjs OLD36_TEXT 와 같은 목록(시험이 맞대 봄) · 「36곳 내림」 같은 셈 글은 아님(2026-10-13 14:2x 바이오 갈래를 잘못 잡던 것)
+const OLD36 = ['매수 검토', '셈 차례', '봉인 36곳', '365곳 · 36곳', '36곳이 365곳 평균보다', '한 달 평균: 36곳', '36곳은 셈으로 추린', '36곳 밖 —', '36곳 고리', '36곳 탭'];
+const has36 = t => OLD36.some(w => String(t).includes(w));
 const r1 = x => Math.floor(x * 10 + 0.5 + 1e-7) / 10;
 const md = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일`;
 const ymd = d => d.slice(0, 4) + '년 ' + md(d);
@@ -323,7 +326,7 @@ for (const [w, hgt, font] of plans) {
     if (e.dm !== undefined) { numbers++; if (r.dm !== e.dm) fail(tag, `7단 365곳 가운데값 눈금 ${r.dm} ≠ ${e.dm}`); }
     if (e.below !== undefined) { numbers++; if (r.below !== e.below) fail(tag, `6단 「올해 짐작보다 작게 봄」 ${r.below} ≠ ${e.below}`); }
     if (e.step === 3 && r.all.includes('봉인 1호에 든 회사')) fail(tag, '3단에 봉인 줄이 남음(7단으로 옮김)');
-    if (/(?<![\d,])36곳|매수 검토/.test(r.all) || /(?<![\d,])36곳|매수 검토/.test(r.text) || r.l36) fail(tag, '36곳 글 · 길이 남음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)');
+    if (has36(r.all) || has36(r.text) || r.l36) fail(tag, '36곳 글 · 길이 남음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)');
     if (e.trd) { numbers += e.trd.length; if (JSON.stringify(r.trd) !== JSON.stringify(e.trd)) fail(tag, `방향 · 세기 줄 ${JSON.stringify(r.trd).slice(0, 120)} ≠ ${JSON.stringify(e.trd).slice(0, 120)}`); }
     if (r.trdCut?.length) fail(tag, '방향 · 세기 줄이 잘림: ' + r.trdCut.slice(0, 2).join(' · '));
     if (e.trh) { numbers++; if (r.trh !== e.trh) fail(tag, `머리 밑 방향 ${r.trh} ≠ ${e.trh}`); }
@@ -467,7 +470,7 @@ if (home) {
   screens += 2; numbers += 4;
   if (r.hash !== '#/' && r.hash !== '') fail('36곳 없음', `옛 주소 #/36 이 첫 화면으로 가지 않음(${r.hash})`);
   if (!(r.tabs.length === 3 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · '));
-  if (/(?<![\d,])36곳|매수 검토/.test(r.all + r7)) fail('36곳 없음', '「36곳 · 매수 검토」 글이 보임'); // 「136곳」 같은 숫자는 아님(2026-10-13 07:4x 도움말 「3층 136곳」을 잘못 잡던 것)
+  if (has36(r.all + r7)) fail('36곳 없음', '지운 36곳 화면 글이 보임'); // 「136곳」(07:4x) · 「36곳 내림」(14:2x) 같은 셈 글은 아님 — 옛 화면 글 목록으로 봄
   if (asked.some(u => /pick36/.test(u)) || !asked.some(u => /\/range\.json/.test(u))) fail('36곳 없음', '자료 받기 — pick36.json 을 받거나 range.json 을 안 받음');
   if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);
   await ctx.close();
