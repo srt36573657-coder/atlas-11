@@ -30,6 +30,15 @@
   ⑧ 일하는 중에 새 말씀이 와도 앞 턴이 안 닫혔으면 무거운 길 그대로 · 도구 수는 앞 턴 처음부터 셈
      (02:20 · 02:21 — 앞 턴이 막힌 채 새 말씀이 와서 카드가 지워지고 도구 0번 가벼운 길로 나간 구멍)
   ⑨ 문지기 시계 — 컨테이너 시계가 이미 서울이라 +9시간 어긋나던 것을 고침(그 전 기록의 때는 9시간 빼서 읽음)
+
+★ v5 쉬운 말 문 (2026-10-13 22:52 「어렵게 이야기 했어 쉽게 이야기해 시스템으오 여구 세팅해」)
+  ⑩ 사장님 눈에 그대로 닿는 글을 기계가 읽는다 — 마지막 도구 뒤의 답 글 + 보낸 말(SendUserMessage)
+     · 도구를 안 쓴 짧은 답(가벼운 길)도 본다 · 막힌 뒤에는 막힌 때 뒤의 새 글만 본다(대화 기록의 때로 거름)
+  ⑪ 걸리는 것: 어려운 말 목록(HARD · 바꿀 쉬운 말과 함께) · 「3해」 같은 말 · 소문자 영어 낱말 ·
+     한 문장 35자(띄어쓰기 빼고) 넘음 · 「·」 둘 이상 · 괄호((가) 같은 고르기 표시는 됨) · 「→」 둘 이상 · 숫자 넷 이상
+  ⑫ 그림도 본다 — 접은 칸(<details>) 밖 글만 · 어려운 말 목록과 영어만(그림은 줄 · 칸이라 문장 길이는 안 잼)
+  ⑬ 안 보는 것: 안전 문장 · 「틀림 장부 N건 · 못 한 것 N가지」 줄 · 「출처:」 아래 · 코드 칸 · 주소
+  ⑭ 미리 재 보기: python3 wa-gate.py easy <글 파일>  → 걸리는 것을 줄마다 보여 줌(막지는 않음)
 """
 import html as _html
 import json, os, re, sys, time
@@ -84,6 +93,189 @@ GRADES = ["거의 아니다", "아주 낮다", "낮다", "반반", "높다", "�
 
 LAZY = ("함", "했음", "했습니다", "밫음", "ok", "o", "◇", "yes", "네", "다 함", "전부 함", "-", "없음")
 
+# ── v5 쉬운 말 문 ── 사장님(코딩 · 영어 모름 · 주식 어려운 말 모름)께 나가는 글을 기계가 잰다
+EASY_LIMIT = {"chars": 35, "dots": 1, "arrows": 1, "numbers": 3}
+HARD = [  # (찾는 말, 바꿀 쉬운 말) — 영어는 앞뒤가 영어 글자가 아닐 때만 잡는다
+    ("ROE", "자기 돈 100원으로 번 돈"), ("PER", "1년 번 돈의 몇 배 값"), ("PBR", "회사 재산의 몇 배 값"),
+    ("EPS", "한 주가 번 돈"), ("부채비율", "빚이 자기 돈의 몇 %"), ("자기자본", "자기 돈"),
+    ("시가총액", "회사 몸값"), ("거래대금", "하루에 사고판 돈"), ("결산", "1년 성적표"),
+    ("예상치", "미리 짐작한 숫자"), ("컨센서스", "증권사들이 짐작한 숫자"), ("밸류에이션", "값 매기기"),
+    ("레버리지", "빚"), ("포트폴리오", "가진 주식 묶음"), ("변동성", "오르내림"), ("모멘텀", "오르는 힘"),
+    ("백분위", "몇 번째쯤"), ("중앙값", "가운데 값"), ("표본", "센 것"), ("몬테카를로", "여러 번 흉내 내 보기"),
+    ("알고리즘", "계산 순서"), ("파라미터", "정해 둔 숫자"), ("임계", "선"), ("필터", "거르는 조건"),
+    ("스크리닝", "거르기"), ("유니버스", "고르는 대상"), ("리밸런싱", "다시 고르기"),
+    ("흑자", "돈을 벌어 남김"), ("적자", "돈을 잃음"), ("추정", "짐작"), ("지표", "재는 숫자"),
+    ("시안", "처음 만들어 본 것"), ("철저판", "멍거 조건만 쓴 것"), ("기본 문", "기본 조건"),
+    ("빚 선", "빚을 어디까지 봐줄지"), ("깔때기", "거르는 그림"), ("회차", "업데이트"), ("탐침", "확인"), ("문턱", "선"),
+    ("파이썬", "말하지 않음"), ("노드", "말하지 않음"), ("Python", "말하지 않음"), ("Node", "말하지 않음"),
+    ("스크립트", "계산 파일"), ("커밋", "저장"), ("푸시", "올림"), ("배포", "사이트에 올림"), ("브랜치", "갈래"),
+    ("JSON", "자료 파일"), ("HTML", "화면 파일"), ("API", "자료 받는 길"),
+    ("데이터", "자료"), ("로직", "방법"), ("프로세스", "순서"), ("리스크", "위험"), ("이슈", "문제"), ("피드백", "의견"),
+]
+EASY_RE = [
+    (re.compile(r"\d\s?해(?![가-힣])"), "「n해」 → 「n년」"),
+    (re.compile(r"(?<![A-Za-z])[a-z]{3,}(?![A-Za-z])"), "영어 낱말 → 우리말"),
+]
+SAFE_RE = re.compile(r"저는 투자 상담사가 아닙니다.*?권하지 않습니다\.?", re.S)
+LEDGER_LINE_RE = re.compile(r"틀림\s*장부\s*\d+\s*건\s*·\s*못\s*한\s*것\s*\d+\s*가지")
+OPT_RE = re.compile(r"\((?:가|나|다|라|마|바)\)")
+EASY_HEAD = ("쉬운 말 문 — 사장님께 나간 글에 어려운 데가 있습니다. 앞 글은 이미 나갔습니다. "
+             "같은 뜻을 쉬운 말 · 짧은 문장으로 다시 말씀드리고 끝내십시오:\n- ")
+
+
+def easy_strip(text):
+    """⑬ 안 보는 것을 뺀다 — 코드 칸 · 안전 문장 · 장부 줄 · 출처 아래 · 주소"""
+    t = re.sub(r"```.*?```", " ", text or "", flags=re.S)
+    t = re.sub(r"`[^`]*`", " ", t)
+    t = SAFE_RE.sub(" ", t)
+    t = LEDGER_LINE_RE.sub(" ", t)
+    t = re.split(r"(?m)^\s*(?:출처|Sources?)\s*[:：]", t)[0]
+    t = re.sub(r"\]\([^)]*\)", "]", t)
+    t = re.sub(r"https?://\S+", " ", t)
+    return t
+
+
+def easy_sentences(t):
+    out = []
+    for ln in t.splitlines():
+        ln = re.sub(r"^\s*(?:[-*>#]+|\d+[.)])\s*", "", ln)
+        ln = re.sub(r"[*_]{2,3}", "", ln).strip()
+        if not ln:
+            continue
+        for x in re.split(r"(?<=[.?!])\s+", ln):
+            x = x.strip()
+            if x:
+                out.append(x)
+    return out
+
+
+def easy_check(text, structure=True):
+    """⑪ 걸리는 것 목록(빈 목록이면 통과)"""
+    bad = []
+    t = easy_strip(text)
+    for hard, easy in HARD:
+        if re.search(r"[A-Za-z]", hard):
+            hit = re.search(r"(?<![A-Za-z])%s(?![A-Za-z])" % re.escape(hard), t)
+        else:
+            hit = hard in t
+        if hit:
+            bad.append("어려운 말 「%s」 → 「%s」" % (hard, easy))
+    for rx, fix in EASY_RE:
+        m = rx.search(t)
+        if m:
+            bad.append("「%s」 — %s" % (m.group(0), fix))
+    if structure:
+        L = EASY_LIMIT
+        for x in easy_sentences(t):
+            y = OPT_RE.sub("", x)
+            n = len(re.sub(r"\s", "", y))
+            why = []
+            if n > L["chars"]:
+                why.append("%d자(%d자까지)" % (n, L["chars"]))
+            if y.count("·") > L["dots"]:
+                why.append("「·」 %d번(%d번까지)" % (y.count("·"), L["dots"]))
+            if "(" in y or "（" in y:
+                why.append("괄호")
+            if y.count("→") > L["arrows"]:
+                why.append("「→」 %d번" % y.count("→"))
+            k = len(re.findall(r"\d[\d,.]*", y))
+            if k > L["numbers"]:
+                why.append("숫자 %d개(%d개까지)" % (k, L["numbers"]))
+            if why:
+                bad.append("어려운 문장(%s): 「%s」 → 짧게 나누십시오" % (" · ".join(why), x[:45]))
+    return bad
+
+
+def card_text(page):
+    """⑫ 그림에서 볼 글 — 머리 · 접은 칸 밖"""
+    return plain(re.sub(r"<head.*?</head>|<details.*?</details>", " ", page or "", flags=re.S | re.I))
+
+
+def _iso(ts):
+    try:
+        import calendar
+        base = calendar.timegm(time.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S"))
+        frac = float("0" + ts[19:].split("Z")[0].split("+")[0]) if ts[19:20] == "." else 0.0
+        return base + frac
+    except Exception:
+        return None
+
+
+def last_block_time(t0):
+    """⑩ 이번 턴에 마지막으로 막힌 때(초) — 없으면 턴 시작"""
+    t = t0
+    try:
+        import calendar
+        with open(os.path.join(TURN_DIR, "blocks.jsonl"), encoding="utf-8") as f:
+            for ln in f:
+                try:
+                    b = json.loads(ln)
+                except Exception:
+                    continue
+                bt = b.get("t")
+                if bt is None and b.get("때"):
+                    try:
+                        bt = calendar.timegm(time.strptime(b["때"], "%Y-%m-%d %H:%M:%S")) - 9 * 3600
+                    except Exception:
+                        bt = None
+                if isinstance(bt, (int, float)) and bt > t:
+                    t = bt
+    except Exception:
+        pass
+    return t
+
+
+def reply_texts(tpath, since, line0=-1):
+    """⑩ 사장님 눈에 그대로 닿는 글 — 마지막 도구 뒤의 답 글 · 보낸 말(SendUserMessage) · since 뒤 것만"""
+    final, sent = [], []
+    if not tpath or not os.path.exists(tpath):
+        return final, sent
+    try:
+        with open(tpath, encoding="utf-8", errors="replace") as f:
+            for i, ln in enumerate(f):
+                try:
+                    d = json.loads(ln)
+                except Exception:
+                    continue
+                ts = d.get("timestamp")
+                tt = _iso(ts) if isinstance(ts, str) else None
+                if tt is not None:
+                    if tt <= since:
+                        continue
+                elif i < max(line0, 0):
+                    continue
+                typ = d.get("type")
+                msg = d.get("message") if isinstance(d.get("message"), dict) else {}
+                c = msg.get("content", d.get("content"))
+                if typ == "user":
+                    final = []
+                    continue
+                if typ != "assistant" or not isinstance(c, list):
+                    continue
+                for x in c:
+                    if not isinstance(x, dict):
+                        continue
+                    if x.get("type") == "text":
+                        final.append(str(x.get("text") or ""))
+                    elif x.get("type") == "tool_use":
+                        final = []
+                        if x.get("name") == "SendUserMessage":
+                            sent.append(str((x.get("input") or {}).get("message") or ""))
+    except Exception:
+        pass
+    return final, sent
+
+
+def easy_log(data, final, sent, bad):
+    """⑩ 문지기가 무엇을 읽었는지 남긴다(읽은 글이 비면 구멍인지 볼 수 있게)"""
+    try:
+        with open(os.path.join(TURN_DIR, "easy.jsonl"), "a", encoding="utf-8") as f:
+            f.write(json.dumps({"때": kst(), "keys": sorted(data.keys()) if isinstance(data, dict) else [],
+                                "final": (" ".join(final))[:80], "sent": len(sent), "걸림": len(bad)},
+                               ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
 RULES = """[문지기가 펼친 대근 헌법 — 신대근 사장님 방]
 ★ 규칙 0 : 「이 조항이 지금 해당되나?」를 스스로 판단하지 않는다. 애매하면 무조건 적용한다.
 ★ 규칙 0-2 (가벼운 길) : 이 턴에 도구를 한 번도 안 쓰면 나가는 문이 그냥 통과시킨다.
@@ -104,6 +296,10 @@ RULES = """[문지기가 펼친 대근 헌법 — 신대근 사장님 방]
   일지를 남긴다(세 줄) · 채점표 세 칸.        전문은 기억 [[claude-operating-system]]
 v4 덧붙임(2026-10-13 「넌 대충해?」 · 「뭘 걸거야?」) : 그림마다 「못 한 것 N가지」(카드 「못한것」 수) ·
   「틀림 장부 N건」(저장소 reports/atlas11/trust 모두 건수) · 일하는 중 새 말씀이 와도 앞 턴이 안 닫혔으면 무거운 길.
+v5 쉬운 말 문(2026-10-13 「어렵게 이야기 했어 쉽게 이야기해 … 시스템으로 영구 세팅해」) : 사장님께 나가는 모든 글
+  (도구 안 쓴 짧은 답 · 보낸 말 포함)과 그림(접은 칸 밖)을 기계가 잰다 — 어려운 말 목록 · 영어 낱말 ·
+  한 문장 35자(띄어쓰기 빼고) · 「·」 한 번 · 괄호 없음((가) 표시는 됨) · 「→」 한 번 · 숫자 셋까지. 걸리면 다시 쉽게 말하고 끝낸다.
+  안 보는 것: 안전 문장 · 틀림 장부 줄 · 「출처:」 아래 · 코드 칸. 미리 재기: python3 /root/.claude/wa-gate.py easy <파일>
 
 ★ 턴을 끝내려면 /home/claude/turn/claims.json 을 채워야 한다 (무거운 길). 칸:
   understood(제2조) · answer{이해보고,채점표} · image(세칙) · claims[{text,link,grade}](제1조) ·
@@ -158,6 +354,7 @@ def block(reason):
         with open(os.path.join(TURN_DIR, "blocks.jsonl"), "a", encoding="utf-8") as f:
             f.write(json.dumps({
                 "때": kst(),
+                "t": time.time(),
                 "까닭": reason,
                 "조": sorted(set(a for a in ("제1조", "제2조", "제3조") if a in reason)),
             }, ensure_ascii=False) + "\n")
@@ -270,6 +467,16 @@ def mode_out():
     tpath = data.get("transcript_path") or meta.get("transcript") or ""
     used = tools_used_since(tpath, meta.get("line0", -1))
     light = (used == 0) and not meta.get("force_heavy")
+
+    # ── v5 쉬운 말 문 ── 가벼운 길 · 무거운 길 모두 — 사장님 눈에 그대로 닿는 글
+    final, sent = reply_texts(tpath, last_block_time(t0), meta.get("line0", -1))
+    lam = data.get("last_assistant_message") if isinstance(data, dict) else None
+    if isinstance(lam, str) and lam.strip():
+        final = [lam]
+    easy_bad = easy_check("\n".join(final + sent))
+    easy_log(data, final, sent, easy_bad)
+    if light and easy_bad:
+        block(EASY_HEAD + "\n- ".join(easy_bad[:12]))
     if light:
         try:
             with open(os.path.join(TURN_DIR, "light.jsonl"), "a", encoding="utf-8") as f:
@@ -282,21 +489,24 @@ def mode_out():
         close_turn()
         sys.exit(0)
 
-    # ── 여기서부터 무거운 길 ──
+    # ── 여기서부터 무거운 길 ──  (카드가 없어 일찍 막혀도 쉬운 말 문 걸림을 같이 알린다)
+    tail = ("\n- " + EASY_HEAD + "\n- ".join(easy_bad[:12])) if easy_bad else ""
     if not os.path.exists(CARD):
-        block("주장 카드가 없습니다. /home/claude/turn/claims.json 을 채우고 다시 끝내십시오.")
+        block("주장 카드가 없습니다. /home/claude/turn/claims.json 을 채우고 다시 끝내십시오." + tail)
 
     if os.path.getmtime(CARD) <= t0:
         block("빈 카드 그대로입니다 — 아무것도 안 적으셨습니다. "
-              "/home/claude/turn/claims.json 의 understood · claims · not_found · result · steps 를 채우십시오.")
+              "/home/claude/turn/claims.json 의 understood · claims · not_found · result · steps 를 채우십시오." + tail)
 
     try:
         with open(CARD, encoding="utf-8") as f:
             d = json.load(f)
     except Exception as e:
-        block("주장 카드를 읽을 수 없습니다(형식 오류): %s" % e)
+        block("주장 카드를 읽을 수 없습니다(형식 오류): %s" % e + tail)
 
     bad = []
+    if easy_bad:
+        bad.append(EASY_HEAD + "\n- ".join(easy_bad[:12]))
 
     # ── 제2조 · 이해 보고 ──
     und = str(d.get("understood") or "").strip()
@@ -355,6 +565,9 @@ def mode_out():
                        % ", ".join(hit))
         if page.count("?") < 1 and "니까" not in page:
             bad.append("세칙 — 판단·결론을 하나도 의문형으로 쓰지 않았습니다. 단정형만 늘어놓지 마십시오.")
+        cb = easy_check(card_text(page), structure=False)
+        if cb:
+            bad.append("쉬운 말 문(그림 · 접은 칸 밖) — 그림을 쉬운 말로 고치십시오:\n- " + "\n- ".join(cb[:12]))
 
     # ── v4 ⑥ ⑦ · 못 한 것 · 틀림 장부 ──
     nd = d.get("못한것")
@@ -446,9 +659,28 @@ def mode_out():
     sys.exit(0)
 
 
+def mode_easy(path):
+    """⑭ 미리 재 보기 — 글 파일(또는 .html 그림)을 재서 걸리는 것을 보여 줌 · 막지 않음"""
+    try:
+        txt = open(path, encoding="utf-8").read()
+    except Exception as e:
+        print("못 읽음: %s" % e)
+        sys.exit(1)
+    if path.endswith(".html"):
+        bad = easy_check(card_text(txt), structure=False)
+    else:
+        bad = easy_check(txt)
+    print("쉬운 말 문 — 걸림 %d" % len(bad))
+    for x in bad:
+        print("- " + x)
+    sys.exit(0)
+
+
 if __name__ == "__main__":
     m = sys.argv[1] if len(sys.argv) > 1 else "out"
     if m == "in":
         mode_in()
+    elif m == "easy":
+        mode_easy(sys.argv[2] if len(sys.argv) > 2 else "")
     else:
         mode_out()

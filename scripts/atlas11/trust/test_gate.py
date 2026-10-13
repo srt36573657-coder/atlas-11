@@ -1,4 +1,4 @@
-# 문지기 v4 시험 — 따로 만든 방(turn · 장부 · 대화 기록)에서 다섯 길을 돌려 봄
+# 문지기 v4 · v5 시험 — 따로 만든 방(turn · 장부 · 대화 기록)에서 여러 길을 돌려 봄 · v5 = 쉬운 말 문(⑨ ~ ⑮)
 import json, os, subprocess, sys, time, shutil
 G = sys.argv[1]; base = os.path.join(os.path.dirname(G), 'sandbox'); shutil.rmtree(base, ignore_errors=True)
 turn = os.path.join(base, 'turn'); led = os.path.join(base, 'ledger'); os.makedirs(turn); os.makedirs(led)
@@ -51,5 +51,40 @@ o = run('out', P); res.append(('⑦ 장부 없는 일 → 통과', o == ''))
 # ⑧ 시계 — 서울 시각
 o = subprocess.run(['python3', '-c', 'import importlib.util,sys;s=importlib.util.spec_from_file_location("g",sys.argv[1]);g=importlib.util.module_from_spec(s);s.loader.exec_module(g);print(g.kst())', G], capture_output=True, text=True, env=env).stdout.strip()
 res.append(('⑧ 시계 = 서울(' + o[11:16] + ')', o[11:16] == time.strftime('%H:%M', time.gmtime(time.time() + 9 * 3600))))
+# ── v5 쉬운 말 문 ──
+def iso():
+    t = time.time(); return time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime(t)) + '.%03dZ' % int((t % 1) * 1000)
+def say(text=None, tool=None):
+    time.sleep(0.03)
+    blk = {"type": "tool_use", "name": tool[0], "input": tool[1]} if tool else {"type": "text", "text": text}
+    with open(tr, 'a') as f: f.write(json.dumps({"type": "assistant", "timestamp": iso(), "message": {"content": [blk]}}, ensure_ascii=False) + '\n')
+def back():
+    time.sleep(0.03)
+    with open(tr, 'a') as f: f.write(json.dumps({"type": "user", "timestamp": iso(), "message": {"content": [{"type": "tool_result"}]}}) + '\n')
+SAFE = '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.'
+# ⑨ 도구 안 쓴 짧은 답에 어려운 말 → 막힘
+run('in', P); say('멍거 조건으로 고르면 ROE 18% 넘는 곳이 26곳이에요.')
+o = run('out', P); res.append(('⑨ 짧은 답 어려운 말 → 막힘', '"ok": false' in o and '쉬운 말 문' in o and 'ROE' in o))
+# ⑩ 막힌 뒤 쉬운 말로 다시 → 통과(막힌 때 뒤 글만 봄)
+time.sleep(0.05); say('자기 돈 100원으로 해마다 18원 넘게 번 회사가 26곳이에요.')
+o = run('out', P); res.append(('⑩ 막힌 뒤 쉬운 말 → 통과', o == ''))
+# ⑪ 안전 문장 · 장부 줄 · 출처 아래 · 코드 칸은 안 봄
+run('in', P); say('26곳이 남았어요.\n\n틀림 장부 23건 · 못 한 것 12가지\n\n출처:\n- [ROE 부채비율 Sources](https://x.y/z)\n\n```\npython3 x.py\n```\n' + SAFE)
+o = run('out', P); res.append(('⑪ 안 보는 것 → 통과', o == ''))
+# ⑫ 긴 문장 · 괄호 → 막힘
+run('in', P); say('멍거 조건만 쓰면 3년 모두 돈을 벌고 빚이 자기 돈보다 적고 해마다 많이 번 회사만 남는데 그게 스물여섯 곳이에요(은행 포함).')
+o = run('out', P); res.append(('⑫ 긴 문장 · 괄호 → 막힘', '"ok": false' in o and '어려운 문장' in o and '괄호' in o))
+# ⑬ 보낸 말(SendUserMessage)에 어려운 말 → 막힘(끝 답은 쉬워도)
+run('in', P); say(tool=('SendUserMessage', {'message': '결산 자료로 셌어요.'})); back(); say('다 됐어요.')
+o = run('out', P); res.append(('⑬ 보낸 말 어려운 말 → 막힘', '"ok": false' in o and '결산' in o))
+# ⑭ 그림: 접은 칸 밖 어려운 말 → 막힘 · 접은 칸 안은 됨
+run('in', P); tool(1); say('그림을 보내 드려요.')
+card(page('<p>못 한 것 0가지</p><p>3해 모두 ROE 18% 이상</p>'), [])
+o = run('out', P); res.append(('⑭-1 그림 밖 어려운 말 → 막힘', '"ok": false' in o and '그림' in o and 'ROE' in o))
+card(page('<p>못 한 것 0가지</p><details><summary>자세히</summary>3해 모두 ROE 18% 이상</details>'), [])
+o = run('out', P); res.append(('⑭-2 접은 칸 안 → 통과', o == ''))
+# ⑮ 들어온 마지막 답(last_assistant_message)이 있으면 그것을 봄
+run('in', P); P2 = dict(P, last_assistant_message='부채비율 100% 아래만 남겼어요.')
+o = run('out', P2); res.append(('⑮ 마지막 답 칸 → 막힘', '"ok": false' in o and '부채비율' in o))
 for k, ok in res: print('통과' if ok else '실패', k)
 print('실패', sum(1 for _, ok in res if not ok), '/', len(res))
