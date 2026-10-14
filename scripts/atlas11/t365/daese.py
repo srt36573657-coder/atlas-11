@@ -98,7 +98,10 @@ def merge(bundle, codes, snaps, tol=0.005):
 
 
 def pick_day(merged, codes, cal):
-    """고르는 날 = 후보 절반 넘게 종가가 있는 마지막 날 · 달력이 끝난 뒤 날도 그 조건이면 거래일로 셈 → (고르는 날, 늘린 달력)"""
+    """고르는 날 = 후보 절반 넘게 종가가 있는 마지막 날 · 달력이 끝난 뒤 날도 그 조건이면 거래일로 셈 → (고르는 날, 늘린 달력)
+    후보 = 종가 줄이 하나라도 있는 곳만(2026-10-14 — 목록 모두 모음은 펀드 · 우선주 등 종가를 받지 않는 1,750줄이 섞여
+    「절반」이 보통주의 84%가 되던 것 · 이어 받은 종가가 조금만 빠져도 고르는 날이 멈춰 회차가 실패할 수 있었음)"""
+    codes = [c for c in codes if merged['stocks'][c]['fchart']['rows']]
     cnt = collections.Counter(iso8(r[0]) for c in codes for r in merged['stocks'][c]['fchart']['rows'])
     days = sorted(d for d, n in cnt.items() if n > len(codes) / 2)
     ext = sorted(set(cal) | {d for d in days if d > cal[-1]}) if cal else days
