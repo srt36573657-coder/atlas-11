@@ -132,6 +132,7 @@ const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사�
 const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
 if (arg('--only')) routes.splice(0, routes.length, ...arg('--only').split(',')); // 고치는 동안 빨리(그 길만) — 3번 누름 셈 · 문은 못 지남(전부를 돌린 결과만 커밋)
 const fails = []; let screens = 0, numbers = 0;
+const HELLO_LINES = ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!']; // 1장 사장님 글(atlas.js HELLO_MSG — 여는 홍표 뒤 이 글이 그대로)
 const fail = (where, what) => fails.push({where, what});
 
 function expect(route) {
@@ -515,6 +516,7 @@ if (home) {
     const swipe = async (x0, y0, x1, y1) => { await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: x0, y: y0}]}); for (let i = 1; i <= 8; i++) { await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: x0 + (x1 - x0) * i / 8, y: y0 + (y1 - y0) * i / 8}]}); await p.waitForTimeout(16); } await cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []}); await p.waitForTimeout(600); };
     const vp = await p.evaluate(() => { const q = document.querySelector('#view .hvp').getBoundingClientRect(); return {x: Math.round(q.left + q.width / 2), y: Math.round(q.top + q.height / 2)}; });
     const chk = (ok, what) => { numbers++; if (!ok) fail('손가락 밀기', what); };
+    chk(await p.evaluate(() => !document.querySelector('#view .hpi, #view .hs-intro')), '움직임 줄이기인데 1장 여는 홍표가 나옴(규칙 66 — 움직임 줄이기면 바로 글)');
     await swipe(vp.x + 90, vp.y, vp.x - 90, vp.y + 6); chk(await curK(p) === 1, '1장(소개 고리 위)에서 왼쪽으로 밀어도 2장이 아님'); chk(await p.evaluate(() => location.pathname.startsWith('/atlas')), '소개 고리 위 밀기로 소개 화면으로 넘어감');
     await swipe(vp.x + 90, vp.y, vp.x - 90, vp.y); chk(await curK(p) === 2, '2장에서 왼쪽으로 밀어도 3장이 아님');
     await swipe(vp.x - 90, vp.y, vp.x + 90, vp.y); chk(await curK(p) === 1, '오른쪽으로 밀어도 앞 장이 아님');
@@ -524,13 +526,26 @@ if (home) {
     await p.waitForTimeout(5600); chk(await curK(p) === 6, '움직임 줄이기인데 저절로 넘어감');
     screens++; if (errs.length) fail('손가락 밀기', '오류 ' + errs[0]);
     await ctx.close(); }
-  // ⑤ 저절로 넘김(움직임 켬 · 390) — 5초마다 다음 장 · 손대면 멈춤 · 「‖ 멈춤」 단추로 다시 넘김(WCAG 2.2.2)
+  // ⑤ 여는 홍표 · 저절로 넘김(움직임 켬 · 390) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 3초에 사장님 글(규칙 66 · 2026-10-15 04:10 「열면 홍표 니오게 해」)
+  //   1장은 여는 홍표만큼 더 머묾(3.5초 + 5초) · 그 뒤 5초마다 다음 장 · 손대면 멈춤 · 「‖ 멈춤」 단추로 다시 넘김(WCAG 2.2.2)
   { const ctx = await b.newContext({viewport: {width: 390, height: 844}}); const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message));
-    await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForSelector('#view .hbar');
-    const chk = (ok, what) => { numbers++; if (!ok) fail('저절로 넘김', what); };
+    await p.goto(base + '/atlas/', {waitUntil: 'commit'}); await p.waitForSelector('#view .hpi', {timeout: 30000}); const t0 = Date.now(), at = ms => p.waitForTimeout(Math.max(0, ms - (Date.now() - t0)));
+    const chk = (ok, what) => { numbers++; if (!ok) fail('여는 홍표 · 저절로 넘김', what); };
+    const look = () => p.evaluate(() => { const a = document.querySelector('#hs-hello a.hs-hello'), pi = a?.querySelector('.hpi'), r = a?.getBoundingClientRect(), bs = [...(pi?.querySelectorAll('.hpi-b') ?? [])], img = pi?.querySelector('img.hpi-bird');
+      return {intro: !!a?.classList.contains('hs-intro'), pi: !!pi, img: img?.getAttribute('src') ?? null, ok: img ? img.complete && img.naturalWidth > 0 : false, bub: bs.map(x => x.textContent), op: bs.map(x => +getComputedStyle(x).opacity),
+        inside: bs.every(x => { const q = x.getBoundingClientRect(); return q.left >= r.left - 1 && q.right <= r.right + 1 && q.top >= r.top - 1; }), ml: a ? Math.max(...[...a.querySelectorAll('.hml')].map(x => +getComputedStyle(x).opacity)) : null,
+        msg: [...(a?.querySelectorAll('.hml') ?? [])].map(x => x.textContent), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
+    const i0 = await look();
     chk(await curK(p) === 0, '처음 장이 1장(소개)이 아님');
-    await p.waitForTimeout(5600); chk(await curK(p) === 1, '5초 뒤 2장으로 안 넘어감');
-    await p.waitForTimeout(5200); chk(await curK(p) === 2, '10초 뒤 3장으로 안 넘어감');
+    chk(i0.intro && i0.pi && i0.img === '/media/makbi-hello.svg' && JSON.stringify(i0.bub) === JSON.stringify(['홍표!', '홍표!', '홍표!']), '열 때 1장에 여는 홍표(그림 · 「홍표!」 세 번)가 없음: ' + JSON.stringify(i0).slice(0, 160));
+    chk(i0.ml != null && i0.ml < 0.2, '여는 홍표 동안 사장님 글이 겹쳐 보임');
+    await at(2300); const i1 = await look();
+    chk(i1.ok && i1.op.length === 3 && i1.op.every(x => x > 0.9) && i1.inside && i1.sw <= i1.cw, '「홍표!」 세 번이 다 안 보이거나 1장 밖으로 넘침: ' + JSON.stringify(i1).slice(0, 160));
+    await at(4700); const i2 = await look();
+    chk(!i2.intro && !i2.pi && i2.ml > 0.95 && JSON.stringify(i2.msg) === JSON.stringify(HELLO_LINES), '여는 홍표 뒤 사장님 글로 안 바뀜: ' + JSON.stringify(i2).slice(0, 160));
+    chk(await curK(p) === 0, '여는 홍표 동안 1장이 넘어감');
+    await at(9300); chk(await curK(p) === 1, '여는 홍표 + 5초 뒤 2장으로 안 넘어감');
+    await at(14500); chk(await curK(p) === 2, '그다음 5초 뒤 3장으로 안 넘어감');
     chk(await p.evaluate(() => document.querySelector('#view .hplay').textContent.includes('멈춤')), '「‖ 멈춤」 단추가 없음');
     await p.dispatchEvent('#view .hvp', 'pointerdown'); const k0 = await curK(p); await p.waitForTimeout(6000); chk(await curK(p) === k0, '손댄 뒤에도 저절로 넘어감');
     chk(await p.evaluate(() => document.querySelector('#view .hplay').textContent.includes('넘기기')), '멈춘 뒤 「▶ 넘기기」 단추가 없음');

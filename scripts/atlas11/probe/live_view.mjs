@@ -181,6 +181,16 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
     ok: /홍표 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /홍표/.test(hv.label) && /홍표/.test(hv.desc) && /홍표/.test(hv.og) && /홍표/.test(hv.alt) && /홍표가 35초/.test(hv.share) && !/막비|24초/.test(all)};
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
+await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」(규칙 66 · 사진 p27) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 3초에 사장님 글
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'commit', timeout: 60000}); await page.waitForSelector('#view .hpi', {timeout: 30000}); const t0 = Date.now();
+  const look = () => page.evaluate(() => { const a = document.querySelector('#hs-hello a.hs-hello'), pi = a?.querySelector('.hpi'), img = pi?.querySelector('img.hpi-bird');
+    return {intro: !!a?.classList.contains('hs-intro'), img: img ? img.complete && img.naturalWidth > 0 : false, bub: [...(pi?.querySelectorAll('.hpi-b') ?? [])].map(x => [x.textContent, +getComputedStyle(x).opacity]), ml: a ? Math.max(...[...a.querySelectorAll('.hml')].map(x => +getComputedStyle(x).opacity)) : null, msg: a?.querySelector('.hmsg')?.innerText ?? ''}; });
+  await page.waitForTimeout(Math.max(0, 2300 - (Date.now() - t0))); const i1 = await look(); await shot('p27-hello-intro');
+  await page.waitForTimeout(Math.max(0, 4800 - (Date.now() - t0))); const i2 = await look();
+  out.helloIntro = {i1, i2: {intro: i2.intro, ml: i2.ml},
+    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '홍표!' && o > 0.9) && !i2.intro && i2.ml > 0.95 && /하규는 아틀란스 해서 부자 될겁니다/.test(i2.msg) && /아틀란스 올림!/.test(i2.msg)};
+  if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
+});
 await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)
   const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
   const core = await J('core.json'), mk = await J('mkt.json'), rg = await J('range.json');

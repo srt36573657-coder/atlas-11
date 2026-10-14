@@ -541,10 +541,24 @@ const HELLO_PROMO = '10명 소개하면 스타벅스 상품권 1만원!'; // 202
 //   「생각해보세요」 자리에 새 글(「아클란스」 → 「아틀란스」만 고침) · 15:54 「안상미 전문님 돈 많 버세요 주식해서 도 올려」 — 「전무님」 · 「많이」로 읽음(여쭘) · 줄 나눔은 화면에 맞춤
 //   17:13 「전무님이 맞아」 · 17:16 「하규는 아틀란스 해서 부자 될겁니다 로 변경해」(하규 두 줄을 바꿈 · 「아틀란스가 답이다」는 그대로 둔 안을 보여 드림) · 17:17 「10명중 1명은 지워」
 const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!'];
+// 1장 여는 홍표(사장님 2026-10-15(싱가포르) 04:07 「천 화면을 홍표홍표홍표 하는 첫 화면이 나오게 해」 → 여쭌 (가) 「사이트를 열면 맨 위 1장에 그 장면이 먼저 나와요」 · 04:10 「열면 홍표 니오게 해」 · 규칙 66)
+//   사이트를 열어 첫 화면을 처음 그릴 때 한 번 — 1장 글 자리에 홍표 그림(/media/makbi-hello.svg) + 「홍표!」 세 번(0.5 · 1.0 · 1.5초) → 3초에 사장님 글로 바뀜(글자 그대로)
+//   1장에 머무는 때는 여는 홍표만큼 늘림(바 칸도 그만큼 늦게 차오름) · 움직임 줄이기면 없음(바로 글 — 저절로 바뀌는 것을 줄임) · 다시 1장에 와도 다시 안 함(새로 열 때만)
+const INTRO_MS = 3500;
+let helloIntro = true, helloIntroUntil = 0;
 function slideHello() {
-  return h('a', {class: 'hello hs-hello hs-say', href: '/hello.html'}, h('span', {class: 'hmsg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t}))),
+  const intro = helloIntro && !RM.matches; helloIntro = false;
+  const msg = h('span', {class: 'hmsg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t})));
+  const a = h('a', {class: 'hello hs-hello hs-say' + (intro ? ' hs-intro' : ''), href: '/hello.html'}, msg,
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '홍표 35초 영상 · 보내기 ›'}),
       h('span', {class: 'hpr', text: HELLO_PROMO})));
+  if (intro) {
+    const pi = h('span', {class: 'hpi', 'aria-hidden': 'true'}, h('img', {class: 'hpi-bird', src: '/media/makbi-hello.svg', alt: '', width: 240, height: 300, decoding: 'async'}),
+      ...['b1', 'b2', 'b3'].map(k => h('span', {class: 'hpi-b ' + k, text: '홍표!'})));
+    msg.prepend(pi); helloIntroUntil = performance.now() + INTRO_MS;
+    setTimeout(() => { a.classList.remove('hs-intro'); pi.remove(); }, INTRO_MS + 400);
+  }
+  return a;
 }
 /** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */
 function miniLine(x, span, live) {
@@ -624,10 +638,11 @@ function hub(v, H) {
   const running = () => box.isConnected && !state.hubStop && !RM.matches && !document.hidden && inView && !state.hubDet;
   function fill(run) { tabs.forEach((t, j) => { t.classList.toggle('done', j < cur || (j === cur && !run)); t.classList.remove('on'); }); if (run) { void tabs[cur].offsetWidth; tabs[cur].classList.add('on'); } }
   function schedule() {
-    clearTimeout(timer); const run = running();
+    clearTimeout(timer); const run = running(), extra = cur === 0 ? Math.max(0, Math.round(helloIntroUntil - performance.now())) : 0; // 여는 홍표 동안은 1장 그대로(규칙 66)
+    tabs[cur]?.style.setProperty('--hdelay', extra + 'ms');
     box.classList.toggle('run', run); fill(run);
     play.textContent = state.hubStop ? '▶ 넘기기' : '‖ 멈춤'; play.setAttribute('aria-label', state.hubStop ? '저절로 넘기기 다시' : '저절로 넘기기 멈춤');
-    if (run) timer = setTimeout(() => { if (box.isConnected) go(cur + 1, 'auto'); }, DWELL);
+    if (run) timer = setTimeout(() => { if (box.isConnected) go(cur + 1, 'auto'); }, DWELL + extra);
   }
   function stop() { if (!state.hubStop) { state.hubStop = true; schedule(); } }
   function settle() { slides.forEach((s, j) => { const off = j !== cur; s.classList.toggle('off', off); if (off) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden'); s.inert = off; }); }
