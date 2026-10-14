@@ -1,39 +1,39 @@
 {
- "id": "u2-n365-v1-2026-10-10",
- "dir": "reports/atlas11/universe/2026-10-10",
+ "id": "u2-n365-v1-2026-10-14",
+ "dir": "reports/atlas11/universe/2026-10-14",
  "ok": true,
  "picked": 365,
- "createdAt": "2026-10-10T14:41:35Z",
+ "createdAt": "2026-10-14T00:44:14Z",
  "counts": {
-  "candidates": 1378,
-  "pool": 1199,
-  "withKsic": 1199,
+  "candidates": 2527,
+  "pool": 1207,
+  "withKsic": 1207,
   "unknownIndustry": 0,
-  "industriesInPool": 76,
-  "industriesFilled": 75,
-  "industriesStrict": 63,
+  "industriesInPool": 77,
+  "industriesFilled": 74,
+  "industriesStrict": 65,
   "industries": 73,
   "picked": 365,
   "kinds": {
-   "quality": 206,
-   "trend": 130,
-   "profit": 24,
-   "size": 5
+   "quality": 212,
+   "trend": 128,
+   "profit": 21,
+   "size": 4
   },
-  "pickedQuality": 206,
-  "pickedTrend": 130,
+  "pickedQuality": 212,
+  "pickedTrend": 128,
   "split": 121,
   "chosen": [
    {
     "rank": 1,
     "industry": "반도체",
-    "size": 45,
+    "size": 44,
     "sectors": [
      "반도체와반도체장비"
     ],
-    "strict": 45,
+    "strict": 44,
     "filled": 0,
-    "capEok": 29189865,
+    "capEok": 26043326,
     "names": [
      "삼성전자",
      "SK하이닉스",
@@ -44,25 +44,6 @@
    },
    {
     "rank": 2,
-    "industry": "은행·카드",
-    "size": 11,
-    "sectors": [
-     "은행",
-     "카드"
-    ],
-    "strict": 10,
-    "filled": 0,
-    "capEok": 1783775,
-    "names": [
-     "KB금융",
-     "신한지주",
-     "하나금융지주",
-     "우리금융지주",
-     "기업은행"
-    ]
-   },
-   {
-    "rank": 3,
     "industry": "2차전지",
     "size": 16,
     "sectors": [
@@ -71,7 +52,7 @@
     ],
     "strict": 16,
     "filled": 0,
-    "capEok": 1740882,
+    "capEok": 1791523,
     "names": [
      "LG에너지솔루션",
      "삼성SDI",
@@ -81,15 +62,34 @@
     ]
    },
    {
+    "rank": 3,
+    "industry": "은행·카드",
+    "size": 11,
+    "sectors": [
+     "은행",
+     "카드"
+    ],
+    "strict": 10,
+    "filled": 0,
+    "capEok": 1744836,
+    "names": [
+     "KB금융",
+     "신한지주",
+     "하나금융지주",
+     "우리금융지주",
+     "기업은행"
+    ]
+   },
+   {
     "rank": 4,
     "industry": "전자부품",
-    "size": 18,
+    "size": 16,
     "sectors": [
      "전자장비와기기"
     ],
-    "strict": 18,
+    "strict": 16,
     "filled": 0,
-    "capEok": 1472488,
+    "capEok": 1311666,
     "names": [
      "삼성전기",
      "LG이노텍",
@@ -107,7 +107,7 @@
     ],
     "strict": 11,
     "filled": 0,
-    "capEok": 1139024,
+    "capEok": 1100319,
     "names": [
      "HD현대중공업",
      "한화오션",
@@ -125,7 +125,7 @@
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 1088890,
+    "capEok": 1090857,
     "names": [
      "현대차",
      "기아",
@@ -137,14 +137,14 @@
    {
     "rank": 7,
     "industry": "바이오 의약품",
-    "size": 26,
+    "size": 24,
     "sectors": [
      "제약",
      "생물공학"
     ],
-    "strict": 26,
+    "strict": 24,
     "filled": 0,
-    "capEok": 1059694,
+    "capEok": 1056341,
     "names": [
      "삼성바이오로직스",
      "셀트리온",
@@ -155,42 +155,24 @@
    },
    {
     "rank": 8,
-    "industry": "정유·가스",
-    "size": 8,
-    "sectors": [
-     "석유와가스"
-    ],
-    "strict": 2,
-    "filled": 3,
-    "capEok": 979586,
-    "names": [
-     "SK",
-     "GS",
-     "S-Oil",
-     "SK디스커버리",
-     "SK이노베이션"
-    ]
-   },
-   {
-    "rank": 9,
     "industry": "복합기업",
-    "size": 11,
+    "size": 12,
     "sectors": [
      "복합기업"
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 784004,
+    "capEok": 729659,
     "names": [
      "삼성물산",
      "두산",
-     "효성",
      "현대지에프홀딩스",
+     "효성",
      "KX"
     ]
    },
    {
-    "rank": 10,
+    "rank": 9,
     "industry": "전력기기",
     "size": 8,
     "sectors": [
@@ -198,13 +180,31 @@
     ],
     "strict": 8,
     "filled": 0,
-    "capEok": 764687,
+    "capEok": 688574,
     "names": [
      "LS ELECTRIC",
      "효성중공업",
      "HD현대일렉트릭",
      "지엔씨에너지",
      "제룡전기"
+    ]
+   },
+   {
+    "rank": 10,
+    "industry": "정유·가스",
+    "size": 9,
+    "sectors": [
+     "석유와가스"
+    ],
+    "strict": 2,
+    "filled": 3,
+    "capEok": 648867,
+    "names": [
+     "SK",
+     "GS",
+     "S-Oil",
+     "SK디스커버리",
+     "극동유화"
     ]
    },
    {
@@ -216,12 +216,12 @@
     ],
     "strict": 18,
     "filled": 0,
-    "capEok": 635049,
+    "capEok": 624538,
     "names": [
      "메리츠금융지주",
      "미래에셋증권",
-     "한국금융지주",
      "NH투자증권",
+     "한국금융지주",
      "삼성증권"
     ]
    },
@@ -234,7 +234,7 @@
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 596169,
+    "capEok": 548122,
     "names": [
      "한화에어로스페이스",
      "한국항공우주",
@@ -246,13 +246,13 @@
    {
     "rank": 13,
     "industry": "반도체 장비",
-    "size": 43,
+    "size": 40,
     "sectors": [
      "반도체와반도체장비"
     ],
-    "strict": 43,
+    "strict": 40,
     "filled": 0,
-    "capEok": 555630,
+    "capEok": 508952,
     "names": [
      "한미반도체",
      "주성엔지니어링",
@@ -264,13 +264,13 @@
    {
     "rank": 14,
     "industry": "일반 기계",
-    "size": 11,
+    "size": 13,
     "sectors": [
      "기계"
     ],
-    "strict": 11,
+    "strict": 13,
     "filled": 0,
-    "capEok": 549024,
+    "capEok": 504857,
     "names": [
      "두산에너빌리티",
      "현대엘리베이터",
@@ -281,6 +281,24 @@
    },
    {
     "rank": 15,
+    "industry": "자동차부품",
+    "size": 53,
+    "sectors": [
+     "자동차부품"
+    ],
+    "strict": 32,
+    "filled": 0,
+    "capEok": 494344,
+    "names": [
+     "현대모비스",
+     "한국타이어앤테크놀로지",
+     "한온시스템",
+     "한국앤컴퍼니",
+     "DN오토모티브"
+    ]
+   },
+   {
+    "rank": 16,
     "industry": "보험",
     "size": 12,
     "sectors": [
@@ -289,43 +307,25 @@
     ],
     "strict": 11,
     "filled": 0,
-    "capEok": 506726,
+    "capEok": 493420,
     "names": [
      "삼성화재",
      "DB손해보험",
      "한화생명",
      "현대해상",
-     "미래에셋생명"
-    ]
-   },
-   {
-    "rank": 16,
-    "industry": "자동차부품",
-    "size": 47,
-    "sectors": [
-     "자동차부품"
-    ],
-    "strict": 28,
-    "filled": 0,
-    "capEok": 494262,
-    "names": [
-     "현대모비스",
-     "한국타이어앤테크놀로지",
-     "한온시스템",
-     "DN오토모티브",
-     "한국앤컴퍼니"
+     "코리안리"
     ]
    },
    {
     "rank": 17,
     "industry": "인터넷 플랫폼",
-    "size": 9,
+    "size": 7,
     "sectors": [
      "양방향미디어와서비스"
     ],
-    "strict": 9,
+    "strict": 7,
     "filled": 0,
-    "capEok": 433512,
+    "capEok": 429552,
     "names": [
      "NAVER",
      "카카오",
@@ -343,7 +343,7 @@
     ],
     "strict": 10,
     "filled": 0,
-    "capEok": 428668,
+    "capEok": 411969,
     "names": [
      "한화시스템",
      "LIG디펜스앤에어로스페이스",
@@ -355,7 +355,7 @@
    {
     "rank": 19,
     "industry": "가전·생활용품",
-    "size": 16,
+    "size": 17,
     "sectors": [
      "전자제품",
      "가정용기기와용품",
@@ -363,9 +363,9 @@
      "레저용장비와제품",
      "부동산"
     ],
-    "strict": 11,
+    "strict": 10,
     "filled": 0,
-    "capEok": 426507,
+    "capEok": 395410,
     "names": [
      "LG전자",
      "코웨이",
@@ -376,32 +376,14 @@
    },
    {
     "rank": 20,
-    "industry": "화장품",
-    "size": 26,
-    "sectors": [
-     "화장품"
-    ],
-    "strict": 26,
-    "filled": 0,
-    "capEok": 323207,
-    "names": [
-     "에이피알",
-     "아모레퍼시픽",
-     "LG생활건강",
-     "코스맥스",
-     "한국콜마"
-    ]
-   },
-   {
-    "rank": 21,
     "industry": "철강",
-    "size": 19,
+    "size": 23,
     "sectors": [
      "철강"
     ],
     "strict": 2,
     "filled": 3,
-    "capEok": 305226,
+    "capEok": 307582,
     "names": [
      "KG스틸",
      "넥스틸",
@@ -411,17 +393,35 @@
     ]
    },
    {
+    "rank": 21,
+    "industry": "화장품",
+    "size": 26,
+    "sectors": [
+     "화장품"
+    ],
+    "strict": 26,
+    "filled": 0,
+    "capEok": 281472,
+    "names": [
+     "에이피알",
+     "아모레퍼시픽",
+     "LG생활건강",
+     "코스맥스",
+     "한국콜마"
+    ]
+   },
+   {
     "rank": 22,
     "industry": "신약 개발",
-    "size": 25,
+    "size": 23,
     "sectors": [
      "생물공학",
      "제약",
      "식품"
     ],
-    "strict": 25,
+    "strict": 23,
     "filled": 0,
-    "capEok": 298720,
+    "capEok": 280548,
     "names": [
      "알테오젠",
      "SK바이오팜",
@@ -439,7 +439,7 @@
     ],
     "strict": 13,
     "filled": 0,
-    "capEok": 293844,
+    "capEok": 274393,
     "names": [
      "가온전선",
      "LS",
@@ -450,81 +450,6 @@
    },
    {
     "rank": 24,
-    "industry": "로봇·건설기계",
-    "size": 22,
-    "sectors": [
-     "기계"
-    ],
-    "strict": 22,
-    "filled": 0,
-    "capEok": 274683,
-    "names": [
-     "레인보우로보틱스",
-     "두산밥캣",
-     "HD건설기계",
-     "두산로보틱스",
-     "로보티즈"
-    ]
-   },
-   {
-    "rank": 25,
-    "industry": "전력·가스",
-    "size": 12,
-    "sectors": [
-     "전기유틸리티",
-     "가스유틸리티",
-     "복합유틸리티"
-    ],
-    "strict": 7,
-    "filled": 0,
-    "capEok": 261042,
-    "names": [
-     "한국전력",
-     "한전기술",
-     "한전KPS",
-     "삼천리",
-     "한전산업"
-    ]
-   },
-   {
-    "rank": 26,
-    "industry": "식품",
-    "size": 19,
-    "sectors": [
-     "담배",
-     "식품"
-    ],
-    "strict": 19,
-    "filled": 0,
-    "capEok": 252126,
-    "names": [
-     "KT&G",
-     "동서",
-     "동원산업",
-     "오리온홀딩스",
-     "하림지주"
-    ]
-   },
-   {
-    "rank": 27,
-    "industry": "비철금속",
-    "size": 9,
-    "sectors": [
-     "비철금속"
-    ],
-    "strict": 3,
-    "filled": 2,
-    "capEok": 244694,
-    "names": [
-     "고려아연",
-     "풍산",
-     "풍산홀딩스",
-     "SIMPAC",
-     "포스코스틸리온"
-    ]
-   },
-   {
-    "rank": 28,
     "industry": "해운",
     "size": 5,
     "sectors": [
@@ -532,7 +457,7 @@
     ],
     "strict": 4,
     "filled": 1,
-    "capEok": 243017,
+    "capEok": 269381,
     "names": [
      "HMM",
      "팬오션",
@@ -542,44 +467,82 @@
     ]
    },
    {
-    "rank": 29,
-    "industry": "제약",
-    "size": 62,
+    "rank": 25,
+    "industry": "식품",
+    "size": 21,
     "sectors": [
-     "제약",
-     "비철금속"
+     "담배",
+     "식품"
     ],
-    "strict": 62,
+    "strict": 21,
     "filled": 0,
-    "capEok": 231221,
+    "capEok": 257099,
     "names": [
-     "한미약품",
-     "삼천당제약",
-     "유한양행",
-     "한미사이언스",
-     "한올바이오파마"
+     "KT&G",
+     "동서",
+     "동원산업",
+     "오리온홀딩스",
+     "하림지주"
     ]
    },
    {
-    "rank": 30,
-    "industry": "반도체 부품",
+    "rank": 26,
+    "industry": "전력·가스",
+    "size": 16,
+    "sectors": [
+     "전기유틸리티",
+     "가스유틸리티",
+     "복합유틸리티"
+    ],
+    "strict": 9,
+    "filled": 0,
+    "capEok": 255629,
+    "names": [
+     "한국전력",
+     "한전기술",
+     "한전KPS",
+     "삼천리",
+     "INVENI"
+    ]
+   },
+   {
+    "rank": 27,
+    "industry": "로봇·건설기계",
+    "size": 24,
+    "sectors": [
+     "기계"
+    ],
+    "strict": 24,
+    "filled": 0,
+    "capEok": 251650,
+    "names": [
+     "레인보우로보틱스",
+     "두산밥캣",
+     "HD건설기계",
+     "두산로보틱스",
+     "로보티즈"
+    ]
+   },
+   {
+    "rank": 28,
+    "industry": "비철금속",
     "size": 19,
     "sectors": [
-     "반도체와반도체장비"
+     "비철금속"
     ],
-    "strict": 19,
+    "strict": 5,
     "filled": 0,
-    "capEok": 224873,
+    "capEok": 237261,
     "names": [
-     "이수페타시스",
-     "리노공업",
-     "ISC",
-     "티엘비",
-     "에스앤에스텍"
+     "고려아연",
+     "풍산",
+     "풍산홀딩스",
+     "태경산업",
+     "태경비케이"
     ]
    },
    {
-    "rank": 31,
+    "rank": 29,
     "industry": "항공",
     "size": 7,
     "sectors": [
@@ -587,7 +550,7 @@
     ],
     "strict": 0,
     "filled": 5,
-    "capEok": 222472,
+    "capEok": 220587,
     "names": [
      "대한항공",
      "한진칼",
@@ -597,15 +560,52 @@
     ]
    },
    {
+    "rank": 30,
+    "industry": "제약",
+    "size": 66,
+    "sectors": [
+     "제약",
+     "비철금속"
+    ],
+    "strict": 66,
+    "filled": 0,
+    "capEok": 212701,
+    "names": [
+     "한미약품",
+     "유한양행",
+     "삼천당제약",
+     "한미사이언스",
+     "한올바이오파마"
+    ]
+   },
+   {
+    "rank": 31,
+    "industry": "반도체 부품",
+    "size": 19,
+    "sectors": [
+     "반도체와반도체장비"
+    ],
+    "strict": 19,
+    "filled": 0,
+    "capEok": 204762,
+    "names": [
+     "이수페타시스",
+     "리노공업",
+     "ISC",
+     "티엘비",
+     "샘씨엔에스"
+    ]
+   },
+   {
     "rank": 32,
     "industry": "IT서비스",
-    "size": 26,
+    "size": 22,
     "sectors": [
      "IT서비스"
     ],
-    "strict": 26,
+    "strict": 22,
     "filled": 0,
-    "capEok": 207067,
+    "capEok": 202721,
     "names": [
      "현대오토에버",
      "카카오페이",
@@ -626,7 +626,7 @@
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 196482,
+    "capEok": 193933,
     "names": [
      "KT",
      "LG유플러스",
@@ -637,6 +637,24 @@
    },
    {
     "rank": 34,
+    "industry": "가공식품",
+    "size": 13,
+    "sectors": [
+     "식품"
+    ],
+    "strict": 13,
+    "filled": 0,
+    "capEok": 192527,
+    "names": [
+     "삼양식품",
+     "오리온",
+     "CJ제일제당",
+     "농심",
+     "오뚜기"
+    ]
+   },
+   {
+    "rank": 35,
     "industry": "게임",
     "size": 19,
     "sectors": [
@@ -644,31 +662,13 @@
     ],
     "strict": 19,
     "filled": 0,
-    "capEok": 194366,
+    "capEok": 191646,
     "names": [
      "크래프톤",
      "NC",
      "넷마블",
      "펄어비스",
      "더블유게임즈"
-    ]
-   },
-   {
-    "rank": 35,
-    "industry": "가공식품",
-    "size": 12,
-    "sectors": [
-     "식품"
-    ],
-    "strict": 12,
-    "filled": 0,
-    "capEok": 192878,
-    "names": [
-     "삼양식품",
-     "오리온",
-     "CJ제일제당",
-     "농심",
-     "오뚜기"
     ]
    },
    {
@@ -680,7 +680,7 @@
     ],
     "strict": 9,
     "filled": 0,
-    "capEok": 167072,
+    "capEok": 171261,
     "names": [
      "삼성에스디에스",
      "아이티센글로벌",
@@ -691,26 +691,8 @@
    },
    {
     "rank": 37,
-    "industry": "에너지 장비",
-    "size": 17,
-    "sectors": [
-     "에너지장비및서비스"
-    ],
-    "strict": 17,
-    "filled": 0,
-    "capEok": 165205,
-    "names": [
-     "한화솔루션",
-     "두산퓨얼셀",
-     "씨에스윈드",
-     "비에이치아이",
-     "HD현대에너지솔루션"
-    ]
-   },
-   {
-    "rank": 38,
     "industry": "물류·운송",
-    "size": 17,
+    "size": 18,
     "sectors": [
      "항공화물운송과물류",
      "운송인프라",
@@ -718,7 +700,7 @@
     ],
     "strict": 9,
     "filled": 0,
-    "capEok": 161173,
+    "capEok": 163491,
     "names": [
      "현대글로비스",
      "CJ대한통운",
@@ -728,16 +710,34 @@
     ]
    },
    {
+    "rank": 38,
+    "industry": "에너지 장비",
+    "size": 15,
+    "sectors": [
+     "에너지장비및서비스"
+    ],
+    "strict": 15,
+    "filled": 0,
+    "capEok": 154823,
+    "names": [
+     "한화솔루션",
+     "두산퓨얼셀",
+     "씨에스윈드",
+     "HD현대에너지솔루션",
+     "비에이치아이"
+    ]
+   },
+   {
     "rank": 39,
     "industry": "상사",
-    "size": 8,
+    "size": 9,
     "sectors": [
      "무역회사와판매업체",
      "판매업체"
     ],
     "strict": 3,
     "filled": 2,
-    "capEok": 139950,
+    "capEok": 142093,
     "names": [
      "포스코인터내셔널",
      "LX홀딩스",
@@ -748,32 +748,14 @@
    },
    {
     "rank": 40,
-    "industry": "연예 기획사",
-    "size": 5,
-    "sectors": [
-     "방송과엔터테인먼트"
-    ],
-    "strict": 5,
-    "filled": 0,
-    "capEok": 110887,
-    "names": [
-     "하이브",
-     "에스엠",
-     "JYP Ent.",
-     "와이지엔터테인먼트",
-     "큐브엔터"
-    ]
-   },
-   {
-    "rank": 41,
     "industry": "의류·패션",
-    "size": 25,
+    "size": 28,
     "sectors": [
      "섬유,의류,신발,호화품"
     ],
-    "strict": 14,
+    "strict": 15,
     "filled": 0,
-    "capEok": 108505,
+    "capEok": 110804,
     "names": [
      "영원무역",
      "F&F",
@@ -783,15 +765,33 @@
     ]
    },
    {
+    "rank": 41,
+    "industry": "반도체 검사·측정",
+    "size": 10,
+    "sectors": [
+     "반도체와반도체장비"
+    ],
+    "strict": 10,
+    "filled": 0,
+    "capEok": 102449,
+    "names": [
+     "티에스이",
+     "두산테스나",
+     "케이씨텍",
+     "디아이",
+     "케이씨"
+    ]
+   },
+   {
     "rank": 42,
     "industry": "의료용품",
-    "size": 12,
+    "size": 10,
     "sectors": [
      "건강관리장비와용품"
     ],
-    "strict": 12,
+    "strict": 10,
     "filled": 0,
-    "capEok": 106975,
+    "capEok": 99663,
     "names": [
      "HLB",
      "파마리서치",
@@ -803,13 +803,13 @@
    {
     "rank": 43,
     "industry": "건설 엔지니어링",
-    "size": 12,
+    "size": 13,
     "sectors": [
      "건설"
     ],
     "strict": 8,
     "filled": 0,
-    "capEok": 102528,
+    "capEok": 98589,
     "names": [
      "삼성E&A",
      "세보엠이씨",
@@ -820,24 +820,6 @@
    },
    {
     "rank": 44,
-    "industry": "반도체 검사·측정",
-    "size": 12,
-    "sectors": [
-     "반도체와반도체장비"
-    ],
-    "strict": 12,
-    "filled": 0,
-    "capEok": 99354,
-    "names": [
-     "티에스이",
-     "케이씨텍",
-     "두산테스나",
-     "디아이",
-     "케이씨"
-    ]
-   },
-   {
-    "rank": 45,
     "industry": "반도체 소재",
     "size": 11,
     "sectors": [
@@ -845,7 +827,7 @@
     ],
     "strict": 11,
     "filled": 0,
-    "capEok": 91459,
+    "capEok": 86786,
     "names": [
      "솔브레인",
      "동진쎄미켐",
@@ -855,17 +837,17 @@
     ]
    },
    {
-    "rank": 46,
+    "rank": 45,
     "industry": "전자장비",
-    "size": 26,
+    "size": 27,
     "sectors": [
      "전자장비와기기",
      "사무용전자제품",
      "컴퓨터와주변기기"
     ],
-    "strict": 24,
+    "strict": 25,
     "filled": 0,
-    "capEok": 84772,
+    "capEok": 82350,
     "names": [
      "고영",
      "파크시스템스",
@@ -875,15 +857,15 @@
     ]
    },
    {
-    "rank": 47,
+    "rank": 46,
     "industry": "전기 부품",
-    "size": 14,
+    "size": 11,
     "sectors": [
      "전기제품"
     ],
-    "strict": 14,
+    "strict": 11,
     "filled": 0,
-    "capEok": 83930,
+    "capEok": 79551,
     "names": [
      "성호전자",
      "에스피지",
@@ -893,17 +875,17 @@
     ]
    },
    {
-    "rank": 48,
+    "rank": 47,
     "industry": "사업 서비스·광고",
-    "size": 20,
+    "size": 23,
     "sectors": [
      "상업서비스와공급품",
      "광고",
      "해운사"
     ],
-    "strict": 11,
+    "strict": 13,
     "filled": 0,
-    "capEok": 70753,
+    "capEok": 72570,
     "names": [
      "에스원",
      "제일기획",
@@ -913,15 +895,15 @@
     ]
    },
    {
-    "rank": 49,
+    "rank": 48,
     "industry": "조선 기자재",
-    "size": 7,
+    "size": 6,
     "sectors": [
      "조선"
     ],
-    "strict": 7,
+    "strict": 6,
     "filled": 0,
-    "capEok": 69120,
+    "capEok": 67399,
     "names": [
      "한화엔진",
      "HD현대마린엔진",
@@ -931,34 +913,16 @@
     ]
    },
    {
-    "rank": 50,
-    "industry": "바이오 도구·서비스",
-    "size": 12,
-    "sectors": [
-     "생명과학도구및서비스"
-    ],
-    "strict": 12,
-    "filled": 0,
-    "capEok": 67106,
-    "names": [
-     "올릭스",
-     "씨젠",
-     "제이에스링크",
-     "큐리옥스바이오시스템즈",
-     "엔케이젠바이오텍코리아"
-    ]
-   },
-   {
-    "rank": 51,
+    "rank": 49,
     "industry": "디스플레이",
     "size": 16,
     "sectors": [
      "디스플레이패널",
      "디스플레이장비및부품"
     ],
-    "strict": 13,
+    "strict": 12,
     "filled": 0,
-    "capEok": 64813,
+    "capEok": 61375,
     "names": [
      "LG디스플레이",
      "덕산네오룩스",
@@ -968,15 +932,15 @@
     ]
    },
    {
-    "rank": 52,
+    "rank": 50,
     "industry": "건설",
-    "size": 18,
+    "size": 20,
     "sectors": [
      "건설"
     ],
-    "strict": 5,
+    "strict": 6,
     "filled": 0,
-    "capEok": 63283,
+    "capEok": 59830,
     "names": [
      "DL이앤씨",
      "IPARK현대산업개발",
@@ -986,28 +950,25 @@
     ]
    },
    {
-    "rank": 53,
-    "industry": "유통",
-    "size": 16,
+    "rank": 51,
+    "industry": "바이오 도구·서비스",
+    "size": 10,
     "sectors": [
-     "백화점과일반상점",
-     "인터넷과카탈로그소매",
-     "식품과기본식료품소매",
-     "전문소매"
+     "생명과학도구및서비스"
     ],
-    "strict": 4,
-    "filled": 1,
-    "capEok": 59896,
+    "strict": 10,
+    "filled": 0,
+    "capEok": 58689,
     "names": [
-     "실리콘투",
-     "CJ프레시웨이",
-     "광주신세계",
-     "케이티알파",
-     "신세계"
+     "올릭스",
+     "씨젠",
+     "제이에스링크",
+     "큐리옥스바이오시스템즈",
+     "엔케이젠바이오텍코리아"
     ]
    },
    {
-    "rank": 54,
+    "rank": 52,
     "industry": "호텔·레저",
     "size": 10,
     "sectors": [
@@ -1015,7 +976,7 @@
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 54689,
+    "capEok": 55023,
     "names": [
      "강원랜드",
      "파라다이스",
@@ -1025,15 +986,15 @@
     ]
    },
    {
-    "rank": 55,
+    "rank": 53,
     "industry": "의료기기",
-    "size": 25,
+    "size": 26,
     "sectors": [
      "건강관리장비와용품"
     ],
-    "strict": 25,
+    "strict": 26,
     "filled": 0,
-    "capEok": 54368,
+    "capEok": 54086,
     "names": [
      "클래시스",
      "엘앤씨바이오",
@@ -1043,16 +1004,16 @@
     ]
    },
    {
-    "rank": 56,
+    "rank": 54,
     "industry": "건축자재",
-    "size": 9,
+    "size": 11,
     "sectors": [
      "건축자재",
      "건축제품"
     ],
     "strict": 2,
     "filled": 3,
-    "capEok": 49782,
+    "capEok": 49278,
     "names": [
      "KCC",
      "노루홀딩스",
@@ -1062,16 +1023,16 @@
     ]
    },
    {
-    "rank": 57,
+    "rank": 55,
     "industry": "석유화학",
-    "size": 27,
+    "size": 28,
     "sectors": [
      "화학",
      "자동차"
     ],
     "strict": 11,
     "filled": 0,
-    "capEok": 48867,
+    "capEok": 48647,
     "names": [
      "한솔케미칼",
      "미원에스씨",
@@ -1081,15 +1042,15 @@
     ]
    },
    {
-    "rank": 58,
+    "rank": 56,
     "industry": "통신장비",
-    "size": 27,
+    "size": 22,
     "sectors": [
      "통신장비"
     ],
-    "strict": 25,
+    "strict": 20,
     "filled": 0,
-    "capEok": 42318,
+    "capEok": 40829,
     "names": [
      "RFHIC",
      "케이엠더블유",
@@ -1099,15 +1060,15 @@
     ]
    },
    {
-    "rank": 59,
+    "rank": 57,
     "industry": "병원·헬스 서비스",
-    "size": 10,
+    "size": 9,
     "sectors": [
      "건강관리업체및서비스"
     ],
-    "strict": 7,
+    "strict": 6,
     "filled": 0,
-    "capEok": 36255,
+    "capEok": 34606,
     "names": [
      "케어젠",
      "차바이오텍",
@@ -1117,33 +1078,15 @@
     ]
    },
    {
-    "rank": 60,
-    "industry": "휴대폰 부품",
-    "size": 29,
-    "sectors": [
-     "핸드셋"
-    ],
-    "strict": 27,
-    "filled": 0,
-    "capEok": 34966,
-    "names": [
-     "제이앤티씨",
-     "드림텍",
-     "디케이티",
-     "파인엠텍",
-     "아모텍"
-    ]
-   },
-   {
-    "rank": 61,
+    "rank": 58,
     "industry": "시멘트",
-    "size": 8,
+    "size": 10,
     "sectors": [
      "건축자재"
     ],
     "strict": 1,
     "filled": 4,
-    "capEok": 30031,
+    "capEok": 30832,
     "names": [
      "삼표시멘트",
      "한일시멘트",
@@ -1153,70 +1096,91 @@
     ]
    },
    {
-    "rank": 62,
+    "rank": 59,
+    "industry": "휴대폰 부품",
+    "size": 25,
+    "sectors": [
+     "핸드셋"
+    ],
+    "strict": 23,
+    "filled": 0,
+    "capEok": 30716,
+    "names": [
+     "제이앤티씨",
+     "드림텍",
+     "디케이티",
+     "아모텍",
+     "파인엠텍"
+    ]
+   },
+   {
+    "rank": 60,
+    "industry": "유통",
+    "size": 17,
+    "sectors": [
+     "백화점과일반상점",
+     "인터넷과카탈로그소매",
+     "식품과기본식료품소매",
+     "전문소매"
+    ],
+    "strict": 5,
+    "filled": 0,
+    "capEok": 29964,
+    "names": [
+     "실리콘투",
+     "광주신세계",
+     "CJ프레시웨이",
+     "케이티알파",
+     "현대코퍼레이션홀딩스"
+    ]
+   },
+   {
+    "rank": 61,
     "industry": "화학",
-    "size": 22,
+    "size": 24,
     "sectors": [
      "화학"
     ],
     "strict": 12,
     "filled": 0,
-    "capEok": 27826,
+    "capEok": 26704,
     "names": [
-     "파미셀",
      "한국쉘석유",
+     "파미셀",
      "PI첨단소재",
      "삼영무역",
-     "GRT"
+     "남해화학"
     ]
    },
    {
-    "rank": 63,
-    "industry": "정밀화학",
-    "size": 13,
-    "sectors": [
-     "화학"
-    ],
-    "strict": 4,
-    "filled": 1,
-    "capEok": 26764,
-    "names": [
-     "TKG휴켐스",
-     "미원상사",
-     "한국알콜",
-     "미원화학",
-     "레이크머티리얼즈"
-    ]
-   },
-   {
-    "rank": 64,
+    "rank": 62,
     "industry": "기계 부품",
-    "size": 14,
+    "size": 13,
     "sectors": [
      "기계"
     ],
-    "strict": 14,
+    "strict": 13,
     "filled": 0,
-    "capEok": 25802,
+    "capEok": 25993,
     "names": [
      "성광벤드",
      "태광",
      "와이지-원",
      "하이록코리아",
-     "삼미금속"
+     "한선엔지니어링"
     ]
    },
    {
-    "rank": 65,
+    "rank": 63,
     "industry": "종이·포장재",
-    "size": 10,
+    "size": 13,
     "sectors": [
      "포장재",
      "종이와목재"
     ],
     "strict": 2,
     "filled": 3,
-    "capEok": 25024,
+    "capEok": 24899,
     "names": [
      "펌텍코리아",
      "동원시스템즈",
@@ -1226,7 +1190,7 @@
     ]
    },
    {
-    "rank": 66,
+    "rank": 64,
     "industry": "음료",
     "size": 5,
     "sectors": [
@@ -1234,7 +1198,7 @@
     ],
     "strict": 4,
     "filled": 1,
-    "capEok": 24155,
+    "capEok": 24688,
     "names": [
      "하이트진로",
      "롯데칠성",
@@ -1244,36 +1208,17 @@
     ]
    },
    {
-    "rank": 67,
-    "industry": "창투·캐피탈",
-    "size": 14,
-    "sectors": [
-     "창업투자",
-     "기타금융"
-    ],
-    "strict": 12,
-    "filled": 0,
-    "capEok": 23177,
-    "names": [
-     "미래에셋벤처투자",
-     "우리기술투자",
-     "글로벌텍스프리",
-     "스틱인베스트먼트",
-     "한국캐피탈"
-    ]
-   },
-   {
-    "rank": 68,
+    "rank": 65,
     "industry": "소프트웨어",
-    "size": 19,
+    "size": 15,
     "sectors": [
      "소프트웨어",
      "판매업체",
      "비철금속"
     ],
-    "strict": 19,
+    "strict": 15,
     "filled": 0,
-    "capEok": 22132,
+    "capEok": 23260,
     "names": [
      "안랩",
      "엑스게이트",
@@ -1283,15 +1228,34 @@
     ]
    },
    {
-    "rank": 69,
-    "industry": "2차전지 장비",
-    "size": 9,
+    "rank": 66,
+    "industry": "창투·캐피탈",
+    "size": 11,
     "sectors": [
-     "전기제품"
+     "창업투자",
+     "기타금융"
     ],
     "strict": 9,
     "filled": 0,
-    "capEok": 20861,
+    "capEok": 22412,
+    "names": [
+     "미래에셋벤처투자",
+     "우리기술투자",
+     "글로벌텍스프리",
+     "스틱인베스트먼트",
+     "한국캐피탈"
+    ]
+   },
+   {
+    "rank": 67,
+    "industry": "2차전지 장비",
+    "size": 8,
+    "sectors": [
+     "전기제품"
+    ],
+    "strict": 8,
+    "filled": 0,
+    "capEok": 20886,
     "names": [
      "피엔티",
      "SFA넥셀",
@@ -1301,15 +1265,15 @@
     ]
    },
    {
-    "rank": 70,
+    "rank": 68,
     "industry": "콘텐츠 제작",
-    "size": 8,
+    "size": 6,
     "sectors": [
      "방송과엔터테인먼트"
     ],
-    "strict": 8,
+    "strict": 6,
     "filled": 0,
-    "capEok": 20101,
+    "capEok": 20118,
     "names": [
      "CJ CGV",
      "스튜디오드래곤",
@@ -1319,33 +1283,51 @@
     ]
    },
    {
-    "rank": 71,
+    "rank": 69,
+    "industry": "정밀화학",
+    "size": 14,
+    "sectors": [
+     "화학"
+    ],
+    "strict": 5,
+    "filled": 0,
+    "capEok": 19479,
+    "names": [
+     "TKG휴켐스",
+     "미원상사",
+     "한국알콜",
+     "미원화학",
+     "그린케미칼"
+    ]
+   },
+   {
+    "rank": 70,
     "industry": "디스플레이 장비",
-    "size": 12,
+    "size": 10,
     "sectors": [
      "디스플레이장비및부품"
     ],
-    "strict": 12,
+    "strict": 10,
     "filled": 0,
-    "capEok": 17058,
+    "capEok": 17382,
     "names": [
      "선익시스템",
      "AP시스템",
      "HB테크놀러지",
-     "디바이스",
-     "넥사다이내믹스"
+     "넥사다이내믹스",
+     "디바이스"
     ]
    },
    {
-    "rank": 72,
+    "rank": 71,
     "industry": "헬스케어 기술",
-    "size": 7,
+    "size": 5,
     "sectors": [
      "건강관리기술"
     ],
-    "strict": 7,
+    "strict": 5,
     "filled": 0,
-    "capEok": 15425,
+    "capEok": 15065,
     "names": [
      "루닛",
      "인피니트헬스케어",
@@ -1355,7 +1337,7 @@
     ]
    },
    {
-    "rank": 73,
+    "rank": 72,
     "industry": "방송",
     "size": 5,
     "sectors": [
@@ -1363,42 +1345,62 @@
     ],
     "strict": 5,
     "filled": 0,
-    "capEok": 13882,
+    "capEok": 14056,
     "names": [
      "CJ ENM",
      "SBS",
      "스카이라이프",
-     "한국경제TV",
-     "씨씨에스"
+     "LG헬로비전",
+     "한국경제TV"
+    ]
+   },
+   {
+    "rank": 73,
+    "industry": "사료·축산",
+    "size": 7,
+    "sectors": [
+     "식품"
+    ],
+    "strict": 7,
+    "filled": 0,
+    "capEok": 11900,
+    "names": [
+     "이지홀딩스",
+     "하림",
+     "선진",
+     "이지바이오",
+     "현대사료"
     ]
    }
   ],
   "notChosenFilled": [
    {
-    "industry": "사료·축산",
-    "size": 8,
-    "capEok": 11892
-   },
-   {
     "industry": "교육",
-    "size": 6,
-    "capEok": 10748
+    "size": 5,
+    "capEok": 10812
    }
   ],
   "short": [
    {
+    "industry": "연예 기획사",
+    "have": 4
+   },
+   {
     "industry": "부동산",
     "have": 4
+   },
+   {
+    "industry": "출판",
+    "have": 1
    }
   ],
   "failReasons": {
-   "ROE 5% 미만": 620,
-   "2년 연속 흑자 아님": 523,
-   "부채비율 150% 초과": 219,
-   "가격 이력 부족": 101,
-   "결산 자료 없음": 81,
-   "시가총액 1300위 밖": 78,
-   "가격 이력 없음": 78
+   "ROE 5% 미만": 1485,
+   "2년 연속 흑자 아님": 1317,
+   "시가총액 1300위 밖": 1227,
+   "부채비율 150% 초과": 458,
+   "가격 이력 부족": 174,
+   "결산 자료 없음": 3
   }
  }
 }
