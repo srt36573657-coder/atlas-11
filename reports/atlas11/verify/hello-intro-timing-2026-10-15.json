@@ -1,0 +1,93 @@
+{
+ "schema": "atlas11-hello-intro-timing-1",
+ "made": "2026-10-15T07:10+09:00",
+ "why": "사장님 2026-10-15(싱가포르) 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」 — 홍표 5초 뒤 사장님 글 · 사장님 글 5초",
+ "how": "새 ATLAS 를 390×844 휴대폰 화면으로 열고 홍표를 찾은 때(t0)부터 0.06 ~ 0.1초마다 잼 — 홍표가 흐려지기 시작한 때 · 사장님 글 진하기 0.95 넘은 때 · 홍표가 빠진 때 · 장이 바뀐 때",
+ "before_3_5s_04_56": {
+  "note": "04:56(싱가포르) 올린 판 — 홍표 3.5초 · 시계는 만든 때부터",
+  "textFull": 3.36,
+  "birdRemoved": 3.67,
+  "slides": [
+   {
+    "t": 0.03,
+    "slide": 1
+   },
+   {
+    "t": 8.22,
+    "slide": 2
+   },
+   {
+    "t": 13.29,
+    "slide": 3
+   }
+  ]
+ },
+ "five_s_old_clock": {
+  "note": "홍표 5.5초로만 바꾼 판(시계는 만든 때부터) — 시험 서버를 다시 켠 뒤 첫 열기",
+  "birdFadeStarts": 4.97,
+  "textFull": 5.3,
+  "birdRemoved": 5.3,
+  "slides": [
+   {
+    "t": 0.03,
+    "slide": 1
+   },
+   {
+    "t": 9.89,
+    "slide": 2
+   },
+   {
+    "t": 14.88,
+    "slide": 3
+   }
+  ],
+  "found": "홍표가 흐려지기 시작한 지 0.33초 만에 빠짐 — 바뀜 0.5초를 못 채우고 끊김 · 글은 그 순간 툭 진해짐(클래스를 빼서 움직임이 사라짐)"
+ },
+ "five_s_fixed": [
+  {
+   "name": "보통",
+   "birdFadeStarts": 4.94,
+   "textFull": 5.44,
+   "birdRemoved": 5.44,
+   "textWhenRemoved": 1,
+   "slides": [
+    {
+     "t": 0.02,
+     "slide": 1
+    },
+    {
+     "t": 10.46,
+     "slide": 2
+    },
+    {
+     "t": 15.48,
+     "slide": 3
+    }
+   ],
+   "errors": []
+  },
+  {
+   "name": "느린 휴대폰 4배",
+   "birdFadeStarts": 4.9,
+   "textFull": 5.24,
+   "birdRemoved": 5.43,
+   "textWhenRemoved": 1,
+   "slides": [
+    {
+     "t": 0.05,
+     "slide": 1
+    },
+    {
+     "t": 10.4,
+     "slide": 2
+    },
+    {
+     "t": 15.37,
+     "slide": 3
+    }
+   ],
+   "errors": []
+  }
+ ],
+ "rule": "시계 = 1장이 화면에 붙어 그려지는 때(rAF)부터 · 홍표 빼기 = 바뀜 움직임(hpi-out) 끝(animationend) · 마지막 줄 = 그 뒤 1.5초"
+}

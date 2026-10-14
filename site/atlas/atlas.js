@@ -542,9 +542,13 @@ const HELLO_PROMO = '10명 소개하면 스타벅스 상품권 1만원!'; // 202
 //   17:13 「전무님이 맞아」 · 17:16 「하규는 아틀란스 해서 부자 될겁니다 로 변경해」(하규 두 줄을 바꿈 · 「아틀란스가 답이다」는 그대로 둔 안을 보여 드림) · 17:17 「10명중 1명은 지워」
 const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!'];
 // 1장 여는 홍표(사장님 2026-10-15(싱가포르) 04:07 「천 화면을 홍표홍표홍표 하는 첫 화면이 나오게 해」 → 여쭌 (가) 「사이트를 열면 맨 위 1장에 그 장면이 먼저 나와요」 · 04:10 「열면 홍표 니오게 해」 · 규칙 66)
-//   사이트를 열어 첫 화면을 처음 그릴 때 한 번 — 1장 글 자리에 홍표 그림(/media/makbi-hello.svg) + 「홍표!」 세 번(0.5 · 1.0 · 1.5초) → 3초에 사장님 글로 바뀜(글자 그대로)
+//   사이트를 열어 첫 화면을 처음 그릴 때 한 번 — 1장 글 자리에 홍표 그림(/media/makbi-hello.svg) + 「홍표!」 세 번(0.5 · 1.0 · 1.5초) → 5초에 사장님 글로 바뀜(글자 그대로)
+//   05:05 「첫화면 5초 있다 움직여」 → 여쭌 (가) 「홍표를 5초 보여 준 뒤 사장님 글로 바꿔요」 · 06:01 「가」 — 홍표 5초 + 바뀌는 0.5초 · 그 뒤 사장님 글 5초 · 약 10.5초에 2장
 //   1장에 머무는 때는 여는 홍표만큼 늘림(바 칸도 그만큼 늦게 차오름) · 움직임 줄이기면 없음(바로 글 — 저절로 바뀌는 것을 줄임) · 다시 1장에 와도 다시 안 함(새로 열 때만)
-const INTRO_MS = 3500;
+//   바뀌기 시작하는 때는 이 숫자 한 곳 — CSS 는 --hp-at 으로 받음(INTRO_MS − 0.5초)
+//   시계는 화면에 붙어 그려지는 때부터(CSS 움직임과 같은 때) — 만든 때부터 세면 첫 화면을 짓는 동안(휴대폰에서 0.5초 넘게)만큼
+//   홍표가 바뀌다 말고 끊기고 글이 툭 나옴(2026-10-15 06:1x 잼 — 바뀌기 시작 4.97초 · 끊김 5.30초). 홍표를 빼는 때 = 바뀜 움직임이 끝난 때
+const INTRO_MS = 5500;
 let helloIntro = true, helloIntroUntil = 0;
 function slideHello() {
   const intro = helloIntro && !RM.matches; helloIntro = false;
@@ -555,8 +559,14 @@ function slideHello() {
   if (intro) {
     const pi = h('span', {class: 'hpi', 'aria-hidden': 'true'}, h('img', {class: 'hpi-bird', src: '/media/makbi-hello.svg', alt: '', width: 240, height: 300, decoding: 'async'}),
       ...['b1', 'b2', 'b3'].map(k => h('span', {class: 'hpi-b ' + k, text: '홍표!'})));
-    msg.prepend(pi); helloIntroUntil = performance.now() + INTRO_MS;
-    setTimeout(() => { a.classList.remove('hs-intro'); pi.remove(); }, INTRO_MS + 400);
+    msg.prepend(pi); a.style.setProperty('--hp-at', (INTRO_MS - 500) + 'ms'); helloIntroUntil = performance.now() + INTRO_MS;
+    let done = false, tries = 0; const end = () => { if (done) return; done = true; a.classList.remove('hs-intro'); pi.remove(); };
+    pi.addEventListener('animationend', e => { if (e.target === pi && e.animationName === 'hpi-out') end(); });
+    const start = () => { // 붙은 뒤 첫 그림 때(rAF — 1장 넘김 시계를 고르는 IntersectionObserver 보다 앞)
+      if (!a.isConnected) { if (++tries < 600) requestAnimationFrame(start); else end(); return; }
+      helloIntroUntil = performance.now() + INTRO_MS; setTimeout(end, INTRO_MS + 1500); // 움직임이 안 끝나는 때(중간에 움직임 줄이기 등)의 마지막 줄
+    };
+    requestAnimationFrame(start);
   }
   return a;
 }

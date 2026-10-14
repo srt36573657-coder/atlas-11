@@ -526,8 +526,9 @@ if (home) {
     await p.waitForTimeout(5600); chk(await curK(p) === 6, '움직임 줄이기인데 저절로 넘어감');
     screens++; if (errs.length) fail('손가락 밀기', '오류 ' + errs[0]);
     await ctx.close(); }
-  // ⑤ 여는 홍표 · 저절로 넘김(움직임 켬 · 390) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 3초에 사장님 글(규칙 66 · 2026-10-15 04:10 「열면 홍표 니오게 해」)
-  //   1장은 여는 홍표만큼 더 머묾(3.5초 + 5초) · 그 뒤 5초마다 다음 장 · 손대면 멈춤 · 「‖ 멈춤」 단추로 다시 넘김(WCAG 2.2.2)
+  // ⑤ 여는 홍표 · 저절로 넘김(움직임 켬 · 390) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글(규칙 66 · 2026-10-15 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」)
+  //   홍표 5초 동안 글은 안 보임 · 1장은 여는 홍표만큼 더 머묾(5.5초 + 5초 — 사장님 글 5초를 다 채움) · 그 뒤 5초마다 다음 장 · 손대면 멈춤 · 「‖ 멈춤」 단추로 다시 넘김(WCAG 2.2.2)
+  //   t0 은 홍표를 찾은 때라 그린 때보다 조금 늦음(0.3초 안팎) — 재는 때는 그만큼 앞당겨 둠
   { const ctx = await b.newContext({viewport: {width: 390, height: 844}}); const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.goto(base + '/atlas/', {waitUntil: 'commit'}); await p.waitForSelector('#view .hpi', {timeout: 30000}); const t0 = Date.now(), at = ms => p.waitForTimeout(Math.max(0, ms - (Date.now() - t0)));
     const chk = (ok, what) => { numbers++; if (!ok) fail('여는 홍표 · 저절로 넘김', what); };
@@ -541,11 +542,14 @@ if (home) {
     chk(i0.ml != null && i0.ml < 0.2, '여는 홍표 동안 사장님 글이 겹쳐 보임');
     await at(2300); const i1 = await look();
     chk(i1.ok && i1.op.length === 3 && i1.op.every(x => x > 0.9) && i1.inside && i1.sw <= i1.cw, '「홍표!」 세 번이 다 안 보이거나 1장 밖으로 넘침: ' + JSON.stringify(i1).slice(0, 160));
-    await at(4700); const i2 = await look();
+    await at(4300); const i4 = await look();
+    chk(i4.intro && i4.pi && i4.op.length === 3 && i4.op.every(x => x > 0.9) && i4.ml != null && i4.ml < 0.2, '홍표가 5초를 다 못 채우고 사장님 글로 바뀜(06:01 「가」 — 홍표 5초): ' + JSON.stringify(i4).slice(0, 160));
+    await at(6700); const i2 = await look();
     chk(!i2.intro && !i2.pi && i2.ml > 0.95 && JSON.stringify(i2.msg) === JSON.stringify(HELLO_LINES), '여는 홍표 뒤 사장님 글로 안 바뀜: ' + JSON.stringify(i2).slice(0, 160));
     chk(await curK(p) === 0, '여는 홍표 동안 1장이 넘어감');
-    await at(9300); chk(await curK(p) === 1, '여는 홍표 + 5초 뒤 2장으로 안 넘어감');
-    await at(14500); chk(await curK(p) === 2, '그다음 5초 뒤 3장으로 안 넘어감');
+    await at(9600); chk(await curK(p) === 0, '사장님 글이 5초를 다 못 채우고 2장으로 넘어감');
+    await at(11300); chk(await curK(p) === 1, '여는 홍표 + 사장님 글 5초 뒤 2장으로 안 넘어감');
+    await at(16500); chk(await curK(p) === 2, '그다음 5초 뒤 3장으로 안 넘어감');
     chk(await p.evaluate(() => document.querySelector('#view .hplay').textContent.includes('멈춤')), '「‖ 멈춤」 단추가 없음');
     await p.dispatchEvent('#view .hvp', 'pointerdown'); const k0 = await curK(p); await p.waitForTimeout(6000); chk(await curK(p) === k0, '손댄 뒤에도 저절로 넘어감');
     chk(await p.evaluate(() => document.querySelector('#view .hplay').textContent.includes('넘기기')), '멈춘 뒤 「▶ 넘기기」 단추가 없음');
