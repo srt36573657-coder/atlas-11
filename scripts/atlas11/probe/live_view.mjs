@@ -103,6 +103,17 @@ await step('멍거 · 린치 조건', async () => { // 사장님 2026-10-14 06:0
       && /멍거 조건 — 세 조건을 모두 넘었습니다/.test(why) && /자기 돈 100원에 빚/.test(why) && /린치 조건 — 두 조건을 모두 넘었습니다/.test(whyL) && /크는 빠르기에 견줘 값/.test(whyL) && !old};
   if (!out.munger.ok) out.errors.push('멍거 · 린치 조건: ' + JSON.stringify({...out.munger, why: undefined}).slice(0, 200));
 });
+await step('전 종목 찾기', async () => { // 사장님 2026-10-14 08:38 「우리나라 주식 종목 전 종목을 전부 등록 시켜」 · 08:41 「가」 — 찾기 이름표 = 모음 회사 모두 · 몸값이 가장 작은 회사도 찾힘
+  const core = await (await fetch(B + '/atlas/data/core.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
+  const names = await (await fetch(B + '/atlas/data/names.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
+  const last = names.rows.findLast(r => r.s !== 'in'), mk = {KOSPI: 0, KOSDAQ: 0}; for (const r of names.rows) mk[r.m] = (mk[r.m] ?? 0) + 1;
+  await page.goto(B + '/?v=' + Date.now() + '#/find', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
+  await page.fill('#q', last?.n ?? '?'); await page.waitForTimeout(800);
+  const hits = await page.$eval('#hits', x => x.innerText).catch(() => ''); await shot('p15-find-all');
+  out.allFind = {universe: core.funnel?.universe ?? null, rows: names.rows.length, kospi: mk.KOSPI, kosdaq: mk.KOSDAQ, collected: names.collected, last: last && {c: last.c, n: last.n}, hit: !!last && hits.includes(last.n),
+    ok: names.rows.length === core.funnel?.universe && names.rows.length >= 2400 && !!last && hits.includes(last.n)};
+  if (!out.allFind.ok) out.errors.push('전 종목 찾기: ' + JSON.stringify(out.allFind).slice(0, 200));
+});
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
 });

@@ -32,7 +32,7 @@ const rng = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/range.js
 const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
 const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.json'), 'utf8')); // 업데이트 탭(사장님 12:41)
 const tdata = fs.existsSync(path.join(ROOT, 'site/atlas/data/time.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/time.json'), 'utf8')) : null; // 봉인 시간(14:37 · 14:39 「3년후 5년후 10년후 이야기」)
-const NAMES = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/names.json'), 'utf8')), OUT1 = NAMES.rows.find(r => r.s !== 'in'); // 찾기 · 365곳 밖 보기 — 365곳 밖 첫 회사(번호를 박지 않음 · 회차마다 바뀜 · 애플팀 2026-10-13)
+const NAMES = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/names.json'), 'utf8')), OUT1 = NAMES.rows.find(r => r.s !== 'in'), OUTL = NAMES.rows.findLast(r => r.s !== 'in'); // 찾기 · 365곳 밖 보기 — 365곳 밖 첫 회사(번호를 박지 않음 · 회차마다 바뀜 · 애플팀 2026-10-13)
 const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
 const lines = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.json'), 'utf8')).lines; // 3단 100만 원 줄(기준일 = 100 · 2026-10-12 클로드팀)
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
@@ -402,7 +402,8 @@ for (const [w, hgt, font] of plans) {
   }
   // 찾기 — 한 글자 · 첫 글자 · 영어 이름 소리 · 번호 · 365곳 밖
   if (font === 0) {
-    for (const [q, want] of [['삼성', '삼성전자'], ['ㅅㅅㅈㅈ', '삼성전자'], ['에스케이하이', 'SK하이닉스'], ['005930', '삼성전자'], [core.industries[0].name, core.industries[0].name], [OUT1.n, `${core.rules.name} 밖`]]) {
+    for (const [q, want] of [['삼성', '삼성전자'], ['ㅅㅅㅈㅈ', '삼성전자'], ['에스케이하이', 'SK하이닉스'], ['005930', '삼성전자'], [core.industries[0].name, core.industries[0].name], [OUT1.n, `${core.rules.name} 밖`],
+      [OUTL.n, OUTL.n], [OUTL.c, OUTL.n]]) { // 전 종목(사장님 2026-10-14 08:38 「전 종목을 전부 등록 시켜」 · 08:41 「가」) — 몸값이 가장 작은 회사도 이름 · 번호로 찾힘
       await p.evaluate(() => { location.hash = '#/find'; });
       await p.waitForFunction(() => !document.querySelector('#findSheet').hidden);
       await p.fill('#q', q); await p.waitForTimeout(250);
