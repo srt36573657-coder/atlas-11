@@ -76,3 +76,4 @@
 {"at":"2026-10-14T09:01:15.643Z","kst":"2026-10-14 18:01","slot":"18:00","result":"바꿈","served":"rolled","asOf":"2026-10-14","base":"2026-09-10","in":0,"out":0,"inspectFail":0,"why":null}
 {"at":"2026-10-14T09:30:35.138Z","kst":"2026-10-14 18:30","slot":null,"result":"그대로","served":"rolled","asOf":"2026-10-14","base":"2026-09-10","in":0,"out":0,"inspectFail":0,"why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-10-14T10:03:14.323Z","kst":"2026-10-14 19:03","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-10-14","base":"2026-09-10","in":0,"out":0,"inspectFail":0,"why":null}
+{"at":"2026-10-14T10:14:07.994Z","kst":"2026-10-14 19:14","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-10-14","base":"2026-09-10","in":0,"out":0,"inspectFail":0,"why":null}
