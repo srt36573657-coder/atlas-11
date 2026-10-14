@@ -6,8 +6,14 @@ name: atlas11-universe
 #   하지 않는 일: 지금 화면의 52종목 바꾸기 · 전망 · 발행 · 채점 (종목을 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
 #   2026-10-05 05:07 사장님 「지금 180개를 365개로 한다 업종도 늘리고 더 세분화 한다」 — 목록 코스피·코스닥 각 900곳 · 결산·일봉 1300위까지 · 한국거래소 KIND 업종 · 네이버 업종 이름 새 길
 #     → 받는 양이 늘어 시간을 늘림(30분 → 70분 · 스크립트 25분 → 65분)
+#   2026-10-14 08:41 「우리나라 주식 종목 전 종목을 전부 등록 시켜」 · 「가」 — 입력 all(전 종목) · 시간 150분 · 스크립트 140분
 on:
   workflow_dispatch:
+    inputs:
+      all:
+        description: '전 종목(목록 끝까지 · 보통주 모두 결산 · 일봉) — 2026-10-14 「우리나라 주식 종목 전 종목을 전부 등록 시켜」'
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -16,7 +22,7 @@ concurrency:
 jobs:
   universe:
     runs-on: ubuntu-latest
-    timeout-minutes: 70
+    timeout-minutes: 150
     env:
       TZ: Asia/Seoul
     steps:
@@ -25,7 +31,7 @@ jobs:
         with:
           node-version: 22
       - name: Collect and select
-        run: timeout 3900 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "collect_universe exit $?"
+        run: timeout 8400 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" ${{ inputs.all && '--all' || '' }} || echo "collect_universe exit $?"
       - name: Commit
         if: always()
         shell: bash

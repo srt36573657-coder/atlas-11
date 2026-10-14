@@ -1,6 +1,7 @@
 /**
  * ATLAS 11 · 「튼튼한 회사 52곳」 고르기 자료 모으기 — .github/workflows/atlas11-universe.yml 에서 사장님이 단추를 눌러야만 돈다.
- *   node scripts/atlas11/collect_universe.mjs --now ISO [--out-dir reports/atlas11/universe/<날짜>] [--fixture dir] [--from-bundle file.json.gz]
+ *   node scripts/atlas11/collect_universe.mjs --now ISO [--out-dir reports/atlas11/universe/<날짜>] [--fixture dir] [--from-bundle file.json.gz] [--all]
+ *   --all(2026-10-14 「전 종목을 전부」): 목록 끝까지 · 펀드는 목록에서 뺌 · 보통주 모두 결산 · 일봉
  *
  * 하는 일(전망·발행·채점은 하지 않는다 · 지금 화면의 52종목도 바꾸지 않는다 — 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
  *   ① 시가총액 목록(코스피·코스닥) ② 업종 이름표 ③ 후보마다 회사 요약(시총·업종) → 시가총액 순위 ④ 상위 300곳 결산 자료와 일봉 이력
@@ -43,6 +44,9 @@ export const URLS = Object.freeze({
 const MARKETS = Object.freeze([{market: 'KOSPI', sosok: 0, jsonPages: 9, htmlPages: 18, take: 900}, {market: 'KOSDAQ', sosok: 1, jsonPages: 9, htmlPages: 18, take: 900}]);
 /** 결산 자료·일봉을 받는 깊이(시가총액 순위) — 고르기 규칙의 poolTop(300 등)과 따로 · 규칙은 자기 poolTop 안에서만 고른다 */
 export const BUNDLE_DEPTH = 1300;
+// 2026-10-14 08:41(싱가포르) 사장님 「우리나라 주식 종목 전 종목을 전부 등록 시켜」 → 「(가) 모든 종목을 받아 와요」 — --all: 목록을 끝까지(빈 쪽이 나오면 끝) ·
+//   펀드(ETF · ETN — 목록의 stockEndType 이 stock 이 아님)는 목록에서 바로 뺌(요약을 받지 않음) · 결산 · 일봉은 보통주 모두(깊이 끝 없음)
+const ALL_MARKETS = Object.freeze([{market: 'KOSPI', sosok: 0, jsonPages: 60, htmlPages: 80, take: Infinity}, {market: 'KOSDAQ', sosok: 1, jsonPages: 60, htmlPages: 80, take: Infinity}]);
 
 /** 재생 모드: <dir>/urls.json 의 {url: 파일} 대로 읽는다(없는 주소는 404) */
 export function fixtureMapFetch(dir) {
@@ -61,7 +65,7 @@ async function pool(items, limit, worker, delayMs = 0) {
 }
 
 /** 네트워크로 받기 → bundle(원문 그대로) */
-export async function collectBundle({now, fetch = globalThis.fetch, concurrency = 3, politeDelayMs = 200, fallbackCodes = [], log = () => {}} = {}) {
+export async function collectBundle({now, fetch = globalThis.fetch, concurrency = 3, politeDelayMs = 200, fallbackCodes = [], log = () => {}, all = false} = {}) {
   const requests = [], errors = [];
   const get = async url => {
     const t0 = Date.now();
@@ -71,7 +75,7 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
   // ① 시가총액 목록
   const lists = {source: null, pages: []};
   let pool0 = [];
-  for (const m of MARKETS) {
+  for (const m of (all ? ALL_MARKETS : MARKETS)) {
     let rows = [], pages = [];
     // JSON 이 한 쪽이라도 틀리면(받기 실패·모양 다름) 그 시장은 처음부터 HTML 표로 · 빈 쪽이 나오면 거기서 끝(목록 끝)
     let jsonFailed = false;
@@ -82,7 +86,7 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
       for (let p = 1; p <= m.htmlPages; p++) { const r = await get(URLS.mvHtml(m.sosok, p)); pages.push({market: m.market, kind: 'html', ...r}); try { if (!r.text) throw Error('no body'); rows.push(...parseMarketSumHtml(r.text, m.market)); } catch (e) { errors.push({step: 'list_html', market: m.market, page: p, error: String(e.message)}); break; } }
     }
     lists.pages.push(...pages); lists.source = lists.source && lists.source !== source ? 'mixed' : source;
-    const seen = new Set(); pool0.push(...rows.filter(r => !seen.has(r.code) && seen.add(r.code)).slice(0, m.take));
+    const seen = new Set(); pool0.push(...rows.filter(r => !seen.has(r.code) && seen.add(r.code)).filter(r => !all || !r.endType || r.endType === 'stock').slice(0, m.take));
     log(`목록 ${m.market} ${source} ${rows.length}`);
   }
   let poolCodes = [...new Map(pool0.filter(r => !notCommon(r.code, r.name)).map(r => [r.code, r])).values()];
@@ -121,7 +125,7 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
   for (const p of [...new Set(upjong.text?.match(/\/imgstock\/[^"'\s]*industry[^"'\s]*\.js/g) ?? [])].slice(0, 6)) { const r = await get('https://ssl.pstatic.net' + p); chunks.push({url: r.url, status: r.status, text: r.text ? r.text.slice(0, 300000) : null}); }
   log(`네이버 업종 이름 ${Object.keys(industryNames).length}/${industryCodes.length}`);
   // ④ 시가총액 상위 BUNDLE_DEPTH 곳(보통주) — 결산 · 일봉
-  const ranked = rankByCap(stocks).slice(0, BUNDLE_DEPTH);
+  const ranked = rankByCap(stocks).slice(0, all ? Infinity : BUNDLE_DEPTH);
   await pool(ranked, concurrency, async ({code}) => {
     const s = stocks[code];
     const fj = await get(URLS.financeJson(code)); let finance = {kind: 'json', ...fj};
@@ -134,7 +138,7 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
   }, politeDelayMs);
   log(`결산·일봉 ${ranked.length}`);
   const failed = requests.filter(r => r.error || !(r.status >= 200 && r.status < 300)).length;
-  return {schema: BUNDLE_SCHEMA, now, collectedAt: new Date().toISOString(), lists, upjong, kind, industryNames, industryRoute: route, industryProbes, chunks, stocks, errors, requests: {total: requests.length, ok: requests.length - failed, failed, sample: requests.filter(r => r.error).slice(0, 20)}};
+  return {schema: BUNDLE_SCHEMA, now, collectedAt: new Date().toISOString(), all, lists, upjong, kind, industryNames, industryRoute: route, industryProbes, chunks, stocks, errors, requests: {total: requests.length, ok: requests.length - failed, failed, sample: requests.filter(r => r.error).slice(0, 20)}};
 }
 function rankByCap(stocks) {
   const rows = [];
@@ -227,7 +231,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const input = JSON.parse(await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'));
   let bundle;
   if (arg('--from-bundle')) bundle = JSON.parse(zlib.gunzipSync(await fs.readFile(arg('--from-bundle'))).toString('utf8'));
-  else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m)});
+  else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m), all: process.argv.includes('--all')});
   await fs.mkdir(path.join(root, 'reports/atlas11/universe'), {recursive: true});
   // 규칙 판: --rules 이름 → config/atlas11/universe.json 의 selectRules → q52-v2
   let config = null; try { config = JSON.parse(await fs.readFile(path.join(root, 'config/atlas11/universe.json'), 'utf8')); } catch { config = null; }
