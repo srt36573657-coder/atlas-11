@@ -1,5 +1,5 @@
 {
- "made": "2026-10-14T13:19:23.321Z",
+ "made": "2026-10-14T16:32:05.593Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -26,28 +26,28 @@
   {
    "path": "/media/makbi-poster.jpg",
    "status": 200,
-   "bytes": 60169,
+   "bytes": 83790,
    "old": false,
    "sameAsRepo": true
   },
   {
    "path": "/media/makbi-intro.mp4",
    "status": 200,
-   "bytes": 1084042,
+   "bytes": 4523858,
    "old": false,
    "sameAsRepo": true
   },
   {
    "path": "/media/makbi-intro.webm",
    "status": 200,
-   "bytes": 1047758,
+   "bytes": 3722321,
    "old": false,
    "sameAsRepo": true
   },
   {
    "path": "/og-makbi.jpg",
    "status": 200,
-   "bytes": 69266,
+   "bytes": 72994,
    "old": false,
    "sameAsRepo": true
   },
@@ -133,14 +133,15 @@
   "reports/atlas11/probe/live-view/p21-sec-slide.png",
   "reports/atlas11/probe/live-view/p21-sec-industry.png",
   "reports/atlas11/probe/live-view/p23-hello-promo.png",
+  "reports/atlas11/probe/live-view/p26-hello-video.png",
   "reports/atlas11/probe/live-view/p24-other-3.png",
   "reports/atlas11/probe/live-view/p25-other-7.png",
   "reports/atlas11/probe/live-view/p6-old.png"
  ],
  "texts": {
   "moon": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
-  "slide2": "오늘 코스피 −0.4% · 코스닥 −1.6%\n\n22:12 받음 · 장 끝 값\n\n코스피 — 평소보다 작게 내림\n\n오늘\n\n진한 막대 = 오늘만큼 내린 날\n\n자세히 ›",
-  "detail": "자세히 — 오늘\n접기 ×\n\n오늘 시장 — 평소와 견줌\n\n코스피 — 평소보다 작게 내림\n\n오늘\n\n코스닥 — 평소만큼 내림\n\n오늘\n\n시장 2,867곳 중 1,458곳 오름 · 1,154곳 내림 — 10곳 중 5곳 오름\n\n! 외국 투자자가 코스피에서 1조 1,614억 원 더 팖 — 하루 1조 원 문턱\n\n눈금 읽는 법",
+  "slide2": "10월 14일(수) 코스피 −0.4% · 코스닥 −1.6%\n\n01:22 받음 · 장 끝 값\n\n코스피 — 평소보다 작게 내림\n\n10월 14일\n\n진한 막대 = 이날만큼 내린 날\n\n자세히 ›",
+  "detail": "자세히 — 오늘\n접기 ×\n\n10월 14일(수) 시장 — 평소와 견줌\n\n코스피 — 평소보다 작게 내림\n\n10월 14일\n\n코스닥 — 평소만큼 내림\n\n10월 14일\n\n시장 2,867곳 중 1,458곳 오름 · 1,154곳 내림 — 10곳 중 5곳 오름\n\n! 외국 투자자가 코스피에서 1조 1,614억 원 더 팖 — 하루 1조 원 문턱\n\n눈금 읽는 법",
   "moonUp": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
   "up2111": [
    "10월 12일(월) 21:11 · 그 밖 올림 실패\n\n새 ATLAS 맨 위 슬라이드 7장 올림(사장님 19:59 · 20:11)\n\n고른 날 10월 12일 · 기준일 9월 8일 · 옛 규칙(대세 업종)\n\n1등 갈래 반도체 +22.1% · 고른 곳 전체 +9.9% · 20거래일\n\n시장 판독 — 하루 44곳 오름 · 319곳 내림(넓게 내린 날) · 작은 · 중간 회사 쪽이 더 오름\n\n? 네 눈 점검(눈마다 1,000만 번) — 클로드 걸림 412,807건\n\n? 네 눈 점검에서 걸림 — 클로드 412807건(숫자 없는 판독 줄: 앞 회차와 같은 값입니다.) — 지금 사이트 자료 그대로 다시 올림",
@@ -313,6 +314,15 @@
    "sms": "sms:01090117377",
    "tel": "tel:01090117377"
   },
+  "ok": true
+ },
+ "hongpyo": {
+  "band": "친구에게 소개하기홍표 35초 영상 · 보내기 ›10명 소개하면 스타벅스 상품권 1만원!",
+  "dur": 35.023,
+  "label": "앵무새 홍표가 ATLAS를 소개하는 35초 영상 — 장비를 차고 출동 · 홍표 세 번 · 들은 말 따라 하기 · 지난 기록장 · 내일 맞히기는 안 함 · 친구 10명 소개 상품권",
+  "desc": "앵무새 홍표가 ATLAS를 소개해요 — 앵무새는 들은 말만 따라 하죠. ATLAS도 지난 기록만 보여 줘요. 35초 영상 · 행복하세요!",
+  "alt": "밤하늘 별 사이에서 빛나는 눈 가리개를 이마에 올린 분홍 앵무새 홍표가 「홍표! 홍표! 홍표!」라고 외치는 그림 · ATLAS를 소개합니다",
+  "share": "앵무새 홍표가 35초 동안 ATLAS를 소개해요. 앵무새는 들은 것만 말해요 — ATLAS도 지난 기록만 말해요!",
   "ok": true
  },
  "co7": {
