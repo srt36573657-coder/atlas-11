@@ -22,6 +22,8 @@
 크게 잃는 길  20거래일 뒤 단순 수익 < −15% 인 경로 몫(다른 씨앗 B로 다시 돌린 값)
 난수  numpy PCG64 · 씨앗 = sha256('<씨앗 이름>|기준일|방향|찾기 또는 소거') 앞 16자리(16진) · 씨앗 이름은 옛 셈 그대로(숫자를 바꾸지 않으려고 · 화면에 안 나옴)
 
+고른 곳 밖(2026-10-14 17:25 「전부다 나오게 해」 — 모든 회사 7단)  같은 거래일 · 시장 · 방향 날 · 문턱 · 1억 · 번 길 · 크게 잃는 길 · 경로는 따로(씨앗 이름 뒤 「·밖」)
+      · 회사 = 같은 자료 폴더 mkt.json 의 고른 곳 밖 · 결과 range.json others(고른 곳 companies 숫자는 그대로)
 쓰는 법(저장소 맨 위에서): python3 scripts/atlas11/t365/range_mc.py [--quick] [--out <폴더>] [--no-record] [--reuse <앞 range.json>]
 만드는 것: <폴더>/range.json(화면) · reports/atlas11/verify/range-<기준일>-<만든 때>.json(기록 · 새 파일만 · --no-record 면 안 씀)
 """
@@ -87,6 +89,28 @@ M = np.concatenate([[np.nan], np.nanmean(simple, axis=1)])     # 시장 하루 �
 iso = lambda d: f'{d[:4]}-{d[4:6]}-{d[6:]}'
 say(f'회사 {NC}곳 · 거래일 {ND}일({iso(DATES[0])} ~ {iso(DATES[-1])})')
 
+# ── 고른 곳 밖 회사(모든 회사 7단 · 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) ──
+#   회사 = 같은 자료 폴더의 mkt.json(site_build.py 가 먼저 씀) 가운데 고른 곳 밖 · 거래일 · 시장 · 방향 날은 위(고른 곳) 그대로
+#   경로는 따로 뽑음(씨앗 이름에 「밖」) — 고른 곳 숫자는 한 자리도 안 바뀜 · 경로 수 = 1억 ÷ 밖 회사 수(올림) · 한 번에 뽑는 경로는 적게(메모리)
+MKTF = os.path.join(OUTDIR, 'mkt.json')
+OTH = [c for c, m in sorted(json.load(open(MKTF, encoding='utf-8'))['companies'].items()) if not m.get('p')] if os.path.exists(MKTF) else []
+NO = len(OTH)
+if NO:
+    omerged, _ = daese.merge(bundle, OTH, daese.read_closes(os.environ.get('ATLAS_T365_CLOSES')))
+    orows = {c: {r[0]: r[4] for r in ((omerged['stocks'].get(c) or {}).get('fchart') or {}).get('rows') or [] if r[4] and r[4] > 0 and r[0] <= SEL8} for c in OTH}
+    PO = np.full((ND, NO), np.nan)
+    for j, c in enumerate(OTH):
+        for k, d in enumerate(DATES):
+            v = orows[c].get(d)
+            if v:
+                PO[k, j] = v
+    with np.errstate(invalid='ignore', divide='ignore'):
+        osimple = PO[1:] / PO[:-1] - 1
+    osimple[np.abs(osimple) > LIMIT] = np.nan
+    RO = np.vstack([np.full((1, NO), np.nan), np.log1p(osimple)])
+    say(f'고른 곳 밖 {NO}곳 — 같은 거래일 · 방향 날로 따로 셈')
+CHUNK_O = 300
+
 
 def seed_of(asof, d, part):
     return int(hashlib.sha256(f'{SEED}|{asof}|{d}|{part}'.encode()).hexdigest()[:16], 16)
@@ -106,9 +130,9 @@ def regimes(T):
     return {'days': days, 'lab': lab, 'volTh': vth, 'n': {d: int((lab == d).sum()) for d, _ in DIRS}}
 
 
-def pool_matrix(pool, cols, rng):
-    """그 방향 날들 × 회사 · 값 없는 칸은 그 회사 값 있는 같은 방향 날 하나로(씨앗 고정) · 값 있는 날 20일 밑이면 그 회사 셈 못 함"""
-    X = R[np.ix_(pool, cols)].astype(np.float64)
+def pool_matrix(pool, cols, rng, RR=None):
+    """그 방향 날들 × 회사 · 값 없는 칸은 그 회사 값 있는 같은 방향 날 하나로(씨앗 고정) · 값 있는 날 20일 밑이면 그 회사 셈 못 함 · RR = 고른 곳 밖 수익(없으면 고른 곳 R)"""
+    X = (R if RR is None else RR)[np.ix_(pool, cols)].astype(np.float64)
     ok = np.ones(len(cols), bool)
     for j in range(len(cols)):
         col = X[:, j]
@@ -123,8 +147,8 @@ def pool_matrix(pool, cols, rng):
     return X.astype(np.float32), ok
 
 
-def mc(T, asof, cols, pairs, part):
-    """방향마다 경로 = pairs ÷ 회사 수(올림) · 회사마다 (번 길 수, 크게 잃는 길 수, 경로 수)"""
+def mc(T, asof, cols, pairs, part, RR=None, chunk=None):
+    """방향마다 경로 = pairs ÷ 회사 수(올림) · 회사마다 (번 길 수, 크게 잃는 길 수, 경로 수) · RR = 고른 곳 밖 수익(방향 날은 고른 곳 시장 그대로)"""
     rg = regimes(T)
     if rg is None:
         return None
@@ -136,12 +160,12 @@ def mc(T, asof, cols, pairs, part):
         if len(pool) < H:
             out[d] = None
             continue
-        X, ok = pool_matrix(pool, cols, rng)
+        X, ok = pool_matrix(pool, cols, rng, RR)
         win = np.zeros(len(cols), np.int64)
         big = np.zeros(len(cols), np.int64)
         left = npath
         while left > 0:
-            n = min(CHUNK, left)
+            n = min(chunk or CHUNK, left)
             idx = rng.integers(0, len(pool), size=(n, H))
             s = X[idx].sum(axis=1, dtype=np.float32)          # (n, 회사) 20거래일 로그 수익
             win += (s > math.log1p(PROFIT)).sum(axis=0)
@@ -151,10 +175,10 @@ def mc(T, asof, cols, pairs, part):
     return {'dirs': out, 'rg': rg, 'npath': npath}
 
 
-def ranges(T, asof, cols, pairs):
-    """번 길(씨앗 A · 찾기) · 크게 잃는 길(씨앗 B · 소거) — 회사마다 4방향 몫 · 고르기 · 차례 없음"""
-    f = mc(T, asof, cols, pairs, '찾기')
-    e = mc(T, asof, cols, pairs, '소거')
+def ranges(T, asof, cols, pairs, RR=None, tag=''):
+    """번 길(씨앗 A · 찾기) · 크게 잃는 길(씨앗 B · 소거) — 회사마다 4방향 몫 · 고르기 · 차례 없음 · tag = 고른 곳 밖이면 「·밖」(따로 뽑음)"""
+    f = mc(T, asof, cols, pairs, '찾기' + tag, RR, CHUNK_O if RR is not None else None)
+    e = mc(T, asof, cols, pairs, '소거' + tag, RR, CHUNK_O if RR is not None else None)
     if f is None or e is None or any(f['dirs'][d] is None or e['dirs'][d] is None for d, _ in DIRS):
         return None
     pw = np.stack([f['dirs'][d]['win'] / f['dirs'][d]['paths'] for d, _ in DIRS])    # (4, 회사)
@@ -167,11 +191,12 @@ def ranges(T, asof, cols, pairs):
 # ── 지문(같은 회사 · 같은 값이면 앞 회차 범위를 그대로 씀 — 사장님 12:41 「하루에 4번」 · 셈 시간 아낌) ──
 MEMBERS_DIGEST = hashlib.sha256(','.join(codes).encode()).hexdigest()[:16]
 CLOSES_DIGEST = hashlib.sha256(json.dumps([[d for d in DATES]] + [[rows[c].get(d) for d in DATES] for c in codes]).encode()).hexdigest()[:16]
+OTHERS_DIGEST = hashlib.sha256(json.dumps([OTH] + ([[orows[c].get(d) for d in DATES] for c in OTH] if NO else [])).encode()).hexdigest()[:16]  # 고른 곳 밖 회사 · 값
 if '--reuse' in sys.argv and not QUICK:
     try:
         old = json.load(open(sys.argv[sys.argv.index('--reuse') + 1], encoding='utf-8'))
         o = old.get('spec') or {}
-        if old.get('schema') == 'atlas-new-range-1' and (o.get('version'), o.get('specCommit'), o.get('membersDigest'), o.get('closesDigest'), old.get('asOf'), o.get('quick')) == (VERSION, SPEC_COMMIT, MEMBERS_DIGEST, CLOSES_DIGEST, iso(DATES[-1]), False):
+        if old.get('schema') == 'atlas-new-range-1' and (o.get('version'), o.get('specCommit'), o.get('membersDigest'), o.get('closesDigest'), old.get('asOf'), o.get('quick'), o.get('othersDigest')) == (VERSION, SPEC_COMMIT, MEMBERS_DIGEST, CLOSES_DIGEST, iso(DATES[-1]), False, OTHERS_DIGEST if NO else None):
             os.makedirs(OUTDIR, exist_ok=True)
             with open(os.path.join(OUTDIR, 'range.json'), 'w', encoding='utf-8') as f:
                 json.dump(old, f, ensure_ascii=False, separators=(',', ':'))
@@ -193,22 +218,32 @@ if now is None:
     sys.exit('range: 셈을 못 함(역사 창 · 방향 날 모자람)')
 rg = now['rg']
 say('방향 날 수 ' + json.dumps(rg['n'], ensure_ascii=False) + f" · 출렁 문턱 {rg['volTh']:.5f}")
+oth = ranges(T, ASOF, list(range(NO)), PAIRS, RO, '·밖') if NO else None
+if NO and oth is None:
+    sys.exit('range: 고른 곳 밖 회사 셈을 못 함')
+if NO:
+    say(f"고른 곳 밖 {NO}곳 — 경로 {oth['npath']:,} · 셈한 곳 {int(oth['ok'].sum())}곳")
 
 # ── 기록 ──
 per_co = {}
 for j in range(NC):
     per_co[codes[j]] = {'ok': bool(now['ok'][j]), 'avg': round(float(now['avg'][j]) * 100, 2), 'win': [round(float(x) * 100, 2) for x in now['pw'][:, j]],
                         'big': [round(float(x) * 100, 2) for x in now['pb'][:, j]], 'worst': round(float(now['worst'][j]) * 100, 2)}
+per_oth = {}
+for j in range(NO):
+    per_oth[OTH[j]] = {'ok': bool(oth['ok'][j]), 'avg': round(float(oth['avg'][j]) * 100, 2), 'win': [round(float(x) * 100, 2) for x in oth['pw'][:, j]],
+                       'big': [round(float(x) * 100, 2) for x in oth['pb'][:, j]], 'worst': round(float(oth['worst'][j]) * 100, 2)}
 made = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 spec = {'version': VERSION, 'dir': '가 · 시장 방향 넷', 'horizon': H, 'profit': PROFIT, 'bigLoss': BIGLOSS,
         'window': WIN, 'volQ': VOLQ, 'upTh': UPTH, 'downTh': DNTH, 'pairs': PAIRS,
         'paths': now['npath'], 'totalPairs': now['npath'] * NC * len(DIRS) * 2, 'quick': QUICK,
         'universe': ACT['version'], 'specCommit': SPEC_COMMIT, 'selAsOf': pro.get('asOf', ACT['asOf']), 'closes': {k: mst[k] for k in ('files', 'added')},
-        'membersDigest': MEMBERS_DIGEST, 'closesDigest': CLOSES_DIGEST}
+        'membersDigest': MEMBERS_DIGEST, 'closesDigest': CLOSES_DIGEST,
+        'othersDigest': OTHERS_DIGEST if NO else None, 'others': {'n': NO, 'paths': oth['npath'] if NO else None, 'seed': '·밖', 'eligible': int(oth['ok'].sum()) if NO else 0}}
 out = {'schema': 'atlas-new-range-1', 'made': made, 'asOf': ASOF, 'spec': spec,
        'dirs': [{'id': d, 'name': nm, 'days': rg['n'][d], 'pool': now['pools'][d]} for d, nm in DIRS],
        'volTh': rg['volTh'], 'window': {'from': iso(DATES[int(rg['days'][0])]), 'to': ASOF, 'days': int(len(rg['days']))},
-       'eligible': int(now['ok'].sum()), 'companies': per_co}
+       'eligible': int(now['ok'].sum()), 'companies': per_co, 'others': per_oth}
 os.makedirs(OUTDIR, exist_ok=True)
 with open(os.path.join(OUTDIR, 'range.json'), 'w', encoding='utf-8') as f:
     json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
