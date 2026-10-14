@@ -1,5 +1,5 @@
 {
- "made": "2026-10-14T20:59:37.705Z",
+ "made": "2026-10-14T22:33:36.637Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -135,13 +135,14 @@
   "reports/atlas11/probe/live-view/p23-hello-promo.png",
   "reports/atlas11/probe/live-view/p26-hello-video.png",
   "reports/atlas11/probe/live-view/p27-hello-intro.png",
+  "reports/atlas11/probe/live-view/p28-hello-text.png",
   "reports/atlas11/probe/live-view/p24-other-3.png",
   "reports/atlas11/probe/live-view/p25-other-7.png",
   "reports/atlas11/probe/live-view/p6-old.png"
  ],
  "texts": {
   "moon": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
-  "slide2": "10월 14일(수) 코스피 −0.4% · 코스닥 −1.6%\n\n05:53 받음 · 장 끝 값\n\n코스피 — 평소보다 작게 내림\n\n10월 14일\n\n진한 막대 = 이날만큼 내린 날\n\n자세히 ›",
+  "slide2": "10월 14일(수) 코스피 −0.4% · 코스닥 −1.6%\n\n07:28 받음 · 장 끝 값\n\n코스피 — 평소보다 작게 내림\n\n10월 14일\n\n진한 막대 = 이날만큼 내린 날\n\n자세히 ›",
   "detail": "자세히 — 오늘\n접기 ×\n\n10월 14일(수) 시장 — 평소와 견줌\n\n코스피 — 평소보다 작게 내림\n\n10월 14일\n\n코스닥 — 평소만큼 내림\n\n10월 14일\n\n시장 2,867곳 중 1,458곳 오름 · 1,154곳 내림 — 10곳 중 5곳 오름\n\n! 외국 투자자가 코스피에서 1조 1,614억 원 더 팖 — 하루 1조 원 문턱\n\n눈금 읽는 법",
   "moonUp": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
   "up2111": [
@@ -346,6 +347,11 @@
    ],
    "ml": 0,
    "msg": "홍표!\n홍표!\n홍표!\n주식해서\n돈 버신 분 몇분일까요?\n왜? 그럴까요!\n하규는 아틀란스 해서 부자 될겁니다\n아틀란스가 답이다\n안상미 전무님 주식해서 돈 많이 버세요\n아틀란스 올림!"
+  },
+  "i4": {
+   "intro": true,
+   "ml": 0,
+   "bub": 3
   },
   "i2": {
    "intro": false,
