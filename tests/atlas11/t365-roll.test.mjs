@@ -1,6 +1,6 @@
 // 새 ATLAS 회차(하루 4번) — 사장님 2026-10-11 09:37 「기준일을 항상 현재 날짜에서 지난 20일 거래로 하라 … 항상 그렇게 하라」
 //   12:41 「아니 내일이면 내일 다시 그다음날도 다시 기준은 항상 오늘날짜로 해야 하고 업데이트는 하루에 4번 해야 하고 업데이트 탭 만들어서 기록해놓아라」
-//   ① closes_fetch.mjs — 네이버 일봉 XML(재생 모드)을 [날, 종가, 거래량] 으로 새 파일에 남김 · 후보 모두(1,378곳)가 기본 · 없는 곳은 errors
+//   ① closes_fetch.mjs — 네이버 일봉 XML(재생 모드)을 [날, 종가, 거래량] 으로 새 파일에 남김 · 후보 모두(모음 회사 모두 · 2026-10-14 부터 전 종목)가 기본 · 없는 곳은 errors
 //   ② roll.mjs — 모음 뒤 가짜 하루(시험용 · 저장소에 남기지 않음)를 후보 모두에 이어 붙이면 그날 값으로 다시 셈(멍거 · 린치 조건 ml-v1 은 결산 · 모음 날 값만으로 고르므로 같은 곳 · 2026-10-14) ·
 //      기준일이 하루 따라가고 · 그날 종가가 없는 회사(거래정지처럼)와 지난 값이 다르게 다시 받힌 회사는 빠지고 · 따로 세기 셋 모두 틀림 0 · 회차 기록 · 업데이트 탭 자료가 생김
 import test from 'node:test';
@@ -104,12 +104,13 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const rg = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/range.json'), 'utf8')); assert.equal(rg.schema, 'atlas-new-range-1'); assert.equal(rg.asOf, next);
   for (const k of ['picks', 'backtest', 'cutN', 'total']) assert.ok(!(k in rg), k);
   for (const f of fs.readdirSync(path.join(dist, 'atlas/data')).filter(f => f.endsWith('.json'))) { const t = fs.readFileSync(path.join(dist, 'atlas/data', f), 'utf8'); assert.ok(!/pick36/.test(t) && !has36Text(t), '36곳 흔적 ' + f); }
-  // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 가짜 하루가 「봉인 뒤 지금까지」에 한 칸 붙고 · 3년 전 길과 다시 여는 날은 그대로
-  const tm = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/time.json'), 'utf8')).capsules[0];
-  assert.equal(tm.since.days, 1); assert.deepEqual(tm.since.dates, [tm.seal, next]); assert.ok(tm.since.chg365 != null && tm.since.chgPool != null);
+  // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 「봉인 뒤 지금까지」 = 봉인 날 뒤 거래일 모두(모음 날까지 + 가짜 하루) · 3년 전 길과 다시 여는 날은 그대로
+  //   (모음 날 = 봉인 날이던 10월 10일 모음에서는 한 칸 · 2026-10-14 전 종목 모음부터는 봉인 날 뒤 날들이 모음에 들어 있음)
+  const tm = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/time.json'), 'utf8')).capsules[0], after = cal.filter(d => d > tm.seal && d <= next);
+  assert.equal(after.at(-1), next); assert.equal(tm.since.days, after.length); assert.deepEqual(tm.since.dates, [tm.seal, ...after]); assert.ok(tm.since.chg365 != null && tm.since.chgPool != null);
   assert.ok(!('v36' in tm.since) && !('chg36' in tm.since) && !('pick36' in tm), '봉인 화면 자료에 36곳 없음');
   assert.deepEqual(tm.opens.map(o => o.y), [3, 5, 10]); assert.equal(tm.past.to, tm.seal);
-  assert.equal(core.time.since.days, 1); assert.equal(core.time.digest, tm.digest.slice(0, 12));
+  assert.equal(core.time.since.days, after.length); assert.equal(core.time.digest, tm.digest.slice(0, 12));
   const upd = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/updates.json'), 'utf8'));
   assert.equal(upd.records[0].result, '바꿈'); assert.equal(upd.records[0].asOf, next); assert.equal(upd.records[0].in.length, rep.in.length);
   assert.equal(upd.records[0].stay, rep.stay); assert.deepEqual(upd.records[0].kinds, rep.kinds); assert.equal(upd.records[0].ruleChanged, rep.ruleChanged);
