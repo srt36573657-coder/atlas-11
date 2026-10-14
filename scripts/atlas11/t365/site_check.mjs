@@ -28,6 +28,9 @@ const {chromium} = require('playwright');
 const exe = ['/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'].find(f => fs.existsSync(f));
 const core = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/core.json'), 'utf8'));
 const comp = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/comp.json'), 'utf8')).companies;
+// 모든 회사(사장님 2026-10-14 12:01(싱가포르) 「나」) — 갈래 · 업종 · 회사 흐름 = 모든 회사 · 고른 곳은 금빛(줄 왼쪽 띠 · 이름표) · 업종 화면 회사 줄 = 모든 회사 자료(mkt.json)
+const MKT = core.mkt ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/mkt.json'), 'utf8')).companies : null;
+const MA = core.mkt ?? core.all, loc = n => Number(n).toLocaleString('ko-KR');
 const rng = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/range.json'), 'utf8')); // 7단 범위(range-v1)
 const days = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/days.json'), 'utf8'));
 const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.json'), 'utf8')); // 업데이트 탭(사장님 12:41)
@@ -128,8 +131,12 @@ const fail = (where, what) => fails.push({where, what});
 function expect(route) {
   // 화면마다 자료에서 따로 만든 기대 글(보기 = 한 회사 한 표)
   const [, kind, arg] = route.match(/^#\/(\w*)\/?(.*)$/) || [];
-  if (kind === 'g') { const g = core.groups.find(x => x.id === arg); return {step: 1, head: pct(g.chg), up: g.up, down: g.down, rows: g.inds.map(n => { const i = core.industries.find(x => x.name === n); return [n, pct(i.chg)]; }), trh: trText(g.tr), trd: g.inds.map(n => trText(core.industries.find(x => x.name === n).tr))}; }
-  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: i.up, down: i.down, rows: i.members.map(c => [comp[c].name, pct(comp[c].chg)]), trh: trText(i.tr)}; }
+  if (kind === 'g') { const g = core.groups.find(x => x.id === arg); return {step: 1, head: pct(g.chg), up: loc(g.up), down: loc(g.down), rows: g.inds.map(n => { const i = core.industries.find(x => x.name === n); return [n, pct(i.chg)]; }), trh: trText(g.tr), trd: g.inds.map(n => trText(core.industries.find(x => x.name === n).tr)),
+    ...(MKT ? {pkN: g.inds.filter(n => core.industries.find(x => x.name === n).pk > 0).length, why: g.pk ? [`고른 곳 ${g.pk}곳`, '금빛 = 고른 곳'] : []} : {})}; }
+  if (kind === 'i') { const i = core.industries.find(x => x.name === decodeURIComponent(arg)); return {step: 2, head: pct(i.chg), up: loc(i.up), down: loc(i.down), rows: i.members.filter(c => !MKT || MKT[c].l.some(x => x != null)).map(c => (MKT ? [MKT[c].n, pct(MKT[c].c)] : [comp[c].name, pct(comp[c].chg)])), trh: trText(i.tr),
+    // 기준일 종가가 없어 선을 못 그린 회사 = 줄 대신 「?」 한 줄에 이름 고리(2026-10-14 「나」 · 규칙 56 줄마다 선)
+    ...(MKT ? {pkN: i.members.filter(c => MKT[c].p && MKT[c].l.some(x => x != null)).length, pkHref: i.members.filter(c => MKT[c].p && MKT[c].l.some(x => x != null)).map(c => '#/c/' + c),
+      why: [...(i.pk ? [`금빛 = 고른 곳 ${i.pk}곳`] : []), `금빛이 아닌 회사는 ${PN} 밖입니다`, ...(() => { const no = i.members.filter(c => !MKT[c].l.some(x => x != null)); return no.length ? [`기준일(${md(core.base)}) 종가가 없어 선을 못 그린 회사 ${no.length}곳`, ...no.map(c => MKT[c].n)] : []; })()]} : {})}; }
   if (kind === 'c') {
     const [code, sub] = arg.split('/'), c = comp[code];
     if (!sub) { // 왜 멍거 · 린치 조건 N곳에 들었나요?(2026-10-14 06:05 「가」 · ml-v1) — 넘은 갈래마다 값(comp.json 에서 따로 만든 글 · 차례 없음)
@@ -179,10 +186,11 @@ function expect(route) {
   }
   if (!kind) { const T = core.time, H = home, K = H?.idx?.KOSPI, Q = H?.idx?.KOSDAQ, sd = H?.sectors?.date ?? K?.date, fd = H?.flows?.KOSPI?.date ?? H?.flows?.KOSDAQ?.date;
     // 첫 화면 종합 정보(14:54) → 맨 위 슬라이드 7장(19:59 · 20:11) — 머리 = 2장 오늘 지수(「오늘」은 보는 날짜로) · 장 이름 · 업종 1등 · 꼴찌 · 365곳 양 끝 · 봉인 한 줄 · 경주 제목은 그 아래(h2) · 장마다 보이는 글은 아래 hubExpect
-    return {up: core.all.up, down: core.all.down, rows: core.groups.map(g => [g.short, pct(g.chg)]), title: K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', trd: core.groups.map(g => trText(g.tr)),
+    return {up: loc(MA.up), down: loc(MA.down), rows: core.groups.map(g => [g.short, pct(g.chg)]), title: K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', trd: core.groups.map(g => trText(g.tr)),
       why: [`지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, `${PN} — ${PLINE}`, ...(H ? ['코스피 · 코스닥 — 3개월', ...(H.flows ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`] : []), '미국 — 마지막 장', ...(H.s365?.list?.length ? [`${PN} — ${dayWord(H.s365.date)}`] : []),
         ...(H.sectors ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${H.sectors.label} · 약한 7`, H.sectors.strong[0].name, H.sectors.weak[0].name] : []), ...(H.s365?.top ? [H.s365.top.n, H.s365.bot.n] : [])] : ['? 오늘 시장 자료를 못 읽었습니다']),
-        ...(T ? [`봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`, ddayText(T.opens[0].date)] : []), '저는 투자 상담사가 아닙니다'], hub: H ? hubExpect(H) : null}; }
+        ...(T ? [`봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`, ddayText(T.opens[0].date)] : []), '저는 투자 상담사가 아닙니다',
+        ...(MKT ? [`모든 회사 ${loc(core.mkt.n)}곳 중 ${loc(MA.up)}곳 오름`, `금빛 = ${PN}이 든 곳 · 큰 갈래 ${core.groups.length}개 · 업종 ${core.industries.length}개`, ...core.groups.filter(g => g.pk).map(g => `고른 ${g.pk}곳`)] : [])], hub: H ? hubExpect(H) : null}; }
   if (kind === 'time') { const K = tdata.capsules[0], P = K.past, S = K.since; return {title: `봉인 ${K.id}호 — ${md(K.seal)} 365곳`,
     why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
       ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
@@ -279,6 +287,7 @@ const probe = ({banned}) => {
       res.links = [...document.querySelectorAll('#view a[href^="#/"], .tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
       res.head = document.querySelector('#view h1')?.textContent ?? '';
       res.count = document.querySelector('#view .count')?.textContent ?? '';
+      res.pkN = document.querySelectorAll('#view .board .row.pk').length; res.pkHref = [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')); // 금빛 줄(2026-10-14 「나」)
       res.spk = [...document.querySelectorAll('#view .board .row')].map(x => { const ln = x.querySelector('.track .spk .ln'), v = x.querySelector('.val'), b = x.querySelector('.track')?.getBoundingClientRect(); return {d: (ln?.getAttribute('d') ?? '').length, ln: ln?.getAttribute('class') ?? '', val: v?.className ?? '', w: b ? Math.round(b.width) : 0, h: b ? Math.round(b.height) : 0, n: x.querySelector('.nm')?.textContent ?? ''}; }); // 줄마다 선 그래프(2026-10-13 12:30)
       res.rows = [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => [x.querySelector('.nm').firstChild.textContent, x.querySelector('.val').textContent]);
       res.trd = [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => x.querySelector('.trd')?.textContent ?? null);
@@ -343,6 +352,8 @@ for (const [w, hgt, font] of plans) {
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (r.spk?.length) { numbers += r.spk.length; const bad = r.spk.filter(x => !x.d || x.h < 16 || (/\b(up|down)\b/.exec(x.ln)?.[1] ?? 'flat') !== (/\b(up|down)\b/.exec(x.val)?.[1] ?? 'flat')); if (bad.length) fail(tag, `줄 선 그래프 — 선 없음 · 낮음 · 색이 숫자와 다름: ${bad.slice(0, 3).map(x => x.n + ' ' + x.ln + ' / ' + x.val + ' ' + x.h + 'px').join(' · ')}`); } // 사장님 2026-10-13 12:30 「이 사진처럼 … 그래프가 표현되게해」
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
+    if (e.pkN != null) { numbers++; if (r.pkN !== e.pkN) fail(tag, `금빛 줄 ${r.pkN} ≠ ${e.pkN}`); } // 금빛 = 고른 곳(2026-10-14 「나」)
+    if (e.pkHref) { numbers++; if (JSON.stringify([...r.pkHref].sort()) !== JSON.stringify([...e.pkHref].sort())) fail(tag, `금빛 줄 길 ${r.pkHref.join(',')} ≠ ${e.pkHref.join(',')}`); }
     if (e.step) { numbers++; if (r.step !== `7단 중 ${e.step}단`) fail(tag, `7단 표시 ${r.step} ≠ ${e.step}단`); }
     for (const old of ['5단 중', '5단으로 내려갑니다', '사기 전에 볼 것', '4단 앞으로 클까?', '5단 범위', '앞날 값은 내지 않습니다', '지금의 몇 배쯤', '조사하는 중이라 다음 차례에 채웁니다', '기본 문 여섯']) if (r.all.includes(old) || r.text.includes(old)) fail(tag, `옛 글 「${old}」이 남음`); // 7단 · 2026-10-12 네 팀 점검으로 바꾼 글
     if (e.dm !== undefined) { numbers++; if (r.dm !== e.dm) fail(tag, `7단 365곳 가운데값 눈금 ${r.dm} ≠ ${e.dm}`); }
@@ -416,7 +427,8 @@ for (const [w, hgt, font] of plans) {
       await p.evaluate(() => { document.querySelector('[data-close="findSheet"]').click(); });
     }
     await p.evaluate(c => { location.hash = '#/x/' + c; }, OUT1.c);
-    try { await p.waitForFunction(() => document.querySelector('#infoBody .funnel'), null, {timeout: 5000}); const t = await p.$eval('#infoBody', x => x.innerText); screens++; if (!/멈췄습니다/.test(t)) fail(`${w} 365곳 밖`, '까닭 줄 없음'); } catch { fail(`${w} 365곳 밖`, '깔때기 안 그려짐'); }
+    try { await p.waitForFunction(() => document.querySelector('#infoBody .funnel'), null, {timeout: 5000}); const t = await p.$eval('#infoBody', x => x.innerText); screens++; if (!/멈췄습니다/.test(t)) fail(`${w} 365곳 밖`, '까닭 줄 없음');
+      if (MKT?.[OUT1.c]) { numbers++; if (!t.includes(`업종 ${MKT[OUT1.c].i}`) || !t.includes(pct(MKT[OUT1.c].c))) fail(`${w} 365곳 밖`, `업종 · 20거래일 줄 없음(업종 ${MKT[OUT1.c].i} · ${pct(MKT[OUT1.c].c)})`); } } catch { fail(`${w} 365곳 밖`, '깔때기 안 그려짐'); }
   }
   await ctx.close();
 }
@@ -524,7 +536,9 @@ while (q.length) { const r = q.shift(); for (const l of links.get(r) ?? []) { co
 let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c); if (d == null || d > 3) { far++; fail('3번 누름', `${comp[c].name} ${d ?? '닿지 않음'}`); }
   for (const [sub, n, nm] of [['past', 4, '4단 지나온 길'], ['rivals', 5, '5단 누구와 다투나'], ['grow', 6, '6단 앞으로 클까?'], ['range', 7, '7단 범위 · 확인']]) { const dn = depth.get(`#/c/${c}/${sub}`); if (dn == null || dn > n) fail(nm, `${comp[c].name} ${dn ?? '닿지 않음'}`); } }
 const max7 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
-const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99))}, click7: {deepest: max7, steps: ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인']}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
+// 모든 회사(2026-10-14 「나」) — 회사마다 3번이면 닿음(고른 곳 = 3단 회사 #/c/ · 나머지 = 밖 칸 #/x/)
+let farAll = 0, maxAll = 0; if (MKT) for (const [c, m] of Object.entries(MKT)) { const d = depth.get((m.p ? '#/c/' : '#/x/') + c); maxAll = Math.max(maxAll, d ?? 99); if (d == null || d > 3) { farAll++; if (farAll <= 20) fail('3번 누름(모든 회사)', `${m.n} ${d ?? '닿지 않음'}`); } }
+const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99)), ...(MKT ? {all: Object.keys(MKT).length, over3All: farAll, maxAll} : {})}, click7: {deepest: max7, steps: ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인']}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
 if (arg('--links')) fs.writeFileSync(path.resolve(arg('--links')), JSON.stringify(Object.fromEntries(links)) + '\n'); // 길 지도(390 · 보통 글씨에서 화면마다 누를 수 있는 길) — 1억 번 눌러 보기(click_walk.mjs)가 읽음
 console.log(JSON.stringify({screens, numbers, fails: fails.length, click3: res.click3, first: fails.slice(0, 8)}));

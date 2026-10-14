@@ -21,6 +21,8 @@
   comp.json  — 회사 365곳 요약(선 빼고 · 첫 그림 뒤에 받음) · 회사마다 든 까닭(힘 붙음 · 남김 · 채움 · 앞 10거래일 · 뒤 10거래일 · 네이버 업종 · 차례는 싣지 않음)
   lines.json — 회사마다 20거래일 선(기준일 = 100 · 값 × 100 정수 · 값 없는 날 null)
   names.json — 후보 모두(모음 회사 모두 · 2026-10-14 08:41 「가」부터 전 종목) 이름 · 365곳 안/밖 · 밖이면 어느 문에서 왜(찾기 칸이 읽음)
+  mkt.json   — 모든 회사(2026-10-14 12:01 「나」 — 모음 보통주 모두) 회사마다 이름 · 업종 · 20거래일 · 선 · 고른 곳 · 튐(업종 화면 회사 줄)
+  ※ 2026-10-14 「나」부터 core.json 의 갈래 · 업종 = 모든 회사(core.mkt · 고른 곳 수 pk) · core.all · comp · lines · co 는 고른 곳 그대로
 셈(숫자는 모두 여기서 한 번만 · 화면은 보여 주기만 · 종가는 모음 bundle.json.gz 네이버 일봉 그대로):
   회사 선 = 그날 종가 ÷ 기준일 종가 × 100(기준일 종가가 없으면 선 없음)
   한 회사 한 표 = 날마다 회사들 하루 변화의 같은 무게 평균(±50% 넘는 값 뺌)을 이어 곱함 · 기준일 = 100
@@ -116,8 +118,25 @@ for g in BYI['groups']:
             ind_of[m['code']] = (g['id'], i['name'])
 if len(members) != PICK or set(members) != set(SELPICK):
     die('업종 정리 파일의 회사 %d곳이 고른 %d곳과 다름' % (len(members), PICK))
+# 모든 회사(사장님 2026-10-14 12:01(싱가포르) 「나」 — 「첫 화면부터 모두 모든 회사로 바꿔요. 고른 56곳은 금빛이에요」):
+#   갈래 · 업종 · 회사 흐름 = 모음의 회사 주식(보통주) 모두 · 업종 = atlasIndustryOf(ind_all.mjs · 고른 곳 업종 정리와 같은 셈) · 큰 갈래 = groups.json
+#   고른 곳(멍거 · 린치 조건)은 그대로 — comp · lines · co · 범위 · 성장은 고른 곳만 · 업종 · 갈래마다 고른 곳 수 pk · 회사마다 모든 회사 자료 mkt.json
+import subprocess  # noqa: E402
+GRP = json.load(open(os.path.join(HERE, 'groups.json'), encoding='utf-8'))['groups']
+G_OF = {i: g['id'] for g in GRP for i in g['industries']}
+IND_ALL = json.loads(subprocess.run(['node', os.path.join(HERE, 'ind_all.mjs'), NOW], check=True, capture_output=True, text=True).stdout)
+ALLC = sorted(r['code'] for r in N['rows'] if not r.get('notCommon'))
+_lost = sorted({str(IND_ALL.get(c)) for c in ALLC if IND_ALL.get(c) not in G_OF})
+if _lost:
+    die('큰 갈래(groups.json)에 없는 업종 — 지어내지 않고 멈춤: %s' % ' · '.join(_lost))
+if not set(members) <= set(ALLC):
+    die('고른 곳 가운데 회사 주식(보통주) 밖이 있음: %s' % sorted(set(members) - set(ALLC)))
+for c in members:
+    if (G_OF[IND_ALL[c]], IND_ALL[c]) != ind_of[c]:
+        die('%s 업종이 업종 정리(%s)와 모든 회사 셈(%s)에서 다름' % (c, ind_of[c], IND_ALL[c]))
+PKSET = set(members)
 iso8 = lambda d: '%s-%s-%s' % (d[:4], d[4:6], d[6:])
-crow = {c: {iso8(r[0]): r[4] for r in MERGED['stocks'][c]['fchart']['rows'] if r[4] and r[4] > 0 and iso8(r[0]) <= SELDAY} for c in members}
+crow = {c: {iso8(r[0]): r[4] for r in (((MERGED['stocks'].get(c) or {}).get('fchart') or {}).get('rows') or []) if r[4] and r[4] > 0 and iso8(r[0]) <= SELDAY} for c in ALLC}
 BLAST = OVER['blast']  # 모음의 마지막 날(10월 8일)
 dcnt = collections.Counter(d for c in members for d in crow[c])
 DAYS = sorted(d for d, n in dcnt.items() if n > len(members) / 2)  # 365곳 가운데 절반 넘게 종가가 있는 날
@@ -137,14 +156,16 @@ PICK_ASOF = SELDAY  # 고르는 날 = 마지막 종가 날(사장님 12:41 「�
 kPick = dates.index(PICK_ASOF) if PICK_ASOF in dates else None  # 고른 날이 창 밖으로 나가면 금빛 세로선 없음
 px = lambda c, d: crow[c].get(d)
 mv = {}
-for c in members:
+for c in ALLC:  # 모든 회사(고른 곳 포함) — 회사 선 = 그날 종가 ÷ 기준일 종가 × 100
     b0 = px(c, base)
     mv[c] = [(px(c, d) / b0 * 100 if (b0 and px(c, d)) else None) for d in dates]
-mchg = {c: (mv[c][-1] / 100 - 1 if mv[c][-1] is not None else None) for c in members}
+mchg = {c: (mv[c][-1] / 100 - 1 if mv[c][-1] is not None else None) for c in ALLC}
 
 
 def eq_index(codes):
-    """한 회사 한 표 — 날마다 하루 변화(±50% 넘는 값 뺌)의 같은 무게 평균을 이어 곱함 · 기준일 = 100"""
+    """한 회사 한 표 — 날마다 하루 변화(±50% 넘는 값 뺌)의 같은 무게 평균을 이어 곱함 · 기준일 = 100
+    기준일 종가가 있는 회사만(2026-10-14 「나」 모든 회사 — 기준일 뒤에 새로 상장한 곳은 선이 「?」라 셈에서도 뺌 · 선만으로 다시 셀 수 있게)"""
+    codes = [c for c in codes if px(c, base)]
     out, lvl = [100.0], 100.0
     for k in range(1, NDAY):
         rs = []
@@ -177,9 +198,9 @@ def mdd(v):
     return m
 
 
-cap_sel = {c: SELROW[c]['capEok'] for c in members}  # 고를 때(10월 8일) 몸값 · 억 원
+cap_sel = {c: SELROW[c]['capEok'] for c in ALLC}  # 고르는 날 몸값 · 억 원(모든 회사)
 capb = {}
-for c in members:
+for c in ALLC:
     # 고른 날 몸값의 바탕 종가 — 그날 종가가 있으면 그날(daese.refresh 가 그날 값으로 맞춤) · 없으면 모음 날 종가(refresh 가 몸값을 안 바꿈)
     #   멍거 조건(mg-v1)은 결산만으로 고르므로 거래가 멈춘 회사도 남음(2026-10-14 · 회차 시험 「거래정지처럼」) — 둘 다 없으면 큰 회사는 크게 셈에서만 뺌
     a = px(c, PICK_ASOF)
@@ -270,27 +291,34 @@ def node(name, codes, v):
 
 
 # 갈래 · 업종 차례 = 20거래일 많이 오른 순(사장님 2026-10-11 00:00 「올름차순으로 배열을 해」 → 많이 오른 순)
+#   2026-10-14 「나」부터 갈래 · 업종 = 모든 회사(ALLC) · core.all = 고른 곳 전체(그대로 — 업데이트 탭 · 시장 판독 옛 칸과 같은 뜻) · core.mkt = 모든 회사
 all_codes = list(members)
 core_all = node('고른 곳 전체', all_codes, eq_index(all_codes))
-gv = {g['id']: eq_index([m['code'] for i in g['industries'] for m in i['companies']]) for g in BYI['groups']}
-iv = {i['name']: eq_index([m['code'] for m in i['companies']]) for g in BYI['groups'] for i in g['industries']}
-if len(iv) != sum(len(g['industries']) for g in BYI['groups']):
-    die('업종 이름이 겹침')
+core_mkt = node('모든 회사', ALLC, eq_index(ALLC))
+core_mkt['pk'] = len(PKSET)
+IND_MEM = collections.defaultdict(list)
+for c in sorted(ALLC, key=lambda c: (-(SELROW[c].get('capEok') or 0), c)):  # 업종 안 바탕 차례 = 몸값 큰 순(같은 오름이면 이 차례)
+    IND_MEM[IND_ALL[c]].append(c)
+gmem = {g['id']: [c for i in g['industries'] for c in IND_MEM.get(i, [])] for g in GRP}
+gv = {gid: eq_index(cs) for gid, cs in gmem.items() if cs}
+iv = {i: eq_index(cs) for i, cs in IND_MEM.items()}
 SHORT = {'semi': '반도체', 'bio': '바이오', 'heavy': '조선·방산', 'it': 'IT·통신', 'power': '전력·에너지', 'kcon': 'K-소비재',
          'mat': '소재·건설', 'elec': '전자부품', 'fin': '금융', 'hold': '지주·유통'}
-SAY = {g['id']: g['say'] for g in BYI['groups']}
+SAY = {g['id']: g['say'] for g in GRP}
 groups, industries = [], []
-for g in sorted(BYI['groups'], key=lambda g: -gv[g['id']][-1]):
-    gc = [m['code'] for i in g['industries'] for m in i['companies']]
+for g in sorted([g for g in GRP if g['id'] in gv], key=lambda g: -gv[g['id']][-1]):
+    gc = gmem[g['id']]
     gn = node(g['name'], gc, gv[g['id']])
-    inds = sorted(g['industries'], key=lambda i: -iv[i['name']][-1])
-    gn.update({'id': g['id'], 'short': SHORT[g['id']], 'say': SAY[g['id']], 'inds': [i['name'] for i in inds]})
+    inds = sorted([i for i in g['industries'] if i in IND_MEM], key=lambda i: -iv[i][-1])
+    gn.update({'id': g['id'], 'short': SHORT[g['id']], 'say': SAY[g['id']], 'inds': inds, 'pk': sum(1 for c in gc if c in PKSET)})
     groups.append(gn)
     for i in inds:
-        ic = [m['code'] for m in sorted(i['companies'], key=lambda m: -(mchg[m['code']] if mchg[m['code']] is not None else -9))]
-        inn = node(i['name'], ic, iv[i['name']])
-        inn.update({'g': g['id'], 'members': ic})
+        ic = sorted(IND_MEM[i], key=lambda c: -(mchg[c] if mchg[c] is not None else -9))
+        inn = node(i, ic, iv[i])
+        inn.update({'g': g['id'], 'members': ic, 'pk': sum(1 for c in ic if c in PKSET)})
         industries.append(inn)
+if sum(len(i['members']) for i in industries) != len(ALLC) or sum(g['n'] for g in groups) != len(ALLC):
+    die('갈래 · 업종 회사 수의 합(%d · %d)이 모든 회사 %d곳과 다름' % (sum(len(i['members']) for i in industries), sum(g['n'] for g in groups), len(ALLC)))
 for gr in groups:
     if SHORT[gr['id']] is None:
         die('짧은 이름 없음 ' + gr['id'])
@@ -378,12 +406,14 @@ core = {
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
                 'pick': '네이버 증권 결산 · 업종(%s 모음) · 확정 결산 3해(예상치는 안 씀)' % kd(N['collectedAt'][:10])},
-    'dates': dates, 'all': core_all, 'groups': groups, 'industries': industries,
+    'dates': dates, 'all': core_all, 'mkt': core_mkt, 'groups': groups, 'industries': industries,
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
               'perMedian': per_med, 'perN': len(pers),
               # 멍거 갈래 — 값이 1년 이익의 30배 넘는 곳 수(빼지 않고 보여 주기만) · 금융 수(멍거 갈래 안)
               'mg': {'per30': RC['per30'], 'fin': RC['fin']},
               'big': [{'code': c, 'name': companies[c]['name'], 'chg': companies[c]['chg']} for c in big2],
+              # 모든 회사 몸값 큰 두 곳(고르는 날 몸값) — 첫 화면 「큰 회사는 크게 치면 모든 회사가 …」 옆 이름(2026-10-14 「나」)
+              'bigMkt': [{'code': c, 'name': SELROW[c]['name'], 'chg': d2(mv[c][-1] - 100) if mv[c][-1] is not None else None} for c in sorted(ALLC, key=lambda c: (-(SELROW[c].get('capEok') or 0), c))[:2]],
               'jumpN': sum(1 for c in companies.values() if c['jump'])},
     'funnel': FUNNEL,
     'rules': {**{k: RTXT[k] for k in ('version', 'label', 'line', 'data', 'groups', 'conds', 'price', 'wait', 'notCounted', 'limits', 'notMunger', 'q', 'next')},
@@ -429,9 +459,8 @@ for k in range(1, len(DAYS)):
 #   주가를 … 하라는 얘기가 아니라 회사의 성장을 얘기 하란 얘기야 … 담백하게」 · 16:56 「3번」 365곳 모두 · 16:57 「이건 봉인하지마」)
 #   숫자(구글팀) = grow.py build() — 결산 · 2026E · 우리나라 상장 같은 업종 안 크기 · 이야기(애플팀 · 클로드팀) = reports/atlas11/t365/grow/stories-*.json 가장 새 것
 #   co/<번호>.json 의 grow 와 grow.json(요약) — 이야기가 아직 없는 회사는 숫자만(화면 「? 조사 중」) · 봉인하지 않음(새 소식이 나오면 새 파일)
-import subprocess  # noqa: E402
 import grow  # noqa: E402
-IND_ALL = json.loads(subprocess.run(['node', os.path.join(HERE, 'ind_all.mjs'), NOW], check=True, capture_output=True, text=True).stdout)
+# IND_ALL(후보 모두의 ATLAS 업종)은 ② 모든 회사에서 이미 읽음 — 같은 것을 씀
 GB = grow.build(N, NAMES, {'companies': companies}, bnd, IND_ALL)
 STORIES = grow.latest_stories(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow'))
 GROWCO = {c: grow.site_entry(GB[c], STORIES.get(c)) for c in members}
@@ -579,11 +608,27 @@ if tcaps:
                     'past': {k: k0['past'][k] for k in ('from', 'mult365', 'multPool', 'n365', 'nPool', 'half')},
                     'since': {k: k0['since'][k] for k in ('days', 'chg365', 'chgPool')}}
 
-sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES)}
+# ── ⑦ 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄 · 찾기 밖 회사 칸이 읽음: 회사마다 이름 n · 업종 i · 20거래일 c · 선 l(기준일 = 10000 · 값 없는 날 null) · 고른 곳 p · 하루 30% 넘게 튐 j ──
+MKT = {}
+for c in ALLC:
+    v = mv[c]
+    fv = filled(v)
+    e = {'n': SELROW[c]['name'], 'i': IND_ALL[c], 'c': d2(v[-1] - 100) if v[-1] is not None else None, 'l': [None if x is None else int(round(x * 100)) for x in v]}
+    if c in PKSET:
+        e['p'] = 1
+    if any(fv[k] and fv[k - 1] and (fv[k] / fv[k - 1] > 1.305 or fv[k] / fv[k - 1] < 0.695) for k in range(1, NDAY)):
+        e['j'] = 1  # 한국 하루 가격 제한 ±30% 밖 = 주식 수가 바뀐 흔적일 수 있음(? 확인 못 함)
+    MKT[c] = e
+for c in members:  # 고른 곳은 comp · lines 와 한 치도 다르지 않아야 함
+    if MKT[c]['l'] != lines[c] or MKT[c]['c'] != companies[c]['chg']:
+        die('%s 모든 회사 자료가 고른 곳 자료와 다름' % c)
+sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES),
+      'mkt.json': dump('mkt.json', {'schema': 'atlas-new-mkt-1', 'asOf': asof, 'base': base, 'n': len(MKT), 'pk': len(PKSET), 'companies': MKT})}
 if TIME:
     sz['time.json'] = dump('time.json', TIME)
 sz['grow.json'] = dump('grow.json', {'schema': 'atlas-new-grow-1', 'asOf': asof, 'written': len(gsum), 'of': len(GROWCO), 'companies': gsum})
-print(json.dumps({'days': len(DAYS), 'co': nco, 'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'names': len(names),
+print(json.dumps({'days': len(DAYS), 'co': nco, 'bytes': sz, 'groups': len(groups), 'industries': len(industries), 'companies': len(companies), 'mkt': len(MKT), 'names': len(names),
+                  'mktAll': {'chg': core_mkt['chg'], 'cwChg': core_mkt['cwChg'], 'up': core_mkt['up'], 'down': core_mkt['down'], 'flat': core_mkt['flat']},
                   'all': {'chg': core_all['chg'], 'cwChg': core_all['cwChg'], 'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat']},
                   'dd50': ndd50, 'dd30': ndd30, 'perMedian': per_med, 'jump': sum(1 for c in companies.values() if c['jump']),
                   'asOf': asof, 'base': base, 'roll': core['roll'], 'provisional': core['provisional'], 'mismatch': OVER['mismatch'][:10]}, ensure_ascii=False))

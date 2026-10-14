@@ -28,7 +28,7 @@ const ACT = JSON.parse(fss.readFileSync(new URL('./universe.json', import.meta.u
 export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름 · 몸값 · 결산(모음 날 값)
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
-const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json'];
+const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json', 'mkt.json']; // mkt.json = 모든 회사(2026-10-14 「나」 — 업종 화면 회사 줄)
 const OPT_FILES = ['time.json', 'grow.json', 'home.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 
 async function copyAll(from, to) {
@@ -173,7 +173,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
       counts: {picked: pro.counts.picked, mg: pro.counts.mg?.picked ?? null, ly: pro.counts.ly?.picked ?? null, both: pro.counts.both ?? null, q: pro.counts.q}, tiers: null,
       kinds: null, stay: members.filter(c => bset.has(c)).length,
       ruleChanged: !!prev && (prev.version ?? null) !== ACT.version, prevVersion: prev?.version ?? null, buffer: pro.from?.prev?.used ?? false,
-      all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg},
+      all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg, ...(core.mkt ? {scope: 'mkt'} : {})}, // 1등 갈래 = 모든 회사로 센 갈래(2026-10-14 「나」 · 그 전 기록은 고른 곳으로 센 갈래)
       range: {eligible: rg.eligible, reused: /reused/.test(rgRun.stdout)}});
     // 값 지문 — 고른 날 · 이어 붙인 값 수 · 365곳 · 365곳 지수 · 아직 바뀜 여부 · 같으면 「그대로」(새 값 없음)
     rep.digest = crypto.createHash('sha256').update(JSON.stringify([pro.asOf, pro.from?.closes?.added, members, core.all.v, core.provisional])).digest('hex').slice(0, 16);

@@ -16,6 +16,9 @@
 //   · 회사 3단 「왜 멍거 조건에 들었나요?」 = 세 조건 해마다 값 · 멍거 쪽 말은 접은 칸 · 「멍거가 고른 목록이 아님」 · 옛 「힘 붙은 365곳」 글은 지난 회차 기록의 「옛 규칙(힘 붙음)」 꼬리표에만
 // 사장님 2026-10-14 05:37(싱가포르) 「세계적인 주식투자 2인을 더 찾아 내 봐」 · 06:03 「가」 · 06:05 「가」(멍거 26곳과 린치 18곳을 함께 · 겹치면 한 번)
 //   → 바탕 = 「멍거 · 린치 조건 N곳」(ml-v1) — 이름 밑 「멍거 조건 a곳 · 린치 조건 b곳 · 둘 다 c곳」 · 3단 「왜 … 들었나요?」 = 넘은 갈래마다 값 · 깔때기 두 갈래 · 밖 회사는 갈래마다 멈춘 자리
+// 사장님 2026-10-14 12:01(싱가포르) 「나」(「첫 화면부터 모두 모든 회사로 바꿔요. 고른 56곳은 금빛이에요」 · 11:58 「업종이 29개 밖에 … 정상적으로 다 해」)
+//   → 경주판 갈래 · 업종 · 회사 = 모든 회사(core.mkt · core.groups · core.industries · mkt.json) · 고른 곳(멍거 · 린치 조건)은 금빛(줄 왼쪽 금빛 띠 + 금빛 이름표) · 고른 곳만 7단 화면 ·
+//     나머지 회사 줄은 「밖」 칸(#/x/ — 이름 · 까닭 · 깔때기) · 업종 화면 「?」 = 하루 30% 넘게 바뀐 날이 있는 회사(주식 수 바뀜일 수 있음 · 확인 못 함)
 const $ = (s, el = document) => el.querySelector(s);
 /** 바탕 회사 수 · 이름(멍거 · 린치 조건 N곳 — 수는 회차마다 자료에서) · 이름 밑 한 줄(갈래마다 수 · 쉬운 말) */
 const NP = (C = D.core) => C?.funnel?.picked ?? '?';
@@ -25,7 +28,7 @@ const lyDay = (C = D.core) => (C?.rules?.lyDay ? md(C.rules.lyDay) : '모음 날
 const pickHow = (C = D.core) => `멍거 갈래는 3년 성적표만, 린치 갈래는 3년 성적표와 ${lyDay(C)} 값으로 골랐습니다`;
 const NS = 'http://www.w3.org/2000/svg';
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
-const D = {core: null, comp: null, lines: null, names: null};
+const D = {core: null, comp: null, lines: null, names: null, mkt: null};
 const state = {mode: 'eq', played: false, font: 0, hub: 0, hubStop: false, hubDet: false}; // hub = 맨 위 슬라이드 7장 가운데 보는 장 · hubStop = 손대서 멈춤 · hubDet = 「자세히」 열림(사장님 2026-10-12 19:59 · 20:11)
 
 // ── 숫자 · 말 ──
@@ -66,7 +69,11 @@ const chgOf = (node, mode = state.mode) => (mode === 'cw' ? node.cwChg : node.ch
 
 // ── 자료 받기 ──
 async function getJson(name) { const r = await fetch('/atlas/data/' + name, {cache: 'no-cache'}); if (!r.ok) throw Error(name + ' ' + r.status); return r.json(); }
-let compP = null, namesP = null, rangeP = null, daysP = null, updP = null; const coP = new Map();
+let compP = null, namesP = null, rangeP = null, daysP = null, updP = null, mktP = null; const coP = new Map();
+/** 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄(이름 · 업종 · 20거래일 · 선 · 고른 곳 p · 튐 j) */
+function needMkt() { if (!mktP) mktP = getJson('mkt.json').then(m => { D.mkt = m.companies; D.mktN = m.n; }).catch(e => { mktP = null; throw e; }); return mktP; }
+const MK = (C = D.core) => C?.mkt ?? C?.all; // 경주판 맨 위 묶음 = 모든 회사(옛 자료면 고른 곳 전체)
+const MN = (C = D.core) => (C?.mkt?.n ?? NP(C)); // 모든 회사 수
 function needDays() { if (!daysP) daysP = getJson('days.json').then(d => { D.days = d; }).catch(e => { daysP = null; throw e; }); return daysP; }
 function needCo(code) { if (!coP.has(code)) coP.set(code, getJson('co/' + encodeURIComponent(code) + '.json').catch(e => { coP.delete(code); throw e; })); return coP.get(code); }
 function needRange() { if (!rangeP) rangeP = getJson('range.json').then(p => { D.range = p; }).catch(e => { rangeP = null; throw e; }); return rangeP; } // 7단 범위(사장님 2026-10-13 06:45 말씀으로 고른 목록 · 차례는 지움)
@@ -78,7 +85,8 @@ function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D
 // ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 기준일(20거래일 전)과 같음 ──
 //   줄마다 작은 선 그래프(사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」) — 막대 대신 20거래일 선 ·
 //   줄마다 제 눈금(사진처럼 모양이 보이게 — 크기는 옆 숫자가 말함) · 점선 = 기준일 값 · 흐린 점선 = 위 단 평균(같은 눈금) · 오르면 빨강 · 내리면 파랑 · 경주 때 선이 날마다 자람
-//   items: [{key, name, href, v:[21], cw:[21], badge}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
+//   items: [{key, name, href, v:[21], cw:[21], badge, gold, pk}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
+//   gold = 금빛 이름표 글(고른 곳 · 고른 n곳) · pk = 줄 왼쪽 금빛 띠(고른 회사 · 고른 곳이 든 업종 — 2026-10-14 「나」)
 const SPW = 100, SPH = 30; // 줄 선 그래프 viewBox(늘여 그림 · 선 굵기는 그대로)
 function race(host, {items, parent, wide = false, label, onTick, onDone, auto = false}) {
   const C = D.core, n = C.dates.length;
@@ -91,9 +99,9 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
     const pa = parent ? sv('path', {class: 'pa'}) : null, ln = sv('path', {class: 'ln'});
     const b0 = sv('line', {class: 'b0', x1: 0, x2: SPW, y1: SPH / 2, y2: SPH / 2});
     spk.append(b0, ...(pa ? [pa] : []), ln);
-    const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, it.name, it.badge ? h('span', {class: 'badge', text: it.badge}) : null);
+    const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, it.name, it.badge ? h('span', {class: 'badge' + (it.badge === '?' ? ' qb' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'badge gold', text: it.gold}) : null);
     const trd = it.tr ? trEl(state.mode === 'cw' && it.trc ? it.trc : it.tr) : null;
-    const row = h('a', {class: 'row' + (trd ? ' two' : ''), href: it.href}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, spk), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+    const row = h('a', {class: 'row' + (trd ? ' two' : '') + (it.pk ? ' pk' : ''), href: it.href}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, spk), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
     board.append(row);
     return {it, row, ln, pa, b0, rng: {}, val, trd, rank: -1, cur: 100};
   });
@@ -230,11 +238,12 @@ function tellRow(text, onPlay) {
   return {el: h('div', {class: 'tell'}, t, h('span', {class: 'tell-b'}, play, ' ', say)), t};
 }
 function svgPlay() { const s = sv('svg', {width: 14, height: 14, viewBox: '0 0 14 14', 'aria-hidden': 'true'}); s.append(sv('path', {d: 'M3 1.5 L12 7 L3 12.5 Z', fill: 'currentColor'})); return s; }
-function legend(parentName) {
-  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균'), h('span', {}, h('i', {class: 'k-b0'}), '기준일(' + md(D.core.base) + ') 값'));
+function legend(parentName, gold) {
+  return h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), parentName ? h('span', {}, h('i', {class: 'k-avg'}), parentName + ' 평균') : null, h('span', {}, h('i', {class: 'k-b0'}), '기준일(' + md(D.core.base) + ') 값'),
+    gold ? h('span', {}, h('i', {class: 'k-pk'}), gold) : null); // 금빛 = 고른 곳(2026-10-14 「나」)
 }
 function crumbs(...parts) { const c = h('nav', {class: 'crumb', 'aria-label': '지금 자리'}); parts.forEach((p, i) => { if (i) c.append(h('i', {text: '›', 'aria-hidden': 'true'})); c.append(p.href ? h('a', {href: p.href, text: p.text}) : h('span', {text: p.text})); }); return c; }
-const hrefInd = i => (i.n === 1 ? '#/c/' + i.members[0] : '#/i/' + encodeURIComponent(i.name));
+const hrefInd = i => (i.n === 1 ? ((!D.core?.mkt || i.pk ? '#/c/' : '#/x/') + i.members[0]) : '#/i/' + encodeURIComponent(i.name)); // 1곳뿐인 업종 — 고른 곳이면 회사 · 아니면 밖 칸
 // 7단(사장님 2026-10-12 00:50 「지금 5단계 클릭이잖아 7단계로 한다」 · 네 팀 — 구글 · 애플 · 클로드 · CIA): 4단 갈림길(지나온 길 · 앞으로 클까?)을 한 줄로 폄 ·
 //   「앞으로 클까?」 한 화면에 몰린 경쟁 회사를 5단으로 떼어 냄 · 끝은 「사기」가 아니라 「확인」 · 단마다 앎의 종류(CIA팀 — 기록 · 조사 · 판단 · 셈)
 const LV = ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인'];
@@ -401,7 +410,7 @@ function homeIndex(v, H) {
     // 오늘의 눈금(2장) 셈 — 지난 사실만(다섯 팀 합침 2026-10-12 23:10)
     ...[K, Q].filter(Boolean).map(x => { const g = gauge(x); return h('p', {text: !g ? `${x.name} 오늘의 눈금 — ? 3개월 값이 모자람` : `${x.name} 오늘의 눈금 — 오늘 ${pct(g.t)} · 평소(오늘 앞 20거래일 하루 움직임 크기 평균) ${numK(g.avg, 1)}% · 3개월 ${g.n}거래일 가운데 오늘만큼 ${g.t < 0 ? '내린' : '오른'} 날 ${g.rank ?? '?'}날(오늘 넣고)${g.since ? ` · 그 앞 마지막 날 ${md(g.since)}` : ''}${g.streak >= 2 ? ` · ${g.streak}거래일째 ${g.t < 0 ? '내림' : '오름'}(그동안 ${pct(g.streakChg)})` : ''}`}); }),
     h('p', {text: '「n월 n일 뒤 가장 큼」은 오늘만큼 움직인 마지막 날이 5거래일 넘게 앞일 때만 적습니다. 센 것일 뿐 — 다음 날을 말하지 않습니다.'}),
-    h('p', {text: `옅은 띠 = 아래 ${NP()}곳 경주 기간(${md(C.base)} → ${md(C.asOf)} · 20거래일). 두 칸은 같은 비율 폭이라 기울기를 견줄 수 있습니다. 마지막 동그라미가 속이 비면 장 중에 받은 값(마감 값 아님)입니다.`}),
+    h('p', {text: `옅은 띠 = 아래 ${C.mkt ? '모든 회사' : NP() + '곳'} 경주 기간(${md(C.base)} → ${md(C.asOf)} · 20거래일). 두 칸은 같은 비율 폭이라 기울기를 견줄 수 있습니다. 마지막 동그라미가 속이 비면 장 중에 받은 값(마감 값 아님)입니다.`}),
     h('p', {text: '날마다 종가 · 네이버 증권 지수. 지난 20거래일: 코스피 ' + pct(H.cmp20?.kospi) + ' · 코스닥 ' + pct(H.cmp20?.kosdaq) + '.'}))));
 }
 function srows(list, max) {
@@ -646,22 +655,23 @@ function hub(v, H) {
 }
 async function viewHome(v) {
   await needHome();
-  const C = D.core, A = C.all, F = C.facts, H = D.home;
+  const C = D.core, A = MK(C), F = C.facts, H = D.home, ALLN = !!C.mkt; // 경주판 = 모든 회사(2026-10-14 「나」 · 옛 자료면 고른 곳)
+  const who = ALLN ? `모든 회사 ${MN(C).toLocaleString('ko-KR')}곳` : `${NP()}곳`, whoS = ALLN ? '모든 회사' : `${NP()}곳`;
   const top = (m) => C.groups.slice().sort((a, b) => chgOf(b, m) - chgOf(a, m))[0];
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h2', {class: 'sec rt'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
-  const big = F.big.map(b => `${b.name} ${pct(b.chg)}`).join(' · ');
+  const big = (ALLN && F.bigMkt ? F.bigMkt : F.big).map(b => `${b.name} ${pct(b.chg)}`).join(' · ');
   function words(m) {
     const t = top(m);
     if (m === 'eq') {
       head.replaceChildren(`지난 ${C.days}거래일 1등은 `, t.short);  // 금빛 테 줄의 이름과 같게
-      count.replaceChildren(h('b', {class: 'up', text: A.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: A.down + '곳 내림'}), A.flat ? ` · ${A.flat}곳 그대로` : '', h('span', {class: 'sr', text: ` — ${NP()}곳 가운데`}));
-      alt.replaceChildren(`다르게 보면: 큰 회사는 크게 치면 ${NP()}곳이 `, pctEl(A.cwChg), ` — ${big}. 아래 단추로 바꿔 보세요.`);
+      count.replaceChildren(ALLN ? `${who} 중 ` : '', h('b', {class: 'up', text: A.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: A.down.toLocaleString('ko-KR') + '곳 내림'}), A.flat ? ` · ${A.flat.toLocaleString('ko-KR')}곳 그대로` : '', ALLN ? null : h('span', {class: 'sr', text: ` — ${who} 가운데`}));
+      alt.replaceChildren(`다르게 보면: 큰 회사는 크게 치면 ${whoS}${ALLN ? '가' : '이'} `, pctEl(A.cwChg), ` — ${big}. 아래 단추로 바꿔 보세요.`);
     } else {
       const negs = C.groups.filter(g => r1(g.cwChg) < 0).length;
       head.replaceChildren(negs === C.groups.length ? `큰 회사는 크게 치면 ${negs}갈래 모두 내림` : `큰 회사는 크게 치면 1등은 ${t.short}`);
-      count.replaceChildren(`${NP()}곳 몸값으로 세면 `, pctEl(A.cwChg), ` · ${big}`);
-      alt.replaceChildren(`한 회사 한 표로 세면 ${NP()}곳 `, pctEl(A.chg), ` · ${A.up}곳 오름 · ${A.down}곳 내림.`);
+      count.replaceChildren(`${whoS} 몸값으로 세면 `, pctEl(A.cwChg), ` · ${big}`);
+      alt.replaceChildren(`한 회사 한 표로 세면 ${whoS} `, pctEl(A.chg), ` · ${A.up.toLocaleString('ko-KR')}곳 오름 · ${A.down.toLocaleString('ko-KR')}곳 내림.`);
     }
   }
   words(state.mode);
@@ -670,8 +680,9 @@ async function viewHome(v) {
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
   // 맨 위 = 슬라이드 7장(1장 「친구에게 소개하기」 · 사장님 19:59 · 20:11) → 그 아래 20거래일 경주(1단 입구) · 자료를 못 읽으면 옛 소개 띠 + 「?」
   if (H) hub(v, H); else add(v, hello, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
-  v.append(tell.el, head, count, h('p', {class: 'say pk'}, h('b', {text: pickName(C)}), ' — ' + pickLine(C)), host);
-  const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc}));
+  v.append(tell.el, head, count, h('p', {class: 'say pk'}, h('b', {text: pickName(C)}), ' — ' + pickLine(C)),
+    ALLN ? h('p', {class: 'note gold-say', text: `금빛 = ${pickName(C)}이 든 곳 · 큰 갈래 ${C.groups.length}개 · 업종 ${C.industries.length}개`}) : null, host);
+  const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc, gold: ALLN && g.pk ? `고른 ${g.pk}곳` : null}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
   const autoplay = !state.played && !RM.matches; state.played = true; // 경주는 화면에 들어올 때 한 번 저절로(애플팀 — 위에 여섯 장이 있어 처음엔 화면 밖에서 돌다 끝나던 것)
   const rc = race(host, {items, parent: A, label: `큰 갈래 ${C.groups.length}개 — 지난 ${C.days}거래일 경주 · 많이 오른 순: ` + C.groups.map(g => g.short + ' ' + pct(g.chg)).join(', '),
@@ -682,12 +693,13 @@ async function viewHome(v) {
     },
     onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
   if (autoplay && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); if (host.isConnected) rc.play(); } }, {threshold: 0.35}); io.observe(host); }
-  v.append(legend(`${NP(C)}곳`), h('p', {class: 'note trn', text: `줄 아래 = ${md(C.base)} → ${md(C.asOf)} 방향 · 세기 · 힘: 「강하게」 = 곧게 10% 넘게 · 「힘 붙음」 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대) · ${pickHow(C)}.`}), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(legend(whoS, ALLN ? '금빛 = 고른 곳' : null), h('p', {class: 'note trn', text: `줄 아래 = ${md(C.base)} → ${md(C.asOf)} 방향 · 세기 · 힘: 「강하게」 = 곧게 10% 넘게 · 「힘 붙음」 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대) · ${pickHow(C)}.`}), seg(m => { words(m); rc.setMode(m); }), alt);
   const share = Math.round(F.dd50 / F.n1y * 10);
-  v.append(h('p', {class: 'note', text: `이 ${NP(C)}곳도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다 — 반값을 견딜 수 있나요? (${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가)`}));
+  v.append(h('p', {class: 'note', text: `${ALLN ? '고른 ' + NP(C) + '곳' : '이 ' + NP(C) + '곳'}도 10곳 중 ${share}곳은 지난 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있습니다 — 반값을 견딜 수 있나요? (${F.n1y}곳 가운데 ${F.dd50}곳 · ${md(C.asOf)}까지 1년 종가)`}));
   const T = C.time; // 시간 노선도는 한 줄 고리로(애플 · 구글 · 클로드 팀 — 첫 화면이 길어져서) · 봉인 화면은 그대로
   if (T) v.append(h('p', {class: 'links2'}, h('a', {href: '#/time'}, `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶 · 3년 뒤까지 `, h('b', {class: 'num', text: ddayText(T.opens[0].date)}), ' ›')));
-  v.append(h('p', {class: 'note', text: `줄을 누르면 7단까지 내려갑니다 — 갈래 → 업종 → 회사 → 지나온 길 → 누구와 다투나 → 앞으로 클까? → 범위 · 확인. ${pickHow(C)} — 이 선은 지난 값이고 앞날 값이 아닙니다.`}));
+  v.append(h('p', {class: 'note', text: ALLN ? `줄을 누르면 갈래 → 업종 → 회사로 내려갑니다. 금빛 회사는 7단까지 — 지나온 길 → 누구와 다투나 → 앞으로 클까? → 범위 · 확인. ${pickHow(C)} — 이 선은 지난 값이고 앞날 값이 아닙니다.`
+    : `줄을 누르면 7단까지 내려갑니다 — 갈래 → 업종 → 회사 → 지나온 길 → 누구와 다투나 → 앞으로 클까? → 범위 · 확인. ${pickHow(C)} — 이 선은 지난 값이고 앞날 값이 아닙니다.`}));
   v.append(foot());
 }
 
@@ -701,16 +713,16 @@ function viewGroup(v, id) {
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
     head.replaceChildren(`${g.name} ${C.days}거래일 `, pctEl(chgOf(g, m), 'span')); trFill(gtr, m === 'cw' ? g.trc : g.tr);
-    if (m === 'eq') { count.replaceChildren(`${g.n}곳 중 `, h('b', {class: 'up', text: g.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: g.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(g.cwChg), '.'); }
+    if (m === 'eq') { count.replaceChildren(`${g.n.toLocaleString('ko-KR')}곳 중 `, h('b', {class: 'up', text: g.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: g.down.toLocaleString('ko-KR') + '곳 내림'}), g.pk ? ` · 고른 곳 ${g.pk}곳` : ''); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(g.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(g.cwChg), ` · 한 회사 한 표로는 `, pctEl(g.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(g.chg), ` · ${g.up}곳 오름 · ${g.down}곳 내림.`); }
   }
   words(state.mode);
   const host = h('div');
   v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, gtr, h('p', {class: 'say', text: `${inds.slice().sort((a, b) => b.n - a.n).slice(0, 3).map(x => x.name).join(' · ')}${inds.length > 3 ? ' 등' : ''} · 업종 ${inds.length}개`}), count, host); // 설명은 지금 업종에서(CIA팀 2026-10-12: 옛 365곳 설명이 남아 있던 것)
-  const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null, tr: i.tr, trc: i.trc}));
+  const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null, tr: i.tr, trc: i.trc, gold: i.pk ? `고른 ${i.pk}곳` : null, pk: i.pk > 0}));
   const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — ${C.days}거래일 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
-  v.append(legend(g.short), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(legend(g.short, g.pk ? '금빛 = 고른 곳' : null), seg(m => { words(m); rc.setMode(m); }), alt);
   const low = g.low;
   v.append(h('p', {class: 'note', text: `${md(C.dates[low.k])}(이 갈래가 가장 낮던 날)에는 ${g.n}곳 중 ${low.below}곳이 ${md(C.base)}보다 아래였습니다 — 한 갈래는 함께 움직이기 쉽습니다.`}));
   if (inds.some(i => i.n === 1)) v.append(h('p', {class: 'note', text: '「1곳」 = 회사가 하나뿐인 업종 — 업종 평균이 아니라 그 회사 하나의 값입니다.'}));
@@ -721,24 +733,32 @@ function viewGroup(v, id) {
 async function viewIndustry(v, name) {
   const C = D.core, i = ind(name);
   if (!i) return viewMissing(v);
-  if (i.n === 1) { location.replace('#/c/' + i.members[0]); return; }
-  await needComp();
+  if (i.n === 1) { location.replace(hrefInd(i)); return; }
+  if (C.mkt) await needMkt(); else await needComp(); // 모든 회사 자료(2026-10-14 「나」) · 옛 자료면 고른 곳
+  const row = c => (C.mkt ? D.mkt[c] : {n: D.comp[c].name, c: D.comp[c].chg, l: D.lines[c], p: 1});
   const g = gById(i.g);
   const itr = h('p', {class: 'trh'});
   const tell = tellRow(`${md(C.base)} → ${md(C.asOf)}`, () => rc.play());
   const head = h('h1', {class: 'head'}), count = h('p', {class: 'count'}), alt = h('div', {class: 'alt'});
   function words(m) {
     head.replaceChildren(`${i.name} ${C.days}거래일 `, pctEl(chgOf(i, m), 'span')); trFill(itr, m === 'cw' ? i.trc : i.tr);
-    if (m === 'eq') { count.replaceChildren(`${i.n}곳 중 `, h('b', {class: 'up', text: i.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: i.down + '곳 내림'})); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(i.cwChg), '.'); }
+    if (m === 'eq') { count.replaceChildren(`${i.n}곳 중 `, h('b', {class: 'up', text: i.up + '곳 오름'}), ' · ', h('b', {class: 'down', text: i.down + '곳 내림'}), C.mkt && i.pk ? ` · 금빛 = 고른 곳 ${i.pk}곳` : ''); alt.replaceChildren('다르게 보면: 큰 회사는 크게 치면 ', pctEl(i.cwChg), '.'); }
     else { count.replaceChildren('몸값으로 세면 ', pctEl(i.cwChg), ' · 한 회사 한 표로는 ', pctEl(i.chg)); alt.replaceChildren('한 회사 한 표로 세면 ', pctEl(i.chg), ` · ${i.up}곳 오름 · ${i.down}곳 내림.`); }
   }
   words(state.mode);
   const host = h('div');
   v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, itr, count, host);
-  const items = i.members.map(c => ({key: c, name: D.comp[c].name, href: '#/c/' + c, v: D.lines[c].map(x => (x == null ? null : x / 100)), cw: null}));
-  const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${i.n}곳 — ${C.days}거래일 많이 오른 순: ` + i.members.map(c => D.comp[c].name + ' ' + pct(D.comp[c].chg)).join(', '),
+  // 회사 줄 — 고른 곳(금빛)은 3단 회사 화면 · 나머지는 「밖」 칸(이름 · 까닭 · 깔때기) · 하루 30% 넘게 바뀐 날이 있으면 「?」
+  //   기준일 종가가 없어 선을 못 그린 회사(새로 상장 · 그날 거래 멈춤 등)는 줄 대신 아래 「?」 한 줄에 이름 고리로(규칙 56 줄마다 선 · 「3번이면 회사」 그대로)
+  const href = c => (row(c).p ? '#/c/' : '#/x/') + c, noLine = c => !row(c).l.some(x => x != null);
+  const shown = i.members.filter(c => !noLine(c)), none = i.members.filter(noLine);
+  const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: C.mkt && m.p ? '고른 곳' : null, pk: !!(C.mkt && m.p), badge: m.j ? '?' : null}; });
+  const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${shown.length}곳 — ${C.days}거래일 많이 오른 순: ` + shown.map(c => row(c).n + ' ' + pct(row(c).c)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
-  v.append(legend(i.name), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(legend(i.name, C.mkt && i.pk ? '금빛 = 고른 곳' : null), seg(m => { words(m); rc.setMode(m); }), alt);
+  if (items.some(x => x.badge === '?')) v.append(h('p', {class: 'note'}, h('span', {class: 'q', text: '? '}), '= 하루에 30% 넘게 바뀐 날이 있는 회사 — 주식 수가 바뀌었을 수 있습니다(확인 못 함).'));
+  if (none.length) v.append(h('p', {class: 'note noline'}, h('span', {class: 'q', text: '? '}), `기준일(${md(C.base)}) 종가가 없어 선을 못 그린 회사 ${none.length}곳 — `, ...none.flatMap((c, k) => [k ? ' · ' : '', h('a', {class: 'inl', href: href(c), text: row(c).n})])));
+  if (C.mkt) v.append(h('p', {class: 'note', text: `금빛이 아닌 회사는 ${pickName(C)} 밖입니다 — 누르면 이름 · 까닭이 나옵니다.`}));
   v.append(h('p', {class: 'note', text: '회사 줄은 그 회사 주가 그대로라 두 보기에서 같습니다 — 바뀌는 것은 점선(업종 평균)과 맨 위 숫자입니다.'}));
   v.append(foot());
 }
@@ -1175,7 +1195,7 @@ async function viewUpdates(v) {
       li.append(h('p', {}, h('b', {class: 'no2', text: `빠진 곳 ${r.out.length}`}), r.out.length ? ' ' + namesLine(r.out) : ''));
       if (r.in.length > 6 || r.out.length > 6) li.append(h('details', {class: 'more'}, h('summary', {text: '모두 보기'}), h('div', {class: 'in'}, h('p', {text: '새로 든 곳: ' + r.in.map(x => x.n).join(' · ')}), h('p', {text: '빠진 곳: ' + r.out.map(x => x.n).join(' · ')}))));
     } else if (r.result !== '실패') li.append(h('p', {text: '고른 곳은 앞 회차와 같습니다.'}));
-    if (r.top?.short) li.append(h('p', {}, `1등 갈래 ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 고른 곳 전체 ', pctEl(r.all?.chg, 'span'), ` · 20거래일` + (r.in?.length ? '(고른 곳이 바뀐 것도 섞임)' : '')));
+    if (r.top?.short) li.append(h('p', {}, `${r.top.scope === 'mkt' ? '모든 회사 1등 갈래' : '1등 갈래'} ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 고른 곳 전체 ', pctEl(r.all?.chg, 'span'), ` · 20거래일` + (r.in?.length ? '(고른 곳이 바뀐 것도 섞임)' : '')));
     if (r.market?.day) li.append(h('p', {class: 'small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
     if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
     if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
@@ -1346,14 +1366,16 @@ async function viewTime(v) {
 
 // ── 화면 ⑤ 업종 63 ──
 function viewList(v) {
-  const C = D.core;
+  const C = D.core, ALLN = !!C.mkt;
   const multi = C.industries.filter(i => i.n > 1).sort((a, b) => b.chg - a.chg), single = C.industries.filter(i => i.n === 1).sort((a, b) => b.chg - a.chg);
-  v.append(h('h1', {class: 'head', text: `업종 ${C.industries.length}개 — ${C.days}거래일 많이 오른 순`}), h('p', {class: 'count', text: `${md(C.base)} → ${md(C.asOf)} · 큰 갈래와 상관없이 업종만 줄 세웠습니다.`}));
-  const mk = (list, label) => { const host = h('div'); v.append(host); race(host, {items: list.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: gById(i.g).short})), parent: null, wide: true, label}); };
-  v.append(h('h2', {class: 'sec', text: `회사 2곳 이상인 업종 ${multi.length}개`}));
+  v.append(h('h1', {class: 'head', text: `업종 ${C.industries.length}개 — ${C.days}거래일 많이 오른 순`}), h('p', {class: 'count', text: `${md(C.base)} → ${md(C.asOf)} · ${ALLN ? `모든 회사 ${MN(C).toLocaleString('ko-KR')}곳 · ` : ''}큰 갈래와 상관없이 업종만 줄 세웠습니다.`}));
+  if (ALLN) v.append(h('p', {class: 'note gold-say', text: `금빛 줄 = ${pickName(C)}이 든 업종(${C.industries.filter(i => i.pk).length}개).`}));
+  // 금빛 줄(고른 곳이 든 업종) — 이름표는 큰 갈래 이름 하나(줄이 넘치지 않게 · 고른 곳 수는 업종 화면에서)
+  const mk = (list, label) => { const host = h('div'); v.append(host); race(host, {items: list.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: gById(i.g).short, pk: ALLN && i.pk > 0})), parent: null, wide: true, label}); };
+  if (single.length) v.append(h('h2', {class: 'sec', text: `회사 2곳 이상인 업종 ${multi.length}개`}));
   mk(multi, `회사 2곳 이상 업종 ${multi.length}개 — ${C.days}거래일 많이 오른 순`);
-  v.append(h('h2', {class: 'sec', text: `회사 1곳뿐인 업종 ${single.length}개`}), h('p', {text: '업종 평균이 아니라 그 회사 하나의 값입니다.'}));
-  mk(single, `회사 1곳뿐인 업종 ${single.length}개`);
+  if (single.length) { v.append(h('h2', {class: 'sec', text: `회사 1곳뿐인 업종 ${single.length}개`}), h('p', {text: '업종 평균이 아니라 그 회사 하나의 값입니다.'}));
+    mk(single, `회사 1곳뿐인 업종 ${single.length}개`); }
   v.append(foot());
 }
 function viewMissing(v, code) { // 바탕 회사에서 빠진 회사의 옛 주소면 이름 · 까닭 · 깔때기(구글팀 2026-10-12)
@@ -1434,14 +1456,18 @@ function showInfo(code) {
     const r = D.names?.rows.find(x => x.c === code);
     $('#infoTitle').textContent = r ? `${r.n} — ${pickName(C)} 밖` : `${pickName(C)} 밖`;
     if (!r) { body.append(h('p', {class: 'q', text: '? 이 이름표를 못 찾았습니다.'})); return; }
-    body.append(h('p', {text: `${josa(r.n, '은', '는')} ${stopSay(r)}(${r.m === 'KOSPI' ? '코스피' : '코스닥'}).`}), h('div', {class: 'why', text: r.w}), funnel(r));
+    body.append(h('p', {text: `${josa(r.n, '은', '는')} ${stopSay(r)}(${r.m === 'KOSPI' ? '코스피' : '코스닥'}).`}), h('div', {class: 'why', text: r.w}));
+    const mk = D.mkt?.[code], mi = mk ? ind(mk.i) : null; // 모든 회사 자료(2026-10-14 「나」) — 업종 화면에서 왔으면 이미 받음
+    if (mk && mi) body.append(h('p', {}, '업종 ', h('a', {class: 'inl', href: hrefInd(mi), text: mi.name}), ` · ${C.days}거래일 `, pctEl(mk.c, 'span')));
+    body.append(funnel(r));
     body.append(h('p', {class: 'note', text: `${pickHow(C)} — 새 1년 성적표가 나오면 다시 셉니다.`}));
     return;
   }
   $('#infoTitle').textContent = 'ATLAS 는 어떻게 셌나요';
   body.append(h('p', {}, h('b', {text: pickName(C)}), ` — ${pickLine(C)}.`));
   body.append(h('p', {text: `${C.rules.notMunger} ${pickHow(C)} · 앞날 값은 쓰지 않았습니다 · 순서가 아닙니다.`}));
-  body.append(h('p', {text: `이 ${NP(C)}곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사 → 7단까지 눌러 봅니다. 앞날 값은 6단 회사 크기 범위(세 팀의 따짐)와 7단 몬테카를로 범위(모형 셈)로만 보이며, 맞힘이 아닙니다.`}));
+  body.append(h('p', {text: C.mkt ? `모든 회사 ${MN(C).toLocaleString('ko-KR')}곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사로 눌러 봅니다. 금빛 = ${pickName(C)} — 이 회사들만 7단까지 봅니다. 앞날 값은 6단 회사 크기 범위(세 팀의 따짐)와 7단 몬테카를로 범위(모형 셈)로만 보이며, 맞힘이 아닙니다.`
+    : `이 ${NP(C)}곳이 지난 ${C.days}거래일(기준일 ${md(C.base)} → ${md(C.asOf)} · 장이 열린 날 ${C.days}번, 약 한 달) 어떻게 움직였는지, 큰 갈래 → 업종 → 회사 → 7단까지 눌러 봅니다. 앞날 값은 6단 회사 크기 범위(세 팀의 따짐)와 7단 몬테카를로 범위(모형 셈)로만 보이며, 맞힘이 아닙니다.`}));
   body.append(h('p', {text: `줄 아래 「▲ 강하게 오름 · 힘 붙음」 = 이 기간의 방향 · 세기 · 힘입니다. 방향 = 기간 동안 그은 곧은 선이 3% 넘게 기울고 처음보다 끝도 같은 쪽(아니면 「옆걸음」) · 강하게 = 그 선이 10% 넘고 들쭉날쭉하지 않음 · 힘 붙음 = 뒤 ${Math.floor(C.days / 2)}거래일이 앞 ${Math.floor(C.days / 2)}거래일보다 3%p 넘게 더 오름(「힘 빠짐」은 그 반대). 지난 기록이고 앞날 값이 아닙니다. ${pickHow(C)}.`}));
   body.append(h('h2', {class: 'sec', text: `${pickName(C)}은 이렇게 골랐습니다`}), funnel(null));
   const RU = C.rules;
@@ -1489,7 +1515,7 @@ async function route() {
   const hsh = location.hash || '#/';
   if (hsh.startsWith('#/find')) { showFind(); return; }
   if (hsh.startsWith('#/info')) { showInfo(null); return; }
-  if (hsh.startsWith('#/x/')) { try { await needNames(); } catch { /* 아래에서 ? */ } showInfo(dec(hsh.slice(4)) ?? '?'); return; }
+  if (hsh.startsWith('#/x/')) { await Promise.allSettled([needNames(), D.core.mkt ? needMkt() : null]); /* 못 받으면 아래에서 ? · 업종 줄 없음 */ showInfo(dec(hsh.slice(4)) ?? '?'); return; }
   for (const id of ['findSheet', 'infoSheet']) { const s = $('#' + id); if (!s.hidden) { s.hidden = true; delete document.body.dataset.sheet; } }
   if (hsh === lastMain && $('#view').childElementCount) return;
   lastMain = hsh;

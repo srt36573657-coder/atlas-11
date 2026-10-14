@@ -7,13 +7,13 @@
 //   ml(판 이름 ml- · 2026-10-14 06:05 「가」 멍거 · 린치 조건): 회사마다 든 조건 꼬리표(mg · ly) · 업종 · 갈래마다 수만
 import fs from 'node:fs';
 import path from 'node:path';
-import {group365Of} from '../../../lib/atlas11/universe.mjs';
+import {atlasIndustryOf} from '../../../lib/atlas11/universe.mjs'; // 업종 = 새 ATLAS 업종(모든 회사와 같은 셈 · 2026-10-14 「나」)
 const [,, candsPath, propPath, outDir] = process.argv;
 const C = JSON.parse(fs.readFileSync(candsPath, 'utf8')).rows, P = JSON.parse(fs.readFileSync(propPath, 'utf8'));
 const G = JSON.parse(fs.readFileSync(new URL('./groups.json', import.meta.url), 'utf8')).groups;
 const by = new Map(C.map(c => [c.code, c])), gOf = new Map(G.flatMap(g => g.industries.map(i => [i, g.id])));
 const ML = /^ml-/.test(P.rules?.version ?? ''), MG = !ML && /^mg-/.test(P.rules?.version ?? ''), H365 = !ML && !MG && P.picked.every(p => p.kind != null), D365 = !ML && !MG && !H365 && P.picked.every(p => p.tier != null);
-const rows = P.picked.map(p => { const c = by.get(p.code); if (!c) { console.error('후보 표에 없는 회사', p.code); process.exit(1); } return {...p, industry: group365Of({sector: c.sector, ksic: c.ksic})}; });
+const rows = P.picked.map(p => { const c = by.get(p.code); if (!c) { console.error('후보 표에 없는 회사', p.code); process.exit(1); } return {...p, industry: atlasIndustryOf({sector: c.sector, ksic: c.ksic})}; });
 const lost = [...new Set(rows.filter(r => !gOf.has(r.industry)).map(r => r.industry))];
 if (lost.length) { console.error('큰 갈래에 없는 업종:', lost.join(' · ')); process.exit(1); }
 const tiers = cs => [1, 2, 3].map(t => cs.filter(r => r.tier === t).length);

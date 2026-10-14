@@ -120,6 +120,27 @@ await step('전 종목 찾기', async () => { // 사장님 2026-10-14 08:38 「�
     ok: names.rows.length === core.funnel?.universe && names.rows.length >= 2400 && !!last && hits.includes(last.n) && (!nc || hNc.includes(nc.n)) && (!etf || (hEtf.includes(etf.n) && /상장 펀드/.test(hEtf)))};
   if (!out.allFind.ok) out.errors.push('전 종목 찾기: ' + JSON.stringify(out.allFind).slice(0, 200));
 });
+await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가포르) 「나」 — 첫 화면부터 갈래 · 업종 · 회사 흐름 = 모든 회사 · 고른 곳은 금빛(사진 p18 · p19 · p20)
+  const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
+  const core = await J('core.json'), mk = await J('mkt.json');
+  const mem = core.industries.reduce((t, i) => t + i.members.length, 0), pkI = core.industries.filter(i => i.pk > 0);
+  const gold = pkI.slice().sort((a, b) => b.pk - a.pk || b.n - a.n)[0]; // 고른 곳이 가장 많이 든 업종
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
+  await page.evaluate(() => { const b = document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 220); }); await page.waitForTimeout(9000);
+  const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, gold: document.querySelectorAll('#view .board .badge.gold').length, say: document.querySelector('#view .gold-say')?.textContent ?? '', tab: document.querySelector('#tabList')?.textContent ?? ''}));
+  await shot('p18-home-all');
+  await page.goto(B + '/?v=' + Date.now() + '#/i/' + encodeURIComponent(gold.name), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000);
+  const ind = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')), x: document.querySelectorAll('#view .board .row[href^="#/x/"]').length}));
+  await page.evaluate(() => { const r = document.querySelector('#view .board .row.pk'); if (r) window.scrollTo(0, r.getBoundingClientRect().top + window.scrollY - 260); }); await page.waitForTimeout(600);
+  await shot('p19-industry-gold');
+  await page.goto(B + '/?v=' + Date.now() + '#/list', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2500);
+  const list = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: document.querySelectorAll('#view .board .row.pk').length, head: document.querySelector('#view h1')?.textContent ?? ''}));
+  await shot('p20-list-all');
+  out.allCo = {mkt: mk.n, companies: core.funnel?.companies ?? null, mktN: core.mkt?.n ?? null, groups: core.groups.length, industries: core.industries.length, members: mem, picked: core.funnel?.picked ?? null, pk: mk.pk, pkIndustries: pkI.length, home, gold: {name: gold?.name, n: gold?.n, pk: gold?.pk}, ind, list,
+    ok: !!core.mkt && mk.n === core.mkt.n && mk.n === core.funnel?.companies && mem === mk.n && mk.pk === core.funnel?.picked && home.rows === core.groups.length && home.tab === '업종 ' + core.industries.length
+      && ind.rows === gold.n && ind.pk.length === gold.pk && ind.pk.every(h => /^#\/c\//.test(h)) && ind.x === gold.n - gold.pk && list.rows === core.industries.length && list.pk === pkI.length};
+  if (!out.allCo.ok) out.errors.push('모든 회사: ' + JSON.stringify(out.allCo).slice(0, 240));
+});
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
 });

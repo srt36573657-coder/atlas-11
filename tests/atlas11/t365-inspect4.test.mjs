@@ -33,12 +33,12 @@ test('금지 말 목록 = 화면 검사(site_check.mjs)의 목록', () => {
   assert.deepEqual(oldRuleHits('365곳 새 기준 — 옛 규칙(힘 붙음) 365곳'), []); assert.deepEqual(oldRuleHits('힘 붙은 365곳 — 그중'), ['힘 붙은 365곳']); // 2026-10-14 멍거 조건 뒤 옛 이름
 });
 
-test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', () => {
+test('시장 판독 — 지난 사실만 · 문턱(mr-v2 = 모든 회사 · 2026-10-14 「나」) · 줄마다 숫자', () => {
   assert.equal(breadthWord(65, 35), '넓게 오른 날'); assert.equal(breadthWord(64, 36), '오른 곳 · 내린 곳이 섞인 날'); assert.equal(breadthWord(35, 65), '넓게 내린 날'); assert.equal(breadthWord(0, 0), '?');
   assert.equal(breadthWord(70, 30, 'span'), '넓게 오름');
   assert.equal(sizeWord(13.2, -2.5), '작은 · 중간 회사 쪽이 더 오름'); assert.equal(sizeWord(-8, -2), '큰 회사 쪽이 덜 내림'); assert.equal(sizeWord(1, 0), '회사 크기와 상관없이 비슷'); assert.equal(sizeWord(-2, -9), '작은 · 중간 회사 쪽이 덜 내림');
   assert.equal(pctText(-2.49), '−2.5%'); assert.equal(pctText(13.18), '+13.2%'); assert.equal(pctText(null), '?');
-  assert.equal(MR_RULE.id, 'mr-v1');
+  assert.equal(MR_RULE.id, 'mr-v2'); assert.equal(MR_RULE.old, 'mr-v1');
   // 때 말 — 「장 중」은 정규장(9:00 ~ 15:30)에 고른 날 값을 받았을 때만(2026-10-12 16:48 회차: 장 끝 뒤에도 「장 중 값」이던 것)
   assert.equal(whenWord(false, '2026-10-12', new Date('2026-10-12T05:00:00Z')), '마감 값');
   assert.equal(whenWord(true, '2026-10-12', new Date('2026-10-12T05:00:00Z')), '장 중 값(아직 바뀜)');
@@ -46,26 +46,32 @@ test('시장 판독 — 지난 사실만 · 문턱(mr-v1) · 줄마다 숫자', 
   assert.equal(whenWord(true, '2026-10-12', new Date('2026-10-13T01:00:00Z')), '저녁 8시 전 값(아직 바뀜)', '다음 날 장 중이라도 고른 날이 어제면 장 중 아님');
   assert.equal(whenWord(true, '2026-10-12', null), '저녁 8시 전 값(아직 바뀜)');
   const m = readMarket(DATA, null), core = JSON.parse(fs.readFileSync(path.join(DATA, 'core.json'), 'utf8'));
-  assert.equal(m.asOf, core.asOf); assert.equal(m.span.chg, core.all.chg); assert.ok(m.day.up + m.day.down + m.day.flat + m.day.none === Object.keys(JSON.parse(fs.readFileSync(path.join(DATA, 'lines.json'), 'utf8')).lines).length);
+  const pop = core.mkt ? JSON.parse(fs.readFileSync(path.join(DATA, 'mkt.json'), 'utf8')).companies : JSON.parse(fs.readFileSync(path.join(DATA, 'lines.json'), 'utf8')).lines; // mr-v2 = 모든 회사(mkt.json)
+  assert.equal(m.rule, core.mkt ? 'mr-v2' : 'mr-v1'); assert.equal(m.n, Object.keys(pop).length);
+  assert.equal(m.asOf, core.asOf); assert.equal(m.span.chg, (core.mkt ?? core.all).chg); assert.ok(m.day.up + m.day.down + m.day.flat + m.day.none === Object.keys(pop).length);
+  assert.ok(m.lines[0].includes(`${core.mkt ? '모든 회사' : '고른'} ${Object.keys(pop).length.toLocaleString('ko-KR')}곳 가운데`), m.lines[0]); assert.ok(!m.lines[0].includes('365곳'), '옛 「365곳 가운데」 글(틀림 장부 27번)');
   assert.equal(m.lines.length, 3); for (const t of m.lines) { assert.match(t, /\d/); for (const w of BANNED) assert.ok(!t.includes(w), t); }
-  const again = readMarket(DATA, m); assert.equal(again.lines.at(-1), `앞 회차(${mdText(m.asOf)})와 같은 값 — 하루 오른 곳 ${m.day.up}곳 · 1등 갈래 ${m.groups.top.short} 그대로`);
+  const again = readMarket(DATA, m); assert.equal(again.lines.at(-1), `앞 회차(${mdText(m.asOf)})와 같은 값 — 하루 오른 곳 ${m.day.up.toLocaleString('ko-KR')}곳 · 1등 갈래 ${m.groups.top.short} 그대로`);
+  assert.equal(readMarket(DATA, {...m, rule: 'mr-v1'}).vsPrev, null, '판독 규칙이 다른 앞 회차(고른 곳)와는 견주지 않음');
   for (const t of again.lines) assert.match(t, /\d/, '앞 회차와 같은 값이어도 줄마다 숫자(클로드 눈 「줄마다 숫자」 — 2026-10-12 21:11 회차가 여기서 걸림)');
   const other = readMarket(DATA, {...m, asOf: '2026-10-07', day: {up: 100}, groups: {top: {id: 'bio', short: '바이오'}}});
-  assert.match(other.lines.at(-1), /하루 오른 곳 100곳 → \d+곳 · 1등 갈래 바이오 → /);
+  assert.match(other.lines.at(-1), /하루 오른 곳 100곳 → [\d,]+곳 · 1등 갈래 바이오 → /);
 });
 
 test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 화면에서 회사 3번 · n단 n번', () => {
   const J = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
   const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), home: fs.existsSync(path.join(DATA, 'home.json')) ? J('home.json') : null}; // 첫 화면 365곳 막대 양 끝 길(2026-10-12 14:54)도 함께
   S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
-  const {nodes, depth} = siteGraph(S);
-  assert.equal(nodes.size, 5 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5);
+  S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null; // 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄 · 밖 칸
+  const {nodes, depth} = siteGraph(S), outN = S.mk ? Object.values(S.mk).filter(m => !m.p).length : 0;
+  assert.equal(nodes.size, 5 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5 + outN);
+  if (S.mk) for (const [c, m] of Object.entries(S.mk)) assert.ok(depth.get((m.p ? '#/c/' : '#/x/') + c) <= 3, `${m.n} 3번 안`); // 모든 회사 — 3번이면 회사(고른 곳) · 밖 칸(나머지)
   for (const c of S.codes.slice(0, 50)) { assert.ok(depth.get('#/c/' + c) <= 3); assert.ok(depth.get(`#/c/${c}/range`) <= 7); }
   if (S.home?.s365?.top) { const top = '#/c/' + S.home.s365.top.c; assert.ok(nodes.get('#/').links.includes(top)); assert.equal(depth.get(top), 1); } // 오늘 가장 많이 오른 곳은 첫 화면에서 1번
   // 실제 화면에서 모은 길 지도(site_check.mjs --links)가 있으면 길 하나하나 맞대 봄(2026-10-12: 화면 1,878 · 다른 길 0)
   const lf = process.env.ATLAS_LINKS; if (!lf) return;
   const map = JSON.parse(fs.readFileSync(lf, 'utf8'));
-  assert.deepEqual(new Set(Object.keys(map)), new Set(nodes.keys()));
+  assert.deepEqual(new Set(Object.keys(map)), new Set([...nodes.keys()].filter(r => !r.startsWith('#/x/')))); // 밖 칸은 판(창)이라 실제 지도에 화면으로 없음
   for (const [r, ls] of Object.entries(map)) if (r !== '#/info') assert.deepEqual(new Set(ls.filter(x => x !== '#/info')), new Set(nodes.get(r).links.filter(x => x !== '#/info')), r);
 });
 

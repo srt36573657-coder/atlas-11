@@ -758,3 +758,12 @@ html.f3 .board.wide .row { --roww: 5rem; }
 ol.uplist .stay b { font-size: 1.25rem; color: var(--ink-hi); }
 ol.uplist .q.turn { font-weight: 700; }
 .lkey .l-turn { width: 12px; height: 12px; border: 1.5px dashed var(--sub); border-radius: 1px; background: none; }
+
+/* ════ 모든 회사 · 고른 곳 금빛(사장님 2026-10-14 12:01(싱가포르) 「나」 — 「첫 화면부터 모두 모든 회사로 바꿔요. 고른 56곳은 금빛이에요」) ════
+   경주판 줄 = 갈래 · 업종 · 회사 모두 · 고른 곳(멍거 · 린치 조건)이 든 줄 = 왼쪽 금빛 띠 + 금빛 이름표(1등 줄 금빛 이중 테와 다른 꼴) · 「?」 이름표 = 하루 30% 넘게 바뀐 날(금빛 글 · 조심) */
+.board .row.pk::before { content: ''; position: absolute; left: 0; top: 7px; bottom: 7px; width: 3px; border-radius: 2px; background: var(--gold); z-index: 2; pointer-events: none; }
+.badge.gold { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 196, 106, .1); }
+.badge.qb { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 196, 106, .1); font-weight: 800; }
+.key .k-pk { width: 4px; height: 18px; border-radius: 2px; background: var(--gold); }
+.note.gold-say { color: var(--sub); margin: -4px 0 10px; }
+@media (forced-colors: active) { .board .row.pk::before, .key .k-pk { forced-color-adjust: none; } }

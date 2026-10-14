@@ -120,7 +120,7 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.deepEqual(saved.members, rep.members);
   const tab = tabData([saved]); assert.equal(tab.records.length, 1); assert.equal(tab.records[0].members, undefined); // 탭 자료에는 365곳 목록을 싣지 않음
   // 시장 판독 · 네 눈 점검(2026-10-12 12:41) — 이번 회차 자료로 · 눈 넷 · 실패 0 · 기록(짧은 꼴) + 전부는 inspect/ 새 파일 · 업데이트 탭에도
-  assert.equal(rep.market.asOf, next); assert.ok(rep.market.lines.length >= 3); assert.match(rep.market.lines[0], /곳 오름 · \d+곳 내림/);
+  assert.equal(rep.market.asOf, next); assert.ok(rep.market.lines.length >= 3); assert.match(rep.market.lines[0], /곳 오름 · [\d,]+곳 내림/); assert.match(rep.market.lines[0], /모든 회사 [\d,]+곳 가운데/); // 판독 mr-v2 = 모든 회사(2026-10-14 「나」 · 1,000 넘으면 쉼표)
   assert.equal(rep.inspect.fail, 0, JSON.stringify(rep.inspect.lenses.map(l => l.first))); assert.deepEqual(rep.inspect.lenses.map(l => [l.key, l.n]), [['apple', 20000], ['google', 20000], ['claude', 20000], ['cia', 20000]]);
   assert.ok(rep.steps.some(s => s.name === '네 눈 점검' && s.code === 0));
   const ins = fs.readdirSync(path.join(tmp, 'inspect')); assert.deepEqual(ins, files);

@@ -52,9 +52,10 @@ const ms = Date.now() - t0, visited = seen.reduce((a, b) => a + b, 0);
 // ⑤ 점검용 길 지도 맞대기(도움말 판 #/info 의 보기 고리는 판이라 뺌)
 const mirror = (() => { const D = path.resolve(ROOT, arg('--data', 'site/atlas/data')), J = f => JSON.parse(fs.readFileSync(path.join(D, f), 'utf8'));
   const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), home: fs.existsSync(path.join(D, 'home.json')) ? J('home.json') : null}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
+  S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null; // 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄이 고른 곳 #/c/ · 나머지 #/x/
   const {nodes} = siteGraph(S), real = Object.keys(map).filter(r => r !== '#/info'), diff = [];
   for (const r of real) if (!nodes.has(r)) diff.push('점검 지도에 없는 화면 ' + r);
-  for (const r of nodes.keys()) if (r !== '#/info' && !(r in map)) diff.push('실제에 없는 화면 ' + r);
+  for (const r of nodes.keys()) if (r !== '#/info' && !sheet(r) && !(r in map)) diff.push('실제에 없는 화면 ' + r); // 밖 칸(#/x/)은 판이라 실제 지도에 화면으로 없음 — 그리로 가는 길은 아래에서 맞댐
   for (const r of real) { if (!nodes.has(r)) continue; const a = new Set(map[r].filter(x => x !== '#/info')), b = new Set(nodes.get(r).links.filter(x => x !== '#/info'));
     for (const x of a) if (!b.has(x)) diff.push(`${r} → ${x} 점검 지도에 없음`); for (const x of b) if (!a.has(x)) diff.push(`${r} → ${x} 실제에 없음`); }
   return {pages: nodes.size, diff: diff.length, first: diff.slice(0, 10)}; })();
