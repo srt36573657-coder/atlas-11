@@ -127,7 +127,7 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   const gold = pkI.slice().sort((a, b) => b.pk - a.pk || b.n - a.n)[0]; // 고른 곳이 가장 많이 든 업종
   const shown = gold.members.filter(c => mk.companies[c]?.l?.some(x => x != null)), shownN = shown.length, shownPk = shown.filter(c => mk.companies[c].p).length; // 기준일 종가가 없어 선을 못 그린 회사는 줄 대신 「?」 한 줄
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
-  await page.evaluate(() => { const b = document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 220); }); await page.waitForTimeout(9000);
+  await page.evaluate(() => { const b = document.querySelector('#view h2.sec.rt') ?? document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 70); }); await page.waitForTimeout(9000); // 사진 = 경주 제목 · 오름 · 내림 줄 · 금빛 설명 · 경주
   const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, gold: document.querySelectorAll('#view .board .badge.gold').length, say: document.querySelector('#view .gold-say')?.textContent ?? '', tab: document.querySelector('#tabList')?.textContent ?? ''}));
   await shot('p18-home-all');
   await page.goto(B + '/?v=' + Date.now() + '#/i/' + encodeURIComponent(gold.name), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000);
