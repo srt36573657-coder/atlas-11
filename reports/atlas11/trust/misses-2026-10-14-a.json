@@ -1,0 +1,27 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-14T10:08+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": [
+  "모두 건수 = 이 폴더 .json 들의 items 수를 더한 것"
+ ],
+ "scope": {
+  "from": "2026-10-14 09:41(서울)",
+  "to": "2026-10-14 10:08(서울)"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 24,
+   "when": "2026-10-14 10:05(서울) · 09:05(싱가포르)",
+   "what": "「싱가포르 시각 오전 11시 30분쯤 끝나요」 약속을 못 지킴 — 장이 열린 때(서울 09:44 ~ 09:57)에 전 종목 모음을 받아 그날 끝나지 않은 일봉 · 값(10월 14일 장 중)이 섞임. 이 모음으로 고르면 뒤 업데이트에서 종가를 이어 받지 못함",
+   "found_by": "저 — 받은 모음을 열어 마지막 날이 10월 14일(장 중)인 것을 봄",
+   "fixed": "장 중 모음(reports/atlas11/universe/2026-10-14)은 쓰지 않음 · 장이 끝난 뒤(서울 15:50 · 싱가포르 14:50) 다시 받음 · collect_universe --all 은 장이 열린 때(서울 평일 08:00 ~ 15:40)에 받지 않게 막음(--force 로만)",
+   "evidence": [
+    "reports/atlas11/universe/2026-10-14/bundle.json.gz",
+    "scripts/atlas11/collect_universe.mjs",
+    "tests/atlas11/collect-all-hours.test.mjs"
+   ]
+  }
+ ]
+}

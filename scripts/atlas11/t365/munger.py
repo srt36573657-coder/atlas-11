@@ -39,7 +39,8 @@ from rules import isfin  # noqa: E402
 import daese  # noqa: E402  자료 · 고르는 날은 다른 판과 하나로(고르는 날은 기록에만 · 고르는 데 안 씀)
 
 VERSION = 'mg-v1'
-BUNDLE = daese.BUNDLE
+# 모음 = universe.json bundle(2026-10-14 「전 종목」부터 새 모음 · 옛 daese.BUNDLE 은 10월 10일 모음 그대로) · 시험은 ATLAS_BUNDLE 로 옛 모음을 고정
+BUNDLE = os.environ.get('ATLAS_BUNDLE') or json.load(open(os.path.join(HERE, 'universe.json'), encoding='utf-8')).get('bundle') or daese.BUNDLE
 DEBT, ROE = 100.0, 18.0
 NAME = '멍거 조건'
 WHY_IN = '3년 모두 돈을 벌었고 · 빚이 자기 돈보다 적고 · 자기 돈 100원으로 해마다 18원 넘게 벎'

@@ -27,7 +27,7 @@ import munger  # noqa: E402
 import lynch  # noqa: E402
 
 VERSION = 'ml-v1'
-BUNDLE = daese.BUNDLE
+BUNDLE = munger.BUNDLE  # universe.json bundle(시험은 ATLAS_BUNDLE 로 옛 모음 고정)
 NAME = '멍거 · 린치 조건'
 GROUPS = (('mg', munger.NAME), ('ly', lynch.NAME))
 kd = daese.kd

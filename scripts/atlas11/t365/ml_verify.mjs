@@ -10,7 +10,7 @@ const [, , NOWF, PROF, OUTF] = process.argv;
 if (!NOWF || !PROF) { console.error('쓰는 법: ml_verify.mjs <now.json> <proposal.json> [<결과 json>]'); process.exit(2); }
 const N = JSON.parse(fs.readFileSync(NOWF, 'utf8')), P = JSON.parse(fs.readFileSync(PROF, 'utf8'));
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8'));
-const B = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
+const B = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, process.env.ATLAS_BUNDLE || ACT.bundle))).toString('utf8')); // 시험은 ATLAS_BUNDLE 로 옛 모음 고정
 const bad = [];
 // ── 멍거 갈래(munger_verify.mjs 와 같은 뜻 · 따로 적음) ──
 const FIN = new Set(['은행', '증권', '생명보험', '손해보험', '카드', '기타금융', '창업투자']);

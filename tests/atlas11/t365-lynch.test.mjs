@@ -10,6 +10,8 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8'));
+const OLD = {bundle: 'reports/atlas11/universe/2026-10-10/bundle.json.gz', asOf: '2026-10-08', dir: 'reports/atlas11/universe/2026-10-14-munger-lynch'}; // 10월 10일 모음(숫자를 박은 시험은 이 모음으로 고정 — 2026-10-14 「전 종목」부터 universe.json 은 새 모음)
+const OLDENV = {...process.env, ATLAS_BUNDLE: OLD.bundle};
 const py = code => { const r = spawnSync('python3', ['-c', code], {cwd: path.join(ROOT, 'scripts/atlas11/t365'), encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr); return JSON.parse(r.stdout.trim().split('\n').at(-1)); };
 
 test('린치 작은 보기 — 20 ~ 25% · 점수 2 · 적자 · 빈 값', () => {
@@ -41,8 +43,8 @@ test('10월 10일 모음 — 41곳 · 두 갈래 셈 · 노드 따로 세기 틀
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ml-'));
   try {
     const now = path.join(tmp, 'now.json');
-    let r = spawnSync('node', ['scripts/atlas11/t365/dump.mjs', ACT.bundle, now, ACT.asOf], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stderr);
-    r = spawnSync('python3', ['scripts/atlas11/t365/ml.py', now, path.join(tmp, 'a')], {cwd: ROOT, encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr);
+    let r = spawnSync('node', ['scripts/atlas11/t365/dump.mjs', OLD.bundle, now, OLD.asOf], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stderr);
+    r = spawnSync('python3', ['scripts/atlas11/t365/ml.py', now, path.join(tmp, 'a')], {cwd: ROOT, encoding: 'utf8', env: OLDENV}); assert.equal(r.status, 0, r.stderr);
     const a = JSON.parse(fs.readFileSync(path.join(tmp, 'a', 'proposal.json'), 'utf8')), c = a.counts;
     assert.deepEqual([c.universe, c.picked, c.mg.picked, c.ly.picked, c.both], [1378, 41, 26, 18, 3]);
     assert.deepEqual([c.ly.q, c.ly.known, c.ly.l0, c.ly.l1], [89, 1289, 762, 31]);
@@ -50,21 +52,33 @@ test('10월 10일 모음 — 41곳 · 두 갈래 셈 · 노드 따로 세기 틀
     assert.match(a.rules.notMunger, /멍거 · 린치가 고른 목록이 아닙니다/);
     for (const p of a.picked) {
       assert.ok(p.tags.length >= 1);
-      if (p.tags.includes('ly')) { assert.ok(p.ly.g >= 20 && p.ly.g <= 25 && p.ly.score >= 2 && p.ly.pxDay === ACT.asOf, p.name); } else assert.equal(p.ly, null);
+      if (p.tags.includes('ly')) { assert.ok(p.ly.g >= 20 && p.ly.g <= 25 && p.ly.score >= 2 && p.ly.pxDay === OLD.asOf, p.name); } else assert.equal(p.ly, null);
       if (p.tags.includes('mg')) assert.ok(p.mg.roe.every(x => x >= 18) && p.mg.debt.every(x => x <= 100), p.name); else assert.equal(p.mg, null);
     }
     const tags = Object.fromEntries(a.picked.map(p => [p.name, p.tags.join('+')]));
     assert.equal(tags['시프트업'], 'mg+ly'); assert.equal(tags['JYP Ent.'], 'mg+ly'); assert.equal(tags['감성코퍼레이션'], 'mg+ly'); assert.equal(tags['한국단자'], 'ly'); assert.equal(tags['에이피알'], 'mg');
-    // 바탕 판(저장소)과 같은 곳 · 같은 차례
-    const base = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.map(p => p.code));
-    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'a', 'proposal.json'), path.join(tmp, 'v.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stdout + r.stderr); assert.match(r.stdout, /틀림 0/);
+    // 10월 10일 모음으로 고른 판(저장소)과 같은 곳 · 같은 차례
+    const base = JSON.parse(fs.readFileSync(path.join(ROOT, OLD.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.map(p => p.code));
+    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'a', 'proposal.json'), path.join(tmp, 'v.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20, env: OLDENV}); assert.equal(r.status, 0, r.stdout + r.stderr); assert.match(r.stdout, /틀림 0/);
     // 값을 바꾸면 따로 세기가 잡음 — ① 린치만 든 곳의 점수 ② 밖 회사 하나의 린치 멈춘 자리 ③ 꼬리표
     const lyOnly = a.picked.findIndex(p => p.tags.join() === 'ly');
     const bad1 = JSON.parse(JSON.stringify(a)); bad1.picked[lyOnly].ly.score = 1.5; fs.writeFileSync(path.join(tmp, 'bad1.json'), JSON.stringify(bad1));
-    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad1.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 1, '린치 점수를 바꾸면 잡힘');
+    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad1.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20, env: OLDENV}); assert.equal(r.status, 1, '린치 점수를 바꾸면 잡힘');
     const bad2 = JSON.parse(JSON.stringify(a)); bad2.outside[0].ly.s = bad2.outside[0].ly.s === 'g' ? 'peg' : 'g'; fs.writeFileSync(path.join(tmp, 'bad2.json'), JSON.stringify(bad2));
-    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad2.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 1, '린치 멈춘 자리를 바꾸면 잡힘');
+    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad2.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20, env: OLDENV}); assert.equal(r.status, 1, '린치 멈춘 자리를 바꾸면 잡힘');
     const bad3 = JSON.parse(JSON.stringify(a)); bad3.picked[0].tags = ['ly']; fs.writeFileSync(path.join(tmp, 'bad3.json'), JSON.stringify(bad3));
-    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad3.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 1, '꼬리표를 바꾸면 잡힘');
+    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'bad3.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20, env: OLDENV}); assert.equal(r.status, 1, '꼬리표를 바꾸면 잡힘');
+  } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
+});
+
+test('지금 모음(universe.json) — 다시 고르면 저장소 판과 같은 곳 · 같은 차례 · 노드 따로 세기 틀림 0', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ml-now-'));
+  try {
+    const now = path.join(tmp, 'now.json');
+    let r = spawnSync('node', ['scripts/atlas11/t365/dump.mjs', ACT.bundle, now, ACT.asOf], {cwd: ROOT, encoding: 'utf8', maxBuffer: 256 << 20}); assert.equal(r.status, 0, r.stderr);
+    r = spawnSync('python3', ['scripts/atlas11/t365/ml.py', now, path.join(tmp, 'a')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stderr);
+    const a = JSON.parse(fs.readFileSync(path.join(tmp, 'a', 'proposal.json'), 'utf8')), base = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8'));
+    assert.deepEqual(a.picked.map(p => p.code), base.picked.map(p => p.code)); assert.deepEqual(a.counts, base.counts);
+    r = spawnSync('node', ['scripts/atlas11/t365/ml_verify.mjs', now, path.join(tmp, 'a', 'proposal.json')], {cwd: ROOT, encoding: 'utf8', maxBuffer: 256 << 20}); assert.equal(r.status, 0, r.stdout + r.stderr); assert.match(r.stdout, /틀림 0/);
   } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
 });

@@ -10,6 +10,8 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8'));
+const OLD = {bundle: 'reports/atlas11/universe/2026-10-10/bundle.json.gz', asOf: '2026-10-08', dir: 'reports/atlas11/universe/2026-10-14-munger-lynch'}; // 10월 10일 모음(숫자를 박은 시험은 이 모음으로 고정 — 2026-10-14 「전 종목」부터 universe.json 은 새 모음)
+const OLDENV = {...process.env, ATLAS_BUNDLE: OLD.bundle};
 const py = code => { const r = spawnSync('python3', ['-c', code], {cwd: path.join(ROOT, 'scripts/atlas11/t365'), encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr); return JSON.parse(r.stdout.trim().split('\n').at(-1)); };
 
 test('작은 보기 — 세 조건 · 모름 · 예외 없음 · 예상 E 안 씀', () => {
@@ -46,16 +48,16 @@ test('10월 10일 모음 — 26곳 · 깔때기 · 노드 따로 세기 틀림 0
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mg-'));
   try {
     const now = path.join(tmp, 'now.json');
-    let r = spawnSync('node', ['scripts/atlas11/t365/dump.mjs', ACT.bundle, now, ACT.asOf], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stderr);
-    r = spawnSync('python3', ['scripts/atlas11/t365/munger.py', now, path.join(tmp, 'a')], {cwd: ROOT, encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr);
+    let r = spawnSync('node', ['scripts/atlas11/t365/dump.mjs', OLD.bundle, now, OLD.asOf], {cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20}); assert.equal(r.status, 0, r.stderr);
+    r = spawnSync('python3', ['scripts/atlas11/t365/munger.py', now, path.join(tmp, 'a')], {cwd: ROOT, encoding: 'utf8', env: OLDENV}); assert.equal(r.status, 0, r.stderr);
     const a = JSON.parse(fs.readFileSync(path.join(tmp, 'a', 'proposal.json'), 'utf8')), c = a.counts;
     assert.deepEqual([c.universe, c.q, c.known, c.s1, c.s2, c.picked], [1378, 109, 1269, 682, 427, 26]);
     assert.equal(a.rules.version, 'mg-v1'); assert.equal(a.rules.conds.length, 3); assert.match(a.rules.notMunger, /멍거가 고른 목록이 아닙니다/);
     for (const p of a.picked) { assert.equal(p.years.length, 3); assert.ok(p.net.every(x => x > 0) && p.debt.every(x => x <= 100) && p.roe.every(x => x >= 18), p.name); assert.ok(p.years.every(y => !y.endsWith('E'))); }
     const names = a.picked.map(p => p.name); for (const n of ['에이피알', '한미반도체', '코웨이']) assert.ok(names.includes(n), n);
     const out = Object.fromEntries(a.outside.map(o => [o.name, o])); assert.equal(out['삼성전자'].s, 'roe'); assert.equal(out['SK하이닉스'].s, 'loss'); assert.equal(out['현대차'].s, 'debt');
-    // 바탕 판(저장소 · ml-v1)의 멍거 갈래와 같은 곳 · 같은 차례
-    const base = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.filter(p => p.tags.includes('mg')).map(p => p.code));
+    // 10월 10일 모음으로 고른 판(저장소 · ml-v1)의 멍거 갈래와 같은 곳 · 같은 차례
+    const base = JSON.parse(fs.readFileSync(path.join(ROOT, OLD.dir, 'proposal.json'), 'utf8')); assert.deepEqual(a.picked.map(p => p.code), base.picked.filter(p => p.tags.includes('mg')).map(p => p.code));
     r = spawnSync('node', ['scripts/atlas11/t365/munger_verify.mjs', now, path.join(tmp, 'a', 'proposal.json'), path.join(tmp, 'v.json')], {cwd: ROOT, encoding: 'utf8'}); assert.equal(r.status, 0, r.stdout + r.stderr); assert.match(r.stdout, /틀림 0/);
     // 값을 바꾸면 따로 세기가 잡음 — ① 고른 곳 하나의 ROE 를 18 밑으로 ② 밖 회사 하나의 멈춘 자리를 바꿈
     const bad1 = JSON.parse(JSON.stringify(a)); bad1.picked[0].roe[1] = 12; fs.writeFileSync(path.join(tmp, 'bad1.json'), JSON.stringify(bad1));
@@ -65,7 +67,7 @@ test('10월 10일 모음 — 26곳 · 깔때기 · 노드 따로 세기 틀림 0
     // 주가를 안 씀 — 후보 표의 몸값 · 1주 값 · 거래대금을 크게 바꿔도 같은 곳(멍거 「기다림」 · 새 결산이 담긴 모음이 들어와야 바뀜)
     const N = JSON.parse(fs.readFileSync(now, 'utf8')); for (const x of N.rows) { x.capEok = 1; if (x.px) { x.px.close = 1; x.px.atvEok = 0; } x.per = 999; }
     fs.writeFileSync(path.join(tmp, 'now2.json'), JSON.stringify(N));
-    r = spawnSync('python3', ['scripts/atlas11/t365/munger.py', path.join(tmp, 'now2.json'), path.join(tmp, 'b')], {cwd: ROOT, encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr);
+    r = spawnSync('python3', ['scripts/atlas11/t365/munger.py', path.join(tmp, 'now2.json'), path.join(tmp, 'b')], {cwd: ROOT, encoding: 'utf8', env: OLDENV}); assert.equal(r.status, 0, r.stderr);
     const b = JSON.parse(fs.readFileSync(path.join(tmp, 'b', 'proposal.json'), 'utf8')); assert.deepEqual(b.picked.map(p => p.code), a.picked.map(p => p.code));
   } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
 });

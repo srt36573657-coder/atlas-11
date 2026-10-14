@@ -221,9 +221,20 @@ export async function writeOutputs({rootDir, outDir, bundle, proposal, next, bun
   return proposal;
 }
 
+/** 장이 열린 때인가(서울 평일 08:00 ~ 15:40 — 넥스트레이드 아침 장 08:00 · 정규장 끝 15:30 + 10분) — 그때 받은 전 종목 모음은 그날 끝나지 않은 일봉 · 값이 섞임(2026-10-14 틀림 장부 24번)
+ *  공휴일은 따지지 않음(평일 공휴일에 받을 때는 --force) */
+export function marketOpenKst(nowIso) {
+  const t = Date.parse(nowIso) + 9 * 3600000, d = new Date(t), wd = d.getUTCDay(), m = d.getUTCHours() * 60 + d.getUTCMinutes();
+  return wd >= 1 && wd <= 5 && m >= 8 * 60 && m < 15 * 60 + 40;
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
   const arg = k => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
   const root = process.cwd(), now = arg('--now') ?? new Date().toISOString(), day = kst(now).slice(0, 10);
+  // 2026-10-14 틀림 장부 24번 — 장이 열린 때 전 종목을 받으면 그날 끝나지 않은 일봉 · 값이 모음에 섞임 → --all 은 그때 받지 않음(--force 로만)
+  if (process.argv.includes('--all') && !process.argv.includes('--force') && !arg('--from-bundle') && !arg('--fixture') && marketOpenKst(now)) {
+    console.error(`collect_universe --all: 장이 열린 때(서울 ${kst(now).slice(11, 16)})에는 받지 않습니다 — 15:40 뒤에 다시(그날 끝나지 않은 값이 섞임)`); process.exit(4);
+  }
   // 같은 날 폴더가 이미 있으면 덮어쓰지 않고 시각을 붙인 새 폴더(옛 원문·제안은 그대로 둔다)
   const exists = async d => fs.access(path.join(root, d)).then(() => true, () => false);
   let outDir = arg('--out-dir') ?? `reports/atlas11/universe/${day}`;
