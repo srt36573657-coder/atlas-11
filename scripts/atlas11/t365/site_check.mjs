@@ -106,7 +106,7 @@ function hubExpect(H) {
   const big = all.sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0], bigT = big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : null;
   const more = '자세히 ›';
   const slides = [
-    ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!', '친구에게 소개하기', '막비 24초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!'],
+    ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!', '친구에게 소개하기', '홍표 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!'],
     s1,
     K || Q ? ['코스피 · 코스닥 — 3개월', ...[K, Q].filter(Boolean).flatMap(x => [x.name, numK(x.close), pct(x.day)]), more] : ['? 지수 값을 못 받았습니다.', more],
     S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label.replace('7', '3')} · 약한 3`, S.strong[0].name, pct(S.strong[0].chg), S.weak[0].name, pct(S.weak[0].chg), more] : ['? 업종 값을 못 받았습니다.', more],

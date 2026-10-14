@@ -59,3 +59,57 @@ export function makbiHead(o = {}) { // 몸 · 날개 · 발 · 꼬리를 뺀 머
   return `<g transform="translate(50 57) scale(.53) translate(-120 -112)">${makbi({...o, tilt: o.tilt ?? -6}).replace(/<path d="M106 238[^>]*\/>|<g transform="rotate\([^)]*84 178\)">[\s\S]*?<\/g>\s*<g transform="rotate\([^)]*156 178\)">[\s\S]*?<\/g>|<ellipse cx="120" cy="198"[^>]*\/>|<g fill="none" stroke="#AE4A70"[\s\S]*?<\/g>|<g fill="#959CA8">[\s\S]*?<\/g>/g, '')}</g>`;
 }
 export const svg = (w, h, body, extra = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"${extra}>${body}</svg>`;
+
+// ── 홍표 첨단 차림(사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 21:59 「판타스틱하게 만들어줘 아이어맨 처럼」 · 22:29 「더 아이어맨스럽게 … 아틀란스에 올려」) ──
+//   남의 캐릭터 모양은 쓰지 않음 — 홍표만의 빛 눈 가리개(내리면 눈을 덮고 · 올리면 이마 위) · 은빛 날개 덮개 · 발 불꽃통 · 청록 불꽃
+//   같은 그림 좌표(240×270) · 그림 안 이름(id)은 GEAR_DEFS 의 fg · vg · metal · gl 을 씀(영상 화면은 제 DEFS 에 같은 이름이 있음)
+const _f1 = x => x.toFixed(1), _f2 = x => x.toFixed(2);
+export const GEAR_DEFS = '<filter id="gl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+  + '<linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".25" stop-color="#BFFFF4"/><stop offset=".6" stop-color="#2EC4B6"/><stop offset="1" stop-color="#2EC4B6" stop-opacity="0"/></linearGradient>'
+  + '<linearGradient id="vg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FFFF0"/><stop offset=".5" stop-color="#2FCFB8"/><stop offset="1" stop-color="#0E6E68"/></linearGradient>'
+  + '<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2FBFA"/><stop offset=".45" stop-color="#B4CDCB"/><stop offset="1" stop-color="#6E8B89"/></linearGradient>';
+const HP_VP = 'M56 99 Q120 83 184 99 Q190 118 182 135 Q120 151 58 135 Q50 118 56 99 Z';
+const HP_WL = 'M70 170 C46 184 40 222 58 246 C66 240 70 232 74 224 C76 238 82 246 90 250 C92 222 92 194 86 172 Z', HP_WR = 'M170 170 C194 184 200 222 182 246 C174 240 170 232 166 224 C164 238 158 246 150 250 C148 222 148 194 154 172 Z';
+const HP_GL = 'M68 174 C56 182 50 196 52 210 C60 206 68 200 76 196 C78 188 78 180 74 172 Z', HP_GLL = 'M57 203 C63 197 69 193 76 191';
+const hpMir = p => p.replace(/(-?\d+\.?\d*) (-?\d+\.?\d*)/g, (m, x, y) => (240 - +x) + ' ' + y), HP_GR = hpMir(HP_GL), HP_GRL = hpMir(HP_GLL);
+/** 눈 가리개 — v: 1 = 눈을 덮음 · 0 = 이마 위로 올림 · t: 때(빛줄이 지나감) */
+export function visorSvg(v, t, tilt) {
+  const dy = (1 - v) * -50, sc = 1 - (1 - v) * .22, scan = 58 + ((t * .85) % 1) * 126;
+  return '<g transform="rotate(' + tilt + ' 120 150)"><g transform="translate(0 ' + _f1(dy) + ') translate(120 116) scale(1 ' + sc.toFixed(3) + ') translate(-120 -116)">'
+    + '<clipPath id="vc"><path d="' + HP_VP + '"/></clipPath><path d="' + HP_VP + '" fill="url(#vg)" opacity="' + _f2(.42 + .2 * v) + '"/>'
+    + '<g clip-path="url(#vc)"><rect x="' + _f1(scan) + '" y="80" width="12" height="74" fill="#E8FFFB" opacity="' + _f2(.5 * v) + '"/></g>'
+    + '<path d="' + HP_VP + '" fill="none" stroke="#C8FFF6" stroke-width="3.2" filter="url(#gl)"/><path d="M70 101 Q120 89 170 101" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>'
+    + '<path d="M53 113 l-12 -4 M187 113 l12 -4" stroke="#C8FFF6" stroke-width="4.5" stroke-linecap="round"/><circle cx="48" cy="114" r="8" fill="url(#metal)" stroke="#CFFFF7" stroke-width="1.6"/><circle cx="192" cy="114" r="8" fill="url(#metal)" stroke="#CFFFF7" stroke-width="1.6"/></g></g>';
+}
+/** 발 불꽃 — f: 세기(0 ~ 1) · y0: 불꽃이 나오는 높이(발 불꽃통이 있으면 258) */
+export function flameSvg(f, t, y0) {
+  if (f <= .01) return ''; let s = '';
+  [[104, y0 || 251], [136, y0 || 251]].forEach(([x, y], i) => {
+    const L = (30 + 46 * f) * (1 + .16 * Math.sin(t * 43 + i * 2.1) + .09 * Math.sin(t * 71 + i)), w = 10 + 4 * f;
+    s += '<path d="M' + (x - w) + ' ' + y + ' Q' + x + ' ' + _f1(y + L * 1.3) + ' ' + (x + w) + ' ' + y + ' Z" fill="url(#fg)" opacity="' + _f2(.5 + .5 * f) + '" filter="url(#gl)"/><path d="M' + _f1(x - w * .42) + ' ' + y + ' Q' + x + ' ' + _f1(y + L * .62) + ' ' + _f1(x + w * .42) + ' ' + y + ' Z" fill="#fff" opacity="' + _f2(.85 * f) + '"/>';
+  });
+  return s;
+}
+export function wingGlow(g, wl, wr) {
+  if (g <= .01) return '';
+  return '<g fill="none" stroke="#9FFFF0" stroke-width="3.2" opacity="' + _f2(g) + '" filter="url(#gl)"><path transform="rotate(' + _f1(wl * 62) + ' 84 178)" d="' + HP_WL + '"/><path transform="rotate(' + _f1(-wr * 62) + ' 156 178)" d="' + HP_WR + '"/></g>';
+}
+/** 은빛 날개 덮개 · 발 불꽃통 — g: {guard, boot(0 ~ 1 · 붙은 정도), gL · gR · bootOff(날아오는 자리)} */
+export function gearSvg(g, o) {
+  let s = ''; if (!g) return s;
+  if (g.guard > .01) {
+    const a = g.gL || [0, 0], b = g.gR || [0, 0];
+    s += '<g opacity="' + _f2(g.guard) + '"><g transform="translate(' + _f1(a[0]) + ' ' + _f1(a[1]) + ') rotate(' + _f1(o.wingL * 62) + ' 84 178)"><path d="' + HP_GL + '" fill="url(#metal)" stroke="#CFFFF7" stroke-width="1.6"/><path d="' + HP_GLL + '" fill="none" stroke="#7FFFE6" stroke-width="2.6" stroke-linecap="round" filter="url(#gl)"/></g>'
+      + '<g transform="translate(' + _f1(b[0]) + ' ' + _f1(b[1]) + ') rotate(' + _f1(-o.wingR * 62) + ' 156 178)"><path d="' + HP_GR + '" fill="url(#metal)" stroke="#CFFFF7" stroke-width="1.6"/><path d="' + HP_GRL + '" fill="none" stroke="#7FFFE6" stroke-width="2.6" stroke-linecap="round" filter="url(#gl)"/></g></g>';
+  }
+  if (g.boot > .01) {
+    const c = g.bootOff || [0, 0];
+    s += '<g opacity="' + _f2(g.boot) + '" transform="translate(' + _f1(c[0]) + ' ' + _f1(c[1]) + ')">' + [104, 136].map(x => '<rect x="' + (x - 13) + '" y="238" width="26" height="20" rx="9" fill="url(#metal)" stroke="#CFFFF7" stroke-width="1.5"/><ellipse cx="' + x + '" cy="258" rx="11" ry="3.6" fill="#7FFFE6" filter="url(#gl)"/>').join('') + '</g>';
+  }
+  return s;
+}
+/** 홍표 한 마리(첨단 차림) — o: makbi 의 몸짓 + visor · vs(가리개 보임) · visorOff · flame · glowWing · g: gearSvg 의 g */
+export function hongpyo(o, t, g) {
+  return flameSvg(o.flame, t, g && g.boot > .5 ? 258 : 251) + makbi({id: o.id ?? 'hp', tilt: o.tilt, blink: o.blink, wingL: o.wingL, wingR: o.wingR, crestUp: o.crestUp, beakOpen: o.beakOpen}) + gearSvg(g, o) + wingGlow(o.glowWing, o.wingL, o.wingR)
+    + (o.vs > .01 ? '<g opacity="' + _f2(o.vs) + '" transform="translate(0 ' + _f1(o.visorOff || 0) + ')">' + visorSvg(o.visor, t, o.tilt) + '</g>' : '');
+}

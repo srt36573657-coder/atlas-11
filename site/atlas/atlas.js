@@ -543,7 +543,7 @@ const HELLO_PROMO = '10명 소개하면 스타벅스 상품권 1만원!'; // 202
 const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!'];
 function slideHello() {
   return h('a', {class: 'hello hs-hello hs-say', href: '/hello.html'}, h('span', {class: 'hmsg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t}))),
-    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기 ›'}),
+    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '홍표 35초 영상 · 보내기 ›'}),
       h('span', {class: 'hpr', text: HELLO_PROMO})));
 }
 /** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */

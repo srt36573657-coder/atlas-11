@@ -166,6 +166,23 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
       && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar)}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
+await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(600);
+  const band = await page.evaluate(() => document.querySelector('.hs-hello .hw')?.textContent ?? '');
+  await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(600);
+  const hv = await page.evaluate(async () => {
+    const v = document.querySelector('video.hp-vid'), meta = n => document.querySelector(`meta[name="${n}"], meta[property="${n}"]`)?.getAttribute('content') ?? '';
+    if (v) { v.preload = 'auto'; v.load(); await new Promise(r => { if (v.readyState >= 1) r(); else { v.addEventListener('loadedmetadata', r, {once: true}); setTimeout(r, 20000); } }); }
+    return {dur: v ? v.duration : null, label: v?.getAttribute('aria-label') ?? '', desc: meta('description'), og: meta('og:description'), alt: meta('og:image:alt'), body: document.body.innerText};
+  });
+  await shot('p26-hello-video');
+  await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
+  const old = await page.evaluate(() => document.querySelector('.hl-open')?.textContent ?? '');
+  const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, old].join(' ');
+  out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, old,
+    ok: /홍표 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /홍표/.test(hv.label) && /홍표/.test(hv.desc) && /홍표/.test(hv.og) && /홍표/.test(hv.alt) && /홍표 35초 영상/.test(old) && !/막비|24초/.test(all)};
+  if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
+});
 await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)
   const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
   const core = await J('core.json'), mk = await J('mkt.json'), rg = await J('range.json');
