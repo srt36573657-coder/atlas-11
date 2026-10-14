@@ -1,0 +1,25 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-14T18:12+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": [
+  "모두 건수 = 이 폴더 .json 들의 items 수를 더한 것"
+ ],
+ "scope": {
+  "from": "2026-10-14 18:10(서울)",
+  "to": "2026-10-14 18:12(서울)"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 30,
+   "when": "2026-10-14 18:10(서울) 사이트 올린 기록을 읽을 때",
+   "what": "올린 기록 파일(reports/atlas11/operations/deploy-latest.json)의 앞 칸을 통째로 찍어, 찍지 않기로 한 사이트 번호 · 올림 주소가 도구 출력에 나왔음 — 사장님께 보내는 글 · 카드에는 넣지 않았지만 약속(사이트 번호 · 올림 주소 · 올림 번호를 찍지 않음)을 어김",
+   "found_by": "저 — 찍힌 출력을 보고 바로",
+   "fixed": "그 뒤로 올린 기록은 state · at · url 칸만 골라 읽음 · 보내는 글 · 카드 · 기록에 그 값을 옮기지 않음",
+   "evidence": [
+    "reports/atlas11/operations/deploy-latest.json"
+   ]
+  }
+ ]
+}
