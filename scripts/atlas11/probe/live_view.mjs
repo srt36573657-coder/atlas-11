@@ -110,8 +110,14 @@ await step('전 종목 찾기', async () => { // 사장님 2026-10-14 08:38 「�
   await page.goto(B + '/?v=' + Date.now() + '#/find', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
   await page.fill('#q', last?.n ?? '?'); await page.waitForTimeout(800);
   const hits = await page.$eval('#hits', x => x.innerText).catch(() => ''); await shot('p15-find-all');
-  out.allFind = {universe: core.funnel?.universe ?? null, rows: names.rows.length, kospi: mk.KOSPI, kosdaq: mk.KOSDAQ, collected: names.collected, last: last && {c: last.c, n: last.n}, hit: !!last && hits.includes(last.n),
-    ok: names.rows.length === core.funnel?.universe && names.rows.length >= 2400 && !!last && hits.includes(last.n)};
+  // 목록 모두(2026-10-14 11:02 「이거 다 올려」) — 글자 섞인 번호 회사를 번호로 · 상장 펀드를 이름으로 찾음(사진 p16 · p17)
+  const findShot = async (q, tag) => { await page.goto(B + '/?v=' + Date.now() + '#/find', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200); await page.fill('#q', q); await page.waitForTimeout(800); const t = await page.$eval('#hits', x => x.innerText).catch(() => ''); await shot(tag); return t; };
+  const nc = names.rows.find(r => /[A-Z]/.test(r.c) && !r.k), etf = names.rows.find(r => r.k === 'etf' && /^KODEX 200$/.test(r.n)) ?? names.rows.find(r => r.k === 'etf');
+  const hNc = nc ? await findShot(nc.c, 'p16-find-newcode') : '', hEtf = etf ? await findShot(etf.n, 'p17-find-etf') : '';
+  const kinds = {}; for (const r of names.rows) if (r.k) kinds[r.k] = (kinds[r.k] ?? 0) + 1;
+  out.allFind = {universe: core.funnel?.universe ?? null, companies: core.funnel?.companies ?? null, rows: names.rows.length, kospi: mk.KOSPI, kosdaq: mk.KOSDAQ, kinds, collected: names.collected, last: last && {c: last.c, n: last.n}, hit: !!last && hits.includes(last.n),
+    newCode: nc && {c: nc.c, n: nc.n, hit: hNc.includes(nc.n)}, etf: etf && {c: etf.c, n: etf.n, hit: hEtf.includes(etf.n) && /상장 펀드/.test(hEtf)},
+    ok: names.rows.length === core.funnel?.universe && names.rows.length >= 2400 && !!last && hits.includes(last.n) && (!nc || hNc.includes(nc.n)) && (!etf || (hEtf.includes(etf.n) && /상장 펀드/.test(hEtf)))};
   if (!out.allFind.ok) out.errors.push('전 종목 찾기: ' + JSON.stringify(out.allFind).slice(0, 200));
 });
 await step('옛 판', async () => {

@@ -18,7 +18,7 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../.
 const ACT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/universe.json'), 'utf8')); // 지금 쓰는 365곳 판
 const bundle = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(ROOT, ACT.bundle))).toString('utf8'));
 const pro = JSON.parse(fs.readFileSync(path.join(ROOT, ACT.dir, 'proposal.json'), 'utf8'));
-const codes = [...pro.picked.map(p => p.code), ...pro.outside.map(o => o.code)];
+const codes = [...pro.picked.map(p => p.code), ...pro.outside.filter(o => !o.nc).map(o => o.code)]; // 회사 주식이 아닌 것(모음 every — 펀드 · 우선주 …)은 일봉을 받지 않음(2026-10-14 「이거 다 올려」)
 const cal = [...new Set([...JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/input.json'), 'utf8')).calendar.sessions, ...JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/rolling-calendar.json'), 'utf8')).sessions])].sort();
 const rowsOf = c => (bundle.stocks[c]?.fchart?.rows ?? []).filter(r => r[4] > 0);
 
