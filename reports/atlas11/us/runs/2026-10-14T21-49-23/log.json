@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-10-14T21:49:23.928Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-14T21:49:24.012Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-14T21-49-23",
+   "newYork": {
+    "date": "2026-10-14",
+    "hm": "17:49",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-14T21:49:24.966Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-14T21:49:41.031Z",
+   "asked": 365,
+   "got": 363,
+   "latest": "2026-10-14"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-14T21:49:41.196Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/INTC.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-14T21:49:54.765Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-14T21:49:55.129Z",
+   "news": 365,
+   "newsItems": 5846,
+   "index": [
+    "S&P 500 2026-10-14",
+    "나스닥 종합 2026-10-14",
+    "다우존스 2026-10-14"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-14T21:49:55.348Z",
+   "assets": 365,
+   "asOf": "2026-10-14",
+   "late": 2,
+   "sessions": 297,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-14T21-49-23/input.json.gz",
+    "sha256": "1d808725c2b602559963233f4a4cf1a144c0b35a2643c4df6806239a99ab984f",
+    "bytes": 659061
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/MU.O/day?startDateTime=202508100000&endDateTime=202610142359",
+   "status": 200,
+   "ms": 904
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 162
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/INTC.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 162
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609240000&endDateTime=202610142359",
+   "status": 200,
+   "ms": 151
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-14T21:49:55.349Z"
+}
