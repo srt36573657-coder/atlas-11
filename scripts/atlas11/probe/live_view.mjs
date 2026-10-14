@@ -125,6 +125,7 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   const core = await J('core.json'), mk = await J('mkt.json');
   const mem = core.industries.reduce((t, i) => t + i.members.length, 0), pkI = core.industries.filter(i => i.pk > 0);
   const gold = pkI.slice().sort((a, b) => b.pk - a.pk || b.n - a.n)[0]; // 고른 곳이 가장 많이 든 업종
+  const shown = gold.members.filter(c => mk.companies[c]?.l?.some(x => x != null)), shownN = shown.length, shownPk = shown.filter(c => mk.companies[c].p).length; // 기준일 종가가 없어 선을 못 그린 회사는 줄 대신 「?」 한 줄
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
   await page.evaluate(() => { const b = document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 220); }); await page.waitForTimeout(9000);
   const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, gold: document.querySelectorAll('#view .board .badge.gold').length, say: document.querySelector('#view .gold-say')?.textContent ?? '', tab: document.querySelector('#tabList')?.textContent ?? ''}));
@@ -136,9 +137,9 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   await page.goto(B + '/?v=' + Date.now() + '#/list', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2500);
   const list = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: document.querySelectorAll('#view .board .row.pk').length, head: document.querySelector('#view h1')?.textContent ?? ''}));
   await shot('p20-list-all');
-  out.allCo = {mkt: mk.n, companies: core.funnel?.companies ?? null, mktN: core.mkt?.n ?? null, groups: core.groups.length, industries: core.industries.length, members: mem, picked: core.funnel?.picked ?? null, pk: mk.pk, pkIndustries: pkI.length, home, gold: {name: gold?.name, n: gold?.n, pk: gold?.pk}, ind, list,
+  out.allCo = {mkt: mk.n, companies: core.funnel?.companies ?? null, mktN: core.mkt?.n ?? null, groups: core.groups.length, industries: core.industries.length, members: mem, picked: core.funnel?.picked ?? null, pk: mk.pk, pkIndustries: pkI.length, home, gold: {name: gold?.name, n: gold?.n, pk: gold?.pk, shown: shownN}, ind: {...ind, pk: ind.pk.length}, list,
     ok: !!core.mkt && mk.n === core.mkt.n && mk.n === core.funnel?.companies && mem === mk.n && mk.pk === core.funnel?.picked && home.rows === core.groups.length && home.tab === '업종 ' + core.industries.length
-      && ind.rows === gold.n && ind.pk.length === gold.pk && ind.pk.every(h => /^#\/c\//.test(h)) && ind.x === gold.n - gold.pk && list.rows === core.industries.length && list.pk === pkI.length};
+      && ind.rows === shownN && ind.pk.length === shownPk && ind.pk.every(h => /^#\/c\//.test(h)) && ind.x === shownN - shownPk && list.rows === core.industries.length && list.pk === pkI.length};
   if (!out.allCo.ok) out.errors.push('모든 회사: ' + JSON.stringify(out.allCo).slice(0, 240));
 });
 await step('옛 판', async () => {
