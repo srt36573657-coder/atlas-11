@@ -20,7 +20,7 @@ for (const s of Object.values(B.stocks ?? {})) {
   if (drop) { s.fchart.rows = keep; s.fchart.cut = CUT; removed += drop; touched++; }
   kept += keep.length;
 }
-const why = '사장님 2026-10-14 09:52(싱가포르) 「지금 싸이트 변경 해」 — 아침(서울 09:44 ~ 09:57) 장 중에 받은 전 종목 모음에서 그날 끝나지 않은 일봉 줄만 뺌(틀림 장부 24 · 25번)';
+const why = process.env.CUT_WHY || '사장님 2026-10-14 09:52(싱가포르) 「지금 싸이트 변경 해」 — 아침(서울 09:44 ~ 09:57) 장 중에 받은 전 종목 모음에서 그날 끝나지 않은 일봉 줄만 뺌(틀림 장부 24 · 25번)';
 const derived = {from: path.relative(process.cwd(), path.resolve(SRC)), fromSha256: crypto.createHash('sha256').update(gz).digest('hex'), cut: CUT, removedRows: removed, stocksTouched: touched, keptRows: kept, removedDays,
   untouched: '목록 · 회사 요약(PER · 시가총액 = 받은 때 값) · 결산 · 업종 원문은 그대로', why, made: new Date().toISOString()};
 B.derived = derived;
