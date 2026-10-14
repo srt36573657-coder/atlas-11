@@ -161,7 +161,7 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
   await shot('p23-hello-promo');
   out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
-    ok: !!w && got[0] === w && !!after && after.hash === w && /하규/.test(s1.msg) && /안상미/.test(s1.msg) && /스타벅스/.test(s1.promo)
+    ok: !!w && got[0] === w && !!after && after.hash === w && /하규는 아틀란스 해서 부자 될겁니다/.test(s1.msg) && /안상미 전무님/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스/.test(s1.promo)
       && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스/.test(hp.bar)};
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
