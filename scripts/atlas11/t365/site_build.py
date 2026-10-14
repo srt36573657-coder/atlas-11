@@ -179,6 +179,14 @@ def eq_index(codes):
     return out
 
 
+def clean_txt(t):
+    """모음 글의 깨진 글자(U+FFFD — 받을 때 글자 바꿈이 깨진 자리)만 뺌 · 빈 글이면 없음(모든 회사 7단 2026-10-14 — 182400 「NK Vue� KIT」 · 네 눈 클로드 broken)"""
+    if not t:
+        return None
+    t = str(t).replace('\ufffd', '').strip()  # 깨진 글자만 뺌(다른 글자 · 띄어쓰기는 그대로)
+    return t or None
+
+
 def filled(v):
     out, last = [], None
     for x in v:
@@ -340,10 +348,11 @@ pers = []
 PSCALE, PERX = {}, {}
 companies = {}
 lines = {}
-for c, m in members.items():
+OTHERS, OLINES = {}, {}  # 모든 회사 7단(사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — 고른 곳 밖 회사의 3단 회사 자료 · 20거래일 선(co/<번호>.json 의 c · line)
+for c in [*members, *(x for x in ALLC if x not in PKSET)]:
     sel, now = SELROW[c], NOWROW.get(c)
-    u = SELPICK[c]
-    gid, iname = ind_of[c]
+    u = SELPICK.get(c)
+    gid, iname = ind_of[c] if c in PKSET else (G_OF[IND_ALL[c]], IND_ALL[c])
     v = mv[c]
     fv = filled(v)
     jump = any(fv[k] and fv[k - 1] and (fv[k] / fv[k - 1] > 1.305 or fv[k] / fv[k - 1] < 0.695) for k in range(1, NDAY))  # 한국 하루 가격 제한 ±30% 밖 = 주식 수가 바뀐 흔적(쪼개기 · 합치기 · 증자)
@@ -372,24 +381,29 @@ for c, m in members.items():
                 die('%s %s 이 dump.mjs 와 다름: %r ≠ %r' % (c, nm, a, b))
     PERX[c] = per
     rec = fin_pair(now, key) or fin_pair(sel, key)
-    companies[c] = {
+    entry = {
         'name': sel['name'], 'market': sel['market'], 'g': gid, 'i': iname,
         'cap': ((now or sel).get('capEok') if PSCALE[c] == 1.0 or (now or sel).get('capEok') is None else round((now or sel).get('capEok') * PSCALE[c])), 'price': close, 'priceDate': lastd,
         'chg': d2(v[-1] - 100) if v[-1] is not None else None, 'mdd': d2(mdd(v) * 100),
         'r1y': d2(r1y * 100) if r1y is not None else None,
         'mdd1y': d2(mdd1y * 100) if mdd1y is not None else None,
-        'per': per, 'jump': jump, 'products': (now or sel).get('products') or None, 'sector': sel.get('sector'),
+        'per': per, 'jump': jump, 'products': clean_txt((now or sel).get('products')), 'sector': sel.get('sector'),
         'fin': {'key': key, **rec} if rec else None,
         # 든 까닭(ml-v1) — 꼬리표(mg · ly) · 멍거 갈래 3해 값 · 린치 갈래 처음 · 끝 해 EPS · 해마다 큰 % · 배당 % · 값 점수(모음 날 값) · 차례는 싣지 않음(규칙 55)
         'pick': {'sector': u['sector'], 'tags': list(u['tags']),
                  'mg': {'years': list(u['mg']['years']), 'net': list(u['mg']['net']), 'op': list(u['mg']['op']) if u['mg']['op'] else None,
                         'roe': [d2(x) for x in u['mg']['roe']], 'debt': [d2(x) for x in u['mg']['debt']]} if u['mg'] else None,
                  'ly': {'years': list(u['ly']['years']), 'eps': list(u['ly']['eps']), 'g': d2(u['ly']['g']), 'dps': u['ly']['dps'], 'px': u['ly']['px'], 'pxDay': u['ly']['pxDay'],
-                        'yld': d2(u['ly']['yld']), 'per': u['ly']['per'], 'score': d2(u['ly']['score'])} if u['ly'] else None},
+                        'yld': d2(u['ly']['yld']), 'per': u['ly']['per'], 'score': d2(u['ly']['score'])} if u['ly'] else None} if u else None,
     }
-    lines[c] = [None if x is None else int(round(x * 100)) for x in v]
+    if c in PKSET:
+        companies[c] = entry
+        lines[c] = [None if x is None else int(round(x * 100)) for x in v]
+    else:  # 고른 곳 밖 — 든 까닭(pick) 없음 · 3단은 「왜 고른 곳 밖인가요?」(names.json 까닭 · 깔때기)
+        OTHERS[c] = entry
+        OLINES[c] = [None if x is None else int(round(x * 100)) for x in v]
 
-pers = [p for p in PERX.values() if p is not None and p > 0]
+pers = [PERX[c] for c in companies if PERX[c] is not None and PERX[c] > 0]  # 값 몇 배 가운데 = 고른 곳만(그대로)
 per_med = d2(st.median(pers)) if pers else None
 ndd50 = sum(1 for c in companies.values() if c['mdd1y'] is not None and c['mdd1y'] <= -50)
 ndd30 = sum(1 for c in companies.values() if c['mdd1y'] is not None and c['mdd1y'] <= -30)
@@ -416,6 +430,7 @@ core = {
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
                 'pick': '네이버 증권 결산 · 업종(%s 모음) · 확정 결산 3해(예상치는 안 씀)' % kd(N['collectedAt'][:10])},
     'dates': dates, 'all': core_all, 'mkt': core_mkt, 'groups': groups, 'industries': industries, 'secInd': SEC_IND,
+    'co7': len(PKSET) + len(OTHERS),  # 회사 파일이 있는 회사 수 = 모든 회사(7단 · 2026-10-14 17:25 「전부다 나오게 해」)
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
               'perMedian': per_med, 'perN': len(pers),
               # 멍거 갈래 — 값이 1년 이익의 30배 넘는 곳 수(빼지 않고 보여 주기만) · 금융 수(멍거 갈래 안)
@@ -470,9 +485,10 @@ for k in range(1, len(DAYS)):
 #   co/<번호>.json 의 grow 와 grow.json(요약) — 이야기가 아직 없는 회사는 숫자만(화면 「? 조사 중」) · 봉인하지 않음(새 소식이 나오면 새 파일)
 import grow  # noqa: E402
 # IND_ALL(후보 모두의 ATLAS 업종)은 ② 모든 회사에서 이미 읽음 — 같은 것을 씀
-GB = grow.build(N, NAMES, {'companies': companies}, bnd, IND_ALL)
+GB = grow.build(N, NAMES, {'companies': {**companies, **OTHERS}}, bnd, IND_ALL)  # 모든 회사 7단(17:25 「전부다 나오게 해」) — 숫자(결산 · 업종 안 크기)는 모든 회사 · 이야기는 고른 곳만
 STORIES = grow.latest_stories(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow'))
 GROWCO = {c: grow.site_entry(GB[c], STORIES.get(c)) for c in members}
+GROWX = {c: grow.site_entry(GB[c], None) for c in OTHERS}  # 고른 곳 밖 — 이야기 없음(화면 「조사 전」)
 gsum = {c: {'s': e['story']['shape'], 'g': {h: e['story']['h'][h]['g'] for h in grow.HS}, 'm': {h: e['story']['h'][h]['mid'] for h in grow.HS}} for c, e in GROWCO.items() if e['story']}
 core['grow'] = {'written': len(gsum), 'of': len(GROWCO), 'files': sorted({e['story']['file'] for e in GROWCO.values() if e['story']}),
                 'g10': {gr: sum(1 for x in gsum.values() if x['g']['10'] == gr) for gr in grow.GRADES}, 'g10none': sum(1 for x in gsum.values() if x['g']['10'] is None),
@@ -499,12 +515,12 @@ _fut = [d for d in daese.cal_sessions(ROOT) if d > asof]
 core['mcEnd'] = _fut[19] if len(_fut) >= 20 else None  # 7단 한 달 범위를 처음 맞대 볼 날 = 고른 날에서 20거래일 뒤(거래소 달력 · CIA팀 2026-10-12)
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
 for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님
-    if fn.endswith('.json') and fn[:-5] not in members:
+    if fn.endswith('.json') and fn[:-5] not in members and fn[:-5] not in OTHERS:
         os.remove(os.path.join(OUT, 'co', fn))
 nco = 0
-for c in members:
+for c in [*members, *OTHERS]:  # 모든 회사 7단 — 고른 곳 밖도 회사 파일(c = 3단 회사 자료 · line = 20거래일 선)
     ks = [k for k, d in enumerate(DAYS) if d in crow[c]]
-    k0 = ks[0]
+    k0 = ks[0] if ks else len(DAYS)  # 종가가 하나도 없으면 빈 줄
     cl = [crow[c].get(d) for d in DAYS[k0:]]
     jumps = []
     prev = None
@@ -522,7 +538,10 @@ for c in members:
         sc = PSCALE[c]
         cper = now.get('per') if sc == 1.0 or now.get('per') is None else round(now.get('per') * sc, 2)
         cpbr = now.get('pbr') if sc == 1.0 or now.get('pbr') is None else round(now.get('pbr') * sc, 2)
-        json.dump({'schema': 'atlas-new-co-1', 'code': c, 'k0': k0, 'close': cl, 'jumps': jumps, 'fin': fin, 'per': cper, 'pbr': cpbr, 'key': 'net' if isfin(SELROW[c]) else 'op', 'grow': GROWCO[c]}, fh, ensure_ascii=False, separators=(',', ':'))
+        rec_ = {'schema': 'atlas-new-co-1', 'code': c, 'k0': k0, 'close': cl, 'jumps': jumps, 'fin': fin, 'per': cper, 'pbr': cpbr, 'key': 'net' if isfin(SELROW[c]) else 'op', 'grow': GROWCO[c] if c in PKSET else GROWX[c]}
+        if c not in PKSET:
+            rec_.update({'c': OTHERS[c], 'line': OLINES[c]})
+        json.dump(rec_, fh, ensure_ascii=False, separators=(',', ':'))
         fh.write('\n')
     nco += 1
 with open(os.path.join(OUT, 'days.json'), 'w', encoding='utf-8') as fh:
@@ -633,6 +652,9 @@ for c in ALLC:
 for c in members:  # 고른 곳은 comp · lines 와 한 치도 다르지 않아야 함
     if MKT[c]['l'] != lines[c] or MKT[c]['c'] != companies[c]['chg']:
         die('%s 모든 회사 자료가 고른 곳 자료와 다름' % c)
+for c in OTHERS:  # 고른 곳 밖 회사 파일(c · line)도 모든 회사 자료와 한 치도 다르지 않아야 함
+    if MKT[c]['l'] != OLINES[c] or MKT[c]['c'] != OTHERS[c]['chg'] or MKT[c]['n'] != OTHERS[c]['name'] or MKT[c]['i'] != OTHERS[c]['i']:
+        die('%s 회사 파일이 모든 회사 자료와 다름' % c)
 sz = {'core.json': dump('core.json', core), 'comp.json': dump('comp.json', {'schema': 'atlas-new-comp-1', 'asOf': asof, 'companies': companies}), 'lines.json': dump('lines.json', {'schema': 'atlas-new-lines-1', 'asOf': asof, 'base': base, 'lines': lines}), 'names.json': dump('names.json', NAMES),
       'mkt.json': dump('mkt.json', {'schema': 'atlas-new-mkt-1', 'asOf': asof, 'base': base, 'n': len(MKT), 'pk': len(PKSET), 'companies': MKT})}
 if TIME:

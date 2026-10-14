@@ -1,6 +1,6 @@
 {
  "schema": "atlas-new-check-1",
- "made": "2026-10-14T09:23:50.948Z",
+ "made": "2026-10-14T10:52:56.511Z",
  "base": "http://127.0.0.1:8899",
  "plans": [
   "360×640",
@@ -10,8 +10,8 @@
   "900×900"
  ],
  "routes": 372,
- "screens": 1955,
- "numbers": 55481,
+ "screens": 14463,
+ "numbers": 200106,
  "click3": {
   "companies": 56,
   "over3": 0,
@@ -19,6 +19,14 @@
   "all": 2557,
   "over3All": 0,
   "maxAll": 3
+ },
+ "others": {
+  "co7": true,
+  "companies": 2501,
+  "routes": 12505,
+  "full": true,
+  "overStep": 0,
+  "deepest": 7
  },
  "click7": {
   "deepest": 7,
@@ -33,7 +41,7 @@
   ]
  },
  "friends": {
-  "shown": 11555,
+  "shown": 86585,
   "kinds": 11
  },
  "fails": 0,

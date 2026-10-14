@@ -470,6 +470,59 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
   if (GJ && core.grow) sameJ(core.grow.g10, Object.fromEntries(['아주 높다', '높다', '반반', '낮다', '아주 낮다'].map(g => [g, Object.values(GJ.companies).filter(x => x.g['10'] === g).length])), '첫 화면 10년 말 등급 수');
 }
 
+// ⑮ 모든 회사 7단(사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — 고른 곳 밖 회사 파일마다 노드로 따로(site_build.py 와 다른 길):
+//   core.co7 = 회사 파일 수 = 모든 회사 · 3단 자료(c) — 이름 · 시장 · 네이버 업종 · 갈래 · 업종 · 1주 값 · 값 날짜 · 1년 · 1년 가장 깊이 빠짐 · 20거래일 · 20거래일 가장 깊이 빠짐 · 20거래일 튐 · 든 까닭 없음
+//   선(line) = 모든 회사 선(mkt.json · ⑭ 에서 따로 셈) · 긴 종가(k0 · close) · 하루 30% 넘게 바뀐 날 · 결산 해에 E 없음 · 성장 숫자(모음 결산 글 매출 · 바탕 해 · 업종 안 차례) · 이야기 없음(조사 전 — 이야기는 고른 곳만)
+{
+  const MKC = fs.existsSync(path.join(dataDir, 'mkt.json')) ? J(path.join(dataDir, 'mkt.json')).companies : {};
+  const coFiles = fs.existsSync(path.join(dataDir, 'co')) ? fs.readdirSync(path.join(dataDir, 'co')).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort() : [];
+  const OTHC = core.co7 ? ALLC.filter(c => !PK.has(c)) : [];
+  if (core.co7 != null) { same(core.co7, ALLC.length, '회사 파일이 있는 회사 수(core.co7) = 모든 회사'); sameJ(coFiles, [...ALLC].sort(), '회사 파일 = 모든 회사(빠짐 · 남는 파일 없음)'); }
+  else sameJ(coFiles, [...codes].sort(), '회사 파일 = 고른 곳(옛 자료)');
+  const num = t => (t == null || t === '' || t === '-' ? null : Number(String(t).replace(/,/g, '')));
+  const mddOf = v => { let peak = -1, m = 0; for (const x of v) { if (x == null) continue; peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); } return m; };
+  let n15 = 0;
+  for (const c of OTHC) {
+    const cf = path.join(dataDir, 'co', c + '.json'); if (!fs.existsSync(cf)) { bad.push({what: `밖 회사 파일 없음 ${c}`}); continue; } // 위 「회사 파일 = 모든 회사」 와 함께 알림(멈추지 않음)
+    const co = J(cf), x = co.c, row = ROW.get(c);
+    if (!x || !Array.isArray(co.line)) { bad.push({what: `고른 곳 밖 회사 파일에 3단 자료 · 선 없음 ${c}`}); continue; }
+    n15++;
+    same(co.code, c, `밖 회사 파일 번호 ${c}`); same(co.schema, 'atlas-new-co-1', `밖 회사 파일 틀 ${c}`);
+    same(x.name, row.name, `밖 이름 ${c}`); same(x.market, row.market, `밖 시장 ${c}`); same(x.sector ?? null, row.sector ?? null, `밖 네이버 업종 ${c}`); sameJ([x.g, x.i], gi(c), `밖 갈래 · 업종 ${c}`);
+    same(x.pick ?? null, null, `밖 회사에 든 까닭 없음 ${c}`);
+    // 1주 값 · 1년(④⑥ 과 같은 셈)
+    const cr = [...close.get(c).keys()].filter(d => d <= core.asOf).sort(), last = cr.at(-1) ?? null;
+    same(x.price ?? null, last ? px(c, last) : null, `밖 1주 값 ${c}`); same(x.priceDate ?? null, last, `밖 1주 값 날짜 ${c}`);
+    near(x.r1y, cr.length > 252 ? Math.round((px(c, last) / px(c, cr.at(-253)) - 1) * 10000) / 100 : null, 0.0101, `밖 1년 ${c}`);
+    if (cr.length >= 60) { let peak = 0, m = 0; for (const d of cr.slice(-252)) { const v = px(c, d); peak = Math.max(peak, v); m = Math.min(m, v / peak - 1); } near(x.mdd1y, Math.round(m * 10000) / 100, 0.0101, `밖 1년 가장 깊이 빠짐 ${c}`); }
+    else same(x.mdd1y, null, `밖 1년 가장 깊이 빠짐(줄 60개 밑 = 모름) ${c}`);
+    // 20거래일(⑭ 의 선 값 MV) · 가장 깊이 빠짐 · 튐
+    const v = MV.get(c);
+    near(x.chg, v.at(-1) != null ? d2(v.at(-1) - 100) : null, 0.0101, `밖 20거래일 ${c}`); same(x.chg, MKC[c]?.c ?? null, `밖 20거래일 = 모든 회사 자료 ${c}`);
+    near(x.mdd, d2(mddOf(v) * 100), 0.0101, `밖 20거래일 가장 깊이 빠짐 ${c}`);
+    { const f = FV.get(c); same(x.jump, f.some((y, k) => k > 0 && y && f[k - 1] && (y / f[k - 1] > 1.305 || y / f[k - 1] < 0.695)), `밖 20거래일 튄 날(선으로 — 모든 회사 자료 j 와 같은 뜻 · 기준일 종가가 없으면 모름) ${c}`); }
+    sameJ(co.line, MKC[c]?.l ?? null, `밖 선 = 모든 회사 선(mkt.json) ${c}`);
+    // 긴 종가 · 하루 30% 넘게 바뀐 날 · 결산 해(⑧ 과 같은 셈)
+    const k0 = DAYS.findIndex(d => px(c, d)); same(co.k0, k0 < 0 ? DAYS.length : k0, `밖 긴 종가 시작 ${c}`);
+    if (k0 >= 0) { const bad0 = DAYS.slice(k0).findIndex((d, k) => (co.close[k] ?? null) !== (px(c, d) ?? null)); checks++; if (bad0 >= 0) bad.push({what: `밖 긴 종가 ${c} ${DAYS[k0 + bad0]}`, got: co.close[bad0], want: px(c, DAYS[k0 + bad0])}); checks++; if (co.close.length !== DAYS.length - k0) bad.push({what: `밖 긴 종가 칸 수 ${c}`, got: co.close.length, want: DAYS.length - k0}); }
+    else same(co.close.length, 0, `밖 긴 종가 없음 ${c}`);
+    { const jw = []; let prev = null; for (const d of DAYS.slice(Math.max(0, k0))) { const y = px(c, d); if (y && prev && Math.abs(y / prev - 1) > 0.305) jw.push(d); if (y) prev = y; } if (k0 < 0) jw.length = 0; sameJ(co.jumps.map(j => j[0]), jw, `밖 하루 30% 넘게 바뀐 날 ${c}`); }
+    checks++; if ((co.fin?.years ?? []).some(y => String(y).endsWith('E'))) bad.push({what: `밖 결산 해에 짐작 E 섞임 ${c}`});
+    // 성장 숫자(⑬ 과 같은 셈) · 이야기 없음
+    const G = co.grow; if (!G) { bad.push({what: `밖 성장 자료 없음 ${c}`}); continue; }
+    let fi = null; try { fi = JSON.parse(bundle.stocks[c].finance.text).financeInfo; } catch { /* 없음 */ }
+    if (fi) { const r = (fi.rowList || []).find(q => q.title === '매출액'), heads = fi.trTitleList || [];
+      sameJ(G.years, heads.map(t => t.title.replace(/\.$/, '').slice(0, 4) + (t.isConsensus === 'Y' ? 'E' : '')), `밖 성장 해 ${c}`); sameJ(G.rev, heads.map(t => num(r?.columns?.[t.key]?.value)), `밖 성장 매출(모음 결산 글) ${c}`); }
+    else same(G.years.length, 0, `밖 결산 글이 없는데 해가 있음 ${c}`);
+    const act = G.years.map((y, k) => [y, G.rev[k]]).filter(([y]) => !y.endsWith('E'));
+    same(G.baseYear, act.at(-1)?.[0] ?? null, `밖 성장 바탕 해 ${c}`); same(G.baseRev, act.at(-1)?.[1] ?? null, `밖 성장 바탕 매출 ${c}`);
+    checks++; if (G.top.some((t, k) => k && (G.top[k - 1][1] ?? 0) < (t[1] ?? 0))) bad.push({what: `밖 같은 업종 큰 순 차례 ${c}`});
+    checks++; if (G.ind.rank != null && G.ind.rank <= G.top.length && G.top[G.ind.rank - 1]?.[2] !== c) bad.push({what: `밖 같은 업종 차례에 이 회사 자리 ${c}`, got: G.top[G.ind.rank - 1]?.[2], want: c});
+    same(G.story ?? null, null, `밖 성장 이야기 없음(조사 전) ${c}`);
+  }
+  same(n15, OTHC.length, '고른 곳 밖 회사 파일 맞댄 수');
+}
+
 const res = {schema: 'atlas-new-data-verify-1', made: new Date().toISOString(), data: path.relative(ROOT, dataDir), asOf: core.asOf, checks, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({checks, bad: bad.length, first: bad.slice(0, 5)}));

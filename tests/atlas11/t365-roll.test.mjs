@@ -98,11 +98,14 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const comp = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/comp.json'), 'utf8')).companies;
   assert.deepEqual(core.dates, W); assert.equal(core.days, 20); assert.equal(core.pickAsOf, next);
   assert.ok(comp[bent] && comp[halt]); assert.notEqual(comp[halt].priceDate, next, '그날 값이 없는 회사는 앞 날 값');
-  assert.equal(fs.readdirSync(path.join(dist, 'atlas/data/co')).length, rep.members.length);
+  // 모든 회사 7단(사장님 2026-10-14 17:25(싱가포르) 「전부다 나오게 해」 · 규칙 63) — 회사 파일 = 모든 회사(core.co7 = 모든 회사 자료 수) · 고른 곳은 그 안에 모두
+  const coFiles = fs.readdirSync(path.join(dist, 'atlas/data/co')).map(f => f.replace(/\.json$/, ''));
+  assert.equal(core.co7, core.mkt.n, 'core.co7 = 모든 회사'); assert.equal(coFiles.length, core.co7, '회사 파일 = 모든 회사'); assert.ok(rep.members.every(c => coFiles.includes(c)), '고른 곳 회사 파일 모두');
   // 36곳 영구 삭제(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 7단 범위 자료만 · 36곳 자료 · 칸 · 글 없음
   assert.ok(fs.existsSync(path.join(dist, 'atlas/data/range.json')), '7단 범위 자료'); assert.ok(!fs.existsSync(path.join(dist, 'atlas/data/pick36.json')), '36곳 자료 없음');
   const rg = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/range.json'), 'utf8')); assert.equal(rg.schema, 'atlas-new-range-1'); assert.equal(rg.asOf, next);
   for (const k of ['picks', 'backtest', 'cutN', 'total']) assert.ok(!(k in rg), k);
+  assert.equal(Object.keys(rg.others ?? {}).length, core.co7 - rep.members.length, '7단 범위 — 고른 곳 밖 모두(others)');
   for (const f of fs.readdirSync(path.join(dist, 'atlas/data')).filter(f => f.endsWith('.json'))) { const t = fs.readFileSync(path.join(dist, 'atlas/data', f), 'utf8'); assert.ok(!/pick36/.test(t) && !has36Text(t), '36곳 흔적 ' + f); }
   // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) — 「봉인 뒤 지금까지」 = 봉인 날 뒤 거래일 모두(모음 날까지 + 가짜 하루) · 3년 전 길과 다시 여는 날은 그대로
   //   (모음 날 = 봉인 날이던 10월 10일 모음에서는 한 칸 · 2026-10-14 전 종목 모음부터는 봉인 날 뒤 날들이 모음에 들어 있음)

@@ -1,0 +1,16 @@
+{
+ "schema": "range-verify-1",
+ "made": "2026-10-14T10:03:10.731Z",
+ "file": "site/atlas/data/range.json",
+ "asOf": "2026-10-13",
+ "version": "range-v1",
+ "checks": 15241,
+ "mcChecks": 188,
+ "skipped": 2,
+ "others": {
+  "n": 2501,
+  "checked": 2436
+ },
+ "bad": 0,
+ "first": []
+}

@@ -37,6 +37,9 @@ const upd = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/updates.
 const tdata = fs.existsSync(path.join(ROOT, 'site/atlas/data/time.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/time.json'), 'utf8')) : null; // 봉인 시간(14:37 · 14:39 「3년후 5년후 10년후 이야기」)
 const NAMES = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/names.json'), 'utf8')), OUT1 = NAMES.rows.find(r => r.s !== 'in'), OUTL = NAMES.rows.findLast(r => r.s !== 'in'); // 찾기 · 365곳 밖 보기 — 365곳 밖 첫 회사(번호를 박지 않음 · 회차마다 바뀜 · 애플팀 2026-10-13)
 const coOf = c => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/co', c + '.json'), 'utf8'));
+// 모든 회사 7단(사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — core.co7 이면 모든 회사가 3 ~ 7단 · 고른 곳 밖은 회사 파일의 3단 자료(c) · 선(line)
+const CO7 = !!(core.co7 && MKT), OTH = CO7 ? Object.keys(MKT).filter(c => !comp[c]) : [];
+const CO = c => comp[c] ?? coOf(c).c, LINE = c => (comp[c] ? lines[c] : coOf(c).line);
 const lines = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.json'), 'utf8')).lines; // 3단 100만 원 줄(기준일 = 100 · 2026-10-12 클로드팀)
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
 // 바탕 회사 이름 · 밑 한 줄(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 수는 자료에서) · 억 원 글(atlas.js eok 과 같은 셈을 따로 적음)
@@ -103,7 +106,7 @@ function hubExpect(H) {
   const big = all.sort((a, b) => Math.abs(b.val) - Math.abs(a.val))[0], bigT = big ? `${iga(big.kn)} ${big.mn}에서 ${eokW(big.val)} 더 ${big.val < 0 ? '팖' : '삼'}` : null;
   const more = '자세히 ›';
   const slides = [
-    ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!', '친구에게 소개하기', '막비 24초 영상 · 보내기', '10명 소개하면 스타벅스 커피 1잔!'],
+    ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!', '친구에게 소개하기', '막비 24초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!'],
     s1,
     K || Q ? ['코스피 · 코스닥 — 3개월', ...[K, Q].filter(Boolean).flatMap(x => [x.name, numK(x.close), pct(x.day)]), more] : ['? 지수 값을 못 받았습니다.', more],
     S ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${S.label.replace('7', '3')} · 약한 3`, S.strong[0].name, pct(S.strong[0].chg), S.weak[0].name, pct(S.weak[0].chg), more] : ['? 업종 값을 못 받았습니다.', more],
@@ -124,6 +127,9 @@ function hubExpect(H) {
   return {marks, slides, details};
 }
 const routes = ['#/', '#/list', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
+const OLIM = arg('--others-limit') != null ? +arg('--others-limit') : null; // 고치는 동안 빨리(앞 n곳만) — 결과 others.full = false · 문은 못 지남
+const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사만(문은 못 지남)
+const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
 if (arg('--only')) routes.splice(0, routes.length, ...arg('--only').split(',')); // 고치는 동안 빨리(그 길만) — 3번 누름 셈 · 문은 못 지남(전부를 돌린 결과만 커밋)
 const fails = []; let screens = 0, numbers = 0;
 const fail = (where, what) => fails.push({where, what});
@@ -138,7 +144,13 @@ function expect(route) {
     ...(MKT ? {pkN: i.members.filter(c => MKT[c].p && MKT[c].l.some(x => x != null)).length, pkHref: i.members.filter(c => MKT[c].p && MKT[c].l.some(x => x != null)).map(c => '#/c/' + c),
       why: [...(i.pk ? [`금빛 = 고른 곳 ${i.pk}곳`] : []), `금빛이 아닌 회사는 ${PN} 밖입니다`, ...(() => { const no = i.members.filter(c => !MKT[c].l.some(x => x != null)); return no.length ? [`기준일(${md(core.base)}) 종가가 없어 선을 못 그린 회사 ${no.length}곳`, ...no.map(c => MKT[c].n)] : []; })()]} : {})}; }
   if (kind === 'c') {
-    const [code, sub] = arg.split('/'), c = comp[code];
+    const [code, sub] = arg.split('/'), pk = !!comp[code], c = CO(code);
+    if (!sub && !pk) { // 고른 곳 밖(모든 회사 7단) — 「멍거 · 린치 조건 N곳 밖」 · 「왜 … 밖인가요?」 까닭(이름표) · 100만 원 줄 · 세 숫자 · 1주 값
+      const nr = NAMES.rows.find(x => x.c === code), lv = LINE(code).filter(x => x != null).map(x => x / 100), man = x => Math.round(x).toLocaleString('ko-KR') + '만 원';
+      const why = [`${PN} 밖`, '이 회사도 7단까지 볼 수 있습니다', `왜 ${PN} 밖인가요?`, ...(nr ? ['멈췄습니다', nr.w] : ['? 까닭을 못 읽었습니다']), `가장 깊이 빠짐(${core.days}거래일)`];
+      if (!lv.length) why.push(`? 이 회사 ${core.days}거래일 값을 못 읽었습니다`, '? 값을 못 읽었습니다');
+      else { const low = Math.min(...lv), last = lv.at(-1); why.push(low < 100 ? `${md(core.base)}에 100만 원어치였다면 가장 낮을 때 ${man(low)} · 끝 ${man(last)}` : `${md(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${man(last)}`); }
+      return {step: 3, trio: [pct(c.chg), pct(c.r1y), pct(c.mdd)], price: c.price == null ? [] : Math.round(c.price).toLocaleString('ko-KR') + '원', ...(lv.length ? {axis: md(core.base) + ' = 100'} : {}), why, notWhy: [`왜 ${PN}에 들었나요?`]}; }
     if (!sub) { // 왜 멍거 · 린치 조건 N곳에 들었나요?(2026-10-14 06:05 「가」 · ml-v1) — 넘은 갈래마다 값(comp.json 에서 따로 만든 글 · 차례 없음)
       const q = c.pick, why = [`왜 ${PN}에 들었나요?`], won = x => `${Math.round(x).toLocaleString('ko-KR')}원`;
       if (!q?.mg && !q?.ly) fail(route, '든 까닭 값이 없음(멍거 · 린치 모두 없음)');
@@ -159,11 +171,11 @@ function expect(route) {
       const G = coOf(code).grow, S = G?.story, xm = m => (Math.round(m * 10 + 1e-9) / 10).toFixed(1) + '배';
       if (sub === 'rivals') {
         const why = [`「${G.ind.name}」 ${G.ind.n}곳 가운데 매출 ${G.ind.rank ?? '?'}번째`];
-        if (!S) why.push('? 세 팀 이야기는 아직 없습니다'); else { why.push(S.shape, ...S.rivals.map(r => r.name)); for (const r of S.rivals) if (!r.url && r.chk) why.push(r.chk.v === '기사로 확인' && r.chk.url ? '따로 확인한 글' : `따로 찾아봄 · ${r.chk.v}`); }
+        if (!S) why.push(pk ? '? 세 팀 이야기는 아직 없습니다' : '? 세 팀 이야기는 조사 전입니다'); else { why.push(S.shape, ...S.rivals.map(r => r.name)); for (const r of S.rivals) if (!r.url && r.chk) why.push(r.chk.v === '기사로 확인' && r.chk.url ? '따로 확인한 글' : `따로 찾아봄 · ${r.chk.v}`); }
         if (!G.top.some(t => t[2] === code) && G.ind.me != null) why.push(`${c.name}(${G.ind.rank ?? '?'}번째)`); // 막대 위 다섯 밖이면 「이 회사」 줄을 더함
         return {step: 5, title: `${c.name} — 누구와 다투나?`, why};
       }
-      if (!S) return {step: 6, title: `${c.name} — 앞으로 클까?`, why: ['? 세 팀 이야기는 아직 없습니다']};
+      if (!S) return {step: 6, title: `${c.name} — 앞으로 클까?`, why: [pk ? '? 세 팀 이야기는 아직 없습니다' : '? 세 팀 이야기는 조사 전입니다']};
       const gr = (lo, hi) => { if (lo == null || hi == null) return null; const f = lo >= 1 ? 1 : hi <= 1 ? 0 : Math.log(hi) / (Math.log(hi) - Math.log(lo)); return f >= 0.9 ? '아주 높다' : f >= 0.65 ? '높다' : f >= 0.35 ? '반반' : f >= 0.1 ? '낮다' : '아주 낮다'; };
       const why = [`근거 기사 ${S.facts.length}개`];
       for (const k of ['1', '3', '5', '10']) { const x = S.h[k]; if (x.mid == null) { why.push('? 자료 모자람'); continue; } why.push(`${xm(x.mid)}쯤`, `(${xm(x.lo)} ~ ${xm(x.hi)})`); const g = gr(x.lo, x.hi); if (g !== x.g) fail(route, `말 등급이 범위와 다름 ${k}년 ${x.g} ≠ ${g}`); why.push(g); }
@@ -180,7 +192,7 @@ function expect(route) {
       const wn = x => Math.round(x).toLocaleString('ko-KR') + '원', short = from === co.k0 && n - 253 < co.k0, same1y = !short && c.r1y != null && c.mdd1y != null; // 1년은 3단 · 7단과 같은 회사 자료 값(2026-10-12)
       return {step: 4, trio: [pct(same1y ? c.r1y : (last / base - 1) * 100), pct(same1y ? c.mdd1y : m * 100), pct((last / peak - 1) * 100)], price: [wn(base), wn(last)], why: ['가장 높을 때 ' + wn(Math.max(...cl)), '가장 낮을 때 ' + wn(Math.min(...cl))]}; // 처음 · 끝 1주 값 · 그림 위 · 아래 글 = 실제 값
     }
-    const k = rng.companies[code];
+    const k = pk ? rng.companies[code] : rng.others?.[code];
     return {step: 7, title: `${c.name} — 범위 · 확인`, dirs: k && k.ok ? k.win.map((w, j) => [`번 길 ${r1(w).toFixed(1)}%`, `크게 잃는 길 ${r1(k.big[j]).toFixed(1)}%`]) : null,
       why: ['모형 가정 아래 추정 · 검증 전', '앞날 값이 아닙니다', '확인표 — 기록 · 조심 · 모름', '지켜볼 날', '3분기 실적', '2027년 결산', '봉인', ...(core.mcEnd ? [`${ymd(core.mcEnd)} 종가`] : []), ...(k && k.ok ? [`흰 눈금 = ${NPK}곳 가운데값`] : [])], dm: k && k.ok ? 8 : 0};
   }
@@ -283,7 +295,10 @@ const probe = ({banned}) => {
       for (const a of scope.querySelectorAll('a[href], button')) { if (!vis(a)) continue; const bb = a.getBoundingClientRect(); if (bb.height < 43.5 || bb.width < 43.5) res.taps.push((a.textContent.trim() || a.getAttribute('aria-label') || a.tagName).slice(0, 20) + ` ${Math.round(bb.width)}×${Math.round(bb.height)}`); }
       const text = scope.innerText; res.text = text;
       { const tw = document.createTreeWalker(sheet || document.querySelector('#view'), NodeFilter.SHOW_TEXT), parts = []; for (let n = tw.nextNode(); n; n = tw.nextNode()) parts.push(n.textContent); res.all = parts.join('\n'); } // 접은 「자세히」 속 글까지(7단) — 글 마디마다 끊어 붙임(옆 칸 글이 이어 붙어 없는 말이 생기지 않게 · 예: 「조사」+「라온…」)
-      for (const w of banned) if (text.includes(w) || res.all.includes(w)) res.banned.push(w);
+      // 남의 글(회사가 파는 것 — data-proper)은 금지 말 셈 밖(네 눈 클로드 PROPER 와 같은 뜻 · 모든 회사 7단 2026-10-14 「… 이상탐지 및 예측 솔루션」) — 그 글만 빼고 셈
+      res.props = [...scope.querySelectorAll('[data-proper]')].map(e => e.textContent).filter(Boolean);
+      const unprop = t => res.props.reduce((a, p) => a.split(p).join(' '), t);
+      for (const w of banned) if (unprop(text).includes(w) || unprop(res.all).includes(w)) res.banned.push(w);
       res.links = [...document.querySelectorAll('#view a[href^="#/"], .tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
       res.head = document.querySelector('#view h1')?.textContent ?? '';
       res.count = document.querySelector('#view .count')?.textContent ?? '';
@@ -324,21 +339,16 @@ const b = await chromium.launch(exe ? {executablePath: exe} : {});
 const plans = [[360, 640, 0], [360, 640, 1], [360, 640, 2], [390, 844, 0], [900, 900, 0]];
 let moTotal = 0; // 영상 친구 그림 수(화면 × 판 합)
 const links = new Map(); // 길 → 그 화면에서 누를 수 있는 길(3번 누름 셈)
-for (const [w, hgt, font] of plans) {
-  const ctx = await b.newContext({viewport: {width: w, height: hgt}, reducedMotion: 'reduce'});
-  await ctx.addInitScript(f => { try { localStorage.setItem('atlas:font', String(f)); } catch {} }, font);
-  const p = await ctx.newPage();
-  const errs = []; p.on('pageerror', e => errs.push('pageerror ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-  await p.goto(base + '/atlas/', {waitUntil: 'networkidle'});
-  await p.waitForFunction(() => document.querySelector('#view h1'));
-  for (const route of routes) {
+/** 길 하나를 열어 잼(판 · 글씨마다) — 모든 회사 7단(사장님 2026-10-14 17:25(싱가포르) 「전부다 나오게 해」)은 고른 곳 밖 회사 길을 여러 칸(페이지)에서 나눠 돌아서 함수로 뺌 */
+async function visit(p, errs, route, w, hgt, font) {
     const tag = `${w}×${hgt}${font ? ' 글씨' + (font + 1) : ''} ${decodeURIComponent(route)}`;
     errs.length = 0;
     await p.evaluate(r => { location.hash = r; }, route);
     try {
       if (route === '#/info') await p.waitForFunction(() => !document.querySelector('#infoSheet').hidden && document.querySelector('#infoBody').childElementCount > 0, null, {timeout: 8000});
       else await p.waitForFunction(r => { const v = document.querySelector('#view'); return v.querySelector('h1') && (location.hash === r || (r === '#/' && location.hash === '')) && !v.querySelector('.boot'); }, route, {timeout: 8000});
-    } catch { fail(tag, '그려지지 않음'); continue; }
+    } catch { fail(tag, '그려지지 않음'); return; }
+    if (/^#\/c\/[^/]+$/.test(route) && !comp[route.slice(4)]) await p.waitForFunction(() => !document.querySelector('#view').innerText.includes('까닭을 받는 중'), null, {timeout: 8000}).catch(() => {}); // 3단 고른 곳 밖 — 「왜 밖인가요?」 까닭(이름표)을 받을 때까지
     await p.waitForTimeout(60);
     const r = await look(p);
     screens++;
@@ -349,7 +359,9 @@ for (const [w, hgt, font] of plans) {
     if (e.head) { numbers++; if (!r.head.includes(e.head)) fail(tag, `머리 ${r.head} ≠ ${e.head}`); }
     if (e.title) { numbers++; if (!r.head.includes(e.title)) fail(tag, `머리 ${r.head} ≠ ${e.title}`); }
     if (e.axis) { numbers++; if (!r.text.includes(e.axis)) fail(tag, `그림 아래 「${e.axis}」 없음`); }
-    if (!route.endsWith('/grow') && !route.endsWith('/rivals')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old) && !(old === '3개월' && route === '#/')) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 첫 화면은 코스피 · 코스닥 3개월 그림(2026-10-12 14:54)이라 「3개월」을 봐줌 // 5단 · 6단은 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
+    // 4단 지나온 길 — 그 회사 자료의 날(1년 창 첫날 · 상장 뒤 첫 종가 날 · 하루 30% 넘게 바뀐 날)이 7월 6일이면 옛 창 글이 아니라 그 회사 날짜(모든 회사 7단 2026-10-14 · 365660 레몬헬스케어 7월 6일 상장 뒤 첫 종가)
+    const legit = route.endsWith('/past') ? (() => { const co = coOf(decodeURIComponent(route.split('/')[2])), n = days.dates.length, from = Math.max(co.k0, n - 253), f = co.close.slice(from - co.k0).findIndex(x => x != null); return [days.dates[from], days.dates[from + Math.max(0, f)], ...co.jumps.map(j => j[0])].filter(Boolean); })() : [];
+    if (!route.endsWith('/grow') && !route.endsWith('/rivals')) for (const old of ['3개월', '7월 6일']) if (r.text.includes(old) && !(old === '3개월' && route === '#/') && !(old === '7월 6일' && legit.some(d => d.endsWith('-07-06')))) fail(tag, `옛 3개월 창 글 「${old}」이 남음`); // 첫 화면은 코스피 · 코스닥 3개월 그림(2026-10-12 14:54)이라 「3개월」을 봐줌 // 5단 · 6단은 지수 창을 쓰지 않고 기사 사실(예: 「딜러 재고가 3개월 수준」)을 그대로 보임
     if (e.up != null) { numbers += 2; if (!r.count.includes(e.up + '곳 오름') || !r.count.includes(e.down + '곳 내림')) fail(tag, `오름 · 내림 ${r.count}`); }
     if (r.spk?.length) { numbers += r.spk.length; const bad = r.spk.filter(x => !x.d || x.h < 16 || (/\b(up|down)\b/.exec(x.ln)?.[1] ?? 'flat') !== (/\b(up|down)\b/.exec(x.val)?.[1] ?? 'flat')); if (bad.length) fail(tag, `줄 선 그래프 — 선 없음 · 낮음 · 색이 숫자와 다름: ${bad.slice(0, 3).map(x => x.n + ' ' + x.ln + ' / ' + x.val + ' ' + x.h + 'px').join(' · ')}`); } // 사장님 2026-10-13 12:30 「이 사진처럼 … 그래프가 표현되게해」
     if (e.rows) { numbers += e.rows.length; const got = JSON.stringify(r.rows), want = JSON.stringify(e.rows); if (got !== want) fail(tag, `줄 ${got.slice(0, 120)} ≠ ${want.slice(0, 120)}`); }
@@ -361,7 +373,7 @@ for (const [w, hgt, font] of plans) {
     if (e.below !== undefined) { numbers++; if (r.below !== e.below) fail(tag, `6단 「올해 짐작보다 작게 봄」 ${r.below} ≠ ${e.below}`); }
     if (e.step === 3 && r.all.includes('봉인 1호에 든 회사')) fail(tag, '3단에 봉인 줄이 남음(7단으로 옮김)');
     if (has36(r.all) || has36(r.text) || r.l36) fail(tag, '36곳 글 · 길이 남음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)');
-    { const t = (r.all + '\n' + r.text).split('옛 규칙(대세 업종)').join('').split('옛 규칙(힘 붙음)').join(''); // 힘 붙은 365곳(2026-10-13 13:04) — 옛 기준 말 0(지난 회차 · 봉인 꼬리표만) · 좁은 금지 말 0 · 순위 글 0(규칙 55)
+    { const t = (r.props ?? []).reduce((a, p) => a.split(p).join(' '), (r.all + '\n' + r.text).split('옛 규칙(대세 업종)').join('').split('옛 규칙(힘 붙음)').join('')); // 남의 글(data-proper)은 뺌 // 힘 붙은 365곳(2026-10-13 13:04) — 옛 기준 말 0(지난 회차 · 봉인 꼬리표만) · 좁은 금지 말 0 · 순위 글 0(규칙 55)
       const ow = OLD_RULE_WORDS.filter(x => t.includes(x)); if (ow.length) fail(tag, `옛 기준 말 「${ow.join(' · ')}」이 남음`);
       const nw = NARROW.filter(x => t.includes(x)); if (nw.length) fail(tag, `좁은 금지 말 「${nw.join(' · ')}」(클로드팀)`);
       if (/힘 (차례|순서) \d+번째|힘 붙은 365곳 가운데 \d+번째/.test(t)) fail(tag, '순위 글이 보임(규칙 55)'); } // 회사 이야기 글의 「국내 상위 3곳」 같은 남의 사실은 아님(14:2x)
@@ -387,7 +399,7 @@ for (const [w, hgt, font] of plans) {
         if (hs.det) fail(tk, '「자세히」를 안 눌렀는데 열려 있음');
         if (JSON.stringify(hs.marks) !== JSON.stringify(e.hub.marks)) fail(tk, `바 표시 ${JSON.stringify(hs.marks)} ≠ ${JSON.stringify(e.hub.marks)}`);
         for (const want of e.hub.slides[k]) { numbers++; if (!hs.text.includes(want)) fail(tk, `장 글 「${want}」 없음`); }
-        if (!k) for (const gone of ['10명중에 몇명', '못버는건', '실력 없는 사람들', '생각해보세요']) { numbers++; if (hs.text.includes(gone)) fail(tk, `1장에 지운 글 「${gone}」이 남음`); } // 사장님 2026-10-14 17:16 · 17:17(싱가포르) 지우신 줄
+        if (!k) for (const gone of ['10명중에 몇명', '못버는건', '실력 없는 사람들', '생각해보세요', '커피 1잔', '상품권 1장']) { numbers++; if (hs.text.includes(gone)) fail(tk, `1장에 지운 글 「${gone}」이 남음`); } // 사장님 2026-10-14 17:16 · 17:17(싱가포르) 지우신 줄 · 18:19 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」(옛 「커피 1잔」 · 「상품권 1장」)
         if (k) { errs.length = 0; const r2 = await look(p); screens++; judge(tk, r2, errs); moTotal += r2.moN; }
         const id = HUBID[k]; if (!DETAIL.includes(id)) continue;
         await p.evaluate(id => document.querySelector(`#hs-${id} .hmore`).click(), id); await p.waitForTimeout(40);
@@ -403,6 +415,7 @@ for (const [w, hgt, font] of plans) {
     }
     if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/old/', '/us/'])) fail(tag, '맨 아래 길(소개 · 옛 ATLAS · 미국 판) 다름'); }
     for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
+    for (const no of e.notWhy ?? []) { numbers++; if (r.text.includes(no) || r.all.includes(no)) fail(tag, `있으면 안 되는 글 「${no}」`); } // 고른 곳 밖 3단에 「왜 … 들었나요?」(모든 회사 7단)
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
     if (route === '#/' && w === 390 && font === 0) {
       await p.evaluate(() => [...document.querySelectorAll('#view .seg button')][1].click()); await p.waitForTimeout(900);
@@ -412,7 +425,26 @@ for (const [w, hgt, font] of plans) {
       await p.evaluate(() => [...document.querySelectorAll('#view .seg button')][0].click()); await p.waitForTimeout(600);
     }
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
-  }
+}
+/** 고른 곳 밖 회사 길(모든 회사 7단) — 한 판 안에서 칸(페이지) 여럿이 나눠 돎 · 칸마다 오류 모음 따로 · 500길마다 진행 줄(표준 오류) */
+async function sweepOthers(ctx, w, hgt, font) {
+  const K = Math.max(1, +arg('--pages', 3)); let next = 0, done = 0; const t0 = Date.now();
+  await Promise.all(Array.from({length: K}, async () => {
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push('pageerror ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+    await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForFunction(() => document.querySelector('#view h1'));
+    while (next < OROUTES.length) { const r = OROUTES[next++]; await visit(p, errs, r, w, hgt, font); if (++done % 500 === 0) console.error(`고른 곳 밖 ${done.toLocaleString('ko-KR')} / ${OROUTES.length.toLocaleString('ko-KR')}길 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 ${fails.length}`); }
+    await p.close();
+  }));
+}
+for (const [w, hgt, font] of plans) {
+  const ctx = await b.newContext({viewport: {width: w, height: hgt}, reducedMotion: 'reduce'});
+  await ctx.addInitScript(f => { try { localStorage.setItem('atlas:font', String(f)); } catch {} }, font);
+  const p = await ctx.newPage();
+  const errs = []; p.on('pageerror', e => errs.push('pageerror ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+  await p.goto(base + '/atlas/', {waitUntil: 'networkidle'});
+  await p.waitForFunction(() => document.querySelector('#view h1'));
+  for (const route of routes) await visit(p, errs, route, w, hgt, font);
+  if (w === 390 && font === 0 && OROUTES.length) await sweepOthers(ctx, w, hgt, font); // 고른 곳 밖 회사 3 ~ 7단 — 390 · 보통 글씨 한 판(길 지도 · 3번 누름도 여기서)
   // 찾기 — 한 글자 · 첫 글자 · 영어 이름 소리 · 번호 · 365곳 밖
   if (font === 0) {
     for (const [q, want] of [['삼성', '삼성전자'], ['ㅅㅅㅈㅈ', '삼성전자'], ['에스케이하이', 'SK하이닉스'], ['005930', '삼성전자'], [core.industries[0].name, core.industries[0].name], [OUT1.n, `${core.rules.name} 밖`],
@@ -428,9 +460,18 @@ for (const [w, hgt, font] of plans) {
       const errsF = errs.splice(0); if (errsF.length) fail(`${w} 찾기 ${q}`, '오류: ' + errsF[0]);
       await p.evaluate(() => { document.querySelector('[data-close="findSheet"]').click(); });
     }
-    await p.evaluate(c => { location.hash = '#/x/' + c; }, OUT1.c);
+    // 모든 회사 7단(2026-10-14 17:25) — 밖 칸은 회사 주식이 아닌 것(펀드 · 우선주 …)만 · 회사 주식의 옛 밖 칸 주소는 아래에서 3단 회사로 넘어가는지 봄
+    const SHEET = CO7 ? (NAMES.rows.find(r => r.s !== 'in' && r.k) ?? OUT1) : OUT1;
+    await p.evaluate(c => { location.hash = '#/x/' + c; }, SHEET.c);
     try { await p.waitForFunction(() => document.querySelector('#infoBody .funnel'), null, {timeout: 5000}); const t = await p.$eval('#infoBody', x => x.innerText); screens++; if (!/멈췄습니다/.test(t)) fail(`${w} 365곳 밖`, '까닭 줄 없음');
-      if (MKT?.[OUT1.c]) { numbers++; if (!t.includes(`업종 ${MKT[OUT1.c].i}`) || !t.includes(pct(MKT[OUT1.c].c))) fail(`${w} 365곳 밖`, `업종 · 20거래일 줄 없음(업종 ${MKT[OUT1.c].i} · ${pct(MKT[OUT1.c].c)})`); } } catch { fail(`${w} 365곳 밖`, '깔때기 안 그려짐'); }
+      if (MKT?.[SHEET.c]) { numbers++; if (!t.includes(`업종 ${MKT[SHEET.c].i}`) || !t.includes(pct(MKT[SHEET.c].c))) fail(`${w} 365곳 밖`, `업종 · 20거래일 줄 없음(업종 ${MKT[SHEET.c].i} · ${pct(MKT[SHEET.c].c)})`); } } catch { fail(`${w} 365곳 밖`, '깔때기 안 그려짐'); }
+    if (CO7 && MKT[OUT1.c]) { // 옛 밖 칸 주소(회사 주식) → 3단 회사(사장님 17:25 「전부다 나오게 해」)
+      await p.evaluate(() => { for (const x of document.querySelectorAll('[data-close]')) if (!x.closest('[hidden]')) x.click(); });
+      await p.evaluate(c => { location.hash = '#/x/' + c; }, OUT1.c);
+      try { await p.waitForFunction(c => location.hash === '#/c/' + c && document.querySelector('#view .co-head h1'), OUT1.c, {timeout: 8000}); screens++; numbers++; }
+      catch { fail(`${w} 옛 밖 칸 주소`, `#/x/${OUT1.c} 가 3단 회사(#/c/${OUT1.c})로 넘어가지 않음`); }
+      const eF = errs.splice(0); if (eF.length) fail(`${w} 옛 밖 칸 주소`, '오류: ' + eF[0]);
+    }
   }
   await ctx.close();
 }
@@ -539,8 +580,10 @@ let far = 0; for (const c of Object.keys(comp)) { const d = depth.get('#/c/' + c
   for (const [sub, n, nm] of [['past', 4, '4단 지나온 길'], ['rivals', 5, '5단 누구와 다투나'], ['grow', 6, '6단 앞으로 클까?'], ['range', 7, '7단 범위 · 확인']]) { const dn = depth.get(`#/c/${c}/${sub}`); if (dn == null || dn > n) fail(nm, `${comp[c].name} ${dn ?? '닿지 않음'}`); } }
 const max7 = Math.max(...Object.keys(comp).map(c => depth.get(`#/c/${c}/range`) ?? 99));
 // 모든 회사(2026-10-14 「나」) — 회사마다 3번이면 닿음(고른 곳 = 3단 회사 #/c/ · 나머지 = 밖 칸 #/x/)
-let farAll = 0, maxAll = 0; if (MKT) for (const [c, m] of Object.entries(MKT)) { const d = depth.get((m.p ? '#/c/' : '#/x/') + c); maxAll = Math.max(maxAll, d ?? 99); if (d == null || d > 3) { farAll++; if (farAll <= 20) fail('3번 누름(모든 회사)', `${m.n} ${d ?? '닿지 않음'}`); } }
-const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99)), ...(MKT ? {all: Object.keys(MKT).length, over3All: farAll, maxAll} : {})}, click7: {deepest: max7, steps: ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인']}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
+//   모든 회사 7단(17:25 「전부다 나오게 해」)이면 모든 회사가 3단 회사 #/c/ · n단은 n번 안(4 지나온 길 … 7 범위 · 확인)
+let farAll = 0, maxAll = 0, far7 = 0, max7All = 0; if (MKT) for (const [c, m] of Object.entries(MKT)) { const d = depth.get((CO7 || m.p ? '#/c/' : '#/x/') + c); maxAll = Math.max(maxAll, d ?? 99); if (d == null || d > 3) { farAll++; if (farAll <= 20) fail('3번 누름(모든 회사)', `${m.n} ${d ?? '닿지 않음'}`); }
+  if (CO7 && !m.p) for (const [sub, n, nm] of [['past', 4, '4단 지나온 길'], ['rivals', 5, '5단 누구와 다투나'], ['grow', 6, '6단 앞으로 클까?'], ['range', 7, '7단 범위 · 확인']]) { const dn = depth.get(`#/c/${c}/${sub}`); if (sub === 'range') max7All = Math.max(max7All, dn ?? 99); if (dn == null || dn > n) { far7++; if (far7 <= 20) fail(nm + '(고른 곳 밖)', `${m.n} ${dn ?? '닿지 않음'}`); } } }
+const res = {schema: 'atlas-new-check-1', made: new Date().toISOString(), base, plans: plans.map(([w, h, f]) => `${w}×${h}${f ? ' 글씨' + (f + 1) : ''}`), routes: routes.length, screens, numbers, click3: {companies: Object.keys(comp).length, over3: far, max: Math.max(...Object.keys(comp).map(c => depth.get('#/c/' + c) ?? 99)), ...(MKT ? {all: Object.keys(MKT).length, over3All: farAll, maxAll} : {})}, others: {co7: CO7, companies: OTH.length, routes: OROUTES.length, full: CO7 && OLIM == null && !OSEL && !arg('--only') && OROUTES.length === OTH.length * 5, overStep: far7, deepest: CO7 ? max7All : null}, click7: {deepest: max7, steps: ['갈래', '업종', '회사', '지나온 길', '누구와 다투나', '앞으로 클까?', '범위 · 확인']}, friends: {shown: moTotal, kinds: 11}, fails: fails.length, kinds: Object.entries(fails.reduce((m, f) => { const k = f.what.replace(/[\d.]+px/g, 'n').replace(/:.*$/, '').slice(0, 30); m[k] = (m[k] ?? 0) + 1; return m; }, {})), all: fails};
 fs.mkdirSync(path.dirname(out), {recursive: true}); fs.writeFileSync(out, JSON.stringify(res, null, 1) + '\n');
 if (arg('--links')) fs.writeFileSync(path.resolve(arg('--links')), JSON.stringify(Object.fromEntries(links)) + '\n'); // 길 지도(390 · 보통 글씨에서 화면마다 누를 수 있는 길) — 1억 번 눌러 보기(click_walk.mjs)가 읽음
 console.log(JSON.stringify({screens, numbers, fails: fails.length, click3: res.click3, first: fails.slice(0, 8)}));

@@ -70,13 +70,16 @@ function load(siteDir, dataDir) {
   for (const f of fs.readdirSync(D)) { const p = path.join(D, f); if (fs.statSync(p).isFile()) S.files[f] = fs.statSync(p).size; }
   S.codes = Object.keys(S.comp.companies);
   S.all = S.mk ? Object.keys(S.mk) : S.codes; // 모든 회사(옛 자료면 고른 곳)
+  // 모든 회사 7단(사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — core.co7 이면 모든 회사가 회사 파일 · 3 ~ 7단
+  S.co7 = !!(S.core.co7 && S.mk); S.coCodes = S.co7 ? S.all : S.codes; S.oth = S.co7 ? S.all.filter(c => !S.comp.companies[c]) : [];
   S.gid = new Map(S.core.groups.map(g => [g.id, g]));
   S.iby = new Map(S.core.industries.map(i => [i.name, i]));
   return S;
 }
-/** 회사 줄이 가는 곳 — 고른 곳(금빛)은 3단 회사 · 모든 회사 가운데 나머지는 밖 칸(#/x/ — atlas.js viewIndustry · hrefInd 와 같은 규칙) */
+/** 회사 줄이 가는 곳 — 모든 회사 7단(core.co7 · 2026-10-14 17:25 「전부다 나오게 해」)이면 모두 3단 회사 · 아니면 고른 곳(금빛)만 3단 회사 · 나머지 밖 칸(#/x/) — atlas.js cHref · viewIndustry · hrefInd 와 같은 규칙 */
 const isPk = (S, c) => (S.mk ? !!S.mk[c]?.p : !!S.comp.companies[c]);
-const coHref = (S, c) => (isPk(S, c) ? '#/c/' : '#/x/') + c;
+const co7Of = S => !!(S.core?.co7 && S.mk);
+const coHref = (S, c) => (co7Of(S) || isPk(S, c) ? '#/c/' : '#/x/') + c;
 
 // ── 모든 글(자료) — [어디, 키, 글] · 고유 이름은 표시 ──
 function strings(obj, where, out, key = '') {
@@ -108,9 +111,11 @@ export function siteGraph(S) {
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);
   for (const i of core.industries) if (i.n > 1) add('#/i/' + encodeURIComponent(i.name), ['#/', '#/g/' + i.g, ...i.members.map(c => coHref(S, c))], 2, null, 2);
   // 밖 칸(모든 회사 가운데 고른 곳이 아닌 회사 · 2026-10-14 「나」) — 판(창)이지만 「3번이면 회사」를 보려고 길 지도에 넣음 · 처음으로 · 그 업종(atlas.js showInfo 업종 고리)
-  if (S.mk) for (const [c, m] of Object.entries(S.mk)) if (!m.p) { const i = S.iby.get(m.i); add('#/x/' + c, ['#/', i ? hrefInd(i) : null], null, null, 3); } // 단 없음(회사 단이 아닌 판) · 3번 안
-  for (const c of S.codes) {
-    const x = comp[c], i = S.iby.get(x.i), C3 = '#/c/' + c;
+  const co7 = co7Of(S);
+  if (S.mk && !co7) for (const [c, m] of Object.entries(S.mk)) if (!m.p) { const i = S.iby.get(m.i); add('#/x/' + c, ['#/', i ? hrefInd(i) : null], null, null, 3); } // 단 없음(회사 단이 아닌 판) · 3번 안 · 모든 회사 7단이면 밖 칸 없음(옛 주소는 회사로 넘어감)
+  // 회사 단 — 모든 회사 7단이면 모든 회사(고른 곳 밖은 모든 회사 자료의 업종 → 갈래 · 화면은 회사 파일의 같은 값 — site_verify ⑮ · 애플 눈 company 가 맞댐)
+  for (const c of co7 ? Object.keys(S.mk) : S.codes) {
+    const x = comp[c] ?? {i: S.mk[c].i, g: S.iby.get(S.mk[c].i)?.g}, i = S.iby.get(x.i), C3 = '#/c/' + c;
     const ST = ['#/g/' + x.g, i && i.n > 1 ? hrefInd(i) : null, C3, C3 + '/past', C3 + '/rivals', C3 + '/grow', C3 + '/range']; // 1 갈래 … 7 범위
     const upto = s => ST.slice(0, Math.min(s + 1, 7)).filter((hf, k) => hf && k !== s - 1); // 지나온 단 · 바로 다음 단만(자기는 뺌)
     add(C3, ['#/', ...upto(3)], 3, c, 3);
@@ -143,8 +148,18 @@ function appleLens(S) {
       if (e.j < 0) { const from = routes[cur]; cur = home; return `${from} → ${e.hf} 깨진 길`; }
       if (e.skip) { const from = routes[cur]; cur = e.j; return `${from} → ${e.hf} 단 건너뜀`; }
       cur = e.j; return null; }},
-    {k: 'company', name: '회사마다 — 갈래 · 업종 · 선 · 회사 파일(4~7단 자료)', items: S.codes.length, check(i) {
-      const c = S.codes[i], x = comp[c], ind = S.iby.get(x.i), g = S.gid.get(x.g);
+    {k: 'company', name: '회사마다 — 갈래 · 업종 · 선 · 회사 파일(4~7단 자료 · 모든 회사 7단이면 모든 회사)', items: S.coCodes.length, check(i) {
+      const c = S.coCodes[i];
+      if (!comp[c]) { // 고른 곳 밖(2026-10-14 17:25 「전부다 나오게 해」) — 회사 파일의 3단 자료(c) · 선(line) = 모든 회사 자료 · 갈래 · 업종 명단
+        const co = S.co[c], m = S.mk[c]; if (!co) return `${c} 회사 파일(co/${c}.json) 없음 — 3~7단이 「없는 주소」`;
+        const x = co.c, ind = x && S.iby.get(x.i), g = x && S.gid.get(x.g);
+        if (!x || !Array.isArray(co.line)) return `${c} 회사 파일에 3단 자료(c) · 선(line) 없음`;
+        if (!g || !ind || ind.g !== x.g || !ind.members.includes(c) || !(g.inds ?? []).includes(ind.name)) return `${c} 갈래 ${x.g} · 업종 ${x.i} 이 명단과 다름`;
+        if (x.i !== m.i || x.name !== m.n || x.chg !== m.c || JSON.stringify(co.line) !== JSON.stringify(m.l)) return `${c} 회사 파일 이름 · 업종 · 20거래일 · 선 ≠ 모든 회사 자료`;
+        if (x.pick != null) return `${c} 고른 곳 밖인데 든 까닭(pick) 칸이 있음`;
+        if (inNames.has(c)) return `${c} 고른 곳 밖인데 찾기 이름표에 「안」`;
+        return null; }
+      const x = comp[c], ind = S.iby.get(x.i), g = S.gid.get(x.g);
       if (!g) return `${c} 갈래 ${x.g} 없음`;
       if (!ind) return `${c} 업종 ${x.i} 없음`;
       if (ind.g !== x.g || !ind.members.includes(c)) return `${c} 업종 ${x.i} 명단에 없음`;
@@ -222,12 +237,14 @@ function googleLens(S, market, now = new Date()) {
     mk.push(['「장 중」 말 = 정규장 때만', /장 중/.test(market.lines?.[0] ?? ''), !!core.provisional && t.slice(0, 10) === core.asOf && t.slice(11, 16) >= '09:00' && t.slice(11, 16) < '15:30']);
   }
   return {key: 'google', name: '구글', what: '숫자가 서로 맞나 — 같은 숫자를 다른 파일 · 다른 길로 다시 셈', kinds: [
-    {k: 'window', name: '회사 선 ↔ 회사 종가(아무 두 날 사이 비율)', items: S.codes.length * pairs.length, check(i) {
-      const c = S.codes[(i / pairs.length) | 0], p = pairs[i % pairs.length], a = (p / 64) | 0, b = p % 64, co = S.co[c];
+    {k: 'window', name: '회사 선 ↔ 회사 종가(아무 두 날 사이 비율 · 모든 회사 7단이면 모든 회사)', items: S.coCodes.length * pairs.length, check(i) {
+      const c = S.coCodes[(i / pairs.length) | 0], p = pairs[i % pairs.length], a = (p / 64) | 0, b = p % 64, co = S.co[c];
       if (!co) return `${c} 회사 파일 없음`;
-      const ja = dIdx.get(dates[a]) - co.k0, jb = dIdx.get(dates[b]) - co.k0, xa = co.close[ja], xb = co.close[jb], la = lines[c][a], lb = lines[c][b];
+      const Lc = comp[c] ? lines[c] : co.line; if (!Array.isArray(Lc)) return `${c} 선 없음`;
+      const ja = dIdx.get(dates[a]) - co.k0, jb = dIdx.get(dates[b]) - co.k0, xa = ja >= 0 ? co.close[ja] : null, xb = jb >= 0 ? co.close[jb] : null, la = Lc[a], lb = Lc[b];
+      { const j0 = dIdx.get(dates[0]) - co.k0, x0 = j0 >= 0 ? co.close[j0] : null; if (!x0) return Lc.every(x => x == null) ? null : `${c} 기준일 종가가 없는데 선이 있음`; } // 기준일 종가가 없으면(기준일 뒤 새로 상장 등) 선은 모두 빈칸 — 정의(모든 회사 7단 2026-10-14 · 266690)
       if (!xa || !xb || la == null || lb == null) return (!xa || !xb) === (la == null || lb == null) || (!xa && la == null) || (!xb && lb == null) ? null : `${c} ${dates[a]}~${dates[b]} 값 있음 · 없음이 다름`;
-      const d = Math.abs(lb / la - xb / xa); return d <= 2e-4 * (xb / xa) + 1e-9 ? null : `${c} ${dates[a]}~${dates[b]} 선 ${(lb / la).toFixed(5)} ≠ 종가 ${(xb / xa).toFixed(5)}`; }},
+      const d = Math.abs(lb / la - xb / xa); return d <= Math.max(2e-4, 0.6 / Math.abs(la) + 0.6 / Math.abs(lb)) * (xb / xa) + 1e-9 ? null : `${c} ${dates[a]}~${dates[b]} 선 ${(lb / la).toFixed(5)} ≠ 종가 ${(xb / xa).toFixed(5)}`; }}, // 선은 정수(기준일 = 10000)라 크게 빠진 회사(선 1,000 언저리)는 반올림이 2e-4 를 넘을 수 있음 — 반올림만큼 너그럽게(모든 회사 7단 · 2026-10-14)
     {k: 'company', name: '회사 — 1주 값 · 20거래일 비율 · 이름 · 번호', items: S.codes.length * 4, check(i) {
       const c = S.codes[i >> 2], x = comp[c], co = S.co[c], L = lines[c];
       switch (i & 3) {
@@ -235,6 +252,13 @@ function googleLens(S, market, now = new Date()) {
         case 1: if (L[0] == null || L[W - 1] == null) return x.chg == null ? null : `${c} 선이 비었는데 비율 ${x.chg}`; return Math.abs(x.chg - (L[W - 1] / L[0] * 100 - 100)) <= 0.011 ? null : `${c} 비율 ${x.chg} ≠ 선 ${(L[W - 1] / L[0] * 100 - 100).toFixed(2)}`;
         case 2: { const r = S.names.rows.find(y => y.c === c); return r && r.n === x.name ? null : `${c} 이름 「${x.name}」 ≠ 찾기 이름표 「${r?.n}」`; }
         default: return co && co.code === c ? null : `${c} 회사 파일 번호 ${co?.code}`;
+      } }},
+    {k: 'other', name: '고른 곳 밖 회사 — 1주 값 = 회사 파일 마지막 종가 · 20거래일 = 선 · 번호(모든 회사 7단 · 2026-10-14 17:25)', items: S.oth.length * 3, check(i) {
+      const c = S.oth[(i / 3) | 0], co = S.co[c], x = co?.c, L = co?.line; if (!x || !L) return `${c} 회사 파일 3단 자료 없음`;
+      switch (i % 3) {
+        case 0: { const lc = co.close.findLast(v => v != null) ?? null; return x.price === lc ? null : `${c} 1주 값 ${x.price} ≠ 회사 파일 마지막 종가 ${lc}`; }
+        case 1: if (L[0] == null || L[W - 1] == null) return x.chg == null ? null : `${c} 선이 비었는데 비율 ${x.chg}`; return Math.abs(x.chg - (L[W - 1] / L[0] * 100 - 100)) <= 0.011 ? null : `${c} 비율 ${x.chg} ≠ 선 ${(L[W - 1] / L[0] * 100 - 100).toFixed(2)}`;
+        default: return co.code === c ? null : `${c} 회사 파일 번호 ${co.code}`;
       } }},
     {k: 'mktline', name: '모든 회사 — 20거래일 비율 = 선 · 고른 곳 선 = lines.json(2026-10-14 「나」)', items: S.mk ? S.all.length : 0, check(i) {
       const c = S.all[i], m = S.mk[c], L = m.l;
@@ -252,6 +276,11 @@ function googleLens(S, market, now = new Date()) {
       if (i === S.codes.length) return ['picks', 'backtest', 'cutN', 'total'].some(k => k in S.range) ? '범위 자료에 고른 목록 · 시험 칸이 있음' : (S.range.asOf === core.asOf ? null : `범위 날짜 ${S.range.asOf} ≠ 고른 날 ${core.asOf}`);
       const c = S.codes[i], k = S.range.companies?.[c]; if (!k) return `${c} 7단 범위 자료 없음`; if ('rank' in k || 'cut' in k) return `${c} 범위 자료에 차례 · 지움 칸`;
       return !k.ok || (k.win.length === 4 && k.big.length === 4) ? null : `${c} 4방향 칸 수 ${k.win.length} · ${k.big.length}`; }},
+    {k: 'rangeOther', name: '7단 범위 — 고른 곳 밖 회사(모든 회사 7단) · 차례 없음 · 평균 · 가장 나쁜 방향', items: S.oth.length + 1, check(i) {
+      if (i === S.oth.length) { const O = S.range.others ?? {}, n = Object.keys(O).length, ok = Object.values(O).filter(x => x?.ok).length; return n === S.oth.length && S.range.spec?.others?.n === n && S.range.spec?.others?.eligible === ok ? null : `밖 범위 ${n}곳 · 셈한 곳 ${ok} ≠ 고른 곳 밖 ${S.oth.length} · 적은 수 ${S.range.spec?.others?.n} · ${S.range.spec?.others?.eligible}`; }
+      const c = S.oth[i], k = S.range.others?.[c]; if (!k) return `${c} 7단 범위 자료 없음(고른 곳 밖)`; if ('rank' in k || 'cut' in k) return `${c} 범위 자료에 차례 · 지움 칸`;
+      if (!k.ok) return null; if (k.win.length !== 4 || k.big.length !== 4) return `${c} 4방향 칸 수 ${k.win.length} · ${k.big.length}`;
+      const avg = Math.round(k.win.reduce((a, b) => a + b, 0) / 4 * 100) / 100; return Math.abs(avg - k.avg) <= 0.0101 && Math.abs(Math.max(...k.big) - k.worst) <= 0.0101 ? null : `${c} 평균 ${k.avg} · 가장 나쁜 방향 ${k.worst} 이 네 방향 값과 다름`; }},
     {k: 'date', name: '날짜 — 창 21칸 · 기준일 · 고른 날 · 파일마다 같은 날', items: W + fileAsOf.length + 1, check(i, rnd, ctx) {
       if (i < W) { if (i && !(dates[i] > dates[i - 1])) return `날짜 차례 ${dates[i - 1]} → ${dates[i]}`; if (!dIdx.has(dates[i])) return `${dates[i]} 가 긴 날짜표에 없음`; return null; }
       i -= W; if (i < fileAsOf.length) { const [f, d] = fileAsOf[i]; return d === core.asOf ? null : `${f} 날짜 ${d} ≠ 고른 날 ${core.asOf}`; }
@@ -268,7 +297,7 @@ function googleLens(S, market, now = new Date()) {
 function claudeLens(S, market) {
   const comp = S.comp.companies;
   const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : [])];
-  for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
+  for (const c of S.coCodes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts); // 모든 회사 7단이면 모든 회사 파일
   const mlines = (market?.lines ?? []).map(s => ({where: '시장 판독', key: 'line', s, proper: false}));
   texts.push(...mlines);
   const BROKEN = /�|Ã.|Â.|ì[\u0080-¿]|ë[\u0080-¿]|ê[\u0080-¿]/;
@@ -311,8 +340,8 @@ function claudeLens(S, market) {
       if (!mlines.length) return market ? '시장 판독 글이 없음' : null;
       const s = mlines[i].s; if (!/\d/.test(s)) return `숫자 없는 판독 줄: ${s}`;
       if (/(할|될|오를|내릴|갈|올)\s?(것|겁니다|전망)|전망|기대|유망|사세요|파세요|담으세요/.test(s)) return `앞날 · 권하는 말: ${s}`; return null; }},
-    {k: 'unknown', name: '모르는 값은 비워 둠(「?」로 보임 — 0 · 빈 글로 채우지 않음)', items: S.codes.length * unknownKeys.length, check(i) {
-      const c = S.codes[(i / unknownKeys.length) | 0], k = unknownKeys[i % unknownKeys.length], v = comp[c][k];
+    {k: 'unknown', name: '모르는 값은 비워 둠(「?」로 보임 — 0 · 빈 글로 채우지 않음 · 모든 회사 7단이면 모든 회사)', items: S.coCodes.length * unknownKeys.length, check(i) {
+      const c = S.coCodes[(i / unknownKeys.length) | 0], k = unknownKeys[i % unknownKeys.length], x = comp[c] ?? S.co[c]?.c; if (!x) return `${c} 3단 자료 없음`; const v = x[k];
       if (v === undefined || v === null) return null; if (typeof v !== 'number' || !Number.isFinite(v)) return `${c}.${k} = ${JSON.stringify(v)}(숫자도 빈칸도 아님)`;
       if ((k === 'price' || k === 'cap') && v <= 0) return `${c}.${k} = ${v}(0 이하 — 모르면 비워야 함)`; return null; }},
     {k: 'grow', name: '앞으로 클까? 말 등급 다섯 · 배수 범위(주가 아님)', items: Math.max(1, growCos.length), check(i) {
@@ -355,11 +384,11 @@ function ciaLens(S, market) {
   const guard = VIEWS.map(f => { const a = S.js.indexOf(`function ${f}(`); const head = a < 0 ? '' : S.js.slice(a, a + 400); return [f, /return viewMissing\(/.test(head)]; });
   // 왕복 — 화면이 만드는 주소(이름은 encodeURIComponent)를 길 함수에 넣으면 같은 대상이 나오나
   const trips = [...S.core.groups.map(g => ['#/g/' + g.id, ['g', g.id]]), ...S.core.industries.filter(i => i.n > 1).map(i => ['#/i/' + encodeURIComponent(i.name), ['i', i.name]]),
-    ...S.codes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
+    ...S.coCodes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
     ...S.names.rows.filter(r => r.s !== 'in').slice(0, 2000).map(r => ['#/x/' + r.c, ['info', r.c]])];
   // 글 — 자료 모두 + 시장 판독
   const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : [])];
-  for (const c of S.codes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts);
+  for (const c of S.coCodes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts); // 모든 회사 7단이면 모든 회사 파일
   for (const s of market?.lines ?? []) texts.push({where: '시장 판독', key: 'line', s});
   const INJ = /<\s*\/?\s*(script|iframe|img|svg|object|embed|style|link|meta|form|input|a)\b|javascript:|vbscript:|data:text\/html|\bon[a-z]{3,}\s*=/i;
   const HIDDEN = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F​-‏‪-‮⁠-⁩﻿]/;
@@ -369,7 +398,7 @@ function ciaLens(S, market) {
     [/xox[baprs]-[A-Za-z0-9-]{10,}/, '슬랙 열쇠'], [/sk-(ant-)?[A-Za-z0-9_-]{32,}/, 'API 열쇠'], [/NETLIFY_(AUTH_TOKEN|SITE_ID)\s*[=:]/, '넷리파이 이름 + 값'], [/"(siteId|deployId|site_id|deploy_id|deployUrl)"\s*:/, '넷리파이 번호 칸'],
     [/[A-Za-z0-9._%+-]+@(gmail|naver|daum|hanmail|kakao|outlook|hotmail|yahoo|icloud)\.[a-z.]{2,}/i, '개인 메일 주소']];
   const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'range.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json', 'mkt.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
-    ...S.codes.filter(c => S.co[c]).map(c => ['co/' + c + '.json', JSON.stringify(S.co[c])])];
+    ...S.coCodes.filter(c => S.co[c]).map(c => ['co/' + c + '.json', JSON.stringify(S.co[c])])];
   const chunks = []; for (const [f, t] of docs) for (let k = 0; k < Math.max(1, t.length); k += 1800) chunks.push([f, k, t.slice(k, k + 2000)]);
   // 화면 코드 규칙
   const jsNoStr = S.js;
@@ -415,7 +444,7 @@ function ciaLens(S, market) {
       const [what, re] = heads[i]; if (!re) return /unsafe-(inline|eval)/.test(HEADER_TOP) ? `머리말에 ${what.split(' ')[0]}` : null; return re.test(HEADER_TOP) ? null : `머리말 없음: ${what}`; }},
     {k: 'shape', name: '자료 모양 — 회사 번호 꼴(모든 회사) · 파일 크기 · 회사 파일 수', items: S.all.length + sizes.length, check(i) {
       if (i < S.all.length) { const c = S.all[i]; return codeOk(c) ? null : `회사 번호 꼴 「${c}」`; }
-      const [f, b, lim] = sizes[i - S.all.length]; if (lim == null) return b === S.codes.length ? null : `회사 파일 ${b}개 ≠ 고른 곳 ${S.codes.length}`; return b <= lim ? null : `${f} ${b}바이트(한도 ${lim})`; }},
+      const [f, b, lim] = sizes[i - S.all.length]; if (lim == null) return b === S.coCodes.length && (!S.co7 || S.core.co7 === b) ? null : `회사 파일 ${b}개 ≠ ${S.co7 ? '모든 회사' : '고른 곳'} ${S.coCodes.length}(core.co7 ${S.core.co7 ?? '-'})`; return b <= lim ? null : `${f} ${b}바이트(한도 ${lim})`; }},
   ]};
 }
 

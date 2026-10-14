@@ -63,9 +63,12 @@ test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 �
   const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), home: fs.existsSync(path.join(DATA, 'home.json')) ? J('home.json') : null}; // 첫 화면 365곳 막대 양 끝 길(2026-10-12 14:54)도 함께
   S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
   S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null; // 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄 · 밖 칸
-  const {nodes, depth} = siteGraph(S), outN = S.mk ? Object.values(S.mk).filter(m => !m.p).length : 0;
-  assert.equal(nodes.size, 5 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5 + outN);
-  if (S.mk) for (const [c, m] of Object.entries(S.mk)) assert.ok(depth.get((m.p ? '#/c/' : '#/x/') + c) <= 3, `${m.n} 3번 안`); // 모든 회사 — 3번이면 회사(고른 곳) · 밖 칸(나머지)
+  const {nodes, depth} = siteGraph(S), outN = S.mk ? Object.values(S.mk).filter(m => !m.p).length : 0, co7 = !!(S.core.co7 && S.mk);
+  // 모든 회사 7단(사장님 2026-10-14 17:25(싱가포르) 「전부다 나오게 해」) — core.co7 이면 고른 곳 밖도 회사 다섯 단(3 ~ 7) · 밖 칸 없음 · 옛 자료면 밖 칸 하나씩
+  assert.equal(nodes.size, 5 + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5 + (co7 ? outN * 5 : outN));
+  if (co7) { assert.equal([...nodes.keys()].filter(r => r.startsWith('#/x/')).length, 0, '모든 회사 7단 — 밖 칸 길 없음'); assert.equal(S.core.co7, Object.keys(S.mk).length, 'core.co7 = 모든 회사'); }
+  if (S.mk) for (const [c, m] of Object.entries(S.mk)) { assert.ok(depth.get((co7 || m.p ? '#/c/' : '#/x/') + c) <= 3, `${m.n} 3번 안`); // 모든 회사 — 3번이면 회사(모든 회사 7단이면 모두 3단 회사)
+    if (co7) [['past', 4], ['rivals', 5], ['grow', 6], ['range', 7]].forEach(([sub, n]) => assert.ok(depth.get(`#/c/${c}/${sub}`) <= n, `${m.n} ${n}단 ${n}번 안`)); }
   for (const c of S.codes.slice(0, 50)) { assert.ok(depth.get('#/c/' + c) <= 3); assert.ok(depth.get(`#/c/${c}/range`) <= 7); }
   if (S.home?.s365?.top) { const top = '#/c/' + S.home.s365.top.c; assert.ok(nodes.get('#/').links.includes(top)); assert.equal(depth.get(top), 1); } // 오늘 가장 많이 오른 곳은 첫 화면에서 1번
   // 실제 화면에서 모은 길 지도(site_check.mjs --links)가 있으면 길 하나하나 맞대 봄(2026-10-12: 화면 1,878 · 다른 길 0)

@@ -131,7 +131,7 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, gold: document.querySelectorAll('#view .board .badge.gold').length, say: document.querySelector('#view .gold-say')?.textContent ?? '', tab: document.querySelector('#tabList')?.textContent ?? ''}));
   await shot('p18-home-all');
   await page.goto(B + '/?v=' + Date.now() + '#/i/' + encodeURIComponent(gold.name), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000);
-  const ind = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')), x: document.querySelectorAll('#view .board .row[href^="#/x/"]').length}));
+  const ind = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')), x: document.querySelectorAll('#view .board .row[href^="#/x/"]').length, c: document.querySelectorAll('#view .board .row[href^="#/c/"]').length}));
   await page.evaluate(() => { const r = document.querySelector('#view .board .row.pk'); if (r) window.scrollTo(0, r.getBoundingClientRect().top + window.scrollY - 260); }); await page.waitForTimeout(600);
   await shot('p19-industry-gold');
   await page.goto(B + '/?v=' + Date.now() + '#/list', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2500);
@@ -139,13 +139,13 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   await shot('p20-list-all');
   out.allCo = {mkt: mk.n, companies: core.funnel?.companies ?? null, mktN: core.mkt?.n ?? null, groups: core.groups.length, industries: core.industries.length, members: mem, picked: core.funnel?.picked ?? null, pk: mk.pk, pkIndustries: pkI.length, home, gold: {name: gold?.name, n: gold?.n, pk: gold?.pk, shown: shownN}, ind: {...ind, pk: ind.pk.length}, list,
     ok: !!core.mkt && mk.n === core.mkt.n && mk.n === core.funnel?.companies && mem === mk.n && mk.pk === core.funnel?.picked && home.rows === core.groups.length && home.tab === '업종 ' + core.industries.length
-      && ind.rows === shownN && ind.pk.length === shownPk && ind.pk.every(h => /^#\/c\//.test(h)) && ind.x === shownN - shownPk && list.rows === core.industries.length && list.pk === pkI.length};
+      && ind.rows === shownN && ind.pk.length === shownPk && ind.pk.every(h => /^#\/c\//.test(h)) && (core.co7 ? ind.x === 0 && ind.c === shownN : ind.x === shownN - shownPk) && list.rows === core.industries.length && list.pk === pkI.length};
   if (!out.allCo.ok) out.errors.push('모든 회사: ' + JSON.stringify(out.allCo).slice(0, 240));
 });
 await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사장님 2026-10-14(싱가포르) 15:01 「여기 클릭 하면 7단구조 나오게해」 · 14:56 · 14:59 상품권 · 15:19 · 15:54 1장 글(규칙 62 · 사진 p21 · p22 · p23)
   const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
   const core = await J('core.json'), home = await J('home.json');
-  const hrefInd = i => (i.n === 1 ? ((!core.mkt || i.pk ? '#/c/' : '#/x/') + i.members[0]) : '#/i/' + encodeURIComponent(i.name));
+  const hrefInd = i => (i.n === 1 ? ((core.co7 || !core.mkt || i.pk ? '#/c/' : '#/x/') + i.members[0]) : '#/i/' + encodeURIComponent(i.name)); // 모든 회사 7단(2026-10-14 17:25)이면 모두 회사
   const want = g => { const n = core.secInd?.[String(g?.name ?? '').replace(/\s+/g, '')], i = n ? core.industries.find(x => x.name === n) : null; return i ? hrefInd(i) : null; };
   const first = home.sectors?.strong?.[0] ?? null, w = want(first);
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(800);
@@ -161,9 +161,34 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
   await shot('p23-hello-promo');
   out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
-    ok: !!w && got[0] === w && !!after && after.hash === w && /하규는 아틀란스 해서 부자 될겁니다/.test(s1.msg) && /안상미 전무님/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스/.test(s1.promo)
-      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스/.test(hp.bar)};
+    ok: !!w && got[0] === w && !!after && after.hash === w && /하규는 아틀란스 해서 부자 될겁니다/.test(s1.msg) && /안상미 전무님/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스 상품권 1만원/.test(s1.promo) && !/커피 1잔|상품권 1장/.test(s1.promo)
+      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar)}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
+});
+await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)
+  const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
+  const core = await J('core.json'), mk = await J('mkt.json'), rg = await J('range.json');
+  const oth = Object.keys(mk.companies).filter(c => !mk.companies[c].p), code = oth.find(c => mk.companies[c].l.some(x => x != null) && rg.others?.[c]?.ok) ?? oth[0], m = mk.companies[code];
+  const ind = core.industries.find(i => i.name === m.i), co = await J('co/' + code + '.json');
+  const r = {code, name: m.n, co7: core.co7 ?? null, mkt: mk.n, others: oth.length, rangeOthers: Object.keys(rg.others ?? {}).length, rangeNotOk: Object.values(rg.others ?? {}).filter(x => !x?.ok).length, coFile: !!co?.c, steps: []};
+  if (ind && ind.n > 1) { await page.goto(B + '/?v=' + Date.now() + '#/i/' + encodeURIComponent(ind.name), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
+    r.rowHref = await page.evaluate(c => document.querySelector(`#view .board .row[href$="/${c}"]`)?.getAttribute('href') ?? document.querySelector(`#view a[href$="/${c}"]`)?.getAttribute('href') ?? null, code);
+    if (r.rowHref) { await page.locator(`#view a[href="${r.rowHref}"]`).first().click(); await page.waitForTimeout(2000); } }
+  else { await page.goto(B + '/?v=' + Date.now() + '#/c/' + code, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000); }
+  const look = () => page.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent ?? '', step: document.querySelector('#view .st-t b')?.textContent ?? '', text: document.querySelector('#view')?.innerText ?? ''}));
+  let x = await look(); r.steps.push({hash: x.hash, step: x.step, chip: x.text.includes(`${core.rules.name} ${core.funnel.picked}곳 밖`), why: x.text.includes(`왜 ${core.rules.name} ${core.funnel.picked}곳 밖인가요?`)});
+  await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300); await shot('p24-other-3');
+  for (const [sub, n] of [['past', 4], ['rivals', 5], ['grow', 6], ['range', 7]]) {
+    const href = `#/c/${code}/${sub}`; const a = page.locator(`#view a[href="${href}"]`).first();
+    if (await a.count()) { await a.click(); await page.waitForTimeout(1800); } else { r.steps.push({hash: null, step: null, missing: href}); break; }
+    x = await look(); r.steps.push({hash: x.hash, step: x.step, ...(sub === 'grow' ? {notYet: x.text.includes('세 팀 이야기는 조사 전입니다')} : {}), ...(sub === 'range' ? {model: x.text.includes('모형 가정 아래 추정 · 검증 전'), dirs: await page.evaluate(() => document.querySelectorAll('#view ul.dirbars li').length)} : {})});
+  }
+  await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300); await shot('p25-other-7');
+  await page.goto(B + '/?v=' + Date.now() + '#/x/' + code, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000); r.oldX = (await look()).hash;
+  const S = r.steps, want = n => `7단 중 ${n}단`;
+  out.co7 = {...r, ok: !!core.co7 && core.co7 === mk.n && r.rangeOthers === r.others && r.coFile && (!ind || ind.n === 1 || r.rowHref === '#/c/' + code) && S.length === 5 && S.every((s2, k) => s2.hash === (k ? `#/c/${code}/${['past', 'rivals', 'grow', 'range'][k - 1]}` : '#/c/' + code) && s2.step === want(k + 3))
+    && S[0].chip && S[0].why && S[3].notYet && S[4].model && S[4].dirs === rg.dirs.length && r.oldX === '#/c/' + code};
+  if (!out.co7.ok) out.errors.push('모든 회사 7단: ' + JSON.stringify(out.co7).slice(0, 300));
 });
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');

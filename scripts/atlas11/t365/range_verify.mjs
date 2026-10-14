@@ -100,7 +100,56 @@ for (const [code, v] of C) {
 for (const k of ['picks', 'backtest', 'cutN', 'alive', 'total']) { checks++; if (k in pk) bad.push({what: `자료에 「${k}」(36곳 흔적)`}); }
 checks++; if (/매수 검토|셈 차례|봉인 36곳|365곳 · 36곳|36곳이 365곳 평균보다/.test(JSON.stringify(pk))) bad.push({what: '자료 글에 지운 36곳 화면 글'}); // 「36곳 내림」 같은 셈 글은 아님(2026-10-13 14:2x)
 
-const res = {schema: 'range-verify-1', made: new Date().toISOString(), file: path.relative(ROOT, file), asOf: pk.asOf, version: S.version, checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 20)};
+// ④ 고른 곳 밖 회사(모든 회사 7단 · 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — 같은 자료 폴더 mkt.json 의 고른 곳 밖 모두:
+//   회사 목록 = 자료의 others · 적은 수(spec.others) · 셈 가능(ok) = 방향마다 그 회사 값 있는 날이 20일 넘음(모든 회사 다시 셈) · 평균 · 가장 나쁜 방향 · 차례 없음 ·
+//   12곳 × 4방향은 따로 뽑기(경로 200만 · 다른 난수)로 번 길 · 크게 잃는 길 몫을 다시 셈(방향 날은 위 ① 고른 곳 시장 그대로 · 파이썬 경로 수 = spec.others.paths)
+let othChecks = 0;
+{
+  const MKF = path.join(path.dirname(file), 'mkt.json');
+  const OTH = fs.existsSync(MKF) ? Object.entries(J(MKF).companies).filter(([, m]) => !m.p).map(([c]) => c).sort() : [];
+  const PO = pk.others ?? null;
+  if (!OTH.length) same(PO == null || Object.keys(PO).length === 0, true, '고른 곳 밖 회사가 없으면 밖 범위도 없음');
+  else if (!PO) bad.push({what: '고른 곳 밖 범위(others) 없음'});
+  else {
+    same(Object.keys(PO).sort().join(), OTH.join(), '밖 범위 회사 = mkt.json 고른 곳 밖');
+    same(S.others?.n, OTH.length, '밖 범위 적은 수(spec.others.n)'); same(S.others?.seed, '·밖', '밖 범위 씨앗 이름(고른 곳과 따로)');
+    // 값 — 모음 + 이어 받은 일봉(같은 합치기 규칙 · 모음 마지막 날은 밖 회사 무리 안에서) · 고르는 날까지
+    const orows = OTH.map(c => new Map((bundle.stocks[c]?.fchart?.rows ?? []).filter(r => r[4] > 0).map(r => [r[0], r[4]])));
+    { const blast = orows.flatMap(m => [...m.keys()]).sort().at(-1), sel8 = String(pro.asOf ?? ACT.asOf).replaceAll('-', ''), CL = process.env.ATLAS_T365_CLOSES, ix = new Map(OTH.map((c, j) => [c, j]));
+      const base = orows.map(m => new Map(m));
+      if (CL && fs.existsSync(CL)) for (const fn of fs.readdirSync(CL).filter(f => f.endsWith('.json.gz')).sort()) {
+        const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CL, fn))).toString('utf8'));
+        if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue;
+        for (const [code, rs] of Object.entries(snap.rows ?? {})) { const j = ix.get(code); if (j == null) continue;
+          if (rs.some(x => x[0] <= blast && base[j].has(x[0]) && x[1] && Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) continue;
+          for (const x of rs) if (x[0] > blast && x[1] > 0) orows[j].set(x[0], x[1]); }
+      }
+      for (const m of orows) for (const d of [...m.keys()]) if (d > sel8) m.delete(d); }
+    const RO = [OTH.map(() => NaN)]; // RO[k][j] = k-1 → k 로그 수익(하루 ±30.5% 넘으면 뺌)
+    for (let k = 1; k < ND; k++) RO.push(orows.map(m => { const a = m.get(DATES[k - 1]), b2 = m.get(DATES[k]); let x = b2 / a - 1; if (!(Math.abs(x) <= 0.305)) return NaN; return Math.log1p(x); }));
+    const pools = pk.dirs.map(d => days.filter((k, i) => lab[i] === d.id));
+    let okN = 0;
+    OTH.forEach((c, j) => { const v = PO[c]; if (!v) return;
+      const okWant = pools.every(pl => pl.filter(k => !Number.isNaN(RO[k][j])).length >= H); same(v.ok, okWant, `밖 셈 가능(방향마다 값 있는 날 ${H}일 넘음) ${c}`); if (v.ok) okN++;
+      for (const k of ['rank', 'cut']) { checks++; if (k in v) bad.push({what: `밖 회사 ${c} 에 「${k}」(고르기 흔적)`}); }
+      if (!v.ok) return;
+      checks++; if (v.win.length !== 4 || v.big.length !== 4) bad.push({what: `밖 4방향 칸 수 ${c}`});
+      near(v.avg, Math.round(v.win.reduce((a, b) => a + b, 0) / v.win.length * 100) / 100, 0.0101, '밖 평균 ' + c); near(v.worst, Math.max(...v.big), 0.0101, '밖 가장 나쁜 방향 ' + c); othChecks++; });
+    same(okN, S.others?.eligible, '밖 셈한 회사 수(spec.others.eligible)');
+    const okO = OTH.filter(c => PO[c]?.ok), smp = okO.length <= 12 ? okO : Array.from({length: 12}, (_, k) => okO[Math.floor(k * (okO.length - 1) / 11)]);
+    const npo = S.others?.paths ?? 0, thW = Math.log1p(S.profit), thB = Math.log1p(S.bigLoss);
+    for (const code of smp) { const j = OTH.indexOf(code);
+      pk.dirs.forEach((d, di) => {
+        const vals = pools[di].map(k => RO[k][j]); if (vals.some(x => Number.isNaN(x))) { skipped++; return; }
+        const r = rng(0xBADA55 ^ (j * 131 + di * 7)); let win = 0, big = 0;
+        for (let n = 0; n < NJS; n++) { let s2 = 0; for (let q = 0; q < H; q++) s2 += vals[(r() * vals.length) | 0]; if (s2 > thW) win++; if (s2 < thB) big++; }
+        const pw = win / NJS, pb = big / NJS, c = PO[code];
+        const tw = 4 * Math.sqrt(pw * (1 - pw) / NJS + pw * (1 - pw) / npo) * 100, tb = 4 * Math.sqrt(pb * (1 - pb) / NJS + pb * (1 - pb) / npo) * 100;
+        near(pw * 100, c.win[di], Math.max(tw, 0.01), `밖 번 길 몫 ${code} ${d.name}`); near(pb * 100, c.big[di], Math.max(tb, 0.01), `밖 크게 잃는 길 몫 ${code} ${d.name}`); mcChecks += 2; }); }
+  }
+}
+
+const res = {schema: 'range-verify-1', made: new Date().toISOString(), file: path.relative(ROOT, file), asOf: pk.asOf, version: S.version, checks, mcChecks, skipped, others: {n: Object.keys(pk.others ?? {}).length, checked: othChecks}, bad: bad.length, first: bad.slice(0, 20)};
 fs.mkdirSync(path.dirname(outFile), {recursive: true}); fs.writeFileSync(outFile, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({checks, mcChecks, skipped, bad: bad.length, first: bad.slice(0, 6)}));
 process.exit(bad.length ? 1 : 0);
