@@ -767,3 +767,10 @@ ol.uplist .q.turn { font-weight: 700; }
 .key .k-pk { width: 4px; height: 18px; border-radius: 2px; background: var(--gold); }
 .note.gold-say { color: var(--sub); margin: -4px 0 10px; }
 @media (forced-colors: active) { .board .row.pk::before, .key .k-pk { forced-color-adjust: none; } }
+
+/* 이름이 길어도 금빛 이름표는 보이게 — 이름만 「…」로 줄임(2026-10-14 실제 사이트 사진: 「한국타이어앤테크놀로지」 줄에서 「고른 곳」이 잘림) · 아주 크게 업종 탭 두 줄 이름은 그대로 */
+.board .row .nm { display: flex; align-items: center; }
+.board .row .nm > .nt { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board .row .nm > .badge { flex: none; }
+html.f3 .board.wide .row:not(.two) .nm { display: block; }
+html.f3 .board.wide .row:not(.two) .nm > .nt { white-space: normal; overflow: visible; }

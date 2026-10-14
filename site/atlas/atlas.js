@@ -99,7 +99,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
     const pa = parent ? sv('path', {class: 'pa'}) : null, ln = sv('path', {class: 'ln'});
     const b0 = sv('line', {class: 'b0', x1: 0, x2: SPW, y1: SPH / 2, y2: SPH / 2});
     spk.append(b0, ...(pa ? [pa] : []), ln);
-    const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, it.name, it.badge ? h('span', {class: 'badge' + (it.badge === '?' ? ' qb' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'badge gold', text: it.gold}) : null);
+    const val = h('b', {class: 'val num'}), nm = h('span', {class: 'nm'}, h('span', {class: 'nt', text: it.name}), it.badge ? h('span', {class: 'badge' + (it.badge === '?' ? ' qb' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'badge gold', text: it.gold}) : null);
     const trd = it.tr ? trEl(state.mode === 'cw' && it.trc ? it.trc : it.tr) : null;
     const row = h('a', {class: 'row' + (trd ? ' two' : '') + (it.pk ? ' pk' : ''), href: it.href}, nm, h('span', {class: 'track', 'aria-hidden': 'true'}, spk), val, trd, h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
     board.append(row);
@@ -665,7 +665,7 @@ async function viewHome(v) {
     const t = top(m);
     if (m === 'eq') {
       head.replaceChildren(`지난 ${C.days}거래일 1등은 `, t.short);  // 금빛 테 줄의 이름과 같게
-      count.replaceChildren(ALLN ? `${who} 중 ` : '', h('b', {class: 'up', text: A.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: A.down.toLocaleString('ko-KR') + '곳 내림'}), A.flat ? ` · ${A.flat.toLocaleString('ko-KR')}곳 그대로` : '', ALLN ? null : h('span', {class: 'sr', text: ` — ${who} 가운데`}));
+      count.replaceChildren(ALLN ? `${who} 중 ` : '', h('b', {class: 'up', text: A.up.toLocaleString('ko-KR') + '곳 오름'}), ' · ', h('b', {class: 'down', text: A.down.toLocaleString('ko-KR') + '곳 내림'}), A.flat ? ` · ${A.flat.toLocaleString('ko-KR')}곳 그대로` : '', ...(ALLN ? [] : [h('span', {class: 'sr', text: ` — ${who} 가운데`})])); // replaceChildren 은 null 을 글 「null」로 넣음 — 빈 배열로
       alt.replaceChildren(`다르게 보면: 큰 회사는 크게 치면 ${whoS}${ALLN ? '가' : '이'} `, pctEl(A.cwChg), ` — ${big}. 아래 단추로 바꿔 보세요.`);
     } else {
       const negs = C.groups.filter(g => r1(g.cwChg) < 0).length;
@@ -680,8 +680,8 @@ async function viewHome(v) {
     h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); // 영상 친구들(16:29) — 무지개 · 하트
   // 맨 위 = 슬라이드 7장(1장 「친구에게 소개하기」 · 사장님 19:59 · 20:11) → 그 아래 20거래일 경주(1단 입구) · 자료를 못 읽으면 옛 소개 띠 + 「?」
   if (H) hub(v, H); else add(v, hello, h('h1', {class: 'head', text: '오늘 시장 — ?'}), h('p', {class: 'q', text: '? 오늘 시장 자료를 못 읽었습니다 — 아래 20거래일 경주는 그대로입니다.'}));
-  v.append(tell.el, head, count, h('p', {class: 'say pk'}, h('b', {text: pickName(C)}), ' — ' + pickLine(C)),
-    ALLN ? h('p', {class: 'note gold-say', text: `금빛 = ${pickName(C)}이 든 곳 · 큰 갈래 ${C.groups.length}개 · 업종 ${C.industries.length}개`}) : null, host);
+  add(v, tell.el, head, count, h('p', {class: 'say pk'}, h('b', {text: pickName(C)}), ' — ' + pickLine(C)),
+    ALLN ? h('p', {class: 'note gold-say', text: `금빛 = ${pickName(C)}이 든 곳 · 큰 갈래 ${C.groups.length}개 · 업종 ${C.industries.length}개`}) : null, host); // add = 없는 조각(null)은 건너뜀
   const items = C.groups.map(g => ({key: g.id, name: g.short, href: '#/g/' + g.id, v: g.v, cw: g.cw, tr: g.tr, trc: g.trc, gold: ALLN && g.pk ? `고른 ${g.pk}곳` : null}));
   const winner = C.groups.slice().sort((a, b) => b.chg - a.chg)[0];
   const autoplay = !state.played && !RM.matches; state.played = true; // 경주는 화면에 들어올 때 한 번 저절로(애플팀 — 위에 여섯 장이 있어 처음엔 화면 밖에서 돌다 끝나던 것)
@@ -1231,7 +1231,7 @@ function upChart(host, rows) {
 const MOC = {pink: '#F2A7D6', galah: '#EFA6D2', crest: '#F9D6E4', lav: '#C9B6F2', lavD: '#A893E0', yellow: '#F6D97A', yellowD: '#8A6A2A', white: '#F6F3FF', whiteL: '#CFC6EE',
   orange: '#F2A65A', orangeD: '#C9761F', grey: '#ABA8BE', mint: '#9EDDB4', peach: '#F9C48F', whale: '#B4A4EE', whaleL: '#DCD3FA', whaleD: '#9887DD', eye: '#3A2F5A', cheek: '#F6BCDD', beak: '#EDE7F2'};
 // 색 — 빨강 · 파랑은 오름 · 내림에만(규칙 53): 분홍은 자홍 쪽(OKLab 색상 340°대) · 고래는 연보라 · 무지개에 파랑 띠 없음 — site_check 「영상 친구」가 색상 25° 안을 잼
-function moSvg(name, w, hgt, vb, ...kids) { const s = sv('svg', {class: 'mo mo-' + name, viewBox: vb, width: w, height: hgt, 'aria-hidden': 'true', focusable: 'false'}); s.append(...kids.flat().filter(Boolean)); return s; }
+function moSvg(name, w, hgt, vb, ...kids) { const s = sv('svg', {class: 'mo mo-' + name, viewBox: vb, width: w, height: hgt, 'aria-hidden': 'true', focusable: 'false'}); s.append(...kids.flat(Infinity).filter(Boolean)); return s; } // 끝까지 폄(2026-10-14 — 무지개 구름 [[○ ○ ○], [○ ○ ○]]이 한 겹만 펴져 「[object SVGCircleElement]」 글로 들어가던 것 · 화면 돌기 null 검사가 찾음)
 const moLine = (d, color, wd = 2) => sv('path', {d, fill: 'none', stroke: color, 'stroke-width': wd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'});
 const starD = (cx, cy, R, r) => { let d = ''; for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, q = k % 2 ? r : R; d += (k ? 'L' : 'M') + (cx + q * Math.cos(a)).toFixed(1) + ' ' + (cy + q * Math.sin(a)).toFixed(1); } return d + 'Z'; };
 const MO = {

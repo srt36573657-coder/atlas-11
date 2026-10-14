@@ -1,0 +1,27 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-14T15:00+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": [
+  "모두 건수 = 이 폴더 .json 들의 items 수를 더한 것"
+ ],
+ "scope": {
+  "from": "2026-10-14 14:43(서울)",
+  "to": "2026-10-14 15:00(서울)"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 28,
+   "when": "2026-10-14 14:43(서울) 사이트에 올린 뒤부터 고쳐 다시 올릴 때까지",
+   "what": "새 ATLAS 첫 화면 경주 위 오름 · 내림 줄 끝에 「null」 글자가 붙어 보였음(「… · 85곳 그대로null」) — 모든 회사로 바꾸며 쓴 replaceChildren 에 빈 값(null)을 넘김 · 화면 돌기 검사는 이 글자를 보지 않아 통과했음",
+   "found_by": "저 — 올린 뒤 실제 사이트 사진(p18)을 열어 봄",
+   "fixed": "빈 값은 넘기지 않음(빈 배열) · 같은 꼴의 다른 자리(첫 화면 금빛 설명 줄)도 add() 로 · 화면 돌기 검사에 「null · undefined · NaN」 글자 검사를 더함 · 다시 올림",
+   "evidence": [
+    "reports/atlas11/probe/live-view/p18-home-all.png",
+    "site/atlas/atlas.js",
+    "scripts/atlas11/t365/site_check.mjs"
+   ]
+  }
+ ]
+}

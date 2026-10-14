@@ -312,6 +312,7 @@ function judge(tag, r, errs) {
   if (r.clip.length) fail(tag, '옆으로 잘림: ' + r.clip.slice(0, 3).join(' · '));
   if (r.taps.length) fail(tag, '44px 미만 누름: ' + r.taps.slice(0, 3).join(' · '));
   if (r.banned.length) fail(tag, '금지 말: ' + r.banned.join(' · '));
+  { const m = (r.text + '\n' + r.all).match(/null|undefined|NaN|\[object /); if (m) fail(tag, `빈 값이 글로 보임 「${m[0]}」`); } // 2026-10-14 「나」 — 첫 화면 「85곳 그대로null」(replaceChildren 에 null) · 틀림 장부 28번
   { const m = (r.text + '\n' + r.all).match(/(코스닥|개인|기관)가 |(코스피|투자자)이 /); if (m) fail(tag, '토씨(받침 따라 이 · 가): ' + m[0].trim()); } // 2026-10-12 첫 화면 「코스닥가」
   if (r.canvas || r.d3) fail(tag, `입체 · 캔버스 ${r.canvas + r.d3}`);
   if (r.squares >= 20) fail(tag, `작은 네모 ${r.squares}개(바둑판)`);
