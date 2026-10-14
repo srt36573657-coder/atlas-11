@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-14T14:03:04.948Z",
- "kst": "2026-10-14 23:03",
+ "at": "2026-10-14T16:17:15.186Z",
+ "kst": "2026-10-15 01:17",
  "slot": null,
- "reason": "",
+ "reason": "홍표 소개 영상 35초 · 이름 막비 → 홍표",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-JFiurb/closes/20261014T140304Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-Muzu8l/closes/20261014T161715Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261014",
-  "sec": 167,
+  "sec": 160,
   "firstErrors": []
  },
  "asOf": "2026-10-14",
@@ -53,7 +53,7 @@
  },
  "range": {
   "eligible": 55,
-  "reused": true
+  "reused": false
  },
  "market": {
   "schema": "atlas-market-read-1",
@@ -126,7 +126,7 @@
   "nEach": 10000000,
   "fail": 0,
   "ok": true,
-  "ms": 147649,
+  "ms": 330915,
   "lenses": [
    {
     "key": "apple",
@@ -164,7 +164,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-14 23:07",
+  "kst": "2026-10-15 01:22",
   "live": false,
   "idx": true,
   "flows": true,
@@ -187,62 +187,62 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 167.2
+   "sec": 160.6
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3.3
+   "sec": 6.5
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 5.5
+   "sec": 10
   },
   {
    "name": "업종 정리",
    "code": 0,
-   "sec": 0.1
+   "sec": 0.2
   },
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.7
+   "sec": 2.9
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 12.5
+   "sec": 22.8
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 3.5
+   "sec": 6.9
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 6.1
+   "sec": 47.2
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 32.7
+   "sec": 64
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3
+   "sec": 3.3
   },
   {
    "name": "첫 화면 자료",
    "code": 0,
-   "sec": 0
+   "sec": 0.1
   },
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 147.7
+   "sec": 331
   }
  ]
 }
