@@ -2,6 +2,8 @@
  * ATLAS 11 · 「튼튼한 회사 52곳」 고르기 자료 모으기 — .github/workflows/atlas11-universe.yml 에서 사장님이 단추를 눌러야만 돈다.
  *   node scripts/atlas11/collect_universe.mjs --now ISO [--out-dir reports/atlas11/universe/<날짜>] [--fixture dir] [--from-bundle file.json.gz] [--all]
  *   --all(2026-10-14 「전 종목을 전부」): 목록 끝까지 · 펀드는 목록에서 뺌 · 보통주 모두 결산 · 일봉
+ *   --every(2026-10-14 11:02 싱가포르 「이거 다 올려」): --all + 목록에 오른 것 모두(펀드 · 증권 · 우선주 · 스팩 · 리츠 — 이름표 · 요약 · bundle.every) · 쪽을 넘기다 빠진 것은 다시 넘겨 채움
+ *   --force: 장이 열린 때(서울 평일 08:00 ~ 20:00)에도 받음 — 받은 뒤 그날 일봉 줄은 bundle_cut.mjs 로 뺀다
  *
  * 하는 일(전망·발행·채점은 하지 않는다 · 지금 화면의 52종목도 바꾸지 않는다 — 바꾸는 것은 config/atlas11/universe.json 이 정한 날의 매일 실행)
  *   ① 시가총액 목록(코스피·코스닥) ② 업종 이름표 ③ 후보마다 회사 요약(시총·업종) → 시가총액 순위 ④ 상위 300곳 결산 자료와 일봉 이력
@@ -65,7 +67,8 @@ async function pool(items, limit, worker, delayMs = 0) {
 }
 
 /** 네트워크로 받기 → bundle(원문 그대로) */
-export async function collectBundle({now, fetch = globalThis.fetch, concurrency = 3, politeDelayMs = 200, fallbackCodes = [], log = () => {}, all = false} = {}) {
+export async function collectBundle({now, fetch = globalThis.fetch, concurrency = 3, politeDelayMs = 200, fallbackCodes = [], log = () => {}, all = false, every = false} = {}) {
+  if (every) all = true; // --every(2026-10-14 11:02 「이거 다 올려」) = --all + 목록에 오른 것 모두(펀드 · 증권 · 우선주 · 스팩 · 리츠도 이름표 · 요약까지)
   const requests = [], errors = [];
   const get = async url => {
     const t0 = Date.now();
@@ -73,23 +76,31 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
     catch (e) { requests.push({url, status: e.attempts?.at(-1)?.status ?? 0, error: String(e.message).slice(0, 160), ms: Date.now() - t0}); return {url, status: e.attempts?.at(-1)?.status ?? 0, text: null, error: String(e.message).slice(0, 160)}; }
   };
   // ① 시가총액 목록
-  const lists = {source: null, pages: []};
+  const lists = {source: null, pages: [], total: {}, passes: {}, unseen: {}};
+  const totalOf = t => { try { const j = JSON.parse(t); const n = Number(j?.totalCount ?? j?.result?.totalCount); return Number.isFinite(n) && n > 0 ? n : null; } catch { return null; } };
   let pool0 = [];
   for (const m of (all ? ALL_MARKETS : MARKETS)) {
     let rows = [], pages = [];
     // JSON 이 한 쪽이라도 틀리면(받기 실패·모양 다름) 그 시장은 처음부터 HTML 표로 · 빈 쪽이 나오면 거기서 끝(목록 끝)
-    let jsonFailed = false;
-    for (let p = 1; p <= m.jsonPages; p++) { const r = await get(URLS.mvJson(m.market, p)); pages.push({market: m.market, kind: 'json', ...r}); try { if (!r.text) throw Error('no body'); const got = parseMarketValueJson(r.text, m.market); if (!got.length) break; rows.push(...got); } catch (e) { errors.push({step: 'list_json', market: m.market, page: p, error: String(e.message)}); jsonFailed = true; break; } }
+    let jsonFailed = false, total = null, pass = 0;
+    // 장이 열린 때는 몸값 차례가 바뀌어 쪽을 넘기는 사이 빠지는 것이 있음(2026-10-14 아침 4개) → --all 이면 목록 전체 수(totalCount)를 채울 때까지 세 번까지 다시 넘겨 합침
+    while (pass < (all ? 3 : 1)) {
+      pass++;
+      for (let p = 1; p <= m.jsonPages; p++) { const r = await get(URLS.mvJson(m.market, p)); pages.push({market: m.market, kind: 'json', pass, ...r}); try { if (!r.text) throw Error('no body'); if (p === 1) total = totalOf(r.text) ?? total; const got = parseMarketValueJson(r.text, m.market); if (!got.length) break; rows.push(...got); } catch (e) { errors.push({step: 'list_json', market: m.market, page: p, error: String(e.message)}); jsonFailed = true; break; } }
+      if (jsonFailed || !total || new Set(rows.map(r => r.code)).size >= total) break;
+      log(`목록 ${m.market} ${pass}번째 넘김 ${new Set(rows.map(r => r.code)).size} / ${total} — 다시 넘김`);
+    }
     let source = 'json';
     if (jsonFailed || !rows.length) {
       source = 'html'; rows = [];
       for (let p = 1; p <= m.htmlPages; p++) { const r = await get(URLS.mvHtml(m.sosok, p)); pages.push({market: m.market, kind: 'html', ...r}); try { if (!r.text) throw Error('no body'); rows.push(...parseMarketSumHtml(r.text, m.market)); } catch (e) { errors.push({step: 'list_html', market: m.market, page: p, error: String(e.message)}); break; } }
     }
     lists.pages.push(...pages); lists.source = lists.source && lists.source !== source ? 'mixed' : source;
-    const seen = new Set(); pool0.push(...rows.filter(r => !seen.has(r.code) && seen.add(r.code)).filter(r => !all || !r.endType || r.endType === 'stock').slice(0, m.take));
-    log(`목록 ${m.market} ${source} ${rows.length}`);
+    const seen = new Set(); pool0.push(...rows.filter(r => !seen.has(r.code) && seen.add(r.code)).filter(r => every || !all || !r.endType || r.endType === 'stock').slice(0, m.take));
+    if (source === 'json') { lists.total[m.market] = total; lists.passes[m.market] = pass; lists.unseen[m.market] = total ? Math.max(0, total - seen.size) : null; }
+    log(`목록 ${m.market} ${source} ${rows.length} · 다른 것 ${seen.size}${total ? ' / 전체 ' + total : ''}`);
   }
-  let poolCodes = [...new Map(pool0.filter(r => !notCommon(r.code, r.name)).map(r => [r.code, r])).values()];
+  let poolCodes = [...new Map(pool0.filter(r => every || !notCommon(r.code, r.name)).map(r => [r.code, r])).values()]; // --every: 보통주가 아닌 것도 요약까지(결산 · 일봉은 보통주만 — 아래 ④)
   // 목록을 둘 다 못 받으면: 지금 52종목 + 그 업종의 시가총액 큰 이웃(회사 요약의 industryCompareInfo · 실제 응답 확인됨)으로 후보를 만든다
   if (!poolCodes.length && fallbackCodes.length) {
     lists.source = 'peers';
@@ -138,7 +149,7 @@ export async function collectBundle({now, fetch = globalThis.fetch, concurrency 
   }, politeDelayMs);
   log(`결산·일봉 ${ranked.length}`);
   const failed = requests.filter(r => r.error || !(r.status >= 200 && r.status < 300)).length;
-  return {schema: BUNDLE_SCHEMA, now, collectedAt: new Date().toISOString(), all, lists, upjong, kind, industryNames, industryRoute: route, industryProbes, chunks, stocks, errors, requests: {total: requests.length, ok: requests.length - failed, failed, sample: requests.filter(r => r.error).slice(0, 20)}};
+  return {schema: BUNDLE_SCHEMA, now, collectedAt: new Date().toISOString(), all, ...(every ? {every: true} : {}), lists, upjong, kind, industryNames, industryRoute: route, industryProbes, chunks, stocks, errors, requests: {total: requests.length, ok: requests.length - failed, failed, sample: requests.filter(r => r.error).slice(0, 20)}};
 }
 function rankByCap(stocks) {
   const rows = [];
@@ -234,7 +245,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const arg = k => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
   const root = process.cwd(), now = arg('--now') ?? new Date().toISOString(), day = kst(now).slice(0, 10);
   // 2026-10-14 틀림 장부 24 · 25번 — 장이 열린 때(서울 평일 08:00 ~ 20:00) 전 종목을 받으면 그날 끝나지 않은 일봉 · 값이 모음에 섞임 → --all 은 그때 받지 않음(--force 로만)
-  if (process.argv.includes('--all') && !process.argv.includes('--force') && !arg('--from-bundle') && !arg('--fixture') && marketOpenKst(now)) {
+  if ((process.argv.includes('--all') || process.argv.includes('--every')) && !process.argv.includes('--force') && !arg('--from-bundle') && !arg('--fixture') && marketOpenKst(now)) {
     console.error(`collect_universe --all: 장이 열린 때(서울 ${kst(now).slice(11, 16)})에는 받지 않습니다 — 서울 20:00 뒤에 다시(그날 끝나지 않은 일봉 · 값이 섞임 — 네이버 일봉은 넥스트레이드 저녁 장 끝까지 바뀜)`); process.exit(4);
   }
   // 같은 날 폴더가 이미 있으면 덮어쓰지 않고 시각을 붙인 새 폴더(옛 원문·제안은 그대로 둔다)
@@ -244,7 +255,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const input = JSON.parse(await fs.readFile(path.join(root, 'public/data/input.json'), 'utf8'));
   let bundle;
   if (arg('--from-bundle')) bundle = JSON.parse(zlib.gunzipSync(await fs.readFile(arg('--from-bundle'))).toString('utf8'));
-  else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m), all: process.argv.includes('--all')});
+  else bundle = await collectBundle({now, fetch: arg('--fixture') ? fixtureMapFetch(arg('--fixture')) : globalThis.fetch, fallbackCodes: input.assets.map(a => a.code), log: m => console.log(m), all: process.argv.includes('--all'), every: process.argv.includes('--every')});
   await fs.mkdir(path.join(root, 'reports/atlas11/universe'), {recursive: true});
   // 규칙 판: --rules 이름 → config/atlas11/universe.json 의 selectRules → q52-v2
   let config = null; try { config = JSON.parse(await fs.readFile(path.join(root, 'config/atlas11/universe.json'), 'utf8')); } catch { config = null; }

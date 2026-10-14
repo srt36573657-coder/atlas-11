@@ -7,11 +7,20 @@ name: atlas11-universe
 #   2026-10-05 05:07 사장님 「지금 180개를 365개로 한다 업종도 늘리고 더 세분화 한다」 — 목록 코스피·코스닥 각 900곳 · 결산·일봉 1300위까지 · 한국거래소 KIND 업종 · 네이버 업종 이름 새 길
 #     → 받는 양이 늘어 시간을 늘림(30분 → 70분 · 스크립트 25분 → 65분)
 #   2026-10-14 08:41 「우리나라 주식 종목 전 종목을 전부 등록 시켜」 · 「가」 — 입력 all(전 종목) · 시간 150분 · 스크립트 140분
+#   2026-10-14 11:02(싱가포르) 「이거 다 올려」(목록 4,307개) — 입력 every(펀드 · 증권 · 우선주 · 스팩 · 리츠까지) · force(장 중에도 받기 — 그날 일봉 줄은 뒤에 뺌)
 on:
   workflow_dispatch:
     inputs:
       all:
         description: '전 종목(목록 끝까지 · 보통주 모두 결산 · 일봉) — 2026-10-14 「우리나라 주식 종목 전 종목을 전부 등록 시켜」'
+        type: boolean
+        default: false
+      every:
+        description: '목록에 오른 것 모두(펀드 · 증권 · 우선주 · 스팩 · 리츠까지 이름표 · 요약) — 2026-10-14 11:02 「이거 다 올려」'
+        type: boolean
+        default: false
+      force:
+        description: '장이 열린 때(서울 평일 08:00 ~ 20:00)에도 받기 — 받은 뒤 그날 일봉 줄은 bundle_cut.mjs 로 뺌'
         type: boolean
         default: false
 permissions:
@@ -31,7 +40,7 @@ jobs:
         with:
           node-version: 22
       - name: Collect and select
-        run: timeout 8400 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" ${{ inputs.all && '--all' || '' }} || echo "collect_universe exit $?"
+        run: timeout 8400 node scripts/atlas11/collect_universe.mjs --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" ${{ inputs.all && '--all' || '' }} ${{ inputs.every && '--every' || '' }} ${{ inputs.force && '--force' || '' }} || echo "collect_universe exit $?"
       - name: Commit
         if: always()
         shell: bash
