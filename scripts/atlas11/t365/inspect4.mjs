@@ -105,7 +105,9 @@ export function siteGraph(S) {
   const H = S.home?.s365, ends = [H?.top?.c, H?.bot?.c].filter(c => c && comp[c]).map(c => '#/c/' + c); // 첫 화면 365곳 막대 양 끝(가장 많이 오른 · 내린 곳 — 2026-10-12 14:54)
   // 「오늘 업종」 줄(4장 강한 3 · 약한 3 + 「자세히」 강한 7 · 약한 7) → 그 업종(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」 · atlas.js secHref 와 같은 셈 — core.secInd)
   const SI = core.secInd ?? {}, secL = [...(S.home?.sectors?.strong ?? []), ...(S.home?.sectors?.weak ?? [])].map(g => { const n = SI[String(g.name ?? '').replace(/\s+/g, '')], i = n ? S.iby.get(n) : null; return i ? hrefInd(i) : null; });
-  add('#/', [...ends, ...secL, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
+  // 요즘 오르는 업종(2026-10-14 20:01 「1주일로 해」 · 규칙 64) — 경주판 줄 = 오른 업종(core.rise · 업종이 없으면 업종 탭) · 큰 갈래는 경주판 밑 한 줄 고리(atlas.js glinks)
+  const riseL = (core.rise?.list ?? []).map(r => { const i = S.iby.get(r.name); return i ? hrefInd(i) : '#/list'; });
+  add('#/', [...ends, ...secL, ...riseL, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
   add('#/list', core.industries.map(hrefInd), null, null, 1);
   add('#/up', [], null, null, 1); add('#/time', [], null, null, 2); add('#/info', [], null, null, 1);
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);
@@ -260,6 +262,15 @@ function googleLens(S, market, now = new Date()) {
         case 1: if (L[0] == null || L[W - 1] == null) return x.chg == null ? null : `${c} 선이 비었는데 비율 ${x.chg}`; return Math.abs(x.chg - (L[W - 1] / L[0] * 100 - 100)) <= 0.011 ? null : `${c} 비율 ${x.chg} ≠ 선 ${(L[W - 1] / L[0] * 100 - 100).toFixed(2)}`;
         default: return co.code === c ? null : `${c} 회사 파일 번호 ${co.code}`;
       } }},
+    {k: 'rise', name: '요즘 오르는 업종 — 업종 선에서 1주를 다시 셈(오른 업종 수 · 차례 · 줄 선 · 위 단 평균)', items: core.rise ? (core.rise.list?.length ?? 0) + 2 : 0, check(i) {
+      const RI = core.rise, K5 = W - 1 - RI.days, d2 = x => Math.round(x * 100 + (x >= 0 ? 1e-9 : -1e-9)) / 100, c5 = v => (v?.[K5] && v[W - 1] ? d2((v[W - 1] / v[K5] - 1) * 100) : null);
+      const raw = v => (v?.[K5] && v[W - 1] ? (v[W - 1] / v[K5] - 1) * 100 : null), want = core.industries.map(x => [x.name, c5(x.v), x.v, raw(x.v)]).filter(x => x[3] != null && x[3] >= RI.min - 0.005).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)); // 넣기는 반올림 경계까지 너그럽게 · 차례는 소수 둘째 자리 값 → 이름(site_build.py 와 같은 셈)
+      if (i === 0) { const raw = core.industries.map(x => (x.v?.[K5] && x.v[W - 1] ? (x.v[W - 1] / x.v[K5] - 1) * 100 : null)).filter(x => x != null), lo = raw.filter(x => x >= RI.min + 0.005).length, hi = raw.filter(x => x >= RI.min - 0.005).length; // 반올림 경계(0.045 ~ 0.055)는 어느 쪽이든 받음
+        return RI.n >= lo && RI.n <= hi && RI.days === 5 && RI.max === 11 && RI.from === dates[K5] && RI.to === dates[W - 1] ? null : `오른 업종 수 ${RI.n} ≠ 다시 셈 ${lo} ~ ${hi}(또는 1주 창 · 정한 수가 다름)`; }
+      if (i === 1) { const mv = (core.mkt ?? core.all).v; return (RI.all ?? []).every((x, k) => Math.abs(x - mv[K5 + k] / mv[K5] * 100) <= 0.011) && RI.all.length === RI.days + 1 ? null : '위 단 평균(모든 회사) 1주 선이 다름'; }
+      const r = RI.list[i - 2], w = want[i - 2]; if (!w) return `${r.name} — 다시 셈에는 ${i - 1}번째 오른 업종이 없음`;
+      if (r.name !== w[0] || Math.abs(r.chg - w[1]) > 0.011) return `${i - 1}번째 ${r.name} ${r.chg} ≠ 다시 셈 ${w[0]} ${w[1]}`;
+      return r.v.length === RI.days + 1 && r.v.every((x, k) => Math.abs(x - w[2][K5 + k] / w[2][K5] * 100) <= 0.011) ? null : `${r.name} 1주 줄 선이 업종 선과 다름`; }},
     {k: 'mktline', name: '모든 회사 — 20거래일 비율 = 선 · 고른 곳 선 = lines.json(2026-10-14 「나」)', items: S.mk ? S.all.length : 0, check(i) {
       const c = S.all[i], m = S.mk[c], L = m.l;
       if (m.p && (JSON.stringify(L) !== JSON.stringify(lines[c]) || m.c !== comp[c]?.chg)) return `${c} 고른 곳인데 모든 회사 선 · 비율이 고른 곳 자료와 다름`;

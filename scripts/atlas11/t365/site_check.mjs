@@ -198,11 +198,14 @@ function expect(route) {
   }
   if (!kind) { const T = core.time, H = home, K = H?.idx?.KOSPI, Q = H?.idx?.KOSDAQ, sd = H?.sectors?.date ?? K?.date, fd = H?.flows?.KOSPI?.date ?? H?.flows?.KOSDAQ?.date;
     // 첫 화면 종합 정보(14:54) → 맨 위 슬라이드 7장(19:59 · 20:11) — 머리 = 2장 오늘 지수(「오늘」은 보는 날짜로) · 장 이름 · 업종 1등 · 꼴찌 · 365곳 양 끝 · 봉인 한 줄 · 경주 제목은 그 아래(h2) · 장마다 보이는 글은 아래 hubExpect
-    return {up: loc(MA.up), down: loc(MA.down), rows: core.groups.map(g => [g.short, pct(g.chg)]), title: K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?', trd: core.groups.map(g => trText(g.tr)),
-      why: [`지난 ${core.days}거래일 1등은 ${core.groups[0].short}`, `${PN} — ${PLINE}`, ...(H ? ['코스피 · 코스닥 — 3개월', ...(H.flows ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`] : []), '미국 — 마지막 장', ...(H.s365?.list?.length ? [`${PN} — ${dayWord(H.s365.date)}`] : []),
+    // 요즘 오르는 업종(사장님 2026-10-14 20:01 「1주일로 해」 · 규칙 64) — 경주판 줄 = core.rise(업종 · 1주 %) · 줄 밑 방향 글 없음 · 큰 갈래는 경주판 밑 한 줄 고리 · 1주 전 값 줄 · 다르게 보면
+    const RI = core.rise, G1 = core.groups.slice().sort((a, b) => b.chg - a.chg)[0], iOf = n => core.industries.find(x => x.name === n);
+    return {rows: RI.list.map(r => [r.name, pct(r.chg)]), title: K || Q ? `${dayWord((K ?? Q).date)} 코스피 ${pct(K?.day)} · 코스닥 ${pct(Q?.day)}` : '오늘 시장 — ?',
+      why: ['요즘 오르는 업종 — 지난 1주', `업종 ${RI.of}개 중 지난 1주 ${RI.n}개 오름`, `큰 갈래 ${core.groups.length}개(7단 중 1단):`, ...core.groups.map(g => g.short), `1주 전(${md(RI.from)}) 값`, `${md(RI.from)} → ${md(RI.to)}`,
+        `다르게 보면: 업종 ${RI.of - RI.n}개는 지난 1주 오르지 않았습니다 · 지난 ${core.days}거래일로 세면 1등 갈래는 ${G1.short}`, ...(RI.list.length ? [] : ['? 지난 1주 오른 업종이 없습니다']), `${PN} — ${PLINE}`, ...(H ? ['코스피 · 코스닥 — 3개월', ...(H.flows ? [`${fd ? dayWord(fd) + ' ' : ''}누가 사고팔았나`] : []), '미국 — 마지막 장', ...(H.s365?.list?.length ? [`${PN} — ${dayWord(H.s365.date)}`] : []),
         ...(H.sectors ? [`${sd ? dayWord(sd) + ' ' : ''}업종 — ${H.sectors.label} · 약한 7`, H.sectors.strong[0].name, H.sectors.weak[0].name] : []), ...(H.s365?.top ? [H.s365.top.n, H.s365.bot.n] : [])] : ['? 오늘 시장 자료를 못 읽었습니다']),
         ...(T ? [`봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`, ddayText(T.opens[0].date)] : []), '저는 투자 상담사가 아닙니다',
-        ...(MKT ? [`모든 회사 ${loc(core.mkt.n)}곳 중 ${loc(MA.up)}곳 오름`, `금빛 = ${PN}이 든 곳 · 큰 갈래 ${core.groups.length}개 · 업종 ${core.industries.length}개`, ...core.groups.filter(g => g.pk).map(g => `고른 ${g.pk}곳`)] : [])], hub: H ? hubExpect(H) : null}; }
+        ...(MKT ? [`금빛 = ${PN}이 든 곳 · 큰 갈래 ${core.groups.length}개 · 업종 ${core.industries.length}개`, ...RI.list.filter(r => iOf(r.name)?.pk).map(r => `고른 ${iOf(r.name).pk}곳`)] : [])], notWhy: ['지난 20거래일 1등은'], hub: H ? hubExpect(H) : null}; }
   if (kind === 'time') { const K = tdata.capsules[0], P = K.past, S = K.since; return {title: `봉인 ${K.id}호 — ${md(K.seal)} 365곳`,
     why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
       ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
@@ -349,6 +352,7 @@ async function visit(p, errs, route, w, hgt, font) {
       else await p.waitForFunction(r => { const v = document.querySelector('#view'); return v.querySelector('h1') && (location.hash === r || (r === '#/' && location.hash === '')) && !v.querySelector('.boot'); }, route, {timeout: 8000});
     } catch { fail(tag, '그려지지 않음'); return; }
     if (/^#\/c\/[^/]+$/.test(route) && !comp[route.slice(4)]) await p.waitForFunction(() => !document.querySelector('#view').innerText.includes('까닭을 받는 중'), null, {timeout: 8000}).catch(() => {}); // 3단 고른 곳 밖 — 「왜 밖인가요?」 까닭(이름표)을 받을 때까지
+    if (route.endsWith('/range')) await p.waitForFunction(() => !document.querySelector('#view').innerText.includes('여는 중…'), null, {timeout: 8000}).catch(() => {}); // 7단 봉인 줄(「봉인 보기」 고리)은 봉인 자료를 받은 뒤 채워짐 — 길 지도가 그 고리를 놓치지 않게(2026-10-14 · 100130 #/time 한 번 놓침)
     await p.waitForTimeout(60);
     const r = await look(p);
     screens++;
@@ -417,13 +421,7 @@ async function visit(p, errs, route, w, hgt, font) {
     for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
     for (const no of e.notWhy ?? []) { numbers++; if (r.text.includes(no) || r.all.includes(no)) fail(tag, `있으면 안 되는 글 「${no}」`); } // 고른 곳 밖 3단에 「왜 … 들었나요?」(모든 회사 7단)
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
-    if (route === '#/' && w === 390 && font === 0) {
-      await p.evaluate(() => [...document.querySelectorAll('#view .seg button')][1].click()); await p.waitForTimeout(900);
-      const got = await p.evaluate(() => [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => [x.querySelector('.nm').firstChild.textContent, x.querySelector('.trd')?.textContent]));
-      const want = core.groups.slice().sort((a, b) => b.cw.at(-1) - a.cw.at(-1)).map(g => [g.short, trText(g.trc)]);
-      numbers += want.length; if (JSON.stringify(got) !== JSON.stringify(want)) fail(tag + ' 큰 회사는 크게', `방향 · 세기 줄 ${JSON.stringify(got).slice(0, 120)} ≠ ${JSON.stringify(want).slice(0, 120)}`);
-      await p.evaluate(() => [...document.querySelectorAll('#view .seg button')][0].click()); await p.waitForTimeout(600);
-    }
+    if (route === '#/' && w === 390 && font === 0) { numbers++; if (await p.evaluate(() => document.querySelectorAll('#view .seg button').length)) fail(tag, '첫 화면에 「큰 회사는 크게」 단추가 남음(요즘 오르는 업종은 한 회사 한 표 1주만 · 규칙 64)'); }
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
 }
 /** 고른 곳 밖 회사 길(모든 회사 7단) — 한 판 안에서 칸(페이지) 여럿이 나눠 돎 · 칸마다 오류 모음 따로 · 500길마다 진행 줄(표준 오류) */
@@ -498,7 +496,7 @@ if (home) {
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForSelector('#view h1');
     const r = await p.evaluate(() => ({hub: !!document.querySelector('#view .hub'), hello: document.querySelector('#view a.hello')?.getAttribute('href') ?? null, h1: document.querySelector('#view h1').textContent, q: document.querySelector('#view p.q')?.textContent ?? '', rows: document.querySelectorAll('#view .board .row').length}));
-    screens++; numbers++; if (r.hub || r.hello !== '/hello.html' || r.h1 !== '오늘 시장 — ?' || !r.q.includes('못 읽었습니다') || r.rows !== core.groups.length) fail('첫 화면 자료 없음', JSON.stringify(r).slice(0, 160));
+    screens++; numbers++; if (r.hub || r.hello !== '/hello.html' || r.h1 !== '오늘 시장 — ?' || !r.q.includes('못 읽었습니다') || r.rows !== core.rise.list.length) fail('첫 화면 자료 없음', JSON.stringify(r).slice(0, 160));
     if (errs.length) fail('첫 화면 자료 없음', '오류 ' + errs[0]);
     await ctx.close(); }
   // ③ 다음 날 아침 9:30(값은 그대로) → 장 · 자세히 제목에 「오늘」 없음 · 어제 장 중 값을 「장 중」이라 하지 않음(CIA)
@@ -557,7 +555,7 @@ if (home) {
   if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);
   await ctx.close();
 }
-// 경주(움직임 켬) — 8초 뒤 맨 위 줄 = 20거래일 1등 갈래 · 금빛 테
+// 경주(움직임 켬) — 8초 뒤 맨 위 줄 = 요즘 오르는 업종 1등(지난 1주 · 규칙 64) · 금빛 테 · 오른 업종이 없는 날은 「?」 한 줄
 {
   const ctx = await b.newContext({viewport: {width: 390, height: 844}});
   const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
@@ -565,9 +563,9 @@ if (home) {
   await p.evaluate(() => document.querySelector('#view .board').scrollIntoView({block: 'center'})); // 경주는 화면에 들어올 때 한 번 저절로(위에 여섯 장 · 애플팀 2026-10-12 18:31)
   const mid = await p.evaluate(() => new Promise(res => setTimeout(() => res(document.querySelector('.tell .t').textContent), 1500)));
   await p.waitForTimeout(6500);
-  const top = await p.evaluate(() => { const rows = [...document.querySelectorAll('.board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top); return {name: rows[0].querySelector('.nm').firstChild.textContent, win: rows[0].classList.contains('win')}; });
-  const want = core.groups[0].short; screens++;
-  if (top.name !== want || !top.win) fail('경주', `끝 맨 위 ${top.name}(${top.win}) ≠ ${want}`);
+  const top = await p.evaluate(() => { const rows = [...document.querySelectorAll('.board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top); if (!rows.length) return {name: null, win: false}; return {name: rows[0].querySelector('.nm').firstChild.textContent, win: rows[0].classList.contains('win')}; });
+  const want = core.rise.list[0]?.name ?? null; screens++;
+  if (want && (top.name !== want || !top.win)) fail('경주', `끝 맨 위 ${top.name}(${top.win}) ≠ ${want}`);
   if (!/월/.test(mid)) fail('경주', '날짜 줄이 흐르지 않음: ' + mid);
   if (errs.length) fail('경주', '오류 ' + errs[0]);
   await ctx.close();

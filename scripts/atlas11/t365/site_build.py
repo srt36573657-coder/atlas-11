@@ -512,6 +512,17 @@ import grow_bias  # noqa: E402
 core['grow']['bias'] = grow_bias.screen(grow_bias.bias([(c, companies[c], GROWCO[c]) for c in sorted(members)]))
 core['grow']['factN'] = sum(len(e['story']['facts']) for e in GROWCO.values() if e['story'])  # 따로 다시 확인 「표본」의 모집단(CIA팀 2026-10-12)
 _fut = [d for d in daese.cal_sessions(ROOT) if d > asof]
+# 요즘 오르는 업종(사장님 2026-10-14(싱가포르) 19:54 「이 곳은 상승 추세에 업종이 있게해 11개 업종 알겠지」 · 19:58 「아니 요즘 오르는중은 업종」 · 20:01 「1주일로 해」 · 규칙 64)
+#   = 첫 화면 경주판 줄 — 업종마다 지난 1주(마지막 5거래일) 「한 회사 한 표」 지수 변화 = 화면에 올린 선(v)의 끝 ÷ 5거래일 전 − 1(소수 둘째 자리)
+#   오른 업종 = 소수 첫째 자리로 보아 0 보다 큼(0.05% 이상 — 화면 「+0.1%」부터) · 많이 오른 순(같으면 이름 차례) 11개까지 · 적은 날은 있는 만큼만 · 선 = 5거래일 전 = 100
+RISE_DAYS, RISE_MAX, RISE_MIN = 5, 11, 0.05
+def _c5(v):
+    a, b = v[-1 - RISE_DAYS], v[-1]
+    return d2((b / a - 1) * 100) if a and b else None
+_rise = sorted([(i['name'], _c5(i['v']), i['v']) for i in industries if _c5(i['v']) is not None and _c5(i['v']) >= RISE_MIN], key=lambda x: (-x[1], x[0]))
+core['rise'] = {'days': RISE_DAYS, 'max': RISE_MAX, 'min': RISE_MIN, 'from': dates[-1 - RISE_DAYS], 'to': dates[-1], 'of': len(industries), 'n': len(_rise),
+                'list': [{'name': nm, 'chg': c5, 'v': [d2(x / v[-1 - RISE_DAYS] * 100) for x in v[-1 - RISE_DAYS:]]} for nm, c5, v in _rise[:RISE_MAX]],
+                'all': [d2(x / core_mkt['v'][-1 - RISE_DAYS] * 100) for x in core_mkt['v'][-1 - RISE_DAYS:]]}
 core['mcEnd'] = _fut[19] if len(_fut) >= 20 else None  # 7단 한 달 범위를 처음 맞대 볼 날 = 고른 날에서 20거래일 뒤(거래소 달력 · CIA팀 2026-10-12)
 os.makedirs(os.path.join(OUT, 'co'), exist_ok=True)
 for fn in os.listdir(os.path.join(OUT, 'co')):  # 365곳이 바뀌면(11:43 대세 365곳) 빠진 회사의 옛 파일은 지움 — 만든 자료일 뿐 기록이 아님

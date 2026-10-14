@@ -470,6 +470,24 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
   if (GJ && core.grow) sameJ(core.grow.g10, Object.fromEntries(['아주 높다', '높다', '반반', '낮다', '아주 낮다'].map(g => [g, Object.values(GJ.companies).filter(x => x.g['10'] === g).length])), '첫 화면 10년 말 등급 수');
 }
 
+// ⑯ 요즘 오르는 업종(사장님 2026-10-14(싱가포르) 19:54 「이 곳은 상승 추세에 업종이 있게해 11개 업종」 · 19:58 「아니 요즘 오르는중은 업종」 · 20:01 「1주일로 해」 · 규칙 64)
+//   업종마다 1주 = 업종 「한 회사 한 표」 지수(위 ② 에서 종가로 다시 센 값과 맞댄 v)의 끝 ÷ 5거래일 전 − 1(소수 둘째 자리) · 오른 업종 = 0.05 이상(화면 +0.1% 부터) ·
+//   많이 오른 순(같으면 이름 차례) 11개까지 · 선 = 5거래일 전 = 100 · 위 단 평균 = 모든 회사 지수 같은 셈 · 다른 길로 업종 지수를 종가에서 다시 세어 1주도 맞댐
+{
+  const RI = core.rise;
+  if (!RI) bad.push({what: '요즘 오르는 업종(core.rise) 없음'});
+  else {
+    const DD = 5, MX = 11, MIN = 0.05, K5 = W.length - 1 - DD, c5 = v => (v?.[K5] && v.at(-1) ? d2((v.at(-1) / v[K5] - 1) * 100) : null);
+    sameJ([RI.days, RI.max, RI.min, RI.from, RI.to, RI.of], [DD, MX, MIN, W[K5], W.at(-1), core.industries.length], '요즘 오르는 업종 — 정한 수 · 1주 창 · 업종 수');
+    const want = core.industries.map(i => [i.name, c5(i.v), i.v]).filter(x => x[1] != null && x[1] >= MIN).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+    same(RI.n, want.length, '요즘 오르는 업종 — 오른 업종 수');
+    sameJ((RI.list ?? []).map(r => [r.name, r.chg]), want.slice(0, MX).map(x => [x[0], x[1]]), '요즘 오르는 업종 — 차례 · 1주 %');
+    (RI.list ?? []).forEach((r, k) => { const v = want[k]?.[2]; if (!v) return; sameJ(r.v, v.slice(K5).map(x => d2(x / v[K5] * 100)), `요즘 오르는 업종 선 ${r.name}`); });
+    const mv = core.mkt?.v ?? core.all.v; sameJ(RI.all, mv.slice(K5).map(x => d2(x / mv[K5] * 100)), '요즘 오르는 업종 — 위 단 평균(모든 회사) 선');
+    for (const i of core.industries) { const e = eqIndex(i.members); if (e[K5] == null || e.at(-1) == null) continue; near(c5(i.v), d2((Math.round(e.at(-1) * 100) / Math.round(e[K5] * 100) - 1) * 100), 0.0201, `요즘 오르는 업종 1주(종가에서 다시 셈) ${i.name}`); }
+  }
+}
+
 // ⑮ 모든 회사 7단(사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」) — 고른 곳 밖 회사 파일마다 노드로 따로(site_build.py 와 다른 길):
 //   core.co7 = 회사 파일 수 = 모든 회사 · 3단 자료(c) — 이름 · 시장 · 네이버 업종 · 갈래 · 업종 · 1주 값 · 값 날짜 · 1년 · 1년 가장 깊이 빠짐 · 20거래일 · 20거래일 가장 깊이 빠짐 · 20거래일 튐 · 든 까닭 없음
 //   선(line) = 모든 회사 선(mkt.json · ⑭ 에서 따로 셈) · 긴 종가(k0 · close) · 하루 30% 넘게 바뀐 날 · 결산 해에 E 없음 · 성장 숫자(모음 결산 글 매출 · 바탕 해 · 업종 안 차례) · 이야기 없음(조사 전 — 이야기는 고른 곳만)
