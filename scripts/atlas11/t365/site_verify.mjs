@@ -207,6 +207,12 @@ same(nG, ALLC.length, '갈래 회사 수 합 = 모든 회사'); same(nI, ALLC.le
 if (!core.mkt) bad.push({what: '모든 회사 묶음(core.mkt) 없음'});
 else { chk(core.mkt, ALLC, '모든 회사'); same(core.mkt.name, '모든 회사', '모든 회사 이름'); same(core.mkt.pk, PK.size, '모든 회사 가운데 고른 곳 수'); }
 sameJ(core.facts?.bigMkt, BASE.slice(0, 2).map(c => ({code: c, name: ROW.get(c).name, chg: MV.get(c).at(-1) != null ? d2(MV.get(c).at(-1) - 100) : null})), '모든 회사 몸값 큰 두 곳(고르는 날 몸값 · 같으면 번호) · 이름 · 20거래일');
+// 첫 화면 「오늘 업종」 줄 → ATLAS 업종(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」) — 네이버 업종(띄어쓰기 뺌)마다 그 회사가 가장 많이 든 업종 · 같으면 이름 차례 · 따로 셈
+{ const N2 = new Map();
+  for (const c of ALLC) { const s = String(ROW.get(c).sector ?? '').replace(/\s+/g, ''); if (!s) continue; if (!N2.has(s)) N2.set(s, new Map()); const m = N2.get(s); m.set(IND.get(c), (m.get(IND.get(c)) ?? 0) + 1); }
+  const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  sameJ(core.secInd, Object.fromEntries([...N2.keys()].sort(cmp).map(s => [s, [...N2.get(s)].sort((a, b) => b[1] - a[1] || cmp(a[0], b[0]))[0][0]])), '오늘 업종 줄 → ATLAS 업종 표(회사가 가장 많이 든 업종)');
+  for (const [s, i] of Object.entries(core.secInd ?? {})) { checks++; if (!gotI.has(i)) bad.push({what: `오늘 업종 줄 ${s} → 없는 업종`, got: i}); } }
 // 고른 곳의 갈래 · 업종 = 모든 회사 셈(업종 정리 by-industry.json · 회사 요약 comp.json · 이름표 「안」)
 const gi = c => [G_OF.get(IND.get(c))?.id ?? null, IND.get(c) ?? null];
 sameJ([...PICKED].sort(), [...PK].sort(), '업종 정리(by-industry.json) 회사 = proposal.json 고른 곳');
@@ -442,6 +448,7 @@ same(TJ ? TJ.capsules.length : 0, wantCaps.length, '시간 자료 봉인 수 = �
     if (ck.length) { const rec = J(path.join(GDIR, ck.at(-1))), cnt = (arr, ks) => Object.fromEntries([['n', arr.length], ...ks.map(k => [k, arr.filter(x => x.verdict === k).length])]);
       sameJ(core.grow?.check?.facts, cnt(rec.facts.items, ['맞음', '일부만 맞음', '틀림', '못 엶']), '따로 다시 확인 사실 수'); sameJ(core.grow?.check?.rivals, cnt(rec.rivals.items, ['기사로 확인', '다른 일을 함', '확인 못 함']), '따로 다시 확인 경쟁 회사 수');
       same(core.grow?.check?.file, 'reports/atlas11/t365/grow/' + ck.at(-1), '따로 다시 확인 기록 파일');
+      sameJ(core.grow?.check?.fixed ?? null, rec.fixed ?? null, '따로 다시 확인 — 처음 판정 · 고쳐서 다시 확인 · 뺀 수(기록 그대로)');
       // 7단(2026-10-12 CIA팀) — 회사마다 화면에 붙인 판정 = 기록(경쟁 회사는 기사 주소가 없던 것만 · 사실은 주소와 글이 같은 것만)
       const RV = new Map(rec.rivals.items.map(x => [x.code + '|' + x.rival, x])), FV = new Map(rec.facts.items.map(x => [x.code + '|' + x.url + '|' + x.text, x.verdict]));
       for (const c of Object.keys(comp)) { const S = J(path.join(dataDir, 'co', c + '.json')).grow?.story; if (!S) continue;

@@ -1,0 +1,17 @@
+/* 소개 한 장(hello.html) — 친구 소개 상품권 상자(사장님 2026-10-14 14:56 「01090117377 내 번호 올리고 카톡으로 아틀란스 소개 10명 시켜 주면 스타벅스 아메리카노 상품권 1장 준다고 올려 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
+   · 쪽의 보안 규칙(style-src 'self')이 글 안 꾸밈을 막아 따로 둔 파일 · /app/ 아래 파일은 고치지 않음(옛 판 모든 화면 검사가 지키는 곳) */
+.hp-promo { width: 100%; box-sizing: border-box; margin: 0; padding: 16px 18px 14px; border: 2px solid #E9C46A; border-radius: 18px;
+  background: linear-gradient(180deg, rgba(233, 196, 106, .16), rgba(233, 196, 106, .06)); color: #F4EEFA; }
+.hp-pt { margin: 0 0 10px; font-size: 1.375rem; line-height: 1.3; font-weight: 800; color: #FFD98A; text-align: center; letter-spacing: -.01em; }
+.hp-steps { margin: 0 0 12px; padding-left: 1.5em; font-size: 1.0625rem; line-height: 1.55; }
+.hp-steps li { margin: 4px 0; }
+.hp-steps b { color: #FFD98A; }
+.hp-tel { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 0 0 10px; }
+.hp-sms, .hp-call { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 999px; font-size: 1.125rem; font-weight: 800; text-decoration: none; }
+.hp-sms { background: #FFD98A; color: #2A173A; }
+.hp-call { border: 2px solid #FFD98A; color: #FFD98A; }
+.hp-sms:focus-visible, .hp-call:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+.hp-pn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #E8DDF2; text-align: center; }
+.hp-pbar { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; min-height: 44px; padding: 6px 14px; border-radius: 999px;
+  background: #FFD98A; color: #2A173A; font-size: 1.0625rem; font-weight: 800; text-align: center; text-decoration: none; }
+.hp-pbar:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }

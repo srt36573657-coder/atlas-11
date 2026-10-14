@@ -3,6 +3,7 @@
 사장님 2026-10-11 17:56 「예약」 4차 「판정을 쓰지 않은 다른 에이전트가 사실 표본(근거 주소가 정말 그 말을 하는지)을 따로 다시 확인합니다」
   표본(sample.json — 기사 사실 · 업종 고르게 · 정해진 씨앗) + 확인 결과(check-v*.json · 맞음 / 일부만 맞음 / 틀림 / 못 엶)
   + 「기사로 못 봄」 경쟁 회사 표본(rivals.json) + 확인 결과(check-rivals.json · 기사로 확인 / 다른 일을 함 / 확인 못 함)
+  + (있으면) fixed.json — 처음 열어 볼 때 판정 수 · 원문대로 고쳐 다시 확인한 수 · 뺀 수(2026-10-14 42곳 — 표본이 아니라 모두 열어 봄)
   → reports/atlas11/t365/grow/check-<UTC>.json · 화면(시간 화면 요약)은 가장 새 파일의 수만 읽음(site_build ⑤-1)
 쓰는 법(저장소 맨 위에서): python3 scripts/atlas11/t365/grow_check.py <표본 폴더(sample.json · rivals.json · out/check-*.json)> [나갈 파일]
 """
@@ -54,10 +55,19 @@ if __name__ == '__main__':
     if os.path.exists(dst):
         die('이미 있는 기록 파일 — 덮지 않음: ' + dst)
     facts, rivals = build(sys.argv[1])
+    fx = None  # 처음 열어 볼 때의 판정 · 고쳐서 다시 확인한 수 · 뺀 수(2026-10-14 「완벽하게 해」 — 고친 뒤 판정만 보이면 처음부터 다 맞았던 것처럼 읽힘)
+    if os.path.exists(os.path.join(sys.argv[1], 'fixed.json')):
+        fx = json.load(open(os.path.join(sys.argv[1], 'fixed.json'), encoding='utf-8'))
+        if set(fx) != {'first', 'fixed', 'dropped'} or set(fx['first']) != {'n', *FACT} or fx['first']['n'] != sum(fx['first'][v] for v in FACT):
+            die('fixed.json 꼴이 이상함')
+        if fx['first']['n'] - fx['dropped'] > len(facts):
+            die('fixed.json 처음 판정 수가 기록보다 많음')
     rec = {'schema': 'atlas-new-grow-check-1', 'made': now.isoformat(timespec='seconds'),
            'why': '사장님 2026-10-11 17:56 「예약」 4차 — 판정을 쓰지 않은 다른 에이전트가 근거 기사를 직접 열어 그 말을 하는지 확인',
            'facts': {'n': len(facts), **{v: sum(1 for f in facts if f['verdict'] == v) for v in FACT}, 'items': facts},
            'rivals': {'n': len(rivals), **{v: sum(1 for r in rivals if r['verdict'] == v) for v in RIV}, 'items': rivals}}
+    if fx:
+        rec['fixed'] = fx
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     with open(dst, 'w', encoding='utf-8') as fh:
         json.dump(rec, fh, ensure_ascii=False, indent=1)

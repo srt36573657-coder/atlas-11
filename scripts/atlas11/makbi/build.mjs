@@ -7,6 +7,8 @@
 //     site/og-makbi.jpg           링크 미리보기(1200×630)
 //     site/media/makbi-poster.jpg · makbi-intro.mp4 · makbi-intro.webm  소개 영상(720×1280 · 24초 · 소리 없음 · 자막)
 //   위트 = 앵무새는 들은 말만 따라 한다 → ATLAS 도 지난 기록만 말한다(앞날 맞히기 없음 · 안전 문장과 같은 뜻)
+//   친구 소개 상품권(사장님 2026-10-14 14:56 「카톡으로 아틀란스 소개 10명 … 스타벅스 아메리카노 상품권 1장 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
+//     = 영상 아래 금빛 띠(0.8 ~ 19.4초) + 마지막 장면 맨 아래 상자(안전 문장 줄은 로고 밑으로 옮김) · 길이는 24초 그대로(옛 판 띠 · 소개 쪽 글이 「24초」)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
@@ -84,7 +86,7 @@ if (!only || only === 'video') {
     body{width:${W}px;height:${H}px;overflow:hidden;background:linear-gradient(#123F37 0%,${P.night} 52%,${P.deep} 100%);position:relative;color:${P.ink}}
     #sky,#fx{position:absolute;inset:0}#mb{position:absolute;left:150px;top:470px;width:420px;height:473px;transform-origin:50% 100%}
     #cap{position:absolute;left:40px;right:40px;top:1010px;text-align:center;font-size:52px;font-weight:800;line-height:1.28;letter-spacing:-.5px}
-    #sub{position:absolute;left:40px;right:40px;top:1180px;text-align:center;font-size:26px;color:${P.sub};font-weight:600}
+    #sub{position:absolute;left:40px;right:40px;top:380px;text-align:center;font-size:26px;color:${P.sub};font-weight:600}
     .bub{position:absolute;background:#fff;color:${P.night};font-weight:800;font-size:44px;padding:16px 30px;border-radius:30px;white-space:nowrap}
     .bub.l:after{content:'';position:absolute;left:40px;bottom:-24px;border:16px solid transparent;border-top:26px solid #fff;border-bottom:0}
     .bub.r:after{content:'';position:absolute;right:40px;bottom:-24px;border:16px solid transparent;border-top:26px solid #fff;border-bottom:0}
@@ -92,7 +94,11 @@ if (!only || only === 'video') {
     #card{position:absolute;left:70px;right:70px;top:150px;height:300px;border-radius:28px;background:${P.card};border:2px solid rgba(159,224,200,.35);overflow:hidden}
     #card h3{position:absolute;left:28px;top:20px;font-size:34px;color:${P.sub};font-weight:700}
     #ball{position:absolute;width:230px;height:230px;top:250px}
-    </style><body><svg id="sky" viewBox="0 0 ${W} ${H}"></svg><div id="fx"></div><svg id="mb" viewBox="0 0 240 270"></svg><div id="cap"></div><div id="sub"></div>
+    #rib{position:absolute;left:22px;right:22px;top:1180px;padding:8px 10px;border-radius:22px;background:${P.gold};color:#0C2824;text-align:center;font-weight:800;line-height:1.18;opacity:0}
+    #rib b{display:block;font-size:34px;white-space:nowrap}#rib span{display:block;font-size:32px}
+    #pc{position:absolute;left:40px;right:40px;top:1150px;padding:5px 10px;border-radius:22px;border:3px solid ${P.gold};background:rgba(12,40,36,.94);text-align:center;font-weight:800;line-height:1.1;opacity:0}
+    #pc i{display:block;font-style:normal;font-size:28px;color:${P.ink}}#pc b{display:block;font-size:36px;color:${P.gold};white-space:nowrap}#pc span{display:block;font-size:28px;color:${P.ink}}
+    </style><body><svg id="sky" viewBox="0 0 ${W} ${H}"></svg><div id="fx"></div><svg id="mb" viewBox="0 0 240 270"></svg><div id="cap"></div><div id="sub"></div><div id="rib"><b>친구 10명 소개하면 스타벅스 커피 1잔!</b><span>문자 010-9011-7377</span></div><div id="pc"><i>친구 10명에게 소개하면</i><b>스타벅스 아메리카노 1잔!</b><span>문자 010-9011-7377</span></div>
     <script>${drawSrc}
     const P=${JSON.stringify(P)}; let sd=7; const R=()=>((sd=(sd*1103515245+12345)%2147483648)/2147483648);
     const ST=Array.from({length:90},()=>[R()*${W},R()*900,0.8+R()*2,R()*6.28]);
@@ -136,6 +142,9 @@ if (!only || only === 'video') {
       const k=CAP.find(c=>t>=c[0]&&t<c[1]); const cap=document.getElementById('cap');
       if(k){ const a=Math.min(win(t,k[0],k[0]+.35),1-win(t,k[1]-.3,k[1])); cap.innerHTML=k[2]; cap.style.opacity=Math.max(0,a).toFixed(2); cap.style.transform='translateY('+((1-ease(win(t,k[0],k[0]+.4)))*18).toFixed(1)+'px)'; } else cap.style.opacity=0;
       document.getElementById('sub').textContent=t>=19.5?'지난 기록을 센 공부예요 · 사고팔기를 권하지 않아요':'';
+      // 친구 소개 상품권 — 아래 띠(0.8 ~ 19.4초) · 마지막 장면은 맨 아래 상자(띠는 숨김 · 안전 문장 줄은 로고 밑)
+      const rb=document.getElementById('rib'), ra=Math.min(win(t,.8,1.2),1-win(t,19.05,19.45)); rb.style.opacity=Math.max(0,ra).toFixed(2);
+      const pc=document.getElementById('pc'), pa=win(t,20.2,20.7); pc.style.opacity=pa.toFixed(2); pc.style.transform='translateY('+((1-ease(pa))*16).toFixed(1)+'px)';
     };</script></body>`, {waitUntil: 'load'});
   await pg.evaluate(() => document.fonts.ready);
   const fdir = path.join(TMP, 'frames'); await fs.rm(fdir, {recursive: true, force: true}); await fs.mkdir(fdir, {recursive: true});

@@ -100,7 +100,9 @@ export function siteGraph(S) {
   const nodes = new Map();
   const add = (r, links, step = null, co = null, allow = null) => nodes.set(r, {links: [...links.filter(Boolean), ...TABS], step, co, allow});
   const H = S.home?.s365, ends = [H?.top?.c, H?.bot?.c].filter(c => c && comp[c]).map(c => '#/c/' + c); // 첫 화면 365곳 막대 양 끝(가장 많이 오른 · 내린 곳 — 2026-10-12 14:54)
-  add('#/', [...ends, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
+  // 「오늘 업종」 줄(4장 강한 3 · 약한 3 + 「자세히」 강한 7 · 약한 7) → 그 업종(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」 · atlas.js secHref 와 같은 셈 — core.secInd)
+  const SI = core.secInd ?? {}, secL = [...(S.home?.sectors?.strong ?? []), ...(S.home?.sectors?.weak ?? [])].map(g => { const n = SI[String(g.name ?? '').replace(/\s+/g, '')], i = n ? S.iby.get(n) : null; return i ? hrefInd(i) : null; });
+  add('#/', [...ends, ...secL, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
   add('#/list', core.industries.map(hrefInd), null, null, 1);
   add('#/up', [], null, null, 1); add('#/time', [], null, null, 2); add('#/info', [], null, null, 1);
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);

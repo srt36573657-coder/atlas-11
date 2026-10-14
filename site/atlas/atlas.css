@@ -774,3 +774,17 @@ ol.uplist .q.turn { font-weight: 700; }
 .board .row .nm > .badge { flex: none; }
 html.f3 .board.wide .row:not(.two) .nm { display: block; }
 html.f3 .board.wide .row:not(.two) .nm > .nt { white-space: normal; overflow: visible; }
+/* 「오늘 업종」 줄 → 업종 화면(7단 중 2단 · 사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」) — 줄 전체가 고리 · 오른쪽 끝 › · 누르는 자리 44px 넘게 */
+ol.srows a.srow, ol.mrows a.srow { display: block; min-height: 44px; box-sizing: border-box; padding: 2px 0; color: inherit; text-decoration: none; border-radius: 6px; }
+ol.srows a.srow .sl > b { margin-left: auto; }
+a.srow .sgo { flex: 0 0 auto; margin-left: 6px; color: var(--sub); font-style: normal; font-weight: 700; }
+a.srow:hover .sn, a.srow:focus-visible .sn { text-decoration: underline; text-underline-offset: 3px; }
+a.srow:focus-visible { outline: 2px solid var(--violet-ink); outline-offset: 2px; }
+a.srow:active { background: var(--press); }
+/* 1장 친구 소개 상품권 한 줄(사장님 2026-10-14 14:56 · 14:59) — 강조 옥색 굵게(금빛은 고른 곳 · 조심에만) */
+.hs a.hello.hs-hello .hw span.hpr { margin-top: 4px; color: var(--violet-ink); font-weight: 800; }
+/* 1장 글이 아홉 줄로 늘어(사장님 2026-10-14 15:19 · 15:54 하규 · 안상미 글) 바(장 칸 일곱)가 첫 화면 밖으로 밀리던 것 — 글 크기 · 위 여백 · 소개 칸 위 여백을 줄여
+   390×844 에서 바가 아래 탭 위에 보이게(조심 「!」「?」가 첫 화면에 남게 · site_check 맨 위 슬라이드 조심 표시 · 저절로 넘김) */
+.hs a.hello.hs-hello .hmsg { gap: 2px; padding: 44px 18px 6px; font-size: 1.18rem; line-height: 1.36; }
+.hs a.hello.hs-hello .hw { padding: 18px 16px 12px; }
+@media (max-width: 380px) { .hs a.hello.hs-hello .hmsg { padding: 40px 16px 4px; font-size: 1rem; gap: 1px; line-height: 1.3; } }

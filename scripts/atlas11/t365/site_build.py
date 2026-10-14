@@ -397,6 +397,15 @@ n1y = sum(1 for c in companies.values() if c['mdd1y'] is not None)
 big2 = sorted(companies, key=lambda c: -(companies[c]['cap'] or 0))[:2]
 
 RTXT = ml.rules_text(RES, ACT.get('slots') or [], kd(N['asOf']))  # 회차 시각은 universe.json slots 에서(틀림 장부 21번 — 옛 시각 글이 남던 것)
+# 첫 화면 「오늘 업종」 줄 → ATLAS 업종 화면(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」 — 네이버 업종 이름(띄어쓰기 뺌)마다
+#   그 네이버 업종 회사(모든 회사 · 보통주)가 가장 많이 든 ATLAS 업종(같은 수면 이름 차례) · 화면은 이 표로 업종 2단 고리를 닮 · site_verify 가 따로 셈
+_SECROW = {r['code']: r.get('sector') for r in N['rows']}
+_SECN = {}
+for _c in ALLC:
+    _s = ''.join(str(_SECROW.get(_c) or '').split())
+    if _s:
+        _SECN.setdefault(_s, collections.Counter())[IND_ALL[_c]] += 1
+SEC_IND = {_s: sorted(_n.items(), key=lambda kv: (-kv[1], kv[0]))[0][0] for _s, _n in sorted(_SECN.items())}
 core = {
     'schema': 'atlas-new-core-1', 'made': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
     'asOf': asof, 'base': base, 'days': NDAY - 1, 'pickAsOf': PICK_ASOF, 'kPick': kPick, 'sincePick': DAYS.index(asof) - DAYS.index(PICK_ASOF),
@@ -406,7 +415,7 @@ core = {
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
                 'pick': '네이버 증권 결산 · 업종(%s 모음) · 확정 결산 3해(예상치는 안 씀)' % kd(N['collectedAt'][:10])},
-    'dates': dates, 'all': core_all, 'mkt': core_mkt, 'groups': groups, 'industries': industries,
+    'dates': dates, 'all': core_all, 'mkt': core_mkt, 'groups': groups, 'industries': industries, 'secInd': SEC_IND,
     'facts': {'up': core_all['up'], 'down': core_all['down'], 'flat': core_all['flat'], 'dd50': ndd50, 'dd30': ndd30, 'n1y': n1y,
               'perMedian': per_med, 'perN': len(pers),
               # 멍거 갈래 — 값이 1년 이익의 30배 넘는 곳 수(빼지 않고 보여 주기만) · 금융 수(멍거 갈래 안)
@@ -473,6 +482,8 @@ if GCHK:  # 따로 다시 확인(17:56 「예약」 4차) — 가장 새 기록�
     _gc = json.load(open(os.path.join(ROOT, 'reports', 'atlas11', 't365', 'grow', GCHK[-1]), encoding='utf-8'))
     core['grow']['check'] = {'file': 'reports/atlas11/t365/grow/' + GCHK[-1], 'made': _gc['made'][:10],
                              'facts': {k: _gc['facts'][k] for k in ('n', '맞음', '일부만 맞음', '틀림', '못 엶')}, 'rivals': {k: _gc['rivals'][k] for k in ('n', '기사로 확인', '다른 일을 함', '확인 못 함')}}
+    if _gc.get('fixed'):  # 처음 판정 · 고쳐서 다시 확인 · 뺌(2026-10-14 「완벽하게 해」 42곳)
+        core['grow']['check']['fixed'] = _gc['fixed']
     _rv = {(x['code'], x['rival']): x for x in _gc['rivals']['items']}
     _fv = {(x['code'], x['url'], x['text']): x['verdict'] for x in _gc['facts']['items']}
     for c, e in GROWCO.items():

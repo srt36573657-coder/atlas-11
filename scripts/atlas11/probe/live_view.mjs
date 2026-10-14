@@ -142,6 +142,29 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
       && ind.rows === shownN && ind.pk.length === shownPk && ind.pk.every(h => /^#\/c\//.test(h)) && ind.x === shownN - shownPk && list.rows === core.industries.length && list.pk === pkI.length};
   if (!out.allCo.ok) out.errors.push('모든 회사: ' + JSON.stringify(out.allCo).slice(0, 240));
 });
+await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사장님 2026-10-14(싱가포르) 15:01 「여기 클릭 하면 7단구조 나오게해」 · 14:56 · 14:59 상품권 · 15:19 · 15:54 1장 글(규칙 62 · 사진 p21 · p22 · p23)
+  const J = async f => (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)})).json();
+  const core = await J('core.json'), home = await J('home.json');
+  const hrefInd = i => (i.n === 1 ? ((!core.mkt || i.pk ? '#/c/' : '#/x/') + i.members[0]) : '#/i/' + encodeURIComponent(i.name));
+  const want = g => { const n = core.secInd?.[String(g?.name ?? '').replace(/\s+/g, '')], i = n ? core.industries.find(x => x.name === n) : null; return i ? hrefInd(i) : null; };
+  const first = home.sectors?.strong?.[0] ?? null, w = want(first);
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(800);
+  const s1 = await page.evaluate(() => ({msg: document.querySelector('.hs-hello .hmsg')?.innerText ?? '', promo: document.querySelector('.hs-hello .hpr')?.textContent ?? ''}));
+  await shot('p22-slide1');
+  await page.click('#ht-sec'); await page.waitForTimeout(900);
+  const got = await page.evaluate(() => [...document.querySelectorAll('#hs-sec a.srow')].map(a => a.getAttribute('href')));
+  await shot('p21-sec-slide');
+  let after = null;
+  if (got[0]) { await page.locator('#hs-sec a.srow').first().click(); await page.waitForTimeout(2000); after = await page.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent ?? '', step: document.querySelector('#view .steps, #view .lv')?.textContent ?? ''})); await shot('p21-sec-industry'); }
+  await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
+  const hp = await page.evaluate(() => ({bar: document.querySelector('.hp-pbar')?.textContent ?? '', box: document.querySelector('#hp-promo')?.innerText ?? '', sms: document.querySelector('#hp-promo a[href^="sms:"]')?.getAttribute('href') ?? null, tel: document.querySelector('#hp-promo a[href^="tel:"]')?.getAttribute('href') ?? null}));
+  await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
+  await shot('p23-hello-promo');
+  out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
+    ok: !!w && got[0] === w && !!after && after.hash === w && /하규/.test(s1.msg) && /안상미/.test(s1.msg) && /스타벅스/.test(s1.promo)
+      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스/.test(hp.bar)};
+  if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
+});
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
 });

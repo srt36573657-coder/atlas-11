@@ -413,8 +413,15 @@ function homeIndex(v, H) {
     h('p', {text: `옅은 띠 = 아래 ${C.mkt ? '모든 회사' : NP() + '곳'} 경주 기간(${md(C.base)} → ${md(C.asOf)} · 20거래일). 두 칸은 같은 비율 폭이라 기울기를 견줄 수 있습니다. 마지막 동그라미가 속이 비면 장 중에 받은 값(마감 값 아님)입니다.`}),
     h('p', {text: '날마다 종가 · 네이버 증권 지수. 지난 20거래일: 코스피 ' + pct(H.cmp20?.kospi) + ' · 코스닥 ' + pct(H.cmp20?.kosdaq) + '.'}))));
 }
+/** 「오늘 업종」 줄 → ATLAS 업종 화면(7단 중 2단 · 사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」) — 네이버 업종 이름 → core.secInd(그 네이버 업종 회사가 가장 많이 든 업종 · site_build 셈 · site_verify 따로 셈) · 없으면 고리 없음 */
+const secHref = name => { const n = D.core?.secInd?.[String(name ?? '').replace(/\s+/g, '')], i = n ? D.core.industries?.find(x => x.name === n) : null; return i ? hrefInd(i) : null; };
+/** 업종 줄 하나 — 고리가 있으면 줄 전체가 그 업종으로(오른쪽 끝 ›) */
+function secRow(g, max) {
+  const href = secHref(g.name), kids = [h('p', {class: 'sl'}, h('span', {class: 'sn', text: g.name}), pctEl(g.chg, 'b'), href ? h('i', {class: 'sgo', 'aria-hidden': 'true', text: '›'}) : null), dbar(g.chg, max)];
+  return h('li', {}, href ? h('a', {class: 'srow', href}, ...kids) : kids);
+}
 function srows(list, max) {
-  return h('ol', {class: 'srows'}, ...list.map(g => h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: g.name}), pctEl(g.chg, 'b')), dbar(g.chg, max))));
+  return h('ol', {class: 'srows'}, ...list.map(g => secRow(g, max)));
 }
 /** 3장 업종 — 강한 7 · 약한 7 한 장(나누면 「강한 7」 장이 살 목록처럼 읽힘 · CIA팀) · 줄마다 붙던 「오른 곳 · 365곳」은 접음(애플 · 클로드팀) */
 function homeSectors(v, H) {
@@ -516,10 +523,15 @@ function hubMark(H, id) {
   return (bang ? '!' : '') + (q ? '?' : '');
 }
 /** 1장 소개 — 그림 자리에 사장님 글(2026-10-13 05:42 「앵무새 그게 있는곳에 글 제대로 딱 올려 알겠지 이대로 올려」 — 글자 · 띄어쓰기 그대로 · 05:49 「생각해세요 여가 아니라 생각해보세요」로 끝 한 곳 · 05:52 「고쳐」로 「번신분 → 버신 분」만 고침) · 아래 「친구에게 소개하기」(막비 24초 영상 · 보내기)는 그대로 */
-const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '10명중에 몇명 전 1명입니다', '왜? 그럴까요! 생각해보세요  아틀란스 올림!'];
+/** 친구 소개 상품권 한 줄(사장님 2026-10-14 14:56 「01090117377 내 번호 올리고 카톡으로 아틀란스 소개 10명 시켜 주면 스타벅스 아메리카노 상품권 1장 준다고 올려」 · 14:59 「너가 알아서 해 그냥 많이줘」) — 누르면 소개 쪽(/hello.html)의 상자(번호 · 문자 보내기 · 10명마다 1장) */
+const HELLO_PROMO = '10명 소개하면 스타벅스 커피 1잔!'; // 바로 위 「친구에게 소개하기」가 누구에게인지 말해 줌 — 한 줄에 들게(360 · 390)
+// 2026-10-14 15:19(싱가포르) 「글을 이렇게 올려 내 친구 히구 가 돈 못버는건 아틀란스를 안보고 실력 없는 사람들 말 들어서다  아클란스가 답이다 이렇게」 · 15:19 「히구 가 하나라 하규야」 —
+//   「생각해보세요」 자리에 새 글(「아클란스」 → 「아틀란스」만 고침) · 15:54 「안상미 전문님 돈 많 버세요 주식해서 도 올려」 — 「전무님」 · 「많이」로 읽음(여쭘) · 줄 나눔은 화면에 맞춤
+const HELLO_MSG = ['주식해서', '돈 버신 분 몇분일까요?', '10명중에 몇명 전 1명입니다', '왜? 그럴까요!', '내 친구 하규가 돈 못버는건', '아틀란스를 안보고 실력 없는 사람들 말 들어서다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!'];
 function slideHello() {
   return h('a', {class: 'hello hs-hello hs-say', href: '/hello.html'}, h('span', {class: 'hmsg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t}))),
-    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기 ›'})));
+    h('span', {class: 'hello-mo', 'aria-hidden': 'true'}, MO.rainbow(46), MO.heart(16)), h('span', {class: 'hw'}, h('b', {text: '친구에게 소개하기'}), h('span', {text: '막비 24초 영상 · 보내기 ›'}),
+      h('span', {class: 'hpr', text: HELLO_PROMO})));
 }
 /** 3장 지수 — 두 지수 3개월 선(같은 비율 폭 · 축 없음) */
 function miniLine(x, span, live) {
@@ -547,7 +559,7 @@ function miniSec(v, H) {
   v.append(h('h2', {class: 'sec', text: `${d ? dayWord(d) + ' ' : ''}업종 — ${(S?.label ?? '강한 7').replace('7', '3')} · 약한 3`}));
   if (!S) { v.append(h('p', {class: 'q', text: '? 업종 값을 못 받았습니다.'})); return; }
   const six = [...S.strong.slice(0, 3), ...S.weak.slice(0, 3)], max = Math.max(...six.map(g => Math.abs(g.chg)), 0.5);
-  add(v, staleNote(H, 'sectors'), h('ol', {class: 'mrows bars'}, ...six.map(g => h('li', {}, h('p', {class: 'sl'}, h('span', {class: 'sn', text: g.name}), pctEl(g.chg, 'b')), dbar(g.chg, max)))));
+  add(v, staleNote(H, 'sectors'), h('ol', {class: 'mrows bars'}, ...six.map(g => secRow(g, max))));
 }
 /** 5장 사고팔기 — 가장 큰 쪽 한 문장 + 코스피 세 줄(돈 · 막대는 「자세히」) */
 function miniFlow(v, H) {
@@ -1116,7 +1128,12 @@ function growSummary(Gs) {
 }
 const GRADES_ALL = ['아주 높다', '높다', '반반', '낮다', '아주 낮다'];
 // 따로 다시 확인(17:56 「예약」 4차) — 판정을 쓰지 않은 다른 팀이 근거 기사를 직접 열어 봄
-const checkLine = K => `따로 다시 확인(${md(K.made)}): 근거 기사${D.core.grow?.factN ? ` ${D.core.grow.factN.toLocaleString('ko-KR')}개 가운데` : ''} ${K.facts.n}개를 골라(표본) 다른 팀이 직접 열어 봄 — 맞음 ${K.facts['맞음']} · 일부만 맞음 ${K.facts['일부만 맞음']} · 틀림 ${K.facts['틀림']} · 못 엶 ${K.facts['못 엶']}. 「기사로 못 봄」 경쟁 회사 ${K.rivals.n}곳은 기사로 확인 ${K.rivals['기사로 확인']} · 다른 일을 함 ${K.rivals['다른 일을 함']} · 확인 못 함 ${K.rivals['확인 못 함']}.`;
+// 2026-10-14 「완벽하게 해」 — 42곳은 근거 기사를 모두 열어 봄(표본 아님) · 처음에 틀리거나 일부만 맞던 문장은 원문대로 고쳐 다시 열어 봄 → 「골라(표본)」은 기록에 고친 수(fixed)가 없을 때만
+const checkLine = K => { const N = D.core.grow?.factN, X = K.fixed;
+  return `따로 다시 확인(${md(K.made)}): 근거 기사${N ? ` ${N.toLocaleString('ko-KR')}개 가운데` : ''} ${K.facts.n}개를${X ? '' : ' 골라(표본)'} 다른 팀이 직접 열어 봄 — 맞음 ${K.facts['맞음']} · 일부만 맞음 ${K.facts['일부만 맞음']} · 틀림 ${K.facts['틀림']} · 못 엶 ${K.facts['못 엶']}.` +
+    (X ? ` 처음 열어 볼 때 일부만 맞음 ${X.first['일부만 맞음']} · 틀림 ${X.first['틀림']}이던 ${X.fixed}개는 원문대로 고쳐 다시 열어 봤고, 본문이 안 열린 ${X.dropped}개는 뺐습니다.` : '') +
+    (N && X && N > K.facts.n ? ` 나머지 ${(N - K.facts.n).toLocaleString('ko-KR')}개(앞서 쓴 이야기)는 아직 다시 열어 보지 못했습니다.` : '') +
+    ` 「기사로 못 봄」 경쟁 회사 ${K.rivals.n}곳은 기사로 확인 ${K.rivals['기사로 확인']} · 다른 일을 함 ${K.rivals['다른 일을 함']} · 확인 못 함 ${K.rivals['확인 못 함']}.`; };
 function growChart(host, c, G) {
   host.textContent = '';
   const wrap = h('div', {class: 'gc'}); host.append(wrap);
