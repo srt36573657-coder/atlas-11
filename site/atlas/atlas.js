@@ -1018,7 +1018,7 @@ function peerBars(c, G, code) {
   const rows = top.map(([nm, val, cc]) => [nm, val, cc === code]);
   if (!inTop && I.me != null) rows.push([`${c.name}(${I.rank ?? '?'}번째)`, I.me, true]);
   const mx = Math.max(1, ...rows.map(r => r[1] || 0));
-  const box = h('div', {class: 'box'}, h('h2', {text: `우리나라 상장 후보 ${D.core.funnel.universe.toLocaleString('ko-KR')}곳 안 「${I.name}」 ${I.n}곳 가운데 매출 ${I.rank ?? '?'}번째`}));
+  const box = h('div', {class: 'box'}, h('h2', {text: `우리나라 상장 회사 ${(D.core.funnel.companies ?? D.core.funnel.universe).toLocaleString('ko-KR')}곳 안 「${I.name}」 ${I.n}곳 가운데 매출 ${I.rank ?? '?'}번째`}));
   const ul = h('ul', {class: 'peers', 'aria-label': `같은 업종 ${I.size === 'net' ? '순이익' : '매출'} 막대 — ` + rows.map(r => `${r[0]} ${eok(r[1])}`).join(', ')});
   for (const [nm, val, me] of rows) { const bar = h('i', {class: 'pb' + (me ? ' me' : '')}); bar.style.width = Math.max(2, (val || 0) / mx * 100) + '%';
     ul.append(h('li', {class: me ? 'me' : null}, h('span', {class: 'pn', text: nm}), h('span', {class: 'pt', 'aria-hidden': 'true'}, bar), h('b', {class: 'num', text: eok(val)}))); }
@@ -1375,13 +1375,14 @@ function prepNames() {
 }
 function search(q) {
   const k = norm(q); if (!k) return [];
-  const onlyCho = /^[ㄱ-ㅎ]+$/.test(k), digits = /^\d+$/.test(k);
+  const onlyCho = /^[ㄱ-ㅎ]+$/.test(k), digits = /^\d+$/.test(k), codeK = !digits && /^\d[0-9a-z]{0,5}$/.test(k); // 번호 — 새로 상장한 곳은 숫자 · 영문이 섞임(0126Z0 · 2026-10-14 틀림 장부 26번)
   const hits = [];
   for (const g of D.core.groups) if (norm(g.name).includes(k) || norm(g.short).includes(k)) hits.push({kind: 'g', score: norm(g.name).startsWith(k) ? 0 : 1, g});
   for (const i of D.core.industries) if (norm(i.name).includes(k) || (onlyCho && cho(norm(i.name)).includes(k))) hits.push({kind: 'i', score: norm(i.name).startsWith(k) ? 0 : 1, i});
   D.names.rows.forEach((r, ix) => {
     let s = -1;
     if (digits) { if (r.c.startsWith(k)) s = 0; }
+    else if (codeK && r.c.toLowerCase().startsWith(k)) s = 0;
     else if (onlyCho) { if (r._c.some(x => x.startsWith(k))) s = 1; else if (r._c.some(x => x.includes(k))) s = 3; }
     else if (r._k.some(x => x.startsWith(k))) s = 0; else if (r._k.some(x => x.includes(k))) s = 2;
     if (s >= 0) hits.push({kind: 'c', score: s + (r.s === 'in' ? 0 : 0.5), ix, r});
@@ -1403,7 +1404,7 @@ function renderHits() {
   const q = $('#q').value, ul = $('#hits'), hint = $('#qHint'); ul.textContent = '';
   if (!q.trim()) { hint.textContent = '이름 한 글자부터 찾습니다 · 첫 글자(ㅅㅅㅈㅈ) · 종목 번호도 됩니다.'; return; }
   const hits = search(q);
-  if (!hits.length) { hint.textContent = `「${q}」 — 찾는 이름이 없습니다. 코스피 · 코스닥 ${D.names.funnel.universe.toLocaleString('ko-KR')}곳(${D.names.collected} 모음) 안에 없는 이름입니다. 띄어쓰기를 빼거나 첫 글자로도 찾아보세요.`; return; }
+  if (!hits.length) { hint.textContent = `「${q}」 — 찾는 이름이 없습니다. 코스피 · 코스닥 목록 ${D.names.funnel.universe.toLocaleString('ko-KR')}개(${D.names.collected} 모음 · 펀드 · 우선주까지) 안에 없는 이름입니다. 띄어쓰기를 빼거나 첫 글자로도 찾아보세요.`; return; }
   hint.textContent = `「${q}」 — ${hits.length >= 40 ? '앞 40개' : hits.length + '개'}`;
   for (const x of hits) {
     if (x.kind === 'g') ul.append(h('li', {}, h('a', {href: '#/g/' + x.g.id, 'data-go': '1'}, h('span', {class: 'nm', text: x.g.name}), pctEl(x.g.chg), h('span', {class: 'g2', text: `큰 갈래 · ${x.g.n}곳`}))));

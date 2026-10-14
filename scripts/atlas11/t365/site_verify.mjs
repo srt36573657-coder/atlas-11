@@ -142,8 +142,11 @@ same(JSON.stringify(inSet), JSON.stringify(proSet), '이름표 「안」 = propo
 same(names.rows.length, pro.counts.universe, '이름표 수 = 모음 회사 수');
 same(names.rows.filter(r => !['in', 'out', 'q'].includes(r.s)).length, 0, '이름표 표시는 안 · 밖 · 모름 뿐');
 same(names.rows.filter(r => r.s === 'q').length, pro.counts.q, '두 갈래 모두 모름 수 = proposal.json');
-{ const ow = new Map(pro.outside.map(o => [o.code, [o.s, `멍거 — ${o.mg.why} / 린치 — ${o.ly.why}`, o.mg.s, o.ly.s]]));
-  for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w, r.sm, r.sl], ow.get(r.c) ?? null, `밖 까닭 · 갈래마다 멈춘 자리 ${r.c}`); }
+{ const ow = new Map(pro.outside.map(o => [o.code, [o.s, o.nc ? `${o.nc} — 회사 주식이 아니라 두 조건을 셀 수 없음` : `멍거 — ${o.mg.why} / 린치 — ${o.ly.why}`, o.mg.s, o.ly.s]])); // 회사 주식이 아닌 것(모음 every)은 종류 한 줄
+  for (const r of names.rows) if (r.s !== 'in') sameJ([r.s, r.w, r.sm, r.sl], ow.get(r.c) ?? null, `밖 까닭 · 갈래마다 멈춘 자리 ${r.c}`);
+  const nck = new Map(pro.outside.filter(o => o.nc).map(o => [o.code, o.kind]));
+  for (const r of names.rows) same(r.k ?? null, nck.get(r.c) ?? null, `회사 주식이 아닌 것의 종류 ${r.c}`);
+  for (const o of pro.outside) if (o.nc) { same(o.s, 'q', `회사 주식이 아닌 것은 두 갈래 모두 모름 ${o.code}`); same(o.mg.s + o.ly.s, 'qq', `회사 주식이 아닌 것 갈래 ${o.code}`); } }
 same(pro.rules.version, ACT.version, 'proposal 판 = universe.json 판');
 // ⑩ 든 까닭 · 깔때기 · 규칙 글(ml-v1 — 고르기 자체는 ml_verify.mjs 가 후보 표 · 모음에서 따로 다시 셈)
 //    꼬리표마다 값이 proposal.json 과 같고 그 갈래 조건을 모두 넘는지 · 린치 성장 · 점수는 여기서 다시 셈 · 순위 · 옛 칸 없음 · 깔때기 두 갈래 = proposal.json · 규칙 글 = proposal.json

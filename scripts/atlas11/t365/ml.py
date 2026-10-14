@@ -42,7 +42,7 @@ def select(rows, asof, lyin, prev=None):
         c = r['code']
         ms = mg['status'][c]
         if r.get('notCommon'):
-            ls, lw, v = 'q', '보통주가 아님(우선주 · 스팩 · 리츠 등)', None
+            ls, lw, v = 'q', ('%s — 회사 주식이 아니라 셀 수 없음' % r['kindName']) if r.get('kindName') else '보통주가 아님(우선주 · 스팩 · 리츠 등)', None
         else:
             ls, lw, v = lynch.judge(r, lyin.get(c))
         if ls != 'in':
@@ -142,7 +142,7 @@ def main():
     byc = {r['code']: r for r in rows}
     picked = [{**p, 'why': why_of(p)} for p in res['picked']]
     outside = [{'code': c, 'name': byc[c]['name'], 'market': byc[c]['market'], 'sector': byc[c]['sector'], 'capEok': byc[c]['capEok'], 's': res['status'][c]['s'],
-                'mg': res['status'][c]['mg'], 'ly': res['status'][c]['ly']}
+                'mg': res['status'][c]['mg'], 'ly': res['status'][c]['ly'], **({'nc': byc[c]['kindName'], 'kind': byc[c]['kind']} if byc[c].get('kindName') else {})}
                for c in sorted(res['status'], key=lambda c: (-(byc[c]['capEok'] or 0), c)) if res['status'][c]['s'] != 'in']
     doc = {'schema': 'atlas11-ml-proposal-1', 'made': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
            'from': {'cands': 'dump.mjs %s %s' % (BUNDLE, N['asOf']), 'collectedAt': N['collectedAt'], 'closes': stats, 'prev': res['prev'], 'lynchPriceDay': N['asOf']},

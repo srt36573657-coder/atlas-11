@@ -62,7 +62,9 @@ for (const p of P.picked) {
   const tags = [mset.has(p.code) ? 'mg' : null, lset.has(p.code) ? 'ly' : null].filter(Boolean);
   if (tags.join() !== (p.tags ?? []).join()) bad.push(`${p.code} ${p.name} 꼬리표 노드 ${tags} ≠ 파이썬 ${p.tags}`);
 }
+const rowOf = Object.fromEntries(N.rows.map(r => [r.code, r]));
 for (const o of P.outside) {
+  if ((rowOf[o.code]?.kindName ?? null) !== (o.nc ?? null)) bad.push(`${o.code} ${o.name} 회사 주식이 아닌 것의 종류 노드 ${rowOf[o.code]?.kindName ?? '-'} ≠ 파이썬 ${o.nc ?? '-'}`); // 모음 every(2026-10-14 「이거 다 올려」)
   if (mst[o.code] !== o.mg?.s) bad.push(`${o.code} ${o.name} 멍거 멈춘 자리 노드 ${mst[o.code]} ≠ 파이썬 ${o.mg?.s}`);
   if (lst[o.code] !== o.ly?.s) bad.push(`${o.code} ${o.name} 린치 멈춘 자리 노드 ${lst[o.code]} ≠ 파이썬 ${o.ly?.s}`);
   const u = mst[o.code] === 'q' && lst[o.code] === 'q' ? 'q' : 'out';

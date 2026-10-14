@@ -25,7 +25,7 @@ const count = Math.max(5, Math.min(400, +arg('--count', 0) || Math.max(30, weekd
 const budget = Math.max(30, +arg('--budget-s', 420) || 420) * 1000;
 const fixture = arg('--fixture', null), set = arg('--set', 'all');
 const pro = JSON.parse(await fs.readFile(path.join(ROOT, act.dir, 'proposal.json'), 'utf8'));
-const codes = set === '365' ? pro.picked.map(p => p.code) : [...pro.picked.map(p => p.code), ...(pro.outside ?? []).map(o => o.code)];
+const codes = set === '365' ? pro.picked.map(p => p.code) : [...pro.picked.map(p => p.code), ...(pro.outside ?? []).filter(o => !o.nc).map(o => o.code)]; // 회사 주식이 아닌 것(모음 every — 펀드 · 증권 · 우선주 · 스팩 · 리츠)은 일봉을 받지 않음
 const doFetch = fixture ? fixtureFetch(path.resolve(fixture)) : globalThis.fetch;
 const url = code => `https://fchart.stock.naver.com/sise.nhn?symbol=${code}&timeframe=day&count=${count}&requestType=0`;
 const t0 = Date.now(), startedAt = new Date().toISOString(), rows = {}, errors = [];

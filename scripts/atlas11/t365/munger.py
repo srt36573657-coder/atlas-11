@@ -95,8 +95,8 @@ def select(rows, asof, prev=None):
     status, val, cnt = {}, {}, {'q': 0, 'loss': 0, 'debt': 0, 'roe': 0, 'common': 0}
     for r in rows:
         c = r['code']
-        if r.get('notCommon'):
-            status[c] = {'s': 'q', 'why': '보통주가 아님(우선주 · 스팩 · 리츠 등)'}
+        if r.get('notCommon'):  # 목록 모두(모음 every)의 종류 이름이 있으면 그 이름으로(2026-10-14 11:02 「이거 다 올려」 · 고르기는 그대로)
+            status[c] = {'s': 'q', 'why': ('%s — 회사 주식이 아니라 셀 수 없음' % r['kindName']) if r.get('kindName') else '보통주가 아님(우선주 · 스팩 · 리츠 등)'}
             cnt['q'] += 1
             continue
         cnt['common'] += 1

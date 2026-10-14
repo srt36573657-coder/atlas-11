@@ -89,8 +89,8 @@ PICK = RC['picked']
 if PICK < 1:
     die('멍거 · 린치 조건을 넘은 곳이 없음')
 MC, LC = RC['mg'], RC['ly']
-U0 = {'k': 'universe', 'n': RC['universe'], 't': '코스피 · 코스닥 회사 목록(%s 모음)' % kd(N['collectedAt'][:10])}
-FUNNEL = {'universe': RC['universe'], 'picked': RC['picked'], 'both': RC['both'], 'q': RC['q'],
+U0 = {'k': 'universe', 'n': RC['universe'], 't': ('코스피 · 코스닥 목록 모두 — 펀드 · 우선주까지(%s 모음)' if N.get('every') else '코스피 · 코스닥 회사 목록(%s 모음)') % kd(N['collectedAt'][:10])}
+FUNNEL = {'universe': RC['universe'], 'companies': MC['common'], 'picked': RC['picked'], 'both': RC['both'], 'q': RC['q'],  # companies = 보통주(회사 주식) 수 — 모음 every 면 universe 에 펀드 · 우선주 등이 더 들어 있음
           'groups': [
               {'k': 'mg', 'name': munger.NAME, 'n': MC['picked'], 'q': MC['q'], 'stop': dict(munger.STOP), 'stopName': dict(munger.STOP_NAME),
                'steps': [U0, {'k': 'known', 'n': MC['known'], 't': '3년 성적표가 다 있는 곳' + (' · 「?」 %d곳 뺌' % MC['q'] if MC['q'] else '')},
@@ -397,8 +397,11 @@ for r in sorted(rows, key=lambda r: -(r['capEok'] or 0)):
     item = {'c': r['code'], 'n': r['name'], 's': s['s']}
     if s['s'] == 'in':
         item['g'], item['i'] = ind_of[r['code']]
-    else:  # 밖 — 갈래마다 멈춘 자리(sm · sl)와 까닭(멍거 — … / 린치 — …)
-        item['w'] = '멍거 — %s / 린치 — %s' % (s['mg']['why'], s['ly']['why'])
+    else:  # 밖 — 갈래마다 멈춘 자리(sm · sl)와 까닭(멍거 — … / 린치 — …) · 회사 주식이 아닌 것(모음 every — 펀드 · 증권 · 우선주 · 스팩 · 리츠)은 종류 한 줄 + 종류 k
+        if r.get('kindName'):
+            item['w'], item['k'] = '%s — 회사 주식이 아니라 두 조건을 셀 수 없음' % r['kindName'], r['kind']
+        else:
+            item['w'] = '멍거 — %s / 린치 — %s' % (s['mg']['why'], s['ly']['why'])
         item['sm'], item['sl'] = s['mg']['s'], s['ly']['s']
         item['m'] = r['market']
     names.append(item)
