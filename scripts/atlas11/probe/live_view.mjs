@@ -173,14 +173,12 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
   const hv = await page.evaluate(async () => {
     const v = document.querySelector('video.hp-vid'), meta = n => document.querySelector(`meta[name="${n}"], meta[property="${n}"]`)?.getAttribute('content') ?? '';
     if (v) { v.preload = 'auto'; v.load(); await new Promise(r => { if (v.readyState >= 1) r(); else { v.addEventListener('loadedmetadata', r, {once: true}); setTimeout(r, 20000); } }); }
-    return {dur: v ? v.duration : null, label: v?.getAttribute('aria-label') ?? '', desc: meta('description'), og: meta('og:description'), alt: meta('og:image:alt'), body: document.body.innerText};
+    return {dur: v ? v.duration : null, label: v?.getAttribute('aria-label') ?? '', desc: meta('description'), og: meta('og:description'), alt: meta('og:image:alt'), body: document.body.innerText, share: window.__helloShare?.text ?? ''};
   });
   await shot('p26-hello-video');
-  await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
-  const old = await page.evaluate(() => document.querySelector('.hl-open')?.textContent ?? '');
-  const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, old].join(' ');
-  out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, old,
-    ok: /홍표 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /홍표/.test(hv.label) && /홍표/.test(hv.desc) && /홍표/.test(hv.og) && /홍표/.test(hv.alt) && /홍표 35초 영상/.test(old) && !/막비|24초/.test(all)};
+  const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, hv.share].join(' '); // 옛 판(/old/) 띠는 그대로(옛 판 화면 코드 안 고침 — 규칙 65)
+  out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, share: hv.share,
+    ok: /홍표 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /홍표/.test(hv.label) && /홍표/.test(hv.desc) && /홍표/.test(hv.og) && /홍표/.test(hv.alt) && /홍표가 35초/.test(hv.share) && !/막비|24초/.test(all)};
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
 await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)
