@@ -1,19 +1,19 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-14T08:02:35.644Z",
+  "at": "2026-10-14T08:15:36.746Z",
   "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "url": "https://aaa7377.com",
-  "deployUrl": "https://6acf3748bea0560581fd74aa--mulgil.netlify.app",
-  "deployId": "6acf3748bea0560581fd74aa",
+  "deployUrl": "https://6acf3a620d971b41d80374bb--mulgil.netlify.app",
+  "deployId": "6acf3a620d971b41d80374bb",
   "noindex": false,
   "files": 2607,
   "exitCode": 0,
   "error": null,
   "functions": {
-    "state": "deployed",
+    "state": "failed",
     "names": [
       "invite"
     ],
@@ -65,6 +65,6 @@
       "urlpattern-polyfill",
       "when-exit"
     ],
-    "error": null
+    "error": "npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead\n ›   Error: Error while running build\n"
   }
 }
