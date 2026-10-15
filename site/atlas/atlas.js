@@ -1966,7 +1966,7 @@ function trTime(T) {
 function trDots(n10, label) {
   const R = 9, G = 8, W = 10 * (2 * R) + 9 * G, T = tok();
   const s = sv('svg', {viewBox: `0 0 ${W} ${2 * R + 4}`, width: W, height: 2 * R + 4, role: 'img', 'aria-label': `${label} 10곳 중 ${n10}곳`, class: 'cal-dots'});
-  for (let i = 0; i < 10; i++) s.append(sv('circle', {cx: R + 2 + i * (2 * R + G) - 2, cy: R + 2, r: R - 1, fill: i < n10 ? T.up : 'none', stroke: i < n10 ? T.up : T.mute, 'stroke-width': 1.5}));
+  for (let i = 0; i < 10; i++) s.append(sv('circle', {cx: R + 2 + i * (2 * R + G) - 2, cy: R + 2, r: R - 1, fill: i < n10 ? T.up : T['m4-neu'], 'fill-opacity': i < n10 ? 1 : 0.55})); // 빈 점은 회색으로 칠함(테만 그리면 누르는 단추처럼 보임 — 3초 시험 2026-10-15)
   return s;
 }
 function trAnswer(T, R) {
@@ -1974,25 +1974,25 @@ function trAnswer(T, R) {
   if (!T.N) { box.append(h('p', {class: 'cal-big', text: T.k ? `${md(T.asOf)}에 처음 ${T.k}곳이 뽑혔어요.` : '아직 지켜보는 곳이 없어요.'}), T.k ? h('p', {class: 'small', text: '등락률은 다음 장날부터 쌓여요.'}) : null); return box; }
   const z = R.filter(r => r.st === 'z').length, q = R.filter(r => r.st === 'q').length;
   box.append(h('p', {class: 'cal-cap', text: '뽑힌 날보다 올라 있는 곳'}), h('div', {class: 'cal-cmp'},
-    h('p', {class: 'cal-cl'}, h('span', {text: '지켜보는 곳'}), h('b', {class: 'num', text: `10곳 중 ${T.n10}곳`})), trDots(T.n10, '지켜보는 곳'),
-    T.m10 != null ? h('p', {class: 'cal-cl'}, h('span', {text: '같은 날들 모든 회사'}), h('b', {class: 'num', text: `10곳 중 ${T.m10}곳`})) : null,
-    T.m10 != null ? trDots(T.m10, '같은 날들 모든 회사') : null));
+    h('p', {class: 'cal-cl'}, h('span', {text: `지켜보는 ${T.N}곳`}), h('b', {class: 'num', text: `10곳 중 ${T.n10}곳꼴`})), trDots(T.n10, '지켜보는 곳'),
+    T.m10 != null ? h('p', {class: 'cal-cl'}, h('span', {text: '같은 기간 모든 회사'}), h('b', {class: 'num', text: `10곳 중 ${T.m10}곳꼴`})) : null,
+    T.m10 != null ? trDots(T.m10, '같은 기간 모든 회사') : null));
   box.setAttribute('aria-label', `지켜보는 곳 ${T.N}곳 가운데 뽑힌 날보다 위 ${T.a}곳 · 아래 ${T.b}곳${z ? ` · 그대로 ${z}곳` : ''}`);
   if (q) box.append(h('p', {class: 'q', text: `? 값이 없는 곳 ${q}곳`}));
   return box;
 }
 /** 줄 하나 — 이름 | 뽑힌 날부터 % (빨강 · 파랑) · 둘째 줄은 「! 반 토막」 「? 거래 멈춤」만(금빛) · 새로 뽑힌 곳 = % 대신 「새로」 + 칸 */
 function trRowEl(r, star) {
-  const right = r.st === 'n' ? h('span', {class: 'cal-nw num', text: `5일 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v); // 새로 뽑힌 곳 = 뽑힌 까닭(5일 오름 · 회색) — 뽑힌 날부터 %는 다음 장날부터
+  const right = r.st === 'n' ? h('span', {class: 'cal-nw num', text: `5일간 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v); // 새로 뽑힌 곳 = 뽑힌 까닭(5일 오름 · 회색) — 뽑힌 날부터 %는 다음 장날부터
   const fl = trFlag(r);
   return h('a', {class: 'cal-row', href: '#/cal/' + r.c, 'data-c': r.c}, h('span', {class: 'nm'}, star.has(r.c) ? h('span', {class: 'cal-st', text: '★ '}) : null, r.n), right, fl ? h('span', {class: 'cal-fl', text: fl}) : null);
 }
 /** 날 하나 — 달력 날 판(달 · 날 · 요일) + 「선택 k · 이동 m · 탈락 x」 + 그날 뽑힌 줄 넷 + 「나머지 n곳 보기」 + 「이날 이동 · 탈락 보기」 */
-function trDay(x, byC, vis, star) {
+function trDay(x, byC, vis, star, reNote = false) {
   const ok = c => { const r = byC.get(c); return r && vis(r); };
   const sel = x.sel.filter(ok).map(c => byC.get(c)), mv = x.mv.filter(e => ok(e[0])), out = x.out.filter(ok), re = x.re.filter(e => ok(e[0]));
   const dd = +x.d.slice(8, 10), dw = DOW[dDow(x.d)];
-  const cnt = [`이동 ${mv.length}`, `탈락 ${out.length}`, re.length ? `다시 선택 ${re.length}` : null].filter(Boolean).join(' · ');
+  const cnt = [`이동${NB}${mv.length}`, `탈락${NB}${out.length}`, re.length ? `다시${NB}선택${NB}${re.length}` : null].filter(Boolean).join(' · '); // 낱말 안은 붙임 띄어쓰기(「다시 / 선택 12」로 갈리지 않게 — 3초 시험)
   const sec = h('section', {class: 'cal-day' + (x.seed ? ' re' : ''), 'data-d': x.d},
     h('div', {class: 'cal-dh'}, h('h2', {class: 'cal-tile', 'aria-label': `${mdw(x.d)}${x.seed ? ' 되짚음' : ''}`}, h('span', {class: 'm', text: `${+x.d.slice(5, 7)}월`}), h('b', {class: 'dn num', text: String(dd)}), h('span', {class: 'w', text: dw})),
       h('div', {class: 'cal-dhx'}, h('p', {class: 'cal-ds'}, h('b', {text: `선택 ${sel.length}`}), x.seed ? h('span', {class: 'cal-re', text: ' · 되짚음'}) : null), h('p', {class: 'cal-dc', text: tx(cnt)}))));
@@ -2000,11 +2000,12 @@ function trDay(x, byC, vis, star) {
   if (!sel.length) rows.append(h('p', {class: 'cal-none', text: '이날 새로 뽑힌 곳은 없어요.'}));
   sel.slice(0, 4).forEach(r => rows.append(trRowEl(r, star)));
   sec.append(rows);
+  if (reNote) sec.append(h('p', {class: 'cal-ren', text: '되짚음 = 업데이트 기록이 없던 날이라 그날 종가로 다시 센 날이에요.'}));
   if (sel.length > 4) sec.append(h('details', {class: 'more cal-rest', 'data-k': 'rest-' + x.d}, h('summary', {text: `나머지 ${sel.length - 4}곳 보기`}), h('div', {class: 'in cal-rows'}, ...sel.slice(4).map(r => trRowEl(r, star))))); // 접은 칸(줄은 처음부터 있음 — 길 지도 · 3번이면 회사)
   const items = [...mv.map(([c, b]) => [c, `${trTo(b)} 이동`, 0]), ...out.map(c => [c, '탈락', 1]), ...re.map(([c, b]) => [c, `다시 선택 · ${TR_B[b] ?? '?'}`, 2])]
     .sort((a, b) => a[2] - b[2] || byC.get(a[0]).n.localeCompare(byC.get(b[0]).n, 'ko') || (a[0] < b[0] ? -1 : 1));
-  if (items.length) sec.append(h('details', {class: 'more cal-ev', 'data-k': 'ev-' + x.d}, h('summary', {text: `이동 · 탈락 ${items.length}곳 보기`}),
-    h('div', {class: 'in'}, ...items.map(([c, t]) => { const r = byC.get(c); return h('a', {class: 'cal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', text: r.n}), h('span', {class: 'cal-et', text: tx(t)}), r.st === 'n' ? h('span', {class: 'cal-nw num', text: `5일 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)); }))));
+  if (items.length) sec.append(h('details', {class: 'more cal-ev', 'data-k': 'ev-' + x.d}, h('summary', {text: tx(`${re.length ? '이동 · 탈락 · 다시 선택' : '이동 · 탈락'} ${items.length}곳 보기`)}),
+    h('div', {class: 'in'}, ...items.map(([c, t]) => { const r = byC.get(c); return h('a', {class: 'cal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', text: r.n}), h('span', {class: 'cal-et', text: tx(t)}), r.st === 'n' ? h('span', {class: 'cal-nw num', text: `5일간 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)); }))));
   return sec;
 }
 async function viewCal(v) {
@@ -2013,7 +2014,7 @@ async function viewCal(v) {
   v.append(h('h1', {class: 'head', text: '달력'}));
   if (!ok) { v.append(h('p', {class: 'q', text: '? 달력 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), foot()); return; }
   const T = D.tr, R = T.cases.map(trRow), byC = new Map(R.map(r => [r.c, r]));
-  v.append(h('p', {class: 'count cal-time', text: tx(trTime(T))}));
+  v.append(h('p', {class: 'count cal-time', text: tx(`5일간 10% 넘게 오르면 뽑혀요. ${trTime(T)}`)})); // 무엇을 왜 뽑았나 — 첫 줄(3초 시험 2026-10-15 · 다섯 가운데 셋이 몰랐음)
   v.append(trAnswer(T, R));
   const AL = (T.alerts ?? []).filter(A => A.n > 0); // 새로 생긴 일만(마지막 장날 종가로) — 금빛 한 줄 · 누르면 그 종목들(종목 파일)
   if (AL.length) {
@@ -2031,9 +2032,10 @@ async function viewCal(v) {
     list.textContent = '';
     const stars = R.filter(r => star.has(r.c) && vis(r));
     if (stars.length) list.append(h('section', {class: 'cal-day cal-stars'}, h('h2', {class: 'cal-sh', text: `★ 관심 ${stars.length}곳`}), h('div', {class: 'cal-rows'}, ...stars.map(r => trRowEl(r, star)))));
-    for (const x of T.days.slice(0, 5)) list.append(trDay(x, byC, vis, star)); // 새 다섯 날은 펼쳐 둠 · 그 앞은 다섯 날씩 접은 칸(누르면 펼침 — 줄은 처음부터 있음)
+    const re1 = T.days.find(x => x.seed)?.d; // 「되짚음」 풀이는 처음 나오는 되짚은 날 한 곳에만
+    for (const x of T.days.slice(0, 5)) list.append(trDay(x, byC, vis, star, x.d === re1)); // 새 다섯 날은 펼쳐 둠 · 그 앞은 다섯 날씩 접은 칸(누르면 펼침 — 줄은 처음부터 있음)
     const older = T.days.slice(5);
-    for (let i = 0; i < older.length; i += 5) { const ch = older.slice(i, i + 5); list.append(h('details', {class: 'more cal-older', 'data-k': 'older-' + ch[0].d}, h('summary', {text: tx(`${md(ch.at(-1).d)} ~ ${md(ch[0].d)} 보기`)}), h('div', {class: 'in'}, ...ch.map(x => trDay(x, byC, vis, star))))); }
+    for (let i = 0; i < older.length; i += 5) { const ch = older.slice(i, i + 5); list.append(h('details', {class: 'more cal-older', 'data-k': 'older-' + ch[0].d}, h('summary', {text: tx(`${md(ch.at(-1).d)} ~ ${md(ch[0].d)} 보기`)}), h('div', {class: 'in'}, ...ch.map(x => trDay(x, byC, vis, star, x.d === re1))))); }
     list.append(h('p', {class: 'small', text: tx(`${md(T.days.at(-1)?.d ?? T.asOf)}부터 적었어요.`)}));
     const gone = R.filter(r => hid.has(r.c)).sort((a, b) => a.n.localeCompare(b.n, 'ko'));
     if (gone.length) list.append(h('details', {class: 'more cal-gone'}, h('summary', {text: `숨긴 곳 ${gone.length}곳 보기`}),
@@ -2050,7 +2052,7 @@ async function viewCal(v) {
     '이동과 탈락은 장이 끝난 값으로만 세요.',
     T.seed ? `${md(T.seed.from)} ~ ${md(T.seed.to)}은 업데이트 기록이 없던 날이라 그날 종가로 다시 셌어요. 그날에는 「되짚음」이라고 적어요.` : null,
     '「! 반 토막」은 뽑힌 뒤 가장 높던 종가의 반 밑으로 내려온 곳이에요. 「? 거래 멈춤」은 그날 거래가 없던 곳이에요. 맨 위에는 새로 생긴 날에만 적어요.',
-    '「같은 날들 모든 회사」는 같은 날 종가부터 같은 날까지 모든 회사를 센 값이에요.',
+    '「같은 기간 모든 회사」는 종목마다 뽑힌 날 종가부터 같은 날까지 모든 회사를 센 값이에요. 「10곳 중 n곳꼴」은 올라 있는 몫을 10곳으로 줄여 센 거예요.',
     '「관심」과 「관심 없음」은 이 기계에만 남아요. 셈에는 그대로 들어가요.',
   ].filter(Boolean).map(t => h('p', {text: tx(t)})))));
   v.append(h('p', {class: 'hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), h('p', {class: 'small', text: '지난 값일 뿐 앞날을 말하지 않아요.'}));
@@ -2109,14 +2111,14 @@ async function viewCalCase(v, code) {
   if (!r0 || !K) { await needMkt().catch(() => {}); v.append(h('h1', {class: 'head', text: D.mkt?.[code]?.n ?? code}), h('p', {class: 'note', text: '이 종목은 지금 달력에서 지켜보는 곳이 아니에요. 뽑힌 뒤 60거래일이 지나면 목록에서 내려요.'}), h('p', {}, h('a', {class: 'inl', href: cHref(code), text: '회사 보기 ›'})), foot()); return; }
   const r = trRow(r0), i0 = T.dates.indexOf(r.d0), dates = T.dates.slice(i0, i0 + K.p.length);
   v.append(h('h1', {class: 'head', text: r.n}));
-  v.append(h('p', {class: 'count', text: tx(`${mdw(r.d0)}에 ${trTo(r.b)} 뽑혔어요. 그때 5일 ${pct(r.r5)}${r.re ? ' · 되짚음' : ''}`)}));
+  v.append(h('p', {class: 'count', text: tx(`${mdw(r.d0)}에 ${trTo(r.b)} 뽑혔어요. 그때 5일간 ${pct(r.r5)}${r.re ? ' · 되짚음(그날 종가로 다시 셈)' : ''}`)}));
   const now = h('div', {class: 'cal-now'}, h('p', {class: 'cal-w ' + (r.st === 'u' ? 'up' : r.st === 'd' ? 'down' : r.st === 'q' ? 'q' : 'flat'), text: CAL_WORD[r.st] ?? '?'}));
   if (r.st === 'n') now.append(h('p', {class: 'small', text: '등락률은 다음 장날부터 쌓여요.'}));
   else now.append(h('p', {class: 'cal-p'}, h('span', {text: '뽑힌 날부터 '}), r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)));
   v.append(now);
   if (r.h) v.append(h('p', {class: 'q', text: '? 거래 멈춤 — 마지막 장날에 거래가 없었어요. 거래정지일 수 있어요.'}));
   if (r.f) v.append(h('p', {class: 'q', text: r.f === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요. 하루 35% 넘게 바뀐 날이 있어 값이 고쳐졌을 수 있어요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.'}));
-  if (K.mk != null) v.append(h('p', {class: 'cal-mk', text: tx(`같은 날들 모든 회사는 보통 ${pct(K.mk)}였어요.`)}));
+  if (K.mk != null) v.append(h('p', {class: 'cal-mk', text: tx(`같은 기간 모든 회사의 가운데 값은 ${pct(K.mk)}였어요.`)}));
   if (T.provisional && r.st !== 'n') v.append(h('p', {class: 'small', text: tx(`${md(T.asOf)} 값은 장 중 값이에요. 저녁 8시까지 바뀌어요.`)}));
   const g1 = h('div', {class: 'cal-g'}), g2 = h('div', {class: 'cal-g'});
   v.append(h('h2', {class: 'sec', text: '뽑힌 날부터 날마다'}), g1, h('h2', {class: 'sec', text: '그 회사 5일 오름이 든 칸'}), g2,
@@ -2125,7 +2127,7 @@ async function viewCalCase(v, code) {
   drawG(); chartDraw = drawG;
   // 단계(택배 조회처럼 — 새 것이 위 · 넷 + 「더 보기」)
   const at = d => { const i = dates.indexOf(d); return i >= 0 ? K.p[i] : null; };
-  const S = [{d: r.d0, t: `선택 · ${TR_B[r.b] ?? '?'}`, s: `5일 ${pct(r.r5)}${r.re ? ' · 되짚음' : ''}`}];
+  const S = [{d: r.d0, t: `선택 · ${TR_B[r.b] ?? '?'}`, s: `5일간 ${pct(r.r5)}${r.re ? ' · 되짚음' : ''}`}];
   for (const e of K.ev) S.push({d: e[0], t: e[1] === 'mv' ? `${trTo(e[2])} 이동` : e[1] === 'out' ? '탈락 · 10% 밑이거나 거래가 적어짐' : e[1] === 're' ? `다시 선택 · ${TR_B[e[2]] ?? '?'}` : '조심 · 투자경고 오름 기준에 닿음', s: e[1] === 'warn' ? '? 실제로 지정됐는지는 몰라요' : `뽑힌 날부터 ${pct(at(e[0]))}`, g: e[1] === 'warn'});
   if (r.st !== 'n') S.push({d: T.asOf, t: `지금 ${pct(r.v)}`, s: CAL_WORD[r.st] ?? '', now: true});
   const ol = h('ol', {class: 'cal-steps'}), lis = S.slice().reverse().map(s => h('li', {class: (s.now ? 'now' : '') + (s.g ? ' g' : '')}, h('span', {class: 'd', text: md(s.d)}), h('b', {text: tx(s.t)}), s.s ? h('span', {class: 's' + (/^\?/.test(s.s) ? ' q' : ''), text: tx(s.s)}) : null));

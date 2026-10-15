@@ -1430,13 +1430,13 @@ html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
 .vw .cal-ans > p.q { margin: 8px 0 0; }
 .vw details.cal-al .in { display: grid; padding-top: 0; }
 .vw .cal-et.q { color: var(--gold); font-weight: 700; }
-.vw .cal-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 14px 0 0; }
+.vw .cal-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 10px 0 0; }
 .vw .cal-chips button { min-width: 44px; min-height: 44px; padding: 0 2px; border: 1px solid var(--m4-line); border-radius: 999px; background: none; color: var(--sub); font: inherit; font-size: 21px; white-space: nowrap; cursor: pointer; }
 .vw .cal-chips button[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); font-weight: 600; background: var(--card); }
 .vw .cal-chips button:hover { border-color: var(--sub); }
-.vw .cal-day { margin: 14px 0 0; padding-top: 10px; border-top: 1px solid var(--m4-line); }
+.vw .cal-day { margin: 10px 0 0; padding-top: 8px; border-top: 1px solid var(--m4-line); }
 .vw .cal-dh { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; }
-.vw h2.cal-tile { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; width: 60px; min-height: 68px; margin: 0; padding: 2px 0; border: 1px solid var(--m4-line); border-radius: 10px; background: var(--card); font-family: var(--sans); font-size: 21px; font-weight: 400; line-height: 1.15; letter-spacing: 0; color: var(--sub); }
+.vw h2.cal-tile { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; width: 60px; min-height: 64px; margin: 0; padding: 2px 0; border: 1px solid var(--m4-line); border-radius: 10px; background: var(--card); font-family: var(--sans); font-size: 21px; font-weight: 400; line-height: 1.15; letter-spacing: 0; color: var(--sub); }
 .vw h2.cal-tile .dn { font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1; }
 .vw h2.cal-tile .m, .vw h2.cal-tile .w { color: var(--mute); }
 .vw .cal-day.re h2.cal-tile { border-style: dashed; }
@@ -1445,6 +1445,8 @@ html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
 .vw .cal-ds b { font-weight: 700; }
 .vw .cal-dc { margin: 0; color: var(--sub); text-wrap: pretty; }
 .vw .cal-re { color: var(--mute); }
+.vw .cal-ren { margin: 6px 0 0; color: var(--mute); }
+.vw p.count.cal-time { line-height: 1.4; }
 .vw p.count.cal-time { margin-bottom: 10px; }
 .vw .cal-sh { margin: 0 0 4px; font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--ink); }
 .vw .cal-rows { display: grid; }
@@ -1492,7 +1494,7 @@ html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
 .vw .cal-acts { display: flex; flex-wrap: wrap; align-items: center; margin: 18px 0 0; }
 .vw .cal-acts .cal-co { color: var(--ink); }
 .vw .cal-cmp { margin: 0; }
-.vw .cal-cl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 10px; margin: 4px 0 2px; color: var(--sub); }
+.vw .cal-cl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 10px; margin: 2px 0 0; color: var(--sub); line-height: 1.35; }
 .vw .cal-cl b { font-weight: 700; color: var(--ink); white-space: nowrap; }
 .vw .cal-cl .cal-ud { font-weight: 700; color: var(--ink); white-space: nowrap; }
 .vw svg.cal-dots { display: block; max-width: 100%; height: auto; }

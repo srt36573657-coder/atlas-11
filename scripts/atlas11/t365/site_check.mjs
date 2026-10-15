@@ -222,28 +222,29 @@ function calExpect(arg) {
   const T = trData; if (!T) return {why: ['? 달력 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.']};
   const byC = new Map(T.cases.map(r => [r[0], r]));
   if (!arg) {
-    const why = ['달력', T.provisional ? `${md(T.asOf)} ${/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(T.kst ?? '') && T.kst.slice(0, 10) === T.asOf ? ampmS(T.kst) + ' ' : ''}값이에요. 장 중이라 바뀌어요.` : `${md(T.asOf)} 종가예요.`];
-    if (T.N) { why.push('뽑힌 날보다 올라 있는 곳', '지켜보는 곳', `10곳 중 ${T.n10}곳`); if (T.m10 != null) why.push('같은 날들 모든 회사', `10곳 중 ${T.m10}곳`); }
+    const why = ['달력', '5일간 10% 넘게 오르면 뽑혀요.', T.provisional ? `${md(T.asOf)} ${/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(T.kst ?? '') && T.kst.slice(0, 10) === T.asOf ? ampmS(T.kst) + ' ' : ''}값이에요. 장 중이라 바뀌어요.` : `${md(T.asOf)} 종가예요.`];
+    if (T.N) { why.push('뽑힌 날보다 올라 있는 곳', `지켜보는 ${T.N}곳`, `10곳 중 ${T.n10}곳꼴`); if (T.m10 != null) why.push('같은 기간 모든 회사', `10곳 중 ${T.m10}곳꼴`); }
     else why.push(T.k ? `${md(T.asOf)}에 처음 ${T.k}곳이 뽑혔어요.` : '아직 지켜보는 곳이 없어요.');
     const AL = (T.alerts ?? []).filter(A => A.n > 0); if (AL.length) { why.push(AL.map(A => (A.kind === 'halt' ? `? 거래 멈춤 ${A.n}곳` : `${A.f === 2 ? '?' : '!'} 반 토막 ${A.n}곳`)).join(' · '), '마지막 장날 종가로 새로 생긴 일이에요.'); for (const A of AL) for (const c of A.cs ?? []) why.push(byC.get(c)?.[1] ?? '?'); }
     why.push('전체', '10%', '20%', '30%', '40%');
     for (const x of T.days.slice(0, 5)) {
       why.push(`${+x.d.slice(5, 7)}월`, `선택 ${x.sel.length}`, `이동 ${x.mv.length} · 탈락 ${x.out.length}${x.re.length ? ` · 다시 선택 ${x.re.length}` : ''}`);
       if (x.seed) why.push(' · 되짚음');
-      for (const c of x.sel.slice(0, 4)) { const r = byC.get(c); why.push(r[1], r[6] === 'n' ? `5일 ${pct(r[4])}` : pct(r[5])); if (r[7] || r[8]) why.push(r[7] ? '? 거래 멈춤' : r[8] === 2 ? '? 반 토막' : '! 반 토막'); }
+      for (const c of x.sel.slice(0, 4)) { const r = byC.get(c); why.push(r[1], r[6] === 'n' ? `5일간 ${pct(r[4])}` : pct(r[5])); if (r[7] || r[8]) why.push(r[7] ? '? 거래 멈춤' : r[8] === 2 ? '? 반 토막' : '! 반 토막'); }
       if (x.sel.length > 4) why.push(`나머지 ${x.sel.length - 4}곳 보기`);
-      const items = x.mv.length + x.out.length + x.re.length; if (items) why.push(`이동 · 탈락 ${items}곳 보기`);
+      const items = x.mv.length + x.out.length + x.re.length; if (items) why.push(`${x.re.length ? '이동 · 탈락 · 다시 선택' : '이동 · 탈락'} ${items}곳 보기`);
       if (!x.sel.length) why.push('이날 새로 뽑힌 곳은 없어요.'); }
     for (let i = 5; i < T.days.length; i += 5) { const ch = T.days.slice(i, i + 5); why.push(`${md(ch.at(-1).d)} ~ ${md(ch[0].d)} 보기`); }
     why.push(`${md(T.days.at(-1).d)}부터 적었어요.`, '어떻게 골랐나요?', '사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.');
     if (T.seed) why.push(`${md(T.seed.from)} ~ ${md(T.seed.to)}은 업데이트 기록이 없던 날이라 그날 종가로 다시 셌어요.`);
+    if (T.days.some(x => x.seed)) why.push('되짚음 = 업데이트 기록이 없던 날이라 그날 종가로 다시 센 날이에요.');
     return {title: '달력', why, cal: {home: true}}; }
   const r = byC.get(arg), K = trCase?.[arg];
   if (!r || !K) return {why: ['이 종목은 지금 달력에서 지켜보는 곳이 아니에요.'], cal: {}};
   const i0 = T.dates.indexOf(r[2]), dates = T.dates.slice(i0, i0 + K.p.length);
-  const why = [`${mdw(r[2])}에 ${jo(TRB[r[3]], '으로', '로')} 뽑혔어요.`, `그때 5일 ${pct(r[4])}`, CALW[r[6]], '뽑힌 날부터 날마다', '그 회사 5일 오름이 든 칸', '지나온 일', '● 선택', '○ 탈락', '◉ 다시 선택', '☆ 관심', '관심 없음', '회사 보기 ›', '사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.'];
+  const why = [`${mdw(r[2])}에 ${jo(TRB[r[3]], '으로', '로')} 뽑혔어요.`, `그때 5일간 ${pct(r[4])}`, CALW[r[6]], '뽑힌 날부터 날마다', '그 회사 5일 오름이 든 칸', '지나온 일', '● 선택', '○ 탈락', '◉ 다시 선택', '☆ 관심', '관심 없음', '회사 보기 ›', '사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.'];
   if (r[6] !== 'n') why.push('뽑힌 날부터', r[5] == null ? '?' : pct(r[5])); else why.push('등락률은 다음 장날부터 쌓여요.');
-  if (K.mk != null) why.push(`같은 날들 모든 회사는 보통 ${pct(K.mk)}였어요.`);
+  if (K.mk != null) why.push(`같은 기간 모든 회사의 가운데 값은 ${pct(K.mk)}였어요.`);
   if (r[7]) why.push('? 거래 멈춤 — 마지막 장날에 거래가 없었어요.'); if (r[8]) why.push(r[8] === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.');
   const S = calSteps(r, K, dates); for (const [d, t, x] of S.slice(0, 4)) { why.push(md(d), t); if (x) why.push(x); } if (S.length > 4) why.push(`더 보기 ${S.length - 4}개`);
   return {title: r[1], why, cal: {code: arg}}; }
