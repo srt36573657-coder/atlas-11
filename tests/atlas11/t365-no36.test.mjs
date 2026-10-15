@@ -12,7 +12,8 @@ const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 
 test('새 ATLAS 화면 코드에 36곳 화면 · 탭 · 글 없음', () => {
   for (const f of ['site/atlas/atlas.js', 'site/atlas/atlas.css', 'site/atlas/index.html']) assert.ok(!BAD.test(rd(f)), f);
-  assert.equal((rd('site/atlas/index.html').match(/<a href="#\/[a-z]*" id="tab/g) ?? []).length, 3, '아래 탭 셋');
+  assert.equal((rd('site/atlas/index.html').match(/<a href="#\/[a-z]*" id="tab/g) ?? []).length, 4, '아래 탭 넷(2026-10-15 14:27 급등 탭 · 규칙 69 — 옛 「매수 검토 36곳」 탭은 그대로 없음)');
+  assert.match(rd('site/atlas/index.html'), /<a href="#\/surge" id="tabSurge">급등<\/a>/, '넷째 탭 = 급등(#/surge · 이름 수는 자료에서)');
   assert.match(rd('site/atlas/atlas.js'), /kind === '36'\) \{ location\.replace\('#\/'\)/, '옛 주소 #/36 은 첫 화면으로');
 });
 

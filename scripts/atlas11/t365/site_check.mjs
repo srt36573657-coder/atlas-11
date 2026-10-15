@@ -43,6 +43,7 @@ const CO7 = !!(core.co7 && MKT), OTH = CO7 ? Object.keys(MKT).filter(c => !comp[
 const CO = c => comp[c] ?? coOf(c).c, LINE = c => (comp[c] ? lines[c] : coOf(c).line);
 const lines0 = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines.json'), 'utf8')), lines = lines0.lines; // 3단 100만 원 줄(기준일 = 100 · 2026-10-12 클로드팀) · 첫 화면 고른 곳 「크게 움직인 곳」(asOf)
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
+const surge = fs.existsSync(path.join(ROOT, 'site/atlas/data/surge.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surge.json'), 'utf8')) : null; // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라」 · 규칙 69)
 // 바탕 회사 이름 · 밑 한 줄(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 수는 자료에서) · 억 원 글(atlas.js eok 과 같은 셈을 따로 적음)
 const PN = `${core.rules.name} ${core.funnel.picked}곳`, NPK = core.funnel.picked, PLINE = core.rules.line ?? core.rules.conds.map(x => x.t).join(' · ');
 const eokS = v => { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); if (a >= 10000) return s + (Math.floor(a / 10000 * 10 + 0.5 + 1e-7) / 10).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원'; return s + Math.round(a).toLocaleString('ko-KR') + '억 원'; };
@@ -167,7 +168,7 @@ function m4Expect(H) {
     groups: core.groups.slice().sort((a, b) => b.chg - a.chg).map(g => ['#/g/' + g.id, g.short, pct(g.chg)]), stale: notes.length > 0,
     letter: ['친구에게 소개하기', '홍표 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!']};
 }
-const routes = ['#/', '#/list', '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
+const routes = ['#/', '#/list', ...(surge ? ['#/surge'] : []), '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
 const OLIM = arg('--others-limit') != null ? +arg('--others-limit') : null; // 고치는 동안 빨리(앞 n곳만) — 결과 others.full = false · 문은 못 지남
 const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사만(문은 못 지남)
 const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
@@ -247,6 +248,25 @@ function expect(route) {
     why: [ymd(P.from), `${P.n365}곳`, won100(P.mult365), won100(P.med365), won100(P.multPool), `${P.half}곳`, `${P.skip365}곳은 뺐습니다`, ...K.opens.flatMap(o => [ymd(o.date), ddayText(o.date)]), K.digest, K.file, // 잠근 규칙은 접힌 칸이라 글에 안 잡힘 — site_verify ⑫ 가 봉인 파일과 맞댐
       ...(S.days ? [pct(S.chg365), pct(S.chgPool), `봉인 뒤 ${S.days}거래일`] : ['아직 0거래일'])]}; }
   if (kind === 'up') { const r0 = upd.records[0]; return {title: '업데이트 기록', why: r0 ? [{'바꿈': '바꿈', '그대로': '그대로 — 새 값 없음', '실패': '실패'}[r0.result], ...(r0.asOf ? [`고른 날 ${md(r0.asOf)}`, `기준일 ${md(r0.base)}`] : []), ...(r0.in?.length ? [`새로 든 곳 ${r0.in.length}`, `빠진 곳 ${r0.out.length}`, ...(r0.stay != null ? [`그대로 ${r0.stay}`] : [])] : []), ...(r0.ruleChanged ? ['이 회차에 고르는 기준이 바뀌었습니다'] : [])] : ['아직 기록이 없습니다']}; }
+  if (kind === 'surge') { // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 …」 · 규칙 69) — surge.json 에서 따로 만든 글 · 줄 · 세 숫자
+    const S = surge, M = S.members ?? [], n = M.length, F = S.facts ?? {}, W3 = S.why ?? {}, FU = S.funnel ?? {}, CUT = S.cut ?? {}, loc0 = x => Number(x).toLocaleString('ko-KR');
+    const chg = S.carry ? null : S.kind !== 'pick' ? '처음 고른 목록이에요.' : (S.in.length || S.out.length) ? `${S.in.length}곳이 새로 들고 ${S.out.length}곳이 나갔어요.` : '이번에 바뀐 곳은 없어요.';
+    const warn = M.filter(m => m.warn), live = M.filter(m => m.warnLive), down = M.filter(m => m.d1 != null && m.d1 < 0);
+    return {title: `급등 ${n}곳`, rows: M.map(m => [m.n, pct(m.v[5] - 100)]), trio: n ? [pct(S.stats.med), pct(S.market.med), pct(S.stats.lo)] : null,
+      why: [n ? `지난 5일 동안 ${n}곳이 ${pct(S.stats.lo)} ~ ${pct(S.stats.hi)} 올랐어요.` : '지난 5일 동안 문턱을 넘은 곳이 없어요.', '사고팔 곳을 고른 목록이 아니에요.', '? 오른 까닭은 몰라요.', ...(chg ? [chg] : ['목록은 ']),
+        ...(S.provisional ? ['장 중 값이에요. 저녁 8시까지 바뀌어요.'] : [`${md(S.asOf)} 장 마감`]), ...(n < S.cap ? [`오늘은 문턱을 넘은 곳이 ${n}곳뿐이에요. 억지로 채우지 않아요.`] : []),
+        `셀 수 있는 회사 ${loc0(S.market.n)}곳`, '셀 수 있는 회사 가운데값', ...(FU.q ? [`셀 수 없는 곳 ${loc0(FU.q)}곳`] : []),
+        ...(S.kind === 'pick' ? S.in.map(x => x.n) : []), ...(S.out.length ? [`나간 곳 ${S.out.length}곳 — 까닭 보기`, ...S.out.flatMap(o => [o.n, o.why])] : []),
+        ...(n ? [`${n}곳 가운데 ${F.half}곳은 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있어요.`, `업종 전체가 함께 오른 곳 ${W3.ind}곳 · 업종과 따로 오른 곳 ${W3.co}곳`, ...((S.sameInd ?? []).length ? ['같은 업종 3곳 이상: ' + S.sameInd.map(x => `${x[0]} ${x[1]}곳`).join(' · ')] : [])] : []),
+        ...(warn.length || live.length ? [`거래소 경고 기준만큼 오른 곳 ${warn.length}곳`, '5일 60% 또는 15일 100%로만 셌어요.', [...warn, ...live].map(m => m.n).join(' · ')] : []),
+        ...(down.length ? [`마지막 날 내린 곳 ${down.length}곳`, down.map(m => m.n).join(' · ')] : []),
+        ...(F.one ? [`하루에 몰려 오른 곳 ${F.one}곳`] : []), ...(F.quiet ? [`거래가 덜 붙은 곳 ${F.quiet}곳`] : []), ...(F.reb ? [`되오른 곳 ${F.reb}곳`] : []),
+        ...(S.cutList?.length ? [`+15%를 넘었지만 값이나 거래 때문에 뺀 곳 ${S.cutList.length}곳 — 까닭 보기`, ...S.cutList.flatMap(o => [o.n, o.why])] : []),
+        ...(CUT.seat ? [`+15%를 넘었지만 아직 못 든 곳도 ${CUT.seat}곳 있어요.`] : []),
+        ...(S.confirm?.n ? [`${md(S.confirm.day)} 장 중에 든 ${S.confirm.n}곳`] : []), ...(S.strict ? ['지금은 두 번 넘어야 들어와요.'] : []),
+        '조심할 것과 모르는 것', '더 확인할 곳', '어떻게 골랐나요?', ...(S.rules?.lines ?? []), ...(S.hist?.length ? ['지난 업데이트 — 들고 난 곳', '기록은 지우지 않아요.'] : []),
+        `급등 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요.`],
+      notWhy: ['1등', '들어온 뒤', '20거래일 뒤', '많이 오른 뒤에는', '사 볼', `${PN} —`, '거래소 투자경고', '센 기록'], surge: {gold: M.filter(m => S.provisional && m.prov).length}}; }
   if (kind === 'info') { // 도움말 — 이름 밑 한 줄 · 멍거가 고른 목록 아님 · 깔때기 · 값 · 기다림 · 회차 시각(= universe.json slots · 틀림 장부 21번)
     return {why: [`${PN} — ${PLINE}`, core.rules.notMunger, `${PN}은 이렇게 골랐습니다`, ...core.funnel.groups.flatMap(g => [`${g.name} ${g.n}곳`, ...g.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]), core.rules.price, core.rules.wait, core.rules.notCounted,
       `? 다시 고르기 — 하루 ${core.rules.slots.length}번(${core.rules.slots.join(' · ')} 서울)`]}; }
@@ -441,6 +461,7 @@ async function visit(p, errs, route, w, hgt, font) {
         if (JSON.stringify(m.msg) !== JSON.stringify(HELLO_LINES)) fail(tk, `사장님 글 ${JSON.stringify(m.msg)} ≠ 글자 그대로`);
         for (const want of X.letter) { numbers++; if (!m.letter.includes(want)) fail(tk, `편지 칸 글 「${want}」 없음`); }
         for (const gone of ['10명중에 몇명', '못버는건', '실력 없는 사람들', '생각해보세요', '커피 1잔', '상품권 1장', '막비', '24초']) { numbers++; if (m.letter.includes(gone)) fail(tk, `편지 칸에 지운 글 「${gone}」이 남음`); } // 2026-10-14 17:16 · 17:17 · 18:19 · 21:50
+        numbers++; if (m.letter.includes('급등')) fail(tk, '편지 칸(친구 소개)에 「급등」 — 소개 쪽에 급등 목록을 띄우지 않음(레드 셀 반대 2 · 규칙 69)');
         numbers++; if (JSON.stringify(m.heads) !== JSON.stringify(X.heads)) fail(tk, `칸 차례 ${JSON.stringify(m.heads)} ≠ ${JSON.stringify(X.heads)}`);
         numbers += X.leads.length; if (JSON.stringify(m.leads) !== JSON.stringify(X.leads)) fail(tk, `칸 첫 줄 ${JSON.stringify(m.leads).slice(0, 400)} ≠ ${JSON.stringify(X.leads).slice(0, 400)}`);
         numbers += X.alerts.length + 1; if (JSON.stringify(m.alerts) !== JSON.stringify(X.alerts)) fail(tk, `금빛 알림 ${JSON.stringify(m.alerts)} ≠ ${JSON.stringify(X.alerts)}`);
@@ -470,6 +491,18 @@ async function visit(p, errs, route, w, hgt, font) {
     for (const no of e.notWhy ?? []) { numbers++; if (r.text.includes(no) || r.all.includes(no)) fail(tag, `있으면 안 되는 글 「${no}」`); } // 고른 곳 밖 3단에 「왜 … 들었나요?」(모든 회사 7단)
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
     if (route === '#/' && w === 390 && font === 0) { numbers++; if (await p.evaluate(() => document.querySelectorAll('#view .seg button').length)) fail(tag, '첫 화면에 「큰 회사는 크게」 단추가 남음(요즘 오르는 업종은 한 회사 한 표 1주만 · 규칙 64)'); }
+    if (e.surge) { // 급등 탭(규칙 69) — 1등 빛 없음 · 금빛 줄 = 장 중에 든 곳만 · 기관 이름 없음(접은 글까지) · 그림이 첫 화면(360 × 640) 안 · 접은 칸을 모두 열어 다시 잼
+      const tk = `${tag} · 급등`, g = await p.evaluate(() => { const s = document.querySelector('#view .svr svg')?.getBoundingClientRect(), t = document.querySelector('.tabbar')?.getBoundingClientRect();
+        return {win: document.querySelectorAll('#view .row.win').length, gold: document.querySelectorAll('#view .board .row .badge.gold').length, svgB: s ? s.bottom + scrollY : null, tabT: t ? t.top : null, svgN: document.querySelectorAll('#view .svr svg').length}; });
+      numbers += 4;
+      if (g.win) fail(tk, `1등 빛 줄 ${g.win}개(없어야 함)`);
+      if (g.gold !== e.surge.gold) fail(tk, `금빛 줄 ${g.gold} ≠ 장 중에 든 곳 ${e.surge.gold}`);
+      if (g.svgN !== 1) fail(tk, `그림 「5일 오름 자」 ${g.svgN}개`);
+      if (w === 360 && hgt === 640 && !(g.svgB != null && g.tabT != null && g.svgB <= g.tabT)) fail(tk, `그림이 첫 화면 밖(그림 끝 ${g.svgB} · 아래 탭 ${g.tabT})`); // 글씨 셋 모두(새 눈 점검 1 — 사장님은 큰 글씨를 쓰심)
+      await p.evaluate(() => document.querySelectorAll('#view details').forEach(d => { d.open = true; })); await p.waitForTimeout(40);
+      { errs.length = 0; const r2 = await look(p); screens++; judge(`${tk} · 접은 칸 열림`, r2, errs); moTotal += r2.moN; if (/CIA|씨아이에이|정보기관|중앙정보국/i.test(r2.all + '\n' + r2.text)) fail(tk, '기관 이름이 보임(레드 셀 반대 2 — 권위 이름을 빌리지 않음)'); }
+      await p.evaluate(() => { document.querySelectorAll('#view details').forEach(d => { d.open = false; }); window.scrollTo(0, 0); });
+    }
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
 }
 /** 고른 곳 밖 회사 길(모든 회사 7단) — 한 판 안에서 칸(페이지) 여럿이 나눠 돎 · 칸마다 오류 모음 따로 · 500길마다 진행 줄(표준 오류) */
@@ -632,10 +665,19 @@ if (home) {
   const r7 = await p.evaluate(() => document.body.innerText);
   screens += 2; numbers += 4;
   if (r.hash !== '#/' && r.hash !== '') fail('36곳 없음', `옛 주소 #/36 이 첫 화면으로 가지 않음(${r.hash})`);
-  if (!(r.tabs.length === 3 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · '));
+  if (!(r.tabs.length === 4 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트' && r.tabs[3] === (surge?.n != null ? '급등 ' + surge.n : '급등'))) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · ')); // 탭 넷(2026-10-15 14:27 급등 탭 · 규칙 69 — 옛 「매수 검토 36곳」 탭은 그대로 없음)
   if (has36(r.all + r7)) fail('36곳 없음', '지운 36곳 화면 글이 보임'); // 「136곳」(07:4x) · 「36곳 내림」(14:2x) 같은 셈 글은 아님 — 옛 화면 글 목록으로 봄
   if (asked.some(u => /pick36/.test(u)) || !asked.some(u => /\/range\.json/.test(u))) fail('36곳 없음', '자료 받기 — pick36.json 을 받거나 range.json 을 안 받음');
   if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);
+  await ctx.close();
+}
+// 친구 소개 쪽(레드 셀 반대 2 · 규칙 69) — 소개 쪽 글 · 링크 미리보기 글 · 제목에 「급등」 0(급등 목록을 소개 · 상품권 길에 띄우지 않음)
+{
+  const ctx = await b.newContext({viewport: {width: 390, height: 844}, reducedMotion: 'reduce'}), p = await ctx.newPage();
+  await p.goto(base + '/hello.html', {waitUntil: 'networkidle'});
+  const t = await p.evaluate(() => [document.title, document.body.innerText, ...[...document.querySelectorAll('meta[content]')].map(m => m.getAttribute('content'))].join('\n'));
+  screens++; numbers++;
+  if (t.includes('급등')) fail('친구 소개 쪽', '「급등」 — 소개 쪽에 급등 목록을 띄우지 않음(레드 셀 반대 2 · 규칙 69)');
   await ctx.close();
 }
 // (옛) 첫 화면 경주(움직임 켬) 검사는 2026-10-15 먹빛 첫 화면으로 지움 — 요즘 오르는 업종 줄은 위 먹빛 판정(차례 · 값 · 선 색 · 고리 · 금빛)이 봄 · 갈래 · 업종 화면 경주는 화면마다 판정

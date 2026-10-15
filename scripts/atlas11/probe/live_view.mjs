@@ -65,7 +65,7 @@ await step('36곳 없음', async () => { // 사장님 2026-10-13 06:45 「매수
   r.seen += r.seenUp;
   const get = async u => { try { const x = await fetch(B + u + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)}); const t = await x.text(); return {status: x.status, json: /^\s*\{/.test(t), picks: /"picks"|매수 검토/.test(t)}; } catch { return {status: 0}; } };
   const pick = await get('/atlas/data/pick36.json'), range = await get('/atlas/data/range.json'); // 없는 파일은 404 또는 첫 화면 글(되돌려 보내기) — 36곳 자료(JSON)만 아니면 됨
-  out.no36 = {...r, pick36: pick, range, ok: (r.hash === '#/' || r.hash === '') && r.tabs.length === 3 && r.seen === 0 && !pick.json && !pick.picks && range.status === 200 && range.json && !range.picks};
+  out.no36 = {...r, pick36: pick, range, ok: (r.hash === '#/' || r.hash === '') && r.tabs.length === 4 && /^급등( \d+)?$/.test(r.tabs[3] ?? '') && r.seen === 0 && !pick.json && !pick.picks && range.status === 200 && range.json && !range.picks};
   if (!out.no36.ok) out.errors.push('36곳 없음: ' + JSON.stringify(out.no36).slice(0, 160));
 });
 await step('줄 선 그래프', async () => { // 사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」
@@ -217,6 +217,19 @@ await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱
   out.co7 = {...r, ok: !!core.co7 && core.co7 === mk.n && r.rangeOthers === r.others && r.coFile && (!ind || ind.n === 1 || r.rowHref === '#/c/' + code) && S.length === 5 && S.every((s2, k) => s2.hash === (k ? `#/c/${code}/${['past', 'rivals', 'grow', 'range'][k - 1]}` : '#/c/' + code) && s2.step === want(k + 3))
     && S[0].chip && S[0].why && S[3].notYet && S[4].model && S[4].dirs === rg.dirs.length && r.oldX === '#/c/' + code};
   if (!out.co7.ok) out.errors.push('모든 회사 7단: ' + JSON.stringify(out.co7).slice(0, 300));
+});
+await step('급등 탭', async () => { // 규칙 69(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 …」) — 올라간 자료와 화면이 같은지 · 1등 빛 0 · 그림이 첫 화면 안 · 접은 칸까지 기관 이름 0
+  const S = await (await fetch(B + '/atlas/data/surge.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)})).json();
+  await page.goto(B + '/?v=' + Date.now() + '#/surge', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view .svr svg', {timeout: 30000}); await page.waitForTimeout(1500);
+  await shot('p29-surge-top');
+  const g = await page.evaluate(() => { const s = document.querySelector('#view .svr svg')?.getBoundingClientRect(), t = document.querySelector('.tabbar')?.getBoundingClientRect();
+    document.querySelectorAll('#view details').forEach(d => { d.open = true; });
+    return {h1: document.querySelector('#view h1')?.textContent ?? '', tab: document.querySelector('#tabSurge')?.textContent ?? '', win: document.querySelectorAll('#view .row.win').length, inView: !!(s && t && s.bottom <= t.top),
+      rows: [...document.querySelectorAll('#view .board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(x => x.querySelector('.nm')?.firstChild?.textContent ?? ''), text: document.querySelector('#view').innerText}; });
+  await page.evaluate(() => { const e = document.querySelector('#view .sv-board'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(500); await shot('p30-surge-rows');
+  out.surge = {version: S.version, kind: S.kind, n: S.n, asOf: S.asOf, provisional: S.provisional, kst: S.kst, h1: g.h1, tab: g.tab, win: g.win, inView: g.inView, rowsSame: JSON.stringify(g.rows) === JSON.stringify(S.members.map(m => m.n)), noAgency: !/CIA|씨아이에이|정보기관|중앙정보국/i.test(g.text)};
+  out.surge.ok = S.version === 'sv-v1' && g.h1 === `급등 ${S.n}곳` && g.tab === `급등 ${S.n}` && g.win === 0 && g.inView && out.surge.rowsSame && out.surge.noAgency;
+  if (!out.surge.ok) out.errors.push('급등 탭: ' + JSON.stringify(out.surge).slice(0, 300));
 });
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');

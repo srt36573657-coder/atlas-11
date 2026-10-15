@@ -1,0 +1,23 @@
+{
+ "schema": "atlas-new-surge-verify-1",
+ "made": "2026-10-15T08:27:04.130Z",
+ "checks": 868,
+ "bad": 0,
+ "first": [],
+ "seen": {
+  "kind": "first",
+  "asOf": "2026-10-13",
+  "provisional": false,
+  "files": 0,
+  "lastFile": null,
+  "all": 2557,
+  "clean": 2349,
+  "liquid": 1584,
+  "picked": 36,
+  "in": 0,
+  "out": 0,
+  "wait": 0,
+  "strict": false,
+  "digest": "e6caace8a08903d8"
+ }
+}
