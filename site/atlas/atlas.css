@@ -1512,3 +1512,49 @@ html.en body { word-break: normal; overflow-wrap: break-word; }
 @media (max-width: 430px) { .band-in { gap: 6px; } .brand b { letter-spacing: .1em; margin-right: -.1em; } }
 @media (max-width: 374px) { .find { flex: 0 0 44px; padding: 0; justify-content: center; } .find span { display: none; } .brand { margin-right: auto; } }
 @media (max-width: 430px) { html.en .find { flex: 0 0 44px; padding: 0; justify-content: center; } html.en .find span { display: none; } html.en .brand { margin-right: auto; } }
+/* 영어 탭(2026-10-16) — 긴 이름 · 짧은 이름 · 좁으면 수를 뺌(글씨는 21px 그대로) */
+html.en .tabbar .ts { display: none; }
+@media (max-width: 430px) { html.en .tabbar .tabn { display: none; } html.en .tabbar a, html.en .tabbar button { padding: 0 2px; } }
+@media (max-width: 359px) { html.en .tabbar .tl { display: none; } html.en .tabbar .ts { display: inline; } }
+
+/* ════ 조건 찾기 탭(사장님 2026-10-15(싱가포르) 23:53 「엘셀처럼 찾는 조건을 3가지」 · 23:54 「가」 · 규칙 72) ════
+   칸 셋(큰 단추 · 누르면 고르는 판) · 깔때기 수 한 줄 · 「남은 곳」 숫자 하나만 크게 · 결과 줄 = 이름 | 5일 % · 업종 · 몸값 n등 · 금빛 = 고른 곳 · ? 만 */
+.vw .cd-time { margin: 2px 0 0; }
+.vw .cd-slots { display: grid; gap: 8px; margin: 12px 0 0; }
+.vw button.cd-slot { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; column-gap: 10px; min-height: 52px; padding: 8px 12px; border: 1px solid var(--m4-line); border-radius: 4px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.vw button.cd-slot:hover { border-color: var(--sub); }
+.vw button.cd-slot.zero { border-color: var(--ink); }
+.vw .cd-n { font-size: 1.15rem; color: var(--sub); }
+.vw .cd-t { display: grid; min-width: 0; }
+.vw .cd-k { color: var(--sub); line-height: 1.2; }
+.vw .cd-o { font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
+.vw .cd-c { font-weight: 700; white-space: nowrap; }
+.vw .cd-chev { font-style: normal; color: var(--sub); }
+.vw .cd-flow { margin: 4px 0 0; color: var(--sub); }
+.vw .cd-ex { margin: 4px 0 0; }
+.vw .cd-btn { min-height: 44px; padding: 0 14px; margin: 8px 8px 0 0; border: 1px solid var(--m4-line); border-radius: 999px; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.vw .cd-btn:hover { border-color: var(--sub); }
+.vw .cd-big { margin: 12px 0 0; font-size: 1.1rem; line-height: 1.2; }
+.vw .cd-big > b { font-size: 2.2rem; font-weight: 300; margin: 0 2px; }
+.vw .cd-ud { white-space: nowrap; }
+.vw .cd-how { margin: 2px 0 6px; }
+.vw .cd-none { margin: 12px 0 0; font-weight: 700; }
+.vw .cd-rows { display: grid; margin: 4px 0 0; }
+.vw a.cd-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'nm v' 'sub sub'; align-items: center; column-gap: 12px; min-height: 64px; padding: 8px 0; border-bottom: 1px solid var(--m4-soft); color: var(--ink); text-decoration: none; }
+.vw a.cd-row .nm { grid-area: nm; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.vw a.cd-row .nm.gold { color: var(--gold); }
+.vw a.cd-row > .cd-v { grid-area: v; white-space: nowrap; } .vw a.cd-row .cd-5 { color: var(--sub); }
+.vw a.cd-row .cd-sub { grid-area: sub; color: var(--sub); min-width: 0; overflow-wrap: anywhere; }
+.vw a.cd-row .cd-pk { color: var(--gold); }
+.vw .cd-more { margin-top: 12px; }
+.vw details.cd-q > summary { color: var(--gold); }
+.vw .cd-qr { margin: 6px 0; }
+.vw .cd-diff { margin: 10px 0 0; }
+.cd-ops { display: grid; gap: 10px; padding-top: 14px; }
+.cd-ops button.cd-op { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 10px; min-height: 64px; padding: 8px 14px; border: 1px solid var(--hair2); border-radius: 4px; background: transparent; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.cd-ops button.cd-op:hover, .cd-ops button.cd-op:active { background: var(--card3); }
+.cd-ops button.cd-op[aria-current="true"] { border-color: var(--ink); }
+.cd-ops .cd-ot { display: grid; min-width: 0; }
+.cd-ops .cd-ot b { font-weight: 700; overflow-wrap: anywhere; }
+.cd-ops .cd-od { color: var(--sub); overflow-wrap: anywhere; }
+.cd-ops .cd-oc { white-space: nowrap; font-weight: 700; }
