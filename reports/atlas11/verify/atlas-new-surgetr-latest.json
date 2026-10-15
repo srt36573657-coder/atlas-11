@@ -1,0 +1,33 @@
+{
+ "ok": true,
+ "checks": 7937,
+ "bad": [],
+ "seen": {
+  "asOf": "2026-10-13",
+  "last": "2026-10-13",
+  "provisional": false,
+  "files": 0,
+  "lastFile": null,
+  "records": 1,
+  "recordsUsed": 0,
+  "first": null,
+  "seedDays": 17,
+  "rosterDays": 17,
+  "opened": 411,
+  "N": 403,
+  "a": 165,
+  "b": 237,
+  "k": 8,
+  "n10": 4,
+  "m10": 3,
+  "U": 283711,
+  "T": 1029205,
+  "cases": 411,
+  "dup": 0,
+  "alerts": [],
+  "size": [
+   51101,
+   75309
+  ]
+ }
+}

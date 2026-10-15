@@ -62,7 +62,7 @@ function load(siteDir, dataDir) {
   const opt = f => { try { return J(f); } catch { return null; } };
   const S = {siteDir, dataDir: D, js: fs.readFileSync(path.join(A, 'atlas.js'), 'utf8'), css: fs.readFileSync(path.join(A, 'atlas.css'), 'utf8'), html: fs.readFileSync(path.join(A, 'index.html'), 'utf8'),
     fontsCss: fs.existsSync(path.join(A, 'fonts.css')) ? fs.readFileSync(path.join(A, 'fonts.css'), 'utf8') : '',
-    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), upd: opt('updates.json'), surge: opt('surge.json'), surgecal: opt('surgecal.json'), co: {}, coBytes: {}, files: {}}; // surge = 급등 탭(2026-10-15 14:27 · 규칙 69) · surgecal = 급등 달력 · 따라가기(16:34 · 16:40)
+    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), upd: opt('updates.json'), surge: opt('surge.json'), surgecal: opt('surgecal.json'), tr: opt('surgetr.json'), trc: opt('surgetr-case.json'), co: {}, coBytes: {}, files: {}}; // tr · trc = 달력 탭(2026-10-15 19:28 · 20:51 · 규칙 70 — 날짜별 선택 · 끝까지 따라가기) // surge = 급등 탭(2026-10-15 14:27 · 규칙 69) · surgecal = 급등 달력 · 따라가기(16:34 · 16:40)
   // 모든 회사(2026-10-14 「나」) — 갈래 · 업종 · 회사 흐름 = 모든 회사 · core.mkt 가 있으면 mkt.json 은 꼭 있어야 함(없으면 J 가 멈춤 → 점검 실패)
   S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null;
   const coDir = path.join(D, 'co');
@@ -80,6 +80,7 @@ function load(siteDir, dataDir) {
 const isPk = (S, c) => (S.mk ? !!S.mk[c]?.p : !!S.comp.companies[c]);
 const co7Of = S => !!(S.core?.co7 && S.mk);
 const coHref = (S, c) => (co7Of(S) || isPk(S, c) ? '#/c/' : '#/x/') + c;
+const trOk = T => !!(T && T.version === 'tr-v1' && /^\d{4}-\d{2}-\d{2}$/.test(String(T.asOf ?? '')) && Array.isArray(T.days) && Array.isArray(T.cases) && Array.isArray(T.dates) && T.days.every(x => /^\d{4}-\d{2}-\d{2}/.test(String(x?.d ?? '')))); // atlas.js trOk 와 같은 뜻(달력 탭 · 규칙 70)
 const svCalOk = K => !!(K && K.version === 'sk-v1' && Array.isArray(K.dates) && K.dates.length && K.dates.every(d => /^\d{4}-\d{2}-\d{2}/.test(String(d ?? ''))) && Array.isArray(K.days) && Array.isArray(K.track)); // atlas.js svCalOk 와 같은 뜻
 
 // ── 모든 글(자료) — [어디, 키, 글] · 고유 이름은 표시 ──
@@ -106,7 +107,7 @@ export function pickMovesX(S) {
 // ═════════ 🍎 애플 — 화면 길 지도(atlas.js 와 같은 링크 규칙) ═════════
 export function siteGraph(S) {
   const {core} = S, comp = S.comp.companies;
-  const TABS = ['#/', '#/list', '#/surge', '#/up', '#/info']; // 아래 탭 넷 + 맨 위 「?」 단추(index.html · 2026-10-13 06:45 옛 탭 하나 지움 · 2026-10-15 14:27 급등 탭 · 규칙 69)
+  const TABS = ['#/', '#/list', '#/surge', '#/up', '#/cal', '#/info']; // 2026-10-15 19:36 「가 로 해라」 = 아래 탭 다섯째 「달력」(규칙 70) // 아래 탭 넷 + 맨 위 「?」 단추(index.html · 2026-10-13 06:45 옛 탭 하나 지움 · 2026-10-15 14:27 급등 탭 · 규칙 69)
   const hrefInd = i => (i.n === 1 ? coHref(S, i.members[0]) : '#/i/' + encodeURIComponent(i.name));
   const nodes = new Map();
   const add = (r, links, step = null, co = null, allow = null) => nodes.set(r, {links: [...links.filter(Boolean), ...TABS], step, co, allow});
@@ -130,6 +131,13 @@ export function siteGraph(S) {
   add('#/surge', [...CHIPS, ...(S.surge?.members ?? []).map(m => coHref(S, m.c)), ...(S.surge?.out ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c)), ...(S.surge?.cutList ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c)), ...svCalL('sv')], null, null, 1); // 줄 · 나간 곳 · +15% 넘었지만 뺀 곳(접은 칸) — 모두 그 회사 3단
   for (const b of ['b10', 'b20', 'b30', 'b40']) { const BS = S.surge?.bands?.version === 'sb-v1' ? S.surge.bands : null, B = BS?.[b], io = B && BS.kind === 'pick' && !S.surge.carry ? [...B.in, ...B.move.filter(x => x.to === b), ...B.out, ...B.move.filter(x => x.from === b)] : [];
     add('#/surge/' + b.slice(1), [...CHIPS, ...(B ? B.members.map(m => coHref(S, m.c)) : []), ...io.map(x => coHref(S, x.c)), ...svCalL(b)], null, null, 2); } // 칸은 탭에서 한 번 더(2번)
+  // 달력 탭(규칙 70 — atlas.js viewCal · trDay · viewCalCase 와 같은 길) — 금빛 줄(새로 생긴 것 · 그 종목 파일) · 모든 날의 줄(넷 밖 · 다섯 날 밖은 접은 칸) · 이동 · 탈락 접은 칸 → 종목 파일 → 회사 3단
+  const TR = trOk(S.tr) ? S.tr : null;
+  if (TR) {
+    const calL = [...(TR.alerts ?? []).flatMap(a => a.cs ?? (a.top?.c ? [a.top.c] : [])), ...TR.days.flatMap(x => [...x.sel, ...x.mv.map(e => e[0]), ...x.out, ...x.re.map(e => e[0])])].map(c => '#/cal/' + c); // 모든 날의 줄 · 이동 · 탈락(새 다섯 날 밖 · 넷 밖은 접은 칸 — 줄은 처음부터 있음)
+    add('#/cal', calL, null, null, 1);
+    for (const r of TR.cases) if (S.trc?.cases?.[r[0]]) add('#/cal/' + r[0], ['#/cal', coHref(S, r[0])], null, null, 2);
+  } else add('#/cal', [], null, null, 1);
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);
   for (const i of core.industries) if (i.n > 1) add('#/i/' + encodeURIComponent(i.name), ['#/', '#/g/' + i.g, ...i.members.map(c => coHref(S, c))], 2, null, 2);
   // 밖 칸(모든 회사 가운데 고른 곳이 아닌 회사 · 2026-10-14 「나」) — 판(창)이지만 「3번이면 회사」를 보려고 길 지도에 넣음 · 처음으로 · 그 업종(atlas.js showInfo 업종 고리)
@@ -353,6 +361,13 @@ function claudeLens(S, market) {
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],
     ['36곳 없음 — 화면 코드 · 자료에 「36곳 · 매수 검토」 · 36곳 화면 · 탭 · 자료 파일 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)', () => no36],
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
+    ['달력 탭(규칙 70) — 판 tr-v1 · 답 한 줄 수 = 줄 셈(N · a · b · k · 10곳 중 n곳) · 금빛 줄 두 줄 안 · 종목 파일 짝 · 뽑힌 날이 창 안 · 값은 뽑힌 날부터 마지막 날까지만 · 속 상태 · 기관 이름 · 관심 기록 없음', () => {
+      const T = S.tr; if (!T) return true; if (!trOk(T) || !S.trc?.cases) return false;
+      const R = T.cases, N = R.filter(r => r[6] !== 'n').length, a = R.filter(r => r[6] === 'u').length, b = R.filter(r => r[6] === 'd').length, k = R.filter(r => r[6] === 'n').length;
+      if (T.N !== N || T.a !== a || T.b !== b || T.k !== k || (N && T.n10 !== Math.floor((20 * a + N) / (2 * N))) || (T.alerts ?? []).length > 2) return false;
+      if (Object.keys(S.trc.cases).length !== R.length) return false;
+      for (const r of R) { const K = S.trc.cases[r[0]], i0 = T.dates.indexOf(r[2]); if (!K || i0 < 0 || K.p.length !== T.dates.length - i0) return false; }
+      return !/CIA|씨아이에이|정보기관|중앙정보국|pending|recentOut|confirms|surge-hide|cal-star/i.test(JSON.stringify([T, S.trc])); }],
     ['급등 네 칸 · 달력 · 며칠 뒤(16:28 · 16:34 · 16:40) — 칸마다 자리 수 안 · 칸끼리 안 겹침 · 달력은 25거래일 안 · 따라간 값은 처음 든 날 뒤 날만(앞날 없음) · 속 상태 · 기관 이름 · 「관심 없음」 기록이 공개 자료에 없음', () => {
       const BS = S.surge?.bands, K = S.surgecal; if (!BS && !K) return true;
       if (BS) { if (BS.version !== 'sb-v1') return false; const seen = new Set(); for (const b of ['b10', 'b20', 'b30', 'b40']) { const B = BS[b]; if (!B || B.members.length > BS.cap || B.n !== B.members.length) return false; for (const m of B.members) { if (seen.has(m.c)) return false; seen.add(m.c); } } }
@@ -401,7 +416,7 @@ export function routeRunner(js) {
   const rec = k => (...x) => { calls.push([k, ...x.slice(1)]); };
   const box = {D: {core: {}}, location: {hash: '#/', search: '', replace: u => calls.push(['replace', u])}, freshCheck() {}, showFind: () => calls.push(['find']), showInfo: x => calls.push(['info', x]), needNames: async () => {}, needMkt: async () => {},
     $: () => el(), document: {body: {dataset: {}}, title: ''}, lastMain: '', routeSeq: 0, chartDraw: null, h: () => el(), MO: {cat: () => el(), catSleep: () => { calls.push(['error-screen']); return el(); }}, window: {scrollTo() {}}, console: {error() {}},
-    viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewSurge: rec('surge'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'),
+    viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewSurge: rec('surge'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'), viewCal: rec('cal'), viewCalCase: rec('calc'), calLeave() {}, calBack() {},
     decodeURIComponent, encodeURIComponent, Promise, Object, String, Array};
   vm.createContext(box);
   vm.runInContext(js.slice(a, b) + '\n;globalThis.__route = route;', box);
@@ -410,7 +425,7 @@ export function routeRunner(js) {
 const PAY = ['<script>alert(1)</script>', '"><img src=x onerror=alert(1)>', 'javascript:alert(1)', "'", '"', '%', '%%', '%E0%A4%A', '%ZZ', '%u0041', '%C0%AF', '%00', '‮', '\u0000', '\n', '../', '..%2F', '%2e%2e%2f', '//evil.example', 'https://evil.example', '#', '?', '&', '\\', '%F0%9F%98%80', '😀', '가나다', 'ㄱ', ' ', '%20'];
 function fuzzHash(rnd, S) {
   const pick = a => a[(rnd() * a.length) | 0];
-  const heads = ['#/', '#/c/', '#/g/', '#/i/', '#/x/', '#/find', '#/info', '#/list', '#/36', '#/up', '#/surge', '#/time', '', '#', '#//', '#/C/', '#/c//', '#/stocks', '#/road', '#/x//', '#/i//', '#/g/%'];
+  const heads = ['#/', '#/c/', '#/g/', '#/i/', '#/x/', '#/find', '#/info', '#/list', '#/36', '#/up', '#/surge', '#/cal', '#/cal/', '#/time', '', '#', '#//', '#/C/', '#/c//', '#/stocks', '#/road', '#/x//', '#/i//', '#/g/%'];
   const bodies = [() => pick(S.codes), () => String((rnd() * 1e6) | 0).padStart(6, '0'), () => pick(S.core.groups).id, () => pick(S.core.industries).name, () => encodeURIComponent(pick(S.core.industries).name),
     () => encodeURIComponent(encodeURIComponent(pick(S.core.industries).name)), () => pick(PAY), () => String.fromCharCode((rnd() * 0xffff) | 0), () => 'a'.repeat(1 + ((rnd() * 3000) | 0)), () => pick(['/past', '/rivals', '/grow', '/range', '/x', '/', '//past'])];
   let s = pick(heads); const n = 1 + ((rnd() * 4) | 0); for (let k = 0; k < n; k++) s += pick(bodies)();
@@ -423,6 +438,7 @@ function ciaLens(S, market) {
   const guard = VIEWS.map(f => { const a = S.js.indexOf(`function ${f}(`); const head = a < 0 ? '' : S.js.slice(a, a + 400); return [f, /return viewMissing\(/.test(head)]; });
   // 왕복 — 화면이 만드는 주소(이름은 encodeURIComponent)를 길 함수에 넣으면 같은 대상이 나오나
   const trips = [['#/surge', ['surge', 'sv']], ['#/surge/10', ['surge', 'b10']], ['#/surge/20', ['surge', 'b20']], ['#/surge/30', ['surge', 'b30']], ['#/surge/40', ['surge', 'b40']], ['#/surge/50', ['missing']], ['#/surge/10/', ['missing']], // 급등 다섯 칸(16:28)
+    ['#/cal', ['cal']], ['#/cal/abc', ['missing']], ['#/cal/0123456', ['missing']], ...(trOk(S.tr) ? S.tr.cases.slice(0, 200).map(r => ['#/cal/' + r[0], ['calc', r[0]]]) : []), // 달력 탭 · 종목 파일(규칙 70)
     ...S.core.groups.map(g => ['#/g/' + g.id, ['g', g.id]]), ...S.core.industries.filter(i => i.n > 1).map(i => ['#/i/' + encodeURIComponent(i.name), ['i', i.name]]),
     ...S.coCodes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
     ...S.names.rows.filter(r => r.s !== 'in').slice(0, 2000).map(r => ['#/x/' + r.c, ['info', r.c]])];
@@ -457,7 +473,7 @@ function ciaLens(S, market) {
   const heads = [['default-src \'self\'', /default-src 'self'/], ['script-src \'self\'(안에 박은 코드 · eval 막음)', /script-src 'self'(;|$)/m], ['object-src \'none\'', /object-src 'none'/], ['frame-ancestors \'none\'(남의 화면에 못 끼움)', /frame-ancestors 'none'/],
     ['base-uri · form-action \'self\'', /base-uri 'self'.*form-action 'self'/], ['X-Frame-Options: DENY', /X-Frame-Options: DENY/], ['X-Content-Type-Options: nosniff', /X-Content-Type-Options: nosniff/],
     ['Referrer-Policy', /Referrer-Policy: strict-origin-when-cross-origin/], ['Permissions-Policy(카메라 · 마이크 · 위치 막음)', /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/], ['unsafe-inline · unsafe-eval 없음', null]];
-  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'range.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5, 'mkt.json': 2e6, 'surge.json': 3e5, 'surgecal.json': 1.5e6}; // 달력 · 따라가기(25거래일 · 지금 약 13KB — 날마다 쌓여도 이 안) // 급등 탭(규칙 69 · 36곳 줄 + 빠진 곳 + 그림 칸) // 모든 회사 자료(2026-10-14 「나」 · 지금 약 0.47MB)
+  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'range.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5, 'mkt.json': 2e6, 'surge.json': 3e5, 'surgecal.json': 1.5e6, 'surgetr.json': 1.5e5, 'surgetr-case.json': 4e5}; // 달력 · 따라가기(25거래일 · 지금 약 13KB — 날마다 쌓여도 이 안) // 급등 탭(규칙 69 · 36곳 줄 + 빠진 곳 + 그림 칸) // 모든 회사 자료(2026-10-14 「나」 · 지금 약 0.47MB)
   const sizes = [...Object.entries(S.files).map(([f, b]) => [f, b, LIM[f] ?? 1e6]), ...Object.entries(S.coBytes).map(([c, b]) => ['co/' + c + '.json', b, 2.5e5]), ['co 파일 수', Object.keys(S.coBytes).length, null]];
   const codeOk = c => /^[0-9A-Z]{6}$/.test(c);
   return {key: 'cia', name: 'CIA', what: '뚫리거나 새는 곳이 없나 — 이상한 주소 넣어 보기 · 비밀 · 바깥 주소 · 끼운 코드', route: R, kinds: [

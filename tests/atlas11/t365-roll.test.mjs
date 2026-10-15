@@ -126,6 +126,9 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   assert.equal(rep.market.asOf, next); assert.ok(rep.market.lines.length >= 3); assert.match(rep.market.lines[0], /곳 오름 · [\d,]+곳 내림/); assert.match(rep.market.lines[0], /모든 회사 [\d,]+곳 가운데/); // 판독 mr-v2 = 모든 회사(2026-10-14 「나」 · 1,000 넘으면 쉼표)
   assert.equal(rep.inspect.fail, 0, JSON.stringify(rep.inspect.lenses.map(l => l.first))); assert.deepEqual(rep.inspect.lenses.map(l => [l.key, l.n]), [['apple', 20000], ['google', 20000], ['claude', 20000], ['cia', 20000]]);
   assert.ok(rep.steps.some(s => s.name === '네 눈 점검' && s.code === 0));
+  // 달력 탭(2026-10-15 · 규칙 70) — 회차마다 셈 → 따로 세기 틀림 0 → 올라가는 자료에 surgetr.json · surgetr-case.json
+  assert.equal(rep.cal?.version, 'tr-v1', JSON.stringify(rep.cal)); assert.match(rep.verify.cal, /"bad":0/); assert.ok(rep.steps.some(s => s.name === '달력 따로 세기' && s.code === 0));
+  { const T = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/surgetr.json'), 'utf8')); assert.equal(T.asOf, next); assert.equal(T.provisional, true); assert.ok(fs.existsSync(path.join(dist, 'atlas/data/surgetr-case.json'))); }
   const ins = fs.readdirSync(path.join(tmp, 'inspect')); assert.deepEqual(ins, files);
   assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'inspect', ins[0]), 'utf8')).lenses.length, 4);
   assert.deepEqual(upd.records[0].market.lines, rep.market.lines); assert.equal(upd.records[0].inspect.fail, 0); assert.equal(upd.slots.join(), '10:00,12:00,14:00,18:00');

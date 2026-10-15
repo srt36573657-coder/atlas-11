@@ -29,7 +29,7 @@ export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
 const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json', 'mkt.json']; // mkt.json = 모든 회사(2026-10-14 「나」 — 업종 화면 회사 줄)
-const OPT_FILES = ['time.json', 'grow.json', 'home.json', 'surge.json', 'surgecal.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) · 급등 탭(2026-10-15 14:27 · 규칙 69) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
+const OPT_FILES = ['time.json', 'grow.json', 'home.json', 'surge.json', 'surgecal.json', 'surgetr.json', 'surgetr-case.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) · 급등 탭(2026-10-15 14:27 · 규칙 69) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 // 급등 탭(사장님 2026-10-15 14:27(싱가포르) 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 모아높는곳이다 기준은 cia라면 어떻게 할것인지 에이전트 총 사용해서 하고
 //   하루에 4번 업데이트할때미다 그때 선택도 하고 탈락도 시켜라」 · 규칙 69) — 고른 판 기록은 새 파일만(reports/atlas11/t365/surge/<UTC>.json · 올라간 고르기만)
 export const SURGE_DIR = 'reports/atlas11/t365/surge';
@@ -121,7 +121,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   const kst = kstOf(now);
   const rep = {schema: 'atlas-t365-update-1', at: now.toISOString(), kst, slot: slotFor(kst, reason), reason, ci, version: ACT.version, result: null, served: 'stored', why: null,
     fetch: null, asOf: null, base: null, provisional: null, roll: null, digest: null, members: null, in: null, out: null, counts: null, tiers: null, kinds: null, stay: null, ruleChanged: null, prevVersion: null, buffer: null,
-    all: null, top: null, range: null, market: null, inspect: null, home: null, homeFetch: null, surge: null, verify: {}, steps: []};
+    all: null, top: null, range: null, market: null, inspect: null, home: null, homeFetch: null, surge: null, cal: null, verify: {}, steps: []};
   const surgeDir = recDir ? path.join(path.dirname(recDir), 'surge') : path.join(root, SURGE_DIR); // 급등 고르기 기록(규칙 69) — 깃허브 실행기 = reports/atlas11/t365/surge · 시험 = 임시 폴더
   const sRecs = readSurge(surgeDir), sLast = sRecs.at(-1) ?? null;
   let surgeOut = null, surgeCal = null; // 이번에 고른 급등 판(올라가면 기록 파일로) · 그 달력 글
@@ -222,6 +222,26 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
       } else {
         await fs.writeFile(sf, JSON.stringify(surgeCarry(sLast, sRecs, again ? '같은 업데이트를 한 번 더 돌려 앞에 고른 그대로예요' : null)) + '\n'); await calCarry();
         rep.surge = {kind: 'carry', from: sLast.at, fromKst: sLast.kst, fromSlot: sLast.slot ?? null, digest: sLast.payload.digest, ...(again ? {why: '같은 업데이트 두 번째'} : {})};
+      }
+    }
+    // 달력 탭(사장님 2026-10-15 19:28 · 20:51 「추적하는 시스탬」 · 21:24 「가 로 해」 · 규칙 70) — 올라간 네 칸 기록(sb-v1) + 이번에 새로 고른 판 + 일봉으로 처음부터 다시 엮음
+    //   셈 surgetr.py(tr-v1) → 따로 세기 surgetr_verify.mjs(노드 · 결정표만 보고 씀) 틀림 0 일 때만 · 멈추면 지금 사이트 것 → 저장소 바탕 것 그대로(없으면 없음 — 화면은 「?」) · 사이트의 다른 자료는 계속
+    {
+      const trIn = path.join(tmp, 'surgetr-records.json');
+      const trRecs = [...sRecs, ...(surgeOut ? [surgeOut] : [])].filter(r => r?.payload?.bands?.version === 'sb-v1').map(r => ({asOf: r.payload.asOf, provisional: !!r.payload.provisional, kst: r.payload.kst ?? r.kst ?? null, slot: r.payload.slot ?? r.slot ?? null, bands: r.payload.bands}));
+      try {
+        await fs.writeFile(trIn, JSON.stringify({records: trRecs}));
+        run('달력 셈', 'python3', ['scripts/atlas11/t365/surgetr.py', now0, out, '--records', trIn, '--at', now.toISOString(), '--slot', rep.slot ?? ''], env2);
+        const tv = run('달력 따로 세기', 'node', ['scripts/atlas11/t365/surgetr_verify.mjs', out, trIn, path.join(tmp, 'tv.json')], env2);
+        rep.verify.cal = tail(tv.stdout);
+        const TR = JSON.parse(await fs.readFile(path.join(out, 'surgetr.json'), 'utf8'));
+        rep.cal = {version: TR.version, asOf: TR.asOf, provisional: TR.provisional, records: trRecs.length, cases: TR.cases.length, N: TR.N, a: TR.a, b: TR.b, k: TR.k, n10: TR.n10, m10: TR.m10, alerts: (TR.alerts ?? []).map(x => [x.kind, x.n])};
+      } catch (e) {
+        rep.cal = {kind: 'fail', why: String(e?.message ?? e).slice(0, 300)};
+        for (const f of ['surgetr.json', 'surgetr-case.json']) {
+          await fs.rm(path.join(out, f), {force: true});
+          try { if (!useLive) throw Error('no live'); await fs.writeFile(path.join(out, f), await getLive(f)); } catch { try { await fs.copyFile(path.join(target, f), path.join(out, f)); } catch { /* 없으면 없음 */ } }
+        }
       }
     }
     // 회차 기록 — 고른 날 · 기준일 · 365곳 · 들고 난 곳 · 층 · 1등 갈래
