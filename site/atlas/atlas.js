@@ -51,7 +51,7 @@ const pctEl = (x, tag = 'b') => h(tag, {class: 'num ' + cls(x), text: pct(x)});
 /** 두 값이 한 자리로 같아 보이면 둘째 자리까지(+3.46% · +3.54% — 「같은데 못했다」로 헷갈리지 않게) */
 const pct2El = (x, y) => { if (x == null || y == null || pct(x) !== pct(y) || Math.abs(x) >= 100) return pctEl(x); const v = Math.round(x * 100) / 100; return h('b', {class: 'num ' + cls(x), text: (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%'}); };
 // 그림 색은 atlas.css 의 색 이름(토큰)에서 읽음(구글팀 2026-10-11 13:29 「고급스럽게」: 색 이름은 한 곳) — 못 읽으면 같은 값
-const TOK0 = {up: '#F0506E', down: '#6EA0FF', gold: '#E9C46A', ink: '#EEF6F2', night: '#0C2824', mute: '#9BB6AC', violet: '#6CC7A8', 'violet-ink': '#9FE0C8'}; // 청자 밤(2026-10-12 10:53)
+const TOK0 = {up: '#FF5A65', down: '#5B96FF', gold: '#E9B949', ink: '#F2EFE8', night: '#0C0E12', mute: '#8E959F', sub: '#B0B5BD', violet: '#D9D4C9', 'violet-ink': '#D8DCE2', 'm4-soft': '#1C1F26', 'm4-line': '#272B34', 'm4-neu': '#6F7782'}; // 먹빛(2026-10-15 12:43 「모든 화면을 바꿔」 — atlas.css :root 와 같은 값 · 꾸밈 파일을 못 읽을 때만)
 function tok() { const s = getComputedStyle(document.documentElement), o = {}; for (const k of Object.keys(TOK0)) o[k] = s.getPropertyValue('--' + k).trim() || TOK0[k]; return o; }
 /** 숫자 카드 — 긴 숫자(+2,920%)가 카드 밖으로 넘치면 한 단 작게(애플팀: 넘치거나 잘리지 않게 · 숫자는 그대로) */
 function fitNums(box) { const go = () => { for (const b of box.querySelectorAll('b')) { b.classList.remove('fit'); if (b.scrollWidth > b.clientWidth + 1) b.classList.add('fit'); } }; go(); document.fonts?.ready.then(() => { if (box.isConnected) go(); }); }
@@ -59,9 +59,23 @@ function fitNums(box) { const go = () => { for (const b of box.querySelectorAll(
 function areaPath(arr, X, Y, by) { let d = '', seg = []; const flush = () => { if (seg.length) d += 'M' + X(seg[0]).toFixed(1) + ' ' + by.toFixed(1) + seg.map(i => 'L' + X(i).toFixed(1) + ' ' + Y(arr[i]).toFixed(1)).join('') + 'L' + X(seg[seg.length - 1]).toFixed(1) + ' ' + by.toFixed(1) + 'Z'; seg = []; }; arr.forEach((y, i) => { if (y == null) flush(); else seg.push(i); }); flush(); return d; }
 /** 기준선 위 빨강 · 아래 파랑 옅은 면(판판한 번짐 — 입체 아님) */
 function fadeDefs(defs, id, T, P, H, by) {
-  const gu = sv('linearGradient', {id: id + 'gu', gradientUnits: 'userSpaceOnUse', x1: 0, y1: P, x2: 0, y2: by}); gu.append(sv('stop', {offset: 0, 'stop-color': T.up, 'stop-opacity': 0.26}), sv('stop', {offset: 1, 'stop-color': T.up, 'stop-opacity': 0.02}));
-  const gd = sv('linearGradient', {id: id + 'gd', gradientUnits: 'userSpaceOnUse', x1: 0, y1: by, x2: 0, y2: H - P}); gd.append(sv('stop', {offset: 0, 'stop-color': T.down, 'stop-opacity': 0.02}), sv('stop', {offset: 1, 'stop-color': T.down, 'stop-opacity': 0.26}));
+  const gu = sv('linearGradient', {id: id + 'gu', gradientUnits: 'userSpaceOnUse', x1: 0, y1: P, x2: 0, y2: by}); gu.append(sv('stop', {offset: 0, 'stop-color': T.up, 'stop-opacity': 0.14}), sv('stop', {offset: 1, 'stop-color': T.up, 'stop-opacity': 0}));
+  const gd = sv('linearGradient', {id: id + 'gd', gradientUnits: 'userSpaceOnUse', x1: 0, y1: by, x2: 0, y2: H - P}); gd.append(sv('stop', {offset: 0, 'stop-color': T.down, 'stop-opacity': 0}), sv('stop', {offset: 1, 'stop-color': T.down, 'stop-opacity': 0.14}));
   defs.append(gu, gd);
+}
+/** 그림 눈금(2026-10-15 먹빛 예술 · 데이터 눈) — 첫 화면 시장 그림과 같은 꼴: 글은 그림 오른쪽 칸 · 가는 가로선 · 기준선은 점선
+ *  눈금 글 = 「좋은 수」(틀 값 — 위아래 여백을 더한 값 — 을 글로 쓰지 않음 · 옛 「105 · 76」은 실제 값이 아니었음) */
+const TSTEP = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000, 2000, 5000, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6];
+function niceTicks(lo, hi, max = 4) { let s = TSTEP.at(-1); for (const x of TSTEP) if ((hi - lo) / x <= max) { s = x; break; } const t = []; for (let a = Math.ceil(lo / s - 1e-9) * s; a <= hi + 1e-9; a += s) t.push(Math.round(a * 1000) / 1000); return t; }
+const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 21;
+const AXR = () => Math.round(remPx() * 3.05); // 오른쪽 눈금 칸 넓이 — 글씨 크기를 따라감(첫 화면 m4market padR 와 같음)
+function gutterAxis(svg, wrap, {ticks, Y, x0, x1, base, fmt}) {
+  const T = tok(), lab = h('div', {class: 'yr', 'aria-hidden': 'true'}), seen = new Set();
+  const one = (t, b) => { const y = Y(t); svg.append(sv('line', {x1: x0, x2: x1 + 6, y1: y.toFixed(1), y2: y.toFixed(1), stroke: b ? T.mute : T['m4-soft'], 'stroke-width': 1, 'stroke-dasharray': b ? '2 4' : null}));
+    const key = Math.round(y); if ([...seen].some(k => Math.abs(k - key) < 24)) return; seen.add(key); lab.append(st(h('span', {class: 'num', text: fmt(t)}), {top: (y - 11).toFixed(1) + 'px'})); };
+  if (base != null) one(base, true); // 기준선은 늘 그림(눈금 글이 겹치면 기준 글을 남김)
+  for (const t of ticks) if (base == null || Math.abs(t - base) > 1e-9) one(t, false);
+  wrap.append(lab);
 }
 const hairs = (svg, W, P, ys) => { const ink = tok().ink; for (const y of ys) svg.append(sv('line', {x1: P, x2: W - P, y1: y, y2: y, stroke: ink, 'stroke-opacity': 0.12, 'stroke-width': 1})); }; // 가는 눈금선 — 글 색(먹 · 흰빛)을 따라 옅게(2026-10-12 모래 달항아리 · 청자 밤)
 const gById = id => D.core.groups.find(g => g.id === id);
@@ -134,7 +148,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
       const d = v == null ? null : v - 100, s = d == null ? 0 : Math.min(1, Math.abs(d) / M);  // 값이 없는 날(거래정지 · 새 값 못 받음)은 「?」 · 막대 없음
       const R = rngOf(r), y0 = sy(100, R); if (r.b0.getAttribute('y1') !== y0) { r.b0.setAttribute('y1', y0); r.b0.setAttribute('y2', y0); }
       r.ln.setAttribute('d', lineTo(mode === 'cw' && r.it.cw ? r.it.cw : r.it.v, k, R)); r.ln.setAttribute('class', 'ln ' + cls(d)); void s;
-      r.val.textContent = pct(d); r.val.className = 'val num ' + cls(d);
+      r.val.textContent = pct(d); r.val.className = 'val num ' + (d == null ? 'q' : cls(d)); // 값이 없는 날 「?」 = 금빛(규칙 53 · 데이터 눈)
       if (r.pa) r.pa.setAttribute('d', lineTo(mode === 'cw' ? parent.cw : parent.v, k, R));
     }
     const order = rows.slice().sort((a, b) => (b.cur ?? -Infinity) - (a.cur ?? -Infinity) || 0);
@@ -184,40 +198,37 @@ function lineChart(host, {v, avg, label, noPick = false}) {
   host.textContent = '';
   const wrap = h('div', {class: 'lc'});
   host.append(wrap);
-  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 210, P = 10;
+  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 222, P = 10, PT = kPick != null ? 34 : 12, padR = AXR(); // 위 띠(PT) = 「고른 날」 글 자리 — 글이 선을 가리지 않게(데이터 눈)
   const vals = [...v, ...(avg || []), 100].filter(x => x != null);
   if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'q', text: `? 이 회사 ${C.days}거래일 값을 못 읽었습니다`})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 2; lo -= pad; hi += pad;
-  const X = i => P + i * (W - 2 * P) / (n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
+  const X = i => 4 + i * (W - 4 - padR) / (n - 1), Y = y => PT + (hi - y) * (H - PT - P) / (hi - lo);
   const id = 'lc' + (++lcN), T = tok();
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});
   const defs = sv('defs');
   const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(100)}));
   const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(100), width: W, height: H - Y(100)}));
-  defs.append(cu, cd); fadeDefs(defs, id, T, P, H, Y(100)); svg.append(defs);
-  hairs(svg, W, P, [P, H - P]); // 가로 가는 선 = 위 · 아래 끝(왼쪽 숫자 자리)
+  defs.append(cu, cd); fadeDefs(defs, id, T, PT, H, Y(100)); svg.append(defs);
+  gutterAxis(svg, wrap, {ticks: niceTicks(lo, hi), Y, x0: 4, x1: W - padR, base: 100, fmt: String}); // 눈금 = 기준일 100 과 같은 단위(「9월 9일 = 100」) · 100 은 점선
   const ad = areaPath(v, X, Y, Y(100));
   svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1}));
-  if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: P - 4, y2: H - P + 4, stroke: T.gold, 'stroke-width': 2}));
+  if (kPick != null) svg.append(sv('line', {x1: X(kPick), x2: X(kPick), y1: PT - 4, y2: H - P + 4, stroke: T.gold, 'stroke-width': 2}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 3, 'stroke-dasharray': '0.1 6', 'stroke-linecap': 'round'}));
+  if (avg) svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T.mute, 'stroke-width': 1.5, 'stroke-dasharray': '4 3', 'stroke-linecap': 'round'})); // 업종 평균 = 회색 점선(줄 선 · 범례와 같은 꼴)
   const d = path(v);
-  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
-  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
   const lastK = v.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
-  svg.append(sv('circle', {cx: X(lastK), cy: Y(v[lastK]), r: 5.5, fill: v[lastK] >= 100 ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
-  const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2});
+  svg.append(sv('circle', {cx: X(lastK), cy: Y(v[lastK]), r: 4.5, fill: v[lastK] >= 100 ? T.up : T.down, stroke: T.night, 'stroke-width': 2}));
+  const cx = sv('line', {y1: PT, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5, fill: T.ink, stroke: T.night, 'stroke-width': 2});
   cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
-  wrap.append(svg);
-  const yt = h('span', {class: 'yl num', text: Math.round(hi)}), yb = h('span', {class: 'yl num', text: Math.round(lo)});
-  yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
+  wrap.prepend(svg);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
-  if (kPick != null) { const pick = h('span', {class: 'yl', text: '고른 날'}); pick.style.top = '0'; pick.style.left = Math.min(W - 80, Math.max(0, X(kPick) - 74)) + 'px'; wrap.append(pick); }
+  if (kPick != null) { const pick = h('span', {class: 'yl', text: '고른 날'}); pick.style.top = '0'; wrap.append(pick); const pw = pick.offsetWidth || 76; pick.style.left = Math.max(0, Math.min(W - pw, X(kPick) - pw - 6)) + 'px'; } // 금빛 세로선 왼쪽 위 띠 — 넓이를 재어 자리(글씨가 커져도 선을 덮지 않게 · 장인 눈 L4)
   wrap.append(h('div', {class: 'ax'}, h('span', {text: md(C.dates[0]) + ' = 100'}), h('span', {text: md(C.dates[n - 1])})));
-  const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - P) / ((W - 2 * P) / (n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (v[i] == null) return;
+  const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - 4) / ((W - 4 - padR) / (n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (v[i] == null) return;
     cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('visibility', 'visible'); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(v[i])); dot.setAttribute('visibility', 'visible');
-    tip.hidden = false; tip.textContent = md(C.dates[i]) + ' · ' + pct(v[i] - 100); tip.style.left = Math.min(W - 80, Math.max(80, X(i) * r.width / W)) + 'px'; };
+    tip.hidden = false; tip.textContent = md(C.dates[i]) + ' · ' + pct(v[i] - 100); tip.style.left = Math.min(r.width - 80, Math.max(80, X(i) * r.width / W)) + 'px'; };
   const lv = () => { cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); tip.hidden = true; };
   svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', lv);
 }
@@ -336,7 +347,7 @@ const secHref = name => { const n = D.core?.secInd?.[String(name ?? '').replace(
 //     ④ 못 받은 값은 받은 때마다 「?」 한 줄(그때 못 받은 조각을 모두 적음) + 그 칸 머리 때 앞 금빛 「?」 · 장 중에 받은 값은 받은 때까지라고 말함 · 「오늘」은 보는 날이 값의 날일 때만
 //     ⑥ 한 칸이 자료 탓에 멈춰도 그 칸만 「?」(다른 칸은 그대로) · 다른 눈 점검(2026-10-15 11:5x 서울 · 스무 가지)을 모두 고침
 //     ⑤ 고른 지수(코스피 · 코스닥) · 기간(1주 · 1달 · 3달)은 이 기기에 기억(localStorage — 못 쓰면 처음 값) · 사고팔기도 고른 지수를 따라감
-//   먹빛 색은 첫 화면에만(html.m4 — atlas.css 「먹빛 첫 화면」 묶음) · 다른 화면은 청자 밤 그대로(다른 화면도 바꿀지 사장님께 여쭘 2026-10-15)
+//   먹빛 색은 모든 화면(atlas.css :root — 2026-10-15 12:43 사장님 「모든 화면을 바꿔」 = 여쭘 (나)) · html.m4 는 첫 화면 꾸밈만(「먹빛 첫 화면」 묶음)
 //   빨강 · 파랑은 오름 · 내림에만(사고팔기 막대는 한 색 · 규칙 53) · 금빛은 고른 곳 · 문턱 「!」에만 · 그림자 · 입체 · 캔버스 · 바둑판 없음(규칙 50 · 51) · 움직임 줄이기면 움직임 없음
 //   보안 규칙(CSP style-src 'self'): 글 속 style 없음 — 자리 · 길이는 CSSOM(st · el.style)
 const HELLO_PROMO = '10명 소개하면 스타벅스 상품권 1만원!'; // 2026-10-14 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」(규칙 62)
@@ -762,11 +773,11 @@ function viewGroup(v, id) {
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, gtr, h('p', {class: 'say', text: `${inds.slice().sort((a, b) => b.n - a.n).slice(0, 3).map(x => x.name).join(' · ')}${inds.length > 3 ? ' 등' : ''} · 업종 ${inds.length}개`}), count, host); // 설명은 지금 업종에서(CIA팀 2026-10-12: 옛 365곳 설명이 남아 있던 것)
+  v.append(crumbs({href: '#/', text: '한눈에'}, {text: g.short}), steps(1), tell.el, head, gtr, h('p', {class: 'say', text: `${inds.slice().sort((a, b) => b.n - a.n).slice(0, 3).map(x => x.name).join(' · ')}${inds.length > 3 ? ' 등' : ''} · 업종 ${inds.length}개`}), count, legend(g.short, g.pk ? '금빛 = 고른 곳' : null), host); // 범례는 판 바로 위(2026-10-15 먹빛 예술 · 데이터 눈 — 선을 읽기 전에 뜻을) // 설명은 지금 업종에서(CIA팀 2026-10-12: 옛 365곳 설명이 남아 있던 것)
   const items = inds.map(i => ({key: i.name, name: i.name, href: hrefInd(i), v: i.v, cw: i.cw, badge: i.n === 1 ? '1곳' : null, tr: i.tr, trc: i.trc, gold: i.pk ? `고른 ${i.pk}곳` : null, pk: i.pk > 0}));
   const rc = race(host, {items, parent: g, wide: true, label: `${g.name} 업종 ${inds.length}개 — ${C.days}거래일 많이 오른 순: ` + inds.map(i => i.name + ' ' + pct(i.chg)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
-  v.append(legend(g.short, g.pk ? '금빛 = 고른 곳' : null), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(seg(m => { words(m); rc.setMode(m); }), alt);
   const low = g.low;
   v.append(h('p', {class: 'note', text: `${md(C.dates[low.k])}(이 갈래가 가장 낮던 날)에는 ${g.n}곳 중 ${low.below}곳이 ${md(C.base)}보다 아래였습니다 — 한 갈래는 함께 움직이기 쉽습니다.`}));
   if (inds.some(i => i.n === 1)) v.append(h('p', {class: 'note', text: '「1곳」 = 회사가 하나뿐인 업종 — 업종 평균이 아니라 그 회사 하나의 값입니다.'}));
@@ -791,7 +802,7 @@ async function viewIndustry(v, name) {
   }
   words(state.mode);
   const host = h('div');
-  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, itr, count, host);
+  v.append(crumbs({href: '#/', text: '한눈에'}, {href: '#/g/' + g.id, text: g.short}, {text: i.name}), steps(2, ['#/g/' + g.id]), tell.el, head, itr, count, legend(i.name, C.mkt && i.pk ? '금빛 = 고른 곳' : null), host); // 범례는 판 바로 위
   // 회사 줄 — 고른 곳(금빛)은 3단 회사 화면 · 나머지는 모든 회사 7단(core.co7)이면 3단 회사 · 옛 자료면 「밖」 칸(이름 · 까닭 · 깔때기) · 하루 30% 넘게 바뀐 날이 있으면 「?」
   //   기준일 종가가 없어 선을 못 그린 회사(새로 상장 · 그날 거래 멈춤 등)는 줄 대신 아래 「?」 한 줄에 이름 고리로(규칙 56 줄마다 선 · 「3번이면 회사」 그대로)
   const href = c => cHref(c, row(c).p), noLine = c => !row(c).l.some(x => x != null);
@@ -799,7 +810,7 @@ async function viewIndustry(v, name) {
   const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: C.mkt && m.p ? '고른 곳' : null, pk: !!(C.mkt && m.p), badge: m.j ? '?' : null}; });
   const rc = race(host, {items, parent: i, wide: true, label: `${i.name} 회사 ${shown.length}곳 — ${C.days}거래일 많이 오른 순: ` + shown.map(c => row(c).n + ' ' + pct(row(c).c)).join(', '),
     onTick: k => tell.t.replaceChildren(h('b', {text: md(C.dates[k])})), onDone: () => { tell.t.textContent = `${md(C.base)} → ${md(C.asOf)}`; }});
-  v.append(legend(i.name, C.mkt && i.pk ? '금빛 = 고른 곳' : null), seg(m => { words(m); rc.setMode(m); }), alt);
+  v.append(seg(m => { words(m); rc.setMode(m); }), alt);
   if (items.some(x => x.badge === '?')) v.append(h('p', {class: 'note'}, h('span', {class: 'q', text: '? '}), '= 하루에 30% 넘게 바뀐 날이 있는 회사 — 주식 수가 바뀌었을 수 있습니다(확인 못 함).'));
   if (none.length) v.append(h('p', {class: 'note noline'}, h('span', {class: 'q', text: '? '}), `기준일(${md(C.base)}) 종가가 없어 선을 못 그린 회사 ${none.length}곳 — `, ...none.flatMap((c, k) => [k ? ' · ' : '', h('a', {class: 'inl', href: href(c), text: row(c).n})])));
   if (C.mkt) v.append(h('p', {class: 'note', text: `금빛이 아닌 회사는 ${pickName(C)} 밖입니다 — ${C.co7 ? '눌러도 7단까지 볼 수 있고, 3단에 왜 밖인지 나옵니다' : '누르면 이름 · 까닭이 나옵니다'}.`}));
@@ -817,6 +828,7 @@ async function viewCompany(v, code) {
   v.append(stepsCo(3, code, g, i));
   v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name}), h('small', {text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${won(c.price)}`})));
   if (!E.pk) v.append(h('p', {class: 'chipline'}, h('span', {class: 'chip', text: `${pickName(C)} 밖`}), ' 이 회사도 7단까지 볼 수 있습니다'));
+  else v.append(h('p', {class: 'chipline pk'}, h('span', {class: 'badge gold', text: '고른 곳'}), ` ${pickName(C)}에 든 회사입니다 — 두 사람이 고른 목록은 아닙니다`)); // 고른 회사 머리에도 금빛 한 줄(2026-10-15 먹빛 예술 · 믿음 눈 — 금빛 = 고른 곳을 머리에서 바로)
   // 그림을 맨 위로(애플팀 2026-10-12 — 첫 화면에 그림이 없던 것) → 세 숫자 → 100만 원 줄 → 다음 단 → 왜 들었나
   const chartHost = h('div');
   v.append(chartHost);
@@ -858,7 +870,7 @@ const coCrumbs = (c, g, i, code) => crumbs({href: '#/', text: '한눈에'}, {hre
 //   두 사람 말 · 값 · 숫자로 못 세는 조건 · 한계는 접은 칸 · 확정 결산만 · 앞날 숫자 없음 · 차례(n번째)는 싣지 않음(규칙 55) · 숫자는 먹색(규칙 53)
 function whyBox(c) {
   const C = D.core, p = c.pick, R = C.rules;
-  const box = h('div', {class: 'box'}, h('h2', {text: `왜 ${pickName(C)}에 들었나요?`}));
+  const box = h('div', {class: 'box'}, h('h2', {text: `왜 ${pickName(C)}에 들었나요?`}), R?.notMunger ? h('p', {class: 'small hon', text: `${R.notMunger} 좋은 회사 순서가 아닙니다.`}) : null); // 정직 글은 머리 바로 밑 · 진주 글(2026-10-15 먹빛 예술 · 믿음 눈 — 접은 칸 뒤 아래쪽에 묻히던 것)
   if (!p?.tags?.length || !R?.groups || (!p.mg && !p.ly)) { box.append(h('p', {class: 'q', text: '? 든 까닭을 못 읽었습니다'})); return box; }
   const row = (t, xs) => h('li', {}, h('b', {text: t}), ...xs.flatMap((x, k) => [k ? ' · ' : '', h('span', {class: 'num', text: x})])); // 한 칸씩(줄이 길면 칸 사이에서 꺾임 — 360px 옆 넘침 막음)
   const won = x => `${Math.round(x).toLocaleString('ko-KR')}원`;
@@ -875,7 +887,6 @@ function whyBox(c) {
   box.append(h('details', {class: 'more'}, h('summary', {text: '두 사람의 말 · 값 · 한계 — 눌러서 보기'}), h('div', {class: 'in'}, h('ul', {class: 'tm'},
     ...R.groups.filter(g => p.tags.includes(g.k)).flatMap(g => [...g.conds.map(x => h('li', {text: `${x.t} — 「${x.q}」 · ${x.who}`})), h('li', {text: g.price}), h('li', {text: g.notCounted}), h('li', {text: g.limits})]),
     h('li', {text: `네이버 업종 「${p.sector}」 · ${C.sources.pick}`})))));
-  box.append(h('p', {class: 'small', text: `${R.notMunger} 좋은 회사 순서가 아닙니다.`}));
   return box;
 }
 function nextStep(href, title, sub) { return h('a', {class: 'nextst', href}, h('span', {}, h('b', {text: title}), h('span', {text: sub})), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'})); }
@@ -954,33 +965,34 @@ async function viewPast(v, code) {
 function priceChart(host, {dates, close, avg, jumps, label}) {
   host.textContent = '';
   const wrap = h('div', {class: 'lc'}); host.append(wrap);
-  const n = close.length, W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 220, P = 10;
+  const n = close.length, W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 222, P = 10, PT = 12, padR = AXR();
   const vals = [...close, ...avg].filter(x => x != null);
   if (!vals.length) { wrap.append(h('p', {class: 'q', text: '? 이 기간 값을 못 읽었습니다'})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
-  const X = i => P + i * (W - 2 * P) / Math.max(1, n - 1), Y = y => P + (hi - y) * (H - 2 * P) / (hi - lo);
+  const X = i => 4 + i * (W - 4 - padR) / Math.max(1, n - 1), Y = y => PT + (hi - y) * (H - PT - P) / (hi - lo);
   const base = close.find(x => x != null), id = 'pc' + (++lcN), T = tok();
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});
-  const defs = sv('defs'); const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(base)})); const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(base), width: W, height: H - Y(base)})); defs.append(cu, cd); fadeDefs(defs, id, T, P, H, Y(base)); svg.append(defs);
-  hairs(svg, W, P, [P, H - P]);
+  const defs = sv('defs'); const cu = sv('clipPath', {id: id + 'u'}); cu.append(sv('rect', {x: 0, y: 0, width: W, height: Y(base)})); const cd = sv('clipPath', {id: id + 'd'}); cd.append(sv('rect', {x: 0, y: Y(base), width: W, height: H - Y(base)})); defs.append(cu, cd); fadeDefs(defs, id, T, PT, H, Y(base)); svg.append(defs);
+  const sgn = t => (t > 0 ? '+' : t < 0 ? '−' : ''), toP = y => (y / base - 1) * 100; // 눈금 = 첫날 대비 %(첫 화면 「첫날 = 0%」와 같은 말) · 0% 는 점선
+  gutterAxis(svg, wrap, {ticks: niceTicks(toP(lo), toP(hi)), Y: t => Y(base * (1 + t / 100)), x0: 4, x1: W - padR, base: 0, fmt: t => `${sgn(t)}${Math.abs(t)}%`});
   const ad = areaPath(close, X, Y, Y(base));
   svg.append(sv('path', {d: ad, fill: `url(#${id}gu)`, 'clip-path': `url(#${id}u)`}), sv('path', {d: ad, fill: `url(#${id}gd)`, 'clip-path': `url(#${id}d)`}));
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(base), y2: Y(base), stroke: T.mute, 'stroke-width': 1}));
   const path = arr => { let d = '', on = false; arr.forEach((y, i) => { if (y == null) { on = false; return; } d += (on ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(y).toFixed(1); on = true; }); return d; };
-  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 3, 'stroke-dasharray': '0.1 6', 'stroke-linecap': 'round'}));
+  svg.append(sv('path', {d: path(avg), fill: 'none', stroke: T.mute, 'stroke-width': 1.5, 'stroke-dasharray': '4 3', 'stroke-linecap': 'round'}));
   const d = path(close);
-  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
-  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.up, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}u)`}));
+  svg.append(sv('path', {d, fill: 'none', stroke: T.down, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'clip-path': `url(#${id}d)`}));
   for (const [dt] of jumps) { const k = dates.indexOf(dt); if (k >= 0 && close[k] != null) svg.append(sv('circle', {cx: X(k), cy: Y(close[k]), r: 7, fill: 'none', stroke: T.gold, 'stroke-width': 2})); }
+  const cv = close.filter(x => x != null), mxV = Math.max(...cv), mnV = Math.min(...cv); // 가장 높은 · 낮은 종가 — 그림에는 빈 동그라미 · 글은 그림 밑 한 줄(글이 선을 가리지 않게 · 데이터 눈)
+  for (const z of [mxV, mnV]) { const k = close.indexOf(z); if (k >= 0) svg.append(sv('circle', {cx: X(k), cy: Y(z), r: 4, fill: T.night, stroke: T.ink, 'stroke-width': 1.5})); }
   const lastK = close.map((x, i) => (x == null ? -1 : i)).filter(i => i >= 0).pop();
-  svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 5.5, fill: close[lastK] >= base ? T.up : T.down, stroke: T.night, 'stroke-width': 2.5}));
-  const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5.5, fill: T.ink, stroke: T.night, 'stroke-width': 2}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
-  wrap.append(svg);
-  const cv = close.filter(x => x != null); // 위 · 아래 글 = 이 회사 실제 가장 높은 · 낮은 종가(CIA팀 2026-10-12: 여백을 덧댄 값이 보이던 것)
-  const yt = h('span', {class: 'yl num', text: '가장 높을 때 ' + won(Math.max(...cv))}), yb = h('span', {class: 'yl num', text: '가장 낮을 때 ' + won(Math.min(...cv))}); yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
+  svg.append(sv('circle', {cx: X(lastK), cy: Y(close[lastK]), r: 4.5, fill: close[lastK] >= base ? T.up : T.down, stroke: T.night, 'stroke-width': 2}));
+  const cx = sv('line', {y1: PT, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}), dot = sv('circle', {r: 5, fill: T.ink, stroke: T.night, 'stroke-width': 2}); cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); svg.append(cx, dot);
+  wrap.prepend(svg);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
   wrap.append(h('div', {class: 'ax'}, h('span', {text: ymd(dates[0])}), h('span', {text: ymd(dates[n - 1])})));
-  const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - P) / ((W - 2 * P) / Math.max(1, n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (close[i] == null) return;
+  wrap.append(h('p', {class: 'lc-ext'}, h('span', {class: 'num', text: '가장 높을 때 ' + won(mxV)}), ' · ', h('span', {class: 'num', text: '가장 낮을 때 ' + won(mnV)}))); // 이 회사 실제 가장 높은 · 낮은 종가(CIA팀 2026-10-12)
+  const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - 4) / ((W - 4 - padR) / Math.max(1, n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (close[i] == null) return;
     cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('visibility', 'visible'); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(close[i])); dot.setAttribute('visibility', 'visible');
     tip.hidden = false; tip.textContent = `${ymd(dates[i])} · ${won(close[i])} · ${pct((close[i] / base - 1) * 100)}`; tip.style.left = Math.min(r.width - 120, Math.max(120, X(i) * r.width / W)) + 'px'; };
   svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { cx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); tip.hidden = true; });
@@ -998,7 +1010,7 @@ async function viewRange(v, code) {
   v.append(stepsCo(7, code, g, i));
   v.append(h('div', {class: 'co-head'}, h('h1', {text: c.name + ' — 범위 · 확인'}), h('small', {text: `여기부터 다시 주가 · ${md(K.asOf)} 종가 · ${S.horizon}거래일(약 한 달) 뒤`})));
   const box = h('div', {class: 'box'}, h('h2', {text: '시장이 이렇게 가면 — 몬테카를로 4방향'}));
-  box.append(h('p', {class: 'alt'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), ' — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.'));
+  box.append(h('p', {class: 'alt model'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), ' — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.')); // model = 정직 표지 꼴(진주 띠 · 진주 글 — 숫자만큼 또렷하게)
   if (!k || !k.ok) box.append(h('p', {class: 'q', text: '? 셈 못 함 — 어느 한 방향에서 이 회사 값이 있는 날이 20일이 안 됩니다.'}));
   else {
     const list = h('ul', {class: 'dirbars'});
@@ -1189,30 +1201,31 @@ function growChart(host, c, G) {
   if (!base) { wrap.append(h('p', {class: 'q', text: '? 마지막 결산 매출이 없어 그림을 못 그립니다'})); return; }
   const slots = [...act.map(([y, val]) => ({lab: y, kind: 'act', v: val / base})), ...(est && est[1] != null ? [{lab: est[0].replace('E', ''), kind: 'est', v: est[1] / base}] : []),
     ...fut.map(([k, y, x]) => ({lab: String(y), kind: 'fut', k, x}))];
-  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 230, P = 12, n = slots.length;
+  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 230, P = 12, n = slots.length, padR = AXR();
   const top = Math.max(1.2, ...slots.map(s => (s.kind === 'fut' ? (s.x?.hi ?? 0) : s.v || 0))) * 1.08;
-  const X = j => P + (j + 0.5) * (W - 2 * P) / n, bw = Math.min(34, (W - 2 * P) / n * 0.56), Y = y => H - P - y / top * (H - 2 * P);
+  const X = j => 4 + (j + 0.5) * (W - 4 - padR) / n, bw = Math.min(34, (W - 4 - padR) / n * 0.56), Y = y => H - P - y / top * (H - 2 * P);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `${c.name} 매출 길 — ${G.baseYear}년 매출 = 1 · ` +
     slots.map(s => s.kind === 'fut' ? `${s.k}년 뒤(${s.lab}) ${s.x?.mid != null ? xMul(s.x.lo) + '~' + xMul(s.x.hi) + ' 가운데 ' + xMul(s.x.mid) : '자료 모자람'}` : `${s.lab}${s.kind === 'est' ? ' 증권사 평균치' : ''} ${xMul(s.v)}`).join(', ')});
-  hairs(svg, W, P, [Y(0)]);
-  svg.append(sv('line', {x1: P, x2: W - P, y1: Y(1), y2: Y(1), stroke: T.mute, 'stroke-width': 1}));
+  const fmtX = t => (Number.isInteger(t) ? String(t) : t.toFixed(1)) + '배';
+  gutterAxis(svg, wrap, {ticks: niceTicks(0, top).filter(t => t > 0), Y, x0: 4, x1: W - padR, base: 1, fmt: fmtX}); // 눈금 = 배(1배 = 기준 해 매출 · 점선) — 옛 맨 위 「n배」 한 글(틀 값) 대신
+  svg.append(sv('line', {x1: 4, x2: W - padR + 6, y1: Y(0), y2: Y(0), stroke: T['m4-line'], 'stroke-width': 1}));
+  const jf = slots.findIndex(z => z.kind === 'fut'); if (jf > 0) { const xm = (X(jf - 1) + X(jf)) / 2; svg.append(sv('line', {x1: xm, x2: xm, y1: P, y2: H - P, stroke: T['m4-line'], 'stroke-width': 1, 'stroke-dasharray': '3 4'})); } // 기록 · 올해 | 1 · 3 · 5 · 10년 뒤 사이 가름 점선(해 사이가 같은 간격이 아님)
   const tipOf = [];
   slots.forEach((s, j) => {
     const x = X(j);
-    if (s.kind === 'act') svg.append(sv('rect', {x: x - bw / 2, y: Y(Math.max(0, s.v)), width: bw, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 1, fill: T['violet-ink']}));
-    else if (s.kind === 'est') svg.append(sv('rect', {x: x - bw / 2 + 1, y: Y(Math.max(0, s.v)), width: bw - 2, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 1, fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
+    if (s.kind === 'act') svg.append(sv('rect', {x: x - bw / 2, y: Y(Math.max(0, s.v)), width: bw, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 3, fill: T.sub}));
+    else if (s.kind === 'est') svg.append(sv('rect', {x: x - bw / 2 + 1, y: Y(Math.max(0, s.v)), width: bw - 2, height: Math.max(1, Y(0) - Y(Math.max(0, s.v))), rx: 3, fill: 'none', stroke: T.sub, 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
     else if (s.x && s.x.mid != null) {
-      svg.append(sv('rect', {x: x - bw / 2, y: Y(s.x.hi), width: bw, height: Math.max(2, Y(s.x.lo) - Y(s.x.hi)), rx: 1, fill: T.violet, 'fill-opacity': 0.38, stroke: T['violet-ink'], 'stroke-width': 1}));
+      svg.append(sv('rect', {x: x - bw / 2, y: Y(s.x.hi), width: bw, height: Math.max(2, Y(s.x.lo) - Y(s.x.hi)), rx: 3, fill: T.ink, 'fill-opacity': 0.12, stroke: T.sub, 'stroke-width': 1}));
       svg.append(sv('line', {x1: x - bw / 2 - 3, x2: x + bw / 2 + 3, y1: Y(s.x.mid), y2: Y(s.x.mid), stroke: T.ink, 'stroke-width': 3, 'stroke-linecap': 'butt'}));
     } else svg.append(sv('line', {x1: x - bw / 2, x2: x + bw / 2, y1: Y(1), y2: Y(1), stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '2 4'}));
     tipOf.push(s.kind === 'fut' ? `${s.k}년 뒤 ${s.lab}년 · ${s.x?.mid != null ? `${xMul(s.x.lo)} ~ ${xMul(s.x.hi)} · 가운데 ${xMul(s.x.mid)}` : '? 자료 모자람'}` : `${s.lab}년${s.kind === 'est' ? ' 증권사 평균치' : ''} · ${xMul(s.v)}`);
   });
   const cx = sv('line', {y1: P, y2: H - P, stroke: T.ink, 'stroke-opacity': 0.5, 'stroke-width': 1}); cx.setAttribute('visibility', 'hidden'); svg.append(cx);
-  wrap.append(svg);
-  const yt = h('span', {class: 'yl num', text: xMul(top)}); yt.style.top = '0'; wrap.append(yt); // 「${G.baseYear}년 = 1」 은 그림 밑 표(.lkey)에만(애플팀 2026-10-12: 막대를 가리던 것)
+  wrap.prepend(svg);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
   wrap.append(h('div', {class: 'ax'}, h('span', {text: `${slots[0].lab}년 →`}), h('span', {text: S ? `1 · 3 · 5 · 10년 뒤(${slots[n - 1].lab}년까지)` : `${slots[n - 1].lab}년`})));
-  const mv = e => { const r = svg.getBoundingClientRect(), xx = (e.clientX - r.left) * W / r.width; const j = Math.max(0, Math.min(n - 1, Math.floor((xx - P) / ((W - 2 * P) / n))));
+  const mv = e => { const r = svg.getBoundingClientRect(), xx = (e.clientX - r.left) * W / r.width; const j = Math.max(0, Math.min(n - 1, Math.floor((xx - 4) / ((W - 4 - padR) / n))));
     cx.setAttribute('x1', X(j)); cx.setAttribute('x2', X(j)); cx.setAttribute('visibility', 'visible'); tip.hidden = false; tip.textContent = tipOf[j]; tip.style.left = Math.min(r.width - 130, Math.max(130, X(j) * r.width / W)) + 'px'; };
   svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv); svg.addEventListener('pointerleave', () => { cx.setAttribute('visibility', 'hidden'); tip.hidden = true; });
 }
@@ -1278,9 +1291,9 @@ function upChart(host, rows) {
     const x = x0 + k * bw + bw * 0.18, w = Math.max(2, bw * 0.64), a = (r.in?.length ?? 0) * sc, b = (r.out?.length ?? 0) * sc;
     if (r.ruleChanged) { svg.append(sv('rect', {x: x.toFixed(1), y: P, width: w.toFixed(1), height: Hh - 2 * P, rx: 1, fill: 'none', stroke: T.mute, 'stroke-width': 1.2, 'stroke-dasharray': '3 3'})); return; } // 점선 빈 막대 = 기준이 바뀐 회차
     if (r.result === '실패') svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - 7).toFixed(1), width: w.toFixed(1), height: 14, rx: 1, fill: 'none', stroke: T.gold, 'stroke-width': 1.5}));
-    else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 3, fill: T.mute}));
-    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 1, fill: T.violet}));
-    if (b) svg.append(sv('rect', {x: x.toFixed(1), y: Y0, width: w.toFixed(1), height: b.toFixed(1), rx: 1, fill: T['violet-ink']}));
+    else if (!a && !b) svg.append(sv('circle', {cx: (x + w / 2).toFixed(1), cy: Y0, r: 2.5, fill: T.mute}));
+    if (a) svg.append(sv('rect', {x: x.toFixed(1), y: (Y0 - a).toFixed(1), width: w.toFixed(1), height: a.toFixed(1), rx: 1, fill: T.ink})); // 새로 든 곳 = 꽉 찬 진주 · 빠진 곳 = 테만(먹빛에서 옛 두 보라가 같은 진주색이 되어 못 가르던 것 — 2026-10-15 먹빛 예술 · 데이터 눈 · 믿음 눈)
+    if (b) svg.append(sv('rect', {x: (x + 0.75).toFixed(1), y: (Y0 + 0.75).toFixed(1), width: Math.max(1, w - 1.5).toFixed(1), height: Math.max(1, b - 1.5).toFixed(1), rx: 1, fill: 'none', stroke: T.sub, 'stroke-width': 1.5})); // 빠진 곳 = 테만(새로 든 곳 꽉 찬 진주와 꼴로 가름 — 믿음 눈)
   });
   host.append(svg);
   if (rows.length > 1) host.append(h('div', {class: 'ax'}, h('span', {text: kstLabel(rows[0].kst)}), h('span', {text: kstLabel(rows[rows.length - 1].kst)})));
@@ -1354,34 +1367,32 @@ function timeChart(host, K) {
   host.textContent = '';
   const wrap = h('div', {class: 'tc'}); host.append(wrap);
   const P = K.past, S = K.since, open3 = K.opens[0].date, T = tok();
-  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 220, Pd = 10;
+  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 232, Pd = 10, PT = 34, padR = AXR(); // 위 띠(PT) = 「앞날은 비워 둡니다」 글 자리(글이 선에 닿지 않게)
   const day = d => Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10)) / 864e5;
-  const x0 = day(P.from), x1 = day(open3), X = d => Pd + (day(d) - x0) / (x1 - x0) * (W - 2 * Pd);
+  const x0 = day(P.from), x1 = day(open3), X = d => 4 + (day(d) - x0) / (x1 - x0) * (W - 4 - padR);
   const last365 = P.v365.at(-1), lastPool = P.vpool.at(-1); // 봉인 날 = 100 으로 맞춤
   const p365 = P.v365.map(v => (v == null ? null : v / last365 * 100)), ppool = P.vpool.map(v => (v == null ? null : v / lastPool * 100));
   const vals = [...p365, ...ppool, ...S.v365, ...S.vpool, 100].filter(v => v != null);
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.08 || 4; lo -= pad; hi += pad;
-  const Y = v => Pd + (hi - v) * (H - 2 * Pd) / (hi - lo);
+  const Y = v => PT + (hi - v) * (H - PT - Pd) / (hi - lo);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `봉인 ${K.id}호 — 3년 전 ${ymd(P.from)}부터 봉인 날 ${ymd(K.seal)}까지 실제 선(봉인 날 = 100) · 그 뒤 3년 뒤 ${ymd(open3)}까지는 비워 둠(앞날 값을 그리지 않음)`});
   const xs = X(S.dates.at(-1));
-  svg.append(sv('rect', {x: xs.toFixed(1), y: Pd, width: Math.max(0, W - Pd - xs).toFixed(1), height: H - 2 * Pd, fill: T.violet, 'fill-opacity': 0.07, rx: 1})); // 아직 오지 않은 날 — 비워 둠
-  hairs(svg, W, Pd, [Pd, H - Pd]);
-  svg.append(sv('line', {x1: Pd, x2: W - Pd, y1: Y(100), y2: Y(100), stroke: T.mute, 'stroke-width': 1}));
+  svg.append(sv('rect', {x: xs.toFixed(1), y: PT, width: Math.max(0, W - padR - xs).toFixed(1), height: H - PT - Pd, fill: T.ink, 'fill-opacity': 0.04, rx: 1})); // 아직 오지 않은 날 — 비워 둠
+  gutterAxis(svg, wrap, {ticks: niceTicks(lo, hi), Y, x0: 4, x1: W - padR, base: 100, fmt: String}); // 눈금 = 봉인 날 100 과 같은 단위 · 100 은 점선
   const path = (ds, arr) => { let d = '', on = false; arr.forEach((v, i) => { if (v == null) { on = false; return; } d += (on ? 'L' : 'M') + X(ds[i]).toFixed(1) + ' ' + Y(v).toFixed(1); on = true; }); return d; };
-  svg.append(sv('path', {d: path(P.dates, ppool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '6 4', 'stroke-linejoin': 'round'}));
-  svg.append(sv('path', {d: path(P.dates, p365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round'}));
+  svg.append(sv('path', {d: path(P.dates, ppool), fill: 'none', stroke: T['m4-neu'], 'stroke-width': 1.5, 'stroke-linejoin': 'round'})); // 후보 모두 = 회색 실선(첫 화면 둘째 지수와 같은 꼴)
+  svg.append(sv('path', {d: path(P.dates, p365), fill: 'none', stroke: T.ink, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round'})); // 봉인 365곳 = 진주 선
   if (S.days) {
-    svg.append(sv('path', {d: path(S.dates, S.vpool), fill: 'none', stroke: T.mute, 'stroke-width': 2, 'stroke-dasharray': '6 4'}));
-    svg.append(sv('path', {d: path(S.dates, S.v365), fill: 'none', stroke: T['violet-ink'], 'stroke-width': 2.5, 'stroke-linecap': 'round'}));
+    svg.append(sv('path', {d: path(S.dates, S.vpool), fill: 'none', stroke: T['m4-neu'], 'stroke-width': 1.5}));
+    svg.append(sv('path', {d: path(S.dates, S.v365), fill: 'none', stroke: T.ink, 'stroke-width': 2, 'stroke-linecap': 'round'}));
   }
-  svg.append(sv('line', {x1: X(K.seal), x2: X(K.seal), y1: Pd - 4, y2: H - Pd + 4, stroke: T.gold, 'stroke-width': 2})); // 봉인 날
-  svg.append(sv('line', {x1: X(open3), x2: X(open3), y1: Pd - 4, y2: H - Pd + 4, stroke: T['violet-ink'], 'stroke-width': 2, 'stroke-dasharray': '6 4'})); // 3년 뒤 여는 날
+  svg.append(sv('line', {x1: X(K.seal), x2: X(K.seal), y1: PT - 4, y2: H - Pd + 4, stroke: T.gold, 'stroke-width': 2})); // 봉인 날
+  svg.append(sv('line', {x1: X(open3), x2: X(open3), y1: PT - 4, y2: H - Pd + 4, stroke: T.sub, 'stroke-width': 1.5, 'stroke-dasharray': '6 4'})); // 3년 뒤 여는 날
   const lk = S.dates.length - 1;
-  svg.append(sv('circle', {cx: X(S.dates[lk]), cy: Y(S.v365[lk]), r: 5.5, fill: T['violet-ink'], stroke: T.night, 'stroke-width': 2.5}));
-  const cx = sv('line', {y1: Pd, y2: H - Pd, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}); cx.setAttribute('visibility', 'hidden'); svg.append(cx);
-  wrap.append(svg);
-  const yt = h('span', {class: 'yl num', text: Math.round(hi)}), yb = h('span', {class: 'yl num', text: Math.round(lo)}); yt.style.top = '0'; yb.style.top = (H - 30) + 'px'; wrap.append(yt, yb);
-  const fut = h('span', {class: 'fut', text: '앞날은 비워 둡니다'}); fut.style.left = (xs + 8) + 'px'; fut.style.right = '8px'; fut.style.top = (H / 2 - 30) + 'px'; wrap.append(fut);
+  svg.append(sv('circle', {cx: X(S.dates[lk]), cy: Y(S.v365[lk]), r: 4.5, fill: T.ink, stroke: T.night, 'stroke-width': 2}));
+  const cx = sv('line', {y1: PT, y2: H - Pd, stroke: T.ink, 'stroke-opacity': 0.6, 'stroke-width': 1}); cx.setAttribute('visibility', 'hidden'); svg.append(cx);
+  wrap.prepend(svg);
+  const fut = h('span', {class: 'fut', text: '앞날은 비워 둡니다'}); fut.style.left = (xs + 8) + 'px'; fut.style.right = (padR + 8) + 'px'; fut.style.top = '2px'; wrap.append(fut);
   wrap.append(h('div', {class: 'ax3'}, h('span', {text: '3년 전'}), h('span', {text: `봉인 ${md(K.seal)}`}), h('span', {text: '3년 뒤'})));
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
   const allD = [...P.dates, ...S.dates.slice(1)], all365 = [...p365, ...S.v365.slice(1)];
@@ -1588,7 +1599,7 @@ async function route() {
   for (const t of ['#tabHome', '#tabList', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, raw] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [], arg = dec(raw ?? '');
-    document.documentElement?.classList?.toggle('m4', !kind); document.querySelector?.('meta[name="theme-color"]')?.setAttribute('content', kind ? '#061A17' : '#0C0E12'); // 먹빛은 첫 화면에만(규칙 67) · 네 눈 CIA 눈의 길 흔들기(브라우저 없이 route 를 돌림)에서도 멈추지 않게 ?. 
+    document.documentElement?.classList?.toggle('m4', !kind); document.querySelector?.('meta[name="theme-color"]')?.setAttribute('content', '#0C0E12'); // 첫 화면 꾸밈(html.m4)은 첫 화면에만 · 색(먹빛)과 휴대폰 위 띠 색은 모든 화면(2026-10-15 12:43 「모든 화면을 바꿔」) · 네 눈 CIA 눈의 길 흔들기(브라우저 없이 route 를 돌림)에서도 멈추지 않게 ?.
     if (!kind) { $('#tabHome').setAttribute('aria-current', 'page'); await viewHome(v); }
     else if (arg == null && /^[gic]$/.test(kind)) viewMissing(v); // 깨진 주소 = 없는 주소
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }

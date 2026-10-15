@@ -8,7 +8,7 @@
              · 글자 대비 검사(site_check 「대비」 — 보통 글 4.5 · 굵거나 큰 글 3 넘게)
      클로드팀 빨강 · 파랑은 오름 · 내림에만(「!」 조심 표시를 빨강에서 금빛으로 — 규칙 53) · 금빛은 「고른 한 곳 · 고른 날 · 모름(?) · 조심」에만
              · 위험 · 정직 글(멍거 · 지난 기록 시험 · 맨 아래 한 줄)은 숫자만큼 또렷하게
-   색: 2026-10-12 10:53 사장님 「10번이 좋아」 = 청자 밤(푸른색 계열 시안 10번) — 이 판은 늘 밤 화면(color-scheme: dark)
+   색: 2026-10-15 12:43 사장님 「모든 화면을 바꿔」 = 먹빛(첫 화면 먹빛 판 규칙 67 의 색을 모든 화면에 — 아래 :root) · 그 앞 2026-10-12 10:53 「10번이 좋아」 = 청자 밤(푸른색 계열 시안 10번 — 기록) — 이 판은 늘 밤 화면(color-scheme: dark)
      고른 길: 09:16 모래 달항아리(모양 · 10번 창 한 칸 · 달빛 마루는 그대로) → 10:44 「지금보면 갈색과 베이지색 두개야 해보니 넘 답답해 그래서 프른색 계열로 다시 11가지 샘플을 보여줘」 → 10번 청자 밤
      달 = 제목 옆 둥근 창 안에 앵무새 막비 얼굴(`/media/makbi-moon.svg` · 코드 그림 · 2026-10-13 03:39 사장님 「이 앵무새로」) — 사람 얼굴 사진은 쓰지 않음
      (옛 밤보라 — #111433 · #141738 · #8973C3 — 는 옛 판 /old/ · 미국 판 /us/ 에 그대로) · 빨강 = 오름 · 파랑 = 내림(쨍한 파랑 · 바탕 청자와 색상이 멀게) · 금빛 = 고른 한 곳 · 고른 날 · ? · 조심
@@ -17,19 +17,22 @@
    보안 규칙(CSP style-src 'self'): 글 속 style 없음 — 움직이는 값은 atlas.js 가 CSSOM(el.style.x)으로만 */
 :root {
   color-scheme: dark;
-  /* 청자 밤(2026-10-12 10:53) — 색 이름은 옛 이름 그대로(night = 바탕 · band = 막대 · violet = 강조) · 값만 청자 밤 · 강조는 옥색(빨강 · 파랑 · 금빛과 겹치지 않는 색) */
-  --night: #0C2824; --band: #061A17; --violet: #6CC7A8;                 /* 바탕 어두운 청자 · 막대 더 깊은 청자 · 강조 옥색 */
-  --card: #12322D; --card2: #1A3D37; --card3: #224942;                   /* 면 세 단 — 그림자 대신 밝기 */
-  --hair: rgba(255, 255, 255, .13); --hair2: rgba(255, 255, 255, .24);
-  --seam: rgba(108, 199, 168, .55);
-  --lift: rgba(255, 255, 255, .045); --press: rgba(255, 255, 255, .08);  /* 올림 · 누름 상태 층 */
-  --ink: #EEF6F2; --ink-hi: #FFFFFF; --sub: #B7D0C7; --mute: #9BB6AC;    /* 글 — 맑은 흰빛 · 보조 옥빛 회색(바탕 · 면 위 대비 4.5 넘게) */
-  --violet-ink: #9FE0C8; --violet-wash: rgba(108, 199, 168, .2); --violet-line: rgba(159, 224, 200, .45); --violet-glow: rgba(108, 199, 168, .3);
-  --gold: #E9C46A; --gold-wash: rgba(233, 196, 106, .06); --gold-line: rgba(233, 196, 106, .6);   /* 금빛 = 뜻 있는 테 · 글만 */
-  --up: #F0506E; --down: #6EA0FF; --up-ink: #FF8FA0; --down-ink: #9CC3FF; /* 오름 · 내림 뜻 그대로 — 내림 파랑은 바탕 청자와 색상이 멀게 쨍하게 */
-  --up-fill: rgba(240, 80, 110, .3); --down-fill: rgba(110, 160, 255, .3); --up-fade: rgba(240, 80, 110, .03); --down-fade: rgba(110, 160, 255, .03);
-  --lacquer: #061A17; --lacquer-ink: #EEF6F2; --lacquer-sub: #A9C7BD; --lacquer-gold: #E9C46A; /* 위 · 아래 막대(10번 옻칠 자리) — 깊은 청자 · 막대 안 글은 밝은 색 */
-  --moon: #F4ECDE; --moonrow: rgba(244, 236, 222, .1);                   /* 달(제목 옆 둥근 창 테) · 달빛(1등 줄 — 밤 화면이라 옅게) */
+  /* 먹빛(2026-10-15 12:43 사장님 「모든 화면을 바꿔」 — 첫 화면 먹빛 판(규칙 67)을 모든 화면에) — 색 이름은 옛 이름 그대로(night = 바탕 · band = 막대 · violet = 강조) · 값만 먹빛
+     강조는 진주 회색(색 없는 먹 — 빨강 · 파랑 · 금빛과 겹치지 않음) · 옛 청자 밤(#0C0E12 · #0C0E12 · 옥색 #6CC7A8)은 기록에만 */
+  --night: #0C0E12; --band: #0C0E12; --violet: #D9D4C9;                 /* 바탕 먹 · 막대 먹 · 강조 진주 회색(면 · 줄 · 점) */
+  --card: #13161C; --card2: #1C1F26; --card3: #272B34;                   /* 면 세 단 — 그림자 대신 밝기(편지지 면) */
+  --hair: rgba(242, 239, 232, .12); --hair2: rgba(242, 239, 232, .22);
+  --seam: rgba(242, 239, 232, .22);
+  --lift: rgba(242, 239, 232, .04); --press: rgba(242, 239, 232, .08);  /* 올림 · 누름 상태 층 */
+  --ink: #F2EFE8; --ink-hi: #FFFFFF; --sub: #B0B5BD; --mute: #8E959F;    /* 글 — 진주 · 보조 회색(바탕 · 면 셋 위 대비 4.5 넘게 — 가장 밝은 면 card3 위 --mute 4.7) */
+  --violet-ink: #D8DCE2; --violet-wash: rgba(242, 239, 232, .08); --violet-line: rgba(242, 239, 232, .32); --violet-glow: rgba(242, 239, 232, .14); /* 고리 글 · 테 · 옅은 면 */
+  --gold: #E9B949; --gold-wash: rgba(233, 185, 73, .08); --gold-line: rgba(233, 185, 73, .6);   /* 금빛 = 뜻 있는 테 · 글만 */
+  --up: #FF5A65; --down: #5B96FF; --up-ink: #FF5A65; --down-ink: #5B96FF; /* 오름 · 내림 뜻 그대로(첫 화면과 같은 빨강 · 파랑 — 먹 위 대비 6 넘게) */
+  --up-fill: rgba(255, 90, 101, .3); --down-fill: rgba(91, 150, 255, .3); --up-fade: rgba(255, 90, 101, .03); --down-fade: rgba(91, 150, 255, .03);
+  --lacquer: #0C0E12; --lacquer-ink: #F2EFE8; --lacquer-sub: #B0B5BD; --lacquer-gold: #E9B949; /* 위 · 아래 막대 — 먹 · 막대 안 글은 진주 */
+  --moon: #F2EFE8; --moonrow: rgba(242, 239, 232, .07);                   /* 달(제목 옆 둥근 창 테) · 달빛(1등 줄 — 옅게) */
+  --m4-band: #13161C; --m4-line: #272B34; --m4-soft: #1C1F26; --m4-neu: #6F7782; --m4-line2: rgba(242, 239, 232, .08); /* 먹빛 판 가는 선 셋 · 그대로 색 */
+  --m4-ease: cubic-bezier(.2, .7, .2, 1);
   --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --row: 2.1rem; --roww: 3.3rem; --row2: 3.2rem; --roww2: 4.7rem; /* 방향 · 세기 · 힘 한 줄이 붙은 줄(11:10 「이 화면에서 나와야 해」) */
@@ -41,7 +44,7 @@ body { margin: 0; background: var(--night); color: var(--ink); font-family: var(
 button, input { font: inherit; color: inherit; letter-spacing: inherit; }
 a { color: inherit; text-decoration: none; }
 a, button, summary { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(108, 199, 168, .4); color: #fff; }
+::selection { background: rgba(242, 239, 232, .24); color: #fff; }
 :focus-visible { outline: 3px solid var(--violet-ink); outline-offset: 2px; } /* 테는 칸의 둥근 모서리를 그대로 따라감 */
 .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; white-space: nowrap; }
 .up { color: var(--up-ink); } .down { color: var(--down-ink); } .flat { color: var(--sub); }
@@ -103,8 +106,8 @@ h1.head .num { font-weight: 800; }
 .track { position: relative; height: 16px; border-radius: 8px; background: rgba(255, 255, 255, .06); overflow: hidden; }
 .track .zero { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, .34); }
 .track .bar { position: absolute; top: 2px; bottom: 2px; width: 50%; transform: scaleX(0); }
-.track .bar.pos { left: 50%; transform-origin: 0 50%; background: linear-gradient(90deg, rgba(240, 80, 110, .5), var(--up)); border-radius: 0 6px 6px 0; }
-.track .bar.neg { right: 50%; transform-origin: 100% 50%; background: linear-gradient(270deg, rgba(110, 160, 255, .5), var(--down)); border-radius: 6px 0 0 6px; }
+.track .bar.pos { left: 50%; transform-origin: 0 50%; background: linear-gradient(90deg, rgba(255, 90, 101, .5), var(--up)); border-radius: 0 6px 6px 0; }
+.track .bar.neg { right: 50%; transform-origin: 100% 50%; background: linear-gradient(270deg, rgba(91, 150, 255, .5), var(--down)); border-radius: 6px 0 0 6px; }
 .track .avg { position: absolute; top: -2px; bottom: -2px; width: 0; border-left: 2px dotted var(--ink); left: 50%; }
 .board:not(.wide) .row { grid-template-columns: minmax(0, 1fr) auto 0.7em; }
 .board:not(.wide) .row > .track { position: absolute; left: 0; right: 0; top: 3px; bottom: 3px; height: auto; background: none; border-radius: 10px; z-index: 0; }
@@ -118,7 +121,7 @@ h1.head .num { font-weight: 800; }
 .row.win { outline: 2px solid var(--gold); outline-offset: -2px; animation: glow 1.6s ease 1; }
 .board .row.win { background: var(--violet-wash); } /* 고른 한 줄 = 금 테 안 자수정 */
 .board .row.win:hover { background: var(--violet-glow); }
-@keyframes glow { 0% { outline-color: rgba(233, 196, 106, 0); } 30% { outline-color: rgba(233, 196, 106, 1); } 100% { outline-color: rgba(233, 196, 106, .9); } }
+@keyframes glow { 0% { outline-color: rgba(233, 185, 73, 0); } 30% { outline-color: rgba(233, 185, 73, 1); } 100% { outline-color: rgba(233, 185, 73, .9); } }
 .row.dim .nm, .row.dim .val { opacity: .55; }
 .badge { display: inline-block; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--violet-ink); border: 1px solid var(--violet-line); background: var(--violet-wash); border-radius: 8px; padding: 0 7px; margin-left: 6px; vertical-align: 1px; letter-spacing: -0.02em; }
 .key { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--sub); margin: 10px 0 0; }
@@ -149,7 +152,7 @@ h1.head .num { font-weight: 800; }
 .foot .links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .foot .links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; }
 .foot .links a:hover { text-decoration-color: currentColor; }
-.hello { display: grid; grid-template-columns: 44px minmax(0, 1fr) 0.7em; align-items: center; gap: 12px; min-height: 60px; padding: 8px 12px 8px 8px; margin: 4px 0 6px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(108, 199, 168, .06) 75%); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
+.hello { display: grid; grid-template-columns: 44px minmax(0, 1fr) 0.7em; align-items: center; gap: 12px; min-height: 60px; padding: 8px 12px 8px 8px; margin: 4px 0 6px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(242, 239, 232, .04) 75%); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
 .hello:hover { border-color: var(--violet-ink); }
 .hello img { width: 44px; height: 44px; object-fit: cover; border-radius: 12px; display: block; }
 .hello .hw { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; min-width: 0; }
@@ -226,7 +229,7 @@ h2.sec + p { margin: 0; color: var(--sub); }
 .steps { margin: 0 0 8px; }
 ol.st { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; } /* 7단(2026-10-12) — 360px 에서 한 칸 45.7px(44px 위) */
 ol.st li > a, ol.st li > .cell { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 12px; border: 2px solid var(--hair2); background: none; color: var(--sub); font-weight: 800; transition: background-color .2s var(--ease), border-color .2s var(--ease); }
-ol.st li.past > a, ol.st li.past > .cell { background: var(--violet); border-color: var(--violet); color: #06201C; }
+ol.st li.past > a, ol.st li.past > .cell { background: var(--violet); border-color: var(--violet); color: #0C0E12; }
 ol.st li.past > a:hover { border-color: var(--violet-ink); }
 ol.st li.now > .cell { background: var(--ink); border-color: var(--ink); color: var(--night); }
 ol.st li.next > a { border-color: var(--violet-line); color: var(--violet-ink); border-style: dashed; }
@@ -235,7 +238,7 @@ ol.st li.next > .cell { opacity: .45; }
 .st-t { margin: 6px 0 0; color: var(--sub); }
 .st-t b { color: var(--ink); }
 .st-t .lk { font-weight: 650; color: var(--violet-ink); } /* 앎의 종류(CIA팀) — 기록 · 조사 · 판단 · 셈 · 테 없는 글(애플팀 2026-10-12: 단추처럼 보이던 것) */
-.nextst { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 8px; margin: 18px 0 0; padding: 14px 16px; min-height: 64px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(108, 199, 168, .08)); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
+.nextst { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 8px; margin: 18px 0 0; padding: 14px 16px; min-height: 64px; border-radius: 18px; background: linear-gradient(100deg, var(--violet-glow), rgba(242, 239, 232, .05)); border: 1px solid var(--violet-line); transition: border-color .2s var(--ease); }
 .nextst:hover { border-color: var(--violet-ink); }
 .nextst b { display: block; font-weight: 750; font-size: 1.12rem; letter-spacing: -0.02em; color: var(--ink-hi); }
 .nextst span span { color: var(--sub); }
@@ -247,7 +250,7 @@ ul.fin li { display: grid; grid-template-columns: 4.6em minmax(0, 1fr) auto; gap
 ul.fin .y { color: var(--sub); }
 ul.fin .ft { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
 ul.fin .fb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; }
-ul.fin .fb.pos { background: linear-gradient(90deg, rgba(108, 199, 168, .55), var(--violet)); } ul.fin .fb.neg { background: var(--mute); }
+ul.fin .fb.pos { background: linear-gradient(90deg, rgba(242, 239, 232, .33), var(--violet)); } ul.fin .fb.neg { background: var(--mute); }
 ul.dirbars { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 12px; }
 ul.dirbars li { display: grid; gap: 4px; }
 ul.dirbars .dn { font-weight: 800; color: var(--ink-hi); }
@@ -257,7 +260,7 @@ ul.dirbars .dm { position: absolute; top: -3px; bottom: -3px; width: 3px; margin
 .lkey .l-dw { width: 22px; height: 10px; border-radius: 5px; background: var(--violet-ink); } .lkey .l-db { width: 22px; height: 10px; border-radius: 5px; background: var(--gold); } .lkey .l-dm { width: 3px; height: 18px; border-radius: 2px; background: var(--ink); }
 ul.dirbars .dt { position: relative; height: 12px; background: rgba(255, 255, 255, .06); border-radius: 6px; } /* 눈금이 위아래로 조금 나오게 — 숨김 없음 */
 ul.dirbars .db { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
-ul.dirbars .db.pos { background: linear-gradient(90deg, rgba(108, 199, 168, .55), var(--violet-ink)); } ul.dirbars .db.neg { background: linear-gradient(90deg, rgba(233, 196, 106, .45), var(--gold)); } /* 7단(클로드팀): 모형 셈은 오름 · 내림 색(빨강 · 파랑)을 쓰지 않음 — 규칙 53 · 번 길 보라 · 크게 잃는 길 금빛(조심) */
+ul.dirbars .db.pos { background: linear-gradient(90deg, rgba(242, 239, 232, .33), var(--violet-ink)); } ul.dirbars .db.neg { background: linear-gradient(90deg, rgba(233, 185, 73, .45), var(--gold)); } /* 7단(클로드팀): 모형 셈은 오름 · 내림 색(빨강 · 파랑)을 쓰지 않음 — 규칙 53 · 번 길 보라 · 크게 잃는 길 금빛(조심) */
 a.inl, .links2 a { color: var(--violet-ink); text-decoration: underline; text-decoration-color: var(--violet-line); text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
 a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decoration-color: currentColor; }
 .links2 { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; }
@@ -297,7 +300,7 @@ a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decorat
 /* 깔때기 — 1,375곳 → 365곳(구글팀: 「내 회사는 왜 없지?」에 그림으로 답함) */
 .funnel { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
 .funnel li { position: relative; padding: 10px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); overflow: hidden; }
-.funnel li .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(108, 199, 168, .26), rgba(108, 199, 168, .12)); }
+.funnel li .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(242, 239, 232, .16), rgba(242, 239, 232, .07)); }
 .funnel li span { position: relative; display: flex; justify-content: space-between; gap: 8px; }
 .funnel li.stop { border: 2px solid var(--gold); }
 .funnel li.past span { color: var(--sub); }
@@ -310,7 +313,7 @@ a.inl:hover, .links2 a:hover, .in36 a:hover, details.more a:hover { text-decorat
 }
 /* 클로드팀 — 「대비를 더」를 켠 사람에게는 선 · 흐린 글을 더 또렷하게 · 윈도 고대비에서도 막대 색을 지킴 */
 @media (prefers-contrast: more) {
-  :root { --hair: rgba(255, 255, 255, .26); --hair2: rgba(255, 255, 255, .4); --sub: #D3E5DE; --mute: #C0D6CE; --violet-line: rgba(159, 224, 200, .7); }
+  :root { --hair: rgba(242, 239, 232, .26); --hair2: rgba(242, 239, 232, .4); --sub: #D0D4DA; --mute: #C2C7CF; --violet-line: rgba(242, 239, 232, .6); }
 }
 @media (forced-colors: active) {
   .track .bar, .key i, .lkey i, ul.fin .fb, ul.dirbars .db { forced-color-adjust: none; }
@@ -435,7 +438,7 @@ ol.opens li .mo { align-self: center; }
 .gc .tip { position: absolute; top: 0; transform: translateX(-50%); background: var(--ink); color: var(--night); padding: 3px 12px; border-radius: 10px; white-space: nowrap; pointer-events: none; font-weight: 700; }
 .lkey .l-gact { width: 14px; height: 18px; border-radius: 3px; background: var(--violet-ink); }
 .lkey .l-gest { width: 14px; height: 18px; border-radius: 3px; border: 2px dashed var(--violet-ink); }
-.lkey .l-gband { width: 14px; height: 18px; border-radius: 4px; background: rgba(108, 199, 168, .35); border: 1px solid var(--violet-ink); box-sizing: border-box; }
+.lkey .l-gband { width: 14px; height: 18px; border-radius: 4px; background: rgba(242, 239, 232, .21); border: 1px solid var(--violet-ink); box-sizing: border-box; }
 .lkey .l-gone { border-top: 2px dashed var(--mute); }
 ol.yrs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 ol.yrs li { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 12px 14px; min-width: 0; }
@@ -448,7 +451,7 @@ ol.yrs .yg { color: var(--sub); }
 ol.yrs .yt { color: var(--ink); margin-top: 6px; }
 .gchip { display: inline-block; padding: 0 10px; border-radius: 10px; font-weight: 750; line-height: 1.5; }
 .gchip.g5 { background: var(--violet); color: var(--ink-hi); }
-.gchip.g4 { background: rgba(108, 199, 168, .3); color: var(--ink-hi); }
+.gchip.g4 { background: rgba(242, 239, 232, .18); color: var(--ink-hi); }
 .gchip.g3 { background: var(--card3); color: var(--ink); }
 .gchip.g2 { border: 1px solid var(--hair2); color: var(--ink); }
 .gchip.g1 { border: 1px dashed var(--mute); color: var(--ink); }
@@ -463,12 +466,12 @@ ul.peers li { display: grid; grid-template-columns: minmax(0, 7.2em) minmax(0, 1
 ul.peers .pn { color: var(--sub); overflow-wrap: anywhere; } /* 이름은 줄바꿈 — 「SNT에너지(6…」처럼 잘리던 것(애플팀 2026-10-12) */
 ul.peers li.me .pn { color: var(--ink-hi); font-weight: 750; }
 ul.peers .pt { position: relative; height: 14px; background: rgba(255, 255, 255, .06); border-radius: 7px; overflow: hidden; }
-ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(108, 199, 168, .45); }
+ul.peers .pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: rgba(242, 239, 232, .27); }
 ul.peers .pb.me { background: var(--violet-ink); }
 ul.gbars { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
 ul.gbars li { display: grid; grid-template-columns: 5.4em minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 ul.gbars .gt { position: relative; height: 16px; background: rgba(255, 255, 255, .06); border-radius: 8px; overflow: hidden; }
-ul.gbars .gf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; background: rgba(108, 199, 168, .55); }
+ul.gbars .gf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; background: rgba(242, 239, 232, .33); }
 
 /* ════ 명품 ATLAS(사장님 2026-10-12 03:11 「자 명품팀 만든다 글씨에 명품팀 색감에 명품팀 그리고 선에 명품팀 느낌에 명품팀 최고에 장임에 정신으로 똘똘 뭉친다 그래서 아틀란스에 지금에 구조를 유지하면서 최대한 과감하게 명품 아틀란스를 디자인적으로 혁신 하라」) ════
    네 명품팀을 서로 모르게 따로 돌려 합침 — 색감 「밤 보석함」(맨 위 :root 값 · 자수정 면 · 진주 글 · 라일락 은사 선 · 루비 오름 · 사파이어 내림 · 세 닻 그대로)
@@ -591,14 +594,14 @@ html.f2 h1.head, html.f2 .co-head h1 { font-size: 1.42rem; } html.f3 h1.head, ht
 .board:not(.wide) .track .avg { top: -5px; bottom: -3px; border-left-width: 2px; }
 .board.wide .track { height: 10px; border-radius: 0; } .board.wide .track .bar { border-radius: 0; }
 ol.st { margin-left: -10px; margin-right: -10px; } /* 넓힌 여백(24px)에서도 360px 에서 7단 한 칸 45.7px — 누르는 자리 44px 위 */
-.gchip.g5 { color: #06201C; } /* 「아주 높다」 — 옥색 바탕에는 어두운 글(대비 8.5) */
+.gchip.g5 { color: #0C0E12; } /* 「아주 높다」 — 옥색 바탕에는 어두운 글(대비 8.5) */
 .row.win, .board .row.win { outline: 1px solid var(--gold); outline-offset: -1px; animation: none; }
 
 /* 10번 옻칠 — 위 · 아래 막대를 옻칠한 나무색 · 올리브 한 줄 · 막대 안 글과 표시는 밝은 색 */
 .band, .tabbar { background: var(--lacquer); } .band { border-bottom: 2px solid var(--violet); } .tabbar { border-top: 2px solid var(--violet); }
 .brand b { color: var(--lacquer-ink); } .brand svg circle, .brand svg path { stroke: var(--lacquer-ink); }
-.band .find, .band .ibtn { color: var(--lacquer-ink); border-color: rgba(245, 239, 228, .4); } .band .find { color: var(--lacquer-sub); }
-.band .find:hover, .band .ibtn:hover, .band .find:active, .band .ibtn:active { background: rgba(245, 239, 228, .1); }
+.band .find, .band .ibtn { color: var(--lacquer-ink); border-color: rgba(242, 239, 232, .4); } .band .find { color: var(--lacquer-sub); }
+.band .find:hover, .band .ibtn:hover, .band .find:active, .band .ibtn:active { background: rgba(242, 239, 232, .1); }
 .band .ibtn[aria-pressed="true"] { border-color: var(--lacquer-gold); }
 .tabbar a, .tabbar button { color: var(--lacquer-sub); } .tabbar a:hover, .tabbar button:hover { color: var(--lacquer-ink); }
 .tabbar [aria-current="page"] { color: var(--lacquer-ink); } .tabbar [aria-current="page"]::before { background: var(--lacquer-ink); }
@@ -671,7 +674,7 @@ html.f2 .hs > h1.head { font-size: 1.16rem; } html.f3 .hs > h1.head { font-size:
 .hs0 { padding: 0; }
 .hs a.hello.hs-hello { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 0; flex: 1 1 auto; min-height: 240px; margin: 0; padding: 0; border: 0; border-radius: 0; background: var(--band); overflow: hidden; }
 .hs a.hello.hs-hello img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; border-radius: 0; }
-.hs a.hello.hs-hello .hw { position: relative; display: grid; gap: 0; padding: 40px 16px 14px; background: linear-gradient(rgba(6, 26, 23, 0), rgba(6, 26, 23, .9) 45%); }
+.hs a.hello.hs-hello .hw { position: relative; display: grid; gap: 0; padding: 40px 16px 14px; background: linear-gradient(rgba(12, 14, 18, 0), rgba(12, 14, 18, .9) 45%); }
 .hs a.hello.hs-hello .hw b { font-size: 1.14rem; color: var(--ink-hi); }
 .hs a.hello.hs-hello .hw span { color: var(--ink); }
 .hs a.hello.hs-hello .hello-mo { top: 12px; right: 14px; }
@@ -762,8 +765,8 @@ ol.uplist .q.turn { font-weight: 700; }
 /* ════ 모든 회사 · 고른 곳 금빛(사장님 2026-10-14 12:01(싱가포르) 「나」 — 「첫 화면부터 모두 모든 회사로 바꿔요. 고른 56곳은 금빛이에요」) ════
    경주판 줄 = 갈래 · 업종 · 회사 모두 · 고른 곳(멍거 · 린치 조건)이 든 줄 = 왼쪽 금빛 띠 + 금빛 이름표(1등 줄 금빛 이중 테와 다른 꼴) · 「?」 이름표 = 하루 30% 넘게 바뀐 날(금빛 글 · 조심) */
 .board .row.pk::before { content: ''; position: absolute; left: 0; top: 7px; bottom: 7px; width: 3px; border-radius: 2px; background: var(--gold); z-index: 2; pointer-events: none; }
-.badge.gold { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 196, 106, .1); }
-.badge.qb { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 196, 106, .1); font-weight: 800; }
+.badge.gold { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 185, 73, .1); }
+.badge.qb { color: var(--gold); border-color: var(--gold-line); background: rgba(233, 185, 73, .1); font-weight: 800; }
 .key .k-pk { width: 4px; height: 18px; border-radius: 2px; background: var(--gold); }
 .note.gold-say { color: var(--sub); margin: -4px 0 10px; }
 @media (forced-colors: active) { .board .row.pk::before, .key .k-pk { forced-color-adjust: none; } }
@@ -798,9 +801,9 @@ a.srow:active { background: var(--press); }
 /* ── 1장 여는 홍표(사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 규칙 66) ──
    사이트를 열면 1장 글 자리에 홍표 그림 + 「홍표!」 세 번(0.5 · 1.0 · 1.5초) → 5초에 사장님 글로 바뀜(05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」) · 움직임 줄이기면 없음(atlas.js 가 안 그림)
    바뀌기 시작하는 때 --hp-at 은 atlas.js INTRO_MS 한 곳에서 옴(없으면 5초) */
-.hs a.hello.hs-hello .hpi { --hp-bub: #FFFFFF; --hp-ink: #0C2824; --hp-glow: #7FFFE6; position: absolute; inset: 0; display: block; z-index: 1; pointer-events: none; animation: hpi-out .5s ease var(--hp-at, 5s) forwards; }
+.hs a.hello.hs-hello .hpi { --hp-bub: #FFFFFF; --hp-ink: #0C0E12; --hp-glow: #F2EFE8; position: absolute; inset: 0; display: block; z-index: 1; pointer-events: none; animation: hpi-out .5s ease var(--hp-at, 5s) forwards; }
 .hs a.hello.hs-hello .hpi img.hpi-bird { position: absolute; inset: auto; left: 50%; bottom: 2px; top: auto; width: auto; height: 74%; max-width: 70%; object-fit: contain; border-radius: 0; translate: -50% 0; animation: hpi-rise .45s ease-out both; }
-.hs a.hello.hs-hello .hpi-b { position: absolute; padding: 4px 14px; border-radius: 16px; background: var(--hp-bub); color: var(--hp-ink); border: 3px solid var(--hp-glow); box-shadow: 0 0 18px rgba(127, 255, 230, .55); font-weight: 900; line-height: 1.2; white-space: nowrap; opacity: 0; animation: hpi-pop .38s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+.hs a.hello.hs-hello .hpi-b { position: absolute; padding: 4px 14px; border-radius: 16px; background: var(--hp-bub); color: var(--hp-ink); border: 3px solid var(--hp-glow); box-shadow: 0 0 18px rgba(242, 239, 232, .33); font-weight: 900; line-height: 1.2; white-space: nowrap; opacity: 0; animation: hpi-pop .38s cubic-bezier(.3, 1.6, .5, 1) forwards; }
 .hs a.hello.hs-hello .hpi-b.b1 { left: 4%; top: 44%; font-size: 1.05rem; animation-delay: .5s; }
 .hs a.hello.hs-hello .hpi-b.b2 { right: 4%; top: 30%; font-size: 1.2rem; animation-delay: 1s; }
 .hs a.hello.hs-hello .hpi-b.b3 { left: 50%; top: 8%; font-size: 1.5rem; translate: -50% 0; animation-delay: 1.5s; }
@@ -813,7 +816,7 @@ a.srow:active { background: var(--press); }
 @media (prefers-reduced-motion: reduce) { .hs a.hello.hs-hello .hpi { display: none; } .hs a.hello.hs-hello.hs-intro .hml { animation: none; } }
 
 /* ── 먹빛 첫 화면(사장님 2026-10-15(싱가포르) 09:41 「(나)는 아니야 너가 제일 스마트하게 만들어 … 만배는 더 스마트 한게 만들어」 · 앞 질문 (가) · 규칙 67) ──
-   샘플 11가지 가운데 4번 「밤 화면 · 먹」 → 다섯 번 다듬은 판(v4g)을 첫 화면(#/)에만 — html.m4 는 atlas.js route() 가 첫 화면에서만 붙임 · 다른 화면은 위 청자 밤 그대로
+   샘플 11가지 가운데 4번 「밤 화면 · 먹」 → 다섯 번 다듬은 판(v4g) — 색은 2026-10-15 12:43 「모든 화면을 바꿔」로 모든 화면(위 :root 먹빛) · html.m4(atlas.js route() 가 첫 화면에서만 붙임)는 첫 화면 꾸밈 · 첫 화면 색 이름 몇 개만
    색은 이 묶음 맨 위 한 곳(먹 바탕 · 편지지 면 · 가는 선 · 진주 글 · 빨강 오름 · 파랑 내림 · 금빛 = 고른 곳 · 문턱 「!」) · 글씨는 rem(글씨 크기 단추를 따라감 · 21px 이상)
    그림자 · 입체 · 흐림 필터 · 캔버스 · 바둑판 없음 · 움직임 줄이기면 움직임 없음 · 글 속 style 없음(CSP) */
 html.m4 {
@@ -828,11 +831,12 @@ html.m4 {
   --m4-ease: cubic-bezier(.2, .7, .2, 1);
   background: var(--night);
 }
-html.m4 body { background: var(--night); font-variant-numeric: tabular-nums; }
-html.m4 .band { border-bottom: 1px solid var(--m4-soft); }
-html.m4 .tabbar { border-top: 1px solid var(--m4-soft); }
-html.m4 .band .find, html.m4 .band .ibtn { border-color: var(--m4-line); border-radius: 22px; }
-html.m4 .tabbar [aria-current="page"]::before { top: -1px; height: 2px; width: 28px; margin-left: -14px; }
+/* 위 · 아래 막대 · 찾기 판 머리 — 모든 화면 같은 먹빛 막대(가는 선 하나 · 둥근 단추 · 2026-10-15 12:43 「모든 화면을 바꿔」) */
+body { background: var(--night); font-variant-numeric: tabular-nums; }
+.band, .sheet-top { border-bottom: 1px solid var(--m4-soft); }
+.tabbar { border-top: 1px solid var(--m4-soft); }
+.band .find, .band .ibtn { border-color: var(--m4-line); border-radius: 22px; }
+.tabbar [aria-current="page"]::before { top: -1px; height: 2px; width: 28px; margin-left: -14px; }
 html.m4 main.view { padding-top: 0; }
 html.m4 .vw > * { animation: none; } /* 칸마다 들어오는 움직임은 이 판의 움직임(편지 · 그래프 · 막대)으로 */
 .m4-letter .nb, .m4-sec .nb { white-space: nowrap; }
@@ -1020,3 +1024,291 @@ html.m4 main.view:focus, html.m4 main.view:focus-visible { outline: none; } /* �
 /* 맨 위 막대 — 좁은 휴대폰(374px 이하)에서 「ATLAS」가 찾기 칸에 겹치거나 「찾기」가 「찾..」로 잘리던 것(다른 눈 L9 · 모든 화면 같은 막대) */
 @media (max-width: 374px) { .band-in { gap: 6px; padding: 0 8px 0 10px; } .brand { flex: none; gap: 6px; } .brand b { letter-spacing: .12em; margin-right: -.12em; } .find { padding: 0 10px; } }
 @media (max-width: 340px) { .find svg { display: none; } }
+
+/* ════ 먹빛 예술 — 나머지 화면(사장님 2026-10-15(싱가포르) 12:49 「모든 화면을 바꿔 / 바꿀때 똑똑하게 그리고 장인정신 고급으로 에이전트 / 토론해서 나머지 페이지 예술러 변경해」 · 규칙 68) ════
+   첫 화면 먹빛 판(규칙 67)의 말투를 나머지 화면에 — 일꾼 넷(장인 · 데이터 · 예술 · 믿음)이 따로 안을 내고 따져 본 뒤 합침(docs/design/new-atlas-2026-10-11.md 「먹빛 예술」)
+   :is(html:not(.m4), .sheet) = 첫 화면 밖 · 찾기 · 도움말 판(첫 화면에서 열어도 같은 꼴 — 첫 화면 칸은 그대로) · 구조(차례 · 칸 · 클래스 · 글 · 숫자 · 고리)는 그대로, 모양만 · 그림자 · 입체 · 흐림 · 바둑판 없음 · 글씨 21px · 누르는 자리 44px · 대비 · 글 속 style 없음 */
+/* ── 머리: 위치 줄 · 제목(달 속 홍표는 첫 화면 칸 머리처럼 제목 왼쪽) · 작은 머리 ── */
+:is(html:not(.m4), .sheet) .crumb { margin: 4px 0 0; gap: 0 4px; color: var(--mute); }
+:is(html:not(.m4), .sheet) h1.head, :is(html:not(.m4), .sheet) .co-head h1 { padding-right: 0; padding-left: 44px; color: var(--ink); font-weight: 400; font-size: 1.43rem; line-height: 1.3; letter-spacing: -.015em; text-wrap: balance; }
+html.f2:not(.m4) :is(h1.head, .co-head h1) { font-size: 1.3rem; } html.f3:not(.m4) :is(h1.head, .co-head h1) { font-size: 1.2rem; }
+:is(html:not(.m4), .sheet) h1.head { margin: 32px 0 12px; }
+:is(html:not(.m4), .sheet) h1.head::before, :is(html:not(.m4), .sheet) .co-head h1::before { left: 0; right: auto; top: calc((1.3em - 32px) / 2); width: 32px; height: 32px; border: 0; } /* 달 속 홍표 — 첫 화면 칸 머리와 같은 32px · 바탕 그림 url 그대로(site_check 「달 속 막비」) */
+:is(html:not(.m4), .sheet) .co-head { margin: 32px 0 16px; row-gap: 4px; }
+:is(html:not(.m4), .sheet) .co-head small { display: block; flex: 1 1 100%; color: var(--mute); }
+:is(html:not(.m4), .sheet) .count { margin: 0 0 8px; color: var(--sub); }
+:is(html:not(.m4), .sheet) .say { margin: 0 0 8px; color: var(--mute); }
+:is(html:not(.m4), .sheet) .trh { margin: 0 0 8px; }
+:is(html:not(.m4), .sheet) .count b { font-weight: 500; }
+:is(html:not(.m4), .sheet) .tell { margin: 16px 0 0; color: var(--mute); }
+:is(html:not(.m4), .sheet) .tell .t b { color: var(--ink); font-weight: 500; }
+:is(html:not(.m4), .sheet) .tell .ibtn { border-color: var(--m4-line); border-radius: 22px; background: none; }
+:is(html:not(.m4), .sheet) .tell .ibtn:hover { background: var(--m4-soft); }
+
+/* ── 7단 = 밑줄 길(토론으로 정함) — 지나온 단 = 어두운 실선 · 지금 단 = 진주 실선 + 밝은 글 · 갈 수 있는 다음 단 = 점선 · 못 가는 단 = 회색 글(대비 6.4)
+   예술 눈의 「일곱 달(1단 초승 → 7단 보름)」은 뺌 — 장인 눈: 20px 에서 달 모양이 가려 보이지 않고 숫자 말을 되풀이 · 믿음 눈: 7단(모형 · 검증 전)이 보름이면 「다 왔다 · 확실」로 읽힘 · 숫자 · 고리 · 주소 그대로 ── */
+:is(html:not(.m4), .sheet) .steps { margin: 8px 0 0; }
+:is(html:not(.m4), .sheet) ol.st { gap: 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) ol.st li > :is(a, .cell) { min-height: 48px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--sub); }
+:is(html:not(.m4), .sheet) ol.st .num { font-family: var(--serif); font-weight: 400; font-size: 1.048rem; line-height: 1.15; }
+:is(html:not(.m4), .sheet) ol.st li.past > :is(a, .cell) { background: none; border-bottom: 2px solid var(--m4-line); color: var(--sub); }
+:is(html:not(.m4), .sheet) ol.st li.past > a:hover { color: var(--ink); background: var(--lift); }
+:is(html:not(.m4), .sheet) ol.st li.now > .cell { background: none; color: var(--ink); border-bottom: 2px solid var(--ink); border-radius: 0; }
+:is(html:not(.m4), .sheet) ol.st li.now .num { font-weight: 700; }
+:is(html:not(.m4), .sheet) ol.st li.next > a { color: var(--ink); border: 0; border-bottom: 2px dashed rgba(242, 239, 232, .55); }
+:is(html:not(.m4), .sheet) ol.st li.next > a:hover { background: var(--lift); border-bottom-style: solid; border-bottom-color: var(--ink); }
+:is(html:not(.m4), .sheet) ol.st li.next > .cell { opacity: 1; color: var(--mute); }
+:is(html:not(.m4), .sheet) .st-t { margin: 10px 0 0; color: var(--mute); font-weight: 400; letter-spacing: 0; }
+:is(html:not(.m4), .sheet) .st-t b { color: var(--ink); font-weight: 600; }
+:is(html:not(.m4), .sheet) .st-t .lk { color: var(--sub); font-weight: 400; }
+@media (max-width: 340px) { :is(html:not(.m4), .sheet) ol.st { margin-left: -18px; margin-right: -18px; } } /* 320px 에서도 한 칸 44px 넘게(장인 눈 · 믿음 눈 — 검사는 360 부터라 못 잼) */
+
+/* ── 경주판 줄 — 첫 화면 줄처럼 가는 선으로 나눔 · 숫자는 가는 굵기 · 1등 줄은 편지지 면(금빛은 고른 곳에만) · 금빛 이름표 = 점 + 글 ── */
+:is(html:not(.m4), .sheet) .board { margin: 16px 0 0; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) .board .row::after { left: 0; right: 0; border-top-color: var(--m4-soft); }
+:is(html:not(.m4), .sheet) .board:not(.wide) .row::after { display: block; }
+:is(html:not(.m4), .sheet) .row .val { font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; }
+:is(html:not(.m4), .sheet) .row .chev { color: var(--mute); }
+:is(html:not(.m4), .sheet) .row.win, :is(html:not(.m4), .sheet) .board .row.win, :is(html:not(.m4), .sheet) .board .row.win:hover { outline: 0; background: var(--m4-band); }
+:is(html:not(.m4), .sheet) .badge { border: 0; background: none; padding: 0; margin-left: 8px; color: var(--mute); font-weight: 400; letter-spacing: 0; }
+:is(html:not(.m4), .sheet) .badge:not(.gold):not(.qb)::before { content: '·'; margin-right: 8px; color: var(--mute); }
+:is(html:not(.m4), .sheet) .badge.gold { color: var(--gold); font-weight: 500; white-space: nowrap; }
+:is(html:not(.m4), .sheet) .badge.gold::before { content: ''; display: inline-block; width: 7px; height: 7px; margin: 0 6px 0 0; border-radius: 50%; background: var(--gold); vertical-align: .18em; }
+:is(html:not(.m4), .sheet) .badge.qb { color: var(--gold); font-weight: 600; }
+:is(html:not(.m4), .sheet) .board .row { padding-left: 4px; }
+:is(html:not(.m4), .sheet) .board .row.pk::before { left: -10px; width: 2px; top: 10px; bottom: 10px; border-radius: 1px; }
+:is(html:not(.m4), .sheet) .track .spk .ln { stroke-width: 1.8; }
+:is(html:not(.m4), .sheet) .track .spk .b0 { stroke: rgba(242, 239, 232, .28); }
+:is(html:not(.m4), .sheet) .track .spk .pa { stroke: var(--mute); stroke-opacity: .8; stroke-width: 1.2; stroke-dasharray: 1 3; stroke-linecap: round; }
+:is(html:not(.m4), .sheet) .trd { font-weight: 500; }
+:is(html:not(.m4), .sheet) :is(.key, .lkey) { margin: 16px 0 0; gap: 4px 16px; color: var(--mute); }
+
+/* ── 보기 바꾸기 = 첫 화면 지수 고르기(진주 손잡이) · 기간 = 첫 화면 기간 줄 ── */
+:is(html:not(.m4), .sheet) .seg { margin: 24px 0 0; padding: 4px; gap: 4px; border: 1px solid var(--m4-line); border-radius: 24px; background: none; }
+:is(html:not(.m4), .sheet) .seg button { border-radius: 22px; color: var(--sub); font-weight: 400; }
+:is(html:not(.m4), .sheet) .seg button[aria-pressed="true"] { background: var(--ink); color: var(--night); font-weight: 500; }
+:is(html:not(.m4), .sheet) .seg.seg3 { margin: 16px 0 8px; border-radius: 12px; }
+:is(html:not(.m4), .sheet) .seg.seg3 button { border: 1px solid transparent; border-radius: 8px; }
+:is(html:not(.m4), .sheet) .seg.seg3 button[aria-pressed="true"] { background: var(--m4-soft); color: var(--ink); border-color: var(--m4-line); }
+:is(html:not(.m4), .sheet) .alt { margin: 16px 0 0; padding: 12px 16px; border: 0; border-left: 2px solid var(--m4-line); border-radius: 0 8px 8px 0; background: var(--m4-band); color: var(--ink); }
+:is(html:not(.m4), .sheet) .alt b { color: var(--ink); font-weight: 600; }
+:is(html:not(.m4), .sheet) .note { margin: 16px 0 0; color: var(--sub); }
+:is(html:not(.m4), .sheet) .q { font-weight: 600; }
+
+/* ── 회사 머리 — 그림 · 세 숫자(셋 다 같은 크기 — 「가장 깊이 빠짐」 같은 조심 숫자를 작게 두지 않음) · 100만 원 줄 ── */
+:is(html:not(.m4), .sheet) .lc, :is(html:not(.m4), .sheet) .gc, :is(html:not(.m4), .sheet) .tc { margin: 16px 0 4px; }
+:is(html:not(.m4), .sheet) :is(.lc, .gc, .tc) .tip { border-radius: 8px; font-weight: 500; }
+:is(html:not(.m4), .sheet) .trio { grid-template-columns: minmax(0, 1fr); gap: 0; margin: 24px 0 8px; padding: 0; border: 0; border-top: 1px solid var(--m4-line); border-radius: 0; background: none; }
+:is(html:not(.m4), .sheet) .trio div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border: 0; border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; min-width: 0; }
+:is(html:not(.m4), .sheet) .trio span { color: var(--sub); font-weight: 400; letter-spacing: 0; line-height: 1.35; }
+:is(html:not(.m4), .sheet) .trio b { flex: none; margin: 0; font-family: var(--sans); font-size: 1.62rem; font-weight: 300; letter-spacing: -.035em; line-height: 1.1; }
+:is(html:not(.m4), .sheet) .trio b.fit { font-size: 1.3rem; }
+:is(html:not(.m4), .sheet) .won { margin: 16px 0 4px; color: var(--sub); }
+:is(html:not(.m4), .sheet) .src { margin: 4px 0 0; color: var(--mute); }
+:is(html:not(.m4), .sheet) p.chipline { margin: 0 0 8px; color: var(--sub); }
+:is(html:not(.m4), .sheet) .chip { border-color: var(--m4-line); border-radius: 12px; color: var(--sub); }
+
+/* ── 다음 단 = 가는 선 줄 하나(첫 화면 봉인 · 소개 줄처럼) · 오른쪽 진주 동그라미 ›(= 이리로 하나) ── */
+:is(html:not(.m4), .sheet) .nextst { grid-template-columns: minmax(0, 1fr) 44px; gap: 16px; min-height: 0; margin: 48px 0 0; padding: 16px 0; border: 0; border-top: 1px solid var(--m4-line); border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; }
+:is(html:not(.m4), .sheet) .nextst:hover { background: var(--lift); }
+:is(html:not(.m4), .sheet) .nextst:active { background: var(--m4-soft); }
+:is(html:not(.m4), .sheet) .nextst b { font-family: var(--serif); font-weight: 400; font-size: 1.143rem; color: var(--ink); }
+:is(html:not(.m4), .sheet) .nextst span span { color: var(--mute); }
+:is(html:not(.m4), .sheet) .nextst .chev { border: 0; background: var(--ink); color: var(--night); font-size: 1.143rem; }
+
+/* ── 칸 · 칸 머리 — 첫 화면 칸처럼: 칸 사이 넓게 · 바탕체 머리 왼쪽에 달 속 홍표(32px) · 테 없음 ── */
+:is(html:not(.m4), .sheet) .box { margin: 48px 0 0; padding: 0; border: 0; background: none; }
+:is(html:not(.m4), .sheet) :is(h2.sec, .box h2) { display: flex; align-items: center; gap: 12px; margin: 48px 0 16px; padding: 0; border: 0; font-family: var(--serif); font-size: 1.143rem; font-weight: 400; line-height: 1.3; letter-spacing: -.015em; color: var(--ink); }
+:is(html:not(.m4), .sheet) .box h2 { margin-top: 0; }
+:is(html:not(.m4), .sheet) :is(h2.sec, .box h2)::before { content: ''; flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--moon) url(/media/makbi-moon.svg) center / cover no-repeat; }
+:is(html:not(.m4), .sheet) .box h3 { margin: 24px 0 8px; color: var(--sub); font-weight: 500; }
+:is(html:not(.m4), .sheet) .box p { line-height: 1.6; }
+:is(html:not(.m4), .sheet) .box .small, :is(html:not(.m4), .sheet) p.small { color: var(--sub); } /* 정직 글(「멍거 · 린치가 고른 목록이 아닙니다」 · 셈 방법)은 흐리게 하지 않음 — 숫자만큼 또렷하게(규칙 53) */
+:is(html:not(.m4), .sheet) details.more { margin: 32px 0 0; border: 0; border-top: 1px solid var(--m4-line); border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; }
+:is(html:not(.m4), .sheet) details.more > summary { min-height: 56px; padding: 0 2px 0 0; font-weight: 400; color: var(--sub); border-radius: 0; }
+:is(html:not(.m4), .sheet) details.more > summary::after { color: var(--mute); font-weight: 400; }
+:is(html:not(.m4), .sheet) details.more .in { padding: 4px 0 16px; }
+:is(html:not(.m4), .sheet) ul.chk { gap: 0; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ul.chk li { padding: 12px 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) ul.chk b { color: var(--ink); font-weight: 500; }
+:is(html:not(.m4), .sheet) ul.chk .m.ok { color: var(--mute); }
+:is(html:not(.m4), .sheet) a.inl, :is(html:not(.m4), .sheet) .links2 a, :is(html:not(.m4), .sheet) details.more a, :is(html:not(.m4), .sheet) ul.riv a, :is(html:not(.m4), .sheet) .capin a { color: var(--ink); text-decoration-color: var(--m4-line); }
+:is(html:not(.m4), .sheet) :is(a.inl, .links2 a, details.more a, ul.riv a, .capin a):hover { text-decoration-color: currentColor; }
+
+/* ── 막대 — 첫 화면 사고팔기 막대처럼 얇고 둥근 끝 · 방향이 아닌 것은 한 색 · 조심은 금빛(색은 아래 「데이터 눈 · 믿음 눈」에서 다시 정함) ── */
+:is(html:not(.m4), .sheet) :is(ul.fin .ft, ul.peers .pt, ul.gbars .gt, ul.dirbars .dt) { height: 10px; border-radius: 4px; background: var(--m4-soft); }
+:is(html:not(.m4), .sheet) :is(ul.fin .fb, ul.peers .pb, ul.gbars .gf, ul.dirbars .db) { border-radius: 4px; }
+:is(html:not(.m4), .sheet) ul.fin .fb.pos, :is(html:not(.m4), .sheet) ul.gbars .gf, :is(html:not(.m4), .sheet) ul.peers .pb { background: var(--m4-neu); }
+:is(html:not(.m4), .sheet) ul.fin .fb.neg { background: var(--m4-line); }
+:is(html:not(.m4), .sheet) ul.peers .pb.me { background: var(--ink); }
+:is(html:not(.m4), .sheet) ul.dirbars { gap: 16px; }
+:is(html:not(.m4), .sheet) ul.dirbars .dn { font-weight: 500; color: var(--ink); }
+:is(html:not(.m4), .sheet) ul.fin li, :is(html:not(.m4), .sheet) ul.peers li, :is(html:not(.m4), .sheet) ul.gbars li { min-height: 32px; }
+:is(html:not(.m4), .sheet) ul.peers li.me .pn { color: var(--ink); font-weight: 500; }
+
+/* ── 6단 해마다 칸 · 말 등급 ── */
+:is(html:not(.m4), .sheet) ol.yrs { gap: 0 24px; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ol.yrs li { padding: 16px 0; border: 0; border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; }
+:is(html:not(.m4), .sheet) ol.yrs .yh b { color: var(--ink); font-weight: 500; }
+:is(html:not(.m4), .sheet) ol.yrs .ym b { font-family: var(--sans); font-size: 1.9rem; font-weight: 300; letter-spacing: -.03em; color: var(--ink); }
+:is(html:not(.m4), .sheet) .gchip { padding: 0 12px; border-radius: 14px; font-weight: 500; }
+
+/* ── 업데이트 탭 · 봉인 ── */
+:is(html:not(.m4), .sheet) ol.uplist { gap: 0; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ol.uplist li { padding: 24px 0 16px; border: 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) ol.uplist .uh b { color: var(--ink); font-weight: 500; }
+:is(html:not(.m4), .sheet) ol.uplist .chip.res { border-radius: 12px; }
+:is(html:not(.m4), .sheet) ol.uplist .stay b { font-weight: 300; font-size: 1.6rem; letter-spacing: -.03em; color: var(--ink); }
+:is(html:not(.m4), .sheet) ol.uplist .ni, :is(html:not(.m4), .sheet) ol.uplist .no2 { font-weight: 500; }
+:is(html:not(.m4), .sheet) ol.stations li::before { border-left-color: var(--sub); }
+:is(html:not(.m4), .sheet) ol.stations li:is(.now, .future)::before { border-left-color: var(--m4-line); }
+:is(html:not(.m4), .sheet) ol.stations li::after { background: var(--ink); }
+:is(html:not(.m4), .sheet) ol.stations li.now::after { background: var(--night); border-color: var(--gold); }
+:is(html:not(.m4), .sheet) ol.stations li.future::after { background: var(--night); border-color: var(--sub); }
+:is(html:not(.m4), .sheet) ol.stations .when b { font-weight: 400; color: var(--ink); }
+:is(html:not(.m4), .sheet) .dd { color: var(--ink); font-weight: 400; }
+:is(html:not(.m4), .sheet) ol.opens { gap: 0; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ol.opens li { padding: 16px 0; border: 0; border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; }
+:is(html:not(.m4), .sheet) ol.opens .oy { font-weight: 400; color: var(--ink); }
+
+/* ── 찾기 · 도움말 판 · 깔때기 ── */
+.sheet .sheet-top { background: var(--night); }
+.sheet .sheet-top input { border: 1px solid var(--m4-line); border-radius: 24px; background: var(--m4-band); }
+.sheet .sheet-top input:focus, .sheet .sheet-top input:focus-visible { border-color: var(--ink); }
+.sheet .sheet-top h2 { font-family: var(--serif); font-weight: 400; font-size: 1.143rem; color: var(--ink); }
+.sheet .close { border-color: var(--m4-line); border-radius: 22px; background: none; }
+.sheet .close:hover { background: var(--m4-soft); }
+:is(html:not(.m4), .sheet) .hits { border-top: 1px solid var(--m4-line); border-bottom: 0; }
+:is(html:not(.m4), .sheet) .hits li a { padding: 14px 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) .hits li + li a::before { display: none; }
+:is(html:not(.m4), .sheet) .hits .nm { font-weight: 500; }
+:is(html:not(.m4), .sheet) .hits .g2 { color: var(--mute); }
+:is(html:not(.m4), .sheet) .hint { color: var(--mute); }
+:is(html:not(.m4), .sheet) .funnel li { border: 1px solid var(--m4-soft); border-radius: 8px; background: var(--m4-band); }
+:is(html:not(.m4), .sheet) .funnel li .fill { background: rgba(242, 239, 232, .08); }
+:is(html:not(.m4), .sheet) .funnel li.stop { border: 1px solid var(--gold); }
+:is(html:not(.m4), .sheet) .funnel li .num { font-weight: 500; }
+:is(html:not(.m4), .sheet) .why { font-weight: 500; }
+:is(html:not(.m4), .sheet) :is(ul.fin, ul.peers, ul.gbars) b { font-weight: 500; }
+/* 5단 같은 업종 매출 막대 — 이름 · 값이 위 · 막대는 아래 온 넓이(첫 화면 사고팔기 줄처럼 · 긴 회사 이름이 낱말 가운데서 끊기지 않게) */
+:is(html:not(.m4), .sheet) ul.peers { gap: 0; margin: 0 0 8px; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ul.peers li { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'n v' 'b b'; align-items: baseline; column-gap: 12px; row-gap: 8px; padding: 12px 0 16px; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) ul.peers .pn { grid-area: n; overflow-wrap: break-word; }
+:is(html:not(.m4), .sheet) ul.peers .pt { grid-area: b; }
+:is(html:not(.m4), .sheet) ul.peers li > b { grid-area: v; text-align: right; }
+/* 7단 네 방향 — 글(번 길 · 크게 잃는 길 %)이 위 · 막대가 아래(글이 두 줄로 꺾이지 않게) */
+:is(html:not(.m4), .sheet) ul.dirbars .dl { grid-template-columns: minmax(0, 1fr); grid-template-areas: 't' 'b'; row-gap: 6px; }
+:is(html:not(.m4), .sheet) ul.dirbars .dl .num { grid-area: t; color: var(--sub); }
+:is(html:not(.m4), .sheet) ul.dirbars .dl .dt { grid-area: b; }
+:is(html:not(.m4), .sheet) ul.dirbars li { gap: 8px; padding: 0 0 16px; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) .play { border-color: var(--m4-line); border-radius: 22px; background: none; font-weight: 500; }
+:is(html:not(.m4), .sheet) .play:hover { background: var(--m4-soft); }
+
+/* ── 데이터 눈 · 믿음 눈(따로 낸 안을 합침) — 그림 눈금 · 범례 한 꼴 · 「기록 = 꽉 찬 막대 · 남의 짐작 = 점선 · 모형 = 빗금과 테」 · 금빛은 고른 곳 · ? · ! · 조심에만 ── */
+/* 그림 — 눈금 글은 오른쪽 칸(첫 화면 시장 그림과 같은 꼴 · atlas.js gutterAxis) · 때 글은 그림 위 띠 · 축 글은 21px 에 맞춤(글씨가 커져도 두 줄로 꺾이지 않게) */
+:is(html:not(.m4), .sheet) :is(.lc, .tc, .gc) .yr span { position: absolute; right: 0; color: var(--mute); line-height: 1; white-space: nowrap; font-size: max(21px, .78rem); pointer-events: none; }
+:is(html:not(.m4), .sheet) :is(.lc, .gc) .ax, :is(html:not(.m4), .sheet) .tc .ax3 { padding-right: 3.05rem; font-size: max(21px, .78rem); }
+:is(html:not(.m4), .sheet) .upchart .ax { font-size: max(21px, .78rem); }
+:is(html:not(.m4), .sheet) .lc .yl { background: none; padding: 0; color: var(--gold); line-height: 1.2; } /* 「고른 날」 — 금빛 세로선의 이름(위 띠 · 선을 가리지 않음) */
+:is(html:not(.m4), .sheet) .lc-ext { margin: 8px 0 0; color: var(--mute); }
+:is(html:not(.m4), .sheet) .tc .fut { color: var(--mute); }
+/* 범례 견본 — 그림 속 선 · 막대와 같은 꼴(선 22×2 · 막대 22×10 · 때 2×18 — 네모 꼴 없음) */
+:is(html:not(.m4), .sheet) .key .k-avg, :is(html:not(.m4), .sheet) .lkey .l-avg { width: 22px; height: 0; border: 0; border-top: 2px dashed var(--mute); opacity: 1; }
+:is(html:not(.m4), .sheet) .lkey .l-k365 { width: 22px; height: 2px; border-radius: 1px; background: var(--ink); }
+:is(html:not(.m4), .sheet) .lkey .l-kpool { width: 22px; height: 0; border-top: 2px solid var(--m4-neu); }
+:is(html:not(.m4), .sheet) .lkey .l-open { width: 0; height: 18px; border-left: 2px dashed var(--sub); }
+:is(html:not(.m4), .sheet) .lkey .l-gact { width: 22px; height: 10px; border-radius: 3px; background: var(--sub); }
+:is(html:not(.m4), .sheet) .lkey .l-gest { width: 22px; height: 10px; border-radius: 3px; border: 2px dashed var(--sub); box-sizing: border-box; }
+:is(html:not(.m4), .sheet) .lkey .l-gband { width: 22px; height: 10px; border-radius: 3px; background: rgba(242, 239, 232, .12); border: 1px solid var(--sub); box-sizing: border-box; }
+:is(html:not(.m4), .sheet) .lkey .l-gone { width: 22px; height: 0; border-top: 1px dashed var(--mute); }
+:is(html:not(.m4), .sheet) .lkey .l-in { width: 22px; height: 10px; border-radius: 2px; background: var(--ink); }
+:is(html:not(.m4), .sheet) .lkey .l-out { width: 22px; height: 10px; border-radius: 2px; background: none; border: 1.5px solid var(--sub); box-sizing: border-box; }
+:is(html:not(.m4), .sheet) .lkey .l-turn { width: 22px; height: 10px; }
+/* 7단 모형 막대 = 빗금 + 테(기록 막대와 꼴로 가름) · 크게 잃는 길 = 금빛 빗금(조심) · 가운데값 눈금 = 흰 선 양옆 먹 틈(어느 막대 위에서도 보임) */
+:is(html:not(.m4), .sheet) ul.dirbars .db { box-sizing: border-box; }
+:is(html:not(.m4), .sheet) ul.dirbars .db.pos { background: repeating-linear-gradient(135deg, rgba(242, 239, 232, .55) 0 2px, transparent 2px 6px); border: 1px solid var(--sub); }
+:is(html:not(.m4), .sheet) ul.dirbars .db.neg { background: repeating-linear-gradient(135deg, rgba(233, 185, 73, .7) 0 2px, transparent 2px 6px); border: 1px solid var(--gold); }
+:is(html:not(.m4), .sheet) ul.dirbars .dm { width: 6px; margin-left: -3px; top: -5px; bottom: -5px; background: var(--ink); border-left: 2px solid var(--night); border-right: 2px solid var(--night); background-clip: padding-box; border-radius: 0; }
+:is(html:not(.m4), .sheet) .lkey .l-dw { width: 22px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(242, 239, 232, .55) 0 2px, transparent 2px 6px); border: 1px solid var(--sub); box-sizing: border-box; }
+:is(html:not(.m4), .sheet) .lkey .l-db { width: 22px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(233, 185, 73, .7) 0 2px, transparent 2px 6px); border: 1px solid var(--gold); box-sizing: border-box; }
+:is(html:not(.m4), .sheet) .lkey .l-dm { width: 6px; height: 18px; background: var(--ink); border-left: 2px solid var(--night); border-right: 2px solid var(--night); background-clip: padding-box; border-radius: 0; }
+/* 기록 막대 한 꼴 — 이름 · 값 위 · 같은 자 막대 아래(첫 화면 사고팔기 줄) · 꽉 찬 한 색 · 잃은 해 = 짙은 회색 */
+:is(html:not(.m4), .sheet) :is(ul.fin, ul.gbars) { gap: 0; margin: 0 0 8px; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ul.fin li { grid-template-columns: 4.6em minmax(0, 1fr) auto; grid-template-areas: 'n b v'; align-items: center; column-gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html.f2:not(.m4), html.f3:not(.m4), .sheet) ul.fin li, :is(html:not(.m4), .sheet) ul.gbars li { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'n v' 'b b'; align-items: baseline; column-gap: 12px; row-gap: 8px; padding: 12px 0 16px; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) ul.fin .y, :is(html:not(.m4), .sheet) ul.gbars li > span:first-child { grid-area: n; min-width: 0; }
+:is(html:not(.m4), .sheet) :is(ul.fin, ul.gbars) li > b { grid-area: v; text-align: right; }
+:is(html:not(.m4), .sheet) :is(ul.fin .ft, ul.gbars .gt) { grid-area: b; align-self: center; }
+:is(html:not(.m4), .sheet) ul.fin .fb.pos, :is(html:not(.m4), .sheet) ul.gbars .gf { background: var(--sub); }
+:is(html:not(.m4), .sheet) ul.fin .fb.neg { background: var(--m4-neu); }
+:is(html:not(.m4), .sheet) .box h3 { color: var(--ink); font-weight: 500; margin: 24px 0 8px; }
+/* 깔때기 — 수(오른쪽 맞춤 칸) · 글(왼쪽) · 밑에 온 넓이 자 위로 줄어드는 막대(장인 눈) · 멈춘 자리 = 진주 왼쪽 띠 · 진주 막대(금빛 아님 — 「고른 곳」으로 읽히지 않게 · 믿음 눈) */
+:is(html:not(.m4), .sheet) .funnel { gap: 0; border-top: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) .funnel li { padding: 12px 0 28px 14px; border: 0; border-bottom: 1px solid var(--m4-soft); border-radius: 0; background: none; overflow: visible; }
+:is(html:not(.m4), .sheet) .funnel li::after { content: ''; position: absolute; left: 14px; right: 0; bottom: 12px; height: 6px; border-radius: 3px; background: var(--m4-soft); }
+:is(html:not(.m4), .sheet) .funnel li .fill { top: auto; left: 14px; bottom: 12px; max-width: calc(100% - 14px); height: 6px; border-radius: 3px; background: var(--m4-neu); z-index: 1; }
+:is(html:not(.m4), .sheet) .funnel li > span { display: grid; grid-template-columns: 5.2em minmax(0, 1fr); column-gap: 12px; justify-content: start; }
+:is(html:not(.m4), .sheet) .funnel li > span b { text-align: right; font-weight: 500; }
+:is(html:not(.m4), .sheet) .funnel li.stop { border: 0; border-bottom: 1px solid var(--m4-soft); }
+:is(html:not(.m4), .sheet) .funnel li.stop::before { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--ink); }
+:is(html:not(.m4), .sheet) .funnel li.stop > span, :is(html:not(.m4), .sheet) .funnel li.stop > span b { color: var(--ink); }
+:is(html:not(.m4), .sheet) .funnel li.stop .fill { background: var(--ink); }
+:is(html:not(.m4), .sheet) p.fname { margin: 24px 0 8px; color: var(--sub); } :is(html:not(.m4), .sheet) p.fname b { font-weight: 500; }
+:is(html:not(.m4), .sheet) .why { border: 0; border-left: 2px solid var(--sub); border-radius: 0; background: none; padding: 2px 0 2px 14px; font-weight: 500; color: var(--ink); } /* 밖인 까닭 — 금빛 아님 */
+/* 손끝 · 고리 — 1등 줄에도 고를 때 테 · 고리는 밑줄(회색 · 바탕과 6:1)로 알아봄 · 위치 줄은 누를 곳이 더 밝음 */
+:is(html:not(.m4), .sheet) .board .row:focus-visible, :is(html:not(.m4), .sheet) .board .row.win:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+:is(html:not(.m4), .sheet) .crumb a { color: var(--ink); text-decoration-color: var(--mute); }
+:is(html:not(.m4), .sheet) .crumb a:hover { color: var(--ink); text-decoration-color: currentColor; }
+:is(html:not(.m4), .sheet) .crumb > span { color: var(--sub); }
+:is(html:not(.m4), .sheet) :is(a.inl, .links2 a, details.more a, ul.riv a, .capin a) { color: var(--ink); text-decoration-color: var(--mute); text-underline-offset: 5px; }
+/* 정직 글 — 숫자만큼 또렷하게(규칙 53) */
+:is(html:not(.m4), .sheet) .alt.model { border-left: 2px solid var(--ink); background: var(--m4-band); color: var(--ink); }
+:is(html:not(.m4), .sheet) .alt.model b { font-weight: 600; }
+:is(html:not(.m4), .sheet) .box p.small.hon { color: var(--ink); }
+:is(html:not(.m4), .sheet) .box.seal h2 { color: var(--ink); } /* 봉인 번호 — 뜻 없는 금빛을 뺌(금빛은 봉인 날 · 세로선에만) */
+/* 6단 — 가운데 값이 범위를 누르지 않게 · 말 등급 다섯은 한 꼴(뒤집은 단추 꼴은 고른 단추에만) */
+:is(html:not(.m4), .sheet) ol.yrs .ym b { font-size: 1.6rem; }
+:is(html:not(.m4), .sheet) ol.yrs .ym span.num { font-size: 1.143rem; color: var(--ink); }
+:is(html:not(.m4), .sheet) .gchip, :is(html:not(.m4), .sheet) .gchip:is(.g1, .g2, .g3, .g4, .g5) { background: none; border: 1px solid var(--m4-line); color: var(--ink); }
+/* 숫자 — 잰 값은 고정폭 Pretendard(세리프는 제목 · 차례 번호 · 단 번호) · 갈래 · 업종 머리 숫자는 제 줄로 크게(첫 화면 시장 큰 숫자) */
+:is(html:not(.m4), .sheet) h1.head > .num { display: block; margin: 8px 0 0 -44px; font-family: var(--sans); font-size: 2.19rem; font-weight: 300; letter-spacing: -.035em; line-height: 1.05; } /* 결론 숫자 = 제목 아래 줄 · 글 기둥 왼쪽 끝(첫 화면 큰 숫자 .m4-v 꼴) */
+:is(html:not(.m4), .sheet) .dd { font-family: var(--sans); font-weight: 500; letter-spacing: -.02em; }
+:is(html:not(.m4), .sheet) .row .chev { font-size: 1.143rem; }
+:is(html:not(.m4), .sheet) .hits a > b.num { font-weight: 500; }
+:is(html:not(.m4), .sheet) .hits .chip { border: 0; padding: 0; margin-left: 8px; color: var(--mute); }
+:is(html:not(.m4), .sheet) p.chipline .badge.gold { margin-left: 0; }
+.sheet .sheet-body { padding-left: 24px; padding-right: 24px; }
+:is(html:not(.m4), .sheet) .lc .yl { white-space: nowrap; }
+
+/* ── 예술 눈(C) 합침 — 접은 칸 ○ → ● · 다음 단 왼쪽에 그 단의 달 · 칸 첫 문단은 바탕체 · 업데이트 두루마리 · 봉인 칸 · 판 = 편지지 · 화면 끝 도장(낙관) ── */
+:is(html:not(.m4), .sheet) details.more > summary { justify-content: flex-start; gap: 12px; }
+:is(html:not(.m4), .sheet) details.more > summary::before { content: ''; flex: none; width: 18px; height: 18px; box-sizing: border-box; border: 1.5px solid var(--mute); border-radius: 50%; } /* 첫 화면 「어떻게 셌나요?」와 같은 ○ · 열면 ● */
+:is(html:not(.m4), .sheet) details.more[open] > summary::before { background: var(--sub); border-color: var(--sub); }
+:is(html:not(.m4), .sheet) details.more > summary::after { margin-left: auto; padding-left: 12px; }
+:is(html:not(.m4), .sheet) details.more .in { margin: 0 0 16px; padding: 12px 16px; border-left: 2px solid var(--m4-line); border-radius: 0 8px 8px 0; background: var(--m4-soft); }
+:is(html:not(.m4), .sheet) ol.uplist details.more { margin: 12px 0 4px; }
+:is(html:not(.m4), .sheet) .box > h2 + p:not(.small):not(.alt):not(.q) { font-family: var(--serif); font-size: 1.048rem; line-height: 1.6; letter-spacing: -.01em; } /* 칸 첫 문단 = 첫 화면 첫 줄(.m4-lead) 꼴 */
+:is(html:not(.m4), .sheet) .gchip { border-radius: 4px; } /* 말 등급 = 이름표(알약은 고른 단추에만) */
+:is(html:not(.m4), .sheet) .box.seal { padding: 20px 16px 12px; border: 1px solid var(--gold-line); border-radius: 8px; } /* 봉인 번호 칸 = 고른 날의 봉인(금빛 테 하나 · 제목 글은 진주) */
+/* 업데이트 = 두루마리 장부 — 왼쪽 축 하나 · 회차마다 점(바꿈 ● 진주 · 그대로 ○ · 실패 ○ 금빛) · 기록은 지우지 않음 */
+:is(html:not(.m4), .sheet) ol.uplist { position: relative; padding-left: 28px; }
+:is(html:not(.m4), .sheet) ol.uplist::before { content: ''; position: absolute; left: 7px; top: 22px; bottom: 0; border-left: 1px solid var(--m4-line); }
+:is(html:not(.m4), .sheet) ol.uplist li { position: relative; }
+:is(html:not(.m4), .sheet) ol.uplist li::before { content: ''; position: absolute; left: -26px; top: 32px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--mute); background: var(--night); }
+:is(html:not(.m4), .sheet) ol.uplist li.r-ch::before { border-color: var(--ink); background: var(--ink); }
+:is(html:not(.m4), .sheet) ol.uplist li.r-fail::before { border-color: var(--gold); }
+:is(html:not(.m4), .sheet) ol.uplist li.r-fail { border-color: var(--m4-soft); }
+:is(html:not(.m4), .sheet) ol.uplist .uh b { font-family: var(--serif); font-weight: 400; font-size: 1.048rem; }
+/* 판(찾기 · 도움말 · 밖 칸) = 편지지 한 장 · 찾기 칸 = 밑줄 한 줄(편지지에 이름을 씀) */
+.sheet, .sheet .sheet-top { background: var(--m4-band); }
+.sheet .sheet-top { border-bottom: 1px solid var(--m4-line); }
+.sheet .sheet-top input { padding: 0 4px; border: 0; border-bottom: 1px solid rgba(242, 239, 232, .4); border-radius: 0; background: transparent; }
+.sheet .sheet-top input:focus, .sheet .sheet-top input:focus-visible { border-bottom: 2px solid var(--ink); }
+.sheet .alt, .sheet details.more .in { background: var(--m4-soft); }
+/* 화면 끝 도장(낙관) — 첫 화면 홍표 도장과 같은 꼴 · 글 없음 · 빨간 도장 없음(빨강 = 오름) · 판판한 원(번짐 빛 아님) · 가상 요소 */
+html:not(.m4) .foot { margin-top: 64px; }
+html:not(.m4) .foot::before { content: ''; display: block; width: 52px; height: 52px; margin: 0 auto 40px; box-sizing: border-box; border: 1.5px solid rgba(242, 239, 232, .45); border-radius: 10px;
+  background: url(/media/makbi-moon.svg) center / 34px 34px no-repeat, radial-gradient(circle at 50% 50%, var(--moon) 0 16.5px, transparent 17px); }
+@media (prefers-reduced-motion: no-preference) { html:not(.m4) .vw > :is(h1.head, .co-head) { animation: m4-ink .6s var(--m4-ease) both; } }
+html:not(.m4) .vw:has(ol.st li:nth-child(7).now) .foot::before, html:not(.m4) .vw:has(.box.seal) .foot::before { display: none; }
+:is(html:not(.m4), .sheet) :is(.lc, .gc) .ax span:last-child { margin-right: -3.05rem; } /* 끝 날짜는 눈금 칸까지 써서 한 줄로(데이터 눈 — 4단 「2025년 9월 24일」이 두 줄로 꺾이던 것) */
