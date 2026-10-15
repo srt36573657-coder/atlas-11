@@ -34,6 +34,9 @@
    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
    <span>찾기</span>
   </button>
+  <button class="ibtn lang" type="button" id="langBtn" aria-label="언어 고르기 · Language" aria-haspopup="dialog">
+   <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2 11h18M11 2c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9M11 2C8.4 4.6 7.2 7.6 7.2 11s1.2 6.4 3.8 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+  </button>
   <button class="ibtn" type="button" id="fontBtn" aria-label="글씨 크기 바꾸기 (지금 보통)">가</button>
   <button class="ibtn" type="button" id="helpBtn" aria-label="ATLAS 는 어떻게 셌나요">?</button>
  </div>
@@ -61,6 +64,15 @@
  <div class="sheet-in">
   <div class="sheet-top"><h2 id="infoTitle">ATLAS 는 어떻게 셌나요</h2><button class="close" type="button" data-close="infoSheet">닫기</button></div>
   <div class="sheet-body" id="infoBody"></div>
+ </div>
+</div>
+<div class="sheet" id="langSheet" role="dialog" aria-modal="true" aria-labelledby="langTitle" hidden>
+ <div class="sheet-in">
+  <div class="sheet-top"><h2 id="langTitle">언어 · Language</h2><button class="close" type="button" data-close="langSheet">닫기</button></div>
+  <div class="sheet-body lang-pick">
+   <button type="button" data-lang="ko" lang="ko">한국어</button>
+   <button type="button" data-lang="en" lang="en">English</button>
+  </div>
  </div>
 </div>
 <noscript><p class="boot">이 화면은 자바스크립트가 켜져 있어야 열립니다.</p></noscript>

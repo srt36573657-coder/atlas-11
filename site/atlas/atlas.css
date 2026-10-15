@@ -1498,3 +1498,13 @@ html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
 .vw .cal-cl b { font-weight: 700; color: var(--ink); white-space: nowrap; }
 .vw .cal-cl .cal-ud { font-weight: 700; color: var(--ink); white-space: nowrap; }
 .vw svg.cal-dots { display: block; max-width: 100%; height: auto; }
+
+/* ════ 영어 팩(사장님 2026-10-15(싱가포르) 23:30 「영어 팩도 올려」 · 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」) ════
+   맨 위 언어 단추(지구 · 44px) → 언어 판(한국어 · English) · 영어로 볼 때만 html.en(낱말 단위 줄바꿈 · 긴 낱말은 칸 안에서 끊음) · 금빛 안 씀 */
+.ibtn.lang svg { display: block; }
+.lang-pick { display: grid; gap: 12px; padding-top: 16px; }
+.lang-pick button { min-height: 56px; padding: 0 18px; border-radius: 4px; border: 1px solid var(--hair2); background: transparent; color: var(--ink); font: inherit; font-weight: 700; font-size: 1.1rem; text-align: left; cursor: pointer; }
+.lang-pick button:hover, .lang-pick button:active { background: var(--card3); }
+.lang-pick button[aria-current="true"] { border-color: var(--ink); }
+.lang-pick button[aria-current="true"]::after { content: '  ✓'; }
+html.en body { word-break: normal; overflow-wrap: break-word; }

@@ -21,6 +21,8 @@
 //     나머지 회사 줄은 「밖」 칸(#/x/ — 이름 · 까닭 · 깔때기) · 업종 화면 「?」 = 하루 30% 넘게 바뀐 날이 있는 회사(주식 수 바뀜일 수 있음 · 확인 못 함)
 //   2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」(규칙 62) — core.co7 이면 모든 회사가 3 ~ 7단(회사 파일 co/<번호>.json 의 c · line · coEntry) ·
 //     고른 곳 밖 3단 = 「왜 … 밖인가요?」(이름표 까닭 · 깔때기) · 6단 이야기 = 「조사 전」(이야기는 고른 곳만 사람이 조사) · 7단 = range.json others · 밖 칸 #/x/ 는 회사 주식이 아닌 것(펀드 · 우선주 …)만 · 회사 주식의 옛 #/x/ 주소는 3단 회사로
+// 영어 팩(사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」) — 그려진 한국어를 틀로 바꿈(site/atlas/i18n.js) · 화면 코드는 한국어 그대로
+import {ON as EN, startI18n, t as L, switchLang, nameEn} from './i18n.js';
 const $ = (s, el = document) => el.querySelector(s);
 /** 바탕 회사 수 · 이름(멍거 · 린치 조건 N곳 — 수는 회차마다 자료에서) · 이름 밑 한 줄(갈래마다 수 · 쉬운 말) */
 const NP = (C = D.core) => C?.funnel?.picked ?? '?';
@@ -440,7 +442,7 @@ function countUp(el, to, still) { const end = to.toLocaleString('ko-KR'); if (st
 // ── ① 사장님 편지 ──
 function m4letter() {
   const intro = helloIntro && !RM.matches; helloIntro = false;
-  const msg = h('span', {class: 'hmsg m4-msg'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t})), h('i', {class: 'm4-moon', 'aria-hidden': 'true'}),
+  const msg = h('span', {class: 'hmsg m4-msg', lang: 'ko'}, ...HELLO_MSG.map(t => h('span', {class: 'hml', text: t})), h('i', {class: 'm4-moon', 'aria-hidden': 'true'}),
     h('img', {class: 'm4-hp', src: '/media/makbi-hello.svg', alt: '', width: 88, height: 110, decoding: 'async', 'aria-hidden': 'true'}));
   const stars = h('span', {class: 'm4-stars', 'aria-hidden': 'true'}, ...[0, 1, 2, 3, 4, 5, 6].map(() => h('i')));
   const cut = HELLO_PROMO.indexOf('스타벅스'); // 「스타벅스 상품권 1만원!」은 한 줄에(규칙 62)
@@ -1839,14 +1841,14 @@ const norm = s => String(s).toLowerCase().replace(/[\s·.\-()&]/g, '');
 const cho = s => [...s].map(ch => { const k = ch.charCodeAt(0) - 0xAC00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : ch; }).join('');
 const sound = s => String(s).replace(/[A-Za-z]/g, ch => LAT[ch.toUpperCase()] || ch);
 function prepNames() {
-  for (const r of D.names.rows) { const a = norm(r.n), b = norm(sound(r.n)); r._k = [a, b]; r._c = [cho(a), cho(b)]; }
+  for (const r of D.names.rows) { const a = norm(r.n), b = norm(sound(r.n)), e = EN ? norm(nameEn(r.n) ?? '') : ''; r._k = e ? [a, b, e] : [a, b]; r._c = [cho(a), cho(b)]; } // 영어로 볼 때는 영어 이름으로도 찾음
 }
 function search(q) {
   const k = norm(q); if (!k) return [];
   const onlyCho = /^[ㄱ-ㅎ]+$/.test(k), digits = /^\d+$/.test(k), codeK = !digits && /^\d[0-9a-z]{0,5}$/.test(k); // 번호 — 새로 상장한 곳은 숫자 · 영문이 섞임(0126Z0 · 2026-10-14 틀림 장부 26번)
   const hits = [];
-  for (const g of D.core.groups) if (norm(g.name).includes(k) || norm(g.short).includes(k)) hits.push({kind: 'g', score: norm(g.name).startsWith(k) ? 0 : 1, g});
-  for (const i of D.core.industries) if (norm(i.name).includes(k) || (onlyCho && cho(norm(i.name)).includes(k))) hits.push({kind: 'i', score: norm(i.name).startsWith(k) ? 0 : 1, i});
+  for (const g of D.core.groups) if (norm(g.name).includes(k) || norm(g.short).includes(k) || (EN && norm(L(g.name)).includes(k))) hits.push({kind: 'g', score: norm(g.name).startsWith(k) ? 0 : 1, g});
+  for (const i of D.core.industries) if (norm(i.name).includes(k) || (onlyCho && cho(norm(i.name)).includes(k)) || (EN && norm(L(i.name)).includes(k))) hits.push({kind: 'i', score: norm(i.name).startsWith(k) ? 0 : 1, i});
   D.names.rows.forEach((r, ix) => {
     let s = -1;
     if (digits) { if (r.c.startsWith(k)) s = 0; }
@@ -2154,9 +2156,9 @@ function calBack(to, from) { if (to !== '#/cal' || !/^#\/cal\//.test(from || '')
 // ── 소리 · 글씨 ──
 function speak() {
   try { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel();
-    const v = $('#view'), say = t => t?.replace(/−/g, '마이너스 ').replace(/\+/g, '플러스 '), m4 = [...v.querySelectorAll('.m4-sec')].slice(0, 3); // 첫 화면 = 먹빛 판의 앞 세 칸(제목 · 첫 줄)
-    const parts = [...(m4.length ? m4.flatMap(x => [x.querySelector('.m4-t')?.textContent, x.querySelector('.m4-lead')?.textContent]).map(say) : [v.querySelector('h1')?.textContent]), v.querySelector('.count')?.textContent, ...[...v.querySelectorAll('.board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).slice(0, 3).map(r => r.querySelector('.nm').textContent + ' ' + r.querySelector('.val').textContent.replace('−', '마이너스 ').replace('+', '플러스 ') + (r.querySelector('.trd') ? ', ' + r.querySelector('.trd').textContent.replace(/[▲▼▶] /, '') : ''))].filter(Boolean);
-    const u = new SpeechSynthesisUtterance(parts.join('. ')); u.lang = 'ko-KR'; u.rate = 0.9; speechSynthesis.speak(u); } catch { /* 소리 없음 */ }
+    const v = $('#view'), say = t => (EN ? t : t?.replace(/−/g, '마이너스 ').replace(/\+/g, '플러스 ')), m4 = [...v.querySelectorAll('.m4-sec')].slice(0, 3); // 첫 화면 = 먹빛 판의 앞 세 칸(제목 · 첫 줄)
+    const parts = [...(m4.length ? m4.flatMap(x => [x.querySelector('.m4-t')?.textContent, x.querySelector('.m4-lead')?.textContent]).map(say) : [v.querySelector('h1')?.textContent]), v.querySelector('.count')?.textContent, ...[...v.querySelectorAll('.board .row')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).slice(0, 3).map(r => r.querySelector('.nm').textContent + ' ' + (EN ? r.querySelector('.val').textContent : r.querySelector('.val').textContent.replace('−', '마이너스 ').replace('+', '플러스 ')) + (r.querySelector('.trd') ? ', ' + r.querySelector('.trd').textContent.replace(/[▲▼▶] /, '') : ''))].filter(Boolean);
+    const u = new SpeechSynthesisUtterance(parts.join('. ')); u.lang = EN ? 'en-US' : 'ko-KR'; u.rate = 0.9; speechSynthesis.speak(u); } catch { /* 소리 없음 */ }
 }
 const FONTS = ['보통', '크게', '아주 크게'];
 function setFont(k) { state.font = k; const r = document.documentElement; r.classList.toggle('f2', k === 1); r.classList.toggle('f3', k === 2); $('#fontBtn').setAttribute('aria-label', '글씨 크기 바꾸기 (지금 ' + FONTS[k] + ')'); try { localStorage.setItem('atlas:font', String(k)); } catch { /* 저장 못 함 */ } }
@@ -2177,7 +2179,7 @@ async function route() {
   if (hsh.startsWith('#/find')) { showFind(); return; }
   if (hsh.startsWith('#/info')) { showInfo(null); return; }
   if (hsh.startsWith('#/x/')) { await Promise.allSettled([needNames(), D.core.mkt ? needMkt() : null]); /* 못 받으면 아래에서 ? · 업종 줄 없음 */ const xc = dec(hsh.slice(4)); if (xc && D.core.co7 && D.mkt?.[xc]) { location.replace('#/c/' + xc); return; } /* 모든 회사 7단 — 옛 밖 칸 주소는 회사로 */ showInfo(xc ?? '?'); return; }
-  for (const id of ['findSheet', 'infoSheet']) { const s = $('#' + id); if (!s.hidden) { s.hidden = true; delete document.body.dataset.sheet; } }
+  for (const id of ['findSheet', 'infoSheet', 'langSheet']) { const s = $('#' + id); if (s && !s.hidden) { s.hidden = true; delete document.body.dataset.sheet; } }
   if (hsh === lastMain && $('#view').childElementCount) return;
   const from = lastMain; if (typeof svLeave === 'function') svLeave(from); if (typeof calLeave === 'function') calLeave(from); // 급등 칸 · 달력 자리 기억(뒤로 오면 그 자리)
   lastMain = hsh;
@@ -2199,7 +2201,7 @@ async function route() {
     else if (kind === 'g') viewGroup(v, arg);
     else if (kind === 'i') await viewIndustry(v, arg);
     else if (kind === 'c') { const [code, sub] = arg.split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'rivals') await viewRivals(v, code); else if (sub === 'grow') await viewGrow(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }
-    else { location.replace('/old/' + location.search + location.hash); return; } // 옛 ATLAS 주소(#/stocks · #/road …)는 옛 판으로
+    else { location.replace('#/'); return; } // 옛 ATLAS 주소(#/stocks · #/road …) — 옛 판은 2026-10-15 23:35 사장님 「알틀란스는 영구 삭제한다」로 지움 · 첫 화면으로
   } catch (e) {
     console.error(e);
     if (my !== routeSeq) return;
@@ -2211,14 +2213,17 @@ async function route() {
   window.scrollTo(0, 0);
   if (typeof svBack === 'function') svBack(hsh, from); // 회사에서 급등 칸으로 돌아오면 그 자리(새 눈 점검 3)
   if (typeof calBack === 'function') calBack(hsh, from); // 종목 파일에서 달력으로 돌아오면 그 자리
-  document.title = v.querySelector('.m4-letter') ? '한눈에 · ATLAS' : (v.querySelector('h1')?.textContent || 'ATLAS') + ' · ATLAS'; // 첫 화면은 아래 탭 이름 그대로(머리 「시장」은 칸 이름)
+  document.title = L(v.querySelector('.m4-letter') ? '한눈에 · ATLAS' : (v.querySelector('h1')?.textContent || 'ATLAS') + ' · ATLAS'); // 첫 화면은 아래 탭 이름 그대로(머리 「시장」은 칸 이름)
   try { root.focus({preventScroll: true}); } catch { /* 초점 못 옮김 */ } // 화면 읽기가 새 화면 제목부터
 }
 
 /** 탭 이름 뒤 수 — 「업종」 + 「 77」(수는 따로 칸 · 320 폭에서는 숨김 · 글은 「업종 77」 그대로) */
 function tabNum(sel, name, n) { const a = $(sel); if (!a) return; a.textContent = name; a.append(h('span', {class: 'tabn', text: ' ' + n})); }
 async function boot() {
-  try { const lg = new URLSearchParams(location.search).get('lang'); if (lg && lg !== 'ko') { location.replace('/old/' + location.search + location.hash); return; } } catch { /* 주소 못 읽음 */ }
+  for (const b of document.querySelectorAll('#langSheet button[data-lang]')) if ((b.dataset.lang === 'en') === EN) b.setAttribute('aria-current', 'true'); // 지금 말
+  await startI18n(); // 영어면 사전 · 이름을 먼저 읽고 그려지는 글을 모두 영어로(옛 판으로 넘기던 ?lang= 은 옛 판 영구 삭제로 여기서 엶)
+  $('#langBtn')?.addEventListener('click', () => { openSheet('langSheet'); $('#langSheet [aria-current]')?.focus(); });
+  $('#langSheet')?.addEventListener('click', e => { const b = e.target.closest('button[data-lang]'); if (!b) return; if ((b.dataset.lang === 'en') === EN) { closeSheet('langSheet'); return; } switchLang(b.dataset.lang); });
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }
   $('#fontBtn').addEventListener('click', () => { setFont((state.font + 1) % 3); lastMain = ''; route(); });
   $('#helpBtn').addEventListener('click', () => { location.hash = '#/info'; });
