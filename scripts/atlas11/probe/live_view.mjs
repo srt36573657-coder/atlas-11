@@ -231,6 +231,18 @@ await step('급등 탭', async () => { // 규칙 69(사장님 2026-10-15 14:27 �
   out.surge.ok = S.version === 'sv-v1' && g.h1 === `급등 ${S.n}곳` && g.tab === `급등 ${S.n}` && g.win === 0 && g.inView && out.surge.rowsSame && out.surge.noAgency;
   if (!out.surge.ok) out.errors.push('급등 탭: ' + JSON.stringify(out.surge).slice(0, 300));
 });
+await step('달력 탭', async () => { // 사장님 2026-10-15 19:28 「달력 턉」 · 20:04 「종목이름 등락률」 · 20:51 「추적하는 시스탬」 · 규칙 70 — 올라간 자료(surgetr.json)와 화면 머리 · 답 · 날짜 줄이 같은지 · 종목 파일 하나 · 회사 3단 고리
+  const tr = await fetch(B + '/atlas/data/surgetr.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)}), T = tr.ok ? await tr.json() : null;
+  await page.goto(B + '/?v=' + Date.now() + '#/cal', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view h1', {timeout: 30000}); await page.waitForTimeout(900);
+  await shot('p34-cal-top');
+  const g = await page.evaluate(() => ({h1: document.querySelector('#view h1')?.textContent ?? '', tab: document.querySelector('#tabCal')?.getAttribute('aria-current'), n10: document.querySelector('#view .cal-cl b')?.textContent ?? null, days: [...document.querySelectorAll('#view section.cal-day[data-d]')].map(x => x.dataset.d), rows: document.querySelectorAll('#view a.cal-row').length, text: document.querySelector('#view').innerText, sw: document.documentElement.scrollWidth, cw: innerWidth}));
+  let cs = null; const c0 = T?.cases?.find(r => r[6] !== 'n')?.[0] ?? T?.cases?.[0]?.[0];
+  if (c0) { await page.goto(B + '/?v=' + Date.now() + '#/cal/' + c0, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view h1', {timeout: 30000}); await page.waitForTimeout(700); await shot('p35-cal-case');
+    cs = await page.evaluate(() => ({h1: document.querySelector('#view h1')?.textContent ?? '', co: document.querySelector('#view .cal-co')?.getAttribute('href') ?? null, lane: !!document.querySelector('#view .cal-lane svg'), steps: document.querySelectorAll('#view ol.cal-steps li').length})); }
+  out.cal = {status: tr.status, version: T?.version ?? null, asOf: T?.asOf ?? null, N: T?.N ?? null, n10: T?.n10 ?? null, m10: T?.m10 ?? null, cases: T?.cases?.length ?? null, h1: g.h1, n10Shown: g.n10, days: g.days.length, rows: g.rows, case: cs};
+  out.cal.ok = T?.version === 'tr-v1' && g.h1 === '달력' && g.tab === 'page' && (!T.N || g.n10 === `10곳 중 ${T.n10}곳`) && g.rows === T.cases.length && JSON.stringify(g.days) === JSON.stringify(T.days.map(x => x.d)) && g.sw <= g.cw && !/급등|NaN|undefined/.test(g.text) && (!cs || (cs.h1 === T.cases.find(r => r[0] === c0)[1] && /^#\/[cx]\//.test(cs.co ?? '') && cs.steps >= 1));
+  if (!out.cal.ok) out.errors.push('달력 탭: ' + JSON.stringify(out.cal).slice(0, 400));
+});
 await step('급등 다섯 칸', async () => { // 사장님 2026-10-15 16:28 「총 5개」 · 16:34 「달력에 기록 … 매일 매일 선택됐다 탈락 됐다 이동 했다」 · 16:40 「관심 없음」 — 올라간 자료(surge.json bands · surgecal.json)와 화면이 같은지 · 다섯 칸 한 줄 · 달력 · 며칠 뒤
   const S = await (await fetch(B + '/atlas/data/surge.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)})).json();
   const cr = await fetch(B + '/atlas/data/surgecal.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)}), K = cr.ok ? await cr.json() : null;

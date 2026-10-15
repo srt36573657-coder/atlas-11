@@ -168,7 +168,7 @@ test('④ 화면 코드 — 넷째 탭 · 1등 빛 끔 · 기관 이름 없음 �
 
 test('⑤ 회차 — 업데이트 때만 고름 · 같은 날 같은 업데이트 두 번째는 앞 판 그대로 · 지금 사이트 것으로 받음 · 기록은 새 파일만', () => {
   const R = rd('scripts/atlas11/t365/roll.mjs');
-  assert.match(R, /const OPT_FILES = \[[^\]]*'surge\.json', 'surgecal\.json'\]/, '못 받으면 지금 사이트 것(달력 · 따라가기도)');
+  assert.match(R, /const OPT_FILES = \[[^\]]*'surge\.json', 'surgecal\.json'(, [^\]]*)?\]/, '못 받으면 지금 사이트 것(달력 · 따라가기도)'); // 2026-10-15 달력 탭(규칙 70) — surgetr.json · surgetr-case.json 이 뒤에 붙음
   assert.match(R, /const again = !!\(sLast && rep\.slot && sLast\.slot === rep\.slot && String\(sLast\.kst \?\? ''\)\.slice\(0, 10\) === rep\.kst\.slice\(0, 10\)\)/);
   assert.match(R, /if \(\(rep\.slot \|\| !sLast\) && !again\)/, '업데이트 때만(처음은 손 올리기 때도)');
   assert.match(R, /'--state-out', sfo/); assert.match(R, /surge_verify\.mjs', out, pf, path\.join\(tmp, 'gv\.json'\), sfo/);

@@ -45,6 +45,9 @@ const lines0 = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/lines
 const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/home.json'), 'utf8')) : null; // 첫 화면 종합 정보(2026-10-12 14:54)
 const surgecal = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgecal.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgecal.json'), 'utf8')) : null; // 급등 달력 · 따라가기(사장님 2026-10-15 16:34 · 16:40 · sk-v1)
 const surge = fs.existsSync(path.join(ROOT, 'site/atlas/data/surge.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surge.json'), 'utf8')) : null; // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라」 · 규칙 69)
+// 달력 탭(사장님 2026-10-15 19:28 · 20:04 「달력에 종목이름 등락률」 · 20:51 「추적하는 시스탬」 · 21:24 「가 로 해」 · 규칙 70) — 첫 화면 몫 · 종목 파일 몫
+const trData = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgetr.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgetr.json'), 'utf8')) : null;
+const trCase = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgetr-case.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgetr-case.json'), 'utf8')).cases : null;
 // 바탕 회사 이름 · 밑 한 줄(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 수는 자료에서) · 억 원 글(atlas.js eok 과 같은 셈을 따로 적음)
 const PN = `${core.rules.name} ${core.funnel.picked}곳`, NPK = core.funnel.picked, PLINE = core.rules.line ?? core.rules.conds.map(x => x.t).join(' · ');
 const eokS = v => { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); if (a >= 10000) return s + (Math.floor(a / 10000 * 10 + 0.5 + 1e-7) / 10).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원'; return s + Math.round(a).toLocaleString('ko-KR') + '억 원'; };
@@ -170,7 +173,12 @@ function m4Expect(H) {
     letter: ['친구에게 소개하기', '홍표 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!']};
 }
 const SV_BANDS = surge?.bands?.version === 'sb-v1' ? ['#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'] : []; // 급등 다섯 칸(16:28 「총 5개」 · 16:34 (가))
-const routes = ['#/', '#/list', ...(surge ? ['#/surge', ...SV_BANDS] : []), '#/up', ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
+// 달력 탭 — 첫 화면 + 종목 파일 몇 곳(오늘 새로 · 사건이 가장 많은 곳 · 금빛 · 조심 · 가장 오른 · 가장 내린 · 가장 긴 이름)은 모든 판 · 글씨에서, 나머지 종목 파일은 390 · 보통 글씨 한 판에서(길 지도 · 3번 누름도)
+const CAL_SAMPLE = (() => { if (!trData || !trCase) return []; const R = trData.cases.filter(r => trCase[r[0]]), out = new Set(), add = r => { if (r) out.add('#/cal/' + r[0]); };
+  add(R.find(r => r[6] === 'n')); add([...R].sort((a, b) => trCase[b[0]].ev.length - trCase[a[0]].ev.length)[0]); add(R.find(r => r[7] || r[8])); add(R.find(r => trCase[r[0]].ev.some(e => e[1] === 'warn')));
+  const vv = R.filter(r => r[5] != null).sort((a, b) => a[5] - b[5]); add(vv[0]); add(vv.at(-1)); add([...R].sort((a, b) => b[1].length - a[1].length)[0]); return [...out]; })();
+const CROUTES = trData && trCase && !arg('--only') ? trData.cases.filter(r => trCase[r[0]]).map(r => '#/cal/' + r[0]).filter(r => !CAL_SAMPLE.includes(r)) : [];
+const routes = ['#/', '#/list', ...(surge ? ['#/surge', ...SV_BANDS] : []), '#/up', ...(trData ? ['#/cal', ...CAL_SAMPLE] : []), ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
 const OLIM = arg('--others-limit') != null ? +arg('--others-limit') : null; // 고치는 동안 빨리(앞 n곳만) — 결과 others.full = false · 문은 못 지남
 const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사만(문은 못 지남)
 const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
@@ -200,6 +208,45 @@ function svCalWhy(tab) {
     ...(X.went ? ['「관심 없음」을 누르면 이 목록에서 빠져요.', '이 휴대폰에서만 그래요.', ...X.groups.map(([d, n, k]) => `${md(d)}에 처음 찾은 곳 ${n}곳 — ${k}일 뒤`)] : ['? 아직 따라간 날이 없어요.']),
     ...(X.fresh ? [`${md(surgecal.asOf)}에 처음 찾은 ${X.fresh}곳은 다음 장날부터 적혀요.`] : []), ...(X.nobase ? [`? 처음 찾은 날 종가가 없어 못 적은 곳 ${X.nobase}곳`] : [])];
 }
+// 달력 탭 기대 글(atlas.js viewCal · trDay · viewCalCase 와 같은 뜻을 자료에서 따로 적음)
+const TRB = {'1': '10%대', '2': '20%대', '3': '30%대', '4': '40% 이상'}, CALW = {u: '올라 있음', d: '내려 있음', z: '제자리', q: '? 값 없음', n: '새로 뽑힘'};
+const ampmS = t => { const hh = +t.slice(11, 13); return `${hh < 12 ? '오전' : '오후'} ${hh % 12 || 12}:${t.slice(14, 16)}`; };
+const CAL_NOT = ['급등', '더 오름', '덜 오름', '사라', '팔라', 'NaN', 'undefined', 'Invalid', '이 뽑힌 날보다 올라 있어요만'];
+function calSteps(r, K, dates) { // 단계(새 것이 위) — [날, 글]
+  const at = d => { const i = dates.indexOf(d); return i >= 0 ? K.p[i] : null; };
+  const S = [[r[2], `선택 · ${TRB[r[3]]}`]];
+  for (const e of K.ev) S.push([e[0], e[1] === 'mv' ? `${jo(TRB[e[2]], '으로', '로')} 이동` : e[1] === 'out' ? '탈락 · 10% 밑이거나 거래가 적어짐' : e[1] === 're' ? `다시 선택 · ${TRB[e[2]]}` : '조심 · 투자경고 오름 기준에 닿음', e[1] === 'warn' ? '? 실제로 지정됐는지는 몰라요' : `뽑힌 날부터 ${pct(at(e[0]))}`]);
+  if (r[6] !== 'n') S.push([trData.asOf, `지금 ${pct(r[5])}`]);
+  return S.reverse(); }
+function calExpect(arg) {
+  const T = trData; if (!T) return {why: ['? 달력 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.']};
+  const byC = new Map(T.cases.map(r => [r[0], r]));
+  if (!arg) {
+    const why = ['달력', T.provisional ? `${md(T.asOf)} ${/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(T.kst ?? '') && T.kst.slice(0, 10) === T.asOf ? ampmS(T.kst) + ' ' : ''}값이에요. 장 중이라 바뀌어요.` : `${md(T.asOf)} 종가예요.`];
+    if (T.N) { why.push('뽑힌 날보다 올라 있는 곳', '지켜보는 곳', `10곳 중 ${T.n10}곳`); if (T.m10 != null) why.push('같은 날들 모든 회사', `10곳 중 ${T.m10}곳`); }
+    else why.push(T.k ? `${md(T.asOf)}에 처음 ${T.k}곳이 뽑혔어요.` : '아직 지켜보는 곳이 없어요.');
+    const AL = (T.alerts ?? []).filter(A => A.n > 0); if (AL.length) { why.push(AL.map(A => (A.kind === 'halt' ? `? 거래 멈춤 ${A.n}곳` : `${A.f === 2 ? '?' : '!'} 반 토막 ${A.n}곳`)).join(' · '), '마지막 장날 종가로 새로 생긴 일이에요.'); for (const A of AL) for (const c of A.cs ?? []) why.push(byC.get(c)?.[1] ?? '?'); }
+    why.push('전체', '10%', '20%', '30%', '40%');
+    for (const x of T.days.slice(0, 5)) {
+      why.push(`${+x.d.slice(5, 7)}월`, `선택 ${x.sel.length}`, `이동 ${x.mv.length} · 탈락 ${x.out.length}${x.re.length ? ` · 다시 선택 ${x.re.length}` : ''}`);
+      if (x.seed) why.push(' · 되짚음');
+      for (const c of x.sel.slice(0, 4)) { const r = byC.get(c); why.push(r[1], r[6] === 'n' ? `5일 ${pct(r[4])}` : pct(r[5])); if (r[7] || r[8]) why.push(r[7] ? '? 거래 멈춤' : r[8] === 2 ? '? 반 토막' : '! 반 토막'); }
+      if (x.sel.length > 4) why.push(`나머지 ${x.sel.length - 4}곳 보기`);
+      const items = x.mv.length + x.out.length + x.re.length; if (items) why.push(`이동 · 탈락 ${items}곳 보기`);
+      if (!x.sel.length) why.push('이날 새로 뽑힌 곳은 없어요.'); }
+    for (let i = 5; i < T.days.length; i += 5) { const ch = T.days.slice(i, i + 5); why.push(`${md(ch.at(-1).d)} ~ ${md(ch[0].d)} 보기`); }
+    why.push(`${md(T.days.at(-1).d)}부터 적었어요.`, '어떻게 골랐나요?', '사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.');
+    if (T.seed) why.push(`${md(T.seed.from)} ~ ${md(T.seed.to)}은 업데이트 기록이 없던 날이라 그날 종가로 다시 셌어요.`);
+    return {title: '달력', why, cal: {home: true}}; }
+  const r = byC.get(arg), K = trCase?.[arg];
+  if (!r || !K) return {why: ['이 종목은 지금 달력에서 지켜보는 곳이 아니에요.'], cal: {}};
+  const i0 = T.dates.indexOf(r[2]), dates = T.dates.slice(i0, i0 + K.p.length);
+  const why = [`${mdw(r[2])}에 ${jo(TRB[r[3]], '으로', '로')} 뽑혔어요.`, `그때 5일 ${pct(r[4])}`, CALW[r[6]], '뽑힌 날부터 날마다', '그 회사 5일 오름이 든 칸', '지나온 일', '● 선택', '○ 탈락', '◉ 다시 선택', '☆ 관심', '관심 없음', '회사 보기 ›', '사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.'];
+  if (r[6] !== 'n') why.push('뽑힌 날부터', r[5] == null ? '?' : pct(r[5])); else why.push('등락률은 다음 장날부터 쌓여요.');
+  if (K.mk != null) why.push(`같은 날들 모든 회사는 보통 ${pct(K.mk)}였어요.`);
+  if (r[7]) why.push('? 거래 멈춤 — 마지막 장날에 거래가 없었어요.'); if (r[8]) why.push(r[8] === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.');
+  const S = calSteps(r, K, dates); for (const [d, t, x] of S.slice(0, 4)) { why.push(md(d), t); if (x) why.push(x); } if (S.length > 4) why.push(`더 보기 ${S.length - 4}개`);
+  return {title: r[1], why, cal: {code: arg}}; }
 function expect(route) {
   // 화면마다 자료에서 따로 만든 기대 글(보기 = 한 회사 한 표)
   const [, kind, arg] = route.match(/^#\/(\w*)\/?(.*)$/) || [];
@@ -303,6 +350,7 @@ function expect(route) {
         ...(down.length ? [`마지막 날 내린 곳 ${down.length}곳`, down.map(m => m.n).join(' · ')] : []), '조심할 것과 모르는 것', '더 확인할 곳', '어떻게 골랐나요?', '칸끼리 겹치지 않아요.', `칸마다 많이 오른 차례로 ${BS.cap}곳까지 실어요.`,
         ...svCalWhy(b), `${NAME} 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요.`],
       notWhy: SV_NOT, surge: {gold: M.filter(m => S.provisional && m.prov).length, tab: b}}; }
+  if (kind === 'cal') return calExpect(arg);
   if (kind === 'info') { // 도움말 — 이름 밑 한 줄 · 멍거가 고른 목록 아님 · 깔때기 · 값 · 기다림 · 회차 시각(= universe.json slots · 틀림 장부 21번)
     return {why: [`${PN} — ${PLINE}`, core.rules.notMunger, `${PN}은 이렇게 골랐습니다`, ...core.funnel.groups.flatMap(g => [`${g.name} ${g.n}곳`, ...g.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]), core.rules.price, core.rules.wait, core.rules.notCounted,
       `? 다시 고르기 — 하루 ${core.rules.slots.length}번(${core.rules.slots.join(' · ')} 서울)`]}; }
@@ -369,7 +417,7 @@ const probe = ({banned}) => {
       if (sig.length < 4) res.mo.push('오름 · 내림 색 이름을 못 읽음');
       const hueGap = (a, b2) => { const d = Math.abs(a - b2) % 360; return d > 180 ? 360 - d : d; };
       const gapOf = (a, b2) => Math.hypot(Math.max(0, b2.left - a.right, a.left - b2.right), Math.max(0, b2.top - a.bottom, a.top - b2.bottom));
-      const shut = el => { const d = el.closest('details:not([open])'); return !!d && !el.closest('summary'); }; // 닫힌 「자세히」 속 글은 그려지지 않음(크롬은 자리만 셈)
+      const shut = el => { for (let d = el.closest('details:not([open])'); d; d = d.parentElement?.closest('details:not([open])') ?? null) { const sm = el.closest('summary'); if (!(sm && sm.parentElement === d)) return true; } return false; }; // 닫힌 「자세히」 속 글은 그려지지 않음(크롬은 자리만 셈) — 닫힌 칸 안의 닫힌 칸 머리(summary)도 숨음(2026-10-15 달력 지난 날 접은 칸 · 칸 안 「이동 · 탈락 n곳 보기」)
       const bar = el => !!el.closest('nav.tabbar, header.band'); // 위 · 아래 고정 막대 — 스크롤 따라 덮고 지나감(겹침 아님)
       const mos = [...scope.querySelectorAll('svg.mo')].filter(m => vis(m) && !shut(m));
       if (mos.length) {
@@ -526,6 +574,19 @@ async function visit(p, errs, route, w, hgt, font) {
     for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
     for (const no of e.notWhy ?? []) { numbers++; if (r.text.includes(no) || r.all.includes(no)) fail(tag, `있으면 안 되는 글 「${no}」`); } // 고른 곳 밖 3단에 「왜 … 들었나요?」(모든 회사 7단)
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }
+    if (e.cal) { // 달력 탭(규칙 70) — 화면 안 글에 「급등」 · 판정 말 0 · 금빛은 「!」 「?」 줄 · 조심 단계에만 · 첫 화면(360 × 640 보통 글씨)에 종목 줄 하나 이상 · 줄마다 이름 · 값
+      const g = await p.evaluate(() => { const v = document.querySelector('#view');
+        const rgb = (() => { const i = document.createElement('i'); i.style.color = 'var(--gold)'; v.append(i); const c = getComputedStyle(i).color; i.remove(); return c; })();
+        const golds = [...v.querySelectorAll('*')].filter(x => [...x.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && getComputedStyle(x).color === rgb && x.getBoundingClientRect().width).map(x => x.textContent.trim());
+        const rows = [...v.querySelectorAll('a.cal-row')], tabTop = document.querySelector('nav.tabbar')?.getBoundingClientRect().top ?? innerHeight;
+        return {t: v.innerText, golds, first: rows.filter(x => x.getBoundingClientRect().bottom <= tabTop + 1 && x.getBoundingClientRect().top >= 0).length, bad: rows.filter(x => !x.querySelector('.nm')?.textContent.trim() || !x.querySelector('b.num, .cal-nw')).length}; });
+      numbers += 3;
+      for (const w0 of CAL_NOT) if (g.t.includes(w0)) fail(tag, `달력 화면에 「${w0}」`);
+      const okGold = s0 => /^[!?]/.test(s0) || /^조심/.test(s0) || /^\?/.test(s0) || s0 === '?';
+      const badGold = g.golds.filter(x => !okGold(x)); if (badGold.length) fail(tag, '금빛 글이 「!」 「?」 「조심」 밖: ' + badGold.slice(0, 3).join(' · '));
+      if (g.bad) fail(tag, `이름이나 값이 빈 줄 ${g.bad}개`);
+      if (e.cal.home && w === 360 && font === 0 && trData.days.some(x => x.sel.length) && trData.days[0].sel.length && g.first < 1) fail(tag, '첫 화면(360 × 640)에 종목 줄이 하나도 없음(결정표 v3 11절)');
+    }
     if (route === '#/' && w === 390 && font === 0) { numbers++; if (await p.evaluate(() => document.querySelectorAll('#view .seg button').length)) fail(tag, '첫 화면에 「큰 회사는 크게」 단추가 남음(요즘 오르는 업종은 한 회사 한 표 1주만 · 규칙 64)'); }
     if (e.surge) { // 급등 탭(규칙 69) — 1등 빛 없음 · 금빛 줄 = 장 중에 든 곳만 · 기관 이름 없음(접은 글까지) · 그림이 첫 화면(360 × 640) 안 · 접은 칸을 모두 열어 다시 잼
       const tk = `${tag} · 급등`, g = await p.evaluate(() => { const s = document.querySelector('#view .svr svg')?.getBoundingClientRect(), t = document.querySelector('.tabbar')?.getBoundingClientRect();
@@ -558,12 +619,12 @@ async function visit(p, errs, route, w, hgt, font) {
     if (route === '#/info') await p.evaluate(() => { location.hash = '#/'; });
 }
 /** 고른 곳 밖 회사 길(모든 회사 7단) — 한 판 안에서 칸(페이지) 여럿이 나눠 돎 · 칸마다 오류 모음 따로 · 500길마다 진행 줄(표준 오류) */
-async function sweepOthers(ctx, w, hgt, font) {
+async function sweepOthers(ctx, w, hgt, font, LIST = OROUTES) {
   const K = Math.max(1, +arg('--pages', 3)); let next = 0, done = 0; const t0 = Date.now();
   await Promise.all(Array.from({length: K}, async () => {
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push('pageerror ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
     await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForFunction(() => document.querySelector('#view h1'));
-    while (next < OROUTES.length) { const r = OROUTES[next++]; await visit(p, errs, r, w, hgt, font); if (++done % 500 === 0) console.error(`고른 곳 밖 ${done.toLocaleString('ko-KR')} / ${OROUTES.length.toLocaleString('ko-KR')}길 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 ${fails.length}`); }
+    while (next < LIST.length) { const r = LIST[next++]; await visit(p, errs, r, w, hgt, font); if (++done % 500 === 0) console.error(`고른 곳 밖 ${done.toLocaleString('ko-KR')} / ${LIST.length.toLocaleString('ko-KR')}길 · ${Math.round((Date.now() - t0) / 1000)}초 · 실패 ${fails.length}`); }
     await p.close();
   }));
 }
@@ -575,6 +636,7 @@ for (const [w, hgt, font] of plans) {
   await p.goto(base + '/atlas/', {waitUntil: 'networkidle'});
   await p.waitForFunction(() => document.querySelector('#view h1'));
   for (const route of routes) await visit(p, errs, route, w, hgt, font);
+  if (w === 390 && font === 0 && CROUTES.length) await sweepOthers(ctx, w, hgt, font, CROUTES); // 달력 종목 파일 나머지(규칙 70) — 390 · 보통 글씨 한 판
   if (w === 390 && font === 0 && OROUTES.length) await sweepOthers(ctx, w, hgt, font); // 고른 곳 밖 회사 3 ~ 7단 — 390 · 보통 글씨 한 판(길 지도 · 3번 누름도 여기서)
   // 찾기 — 한 글자 · 첫 글자 · 영어 이름 소리 · 번호 · 365곳 밖
   if (font === 0) {
@@ -706,6 +768,76 @@ if (home) {
     if (r.sw > r.cw) fail('한 조각 깨짐 · ' + nm, `옆으로 넘침 ${r.sw} > ${r.cw}`);
     if (errs.length) fail('한 조각 깨짐 · ' + nm, '오류 ' + errs[0]);
     await ctx.close(); }
+}
+// 달력 탭 둘레(규칙 70 · 사장님 2026-10-15 16:40 「관심 없음 버트을 클릭하면 없어지는구조」 · 19:28 「관리하고 판단」) —
+//   ① 종목 파일 「관심 없음」 → 달력에서 그 줄이 빠짐 · 「숨긴 곳 1곳 보기」 · 되돌리기 → 돌아옴 ② 「☆ 관심」 → 달력 맨 위 「★ 관심 1곳」 묶음 ③ 칸 고르기(20%) → 줄이 모두 그 칸 ④ 「나머지 n곳 보기」 → 그날 줄 모두
+//   ⑤ 기억 못 하는 기계(사생활 창) — 이 화면 동안만 · 오류 0 ⑥ 달력 자료 못 받음 → 「?」 한 줄 · 오류 0 · 종목 파일도 「?」 ⑦ 종목 파일에서 뒤로 → 그 자리
+if (trData && trCase) {
+  const withTr = async (body, init) => { const ctx = await b.newContext({viewport: {width: 390, height: 844}, reducedMotion: 'reduce'}); if (init) await ctx.addInitScript(init);
+    if (body !== undefined) await ctx.route('**/atlas/data/surgetr.json', r => (body === 404 ? r.fulfill({status: 404, body: 'no'}) : r.fulfill({contentType: 'application/json', body: JSON.stringify(body)})));
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/404/.test(m.text())) errs.push(m.text()); }); return {ctx, p, errs}; };
+  const calSt = p => p.evaluate(() => ({rows: [...document.querySelectorAll('#view a.cal-row')].map(a => a.dataset.c), star: document.querySelector('#view .cal-stars .cal-sh')?.textContent ?? null, starRows: [...document.querySelectorAll('#view .cal-stars a.cal-row')].map(a => a.dataset.c),
+    gone: document.querySelector('#view details.cal-gone summary')?.textContent ?? null, live: document.querySelector('#view p.sr[aria-live]')?.textContent ?? '', t: document.querySelector('#view').innerText, sw: document.documentElement.scrollWidth, cw: innerWidth}));
+  const D0 = trData.days.slice(0, 5), firstC = D0.flatMap(x => x.sel.slice(0, 4))[0], firstN = trData.cases.find(r => r[0] === firstC)?.[1];
+  if (firstC) {
+    const {ctx, p, errs} = await withTr(); await p.goto(base + '/atlas/#/cal', {waitUntil: 'networkidle'}); await p.waitForSelector('#view a.cal-row'); await p.waitForTimeout(120);
+    const s0 = await calSt(p); screens++; numbers += 8;
+    // ① 관심 없음
+    await p.evaluate(c => { location.hash = '#/cal/' + c; }, firstC); await p.waitForSelector('#view button.cal-hide'); await p.click('#view button.cal-hide'); await p.waitForTimeout(80);
+    const live1 = await p.$eval('#view p.sr[aria-live]', x => x.textContent);
+    if (!live1.includes('숨겼어요')) fail('달력 관심 없음', `알림 글 「${live1}」`);
+    await p.evaluate(() => { location.hash = '#/cal'; }); await p.waitForSelector('#view a.cal-row'); await p.waitForTimeout(100);
+    const s1 = await calSt(p);
+    if (s1.rows.includes(firstC)) fail('달력 관심 없음', `${firstN} 줄이 그대로 보임`);
+    if (s1.gone !== '숨긴 곳 1곳 보기') fail('달력 관심 없음', `숨긴 곳 줄 「${s1.gone}」`);
+    await p.evaluate(() => { const d = document.querySelector('#view details.cal-gone'); if (d) d.open = true; }); await p.click('#view button.cal-show'); await p.waitForTimeout(80);
+    const s2 = await calSt(p); if (!s2.rows.includes(firstC) || s2.gone) fail('달력 관심 없음', '되돌리기 뒤 줄이 돌아오지 않음');
+    // ② 관심
+    await p.evaluate(c => { location.hash = '#/cal/' + c; }, firstC); await p.waitForSelector('#view button.cal-star'); await p.click('#view button.cal-star'); await p.waitForTimeout(60);
+    const pressed = await p.$eval('#view button.cal-star', x => [x.getAttribute('aria-pressed'), x.textContent]);
+    if (pressed[0] !== 'true' || pressed[1] !== '★ 관심 풀기') fail('달력 관심', `단추 ${pressed.join(' · ')}`);
+    await p.evaluate(() => { location.hash = '#/cal'; }); await p.waitForSelector('#view a.cal-row'); await p.waitForTimeout(100);
+    const s3 = await calSt(p); if (s3.star !== '★ 관심 1곳' || s3.starRows[0] !== firstC) fail('달력 관심', `맨 위 묶음 ${s3.star} · ${s3.starRows.join(',')}`);
+    await p.evaluate(() => { try { localStorage.removeItem('atlas:cal-star'); } catch {} });
+    // ③ 칸 고르기 20%
+    await p.evaluate(() => { location.hash = '#/up'; }); await p.waitForSelector('#view h1'); await p.evaluate(() => { location.hash = '#/cal'; }); await p.waitForSelector('#view .cal-chips');
+    await p.click('#view .cal-chips button[data-f="2"]'); await p.waitForTimeout(80);
+    const s4 = await calSt(p), b0 = new Map(trData.cases.map(r => [r[0], r[3]]));
+    const wrong = s4.rows.filter(c => b0.get(c) !== '2'); if (wrong.length) fail('달력 칸 고르기', `20% 칸이 아닌 줄 ${wrong.length}개`);
+    const want4 = trData.cases.filter(r => r[3] === '2').length; if (s4.rows.length !== want4) fail('달력 칸 고르기', `20% 줄 ${s4.rows.length} ≠ ${want4}`); // 모든 날 줄(접은 칸 안도)
+    await p.click('#view .cal-chips button[data-f="all"]'); await p.waitForTimeout(60);
+    // ④ 나머지 n곳 보기
+    const big = D0.find(x => x.sel.length > 4);
+    if (big) { await p.click(`#view section.cal-day[data-d="${big.d}"] details.cal-rest > summary`); await p.waitForTimeout(60);
+      const n = await p.$$eval(`#view section.cal-day[data-d="${big.d}"] a.cal-row`, xs => xs.filter(x => x.getBoundingClientRect().height > 0).length); if (n !== big.sel.length) fail('달력 나머지 보기', `${big.d} 보이는 줄 ${n} ≠ ${big.sel.length}`); }
+    // 지난 날 접은 칸 — 열면 그 다섯 날이 보임 · 종목 파일에서 돌아오면 연 칸 그대로
+    const old5 = trData.days.slice(5, 10);
+    if (old5.length) { await p.click(`#view details.cal-older[data-k="older-${old5[0].d}"] > summary`); await p.waitForTimeout(60);
+      const vis = await p.$$eval('#view details.cal-older[open] section.cal-day', xs => xs.map(x => x.dataset.d)); if (JSON.stringify(vis) !== JSON.stringify(old5.map(x => x.d))) fail('달력 지난 날 보기', `${vis.join(',')} ≠ ${old5.map(x => x.d).join(',')}`); }
+    // ⑦ 종목 파일에서 뒤로 → 그 자리
+    await p.evaluate(() => window.scrollTo(0, 900)); await p.waitForTimeout(60); const y0 = await p.evaluate(() => window.scrollY);
+    await p.evaluate(c => { location.hash = '#/cal/' + c; }, firstC); await p.waitForSelector('#view button.cal-hide'); await p.goBack(); await p.waitForSelector('#view a.cal-row'); await p.waitForTimeout(200);
+    const y1 = await p.evaluate(() => window.scrollY); if (Math.abs(y1 - y0) > 80) fail('달력 뒤로 오면 그 자리', `${y1} ≠ ${y0}`);
+    if (old5.length && !(await p.$(`#view details.cal-older[data-k="older-${old5[0].d}"][open]`))) fail('달력 뒤로 오면 그 자리', '연 지난 날 칸이 닫힘');
+    if (s0.sw > s0.cw) fail('달력 둘레', `옆 넘침 ${s0.sw} > ${s0.cw}`);
+    if (errs.length) fail('달력 둘레', '오류 ' + errs[0]);
+    await ctx.close();
+  }
+  // ⑤ 기억 못 하는 기계
+  if (firstC) { const {ctx, p, errs} = await withTr(undefined, () => { Object.defineProperty(window, 'localStorage', {get() { throw new Error('막힘'); }}); });
+    await p.goto(base + '/atlas/#/cal/' + firstC, {waitUntil: 'networkidle'}); await p.waitForSelector('#view button.cal-hide'); await p.click('#view button.cal-hide'); await p.waitForTimeout(60);
+    const live = await p.$eval('#view p.sr[aria-live]', x => x.textContent); screens++; numbers += 2;
+    if (!live.includes('기억을 못 해')) fail('달력 기억 못 하는 기계', `알림 「${live}」`);
+    await p.evaluate(() => { location.hash = '#/cal'; }); await p.waitForSelector('#view .cal-chips'); await p.waitForTimeout(80);
+    const s = await calSt(p); if (s.rows.includes(firstC)) fail('달력 기억 못 하는 기계', '이 화면 동안 숨김이 안 됨');
+    if (errs.length) fail('달력 기억 못 하는 기계', '오류 ' + errs[0]); await ctx.close(); }
+  // ⑥ 자료 못 받음
+  { const {ctx, p, errs} = await withTr(404); await p.goto(base + '/atlas/#/cal', {waitUntil: 'networkidle'}); await p.waitForSelector('#view h1'); await p.waitForTimeout(120);
+    const t = await p.$eval('#view', x => x.innerText); screens++; numbers++;
+    if (!t.includes('? 달력 자료를 못 받았어요.')) fail('달력 못 받음', '「?」 줄이 없음');
+    await p.evaluate(c => { location.hash = '#/cal/' + c; }, trData.cases[0][0]); await p.waitForTimeout(400);
+    const t2 = await p.$eval('#view', x => x.innerText); if (!t2.includes('? 종목 파일을 못 받았어요.')) fail('달력 못 받음', '종목 파일 「?」 줄이 없음');
+    if (errs.length) fail('달력 못 받음', '오류 ' + errs[0]); await ctx.close(); }
 }
 // 36곳 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 옛 주소 #/36 은 첫 화면으로 · 아래 탭 셋 · 「36곳 · 매수 검토」 글 0 · range.json 만 받음(pick36.json 안 받음)
 {
