@@ -571,7 +571,7 @@ async function visit(p, errs, route, w, hgt, font) {
       { errs.length = 0; const r2 = await look(p); screens++; judge(`${tag} · 어떻게 셌나요 열림`, r2, errs); moTotal += r2.moN; }
       await p.evaluate(() => { document.querySelectorAll('#view details.m4-how, #view details.m4-more').forEach(d => { d.open = false; }); window.scrollTo(0, 0); });
     }
-    if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/old/', '/us/'])) fail(tag, '맨 아래 길(소개 · 옛 ATLAS · 미국 판) 다름'); }
+    if (route !== '#/info') { numbers++; if (JSON.stringify(r.foot) !== JSON.stringify(['/hello.html', '/us/'])) fail(tag, '맨 아래 길(소개 · 미국 판 — 옛 ATLAS 는 2026-10-15 영구 삭제) 다름'); }
     for (const want of e.why ?? []) { numbers++; if (!r.text.includes(want) && !r.all.includes(want)) fail(tag, `글 「${want}」 없음`); }
     for (const no of e.notWhy ?? []) { numbers++; if (r.text.includes(no) || r.all.includes(no)) fail(tag, `있으면 안 되는 글 「${no}」`); } // 고른 곳 밖 3단에 「왜 … 들었나요?」(모든 회사 7단)
     if (e.trio) { numbers += 4; if (JSON.stringify(r.trio) !== JSON.stringify(e.trio)) fail(tag, `세 숫자 ${r.trio} ≠ ${e.trio}`); for (const pz of [].concat(e.price ?? [])) { numbers++; if (!r.text.includes(pz)) fail(tag, `1주 값 ${pz} 없음`); } }

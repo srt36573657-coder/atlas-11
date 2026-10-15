@@ -414,7 +414,7 @@ export function routeRunner(js) {
   const calls = [];
   const el = () => ({hidden: true, dataset: {}, childElementCount: 0, textContent: '', append() {}, remove() {}, focus() {}, setAttribute() {}, toggleAttribute() {}, addEventListener() {}, querySelector() { return null; }});
   const rec = k => (...x) => { calls.push([k, ...x.slice(1)]); };
-  const box = {D: {core: {}}, location: {hash: '#/', search: '', replace: u => calls.push(['replace', u])}, freshCheck() {}, showFind: () => calls.push(['find']), showInfo: x => calls.push(['info', x]), needNames: async () => {}, needMkt: async () => {},
+  const box = {D: {core: {}}, L: x => x, location: {hash: '#/', search: '', replace: u => calls.push(['replace', u])}, freshCheck() {}, // L = 영어 팩 글 바꿈(한국어면 그대로) showFind: () => calls.push(['find']), showInfo: x => calls.push(['info', x]), needNames: async () => {}, needMkt: async () => {},
     $: () => el(), document: {body: {dataset: {}}, title: ''}, lastMain: '', routeSeq: 0, chartDraw: null, h: () => el(), MO: {cat: () => el(), catSleep: () => { calls.push(['error-screen']); return el(); }}, window: {scrollTo() {}}, console: {error() {}},
     viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewSurge: rec('surge'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'), viewCal: rec('cal'), viewCalCase: rec('calc'), calLeave() {}, calBack() {},
     decodeURIComponent, encodeURIComponent, Promise, Object, String, Array};
@@ -481,7 +481,7 @@ function ciaLens(S, market) {
       const hsh = fuzzHash(rnd, S), r = await R.run(hsh), show = JSON.stringify(hsh.slice(0, 60));
       if (r.err) return `${show} 멈춤: ${String(r.err.message ?? r.err).slice(0, 80)}`;
       if (r.calls.some(c => c[0] === 'error-screen')) return `${show} 「자료를 못 읽었습니다」(주소가 잘못됐는데 까닭이 틀림)`;
-      const rep = r.calls.find(c => c[0] === 'replace'); if (rep && !(String(rep[1]).startsWith('/old/') || /^#\/c\/[0-9A-Z]{6}$/.test(rep[1]) || rep[1] === '#/') || (rep && String(rep[1]).startsWith('//'))) return `${show} 바깥으로 가는 길 ${rep[1]}`; // #/ = 지운 36곳 옛 주소(2026-10-13)
+      const rep = r.calls.find(c => c[0] === 'replace'); if (rep && !(/^#\/c\/[0-9A-Z]{6}$/.test(rep[1]) || rep[1] === '#/') || (rep && String(rep[1]).startsWith('//'))) return `${show} 바깥으로 가는 길 ${rep[1]}`; // #/ = 지운 36곳 옛 주소(2026-10-13) · 옛 ATLAS 주소(옛 판 /old/ 은 2026-10-15 23:35 영구 삭제 — 이제 첫 화면으로)
       if (!r.calls.length) return `${show} 아무 화면도 안 열림`; return null; }},
     {k: 'trip', name: '이름 주소 왕복 — 화면이 만든 주소가 같은 대상을 여나', items: trips.length, async: true, async check(i) {
       const [hsh, want] = trips[i], r = await R.run(hsh); const got = r.calls.find(c => c[0] !== 'replace');

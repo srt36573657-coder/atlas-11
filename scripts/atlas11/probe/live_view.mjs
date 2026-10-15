@@ -263,8 +263,10 @@ await step('급등 다섯 칸', async () => { // 사장님 2026-10-15 16:28 「�
   out.surge5.ok = S.bands?.version === 'sb-v1' && K?.version === 'sk-v1' && main.chips.length === 5 && main.rows === 1 && main.cells >= 1 && main.track && Object.values(bands).every(x => x.ok) && !/CIA|씨아이에이|정보기관|중앙정보국/i.test(main.text);
   if (!out.surge5.ok) out.errors.push('급등 다섯 칸: ' + JSON.stringify(out.surge5).slice(0, 400));
 });
-await step('옛 판', async () => {
+await step('옛 판 지움', async () => { // 2026-10-15(싱가포르) 23:35 「알틀란스는 영구 삭제한다」 — /old/ 는 첫 화면(새 ATLAS)으로 · 맨 아래 「옛 ATLAS」 고리 없음
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
+  const g = await page.evaluate(() => ({path: location.pathname, newAtlas: !!document.querySelector('#tabCal'), oldLink: [...document.querySelectorAll('a[href]')].some(a => /\/old\//.test(a.getAttribute('href')))}));
+  out.oldGone = {...g, ok: g.path === '/' && g.newAtlas && !g.oldLink}; if (!out.oldGone.ok) out.errors.push('옛 판 지움: ' + JSON.stringify(g));
 });
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;

@@ -241,7 +241,7 @@ function lineChart(host, {v, avg, label, noPick = false}) {
 function foot({src = null} = {}) { // src = 그 화면만의 자료 줄(급등 탭 — 규칙 69 · 없으면 사이트 바탕 회사 줄)
   const C = D.core;
   return h('footer', {class: 'foot'}, footFriends(),
-    h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/old/', text: '옛 ATLAS'}), h('a', {href: '/us/', text: '미국 판'})),
+    h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})), // 「옛 ATLAS」 고리는 옛 판 영구 삭제(2026-10-15 23:35)로 뺌
     h('p', {text: src ? `자료: ${C.sources.price} · ${src}.` : `자료: ${C.sources.price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
     h('p', {text: '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.'}));

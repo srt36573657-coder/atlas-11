@@ -91,7 +91,7 @@ test('진짜 길 함수(route) — 깨진 주소에도 멈추지 않고 「없�
   r = await go('#/c/%E0%A4%A/past'); assert.deepEqual(r.calls.map(c => c[0]), ['missing']);
   r = await go('#/c/005930/past'); assert.deepEqual(r.calls, [['past', '005930']]);
   r = await go('#/i/' + encodeURIComponent('반도체 장비')); assert.deepEqual(r.calls, [['i', '반도체 장비']]);
-  r = await go('#/stocks'); assert.deepEqual(r.calls, [['replace', '/old/#/stocks']]);
+  r = await go('#/stocks'); assert.deepEqual(r.calls, [['replace', '#/']]); // 옛 ATLAS 주소 — 옛 판 영구 삭제(2026-10-15 23:35)로 첫 화면
   r = await go(''); assert.deepEqual(r.calls, [['home']]);
 });
 
