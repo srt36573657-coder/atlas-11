@@ -29,10 +29,11 @@ export const BUNDLE_NOW = [ACT.bundle, ACT.asOf]; // 고를 때 · 회사 이름
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
 const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json', 'mkt.json']; // mkt.json = 모든 회사(2026-10-14 「나」 — 업종 화면 회사 줄)
-const OPT_FILES = ['time.json', 'grow.json', 'home.json', 'surge.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) · 급등 탭(2026-10-15 14:27 · 규칙 69) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
+const OPT_FILES = ['time.json', 'grow.json', 'home.json', 'surge.json', 'surgecal.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) · 급등 탭(2026-10-15 14:27 · 규칙 69) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
 // 급등 탭(사장님 2026-10-15 14:27(싱가포르) 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 모아높는곳이다 기준은 cia라면 어떻게 할것인지 에이전트 총 사용해서 하고
 //   하루에 4번 업데이트할때미다 그때 선택도 하고 탈락도 시켜라」 · 규칙 69) — 고른 판 기록은 새 파일만(reports/atlas11/t365/surge/<UTC>.json · 올라간 고르기만)
 export const SURGE_DIR = 'reports/atlas11/t365/surge';
+export const SURGECAL_LATEST = 'reports/atlas11/t365/surgecal-latest.json'; // 달력 · 따라가기(sk-v1) 마지막 판 — 올라간 고르기 때마다 덮어씀(업데이트 밖 올림이 그대로 씀)
 /** 지난 급등 고르기 기록(올라간 것만 · 새 파일만 쌓임) — 이름 차례 */
 export function readSurge(dir) {
   if (!dir || !fss.existsSync(dir)) return [];
@@ -42,6 +43,16 @@ export function readSurge(dir) {
 export const surgeHist = recs => recs.slice(-28).map(r => ({at: r.at, kst: r.kst, slot: r.slot ?? null, kind: r.kind, n: r.payload.n, in: r.payload.in?.length ?? 0, out: r.payload.out?.length ?? 0, asOf: r.payload.asOf, provisional: !!r.payload.provisional}));
 /** 업데이트 때가 아닌 올림(손 올리기 · 종가 올리기 · 미국 판 올리기) — 앞에 고른 그대로(값도 그때 값) · 목록은 하루 4번 업데이트 때만 바뀜 */
 export const surgeCarry = (last, recs, why = null) => ({...last.payload, hist: surgeHist(recs), carry: {from: last.at, fromKst: last.kst, fromSlot: last.slot ?? null, why}});
+/** 앞 상태 — 마지막 기록의 상태 + 기록들의 사건(evNow) · 따라가기 시작(trackNew)을 이어 붙임(기록 파일엔 그 업데이트 몫만 · 크기를 늘리지 않으려고 · 결정표 v3) */
+export function surgePrevState(recs) {
+  const last = recs.at(-1); if (!last) return null;
+  const st = {...(last.state ?? {})}; delete st.evNow; delete st.trackNew;
+  st.events = recs.flatMap(r => r.state?.evNow ?? []);
+  st.track = {}; for (const r of recs) for (const [c, v] of Object.entries(r.state?.trackNew ?? {})) st.track[c] = v; // 뒤 기록이 이김 — 25거래일 밖으로 내린 곳이 다시 들면 새 시작(surge.py 가 창 밖은 내림)
+  return st;
+}
+/** 기록에 남길 상태 — 전체 사건 · 따라가기 목록은 빼고 그 업데이트 몫(evNow · trackNew)만 */
+export const surgeRecState = st => { const o = {...st}; delete o.events; delete o.track; return o; };
 /** 폴더 안 일봉 파일 지문(이름 차례 · 이름 + 내용) — 나중에 「그때 무엇으로 셌나」를 맞대 보려고 */
 export function filesDigest(dir) {
   try { const h = crypto.createHash('sha256'); for (const f of fss.readdirSync(dir).filter(x => x.endsWith('.json.gz')).sort()) { h.update(f); h.update(fss.readFileSync(path.join(dir, f))); } return h.digest('hex').slice(0, 16); } catch { return null; }
@@ -83,7 +94,8 @@ export function tabData(records) {
     served: r.served, // 옛 기록의 36곳 칸은 화면 자료에 싣지 않음(2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 · 기록 파일은 그대로)
     market: r.market ? {asOf: r.market.asOf, provisional: r.market.provisional, lines: r.market.lines, day: r.market.day && {up: r.market.day.up, down: r.market.day.down, word: r.market.day.word}, size: r.market.span?.size ?? null} : null,
     // 급등 탭(규칙 69) — 그 회차에 고른 판(들고 난 이름) · 그대로 둔 판 · 멈춘 까닭
-    surge: r.surge ? {kind: r.surge.kind, n: r.surge.n ?? null, in: r.surge.in ?? [], out: r.surge.out ?? [], published: r.surge.published ?? null, why: r.surge.why ?? null, fromKst: r.surge.fromKst ?? null} : null,
+    surge: r.surge ? {kind: r.surge.kind, n: r.surge.n ?? null, in: r.surge.in ?? [], out: r.surge.out ?? [], published: r.surge.published ?? null, why: r.surge.why ?? null, fromKst: r.surge.fromKst ?? null,
+      bands: r.surge.bands ? {kind: r.surge.bands.kind, n: r.surge.bands.n, in: r.surge.bands.in, out: r.surge.bands.out, move: r.surge.bands.move} : null} : null, // 네 칸(16:28 · 16:34) — 업데이트마다 든 · 빠짐 · 옮김 수
     inspect: r.inspect ? {nEach: r.inspect.nEach, fail: r.inspect.fail, lenses: r.inspect.lenses.map(l => ({key: l.key, name: l.name, n: l.n, fail: l.fail}))} : null}));
   return {schema: 'atlas-new-updates-1', made: new Date().toISOString(), slots: ACT.slots ?? [], n: records.length, records: rows};
 }
@@ -112,7 +124,8 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     all: null, top: null, range: null, market: null, inspect: null, home: null, homeFetch: null, surge: null, verify: {}, steps: []};
   const surgeDir = recDir ? path.join(path.dirname(recDir), 'surge') : path.join(root, SURGE_DIR); // 급등 고르기 기록(규칙 69) — 깃허브 실행기 = reports/atlas11/t365/surge · 시험 = 임시 폴더
   const sRecs = readSurge(surgeDir), sLast = sRecs.at(-1) ?? null;
-  let surgeOut = null; // 이번에 고른 급등 판(올라가면 기록 파일로)
+  let surgeOut = null, surgeCal = null; // 이번에 고른 급등 판(올라가면 기록 파일로) · 그 달력 글
+  const surgeCalLatest = recDir ? path.join(path.dirname(recDir), 'surgecal-latest.json') : path.join(root, SURGECAL_LATEST);
   const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 1e7)); // 네 눈 점검 — 눈마다 번 수(사장님 「각각 1000만번씩」 · 시험만 줄임)
   let inspectFull = null;
   /** 네 눈 점검 — dataDir 자료 + dist 화면 코드 · 끝나지 못하면 throw · 걸린 것이 있으면 결과를 남기고 false */
@@ -186,25 +199,28 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
     //   셈 surge.py(파이썬) → 따로 세기 surge_verify.mjs(노드 · 원문에서 처음부터) 틀림 0 일 때만 · 급등 셈만 멈추면 앞 판 그대로 + 까닭(사이트의 다른 자료는 계속)
     {
       const sf = path.join(out, 'surge.json');
+      const calCarry = async () => { try { await fs.copyFile(path.join(surgeCalLatest), path.join(out, 'surgecal.json')); } catch { await fs.rm(path.join(out, 'surgecal.json'), {force: true}); } }; // 업데이트 밖 · 멈춤 = 마지막 달력 그대로(없으면 없음)
       const again = !!(sLast && rep.slot && sLast.slot === rep.slot && String(sLast.kst ?? '').slice(0, 10) === rep.kst.slice(0, 10)); // 같은 날 같은 업데이트 이름으로 두 번째(경보 눈 반대 4) — 앞에 고른 그대로
       if ((rep.slot || !sLast) && !again) {
         try {
           const pf = path.join(tmp, 'surge-prev.json'), sfo = path.join(tmp, 'surge-state.json');
-          await fs.writeFile(pf, JSON.stringify(sLast ? {at: sLast.at, kst: sLast.kst, slot: sLast.slot ?? null, payload: sLast.payload, state: sLast.state ?? null} : null));
+          await fs.writeFile(pf, JSON.stringify(sLast ? {at: sLast.at, kst: sLast.kst, slot: sLast.slot ?? null, payload: sLast.payload, state: surgePrevState(sRecs)} : null));
           run('급등 고르기', 'python3', ['scripts/atlas11/t365/surge.py', now0, out, '--prev', pf, '--at', now.toISOString(), '--slot', rep.slot ?? '', '--state-out', sfo], env2);
           const gv = run('급등 따로 세기', 'node', ['scripts/atlas11/t365/surge_verify.mjs', out, pf, path.join(tmp, 'gv.json'), sfo], env2);
           rep.verify.surge = tail(gv.stdout);
           const P = JSON.parse(await fs.readFile(sf, 'utf8')), state = JSON.parse(await fs.readFile(sfo, 'utf8'));
-          surgeOut = {at: rep.at, kst: rep.kst, slot: rep.slot, kind: P.kind, payload: P, state, input: filesDigest(closes)}; // state = 방금 빠진 곳 · 기다림 · 확정 맞대기(공개 자료엔 없음) · input = 이어 받은 일봉 파일 지문(방첩 눈 반대 4 — 파일 통째는 크기 때문에 못 남김)
+          surgeOut = {at: rep.at, kst: rep.kst, slot: rep.slot, kind: P.kind, payload: P, state: surgeRecState(state), input: filesDigest(closes)}; // state = 방금 빠진 곳 · 기다림 · 확정 맞대기 · 그 업데이트 사건 · 따라가기 시작(공개 자료엔 없음) · input = 이어 받은 일봉 파일 지문(방첩 눈 반대 4 — 파일 통째는 크기 때문에 못 남김)
+          surgeCal = await fs.readFile(path.join(out, 'surgecal.json'), 'utf8'); // 달력 · 따라가기(sk-v1) — 올라가면 SURGECAL_LATEST 로
           await fs.writeFile(sf, JSON.stringify({...P, hist: surgeHist([...sRecs, surgeOut])}) + '\n');
-          rep.surge = {kind: P.kind, version: P.version, n: P.n, asOf: P.asOf, provisional: P.provisional, members: P.members.map(m => m.c), in: P.in.map(x => ({c: x.c, n: x.n})), out: P.out.map(x => ({c: x.c, n: x.n, why: x.why})), digest: P.digest, published: null};
+          rep.surge = {kind: P.kind, version: P.version, n: P.n, asOf: P.asOf, provisional: P.provisional, members: P.members.map(m => m.c), in: P.in.map(x => ({c: x.c, n: x.n})), out: P.out.map(x => ({c: x.c, n: x.n, why: x.why})), digest: P.digest, published: null,
+            bands: P.bands ? {version: P.bands.version, kind: P.bands.kind, digest: P.bands.digest, n: Object.fromEntries(['b10', 'b20', 'b30', 'b40'].map(b => [b, P.bands[b]?.n ?? null])), in: ['b10', 'b20', 'b30', 'b40'].reduce((a, b) => a + (P.bands[b]?.in?.length ?? 0), 0), out: ['b10', 'b20', 'b30', 'b40'].reduce((a, b) => a + (P.bands[b]?.out?.length ?? 0), 0), move: (state.evNow ?? []).filter(e => e[4] === 'move').length} : null};
         } catch (e) {
           rep.surge = {kind: 'fail', why: String(e?.message ?? e).slice(0, 300), from: sLast?.at ?? null};
-          if (sLast) await fs.writeFile(sf, JSON.stringify(surgeCarry(sLast, sRecs, '이번 업데이트에 급등 셈이 멈춰 앞에 고른 그대로예요')) + '\n');
-          else await fs.rm(sf, {force: true});
+          if (sLast) { await fs.writeFile(sf, JSON.stringify(surgeCarry(sLast, sRecs, '이번 업데이트에 급등 셈이 멈춰 앞에 고른 그대로예요')) + '\n'); await calCarry(); }
+          else { await fs.rm(sf, {force: true}); await fs.rm(path.join(out, 'surgecal.json'), {force: true}); }
         }
       } else {
-        await fs.writeFile(sf, JSON.stringify(surgeCarry(sLast, sRecs, again ? '같은 업데이트를 한 번 더 돌려 앞에 고른 그대로예요' : null)) + '\n');
+        await fs.writeFile(sf, JSON.stringify(surgeCarry(sLast, sRecs, again ? '같은 업데이트를 한 번 더 돌려 앞에 고른 그대로예요' : null)) + '\n'); await calCarry();
         rep.surge = {kind: 'carry', from: sLast.at, fromKst: sLast.kst, fromSlot: sLast.slot ?? null, digest: sLast.payload.digest, ...(again ? {why: '같은 업데이트 두 번째'} : {})};
       }
     }
@@ -223,7 +239,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
       all: {chg: core.all.chg, up: core.all.up, down: core.all.down}, top: {short: core.groups[0]?.short, chg: core.groups[0]?.chg, ...(core.mkt ? {scope: 'mkt'} : {})}, // 1등 갈래 = 모든 회사로 센 갈래(2026-10-14 「나」 · 그 전 기록은 고른 곳으로 센 갈래)
       range: {eligible: rg.eligible, reused: /reused/.test(rgRun.stdout)}});
     // 값 지문 — 고른 날 · 이어 붙인 값 수 · 365곳 · 365곳 지수 · 아직 바뀜 여부 · 같으면 「그대로」(새 값 없음)
-    rep.digest = crypto.createHash('sha256').update(JSON.stringify([pro.asOf, pro.from?.closes?.added, members, core.all.v, core.provisional, ...(rep.surge?.digest ? [rep.surge.digest] : [])])).digest('hex').slice(0, 16); // 급등 판 지문도(규칙 69 · 경보 눈 — 바탕 회사가 같아도 급등 목록이 바뀌면 「바꿈」)
+    rep.digest = crypto.createHash('sha256').update(JSON.stringify([pro.asOf, pro.from?.closes?.added, members, core.all.v, core.provisional, ...(rep.surge?.digest ? [rep.surge.digest] : []), ...(rep.surge?.bands?.digest ? [rep.surge.bands.digest] : [])])).digest('hex').slice(0, 16); // 급등 판 지문도(규칙 69 · 경보 눈 — 바탕 회사가 같아도 급등 목록이 바뀌면 「바꿈」)
     rep.result = prev && prev.digest === rep.digest ? '그대로' : '바꿈';
     if (rep.result === '그대로') rep.why = '새 값 없음 — 앞 회차와 같은 값으로 다시 만듦';
     // 시장 판독(지난 사실만) → 네 눈 점검(이번 회차 자료 + 화면 코드) — 걸리면 새 자료를 올리지 않음(아래 catch: 지금 사이트 자료 그대로)
@@ -260,7 +276,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
         const dir = path.dirname(recDir); // 깃허브 실행기 = reports/atlas11/t365 · 시험 = 임시 폴더(저장소 기록을 건드리지 않음)
         if (inspectFull) { await fs.mkdir(path.join(dir, 'inspect'), {recursive: true}); await fs.writeFile(path.join(dir, 'inspect', name), JSON.stringify({...inspectFull, at: rep.at, kst: rep.kst, slot: rep.slot}, null, 1) + '\n', {flag: 'wx'}); }
         // 급등 고르기 기록(규칙 69) — 올라간 고르기만(네 눈 점검까지 지나 사이트 자료가 바뀐 때) · 새 파일만 · 다음 업데이트의 「앞 판」
-        if (surgeOut && rep.served === 'rolled') { await fs.mkdir(surgeDir, {recursive: true}); await fs.writeFile(path.join(surgeDir, name), JSON.stringify({schema: 'atlas-t365-surge-rec-1', ...surgeOut}, null, 1) + '\n', {flag: 'wx'}); }
+        if (surgeOut && rep.served === 'rolled') { await fs.mkdir(surgeDir, {recursive: true}); await fs.writeFile(path.join(surgeDir, name), JSON.stringify({schema: 'atlas-t365-surge-rec-1', ...surgeOut}, null, 1) + '\n', {flag: 'wx'}); if (surgeCal) await fs.writeFile(surgeCalLatest, surgeCal); }
         await fs.writeFile(path.join(dir, 'roll-latest.json'), JSON.stringify({...rep, members: undefined}, null, 1) + '\n');
         await fs.appendFile(path.join(dir, 'roll-log.jsonl'), JSON.stringify({at: rep.at, kst: rep.kst, slot: rep.slot, result: rep.result, served: rep.served, asOf: rep.asOf, base: rep.base, in: rep.in?.length ?? null, out: rep.out?.length ?? null, inspectFail: rep.inspect?.fail ?? null, surge: rep.surge?.kind ?? null, why: rep.why}) + '\n');
       } catch (e) { rep.why = (rep.why ? rep.why + ' · ' : '') + '회차 기록을 못 남김: ' + String(e?.message ?? e).slice(0, 120); }

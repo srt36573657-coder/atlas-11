@@ -2,7 +2,8 @@
 // 급등 탭 따로 세기(사장님 2026-10-15 14:27(싱가포르) 「… 최근 5일에 급등한 종목을 36개 … 하루에 4번 업데이트할때미다 그때 선택도 하고 탈락도 시켜라」 · 규칙 69)
 //   surge.py(파이썬)는 열지 않고 결정표 v2(sv-v1) 0 ~ 4절만 보고 다른 길(노드 · 모음 원본 일봉 + 이어 받은 일봉 + 앞 판 · 상태에서 처음부터)로 다시 세어
 //   화면 자료 surge.json(그리고 주면 상태 파일)과 칸마다 맞댐 — 허용 오차 없음 · 틀린 것이 하나라도 있으면 끝 코드 1
-//   쓰는 법(저장소 맨 위에서): node scripts/atlas11/t365/surge_verify.mjs <자료 폴더(surge.json · mkt.json · core.json)> <앞 판 json({at, kst, slot, payload, state} · null · 없으면 -)> <결과 json> [상태 json(surge.py --state-out)]
+//   쓰는 법(저장소 맨 위에서): node scripts/atlas11/t365/surge_verify.mjs <자료 폴더(surge.json · mkt.json · core.json)> <앞 판 json({at, kst, slot, payload, state} · null · 없으면 -)> <결과 json> [상태 json(surge.py --state-out · 없으면 -)] [달력 json(없으면 자료 폴더의 surgecal.json 이 있을 때만)]
+//   v3(merge-v3 · 사장님 2026-10-15 16:28 「10프로 20프로 30프로40프로 탭도 만들어 총 5개」 · 16:34 「… 추적해서 달력에 기록」): 네 칸(sb-v1 · surge.json bands) · 사건 · 따라가기(sk-v1 · 상태 events · evNow · track · trackNew · surgecal.json)도 원문에서 다시 셈
 //   환경 변수: ATLAS_T365_CLOSES(이어 받은 일봉 폴더 · 없어도 됨) · ATLAS_D365_DIR(그 업데이트 후보 표 폴더 — proposal.json · 없으면 universe.json dir)
 //   맞대는 것: kind · n · cap · asOf · provisional · got · window · members(차례 · 칸 모두) · stats · funnel(qn 포함) · cut · cutList · market · bins · why · facts · sameInd · in · out(까닭 글 포함)
 //             · confirm · strict · digest · 규칙 숫자(enter 15 · stay 10 · liq 1 · jump 35 · hist 20 · enterRank 36 · keepRank 72 · margin 5 · pen 5 · idleDays 61 · idleMax 13)
@@ -16,11 +17,13 @@ import zlib from 'node:zlib';
 import path from 'node:path';
 import crypto from 'node:crypto';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
-const [dataArg, prevArg, outArg, stateArg] = process.argv.slice(2);
+const [dataArg, prevArg, outArg, stateArg, calArg] = process.argv.slice(2);
 const dataDir = path.resolve(ROOT, dataArg ?? 'site/atlas/data');
 const prevFile = prevArg && prevArg !== '-' ? path.resolve(ROOT, prevArg) : null;
 const outFile = path.resolve(ROOT, outArg ?? 'reports/atlas11/verify/atlas-new-surge-latest.json');
-const stateFile = stateArg ? path.resolve(ROOT, stateArg) : null;
+const stateFile = stateArg && stateArg !== '-' ? path.resolve(ROOT, stateArg) : null;
+// 다섯째 = 달력 파일 surgecal.json(없으면 자료 폴더의 surgecal.json 이 있을 때만)
+const calFile = calArg ? path.resolve(ROOT, calArg) : fs.existsSync(path.join(dataDir, 'surgecal.json')) ? path.join(dataDir, 'surgecal.json') : null;
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 const iso = d => `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
@@ -29,6 +32,14 @@ const canon = x => JSON.stringify(x, (k, v) => (v && typeof v === 'object' && !A
 const bad = []; let checks = 0;
 const same = (got, want, what) => { checks++; if (canon(got) !== canon(want)) bad.push({what, got: got === undefined ? '(없음)' : got, want: want === undefined ? '(없음)' : want}); };
 const truth = (ok, what, got, want) => { checks++; if (!ok) bad.push({what, got, want}); };
+// 긴 목록 — 틀리면 처음 다른 칸 하나만(길이와 함께) 적음
+const sameArr = (got, want, what) => {
+  checks++;
+  if (canon(got) === canon(want)) return;
+  if (!Array.isArray(got)) { bad.push({what, got: got === undefined ? '(없음)' : got, want}); return; }
+  let i = 0; while (i < Math.max(got.length, want.length) && canon(got[i]) === canon(want[i])) i++;
+  bad.push({what: `${what}[${i}] (길이 ${got.length} · ${want.length})`, got: got[i] === undefined ? '(없음)' : got[i], want: want[i] === undefined ? '(없음)' : want[i]});
+};
 
 // ── 결정표 숫자(2절 · 1절 · 4절) ──
 const VERSION = 'sv-v1', SCHEMA = 'atlas-new-surge-1';
@@ -258,10 +269,15 @@ function warnAt(c, L) { // 거래소 투자경고 오름 기준(지수 조건은
   return false;
 }
 const prevByCode = new Map(prevMembers.map(m => [m.c, m]));
-const members = seat.map(j => {
-  const code = ALLC[j], c = C[j], v = V[j], r = R[j], m0 = RULE ? undefined : prevByCode.get(code);
+// 줄 바탕 칸(급등 칸 · 네 칸 같은 셈) — c · n · i · g · mk · r5 · v(6) · d1 · liq
+const baseOf = j => {
+  const code = ALLC[j], c = C[j];
   const r5 = d2((c[K] / c[K - 5] - 1) * 100);
   const vv = []; for (let t = K - 5; t <= K - 1; t++) vv.push(d2(c[t] / c[K - 5] * 100)); vv.push(d2(100 + r5));
+  return {c: code, n: nameOf(code), i: indOf(j), g: gOf(j), mk: rowOf.get(code).market ?? null, r5, v: vv, d1: d2((c[K] / c[K - 1] - 1) * 100), liq: d2(X.liq[j] / 1e8)};
+};
+const members = seat.map(j => {
+  const code = ALLC[j], c = C[j], v = V[j], r = R[j], m0 = RULE ? undefined : prevByCode.get(code);
   const warn = warnAt(c, PROV ? K - 1 : K), warnLive = !warn && PROV && warnAt(c, K);
   let one = false; if (r > 1) for (let t = K - 4; t <= K; t++) { const y = c[t] / c[t - 1]; if (y * y * y >= r * r) { one = true; break; } }
   let pmax = null; for (let t = Math.max(0, K - 65); t <= K - 5; t++) if (c[t] != null && (pmax === null || c[t] > pmax)) pmax = c[t];
@@ -275,8 +291,7 @@ const members = seat.map(j => {
   const why = mktMed * 2 >= x ? 'mkt' : peers.length >= 4 && (median(peers.map(rr)) * 2 >= x || (hot >= 2 && hot >= 3 * peers.length * p15)) ? 'ind' : 'co';
   const tag = m0 ? 'stay' : 'new';
   const since = m0 ? m0.since : S.at, sinceKst = m0 ? m0.sinceKst : S.kst, sinceAsOf = m0 ? m0.sinceAsOf : DAY, rounds = m0 ? m0.rounds + 1 : 1;
-  return {c: code, n: nameOf(code), i: indOf(j), g: gOf(j), mk: rowOf.get(code).market ?? null, r5, v: vv, d1: d2((c[K] / c[K - 1] - 1) * 100), liq: d2(X.liq[j] / 1e8),
-    warn, warnLive, one, reb, half, quiet, why, tag, since, sinceKst, sinceAsOf, rounds, prov: PROV && sinceAsOf === DAY};
+  return {...baseOf(j), warn, warnLive, one, reb, half, quiet, why, tag, since, sinceKst, sinceAsOf, rounds, prov: PROV && sinceAsOf === DAY};
 });
 const r5s = members.map(m => m.r5);
 const stats = members.length ? {lo: Math.min(...r5s), hi: Math.max(...r5s), med: d2(median(r5s))} : null;
@@ -314,6 +329,87 @@ const recentOut = [...penUsed.filter(e => !outCodes.has(e.c)).map(e => ({c: e.c,
   .sort((a, b) => cmp(a.day, b.day) || cmp(a.c, b.c));
 const pending = wait.map(j => ALLC[j]).sort(cmp);
 
+// ── v3 1절 네 칸(sb-v1) — 업데이트마다 새로 셈 · liquid 이고 r 이 칸 안인 곳을 열쇠 차례로 앞 36곳 · 넘친 수는 over ──
+const BAND_VERSION = 'sb-v1', BANDS = [['b10', 1.10, 1.20], ['b20', 1.20, 1.30], ['b30', 1.30, 1.40], ['b40', 1.40, null]];
+const CUTS = [['b10', 10, 20], ['b20', 20, 30], ['b30', 30, 40], ['b40', 40, null]];
+const BAND_TEXT = {
+  gone: '? 이번 자료에 이 회사 값이 없어요',
+  q: '? 값을 셀 수 없어 뺐어요 — ',
+  thin: '평소 하루 거래가 1억 원 밑이 됐어요',
+  win: '크게 오른 날이 5일 밖으로 나가 10% 밑이 됐어요',
+  down: '값이 내려 10% 밑이 됐어요',
+  cap: '같은 칸에 더 크게 오른 곳이 많아 밀렸어요',
+};
+const band = {}, bandNow = new Map(); // 칸 → {top: [j…], over} · 번호 → 지금 칸
+for (const [b, lo, hi] of BANDS) {
+  const all = E.filter(j => R[j] >= lo && (hi === null || R[j] < hi)); // E 는 이미 열쇠 차례
+  band[b] = {top: all.slice(0, CAP), over: Math.max(0, all.length - CAP)};
+  for (const j of band[b].top) bandNow.set(ALLC[j], b);
+}
+// 앞 칸 = 앞 판 payload.bands[b].members(앞 판이 없거나 bands 판 이름이 다르면 「처음」 — 사건 없음)
+const PB = PP && PP.bands && PP.bands.version === BAND_VERSION ? PP.bands : null;
+const BKIND = PB ? 'pick' : 'first';
+const bandPrev = new Map(), bandPrevMem = new Map(); // 번호 → 앞 칸 · 앞 줄
+if (PB) for (const [b] of BANDS) for (const m of PB[b]?.members ?? []) { bandPrev.set(m.c, b); bandPrevMem.set(m.c, m); }
+const BAND = {};
+for (const [b] of BANDS) {
+  BAND[b] = {n: band[b].top.length, over: band[b].over, members: band[b].top.map(j => {
+    const code = ALLC[j], pm = bandPrev.get(code) === b ? bandPrevMem.get(code) : null; // 같은 칸에 있었을 때만 남음
+    const sinceAsOf = pm ? pm.sinceAsOf : DAY;
+    return {...baseOf(j), tag: pm ? 'stay' : 'new', since: pm ? pm.since : S.at, sinceKst: pm ? pm.sinceKst : S.kst, sinceAsOf, prov: PROV && sinceAsOf === DAY};
+  }), in: [], out: [], move: []};
+}
+// 사건 — 첫 돌기: 칸 차례 · 줄 차례로 in · move(같은 줄을 from 칸과 to 칸에 그때 차례로) · 둘째 돌기: 칸 차례 · 앞 줄 차례로 out
+const bandEv = []; // [번호, kind, tab, tab2]
+if (PB) {
+  for (const [b] of BANDS) for (const j of band[b].top) {
+    const code = ALLC[j], P = bandPrev.get(code), r5 = d2((R[j] - 1) * 100);
+    if (P === undefined) { BAND[b].in.push({c: code, n: nameOf(code), r5}); bandEv.push([code, 'in', b, null]); }
+    else if (P !== b) { const mv = {c: code, n: nameOf(code), r5, from: P, to: b}; BAND[P].move.push(mv); BAND[b].move.push(mv); bandEv.push([code, 'move', P, b]); }
+  }
+  for (const [b] of BANDS) for (const m of PB[b]?.members ?? []) {
+    if (bandNow.has(m.c)) continue;
+    const j = IX.get(m.c), inList = j !== undefined;
+    const why = !inList ? BAND_TEXT.gone : !clean[j] ? BAND_TEXT.q + WHY_TEXT[X.why[j]] : !liquid[j] ? BAND_TEXT.thin
+      : R[j] < STAY ? (PP.asOf !== DAY && C[j][K] >= C[j][K - 1] ? BAND_TEXT.win : BAND_TEXT.down) : BAND_TEXT.cap;
+    BAND[b].out.push({c: m.c, n: nameOf(m.c) ?? m.n ?? null, r5: inList && clean[j] ? d2((R[j] - 1) * 100) : null, why});
+    bandEv.push([m.c, 'out', b, null]);
+  }
+}
+const bandDigest = crypto.createHash('sha256').update(['sb-v1', DAY, PROV ? '1' : '0',
+  ...BANDS.map(([b]) => `${b}:${BAND[b].members.map(m => `${m.c}:${m.r5.toFixed(2)}`).join(',')}`),
+  ...bandEv.map(([c, kind, tab, tab2]) => `${c}>${kind}>${tab}>${tab2 ?? 'None'}`)].join('|')).digest('hex').slice(0, 16);
+const BANDS_OUT = {version: BAND_VERSION, kind: BKIND, cap: CAP, cuts: CUTS, digest: bandDigest, ...BAND};
+
+// ── v3 2절 달력 · 따라가기(sk-v1) — 사건 · 따라가기는 급등 칸 규칙이 바뀌어도 앞 상태에서 이어 받음 ──
+const RAWPS = PREV && PREV.state ? PREV.state : null;
+const SLOT = S.slot ?? null;
+// 이번 사건 = 급등 칸 몫(pick: in 들 → out 들 · first/rule: 급등 줄마다 'first') + 네 칸 몫(처음: 칸 차례 · 줄 차례로 'first' · 아니면 in/move/out) — 'first' 줄은 달력에만(bands 사건 · digest 는 그대로)
+const evNow = [...(KIND === 'pick' ? [...IN.map(x => [x.c, 'in', 'sv', null]), ...OUT.map(x => [x.c, 'out', 'sv', null])] : members.map(m => [m.c, 'first', 'sv', null])),
+  ...(BKIND === 'first' ? BANDS.flatMap(([b]) => BAND[b].members.map(m => [m.c, 'first', b, null])) : bandEv)]
+  .map(([c, kind, tab, tab2]) => [DAY, S.kst, SLOT, c, kind, tab, tab2]);
+const keepDays = new Set(D.slice(Math.max(0, K - 24), K + 1));
+const events = [...(Array.isArray(RAWPS?.events) ? RAWPS.events : []), ...evNow].filter(e => keepDays.has(e[0]));
+// 따라가기 창(2026-10-15 덧붙임): 앞 track 가운데 첫 날이 마지막 25거래일(D[k−24] … D[k]) 밖인 것은 이번 시작 전에 버림 — 다시 들면 오늘로 새로 시작(trackNew)
+const trackMap = new Map(Object.entries(RAWPS?.track && typeof RAWPS.track === 'object' ? RAWPS.track : {}).filter(([, row]) => Array.isArray(row) && keepDays.has(row[0]))), trackNew = new Map();
+const startTrack = (c, tab) => { if (!trackMap.has(c)) { const row = [DAY, S.kst, tab, nameOf(c)]; trackMap.set(c, row); trackNew.set(c, row); } };
+if (KIND === 'pick') for (const x of IN) startTrack(x.c, 'sv'); else for (const m of members) startTrack(m.c, 'sv');
+if (BKIND === 'first') { for (const [b] of BANDS) for (const j of band[b].top) startTrack(ALLC[j], b); }
+else for (const [c, kind, tab] of bandEv) if (kind === 'in') startTrack(c, tab);
+// 이름(달력 days[].ev · track[] 같은 규칙): mkt.json 에 있으면 그 이름 · 없으면 새 state.track 에 적힌 이름 · 그것도 없으면 번호
+const calName = c => (Object.prototype.hasOwnProperty.call(MK, c) ? MK[c].n : trackMap.get(c)?.[3] ?? c);
+const evByDay = new Map();
+for (const e of events) { if (!evByDay.has(e[0])) evByDay.set(e[0], []); evByDay.get(e[0]).push([e[1], e[2], e[3], calName(e[3]), e[4], e[5], e[6]]); }
+const calDays = [...evByDay.keys()].sort((a, b) => cmp(b, a)).map(d => ({d, ev: evByDay.get(d)}));
+const seatCodes = new Set(members.map(m => m.c));
+const calTrack = [...trackMap].map(([c, row]) => {
+  const [fd, , ft] = row, j = IX.get(c), d0 = D.indexOf(fd), path = [];
+  if (j !== undefined && d0 >= 0 && C[j][d0] != null) for (let t = d0 + 1; t <= K; t++) path.push([D[t], C[j][t] != null ? d2((C[j][t] / C[j][d0] - 1) * 100) : null]);
+  const now = [...(seatCodes.has(c) ? ['sv'] : []), ...BANDS.map(([b]) => b).filter(b => bandNow.get(c) === b)];
+  return {c, n: calName(c), d: fd, t: ft, now, path};
+}).sort((a, b) => cmp(b.d, a.d) || cmp(a.c, b.c));
+const CAL = {schema: 'atlas-new-surgecal-1', version: 'sk-v1', asOf: DAY, provisional: PROV, kst: S.kst, keep: 25, dates: D.slice(Math.max(0, K - 24), K + 1), days: calDays, track: calTrack};
+
 // ── 맞대기 ──
 same(S.schema, SCHEMA, 'schema'); same(S.version, VERSION, 'version');
 same(S.kind, KIND, 'kind'); same(S.n, members.length, 'n'); same(S.cap, CAP, 'cap'); same(S.asOf, DAY, 'asOf');
@@ -338,7 +434,53 @@ if (stateFile) {
   else {
     const ST = J(stateFile);
     same(ST.asOf, DAY, 'state.asOf'); same(ST.recentOut, recentOut, 'state.recentOut'); same(ST.pending, pending, 'state.pending'); same(ST.confirms, confirms, 'state.confirms');
+    // v3 — 이번 사건(evNow · 자르기 전) · 쌓인 사건(events · 마지막 25거래일) · 따라가기(track · 처음 든 것이 이김) · 이번에 시작한 따라가기(trackNew)
+    sameArr(ST.evNow, evNow, 'state.evNow'); sameArr(ST.events, events, 'state.events');
+    same(ST.track, Object.fromEntries(trackMap), 'state.track'); same(ST.trackNew, Object.fromEntries(trackNew), 'state.trackNew');
   }
 }
-finish.seen = {kind: KIND, asOf: DAY, provisional: PROV, files: nFiles, lastFile: lastFile?.file ?? null, all: NC, clean: cleanJ.length, liquid: nLiquid, picked: members.length, in: IN.length, out: OUT.length, wait: wait.length, strict: STRICT, digest};
+// ── v3 맞대기 — 네 칸(surge.json bands) ──
+const SB = S.bands && typeof S.bands === 'object' ? S.bands : {};
+for (const k of ['version', 'kind', 'cap', 'cuts', 'digest']) same(SB[k], BANDS_OUT[k], `bands.${k}`);
+same(Object.keys(SB).sort(), Object.keys(BANDS_OUT).sort(), 'bands 칸 이름');
+const BFIELDS = ['c', 'n', 'i', 'g', 'mk', 'r5', 'v', 'd1', 'liq', 'tag', 'since', 'sinceKst', 'sinceAsOf', 'prov'];
+for (const [b] of BANDS) {
+  const g = SB[b] && typeof SB[b] === 'object' ? SB[b] : {}, w = BAND[b];
+  same(g.n, w.n, `bands.${b}.n`); same(g.over, w.over, `bands.${b}.over`);
+  const gm = Array.isArray(g.members) ? g.members : [];
+  same(gm.map(m => m.c), w.members.map(m => m.c), `bands.${b}.members 번호 · 차례`);
+  const by = new Map(gm.map(m => [m.c, m]));
+  for (const m of w.members) {
+    const x = by.get(m.c);
+    if (!x) { truth(false, `bands.${b}.members.${m.c} 없음`, null, m); continue; }
+    for (const f of BFIELDS) same(x[f], m[f], `bands.${b}.members.${m.c}.${f}`);
+    same(Object.keys(x).sort(), [...BFIELDS].sort(), `bands.${b}.members.${m.c} 칸 이름`);
+  }
+  sameArr(g.in, w.in, `bands.${b}.in`); sameArr(g.out, w.out, `bands.${b}.out`); sameArr(g.move, w.move, `bands.${b}.move`);
+  same(Object.keys(g).sort(), ['in', 'members', 'move', 'n', 'out', 'over'], `bands.${b} 칸 이름`);
+}
+// ── v3 맞대기 — 달력 파일(surgecal.json) ──
+if (calFile) {
+  if (!fs.existsSync(calFile)) truth(false, 'surgecal.json 없음', calFile, '있음');
+  else {
+    const SC = J(calFile);
+    for (const k of ['schema', 'version', 'asOf', 'provisional', 'kst', 'keep', 'dates']) same(SC[k], CAL[k], `surgecal.${k}`);
+    same(Object.keys(SC).sort(), Object.keys(CAL).sort(), 'surgecal 칸 이름');
+    const sd = Array.isArray(SC.days) ? SC.days : [];
+    same(sd.map(x => x.d), CAL.days.map(x => x.d), 'surgecal.days 날 · 차례');
+    for (const x of CAL.days) { const y = sd.find(z => z.d === x.d); sameArr(y?.ev, x.ev, `surgecal.days.${x.d}.ev`); if (y) same(Object.keys(y).sort(), ['d', 'ev'], `surgecal.days.${x.d} 칸 이름`); }
+    const st = Array.isArray(SC.track) ? SC.track : [];
+    same(st.map(x => x.c), CAL.track.map(x => x.c), 'surgecal.track 번호 · 차례');
+    const tb = new Map(st.map(x => [x.c, x]));
+    for (const x of CAL.track) {
+      const y = tb.get(x.c);
+      if (!y) { truth(false, `surgecal.track.${x.c} 없음`, null, x); continue; }
+      for (const f of ['c', 'n', 'd', 't', 'now']) same(y[f], x[f], `surgecal.track.${x.c}.${f}`);
+      sameArr(y.path, x.path, `surgecal.track.${x.c}.path`);
+      same(Object.keys(y).sort(), ['c', 'd', 'n', 'now', 'path', 't'], `surgecal.track.${x.c} 칸 이름`);
+    }
+  }
+}
+finish.seen = {kind: KIND, asOf: DAY, provisional: PROV, files: nFiles, lastFile: lastFile?.file ?? null, all: NC, clean: cleanJ.length, liquid: nLiquid, picked: members.length, in: IN.length, out: OUT.length, wait: wait.length, strict: STRICT, digest,
+  bands: {kind: BKIND, n: BANDS.map(([b]) => BAND[b].n), over: BANDS.map(([b]) => BAND[b].over), ev: bandEv.length, digest: bandDigest}, evNow: evNow.length, events: events.length, track: trackMap.size, trackNew: trackNew.size, cal: calFile ? path.basename(calFile) : null};
 finish();

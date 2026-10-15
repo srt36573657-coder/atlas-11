@@ -62,7 +62,7 @@ function load(siteDir, dataDir) {
   const opt = f => { try { return J(f); } catch { return null; } };
   const S = {siteDir, dataDir: D, js: fs.readFileSync(path.join(A, 'atlas.js'), 'utf8'), css: fs.readFileSync(path.join(A, 'atlas.css'), 'utf8'), html: fs.readFileSync(path.join(A, 'index.html'), 'utf8'),
     fontsCss: fs.existsSync(path.join(A, 'fonts.css')) ? fs.readFileSync(path.join(A, 'fonts.css'), 'utf8') : '',
-    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), upd: opt('updates.json'), surge: opt('surge.json'), co: {}, coBytes: {}, files: {}}; // surge = 급등 탭(2026-10-15 14:27 · 규칙 69)
+    core: J('core.json'), comp: J('comp.json'), lines: J('lines.json'), names: J('names.json'), days: J('days.json'), range: J('range.json'), grow: opt('grow.json'), time: opt('time.json'), home: opt('home.json'), upd: opt('updates.json'), surge: opt('surge.json'), surgecal: opt('surgecal.json'), co: {}, coBytes: {}, files: {}}; // surge = 급등 탭(2026-10-15 14:27 · 규칙 69) · surgecal = 급등 달력 · 따라가기(16:34 · 16:40)
   // 모든 회사(2026-10-14 「나」) — 갈래 · 업종 · 회사 흐름 = 모든 회사 · core.mkt 가 있으면 mkt.json 은 꼭 있어야 함(없으면 J 가 멈춤 → 점검 실패)
   S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null;
   const coDir = path.join(D, 'co');
@@ -80,6 +80,7 @@ function load(siteDir, dataDir) {
 const isPk = (S, c) => (S.mk ? !!S.mk[c]?.p : !!S.comp.companies[c]);
 const co7Of = S => !!(S.core?.co7 && S.mk);
 const coHref = (S, c) => (co7Of(S) || isPk(S, c) ? '#/c/' : '#/x/') + c;
+const svCalOk = K => !!(K && K.version === 'sk-v1' && Array.isArray(K.dates) && K.dates.length && K.dates.every(d => /^\d{4}-\d{2}-\d{2}/.test(String(d ?? ''))) && Array.isArray(K.days) && Array.isArray(K.track)); // atlas.js svCalOk 와 같은 뜻
 
 // ── 모든 글(자료) — [어디, 키, 글] · 고유 이름은 표시 ──
 function strings(obj, where, out, key = '') {
@@ -122,7 +123,13 @@ export function siteGraph(S) {
   add('#/list', core.industries.map(hrefInd), null, null, 1);
   add('#/up', [], null, null, 1); add('#/time', [], null, null, 2); add('#/info', [], null, null, 1);
   // 급등 탭(규칙 69) — 줄마다 그 회사(3단) · 이번에 빠진 곳도 회사로(atlas.js viewSurge 와 같은 길)
-  add('#/surge', [...(S.surge?.members ?? []).map(m => coHref(S, m.c)), ...(S.surge?.out ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c)), ...(S.surge?.cutList ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c))], null, null, 1); // 줄 · 나간 곳 · +15% 넘었지만 뺀 곳(접은 칸) — 모두 그 회사 3단
+  // 급등 다섯 칸(사장님 2026-10-15 16:28 「총 5개」 · 16:34 · 16:40 — atlas.js svChips · svBand · svCal · svTrack 과 같은 길) — 칸 고리 다섯(늘) · 칸 줄 · 들고 난 곳 · 달력 판(그 칸 사건 모두 · 숨은 판도 고리) · 며칠 뒤(따라간 날이 있는 곳 · 숨긴 곳도 접은 칸에 고리)
+  const SVC = svCalOk(S.surgecal) ? S.surgecal : null, CHIPS = ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'];
+  const svCalL = tab => { if (!SVC) return []; const ev = SVC.days.flatMap(x => x.ev).filter(e => e[5] === tab || e[6] === tab), ever = new Set(SVC.track.filter(t => (t.now ?? []).includes(tab)).map(t => t.c));
+    for (const e of ev) ever.add(e[2]); return [...ev.map(e => coHref(S, e[2])), ...SVC.track.filter(t => ever.has(t.c) && t.path?.length).map(t => coHref(S, t.c))]; };
+  add('#/surge', [...CHIPS, ...(S.surge?.members ?? []).map(m => coHref(S, m.c)), ...(S.surge?.out ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c)), ...(S.surge?.cutList ?? []).filter(o => S.mk?.[o.c]).map(o => coHref(S, o.c)), ...svCalL('sv')], null, null, 1); // 줄 · 나간 곳 · +15% 넘었지만 뺀 곳(접은 칸) — 모두 그 회사 3단
+  for (const b of ['b10', 'b20', 'b30', 'b40']) { const BS = S.surge?.bands?.version === 'sb-v1' ? S.surge.bands : null, B = BS?.[b], io = B && BS.kind === 'pick' && !S.surge.carry ? [...B.in, ...B.move.filter(x => x.to === b), ...B.out, ...B.move.filter(x => x.from === b)] : [];
+    add('#/surge/' + b.slice(1), [...CHIPS, ...(B ? B.members.map(m => coHref(S, m.c)) : []), ...io.map(x => coHref(S, x.c)), ...svCalL(b)], null, null, 2); } // 칸은 탭에서 한 번 더(2번)
   for (const g of core.groups) add('#/g/' + g.id, ['#/', ...(g.inds ?? []).map(n => (S.iby.get(n) ? hrefInd(S.iby.get(n)) : '#/i/' + encodeURIComponent(n)))], 1, null, 1);
   for (const i of core.industries) if (i.n > 1) add('#/i/' + encodeURIComponent(i.name), ['#/', '#/g/' + i.g, ...i.members.map(c => coHref(S, c))], 2, null, 2);
   // 밖 칸(모든 회사 가운데 고른 곳이 아닌 회사 · 2026-10-14 「나」) — 판(창)이지만 「3번이면 회사」를 보려고 길 지도에 넣음 · 처음으로 · 그 업종(atlas.js showInfo 업종 고리)
@@ -320,7 +327,7 @@ function googleLens(S, market, now = new Date()) {
 // ═════════ 🤖 클로드 — 말 ═════════
 function claudeLens(S, market) {
   const comp = S.comp.companies;
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : []), ...(S.surge ? strings(S.surge, 'surge', []) : [])]; // surge = 급등 탭(규칙 69)
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : []), ...(S.surge ? strings(S.surge, 'surge', []) : []), ...(S.surgecal ? strings(S.surgecal, 'surgecal', []) : [])]; // surge = 급등 탭(규칙 69) · surgecal = 달력 · 따라가기
   for (const c of S.coCodes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts); // 모든 회사 7단이면 모든 회사 파일
   const mlines = (market?.lines ?? []).map(s => ({where: '시장 판독', key: 'line', s, proper: false}));
   texts.push(...mlines);
@@ -346,6 +353,13 @@ function claudeLens(S, market) {
     ['모형 표지 「모형 가정 아래 추정 · 검증 전」 두 곳 이상', () => S.js.split(MODEL_TAG).length - 1 >= 2],
     ['36곳 없음 — 화면 코드 · 자료에 「36곳 · 매수 검토」 · 36곳 화면 · 탭 · 자료 파일 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」)', () => no36],
     ['장 중 값 표시 「아직 바뀜」', () => S.js.includes('아직 바뀜')],
+    ['급등 네 칸 · 달력 · 며칠 뒤(16:28 · 16:34 · 16:40) — 칸마다 자리 수 안 · 칸끼리 안 겹침 · 달력은 25거래일 안 · 따라간 값은 처음 든 날 뒤 날만(앞날 없음) · 속 상태 · 기관 이름 · 「관심 없음」 기록이 공개 자료에 없음', () => {
+      const BS = S.surge?.bands, K = S.surgecal; if (!BS && !K) return true;
+      if (BS) { if (BS.version !== 'sb-v1') return false; const seen = new Set(); for (const b of ['b10', 'b20', 'b30', 'b40']) { const B = BS[b]; if (!B || B.members.length > BS.cap || B.n !== B.members.length) return false; for (const m of B.members) { if (seen.has(m.c)) return false; seen.add(m.c); } } }
+      if (K) { if (!svCalOk(K) || K.dates.length > K.keep) return false; const ds = new Set(K.dates); if (!K.days.every(x => ds.has(x.d))) return false;
+        if (!K.track.every(t => ds.has(t.d) && (t.path ?? []).every(([d]) => ds.has(d) && d > t.d && d <= K.asOf))) return false; }
+      return !/CIA|씨아이에이|정보기관|중앙정보국|pending|recentOut|confirms|surge-hide|hide/i.test(JSON.stringify([BS ?? null, K ?? null]));
+    }],
     ['급등 탭(규칙 69) — 자리 수 안 · 차례 · 「들어온 뒤」 · 그 뒤 기록 칸 없음 · 기다림 · 방금 빠진 곳(속 상태)은 공개 자료에 없음 · 기관 이름 없음', () => !S.surge || (S.surge.version === 'sv-v1' && S.surge.members.length <= S.surge.cap && S.surge.members.every(m => !['rank', 'srank', 'after', 'f20', 'pk', 'gold'].some(k => k in m)) && !['base', 'pending', 'recentOut', 'state'].some(k => k in S.surge) && !/CIA|씨아이에이|정보기관|중앙정보국/i.test(JSON.stringify(S.surge)))],
     ['모르는 값은 「?」(pct)', () => /function pct\(x\) \{ if \(x == null \|\| !isFinite\(x\)\) return '\?';/.test(S.js)],
     ['시장 판독 상자 「지난 값만 · 앞날 맞히기 아님」', () => S.js.includes('지난 값만 · 앞날 맞히기 아님')],
@@ -408,11 +422,12 @@ function ciaLens(S, market) {
   const VIEWS = ['viewGroup', 'viewIndustry', 'viewCompany', 'viewPast', 'viewRange', 'viewRivals', 'viewGrow'];
   const guard = VIEWS.map(f => { const a = S.js.indexOf(`function ${f}(`); const head = a < 0 ? '' : S.js.slice(a, a + 400); return [f, /return viewMissing\(/.test(head)]; });
   // 왕복 — 화면이 만드는 주소(이름은 encodeURIComponent)를 길 함수에 넣으면 같은 대상이 나오나
-  const trips = [...S.core.groups.map(g => ['#/g/' + g.id, ['g', g.id]]), ...S.core.industries.filter(i => i.n > 1).map(i => ['#/i/' + encodeURIComponent(i.name), ['i', i.name]]),
+  const trips = [['#/surge', ['surge', 'sv']], ['#/surge/10', ['surge', 'b10']], ['#/surge/20', ['surge', 'b20']], ['#/surge/30', ['surge', 'b30']], ['#/surge/40', ['surge', 'b40']], ['#/surge/50', ['missing']], ['#/surge/10/', ['missing']], // 급등 다섯 칸(16:28)
+    ...S.core.groups.map(g => ['#/g/' + g.id, ['g', g.id]]), ...S.core.industries.filter(i => i.n > 1).map(i => ['#/i/' + encodeURIComponent(i.name), ['i', i.name]]),
     ...S.coCodes.flatMap(c => [['#/c/' + c, ['c', c]], ['#/c/' + c + '/past', ['past', c]], ['#/c/' + c + '/rivals', ['rivals', c]], ['#/c/' + c + '/grow', ['grow', c]], ['#/c/' + c + '/range', ['range', c]]]),
     ...S.names.rows.filter(r => r.s !== 'in').slice(0, 2000).map(r => ['#/x/' + r.c, ['info', r.c]])];
   // 글 — 자료 모두 + 시장 판독
-  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : []), ...(S.surge ? strings(S.surge, 'surge', []) : [])]; // surge = 급등 탭(규칙 69)
+  const texts = [...strings(S.core, 'core', []), ...strings(S.comp, 'comp', []), ...strings(S.names, 'names', []), ...strings(S.range, 'range', []), ...(S.grow ? strings(S.grow, 'grow', []) : []), ...(S.time ? strings(S.time, 'time', []) : []), ...(S.home ? strings(S.home, 'home', []) : []), ...(S.mkt ? strings(S.mkt, 'mkt', []) : []), ...(S.surge ? strings(S.surge, 'surge', []) : []), ...(S.surgecal ? strings(S.surgecal, 'surgecal', []) : [])]; // surge = 급등 탭(규칙 69) · surgecal = 달력 · 따라가기
   for (const c of S.coCodes) if (S.co[c]) strings(S.co[c], 'co/' + c, texts); // 모든 회사 7단이면 모든 회사 파일
   for (const s of market?.lines ?? []) texts.push({where: '시장 판독', key: 'line', s});
   const INJ = /<\s*\/?\s*(script|iframe|img|svg|object|embed|style|link|meta|form|input|a)\b|javascript:|vbscript:|data:text\/html|\bon[a-z]{3,}\s*=/i;
@@ -422,7 +437,7 @@ function ciaLens(S, market) {
   const SECRET = [[/nfp_[A-Za-z0-9]{20,}/, '넷리파이 열쇠'], [/gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}/, '깃허브 열쇠'], [/AKIA[0-9A-Z]{16}/, 'AWS 열쇠'], [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, '개인 키'],
     [/xox[baprs]-[A-Za-z0-9-]{10,}/, '슬랙 열쇠'], [/sk-(ant-)?[A-Za-z0-9_-]{32,}/, 'API 열쇠'], [/NETLIFY_(AUTH_TOKEN|SITE_ID)\s*[=:]/, '넷리파이 이름 + 값'], [/"(siteId|deployId|site_id|deploy_id|deployUrl)"\s*:/, '넷리파이 번호 칸'],
     [/[A-Za-z0-9._%+-]+@(gmail|naver|daum|hanmail|kakao|outlook|hotmail|yahoo|icloud)\.[a-z.]{2,}/i, '개인 메일 주소']];
-  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'range.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json', 'mkt.json', 'surge.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
+  const docs = [['atlas.js', S.js], ['atlas.css', S.css], ['index.html', S.html], ['fonts.css', S.fontsCss], ...['core.json', 'comp.json', 'names.json', 'range.json', 'lines.json', 'days.json', 'grow.json', 'time.json', 'home.json', 'mkt.json', 'surge.json', 'surgecal.json'].filter(f => S.files[f] != null).map(f => [f, fs.readFileSync(path.join(S.dataDir, f), 'utf8')]),
     ...S.coCodes.filter(c => S.co[c]).map(c => ['co/' + c + '.json', JSON.stringify(S.co[c])])];
   const chunks = []; for (const [f, t] of docs) for (let k = 0; k < Math.max(1, t.length); k += 1800) chunks.push([f, k, t.slice(k, k + 2000)]);
   // 화면 코드 규칙
@@ -442,7 +457,7 @@ function ciaLens(S, market) {
   const heads = [['default-src \'self\'', /default-src 'self'/], ['script-src \'self\'(안에 박은 코드 · eval 막음)', /script-src 'self'(;|$)/m], ['object-src \'none\'', /object-src 'none'/], ['frame-ancestors \'none\'(남의 화면에 못 끼움)', /frame-ancestors 'none'/],
     ['base-uri · form-action \'self\'', /base-uri 'self'.*form-action 'self'/], ['X-Frame-Options: DENY', /X-Frame-Options: DENY/], ['X-Content-Type-Options: nosniff', /X-Content-Type-Options: nosniff/],
     ['Referrer-Policy', /Referrer-Policy: strict-origin-when-cross-origin/], ['Permissions-Policy(카메라 · 마이크 · 위치 막음)', /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/], ['unsafe-inline · unsafe-eval 없음', null]];
-  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'range.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5, 'mkt.json': 2e6, 'surge.json': 3e5}; // 급등 탭(규칙 69 · 36곳 줄 + 빠진 곳 + 그림 칸) // 모든 회사 자료(2026-10-14 「나」 · 지금 약 0.47MB)
+  const LIM = {'core.json': 2e6, 'comp.json': 3e6, 'names.json': 3e6, 'range.json': 2e6, 'lines.json': 2e6, 'days.json': 2e6, 'grow.json': 3e6, 'time.json': 2e6, 'updates.json': 2e6, 'home.json': 5e5, 'mkt.json': 2e6, 'surge.json': 3e5, 'surgecal.json': 1.5e6}; // 달력 · 따라가기(25거래일 · 지금 약 13KB — 날마다 쌓여도 이 안) // 급등 탭(규칙 69 · 36곳 줄 + 빠진 곳 + 그림 칸) // 모든 회사 자료(2026-10-14 「나」 · 지금 약 0.47MB)
   const sizes = [...Object.entries(S.files).map(([f, b]) => [f, b, LIM[f] ?? 1e6]), ...Object.entries(S.coBytes).map(([c, b]) => ['co/' + c + '.json', b, 2.5e5]), ['co 파일 수', Object.keys(S.coBytes).length, null]];
   const codeOk = c => /^[0-9A-Z]{6}$/.test(c);
   return {key: 'cia', name: 'CIA', what: '뚫리거나 새는 곳이 없나 — 이상한 주소 넣어 보기 · 비밀 · 바깥 주소 · 끼운 코드', route: R, kinds: [

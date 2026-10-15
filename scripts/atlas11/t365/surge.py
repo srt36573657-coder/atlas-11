@@ -47,6 +47,13 @@ import daese  # noqa: E402
 
 VERSION = 'sv-v1'
 NAME = '급등'
+BVER = 'sb-v1'   # 네 칸(10%대 · 20%대 · 30%대 · 40% 넘게) — 사장님 2026-10-15 16:28 · 16:34 「가 가 각각 최대 36」(결정표 v3 · docs/design/surge-2026-10-15/merge-v3.md)
+KVER = 'sk-v1'   # 날마다 달력 · 따라가기 — 16:34 「추적해서 달력에 기록 … 매일 매일 선택됐다 탈락 됐다 이동 했다」 · 16:40 「매일매일 … 관심 없음 … 없어지는구조」(관심 없음은 보는 기계에만)
+BANDS = [('b10', 1.10, 1.20), ('b20', 1.20, 1.30), ('b30', 1.30, 1.40), ('b40', 1.40, None)]
+TABS = ['sv'] + [b for b, _, _ in BANDS]
+BWHY = {'gone': '? 이번 자료에 이 회사 값이 없어요', 'thin': '평소 하루 거래가 1억 원 밑이 됐어요', 'win': '크게 오른 날이 5일 밖으로 나가 10% 밑이 됐어요',
+        'down': '값이 내려 10% 밑이 됐어요', 'cap': '같은 칸에 더 크게 오른 곳이 많아 밀렸어요'}
+KEEP_DAYS = 25   # 달력에 싣는 거래일 수 · 따라가기도 처음 든 날부터 이 안에서만(파일이 끝없이 커지지 않게)
 CFG = {'cap': 36, 'days': 5, 'hist': 20, 'jump': 35, 'liq': 1e8, 'enter': 1.15, 'stay': 1.10, 'enterRank': 36, 'keepRank': 72,
        'cover': 0.90, 'warn5': (16, 10), 'warn15': (2, 1), 'hi': 15, 'reb': (7, 10), 'rebDays': 60, 'halfDays': 252, 'peerMin': 5, 'chance': 3,
        'binLo': -20, 'binHi': 80, 'idleDays': 61, 'idleMax': 13, 'margin': 0.05, 'pen': 0.05, 'confirmN': 20}
@@ -400,6 +407,135 @@ def main():
                        '하루 4번 업데이트(%s · 서울) 때만 넣고 빼요. 다른 때 올리면 그때 고른 그대로예요.' % ' · '.join(slots),
                        '자리는 %d곳이에요. 채우려고 문턱을 낮추지 않아요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.' % CFG['cap'],
                        '센 것일 뿐 다음 날을 말하지 않아요.']}
+    # ── 네 칸(sb-v1) · 날마다 달력 · 따라가기(sk-v1) — 결정표 v3(사장님 16:28 · 16:34 · 16:40) ──
+    pst_raw = ((prev_doc or {}).get('state') or {}) if prev_doc else {}  # 달력 · 따라가기 상태는 급등 칸 규칙이 바뀌어도 이어 감
+    prevB = (prevP or {}).get('bands') if prevP else None
+    if not (prevB and prevB.get('version') == BVER):
+        prevB = None
+    bfirst = prevB is None
+    lists, over = {b: [] for b, _, _ in BANDS}, {b: 0 for b, _, _ in BANDS}
+    for j in today.E:
+        j = int(j)
+        r = float(today.ratio[j])
+        bb = next((b for b, lo, hi in BANDS if r >= lo and (hi is None or r < hi)), None)
+        if bb is None:
+            continue
+        if len(lists[bb]) < CFG['cap']:
+            lists[bb].append(j)
+        else:
+            over[bb] += 1
+    now_of = {allc[j]: b for b, js in lists.items() for j in js}
+    prev_of, prev_m = {}, {}
+    if prevB:
+        for b, _, _ in BANDS:
+            for m in prevB[b]['members']:
+                prev_of[m['c']] = b
+                prev_m[(b, m['c'])] = m
+
+    def basef(j):
+        c = allc[j]
+        W = C[k - CFG['days']:k + 1, j]
+        c0 = float(W[0])
+        r5_ = r2((float(W[-1]) / c0 - 1) * 100)
+        return {'c': c, 'n': MK[c]['n'], 'i': MK[c]['i'], 'g': g_of.get(MK[c]['i']), 'mk': rowmap[c].get('market'), 'r5': r5_,
+                'v': [r2(float(y) / c0 * 100) for y in W[:-1]] + [r2(100 + r5_)], 'd1': r2((float(W[-1]) / float(W[-2]) - 1) * 100),
+                'liq': r2(float(today.liq[j]) / 1e8) if not math.isnan(today.liq[j]) else None}
+    bmem = {b: [] for b, _, _ in BANDS}
+    bio = {b: {'in': [], 'out': [], 'move': []} for b, _, _ in BANDS}
+    bev = []
+    for b, _, _ in BANDS:
+        for j in lists[b]:
+            c = allc[j]
+            f = basef(j)
+            p0 = None if bfirst else prev_of.get(c)
+            if not bfirst and p0 == b:
+                old = prev_m[(b, c)]
+                f.update({'tag': 'stay', 'since': old['since'], 'sinceKst': old['sinceKst'], 'sinceAsOf': old['sinceAsOf']})
+            else:
+                f.update({'tag': 'new', 'since': at, 'sinceKst': kst, 'sinceAsOf': day})
+            f['prov'] = bool(prov and f['sinceAsOf'] == day)
+            bmem[b].append(f)
+            if bfirst:
+                continue
+            if p0 is None:
+                bio[b]['in'].append({'c': c, 'n': f['n'], 'r5': f['r5']})
+                bev.append([c, 'in', b, None])
+            elif p0 != b:
+                e = {'c': c, 'n': f['n'], 'r5': f['r5'], 'from': p0, 'to': b}
+                bio[p0]['move'].append(e)
+                bio[b]['move'].append(e)
+                bev.append([c, 'move', p0, b])
+    if not bfirst:
+        for b, _, _ in BANDS:
+            for m in prevB[b]['members']:
+                c = m['c']
+                if c in now_of:
+                    continue
+                j = jof.get(c)
+                if j is None:
+                    why = BWHY['gone']
+                elif not today.clean[j]:
+                    why = '? 값을 셀 수 없어 뺐어요 — ' + Q_WHY[Q_ORDER[int(today.q[j]) - 1]]
+                elif not today.liquid[j]:
+                    why = BWHY['thin']
+                elif today.ratio[j] < BANDS[0][1]:
+                    why = BWHY['win'] if (prevP.get('asOf') != day and C[k, j] >= C[k - 1, j]) else BWHY['down']
+                else:
+                    why = BWHY['cap']
+                r5o = r2((float(today.ratio[j]) - 1) * 100) if j is not None and today.clean[j] else None
+                bio[b]['out'].append({'c': c, 'n': MK.get(c, {}).get('n') or m['n'], 'r5': r5o, 'why': why})
+                bev.append([c, 'out', b, None])
+    bcanon = '|'.join([BVER, day, '1' if prov else '0'] + [b + ':' + ','.join('%s:%.2f' % (f['c'], f['r5']) for f in bmem[b]) for b, _, _ in BANDS] + ['%s>%s>%s>%s' % (e[0], e[1], e[2], e[3]) for e in bev])
+    BP = {'version': BVER, 'kind': 'first' if bfirst else 'pick', 'cap': CFG['cap'], 'cuts': [[b, round((lo - 1) * 100), None if hi is None else round((hi - 1) * 100)] for b, lo, hi in BANDS],
+          'digest': hashlib.sha256(bcanon.encode('utf-8')).hexdigest()[:16]}
+    for b, _, _ in BANDS:
+        BP[b] = {'n': len(bmem[b]), 'over': over[b], 'members': bmem[b], 'in': bio[b]['in'], 'out': bio[b]['out'], 'move': bio[b]['move']}
+    # 이번 업데이트 사건 — 급등 칸 → 네 칸 · 처음 판(급등 'first' · 'rule' · 네 칸 「처음」)은 줄마다 'first'(달력의 「처음 담음」 · 들고 남 수에는 안 셈)
+    ev_sv = ([[c_['c'], 'in', 'sv', None] for c_ in ins] + [[o['c'], 'out', 'sv', None] for o in outs]) if kind == 'pick' else [[m['c'], 'first', 'sv', None] for m in members]
+    ev_b = [[f['c'], 'first', b, None] for b, _, _ in BANDS for f in bmem[b]] if bfirst else bev
+    ev_now = [[day, kst, slot, e[0], e[1], e[2], e[3]] for e in ev_sv + ev_b]
+    keep = set(D[max(0, k - KEEP_DAYS + 1):k + 1])
+    events = [e for e in (pst_raw.get('events') or []) + ev_now if e[0] in keep]
+    trk = {c_: list(v_) for c_, v_ in (pst_raw.get('track') or {}).items() if v_ and v_[0] in keep}  # 처음 든 날이 달력 25거래일 안인 곳만 따라감(밖으로 나가면 내림 · 다시 들면 그날부터 새로)
+    trk_new = {}  # 이번에 따라가기를 시작한 곳(기록 파일엔 이것만 — roll.mjs 가 기록들을 이어 붙여 앞 상태를 만듦)
+    def start(c_, tab, nm):
+        if c_ not in trk:
+            trk[c_] = [day, kst, tab, nm]
+            trk_new[c_] = [day, kst, tab, nm]
+    if kind in ('first', 'rule'):
+        for m in members:
+            start(m['c'], 'sv', m['n'])
+    else:
+        for x in ins:
+            start(x['c'], 'sv', x['n'])
+    if bfirst:
+        for b, _, _ in BANDS:
+            for f in bmem[b]:
+                start(f['c'], b, f['n'])
+    else:
+        for e in bev:
+            if e[1] == 'in':
+                start(e[0], e[2], MK[e[0]]['n'])
+    nm_of = lambda c_: MK[c_]['n'] if c_ in MK else (trk.get(c_, [None, None, None, c_])[3] or c_)
+    seat_c = {m['c'] for m in members}
+    days_out = []
+    for d_ in sorted(keep, reverse=True):
+        evs = [e for e in events if e[0] == d_]
+        if evs:
+            days_out.append({'d': d_, 'ev': [[e[1], e[2], e[3], nm_of(e[3]), e[4], e[5], e[6]] for e in evs]})
+    track = []
+    for c_, (d0, k0, t0, n0) in sorted(sorted(trk.items(), key=lambda kv: kv[0]), key=lambda kv: kv[1][0], reverse=True):
+        j = jof.get(c_)
+        path = []
+        if j is not None and d0 in D:
+            i0 = D.index(d0)
+            base0 = C[i0, j]
+            if not math.isnan(base0):
+                for t in range(i0 + 1, k + 1):
+                    vv = C[t, j]
+                    path.append([D[t], None if math.isnan(vv) else r2((float(vv) / float(base0) - 1) * 100)])
+        track.append({'c': c_, 'n': nm_of(c_), 'd': d0, 't': t0, 'now': [t for t in TABS if (t == 'sv' and c_ in seat_c) or (t != 'sv' and now_of.get(c_) == t)], 'path': path})
+    CAL = {'schema': 'atlas-new-surgecal-1', 'version': KVER, 'asOf': day, 'provisional': prov, 'kst': kst, 'keep': KEEP_DAYS, 'dates': list(D[max(0, k - KEEP_DAYS + 1):k + 1]), 'days': days_out, 'track': track}
     P = {'schema': 'atlas-new-surge-1', 'version': VERSION, 'kind': kind, 'made': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'at': at, 'kst': kst, 'slot': slot,
          'asOf': day, 'provisional': prov, 'got': got, 'window': D[k - CFG['days']:k + 1], 'cap': CFG['cap'], 'n': len(members), 'rules': rules,
          'stats': {'lo': r5s[0], 'hi': r5s[-1], 'med': r2(st.median(r5s))} if r5s else None,
@@ -408,23 +544,27 @@ def main():
          'market': {'n': len(allr), 'med': r2(mkt_med * 100) if mkt_med is not None else None, 'up': sum(1 for x in allr if x > 0), 'down': sum(1 for x in allr if x < 0), 'avg6': avg6},
          'bins': [[CFG['binLo'] + i, b] for i, b in enumerate(bins) if b], 'why': why_n, 'facts': facts,
          'sameInd': sorted([[i, n] for i, n in ninds.items() if n >= 3], key=lambda x: (-x[1], x[0])),
-         'members': members, 'in': ins, 'out': outs, 'confirm': confirm, 'strict': strict,
+         'members': members, 'in': ins, 'out': outs, 'confirm': confirm, 'strict': strict, 'bands': BP,
          'prev': {'at': prev_doc.get('at'), 'kst': prev_doc.get('kst'), 'slot': prev_doc.get('slot'), 'asOf': prevP.get('asOf'), 'n': prevP.get('n'), 'version': prevP.get('version')} if prevP else None}
     canon = '|'.join([VERSION, day, '1' if prov else '0', ','.join('%s:%.2f' % (m['c'], m['r5']) for m in members), ','.join(x['c'] for x in ins), ','.join(x['c'] for x in outs)])
     P['digest'] = hashlib.sha256(canon.encode('utf-8')).hexdigest()[:16]
     with open(os.path.join(out, 'surge.json'), 'w', encoding='utf-8') as f:
         json.dump(P, f, ensure_ascii=False, separators=(',', ':'))
         f.write('\n')
+    with open(os.path.join(out, 'surgecal.json'), 'w', encoding='utf-8') as f:  # 달력 · 따라가기(sk-v1 · 공개 — 관심 없음은 보는 기계에만)
+        json.dump(CAL, f, ensure_ascii=False, separators=(',', ':'))
+        f.write('\n')
     # 속 상태(공개 자료에 싣지 않음 — 기다림 · 방금 빠진 곳은 「곧 들어올 곳」 표가 되지 않게 · 방첩 눈) — roll.mjs 가 고르기 기록에만 남김
     outset = {o['c'] for o in outs}
     state = {'asOf': day,
              'recentOut': sorted([{'c': x['c'], 'day': x['day']} for x in recent if x['c'] not in outset] + ([{'c': o['c'], 'day': day} for o in outs] if not rule else []), key=lambda x: (x['day'], x['c'])),
-             'pending': sorted(allc[j] for j in wait), 'confirms': confirms}
+             'pending': sorted(allc[j] for j in wait), 'confirms': confirms, 'events': events, 'track': trk, 'evNow': ev_now, 'trackNew': trk_new}
     if opt('--state-out'):
         with open(opt('--state-out'), 'w', encoding='utf-8') as f:
             json.dump(state, f, ensure_ascii=False)
     print(json.dumps({'kind': kind, 'asOf': day, 'provisional': prov, 'n': len(members), 'in': len(ins), 'out': len(outs), 'clean': len(clean_idx), 'liquid': P['funnel']['liquid'],
-                      'over': cut['over'], 'wait': len(wait), 'strict': strict, 'confirm': confirm and {k_: confirm[k_] for k_ in ('day', 'n', 'miss')}, 'digest': P['digest']}, ensure_ascii=False))
+                      'over': cut['over'], 'wait': len(wait), 'strict': strict, 'confirm': confirm and {k_: confirm[k_] for k_ in ('day', 'n', 'miss')}, 'digest': P['digest'],
+                      'bands': {b: BP[b]['n'] for b, _, _ in BANDS}, 'bkind': BP['kind'], 'bdigest': BP['digest'], 'events': len(ev_now), 'track': len(track)}, ensure_ascii=False))
 
 
 def cube(y):

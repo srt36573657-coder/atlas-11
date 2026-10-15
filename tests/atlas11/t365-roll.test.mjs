@@ -133,6 +133,28 @@ test('회차 — 가짜 하루를 후보 모두에 이어 붙이면 그날 값�
   const home = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/home.json'), 'utf8'));
   assert.equal(home.asOf, next); assert.equal(home.s365.date, next); assert.equal(home.s365.n, rep.members.length); assert.equal(home.s365.list.length, rep.members.length - 2, '그날 값이 없는 두 곳(지난 값을 고쳐 적은 곳 · 거래정지처럼)만 오늘 막대에서 빠짐'); assert.ok(rep.steps.some(s => s.name === '첫 화면 자료' && s.code === 0));
   assert.ok(home.idx && home.stale.idx, '받지 못한 지수는 앞 자료 + 꼬리표');
+  // 급등 다섯 칸 · 달력 · 며칠 뒤(사장님 2026-10-15 16:28 「총 5개」 · 16:34 「달력에 기록 … 매일 매일」 · 16:40 「매일매일」) — 앞 기록이 없으면 처음 고름(달력 = 「처음 담음」 줄 · 따라간 날 없음)
+  assert.equal(rep.surge?.kind, 'first', JSON.stringify(rep.surge)); assert.equal(rep.surge.bands?.kind, 'first'); assert.equal(rep.surge.published, true); assert.match(rep.verify.surge ?? '', /"bad":0/);
+  const K1 = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/surgecal.json'), 'utf8'));
+  assert.equal(K1.version, 'sk-v1'); assert.equal(K1.asOf, next); assert.ok(K1.days.length === 1 && K1.days[0].d === next && K1.days[0].ev.every(e => e[4] === 'first'), '처음 고른 날은 「처음 담음」 줄만');
+  assert.ok(K1.track.length > 0 && K1.track.every(t => t.d === next && t.path.length === 0), '처음 고른 날은 따라간 날이 아직 없음');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(tmp, 'surgecal-latest.json'), 'utf8')), K1, '올라간 달력 = surgecal-latest(업데이트 밖 올림이 씀)');
+  const sr1 = fs.readdirSync(path.join(tmp, 'surge')); assert.equal(sr1.length, 1);
+  const st1 = JSON.parse(fs.readFileSync(path.join(tmp, 'surge', sr1[0]), 'utf8')).state;
+  assert.ok(st1.evNow.length === K1.days[0].ev.length && Object.keys(st1.trackNew).length === K1.track.length && !('events' in st1) && !('track' in st1), '기록 파일엔 그 업데이트 몫만');
+  // 다음 장날 10:00 업데이트 — 앞 기록을 이어 붙여 넣고 빼기 · 옮김 · 따라가기 하루
+  const next2 = cal.find(d => d > next), n82 = next2.replaceAll('-', '');
+  const rows2 = Object.fromEntries(Object.entries(rows).map(([c, rs]) => { const m = (((codes.indexOf(c) * 104729) % 2401) - 1200) / 10000; return [c, [...rs, [n82, Math.round(rs.at(-1)[1] * (1 + m)), rs.at(-1)[2]]]]; }));
+  fs.writeFileSync(path.join(closes, '20991231T081000Z.json.gz'), zlib.gzipSync(JSON.stringify({schema: 'atlas-t365-closes-2', startedAt: next2 + 'T01:00:00.000Z', rows: rows2, errors: []})));
+  const rep2 = await rollAtlas({root: ROOT, dist, closesDir: closes, recordDir: rec, now: new Date(next2 + 'T01:02:00Z'), rangeQuick: true, log: () => {}});
+  assert.equal(rep2.served, 'rolled', rep2.why); assert.equal(rep2.slot, '10:00'); assert.equal(rep2.surge?.kind, 'pick', JSON.stringify(rep2.surge)); assert.equal(rep2.surge.bands?.kind, 'pick'); assert.match(rep2.verify.surge ?? '', /"bad":0/);
+  const K2 = JSON.parse(fs.readFileSync(path.join(dist, 'atlas/data/surgecal.json'), 'utf8'));
+  assert.equal(K2.asOf, next2); assert.equal(K2.dates.at(-1), next2); assert.equal(K2.days.at(-1).d, next, '처음 고른 날 줄은 그대로');
+  const ev2 = K2.days.find(x => x.d === next2)?.ev ?? [], nb = rep2.surge.bands.in + rep2.surge.bands.out + rep2.surge.bands.move + rep2.surge.in.length + rep2.surge.out.length;
+  assert.ok(nb > 0, '가짜 하루에 들고 남이 있음'); assert.equal(ev2.length, nb, '다음 장날 사건 = 들고 남 · 옮김 수');
+  const t1 = K2.track.filter(t => t.d === next); assert.ok(t1.length && t1.every(t => t.path.length === 1 && t.path[0][0] === next2) && t1.some(t => t.path[0][1] != null), '처음 고른 날 든 곳은 다음 장날 하루 값');
+  assert.equal(fs.readdirSync(path.join(tmp, 'surge')).length, 2); assert.deepEqual(JSON.parse(fs.readFileSync(path.join(tmp, 'surgecal-latest.json'), 'utf8')), K2);
+  assert.equal(rep2.inspect.fail, 0, JSON.stringify(rep2.inspect.lenses.map(l => l.first)));
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 

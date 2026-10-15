@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {surgeHist, surgeCarry} from '../../scripts/atlas11/t365/roll.mjs';
+import {surgeHist, surgeCarry, surgePrevState, surgeRecState} from '../../scripts/atlas11/t365/roll.mjs';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const DATA = path.join(ROOT, 'site/atlas/data');
 const ENV = (() => { const e = {...process.env}; delete e.ATLAS_T365_CLOSES; delete e.ATLAS_D365_DIR; return e; })();
@@ -42,7 +42,15 @@ test('① sv-v1 — 모음 날 값으로 다시 고르면 저장된 surge.json �
   assert.ok(S.n <= S.cap && S.members.every(m => m.r5 >= 15), '자리 수 안 · 모두 +15% 넘음');
   for (const k of ['base', 'pending', 'recentOut', 'state']) assert.ok(!(k in S), `공개 자료에 속 칸 ${k} 없음`);
   assert.ok(S.members.every(m => !('rank' in m) && !('pk' in m)), '차례 · 고른 곳 칸 없음');
-  assert.deepEqual(Object.keys(state).sort(), ['asOf', 'confirms', 'pending', 'recentOut']);
+  assert.deepEqual(Object.keys(state).sort(), ['asOf', 'confirms', 'evNow', 'events', 'pending', 'recentOut', 'track', 'trackNew']);
+  // 네 칸 · 달력 · 따라가기(사장님 16:28 · 16:34 · 16:40 — sb-v1 · sk-v1) — 다시 고르면 저장된 것과 같음
+  const C = J(path.join(out, 'surgecal.json')), C0 = J(path.join(DATA, 'surgecal.json'));
+  assert.equal(S.bands.version, 'sb-v1'); assert.equal(S.bands.kind, 'first'); assert.equal(S.bands.digest, K.bands.digest, '네 칸 지문 = 저장된 화면 자료');
+  const seen = new Set(); for (const b of ['b10', 'b20', 'b30', 'b40']) { const B = S.bands[b]; assert.ok(B.members.length <= S.bands.cap && B.n === B.members.length); for (const m of B.members) { assert.ok(!seen.has(m.c), '칸끼리 안 겹침 ' + m.c); seen.add(m.c); } }
+  assert.deepEqual(C, C0, '달력 · 따라가기 = 저장된 화면 자료'); assert.equal(C.version, 'sk-v1'); assert.ok(C.dates.length <= C.keep && C.dates.at(-1) === S.asOf);
+  assert.ok(C.days.length === 1 && C.days[0].ev.every(e => e[4] === 'first'), '처음 고른 날은 「처음 담음」 줄만');
+  assert.ok(C.track.every(t => t.d === S.asOf && t.path.length === 0), '처음 고른 날은 따라간 날이 아직 없음');
+  assert.ok(!/surge-hide|관심 없음/.test(JSON.stringify(C)), '관심 없음은 보는 기계에만(공개 자료에 없음)');
   const v = verify(out, pf, sf);
   assert.equal(v.code, 0, v.log); assert.equal(v.rep.bad, 0); assert.ok(v.rep.checks > 500, '맞댄 수 ' + v.rep.checks);
 });
@@ -67,6 +75,18 @@ test('② 따로 세기 — 일부러 틀린 사본은 모두 잡음', () => {
   }
   const st0 = J(sf), bs = path.join(tmp, 'bad-state.json'); fs.writeFileSync(bs, JSON.stringify({...st0, pending: ['000000']}));
   assert.equal(verify(out, pf, bs).code, 1, '속 상태(기다림)를 바꾸면 잡음');
+  const bs2 = path.join(tmp, 'bad-state2.json'); fs.writeFileSync(bs2, JSON.stringify({...st0, evNow: st0.evNow.slice(1)}));
+  assert.equal(verify(out, pf, bs2).code, 1, '속 상태(이번 사건)를 바꾸면 잡음');
+  // 네 칸 · 달력 · 따라가기 사본(16:28 · 16:34 · 16:40)
+  const C0 = J(path.join(out, 'surgecal.json'));
+  for (const [name, mutS, mutC] of [['칸 5일 %', o => { o.bands.b10.members[0].r5 += 0.01; }, null], ['칸 지문', o => { o.bands.digest = '0000000000000000'; }, null], ['칸 넘친 수', o => { o.bands.b20.over += 1; }, null],
+    ['달력 날', null, c => { c.dates = c.dates.slice(1); }], ['달력 이름', null, c => { c.days[0].ev[0][3] = '가짜'; }], ['처음 든 칸', null, c => { c.track[0].t = c.track[0].t === 'sv' ? 'b10' : 'sv'; }], ['지금 든 칸', null, c => { c.track[0].now = []; }]]) {
+    const d = fs.mkdtempSync(path.join(tmp, 'badc-'));
+    for (const f of ['core.json', 'mkt.json']) fs.copyFileSync(path.join(out, f), path.join(d, f));
+    const o = JSON.parse(JSON.stringify(S)), c = JSON.parse(JSON.stringify(C0)); mutS?.(o); mutC?.(c);
+    fs.writeFileSync(path.join(d, 'surge.json'), JSON.stringify(o)); fs.writeFileSync(path.join(d, 'surgecal.json'), JSON.stringify(c));
+    const v = verify(d, pf, sf); assert.equal(v.code, 1, `${name} — 못 잡음 ${v.log}`);
+  }
 });
 
 // ③ 넣고 빼기 작은 보기 — 파이썬 surge.choose 를 가짜 하루로 부름(차례 줄 · 문 · 띠 · 맞바꿈 · 가산 · 장 중)
@@ -128,11 +148,16 @@ test('③ 넣고 빼기 작은 보기 — 처음 · 얇음 · 남기 72번째 ·
   assert.equal(R.dirty.out['12'], 'q', '셀 수 없게 된 곳은 「?」로 나감');
 });
 
-test('④ 화면 코드 — 넷째 탭 · 1등 빛 끔 · 기관 이름 없음 · 그 뒤 기록 상자 없음 · 장 중 금빛만', () => {
+test('④ 화면 코드 — 넷째 탭 · 1등 빛 끔 · 기관 이름 없음 · 그 뒤 기록 상자 없음 · 장 중 금빛만 · 다섯 칸 · 관심 없음은 이 기계에만', () => {
   const js = rd('site/atlas/atlas.js'), html = rd('site/atlas/index.html');
   assert.match(html, /<a href="#\/surge" id="tabSurge">급등<\/a>/);
-  assert.match(js, /else if \(kind === 'surge'\) \{ \$\('#tabSurge'\)\.setAttribute\('aria-current', 'page'\); await viewSurge\(v\); \}/);
-  const a = js.indexOf('async function viewSurge(v)'), b = js.indexOf('/** 업데이트 탭 한 줄 — 그 회차의 급등 고르기');
+  assert.match(js, /else if \(kind === 'surge'\) \{ \$\('#tabSurge'\)\.setAttribute\('aria-current', 'page'\); const t = !arg \? 'sv' : \/\^\(10\|20\|30\|40\)\$\/\.test\(arg\) \? 'b' \+ arg : null; if \(t\) await viewSurge\(v, t\); else viewMissing\(v\); \}/, '다섯 칸 주소 · 그 밖은 없는 주소');
+  assert.match(js, /const SV_TABS = \[\['sv', '급등'\], \['b10', '10%'\], \['b20', '20%'\], \['b30', '30%'\], \['b40', '40%'\]\];/, '맨 위 다섯 칸(16:28 「총 5개」)');
+  const H0 = js.indexOf("const SV_HIDE = 'atlas:surge-hide';"), H1 = js.indexOf('async function viewSurge(v, tab');
+  assert.ok(H0 > 0 && H1 > H0); assert.equal(js.split("'atlas:surge-hide'").length, 2, '관심 없음 기억 이름은 한 곳');
+  assert.ok(!/fetch\(|sendBeacon|XMLHttpRequest/.test(js.slice(H0, H1)), '관심 없음은 서버로 보내지 않음(이 기계에만 · 16:40)');
+  assert.match(js.slice(H0, H1), /'관심 없음'/); assert.match(js.slice(H0, H1), /되돌리기/); assert.match(js.slice(H0, H1), /숨겼어요/); // 그 자리 「숨겼어요 · 되돌리기」(새 눈 점검 2)
+  const a = js.indexOf('async function viewSurge(v, tab'), b = js.indexOf('/** 업데이트 탭 한 줄 — 그 회차의 급등 고르기');
   assert.ok(a > 0 && b > a); const V = js.slice(a, b);
   assert.match(V, /win: false/, '1등 빛 끔');
   assert.ok(!/CIA|씨아이에이|정보기관/i.test(V), '화면 글에 기관 이름 없음');
@@ -143,7 +168,7 @@ test('④ 화면 코드 — 넷째 탭 · 1등 빛 끔 · 기관 이름 없음 �
 
 test('⑤ 회차 — 업데이트 때만 고름 · 같은 날 같은 업데이트 두 번째는 앞 판 그대로 · 지금 사이트 것으로 받음 · 기록은 새 파일만', () => {
   const R = rd('scripts/atlas11/t365/roll.mjs');
-  assert.match(R, /const OPT_FILES = \[[^\]]*'surge\.json'\]/, '못 받으면 지금 사이트 것');
+  assert.match(R, /const OPT_FILES = \[[^\]]*'surge\.json', 'surgecal\.json'\]/, '못 받으면 지금 사이트 것(달력 · 따라가기도)');
   assert.match(R, /const again = !!\(sLast && rep\.slot && sLast\.slot === rep\.slot && String\(sLast\.kst \?\? ''\)\.slice\(0, 10\) === rep\.kst\.slice\(0, 10\)\)/);
   assert.match(R, /if \(\(rep\.slot \|\| !sLast\) && !again\)/, '업데이트 때만(처음은 손 올리기 때도)');
   assert.match(R, /'--state-out', sfo/); assert.match(R, /surge_verify\.mjs', out, pf, path\.join\(tmp, 'gv\.json'\), sfo/);
@@ -151,4 +176,11 @@ test('⑤ 회차 — 업데이트 때만 고름 · 같은 날 같은 업데이�
   const recs = Array.from({length: 30}, (_, k) => ({at: `t${k}`, kst: '2026-10-15 10:00', slot: '10:00', kind: 'pick', payload: {n: 36, in: [1], out: [], asOf: '2026-10-15', provisional: true}}));
   const h = surgeHist(recs); assert.equal(h.length, 28); assert.equal(h.at(-1).at, 't29');
   const c = surgeCarry(recs.at(-1), recs, '까닭'); assert.equal(c.carry.from, 't29'); assert.equal(c.carry.why, '까닭'); assert.equal(c.n, 36);
+  // 앞 상태 = 마지막 기록 상태 + 기록마다 그 업데이트 사건(evNow) · 따라가기 시작(trackNew — 뒤 기록이 이김: 25거래일 밖으로 내린 곳이 다시 들면 새로)
+  const st = surgePrevState([{state: {asOf: 'd1', recentOut: [], pending: [], confirms: [], evNow: [['d1', 'k1', null, 'A', 'first', 'sv', null]], trackNew: {A: ['d1', 'k1', 'sv', '에이']}}},
+    {state: {asOf: 'd2', recentOut: [{c: 'B', day: 'd2'}], pending: ['C'], confirms: [], evNow: [['d2', 'k2', '10:00', 'B', 'out', 'sv', null]], trackNew: {A: ['d2', 'k2', 'b10', '에이']}}}]);
+  assert.equal(st.asOf, 'd2'); assert.deepEqual(st.pending, ['C']); assert.equal(st.events.length, 2); assert.deepEqual(st.track.A, ['d2', 'k2', 'b10', '에이']); assert.ok(!('evNow' in st) && !('trackNew' in st));
+  assert.equal(surgePrevState([]), null);
+  assert.deepEqual(Object.keys(surgeRecState({asOf: 'x', events: [1], track: {a: 1}, evNow: [], trackNew: {}})).sort(), ['asOf', 'evNow', 'trackNew'], '기록 파일엔 그 업데이트 몫만');
+  assert.match(R, /surgecal-latest\.json/); assert.match(R, /await calCarry\(\)/, '업데이트 밖 올림은 마지막 달력 그대로');
 });

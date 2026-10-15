@@ -1249,19 +1249,20 @@ const inspectLine = (I, all) => `네 눈 점검(눈마다 ${manText(I.nEach)} �
 //   한 장 차례(다섯 질문): 머리(때 한 줄 · 판단 한 문단 · 정직 한 문장 · ? 한 줄) → 그림 「5일 오름 자」(첫 화면 안) → 들고 남 → 견줌(세 숫자) → 어떤 곳들(줄) → 조심할 것과 모르는 것 → 더 확인할 곳 → 지난 업데이트 → 어떻게 골랐나요?
 //   숫자는 모두 surge.json(surge.py 셈 · surge_verify.mjs 따로 셈) — 화면은 보여 주기만 · 차례 번호 · 1등 빛 · 「들어온 뒤 %」 · 그 뒤 기록 상자 · 기관 이름 없음 · 금빛은 「?」 「!」 · 장 중에 든 줄만
 const SV_LO = -20, SV_HI = 80; // 그림 자 — 5일 오름 %(곧은 눈금 · 넘는 곳은 끝에 쌓음)
-const svTime = S => (S.provisional && isTime(S.got) ? `${dayK(S.got)} ${ampm(S.got)}까지 · 장${NB}중` : isDay(S.asOf) ? `${md(S.asOf)} 장${NB}마감` : '?'); // 때 한 줄(브리핑 눈 — 같은 때를 두 번 쓰지 않음 · 고른 때는 아래 「지난 업데이트」)
+const svTime = S => (S.provisional && isTime(S.got) ? `${dayK(S.got)} ${ampm(S.got)} 값` : isDay(S.asOf) ? `${md(S.asOf)} 장${NB}마감` : '?'); // 장 중은 짧게(아주 큰 글씨 · 좁은 화면에서도 한 줄 — 새 눈 점검 2 · 9) · 「장 중」은 그림 밑 회색 한 줄 // 때 한 줄(브리핑 눈 — 같은 때를 두 번 쓰지 않음 · 고른 때는 아래 「지난 업데이트」)
 const svChange = S => (S.carry ? `목록은 ${kstLabel(S.carry.fromKst)}에 고른 그대로예요.`
   : S.kind !== 'pick' ? '처음 고른 목록이에요.'
   : (S.in?.length || S.out?.length) ? `${S.in.length}곳이 새로 들고 ${S.out.length}곳이 나갔어요.` : '이번에 바뀐 곳은 없어요.');
 const svNext = () => { const sl = D.surge?.rules?.slots ?? ['10:00', '12:00', '14:00', '18:00'], k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), wd = k.getUTCDay(), nx = sl.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m); return wd > 0 && wd < 6 && nx ? `오늘 ${nx}` : `다음 장날 ${sl[0]}`; };
 /** 그림 한 장 「5일 오름 자」(브리핑 눈) — 회색 산 = 값 있는 모든 회사가 몰린 곳(1%p 칸) · 점선 = 모든 회사 가운데값 · 진주 점선 = 들어오는 문턱 · 빨간 점 = 목록 한 곳(쌓음) · 진주 테 = 이번에 새로 */
-function svChart(host, S) {
+function svChart(host, S, BD = null) { // BD = 네 칸 가운데 하나(10%대 · 20%대 · 30%대 · 40% 넘게) — 점 = 그 칸 줄 · 점선 둘 = 칸 끝
   host.textContent = '';
-  const T = tok(), M = S.members ?? [], wrap = h('div', {class: 'svr'}); host.append(wrap);
+  const T = tok(), M = BD ? BD.M : (S.members ?? []), wrap = h('div', {class: 'svr'}); host.append(wrap);
   const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 150, P = 12, base = H - 6, mtH = 54;
   const X = x => P + (Math.max(SV_LO, Math.min(SV_HI, x)) - SV_LO) / (SV_HI - SV_LO) * (W - 2 * P);
   const bins = S.bins ?? [], mx = Math.max(1, ...bins.map(b => b[1]));
-  const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `5일 오름 — 모든 회사 가운데 ${pct(S.market?.med)} · 급등 ${M.length}곳 ${M.length ? `${pct(S.stats?.lo)} ~ ${pct(S.stats?.hi)}` : '없음'}${S.kind === 'pick' && S.in?.length ? ` · 새로 ${S.in.length}곳` : ''}`});
+  const nNew = BD ? (BD.kind === 'pick' ? M.filter(m => m.tag === 'new').length : 0) : (S.kind === 'pick' ? S.in?.length ?? 0 : 0);
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `5일 오름 — 모든 회사 가운데 ${pct(S.market?.med)} · ${BD ? BD.name : '급등'} ${M.length}곳 ${M.length ? (BD ? `${pct(M.at(-1).r5)} ~ ${pct(M[0].r5)}` : `${pct(S.stats?.lo)} ~ ${pct(S.stats?.hi)}`) : '없음'}${nNew ? ` · 새로 ${nNew}곳` : ''}`});
   if (bins.length) { // 산 — 칸 가운데를 잇는 면 + 선(옅게)
     const pts = bins.map(([x, c]) => [X(x + 0.5), base - c / mx * mtH]);
     const d = `M${X(SV_LO).toFixed(1)} ${base}` + pts.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join('') + `L${X(SV_HI).toFixed(1)} ${base}Z`;
@@ -1269,26 +1270,27 @@ function svChart(host, S) {
   }
   svg.append(sv('line', {x1: P, x2: W - P, y1: base, y2: base, stroke: T['m4-line'], 'stroke-width': 1}));
   if (S.market?.med != null) svg.append(sv('line', {x1: X(S.market.med), x2: X(S.market.med), y1: base - mtH - 8, y2: base, stroke: T.mute, 'stroke-width': 1.5, 'stroke-dasharray': '3 4'}));
-  if (S.rules?.enter != null) svg.append(sv('line', {x1: X(S.rules.enter), x2: X(S.rules.enter), y1: 6, y2: base, stroke: T.ink, 'stroke-opacity': 0.7, 'stroke-width': 1.5, 'stroke-dasharray': '2 4'}));
+  const gate = BD ? [BD.lo, BD.hi].filter(x => x != null) : S.rules?.enter != null ? [S.rules.enter] : [];
+  for (const x of gate) svg.append(sv('line', {x1: X(x), x2: X(x), y1: 6, y2: base, stroke: T.ink, 'stroke-opacity': 0.7, 'stroke-width': 1.5, 'stroke-dasharray': '2 4'}));
   const R = 4.6, col = new Map(), dots = [], keyOf = m => (m.r5 > SV_HI ? 'hi' : Math.floor(m.r5 / 2));
   const tall = Math.max(1, ...(() => { const c = new Map(); for (const m of M) c.set(keyOf(m), (c.get(keyOf(m)) ?? 0) + 1); return [...c.values()]; })());
   const step = Math.min(2 * R + 1.6, (base - 12) / tall);
   for (const m of [...M].sort((a, b) => a.r5 - b.r5 || (a.c < b.c ? -1 : 1))) {
     const key = keyOf(m), k = col.get(key) ?? 0; col.set(key, k + 1);
-    const cx = key === 'hi' ? W - P - R : X(Math.floor(m.r5 / 2) * 2 + 1), cy = base - R - 1 - k * step, isNew = m.tag === 'new' && S.kind === 'pick';
+    const cx = key === 'hi' ? W - P - R : X(Math.floor(m.r5 / 2) * 2 + 1), cy = base - R - 1 - k * step, isNew = m.tag === 'new' && (BD ? BD.kind : S.kind) === 'pick';
     svg.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: R, fill: T.up, stroke: isNew ? T.ink : T.night, 'stroke-width': isNew ? 2 : 1.2}));
     dots.push({m, x: cx, y: cy});
   }
   wrap.append(svg);
   // 글(HTML · 21px) — 문턱은 위 · 가운데값은 아래 왼쪽 · 끝(80% 넘게)에 쌓인 곳 수는 아래 오른쪽(좁은 화면에서도 겹치지 않게 넓이를 재어 자리 · 그래도 겹치면 끝 글을 범례 줄로)
   const lab = h('div', {class: 'svl', 'aria-hidden': 'true'}), mk = (cls2, text) => { const e = h('span', {class: cls2 + ' num', text}); lab.append(e); return e; };
-  const th = S.rules?.enter != null ? mk('sv-th', `문턱 ${pct(S.rules.enter)}`) : null, md0 = S.market?.med != null ? mk('sv-md', `가운데 ${pct(S.market.med)}`) : null;
+  const thX = gate.length ? gate.at(-1) : null, th = thX == null ? null : mk('sv-th', BD ? (BD.hi == null ? `${BD.lo}% 이상` : `${BD.lo}% ~ ${BD.hi}%`) : `문턱 ${pct(S.rules.enter)}`), md0 = S.market?.med != null ? mk('sv-md', `가운데 ${pct(S.market.med)}`) : null;
   const nHi = M.filter(m => m.r5 > SV_HI).length, hi = nHi ? mk('sv-hi', `${SV_HI}% 넘게 ${nHi}곳`) : null;
   wrap.append(lab);
   const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
   const place = () => {
     const at = (e, x, top) => { const w = e.offsetWidth || 80, L = Math.max(0, Math.min(W - w, x - w / 2)); st(e, {left: L + 'px', [top ? 'top' : 'bottom']: '0'}); return [L, L + w]; };
-    if (th) { const w = th.offsetWidth || 120, x = X(S.rules.enter), L = x + 6 + w <= W ? x + 6 : Math.max(0, x - 6 - w); st(th, {left: L + 'px', top: '0'}); } // 문턱 글은 그림 위쪽 빈 곳 · 점선 오른쪽(위 띠를 없애 그림을 첫 화면 안으로 · 새 눈 점검 1)
+    if (th) { const w = th.offsetWidth || 120, x = X(thX), L = x + 6 + w <= W ? x + 6 : Math.max(0, x - 6 - w); st(th, {left: L + 'px', top: '0'}); } // 문턱 글은 그림 위쪽 빈 곳 · 점선 오른쪽(위 띠를 없애 그림을 첫 화면 안으로 · 새 눈 점검 1)
     const m = md0 ? at(md0, X(S.market.med), false) : null;
     if (hi) { hi.hidden = false; const w = hi.offsetWidth || 120, L = W - w; st(hi, {left: L + 'px', bottom: '0'});
       if (m && m[1] + 8 > L) { const L2 = Math.max(0, L - 8 - (m[1] - m[0])); st(md0, {left: L2 + 'px'}); if (L2 + (m[1] - m[0]) + 8 > L) hi.hidden = true; } }
@@ -1299,14 +1301,199 @@ function svChart(host, S) {
   svg.addEventListener('pointerleave', ev => { if (ev.pointerType === 'mouse') tip.hidden = true; }); // 손가락으로 누르면 떼는 순간 pointerleave 가 와서 바로 숨던 것(새 눈 점검 2) — 마우스만 숨김
 }
 const svRow = (o, showPct) => h('a', {class: 'sv-row', href: cHref(o.c)}, h('span', {class: 'top'}, h('span', {class: 'nm', text: o.n}), showPct ? (o.r5 == null ? h('b', {class: 'num q', text: '?'}) : pctEl(o.r5)) : null), h('span', {class: 'why' + (/^\?/.test(o.why) ? ' q' : ''), text: o.why}), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
-async function viewSurge(v) {
+// ── 급등 다섯 칸 · 날마다 달력 · 며칠 뒤(사장님 2026-10-15(싱가포르) 16:28 「10프로 20프로 30프로40프로 탭도 만들어 총 5개를 만드는거야」 · 16:34 「가 가 각각 최대 36를 찾고 / 이렇개 찾아내 종목들을 추적해서 달력에 기록하는 시스템 … 매일 매일 선택됐다 탈락 됐다 이동 했다 해야해」 · 16:40 「아니 매일매일 그리고 나서 내가 관심 없음 버트을 클릭하면 없어지는구조」 · 16:44 「그래 만들어」)
+//   칸 = 급등(sv-v1 그대로) · 10%대 · 20%대 · 30%대 · 40% 넘게(sb-v1 · 칸끼리 안 겹침 · 칸마다 자리 36까지) — 급등 화면 맨 위 다섯 칸(#/surge · #/surge/10 · /20 · /30 · /40)
+//   달력 · 따라가기 = surgecal.json(sk-v1 — surge.py 셈 · surge_verify.mjs 따로 셈 · 지난 25거래일) · 화면은 보여 주기만
+//   「관심 없음」 = 보는 기계에만(localStorage) — 따라가기 목록에서만 빠짐 · 셈 · 공개 자료 · 다섯 칸 목록은 그대로 · 숨긴 곳도 고리는 남김(접은 칸 「다시 보기」)
+const SV_TABS = [['sv', '급등'], ['b10', '10%'], ['b20', '20%'], ['b30', '30%'], ['b40', '40%']];
+const SV_NAME = {sv: '급등', b10: '10%\u2060대', b20: '20%\u2060대', b30: '30%\u2060대', b40: '40%\u00a0이상'}; // 40% 칸 = 1.40 이상(새 눈 점검 2 — 「넘게」가 아님) · \u00a0 = 「40%」와 「이상」이 갈리지 않게 // \u2060 = 「10%」와 「대」 사이에서 줄이 갈리지 않게(보이지 않는 이음표)
+const svJ = (o, tail) => Object.fromEntries(Object.entries(o).map(([k, x]) => [k, x + tail]));
+const SV_KAN = {sv: '급등 칸에', ...svJ({b10: SV_NAME.b10, b20: SV_NAME.b20, b30: SV_NAME.b30, b40: SV_NAME.b40}, ' 칸에')};
+const SV_FROM = svJ({b10: SV_NAME.b10, b20: SV_NAME.b20, b30: SV_NAME.b30, b40: SV_NAME.b40}, ' 칸에서'), SV_TO = svJ({b10: SV_NAME.b10, b20: SV_NAME.b20, b30: SV_NAME.b30, b40: SV_NAME.b40}, ' 칸으로');
+const svHref = t => '#/surge' + (t === 'sv' ? '' : '/' + t.slice(1));
+const svChips = cur => h('nav', {class: 'sv-chips', 'aria-label': '급등 다섯 칸'}, ...SV_TABS.map(([t, lab]) => h('a', {class: 'sv-chip', href: svHref(t), 'aria-current': t === cur ? 'page' : null, text: lab})));
+let surgeCalP = null; // 달력 · 따라가기(surgecal.json) — 못 받으면 그 칸만 「?」
+function needSurgeCal() { if (!surgeCalP) surgeCalP = getJson('surgecal.json').then(s => { D.surgeCal = s; }).catch(e => { surgeCalP = null; throw e; }); return surgeCalP; }
+const dPlus = (d, k) => new Date(Date.parse(d + 'T00:00:00Z') + k * 864e5).toISOString().slice(0, 10), dDow = d => new Date(d + 'T00:00:00Z').getUTCDay();
+const svCalOk = K => !!(K && K.version === 'sk-v1' && Array.isArray(K.dates) && K.dates.length && K.dates.every(isDay) && Array.isArray(K.days) && Array.isArray(K.track));
+/** 이 칸의 그날 사건 — 든 = 처음 담음 · 새로 듦 · 옮겨 옴 / 뺌 = 빠짐 · 옮겨 감(회사 수) · 줄 = [때, 업데이트, 번호, 이름, 종류, 칸, 옮긴 칸] */
+function svDayOf(K, d, tab) {
+  const ev = (K.days.find(x => x.d === d)?.ev ?? []).filter(e => e[5] === tab || e[6] === tab);
+  const isIn = e => (e[4] === 'move' ? e[6] === tab : (e[4] === 'first' || e[4] === 'in') && e[5] === tab), isOut = e => (e[4] === 'move' ? e[5] === tab : e[4] === 'out' && e[5] === tab);
+  return {ev, nIn: new Set(ev.filter(isIn).map(e => e[2])).size, nOut: new Set(ev.filter(isOut).map(e => e[2])).size};
+}
+/** 이름 고리 — 옮긴 곳(어디서 · 어디로)은 한 줄에 한 곳 · 나머지는 「 · 」로 잇고 15곳 넘으면 12곳 + 접은 칸 · xs = [{c, n, t}] */
+function svNames(lab, xs) {
+  const box = h('div', {class: 'sv-nl'}), withT = xs.some(x => x.t), cut = xs.length > 15 ? 12 : xs.length;
+  const one = x => [h('a', {class: 'inl', href: cHref(x.c), text: x.n}), x.t ? h('span', {class: 'sv-tl', text: x.t}) : null];
+  const body = ys => (withT ? h('ul', {class: 'sv-ml'}, ...ys.map(x => h('li', {}, ...one(x)))) : h('p', {class: 'sv-in'}, ...ys.flatMap((x, i) => [i ? ' · ' : null, ...one(x)])));
+  box.append(h('p', {class: 'sv-in'}, h('b', {text: `${lab} ${xs.length}곳`})), body(xs.slice(0, cut)));
+  if (xs.length > cut) box.append(h('details', {class: 'more'}, h('summary', {text: `나머지 ${xs.length - cut}곳 보기`}), h('div', {class: 'in'}, body(xs.slice(cut)))));
+  return box;
+}
+/** 고른 날 하나 — 업데이트(때)마다 늦은 때가 위 · 들어온 곳(처음 담음 · 새로 듦 · 옮겨 옴) · 나간 곳(빠짐 · 옮겨 감) — 달력 칸 「든 · 뺌」 수와 같은 묶음(새 눈 점검 10) */
+function svDayPanel(K, d, tab) {
+  const {ev, nIn, nOut} = svDayOf(K, d, tab), p = h('div', {class: 'sv-day', 'data-d': d});
+  p.append(h('p', {class: 'sv-dh'}, h('b', {text: mdw(d)}), ev.length ? ' — ' + [nIn ? `들어온 곳 ${nIn}` : null, nOut ? `나간 곳 ${nOut}` : null].filter(Boolean).join(' · ') : ''));
+  if (!ev.length) { p.append(h('p', {class: 'small', text: '이날 이 칸은 바뀐 곳이 없어요.'})); return p; }
+  const G = new Map(); for (const e of ev) { const k = e[0] + '|' + (e[1] ?? ''); if (!G.has(k)) G.set(k, []); G.get(k).push(e); }
+  for (const [k, es] of [...G].sort((a, b) => (a[0] < b[0] ? 1 : a[0] > b[0] ? -1 : 0))) {
+    const [kst, slot] = k.split('|'), when = (kst.slice(0, 10) !== d && isDay(kst) ? md(kst.slice(0, 10)) + ' ' : '') + (slot || kst.slice(11, 16));
+    p.append(h('p', {class: 'sv-ut', text: slot ? `${when} 업데이트` : `${when}에 처음 골랐어요`}));
+    const of = f => es.filter(f).map(e => ({c: e[2], n: e[3], e}));
+    const ins = [['처음 담은 곳', of(e => e[4] === 'first' && e[5] === tab)], ['새로 든 곳', of(e => e[4] === 'in' && e[5] === tab)], ['옮겨 온 곳', of(e => e[4] === 'move' && e[6] === tab).map(x => ({...x, t: SV_FROM[x.e[5]]}))]].filter(x => x[1].length);
+    const outs = [['빠진 곳', of(e => e[4] === 'out' && e[5] === tab)], ['다른 칸으로 옮겨 간 곳', of(e => e[4] === 'move' && e[5] === tab).map(x => ({...x, t: SV_TO[x.e[6]]}))]].filter(x => x[1].length);
+    for (const [head, parts] of [['들어온 곳', ins], ['나간 곳', outs]]) {
+      if (parts.length > 1) p.append(h('p', {class: 'sv-io'}, h('b', {text: `${head} ${parts.reduce((a, x) => a + x[1].length, 0)}곳`}), ` = ${parts.map(x => x[0]).join(' + ')}`));
+      for (const [lab, xs] of parts) p.append(svNames(lab, xs));
+    }
+  }
+  return p;
+}
+/** 날마다 달력(무엇이 변했나 — 날마다) — 월 ~ 금 다섯 줄 · 칸 = 그날 이 칸에 든 곳 · 뺀 곳 수 · 누르면 그날 이름 */
+function svCal(v, tab, ok) {
+  v.append(h('h2', {class: 'sec', id: 'svCalH', text: '날마다 달력'}));
+  const K = D.surgeCal;
+  if (!ok || !svCalOk(K)) { v.append(h('p', {class: 'q', text: '? 달력 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.'})); return; }
+  const dates = K.dates, set = new Set(dates), last = dates.at(-1);
+  const tabDays = K.days.filter(x => set.has(x.d) && x.ev.some(e => e[5] === tab || e[6] === tab)).map(x => x.d).sort();
+  const f0 = K.days.filter(x => set.has(x.d) && x.ev.some(e => e[4] === 'first' && e[5] === tab)).map(x => x.d).sort()[0];
+  const start = f0 && tabDays[0] === f0 ? f0 : dates[0]; // 이 칸을 처음 고른 날이 창 안이면 그 앞은 「기록 전」
+  v.append(h('p', {class: 'note', text: `하루 4번 업데이트 때 적어요. 날짜를 누르면 그날 ${SV_KAN[tab]} 들어온 곳과 나간 곳이 나와요.`}));
+  if (start > dates[0]) v.append(h('p', {class: 'small', text: `${md(start)}부터 적었어요. 날마다 쌓여 지난 ${K.keep}거래일까지 남아요.`}));
+  const head = h('div', {class: 'sv-wk hd', 'aria-hidden': 'true'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {text: t})));
+  const from = start > dates[0] ? start : dates[0]; // 기록이 짧으면 처음 적은 주부터(빈 칸이 줄지어 서지 않게)
+  const grid = h('div', {class: 'sv-wk', role: 'group', 'aria-label': `${SV_NAME[tab]} 칸 날마다 달력 — ${md(from)} ~ ${md(last)}`});
+  const panels = h('div', {class: 'sv-days'}), seen = {pre: 0, off: 0, none: 0};
+  let mo = '', pick = null;
+  for (let d = dPlus(from, 1 - dDow(from)), end = dPlus(last, 5 - dDow(last)); d <= end; d = dPlus(d, 1)) {
+    const w = dDow(d); if (w === 0 || w === 6) continue;
+    if (d < dates[0] || d > last) { grid.append(h('div', {class: 'sv-cell blank'})); continue; }
+    const m = +d.slice(5, 7), dn = [m !== +mo ? h('span', {class: 'mo', text: `${m}월`}) : null, h('span', {class: 'dn num', text: String(+d.slice(8, 10))})]; if (m !== +mo) mo = String(m);
+    if (!set.has(d)) { seen.off++; grid.append(h('div', {class: 'sv-cell off'}, ...dn, h('span', {class: 'cx', text: '쉼'}))); continue; }
+    if (d < start) { seen.pre++; grid.append(h('div', {class: 'sv-cell pre'}, ...dn, h('span', {class: 'cx', text: '—'}))); continue; }
+    const {ev, nIn, nOut} = svDayOf(K, d, tab);
+    if (!ev.length) seen.none++;
+    const b = h('button', {type: 'button', class: 'sv-cell', 'data-d': d, 'aria-pressed': 'false', 'aria-label': `${mdw(d)} ${ev.length ? `든 곳 ${nIn} · 빠진 곳 ${nOut}` : '바뀐 곳 없음'}`}, ...dn,
+      ev.length ? [nIn ? h('span', {class: 'ci num', text: `든 ${nIn}`}) : null, nOut ? h('span', {class: 'co num', text: `뺌 ${nOut}`}) : null] : h('span', {class: 'cx', text: '없음'}));
+    grid.append(b); const pn = svDayPanel(K, d, tab); pn.hidden = true; panels.append(pn);
+    if (ev.length) pick = d;
+  }
+  pick = pick ?? last;
+  const sel = d => { for (const b of grid.querySelectorAll('button.sv-cell')) b.setAttribute('aria-pressed', String(b.dataset.d === d)); for (const p of panels.children) p.hidden = p.dataset.d !== d; };
+  grid.addEventListener('click', e => { const b = e.target.closest('button.sv-cell'); if (b) sel(b.dataset.d); });
+  v.append(h('div', {class: 'sv-cal'}, head, grid));
+  v.append(h('p', {class: 'lkey sv-ckey'}, h('span', {text: '든 = 들어온 곳'}), h('span', {text: '뺌 = 나간 곳(빠지거나 다른 칸으로 옮긴 곳)'}), seen.none ? h('span', {text: '없음 = 바뀐 곳 없음'}) : null, seen.off ? h('span', {text: '쉼 = 장이 쉰 날'}) : null, seen.pre ? h('span', {text: '— = 기록 전'}) : null));
+  v.append(panels); sel(pick);
+}
+// 관심 없음 — 보는 기계에만(사장님 16:40) · 기억 못 하는 기계(사생활 창 등)는 이 화면 동안만
+const SV_HIDE = 'atlas:surge-hide';
+let svHideMem = new Set();
+function hideGet() { try { const x = JSON.parse(localStorage.getItem(SV_HIDE) || '[]'); return new Set(Array.isArray(x) ? x.filter(c => typeof c === 'string' && /^[0-9A-Z]{6}$/.test(c)).slice(0, 5000) : []); } catch { return new Set(svHideMem); } }
+function hidePut(s) { svHideMem = new Set(s); try { localStorage.setItem(SV_HIDE, JSON.stringify([...s].sort())); return true; } catch { return false; } }
+/** 줄 선 — 처음 찾은 날 종가 = 0 · 날마다 · 값이 빈 날은 끊음(앞뒤가 빈 날 하나는 점 — 새 눈 점검 11) · 마지막 값이 오르면 빨강 · 내리면 파랑 */
+function svSpark(t, P) {
+  const vals = [0, ...P.map(p => p[1])], n = vals.length, nn = vals.filter(x => x != null), lo = Math.min(0, ...nn), hi = Math.max(0, ...nn), span = hi - lo || 1;
+  const X = i => 2 + i * 96 / Math.max(1, n - 1), Y = x => 3 + (hi - x) / span * 24, T = tok(), lastV = [...vals].reverse().find(x => x != null);
+  const s = sv('svg', {viewBox: '0 0 100 30', preserveAspectRatio: 'none', class: 'spk', role: 'img', 'aria-label': `${t.n} — 처음 찾은 날 종가부터 날마다: ` + (P.length ? P.map(p => `${md(p[0])} ${pct(p[1])}`).join(', ') : '아직 없음')});
+  s.append(sv('line', {x1: 0, x2: 100, y1: Y(0).toFixed(1), y2: Y(0).toFixed(1), stroke: T.mute, 'stroke-width': 1, 'stroke-dasharray': '2 3', 'vector-effect': 'non-scaling-stroke'}));
+  let d = '', pen = false; vals.forEach((x, i) => { if (x == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x).toFixed(1); pen = true; });
+  vals.forEach((x, i) => { if (x != null && vals[i - 1] == null && vals[i + 1] == null) d += `M${(X(i) - 1.4).toFixed(1)} ${Y(x).toFixed(1)}L${(X(i) + 1.4).toFixed(1)} ${Y(x).toFixed(1)}`; });
+  s.append(sv('path', {d, class: 'ln ' + cls(lastV), fill: 'none', stroke: lastV > 0 ? T.up : lastV < 0 ? T.down : T.mute, 'stroke-width': 2.4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'vector-effect': 'non-scaling-stroke'}));
+  return s;
+}
+/** 줄 하나 — 이름 | 관심 없음 · 처음 찾은 칸 / 지금 든 칸(두 줄) · 작은 선 | n일 뒤 ±x% */
+function svTrRow(t) {
+  const P = t.path ?? []; let li = -1; for (let i = P.length - 1; i >= 0; i--) if (P[i][1] != null) { li = i; break; }
+  const nowT = (t.now ?? []).map(x => SV_NAME[x]).filter(Boolean);
+  return h('div', {class: 'sv-tr', 'data-c': t.c},
+    h('div', {class: 'sv-trt'}, h('a', {class: 'nm', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'sv-hide', 'data-c': t.c, text: '관심 없음'})), // 이름이 길면 단추가 밑 줄로(이름은 가르지 않음)
+    h('p', {class: 'sub'}, h('span', {text: `처음 찾은 칸: ${SV_NAME[t.t] ?? '?'}`}), h('span', {text: nowT.length ? `지금 든 칸: ${nowT.join(', ')}` : '지금은 다섯 칸 밖'})),
+    svSpark(t, P),
+    h('span', {class: 'v'}, li >= 0 ? h('span', {class: 'dd', text: `${li + 1}일 뒤 `}) : null, li >= 0 ? pctEl(P[li][1]) : h('b', {class: 'num q', text: '?'})));
+}
+/** 며칠 뒤 어떻게 됐나(확인할 것) — 이 칸에 한 번이라도 든 곳(지난 25거래일) · 다섯 칸 어디든 처음 찾은 날마다 한 묶음(새 날이 위 · 맨 위만 펼침) · 처음 찾은 날 종가부터 날마다
+ *   「관심 없음」 = 그 자리에 「숨겼어요 · 되돌리기」(줄이 위로 밀려 다른 곳을 잘못 누르지 않게 — 새 눈 점검 2) · 숨긴 곳은 맨 밑 「숨긴 곳 n곳 보기」 · 다섯 칸 모두 같음 · 이 휴대폰에서만 */
+function svTrack(v, tab, ok) {
+  v.append(h('h2', {class: 'sec', id: 'svTrkH', text: '며칠 뒤 어떻게 됐나'}));
+  const K = D.surgeCal;
+  if (!ok || !svCalOk(K)) { v.append(h('p', {class: 'q', text: '? 따라간 기록을 못 받았어요. 잠시 뒤 다시 열어 주세요.'})); return; }
+  const ever = new Set(K.track.filter(t => (t.now ?? []).includes(tab)).map(t => t.c));
+  for (const x of K.days) for (const e of x.ev) if (e[5] === tab || e[6] === tab) ever.add(e[2]);
+  const all = K.track.filter(t => ever.has(t.c)), went = all.filter(t => t.path?.length), fresh = all.filter(t => !t.path?.length && t.d === K.asOf).length, nobase = all.filter(t => !t.path?.length && t.d !== K.asOf).length;
+  v.append(h('p', {class: 'note', text: `${SV_KAN[tab]} 한 번이라도 든 곳이에요. 다섯 칸 어디든 처음 찾은 날 종가부터 날마다 몇 %인지 적어요. 날은 장이 열린 날로 세고, 처음 찾은 날부터 ${K.keep}거래일까지 적어요.`}));
+  if (went.length) v.append(h('p', {class: 'small', text: '「관심 없음」을 누르면 이 목록에서 빠져요. 다섯 칸 모두 같아요. 이 휴대폰에서만 그래요. 위 칸 목록은 그대로예요.'}));
+  if (K.provisional && isDay(K.asOf) && went.length) v.append(h('p', {class: 'sv-prov', text: `${md(K.asOf)} 값은 장 중 값이에요. 저녁 8시까지 바뀌어요.`}));
+  const days = [...new Set(went.map(t => t.d))].sort().reverse(), byName = (a, b) => a.n.localeCompare(b.n, 'ko') || (a.c < b.c ? -1 : 1);
+  const box = h('div', {class: 'sv-trs'}), live = h('p', {class: 'sr', role: 'status', 'aria-live': 'polite'});
+  const goneEl = () => { const hid = hideGet(), gone = went.filter(t => hid.has(t.c)).sort(byName); if (!gone.length) return null;
+    return h('details', {class: 'more sv-gone'}, h('summary', {text: `숨긴 곳 ${gone.length}곳 보기`}), h('div', {class: 'in'}, ...gone.map(t => h('p', {class: 'sv-g'}, h('a', {class: 'inl', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'sv-show', 'data-c': t.c, text: '되돌리기'}))))); };
+  const tail = h('div', {class: 'sv-tail'});
+  const drawTail = () => { const open = tail.querySelector('details.sv-gone')?.open; tail.textContent = '';
+    if (fresh) tail.append(h('p', {class: 'small', text: `${isDay(K.asOf) ? md(K.asOf) + '에' : '마지막 날'} 처음 찾은 ${fresh}곳은 다음 장날부터 적혀요.`}));
+    if (nobase) tail.append(h('p', {class: 'q', text: `? 처음 찾은 날 종가가 없어 못 적은 곳 ${nobase}곳`}));
+    const g = goneEl(); if (g) { if (open) g.open = true; tail.append(g); } };
+  const draw = () => {
+    const open = new Set([...box.querySelectorAll('details.sv-grp[open]')].map(x => x.dataset.d)), first = !box.childElementCount;
+    box.textContent = '';
+    const hid = hideGet(); let shownAny = false;
+    if (!went.length) box.append(h('p', {class: 'q', text: '? 아직 따라간 날이 없어요.'}));
+    for (const d of days) {
+      const rows = went.filter(t => t.d === d && !hid.has(t.c)).sort(byName); if (!rows.length) continue;
+      const k = Math.max(...rows.map(t => t.path.length)), g = h('details', {class: 'more sv-grp', 'data-d': d}, h('summary', {text: `${md(d)}에 처음 찾은 곳 ${rows.length}곳 — ${k}일 뒤`}), h('div', {class: 'in'}, ...rows.map(svTrRow)));
+      if (first ? !shownAny : open.has(d)) g.open = true;
+      box.append(g); shownAny = true;
+    }
+    if (went.length && !shownAny) box.append(h('p', {class: 'small', text: '보이는 곳이 없어요. 모두 숨겼어요.'}));
+    drawTail();
+  };
+  const say = msg => { live.textContent = msg; };
+  v.addEventListener('click', e => {
+    const b = e.target.closest('button[data-c]'); if (!b || !(box.contains(b) || tail.contains(b))) return;
+    const c = b.dataset.c, t = all.find(x => x.c === c); if (!t) return;
+    const hid = hideGet();
+    if (b.classList.contains('sv-hide')) { // 그 자리에 「숨겼어요 · 되돌리기」 — 줄 높이 그대로(아래 줄이 손가락 밑으로 올라오지 않게)
+      hid.add(c); const kept = hidePut(hid), row = b.closest('.sv-tr'), hh = row.offsetHeight;
+      const undo = h('button', {type: 'button', class: 'sv-undo', 'data-c': c, text: '되돌리기'}), ph = h('div', {class: 'sv-ph', 'data-c': c}, h('span', {class: 'sv-phn', text: `${t.n} 숨겼어요`}), undo);
+      st(ph, {minHeight: hh + 'px'}); row.replaceWith(ph); drawTail(); try { undo.focus({preventScroll: true}); } catch { /* 초점 못 옮김 */ }
+      say(`${t.n} 숨겼어요.${kept ? '' : ' 이 기계는 기억을 못 해 다시 열면 돌아와요.'}`);
+    } else if (b.classList.contains('sv-undo')) { hid.delete(c); hidePut(hid); b.closest('.sv-ph').replaceWith(svTrRow(t)); drawTail(); say(`${t.n} 다시 보여요.`); }
+    else if (b.classList.contains('sv-show')) { hid.delete(c); hidePut(hid); draw(); say(`${t.n} 다시 보여요.`); }
+  });
+  draw();
+  v.append(box, tail, live, h('p', {class: 'hon sv-hon', text: '지난 값일 뿐 앞날을 말하지 않아요.'}));
+}
+/** 칸 머리 — 제목 · 때 한 줄 */
+function svHead(v, title, S) { v.append(h('h1', {class: 'head', text: title}), h('p', {class: 'count', text: svTime(S)})); }
+/** 「며칠 뒤 어떻게 됐나 ↓」 — 그림 바로 밑(맨 밑 따라가기로 바로 — 새 눈 점검 3 · 그림은 첫 화면 안 그대로) */
+function svJump(v) {
+  const go = h('button', {type: 'button', class: 'sv-go', text: '며칠 뒤 어떻게 됐나 ↓'});
+  go.addEventListener('click', () => { const x = document.getElementById('svTrkH'); if (x) x.scrollIntoView({block: 'start', behavior: RM.matches ? 'auto' : 'smooth'}); });
+  v.append(h('p', {class: 'sv-jump'}, go));
+}
+// 회사를 보고 뒤로 오면 그 칸 그 자리 · 고른 날 · 펼친 묶음 그대로(새 눈 점검 3 — 회사를 하나씩 볼 때 맨 위로 튀지 않게) · 이 열린 창 안에서만(저장 안 함)
+const svMem = new Map();
+function svLeave(from) { if (!/^#\/surge/.test(from || '')) return; const q = s2 => document.querySelector('#view ' + s2);
+  svMem.set(from, {y: window.scrollY, day: q('.sv-wk button.sv-cell[aria-pressed="true"]')?.dataset.d ?? null, open: [...document.querySelectorAll('#view details.sv-grp')].filter(x => x.open).map(x => x.dataset.d), gone: !!q('details.sv-gone')?.open}); }
+function svBack(to, from) { const m = svMem.get(to); if (!m || !/^#\/surge/.test(to) || !/^#\/c\//.test(from || '')) return;
+  if (m.day) document.querySelector(`#view .sv-wk button.sv-cell[data-d="${m.day}"]`)?.click();
+  for (const x of document.querySelectorAll('#view details.sv-grp')) x.open = m.open.includes(x.dataset.d);
+  const g = document.querySelector('#view details.sv-gone'); if (g) g.open = m.gone;
+  requestAnimationFrame(() => window.scrollTo(0, m.y)); }
+async function viewSurge(v, tab = 'sv') {
   await needSurge();
-  const S = D.surge, M = S.members ?? [], n = M.length, F = S.facts ?? {}, cap = S.cap ?? n, FU = S.funnel ?? {}, CUT = S.cut ?? {};
+  const ok = await needSurgeCal().then(() => true, () => false); // 달력 · 따라가기는 못 받아도 목록은 보임(그 칸만 「?」)
+  v.append(svChips(tab));
+  if (tab === 'sv') svMain(v, D.surge, ok); else svBand(v, D.surge, tab, ok);
+}
+function svMain(v, S, ok) {
+  const M = S.members ?? [], n = M.length, F = S.facts ?? {}, cap = S.cap ?? n, FU = S.funnel ?? {}, CUT = S.cut ?? {};
   // ① 무엇이 변했나 — 때 한 줄 · 판단 한 문장 → 바로 그림(어떤 글씨 크기에서도 첫 화면 안 · 새 눈 점검 1) → 정직 한 문장 · 「?」
-  v.append(h('h1', {class: 'head', text: `급등 ${n}곳`}), h('p', {class: 'count', text: svTime(S)}));
+  svHead(v, `급등 ${n}곳`, S);
   v.append(h('p', {class: 'sv-lead', text: n ? `지난 5일 동안 ${n}곳이 ${pct(S.stats.lo)} ~ ${pct(S.stats.hi)} 올랐어요.` : '지난 5일 동안 문턱을 넘은 곳이 없어요.'}));
   const host = h('div', {class: 'svc'}); v.append(host); svChart(host, S); chartDraw = () => svChart(host, S);
   v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dot'}), `급등 ${n}곳`), S.kind === 'pick' && S.in?.length ? h('span', {}, h('i', {class: 'l-dot new'}), '이번에 새로') : null, h('span', {}, h('i', {class: 'l-mt'}), `셀 수 있는 회사 ${(S.market?.n ?? 0).toLocaleString('ko-KR')}곳`)));
+  svJump(v);
   if (S.provisional) v.append(h('p', {class: 'sv-prov', text: '장 중 값이에요. 저녁 8시까지 바뀌어요.'})); // 장 중 = 회색 한 줄(금빛 아님 · 브리핑 눈)
   v.append(h('p', {class: 'hon sv-hon', text: '사고팔 곳을 고른 목록이 아니에요.'}));
   v.append(h('p', {class: 'q', text: '? 오른 까닭은 몰라요.'}));
@@ -1316,9 +1503,9 @@ async function viewSurge(v) {
   if (n < cap) v.append(h('p', {class: 'note', text: `오늘은 문턱을 넘은 곳이 ${n}곳뿐이에요. 억지로 채우지 않아요.`}));
   // 들고 남 — 바뀐 수 한 문장 → 새로 든 곳 이름(회사 고리) → 나간 곳(접음) → 앞 날 장 중에 든 곳 다시 보기
   v.append(h('p', {class: 'sv-chg', text: svChange(S)}));
-  if (S.kind === 'pick' && S.in?.length) { const p = h('p', {class: 'sv-in'}, h('b', {text: `새로 든 곳 ${S.in.length}곳`}), ' '); S.in.forEach((x, k) => { if (k) p.append(' · '); p.append(h('a', {class: 'inl', href: cHref(x.c), text: x.n})); }); v.append(p); }
   if (S.out?.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `나간 곳 ${S.out.length}곳 — 까닭 보기`}), h('div', {class: 'in'}, ...S.out.map(o => svRow(o, true)))));
   if (S.confirm?.n) v.append(h('p', {class: 'small', text: S.confirm.miss ? `${md(S.confirm.day)} 장 중에 든 ${S.confirm.n}곳 가운데 ${S.confirm.miss}곳은 그날 장 마감 값으로는 문턱 밑이었어요.` : `${md(S.confirm.day)} 장 중에 든 ${S.confirm.n}곳은 모두 그날 장 마감 값으로도 문턱을 넘었어요.`}));
+  svCal(v, 'sv', ok); // 날마다 달력(16:34 「매일 매일 선택됐다 탈락 됐다」)
   // ② 견줌
   v.append(h('h2', {class: 'sec', text: '다른 곳과 견주면?'}));
   const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: `급등 ${n}곳 가운데값`}), n ? pctEl(S.stats.med) : h('b', {class: 'num q', text: '?'})), h('div', {}, h('span', {text: '셀 수 있는 회사 가운데값'}), pctEl(S.market?.med)), h('div', {}, h('span', {text: '가장 적게 오른 곳'}), n ? pctEl(S.stats.lo) : h('b', {class: 'num q', text: '?'})));
@@ -1338,40 +1525,94 @@ async function viewSurge(v) {
   // ④ 조심할 것과 모르는 것 — 「!」마다 바로 밑에 그 이름(새 눈 점검 10) · 「?」
   v.append(h('h2', {class: 'sec', text: '조심할 것과 모르는 것'}));
   const chk = h('ul', {class: 'chk sv-chk'});
-  const li = (mark, b, t, names) => h('li', {}, h('span', {class: 'm' + (mark === '?' ? ' q' : ' w'), text: mark}), h('span', {}, h('b', {text: b + ' '}), t, names?.length ? h('span', {class: 'sv-nms', text: names.join(' · ')}) : null));
   const warnN = M.filter(m => m.warn), liveN = M.filter(m => m.warnLive), downN = M.filter(m => m.d1 != null && m.d1 < 0);
-  if (warnN.length || liveN.length) chk.append(li('!', `거래소 경고 기준만큼 오른 곳 ${warnN.length}곳`, `— 5일 60% 또는 15일 100%로만 셌어요. 거래소가 실제로 경고했는지는 몰라요.${liveN.length ? ` 장 중 값으로만 닿은 곳은 ${liveN.length}곳이에요.` : ''}`, [...warnN, ...liveN].map(m => m.n)));
-  if (downN.length) chk.append(li('!', `마지막 날 내린 곳 ${downN.length}곳`, '— 5일로는 올랐지만 마지막 날은 내렸어요.', downN.map(m => m.n)));
-  if (F.one) chk.append(li('!', `하루에 몰려 오른 곳 ${F.one}곳`, '— 5일 오름의 대부분이 하루에 났어요.'));
-  if (F.quiet) chk.append(li('!', `거래가 덜 붙은 곳 ${F.quiet}곳`, '— 5일 거래가 평소의 2배도 안 됐어요.'));
-  if (F.reb) chk.append(li('!', `되오른 곳 ${F.reb}곳`, '— 5일 전에 이미 크게 빠져 있었어요.'));
-  chk.append(li('?', '오른 까닭', '— 몰라요. 뉴스와 공시를 못 봐요.'), li('?', '거래소 경고 · 거래정지', '— 여기서는 확인 못 해요.'), li('?', '공매도 · 빚내서 산 돈 · 주식 수 바뀜', '— 못 봐요.'));
-  if (FU.q) chk.append(li('?', `셀 수 없는 곳 ${FU.q.toLocaleString('ko-KR')}곳`, '— 새로 상장했거나 값이 빈 날 · 거래가 멈춘 날이 있어요.'));
+  if (warnN.length || liveN.length) chk.append(svLi('!', `거래소 경고 기준만큼 오른 곳 ${warnN.length}곳`, '— 5일 60% 또는 15일 100%로만 셌어요. 거래소가 실제로 경고했는지는 몰라요.', warnN.map(m => m.n), liveN.length ? [`장 중 값으로만 닿은 곳 ${liveN.length}곳`, liveN.map(m => m.n)] : null)); // 수와 이름이 맞게(새 눈 점검 12)
+  if (downN.length) chk.append(svLi('!', `마지막 날 내린 곳 ${downN.length}곳`, '— 5일로는 올랐지만 마지막 날은 내렸어요.', downN.map(m => m.n)));
+  if (F.one) chk.append(svLi('!', `하루에 몰려 오른 곳 ${F.one}곳`, '— 5일 오름의 대부분이 하루에 났어요.'));
+  if (F.quiet) chk.append(svLi('!', `거래가 덜 붙은 곳 ${F.quiet}곳`, '— 5일 거래가 평소의 2배도 안 됐어요.'));
+  if (F.reb) chk.append(svLi('!', `되오른 곳 ${F.reb}곳`, '— 5일 전에 이미 크게 빠져 있었어요.'));
+  chk.append(svLi('?', '오른 까닭', '— 몰라요. 뉴스와 공시를 못 봐요.'), svLi('?', '거래소 경고 · 거래정지', '— 여기서는 확인 못 해요.'), svLi('?', '공매도 · 빚내서 산 돈 · 주식 수 바뀜', '— 못 봐요.'));
+  if (FU.q) chk.append(svLi('?', `셀 수 없는 곳 ${FU.q.toLocaleString('ko-KR')}곳`, '— 새로 상장했거나 값이 빈 날 · 거래가 멈춘 날이 있어요.'));
   v.append(chk);
   if (S.cutList?.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `+15%를 넘었지만 값이나 거래 때문에 뺀 곳 ${S.cutList.length}곳 — 까닭 보기`}), h('div', {class: 'in'}, ...S.cutList.map(o => svRow(o, false)))));
   if (CUT.seat) v.append(h('p', {class: 'small', text: `+15%를 넘었지만 아직 못 든 곳도 ${CUT.seat}곳 있어요. 자리가 찼거나 다음 업데이트에서 한 번 더 봐요. 이름은 싣지 않아요.`}));
-  // ⑤ 더 확인할 곳
+  // ⑤ 더 확인할 곳 → 며칠 뒤 어떻게 됐나(16:34 「몇일후 어떻게 됐는지」 · 16:40 「매일매일」 「관심 없음」)
+  svSee(v, S);
+  svTrack(v, 'sv', ok);
+  // 어떻게 골랐나요?
+  v.append(h('details', {class: 'more sv-how'}, h('summary', {text: '어떻게 골랐나요?'}), h('div', {class: 'in'}, ...(S.rules?.lines ?? []).map(t => h('p', {text: t})))));
+  v.append(foot({src: isDay(S.window?.[0]) && isDay(S.asOf) ? `급등 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null})); // 이 탭 자료 줄(새 눈 점검 4 — 멍거 · 린치 줄은 이 탭과 상관없음)
+}
+const svLi = (mark, b, t, names, more = null) => h('li', {}, h('span', {class: 'm' + (mark === '?' ? ' q' : ' w'), text: mark}), h('span', {}, h('b', {text: b + ' '}), t, names?.length ? h('span', {class: 'sv-nms', text: names.join(' · ')}) : null, more ? h('span', {class: 'sv-nms', text: `${more[0]}: ${more[1].join(' · ')}`}) : null));
+function svSee(v, S) {
   v.append(h('h2', {class: 'sec', text: '더 확인할 곳'}));
   v.append(h('ul', {class: 'chk sv-see'},
     h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {}, '거래소 경고 · 거래정지: ', h('a', {class: 'inl', href: 'https://kind.krx.co.kr/', target: '_blank', rel: 'noopener noreferrer', text: '한국거래소 공시'}))),
     h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {}, '주식 수 바뀜 · 큰 계약: ', h('a', {class: 'inl', href: 'https://dart.fss.or.kr/', target: '_blank', rel: 'noopener noreferrer', text: '금융감독원 공시'}))),
     h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {text: `다음 업데이트: ${svNext()}(서울) — 그때 넣고 빼요.`})),
     S.provisional ? h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {text: '오늘 값이 굳는 때: 저녁 8시 뒤예요. 다음 장날 첫 업데이트에 들어가요.'})) : null));
-  // 지난 업데이트 — 들고 난 곳(새 파일만 · 지우지 않음)
-  const HS = (S.hist ?? []).slice().reverse();
-  if (HS.length) {
-    v.append(h('h2', {class: 'sec', text: '지난 업데이트 — 들고 난 곳'}));
-    v.append(h('ol', {class: 'uplist sv-hist'}, ...HS.slice(0, 12).map(r => h('li', {class: 'r-ch'}, h('p', {class: 'uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 업데이트' : '처음 고름'}${r.provisional ? ' · 장 중' : ''}`),
-      h('p', {text: r.kind === 'pick' ? `새로 ${r.in} · 나감 ${r.out} · 모두 ${r.n}곳` : `처음 ${r.n}곳`})))));
-    v.append(h('p', {class: 'small', text: '기록은 지우지 않아요.'}));
+}
+/** 네 칸(10%대 · 20%대 · 30%대 · 40% 넘게 — sb-v1) 한 장 — 급등 칸과 같은 차례(다섯 질문) · 숫자는 surge.json bands 그대로 */
+function svBand(v, S, b, ok) {
+  const BS = S.bands, B = BS?.[b], name = SV_NAME[b];
+  if (!B || BS.version !== 'sb-v1') { v.append(h('h1', {class: 'head', text: name}), h('p', {class: 'q', text: '? 이 칸 자료가 아직 없어요. 다음 업데이트에 들어가요.'})); svCal(v, b, ok); svTrack(v, b, ok); v.append(foot()); return; }
+  const M = B.members ?? [], n = M.length, cut = (BS.cuts ?? []).find(x => x[0] === b) ?? [b, null, null], lo = cut[1], hi = cut[2], range = hi == null ? `${lo}%${NB}이상` : `${lo}%에서 ${hi}% 사이`;
+  const BD = {M, lo, hi, kind: BS.kind, name};
+  svHead(v, `${name} ${n}곳`, S);
+  v.append(h('p', {class: 'sv-lead', text: n ? `지난 5일 동안 ${range} 올랐어요.` : `지난 5일 동안 ${range} 오른 곳이 없어요.`}));
+  const host = h('div', {class: 'svc'}); v.append(host); svChart(host, S, BD); chartDraw = () => svChart(host, S, BD);
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dot'}), `${name} ${n}곳`), BS.kind === 'pick' && M.some(m => m.tag === 'new') ? h('span', {}, h('i', {class: 'l-dot new'}), '이번에 새로') : null, h('span', {}, h('i', {class: 'l-mt'}), `셀 수 있는 회사 ${(S.market?.n ?? 0).toLocaleString('ko-KR')}곳`)));
+  svJump(v);
+  if (S.provisional) v.append(h('p', {class: 'sv-prov', text: '장 중 값이에요. 저녁 8시까지 바뀌어요.'}));
+  v.append(h('p', {class: 'hon sv-hon', text: '사고팔 곳을 고른 목록이 아니에요.'}));
+  v.append(h('p', {class: 'q', text: '? 오른 까닭은 몰라요.'}));
+  if (D.core?.asOf && isDay(S.asOf) && S.asOf < D.core.asOf) v.append(h('p', {class: 'q', text: `? 이 목록은 ${md(S.asOf)} 값이에요. 그 뒤 값은 다음 업데이트에 들어가요.`}));
+  if (S.carry?.why) v.append(h('p', {class: 'q', text: '? ' + S.carry.why}));
+  if (B.over) v.append(h('p', {class: 'note', text: `이 칸에 든 곳이 많아 많이 오른 차례로 ${BS.cap}곳만 실었어요. 나머지 ${B.over}곳은 싣지 않아요.`}));
+  // 들고 남 — 새로 든 곳 · 옮겨 온 곳(다른 칸에서) · 빠진 곳(까닭) · 옮겨 간 곳(다른 칸으로)
+  const ins = B.in ?? [], outs = B.out ?? [], mIn = (B.move ?? []).filter(x => x.to === b), mOut = (B.move ?? []).filter(x => x.from === b);
+  const said = [ins.length ? `${ins.length}곳이 새로 들었어요.` : null, mIn.length ? `${mIn.length}곳이 다른 칸에서 옮겨 왔어요.` : null, outs.length ? `${outs.length}곳이 빠졌어요.` : null, mOut.length ? `${mOut.length}곳이 다른 칸으로 옮겨 갔어요.` : null].filter(Boolean);
+  v.append(h('p', {class: 'sv-chg', text: S.carry ? `목록은 ${kstLabel(S.carry.fromKst)}에 고른 그대로예요.` : BS.kind !== 'pick' ? '처음 고른 목록이에요.' : said.length ? said.join(' ') : '이번에 바뀐 곳은 없어요.'}));
+  if (BS.kind === 'pick' && !S.carry) { // 든 곳 · 옮겨 온 곳 이름은 바로 밑 달력(오늘) 판에 — 두 번 싣지 않음(새 눈 점검 7) · 빠진 까닭은 여기만
+    if (outs.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `빠진 곳 ${outs.length}곳 — 까닭 보기`}), h('div', {class: 'in'}, ...outs.map(o => svRow(o, true)))));
+    if (mOut.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `다른 칸으로 옮겨 간 곳 ${mOut.length}곳 — 어디로 갔나 보기`}), h('div', {class: 'in'}, ...mOut.map(o => svRow({c: o.c, n: o.n, r5: o.r5, why: `${SV_TO[o.to]} 옮겼어요`}, true)))));
   }
-  // 어떻게 골랐나요?
-  v.append(h('details', {class: 'more sv-how'}, h('summary', {text: '어떻게 골랐나요?'}), h('div', {class: 'in'}, ...(S.rules?.lines ?? []).map(t => h('p', {text: t})))));
-  v.append(foot({src: isDay(S.window?.[0]) && isDay(S.asOf) ? `급등 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null})); // 이 탭 자료 줄(새 눈 점검 4 — 멍거 · 린치 줄은 이 탭과 상관없음)
+  svCal(v, b, ok);
+  // ② 견줌 — 칸 안 가장 많이 · 가장 적게 오른 곳(줄 값 그대로) · 셀 수 있는 회사 가운데값
+  v.append(h('h2', {class: 'sec', text: '다른 곳과 견주면?'}));
+  const q = () => h('b', {class: 'num q', text: '?'});
+  const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: '이 칸에서 가장 많이 오른 곳'}), n ? pctEl(M[0].r5) : q()), h('div', {}, h('span', {text: '이 칸에서 가장 적게 오른 곳'}), n ? pctEl(M.at(-1).r5) : q()), h('div', {}, h('span', {text: '셀 수 있는 회사 가운데값'}), pctEl(S.market?.med)));
+  v.append(trio); fitNums(trio);
+  // ③ 어떤 곳들인가요?
+  v.append(h('h2', {class: 'sec', text: '어떤 곳들인가요?'}));
+  if (n) {
+    const mk = [['KOSDAQ', '코스닥'], ['KOSPI', '코스피']].map(([k, nm]) => [nm, M.filter(m => m.mk === k).length]).filter(x => x[1]);
+    if (mk.length) v.append(h('p', {class: 'small', text: mk.map(([nm, c]) => `${nm} ${c}곳`).join(' · ')}));
+    const box = h('div', {class: 'sv-board'}); v.append(box);
+    race(box, {items: M.map(m => ({key: m.c, name: m.n, href: cHref(m.c), v: m.v, cw: m.v, badge: BS.kind === 'pick' && m.tag === 'new' ? '새로' : null, gold: S.provisional && m.prov ? '? 장 중' : null})), parent: S.market?.avg6 ? {v: S.market.avg6, cw: S.market.avg6} : null, wide: true, label: `${name} ${n}곳 — 5일 동안 많이 오른 차례`, n: 6, win: false});
+    v.append(h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), '셀 수 있는 회사 가운데값'), h('span', {}, h('i', {class: 'k-b0'}), `5일 전(${md(S.window?.[0] ?? S.asOf)}) 값`)));
+  } else v.append(h('p', {class: 'small', text: '이 칸에 든 곳이 없어요.'}));
+  // ④ 조심할 것과 모르는 것
+  v.append(h('h2', {class: 'sec', text: '조심할 것과 모르는 것'}));
+  const downN = M.filter(m => m.d1 != null && m.d1 < 0), chk = h('ul', {class: 'chk sv-chk'});
+  if (downN.length) chk.append(svLi('!', `마지막 날 내린 곳 ${downN.length}곳`, '— 5일로는 올랐지만 마지막 날은 내렸어요.', downN.map(m => m.n)));
+  chk.append(svLi('?', '오른 까닭', '— 몰라요. 뉴스와 공시를 못 봐요.'), svLi('?', '거래소 경고 · 거래정지', '— 여기서는 확인 못 해요.'), svLi('?', '공매도 · 빚내서 산 돈 · 주식 수 바뀜', '— 못 봐요.'));
+  v.append(chk);
+  svSee(v, S);
+  svTrack(v, b, ok);
+  v.append(h('details', {class: 'more sv-how'}, h('summary', {text: '어떻게 골랐나요?'}), h('div', {class: 'in'}, ...[
+    '5일 오름 = 마지막 값 ÷ 5일 전 종가예요. 5일은 장이 열린 날로 세요.',
+    '칸은 10%대 · 20%대 · 30%대 · 40% 이상 넷이에요. 칸끼리 겹치지 않아요. 10%대는 10% 이상 20% 밑이에요.',
+    '값이 빈 날 · 거래가 없던 날 · 하루 35% 넘게 바뀐 날이 있거나, 새로 상장했거나, 석 달 안에 오래 멈췄던 곳은 빼요. 평소 하루 거래가 1억 원이 안 되는 곳도 빼요.',
+    `칸마다 많이 오른 차례로 ${BS.cap}곳까지 실어요. 채우려고 문턱을 낮추지 않아요.`,
+    '하루 4번 업데이트 때 다시 세요. 다른 칸으로 간 곳은 「옮김」으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.',
+    '급등 칸과 따로 세요. 급등 칸은 들어오는 문 · 나가는 문이 따로 있어서, 한 회사가 급등 칸과 이 칸에서 다르게 보일 수 있어요.',
+    '센 것일 뿐 다음 날을 말하지 않아요.'].map(t => h('p', {text: t})))));
+  v.append(foot({src: isDay(S.window?.[0]) && isDay(S.asOf) ? `${name} 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null}));
 }
 /** 업데이트 탭 한 줄 — 그 회차의 급등 고르기(규칙 69) */
 const surgeRecLine = s => (s.kind === 'fail' ? `? 급등 탭 — 셈이 멈춰 앞에 고른 그대로 둠${s.why ? ` · ${s.why}` : ''}`
-  : `급등 탭 — ${s.kind === 'first' ? `처음 고름 ${s.n ?? '?'}곳` : `새로 든 곳 ${s.in?.length ?? 0} · 빠진 곳 ${s.out?.length ?? 0} · 모두 ${s.n ?? '?'}곳`}${s.published === false ? ' · ? 점검에 걸려 올라가지 않음' : ''}`);
+  : `급등 탭 — ${s.kind === 'first' ? `처음 고름 ${s.n ?? '?'}곳` : `새로 든 곳 ${s.in?.length ?? 0} · 빠진 곳 ${s.out?.length ?? 0} · 모두 ${s.n ?? '?'}곳`}${s.bands ? ` · 네 칸 ${s.bands.kind === 'first' ? '처음 고름' : `든 ${s.bands.in ?? 0} · 빠짐 ${s.bands.out ?? 0} · 옮김 ${s.bands.move ?? 0}`}` : ''}${s.published === false ? ' · ? 점검에 걸려 올라가지 않음' : ''}`); // 네 칸(16:28 · 16:34 「선택됐다 탈락 됐다 이동 했다」)
 async function viewUpdates(v) {
   await needUpd();
   const U = D.upd, R = U.records, last = R[0];
@@ -1723,6 +1964,7 @@ async function route() {
   if (hsh.startsWith('#/x/')) { await Promise.allSettled([needNames(), D.core.mkt ? needMkt() : null]); /* 못 받으면 아래에서 ? · 업종 줄 없음 */ const xc = dec(hsh.slice(4)); if (xc && D.core.co7 && D.mkt?.[xc]) { location.replace('#/c/' + xc); return; } /* 모든 회사 7단 — 옛 밖 칸 주소는 회사로 */ showInfo(xc ?? '?'); return; }
   for (const id of ['findSheet', 'infoSheet']) { const s = $('#' + id); if (!s.hidden) { s.hidden = true; delete document.body.dataset.sheet; } }
   if (hsh === lastMain && $('#view').childElementCount) return;
+  const from = lastMain; if (typeof svLeave === 'function') svLeave(from); // 급등 칸 자리 기억(뒤로 오면 그 자리)
   lastMain = hsh;
   const my = ++routeSeq, root = $('#view'); root.textContent = ''; chartDraw = null;
   const v = h('div', {class: 'vw'}); root.append(v); // 길마다 새 칸 — 늦게 끝난 앞 화면은 떨어진 칸에 그려져 보이지 않음(구글팀: 두 화면이 겹치던 것)
@@ -1736,7 +1978,7 @@ async function route() {
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
     else if (kind === '36') { location.replace('#/'); return; } // 지운 화면(사장님 2026-10-13 06:45 「영구 삭제」) — 옛 주소는 첫 화면으로
     else if (kind === 'up') { $('#tabUp').setAttribute('aria-current', 'page'); await viewUpdates(v); }
-    else if (kind === 'surge') { $('#tabSurge').setAttribute('aria-current', 'page'); await viewSurge(v); } // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개」 · 규칙 69)
+    else if (kind === 'surge') { $('#tabSurge').setAttribute('aria-current', 'page'); const t = !arg ? 'sv' : /^(10|20|30|40)$/.test(arg) ? 'b' + arg : null; if (t) await viewSurge(v, t); else viewMissing(v); } // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개」 · 규칙 69)
     else if (kind === 'time') await viewTime(v);
     else if (kind === 'g') viewGroup(v, arg);
     else if (kind === 'i') await viewIndustry(v, arg);
@@ -1751,6 +1993,7 @@ async function route() {
   if (my !== routeSeq) return; // 그 사이 다른 화면으로 갔음 — 제목 · 자리 · 초점을 건드리지 않음
   opening.remove();
   window.scrollTo(0, 0);
+  if (typeof svBack === 'function') svBack(hsh, from); // 회사에서 급등 칸으로 돌아오면 그 자리(새 눈 점검 3)
   document.title = v.querySelector('.m4-letter') ? '한눈에 · ATLAS' : (v.querySelector('h1')?.textContent || 'ATLAS') + ' · ATLAS'; // 첫 화면은 아래 탭 이름 그대로(머리 「시장」은 칸 이름)
   try { root.focus({preventScroll: true}); } catch { /* 초점 못 옮김 */ } // 화면 읽기가 새 화면 제목부터
 }

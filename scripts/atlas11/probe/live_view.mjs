@@ -231,6 +231,26 @@ await step('급등 탭', async () => { // 규칙 69(사장님 2026-10-15 14:27 �
   out.surge.ok = S.version === 'sv-v1' && g.h1 === `급등 ${S.n}곳` && g.tab === `급등 ${S.n}` && g.win === 0 && g.inView && out.surge.rowsSame && out.surge.noAgency;
   if (!out.surge.ok) out.errors.push('급등 탭: ' + JSON.stringify(out.surge).slice(0, 300));
 });
+await step('급등 다섯 칸', async () => { // 사장님 2026-10-15 16:28 「총 5개」 · 16:34 「달력에 기록 … 매일 매일 선택됐다 탈락 됐다 이동 했다」 · 16:40 「관심 없음」 — 올라간 자료(surge.json bands · surgecal.json)와 화면이 같은지 · 다섯 칸 한 줄 · 달력 · 며칠 뒤
+  const S = await (await fetch(B + '/atlas/data/surge.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)})).json();
+  const cr = await fetch(B + '/atlas/data/surgecal.json?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)}), K = cr.ok ? await cr.json() : null;
+  const NAME = {b10: '10%대', b20: '20%대', b30: '30%대', b40: '40% 이상'}, bands = {};
+  await page.goto(B + '/?v=' + Date.now() + '#/surge', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view .sv-wk', {timeout: 30000}); await page.waitForTimeout(800);
+  const main = await page.evaluate(() => ({chips: [...document.querySelectorAll('#view nav.sv-chips a')].map(a => [a.getAttribute('href'), a.textContent.trim()]), rows: new Set([...document.querySelectorAll('#view nav.sv-chips a')].map(a => Math.round(a.getBoundingClientRect().top))).size,
+    cells: document.querySelectorAll('#view .sv-wk button.sv-cell').length, track: !!document.querySelector('#view .sv-trs'), text: document.querySelector('#view').innerText}));
+  await page.evaluate(() => { const e = document.querySelector('#view .sv-cal'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 120); }); await page.waitForTimeout(400); await shot('p31-surge-cal');
+  await page.evaluate(() => { const e = document.querySelector('#view .sv-trs'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 220); }); await page.waitForTimeout(400); await shot('p32-surge-track');
+  for (const b of ['b10', 'b20', 'b30', 'b40']) {
+    await page.goto(B + '/?v=' + Date.now() + '#/surge/' + b.slice(1), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view h1', {timeout: 30000}); await page.waitForTimeout(700);
+    if (b === 'b10') await shot('p33-surge-10');
+    const g = await page.evaluate(() => ({h1: (document.querySelector('#view h1')?.textContent ?? '').replace(/\u2060/g, '').replace(/\u00a0/g, ' '), cur: document.querySelector('#view nav.sv-chips a[aria-current="page"]')?.getAttribute('href') ?? '', win: document.querySelectorAll('#view .row.win').length,
+      rows: [...document.querySelectorAll('#view .board .row')].sort((a, c) => a.getBoundingClientRect().top - c.getBoundingClientRect().top).map(x => x.querySelector('.nm')?.firstChild?.textContent ?? ''), cells: document.querySelectorAll('#view .sv-wk button.sv-cell').length, sw: document.documentElement.scrollWidth, cw: innerWidth}));
+    const B0 = S.bands?.[b]; bands[b] = {h1: g.h1, ok: !!B0 && g.h1 === `${NAME[b]} ${B0.n}곳` && g.cur === '#/surge/' + b.slice(1) && g.win === 0 && JSON.stringify(g.rows) === JSON.stringify(B0.members.map(m => m.n)) && g.cells >= 1 && g.sw <= g.cw};
+  }
+  out.surge5 = {bands: S.bands?.version ?? null, cal: K?.version ?? null, calStatus: cr.status, days: K?.days?.length ?? null, track: K?.track?.length ?? null, tracked: K?.track?.filter(t => t.path?.length).length ?? null, chips: main.chips.map(x => x[1]).join(' '), oneRow: main.rows === 1, cells: main.cells, trackBox: main.track, each: bands};
+  out.surge5.ok = S.bands?.version === 'sb-v1' && K?.version === 'sk-v1' && main.chips.length === 5 && main.rows === 1 && main.cells >= 1 && main.track && Object.values(bands).every(x => x.ok) && !/CIA|씨아이에이|정보기관|중앙정보국/i.test(main.text);
+  if (!out.surge5.ok) out.errors.push('급등 다섯 칸: ' + JSON.stringify(out.surge5).slice(0, 400));
+});
 await step('옛 판', async () => {
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
 });

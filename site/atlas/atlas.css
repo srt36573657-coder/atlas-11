@@ -1348,3 +1348,65 @@ html:not(.m4) .vw:has(ol.st li:nth-child(7).now) .foot::before, html:not(.m4) .v
 .vw ul.sv-see .m { color: var(--mute); }
 .vw ol.sv-hist { margin-top: 8px; }
 .vw .sv-how .in p { margin: 0 0 10px; }
+/* ── 급등 다섯 칸 · 날마다 달력 · 며칠 뒤(사장님 2026-10-15(싱가포르) 16:28 「총 5개」 · 16:34 「달력에 기록 … 매일 매일 선택됐다 탈락 됐다 이동 했다」 · 16:40 「관심 없음 버트을 클릭하면 없어지는구조」 · 규칙 69 덧붙임)
+   다섯 칸 = 화면 맨 위 둥근 고리 다섯(아래 탭은 넷 그대로) · 달력 = 월 ~ 금 다섯 줄 · 칸은 44px 넘게(작은 네모 판 아님 — 규칙 51) · 글은 모두 21px(1rem) · 빨강 · 파랑은 오름 · 내림에만 */
+.vw nav.sv-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 2px 0 14px; }
+.vw a.sv-chip { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; padding: 0 2px; border: 1px solid var(--m4-line); border-radius: 999px; color: var(--sub); white-space: nowrap; text-decoration: none; font-size: 21px; } /* 다섯 칸은 늘 한 줄(글씨 크기 단추와 상관없이 21px — 위 막대 이름표처럼) */
+.vw a.sv-chip[aria-current="page"] { border-color: var(--ink); color: var(--ink); font-weight: 600; background: var(--card); }
+.vw a.sv-chip:hover { border-color: var(--sub); }
+.vw .sv-cal { margin-top: 10px; }
+.vw .sv-wk { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.vw .sv-wk.hd { margin-bottom: 4px; }
+.vw .sv-wk.hd span { text-align: center; color: var(--mute); line-height: 1.4; font-size: 21px; }
+.vw .sv-cell { min-height: 64px; padding: 6px 2px 8px; border-radius: 10px; border: 1px solid var(--m4-soft); background: none; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px; text-align: center; color: var(--mute); font: inherit; font-size: 21px; line-height: 1.2; } /* 달력 칸 글은 21px 그대로(글씨 크기 단추와 상관없이 — 아주 크게에서 「10월」이 칸 밖으로 · 「든 / 33」이 갈리던 것 · 새 눈 점검 13) */
+.vw .sv-cell.blank { border-color: transparent; }
+.vw button.sv-cell { cursor: pointer; background: var(--card); color: var(--sub); }
+.vw button.sv-cell:hover { border-color: var(--sub); }
+.vw button.sv-cell[aria-pressed="true"] { border: 2px solid var(--ink); padding: 5px 1px 7px; }
+.vw .sv-cell .mo { color: var(--mute); }
+.vw .sv-cell .dn { color: var(--sub); }
+.vw button.sv-cell .dn { color: var(--ink); }
+.vw .sv-cell .ci { color: var(--ink); font-weight: 600; white-space: normal; }
+.vw .sv-cell .co { color: var(--sub); white-space: normal; }
+.vw .sv-cell .cx { color: var(--mute); }
+.vw .sv-ckey { margin-top: 10px; }
+.vw .sv-day { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--m4-line); }
+.vw .sv-day .sv-dh { margin: 0; }
+.vw .sv-day .sv-dh b { font-weight: 600; color: var(--ink); }
+.vw .sv-day .sv-ut { margin: 14px 0 0; color: var(--mute); }
+.vw .sv-nl .sv-in { margin: 6px 0 0; }
+.vw .sv-nl details.more { margin-top: 4px; }
+.vw .sv-in a.inl, .vw .sv-g a.inl, .vw ul.sv-ml a.inl { min-width: 44px; justify-content: center; }
+.vw .sv-nl a.inl { max-width: 100%; overflow-wrap: anywhere; } /* 아주 긴 이름(한화머시너리앤서비스홀딩스)도 화면 안에서 줄을 바꿈(새 눈 점검 6) */
+.vw .sv-io { margin: 10px 0 0; color: var(--sub); }
+.vw .sv-io b { color: var(--ink); font-weight: 600; }
+.vw #svCalH, .vw #svTrkH { scroll-margin-top: 72px; }
+.vw p.sv-jump { margin: 8px 0 0; }
+.vw button.sv-go { min-height: 44px; min-width: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--m4-line); background: none; color: var(--sub); font: inherit; font-size: 21px; cursor: pointer; white-space: nowrap; }
+.vw button.sv-go:hover { border-color: var(--sub); color: var(--ink); }
+/* 급등 줄 — 「새로」 「? 장 중」 꼬리표는 이름 밑 줄로(이름을 줄이지 않음 — 새 눈 점검 1) · 줄 높이는 모두 같게(경주판 자리 셈) */
+.vw .sv-board .board.wide .row { --roww: 4.7rem; }
+html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
+.vw .sv-board .board .row .nm { flex-wrap: wrap; align-content: center; row-gap: 2px; white-space: normal; }
+.vw .sv-board .board .row .nm > .nt { flex: 0 0 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; line-height: 1.25; }
+.vw .sv-board .board .row .nm > .badge { margin-left: 0; margin-right: 6px; }
+.vw .sv-tl { color: var(--sub); margin-left: 8px; }
+.vw ul.sv-ml { list-style: none; margin: 2px 0 0; padding: 0; }
+.vw ul.sv-ml li { margin: 0; padding: 0; line-height: 1.5; }
+.vw .sv-trs { margin-top: 6px; }
+.vw .sv-grp .in { padding-top: 0; }
+.vw .sv-trt { grid-area: top; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; }
+.vw .sv-tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'top top' 'sub sub' 'sp v'; column-gap: 12px; row-gap: 4px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--m4-soft); } /* 이름 옆은 21px 단추만 · 칸 글은 한 줄을 다 씀(좁은 칸에서 낱말 가운데 갈리던 것 — 새 눈 점검 8) */
+.vw .sv-tr .sub span { display: block; }
+.vw .sv-ph { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--m4-soft); color: var(--sub); box-sizing: border-box; }
+.vw button.sv-undo { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--sub); background: none; color: var(--ink); font: inherit; cursor: pointer; white-space: nowrap; }
+.vw .sv-tr a.nm { display: inline-block; box-sizing: border-box; min-height: 44px; min-width: 44px; padding: 8px 0; line-height: 1.35; max-width: 100%; color: var(--ink); text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 5px; overflow-wrap: break-word; } /* break-word — 최소 폭 = 이름 전체(단추가 먼저 밑으로) · 줄 하나보다 긴 이름만 그 안에서 줄을 바꿈 */
+.vw .sv-tr .v { grid-area: v; text-align: right; white-space: nowrap; }
+.vw .sv-tr .v .dd { color: var(--sub); }
+.vw .sv-tr .sub { grid-area: sub; margin: 0; color: var(--sub); }
+.vw .sv-tr svg.spk { grid-area: sp; display: block; width: 100%; height: 40px; overflow: visible; }
+.vw .sv-tr button.sv-hide, .vw .sv-g button.sv-show { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--m4-line); background: none; color: var(--sub); font: inherit; font-size: 21px; cursor: pointer; white-space: nowrap; align-self: start; } /* 단추 글은 21px 그대로 — 이름 칸을 좁히지 않게 */
+.vw .sv-tr button.sv-hide { margin-left: auto; }
+.vw .sv-tr button.sv-hide:hover, .vw .sv-g button.sv-show:hover { border-color: var(--sub); color: var(--ink); }
+.vw .sv-g { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 4px 0; border-bottom: 1px solid var(--m4-soft); }
+.vw .sv-g:last-child { border-bottom: 0; }
