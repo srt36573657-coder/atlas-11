@@ -717,7 +717,7 @@ if (home) {
   const r7 = await p.evaluate(() => document.body.innerText);
   screens += 2; numbers += 4;
   if (r.hash !== '#/' && r.hash !== '') fail('36곳 없음', `옛 주소 #/36 이 첫 화면으로 가지 않음(${r.hash})`);
-  if (!(r.tabs.length === 4 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트' && r.tabs[3] === (surge?.n != null ? '급등 ' + surge.n : '급등'))) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · ')); // 탭 넷(2026-10-15 14:27 급등 탭 · 규칙 69 — 옛 「매수 검토 36곳」 탭은 그대로 없음)
+  if (!(r.tabs.length === 5 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트' && r.tabs[3] === (surge?.n != null ? '급등 ' + surge.n : '급등') && r.tabs[4] === '달력')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · ')); // 탭 다섯(2026-10-15 14:27 급등 탭 · 규칙 69 · 19:36 「가 로 해라」 달력 탭 · 규칙 70 — 옛 「매수 검토 36곳」 탭은 그대로 없음)
   if (has36(r.all + r7)) fail('36곳 없음', '지운 36곳 화면 글이 보임'); // 「136곳」(07:4x) · 「36곳 내림」(14:2x) 같은 셈 글은 아님 — 옛 화면 글 목록으로 봄
   if (asked.some(u => /pick36/.test(u)) || !asked.some(u => /\/range\.json/.test(u))) fail('36곳 없음', '자료 받기 — pick36.json 을 받거나 range.json 을 안 받음');
   if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);

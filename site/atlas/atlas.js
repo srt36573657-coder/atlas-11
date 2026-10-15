@@ -1969,7 +1969,7 @@ async function route() {
   const my = ++routeSeq, root = $('#view'); root.textContent = ''; chartDraw = null;
   const v = h('div', {class: 'vw'}); root.append(v); // 길마다 새 칸 — 늦게 끝난 앞 화면은 떨어진 칸에 그려져 보이지 않음(구글팀: 두 화면이 겹치던 것)
   const opening = h('p', {class: 'boot'}, MO.cat('white', 34), ' 여는 중입니다…'); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
-  for (const t of ['#tabHome', '#tabList', '#tabSurge', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
+  for (const t of ['#tabHome', '#tabList', '#tabSurge', '#tabUp', '#tabCal']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, raw] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [], arg = dec(raw ?? '');
     document.documentElement?.classList?.toggle('m4', !kind); document.querySelector?.('meta[name="theme-color"]')?.setAttribute('content', '#0C0E12'); // 첫 화면 꾸밈(html.m4)은 첫 화면에만 · 색(먹빛)과 휴대폰 위 띠 색은 모든 화면(2026-10-15 12:43 「모든 화면을 바꿔」) · 네 눈 CIA 눈의 길 흔들기(브라우저 없이 route 를 돌림)에서도 멈추지 않게 ?.
@@ -1998,6 +1998,8 @@ async function route() {
   try { root.focus({preventScroll: true}); } catch { /* 초점 못 옮김 */ } // 화면 읽기가 새 화면 제목부터
 }
 
+/** 탭 이름 뒤 수 — 「업종」 + 「 77」(수는 따로 칸 · 320 폭에서는 숨김 · 글은 「업종 77」 그대로) */
+function tabNum(sel, name, n) { const a = $(sel); if (!a) return; a.textContent = name; a.append(h('span', {class: 'tabn', text: ' ' + n})); }
 async function boot() {
   try { const lg = new URLSearchParams(location.search).get('lang'); if (lg && lg !== 'ko') { location.replace('/old/' + location.search + location.hash); return; } } catch { /* 주소 못 읽음 */ }
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }
@@ -2012,7 +2014,7 @@ async function boot() {
   let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (chartDraw) chartDraw(); }, 200); });
   addEventListener('hashchange', route);
   document.querySelector('.tabbar')?.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (!a) return; if (a.getAttribute('href') === (location.hash || '#/')) { e.preventDefault(); window.scrollTo({top: 0, behavior: RM.matches ? 'auto' : 'smooth'}); } });
-  try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; needSurge().then(() => { if (D.surge?.n != null) $('#tabSurge').textContent = '급등 ' + D.surge.n; }).catch(() => {}); } // 급등 탭 이름 = 고른 수(못 받으면 「급등」 그대로)
+  try { D.core = await getJson('core.json'); tabNum('#tabList', '업종', D.core.industries.length); needSurge().then(() => { if (D.surge?.n != null) tabNum('#tabSurge', '급등', D.surge.n); }).catch(() => {}); } // 급등 탭 이름 = 고른 수(못 받으면 「급등」 그대로)
   catch (e) { console.error(e); const v = $('#view'); v.textContent = ''; const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => location.reload()); v.append(MO.catSleep(72), h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요.'}), again); return; }
   await route();
   setTimeout(() => { needComp().catch(() => {}); }, 400);
