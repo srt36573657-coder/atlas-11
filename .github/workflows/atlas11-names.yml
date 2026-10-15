@@ -4,8 +4,17 @@
 #   결과는 public/data/atlas11/names-kr.json 한 파일만 적는다 — 판 · 기록 파일은 건드리지 않는다. 사이트에 올리지는 않는다.
 #   예약(cron)은 두지 않는다 — 회사 목록이 바뀌었을 때만 「Run workflow」(docs/ATLAS_원칙.md 규칙 7).
 name: 한국 회사 영어 이름 받기
+#   2026-10-15(싱가포르) 23:35 사장님 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」 — 입력 scope=all 이면 새 ATLAS 찾기 목록 모두(회사 주식 · 그 밖)를
+#   scripts/atlas11/t365/names_en.mjs 로 받아 public/data/atlas11/names-en-all.json 한 파일만 적는다(옛 365곳 받기는 그대로).
 on:
   workflow_dispatch:
+    inputs:
+      scope:
+        description: 'old365 = 옛 365곳(names-kr.json) · all = 새 ATLAS 찾기 목록 모두(names-en-all.json)'
+        required: false
+        default: old365
+        type: choice
+        options: [old365, all]
 permissions:
   contents: write
 concurrency:
@@ -14,21 +23,26 @@ concurrency:
 jobs:
   names:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 110
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: 영어 이름 받기(365곳)
+        if: inputs.scope != 'all'
         run: timeout 1500 node scripts/atlas11/collect_names.mjs
-      - name: 기록 올리기(public/data/atlas11/names-kr.json 만)
+      - name: 영어 이름 받기(새 ATLAS 찾기 목록 모두)
+        if: inputs.scope == 'all'
+        run: timeout 6000 node scripts/atlas11/t365/names_en.mjs --jobs 3
+      - name: 기록 올리기(names-kr.json · names-en-all.json 만)
         if: always()
         run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
-          [ -f public/data/atlas11/names-kr.json ] || { echo "받은 것 없음"; exit 1; }
-          git add -f public/data/atlas11/names-kr.json
-          git commit -q -m "atlas11 names kr [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          F=public/data/atlas11/names-kr.json; [ "${{ inputs.scope }}" = all ] && F=public/data/atlas11/names-en-all.json
+          [ -f "$F" ] || { echo "받은 것 없음"; exit 1; }
+          git add -f "$F"
+          git commit -q -m "atlas11 names ${{ inputs.scope || 'old365' }} [skip ci]" || { echo "올릴 것 없음"; exit 0; }
           for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
           exit 1
