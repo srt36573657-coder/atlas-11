@@ -64,7 +64,7 @@ test('요즘 오르는 업종 — 화면 코드 · 길 지도(오른 업종 · �
   assert.match(home, /function m4rise\(v\)/); assert.match(home, /m4head\('h2', '요즘 오르는 업종'/); assert.match(home, /href = i \? hrefInd\(i\) : '#\/list'/); assert.match(home, /RI\??\.list/);
   assert.match(home, /function m4groups\(v\)/); assert.match(home, /href: '#\/g\/' \+ g\.id/);
   assert.ok(!/\bseg\(/.test(home), '첫 화면에 「큰 회사는 크게」 단추 없음'); assert.ok(!/C\.groups\.map\(g => \(\{key: g\.id/.test(home), '큰 갈래 경주 줄 없음');
-  assert.match(js, /function race\(host, \{items, parent, wide = false, label, onTick, onDone, auto = false, n: nDays = null\}\)/);
+  assert.match(js, /function race\(host, \{items, parent, wide = false, label, onTick, onDone, auto = false, n: nDays = null(, win = true)?\}\)/); // win = 맨 위 줄 빛(급등 탭은 끔 · 규칙 69)
   const c = J(path.join(DATA, 'core.json'));
   const S = {core: c, comp: J(path.join(DATA, 'comp.json')), range: {}, home: null, mkt: c.mkt ? J(path.join(DATA, 'mkt.json')) : null}; S.codes = Object.keys(S.comp.companies); S.mk = S.mkt?.companies ?? null;
   S.gid = new Map(c.groups.map(g => [g.id, g])); S.iby = new Map(c.industries.map(i => [i.name, i]));

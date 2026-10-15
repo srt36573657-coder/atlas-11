@@ -104,6 +104,8 @@ async function coEntry(code) {
 function needComp() { if (!compP) compP = Promise.all([getJson('comp.json'), getJson('lines.json')]).then(([c, l]) => { D.comp = c.companies; D.lines = l.lines; D.linesAsOf = l.asOf; }).catch(e => { compP = null; throw e; }); return compP; }
 // grow.json(회사 성장 요약)은 화면에서 읽지 않음 — 7단부터 회사마다 co/<번호>.json 의 grow 를 씀(자료 따로 세기 · 올린 뒤 확인에는 남음)
 function needUpd() { if (!updP) updP = getJson('updates.json').then(u => { D.upd = u; }).catch(e => { updP = null; throw e; }); return updP; }
+let surgeP = null; // 급등 탭 자료(surge.json · 규칙 69 — 하루 4번 업데이트 때 고른 그대로)
+function needSurge() { if (!surgeP) surgeP = getJson('surge.json').then(s => { D.surge = s; }).catch(e => { surgeP = null; throw e; }); return surgeP; }
 function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D.names = n; prepNames(); }).catch(e => { namesP = null; throw e; }); return namesP; }
 
 // ── 경주판(잡스팀) — 줄 하나 = 갈래 · 업종 · 회사 하나 · 가운데 = 기준일(20거래일 전)과 같음 ──
@@ -112,7 +114,7 @@ function needNames() { if (!namesP) namesP = getJson('names.json').then(n => { D
 //   items: [{key, name, href, v:[21], cw:[21], badge, gold, pk}] · parent: {v, cw}(흰 점선) · wide: 이름이 긴 줄(두 줄 모양)
 //   gold = 금빛 이름표 글(고른 곳 · 고른 n곳) · pk = 줄 왼쪽 금빛 띠(고른 회사 · 고른 곳이 든 업종 — 2026-10-14 「나」)
 const SPW = 100, SPH = 30; // 줄 선 그래프 viewBox(늘여 그림 · 선 굵기는 그대로)
-function race(host, {items, parent, wide = false, label, onTick, onDone, auto = false, n: nDays = null}) { // nDays = 줄 선 칸 수(없으면 20거래일 창 · 요즘 오르는 업종 = 1주 6칸)
+function race(host, {items, parent, wide = false, label, onTick, onDone, auto = false, n: nDays = null, win = true}) { // win = 맨 위 줄 빛(급등 탭은 끔 — 1등 빛 없음 · 브리핑 눈) // nDays = 줄 선 칸 수(없으면 20거래일 창 · 요즘 오르는 업종 = 1주 6칸)
   const C = D.core, n = nDays ?? C.dates.length;
   const board = h('div', {class: 'board' + (wide ? ' wide' : ''), role: 'group', 'aria-label': label}); // 줄은 링크 그대로(구글팀 2026-10-12: role=listitem 이 링크를 가렸음)
   const scale = arrs => Math.max(5, Math.ceil(Math.max(0, ...arrs.flat().filter(x => x != null).map(x => Math.abs(x - 100))) * 1.06));
@@ -160,7 +162,7 @@ function race(host, {items, parent, wide = false, label, onTick, onDone, auto = 
     cancelAnimationFrame(raf); playing = false; board.classList.remove('playing');
     const order = paint(n - 1, true);
     rows.forEach(r => r.row.classList.remove('win'));
-    if (order[0]) { void order[0].row.offsetWidth; order[0].row.classList.add('win'); }
+    if (win && order[0]) { void order[0].row.offsetWidth; order[0].row.classList.add('win'); }
     clearTimeout(reo); reo = setTimeout(() => { if (!playing && board.isConnected) order.forEach(r => board.append(r.row)); }, 700); // 누름(Tab) 차례 = 보이는 차례(구글팀) — 움직임이 끝난 뒤에 줄을 다시 꽂음
     if (done) { const f = done; done = null; f(order); }
     if (onDone) onDone(order);
@@ -234,11 +236,11 @@ function lineChart(host, {v, avg, label, noPick = false}) {
 }
 
 // ── 공통 조각 ──
-function foot() {
+function foot({src = null} = {}) { // src = 그 화면만의 자료 줄(급등 탭 — 규칙 69 · 없으면 사이트 바탕 회사 줄)
   const C = D.core;
   return h('footer', {class: 'foot'}, footFriends(),
     h('p', {class: 'links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/old/', text: '옛 ATLAS'}), h('a', {href: '/us/', text: '미국 판'})),
-    h('p', {text: `자료: ${C.sources.price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
+    h('p', {text: src ? `자료: ${C.sources.price} · ${src}.` : `자료: ${C.sources.price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
     h('p', {text: '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.'}));
 }
@@ -1242,6 +1244,134 @@ function namesLine(list, max = 6) { return list.slice(0, max).map(x => x.n).join
 const manText = n => (n >= 1e4 && n % 1e4 === 0 ? (n / 1e4).toLocaleString('ko-KR') + '만' : Number(n).toLocaleString('ko-KR')); // 10000000 → 1,000만
 /** 네 눈 점검 한 줄(사장님 2026-10-12 12:41 「업데이트 할때마다 아틀란스 점검을 애플 구글 클로드 cia방식으로 각각 1000만번씩」) */
 const inspectLine = (I, all) => `네 눈 점검(눈마다 ${manText(I.nEach)} 번) — ` + (all || I.fail ? I.lenses.filter(l => all || l.fail).map(l => `${l.name} ${l.fail ? '걸림 ' + l.fail.toLocaleString('ko-KR') + '건' : '이상 없음'}`).join(' · ') : '모두 이상 없음');
+// ── 급등 탭(사장님 2026-10-15 14:27(싱가포르) 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 모아높는곳이다 … 하루에 4번 업데이트할때미다 그때 선택도 하고 탈락도 시켜라」 · 규칙 69)
+//   일꾼 여섯(분석 · 방첩 · 수집 실험 · 경보 · 레드 셀 · 브리핑)이 따로 → 결정표 → 반대만 받는 토론 한 판 → 결정표 v2(sv-v1)
+//   한 장 차례(다섯 질문): 머리(때 한 줄 · 판단 한 문단 · 정직 한 문장 · ? 한 줄) → 그림 「5일 오름 자」(첫 화면 안) → 들고 남 → 견줌(세 숫자) → 어떤 곳들(줄) → 조심할 것과 모르는 것 → 더 확인할 곳 → 지난 업데이트 → 어떻게 골랐나요?
+//   숫자는 모두 surge.json(surge.py 셈 · surge_verify.mjs 따로 셈) — 화면은 보여 주기만 · 차례 번호 · 1등 빛 · 「들어온 뒤 %」 · 그 뒤 기록 상자 · 기관 이름 없음 · 금빛은 「?」 「!」 · 장 중에 든 줄만
+const SV_LO = -20, SV_HI = 80; // 그림 자 — 5일 오름 %(곧은 눈금 · 넘는 곳은 끝에 쌓음)
+const svTime = S => (S.provisional && isTime(S.got) ? `${dayK(S.got)} ${ampm(S.got)}까지 · 장${NB}중` : isDay(S.asOf) ? `${md(S.asOf)} 장${NB}마감` : '?'); // 때 한 줄(브리핑 눈 — 같은 때를 두 번 쓰지 않음 · 고른 때는 아래 「지난 업데이트」)
+const svChange = S => (S.carry ? `목록은 ${kstLabel(S.carry.fromKst)}에 고른 그대로예요.`
+  : S.kind !== 'pick' ? '처음 고른 목록이에요.'
+  : (S.in?.length || S.out?.length) ? `${S.in.length}곳이 새로 들고 ${S.out.length}곳이 나갔어요.` : '이번에 바뀐 곳은 없어요.');
+const svNext = () => { const sl = D.surge?.rules?.slots ?? ['10:00', '12:00', '14:00', '18:00'], k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), wd = k.getUTCDay(), nx = sl.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m); return wd > 0 && wd < 6 && nx ? `오늘 ${nx}` : `다음 장날 ${sl[0]}`; };
+/** 그림 한 장 「5일 오름 자」(브리핑 눈) — 회색 산 = 값 있는 모든 회사가 몰린 곳(1%p 칸) · 점선 = 모든 회사 가운데값 · 진주 점선 = 들어오는 문턱 · 빨간 점 = 목록 한 곳(쌓음) · 진주 테 = 이번에 새로 */
+function svChart(host, S) {
+  host.textContent = '';
+  const T = tok(), M = S.members ?? [], wrap = h('div', {class: 'svr'}); host.append(wrap);
+  const W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 150, P = 12, base = H - 6, mtH = 54;
+  const X = x => P + (Math.max(SV_LO, Math.min(SV_HI, x)) - SV_LO) / (SV_HI - SV_LO) * (W - 2 * P);
+  const bins = S.bins ?? [], mx = Math.max(1, ...bins.map(b => b[1]));
+  const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': `5일 오름 — 모든 회사 가운데 ${pct(S.market?.med)} · 급등 ${M.length}곳 ${M.length ? `${pct(S.stats?.lo)} ~ ${pct(S.stats?.hi)}` : '없음'}${S.kind === 'pick' && S.in?.length ? ` · 새로 ${S.in.length}곳` : ''}`});
+  if (bins.length) { // 산 — 칸 가운데를 잇는 면 + 선(옅게)
+    const pts = bins.map(([x, c]) => [X(x + 0.5), base - c / mx * mtH]);
+    const d = `M${X(SV_LO).toFixed(1)} ${base}` + pts.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join('') + `L${X(SV_HI).toFixed(1)} ${base}Z`;
+    svg.append(sv('path', {d, fill: T.ink, 'fill-opacity': 0.08, stroke: T.sub, 'stroke-width': 1.2, 'stroke-linejoin': 'round'}));
+  }
+  svg.append(sv('line', {x1: P, x2: W - P, y1: base, y2: base, stroke: T['m4-line'], 'stroke-width': 1}));
+  if (S.market?.med != null) svg.append(sv('line', {x1: X(S.market.med), x2: X(S.market.med), y1: base - mtH - 8, y2: base, stroke: T.mute, 'stroke-width': 1.5, 'stroke-dasharray': '3 4'}));
+  if (S.rules?.enter != null) svg.append(sv('line', {x1: X(S.rules.enter), x2: X(S.rules.enter), y1: 6, y2: base, stroke: T.ink, 'stroke-opacity': 0.7, 'stroke-width': 1.5, 'stroke-dasharray': '2 4'}));
+  const R = 4.6, col = new Map(), dots = [], keyOf = m => (m.r5 > SV_HI ? 'hi' : Math.floor(m.r5 / 2));
+  const tall = Math.max(1, ...(() => { const c = new Map(); for (const m of M) c.set(keyOf(m), (c.get(keyOf(m)) ?? 0) + 1); return [...c.values()]; })());
+  const step = Math.min(2 * R + 1.6, (base - 12) / tall);
+  for (const m of [...M].sort((a, b) => a.r5 - b.r5 || (a.c < b.c ? -1 : 1))) {
+    const key = keyOf(m), k = col.get(key) ?? 0; col.set(key, k + 1);
+    const cx = key === 'hi' ? W - P - R : X(Math.floor(m.r5 / 2) * 2 + 1), cy = base - R - 1 - k * step, isNew = m.tag === 'new' && S.kind === 'pick';
+    svg.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: R, fill: T.up, stroke: isNew ? T.ink : T.night, 'stroke-width': isNew ? 2 : 1.2}));
+    dots.push({m, x: cx, y: cy});
+  }
+  wrap.append(svg);
+  // 글(HTML · 21px) — 문턱은 위 · 가운데값은 아래 왼쪽 · 끝(80% 넘게)에 쌓인 곳 수는 아래 오른쪽(좁은 화면에서도 겹치지 않게 넓이를 재어 자리 · 그래도 겹치면 끝 글을 범례 줄로)
+  const lab = h('div', {class: 'svl', 'aria-hidden': 'true'}), mk = (cls2, text) => { const e = h('span', {class: cls2 + ' num', text}); lab.append(e); return e; };
+  const th = S.rules?.enter != null ? mk('sv-th', `문턱 ${pct(S.rules.enter)}`) : null, md0 = S.market?.med != null ? mk('sv-md', `가운데 ${pct(S.market.med)}`) : null;
+  const nHi = M.filter(m => m.r5 > SV_HI).length, hi = nHi ? mk('sv-hi', `${SV_HI}% 넘게 ${nHi}곳`) : null;
+  wrap.append(lab);
+  const tip = h('div', {class: 'tip num'}); tip.hidden = true; wrap.append(tip);
+  const place = () => {
+    const at = (e, x, top) => { const w = e.offsetWidth || 80, L = Math.max(0, Math.min(W - w, x - w / 2)); st(e, {left: L + 'px', [top ? 'top' : 'bottom']: '0'}); return [L, L + w]; };
+    if (th) { const w = th.offsetWidth || 120, x = X(S.rules.enter), L = x + 6 + w <= W ? x + 6 : Math.max(0, x - 6 - w); st(th, {left: L + 'px', top: '0'}); } // 문턱 글은 그림 위쪽 빈 곳 · 점선 오른쪽(위 띠를 없애 그림을 첫 화면 안으로 · 새 눈 점검 1)
+    const m = md0 ? at(md0, X(S.market.med), false) : null;
+    if (hi) { hi.hidden = false; const w = hi.offsetWidth || 120, L = W - w; st(hi, {left: L + 'px', bottom: '0'});
+      if (m && m[1] + 8 > L) { const L2 = Math.max(0, L - 8 - (m[1] - m[0])); st(md0, {left: L2 + 'px'}); if (L2 + (m[1] - m[0]) + 8 > L) hi.hidden = true; } }
+  };
+  place(); requestAnimationFrame(place);
+  const near = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * W / r.width, y = (ev.clientY - r.top) * H / r.height; let best = null, bd = 18 * 18; for (const d of dots) { const q = (d.x - x) ** 2 + (d.y - y) ** 2; if (q < bd) { bd = q; best = d; } } return best; };
+  svg.addEventListener('pointerdown', ev => { const d = near(ev); if (!d) { tip.hidden = true; return; } tip.hidden = false; tip.textContent = `${d.m.n} ${pct(d.m.r5)}`; const r = svg.getBoundingClientRect(); tip.style.left = Math.min(r.width - 80, Math.max(80, d.x * r.width / W)) + 'px'; });
+  svg.addEventListener('pointerleave', ev => { if (ev.pointerType === 'mouse') tip.hidden = true; }); // 손가락으로 누르면 떼는 순간 pointerleave 가 와서 바로 숨던 것(새 눈 점검 2) — 마우스만 숨김
+}
+const svRow = (o, showPct) => h('a', {class: 'sv-row', href: cHref(o.c)}, h('span', {class: 'top'}, h('span', {class: 'nm', text: o.n}), showPct ? (o.r5 == null ? h('b', {class: 'num q', text: '?'}) : pctEl(o.r5)) : null), h('span', {class: 'why' + (/^\?/.test(o.why) ? ' q' : ''), text: o.why}), h('span', {class: 'chev', 'aria-hidden': 'true', text: '›'}));
+async function viewSurge(v) {
+  await needSurge();
+  const S = D.surge, M = S.members ?? [], n = M.length, F = S.facts ?? {}, cap = S.cap ?? n, FU = S.funnel ?? {}, CUT = S.cut ?? {};
+  // ① 무엇이 변했나 — 때 한 줄 · 판단 한 문장 → 바로 그림(어떤 글씨 크기에서도 첫 화면 안 · 새 눈 점검 1) → 정직 한 문장 · 「?」
+  v.append(h('h1', {class: 'head', text: `급등 ${n}곳`}), h('p', {class: 'count', text: svTime(S)}));
+  v.append(h('p', {class: 'sv-lead', text: n ? `지난 5일 동안 ${n}곳이 ${pct(S.stats.lo)} ~ ${pct(S.stats.hi)} 올랐어요.` : '지난 5일 동안 문턱을 넘은 곳이 없어요.'}));
+  const host = h('div', {class: 'svc'}); v.append(host); svChart(host, S); chartDraw = () => svChart(host, S);
+  v.append(h('p', {class: 'lkey'}, h('span', {}, h('i', {class: 'l-dot'}), `급등 ${n}곳`), S.kind === 'pick' && S.in?.length ? h('span', {}, h('i', {class: 'l-dot new'}), '이번에 새로') : null, h('span', {}, h('i', {class: 'l-mt'}), `셀 수 있는 회사 ${(S.market?.n ?? 0).toLocaleString('ko-KR')}곳`)));
+  if (S.provisional) v.append(h('p', {class: 'sv-prov', text: '장 중 값이에요. 저녁 8시까지 바뀌어요.'})); // 장 중 = 회색 한 줄(금빛 아님 · 브리핑 눈)
+  v.append(h('p', {class: 'hon sv-hon', text: '사고팔 곳을 고른 목록이 아니에요.'}));
+  v.append(h('p', {class: 'q', text: '? 오른 까닭은 몰라요.'}));
+  if (D.core?.asOf && isDay(S.asOf) && S.asOf < D.core.asOf) v.append(h('p', {class: 'q', text: `? 이 목록은 ${md(S.asOf)} 값이에요. 그 뒤 값은 다음 업데이트에 들어가요.`})); // 목록이 사이트 값보다 늦음(새 눈 점검 7)
+  if (S.carry?.why) v.append(h('p', {class: 'q', text: '? ' + S.carry.why}));
+  if (S.strict) v.append(h('p', {class: 'q', text: '? 장 중에 든 곳이 장 마감 값으로 자주 빠져, 지금은 두 번 넘어야 들어와요.'}));
+  if (n < cap) v.append(h('p', {class: 'note', text: `오늘은 문턱을 넘은 곳이 ${n}곳뿐이에요. 억지로 채우지 않아요.`}));
+  // 들고 남 — 바뀐 수 한 문장 → 새로 든 곳 이름(회사 고리) → 나간 곳(접음) → 앞 날 장 중에 든 곳 다시 보기
+  v.append(h('p', {class: 'sv-chg', text: svChange(S)}));
+  if (S.kind === 'pick' && S.in?.length) { const p = h('p', {class: 'sv-in'}, h('b', {text: `새로 든 곳 ${S.in.length}곳`}), ' '); S.in.forEach((x, k) => { if (k) p.append(' · '); p.append(h('a', {class: 'inl', href: cHref(x.c), text: x.n})); }); v.append(p); }
+  if (S.out?.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `나간 곳 ${S.out.length}곳 — 까닭 보기`}), h('div', {class: 'in'}, ...S.out.map(o => svRow(o, true)))));
+  if (S.confirm?.n) v.append(h('p', {class: 'small', text: S.confirm.miss ? `${md(S.confirm.day)} 장 중에 든 ${S.confirm.n}곳 가운데 ${S.confirm.miss}곳은 그날 장 마감 값으로는 문턱 밑이었어요.` : `${md(S.confirm.day)} 장 중에 든 ${S.confirm.n}곳은 모두 그날 장 마감 값으로도 문턱을 넘었어요.`}));
+  // ② 견줌
+  v.append(h('h2', {class: 'sec', text: '다른 곳과 견주면?'}));
+  const trio = h('div', {class: 'trio'}, h('div', {}, h('span', {text: `급등 ${n}곳 가운데값`}), n ? pctEl(S.stats.med) : h('b', {class: 'num q', text: '?'})), h('div', {}, h('span', {text: '셀 수 있는 회사 가운데값'}), pctEl(S.market?.med)), h('div', {}, h('span', {text: '가장 적게 오른 곳'}), n ? pctEl(S.stats.lo) : h('b', {class: 'num q', text: '?'})));
+  v.append(trio); fitNums(trio);
+  // ③ 어떤 곳들인가요?
+  v.append(h('h2', {class: 'sec', text: '어떤 곳들인가요?'}));
+  if (n) {
+    v.append(h('p', {class: 'alt', text: `${n}곳 가운데 ${F.half ?? '?'}곳은 1년 사이 꼭대기의 반값 아래로 떨어진 적이 있어요.`}));
+    const mk = [['KOSDAQ', '코스닥'], ['KOSPI', '코스피']].map(([k, nm]) => [nm, M.filter(m => m.mk === k).length]).filter(x => x[1]), same = (S.sameInd ?? []).map(x => `${x[0]} ${x[1]}곳`);
+    v.append(h('p', {class: 'small', text: mk.map(([nm, c]) => `${nm} ${c}곳`).join(' · ') + (same.length ? ` · 같은 업종 3곳 이상: ${same.join(' · ')}` : '')}));
+    const W3 = S.why ?? {};
+    v.append(h('p', {class: 'small', text: `업종 전체가 함께 오른 곳 ${W3.ind ?? '?'}곳 · 업종과 따로 오른 곳 ${W3.co ?? '?'}곳${W3.mkt ? ` · 시장 전체와 함께 ${W3.mkt}곳` : ''}이에요. 오른 까닭은 몰라요.`}));
+    const box = h('div', {class: 'sv-board'}); v.append(box);
+    race(box, {items: M.map(m => ({key: m.c, name: m.n, href: cHref(m.c), v: m.v, cw: m.v, badge: S.kind === 'pick' && m.tag === 'new' ? '새로' : null, gold: S.provisional && m.prov ? '? 장 중' : null})), parent: S.market?.avg6 ? {v: S.market.avg6, cw: S.market.avg6} : null, wide: true, label: `급등 ${n}곳 — 5일 동안 많이 오른 차례`, n: 6, win: false});
+    v.append(h('p', {class: 'key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), '셀 수 있는 회사 가운데값'), h('span', {}, h('i', {class: 'k-b0'}), `5일 전(${md(S.window?.[0] ?? S.asOf)}) 값`)));
+  }
+  // ④ 조심할 것과 모르는 것 — 「!」마다 바로 밑에 그 이름(새 눈 점검 10) · 「?」
+  v.append(h('h2', {class: 'sec', text: '조심할 것과 모르는 것'}));
+  const chk = h('ul', {class: 'chk sv-chk'});
+  const li = (mark, b, t, names) => h('li', {}, h('span', {class: 'm' + (mark === '?' ? ' q' : ' w'), text: mark}), h('span', {}, h('b', {text: b + ' '}), t, names?.length ? h('span', {class: 'sv-nms', text: names.join(' · ')}) : null));
+  const warnN = M.filter(m => m.warn), liveN = M.filter(m => m.warnLive), downN = M.filter(m => m.d1 != null && m.d1 < 0);
+  if (warnN.length || liveN.length) chk.append(li('!', `거래소 경고 기준만큼 오른 곳 ${warnN.length}곳`, `— 5일 60% 또는 15일 100%로만 셌어요. 거래소가 실제로 경고했는지는 몰라요.${liveN.length ? ` 장 중 값으로만 닿은 곳은 ${liveN.length}곳이에요.` : ''}`, [...warnN, ...liveN].map(m => m.n)));
+  if (downN.length) chk.append(li('!', `마지막 날 내린 곳 ${downN.length}곳`, '— 5일로는 올랐지만 마지막 날은 내렸어요.', downN.map(m => m.n)));
+  if (F.one) chk.append(li('!', `하루에 몰려 오른 곳 ${F.one}곳`, '— 5일 오름의 대부분이 하루에 났어요.'));
+  if (F.quiet) chk.append(li('!', `거래가 덜 붙은 곳 ${F.quiet}곳`, '— 5일 거래가 평소의 2배도 안 됐어요.'));
+  if (F.reb) chk.append(li('!', `되오른 곳 ${F.reb}곳`, '— 5일 전에 이미 크게 빠져 있었어요.'));
+  chk.append(li('?', '오른 까닭', '— 몰라요. 뉴스와 공시를 못 봐요.'), li('?', '거래소 경고 · 거래정지', '— 여기서는 확인 못 해요.'), li('?', '공매도 · 빚내서 산 돈 · 주식 수 바뀜', '— 못 봐요.'));
+  if (FU.q) chk.append(li('?', `셀 수 없는 곳 ${FU.q.toLocaleString('ko-KR')}곳`, '— 새로 상장했거나 값이 빈 날 · 거래가 멈춘 날이 있어요.'));
+  v.append(chk);
+  if (S.cutList?.length) v.append(h('details', {class: 'more sv-outs'}, h('summary', {text: `+15%를 넘었지만 값이나 거래 때문에 뺀 곳 ${S.cutList.length}곳 — 까닭 보기`}), h('div', {class: 'in'}, ...S.cutList.map(o => svRow(o, false)))));
+  if (CUT.seat) v.append(h('p', {class: 'small', text: `+15%를 넘었지만 아직 못 든 곳도 ${CUT.seat}곳 있어요. 자리가 찼거나 다음 업데이트에서 한 번 더 봐요. 이름은 싣지 않아요.`}));
+  // ⑤ 더 확인할 곳
+  v.append(h('h2', {class: 'sec', text: '더 확인할 곳'}));
+  v.append(h('ul', {class: 'chk sv-see'},
+    h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {}, '거래소 경고 · 거래정지: ', h('a', {class: 'inl', href: 'https://kind.krx.co.kr/', target: '_blank', rel: 'noopener noreferrer', text: '한국거래소 공시'}))),
+    h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {}, '주식 수 바뀜 · 큰 계약: ', h('a', {class: 'inl', href: 'https://dart.fss.or.kr/', target: '_blank', rel: 'noopener noreferrer', text: '금융감독원 공시'}))),
+    h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {text: `다음 업데이트: ${svNext()}(서울) — 그때 넣고 빼요.`})),
+    S.provisional ? h('li', {}, h('span', {class: 'm', text: '·'}), h('span', {text: '오늘 값이 굳는 때: 저녁 8시 뒤예요. 다음 장날 첫 업데이트에 들어가요.'})) : null));
+  // 지난 업데이트 — 들고 난 곳(새 파일만 · 지우지 않음)
+  const HS = (S.hist ?? []).slice().reverse();
+  if (HS.length) {
+    v.append(h('h2', {class: 'sec', text: '지난 업데이트 — 들고 난 곳'}));
+    v.append(h('ol', {class: 'uplist sv-hist'}, ...HS.slice(0, 12).map(r => h('li', {class: 'r-ch'}, h('p', {class: 'uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 업데이트' : '처음 고름'}${r.provisional ? ' · 장 중' : ''}`),
+      h('p', {text: r.kind === 'pick' ? `새로 ${r.in} · 나감 ${r.out} · 모두 ${r.n}곳` : `처음 ${r.n}곳`})))));
+    v.append(h('p', {class: 'small', text: '기록은 지우지 않아요.'}));
+  }
+  // 어떻게 골랐나요?
+  v.append(h('details', {class: 'more sv-how'}, h('summary', {text: '어떻게 골랐나요?'}), h('div', {class: 'in'}, ...(S.rules?.lines ?? []).map(t => h('p', {text: t})))));
+  v.append(foot({src: isDay(S.window?.[0]) && isDay(S.asOf) ? `급등 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null})); // 이 탭 자료 줄(새 눈 점검 4 — 멍거 · 린치 줄은 이 탭과 상관없음)
+}
+/** 업데이트 탭 한 줄 — 그 회차의 급등 고르기(규칙 69) */
+const surgeRecLine = s => (s.kind === 'fail' ? `? 급등 탭 — 셈이 멈춰 앞에 고른 그대로 둠${s.why ? ` · ${s.why}` : ''}`
+  : `급등 탭 — ${s.kind === 'first' ? `처음 고름 ${s.n ?? '?'}곳` : `새로 든 곳 ${s.in?.length ?? 0} · 빠진 곳 ${s.out?.length ?? 0} · 모두 ${s.n ?? '?'}곳`}${s.published === false ? ' · ? 점검에 걸려 올라가지 않음' : ''}`);
 async function viewUpdates(v) {
   await needUpd();
   const U = D.upd, R = U.records, last = R[0];
@@ -1273,6 +1403,7 @@ async function viewUpdates(v) {
     } else if (r.result !== '실패') li.append(h('p', {text: '고른 곳은 앞 회차와 같습니다.'}));
     if (r.top?.short) li.append(h('p', {}, `${r.top.scope === 'mkt' ? '모든 회사 1등 갈래' : '1등 갈래'} ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 고른 곳 전체 ', pctEl(r.all?.chg, 'span'), ` · 20거래일` + (r.in?.length ? '(고른 곳이 바뀐 것도 섞임)' : '')));
     if (r.market?.day) li.append(h('p', {class: 'small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
+    if (r.surge && r.surge.kind !== 'carry') li.append(h('p', {class: r.surge.kind === 'fail' || r.surge.published === false ? 'q' : 'small', text: surgeRecLine(r.surge)})); // 급등 탭(규칙 69) — 업데이트 때 넣고 뺀 것 · 그 밖 올림은 앞 판 그대로라 적지 않음
     if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
     if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
     ol.append(li);
@@ -1596,7 +1727,7 @@ async function route() {
   const my = ++routeSeq, root = $('#view'); root.textContent = ''; chartDraw = null;
   const v = h('div', {class: 'vw'}); root.append(v); // 길마다 새 칸 — 늦게 끝난 앞 화면은 떨어진 칸에 그려져 보이지 않음(구글팀: 두 화면이 겹치던 것)
   const opening = h('p', {class: 'boot'}, MO.cat('white', 34), ' 여는 중입니다…'); v.append(opening); // 느린 망에서 빈 화면 대신(애플팀) — 다 그리면 지움
-  for (const t of ['#tabHome', '#tabList', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
+  for (const t of ['#tabHome', '#tabList', '#tabSurge', '#tabUp']) $(t)?.toggleAttribute('aria-current', false);
   try {
     const [, kind, raw] = hsh.match(/^#\/(\w*)\/?(.*)$/) || [], arg = dec(raw ?? '');
     document.documentElement?.classList?.toggle('m4', !kind); document.querySelector?.('meta[name="theme-color"]')?.setAttribute('content', '#0C0E12'); // 첫 화면 꾸밈(html.m4)은 첫 화면에만 · 색(먹빛)과 휴대폰 위 띠 색은 모든 화면(2026-10-15 12:43 「모든 화면을 바꿔」) · 네 눈 CIA 눈의 길 흔들기(브라우저 없이 route 를 돌림)에서도 멈추지 않게 ?.
@@ -1605,6 +1736,7 @@ async function route() {
     else if (kind === 'list') { $('#tabList').setAttribute('aria-current', 'page'); viewList(v); }
     else if (kind === '36') { location.replace('#/'); return; } // 지운 화면(사장님 2026-10-13 06:45 「영구 삭제」) — 옛 주소는 첫 화면으로
     else if (kind === 'up') { $('#tabUp').setAttribute('aria-current', 'page'); await viewUpdates(v); }
+    else if (kind === 'surge') { $('#tabSurge').setAttribute('aria-current', 'page'); await viewSurge(v); } // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개」 · 규칙 69)
     else if (kind === 'time') await viewTime(v);
     else if (kind === 'g') viewGroup(v, arg);
     else if (kind === 'i') await viewIndustry(v, arg);
@@ -1637,7 +1769,7 @@ async function boot() {
   let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (chartDraw) chartDraw(); }, 200); });
   addEventListener('hashchange', route);
   document.querySelector('.tabbar')?.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (!a) return; if (a.getAttribute('href') === (location.hash || '#/')) { e.preventDefault(); window.scrollTo({top: 0, behavior: RM.matches ? 'auto' : 'smooth'}); } });
-  try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; }
+  try { D.core = await getJson('core.json'); $('#tabList').textContent = '업종 ' + D.core.industries.length; needSurge().then(() => { if (D.surge?.n != null) $('#tabSurge').textContent = '급등 ' + D.surge.n; }).catch(() => {}); } // 급등 탭 이름 = 고른 수(못 받으면 「급등」 그대로)
   catch (e) { console.error(e); const v = $('#view'); v.textContent = ''; const again = h('button', {class: 'play', type: 'button', text: '다시 열기'}); again.addEventListener('click', () => location.reload()); v.append(MO.catSleep(72), h('h1', {class: 'head', text: '자료를 못 읽었습니다'}), h('p', {class: 'count', text: '? 잠시 뒤 다시 열어 주세요.'}), again); return; }
   await route();
   setTimeout(() => { needComp().catch(() => {}); }, 400);
