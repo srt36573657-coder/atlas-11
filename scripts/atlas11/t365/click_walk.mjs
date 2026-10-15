@@ -51,7 +51,7 @@ while (clicks < N) {
 const ms = Date.now() - t0, visited = seen.reduce((a, b) => a + b, 0);
 // ⑤ 점검용 길 지도 맞대기(도움말 판 #/info 의 보기 고리는 판이라 뺌)
 const mirror = (() => { const D = path.resolve(ROOT, arg('--data', 'site/atlas/data')), J = f => JSON.parse(fs.readFileSync(path.join(D, f), 'utf8'));
-  const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), home: fs.existsSync(path.join(D, 'home.json')) ? J('home.json') : null}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));
+  const S = {core: J('core.json'), comp: J('comp.json'), range: J('range.json'), lines: J('lines.json'), home: fs.existsSync(path.join(D, 'home.json')) ? J('home.json') : null}; S.codes = Object.keys(S.comp.companies); S.gid = new Map(S.core.groups.map(g => [g.id, g])); S.iby = new Map(S.core.industries.map(i => [i.name, i]));  // lines = 첫 화면 고른 곳 「크게 움직인 곳」 고리(2026-10-15 먹빛 첫 화면)
   S.mkt = S.core.mkt ? J('mkt.json') : null; S.mk = S.mkt?.companies ?? null; // 모든 회사(2026-10-14 「나」) — 업종 화면 회사 줄이 고른 곳 #/c/ · 나머지 #/x/
   const {nodes} = siteGraph(S), real = Object.keys(map).filter(r => r !== '#/info'), diff = [];
   for (const r of real) if (!nodes.has(r)) diff.push('점검 지도에 없는 화면 ' + r);

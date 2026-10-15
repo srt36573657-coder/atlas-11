@@ -95,6 +95,13 @@ function numbers(obj, where, out, key = '') {
   return out;
 }
 
+/** 고른 곳마다 마지막 하루 바뀜 ÷ 평소(그 앞 거래일 하루 움직임 크기 평균) — atlas.js pickMoves 와 같은 셈(lines.json 21개 값 · 날이 하루 값 날과 다르면 빈 목록) */
+export function pickMovesX(S) {
+  const H = S.home?.s365, L = S.lines, out = []; if (!H?.list?.length || !L?.lines || L.asOf !== H.date) return out;
+  for (const [c] of H.list) { const l = L.lines[c]; if (!l || l.length < 6 || l.at(-1) == null || l.at(-2) == null) continue; const d = []; for (let k = 1; k < l.length; k++) if (l[k - 1] > 0 && l[k] > 0) d.push((l[k] / l[k - 1] - 1) * 100);
+    if (d.length < 5) continue; const t = (l.at(-1) / l.at(-2) - 1) * 100, prev = d.slice(0, -1), avg = prev.reduce((a, x) => a + Math.abs(x), 0) / prev.length; out.push({c, t, avg, ratio: avg > 0 ? Math.abs(t) / avg : null}); }
+  return out;
+}
 // ═════════ 🍎 애플 — 화면 길 지도(atlas.js 와 같은 링크 규칙) ═════════
 export function siteGraph(S) {
   const {core} = S, comp = S.comp.companies;
@@ -102,9 +109,13 @@ export function siteGraph(S) {
   const hrefInd = i => (i.n === 1 ? coHref(S, i.members[0]) : '#/i/' + encodeURIComponent(i.name));
   const nodes = new Map();
   const add = (r, links, step = null, co = null, allow = null) => nodes.set(r, {links: [...links.filter(Boolean), ...TABS], step, co, allow});
-  const H = S.home?.s365, ends = [H?.top?.c, H?.bot?.c].filter(c => c && comp[c]).map(c => '#/c/' + c); // 첫 화면 365곳 막대 양 끝(가장 많이 오른 · 내린 곳 — 2026-10-12 14:54)
-  // 「오늘 업종」 줄(4장 강한 3 · 약한 3 + 「자세히」 강한 7 · 약한 7) → 그 업종(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」 · atlas.js secHref 와 같은 셈 — core.secInd)
-  const SI = core.secInd ?? {}, secL = [...(S.home?.sectors?.strong ?? []), ...(S.home?.sectors?.weak ?? [])].map(g => { const n = SI[String(g.name ?? '').replace(/\s+/g, '')], i = n ? S.iby.get(n) : null; return i ? hrefInd(i) : null; });
+  // 첫 화면 = 먹빛 판(사장님 2026-10-15(싱가포르) 09:41 · 규칙 67 — atlas.js m4picks · m4breadth · m4rise · m4groups 와 같은 셈)
+  //   고른 곳 칸: 가장 많이 오른 곳 · 가장 많이 내린 곳 + 제 평소의 2.5배 이상 움직인 곳 모두(큰 차례로 셋 + 「나머지 n곳 보기」 접은 칸 · lines.json 날 = 하루 값 날일 때만) → 회사(#/c/)
+  const H = S.home?.s365, ends = [];
+  if (H?.list?.length) { const seen = new Set(), push = c => { if (c && !seen.has(c)) { seen.add(c); ends.push('#/c/' + c); } }; push(H.top?.c); push(H.bot?.c);
+    for (const x of pickMovesX(S).filter(x => x.ratio != null && x.ratio >= 2.5 && !seen.has(x.c)).sort((a, b) => b.ratio - a.ratio)) push(x.c); }
+  // 「오늘 업종」 줄(오른 곳과 내린 곳 칸의 강한 3 · 약한 3) → 그 업종(사장님 2026-10-14 15:01(싱가포르) 「여기 클릭 하면 7단구조 나오게해」 · atlas.js secHref 와 같은 셈 — core.secInd)
+  const SI = core.secInd ?? {}, secL = [...(S.home?.sectors?.strong ?? []).slice(0, 3), ...(S.home?.sectors?.weak ?? []).slice(0, 3)].map(g => { const n = SI[String(g.name ?? '').replace(/\s+/g, '')], i = n ? S.iby.get(n) : null; return i ? hrefInd(i) : null; });
   // 요즘 오르는 업종(2026-10-14 20:01 「1주일로 해」 · 규칙 64) — 경주판 줄 = 오른 업종(core.rise · 업종이 없으면 업종 탭) · 큰 갈래는 경주판 밑 한 줄 고리(atlas.js glinks)
   const riseL = (core.rise?.list ?? []).map(r => { const i = S.iby.get(r.name); return i ? hrefInd(i) : '#/list'; });
   add('#/', [...ends, ...secL, ...riseL, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);

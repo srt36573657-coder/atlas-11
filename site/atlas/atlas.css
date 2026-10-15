@@ -811,3 +811,212 @@ a.srow:active { background: var(--press); }
 @keyframes hpi-out { to { opacity: 0; visibility: hidden; } }
 @keyframes hpi-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .hs a.hello.hs-hello .hpi { display: none; } .hs a.hello.hs-hello.hs-intro .hml { animation: none; } }
+
+/* ── 먹빛 첫 화면(사장님 2026-10-15(싱가포르) 09:41 「(나)는 아니야 너가 제일 스마트하게 만들어 … 만배는 더 스마트 한게 만들어」 · 앞 질문 (가) · 규칙 67) ──
+   샘플 11가지 가운데 4번 「밤 화면 · 먹」 → 다섯 번 다듬은 판(v4g)을 첫 화면(#/)에만 — html.m4 는 atlas.js route() 가 첫 화면에서만 붙임 · 다른 화면은 위 청자 밤 그대로
+   색은 이 묶음 맨 위 한 곳(먹 바탕 · 편지지 면 · 가는 선 · 진주 글 · 빨강 오름 · 파랑 내림 · 금빛 = 고른 곳 · 문턱 「!」) · 글씨는 rem(글씨 크기 단추를 따라감 · 21px 이상)
+   그림자 · 입체 · 흐림 필터 · 캔버스 · 바둑판 없음 · 움직임 줄이기면 움직임 없음 · 글 속 style 없음(CSP) */
+html.m4 {
+  --night: #0C0E12; --band: #0C0E12; --lacquer: #0C0E12; --card: #13161C; --card2: #1C1F26; --card3: #272B34;
+  --hair: rgba(242, 239, 232, .12); --hair2: rgba(242, 239, 232, .22); --seam: #1C1F26; --lift: rgba(242, 239, 232, .04); --press: rgba(242, 239, 232, .08);
+  --ink: #F2EFE8; --ink-hi: #F2EFE8; --sub: #B0B5BD; --mute: #8E959F;
+  --violet: #1C1F26; --violet-ink: #F2EFE8; --violet-wash: rgba(242, 239, 232, .1); --violet-line: rgba(242, 239, 232, .3); --violet-glow: rgba(242, 239, 232, .2);
+  --gold: #E9B949; --gold-wash: rgba(233, 185, 73, .08); --gold-line: rgba(233, 185, 73, .6);
+  --up: #FF5A65; --down: #5B96FF; --up-ink: #FF5A65; --down-ink: #5B96FF;
+  --lacquer-ink: #F2EFE8; --lacquer-sub: #B0B5BD; --lacquer-gold: #E9B949; --moon: #F2EFE8;
+  --m4-band: #13161C; --m4-line: #272B34; --m4-soft: #1C1F26; --m4-neu: #6F7782; --m4-line2: rgba(242, 239, 232, .08);
+  --m4-ease: cubic-bezier(.2, .7, .2, 1);
+  background: var(--night);
+}
+html.m4 body { background: var(--night); font-variant-numeric: tabular-nums; }
+html.m4 .band { border-bottom: 1px solid var(--m4-soft); }
+html.m4 .tabbar { border-top: 1px solid var(--m4-soft); }
+html.m4 .band .find, html.m4 .band .ibtn { border-color: var(--m4-line); border-radius: 22px; }
+html.m4 .tabbar [aria-current="page"]::before { top: -1px; height: 2px; width: 28px; margin-left: -14px; }
+html.m4 main.view { padding-top: 0; }
+html.m4 .vw > * { animation: none; } /* 칸마다 들어오는 움직임은 이 판의 움직임(편지 · 그래프 · 막대)으로 */
+.m4-letter .nb, .m4-sec .nb { white-space: nowrap; }
+/* ① 사장님 편지 — 달빛 아래 편지지(가는 줄은 글줄 밑에 · 줄 높이 1.72em) */
+html.m4 a.hello.m4-letter { position: relative; display: block; overflow: hidden; margin: 0 -24px; padding: 32px 24px 0; min-height: 0; background: var(--m4-band); border: 0; border-bottom: 1px solid var(--m4-line); border-radius: 0; color: var(--ink); }
+html.m4 a.hello.m4-letter:hover { border-color: var(--m4-line); }
+.m4-msg { position: relative; display: block; margin: 0; padding-bottom: 32px; font-family: var(--serif); font-size: 1.048rem; line-height: 1.72; letter-spacing: -.01em; font-weight: 400;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.72em - 1px), var(--m4-line2) calc(1.72em - 1px), var(--m4-line2) 1.72em); background-position: 0 -.24em; background-origin: content-box; background-clip: content-box; }
+.m4-msg .hml { position: relative; z-index: 1; display: block; text-wrap: balance; white-space: pre-wrap; }
+.m4-msg .hml:nth-child(6), .m4-msg .hml:nth-child(7) { padding-right: 96px; }
+.m4-msg .m4-moon { position: absolute; z-index: 0; right: -30px; bottom: 0; width: 134px; height: 134px; border-radius: 50%; background: rgba(242, 239, 232, .07); border: 1px solid rgba(242, 239, 232, .12); outline: 1px solid rgba(242, 239, 232, .05); outline-offset: 12px; }
+html.m4 a.hello.m4-letter img.m4-hp { position: absolute; z-index: 2; right: -2px; bottom: -5px; width: 88px; height: 110px; border-radius: 0; object-fit: contain; }
+.m4-stars { position: absolute; inset: 0; pointer-events: none; }
+.m4-stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--ink); opacity: .4; }
+.m4-stars i:nth-child(1) { left: 72%; top: 22px; } .m4-stars i:nth-child(2) { left: 83%; top: 46px; width: 2px; height: 2px; } .m4-stars i:nth-child(3) { left: 93%; top: 18px; }
+.m4-stars i:nth-child(4) { left: 78%; top: 92px; width: 2px; height: 2px; } .m4-stars i:nth-child(5) { left: 90%; top: 78px; } .m4-stars i:nth-child(6) { left: 96%; top: 118px; width: 2px; height: 2px; } .m4-stars i:nth-child(7) { left: 69%; top: 126px; }
+.m4-act { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; column-gap: 16px; padding: 16px 0 12px; border-top: 1px solid var(--m4-line); }
+.m4-ic { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--m4-line); border-radius: 22px; color: var(--ink); }
+.m4-aw b { display: block; font-weight: 500; color: var(--ink); } .m4-aw > span { display: block; color: var(--sub); }
+.m4-chev { font-style: normal; font-size: 1.143rem; color: var(--mute); }
+.m4-gift { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0 0 24px; letter-spacing: -.025em; color: var(--ink); }
+.m4-gift svg { flex: none; color: var(--sub); }
+@media (max-width: 379px) { .m4-gift svg { display: none; } .m4-msg { letter-spacing: -.02em; } }
+@media (max-width: 355px) { html.m4 a.hello.m4-letter img.m4-hp { width: 72px; height: 90px; } .m4-msg .hml:nth-child(6), .m4-msg .hml:nth-child(7) { padding-right: 76px; } }
+/* 열 때 5초 — 달이 떠오르고 「홍표!」 세 번 → 큰 홍표 · 큰 달이 편지 끝 제자리로 날아가 앉음 → 붓으로 쓰듯 한 줄씩 */
+.m4-letter.intro .hml, .m4-letter.intro .m4-hp, .m4-letter.intro .m4-moon, .m4-letter.intro .m4-act, .m4-letter.intro .m4-gift { visibility: hidden; }
+.m4-letter .hpi { position: absolute; inset: 0; display: block; z-index: 3; pointer-events: none; }
+.m4-letter .hpi .m4-bm { position: absolute; left: 50%; top: 15%; width: 250px; height: 250px; margin-left: -125px; border-radius: 50%; background: rgba(242, 239, 232, .07); border: 1px solid rgba(242, 239, 232, .12); outline: 1px solid rgba(242, 239, 232, .05); outline-offset: 22px; }
+html.m4 a.hello.m4-letter .hpi img.hpi-bird { position: absolute; left: 50%; bottom: 28px; width: auto; height: 66%; max-width: 80%; border-radius: 0; object-fit: contain; transform: translateX(-50%); }
+.m4-letter .hpi .hpi-b { position: absolute; padding: 4px 16px; border-radius: 18px; background: var(--ink); color: #0C0E12; border: 2px solid #7FFFE6; font-weight: 600; white-space: nowrap; line-height: 1.4; }
+/* 「홍표!」 셋은 홍표 머리 위로(홍표 그림 높이는 편지의 66% 이하 — 그 위에 앉힘 · 다른 눈 L11) */
+.m4-letter .hpi .b1 { left: 5%; bottom: calc(30px + 66%); font-size: 1rem; } .m4-letter .hpi .b2 { right: 5%; bottom: calc(46px + 66%); font-size: 1.143rem; } .m4-letter .hpi .b3 { left: 50%; top: 7%; font-size: 1.43rem; transform: translateX(-50%); }
+.m4-letter.landed .m4-hp, .m4-letter.landed .m4-moon { animation: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .m4-letter.intro .hpi .m4-bm { animation: m4-moonrise 1.8s var(--m4-ease) both; }
+  .m4-letter.intro .m4-stars i { animation: m4-twinkle 1.4s var(--m4-ease) both; }
+  .m4-letter.intro .m4-stars i:nth-child(2) { animation-delay: .25s; } .m4-letter.intro .m4-stars i:nth-child(3) { animation-delay: .5s; } .m4-letter.intro .m4-stars i:nth-child(4) { animation-delay: .75s; }
+  .m4-letter.intro .m4-stars i:nth-child(5) { animation-delay: 1s; } .m4-letter.intro .m4-stars i:nth-child(6) { animation-delay: 1.25s; } .m4-letter.intro .m4-stars i:nth-child(7) { animation-delay: 1.5s; }
+  html.m4 .m4-letter.intro .hpi img.hpi-bird { animation: m4-bob 2.2s ease-in-out .3s infinite alternate; }
+  .m4-letter.intro .hpi .hpi-b { animation: m4-pop .45s var(--m4-ease) both; } .m4-letter.intro .hpi .b1 { animation-delay: .6s; } .m4-letter.intro .hpi .b2 { animation-delay: 1.5s; } .m4-letter.intro .hpi .b3 { animation-name: m4-pop3; animation-delay: 2.4s; }
+  .m4-letter.rv .hml { animation: m4-ink 1.05s var(--m4-ease) both; }
+  .m4-letter.rv .hml:nth-child(2) { animation-delay: .22s; } .m4-letter.rv .hml:nth-child(3) { animation-delay: .44s; } .m4-letter.rv .hml:nth-child(4) { animation-delay: .66s; }
+  .m4-letter.rv .hml:nth-child(5) { animation-delay: .88s; } .m4-letter.rv .hml:nth-child(6) { animation-delay: 1.1s; } .m4-letter.rv .hml:nth-child(7) { animation-delay: 1.32s; }
+  .m4-letter.rv .m4-act, .m4-letter.rv .m4-gift { animation: m4-rise .7s 1.9s var(--m4-ease) both; }
+}
+@keyframes m4-twinkle { 0% { opacity: 0; transform: scale(.3); } 55% { opacity: .9; transform: scale(1.3); } 100% { opacity: .4; transform: none; } }
+@keyframes m4-moonrise { from { opacity: 0; transform: translateY(70px); } to { opacity: 1; transform: none; } }
+@keyframes m4-ink { from { clip-path: inset(-20% 100% -20% 0); opacity: .35; } to { clip-path: inset(-20% 0 -20% 0); opacity: 1; } }
+@keyframes m4-bob { from { transform: translate(-50%, 0); } to { transform: translate(-50%, -8px); } }
+@keyframes m4-pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes m4-pop3 { from { opacity: 0; transform: translateX(-50%) scale(.6); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes m4-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes m4-stamp { 0% { opacity: 0; transform: scale(1.7) rotate(-12deg); } 55% { opacity: 1; transform: scale(.93) rotate(2deg); } 100% { opacity: 1; transform: none; } }
+/* 칸 · 칸 머리 — 모든 제목 옆 달 속 막비(바탕 그림 · 사진 아님) */
+.m4-sec { margin: 48px 0 0; }
+.m4-sh { display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; row-gap: 4px; margin: 0 0 16px; }
+html.m4 .m4-sh .m4-t { position: relative; display: flex; align-items: center; gap: 12px; min-width: 0; margin: 0; padding: 0; border: 0; font-family: var(--serif); font-size: 1.143rem; font-weight: 400; line-height: 1.3; letter-spacing: -.015em; color: var(--ink); }
+html.m4 .m4-sh .m4-t::before { content: ''; position: static; z-index: auto; flex: none; width: 32px; height: 32px; aspect-ratio: auto; border-radius: 50%; border: 0; background: var(--moon) url(/media/makbi-moon.svg) center / cover no-repeat; inset: auto; }
+html.m4 .m4-sh .m4-t::after { content: none; }
+.m4-meta { margin-left: auto; min-width: 0; color: var(--mute); text-align: right; } /* 좁은 화면 · 큰 글씨는 두 줄로(다른 눈 H2) */
+.m4-mq { color: var(--gold); font-weight: 600; } /* 못 받은 값 칸 — 머리 때 앞 금빛 「?」 */
+html.m4 h1.head.m4-h1x { margin: 32px 0 8px; font-size: 1.143rem; }
+.m4-lead { margin: 0 0 16px; font-family: var(--serif); font-size: 1.048rem; line-height: 1.6; letter-spacing: -.01em; text-wrap: pretty; color: var(--ink); }
+.m4-cap { margin: 12px 0 0; color: var(--mute); text-wrap: pretty; }
+.m4-say { margin: -8px 0 16px; color: var(--sub); text-wrap: balance; }
+.m4-vh { margin: 16px 0 0; color: var(--sub); text-wrap: pretty; } .m4-vh b { font-weight: 500; }
+.m4-hint { margin: 4px 0 0; color: var(--mute); }
+html.m4 p.q.m4-q { margin: 12px 0 0; color: var(--gold); font-weight: 500; }
+.m4-al { margin: 0 0 16px; padding: 12px 16px; border: 1px solid var(--gold-line); border-radius: 8px; background: var(--gold-wash); color: var(--gold); font-weight: 500; text-wrap: pretty; }
+.m4-sl { margin: 16px 0 4px; color: var(--sub); font-weight: 500; text-wrap: balance; }
+details.m4-how { margin: 8px 0 0; }
+details.m4-how summary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--sub); cursor: pointer; list-style: none; }
+details.m4-how summary::-webkit-details-marker { display: none; }
+details.m4-how summary::before { content: ''; width: 18px; height: 18px; border: 1.5px solid var(--mute); border-radius: 50%; box-sizing: border-box; }
+details.m4-how[open] summary::before { background: var(--mute); }
+details.m4-how .m4-in { margin: 4px 0 0; padding: 12px 16px; border-left: 2px solid var(--m4-line); background: var(--m4-soft); border-radius: 0 8px 8px 0; }
+details.m4-how .m4-in p { margin: 0; color: var(--sub); text-wrap: pretty; } details.m4-how .m4-in p + p { margin-top: 8px; }
+/* ② 시장 — 지수 고르기 · 큰 숫자 · 두 산줄기 · 기간 */
+.m4-seg { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--m4-line); border-radius: 24px; }
+.m4-seg button { min-width: 4.4rem; min-height: 44px; padding: 0 16px; border: 0; border-radius: 22px; background: none; color: var(--sub); cursor: pointer; }
+.m4-seg button[aria-pressed="true"] { background: var(--ink); color: var(--night); font-weight: 500; }
+.m4-seg button:disabled { color: var(--mute); cursor: default; }
+.m4-per { display: flex; margin: 16px 0 0; border: 1px solid var(--m4-line); border-radius: 12px; padding: 4px; gap: 4px; }
+.m4-per button { flex: 1; min-height: 44px; padding: 0; border: 1px solid transparent; border-radius: 8px; background: none; color: var(--sub); cursor: pointer; }
+.m4-per button[aria-pressed="true"] { background: var(--m4-soft); color: var(--ink); font-weight: 500; border-color: var(--m4-line); }
+.m4-hero { margin: 16px 0 0; }
+.m4-hv { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 12px; }
+.m4-v { font-size: 2.19rem; font-weight: 300; letter-spacing: -.035em; line-height: 1.05; color: var(--ink); }
+.m4-vt { color: var(--sub); opacity: 0; } .m4-hero.sc .m4-vt { opacity: 1; }
+.m4-cg { display: flex; flex-wrap: wrap; column-gap: 16px; margin-top: 8px; } .m4-hero.sc .m4-cg { opacity: .3; }
+.m4-cg > span { color: var(--mute); } .m4-cg b { font-weight: 500; margin-left: 8px; }
+.m4-ch { position: relative; height: 170px; margin: 24px 0 0; touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
+.m4-ch svg { display: block; overflow: visible; }
+.m4-ch .gl { stroke: var(--m4-soft); stroke-width: 1; } .m4-ch .g0 { stroke: var(--mute); stroke-width: 1; stroke-dasharray: 2 4; }
+.m4-yl span { position: absolute; right: 0; color: var(--mute); white-space: nowrap; pointer-events: none; line-height: 1; }
+.m4-ch .lf { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.m4-ch .lg { fill: none; stroke: #7D8592; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.m4-ch .ag2 { fill: rgba(242, 239, 232, .045); }
+.m4-ch .now { fill: var(--ink); } .m4-ch .hd { fill: var(--ink); opacity: 0; } .m4-ch.play .hd { opacity: 1; }
+.m4-ch .cur { stroke: var(--sub); stroke-width: 1; opacity: 0; } .m4-ch .cd { fill: var(--ink); opacity: 0; }
+.m4-ch.on .cur, .m4-ch.on .cd { opacity: 1; }
+.m4-ch.play .af, .m4-ch.play .ag2, .m4-ch.play .lg, .m4-ch.play .now { opacity: 0; }
+.m4-axl { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; padding-right: 3.05rem; color: var(--mute); font-size: max(21px, .78rem); } /* 날짜 두 개가 좁은 화면 큰 글씨에서 붙지 않게(21px 아래로는 안 줄임) */
+.m4-lgd { display: flex; flex-wrap: wrap; align-items: center; column-gap: 16px; row-gap: 4px; margin: 12px 0 0; color: var(--sub); }
+.m4-lgd span { display: inline-flex; align-items: center; gap: 8px; } .m4-lgd i { display: inline-block; width: 22px; height: 0; border-top: 2px solid var(--ink); } .m4-lgd i.g { border-top: 1.5px solid #7D8592; }
+.m4-lgd b { font-weight: 500; } .m4-lgd .z { color: var(--mute); } .m4-lgd.one .g2 { display: none; }
+.m4-pc { margin-top: 8px; }
+/* ③ 오른 곳 · 내린 곳 */
+.m4-bar { display: flex; gap: 3px; height: 14px; }
+.m4-bar i { display: block; height: 100%; border-radius: 4px; transform-origin: left center; }
+.m4-bar .u { background: var(--up); } .m4-bar .f { background: var(--m4-neu); } .m4-bar .d { background: var(--down); }
+.m4-bl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 12px; }
+.m4-bl > span { color: var(--sub); min-width: 0; } .m4-bl b { display: block; margin-top: 2px; font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; }
+.m4-bl > span + span { padding-left: 16px; border-left: 1px solid var(--m4-soft); }
+.m4-two { display: grid; grid-template-columns: minmax(0, 1fr); } /* 강한 업종 · 약한 업종은 위아래로(두 칸이면 큰 글씨에서 이름이 낱말 가운데서 끊김 · 다른 눈 M4) */
+.m4-sr { display: grid; grid-template-columns: minmax(0, 1fr) 0.7em; align-items: center; column-gap: 8px; min-height: 52px; border-bottom: 1px solid var(--m4-soft); }
+.m4-sr .top { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; min-width: 0; padding: 4px 0; } /* 이름이 길면 %가 다음 줄 오른쪽으로(네이버 업종 이름은 띄어쓰기가 없어 낱말 가운데서 끊기지 않게) */
+.m4-sr .nm { min-width: 0; overflow-wrap: break-word; line-height: 1.3; } .m4-sr .top b { margin-left: auto; font-weight: 500; }
+/* ④ 요즘 오르는 업종 */
+.m4-rows { border-top: 1px solid var(--m4-line); }
+.m4-tr { display: grid; grid-template-columns: 1.34rem minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 12px; row-gap: 4px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--m4-soft); }
+.m4-tr .no { grid-row: 1 / 3; font-family: var(--serif); font-size: 1.048rem; color: var(--mute); } .m4-tr .no.t3 { color: var(--ink); }
+.m4-tr .nm { grid-column: 2; grid-row: 1; font-weight: 500; min-width: 0; text-wrap: balance; overflow-wrap: break-word; }
+.m4-tr .sub { grid-column: 2; grid-row: 2; display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; row-gap: 4px; min-height: 24px; }
+.m4-tr .v { grid-column: 3; grid-row: 1 / 3; text-align: right; font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; }
+.m4-pk { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); white-space: nowrap; } .m4-pk::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.m4-spk { display: block; overflow: visible; }
+.m4-spk .ln { fill: none; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; } .m4-spk .ln.up { stroke: var(--up); } .m4-spk .ln.down { stroke: var(--down); } .m4-spk .ln.flat { stroke: var(--m4-neu); }
+.m4-spk .b0 { stroke: var(--m4-line); stroke-width: 1; stroke-dasharray: 2 3; } .m4-spk .pa { fill: none; stroke: var(--mute); stroke-opacity: .55; stroke-width: 1; stroke-dasharray: 1 3; }
+/* ⑤ 사고팔기 — 막대는 한 색(돈의 방향) */
+.m4-fl { border-top: 1px solid var(--m4-line); }
+/*   한 줄 = 누구 · 얼마(위) + 막대(아래 · 세 줄이 같은 넓이의 자 — 다른 눈 M5) · 얼마는 좁으면 띄어쓰기에서 두 줄(다른 눈 H2) */
+.m4-fr { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'n v' 'b b'; align-items: baseline; column-gap: 12px; row-gap: 8px; padding: 12px 0 16px; border-bottom: 1px solid var(--m4-soft); }
+.m4-fr .fn { grid-area: n; } .m4-fr b { grid-area: v; font-weight: 500; letter-spacing: -.02em; text-align: right; }
+.m4-fr .fb { grid-area: b; position: relative; height: 10px; border-radius: 4px; background: var(--m4-soft); }
+.m4-fr .fb i { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; background: var(--sub); transform-origin: left center; }
+/* ⑥ 미국 */
+.m4-us { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--m4-line); border-bottom: 1px solid var(--m4-soft); }
+.m4-us > div { padding: 16px 0 16px 16px; border-left: 1px solid var(--m4-soft); min-width: 0; } .m4-us > div:first-child { padding-left: 0; border-left: 0; }
+.m4-us span { display: block; color: var(--sub); white-space: nowrap; } .m4-us b { display: block; margin-top: 2px; font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; }
+/* ⑦ 고른 곳 */
+.m4-mvs { border-top: 1px solid var(--m4-line); }
+.m4-mv { display: grid; grid-template-columns: minmax(0, 1fr) 0.7em; grid-template-rows: auto auto; align-items: center; column-gap: 12px; row-gap: 2px; padding: 12px 0; min-height: 52px; border-bottom: 1px solid var(--m4-soft); }
+/*   위 줄 = 이름 + %(이름이 길면 %가 다음 줄 오른쪽으로 · 이름을 낱말 가운데서 끊지 않음 — 다른 눈 두 번째 점검) · 아래 줄 = 꼬리표(넓게 — 「평소의 5.3 / 배」로 끊기지 않게) */
+.m4-mv .top { grid-column: 1; grid-row: 1; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; min-width: 0; }
+.m4-mv .nm { font-weight: 500; min-width: 0; overflow-wrap: break-word; } .m4-mv .tg { grid-column: 1; grid-row: 2; min-width: 0; color: var(--mute); }
+.m4-mv .top b { margin-left: auto; font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; } .m4-mv .m4-chev { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+/*   「나머지 n곳 보기」 — 큰 차례로 셋 밖도 첫 화면에서 다 닿게(접은 칸 · 여닫는 표시는 + · −) */
+details.m4-more > summary { display: flex; align-items: center; gap: 12px; min-height: 52px; color: var(--sub); cursor: pointer; list-style: none; border-bottom: 1px solid var(--m4-soft); }
+details.m4-more > summary::-webkit-details-marker { display: none; }
+details.m4-more > summary::after { content: '+'; margin-left: auto; padding-right: 2px; color: var(--mute); font-size: 1.143rem; }
+details.m4-more[open] > summary::after { content: '−'; }
+details.m4-more .m4-mvs { border-top: 0; }
+/* ⑧ 큰 갈래 · 봉인 */
+.m4-gs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; border-top: 1px solid var(--m4-line); }
+.m4-g { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 52px; padding: 12px 0; border-bottom: 1px solid var(--m4-soft); }
+.m4-g .nm { min-width: 0; color: var(--sub); } .m4-g b { font-size: 1.143rem; font-weight: 500; letter-spacing: -.02em; }
+.m4-mr { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; row-gap: 4px; margin-top: 24px; padding: 16px 0; border-top: 1px solid var(--m4-line); border-bottom: 1px solid var(--m4-soft); }
+.m4-mr .l { color: var(--mute); } .m4-mr .k { grid-column: 1; font-weight: 500; } .m4-mr .m4-chev { grid-column: 2; grid-row: 1 / 3; }
+/* ⑨ 홍표 도장 */
+.m4-seal-box { margin: 48px 0 0; padding: 8px 0 16px; text-align: center; }
+.m4-seal { display: grid; place-items: center; width: 66px; height: 66px; margin: 0 auto 16px; border: 1.5px solid rgba(242, 239, 232, .45); border-radius: 12px; }
+.m4-seal i { display: block; width: 46px; height: 46px; border-radius: 50%; background: var(--moon) url(/media/makbi-moon.svg) center / cover no-repeat; } /* 도장 = 달 속 홍표(막비 얼굴은 달 그림 하나만 — 네 눈 클로드 눈) */
+.m4-pr { margin: 0; font-family: var(--serif); font-size: 1.048rem; line-height: 1.6; } .m4-pr span { display: block; text-wrap: balance; }
+.m4-seal-box .m4-cap { text-wrap: balance; }
+/* 손끝 — 누르면 바탕이 살짝 밝아짐(움직임 줄이기면 줄어드는 움직임 · 옅어짐 없음 — 다른 눈 L8) */
+a.m4-tr:active, a.m4-sr:active, a.m4-mv:active, a.m4-g:active { background: var(--m4-soft); }
+html.m4 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+html.m4 main.view:focus, html.m4 main.view:focus-visible { outline: none; } /* 화면이 바뀌면 읽기 초점만 옮김(테 없음 — 위 main.view:focus 와 같은 뜻 · 이 묶음이 뒤라 다시 적음) */
+/* 화면에 들어오면 한 번 — 막대가 자라고 · 선이 그려지고 · 도장이 찍힘(움직임 줄이기면 없음 · .io 는 화면 밖에서 기다리는 칸) */
+@media (prefers-reduced-motion: no-preference) {
+  .m4-seg button, .m4-per button, .m4-act, .m4-mr, .m4-g, .m4-sr, .m4-mv { transition: transform .12s var(--m4-ease), background-color .2s; }
+  .m4-seg button:active, .m4-per button:active, .m4-mr:active { transform: scale(.97); }
+  .m4-vt, .m4-cg { transition: opacity .2s; } .m4-ch .af, .m4-ch .ag2, .m4-ch .lg { transition: opacity .9s; }
+  .io .m4-bar i, .io .fb i { transform: scaleX(0); transition: transform 1.1s var(--m4-ease); } .io.in .m4-bar i, .io.in .fb i { transform: none; } .io.in .m4-bar .f { transition-delay: .15s; } .io.in .m4-bar .d { transition-delay: .3s; }
+  .io .m4-spk .ln { stroke-dasharray: 1; stroke-dashoffset: 1; } .io.in .m4-spk .ln { transition: stroke-dashoffset 1.1s var(--m4-ease); stroke-dashoffset: 0; }
+  .io .m4-seal { opacity: 0; } .io.in .m4-seal { animation: m4-stamp .75s cubic-bezier(.2, .9, .3, 1.15) both; }
+}
+@media (max-width: 419px) { /* 글씨 크게 · 아주 크게 + 좁은 휴대폰 — 미국 세 칸은 한 줄씩(숫자끼리 겹치지 않게) */
+  html.m4.f2 .m4-us, html.m4.f3 .m4-us { grid-template-columns: minmax(0, 1fr); }
+  html.m4.f2 .m4-us > div, html.m4.f3 .m4-us > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-left: 0; border-top: 1px solid var(--m4-soft); }
+  html.m4.f2 .m4-us > div:first-child, html.m4.f3 .m4-us > div:first-child { border-top: 0; }
+  html.m4.f2 .m4-us b, html.m4.f3 .m4-us b { margin-top: 0; }
+}
+/* 맨 위 막대 — 좁은 휴대폰(374px 이하)에서 「ATLAS」가 찾기 칸에 겹치거나 「찾기」가 「찾..」로 잘리던 것(다른 눈 L9 · 모든 화면 같은 막대) */
+@media (max-width: 374px) { .band-in { gap: 6px; padding: 0 8px 0 10px; } .brand { flex: none; gap: 6px; } .brand b { letter-spacing: .12em; margin-right: -.12em; } .find { padding: 0 10px; } }
+@media (max-width: 340px) { .find svg { display: none; } }

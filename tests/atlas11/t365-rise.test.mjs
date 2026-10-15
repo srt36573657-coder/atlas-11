@@ -58,9 +58,12 @@ test('요즘 오르는 업종 — 따로 세기가 일부러 틀린 사본을 �
 
 test('요즘 오르는 업종 — 화면 코드 · 길 지도(오른 업종 · 큰 갈래 모두 1번)', () => {
   const js = fs.readFileSync(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8');
-  const a = js.indexOf('async function viewHome('), b = js.indexOf('// ── 화면 ② 갈래 ──', a), home = js.slice(a, b);
-  assert.match(home, /요즘 오르는 업종 — 지난 1주/); assert.match(home, /class: 'glinks'/); assert.match(home, /n: RI\.days \+ 1/);
-  assert.ok(!/seg\(m =>/.test(home), '첫 화면에 「큰 회사는 크게」 단추 없음'); assert.ok(!/C\.groups\.map\(g => \(\{key: g\.id/.test(home), '큰 갈래 경주 줄 없음');
+  // 첫 화면 = 먹빛 판(사장님 2026-10-15 09:41 · 규칙 67) — 요즘 오르는 업종 칸(m4rise · 줄마다 업종 화면) · 큰 갈래 칸(m4groups · 7단 중 1단 1번) · 「큰 회사는 크게」 단추 없음
+  const a = js.indexOf('// ── 첫 화면 = 먹빛 판'), b = js.indexOf('// ── 화면 ② 갈래 ──', a), home = js.slice(a, b);
+  assert.ok(a > 0 && b > a, '먹빛 첫 화면 코드');
+  assert.match(home, /function m4rise\(v\)/); assert.match(home, /m4head\('h2', '요즘 오르는 업종'/); assert.match(home, /href = i \? hrefInd\(i\) : '#\/list'/); assert.match(home, /RI\??\.list/);
+  assert.match(home, /function m4groups\(v\)/); assert.match(home, /href: '#\/g\/' \+ g\.id/);
+  assert.ok(!/\bseg\(/.test(home), '첫 화면에 「큰 회사는 크게」 단추 없음'); assert.ok(!/C\.groups\.map\(g => \(\{key: g\.id/.test(home), '큰 갈래 경주 줄 없음');
   assert.match(js, /function race\(host, \{items, parent, wide = false, label, onTick, onDone, auto = false, n: nDays = null\}\)/);
   const c = J(path.join(DATA, 'core.json'));
   const S = {core: c, comp: J(path.join(DATA, 'comp.json')), range: {}, home: null, mkt: c.mkt ? J(path.join(DATA, 'mkt.json')) : null}; S.codes = Object.keys(S.comp.companies); S.mk = S.mkt?.companies ?? null;

@@ -1,7 +1,7 @@
 // 탐침 — 올라간 사이트(aaa7377.com)를 진짜 브라우저(휴대폰 크기)로 열어 봄(사장님 2026-10-13 03:35 「못한거 해내」 · 03:38 「모든 흔적 다 지워」)
 //   깃허브 실행기에서만 바깥에 닿음 · 결과 reports/atlas11/probe/live-view/(그림 · summary.json)
 //   ① 소개 그림 · 영상 · 달 · 링크 미리보기 파일을 받아 git 블롭 번호로 셈 — 옛 그림(지운 판 43개) 가운데 하나라도 나오면 실패
-//   ② 맨 위 2장 → 「자세히 ›」 글 · ③ 업데이트 탭의 10월 12일 21:11 줄 · ④ 소개 한 장(hello.html) · ⑤ 옛 판 첫 화면 띠 — 그림으로 남김
+//   ② 첫 화면(먹빛 판 · 2026-10-15 09:41 · 규칙 67) 시장 칸 · 고른 곳 칸 · ③ 업데이트 탭의 10월 12일 21:11 줄 · ④ 소개 한 장(hello.html) · ⑤ 옛 판 첫 화면 띠 — 그림으로 남김
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
@@ -31,18 +31,16 @@ const shot = async (name, opts = {}) => { const f = `${dir}/${name}.png`; await 
 const step = async (name, fn) => { try { await fn(); } catch (e) { out.errors.push(`${name}: ${String(e.message).slice(0, 120)}`); } };
 await step('첫 화면', async () => {
   await page.goto(B + '/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000});
-  await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(800);
-  await page.evaluate(() => document.querySelector('[aria-label="‖ 멈춤"], .hplay')?.click?.());
-  await shot('p1-slide1');
+  await page.waitForSelector('#view .m4-sec', {timeout: 30000}); await page.waitForTimeout(9000); // 여는 홍표(5초) · 사장님 글이 다 써질 때까지
+  await shot('p1-home-top');
   out.texts.moon = await page.evaluate(() => { const hd = document.querySelector('h1.head, .co-head h1'); return hd ? getComputedStyle(hd, '::before').backgroundImage : null; });
 });
-await step('2장', async () => {
-  await page.click('button[aria-label="다음 장"]'); await page.waitForTimeout(900); await shot('p2-slide2');
-  out.texts.slide2 = await page.evaluate(() => [...document.querySelectorAll('.hs')].filter(s => !s.hidden && getComputedStyle(s).visibility !== 'hidden').map(s => s.innerText).join('\n').slice(0, 800));
-  const more = page.locator('.hs:not([hidden]) .hmore').filter({hasText: '자세히'}).first();
-  await more.click({timeout: 10000}); await page.waitForSelector('.hdet:not([hidden])', {timeout: 10000}); await page.waitForTimeout(500);
-  out.texts.detail = (await page.locator('.hdet').innerText()).slice(0, 2000);
-  await page.locator('.hdet').screenshot({path: `${dir}/p3-slide2-detail.png`}); out.shots.push(`${dir}/p3-slide2-detail.png`);
+await step('시장 칸', async () => { // 먹빛 첫 화면(2026-10-15 09:41 · 규칙 67) — 오늘 한 줄(평소와 견줌) · 큰 날만 금빛 알림 · 두 산줄기 · 「어떻게 셌나요?」
+  await page.evaluate(() => { const e = document.querySelector('#m4-h-mk')?.closest('.m4-sec'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(2600); await shot('p2-home-market');
+  out.texts.market = await page.evaluate(() => ({lead: document.querySelector('#view .m4-lead')?.innerText ?? '', alerts: [...document.querySelectorAll('#view .m4-al')].map(x => x.innerText), meta: document.querySelector('#view .m4-meta')?.innerText ?? '', qs: [...document.querySelectorAll('#view .m4-q')].map(x => x.innerText)}));
+  await page.evaluate(() => document.querySelectorAll('#view details.m4-how').forEach(d => { d.open = true; })); await page.waitForTimeout(300);
+  out.texts.how = await page.evaluate(() => [...document.querySelectorAll('#view details.m4-how')].map(d => d.innerText).join('\n').slice(0, 2000));
+  await page.evaluate(() => { const e = document.querySelector('#m4-h-pk')?.closest('.m4-sec'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(600); await shot('p3-home-picks');
 });
 await step('업데이트 탭', async () => {
   await page.goto(B + '/?v=' + Date.now() + '#/up', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
@@ -72,9 +70,10 @@ await step('36곳 없음', async () => { // 사장님 2026-10-13 06:45 「매수
 });
 await step('줄 선 그래프', async () => { // 사장님 2026-10-13 12:30 「이 사진처럼 그 업종 이라든지 종목에 그래프가 표현되게해」
   const cnt = () => page.evaluate(() => { const rows = [...document.querySelectorAll('#view .board .row')]; return {rows: rows.length, lines: rows.filter(r => (r.querySelector('.track .spk .ln')?.getAttribute('d') ?? '').length > 10).length}; });
+  const cntHome = () => page.evaluate(() => { const rows = [...document.querySelectorAll('#view .m4-tr')]; return {rows: rows.length, lines: rows.filter(r => (r.querySelector('.m4-spk .ln')?.getAttribute('d') ?? '').length > 10).length}; }); // 먹빛 첫 화면 — 요즘 오르는 업종 줄마다 1주 선
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
-  await page.evaluate(() => { const b = document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 140); }); await page.waitForTimeout(9000); // 경주가 끝날 때까지
-  const home = await cnt(); await shot('p8-home-board');
+  await page.evaluate(() => { const b = document.querySelector('#m4-h-ri')?.closest('.m4-sec'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(2500); // 선이 그려질 때까지
+  const home = await cntHome(); await shot('p8-home-board');
   await page.goto(B + '/?v=' + Date.now() + '#/list', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2500);
   const list = await cnt(); await shot('p9-list');
   out.spark = {home, list, ok: home.rows > 0 && home.lines === home.rows && list.rows > 0 && list.lines === list.rows};
@@ -87,8 +86,8 @@ await step('멍거 · 린치 조건', async () => { // 사장님 2026-10-14 06:0
   const n = core.funnel?.picked ?? null, name = `${core.rules?.name ?? '?'} ${n}곳`, line = core.rules?.line ?? '?';
   const cM = Object.keys(comp).find(c => comp[c].pick?.tags?.includes('mg')), cL = Object.keys(comp).find(c => JSON.stringify(comp[c].pick?.tags) === '["ly"]');
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
-  const home = await page.evaluate(() => document.querySelector('#view .say.pk')?.innerText ?? '');
-  await page.evaluate(() => { const e = document.querySelector('#view .say.pk'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 160); }); await page.waitForTimeout(9000); await shot('p12-ml-home'); // 경주가 끝날 때까지
+  const home = await page.evaluate(() => (document.querySelector('#m4-h-pk')?.closest('.m4-sec')?.innerText ?? '') + '\n' + (document.querySelector('#view .foot')?.innerText ?? '')); // 먹빛 첫 화면 — 고른 곳 칸(이름 밑 갈래마다 수) · 맨 아래 자료 줄(멍거 · 린치 조건 N곳)
+  await page.evaluate(() => { const e = document.querySelector('#m4-h-pk')?.closest('.m4-sec'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(1500); await shot('p12-ml-home');
   const whyOf = async (c, tag) => { if (!c) return '';
     await page.goto(B + '/?v=' + Date.now() + '#/c/' + c, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
     const t = await page.evaluate(() => [...document.querySelectorAll('#view .box')].find(b => /왜 멍거 · 린치 조건/.test(b.innerText))?.innerText ?? '');
@@ -127,9 +126,9 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   const gold = pkI.slice().sort((a, b) => b.pk - a.pk || b.n - a.n)[0]; // 고른 곳이 가장 많이 든 업종
   const shown = gold.members.filter(c => mk.companies[c]?.l?.some(x => x != null)), shownN = shown.length, shownPk = shown.filter(c => mk.companies[c].p).length; // 기준일 종가가 없어 선을 못 그린 회사는 줄 대신 「?」 한 줄
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
-  await page.evaluate(() => { const b = document.querySelector('#view h2.sec.rt') ?? document.querySelector('#view .board'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 70); }); await page.waitForTimeout(9000); // 사진 = 경주 제목 · 오름 · 내림 줄 · 금빛 설명 · 경주
-  const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, gold: document.querySelectorAll('#view .board .badge.gold').length, say: document.querySelector('#view .gold-say')?.textContent ?? '', tab: document.querySelector('#tabList')?.textContent ?? '',
-    head: document.querySelector('#view h2.sec.rt')?.textContent ?? '', names: [...document.querySelectorAll('#view .board .row .nm .nt')].map(x => x.textContent), glinks: [...document.querySelectorAll('#view .glinks a')].map(a => a.getAttribute('href'))})); // 요즘 오르는 업종(2026-10-14 20:01 「1주일로 해」 · 규칙 64) — 줄 = core.rise · 큰 갈래 고리
+  await page.evaluate(() => { const b = document.querySelector('#m4-h-ri')?.closest('.m4-sec'); if (b) window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(2500); // 사진 = 요즘 오르는 업종 칸(먹빛 첫 화면)
+  const home = await page.evaluate(() => ({rows: document.querySelectorAll('#view .m4-tr').length, gold: document.querySelectorAll('#view .m4-tr .m4-pk').length, tab: document.querySelector('#tabList')?.textContent ?? '',
+    head: document.querySelector('#m4-h-ri')?.textContent ?? '', names: [...document.querySelectorAll('#view .m4-tr .nm')].map(x => x.textContent.replace(/\u2060/g, '')), glinks: [...document.querySelectorAll('#view .m4-g')].map(a => a.getAttribute('href'))})); // 요즘 오르는 업종(규칙 64) — 줄 = core.rise · 큰 갈래 고리 = 열 개(20거래일 많이 오른 차례)
   await shot('p18-home-all');
   await page.goto(B + '/?v=' + Date.now() + '#/i/' + encodeURIComponent(gold.name), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(2000);
   const ind = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')), x: document.querySelectorAll('#view .board .row[href^="#/x/"]').length, c: document.querySelectorAll('#view .board .row[href^="#/c/"]').length}));
@@ -139,7 +138,7 @@ await step('모든 회사', async () => { // 사장님 2026-10-14 12:01(싱가�
   const list = await page.evaluate(() => ({rows: document.querySelectorAll('#view .board .row').length, pk: document.querySelectorAll('#view .board .row.pk').length, head: document.querySelector('#view h1')?.textContent ?? ''}));
   await shot('p20-list-all');
   out.allCo = {mkt: mk.n, companies: core.funnel?.companies ?? null, mktN: core.mkt?.n ?? null, groups: core.groups.length, industries: core.industries.length, members: mem, picked: core.funnel?.picked ?? null, pk: mk.pk, pkIndustries: pkI.length, home, gold: {name: gold?.name, n: gold?.n, pk: gold?.pk, shown: shownN}, ind: {...ind, pk: ind.pk.length}, list,
-    ok: !!core.mkt && mk.n === core.mkt.n && mk.n === core.funnel?.companies && mem === mk.n && mk.pk === core.funnel?.picked && home.rows === (core.rise?.list?.length ?? core.groups.length) && (!core.rise || (home.head === '요즘 오르는 업종 — 지난 1주' && JSON.stringify(home.names) === JSON.stringify(core.rise.list.map(r => r.name)) && JSON.stringify(home.glinks) === JSON.stringify(core.groups.map(g => '#/g/' + g.id)))) && home.tab === '업종 ' + core.industries.length
+    ok: !!core.mkt && mk.n === core.mkt.n && mk.n === core.funnel?.companies && mem === mk.n && mk.pk === core.funnel?.picked && home.rows === (core.rise?.list?.length ?? core.groups.length) && (!core.rise || (home.head === '요즘 오르는 업종' && JSON.stringify(home.names) === JSON.stringify(core.rise.list.map(r => r.name)) && JSON.stringify(home.glinks) === JSON.stringify(core.groups.slice().sort((a, b) => b.chg - a.chg).map(g => '#/g/' + g.id)))) && home.tab === '업종 ' + core.industries.length
       && ind.rows === shownN && ind.pk.length === shownPk && ind.pk.every(h => /^#\/c\//.test(h)) && (core.co7 ? ind.x === 0 && ind.c === shownN : ind.x === shownN - shownPk) && list.rows === core.industries.length && list.pk === pkI.length};
   if (!out.allCo.ok) out.errors.push('모든 회사: ' + JSON.stringify(out.allCo).slice(0, 240));
 });
@@ -149,14 +148,14 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   const hrefInd = i => (i.n === 1 ? ((core.co7 || !core.mkt || i.pk ? '#/c/' : '#/x/') + i.members[0]) : '#/i/' + encodeURIComponent(i.name)); // 모든 회사 7단(2026-10-14 17:25)이면 모두 회사
   const want = g => { const n = core.secInd?.[String(g?.name ?? '').replace(/\s+/g, '')], i = n ? core.industries.find(x => x.name === n) : null; return i ? hrefInd(i) : null; };
   const first = home.sectors?.strong?.[0] ?? null, w = want(first);
-  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(800);
-  const s1 = await page.evaluate(() => ({msg: document.querySelector('.hs-hello .hmsg')?.innerText ?? '', promo: document.querySelector('.hs-hello .hpr')?.textContent ?? ''}));
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view .m4-sec', {timeout: 30000}); await page.waitForTimeout(9000); // 여는 홍표 · 글 쓰기가 끝날 때까지
+  const s1 = await page.evaluate(() => ({msg: document.querySelector('#view .m4-letter .hmsg')?.innerText ?? '', promo: document.querySelector('#view .m4-letter .m4-gift')?.textContent ?? ''}));
   await shot('p22-slide1');
-  await page.click('#ht-sec'); await page.waitForTimeout(900);
-  const got = await page.evaluate(() => [...document.querySelectorAll('#hs-sec a.srow')].map(a => a.getAttribute('href')));
+  await page.evaluate(() => { const e = document.querySelector('#m4-h-br')?.closest('.m4-sec'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(1500);
+  const got = await page.evaluate(() => [...document.querySelectorAll('#view a.m4-sr')].map(a => a.getAttribute('href'))); // 먹빛 첫 화면 「오른 곳과 내린 곳」 칸의 강한 · 약한 업종 줄
   await shot('p21-sec-slide');
   let after = null;
-  if (got[0]) { await page.locator('#hs-sec a.srow').first().click(); await page.waitForTimeout(2000); after = await page.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent ?? '', step: document.querySelector('#view .steps, #view .lv')?.textContent ?? ''})); await shot('p21-sec-industry'); }
+  if (got[0]) { await page.locator('#view a.m4-sr').first().click(); await page.waitForTimeout(2000); after = await page.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent ?? '', step: document.querySelector('#view .steps, #view .lv')?.textContent ?? ''})); await shot('p21-sec-industry'); }
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
   const hp = await page.evaluate(() => ({bar: document.querySelector('.hp-pbar')?.textContent ?? '', box: document.querySelector('#hp-promo')?.innerText ?? '', sms: document.querySelector('#hp-promo a[href^="sms:"]')?.getAttribute('href') ?? null, tel: document.querySelector('#hp-promo a[href^="tel:"]')?.getAttribute('href') ?? null}));
   await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
@@ -167,8 +166,8 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
 await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)
-  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hbar', {timeout: 30000}); await page.waitForTimeout(600);
-  const band = await page.evaluate(() => document.querySelector('.hs-hello .hw')?.textContent ?? '');
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view .m4-sec', {timeout: 30000}); await page.waitForTimeout(600);
+  const band = await page.evaluate(() => document.querySelector('#view .m4-letter .m4-act')?.textContent ?? ''); // 먹빛 첫 화면 편지 칸 「친구에게 소개하기 · 홍표 35초 영상 · 보내기」
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(600);
   const hv = await page.evaluate(async () => {
     const v = document.querySelector('video.hp-vid'), meta = n => document.querySelector(`meta[name="${n}"], meta[property="${n}"]`)?.getAttribute('content') ?? '';
@@ -183,14 +182,15 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
 });
 await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」(규칙 66 · 사진 p27 · p28) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'commit', timeout: 60000}); await page.waitForSelector('#view .hpi', {timeout: 30000}); const t0 = Date.now();
-  const look = () => page.evaluate(() => { const a = document.querySelector('#hs-hello a.hs-hello'), pi = a?.querySelector('.hpi'), img = pi?.querySelector('img.hpi-bird');
-    return {intro: !!a?.classList.contains('hs-intro'), img: img ? img.complete && img.naturalWidth > 0 : false, bub: [...(pi?.querySelectorAll('.hpi-b') ?? [])].map(x => [x.textContent, +getComputedStyle(x).opacity]), ml: a ? Math.max(...[...a.querySelectorAll('.hml')].map(x => +getComputedStyle(x).opacity)) : null, msg: a?.querySelector('.hmsg')?.innerText ?? ''}; });
-  await page.waitForTimeout(Math.max(0, 2300 - (Date.now() - t0))); const i1 = await look(); await shot('p27-hello-intro');
-  await page.waitForTimeout(Math.max(0, 4300 - (Date.now() - t0))); const i4 = await look(); // 홍표 5초 — 4.3초에도 홍표 그대로 · 글은 아직
-  await page.waitForTimeout(Math.max(0, 6800 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text');
-  out.helloIntro = {i1, i4: {intro: i4.intro, ml: i4.ml, bub: i4.bub.length}, i2: {intro: i2.intro, ml: i2.ml},
-    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '홍표!' && o > 0.9) && i4.intro && i4.ml < 0.2 && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
-      && !i2.intro && i2.ml > 0.95 && /하규는 아틀란스 해서 부자 될겁니다/.test(i2.msg) && /아틀란스 올림!/.test(i2.msg)};
+  const look = () => page.evaluate(() => { const a = document.querySelector('#view a.m4-letter'), pi = a?.querySelector('.hpi'), img = pi?.querySelector('img.hpi-bird'), ls = [...(a?.querySelectorAll('.hml') ?? [])]; // 먹빛 첫 화면(2026-10-15) 편지 칸
+    return {intro: !!a?.classList.contains('intro'), img: img ? img.complete && img.naturalWidth > 0 : false, bub: [...(pi?.querySelectorAll('.hpi-b') ?? [])].map(x => [x.textContent, +getComputedStyle(x).opacity]),
+      shown: ls.some(x => getComputedStyle(x).visibility === 'visible'), ml: ls.length ? Math.min(...ls.map(x => +getComputedStyle(x).opacity)) : null, msg: a?.querySelector('.hmsg')?.innerText ?? ''}; });
+  await page.waitForTimeout(Math.max(0, 2700 - (Date.now() - t0))); const i1 = await look(); await shot('p27-hello-intro');
+  await page.waitForTimeout(Math.max(0, 4000 - (Date.now() - t0))); const i4 = await look(); // 홍표 5초 — 4초에도 홍표 그대로 · 글은 아직(4.2초에 제자리로 날아감)
+  await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text'); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
+  out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml},
+    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '홍표!' && o > 0.9) && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
+      && !i2.intro && i2.shown && i2.ml > 0.95 && /하규는 아틀란스 해서 부자 될겁니다/.test(i2.msg) && /아틀란스 올림!/.test(i2.msg)};
   if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
 });
 await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)
