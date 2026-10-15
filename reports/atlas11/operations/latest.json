@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-15T12:31:25Z",
+  "at": "2026-10-15T12:44:28Z",
   "dayKST": "2026-10-15",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-15T12:31:25.438Z",
+      "startedAt": "2026-10-15T12:44:29.043Z",
       "status": "ok",
-      "durationMs": 37,
+      "durationMs": 484,
       "session": true,
       "afterClose": true,
       "day": "2026-10-15",
@@ -17,19 +17,19 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-15T12:31:25.475Z",
+      "startedAt": "2026-10-15T12:44:29.527Z",
       "status": "ok",
-      "durationMs": 23180,
+      "durationMs": 27425,
       "attempted": true,
       "observations": 0,
       "errors": 44,
-      "recordId": "collection-ba9bea37f7e65db8"
+      "recordId": "collection-0de9feb129380d62"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-15T12:31:48.655Z",
+      "startedAt": "2026-10-15T12:44:56.952Z",
       "status": "ok",
-      "durationMs": 5503,
+      "durationMs": 5486,
       "changed": false,
       "confirmedToday": 360,
       "actualAsOf": "2026-10-01",
@@ -37,15 +37,15 @@
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-15T12:31:54.162Z",
+      "startedAt": "2026-10-15T12:45:02.449Z",
       "view": {
-        "boardId": "board-2026-10-15-9b464c62",
+        "boardId": "board-2026-10-15-ac444272",
         "asOf": "2026-10-15",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2941864,
+        "bytes": 2941695,
         "similar": [
           "안랩",
           "DB",
@@ -78,7 +78,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1374
+      "durationMs": 1341
     }
   ],
   "runtime": {
@@ -87,10 +87,10 @@
     "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "38734940157",
+    "runId": "38735970259",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38734940157",
-    "commit": "78f82f457bb58fec49f2bc43e8e16534f1c6561e",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38735970259",
+    "commit": "ffa9203482c8e3a327b64236006d1b6c6f941776",
     "serverInstalled": true,
     "scheduledRun": true
   },
@@ -394,12 +394,12 @@
       "finalizedToday": 0,
       "crossChecked": 29,
       "requests": 77,
-      "durationMs": 23157,
+      "durationMs": 27404,
       "corporateActionAdjusted": []
     },
-    "durationMs": 23157
+    "durationMs": 27404
   },
-  "collectionRecordId": "collection-ba9bea37f7e65db8",
+  "collectionRecordId": "collection-0de9feb129380d62",
   "inputChanged": false,
   "actualAsOf": "2026-10-01",
   "freshStocks": 0,
@@ -776,5 +776,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-10-15) 확정 종가 360/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-15T12:31:55.536Z"
+  "finishedAt": "2026-10-15T12:45:03.790Z"
 }
