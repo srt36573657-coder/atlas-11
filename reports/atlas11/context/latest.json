@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-15",
- "fetchedAt": "2026-10-15T08:07:23Z",
- "file": "reports/atlas11/context/2026-10-15/2026-10-15T08-07-23Z.json",
+ "fetchedAt": "2026-10-15T10:01:06Z",
+ "file": "reports/atlas11/context/2026-10-15/2026-10-15T10-01-06Z.json",
  "summary": {
   "day": "2026-10-15",
-  "fetchedAt": "2026-10-15T08:07:23Z",
+  "fetchedAt": "2026-10-15T10:01:06Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-15",
@@ -35,13 +35,13 @@
    "distinct": 7154,
    "republished": 56,
    "sameArticle": 0,
-   "stocksWithTodayNews": 204,
-   "todayDistinct": 1352
+   "stocksWithTodayNews": 209,
+   "todayDistinct": 1413
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 780
+   "corporateActions": 784
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-15",
-     "value": 1343,
-     "changePct": 0
+     "value": 1344.3,
+     "changePct": 0.1
     },
     "rows": 10
    },
@@ -238,8 +238,38 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-15",
-   "corporateActions": 780,
+   "corporateActions": 784,
    "recentActions": [
+    {
+     "code": "066970",
+     "title": "(주)엘앤에프 상장안내(보통주 추가상장 및 신주인수권 변경상장)",
+     "publishedAt": "2026-10-15T17:51:19+09:00",
+     "word": "신주인수권"
+    },
+    {
+     "code": "151860",
+     "title": "케이지에코솔루션(주) 자기주식 처분 결정(자회사의 주요경영사항)",
+     "publishedAt": "2026-10-15T17:43:01+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "151860",
+     "title": "케이지에코솔루션(주) 주식 소각 결정(자회사의 주요경영사항)",
+     "publishedAt": "2026-10-15T17:42:51+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "016380",
+     "title": "KG스틸(주) 자기주식 처분 결정",
+     "publishedAt": "2026-10-15T17:33:44+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "016380",
+     "title": "KG스틸(주) 주식 소각 결정",
+     "publishedAt": "2026-10-15T17:33:34+09:00",
+     "word": "소각"
+    },
     {
      "code": "000150",
      "title": "(주)두산 변경상장(주식소각)",
@@ -281,36 +311,6 @@
      "title": "두산퓨얼셀 주식회사 신주인수권부사채권발행결정",
      "publishedAt": "2026-10-13T06:51:23+09:00",
      "word": "신주인수권"
-    },
-    {
-     "code": "336260",
-     "title": "두산퓨얼셀 주식회사 전환사채권발행결정",
-     "publishedAt": "2026-10-13T06:51:22+09:00",
-     "word": "전환사채"
-    },
-    {
-     "code": "006120",
-     "title": "에스케이디스커버리(주) 자기주식취득 신탁계약 체결 결정(자회사의 주요경영사항)",
-     "publishedAt": "2026-10-13T06:51:16+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "115310",
-     "title": "(주)인포바인 변경상장(주식소각)",
-     "publishedAt": "2026-10-13T06:50:52+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "247540",
-     "title": "(주)에코프로비엠 (정정)유상증자결정(주주배정후 실권주 일반공모)",
-     "publishedAt": "2026-10-13T06:50:45+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "247540",
-     "title": "(주)에코프로비엠 유상증자최종발행가액확정",
-     "publishedAt": "2026-10-13T06:50:24+09:00",
-     "word": "유상증자"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-15",
-     "value": 1343,
+     "value": 1344.3,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
