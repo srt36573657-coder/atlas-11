@@ -293,6 +293,18 @@ await step('영어 판', async () => { // 사장님 2026-10-15(싱가포르) 23:
   out.english = {pages: R, back, ok: Object.values(R).every(x => x.en && x.lang === 'en' && x.btn && x.han === 0 && x.miss === 0 && x.sw <= x.cw) && back.lang === 'ko' && !back.en};
   if (!out.english.ok) out.errors.push('영어 판: ' + JSON.stringify(out.english).slice(0, 400));
 });
+await step('편지 여는 밤', async () => { // 사장님 2026-10-17 01:29 「그래 이제 만들어봐」 · 규칙 73 — 초대받은 분만: 손님 화면 · /api/letter 손님 답 · 검색 제외 머리말 · 다른 사이트에서 쓰기 403(쓰는 것 없음)
+  const NC = {'Cache-Control': 'no-cache'};
+  const hr = await fetch(B + '/letter.html?v=' + Date.now(), {headers: NC, signal: AbortSignal.timeout(30000)}), robots = hr.headers.get('x-robots-tag') ?? '';
+  const ar = await fetch(B + '/api/letter', {headers: NC, signal: AbortSignal.timeout(30000)}), A = ar.ok ? await ar.json().catch(() => null) : null;
+  const xr = await fetch(B + '/api/letter', {method: 'POST', headers: {'content-type': 'application/json', origin: 'https://probe.invalid'}, body: JSON.stringify({op: 'join', code: 'x'.repeat(16), nick: '탐침'}), signal: AbortSignal.timeout(30000)});
+  await page.goto(B + '/letter.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hero .clk', {timeout: 30000}).catch(() => {}); await page.waitForTimeout(1500); await shot('p40-letter');
+  const g = await page.evaluate(() => ({h1: document.querySelector('.hero h1')?.textContent ?? '', clock: document.querySelector('.hero .clk')?.textContent ?? '', guest: document.querySelector('.card h2')?.textContent ?? '', write: !!document.querySelector('#write'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+  out.letter = {html: hr.status, robots, api: ar.status, week: A?.week ?? null, current: A?.current ?? null, opensAt: A?.opensAt ?? null, open: A?.open ?? null, count: A?.count ?? null, member: A?.member ?? null, owner: A?.owner ?? null, foreign: xr.status, ...g,
+    ok: hr.status === 200 && /noindex/.test(robots) && ar.status === 200 && /^\d{4}-\d{2}-\d{2}$/.test(A?.week ?? '') && A?.week === A?.current && A?.open === false && A?.member === false && A?.owner === false && Number.isInteger(A?.count) && xr.status === 403
+      && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw};
+  if (!out.letter.ok) out.errors.push('편지 여는 밤: ' + JSON.stringify(out.letter).slice(0, 400));
+});
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;
 await fs.writeFile(`${dir}/summary.json`, JSON.stringify(out, null, 1));
