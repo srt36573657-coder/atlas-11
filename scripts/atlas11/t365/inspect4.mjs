@@ -50,7 +50,7 @@ export const OLD36_TEXT = ['매수 검토', '셈 차례', '봉인 36곳', '365�
 export const has36Text = t => OLD36_TEXT.some(w => String(t).includes(w));
 const NO36 = /(?<![\d,])36곳|pick36|view36|tab36|매수 검토|["']#\/36["']/; // 「136곳」 같은 숫자는 아님 // 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 다시 들어오면 클로드 눈이 막음
 const LEVELS = new Set(['아주 높다', '높다', '반반', '낮다', '아주 낮다']);
-const CODE_HOSTS = new Set(['aaa7377.com', 'kind.krx.co.kr', 'dart.fss.or.kr', 'www.w3.org']);
+const CODE_HOSTS = new Set(['aaa7377.com', 'kind.krx.co.kr', 'dart.fss.or.kr', 'www.w3.org', 'www.youtube.com']); // 유튜브 = 이야기 칸 영상 고리(2026-10-16)
 // 사람 이름 · 회사 이름 · 업종 이름 · 기사 제목처럼 밖에서 온 이름은 금지 말을 보지 않음(「사라」 → 「사라진」 같은 이름 · 제목) — 깨진 글자 · 숨은 글자 · 끼운 코드는 봄
 const PROPER = new Set(['name', 'n', 'i', 'sector', 'products', 'title', 'src', 'url', 'press', 'who', 'c', 'code', 'members', 'inds', 'short', 'pn', 'source']);
 
@@ -133,9 +133,9 @@ export function siteGraph(S) {
   const SI = core.secInd ?? {}, secL = [...(S.home?.sectors?.strong ?? []).slice(0, 3), ...(S.home?.sectors?.weak ?? []).slice(0, 3)].map(g => { const n = SI[String(g.name ?? '').replace(/\s+/g, '')], i = n ? S.iby.get(n) : null; return i ? hrefInd(i) : null; });
   // 요즘 오르는 업종(2026-10-14 20:01 「1주일로 해」 · 규칙 64) — 경주판 줄 = 오른 업종(core.rise · 업종이 없으면 업종 탭) · 큰 갈래는 경주판 밑 한 줄 고리(atlas.js glinks)
   const riseL = (core.rise?.list ?? []).map(r => { const i = S.iby.get(r.name); return i ? hrefInd(i) : '#/list'; });
-  add('#/', [...ends, ...secL, ...riseL, ...core.groups.map(g => '#/g/' + g.id), '#/time'], 0, null, 0);
+  add('#/', [...ends, ...secL, ...riseL, ...core.groups.map(g => '#/g/' + g.id), '#/time', '#/talk'], 0, null, 0); // 이야기 칸 입구(2026-10-16 · 첫 화면 맨 위)
   add('#/list', core.industries.map(hrefInd), null, null, 1);
-  add('#/up', [], null, null, 2); add('#/time', [], null, null, 2); add('#/info', ['#/up'], null, null, 1);
+  add('#/up', [], null, null, 2); add('#/time', [], null, null, 2); add('#/talk', [], null, null, 1); /* 이야기 칸 — 회사 고리 없음(밖 고리만) */ add('#/info', ['#/up'], null, null, 1);
   // 조건 찾기 탭(규칙 72 — atlas.js viewCond 처음 조건(큰 회사가 오른 업종 · 대장주 · 5일 10% 넘게 오른 곳 빼기 · 결정표 v2)과 같은 셈) — 결과 줄 앞 20곳 · 값 모르는 곳(접은 칸) → 회사 3단
   add('#/cond', condDefaultX(S).flatMap(x => x).map(c => coHref(S, c)), null, null, 1);
   // 급등 탭(규칙 69) — 줄마다 그 회사(3단) · 이번에 빠진 곳도 회사로(atlas.js viewSurge 와 같은 길)
@@ -431,7 +431,7 @@ export function routeRunner(js) {
   const rec = k => (...x) => { calls.push([k, ...x.slice(1)]); };
   const box = {D: {core: {}}, L: x => x, location: {hash: '#/', search: '', replace: u => calls.push(['replace', u])}, freshCheck() {}, /* L = 영어 팩 글 바꿈(한국어면 그대로) */ showFind: () => calls.push(['find']), showInfo: x => calls.push(['info', x]), needNames: async () => {}, needMkt: async () => {},
     $: () => el(), document: {body: {dataset: {}}, title: ''}, lastMain: '', routeSeq: 0, chartDraw: null, h: () => el(), MO: {cat: () => el(), catSleep: () => { calls.push(['error-screen']); return el(); }}, window: {scrollTo() {}}, console: {error() {}},
-    viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewSurge: rec('surge'), viewTime: rec('time'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'), viewCal: rec('cal'), viewCalCase: rec('calc'), viewCond: rec('cond'), calLeave() {}, calBack() {},
+    viewHome: rec('home'), viewList: rec('list'), viewUpdates: rec('up'), viewSurge: rec('surge'), viewTime: rec('time'), viewTalk: rec('talk'), viewGroup: rec('g'), viewIndustry: rec('i'), viewPast: rec('past'), viewRivals: rec('rivals'), viewGrow: rec('grow'), viewRange: rec('range'), viewCompany: rec('c'), viewMissing: rec('missing'), viewCal: rec('cal'), viewCalCase: rec('calc'), viewCond: rec('cond'), calLeave() {}, calBack() {},
     decodeURIComponent, encodeURIComponent, Promise, Object, String, Array};
   vm.createContext(box);
   vm.runInContext(js.slice(a, b) + '\n;globalThis.__route = route;', box);
@@ -440,7 +440,7 @@ export function routeRunner(js) {
 const PAY = ['<script>alert(1)</script>', '"><img src=x onerror=alert(1)>', 'javascript:alert(1)', "'", '"', '%', '%%', '%E0%A4%A', '%ZZ', '%u0041', '%C0%AF', '%00', '‮', '\u0000', '\n', '../', '..%2F', '%2e%2e%2f', '//evil.example', 'https://evil.example', '#', '?', '&', '\\', '%F0%9F%98%80', '😀', '가나다', 'ㄱ', ' ', '%20'];
 function fuzzHash(rnd, S) {
   const pick = a => a[(rnd() * a.length) | 0];
-  const heads = ['#/', '#/c/', '#/g/', '#/i/', '#/x/', '#/find', '#/info', '#/list', '#/36', '#/up', '#/cond', '#/cond/', '#/surge', '#/cal', '#/cal/', '#/time', '', '#', '#//', '#/C/', '#/c//', '#/stocks', '#/road', '#/x//', '#/i//', '#/g/%'];
+  const heads = ['#/', '#/c/', '#/g/', '#/i/', '#/x/', '#/find', '#/info', '#/list', '#/36', '#/up', '#/cond', '#/cond/', '#/surge', '#/cal', '#/cal/', '#/time', '#/talk', '', '#', '#//', '#/C/', '#/c//', '#/stocks', '#/road', '#/x//', '#/i//', '#/g/%'];
   const bodies = [() => pick(S.codes), () => String((rnd() * 1e6) | 0).padStart(6, '0'), () => pick(S.core.groups).id, () => pick(S.core.industries).name, () => encodeURIComponent(pick(S.core.industries).name),
     () => encodeURIComponent(encodeURIComponent(pick(S.core.industries).name)), () => pick(PAY), () => String.fromCharCode((rnd() * 0xffff) | 0), () => 'a'.repeat(1 + ((rnd() * 3000) | 0)), () => pick(['/past', '/rivals', '/grow', '/range', '/x', '/', '//past'])];
   let s = pick(heads); const n = 1 + ((rnd() * 4) | 0); for (let k = 0; k < n; k++) s += pick(bodies)();

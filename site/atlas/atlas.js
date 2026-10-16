@@ -754,6 +754,7 @@ async function viewHome(v) {
   const H = D.home; m4load(); m4notes = H ? planNotes(H) : {};
   /** 칸 하나가 자료 탓에 멈춰도 첫 화면 전체가 「자료를 못 읽었습니다」가 되지 않게 — 그 칸 자리에 「?」 한 줄(다른 눈 M3) */
   const safe = (name, f) => { try { return f(); } catch (e) { console.warn('첫 화면 칸', name, e); v.append(h('section', {class: 'm4-sec'}, h('p', {class: 'q m4-q', text: `? ${name} 칸을 그리지 못했어요.`}))); return null; } };
+  v.append(h('a', {class: 'tk-entry', href: '#/talk'}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'}))); // 이야기 칸 입구 — 첫 화면 맨 위(2026-10-16 21:44 「이런 곳을 상단에」 · 21:46 「알아서 해」)
   // 큰 날 금빛 「!」는 편지 위 — 편지가 격언 열 가지로 길어져(2026-10-16) 시장 칸이 첫 화면(390×844) 밖으로 밀려서
   const top = H && (idxOk(H.idx?.KOSPI) || idxOk(H.idx?.KOSDAQ)) ? idxAlerts(H) : [];
   if (top.length) v.append(h('div', {class: 'm4-top'}, ...top));
@@ -2302,6 +2303,65 @@ async function freshCheck() {
   if (Date.now() - freshAt < 600000 || !D.core) return; freshAt = Date.now();
   try { const r = await fetch('/atlas/data/core.json', {cache: 'no-store'}); if (!r.ok) return; const x = await r.json(); if (x.made && D.core.made && x.made !== D.core.made) location.reload(); } catch { /* 망 없음 — 그대로 */ }
 }
+// ── 이야기 칸(사장님 2026-10-16(싱가포르) 21:44 「가장 웃긴 댓글 · 가장 조회수 많은 댓글 … 가십을 올려봐 … 투자격언도 유명인들 넣어주고 … 유투브도 한 30개」 · 22:25 「작업해」) ──
+//   남의 글은 옮기지 않음(네이버 약관이 자동 모으기를 막고 · 소문 글은 시장질서 교란이 될 수 있음) — 네이버 인기 토론은 고리 하나 · 이야깃거리는 사이트 자료로 화면에서 셈 · 격언 · 유튜브는 talk.json(출처 확인한 것만)
+let talkP = null;
+function needTalk() { if (!talkP) talkP = fetch('/atlas/talk.json', {cache: 'no-cache'}).then(r => { if (!r.ok) throw Error('talk.json ' + r.status); return r.json(); }).then(t => { D.talk = t; }).catch(e => { talkP = null; throw e; }); return talkP; }
+const tkOk = c => !!c && !c.j && Array.isArray(c.l) && c.l.length > 2 && c.l.every(x => x != null) && !c.l.some((x, k) => k >= 2 && x === c.l[k - 1] && x === c.l[k - 2]); // 이름을 불러도 되는 곳 — 하루 30% 넘게 튄 곳 · 빈 날 · 값이 사흘 그대로(거래가 멈췄을 수 있음)는 뺌 · 내린 곳 이름은 부르지 않음
+function talkFacts() {
+  const C = D.core, M = D.mkt ?? {}, out = [], ok = Object.keys(M).filter(k => tkOk(M[k])).sort(), N = C.days;
+  let b = null; // ① 내리 오른 날 — 가장 길게 이어 오른 곳(같으면 더 오른 곳 · 번호 차례)
+  for (const k of ok) { const l = M[k].l; let run = 0, mx = 0; for (let i = 1; i < l.length; i++) { run = l[i] > l[i - 1] ? run + 1 : 0; if (run > mx) mx = run; } if (!b || mx > b.k || (mx === b.k && M[k].c > M[b.c].c)) b = {c: k, k: mx}; }
+  if (b && b.k >= 3) out.push({t: '내리 오른 날', s: `지난 ${M[b.c].l.length - 1}거래일 동안 ${josa(M[b.c].n, '은', '는')} ${b.k}거래일 내리 올랐어요. 모든 회사 가운데 가장 길어요.`, line: M[b.c].l});
+  let g = null; // ② 같은 업종 다른 길 — 5곳 넘는 업종에서 업종 평균보다 가장 크게 앞선 곳
+  for (const ind of C.industries ?? []) { if (!(ind.n >= 5) || ind.chg == null) continue; for (const k of ind.members ?? []) { const m = M[k]; if (!tkOk(m) || m.c == null || m.c <= ind.chg) continue; const d = m.c - ind.chg; if (!g || d > g.d) g = {ind, c: k, d}; } }
+  if (g) out.push({t: '같은 업종 다른 길', s: `지난 ${N}거래일 동안 ${g.ind.name} 업종 ${g.ind.n}곳은 평균 ${pct(g.ind.chg)}인데, 그 안에서 ${josa(M[g.c].n, '은', '는')} ${pct(M[g.c].c)}예요.`});
+  const all = Object.values(M).filter(m => m && !m.j && m.c != null), two = all.filter(m => m.c >= 100).length, half = all.filter(m => m.c <= -50).length; // ③ 두 배 · 반 토막(수만)
+  if (all.length) out.push({t: '두 배와 반 토막', s: `지난 ${N}거래일 동안 값이 두 배 넘게 된 곳은 ${two}곳, 반 넘게 내린 곳은 ${half}곳이에요.`});
+  const bm = C.facts?.bigMkt ?? []; // ④ 몸값 1 · 2등
+  if (bm.length >= 2 && bm[0].chg != null && bm[1].chg != null) out.push({t: '몸값 1등과 2등', s: `지난 ${N}거래일 동안 몸값 1등 ${josa(bm[0].name, '은', '는')} ${pct(bm[0].chg)}, 2등 ${josa(bm[1].name, '은', '는')} ${pct(bm[1].chg)}예요.`});
+  for (const key of ['KOSPI', 'KOSDAQ']) { const x = D.home?.idx?.[key]; if (!x || D.home?.stale?.idx || x.hi?.vs == null || x.lo?.vs == null) continue; // ⑤ 3달 꼭대기와 바닥(못 받은 값이면 뺌)
+    out.push({t: '3달 꼭대기와 바닥', s: `${md(x.date)} ${josa(key === 'KOSPI' ? '코스피' : '코스닥', '은', '는')} 3달 꼭대기보다 ${pct(x.hi.vs)}, 3달 바닥보다 ${pct(x.lo.vs)}예요.`}); }
+  const S = D.surge; // ⑥ 급등 칸(수만)
+  if (S && S.n != null) out.push({t: '5일 동안 크게 오른 곳', s: `${md(S.asOf)}까지 5거래일 「급등」 칸에 든 곳은 ${S.n}곳이에요.` + (S.bands?.b40?.n != null ? ` 40% 넘게 오른 곳은 ${S.bands.b40.n}곳이에요.` : '')});
+  const T = C.time; // ⑦ 봉인 상자
+  if (T?.seal && T.since?.days != null && T.since?.chg365 != null) out.push({t: '봉인 상자', s: `${md(T.seal)}에 봉인한 상자는 그 뒤 ${T.since.days}거래일 동안 평균 ${pct(T.since.chg365)}예요.`});
+  return out;
+}
+function tkSpark(l) { // 이야깃거리 ① 회사의 선(처음엔 멈춘 그림 · 오름 색)
+  const NS = 'http://www.w3.org/2000/svg', W = 320, H = 72, mn = Math.min(...l), mx = Math.max(...l), y = x => H - 8 - (x - mn) / ((mx - mn) || 1) * (H - 16);
+  const s = document.createElementNS(NS, 'svg'); s.setAttribute('viewBox', `0 0 ${W} ${H}`); s.setAttribute('class', 'tk-spark'); s.setAttribute('role', 'img'); s.setAttribute('aria-label', '지난 거래일 값의 선');
+  const p = document.createElementNS(NS, 'polyline'); p.setAttribute('points', l.map((x, i) => `${(6 + i / (l.length - 1) * (W - 12)).toFixed(1)},${y(x).toFixed(1)}`).join(' ')); p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'var(--up)'); p.setAttribute('stroke-width', '2.5'); p.setAttribute('stroke-linejoin', 'round');
+  s.append(p); return s;
+}
+const TK_CAT = [['대가', '투자 대가'], ['슈카', '쉬운 경제 이야기'], ['역사', '버블과 위기의 역사'], ['기초', '차트 기초']];
+async function viewTalk(v) {
+  const [t] = await Promise.allSettled([needTalk(), needMkt(), needHome(), needSurge()]);
+  v.append(h('h1', {class: 'head', text: '오늘의 이야기'}), h('p', {class: 'hon', text: '지난 기록으로 만든 이야깃거리예요. 사고팔 곳을 고른 목록이 아니에요.'}));
+  const F = talkFacts();
+  const s1 = h('section', {class: 'tk-sec'}, h('h2', {class: 'sub', text: '오늘의 이야깃거리'}));
+  if (F[0]?.line) s1.append(tkSpark(F[0].line));
+  if (F.length) s1.append(h('ol', {class: 'tk-list'}, ...F.map(f => h('li', {}, h('b', {class: 'tk-t', text: f.t}), h('span', {text: tx(f.s)})))));
+  else s1.append(h('p', {class: 'q', text: '? 이번에는 이야깃거리를 만들 자료를 못 받았어요.'}));
+  v.append(s1);
+  const T = D.talk;
+  if (t.status !== 'fulfilled' || !T) { v.append(h('p', {class: 'q', text: '? 격언과 영상 목록을 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), foot()); return; }
+  const day = Math.floor(Date.parse((D.core.asOf ?? '2026-10-16') + 'T00:00:00Z') / 864e5), mx = T.maxims ?? [], today = mx.length ? mx[day % mx.length] : null;
+  const mk = (m, big) => h('figure', {class: 'tk-q' + (big ? ' tk-big' : '')}, h('blockquote', {lang: 'ko', 'data-proper': '1', text: m.ko}), h('p', {class: 'tk-en', lang: 'en', 'data-proper': '1', text: m.en}), // 남의 말(대가의 말 그대로 · 출처 확인) — 금지 말 셈 밖
+    h('figcaption', {}, h('b', {lang: 'ko', text: m.who}), ' · ', m.url ? h('a', {href: m.url, target: '_blank', rel: 'noopener noreferrer', lang: 'ko', text: m.src}) : h('span', {lang: 'ko', text: m.src})));
+  const s2 = h('section', {class: 'tk-sec'}, h('h2', {class: 'sub', text: '대가 한마디'}), h('p', {class: 'small', text: '말한 사람과 출처를 확인한 것만 실었어요.'}));
+  if (today) s2.append(mk(today, true));
+  s2.append(h('details', {class: 'tk-more'}, h('summary', {text: `격언 ${mx.length}개 모두 보기`}), ...mx.map(m => mk(m, false))));
+  v.append(s2);
+  const yt = T.youtube ?? [], s3 = h('section', {class: 'tk-sec'}, h('h2', {class: 'sub', text: `유튜브 ${yt.length}개`}), h('p', {class: 'small', text: '아틀란스가 만든 영상이 아니에요. 앞날 맞히기와 종목 찍어 주기 영상은 뺐어요.'}));
+  for (const [k, name] of TK_CAT) { const xs = yt.filter(y => y[2] === k); if (!xs.length) continue;
+    s3.append(h('h3', {class: 'tk-cat', text: name}), h('ul', {class: 'tk-yt'}, ...xs.map(([id, title]) => h('li', {}, h('a', {href: 'https://www.youtube.com/watch?v=' + encodeURIComponent(id), target: '_blank', rel: 'noopener noreferrer'}, h('span', {lang: 'ko', 'data-proper': '1', text: title}), h('i', {class: 'tk-go', 'aria-hidden': 'true', text: '›'})))))); }
+  v.append(s3);
+  if (T.hot?.url) v.append(h('section', {class: 'tk-sec'}, h('h2', {class: 'sub', text: '사람들 이야기'}), h('p', {class: 'small', text: '남의 글은 옮겨 싣지 않아요. 보고 싶으면 네이버로 나가요.'}),
+    h('a', {class: 'tk-out', href: T.hot.url, target: '_blank', rel: 'noopener noreferrer'}, h('span', {text: '네이버 증권 인기 토론 구경 가기'}), h('i', {'aria-hidden': 'true', text: '›'}))));
+  v.append(foot());
+}
+
 async function route() {
   if (!D.core) return; // 첫 자료를 받은 뒤 boot 가 길을 엶(구글팀: 받는 중에 탭을 누르면 멈추던 것)
   freshCheck();
@@ -2331,6 +2391,7 @@ async function route() {
     else if (kind === 'surge') { $('#tabSurge').setAttribute('aria-current', 'page'); const t = !arg ? 'sv' : /^(10|20|30|40)$/.test(arg) ? 'b' + arg : null; if (t) await viewSurge(v, t); else viewMissing(v); } // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개」 · 규칙 69)
     else if (kind === 'cal') { $('#tabCal').setAttribute('aria-current', 'page'); if (!arg) await viewCal(v); else if (/^[0-9A-Z]{6}$/.test(arg)) await viewCalCase(v, arg); else viewMissing(v); } // 달력 탭(사장님 2026-10-15 19:28 · 20:51 「추적하는 시스탬」 · 규칙 70) — 종목 파일 #/cal/<번호>
     else if (kind === 'time') await viewTime(v);
+    else if (kind === 'talk') await viewTalk(v); // 이야기 칸(2026-10-16 21:44 · 22:25 「작업해」)
     else if (kind === 'g') viewGroup(v, arg);
     else if (kind === 'i') await viewIndustry(v, arg);
     else if (kind === 'c') { const [code, sub] = arg.split('/'); if (sub === 'past') await viewPast(v, code); else if (sub === 'rivals') await viewRivals(v, code); else if (sub === 'grow') await viewGrow(v, code); else if (sub === 'range') await viewRange(v, code); else if (!sub) await viewCompany(v, code); else viewMissing(v, code); }

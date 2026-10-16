@@ -20,7 +20,7 @@ const core = J('core.json'), names = J('names.json'), mkt = J('mkt.json').compan
 const all = Object.keys(mkt), LIM = arg('--others') != null ? Number(arg('--others')) : null;
 const cos = LIM == null ? all : all.filter((_, i) => i % Math.max(1, Math.floor(all.length / Math.max(1, LIM))) === 0).slice(0, LIM);
 const sub = c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`];
-const routes = ['#/', '#/list', '#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all', '#/up', // 조건 찾기 탭(2026-10-15 23:54 「가」 · 규칙 72 — 옛 이름 #/scan 은 없앰)
+const routes = ['#/', '#/talk', '#/list', '#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all', '#/up', // 조건 찾기 탭(2026-10-15 23:54 「가」 · 규칙 72 — 옛 이름 #/scan 은 없앰)
   '#/cal', '#/time', '#/info', '#/find', '#/zz', '#/c/999999',
   ...(surge ? ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'] : []),
   ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)),
