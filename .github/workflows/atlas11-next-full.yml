@@ -67,14 +67,20 @@ jobs:
           pattern: next-full-*
           merge-multiple: true
       - run: |
-          mkdir -p reports/atlas11/probe/next-full
-          cp art/* reports/atlas11/probe/next-full/ 2>/dev/null || true
-          node -e '
-            const fs = require("fs"), d = "reports/atlas11/probe/next-full";
-            const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
-            const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: "https://aaa7377.com", pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
-            fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
-          git add -f reports/atlas11/probe/next-full
-          git commit -m "atlas11 probe next-full [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase -q && git push && break; sleep 7; done || true
+          # 결과 올리기 — 다른 실행이 먼저 올려도 섞이지 않게: 맨 새 줄기 위에서 다시 만들어 올림(2026-10-17 · 두 실행이 summary.json 을 함께 고쳐 rebase 가 막히고 결과가 안 올라간 일)
+          for i in 1 2 3 4 5 6; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p reports/atlas11/probe/next-full
+            cp art/* reports/atlas11/probe/next-full/ 2>/dev/null || true
+            node -e '
+              const fs = require("fs"), d = "reports/atlas11/probe/next-full";
+              const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
+              const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: "https://aaa7377.com", pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
+              fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
+            git add -f reports/atlas11/probe/next-full
+            git commit -q -m "atlas11 probe next-full [skip ci]" || break
+            git push -q origin HEAD:main && break
+            sleep 7
+          done
