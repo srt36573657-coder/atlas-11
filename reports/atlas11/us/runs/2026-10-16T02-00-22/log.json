@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-10-16T02:00:22.639Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-16T02:00:22.705Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-16T02-00-22",
+   "newYork": {
+    "date": "2026-10-15",
+    "hm": "22:00",
+    "weekday": 4
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-16T02:00:23.600Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-16T02:00:38.605Z",
+   "asked": 365,
+   "got": 363,
+   "latest": "2026-10-15"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-16T02:00:38.760Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/MU.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-16T02:00:51.832Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-16T02:00:52.113Z",
+   "news": 365,
+   "newsItems": 5846,
+   "index": [
+    "S&P 500 2026-10-15",
+    "나스닥 종합 2026-10-15",
+    "다우존스 2026-10-15"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-16T02:00:52.371Z",
+   "assets": 365,
+   "asOf": "2026-10-15",
+   "late": 2,
+   "sessions": 297,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-16T02-00-22/input.json.gz",
+    "sha256": "73a0ce946a7f9287f2de7a74730b3c5c3d5e04f21f47a82cee10c20a97f422b8",
+    "bytes": 659098
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day?startDateTime=202508120000&endDateTime=202610162359",
+   "status": 200,
+   "ms": 884
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 140
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/MU.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 153
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609260000&endDateTime=202610162359",
+   "status": 200,
+   "ms": 140
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-16T02:00:52.371Z"
+}
