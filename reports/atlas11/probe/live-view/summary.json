@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T19:57:23.314Z",
+ "made": "2026-10-16T20:34:57.362Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -358,7 +358,7 @@
     ],
     [
      "보드리!",
-     0.97533
+     0.975338
     ]
    ],
    "shown": false,
@@ -618,7 +618,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 14시간 59분 50초",
+  "clock": "6일 14시간 22분 18초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -627,7 +627,7 @@
  },
  "next": {
   "html": 200,
-  "robots": "noindex, nofollow, noarchive",
+  "robots": "",
   "home": {
    "tabs": [
     "홈",
@@ -637,10 +637,14 @@
     "나"
    ],
    "cards": 13,
-   "chips": 7,
+   "chips": 8,
    "q": 0,
    "sw": 390,
-   "cw": 390
+   "cw": 390,
+   "letter": 11,
+   "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
+   "landed": true,
+   "tk": "/atlas/#/talk"
   },
   "watch": {
    "h1": "삼성전자",
