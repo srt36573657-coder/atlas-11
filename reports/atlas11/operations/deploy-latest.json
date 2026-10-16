@@ -1,21 +1,22 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-16T16:13:49.326Z",
+  "at": "2026-10-16T18:05:06.549Z",
   "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "url": "https://aaa7377.com",
-  "deployUrl": "https://6ad24d6c28b0a1c3d25f34fc--mulgil.netlify.app",
-  "deployId": "6ad24d6c28b0a1c3d25f34fc",
+  "deployUrl": "https://6ad267802c10cc1ffb04e178--mulgil.netlify.app",
+  "deployId": "6ad267802c10cc1ffb04e178",
   "noindex": false,
-  "files": 6823,
+  "files": 6829,
   "exitCode": 0,
   "error": null,
   "functions": {
     "state": "deployed",
     "names": [
-      "invite"
+      "invite",
+      "letter"
     ],
     "packages": [
       "@envelop/instrumentation",
