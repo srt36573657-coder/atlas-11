@@ -1,0 +1,72 @@
+{
+ "schema": "atlas11-next-en-check-1",
+ "at": "2026-10-16T21:33:21.905Z",
+ "base": "http://127.0.0.1:8826",
+ "page": "http://127.0.0.1:8826/next/?lang=en",
+ "lang": "en",
+ "widths": [
+  320,
+  360,
+  390
+ ],
+ "routes": 269,
+ "companies": 58,
+ "allCompanies": false,
+ "modules": true,
+ "modFiles": {
+  "past": true,
+  "rivals": true,
+  "grow": true,
+  "range": true,
+  "surge": true,
+  "cal": true,
+  "cond": true,
+  "talk": true,
+  "up": true,
+  "time": true,
+  "info": true,
+  "x": true,
+  "co": true,
+  "chx": true,
+  "today": true
+ },
+ "edge": true,
+ "only": null,
+ "appFile": null,
+ "full": false,
+ "seconds": 74,
+ "counts": {
+  "쇼츠 장": 10,
+  "화면": 401,
+  "길 · home": 1,
+  "길 · chips": 7,
+  "길 · shorts": 11,
+  "길 · sub": 1,
+  "길 · me": 1,
+  "길 · find": 9,
+  "길 · watch": 61,
+  "길 · chan": 89,
+  "길 · mod": 89,
+  "누르기": 1,
+  "바꿔치기": 1,
+  "오늘 한 줄 문장": 412,
+  "새 창": 2
+ },
+ "missing": 0,
+ "avatarLetters": 0,
+ "kinds": {},
+ "fails": 0,
+ "own": {
+  "fails": 0,
+  "missing": 0,
+  "leftover": 0
+ },
+ "mod": {
+  "fails": 0,
+  "missing": 0,
+  "leftover": 0
+ },
+ "missingList": [],
+ "all": [],
+ "ok": true
+}

@@ -331,8 +331,8 @@ await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done();
   for (const [k, hash, sel] of R) {
     await page.evaluate(hh => { location.hash = hh; }, hash); await done(); await page.waitForTimeout(700);
-    const g = await page.evaluate(sel => ({url: location.pathname + location.hash, n: document.querySelector('#view')?.childElementCount ?? 0, bad: [...document.querySelectorAll('#view .empty')].map(e => e.textContent).filter(t => /그리지 못했어요/.test(t)).length, sel: sel ? !!document.querySelector('#view ' + sel) : true, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, title: document.title}), sel);
-    g.ok = g.url.startsWith('/') && !g.url.includes('/atlas/') && g.n >= 2 && !g.bad && g.sel && g.sw <= g.cw; g.k = k; got.push(g);
+    const g = await page.evaluate(sel => ({url: location.pathname + location.hash, n: (document.querySelector('#view')?.innerText ?? '').trim().length /* 쪽 모듈은 한 칸(div)에 담겨 칸 수가 1 — 글 길이로 봄 */, bad: [...document.querySelectorAll('#view .empty')].map(e => e.textContent).filter(t => /그리지 못했어요/.test(t)).length, sel: sel ? !!document.querySelector('#view ' + sel) : true, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, title: document.title}), sel);
+    g.ok = g.url.startsWith('/') && !g.url.includes('/atlas/') && g.n >= 150 && !g.bad && g.sel && g.sw <= g.cw; g.k = k; got.push(g);
     if (got.length <= 6) await shot('p5' + got.length + '-next-' + k);
   }
   out.nextPages = {ready: [...NREADY], pages: got, ok: got.every(g => g.ok)};
