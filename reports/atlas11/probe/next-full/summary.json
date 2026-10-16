@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-16T23:45:45.518Z",
+ "at": "2026-10-16T23:54:08.790Z",
  "base": "https://aaa7377.com",
  "pages": [
   {
@@ -30,8 +30,8 @@
   },
   {
    "name": "grow",
-   "code": 1,
-   "seconds": 553
+   "code": 0,
+   "seconds": 308
   },
   {
    "name": "misc",
