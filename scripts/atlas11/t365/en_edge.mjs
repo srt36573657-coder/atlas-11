@@ -91,6 +91,7 @@ function randHome() {
   if (H.sectors) { H.sectors.strong = secRows(1); H.sectors.weak = secRows(-1); H.sectors.breadth = rnd() < 0.1 ? null : breadth(); H.sectors.date = pick([TODAY, YDAY, undefined]); if (rnd() < 0.1) { H.sectors.strong = []; H.sectors.weak = []; } if (rnd() < 0.1) delete H.sectors.ranked; }
   if (rnd() < 0.06) H.sectors = null;
   if (H.flows) { for (const m of ['KOSPI', 'KOSDAQ']) if (H.flows[m]) { H.flows[m].date = pick([TODAY, YDAY]); for (const w of ['personal', 'foreign', 'institutional']) H.flows[m][w] = rnd() < 0.08 ? null : rnd() < 0.08 ? 0 : Math.round((rnd() - 0.5) * 30000); } H.flows.live = pick([true, false, undefined]); if (rnd() < 0.12) delete H.flows.KOSDAQ; if (rnd() < 0.05) H.flows = null; }
+  if (H.s365) { H.s365.date = pick([TODAY, YDAY, H.s365.date]); H.s365.flat = pick([0, 1, 3]); H.s365.none = pick([0, 0, 2]); } // 고른 곳 첫 줄 「오늘은 … 그대로였어요 · 값이 없는 곳」(2026-10-16 올린 뒤 실제 사이트 돌기)
   if (H.us && Array.isArray(H.us.rows)) { const keep = H.us.rows.filter(r => rnd() < 0.85 || r.key === 'INX'); for (const r of keep) r.chg = r2((rnd() - 0.5) * 4); H.us.rows = keep; H.us.date = pick([TODAY, YDAY, Y2, undefined]); if (rnd() < 0.05) H.us = null; }
   return H;
 }
@@ -140,6 +141,9 @@ if (surge) {
 }
 if (surgecal) for (const [nm, f] of [['달력 장 중', T => { T.provisional = true; T.kst = `${T.asOf} 13:05`; }], ['달력 장 중 다른 날', T => { T.provisional = true; T.kst = `${addDays(T.asOf, 1)} 09:20`; }]]) { const T = C(surgecal); f(T); for (const h of [...SVR, '#/cal']) other.push({name: nm, files: {'surgecal.json': T}, hash: h, clock: CLOCKS.in}); }
 if (surgetr) for (const [nm, f] of [['따라가기 장 중', T => { T.provisional = true; T.kst = `${T.asOf} 13:05`; }], ['따라가기 장 중 다른 날', T => { T.provisional = true; T.kst = `${addDays(T.asOf, 1)} 09:20`; }]]) { const T = C(surgetr); f(T); for (const h of ['#/cal', ...(T.cases?.slice(0, 4).map(r => '#/cal/' + r[0]) ?? [])]) other.push({name: nm, files: {'surgetr.json': T}, hash: h, clock: CLOCKS.in}); }
+for (const h of SVR) other.push({name: '급등 저녁(다음 장날)', hash: h, clock: CLOCKS.eve}); // 「다음 업데이트: 다음 장날 10:00(서울)」(2026-10-16 실제 사이트 돌기)
+if (coPick) { let CO = null; try { CO = J(`co/${coPick}.json`); } catch { /* 넘어감 */ } if (CO?.c) { const X = C(CO); X.c.chg = null; X.c.mdd = null; X.c.r1y = null; X.c.mdd1y = null; for (const h of ['#/c/' + coPick, `#/c/${coPick}/past`]) other.push({name: '회사 값 없음', files: {[`co/${coPick}.json`]: X}, hash: h}); } } // 「기준일 … = 100에서 ?」
+for (const i of core.industries) { const K = C(core); if (!K.rise?.list?.length) break; K.rise.list = [{...K.rise.list[0], name: i.name}, ...K.rise.list.slice(1)]; other.push({name: '요즘 오르는 업종 첫 줄 ' + i.name, files: {'core.json': K}, hash: '#/'}); } // 업종 이름 + 「이에요 · 예요」(2026-10-16 「연예 기획사예요」)
 // ③ 실제 업데이트 기록의 급등 판(마지막 셋) · surgecal-latest
 { const dir = path.join(ROOT, 'reports/atlas11/t365/surge'); const recs = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)).sort().slice(-3) : [];
   for (const f of recs) { let P = null; try { P = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).payload; } catch { /* 넘어감 */ } if (P?.schema === 'atlas-new-surge-1') for (const h of SVR) other.push({name: '기록 ' + f, files: {'surge.json': P}, hash: h, clock: CLOCKS.in}); }

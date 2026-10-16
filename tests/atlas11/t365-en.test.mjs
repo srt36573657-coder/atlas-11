@@ -28,6 +28,18 @@ test('①-2 엔진(2026-10-16) — 달 값은 화면 차례대로 · 로마자 �
   assert.equal(m.t('KCC 매출 길'), 'KCC sales path', '로마자 이름 회사 → {e} 틀');
   assert.equal(m.t('SOOP 1000 원'), 'SOOP 1000 won (old key)', '사전에 그 이름 그대로의 틀이 있으면 그것을 먼저');
   assert.equal(m.t('삼성전자 2300000000000 원, 현대차 1100000000000 원, SM Life Design(5번째) 302700000000 원'), 'Samsung Electronics 2.3 trillion won, Hyundai Motor 1.1 trillion won, SM Life Design (No. 5) 302.7 billion won', '큰 수 · 긴 이름이 든 목록도 나눔');
+  m.useDict({templates: {'{n}주 동안 가장 많이 오른 업종은 {e}예요.': 'Top-rising sector over {n} weeks: {e}.', '{n}주 동안 가장 많이 오른 업종은 {e}이에요.': 'Top-rising sector over {n} weeks: {e}.'}, entities: {'2차전지': 'Batteries', '연예 기획사': 'Entertainment Agencies', '반도체 부품': 'Semiconductor Parts'}}, {});
+  for (const [ko, en] of [['1주 동안 가장 많이 오른 업종은 2차전지예요.', 'Batteries'], ['1주 동안 가장 많이 오른 업종은 연예 기획사예요.', 'Entertainment Agencies'], ['1주 동안 가장 많이 오른 업종은 반도체 부품이에요.', 'Semiconductor Parts']]) assert.equal(m.t(ko), `Top-rising sector over 1 weeks: ${en}.`, '이름 + 이에요 · 예요(2026-10-16 올린 뒤 탐침)');
+});
+test('①-3 실제 사전 — 업종 · 갈래 · 네이버 업종 이름이 통째로도 · 문장 속(이에요 · 예요)에서도 영어로(2026-10-16 올린 뒤 탐침)', async () => {
+  const m = await engine('en'), J = f => JSON.parse(R(f)), nm = J('site/atlas/i18n/en-names.json'), core = J('site/atlas/data/core.json');
+  m.useDict(J('site/atlas/i18n/en.json'), nm.names, nm.latin);
+  const hasB = w => { const c = String(w).trim().slice(-1), k = c.charCodeAt(0) - 0xAC00; return k >= 0 && k <= 11171 ? k % 28 !== 0 : '013678'.includes(c); };
+  const bad = [], H = /[가-힣]/;
+  for (const n of [...core.industries.map(i => i.name), ...core.groups.map(g => g.name), ...core.groups.map(g => g.short).filter(Boolean), ...Object.keys(core.secInd ?? {})]) if (H.test(m.t(n))) bad.push(n);
+  for (const i of core.industries) { const s = `1주 동안 가장 많이 오른 업종은 ${i.name}${hasB(i.name) ? '이에요' : '예요'}.`; if (H.test(m.t(s))) bad.push(s); }
+  for (const g of core.groups) for (const w of ['가장 많이 오른', '가장 덜 내린']) { const sh = g.short ?? g.name, s = `9월 9일부터 20거래일 동안 ${w} 갈래는 ${sh}${hasB(sh) ? '이에요' : '예요'}.`; if (H.test(m.t(s))) bad.push(s); }
+  assert.deepEqual(bad, [], '영어로 안 바뀐 이름 · 문장');
 });
 test('① 엔진 — 틀 · 날짜 · 달 · 시각 · 큰 수 · 목록 · 이름', async () => {
   const m = await engine('en');
