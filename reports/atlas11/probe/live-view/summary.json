@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T16:16:40.305Z",
+ "made": "2026-10-16T18:08:46.193Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -147,7 +147,8 @@
   "reports/atlas11/probe/live-view/p6-old.png",
   "reports/atlas11/probe/live-view/p36-cond.png",
   "reports/atlas11/probe/live-view/p37-en-home.png",
-  "reports/atlas11/probe/live-view/p37-en-cond.png"
+  "reports/atlas11/probe/live-view/p37-en-cond.png",
+  "reports/atlas11/probe/live-view/p40-letter.png"
  ],
  "texts": {
   "moon": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
@@ -354,7 +355,7 @@
     ],
     [
      "보드리!",
-     0.97535
+     0.975326
     ]
    ],
    "shown": false,
@@ -599,6 +600,26 @@
    "lang": "ko",
    "en": false
   },
+  "ok": true
+ },
+ "letter": {
+  "html": 200,
+  "robots": "noindex, nofollow, noarchive",
+  "api": 200,
+  "week": "2026-10-23",
+  "current": "2026-10-23",
+  "opensAt": "2026-10-23T11:00:00.000Z",
+  "open": false,
+  "count": 0,
+  "member": false,
+  "owner": false,
+  "foreign": 403,
+  "h1": "금요일 밤,편지가 열려요",
+  "clock": "6일 16시간 48분 23초",
+  "guest": "초대받은 분만 쓸 수 있어요",
+  "write": false,
+  "sw": 390,
+  "cw": 390,
   "ok": true
  },
  "ok": true
