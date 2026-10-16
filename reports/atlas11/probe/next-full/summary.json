@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-16T23:02:47.714Z",
+ "at": "2026-10-16T23:29:27.845Z",
  "base": "https://aaa7377.com",
  "pages": [
   {
@@ -10,8 +10,8 @@
   },
   {
    "name": "chx",
-   "code": 1,
-   "seconds": 170
+   "code": 0,
+   "seconds": 179
   },
   {
    "name": "co",
@@ -31,7 +31,7 @@
   {
    "name": "grow",
    "code": 1,
-   "seconds": 449
+   "seconds": 545
   },
   {
    "name": "misc",
@@ -45,8 +45,8 @@
   },
   {
    "name": "past",
-   "code": 1,
-   "seconds": 637
+   "code": 0,
+   "seconds": 495
   },
   {
    "name": "range",
@@ -56,7 +56,7 @@
   {
    "name": "rivals",
    "code": 1,
-   "seconds": 171
+   "seconds": 39
   },
   {
    "name": "surge",

@@ -1,1 +1,14 @@
-{"ok":false,"companies":2557,"seconds":449,"counts":{"맞댄 글 낱낱":43387,"맞댄 숫자 낱말":82630,"이야기 있는 회사":61,"손가락 이름표":8477,"회사":2557,"아주 크게":9,"세 폭 화면":30,"둘레":9,"fail":1},"fails":[["밖 칸 고리","005935 #/find,#/x/005935,#/"]]}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?dev=1#/w/100120/grow
+Call log:
+  - navigating to "https://aaa7377.com/next/?dev=1#/w/100120/grow", waiting until "load"
+
+    at openNew (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:68:22)
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:278:73 {
+  name: 'Error'
+}
+
+Node.js v22.23.3
