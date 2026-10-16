@@ -68,14 +68,15 @@ const scan = p => p.evaluate(() => {
   return {sw: document.documentElement.scrollWidth, vw, text: view?.innerText ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
 });
 const knownHref = h => {
-  if (h === '/' || h === '/letter.html') return true;
-  let m = /^#\/(?:f\/(rise|surge|lead|pick|group|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
+  if (h === '/' || h === '/letter.html' || h === '/hello.html') return true;
+  let m = /^#\/(?:f\/(rise|surge|lead|pick|group|ind|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
+  if ((m = /^\/atlas\/(#\/.*)$/.exec(h))) h = '/' + m[1]; // 아직 지금 아틀란스에서 여는 쪽(/atlas/#/…) — 아래 같은 잣대로
   if ((m = /^#\/w\/(.+)$/.exec(h))) return m[1] === 'KOSPI' || m[1] === 'KOSDAQ' || !!CO[m[1]];
   if ((m = /^#\/ch\/([ig])\/(.+)$/.exec(h))) { const v = decodeURIComponent(m[2]); return m[1] === 'i' ? ind.has(v) : grp.has(v); }
   if ((m = /^\/#\/g\/(.+)$/.exec(h))) return grp.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/i\/(.+)$/.exec(h))) return ind.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/c\/([0-9A-Z]{6})(\/(past|rivals|grow|range))?$/.exec(h))) return !!CO[m[1]];
-  return /^\/#\/(surge|cal|cond|talk|find)$/.test(h);
+  return /^\/#\/(surge|cal|cond|talk|find|time|up)$/.test(h);
 };
 function checkScan(where, s, p) {
   if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw);
@@ -86,14 +87,46 @@ function checkScan(where, s, p) {
 }
 
 /* ① 세 폭 */
-const firstCo = codes[0], g0 = core.groups[0].id, i0 = core.industries[0].name;
-const ROUTES = ['#/', '#/f/rise', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/group', '#/f/us', '#/shorts', '#/sub', '#/me', '#/find', '#/find/삼성', '#/w/KOSPI', '#/w/KOSDAQ', '#/w/' + firstCo, '#/ch/g/' + g0, '#/ch/i/' + encodeURIComponent(i0)];
+const firstCo = codes[0], g0 = core.groups[0].id, i0 = core.industries[0].name, g0id = () => g0;
+const ROUTES = ['#/', '#/f/rise', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/shorts', '#/sub', '#/me', '#/find', '#/find/삼성', '#/w/KOSPI', '#/w/KOSDAQ', '#/w/' + firstCo, '#/ch/g/' + g0, '#/ch/i/' + encodeURIComponent(i0)];
 for (const w of [320, 360, 390]) {
   const p = await page(w); await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
   for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); bump('화면'); }
   await p.context().close();
 }
 
+/* ①-2 첫 화면 붙박이(지금 아틀란스 atlas.js 와 글자 그대로) · 옛 주소 */
+{
+  const src = await fs.readFile(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8');
+  const MSG = JSON.parse((/const HELLO_MSG = (\[[^\]]*\]);/.exec(src) || [, 'null'])[1].replace(/'/g, '"')), PROMO = (/const HELLO_PROMO = '([^']*)';/.exec(src) || [])[1];
+  if (!Array.isArray(MSG) || MSG.length < 2 || !PROMO) fail('편지 글을 atlas.js 에서 못 읽음', '');
+  const q = await page(390, 844); await q.goto(base + '/next/#/');
+  await q.waitForSelector('#view .m4-letter', {timeout: 20000});
+  const g0 = await q.evaluate(() => ({intro: document.querySelector('#view .m4-letter')?.classList.contains('intro'), bub: [...document.querySelectorAll('#view .hpi-b')].map(b => b.textContent)}));
+  if (!g0.intro || g0.bub.join(',') !== '보드리!,보드리!,보드리!') fail('열면 보드리', JSON.stringify(g0));
+  await q.waitForFunction(() => document.querySelector('#view .m4-letter')?.classList.contains('landed'), null, {timeout: 9000}).catch(() => fail('보드리 내려앉음', '9초 안에 안 끝남'));
+  const g = await q.evaluate(() => ({lines: [...document.querySelectorAll('#view .m4-msg .hml')].map(e => e.textContent), promo: document.querySelector('#view .m4-gift')?.textContent ?? '', act: document.querySelector('#view .m4-aw')?.textContent ?? '',
+    href: document.querySelector('#view a.m4-letter')?.getAttribute('href'), tk: document.querySelector('#view a.tk-entry')?.getAttribute('href'), today: document.querySelectorAll('#view .today .tl').length,
+    mr: document.querySelector('#view a.m4-mr')?.getAttribute('href') ?? null, seal: !!document.querySelector('#view .m4-seal-box'), al: [...document.querySelectorAll('#view .m4-al')].map(e => e.textContent), first: document.querySelector('#view > *')?.className ?? ''}));
+  if (JSON.stringify(g.lines) !== JSON.stringify(MSG)) fail('사장님 편지 글자', JSON.stringify(g.lines).slice(0, 200));
+  if (g.promo !== PROMO) fail('상품권 줄', g.promo + ' ≠ ' + PROMO);
+  if (g.act !== '친구에게 소개하기보드리 1분 영상 · 보내기') fail('친구 소개 줄', g.act);
+  if (g.href !== '/hello.html') fail('편지 고리', String(g.href));
+  if (g.tk !== '/atlas/#/talk' || !g.first.includes('tk-entry')) fail('이야기 입구', g.tk + ' ' + g.first);
+  if (home?.idx?.KOSPI && g.today !== 2) fail('오늘 한 줄', String(g.today));
+  if (core.time?.opens?.[0]?.date && g.mr !== '/atlas/#/time') fail('봉인 줄', String(g.mr));
+  if (!g.seal) fail('보드리 약속', '');
+  const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
+  if (g.al.length !== wantAl) fail('큰 날 「!」', g.al.length + ' ≠ ' + wantAl);
+  // 옛 주소 — 새 화면으로 · 아직 안 옮긴 쪽은 /atlas/
+  for (const [from, want] of [['#/c/005930', '#/w/005930'], ['#/g/' + g0id(), '#/ch/g/' + g0id()], ['#/list', '#/f/ind'], ['#/36', '#/']]) {
+    await q.evaluate(hh => { location.hash = hh; }, from); await q.waitForTimeout(250);
+    const got = await q.evaluate(() => location.hash); if (got !== want) fail('옛 주소', from + ' → ' + got + ' ≠ ' + want);
+  }
+  await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForURL(/\/atlas\/#\/surge$/, {timeout: 15000}).catch(() => fail('옛 주소', '#/surge → /atlas/#/surge 아님 ' + q.url()));
+  bump('첫 화면 붙박이');
+  await q.context().close();
+}
 /* ② 모든 회사 보는 화면 · ③ 채널 · ④ 쇼츠 · ⑤ 찾기 · ⑥ 누르기 — 390 폭 */
 const p = await page(390, 844);
 await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
@@ -109,7 +142,7 @@ for (const code of list) {
   if (!g.ws.includes('하루 ' + wantDay)) fail('하루 %', code + ' 「' + g.ws + '」 ≠ ' + wantDay);
   if (!g.ws.includes(MD(mkt.asOf) + ' 마감')) fail('마감 날', code);
   const I = ind.get(o.i), G = I ? grp.get(I.g) : null;
-  const wantCh = [G ? '/#/g/' + encodeURIComponent(G.id) : null, I ? '/#/i/' + encodeURIComponent(I.name) : null, '/#/c/' + code, '/#/c/' + code + '/past', '/#/c/' + code + '/rivals', '/#/c/' + code + '/grow', '/#/c/' + code + '/range'].filter(Boolean);
+  const wantCh = [G ? '#/ch/g/' + encodeURIComponent(G.id) : null, I ? '#/ch/i/' + encodeURIComponent(I.name) : null, '/atlas/#/c/' + code, '/atlas/#/c/' + code + '/past', '/atlas/#/c/' + code + '/rivals', '/atlas/#/c/' + code + '/grow', '/atlas/#/c/' + code + '/range'].filter(Boolean);
   if (JSON.stringify(g.ch) !== JSON.stringify(wantCh) || g.ch.length + g.chq !== 7) fail('챕터 일곱', code + ' ' + JSON.stringify(g.ch));
   if (g.chan !== (o.i || '?') + ' 업종') fail('채널 줄', code + ' ' + g.chan);
   const mem = (I?.members || []).filter(m => m !== code && CO[m]).length;
