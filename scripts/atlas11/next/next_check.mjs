@@ -36,7 +36,8 @@ const [core, mkt, home, surge, cond] = await Promise.all(['core.json', 'mkt.json
 if (!core || !mkt) { console.error('자료를 못 받음'); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO);
 const ind = new Map(core.industries.map(i => [i.name, i])), grp = new Map(core.groups.map(g => [g.id, g]));
-const lineChg = l => (l[l.length - 1] / l[0] - 1) * 100, lineDay = l => (l[l.length - 1] / l[l.length - 2] - 1) * 100;
+// 끝 값이 없거나 0 이면(거래 멈춤 · 빈 날) 모름 = 「?」 — 2026-10-17 실제 사이트 탐침에서 005110 · 033340 을 −100% 로 잘못 기대한 것을 고침
+const lineChg = l => (l?.[0] > 0 && l[l.length - 1] > 0) ? (l[l.length - 1] / l[0] - 1) * 100 : null, lineDay = l => (l?.length > 1 && l[l.length - 2] > 0 && l[l.length - 1] > 0) ? (l[l.length - 1] / l[l.length - 2] - 1) * 100 : null;
 const c20 = o => Number.isFinite(o.c) ? o.c : lineChg(o.l);
 const weird = l => { if (!Array.isArray(l) || l.length < 3) return true; for (const v of l) if (!(v > 0)) return true; for (let i = 1; i < l.length; i++) if (Math.abs(l[i] / l[i - 1] - 1) >= 0.3) return true; const n = l.length; return l[n - 1] === l[n - 2] && l[n - 2] === l[n - 3]; };
 // 쓰지 않을 말(규칙 72 ⑥) + 지운 36곳 화면 글(inspect4.mjs OLD36_TEXT 를 읽어 그대로 — 「36곳 내림」 같은 셈 글은 아님)
