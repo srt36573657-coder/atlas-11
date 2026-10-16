@@ -161,7 +161,7 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
   await shot('p23-hello-promo');
   out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
-    ok: !!w && got[0] === w && !!after && after.hash === w && /하규는 아틀란스 해서 부자 될겁니다/.test(s1.msg) && /안상미 전무님/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스 상품권 1만원/.test(s1.promo) && !/커피 1잔|상품권 1장/.test(s1.promo)
+    ok: !!w && got[0] === w && !!after && after.hash === w && /아틀란스 주식 격언 열 가지/.test(s1.msg) && /10\. 기회는 찾아오는 거지, 만드는 게 아니다\./.test(s1.msg) && !/하규는|안상미/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스 상품권 1만원/.test(s1.promo) && !/커피 1잔|상품권 1장/.test(s1.promo)
       && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar)}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
@@ -190,7 +190,7 @@ await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 
   await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text'); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
   out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml},
     ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '홍표!' && o > 0.9) && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
-      && !i2.intro && i2.shown && i2.ml > 0.95 && /하규는 아틀란스 해서 부자 될겁니다/.test(i2.msg) && /아틀란스 올림!/.test(i2.msg)};
+      && !i2.intro && i2.shown && i2.ml > 0.95 && /아틀란스 주식 격언 열 가지/.test(i2.msg) && /좋은 때를 기다립니다\./.test(i2.msg)};
   if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
 });
 await step('모든 회사 7단', async () => { // 사장님 2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」 — 고른 곳 밖 회사도 업종 줄 → 3단 회사 → 4 · 5 · 6 · 7단(사진 p24 · p25)

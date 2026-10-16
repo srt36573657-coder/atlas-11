@@ -185,7 +185,7 @@ const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사�
 const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
 if (arg('--only')) routes.splice(0, routes.length, ...arg('--only').split(',')); // 고치는 동안 빨리(그 길만) — 3번 누름 셈 · 문은 못 지남(전부를 돌린 결과만 커밋)
 const fails = []; let screens = 0, numbers = 0;
-const HELLO_LINES = ['주식해서', '돈 버신 분 몇분일까요?', '왜? 그럴까요!', '하규는 아틀란스 해서 부자 될겁니다', '아틀란스가 답이다', '안상미 전무님 주식해서 돈 많이 버세요', '아틀란스 올림!']; // 1장 사장님 글(atlas.js HELLO_MSG — 여는 홍표 뒤 이 글이 그대로)
+const HELLO_LINES = ['아틀란스 주식 격언 열 가지', '1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.']; // 1장 사장님 글(atlas.js HELLO_MSG — 여는 홍표 뒤 이 글이 그대로)
 const fail = (where, what) => fails.push({where, what});
 
 // 급등 다섯 칸 · 달력 · 며칠 뒤(사장님 2026-10-15 16:28 · 16:34 · 16:40) — surgecal.json 에서 따로 셈(atlas.js svDayOf · svCal · svTrack 과 같은 뜻을 따로 적음)
@@ -697,7 +697,7 @@ if (home) {
   { const {ctx, p, errs} = await withHome(404); await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForSelector('#view h1');
     const r = await p.evaluate(() => ({hello: document.querySelector('#view a.hello')?.getAttribute('href') ?? null, msg: document.querySelectorAll('#view .m4-letter .hml').length, h1: document.querySelector('#view h1').textContent, q: document.querySelector('#view p.q')?.textContent ?? '',
       rows: document.querySelectorAll('#view .m4-tr').length, groups: document.querySelectorAll('#view .m4-g').length, sw: document.documentElement.scrollWidth, cw: innerWidth}));
-    screens++; numbers += 5; if (r.hello !== '/hello.html' || r.msg !== 7 || r.h1 !== '시장 — ?' || !r.q.includes('못 읽었어요') || r.rows !== core.rise.list.length || r.groups !== core.groups.length || r.sw > r.cw) fail('첫 화면 자료 없음', JSON.stringify(r).slice(0, 200));
+    screens++; numbers += 5; if (r.hello !== '/hello.html' || r.msg !== HELLO_LINES.length || r.h1 !== '시장 — ?' || !r.q.includes('못 읽었어요') || r.rows !== core.rise.list.length || r.groups !== core.groups.length || r.sw > r.cw) fail('첫 화면 자료 없음', JSON.stringify(r).slice(0, 200));
     if (errs.length) fail('첫 화면 자료 없음', '오류 ' + errs[0]);
     await ctx.close(); }
   // ③ 장 중(같은 날 10:30) · 다음 날 아침(9:30) — 제때 받은 장 중 값: 같은 날은 「오늘 … · 장 중」 · 「오늘 오전 10:06까지」(받은 때까지 — 「지금까지」라 하지 않음 · 다른 눈 L5) / 다음 날은 「오늘」 · 「장 중」 말 없음(CIA)
