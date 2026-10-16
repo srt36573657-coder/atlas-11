@@ -177,19 +177,20 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
   await shot('p26-hello-video');
   const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, hv.share].join(' '); // 옛 판(/old/) 띠는 그대로(옛 판 화면 코드 안 고침 — 규칙 65)
   out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, share: hv.share,
-    ok: /홍표 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /홍표/.test(hv.label) && /홍표/.test(hv.desc) && /홍표/.test(hv.og) && /홍표/.test(hv.alt) && /홍표가 35초/.test(hv.share) && !/막비|24초/.test(all)};
+    ok: /보드리 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /보드리/.test(hv.label) && /보드리/.test(hv.desc) && /보드리/.test(hv.og) && /보드리/.test(hv.alt) && /보드리가 35초/.test(hv.share) && !/막비|24초|홍표/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
 await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」(규칙 66 · 사진 p27 · p28) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'commit', timeout: 60000}); await page.waitForSelector('#view .hpi', {timeout: 30000}); const t0 = Date.now();
   const look = () => page.evaluate(() => { const a = document.querySelector('#view a.m4-letter'), pi = a?.querySelector('.hpi'), img = pi?.querySelector('img.hpi-bird'), ls = [...(a?.querySelectorAll('.hml') ?? [])]; // 먹빛 첫 화면(2026-10-15) 편지 칸
     return {intro: !!a?.classList.contains('intro'), img: img ? img.complete && img.naturalWidth > 0 : false, bub: [...(pi?.querySelectorAll('.hpi-b') ?? [])].map(x => [x.textContent, +getComputedStyle(x).opacity]),
-      shown: ls.some(x => getComputedStyle(x).visibility === 'visible'), ml: ls.length ? Math.min(...ls.map(x => +getComputedStyle(x).opacity)) : null, msg: a?.querySelector('.hmsg')?.innerText ?? ''}; });
+      shown: ls.some(x => getComputedStyle(x).visibility === 'visible'), ml: ls.length ? Math.min(...ls.map(x => +getComputedStyle(x).opacity)) : null, msg: a?.querySelector('.hmsg')?.innerText ?? '',
+      bird: img ? (q => [Math.round(q.top), Math.round(q.bottom), innerHeight])(img.getBoundingClientRect()) : null}; }); // 그림이 첫 화면 안(틀림 장부 45)
   await page.waitForTimeout(Math.max(0, 2700 - (Date.now() - t0))); const i1 = await look(); await shot('p27-hello-intro');
   await page.waitForTimeout(Math.max(0, 4000 - (Date.now() - t0))); const i4 = await look(); // 홍표 5초 — 4초에도 홍표 그대로 · 글은 아직(4.2초에 제자리로 날아감)
   await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text'); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
   out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml},
-    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '홍표!' && o > 0.9) && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
+    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '보드리!' && o > 0.9) && !!i1.bird && i1.bird[0] >= 50 && i1.bird[1] <= i1.bird[2] - 50 && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
       && !i2.intro && i2.shown && i2.ml > 0.95 && /아틀란스 주식 격언 열 가지/.test(i2.msg) && /좋은 때를 기다립니다\./.test(i2.msg)};
   if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
 });
