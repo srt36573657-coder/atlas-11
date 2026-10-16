@@ -53,7 +53,7 @@ function priceChart(box, {dates, close, avg, jumps, label, width}) {
   if (!vals.length) { box.append(h('p', {class: 'empty q', text: '? 이 기간 값을 못 읽었습니다'})); return; }
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
   const base = close.find(x => x != null), toP = y => (y / base - 1) * 100, ticks = niceTicks(toP(lo), toP(hi)), fmt = t => `${sgn(t)}${Math.abs(t)}%`;
-  const W = Math.max(120, Math.round(width)), padR = Math.max(52, Math.round(Math.max(...ticks.map(t => fmt(t).length), 2) * 10.5 + 8)); // 오른쪽 눈금 칸 = 가장 긴 눈금 글이 들어가는 넓이(17px 글)
+  const W = Math.max(120, Math.round(width)), padR = Math.max(52, Math.round(Math.max(...ticks.map(t => fmt(t).length), 2) * 11 + 10)); /* 글꼴마다 숫자 넓이가 달라 넉넉히(실제 사이트 320 폭 「−100%」 1px 겹침 — 2026-10-17) */ // 오른쪽 눈금 칸 = 가장 긴 눈금 글이 들어가는 넓이(17px 글)
   const X = i => 4 + i * (W - 4 - padR) / Math.max(1, n - 1), Y = y => PT + (hi - y) * (H - PT - P) / (hi - lo);
   const id = 'ppast' + (++lcN), T = tok(), by = Y(base);
   const svg = sv('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': label});

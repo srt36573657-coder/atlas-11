@@ -174,11 +174,11 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
     }
     for (const mode of ['eq', 'cw']) {
       if (mode === 'eq') { await waitOld(po, pg); await waitNew(pn, pg); }
-      else { await setMode(po, '#view .seg button', 2); await setMode(pn, '#view .pchx-seg button', 2); }
+      else { await setMode(po, '#view .seg button', 2); await setMode(pn, '#view .pchx-seg button', 2); await po.waitForTimeout(800); } // 옛 경주판은 줄을 움직인 뒤 700ms 에 차례대로 다시 꽂음 — 그 전에 읽으면 옛 차례(실제 사이트 검사에서 걸린 것 · 2026-10-17)
       const [O, N] = [await po.evaluate(readOld), await pn.evaluate(readNew)];
       compare(where + ' · ' + (mode === 'eq' ? '한 회사 한 표' : '큰 회사는 크게'), O, N, pg, mode);
       if (!selfTested && N && O.rows.length > 1) selfTest(O, N, pg, mode);
-      if (mode === 'cw') { await setMode(po, '#view .seg button', 1); await setMode(pn, '#view .pchx-seg button', 1); }
+      if (mode === 'cw') { await setMode(po, '#view .seg button', 1); await setMode(pn, '#view .pchx-seg button', 1); await po.waitForTimeout(800); }
       bump('맞댄 화면');
     }
     errsOf(po, '옛 ' + where); errsOf(pn, '새 ' + where);

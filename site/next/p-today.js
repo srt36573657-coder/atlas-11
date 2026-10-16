@@ -34,6 +34,7 @@ const eokW = v => { if (v == null) return '?'; const a = Math.abs(Math.round(v))
 const tx = s => String(s).replace(/ · /g, NB + '· ').replace(/([^\s])·(?=[^\s])/g, '$1⁠·').replace(/([」%])(?=[가-힣])/g, '$1⁠');
 /** 이름 — 「·」 · 「및」 · 「와」 · 「과」 · 「,」 뒤에서만 줄이 바뀜(<wbr>) · 낱말 가운데서 안 끊김 */
 function nameEl(t, c = 'ptoday-nm') {
+  if (document.documentElement.lang === 'en') return h('span', {class: c, text: String(t)}); // 영어 — 이름은 한 글 마디(엔진이 이름 통째로 바꿈 · 규칙 71)
   const e = h('span', {class: c}), parts = String(t).replace(/·/g, '⁠·').split(/(?<=[·,]|및|와|과)/);
   parts.forEach((p, i) => { e.append(p); if (i < parts.length - 1) e.append(h('wbr')); });
   return e;

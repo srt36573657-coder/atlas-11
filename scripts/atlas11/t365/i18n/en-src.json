@@ -7162,6 +7162,12 @@
   "급등 칸 {n}곳 가운데 {n}등 {n}%": "No. {n2} of {n1} in the surge list: {n3}%",
   "고른 곳 {n}곳 가운데 {n}곳": "{n2} of {n1} picks",
   "다음 여는 밤은 {d}": "Next opening night: {d}",
-  "지수": "Indexes"
+  "지수": "Indexes",
+  "판의 모양 네 가지": "Four shapes of the field",
+  "이 회사는 {q}": "This company: {q}",
+  "새로 생기는 판": "A new field forming",
+  "?번째": "No. ?",
+  "막대로 견줄 매출 값이 없습니다": "No sales figures to compare in bars",
+  "새 창": "new window"
  }
 }

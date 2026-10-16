@@ -80,8 +80,8 @@ function shapePic(shape) {
 
 /** 경쟁 회사 한 곳 — 이름 · 어디 회사 · 한 줄 · 기사(새 창) 또는 따로 확인한 글 · 확인 못 한 것은 그렇다고(지금 아틀란스 viewRivals 그대로) */
 function rivalCard(r) {
-  const out = r.url ? h('a', {class: 'privals-go', href: r.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${r.name} 기사 — 새 창`, text: '기사'})
-    : r.chk && r.chk.v === '기사로 확인' && r.chk.url ? h('a', {class: 'privals-go', href: r.chk.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${r.name} 따로 확인한 글 — 새 창`, text: '따로 확인한 글'})
+  const out = r.url ? h('a', {class: 'privals-go', href: r.url, target: '_blank', rel: 'noopener noreferrer', text: '기사'})
+    : r.chk && r.chk.v === '기사로 확인' && r.chk.url ? h('a', {class: 'privals-go', href: r.chk.url, target: '_blank', rel: 'noopener noreferrer', text: '따로 확인한 글'})
       : h('p', {class: 'privals-rw2', text: r.chk ? `(따로 찾아봄 · ${r.chk.v})` : '(기사 확인 안 함 · 널리 알려진 이름)'});
   return h('li', {class: 'privals-rv'},
     h('p', {class: 'privals-rt'}, h('b', {'data-proper': true, text: r.name}), h('span', {class: 'privals-rw', 'data-proper': true, text: r.where || '?'})),

@@ -229,6 +229,7 @@ const LAYOUT = () => {
   const out = {sw: document.documentElement.scrollWidth, vw, out: [], small: [], tiny: [], svg: null, yr: []};
   for (const e of v.querySelectorAll('*')) {
     if (e.closest('svg') && e.tagName.toLowerCase() !== 'svg') continue;
+    if (e.closest('.chaps.row')) continue; // 챕터 줄은 옆으로 미는 칸 — 밀려 가려진 칩은 넘침이 아님(2026-10-17 챕터 한 줄)
     const r = e.getBoundingClientRect(); if (!r.width && !r.height) continue;
     if (r.right > vw + 0.5 || r.left < -0.5) out.out.push((e.className?.baseVal ?? e.className ?? e.tagName) + ' ' + Math.round(r.left) + '~' + Math.round(r.right));
     if (e.tagName.toLowerCase() !== 'svg' && e.clientWidth && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX === 'visible') out.out.push('속 넘침 ' + (e.className || e.tagName) + ' ' + e.scrollWidth + '>' + e.clientWidth); // 칸 안에서 글이 옆 칸 · 여백으로 삐져나감
