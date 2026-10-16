@@ -298,7 +298,7 @@ if (WIDE) {
     await raf2(p);
     const r = await p.evaluate(() => ({t: document.querySelector('main#view').textContent.replace(/[\s ]+/g, ' '), sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth, x: [...document.querySelectorAll('main#view a')].map(a => a.getAttribute('href'))}));
     if (!r.t.includes(want)) fail('둘레 「' + name + '」', r.t.slice(0, 120));
-    if (name.startsWith('없는 주소(회사 아닌') && !r.x.split(',').some(x => x === '#/x/' + code || x === '/atlas/#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸이 새 화면에 켜지면 #/x/ (2026-10-17)
+    if (name.startsWith('없는 주소(회사 아닌') && ![].concat(r.x ?? []).flatMap(x => String(x).split(',')).some(x => x === '#/x/' + code || x === '/atlas/#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸이 새 화면에 켜지면 #/x/ (2026-10-17)
     if (r.sw > r.vw) fail('가로 넘침', name);
     p._errs = p._errs.filter(e => !/404|Failed to load resource/.test(e)); // 일부러 막은 파일의 404 줄은 뺌
     await errsOf(p, '둘레 ' + name, '새');
