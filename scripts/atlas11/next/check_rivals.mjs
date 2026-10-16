@@ -87,7 +87,11 @@ async function page(width, height = 844) {
 /** 길 열기 — 앞 화면 글이 남아 있으면 「다 그림」으로 잘못 읽으므로 먼저 비우고 주소를 바꿈 */
 async function open(p, hash, done, what) {
   await p.evaluate(h => { if (location.hash === h) history.replaceState(null, '', '#/~'); document.querySelector('#view')?.replaceChildren(); location.hash = h; }, hash); // 같은 주소면 길이 안 바뀌므로 잠깐 다른 주소로 바꿔 둠(길은 열지 않음)
-  const ok = await p.waitForFunction(done, null, {timeout: 20000}).then(() => true).catch(() => false);
+  let ok = await p.waitForFunction(done, null, {timeout: 20000}).then(() => true).catch(() => false);
+  if (!ok) { // 실제 사이트가 잠깐 느릴 때(다른 검사가 함께 돌 때) — 한 번만 다시 열어 봄 · 그래도 못 그리면 실패(2026-10-17 실제 사이트 검사)
+    await p.evaluate(h => { history.replaceState(null, '', '#/~'); document.querySelector('#view')?.replaceChildren(); location.hash = h; }, hash);
+    ok = await p.waitForFunction(done, null, {timeout: 40000}).then(() => true).catch(() => false);
+  }
   if (!ok) fail('다 그리지 못함', what + ' ' + hash);
   return ok;
 }
