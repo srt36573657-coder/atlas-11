@@ -1,6 +1,6 @@
 {
  "schema": "atlas-new-en-check-1",
- "made": "2026-10-16T09:30:07.903Z",
+ "made": "2026-10-16T11:11:26.484Z",
  "base": "https://aaa7377.com",
  "lang": "en",
  "plan": "360×640",
@@ -8,66 +8,11 @@
  "screens": 3523,
  "companies": 600,
  "full": false,
- "seconds": 205,
- "missing": 4,
- "missingFirst": [
-  {
-   "key": "{n}주 동안 가장 많이 오른 업종은 연예 기획사예요.",
-   "ex": "1주 동안 가장 많이 오른 업종은 연예 기획사예요."
-  },
-  {
-   "key": "오늘은 {n}곳이 오르고 {n}곳이 내렸어요. {n}곳은 그대로였어요.",
-   "ex": "오늘은 49곳이 오르고 6곳이 내렸어요. 1곳은 그대로였어요."
-  },
-  {
-   "key": "다음 장날 {t}(서울)",
-   "ex": "다음 장날 10:00(서울)"
-  },
-  {
-   "key": "기준일 {d} = {n}에서 ?",
-   "ex": "기준일 9월 14일 = 100에서 ?"
-  }
- ],
- "fails": 8,
- "kinds": [
-  [
-   "한글",
-   8
-  ]
- ],
- "all": [
-  {
-   "where": "#/",
-   "what": "한글 남음 2: 1주 동안 가장 많이 오른 업종은 연예 기획사예요. | 오늘은 49곳이 오르고 6곳이 내렸어요. 1곳은 그대로였어요."
-  },
-  {
-   "where": "#/surge",
-   "what": "한글 남음 1: Next update: 다음 장날 10:00(서울) — Stocks are added and removed "
-  },
-  {
-   "where": "#/surge/10",
-   "what": "한글 남음 1: Next update: 다음 장날 10:00(서울) — Stocks are added and removed "
-  },
-  {
-   "where": "#/surge/40",
-   "what": "한글 남음 1: Next update: 다음 장날 10:00(서울) — Stocks are added and removed "
-  },
-  {
-   "where": "#/surge/30",
-   "what": "한글 남음 1: Next update: 다음 장날 10:00(서울) — Stocks are added and removed "
-  },
-  {
-   "where": "#/zz",
-   "what": "한글 남음 2: 1주 동안 가장 많이 오른 업종은 연예 기획사예요. | 오늘은 49곳이 오르고 6곳이 내렸어요. 1곳은 그대로였어요."
-  },
-  {
-   "where": "#/surge/20",
-   "what": "한글 남음 1: Next update: 다음 장날 10:00(서울) — Stocks are added and removed "
-  },
-  {
-   "where": "#/c/033340",
-   "what": "한글 남음 1: @aria-label:GOODPEOPLE: 20-trading-day line — 기준일 9월 14일 = 100"
-  }
- ],
+ "seconds": 198,
+ "missing": 0,
+ "missingFirst": [],
+ "fails": 0,
+ "kinds": [],
+ "all": [],
  "ok": false
 }
