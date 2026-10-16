@@ -1621,6 +1621,7 @@ async function viewUpdates(v) {
   const tell = tellRow(`하루 ${U.slots.length}번 · ${U.slots.join(' · ')}(서울)`, null);
   v.append(tell.el, h('h1', {class: 'head', text: `업데이트 기록 — 하루 ${U.slots.length}번`}),
     h('p', {class: 'count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
+  if (EN) v.append(h('p', {class: 'note', text: 'Each update keeps its original note in Korean, as it was written at the time.'})); // 영어 화면에서만(규칙 71)
   const h0 = [...R].reverse().find(r => r.version === D.core.rules.version); // 이 규칙으로 처음 고른 회차(지난 기록에서 셈 · 날짜를 박지 않음)
   v.append(h('p', {class: 'note', text: `회차마다 값과 그림을 새로 셉니다 — ${pickName()}은 새 1년 성적표가 들어와야 바뀝니다(${h0 ? md(h0.kst.slice(0, 10)) + '부터' : '이번 회차부터'} 이 규칙 · 그 전 기록은 옛 규칙). 기준일은 늘 마지막 종가 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 1,000만 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.`}));
   // 시장 판독(사장님 2026-10-12 12:41 「시장을 판독해서」) — 마지막 회차가 올린 자료로 · 지난 사실만(규칙 49 · 판독 규칙 mr-v1 = market_read.mjs)
@@ -1635,7 +1636,7 @@ async function viewUpdates(v) {
   for (const r of R) {
     const li = h('li', {class: 'r-' + ({'바꿈': 'ch', '그대로': 'same', '실패': 'fail'}[r.result] ?? 'same')});
     li.append(h('p', {class: 'uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 회차' : '그 밖 올림'} `, h('span', {class: 'chip res', text: RES_WORD[r.result] ?? r.result})));
-    if (!r.slot && r.reason) li.append(h('p', {class: 'small', text: r.reason}));
+    if (!r.slot && r.reason) li.append(h('p', {class: 'small', lang: 'ko', text: r.reason})); // 올린 까닭 = 원문 기록(사장님 말씀 · 그때 적은 글) — 영어 화면에서도 한국어 그대로(lang="ko" · 규칙 71)
     if (r.ruleChanged) li.append(h('p', {class: 'q turn', text: RULE_TURN(r)}));
     if (r.asOf) li.append(h('p', {text: `고른 날 ${md(r.asOf)}${r.provisional ? '(그날 저녁 8시 전 값 — 아직 바뀜)' : ''} · 기준일 ${md(r.base)}` + (OLD_RULE(r.version) ? ` · ${OLD_RULE(r.version)}` : '')}));
     if (r.stay != null && (r.in?.length || r.out?.length)) li.append(h('p', {class: 'stay'}, h('b', {class: 'num', text: `그대로 ${r.stay}`}), ''));
@@ -1648,7 +1649,7 @@ async function viewUpdates(v) {
     if (r.market?.day) li.append(h('p', {class: 'small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
     if (r.surge && r.surge.kind !== 'carry') li.append(h('p', {class: r.surge.kind === 'fail' || r.surge.published === false ? 'q' : 'small', text: surgeRecLine(r.surge)})); // 급등 탭(규칙 69) — 업데이트 때 넣고 뺀 것 · 그 밖 올림은 앞 판 그대로라 적지 않음
     if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
-    if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')}));
+    if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'small', lang: 'ko', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')})); // 까닭 글 = 그때 적은 원문(영어 화면에서도 그대로)
     ol.append(li);
   }
   v.append(h('h2', {class: 'sec', text: `회차 ${U.n}번 가운데 최근 ${R.length}번`}), ol);
@@ -2210,7 +2211,7 @@ async function viewCond(v, arg) {
   const X = D.cond, C = X.co, st = cdLoad(arg);
   if (X.asOf !== D.core.asOf) { v.append(h('p', {class: 'q', text: tx(`? 조건 자료(${md(X.asOf)})가 다른 자료(${md(D.core.asOf)})와 날이 달라요. 다음 업데이트에 맞춰져요.`)}), h('p', {class: 'hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), foot()); return; } // 옛 날 값을 지금 것처럼 보이지 않음(CIA 팀)
   v.append(h('p', {class: 'count cd-time', text: tx(`${md(X.asOf)} ${X.provisional ? '장 중 값' : '장 마감 값'}이에요.`)}));
-  if (X.provisional) v.append(h('p', {class: 'small', text: '장 중 값이에요. 저녁 8시까지 바뀌어요.'}));
+  if (X.provisional) v.append(h('p', {class: 'small', text: '저녁 8시까지 바뀌어요.'})); // 바로 위 줄이 「… 장 중 값이에요.」라 같은 말을 두 번 하지 않음(2026-10-16 탐침 사진)
   const box = h('div', {class: 'cd-box'}); v.append(box);
   const draw = () => {
     box.textContent = '';

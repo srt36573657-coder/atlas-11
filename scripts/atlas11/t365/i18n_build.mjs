@@ -29,6 +29,9 @@ for (const r of names) {
   const en = clean(all[r.c]?.nameEn) ?? clean(old[r.c]?.nameEn);
   if (en && !HAN.test(en)) { co[r.n] = en; fromYahoo++; } else { co[r.n] = romanize(r.n); fromRoman++; }
 }
+// 로마자 이름 회사(KCC · SOOP · YG PLUS …) — 엔진(i18n.js)이 사전에 없는 줄에서만 이름({e})으로 봄(2026-10-16 · 「KCC 매출 길」 같은 줄이 회사마다 따로 남던 것)
+const latin = {};
+for (const r of names) { if (HAN.test(r.n) || String(r.n).length < 2 || latin[r.n]) continue; const en = clean(all[r.c]?.nameEn) ?? clean(old[r.c]?.nameEn); latin[r.n] = en && !HAN.test(en) ? en : r.n; }
 // 틀 검사
 const PH = s => (String(s).match(/\{(?:d|m|t|e|n|q)\d*\}/g) ?? []).map(x => x.replace(/\d+\}$/, '}')).sort().join(' ');
 const bad = [];
@@ -41,9 +44,9 @@ for (const [k, v] of Object.entries(SRC.entities)) if (!v || HAN.test(v)) bad.pu
 if (bad.length) { console.error(JSON.stringify({bad: bad.length, first: bad.slice(0, 20)}, null, 1)); if (process.argv.includes('--check')) process.exit(1); }
 const outDir = path.join(ROOT, 'site/atlas/i18n'); fs.mkdirSync(outDir, {recursive: true});
 const dict = {schema: 'atlas-new-i18n-1', lang: 'en', note: '새 ATLAS 영어 팩(scripts/atlas11/t365/i18n_build.mjs 가 만듦 — 손으로 고치지 않음)', entities: SRC.entities, templates: SRC.templates};
-const nm = {schema: 'atlas-new-i18n-names-1', lang: 'en', note: '회사 영어 이름 — 야후 파이낸스 영문 정식 이름(회사 꼴은 뗌) · 없으면 로마자', count: Object.keys(co).length, fromYahoo, fromRoman, names: co};
+const nm = {schema: 'atlas-new-i18n-names-1', lang: 'en', note: '회사 영어 이름 — 야후 파이낸스 영문 정식 이름(회사 꼴은 뗌) · 없으면 로마자', count: Object.keys(co).length, fromYahoo, fromRoman, names: co, latinCount: Object.keys(latin).length, latin};
 if (!process.argv.includes('--check')) {
   fs.writeFileSync(path.join(outDir, 'en.json'), JSON.stringify(dict) + '\n');
   fs.writeFileSync(path.join(outDir, 'en-names.json'), JSON.stringify(nm) + '\n');
 }
-console.log(JSON.stringify({templates: Object.keys(SRC.templates).length, entities: Object.keys(SRC.entities).length, names: Object.keys(co).length, fromYahoo, fromRoman, bad: bad.length}));
+console.log(JSON.stringify({templates: Object.keys(SRC.templates).length, entities: Object.keys(SRC.entities).length, names: Object.keys(co).length, fromYahoo, fromRoman, latin: Object.keys(latin).length, bad: bad.length}));

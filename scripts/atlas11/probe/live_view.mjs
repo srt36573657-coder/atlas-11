@@ -275,13 +275,22 @@ await step('조건 찾기 탭', async () => { // 사장님 2026-10-15(싱가포�
   await shot('p36-cond');
   const g = await page.evaluate(() => ({h1: document.querySelector('#view h1')?.textContent ?? '', tab: document.querySelector('#tabCond')?.getAttribute('aria-current'), tabs: [...document.querySelectorAll('nav.tabbar a')].map(a => a.getAttribute('href')),
     slots: document.querySelectorAll('#view button.cd-slot').length, big: document.querySelector('#view .cd-big b')?.textContent ?? null, rows: document.querySelectorAll('#view .cd-row, #view .cd-list li').length, flow: document.querySelector('#view .cd-flow')?.textContent ?? '',
-    hon: (document.querySelector('#view')?.innerText ?? '').includes('사고팔 곳을 고른 목록이 아니에요.'), q: !!document.querySelector('#view p.q'), sw: document.documentElement.scrollWidth, cw: innerWidth}));
+    hon: (document.querySelector('#view')?.innerText ?? '').includes('사고팔 곳을 고른 목록이 아니에요.'), q: [...document.querySelectorAll('#view p.q')].some(p => /조건 자료/.test(p.textContent)), /* 조건 자료를 못 받음 · 날이 다름만(맨 아래 「? 장 중 값」 줄은 장 중이면 늘 있음 — 2026-10-16 첫 탐침이 이것을 잘못 잡음) */ sw: document.documentElement.scrollWidth, cw: innerWidth}));
   await page.goto(B + '/?v=' + Date.now() + '#/info', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(900);
   const up = await page.evaluate(() => [...document.querySelectorAll('#infoSheet a[href="#/up"]')].length);
   const last = g.flow.split('→').map(x => x.trim()).filter(Boolean).at(-1);
   out.cond = {status: X ? 200 : null, version: X?.version ?? null, asOf: X?.asOf ?? null, coreAsOf: core?.asOf ?? null, ...g, upLink: up,
     ok: X?.version === 'cd-v1' && X?.asOf === core?.asOf && g.h1 === '조건 찾기' && g.tab === 'page' && g.tabs.includes('#/cond') && !g.tabs.includes('#/up') && g.slots === 3 && g.big != null && last === g.big && g.hon && !g.q && up >= 1 && g.sw <= g.cw};
   if (!out.cond.ok) out.errors.push('조건 찾기 탭: ' + JSON.stringify(out.cond).slice(0, 400));
+});
+await step('영어 판', async () => { // 사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」 · 규칙 71 — 지구 단추 · ?lang=en · 보이는 한국어 0(사장님 글 · 기사 원문 lang="ko" 빼고) · 끝에 ?lang=ko 로 되돌림(이 기계 기억)
+  const han = async () => page.evaluate(() => { const H = /[가-힣]/, bad = []; const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let n = w.nextNode(); n; n = w.nextNode()) { const el = n.parentElement; if (!el || el.closest('[lang="ko"], script, style, noscript, [hidden], [aria-hidden="true"]')) continue; const r = el.getBoundingClientRect(), cs = getComputedStyle(el); if (!r.width || !r.height || cs.visibility === 'hidden' || cs.display === 'none') continue; if (H.test(n.nodeValue)) bad.push(n.nodeValue.trim().slice(0, 40)); } return {en: document.documentElement.classList.contains('en'), lang: document.documentElement.lang, btn: !(document.querySelector('#langBtn')?.hidden ?? true), han: bad.length, first: bad.slice(0, 3), sw: document.documentElement.scrollWidth, cw: innerWidth}; });
+  const R = {};
+  for (const [k, h] of [['home', '#/'], ['list', '#/list'], ['cond', '#/cond'], ['surge', '#/surge'], ['cal', '#/cal'], ['up', '#/up'], ['co', '#/c/005930']]) { await page.goto(B + '/?lang=en&v=' + Date.now() + h, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view h1, #view .m4-sec', {timeout: 30000}).catch(() => {}); await page.waitForTimeout(1500); if (k === 'home' || k === 'cond') await shot('p37-en-' + k); R[k] = await han(); const m = await page.evaluate(() => (window.__atlasI18n?.missing?.() ?? []).map(x => String(x.key).slice(0, 160))); R[k].miss = m.length; R[k].missFirst = m.slice(0, 5); } // 사이트에만 있는 글(장 중 · 새 업데이트 기록)도 사전에 있나 — 남은 틀 0
+  await page.goto(B + '/?lang=ko&v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
+  const back = await page.evaluate(() => ({lang: document.documentElement.lang, en: document.documentElement.classList.contains('en')}));
+  out.english = {pages: R, back, ok: Object.values(R).every(x => x.en && x.lang === 'en' && x.btn && x.han === 0 && x.miss === 0 && x.sw <= x.cw) && back.lang === 'ko' && !back.en};
+  if (!out.english.ok) out.errors.push('영어 판: ' + JSON.stringify(out.english).slice(0, 400));
 });
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;

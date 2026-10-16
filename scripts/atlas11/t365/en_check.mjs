@@ -42,6 +42,11 @@ async function judge(p, r) {
       if (/[가-힣ㄱ-ㅎ]/.test(t) && vis(el)) out.han.push(t.slice(0, 60));
       if (vis(el)) { const fs = parseFloat(getComputedStyle(el).fontSize); if (fs < 20.5 && !el.closest('svg')) out.small.push(el.tagName + ':' + fs + ':' + t.slice(0, 20)); }
     }
+    // 스타일로 넣은 글(::before · ::after content) — 글자 마디가 아니라 사전 · 위 검사가 못 봄(2026-10-16 접는 줄의 「열기」가 영어 화면에 남던 것)
+    { const sels = []; const walk = rules => { for (const ru of rules) { if (ru.cssRules) walk(ru.cssRules); if (ru.selectorText && /::?(before|after)/.test(ru.selectorText) && /[가-힣]/.test(ru.style?.content ?? '')) sels.push(ru.selectorText); } };
+      for (const sh of document.styleSheets) { try { walk(sh.cssRules); } catch { /* 다른 곳 글꼴표 */ } }
+      for (const sel of sels) for (const part of sel.split(',')) { const m = /^(.*?)::?(before|after)\s*$/.exec(part.trim()); if (!m) continue; let els = []; try { els = document.querySelectorAll(m[1] || '*'); } catch { continue; }
+        for (const el of els) { if (el.closest('[lang="ko"]') || !vis(el)) continue; const c = getComputedStyle(el, '::' + m[2]).content; if (c && /[가-힣]/.test(c)) out.han.push('::' + m[2] + ':' + c.slice(0, 30)); } } }
     for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll(`[${a}]`)) { if (el.closest('[lang="ko"]')) continue; const v = el.getAttribute(a); if (/[가-힣]/.test(v)) out.han.push('@' + a + ':' + v.slice(0, 50)); }
     for (const el of document.querySelectorAll('#view a, #view button, #view summary, .band a, .band button, .tabbar a')) { if (!vis(el)) continue; const rc = el.getBoundingClientRect(); if (rc.width && (rc.height < 43.5 || rc.width < 43.5) && !el.closest('p, li > span, .why, .note')) out.taps.push((el.textContent || '').trim().slice(0, 20) + ' ' + Math.round(rc.width) + 'x' + Math.round(rc.height)); }
     out.miss = (window.__atlasI18n?.missing() ?? []).length; out.title = document.title;
@@ -50,7 +55,7 @@ async function judge(p, r) {
 }
 async function worker(list) {
   const ctx = await b.newContext({viewport: {width: 360, height: 640}});
-  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e).slice(0, 160))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 160)); });
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e).slice(0, 160))); p.on('console', m => { if (m.type() === 'error' && !/404/.test(m.text())) errs.push(m.text().slice(0, 160)); }); // 없는 자료 받기(404)는 화면 돌기(site_check)와 같이 셈에서 뺌 — 「없는 회사」 길(#/c/999999)이 일부러 404 를 받음
   await p.goto(PAGE + '#/'); await p.waitForFunction(() => window.__atlasI18n && !document.querySelector('#view p.boot'), null, {timeout: 30000}).catch(() => {});
   for (const r of list) {
     errs.length = 0;
