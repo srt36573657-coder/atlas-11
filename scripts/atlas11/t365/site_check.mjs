@@ -171,7 +171,7 @@ function m4Expect(H) {
   return {heads, leads, alerts, sec, movers, pickLabels, notes, qHeads, sayPk,
     rows: (RI?.list ?? []).map(r => [r.name, pct(r.chg)]), rowHref: (RI?.list ?? []).map(r => { const i = iOf(r.name); return i ? hrefI(i) : '#/list'; }), rowGold: (RI?.list ?? []).map(r => (core.mkt && iOf(r.name)?.pk ? `고른 ${iOf(r.name).pk}곳` : '')),
     groups: core.groups.slice().sort((a, b) => b.chg - a.chg).map(g => ['#/g/' + g.id, g.short, pct(g.chg)]), stale: notes.length > 0,
-    letter: ['친구에게 소개하기', '보드리 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!']};
+    letter: ['친구에게 소개하기', '보드리 35초 영상 · 보내기', '3명만 소개해도 스타벅스 상품권 1만원!']};
 }
 const SV_BANDS = surge?.bands?.version === 'sb-v1' ? ['#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'] : []; // 급등 다섯 칸(16:28 「총 5개」 · 16:34 (가))
 // 달력 탭 — 첫 화면 + 종목 파일 몇 곳(오늘 새로 · 사건이 가장 많은 곳 · 금빛 · 조심 · 가장 오른 · 가장 내린 · 가장 긴 이름)은 모든 판 · 글씨에서, 나머지 종목 파일은 390 · 보통 글씨 한 판에서(길 지도 · 3번 누름도)
@@ -550,7 +550,7 @@ async function visit(p, errs, route, w, hgt, font) {
       else {
         if (JSON.stringify(m.msg) !== JSON.stringify(HELLO_LINES)) fail(tk, `사장님 글 ${JSON.stringify(m.msg)} ≠ 글자 그대로`);
         for (const want of X.letter) { numbers++; if (!m.letter.includes(want)) fail(tk, `편지 칸 글 「${want}」 없음`); }
-        for (const gone of ['10명중에 몇명', '못버는건', '실력 없는 사람들', '생각해보세요', '커피 1잔', '상품권 1장', '막비', '24초']) { numbers++; if (m.letter.includes(gone)) fail(tk, `편지 칸에 지운 글 「${gone}」이 남음`); } // 2026-10-14 17:16 · 17:17 · 18:19 · 21:50
+        for (const gone of ['10명 소개하면', '10명중에 몇명', '못버는건', '실력 없는 사람들', '생각해보세요', '커피 1잔', '상품권 1장', '막비', '24초']) { numbers++; if (m.letter.includes(gone)) fail(tk, `편지 칸에 지운 글 「${gone}」이 남음`); } // 2026-10-14 17:16 · 17:17 · 18:19 · 21:50
         numbers++; if (m.letter.includes('급등')) fail(tk, '편지 칸(친구 소개)에 「급등」 — 소개 쪽에 급등 목록을 띄우지 않음(레드 셀 반대 2 · 규칙 69)');
         numbers++; if (JSON.stringify(m.heads) !== JSON.stringify(X.heads)) fail(tk, `칸 차례 ${JSON.stringify(m.heads)} ≠ ${JSON.stringify(X.heads)}`);
         numbers += X.leads.length; if (JSON.stringify(m.leads) !== JSON.stringify(X.leads)) fail(tk, `칸 첫 줄 ${JSON.stringify(m.leads).slice(0, 400)} ≠ ${JSON.stringify(X.leads).slice(0, 400)}`);
