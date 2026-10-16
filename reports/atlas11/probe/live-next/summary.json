@@ -1,12 +1,12 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-16T19:19:24.556Z",
+ "at": "2026-10-16T19:37:09.812Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "companies": 2557,
  "limit": null,
  "full": true,
- "seconds": 28,
+ "seconds": 33,
  "counts": {
   "고리": 1090,
   "화면": 51,
