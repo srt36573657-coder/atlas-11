@@ -386,6 +386,7 @@ const timesW = r => (r >= 2.4 && r < 2.5 ? String(Math.floor(r * 100 + 1e-9) / 1
 const usualW = r => (r == null ? '' : r >= 1.25 ? `평소의${NB}${timesW(r)}배` : r >= 0.8 ? '평소만큼' : '평소보다 작게');
 /** 이름 — 「·」 · 「및」 · 「와」 · 「과」 · 「,」 뒤에서만 줄을 바꿀 수 있게(<wbr>) · 낱말 가운데서 끊기지 않게(네이버 업종 이름은 띄어쓰기가 없음) */
 function nameEl(t, cls = 'nm') { // 「·」 앞은 붙임(U+2060 — 「도구 / ·서비스」처럼 「·」로 줄이 시작하지 않게 · 글 맞대기는 U+2060 을 빼고 봄)
+  if (EN) return h('span', {class: cls, text: String(t)}); // 영어 화면 — 이름을 한 글 마디로(사전이 이름을 통째로 바꿈 · 영어는 띄어쓰기에서 줄이 바뀜 · 2026-10-16 올린 뒤 탐침: 「생명과 | 학도구및 | 서비스」로 나뉘어 영어로 못 바꾼 것)
   const e = h('span', {class: cls}), parts = String(t).replace(/·/g, '\u2060·').split(/(?<=[·,]|및|와|과)/);
   parts.forEach((p, i) => { e.append(p); if (i < parts.length - 1) e.append(h('wbr')); });
   return e;
