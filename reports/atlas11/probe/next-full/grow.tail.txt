@@ -1,1 +1,8 @@
-{"ok":false,"companies":2557,"seconds":449,"counts":{"맞댄 글 낱낱":43387,"맞댄 숫자 낱말":82630,"이야기 있는 회사":61,"손가락 이름표":8477,"회사":2557,"아주 크게":9,"세 폭 화면":30,"둘레":9,"fail":1},"fails":[["밖 칸 고리","005935 #/find,#/x/005935,#/"]]}
+file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:301
+    if (name.startsWith('없는 주소(회사 아닌') && !r.x.split(',').some(x => x === '#/x/' + code || x === '/atlas/#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸이 새 화면에 켜지면 #/x/ (2026-10-17)
+                                               ^
+
+TypeError: r.x.split is not a function
+    at file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:301:48
+
+Node.js v22.23.3
