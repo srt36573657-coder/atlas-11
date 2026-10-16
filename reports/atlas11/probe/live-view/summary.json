@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T20:34:57.362Z",
+ "made": "2026-10-16T21:55:29.188Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -151,7 +151,13 @@
   "reports/atlas11/probe/live-view/p40-letter.png",
   "reports/atlas11/probe/live-view/p41-next-home.png",
   "reports/atlas11/probe/live-view/p42-next-watch.png",
-  "reports/atlas11/probe/live-view/p43-next-shorts.png"
+  "reports/atlas11/probe/live-view/p43-next-shorts.png",
+  "reports/atlas11/probe/live-view/p51-next-co.png",
+  "reports/atlas11/probe/live-view/p52-next-past.png",
+  "reports/atlas11/probe/live-view/p53-next-rivals.png",
+  "reports/atlas11/probe/live-view/p54-next-grow.png",
+  "reports/atlas11/probe/live-view/p55-next-range.png",
+  "reports/atlas11/probe/live-view/p56-next-chx.png"
  ],
  "texts": {
   "moon": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
@@ -175,7 +181,9 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [],
+ "errors": [
+  "새 아틀란스 모든 쪽: [{\"url\":\"/#/w/005930/past\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"삼성전자 — 지나온 길 · 새 아틀란스\",\"ok\":false,\"k\":\"past\"},{\"url\":\"/#/surge\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"급등 30곳 · 새 아틀란스\",\"ok\":false,\"k\":\"surge\"},{\"url\":\"/#/surge/20\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"20%대 10곳 · 새 아틀란스\",\"ok\":false,\"k\":\"surge\"},{\"url\":\"/#/cal\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":39"
+ ],
  "no36": {
   "hash": "#/",
   "tabs": [
@@ -358,7 +366,7 @@
     ],
     [
      "보드리!",
-     0.975338
+     0.975351
     ]
    ],
    "shown": false,
@@ -618,7 +626,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 14시간 22분 18초",
+  "clock": "6일 13시간 01분 48초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -644,7 +652,7 @@
    "letter": 11,
    "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
    "landed": true,
-   "tk": "/atlas/#/talk"
+   "tk": "#/talk"
   },
   "watch": {
    "h1": "삼성전자",
@@ -655,5 +663,192 @@
   "shorts": 10,
   "ok": true
  },
- "ok": true
+ "nextPages": {
+  "ready": [
+   "co",
+   "past",
+   "rivals",
+   "grow",
+   "range",
+   "chx",
+   "surge",
+   "cond",
+   "talk",
+   "up",
+   "time",
+   "info",
+   "x",
+   "cal",
+   "today"
+  ],
+  "pages": [
+   {
+    "url": "/#/w/005930",
+    "n": 13,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "삼성전자 · 새 아틀란스",
+    "ok": true,
+    "k": "co"
+   },
+   {
+    "url": "/#/w/005930/past",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "삼성전자 — 지나온 길 · 새 아틀란스",
+    "ok": false,
+    "k": "past"
+   },
+   {
+    "url": "/#/w/005930/rivals",
+    "n": 10,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "삼성전자 · 누구와 다투나 · 새 아틀란스",
+    "ok": true,
+    "k": "rivals"
+   },
+   {
+    "url": "/#/w/005930/grow",
+    "n": 10,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "삼성전자 — 앞으로 클까? · 새 아틀란스",
+    "ok": true,
+    "k": "grow"
+   },
+   {
+    "url": "/#/w/005930/range",
+    "n": 17,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "삼성전자 — 범위 · 확인 · 새 아틀란스",
+    "ok": true,
+    "k": "range"
+   },
+   {
+    "url": "/#/ch/g/semi",
+    "n": 8,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "반도체 갈래 · 새 아틀란스",
+    "ok": true,
+    "k": "chx"
+   },
+   {
+    "url": "/#/surge",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "급등 30곳 · 새 아틀란스",
+    "ok": false,
+    "k": "surge"
+   },
+   {
+    "url": "/#/surge/20",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "20%대 10곳 · 새 아틀란스",
+    "ok": false,
+    "k": "surge"
+   },
+   {
+    "url": "/#/cal",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "달력 · 새 아틀란스",
+    "ok": false,
+    "k": "cal"
+   },
+   {
+    "url": "/#/cond",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "조건 찾기 · 새 아틀란스",
+    "ok": false,
+    "k": "cond"
+   },
+   {
+    "url": "/#/talk",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "오늘의 이야기 · 새 아틀란스",
+    "ok": false,
+    "k": "talk"
+   },
+   {
+    "url": "/#/up",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "업데이트 기록 · 새 아틀란스",
+    "ok": false,
+    "k": "up"
+   },
+   {
+    "url": "/#/time",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "봉인 1호 · 새 아틀란스",
+    "ok": false,
+    "k": "time"
+   },
+   {
+    "url": "/#/info",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "ATLAS 는 어떻게 셌나요 · 새 아틀란스",
+    "ok": false,
+    "k": "info"
+   },
+   {
+    "url": "/#/today",
+    "n": 1,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "오늘 시장 · 새 아틀란스",
+    "ok": false,
+    "k": "today"
+   }
+  ],
+  "ok": false
+ },
+ "ok": false
 }
