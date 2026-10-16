@@ -305,6 +305,20 @@ await step('편지 여는 밤', async () => { // 사장님 2026-10-17 01:29 「�
       && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw};
   if (!out.letter.ok) out.errors.push('편지 여는 밤: ' + JSON.stringify(out.letter).slice(0, 400));
 });
+await step('새 아틀란스 시험판', async () => { // 사장님 2026-10-17 02:22 · 02:24 「가」 · 02:38 「정교하게 만들어라」 · 규칙 74 — /next/ 홈 · 보는 화면 · 쇼츠 · 검색 제외 머리말(모든 회사 · 채널 맞대기는 탐침 livenext)
+  const hr = await fetch(B + '/next/?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)}), robots = hr.headers.get('x-robots-tag') ?? '';
+  const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
+  await page.goto(B + '/next/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done(); await page.waitForTimeout(600); await shot('p41-next-home');
+  const home = await page.evaluate(() => ({tabs: [...document.querySelectorAll('.tabs a')].map(a => a.textContent.trim()), cards: document.querySelectorAll('#view .card').length, chips: document.querySelectorAll('#view .chip').length, q: document.querySelectorAll('#view .empty').length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+  await page.evaluate(() => { location.hash = '#/w/005930'; }); await done(); await page.waitForTimeout(500); await shot('p42-next-watch');
+  const watch = await page.evaluate(() => ({h1: document.querySelector('#view .wt')?.textContent ?? '', ws: document.querySelector('#view .ws')?.textContent ?? '', ch: document.querySelectorAll('#view .chaps a.cp').length, nx: document.querySelectorAll('#view .nx').length}));
+  await page.evaluate(() => { location.hash = '#/shorts'; }); await done(); await page.waitForTimeout(500); await shot('p43-next-shorts');
+  const shorts = await page.evaluate(() => document.querySelectorAll('#view .sh').length);
+  out.next = {html: hr.status, robots, home, watch, shorts,
+    ok: hr.status === 200 && /noindex/.test(robots) && home.tabs.join(',') === '홈,쇼츠,편지,구독,나' && home.cards >= 5 && home.chips === 7 && home.q === 0 && home.sw <= home.cw
+      && watch.h1 === '삼성전자' && /20거래일 동안 [+−]?\d/.test(watch.ws) && watch.ch === 7 && watch.nx >= 1 && shorts >= 8};
+  if (!out.next.ok) out.errors.push('새 아틀란스 시험판: ' + JSON.stringify(out.next).slice(0, 400));
+});
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;
 await fs.writeFile(`${dir}/summary.json`, JSON.stringify(out, null, 1));
