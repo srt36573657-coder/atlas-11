@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-16T23:29:27.845Z",
+ "at": "2026-10-16T23:45:45.518Z",
  "base": "https://aaa7377.com",
  "pages": [
   {
@@ -31,7 +31,7 @@
   {
    "name": "grow",
    "code": 1,
-   "seconds": 545
+   "seconds": 553
   },
   {
    "name": "misc",
@@ -56,7 +56,7 @@
   {
    "name": "rivals",
    "code": 1,
-   "seconds": 39
+   "seconds": 825
   },
   {
    "name": "surge",

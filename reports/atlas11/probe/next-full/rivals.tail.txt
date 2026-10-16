@@ -1,13 +1,1 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-
-page.goto: Timeout 30000ms exceeded.
-Call log:
-  - navigating to "https://aaa7377.com/next/?dev=1#/find", waiting until "load"
-
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_rivals.mjs:129:10 {
-  name: 'TimeoutError'
-}
-
-Node.js v22.23.3
+{"ok":false,"seconds":824,"companies":2557,"missing":7,"counts":{"sec":{"pick":2,"compare":815},"글 마디":51092,"숫자 낱말":50893,"막대 줄":13240,"회사":2277,"fail":304,"옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)":8,"경쟁 회사":157,"없는 번호":7,"세 폭 화면":30,"못 받은 파일 길":6},"fails":[["다 그리지 못함","옛 쪽 #/c/001380/rivals"],["다 그리지 못함","옛 쪽 #/c/001390/rivals"],["다 그리지 못함","새 쪽 #/w/001390/rivals"],["다 그리지 못함","옛 쪽 #/c/0013V0/rivals"],["다 그리지 못함","새 쪽 #/w/0013V0/rivals"],["다 그리지 못함","옛 쪽 #/c/001420/rivals"],["다 그리지 못함","새 쪽 #/w/001420/rivals"],["다 그리지 못함","옛 쪽 #/c/001430/rivals"],["다 그리지 못함","새 쪽 #/w/001430/rivals"],["다 그리지 못함","옛 쪽 #/c/001440/rivals"],["다 그리지 못함","새 쪽 #/w/001440/rivals"],["다 그리지 못함","새 쪽 #/w/001450/rivals"],["다 그리지 못함","옛 쪽 #/c/001450/rivals"],["다 그리지 못함","옛 쪽 #/c/001460/rivals"],["다 그리지 못함","새 쪽 #/w/001460/rivals"]]}

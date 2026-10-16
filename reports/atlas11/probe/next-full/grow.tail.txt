@@ -1,14 +1,8 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
+file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:301
+    if (name.startsWith('없는 주소(회사 아닌') && !r.x.split(',').some(x => x === '#/x/' + code || x === '/atlas/#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸이 새 화면에 켜지면 #/x/ (2026-10-17)
+                                               ^
 
-page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?dev=1#/w/100120/grow
-Call log:
-  - navigating to "https://aaa7377.com/next/?dev=1#/w/100120/grow", waiting until "load"
-
-    at openNew (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:68:22)
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:278:73 {
-  name: 'Error'
-}
+TypeError: r.x.split is not a function
+    at file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:301:48
 
 Node.js v22.23.3
