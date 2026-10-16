@@ -1,0 +1,26 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-16T13:06+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": [
+  "모두 건수 = 이 폴더 .json 들의 items 수를 더한 것"
+ ],
+ "scope": {
+  "from": "2026-10-16 11:08(서울)",
+  "to": "2026-10-16 13:06(서울)"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 42,
+   "when": "2026-10-15 14:48(서울) 커밋 66cd51e4 — 먹빛 예술 올림의 기록 줄(u-20261015T145000-m4-art)",
+   "what": "기록 줄의 「무엇」을 10줄로 써서 한도 8줄을 넘김 — 검사에 걸려 기록 탭에서 빠졌고, 저장소 단위 시험(changelog)이 하루 동안 실패 상태였는데 몰랐음",
+   "found_by": "Claude 스스로 — 2026-10-16 12:03(싱가포르) 올리기 전 모든 단위 시험에서 걸림",
+   "fixed": "글은 그대로 두고 두 쌍을 한 줄로 합쳐 8줄로 맞춤(올린 적 없는 줄이라 고침) · 앞으로 기록 줄을 쓰면 그 자리에서 단위 시험을 돌림",
+   "evidence": [
+    "/home/claude/atlas-11/reports/atlas11/changelog/updates/u-20261015T145000-m4-art.json",
+    "/home/claude/atlas-11/tests/atlas11/changelog.test.mjs"
+   ]
+  }
+ ]
+}
